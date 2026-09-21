@@ -1,3 +1,14 @@
+## 2026-09-21 — `M5-CP3-TB1-R3-CAND-01`: CB4 hard-feature transition correction does not recover frozen torus endpoint — **EXECUTION EVIDENCE / SEMANTIC RED / REVIEW PENDING**
+
+- **Candidate:** artifact `10624020011` / semantic source `6dd0e5179686a4ea2ca4aacda0577855948864df`.
+- **Runtime evidence:** run/job `35565176454 / 106225476682`; result/log artifacts `10623878370 / 10624252516`; result self-manifest **908/908**.
+- **Frozen gate:** mechanism **9/9 PASS**; six produced identities **0/6 PASS** with shared `PeriodicHolonomyMismatch`; selector430 **429/430 PASS** with sole RED ordinal408 receiving `Rejected` instead of required `Produced` (`NotProductionReady/tracing/None`). Exact-one selection and zero skips hold for all 445 processes.
+- **Boundary:** package/source/execution-view byte+mode censuses are unchanged; candidate manifest remains **28/28**; selector430/first427 and routing-map hashes are unchanged; benchmark/configure/compile/relink/generated-discovery/repair/mutation counters are all zero.
+- **Recovery result:** CB4's exact edge-keyed hard-feature transition-value correction plus exact source-edge-parameter orientation does not restore the endpoint behavior frozen by the R1 gate. EXEC does not infer which internal `PeriodicHolonomyMismatch` branch remains active and does not alter test/expectation authority.
+- **Accepted authority:** candidate remains unpromoted. Accepted runtime package/source remains `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316` under selector430 **430/430**. All four M5 produced debts remain open and selector publication remains prohibited.
+- **Accounting:** current durable totals remain **50 events / 14 categories / 36 recurrences**, produced-witness debt **5**, pending independent `M5-CP3-TB1-R3-REV` adjudication of whether this is continuation of the existing `M5-CP3-TB1-R1-CAND-01` stable event or requires distinct classification.
+- **Exact owner:** `M5-CP3-TB1-R3-REV`; no implementation, rerun, promotion, debt discharge, or selector publication is authorized before that Review.
+
 ## 2026-09-21 — `M5-CP3-TB1-R2-CAND-01`: exact-span recovery uses traversal authority on a nontraversable hard-feature carrier — **CLASSIFIED / IMPLEMENTATION AUTHORITY / HARD-FEATURE TRANSPORT DOMAIN CONFLATION / MERGED INTO R1 STABLE RP-01 RECURRENCE / RECOVERY REQUIRED**
 
 - **Candidate/evidence:** artifact `10620415471` / source `279efa03471f1e0d6c32f57c8b395dd1cb1a93f5`; run/job `35557990692 / 106205308600`; result/log artifacts `10621351075 / 10621154456`, result self-manifest **908/908**. Independent Review re-derives mechanism **9/9 PASS**, produced **0/6 PASS**, selector430 **429/430 PASS**, exact-one/zero-skip, immutable postflight and zero benchmark/configure/compile/relink/discovery/repair/mutation.

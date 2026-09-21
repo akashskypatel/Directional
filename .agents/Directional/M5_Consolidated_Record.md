@@ -1,7 +1,7 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-21 at `M5-CP3-CB4`
+**Last updated:** 2026-09-21 at `M5-CP3-TB1-R3-EXEC`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Corrected stable accounting is **50 / 14 / 36**, produced-witness debt **5**; M5 owns four of those debts.
 
@@ -51,7 +51,9 @@ R2 candidate `M5-CP3-TB1-R2-CAND-01` is **IMPLEMENTATION AUTHORITY / HARD-FEATUR
 
 Mandatory GMP run/job `35564191247 / 106222789039` compiles all eight standard targets with preflight/build `0 / 0`, explicit GMPXX+GMP, clean source receipts and `runtimeExecution=false`. Candidate artifact `10624020011` has provider SHA-256 `eeba51295d20082c8f20840b3f3b280d6b6012a1178eef2bd3eb5afbfd1a0ed6`, root manifest **28/28** at `a9ccee0d830768e1d91239741bba67f4912fe86efe12cca8ddd3a13cf50f4177`, and log artifact `10623905213` / `8e58b782ebe544e8b082e3c81b6e3634fc54de420acfe9a38a6a0d08a04a76ed`. This candidate is compile-only, runtime-unproven and unpromoted; accounting remains **50 / 14 / 36**, debt **5**.
 
-Exact successor is fresh artifact-only **`M5-CP3-TB1-R3-EXEC`** under `Architecture_M5_CP3_TB1_R3_Artifact_Only_Test_Benchmark_Plan.md`, restarting the unchanged **9 + 6 + 430 = 445** exact-filter processes from process 1 with benchmark **0** and no R1/R2 semantic-credit reuse.
+Fresh R3 run/job `35565176454 / 106225476682` consumes that CB4 candidate exactly and completes all **445** frozen exact-filter processes with exact-one/zero-skip and immutable postflight. The vector remains **9/9 mechanism PASS, 0/6 produced PASS, selector430 429/430 PASS**; all six produced rows report `PeriodicHolonomyMismatch`, and accepted ordinal408 again receives `Rejected` instead of required `Produced`. Result/log artifacts are `10623878370 / 10624252516`, result self-manifest **908/908**, and all prohibited-operation counters including benchmark execution remain zero. The candidate remains unpromoted; stable accounting remains **50 / 14 / 36**, debt **5**, pending independent Review.
+
+Exact successor is runtime-free **`M5-CP3-TB1-R3-REV`**. Review must independently verify R3 evidence, adjudicate why CB4 did not recover production and decide stable-event/accounting disposition before any further implementation, rerun, promotion, debt credit or selector publication.
 
 ## 5. Folded-document index
 
