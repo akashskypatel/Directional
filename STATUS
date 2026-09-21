@@ -1,8 +1,8 @@
 ---TURN_STATUS---
-Turn: M5-CP3-TB1-R3-EXEC
-Status: COMPLETE
-Successor: M5-CP3-TB1-R3-REV
-Started at: 2026-09-21T05:34:41Z
-Resumed at: 2026-09-21T05:57:33Z
-Ended at: 2026-09-21T06:04:34Z
+Turn: M5-CP3-TB1-R3-REV
+Status: IN_PROGRESS
+Successor: UNKNOWN
+Started at: 2026-09-21T06:20:06Z
+Resumed at: 
+Ended at: 
 ---END_TURN_STATUS---
