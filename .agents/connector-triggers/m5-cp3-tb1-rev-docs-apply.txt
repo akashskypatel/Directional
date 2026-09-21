@@ -3,4 +3,4 @@ purpose=apply verified durable Review documentation patch from Google Drive
 base_sha=8ab04882412a9f13463b4a5884043863e07526ea
 file_id=1WBdMwHgEKql6Ow1j8jDzgV5H0C2EXqT1
 patch_sha256=97b9b27f3a417e598505347f9a15d2a6e27844152b6a36addbccc49937b56dff
-retry=0
+retry=1
