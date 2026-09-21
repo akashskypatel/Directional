@@ -1,7 +1,7 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-21 at `M5-CP3-TB1-R5-EXEC`
+**Last updated:** 2026-09-21 at `M5-CP3-TB1-R5-REV`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Corrected stable accounting is **50 / 14 / 36**, produced-witness debt **5**; M5 owns four of those debts.
 
@@ -82,6 +82,16 @@ Fresh artifact-only R5 run/job `35591203189 / 106305794544` consumes candidate `
 The CB6 test-authority correction behaves exactly as intended: `FieldTransportAtlas.RetainsDirectedTransitionValueForHardFeatureWithoutTraversalAdjacency` passes, and R4 selector reds 18, 20, 21, 22, 23 and 25 all return green under unchanged selector430. This is runtime recovery evidence for non-stable `R4-CAND-02`, subject to independent R5 Review.
 
 The product endpoint does not recover. All six produced identities still terminate with `PeriodicHolonomyMismatch`; selector ordinal408 is the sole selector RED and still observes `Rejected` rather than required `Produced` with `NotProductionReady/tracing/None`. Removing the unfrozen carrier-distinctness inequality is therefore not sufficient. EXEC records `M5-CP3-TB1-R5-CAND-01` as Review-pending continuation evidence for the existing stable R1 `RP-01` event, with +0 accounting. Stable totals remain **50 / 14 / 36**, debt **5**; candidate remains unpromoted, all four M5 debts remain open and selector publication remains prohibited. Exact successor is independent runtime-free `M5-CP3-TB1-R5-REV`.
+
+
+### R5 independent Review — oracle recovery closed; product failure requires typed branch proof
+
+`M5-CP3-TB1-R5-REV` independently re-derives result self-manifest **911/911**, all **446** process rows, exact-one/zero-skip, raw-log hashes, immutable postflight and zero prohibited counters: mechanism **9/9 PASS**, focused atlas **1/1 PASS**, produced **0/6 PASS**, selector430 **429/430 PASS** with sole RED ordinal408. Candidate `10633891886` remains unpromoted; accepted runtime authority remains package `10601978228` / selector430 **430/430**; accounting remains **50 / 14 / 36**, debt **5**.
+
+R4 test-authority oracle drift closes **RECOVERY PROVED / NON-STABLE** because the new value-without-adjacency control and all six formerly red atlas rows are green with their discriminators retained. CB6 carrier-distinctness removal is falsified as the complete product cause. The R5 product RED remains continuation of the existing R1 `RP-01` event, but the generic `PeriodicHolonomyMismatch` currently collapses generator-route lookup, action correspondence and checked holonomy construction. Review records a source-level A4-front-face versus exact A3-carrier-incidence authority mismatch as `M5-CP3-TB1-R5-REV-OBS-01`, but prohibits using it as a semantic fix until runtime proves generator-route unavailability is the active branch.
+
+Exact successor is runtime-free `M5-CP3-CB7`, diagnostic-only. It appends typed failure reasons for the three boundaries and exact existing holonomy-construction subcodes without changing semantics, then mandatory GMP compile/packages all eight standard targets. A green candidate routes to fresh artifact-only R6 on the unchanged 446-process gate, then mandatory Review before any semantic correction.
+
 
 ## 5. Folded-document index
 

@@ -2,11 +2,11 @@
 
 Last updated: 2026-09-21 UTC
 
-## Latest Review turn — `M5-CP3-TB1-R4-REV`
+## Latest Review turn — `M5-CP3-TB1-R5-REV`
 
-`M5-CP3-TB1-R4-REV` is **COMPLETE / RUNTIME-FREE / R4 EVIDENCE UPHELD / EXISTING RP-01 RECOVERY OPEN / TEST-AUTHORITY ORACLE DRIFT CONFIRMED / CB6 REQUIRED**. Review independently verifies self-manifest **908/908**, the full **445/445** process ledger, exact-one/zero-skip, immutable postflight and zero prohibited counters: mechanism **9/9 PASS**, produced **0/6 PASS**, selector430 **423/430 PASS** with RED ordinals **18, 20, 21, 22, 23, 25, 408**.
+`M5-CP3-TB1-R5-REV` is **COMPLETE / RUNTIME-FREE / R5 EVIDENCE UPHELD / R4 ORACLE RECOVERY PROVED / EXISTING RP-01 RECOVERY OPEN / CB7 REQUIRED**. Review independently verifies self-manifest **911/911**, all **446/446** ledger rows, exact-one/zero-skip, immutable postflight and zero prohibited counters: mechanism **9/9 PASS**, focused atlas **1/1 PASS**, produced **0/6 PASS**, selector430 **429/430 PASS** with sole RED ordinal408.
 
-The six atlas REDs are non-stable stale independent-oracle authority: CB5 extended production atlas semantic identity with retained transition-value facts, but the independent snapshot/digest omitted them and fails valid baseline before intended discriminators. Ordinal408 remains the existing stable RP-01 recovery event; Review identifies an unfrozen generator-vs-cut carrier-identity inequality as the bounded CB6 falsifier, not a dynamically instrumented branch claim. Frozen §15 records transition value distinct from traversal adjacency and discharges `M5-CP3-TB1-R3-REV-OBS-01`. Accounting stays **50 / 14 / 36**, debt **5**; candidate `10627250028` remains unpromoted, all four M5 debts remain open and selector publication is prohibited. Exact next: `M5-CP3-CB6`.
+R4 oracle drift is closed non-stably: the focused hard-feature transition-value-without-adjacency identity and former RED ordinals **18/20/21/22/23/25** are all green with discriminators retained. CB6 carrier-distinctness removal is falsified as the complete product cause. The surviving endpoint remains the existing stable RP-01 event, but `PeriodicHolonomyMismatch` still collapses generator-route, action-correspondence and checked relation-construction failures. Review records the A4-front-face versus exact A3-carrier-incidence mismatch only as `R5-REV-OBS-01`, pending dynamic proof of the generator-route branch. Accounting stays **50 / 14 / 36**, debt **5**; candidate `10633891886` remains unpromoted, all four M5 debts remain open and selector publication is prohibited. Exact next: `M5-CP3-CB7` diagnostic-only failure disambiguation.
 
 
 ## Latest Test + Benchmark turn — `M5-CP3-TB1-R5-EXEC`
@@ -45,11 +45,13 @@ Mandatory GMP compile/package run/job `35589136079 / 106299332182` built all eig
 - [x] `M5-CP3-TB1-R4-REV`: R4 evidence upheld; six atlas REDs confirmed non-stable oracle drift; ordinal408 kept in existing RP-01 recovery; frozen §15 added; CB6 frozen.
 - [x] `M5-CP3-CB6`: bounded carrier-distinctness + independent atlas-oracle correction built; candidate `10633891886` GMP compile/package green, runtime-free.
 - [x] `M5-CP3-TB1-R5-EXEC`: complete 446-process gate; mechanism 9/9, focused atlas 1/1, produced 0/6, selector430 429/430; atlas-oracle recovery green, product endpoint still RED.
-- [ ] `M5-CP3-TB1-R5-REV`: **exact next**; independently re-derive R5 evidence, confirm non-stable oracle recovery, adjudicate surviving RP-01 continuation, and freeze the next bounded correction or stop.
+- [x] `M5-CP3-TB1-R5-REV`: R5 evidence upheld; R4 oracle drift recovery proved/closed non-stably; carrier-distinctness falsifier refuted; surviving RP-01 remains open behind collapsed periodic-promotion failures.
+- [ ] `M5-CP3-CB7`: **exact next**; diagnostic-only typed failure disambiguation, mandatory GMP compile/package, zero generated runtime.
 
-## Current focus — `M5-CP3-TB1-R5-REV`
+## Current focus — `M5-CP3-CB7`
 
-Perform a runtime-free independent Review of `Architecture_M5_CP3_TB1_R5_Artifact_Only_Test_Benchmark_Report.md` and immutable R5 artifacts. Re-derive the 446-process vector and self-manifest; verify the focused atlas row and formerly red selector ordinals 18/20/21/22/23/25 are genuinely green; adjudicate `M5-CP3-TB1-R5-CAND-01` against the existing stable RP-01 event; preserve selector430 and accepted runtime authority; and identify only a falsifiable next correction if the surviving production failure is independently localized. No runtime, implementation, candidate promotion, debt credit or selector publication is authorized in Review.
+Implement only the diagnostic disambiguation frozen in `Architecture_M5_CP3_CB7_Periodic_Holonomy_Failure_Disambiguation_Plan.md`. Append typed phase-front reasons for same-region generator-route unavailability, action-correspondence mismatch and the four existing holonomy-construction errors; preserve all existing reason numeric values and all semantic predicates. Change only the two authorized SurfaceCellTracing files. No test/fixture/selector/frozen-definition/atlas/action/relation semantic edits. Mandatory GMP/GMPXX compile/package all eight standard targets, no generated runtime. If green, fresh `M5-CP3-TB1-R6-EXEC` reruns the unchanged 446-process gate; semantic repair waits for R6 Review branch proof.
+
 
 ## Carried forward from M1
 

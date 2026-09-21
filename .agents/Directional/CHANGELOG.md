@@ -1,3 +1,9 @@
+## 2026-09-21 — `M5-CP3-TB1-R5-REV`: R5 upheld; oracle recovery closed; typed failure disambiguation next
+
+Runtime-free independent Review reopens R5 result/log and CB6 package bytes, verifies result self-manifest **911/911**, all **446/446** exact-filter rows with matching raw-log hashes, exact-one/zero-skip, immutable postflight and zero prohibited counters, plus CB6 package **28/28** / GMP boundary. Vector is mechanism **9/9 PASS**, focused atlas **1/1 PASS**, produced **0/6 PASS**, selector430 **429/430 PASS** with sole RED ordinal408. Selector430 and first427 re-hash unchanged.
+
+`M5-CP3-TB1-R4-CAND-02` closes **RECOVERY PROVED / NON-STABLE**: the new hard-feature transition-value-without-adjacency identity and former atlas RED ordinals 18/20/21/22/23/25 are green with source discriminators retained. `M5-CP3-TB1-R5-CAND-01` is upheld as continuation of the existing stable R1 `RP-01` event; carrier-distinctness removal is falsified as the complete cause, +0 accounting. Review does not guess the next semantic fix: current `PeriodicHolonomyMismatch` collapses generator-route unavailability, action correspondence and checked holonomy construction. Static A4-front-face vs exact A3-carrier-incidence mismatch is recorded as `R5-REV-OBS-01` pending dynamic branch proof. Accounting remains **50 / 14 / 36**, debt **5**; candidate unpromoted and four M5 debts open. Exact successor: diagnostic-only runtime-free `M5-CP3-CB7`, then fresh R6 and mandatory Review.
+
 ## 2026-09-21 — `M5-CP3-CB6`: carrier-distinctness/oracle correction compile-package GREEN
 
 ## 2026-09-21 — `M5-CP3-TB1-R5-EXEC`: 446-process gate repairs atlas oracle but production endpoint remains RED
