@@ -1,3 +1,37 @@
+## 2026-09-21 — `M5-CP3-TB1-R3-REV` review: unreachability diagnosis upheld; atlas-contract recording required
+
+Runtime-free review. **Upheld.** Accounting holds at **50 events / 14 categories / 36 recurrences**, debt **5**;
+candidate `10624020011` unpromoted; accepted authority remains package `10601978228` / selector430 **430/430**.
+
+**The unreachability claim is exact.** `RemeshPipeline.cpp:7869` installs `tracingOptions.fieldTransportAtlas`
+and there is **no assignment of `tracingOptions.edgeTransitions` anywhere in that file**, so CB4's opening
+`edgeTransitions != nullptr` guard is deterministically false on the production path. R3's tallies are unchanged
+from R2 — mechanism 9/9, produced 0/6, selector430 429/1 at ordinal 408 — which is exactly what an unreachable
+fix predicts.
+
+**This is "passed vs did not run", and the green rows helped hide it.** CB4's code was correct and did implement
+the seam re-validation `M5-CP3-TB1-R2-REV-OBS-01` required; it has simply never executed. The nine mechanism rows
+stayed green because they supply raw containers directly, so their green was compatible with the repair never
+running (`LESSONS.md` 160). The operative consequence for CB5: **reachability on the production path must be
+established before internal correctness is worth assessing** — §4.3 is right that the R2 observation is refined,
+not discharged, because validation that has never run is not validated.
+
+**Three failures, but convergence by elimination.** R1 eliminated synthesised transport, R2 the wrong authority
+domain (traversal-only, hard-feature-excluded), R3 the wrong source container (raw transitions, cut out by the A1
+cutover). None was refuted by the representation rule — only by where the value was fetched. The remaining target
+provably holds the data: `FieldTransportAtlas::make` builds and validates `transitionByEdge` at `:1912-1923`
+before the hard-feature exclusion at `:1963`.
+
+New: `M5-CP3-TB1-R3-REV-OBS-01`. CB5 changes what `FieldTransportAtlas` **publishes**, a public-contract change
+whose sole authority is a review record — the frozen definitions were last amended at `af233057` and §14 is
+untouched, while CB4's own plan had forbidden exactly this change one turn earlier. The substance is sound
+(value versus traversability is a real distinction, and §4.2 preserves the A1 cutover), but left unrecorded a
+later reader of §14 finds the barrier invariant beside a new query returning hard-feature data with no frozen
+text reconciling them. Before CB5's result is accepted, the frozen definitions must record the non-traversal
+value retention and that the A1 barrier contract is unchanged. Recurring pattern of `M4-CP4-TB3-REV-OBS-01`.
+
+Exact successor: `M5-CP3-CB5` — atlas barrier transition-value cutover, three authorized files, explicit stops.
+
 ## 2026-09-21 — `M5-CP3-TB1-R3-REV`: R3 upheld; production atlas cutover makes CB4 raw-transition correction unreachable; CB5 next
 
 Independent runtime-free Review re-opens R3 candidate `10624020011` / source `6dd0e517...`, verifies outer artifact identities and result self-manifest **908/908**, and re-derives the complete **9/9 mechanism PASS, 0/6 produced PASS, selector430 429/430 PASS** vector with exact-one/zero-skip, immutable postflight and all prohibited-operation counters zero. Accepted selector430/first427 re-hash unchanged.

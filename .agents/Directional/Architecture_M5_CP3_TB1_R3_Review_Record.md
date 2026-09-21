@@ -128,3 +128,98 @@ Per `CLEAN_UP_POLICY.md`, this Review folds the superseded CB4 build report/plan
 | review_check.py boundary | PASS — `review_check.py boundary` reports ALL CHECKS PASSED; no product/test/fixture/build or selector mutation |
 | `STATUS` lifecycle maintained | entry beacon published for `M5-CP3-TB1-R3-REV`; terminal COMPLETE beacon with sole successor `M5-CP3-CB5` is the final repository write after durable docs and cleanup |
 | Pushed to origin, branch in sync | control-plane confirmation is performed after documentation push and temporary-state cleanup; no self-referential commit hash is embedded here |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld.** The reachability diagnosis is correct and re-derives from bytes, the continuation
+accounting is right, and CB5 targets the one remaining location that can hold the value. Accounting holds at
+**50 events / 14 categories / 36 recurrences**, debt **5**. One normative-recording finding is raised.
+
+### V1 — the unreachability claim is exact
+
+`RemeshPipeline.cpp:7869` sets `tracingOptions.fieldTransportAtlas = &*fieldTransportAtlasProduct;`, and there is
+**no assignment of `tracingOptions.edgeTransitions` anywhere in `RemeshPipeline.cpp`** — the field keeps its
+default null on the production path. CB4's helper opens by requiring `edgeTransitions != nullptr`, so on
+production that guard is deterministically false by construction, exactly as §4.1 states. The corrected code is
+never entered.
+
+R3's tallies are unchanged from R2 — mechanism **9/9**, produced **0/6**, selector430 **429/1** with ordinal 408
+the sole selector RED and all six produced rows reporting `PeriodicHolonomyMismatch` — which is precisely what an
+unreachable fix predicts: nothing moved.
+
+### V2 — this is "passed vs did not run", and the green rows helped hide it
+
+Worth naming plainly, because it bears on how the next correction is judged. CB4's code was not sloppy: it
+implemented the seam re-validation `M5-CP3-TB1-R2-REV-OBS-01` required — unique edge-transition authority, exact
+edge identity, directed face-pair identity, failing closed. That work is correct. It has simply never executed.
+
+The nine mechanism rows stayed **9/9 green** throughout, because they construct options directly and do supply
+raw containers; only the produced rows and row408 traverse the real pipeline. So the mechanism suite's
+continued green was not evidence that the repair worked — it was compatible with the repair never running at all.
+`LESSONS.md` 160 applies directly: **passed is not the same as did not run.**
+
+The operative consequence: **a correction's reachability on the production path must be established before its
+internal correctness is worth assessing.** For CB5 that means demonstrating the new atlas query is reached by
+`generator_route_for_span` on the production configuration — the one where `fieldTransportAtlas` is installed and
+raw containers are absent — not merely that it returns the right value when called. §4.3 is therefore right that
+`M5-CP3-TB1-R2-REV-OBS-01` is **refined, not discharged**: validation that has never run is not validated.
+
+### V3 — three failures, but this is convergence by elimination, not thrashing
+
+Three consecutive failed recoveries deserve a judgment rather than a shrug, since the alternative reading is that
+frozen §14.3's representation is itself wrong. The record supports convergence:
+
+- **R1** eliminated *synthesised* transport (whole-region rotation reconstruction);
+- **R2** eliminated the wrong *authority domain* (`FieldTransportAtlas::transport`, traversal-only, which
+  excludes hard-feature carriers by design);
+- **R3** eliminated the wrong *source container* (raw `crossField.edgeTransitions`, cut out of the production
+  path by the A1 single-authority cutover).
+
+Each attempt removed a distinct wrong provider for the same value, and none of the three was refuted by the
+representation rule — only by where the value was fetched from. The remaining candidate is the one place that
+provably both holds the data and survives the cutover: I verified at `M5-CP3-TB1-R2-REV` that
+`FieldTransportAtlas::make` builds `transitionByEdge` at `:1912-1923`, with validation, **before** the
+hard-feature exclusion at `:1963`. The value is already computed and already validated inside the atlas; CB5 only
+has to retain and publish it as a non-traversal fact. The search space is now small and the target is
+evidence-backed.
+
+### V4 — RECORDED: the atlas's published contract is being extended by review record alone
+
+`Architecture_M5_Frozen_Definitions.md` was last amended at `af233057`, the R1 review. §14 has not been touched
+since, and it governs CP3 same-region periodic promotion.
+
+CB5 will change what `FieldTransportAtlas` **publishes** — retaining a validated transition-value fact for
+interior edges and exposing a separate non-traversal query. That is a change to a product's public contract, and
+its sole authority is this Review record. Note also that CB4's own plan forbade exactly this ("no change to
+`FieldTransportAtlas` implementation or any public header"); the prohibition is being lifted one turn later by a
+different document.
+
+The substance is sound — separating transition **value** from **traversability** is a real distinction, the atlas
+already computes and validates the value, and §4.2 is explicit that hard features must not become traversable and
+that the A1 single-authority cutover is preserved. I am not disputing the direction. The gap is where it is
+written. This is the recurring pattern recorded as `M4-CP4-TB3-REV-OBS-01`: **a turn reliably amends the document
+it is working in, and unreliably amends the document that governs it.**
+
+Left as is, a later reader of §14 finds the A1 barrier invariant — hard-feature edges are not traversable —
+sitting beside a new atlas query that returns data for hard-feature edges, with no frozen text reconciling the
+two. That reads as a weakened barrier to anyone who did not follow this turn sequence.
+
+**Required before CB5's result is accepted, not before CB5 runs:** record in the frozen definitions that
+`FieldTransportAtlas` retains a validated non-traversal transition value for interior edges, that this is
+distinct from traversability, and that `FieldTransportBarrierKind::HardFeature` and the A1 barrier contract are
+unchanged. Recorded as `M5-CP3-TB1-R3-REV-OBS-01`.
+
+### V5 — successor scope and verification limits
+
+CB5's plan is tightly bounded and carries real stop rules: three authorized files; no test, fixture, benchmark,
+selector, frozen-definition, CMake or `RemeshPipeline` change; §14.2's same-region promotion preconditions
+preserved exactly; and explicit stops if scope must widen beyond the three files or if a declaration-only
+adjustment outside them proves necessary. Requiring R4 to restart the complete **9 + 6 + 430 = 445** process
+sequence from process 1, with no reuse of R3 credit, is also correct.
+
+Re-derived from repository bytes: the `fieldTransportAtlas` installation at `RemeshPipeline.cpp:7869`, the
+absence of any `tracingOptions.edgeTransitions` assignment in that file, the frozen-definitions amendment history,
+and CB5's authorized-path and stop-rule text. Accepted as reported: R3 artifact hashes, the 908-row self-manifest,
+the 28/28 package manifest, run/job identifiers and execution-boundary receipts.

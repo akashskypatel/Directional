@@ -9160,3 +9160,39 @@ validation is **implemented at the seam**, not merely promised — absent, dupli
 face-pair-mismatched raw authority must each fail closed with the existing production failure. A consumer that
 takes over raw authority without re-performing the checks its former provider performed is a silent validation
 gap, and it will not show up as a failing test until the malformed case actually occurs.
+
+## `M5-CP3-TB1-R3-REV-OBS-01` — the atlas's published contract is being extended by review record alone
+
+**Status.** OPEN / NON-GATING FOR CB5 EXECUTION / must be recorded before CB5's result is accepted / owner: the
+Review that adjudicates CB5 / NON-STABLE.
+
+`M5-CP3-CB5` will change what `FieldTransportAtlas` **publishes**: retaining a validated transition-value fact
+for interior edges and exposing a separate non-traversal query, so `generator_route_for_span` can consume the
+exact value without touching raw containers. Its sole authority is `M5-CP3-TB1-R3-REV`.
+`Architecture_M5_Frozen_Definitions.md` was last amended at `af233057` (the R1 review) and §14 — which governs
+CP3 same-region periodic promotion — has not been touched since. `M5-CP3-CB4`'s own plan had forbidden exactly
+this ("no change to `FieldTransportAtlas` implementation or any public header"); that prohibition is being lifted
+one turn later by a different document.
+
+**The substance is sound and is not disputed.** Separating transition **value** from **traversability** is a real
+distinction: `FieldTransportAtlas::make` already builds and validates `transitionByEdge` at `:1912-1923` before
+the hard-feature exclusion at `:1963`, so the value exists and is already checked. R3-REV §4.2 is explicit that
+hard features must not become traversable and that the A1 single-authority cutover is preserved.
+
+**Why it must still be recorded:** left as is, a later reader of §14 finds the A1 barrier invariant — hard-feature
+edges are not traversable — sitting beside a new atlas query that returns data for hard-feature edges, with no
+frozen text reconciling the two. That reads as a weakened barrier to anyone who did not follow this turn
+sequence. This is the recurring pattern of `[[M4-CP4-TB3-REV-OBS-01]]`: a turn reliably amends the document it is
+working in and unreliably amends the document that governs it.
+
+**How to apply:** before CB5's result is accepted, record in the frozen definitions that `FieldTransportAtlas`
+retains a validated **non-traversal** transition value for interior edges, that this is distinct from
+traversability, and that `FieldTransportBarrierKind::HardFeature` and the A1 barrier contract are unchanged.
+
+**Reachability requirement carried with it** (refining `[[M5-CP3-TB1-R2-REV-OBS-01]]`): CB4's seam re-validation
+was implemented correctly but is unreachable — `RemeshPipeline.cpp:7869` installs `fieldTransportAtlas` and never
+assigns `tracingOptions.edgeTransitions`, so CB4's `edgeTransitions != nullptr` guard is deterministically false
+in production. The nine mechanism rows stayed 9/9 green throughout because they supply raw containers directly,
+so their green was compatible with the repair never running (`LESSONS.md` 160, passed vs did not run). CB5 must
+demonstrate the new query is **reached** by `generator_route_for_span` on the production configuration, not only
+that it returns the right value when called.
