@@ -1,0 +1,5 @@
+purpose=M5-CP3-TB1-R4-EXEC durable semantic-red closeout
+caller_commit=5ff602addbb95b91d7763278e542ee11ef0e566e
+base_sha=c41dfaeb6d6bf6f439690e0f06000568344eabef
+patch_sha256=d5ad65d4b746ee75a5d009e7a775091458d7ea2f10575872409afd8ca035f8d3
+retry=0
