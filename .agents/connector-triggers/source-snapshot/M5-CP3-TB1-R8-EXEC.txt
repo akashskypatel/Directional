@@ -1,0 +1,3 @@
+turn=M5-CP3-TB1-R8-EXEC
+purpose=source-snapshot
+source_sha=909ba779813079dbc752e6a2d4d5974f1f5f5bde
