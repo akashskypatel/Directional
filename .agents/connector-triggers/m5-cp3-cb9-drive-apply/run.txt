@@ -1,2 +1,3 @@
 turn=M5-CP3-CB9
-patch_sha256=6c3aadd6e83ba227eeaa0d534b23dfa94eb57d4e07ed47cbdef5c7b0105aa33e
+patch_sha256=b9bb2c0bf99ca60e86cc1860472ee2d632ca899e5c7987dc0d4018f64b619962
+purpose=durable-closeout
