@@ -1,4 +1,0 @@
-turn=M5-CP3-TB1-R8-EXEC
-purpose=apply durable artifact-only runtime closeout documentation
-base_sha=da565dc038a28a1823974361d61d4ff03050ab19
-patch_sha256=3fbf47ef30b950e28ca0efe584baa06efa8284160990e480b4ebc12f338d1cdb
