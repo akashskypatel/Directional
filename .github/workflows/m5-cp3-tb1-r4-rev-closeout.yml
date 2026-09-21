@@ -1,0 +1,43 @@
+name: M5 CP3 TB1 R4 Review Docs Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m5-cp3-tb1-r4-rev-closeout-20260921.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  id-token: write
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m5-cp3-tb1-r4-rev-closeout.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m5-cp3-tb1-r4-rev-closeout
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1x5wTiSomra9vTJLgKteMvUzQ1jcrXJ_c
+      patch_sha256: 4269e6ba826d2fce672467262780dcf829ffc49da1565ba32f4b13bf44ec4547
+      base_sha: 3ef5128ea070b8d050fea9f97717c32c5d916011
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "M5-CP3-TB1-R4-REV: record independent review and freeze CB6"
+    secrets: inherit
