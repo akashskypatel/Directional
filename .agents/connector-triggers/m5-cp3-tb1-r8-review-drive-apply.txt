@@ -1,7 +1,0 @@
-turn=M5-CP3-TB1-R8-REV
-purpose=durable-review-closeout
-caller_install=c83c03771471729fe8545f3425df33a367855ddc
-patch_file_id=1uo3F7aTy4lMhu0MxtIs3Ci8hjOdz_gS0
-patch_sha256=dfc89483d42bcdcb0bda2c2969f5da02e4419fdf5537a85c1183f4c08131d168
-base_sha=dcdfefbbd3bd21d9a208eaf5751fee8e5407d7ef
-retry=1
