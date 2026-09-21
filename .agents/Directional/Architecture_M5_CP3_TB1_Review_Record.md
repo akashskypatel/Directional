@@ -98,5 +98,5 @@ Current retained role documents are the CB2 build report, blocked TB1 runtime re
 | Successor frozen | `M5-CP3-TB1-R1-EXEC`; mechanically complete R1 must next enter `M5-CP3-TB1-R1-REV`. |
 | Turn boundary held | Runtime-free; no product/test/fixture/benchmark/build/selector mutation, compile or Directional runtime execution. |
 | review_check.py boundary | **ALL CHECKS PASSED** with selector430 exact-hash expectation on the prepared Review delta. |
-| `STATUS` lifecycle maintained | Review entry beacon already published; COMPLETE successor beacon is withheld until durable docs and cleanup are verified. |
-| Pushed to origin, branch in sync | **PENDING CLOSEOUT**; remote authority must be re-verified before final COMPLETE `STATUS`. |
+| `STATUS` lifecycle maintained | Review entry beacon already published; durable docs and workflow-first cleanup are verified. The COMPLETE successor beacon is the next and final repository write for this turn. |
+| Pushed to origin, branch in sync | **CONFIRMED** after durable documentation push and workflow-first cleanup; current remote authority was re-read with only durable workflows present, all connector-trigger/workflow-observation/turn-payload temporary state absent, and all current-turn Drive staging patches permanently retired. |
