@@ -1,3 +1,13 @@
+## 2026-09-21 — `M5-CP3-CB8`: occurrence-owned source-face incidence correction — **COMPILE GREEN / EXISTING RP-01 RECOVERY PENDING / +0**
+
+- **Correction authority:** semantic patch `31d437a0864f99cb44d06430e0faa85c57c862be`; exact compile source `baae6307d189639fdf7d8a0011f5ba5f30de1631`; only semantic path `src/geometry/SurfaceCellTracing.cpp`.
+- **Corrected seam:** accepted A3 `AcceptedCutBoundarySegment::sourceFace` is retained under exact boundary-occurrence/span/carrier identity; generator-route transition lookup resolves the directed pair from those accepted occurrences instead of A4 endpoint point faces, and validates carrier membership without using `sourceEdgeFaces` storage order to choose direction.
+- **Compile evidence:** run/job `35623934990 / 106413580650`; candidate/log `10651055588 / 10651435428`; candidate SHA-256 `376f61120b4a71dd9747daae8c248fe766bbf899faac0e2f336fc97e57acda96`; package manifest **28/28** at `06f7e6f068a6b390d212da07928b7088918ee675ccd1968355497b8143f598cd`; all eight mandatory GMP/GMPXX targets green; `runtimeExecution=false`.
+- **Boundary:** no test, fixture, selector, atlas/traversal, action/relation, frozen-definition or public-header change; no generated Directional runtime executes. Compile green does not establish recovery.
+- **Observation:** `M5-CP3-TB1-R6-REV-OBS-01` remains open for R7 Review because unordered carrier membership is not itself an independent directed-orientation falsifier.
+- **Disposition:** the stable `M5-CP3-TB1-R1-CAND-01 / RP-01 AUTHORITY_DOMAIN_CONFLATION` event remains **OPEN RECOVERY** until fresh R7 artifact-only runtime and mandatory Review. Exact next gate is candidate `10651055588` over unchanged 446 processes; no produced row may remain `PeriodicGeneratorRouteUnavailable`.
+- **Accounting:** compile-only recovery attempt, **+0 event / +0 category / +0 recurrence**. Totals remain **50 / 14 / 36**, debt **5**; accepted runtime package remains `10601978228` under selector430 **430/430**.
+
 ## 2026-09-21 — `M5-CP3-TB1-R6-REV`: exact A3 occurrence face authority discarded at A4 generator-route consumption — **CAUSE PROVED / IMPLEMENTATION AUTHORITY / EXISTING RP-01 CONTINUATION / CB8 RECOVERY / +0**
 
 - **Independent evidence:** R6 result self-manifest **914/914**; all **446/446** rows exact-one/zero-skip; mechanism **9/9 PASS**, focused atlas **1/1 PASS**, produced **0/6 PASS**, selector430 **429/430 PASS** with sole RED ordinal408; all six produced reasons exactly `PeriodicGeneratorRouteUnavailable`; immutable postflight and prohibited counters zero.
@@ -9327,7 +9337,7 @@ shown preserved rather than merely relabelled. See `[[M5-CP2-CB1-OBS-01]]`.
 
 ## `M5-CP3-TB1-R6-REV-OBS-01` — CB8 has a membership falsifier but no direction falsifier
 
-**Status.** OPEN / GATING ON `M5-CP3-CB8` and `M5-CP3-TB1-R7-REV` / NON-STABLE.
+**Status.** OPEN / CB8 OCCURRENCE-FACE CORRECTION COMPILED / GATING ON `M5-CP3-TB1-R7-REV` / NON-STABLE.
 
 R6 dynamically localized the failure to branch 1: `generator_route_for_span` returns no route, reported through
 CB7's new `SurfacePhaseFrontFailureReason::PeriodicGeneratorRouteUnavailable`
@@ -9349,8 +9359,13 @@ face order still satisfies unordered-pair equality, still resolves a route, and 
 mirrored. That converts today's clean fail-closed rejection into a plausible wrong answer — strictly worse than
 the present state, and far harder to detect later.
 
-**How to apply:** CB8 must check the produced relation's action against an expectation derived **independently of
-the face order that produced it** — §14.2's canonical-reverse / opposing-advance-sign reciprocity rule is the
-natural instrument — so an inverted orientation **fails** rather than silently producing a mirrored relation.
-`M5-CP3-TB1-R7-REV` must report, for each of the six produced identities, that the resolved directed pair and the
-resulting action agree with independently derived A3 orientation.
+**CB8 disposition:** the bounded plan restored occurrence-owned directed face authority and preserved the existing
+`periodic_action_for_pair(...)` correspondence checks against reciprocal endpoint branch rotations/lattice
+coordinates; it did **not** add a second product-side direction oracle or alter action semantics. The mandatory
+compile is green, but compile evidence cannot close this observation.
+
+**How to apply:** `M5-CP3-TB1-R7-REV` must report, for each of the six produced identities, that the resolved
+directed pair and resulting action agree with independently derived A3 orientation / §14.2 reciprocity. If the
+immutable R7 receipts are insufficient to establish that independently, Review must keep the observation open and
+freeze a bounded diagnostic next turn rather than infer correctness from unordered carrier membership or a green
+compile.

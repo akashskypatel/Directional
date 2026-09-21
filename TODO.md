@@ -4,32 +4,52 @@ Last updated: 2026-09-21 UTC
 
 ## Latest Review turn — `M5-CP3-TB1-R6-REV`
 
-`M5-CP3-TB1-R6-REV` is **COMPLETE / RUNTIME-FREE / R6 EVIDENCE UPHELD / CAUSE PROVED / EXISTING RP-01 RECOVERY OPEN / CB8 REQUIRED**. Review independently verifies R6 result self-manifest **914/914**, all **446/446** exact-one/zero-skip processes, mechanism **9/9**, focused atlas **1/1**, produced **0/6**, selector430 **429/430** with sole RED ordinal408, six exact `PeriodicGeneratorRouteUnavailable` reasons, protected ordinals 191/192/247 green, immutable postflight and zero prohibited counters.
-
-The causal seam is now proved: accepted A3 cut authority already derives the unique oriented carrier-owning `SourceFaceId`, but A4 interval publication keeps only the occurrence while same-region promotion queries atlas transition value with deduplicated A4 endpoint point faces. Atlas correctly requires the exact carrier incident face pair. This is the existing stable `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recovery event, **+0** accounting. R5 hazard observation closes runtime-green/non-stable/+0. Candidate remains unpromoted; totals remain **50 / 14 / 36**, debt **5**; all four M5 debts remain open and selector publication is prohibited. Exact next: bounded runtime-free `M5-CP3-CB8`.
+`M5-CP3-TB1-R6-REV` remains the latest independent Review: R6 is mechanism **9/9 PASS**, focused atlas **1/1 PASS**,
+produced **0/6 PASS**, selector430 **429/430 PASS** with sole RED ordinal408, and all six produced rows stop at
+`PeriodicGeneratorRouteUnavailable`. Review proved the A3 occurrence-owned source-face / A4 endpoint-face
+authority conflation as continuation of the existing stable `RP-01` event and froze CB8. Its direction-orientation
+addendum `M5-CP3-TB1-R6-REV-OBS-01` remains open for R7 Review.
 
 ## Latest Test + Benchmark turn — `M5-CP3-TB1-R6-EXEC`
 
-R6 run/job `35606326632 / 106354249393` consumes CB7 candidate `10637998372` and executes all 446 fresh exact-filter processes. Result/log artifacts `10642347642 / 10642362744`; self-manifest **914/914**. Vector is 9/9 mechanism PASS, 1/1 focused PASS, 0/6 produced PASS, selector430 429/430 with sole RED ordinal408. All six produced rows are `PeriodicGeneratorRouteUnavailable`; accepted hazard rows 191/192/247 remain PASS. Candidate is unpromoted and immutable postflight is exact.
+R6 run/job `35606326632 / 106354249393` consumes CB7 candidate `10637998372` and executes all 446 fresh exact-filter
+processes. Result/log artifacts `10642347642 / 10642362744`; self-manifest **914/914**. Vector is 9/9 mechanism
+PASS, 1/1 focused PASS, 0/6 produced PASS, selector430 429/430 with sole RED ordinal408. All six produced rows are
+`PeriodicGeneratorRouteUnavailable`; protected ordinals 191/192/247 remain PASS.
 
-## Latest Code + Build turn — `M5-CP3-CB7`
+## Latest Code + Build turn — `M5-CP3-CB8`
 
-CB7 semantic patch `a1392c61a4f800512bb8bd73126f993638d1f55c` is diagnostic-only and compile/package green. Run/job `35598796960 / 106329775985` built all eight GMP targets from source `8f77ec403f16930145bba5bfc526a5b881b9f166` into artifact `10637998372` with `runtimeExecution=false`. It appends failure reasons 50-55 without changing producer semantics or accepted bytes.
+CB8 is **COMPLETE / STATIC GREEN / GMP COMPILE-PACKAGE GREEN / RUNTIME-FREE**. Semantic patch
+`31d437a0864f99cb44d06430e0faa85c57c862be` changes only `src/geometry/SurfaceCellTracing.cpp`: exact accepted A3
+boundary occurrences now retain their `AcceptedCutBoundarySegment::sourceFace`, generator-route transition queries
+resolve the directed face pair from that authority, and the pair is validated against carrier `sourceEdgeFaces` as
+an unordered set without using storage order for direction. No atlas/traversal/action/relation/test/selector
+semantics changed.
+
+Compile run/job `35623934990 / 106413580650` builds all eight mandatory GMP/GMPXX targets from exact source
+`baae6307d189639fdf7d8a0011f5ba5f30de1631` with `runtimeExecution=false`. Candidate/log artifacts are
+`10651055588 / 10651435428`; candidate SHA-256 is
+`376f61120b4a71dd9747daae8c248fe766bbf899faac0e2f336fc97e57acda96`, package manifest **28/28**. Candidate is
+unpromoted; accepted runtime authority and stable accounting remain unchanged.
 
 ## M5 checkpoint sequence
 
 - [x] `M5-CP1` and `M5-CP2`: CLOSED / ACCEPTED for mechanism credit; accepted package `10601978228`.
-- [x] `M5-CP3-CB2` through `R5-REV`: successive bounded recovery falsifiers localize the open stable ordinal408 `RP-01` event while keeping four produced debts open.
+- [x] `M5-CP3-CB2` through `R5-REV`: bounded recovery falsifiers localize the open stable ordinal408 `RP-01` event while four produced debts remain open.
 - [x] `M5-CP3-CB7`: typed diagnostic branch cutover compile/package green, runtime-free.
 - [x] `M5-CP3-TB1-R6-EXEC`: all six produced REDs dynamically localize to `PeriodicGeneratorRouteUnavailable`; 191/192/247 remain green.
-- [x] `M5-CP3-TB1-R6-REV`: R6 evidence upheld; exact A3 occurrence-owned source-face authority versus A4 endpoint-face substitution proved causal; R5 hazard closed green; CB8 frozen.
-- [ ] `M5-CP3-CB8`: **exact next**; product-source-only correction in `SurfaceCellTracing.cpp`, then mandatory GMP compile/package with no runtime.
-- [ ] `M5-CP3-TB1-R7-EXEC`: only after CB8 compile green; unchanged 446-process artifact-only gate. Primary falsifier: no produced row may remain `PeriodicGeneratorRouteUnavailable`.
-- [ ] `M5-CP3-TB1-R7-REV`: mandatory independent Review before any promotion, debt credit or selector-publication step.
+- [x] `M5-CP3-TB1-R6-REV`: R6 evidence upheld; exact A3 occurrence-owned source-face authority versus A4 endpoint-face substitution proved causal; CB8 frozen.
+- [x] `M5-CP3-CB8`: occurrence-owned source-face correction implemented; all eight mandatory GMP targets compile/package green; no runtime.
+- [ ] `M5-CP3-TB1-R7-EXEC`: **exact next**; immutable candidate `10651055588`, unchanged 446-process artifact-only gate, benchmark 0. Primary falsifier: no produced row may remain `PeriodicGeneratorRouteUnavailable`.
+- [ ] `M5-CP3-TB1-R7-REV`: mandatory independent Review; also adjudicates the open direction-orientation observation before promotion/debt/selector credit.
 
-## Current focus — `M5-CP3-CB8`
+## Current focus — `M5-CP3-TB1-R7-EXEC`
 
-Execute `Architecture_M5_CP3_CB8_Source_Face_Incidence_Authority_Correction_Plan.md` exactly. Reuse `AcceptedCutBoundarySegment::sourceFace` / exact boundary-occurrence authority to direct the generator carrier's atlas `transition_value(...)` query; validate the two resolved faces against the carrier's `sourceEdgeFaces` as an unordered pair. Do not use `SurfaceTracePoint::face`, do not infer direction from `sourceEdgeFaces` ordering, and do not change atlas, tests, fixtures, selector430, frozen definitions or relation semantics. Compile/package all eight standard targets through the mandatory GMP reusable workflow with `runtimeExecution=false`.
+Execute `Architecture_M5_CP3_TB1_R7_Artifact_Only_Test_Benchmark_Plan.md` exactly. Consume candidate
+`10651055588` immutably, preserve package modes/bytes, execute 9 mechanism + 1 focused atlas + 6 produced + all
+430 selector rows as fresh exact-filter processes, and run **zero benchmarks**. Do not configure, compile, relink,
+repair, repackage, mutate tests/fixtures/selector, or perform same-turn semantic repair. Any RED routes to mandatory
+R7 Review; full green also routes to R7 Review before promotion.
 
 ## Carried forward from M1
 
@@ -69,7 +89,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. Four periodic/relation debts remain M5-owned and one closed-complex debt remains M6-owned.
-- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 CB7 COMPILE-PACKAGE GREEN / R6 EXEC NEXT**. Accepted runtime package remains `10601978228`. CB7 candidate `10637998372` / source `8f77ec403f...` is runtime-unadjudicated and unpromoted; it changes diagnostics only and compiled all eight GMP targets with `runtimeExecution=false`. R5 remains the latest semantic evidence at mechanism 9/9 PASS, focused atlas 1/1 PASS, produced 0/6 PASS, selector430 429/430 PASS with sole RED ordinal408. Stable accounting remains **50 / 14 / 36**, debt **5**; four M5 debts remain open and selector publication is prohibited. Exact next `M5-CP3-TB1-R6-EXEC`.
+- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 CB8 COMPILE-PACKAGE GREEN / R7 EXEC NEXT**. Accepted runtime package remains `10601978228`. CB8 candidate `10651055588` / source `baae6307d...` is compile/package green, runtime-unadjudicated and unpromoted; all eight mandatory GMP/GMPXX targets built with `runtimeExecution=false`. R6 remains latest runtime evidence at mechanism 9/9 PASS, focused atlas 1/1 PASS, produced 0/6 PASS, selector430 429/430 PASS with sole RED ordinal408. Stable accounting remains **50 / 14 / 36**, debt **5**; four M5 debts remain open and selector publication is prohibited. Exact next `M5-CP3-TB1-R7-EXEC`.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.

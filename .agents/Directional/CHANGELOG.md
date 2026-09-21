@@ -1,3 +1,28 @@
+## 2026-09-21 — `M5-CP3-CB8`: occurrence-owned source-face incidence correction compile/package GREEN
+
+Runtime-free Code + Build. CB8 changes only `src/geometry/SurfaceCellTracing.cpp` and restores the exact accepted
+A3 carrier-incidence owner at the generator-route atlas query. A checked
+`SurfaceBoundaryOccurrenceId + NetworkArcId + carrier` association retains each accepted
+`AcceptedCutBoundarySegment::sourceFace`; reciprocal same-region queries resolve their directed pair from those
+occurrences, verify that pair equals the carrier's `sourceEdgeFaces` as an unordered set, and pass the occurrence
+order to `FieldTransportAtlas::transition_value`. A4 endpoint `.face` provenance and `sourceEdgeFaces` storage
+order no longer determine the query. Atlas/traversal/action/relation/test/selector/frozen-definition semantics and
+CB7 reason values are unchanged.
+
+Semantic patch commit `31d437a0864f99cb44d06430e0faa85c57c862be`; exact compiled source
+`baae6307d189639fdf7d8a0011f5ba5f30de1631`. Compile run/job `35623934990 / 106413580650` succeeds for all eight
+mandatory GMP/GMPXX targets with preflight/build 0/0, clean source receipts and `runtimeExecution=false`.
+Candidate/log artifacts `10651055588 / 10651435428` hash to
+`376f61120b4a71dd9747daae8c248fe766bbf899faac0e2f336fc97e57acda96 /
+ c2f9a47c0b9346fe9ab35394b2460d9ca6517aa7dcc5608dc1980c38ee589d53`; root manifest is **28/28** at
+`06f7e6f068a6b390d212da07928b7088918ee675ccd1968355497b8143f598cd`, source archive SHA-256
+`f75528fe7c9349d76430bbe06ca67e4593cce452107071405ed2c6c7d848143f`. No Directional runtime executes.
+
+The existing stable R1 `RP-01` event remains open pending R7; accounting remains **50 / 14 / 36**, debt **5**,
+accepted runtime package remains `10601978228`, and all four M5 produced debts remain open. R6 Review's direction
+observation remains gating on R7 Review. Exact successor is immutable artifact-only `M5-CP3-TB1-R7-EXEC` on the
+unchanged 446-process gate; no produced row may remain `PeriodicGeneratorRouteUnavailable`.
+
 ## 2026-09-21 — `M5-CP3-TB1-R6-REV` review: root cause dynamically confirmed; direction falsifier required
 
 Runtime-free review. **Upheld.** Accounting holds at **50 events / 14 categories / 36 recurrences**, debt **5**;
