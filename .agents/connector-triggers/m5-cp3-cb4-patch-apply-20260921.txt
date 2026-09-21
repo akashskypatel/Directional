@@ -1,0 +1,3 @@
+turn=M5-CP3-CB4
+purpose=apply verified work-preservation patch from Google Drive
+retry=0
