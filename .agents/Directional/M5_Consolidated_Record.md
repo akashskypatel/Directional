@@ -1,7 +1,7 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-21 at `M5-CP3-TB1-R4-EXEC`
+**Last updated:** 2026-09-21 at `M5-CP3-TB1-R4-REV`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Corrected stable accounting is **50 / 14 / 36**, produced-witness debt **5**; M5 owns four of those debts.
 
@@ -61,14 +61,30 @@ Fresh R3 run/job `35565176454 / 106225476682` consumes that CB4 candidate exactl
 
 Mandatory GMP run/job `35572051606 / 106245602800` compiles all eight standard targets with preflight/build `0 / 0`, explicit GMPXX+GMP, empty source-status receipts, manifest **28/28** and `runtimeExecution=false`. Candidate artifact `10627250028` / SHA-256 `0d26b01c026651ecacf57af04615746e6b48b09db2e5f1baa1dce62db31bc28f`, manifest SHA-256 `abbda66e46b059832027b82b5dde457dfb2f8b10472bdb742f61f25979e7e02b`, source archive `4335090caf9a1b5f38efa7ce3745d9f1a4bae13871c41572baa62abd2e06570b`, log artifact `10626109792` / `167f16e9886c24839581c4e94061e4219bc6e833bdf31e81884a52ad3f7e4af5`. This candidate is compile-only, runtime-unproven and unpromoted; accepted runtime authority, accounting **50 / 14 / 36**, debt **5**, four M5 produced debts and selector-publication prohibition remain unchanged.
 
-Fresh R4 run/job `35575202225 / 106255409380` consumes `10627250028` exactly and completes all **445** frozen processes with exact-one/zero-skip and immutable postflight. Mechanism remains **9/9 PASS** and produced remains **0/6 PASS** with `PeriodicHolonomyMismatch`; selector430 is now **423/430 PASS**, with RED ordinals **18, 20, 21, 22, 23, 25, 408**. Ordinal408 continues the open R1 endpoint event. The other six rows are localized in EXEC to a stale independent atlas digest: CB5 added transition values to production semantic identity while the independent test snapshot/digest omitted them, so valid baseline oracle checks fail with `CanonicalBindingMismatch` before intended discriminators. This is recorded as non-stable test-authority oracle drift pending Review; accounting remains **50 / 14 / 36**, debt **5**.
+Fresh R4 run/job `35575202225 / 106255409380` consumes `10627250028` exactly and completes all **445** frozen processes with exact-one/zero-skip and immutable postflight. Mechanism remains **9/9 PASS** and produced remains **0/6 PASS** with `PeriodicHolonomyMismatch`; selector430 is now **423/430 PASS**, with RED ordinals **18, 20, 21, 22, 23, 25, 408**. Ordinal408 continues the open R1 endpoint event. The other six rows are localized in EXEC to a stale independent atlas digest: CB5 added transition values to production semantic identity while the independent test snapshot/digest omitted them, so valid baseline oracle checks fail with `CanonicalBindingMismatch` before intended discriminators. This entered R4 Review as non-stable test-authority oracle drift; Review below independently confirms that classification. Accounting remains **50 / 14 / 36**, debt **5**.
 
-Candidate `10627250028` remains unpromoted; all four M5 produced debts remain open and selector publication remains prohibited. Exact successor is independent runtime-free **`M5-CP3-TB1-R4-REV`**.
+Candidate `10627250028` remains unpromoted; all four M5 produced debts remain open and selector publication remains prohibited. R4 EXEC routed to the now-complete independent Review below.
+
+## 4.1 `M5-CP3-TB1-R4-REV` — R4 adjudication and CB6 recovery
+
+Independent Review upholds the R4 mechanics exactly: result self-manifest **908/908**; **445/445** fresh exact-filter processes with exact-one/zero-skip; mechanism **9/9 PASS**; produced **0/6 PASS**; selector430 **423/430 PASS**, RED ordinals **18, 20, 21, 22, 23, 25, 408**; immutable package/source/execution-view postflight; benchmark/configure/compile/relink/discovery/repair/mutation counters all zero. Selector430/first427 remain byte-frozen at `1c412850...9db6 / f9c88380...e86f`.
+
+The six new atlas REDs are **non-stable test-authority oracle drift**. Production CB5 extends atlas semantic identity with retained transition-value facts for validated interior edges, including nontraversable hard features; the independent test snapshot/digest omits those facts, so valid baseline fails `CanonicalBindingMismatch` before its intended tamper/relabel discriminators. No selector/test expectation weakening is authorized.
+
+The still-RED torus endpoint remains the existing stable `RP-01` recovery event, +0 accounting. Review identifies a bounded unfrozen implementation restriction: same-region promotion rejects equality between generator and cut carrier identities even though frozen §§3/14, `PeriodicRelationId::from_carriers` and `SurfacePeriodicHolonomy::make` do not require the two valid carrier roles to differ. On the accepted one-edge `Mandatory` hard-feature span equality is legitimate. Because runtime collapses the internal cause to `PeriodicHolonomyMismatch`, this is a static falsifier, not claimed dynamic branch proof.
+
+Frozen §15 records that transition value is semantic metadata distinct from traversal adjacency, preserving hard-feature barriers, and that valid generator/cut carrier equality alone is not rejection. `M5-CP3-TB1-R3-REV-OBS-01` is discharged. Exact successor is bounded runtime-free `M5-CP3-CB6`: remove only the extra carrier-distinctness rejection and independently extend the atlas oracle in `tests/FieldTransportAtlasTests.cpp`; one new focused hard-feature transition-value-without-adjacency identity is frozen. Compile-green routes to fresh **446-process** R5. Accepted runtime authority remains `10601978228`; accounting remains **50 / 14 / 36**, debt **5**; all four M5 debts remain open and selector publication remains prohibited.
 
 ## 5. Folded-document index
 
 | Folded filename | Verdict / retained home |
 |---|---|
+| `Architecture_M5_CP2_TB1_Artifact_Only_Test_Benchmark_Report.md` (80 lines) | **SUPERSEDED CP2 RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R4-REV`.** Accepted CP2 runtime facts remain in `M5_CP2_Closure_Record.md`, this family record, changelog and git history. |
+| `Architecture_M5_CP2_TB1_Review_Record.md` (136 lines) | **SUPERSEDED CP2 REVIEW / FOLDED BY `M5-CP3-TB1-R4-REV`.** CP2 promotion, typed-failure adjudication and carried publication observation remain in `M5_CP2_Closure_Record.md`, frozen §13, tracker and this record. |
+| `Architecture_M5_CP3_CB5_Atlas_Barrier_Transition_Value_Cutover_Correction_Plan.md` (133 lines) | **CONSUMED CB5 PLAN / FOLDED BY `M5-CP3-TB1-R4-REV`.** Atlas-owned nontraversal transition-value intent, prohibitions and R4 gate remain in frozen §15, current R4 Review, this record and git history. |
+| `Architecture_M5_CP3_CB5_Code_Build_Report.md` (78 lines) | **SUPERSEDED CB5 BUILD REPORT / FOLDED BY `M5-CP3-TB1-R4-REV`.** Candidate `10627250028`, source `001dfe8f...`, GMP compile/package authority and hashes remain in current R4 runtime report/Review, this record and changelog. |
+| `Architecture_M5_CP3_TB1_R3_Artifact_Only_Test_Benchmark_Report.md` (116 lines) | **SUPERSEDED R3 RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R4-REV`.** R3 vector and atlas-cutover recovery history remain in tracker/current R4 Review/this record/git history. |
+| `Architecture_M5_CP3_TB1_R3_Review_Record.md` (225 lines) | **SUPERSEDED R3 REVIEW / FOLDED BY `M5-CP3-TB1-R4-REV`.** Atlas-cutover diagnosis, carried observations and CB5 authority remain in frozen §15, tracker/current R4 Review/this record/git history. |
 | `Architecture_M5_CP3_CB4_Code_Build_Report.md` (106 lines) | **SUPERSEDED BUILD REPORT / FOLDED BY `M5-CP3-TB1-R3-REV`.** CB4 source/artifact/compile identities and exact raw-transition implementation are retained in current R3 Review, this record, changelog and git history. |
 | `Architecture_M5_CP3_CB4_Hard_Feature_Transition_Transport_Correction_Plan.md` (130 lines) | **CONSUMED CORRECTION PLAN / FOLDED BY `M5-CP3-TB1-R3-REV`.** Its exact-carrier/raw-transition intent and stop rules are retained in current R3 Review; successor authority is CB5. |
 | `Architecture_M5_CP3_TB1_R2_Artifact_Only_Test_Benchmark_Report.md` (148 lines) | **SUPERSEDED RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R3-REV`.** R2 vector and immutable evidence remain in tracker, current Review, this record and git history. |
@@ -104,4 +120,4 @@ Candidate `10627250028` remains unpromoted; all four M5 produced debts remain op
 | `Architecture_M5_CP3_CB1_Direct_Production_Exit_Plan.md` | **CONSUMED / SUPERSEDED AFTER FROZEN STOP.** Its subject, six names, mechanism focus, selector freeze, debt discriminators and stop rules are preserved in current frozen §§13-14, this record and the CB2 plan; provenance remains in git history. |
 | `Architecture_M5_CP3_CB1_Stop_Record.md` | **ADJUDICATED / FOLDED BY `M5-CP3-CB1-REV`.** The HardRail/PeriodicCut/shared-interval contradiction, no-mutation/no-compile boundary and accepted-authority facts are retained in the current Review, this record, tracker and changelog. |
 
-CP2's consumed CB1 plan/report and TB1 execution plan are indexed in durable `M5_CP2_Closure_Record.md`; its current TB1 runtime report and current Review record are retained.
+CP2's consumed CB1 plan/report and TB1 execution plan remain indexed in durable `M5_CP2_Closure_Record.md`; its superseded TB1 runtime report and Review are now folded above.

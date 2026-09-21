@@ -2,21 +2,19 @@
 
 Last updated: 2026-09-21 UTC
 
+## Latest Review turn — `M5-CP3-TB1-R4-REV`
+
+`M5-CP3-TB1-R4-REV` is **COMPLETE / RUNTIME-FREE / R4 EVIDENCE UPHELD / EXISTING RP-01 RECOVERY OPEN / TEST-AUTHORITY ORACLE DRIFT CONFIRMED / CB6 REQUIRED**. Review independently verifies self-manifest **908/908**, the full **445/445** process ledger, exact-one/zero-skip, immutable postflight and zero prohibited counters: mechanism **9/9 PASS**, produced **0/6 PASS**, selector430 **423/430 PASS** with RED ordinals **18, 20, 21, 22, 23, 25, 408**.
+
+The six atlas REDs are non-stable stale independent-oracle authority: CB5 extended production atlas semantic identity with retained transition-value facts, but the independent snapshot/digest omitted them and fails valid baseline before intended discriminators. Ordinal408 remains the existing stable RP-01 recovery event; Review identifies an unfrozen generator-vs-cut carrier-identity inequality as the bounded CB6 falsifier, not a dynamically instrumented branch claim. Frozen §15 records transition value distinct from traversal adjacency and discharges `M5-CP3-TB1-R3-REV-OBS-01`. Accounting stays **50 / 14 / 36**, debt **5**; candidate `10627250028` remains unpromoted, all four M5 debts remain open and selector publication is prohibited. Exact next: `M5-CP3-CB6`.
+
+
 ## Latest Test + Benchmark turn — `M5-CP3-TB1-R4-EXEC`
 
 `M5-CP3-TB1-R4-EXEC` is **COMPLETE / MECHANICALLY COMPLETE / SEMANTIC RED / REVIEW REQUIRED**. Run/job `35575202225 / 106255409380` consumes CB5 candidate `10627250028` exactly and executes all **445** frozen fresh processes: mechanism **9/9 PASS**, produced **0/6 PASS** with `PeriodicHolonomyMismatch`, selector430 **423/430 PASS** with RED ordinals **18, 20, 21, 22, 23, 25, 408**. Exact-one/zero-skip, package/source/execution-view immutability, 28/28 candidate manifest and benchmark/configure/compile/relink/discovery/repair/mutation counters all hold.
 
-Ordinal408 remains the existing production endpoint failure. The six newly red atlas identities fail baseline `independent_validate_snapshot(...)`; static localization shows CB5 extended production atlas semantic identity with retained transition values while the independent test snapshot/digest omitted them, producing `CanonicalBindingMismatch` before intended oracle discriminators. Recorded as `R4-CAND-02` test-authority oracle drift / non-stable / Review required. Stable accounting remains **50 / 14 / 36**, debt **5**. Candidate stays unpromoted, four M5 produced debts remain open, and selector publication is prohibited. Exact next: `M5-CP3-TB1-R4-REV`.
+Ordinal408 remains the existing production endpoint failure. The six newly red atlas identities fail baseline `independent_validate_snapshot(...)`; static localization shows CB5 extended production atlas semantic identity with retained transition values while the independent test snapshot/digest omitted them, producing `CanonicalBindingMismatch` before intended oracle discriminators. Recorded as `R4-CAND-02` test-authority oracle drift / non-stable; the now-complete R4 Review confirms that classification. Stable accounting remains **50 / 14 / 36**, debt **5**. Candidate stays unpromoted, four M5 produced debts remain open, and selector publication remains prohibited.
 
-## Latest Review turn — `M5-CP3-TB1-R3-REV`
-
-`M5-CP3-TB1-R3-REV` is **COMPLETE / RUNTIME-FREE / R3 EVIDENCE UPHELD / PRODUCTION AUTHORITY CUTOVER MISMATCH / EXISTING RP-01 RECURRENCE / RECOVERY REQUIRED**. Review independently verifies R3 at **9/9 mechanism PASS, 0/6 produced PASS, selector430 429/430 PASS**, exact-one/zero-skip, result self-manifest **908/908**, candidate manifest **28/28**, immutable postflight and all prohibited-operation counters zero.
-
-The remaining failure is deterministic: production installs `FieldTransportAtlas` then deliberately nulls raw matching/effort/edge-transition ingress, while CB4's exact generator helper requires raw `edgeTransitions`. Its new exact raw transition checks are therefore unreachable on production and the first same-region promotion guard emits `PeriodicHolonomyMismatch`. R3 is merged into the existing R1 `RP-01 / AUTHORITY_DOMAIN_CONFLATION` event with +0 accounting; totals remain **50 / 14 / 36**, debt **5**. Exact next: runtime-free `M5-CP3-CB5`, retaining validated interior-edge transition values inside atlas authority while hard-feature traversal remains prohibited.
-
-## Latest Test + Benchmark turn — `M5-CP3-TB1-R3-EXEC`
-
-`M5-CP3-TB1-R3-EXEC` is **COMPLETE / MECHANICALLY COMPLETE / SEMANTIC RED / REVIEW REQUIRED**. Successful run/job `35565176454 / 106225476682` consumes CB4 candidate `10624020011` / source `6dd0e517...` and completes all **445** frozen exact-filter processes with exact-one/zero-skip and immutable postflight: mechanism **9/9 PASS**, produced **0/6 PASS** with shared `PeriodicHolonomyMismatch`, selector430 **429/430 PASS** with sole RED ordinal408 again receiving `Rejected` instead of `Produced`. Result/log artifacts are `10623878370 / 10624252516`; result self-manifest is **908/908**. Candidate remains unpromoted, accepted runtime package remains `10601978228`, all four M5 produced debts remain open, accounting remains **50 / 14 / 36**, debt **5**, and selector publication remains prohibited. Exact next: independent runtime-free `M5-CP3-TB1-R3-REV`.
 
 ## Latest Code + Build turn — `M5-CP3-CB5`
 
@@ -24,29 +22,8 @@ The remaining failure is deterministic: production installs `FieldTransportAtlas
 
 Mandatory GMP compile/package run/job `35572051606 / 106245602800` built all eight standard targets with preflight/build `0 / 0`, explicit GMPXX+GMP linkage, five empty source-status receipts, root manifest **28/28**, exact packaged source and `runtimeExecution=false`. Candidate artifact `10627250028` / SHA-256 `0d26b01c026651ecacf57af04615746e6b48b09db2e5f1baa1dce62db31bc28f` has root-manifest SHA-256 `abbda66e46b059832027b82b5dde457dfb2f8b10472bdb742f61f25979e7e02b` and source-archive SHA-256 `4335090caf9a1b5f38efa7ce3745d9f1a4bae13871c41572baa62abd2e06570b`; log artifact `10626109792` has SHA-256 `167f16e9886c24839581c4e94061e4219bc6e833bdf31e81884a52ad3f7e4af5`. No Directional binary, test, benchmark, discovery/help/version command, CLI, fuzzer or custom input ran. Candidate remains compile-only, runtime-unproven and unpromoted; accepted runtime authority remains package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under selector430 **430/430**. Accounting remains **50 events / 14 categories / 36 recurrences**, debt **5**; all four M5 produced debts remain open and selector publication remains prohibited.
 
-Exact next: fresh artifact-only `M5-CP3-TB1-R4-EXEC` on candidate `10627250028`, restarting all **445** frozen processes with benchmark **0** and no R1/R2/R3 semantic-credit reuse.
+Historical successor R4 completed the fresh 445-process gate; current authority is the R4 Review and CB6 plan below.
 
-## Latest Review turn — `M5-CP3-TB1-R2-REV`
-
-`M5-CP3-TB1-R2-REV` is **COMPLETE / RUNTIME-FREE / R2 EVIDENCE UPHELD / IMPLEMENTATION AUTHORITY REFINED / RECOVERY REQUIRED**. Review independently reopens R2 artifacts, verifies self-manifest **908/908**, re-derives **9/9 mechanism PASS, 0/6 produced PASS, selector430 429/430 PASS**, exact-one/zero-skip, immutable postflight and zero prohibited-operation counters, and re-hashes selector430/first427 unchanged.
-
-The failed CB3 recovery is deterministic: the exact `Mandatory` A3 carrier is a HardRail/hard-feature edge, but CB3 asks `FieldTransportAtlas::transport` for a traversal adjacency. Atlas construction intentionally records hard features as nontraversable and skips adjacency creation, so the lookup cannot succeed. Existing raw `CrossFieldEdgeTransition` metadata already supplies the exact edge/face-pair directed matching value; `resolve_branch_transition` demonstrates the accepted forward/inverse interpretation. CB3 also over-constrains exact interval endpoints to source vertices even though split mandatory paths may contain `ExactSourceEdgePoint`.
-
-`M5-CP3-TB1-R2-CAND-01` is **IMPLEMENTATION AUTHORITY / HARD-FEATURE TRANSPORT DOMAIN CONFLATION / MERGED INTO EXISTING STABLE `RP-01` EVENT**. R2 adds no second stable event; accounting remains **50 / 14 / 36**, debt **5**. Candidate `10620415471` remains unpromoted, all four M5 debts remain open and selector publication remains prohibited. Exact next: runtime-free `M5-CP3-CB4` under `Architecture_M5_CP3_CB4_Hard_Feature_Transition_Transport_Correction_Plan.md`.
-
-## Latest Review turn — `M5-CP3-TB1-R1-REV`
-
-`M5-CP3-TB1-R1-REV` is **COMPLETE / RUNTIME-FREE / IMPLEMENTATION-AUTHORITY DEFECT CONFIRMED / CORRECTION FROZEN**. Review freshly re-opens R1 result/log artifacts, verifies self-manifest **908/908**, and independently re-derives **9/9 mechanism PASS, 0/6 produced PASS, selector430 429/430 PASS**, exact-one/zero-skip, immutable postflight and benchmark/configure/compile/relink/discovery/repair/mutation **0**. Selector430/first427 re-hash unchanged.
-
-`M5-CP3-TB1-R1-CAND-01` is classified **IMPLEMENTATION AUTHORITY / EXACT-SPAN TRANSPORT CONTRACT VIOLATION / STABLE `RP-01` RECURRENCE / RECOVERY REQUIRED**. Frozen §14.3 requires the exact A3 interval `span` source path to be converted through existing transition/atlas authority. Candidate `fc2aa5fa...` instead performs a whole-region path-independent rotation reconstruction and injects the aggregate result into one source-path route step. Row408 fails at its pre-existing `Produced` assertion before its evolved final-kind assertions, so the later independent accounting addendum records the accepted-prefix PASS→RED as the 50th stable event / 36th recurrence. Candidate `10615252806` remains unpromoted; accepted package `10601978228` remains authority; corrected accounting is **50 / 14 / 36**, debt **5**. CB3 has now built the exact-span correction; fresh R2 runtime remains required.
-
-## Latest Test + Benchmark turn — `M5-CP3-TB1-R2-EXEC`
-
-`M5-CP3-TB1-R2-EXEC` is **COMPLETE / MECHANICALLY COMPLETE / SEMANTIC RED / REVIEW REQUIRED**. Successful run/job `35557990692 / 106205308600` executes all **445** frozen exact-filter processes on corrected candidate `10620415471` / source `279efa0347...` with exact-one/zero-skip and immutable postflight: mechanism **9/9 PASS**, produced **0/6 PASS** with shared `PeriodicHolonomyMismatch`, selector430 **429/430 PASS** with sole RED ordinal408 again receiving `Rejected` instead of `Produced`. Result/log artifacts are `10621351075 / 10621154456`; result self-manifest is **908/908**. The CB3 exact-span correction therefore does not recover the frozen torus endpoint. Candidate remains unpromoted; accepted package `10601978228` remains authority; all four M5 produced debts remain open. Exact next: independent runtime-free `M5-CP3-TB1-R2-REV`; EXEC does not classify the remaining internal cause or alter stable accounting.
-
-## Latest Code + Build turn — `M5-CP3-CB3`
-
-`M5-CP3-CB3` is **COMPLETE / STATIC GREEN / GMP COMPILE-PACKAGE GREEN / RUNTIME-FREE / CORRECTION BUILT**. Exact semantic source `279efa03471f1e0d6c32f57c8b395dd1cb1a93f5` replaces whole-region rotation reconstruction with the exact A3 `span` carrier and an attempted directed `FieldTransportAtlas` lookup; R2 Review later proves that lookup is outside the traversal domain for the mandatory hard-feature carrier. No test, fixture, selector, frozen definition, CP2 relation contract or cross-region HardRail behavior changed. Mandatory run/job `35555882867 / 106199345527` produced candidate artifact `10620415471` at SHA-256 `700b605167427d21823b90d942dd5bb40d1690f162285d22a20da5ad7898a1cd`; root manifest **28/28**, all eight standard targets, explicit GMP/GMPXX linkage, empty source-status receipts and `runtimeExecution=false`. No Directional runtime/test/benchmark ran in CB3. Its R2 execution plan is now consumed/folded; R2 Review classifies the failed recovery and freezes CB4.
 
 ## M5 checkpoint sequence
 
@@ -69,11 +46,13 @@ The failed CB3 recovery is deterministic: the exact `Mandatory` A3 carrier is a 
 - [x] `M5-CP3-TB1-R3-REV`: R3 evidence upheld; CB4 raw transition path proved unreachable after production atlas cutover; R3 merged into existing RP-01 event; CB5 frozen.
 - [x] `M5-CP3-CB5`: atlas-owned non-traversal transition-value publication/query correction built at source `001dfe8f0fec...`; candidate `10627250028` GMP compile/package green, runtime-free.
 - [x] `M5-CP3-TB1-R4-EXEC`: complete 445-process gate; mechanism 9/9, produced 0/6, selector430 423/430; candidate unpromoted; Review required.
-- [ ] `M5-CP3-TB1-R4-REV`: **exact next**; independently adjudicate production continuation plus six-row atlas-oracle drift and carried frozen-contract obligation.
+- [x] `M5-CP3-TB1-R4-REV`: R4 evidence upheld; six atlas REDs confirmed non-stable oracle drift; ordinal408 kept in existing RP-01 recovery; frozen §15 added; CB6 frozen.
+- [ ] `M5-CP3-CB6`: **exact next**; remove only unfrozen carrier-distinctness rejection, repair independent atlas transition-value oracle, add one focused hard-feature value-without-adjacency identity, mandatory GMP compile/package only.
 
-## Current focus — `M5-CP3-TB1-R4-REV`
+## Current focus — `M5-CP3-CB6`
 
-Independently re-derive R4 artifact/self-manifest, the complete 445-process vector, exact-one/zero-skip and immutable postflight. Adjudicate `R4-CAND-01` against the existing stable RP-01 recurrence and `R4-CAND-02` as test-authority versus product-authority. Verify production consumption of atlas-owned transition value and resolve `M5-CP3-TB1-R3-REV-OBS-01` in frozen definitions before any candidate acceptance or test correction. No implementation, retry, promotion, debt discharge or selector publication before Review.
+Execute `Architecture_M5_CP3_CB6_Carrier_Distinctness_And_Atlas_Oracle_Correction_Plan.md` exactly. Authorized semantic/test paths are only `src/geometry/SurfaceCellTracing.cpp` and `tests/FieldTransportAtlasTests.cpp`. Preserve exact A3 span provenance, atlas-owned transition value, hard-feature nontraversability, relation/action/factory semantics and selector430. Mandatory GMP/GMPXX compile/package all eight standard targets with `runtimeExecution=false`; no tests or benchmarks execute. Compile-green routes to fresh 446-process `M5-CP3-TB1-R5-EXEC`.
+
 
 ## Carried forward from M1
 
@@ -113,7 +92,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. Four periodic/relation debts remain M5-owned and one closed-complex debt remains M6-owned.
-- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 R4 runtime complete, Review next**. Accepted runtime package remains `10601978228`. CB5 candidate `10627250028` / source `001dfe8f0fec...` is runtime-tested but unpromoted at 9/9 mechanism, 0/6 produced, selector430 423/430. Stable accounting remains **50 / 14 / 36**, debt **5**; four M5 produced-witness debts remain open and selector publication remains prohibited. Exact next `M5-CP3-TB1-R4-REV`.
+- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 R4 REVIEW COMPLETE / CB6 RECOVERY NEXT**. Accepted runtime package remains `10601978228`. CB5 candidate `10627250028` / source `001dfe8f0fec...` remains unpromoted after R4 9/9 mechanism, 0/6 produced, selector430 423/430. Six new atlas REDs are non-stable oracle drift; ordinal408 remains the existing RP-01 recovery event. Stable accounting remains **50 / 14 / 36**, debt **5**; four M5 debts remain open and selector publication is prohibited. Exact next `M5-CP3-CB6`.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.

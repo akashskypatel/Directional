@@ -234,9 +234,9 @@ All `M5-DEFN` stop rules are resolved:
 
 ## 11. Current exact successor
 
-**`M5-CP3-CB3`** under `Architecture_M5_CP3_CB3_Exact_Span_Transport_Correction_Plan.md`.
+**`M5-CP3-CB6`** under `Architecture_M5_CP3_CB6_Carrier_Distinctness_And_Atlas_Oracle_Correction_Plan.md`.
 
-`M5-CP3-TB1-R1-REV` independently upheld the mechanically complete R1 semantic RED and classified the candidate's relation-construction seam as implementation authority. The narrow §14.2 same-region promotion remains frozen, but §14.3 requires generator carrier **and transport** to come from the exact A3 interval `span` / `GlobalTopologyPlan` source path through existing transition/atlas authority. CB3 corrects only that authority conversion, is compile/package only with mandatory GMP and `runtimeExecution=false`; tests, fixtures, selector430, CP2 relation semantics and cross-region HardRail remain frozen. If the exact path lacks enough existing authority to resolve one unique directed transport route, CB3 stops and returns to Review rather than searching or guessing.
+`M5-CP3-TB1-R4-REV` independently upholds the complete R4 semantic RED, confirms six accepted atlas rows are stale independent-oracle authority after CB5 extended atlas semantic identity, and refines the continuing production failure to an unfrozen generator-versus-cut carrier-distinctness restriction. CB6 removes only that extra restriction and independently extends the atlas test oracle; product identity/factory semantics, hard-feature nontraversability, selectors and produced expectations remain frozen.
 
 ## 12. Supersession and citation map
 
@@ -343,6 +343,29 @@ Row408 keeps its identity, committed torus subject, exact 18-source-edge hard-fe
 On the one-region torus, the evolved row requires at least one complete reciprocal promoted pair (at least two edges) carrying the exact A3 interval provenance on `PeriodicCut`, with canonical periodic owner and reverse-route binding. A broad presence count is insufficient. Existing cross-region HardRail tests continue to own HardRail interval semantics.
 
 This accepted-test evolution is not runtime credit by itself. Selector430 remains byte-frozen, and the complete selector430 runtime in the CP3 pre-publication gate must re-prove the evolved row before candidate promotion or M5 publication.
+
+
+## 15. CP3 R4 Review amendment — transition value is not traversal adjacency
+
+`M5-CP3-TB1-R4-REV` records the public A1 contract extension introduced by CB5 and reconciles it with the unchanged hard-feature barrier invariant. This amendment discharges `M5-CP3-TB1-R3-REV-OBS-01`; it does not weaken §§3-9 or §14.
+
+### 15.1 Retained transition value is semantic metadata
+
+For every validated interior source edge, `FieldTransportAtlas` may retain one canonical exact directed transition-value fact independently of whether that edge is traversable. The retained fact is validated once at atlas construction from exact source-edge identity, exact two-face identity, reciprocal quarter-turn and signed lift/effort authority, and it participates in atlas semantic identity.
+
+A hard-feature interior edge therefore may have a retained transition **value** while remaining nontraversable.
+
+### 15.2 Queries have disjoint meanings
+
+`transition_value(sourceEdge, fromFace, toFace)` is a directed semantic-value query. Its return type carries no `FieldTransportAdjacencyId` and its success does **not** assert that the edge is traversable or that a traversal adjacency exists.
+
+`transport(sourceEdge, fromFace, toFace)` remains traversal-adjacency-only. Hard-feature edges remain absent from traversable adjacency and remain `FieldTransportBarrierKind::HardFeature` barriers. No consumer may use `transition_value(...)` to bypass a barrier or synthesize traversal.
+
+### 15.3 CP3 promotion use
+
+Frozen §14.3's exact A3 `Mandatory` generator carrier may consume the atlas-owned transition value for its exact source edge and directed face pair without making the carrier traversable. This preserves the single A1 production owner and forbids re-enabling raw production transition ingress.
+
+The generator carrier path and cut carrier path remain separate semantic roles in `PeriodicRelationId`, but the frozen relation contract does **not** require their carrier identities to be unequal. Equality of two valid carrier paths is not, by itself, rejection. Validity still requires exact carrier provenance, canonical paths, authoritative action/endpoint correspondence, reciprocal binding and the checked relation factory; zero translation and every existing CP2 failure condition remain binding.
 
 
 ---

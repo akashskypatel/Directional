@@ -31,7 +31,7 @@ No repair, relation reassignment, relation sorting, ordinal fallback or downstre
 - focused **7/7 PASS**, selector430 **430/430 PASS**, exact-one/zero-skip across **437** fresh processes, benchmark **0**, exact immutable postflight;
 - selector430 **430 LF rows** at `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`; first427 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`; owner census **31 / 283 / 75 / 41**.
 
-The retained detailed authorities are `Architecture_M5_CP2_TB1_Artifact_Only_Test_Benchmark_Report.md` and `Architecture_M5_CP2_TB1_Review_Record.md`.
+The superseded detailed TB1 runtime/Review documents are folded into `M5_Consolidated_Record.md` §5 and git history. This closure record plus the consolidated family record retain their accepted facts.
 
 ## 3. Credit boundary
 
@@ -49,10 +49,9 @@ Per `CLEAN_UP_POLICY.md`, the following consumed CP2 per-turn documents are fold
 
 Retained current roles:
 
-- runtime-authority report: `Architecture_M5_CP2_TB1_Artifact_Only_Test_Benchmark_Report.md`;
-- independent review: `Architecture_M5_CP2_TB1_Review_Record.md`;
+- accepted CP2 runtime/review facts: this closure record + `M5_Consolidated_Record.md` §3/§5;
 - normative milestone definitions: `Architecture_M5_Frozen_Definitions.md`;
-- next-turn plan: `Architecture_M5_CP3_CB1_Direct_Production_Exit_Plan.md`;
+- current M5 successor authority: `Future_Chat_Session_Handoff.md` and the one live next-turn plan named there;
 - byte-frozen selector authority: `Architecture_M4_CP4_CB8_Required_Green_Selector_430.txt` and its retained prefix chain.
 
 ## 5. Successor
