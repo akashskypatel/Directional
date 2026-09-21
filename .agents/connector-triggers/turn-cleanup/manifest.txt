@@ -1,0 +1,5 @@
+# M5-CP3-CB9 temporary-state cleanup
+.agents/connector-triggers/m5-cp3-cb9-compile
+.agents/connector-triggers/m5-cp3-cb9-drive-apply.txt
+.agents/connector-triggers/m5-cp3-cb9-drive-apply
+.agents/connector-triggers/m5-cp3-cb9-recent
