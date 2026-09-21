@@ -43,6 +43,6 @@ jobs:
       patch_sha256: 97b9b27f3a417e598505347f9a15d2a6e27844152b6a36addbccc49937b56dff
       base_sha: 8ab04882412a9f13463b4a5884043863e07526ea
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: docs: close M5-CP3-TB1 review and freeze R1 execution
+      commit_message: "docs: close M5-CP3-TB1 review and freeze R1 execution"
       retention_days: 7
     secrets: inherit
