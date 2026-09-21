@@ -2,4 +2,4 @@ turn=M5-CP3-TB1-R2-EXEC
 purpose=fresh immutable 445-process artifact-only corrected pre-publication gate
 candidate_artifact=10620415471
 semantic_source=279efa03471f1e0d6c32f57c8b395dd1cb1a93f5
-retry=2
+retry=3
