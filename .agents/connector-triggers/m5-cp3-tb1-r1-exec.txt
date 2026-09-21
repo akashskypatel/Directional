@@ -1,5 +1,0 @@
-turn=M5-CP3-TB1-R1-EXEC
-purpose=fresh artifact-only 9+6+430 runtime gate
-retry=R1
-candidate_artifact=10615252806
-routing_artifact=10592987234
