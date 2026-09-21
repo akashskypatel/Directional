@@ -1,0 +1,4 @@
+turn=M5-CP3-TB1-R2-EXEC
+purpose=apply R2 execution report and durable review handoff
+base_sha=d248ea7bf26c3b63fa062e9ff695be6a91ac70c6
+retry=0
