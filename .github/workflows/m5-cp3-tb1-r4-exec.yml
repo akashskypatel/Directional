@@ -42,7 +42,6 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       DRIVER_TEMPLATE: .agents/Directional/turn-payloads/m5_cp3_tb1_r4_exec.py.in
       DRIVER_BASENAME: m5_cp3_tb1_r4_exec.py
-      PLAN_PATH: .agents/Directional/Architecture_M5_CP3_TB1_R3_Artifact_Only_Test_Benchmark_Plan.md
       TURN_ID: M5-CP3-TB1-R4-EXEC
     steps:
       - name: Initialize persistent diagnostic log
@@ -78,21 +77,12 @@ jobs:
           log="${RUNNER_TEMP}/${TURN_ID}.log"
           exec > >(tee -a "$log") 2>&1
           test -f "$DRIVER_TEMPLATE"
-          test -f "$PLAN_PATH"
           test -f .agents/Directional/tools/write_orchestration_payload.py
           driver="${RUNNER_TEMP}/${DRIVER_BASENAME}"
           env_file="${RUNNER_TEMP}/m5-cp3-tb1-r4-sha.env"
-          cat > "$env_file" <<'EOF'
-CANDIDATE_SHA256=0d26b01c026651ecacf57af04615746e6b48b09db2e5f1baa1dce62db31bc28f
-ROOT_MANIFEST_SHA256=abbda66e46b059832027b82b5dde457dfb2f8b10472bdb742f61f25979e7e02b
-SOURCE_ARCHIVE_SHA256=4335090caf9a1b5f38efa7ce3745d9f1a4bae13871c41572baa62abd2e06570b
-ROUTING_SHA256=352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce
-IDENTITY_MAP_SHA256=7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c
-SELECTOR_SHA256=1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6
-PREFIX427_SHA256=f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f
-EOF
+          printf '%s\n' 'CANDIDATE_SHA256=0d26b01c026651ecacf57af04615746e6b48b09db2e5f1baa1dce62db31bc28f' 'ROOT_MANIFEST_SHA256=abbda66e46b059832027b82b5dde457dfb2f8b10472bdb742f61f25979e7e02b' 'SOURCE_ARCHIVE_SHA256=4335090caf9a1b5f38efa7ce3745d9f1a4bae13871c41572baa62abd2e06570b' 'ROUTING_SHA256=352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce' 'IDENTITY_MAP_SHA256=7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c' 'SELECTOR_SHA256=1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6' 'PREFIX427_SHA256=f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f' > "$env_file"
           source "$env_file"
-          python3 .agents/Directional/tools/write_orchestration_payload.py             --template "$DRIVER_TEMPLATE"             --output "$driver"             --sha256 "candidate=$CANDIDATE_SHA256"             --sha256 "root_manifest=$ROOT_MANIFEST_SHA256"             --sha256 "source_archive=$SOURCE_ARCHIVE_SHA256"             --sha256 "routing=$ROUTING_SHA256"             --sha256 "identity_map=$IDENTITY_MAP_SHA256"             --sha256 "selector=$SELECTOR_SHA256"             --sha256 "prefix427=$PREFIX427_SHA256"
+          python3 .agents/Directional/tools/write_orchestration_payload.py --template "$DRIVER_TEMPLATE" --output "$driver" --sha256 "candidate=$CANDIDATE_SHA256" --sha256 "root_manifest=$ROOT_MANIFEST_SHA256" --sha256 "source_archive=$SOURCE_ARCHIVE_SHA256" --sha256 "routing=$ROUTING_SHA256" --sha256 "identity_map=$IDENTITY_MAP_SHA256" --sha256 "selector=$SELECTOR_SHA256" --sha256 "prefix427=$PREFIX427_SHA256"
           python3 - "$driver" <<'PY'
           import pathlib, sys
           path = pathlib.Path(sys.argv[1])
@@ -103,8 +93,6 @@ EOF
           {
             echo "template_path=$DRIVER_TEMPLATE"
             echo "template_sha256=$(sha256sum "$DRIVER_TEMPLATE" | awk '{print $1}')"
-            echo "plan_path=$PLAN_PATH"
-            echo "plan_sha256=$(sha256sum "$PLAN_PATH" | awk '{print $1}')"
             echo "writer_sha256=$(sha256sum .agents/Directional/tools/write_orchestration_payload.py | awk '{print $1}')"
             echo "rendered_driver_sha256=$(sha256sum "$driver" | awk '{print $1}')"
             cat "$env_file"
@@ -133,7 +121,7 @@ EOF
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: directional-m5-cp3-tb1-r3-result-${{ github.run_id }}
+          name: directional-m5-cp3-tb1-r4-result-${{ github.run_id }}
           path: ${{ runner.temp }}/M5-CP3-TB1-R4-EXEC-result
           if-no-files-found: error
           retention-days: 7
@@ -154,7 +142,7 @@ EOF
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: directional-m5-cp3-tb1-r3-log-${{ github.run_id }}
+          name: directional-m5-cp3-tb1-r4-log-${{ github.run_id }}
           path: ${{ runner.temp }}/M5-CP3-TB1-R4-EXEC.log
           if-no-files-found: error
           retention-days: 7
