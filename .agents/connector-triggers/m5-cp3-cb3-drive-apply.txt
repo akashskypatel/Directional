@@ -1,0 +1,4 @@
+turn=M5-CP3-CB3
+purpose=apply exact-span transport correction from staged Drive patch
+base_sha=00c6765bf83f69cd73dd25324818f6752f5bacad
+retry=0
