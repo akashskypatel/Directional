@@ -9092,3 +9092,14 @@ correction plan, does not exempt it — and neither does the candidate being unp
 ground at `M4-CP-SCALE-TB6-REV` because it would make the rule unfirable. Nothing else moves: candidate
 unpromoted, accepted authority package `10601978228` / selector430 **430/430**, all four M5 produced debts OPEN
 with no credit, `M5-CP2-TB1-REV-OBS-01` correctly carried.
+
+
+## 2026-09-21 — `M5-CP3-CB3` correction built; runtime recovery proof pending
+
+`M5-CP3-TB1-R1-CAND-01` remains the recorded **STABLE / `RP-01 AUTHORITY_DOMAIN_CONFLATION` recurrence**. CB3 does not erase or close the event; it builds the bounded recovery required by the R1 Review.
+
+Exact semantic source `279efa03471f1e0d6c32f57c8b395dd1cb1a93f5` removes whole-region branch-transport reconstruction from same-region periodic promotion and derives the generator carrier and directed transport from the same exact A3 `span` / canonical source-path authority through the existing `FieldTransportAtlas`. Mandatory GMP compile/package run/job `35555882867 / 106199345527` is green and runtime-free; candidate artifact `10620415471` is unpromoted.
+
+**Falsifier / closure condition:** fresh complete `M5-CP3-TB1-R2-EXEC` must re-prove the unchanged 9 mechanism + 6 produced + selector430 gate on artifact `10620415471`; independent `M5-CP3-TB1-R2-REV` must adjudicate recovery. Until then the event is **CORRECTION BUILT / RUNTIME RE-PROOF PENDING**, all four M5 produced debts remain open, and selector publication remains prohibited.
+
+No Directional runtime occurred in CB3, so there is **+0 event / +0 category / +0 recurrence**. Corrected totals remain **50 / 14 / 36**, produced-witness debt **5**.

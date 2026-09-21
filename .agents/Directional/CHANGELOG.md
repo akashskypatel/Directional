@@ -1,3 +1,11 @@
+## 2026-09-21 — `M5-CP3-CB3`: exact-span transport correction compile/package GREEN
+
+Runtime-free Code + Build completes the bounded R1 recovery at exact semantic source `279efa03471f1e0d6c32f57c8b395dd1cb1a93f5`. Same-region periodic promotion no longer reconstructs a path-independent rotation across the whole topology region. The exact A3 `sharedBoundaryInterval.span` resolves to its canonical `Mandatory` source path, the frozen subject's single `SourceEdgeSupport` obtains directed transport from existing `FieldTransportAtlas` authority, and the resulting generator route supplies the rotation used by the reciprocal periodic action. Cross-region HardRail, CP2 checked relation semantics, row408, all six produced tests, fixtures and selector430 are unchanged.
+
+Google Drive patch-apply run/job `35555753455 / 106198975068` verifies patch `d5cc5f23...884fd` and pushes the one-file semantic commit. Mandatory GMP compile/package run/job `35555882867 / 106199345527` is green on all eight standard targets with preflight/build `0 / 0`, explicit GMP/GMPXX linkage, empty source-status receipts and `runtimeExecution=false`. Candidate artifact `10620415471` hashes to `700b605167427d21823b90d942dd5bb40d1690f162285d22a20da5ad7898a1cd`; its root manifest is **28/28 PASS** at `ea12d6fc...623d24`, packaged source archive `198a6454...2f00`, log artifact `10620265598` / `a82f4871...78b14`. No Directional runtime/test/benchmark/discovery command ran.
+
+Candidate remains unpromoted; no produced debt is discharged. The prior R1 accepted-prefix regression remains the recorded stable `RP-01` recurrence, so corrected accounting stays **50 / 14 / 36**, debt **5**. Exact successor: fresh artifact-only `M5-CP3-TB1-R2-EXEC` on `10620415471`, restarting the unchanged **9 + 6 + 430 = 445** process gate with benchmark **0** and no R1 semantic credit reuse.
+
 ## 2026-09-21 — `M5-CP3-TB1-R1-REV` review: technical findings upheld; stable event recorded, totals 50 / 14 / 36
 
 Runtime-free review. **Every technical finding upheld; one accounting classification corrected.**
