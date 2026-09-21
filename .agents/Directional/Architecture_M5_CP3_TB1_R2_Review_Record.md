@@ -122,3 +122,79 @@ Per `CLEAN_UP_POLICY.md`, this Review folds the superseded CP3 per-turn document
 | review_check.py boundary | PASS — `review_check.py boundary` reports ALL CHECKS PASSED; no product/test/fixture/build or selector mutation; all retained selector hashes match baseline; 15 documentation/consolidation paths changed |
 | `STATUS` lifecycle maintained | entry beacon published for `M5-CP3-TB1-R2-REV`; terminal COMPLETE beacon with sole successor `M5-CP3-CB4` is the final repository write after documentation and cleanup |
 | Pushed to origin, branch in sync | control-plane confirmation is performed after documentation push and temporary-state cleanup; no self-referential commit hash is embedded here |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld in full.** The refined diagnosis is correct, the corrective is genuinely available, and
+the accounting disposition — including treating R2 as a continuation rather than a second event — is right.
+Accounting holds at **50 events / 14 categories / 36 recurrences**, debt **5**.
+
+### V1 — the refined root cause re-derives exactly, and the corrective really exists
+
+All three source claims verified from bytes:
+
+- **The wrong domain is being asked.** `generator_route_for_span` calls
+  `options.fieldTransportAtlas->transport(carrier->edge, typedFromFace, typedToFace)`
+  (`src/geometry/SurfaceCellTracing.cpp:~17013`). That is traversal authority, and a hard-feature carrier is
+  deliberately absent from it.
+- **The value nevertheless exists, before exclusion.** In `src/authority/FieldTransportAtlas.cpp`,
+  `transitionByEdge` is built at `:1912-1923` — every `crossField.edgeTransitions` entry keyed by exact
+  `SourceEdgeTopologyKey`, with `InvalidInput` and `DuplicateAdjacency` rejections on the way in — and the
+  hard-feature exclusion only happens afterwards at **`:1963`** (`if (hardFeatureEdges.count(edge.value()) != 0U)`).
+  §4.2's constructive claim is therefore true: the exact transition metadata is retained, and CB4 will not hit
+  its stop rule for want of data.
+- **The endpoint over-constraint is real.** `generator_route_for_span` requires both support-piece endpoints to be
+  `SourceVertexId` (`:16991-16992`), while `exact_edge_parameter` already exists (`:15584`) and is already applied
+  to `arc.sourcePath.front().first/second` at `:15686-15688`, accepting either a source vertex or an exact edge
+  point.
+
+So this is `RP-01` in a sharper form than R1's: not a synthesised value this time, but the **right value read
+from the wrong authority domain**. §4.1's refusal to "fix" it by publishing a hard-feature adjacency is exactly
+right — that would weaken the A1 barrier to satisfy a consumer, which is the inverse of the correct repair.
+
+### V2 — "no second stable event" is the correct precedent, and worth stating as one
+
+This is the first time the durable criterion has been applied to a **continuation**, so the reasoning should be
+explicit for later turns. The criterion fires on an accepted-prefix ordinal transitioning PASS → RED. Ordinal 408
+made that transition at R1 and was recorded. At R2 it has not transitioned again — it never returned to PASS in
+between, because accepted authority is still package `10601978228`, where it passes, and each candidate is
+measured against that unchanged baseline.
+
+Recording a fresh event per correction attempt would conflate *how many distinct regressions exist* with *how
+many attempts have been made to fix one*, and would inflate the count precisely when a team is doing the right
+thing by iterating on a localised defect. Merging `M5-CP3-TB1-R2-CAND-01` into the open
+`M5-CP3-TB1-R1-CAND-01` stable `RP-01` recurrence is the correct treatment, and the recurrence count rightly
+does not move either, since the defect was never resolved in between.
+
+### V3 — the successor's scope already closes the hazard this correction creates
+
+Reading transition data that sits *behind* a barrier is exactly the kind of fix that can become the next, worse
+defect: a general "look up transport ignoring hard features" accessor would hand every caller a bypass around A1
+barrier authority. The CB4 plan forecloses it rather than leaving it to judgment — §3 authorizes no change to
+`FieldTransportAtlas` implementation or any public header, and §4.2 states that `FieldTransportAtlas` remains
+authoritative for traversal/nontraversability with no hard-feature adjacency added and
+`FieldTransportBarrierKind::HardFeature` unchanged. CB4 therefore reads the raw `CrossFieldEdgeTransition`
+authority at the seam rather than widening an API. That is the right shape.
+
+**One thing the next Review must verify rather than assume.** Reading raw transitions directly bypasses the
+validation the atlas performs while indexing — the `InvalidInput` and `DuplicateAdjacency` rejections at
+`:1917-1923`. The plan requires the seam to fail closed on absent, duplicated, edge-mismatched or
+face-pair-mismatched authority with no fallback, which is precisely the right requirement; the next Review must
+confirm that re-validation was actually **implemented at the seam**, not merely promised in the plan. A seam that
+consumes raw authority without re-performing the checks its former provider performed is a silent
+validation gap. Recorded as `M5-CP3-TB1-R2-REV-OBS-01`.
+
+### V4 — evidence, obligations and verification limits
+
+R2's ledger is mechanically sound as reported: mechanism **9/9**, produced **0/6**, selector430 **429/1** with
+ordinal 408 the sole selector RED, every process selecting exactly one test with zero skips, and
+`orchestration_failure=false`. Selector430 independently re-hashes to `1c412850…9db6` at 430 LF rows. The
+candidate stays unpromoted; all four M5 produced debts remain **OPEN** with zero credit;
+`M5-CP2-TB1-REV-OBS-01` remains correctly carried, since no publication identity is green on any candidate yet.
+
+Re-derived from repository bytes: the `transport(...)` call site, the `transitionByEdge` construction and its
+ordering against the `:1963` hard-feature exclusion, the `SourceVertexId` endpoint constraint,
+`exact_edge_parameter` and its existing use, and selector430's rows and hash. Accepted as reported: R2 result and
+log artifact hashes, the 908-row self-manifest, run/job identifiers and execution-boundary receipts.

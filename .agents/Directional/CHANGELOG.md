@@ -1,3 +1,34 @@
+## 2026-09-21 — `M5-CP3-TB1-R2-REV` review: refined diagnosis upheld; continuation precedent affirmed
+
+Runtime-free review. **Upheld in full.** Accounting holds at **50 events / 14 categories / 36 recurrences**,
+debt **5**; selector430 re-hashes to `1c412850…9db6` at 430 LF rows; candidate `10620415471` stays unpromoted.
+
+All three source claims re-derived from bytes. `generator_route_for_span` asks
+`fieldTransportAtlas->transport(...)`, which is **traversal** authority that deliberately excludes hard-feature
+carriers. The needed value nevertheless exists: in `FieldTransportAtlas.cpp`, `transitionByEdge` is built at
+`:1912-1923` keyed by exact source edge, and hard-feature exclusion happens only afterwards at **`:1963`** — so
+§4.2's constructive claim holds and CB4 will not hit its stop rule for want of data. The endpoint
+over-constraint is real too: both support-piece endpoints are forced to `SourceVertexId` at `:16991-16992`, while
+`exact_edge_parameter` already exists at `:15584` and already handles either form at `:15686-15688`. This is
+`RP-01` in sharper form than R1 — the right value read from the wrong authority domain — and §4.1 is right to
+refuse the "fix" of publishing a hard-feature adjacency, which would weaken the A1 barrier to satisfy a consumer.
+
+**Continuation precedent affirmed.** This is the first application of the durable stable-event criterion to a
+continuation, so the reasoning is now explicit: ordinal 408 transitioned PASS → RED at R1 and was recorded; at R2
+it has not transitioned again, having never returned to PASS in between, since accepted authority remains package
+`10601978228` where it passes. Recording a fresh event per correction attempt would conflate how many distinct
+regressions exist with how many attempts have been made to fix one. Merging `M5-CP3-TB1-R2-CAND-01` into the open
+`M5-CP3-TB1-R1-CAND-01` recurrence is correct, and recurrences rightly do not move either.
+
+New: `M5-CP3-TB1-R2-REV-OBS-01` (non-gating, owner CB4 and its Review). CB4 reads raw `CrossFieldEdgeTransition`
+authority at the seam, which skips the validation the atlas performs while indexing — `InvalidInput` and
+`DuplicateAdjacency` rejections at `:1917-1923`. The plan requires failing closed with no fallback, which is the
+right requirement, but a requirement in a plan is not an implementation: the next Review must confirm from bytes
+that the re-validation exists **at the seam**. The plan's scoping is otherwise exemplary — no `FieldTransportAtlas`
+or public-header change is authorized, so the fix cannot become a general bypass around A1 barrier authority.
+
+Exact successor: `M5-CP3-CB4` — product-only hard-feature transition transport correction.
+
 ## 2026-09-21 — `M5-CP3-TB1-R2-REV`: R2 failed recovery classified as hard-feature transport-domain conflation; CB4 next
 
 Runtime-free independent Review reopens R2 artifacts `10621351075 / 10621154456`, verifies self-manifest **908/908**, independently re-derives **9/9 mechanism PASS, 0/6 produced PASS, selector430 429/430 PASS**, exact-one/zero-skip, immutable postflight and zero prohibited-operation counters, and re-hashes selector430/first427 unchanged.

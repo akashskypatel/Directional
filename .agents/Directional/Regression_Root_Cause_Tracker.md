@@ -9113,3 +9113,29 @@ Exact semantic source `279efa03471f1e0d6c32f57c8b395dd1cb1a93f5` removes whole-r
 **Falsifier / closure condition:** fresh complete `M5-CP3-TB1-R2-EXEC` must re-prove the unchanged 9 mechanism + 6 produced + selector430 gate on artifact `10620415471`; independent `M5-CP3-TB1-R2-REV` must adjudicate recovery. Until then the event is **CORRECTION BUILT / RUNTIME RE-PROOF PENDING**, all four M5 produced debts remain open, and selector publication remains prohibited.
 
 No Directional runtime occurred in CB3, so there is **+0 event / +0 category / +0 recurrence**. Corrected totals remain **50 / 14 / 36**, produced-witness debt **5**.
+
+## `M5-CP3-TB1-R2-REV-OBS-01` — a seam consuming raw authority must re-perform its provider's validation
+
+**Status.** OPEN / NON-GATING / owner `M5-CP3-CB4` and the Review that follows it / NON-STABLE.
+
+`M5-CP3-CB4` corrects the hard-feature transport-domain conflation by reading raw `CrossFieldEdgeTransition`
+authority at the promotion seam instead of calling `FieldTransportAtlas::transport(...)`, which by design
+excludes hard-feature carriers. The corrective is sound and the data genuinely exists — verified in
+`src/authority/FieldTransportAtlas.cpp`, where `transitionByEdge` is built at `:1912-1923` and the hard-feature
+exclusion occurs only afterwards at `:1963`.
+
+The plan's scoping is also right: it authorizes no change to `FieldTransportAtlas` implementation or any public
+header and forbids adding a hard-feature adjacency, so the fix cannot become a general bypass around A1 barrier
+authority for other callers.
+
+**Why this still needs verification:** the atlas validates while indexing — it rejects `InvalidInput` and
+`DuplicateAdjacency` at `:1917-1923` before any entry is retained. A seam that reads the raw transitions directly
+skips that gate. The CB4 plan requires failing closed on absent, duplicated, edge-mismatched or
+face-pair-mismatched authority with no fallback, which is exactly the right requirement, but a requirement in a
+plan is not an implementation.
+
+**How to apply:** the Review after `M5-CP3-CB4` must confirm from bytes that equivalent duplicate/mismatch
+validation is **implemented at the seam**, not merely promised — absent, duplicated, edge-mismatched and
+face-pair-mismatched raw authority must each fail closed with the existing production failure. A consumer that
+takes over raw authority without re-performing the checks its former provider performed is a silent validation
+gap, and it will not show up as a failing test until the malformed case actually occurs.
