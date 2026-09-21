@@ -34,7 +34,7 @@ Final run result/log artifacts are `10616206801` SHA-256 `48509074dfe81f89133290
 
 ## Exact blocker
 
-`Architecture_M5_CP3_TB1_Artifact_Only_Test_Benchmark_Plan.md` freezes the routing ZIP SHA-256 as:
+The historical frozen TB1 plan (folded after Review; resolver `M5_Consolidated_Record.md` §5) freezes the routing ZIP SHA-256 as:
 
 `352c8cfc9c89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`
 

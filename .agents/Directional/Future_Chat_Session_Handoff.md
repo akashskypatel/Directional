@@ -4,59 +4,56 @@
 
 ## Current authority
 
-`M5-CP3-TB1-EXEC` is **COMPLETE / BLOCKED PRE-RUNTIME / FROZEN PLAN DIGEST DEFECT / ZERO SEMANTIC CREDIT**.
+`M5-CP3-TB1-REV` is **COMPLETE / FROZEN PLAN DEFECT CONFIRMED / CORRECTED R1 EXECUTION AUTHORITY FROZEN / RUNTIME-FREE**.
 
 Candidate `10615252806` / source `fc2aa5fa68cac890051614c2104979aef4a60d21` remains compile-only and unpromoted. Accepted runtime authority remains package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under selector430 **430/430**. Stable accounting remains **49 / 14 / 35**, produced-witness debt **5**; all four M5 produced debts remain open.
 
-Three artifact-only execution attempts occurred. Runs `35544087129` and `35544211517` stopped before preflight on HTTP 401 artifact download failures and executed zero Directional binaries. The diagnosed redirect-safe download correction was then frozen into retry run `35544717675`, which passed schema/driver validation and successfully verified candidate artifact `10615252806` at SHA-256 `1e32fa2b55f84b9097b0d617bcfc1b5f7ad1ab7e5ffc2bdb8e0cde8ea715bf20`.
+Review independently re-opened final blocked retry `35544717675`, result artifact `10616206801`, the consumed TB1 plan, and accepted M4-TB3 routing artifact `10592987234`. The consumed plan's routing ZIP literal is exactly **62** hex characters (`352c8cfc9c89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`). Live provider metadata and a fresh artifact download both prove the accepted routing ZIP SHA-256 is exactly `352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`. The downloaded `identity-map.tsv` independently hashes to `7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c`, contains 430 unique identities with ordinals 1..430, and owners **31 / 283 / 75 / 41**.
 
-That final retry then failed closed before semantic runtime because the frozen TB1 plan records routing artifact `10592987234` with malformed 62-character ZIP digest `352c8cfc9c89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`. Accepted M4-TB3 authority and existing durable reports preserve the actual 64-character provider/download digest `352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`. TB-EXEC did not silently repair the frozen plan.
-
-Final retry result/log artifacts are `10616206801` SHA-256 `48509074dfe81f89133290dc4b8f51454e205ce2e2f1c7df40e3d8553ebfc71c` / `10616186884` SHA-256 `6e91e0eb8ab632ccfea3c491fe44dadc7c0c1a7641068107a24bb5dfb686de01`. The result self-manifest verifies 4/4. Boundary receipt: `preflight_completed=false`, `runtime_started=false`, `runtime_completed=false`, `orchestration_failure=true`; all configure/compile/relink/discovery/repair/mutation and benchmark counters are zero. Semantic execution is **0/445**.
+The predecessor executed **0/445** semantic processes. Boundary evidence remains preflight/runtime false with every configure/compile/relink/discovery/repair/mutation and benchmark counter zero. `M5-CP3-TB1-EXEC-OBS-01` is therefore resolved non-stably as **ORCHESTRATION / FROZEN PLAN AUTHORITY**, not product/test/fixture/expectation evidence.
 
 ## Exact next turn
 
-**`M5-CP3-TB1-REV` — independent runtime-free Review of the preflight blocker.**
+**`M5-CP3-TB1-R1-EXEC` — fresh artifact-only execution under the corrected immutable plan.**
 
-Review must independently re-open the frozen CP3 TB1 plan and accepted M4-TB3 routing authority, confirm or reject the 62-character digest defect, and durably determine corrected execution authority. It must not run tests/benchmarks, compile, patch production/test/build logic, or award any runtime/debt credit.
+Authoritative plan: `.agents/Directional/Architecture_M5_CP3_TB1_R1_Artifact_Only_Test_Benchmark_Plan.md`. It changes only the routing ZIP authority literal and retry/review turn names. The immutable candidate/source, nine mechanism identities, six produced identities, selector430 bytes/order/hash, identity-map hash/census, exact-one/zero-skip rules, immutable postflight, semantic-RED continuation rule and benchmark **0** are unchanged.
 
-If Review confirms the plan literal defect, it should freeze the exact corrected 64-character routing ZIP digest and authorize a fresh artifact-only execution from process 1 on the same immutable candidate. Do not silently edit the executor expectation in Review without updating the owning plan/record. Candidate promotion, production-debt discharge and successor-selector publication remain forbidden until a mechanically complete runtime and subsequent independent adjudication.
+R1 must restart at process **1**. If preflight is valid it must execute exactly **445 fresh exact-filter processes** in frozen order: 9 reviewed mechanism rows, 6 `M5CP3.Produced...` rows, then all 430 selector rows. Do not reuse blocked-attempt semantic credit, repair package/source/selector bytes, configure, compile, relink, generate discovery, or execute the benchmark binary.
 
-## Review obligations
+Mechanically complete R1 must transition to independent runtime-free **`M5-CP3-TB1-R1-REV`**. Only that Review may promote the candidate, adjudicate the four M5 produced debts, and close `M5-CP2-TB1-REV-OBS-01` by pre-committing exact successor-selector bytes/order/LF SHA-256/prefix/census.
 
-- `M5-CP3-TB1-EXEC-OBS-01` — **OPEN / owner `M5-CP3-TB1-REV` / NON-STABLE**; malformed frozen routing digest must be adjudicated before another execution.
-- `M5-CP2-TB1-REV-OBS-01` — **OPEN / owner eventual green `M5-CP3-TB1-REV`**; exact publication selector precommitment remains mandatory after valid runtime evidence exists.
-- M5 produced debts 1-4 — **OPEN**; current TB execution provides zero semantic credit.
+## Open obligations
+
+- `M5-CP3-TB1-EXEC-OBS-01` — **RESOLVED / NON-STABLE** by current Review; corrected R1 plan owns recovery.
+- `M5-CP2-TB1-REV-OBS-01` — **OPEN / owner `M5-CP3-TB1-R1-REV`**; no publication precommitment before valid R1 runtime.
+- M5 produced debts 1-4 — **OPEN**; predecessor TB1 provided zero semantic credit.
 - M6 closed-complex produced debt — **OPEN / M6-owned**; do not pull A5 authority backward.
 
 ## Resume-critical evidence
 
-- Blocked TB report: `.agents/Directional/Architecture_M5_CP3_TB1_Artifact_Only_Test_Benchmark_Report.md`
-- Frozen TB plan containing the defect: `.agents/Directional/Architecture_M5_CP3_TB1_Artifact_Only_Test_Benchmark_Plan.md`
-- Accepted M4 routing proof: `.agents/Directional/Architecture_M4_CP4_TB3_Artifact_Only_Test_Benchmark_Report.md` and `.agents/Directional/Architecture_M4_CP4_TB3_Review_Record.md`
-- CB2 report: `.agents/Directional/Architecture_M5_CP3_CB2_Code_Build_Report.md`
-- Candidate artifact: `10615252806` / SHA-256 `1e32fa2b...15bf20`
-- Final blocked TB result/log: `10616206801 / 10616186884`
-- Evidence source: `fc2aa5fa68cac890051614c2104979aef4a60d21`
+- Current Review: `.agents/Directional/Architecture_M5_CP3_TB1_Review_Record.md`
+- Corrected R1 plan: `.agents/Directional/Architecture_M5_CP3_TB1_R1_Artifact_Only_Test_Benchmark_Plan.md`
+- Retained blocked TB report: `.agents/Directional/Architecture_M5_CP3_TB1_Artifact_Only_Test_Benchmark_Report.md`
+- CB2 candidate report: `.agents/Directional/Architecture_M5_CP3_CB2_Code_Build_Report.md`
+- Candidate artifact/source: `10615252806` / `fc2aa5fa68cac890051614c2104979aef4a60d21`
+- Accepted routing artifact: `10592987234`, ZIP `352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`, map `7a92e7a...5cf6c`
+- Selector430/full + first427: `1c412850...9db6 / f9c88380...e86f`
 - Accepted runtime package remains `10601978228`.
 
 ## Context Load Plan
 
 ```yaml
 load_next:
-  - references/turns/TB-REVIEW.md
+  - references/turns/TB-EXEC.md
 conditional_modules:
-  - trigger: GitHub connector / Actions / artifact evidence inspection
+  - trigger: GitHub Actions / immutable artifact execution
     path: modules/github-connector/MODULE.md
 deep_references:
+  - .agents/Directional/Architecture_M5_CP3_TB1_R1_Artifact_Only_Test_Benchmark_Plan.md
+  - .agents/Directional/Architecture_M5_CP3_TB1_Review_Record.md
+  - .agents/Directional/Architecture_M5_CP3_CB2_Code_Build_Report.md
   - .agents/Directional/Architecture_M5_CP3_TB1_Artifact_Only_Test_Benchmark_Report.md
-  - .agents/Directional/Architecture_M5_CP3_TB1_Artifact_Only_Test_Benchmark_Plan.md
-  - .agents/Directional/Architecture_M4_CP4_TB3_Artifact_Only_Test_Benchmark_Report.md
-  - .agents/Directional/Architecture_M4_CP4_TB3_Review_Record.md
-  - .agents/Directional/Architecture_M5_Frozen_Definitions.md §§8-9, 13-14
-templates_when_producing:
-  - REVIEW_RECORD.md
 do_not_preload:
-  - Code + Build turn files
-  - superseded orchestration attempts beyond the current TB report
+  - Code + Build turn files beyond retained candidate authority
+  - folded predecessor orchestration plans/reviews
 ```

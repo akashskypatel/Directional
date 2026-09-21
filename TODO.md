@@ -2,19 +2,19 @@
 
 Last updated: 2026-09-20 UTC
 
-## Latest Review turn — `M5-CP3-CB1-REV`
+## Latest Review turn — `M5-CP3-TB1-REV`
 
-`M5-CP3-CB1-REV` is **COMPLETE / APPROVED_WITH_AMENDMENTS / RUNTIME-FREE**. It upholds CB1's frozen stop and freezes M5 §14: exact A3 shared-boundary interval is provenance that may survive narrow same-region cut promotion to `PeriodicCut`; canonical periodic relation ownership remains independent and mandatory; cross-region HardRail and the materializer same-region HardRail rejection remain unchanged. Row408 may evolve only at its final-kind assertion while retaining the exact 18-edge hard-feature input and receipt/digest binding.
+`M5-CP3-TB1-REV` is **COMPLETE / RUNTIME-FREE / FROZEN PLAN DEFECT CONFIRMED / CORRECTED R1 EXECUTION AUTHORITY FROZEN**. Review independently re-opens final retry `35544717675`, confirms semantic execution **0/445**, proves the consumed plan's routing SHA literal is only 62 hex characters, and independently re-downloads accepted M4-TB3 routing artifact `10592987234` at exact ZIP SHA-256 `352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`. Its `identity-map.tsv` remains exact at `7a92e7a...5cf6c`, 430 unique ordinals, owners **31/283/75/41**.
 
-Accepted package `10601978228` / source `0798547d...` and selector430 remain unchanged. Stable accounting stays **49 / 14 / 35**, debt **5**. `M5-DEFN-REV-OBS-01` and `M5-CP1-TB1-PREFLIGHT-REV-OBS-01` are discharged; `M5-CP2-TB1-REV-OBS-01` remains owned by `M5-CP3-TB1-REV`. Exact next is `M5-CP3-CB2` under the reviewed direct-production promotion plan.
+`M5-CP3-TB1-EXEC-OBS-01` is resolved non-stably as orchestration/frozen-plan authority. Candidate `10615252806` remains unpromoted; accepted package `10601978228` and selector430 remain authority. Stable accounting stays **49 / 14 / 35**, debt **5**. `M5-CP2-TB1-REV-OBS-01` is re-homed unchanged to `M5-CP3-TB1-R1-REV`. Exact next is fresh `M5-CP3-TB1-R1-EXEC` under the corrected R1 artifact-only plan.
 
 ## Latest Test + Benchmark turn — `M5-CP3-TB1-EXEC`
 
-`M5-CP3-TB1-EXEC` is **COMPLETE / BLOCKED PRE-RUNTIME / ZERO SEMANTIC CREDIT**. Final retry `35544717675` verified candidate `10615252806` but failed closed before routing extraction because the frozen plan's routing-artifact SHA-256 literal is malformed at 62 characters. Final result/log artifacts: `10616206801 / 10616186884`. Preflight/runtime are false; benchmark/configure/compile/relink/discovery/repair/mutation counts are all zero; semantic execution **0/445**. Candidate remains unpromoted.
+`M5-CP3-TB1-EXEC` is **COMPLETE / BLOCKED PRE-RUNTIME / ZERO SEMANTIC CREDIT**. Final retry `35544717675` verified candidate `10615252806` but failed closed before routing extraction because the consumed frozen plan's routing-artifact SHA-256 literal was malformed. Final result/log artifacts: `10616206801 / 10616186884`. Preflight/runtime are false; benchmark/configure/compile/relink/discovery/repair/mutation counts are all zero. The defect is now independently adjudicated and corrected only in the new R1 plan; none of the blocked attempts contributes semantic credit.
 
 ## Latest Code + Build turn — `M5-CP3-CB2`
 
-`M5-CP3-CB2` is **COMPLETE / STATIC GREEN / GMP COMPILE-PACKAGE GREEN / RUNTIME-FREE**. Exact evidence source `fc2aa5fa68cac890051614c2104979aef4a60d21` implements the reviewed narrow same-region A3 `PeriodicCut` promotion, preserves cross-region HardRail and CP2/materializer failure semantics, strengthens accepted row408 at only its final-kind assertion, and compiles the six frozen `M5CP3.Produced...` identities. Mandatory run/job `35542532109 / 106162702255` produced candidate artifact `10615252806` (SHA-256 `1e32fa2b...15bf20`) with all eight targets, GMP/GMPXX, clean source and `runtimeExecution=false`. No test/benchmark ran. Accepted runtime package `10601978228` remains authority until runtime + Review.
+`M5-CP3-CB2` is **COMPLETE / STATIC GREEN / GMP COMPILE-PACKAGE GREEN / RUNTIME-FREE**. Exact evidence source `fc2aa5fa68cac890051614c2104979aef4a60d21` implements the reviewed narrow same-region A3 `PeriodicCut` promotion, preserves cross-region HardRail and CP2/materializer failure semantics, strengthens accepted row408 only at its final-kind assertion, and compiles the six frozen `M5CP3.Produced...` identities. Mandatory run/job `35542532109 / 106162702255` produced candidate artifact `10615252806` (SHA-256 `1e32fa2b...15bf20`) with all eight targets, GMP/GMPXX, clean source and `runtimeExecution=false`. No test/benchmark ran.
 
 ## M5 checkpoint sequence
 
@@ -22,15 +22,17 @@ Accepted package `10601978228` / source `0798547d...` and selector430 remain unc
 - [x] `M5-CP2-CB1`: five-class typed relation failure matrix implemented; GMP compile/package green on `10601978228`; no runtime/selector publication.
 - [x] `M5-CP2-TB1-EXEC`: focused **7/7 PASS** + selector430 **430/430 PASS**, exact-one/zero-skip, benchmark 0, immutable postflight.
 - [x] `M5-CP2-TB1-REV`: promote package `10601978228`, close CP2, discharge boundary-relocation observation, freeze selector-publication sequence.
-- [x] `M5-CP3-CB1`: stopped before implementation/compile on the frozen row408 `HardRail` versus one-region `PeriodicCut` contract conflict; no semantic source or selector change.
-- [x] `M5-CP3-CB1-REV`: uphold CB1 stop; freeze A3-provenance-preserving same-region PeriodicCut promotion, authorize surgical row408 final-kind evolution, discharge two governance observations.
-- [x] `M5-CP3-CB2`: reviewed same-region promotion + row408 evolution + six frozen produced identities implemented; mandatory GMP package `10615252806` / source `fc2aa5fa...` compile-green with selector430 byte-frozen and no runtime.
-- [x] `M5-CP3-TB1-EXEC`: stopped before semantic runtime on frozen-plan routing-digest defect; zero semantic credit; final result/log `10616206801 / 10616186884`.
-- [ ] `M5-CP3-TB1-REV`: **exact next**; first adjudicate the frozen routing-digest defect and corrected execution authority. Debt/selector adjudication remains deferred until valid runtime exists.
+- [x] `M5-CP3-CB1`: stopped before implementation/compile on the frozen row408 `HardRail` versus one-region `PeriodicCut` contract conflict.
+- [x] `M5-CP3-CB1-REV`: freeze A3-provenance-preserving same-region PeriodicCut promotion and surgical row408 final-kind evolution.
+- [x] `M5-CP3-CB2`: reviewed production promotion + six produced identities; candidate `10615252806` compile/package green.
+- [x] `M5-CP3-TB1-EXEC`: pre-runtime frozen-plan routing-digest block; semantic **0/445**.
+- [x] `M5-CP3-TB1-REV`: independently confirm malformed literal and exact accepted routing bytes; freeze corrected retry authority.
+- [ ] `M5-CP3-TB1-R1-EXEC`: **exact next**; restart process 1 and execute unchanged 9 mechanism + 6 produced + selector430 = **445** fresh exact-filter processes; benchmark 0.
+- [ ] `M5-CP3-TB1-R1-REV`: after mechanically complete R1, adjudicate candidate/debts and exact successor-selector publication precommitment.
 
-## Current focus — `M5-CP3-TB1-REV`
+## Current focus — `M5-CP3-TB1-R1-EXEC`
 
-Perform runtime-free independent Review of `M5-CP3-TB1-EXEC-OBS-01`. Re-open the frozen CP3 TB1 plan and accepted M4-TB3 routing authority, confirm or reject the malformed 62-character routing digest, and durably freeze corrected execution authority before any fresh artifact-only run. Do not run tests/benchmarks, compile, patch production/test/build logic, promote candidate `10615252806`, discharge production debt, or publish a successor selector. If the defect is confirmed, authorize a fresh execution from process 1 using the unchanged 445-process semantic surface unless Review finds a separate authority defect.
+Execute `.agents/Directional/Architecture_M5_CP3_TB1_R1_Artifact_Only_Test_Benchmark_Plan.md` exactly. The sole corrected authority literal is routing artifact `10592987234` ZIP SHA-256 `352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`; candidate/source, focused identities/order, selector430, routing map/census, exact-one/zero-skip requirements, immutable postflight and benchmark **0** are unchanged. Start from process 1. Do not rebuild, repair, mutate selector/source/test/fixture bytes, or import semantic credit from predecessor attempts.
 
 ## Carried forward from M1
 
@@ -70,7 +72,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. Four periodic/relation debts remain M5-owned and one closed-complex debt remains M6-owned.
-- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 TB1 BLOCKED PRE-RUNTIME BY FROZEN PLAN DIGEST DEFECT**; accepted runtime package remains `10601978228` / source `0798547d...`; candidate `10615252806` / source `fc2aa5fa...` is compile-only and unpromoted under unchanged selector430; exact next `M5-CP3-TB1-REV`; four M5 produced-witness debts remain open.
+- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 CB2 candidate compile-green; initial TB1 blocked pre-runtime and Review-confirmed as frozen-plan orchestration only**. Accepted runtime package remains `10601978228`; candidate `10615252806` is unpromoted under selector430. Exact next `M5-CP3-TB1-R1-EXEC`; four M5 produced-witness debts remain open.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.
@@ -109,4 +111,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **49 events / 14 categories / 35 recurrences**, debt **5**. M4, M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**; current accepted runtime authority remains package `10601978228` / source `0798547d...` under unchanged selector430 **430/430**. M5-CP3 candidate `10615252806` / source `fc2aa5fa...` is compile/package green but unpromoted; CP3 TB1 semantic runtime is **0/445** because preflight failed closed on the frozen plan's malformed routing digest. The closed-complex `G4-B002` debt remains M6-owned, while two periodic `G4-B002` plus two `G4-B003` debts remain M5-owned. Exact successor is **`M5-CP3-TB1-REV`**. PR #8 remains open, draft, and unmerged.
+Current totals remain **49 events / 14 categories / 35 recurrences**, debt **5**. M4, M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**; current accepted runtime authority remains package `10601978228` / source `0798547d...` under unchanged selector430 **430/430**. M5-CP3 candidate `10615252806` / source `fc2aa5fa...` is compile/package green but unpromoted; CP3 TB1 semantic runtime is **0/445** because preflight failed closed on the frozen plan's malformed routing digest. The closed-complex `G4-B002` debt remains M6-owned, while two periodic `G4-B002` plus two `G4-B003` debts remain M5-owned. Review has independently confirmed the routing authority and frozen corrected R1 execution. Exact successor is **`M5-CP3-TB1-R1-EXEC`**. PR #8 remains open, draft, and unmerged.

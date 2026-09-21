@@ -1,3 +1,11 @@
+## 2026-09-20 — `M5-CP3-TB1-REV`: frozen routing digest defect confirmed; corrected R1 execution authority frozen
+
+Runtime-free independent Review confirms `M5-CP3-TB1-EXEC` provided **zero semantic credit**. Final retry `35544717675` / result `10616206801` is independently re-opened: result ZIP/self-manifest verify, preflight/runtime are false, and all benchmark/configure/compile/relink/discovery/repair/mutation counters are zero. The consumed plan's routing artifact `10592987234` digest is only **62 hex characters**.
+
+Review independently re-opens live M4-TB3 artifact metadata and freshly downloads the routing artifact. Provider and local ZIP SHA-256 both equal `352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`; `identity-map.tsv` independently hashes to `7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c`, has 430 unique ordinals 1..430 and owner census **31/283/75/41**. Selector430/first427 re-hash unchanged. `M5-CP3-TB1-EXEC-OBS-01` closes **ORCHESTRATION / FROZEN PLAN AUTHORITY / NON-STABLE**, +0/+0/+0.
+
+Candidate `10615252806` remains unpromoted; accepted runtime package remains `10601978228`; accounting stays **49 / 14 / 35**, debt **5**, all four M5 produced debts open. `M5-CP2-TB1-REV-OBS-01` is carried unchanged to `M5-CP3-TB1-R1-REV`. New sole plan `Architecture_M5_CP3_TB1_R1_Artifact_Only_Test_Benchmark_Plan.md` changes only the routing ZIP authority and retry/review turn names; it restarts the same **445** fresh exact-filter processes from process 1, benchmark **0**. Exact successor: `M5-CP3-TB1-R1-EXEC`.
+
 ## 2026-09-20 — `M5-CP3-TB1-EXEC`: pre-runtime frozen-plan digest defect; zero semantic credit
 
 Artifact-only TB execution is mechanically blocked before valid preflight. Runs `35544087129` and `35544211517` stopped on HTTP 401 artifact-download orchestration with zero Directional runtime. Diagnosed redirect-safe retry `35544717675` passed schema/driver validation and verified candidate artifact `10615252806` at exact SHA-256 `1e32fa2b55f84b9097b0d617bcfc1b5f7ad1ab7e5ffc2bdb8e0cde8ea715bf20`, then failed closed because the frozen CP3 TB1 plan gives routing artifact `10592987234` a malformed 62-character ZIP digest `352c8cfc9c89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`; accepted M4-TB3/provider authority is `352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`.

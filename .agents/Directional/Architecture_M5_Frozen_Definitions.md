@@ -234,7 +234,7 @@ All `M5-DEFN` stop rules are resolved:
 
 ## 11. Current exact successor
 
-**`M5-CP3-CB2`** under `Architecture_M5_CP3_CB2_Direct_Production_Promotion_Plan.md`.
+**`M5-CP3-CB2`** under the reviewed plan now indexed in `M5_Consolidated_Record.md` §5; implementation outcome is retained in `Architecture_M5_CP3_CB2_Code_Build_Report.md`.
 
 It is the reviewed replacement Code + Build after `M5-CP3-CB1` stopped before implementation on the row408 representation conflict. It implements the narrow A3-provenance-preserving same-region periodic promotion, is compile/package only with mandatory GMP and `runtimeExecution=false`; selector430 is byte-frozen and no Directional runtime is authorized in CB2.
 
@@ -251,7 +251,7 @@ This record supersedes the consumed `Architecture_M5_DEFN_Definition_Plan.md` as
 | producer/consumer cutover | this record §5 |
 | typed failure matrix | this record §6 |
 | invariance | this record §7 |
-| exact next implementation | `Architecture_M5_CP3_CB2_Direct_Production_Promotion_Plan.md` |
+| historical CP3 implementation plan | folded after completion; resolver: `M5_Consolidated_Record.md` §5 |
 
 
 ## 13. CP2 Review amendment — M5 exit theorem and selector publication sequence

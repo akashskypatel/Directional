@@ -1,7 +1,7 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-20 at `M5-CP3-TB1-EXEC`
+**Last updated:** 2026-09-20 at `M5-CP3-TB1-REV`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Stable accounting remains **49 / 14 / 35**, produced-witness debt **5**; M5 owns four of those debts.
 
@@ -27,17 +27,15 @@ The Review also resolves the prior selector-governance gap by adding frozen §13
 
 ## 4. Current open M5 boundary — `M5-CP3`
 
-`M5-CP3-CB1` stopped correctly on the HardRail/PeriodicCut provenance conflict and `M5-CP3-CB1-REV` froze §14. `M5-CP3-CB2` has now implemented that reviewed representation contract and is **COMPLETE / STATIC GREEN / GMP COMPILE-PACKAGE GREEN / RUNTIME-FREE** at exact semantic source `fc2aa5fa68cac890051614c2104979aef4a60d21`.
+`M5-CP3-CB2` is **COMPLETE / STATIC GREEN / GMP COMPILE-PACKAGE GREEN / RUNTIME-UNADJUDICATED** at semantic source `fc2aa5fa68cac890051614c2104979aef4a60d21`, candidate artifact `10615252806` SHA-256 `1e32fa2b55f84b9097b0d617bcfc1b5f7ad1ab7e5ffc2bdb8e0cde8ea715bf20`. It implements the reviewed narrow same-region A3 interval-preserving `PeriodicCut` promotion and compiles the six frozen `M5CP3.Produced...` identities while leaving cross-region HardRail and CP2 relation validation intact. Selector430/first427 remain frozen.
 
-Production now promotes only already-valid same-region A3 paired cut copies satisfying reciprocal exact interval identity, distinct exact boundary occurrences, reverse routes, matching families and opposing advance signs. The generator carrier is derived from accepted topology-arc/source-path transition authority, the produced edge route is the cut carrier, and one exact action must satisfy both reciprocal endpoint pairs before the canonical relation publishes. The pair becomes owned `PeriodicCut` with retained A3 provenance and `PeriodicFrontMerge`; cross-region HardRail and the materializer same-region HardRail rejection remain unchanged. Checked product validation now treats A3 interval provenance as orthogonal to final HardRail/PeriodicCut ownership while preserving CP2 relation checks.
+`M5-CP3-TB1-EXEC` produced **zero semantic credit**. Runs `35544087129` and `35544211517` stopped preflight on artifact-download orchestration; final retry `35544717675` corrected that transport, verified the candidate, then failed closed because its frozen plan recorded routing artifact `10592987234` with a malformed 62-character ZIP digest. Boundary receipt remains preflight/runtime false with all prohibited-operation and benchmark counters zero.
 
-Accepted selector row408 keeps the exact 18-edge torus production precondition, A0-A3/conformity receipts/digests and fail-closed pairing check; its obsolete final HardRail-only observation is strengthened to require `>=2` promoted interval edges forming at least one complete reciprocal pair with canonical owner. Accepted selector rows 404-407 retain the general/cross-region HardRail interval contract. The six frozen `M5CP3.Produced...` identities exist and compile; Code + Build grants them no runtime credit.
+`M5-CP3-TB1-REV` independently confirms that defect. Live provider metadata and a fresh download of accepted routing artifact `10592987234` both hash to `352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`; `identity-map.tsv` hashes to `7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c`, has 430 unique ordinals 1..430, and owner census **31 / 283 / 75 / 41**. `M5-CP3-TB1-EXEC-OBS-01` is resolved non-stably as frozen-plan orchestration.
 
-Mandatory compile/package run/job `35542532109 / 106162702255` builds all eight standard targets with GMP/GMPXX, clean source and `runtimeExecution=false`. Candidate artifact `10615252806` is SHA-256 `1e32fa2b55f84b9097b0d617bcfc1b5f7ad1ab7e5ffc2bdb8e0cde8ea715bf20`; root manifest verifies 28/28. Selector430/first427 remain frozen at `1c412850...9db6 / f9c88380...e86f`. The first compile's aggregate-macro syntax error was corrected by one parenthesis-only test-source repair before the successful fresh compile.
+Candidate `10615252806` remains unpromoted; accepted runtime authority remains package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316`. Stable accounting remains **49 / 14 / 35**, debt **5**; all four M5 produced debts remain open. `M5-CP2-TB1-REV-OBS-01` is re-homed unchanged to the first independently green R1 Review.
 
-`M5-CP3-TB1-EXEC` then stopped before semantic runtime. Two initial runs (`35544087129`, `35544211517`) exposed and diagnosed redirect/auth artifact-download orchestration; retry `35544717675` verified the candidate artifact successfully and then failed closed on the frozen plan's malformed 62-character routing ZIP digest. Accepted M4-TB3/provider authority for artifact `10592987234` is `352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`, while the CP3 TB1 plan records `352c8cfc9c89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`. Final result/log artifacts are `10616206801 / 10616186884`; preflight/runtime are false and all prohibited-operation counters are zero. Semantic credit is **0/445**. Candidate remains unpromoted and accepted runtime authority remains package `10601978228`. Stable accounting remains **49 / 14 / 35**, debt **5**.
-
-Exact successor is runtime-free `M5-CP3-TB1-REV`, which owns `M5-CP3-TB1-EXEC-OBS-01` and must independently adjudicate/correct frozen plan authority before any fresh artifact-only execution. `M5-CP2-TB1-REV-OBS-01` and all four M5 produced debts remain open because no valid CP3 semantic runtime exists.
+Exact successor is fresh artifact-only **`M5-CP3-TB1-R1-EXEC`** under `Architecture_M5_CP3_TB1_R1_Artifact_Only_Test_Benchmark_Plan.md`: same immutable candidate, 9 mechanism + 6 produced + selector430 = **445** fresh exact-filter processes from process 1, benchmark **0**, only the routing ZIP digest corrected to independently verified 64-character authority.
 
 ## 5. Folded-document index
 
@@ -45,6 +43,9 @@ Exact successor is runtime-free `M5-CP3-TB1-REV`, which owns `M5-CP3-TB1-EXEC-OB
 |---|---|
 | `Architecture_M5_DEFN_Definition_Plan.md` | **CONSUMED / FOLDED BY M5-DEFN.** Live requirements are frozen in `Architecture_M5_Frozen_Definitions.md`; provenance remains in git history. |
 | `Architecture_M5_DEFN_Definition_Record.md` | **SUPERSEDED / FOLDED.** Definition adjudication and debt boundaries remain in frozen definitions, this consolidated record, tracker and changelog. |
+| `Architecture_M5_CP3_CB1_Review_Record.md` (141 lines) | **SUPERSEDED REVIEW / FOLDED BY `M5-CP3-TB1-REV`.** Frozen §14 adjudication remains in `Architecture_M5_Frozen_Definitions.md`, this consolidated record, tracker/changelog and git history. |
+| `Architecture_M5_CP3_CB2_Direct_Production_Promotion_Plan.md` (197 lines) | **CONSUMED IMPLEMENTATION PLAN / FOLDED BY `M5-CP3-TB1-REV`.** Candidate implementation/compile authority remains in retained `Architecture_M5_CP3_CB2_Code_Build_Report.md`. |
+| `Architecture_M5_CP3_TB1_Artifact_Only_Test_Benchmark_Plan.md` (148 lines) | **CONSUMED BLOCKED PLAN / FOLDED BY `M5-CP3-TB1-REV`.** Malformed digest, fail-closed evidence and corrected authority remain in retained TB1 report/current Review/tracker; corrected sole plan is the R1 plan. |
 | `Architecture_M5_CP1_Code_Build_Plan.md` | **CONSUMED / FOLDED.** CP1 implementation scope completed at CB1; durable outcome is retained here and in changelog. |
 | `Architecture_M5_CP1_CB1_Code_Build_Report.md` | **SUPERSEDED BUILD REPORT / FOLDED.** Historical compile/package authority `10595705100` is retained here/changelog; accepted authority advanced through CP1 and now CP2. |
 | `Architecture_M5_CP1_TB1_Preflight_Review_Record.md` (204 lines) | **SUPERSEDED REVIEW / FOLDED BY `M5-CP1-TB1-R2-REV`.** Routing recovery and mechanism-only credit boundary remain in tracker/changelog/history. |

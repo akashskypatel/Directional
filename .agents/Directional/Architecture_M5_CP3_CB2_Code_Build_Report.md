@@ -129,7 +129,7 @@ The first compile attempt `35541328083 / 106159452135` reached the approved comp
 
 ## Mandatory Test + Benchmark Plan
 
-- Plan reference: `.agents/Directional/Architecture_M5_CP3_TB1_Artifact_Only_Test_Benchmark_Plan.md`
+- Historical TB1 plan reference: folded after its blocked execution; resolver `M5_Consolidated_Record.md` §5. Corrected sole current runtime plan is `Architecture_M5_CP3_TB1_R1_Artifact_Only_Test_Benchmark_Plan.md`.
 - Evidence commit/artifact under test: `fc2aa5fa68cac890051614c2104979aef4a60d21` / `10615252806`
 - Focused validation: exact nine frozen reviewed mechanism identities, then exact six produced identities, each as a fresh exact-filter process
 - Related regression validation: complete selector430, all 430 rows in exact file order and fresh exact-filter processes

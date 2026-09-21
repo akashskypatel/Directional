@@ -1,8 +1,8 @@
-# M5-CP3-TB1 Artifact-Only Test + Benchmark Plan
+# M5-CP3-TB1-R1 Artifact-Only Test + Benchmark Plan
 
 ## Validation Identity
 
-- Phase: `M5-CP3-TB1-EXEC`
+- Phase: `M5-CP3-TB1-R1-EXEC`
 - Working branch: `agent/surface_cell_quad/p5-recover-bridge-healing`
 - Evidence commit to validate: `fc2aa5fa68cac890051614c2104979aef4a60d21`
 - Candidate build artifact: `10615252806` (`m5-cp3-cb2-result-35542532109`)
@@ -10,8 +10,14 @@
 - Candidate root `SHA256SUMS`: 28 entries, file SHA-256 `322b04df9767a80bc246b4b0a03886cc6abb118b8e13147ed8fa1126de74a7c1`
 - Candidate packaged source archive SHA-256: `6fe16061079b01079bc53006f102575a5452a950b663807b4f278949ff3ef967`
 - Build diagnostic artifact: `10614394740`, SHA-256 `91e768f1f0ecd36f00dd75ce3c5378ed012d1b4a3a521d1059528118eeedffde`
-- Accepted selector routing authority: M4 TB3 artifact `10592987234`, ZIP SHA-256 `352c8cfc9c89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`, `identity-map.tsv` SHA-256 `7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c`
+- Accepted selector routing authority: M4 TB3 artifact `10592987234`, ZIP SHA-256 `352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`, `identity-map.tsv` SHA-256 `7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c`
 - Planned environment/platform: GitHub Actions `ubuntu-24.04`, artifact-only; no checkout-built Directional binary may execute
+
+## Review-Corrected Execution Authority
+
+`M5-CP3-TB1-REV` independently re-opened routing artifact `10592987234` rather than repairing the predecessor executor in place. The frozen predecessor plan contained a **62-character** routing ZIP literal. The live GitHub provider digest, a fresh downloaded copy of artifact `10592987234`, and the accepted M4-TB3 durable reports all agree on the exact **64-character** SHA-256 `352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`. The downloaded artifact's `identity-map.tsv` independently hashes to `7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c`, contains 430 unique identities with ordinals 1..430, and has owner census **31 / 283 / 75 / 41**.
+
+This R1 plan changes **only** the routing ZIP authority literal and the execution/review turn names required for a fresh retry. Candidate artifact/source, candidate/package hashes, the nine mechanism identities, six produced identities, selector430 bytes/order/hash, first427 prefix hash, routing identity-map hash, owner census, exact-one/zero-skip requirements, immutability checks, semantic-RED continuation rule, benchmark count **0**, and all credit/promotion boundaries are unchanged. No evidence from the blocked predecessor attempts is imported as semantic credit. R1 restarts at process **1** and must execute all **445** planned semantic processes if preflight succeeds.
 
 ## Validation Objective
 
@@ -24,7 +30,7 @@ Prove the CB2 candidate at runtime without rebuilding or repairing it:
 5. the immutable candidate package, packaged source and execution view are byte/mode identical before and after runtime;
 6. no benchmark, configure, compile, relink, generated discovery, package repair or source/test/fixture/selector mutation occurs.
 
-A green TB execution is pre-publication evidence only. It does not itself discharge the four M5 produced debts, promote the candidate, or authorize selector publication; all such judgments belong to `M5-CP3-TB1-REV`.
+A green TB execution is pre-publication evidence only. It does not itself discharge the four M5 produced debts, promote the candidate, or authorize selector publication; all such judgments belong to `M5-CP3-TB1-R1-REV`.
 
 ## Preconditions
 
@@ -143,6 +149,6 @@ The execution plan is mechanically complete when:
 - benchmark count is 0;
 - immutable postflight is exact;
 - raw per-process evidence, summaries, resource receipts and pre/post hashes are packaged with a self-excluding manifest;
-- `M5-CP3-TB1-REV` can independently adjudicate every production debt and the publication precommitment obligation without reconstructing intent from chat.
+- `M5-CP3-TB1-R1-REV` can independently adjudicate every production debt and the publication precommitment obligation without reconstructing intent from chat.
 
-A fully green result is **445/445 PASS** and routes to `M5-CP3-TB1-REV`. A semantically red but mechanically complete run also routes to that Review; it does not return directly to implementation.
+A fully green result is **445/445 PASS** and routes to `M5-CP3-TB1-R1-REV`. A semantically red but mechanically complete run also routes to that Review; it does not return directly to implementation.
