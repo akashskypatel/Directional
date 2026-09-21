@@ -11,6 +11,7 @@
 #include <filesystem>
 #include <fstream>
 #include <iterator>
+#include <limits>
 #include <map>
 #include <variant>
 #include <numbers>
@@ -710,11 +711,11 @@ Eigen::MatrixXd torus_nonzero_z4_raw_field(const directional::TriMesh &mesh) {
     }
     minorTangent.normalize();
 
-    const double windingAngle = 0.25 * majorAngle;
-    const Eigen::Vector3d x = std::cos(windingAngle) * majorTangent +
-                              std::sin(windingAngle) * minorTangent;
-    const Eigen::Vector3d y = -std::sin(windingAngle) * majorTangent +
-                              std::cos(windingAngle) * minorTangent;
+    const double seamRampAngle = (std::numbers::pi - majorAngle) / 6.0;
+    const Eigen::Vector3d x = std::cos(seamRampAngle) * majorTangent +
+                              std::sin(seamRampAngle) * minorTangent;
+    const Eigen::Vector3d y = -std::sin(seamRampAngle) * majorTangent +
+                              std::cos(seamRampAngle) * minorTangent;
     raw.row(face) << x.transpose(), y.transpose(), (-x).transpose(),
         (-y).transpose();
   }
@@ -778,6 +779,318 @@ directed_source_transition(
     return forward.inverse();
   }
   return std::nullopt;
+}
+
+struct TorusChartAdmissibilityOracle {
+  double minimumBoundaryAlignment = 1.0;
+  std::vector<int> canonicalRunBranches;
+  std::vector<double> runLengths;
+  int signedQuarterTurnSum = 0;
+  Eigen::Vector2d closureResidual = Eigen::Vector2d::Zero();
+  double closureTolerance = 0.0;
+};
+
+int normalized_test_branch(const int branch) {
+  return ((branch % 4) + 4) % 4;
+}
+
+TorusChartAdmissibilityOracle validate_nonzero_z4_torus_chart_subject(
+    const directional::TriMesh &mesh, const Eigen::MatrixXd &raw,
+    const directional::fields::CrossFieldResult &sourceCrossField,
+    const std::set<directional::authority::SourceEdgeTopologyKey> &hardEdges) {
+  constexpr double kBoundaryAlignment = 0.7;
+  constexpr double kFrameTolerance = 1.0e-12;
+  const std::array<int, 7> minorCycle{{0, 3, 25, 37, 49, 61, 0}};
+  const std::array<int, 13> majorCycle{
+      {0, 1, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 0}};
+
+  if (hardEdges != torus_row408_hard_edges(mesh) || hardEdges.size() != 18U) {
+    throw std::runtime_error(
+        "Nonzero-Z4 torus chart oracle requires the exact 18 row408 hard edges.");
+  }
+  if (raw.rows() != mesh.F.rows() || raw.cols() != 12 ||
+      sourceCrossField.primaryDirections.rows() != mesh.F.rows() ||
+      sourceCrossField.primaryDirections.cols() != 3 ||
+      sourceCrossField.secondaryDirections.rows() != mesh.F.rows() ||
+      sourceCrossField.secondaryDirections.cols() != 3) {
+    throw std::runtime_error(
+        "Nonzero-Z4 torus chart oracle received incomplete field authority.");
+  }
+
+  // Re-derive the frozen source frame and exact seam ramp independently of
+  // product output so a tuned or differently phased field fails before use.
+  for (int face = 0; face < mesh.F.rows(); ++face) {
+    Eigen::Vector3d centroid = Eigen::Vector3d::Zero();
+    for (int corner = 0; corner < 3; ++corner) {
+      centroid += mesh.V.row(mesh.F(face, corner)).transpose();
+    }
+    centroid /= 3.0;
+    double majorAngle = std::atan2(centroid.y(), centroid.x());
+    if (majorAngle < 0.0) majorAngle += 2.0 * std::numbers::pi;
+
+    const Eigen::Vector3d normal = mesh.faceNormals.row(face).transpose();
+    Eigen::Vector3d majorTangent(-std::sin(majorAngle),
+                                 std::cos(majorAngle), 0.0);
+    majorTangent -= majorTangent.dot(normal) * normal;
+    if (!normal.allFinite() ||
+        std::abs(normal.norm() - 1.0) > kFrameTolerance ||
+        !majorTangent.allFinite() || majorTangent.norm() <= kFrameTolerance) {
+      throw std::runtime_error(
+          "Nonzero-Z4 torus chart oracle rejected the source frame.");
+    }
+    majorTangent.normalize();
+    Eigen::Vector3d minorTangent = normal.cross(majorTangent);
+    if (!minorTangent.allFinite() || minorTangent.norm() <= kFrameTolerance) {
+      throw std::runtime_error(
+          "Nonzero-Z4 torus chart oracle rejected the source frame.");
+    }
+    minorTangent.normalize();
+
+    const double delta = (std::numbers::pi - majorAngle) / 6.0;
+    const Eigen::Vector3d expectedX =
+        std::cos(delta) * majorTangent + std::sin(delta) * minorTangent;
+    const Eigen::Vector3d expectedY =
+        -std::sin(delta) * majorTangent + std::cos(delta) * minorTangent;
+    const Eigen::Vector3d authoredX = raw.block<1, 3>(face, 0).transpose();
+    const Eigen::Vector3d authoredY = raw.block<1, 3>(face, 3).transpose();
+    if (!expectedX.allFinite() || !expectedY.allFinite() ||
+        std::abs(expectedX.norm() - 1.0) > kFrameTolerance ||
+        std::abs(expectedY.norm() - 1.0) > kFrameTolerance ||
+        std::abs(expectedX.dot(expectedY)) > kFrameTolerance ||
+        expectedX.cross(expectedY).dot(normal) <= 1.0 - kFrameTolerance ||
+        (authoredX - expectedX).norm() > kFrameTolerance ||
+        (authoredY - expectedY).norm() > kFrameTolerance ||
+        (raw.block<1, 3>(face, 6).transpose() + expectedX).norm() >
+            kFrameTolerance ||
+        (raw.block<1, 3>(face, 9).transpose() + expectedY).norm() >
+            kFrameTolerance) {
+      throw std::runtime_error(
+          "Nonzero-Z4 torus chart oracle rejected the frozen seam-ramp frame.");
+    }
+  }
+
+  struct FaceEdgeSide {
+    int face = -1;
+    int firstVertex = -1;
+    int secondVertex = -1;
+  };
+  std::map<directional::authority::SourceEdgeTopologyKey,
+           std::vector<FaceEdgeSide>> incidence;
+  for (int face = 0; face < mesh.F.rows(); ++face) {
+    for (int corner = 0; corner < 3; ++corner) {
+      const int first = mesh.F(face, corner);
+      const int second = mesh.F(face, (corner + 1) % 3);
+      incidence[test_source_edge_topology(
+                    first, second, static_cast<std::size_t>(mesh.V.rows()))]
+          .push_back({face, first, second});
+    }
+  }
+  if (std::any_of(incidence.begin(), incidence.end(), [](const auto &entry) {
+        return entry.second.size() != 2U;
+      })) {
+    throw std::runtime_error(
+        "Nonzero-Z4 torus chart oracle requires a closed two-sided source mesh.");
+  }
+
+  // Establish one global branch gauge over the cut disk from finalized source
+  // matching. Hard edges are omitted from the dual exactly because they are
+  // the frozen row408 cut authority.
+  std::vector<std::vector<std::pair<int,
+      directional::authority::SourceEdgeTopologyKey>>> dual(
+          static_cast<std::size_t>(mesh.F.rows()));
+  for (const auto &[edge, sides] : incidence) {
+    if (hardEdges.count(edge) != 0U) continue;
+    dual[static_cast<std::size_t>(sides[0].face)].push_back(
+        {sides[1].face, edge});
+    dual[static_cast<std::size_t>(sides[1].face)].push_back(
+        {sides[0].face, edge});
+  }
+  for (auto &neighbors : dual) std::sort(neighbors.begin(), neighbors.end());
+
+  std::vector<int> faceBranchRotation(static_cast<std::size_t>(mesh.F.rows()),
+                                      -1);
+  faceBranchRotation[0] = 0;
+  std::vector<int> pending{0};
+  for (std::size_t index = 0U; index < pending.size(); ++index) {
+    const int sourceFace = pending[index];
+    const auto typedSource = directional::authority::SourceFaceId::from_index(
+        sourceFace, static_cast<std::size_t>(mesh.F.rows()));
+    if (!typedSource) {
+      throw std::runtime_error(
+          "Nonzero-Z4 torus chart oracle could not type a source face.");
+    }
+    for (const auto &[targetFace, edge] :
+         dual[static_cast<std::size_t>(sourceFace)]) {
+      const auto typedTarget = directional::authority::SourceFaceId::from_index(
+          targetFace, static_cast<std::size_t>(mesh.F.rows()));
+      if (!typedTarget) {
+        throw std::runtime_error(
+            "Nonzero-Z4 torus chart oracle could not type a target face.");
+      }
+      const auto transport = directed_source_transition(
+          mesh, sourceCrossField, edge, typedSource.value(),
+          typedTarget.value());
+      if (!transport.has_value()) {
+        throw std::runtime_error(
+            "Nonzero-Z4 torus chart oracle found missing interior transport.");
+      }
+      const int targetRotation = normalized_test_branch(
+          faceBranchRotation[static_cast<std::size_t>(sourceFace)] +
+          static_cast<int>(transport->value()));
+      int &stored = faceBranchRotation[static_cast<std::size_t>(targetFace)];
+      if (stored < 0) {
+        stored = targetRotation;
+        pending.push_back(targetFace);
+      } else if (stored != targetRotation) {
+        throw std::runtime_error(
+            "Nonzero-Z4 torus chart oracle found inconsistent interior transport.");
+      }
+    }
+  }
+  if (std::any_of(faceBranchRotation.begin(), faceBranchRotation.end(),
+                  [](const int value) { return value < 0; })) {
+    throw std::runtime_error(
+        "Nonzero-Z4 torus chart oracle found a disconnected cut-domain dual.");
+  }
+
+  TorusChartAdmissibilityOracle oracle;
+  const auto classify_cycle = [&](const auto &cycle) {
+    std::optional<int> forwardBranch;
+    std::optional<int> reverseBranch;
+    double cycleLength = 0.0;
+    for (std::size_t edgeIndex = 1U; edgeIndex < cycle.size(); ++edgeIndex) {
+      const int cycleFirst = cycle[edgeIndex - 1U];
+      const int cycleSecond = cycle[edgeIndex];
+      const auto edge = test_source_edge_topology(
+          cycleFirst, cycleSecond, static_cast<std::size_t>(mesh.V.rows()));
+      const auto found = incidence.find(edge);
+      if (hardEdges.count(edge) == 0U || found == incidence.end() ||
+          found->second.size() != 2U) {
+        throw std::runtime_error(
+            "Nonzero-Z4 torus chart oracle lost a frozen hard-edge side.");
+      }
+      cycleLength +=
+          (mesh.V.row(cycleSecond) - mesh.V.row(cycleFirst)).norm();
+      for (const auto &side : found->second) {
+        const bool forward = side.firstVertex == cycleFirst &&
+                             side.secondVertex == cycleSecond;
+        const bool reverse = side.firstVertex == cycleSecond &&
+                             side.secondVertex == cycleFirst;
+        if (!forward && !reverse) {
+          throw std::runtime_error(
+              "Nonzero-Z4 torus chart oracle found inconsistent edge orientation.");
+        }
+        const Eigen::Vector3d normal =
+            mesh.faceNormals.row(side.face).transpose();
+        Eigen::Vector3d edgeDirection =
+            mesh.V.row(side.secondVertex).transpose() -
+            mesh.V.row(side.firstVertex).transpose();
+        edgeDirection -= edgeDirection.dot(normal) * normal;
+        if (!edgeDirection.allFinite() || edgeDirection.norm() <= 0.0) {
+          throw std::runtime_error(
+              "Nonzero-Z4 torus chart oracle found a degenerate boundary edge.");
+        }
+        edgeDirection.normalize();
+        const Eigen::Vector3d x =
+            sourceCrossField.primaryDirections.row(side.face).transpose();
+        const Eigen::Vector3d y =
+            sourceCrossField.secondaryDirections.row(side.face).transpose();
+        const std::array<Eigen::Vector3d, 4> branches{{x, y, -x, -y}};
+        double bestAlignment = -2.0;
+        double secondAlignment = -2.0;
+        int bestLocalBranch = -1;
+        for (int branch = 0; branch < 4; ++branch) {
+          Eigen::Vector3d direction = branches[static_cast<std::size_t>(branch)];
+          direction -= direction.dot(normal) * normal;
+          if (!direction.allFinite() || direction.norm() <= 0.0) continue;
+          direction.normalize();
+          const double alignment = direction.dot(edgeDirection);
+          if (alignment > bestAlignment) {
+            secondAlignment = bestAlignment;
+            bestAlignment = alignment;
+            bestLocalBranch = branch;
+          } else if (alignment > secondAlignment) {
+            secondAlignment = alignment;
+          }
+        }
+        const double ambiguityTolerance =
+            256.0 * std::numeric_limits<double>::epsilon() *
+            std::max(1.0, std::abs(bestAlignment));
+        if (bestLocalBranch < 0 || !(bestAlignment > kBoundaryAlignment) ||
+            std::abs(bestAlignment - secondAlignment) <= ambiguityTolerance) {
+          throw std::runtime_error(
+              "Nonzero-Z4 torus chart oracle rejected boundary alignment.");
+        }
+        oracle.minimumBoundaryAlignment =
+            std::min(oracle.minimumBoundaryAlignment, bestAlignment);
+        const int globalBranch = normalized_test_branch(
+            bestLocalBranch -
+            faceBranchRotation[static_cast<std::size_t>(side.face)]);
+        auto &ownedBranch = forward ? forwardBranch : reverseBranch;
+        if (ownedBranch.has_value() && *ownedBranch != globalBranch) {
+          throw std::runtime_error(
+              "Nonzero-Z4 torus chart oracle found a split branch run.");
+        }
+        ownedBranch = globalBranch;
+      }
+    }
+    if (!forwardBranch.has_value() || !reverseBranch.has_value() ||
+        !(cycleLength > 0.0) || !std::isfinite(cycleLength)) {
+      throw std::runtime_error(
+          "Nonzero-Z4 torus chart oracle found an incomplete hard-edge cycle.");
+    }
+    return std::tuple<int, int, double>{*forwardBranch, *reverseBranch,
+                                        cycleLength};
+  };
+
+  const auto [majorForward, majorReverse, majorLength] =
+      classify_cycle(majorCycle);
+  const auto [minorForward, minorReverse, minorLength] =
+      classify_cycle(minorCycle);
+  const int globalQuarterTurn = majorForward;
+  oracle.canonicalRunBranches = {
+      0, normalized_test_branch(minorForward - globalQuarterTurn),
+      normalized_test_branch(majorReverse - globalQuarterTurn),
+      normalized_test_branch(minorReverse - globalQuarterTurn)};
+  oracle.runLengths = {majorLength, minorLength, majorLength, minorLength};
+  if (oracle.canonicalRunBranches != std::vector<int>({0, 1, 2, 3})) {
+    throw std::runtime_error(
+        "Nonzero-Z4 torus chart oracle rejected the canonical [0,1,2,3] runs.");
+  }
+
+  for (std::size_t run = 0U; run < oracle.canonicalRunBranches.size(); ++run) {
+    const int delta = normalized_test_branch(
+        oracle.canonicalRunBranches[(run + 1U) % 4U] -
+        oracle.canonicalRunBranches[run]);
+    if (delta == 1) {
+      ++oracle.signedQuarterTurnSum;
+    } else if (delta == 3) {
+      --oracle.signedQuarterTurnSum;
+    } else {
+      throw std::runtime_error(
+          "Nonzero-Z4 torus chart oracle found a non-quarter boundary turn.");
+    }
+  }
+  if (oracle.signedQuarterTurnSum != 4) {
+    throw std::runtime_error(
+        "Nonzero-Z4 torus chart oracle rejected the +4 boundary turn sum.");
+  }
+
+  const std::array<Eigen::Vector2d, 4> chartDirections{{
+      Eigen::Vector2d(1.0, 0.0), Eigen::Vector2d(0.0, 1.0),
+      Eigen::Vector2d(-1.0, 0.0), Eigen::Vector2d(0.0, -1.0)}};
+  double totalIntrinsicLength = 0.0;
+  for (std::size_t run = 0U; run < oracle.runLengths.size(); ++run) {
+    oracle.closureResidual += oracle.runLengths[run] * chartDirections[run];
+    totalIntrinsicLength += oracle.runLengths[run];
+  }
+  oracle.closureTolerance =
+      1.0e-10 * std::max(1.0, totalIntrinsicLength);
+  if (oracle.closureResidual.norm() > oracle.closureTolerance) {
+    throw std::runtime_error(
+        "Nonzero-Z4 torus chart oracle rejected orthogonal chart closure.");
+  }
+  return oracle;
 }
 
 std::optional<directional::authority::SourceFaceId>
@@ -1000,6 +1313,10 @@ ProducedTorusWitnessFixture make_nonzero_z4_torus_witness_fixture() {
     throw std::runtime_error(
         "Torus winding field did not produce a nonzero-Z4 row408 hard edge.");
   }
+  const TorusChartAdmissibilityOracle chartOracle =
+      validate_nonzero_z4_torus_chart_subject(
+          fixture.mesh, raw, sourceCrossField, hardEdges);
+  (void)chartOracle;
 
   directional::pipeline::RemeshOptions options;
   options.lengthRatio = 0.2;
