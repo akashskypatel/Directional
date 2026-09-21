@@ -1,5 +1,13 @@
 ## 2026-09-21 — `M5-CP3-TB1-R8-EXEC`: row6 witness recovers; rows4/5 stop at `InvalidBoundedDiskChart`
 
+## 2026-09-21 — M5-CP3 R8 Review: row6 recovery proved; nonzero chart witness corrected next
+
+- Independently upheld R8 `35652063644 / 106506627509`: **446/446** fresh exact filters, **9/9 mechanism + 1/1 focused atlas + 4/6 produced + selector430 430/430**, exact postflight, benchmark 0; result artifact `10662697929` self-manifest **912/912**.
+- Closed `M5-CP3-TB1-R7-CAND-03` non-stably: produced row6 proves the added valid relation absent/unowned/unselected before insertion and passes complete certificate/output invariance.
+- Proved rows4/5 are still test-authority work, not product-defect evidence. CB9's `alpha(theta)=theta/4` field is genuinely nonzero but develops to a nonclosing bounded-disk polygon (closure residual norm `4.666904755831214` vs ~`3.3310125454580146e-9` tolerance) before relation selection/direction/materialization/tamper.
+- Stable accounting remains **50 / 14 / 36**, debt **3**; candidate `10660365136` remains unpromoted; accepted runtime remains `10601978228 / 0798547d...` under selector430 430/430; publication remains prohibited.
+- Froze test-only `M5-CP3-CB10`: exact seam ramp `delta(theta)=(pi-theta)/6` plus independent chart-admissibility oracle, mandatory all-eight GMP compile, then fresh R9 over the unchanged 446 identities and mandatory Review.
+
 Immutable artifact-only R8 consumes CB9 candidate `10660365136` / source `1023eea6090a1f6c2d47ecaceb1099967c32e6c2`.
 Runtime run/job `35652063644 / 106506627509` completes all **446/446** fresh exact-filter processes with exact-one/zero-skip and
 benchmark **0**. Frozen vector is mechanism **9/9 PASS**, focused atlas **1/1 PASS**, produced **4/6 PASS**, selector430

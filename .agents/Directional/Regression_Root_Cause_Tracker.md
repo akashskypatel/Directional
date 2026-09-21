@@ -1,3 +1,29 @@
+## 2026-09-21 — `M5-CP3-TB1-R8-REV` independently proves row6 recovery and rows4/5 chart-subject inadmissibility
+
+**Stable totals remain 50 events / 14 categories / 36 recurrences. Produced-witness debt remains 3.**
+
+Independent Review upholds R8 run/job `35652063644 / 106506627509`, result artifact `10662697929` self-manifest **912/912**, and the complete **9/9 mechanism + 1/1 focused atlas + 4/6 produced + selector430 430/430** vector. Candidate `10660365136` remains unpromoted; accepted runtime package/source remains `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316`.
+
+### `M5-CP3-TB1-R7-CAND-03` — CLOSED / recovery proved / non-stable / +0
+
+Row6 is non-vacuously green. Before insertion it proves the candidate relation ID absent from the produced table, unowned by all phase-front edges, and absent from the baseline selected certificate; runtime then reaches baseline/extended materialization, identical selected-certificate signatures and completion hashes, identical consumed-periodic counts, and confirms the added ID remains unselected. Frozen §7 invariance is therefore runtime-proved on produced authority.
+
+### `M5-CP3-TB1-R7-CAND-02` — OPEN / `RP-02 TEST_AUTHORITY_COVERAGE_GAP` / inadmissible nonzero-Z4 chart subject / +0
+
+Review independently reconstructs CB9's test-local `alpha(theta)=theta/4` field over the committed torus and exact 18 row408 hard edges. The field passes the earlier nonzero-transition, branch-alignment and turn-sum gates but develops to six boundary runs `[0,3,0,1,2,3]` with closure residual norm `4.666904755831214` against source-scale tolerance about `3.3310125454580146e-9`. The R8 `InvalidBoundedDiskChart` stop is therefore witness-owned and occurs before `select_torus_source_witness`, product-direction comparison, materialization or tamper. Product source is not a correction owner on this evidence.
+
+Exact correction owner is test-only `M5-CP3-CB10`, precommitted to the seam ramp `delta(theta)=(pi-theta)/6` plus a source/geometry-owned pre-product chart-admissibility falsifier. Static Review reconstruction predicts minimum hard-edge alignment `0.7753279615208046`, four runs `[0,1,2,3]`, turn sum `+4`, and closure residual norm `1.9860273225978185e-15`. Fresh R9 must still prove the finalized nonzero source transition and all downstream direction/materialization/tamper requirements.
+
+### Carried observations/debts
+
+- `M5-CP3-TB1-R6-REV-OBS-01`: **OPEN**; rows4/5 fail before the independent directed relation comparison executes.
+- `M5-CP2-TB1-REV-OBS-01`: **OPEN**; R8 is semantic RED, so frozen §13.3 selector-publication precommitment remains prohibited.
+- `FullPeriodicRotationAndTranslationMaterialize`: **OPEN / M5**.
+- `TamperedFullPeriodicTransformIsRejected`: **OPEN / M5**.
+- closed-complex produced witness: **OPEN / M6**.
+
+No accepted selector row regressed; this is continuing non-stable RP-02 test-authority work, so stable accounting is unchanged.
+
 ## 2026-09-21 — `M5-CP3-TB1-R8-EXEC` witness-authority runtime evidence
 
 **Stable totals remain 50 events / 14 categories / 36 recurrences. Produced-witness debt remains 3 in EXEC.**

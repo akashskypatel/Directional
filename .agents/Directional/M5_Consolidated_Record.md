@@ -1,25 +1,17 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-21 at `M5-CP3-TB1-R8-EXEC`
+**Last updated:** 2026-09-21 at `M5-CP3-TB1-R8-REV`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Corrected stable accounting is **50 / 14 / 36**, produced-witness debt **3**; M5 owns two of those debts and M6 owns one.
 
-## Current CP3 authority — R8 mechanically complete, semantic RED, mandatory Review next
+## Current CP3 authority — R8 Review proves witness-owned chart failure; CB10 next
 
-R7 Review recovery-proved the stable generator-route RP-01 event and discharged two produced debts. CB9 then changed only test
-witness authority and compiled candidate `10660365136` / source `1023eea6090a1f6c2d47ecaceb1099967c32e6c2`.
+R8 Review independently upholds the immutable **446/446** gate at **9/9 mechanism + 1/1 focused atlas + 4/6 produced + selector430 430/430**, exact postflight and benchmark 0. Produced row6 is non-vacuously recovery-proved and closes `M5-CP3-TB1-R7-CAND-03` as non-stable +0.
 
-R8 run/job `35652063644 / 106506627509` consumes that candidate immutably across all **446/446** fresh exact filters at
-**9/9 mechanism + 1/1 focused atlas + 4/6 produced + selector430 430/430** with exact-one/zero-skip, benchmark 0 and exact
-postflight. Produced row6 now PASSes the corrected unused-relation witness. Rows4/5 both stop at
-`InvalidBoundedDiskChart` while constructing the nonzero production subject, before directed relation/materialization/tamper
-assertions. Result artifact `10662697929` self-manifest verifies **912/912**.
+Rows4/5 are not product-defect evidence: independent reconstruction of CB9's `alpha(theta)=theta/4` field on the exact 18 row408 hard edges produces six boundary runs and a developed closure residual norm `4.666904755831214` against tolerance about `3.3310125454580146e-9`, explaining `InvalidBoundedDiskChart` before relation selection/direction/materialization/tamper. `M5-CP3-TB1-R7-CAND-02` remains open as `RP-02 TEST_AUTHORITY_COVERAGE_GAP / INADMISSIBLE NONZERO-Z4 CHART SUBJECT`.
 
-Candidate remains unpromoted. Stable accounting remains **50 / 14 / 36**, project debt **3** and selector publication is
-prohibited. Exact successor is mandatory runtime-free `M5-CP3-TB1-R8-REV`, which owns the rows4/5 cause and row6 recovery
-adjudication.
-
+Candidate `10660365136` remains unpromoted. Stable accounting remains **50 / 14 / 36**, project debt **3**, the direction observation remains open, and selector publication is prohibited. Exact successor is test-only/runtime-free `M5-CP3-CB10`, frozen to seam ramp `delta(theta)=(pi-theta)/6` and an independent pre-product chart-admissibility oracle; if compile-green, R9 repeats the same 446-process gate before mandatory Review.
 
 ## 1. `M5-DEFN` — definitions frozen
 
@@ -167,12 +159,20 @@ discriminate forward from inverse occurrence ordering. Exact successor `M5-CP3-C
 source-authoritative nonzero-Z4 torus witness, an independent A3/source-path direction oracle, and a genuinely absent unused
 relation witness; product source stays byte-frozen. Compile-green routes to the same 446-process R8 gate and mandatory Review.
 
+## 4.8 `M5-CP3-TB1-R8-REV` — row6 recovers; nonzero field is chart-inadmissible
+
+R8 Review re-verifies candidate/result manifests and the complete 444/2 runtime vector. Row6 passes its independently absent/unowned/unselected relation preconditions and full invariance path, closing `R7-CAND-03` non-stably. Rows4/5 fail earlier: CB9's quarter-winding field is genuinely nonzero on row408 hard-edge authority but independently develops to a nonclosing bounded-disk polygon. Review classifies this as continuing `RP-02` test-authority coverage gap, not a product correction signal. Both nonzero-Z4 debts and the direction observation remain open. CB10 is frozen test-only to the precommitted seam ramp and source-owned chart-admissibility oracle; R9 repeats the unchanged 446 identities.
+
 ## 5. Folded-document index
 
 Historical citations in frozen/normative records to filenames listed here are provenance-only and resolve through this index plus git history; frozen text is not rewritten merely to chase a folded filename.
 
 | Folded filename | Verdict / retained home |
 |---|---|
+| `Architecture_M5_CP3_TB1_R7_Review_Record.md` (330 lines) | **SUPERSEDED R7 REVIEW / FOLDED BY `M5-CP3-TB1-R8-REV`.** Recovery/debt credit, R7 witness classifications and CB9 authority remain in §§4.7-4.8, tracker/changelog, current R8 Review and git history. |
+| `Architecture_M5_CP3_CB9_Produced_Witness_Authority_Correction_Plan.md` (207 lines) | **CONSUMED CB9 PLAN / FOLDED BY `M5-CP3-TB1-R8-REV`.** Nonzero source oracle, direction falsifier and row6 absence requirements remain in current R8 Review, CB10 plan, tracker and git history. |
+| `Architecture_M5_CP3_CB9_Code_Build_Report.md` (85 lines) | **SUPERSEDED CB9 BUILD REPORT / FOLDED BY `M5-CP3-TB1-R8-REV`.** Candidate/source/compile/package identities remain in current R8 runtime report/Review, changelog and this record. |
+| `Architecture_M5_CP3_TB1_R8_Artifact_Only_Test_Benchmark_Plan.md` (122 lines) | **CONSUMED R8 EXECUTION PLAN / FOLDED BY `M5-CP3-TB1-R8-REV`.** Exact 446-process gate and immutable-boundary requirements remain in current R8 runtime report/Review and CB10 successor plan. |
 | `Architecture_M5_CP3_TB1_R6_Artifact_Only_Test_Benchmark_Report.md` | **SUPERSEDED R6 RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R7-REV`.** Exact 446-process branch-localization evidence is retained in §§4.4-4.7, tracker/changelog and git history. |
 | `Architecture_M5_CP3_TB1_R6_Review_Record.md` | **SUPERSEDED R6 REVIEW / FOLDED BY `M5-CP3-TB1-R7-REV`.** A3 occurrence-face cause, carried direction observation and CB8 scope are retained in §§4.5-4.7, current R7 Review and tracker. |
 | `Architecture_M5_CP3_CB8_Source_Face_Incidence_Authority_Correction_Plan.md` | **CONSUMED CB8 PLAN / FOLDED BY `M5-CP3-TB1-R7-REV`.** Source-face correction boundary and R7 falsifier are retained in §§4.6-4.7/current Review/git history. |
