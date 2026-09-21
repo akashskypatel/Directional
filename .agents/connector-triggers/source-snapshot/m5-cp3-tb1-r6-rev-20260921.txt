@@ -1,0 +1,3 @@
+Purpose: exact source/document snapshot for M5-CP3-TB1-R6-REV independent review.
+Authority before trigger: 30bafa7a51f26fd7ce163d9bd6e1720e138da999
+Runtime execution: false
