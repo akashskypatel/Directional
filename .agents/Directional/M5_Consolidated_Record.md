@@ -1,7 +1,7 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-21 at `M5-CP3-CB3`
+**Last updated:** 2026-09-21 at `M5-CP3-TB1-R2-EXEC`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Corrected stable accounting is **50 / 14 / 36**, produced-witness debt **5**; M5 owns four of those debts.
 
@@ -43,7 +43,11 @@ Candidate `10615252806` remains unpromoted. Accepted runtime authority remains p
 
 Mandatory compile/package run/job `35555882867 / 106199345527` is green with all eight standard targets, GMP/GMPXX, clean source receipts and `runtimeExecution=false`. Candidate artifact `10620415471` hashes to `700b605167427d21823b90d942dd5bb40d1690f162285d22a20da5ad7898a1cd`; root manifest is **28/28** at `ea12d6fc6ab6752f8ef10f46f1900423e9074e62c25edba48bde5b4526623d24`; packaged source archive is `198a6454bb3171a863be571b91ec861d1161dbab608d3114a86032ee40dc2f00`. No Directional runtime executed. Candidate remains unpromoted and earns no debt credit.
 
-Exact successor is fresh artifact-only **`M5-CP3-TB1-R2-EXEC`** under `Architecture_M5_CP3_TB1_R2_Artifact_Only_Test_Benchmark_Plan.md`: restart the unchanged 9 + 6 + 430 = **445** process gate from process 1 with benchmark **0**, exact-one/zero-skip and immutable pre/postflight. A mechanically complete R2 routes to independent `M5-CP3-TB1-R2-REV`.
+Fresh `M5-CP3-TB1-R2-EXEC` then consumes corrected candidate `10620415471` exactly and completes all **445** exact-filter processes under the frozen artifact-only plan. Successful run/job `35557990692 / 106205308600` is mechanically complete with exact-one/zero-skip and immutable postflight: mechanism **9/9 PASS**, produced **0/6 PASS**, selector430 **429/430 PASS**. All six produced rows still stop at `PeriodicHolonomyMismatch` while establishing the real torus fixture, and accepted ordinal408 still receives `Rejected` instead of required `Produced` with `NotProductionReady/tracing/None`. Result/log artifacts are `10621351075 / 10621154456`; result self-manifest is **908/908**; benchmark/configure/compile/relink/discovery/repair/mutation counters are all zero.
+
+The exact-span correction therefore does not recover the frozen production endpoint. R2 is execution evidence only: it does not independently classify the remaining internal cause, change test authority, promote candidate `10620415471`, discharge any of the four M5 produced debts, or authorize selector publication. Accepted runtime authority remains package `10601978228` / source `0798547d...` under selector430 **430/430**. Current durable accounting remains **50 / 14 / 36**, debt **5**, pending independent adjudication of whether R2 continues the existing R1 stable event or changes classification/accounting.
+
+Exact successor is runtime-free **`M5-CP3-TB1-R2-REV`**. Review must independently reopen R2 evidence, compare the corrected candidate against frozen §14 and the accepted baseline, adjudicate the failed recovery, decide accounting/classification, and freeze the next bounded authority before any implementation or publication work.
 
 ## 5. Folded-document index
 
