@@ -1,3 +1,0 @@
-M5-CP3-TB1-R5-EXEC source snapshot trigger
-parent_authority=41fa0d0799200e8ac322ba6c6566dff09f476e82
-read_mode=snapshot
