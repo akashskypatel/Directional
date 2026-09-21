@@ -1,3 +1,11 @@
+## 2026-09-21 — `M5-CP3-TB1-R1-REV`: R1 semantic RED classified as exact-span transport implementation authority; CB3 next
+
+Runtime-free independent Review freshly re-opens R1 run/job `35548642817 / 106179163233`, result/log artifacts `10617583137 / 10616998978`, and accepted package `10601978228`. It independently verifies result self-manifest **908/908**, re-derives **9/9 mechanism PASS, 0/6 produced PASS, selector430 429/430 PASS**, exact-one/zero-skip and immutable postflight, and re-hashes selector430/first427 unchanged. Stable accounting remains **49 / 14 / 35**, debt **5**.
+
+`M5-CP3-TB1-R1-CAND-01` is classified **IMPLEMENTATION AUTHORITY / EXACT-SPAN TRANSPORT CONTRACT VIOLATION / NON-STABLE / RECOVERY REQUIRED**. Frozen §14.3 requires generator carrier and transport to derive from the exact A3 interval `span` / `GlobalTopologyPlan::sourcePath` through existing transition/atlas authority. Candidate `fc2aa5fa...` instead scans all branch transports in the region to require one path-independent aggregate rotation, then assigns identity transport to all source-path steps except one synthetic aggregate rotation on the first. Review does not infer which collapsed `PeriodicHolonomyMismatch` branch fired. Row408 fails before its approved final-kind evolution and all six produced tests fail while establishing the real production fixture, so test/expectation authority is upheld.
+
+Candidate `10615252806` remains unpromoted; accepted runtime authority stays package `10601978228` / selector430 **430/430**; all four M5 produced debts remain open. `M5-CP2-TB1-REV-OBS-01` is carried because its all-publication-identities-green precondition is not met. Exact successor is runtime-free product-only `M5-CP3-CB3` under `Architecture_M5_CP3_CB3_Exact_Span_Transport_Correction_Plan.md`; if the exact A3 path lacks enough directed transport authority without search/guessing, CB3 must stop and return to Review.
+
 ## 2026-09-21 — `M5-CP3-TB1-REV` review: orchestration classification upheld; literal-checking rule escalated
 
 Runtime-free review. **Upheld.** Accounting holds at **49 / 14 / 35**, debt **5**; selector430 re-hashes to

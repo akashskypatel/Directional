@@ -234,9 +234,9 @@ All `M5-DEFN` stop rules are resolved:
 
 ## 11. Current exact successor
 
-**`M5-CP3-CB2`** under the reviewed plan now indexed in `M5_Consolidated_Record.md` §5; implementation outcome is retained in `Architecture_M5_CP3_CB2_Code_Build_Report.md`.
+**`M5-CP3-CB3`** under `Architecture_M5_CP3_CB3_Exact_Span_Transport_Correction_Plan.md`.
 
-It is the reviewed replacement Code + Build after `M5-CP3-CB1` stopped before implementation on the row408 representation conflict. It implements the narrow A3-provenance-preserving same-region periodic promotion, is compile/package only with mandatory GMP and `runtimeExecution=false`; selector430 is byte-frozen and no Directional runtime is authorized in CB2.
+`M5-CP3-TB1-R1-REV` independently upheld the mechanically complete R1 semantic RED and classified the candidate's relation-construction seam as implementation authority. The narrow §14.2 same-region promotion remains frozen, but §14.3 requires generator carrier **and transport** to come from the exact A3 interval `span` / `GlobalTopologyPlan` source path through existing transition/atlas authority. CB3 corrects only that authority conversion, is compile/package only with mandatory GMP and `runtimeExecution=false`; tests, fixtures, selector430, CP2 relation semantics and cross-region HardRail remain frozen. If the exact path lacks enough existing authority to resolve one unique directed transport route, CB3 stops and returns to Review rather than searching or guessing.
 
 ## 12. Supersession and citation map
 
@@ -298,6 +298,8 @@ Existing selector430 rows that already cover related CP1/CP2 behavior remain in-
 6. A final independent Review may close M5 only after re-hashing the published selector/prefix, re-deriving its owner census, independently accepting the full runtime evidence, and proving every §13.1 exit conjunct.
 
 The publication CB may not choose or reorder identities after seeing build/runtime outcomes. Exact successor-selector hash/census authority is owned by the preceding Review, not the publication implementation turn.
+
+A semantic-RED pre-publication attempt does not advance this sequence. It routes through an independently reviewed correction and a fresh complete pre-publication gate; selector bytes/hash/census may be pre-committed only by the first subsequent Review that independently accepts all proposed publication identities green on one corrected candidate. `M5-CP3-TB1-R1-REV` applies this rule and therefore carries, rather than discharges, `M5-CP2-TB1-REV-OBS-01`.
 
 ### 13.4 Mechanism versus produced naming boundary
 

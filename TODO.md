@@ -2,15 +2,15 @@
 
 Last updated: 2026-09-21 UTC
 
-## Latest Review turn — `M5-CP3-TB1-REV`
+## Latest Review turn — `M5-CP3-TB1-R1-REV`
 
-`M5-CP3-TB1-REV` is **COMPLETE / RUNTIME-FREE / FROZEN PLAN DEFECT CONFIRMED / CORRECTED R1 EXECUTION AUTHORITY FROZEN**. Review independently re-opens final retry `35544717675`, confirms semantic execution **0/445**, proves the consumed plan's routing SHA literal is only 62 hex characters, and independently re-downloads accepted M4-TB3 routing artifact `10592987234` at exact ZIP SHA-256 `352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`. Its `identity-map.tsv` remains exact at `7a92e7a...5cf6c`, 430 unique ordinals, owners **31/283/75/41**.
+`M5-CP3-TB1-R1-REV` is **COMPLETE / RUNTIME-FREE / IMPLEMENTATION-AUTHORITY DEFECT CONFIRMED / CORRECTION FROZEN**. Review freshly re-opens R1 result/log artifacts, verifies self-manifest **908/908**, and independently re-derives **9/9 mechanism PASS, 0/6 produced PASS, selector430 429/430 PASS**, exact-one/zero-skip, immutable postflight and benchmark/configure/compile/relink/discovery/repair/mutation **0**. Selector430/first427 re-hash unchanged.
 
-`M5-CP3-TB1-EXEC-OBS-01` is resolved non-stably as orchestration/frozen-plan authority. Candidate `10615252806` remains unpromoted; accepted package `10601978228` and selector430 remain authority. Stable accounting stays **49 / 14 / 35**, debt **5**. `M5-CP2-TB1-REV-OBS-01` is re-homed unchanged to `M5-CP3-TB1-R1-REV`. Corrected R1 execution is now mechanically complete and semantic RED; exact next is independent runtime-free `M5-CP3-TB1-R1-REV`.
+`M5-CP3-TB1-R1-CAND-01` is classified **IMPLEMENTATION AUTHORITY / EXACT-SPAN TRANSPORT CONTRACT VIOLATION / NON-STABLE / RECOVERY REQUIRED**. Frozen §14.3 requires the exact A3 interval `span` source path to be converted through existing transition/atlas authority. Candidate `fc2aa5fa...` instead performs a whole-region path-independent rotation reconstruction and injects the aggregate result into one source-path route step. Row408 fails before its evolved final-kind assertions and all six produced tests fail while establishing the real production fixture, so test/expectation authority is upheld. Candidate `10615252806` remains unpromoted; accepted package `10601978228` remains authority; accounting stays **49 / 14 / 35**, debt **5**. Exact next: runtime-free `M5-CP3-CB3` under `Architecture_M5_CP3_CB3_Exact_Span_Transport_Correction_Plan.md`.
 
 ## Latest Test + Benchmark turn — `M5-CP3-TB1-R1-EXEC`
 
-`M5-CP3-TB1-R1-EXEC` is **COMPLETE / MECHANICALLY COMPLETE / SEMANTIC RED / REVIEW REQUIRED**. Run/job `35548642817 / 106179163233` executes all **445** frozen exact-filter processes with exact-one/zero-skip and immutable postflight: mechanism **9/9 PASS**, produced **0/6 PASS** with shared `PeriodicHolonomyMismatch`, selector430 **429/430 PASS** with sole RED ordinal408 receiving `Rejected` instead of `Produced`. Result/log artifacts are `10617583137 / 10616998978`; result self-manifest is **908/908**. Candidate `10615252806` remains unpromoted; accepted package `10601978228` remains authority. `M5-CP3-TB1-R1-CAND-01` is non-stable and Review-owned.
+`M5-CP3-TB1-R1-EXEC` is **COMPLETE / MECHANICALLY COMPLETE / SEMANTIC RED**. Run/job `35548642817 / 106179163233` executes all **445** frozen exact-filter processes with exact-one/zero-skip and immutable postflight: mechanism **9/9 PASS**, produced **0/6 PASS** with shared `PeriodicHolonomyMismatch`, selector430 **429/430 PASS** with sole RED ordinal408 receiving `Rejected` instead of `Produced`. Result/log artifacts are `10617583137 / 10616998978`; result self-manifest is **908/908**. Candidate `10615252806` remains unpromoted; accepted package `10601978228` remains authority. Subsequent R1 Review classifies `M5-CP3-TB1-R1-CAND-01` as non-stable implementation authority with recovery owned by `M5-CP3-CB3`.
 
 ## Latest Code + Build turn — `M5-CP3-CB2`
 
@@ -28,11 +28,12 @@ Last updated: 2026-09-21 UTC
 - [x] `M5-CP3-TB1-EXEC`: pre-runtime frozen-plan routing-digest block; semantic **0/445**.
 - [x] `M5-CP3-TB1-REV`: independently confirm malformed literal and exact accepted routing bytes; freeze corrected retry authority.
 - [x] `M5-CP3-TB1-R1-EXEC`: corrected immutable gate mechanically complete at **438/445 PASS**, 7 semantic RED, exact-one/zero-skip, benchmark 0; no same-turn repair.
-- [ ] `M5-CP3-TB1-R1-REV`: **exact next**; independently adjudicate `M5-CP3-TB1-R1-CAND-01`, candidate/debts and the next correction/publication path.
+- [x] `M5-CP3-TB1-R1-REV`: independently uphold the R1 vector, classify `M5-CP3-TB1-R1-CAND-01` as implementation authority, keep candidate/debts unpromoted/open, and freeze the exact-span correction.
+- [ ] `M5-CP3-CB3`: **exact next**; replace whole-region periodic rotation reconstruction with exact A3 span-path transport authority, preserve all tests/fixtures/selector, then mandatory GMP compile/package with no runtime.
 
-## Current focus — `M5-CP3-TB1-R1-REV`
+## Current focus — `M5-CP3-CB3`
 
-Independently review the mechanically complete R1 evidence in `.agents/Directional/Architecture_M5_CP3_TB1_R1_Artifact_Only_Test_Benchmark_Report.md`: re-derive **9/9 mechanism, 0/6 produced, 429/430 selector**, confirm exact-one/zero-skip and immutable postflight, and classify `M5-CP3-TB1-R1-CAND-01`. Do not repair, rebuild, rerun, publish a successor selector, promote candidate `10615252806`, or discharge produced debt before Review establishes the responsible authority and exact successor.
+Execute `.agents/Directional/Architecture_M5_CP3_CB3_Exact_Span_Transport_Correction_Plan.md` exactly. Change only the CP3 relation-construction implementation so generator carrier **and** transport derive from the exact A3 `GlobalTopologyArc::sourcePath` through existing transition/atlas authority. Do not alter row408, the six `M5CP3.Produced...` tests, fixtures, selector430, CP2 relation validation, cross-region HardRail, or frozen definitions. If the exact path cannot determine a unique directed transport without search/guessing, stop and return to Review. Compile/package only with mandatory GMP; no Directional runtime.
 
 ## Carried forward from M1
 
@@ -72,7 +73,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. Four periodic/relation debts remain M5-owned and one closed-complex debt remains M6-owned.
-- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 CB2 candidate compile-green; corrected R1 runtime mechanically complete but semantic RED at shared torus production reachability**. Accepted runtime package remains `10601978228`; candidate `10615252806` is unpromoted under selector430 after **9/9 mechanism, 0/6 produced, 429/430 selector**. Exact next `M5-CP3-TB1-R1-REV`; four M5 produced-witness debts remain open.
+- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 R1 Review classifies the semantic RED as an implementation-authority exact-span transport defect**. Accepted runtime package remains `10601978228`; candidate `10615252806` is unpromoted under selector430 after **9/9 mechanism, 0/6 produced, 429/430 selector**. Exact next `M5-CP3-CB3`; four M5 produced-witness debts remain open and selector publication remains prohibited.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.
@@ -111,4 +112,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **49 events / 14 categories / 35 recurrences**, debt **5**. M4, M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**; current accepted runtime authority remains package `10601978228` / source `0798547d...` under unchanged selector430 **430/430**. M5-CP3 candidate `10615252806` / source `fc2aa5fa...` is compile/package green but unpromoted. Corrected R1 executes all **445** frozen processes with **9/9 mechanism PASS, 0/6 produced PASS, selector430 429/430 PASS** and immutable postflight; the seven semantic REDs share the torus production-reachability surface and are recorded as non-stable `M5-CP3-TB1-R1-CAND-01`. The closed-complex `G4-B002` debt remains M6-owned, while two periodic `G4-B002` plus two `G4-B003` debts remain M5-owned. Exact successor is independent runtime-free **`M5-CP3-TB1-R1-REV`**. PR #8 remains open, draft, and unmerged.
+Current totals remain **49 events / 14 categories / 35 recurrences**, debt **5**. M4, M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**; current accepted runtime authority remains package `10601978228` / source `0798547d...` under unchanged selector430 **430/430**. M5-CP3 candidate `10615252806` / source `fc2aa5fa...` remains unpromoted after corrected R1 **9/9 mechanism PASS, 0/6 produced PASS, selector430 429/430 PASS**. Independent R1 Review classifies the common torus production failure as a non-stable implementation-authority violation of frozen exact-span transport construction and freezes product-only `M5-CP3-CB3`. The closed-complex `G4-B002` debt remains M6-owned, while two periodic `G4-B002` plus two `G4-B003` debts remain M5-owned. Selector publication remains prohibited until a corrected full pre-publication gate is independently green. Exact successor is **`M5-CP3-CB3`**. PR #8 remains open, draft, and unmerged.
