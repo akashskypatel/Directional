@@ -1,0 +1,53 @@
+name: M5 CP3 CB6 Compile
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m5-cp3-cb6-compile.txt
+
+permissions:
+  contents: write
+  actions: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m5-cp3-cb6-compile-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m5-cp3-cb6-compile.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m5-cp3-cb6-compile
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  compile:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-compile-reusable.yml
+    with:
+      source_sha: 20f9bf11dc5a986dafd52c5556671fb9f7d429f4
+      targets: >-
+        directional_core
+        directional_pipeline
+        directional_surface_cell_authority_kernel_tests
+        directional_surface_cell_producer_tests
+        directional_surface_cell_completion_tests
+        directional_surface_cell_validation_tests
+        directional_compiled_api_tests
+        directional_benchmarks
+      artifact_prefix: m5-cp3-cb6
+    secrets: inherit
