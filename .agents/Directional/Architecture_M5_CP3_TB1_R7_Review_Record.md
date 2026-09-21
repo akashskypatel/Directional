@@ -221,7 +221,7 @@ tracker/changelog and git history. Byte-frozen selectors and frozen definitions 
 | Turn boundary held | Yes — runtime-free Review; no product, test, fixture, selector, benchmark or build-source mutation. |
 | review_check.py boundary | **PASS** on the final local documentation/consolidation worktree before publication. |
 | `STATUS` lifecycle maintained | Entry and resume beacons maintained for `M5-CP3-TB1-R7-REV`; final COMPLETE beacon with successor `M5-CP3-CB9` is the terminal control write after publication and cleanup. |
-| Pushed to origin, branch in sync | **PENDING FINAL CLOSEOUT CONFIRMATION** — replace this row after durable publication/cleanup and branch-authority verification; do not close the turn while this text remains. |
+| Pushed to origin, branch in sync | **CONFIRMED.** Durable Review closeout is commit `26c32d45a7723ebef0f05376ec3224b24a0e4984`; the original closeout cleanup reached `6817943dcdf787490840948d35d6c8ebc9530f79`. A late duplicate caller/trigger from resumed orchestration was detected as stale against the already-published intended paths and removed without semantic mutation; cleanup head `46ebf12f18ef7e768227c19da6c89898ac49dbf7` contains only the seven durable workflows and no trigger/observation/turn-payload state. |
 
 ## Independent verification addendum (reviewing agent)
 
