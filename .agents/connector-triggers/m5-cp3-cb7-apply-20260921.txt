@@ -1,5 +1,0 @@
-Purpose: apply verified M5-CP3-CB7 diagnostic-only patch from Google Drive.
-Caller install: 29843aaaeb03b8a34798cc7d9fef37985645c92f
-Patch base: 9d8256c0ff0e951a8126e8c73b35c03811d7c269
-Patch SHA-256: e8643387e73fef32c142f1517e335a9373efe23c41d701420b0586f0c759b462
-Retry: 0
