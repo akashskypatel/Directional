@@ -644,6 +644,429 @@ const PhaseFrontFixture &torus_fixture() {
   return fixture;
 }
 
+struct ProducedTorusSourceWitness {
+  directional::authority::SourceEdgeTopologyKey carrier;
+  directional::authority::NetworkArcId span;
+  directional::authority::NetworkRegionId networkRegion;
+  directional::geometry::SurfaceBoundaryOccurrenceId fromOccurrence;
+  directional::geometry::SurfaceBoundaryOccurrenceId toOccurrence;
+  directional::authority::SourceFaceId fromFace;
+  directional::authority::SourceFaceId toFace;
+  directional::authority::QuarterTurn sourceRotation;
+  directional::authority::QuarterTurn atlasRotation;
+  directional::authority::Orientation sourcePathOrientation =
+      directional::authority::Orientation::Forward;
+  directional::authority::CanonicalRoute generatorRoute;
+};
+
+struct ProducedTorusWitnessFixture {
+  PhaseFrontFixture fixture;
+  ProducedTorusSourceWitness witness;
+};
+
+std::set<directional::authority::SourceEdgeTopologyKey>
+torus_row408_hard_edges(const directional::TriMesh &mesh) {
+  const std::array<int, 7> minorCycle{{0, 3, 25, 37, 49, 61, 0}};
+  const std::array<int, 13> majorCycle{
+      {0, 1, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 0}};
+  std::set<directional::authority::SourceEdgeTopologyKey> result;
+  const auto append = [&](const auto &cycle) {
+    for (std::size_t i = 1U; i < cycle.size(); ++i) {
+      result.insert(test_source_edge_topology(
+          cycle[i - 1U], cycle[i], static_cast<std::size_t>(mesh.V.rows())));
+    }
+  };
+  append(minorCycle);
+  append(majorCycle);
+  if (result.size() != 18U) {
+    throw std::runtime_error(
+        "Torus witness requires the row408 18-edge hard-rail authority.");
+  }
+  return result;
+}
+
+Eigen::MatrixXd torus_nonzero_z4_raw_field(const directional::TriMesh &mesh) {
+  Eigen::MatrixXd raw(mesh.F.rows(), 12);
+  for (int face = 0; face < mesh.F.rows(); ++face) {
+    Eigen::Vector3d centroid = Eigen::Vector3d::Zero();
+    for (int corner = 0; corner < 3; ++corner) {
+      centroid += mesh.V.row(mesh.F(face, corner)).transpose();
+    }
+    centroid /= 3.0;
+    double majorAngle = std::atan2(centroid.y(), centroid.x());
+    if (majorAngle < 0.0) majorAngle += 2.0 * std::numbers::pi;
+
+    const Eigen::Vector3d normal = mesh.faceNormals.row(face).transpose();
+    Eigen::Vector3d majorTangent(-std::sin(majorAngle),
+                                 std::cos(majorAngle), 0.0);
+    majorTangent -= majorTangent.dot(normal) * normal;
+    if (!majorTangent.allFinite() || majorTangent.norm() <= 1.0e-12) {
+      throw std::runtime_error("Degenerate torus major tangent.");
+    }
+    majorTangent.normalize();
+    Eigen::Vector3d minorTangent = normal.cross(majorTangent);
+    if (!minorTangent.allFinite() || minorTangent.norm() <= 1.0e-12) {
+      throw std::runtime_error("Degenerate torus minor tangent.");
+    }
+    minorTangent.normalize();
+
+    const double windingAngle = 0.25 * majorAngle;
+    const Eigen::Vector3d x = std::cos(windingAngle) * majorTangent +
+                              std::sin(windingAngle) * minorTangent;
+    const Eigen::Vector3d y = -std::sin(windingAngle) * majorTangent +
+                              std::cos(windingAngle) * minorTangent;
+    raw.row(face) << x.transpose(), y.transpose(), (-x).transpose(),
+        (-y).transpose();
+  }
+  return raw;
+}
+
+std::optional<directional::authority::FieldExactRational>
+test_exact_edge_parameter(
+    const directional::authority::ExactSourcePoint &point,
+    const directional::authority::SourceEdgeTopologyKey &edge) {
+  if (const auto *vertex =
+          std::get_if<directional::authority::SourceVertexId>(&point)) {
+    if (*vertex == edge.first()) {
+      return directional::authority::FieldExactRational::from_integer(0);
+    }
+    if (*vertex == edge.second()) {
+      return directional::authority::FieldExactRational::from_integer(1);
+    }
+    return std::nullopt;
+  }
+  const auto *edgePoint =
+      std::get_if<directional::authority::ExactSourceEdgePoint>(&point);
+  if (edgePoint == nullptr || edgePoint->edge != edge) return std::nullopt;
+  return edgePoint->parameter;
+}
+
+const directional::fields::CrossFieldEdgeTransition *source_transition_for(
+    const directional::TriMesh &mesh,
+    const directional::fields::CrossFieldResult &crossField,
+    const directional::authority::SourceEdgeTopologyKey &carrier) {
+  const auto found = std::find_if(
+      crossField.edgeTransitions.begin(), crossField.edgeTransitions.end(),
+      [&](const auto &candidate) {
+        return test_source_edge_topology(
+                   candidate.sourceVertex0, candidate.sourceVertex1,
+                   static_cast<std::size_t>(mesh.V.rows())) == carrier;
+      });
+  return found == crossField.edgeTransitions.end() ? nullptr : &*found;
+}
+
+std::optional<directional::authority::QuarterTurn>
+directed_source_transition(
+    const directional::TriMesh &mesh,
+    const directional::fields::CrossFieldResult &crossField,
+    const directional::authority::SourceEdgeTopologyKey &carrier,
+    const directional::authority::SourceFaceId fromFace,
+    const directional::authority::SourceFaceId toFace) {
+  const auto *transition = source_transition_for(mesh, crossField, carrier);
+  if (transition == nullptr) return std::nullopt;
+  const auto firstFace = directional::authority::SourceFaceId::from_index(
+      transition->firstFace, static_cast<std::size_t>(mesh.F.rows()));
+  const auto secondFace = directional::authority::SourceFaceId::from_index(
+      transition->secondFace, static_cast<std::size_t>(mesh.F.rows()));
+  if (!firstFace || !secondFace) return std::nullopt;
+  const auto forward = directional::authority::QuarterTurn::from_integer(
+      transition->matching);
+  if (fromFace == firstFace.value() && toFace == secondFace.value()) {
+    return forward;
+  }
+  if (fromFace == secondFace.value() && toFace == firstFace.value()) {
+    return forward.inverse();
+  }
+  return std::nullopt;
+}
+
+std::optional<directional::authority::SourceFaceId>
+source_face_for_boundary_occurrence(
+    const directional::TriMesh &mesh,
+    const directional::geometry::SourceTopologyRegions &sourceAuthority,
+    const directional::geometry::GlobalTopologyPlan &plan,
+    const directional::geometry::SurfaceBoundaryOccurrenceId &occurrence,
+    const directional::authority::NetworkArcId span,
+    const directional::authority::SourceEdgeTopologyKey &carrier) {
+  const auto region = std::find_if(
+      plan.regions().begin(), plan.regions().end(), [&](const auto &candidate) {
+        return candidate.id == occurrence.region;
+      });
+  if (region == plan.regions().end() ||
+      occurrence.canonicalBoundaryOccurrenceOrdinal >= region->boundary.size()) {
+    return std::nullopt;
+  }
+  const auto &orientedArc =
+      region->boundary[occurrence.canonicalBoundaryOccurrenceOrdinal];
+  if (orientedArc.arc != span) return std::nullopt;
+  const auto *arc = plan.find_arc(span);
+  if (arc == nullptr || arc->kind != directional::geometry::GlobalTopologyArcKind::Mandatory ||
+      arc->sourcePath.size() != 1U) {
+    return std::nullopt;
+  }
+  const auto orientedPath = directional::authority::exact_source_path_for_orientation(
+      arc->sourcePath, orientedArc.orientation);
+  if (orientedPath.size() != 1U) return std::nullopt;
+  const auto *pathCarrier =
+      std::get_if<directional::authority::SourceEdgeSupport>(
+          &orientedPath.front().carrier);
+  const auto *first = std::get_if<directional::authority::SourceVertexId>(
+      &orientedPath.front().first);
+  const auto *second = std::get_if<directional::authority::SourceVertexId>(
+      &orientedPath.front().second);
+  if (pathCarrier == nullptr || pathCarrier->edge != carrier || first == nullptr ||
+      second == nullptr || *first == *second) {
+    return std::nullopt;
+  }
+
+  std::set<directional::authority::SourceFaceId> activeFaces;
+  for (const auto &topology : region->sourceFaces) {
+    const auto row = sourceAuthority.row_for_topology(topology);
+    if (!row.has_value()) return std::nullopt;
+    activeFaces.insert(*row);
+  }
+
+  std::optional<directional::authority::SourceFaceId> owner;
+  for (const auto candidate : activeFaces) {
+    const int face = static_cast<int>(candidate.index());
+    bool oriented = false;
+    for (int corner = 0; corner < 3; ++corner) {
+      if (mesh.F(face, corner) == static_cast<int>(first->index()) &&
+          mesh.F(face, (corner + 1) % 3) ==
+              static_cast<int>(second->index())) {
+        oriented = true;
+        break;
+      }
+    }
+    if (!oriented) continue;
+    if (owner.has_value()) return std::nullopt;
+    owner = candidate;
+  }
+  return owner;
+}
+
+std::optional<ProducedTorusSourceWitness> select_torus_source_witness(
+    const directional::TriMesh &mesh,
+    const directional::fields::CrossFieldResult &sourceCrossField,
+    const directional::authority::FieldTransportAtlas &atlas,
+    const directional::geometry::SourceTopologyRegions &sourceAuthority,
+    const directional::geometry::GlobalTopologyPlan &plan,
+    const std::set<directional::authority::SourceEdgeTopologyKey>
+        &nonzeroHardCarriers) {
+  const auto sourceIncidence =
+      directional::geometry::surface_cell_tracing_detail::edge_faces(mesh.F);
+  const auto sourceMatchingIndices = directional::geometry::
+      surface_cell_tracing_detail::edge_matching_indices(sourceIncidence);
+
+  for (const auto carrier : nonzeroHardCarriers) {
+    for (const auto &region : plan.regions()) {
+      std::map<directional::authority::NetworkArcId,
+               std::vector<std::pair<std::size_t,
+                                     directional::authority::Orientation>>>
+          occurrences;
+      for (std::size_t ordinal = 0U; ordinal < region.boundary.size(); ++ordinal) {
+        const auto &incidence = region.boundary[ordinal];
+        const auto *arc = plan.find_arc(incidence.arc);
+        if (arc == nullptr ||
+            arc->kind != directional::geometry::GlobalTopologyArcKind::Mandatory ||
+            arc->sourcePath.size() != 1U) {
+          continue;
+        }
+        const auto *pathCarrier =
+            std::get_if<directional::authority::SourceEdgeSupport>(
+                &arc->sourcePath.front().carrier);
+        if (pathCarrier == nullptr || pathCarrier->edge != carrier) continue;
+        occurrences[incidence.arc].push_back({ordinal, incidence.orientation});
+      }
+
+      for (const auto &[span, values] : occurrences) {
+        if (values.size() != 2U) continue;
+        std::optional<std::size_t> forwardOrdinal;
+        std::optional<std::size_t> reverseOrdinal;
+        for (const auto &[ordinal, orientation] : values) {
+          if (orientation == directional::authority::Orientation::Forward) {
+            if (forwardOrdinal.has_value()) {
+              forwardOrdinal.reset();
+              break;
+            }
+            forwardOrdinal = ordinal;
+          } else {
+            if (reverseOrdinal.has_value()) {
+              reverseOrdinal.reset();
+              break;
+            }
+            reverseOrdinal = ordinal;
+          }
+        }
+        if (!forwardOrdinal.has_value() || !reverseOrdinal.has_value()) continue;
+
+        const directional::geometry::SurfaceBoundaryOccurrenceId fromOccurrence{
+            region.id, *forwardOrdinal};
+        const directional::geometry::SurfaceBoundaryOccurrenceId toOccurrence{
+            region.id, *reverseOrdinal};
+        const auto fromFace = source_face_for_boundary_occurrence(
+            mesh, sourceAuthority, plan, fromOccurrence, span, carrier);
+        const auto toFace = source_face_for_boundary_occurrence(
+            mesh, sourceAuthority, plan, toOccurrence, span, carrier);
+        if (!fromFace.has_value() || !toFace.has_value() ||
+            *fromFace == *toFace) {
+          continue;
+        }
+
+        const auto sourceRotation = directed_source_transition(
+            mesh, sourceCrossField, carrier, *fromFace, *toFace);
+        const auto atlasValue =
+            atlas.transition_value(carrier, *fromFace, *toFace);
+        if (!sourceRotation.has_value() || !atlasValue.has_value() ||
+            *sourceRotation == directional::authority::QuarterTurn{} ||
+            atlasValue->transport != *sourceRotation) {
+          continue;
+        }
+
+        const auto *arc = plan.find_arc(span);
+        if (arc == nullptr || arc->sourcePath.size() != 1U) continue;
+        const auto firstParameter = test_exact_edge_parameter(
+            arc->sourcePath.front().first, carrier);
+        const auto secondParameter = test_exact_edge_parameter(
+            arc->sourcePath.front().second, carrier);
+        if (!firstParameter.has_value() || !secondParameter.has_value() ||
+            *firstParameter == *secondParameter) {
+          continue;
+        }
+        const auto sourcePathOrientation =
+            *firstParameter < *secondParameter
+                ? directional::authority::Orientation::Forward
+                : directional::authority::Orientation::Reverse;
+        const auto transitionIndex = sourceMatchingIndices.find(carrier);
+        if (transitionIndex == sourceMatchingIndices.end()) continue;
+        const auto transitionId =
+            directional::authority::InteriorTransitionId::from_index(
+                transitionIndex->second, sourceMatchingIndices.size());
+        if (!transitionId) continue;
+        directional::authority::GridAutomorphism transport =
+            directional::authority::GridAutomorphism::identity();
+        transport.rotation = *sourceRotation;
+        const auto step = directional::authority::TransitionStep::interior(
+            carrier, transitionId.value(), transport, sourcePathOrientation);
+        if (!step) continue;
+        auto generatorRoute =
+            directional::authority::CanonicalRoute::from_observed_steps(
+                {step.value()});
+        if (generatorRoute.empty() ||
+            generatorRoute.composed_transport().rotation != *sourceRotation) {
+          continue;
+        }
+        return ProducedTorusSourceWitness{
+            carrier,
+            span,
+            region.id,
+            fromOccurrence,
+            toOccurrence,
+            *fromFace,
+            *toFace,
+            *sourceRotation,
+            atlasValue->transport,
+            sourcePathOrientation,
+            std::move(generatorRoute)};
+      }
+    }
+  }
+  return std::nullopt;
+}
+
+ProducedTorusWitnessFixture make_nonzero_z4_torus_witness_fixture() {
+  PhaseFrontFixture fixture;
+  const auto meshPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/torus.obj");
+  if (!directional::readOBJ(meshPath.string(), fixture.mesh)) {
+    throw std::runtime_error("Failed to read committed torus fixture.");
+  }
+  const Eigen::MatrixXd raw = torus_nonzero_z4_raw_field(fixture.mesh);
+  const auto sourceCrossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(fixture.mesh,
+                                                                    raw);
+  const auto hardEdges = torus_row408_hard_edges(fixture.mesh);
+  std::set<directional::authority::SourceEdgeTopologyKey> nonzeroHardCarriers;
+  for (const auto &carrier : hardEdges) {
+    const auto *transition =
+        source_transition_for(fixture.mesh, sourceCrossField, carrier);
+    if (transition != nullptr &&
+        directional::authority::QuarterTurn::from_integer(
+            transition->matching) != directional::authority::QuarterTurn{}) {
+      nonzeroHardCarriers.insert(carrier);
+    }
+  }
+  if (nonzeroHardCarriers.empty()) {
+    throw std::runtime_error(
+        "Torus winding field did not produce a nonzero-Z4 row408 hard edge.");
+  }
+
+  directional::pipeline::RemeshOptions options;
+  options.lengthRatio = 0.2;
+  options.integralSeamless = false;
+  options.roundSeams = false;
+  options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+  options.surfaceCells.enabled = true;
+  options.surfaceCells.fallbackPolicy =
+      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+  options.surfaceCells.allowSourceGridRecovery = false;
+  options.surfaceCells.retainIntermediateGeometry = true;
+  options.surfaceCells.featureMap.cadAbsoluteLowDegrees = 179.0;
+  options.surfaceCells.featureMap.cadAbsoluteHighDegrees = 180.0;
+  options.surfaceCells.featureMap.organicAbsoluteLowDegrees = 179.0;
+  options.surfaceCells.featureMap.organicAbsoluteHighDegrees = 180.0;
+  for (const auto &edge : hardEdges) {
+    options.surfaceCells.featureMap.userHardEdges.insert(
+        {static_cast<int>(edge.first().index()),
+         static_cast<int>(edge.second().index())});
+  }
+
+  const auto result = directional::pipeline::remesh_from_raw_cross_field(
+      fixture.mesh.V, fixture.mesh.F, raw, options);
+  const auto &snapshots = result.surfaceCellContext.productSnapshots;
+  if (!snapshots.hasCrossField || !snapshots.hasSourceSurfaceLabels ||
+      !snapshots.fieldTransportAtlas.has_value() ||
+      !snapshots.globalTopologyPlan.has_value() ||
+      !snapshots.sourceTopologyRegions.has_value() ||
+      !result.surfaceCellContext.hasTraceNetwork) {
+    throw std::runtime_error(
+        "Nonzero-Z4 torus pipeline did not retain source/A3 witness authority.");
+  }
+  fixture.components = snapshots.sourceSurfaceLabels.componentByFace;
+  fixture.sheets = snapshots.sourceSurfaceLabels.localSheetByFace;
+  fixture.network = snapshots.traceNetwork;
+  require_produced(fixture, "torus nonzero-Z4 source witness");
+
+  const auto witness = select_torus_source_witness(
+      fixture.mesh, sourceCrossField, *snapshots.fieldTransportAtlas,
+      *snapshots.sourceTopologyRegions, *snapshots.globalTopologyPlan,
+      nonzeroHardCarriers);
+  if (!witness.has_value()) {
+    throw std::runtime_error(
+        "Missing source/A3-selected nonzero-Z4 row408 generator witness.");
+  }
+
+  const auto *pipelineTransition =
+      source_transition_for(fixture.mesh, snapshots.crossField,
+                            witness->carrier);
+  const auto *sourceTransition =
+      source_transition_for(fixture.mesh, sourceCrossField, witness->carrier);
+  if (pipelineTransition == nullptr || sourceTransition == nullptr ||
+      pipelineTransition->matching != sourceTransition->matching ||
+      pipelineTransition->firstFace != sourceTransition->firstFace ||
+      pipelineTransition->secondFace != sourceTransition->secondFace) {
+    throw std::runtime_error(
+        "Pipeline source transition diverged from the pre-finalized witness.");
+  }
+  return {std::move(fixture), *witness};
+}
+
+const ProducedTorusWitnessFixture &nonzero_z4_torus_witness_fixture() {
+  static const ProducedTorusWitnessFixture fixture =
+      make_nonzero_z4_torus_witness_fixture();
+  return fixture;
+}
+
 AuthoritativePhaseFrontMeshResult materialize(
     const PhaseFrontFixture &fixture, const SurfacePhaseFrontResult &phaseFront) {
   return directional::pipeline::build_authoritative_phase_front_mesh(
@@ -1026,6 +1449,54 @@ selected_relation_certificate_signature(
   }
   std::sort(result.begin(), result.end());
   return result;
+}
+
+const directional::geometry::SurfacePeriodicHolonomy *
+produced_relation_for_witness(const ProducedTorusWitnessFixture &fixture) {
+  const auto &product = fixture.fixture.network.phaseFront.product();
+  std::optional<directional::authority::PeriodicRelationId> ownerId;
+  bool sawFrom = false;
+  bool sawTo = false;
+  for (const auto &edge : product.edges()) {
+    if (!edge.sharedBoundaryInterval.has_value() ||
+        !edge.sharedBoundaryInterval->boundaryOccurrence.has_value() ||
+        edge.sharedBoundaryInterval->span != fixture.witness.span) {
+      continue;
+    }
+    const auto occurrence =
+        *edge.sharedBoundaryInterval->boundaryOccurrence;
+    if (occurrence != fixture.witness.fromOccurrence &&
+        occurrence != fixture.witness.toOccurrence) {
+      continue;
+    }
+    if (edge.boundaryKind != SurfaceFrontBoundaryKind::PeriodicCut ||
+        !edge.periodicRelation.has_value()) {
+      return nullptr;
+    }
+    if (ownerId.has_value() && *ownerId != *edge.periodicRelation) {
+      return nullptr;
+    }
+    ownerId = *edge.periodicRelation;
+    sawFrom = sawFrom || occurrence == fixture.witness.fromOccurrence;
+    sawTo = sawTo || occurrence == fixture.witness.toOccurrence;
+  }
+  if (!ownerId.has_value() || !sawFrom || !sawTo) return nullptr;
+  const auto relation = std::find_if(
+      product.periodicHolonomies().begin(), product.periodicHolonomies().end(),
+      [&](const auto &candidate) { return candidate.id() == *ownerId; });
+  return relation == product.periodicHolonomies().end() ? nullptr : &*relation;
+}
+
+bool certificate_references_periodic_relation(
+    const std::vector<directional::geometry::SelectedRelationPathCertificate>
+        &certificates,
+    const directional::authority::PeriodicRelationId id) {
+  return std::any_of(
+      certificates.begin(), certificates.end(), [&](const auto &certificate) {
+        return std::any_of(
+            certificate.orderedSteps.begin(), certificate.orderedSteps.end(),
+            [&](const auto &step) { return step.periodicRelation == id; });
+      });
 }
 
 TEST(SurfaceCellTransitionQuotient,
@@ -2081,21 +2552,24 @@ TEST(M5CP3, ProducedTorusMissingPeriodicRelationOwnerRejectsTyped) {
 }
 
 TEST(M5CP3, ProducedTorusNonzeroZ4RotationTranslationMaterializes) {
-  const auto &fixture = torus_fixture();
-  const auto &product = fixture.network.phaseFront.product();
-  const auto relation = std::find_if(
-      product.periodicHolonomies().begin(), product.periodicHolonomies().end(),
-      [](const auto &candidate) {
-        return action_has_nonzero_turn(candidate.action()) &&
-               (candidate.action().shift.x != 0 ||
-                candidate.action().shift.y != 0);
-      });
-  ASSERT_NE(product.periodicHolonomies().end(), relation)
-      << "production must publish a genuine nonzero-Z4 periodic action";
+  const auto &witnessFixture = nonzero_z4_torus_witness_fixture();
+  const auto &fixture = witnessFixture.fixture;
+  const auto &witness = witnessFixture.witness;
+  ASSERT_NE(directional::authority::QuarterTurn{}, witness.sourceRotation);
+  ASSERT_EQ(witness.sourceRotation, witness.atlasRotation);
+
+  const auto *relation = produced_relation_for_witness(witnessFixture);
+  ASSERT_NE(nullptr, relation)
+      << "source/A3-selected nonzero-Z4 hard-edge witness must publish a relation";
+  EXPECT_EQ(witness.generatorRoute, relation->route())
+      << "published generator route must preserve the independently directed "
+         "source transition";
   const auto expectedId = independent_periodic_relation_id(
-      relation->sourceTopologyRegion(), relation->route(), relation->cutRoute());
+      relation->sourceTopologyRegion(), witness.generatorRoute,
+      relation->cutRoute());
   ASSERT_TRUE(expectedId.has_value());
   EXPECT_EQ(relation->id(), *expectedId);
+  EXPECT_EQ(witness.sourceRotation, relation->action().rotation);
   EXPECT_NE(directional::authority::QuarterTurn{}, relation->action().rotation);
   EXPECT_NE((directional::authority::LatticeTranslation{0, 0}),
             relation->action().shift);
@@ -2120,27 +2594,34 @@ TEST(M5CP3, ProducedTorusNonzeroZ4RotationTranslationMaterializes) {
 }
 
 TEST(M5CP3, ProducedTorusTamperedNonzeroZ4TransformRejectsTyped) {
-  const auto &fixture = torus_fixture();
-  PhaseFrontDraft tampered = phase_front_draft(fixture.network.phaseFront);
+  const auto &witnessFixture = nonzero_z4_torus_witness_fixture();
+  const auto *published = produced_relation_for_witness(witnessFixture);
+  ASSERT_NE(nullptr, published);
+  ASSERT_EQ(witnessFixture.witness.generatorRoute, published->route());
+  ASSERT_EQ(witnessFixture.witness.sourceRotation,
+            published->action().rotation);
+  ASSERT_NE(directional::authority::QuarterTurn{},
+            published->action().rotation);
+
+  PhaseFrontDraft tampered =
+      phase_front_draft(witnessFixture.fixture.network.phaseFront);
   const auto relation = std::find_if(
       tampered.periodicHolonomies.begin(), tampered.periodicHolonomies.end(),
-      [](const auto &candidate) {
-        return action_has_nonzero_turn(candidate.action()) &&
-               (candidate.action().shift.x != 0 ||
-                candidate.action().shift.y != 0);
-      });
+      [&](const auto &candidate) { return candidate.id() == published->id(); });
   ASSERT_NE(tampered.periodicHolonomies.end(), relation);
   const auto originalId = relation->id();
-  auto action = relation->action();
+  const auto originalAction = relation->action();
+  auto action = originalAction;
   action.rotation = directional::authority::QuarterTurn::from_integer(
       static_cast<int>(action.rotation.value()) + 1);
+  ASSERT_NE(originalAction, action);
   auto rebuilt = directional::geometry::SurfacePeriodicHolonomy::make(
       relation->sourceTopologyRegion(), action, relation->route(),
       relation->cutRoute());
   auto *value =
       std::get_if<directional::geometry::SurfacePeriodicHolonomy>(&rebuilt);
   ASSERT_NE(nullptr, value);
-  EXPECT_EQ(originalId, value->id());
+  ASSERT_EQ(originalId, value->id());
   *relation = std::move(*value);
 
   expect_phase_front_product_error(
@@ -2151,37 +2632,130 @@ TEST(M5CP3, ProducedTorusTamperedNonzeroZ4TransformRejectsTyped) {
 
 TEST(M5CP3, ProducedTorusUnusedValidRelationDoesNotAlterSelectedCertificate) {
   const auto &fixture = torus_fixture();
-  PhaseFrontDraft baselineDraft = phase_front_draft(fixture.network.phaseFront);
-  PhaseFrontDraft extendedDraft = baselineDraft;
-  ASSERT_FALSE(extendedDraft.periodicHolonomies.empty());
-  const auto &owner = extendedDraft.periodicHolonomies.front();
+  const auto &product = fixture.network.phaseFront.product();
+  PhaseFrontDraft baselineDraft = phase_front_draft(product);
+  const auto baseline = materialize(fixture, baselineDraft);
+  ASSERT_TRUE(baseline.success) << baseline.failure;
+  const auto baselineCertificates =
+      selected_relation_certificate_signature(baseline.mesh);
+  ASSERT_FALSE(baselineCertificates.empty());
+
+  std::set<directional::authority::SourceEdgeTopologyKey> periodicCarriers;
+  for (const auto &relation : product.periodicHolonomies()) {
+    for (const auto &step : relation.route().carrier_identity()) {
+      periodicCarriers.insert(step.topology);
+    }
+    for (const auto &step : relation.cutRoute().carrier_identity()) {
+      periodicCarriers.insert(step.topology);
+    }
+  }
+
+  const Eigen::MatrixXd raw = read_rawfield(
+      directional::tests::benchmark_fixture_path("milestone-g/torus.rawfield"),
+      fixture.mesh.F.rows());
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(fixture.mesh,
+                                                                    raw);
+  const auto sourceIncidence = directional::geometry::
+      surface_cell_tracing_detail::edge_faces(fixture.mesh.F);
+  const auto sourceMatchingIndices = directional::geometry::
+      surface_cell_tracing_detail::edge_matching_indices(sourceIncidence);
+  const auto &sourceAuthority = product.sourceTopologyRegions();
+  std::map<directional::authority::TopologyRegionId,
+           std::set<directional::authority::CanonicalRoute>>
+      sourceRoutes;
+  for (const auto &transition : crossField.edgeTransitions) {
+    const auto carrier = test_source_edge_topology(
+        transition.sourceVertex0, transition.sourceVertex1,
+        static_cast<std::size_t>(fixture.mesh.V.rows()));
+    if (periodicCarriers.count(carrier) != 0U) continue;
+    const auto firstFace = directional::authority::SourceFaceId::from_index(
+        transition.firstFace, static_cast<std::size_t>(fixture.mesh.F.rows()));
+    const auto secondFace = directional::authority::SourceFaceId::from_index(
+        transition.secondFace, static_cast<std::size_t>(fixture.mesh.F.rows()));
+    if (!firstFace || !secondFace ||
+        sourceAuthority.region_for_row(firstFace.value()) !=
+            sourceAuthority.region_for_row(secondFace.value())) {
+      continue;
+    }
+    const auto transitionIndex = sourceMatchingIndices.find(carrier);
+    if (transitionIndex == sourceMatchingIndices.end()) continue;
+    const auto transitionId =
+        directional::authority::InteriorTransitionId::from_index(
+            transitionIndex->second, sourceMatchingIndices.size());
+    if (!transitionId) continue;
+    directional::authority::GridAutomorphism transport =
+        directional::authority::GridAutomorphism::identity();
+    transport.rotation = directional::authority::QuarterTurn::from_integer(
+        transition.matching);
+    const auto step = directional::authority::TransitionStep::interior(
+        carrier, transitionId.value(), transport,
+        directional::authority::Orientation::Forward);
+    if (!step) continue;
+    sourceRoutes[sourceAuthority.region_for_row(firstFace.value())].insert(
+        directional::authority::CanonicalRoute::from_observed_steps(
+            {step.value()}));
+  }
+
+  std::optional<directional::authority::TopologyRegionId> unusedRegion;
+  std::optional<directional::authority::CanonicalRoute> unusedGenerator;
+  std::optional<directional::authority::CanonicalRoute> unusedCut;
+  const directional::geometry::SurfacePeriodicHolonomy *actionOwner = nullptr;
+  for (const auto &[region, routes] : sourceRoutes) {
+    if (routes.size() < 2U) continue;
+    const auto owner = std::find_if(
+        product.periodicHolonomies().begin(), product.periodicHolonomies().end(),
+        [&](const auto &relation) {
+          return relation.sourceTopologyRegion() == region;
+        });
+    if (owner == product.periodicHolonomies().end()) continue;
+    auto route = routes.begin();
+    unusedRegion = region;
+    unusedGenerator = *route++;
+    unusedCut = *route;
+    actionOwner = &*owner;
+    break;
+  }
+  ASSERT_TRUE(unusedRegion.has_value());
+  ASSERT_TRUE(unusedGenerator.has_value());
+  ASSERT_TRUE(unusedCut.has_value());
+  ASSERT_NE(nullptr, actionOwner);
   auto unusedConstruction = directional::geometry::SurfacePeriodicHolonomy::make(
-      owner.sourceTopologyRegion(), owner.action(), owner.cutRoute(),
-      owner.route());
+      *unusedRegion, actionOwner->action(), *unusedGenerator, *unusedCut);
   const auto *unused =
       std::get_if<directional::geometry::SurfacePeriodicHolonomy>(
           &unusedConstruction);
   ASSERT_NE(nullptr, unused);
+
   ASSERT_TRUE(std::none_of(
-      extendedDraft.periodicHolonomies.begin(),
-      extendedDraft.periodicHolonomies.end(), [&](const auto &relation) {
+      baselineDraft.periodicHolonomies.begin(),
+      baselineDraft.periodicHolonomies.end(), [&](const auto &relation) {
         return relation.id() == unused->id();
       }));
-  extendedDraft.periodicHolonomies.push_back(*unused);
+  ASSERT_TRUE(std::none_of(
+      baselineDraft.edges.begin(), baselineDraft.edges.end(),
+      [&](const auto &edge) { return edge.periodicRelation == unused->id(); }));
+  ASSERT_FALSE(
+      certificate_references_periodic_relation(baselineCertificates,
+                                               unused->id()));
 
-  const auto baseline = materialize(fixture, std::move(baselineDraft));
+  PhaseFrontDraft extendedDraft = baselineDraft;
+  const auto unusedId = unused->id();
+  extendedDraft.periodicHolonomies.push_back(*unused);
+  std::reverse(extendedDraft.periodicHolonomies.begin(),
+               extendedDraft.periodicHolonomies.end());
+
   const auto extended = materialize(fixture, std::move(extendedDraft));
-  ASSERT_TRUE(baseline.success) << baseline.failure;
   ASSERT_TRUE(extended.success) << extended.failure;
-  const auto baselineCertificates =
-      selected_relation_certificate_signature(baseline.mesh);
-  ASSERT_FALSE(baselineCertificates.empty());
-  EXPECT_EQ(baselineCertificates,
-            selected_relation_certificate_signature(extended.mesh));
+  const auto extendedCertificates =
+      selected_relation_certificate_signature(extended.mesh);
+  EXPECT_EQ(baselineCertificates, extendedCertificates);
   EXPECT_EQ(directional::pipeline::hash_completion(baseline.mesh),
             directional::pipeline::hash_completion(extended.mesh));
   EXPECT_EQ(baseline.consumedPeriodicHolonomies,
             extended.consumedPeriodicHolonomies);
+  EXPECT_FALSE(
+      certificate_references_periodic_relation(extendedCertificates, unusedId));
 }
 
 TEST(SurfaceCellTransitionQuotient,
