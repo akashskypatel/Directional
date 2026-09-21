@@ -1,0 +1,3 @@
+turn=M5-CP3-CB4
+purpose=refresh exact source snapshot after semantic patch landed
+semantic_source=6dd0e5179686a4ea2ca4aacda0577855948864df
