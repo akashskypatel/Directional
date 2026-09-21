@@ -1,5 +1,0 @@
-M5-CP3-CB6 Drive patch apply
-caller_install=6f58937de2e8b2ba46f26b81ef9b7369498c6721
-base_sha=80db2992c747e32eaf3e743ea4b63afa5e0c746c
-patch_sha256=ec37451a776bda8e1c18c36e4b18e1ae2fec363d7ff6e48fca57d461306565c2
-retry=1
