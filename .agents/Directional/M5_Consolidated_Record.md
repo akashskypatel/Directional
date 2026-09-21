@@ -1,7 +1,7 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-21 at `M5-CP3-TB1-R6-EXEC`
+**Last updated:** 2026-09-21 at `M5-CP3-TB1-R6-REV`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Corrected stable accounting is **50 / 14 / 36**, produced-witness debt **5**; M5 owns four of those debts.
 
@@ -109,10 +109,29 @@ All six produced identities terminate at exact reason `PeriodicGeneratorRouteUna
 
 The R5 accepted-row hazard does not materialize in runtime: selector ordinals **191, 192, 247** remain PASS with unchanged expectations, and no selector row beyond ordinal408 turns RED. `M5-CP3-TB1-R6-CAND-01` is therefore **DYNAMIC BRANCH PROOF / EXISTING `RP-01` CONTINUATION / REVIEW REQUIRED / +0**; stable accounting remains **50 / 14 / 36**, debt **5**. Candidate remains unpromoted, all four M5 debts remain open, and selector publication remains prohibited. Exact successor is mandatory runtime-free `M5-CP3-TB1-R6-REV`.
 
+
+## 4.5 `M5-CP3-TB1-R6-REV` — generator-route face-incidence authority cause proved
+
+Independent Review re-verifies R6 candidate/result authority, self-manifest **914/914**, all **446/446** exact-one/zero-skip rows, mechanism **9/9**, focused atlas **1/1**, produced **0/6**, selector430 **429/430** with sole RED ordinal408, all six exact `PeriodicGeneratorRouteUnavailable` reasons, protected accepted rows 191/192/247 green, immutable byte+mode postflight and zero prohibited counters.
+
+The dynamic branch plus source authority closes the R5 ambiguity. Accepted A3 cut construction already determines a unique oriented carrier-owning `SourceFaceId` and exact conformity boundary occurrence. A4 `SurfaceSharedBoundaryInterval` keeps the occurrence but not that face, while geometric point deduplication may retain a neighboring segment's `.face`. Same-region promotion then supplies `first.from.face / second.to.face` to atlas `transition_value`; atlas intentionally returns a value only for the exact carrier-incident face pair. `M5-CP3-TB1-R5-REV-OBS-01` is therefore **CAUSE PROVED / existing `RP-01 AUTHORITY_DOMAIN_CONFLATION` continuation / +0**. The accepted-row hazard closes runtime-green/non-stably.
+
+No frozen-definition amendment, selector change, promotion or debt credit occurs. `M5-CP3-TB1-R2-REV-OBS-01` remains carried until successful corrected production proves reached value consumption. Stable accounting remains **50 / 14 / 36**, debt **5**; accepted runtime package remains `10601978228` under selector430 **430/430**. Exact successor is bounded runtime-free `M5-CP3-CB8`, correcting only the source-face incidence authority in `SurfaceCellTracing.cpp`; compile-green then routes to fresh 446-process R7 with the pre-committed falsifier that no produced row may remain `PeriodicGeneratorRouteUnavailable`.
+
 ## 5. Folded-document index
+
+Historical citations in frozen/normative records to filenames listed here are provenance-only and resolve through this index plus git history; frozen text is not rewritten merely to chase a folded filename.
 
 | Folded filename | Verdict / retained home |
 |---|---|
+| `Architecture_M5_CP3_CB6_Carrier_Distinctness_And_Atlas_Oracle_Correction_Plan.md` (135 lines) | **CONSUMED CB6 PLAN / FOLDED BY `M5-CP3-TB1-R6-REV`.** Carrier-distinctness falsifier and independent atlas-oracle correction history remain in §§4.1-4.2, tracker, changelog and git history. |
+| `Architecture_M5_CP3_CB7_Code_Build_Report.md` (72 lines) | **SUPERSEDED CB7 BUILD REPORT / FOLDED BY `M5-CP3-TB1-R6-REV`.** Diagnostic-only semantic commit, compile/package IDs and candidate hashes remain in §§4.3-4.5, durable changelog and current R6 Review. |
+| `Architecture_M5_CP3_CB7_Periodic_Holonomy_Failure_Disambiguation_Plan.md` (89 lines) | **CONSUMED CB7 PLAN / FOLDED BY `M5-CP3-TB1-R6-REV`.** Diagnostic branch vocabulary, no-semantic-change boundary and R6 falsifier remain in §§4.3-4.5, tracker and git history. |
+| `Architecture_M5_CP3_TB1_R4_Artifact_Only_Test_Benchmark_Report.md` (71 lines) | **SUPERSEDED R4 RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R6-REV`.** R4 vector/oracle-drift evidence remains in §4.1, tracker/changelog and git history. |
+| `Architecture_M5_CP3_TB1_R4_Review_Record.md` (218 lines) | **SUPERSEDED R4 REVIEW / FOLDED BY `M5-CP3-TB1-R6-REV`.** Oracle-drift adjudication, §15 authority and CB6 falsifier remain in §4.1, frozen definitions, tracker and git history. |
+| `Architecture_M5_CP3_TB1_R5_Artifact_Only_Test_Benchmark_Report.md` (66 lines) | **SUPERSEDED R5 RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R6-REV`.** 446-process vector and atlas recovery remain in §4.2, tracker/changelog and git history. |
+| `Architecture_M5_CP3_TB1_R5_Review_Record.md` (203 lines) | **SUPERSEDED R5 REVIEW / FOLDED BY `M5-CP3-TB1-R6-REV`.** Dynamic-branch prerequisite, source-face observation and accepted-row hazard are adjudicated by current R6 Review and retained in tracker/§4.5. |
+| `Architecture_M5_CP3_TB1_R6_Artifact_Only_Test_Benchmark_Plan.md` (127 lines) | **CONSUMED R6 EXECUTION PLAN / FOLDED BY `M5-CP3-TB1-R6-REV`.** Candidate/routing/selector hashes, exact 446-process gate and branch interpretation are preserved in current R6 report/Review and §§4.4-4.5. |
 | `Architecture_M5_CP2_TB1_Artifact_Only_Test_Benchmark_Report.md` (80 lines) | **SUPERSEDED CP2 RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R4-REV`.** Accepted CP2 runtime facts remain in `M5_CP2_Closure_Record.md`, this family record, changelog and git history. |
 | `Architecture_M5_CP2_TB1_Review_Record.md` (136 lines) | **SUPERSEDED CP2 REVIEW / FOLDED BY `M5-CP3-TB1-R4-REV`.** CP2 promotion, typed-failure adjudication and carried publication observation remain in `M5_CP2_Closure_Record.md`, frozen §13, tracker and this record. |
 | `Architecture_M5_CP3_CB5_Atlas_Barrier_Transition_Value_Cutover_Correction_Plan.md` (133 lines) | **CONSUMED CB5 PLAN / FOLDED BY `M5-CP3-TB1-R4-REV`.** Atlas-owned nontraversal transition-value intent, prohibitions and R4 gate remain in frozen §15, current R4 Review, this record and git history. |

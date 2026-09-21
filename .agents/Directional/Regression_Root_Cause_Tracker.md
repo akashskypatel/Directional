@@ -1,3 +1,11 @@
+## 2026-09-21 — `M5-CP3-TB1-R6-REV`: exact A3 occurrence face authority discarded at A4 generator-route consumption — **CAUSE PROVED / IMPLEMENTATION AUTHORITY / EXISTING RP-01 CONTINUATION / CB8 RECOVERY / +0**
+
+- **Independent evidence:** R6 result self-manifest **914/914**; all **446/446** rows exact-one/zero-skip; mechanism **9/9 PASS**, focused atlas **1/1 PASS**, produced **0/6 PASS**, selector430 **429/430 PASS** with sole RED ordinal408; all six produced reasons exactly `PeriodicGeneratorRouteUnavailable`; immutable postflight and prohibited counters zero.
+- **Root cause:** accepted A3 cut construction derives a unique oriented `AcceptedCutBoundarySegment::sourceFace` for the exact carrier and publishes an exact boundary occurrence. `SurfaceSharedBoundaryInterval` retains the occurrence but not that face. A4 boundary point deduplication may retain a neighboring segment's `SurfaceTracePoint::face`, yet same-region promotion uses `first.from.face / second.to.face` as the directed incidence pair for the exact generator carrier. `FieldTransportAtlas::transition_value` correctly accepts only that carrier's two exact incident source faces. Representation-point provenance has replaced carrier-incidence authority at the active first-failure seam.
+- **Classification/accounting:** existing `M5-CP3-TB1-R1-CAND-01 / RP-01 AUTHORITY_DOMAIN_CONFLATION` continuation; no new accepted-green transition. **+0 events / +0 categories / +0 recurrences**; totals remain **50 / 14 / 36**, debt **5**.
+- **Recovery/falsifier:** `M5-CP3-CB8` may change only `src/geometry/SurfaceCellTracing.cpp` to resolve the directed faces from exact accepted boundary occurrences and validate their unordered membership against the generator carrier's `sourceEdgeFaces`. Storage order may not choose direction; A4 point-face fallback is prohibited. Fresh R7 must show **zero** produced rows still reporting `PeriodicGeneratorRouteUnavailable`; any later typed RED returns to Review.
+- **Accepted boundary:** candidate `10637998372` remains unpromoted; accepted package `10601978228` / selector430 430/430 remains authority; four M5 debts stay open; selector publication prohibited.
+
 ## 2026-09-21 — `M5-CP3-TB1-R6-CAND-01`: torus production RED dynamically localizes to generator-route unavailability — **DYNAMIC BRANCH PROOF / EXISTING RP-01 CONTINUATION / REVIEW REQUIRED / +0**
 
 - **Candidate/runtime:** artifact/source `10637998372 / 8f77ec403f16930145bba5bfc526a5b881b9f166`; R6 run/job `35606326632 / 106354249393`; result/log `10642347642 / 10642362744`; self-manifest **914/914**.
@@ -16,12 +24,13 @@
 - **Falsifier/owner:** `M5-CP3-CB7` appends diagnostic-only typed reasons for the three same-region boundaries and exact existing holonomy-construction subcodes without changing semantics; fresh R6 must expose one of those reasons in the six produced rows. Only mandatory R6 Review may authorize a semantic fix.
 - **Prohibited:** no route/face/action/relation correction based only on static plausibility; no selector/test weakening; no promotion/debt credit before corrected green Review.
 
-## 2026-09-21 — `M5-CP3-TB1-R5-REV-OBS-01`: A4 front endpoint faces reused as A3 carrier transition incidence — **STATIC AUTHORITY-MISMATCH CANDIDATE / DYNAMIC BRANCH PROOF REQUIRED**
+## 2026-09-21 — `M5-CP3-TB1-R5-REV-OBS-01`: A4 front endpoint faces reused as A3 carrier transition incidence — **CAUSE PROVED BY R6 REVIEW / CB8 OWNER / EXISTING RP-01 / +0**
 
-- `generator_route_for_span` resolves the exact frozen A3 `Mandatory` span and `SourceEdgeSupport`, but its atlas `transition_value` query receives `first.from.face` / `second.to.face` from the A4 front pair.
-- `SurfaceTracePoint::face` is untyped integer provenance and no `SurfaceFrontEdge` contract proves those endpoint faces equal the carrier edge's exact two incident source faces. The producer already owns exact `sourceEdgeFaces` for that carrier.
-- This is structurally consistent with existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION`, but R5 does not prove the generator-route branch is active. Owner is R6 Review after CB7 diagnostic disambiguation.
-- **Falsifier:** if R6 reports generator-route-unavailable, inspect/compare the exact carrier incidence and front faces before authorizing a correction. If R6 reports another branch, this observation cannot justify a face-authority edit.
+- R6 dynamically proves the candidate branch: all six produced identities stop first at `PeriodicGeneratorRouteUnavailable`.
+- R6 Review then proves the authority mismatch causal. Exact accepted-cut construction already owns one oriented `AcceptedCutBoundarySegment::sourceFace`; the exact occurrence survives into `SurfaceSharedBoundaryInterval`, while the owning face does not. A4 point deduplication means `SurfaceTracePoint::face` is representation provenance, not per-carrier incidence. Current same-region promotion nevertheless supplies `first.from.face / second.to.face` to the exact generator carrier's atlas transition query.
+- Atlas authority is not missing: validated transition values are retained before hard-feature nontraversability, and `transition_value` rejects only when the requested face pair is not the exact carrier pair. The R5 focused value-without-adjacency identity is green.
+- **Disposition:** observation discharged as **CAUSE PROVED**; bounded correction owner `M5-CP3-CB8`. Use exact occurrence-owned directed faces, revalidate unordered carrier membership, prohibit A4 point-face fallback and prohibit choosing direction from `sourceEdgeFaces` storage order.
+
 
 ## 2026-09-21 — `M5-CP3-TB1-R4-CAND-02`: independent atlas oracle omitted CB5 transition-value identity domain — **CLOSED / RECOVERY PROVED / NON-STABLE / +0**
 
@@ -9180,7 +9189,7 @@ No Directional runtime occurred in CB3, so there is **+0 event / +0 category / +
 
 ## `M5-CP3-TB1-R2-REV-OBS-01` — a seam consuming raw authority must re-perform its provider's validation
 
-**Status.** OPEN / NON-GATING / owner `M5-CP3-CB4` and the Review that follows it / NON-STABLE.
+**Status.** OPEN / CARRIED THROUGH R6 REVIEW / NON-GATING / owner: first corrected green post-CB8 Review / NON-STABLE.
 
 `M5-CP3-CB4` corrects the hard-feature transport-domain conflation by reading raw `CrossFieldEdgeTransition`
 authority at the promotion seam instead of calling `FieldTransportAtlas::transport(...)`, which by design
@@ -9204,10 +9213,12 @@ face-pair-mismatched raw authority must each fail closed with the existing produ
 takes over raw authority without re-performing the checks its former provider performed is a silent validation
 gap, and it will not show up as a failing test until the malformed case actually occurs.
 
+
+**R6 Review carry:** R6 proves production reaches `FieldTransportAtlas::transition_value` at the exact generator-route seam, so the earlier “unreachable consumer” concern is narrowed. It still does **not** prove successful consumption or relation publication because all six rows fail at the directed face-pair query. Carry this observation to the first corrected green post-CB8 Review; discharge only when the production consumer successfully reads the atlas-owned value while the hard feature remains nontraversable.
+
 ## `M5-CP3-TB1-R3-REV-OBS-01` — the atlas's published contract is being extended by review record alone
 
-**Status.** OPEN / NON-GATING FOR CB5 EXECUTION / must be recorded before CB5's result is accepted / owner: the
-Review that adjudicates CB5 / NON-STABLE.
+**Status.** CLOSED / FROZEN §15 RECORDED / R5 VALUE-WITHOUT-ADJACENCY CONTROL GREEN / NON-STABLE.
 
 `M5-CP3-CB5` will change what `FieldTransportAtlas` **publishes**: retaining a validated transition-value fact
 for interior edges and exposing a separate non-traversal query, so `generator_route_for_span` can consume the
@@ -9232,6 +9243,8 @@ working in and unreliably amends the document that governs it.
 retains a validated **non-traversal** transition value for interior edges, that this is distinct from
 traversability, and that `FieldTransportBarrierKind::HardFeature` and the A1 barrier contract are unchanged.
 
+**Closure:** frozen §15 now records exactly that distinction and explicitly states that the amendment discharges this observation. R5 then kept `FieldTransportAtlas.RetainsDirectedTransitionValueForHardFeatureWithoutTraversalAdjacency` green, so no further owner remains for this observation.
+
 **Reachability requirement carried with it** (refining `[[M5-CP3-TB1-R2-REV-OBS-01]]`): CB4's seam re-validation
 was implemented correctly but is unreachable — `RemeshPipeline.cpp:7869` installs `fieldTransportAtlas` and never
 assigns `tracingOptions.edgeTransitions`, so CB4's `edgeTransitions != nullptr` guard is deterministically false
@@ -9242,7 +9255,7 @@ that it returns the right value when called.
 
 ## `M5-CP3-TB1-R4-REV-OBS-01` — the oracle-drift classification must be falsified by CB6, not assumed
 
-**Status.** OPEN / GATING ON `M5-CP3-CB6` / NON-STABLE.
+**Status.** CLOSED / RECOVERY PROVED BY R5 / NON-STABLE.
 
 `M5-CP3-TB1-R4-EXEC` ran selector430 at **423 PASS / 7 RED**, the REDs being ordinals **18, 20, 21, 22, 23, 25**
 and **408**. The six new ones are all `FieldTransportAtlas.*` oracle identities and were classified
@@ -9278,7 +9291,7 @@ rejects. See `[[M5-CP2-CB1-OBS-01]]`.
 
 ## `M5-CP3-TB1-R5-REV-OBS-01-A` — CB7's failure disambiguation can break three accepted selector rows
 
-**Status.** OPEN / GATING ON `M5-CP3-CB7` / NON-STABLE.
+**Status.** CLOSED / RUNTIME GREEN IN R6 / NON-STABLE / +0.
 
 `M5-CP3-CB7` appends typed same-region periodic-promotion failure reasons so the three collapsed boundaries
 behind `PeriodicHolonomyMismatch` become observable. Its stated protection is that existing reasons are not
@@ -9308,3 +9321,6 @@ objective.
 If CB7 instead changes returned codes, it must **pre-commit before running** exactly which accepted rows will
 change and to what, and the standing accepted-row audit applies: each row's fail-closed discriminator must be
 shown preserved rather than merely relabelled. See `[[M5-CP2-CB1-OBS-01]]`.
+
+
+**R6 closure:** selector ordinals **191, 192 and 247** all remain PASS under unchanged generic-reason expectations; no accepted row beyond the already-open ordinal408 turns RED. The hazard did not materialize. No test/selector correction is authorized or needed.

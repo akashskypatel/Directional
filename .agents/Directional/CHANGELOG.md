@@ -1,3 +1,11 @@
+## 2026-09-21 — `M5-CP3-TB1-R6-REV`: R6 branch proof upheld; exact source-face incidence authority leak proved; CB8 frozen
+
+Runtime-free independent Review re-verifies CB7 candidate `10637998372`, R6 run/job `35606326632 / 106354249393`, result/log `10642347642 / 10642362744`, result self-manifest **914/914**, all **446/446** exact-one/zero-skip processes, immutable postflight and zero prohibited counters. Vector remains mechanism **9/9 PASS**, focused atlas **1/1 PASS**, produced **0/6 PASS**, selector430 **429/430 PASS** with sole RED ordinal408. All six produced rows report exact `PeriodicGeneratorRouteUnavailable`; protected accepted ordinals 191/192/247 remain PASS.
+
+Review proves `M5-CP3-TB1-R5-REV-OBS-01` causal. Accepted A3 cut construction already computes the exact oriented carrier-owning `SourceFaceId` and boundary occurrence. A4 interval publication retains the occurrence but point deduplication can retain a neighboring segment's face provenance; same-region promotion then supplies `first.from.face / second.to.face` to `FieldTransportAtlas::transition_value`, which correctly accepts only the exact carrier incident pair. This is **IMPLEMENTATION AUTHORITY / existing `RP-01 AUTHORITY_DOMAIN_CONFLATION` continuation / +0**, not missing atlas value or a reason to make hard features traversable. R5 hazard observation closes runtime-green/non-stable/+0. Stable totals remain **50 / 14 / 36**, debt **5**; candidate unpromoted, four M5 debts open, selector publication prohibited.
+
+Exact successor `M5-CP3-CB8` is frozen as a one-file runtime-free correction in `src/geometry/SurfaceCellTracing.cpp`: resolve directed faces from exact accepted boundary occurrences, validate unordered carrier membership, prohibit A4 point-face fallback and `sourceEdgeFaces` order guessing, then mandatory all-eight GMP compile/package. Compile-green routes to fresh 446-process R7 whose primary falsifier is that no produced row may remain `PeriodicGeneratorRouteUnavailable`.
+
 ## 2026-09-21 — `M5-CP3-TB1-R5-REV` review: falsifier discharged; CB7 vocabulary hazard flagged
 
 Runtime-free review. **Upheld.** Accounting holds at **50 events / 14 categories / 36 recurrences**, debt **5**;

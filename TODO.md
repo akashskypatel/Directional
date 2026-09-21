@@ -2,57 +2,34 @@
 
 Last updated: 2026-09-21 UTC
 
-## Latest Review turn — `M5-CP3-TB1-R5-REV`
+## Latest Review turn — `M5-CP3-TB1-R6-REV`
 
-`M5-CP3-TB1-R5-REV` is **COMPLETE / RUNTIME-FREE / R5 EVIDENCE UPHELD / R4 ORACLE RECOVERY PROVED / EXISTING RP-01 RECOVERY OPEN / CB7 REQUIRED**. Review independently verifies self-manifest **911/911**, all **446/446** ledger rows, exact-one/zero-skip, immutable postflight and zero prohibited counters: mechanism **9/9 PASS**, focused atlas **1/1 PASS**, produced **0/6 PASS**, selector430 **429/430 PASS** with sole RED ordinal408.
+`M5-CP3-TB1-R6-REV` is **COMPLETE / RUNTIME-FREE / R6 EVIDENCE UPHELD / CAUSE PROVED / EXISTING RP-01 RECOVERY OPEN / CB8 REQUIRED**. Review independently verifies R6 result self-manifest **914/914**, all **446/446** exact-one/zero-skip processes, mechanism **9/9**, focused atlas **1/1**, produced **0/6**, selector430 **429/430** with sole RED ordinal408, six exact `PeriodicGeneratorRouteUnavailable` reasons, protected ordinals 191/192/247 green, immutable postflight and zero prohibited counters.
 
-R4 oracle drift is closed non-stably: the focused hard-feature transition-value-without-adjacency identity and former RED ordinals **18/20/21/22/23/25** are all green with discriminators retained. CB6 carrier-distinctness removal is falsified as the complete product cause. The surviving endpoint remains the existing stable RP-01 event, but `PeriodicHolonomyMismatch` still collapses generator-route, action-correspondence and checked relation-construction failures. Review records the A4-front-face versus exact A3-carrier-incidence mismatch only as `R5-REV-OBS-01`, pending dynamic proof of the generator-route branch. Accounting stays **50 / 14 / 36**, debt **5**; candidate `10633891886` remains unpromoted, all four M5 debts remain open and selector publication is prohibited. Exact next: `M5-CP3-CB7` diagnostic-only failure disambiguation.
-
+The causal seam is now proved: accepted A3 cut authority already derives the unique oriented carrier-owning `SourceFaceId`, but A4 interval publication keeps only the occurrence while same-region promotion queries atlas transition value with deduplicated A4 endpoint point faces. Atlas correctly requires the exact carrier incident face pair. This is the existing stable `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recovery event, **+0** accounting. R5 hazard observation closes runtime-green/non-stable/+0. Candidate remains unpromoted; totals remain **50 / 14 / 36**, debt **5**; all four M5 debts remain open and selector publication is prohibited. Exact next: bounded runtime-free `M5-CP3-CB8`.
 
 ## Latest Test + Benchmark turn — `M5-CP3-TB1-R6-EXEC`
 
-`M5-CP3-TB1-R6-EXEC` is **COMPLETE / MECHANICALLY COMPLETE / SEMANTIC RED / GENERATOR-ROUTE BRANCH DYNAMICALLY PROVED / REVIEW REQUIRED**. Run/job `35606326632 / 106354249393` consumes CB7 candidate `10637998372` exactly and executes all **446/446** fresh processes with exact-one/zero-skip: mechanism **9/9 PASS**, focused atlas **1/1 PASS**, produced **0/6 PASS**, selector430 **429/430 PASS** with sole RED ordinal408. All six produced rows report `PeriodicGeneratorRouteUnavailable`; the protected generic-reason accepted rows at ordinals **191, 192, 247** all remain PASS. Benchmark/configure/compile/relink/discovery/repair/mutation counters are zero and immutable postflight is exact.
-
-Result/log artifacts are `10642347642 / 10642362744`; self-manifest verifies **914/914**. `M5-CP3-TB1-R6-CAND-01` is existing `RP-01` continuation with dynamic branch proof and **+0** accounting. Stable totals remain **50 / 14 / 36**, debt **5**. Candidate remains unpromoted; all four M5 produced debts remain open and selector publication remains prohibited. Exact next: mandatory runtime-free `M5-CP3-TB1-R6-REV`, which must independently adjudicate the now-eligible A4-front-face versus exact A3-carrier-incidence candidate before any semantic correction.
+R6 run/job `35606326632 / 106354249393` consumes CB7 candidate `10637998372` and executes all 446 fresh exact-filter processes. Result/log artifacts `10642347642 / 10642362744`; self-manifest **914/914**. Vector is 9/9 mechanism PASS, 1/1 focused PASS, 0/6 produced PASS, selector430 429/430 with sole RED ordinal408. All six produced rows are `PeriodicGeneratorRouteUnavailable`; accepted hazard rows 191/192/247 remain PASS. Candidate is unpromoted and immutable postflight is exact.
 
 ## Latest Code + Build turn — `M5-CP3-CB7`
 
-`M5-CP3-CB7` is **COMPLETE / STATIC GREEN / GMP COMPILE-PACKAGE GREEN / RUNTIME-FREE / DIAGNOSTIC CUTOVER BUILT**. Semantic patch commit `a1392c61a4f800512bb8bd73126f993638d1f55c` changes only the two authorized `SurfaceCellTracing` files. Existing failure reason values 0–49 remain unchanged; values 50–55 append generator-route unavailable, action-correspondence mismatch and the four exact existing holonomy-construction subcodes. No route/face/action/relation predicate, atlas semantic, test, fixture, selector, frozen definition or acceptance expectation changed. Selector430/first427 remain `1c412850...9db6 / f9c88380...e86f`.
-
-Mandatory GMP compile/package run/job `35598796960 / 106329775985` built all eight standard targets from exact packaged source `8f77ec403f16930145bba5bfc526a5b881b9f166` with preflight/build `0 / 0`, explicit GMPXX+GMP linkage, five empty source-status receipts, root manifest **28/28** and `runtimeExecution=false`. Candidate artifact `10637998372` / SHA-256 `1c92e42939081ec9f041f72e916c99d80a700b39a61e3917e8cf8830c5a3f98f` has root-manifest SHA-256 `1b0bc0b8ce4ff0c339659c7f7c5c3c4e9e26143d352424f7aecf1a2b8f91f737` and source-archive SHA-256 `dbc083059b4dbd8ea7b429ca32819ce8a91b179b5e2cbd6201a66113d37a9163`; log artifact `10637858795` is `ad626d649fdae2bb8fe591e2a3a38d0ee670ed152967f08cb800c098e4c4645a`. No Directional runtime executed. Candidate remains unpromoted; accepted runtime authority stays `10601978228 / 0798547d...`, accounting **50 / 14 / 36**, debt **5**, all four M5 produced debts open and selector publication prohibited. Exact next is immutable artifact-only `M5-CP3-TB1-R6-EXEC`.
+CB7 semantic patch `a1392c61a4f800512bb8bd73126f993638d1f55c` is diagnostic-only and compile/package green. Run/job `35598796960 / 106329775985` built all eight GMP targets from source `8f77ec403f16930145bba5bfc526a5b881b9f166` into artifact `10637998372` with `runtimeExecution=false`. It appends failure reasons 50-55 without changing producer semantics or accepted bytes.
 
 ## M5 checkpoint sequence
 
-- [x] `M5-CP1-TB1-R3-REV`: promote package `10600353027` and close CP1; no production-debt credit.
-- [x] `M5-CP2-CB1`: five-class typed relation failure matrix implemented; GMP compile/package green on `10601978228`; no runtime/selector publication.
-- [x] `M5-CP2-TB1-EXEC`: focused **7/7 PASS** + selector430 **430/430 PASS**, exact-one/zero-skip, benchmark 0, immutable postflight.
-- [x] `M5-CP2-TB1-REV`: promote package `10601978228`, close CP2, discharge boundary-relocation observation, freeze selector-publication sequence.
-- [x] `M5-CP3-CB1`: stopped before implementation/compile on the frozen row408 `HardRail` versus one-region `PeriodicCut` contract conflict.
-- [x] `M5-CP3-CB1-REV`: freeze A3-provenance-preserving same-region PeriodicCut promotion and surgical row408 final-kind evolution.
-- [x] `M5-CP3-CB2`: reviewed production promotion + six produced identities; candidate `10615252806` compile/package green.
-- [x] `M5-CP3-TB1-EXEC`: pre-runtime frozen-plan routing-digest block; semantic **0/445**.
-- [x] `M5-CP3-TB1-REV`: independently confirm malformed literal and exact accepted routing bytes; freeze corrected retry authority.
-- [x] `M5-CP3-TB1-R1-EXEC`: corrected immutable gate mechanically complete at **438/445 PASS**, 7 semantic RED, exact-one/zero-skip, benchmark 0; no same-turn repair.
-- [x] `M5-CP3-TB1-R1-REV`: independently uphold the R1 vector, classify `M5-CP3-TB1-R1-CAND-01` as implementation authority, keep candidate/debts unpromoted/open, and freeze the exact-span correction.
-- [x] `M5-CP3-CB3`: exact-span transport correction built at source `279efa0347...`; candidate `10620415471` GMP compile/package green, runtime-free.
-- [x] `M5-CP3-TB1-R2-EXEC`: corrected candidate gate mechanically complete at **438/445 PASS**, 7 semantic RED, exact-one/zero-skip, benchmark 0; CB3 correction does not recover the endpoint.
-- [x] `M5-CP3-TB1-R2-REV`: R2 evidence upheld; hard-feature traversal-vs-transition domain conflation independently proved; R2 merged into existing stable RP-01 event; CB4 frozen.
-- [x] `M5-CP3-CB4`: exact hard-feature transition transport + exact-parameter orientation correction built at source `6dd0e517...`; candidate `10624020011` GMP compile/package green, runtime-free.
-- [x] `M5-CP3-TB1-R3-EXEC`: CB4 candidate gate mechanically complete at **438/445 PASS**, 7 semantic RED, exact-one/zero-skip, benchmark 0; CB4 correction does not recover the endpoint.
-- [x] `M5-CP3-TB1-R3-REV`: R3 evidence upheld; CB4 raw transition path proved unreachable after production atlas cutover; R3 merged into existing RP-01 event; CB5 frozen.
-- [x] `M5-CP3-CB5`: atlas-owned non-traversal transition-value publication/query correction built at source `001dfe8f0fec...`; candidate `10627250028` GMP compile/package green, runtime-free.
-- [x] `M5-CP3-TB1-R4-EXEC`: complete 445-process gate; mechanism 9/9, produced 0/6, selector430 423/430; candidate unpromoted; Review required.
-- [x] `M5-CP3-TB1-R4-REV`: R4 evidence upheld; six atlas REDs confirmed non-stable oracle drift; ordinal408 kept in existing RP-01 recovery; frozen §15 added; CB6 frozen.
-- [x] `M5-CP3-CB6`: bounded carrier-distinctness + independent atlas-oracle correction built; candidate `10633891886` GMP compile/package green, runtime-free.
-- [x] `M5-CP3-TB1-R5-EXEC`: complete 446-process gate; mechanism 9/9, focused atlas 1/1, produced 0/6, selector430 429/430; atlas-oracle recovery green, product endpoint still RED.
-- [x] `M5-CP3-TB1-R5-REV`: R5 evidence upheld; R4 oracle drift recovery proved/closed non-stably; carrier-distinctness falsifier refuted; surviving RP-01 remains open behind collapsed periodic-promotion failures.
-- [x] `M5-CP3-CB7`: diagnostic-only typed failure disambiguation built; candidate `10637998372` GMP compile/package green, runtime-free.
-- [x] `M5-CP3-TB1-R6-EXEC`: complete 446-process gate; mechanism 9/9, focused atlas 1/1, produced 0/6, selector430 429/430; all six produced REDs dynamically localize to `PeriodicGeneratorRouteUnavailable`; accepted hazard rows 191/192/247 remain green.
+- [x] `M5-CP1` and `M5-CP2`: CLOSED / ACCEPTED for mechanism credit; accepted package `10601978228`.
+- [x] `M5-CP3-CB2` through `R5-REV`: successive bounded recovery falsifiers localize the open stable ordinal408 `RP-01` event while keeping four produced debts open.
+- [x] `M5-CP3-CB7`: typed diagnostic branch cutover compile/package green, runtime-free.
+- [x] `M5-CP3-TB1-R6-EXEC`: all six produced REDs dynamically localize to `PeriodicGeneratorRouteUnavailable`; 191/192/247 remain green.
+- [x] `M5-CP3-TB1-R6-REV`: R6 evidence upheld; exact A3 occurrence-owned source-face authority versus A4 endpoint-face substitution proved causal; R5 hazard closed green; CB8 frozen.
+- [ ] `M5-CP3-CB8`: **exact next**; product-source-only correction in `SurfaceCellTracing.cpp`, then mandatory GMP compile/package with no runtime.
+- [ ] `M5-CP3-TB1-R7-EXEC`: only after CB8 compile green; unchanged 446-process artifact-only gate. Primary falsifier: no produced row may remain `PeriodicGeneratorRouteUnavailable`.
+- [ ] `M5-CP3-TB1-R7-REV`: mandatory independent Review before any promotion, debt credit or selector-publication step.
 
-## Current focus — `M5-CP3-TB1-R6-REV`
+## Current focus — `M5-CP3-CB8`
 
-Perform mandatory runtime-free independent Review of `.agents/Directional/Architecture_M5_CP3_TB1_R6_Artifact_Only_Test_Benchmark_Report.md`. Re-derive immutable candidate/result hashes, **446/446** exact-one/zero-skip rows, the 9/1/0-of-6/429-of-430 vector, six `PeriodicGeneratorRouteUnavailable` reasons, ordinals 191/192/247 remaining required-green, immutable postflight and zero prohibited counters. Then adjudicate `M5-CP3-TB1-R5-REV-OBS-01`: either prove the A4-front-face versus exact A3-carrier-incidence mismatch owns generator-route unavailability and freeze one bounded correction, or reject/carry it with an explicit stop. No runtime, semantic edit, promotion, debt discharge or selector publication in Review.
-
+Execute `Architecture_M5_CP3_CB8_Source_Face_Incidence_Authority_Correction_Plan.md` exactly. Reuse `AcceptedCutBoundarySegment::sourceFace` / exact boundary-occurrence authority to direct the generator carrier's atlas `transition_value(...)` query; validate the two resolved faces against the carrier's `sourceEdgeFaces` as an unordered pair. Do not use `SurfaceTracePoint::face`, do not infer direction from `sourceEdgeFaces` ordering, and do not change atlas, tests, fixtures, selector430, frozen definitions or relation semantics. Compile/package all eight standard targets through the mandatory GMP reusable workflow with `runtimeExecution=false`.
 
 ## Carried forward from M1
 
