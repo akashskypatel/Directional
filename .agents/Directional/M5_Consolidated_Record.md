@@ -1,7 +1,7 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-21 at `M5-CP3-TB1-R2-REV`
+**Last updated:** 2026-09-21 at `M5-CP3-CB4`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Corrected stable accounting is **50 / 14 / 36**, produced-witness debt **5**; M5 owns four of those debts.
 
@@ -47,7 +47,11 @@ Fresh `M5-CP3-TB1-R2-EXEC` consumes candidate `10620415471` exactly and complete
 
 R2 candidate `M5-CP3-TB1-R2-CAND-01` is **IMPLEMENTATION AUTHORITY / HARD-FEATURE TRANSPORT DOMAIN CONFLATION / RECOVERY REQUIRED** and is merged into the existing stable `M5-CP3-TB1-R1-CAND-01 / RP-01 AUTHORITY_DOMAIN_CONFLATION` event. R2 does not create a second accepted-green→RED transition, so stable accounting remains **50 / 14 / 36**, debt **5**. Candidate `10620415471` remains unpromoted; accepted runtime authority remains package `10601978228` under selector430 **430/430**; all four M5 produced debts remain open; selector publication is prohibited.
 
-Exact successor is runtime-free **`M5-CP3-CB4`** under `Architecture_M5_CP3_CB4_Hard_Feature_Transition_Transport_Correction_Plan.md`: retain the exact A3 carrier, read its directed transport from the exact raw edge-transition record without making hard features traversable, derive orientation from exact edge parameters, then GMP compile/package only.
+`M5-CP3-CB4` then implements that exact bounded correction at semantic source `6dd0e5179686a4ea2ca4aacda0577855948864df`. The A3 `Mandatory` span carrier is unchanged; generator-route transport now comes from the unique raw edge-keyed `CrossFieldEdgeTransition` after exact carrier-edge reconstruction and directed source-face-pair validation, with inverse quarter-turn on reverse traversal. Route orientation now compares exact source-edge parameters and therefore supports `ExactSourceEdgePoint` endpoints. `FieldTransportAtlas` hard-feature nontraversability, CP2 failures, cross-region HardRail and same-region materializer rejection remain unchanged.
+
+Mandatory GMP run/job `35564191247 / 106222789039` compiles all eight standard targets with preflight/build `0 / 0`, explicit GMPXX+GMP, clean source receipts and `runtimeExecution=false`. Candidate artifact `10624020011` has provider SHA-256 `eeba51295d20082c8f20840b3f3b280d6b6012a1178eef2bd3eb5afbfd1a0ed6`, root manifest **28/28** at `a9ccee0d830768e1d91239741bba67f4912fe86efe12cca8ddd3a13cf50f4177`, and log artifact `10623905213` / `8e58b782ebe544e8b082e3c81b6e3634fc54de420acfe9a38a6a0d08a04a76ed`. This candidate is compile-only, runtime-unproven and unpromoted; accounting remains **50 / 14 / 36**, debt **5**.
+
+Exact successor is fresh artifact-only **`M5-CP3-TB1-R3-EXEC`** under `Architecture_M5_CP3_TB1_R3_Artifact_Only_Test_Benchmark_Plan.md`, restarting the unchanged **9 + 6 + 430 = 445** exact-filter processes from process 1 with benchmark **0** and no R1/R2 semantic-credit reuse.
 
 ## 5. Folded-document index
 
