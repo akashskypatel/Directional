@@ -100,3 +100,73 @@ Current retained role documents are the CB2 build report, blocked TB1 runtime re
 | review_check.py boundary | **ALL CHECKS PASSED** with selector430 exact-hash expectation on the prepared Review delta. |
 | `STATUS` lifecycle maintained | Review entry beacon already published; durable docs and workflow-first cleanup are verified. The COMPLETE successor beacon is the next and final repository write for this turn. |
 | Pushed to origin, branch in sync | **CONFIRMED** after durable documentation push and workflow-first cleanup; current remote authority was re-read with only durable workflows present, all connector-trigger/workflow-observation/turn-payload temporary state absent, and all current-turn Drive staging patches permanently retired. |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld.** The orchestration classification is correct, the correction is semantic-neutral, and
+deferring the four produced-debt decisions and the selector pre-commitment to `M5-CP3-TB1-R1-REV` is right.
+Accounting holds at **49 / 14 / 35**, debt **5**; selector430 re-hashes to `1c412850…9db6` at 430 rows with its
+first 427 rows byte-identical to selector427.
+
+### V1 — the corruption is precisely characterised, and the corrected plan is clean
+
+The malformed literal is **62** characters and the verified digest is **64**. They are not independently wrong
+values: the malformed literal is *exactly* the correct digest with `9b` deleted —
+`352c8cfc9c`**`9b`**`89cf…afce` → `352c8cfc9c89cf…afce`. A two-character mid-string drop.
+
+I then applied the check this class actually needs to the corrected plan: every hex literal in
+`Architecture_M5_CP3_TB1_R1_Artifact_Only_Test_Benchmark_Plan.md`, with lengths. All **eight** SHA-256 values are
+exactly 64 characters — including the corrected routing digest `352c8cfc9c9b89cf…afce`, the identity-map digest
+`7a92e7a3…cf6c`, selector430 `1c412850…9db6` and the selector427 prefix `f9c88380…e86f` — and the single 40-character
+value is the git SHA-1 semantic source `fc2aa5fa…`. **No fourth malformed literal.** The R1 plan is well-formed.
+
+§2.3's method is also right: the digest was re-derived from live artifact metadata plus a fresh download, not
+inferred from the malformed literal. Inferring the correct value from the corrupted one would have been circular.
+
+And the executor failed closed rather than editing frozen authority mid-execution — the third time that
+separation has held under pressure (`M5-CP1-TB1-EXEC`, `M5-CP1-TB1-R1-EXEC`, here). That discipline is why each
+of these cost a turn instead of corrupting an acceptance.
+
+### V2 — ESCALATED: this is a transcription failure, not a knowledge failure
+
+This is the **third** malformed frozen literal in M5, and the decisive fact is that **the correct value was
+already in the durable record**. `352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce` appears
+verbatim in at least five committed documents — including `Architecture_M4_CP4_TB3_Review_Record.md` and
+`Architecture_M5_CP2_TB1_Artifact_Only_Test_Benchmark_Report.md` — and it was independently verified by this
+reviewer at `M4-CP4-TB3-REV` and again at `M5-CP1-TB1-PREFLIGHT-REV`. The same artifact's *identity-map* digest
+was the one truncated to 63 characters at `M5-CP1-TB1-EXEC`.
+
+So the standing rule recorded at `M5-CP1-TB1-EXEC-OBS-01` — validate every literal against the artifact it names
+before freezing — is correct but is not working, because it prescribes artifact re-derivation, which is
+expensive and keeps being skipped. Nothing about these failures required artifact access to detect:
+
+1. **A length check catches both observed instances for free.** A SHA-256 literal is 64 hex characters; a git
+   SHA-1 is 40. The 63-character and 62-character literals were detectable without opening anything. The single
+   command above validated all eight literals in the corrected plan.
+2. **A digest already present in the durable record must be copied from it, not re-typed.** Every one of these
+   values existed verbatim in committed documents; a `grep` for the literal would have failed instantly on a
+   corrupted copy.
+
+Recorded as `M5-CP3-TB1-REV-OBS-01`: before any plan is frozen, mechanically check that every hex literal has a
+valid length for its type, and that any digest already recorded in a durable document matches that record
+verbatim. This is seconds of work and catches the entire observed failure class; artifact re-derivation remains
+required only for values that are genuinely new.
+
+### V3 — obligations and credit boundaries are correctly held
+
+`M5-CP2-TB1-REV-OBS-01` (pre-commit the successor selector bytes/order/SHA-256/census before publication) is
+carried to `M5-CP3-TB1-R1-REV` for the right reason: no valid CP3 semantic runtime exists yet, and the selector's
+content depends on which produced identities pass. Pre-committing before that would be pre-committing a guess.
+
+M5 produced debts **1-4 remain OPEN** with **zero semantic credit** from TB1, and the M6 closed-complex debt
+remains M6-owned with no A5 authority pulled backward. Frozen §13.4's naming boundary and the §8.1 mechanism-only
+classification of the direct/draft helpers are untouched, so nothing here moves a debt.
+
+### V4 — verification limits
+
+Re-derived from repository bytes: both literals' lengths and the exact `9b` deletion relating them, the presence
+of the correct digest in five committed documents, every hex literal and its length in the corrected R1 plan, and
+selector430's row count, full hash and 427-row prefix. Accepted as reported: live artifact metadata for
+`10592987234`, the fresh-download hash, run/job identifiers and the predecessor's pre-runtime failure receipts.

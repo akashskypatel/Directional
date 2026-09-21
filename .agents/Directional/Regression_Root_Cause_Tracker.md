@@ -9008,3 +9008,38 @@ Independent Review re-derived that `SurfaceSharedBoundaryInterval` is a separate
 **Falsifier / stop rule:** if accepted A2b/A3 authority cannot provide a canonical generator carrier, if one exact full action cannot map both reciprocal pair endpoints, if the row408 subject cannot produce `>=2` canonical relations/owned periodic edges or genuine nonzero-Z4 authority, or if the change requires weakening CP2/HardRail semantics, CB2 stops. Direct/test injection, edge-order identity and M6 authority are prohibited.
 
 No runtime or accepted package changed. Stable accounting remains **49 events / 14 categories / 35 recurrences**, produced-witness debt **5**.
+
+## `M5-CP3-TB1-REV-OBS-01` — malformed frozen literals are a transcription failure; check length and copy from the record
+
+**Status.** OPEN / NON-GATING / process-class / owner: every turn that freezes a plan / supersedes the detection
+half of `[[M5-CP1-TB1-EXEC-OBS-01]]` / NON-STABLE.
+
+Third malformed frozen hex literal in M5:
+
+1. `M5-CP1-TB1-EXEC` — identity-map digest of artifact `10592987234` frozen at **63** characters (final `c`
+   dropped);
+2. `M5-CP1-TB1-R1-EXEC` — embedded harness and package paths unresolved before triggering;
+3. `M5-CP3-TB1-EXEC` — routing ZIP digest of the **same** artifact `10592987234` frozen at **62** characters.
+   The malformed value is exactly the correct digest with `9b` deleted:
+   `352c8cfc9c`**`9b`**`89cf…afce` → `352c8cfc9c89cf…afce`.
+
+**Why the existing rule is not working:** `M5-CP1-TB1-EXEC-OBS-01` requires validating every literal against the
+artifact it names before freezing. That is correct but prescribes artifact re-derivation — expensive, and
+repeatedly skipped. The decisive fact is that **the correct value was already in the durable record**:
+`352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce` appears verbatim in at least five committed
+documents, including `Architecture_M4_CP4_TB3_Review_Record.md`, and was independently verified at
+`M4-CP4-TB3-REV` and `M5-CP1-TB1-PREFLIGHT-REV`. This is a transcription failure, not a knowledge failure, and
+neither instance required artifact access to detect.
+
+**How to apply — two mechanical checks before any plan is frozen:**
+
+1. **Length.** Every hex literal must have a valid length for its type: SHA-256 is 64 hex characters, git SHA-1
+   is 40. This catches both observed instances with no artifact access. Applied to
+   `Architecture_M5_CP3_TB1_R1_Artifact_Only_Test_Benchmark_Plan.md` it confirms all eight SHA-256 literals at 64
+   and the one git SHA-1 at 40 — the corrected plan is clean.
+2. **Provenance.** Any digest already recorded in a durable document must be copied from that record and match it
+   verbatim; a `grep` for the literal fails instantly on a corrupted copy. Artifact re-derivation remains
+   required only for genuinely new values.
+
+The executor failing closed rather than editing frozen authority mid-execution has now held three times, which is
+why each instance cost one turn instead of corrupting an acceptance. That separation must be preserved.

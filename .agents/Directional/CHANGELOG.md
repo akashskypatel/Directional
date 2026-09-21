@@ -1,3 +1,34 @@
+## 2026-09-21 — `M5-CP3-TB1-REV` review: orchestration classification upheld; literal-checking rule escalated
+
+Runtime-free review. **Upheld.** Accounting holds at **49 / 14 / 35**, debt **5**; selector430 re-hashes to
+`1c412850…9db6` at 430 rows with its first 427 rows byte-identical to selector427. The four produced-debt
+decisions and the selector pre-commitment are correctly deferred to `M5-CP3-TB1-R1-REV`.
+
+The corruption is precisely characterised: the malformed literal is **62** characters and is *exactly* the
+verified 64-character digest with `9b` deleted — `352c8cfc9c`**`9b`**`89cf…afce` → `352c8cfc9c89cf…afce`. §2.3's
+method is right, re-deriving from live artifact metadata and a fresh download rather than inferring from the
+corrupted literal, which would have been circular. The executor again failed closed instead of editing frozen
+authority mid-execution — the third time that separation has held, and why each instance cost a turn rather than
+corrupting an acceptance.
+
+Applying the check this class actually needs to the corrected plan: all **eight** SHA-256 literals in
+`Architecture_M5_CP3_TB1_R1_…_Plan.md` are exactly 64 characters and the single 40-character value is the git
+SHA-1 semantic source. **No fourth malformed literal** — the R1 plan is clean.
+
+New: `M5-CP3-TB1-REV-OBS-01`, escalating the detection half of `M5-CP1-TB1-EXEC-OBS-01`. This is the third
+malformed frozen literal in M5, and the decisive fact is that **the correct value was already in the durable
+record** — present verbatim in at least five committed documents and independently verified by this reviewer at
+`M4-CP4-TB3-REV` and `M5-CP1-TB1-PREFLIGHT-REV`. It is a transcription failure, not a knowledge failure. The
+existing rule prescribes artifact re-derivation, which is expensive and keeps being skipped; neither instance
+needed artifact access to detect. Two mechanical checks before freezing: **length** (SHA-256 is 64 hex, git SHA-1
+is 40 — catches both observed cases for free) and **provenance** (a digest already in a durable record is copied
+from it and matched verbatim by `grep`, never re-typed).
+
+M5 produced debts 1-4 remain OPEN with zero semantic credit; the M6 closed-complex debt remains M6-owned with no
+A5 authority pulled backward.
+
+Exact successor: `M5-CP3-TB1-R1-EXEC` under the corrected artifact-only plan.
+
 ## 2026-09-20 — `M5-CP3-TB1-REV`: frozen routing digest defect confirmed; corrected R1 execution authority frozen
 
 Runtime-free independent Review confirms `M5-CP3-TB1-EXEC` provided **zero semantic credit**. Final retry `35544717675` / result `10616206801` is independently re-opened: result ZIP/self-manifest verify, preflight/runtime are false, and all benchmark/configure/compile/relink/discovery/repair/mutation counters are zero. The consumed plan's routing artifact `10592987234` digest is only **62 hex characters**.
