@@ -97,8 +97,11 @@ jobs:
           values = {}
           for name, pattern in patterns.items():
               matches = re.findall(pattern, text)
-              if len(matches) != 1:
-                  raise SystemExit(f'{name}: expected exactly one durable-plan match, got {len(matches)}')
+              if not matches:
+                  raise SystemExit(f'{name}: durable-plan value not found')
+              unique = set(matches)
+              if len(unique) != 1:
+                  raise SystemExit(f'{name}: conflicting durable-plan values: {sorted(unique)}')
               values[name] = matches[0]
           pathlib.Path(sys.argv[2]).write_text(
               ''.join(f'{name}={value}\n' for name, value in values.items()),
