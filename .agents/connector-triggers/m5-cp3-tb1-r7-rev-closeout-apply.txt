@@ -1,0 +1,4 @@
+Purpose: apply verified durable closeout for M5-CP3-TB1-R7-REV.
+Patch base: 70fcc68b88238b76ee263b88b79c60bbd79e219a.
+Caller install: 621cf6bb8497693f38e272ab431cec339f8478dd.
+Retry: 0
