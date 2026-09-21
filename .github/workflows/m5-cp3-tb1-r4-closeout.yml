@@ -1,0 +1,43 @@
+name: M5 CP3 TB1 R4 Closeout Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m5-cp3-tb1-r4-closeout-20260921.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  id-token: write
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m5-cp3-tb1-r4-closeout.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m5-cp3-tb1-r4-closeout
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 138UOTi0QYgvchtd6a4E_c2NDq7ONwWi0
+      patch_sha256: d5ad65d4b746ee75a5d009e7a775091458d7ea2f10575872409afd8ca035f8d3
+      base_sha: c41dfaeb6d6bf6f439690e0f06000568344eabef
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "M5-CP3-TB1-R4-EXEC: record semantic-red execution"
+    secrets: inherit
