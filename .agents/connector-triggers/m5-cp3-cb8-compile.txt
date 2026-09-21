@@ -1,0 +1,4 @@
+Purpose: compile/package exact M5-CP3-CB8 source with mandatory GMP/GMPXX and no runtime execution.
+Source SHA: baae6307d189639fdf7d8a0011f5ba5f30de1631.
+Caller install: 1c7102d6941d617ce6e7ec5a9fa2be4d98d0bce3.
+Retry: 0
