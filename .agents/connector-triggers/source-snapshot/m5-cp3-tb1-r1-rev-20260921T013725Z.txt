@@ -1,3 +1,0 @@
-turn=M5-CP3-TB1-R1-REV
-purpose=review source snapshot
-semantic_source=fc2aa5fa68cac890051614c2104979aef4a60d21
