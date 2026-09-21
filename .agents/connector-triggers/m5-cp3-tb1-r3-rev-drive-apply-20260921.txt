@@ -1,0 +1,5 @@
+turn=M5-CP3-TB1-R3-REV
+purpose=apply independent Review record, CB5 plan, consolidation, and durable handoff
+base_sha=a2bfebd90e0088b536c525177a96dd9fe1599e46
+patch_sha256=f44581b0a860a2f67886d294a2fa842d757cf30288a7d5fe025829d06a92742f
+retry=0
