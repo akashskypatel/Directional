@@ -1,7 +1,7 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-21 at `M5-CP3-TB1-R6-REV`
+**Last updated:** 2026-09-21 at `M5-CP3-TB1-R7-REV`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Corrected stable accounting is **50 / 14 / 36**, produced-witness debt **5**; M5 owns four of those debts.
 
@@ -118,12 +118,51 @@ The dynamic branch plus source authority closes the R5 ambiguity. Accepted A3 cu
 
 No frozen-definition amendment, selector change, promotion or debt credit occurs. `M5-CP3-TB1-R2-REV-OBS-01` remains carried until successful corrected production proves reached value consumption. Stable accounting remains **50 / 14 / 36**, debt **5**; accepted runtime package remains `10601978228` under selector430 **430/430**. Exact successor is bounded runtime-free `M5-CP3-CB8`, correcting only the source-face incidence authority in `SurfaceCellTracing.cpp`; compile-green then routes to fresh 446-process R7 with the pre-committed falsifier that no produced row may remain `PeriodicGeneratorRouteUnavailable`.
 
+## 4.6 `M5-CP3-CB8` + `M5-CP3-TB1-R7-EXEC` — generator-route recovery and later witness frontier
+
+CB8 semantic commit `31d437a0864f99cb44d06430e0faa85c57c862be` changes only `SurfaceCellTracing.cpp`: accepted A3
+boundary-occurrence `sourceFace` authority is retained to the exact generator carrier; the directed atlas value is queried from
+those occurrence-owned faces after unordered carrier-incidence validation. Mandatory GMP compile/package run/job
+`35623934990 / 106413580650` packages exact source `baae6307d189639fdf7d8a0011f5ba5f30de1631` as candidate
+`10651055588` with `runtimeExecution=false` and 28/28 root manifest.
+
+R7 runtime run/job `35628318067 / 106428116133` then executes all **446** exact-filter processes: mechanism **9/9**,
+focused atlas **1/1**, produced **3/6**, selector430 **430/430**, zero skips and benchmark zero. The CB8 primary
+falsifier clears: no produced row reports `PeriodicGeneratorRouteUnavailable`; accepted ordinal408 recovers. Runtime-free
+evidence finalization `35630259806 / 106434543859` re-verifies the completed runtime without rerun and publishes finalized
+artifact `10653953037`, self-manifest **918/918** at
+`3318a61ee993a9022141457fe0efacf8334013e0d6a9708a8537ec1358c39fb5`.
+
+## 4.7 `M5-CP3-TB1-R7-REV` — recovery closes, witness authority is the remaining owner
+
+Independent Review upholds the full R7 mechanical evidence and closes the stable R1 `RP-01 AUTHORITY_DOMAIN_CONFLATION`
+event **RECOVERY PROVED** without decrementing stable history: **50 events / 14 categories / 36 recurrences**.
+Produced rows1-3 directly discharge the relation-owner/reorder and missing-owner M5 debts; project debt moves **5 -> 3**
+(two nonzero-Z4 M5 debts plus one M6 debt).
+
+Rows4/5 do not prove another product defect. Exact re-derivation from committed `torus.obj` / `torus.rawfield` shows all
+**216/216** source-edge matching values are Z4 zero, including all 18 row408 hard edges, so their supposed genuine
+nonzero-Z4 source precondition is false. Row6's purported unused swapped relation ID is already present in the produced table.
+Both are existing `RP-02 / TEST_AUTHORITY_COVERAGE_GAP` instances and non-stable. Candidate `10651055588` remains
+unpromoted and publication precommitment remains prohibited.
+
+The R6 direction observation remains open: CB8 validates face membership but current zero-Z4 fixture cannot dynamically
+discriminate forward from inverse occurrence ordering. Exact successor `M5-CP3-CB9` is test-only: author a deterministic
+source-authoritative nonzero-Z4 torus witness, an independent A3/source-path direction oracle, and a genuinely absent unused
+relation witness; product source stays byte-frozen. Compile-green routes to the same 446-process R8 gate and mandatory Review.
+
 ## 5. Folded-document index
 
 Historical citations in frozen/normative records to filenames listed here are provenance-only and resolve through this index plus git history; frozen text is not rewritten merely to chase a folded filename.
 
 | Folded filename | Verdict / retained home |
 |---|---|
+| `Architecture_M5_CP3_TB1_R6_Artifact_Only_Test_Benchmark_Report.md` | **SUPERSEDED R6 RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R7-REV`.** Exact 446-process branch-localization evidence is retained in §§4.4-4.7, tracker/changelog and git history. |
+| `Architecture_M5_CP3_TB1_R6_Review_Record.md` | **SUPERSEDED R6 REVIEW / FOLDED BY `M5-CP3-TB1-R7-REV`.** A3 occurrence-face cause, carried direction observation and CB8 scope are retained in §§4.5-4.7, current R7 Review and tracker. |
+| `Architecture_M5_CP3_CB8_Source_Face_Incidence_Authority_Correction_Plan.md` | **CONSUMED CB8 PLAN / FOLDED BY `M5-CP3-TB1-R7-REV`.** Source-face correction boundary and R7 falsifier are retained in §§4.6-4.7/current Review/git history. |
+| `Architecture_M5_CP3_CB8_Code_Build_Report.md` | **SUPERSEDED CB8 BUILD REPORT / FOLDED BY `M5-CP3-TB1-R7-REV`.** Semantic commit, compile/package identities and candidate hashes are retained in §4.6/current Review/changelog. |
+| `Architecture_M5_CP3_TB1_R7_Artifact_Only_Test_Benchmark_Plan.md` | **CONSUMED R7 EXECUTION PLAN / FOLDED BY `M5-CP3-TB1-R7-REV`.** Exact 446-process gate and primary falsifier are retained in §§4.6-4.7/current Review. |
+| `Architecture_M5_CP3_TB1_R7_Artifact_Only_Test_Benchmark_Report.md` | **SUPERSEDED R7 RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R7-REV`.** Runtime/finalization authority and 443/3 vector are retained in §§4.6-4.7/current Review/tracker/changelog. |
 | `Architecture_M5_CP3_CB6_Carrier_Distinctness_And_Atlas_Oracle_Correction_Plan.md` (135 lines) | **CONSUMED CB6 PLAN / FOLDED BY `M5-CP3-TB1-R6-REV`.** Carrier-distinctness falsifier and independent atlas-oracle correction history remain in §§4.1-4.2, tracker, changelog and git history. |
 | `Architecture_M5_CP3_CB7_Code_Build_Report.md` (72 lines) | **SUPERSEDED CB7 BUILD REPORT / FOLDED BY `M5-CP3-TB1-R6-REV`.** Diagnostic-only semantic commit, compile/package IDs and candidate hashes remain in §§4.3-4.5, durable changelog and current R6 Review. |
 | `Architecture_M5_CP3_CB7_Periodic_Holonomy_Failure_Disambiguation_Plan.md` (89 lines) | **CONSUMED CB7 PLAN / FOLDED BY `M5-CP3-TB1-R6-REV`.** Diagnostic branch vocabulary, no-semantic-change boundary and R6 falsifier remain in §§4.3-4.5, tracker and git history. |

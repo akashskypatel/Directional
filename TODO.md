@@ -2,63 +2,44 @@
 
 Last updated: 2026-09-21 UTC
 
-## Latest Review turn — `M5-CP3-TB1-R6-REV`
+## Latest Review turn — `M5-CP3-TB1-R7-REV`
 
-`M5-CP3-TB1-R6-REV` remains the latest independent Review. It proved the A3 occurrence-owned source-face / A4
-endpoint-face authority conflation as continuation of the existing stable `RP-01` event and froze CB8. Its
-`M5-CP3-TB1-R6-REV-OBS-01` direction-orientation addendum remains open for mandatory R7 Review.
+R7 Review independently upholds the 446-process evidence, closes the stable R1 `RP-01` recovery, proves rows4/5 and row6 are
+non-stable test-authority defects, discharges two produced M5 debts, and freezes test-only CB9. Stable accounting remains
+**50 / 14 / 36**; project debt is **3**. Candidate `10651055588` remains unpromoted and selector publication is prohibited.
 
 ## Latest Test + Benchmark turn — `M5-CP3-TB1-R7-EXEC`
 
-R7 runtime run/job `35628318067 / 106428116133` consumed CB8 candidate `10651055588` immutably and completed all
-**446** fresh exact-filter processes with exact-one/zero-skip. Vector is mechanism **9/9 PASS**, focused atlas
-**1/1 PASS**, produced **3/6 PASS**, selector430 **430/430 PASS**, benchmark **0**. Produced ordinals 4/5/6 remain
-RED at later GTest assertions; **zero** produced rows report `PeriodicGeneratorRouteUnavailable`. Accepted ordinal
-408 and protected 191/192/247 are PASS. Runtime-free evidence finalization `35630259806 / 106434543859` verified
-the immutable runtime result without rerun and published finalized artifact `10653953037`, self-manifest
-**918/918** at `3318a61ee993a9022141457fe0efacf8334013e0d6a9708a8537ec1358c39fb5`.
+R7 is mechanically complete at **9/9 mechanism + 1/1 focused atlas + 3/6 produced + selector430 430/430** over 446 fresh
+exact-one/zero-skip processes. Zero produced rows report `PeriodicGeneratorRouteUnavailable`; accepted ordinal408 is recovered.
+Finalized evidence artifact `10653953037` has complete self-manifest **918/918** at
+`3318a61ee993a9022141457fe0efacf8334013e0d6a9708a8537ec1358c39fb5`.
 
 ## Latest Code + Build turn — `M5-CP3-CB8`
 
-CB8 is **COMPLETE / STATIC GREEN / GMP COMPILE-PACKAGE GREEN / RUNTIME-FREE**. Semantic patch
-`31d437a0864f99cb44d06430e0faa85c57c862be` changes only `src/geometry/SurfaceCellTracing.cpp`: exact accepted A3
-boundary occurrences retain `AcceptedCutBoundarySegment::sourceFace`, generator-route transition queries resolve
-the directed face pair from that authority, and the pair is validated against carrier `sourceEdgeFaces` as an
-unordered set without using storage order for direction. Candidate `10651055588` / source `baae6307d...` is the
-R7 runtime subject and remains unpromoted pending Review.
+CB8 is runtime-free compile/package green and corrects exact A3 occurrence-owned source-face incidence for the generator atlas
+query. Candidate `10651055588` / source `baae6307d...` remains unpromoted because R7 rows4–6 are semantic RED.
 
 ## M5 checkpoint sequence
 
 - [x] `M5-CP1` and `M5-CP2`: CLOSED / ACCEPTED for mechanism credit; accepted package `10601978228`.
-- [x] `M5-CP3-CB2` through `R5-REV`: bounded recovery falsifiers localize the open stable ordinal408 `RP-01` event while four produced debts remain open.
-- [x] `M5-CP3-CB7`: typed diagnostic branch cutover compile/package green, runtime-free.
-- [x] `M5-CP3-TB1-R6-EXEC`: all six produced REDs dynamically localize to `PeriodicGeneratorRouteUnavailable`; 191/192/247 remain green.
-- [x] `M5-CP3-TB1-R6-REV`: exact A3 occurrence-owned source-face authority versus A4 endpoint-face substitution proved causal; CB8 frozen.
-- [x] `M5-CP3-CB8`: occurrence-owned source-face correction implemented; all eight mandatory GMP targets compile/package green; no runtime.
-- [x] `M5-CP3-TB1-R7-EXEC`: all 446 processes complete; primary generator-route falsifier clears, ordinal408 recovers, produced rows 1–3 pass and 4–6 remain later RED; candidate still unpromoted.
-- [ ] `M5-CP3-TB1-R7-REV`: **exact next**; mandatory runtime-free independent Review. Re-derive R7 evidence, adjudicate R1 recovery and direction orientation, localize rows 4–6, and decide produced-debt credit/promotion/next bounded turn.
+- [x] `M5-CP3` R1→R7 recovery chain: stable ordinal408 `RP-01` event **RECOVERY PROVED** at R7 Review.
+- [x] M5 produced debt 1 — relation owners/container reorder: **DISCHARGED at R7 Review** on produced rows1/2 with >=2 relations and >=2 owned periodic edges.
+- [x] M5 produced debt 2 — missing relation owner: **DISCHARGED at R7 Review** on produced rows1/3 with exact typed rejection.
+- [ ] M5 produced debt 3 — genuine nonzero-Z4 rotation+translation through production/materialization: **OPEN**; R7 witness precondition false.
+- [ ] M5 produced debt 4 — tampered produced nonzero-Z4 transform rejects typed: **OPEN**; same witness precondition, tamper not reached.
+- [ ] M6 closed-complex produced debt: **OPEN / M6-owned**.
+- [ ] `M5-CP3-CB9` — **NEXT / TEST-ONLY / RUNTIME-FREE**. Repair nonzero-Z4 source witness, independent direction oracle and genuinely unused relation witness in `tests/SurfaceCellTransitionQuotientTests.cpp` only; mandatory all-eight GMP compile/package.
+- [ ] `M5-CP3-TB1-R8-EXEC` — if CB9 compile-green, immutable same 446-process gate; require 9/9 + 1/1 + 6/6 + 430/430, independent nonzero direction oracle, exact immutable postflight.
+- [ ] `M5-CP3-TB1-R8-REV` — mandatory Review; only an all-green Review may discharge remaining M5 debts and pre-commit selector publication.
+- [ ] M5 selector publication Code + Build / cumulative artifact-only runtime / Review — blocked until frozen §13.3 precommitment exists.
 
-## Current focus — `M5-CP3-TB1-R7-REV`
+## Current observations
 
-Review `.agents/Directional/Architecture_M5_CP3_TB1_R7_Artifact_Only_Test_Benchmark_Report.md` and the immutable R7
-evidence independently. Do not mutate or rerun the candidate. Verify the 443 PASS / 3 RED vector, zero
-`PeriodicGeneratorRouteUnavailable`, ordinal408 recovery, immutable postflight, finalized evidence chain, and
-`M5-CP3-TB1-R6-REV-OBS-01` against A3 orientation / §14.2 reciprocity authority. Rows 4–6 must be localized from
-source/evidence rather than assumed to share one cause.
-
-## Carried forward from M1
-
-**Produced-witness debt — `G4-B002` split by DEFN-R1/R2 (3 total, unchanged).**
-- [ ] **M6-CP1 mechanism / M6-CP3 production:** re-prove `CandidateExtractionBaselineForCanonicalSourceScopeIdentityIsNonVacuous` on authoritative A5 occurrence-complex production with the original independent eligibility oracle + hard-feature tamper.
-- [ ] **M5-CP1 mechanism / M5-CP3 production:** re-prove `PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization` with the original `>=2` produced relation/edge discriminator.
-- [ ] **M5-CP2 mechanism / M5-CP3 production:** re-prove `MissingPeriodicRelationOwnerIsRejected` on produced periodic authority.
-
-**Produced-witness debt — `G4-B003` → M5 (2).** Together with the two re-homed periodic `G4-B002` debts, M5 owns four produced-witness debts; M6 owns the re-homed closed-complex `G4-B002` debt; total project debt remains 5.
-- [ ] Re-prove `FullPeriodicRotationAndTranslationMaterialize` on produced nonzero-Z4 authority.
-- [ ] Re-prove `TamperedFullPeriodicTransformIsRejected` on produced nonzero-Z4 authority.
-
-**Criterion-5 disposition re-proof → M7.**
-- [ ] Re-express M1 criterion 5 in disposition terms and re-run F1/F2/F3 under verifier-assigned `Certified`. M7 does not close until green.
+- [x] `M5-CP3-TB1-R5-REV-OBS-01` — recovery proved by R7.
+- [x] `M5-CP3-TB1-R2-REV-OBS-01` — successful atlas-owned value consumption proved at R7 while hard-feature nontraversal control remains green.
+- [ ] `M5-CP3-TB1-R6-REV-OBS-01` — **OPEN**. Current torus source matching is zero on every edge, so R7 cannot discriminate forward/inverse face direction. CB9/R8 must provide a genuine nonzero-Z4 oracle before product correction.
+- [ ] `M5-CP2-TB1-REV-OBS-01` — **OPEN** until first independently all-green corrected CP3 pre-publication Review freezes publication bytes/hash/census.
 
 ## Deferred hygiene
 
@@ -84,7 +65,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. Four periodic/relation debts remain M5-owned and one closed-complex debt remains M6-owned.
-- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 R7 EXEC COMPLETE / SEMANTIC RED / R7 REVIEW NEXT**. Accepted runtime package remains `10601978228`. CB8/R7 candidate `10651055588` / source `baae6307d...` is unpromoted. R7 completes 446/446 at mechanism 9/9 PASS, focused atlas 1/1 PASS, produced 3/6 PASS, selector430 430/430 PASS; the generator-route falsifier clears and ordinal408 recovers, while produced rows 4–6 remain later assertion REDs. Stable accounting remains **50 / 14 / 36**, debt **5** pending Review; selector publication is prohibited. Exact next `M5-CP3-TB1-R7-REV`.
+- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 R7 REVIEW COMPLETE / CB9 TEST-WITNESS CORRECTION NEXT**. Accepted runtime package remains `10601978228`; R7 candidate `10651055588` is unpromoted. R7 Review closes generator-route RP-01 recovery and discharges two M5 debts; rows4/5 and row6 are non-stable test-authority gaps. Stable accounting remains **50 / 14 / 36**, debt **3**. Exact next `M5-CP3-CB9`.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.
@@ -123,4 +104,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current corrected totals are **50 events / 14 categories / 36 recurrences**, debt **5**. M4, M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**; accepted runtime authority remains package `10601978228` / source `0798547d...` under selector430 **430/430**. R7 candidate `10651055588` / source `baae6307d...` has now completed immutable runtime at mechanism 9/9, focused atlas 1/1, produced 3/6 and selector430 430/430; zero produced rows remain at `PeriodicGeneratorRouteUnavailable`, but rows 4/5/6 are later semantic REDs and the candidate remains unpromoted. The existing R1 stable `RP-01` recurrence has runtime recovery evidence but is not closed until R7 Review. Four M5 produced debts remain open in EXEC, the M6 closed-complex debt remains open, and selector publication remains prohibited. Exact successor is **`M5-CP3-TB1-R7-REV`**. PR #8 remains open, draft, and unmerged.
+Current corrected totals are **50 events / 14 categories / 36 recurrences**, debt **3**. M4, M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**; accepted runtime authority remains package `10601978228` / source `0798547d...` under selector430 **430/430**. R7 candidate `10651055588` remains unpromoted, but generator-route RP-01 recovery is independently proved and the relation-owner/reorder plus missing-owner M5 debts are discharged. Two nonzero-Z4 M5 debts and the M6 closed-complex debt remain open. Rows4/5 and row6 require test-witness correction, and the R6 direction observation remains open until a genuine nonzero source transition can discriminate direction. Selector publication remains prohibited. Exact successor is **`M5-CP3-CB9`**. PR #8 remains open, draft, and unmerged.

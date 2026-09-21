@@ -1,3 +1,12 @@
+## 2026-09-21 — M5-CP3-TB1-R7 Review closes generator-route recovery and freezes test-only CB9
+
+- Independent Review upholds R7's complete immutable 446-process evidence: **9/9 mechanism, 1/1 focused atlas, 3/6 produced, selector430 430/430**, exact-one/zero-skip, zero prohibited operations, and finalized artifact `10653953037` self-manifest **918/918**.
+- `M5-CP3-TB1-R1-CAND-01 / RP-01 AUTHORITY_DOMAIN_CONFLATION` is **RECOVERY PROVED**: zero produced rows remain `PeriodicGeneratorRouteUnavailable` and accepted ordinal408 is green. Stable history remains **50 events / 14 categories / 36 recurrences**.
+- Produced relation-owner/container-reorder and missing-owner debts are discharged; project debt **5 -> 3** (two M5 nonzero-Z4 debts + one M6 debt).
+- Rows4/5 are non-stable `RP-02` witness-authority failures: exact reconstruction of committed torus source matching yields Z4 **0 on all 216 edges**, so their genuine-nonzero source precondition is false. Row6's purported unused swapped relation is already present, another non-stable RP-02/non-vacuity failure.
+- R6 direction observation remains open because a zero-Z4 fixture cannot discriminate forward/inverse directed transition authority. No product correction is authorized yet.
+- Exact successor `M5-CP3-CB9` is test-only/runtime-free: author a deterministic nonzero-Z4 source witness, independent A3 direction oracle, and genuinely absent unused relation witness; mandatory GMP compile/package then fresh 446-process R8.
+
 ## 2026-09-21 — `M5-CP3-TB1-R7-EXEC`: generator-route recovery proved; 3 later produced REDs remain
 
 Immutable artifact-only R7 consumes CB8 candidate `10651055588` / source

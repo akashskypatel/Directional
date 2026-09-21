@@ -1,3 +1,55 @@
+## 2026-09-21 — `M5-CP3-TB1-R7-REV` recovery and witness-authority adjudication
+
+**Stable totals remain 50 events / 14 categories / 36 recurrences. Produced-witness debt moves 5 -> 3.**
+
+`M5-CP3-TB1-R1-CAND-01 / RP-01 AUTHORITY_DOMAIN_CONFLATION` is **CLOSED / RECOVERY PROVED**. Fresh R7 executes the
+complete 446-process gate with selector430 **430/430**, accepted ordinal408 recovered, produced rows1-3 green and zero
+`PeriodicGeneratorRouteUnavailable`; independent Review upholds those bytes and the immutable postflight. R2-R6 remain
+continuations of this one stable event. Stable counts do not decrement on recovery.
+
+### `M5-CP3-TB1-R7-CAND-02` — rows4/5 nonzero-Z4 witness precondition is false
+
+**Status:** OPEN ONLY AS CB9 TEST-AUTHORITY WORK / `RP-02 TEST_AUTHORITY_COVERAGE_GAP` / NON-STABLE / +0.
+
+Review independently reconstructs the committed torus cross-field matching from `torus.obj` + `torus.rawfield` and obtains
+Z4 **0 on all 216/216 source edges**, including every one of the 18 row408 hard-feature edges. Rows4/5 search produced
+relations for a nonzero-Z4+translation action; no independent source oracle first proves such an action can exist. Row4 therefore
+fails its own precondition and row5 never reaches tamper. CB9 must author a deterministic source-level nonzero-Z4 torus witness
+and pre-product oracle; production source is not an owner until a discriminating runtime says so.
+
+### `M5-CP3-TB1-R7-CAND-03` — row6 “unused” relation is already present
+
+**Status:** OPEN ONLY AS CB9 TEST-AUTHORITY WORK / `RP-02 TEST_AUTHORITY_COVERAGE_GAP` / NON-STABLE / +0.
+
+Row6 copies the direct CP1 trick of swapping the first owner's generator/cut routes and assumes the resulting ID is absent. On
+the produced torus it is already present, so the row fails before insertion/materialization. CB9 must construct a valid relation
+whose semantic ID is independently proved absent, unowned and unselected before insertion; frozen §7 is unchanged.
+
+### Observation disposition at R7 Review
+
+- `M5-CP3-TB1-R5-REV-OBS-01`: **CLOSED / RECOVERY PROVED** with R7 zero-generator-route-unavailable and recovered
+  publication endpoint.
+- `M5-CP3-TB1-R2-REV-OBS-01`: **DISCHARGED**. R7 rows1-3 successfully consume atlas-owned hard-feature transition value,
+  while the focused atlas control keeps the hard feature nontraversable.
+- `M5-CP3-TB1-R6-REV-OBS-01`: **OPEN / FALSIFIER NOT SATISFIED / owner CB9 -> R8 Review**. CB8's unordered carrier
+  membership check does not independently tie `fromOccurrence -> toOccurrence` to canonical source-path direction; current
+  torus source matching is zero everywhere, so R7 cannot distinguish inversion. CB9 must introduce a genuine nonzero-Z4
+  source oracle before any product correction is authorized.
+- `M5-CP2-TB1-REV-OBS-01`: **CARRIED**. R7 is semantic RED, so selector publication precommitment remains prohibited.
+
+### Debt disposition
+
+- `PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization`: **DISCHARGED by R7 Review** on produced rows1/2
+  with >=2 distinct produced relations and >=2 owned periodic edges.
+- `MissingPeriodicRelationOwnerIsRejected`: **DISCHARGED by R7 Review** on produced rows1/3 with exact typed rejection.
+- `FullPeriodicRotationAndTranslationMaterialize`: **OPEN / M5**; current witness has no genuine nonzero-Z4 source transition.
+- `TamperedFullPeriodicTransformIsRejected`: **OPEN / M5**; same precondition missing and tamper not reached.
+- closed-complex produced witness: **OPEN / M6**.
+
+Accepted package/source remains `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316` under selector430 430/430.
+Candidate `10651055588` stays unpromoted. Exact successor is test-only `M5-CP3-CB9` followed, if compile-green, by fresh
+446-process `M5-CP3-TB1-R8-EXEC` and mandatory Review.
+
 ## 2026-09-21 — `M5-CP3-CB8`: occurrence-owned source-face incidence correction — **COMPILE GREEN / EXISTING RP-01 RECOVERY PENDING / +0**
 
 - **Correction authority:** semantic patch `31d437a0864f99cb44d06430e0faa85c57c862be`; exact compile source `baae6307d189639fdf7d8a0011f5ba5f30de1631`; only semantic path `src/geometry/SurfaceCellTracing.cpp`.
@@ -9337,7 +9389,7 @@ shown preserved rather than merely relabelled. See `[[M5-CP2-CB1-OBS-01]]`.
 
 ## `M5-CP3-TB1-R6-REV-OBS-01` — CB8 has a membership falsifier but no direction falsifier
 
-**Status.** OPEN / R7 GENERATOR-ROUTE RECOVERY OBSERVED / GATING ON `M5-CP3-TB1-R7-REV` / NON-STABLE.
+**Status.** OPEN / R7 GENERATOR-ROUTE RECOVERY PROVED / DIRECTION FALSIFIER NOT SATISFIED / OWNER `M5-CP3-CB9` -> `M5-CP3-TB1-R8-REV` / NON-STABLE.
 
 R6 dynamically localized the failure to branch 1: `generator_route_for_span` returns no route, reported through
 CB7's new `SurfacePhaseFrontFailureReason::PeriodicGeneratorRouteUnavailable`
@@ -9364,11 +9416,11 @@ the present state, and far harder to detect later.
 coordinates; it did **not** add a second product-side direction oracle or alter action semantics. The mandatory
 compile is green, but compile evidence cannot close this observation.
 
-**How to apply:** `M5-CP3-TB1-R7-REV` must report, for each of the six produced identities, that the resolved
-directed pair and resulting action agree with independently derived A3 orientation / §14.2 reciprocity. If the
-immutable R7 receipts are insufficient to establish that independently, Review must keep the observation open and
-freeze a bounded diagnostic next turn rather than infer correctness from unordered carrier membership or a green
-compile.
+**R7 Review disposition:** immutable R7 proves generator-route recovery but cannot independently establish directed
+face orientation because the committed torus source matching is Z4 zero on all 216/216 edges; forward and inverse
+quarter-turn are therefore dynamically indistinguishable on this subject. The observation remains open. `M5-CP3-CB9`
+must author a source-authoritative nonzero-Z4 witness and independent A3/source-path direction oracle; fresh R8 and
+mandatory R8 Review own closure or any later production correction.
 
 
 ## 2026-09-21 — `M5-CP3-TB1-R7-EXEC` clears generator-route falsifier; later produced frontier remains Review-owned
