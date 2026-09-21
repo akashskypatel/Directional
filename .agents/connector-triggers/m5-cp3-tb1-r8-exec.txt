@@ -1,0 +1,5 @@
+Purpose: execute immutable M5-CP3-TB1-R8 446-process artifact-only gate.
+Candidate artifact: 10660365136.
+Exact packaged source: 1023eea6090a1f6c2d47ecaceb1099967c32e6c2.
+Caller install: df99bfad3c33a19f905d75bf1af09c171aeffa7c.
+Retry: 0
