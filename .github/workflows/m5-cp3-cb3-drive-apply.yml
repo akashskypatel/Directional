@@ -1,0 +1,46 @@
+name: M5 CP3 CB3 Drive Patch
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m5-cp3-cb3-drive-apply.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  id-token: write
+
+concurrency:
+  group: m5-cp3-cb3-drive-patch-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m5-cp3-cb3-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m5-cp3-cb3-drive-patch
+      commit_run_file: false
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 15F3s2I9CSmhPy6SEdRlp6vJ0SeJu2ZBk
+      patch_sha256: d5cc5f23f2465e56d806789e9abd30fb9fdd3276a007a907daf84fbe8ac884fd
+      base_sha: 00c6765bf83f69cd73dd25324818f6752f5bacad
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: M5-CP3-CB3 exact-span transport correction
+    secrets: inherit
