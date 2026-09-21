@@ -17167,7 +17167,7 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
         result.disposition = SurfaceCellProducerDisposition::Rejected;
         set_phase_front_failure(
             result.failure,
-            SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch,
+            SurfacePhaseFrontFailureReason::PeriodicGeneratorRouteUnavailable,
             static_cast<int>(first.filledCell.index()), first.filledSide);
         return result;
       }
@@ -17180,7 +17180,7 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
         result.disposition = SurfaceCellProducerDisposition::Rejected;
         set_phase_front_failure(
             result.failure,
-            SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch,
+            SurfacePhaseFrontFailureReason::PeriodicActionCorrespondenceMismatch,
             static_cast<int>(first.filledCell.index()), first.filledSide);
         return result;
       }
@@ -17188,10 +17188,28 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
           first.sourceTopologyRegion, *action, *generatorRoute, first.route);
       auto *relation = std::get_if<SurfacePeriodicHolonomy>(&construction);
       if (relation == nullptr) {
+        const auto &error = std::get<SurfacePeriodicHolonomyError>(construction);
+        SurfacePhaseFrontFailureReason reason =
+            SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch;
+        switch (error.code) {
+        case SurfacePeriodicHolonomyErrorCode::ZeroTranslation:
+          reason = SurfacePhaseFrontFailureReason::PeriodicHolonomyZeroTranslation;
+          break;
+        case SurfacePeriodicHolonomyErrorCode::MissingRoute:
+          reason =
+              SurfacePhaseFrontFailureReason::PeriodicHolonomyMissingGeneratorRoute;
+          break;
+        case SurfacePeriodicHolonomyErrorCode::MissingCutRoute:
+          reason = SurfacePhaseFrontFailureReason::PeriodicHolonomyMissingCutRoute;
+          break;
+        case SurfacePeriodicHolonomyErrorCode::InvalidRelationIdentity:
+          reason =
+              SurfacePhaseFrontFailureReason::PeriodicHolonomyInvalidRelationIdentity;
+          break;
+        }
         result.disposition = SurfaceCellProducerDisposition::Rejected;
         set_phase_front_failure(
-            result.failure,
-            SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch,
+            result.failure, reason,
             static_cast<int>(first.filledCell.index()), first.filledSide);
         return result;
       }
@@ -17317,6 +17335,12 @@ const char *surface_phase_front_failure_reason_name(
   case SurfacePhaseFrontFailureReason::UnsupportedEmbeddedReliefCut: return "UnsupportedEmbeddedReliefCut";
   case SurfacePhaseFrontFailureReason::InvalidHardRailPairing: return "InvalidHardRailPairing";
   case SurfacePhaseFrontFailureReason::InvalidIsolationSeamTransportCertificate: return "InvalidIsolationSeamTransportCertificate";
+  case SurfacePhaseFrontFailureReason::PeriodicGeneratorRouteUnavailable: return "PeriodicGeneratorRouteUnavailable";
+  case SurfacePhaseFrontFailureReason::PeriodicActionCorrespondenceMismatch: return "PeriodicActionCorrespondenceMismatch";
+  case SurfacePhaseFrontFailureReason::PeriodicHolonomyZeroTranslation: return "PeriodicHolonomyZeroTranslation";
+  case SurfacePhaseFrontFailureReason::PeriodicHolonomyMissingGeneratorRoute: return "PeriodicHolonomyMissingGeneratorRoute";
+  case SurfacePhaseFrontFailureReason::PeriodicHolonomyMissingCutRoute: return "PeriodicHolonomyMissingCutRoute";
+  case SurfacePhaseFrontFailureReason::PeriodicHolonomyInvalidRelationIdentity: return "PeriodicHolonomyInvalidRelationIdentity";
   }
   return "Unknown";
 }

@@ -1652,6 +1652,12 @@ enum class SurfacePhaseFrontFailureReason : int {
   UnsupportedEmbeddedReliefCut = 47,
   InvalidHardRailPairing = 48,
   InvalidIsolationSeamTransportCertificate = 49,
+  PeriodicGeneratorRouteUnavailable = 50,
+  PeriodicActionCorrespondenceMismatch = 51,
+  PeriodicHolonomyZeroTranslation = 52,
+  PeriodicHolonomyMissingGeneratorRoute = 53,
+  PeriodicHolonomyMissingCutRoute = 54,
+  PeriodicHolonomyInvalidRelationIdentity = 55,
 };
 
 struct SurfacePhaseFrontFailure {
