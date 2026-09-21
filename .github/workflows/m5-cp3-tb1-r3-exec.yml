@@ -81,7 +81,7 @@ jobs:
           test -f "$PLAN_PATH"
           test -f .agents/Directional/tools/write_orchestration_payload.py
           driver="${RUNNER_TEMP}/${DRIVER_BASENAME}"
-          env_file="${RUNNER_TEMP}/m5-cp3-tb1-r2-sha.env"
+          env_file="${RUNNER_TEMP}/m5-cp3-tb1-r3-sha.env"
           python3 - "$PLAN_PATH" "$env_file" <<'PY'
           import pathlib, re, sys
           text = pathlib.Path(sys.argv[1]).read_text(encoding='utf-8')
@@ -150,7 +150,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: directional-m5-cp3-tb1-r2-result-${{ github.run_id }}
+          name: directional-m5-cp3-tb1-r3-result-${{ github.run_id }}
           path: ${{ runner.temp }}/M5-CP3-TB1-R3-EXEC-result
           if-no-files-found: error
           retention-days: 7
@@ -171,7 +171,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: directional-m5-cp3-tb1-r2-log-${{ github.run_id }}
+          name: directional-m5-cp3-tb1-r3-log-${{ github.run_id }}
           path: ${{ runner.temp }}/M5-CP3-TB1-R3-EXEC.log
           if-no-files-found: error
           retention-days: 7
