@@ -1,5 +1,0 @@
-turn=M5-CP3-TB1-R3-EXEC
-purpose=apply durable R3 runtime report and Review handoff
-base_sha=9c8611418e45acc8df5007a43951171e6a3e753c
-patch_sha256=b2d0aa0ba298825d97e683945a1e1d5f5ee4f44b4629369e48af1252471b4530
-retry=0
