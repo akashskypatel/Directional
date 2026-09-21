@@ -1,3 +1,0 @@
-M5-CP3-CB6 source snapshot trigger
-parent_authority=250c03217c2219a519dce33e213c8818c871c1f0
-read_mode=snapshot
