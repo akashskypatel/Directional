@@ -16964,108 +16964,28 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
     return &result.sourceTopologyRegions->region(id);
   };
 
-  const auto atlas_rotation_between_faces = [&](
-      const int fromFace, const int toFace,
-      const authority::TopologyRegionId region)
-      -> std::optional<authority::QuarterTurn> {
-    if (options.fieldTransportAtlas == nullptr ||
-        !result.sourceTopologyRegions.has_value()) {
-      return std::nullopt;
-    }
-    const auto fromRow = source_face_id(fromFace, faces.rows());
-    const auto toRow = source_face_id(toFace, faces.rows());
-    if (!fromRow.has_value() || !toRow.has_value() ||
-        result.sourceTopologyRegions->region_for_row(*fromRow) != region ||
-        result.sourceTopologyRegions->region_for_row(*toRow) != region) {
-      return std::nullopt;
-    }
-    const auto fromTopology =
-        result.sourceTopologyRegions->topology_for_row(*fromRow);
-    const auto toTopology = result.sourceTopologyRegions->topology_for_row(*toRow);
-    const authority::FieldBranchTopology &topology =
-        options.fieldTransportAtlas->branch_topology();
-    const authority::FieldFaceBranchFrame *fromFrame =
-        topology.find_frame(fromTopology);
-    const authority::FieldFaceBranchFrame *toFrame =
-        topology.find_frame(toTopology);
-    if (fromFrame == nullptr || toFrame == nullptr ||
-        fromFrame->topologyRegion != region || toFrame->topologyRegion != region) {
-      return std::nullopt;
-    }
-    if (fromTopology == toTopology) return authority::QuarterTurn{};
-
-    struct AtlasNeighbor {
-      authority::SourceFaceTopologyKey face;
-      authority::SourceEdgeTopologyKey edge;
-      authority::QuarterTurn rotation;
-    };
-    std::map<authority::SourceFaceTopologyKey, std::vector<AtlasNeighbor>> graph;
-    for (const authority::FieldBranchTransportAdjacency &transport :
-         topology.transports()) {
-      const authority::FieldFaceBranchFrame *firstFrame =
-          topology.find_frame(transport.firstFace);
-      const authority::FieldFaceBranchFrame *secondFrame =
-          topology.find_frame(transport.secondFace);
-      if (firstFrame == nullptr || secondFrame == nullptr ||
-          firstFrame->topologyRegion != region ||
-          secondFrame->topologyRegion != region) {
-        continue;
-      }
-      graph[transport.firstFace].push_back(
-          {transport.secondFace, transport.sourceEdge, transport.forward});
-      graph[transport.secondFace].push_back(
-          {transport.firstFace, transport.sourceEdge, transport.reverse});
-    }
-    for (auto &[face, neighbors] : graph) {
-      (void)face;
-      std::sort(neighbors.begin(), neighbors.end(),
-                [](const AtlasNeighbor &a, const AtlasNeighbor &b) {
-                  return std::tie(a.edge, a.face, a.rotation) <
-                         std::tie(b.edge, b.face, b.rotation);
-                });
-    }
-
-    std::map<authority::SourceFaceTopologyKey, authority::QuarterTurn> rotations;
-    std::queue<authority::SourceFaceTopologyKey> pending;
-    rotations.emplace(fromTopology, authority::QuarterTurn{});
-    pending.push(fromTopology);
-    while (!pending.empty()) {
-      const auto face = pending.front();
-      pending.pop();
-      const auto foundNeighbors = graph.find(face);
-      if (foundNeighbors == graph.end()) continue;
-      const authority::QuarterTurn current = rotations.at(face);
-      for (const AtlasNeighbor &neighbor : foundNeighbors->second) {
-        const authority::QuarterTurn candidate =
-            compose(neighbor.rotation, current);
-        const auto [found, inserted] = rotations.emplace(neighbor.face, candidate);
-        if (inserted) {
-          pending.push(neighbor.face);
-        } else if (found->second != candidate) {
-          return std::nullopt;
-        }
-      }
-    }
-    const auto target = rotations.find(toTopology);
-    return target == rotations.end()
-               ? std::nullopt
-               : std::optional<authority::QuarterTurn>{target->second};
-  };
-
   const auto generator_route_for_span = [&](
-      const authority::NetworkArcId span,
-      const authority::QuarterTurn rotation)
-      -> std::optional<authority::CanonicalRoute> {
-    if (options.globalTopologyPlan == nullptr) return std::nullopt;
+      const authority::NetworkArcId span, const int fromFace,
+      const int toFace) -> std::optional<authority::CanonicalRoute> {
+    if (options.globalTopologyPlan == nullptr ||
+        options.fieldTransportAtlas == nullptr) {
+      return std::nullopt;
+    }
     const GlobalTopologyArc *arc = options.globalTopologyPlan->find_arc(span);
-    if (arc == nullptr || arc->sourcePath.empty() ||
+    if (arc == nullptr || arc->kind != GlobalTopologyArcKind::Mandatory ||
+        arc->sourcePath.size() != 1U ||
         !authority::exact_source_path_is_canonical(arc->sourcePath)) {
       return std::nullopt;
     }
+    const auto typedFromFace = authority::SourceFaceId::from_index(
+        fromFace, static_cast<std::size_t>(faces.rows()));
+    const auto typedToFace = authority::SourceFaceId::from_index(
+        toFace, static_cast<std::size_t>(faces.rows()));
+    if (!typedFromFace || !typedToFace) return std::nullopt;
+
     std::vector<authority::TransitionStep> steps;
     steps.reserve(arc->sourcePath.size());
-    for (std::size_t index = 0U; index < arc->sourcePath.size(); ++index) {
-      const authority::ExactSourceSupportPiece &piece = arc->sourcePath[index];
+    for (const authority::ExactSourceSupportPiece &piece : arc->sourcePath) {
       const auto *carrier =
           std::get_if<authority::SourceEdgeSupport>(&piece.carrier);
       const auto *first = std::get_if<authority::SourceVertexId>(&piece.first);
@@ -17090,12 +17010,12 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
       const auto transition = authority::InteriorTransitionId::from_index(
           transitionIndex->second, sourceMatchingIndices.size());
       if (!transition) return std::nullopt;
-      // Carrier identity comes only from the accepted exact source path. The
-      // cut-open atlas supplies the aggregate generator rotation; record that
-      // transport once so the canonical route composes to the same authority.
+      const auto directedTransport = options.fieldTransportAtlas->transport(
+          carrier->edge, typedFromFace.value(), typedToFace.value());
+      if (!directedTransport.has_value()) return std::nullopt;
       authority::GridAutomorphism transport =
           authority::GridAutomorphism::identity();
-      if (index == 0U) transport.rotation = rotation;
+      transport.rotation = directedTransport->transport;
       const auto step = authority::TransitionStep::interior(
           carrier->edge, transition.value(), transport, orientation);
       if (!step) return std::nullopt;
@@ -17103,10 +17023,8 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
     }
     authority::CanonicalRoute route =
         authority::CanonicalRoute::from_observed_steps(std::move(steps));
-    if (route.empty() || route.composed_transport().rotation != rotation) {
-      return std::nullopt;
-    }
-    return route;
+    return route.empty() ? std::nullopt
+                         : std::optional<authority::CanonicalRoute>{route};
   };
 
   const auto periodic_action_for_pair = [&](
@@ -17241,12 +17159,9 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
 
     SurfaceFrontEventKind mergeKind = SurfaceFrontEventKind::HardRailMerge;
     if (sameSourceRegion) {
-      const auto firstRotation = atlas_rotation_between_faces(
-          first.from.face, second.to.face, first.sourceTopologyRegion);
-      const auto secondRotation = atlas_rotation_between_faces(
-          first.to.face, second.from.face, first.sourceTopologyRegion);
-      if (!firstRotation.has_value() || !secondRotation.has_value() ||
-          *firstRotation != *secondRotation) {
+      const auto generatorRoute = generator_route_for_span(
+          first.sharedBoundaryInterval->span, first.from.face, second.to.face);
+      if (!generatorRoute.has_value()) {
         result.disposition = SurfaceCellProducerDisposition::Rejected;
         set_phase_front_failure(
             result.failure,
@@ -17254,11 +17169,11 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
             static_cast<int>(first.filledCell.index()), first.filledSide);
         return result;
       }
-      const auto generatorRoute = generator_route_for_span(
-          first.sharedBoundaryInterval->span, *firstRotation);
+      const authority::QuarterTurn generatorRotation =
+          generatorRoute->composed_transport().rotation;
       const auto action =
-          periodic_action_for_pair(first, second, *firstRotation);
-      if (!generatorRoute.has_value() || !action.has_value() ||
+          periodic_action_for_pair(first, second, generatorRotation);
+      if (!action.has_value() ||
           generatorRoute->carrier_identity() == first.route.carrier_identity() ||
           generatorRoute->carrier_identity() ==
               first.route.reversed().carrier_identity() ||
