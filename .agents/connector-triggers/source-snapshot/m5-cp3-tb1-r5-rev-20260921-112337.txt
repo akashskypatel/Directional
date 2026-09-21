@@ -1,4 +1,0 @@
-M5-CP3-TB1-R5-REV source snapshot trigger
-source_authority=8ded020072776939a33d4f2cd7f29fc40e607f73
-read_mode=snapshot
-review_boundary=runtime-free

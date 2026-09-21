@@ -1,5 +1,0 @@
-M5-CP3-TB1-R5-REV durable closeout patch apply
-caller_install=f6e21c71420c0d8861ab10be895bc332c20ffc94
-base_sha=59662b3049df03caf690e5ced944e67fe1cd7ec5
-patch_sha256=a17d0284ec79fc5c7337b1643da087584a299033de31706f15ef80d2caeb64e9
-retry=1
