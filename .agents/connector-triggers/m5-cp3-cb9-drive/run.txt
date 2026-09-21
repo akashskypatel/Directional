@@ -1,0 +1,3 @@
+turn=M5-CP3-CB9
+operation=drive-patch-apply
+patch_sha256=89af1b2a1e4a76058c54358a101d5ef2bd7a250f0bfc3b132f1ad5d4606f4e9b
