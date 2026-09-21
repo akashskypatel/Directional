@@ -13,7 +13,7 @@ Authorized semantic mutation remained exactly:
 - `src/authority/FieldTransportAtlas.cpp`
 - `src/geometry/SurfaceCellTracing.cpp`
 
-Exact semantic source is `001dfe8f0fec8a8dc2475e534fadc29967cadf84`. The semantic patch was applied through Drive run/job `35571765480 / 106244733083` with patch SHA-256 `44931e29f8ca13eec8f4311fb6f8ab930fe61d63018410b3adfd1c37269beaa1`; owner-side Drive retirement completed. No test, fixture, benchmark, selector, frozen-definition, CMake/build-source, `RemeshPipeline`, CP2 failure-contract, cross-region `HardRail`, or same-region `HardRail` rejection byte changed.
+Exact semantic source is `001dfe8f0fec8a8dc2475e534fadc29967cadf84`. The semantic patch was applied through Drive run/job `35571765480 / 106244733083` with patch SHA-256 `44931e29f8ca13eec8f4311fb6f8ab930fe61d63018410b3adfd1c37269beaa1`; the workflow reported owner-side retirement required, but the exact Drive file was already non-addressable (404) when owner-side deletion was attempted, so no explicit delete-success claim is made. No test, fixture, benchmark, selector, frozen-definition, CMake/build-source, `RemeshPipeline`, CP2 failure-contract, cross-region `HardRail`, or same-region `HardRail` rejection byte changed.
 
 ## 2. Implementation
 
