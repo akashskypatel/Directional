@@ -1,0 +1,3 @@
+Purpose: exact current source/document snapshot for resumed M5-CP3-TB1-R7-EXEC closeout.
+Pre-trigger branch authority: 6c18e1f07117151be79431d0db5c5a200dfcb89c.
+Retry: 0
