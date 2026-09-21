@@ -1,0 +1,6 @@
+turn=M5-CP3-TB1-R3-EXEC
+purpose=fresh immutable artifact-only 445-process semantic gate
+candidate_artifact=10624020011
+candidate_source=6dd0e5179686a4ea2ca4aacda0577855948864df
+routing_artifact=10592987234
+retry=0
