@@ -9266,3 +9266,36 @@ return to PASS**. If any still fails, the failure lies in a pre-existing modeled
 report must show each row's original discriminator — relabel, pairing, port-attachment and typed-tamper checks —
 is preserved and not diluted by the wider snapshot. Extending domain coverage must not soften what the oracle
 rejects. See `[[M5-CP2-CB1-OBS-01]]`.
+
+## `M5-CP3-TB1-R5-REV-OBS-01-A` — CB7's failure disambiguation can break three accepted selector rows
+
+**Status.** OPEN / GATING ON `M5-CP3-CB7` / NON-STABLE.
+
+`M5-CP3-CB7` appends typed same-region periodic-promotion failure reasons so the three collapsed boundaries
+behind `PeriodicHolonomyMismatch` become observable. Its stated protection is that existing reasons are not
+renumbered. That protects enum **values**; it does not protect which code is **returned** at a given site, which
+is what accepted tests assert.
+
+Verified from bytes: `PeriodicHolonomyMismatch` has **20** return sites in `src/geometry/SurfaceCellTracing.cpp`,
+and three tests assert that exact code (`tests/SurfaceCellsPhase10Tests.cpp:4248, 4397, 4609`). All three are
+**accepted selector430 rows**:
+
+- `SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration.NonzeroNetCycleFailsClosedAtPeriodicHolonomyGuard`
+- `SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration.MalformedAuthoritativeCrossingProvenanceFailsClosed`
+- `SurfaceCellsPhase10.PeriodicPhaseFrontMalformedHolonomyFailsClosedWithTypedReason`
+
+The third exists specifically to prove the phase front fails closed **with a typed reason**, so a turn whose
+purpose is to make typed reasons more specific operates directly on what that row asserts.
+
+**Why:** if any site those rows exercise begins returning a narrower reason, the accepted rows go RED and
+reproduce the `[[M5-CP3-TB1-R4-REV-OBS-01]]` pattern — a fresh crop of accepted REDs that is indistinguishable at
+first sight from a genuine regression, re-opening a classification debate that cost two full turns to settle.
+
+**How to apply — the safe design is cheap and should be preferred:** keep the **returned code** stable at
+`PeriodicHolonomyMismatch` and carry the disambiguation in a **separate diagnostic field** surfaced by the
+runtime report. That delivers full branch observability with zero accepted-row exposure, which is CB7's entire
+objective.
+
+If CB7 instead changes returned codes, it must **pre-commit before running** exactly which accepted rows will
+change and to what, and the standing accepted-row audit applies: each row's fail-closed discriminator must be
+shown preserved rather than merely relabelled. See `[[M5-CP2-CB1-OBS-01]]`.

@@ -1,3 +1,35 @@
+## 2026-09-21 — `M5-CP3-TB1-R5-REV` review: falsifier discharged; CB7 vocabulary hazard flagged
+
+Runtime-free review. **Upheld.** Accounting holds at **50 events / 14 categories / 36 recurrences**, debt **5**;
+candidate unpromoted; accepted authority remains package `10601978228` / selector430 **430/430**.
+
+**The pre-committed falsifier resolved exactly as specified.** At R4 this reviewer required CB6's oracle
+extension to return all six accepted ordinals 18, 20, 21, 22, 23 and 25 to PASS, with any residual failure
+falsifying the oracle-drift classification into a stable event. R5 delivers it: selector430 is back to **429 PASS
+/ 1 RED** with ordinal 408 the sole RED, and the added control
+`FieldTransportAtlas.RetainsDirectedTransitionValueForHardFeatureWithoutTraversalAdjacency` passes. The
+classification is proved rather than merely plausible, and `M5-CP3-TB1-R4-REV-OBS-01` is discharged. That is the
+second consecutive pre-committed falsifier to resolve cleanly, after the pure-permutation witness at R2 → R3.
+
+**Refusing a sixth static guess is the right call.** Five semantic edits chosen from static plausibility have
+failed dynamically; the bottleneck is observability, not ingenuity. §5 is the part worth keeping as precedent: a
+concrete next candidate — exact A3 carrier incidence not proved equal to A4 front endpoint faces — is identified
+and deliberately **not implemented**, pending dynamic branch proof. Converting five failures into the rule "no
+semantic edit without dynamic branch evidence" is stronger than any individual fix would have been.
+
+New: `M5-CP3-TB1-R5-REV-OBS-01-A` (gating on CB7). CB7 changes production failure vocabulary, protected only by
+"no renumbering" — which guards enum values, not which code is returned at a site. Verified from bytes:
+`PeriodicHolonomyMismatch` has **20** return sites, and three tests assert that exact code, **all three accepted
+selector430 rows**, one of them named `…FailsClosedWithTypedReason` precisely because it exists to assert the
+typed reason. The safe design is cheap: keep the returned code stable and carry disambiguation in a separate
+diagnostic field, giving full branch observability with zero accepted-row exposure. Otherwise CB7 must
+pre-commit which accepted rows change and to what, with the accepted-row audit applied.
+
+The judgment that no frozen-definition amendment is required is sound — §§14-15 already cover the needed
+authority, checked proactively rather than at an acceptance review.
+
+Exact successor: `M5-CP3-CB7` — diagnostics-only periodic holonomy failure disambiguation.
+
 ## 2026-09-21 — `M5-CP3-TB1-R5-REV`: R5 upheld; oracle recovery closed; typed failure disambiguation next
 
 Runtime-free independent Review reopens R5 result/log and CB6 package bytes, verifies result self-manifest **911/911**, all **446/446** exact-filter rows with matching raw-log hashes, exact-one/zero-skip, immutable postflight and zero prohibited counters, plus CB6 package **28/28** / GMP boundary. Vector is mechanism **9/9 PASS**, focused atlas **1/1 PASS**, produced **0/6 PASS**, selector430 **429/430 PASS** with sole RED ordinal408. Selector430 and first427 re-hash unchanged.

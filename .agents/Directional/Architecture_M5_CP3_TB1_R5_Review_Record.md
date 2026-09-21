@@ -114,3 +114,90 @@ If compile/package is green, exact successor is a fresh artifact-only `M5-CP3-TB
 | review_check.py boundary | **PASS** on the final local review document set |
 | `STATUS` lifecycle maintained | entry beacon `M5-CP3-TB1-R5-REV / IN_PROGRESS` published; terminal COMPLETE beacon with sole successor `M5-CP3-CB7` is reserved as the final repository write after durable docs and cleanup |
 | Pushed to origin, branch in sync | confirmed after durable-doc push and temporary-state cleanup; final authority re-read before terminal `STATUS` write |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld.** The falsifier discharged cleanly, the decision to stop guessing and instrument is the
+right call, and accounting correctly holds at **50 events / 14 categories / 36 recurrences**, debt **5**. One
+concrete hazard in CB7 is flagged, derived from bytes.
+
+### V1 — the pre-committed falsifier resolved exactly as specified
+
+At R4 I required that CB6's oracle extension return **all six** accepted ordinals 18, 20, 21, 22, 23, 25 to PASS,
+and stated that any residual failure would falsify the oracle-drift classification and become a stable event.
+R5 satisfies it: selector430 is back to **429 PASS / 1 RED** with ordinal 408 the sole RED, and the added control
+`FieldTransportAtlas.RetainsDirectedTransitionValueForHardFeatureWithoutTraversalAdjacency` passes. The
+classification was therefore **proved, not merely plausible**, and `M5-CP3-TB1-R4-REV-OBS-01` is correctly
+discharged.
+
+That is the second consecutive pre-committed falsifier to resolve cleanly — the pure-permutation witness at
+R2 → R3, and oracle recovery at R4 → R5. In both cases the classification could have been sealed by argument and
+instead was settled by a test that could have gone the other way.
+
+### V2 — refusing a sixth static guess is the correct methodological call
+
+Five semantic edits chosen from static plausibility have now failed dynamically. §4's refusal to make a sixth —
+"another semantic edit chosen from static plausibility alone would vi[olate the evidence discipline]" — correctly
+identifies that the bottleneck is **observability, not ingenuity**. The collapsed `PeriodicHolonomyMismatch`
+vocabulary hides which of three materially different boundaries fires, so every hypothesis has been untestable
+until after a full build-and-run cycle.
+
+§5 is the part worth preserving as precedent. A concrete next candidate is identified — exact A3 carrier
+incidence not proved equal to A4 front endpoint faces — and then deliberately **not implemented**, recorded as a
+candidate requiring dynamic branch proof first. Converting five failures into the rule "no semantic edit without
+dynamic branch evidence" is exactly the right lesson to extract, and it is stronger than any individual fix would
+have been.
+
+### V3 — HAZARD FOR CB7: the disambiguation can break three accepted selector rows
+
+CB7 changes production failure vocabulary, and the plan's protection is that it appends typed reasons "without
+renumbering existing reasons". That protects enum **values**. It does **not** protect which code is **returned**
+at a given site — and that is what accepted tests assert.
+
+Verified from bytes: `PeriodicHolonomyMismatch` has **20** return sites in `src/geometry/SurfaceCellTracing.cpp`,
+and three tests assert that exact code (`tests/SurfaceCellsPhase10Tests.cpp:4248, 4397, 4609`). All three are
+**accepted selector430 rows**:
+
+| Identity | In selector430 |
+|---|---|
+| `SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration.NonzeroNetCycleFailsClosedAtPeriodicHolonomyGuard` | yes |
+| `SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration.MalformedAuthoritativeCrossingProvenanceFailsClosed` | yes |
+| `SurfaceCellsPhase10.PeriodicPhaseFrontMalformedHolonomyFailsClosedWithTypedReason` | yes |
+
+The third is named for exactly this: it exists to prove the phase front **fails closed with a typed reason**. A
+turn whose purpose is to make typed reasons more specific is therefore operating directly on what that row
+asserts. If any of the 20 sites these rows exercise begins returning a narrower reason, those accepted rows go
+RED — reproducing the R4 pattern, and re-opening the same classification debate on six days' evidence.
+
+**The safe design is available and cheap:** keep the **returned code** stable at `PeriodicHolonomyMismatch` and
+carry the disambiguation in a **separate diagnostic field** the runtime report can surface. That yields full
+branch observability with **zero** accepted-row exposure, which is the entire objective of CB7.
+
+If CB7 instead changes returned codes, it must **pre-commit, before running**, exactly which accepted rows will
+change and to what — and the accepted-row audit applies, showing each row's fail-closed discriminator is
+preserved rather than merely relabelled. Recorded as `M5-CP3-TB1-R5-REV-OBS-01-A`. An unplanned crop of accepted
+REDs at R6 would be indistinguishable, at first sight, from a genuine regression.
+
+### V4 — accounting and obligations
+
+R5 is correctly another continuation: ordinal 408 has never returned to accepted green on a promoted candidate,
+so a failed repair attempt creates no new event. **50 / 14 / 36**, debt **5**, candidate unpromoted, accepted
+authority unchanged at package `10601978228` / selector430 **430/430** — which re-hashes to `1c412850…9db6` at
+430 LF rows.
+
+The judgment that no frozen-definition amendment is required is also sound: §§14-15 already require exact A3
+carrier authority, separate transition value from traversal adjacency, and permit generator/cut carrier equality.
+Checking that proactively — rather than discovering it at an acceptance review — is the pattern I have been
+asking for.
+
+`M5-CP3-TB1-R2-REV-OBS-01` remains correctly carried: the seam validation is proved as a contract by R5's new
+control identity, but no successful produced relation has yet exercised it end to end.
+
+### V5 — verification limits
+
+Re-derived from repository bytes: selector430's rows and hash, the three `PeriodicHolonomyMismatch` assertion
+sites and their enclosing identities, those identities' membership in the accepted selector, and the 20 return
+sites of the collapsed code. Accepted as reported: R5 artifact hashes, ledger tallies, raw-log digests, run/job
+identifiers and execution-boundary receipts.
