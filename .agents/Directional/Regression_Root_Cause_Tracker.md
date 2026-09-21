@@ -1,3 +1,12 @@
+## 2026-09-21 — `M5-CP3-TB1-R6-CAND-01`: torus production RED dynamically localizes to generator-route unavailability — **DYNAMIC BRANCH PROOF / EXISTING RP-01 CONTINUATION / REVIEW REQUIRED / +0**
+
+- **Candidate/runtime:** artifact/source `10637998372 / 8f77ec403f16930145bba5bfc526a5b881b9f166`; R6 run/job `35606326632 / 106354249393`; result/log `10642347642 / 10642362744`; self-manifest **914/914**.
+- **Observed gate:** all **446/446** fresh filters execute exact-one/zero-skip. Mechanism **9/9 PASS**, focused atlas **1/1 PASS**, produced **0/6 PASS**, selector430 **429/430 PASS** with sole RED ordinal408. Benchmark/build/repair/mutation counters are zero and immutable postflight is exact.
+- **Dynamic localization:** every one of the six produced rows now fails with exact phase-front reason `PeriodicGeneratorRouteUnavailable`. No row reports `PeriodicActionCorrespondenceMismatch` or any of the four checked `SurfacePeriodicHolonomyErrorCode`-derived reasons. This satisfies the dynamic-branch precondition on `M5-CP3-TB1-R5-REV-OBS-01` but EXEC does not independently adjudicate that static source mismatch as causal or authorize a correction.
+- **Accepted-row hazard:** selector ordinals **191, 192, 247** — the three R5 Review addendum rows that retain generic `PeriodicHolonomyMismatch` expectations — all remain PASS. CB7's diagnostic cutover therefore creates no new accepted-green loss; formal observation closure belongs to R6 Review.
+- **Classification/accounting:** ordinal408 is the same accepted-green→RED event already recorded at R1 and never recovered on a promoted candidate. R6 adds branch localization, not a new stable regression. Classification remains existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` continuation. Stable totals remain **50 events / 14 categories / 36 recurrences**, debt **5**. Candidate remains unpromoted and all four M5 produced debts remain open.
+- **Exact successor:** mandatory runtime-free `M5-CP3-TB1-R6-REV`; only Review may decide whether the now-eligible A4-front-face vs exact A3-carrier-incidence mismatch is the semantic owner, freeze a bounded correction, or stop.
+
 ## 2026-09-21 — `M5-CP3-TB1-R5-CAND-01`: surviving torus RED after CB6 — **UPHELD / EXISTING RP-01 CONTINUATION / RECOVERY OPEN / +0**
 
 - **Candidate/runtime:** artifact/source `10633891886 / 20f9bf11dc5a986dafd52c5556671fb9f7d429f4`; R5 run/job `35591203189 / 106305794544`; result/log `10634649162 / 10635142112`; self-manifest **911/911**.

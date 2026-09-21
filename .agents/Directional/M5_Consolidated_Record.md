@@ -1,7 +1,7 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-21 at `M5-CP3-TB1-R5-REV`
+**Last updated:** 2026-09-21 at `M5-CP3-TB1-R6-EXEC`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Corrected stable accounting is **50 / 14 / 36**, produced-witness debt **5**; M5 owns four of those debts.
 
@@ -100,6 +100,14 @@ CB7 implements only the R5 Review-authorized observability seam. Semantic patch 
 Mandatory GMP compile/package run/job `35598796960 / 106329775985` is green on all eight standard targets from exact source `8f77ec403f16930145bba5bfc526a5b881b9f166`. Candidate artifact `10637998372` hashes to `1c92e42939081ec9f041f72e916c99d80a700b39a61e3917e8cf8830c5a3f98f`; root manifest is **28/28** at `1b0bc0b8ce4ff0c339659c7f7c5c3c4e9e26143d352424f7aecf1a2b8f91f737`; source archive is `dbc083059b4dbd8ea7b429ca32819ce8a91b179b5e2cbd6201a66113d37a9163`; log artifact `10637858795` is `ad626d649fdae2bb8fe591e2a3a38d0ee670ed152967f08cb800c098e4c4645a`. GMPXX+GMP linkage is explicit, all five source-status receipts are empty, and `runtimeExecution=false`.
 
 Candidate remains unpromoted; accepted runtime authority and accounting remain `10601978228`, selector430 **430/430**, **50 / 14 / 36**, debt **5**. Exact next is immutable artifact-only `M5-CP3-TB1-R6-EXEC` on the unchanged **446-process** gate. The six produced rows must expose their exact new typed branch; the three accepted generic-`PeriodicHolonomyMismatch` rows identified by the R5 Review addendum remain required-green and unchanged. Mandatory R6 Review owns any next semantic correction.
+
+## 4.4 `M5-CP3-TB1-R6-EXEC` — typed branch proof localizes the surviving production RED
+
+Fresh artifact-only R6 run/job `35606326632 / 106354249393` consumes CB7 candidate `10637998372` / source `8f77ec403f16930145bba5bfc526a5b881b9f166` and completes the unchanged **446-process** gate with exact-one selection, zero skips and exact immutable postflight. Result is mechanism **9/9 PASS**, focused atlas **1/1 PASS**, produced **0/6 PASS**, selector430 **429/430 PASS** with sole RED ordinal408. Result/log artifacts are `10642347642 / 10642362744`; provider/download hashes are `d23863aa7725b4f82e5a3ee7992c910a2f24bf32252b05260046836ca0470bfc / 6f02d669521bf5c0d1821e656948950b549c6c697ea1a28325cbee1d20f9dcff`; self-manifest is **914/914** at `2130e816714231ea5dfe8cae74f297d0d9ad5b6e21f91c5ce600bf46d4fecb15`. All build/repair/discovery/benchmark/mutation counters remain zero.
+
+All six produced identities terminate at exact reason `PeriodicGeneratorRouteUnavailable`. None reaches action-correspondence mismatch or any checked holonomy-construction subcode. This dynamically satisfies the branch prerequisite on `M5-CP3-TB1-R5-REV-OBS-01` and rules out the other CB7 diagnostic branches as the active first failure for these six witnesses. EXEC does not infer causal ownership from that localization alone: the previously recorded A4-front-face versus exact A3-carrier-incidence mismatch remains Review-owned.
+
+The R5 accepted-row hazard does not materialize in runtime: selector ordinals **191, 192, 247** remain PASS with unchanged expectations, and no selector row beyond ordinal408 turns RED. `M5-CP3-TB1-R6-CAND-01` is therefore **DYNAMIC BRANCH PROOF / EXISTING `RP-01` CONTINUATION / REVIEW REQUIRED / +0**; stable accounting remains **50 / 14 / 36**, debt **5**. Candidate remains unpromoted, all four M5 debts remain open, and selector publication remains prohibited. Exact successor is mandatory runtime-free `M5-CP3-TB1-R6-REV`.
 
 ## 5. Folded-document index
 
