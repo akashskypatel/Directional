@@ -1,3 +1,9 @@
+## 2026-09-21 — `M5-CP3-TB1-R2-REV`: failed exact-span recovery refined to hard-feature transport-domain conflation; CB4 next
+
+Independent runtime-free Review upholds R2 **9/9 mechanism PASS, 0/6 produced PASS, selector430 429/430 PASS** and identifies the deterministic remaining product seam: CB3 asks `FieldTransportAtlas::transport` for a mandatory HardRail/hard-feature carrier that atlas construction deliberately excludes from traversal adjacency. Existing exact `CrossFieldEdgeTransition` metadata already owns the edge/face-pair directed matching value. The same seam must also derive orientation from exact parameters so split `ExactSourceEdgePoint` mandatory intervals remain valid.
+
+R2 is merged into the existing stable `M5-CP3-TB1-R1-CAND-01 / RP-01` event, not counted again. Current accounting is **50 / 14 / 36**, debt **5**. Candidate `10620415471` remains unpromoted; accepted runtime authority stays `10601978228` / selector430 **430/430**; all four M5 produced debts stay open. Exact successor is runtime-free `M5-CP3-CB4`; no selector publication is authorized.
+
 ## 2026-09-21 — `M5-CP3-TB1-R1-REV`: R1 semantic RED classified as exact-span transport implementation authority; CB3 next
 
 Runtime-free independent Review freshly re-opens R1 run/job `35548642817 / 106179163233`, result/log artifacts `10617583137 / 10616998978`, and accepted package `10601978228`. It independently verifies result self-manifest **908/908**, re-derives **9/9 mechanism PASS, 0/6 produced PASS, selector430 429/430 PASS**, exact-one/zero-skip and immutable postflight, and re-hashes selector430/first427 unchanged. Stable accounting remains **49 / 14 / 35**, debt **5**.

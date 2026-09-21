@@ -2,6 +2,14 @@
 
 Last updated: 2026-09-21 UTC
 
+## Latest Review turn — `M5-CP3-TB1-R2-REV`
+
+`M5-CP3-TB1-R2-REV` is **COMPLETE / RUNTIME-FREE / R2 EVIDENCE UPHELD / IMPLEMENTATION AUTHORITY REFINED / RECOVERY REQUIRED**. Review independently reopens R2 artifacts, verifies self-manifest **908/908**, re-derives **9/9 mechanism PASS, 0/6 produced PASS, selector430 429/430 PASS**, exact-one/zero-skip, immutable postflight and zero prohibited-operation counters, and re-hashes selector430/first427 unchanged.
+
+The failed CB3 recovery is deterministic: the exact `Mandatory` A3 carrier is a HardRail/hard-feature edge, but CB3 asks `FieldTransportAtlas::transport` for a traversal adjacency. Atlas construction intentionally records hard features as nontraversable and skips adjacency creation, so the lookup cannot succeed. Existing raw `CrossFieldEdgeTransition` metadata already supplies the exact edge/face-pair directed matching value; `resolve_branch_transition` demonstrates the accepted forward/inverse interpretation. CB3 also over-constrains exact interval endpoints to source vertices even though split mandatory paths may contain `ExactSourceEdgePoint`.
+
+`M5-CP3-TB1-R2-CAND-01` is **IMPLEMENTATION AUTHORITY / HARD-FEATURE TRANSPORT DOMAIN CONFLATION / MERGED INTO EXISTING STABLE `RP-01` EVENT**. R2 adds no second stable event; accounting remains **50 / 14 / 36**, debt **5**. Candidate `10620415471` remains unpromoted, all four M5 debts remain open and selector publication remains prohibited. Exact next: runtime-free `M5-CP3-CB4` under `Architecture_M5_CP3_CB4_Hard_Feature_Transition_Transport_Correction_Plan.md`.
+
 ## Latest Review turn — `M5-CP3-TB1-R1-REV`
 
 `M5-CP3-TB1-R1-REV` is **COMPLETE / RUNTIME-FREE / IMPLEMENTATION-AUTHORITY DEFECT CONFIRMED / CORRECTION FROZEN**. Review freshly re-opens R1 result/log artifacts, verifies self-manifest **908/908**, and independently re-derives **9/9 mechanism PASS, 0/6 produced PASS, selector430 429/430 PASS**, exact-one/zero-skip, immutable postflight and benchmark/configure/compile/relink/discovery/repair/mutation **0**. Selector430/first427 re-hash unchanged.
@@ -14,7 +22,7 @@ Last updated: 2026-09-21 UTC
 
 ## Latest Code + Build turn — `M5-CP3-CB3`
 
-`M5-CP3-CB3` is **COMPLETE / STATIC GREEN / GMP COMPILE-PACKAGE GREEN / RUNTIME-FREE / CORRECTION BUILT**. Exact semantic source `279efa03471f1e0d6c32f57c8b395dd1cb1a93f5` replaces whole-region rotation reconstruction with exact A3 `span`-path transport through existing `FieldTransportAtlas` authority. No test, fixture, selector, frozen definition, CP2 relation contract or cross-region HardRail behavior changed. Mandatory run/job `35555882867 / 106199345527` produced candidate artifact `10620415471` at SHA-256 `700b605167427d21823b90d942dd5bb40d1690f162285d22a20da5ad7898a1cd`; root manifest **28/28**, all eight standard targets, explicit GMP/GMPXX linkage, empty source-status receipts and `runtimeExecution=false`. No Directional runtime/test/benchmark ran. Exact next: fresh artifact-only `M5-CP3-TB1-R2-EXEC` under `Architecture_M5_CP3_TB1_R2_Artifact_Only_Test_Benchmark_Plan.md`.
+`M5-CP3-CB3` is **COMPLETE / STATIC GREEN / GMP COMPILE-PACKAGE GREEN / RUNTIME-FREE / CORRECTION BUILT**. Exact semantic source `279efa03471f1e0d6c32f57c8b395dd1cb1a93f5` replaces whole-region rotation reconstruction with the exact A3 `span` carrier and an attempted directed `FieldTransportAtlas` lookup; R2 Review later proves that lookup is outside the traversal domain for the mandatory hard-feature carrier. No test, fixture, selector, frozen definition, CP2 relation contract or cross-region HardRail behavior changed. Mandatory run/job `35555882867 / 106199345527` produced candidate artifact `10620415471` at SHA-256 `700b605167427d21823b90d942dd5bb40d1690f162285d22a20da5ad7898a1cd`; root manifest **28/28**, all eight standard targets, explicit GMP/GMPXX linkage, empty source-status receipts and `runtimeExecution=false`. No Directional runtime/test/benchmark ran in CB3. Its R2 execution plan is now consumed/folded; R2 Review classifies the failed recovery and freezes CB4.
 
 ## M5 checkpoint sequence
 
@@ -31,11 +39,12 @@ Last updated: 2026-09-21 UTC
 - [x] `M5-CP3-TB1-R1-REV`: independently uphold the R1 vector, classify `M5-CP3-TB1-R1-CAND-01` as implementation authority, keep candidate/debts unpromoted/open, and freeze the exact-span correction.
 - [x] `M5-CP3-CB3`: exact-span transport correction built at source `279efa0347...`; candidate `10620415471` GMP compile/package green, runtime-free.
 - [x] `M5-CP3-TB1-R2-EXEC`: corrected candidate gate mechanically complete at **438/445 PASS**, 7 semantic RED, exact-one/zero-skip, benchmark 0; CB3 correction does not recover the endpoint.
-- [ ] `M5-CP3-TB1-R2-REV`: **exact next**; independently re-open R2 evidence, adjudicate failed recovery/root authority and accounting, then freeze the next bounded path.
+- [x] `M5-CP3-TB1-R2-REV`: R2 evidence upheld; hard-feature traversal-vs-transition domain conflation independently proved; R2 merged into existing stable RP-01 event; CB4 frozen.
+- [ ] `M5-CP3-CB4`: **exact next**; product-only exact hard-feature transition transport + exact-parameter orientation correction, mandatory GMP compile/package, runtime-free.
 
-## Current focus — `M5-CP3-TB1-R2-REV`
+## Current focus — `M5-CP3-CB4`
 
-Independently review `.agents/Directional/Architecture_M5_CP3_TB1_R2_Artifact_Only_Test_Benchmark_Report.md` and artifacts `10621351075 / 10621154456`. Re-derive the R2 **9/9 mechanism PASS + 0/6 produced PASS + selector430 429/430 PASS** vector, exact-one/zero-skip, immutable postflight and zero prohibited-operation counters; compare corrected source `279efa0347...` against frozen §14 exact-span authority and accepted runtime baseline `10601978228 / 0798547d...`. Adjudicate why the CB3 correction did not restore the production endpoint, decide whether R2 continues the existing R1 stable event or changes accounting/classification, and freeze the next bounded authority. Do not implement, rerun, promote, discharge debt, or publish selector authority inside Review.
+Execute `.agents/Directional/Architecture_M5_CP3_CB4_Hard_Feature_Transition_Transport_Correction_Plan.md` exactly. Preserve CB3's exact `span` carrier but stop using `FieldTransportAtlas::transport` on the mandatory HardRail/hard-feature support. Read directed quarter-turn from the exact edge-keyed `CrossFieldEdgeTransition` after validating edge and face pair, use inverse on reverse traversal, and derive support orientation from exact edge parameters so `ExactSourceEdgePoint` endpoints are supported. Do not make hard features traversable, search globally, alter tests/fixtures/selector/frozen definitions, weaken CP2 failures, or change cross-region HardRail/materializer behavior. Mandatory GMP compile/package only; if green, route to fresh 445-process `M5-CP3-TB1-R3-EXEC`.
 
 ## Carried forward from M1
 
@@ -75,7 +84,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. Four periodic/relation debts remain M5-owned and one closed-complex debt remains M6-owned.
-- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 corrected R2 runtime remains semantic RED; independent Review next**. Accepted runtime package remains `10601978228`; corrected candidate `10620415471` / source `279efa0347...` is unpromoted after R2 reproduces **9/9 mechanism PASS, 0/6 produced PASS, selector430 429/430 PASS**. Current durable accounting remains **50 / 14 / 36**, debt **5**, pending R2 Review adjudication. Exact next `M5-CP3-TB1-R2-REV`; four M5 produced-witness debts remain open and selector publication remains prohibited.
+- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 R2 reviewed as existing stable RP-01 recovery failure; CB4 next**. Accepted runtime package remains `10601978228`; corrected candidate `10620415471` / source `279efa0347...` is unpromoted after R2 reproduces **9/9 mechanism PASS, 0/6 produced PASS, selector430 429/430 PASS**. Stable accounting remains **50 / 14 / 36**, debt **5**; R2 adds no second event. Exact next `M5-CP3-CB4`; four M5 produced-witness debts remain open and selector publication remains prohibited.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.
@@ -114,4 +123,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current corrected totals are **50 events / 14 categories / 36 recurrences**, debt **5**, pending R2 Review adjudication. M4, M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**; current accepted runtime authority remains package `10601978228` / source `0798547d...` under unchanged selector430 **430/430**. R1's accepted ordinal408 PASS→RED remains the recorded stable `RP-01` recurrence. CB3 candidate `10620415471` / source `279efa0347...` is now runtime-tested but still unpromoted: R2 is mechanically complete at **438/445 PASS**, with all six produced rows and accepted ordinal408 RED at the same production reachability surface. The closed-complex `G4-B002` debt remains M6-owned, while two periodic `G4-B002` plus two `G4-B003` debts remain M5-owned. Selector publication remains prohibited. Exact successor is **`M5-CP3-TB1-R2-REV`**. PR #8 remains open, draft, and unmerged.
+Current corrected totals are **50 events / 14 categories / 36 recurrences**, debt **5**. M4, M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**; current accepted runtime authority remains package `10601978228` / source `0798547d...` under unchanged selector430 **430/430**. R1's accepted ordinal408 PASS→RED remains the recorded stable `RP-01` recurrence; R2 Review merges the failed CB3 recovery into that same event after proving the hard-feature traversal-adjacency vs exact transition-value domain mismatch. Candidate `10620415471` / source `279efa0347...` remains unpromoted. The closed-complex `G4-B002` debt remains M6-owned, while two periodic `G4-B002` plus two `G4-B003` debts remain M5-owned. Selector publication remains prohibited. Exact successor is **`M5-CP3-CB4`**. PR #8 remains open, draft, and unmerged.
