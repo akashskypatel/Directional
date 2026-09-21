@@ -1,0 +1,6 @@
+# M5-CP3-TB1-R7-EXEC temporary-state cleanup
+.agents/connector-triggers/m5-cp3-tb1-r7-exec.txt
+.agents/connector-triggers/m5-cp3-tb1-r7-evidence-finalize.txt
+.agents/connector-triggers/m5-cp3-tb1-r7-closeout-apply.txt
+.agents/connector-triggers/source-snapshot/m5-cp3-tb1-r7-exec-20260921.txt
+.agents/connector-triggers/source-snapshot/m5-cp3-tb1-r7-resume-20260921.txt
