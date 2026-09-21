@@ -1,5 +1,0 @@
-turn=M5-CP3-CB4
-purpose=apply durable closeout documentation and R3 plan
-base_sha=413512e8164de490170818a16cfaf0f2eccc6b9b
-patch_sha256=4936f924e5dca9a3ef13b56fcb59de84a5d6027249a6847e52527edd0481c11a
-retry=0

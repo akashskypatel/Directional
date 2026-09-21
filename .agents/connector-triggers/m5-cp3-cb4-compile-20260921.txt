@@ -1,4 +1,0 @@
-turn=M5-CP3-CB4
-purpose=mandatory GMP compile/package
-source_sha=6dd0e5179686a4ea2ca4aacda0577855948864df
-retry=0
