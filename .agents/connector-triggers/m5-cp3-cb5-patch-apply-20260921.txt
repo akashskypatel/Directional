@@ -1,5 +1,0 @@
-purpose=M5-CP3-CB5 apply verified atlas transition-value patch
-caller_commit=847272c69453d3d1b85a0929363a493bbca8f006
-base_sha=f66aa52759069950a92d6fe927bac66047543da8
-patch_sha256=44931e29f8ca13eec8f4311fb6f8ab930fe61d63018410b3adfd1c37269beaa1
-retry=0

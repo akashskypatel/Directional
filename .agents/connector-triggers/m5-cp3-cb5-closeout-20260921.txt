@@ -1,5 +1,0 @@
-purpose=M5-CP3-CB5 durable closeout documentation
-caller_commit=c8e822651e746d274fd1406b6ef6520feb07607c
-base_sha=57b49b047b0069d5ade7c8622e55086fd49420b2
-patch_sha256=0c056adfd2b95dac2eecee9589729d2fccfd6fd4c0c2df5284147eb1dfdd0669
-retry=0
