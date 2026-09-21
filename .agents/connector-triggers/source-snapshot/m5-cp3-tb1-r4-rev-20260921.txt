@@ -1,3 +1,0 @@
-purpose=M5-CP3-TB1-R4-REV independent review source snapshot
-source_ref=b40ff14a3928aef404be424536adc50cb153f951
-retry=0
