@@ -1,0 +1,3 @@
+purpose=M5-CP3-CB5 exact source snapshot
+pre_trigger_head=06adc2868404fd53be40f2274c1f960716ed7aad
+retry=0
