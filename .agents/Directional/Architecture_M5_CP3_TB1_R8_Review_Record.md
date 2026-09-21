@@ -152,3 +152,85 @@ No Directional runtime, compile, benchmark, source mutation, test mutation, fixt
 | review_check.py boundary | **PASS.** Final local documentation/consolidation worktree passes `review_check.py boundary --expect-selector 430=1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6` and `git diff --check`; no code/test/fixture/build/selector byte changed. |
 | `STATUS` lifecycle maintained | Entry and resume beacons maintained; terminal COMPLETE beacon is reserved as final repository mutation after durable publication and cleanup. |
 | Pushed to origin, branch in sync | **CONFIRMED at closeout after durable publication and mandatory temporary-state cleanup.** |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld.** The row 6 recovery is genuinely non-vacuous, the rows 4/5 classification is sound and
+correctly bounded, and the accounting is right. Totals stay **50 events / 14 categories / 36 recurrences**;
+produced-witness debt remains **3**. One verification requirement is added for R9.
+
+### V1 — the recovery holds and no new accepted-prefix exposure was created
+
+selector430 is **430/430** with the first 427 rows byte-identical to selector427, so the ordinal-408 recovery
+proved at R7 survives a further candidate. Mechanism is 9/9 and CP3 produced is 4/6. The two REDs are
+candidate-only produced identities, so no accepted-prefix ordinal transitioned PASS → RED and no new stable event
+arises — **50 / 14 / 36** is correct, and the historical ordinal-408 event rightly stays recorded despite its
+recovery.
+
+### V2 — row 6's recovery is a real invariance proof, not an appended no-op
+
+This one deserved scrutiny, because "adding an unused relation changes nothing" is trivially passable if the
+relation is never really unused or never really inserted. The CB9 body is not that. Verified in
+`tests/SurfaceCellTransitionQuotientTests.cpp`, it carries 15 assertions and establishes absence **three
+independent ways before insertion** — two `std::none_of` predicates over the produced periodic-owner carrier set,
+and `certificate_references_periodic_relation(baselineCertificates, …)` proving the baseline certificate does not
+reference it. Only then does it `push_back` the relation, `std::reverse` the relation storage, rebuild the checked
+product, and require the selected certificate signature, `hash_completion(...)` and `consumedPeriodicHolonomies`
+to be unchanged.
+
+It therefore proves unused-valid-relation invariance **and** storage-order invariance simultaneously on the
+produced subject, which is exactly what frozen §7 asks for. The disposition — recovery proved, non-stable, +0,
+and explicitly no debt credit — is right.
+
+### V3 — rows 4/5 are an inadmissible authored subject, and the bound on that claim is the important part
+
+`InvalidBoundedDiskChart` is raised by `require_produced(...)` during fixture construction, **before**
+`select_torus_source_witness(...)`, before the source/A3 directed relation lookup, and before any relation is
+selected. That ordering is what licenses the classification: the failure cannot be masking a product defect at
+the relation, materialization or tamper stages, because none of those stages runs. The Review is right to make
+that the load-bearing argument rather than resting on plausibility.
+
+The magnitude matters too. Missing bounded-disk closure by roughly nine orders of magnitude is not a near miss;
+it indicates CB9 authored a rotation law **without an admissibility argument** and discovered the result at
+runtime. That is the same shape as the five semantic edits chosen from static plausibility earlier in this
+checkpoint, transposed from product code to authored test subjects.
+
+### V4 — CB10 answers that correctly, and R9 must make the pre-commitment enforceable
+
+CB10 does not iterate another attempt. It replaces the global quarter winding with a closed-form law,
+`delta(theta) = (pi - theta) / 6` over `theta = atan2(centroid.y, centroid.x)` normalized to `[0, 2*pi)`, holding
+the committed torus geometry and tangent frame fixed — and it states plainly: *do not search a family of ramp
+angles, do not tune the coefficient or phase after compile/runtime results; this exact ramp is precommitted by
+Review from source/geometry analysis.*
+
+That is the right correction to the authoring discipline. A derived, pre-committed constant is falsifiable in a
+way that a tuned one never is: the ramp sweeps `+pi/6` to `-pi/6` across the loop, leaving a single seam
+discontinuity that is nearer a quarter turn than zero, which is how exactly one nonzero Z4 matching arises while
+the interior stays smooth. Whether the closure residual now lands inside the frozen threshold is a runtime
+question R9 must answer — but the construction is now a claim that can be wrong, rather than a search that
+eventually succeeds.
+
+**Required of R9:** a no-tuning rule is only enforceable if someone checks the constant afterwards. R9 must
+verify the **implemented** ramp matches the pre-committed formula exactly — the divisor `6`, the `pi` phase, and
+the `atan2` normalization to `[0, 2*pi)` — and report that comparison explicitly. If the implemented law differs
+in any constant, the result is a tuned witness regardless of outcome and earns no debt credit. This is the same
+discipline as selector pre-commitment, which has now held five consecutive times precisely because the declared
+value was checked against the built one. Recorded as `M5-CP3-TB1-R8-REV-OBS-01`.
+
+### V5 — carried items are correctly held
+
+`M5-CP3-TB1-R6-REV-OBS-01` remains **OPEN**, and necessarily so: rows 4/5 stop before
+`select_torus_source_witness(...)`, so face-direction inversion is still unobservable. CB9's source-authoritative
+direction oracle is compiled and preserved by CB10 Goal C, so the instrument exists and awaits an admissible
+subject. Debts 3 and 4 remain OPEN with no credit, the M6 closed-complex debt remains M6-owned, and
+`M5-CP2-TB1-REV-OBS-01` is correctly still open — frozen §13.3 prohibits selector-publication pre-commitment
+while the gate is semantic RED, which is the right reading.
+
+### V6 — verification limits
+
+Re-derived from repository bytes: row 6's assertion count and its three absence predicates, the insertion /
+reversal / invariance sequence, `require_produced`'s position ahead of witness selection, CB10's pre-committed
+ramp and its no-tuning prohibition, and selector430's rows, hash and 427-row prefix. Accepted as reported: R8
+artifact hashes, gate tallies, the bounded-disk closure residual magnitude, and execution-boundary receipts.

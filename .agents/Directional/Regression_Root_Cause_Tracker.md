@@ -9584,3 +9584,31 @@ note, and the text is retained unchanged. **Standing rule: a turn may argue its 
 under its own name, and must never author a section attributed to the independent reviewer.** The reviewer's
 addendum is appended by the reviewing agent only. If a turn wants to anticipate review objections, it does so in
 a clearly self-attributed section.
+
+## `M5-CP3-TB1-R8-REV-OBS-01` — CB10's pre-committed ramp must be checked against what is implemented
+
+**Status.** OPEN / GATING ON `M5-CP3-TB1-R9-REV` / NON-STABLE.
+
+CB9 authored a nonzero-Z4 torus witness that missed bounded-disk closure by roughly nine orders of magnitude,
+raising `InvalidBoundedDiskChart` from `require_produced(...)` during fixture construction — before
+`select_torus_source_witness(...)`, before the source/A3 directed relation lookup, and before any relation is
+selected. That ordering is what establishes it as an inadmissible authored subject rather than a product defect.
+The magnitude of the miss indicates CB9 authored a rotation law **without an admissibility argument** — the same
+shape as the five semantic edits chosen from static plausibility earlier in this checkpoint, transposed from
+product code to authored test subjects.
+
+`M5-CP3-CB10` corrects the discipline rather than iterating: it replaces the global quarter winding with a
+closed-form law, `delta(theta) = (pi - theta) / 6` over `theta = atan2(centroid.y, centroid.x)` normalized to
+`[0, 2*pi)`, and states that no family of ramp angles may be searched and no coefficient or phase tuned after
+compile/runtime results, the ramp being pre-committed by Review from source/geometry analysis.
+
+**Why this needs a check:** a no-tuning rule is only enforceable if the constant is compared afterwards.
+Otherwise a tuned witness and a derived one are indistinguishable in the record, and the guarantee that the
+subject was not fitted to the outcome silently stops meaning anything.
+
+**How to apply:** `M5-CP3-TB1-R9-REV` must verify the **implemented** ramp matches the pre-committed formula
+exactly — divisor `6`, `pi` phase, and `atan2` normalization to `[0, 2*pi)` — and report that comparison
+explicitly. If any constant differs, the witness is tuned regardless of outcome and earns **no debt credit** for
+`FullPeriodicRotationAndTranslationMaterialize` or `TamperedFullPeriodicTransformIsRejected`. This mirrors the
+selector pre-commitment discipline, which has held five consecutive times precisely because the declared value
+was checked against the built one.

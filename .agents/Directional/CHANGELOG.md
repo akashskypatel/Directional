@@ -1,3 +1,41 @@
+## 2026-09-21 — `M5-CP3-TB1-R8-REV` review: row6 recovery verified non-vacuous; CB10 ramp check required
+
+Runtime-free review. **Upheld.** Totals stay **50 events / 14 categories / 36 recurrences**; produced-witness
+debt remains **3**. selector430 is **430/430** with its first 427 rows byte-identical to selector427, so the
+ordinal-408 recovery proved at R7 survives another candidate; the two REDs are candidate-only produced
+identities, so no new stable event arises.
+
+**Row 6's recovery is a real invariance proof.** "Adding an unused relation changes nothing" is trivially
+passable if the relation is never really unused or never really inserted, so this was checked: the body carries
+15 assertions and establishes absence **three independent ways before insertion** — two `std::none_of` predicates
+over the produced periodic-owner carrier set plus `certificate_references_periodic_relation(...)` proving the
+baseline certificate does not reference it — then appends, reverses relation storage, rebuilds the checked
+product, and requires certificate signature, `hash_completion(...)` and `consumedPeriodicHolonomies` unchanged.
+It proves unused-valid-relation invariance and storage-order invariance together on the produced subject.
+
+**Rows 4/5 are an inadmissible authored subject, and the bound on that claim carries it.**
+`InvalidBoundedDiskChart` is raised by `require_produced(...)` during fixture construction, before
+`select_torus_source_witness(...)` and before any relation is selected — so it cannot be masking a product defect
+at the relation, materialization or tamper stages, because none of those stages runs. Missing closure by roughly
+nine orders of magnitude also indicates CB9 authored a rotation law without an admissibility argument — the same
+shape as the earlier static-plausibility edits, transposed to authored test subjects.
+
+CB10 corrects that discipline rather than iterating: a closed-form `delta(theta) = (pi - theta) / 6`,
+pre-committed by Review from geometry analysis, with searching ramp families or tuning the coefficient/phase
+explicitly forbidden.
+
+New: `M5-CP3-TB1-R8-REV-OBS-01` (gating on R9). A no-tuning rule is only enforceable if the constant is compared
+afterwards. R9 must verify the **implemented** ramp matches the pre-committed formula exactly — divisor `6`, `pi`
+phase, `atan2` normalization to `[0, 2*pi)` — and report that comparison; any differing constant makes the
+witness tuned regardless of outcome and earns no debt credit. This mirrors selector pre-commitment, which has
+held five consecutive times because the declared value was checked against the built one.
+
+`M5-CP3-TB1-R6-REV-OBS-01` necessarily remains open — rows 4/5 stop before witness selection, so direction
+inversion is still unobservable, though CB9's direction oracle is compiled and preserved by CB10 Goal C.
+`M5-CP2-TB1-REV-OBS-01` also correctly stays open: frozen §13.3 prohibits publication pre-commitment while RED.
+
+Exact successor: `M5-CP3-CB10` — chart-admissible nonzero-Z4 witness correction, test/witness surface only.
+
 ## 2026-09-21 — `M5-CP3-TB1-R8-EXEC`: row6 witness recovers; rows4/5 stop at `InvalidBoundedDiskChart`
 
 ## 2026-09-21 — M5-CP3 R8 Review: row6 recovery proved; nonzero chart witness corrected next
