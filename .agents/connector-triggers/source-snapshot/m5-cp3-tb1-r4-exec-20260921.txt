@@ -1,0 +1,3 @@
+purpose=M5-CP3-TB1-R4-EXEC planning/source authority snapshot
+source_ref=32405f1bf7eaac1502420d81792f48a3d145526e
+retry=0
