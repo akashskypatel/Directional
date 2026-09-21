@@ -1,3 +1,34 @@
+## 2026-09-21 — `M5-CP3-TB1-R1-REV` review: technical findings upheld; stable event recorded, totals 50 / 14 / 36
+
+Runtime-free review. **Every technical finding upheld; one accounting classification corrected.**
+
+The adjudication does the hard thing and declines the easy verdict. A semantic RED on a candidate that also
+evolved a test body invites a test-authority classification, and §4 refuses it on evidence: row408 fails at its
+**pre-existing** producer-disposition assertion with none of the evolved `PeriodicCut` assertions executing; the
+six `M5CP3.Produced…` rows run on `torus_fixture()` through `remesh_from_raw_cross_field`, so they are genuine
+production subjects rather than `direct_*` helper substitutions — the §13.4 boundary holding under pressure; and
+all nine CP1/CP2 mechanism rows PASS, localising the defect. §5.3 also declines to claim which `if` branch fired,
+which is the right restraint.
+
+**Correction.** §6 stated "No stable accepted-green behavior was lost" and held accounting at 49 / 14 / 35. The
+evidence defeating that is the Review's own §4.1. R1 ran accepted selector430 at **429 PASS / 1 RED**, the sole
+RED being ordinal **408**, verified at line 408 of the byte-frozen selector, which was 430/430 PASS at
+`M4-CP4-TB3`, `M5-CP1-TB1-R3` and `M5-CP2-TB1`. The durable criterion fires on an accepted-prefix ordinal going
+PASS → RED regardless of promotion status, and the §14.4 body evolution does not exempt it because the failure
+occurs at the pre-existing assertion, before any new one runs — lost behaviour, not a raised bar.
+
+**Corrected accounting: 50 events / 14 categories / 36 recurrences**, debt **5**. The category is the existing
+`RP-01 AUTHORITY_DOMAIN_CONFLATION` — §5.2 finds carrier identity read from `GlobalTopologyArc::sourcePath` while
+transport is synthesised by whole-region rotation reconstruction — so no new category opens.
+`M5-CP3-TB1-R1-CAND-01` keeps its classification and changes only from NON-STABLE to STABLE / `RP-01` recurrence.
+
+Nothing else moves: candidate `10615252806` unpromoted, accepted authority package `10601978228` under
+selector430 **430/430**, all four M5 produced debts OPEN with no credit, `M5-CP2-TB1-REV-OBS-01` correctly
+carried since no publication identity is green on this candidate.
+
+Exact successor: `M5-CP3-CB3` — product-only exact-span transport correction, with an explicit stop if the exact
+A3 source path cannot resolve one unique directed transition/transport sequence without global search.
+
 ## 2026-09-21 — `M5-CP3-TB1-R1-REV`: R1 semantic RED classified as exact-span transport implementation authority; CB3 next
 
 Runtime-free independent Review freshly re-opens R1 run/job `35548642817 / 106179163233`, result/log artifacts `10617583137 / 10616998978`, and accepted package `10601978228`. It independently verifies result self-manifest **908/908**, re-derives **9/9 mechanism PASS, 0/6 produced PASS, selector430 429/430 PASS**, exact-one/zero-skip and immutable postflight, and re-hashes selector430/first427 unchanged. Stable accounting remains **49 / 14 / 35**, debt **5**.

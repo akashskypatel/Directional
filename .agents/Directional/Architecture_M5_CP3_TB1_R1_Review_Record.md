@@ -199,3 +199,83 @@ Per `CLEAN_UP_POLICY.md`, durable facts from superseded CP3 per-turn records are
 | review_check.py boundary | **PASS** on the prepared Review documentation/consolidation diff with selector430 expected hash; recorded before remote application |
 | `STATUS` lifecycle maintained | entry beacon written before other repository mutation; final COMPLETE beacon is reserved as the final repository write after documentation and cleanup |
 | Pushed to origin, branch in sync | Closeout control requires final branch-authority confirmation after documentation/cleanup and the final `STATUS` write; no commit hash is embedded in this record |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld on every technical finding; one accounting classification is corrected.** The root-cause
+analysis, the defence of test authority, the produced-subject proof and the candidate/debt decisions all stand.
+Stable accounting is corrected to **50 events / 14 categories / 36 recurrences**; produced-witness debt remains
+**5**.
+
+### V1 — the technical adjudication is right, and right for the right reasons
+
+This Review does the hard thing: it declines the easy verdict. A semantic RED on a candidate that also evolved a
+test body invites a test-authority classification, and §4 refuses it on evidence.
+
+- **§4.1** — the candidate row408 body still proves the exact 18-edge torus authority and fails at the
+  **producer-disposition assertion**, which is pre-existing; none of the evolved `PeriodicCut` assertions ever
+  execute. The R1 report confirms it: ordinal **408** expected `SurfaceCellProducerDisposition::Produced`.
+- **§4.2** — the six `M5CP3.Produced…` rows run on `torus_fixture()` backed by `make_torus_pipeline_fixture()`
+  through `remesh_from_raw_cross_field`, so they are genuine production subjects, not `direct_*` helper
+  substitutions. That is the §13.4 boundary holding under pressure.
+- **§4.3** — all nine CP1/CP2 mechanism rows PASS on the same candidate, which localises the defect instead of
+  permitting a vague "something broke" story.
+- **§5.3** — the Review explicitly declines to claim which `if` branch fired. Refusing to over-specify a root
+  cause the logs cannot resolve is the correct discipline.
+
+The §5 diagnosis — carrier identity read from `GlobalTopologyArc::sourcePath` while transport is synthesised by
+whole-region rotation reconstruction — is `RP-01 AUTHORITY_DOMAIN_CONFLATION` in its textbook form: two halves of
+one semantic object sourced from different authorities.
+
+### V2 — CORRECTION: this is a stable event; accounting moves to 50 / 14 / 36
+
+§6 states "No stable accepted-green behavior was lost. Stable accounting remains **49 / 14 / 35**." That is
+incorrect, and the evidence defeating it is this Review's own §4.1.
+
+The durable criterion, recorded in `Regression_Root_Cause_Tracker.md`, is mechanical:
+
+> A stable event is recorded when an ordinal inside the **accepted selector prefix** transitions PASS → RED,
+> regardless of whether the failing package is promoted. New unaccepted rows cannot produce one, and "the failing
+> bytes are on an unpromoted package" is not a valid reason for non-stable — it would make the rule unfirable.
+
+Every element is satisfied:
+
+1. **Inside the accepted prefix.** Ordinal 408 of selector430,
+   `RemeshPipeline.ExactA3ToA4TorusProductionPathPublishesTypedSharedBoundaryIdentity`, verified at line 408 of
+   the byte-frozen accepted selector.
+2. **Was PASS.** selector430 ran **430/430** at `M4-CP4-TB3`, again at `M5-CP1-TB1-R3` and again at `M5-CP2-TB1`.
+3. **Is now RED.** R1 records selector430 at **429 PASS / 1 RED**, ordinal 408 the sole selector RED.
+4. **Lost behaviour, not a raised bar.** This is the one that could have excused it, and §4.1 closes it: the
+   failure occurs at the **pre-existing** producer-disposition assertion, *before* any evolved assertion runs. The
+   candidate lost behaviour that accepted authority had already proved — it did not merely fail a new one.
+
+The §14.4 body evolution therefore does not exempt this row. Had row408 failed on an evolved `PeriodicCut`
+assertion, non-stable would have been right; it failed on the assertion it has always made and always passed.
+
+**Corrected accounting: 50 events / 14 categories / 36 recurrences**, debt **5**. The category is the existing
+`RP-01 AUTHORITY_DOMAIN_CONFLATION`, so no new category opens and the count stays at 14. `M5-CP3-TB1-R1-CAND-01`
+keeps its classification — implementation authority / exact-span transport contract violation — and its
+disposition changes only from NON-STABLE to **STABLE / RP-01 recurrence**.
+
+Nothing else moves: the candidate stays unpromoted, accepted authority remains package `10601978228` under
+selector430 **430/430**, all four M5 produced debts stay OPEN with no credit, and `M5-CP2-TB1-REV-OBS-01`
+remains correctly carried because no publication identity is green on this candidate.
+
+Recording the event is not a criticism of the work. A stable event marks that a candidate lost accepted
+behaviour, so the pattern stays visible across turns; that the cause is authorised in-progress CP3 work, already
+localised, and already has a bounded correction plan does not exempt it. The rule was made durable at
+`M4-CP-SCALE-TB6-REV` precisely so it could not be argued away by circumstance.
+
+### V3 — successor scope and verification limits
+
+`M5-CP3-CB3` is product-only, replacing whole-region rotation reconstruction with exact `span`-path conversion
+through existing transition authority, and carries an explicit stop: if the exact A3 source path cannot resolve
+one unique directed transition/transport sequence without global search or guessing, CB3 stops. That is the right
+falsifier, and it is the second time in this checkpoint a plan has pre-committed the condition for abandoning
+itself. No R1 semantic credit may be reused; a fresh full `M5-CP3-TB1-R2-EXEC` is required.
+
+Re-derived from repository bytes: row408's identity at selector line 408, selector430's 430 rows and SHA-256, its
+427-row prefix, and the R1 gate tallies as reported in the retained runtime report. Accepted as reported: R1
+artifact hashes, run/job identifiers and package receipts.

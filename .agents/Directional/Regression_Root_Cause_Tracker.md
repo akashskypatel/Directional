@@ -9055,3 +9055,40 @@ neither instance required artifact access to detect.
 
 The executor failing closed rather than editing frozen authority mid-execution has now held three times, which is
 why each instance cost one turn instead of corrupting an acceptance. That separation must be preserved.
+
+## 2026-09-21 — `M5-CP3-TB1-R1-REV` accounting correction: stable event recorded, totals now 50 / 14 / 36
+
+**Corrected totals: 50 events / 14 categories / 36 recurrences. Produced-witness debt 5 (unchanged).**
+
+`M5-CP3-TB1-R1-REV` §6 recorded "No stable accepted-green behavior was lost" and held accounting at 49 / 14 / 35.
+That is corrected here. The evidence defeating it is that Review's own §4.1.
+
+**Event:** `M5-CP3-TB1-R1-EXEC` ran accepted selector430 at **429 PASS / 1 RED**. The sole selector RED is
+ordinal **408**, `RemeshPipeline.ExactA3ToA4TorusProductionPathPublishesTypedSharedBoundaryIdentity`, which
+expected `SurfaceCellProducerDisposition::Produced` and received `Rejected`.
+
+**Criterion applied** (durable rule, established `M4-CP-SCALE-TB6-REV`): a stable event is recorded when an
+ordinal inside the accepted selector prefix transitions PASS → RED, regardless of promotion status.
+
+1. ordinal 408 is inside the byte-frozen accepted prefix of selector430;
+2. it was PASS at `M4-CP4-TB3`, `M5-CP1-TB1-R3` and `M5-CP2-TB1`, each 430/430;
+3. it is RED on candidate `10615252806`;
+4. **the failure is at the pre-existing producer-disposition assertion**, before any assertion added by the
+   §14.4 body evolution executes — so this is lost behaviour, not a newly raised bar. Had it failed on an evolved
+   `PeriodicCut` assertion, non-stable would have been correct.
+
+**Category:** existing `RP-01 AUTHORITY_DOMAIN_CONFLATION` — §5.2 finds carrier identity read from
+`GlobalTopologyArc::sourcePath` while transport is synthesised by whole-region rotation reconstruction, two
+halves of one semantic object sourced from different authorities. No new category opens; the count stays at 14
+and recurrences move 35 → 36.
+
+`M5-CP3-TB1-R1-CAND-01` keeps its classification — implementation authority / exact-span transport contract
+violation, owner `M5-CP3-CB3` — and its disposition changes only from NON-STABLE to
+**STABLE / `RP-01` recurrence**.
+
+**Why record it:** a stable event marks that a candidate lost accepted behaviour, so the pattern stays visible
+across turns. That the cause is authorised in-progress CP3 work, already localised and already carrying a bounded
+correction plan, does not exempt it — and neither does the candidate being unpromoted, which was ruled an invalid
+ground at `M4-CP-SCALE-TB6-REV` because it would make the rule unfirable. Nothing else moves: candidate
+unpromoted, accepted authority package `10601978228` / selector430 **430/430**, all four M5 produced debts OPEN
+with no credit, `M5-CP2-TB1-REV-OBS-01` correctly carried.
