@@ -1,0 +1,4 @@
+Purpose: apply verified durable closeout documentation for M5-CP3-CB8.
+Patch base: a2c41bd7b962b9ffe08f31903dcd283b7ea7a79c.
+Caller install: 0fdf885cb06812762c1afcc87eb4d738a9c92920.
+Retry: 0
