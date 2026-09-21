@@ -127,3 +127,92 @@ This Review folds six superseded per-turn documents into `M5_Consolidated_Record
 | review_check.py boundary | PASS — local `python3 .agents/Directional/tools/review_check.py boundary` reports ALL CHECKS PASSED |
 | `STATUS` lifecycle maintained | entry and resume beacons published for `M5-CP3-TB1-R4-REV`; terminal COMPLETE beacon with sole successor `M5-CP3-CB6` is the final repository write after durable docs and cleanup |
 | Pushed to origin, branch in sync | control-plane confirmation is performed after documentation push and temporary-state cleanup; no self-referential commit hash is embedded in this record |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld.** The oracle-drift classification is verified rather than accepted, frozen §15 discharges
+the prior obligation exactly as specified, and accounting correctly holds at **50 events / 14 categories /
+36 recurrences**, debt **5**. One falsifier is pre-committed for CB6.
+
+### V1 — the oracle-drift claim is checkable, and it checks out
+
+Six accepted-prefix ordinals going PASS → RED is the largest call in this Review, and "test-authority oracle
+drift" must not become the kind of excuse that makes the stable rule unfirable. Unlike "the candidate is
+unpromoted" — always true, therefore invalid — this claim is specific and falsifiable, so I verified it.
+
+- The six REDs are ordinals **18, 20, 21, 22, 23, 25**, all `FieldTransportAtlas.*` oracle/publication
+  identities.
+- `IndependentAtlasSnapshot` (`tests/FieldTransportAtlasTests.cpp:516-530`) models **13** domains — adjacencies,
+  branch frames, branch transports, port attachments, branch-topology digest, nontraversable edges, cycles,
+  singularities, source boundary cycles and associations, component topology, witnesses, source digest. **There
+  is no transition-value field.**
+- CB5 (`001dfe8f`) added to the **public header** `FieldTransportTransitionValue`,
+  `FieldDirectedTransitionValue` and the `transition_value(sourceEdge, …)` query — a published domain the
+  snapshot cannot reproduce — and frozen §15 states retained values "participate in atlas semantic identity".
+
+So the snapshot reconstructs a superseded contract and fails at comparison before reaching its relabel/tamper
+discriminator. That is a new domain the oracle cannot model, not an old capability lost.
+
+I also checked the most at-risk pre-existing domain directly, since CB5 was **not** purely additive (99
+insertions / 23 deletions). The deletions touch `nontraversableEdges` construction — a domain the snapshot does
+model. The additions restore the identical pushes:
+`FieldNonTraversableEdge{edge.value(), FieldTransportBarrierKind::HardFeature, first, second}` followed by
+`continue`, and the `NonTraversable` region/component case likewise. The block was **relocated** so the value is
+recorded before the `continue`, not semantically changed.
+
+Applying the distinction I set at `M5-CP3-TB1-R1-REV` — lost behaviour versus a bar never proved — these six
+rows fail because the oracle cannot model a domain that did not previously exist. Non-stable is correct, and
+`+0 events / +0 categories` stands.
+
+### V2 — PRE-COMMITTED FALSIFIER: CB6 must return all six rows to PASS
+
+My verification is strong but not complete: I confirmed the mechanism and spot-checked one of thirteen modeled
+domains. A snapshot comparison that fails wholesale cannot, by itself, distinguish "new domain added" from "new
+domain added **and** an old one changed". The classification is therefore well-supported rather than proven, and
+it needs a falsifier now — otherwise "oracle drift" becomes a label capable of absorbing any future accepted-row
+breakage.
+
+**The falsifier is clean and CB6 will execute it.** Once CB6 extends the independent snapshot to derive CB5
+transition-value identity independently — including nontraversal hard-feature values — **all six ordinals 18, 20,
+21, 22, 23 and 25 must return to PASS**. If any one of them still fails, the failure is in a pre-existing modeled
+domain, the drift explanation is falsified, and that row is a **stable event** to be recorded, not re-classified.
+Recorded as `M5-CP3-TB1-R4-REV-OBS-01`.
+
+**Accepted-row audit applies to the oracle extension.** Ordinals 18-25 are accepted required-green rows. CB6
+extends their oracle, so per the standing rule the CB6 report must show that each row's original discriminator —
+the relabel, pairing, port-attachment and typed-tamper checks these identities exist to enforce — is preserved,
+not diluted by widening the snapshot. Extending an oracle's domain coverage must not soften what it rejects.
+
+### V3 — the prior obligation was discharged exactly as specified
+
+`M5-CP3-TB1-R3-REV-OBS-01` asked that the atlas contract change be recorded in the frozen definitions **before
+CB5's result is accepted, not before CB5 runs**. Frozen **§15** now exists at line 348 and states precisely the
+needed separation: interior edges may carry atlas-owned transition value even when nontraversable;
+`transition_value(...)` is a directed semantic-value query implying no adjacency; `transport(...)` remains
+traversal-only; hard-feature edges remain absent from traversable adjacency and remain `HardFeature` barriers.
+The A1 barrier contract is explicitly preserved, which was the whole concern. Obligation met on its terms.
+
+§15 also frezes the `R4-CAND-01` resolution normatively — "equality of valid generator/cut carrier paths is not,
+by itself, relation invalidity" — rather than leaving it in a review record. That is the right home for it: the
+guard CB6 removes is being removed on frozen authority, not on a reviewer's say-so.
+
+### V4 — four failed recoveries, and the convergence reading still holds
+
+R1 eliminated synthesised transport; R2 the wrong authority domain; R3 the wrong source container; R4 now
+isolates an **unfrozen** generator-versus-cut carrier-identity inequality — a guard that was never a frozen M5
+invariant, since frozen §3.1 derives `PeriodicRelationId` from region plus canonical carrier paths and excludes
+transport from identity. Each round removed a distinct obstruction and none was refuted by the representation
+rule itself. CB5 also succeeded at its own objective: the generator lookup now runs on the production atlas seam,
+which is what R3's unreachability finding demanded.
+
+`M5-CP3-TB1-R2-REV-OBS-01` being carried and refined rather than discharged remains right — the seam validation
+exists in source but has still never executed to completion on the production path.
+
+### V5 — verification limits
+
+Re-derived from repository bytes: the six failing ordinals' identities, `IndependentAtlasSnapshot`'s 13 modeled
+domains, CB5's public-header additions, the `nontraversableEdges` relocation and its byte-equivalent restoration,
+frozen §15's presence and content, and selector430's 430 rows and SHA-256. Accepted as reported: R4 artifact
+hashes, ledger tallies, run/job identifiers and execution-boundary receipts.

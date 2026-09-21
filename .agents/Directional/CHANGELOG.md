@@ -1,3 +1,34 @@
+## 2026-09-21 — `M5-CP3-TB1-R4-REV` review: oracle-drift classification verified; CB6 falsifier pre-committed
+
+Runtime-free review. **Upheld.** Accounting holds at **50 events / 14 categories / 36 recurrences**, debt **5**;
+candidate `10627250028` unpromoted; accepted authority remains package `10601978228` / selector430 **430/430**.
+
+R4 ran selector430 at **423 PASS / 7 RED** — ordinals 18, 20, 21, 22, 23, 25 and 408. Six accepted-prefix
+ordinals going PASS → RED is the largest call here, and "test-authority oracle drift" must not become the kind of
+excuse that makes the stable rule unfirable. Unlike "the candidate is unpromoted", it is specific and checkable,
+so it was verified: `IndependentAtlasSnapshot` models 13 domains with **no transition-value field**, while CB5
+(`001dfe8f`) added `FieldTransportTransitionValue`, `FieldDirectedTransitionValue` and `transition_value(...)` to
+the **public header**, with frozen §15 making retained values participate in atlas semantic identity. The
+snapshot therefore reconstructs a superseded contract and fails before its discriminator — a new domain it cannot
+model, not an old capability lost. Since CB5 was not purely additive (99/23), the most at-risk modeled domain was
+checked directly: the deleted `nontraversableEdges` pushes are restored identically, relocated so the value is
+recorded before the `continue`. Non-stable stands.
+
+New: `M5-CP3-TB1-R4-REV-OBS-01` (gating on CB6). A wholesale snapshot failure cannot distinguish "new domain
+added" from "new domain added **and** an old one changed", and one of thirteen domains was spot-checked. After
+CB6 extends the snapshot to derive transition-value identity independently, **all six ordinals must return to
+PASS**; if any still fails, the drift explanation is falsified and that row is recorded as a stable event. The
+accepted-row audit also applies — widening the oracle must not dilute the relabel, pairing, port-attachment and
+typed-tamper discriminators those rows exist to enforce.
+
+`M5-CP3-TB1-R3-REV-OBS-01` is **discharged** exactly as specified: frozen **§15** now records that interior edges
+may carry atlas-owned transition value while nontraversable, that `transition_value(...)` implies no adjacency,
+that `transport(...)` remains traversal-only, and that hard-feature edges remain `HardFeature` barriers — the A1
+contract explicitly preserved. §15 also freezes the `R4-CAND-01` resolution normatively, so the guard CB6 removes
+is removed on frozen authority rather than a reviewer's say-so.
+
+Exact successor: `M5-CP3-CB6` — carrier-distinctness and atlas-oracle correction.
+
 ## 2026-09-21 — `M5-CP3-TB1-R4-REV`: R4 upheld; atlas-oracle drift confirmed; carrier-distinctness recovery frozen
 
 Runtime-free independent Review re-verifies R4 result self-manifest **908/908**, all **445/445** exact-filter processes, exact-one/zero-skip, immutable postflight and zero prohibited-operation counters: mechanism **9/9 PASS**, produced **0/6 PASS**, selector430 **423/430 PASS** with RED ordinals **18, 20, 21, 22, 23, 25, 408**. Selector430/first427 independently re-hash unchanged at `1c412850...9db6 / f9c88380...e86f`.

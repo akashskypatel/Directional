@@ -9216,3 +9216,39 @@ in production. The nine mechanism rows stayed 9/9 green throughout because they 
 so their green was compatible with the repair never running (`LESSONS.md` 160, passed vs did not run). CB5 must
 demonstrate the new query is **reached** by `generator_route_for_span` on the production configuration, not only
 that it returns the right value when called.
+
+## `M5-CP3-TB1-R4-REV-OBS-01` — the oracle-drift classification must be falsified by CB6, not assumed
+
+**Status.** OPEN / GATING ON `M5-CP3-CB6` / NON-STABLE.
+
+`M5-CP3-TB1-R4-EXEC` ran selector430 at **423 PASS / 7 RED**, the REDs being ordinals **18, 20, 21, 22, 23, 25**
+and **408**. The six new ones are all `FieldTransportAtlas.*` oracle identities and were classified
+**TEST-AUTHORITY ORACLE DRIFT / NON-STABLE**, adding +0 events / +0 categories. That classification is verified,
+not merely accepted:
+
+- `IndependentAtlasSnapshot` (`tests/FieldTransportAtlasTests.cpp:516-530`) models 13 domains and has **no
+  transition-value field**;
+- CB5 (`001dfe8f`) added `FieldTransportTransitionValue`, `FieldDirectedTransitionValue` and
+  `transition_value(...)` to the **public header**, and frozen §15 makes retained values participate in atlas
+  semantic identity;
+- so the snapshot reconstructs a superseded contract and fails at comparison before its relabel/tamper
+  discriminator — a new domain it cannot model, not an old capability lost;
+- CB5 was **not** purely additive (99 insertions / 23 deletions), so the most at-risk modeled domain was checked
+  directly: the deleted `nontraversableEdges` pushes are restored identically
+  (`FieldTransportBarrierKind::HardFeature`, then the `NonTraversable` region/component case), i.e. relocated so
+  the value is recorded before the `continue`, not semantically changed.
+
+**Why a falsifier is still required:** a wholesale snapshot comparison failure cannot by itself distinguish "new
+domain added" from "new domain added **and** an old one changed", and one of thirteen domains was spot-checked.
+Left unfalsifiable, "oracle drift" becomes a label able to absorb any future accepted-row breakage — the same
+hazard as "the candidate is unpromoted", which was ruled invalid at `[[M4-CP-SCALE-TB6-REV]]`.
+
+**How to apply:** after `M5-CP3-CB6` extends the independent snapshot to derive CB5 transition-value identity
+independently, including nontraversal hard-feature values, **all six ordinals 18, 20, 21, 22, 23 and 25 must
+return to PASS**. If any still fails, the failure lies in a pre-existing modeled domain, the drift explanation is
+**falsified**, and that row is recorded as a **stable event** rather than re-classified.
+
+**Accepted-row audit applies.** These are accepted required-green rows whose oracle CB6 is widening. The CB6
+report must show each row's original discriminator — relabel, pairing, port-attachment and typed-tamper checks —
+is preserved and not diluted by the wider snapshot. Extending domain coverage must not soften what the oracle
+rejects. See `[[M5-CP2-CB1-OBS-01]]`.
