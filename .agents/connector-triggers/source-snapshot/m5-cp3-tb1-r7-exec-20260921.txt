@@ -1,3 +1,0 @@
-Purpose: exact source/document snapshot for M5-CP3-TB1-R7-EXEC.
-Pre-trigger branch authority: 9d13f09ee9a17d9a0fd538aea39131072726d416.
-Retry: 0
