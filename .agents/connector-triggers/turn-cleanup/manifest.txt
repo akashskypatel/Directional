@@ -1,0 +1,5 @@
+# M5-CP3-CB4 temporary-state cleanup
+.agents/connector-triggers/m5-cp3-cb4-compile-20260921.txt
+.agents/connector-triggers/source-snapshot/m5-cp3-cb4-20260921.txt
+.agents/connector-triggers/source-snapshot/m5-cp3-cb4-postapply-20260921.txt
+.agents/connector-triggers/m5-cp3-cb4-closeout-drive-apply-20260921.txt
