@@ -184,7 +184,7 @@ def main():
         def summarize(path):
             rr=list(csv.DictReader(path.open(),delimiter='\t')); red=[int(x['ordinal']) for x in rr if x['result']!='PASS']; return len(rr),len(rr)-len(red),red
         mt,mp,mr=summarize(m); ft,fp,fr=summarize(f); pt,pp,pr=summarize(p); st,sp,sr=summarize(s)
-        write(result/'semantic-summary.txt',f'mechanism_total={mt}\nmechanism_pass={mp}\nmechanism_red_ordinals={mr}\nproduced_total={pt}\nproduced_pass={pp}\nproduced_red_ordinals={pr}\nselector_total={st}\nselector_pass={sp}\nselector_red_ordinals={sr}\nplanned_processes={mt+pt+st}\nbenchmark_execution=0\n')
+        write(result/'semantic-summary.txt',f'mechanism_total={mt}\nmechanism_pass={mp}\nmechanism_red_ordinals={mr}\nfocused_total={ft}\nfocused_pass={fp}\nfocused_red_ordinals={fr}\nproduced_total={pt}\nproduced_pass={pp}\nproduced_red_ordinals={pr}\nselector_total={st}\nselector_pass={sp}\nselector_red_ordinals={sr}\nplanned_processes={mt+ft+pt+st}\nbenchmark_execution=0\n')
 
         census(pkg,result/'package-census-after.tsv'); census(source,result/'source-census-after.tsv'); census(execv,result/'execution-view-after.tsv')
         if pre['package']!=(result/'package-census-after.tsv').read_bytes(): fail('package byte/mode census changed')
