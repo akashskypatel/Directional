@@ -35,8 +35,8 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1x5wTiSomra9vTJLgKteMvUzQ1jcrXJ_c
-      patch_sha256: 4269e6ba826d2fce672467262780dcf829ffc49da1565ba32f4b13bf44ec4547
+      file_id: 1IiUv9nQ4mEbNb7Ur6JgAzutUaxUZOAUO
+      patch_sha256: eed4c14f179fa8746c5a7ee885c82912bfa525ebae1235f2ae5da677523a31cf
       base_sha: 3ef5128ea070b8d050fea9f97717c32c5d916011
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: "M5-CP3-TB1-R4-REV: record independent review and freeze CB6"
