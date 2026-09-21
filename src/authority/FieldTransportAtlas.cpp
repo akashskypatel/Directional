@@ -894,6 +894,33 @@ const FieldTransportAdjacency *find_adjacency_in(
                                                                  : nullptr;
 }
 
+const FieldTransportTransitionValue *find_transition_value_in(
+    const std::vector<FieldTransportTransitionValue> &transitionValues,
+    const SourceEdgeTopologyKey &edge) {
+  const auto found = std::lower_bound(
+      transitionValues.begin(), transitionValues.end(), edge,
+      [](const FieldTransportTransitionValue &candidate,
+         const SourceEdgeTopologyKey &key) {
+        return candidate.sourceEdge < key;
+      });
+  return found != transitionValues.end() && found->sourceEdge == edge ? &*found
+                                                                      : nullptr;
+}
+
+std::optional<FieldDirectedTransitionValue> directed_transition_value(
+    const FieldTransportTransitionValue &value, const SourceFaceId fromFace,
+    const SourceFaceId toFace) {
+  if (value.firstFace == fromFace && value.secondFace == toFace) {
+    return FieldDirectedTransitionValue{value.forward, value.forwardLift,
+                                        value.effort};
+  }
+  if (value.secondFace == fromFace && value.firstFace == toFace) {
+    return FieldDirectedTransitionValue{value.reverse, -value.forwardLift,
+                                        -value.effort};
+  }
+  return std::nullopt;
+}
+
 std::optional<FieldDirectedTransport> directed_transport(
     const FieldTransportAdjacency &adjacency, const SourceFaceId fromFace,
     const SourceFaceId toFace) {
@@ -1602,6 +1629,7 @@ std::uint64_t branch_topology_digest(
 std::uint64_t atlas_fact_digest(
     const std::uint64_t sourceDigest,
     const std::vector<SourceFaceTopologyKey> &rowTopology,
+    const std::vector<FieldTransportTransitionValue> &transitionValues,
     const std::vector<FieldTransportAdjacency> &adjacencies,
     const std::vector<FieldNonTraversableEdge> &nontraversableEdges,
     const std::vector<FieldCycleWitness> &cycles,
@@ -1615,6 +1643,29 @@ std::uint64_t atlas_fact_digest(
   std::uint64_t hash = kFnvOffset;
   consume_hash(hash, sourceDigest);
   consume_hash(hash, branchTopologyDigest);
+
+  consume_hash(hash, transitionValues.size());
+  for (const FieldTransportTransitionValue &value : transitionValues) {
+    consume_hash(hash, value.sourceEdge.first().index());
+    consume_hash(hash, value.sourceEdge.second().index());
+    const bool canonicalForward =
+        value.firstFaceTopology < value.secondFaceTopology;
+    consume_face_topology(
+        hash, canonicalForward ? value.firstFaceTopology
+                               : value.secondFaceTopology);
+    consume_face_topology(
+        hash, canonicalForward ? value.secondFaceTopology
+                               : value.firstFaceTopology);
+    consume_hash(hash,
+                 (canonicalForward ? value.forward : value.reverse).value());
+    consume_hash(hash,
+                 (canonicalForward ? value.reverse : value.forward).value());
+    consume_signed(hash,
+                   canonicalForward ? value.forwardLift : -value.forwardLift);
+    double canonicalEffort = canonicalForward ? value.effort : -value.effort;
+    if (canonicalEffort == 0.0) canonicalEffort = 0.0;
+    consume_hash(hash, std::bit_cast<std::uint64_t>(canonicalEffort));
+  }
 
   consume_hash(hash, adjacencies.size());
   for (const FieldTransportAdjacency &adjacency : adjacencies) {
@@ -1934,6 +1985,7 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
     return ka && kb ? ka.value() < kb.value() : a < b;
   });
 
+  std::vector<FieldTransportTransitionValue> transitionValues;
   std::vector<FieldTransportAdjacency> adjacencies;
   std::vector<FieldNonTraversableEdge> nontraversableEdges;
   for (const int edgeIndex : sourceEdges) {
@@ -1960,18 +2012,6 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
           std::nullopt});
       continue;
     }
-    if (hardFeatureEdges.count(edge.value()) != 0U) {
-      nontraversableEdges.push_back(FieldNonTraversableEdge{
-          edge.value(), FieldTransportBarrierKind::HardFeature, first, second});
-      continue;
-    }
-    if (rowRegions[first.index()] != rowRegions[second->index()] ||
-        rowComponents[first.index()] != rowComponents[second->index()]) {
-      nontraversableEdges.push_back(FieldNonTraversableEdge{
-          edge.value(), FieldTransportBarrierKind::NonTraversable, first,
-          second});
-      continue;
-    }
 
     const auto transition = transitionByEdge.find(edge.value());
     if (transition == transitionByEdge.end()) {
@@ -1996,13 +2036,37 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
       return fail(FieldAtlasBuildErrorCode::NonReciprocalAdjacency,
                   edge.value());
     }
-    adjacencies.push_back(FieldTransportAdjacency{
-        make_id<FieldTransportAdjacencyId>(adjacencies.size()), edge.value(),
-        rawFirst, rawSecond, rowTopology[rawFirst.index()],
-        rowTopology[rawSecond.index()], rowRegions[rawFirst.index()],
-        rowComponents[rawFirst.index()], forward, reverse, raw.matching,
+    transitionValues.push_back(FieldTransportTransitionValue{
+        edge.value(), rawFirst, rawSecond, rowTopology[rawFirst.index()],
+        rowTopology[rawSecond.index()], forward, reverse, raw.matching,
         raw.effort});
+
+    if (hardFeatureEdges.count(edge.value()) != 0U) {
+      nontraversableEdges.push_back(FieldNonTraversableEdge{
+          edge.value(), FieldTransportBarrierKind::HardFeature, first, second});
+      continue;
+    }
+    if (rowRegions[first.index()] != rowRegions[second->index()] ||
+        rowComponents[first.index()] != rowComponents[second->index()]) {
+      nontraversableEdges.push_back(FieldNonTraversableEdge{
+          edge.value(), FieldTransportBarrierKind::NonTraversable, first,
+          second});
+      continue;
+    }
+
+    const FieldTransportTransitionValue &value = transitionValues.back();
+    adjacencies.push_back(FieldTransportAdjacency{
+        make_id<FieldTransportAdjacencyId>(adjacencies.size()), value.sourceEdge,
+        value.firstFace, value.secondFace, value.firstFaceTopology,
+        value.secondFaceTopology, rowRegions[value.firstFace.index()],
+        rowComponents[value.firstFace.index()], value.forward, value.reverse,
+        value.forwardLift, value.effort});
   }
+  std::sort(transitionValues.begin(), transitionValues.end(),
+            [](const FieldTransportTransitionValue &a,
+               const FieldTransportTransitionValue &b) {
+              return a.sourceEdge < b.sourceEdge;
+            });
   std::sort(adjacencies.begin(), adjacencies.end(),
             [](const FieldTransportAdjacency &a,
                const FieldTransportAdjacency &b) {
@@ -2956,9 +3020,10 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
   const std::uint64_t branchDigest = branch_topology_digest(
       branchFrames, *branchTransports, *singularityAttachments);
   const std::uint64_t atlasDigest = atlas_fact_digest(
-      sourceDigest, rowTopology, adjacencies, nontraversableEdges, cycles,
-      singularities, sourceBoundaryCycles, sourceBoundaryCycleAssociations,
-      componentTopology, certificateWitnesses, branchDigest);
+      sourceDigest, rowTopology, transitionValues, adjacencies,
+      nontraversableEdges, cycles, singularities, sourceBoundaryCycles,
+      sourceBoundaryCycleAssociations, componentTopology, certificateWitnesses,
+      branchDigest);
   FieldBranchTopology branchTopology(
       std::move(branchFrames), std::move(*branchTransports),
       std::move(*singularityAttachments), branchDigest);
@@ -2966,8 +3031,8 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
       std::move(certificateWitnesses), true, sourceDigest, atlasDigest);
   return FieldTransportAtlasBuildResult(FieldTransportAtlas(
       vertexExtent, std::move(rowTopology), std::move(rowRegions),
-      std::move(rowComponents), std::move(adjacencies),
-      std::move(nontraversableEdges), std::move(cycles),
+      std::move(rowComponents), std::move(transitionValues),
+      std::move(adjacencies), std::move(nontraversableEdges), std::move(cycles),
       std::move(singularities), std::move(sourceBoundaryCycles),
       std::move(sourceBoundaryCycleAssociations),
       std::move(componentTopology), std::move(regionTransportDiagnostics),
@@ -3009,6 +3074,17 @@ std::optional<FieldDirectedTransport> FieldTransportAtlas::transport(
   return adjacency == nullptr
              ? std::nullopt
              : directed_transport(*adjacency, fromFace, toFace);
+}
+
+std::optional<FieldDirectedTransitionValue>
+FieldTransportAtlas::transition_value(
+    const SourceEdgeTopologyKey &sourceEdge, const SourceFaceId fromFace,
+    const SourceFaceId toFace) const noexcept {
+  const FieldTransportTransitionValue *value =
+      find_transition_value_in(transitionValues_, sourceEdge);
+  return value == nullptr
+             ? std::nullopt
+             : directed_transition_value(*value, fromFace, toFace);
 }
 
 bool FieldTransportAtlas::matches_source_faces(

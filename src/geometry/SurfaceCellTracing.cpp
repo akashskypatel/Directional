@@ -16965,16 +16965,11 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
     return &result.sourceTopologyRegions->region(id);
   };
 
-  const EdgeTransitionLookup generatorTransitionLookup =
-      edgeTransitions != nullptr
-          ? edge_transition_lookup(*edgeTransitions, sourceVertexExtent)
-          : EdgeTransitionLookup{};
-
   const auto generator_route_for_span = [&](
       const authority::NetworkArcId span, const int fromFace,
       const int toFace) -> std::optional<authority::CanonicalRoute> {
-    if (options.globalTopologyPlan == nullptr || edgeTransitions == nullptr ||
-        generatorTransitionLookup.duplicate) {
+    if (options.globalTopologyPlan == nullptr ||
+        options.fieldTransportAtlas == nullptr) {
       return std::nullopt;
     }
     const GlobalTopologyArc *arc = options.globalTopologyPlan->find_arc(span);
@@ -17016,44 +17011,13 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
           transitionIndex->second, sourceMatchingIndices.size());
       if (!transition) return std::nullopt;
 
-      const auto rawTransition =
-          generatorTransitionLookup.byEdge.find(carrier->edge);
-      if (rawTransition == generatorTransitionLookup.byEdge.end()) {
-        return std::nullopt;
-      }
-      const fields::CrossFieldEdgeTransition &transitionRecord =
-          rawTransition->second;
-      const auto transitionFirstVertex = authority::SourceVertexId::from_index(
-          transitionRecord.sourceVertex0, sourceVertexExtent);
-      const auto transitionSecondVertex = authority::SourceVertexId::from_index(
-          transitionRecord.sourceVertex1, sourceVertexExtent);
-      if (!transitionFirstVertex || !transitionSecondVertex) {
-        return std::nullopt;
-      }
-      const auto transitionEdge = authority::SourceEdgeTopologyKey::make(
-          transitionFirstVertex.value(), transitionSecondVertex.value());
-      if (!transitionEdge || transitionEdge.value() != carrier->edge) {
-        return std::nullopt;
-      }
-      const auto transitionFirstFace = authority::SourceFaceId::from_index(
-          transitionRecord.firstFace, static_cast<std::size_t>(faces.rows()));
-      const auto transitionSecondFace = authority::SourceFaceId::from_index(
-          transitionRecord.secondFace, static_cast<std::size_t>(faces.rows()));
-      if (!transitionFirstFace || !transitionSecondFace) return std::nullopt;
-      const bool forwardTraversal =
-          transitionFirstFace.value() == typedFromFace.value() &&
-          transitionSecondFace.value() == typedToFace.value();
-      const bool reverseTraversal =
-          transitionFirstFace.value() == typedToFace.value() &&
-          transitionSecondFace.value() == typedFromFace.value();
-      if (!forwardTraversal && !reverseTraversal) return std::nullopt;
+      const auto transitionValue = options.fieldTransportAtlas->transition_value(
+          carrier->edge, typedFromFace.value(), typedToFace.value());
+      if (!transitionValue.has_value()) return std::nullopt;
 
-      authority::QuarterTurn directedTransport =
-          authority::QuarterTurn::from_integer(transitionRecord.matching);
-      if (reverseTraversal) directedTransport = directedTransport.inverse();
       authority::GridAutomorphism transport =
           authority::GridAutomorphism::identity();
-      transport.rotation = directedTransport;
+      transport.rotation = transitionValue->transport;
       const auto step = authority::TransitionStep::interior(
           carrier->edge, transition.value(), transport, orientation);
       if (!step) return std::nullopt;

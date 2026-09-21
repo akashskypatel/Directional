@@ -289,6 +289,21 @@ struct FieldNonTraversableEdge {
   auto operator<=>(const FieldNonTraversableEdge &) const = default;
 };
 
+/** Validated transition value retained independently of edge traversability. */
+struct FieldTransportTransitionValue {
+  SourceEdgeTopologyKey sourceEdge;
+  SourceFaceId firstFace;
+  SourceFaceId secondFace;
+  SourceFaceTopologyKey firstFaceTopology;
+  SourceFaceTopologyKey secondFaceTopology;
+  QuarterTurn forward;
+  QuarterTurn reverse;
+  int forwardLift = 0;
+  double effort = 0.0;
+
+  auto operator<=>(const FieldTransportTransitionValue &) const = default;
+};
+
 struct FieldTransportStep {
   FieldTransportAdjacencyId adjacency;
   SourceEdgeTopologyKey sourceEdge;
@@ -423,6 +438,15 @@ struct FieldDirectedTransport {
   double effort = 0.0;
 
   auto operator<=>(const FieldDirectedTransport &) const = default;
+};
+
+/** Directed transition value with no traversal-adjacency authority. */
+struct FieldDirectedTransitionValue {
+  QuarterTurn transport;
+  int signedLift = 0;
+  double effort = 0.0;
+
+  auto operator<=>(const FieldDirectedTransitionValue &) const = default;
 };
 
 enum class FieldBoundaryFlow : std::uint8_t {
@@ -862,6 +886,10 @@ public:
   transport(const SourceEdgeTopologyKey &sourceEdge, SourceFaceId fromFace,
             SourceFaceId toFace) const noexcept;
 
+  [[nodiscard]] DIRECTIONAL_API std::optional<FieldDirectedTransitionValue>
+  transition_value(const SourceEdgeTopologyKey &sourceEdge,
+                   SourceFaceId fromFace, SourceFaceId toFace) const noexcept;
+
   [[nodiscard]] DIRECTIONAL_API bool matches_source_faces(
       const Eigen::MatrixXi &sourceFaces,
       const geometry::SourceTopologyRegions &sourceAuthority,
@@ -877,6 +905,7 @@ private:
       std::vector<SourceFaceTopologyKey> rowTopology,
       std::vector<TopologyRegionId> rowRegions,
       std::vector<SourceComponentId> rowComponents,
+      std::vector<FieldTransportTransitionValue> transitionValues,
       std::vector<FieldTransportAdjacency> adjacencies,
       std::vector<FieldNonTraversableEdge> nontraversableEdges,
       std::vector<FieldCycleWitness> cycles,
@@ -892,6 +921,7 @@ private:
         rowTopology_(std::move(rowTopology)),
         rowRegions_(std::move(rowRegions)),
         rowComponents_(std::move(rowComponents)),
+        transitionValues_(std::move(transitionValues)),
         adjacencies_(std::move(adjacencies)),
         nontraversableEdges_(std::move(nontraversableEdges)),
         cycles_(std::move(cycles)), singularities_(std::move(singularities)),
@@ -907,6 +937,7 @@ private:
   std::vector<SourceFaceTopologyKey> rowTopology_;
   std::vector<TopologyRegionId> rowRegions_;
   std::vector<SourceComponentId> rowComponents_;
+  std::vector<FieldTransportTransitionValue> transitionValues_;
   std::vector<FieldTransportAdjacency> adjacencies_;
   std::vector<FieldNonTraversableEdge> nontraversableEdges_;
   std::vector<FieldCycleWitness> cycles_;
