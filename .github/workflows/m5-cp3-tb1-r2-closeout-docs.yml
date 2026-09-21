@@ -1,0 +1,46 @@
+name: M5 CP3 TB1 R2 Closeout Docs
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m5-cp3-tb1-r2-closeout-docs.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  id-token: write
+
+concurrency:
+  group: m5-cp3-tb1-r2-closeout-docs-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m5-cp3-tb1-r2-closeout-docs.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m5-cp3-tb1-r2-closeout-docs
+      commit_run_file: false
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1D1_VTlx2kIrhVvW2sX0UyaoWnlVsI-lP
+      patch_sha256: e23ce1d137f43200cb08163f0336e4badd50c6a58a82f31facde5330fc322e7a
+      base_sha: d248ea7bf26c3b63fa062e9ff695be6a91ac70c6
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: M5-CP3-TB1-R2-EXEC durable report and review handoff
+    secrets: inherit
