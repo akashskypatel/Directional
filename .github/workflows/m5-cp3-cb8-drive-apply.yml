@@ -1,0 +1,46 @@
+name: M5 CP3 CB8 Drive Patch Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m5-cp3-cb8-drive-apply.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  id-token: write
+
+concurrency:
+  group: m5-cp3-cb8-drive-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m5-cp3-cb8-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m5-cp3-cb8-drive-apply
+      commit_run_file: false
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1EElFWQNelL9IFZtsnSF7DCMp3lbTfaPZ
+      patch_sha256: 0c6b8fe88fbf6948844cb227650960048246b6dca60ad9b946e466f58bb52c67
+      base_sha: ba7f09493e3e5c4ca488e2c0c00a02aafc20b0fd
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: M5-CP3-CB8 source-face incidence authority correction
+    secrets: inherit
