@@ -1,6 +1,0 @@
-turn=M5-CP3-TB1-REV
-purpose=apply verified durable Review documentation patch from Google Drive
-base_sha=8ab04882412a9f13463b4a5884043863e07526ea
-file_id=1Wsdc7HeXS3qLOMq-UpN8o3PD583nfnbG
-patch_sha256=ce1b66eecc8a8ccb56158b823bb47a1de923eb883b4cb996c2613f980d96b6ff
-retry=2
