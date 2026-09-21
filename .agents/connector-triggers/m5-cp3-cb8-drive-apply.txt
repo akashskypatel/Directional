@@ -1,0 +1,4 @@
+Purpose: apply the verified M5-CP3-CB8 source-face authority patch from Google Drive.
+Expected patch base: ba7f09493e3e5c4ca488e2c0c00a02aafc20b0fd.
+Caller install: eb24d0c92f9ed4776696f27ef787e7cf8f4e040b.
+Retry: 0
