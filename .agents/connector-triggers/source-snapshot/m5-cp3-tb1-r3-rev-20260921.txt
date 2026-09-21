@@ -1,3 +1,0 @@
-turn=M5-CP3-TB1-R3-REV
-purpose=independent Review source/document authority
-candidate_source=6dd0e5179686a4ea2ca4aacda0577855948864df
