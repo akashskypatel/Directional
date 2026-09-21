@@ -1,0 +1,137 @@
+name: M5 CP3 TB1 R1 Artifact-Only Test Benchmark
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m5-cp3-tb1-r1-exec.txt
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m5-cp3-tb1-r1-exec-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m5-cp3-tb1-r1-exec
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m5-cp3-tb1-r1-exec.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  runtime:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    env:
+      GH_TOKEN: ${{ github.token }}
+      DRIVER_PATH: .agents/Directional/turn-payloads/m5_cp3_tb1_r1_exec.py
+      EXPECTED_DRIVER_SHA256: fa48d472891d8a6c38e38b2800acae571662b24cc055abb90b4d17f95587934b
+      TURN_ID: M5-CP3-TB1-R1-EXEC
+    steps:
+      - name: Initialize persistent diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/${TURN_ID}.log"
+          : > "$log"
+          {
+            echo "workflow=${GITHUB_WORKFLOW}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "event=${GITHUB_EVENT_NAME}"
+            echo "event_sha=${GITHUB_SHA}"
+            echo "ref=${GITHUB_REF}"
+            echo "repository=${GITHUB_REPOSITORY}"
+            echo "runner_os=${RUNNER_OS}"
+            echo "turn_boundary=Test+Benchmark-only"
+            echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Checkout orchestration authority
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          submodules: false
+          lfs: false
+          token: ${{ secrets.GH_TOKEN || github.token }}
+
+      - name: Verify frozen runtime driver
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/${TURN_ID}.log"
+          exec > >(tee -a "$log") 2>&1
+          test -f "$DRIVER_PATH"
+          actual="$(sha256sum "$DRIVER_PATH" | awk '{print $1}')"
+          echo "driver_sha256=${actual}"
+          test "$actual" = "$EXPECTED_DRIVER_SHA256"
+          python3 - "$DRIVER_PATH" <<'PY'
+          import pathlib, sys
+          path = pathlib.Path(sys.argv[1])
+          compile(path.read_text(encoding='utf-8'), str(path), 'exec')
+          PY
+          git status --short
+
+      - name: Execute frozen artifact-only plan
+        id: gate
+        shell: bash
+        run: |
+          set +e
+          log="${RUNNER_TEMP}/${TURN_ID}.log"
+          exec > >(tee -a "$log") 2>&1
+          python3 "$DRIVER_PATH"
+          status=$?
+          echo "driver_exit=${status}"
+          echo "driver_exit=${status}" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Upload runtime result evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: directional-m5-cp3-tb1-r1-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/M5-CP3-TB1-R1-EXEC-result
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Record final runtime status
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          log="${RUNNER_TEMP}/${TURN_ID}.log"
+          {
+            echo "driver_exit=${{ steps.gate.outputs.driver_exit }}"
+            echo "final_job_status=${{ job.status }}"
+            echo "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Upload diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: directional-m5-cp3-tb1-r1-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/M5-CP3-TB1-R1-EXEC.log
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Fail closed on orchestration failure
+        if: always()
+        shell: bash
+        run: test "${{ steps.gate.outputs.driver_exit }}" = "0"
