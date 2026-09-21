@@ -1,6 +1,0 @@
-Purpose: mandatory GMP/GMPXX compile/package for M5-CP3-CB7.
-Caller install: 7a74359a4dfb34f816b161728eec35682a34f211
-Semantic patch commit: a1392c61a4f800512bb8bd73126f993638d1f55c
-Targets: eight standard targets
-Runtime execution: prohibited
-Retry: 0
