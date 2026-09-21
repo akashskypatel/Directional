@@ -15,10 +15,13 @@ exact-one/zero-skip processes. Zero produced rows report `PeriodicGeneratorRoute
 Finalized evidence artifact `10653953037` has complete self-manifest **918/918** at
 `3318a61ee993a9022141457fe0efacf8334013e0d6a9708a8537ec1358c39fb5`.
 
-## Latest Code + Build turn — `M5-CP3-CB8`
+## Latest Code + Build turn — `M5-CP3-CB9`
 
-CB8 is runtime-free compile/package green and corrects exact A3 occurrence-owned source-face incidence for the generator atlas
-query. Candidate `10651055588` / source `baae6307d...` remains unpromoted because R7 rows4–6 are semantic RED.
+CB9 is **COMPLETE / STATIC SCOPE GREEN / GMP COMPILE-PACKAGE GREEN / RUNTIME UNADJUDICATED**. It changes only
+`tests/SurfaceCellTransitionQuotientTests.cpp`, adding the source-authoritative nonzero-Z4 witness, independent directed
+A3 oracle, rows4/5 witness binding and genuinely absent/unowned/unselected row6 relation construction. Exact compile source
+`1023eea6090a1f6c2d47ecaceb1099967c32e6c2` packages all eight mandatory targets as candidate `10660365136` with
+root manifest **28/28**, explicit GMPXX+GMP, clean source status and `runtimeExecution=false`. No Directional runtime ran.
 
 ## M5 checkpoint sequence
 
@@ -26,11 +29,11 @@ query. Candidate `10651055588` / source `baae6307d...` remains unpromoted becaus
 - [x] `M5-CP3` R1→R7 recovery chain: stable ordinal408 `RP-01` event **RECOVERY PROVED** at R7 Review.
 - [x] M5 produced debt 1 — relation owners/container reorder: **DISCHARGED at R7 Review** on produced rows1/2 with >=2 relations and >=2 owned periodic edges.
 - [x] M5 produced debt 2 — missing relation owner: **DISCHARGED at R7 Review** on produced rows1/3 with exact typed rejection.
-- [ ] M5 produced debt 3 — genuine nonzero-Z4 rotation+translation through production/materialization: **OPEN**; R7 witness precondition false.
-- [ ] M5 produced debt 4 — tampered produced nonzero-Z4 transform rejects typed: **OPEN**; same witness precondition, tamper not reached.
+- [ ] M5 produced debt 3 — genuine nonzero-Z4 rotation+translation through production/materialization: **OPEN / CB9 WITNESS CORRECTION BUILT / RUNTIME UNADJUDICATED**.
+- [ ] M5 produced debt 4 — tampered produced nonzero-Z4 transform rejects typed: **OPEN / CB9 WITNESS CORRECTION BUILT / RUNTIME UNADJUDICATED**.
 - [ ] M6 closed-complex produced debt: **OPEN / M6-owned**.
-- [ ] `M5-CP3-CB9` — **NEXT / TEST-ONLY / RUNTIME-FREE**. Repair nonzero-Z4 source witness, independent direction oracle and genuinely unused relation witness in `tests/SurfaceCellTransitionQuotientTests.cpp` only; mandatory all-eight GMP compile/package.
-- [ ] `M5-CP3-TB1-R8-EXEC` — if CB9 compile-green, immutable same 446-process gate; require 9/9 + 1/1 + 6/6 + 430/430, independent nonzero direction oracle, exact immutable postflight.
+- [x] `M5-CP3-CB9` — **COMPLETE / TEST-ONLY / RUNTIME-FREE / COMPILE GREEN**. Candidate `10660365136` / source `1023eea6090...`; all-eight GMP compile/package green, no runtime.
+- [ ] `M5-CP3-TB1-R8-EXEC` — **EXACT NEXT**. Immutable same 446-process gate on candidate `10660365136`; require 9/9 + 1/1 + 6/6 + 430/430, independent nonzero direction oracle, exact immutable postflight.
 - [ ] `M5-CP3-TB1-R8-REV` — mandatory Review; only an all-green Review may discharge remaining M5 debts and pre-commit selector publication.
 - [ ] M5 selector publication Code + Build / cumulative artifact-only runtime / Review — blocked until frozen §13.3 precommitment exists.
 
@@ -38,7 +41,7 @@ query. Candidate `10651055588` / source `baae6307d...` remains unpromoted becaus
 
 - [x] `M5-CP3-TB1-R5-REV-OBS-01` — recovery proved by R7.
 - [x] `M5-CP3-TB1-R2-REV-OBS-01` — successful atlas-owned value consumption proved at R7 while hard-feature nontraversal control remains green.
-- [ ] `M5-CP3-TB1-R6-REV-OBS-01` — **OPEN**. Current torus source matching is zero on every edge, so R7 cannot discriminate forward/inverse face direction. CB9/R8 must provide a genuine nonzero-Z4 oracle before product correction.
+- [ ] `M5-CP3-TB1-R6-REV-OBS-01` — **OPEN / CB9 FALSIFIER COMPILED / RUNTIME UNADJUDICATED**. CB9 now supplies a genuine nonzero-Z4 source/A3 direction oracle; R8 must determine whether production agrees with that direction before any product correction.
 - [ ] `M5-CP2-TB1-REV-OBS-01` — **OPEN** until first independently all-green corrected CP3 pre-publication Review freezes publication bytes/hash/census.
 
 ## Deferred hygiene
@@ -65,7 +68,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. Four periodic/relation debts remain M5-owned and one closed-complex debt remains M6-owned.
-- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 R7 REVIEW COMPLETE / CB9 TEST-WITNESS CORRECTION NEXT**. Accepted runtime package remains `10601978228`; R7 candidate `10651055588` is unpromoted. R7 Review closes generator-route RP-01 recovery and discharges two M5 debts; rows4/5 and row6 are non-stable test-authority gaps. Stable accounting remains **50 / 14 / 36**, debt **3**. Exact next `M5-CP3-CB9`.
+- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 CB9 COMPILE GREEN / R8 EXEC NEXT**. Accepted runtime package remains `10601978228`. CB9 candidate `10660365136` / source `1023eea6090...` is compile-only and unpromoted; the R7 witness-authority gaps now have a bounded test-only correction, but the two M5 nonzero-Z4 debts remain runtime-unadjudicated. Stable accounting remains **50 / 14 / 36**, debt **3**. Exact next `M5-CP3-TB1-R8-EXEC`.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.
@@ -104,4 +107,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current corrected totals are **50 events / 14 categories / 36 recurrences**, debt **3**. M4, M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**; accepted runtime authority remains package `10601978228` / source `0798547d...` under selector430 **430/430**. R7 candidate `10651055588` remains unpromoted, but generator-route RP-01 recovery is independently proved and the relation-owner/reorder plus missing-owner M5 debts are discharged. Two nonzero-Z4 M5 debts and the M6 closed-complex debt remain open. Rows4/5 and row6 require test-witness correction, and the R6 direction observation remains open until a genuine nonzero source transition can discriminate direction. Selector publication remains prohibited. Exact successor is **`M5-CP3-CB9`**. PR #8 remains open, draft, and unmerged.
+Current corrected totals are **50 events / 14 categories / 36 recurrences**, debt **3**. M4, M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**; accepted runtime authority remains package `10601978228` / source `0798547d...` under selector430 **430/430**. R7 candidate `10651055588` remains unpromoted, but generator-route RP-01 recovery is independently proved and the relation-owner/reorder plus missing-owner M5 debts are discharged. Two nonzero-Z4 M5 debts and the M6 closed-complex debt remain open. CB9 has compiled the bounded rows4/5, row6, and nonzero-direction witness correction, but runtime evidence is still required in R8 and mandatory Review. Selector publication remains prohibited. Exact successor is **`M5-CP3-TB1-R8-EXEC`** on candidate `10660365136`; mandatory Review follows every mechanically complete R8. PR #8 remains open, draft, and unmerged.

@@ -1,3 +1,44 @@
+## 2026-09-21 — `M5-CP3-CB9` produced-witness authority correction compile evidence
+
+**Stable totals remain 50 events / 14 categories / 36 recurrences. Produced-witness debt remains 3.**
+
+CB9 changes only `tests/SurfaceCellTransitionQuotientTests.cpp` under the bounded R7 Review authority. Semantic commit
+`1907c26ed4de03b96c11e8f3500a65167bd2e42b` compiles/packages at exact source
+`1023eea6090a1f6c2d47ecaceb1099967c32e6c2` as candidate artifact `10660365136`. Mandatory run/job
+`35644260337 / 106480821581` is all-eight GMP/GMPXX compile green with root manifest **28/28**, clean source status
+and `runtimeExecution=false`; no generated Directional runtime executes.
+
+### `M5-CP3-TB1-R7-CAND-02` — correction built, runtime unadjudicated
+
+**Status:** OPEN / `RP-02 TEST_AUTHORITY_COVERAGE_GAP` / NON-STABLE / CB9 CORRECTION BUILT / OWNER R8 REVIEW / +0.
+
+The corrected test authors a deterministic quarter-winding field over committed torus geometry, finalizes it through source
+authority, requires a genuine nonzero transition on an exact row408 hard-edge carrier before product inspection, and binds
+rows4/5 to the source/A3-selected witness. The test independently derives directed transition value from canonical source-path
+orientation plus exact accepted boundary-occurrence source faces. Static compile evidence does not prove the runtime witness is
+`Produced`, that published product direction agrees, or that rows4/5 pass; those remain R8 falsifiers.
+
+### `M5-CP3-TB1-R7-CAND-03` — correction built, runtime unadjudicated
+
+**Status:** OPEN / `RP-02 TEST_AUTHORITY_COVERAGE_GAP` / NON-STABLE / CB9 CORRECTION BUILT / OWNER R8 REVIEW / +0.
+
+Row6 now constructs candidate routes from finalized source transitions on carriers outside the produced periodic-owner carrier
+set and asserts, before insertion, that the resulting valid relation ID is absent from the relation table, unowned by all
+phase-front edges, and absent from the baseline selected certificate. Only then is it inserted and relation storage permuted.
+Static compile evidence does not establish the runtime non-vacuity or invariance result.
+
+### Observation and debt disposition
+
+- `M5-CP3-TB1-R6-REV-OBS-01`: **OPEN / NONZERO DIRECTION FALSIFIER COMPILED / RUNTIME UNADJUDICATED / OWNER R8 REVIEW**. No product correction is authorized in CB9.
+- `M5-CP2-TB1-REV-OBS-01`: **CARRIED** until an independently all-green corrected CP3 pre-publication Review.
+- `FullPeriodicRotationAndTranslationMaterialize`: **OPEN / M5** pending R8 + Review.
+- `TamperedFullPeriodicTransformIsRejected`: **OPEN / M5** pending R8 + Review.
+- closed-complex produced witness: **OPEN / M6**.
+
+Accepted runtime package/source remains `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316` under selector430
+**430/430**. Candidate `10660365136` is compile-only and unpromoted. Exact successor is immutable artifact-only
+`M5-CP3-TB1-R8-EXEC`, followed by mandatory Review.
+
 ## 2026-09-21 — `M5-CP3-TB1-R7-REV` recovery and witness-authority adjudication
 
 **Stable totals remain 50 events / 14 categories / 36 recurrences. Produced-witness debt moves 5 -> 3.**

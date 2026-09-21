@@ -1,9 +1,15 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-21 at `M5-CP3-TB1-R7-REV`
+**Last updated:** 2026-09-21 at `M5-CP3-CB9`
 
-Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Corrected stable accounting is **50 / 14 / 36**, produced-witness debt **5**; M5 owns four of those debts.
+Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Corrected stable accounting is **50 / 14 / 36**, produced-witness debt **3**; M5 owns two of those debts and M6 owns one.
+
+## Current CP3 authority — CB9 compile green, R8 runtime next
+
+R7 Review recovery-proved the stable generator-route RP-01 event, discharged the produced relation-owner/reorder and missing-owner debts, and proved the remaining rows4/5 plus row6 failures were non-stable witness-authority gaps. CB9 changes only `tests/SurfaceCellTransitionQuotientTests.cpp` to supply a deterministic source-authoritative nonzero-Z4 torus witness, independent exact directed A3/source-path oracle, rows4/5 binding to that witness, and a row6 relation independently required absent/unowned/unselected before insertion.
+
+Semantic commit `1907c26ed4de03b96c11e8f3500a65167bd2e42b` compiles/packages at exact source `1023eea6090a1f6c2d47ecaceb1099967c32e6c2` as candidate `10660365136`. Mandatory run/job `35644260337 / 106480821581` builds all eight GMP/GMPXX targets with root manifest **28/28**, clean source status and `runtimeExecution=false`. Candidate remains unpromoted; the two M5 nonzero-Z4 debts and `M5-CP3-TB1-R6-REV-OBS-01` are correction-built/runtime-unadjudicated. Exact successor is immutable artifact-only `M5-CP3-TB1-R8-EXEC`, then mandatory Review.
 
 ## 1. `M5-DEFN` — definitions frozen
 

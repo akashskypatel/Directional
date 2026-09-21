@@ -4,60 +4,37 @@
 
 ## Current authority
 
-`M5-CP3-TB1-R7-REV` is **COMPLETE / R7 EVIDENCE UPHELD / R1 RP-01 RECOVERY PROVED / TWO M5 DEBTS DISCHARGED / TEST-AUTHORITY CORRECTION NEXT**.
+`M5-CP3-CB9` is **COMPLETE / STATIC SCOPE GREEN / GMP COMPILE-PACKAGE GREEN / RUNTIME UNADJUDICATED**.
 
-R7 immutable runtime remains authoritative candidate evidence: run/job `35628318067 / 106428116133`, candidate
-`10651055588` / source `baae6307d189639fdf7d8a0011f5ba5f30de1631`, complete **446/446** exact-one/zero-skip vector
-**9/9 mechanism + 1/1 focused atlas + 3/6 produced + selector430 430/430**, benchmark 0. Zero produced rows report
-`PeriodicGeneratorRouteUnavailable`; ordinal408 is recovered. Runtime-free finalization run/job
-`35630259806 / 106434543859` produced artifact `10653953037`, SHA-256
-`45a6c7c3809ad4068119b58ec061e30832202f6880e7a26ba517500a23b457d2`, complete self-manifest **918/918** at
-`3318a61ee993a9022141457fe0efacf8334013e0d6a9708a8537ec1358c39fb5`.
+CB9 implements only the R7-reviewed produced-witness authority correction in `tests/SurfaceCellTransitionQuotientTests.cpp`. Semantic commit `1907c26ed4de03b96c11e8f3500a65167bd2e42b` adds a deterministic nonzero-Z4 torus source witness, an independent A3/source-path directed-transition oracle, rows4/5 bound to that preselected witness, and a row6 relation that is independently proved absent/unowned/unselected before insertion. No production source, public header, committed fixture, selector, CMake ownership, frozen definition, benchmark semantic, or accepted expectation changed.
 
-Independent R7 Review closes the stable `M5-CP3-TB1-R1-CAND-01 / RP-01 AUTHORITY_DOMAIN_CONFLATION` recovery without
-changing historical totals: **50 events / 14 categories / 36 recurrences**. Produced rows1/2 discharge the relation-owner/
-container-reorder M5 debt with >=2 produced relations and >=2 owned periodic edges; rows1/3 discharge the produced missing-owner
-debt with exact typed rejection. Project debt is now **3**: two M5 nonzero-Z4 debts plus one M6 closed-complex debt.
+Mandatory runtime-free compile/package consumed exact source `1023eea6090a1f6c2d47ecaceb1099967c32e6c2`. Run/job `35644260337 / 106480821581` compiled all eight required targets with explicit GMPXX+GMP linkage, preflight/build `0 / 0`, clean source-status receipts, and `runtimeExecution=false`. Candidate artifact `10660365136` has ZIP SHA-256 `30333b2edbcd011ca52ae9e7e134884f72f4425a56103f179b6a3b6b3d1b0729`; root `SHA256SUMS` verifies **28/28** and hashes to `9cfe8fac63bf730c59b271eec7ee5948debca285d73eec4b9cbc81396b58e464`; packaged source archive hashes to `38dff143f89ee882cd40f85d2344fb96b68f87eb864d52a352a5404e244a5bbc`. Compile-log artifact `10660330234` hashes to `7957e1f97820866a6b26d0149e6ca98ec67de857273c0f24185418c9e8c657d1`. No generated Directional test, benchmark, discovery, `ctest`, CLI, fuzzer, help/version command, or custom input executed.
 
-Rows4/5 are not product evidence: exact static re-derivation from committed torus geometry/rawfield proves all **216/216** source
-edge matching values, including the 18 row408 hard edges, are Z4 zero. The tests assumed a genuine nonzero-Z4 relation by
-searching product output. Row6's purported unused swapped relation ID is already present. These are non-stable
-`RP-02 / TEST_AUTHORITY_COVERAGE_GAP` witness defects. Candidate `10651055588` remains unpromoted; selector publication remains
-prohibited.
-
-`M5-CP3-TB1-R6-REV-OBS-01` remains open. CB8 retained exact occurrence-owned source faces but R7's zero-Z4 field cannot
-falsify a directed-face inversion. No product correction is authorized until a nonzero-Z4 source oracle makes direction
-observable. `M5-CP3-TB1-R2-REV-OBS-01` is discharged by successful atlas-value consumption plus the retained-value/nontraversal
-control. `M5-CP2-TB1-REV-OBS-01` remains carried until a complete corrected pre-publication gate is independently green.
-
-Accepted runtime authority remains package/source `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316` under
-selector430 **430/430**.
+CB9 supplies no runtime semantic credit. Candidate `10660365136` is unpromoted. Accepted runtime authority remains package/source `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316` under selector430 **430/430**. Stable accounting remains **50 events / 14 categories / 36 recurrences** and project produced-witness debt remains **3**: two M5 nonzero-Z4 debts plus one M6 closed-complex debt. `M5-CP3-TB1-R7-CAND-02`, `M5-CP3-TB1-R7-CAND-03`, and `M5-CP3-TB1-R6-REV-OBS-01` remain open as **correction built / runtime unadjudicated** through R8 Review. Selector publication remains prohibited.
 
 ## Exact next turn
 
-**`M5-CP3-CB9` — runtime-free test-authority-only Code + Build.**
+**`M5-CP3-TB1-R8-EXEC` — immutable artifact-only runtime gate.**
 
-Execute `Architecture_M5_CP3_CB9_Produced_Witness_Authority_Correction_Plan.md` exactly. Change only
-`tests/SurfaceCellTransitionQuotientTests.cpp`:
+Execute `.agents/Directional/Architecture_M5_CP3_TB1_R8_Artifact_Only_Test_Benchmark_Plan.md` exactly on candidate artifact `10660365136` / source `1023eea6090a1f6c2d47ecaceb1099967c32e6c2`.
 
-- author a deterministic raw cross field on the existing committed torus geometry whose finalized source authority proves at
-  least one exact row408-class hard-edge transition has genuine nonzero Z4 before product inspection;
-- derive the expected directed transition from canonical A3 source-path orientation + exact boundary-occurrence source faces;
-- make rows4/5 use that preselected witness, with row5 actually reaching stable-ID action tamper and exact
-  `NonReciprocalPeriodicRelation`;
-- make row6 construct an independently absent, unowned and unselected valid relation before insertion.
+- verify provider/package/source/GMP/selector/routing authority and archived executable modes before runtime;
+- execute the same **446** fresh exact-filter processes: 9 mechanism + 1 focused atlas + 6 produced + selector430;
+- require exact-one selection and zero skips for every row;
+- intended vector is **9/9 + 1/1 + 6/6 + 430/430**;
+- rows4/5 must prove a source-authoritative genuine nonzero-Z4 witness, exact directed-orientation agreement, materialization, and exact typed tamper rejection;
+- row6 must prove the added valid relation was independently absent/unowned/unselected and remains unconsumed with certificate/output invariance;
+- benchmark execution remains **0** and all build/repair/discovery/mutation counters remain zero;
+- preserve exact package/source/execution-view bytes and modes through postflight.
 
-Do not modify production source, public headers, committed fixture bytes, selectors, CMake ownership, frozen definitions or
-accepted expectations. Mandatory all-eight GMP/GMPXX compile/package only; `runtimeExecution=false`. If a genuine nonzero
-source transition or valid unused relation cannot be proved from source authority, stop rather than widening scope. Compile-green
-routes to exact successor `M5-CP3-TB1-R8-EXEC` on the same 446-process gate, followed by mandatory Review.
+Any semantic RED routes directly to mandatory `M5-CP3-TB1-R8-REV`; EXEC may not repair tests or production. An all-green R8 also requires that Review before debt credit, promotion, or selector publication.
 
 ## Open obligations
 
 - `M5-CP3-TB1-R1-CAND-01` — **CLOSED / RECOVERY PROVED / stable historical RP-01 event retained**.
-- `M5-CP3-TB1-R7-CAND-02` — **OPEN / RP-02 / nonzero-Z4 witness precondition / NON-STABLE / CB9 owner**.
-- `M5-CP3-TB1-R7-CAND-03` — **OPEN / RP-02 / unused-relation witness collision / NON-STABLE / CB9 owner**.
-- `M5-CP3-TB1-R6-REV-OBS-01` — **OPEN / direction falsifier not satisfied / CB9 -> R8 Review owner**.
+- `M5-CP3-TB1-R7-CAND-02` — **OPEN / RP-02 / CB9 CORRECTION BUILT / RUNTIME UNADJUDICATED / R8 Review owner**.
+- `M5-CP3-TB1-R7-CAND-03` — **OPEN / RP-02 / CB9 CORRECTION BUILT / RUNTIME UNADJUDICATED / R8 Review owner**.
+- `M5-CP3-TB1-R6-REV-OBS-01` — **OPEN / nonzero direction falsifier compiled / runtime unadjudicated / R8 Review owner**.
 - `M5-CP3-TB1-R2-REV-OBS-01` — **DISCHARGED at R7 Review**.
 - `M5-CP2-TB1-REV-OBS-01` — **OPEN / first independently all-green corrected CP3 pre-publication Review**.
 - M5 produced debts: **2 OPEN** (nonzero-Z4 materialization + tamper); M6 produced debt: **1 OPEN**; project debt **3**.
@@ -65,37 +42,38 @@ routes to exact successor `M5-CP3-TB1-R8-EXEC` on the same 446-process gate, fol
 
 ## Resume-critical evidence
 
-- R7 runtime run/job/event SHA: `35628318067 / 106428116133 / 476bd2c9d903aec19b5a2380b158ef01cbc15e95`
-- R7 original result/log artifacts: `10653532089 / 10653437216`
-- R7 finalized evidence run/job: `35630259806 / 106434543859`
-- R7 finalized result/log artifacts: `10653953037 / 10654192933`
-- R7 finalized result/log SHA-256: `45a6c7c3809ad4068119b58ec061e30832202f6880e7a26ba517500a23b457d2 / 594edca8030333303ec64c6099cae9e23f8a733f82fb9b3c2d3783a17849f4a5`
-- R7 finalized self-manifest: **918/918**, `3318a61ee993a9022141457fe0efacf8334013e0d6a9708a8537ec1358c39fb5`
-- Review source snapshot: run/job/artifact `35636934158 / 106456604121 / 10656048772`, event `70fcc68b88238b76ee263b88b79c60bbd79e219a`
-- Review snapshot provider/source archive: `c00425b8f3becda5705dcaaff7f7e424f9b26f60f82cbbb40b0e43af2d5a5e59 / f65a298bd9d18d1eab9699a96a18a3592ab299e64c707b51c95e9f72f08b9573`
-- Candidate: `10651055588 / baae6307d189639fdf7d8a0011f5ba5f30de1631`, ZIP `376f61120b4a71dd9747daae8c248fe766bbf899faac0e2f336fc97e57acda96`
+- CB9 semantic commit: `1907c26ed4de03b96c11e8f3500a65167bd2e42b`
+- CB9 exact compile source: `1023eea6090a1f6c2d47ecaceb1099967c32e6c2`
+- CB9 compile run/job: `35644260337 / 106480821581`
+- Candidate artifact: `10660365136`, ZIP `30333b2edbcd011ca52ae9e7e134884f72f4425a56103f179b6a3b6b3d1b0729`
+- Candidate root manifest: **28/28**, `9cfe8fac63bf730c59b271eec7ee5948debca285d73eec4b9cbc81396b58e464`
+- Candidate packaged source archive: `38dff143f89ee882cd40f85d2344fb96b68f87eb864d52a352a5404e244a5bbc`
+- CB9 compile log artifact: `10660330234`, ZIP `7957e1f97820866a6b26d0149e6ca98ec67de857273c0f24185418c9e8c657d1`
+- Authoritative test patch Drive staging: file `1s2lJdUsj6L6JRzM-lPoPGiHhqXqJmOZV`, patch SHA-256 `89af1b2a1e4a76058c54358a101d5ef2bd7a250f0bfc3b132f1ad5d4606f4e9b`, base `55adf8d1a8a1ee0b3acd5835efa21c2e06c8a3ef`, applied semantic commit `1907c26...`
+- Accepted runtime package/source: `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316`
 - Selector430 / first427: `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6 / f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`
-- Committed torus OBJ/rawfield: `8a6e0b63382a5eab8b02dc6e07f35e1611c736bf9c5744533fcee573de84c1d8 / 25dddeb56f19122833643d6092b862e6777e9e2be9aa2853dfa445c36fd02dbe`
-- Current Review: `.agents/Directional/Architecture_M5_CP3_TB1_R7_Review_Record.md`
-- Exact successor plan: `.agents/Directional/Architecture_M5_CP3_CB9_Produced_Witness_Authority_Correction_Plan.md`
+- Accepted routing identity-map: `7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c`
+- CB9 report: `.agents/Directional/Architecture_M5_CP3_CB9_Code_Build_Report.md`
+- R8 plan: `.agents/Directional/Architecture_M5_CP3_TB1_R8_Artifact_Only_Test_Benchmark_Plan.md`
 - Frozen definitions: `.agents/Directional/Architecture_M5_Frozen_Definitions.md` §§7, 8.2, 13–15
 
 ## Context Load Plan
 
 ```yaml
 load_next:
-  - references/turns/CB.md
+  - references/turns/TB.md
 conditional_modules:
-  - trigger: GitHub Actions compile/package evidence
+  - trigger: GitHub Actions artifact-only runtime evidence
     path: modules/github-connector/MODULE.md
 deep_references:
+  - .agents/Directional/Architecture_M5_CP3_CB9_Code_Build_Report.md
+  - .agents/Directional/Architecture_M5_CP3_TB1_R8_Artifact_Only_Test_Benchmark_Plan.md
   - .agents/Directional/Architecture_M5_CP3_TB1_R7_Review_Record.md
-  - .agents/Directional/Architecture_M5_CP3_CB9_Produced_Witness_Authority_Correction_Plan.md
   - .agents/Directional/Architecture_M5_Frozen_Definitions.md
   - .agents/Directional/Regression_Root_Cause_Tracker.md
   - .agents/Directional/M5_Consolidated_Record.md
 do_not_preload:
-  - any runtime execution during CB9
-  - any product/source/fixture/selector mutation outside the exact test-only plan
-  - M6 occurrence work or selector publication before an independently all-green CP3 gate
+  - any rebuild or package repair during R8
+  - any semantic mutation during R8 EXEC
+  - M6 occurrence work or selector publication before mandatory R8 Review
 ```

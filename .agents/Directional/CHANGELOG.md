@@ -1,3 +1,25 @@
+## 2026-09-21 — `M5-CP3-CB9`: produced-witness authority correction compile green
+
+Runtime-free test-authority Code + Build. Semantic commit `1907c26ed4de03b96c11e8f3500a65167bd2e42b` changes only
+`tests/SurfaceCellTransitionQuotientTests.cpp`: deterministic nonzero-Z4 torus source witness, independent exact A3/source-path
+direction oracle, rows4/5 bound to that witness, and a row6 relation independently required absent/unowned/unselected before
+insertion. No production source, public header, committed fixture, selector, CMake ownership, frozen definition or accepted
+expectation changed.
+
+Mandatory compile/package run/job `35644260337 / 106480821581` consumes exact source
+`1023eea6090a1f6c2d47ecaceb1099967c32e6c2`, builds all eight required targets with explicit GMPXX+GMP linkage and
+preflight/build `0 / 0`, and publishes candidate artifact `10660365136` at ZIP SHA-256
+`30333b2edbcd011ca52ae9e7e134884f72f4425a56103f179b6a3b6b3d1b0729`. Root manifest is **28/28** at
+`9cfe8fac63bf730c59b271eec7ee5948debca285d73eec4b9cbc81396b58e464`; packaged source archive hashes to
+`38dff143f89ee882cd40f85d2344fb96b68f87eb864d52a352a5404e244a5bbc`; compile log artifact `10660330234` hashes
+to `7957e1f97820866a6b26d0149e6ca98ec67de857273c0f24185418c9e8c657d1`. Source-status receipts are empty and
+`runtimeExecution=false`; no Directional runtime/test/benchmark/discovery executed.
+
+Candidate remains compile-only and unpromoted. Stable accounting stays **50 / 14 / 36**, project debt **3**, and selector
+publication remains prohibited. `M5-CP3-TB1-R7-CAND-02`, `M5-CP3-TB1-R7-CAND-03`, and
+`M5-CP3-TB1-R6-REV-OBS-01` are correction-built/runtime-unadjudicated. Exact successor is immutable artifact-only
+`M5-CP3-TB1-R8-EXEC` on candidate `10660365136`, then mandatory Review.
+
 ## 2026-09-21 — `M5-CP3-TB1-R7-REV` review: recovery and two debt discharges upheld; attribution corrected
 
 Runtime-free review. **Upheld.** Stable totals stay **50 events / 14 categories / 36 recurrences**;

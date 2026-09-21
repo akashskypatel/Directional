@@ -27,9 +27,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
-> **Current milestone authority (2026-09-21, after `M5-CP3-TB1-R7-REV`):** M4 remains **CLOSED / ACCEPTED**; M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**. Accepted runtime authority remains package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under selector430 **430/430**. R7 candidate `10651055588` is runtime-tested but unpromoted. R7 is mechanically **9/9 mechanism, 1/1 focused atlas, 3/6 produced, selector430 430/430**; zero produced rows remain `PeriodicGeneratorRouteUnavailable` and ordinal408 recovers. R7 Review closes the stable R1 `RP-01` recovery, discharges the produced relation-owner/reorder and missing-owner debts, proves rows4/5 and row6 are non-stable `RP-02` witness-authority defects, and carries the nonzero direction observation. Stable accounting is **50 / 14 / 36**, project debt **3**. Exact next is runtime-free test-only `M5-CP3-CB9`.
+> **Current milestone authority (2026-09-21, after `M5-CP3-CB9`):** M4 remains **CLOSED / ACCEPTED**; M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**. Accepted runtime authority remains package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under selector430 **430/430**. CB9 candidate `10660365136` / source `1023eea6090a1f6c2d47ecaceb1099967c32e6c2` is compile/package green and runtime-unadjudicated. CB9 changes only `tests/SurfaceCellTransitionQuotientTests.cpp`, compiling the source-authoritative nonzero-Z4 witness, independent directed A3 oracle, rows4/5 witness binding and genuinely unused row6 relation construction. Stable accounting remains **50 / 14 / 36**, project debt **3**; candidate is unpromoted and selector publication prohibited. Exact next is immutable artifact-only `M5-CP3-TB1-R8-EXEC`.
 
-**Currency.** `M5-CP3-TB1-R7-REV`, 2026-09-21 UTC
+**Currency.** `M5-CP3-CB9`, 2026-09-21 UTC
 
 **Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` is the active M5 contract. `PeriodicRelationId` is carrier-content identity under one topology region; action/transport is relation value; the producer records the exact ordered relation path used for lineage, and consumers independently validate that certificate without reachability search. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 
@@ -81,7 +81,7 @@ A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on t
 
 DEFN-R1/R2 debt ownership is unchanged by closure. The two periodic `G4-B002` M5 debts are **DISCHARGED at R7 Review** on produced authority: relation/container-order ownership (rows1/2) and missing-owner typing (rows1/3). The two `G4-B003` nonzero-Z4 debts remain **M5-owned**; the closed candidate-bearing-complex `G4-B002` debt remains **M6-owned** at M6-CP1 mechanism / M6-CP3 direct-production proof. No produced-witness debt is M4-owned.
 
-M5-DEFN is **COMPLETE / DEFINITIONS FROZEN**; `M5-CP1` and `M5-CP2` are **CLOSED / ACCEPTED**. Package `10601978228` remains accepted. R7 candidate `10651055588` executes 9/9 + 1/1 + 3/6 + 430/430; Review closes the generator-route RP-01 recovery, credits two produced debts, and proves the remaining REDs are test-witness authority. Exact next is **`M5-CP3-CB9`** test-only, then fresh R8.
+M5-DEFN is **COMPLETE / DEFINITIONS FROZEN**; `M5-CP1` and `M5-CP2` are **CLOSED / ACCEPTED**. Package `10601978228` remains accepted. R7 Review closes the generator-route RP-01 recovery and credits two produced debts. CB9 then compiles the bounded test-witness correction as candidate `10660365136` / source `1023eea6090...` with no runtime. Exact next is immutable **`M5-CP3-TB1-R8-EXEC`**, then mandatory Review.
 
 ## 4. The witnesses — the fastest way to understand the problem
 
@@ -198,9 +198,9 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **M5-CP3-CB9 — NEXT / TEST-ONLY.** Author a deterministic source-authoritative nonzero-Z4 torus field/witness, exact A3/source-path direction oracle, and genuinely absent unused relation witness in `SurfaceCellTransitionQuotientTests.cpp` only. No product/fixture/selector change. Mandatory all-eight GMP compile/package, `runtimeExecution=false`; compile-green routes to the same 446-process R8 gate.
+1. **M5-CP3-TB1-R8-EXEC — NEXT / ARTIFACT-ONLY.** Consume compile-green candidate `10660365136` / source `1023eea6090...` immutably over the same 446-process gate. Require 9/9 mechanism + 1/1 focused atlas + 6/6 produced + selector430 430/430, exact-one/zero-skip, independent nonzero-Z4 directed-orientation agreement, genuine unused-relation non-vacuity, immutable byte+mode postflight and benchmark execution 0. Every mechanically complete execution routes to mandatory R8 Review.
 
-2. **Remaining M5 nonzero-Z4 debts + publication — OPEN / M5.** Relation-owner/reorder and missing-owner debts are discharged at R7 Review. `FullPeriodicRotationAndTranslationMaterialize` and `TamperedFullPeriodicTransformIsRejected` remain open because the committed torus rawfield has Z4 zero on all source edges. `M5-CP3-TB1-R6-REV-OBS-01` remains open until a nonzero source witness can falsify direction. `M5-CP2-TB1-REV-OBS-01` remains carried; selector precommitment/publication is prohibited until an independently all-green corrected CP3 gate.
+2. **Remaining M5 nonzero-Z4 debts + publication — OPEN / M5.** Relation-owner/reorder and missing-owner debts are discharged at R7 Review. CB9 compiles a source-authoritative nonzero-Z4 witness and independent direction falsifier, but `FullPeriodicRotationAndTranslationMaterialize` and `TamperedFullPeriodicTransformIsRejected` remain open until R8 runtime + Review. `M5-CP3-TB1-R6-REV-OBS-01` is correction-built/runtime-unadjudicated. `M5-CP2-TB1-REV-OBS-01` remains carried; selector precommitment/publication is prohibited until an independently all-green corrected CP3 gate.
 
 3. **`G4-B002` produced closed-complex debt — OPEN / M6.** DEFN-R2 freezes M6-CP1 mechanism / M6-CP3 direct-production proof. Preserve the A5 occurrence-complex subject, independent eligibility oracle, hard-feature tamper, and fail-closed/no-recovery contract. Do not pull diagnostic `hasArrangement` backward into M4/M5.
 
