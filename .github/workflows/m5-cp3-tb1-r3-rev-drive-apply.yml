@@ -1,0 +1,47 @@
+name: M5 CP3 TB1 R3 Review Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m5-cp3-tb1-r3-rev-drive-apply-20260921.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m5-cp3-tb1-r3-rev-drive-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m5-cp3-tb1-r3-rev-drive-apply
+      commit_run_file: false
+      trim_stale_comments: false
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m5-cp3-tb1-r3-rev-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1K8aesRPjfQepL5jfxlLDbzBs9obMzWRy
+      patch_sha256: f44581b0a860a2f67886d294a2fa842d757cf30288a7d5fe025829d06a92742f
+      base_sha: a2bfebd90e0088b536c525177a96dd9fe1599e46
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'M5-CP3-TB1-R3-REV adjudicate failed recovery and freeze CB5'
+    secrets: inherit
