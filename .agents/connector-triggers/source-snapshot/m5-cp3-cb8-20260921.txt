@@ -1,3 +1,0 @@
-Purpose: acquire exact source snapshot for M5-CP3-CB8.
-Expected semantic source authority before control marker: 2beb31fe80448cd8cae9f7a7d811e27672e5fbbd.
-Retry: 0
