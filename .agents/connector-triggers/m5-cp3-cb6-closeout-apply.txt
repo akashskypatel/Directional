@@ -1,5 +1,0 @@
-M5-CP3-CB6 durable closeout patch apply
-caller_install=675614605d83c64d030f9cf02c14987d4cabd6e9
-base_sha=9afb9c7cfa1d1abb86faf14f814b922ac24db41d
-patch_sha256=918627626c9dbd68bce2ae3597d2e03b672e5ffed174497ff9916f5b4f4b4ca5
-retry=1
