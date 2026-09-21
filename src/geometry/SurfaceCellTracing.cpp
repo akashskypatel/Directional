@@ -40,6 +40,23 @@ authority::SourceEdgeTopologyKey edge_key(const int a, const int b,
   return key.value();
 }
 
+std::optional<authority::FieldExactRational> exact_edge_parameter(
+    const authority::ExactSourcePoint &point,
+    const authority::SourceEdgeTopologyKey &edge) {
+  if (const auto *vertex = std::get_if<authority::SourceVertexId>(&point)) {
+    if (*vertex == edge.first()) {
+      return authority::FieldExactRational::from_integer(0);
+    }
+    if (*vertex == edge.second()) {
+      return authority::FieldExactRational::from_integer(1);
+    }
+    return std::nullopt;
+  }
+  const auto *edgePoint = std::get_if<authority::ExactSourceEdgePoint>(&point);
+  if (edgePoint == nullptr || edgePoint->edge != edge) return std::nullopt;
+  return edgePoint->parameter;
+}
+
 } // namespace directional::geometry::surface_cell_tracing_detail
 
 namespace directional::geometry::surface_cell_tracing_detail {
@@ -15581,24 +15598,6 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
     }
     return converted;
   };
-  const auto exact_edge_parameter = [](
-      const authority::ExactSourcePoint &point,
-      const authority::SourceEdgeTopologyKey &edge)
-      -> std::optional<authority::FieldExactRational> {
-    if (const auto *vertex = std::get_if<authority::SourceVertexId>(&point)) {
-      if (*vertex == edge.first()) {
-        return authority::FieldExactRational::from_integer(0);
-      }
-      if (*vertex == edge.second()) {
-        return authority::FieldExactRational::from_integer(1);
-      }
-      return std::nullopt;
-    }
-    const auto *edgePoint =
-        std::get_if<authority::ExactSourceEdgePoint>(&point);
-    if (edgePoint == nullptr || edgePoint->edge != edge) return std::nullopt;
-    return edgePoint->parameter;
-  };
   const auto boundary_trace_point = [&faces](
       const int face, const int firstVertex, const int secondVertex,
       const authority::FieldExactRational &canonicalParameter,
@@ -16595,6 +16594,8 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
   // incidence for traversal only; they never rebuild serialized indices.
   const auto sourceEdgeFaces = edge_faces(faces);
   const auto sourceMatchingIndices = edge_matching_indices(sourceEdgeFaces);
+  const std::size_t sourceVertexExtent =
+      static_cast<std::size_t>(vertices.rows());
 
   if (!sourceAuthority.matches_source_faces(
           faces, static_cast<std::size_t>(vertices.rows())) ||
@@ -16964,11 +16965,16 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
     return &result.sourceTopologyRegions->region(id);
   };
 
+  const EdgeTransitionLookup generatorTransitionLookup =
+      edgeTransitions != nullptr
+          ? edge_transition_lookup(*edgeTransitions, sourceVertexExtent)
+          : EdgeTransitionLookup{};
+
   const auto generator_route_for_span = [&](
       const authority::NetworkArcId span, const int fromFace,
       const int toFace) -> std::optional<authority::CanonicalRoute> {
-    if (options.globalTopologyPlan == nullptr ||
-        options.fieldTransportAtlas == nullptr) {
+    if (options.globalTopologyPlan == nullptr || edgeTransitions == nullptr ||
+        generatorTransitionLookup.duplicate) {
       return std::nullopt;
     }
     const GlobalTopologyArc *arc = options.globalTopologyPlan->find_arc(span);
@@ -16988,21 +16994,20 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
     for (const authority::ExactSourceSupportPiece &piece : arc->sourcePath) {
       const auto *carrier =
           std::get_if<authority::SourceEdgeSupport>(&piece.carrier);
-      const auto *first = std::get_if<authority::SourceVertexId>(&piece.first);
-      const auto *second = std::get_if<authority::SourceVertexId>(&piece.second);
-      if (carrier == nullptr || first == nullptr || second == nullptr ||
-          *first == *second) {
+      if (carrier == nullptr) return std::nullopt;
+
+      const auto firstParameter =
+          exact_edge_parameter(piece.first, carrier->edge);
+      const auto secondParameter =
+          exact_edge_parameter(piece.second, carrier->edge);
+      if (!firstParameter.has_value() || !secondParameter.has_value() ||
+          *firstParameter == *secondParameter) {
         return std::nullopt;
       }
-      authority::Orientation orientation;
-      if (*first == carrier->edge.first() && *second == carrier->edge.second()) {
-        orientation = authority::Orientation::Forward;
-      } else if (*first == carrier->edge.second() &&
-                 *second == carrier->edge.first()) {
-        orientation = authority::Orientation::Reverse;
-      } else {
-        return std::nullopt;
-      }
+      const authority::Orientation orientation =
+          *firstParameter < *secondParameter ? authority::Orientation::Forward
+                                             : authority::Orientation::Reverse;
+
       const auto transitionIndex = sourceMatchingIndices.find(carrier->edge);
       if (transitionIndex == sourceMatchingIndices.end()) {
         return std::nullopt;
@@ -17010,12 +17015,45 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
       const auto transition = authority::InteriorTransitionId::from_index(
           transitionIndex->second, sourceMatchingIndices.size());
       if (!transition) return std::nullopt;
-      const auto directedTransport = options.fieldTransportAtlas->transport(
-          carrier->edge, typedFromFace.value(), typedToFace.value());
-      if (!directedTransport.has_value()) return std::nullopt;
+
+      const auto rawTransition =
+          generatorTransitionLookup.byEdge.find(carrier->edge);
+      if (rawTransition == generatorTransitionLookup.byEdge.end()) {
+        return std::nullopt;
+      }
+      const fields::CrossFieldEdgeTransition &transitionRecord =
+          rawTransition->second;
+      const auto transitionFirstVertex = authority::SourceVertexId::from_index(
+          transitionRecord.sourceVertex0, sourceVertexExtent);
+      const auto transitionSecondVertex = authority::SourceVertexId::from_index(
+          transitionRecord.sourceVertex1, sourceVertexExtent);
+      if (!transitionFirstVertex || !transitionSecondVertex) {
+        return std::nullopt;
+      }
+      const auto transitionEdge = authority::SourceEdgeTopologyKey::make(
+          transitionFirstVertex.value(), transitionSecondVertex.value());
+      if (!transitionEdge || transitionEdge.value() != carrier->edge) {
+        return std::nullopt;
+      }
+      const auto transitionFirstFace = authority::SourceFaceId::from_index(
+          transitionRecord.firstFace, static_cast<std::size_t>(faces.rows()));
+      const auto transitionSecondFace = authority::SourceFaceId::from_index(
+          transitionRecord.secondFace, static_cast<std::size_t>(faces.rows()));
+      if (!transitionFirstFace || !transitionSecondFace) return std::nullopt;
+      const bool forwardTraversal =
+          transitionFirstFace.value() == typedFromFace.value() &&
+          transitionSecondFace.value() == typedToFace.value();
+      const bool reverseTraversal =
+          transitionFirstFace.value() == typedToFace.value() &&
+          transitionSecondFace.value() == typedFromFace.value();
+      if (!forwardTraversal && !reverseTraversal) return std::nullopt;
+
+      authority::QuarterTurn directedTransport =
+          authority::QuarterTurn::from_integer(transitionRecord.matching);
+      if (reverseTraversal) directedTransport = directedTransport.inverse();
       authority::GridAutomorphism transport =
           authority::GridAutomorphism::identity();
-      transport.rotation = directedTransport->transport;
+      transport.rotation = directedTransport;
       const auto step = authority::TransitionStep::interior(
           carrier->edge, transition.value(), transport, orientation);
       if (!step) return std::nullopt;
