@@ -1,4 +1,0 @@
-Purpose: apply verified M5-CP3-TB1-R7-REV durable review/consolidation closeout.
-Patch base: 70fcc68b88238b76ee263b88b79c60bbd79e219a.
-Caller install: 7977188ebc84d488db3ce71f5a80e5f76e9427e1.
-Retry: 0
