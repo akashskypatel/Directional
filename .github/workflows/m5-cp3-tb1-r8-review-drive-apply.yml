@@ -33,8 +33,8 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1QFzR7Dvs8VAJDce2foo9oNtpbmYxLvum
-      patch_sha256: '0d02af877416902c86a03123b26a0271c98936aba7188469108ab8e2c7aa2b10'
+      file_id: 1uo3F7aTy4lMhu0MxtIs3Ci8hjOdz_gS0
+      patch_sha256: 'dfc89483d42bcdcb0bda2c2969f5da02e4419fdf5537a85c1183f4c08131d168'
       base_sha: dcdfefbbd3bd21d9a208eaf5751fee8e5407d7ef
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: "M5-CP3-TB1-R8-REV: publish review adjudication and CB10 plan"
