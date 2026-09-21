@@ -40,7 +40,7 @@ jobs:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
       file_id: 1QSyXlUR57Ih0q-x2x1oeKoRhC-sPJNKJ
-      patch_sha256: b9bb2c0bf99ca60e86cc1860472ee2d632ca899e5c7987dc0d4018f64b619962
+      patch_sha256: f8e9d7cc4428f892bea6250c7e98ec5007bde3fb33069283d522424e97de8607
       base_sha: ca2140016f53f75264f6219f54332000e3ba916f
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: "M5-CP3-CB9: durable compile closeout"
