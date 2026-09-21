@@ -1,7 +1,7 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-21 at `M5-CP3-TB1-R4-REV`
+**Last updated:** 2026-09-21 at `M5-CP3-TB1-R5-EXEC`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Corrected stable accounting is **50 / 14 / 36**, produced-witness debt **5**; M5 owns four of those debts.
 
@@ -74,6 +74,14 @@ The six new atlas REDs are **non-stable test-authority oracle drift**. Productio
 The still-RED torus endpoint remains the existing stable `RP-01` recovery event, +0 accounting. Review identifies a bounded unfrozen implementation restriction: same-region promotion rejects equality between generator and cut carrier identities even though frozen §§3/14, `PeriodicRelationId::from_carriers` and `SurfacePeriodicHolonomy::make` do not require the two valid carrier roles to differ. On the accepted one-edge `Mandatory` hard-feature span equality is legitimate. Because runtime collapses the internal cause to `PeriodicHolonomyMismatch`, this is a static falsifier, not claimed dynamic branch proof.
 
 Frozen §15 records that transition value is semantic metadata distinct from traversal adjacency, preserving hard-feature barriers, and that valid generator/cut carrier equality alone is not rejection. `M5-CP3-TB1-R3-REV-OBS-01` is discharged. Exact successor is bounded runtime-free `M5-CP3-CB6`: remove only the extra carrier-distinctness rejection and independently extend the atlas oracle in `tests/FieldTransportAtlasTests.cpp`; one new focused hard-feature transition-value-without-adjacency identity is frozen. Compile-green routes to fresh **446-process** R5. Accepted runtime authority remains `10601978228`; accounting remains **50 / 14 / 36**, debt **5**; all four M5 debts remain open and selector publication remains prohibited.
+
+## 4.2 `M5-CP3-TB1-R5-EXEC` — atlas-oracle recovery green; production recovery still RED
+
+Fresh artifact-only R5 run/job `35591203189 / 106305794544` consumes candidate `10633891886` / semantic source `20f9bf11dc5a986dafd52c5556671fb9f7d429f4` and executes all **446** frozen processes with exact-one selection, zero skips, immutable package/source/execution-view postflight and benchmark **0**. Result is mechanism **9/9 PASS**, focused atlas **1/1 PASS**, produced **0/6 PASS**, selector430 **429/430 PASS**. Result/log artifacts are `10634649162 / 10635142112`; provider/download hashes are `b93903eafdd028140759526635312efa7e6896442d5260a871a85402371cc4ab / eded6a14c358fb4f8a24ae07585142cc9d97042912fd100857ff078430f9509c`; self-manifest is **911/911** at `680ec03ace5f839e802fc256b7a335b11279cedc9248d641e9156e266d6b4fc9`.
+
+The CB6 test-authority correction behaves exactly as intended: `FieldTransportAtlas.RetainsDirectedTransitionValueForHardFeatureWithoutTraversalAdjacency` passes, and R4 selector reds 18, 20, 21, 22, 23 and 25 all return green under unchanged selector430. This is runtime recovery evidence for non-stable `R4-CAND-02`, subject to independent R5 Review.
+
+The product endpoint does not recover. All six produced identities still terminate with `PeriodicHolonomyMismatch`; selector ordinal408 is the sole selector RED and still observes `Rejected` rather than required `Produced` with `NotProductionReady/tracing/None`. Removing the unfrozen carrier-distinctness inequality is therefore not sufficient. EXEC records `M5-CP3-TB1-R5-CAND-01` as Review-pending continuation evidence for the existing stable R1 `RP-01` event, with +0 accounting. Stable totals remain **50 / 14 / 36**, debt **5**; candidate remains unpromoted, all four M5 debts remain open and selector publication remains prohibited. Exact successor is independent runtime-free `M5-CP3-TB1-R5-REV`.
 
 ## 5. Folded-document index
 
