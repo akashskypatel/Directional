@@ -1,4 +1,4 @@
-Purpose: apply verified durable closeout documentation for M5-CP3-CB8.
+Purpose: retry verified durable closeout documentation for M5-CP3-CB8 after correcting intended_paths delimiter metadata.
 Patch base: a2c41bd7b962b9ffe08f31903dcd283b7ea7a79c.
-Caller install: 0fdf885cb06812762c1afcc87eb4d738a9c92920.
-Retry: 0
+Caller correction: 0294004f82d9f3eb01c8e8c0771c5b330dc05b39.
+Retry: 1
