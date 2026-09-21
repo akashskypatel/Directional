@@ -3,4 +3,4 @@ purpose=fresh immutable artifact-only 445-process semantic gate
 candidate_artifact=10627250028
 candidate_source=001dfe8f0fec8a8dc2475e534fadc29967cadf84
 routing_artifact=10592987234
-retry=0
+retry=1
