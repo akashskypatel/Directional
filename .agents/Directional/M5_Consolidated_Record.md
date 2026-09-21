@@ -1,7 +1,7 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-21 at `M5-CP3-TB1-R3-REV`
+**Last updated:** 2026-09-21 at `M5-CP3-TB1-R4-EXEC`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Corrected stable accounting is **50 / 14 / 36**, produced-witness debt **5**; M5 owns four of those debts.
 
@@ -61,7 +61,9 @@ Fresh R3 run/job `35565176454 / 106225476682` consumes that CB4 candidate exactl
 
 Mandatory GMP run/job `35572051606 / 106245602800` compiles all eight standard targets with preflight/build `0 / 0`, explicit GMPXX+GMP, empty source-status receipts, manifest **28/28** and `runtimeExecution=false`. Candidate artifact `10627250028` / SHA-256 `0d26b01c026651ecacf57af04615746e6b48b09db2e5f1baa1dce62db31bc28f`, manifest SHA-256 `abbda66e46b059832027b82b5dde457dfb2f8b10472bdb742f61f25979e7e02b`, source archive `4335090caf9a1b5f38efa7ce3745d9f1a4bae13871c41572baa62abd2e06570b`, log artifact `10626109792` / `167f16e9886c24839581c4e94061e4219bc6e833bdf31e81884a52ad3f7e4af5`. This candidate is compile-only, runtime-unproven and unpromoted; accepted runtime authority, accounting **50 / 14 / 36**, debt **5**, four M5 produced debts and selector-publication prohibition remain unchanged.
 
-Exact successor is fresh artifact-only **`M5-CP3-TB1-R4-EXEC`** consuming `10627250028` and restarting all 445 frozen processes with benchmark 0 and no prior semantic-credit reuse.
+Fresh R4 run/job `35575202225 / 106255409380` consumes `10627250028` exactly and completes all **445** frozen processes with exact-one/zero-skip and immutable postflight. Mechanism remains **9/9 PASS** and produced remains **0/6 PASS** with `PeriodicHolonomyMismatch`; selector430 is now **423/430 PASS**, with RED ordinals **18, 20, 21, 22, 23, 25, 408**. Ordinal408 continues the open R1 endpoint event. The other six rows are localized in EXEC to a stale independent atlas digest: CB5 added transition values to production semantic identity while the independent test snapshot/digest omitted them, so valid baseline oracle checks fail with `CanonicalBindingMismatch` before intended discriminators. This is recorded as non-stable test-authority oracle drift pending Review; accounting remains **50 / 14 / 36**, debt **5**.
+
+Candidate `10627250028` remains unpromoted; all four M5 produced debts remain open and selector publication remains prohibited. Exact successor is independent runtime-free **`M5-CP3-TB1-R4-REV`**.
 
 ## 5. Folded-document index
 

@@ -1,3 +1,19 @@
+## 2026-09-21 — `M5-CP3-TB1-R4-CAND-02`: independent atlas oracle omits CB5 transition-value identity domain — **TEST-AUTHORITY ORACLE DRIFT / CONTRACT-COVERAGE GAP / NON-STABLE / REVIEW REQUIRED**
+
+- **Candidate/runtime:** artifact/source `10627250028 / 001dfe8f0fec8a8dc2475e534fadc29967cadf84`; authoritative R4 run/job `35575202225 / 106255409380`; result/log artifacts `10627818091 / 10628501968`; result self-manifest **908/908**.
+- **Observed regression:** accepted selector430 is **423/430 PASS**. New RED ordinals **18, 20, 21, 22, 23, 25** are all `FieldTransportAtlas` independent-oracle identities. Each fails at baseline `independent_validate_snapshot(...)` validity before its intended relabel/tamper discriminator. Ordinal408 is the separately carried open RP-01 endpoint failure.
+- **Static root cause:** CB5 adds retained `FieldTransportTransitionValue` facts to production `field_transport_atlas_hash(...)`. The independent test snapshot/digest still represents the pre-CB5 identity domain: `IndependentAtlasSnapshot` has no transition-value facts and `independent_atlas_digest(...)` does not hash them. Final independent validation therefore compares an old-domain digest against the extended published `atlasDigest` and returns `CanonicalBindingMismatch` for a valid baseline.
+- **Classification/accounting:** test-authority oracle drift caused by an intentional public identity-contract extension, not product-semantic evidence. Record as **NON-STABLE** pending independent Review: **+0 stable events / +0 categories / +0 recurrences**. Totals remain **50 / 14 / 36**, debt **5**.
+- **Owner:** `M5-CP3-TB1-R4-REV`. Review must verify this localization, reconcile it with carried `M5-CP3-TB1-R3-REV-OBS-01` (frozen non-traversal transition-value contract recording), and only then decide whether a test-only oracle correction is authorized. No EXEC-side test mutation or selector weakening is permitted.
+
+## 2026-09-21 — `M5-CP3-TB1-R4-CAND-01`: CB5 atlas-owned transition-value correction still does not recover torus production — **EXECUTION EVIDENCE / EXISTING RP-01 CONTINUATION / REVIEW REQUIRED**
+
+- **Candidate/runtime:** artifact/source `10627250028 / 001dfe8f0fec8a8dc2475e534fadc29967cadf84`; run/job `35575202225 / 106255409380`; complete frozen gate **445/445 attempted**, exact-one/zero-skip, immutable postflight, benchmark **0**.
+- **Observed endpoint:** mechanism **9/9 PASS**; produced **0/6 PASS** with shared `PeriodicHolonomyMismatch`; accepted selector ordinal408 again receives `Rejected` / `NotProductionReady/tracing/None` instead of required `Produced`.
+- **Classification/accounting:** EXEC does not infer a new internal production cause. The endpoint remains continuation evidence for the already-recorded `M5-CP3-TB1-R1-CAND-01 / RP-01 AUTHORITY_DOMAIN_CONFLATION` event: **+0 events / +0 categories / +0 recurrences** pending R4 Review. Totals remain **50 / 14 / 36**, debt **5**.
+- **Accepted boundary:** candidate remains unpromoted; accepted runtime authority stays package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under selector430 **430/430**. Four M5 produced debts remain open; selector publication is prohibited.
+- **Owner:** independent runtime-free `M5-CP3-TB1-R4-REV`; no same-turn implementation, retry, promotion, debt discharge or publication is authorized.
+
 ## 2026-09-21 — `M5-CP3-TB1-R3-CAND-01`: raw transition correction is unreachable after production atlas cutover — **IMPLEMENTATION AUTHORITY / RP-01 RECURRENCE / MERGED / RECOVERY REQUIRED**
 
 - **Candidate/runtime:** artifact/source `10624020011 / 6dd0e5179686a4ea2ca4aacda0577855948864df`; R3 run/job `35565176454 / 106225476682`; result/log `10623878370 / 10624252516`; self-manifest **908/908**.

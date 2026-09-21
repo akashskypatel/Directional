@@ -2,6 +2,12 @@
 
 Last updated: 2026-09-21 UTC
 
+## Latest Test + Benchmark turn — `M5-CP3-TB1-R4-EXEC`
+
+`M5-CP3-TB1-R4-EXEC` is **COMPLETE / MECHANICALLY COMPLETE / SEMANTIC RED / REVIEW REQUIRED**. Run/job `35575202225 / 106255409380` consumes CB5 candidate `10627250028` exactly and executes all **445** frozen fresh processes: mechanism **9/9 PASS**, produced **0/6 PASS** with `PeriodicHolonomyMismatch`, selector430 **423/430 PASS** with RED ordinals **18, 20, 21, 22, 23, 25, 408**. Exact-one/zero-skip, package/source/execution-view immutability, 28/28 candidate manifest and benchmark/configure/compile/relink/discovery/repair/mutation counters all hold.
+
+Ordinal408 remains the existing production endpoint failure. The six newly red atlas identities fail baseline `independent_validate_snapshot(...)`; static localization shows CB5 extended production atlas semantic identity with retained transition values while the independent test snapshot/digest omitted them, producing `CanonicalBindingMismatch` before intended oracle discriminators. Recorded as `R4-CAND-02` test-authority oracle drift / non-stable / Review required. Stable accounting remains **50 / 14 / 36**, debt **5**. Candidate stays unpromoted, four M5 produced debts remain open, and selector publication is prohibited. Exact next: `M5-CP3-TB1-R4-REV`.
+
 ## Latest Review turn — `M5-CP3-TB1-R3-REV`
 
 `M5-CP3-TB1-R3-REV` is **COMPLETE / RUNTIME-FREE / R3 EVIDENCE UPHELD / PRODUCTION AUTHORITY CUTOVER MISMATCH / EXISTING RP-01 RECURRENCE / RECOVERY REQUIRED**. Review independently verifies R3 at **9/9 mechanism PASS, 0/6 produced PASS, selector430 429/430 PASS**, exact-one/zero-skip, result self-manifest **908/908**, candidate manifest **28/28**, immutable postflight and all prohibited-operation counters zero.
@@ -62,11 +68,12 @@ The failed CB3 recovery is deterministic: the exact `Mandatory` A3 carrier is a 
 - [x] `M5-CP3-TB1-R3-EXEC`: CB4 candidate gate mechanically complete at **438/445 PASS**, 7 semantic RED, exact-one/zero-skip, benchmark 0; CB4 correction does not recover the endpoint.
 - [x] `M5-CP3-TB1-R3-REV`: R3 evidence upheld; CB4 raw transition path proved unreachable after production atlas cutover; R3 merged into existing RP-01 event; CB5 frozen.
 - [x] `M5-CP3-CB5`: atlas-owned non-traversal transition-value publication/query correction built at source `001dfe8f0fec...`; candidate `10627250028` GMP compile/package green, runtime-free.
-- [ ] `M5-CP3-TB1-R4-EXEC`: **exact next**; consume `10627250028` immutably and restart all 445 frozen processes with benchmark 0.
+- [x] `M5-CP3-TB1-R4-EXEC`: complete 445-process gate; mechanism 9/9, produced 0/6, selector430 423/430; candidate unpromoted; Review required.
+- [ ] `M5-CP3-TB1-R4-REV`: **exact next**; independently adjudicate production continuation plus six-row atlas-oracle drift and carried frozen-contract obligation.
 
-## Current focus — `M5-CP3-TB1-R4-EXEC`
+## Current focus — `M5-CP3-TB1-R4-REV`
 
-Consume candidate artifact `10627250028` immutably and execute the complete frozen **9 mechanism + 6 produced + selector430 = 445** process sequence from process 1. Require exact-one selection, zero skips, immutable package/source/execution-view pre/postflight and benchmark execution **0**. No configure, compile, relink, generated discovery, repair, fixture/selector mutation, candidate promotion, debt discharge or semantic-credit reuse from R1/R2/R3 is permitted. Mechanically complete evidence routes to `M5-CP3-TB1-R4-REV`.
+Independently re-derive R4 artifact/self-manifest, the complete 445-process vector, exact-one/zero-skip and immutable postflight. Adjudicate `R4-CAND-01` against the existing stable RP-01 recurrence and `R4-CAND-02` as test-authority versus product-authority. Verify production consumption of atlas-owned transition value and resolve `M5-CP3-TB1-R3-REV-OBS-01` in frozen definitions before any candidate acceptance or test correction. No implementation, retry, promotion, debt discharge or selector publication before Review.
 
 ## Carried forward from M1
 
@@ -106,7 +113,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. Four periodic/relation debts remain M5-owned and one closed-complex debt remains M6-owned.
-- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 CB5 correction built, R4 next**. Accepted runtime package remains `10601978228`. CB5 candidate `10627250028` / source `001dfe8f0fec...` is compile-green and runtime-unproven. Stable accounting remains **50 / 14 / 36**, debt **5**; four M5 produced-witness debts remain open and selector publication remains prohibited. Exact next `M5-CP3-TB1-R4-EXEC`.
+- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 R4 runtime complete, Review next**. Accepted runtime package remains `10601978228`. CB5 candidate `10627250028` / source `001dfe8f0fec...` is runtime-tested but unpromoted at 9/9 mechanism, 0/6 produced, selector430 423/430. Stable accounting remains **50 / 14 / 36**, debt **5**; four M5 produced-witness debts remain open and selector publication remains prohibited. Exact next `M5-CP3-TB1-R4-REV`.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.
@@ -145,4 +152,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current corrected totals are **50 events / 14 categories / 36 recurrences**, debt **5**. M4, M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**; current accepted runtime authority remains package `10601978228` / source `0798547d...` under unchanged selector430 **430/430**. CB5 candidate `10627250028` / source `001dfe8f0fec...` is static/compile green, runtime-unproven and unpromoted. The existing R1 stable `RP-01` recurrence remains open pending fresh R4 runtime proof. The closed-complex `G4-B002` debt remains M6-owned; two periodic `G4-B002` plus two `G4-B003` debts remain M5-owned. Selector publication remains prohibited. Exact successor is **`M5-CP3-TB1-R4-EXEC`**. PR #8 remains open, draft, and unmerged.
+Current corrected totals are **50 events / 14 categories / 36 recurrences**, debt **5**. M4, M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**; current accepted runtime authority remains package `10601978228` / source `0798547d...` under unchanged selector430 **430/430**. CB5 candidate `10627250028` / source `001dfe8f0fec...` is runtime-tested and unpromoted after R4 completes at **432/445 PASS**; the existing R1 stable `RP-01` recurrence remains open and six additional selector reds are recorded as non-stable atlas-oracle drift pending Review. The closed-complex `G4-B002` debt remains M6-owned; two periodic `G4-B002` plus two `G4-B003` debts remain M5-owned. Selector publication remains prohibited. Exact successor is **`M5-CP3-TB1-R4-REV`**. PR #8 remains open, draft, and unmerged.
