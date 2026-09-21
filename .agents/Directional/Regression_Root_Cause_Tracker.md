@@ -9337,7 +9337,7 @@ shown preserved rather than merely relabelled. See `[[M5-CP2-CB1-OBS-01]]`.
 
 ## `M5-CP3-TB1-R6-REV-OBS-01` — CB8 has a membership falsifier but no direction falsifier
 
-**Status.** OPEN / CB8 OCCURRENCE-FACE CORRECTION COMPILED / GATING ON `M5-CP3-TB1-R7-REV` / NON-STABLE.
+**Status.** OPEN / R7 GENERATOR-ROUTE RECOVERY OBSERVED / GATING ON `M5-CP3-TB1-R7-REV` / NON-STABLE.
 
 R6 dynamically localized the failure to branch 1: `generator_route_for_span` returns no route, reported through
 CB7's new `SurfacePhaseFrontFailureReason::PeriodicGeneratorRouteUnavailable`
@@ -9369,3 +9369,39 @@ directed pair and resulting action agree with independently derived A3 orientati
 immutable R7 receipts are insufficient to establish that independently, Review must keep the observation open and
 freeze a bounded diagnostic next turn rather than infer correctness from unordered carrier membership or a green
 compile.
+
+
+## 2026-09-21 — `M5-CP3-TB1-R7-EXEC` clears generator-route falsifier; later produced frontier remains Review-owned
+
+R7 consumes CB8 candidate `10651055588` / source `baae6307d189639fdf7d8a0011f5ba5f30de1631` immutably and completes
+all **446/446** exact-filter processes with exact-one selection and zero skips. Frozen vector is **9/9 mechanism
+PASS, 1/1 focused atlas PASS, 3/6 produced PASS, selector430 430/430 PASS**, benchmark **0**. Protected ordinals
+191/192/247 remain PASS and accepted production ordinal408 returns to PASS.
+
+The pre-committed CB8 falsifier is discharged dynamically: **zero** produced rows report
+`PeriodicGeneratorRouteUnavailable`. Produced rows 1–3 now complete, proving the correction advances through the
+formerly active generator-route boundary and can publish/consume periodic relation authority. This is runtime
+recovery evidence for `M5-CP3-TB1-R1-CAND-01`, but EXEC does not close the stable event; mandatory R7 Review owns
+that adjudication and any promotion.
+
+### `M5-CP3-TB1-R7-CAND-01` — later periodic-action/debt frontier after generator-route recovery
+
+Produced rows 4–6 remain RED, but at later ordinary GTest assertions rather than a typed phase-front failure:
+
+- row4 cannot find the expected genuine nonzero-Z4 relation in `product.periodicHolonomies`;
+- row5 cannot find the target nonzero-Z4 relation in `tampered.periodicHolonomies` before its intended tamper
+  rejection can be exercised;
+- row6 finds the otherwise-unused relation ID in `extendedDraft.periodicHolonomies`, contrary to the selected-
+  certificate invariance witness.
+
+No accepted selector row becomes newly RED; selector430 is fully green. These candidate-only produced failures are
+therefore **SEMANTIC RED / REVIEW REQUIRED / NON-STABLE / +0**, not a new stable regression event/category. Review
+must localize them from source and immutable evidence without assuming one shared cause.
+
+`M5-CP3-TB1-R6-REV-OBS-01` remains open. R7 proves route reachability and successful relation publication on three
+produced rows, but EXEC does not independently prove the directed occurrence-owned face pair/action against A3
+orientation and §14.2 reciprocity. R7 Review must close or carry that observation explicitly.
+
+Stable accounting remains **50 events / 14 categories / 36 recurrences**, debt **5**, until Review adjudicates the
+existing R1 recovery and produced-debt credit. Candidate remains unpromoted; selector publication remains
+prohibited.

@@ -1,3 +1,28 @@
+## 2026-09-21 — `M5-CP3-TB1-R7-EXEC`: generator-route recovery proved; 3 later produced REDs remain
+
+Immutable artifact-only R7 consumes CB8 candidate `10651055588` / source
+`baae6307d189639fdf7d8a0011f5ba5f30de1631`. Runtime run/job `35628318067 / 106428116133` completes all
+**446/446** fresh exact-filter processes with exact-one/zero-skip and benchmark **0**. Frozen vector is mechanism
+**9/9 PASS**, focused atlas **1/1 PASS**, produced **3/6 PASS**, selector430 **430/430 PASS**. Zero produced rows
+report `PeriodicGeneratorRouteUnavailable`, so CB8's primary falsifier passes; ordinal408 and protected
+191/192/247 are green. Produced rows 4/5/6 remain later GTest assertion REDs around nonzero-Z4 relation
+materialization/tamper reachability and unused-relation selection. EXEC records no source-level cause.
+
+Original result/log artifacts `10653532089 / 10653437216` hash to
+`30f90ab0dce7fc289ade9fd1d079652c61913e663060559e91c1f5975868d33a /
+ bbc60db8c3c3855d7e68dc97ebd5e23ff3a58f91a47fd534e4c659a5c7f39b65`. The runtime driver and immutable
+postflight completed with exit 0; the workflow's inherited R6 evidence classifier failed only because the later R7
+REDs contain no recognized typed periodic failure token, and its original manifest was written before
+`driver-authority.txt` was copied. Runtime-free evidence finalization `35630259806 / 106434543859` verifies the
+original artifact without candidate rerun/mutation and publishes artifact `10653953037` at
+`45a6c7c3809ad4068119b58ec061e30832202f6880e7a26ba517500a23b457d2`, complete self-manifest **918/918** at
+`3318a61ee993a9022141457fe0efacf8334013e0d6a9708a8537ec1358c39fb5`.
+
+R7 supplies runtime recovery evidence for the existing stable R1 `RP-01` event but does not close/promote it.
+`M5-CP3-TB1-R7-CAND-01` is **SEMANTIC RED / REVIEW REQUIRED / NON-STABLE / +0**; accounting remains
+**50 / 14 / 36**, debt **5**, candidate unpromoted, four M5 produced debts open in EXEC and selector publication
+prohibited. Exact successor is mandatory runtime-free `M5-CP3-TB1-R7-REV`.
+
 ## 2026-09-21 — `M5-CP3-CB8`: occurrence-owned source-face incidence correction compile/package GREEN
 
 Runtime-free Code + Build. CB8 changes only `src/geometry/SurfaceCellTracing.cpp` and restores the exact accepted
