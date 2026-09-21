@@ -1,4 +1,0 @@
-turn=M5-CP3-CB9
-patch_sha256=f8e9d7cc4428f892bea6250c7e98ec5007bde3fb33069283d522424e97de8607
-purpose=durable-closeout
-attempt=2
