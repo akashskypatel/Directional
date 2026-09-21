@@ -1,3 +1,0 @@
-turn=M5-CP3-CB3
-purpose=source-snapshot
-base=0639db79a5a417d6ae46175540642e60053c3af7
