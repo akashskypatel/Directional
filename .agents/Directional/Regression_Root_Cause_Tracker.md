@@ -9324,3 +9324,33 @@ shown preserved rather than merely relabelled. See `[[M5-CP2-CB1-OBS-01]]`.
 
 
 **R6 closure:** selector ordinals **191, 192 and 247** all remain PASS under unchanged generic-reason expectations; no accepted row beyond the already-open ordinal408 turns RED. The hazard did not materialize. No test/selector correction is authorized or needed.
+
+## `M5-CP3-TB1-R6-REV-OBS-01` — CB8 has a membership falsifier but no direction falsifier
+
+**Status.** OPEN / GATING ON `M5-CP3-CB8` and `M5-CP3-TB1-R7-REV` / NON-STABLE.
+
+R6 dynamically localized the failure to branch 1: `generator_route_for_span` returns no route, reported through
+CB7's new `SurfacePhaseFrontFailureReason::PeriodicGeneratorRouteUnavailable`
+(`src/geometry/SurfaceCellTracing.cpp:17170`). The cause is verified from bytes: the call at `:17164-17165` passes
+A4 front endpoint faces — `generator_route_for_span(first.sharedBoundaryInterval->span, first.from.face,
+second.to.face)` — while `SurfaceSharedBoundaryInterval`
+(`include/directional/geometry/SurfaceCellTracing.h:1414-1423`) carries only `span` and `boundaryOccurrence` and
+**no face fields**, so the carrier's exact incident faces cannot be supplied at that call.
+
+`M5-CP3-CB8` handles the resulting face-resolution problem well: directed occurrence-owning faces come from
+`AcceptedCutBoundarySegment::sourceFace` authority derived from the exact oriented A3; reading a directed face
+from `SurfaceTracePoint::face`, `SurfaceFrontEdge::{from,to}.face`, insertion order, UV deduplication or
+region-wide search is forbidden; the two resolved faces must be distinct and, **as an unordered pair**, equal the
+carrier's two faces; and `sourceEdgeFaces[edge][0/1]` storage order must never determine the directed query order.
+
+**Why the gap matters:** that is a **membership** falsifier. There is no **direction** falsifier, and direction is
+where an error stays silent. The transition value is directed (`FieldDirectedTransitionValue`), so an inverted
+face order still satisfies unordered-pair equality, still resolves a route, and yields a relation whose action is
+mirrored. That converts today's clean fail-closed rejection into a plausible wrong answer — strictly worse than
+the present state, and far harder to detect later.
+
+**How to apply:** CB8 must check the produced relation's action against an expectation derived **independently of
+the face order that produced it** — §14.2's canonical-reverse / opposing-advance-sign reciprocity rule is the
+natural instrument — so an inverted orientation **fails** rather than silently producing a mirrored relation.
+`M5-CP3-TB1-R7-REV` must report, for each of the six produced identities, that the resolved directed pair and the
+resulting action agree with independently derived A3 orientation.

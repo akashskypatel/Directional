@@ -1,3 +1,34 @@
+## 2026-09-21 — `M5-CP3-TB1-R6-REV` review: root cause dynamically confirmed; direction falsifier required
+
+Runtime-free review. **Upheld.** Accounting holds at **50 events / 14 categories / 36 recurrences**, debt **5**;
+selector430 remains 430 LF rows at `1c412850…9db6` with ordinal 408 the sole RED.
+
+**The instrumentation strategy is vindicated.** Five semantic edits chosen from static plausibility failed
+dynamically; one turn of diagnostics produced a dynamically-confirmed root cause, repaying the turn it cost. The
+result is non-vacuous: `SurfaceCellTracing.cpp:17170` sets `PeriodicGeneratorRouteUnavailable` on the rejection
+path, so branch 1 is identified by a code only that branch produces, not by a relabelled collapse.
+
+The causal chain re-derives exactly. The call at `:17164-17165` passes A4 front endpoint faces —
+`generator_route_for_span(first.sharedBoundaryInterval->span, first.from.face, second.to.face)` — while
+`SurfaceSharedBoundaryInterval` (`SurfaceCellTracing.h:1414-1423`) carries only `span` and `boundaryOccurrence`
+and **no face fields**. The occurrence is preserved; the face authority is dropped. This is the first root cause
+in six attempts resting on runtime branch evidence, with static bytes corroborating rather than merely permitting
+it.
+
+`M5-CP3-TB1-R5-REV-OBS-01-A` **closes**: the three accepted rows flagged before CB7 ran — ordinals **191**, **192**
+and **247** — all remain PASS. The hazard was real, was flagged in advance, and was handled.
+
+New: `M5-CP3-TB1-R6-REV-OBS-01` (gating on CB8 and R7). CB8's plan is strong where it matters, resolving directed
+occurrence-owning faces from oriented A3 authority and forbidding storage order from determining query order, and
+it requires the resolved faces to equal the carrier's two faces **as an unordered pair**. But that is a
+*membership* falsifier with no *direction* falsifier, and direction is where an error stays silent: the transition
+value is directed, so an inverted face order still passes unordered equality, still resolves a route, and yields a
+mirrored action — converting today's clean fail-closed rejection into a plausible wrong answer. CB8 must check the
+produced action against an expectation derived independently of the face order that produced it (§14.2
+reciprocity is the natural instrument), and R7 must report that agreement for all six produced identities.
+
+Exact successor: `M5-CP3-CB8` — source face incidence authority correction.
+
 ## 2026-09-21 — `M5-CP3-TB1-R6-REV`: R6 branch proof upheld; exact source-face incidence authority leak proved; CB8 frozen
 
 Runtime-free independent Review re-verifies CB7 candidate `10637998372`, R6 run/job `35606326632 / 106354249393`, result/log `10642347642 / 10642362744`, result self-manifest **914/914**, all **446/446** exact-one/zero-skip processes, immutable postflight and zero prohibited counters. Vector remains mechanism **9/9 PASS**, focused atlas **1/1 PASS**, produced **0/6 PASS**, selector430 **429/430 PASS** with sole RED ordinal408. All six produced rows report exact `PeriodicGeneratorRouteUnavailable`; protected accepted ordinals 191/192/247 remain PASS.

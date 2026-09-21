@@ -216,3 +216,87 @@ files and frozen definitions are untouched.
 | review_check.py boundary | must PASS on the final documentation/consolidation worktree before publication |
 | `STATUS` lifecycle maintained | entry/resume beacon maintained; terminal COMPLETE beacon with successor `M5-CP3-CB8` is the final repository write after durable docs and cleanup |
 | Pushed to origin, branch in sync | closeout patch push and post-push branch authority are verified before terminal beacon; no local semantic branch is retained |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld.** The branch localization is real, the causal chain re-derives from bytes, and the R5
+accepted-row hazard closed cleanly. Accounting holds at **50 events / 14 categories / 36 recurrences**, debt
+**5**. One narrow gap in the successor's falsifiers is recorded.
+
+### V1 — the instrumentation strategy is vindicated
+
+Five semantic edits chosen from static plausibility failed dynamically. One turn of diagnostics produced a
+dynamically-confirmed root cause. That is the payoff of the rule R5 froze — **no semantic edit without dynamic
+branch evidence** — and it repaid the turn it cost.
+
+The result is also non-vacuous, which is the check that matters for instrumentation: §2 establishes that the new
+reasons actually discriminate, since bypassing the generator-route guard would change the observed branch. I
+confirmed the mechanism at the source: `src/geometry/SurfaceCellTracing.cpp:17170` sets
+`SurfacePhaseFrontFailureReason::PeriodicGeneratorRouteUnavailable` on the rejection path, so branch 1 is
+identified by a code that only that branch produces — not by a relabelled collapse.
+
+### V2 — the causal chain is exact
+
+All three links verified:
+
+- **The call passes A4 front endpoint faces.** `:17164-17165` reads
+  `generator_route_for_span(first.sharedBoundaryInterval->span, first.from.face, second.to.face)`.
+- **The interval cannot supply the carrier's faces.** `SurfaceSharedBoundaryInterval`
+  (`include/directional/geometry/SurfaceCellTracing.h:1414-1423`) carries `authority::NetworkArcId span` and
+  `std::optional<SurfaceBoundaryOccurrenceId> boundaryOccurrence` — and **no face fields at all**. §3.2's reading
+  is precisely right: the occurrence is preserved, the face authority is dropped.
+- **So the substitution is unavoidable at that call**, and at a cut/boundary junction the A4 front endpoint faces
+  need not be the A3 carrier's incident faces. The route lookup then finds nothing and the phase front is
+  `Rejected`.
+
+This is the first root cause in six attempts resting on runtime branch evidence rather than static plausibility,
+and the static bytes corroborate it rather than merely permitting it.
+
+### V3 — the R5 accepted-row hazard closed exactly as flagged
+
+`M5-CP3-TB1-R5-REV-OBS-01-A` warned that CB7's vocabulary change could break three accepted rows that assert
+`PeriodicHolonomyMismatch` verbatim. Verified by ordinal: **191**
+`…MalformedAuthoritativeCrossingProvenanceFailsClosed`, **192**
+`…NonzeroNetCycleFailsClosedAtPeriodicHolonomyGuard`, **247**
+`SurfaceCellsPhase10.PeriodicPhaseFrontMalformedHolonomyFailsClosedWithTypedReason` — exactly the three
+identities named at R5, and all three remain **PASS**. selector430 is **429/1** with ordinal 408 the sole RED.
+The hazard was real, was flagged before CB7 ran, and was handled; the observation closes.
+
+### V4 — the successor checks membership but not direction
+
+`M5-CP3-CB8`'s plan is unusually well constructed on the point that matters most. It separates the two questions
+that the face pair actually poses: it resolves both directed occurrence-owning faces from
+`AcceptedCutBoundarySegment::sourceFace` authority derived from the exact oriented A3; forbids reading a directed
+face from `SurfaceTracePoint::face`, `SurfaceFrontEdge::{from,to}.face`, insertion order, UV deduplication or
+region-wide search; requires the two resolved faces to be distinct and, **as an unordered pair**, to equal exactly
+the carrier's two faces; and states plainly that `sourceEdgeFaces[edge][0/1]` storage order must never be used to
+invent the directed query order. That is the right decomposition — membership and direction are different
+claims — and it forecloses the obvious way this correction could go wrong.
+
+The gap is narrow and worth naming. The plan supplies a **membership** falsifier (unordered-pair equality) but no
+**direction** falsifier. Direction is exactly where an error would not announce itself: the transition value is
+directed (`FieldDirectedTransitionValue`), so an inverted face order still passes unordered-pair equality, still
+resolves a route, and yields a relation whose action is mirrored. That would convert today's clean fail-closed
+rejection into a plausible wrong answer — strictly worse than the current state, and the hardest kind of defect
+to detect later.
+
+**Required of CB8 and reported by R7:** the produced relation's action must be checked against an expectation
+derived independently of the face order that produced it — reciprocity under §14.2's canonical-reverse/opposing-
+advance-sign rule is the natural instrument — so that an inverted orientation **fails** rather than silently
+producing a mirrored relation. R7 must report, for the six produced identities, that the resolved directed pair
+and the resulting action agree with independently derived A3 orientation. Recorded as
+`M5-CP3-TB1-R6-REV-OBS-01`.
+
+### V5 — accounting and verification limits
+
+R6 is correctly another continuation of the ordinal-408 event first priced at R1: it has never returned to
+accepted green on a promoted candidate, so a further diagnostic turn creates no new event. Selector430 remains
+430 LF rows at `1c412850…9db6`; the candidate is unpromoted; all four M5 produced debts remain **OPEN** with zero
+credit, and `M5-CP2-TB1-REV-OBS-01` stays carried since no publication identity is green.
+
+Re-derived from repository bytes: the `generator_route_for_span` call arguments, `SurfaceSharedBoundaryInterval`'s
+field set, the `PeriodicGeneratorRouteUnavailable` rejection site, selector ordinals 191/192/247 and their PASS
+status implied by the sole-RED tally, and selector430's rows and hash. Accepted as reported: R6 artifact hashes,
+ledger tallies, raw-log digests and execution-boundary receipts.
