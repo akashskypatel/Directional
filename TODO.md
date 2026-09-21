@@ -1,16 +1,16 @@
 # Directional Surface-Cell TODO
 
-Last updated: 2026-09-20 UTC
+Last updated: 2026-09-21 UTC
 
 ## Latest Review turn — `M5-CP3-TB1-REV`
 
 `M5-CP3-TB1-REV` is **COMPLETE / RUNTIME-FREE / FROZEN PLAN DEFECT CONFIRMED / CORRECTED R1 EXECUTION AUTHORITY FROZEN**. Review independently re-opens final retry `35544717675`, confirms semantic execution **0/445**, proves the consumed plan's routing SHA literal is only 62 hex characters, and independently re-downloads accepted M4-TB3 routing artifact `10592987234` at exact ZIP SHA-256 `352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`. Its `identity-map.tsv` remains exact at `7a92e7a...5cf6c`, 430 unique ordinals, owners **31/283/75/41**.
 
-`M5-CP3-TB1-EXEC-OBS-01` is resolved non-stably as orchestration/frozen-plan authority. Candidate `10615252806` remains unpromoted; accepted package `10601978228` and selector430 remain authority. Stable accounting stays **49 / 14 / 35**, debt **5**. `M5-CP2-TB1-REV-OBS-01` is re-homed unchanged to `M5-CP3-TB1-R1-REV`. Exact next is fresh `M5-CP3-TB1-R1-EXEC` under the corrected R1 artifact-only plan.
+`M5-CP3-TB1-EXEC-OBS-01` is resolved non-stably as orchestration/frozen-plan authority. Candidate `10615252806` remains unpromoted; accepted package `10601978228` and selector430 remain authority. Stable accounting stays **49 / 14 / 35**, debt **5**. `M5-CP2-TB1-REV-OBS-01` is re-homed unchanged to `M5-CP3-TB1-R1-REV`. Corrected R1 execution is now mechanically complete and semantic RED; exact next is independent runtime-free `M5-CP3-TB1-R1-REV`.
 
-## Latest Test + Benchmark turn — `M5-CP3-TB1-EXEC`
+## Latest Test + Benchmark turn — `M5-CP3-TB1-R1-EXEC`
 
-`M5-CP3-TB1-EXEC` is **COMPLETE / BLOCKED PRE-RUNTIME / ZERO SEMANTIC CREDIT**. Final retry `35544717675` verified candidate `10615252806` but failed closed before routing extraction because the consumed frozen plan's routing-artifact SHA-256 literal was malformed. Final result/log artifacts: `10616206801 / 10616186884`. Preflight/runtime are false; benchmark/configure/compile/relink/discovery/repair/mutation counts are all zero. The defect is now independently adjudicated and corrected only in the new R1 plan; none of the blocked attempts contributes semantic credit.
+`M5-CP3-TB1-R1-EXEC` is **COMPLETE / MECHANICALLY COMPLETE / SEMANTIC RED / REVIEW REQUIRED**. Run/job `35548642817 / 106179163233` executes all **445** frozen exact-filter processes with exact-one/zero-skip and immutable postflight: mechanism **9/9 PASS**, produced **0/6 PASS** with shared `PeriodicHolonomyMismatch`, selector430 **429/430 PASS** with sole RED ordinal408 receiving `Rejected` instead of `Produced`. Result/log artifacts are `10617583137 / 10616998978`; result self-manifest is **908/908**. Candidate `10615252806` remains unpromoted; accepted package `10601978228` remains authority. `M5-CP3-TB1-R1-CAND-01` is non-stable and Review-owned.
 
 ## Latest Code + Build turn — `M5-CP3-CB2`
 
@@ -27,12 +27,12 @@ Last updated: 2026-09-20 UTC
 - [x] `M5-CP3-CB2`: reviewed production promotion + six produced identities; candidate `10615252806` compile/package green.
 - [x] `M5-CP3-TB1-EXEC`: pre-runtime frozen-plan routing-digest block; semantic **0/445**.
 - [x] `M5-CP3-TB1-REV`: independently confirm malformed literal and exact accepted routing bytes; freeze corrected retry authority.
-- [ ] `M5-CP3-TB1-R1-EXEC`: **exact next**; restart process 1 and execute unchanged 9 mechanism + 6 produced + selector430 = **445** fresh exact-filter processes; benchmark 0.
-- [ ] `M5-CP3-TB1-R1-REV`: after mechanically complete R1, adjudicate candidate/debts and exact successor-selector publication precommitment.
+- [x] `M5-CP3-TB1-R1-EXEC`: corrected immutable gate mechanically complete at **438/445 PASS**, 7 semantic RED, exact-one/zero-skip, benchmark 0; no same-turn repair.
+- [ ] `M5-CP3-TB1-R1-REV`: **exact next**; independently adjudicate `M5-CP3-TB1-R1-CAND-01`, candidate/debts and the next correction/publication path.
 
-## Current focus — `M5-CP3-TB1-R1-EXEC`
+## Current focus — `M5-CP3-TB1-R1-REV`
 
-Execute `.agents/Directional/Architecture_M5_CP3_TB1_R1_Artifact_Only_Test_Benchmark_Plan.md` exactly. The sole corrected authority literal is routing artifact `10592987234` ZIP SHA-256 `352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`; candidate/source, focused identities/order, selector430, routing map/census, exact-one/zero-skip requirements, immutable postflight and benchmark **0** are unchanged. Start from process 1. Do not rebuild, repair, mutate selector/source/test/fixture bytes, or import semantic credit from predecessor attempts.
+Independently review the mechanically complete R1 evidence in `.agents/Directional/Architecture_M5_CP3_TB1_R1_Artifact_Only_Test_Benchmark_Report.md`: re-derive **9/9 mechanism, 0/6 produced, 429/430 selector**, confirm exact-one/zero-skip and immutable postflight, and classify `M5-CP3-TB1-R1-CAND-01`. Do not repair, rebuild, rerun, publish a successor selector, promote candidate `10615252806`, or discharge produced debt before Review establishes the responsible authority and exact successor.
 
 ## Carried forward from M1
 
@@ -72,7 +72,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. Four periodic/relation debts remain M5-owned and one closed-complex debt remains M6-owned.
-- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 CB2 candidate compile-green; initial TB1 blocked pre-runtime and Review-confirmed as frozen-plan orchestration only**. Accepted runtime package remains `10601978228`; candidate `10615252806` is unpromoted under selector430. Exact next `M5-CP3-TB1-R1-EXEC`; four M5 produced-witness debts remain open.
+- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 CB2 candidate compile-green; corrected R1 runtime mechanically complete but semantic RED at shared torus production reachability**. Accepted runtime package remains `10601978228`; candidate `10615252806` is unpromoted under selector430 after **9/9 mechanism, 0/6 produced, 429/430 selector**. Exact next `M5-CP3-TB1-R1-REV`; four M5 produced-witness debts remain open.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.
@@ -111,4 +111,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current totals remain **49 events / 14 categories / 35 recurrences**, debt **5**. M4, M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**; current accepted runtime authority remains package `10601978228` / source `0798547d...` under unchanged selector430 **430/430**. M5-CP3 candidate `10615252806` / source `fc2aa5fa...` is compile/package green but unpromoted; CP3 TB1 semantic runtime is **0/445** because preflight failed closed on the frozen plan's malformed routing digest. The closed-complex `G4-B002` debt remains M6-owned, while two periodic `G4-B002` plus two `G4-B003` debts remain M5-owned. Review has independently confirmed the routing authority and frozen corrected R1 execution. Exact successor is **`M5-CP3-TB1-R1-EXEC`**. PR #8 remains open, draft, and unmerged.
+Current totals remain **49 events / 14 categories / 35 recurrences**, debt **5**. M4, M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**; current accepted runtime authority remains package `10601978228` / source `0798547d...` under unchanged selector430 **430/430**. M5-CP3 candidate `10615252806` / source `fc2aa5fa...` is compile/package green but unpromoted. Corrected R1 executes all **445** frozen processes with **9/9 mechanism PASS, 0/6 produced PASS, selector430 429/430 PASS** and immutable postflight; the seven semantic REDs share the torus production-reachability surface and are recorded as non-stable `M5-CP3-TB1-R1-CAND-01`. The closed-complex `G4-B002` debt remains M6-owned, while two periodic `G4-B002` plus two `G4-B003` debts remain M5-owned. Exact successor is independent runtime-free **`M5-CP3-TB1-R1-REV`**. PR #8 remains open, draft, and unmerged.
