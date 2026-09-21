@@ -1,0 +1,43 @@
+name: M5 CP3 CB10 Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m5-cp3-cb10-drive-apply/**
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m5-cp3-cb10-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m5-cp3-cb10-drive-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1oNqBH7QmfdAsxW6WpuWV7eh3CTMwVEmV
+      patch_sha256: b2fdbee6b557883a72bedc88ae6cd4309d5a321e3e438724a1bed6bb0ccd06a4
+      base_sha: 3b57ad4aa964df8249f2092980d58e2d2267b6f3
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "test: make nonzero-Z4 torus chart admissible"
+    secrets: inherit
