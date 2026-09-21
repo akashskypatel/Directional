@@ -1,0 +1,6 @@
+Purpose: finalize the already-completed M5-CP3-TB1-R7 runtime evidence without rerunning candidate binaries.
+Source runtime run/job: 35628318067 / 106428116133.
+Source result artifact: 10653532089.
+Diagnosed orchestration defect: R6-specific typed-reason finalizer rejected R7 raw GTest assertion failures without typed reason tokens; original runtime/postflight completed.
+Caller install: 177ec7d9762b040529b110a9e9fd808d1b8f23a4.
+Retry: 0
