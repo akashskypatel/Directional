@@ -40,7 +40,7 @@ jobs:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
       file_id: 1K8aesRPjfQepL5jfxlLDbzBs9obMzWRy
-      patch_sha256: f44581b0a860a2f67886d294a2fa842d757cf30288a7d5fe025829d06a92742f
+      patch_sha256: dde844153f1d4f5d6871f38b993f47f8b4678e9cc94ab5ecb75ecfa9f04bdb31
       base_sha: a2bfebd90e0088b536c525177a96dd9fe1599e46
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: 'M5-CP3-TB1-R3-REV adjudicate failed recovery and freeze CB5'
