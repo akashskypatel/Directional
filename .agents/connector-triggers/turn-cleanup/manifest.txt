@@ -1,2 +1,0 @@
-# M5-CP3-TB1-R7-REV retry cleanup after late control-plane reintroduction
-.agents/connector-triggers/m5-cp3-tb1-r7-rev-closeout-apply.txt
