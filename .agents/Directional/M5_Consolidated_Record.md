@@ -93,6 +93,14 @@ R4 test-authority oracle drift closes **RECOVERY PROVED / NON-STABLE** because t
 Exact successor is runtime-free `M5-CP3-CB7`, diagnostic-only. It appends typed failure reasons for the three boundaries and exact existing holonomy-construction subcodes without changing semantics, then mandatory GMP compile/packages all eight standard targets. A green candidate routes to fresh artifact-only R6 on the unchanged 446-process gate, then mandatory Review before any semantic correction.
 
 
+## 4.3 `M5-CP3-CB7` — diagnostic branch cutover compile/package green
+
+CB7 implements only the R5 Review-authorized observability seam. Semantic patch `a1392c61a4f800512bb8bd73126f993638d1f55c` changes exactly `SurfaceCellTracing.h/.cpp`: phase-front failure values 0–49 remain numerically unchanged; values 50–55 append generator-route unavailable, action-correspondence mismatch and the four existing `SurfacePeriodicHolonomyErrorCode` cases. Only the three same-region generic rejection emissions are specialized; no route, face, action, relation, atlas, test, fixture, selector or acceptance semantics change.
+
+Mandatory GMP compile/package run/job `35598796960 / 106329775985` is green on all eight standard targets from exact source `8f77ec403f16930145bba5bfc526a5b881b9f166`. Candidate artifact `10637998372` hashes to `1c92e42939081ec9f041f72e916c99d80a700b39a61e3917e8cf8830c5a3f98f`; root manifest is **28/28** at `1b0bc0b8ce4ff0c339659c7f7c5c3c4e9e26143d352424f7aecf1a2b8f91f737`; source archive is `dbc083059b4dbd8ea7b429ca32819ce8a91b179b5e2cbd6201a66113d37a9163`; log artifact `10637858795` is `ad626d649fdae2bb8fe591e2a3a38d0ee670ed152967f08cb800c098e4c4645a`. GMPXX+GMP linkage is explicit, all five source-status receipts are empty, and `runtimeExecution=false`.
+
+Candidate remains unpromoted; accepted runtime authority and accounting remain `10601978228`, selector430 **430/430**, **50 / 14 / 36**, debt **5**. Exact next is immutable artifact-only `M5-CP3-TB1-R6-EXEC` on the unchanged **446-process** gate. The six produced rows must expose their exact new typed branch; the three accepted generic-`PeriodicHolonomyMismatch` rows identified by the R5 Review addendum remain required-green and unchanged. Mandatory R6 Review owns any next semantic correction.
+
 ## 5. Folded-document index
 
 | Folded filename | Verdict / retained home |

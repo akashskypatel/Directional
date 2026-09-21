@@ -4,32 +4,31 @@
 
 ## Current authority
 
-`M5-CP3-TB1-R5-REV` is **COMPLETE / RUNTIME-FREE / R5 EVIDENCE UPHELD / R4 ORACLE RECOVERY PROVED / EXISTING RP-01 RECOVERY OPEN**. Independent Review re-derives R5 result self-manifest **911/911**, all **446/446** exact-filter rows, exact-one/zero-skip, raw-log hashes, immutable postflight and zero prohibited counters. Vector is mechanism **9/9 PASS**, focused atlas **1/1 PASS**, produced **0/6 PASS**, selector430 **429/430 PASS** with sole RED ordinal408.
+`M5-CP3-CB7` is **COMPLETE / STATIC GREEN / GMP COMPILE-PACKAGE GREEN / RUNTIME-FREE / DIAGNOSTIC CUTOVER BUILT**. Semantic patch commit `a1392c61a4f800512bb8bd73126f993638d1f55c` changes only the two authorized `SurfaceCellTracing` files. Existing phase-front failure values 0–49 remain unchanged; values 50–55 append generator-route unavailable, action-correspondence mismatch, and the four existing checked holonomy-construction subcodes. No route/face/action/relation predicate, atlas semantic, test, fixture, selector, frozen definition, or acceptance expectation changed.
 
-`M5-CP3-TB1-R4-CAND-02` is **CLOSED / RECOVERY PROVED / NON-STABLE**: the new hard-feature transition-value-without-adjacency control passes and formerly red accepted atlas ordinals **18, 20, 21, 22, 23, 25** all return green with their discriminators retained. CB6 carrier-distinctness removal does **not** recover production; `M5-CP3-TB1-R5-CAND-01` is upheld as continuation of the existing stable R1 `RP-01 / AUTHORITY_DOMAIN_CONFLATION` event, +0 accounting.
+Mandatory GMP compile/package run/job `35598796960 / 106329775985` built all eight standard targets from exact packaged source `8f77ec403f16930145bba5bfc526a5b881b9f166` with preflight/build **0/0**, explicit GMPXX+GMP linkage, five empty source-status receipts, root manifest **28/28**, and `runtimeExecution=false`. Candidate artifact `10637998372` has SHA-256 `1c92e42939081ec9f041f72e916c99d80a700b39a61e3917e8cf8830c5a3f98f`; root manifest SHA-256 is `1b0bc0b8ce4ff0c339659c7f7c5c3c4e9e26143d352424f7aecf1a2b8f91f737`; packaged source archive SHA-256 is `dbc083059b4dbd8ea7b429ca32819ce8a91b179b5e2cbd6201a66113d37a9163`; log artifact `10637858795` is `ad626d649fdae2bb8fe591e2a3a38d0ee670ed152967f08cb800c098e4c4645a`. No generated Directional runtime executed.
 
-The next semantic cause is intentionally unresolved. The same-region promotion collapses generator-route unavailability, periodic-action correspondence mismatch, and checked holonomy construction errors into `PeriodicHolonomyMismatch`. Static review records `M5-CP3-TB1-R5-REV-OBS-01`: the exact A3 carrier is resolved from `span`, but atlas transition lookup uses A4 front endpoint face integers rather than carrier-derived `sourceEdgeFaces`. This is a plausible RP-01 authority-domain leak, **not an authorized fix until runtime proves generator-route failure is active**.
-
-Accepted runtime authority remains package/source `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316` under selector430 **430/430**. CB6 candidate `10633891886 / 20f9bf11dc5a986dafd52c5556671fb9f7d429f4` remains unpromoted. Stable accounting remains **50 events / 14 categories / 36 recurrences**, debt **5**; all four M5 produced debts remain open and selector publication remains prohibited.
+Accepted runtime authority remains package/source `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316` under selector430 **430/430**. CB7 candidate `10637998372 / 8f77ec403f16930145bba5bfc526a5b881b9f166` is **unpromoted and runtime-unadjudicated**. Stable accounting remains **50 events / 14 categories / 36 recurrences**, debt **5**; all four M5 produced debts remain open and selector publication remains prohibited.
 
 ## Exact next turn
 
-**`M5-CP3-CB7` — runtime-free periodic-holonomy failure disambiguation.**
+**`M5-CP3-TB1-R6-EXEC` — immutable artifact-only failure-branch proof.**
 
-Authority: `.agents/Directional/Architecture_M5_CP3_CB7_Periodic_Holonomy_Failure_Disambiguation_Plan.md`.
+Authority: `.agents/Directional/Architecture_M5_CP3_TB1_R6_Artifact_Only_Test_Benchmark_Plan.md`.
 
-Change only `include/directional/geometry/SurfaceCellTracing.h` and `src/geometry/SurfaceCellTracing.cpp`. Append typed failure reasons without renumbering existing values so the same-region promotion distinguishes generator-route unavailable, action-correspondence mismatch, and each existing `SurfacePeriodicHolonomyErrorCode`. Do not change route/face/action/relation semantics, tests, fixtures, selector430, frozen definitions, atlas implementation/API or acceptance expectations. Mandatory GMP/GMPXX compile/package all eight standard targets; no generated Directional runtime.
+Consume only artifact `10637998372` and unchanged routing/selector authority. Execute exactly **446** fresh exact-filter processes: 9 mechanism + 1 focused atlas + 6 produced + 430 selector. Require exact-one selection, zero skips, benchmark 0, no configure/compile/relink/discovery/repair/mutation, and exact immutable byte+mode postflight. The six produced rows must report their exact CB7 typed phase-front reason. The three accepted selector rows called out by the R5 Review addendum must remain required-green with their original generic `PeriodicHolonomyMismatch` expectations; do not edit them if runtime exposes diagnostic-label overlap.
 
-If compile/package is green, exact successor is fresh artifact-only `M5-CP3-TB1-R6-EXEC` on the CB7 candidate using the unchanged **446-process** gate (9 mechanism + 1 focused atlas + 6 produced + 430 selector), then mandatory `M5-CP3-TB1-R6-REV`. No semantic repair is authorized until R6 identifies the active typed branch and Review adjudicates it.
+Regardless of semantic outcome, exact successor after mechanically complete R6 is mandatory runtime-free `M5-CP3-TB1-R6-REV`. No same-turn semantic repair, candidate promotion, debt discharge, or selector publication is authorized.
 
 ## Open obligations
 
 - `M5-CP3-TB1-R1-CAND-01` — **STABLE / `RP-01` recurrence / OPEN RECOVERY**.
 - R2/R3/R4-CAND-01/R5-CAND-01 — **MERGED INTO R1 / +0 accounting**; R5 refutes carrier distinctness as the complete cause.
 - `M5-CP3-TB1-R4-CAND-02` — **CLOSED / RECOVERY PROVED / NON-STABLE / +0**.
-- `M5-CP3-TB1-R5-REV-OBS-01` — **OPEN / R6 Review owner**; do not use the front-face/carrier-incidence mismatch as a semantic fix until generator-route branch is dynamically proved.
+- `M5-CP3-TB1-R5-REV-OBS-01` — **OPEN / R6 Review owner**; do not use the front-face/carrier-incidence mismatch as a semantic fix unless R6 dynamically proves `PeriodicGeneratorRouteUnavailable` owns the product endpoint.
+- R5 Review addendum hazard — **OPEN / R6 EXEC+Review**; three accepted generic-reason rows must remain required-green and byte-unchanged.
 - `M5-CP2-TB1-REV-OBS-01` — **OPEN / carried** to the first independently green corrected CP3 pre-publication Review.
-- `M5-CP3-TB1-REV-OBS-01` — **standing** exact digest/provenance process rule; R5 satisfies it.
+- `M5-CP3-TB1-REV-OBS-01` — **standing** exact digest/provenance process rule.
 - `M5-CP3-TB1-R2-REV-OBS-01` — **OPEN / refined / R6 Review**; successful product consumption remains unproved while production is rejected.
 - `M5-CP3-TB1-R3-REV-OBS-01` — **DISCHARGED by frozen §15**.
 - `M5-CP3-TB1-R4-REV-OBS-01` — **DISCHARGED by R5 oracle recovery**.
@@ -38,31 +37,35 @@ If compile/package is green, exact successor is fresh artifact-only `M5-CP3-TB1-
 
 ## Resume-critical evidence
 
-- R5 run/job: `35591203189 / 106305794544`
-- R5 result/log: `10634649162 / 10635142112`; SHA-256 `b93903eafdd028140759526635312efa7e6896442d5260a871a85402371cc4ab / eded6a14c358fb4f8a24ae07585142cc9d97042912fd100857ff078430f9509c`
-- R5 self-manifest: `680ec03ace5f839e802fc256b7a335b11279cedc9248d641e9156e266d6b4fc9` (**911/911**)
-- R5 report/review: `.agents/Directional/Architecture_M5_CP3_TB1_R5_Artifact_Only_Test_Benchmark_Report.md`; `.agents/Directional/Architecture_M5_CP3_TB1_R5_Review_Record.md`
-- CB7 plan: `.agents/Directional/Architecture_M5_CP3_CB7_Periodic_Holonomy_Failure_Disambiguation_Plan.md`
-- CB6 candidate/source: `10633891886 / 20f9bf11dc5a986dafd52c5556671fb9f7d429f4`; artifact/root-manifest/source-archive SHA-256 `4359271b96f9cf5351782056ee030757a3d02956b8cb901264d4a46b4d1836f7 / 5e36a32b3c07c1c4f533c8f896517e33239475a6175d012b66bdd6da358dbd73 / c939872ab9e8648d2009e7ca9781ea62a6938ffeb21f342344924dcaf171b8b7`
+- CB7 semantic patch: `a1392c61a4f800512bb8bd73126f993638d1f55c`
+- CB7 compile run/job: `35598796960 / 106329775985`
+- CB7 candidate/source: `10637998372 / 8f77ec403f16930145bba5bfc526a5b881b9f166`
+- CB7 artifact/root-manifest/source-archive SHA-256: `1c92e42939081ec9f041f72e916c99d80a700b39a61e3917e8cf8830c5a3f98f / 1b0bc0b8ce4ff0c339659c7f7c5c3c4e9e26143d352424f7aecf1a2b8f91f737 / dbc083059b4dbd8ea7b429ca32819ce8a91b179b5e2cbd6201a66113d37a9163`
+- CB7 log: `10637858795`, SHA-256 `ad626d649fdae2bb8fe591e2a3a38d0ee670ed152967f08cb800c098e4c4645a`
+- CB7 report: `.agents/Directional/Architecture_M5_CP3_CB7_Code_Build_Report.md`
+- R6 plan: `.agents/Directional/Architecture_M5_CP3_TB1_R6_Artifact_Only_Test_Benchmark_Plan.md`
+- R5 review: `.agents/Directional/Architecture_M5_CP3_TB1_R5_Review_Record.md`
 - Frozen definitions: `.agents/Directional/Architecture_M5_Frozen_Definitions.md` §§13-15
 - Accepted runtime package/source: `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316`
+- Routing artifact/identity map: `10592987234 / 7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c`
 - Selector430/full + first427: `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6 / f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`
 
 ## Context Load Plan
 
 ```yaml
 load_next:
-  - references/turns/CODE_BUILD.md
+  - references/turns/TEST_BENCHMARK.md
 conditional_modules:
-  - trigger: GitHub Actions compile/package
+  - trigger: GitHub Actions artifact-only runtime
     path: modules/github-connector/MODULE.md
 deep_references:
-  - .agents/Directional/Architecture_M5_CP3_CB7_Periodic_Holonomy_Failure_Disambiguation_Plan.md
+  - .agents/Directional/Architecture_M5_CP3_TB1_R6_Artifact_Only_Test_Benchmark_Plan.md
+  - .agents/Directional/Architecture_M5_CP3_CB7_Code_Build_Report.md
   - .agents/Directional/Architecture_M5_CP3_TB1_R5_Review_Record.md
   - .agents/Directional/Architecture_M5_Frozen_Definitions.md
   - .agents/Directional/Regression_Root_Cause_Tracker.md
   - .agents/Directional/M5_Consolidated_Record.md
 do_not_preload:
-  - any semantic correction for the source-face-incidence candidate before R6 branch proof
+  - any semantic correction for the source-face-incidence candidate before R6 branch proof and Review
   - M6 occurrence work or selector-publication implementation before corrected CP3 runtime is independently green
 ```
