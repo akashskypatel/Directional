@@ -1,4 +1,0 @@
-turn=M5-CP3-TB1-R2-REV
-purpose=apply independent review record and CB4 frozen plan
-base_sha=13b8af14057f54b40e5a47f9528bf02a7f27de2f
-retry=1
