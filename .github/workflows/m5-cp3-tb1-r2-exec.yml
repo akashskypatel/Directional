@@ -41,7 +41,7 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       DRIVER_TEMPLATE: .agents/Directional/turn-payloads/m5_cp3_tb1_r2_exec.py.in
-      DRIVER_PATH: ${{ runner.temp }}/m5_cp3_tb1_r2_exec.py
+      DRIVER_BASENAME: m5_cp3_tb1_r2_exec.py
       PLAN_PATH: .agents/Directional/Architecture_M5_CP3_TB1_R2_Artifact_Only_Test_Benchmark_Plan.md
       TURN_ID: M5-CP3-TB1-R2-EXEC
     steps:
@@ -80,6 +80,7 @@ jobs:
           test -f "$DRIVER_TEMPLATE"
           test -f "$PLAN_PATH"
           test -f .agents/Directional/tools/write_orchestration_payload.py
+          driver="${RUNNER_TEMP}/${DRIVER_BASENAME}"
           env_file="${RUNNER_TEMP}/m5-cp3-tb1-r2-sha.env"
           python3 - "$PLAN_PATH" "$env_file" <<'PY'
           import pathlib, re, sys
@@ -105,12 +106,13 @@ jobs:
           )
           PY
           source "$env_file"
-          python3 .agents/Directional/tools/write_orchestration_payload.py             --template "$DRIVER_TEMPLATE"             --output "$DRIVER_PATH"             --sha256 "candidate=$CANDIDATE_SHA256"             --sha256 "root_manifest=$ROOT_MANIFEST_SHA256"             --sha256 "source_archive=$SOURCE_ARCHIVE_SHA256"             --sha256 "routing=$ROUTING_SHA256"             --sha256 "identity_map=$IDENTITY_MAP_SHA256"             --sha256 "selector=$SELECTOR_SHA256"             --sha256 "prefix427=$PREFIX427_SHA256"
-          python3 - "$DRIVER_PATH" <<'PY'
+          python3 .agents/Directional/tools/write_orchestration_payload.py             --template "$DRIVER_TEMPLATE"             --output "$driver"             --sha256 "candidate=$CANDIDATE_SHA256"             --sha256 "root_manifest=$ROOT_MANIFEST_SHA256"             --sha256 "source_archive=$SOURCE_ARCHIVE_SHA256"             --sha256 "routing=$ROUTING_SHA256"             --sha256 "identity_map=$IDENTITY_MAP_SHA256"             --sha256 "selector=$SELECTOR_SHA256"             --sha256 "prefix427=$PREFIX427_SHA256"
+          python3 - "$driver" <<'PY'
           import pathlib, sys
           path = pathlib.Path(sys.argv[1])
           compile(path.read_text(encoding='utf-8'), str(path), 'exec')
           PY
+          echo "DRIVER_PATH=$driver" >> "$GITHUB_ENV"
           receipt="${RUNNER_TEMP}/${TURN_ID}-driver-authority.txt"
           {
             echo "template_path=$DRIVER_TEMPLATE"
@@ -118,7 +120,7 @@ jobs:
             echo "plan_path=$PLAN_PATH"
             echo "plan_sha256=$(sha256sum "$PLAN_PATH" | awk '{print $1}')"
             echo "writer_sha256=$(sha256sum .agents/Directional/tools/write_orchestration_payload.py | awk '{print $1}')"
-            echo "rendered_driver_sha256=$(sha256sum "$DRIVER_PATH" | awk '{print $1}')"
+            echo "rendered_driver_sha256=$(sha256sum "$driver" | awk '{print $1}')"
             cat "$env_file"
           } > "$receipt"
           cat "$receipt"
@@ -131,7 +133,7 @@ jobs:
           set +e
           log="${RUNNER_TEMP}/${TURN_ID}.log"
           exec > >(tee -a "$log") 2>&1
-          python3 "$DRIVER_PATH"
+          python3 "$driver"
           status=$?
           result="${RUNNER_TEMP}/${TURN_ID}-result"
           if [ -d "$result" ] && [ -f "${RUNNER_TEMP}/${TURN_ID}-driver-authority.txt" ]; then
