@@ -29,6 +29,8 @@ Invalid R11 artifacts `10714199742 / 10715035437` remain provenance only and con
 **`M5-CP3-TB1-R11-R1-EXEC`** under
 `.agents/Directional/Architecture_M5_CP3_TB1_R11_R1_Artifact_Only_Test_Benchmark_Plan.md`.
 
+Before triggering runtime, restore the exact schema-validated retry caller from historical commit
+`789e442aa86278eab1821e5c6aef3ad33678505c`; CB13 cleanup intentionally removed turn-specific workflows to satisfy the durable workflow inventory.
 R11-R1 consumes the same immutable CB12 candidate, routing artifact and selector430, restarts all **446** fresh exact-filter
 processes from ordinal 1, requires exact-one/zero-skip, executes **0** benchmarks, and imports zero semantic rows or verdicts
 from invalid R11. Any mechanically complete retry routes to mandatory `M5-CP3-TB1-R11-R1-REV`; orchestration failure follows
@@ -38,7 +40,7 @@ the durable orchestration-failure edge.
 
 - CB13 report: `.agents/Directional/Architecture_M5_CP3_CB13_R11_Result_Manifest_Finalization_Orchestration_Correction_Report.md`
 - R11-R1 plan: `.agents/Directional/Architecture_M5_CP3_TB1_R11_R1_Artifact_Only_Test_Benchmark_Plan.md`
-- retained retry workflow: `.github/workflows/m5-cp3-tb1-r11-r1-exec.yml`
+- validated retry workflow bytes: historical commit `789e442aa86278eab1821e5c6aef3ad33678505c`; the turn-specific caller was removed at CB13 cleanup and must be restored exactly before R11-R1 is triggered
 - retained retry driver: `.agents/Directional/turn-payloads/m5_cp3_tb1_r11_r1_exec.py.in`
 - CB13 validation run/jobs: `35775766068 / 106908450647 / 106908451034 / 106908512994`
 - CB13 result/log: `10716415780 / 10716260918`
