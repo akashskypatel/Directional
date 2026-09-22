@@ -46,3 +46,36 @@ remain zero-credit provenance.
 
 `M5-CP2-TB1-REV-OBS-01` remains **OPEN**. Selector publication stays prohibited until a corrected candidate is independently green.
 The two nonzero-Z4 M5 debts remain open; the separate M6 closed-complex debt remains open.
+
+## `M5-CP3-TB1-R11-R1-REV-OBS-01` — direction observation reopened; "reaches the path" is not "the path is correct"
+
+**Status.** OPEN / reopens `[[M5-CP3-TB1-R6-REV-OBS-01]]` / carried to the first Review in which produced row 4
+passes item 5 / NON-STABLE.
+
+`M5-CP3-TB1-R11-R1-REV` §2 discharged the direction observation because "the nonzero-Z4 subject now reaches the
+exact semantically directed Forward → Reverse construction path."
+
+**That argument is the class the same Review rejects elsewhere.** §3 correctly discounts
+`action.rotation == generatorRoute.rotation` as non-probative, because `periodic_action_for_pair` builds the
+action *from* the generator rotation; and it discounts item 4's first endpoint mapping because
+`shift = second.to - rotate(R, first.from)` makes it true by definition. Both are labelled "by construction" and
+excluded, which is precisely why item 5 is a real localization. By that standard, **reaching the directed
+construction path proves the ordering code executes, not that the ordering is correct.**
+
+The original observation required two things, neither of which R11-R1 reports:
+
+1. the produced relation's action checked against an expectation derived **independently of the face order that
+   produced it** (§14.2/§16 reciprocity being the natural instrument);
+2. an **inverted** pair **failing**.
+
+Rows 4/5 stop at item 5, before the Forward → Reverse comparator, so the falsifier has not run. An inverted
+ordering producing a mirrored but self-consistent action would be indistinguishable from this evidence — the
+exact failure mode the observation exists to exclude, and the one that would convert today's clean fail-closed
+state into a plausible wrong answer.
+
+**How to apply:** `M5-CP3-TB1-R6-REV-OBS-01` returns to **OPEN**. The first Review in which produced row 4 passes
+item 5 and reaches the comparator must report both the independent-agreement check and the inverted-pair
+failure. The ordering-**source** defect `M5-CP3-TB1-R10-REV-CAND-01` stays **CLOSED** on its own evidence —
+CB12's `directedFirst`/`directedSecond` selection by exact A3 orientation is verified at
+`src/geometry/SurfaceCellTracing.cpp:17229-17241` — and nothing else in R11-R1 depends on the reopened
+observation.

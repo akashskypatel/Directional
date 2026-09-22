@@ -1,3 +1,31 @@
+## 2026-09-22 — `M5-CP3-TB1-R11-R1-REV` review: upheld; direction observation reopened
+
+Runtime-free review. **Upheld with one disposition reversed.** Accounting holds at **50 events / 14 categories /
+36 recurrences**, debt **3**; selector430 **430/430** with protected ordinals **191/192/247/408** PASS and
+produced rows 1/2/3/6 PASS, so the two debts discharged at R7 and the §16 `R = 0` reduction are intact.
+
+**`M5-CP3-TB1-R10-REV-OBS-01` discharged.** The result self-manifest is **912/912** — the driver finalization
+ordering is fixed, and the rule was satisfied before the publication gate rather than under pressure at it, which
+was the point of recording it early. CB12's directed ordering is also verified in source at
+`SurfaceCellTracing.cpp:17229-17241`: `directedFirst`/`directedSecond` are bound by exact A3 `Forward`/`Reverse`
+orientation, with the unordered pair used only for membership, so `M5-CP3-TB1-R10-REV-CAND-01` is rightly closed.
+
+**Reopened: `M5-CP3-TB1-R6-REV-OBS-01`.** §2 discharged it because the subject "now reaches the exact
+semantically directed Forward → Reverse construction path." But §3 of the same Review correctly discounts
+`action.rotation == generatorRoute.rotation` and item 4's endpoint mapping as *true by construction* and
+therefore non-probative — which is exactly why item 5 is a real localization. By that same standard, reaching the
+directed construction path proves the ordering code executes, not that the ordering is correct. The observation
+required the action checked against an expectation derived independently of the face order that produced it, and
+an inverted pair failing; rows 4/5 stop at item 5, before the comparator, so neither has been shown. An inverted
+ordering yielding a mirrored but self-consistent action would look identical to this evidence. Recorded as
+`M5-CP3-TB1-R11-R1-REV-OBS-01`; nothing else in the Review depends on the discharge.
+
+The item-1-to-5 predicate walk is otherwise the right kind of diagnosis — labelling which predicates are
+tautological is what makes the second endpoint mapping a genuine localization rather than another guess, and
+CB14's cut-domain-coordinate target follows algebraically from it.
+
+Exact successor: `M5-CP3-CB14` — periodic seam lattice gauge authority correction.
+
 ## 2026-09-22 — `M5-CP3-TB1-R11-R1-REV`: CB12 direction recovery proved; periodic endpoint-gauge authority defect localized
 
 Runtime-free Review independently upholds R11-R1 run/job `35778555375 / 106917917282`, complete result self-manifest **912/912** and the fresh **444 PASS / 2 RED** vector. CB12's exact A3 Forward -> Reverse selection is storage-order independent, closing `M5-CP3-TB1-R10-REV-CAND-01` recovery-proved and discharging the R6 direction observation.

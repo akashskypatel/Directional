@@ -206,3 +206,80 @@ CB14 routes to a fresh artifact-only gate with all 446 existing identities uncha
 | review_check.py boundary | **ALL CHECKS PASSED**; no product/test/fixture/build mutation, no selector mutation, selector430 declared hash matched, durable markers preserved. |
 | `STATUS` lifecycle maintained | Entry and resume beacons were direct-written with the original start time preserved; the terminal COMPLETE/CB14 beacon is reserved as the final repository mutation immediately before response. |
 | Pushed to origin, branch in sync | n/a for local `git status -sb`: this ChatGPT Web turn writes through the GitHub connector/reusable workflow directly to origin; final PR-head equality is verified after the closeout write rather than claiming a local branch state. |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld with one disposition reversed.** The manifest obligation is discharged, CB12's directed
+ordering is real, and the item-1-to-5 localization is careful work. Accounting holds at **50 events /
+14 categories / 36 recurrences**, debt **3**. `M5-CP3-TB1-R6-REV-OBS-01` is **reopened**.
+
+### V1 — my manifest requirement was met, and the protections held
+
+`M5-CP3-TB1-R10-REV-OBS-01` required complete result self-manifest coverage before any turn needing acceptance
+credit. R11-R1 reports **912/912**, so the driver finalization ordering is fixed and the rule was satisfied
+before the publication gate rather than under pressure at it — which was the entire point of recording it early.
+
+The standing protections also hold: selector430 is **430/430** with protected ordinals **191, 192, 247 and 408**
+all PASS, and produced rows 1/2/3/6 remain PASS, so the two debts discharged at R7 and the §16 `R = 0` reduction
+are both intact. Totals stay 50 / 14 / 36 with debt 3; the candidate remains unpromoted.
+
+### V2 — CB12's directed ordering is implemented, and that defect is correctly closed
+
+Verified in `src/geometry/SurfaceCellTracing.cpp:17229-17241`: `directedFirst` / `directedSecond` are selected by
+exact A3 orientation — the `Forward` interval bound first, the `Reverse` interval second — rather than by storage
+or insertion order. The unordered pair is used only for membership. That is exactly what frozen §14.3 requires,
+and `M5-CP3-TB1-R10-REV-CAND-01` is rightly closed as recovery-proved.
+
+### V3 — REOPENED: `M5-CP3-TB1-R6-REV-OBS-01` is discharged on an argument this Review itself rejects elsewhere
+
+§2 discharges the direction observation because "the nonzero-Z4 subject now reaches the exact semantically
+directed Forward → Reverse construction path."
+
+§3 applies the correct standard two pages later. It discounts `action.rotation == generatorRoute.rotation`
+because the helper builds the action *from* the generator rotation, so the equality is "by construction"; and it
+discounts item 4's first endpoint mapping because `shift = second.to - rotate(R, first.from)` makes it "true by
+construction". Both are properly identified as non-probative, which is why item 5 is correctly named the first
+genuinely false predicate. That is good analysis.
+
+By that same standard, **reaching the directed construction path proves the ordering code executes — not that
+the ordering is correct.** It is the same class of self-consistency the Review declines to credit elsewhere.
+
+The observation asked for two things, and neither is reported:
+
+1. the produced relation's action checked against an expectation derived **independently of the face order that
+   produced it** — §14.2/§16 reciprocity being the natural instrument; and
+2. an **inverted** pair **failing**.
+
+Rows 4 and 5 stop at item 5, before the comparator, so the falsifier has not run. An inverted ordering that
+happened to produce a mirrored-but-self-consistent action would look identical to this evidence, which is the
+precise failure mode the observation exists to exclude — and the one that converts today's clean fail-closed
+state into a plausible wrong answer.
+
+**Disposition:** `M5-CP3-TB1-R6-REV-OBS-01` returns to **OPEN**, carried to the first Review in which produced
+row 4 passes item 5 and reaches the Forward → Reverse comparator. Recorded as `M5-CP3-TB1-R11-R1-REV-OBS-01`.
+Nothing else in this Review depends on the discharge, so reopening costs no other conclusion; the ordering-source
+defect (`R10-REV-CAND-01`) stays closed on its own evidence.
+
+### V4 — the predicate walk is the right kind of diagnosis
+
+Enumerating the five predicates and labelling which are tautological is what makes item 5 a real localization
+rather than another guess. Items 1-3 are independently satisfied, item 4 is true by definition of `shift`, and
+the second endpoint mapping is the first constraint the subject can actually fail. That is the discipline this
+checkpoint arrived at after five static-plausibility edits and one instrumentation turn, now applied without
+needing another runtime round to find the branch.
+
+CB14's target follows from it directly: cut-domain cell coordinates being used as quotient-seam endpoint
+authority is an algebraic cause, not a plausible story, and it is the natural reading of a second endpoint
+mapping failing once `shift` has absorbed the first.
+
+### V5 — carried items and verification limits
+
+`M5-CP2-TB1-REV-OBS-01` correctly remains **OPEN**; §13.3 still prohibits selector-publication pre-commitment
+while the gate is RED. Debts 3 and 4 remain OPEN with no credit; the M6 closed-complex debt remains M6-owned.
+
+Re-derived from repository bytes: the `directedFirst`/`directedSecond` Forward/Reverse selection, selector430's
+rows and hash, and the frozen §14.3 requirement it satisfies. Accepted as reported: the 912/912 manifest
+verification, artifact and ledger digests, gate tallies, and the runtime predicate outcomes underlying the
+item-1-to-5 walk.
