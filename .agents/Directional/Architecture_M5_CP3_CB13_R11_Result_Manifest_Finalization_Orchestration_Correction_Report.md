@@ -51,7 +51,7 @@ CB13 creates:
 
 - `.agents/Directional/Architecture_M5_CP3_TB1_R11_R1_Artifact_Only_Test_Benchmark_Plan.md`;
 - `.agents/Directional/turn-payloads/m5_cp3_tb1_r11_r1_exec.py.in`;
-- `.github/workflows/m5-cp3-tb1-r11-r1-exec.yml`.
+- `.github/workflows/m5-cp3-tb1-r11-r1-exec.yml` at schema-validated historical commit `789e442aa86278eab1821e5c6aef3ad33678505c`.
 
 The retry driver is byte-identical to the invalid R11 driver template after substituting only
 `M5-CP3-TB1-R11-EXEC` -> `M5-CP3-TB1-R11-R1-EXEC`. Static proof restores the old turn string and reproduces historical R11 template SHA-256
@@ -104,4 +104,4 @@ CB13 proves the known self-inclusion mechanism is removed and the corrected fina
 Exact successor is **`M5-CP3-TB1-R11-R1-EXEC`** under
 `.agents/Directional/Architecture_M5_CP3_TB1_R11_R1_Artifact_Only_Test_Benchmark_Plan.md`.
 
-Do not rebuild or repackage. Do not reuse any invalid R11 process result. Do not modify product/test/fixture/selector/routing semantics. A mechanically complete R11-R1 routes to mandatory `M5-CP3-TB1-R11-R1-REV`.
+Do not rebuild or repackage. Do not reuse any invalid R11 process result. Do not modify product/test/fixture/selector/routing semantics. The turn-specific retry caller was removed during CB13 closeout because `agent-turn-cleanup.yml` permits only the durable workflow inventory; restore its exact bytes from commit `789e442aa86278eab1821e5c6aef3ad33678505c` before creating the R11-R1 trigger. A mechanically complete R11-R1 routes to mandatory `M5-CP3-TB1-R11-R1-REV`.
