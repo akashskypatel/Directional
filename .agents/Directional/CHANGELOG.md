@@ -1,3 +1,22 @@
+## 2026-09-22 — `M5-CP3-TB1-R11-R1-EXEC`: complete 446-process retry is authoritative semantic RED; Review next
+
+Fresh immutable run/job `35778555375 / 106917917282` consumes CB12 candidate/source
+`10713410215 / 8ff6fdc720b3e8da5c4f5765850f8fe69d4b2188`. Result/log `10717297354 / 10717921412` verify ZIP SHA-256
+`d76dff757919a0c8bb139b6aa4d54840f5344fc9bf0b88f57a5d9629d3807656 /
+c09c1c5797640e85ed485d5b6a034970a266c36fb0bbf488441be1674aff0cd0`; corrected self-manifest is **912/912** at
+`16dfe18019afee726ce2d2d1845187619c27c74bfa9ff238904237c7de3ab589`, proving CB13's orchestration correction on the full evidence shape.
+
+All **446/446** fresh exact-filter processes select once with zero skips: mechanism **9/9**, focused atlas **1/1**, produced
+**4/6**, selector430 **430/430**, benchmark 0 and exact immutable postflight. Produced rows4/5 alone stop while constructing the
+nonzero-Z4 witness at exact `PeriodicActionCorrespondenceMismatch`; row4 never reaches materialization/certificate checks and row5
+never reaches its transform tamper. The observed frontier is after CB12's Forward -> Reverse pair binding and generator-route
+availability, but the product reason merges action-construction failure with route/action rotation disagreement, so exact root
+adjudication is reserved for mandatory `M5-CP3-TB1-R11-R1-REV`.
+
+`M5-CP3-TB1-R11-R1-CAND-01` is OPEN / PRODUCT SEMANTIC RED / non-stable / +0 pending Review. Stable accounting remains
+**50 / 14 / 36**, debt **3**, accepted runtime unchanged, candidate unpromoted and selector publication prohibited. Invalid R11's
+self-manifest candidate closes as orchestration recovery-confirmed; its runtime rows remain zero-credit provenance.
+
 ## 2026-09-22 — `M5-CP3-CB13`: result-manifest orchestration correction validates runtime-free; R11-R1 next
 
 CB13 is control-plane-only and runtime-free. The retry finalizer moves its temporary manifest outside the result tree, preserves

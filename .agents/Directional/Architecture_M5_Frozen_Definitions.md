@@ -234,14 +234,14 @@ All `M5-DEFN` stop rules are resolved:
 
 ## 11. Current exact successor
 
-**`M5-CP3-TB1-R11-R1-EXEC`** under
-`Architecture_M5_CP3_TB1_R11_R1_Artifact_Only_Test_Benchmark_Plan.md`.
+**`M5-CP3-TB1-R11-R1-REV`** under
+`Architecture_M5_CP3_TB1_R11_R1_Review_Plan.md`.
 
-`M5-CP3-CB13` is control-plane-only, runtime-free and static+synthetic GREEN. It moves final-manifest temporary output outside
-the result tree, preserves copy-before-manifest ordering and fail-closed complete-manifest verification, and freezes an R11-R1
-driver that differs from invalid R11 only by turn identifier. Fresh R11-R1 restarts the unchanged 446-process gate from process
-1 on candidate `10713410215 / 8ff6fdc720b3e8da5c4f5765850f8fe69d4b2188`, with zero semantic carry-forward from invalid R11.
-**No semantic amendment to §§14–16 is made.**
+Fresh R11-R1 is mechanically complete and semantic RED at **444/446 PASS**: mechanism 9/9, focused atlas 1/1, produced 4/6 and
+selector430 430/430. Produced rows4/5 alone stop at `PeriodicActionCorrespondenceMismatch` after CB12's semantic Forward ->
+Reverse pairing and generator-route availability. The retry result self-manifest is complete **912/912**, so the semantic RED is
+authoritative and the R11 orchestration defect is runtime-confirmed closed. Mandatory Review must split the collapsed action
+correspondence guard and adjudicate the inherited R10 candidate before any correction. **No semantic amendment to §§14–16 is made.**
 
 ## 12. Supersession and citation map
 

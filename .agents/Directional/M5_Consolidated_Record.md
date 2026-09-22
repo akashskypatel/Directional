@@ -1,25 +1,26 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-22 at `M5-CP3-CB13`
+**Last updated:** 2026-09-22 at `M5-CP3-TB1-R11-R1-EXEC`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Corrected stable accounting is **50 / 14 / 36**, produced-witness debt **3**; M5 owns two of those debts and M6 owns one.
 
-## Current CP3 authority — CB13 orchestration correction green; fresh R11-R1 runtime next
+## Current CP3 authority — R11-R1 mechanically valid semantic RED; mandatory Review next
 
-CB13 is **COMPLETE / CONTROL-PLANE-ONLY / RUNTIME-FREE / STATIC+SYNTHETIC GREEN**. Validation run `35775766068` proves both
-new workflows schema-valid, the result-manifest temporary path outside the result tree, copy-before-manifest ordering,
-fail-closed checksum verification, explicit row/file-count equality, synthetic **3/3** completeness, checksum-mismatch detection,
-and late-file-count mismatch detection. Result/log artifacts are `10716415780 / 10716260918`. No Directional executable or
-benchmark ran.
+Fresh R11-R1 run/job `35778555375 / 106917917282` consumes unchanged CB12 candidate
+`10713410215 / 8ff6fdc720b3e8da5c4f5765850f8fe69d4b2188`. Corrected evidence finalization is now fully runtime-confirmed:
+result/log `10717297354 / 10717921412`, complete result self-manifest **912/912** at
+`16dfe18019afee726ce2d2d1845187619c27c74bfa9ff238904237c7de3ab589`, no orchestration failure and exact immutable postflight.
 
-The retry driver is R11-byte-identical except for the turn identifier, and fresh `M5-CP3-TB1-R11-R1-EXEC` remains frozen at
-**9 mechanism + 1 focused + 6 produced + selector430 = 446** exact-filter processes, benchmark **0**, on unchanged candidate
-`10713410215 / 8ff6fdc720b3e8da5c4f5765850f8fe69d4b2188`. Invalid R11 remains provenance only with zero semantic carry-forward.
+The fresh semantic vector is **9/9 mechanism + 1/1 focused atlas + 4/6 produced + selector430 430/430**, total **444 PASS / 2 RED**.
+Rows4/5 alone stop at exact `PeriodicActionCorrespondenceMismatch` while constructing the nonzero-Z4 source witness, before row4
+materialization/certificate proof or row5 transform tamper. Candidate source reaches this guard after CB12's semantic Forward ->
+Reverse edge selection and successful generator-route construction; the guard still collapses action-construction failure with
+route/action rotation disagreement, so the exact operand/root requires independent Review.
 
-Accepted runtime remains `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316`; stable accounting remains
-**50 / 14 / 36**, debt **3**, candidate unpromoted and publication prohibited. Exact next is
-`M5-CP3-TB1-R11-R1-EXEC`, then mandatory Review after a mechanically complete retry.
+`M5-CP3-TB1-R11-R1-CAND-01` is non-stable/+0 pending Review. Accepted runtime remains
+`10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316`; stable accounting remains **50 / 14 / 36**, debt **3**, candidate
+unpromoted and selector publication prohibited. Exact next is runtime-free `M5-CP3-TB1-R11-R1-REV`.
 
 ## 1. `M5-DEFN` — definitions frozen
 
