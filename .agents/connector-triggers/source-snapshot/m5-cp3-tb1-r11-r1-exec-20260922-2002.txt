@@ -1,0 +1,3 @@
+M5-CP3-TB1-R11-R1-EXEC source snapshot trigger
+Expected pre-trigger head: d2019bf6fa429efc1b06aa03573d1357b3479820
+Purpose: exact snapshot authority after start-of-turn READ_MODE correction; TB remains artifact-only.
