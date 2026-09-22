@@ -234,9 +234,14 @@ All `M5-DEFN` stop rules are resolved:
 
 ## 11. Current exact successor
 
-**`M5-CP3-TB1-R11-EXEC`** under `Architecture_M5_CP3_TB1_R11_Artifact_Only_Test_Benchmark_Plan.md`, followed by mandatory **`M5-CP3-TB1-R11-REV`**.
+**`M5-CP3-CB13`** under
+`Architecture_M5_CP3_CB13_R11_Result_Manifest_Finalization_Orchestration_Correction_Plan.md`.
 
-`M5-CP3-CB12` compile-green source `8ff6fdc720b3e8da5c4f5765850f8fe69d4b2188` changes only the product direction-selection locus identified by R10 Review: exact A3 interval orientation now binds Forward -> Reverse before the unchanged one generator/action/checked-relation construction. All eight GMP/GMPXX targets package green as candidate `10713410215`, root manifest **28/28**, `runtimeExecution=false`. Runtime recovery, the two nonzero-Z4 debts and Review observations remain open. **No semantic amendment to §§14–16 is made.** R11 executes the unchanged 446-process vector and complete post-copy self-manifest finalization before mandatory Review.
+First `M5-CP3-TB1-R11-EXEC` is orchestration-invalid and contributes no semantic ledger: its final result manifest self-includes
+temporary `SHA256SUMS.new`, producing 913 rows for 912 actual non-manifest evidence files. CB12 candidate
+`10713410215 / 8ff6fdc720b3e8da5c4f5765850f8fe69d4b2188` remains immutable and unpromoted. CB13 changes only the control-plane
+finalizer; if validated, fresh `M5-CP3-TB1-R11-R1-EXEC` restarts the unchanged 446-process gate from process 1, with zero
+semantic carry-forward from invalid R11. **No semantic amendment to §§14–16 is made.**
 
 ## 12. Supersession and citation map
 
