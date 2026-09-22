@@ -1,3 +1,16 @@
+## 2026-09-22 — `M5-CP3-CB13`: fail-closed result-manifest correction validates; fresh R11-R1 next
+
+CB13 corrects only R11's result-finalization control plane. Validation run `35775766068` passes retry-workflow schema,
+CB13 self-schema, static authority checks, driver materialization and bounded synthetic manifest tests. The temporary final
+manifest now lives outside the result tree, `driver-authority.txt` is copied before generation, `sha256sum -c` is fail-closed,
+and manifest rows must equal actual non-manifest files. Synthetic baseline is **3/3**; checksum corruption and late-file count
+mismatch are both detected. No Directional runtime, benchmark, configure, compile, relink, discovery or package repair ran.
+
+Result/log artifacts are `10716415780 / 10716260918`. Immutable candidate/source remain
+`10713410215 / 8ff6fdc720b3e8da5c4f5765850f8fe69d4b2188`; accepted runtime, stable accounting **50 / 14 / 36**, debt **3** and
+publication prohibition are unchanged. Exact successor is fresh `M5-CP3-TB1-R11-R1-EXEC`, restarting all 446 processes from
+process 1 with zero semantic carry-forward from invalid R11.
+
 ## 2026-09-22 — `M5-CP3-TB1-R11-EXEC`: runtime completes; result finalization fails closed; CB13 next
 
 R11 run/job `35771152416 / 106892972571` runs all **446/446** immutable fresh processes on unchanged CB12 candidate

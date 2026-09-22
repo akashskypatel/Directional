@@ -1,21 +1,25 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-22 at `M5-CP3-TB1-R11-EXEC`
+**Last updated:** 2026-09-22 at `M5-CP3-CB13`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Corrected stable accounting is **50 / 14 / 36**, produced-witness debt **3**; M5 owns two of those debts and M6 owns one.
 
-## Current CP3 authority — R11 orchestration-invalid; CB13 control-plane correction next
+## Current CP3 authority — CB13 orchestration correction green; fresh R11-R1 runtime next
 
-R11 run/job `35771152416 / 106892972571` consumed unchanged CB12 candidate
-`10713410215 / 8ff6fdc720b3e8da5c4f5765850f8fe69d4b2188`. All 446 planned processes ran, but final result-manifest
-generation self-included temporary `SHA256SUMS.new`: **913 rows vs 912 actual non-manifest files**. All 912 real evidence
-files verify; the stale temporary row makes the attempt orchestration-invalid. Result/log `10714199742 / 10715035437` are
-preserved as invalid-attempt provenance. No semantic ledger or product/debt credit is taken from the diagnostic 444/2 raw vector.
+CB13 is **COMPLETE / CONTROL-PLANE-ONLY / RUNTIME-FREE / STATIC+SYNTHETIC GREEN**. Validation run `35775766068` proves both
+new workflows schema-valid, the result-manifest temporary path outside the result tree, copy-before-manifest ordering,
+fail-closed checksum verification, explicit row/file-count equality, synthetic **3/3** completeness, checksum-mismatch detection,
+and late-file-count mismatch detection. Result/log artifacts are `10716415780 / 10716260918`. No Directional executable or
+benchmark ran.
+
+The retry driver is R11-byte-identical except for the turn identifier, and fresh `M5-CP3-TB1-R11-R1-EXEC` remains frozen at
+**9 mechanism + 1 focused + 6 produced + selector430 = 446** exact-filter processes, benchmark **0**, on unchanged candidate
+`10713410215 / 8ff6fdc720b3e8da5c4f5765850f8fe69d4b2188`. Invalid R11 remains provenance only with zero semantic carry-forward.
 
 Accepted runtime remains `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316`; stable accounting remains
-**50 / 14 / 36**, debt **3**, publication prohibited. Exact next is control-plane-only `M5-CP3-CB13`; if its finalizer
-correction validates, fresh `M5-CP3-TB1-R11-R1-EXEC` restarts all 446 processes from process 1 on the unchanged candidate.
+**50 / 14 / 36**, debt **3**, candidate unpromoted and publication prohibited. Exact next is
+`M5-CP3-TB1-R11-R1-EXEC`, then mandatory Review after a mechanically complete retry.
 
 ## 1. `M5-DEFN` — definitions frozen
 

@@ -4,30 +4,29 @@ Last updated: 2026-09-22 UTC
 
 ## Latest Test + Benchmark turn — `M5-CP3-TB1-R11-EXEC`
 
-R11 is **ORCHESTRATION INVALID / NO SEMANTIC LEDGER**. Immutable CB12 candidate
-`10713410215 / 8ff6fdc720b3e8da5c4f5765850f8fe69d4b2188` was consumed in run/job
-`35771152416 / 106892972571`, but final evidence generation self-included `SHA256SUMS.new`: **913 manifest rows vs
-912 actual non-manifest files**. All 912 real evidence files verify; the stale temporary row makes the attempt invalid.
-Result/log `10714199742 / 10715035437` are preserved. Raw ledgers are provenance only and cannot adjudicate product semantics.
+R11 remains **ORCHESTRATION INVALID / NO SEMANTIC LEDGER**. Its run/job `35771152416 / 106892972571` completed the planned
+runtime but final evidence self-included `SHA256SUMS.new`, yielding 913 manifest rows for 912 actual non-manifest files. Invalid
+result/log `10714199742 / 10715035437` remain provenance only; no product/debt conclusion carries forward.
 
-## Latest Code + Build turn — `M5-CP3-CB12`
+## Latest Code + Build turn — `M5-CP3-CB13`
 
-CB12 remains **COMPLETE / PRODUCT-ONLY / RUNTIME-FREE / COMPILE GREEN**. Candidate/source
-`10713410215 / 8ff6fdc720b3e8da5c4f5765850f8fe69d4b2188` stays compile-only and unpromoted because R11 has no valid
-semantic ledger.
+CB13 is **COMPLETE / CONTROL-PLANE-ONLY / RUNTIME-FREE / STATIC+SYNTHETIC GREEN**. Validation run `35775766068` passes both
+workflow schemas and the bounded finalizer proof: external manifest temp, copy-before-manifest, fail-closed checksum,
+row/file-count equality, synthetic 3/3 completeness, and detection of checksum plus late-file mismatches. No Directional runtime
+or benchmark ran. Immutable candidate `10713410215 / 8ff6fdc720b3...` is unchanged and unpromoted.
 
-## Exact next turn — `M5-CP3-CB13`
+## Exact next turn — `M5-CP3-TB1-R11-R1-EXEC`
 
-Control-plane-only correction: move final-manifest temporary output outside the result tree, preserve copy-before-manifest
-ordering, schema/static/synthetic-verify complete finalization without Directional runtime, then freeze fresh
-`M5-CP3-TB1-R11-R1-EXEC` from process 1 on the unchanged candidate. Accepted runtime remains
-`10601978228 / 0798547d...`, stable accounting **50 / 14 / 36**, debt **3**, selector publication prohibited.
+Restart the unchanged **446** fresh exact-filter processes from ordinal 1 on the same candidate/routing/selector, exact-one and
+zero-skip, benchmark **0**, with zero semantic carry-forward from invalid R11. A mechanically complete retry routes to mandatory
+`M5-CP3-TB1-R11-R1-REV`. Accepted runtime remains `10601978228 / 0798547d...`, stable accounting **50 / 14 / 36**, debt
+**3**, selector publication prohibited.
 
 ## M5 checkpoint sequence
 
 - [x] `M5-CP3-TB1-R11-EXEC` — **ORCHESTRATION INVALID / NO SEMANTIC LEDGER**. Run/job `35771152416 / 106892972571`; 913 manifest rows vs 912 actual non-manifest files because `SHA256SUMS.new` was inside the enumerated result tree.
-- [ ] `M5-CP3-CB13` — **EXACT NEXT / CONTROL-PLANE-ONLY / RUNTIME-FREE**. Correct only final result-manifest staging and freeze retry.
-- [ ] `M5-CP3-TB1-R11-R1-EXEC` — after green CB13, restart the unchanged 446-process gate from process 1; import zero semantic rows from invalid R11.
+- [x] `M5-CP3-CB13` — **COMPLETE / CONTROL-PLANE-ONLY / RUNTIME-FREE / STATIC+SYNTHETIC GREEN**. Validation run `35775766068`; external manifest temp and fail-closed completeness proof accepted for retry.
+- [ ] `M5-CP3-TB1-R11-R1-EXEC` — **EXACT NEXT / ARTIFACT-ONLY / IMMUTABLE**. Restart the unchanged 446-process gate from process 1; import zero semantic rows from invalid R11; benchmark 0; then mandatory `M5-CP3-TB1-R11-R1-REV` if mechanically complete.
 
 - [x] `M5-CP1` and `M5-CP2`: CLOSED / ACCEPTED for mechanism credit; accepted package `10601978228`.
 - [x] `M5-CP3` R1→R7 recovery chain: stable ordinal408 `RP-01` event **RECOVERY PROVED** at R7 Review.
@@ -46,7 +45,7 @@ ordering, schema/static/synthetic-verify complete finalization without Direction
 - [x] `M5-CP3-TB1-R10-EXEC` — **COMPLETE EXECUTION / 444 PASS + 2 RED / EVIDENCE-MANIFEST CONTRACT INVALID**. Rows4/5 remain at `PeriodicActionCorrespondenceMismatch`; 446/446 exact-one/zero-skip, selector430 430/430, postflight exact; no rerun after runtime began.
 - [x] `M5-CP3-TB1-R10-REV` — **COMPLETE / MANIFEST DEFECT UPHELD / CB11-SPECIFIC RAW-LABEL DEFECT CLOSED / INSERTION-ORDER DIRECTED-AUTHORITY DEFECT PROVED**. Candidate remains unpromoted.
 - [x] `M5-CP3-CB12` — **COMPLETE / PRODUCT-ONLY / RUNTIME-FREE / COMPILE GREEN**. Exact A3 Forward -> Reverse now owns same-region direction; candidate `10713410215` / source `8ff6fdc720b3...`; runtime unproved.
-- [ ] `M5-CP3-TB1-R11-EXEC` — **EXACT NEXT / ARTIFACT-ONLY / IMMUTABLE**. Unchanged 446 fresh processes, benchmark 0, complete self-manifest, then mandatory `M5-CP3-TB1-R11-REV`.
+- [x] `M5-CP3-TB1-R11-EXEC` — **ORCHESTRATION INVALID / NO SEMANTIC LEDGER**. Preserved as invalid-attempt provenance; superseded only for execution by fresh R11-R1 after CB13.
 - [ ] M5 selector publication Code + Build / cumulative artifact-only runtime / Review — blocked until frozen §13.3 precommitment exists.
 
 ## Current observations
@@ -82,7 +81,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. M4 handed four periodic/relation debts to M5 and one closed-complex debt to M6; R7 Review has since discharged two M5 debts, leaving the two nonzero-Z4 M5 debts plus the one M6 debt.
-- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 CB12 COMPILE GREEN / R11 EXEC NEXT**. Accepted runtime package remains `10601978228`. CB12 source `8ff6fdc720b3...` compiles the exact A3 Forward -> Reverse one-file product correction into candidate `10713410215` with all eight GMP/GMPXX targets, root manifest **28/28**, and no runtime. Runtime recovery remains unproved; candidate unpromoted; two M5 nonzero-Z4 debts remain open; stable accounting **50 / 14 / 36**, debt **3**. Exact next is R11 EXEC -> mandatory Review.
+- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 CB13 ORCHESTRATION CORRECTION GREEN / R11-R1 EXEC NEXT**. Accepted runtime package remains `10601978228`. CB12 candidate `10713410215 / 8ff6fdc720b3...` is unchanged; CB13 validates only the corrected finalizer with no Directional runtime. Runtime recovery remains unproved; candidate unpromoted; two M5 nonzero-Z4 debts remain open; stable accounting **50 / 14 / 36**, debt **3**. Exact next is fresh R11-R1 EXEC -> mandatory Review after a mechanically complete run.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.

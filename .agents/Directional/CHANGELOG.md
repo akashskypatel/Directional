@@ -1,3 +1,18 @@
+## 2026-09-22 — `M5-CP3-CB13`: result-manifest orchestration correction validates runtime-free; R11-R1 next
+
+CB13 is control-plane-only and runtime-free. The retry finalizer moves its temporary manifest outside the result tree, preserves
+`driver-authority.txt` copy-before-manifest ordering, verifies the complete manifest fail-closed, and independently requires
+manifest-row/non-manifest-file equality. Retry SHA-256 authorities are frozen in the retained R11-R1 plan and materialized through
+`write_orchestration_payload.py`; the workflow contains no raw 64-hex digest literals.
+
+Validation run `35775766068` is GREEN: retry/self schema jobs `106908450647 / 106908451034` and static/synthetic job
+`106908512994` all pass. Result/log artifacts `10716415780 / 10716260918` hash to
+`e8a3d09981e6eb22df70325741bb265cc2f81cc141c507f6f1577e1e8efeb20b /
+f1cfbc376c05be90da52f7e6660eb86589ec79578e3f0aba35a44e01b10df88b`. Synthetic baseline is 3/3 and both checksum
+corruption and late-file count mismatch are detected. The retry driver is identical to historical R11 except for turn ID and
+still freezes 446 fresh processes / benchmark 0. No Directional executable ran. Candidate/runtime/accounting/debt remain
+unchanged; exact next is fresh `M5-CP3-TB1-R11-R1-EXEC` with zero semantic carry-forward from invalid R11.
+
 ## 2026-09-22 — `M5-CP3-TB1-R11-EXEC`: runtime attempt invalidated by self-including result-manifest finalizer
 
 R11 run/job `35771152416 / 106892972571` consumes unchanged CB12 candidate/source

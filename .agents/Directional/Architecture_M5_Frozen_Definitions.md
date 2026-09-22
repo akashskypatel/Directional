@@ -234,14 +234,14 @@ All `M5-DEFN` stop rules are resolved:
 
 ## 11. Current exact successor
 
-**`M5-CP3-CB13`** under
-`Architecture_M5_CP3_CB13_R11_Result_Manifest_Finalization_Orchestration_Correction_Plan.md`.
+**`M5-CP3-TB1-R11-R1-EXEC`** under
+`Architecture_M5_CP3_TB1_R11_R1_Artifact_Only_Test_Benchmark_Plan.md`.
 
-First `M5-CP3-TB1-R11-EXEC` is orchestration-invalid and contributes no semantic ledger: its final result manifest self-includes
-temporary `SHA256SUMS.new`, producing 913 rows for 912 actual non-manifest evidence files. CB12 candidate
-`10713410215 / 8ff6fdc720b3e8da5c4f5765850f8fe69d4b2188` remains immutable and unpromoted. CB13 changes only the control-plane
-finalizer; if validated, fresh `M5-CP3-TB1-R11-R1-EXEC` restarts the unchanged 446-process gate from process 1, with zero
-semantic carry-forward from invalid R11. **No semantic amendment to §§14–16 is made.**
+`M5-CP3-CB13` is control-plane-only, runtime-free and static+synthetic GREEN. It moves final-manifest temporary output outside
+the result tree, preserves copy-before-manifest ordering and fail-closed complete-manifest verification, and freezes an R11-R1
+driver that differs from invalid R11 only by turn identifier. Fresh R11-R1 restarts the unchanged 446-process gate from process
+1 on candidate `10713410215 / 8ff6fdc720b3e8da5c4f5765850f8fe69d4b2188`, with zero semantic carry-forward from invalid R11.
+**No semantic amendment to §§14–16 is made.**
 
 ## 12. Supersession and citation map
 
