@@ -1,3 +1,0 @@
-M5-CP3-TB1-R10-REV source snapshot trigger
-READ_MODE=snapshot
-Requested authority: a6db8fef40b1eff7f3eefc953baff7d858d7777d
