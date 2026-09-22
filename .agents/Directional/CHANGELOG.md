@@ -1,3 +1,22 @@
+## 2026-09-22 — `M5-CP3-CB11`: rotation-aware same-region periodic pairing compiles/packages GREEN
+
+Runtime-free product-only Code + Build. CB11 changes only `src/geometry/SurfaceCellTracing.cpp`: the existing raw
+`family`/`advanceSign` reciprocity remains on cross-region HardRail pairs, while same-region periodic promotion no longer
+compares those chart-local labels before the exact directed generator rotation. Exact reciprocal intervals, distinct
+same-region occurrences, reverse routes, `generator_route_for_span(...)`, both branch/end-point checks in
+`periodic_action_for_pair(...)`, and checked `SurfacePeriodicHolonomy::make(...)` remain unchanged. No inverse/search/fallback,
+test, fixture, selector, routing, header, CMake, benchmark or frozen-definition semantic change was introduced.
+
+Semantic source `53a21f550cf67e643e8c67a633bb63a20b055c6a`. Compile run/job `35689915209 / 106624528816` built all eight
+mandatory targets with explicit GMPXX+GMP and `runtimeExecution=false`. Candidate/log artifacts `10678487447 / 10678382883`;
+candidate SHA-256 `60c4a643cd4a56c70c5fd0674a0df110c501deffe32e244795213a33c96afc3c`; root manifest **28/28** at
+`5f009791f3d237383a472bd1d5c4b50ca771b5f6e5d66295d99726cdd857e364`; packaged source SHA-256
+`fcd122a41bdcf64010e3c732c1fba89624815b304803e31c114c56018c5dd6b8`. No Directional runtime executed.
+
+Candidate remains unpromoted; accepted runtime remains `10601978228`, selector430 **430/430**, stable accounting
+**50 / 14 / 36**, project debt **3**, publication prohibited. Exact successor is immutable artifact-only
+`M5-CP3-TB1-R10-EXEC` over the unchanged 446-process vector with benchmark 0, followed by mandatory Review.
+
 ## 2026-09-22 — `M5-CP3-TB1-R9-REV` review: ramp pre-commitment upheld; §16 amendment verified necessary
 
 Runtime-free review. **Upheld.** Accounting holds at **50 events / 14 categories / 36 recurrences**, debt **3**;

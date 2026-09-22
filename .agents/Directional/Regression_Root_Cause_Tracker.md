@@ -12,11 +12,11 @@ The R8 chart-subject defect is gone. R9 reaches the later production `PeriodicAc
 
 ### `M5-CP3-TB1-R9-REV-CAND-01` — OPEN / same-region local-gauge comparison forbids nonzero periodic rotation
 
-**Status:** OPEN / IMPLEMENTATION + FROZEN-CONTRACT AUTHORITY / `RP-01 AUTHORITY_DOMAIN_CONFLATION` / NON-STABLE / OWNER CB11 -> R10 REVIEW / +0.
+**Status:** OPEN / IMPLEMENTATION + FROZEN-CONTRACT AUTHORITY / `RP-01 AUTHORITY_DOMAIN_CONFLATION` / NON-STABLE / CB11 COMPILE-GREEN / OWNER R10 REVIEW / +0.
 
-Frozen §14.2 and candidate production require same-region paired chart copies to have matching local `family` and opposing `advanceSign`. Because family/sign is derived from unit integer edge delta, this means `d2=-d1`. Frozen §14.3 and `periodic_action_for_pair(...)` require one exact action mapping `first.from -> second.to` and `first.to -> second.from`; subtracting gives `R(d1)=-d2=d1`. A nonzero cardinal vector is fixed only by identity Z4 rotation. The old rule therefore structurally excludes every genuine nonzero-Z4 relation required by M5 debts 3/4.
+Frozen §14.2 and pre-CB11 production required same-region paired chart copies to have matching local `family` and opposing `advanceSign`. Because family/sign is derived from unit integer edge delta, this means `d2=-d1`. Frozen §14.3 and `periodic_action_for_pair(...)` require one exact action mapping `first.from -> second.to` and `first.to -> second.from`; subtracting gives `R(d1)=-d2=d1`. A nonzero cardinal vector is fixed only by identity Z4 rotation. The old rule therefore structurally excluded every genuine nonzero-Z4 relation required by M5 debts 3/4.
 
-**Correction authority:** frozen §16. Same-region periodic pairing must compare exact lattice deltas after the one directed generator rotation, `rotate(R,d1) == -d2`, while retaining both exact endpoint/branch mappings and forbidding inverse-direction fallback. Cross-region HardRail retains direct family-match/opposite-sign semantics. Exact next is product-only `M5-CP3-CB11`; compile-green then unchanged 446-process R10 + mandatory Review.
+**Correction authority:** frozen §16 plus CB11 semantic source `53a21f550cf67e643e8c67a633bb63a20b055c6a`. CB11 gates the raw family/sign reciprocity to cross-region HardRail pairs and leaves the exact directed generator route, `periodic_action_for_pair(...)`, both branch/end-point checks and checked holonomy construction unchanged. Compile run/job `35689915209 / 106624528816` packages all eight GMP/GMPXX targets green as candidate `10678487447`, root manifest 28/28, `runtimeExecution=false`. The candidate remains open/unpromoted until unchanged 446-process R10 and mandatory Review prove runtime recovery and the frozen `R==0` reduction.
 
 ### Observations/debts
 
