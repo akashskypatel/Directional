@@ -1,3 +1,34 @@
+## 2026-09-22 — `M5-CP3-TB1-R9-REV`: CB10 witness recovery proved; same-region periodic family/sign contract is incompatible with nonzero Z4 — **IMPLEMENTATION + FROZEN-CONTRACT AUTHORITY / RP-01 / NON-STABLE / +0**
+
+**Stable totals remain 50 events / 14 categories / 36 recurrences. Produced-witness debt remains 3.**
+
+Independent Review re-verifies R9 candidate/result/source authority and the complete **444 PASS / 2 RED** vector. The exact CB10 seam ramp `delta(theta)=(pi-theta)/6` matches its no-tuning precommitment; independent geometry/matching reconstruction proves the exact 18-edge row408 chart, minimum alignment `0.7753279615208046`, canonical `[0,1,2,3]` runs, `+4` turn sum, bounded closure and five nonzero `+1 mod 4` hard carriers.
+
+### `M5-CP3-TB1-R7-CAND-02` — CLOSED / witness recovery proved
+
+**Status:** CLOSED / `RP-02 TEST_AUTHORITY_COVERAGE_GAP` / RECOVERY PROVED / NON-STABLE / +0.
+
+The R8 chart-subject defect is gone. R9 reaches the later production `PeriodicActionCorrespondenceMismatch`, so CB10's witness correction is not another inadmissible test subject. `M5-CP3-TB1-R8-REV-OBS-01` closes with the exact authored constant/phase/normalization and chart predicates independently upheld.
+
+### `M5-CP3-TB1-R9-REV-CAND-01` — OPEN / same-region local-gauge comparison forbids nonzero periodic rotation
+
+**Status:** OPEN / IMPLEMENTATION + FROZEN-CONTRACT AUTHORITY / `RP-01 AUTHORITY_DOMAIN_CONFLATION` / NON-STABLE / OWNER CB11 -> R10 REVIEW / +0.
+
+Frozen §14.2 and candidate production require same-region paired chart copies to have matching local `family` and opposing `advanceSign`. Because family/sign is derived from unit integer edge delta, this means `d2=-d1`. Frozen §14.3 and `periodic_action_for_pair(...)` require one exact action mapping `first.from -> second.to` and `first.to -> second.from`; subtracting gives `R(d1)=-d2=d1`. A nonzero cardinal vector is fixed only by identity Z4 rotation. The old rule therefore structurally excludes every genuine nonzero-Z4 relation required by M5 debts 3/4.
+
+**Correction authority:** frozen §16. Same-region periodic pairing must compare exact lattice deltas after the one directed generator rotation, `rotate(R,d1) == -d2`, while retaining both exact endpoint/branch mappings and forbidding inverse-direction fallback. Cross-region HardRail retains direct family-match/opposite-sign semantics. Exact next is product-only `M5-CP3-CB11`; compile-green then unchanged 446-process R10 + mandatory Review.
+
+### Observations/debts
+
+- `M5-CP3-TB1-R8-REV-OBS-01`: **CLOSED / no-tuning + chart admissibility independently upheld / NON-STABLE**.
+- `M5-CP3-TB1-R6-REV-OBS-01`: **OPEN / directed relation discriminator still not reached / owner R10 Review**.
+- `M5-CP2-TB1-REV-OBS-01`: **OPEN**; R9 remains semantic RED, selector publication prohibited.
+- `FullPeriodicRotationAndTranslationMaterialize`: **OPEN / M5**.
+- `TamperedFullPeriodicTransformIsRejected`: **OPEN / M5**.
+- closed-complex produced witness: **OPEN / M6**.
+
+No accepted selector row regressed; selector430 remains **430/430**. The new cause is candidate-only product/definition authority and adds **+0 events / +0 categories / +0 recurrences**.
+
 ## 2026-09-22 — `M5-CP3-TB1-R9-EXEC`: CB10 chart witness clears; rows4/5 advance to `PeriodicActionCorrespondenceMismatch` — **SEMANTIC RED / CAUSE UNADJUDICATED / +0**
 
 **Stable totals remain 50 events / 14 categories / 36 recurrences. Produced-witness debt remains 3 in EXEC.**

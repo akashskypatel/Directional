@@ -2,9 +2,9 @@
 
 Last updated: 2026-09-22 UTC
 
-## Latest Review turn — `M5-CP3-TB1-R8-REV`
+## Latest Review turn — `M5-CP3-TB1-R9-REV`
 
-R8 Review remains the latest independent semantic adjudication: row6 recovery is non-vacuously proved and `R7-CAND-03` closes non-stably, while rows4/5 were localized to CB9's nonclosing `alpha(theta)=theta/4` witness. CB10 corrected that witness and R9 has now executed candidate `10668437359`: the chart preconditions clear, but rows4/5 advance to exact `PeriodicActionCorrespondenceMismatch` before direction/materialization/tamper. `R7-CAND-02` therefore remains open pending mandatory R9 Review. Stable accounting stays **50 / 14 / 36**, project debt **3**, candidate remains unpromoted, and publication remains prohibited. Exact next is runtime-free `M5-CP3-TB1-R9-REV`.
+R9 Review independently upholds the complete 446-process evidence and closes the CB10 witness-authority work: exact `delta(theta)=(pi-theta)/6` matches the no-tuning precommitment, the 18-edge chart is independently admissible, and genuine nonzero hard-edge Z4 authority exists before product inspection. `R7-CAND-02 / RP-02` and `R8-REV-OBS-01` close non-stably. The remaining RED is product/definition authority: raw same-region family/sign comparison plus exact reciprocal action correspondence mathematically forces rotation zero. Frozen §16 now requires transported lattice-delta correspondence under the exact directed generator rotation. New `R9-REV-CAND-01` is OPEN / RP-01 authority-domain conflation / non-stable. Stable accounting remains **50 / 14 / 36**, project debt **3**, candidate unpromoted, publication prohibited. Exact next is product-only `M5-CP3-CB11`.
 
 ## Latest Test + Benchmark turn — `M5-CP3-TB1-R9-EXEC`
 
@@ -26,24 +26,26 @@ manifest **28/28**, explicit GMPXX+GMP, clean source receipts and `runtimeExecut
 - [x] `M5-CP3` R1→R7 recovery chain: stable ordinal408 `RP-01` event **RECOVERY PROVED** at R7 Review.
 - [x] M5 produced debt 1 — relation owners/container reorder: **DISCHARGED at R7 Review** on produced rows1/2 with >=2 relations and >=2 owned periodic edges.
 - [x] M5 produced debt 2 — missing relation owner: **DISCHARGED at R7 Review** on produced rows1/3 with exact typed rejection.
-- [ ] M5 produced debt 3 — genuine nonzero-Z4 rotation+translation through production/materialization: **OPEN / R9 RED AT `PeriodicActionCorrespondenceMismatch` BEFORE MATERIALIZATION / REVIEW NEXT**.
-- [ ] M5 produced debt 4 — tampered produced nonzero-Z4 transform rejects typed: **OPEN / R9 RED AT `PeriodicActionCorrespondenceMismatch` BEFORE TAMPER / REVIEW NEXT**.
+- [ ] M5 produced debt 3 — genuine nonzero-Z4 rotation+translation through production/materialization: **OPEN / R9 REVIEW PROVES SAME-REGION ROTATION-CONTRACT DEFECT / CB11 -> R10**.
+- [ ] M5 produced debt 4 — tampered produced nonzero-Z4 transform rejects typed: **OPEN / R9 REVIEW PROVES SAME-REGION ROTATION-CONTRACT DEFECT / CB11 -> R10**.
 - [ ] M6 closed-complex produced debt: **OPEN / M6-owned**.
 - [x] `M5-CP3-CB9` — **COMPLETE / TEST-ONLY / RUNTIME-FREE / COMPILE GREEN**. Candidate `10660365136` / source `1023eea6090...`; all-eight GMP compile/package green, no runtime.
 - [x] `M5-CP3-TB1-R8-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. Vector 9/9 + 1/1 + 4/6 + 430/430; row6 recovers, rows4/5 stop at `InvalidBoundedDiskChart`; immutable postflight exact.
 - [x] `M5-CP3-TB1-R8-REV` — **COMPLETE / ROW6 RECOVERY PROVED / ROWS4-5 TEST-WITNESS DEFECT PROVED**.
 - [x] `M5-CP3-CB10` — **COMPLETE / TEST-ONLY / RUNTIME-FREE / COMPILE GREEN**. Candidate `10668437359` / source `9040f74a8de...`; exact seam ramp + independent chart-admissibility oracle compiled in all eight GMP targets with no runtime.
 - [x] `M5-CP3-TB1-R9-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. Vector 9/9 + 1/1 + 4/6 + 430/430; CB10 chart oracle clears, rows4/5 stop at exact `PeriodicActionCorrespondenceMismatch`; immutable postflight exact.
-- [ ] `M5-CP3-TB1-R9-REV` — **EXACT NEXT / RUNTIME-FREE**. Independently re-derive the immutable R9 evidence, chart/no-tuning precommitment and new correspondence frontier; adjudicate candidate/debts/observations and freeze the bounded successor.
+- [x] `M5-CP3-TB1-R9-REV` — **COMPLETE / CB10 WITNESS RECOVERY PROVED / ROTATION-AWARE PAIRING DEFECT PROVED**.
+- [ ] `M5-CP3-CB11` — **EXACT NEXT / PRODUCT-ONLY / RUNTIME-FREE**. Remove only the premature same-region raw family/sign veto; preserve exact directed action correspondence and cross-region HardRail semantics; mandatory all-eight GMP compile.
+- [ ] `M5-CP3-TB1-R10-EXEC` — **AFTER GREEN CB11**. Same 446 immutable processes, benchmark 0, mandatory R10 Review.
 - [ ] M5 selector publication Code + Build / cumulative artifact-only runtime / Review — blocked until frozen §13.3 precommitment exists.
 
 ## Current observations
 
 - [x] `M5-CP3-TB1-R5-REV-OBS-01` — recovery proved by R7.
 - [x] `M5-CP3-TB1-R2-REV-OBS-01` — successful atlas-owned value consumption proved at R7 while hard-feature nontraversal control remains green.
-- [ ] `M5-CP3-TB1-R8-REV-OBS-01` — **OPEN / R9 RUNTIME CLEARS PRE-PRODUCT CHART ORACLE / OWNER R9 REVIEW**. Independently verify the immutable candidate implements exactly `delta(theta)=(pi-theta)/6`, the frozen normalization and no tuning; EXEC does not close the observation.
-- [ ] `M5-CP3-TB1-R6-REV-OBS-01` — **OPEN / DIRECTION DISCRIMINATOR STILL NOT REACHED / OWNER R9 REVIEW**. R9 advances to `PeriodicActionCorrespondenceMismatch` but fails before `select_torus_source_witness` and the source/A3 product-direction comparison.
-- [ ] `M5-CP2-TB1-REV-OBS-01` — **OPEN**; R9 remains semantic RED, so no selector-publication precommitment exists before mandatory Review.
+- [x] `M5-CP3-TB1-R8-REV-OBS-01` — **CLOSED / NO-TUNING + CHART ADMISSIBILITY INDEPENDENTLY UPHELD AT R9 REVIEW**.
+- [ ] `M5-CP3-TB1-R6-REV-OBS-01` — **OPEN / DIRECTION DISCRIMINATOR STILL NOT REACHED / OWNER R10 REVIEW**. R9 fails before `select_torus_source_witness`; CB11/R10 must preserve the exact directed generator orientation and forbid inverse fallback.
+- [ ] `M5-CP2-TB1-REV-OBS-01` — **OPEN**; R9 Review confirms semantic RED, so selector publication remains prohibited until an independently green corrected Review.
 
 ## Deferred hygiene
 
@@ -68,8 +70,8 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
-- [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. Four periodic/relation debts remain M5-owned and one closed-complex debt remains M6-owned.
-- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 R9 EXEC COMPLETE / SEMANTIC RED / REVIEW NEXT**. Accepted runtime package remains `10601978228`. Candidate `10668437359` / source `9040f74a8de...` has now completed **9/9 + 1/1 + 4/6 + 430/430** with exact immutable postflight. The CB10 chart witness clears, while rows4/5 stop later at `PeriodicActionCorrespondenceMismatch` before direction/materialization/tamper. Candidate remains unpromoted; the two M5 nonzero-Z4 debts remain open. Stable accounting remains **50 / 14 / 36**, debt **3**. Exact next `M5-CP3-TB1-R9-REV`.
+- [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. M4 handed four periodic/relation debts to M5 and one closed-complex debt to M6; R7 Review has since discharged two M5 debts, leaving the two nonzero-Z4 M5 debts plus the one M6 debt.
+- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 R9 REVIEW COMPLETE / CB11 NEXT**. Accepted runtime package remains `10601978228`. Candidate `10668437359` / source `9040f74a8de...` has now completed **9/9 + 1/1 + 4/6 + 430/430** with exact immutable postflight. R9 Review closes the chart/no-tuning witness gap and proves the remaining same-region pairing contract compares local family/sign labels before applying the authoritative periodic rotation, making nonzero Z4 unreachable. Frozen §16 corrects the semantic rule; product-only CB11 is next, then unchanged 446-process R10 + Review. Candidate remains unpromoted; the two M5 nonzero-Z4 debts remain open. Stable accounting remains **50 / 14 / 36**, debt **3**.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.

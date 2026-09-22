@@ -234,9 +234,9 @@ All `M5-DEFN` stop rules are resolved:
 
 ## 11. Current exact successor
 
-**`M5-CP3-CB6`** under `Architecture_M5_CP3_CB6_Carrier_Distinctness_And_Atlas_Oracle_Correction_Plan.md`.
+**`M5-CP3-CB11`** under `Architecture_M5_CP3_CB11_Rotation_Aware_Periodic_Pairing_Correction_Plan.md`.
 
-`M5-CP3-TB1-R4-REV` independently upholds the complete R4 semantic RED, confirms six accepted atlas rows are stale independent-oracle authority after CB5 extended atlas semantic identity, and refines the continuing production failure to an unfrozen generator-versus-cut carrier-distinctness restriction. CB6 removes only that extra restriction and independently extends the atlas test oracle; product identity/factory semantics, hard-feature nontraversability, selectors and produced expectations remain frozen.
+`M5-CP3-TB1-R9-REV` independently upholds the complete R9 evidence, closes the CB10 witness/no-tuning gap, and proves that the remaining nonzero-Z4 production frontier is a same-region quotient-contract inconsistency: raw chart-local family/sign equality was compared across a periodic seam before applying the exact directed generator rotation. §16 freezes the transported lattice-delta condition while preserving the exact action/certificate contracts. CB11 changes only that product pairing locus and compiles/packages runtime-free; a green package proceeds to unchanged 446-process R10 plus mandatory Review.
 
 ## 12. Supersession and citation map
 
@@ -369,6 +369,30 @@ The generator carrier path and cut carrier path remain separate semantic roles i
 
 
 ---
+
+## 16. CP3 R9 Review amendment — rotation-aware same-region periodic pairing
+
+`M5-CP3-TB1-R9-REV` proves that §14.2 item 4's raw `family`/`advanceSign` comparison is not valid authority across a same-region periodic seam with nonzero transport. The local family/sign pair is a chart-local representation. It may be compared directly only when the two chart copies are already in the same gauge.
+
+For a same-region promotion, retain §14.2's exact reciprocal A3 interval identity, distinct boundary occurrences and canonical-reverse route requirements. Let
+
+```text
+d1 = first.toLattice.latticeCoordinate - first.fromLattice.latticeCoordinate
+d2 = second.toLattice.latticeCoordinate - second.fromLattice.latticeCoordinate
+R  = generatorRoute.composed_transport().rotation
+```
+
+where `R` is taken in the exact directed A3/source-path orientation frozen by §§14.3 and 15.3. The periodic seam compatibility condition is now frozen as
+
+```text
+rotate(R, d1) == -d2.
+```
+
+The same directed `R` must also satisfy the two reciprocal branch-rotation endpoint states and both exact integer endpoint mappings through one `GridAutomorphism`. No inverse-direction retry, best-of-two orientation search, rotation search, floating correspondence, endpoint rewrite or translation fitting is permitted. §14.3's exact action correspondence remains final authority.
+
+For `R == 0`, the transported-delta condition reduces to the former same-family/opposite-advance-sign relation. For nonzero `R`, raw local family/sign values may rotate or reverse and therefore may not veto promotion before transport. Cross-region pairs remain `HardRail` and retain the existing direct local family-match/opposite-sign requirement; this amendment does not broaden cross-region pairing or weaken the same-region HardRail rejection in materialization.
+
+This amendment is required for consistency with §8.2 debts 3/4 and §13.1's M5 exit theorem, both of which require a genuinely nonzero-Z4 produced relation. It supersedes only the raw same-region family/sign clause of §14.2 item 4; all other §§14–15 authority remains binding.
 
 ## Independent verification addendum (reviewing agent)
 
