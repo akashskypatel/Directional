@@ -1,3 +1,35 @@
+## 2026-09-22 — `M5-CP3-TB1-R10-EXEC`: 446-process runtime completes; rows4/5 remain RED; result manifest finalization omitted — **SEMANTIC RED + ORCHESTRATION EVIDENCE INVALID / NON-STABLE / +0**
+
+**Stable totals remain 50 events / 14 categories / 36 recurrences. Produced-witness debt remains 3 in EXEC.**
+
+R10 candidate `10678487447` / source `53a21f550cf67e643e8c67a633bb63a20b055c6a` executes all **446/446** fresh exact-filter processes at **9/9 mechanism + 1/1 focused atlas + 4/6 produced + selector430 430/430**, exact-one/zero-skip, benchmark 0 and exact candidate/source/execution-view postflight. Runtime authority is run/job `35691705806 / 106629921249`; original result/log artifacts are `10679167694 / 10678548342`.
+
+### `M5-CP3-TB1-R10-EXEC-CAND-01` — OPEN / orchestration evidence self-manifest coverage gap
+
+**Status:** OPEN / ORCHESTRATION-EVIDENCE / MANIFEST FINALIZATION OMISSION / NON-STABLE / OWNER R10 REVIEW / +0.
+
+The result artifact contains 913 files. `SHA256SUMS` has 911 entries and all listed entries verify. `SHA256SUMS` itself is intentionally excluded, but `driver-authority.txt` is also absent from the manifest even though R10 Plan §5 requires every non-manifest evidence file to be self-manifested. The omitted file independently hashes to `37d0dc701fd5a788b892cb1c9b4f77d3a58c428b44b55bf2bdb55751d26cd3c5`; manifest SHA-256 is `f9364f0c9945eaf4f71f05db9e02ed08109894261027ea4ae08b28f1a75747bc`.
+
+Root cause is bounded to orchestration: the established R9 caller copied `driver-authority.txt` and then regenerated/verified the result manifest, while the R10 caller used the older wrapper order in which the driver writes its manifest first and the workflow copies `driver-authority.txt` afterward. This violated the frozen instruction to reuse the established R9 orchestration shape. Directional runtime had already executed, so the frozen no-restart rule prohibits a same-turn rerun; EXEC does not rewrite the original artifact to hide the defect.
+
+### `M5-CP3-TB1-R10-EXEC-CAND-02` — OPEN / rows4/5 still stop at `PeriodicActionCorrespondenceMismatch`
+
+**Status:** OPEN / SEMANTIC RED / CAUSE UNADJUDICATED / NON-STABLE / OWNER R10 REVIEW / +0.
+
+Produced rows1/2/3/6 remain PASS and selector430 remains **430/430**, including protected ordinals 191/192/247/408. Rows4/5 nevertheless both throw `torus nonzero-Z4 source witness producer failed: PeriodicActionCorrespondenceMismatch` before `select_torus_source_witness(...)`, row4 materialization/certificate consumption, or row5 action-only tamper. This is the same named frontier observed in R9, but EXEC does not assume string equality proves root-cause equality after CB11. Review must determine whether the prior authority-domain correction is not reached/effective or another exact correspondence constraint remains.
+
+### Observation/debt disposition in EXEC
+
+- `M5-CP3-TB1-R9-REV-CAND-01`: **OPEN / RUNTIME RECOVERY NOT PROVED / OWNER R10 REVIEW**.
+- `M5-CP3-TB1-R9-REV-OBS-01-A`: **RUNTIME FALSIFIER PASSES** because produced rows1/2/3/6 remain PASS; Review owns discharge.
+- `M5-CP3-TB1-R6-REV-OBS-01`: **OPEN / DIRECTED RELATION DISCRIMINATOR STILL NOT REACHED / OWNER R10 REVIEW**.
+- `M5-CP2-TB1-REV-OBS-01`: **OPEN**; candidate remains RED and selector publication remains prohibited.
+- `FullPeriodicRotationAndTranslationMaterialize`: **OPEN / M5**; row4 stops before materialization.
+- `TamperedFullPeriodicTransformIsRejected`: **OPEN / M5**; row5 stops before tamper.
+- closed-complex produced witness: **OPEN / M6**.
+
+No accepted selector row regressed. EXEC assigns no new stable event/category/recurrence; mandatory R10 Review owns semantic and evidence-validity adjudication.
+
 ## 2026-09-22 — `M5-CP3-TB1-R9-REV`: CB10 witness recovery proved; same-region periodic family/sign contract is incompatible with nonzero Z4 — **IMPLEMENTATION + FROZEN-CONTRACT AUTHORITY / RP-01 / NON-STABLE / +0**
 
 **Stable totals remain 50 events / 14 categories / 36 recurrences. Produced-witness debt remains 3.**

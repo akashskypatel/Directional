@@ -1,3 +1,9 @@
+## 2026-09-22 — `M5-CP3-TB1-R10-EXEC`: runtime repeats rows4/5 RED; result self-manifest finalizer missing
+
+R10 consumes CB11 candidate `10678487447` / source `53a21f550cf67e643e8c67a633bb63a20b055c6a` immutably and executes all **446/446** fresh exact-filter processes at **9/9 mechanism + 1/1 focused atlas + 4/6 produced + selector430 430/430**, exact-one/zero-skip and benchmark **0**. Produced rows1/2/3/6 and protected selector ordinals 191/192/247/408 remain PASS. Rows4/5 still stop at exact `PeriodicActionCorrespondenceMismatch` before source/A3 witness selection, materialization/certificate consumption or action-only tamper. Run/job `35691705806 / 106629921249`; original result/log artifacts `10679167694 / 10678548342` at SHA-256 `e07be4438185a3deb1548799175d52ac24934649a7846015667fdecf2ecb4251 / 66e742acfec2e23558fb57443154080b295c682ac7fc00de254efe3f3eef77e2`.
+
+Candidate/package/source/execution-view postflight is exact, but closeout audit finds the original result artifact's self-manifest contract invalid: 913 files, 911 manifest entries, with only `SHA256SUMS` (intentionally) and `driver-authority.txt` (incorrectly) unlisted. The established R9 wrapper regenerated the manifest after copying driver authority; R10 omitted that finalization step. No artifact repair or runtime rerun is performed after Directional execution began. New `R10-EXEC-CAND-01` records the orchestration evidence gap; `R10-EXEC-CAND-02` records the continued semantic RED without cause assignment. Stable accounting remains **50 / 14 / 36**, debt **3**, candidate unpromoted, selector publication prohibited. Exact successor is mandatory runtime-free `M5-CP3-TB1-R10-REV`.
+
 ## 2026-09-22 — `M5-CP3-CB11`: rotation-aware same-region periodic pairing compiles/packages GREEN
 
 Runtime-free product-only Code + Build. CB11 changes only `src/geometry/SurfaceCellTracing.cpp`: the existing raw
