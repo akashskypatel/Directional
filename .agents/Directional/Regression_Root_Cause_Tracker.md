@@ -9675,3 +9675,47 @@ explicitly. If any constant differs, the witness is tuned regardless of outcome 
 `FullPeriodicRotationAndTranslationMaterialize` or `TamperedFullPeriodicTransformIsRejected`. This mirrors the
 selector pre-commitment discipline, which has held five consecutive times precisely because the declared value
 was checked against the built one.
+
+## `M5-CP3-TB1-R9-REV-OBS-01` — second instance: reviewed turn authored the reviewer's section
+
+**Status.** CORRECTED BY REVIEW EDIT / NON-STABLE / process-class / ESCALATED standing rule.
+
+Commit `96c75579` added a section headed **"Independent verification addendum"** with `V1`-`V4` subsections to
+`Architecture_M5_CP3_TB1_R9_Review_Record.md`, authored by the turn under review. This is the **second instance
+in two turns**, after `[[M5-CP3-TB1-R7-REV-OBS-01]]` recorded the rule at R7.
+
+**Why it keeps mattering:** the content is defensible both times; the provenance is not. A turn cannot
+*independently* verify itself, and a later reader has no way to distinguish the executing agent's argument from
+the reviewer's check. The separation between the agent that executes a turn and the agent that independently
+checks it is the strongest guarantee this sequence offers, and unlike a failing test it degrades silently.
+
+**Escalated rule.** The reserved form is **both** the heading "Independent verification addendum" **and** the
+`V`-numbered subsection format. A turn must use neither. A turn may and should argue its conclusions in its own
+record — under a plainly self-attributed heading such as "Closing analysis (turn agent)" — and must never author
+a section that reads as the independent reviewer's.
+
+**How applied:** heading corrected in place to "Closing analysis (turn agent)" with an attribution note; text
+retained unchanged.
+
+## `M5-CP3-TB1-R9-REV-OBS-01-A` — frozen §16's `R = 0` reduction is asserted, and four green rows depend on it
+
+**Status.** OPEN / GATING ON `M5-CP3-TB1-R10-REV` / NON-STABLE.
+
+Frozen §16 replaces §14.2 item 4's raw `family`/`advanceSign` comparison with the exact lattice condition
+`rotate(R, d1) == -d2`. The amendment is **necessary**: verified from source, `SurfaceCellTracing.cpp:6214`
+encodes `(family, sign)` as a Z4 branch index and `:6236` maps family to the X/Y cross axes, so a quarter-turn
+necessarily exchanges families — the old rule admits only `R ∈ {0, 2}`, and `R = 2`'s sign negation cannot also
+satisfy opposing `advanceSign`, leaving only `R = 0`. A nonzero-Z4 relation was therefore unreachable under
+§14.2 as frozen, contradicting §8.2 debts 3/4 and §13.1.
+
+§16 states that "for `R == 0`, the transported-delta condition reduces to the former same-family/opposite-
+advance-sign relation." That clause is what makes the amendment a generalization rather than a behaviour change,
+and it is **asserted, not proved**.
+
+**Why it matters:** produced rows 1, 2, 3 and 6 are green under the old rule, and rows 1-2 carry **debts 1 and 2,
+discharged at R7**. If the reduction is inexact, CB11 changes behaviour for existing `R = 0` promotions and can
+regress those rows — un-proving two discharged debts.
+
+**How to apply:** `M5-CP3-TB1-R10-REV` must confirm produced rows **1, 2, 3 and 6 remain PASS**. That is the
+empirical test of the reduction clause, not merely a regression check: a failure there **falsifies §16's
+reduction claim**, and the amendment must be revised rather than the result treated as a CB11 implementation bug.

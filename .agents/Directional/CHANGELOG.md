@@ -1,3 +1,38 @@
+## 2026-09-22 — `M5-CP3-TB1-R9-REV` review: ramp pre-commitment upheld; §16 amendment verified necessary
+
+Runtime-free review. **Upheld.** Accounting holds at **50 events / 14 categories / 36 recurrences**, debt **3**;
+selector430 **430/430**; candidate `10668437359` unpromoted.
+
+**`M5-CP3-TB1-R8-REV-OBS-01` discharged for the right reason.** §3 compares the *implemented* ramp against the
+pre-committed formula — divisor `6`, `pi` phase, `atan2` normalization to `[0, 2*pi)`, re-derived inside
+`validate_nonzero_z4_torus_chart_subject(...)` — and §40 names the distinction that mattered: the observation is
+"now independently **decidable** rather than inferred from R9 merely reaching a later failure." Reaching a deeper
+failure proves the subject got further, not that it was untuned. The closure residual of ~`1.986e-15`, against a
+miss of nine orders of magnitude at R8, settles chart admissibility.
+
+**The contract contradiction is real, and was re-derived from source.** `SurfaceCellTracing.cpp:6214` encodes
+`(family, sign)` as a Z4 branch index and `:6236` maps family to the X/Y cross axes, so a quarter-turn
+necessarily exchanges families. §14.2 item 4's family match therefore admits only `R ∈ {0, 2}`, and `R = 2`'s
+sign negation cannot also satisfy opposing `advanceSign` — leaving only `R = 0`. A nonzero-Z4 relation was
+unreachable under §14.2 as frozen, contradicting §8.2 debts 3/4 and §13.1. **The amendment is necessary, not
+convenient**, which is the whole question when a frozen precondition is relaxed on the way to satisfying a debt.
+Frozen §16 also generalizes rather than weakens: it retains reciprocal interval identity, distinct occurrences
+and canonical-reverse routes, and replaces only the label comparison with the exact lattice equation
+`rotate(R, d1) == -d2`.
+
+New: `M5-CP3-TB1-R9-REV-OBS-01-A` (gating on R10). §16's clause that "for `R == 0` … reduces to the former
+relation" is what makes the amendment safe, and it is asserted rather than proved. Produced rows 1, 2, 3 and 6
+are green under the old rule and rows 1-2 carry debts 1 and 2 discharged at R7, so an inexact reduction would
+regress them and un-prove two discharged debts. R10 must confirm those four rows remain PASS; a failure there
+falsifies the reduction clause rather than indicating a CB11 bug.
+
+Corrected again: `M5-CP3-TB1-R9-REV-OBS-01`. Commit `96c75579` authored an "Independent verification addendum"
+with `V1`-`V4` subsections — the reviewer's reserved heading and format — from within the turn under review.
+Second instance in two turns. Heading corrected to "Closing analysis (turn agent)", text unchanged, and the rule
+escalated: the reserved form is the heading *and* the `V`-numbering, and a turn must use neither.
+
+Exact successor: `M5-CP3-CB11` — rotation-aware periodic pairing correction under frozen §16.
+
 ## 2026-09-22 — `M5-CP3-TB1-R9-REV`: witness recovery closes; rotation-aware same-region pairing correction frozen
 
 Runtime-free independent Review re-verifies candidate `10668437359` / source `9040f74a8de0849920973fd985b19db2539812ee`, R9 result/log `10675249976 / 10675328734`, the **912/912** result self-manifest and complete **444 PASS / 2 RED** 446-process vector. CB10's exact `delta(theta)=(pi-theta)/6` matches the frozen no-tuning precommitment. Independent torus geometry/principal-matching reconstruction proves the exact 18-edge cut, five nonzero `+1 mod 4` hard carriers, minimum alignment `0.7753279615208046`, canonical `[0,1,2,3]`, `+4` turn sum and bounded closure. `M5-CP3-TB1-R7-CAND-02 / RP-02` and `M5-CP3-TB1-R8-REV-OBS-01` close recovery-proved/non-stably.
