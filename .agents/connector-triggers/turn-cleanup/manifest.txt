@@ -1,0 +1,4 @@
+.agents/connector-triggers/source-snapshot/m5-cp3-cb12-20260922-1817.txt
+.agents/connector-triggers/m5-cp3-cb12-apply-20260922.txt
+.agents/connector-triggers/m5-cp3-cb12-compile-20260922.txt
+.agents/connector-triggers/m5-cp3-cb12-closeout-docs-20260922.txt
