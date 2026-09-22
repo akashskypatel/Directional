@@ -1,0 +1,4 @@
+M5-CP3-CB12 patch application trigger
+Caller install: bfc497d5db7a82431ef1f03320c0db4f0f503df2
+Patch base: 730f89f3f25cc3ddc15411f8a68faab961d07eae
+Retry: 0
