@@ -1,3 +1,0 @@
-M5-CP3-TB1-R11-EXEC source/document snapshot trigger
-Expected pre-trigger head: 31343aa636f277c82cfeab3d5ddf17604df342ad
-Purpose: freeze exact current repository authority for artifact-only R11 execution planning and closeout.
