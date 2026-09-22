@@ -1,0 +1,2 @@
+.agents/connector-triggers/m5-cp3-r11-r1-review-docs-apply.txt
+.agents/connector-triggers/source-snapshot/m5-cp3-tb1-r11-r1-rev-20260922-2157.txt
