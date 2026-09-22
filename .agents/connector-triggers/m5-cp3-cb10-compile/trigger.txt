@@ -1,3 +1,0 @@
-turn=M5-CP3-CB10
-purpose=mandatory-all-eight-gmp-compile-package
-source_sha=9040f74a8de0849920973fd985b19db2539812ee

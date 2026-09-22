@@ -1,2 +1,0 @@
-turn=M5-CP3-CB10
-purpose=closeout-docs-apply
