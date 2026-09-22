@@ -1,4 +1,0 @@
-M5-CP3-TB1-R11-R1-EXEC trigger
-Candidate artifact: 10713410215
-Candidate semantic source: 8ff6fdc720b3e8da5c4f5765850f8fe69d4b2188
-Fresh retry: full 446-process artifact-only gate, benchmark 0, zero semantic carry-forward from invalid R11.
