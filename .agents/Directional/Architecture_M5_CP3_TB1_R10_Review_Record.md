@@ -181,3 +181,84 @@ Only `Architecture_M5_Frozen_Definitions.md` §11's mutable current-successor po
 | review_check.py boundary | **PASS** on the prepared Review documentation/consolidation diff with selector430 expected hash; no code/selector mutation. |
 | `STATUS` lifecycle maintained | `M5-CP3-TB1-R10-REV` entry and resume beacons published with `Started at=2026-09-22T06:16:00Z`; terminal COMPLETE with successor `M5-CP3-CB12` is reserved as the final repository write after durable publication/cleanup. |
 | Pushed to origin, branch in sync | ChatGPT-Web connector mode has no persistent local `origin` checkout; equivalent closeout is a post-publication working-branch authority re-read after cleanup, with any unexpected head race stopping the terminal STATUS write. |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld.** The R=0 reduction falsifier resolved, the manifest defect's credit boundary is
+genuinely safe rather than formulaic, and CB12 correctly needs no amendment. Accounting holds at **50 events /
+14 categories / 36 recurrences**, debt **3**; selector430 re-hashes to `1c412850…9db6` at 430 rows.
+
+### V1 — the falsifier did real protective work, not just procedural work
+
+`M5-CP3-TB1-R9-REV-OBS-01-A` required that produced rows 1, 2, 3 and 6 remain PASS, because frozen §16's clause
+that the transported-delta condition "reduces to the former relation" at `R = 0` was **asserted rather than
+proved**, and rows 1-2 carry debts 1 and 2 discharged at R7. R10 reports all four PASS, so the reduction holds
+empirically and the amendment is confirmed a generalization rather than a silent behaviour change.
+
+This is worth naming as more than a box ticked. A frozen-definition amendment made to *enable* two open debts
+could have quietly un-proven two already-discharged ones, and nothing else in the gate would have distinguished
+that from ordinary progress. It is the third consecutive pre-committed falsifier to resolve cleanly, after the
+pure-permutation witness at R2 → R3 and oracle recovery at R4 → R5.
+
+### V2 — the manifest defect's credit boundary is safe, and here is the check that makes that meaningful
+
+"Sufficient to diagnose, not sufficient to accept" is only a real distinction if someone establishes that the
+missing evidence cannot bear on what was concluded. Verified: the sole omission is **`driver-authority.txt`** —
+orchestration evidence, **not** a raw ledger log — all **911** listed rows verify, and Review independently
+hashed the missing file. Every raw log backing the 446 ledger rows is therefore inside verified coverage.
+
+That matters specifically for V1: rows 1/2/3/6's PASS status, on which my falsifier and the protection of debts 1
+and 2 rest, is supported entirely by covered rows. And no credit was taken from the artifact — nothing promoted,
+no debt discharged; the one closure (`R9-REV-CAND-01`, the specific raw local-gauge pre-veto defect) likewise
+rests on those covered rows. The conservative disposition is correct and, as checked, not over-conservative
+either.
+
+### V3 — RECORD NOW, WHILE IT IS CHEAP: acceptance requires complete manifest coverage
+
+The cause is systematic: the R10 driver generated `SHA256SUMS` before writing `driver-authority.txt`. That
+ordering will reproduce on **every** subsequent run until the driver is fixed, and the obligation is correctly
+carried to the next execution.
+
+The risk is not this turn. It is the publication gate, which is precisely the turn that *requires* acceptance
+credit — a run that cannot be accepted cannot publish. The failure mode to foreclose is the reasonable-sounding
+one made under schedule pressure: accepting a partially-manifested artifact because the omission is "only one
+orchestration file." That argument is available today at zero cost and will be far more tempting at the
+publication gate, which is exactly why the rule should be fixed now, before anything depends on it.
+
+**Rule recorded as `M5-CP3-TB1-R10-REV-OBS-01`:** acceptance credit requires **complete** result self-manifest
+coverage — every non-manifest evidence file listed and verified — with **no exception for orchestration-only
+omissions**, and the driver finalization defect must be fixed before the first turn that needs acceptance credit,
+at the latest before the §13.3 publication gate.
+
+### V4 — correct restraint on amendment, in both directions
+
+CB12's defect is a violation of an **existing** frozen rule, not a gap. §14.3 reads verbatim: *"No edge/group/
+vector ordinal, `HardRailId`, **insertion order**, floating path search, direct-helper relation, or M6 occurrence
+authority may name or synthesize a relation."* Frozen §16 independently requires `R` in the exact directed
+orientation. No amendment is needed, and none was made: the only change to
+`Architecture_M5_Frozen_Definitions.md` this turn is §11's mutable successor pointer and a status sentence — two
+lines, with §§14-16 semantically untouched.
+
+That is the right discipline in both directions. §16 was added at R9 because a rule was genuinely missing; here
+no rule is missing, so nothing is restated. Amending a frozen document to re-say what it already says is its own
+hazard — it invites divergence between two statements of the same constraint.
+
+The new defect is correctly classified as another `RP-01` directed-authority/storage-order instance, consistent
+with the family that has run through this checkpoint.
+
+### V5 — carried items, and one process note
+
+`M5-CP3-TB1-R6-REV-OBS-01` remains correctly **OPEN** and is carried to R11, where row 4 is expected to reach the
+independent source/A3 Forward→Reverse comparator for the first time — the point at which direction inversion
+finally becomes observable. `M5-CP2-TB1-REV-OBS-01` stays open under §13.3 while the gate is RED. Debts 3 and 4
+remain OPEN; the M6 closed-complex debt remains M6-owned.
+
+The attribution rule escalated at `M5-CP3-TB1-R9-REV-OBS-01` was **followed this turn** — this record contains no
+section written under the reviewer's heading or `V`-numbering. Noting it because the rule was violated twice in
+succession before being escalated.
+
+Re-derived from repository bytes: frozen §14.3's prohibition text, the scope of this turn's frozen-definitions
+change, selector430's rows and hash. Accepted as reported: R10 artifact enumeration (913/912/911), the
+`driver-authority.txt` hash, gate tallies and raw-log digests.

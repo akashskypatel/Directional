@@ -9793,3 +9793,31 @@ empirical test of the reduction clause, not merely a regression check: a failure
 reduction claim**, and the amendment must be revised rather than the result treated as a CB11 implementation bug.
 
 **R10 Review disposition:** DISCHARGED. Fresh produced rows1/2/3/6 all PASS on CB11 candidate `10678487447`, so the required empirical reduction falsifier is green.
+
+## `M5-CP3-TB1-R10-REV-OBS-01` — acceptance requires complete manifest coverage, with no orchestration-only exception
+
+**Status.** OPEN / GATING BEFORE THE FIRST TURN NEEDING ACCEPTANCE CREDIT / owner: the next EXEC driver
+finalization / NON-STABLE.
+
+`M5-CP3-TB1-R10-EXEC` produced a result artifact with **913** files, **912** required non-manifest evidence files
+and only **911** `SHA256SUMS` rows. The sole omission is `driver-authority.txt`; every listed row verifies and
+Review independently hashed the missing file. The cause is exact: the driver generated the self-manifest before
+writing `driver-authority.txt`.
+
+**The current disposition is correct and was checked, not assumed.** The omitted file is orchestration evidence,
+**not** a raw ledger log, so every raw log backing the 446 ledger rows lies inside verified coverage. That is what
+makes "sufficient to diagnose, not sufficient to accept" meaningful here — rows 1/2/3/6's PASS status, on which
+`[[M5-CP3-TB1-R9-REV-OBS-01-A]]` and the protection of debts 1 and 2 rest, is fully covered. No credit was taken
+from the artifact: nothing promoted, no debt discharged.
+
+**Why record a rule now:** the defect is systematic and will reproduce on every run until the driver is fixed.
+The exposure is not this turn but the **§13.3 publication gate**, which is precisely the turn that requires
+acceptance credit — a run that cannot be accepted cannot publish. The failure mode to foreclose is the
+reasonable-sounding one made under schedule pressure: accepting a partially-manifested artifact because the
+omission is "only one orchestration file." That argument costs nothing to reject today and will be far more
+tempting later.
+
+**How to apply:** acceptance credit requires **complete** result self-manifest coverage — every non-manifest
+evidence file listed and verified — with **no exception for orchestration-only omissions**. The driver
+finalization ordering must be fixed before the first turn that needs acceptance credit, and at the latest before
+the publication gate.

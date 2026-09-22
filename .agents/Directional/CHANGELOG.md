@@ -1,3 +1,39 @@
+## 2026-09-22 — `M5-CP3-TB1-R10-REV` review: R=0 reduction falsifier resolved; manifest acceptance rule recorded
+
+Runtime-free review. **Upheld.** Accounting holds at **50 events / 14 categories / 36 recurrences**, debt **3**;
+selector430 re-hashes to `1c412850…9db6` at 430 rows; candidate unpromoted.
+
+**The R=0 falsifier did real protective work.** `M5-CP3-TB1-R9-REV-OBS-01-A` required produced rows 1, 2, 3 and 6
+to remain PASS, because frozen §16's clause that the transported-delta condition reduces to the former relation
+at `R = 0` was asserted rather than proved, and rows 1-2 carry debts 1 and 2 discharged at R7. All four are PASS,
+so §16 is confirmed a generalization rather than a silent behaviour change. A frozen amendment made to *enable*
+two open debts could otherwise have quietly un-proven two already-discharged ones, with nothing in the gate
+distinguishing that from progress. Third consecutive pre-committed falsifier to resolve cleanly.
+
+**The manifest defect's credit boundary is safe, and the check that makes that meaningful was performed.** The
+sole omission from the 912 required evidence files is `driver-authority.txt` — orchestration evidence, not a raw
+ledger log — all 911 listed rows verify, and the missing file was independently hashed. Every raw log backing the
+446 ledger rows is inside verified coverage, including the rows supporting the falsifier above. No credit was
+taken from the artifact.
+
+New: `M5-CP3-TB1-R10-REV-OBS-01`. The defect is systematic — the driver wrote `SHA256SUMS` before
+`driver-authority.txt` — and will reproduce until fixed. The exposure is the §13.3 publication gate, the turn
+that *requires* acceptance credit, where the tempting argument will be to accept a partially-manifested artifact
+because the omission is "only one orchestration file." Rule recorded while it is cheap: acceptance requires
+**complete** self-manifest coverage with no orchestration-only exception, and the driver fix must land before the
+first turn needing acceptance credit.
+
+**Correct restraint on amendment, in both directions.** CB12's defect violates an existing rule rather than
+exposing a gap — §14.3 already forbids "insertion order" from naming or synthesizing a relation, verbatim — and
+no amendment was made: this turn's only frozen-definitions change is §11's successor pointer and a status
+sentence, with §§14-16 semantically untouched. §16 was added at R9 because a rule was genuinely missing; here
+none is, so nothing is restated. The new defect is correctly another `RP-01` directed-authority instance.
+
+Also noted: the attribution rule escalated at `M5-CP3-TB1-R9-REV-OBS-01` was followed this turn — no section
+written under the reviewer's heading or `V`-numbering, after two consecutive violations.
+
+Exact successor: `M5-CP3-CB12` — A3 directed periodic pair ordering correction.
+
 ## 2026-09-22 — `M5-CP3-TB1-R10-EXEC`: runtime repeats rows4/5 RED; result self-manifest finalizer missing
 
 R10 consumes CB11 candidate `10678487447` / source `53a21f550cf67e643e8c67a633bb63a20b055c6a` immutably and executes all **446/446** fresh exact-filter processes at **9/9 mechanism + 1/1 focused atlas + 4/6 produced + selector430 430/430**, exact-one/zero-skip and benchmark **0**. Produced rows1/2/3/6 and protected selector ordinals 191/192/247/408 remain PASS. Rows4/5 still stop at exact `PeriodicActionCorrespondenceMismatch` before source/A3 witness selection, materialization/certificate consumption or action-only tamper. Run/job `35691705806 / 106629921249`; original result/log artifacts `10679167694 / 10678548342` at SHA-256 `e07be4438185a3deb1548799175d52ac24934649a7846015667fdecf2ecb4251 / 66e742acfec2e23558fb57443154080b295c682ac7fc00de254efe3f3eef77e2`.
