@@ -1,3 +1,27 @@
+## 2026-09-22 — `M5-CP3-CB10`: chart-admissible nonzero-Z4 witness compiles/packages GREEN
+
+Runtime-free test-authority Code + Build. CB10 changes only `tests/SurfaceCellTransitionQuotientTests.cpp` (**+322 / -5**):
+CB9's `alpha(theta)=theta/4` field is replaced exactly by the precommitted seam ramp
+`delta(theta)=(pi-theta)/6`, and a source/geometry-owned pre-product chart-admissibility oracle now requires the
+exact 18 row408 hard edges, deterministic handed source frame, finalized-matching cut-domain branch gauge,
+strict `>0.7` two-sided boundary alignment, canonical `[0,1,2,3]` runs, `+4` turn sum, bounded orthogonal closure,
+and a finalized nonzero hard-edge Z4 carrier before product inspection. Existing source/A3 direction, rows4/5
+relation/materialization/tamper discriminators, and recovery-proved row6 semantics are preserved. No production,
+fixture, selector, CMake, benchmark or frozen-definition semantics changed.
+
+Semantic/compile source `9040f74a8de0849920973fd985b19db2539812ee`. Mandatory GMP compile run/job
+`35663421502 / 106543714403` built all eight targets with `runtimeExecution=false`. Candidate/log artifacts
+`10668437359 / 10668302525` hash to
+`c5deac0871004fbf9e7f318a124d599c7548641be2083419a0f465b503ff3206 /
+c1ded88407c14ac534ce198ea149b9dfb320590a534732df8f6e66b49e87896a`; root manifest **28/28** hashes to
+`75b0241e3f5c340cd7d5e2369aa3ea632c98a56abc57fc342f656b59c436dee3`; packaged source archive hashes to
+`3de9286684ff550b7377e9a7d383fe1640c2c9ec38910861c4a09f86a9f3c5b3`. No Directional runtime executed.
+
+Candidate remains unpromoted; accepted runtime package remains `10601978228`, stable accounting **50 / 14 / 36**,
+project debt **3**, and selector publication remains prohibited. Exact successor is immutable artifact-only
+`M5-CP3-TB1-R9-EXEC` on the unchanged **446** fresh exact-filter identities with benchmark **0**, followed by
+mandatory Review.
+
 ## 2026-09-21 — `M5-CP3-TB1-R8-REV` review: row6 recovery verified non-vacuous; CB10 ramp check required
 
 Runtime-free review. **Upheld.** Totals stay **50 events / 14 categories / 36 recurrences**; produced-witness

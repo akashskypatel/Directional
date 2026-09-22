@@ -1,3 +1,12 @@
+## 2026-09-22 — `M5-CP3-CB10`: chart-admissible witness correction — **COMPILE GREEN / EXISTING RP-02 RECOVERY PENDING / +0**
+
+- **Correction authority:** exact semantic/compile source `9040f74a8de0849920973fd985b19db2539812ee`; only semantic path `tests/SurfaceCellTransitionQuotientTests.cpp` (**+322 / -5**).
+- **Corrected test authority:** replaces CB9's nonclosing `alpha(theta)=theta/4` field with frozen `delta(theta)=(pi-theta)/6`; adds independent pre-product checks for exact 18-edge cut authority, deterministic source frame, finalized-matching branch gauge, strict two-sided boundary alignment, canonical `[0,1,2,3]` runs, `+4` turn sum, orthogonal closure, and a nonzero finalized row408 source transition.
+- **Preserved discriminators:** source/A3-directed relation oracle, forward/inverse distinction, row4 nonzero rotation+translation/materialization/certificate consumption, row5 action-only tamper -> exact `NonReciprocalPeriodicRelation`, and row6's recovery-proved unused-relation invariance are unchanged in semantic intent; row6 body is unchanged.
+- **Compile evidence:** run/job `35663421502 / 106543714403`; candidate/log `10668437359 / 10668302525`; all eight GMP/GMPXX targets green; root manifest **28/28**; `runtimeExecution=false`.
+- **Disposition:** `M5-CP3-TB1-R7-CAND-02 / RP-02 TEST_AUTHORITY_COVERAGE_GAP` remains **OPEN RECOVERY** until fresh R9 runtime + Review proves the chart oracle and downstream debt discriminators. No new stable event is created by this compile-only correction. **+0 events / +0 categories / +0 recurrences**; totals remain **50 / 14 / 36**, debt **3**.
+- **Next falsifiers:** R9 must independently confirm the immutable candidate uses exactly the precommitted divisor/phase, passes the chart-admissibility predicates, reaches rows4/5 downstream direction/materialization/tamper gates, keeps row6 green, and preserves selector430 **430/430**. `M5-CP3-TB1-R8-REV-OBS-01`, `M5-CP3-TB1-R6-REV-OBS-01`, and `M5-CP2-TB1-REV-OBS-01` remain Review-owned.
+
 ## 2026-09-21 — `M5-CP3-TB1-R8-REV` independently proves row6 recovery and rows4/5 chart-subject inadmissibility
 
 **Stable totals remain 50 events / 14 categories / 36 recurrences. Produced-witness debt remains 3.**

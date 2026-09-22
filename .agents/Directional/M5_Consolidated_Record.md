@@ -1,17 +1,29 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-21 at `M5-CP3-TB1-R8-REV`
+**Last updated:** 2026-09-22 at `M5-CP3-CB10`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Corrected stable accounting is **50 / 14 / 36**, produced-witness debt **3**; M5 owns two of those debts and M6 owns one.
 
-## Current CP3 authority — R8 Review proves witness-owned chart failure; CB10 next
+## Current CP3 authority — CB10 compile-green chart-witness correction; R9 next
 
-R8 Review independently upholds the immutable **446/446** gate at **9/9 mechanism + 1/1 focused atlas + 4/6 produced + selector430 430/430**, exact postflight and benchmark 0. Produced row6 is non-vacuously recovery-proved and closes `M5-CP3-TB1-R7-CAND-03` as non-stable +0.
+R8 Review remains the latest semantic runtime adjudication: candidate `10660365136` completed the 446-process gate at
+**9/9 mechanism + 1/1 focused atlas + 4/6 produced + selector430 430/430**; row6 recovery is proved; rows4/5 are
+`RP-02 TEST_AUTHORITY_COVERAGE_GAP` because CB9's `alpha(theta)=theta/4` source subject does not close as a bounded-disk
+chart before relation direction/materialization/tamper.
 
-Rows4/5 are not product-defect evidence: independent reconstruction of CB9's `alpha(theta)=theta/4` field on the exact 18 row408 hard edges produces six boundary runs and a developed closure residual norm `4.666904755831214` against tolerance about `3.3310125454580146e-9`, explaining `InvalidBoundedDiskChart` before relation selection/direction/materialization/tamper. `M5-CP3-TB1-R7-CAND-02` remains open as `RP-02 TEST_AUTHORITY_COVERAGE_GAP / INADMISSIBLE NONZERO-Z4 CHART SUBJECT`.
+CB10 corrects only that test authority. Exact source `9040f74a8de0849920973fd985b19db2539812ee` replaces the field with
+precommitted `delta(theta)=(pi-theta)/6` and adds an independent pre-product oracle over the exact 18 row408 hard edges,
+finalized matching, strict boundary alignment, canonical `[0,1,2,3]` runs, `+4` turn sum, orthogonal closure and nonzero
+finalized carrier. Existing source/A3 direction and rows4/5 discriminators remain; row6 body is unchanged. Mandatory compile
+run/job `35663421502 / 106543714403` is green for all eight GMP/GMPXX targets and packages candidate `10668437359` with
+`runtimeExecution=false`.
 
-Candidate `10660365136` remains unpromoted. Stable accounting remains **50 / 14 / 36**, project debt **3**, the direction observation remains open, and selector publication is prohibited. Exact successor is test-only/runtime-free `M5-CP3-CB10`, frozen to seam ramp `delta(theta)=(pi-theta)/6` and an independent pre-product chart-admissibility oracle; if compile-green, R9 repeats the same 446-process gate before mandatory Review.
+Candidate `10668437359` is unpromoted. Accepted runtime authority remains package/source
+`10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316` under selector430 **430/430**. Stable accounting remains
+**50 / 14 / 36**, project debt **3**, the two M5 nonzero-Z4 debts and direction/no-tuning observations remain open, and
+selector publication is prohibited. Exact successor is immutable `M5-CP3-TB1-R9-EXEC` on the unchanged 446-process gate,
+then mandatory Review.
 
 ## 1. `M5-DEFN` — definitions frozen
 
