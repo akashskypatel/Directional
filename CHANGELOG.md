@@ -1,3 +1,15 @@
+## 2026-09-22 — `M5-CP3-TB1-R11-EXEC`: runtime completes; result finalization fails closed; CB13 next
+
+R11 run/job `35771152416 / 106892972571` runs all **446/446** immutable fresh processes on unchanged CB12 candidate
+`10713410215 / 8ff6fdc720b3e8da5c4f5765850f8fe69d4b2188`, but final evidence packaging is invalid. The caller creates
+`SHA256SUMS.new` inside the enumerated result tree, yielding **913 manifest rows vs 912 actual non-manifest files** after
+the temporary file is renamed. All 912 real evidence files verify; only stale `./SHA256SUMS.new` fails. Result/log artifacts
+are `10714199742 / 10715035437`; the workflow fails closed.
+
+The preserved raw 444/2 process vector is diagnostic only and receives zero semantic credit. Stable accounting remains
+**50 / 14 / 36**, produced debt **3**, accepted runtime unchanged and candidate unpromoted. Exact successor is control-plane-only
+`M5-CP3-CB13`, followed by fresh `M5-CP3-TB1-R11-R1-EXEC` from process 1 if the finalizer correction validates.
+
 ## 2026-09-22 — `M5-CP3-TB1-R10-REV`: R10 diagnosis upheld; insertion-order directed-authority defect proved; CB12 next
 
 Runtime-free independent Review re-derives R10 run/job `35691705806 / 106629921249` as **444 PASS / 2 RED** across all **446/446** exact-one/zero-skip processes: mechanism 9/9, focused atlas 1/1, produced 4/6, selector430 430/430, benchmark 0 and exact immutable postflight. Rows4/5 alone stop at exact `PeriodicActionCorrespondenceMismatch`. Candidate `10678487447` / source `53a21f550cf67e643e8c67a633bb63a20b055c6a` remains unpromoted. R10 result evidence is diagnostic-only for acceptance because `SHA256SUMS` covers **911/912** required non-manifest evidence files; `driver-authority.txt` is the sole omitted file. `R10-EXEC-CAND-01` is upheld as a non-stable orchestration finalization omission and R11 must restore copy-before-regenerate/verify manifest finalization.
