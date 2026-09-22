@@ -1,2 +1,0 @@
-turn=M5-CP3-TB1-R9-EXEC
-purpose=closeout-document-snapshot
