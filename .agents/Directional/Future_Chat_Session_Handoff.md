@@ -43,7 +43,7 @@ cadence; semantic RED routes to `M5-CP3-TB1-R11-R1-REV`.
 - candidate/root-manifest/source-archive hashes: `faf4def9e6823f718e56091876bb97047f5e91a8bfb561ca40d91d70d2af61ce / 352f7553e2f0dc627ada385d78327bcb93d4f3b66125f4faf540d6965a1c2c33 / 506e9d75976802f7045b95344ef8cc0ff1e4d39b8343bdaddaa009a58e04a673`
 - routing artifact/hash: `10592987234 / 352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`
 - selector430 / first427: `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6 / f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`
-- prior Review: `.agents/Directional/Architecture_M5_CP3_TB1_R10_Review_Record.md`
+- prior R10 Review findings: consolidated in `.agents/Directional/M5_Consolidated_Record.md` and `.agents/Directional/Regression_Root_Cause_Tracker.md`
 - cadence/tracker/consolidated record: `.agents/Directional/Turn_Cadence.md`, `.agents/Directional/Regression_Root_Cause_Tracker.md`, `.agents/Directional/M5_Consolidated_Record.md`
 
 ## Context Load Plan
