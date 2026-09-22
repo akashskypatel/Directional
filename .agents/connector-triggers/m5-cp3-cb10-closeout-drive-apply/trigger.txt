@@ -1,0 +1,3 @@
+turn=M5-CP3-CB10
+purpose=apply-closeout-docs
+patch_sha256=22f0dabc3dc990532eda0a5e4fec6b54551c4ad224842d90f9edfaf8126d32a7
