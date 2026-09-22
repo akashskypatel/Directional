@@ -1,0 +1,4 @@
+M5-CP3-CB14 source snapshot trigger
+READ_MODE=snapshot
+Expected pre-trigger head: 7d0ec1a1b2404a35b2ffca85082437a3b2cc2fcb
+Purpose: freeze exact current repository authority for CB14 pre-mutation derivation and implementation.
