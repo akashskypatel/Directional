@@ -7,8 +7,8 @@
 CB13 corrects only the orchestration defect from invalid R11. The retry finalizer now stages its temporary manifest at
 `${RUNNER_TEMP}/${TURN_ID}-SHA256SUMS.final`, outside the result tree; copies `driver-authority.txt` before manifest generation;
 runs fail-closed `sha256sum -c SHA256SUMS`; and independently requires manifest-row equality with the actual non-manifest file
-count. The retained retry workflow contains no raw 64-hex SHA-256 literals: exact hashes are frozen in the retained R11-R1
-plan and materialized through `write_orchestration_payload.py`.
+count. The schema-validated retry workflow bytes at historical commit `789e442aa86278eab1821e5c6aef3ad33678505c` contain no raw 64-hex
+SHA-256 literals: exact hashes are frozen in the retained R11-R1 plan and materialized through `write_orchestration_payload.py`.
 
 CB13 validation run `35775766068` is GREEN at event SHA `d078db5b8816cd2eed30c4418c26b9b1ce33497e`: retry schema job
 `106908450647`, self-schema job `106908451034`, and static/synthetic job `106908512994` all pass. Result/log artifacts are
