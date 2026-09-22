@@ -1,0 +1,6 @@
+# M5-CP3-CB10 temporary-state cleanup
+.agents/connector-triggers/source-snapshot/M5-CP3-CB10-20260921T2215Z.txt
+.agents/connector-triggers/m5-cp3-cb10-drive-apply
+.agents/connector-triggers/m5-cp3-cb10-compile
+.agents/connector-triggers/m5-cp3-cb10-closeout-drive-apply
+.agents/connector-triggers/m5-cp3-cb10-closeout-apply
