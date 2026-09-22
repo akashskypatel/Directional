@@ -1,2 +1,0 @@
-.agents/connector-triggers/m5-cp3-tb1-r9-rev-closeout-drive-apply/trigger.txt
-.agents/connector-triggers/source-snapshot/M5-CP3-TB1-R9-REV-20260922T032553Z.txt

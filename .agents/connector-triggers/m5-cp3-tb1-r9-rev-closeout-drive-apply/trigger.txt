@@ -1,6 +1,0 @@
-turn=M5-CP3-TB1-R9-REV
-purpose=apply-durable-review-closeout
-patch_file_id=1wmW1kut6b3WTa6hWenoC1XV0Vetx44r-
-patch_sha256=a68358acd4f19ad3f4307c201ff59565ff4359b227762e877bfe58042fdf3c08
-base_sha=74358463bd5182b17ccc5f6bb13e2b5653ab00b8
-retry=1
