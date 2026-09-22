@@ -40,9 +40,9 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1alnK_HkjepGI3ciOjWiym6ViJFL211Qt
-      patch_sha256: 3b2f3359fa8a72ccb0457239009fe6efa7dc0e698e3286f5d24f0aba3cb29e0f
-      base_sha: 3476f48af47172942f4e4c573d24394c4b6fb466
+      file_id: 1tdldzyLqhjPrm44TqFrPId-2v7pxGAYX
+      patch_sha256: 9ecf6fc702d9108c17cc508fa55d79daa9d8ff5666bff508eed4299c1112b596
+      base_sha: 7d9d06e71600042a907b39f6ed067b5c5b95e6d0
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: "M5-CP3-CB14: correct periodic seam lattice gauge authority"
     secrets: inherit
