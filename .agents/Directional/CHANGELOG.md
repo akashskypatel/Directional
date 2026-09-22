@@ -1,3 +1,9 @@
+## 2026-09-22 — `M5-CP3-TB1-R9-EXEC`: chart witness clears; periodic-action correspondence becomes the exact RED frontier
+
+R9 consumes candidate `10668437359` / source `9040f74a8de0849920973fd985b19db2539812ee` immutably and completes all **446/446** fresh exact-filter processes at **9/9 mechanism + 1/1 focused atlas + 4/6 produced + selector430 430/430**, exact-one/zero-skip, benchmark **0** and exact immutable postflight. Run/job `35681652858 / 106599730829`; result/log artifacts `10675249976 / 10675328734`; result self-manifest **912/912** at `62269fc2b7f60f3195bbba6804c69ba991dd8c2b3dfba059277fc9a10915d975`.
+
+CB10's exact seam-ramp/nonzero-carrier/pre-product chart checks now execute without rejection. Produced rows4/5 advance beyond R8's `InvalidBoundedDiskChart` and both stop at exact `PeriodicActionCorrespondenceMismatch` while requiring the real torus subject to be `Produced`, before `select_torus_source_witness`, source/A3 direction comparison, materialization or tamper. Row6 remains green; accepted selector430 remains fully green. EXEC makes no cause assignment or promotion/debt decision. Candidate remains unpromoted; accepted runtime authority remains `10601978228`, stable accounting **50 / 14 / 36**, debt **3**. Exact successor is mandatory runtime-free `M5-CP3-TB1-R9-REV`.
+
 ## 2026-09-22 — `M5-CP3-CB10`: chart-admissible nonzero-Z4 witness compiles/packages GREEN
 
 Runtime-free test-authority Code + Build. CB10 changes only `tests/SurfaceCellTransitionQuotientTests.cpp` (**+322 / -5**):

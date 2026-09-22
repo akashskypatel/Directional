@@ -4,15 +4,11 @@ Last updated: 2026-09-22 UTC
 
 ## Latest Review turn — `M5-CP3-TB1-R8-REV`
 
-R8 Review independently upholds the complete 446-process evidence. Row6 recovery is non-vacuously proved and `R7-CAND-03` closes non-stably. Rows4/5 are localized to CB9's authored `alpha(theta)=theta/4` subject: independent bounded-disk reconstruction yields a nonclosing polygon and explains `InvalidBoundedDiskChart` before relation/direction/materialization/tamper. `R7-CAND-02` remains `RP-02 TEST_AUTHORITY_COVERAGE_GAP`. CB10 has now compiled the bounded chart-witness correction as candidate `10668437359`; semantic runtime authority is still the R8 Review state, stable accounting stays **50 / 14 / 36**, project debt **3**, and publication remains prohibited. Exact next is artifact-only `M5-CP3-TB1-R9-EXEC`.
+R8 Review remains the latest independent semantic adjudication: row6 recovery is non-vacuously proved and `R7-CAND-03` closes non-stably, while rows4/5 were localized to CB9's nonclosing `alpha(theta)=theta/4` witness. CB10 corrected that witness and R9 has now executed candidate `10668437359`: the chart preconditions clear, but rows4/5 advance to exact `PeriodicActionCorrespondenceMismatch` before direction/materialization/tamper. `R7-CAND-02` therefore remains open pending mandatory R9 Review. Stable accounting stays **50 / 14 / 36**, project debt **3**, candidate remains unpromoted, and publication remains prohibited. Exact next is runtime-free `M5-CP3-TB1-R9-REV`.
 
-## Latest Test + Benchmark turn — `M5-CP3-TB1-R8-EXEC`
+## Latest Test + Benchmark turn — `M5-CP3-TB1-R9-EXEC`
 
-R8 is mechanically complete at **9/9 mechanism + 1/1 focused atlas + 4/6 produced + selector430 430/430** over all 446 fresh
-exact-one/zero-skip processes. Produced row6 now PASSes the corrected unused-relation witness. Rows4/5 both stop at exact
-`InvalidBoundedDiskChart` while establishing the new nonzero-Z4 production subject, before directed-relation/materialization/tamper
-discriminators. Result artifact `10662697929` has complete self-manifest **912/912** at
-`f3ede0f999eb77b73abf71aa3729b5631fe627dffabc15c7755bc6faee9effcc`. Mandatory R8 Review owns cause/adjudication.
+R9 is mechanically complete at **9/9 mechanism + 1/1 focused atlas + 4/6 produced + selector430 430/430** over all 446 fresh exact-one/zero-skip processes. CB10's frozen seam-ramp/nonzero-carrier/chart-oracle preconditions execute without rejection, advancing rows4/5 beyond R8's `InvalidBoundedDiskChart`; both now stop at exact `PeriodicActionCorrespondenceMismatch` before source/A3-selected direction comparison, materialization or tamper. Row6 remains PASS. Result artifact `10675249976` has complete self-manifest **912/912** at `62269fc2b7f60f3195bbba6804c69ba991dd8c2b3dfba059277fc9a10915d975`. Mandatory R9 Review owns cause/adjudication.
 
 ## Latest Code + Build turn — `M5-CP3-CB10`
 
@@ -30,23 +26,24 @@ manifest **28/28**, explicit GMPXX+GMP, clean source receipts and `runtimeExecut
 - [x] `M5-CP3` R1→R7 recovery chain: stable ordinal408 `RP-01` event **RECOVERY PROVED** at R7 Review.
 - [x] M5 produced debt 1 — relation owners/container reorder: **DISCHARGED at R7 Review** on produced rows1/2 with >=2 relations and >=2 owned periodic edges.
 - [x] M5 produced debt 2 — missing relation owner: **DISCHARGED at R7 Review** on produced rows1/3 with exact typed rejection.
-- [ ] M5 produced debt 3 — genuine nonzero-Z4 rotation+translation through production/materialization: **OPEN / CB10 CHART-WITNESS CORRECTION COMPILE GREEN / R9 RUNTIME NEXT**.
-- [ ] M5 produced debt 4 — tampered produced nonzero-Z4 transform rejects typed: **OPEN / CB10 CHART-WITNESS CORRECTION COMPILE GREEN / R9 RUNTIME NEXT**.
+- [ ] M5 produced debt 3 — genuine nonzero-Z4 rotation+translation through production/materialization: **OPEN / R9 RED AT `PeriodicActionCorrespondenceMismatch` BEFORE MATERIALIZATION / REVIEW NEXT**.
+- [ ] M5 produced debt 4 — tampered produced nonzero-Z4 transform rejects typed: **OPEN / R9 RED AT `PeriodicActionCorrespondenceMismatch` BEFORE TAMPER / REVIEW NEXT**.
 - [ ] M6 closed-complex produced debt: **OPEN / M6-owned**.
 - [x] `M5-CP3-CB9` — **COMPLETE / TEST-ONLY / RUNTIME-FREE / COMPILE GREEN**. Candidate `10660365136` / source `1023eea6090...`; all-eight GMP compile/package green, no runtime.
 - [x] `M5-CP3-TB1-R8-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. Vector 9/9 + 1/1 + 4/6 + 430/430; row6 recovers, rows4/5 stop at `InvalidBoundedDiskChart`; immutable postflight exact.
 - [x] `M5-CP3-TB1-R8-REV` — **COMPLETE / ROW6 RECOVERY PROVED / ROWS4-5 TEST-WITNESS DEFECT PROVED**.
 - [x] `M5-CP3-CB10` — **COMPLETE / TEST-ONLY / RUNTIME-FREE / COMPILE GREEN**. Candidate `10668437359` / source `9040f74a8de...`; exact seam ramp + independent chart-admissibility oracle compiled in all eight GMP targets with no runtime.
-- [ ] `M5-CP3-TB1-R9-EXEC` — **EXACT NEXT / ARTIFACT-ONLY**. Consume `10668437359` immutably; same 446-process gate, benchmark 0, exact postflight; mandatory R9 Review.
+- [x] `M5-CP3-TB1-R9-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. Vector 9/9 + 1/1 + 4/6 + 430/430; CB10 chart oracle clears, rows4/5 stop at exact `PeriodicActionCorrespondenceMismatch`; immutable postflight exact.
+- [ ] `M5-CP3-TB1-R9-REV` — **EXACT NEXT / RUNTIME-FREE**. Independently re-derive the immutable R9 evidence, chart/no-tuning precommitment and new correspondence frontier; adjudicate candidate/debts/observations and freeze the bounded successor.
 - [ ] M5 selector publication Code + Build / cumulative artifact-only runtime / Review — blocked until frozen §13.3 precommitment exists.
 
 ## Current observations
 
 - [x] `M5-CP3-TB1-R5-REV-OBS-01` — recovery proved by R7.
 - [x] `M5-CP3-TB1-R2-REV-OBS-01` — successful atlas-owned value consumption proved at R7 while hard-feature nontraversal control remains green.
-- [ ] `M5-CP3-TB1-R8-REV-OBS-01` — **OPEN / NO-TUNING PRECOMMITMENT / OWNER R9 REVIEW**. Verify the immutable candidate implements exactly `delta(theta)=(pi-theta)/6` with the frozen normalization and no runtime tuning.
-- [ ] `M5-CP3-TB1-R6-REV-OBS-01` — **OPEN / DIRECTION DISCRIMINATOR NOT REACHED / OWNER R9 REVIEW**. R8 Review proves the CB9 chart subject invalid before source/A3-selected product-direction comparison; CB10 preserves the nonzero direction oracle for R9.
-- [ ] `M5-CP2-TB1-REV-OBS-01` — **OPEN**; R8 Review confirms the pre-publication gate is still semantic RED, so no selector-publication precommitment exists.
+- [ ] `M5-CP3-TB1-R8-REV-OBS-01` — **OPEN / R9 RUNTIME CLEARS PRE-PRODUCT CHART ORACLE / OWNER R9 REVIEW**. Independently verify the immutable candidate implements exactly `delta(theta)=(pi-theta)/6`, the frozen normalization and no tuning; EXEC does not close the observation.
+- [ ] `M5-CP3-TB1-R6-REV-OBS-01` — **OPEN / DIRECTION DISCRIMINATOR STILL NOT REACHED / OWNER R9 REVIEW**. R9 advances to `PeriodicActionCorrespondenceMismatch` but fails before `select_torus_source_witness` and the source/A3 product-direction comparison.
+- [ ] `M5-CP2-TB1-REV-OBS-01` — **OPEN**; R9 remains semantic RED, so no selector-publication precommitment exists before mandatory Review.
 
 ## Deferred hygiene
 
@@ -72,7 +69,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. Four periodic/relation debts remain M5-owned and one closed-complex debt remains M6-owned.
-- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 CB10 COMPILE GREEN / R9 NEXT**. Accepted runtime package remains `10601978228`. R8 remains the latest semantic runtime at **9/9 + 1/1 + 4/6 + 430/430** with row6 recovery proved and rows4/5 classified as RP-02 test-authority work. CB10 candidate `10668437359` / source `9040f74a8de...` is compile/package green, runtime-unadjudicated, and unpromoted. The two M5 nonzero-Z4 debts remain open. Stable accounting remains **50 / 14 / 36**, debt **3**. Exact next `M5-CP3-TB1-R9-EXEC`.
+- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 R9 EXEC COMPLETE / SEMANTIC RED / REVIEW NEXT**. Accepted runtime package remains `10601978228`. Candidate `10668437359` / source `9040f74a8de...` has now completed **9/9 + 1/1 + 4/6 + 430/430** with exact immutable postflight. The CB10 chart witness clears, while rows4/5 stop later at `PeriodicActionCorrespondenceMismatch` before direction/materialization/tamper. Candidate remains unpromoted; the two M5 nonzero-Z4 debts remain open. Stable accounting remains **50 / 14 / 36**, debt **3**. Exact next `M5-CP3-TB1-R9-REV`.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.
@@ -111,4 +108,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current corrected totals are **50 events / 14 categories / 36 recurrences**, debt **3**. M4, M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**; accepted runtime authority remains package `10601978228` / source `0798547d...` under selector430 **430/430**. R8 Review proves row6 recovery and classifies rows4/5 as continuing RP-02 test-authority work because CB9's nonzero field is not a valid closing bounded-disk chart subject. CB10 candidate `10668437359` / source `9040f74a8de...` now compiles the precommitted chart-admissible witness correction but remains runtime-unadjudicated and unpromoted. Two nonzero-Z4 M5 debts and the M6 closed-complex debt remain open; selector publication remains prohibited. Exact successor is artifact-only **`M5-CP3-TB1-R9-EXEC`**, followed by mandatory Review. PR #8 remains open, draft, and unmerged.
+Current corrected totals are **50 events / 14 categories / 36 recurrences**, debt **3**. M4, M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**; accepted runtime authority remains package `10601978228` / source `0798547d...` under selector430 **430/430**. R9 candidate `10668437359` / source `9040f74a8de...` completes the 446-process gate at **9/9 + 1/1 + 4/6 + 430/430** with exact postflight: CB10's chart/no-tuning pre-product checks clear, while rows4/5 now stop at `PeriodicActionCorrespondenceMismatch` before source/A3 direction/materialization/tamper. Candidate remains unpromoted. Two nonzero-Z4 M5 debts and the M6 closed-complex debt remain open; selector publication remains prohibited. Exact successor is mandatory runtime-free **`M5-CP3-TB1-R9-REV`**. PR #8 remains open, draft, and unmerged.

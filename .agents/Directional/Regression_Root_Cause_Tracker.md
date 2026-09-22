@@ -1,3 +1,26 @@
+## 2026-09-22 — `M5-CP3-TB1-R9-EXEC`: CB10 chart witness clears; rows4/5 advance to `PeriodicActionCorrespondenceMismatch` — **SEMANTIC RED / CAUSE UNADJUDICATED / +0**
+
+**Stable totals remain 50 events / 14 categories / 36 recurrences. Produced-witness debt remains 3 in EXEC.**
+
+R9 candidate `10668437359` / source `9040f74a8de0849920973fd985b19db2539812ee` completes all **446/446** immutable processes at **9/9 mechanism + 1/1 focused atlas + 4/6 produced + selector430 430/430**, exact-one/zero-skip, benchmark 0 and exact postflight. Runtime authority is run/job `35681652858 / 106599730829`; result artifact `10675249976` self-manifest verifies **912/912**.
+
+### `M5-CP3-TB1-R7-CAND-02` — chart precondition clears; exact producer frontier advances
+
+**Status:** OPEN / SEMANTIC RED / `PeriodicActionCorrespondenceMismatch` / CAUSE UNADJUDICATED / OWNER R9 REVIEW / +0.
+
+Rows4/5 now execute past CB10's exact frozen seam-ramp self-check, nonzero finalized row408 hard-edge carrier check and independent pre-product chart oracle, so R8's `InvalidBoundedDiskChart` witness defect is no longer the runtime stop. Both rows instead throw `torus nonzero-Z4 source witness producer failed: PeriodicActionCorrespondenceMismatch` at `require_produced(...)`. Because `select_torus_source_witness` occurs only afterward, the source/A3-selected direction comparison, row4 materialization/selected-certificate consumption and row5 action-only tamper still do not execute. EXEC does not decide whether the new correspondence frontier is test authority or product authority.
+
+### Observation/debt disposition in EXEC
+
+- `M5-CP3-TB1-R8-REV-OBS-01`: **OPEN / RUNTIME CLEARS FROZEN PRE-PRODUCT ORACLE / OWNER R9 REVIEW**; Review must independently re-derive no-tuning and exact oracle values.
+- `M5-CP3-TB1-R6-REV-OBS-01`: **OPEN / DIRECTED RELATION DISCRIMINATOR NOT REACHED / OWNER R9 REVIEW**.
+- `M5-CP2-TB1-REV-OBS-01`: **OPEN** because R9 remains semantic RED; selector publication remains prohibited.
+- `FullPeriodicRotationAndTranslationMaterialize`: **OPEN / M5**; row4 stops before materialization.
+- `TamperedFullPeriodicTransformIsRejected`: **OPEN / M5**; row5 stops before tamper.
+- closed-complex produced witness: **OPEN / M6**.
+
+No accepted selector row regressed; selector430 remains **430/430**. EXEC therefore assigns no new stable event/category/recurrence and leaves candidate promotion/debt credit to mandatory Review.
+
 ## 2026-09-22 — `M5-CP3-CB10`: chart-admissible witness correction — **COMPILE GREEN / EXISTING RP-02 RECOVERY PENDING / +0**
 
 - **Correction authority:** exact semantic/compile source `9040f74a8de0849920973fd985b19db2539812ee`; only semantic path `tests/SurfaceCellTransitionQuotientTests.cpp` (**+322 / -5**).

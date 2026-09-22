@@ -1,29 +1,17 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-22 at `M5-CP3-CB10`
+**Last updated:** 2026-09-22 at `M5-CP3-TB1-R9-EXEC`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Corrected stable accounting is **50 / 14 / 36**, produced-witness debt **3**; M5 owns two of those debts and M6 owns one.
 
-## Current CP3 authority — CB10 compile-green chart-witness correction; R9 next
+## Current CP3 authority — R9 mechanically complete, semantic RED at periodic-action correspondence; Review next
 
-R8 Review remains the latest semantic runtime adjudication: candidate `10660365136` completed the 446-process gate at
-**9/9 mechanism + 1/1 focused atlas + 4/6 produced + selector430 430/430**; row6 recovery is proved; rows4/5 are
-`RP-02 TEST_AUTHORITY_COVERAGE_GAP` because CB9's `alpha(theta)=theta/4` source subject does not close as a bounded-disk
-chart before relation direction/materialization/tamper.
+R8 Review proved CB9's nonzero source subject inadmissible before relation selection and froze CB10's chart-witness correction. CB10 compiled exact source `9040f74a8de0849920973fd985b19db2539812ee` as candidate `10668437359`, replacing the field with precommitted `delta(theta)=(pi-theta)/6` and adding an independent pre-product chart oracle over the exact 18 row408 hard edges.
 
-CB10 corrects only that test authority. Exact source `9040f74a8de0849920973fd985b19db2539812ee` replaces the field with
-precommitted `delta(theta)=(pi-theta)/6` and adds an independent pre-product oracle over the exact 18 row408 hard edges,
-finalized matching, strict boundary alignment, canonical `[0,1,2,3]` runs, `+4` turn sum, orthogonal closure and nonzero
-finalized carrier. Existing source/A3 direction and rows4/5 discriminators remain; row6 body is unchanged. Mandatory compile
-run/job `35663421502 / 106543714403` is green for all eight GMP/GMPXX targets and packages candidate `10668437359` with
-`runtimeExecution=false`.
+R9 run/job `35681652858 / 106599730829` consumes that candidate immutably and completes all **446/446** processes at **9/9 mechanism + 1/1 focused atlas + 4/6 produced + selector430 430/430**, exact-one/zero-skip, benchmark 0 and exact immutable postflight. Result/log artifacts are `10675249976 / 10675328734`; result self-manifest is **912/912**. Rows4/5 clear the frozen seam-ramp, finalized nonzero carrier and pre-product chart oracle, then both stop at exact `PeriodicActionCorrespondenceMismatch` while requiring the real torus pipeline subject to be `Produced`. The stop remains before `select_torus_source_witness`, source/A3-directed relation comparison, row4 materialization/certificate consumption and row5 tamper. Row6 remains green.
 
-Candidate `10668437359` is unpromoted. Accepted runtime authority remains package/source
-`10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316` under selector430 **430/430**. Stable accounting remains
-**50 / 14 / 36**, project debt **3**, the two M5 nonzero-Z4 debts and direction/no-tuning observations remain open, and
-selector publication is prohibited. Exact successor is immutable `M5-CP3-TB1-R9-EXEC` on the unchanged 446-process gate,
-then mandatory Review.
+EXEC assigns no cause to the new frontier and no new stable regression. `M5-CP3-TB1-R7-CAND-02` remains open for mandatory R9 Review, which must independently decide whether the correspondence failure belongs to test or product authority and adjudicate the no-tuning/direction observations. Candidate `10668437359` remains unpromoted. Accepted runtime authority remains package/source `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316` under selector430 **430/430**. Stable accounting remains **50 / 14 / 36**, project debt **3**, both M5 nonzero-Z4 debts remain open, and selector publication is prohibited. Exact successor is runtime-free `M5-CP3-TB1-R9-REV`.
 
 ## 1. `M5-DEFN` — definitions frozen
 
