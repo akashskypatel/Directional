@@ -17209,8 +17209,9 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
         first.route != second.route.reversed() ||
         (first.railId.has_value() && second.railId.has_value() &&
          first.railId != second.railId) ||
-        first.family != second.family ||
-        first.advanceSign == second.advanceSign) {
+        (!sameSourceRegion &&
+         (first.family != second.family ||
+          first.advanceSign == second.advanceSign))) {
       result.disposition = SurfaceCellProducerDisposition::Rejected;
       set_phase_front_failure(
           result.failure, SurfacePhaseFrontFailureReason::InvalidHardRailPairing,
