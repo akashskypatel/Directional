@@ -1,4 +1,0 @@
-M5-CP3-TB1-R11-R1-REV documentation/consolidation patch trigger
-Drive file: 1X_GWWC9YmtQSO1Ja7YB_4WhOtCJL2K_J
-Patch SHA-256: 99b1b9c6f88b6dc3b6487eb41d4b419d121cbba6c8ed1236e4f91570646b2e0a
-Base: 9a0837190b139de3cadf0d91586991f22afabe15
