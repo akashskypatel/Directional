@@ -1,26 +1,29 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-22 at `M5-CP3-TB1-R11-R1-EXEC`
+**Last updated:** 2026-09-22 at `M5-CP3-TB1-R11-R1-REV`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Corrected stable accounting is **50 / 14 / 36**, produced-witness debt **3**; M5 owns two of those debts and M6 owns one.
 
-## Current CP3 authority — R11-R1 mechanically valid semantic RED; mandatory Review next
+## Current CP3 authority — R11-R1 Review proves endpoint-gauge authority defect; CB14 next
 
-Fresh R11-R1 run/job `35778555375 / 106917917282` consumes unchanged CB12 candidate
-`10713410215 / 8ff6fdc720b3e8da5c4f5765850f8fe69d4b2188`. Corrected evidence finalization is now fully runtime-confirmed:
-result/log `10717297354 / 10717921412`, complete result self-manifest **912/912** at
-`16dfe18019afee726ce2d2d1845187619c27c74bfa9ff238904237c7de3ab589`, no orchestration failure and exact immutable postflight.
+Fresh R11-R1 run/job `35778555375 / 106917917282` on CB12 candidate
+`10713410215 / 8ff6fdc720b3e8da5c4f5765850f8fe69d4b2188` is mechanically valid at **444 PASS / 2 RED**, with result/log
+`10717297354 / 10717921412`, complete result self-manifest **912/912**, benchmark 0 and exact immutable postflight. Rows4/5 alone
+stop at `PeriodicActionCorrespondenceMismatch`.
 
-The fresh semantic vector is **9/9 mechanism + 1/1 focused atlas + 4/6 produced + selector430 430/430**, total **444 PASS / 2 RED**.
-Rows4/5 alone stop at exact `PeriodicActionCorrespondenceMismatch` while constructing the nonzero-Z4 source witness, before row4
-materialization/certificate proof or row5 transform tamper. Candidate source reaches this guard after CB12's semantic Forward ->
-Reverse edge selection and successful generator-route construction; the guard still collapses action-construction failure with
-route/action rotation disagreement, so the exact operand/root requires independent Review.
+R11-R1 Review independently proves CB12's exact A3 Forward -> Reverse direction correction, closing the R10 insertion-order
+candidate and discharging the R6 direction observation. It also splits the collapsed correspondence guard: source-chart and scale
+preconditions pass, branch correspondence follows the exact directed source transition, the first endpoint map is true by shift
+construction, and the **second exact endpoint map is the first false predicate**. The accepted four-run rectangle gives `d2=-d1`,
+so frozen `rotate(R,d1) == -d2` becomes `rotate(R,d1)==d1`, impossible for genuine nonzero quarter-turn `R`. The remaining root is
+existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION`: raw cut-domain cell-grid coordinates are being reused as quotient-seam endpoint
+authority.
 
-`M5-CP3-TB1-R11-R1-CAND-01` is non-stable/+0 pending Review. Accepted runtime remains
-`10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316`; stable accounting remains **50 / 14 / 36**, debt **3**, candidate
-unpromoted and selector publication prohibited. Exact next is runtime-free `M5-CP3-TB1-R11-R1-REV`.
+Accepted runtime remains `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316`; stable accounting remains
+**50 / 14 / 36**, debt **3**, candidate unpromoted and selector publication prohibited. Exact next is runtime-free product-only
+`M5-CP3-CB14`, which separates cell placement from independently derived periodic relation endpoint-gauge authority before fresh
+R12 runtime.
 
 ## 1. `M5-DEFN` — definitions frozen
 
@@ -187,12 +190,39 @@ R10 Review independently re-parses all ledgers/raw row4/5 evidence, re-hashes se
 The specific R9 defect is recovery-proved: CB11 gates raw family/sign comparison to cross-region HardRail only, while fresh produced rows1/2/3/6 remain PASS, so the `R=0` reduction observation is discharged. Source review then finds a distinct authority-domain violation at same-region relation construction: reciprocal group membership is correct, but representation order determines `first -> second` for `generator_route_for_span(...)` and `periodic_action_for_pair(...)`. Frozen §14.3 already prohibits vector/insertion-order relation synthesis, and §16 already requires the exact directed A3/source-path orientation. Interval authority provides one Forward and one Reverse copy; therefore CB12 is frozen to bind Forward -> Reverse semantically before the one generator/action construction. No frozen semantic amendment, inverse fallback, search, or test correction is authorized. R11 reuses all 446 identities and must be followed by mandatory Review.
 
 
+## 4.11 `M5-CP3-TB1-R11-R1-REV` — direction recovery closes; endpoint-gauge authority defect proved
+
+R11-R1 Review independently upholds the complete **912/912** evidence contract and the fresh **444 PASS / 2 RED** runtime vector.
+CB12's semantic Forward -> Reverse selection is exact and storage-order independent, so `M5-CP3-TB1-R10-REV-CAND-01` closes
+**RECOVERY PROVED** and `M5-CP3-TB1-R6-REV-OBS-01` closes **DIRECTION AUTHORITY PROVED**.
+
+The remaining `PeriodicActionCorrespondenceMismatch` is split exactly. `periodic_action_for_pair(...)` can only be the failing side
+of the collapsed guard because a returned action carries the supplied generator rotation by construction. Source-chart presence and
+zero scale pass; exact branch correspondence follows the directed transition; the first endpoint map is true by the helper's shift
+definition. The second endpoint map is false. On the accepted `[0,1,2,3]` rectangular bounded-disk chart, reciprocal copies of one
+generator lie on opposite sides, giving raw cell-grid `d2=-d1`. Frozen §16 then requires `rotate(R,d1)==d1`, impossible for any
+genuine nonzero quarter-turn on a nonzero cardinal edge.
+
+`M5-CP3-TB1-R11-R1-CAND-01` is therefore **CAUSE PROVED / PRODUCT / existing `RP-01 AUTHORITY_DOMAIN_CONFLATION` continuation /
+cut-domain cell coordinate used as quotient-seam endpoint authority / NON-STABLE / +0 / owner `M5-CP3-CB14`**. The row4/5 test
+authority remains valid; the two nonzero-Z4 debts stay open. CB14 is frozen to keep ordinary cell placement unchanged while deriving
+a separate relation-owned endpoint lattice gauge independently from each endpoint's exact A3 occurrence/source-chart/branch and the
+one directed generator transport. No partner fitting, inverse retry, endpoint rewrite or search is authorized.
+
 ## 5. Folded-document index
 
 Historical citations in frozen/normative records to filenames listed here are provenance-only and resolve through this index plus git history; frozen text is not rewritten merely to chase a folded filename.
 
 | Folded filename | Verdict / retained home |
 |---|---|
+| `Architecture_M5_CP3_TB1_R11_R1_Review_Plan.md` (92 lines) | **CONSUMED R11-R1 REVIEW PLAN / FOLDED BY `M5-CP3-TB1-R11-R1-REV`.** Independent evidence, direction re-derivation, split-guard and adjudication obligations are discharged in §4.11 and the retained Review record; exact successor is CB14. |
+| `Architecture_M5_CP3_TB1_R11_R1_Artifact_Only_Test_Benchmark_Plan.md` (105 lines) | **CONSUMED R11-R1 EXECUTION PLAN / RETIRED BY R11-R1 TB CLEANUP / INDEXED BY REVIEW.** Exact 446-process retry, zero-carry-forward and corrected manifest contract resolve through current runtime report, §4.11, tracker and git history. |
+| `Architecture_M5_CP3_CB13_R11_Result_Manifest_Finalization_Orchestration_Correction_Report.md` (107 lines) | **SUPERSEDED CB13 REPORT / RETIRED BY R11-R1 TB CLEANUP / INDEXED BY REVIEW.** External-temp finalizer correction is runtime-confirmed by R11-R1's complete 912/912 result and retained in §4.11/current report/tracker. |
+| `Architecture_M5_CP3_CB13_R11_Result_Manifest_Finalization_Orchestration_Correction_Plan.md` (94 lines) | **CONSUMED CB13 PLAN / RETIRED BY R11-R1 TB CLEANUP / INDEXED BY REVIEW.** Self-manifest staging correction and fail-closed completeness obligations are runtime-confirmed in §4.11/current report. |
+| `Architecture_M5_CP3_TB1_R11_Invalid_Attempt_Report.md` (91 lines) | **INVALID R11 ATTEMPT REPORT / RETIRED BY R11-R1 TB CLEANUP / INDEXED BY REVIEW.** Invalid 913/912 self-inclusion attempt remains zero-credit provenance; recovery is confirmed by R11-R1 912/912 evidence. |
+| `Architecture_M5_CP3_TB1_R11_Artifact_Only_Test_Benchmark_Plan.md` (95 lines) | **CONSUMED R11 EXECUTION PLAN / RETIRED BETWEEN REVIEWS / INDEXED BY REVIEW.** Frozen 446-process vector and invalid-attempt zero-credit rule resolve through §4.11/current runtime report and git history. |
+| `Architecture_M5_CP3_CB12_A3_Directed_Periodic_Pair_Ordering_Correction_Plan.md` (208 lines) | **CONSUMED CB12 PLAN / RETIRED BETWEEN REVIEWS / INDEXED BY REVIEW.** Exact A3 Forward -> Reverse correction is recovery-proved by R11-R1 Review and retained in §4.11/current Review record. |
+| `Architecture_M5_CP3_TB1_R10_Review_Record.md` (264 lines) | **SUPERSEDED R10 REVIEW / RETIRED BETWEEN REVIEWS / INDEXED BY REVIEW.** Insertion-order candidate, R11 obligations and exact direction rationale resolve through §§4.10-4.11, current Review/tracker and git history. |
 | `Architecture_M5_CP3_TB1_R9_Artifact_Only_Test_Benchmark_Report.md` (125 lines) | **SUPERSEDED R9 RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R10-REV`.** R9 444/2 vector and correspondence frontier remain in §§4.9-4.10, tracker/changelog, R10 Review and git history. |
 | `Architecture_M5_CP3_TB1_R9_Review_Record.md` (318 lines) | **SUPERSEDED R9 REVIEW / FOLDED BY `M5-CP3-TB1-R10-REV`.** CB10 witness recovery, frozen §16 rationale, raw-label candidate and R=0 observation disposition remain in §§4.9-4.10, frozen definitions, current Review/tracker and git history. |
 | `Architecture_M5_CP3_CB11_Code_Build_Report.md` (108 lines) | **SUPERSEDED CB11 BUILD REPORT / FOLDED BY `M5-CP3-TB1-R10-REV`.** Candidate/source/compile-package authority remains in §4.10, retained R10 report/Review, changelog and git history. |

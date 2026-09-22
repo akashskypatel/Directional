@@ -131,8 +131,9 @@ CB12 candidate `10713410215 / 8ff6fdc720b3e8da5c4f5765850f8fe69d4b2188` remains 
 `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316` under selector430 **430/430**. Selector publication remains
 prohibited; no M5 debt or inherited observation is discharged by EXEC.
 
-Exact successor is mandatory runtime-free **`M5-CP3-TB1-R11-R1-REV`** under
-`Architecture_M5_CP3_TB1_R11_R1_Review_Plan.md`.
+The mandatory runtime-free successor **`M5-CP3-TB1-R11-R1-REV`** has completed; its retained authority is
+`Architecture_M5_CP3_TB1_R11_R1_Review_Record.md`, with exact successor `M5-CP3-CB14`. The consumed Review plan resolves through
+`M5_Consolidated_Record.md` §5 and git history.
 
 ## 7. Operational process note
 

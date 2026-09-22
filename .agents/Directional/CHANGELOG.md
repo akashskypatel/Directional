@@ -1,3 +1,11 @@
+## 2026-09-22 — `M5-CP3-TB1-R11-R1-REV`: CB12 direction recovery proved; periodic endpoint-gauge authority defect localized
+
+Runtime-free Review independently upholds R11-R1 run/job `35778555375 / 106917917282`, complete result self-manifest **912/912** and the fresh **444 PASS / 2 RED** vector. CB12's exact A3 Forward -> Reverse selection is storage-order independent, closing `M5-CP3-TB1-R10-REV-CAND-01` recovery-proved and discharging the R6 direction observation.
+
+The remaining `PeriodicActionCorrespondenceMismatch` is split exactly. The action helper's source-chart/scale/branch preconditions and first endpoint mapping pass; the second endpoint mapping is the first false predicate. On the accepted `[0,1,2,3]` rectangle, reciprocal copies have raw cell-grid `d2=-d1`, so frozen nonzero `rotate(R,d1)==-d2` becomes impossible `rotate(R,d1)==d1`. The root is existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION`: cut-domain cell placement is being used as quotient-seam endpoint authority.
+
+Stable accounting remains **50 / 14 / 36**, debt **3**; accepted runtime unchanged, CB12 candidate unpromoted and selector publication prohibited. Exact successor `M5-CP3-CB14` is runtime-free and must preserve cell placement while deriving independent relation-owned endpoint-gauge authority before fresh R12.
+
 ## 2026-09-22 — `M5-CP3-TB1-R11-R1-EXEC`: complete 446-process retry is authoritative semantic RED; Review next
 
 Fresh immutable run/job `35778555375 / 106917917282` consumes CB12 candidate/source

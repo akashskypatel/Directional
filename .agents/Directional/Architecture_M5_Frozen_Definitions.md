@@ -234,14 +234,14 @@ All `M5-DEFN` stop rules are resolved:
 
 ## 11. Current exact successor
 
-**`M5-CP3-TB1-R11-R1-REV`** under
-`Architecture_M5_CP3_TB1_R11_R1_Review_Plan.md`.
+**`M5-CP3-CB14`** under
+`Architecture_M5_CP3_CB14_Periodic_Seam_Lattice_Gauge_Authority_Correction_Plan.md`.
 
-Fresh R11-R1 is mechanically complete and semantic RED at **444/446 PASS**: mechanism 9/9, focused atlas 1/1, produced 4/6 and
-selector430 430/430. Produced rows4/5 alone stop at `PeriodicActionCorrespondenceMismatch` after CB12's semantic Forward ->
-Reverse pairing and generator-route availability. The retry result self-manifest is complete **912/912**, so the semantic RED is
-authoritative and the R11 orchestration defect is runtime-confirmed closed. Mandatory Review must split the collapsed action
-correspondence guard and adjudicate the inherited R10 candidate before any correction. **No semantic amendment to §§14–16 is made.**
+Fresh R11-R1 is mechanically valid at 444 PASS / 2 RED with complete 912/912 evidence. R11-R1 Review proves CB12's exact A3
+Forward -> Reverse direction correction and closes the R10 insertion-order candidate, then proves the surviving product defect:
+cut-domain cell-grid coordinates are being reused as same-region quotient-seam endpoint authority under nonzero transport. CB14 is
+runtime-free and may correct only that endpoint-gauge authority seam before fresh R12. Stable accounting remains **50 / 14 / 36**,
+debt **3**, accepted runtime unchanged, candidate unpromoted and selector publication prohibited.
 
 ## 12. Supersession and citation map
 
@@ -398,6 +398,23 @@ The same directed `R` must also satisfy the two reciprocal branch-rotation endpo
 For `R == 0`, the transported-delta condition reduces to the former same-family/opposite-advance-sign relation. For nonzero `R`, raw local family/sign values may rotate or reverse and therefore may not veto promotion before transport. Cross-region pairs remain `HardRail` and retain the existing direct local family-match/opposite-sign requirement; this amendment does not broaden cross-region pairing or weaken the same-region HardRail rejection in materialization.
 
 This amendment is required for consistency with §8.2 debts 3/4 and §13.1's M5 exit theorem, both of which require a genuinely nonzero-Z4 produced relation. It supersedes only the raw same-region family/sign clause of §14.2 item 4; all other §§14–15 authority remains binding.
+
+
+### 16.1 R11-R1 Review clarification — cell placement is not relation endpoint gauge
+
+The `first` / `second` endpoint lattice states consumed by §16's same-region correspondence are relation-endpoint authority. A raw
+cut-domain cell-placement `LocalLatticeState::latticeCoordinate` is **not** automatically that authority when reciprocal copies are
+separated by nonzero quotient transport.
+
+For each periodic endpoint, the relation-owned lattice state must be derived independently from that endpoint's own accepted A3
+boundary occurrence, semantic Forward/Reverse role, source-chart/branch state, cut-domain integer state and the one directed
+generator transport. Ordinary cell placement remains unchanged. The derivation must precede action construction and may not inspect
+the partner's desired endpoint, fit a translation, rewrite an endpoint after mismatch, search a rotation, try the inverse direction
+or select among multiple gauges based on which one passes.
+
+After both relation endpoint states are independently authored, the frozen §16 equations remain unchanged and are the validation
+contract: one directed `R`, exact `rotate(R,d1) == -d2`, both branch correspondences and both exact integer endpoint mappings through
+one `GridAutomorphism`. This clarification separates authority domains; it does not weaken §§14–16 or change relation identity.
 
 ## Independent verification addendum (reviewing agent)
 
