@@ -35,6 +35,43 @@ inspect product output to choose a gauge.
 If no such independently derived state can be expressed with current authority, **STOP BEFORE MUTATION** and route back to Review
 with the missing authority named. Do not invent a new gauge convention.
 
+### 2.1 Pre-mutation derivation result — PASS
+
+The current products contain sufficient authority. For one endpoint `p`, let `c_p` be its ordinary cut-domain
+`LocalLatticeState::latticeCoordinate`, `B_p` its exact local `branchRotation` as a `QuarterTurn`, `O_p` its exact A3
+`boundaryOccurrence`, `role_p` its exact A3 Forward/Reverse orientation, and `R` the one directed generator rotation selected by
+those occurrences. Define the relation-owned endpoint gauge independently as:
+
+```text
+G_p = Identity                    when R == Identity
+G_p = B_p                         when R != Identity
+q_p = rotate(G_p, c_p)
+```
+
+The typed endpoint state additionally carries `B_p`, `sourceChart`, `scaleLevel`, `O_p`, `role_p`, and `R`. Thus the numerical
+coordinate is authored only from that endpoint's own cut-domain state and branch gauge; its A3 occurrence/semantic role and the one
+directed generator transport are explicit immutable authority on the same state. No partner endpoint or action result participates in
+this derivation.
+
+For `R == Identity`, `q_p == c_p`, so every accepted zero-rotation serialized action remains in the existing gauge exactly. For a
+genuine nonzero `R`, R11-R1 already proved the reciprocal branch relation `B_2 = R o B_1`. Each accepted A3 unit interval is
+materialized on one source-face boundary segment, so its two endpoints share the same local branch gauge. The cut rectangle gives
+`d_2 = -d_1`. Therefore, for the independently derived relation deltas:
+
+```text
+D_1 = rotate(B_1, d_1)
+D_2 = rotate(B_2, d_2)
+    = rotate(R o B_1, -d_1)
+    = -rotate(R, D_1)
+```
+
+and hence `rotate(R, D_1) == -D_2` exactly. A single action shift authored from the first exact mapping must then satisfy the
+second mapping as a validation consequence, not by endpoint fitting. This representation is invariant to face-row, edge-storage,
+cell-storage, and pair-insertion order because `c_p`, `B_p`, canonical A3 occurrence/role, canonical source chart, and directed `R`
+are already semantic authorities.
+
+This derivation satisfies the stop gate. CB14 may proceed with the bounded implementation in §3.
+
 ## 3. Authorized implementation boundary
 
 After the pre-mutation gate succeeds:
