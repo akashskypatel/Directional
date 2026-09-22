@@ -35,13 +35,77 @@ jobs:
       trim_stale_comments: false
     secrets: inherit
 
-  apply:
+  repair-drive-metadata:
     needs: validate
     if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Authenticate to Google Drive
+        id: auth
+        uses: google-github-actions/auth@v3
+        with:
+          project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
+          workload_identity_provider: ${{ secrets.GOOGLE_PROVIDER }}
+          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
+          token_format: access_token
+          access_token_scopes: https://www.googleapis.com/auth/drive
+          create_credentials_file: false
+
+      - name: Repair aggregate intended-path metadata in staged patch
+        env:
+          ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
+          FILE_ID: 1wmW1kut6b3WTa6hWenoC1XV0Vetx44r-
+          ORIGINAL_SHA: 2c58f87c9a0b93ebc7d5e99a479344bbc1cb5f327aabdb0c13d2ef99d1a3e132
+          CORRECTED_SHA: a68358acd4f19ad3f4307c201ff59565ff4359b227762e877bfe58042fdf3c08
+          BODY_SHA: 965b4375b466827f6a014223c672fa280b53e9754ce2c4b8a58a7c59efef0602
+        shell: bash
+        run: |
+          set -euo pipefail
+          patch="${RUNNER_TEMP}/directional.patch"
+          curl --fail-with-body --silent --show-error --location \
+            -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+            "https://www.googleapis.com/drive/v3/files/${FILE_ID}?alt=media&supportsAllDrives=true" \
+            -o "$patch"
+          test "$(sha256sum "$patch" | awk '{print $1}')" = "$ORIGINAL_SHA"
+          python3 - "$patch" <<'PY'
+          import pathlib, sys
+          p = pathlib.Path(sys.argv[1])
+          lines = p.read_text().splitlines(keepends=True)
+          assert not any(line.startswith("# intended_paths=") for line in lines)
+          paths = [line[len("# intended_path="):].rstrip("\r\n")
+                   for line in lines if line.startswith("# intended_path=")]
+          assert len(paths) == 16
+          count_i = next(i for i,line in enumerate(lines)
+                         if line.startswith("# intended_paths_count="))
+          assert lines[count_i].strip() == "# intended_paths_count=16"
+          lines.insert(count_i + 1, "# intended_paths=" + ";".join(paths) + "\n")
+          p.write_text("".join(lines))
+          PY
+          test "$(sha256sum "$patch" | awk '{print $1}')" = "$CORRECTED_SHA"
+          first="$(grep -n -m1 '^diff --git ' "$patch" | cut -d: -f1)"
+          tail -n "+${first}" "$patch" > "${RUNNER_TEMP}/patch.body"
+          test "$(sha256sum "${RUNNER_TEMP}/patch.body" | awk '{print $1}')" = "$BODY_SHA"
+          curl --fail-with-body --silent --show-error --location -X PATCH \
+            -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+            -H 'Content-Type: text/x-diff' \
+            --data-binary @"$patch" \
+            "https://www.googleapis.com/upload/drive/v3/files/${FILE_ID}?uploadType=media&supportsAllDrives=true&fields=id,size,modifiedTime" \
+            > "${RUNNER_TEMP}/update.json"
+          cat "${RUNNER_TEMP}/update.json"
+          verify="${RUNNER_TEMP}/verify.patch"
+          curl --fail-with-body --silent --show-error --location \
+            -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+            "https://www.googleapis.com/drive/v3/files/${FILE_ID}?alt=media&supportsAllDrives=true" \
+            -o "$verify"
+          test "$(sha256sum "$verify" | awk '{print $1}')" = "$CORRECTED_SHA"
+
+  apply:
+    needs: [validate, repair-drive-metadata]
+    if: ${{ needs.validate.outputs.valid == 'true' && needs.repair-drive-metadata.result == 'success' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
       file_id: 1wmW1kut6b3WTa6hWenoC1XV0Vetx44r-
-      patch_sha256: 2c58f87c9a0b93ebc7d5e99a479344bbc1cb5f327aabdb0c13d2ef99d1a3e132
+      patch_sha256: a68358acd4f19ad3f4307c201ff59565ff4359b227762e877bfe58042fdf3c08
       base_sha: 74358463bd5182b17ccc5f6bb13e2b5653ab00b8
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: "docs: record M5-CP3-TB1-R9 review"
