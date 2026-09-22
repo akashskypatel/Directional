@@ -1,0 +1,167 @@
+name: M5 CP3 TB1 R9 Artifact-Only Test Benchmark
+
+on:
+  push:
+    branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
+    paths: [.agents/connector-triggers/m5-cp3-tb1-r9-exec.txt]
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m5-cp3-tb1-r9-exec-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m5-cp3-tb1-r9-exec
+      commit_run_file: false
+      trim_stale_comments: false
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m5-cp3-tb1-r9-exec.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  runtime:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TURN_ID: M5-CP3-TB1-R9-EXEC
+    steps:
+      - name: Initialize diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/${TURN_ID}.log"
+          : > "$log"
+          printf '%s\n' "workflow=$GITHUB_WORKFLOW" "run_id=$GITHUB_RUN_ID" "event=$GITHUB_EVENT_NAME" "event_sha=$GITHUB_SHA" "ref=$GITHUB_REF" "repository=$GITHUB_REPOSITORY" "runner_os=$RUNNER_OS" "turn_boundary=Test+Benchmark-only" "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$log"
+
+      - name: Checkout orchestration authority
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          submodules: false
+          lfs: false
+
+      - name: Materialize and verify R9 runtime driver
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/${TURN_ID}.log"
+          exec > >(tee -a "$log") 2>&1
+          base="${RUNNER_TEMP}/m5_cp3_tb1_r5_exec.py.in"
+          template="${RUNNER_TEMP}/m5_cp3_tb1_r9_exec.py.in"
+          driver="${RUNNER_TEMP}/m5_cp3_tb1_r9_exec.py"
+          git show 1bc3ebcbd90997a9c4503ea2d2b7918556475b2a:.agents/Directional/turn-payloads/m5_cp3_tb1_r5_exec.py.in > "$base"
+          test "$(sha256sum "$base" | awk '{print $1}')" = '752deb7e8d5d879047f1d4619fdb3c564e93e6d3d2e68b8affb9f19a47b997a3'
+          python3 - "$base" "$template" <<'PY'
+          import pathlib,sys
+          p=pathlib.Path(sys.argv[1]).read_text()
+          pairs={
+            "TURN='M5-CP3-TB1-R5-EXEC'":"TURN='M5-CP3-TB1-R9-EXEC'",
+            'CANDIDATE=10633891886':'CANDIDATE=10668437359',
+            "SOURCE_SHA='20f9bf11dc5a986dafd52c5556671fb9f7d429f4'":"SOURCE_SHA='9040f74a8de0849920973fd985b19db2539812ee'",
+          }
+          for a,b in pairs.items():
+            if p.count(a)!=1: raise SystemExit(f'expected one substitution anchor: {a}')
+            p=p.replace(a,b)
+          pathlib.Path(sys.argv[2]).write_text(p)
+          PY
+          python3 .agents/Directional/tools/write_orchestration_payload.py --template "$template" --output "$driver" \
+            --sha256 candidate=c5deac0871004fbf9e7f318a124d599c7548641be2083419a0f465b503ff3206 --sha256 root_manifest=75b0241e3f5c340cd7d5e2369aa3ea632c98a56abc57fc342f656b59c436dee3 \
+            --sha256 source_archive=3de9286684ff550b7377e9a7d383fe1640c2c9ec38910861c4a09f86a9f3c5b3 --sha256 routing=352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce \
+            --sha256 identity_map=7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c --sha256 selector=1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6 \
+            --sha256 prefix427=f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f
+          python3 - "$driver" <<'PY'
+          import pathlib,sys
+          compile(pathlib.Path(sys.argv[1]).read_text(),sys.argv[1],'exec')
+          PY
+          echo "DRIVER_PATH=$driver" >> "$GITHUB_ENV"
+          receipt="${RUNNER_TEMP}/${TURN_ID}-driver-authority.txt"
+          printf '%s\n' "historical_template_commit=1bc3ebcbd90997a9c4503ea2d2b7918556475b2a" "historical_template_sha256=$(sha256sum "$base" | awk '{print $1}')" "r9_template_sha256=$(sha256sum "$template" | awk '{print $1}')" "writer_sha256=$(sha256sum .agents/Directional/tools/write_orchestration_payload.py | awk '{print $1}')" "rendered_driver_sha256=$(sha256sum "$driver" | awk '{print $1}')" > "$receipt"
+          cat "$receipt"
+          git status --short
+
+      - name: Execute immutable 446-process R9 gate
+        id: gate
+        shell: bash
+        run: |
+          set +e
+          log="${RUNNER_TEMP}/${TURN_ID}.log"
+          exec > >(tee -a "$log") 2>&1
+          python3 "$DRIVER_PATH"
+          status=$?
+          echo "driver_exit=$status" | tee -a "$log"
+          echo "driver_exit=$status" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Finalize R9 evidence manifest
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          result="${RUNNER_TEMP}/${TURN_ID}-result"
+          test -d "$result"
+          cp "${RUNNER_TEMP}/${TURN_ID}-driver-authority.txt" "$result/driver-authority.txt"
+          python3 - "$result" <<'PY'
+          import csv,hashlib,pathlib,sys
+          r=pathlib.Path(sys.argv[1])
+          for name,expected in [('mechanism',9),('focused',1),('produced',6),('selector',430)]:
+              p=r/f'{name}-ledger.tsv'
+              if p.exists():
+                  rows=list(csv.DictReader(p.open(),delimiter='\t'))
+                  if len(rows)!=expected:
+                      raise SystemExit(f'{name} ledger rows={len(rows)} expected={expected}')
+          target=r/'SHA256SUMS'
+          rows=[]
+          for p in sorted(r.rglob('*')):
+              if p.is_file() and p!=target:
+                  h=hashlib.sha256(p.read_bytes()).hexdigest()
+                  rows.append(f'{h}  {p.relative_to(r).as_posix()}\n')
+          target.write_text(''.join(rows))
+          PY
+          (cd "$result" && sha256sum -c SHA256SUMS)
+
+      - name: Upload R9 result evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: directional-m5-cp3-tb1-r9-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/M5-CP3-TB1-R9-EXEC-result
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Record final runtime status
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          log="${RUNNER_TEMP}/${TURN_ID}.log"
+          printf '%s\n' "driver_exit=${{ steps.gate.outputs.driver_exit }}" "final_job_status=${{ job.status }}" "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$log"
+
+      - name: Upload diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: directional-m5-cp3-tb1-r9-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/M5-CP3-TB1-R9-EXEC.log
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Fail closed on orchestration failure
+        if: always()
+        shell: bash
+        run: test "${{ steps.gate.outputs.driver_exit }}" = "0"
