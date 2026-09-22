@@ -1,5 +1,0 @@
-# M5-CP3-TB1-R10-EXEC temporary state
-.agents/Directional/turn-payloads/m5_cp3_tb1_r10_exec.py.in
-.agents/connector-triggers/source-snapshot/m5-cp3-tb1-r10-exec-20260922.txt
-.agents/connector-triggers/m5-cp3-tb1-r10-exec.txt
-.agents/connector-triggers/m5-cp3-tb1-r10-closeout-apply.txt
