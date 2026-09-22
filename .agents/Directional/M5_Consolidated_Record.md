@@ -1,15 +1,21 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-22 at `M5-CP3-CB12`
+**Last updated:** 2026-09-22 at `M5-CP3-TB1-R11-EXEC`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Corrected stable accounting is **50 / 14 / 36**, produced-witness debt **3**; M5 owns two of those debts and M6 owns one.
 
-## Current CP3 authority — CB12 A3-directed ordering compiles green; R11 runtime next
+## Current CP3 authority — R11 orchestration-invalid; CB13 control-plane correction next
 
-CB12 corrects the R10 Review defect at its product locus: exact interval orientation selects Forward as directed source and Reverse as target before the unchanged generator-route/action/checked-holonomy construction. Helpers and cross-region behavior are unchanged.
+R11 run/job `35771152416 / 106892972571` consumed unchanged CB12 candidate
+`10713410215 / 8ff6fdc720b3e8da5c4f5765850f8fe69d4b2188`. All 446 planned processes ran, but final result-manifest
+generation self-included temporary `SHA256SUMS.new`: **913 rows vs 912 actual non-manifest files**. All 912 real evidence
+files verify; the stale temporary row makes the attempt orchestration-invalid. Result/log `10714199742 / 10715035437` are
+preserved as invalid-attempt provenance. No semantic ledger or product/debt credit is taken from the diagnostic 444/2 raw vector.
 
-Semantic source `8ff6fdc720b3e8da5c4f5765850f8fe69d4b2188` packages all eight GMP/GMPXX targets green in run/job `35767608403 / 106881074883`; candidate/log `10713410215 / 10713170611`; candidate SHA-256 `faf4def9e6823f718e56091876bb97047f5e91a8bfb561ca40d91d70d2af61ce`; root manifest **28/28**; `runtimeExecution=false`. Compile success does not prove runtime recovery. Accepted runtime remains `10601978228 / 0798547d...`; stable accounting **50 / 14 / 36**, debt **3**, publication prohibited. Exact next is `M5-CP3-TB1-R11-EXEC` under the frozen R11 artifact-only plan, then mandatory Review.
+Accepted runtime remains `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316`; stable accounting remains
+**50 / 14 / 36**, debt **3**, publication prohibited. Exact next is control-plane-only `M5-CP3-CB13`; if its finalizer
+correction validates, fresh `M5-CP3-TB1-R11-R1-EXEC` restarts all 446 processes from process 1 on the unchanged candidate.
 
 ## 1. `M5-DEFN` — definitions frozen
 
