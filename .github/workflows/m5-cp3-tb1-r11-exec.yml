@@ -123,43 +123,7 @@ jobs:
                   | xargs -0 sha256sum > SHA256SUMS.new
                 mv SHA256SUMS.new SHA256SUMS
                 sha256sum -c SHA256SUMS
-                manifest_rows="$(grep -cve '^
-
-      - name: Upload runtime result evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: directional-m5-cp3-tb1-r11-result-${{ github.run_id }}
-          path: ${{ runner.temp }}/M5-CP3-TB1-R11-EXEC-result
-          if-no-files-found: error
-          retention-days: 7
-
-      - name: Record final runtime status
-        if: always()
-        shell: bash
-        run: |
-          set +e
-          log="${RUNNER_TEMP}/${TURN_ID}.log"
-          {
-            echo "driver_exit=${{ steps.gate.outputs.driver_exit }}"
-            echo "final_job_status=${{ job.status }}"
-            echo "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          } | tee -a "$log"
-
-      - name: Upload diagnostic log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: directional-m5-cp3-tb1-r11-log-${{ github.run_id }}
-          path: ${{ runner.temp }}/M5-CP3-TB1-R11-EXEC.log
-          if-no-files-found: error
-          retention-days: 7
-
-      - name: Fail closed on orchestration failure
-        if: always()
-        shell: bash
-        run: test "${{ steps.gate.outputs.driver_exit }}" = "0"
- SHA256SUMS)"
+                manifest_rows="$(grep -cve '^$' SHA256SUMS)"
                 actual_non_manifest="$(find . -type f ! -name SHA256SUMS | wc -l | tr -d ' ')"
                 echo "result_manifest_rows=$manifest_rows"
                 echo "result_non_manifest_files=$actual_non_manifest"
