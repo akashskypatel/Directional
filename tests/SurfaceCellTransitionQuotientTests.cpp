@@ -2868,6 +2868,94 @@ TEST(M5CP3, ProducedTorusMissingPeriodicRelationOwnerRejectsTyped) {
           MissingPeriodicRelationOwner);
 }
 
+TEST(M5CP3, PeriodicRelationEndpointGaugeIsIndependentAndExact) {
+  const auto span = directional::authority::NetworkArcId::from_index(0U, 1U);
+  const auto region =
+      directional::authority::NetworkRegionId::from_index(0U, 1U);
+  const auto forwardChart =
+      directional::authority::FieldChartId::from_index(0U, 2U);
+  const auto reverseChart =
+      directional::authority::FieldChartId::from_index(1U, 2U);
+  ASSERT_TRUE(span.has_value());
+  ASSERT_TRUE(region.has_value());
+  ASSERT_TRUE(forwardChart.has_value());
+  ASSERT_TRUE(reverseChart.has_value());
+
+  directional::geometry::SurfaceSharedBoundaryInterval forwardInterval{
+      *span,
+      directional::authority::FieldExactRational::from_integer(0),
+      directional::authority::FieldExactRational::from_integer(1),
+      directional::authority::Orientation::Forward,
+      directional::geometry::SurfaceBoundaryOccurrenceId{*region, 0U}};
+  directional::geometry::SurfaceSharedBoundaryInterval reverseInterval{
+      *span,
+      directional::authority::FieldExactRational::from_integer(1),
+      directional::authority::FieldExactRational::from_integer(0),
+      directional::authority::Orientation::Reverse,
+      directional::geometry::SurfaceBoundaryOccurrenceId{*region, 1U}};
+
+  directional::geometry::LocalLatticeState forwardFrom;
+  forwardFrom.latticeCoordinate = {0, 0};
+  forwardFrom.branchRotation = 0;
+  forwardFrom.sourceChart = *forwardChart;
+  directional::geometry::LocalLatticeState forwardTo = forwardFrom;
+  forwardTo.latticeCoordinate = {1, 0};
+
+  directional::geometry::LocalLatticeState reverseFrom;
+  reverseFrom.latticeCoordinate = {4, 0};
+  reverseFrom.branchRotation = 1;
+  reverseFrom.sourceChart = *reverseChart;
+  directional::geometry::LocalLatticeState reverseTo = reverseFrom;
+  reverseTo.latticeCoordinate = {3, 0};
+
+  const auto rotation = directional::authority::QuarterTurn::from_integer(1);
+  const auto firstFrom =
+      directional::geometry::make_periodic_relation_endpoint_state(
+          forwardFrom, forwardInterval, rotation);
+  const auto firstTo =
+      directional::geometry::make_periodic_relation_endpoint_state(
+          forwardTo, forwardInterval, rotation);
+  const auto secondFrom =
+      directional::geometry::make_periodic_relation_endpoint_state(
+          reverseFrom, reverseInterval, rotation);
+  const auto secondTo =
+      directional::geometry::make_periodic_relation_endpoint_state(
+          reverseTo, reverseInterval, rotation);
+  ASSERT_TRUE(firstFrom.has_value());
+  ASSERT_TRUE(firstTo.has_value());
+  ASSERT_TRUE(secondFrom.has_value());
+  ASSERT_TRUE(secondTo.has_value());
+
+  const auto firstDelta =
+      firstTo->latticeCoordinate - firstFrom->latticeCoordinate;
+  const auto secondDelta =
+      secondTo->latticeCoordinate - secondFrom->latticeCoordinate;
+  EXPECT_EQ(directional::authority::rotate(rotation, firstDelta), -secondDelta);
+  const directional::authority::LatticeTranslation shift =
+      secondTo->latticeCoordinate -
+      directional::authority::rotate(rotation, firstFrom->latticeCoordinate);
+  const directional::authority::GridAutomorphism action{rotation, shift};
+  EXPECT_NE((directional::authority::LatticeTranslation{0, 0}), shift);
+  EXPECT_EQ(secondTo->latticeCoordinate,
+            action.apply(firstFrom->latticeCoordinate));
+  EXPECT_EQ(secondFrom->latticeCoordinate,
+            action.apply(firstTo->latticeCoordinate));
+  EXPECT_NE(secondTo->latticeCoordinate,
+            action.inverse().apply(firstFrom->latticeCoordinate));
+
+  auto tamperedSecondTo = *secondTo;
+  ++tamperedSecondTo.latticeCoordinate.x;
+  EXPECT_NE(tamperedSecondTo.latticeCoordinate,
+            action.apply(firstFrom->latticeCoordinate));
+
+  const auto zeroRotation = directional::authority::QuarterTurn{};
+  const auto zeroState =
+      directional::geometry::make_periodic_relation_endpoint_state(
+          reverseFrom, reverseInterval, zeroRotation);
+  ASSERT_TRUE(zeroState.has_value());
+  EXPECT_EQ(reverseFrom.latticeCoordinate, zeroState->latticeCoordinate);
+}
+
 TEST(M5CP3, ProducedTorusNonzeroZ4RotationTranslationMaterializes) {
   const auto &witnessFixture = nonzero_z4_torus_witness_fixture();
   const auto &fixture = witnessFixture.fixture;
@@ -2891,6 +2979,71 @@ TEST(M5CP3, ProducedTorusNonzeroZ4RotationTranslationMaterializes) {
   EXPECT_NE((directional::authority::LatticeTranslation{0, 0}),
             relation->action().shift);
 
+  const auto &product = fixture.network.phaseFront.product();
+  const directional::geometry::SurfaceFrontEdge *forwardEdge = nullptr;
+  const directional::geometry::SurfaceFrontEdge *reverseEdge = nullptr;
+  for (const auto &edge : product.edges()) {
+    if (edge.periodicRelation != relation->id() ||
+        !edge.sharedBoundaryInterval.has_value() ||
+        !edge.sharedBoundaryInterval->boundaryOccurrence.has_value() ||
+        edge.sharedBoundaryInterval->span != witness.span) {
+      continue;
+    }
+    if (edge.sharedBoundaryInterval->orientation ==
+        directional::authority::Orientation::Forward) {
+      forwardEdge = &edge;
+    } else {
+      reverseEdge = &edge;
+    }
+  }
+  ASSERT_NE(nullptr, forwardEdge);
+  ASSERT_NE(nullptr, reverseEdge);
+  ASSERT_EQ(relation->cutRoute(), forwardEdge->route);
+  ASSERT_EQ(relation->cutRoute().reversed(), reverseEdge->route);
+  ASSERT_TRUE(forwardEdge->periodicFromLattice.has_value());
+  ASSERT_TRUE(forwardEdge->periodicToLattice.has_value());
+  ASSERT_TRUE(reverseEdge->periodicFromLattice.has_value());
+  ASSERT_TRUE(reverseEdge->periodicToLattice.has_value());
+
+  const auto expectedForwardFrom =
+      directional::geometry::make_periodic_relation_endpoint_state(
+          forwardEdge->fromLattice, *forwardEdge->sharedBoundaryInterval,
+          relation->action().rotation);
+  const auto expectedForwardTo =
+      directional::geometry::make_periodic_relation_endpoint_state(
+          forwardEdge->toLattice, *forwardEdge->sharedBoundaryInterval,
+          relation->action().rotation);
+  const auto expectedReverseFrom =
+      directional::geometry::make_periodic_relation_endpoint_state(
+          reverseEdge->fromLattice, *reverseEdge->sharedBoundaryInterval,
+          relation->action().rotation);
+  const auto expectedReverseTo =
+      directional::geometry::make_periodic_relation_endpoint_state(
+          reverseEdge->toLattice, *reverseEdge->sharedBoundaryInterval,
+          relation->action().rotation);
+  ASSERT_TRUE(expectedForwardFrom.has_value());
+  ASSERT_TRUE(expectedForwardTo.has_value());
+  ASSERT_TRUE(expectedReverseFrom.has_value());
+  ASSERT_TRUE(expectedReverseTo.has_value());
+  EXPECT_EQ(*expectedForwardFrom, *forwardEdge->periodicFromLattice);
+  EXPECT_EQ(*expectedForwardTo, *forwardEdge->periodicToLattice);
+  EXPECT_EQ(*expectedReverseFrom, *reverseEdge->periodicFromLattice);
+  EXPECT_EQ(*expectedReverseTo, *reverseEdge->periodicToLattice);
+  EXPECT_EQ(reverseEdge->periodicToLattice->latticeCoordinate,
+            relation->action().apply(
+                forwardEdge->periodicFromLattice->latticeCoordinate));
+  EXPECT_EQ(reverseEdge->periodicFromLattice->latticeCoordinate,
+            relation->action().apply(
+                forwardEdge->periodicToLattice->latticeCoordinate));
+  EXPECT_EQ(
+      reverseEdge->periodicToLattice->branchRotation,
+      compose(relation->action().rotation,
+              forwardEdge->periodicFromLattice->branchRotation));
+  EXPECT_EQ(
+      reverseEdge->periodicFromLattice->branchRotation,
+      compose(relation->action().rotation,
+              forwardEdge->periodicToLattice->branchRotation));
+
   const auto materialized = materialize(fixture, fixture.network.phaseFront);
   ASSERT_TRUE(materialized.success) << materialized.failure;
   const auto certificates =
@@ -2908,6 +3061,57 @@ TEST(M5CP3, ProducedTorusNonzeroZ4RotationTranslationMaterializes) {
       });
   EXPECT_TRUE(selected);
   EXPECT_GT(materialized.consumedPeriodicHolonomies, 0U);
+}
+
+TEST(M5CP3,
+     ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection) {
+  const auto &witnessFixture = nonzero_z4_torus_witness_fixture();
+  const auto *relation = produced_relation_for_witness(witnessFixture);
+  ASSERT_NE(nullptr, relation);
+
+  PhaseFrontDraft baseline =
+      phase_front_draft(witnessFixture.fixture.network.phaseFront);
+  PhaseFrontDraft reordered = baseline;
+  int firstIndex = -1;
+  int secondIndex = -1;
+  for (int edgeIndex = 0; edgeIndex < static_cast<int>(reordered.edges.size());
+       ++edgeIndex) {
+    const auto &edge = reordered.edges[static_cast<std::size_t>(edgeIndex)];
+    if (edge.periodicRelation != relation->id() || edge.oppositeEdge < 0) {
+      continue;
+    }
+    firstIndex = edgeIndex;
+    secondIndex = edge.oppositeEdge;
+    break;
+  }
+  ASSERT_GE(firstIndex, 0);
+  ASSERT_GE(secondIndex, 0);
+  ASSERT_NE(firstIndex, secondIndex);
+  std::swap(reordered.edges[static_cast<std::size_t>(firstIndex)],
+            reordered.edges[static_cast<std::size_t>(secondIndex)]);
+  reordered.edges[static_cast<std::size_t>(firstIndex)].oppositeEdge =
+      secondIndex;
+  reordered.edges[static_cast<std::size_t>(secondIndex)].oppositeEdge =
+      firstIndex;
+  for (auto &event : reordered.events) {
+    if (event.firstEdge == firstIndex) {
+      event.firstEdge = secondIndex;
+    } else if (event.firstEdge == secondIndex) {
+      event.firstEdge = firstIndex;
+    }
+    if (event.secondEdge == firstIndex) {
+      event.secondEdge = secondIndex;
+    } else if (event.secondEdge == secondIndex) {
+      event.secondEdge = firstIndex;
+    }
+  }
+
+  const auto baselineResult = materialize(witnessFixture.fixture, baseline);
+  const auto reorderedResult = materialize(witnessFixture.fixture, reordered);
+  ASSERT_TRUE(baselineResult.success) << baselineResult.failure;
+  ASSERT_TRUE(reorderedResult.success) << reorderedResult.failure;
+  EXPECT_EQ(selected_relation_certificate_signature(baselineResult.mesh),
+            selected_relation_certificate_signature(reorderedResult.mesh));
 }
 
 TEST(M5CP3, ProducedTorusTamperedNonzeroZ4TransformRejectsTyped) {

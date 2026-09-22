@@ -2145,6 +2145,19 @@ std::uint64_t hash_trace_network(
                           state.sourceChart.value()).index()));
       }
     };
+    const auto hash_periodic_relation_endpoint_state = [&](
+        const geometry::SurfacePeriodicRelationEndpointState &state) {
+      hash_combine_i64(seed, state.latticeCoordinate.x);
+      hash_combine_i64(seed, state.latticeCoordinate.y);
+      hash_combine_i64(seed, static_cast<int>(state.branchRotation.value()));
+      hash_combine_i64(seed, state.scaleLevel);
+      hash_semantic_id(seed, state.sourceChart);
+      hash_semantic_id(seed, state.boundaryOccurrence.region);
+      hash_combine_u64(
+          seed, state.boundaryOccurrence.canonicalBoundaryOccurrenceOrdinal);
+      hash_combine_i64(seed, static_cast<int>(state.occurrenceOrientation));
+      hash_combine_i64(seed, static_cast<int>(state.generatorRotation.value()));
+    };
     hash_combine_u64(seed, phaseFront->edges().size());
     for (const geometry::SurfaceFrontEdge &edge : phaseFront->edges()) {
       hash_trace_point(seed, edge.from);
@@ -2174,6 +2187,14 @@ std::uint64_t hash_trace_network(
         hash_combine_string(seed, interval.secondOrdinal.numerator_string());
         hash_combine_string(seed, interval.secondOrdinal.denominator_string());
         hash_combine_i64(seed, static_cast<int>(interval.orientation));
+      }
+      hash_combine_i64(seed, edge.periodicFromLattice.has_value() ? 1 : 0);
+      if (edge.periodicFromLattice.has_value()) {
+        hash_periodic_relation_endpoint_state(*edge.periodicFromLattice);
+      }
+      hash_combine_i64(seed, edge.periodicToLattice.has_value() ? 1 : 0);
+      if (edge.periodicToLattice.has_value()) {
+        hash_periodic_relation_endpoint_state(*edge.periodicToLattice);
       }
       hash_canonical_route(seed, edge.route);
     }
@@ -3674,6 +3695,15 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
                authority::QuarterTurn::from_integer(second.branchRotation) &&
            first.scaleLevel == second.scaleLevel;
   };
+  const auto relation_action_matches = [&](
+      const geometry::SurfacePeriodicRelationEndpointState &first,
+      const geometry::SurfacePeriodicRelationEndpointState &second,
+      const authority::GridAutomorphism &action) {
+    return action.apply(first.latticeCoordinate) == second.latticeCoordinate &&
+           compose(action.rotation, first.branchRotation) ==
+               second.branchRotation &&
+           first.scaleLevel == second.scaleLevel;
+  };
   for (int edgeIndex = 0;
        edgeIndex < static_cast<int>(phaseFront.edges().size()); ++edgeIndex) {
     const auto &first = phaseFront.edges()[static_cast<std::size_t>(edgeIndex)];
@@ -3787,23 +3817,75 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       if (relation.sourceTopologyRegion() != first.sourceTopologyRegion ||
           (relation.action().shift.x == 0 && relation.action().shift.y == 0) ||
           !exact_interior_route_valid(relation.route()) ||
-          !exact_interior_route_valid(relation.cutRoute()) ||
-          first.route != relation.cutRoute() ||
-          second.route != relation.cutRoute().reversed()) {
+          !exact_interior_route_valid(relation.cutRoute())) {
         result.failure = "InvalidPeriodicRelation";
         return result;
       }
       const authority::GridAutomorphism &action = relation.action();
-      const authority::GridAutomorphism inverseAction = action.inverse();
-      const bool forward =
-          action_matches(first.fromLattice, second.toLattice, action) &&
-          action_matches(first.toLattice, second.fromLattice, action);
-      const bool inverse =
-          action_matches(first.fromLattice, second.toLattice, inverseAction) &&
-          action_matches(first.toLattice, second.fromLattice, inverseAction);
-      if (!forward && !inverse) {
-        result.failure = "InvalidPeriodicFrontTransport";
-        return result;
+      const bool exactA3Pair =
+          first.sharedBoundaryInterval.has_value() &&
+          second.sharedBoundaryInterval.has_value() &&
+          first.sharedBoundaryInterval->boundaryOccurrence.has_value() &&
+          second.sharedBoundaryInterval->boundaryOccurrence.has_value();
+      if (exactA3Pair) {
+        const geometry::SurfaceFrontEdge *forwardEdge = nullptr;
+        const geometry::SurfaceFrontEdge *reverseEdge = nullptr;
+        const bool firstIsForward =
+            first.sharedBoundaryInterval->orientation ==
+            authority::Orientation::Forward;
+        if (firstIsForward &&
+            second.sharedBoundaryInterval->orientation ==
+                authority::Orientation::Reverse) {
+          forwardEdge = &first;
+          reverseEdge = &second;
+        } else if (!firstIsForward &&
+                   first.sharedBoundaryInterval->orientation ==
+                       authority::Orientation::Reverse &&
+                   second.sharedBoundaryInterval->orientation ==
+                       authority::Orientation::Forward) {
+          forwardEdge = &second;
+          reverseEdge = &first;
+        } else {
+          result.failure = "InvalidPeriodicFrontTransport";
+          return result;
+        }
+        if (forwardEdge->route != relation.cutRoute() ||
+            reverseEdge->route != relation.cutRoute().reversed() ||
+            !forwardEdge->periodicFromLattice.has_value() ||
+            !forwardEdge->periodicToLattice.has_value() ||
+            !reverseEdge->periodicFromLattice.has_value() ||
+            !reverseEdge->periodicToLattice.has_value() ||
+            !relation_action_matches(*forwardEdge->periodicFromLattice,
+                                     *reverseEdge->periodicToLattice, action) ||
+            !relation_action_matches(*forwardEdge->periodicToLattice,
+                                     *reverseEdge->periodicFromLattice, action)) {
+          result.failure = "InvalidPeriodicFrontTransport";
+          return result;
+        }
+        selectedDirection = firstIsForward ? authority::Orientation::Forward
+                                           : authority::Orientation::Reverse;
+        selectedAppliedTransport =
+            firstIsForward ? action : action.inverse();
+      } else {
+        if (first.route != relation.cutRoute() ||
+            second.route != relation.cutRoute().reversed()) {
+          result.failure = "InvalidPeriodicRelation";
+          return result;
+        }
+        const authority::GridAutomorphism inverseAction = action.inverse();
+        const bool forward =
+            action_matches(first.fromLattice, second.toLattice, action) &&
+            action_matches(first.toLattice, second.fromLattice, action);
+        const bool inverse =
+            action_matches(first.fromLattice, second.toLattice, inverseAction) &&
+            action_matches(first.toLattice, second.fromLattice, inverseAction);
+        if (!forward && !inverse) {
+          result.failure = "InvalidPeriodicFrontTransport";
+          return result;
+        }
+        selectedDirection = forward ? authority::Orientation::Forward
+                                    : authority::Orientation::Reverse;
+        selectedAppliedTransport = forward ? action : inverseAction;
       }
       consumedPeriodicRelations.insert(*first.periodicRelation);
       equivalence.kind =
@@ -3813,9 +3895,6 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       equivalence.route = relation.route();
       equivalence.cutRoute = relation.cutRoute();
       selectedRelationKind = geometry::SelectedRelationKind::PeriodicHolonomy;
-      selectedDirection = forward ? authority::Orientation::Forward
-                                  : authority::Orientation::Reverse;
-      selectedAppliedTransport = forward ? action : inverseAction;
     } else {
       result.failure = "InvalidPairedBoundaryKind";
       return result;

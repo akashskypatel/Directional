@@ -7903,6 +7903,26 @@ SurfacePeriodicHolonomy::ConstructionResult SurfacePeriodicHolonomy::make(
                                  std::move(route), std::move(cutRoute));
 }
 
+std::optional<SurfacePeriodicRelationEndpointState>
+make_periodic_relation_endpoint_state(
+    const LocalLatticeState &localState,
+    const SurfaceSharedBoundaryInterval &interval,
+    const authority::QuarterTurn generatorRotation) {
+  if (!localState.sourceChart.has_value() ||
+      !interval.boundaryOccurrence.has_value()) {
+    return std::nullopt;
+  }
+  const authority::QuarterTurn branchRotation =
+      authority::QuarterTurn::from_integer(localState.branchRotation);
+  const authority::QuarterTurn gaugeRotation =
+      generatorRotation == authority::QuarterTurn{} ? authority::QuarterTurn{}
+                                                    : branchRotation;
+  return SurfacePeriodicRelationEndpointState{
+      rotate(gaugeRotation, localState.latticeCoordinate), branchRotation,
+      localState.scaleLevel, *localState.sourceChart,
+      *interval.boundaryOccurrence, interval.orientation, generatorRotation};
+}
+
 SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
     int gridU, int gridV, SourceTopologyRegions sourceTopologyRegions,
     std::vector<SurfaceIsolationSeamTransportCertificate>
@@ -7979,6 +7999,15 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
            compose(action.rotation, authority::QuarterTurn::from_integer(
                                         first.branchRotation)) ==
                authority::QuarterTurn::from_integer(second.branchRotation) &&
+           first.scaleLevel == second.scaleLevel;
+  };
+  const auto periodic_relation_action_matches = [](
+      const SurfacePeriodicRelationEndpointState &first,
+      const SurfacePeriodicRelationEndpointState &second,
+      const authority::GridAutomorphism &action) {
+    return action.apply(first.latticeCoordinate) == second.latticeCoordinate &&
+           compose(action.rotation, first.branchRotation) ==
+               second.branchRotation &&
            first.scaleLevel == second.scaleLevel;
   };
 
@@ -8086,36 +8115,115 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
         }
 
         const authority::CanonicalRoute &cutRoute = owner->second->cutRoute();
-        const bool edgeUsesForwardCarrier = edge.route == cutRoute;
-        const bool edgeUsesReverseCarrier = edge.route == cutRoute.reversed();
-        if (!edgeUsesForwardCarrier && !edgeUsesReverseCarrier) {
-          error.code = SurfacePhaseFrontProductErrorCode::
-              RepresentationRenumberedPeriodicRelation;
-          error.edge = static_cast<int>(edgeIndex);
-          error.periodicRelation = edge.periodicRelation;
-          return error;
-        }
-
         const authority::GridAutomorphism &action = owner->second->action();
-        const authority::GridAutomorphism inverseAction = action.inverse();
-        const bool forward =
-            periodic_action_matches(edge.fromLattice, opposite.toLattice, action) &&
-            periodic_action_matches(edge.toLattice, opposite.fromLattice, action);
-        const bool inverse = periodic_action_matches(
-                                 edge.fromLattice, opposite.toLattice,
-                                 inverseAction) &&
-                             periodic_action_matches(
-                                 edge.toLattice, opposite.fromLattice,
-                                 inverseAction);
-        if (!forward && !inverse) {
-          error.code = SurfacePhaseFrontProductErrorCode::
-              NonReciprocalPeriodicRelation;
-          error.edge = static_cast<int>(edgeIndex);
-          error.periodicRelation = edge.periodicRelation;
-          return error;
+        const bool exactA3Pair =
+            edge.sharedBoundaryInterval.has_value() &&
+            opposite.sharedBoundaryInterval.has_value() &&
+            edge.sharedBoundaryInterval->boundaryOccurrence.has_value() &&
+            opposite.sharedBoundaryInterval->boundaryOccurrence.has_value();
+        if (exactA3Pair) {
+          const SurfaceFrontEdge *forwardEdge = nullptr;
+          const SurfaceFrontEdge *reverseEdge = nullptr;
+          if (edge.sharedBoundaryInterval->orientation ==
+                  authority::Orientation::Forward &&
+              opposite.sharedBoundaryInterval->orientation ==
+                  authority::Orientation::Reverse) {
+            forwardEdge = &edge;
+            reverseEdge = &opposite;
+          } else if (edge.sharedBoundaryInterval->orientation ==
+                         authority::Orientation::Reverse &&
+                     opposite.sharedBoundaryInterval->orientation ==
+                         authority::Orientation::Forward) {
+            forwardEdge = &opposite;
+            reverseEdge = &edge;
+          } else {
+            error.code = SurfacePhaseFrontProductErrorCode::
+                NonReciprocalPeriodicRelation;
+            error.edge = static_cast<int>(edgeIndex);
+            error.periodicRelation = edge.periodicRelation;
+            return error;
+          }
+          if (forwardEdge->route != cutRoute ||
+              reverseEdge->route != cutRoute.reversed()) {
+            error.code = SurfacePhaseFrontProductErrorCode::
+                RepresentationRenumberedPeriodicRelation;
+            error.edge = static_cast<int>(edgeIndex);
+            error.periodicRelation = edge.periodicRelation;
+            return error;
+          }
+          if (!forwardEdge->periodicFromLattice.has_value() ||
+              !forwardEdge->periodicToLattice.has_value() ||
+              !reverseEdge->periodicFromLattice.has_value() ||
+              !reverseEdge->periodicToLattice.has_value()) {
+            error.code = SurfacePhaseFrontProductErrorCode::
+                NonReciprocalPeriodicRelation;
+            error.edge = static_cast<int>(edgeIndex);
+            error.periodicRelation = edge.periodicRelation;
+            return error;
+          }
+          const auto expectedForwardFrom = make_periodic_relation_endpoint_state(
+              forwardEdge->fromLattice, *forwardEdge->sharedBoundaryInterval,
+              action.rotation);
+          const auto expectedForwardTo = make_periodic_relation_endpoint_state(
+              forwardEdge->toLattice, *forwardEdge->sharedBoundaryInterval,
+              action.rotation);
+          const auto expectedReverseFrom = make_periodic_relation_endpoint_state(
+              reverseEdge->fromLattice, *reverseEdge->sharedBoundaryInterval,
+              action.rotation);
+          const auto expectedReverseTo = make_periodic_relation_endpoint_state(
+              reverseEdge->toLattice, *reverseEdge->sharedBoundaryInterval,
+              action.rotation);
+          if (!expectedForwardFrom.has_value() || !expectedForwardTo.has_value() ||
+              !expectedReverseFrom.has_value() || !expectedReverseTo.has_value() ||
+              *forwardEdge->periodicFromLattice != *expectedForwardFrom ||
+              *forwardEdge->periodicToLattice != *expectedForwardTo ||
+              *reverseEdge->periodicFromLattice != *expectedReverseFrom ||
+              *reverseEdge->periodicToLattice != *expectedReverseTo ||
+              !periodic_relation_action_matches(
+                  *forwardEdge->periodicFromLattice,
+                  *reverseEdge->periodicToLattice, action) ||
+              !periodic_relation_action_matches(
+                  *forwardEdge->periodicToLattice,
+                  *reverseEdge->periodicFromLattice, action)) {
+            error.code = SurfacePhaseFrontProductErrorCode::
+                NonReciprocalPeriodicRelation;
+            error.edge = static_cast<int>(edgeIndex);
+            error.periodicRelation = edge.periodicRelation;
+            return error;
+          }
+        } else {
+          const bool edgeUsesForwardCarrier = edge.route == cutRoute;
+          const bool edgeUsesReverseCarrier = edge.route == cutRoute.reversed();
+          if (!edgeUsesForwardCarrier && !edgeUsesReverseCarrier) {
+            error.code = SurfacePhaseFrontProductErrorCode::
+                RepresentationRenumberedPeriodicRelation;
+            error.edge = static_cast<int>(edgeIndex);
+            error.periodicRelation = edge.periodicRelation;
+            return error;
+          }
+          const authority::GridAutomorphism inverseAction = action.inverse();
+          const bool forward = periodic_action_matches(
+                                   edge.fromLattice, opposite.toLattice, action) &&
+                               periodic_action_matches(
+                                   edge.toLattice, opposite.fromLattice, action);
+          const bool inverse = periodic_action_matches(
+                                   edge.fromLattice, opposite.toLattice,
+                                   inverseAction) &&
+                               periodic_action_matches(
+                                   edge.toLattice, opposite.fromLattice,
+                                   inverseAction);
+          if (!forward && !inverse) {
+            error.code = SurfacePhaseFrontProductErrorCode::
+                NonReciprocalPeriodicRelation;
+            error.edge = static_cast<int>(edgeIndex);
+            error.periodicRelation = edge.periodicRelation;
+            return error;
+          }
         }
       }
-    } else if (edge.periodicRelation.has_value()) {
+    } else if (edge.periodicRelation.has_value() ||
+               edge.periodicFromLattice.has_value() ||
+               edge.periodicToLattice.has_value()) {
       error.code = SurfacePhaseFrontProductErrorCode::InvalidPeriodicRelationOwner;
       error.edge = static_cast<int>(edgeIndex);
       error.periodicRelation = edge.periodicRelation;
@@ -17094,35 +17202,43 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
   };
 
   const auto periodic_action_for_pair = [&](
-      const SurfaceFrontEdge &first, const SurfaceFrontEdge &second,
+      const SurfacePeriodicRelationEndpointState &firstFrom,
+      const SurfacePeriodicRelationEndpointState &firstTo,
+      const SurfacePeriodicRelationEndpointState &secondFrom,
+      const SurfacePeriodicRelationEndpointState &secondTo,
       const authority::QuarterTurn rotation)
       -> std::optional<authority::GridAutomorphism> {
-    if (!first.fromLattice.sourceChart.has_value() ||
-        !first.toLattice.sourceChart.has_value() ||
-        !second.fromLattice.sourceChart.has_value() ||
-        !second.toLattice.sourceChart.has_value() ||
-        first.fromLattice.scaleLevel != second.toLattice.scaleLevel ||
-        first.toLattice.scaleLevel != second.fromLattice.scaleLevel ||
-        compose(rotation,
-                authority::QuarterTurn::from_integer(
-                    first.fromLattice.branchRotation)) !=
-            authority::QuarterTurn::from_integer(
-                second.toLattice.branchRotation) ||
-        compose(rotation,
-                authority::QuarterTurn::from_integer(
-                    first.toLattice.branchRotation)) !=
-            authority::QuarterTurn::from_integer(
-                second.fromLattice.branchRotation)) {
+    if (firstFrom.occurrenceOrientation != authority::Orientation::Forward ||
+        firstTo.occurrenceOrientation != authority::Orientation::Forward ||
+        secondFrom.occurrenceOrientation != authority::Orientation::Reverse ||
+        secondTo.occurrenceOrientation != authority::Orientation::Reverse ||
+        firstFrom.generatorRotation != rotation ||
+        firstTo.generatorRotation != rotation ||
+        secondFrom.generatorRotation != rotation ||
+        secondTo.generatorRotation != rotation ||
+        firstFrom.sourceChart != firstTo.sourceChart ||
+        secondFrom.sourceChart != secondTo.sourceChart ||
+        firstFrom.boundaryOccurrence != firstTo.boundaryOccurrence ||
+        secondFrom.boundaryOccurrence != secondTo.boundaryOccurrence ||
+        firstFrom.boundaryOccurrence == secondFrom.boundaryOccurrence ||
+        firstFrom.scaleLevel != secondTo.scaleLevel ||
+        firstTo.scaleLevel != secondFrom.scaleLevel ||
+        compose(rotation, firstFrom.branchRotation) != secondTo.branchRotation ||
+        compose(rotation, firstTo.branchRotation) != secondFrom.branchRotation) {
+      return std::nullopt;
+    }
+    const authority::LatticeTranslation firstDelta =
+        firstTo.latticeCoordinate - firstFrom.latticeCoordinate;
+    const authority::LatticeTranslation secondDelta =
+        secondTo.latticeCoordinate - secondFrom.latticeCoordinate;
+    if (rotate(rotation, firstDelta) != -secondDelta) {
       return std::nullopt;
     }
     const authority::LatticeTranslation shift =
-        second.toLattice.latticeCoordinate -
-        rotate(rotation, first.fromLattice.latticeCoordinate);
+        secondTo.latticeCoordinate - rotate(rotation, firstFrom.latticeCoordinate);
     authority::GridAutomorphism action{rotation, shift};
-    if (action.apply(first.fromLattice.latticeCoordinate) !=
-            second.toLattice.latticeCoordinate ||
-        action.apply(first.toLattice.latticeCoordinate) !=
-            second.fromLattice.latticeCoordinate) {
+    if (action.apply(firstFrom.latticeCoordinate) != secondTo.latticeCoordinate ||
+        action.apply(firstTo.latticeCoordinate) != secondFrom.latticeCoordinate) {
       return std::nullopt;
     }
     return action;
@@ -17263,8 +17379,25 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
       }
       const authority::QuarterTurn generatorRotation =
           generatorRoute->composed_transport().rotation;
-      const auto action = periodic_action_for_pair(
-          *directedFirst, *directedSecond, generatorRotation);
+      const auto firstFromState = make_periodic_relation_endpoint_state(
+          directedFirst->fromLattice, *directedFirst->sharedBoundaryInterval,
+          generatorRotation);
+      const auto firstToState = make_periodic_relation_endpoint_state(
+          directedFirst->toLattice, *directedFirst->sharedBoundaryInterval,
+          generatorRotation);
+      const auto secondFromState = make_periodic_relation_endpoint_state(
+          directedSecond->fromLattice, *directedSecond->sharedBoundaryInterval,
+          generatorRotation);
+      const auto secondToState = make_periodic_relation_endpoint_state(
+          directedSecond->toLattice, *directedSecond->sharedBoundaryInterval,
+          generatorRotation);
+      const auto action =
+          firstFromState.has_value() && firstToState.has_value() &&
+                  secondFromState.has_value() && secondToState.has_value()
+              ? periodic_action_for_pair(
+                    *firstFromState, *firstToState, *secondFromState,
+                    *secondToState, generatorRotation)
+              : std::nullopt;
       if (!action.has_value() ||
           generatorRoute->composed_transport().rotation != action->rotation) {
         result.disposition = SurfaceCellProducerDisposition::Rejected;
@@ -17315,6 +17448,10 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
             static_cast<int>(first.filledCell.index()), first.filledSide);
         return result;
       }
+      directedFirst->periodicFromLattice = *firstFromState;
+      directedFirst->periodicToLattice = *firstToState;
+      directedSecond->periodicFromLattice = *secondFromState;
+      directedSecond->periodicToLattice = *secondToState;
       first.boundaryKind = SurfaceFrontBoundaryKind::PeriodicCut;
       second.boundaryKind = SurfaceFrontBoundaryKind::PeriodicCut;
       first.periodicRelation = relationId;

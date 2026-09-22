@@ -1423,6 +1423,30 @@ struct SurfaceSharedBoundaryInterval {
   auto operator<=>(const SurfaceSharedBoundaryInterval &) const = default;
 };
 
+/**
+ * Exact same-region periodic endpoint state in the quotient-relation gauge.
+ *
+ * This state is distinct from LocalLatticeState: the latter owns cut-domain
+ * cell placement, while this value owns only PeriodicCut correspondence.
+ */
+struct SurfacePeriodicRelationEndpointState {
+  authority::LatticeTranslation latticeCoordinate;
+  authority::QuarterTurn branchRotation;
+  int scaleLevel = 0;
+  authority::FieldChartId sourceChart;
+  SurfaceBoundaryOccurrenceId boundaryOccurrence;
+  authority::Orientation occurrenceOrientation = authority::Orientation::Forward;
+  authority::QuarterTurn generatorRotation;
+
+  auto operator<=>(const SurfacePeriodicRelationEndpointState &) const = default;
+};
+
+[[nodiscard]] std::optional<SurfacePeriodicRelationEndpointState>
+make_periodic_relation_endpoint_state(
+    const LocalLatticeState &localState,
+    const SurfaceSharedBoundaryInterval &interval,
+    authority::QuarterTurn generatorRotation);
+
 /** Immutable receipt proving which accepted A2b/A3 plans A4 consumed. */
 struct SurfaceConformityPlanReceipt {
   std::uint64_t topologyPlanDigest = 0U;
@@ -1460,6 +1484,10 @@ struct SurfaceFrontEdge {
   /// pairing and retained when an exact same-region pair is promoted to
   /// PeriodicCut; periodicRelation remains the quotient owner.
   std::optional<SurfaceSharedBoundaryInterval> sharedBoundaryInterval;
+  /// Relation-owned endpoint states for same-region A3 PeriodicCut pairing.
+  /// Ordinary cell placement remains in fromLattice/toLattice unchanged.
+  std::optional<SurfacePeriodicRelationEndpointState> periodicFromLattice;
+  std::optional<SurfacePeriodicRelationEndpointState> periodicToLattice;
   /// Canonical source route carrying topology, transition identity, and transport.
   authority::CanonicalRoute route;
 };
