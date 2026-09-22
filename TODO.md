@@ -2,26 +2,39 @@
 
 Last updated: 2026-09-22 UTC
 
-## Latest Review turn — `M5-CP3-TB1-R10-REV`
+## Latest Test + Benchmark turn — `M5-CP3-TB1-R11-EXEC`
 
-R10 Review independently re-derives **444 PASS / 2 RED / 446 exact-one-zero-skip**, exact immutable postflight and selector430 **430/430**. It upholds the R10 result self-manifest defect (**911/912** required non-manifest files; `driver-authority.txt` omitted), so candidate `10678487447` cannot earn acceptance/promotion credit. CB11's specific raw same-region family/sign pre-veto correction is present and rows1/2/3/6 remain green: `R9-REV-CAND-01` closes as that specific defect and `R9-REV-OBS-01-A` is discharged. Exact source independently proves a distinct frozen-contract violation: same-region generator/action direction is selected by `pair[0] -> pair[1]` insertion order instead of A3 interval orientation. New `R10-REV-CAND-01` is OPEN / `RP-01 AUTHORITY_DOMAIN_CONFLATION` / non-stable / +0. Stable accounting remains **50 / 14 / 36**, project debt **3**, candidate unpromoted, selector publication prohibited. CB12 has since compiled the correction green; exact current next is immutable artifact-only `M5-CP3-TB1-R11-EXEC`.
-
-## Latest Test + Benchmark turn — `M5-CP3-TB1-R10-EXEC`
-
-R10 executes all **446/446** immutable fresh processes at **9/9 mechanism + 1/1 focused atlas + 4/6 produced + selector430 430/430**, exact-one/zero-skip and benchmark **0**. Produced rows1/2/3/6 and protected selector ordinals 191/192/247/408 remain PASS. Rows4/5 remain RED at exact `PeriodicActionCorrespondenceMismatch` before source/A3-selected direction, materialization/certificate consumption, or action-only tamper. Candidate `10678487447` remains unpromoted and cause is Review-owned. Runtime/postflight bytes are immutable, but the original result artifact has an orchestration evidence defect: 913 files with only **911/912** required non-manifest files listed in `SHA256SUMS`; `driver-authority.txt` is the sole unintended omission. No repair or rerun was authorized after runtime began. R10 Review has since upheld the evidence defect and localized a distinct insertion-order directed-authority product defect; exact current next is `M5-CP3-TB1-R11-EXEC`.
+R11 is **ORCHESTRATION INVALID / NO SEMANTIC LEDGER**. Immutable CB12 candidate
+`10713410215 / 8ff6fdc720b3e8da5c4f5765850f8fe69d4b2188` was consumed in run/job
+`35771152416 / 106892972571`, but final evidence generation self-included `SHA256SUMS.new`: **913 manifest rows vs
+912 actual non-manifest files**. All 912 real evidence files verify; the stale temporary row makes the attempt invalid.
+Result/log `10714199742 / 10715035437` are preserved. Raw ledgers are provenance only and cannot adjudicate product semantics.
 
 ## Latest Code + Build turn — `M5-CP3-CB12`
 
-CB12 is **COMPLETE / PRODUCT-ONLY / RUNTIME-FREE / COMPILE GREEN**. Only `src/geometry/SurfaceCellTracing.cpp` changes (**+30 / -6**): exact A3 Forward -> Reverse interval orientation now owns same-region directed generator/action ordering before the unchanged helper path; cross-region HardRail behavior is unchanged. Semantic source `8ff6fdc720b3e8da5c4f5765850f8fe69d4b2188`; compile run/job `35767608403 / 106881074883`; candidate/log `10713410215 / 10713170611`; all eight GMP/GMPXX targets, root manifest **28/28**, clean source, `runtimeExecution=false`. No runtime ran. Exact next is `M5-CP3-TB1-R11-EXEC`, then mandatory Review.
+CB12 remains **COMPLETE / PRODUCT-ONLY / RUNTIME-FREE / COMPILE GREEN**. Candidate/source
+`10713410215 / 8ff6fdc720b3e8da5c4f5765850f8fe69d4b2188` stays compile-only and unpromoted because R11 has no valid
+semantic ledger.
+
+## Exact next turn — `M5-CP3-CB13`
+
+Control-plane-only correction: move final-manifest temporary output outside the result tree, preserve copy-before-manifest
+ordering, schema/static/synthetic-verify complete finalization without Directional runtime, then freeze fresh
+`M5-CP3-TB1-R11-R1-EXEC` from process 1 on the unchanged candidate. Accepted runtime remains
+`10601978228 / 0798547d...`, stable accounting **50 / 14 / 36**, debt **3**, selector publication prohibited.
 
 ## M5 checkpoint sequence
+
+- [x] `M5-CP3-TB1-R11-EXEC` — **ORCHESTRATION INVALID / NO SEMANTIC LEDGER**. Run/job `35771152416 / 106892972571`; 913 manifest rows vs 912 actual non-manifest files because `SHA256SUMS.new` was inside the enumerated result tree.
+- [ ] `M5-CP3-CB13` — **EXACT NEXT / CONTROL-PLANE-ONLY / RUNTIME-FREE**. Correct only final result-manifest staging and freeze retry.
+- [ ] `M5-CP3-TB1-R11-R1-EXEC` — after green CB13, restart the unchanged 446-process gate from process 1; import zero semantic rows from invalid R11.
 
 - [x] `M5-CP1` and `M5-CP2`: CLOSED / ACCEPTED for mechanism credit; accepted package `10601978228`.
 - [x] `M5-CP3` R1→R7 recovery chain: stable ordinal408 `RP-01` event **RECOVERY PROVED** at R7 Review.
 - [x] M5 produced debt 1 — relation owners/container reorder: **DISCHARGED at R7 Review** on produced rows1/2 with >=2 relations and >=2 owned periodic edges.
 - [x] M5 produced debt 2 — missing relation owner: **DISCHARGED at R7 Review** on produced rows1/3 with exact typed rejection.
-- [ ] M5 produced debt 3 — genuine nonzero-Z4 rotation+translation through production/materialization: **OPEN / R10 ROW4 STILL RED BEFORE MATERIALIZATION / OWNER R11 REVIEW**.
-- [ ] M5 produced debt 4 — tampered produced nonzero-Z4 transform rejects typed: **OPEN / R10 ROW5 STILL RED BEFORE TAMPER / OWNER R11 REVIEW**.
+- [ ] M5 produced debt 3 — genuine nonzero-Z4 rotation+translation through production/materialization: **OPEN / VALID R11 RETRY + REVIEW REQUIRED; INVALID R11 CONTRIBUTES NO SEMANTIC CREDIT**.
+- [ ] M5 produced debt 4 — tampered produced nonzero-Z4 transform rejects typed: **OPEN / VALID R11 RETRY + REVIEW REQUIRED; INVALID R11 CONTRIBUTES NO SEMANTIC CREDIT**.
 - [ ] M6 closed-complex produced debt: **OPEN / M6-owned**.
 - [x] `M5-CP3-CB9` — **COMPLETE / TEST-ONLY / RUNTIME-FREE / COMPILE GREEN**. Candidate `10660365136` / source `1023eea6090...`; all-eight GMP compile/package green, no runtime.
 - [x] `M5-CP3-TB1-R8-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. Vector 9/9 + 1/1 + 4/6 + 430/430; row6 recovers, rows4/5 stop at `InvalidBoundedDiskChart`; immutable postflight exact.
@@ -41,7 +54,7 @@ CB12 is **COMPLETE / PRODUCT-ONLY / RUNTIME-FREE / COMPILE GREEN**. Only `src/ge
 - [x] `M5-CP3-TB1-R5-REV-OBS-01` — recovery proved by R7.
 - [x] `M5-CP3-TB1-R2-REV-OBS-01` — successful atlas-owned value consumption proved at R7 while hard-feature nontraversal control remains green.
 - [x] `M5-CP3-TB1-R8-REV-OBS-01` — **CLOSED / NO-TUNING + CHART ADMISSIBILITY INDEPENDENTLY UPHELD AT R9 REVIEW**.
-- [ ] `M5-CP3-TB1-R6-REV-OBS-01` — **OPEN / DIRECTION DISCRIMINATOR STILL NOT REACHED / OWNER R11 REVIEW**. CB12 has compiled exact Forward -> Reverse product ordering without inverse fallback; R11 runtime must prove the comparator is reached and the downstream discriminators recover.
+- [ ] `M5-CP3-TB1-R6-REV-OBS-01` — **OPEN / INVALID R11 CANNOT ADJUDICATE / OWNER FRESH R11-R1 REVIEW**. CB12 remains compiled; only a mechanically valid fresh retry may prove the comparator/downstream discriminators.
 - [ ] `M5-CP2-TB1-REV-OBS-01` — **OPEN**; R10 Review confirms the corrected CP3 gate is still not independently green, so selector publication remains prohibited.
 - [x] `M5-CP3-TB1-R9-REV-OBS-01-A` — **DISCHARGED AT R10 REVIEW**; produced rows1/2/3/6 remain PASS under CB11, empirically upholding frozen §16's `R=0` reduction.
 
