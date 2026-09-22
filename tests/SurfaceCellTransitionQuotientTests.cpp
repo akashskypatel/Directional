@@ -2882,29 +2882,29 @@ TEST(M5CP3, PeriodicRelationEndpointGaugeIsIndependentAndExact) {
   ASSERT_TRUE(reverseChart.has_value());
 
   directional::geometry::SurfaceSharedBoundaryInterval forwardInterval{
-      *span,
+      span.value(),
       directional::authority::FieldExactRational::from_integer(0),
       directional::authority::FieldExactRational::from_integer(1),
       directional::authority::Orientation::Forward,
-      directional::geometry::SurfaceBoundaryOccurrenceId{*region, 0U}};
+      directional::geometry::SurfaceBoundaryOccurrenceId{region.value(), 0U}};
   directional::geometry::SurfaceSharedBoundaryInterval reverseInterval{
-      *span,
+      span.value(),
       directional::authority::FieldExactRational::from_integer(1),
       directional::authority::FieldExactRational::from_integer(0),
       directional::authority::Orientation::Reverse,
-      directional::geometry::SurfaceBoundaryOccurrenceId{*region, 1U}};
+      directional::geometry::SurfaceBoundaryOccurrenceId{region.value(), 1U}};
 
   directional::geometry::LocalLatticeState forwardFrom;
   forwardFrom.latticeCoordinate = {0, 0};
   forwardFrom.branchRotation = 0;
-  forwardFrom.sourceChart = *forwardChart;
+  forwardFrom.sourceChart = forwardChart.value();
   directional::geometry::LocalLatticeState forwardTo = forwardFrom;
   forwardTo.latticeCoordinate = {1, 0};
 
   directional::geometry::LocalLatticeState reverseFrom;
   reverseFrom.latticeCoordinate = {4, 0};
   reverseFrom.branchRotation = 1;
-  reverseFrom.sourceChart = *reverseChart;
+  reverseFrom.sourceChart = reverseChart.value();
   directional::geometry::LocalLatticeState reverseTo = reverseFrom;
   reverseTo.latticeCoordinate = {3, 0};
 
