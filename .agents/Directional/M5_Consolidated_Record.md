@@ -1,17 +1,15 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-22 at `M5-CP3-TB1-R9-REV`
+**Last updated:** 2026-09-22 at `M5-CP3-TB1-R10-REV`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Corrected stable accounting is **50 / 14 / 36**, produced-witness debt **3**; M5 owns two of those debts and M6 owns one.
 
-## Current CP3 authority — R9 Review proves rotation-domain contract inconsistency; CB11 next
+## Current CP3 authority — R10 Review proves directed-authority storage-order defect; CB12 next
 
-R9 Review independently upholds candidate `10668437359` / source `9040f74a8de0849920973fd985b19db2539812ee` and the complete **446/446** immutable runtime at **9/9 mechanism + 1/1 focused atlas + 4/6 produced + selector430 430/430**. The CB10 witness correction is recovery-proved: exact `delta(theta)=(pi-theta)/6` matches the frozen no-tuning precommitment, the exact 18-edge chart is independently admissible, and the source contains genuine nonzero hard-edge Z4 authority before product inspection. `M5-CP3-TB1-R7-CAND-02 / RP-02` therefore closes non-stably.
+R10 Review independently re-derives candidate `10678487447` / source `53a21f550cf67e643e8c67a633bb63a20b055c6a` over the complete **446/446** immutable runtime: **9/9 mechanism + 1/1 focused atlas + 4/6 produced + selector430 430/430 = 444 PASS / 2 RED**, exact-one/zero-skip, benchmark 0 and exact postflight. The result artifact remains diagnostic rather than acceptance-valid because its self-manifest lists **911/912** required non-manifest evidence files; `driver-authority.txt` is the sole omission.
 
-Rows4/5 stop later at `PeriodicActionCorrespondenceMismatch`. Independent source/algebra review proves a stronger structural defect: frozen §14.2 and candidate production compare untransported local `family`/`advanceSign` across same-region cut copies, while §14.3 requires one exact action with authoritative generator rotation `R`. Equal family plus opposite signs gives `d2=-d1`; reciprocal endpoint mapping gives `R(d1)=-d2=d1`, so every nondegenerate unit lattice edge forces `R=0`. Genuine nonzero-Z4 production is therefore structurally unreachable under the old rule.
-
-Frozen §16 now reconciles the contract: same-region periodic pairing compares exact lattice deltas after the directed generator rotation, `rotate(R,d1) == -d2`; exact branch/end-point `GridAutomorphism` correspondence remains final authority, inverse-direction fallback is prohibited, and cross-region HardRail family/sign semantics remain unchanged. New `M5-CP3-TB1-R9-REV-CAND-01` is **OPEN / RP-01 AUTHORITY_DOMAIN_CONFLATION / NON-STABLE / +0**, owned by product-only CB11 -> R10 Review. Candidate remains unpromoted; accepted runtime stays `10601978228 / 0798547d...`, stable accounting **50 / 14 / 36**, project debt **3**, selector publication prohibited.
+Exact source confirms CB11 removed the raw same-region family/sign pre-veto, and rows1/2/3/6 remain green, so `M5-CP3-TB1-R9-REV-CAND-01` closes as that specific defect and `R9-REV-OBS-01-A` is discharged. A distinct implementation violation of frozen §§14.3/16 remains: `hardRailGroups` obtains reciprocal members in edge-vector insertion order and same-region relation construction uses `pair[0] -> pair[1]` as the directed generator/action orientation. Exact interval/A3 authority already carries one Forward and one Reverse occurrence, and the independent witness uses Forward -> Reverse. New `M5-CP3-TB1-R10-REV-CAND-01` is **OPEN / RP-01 AUTHORITY_DOMAIN_CONFLATION / NON-STABLE / +0**, owned by product-only CB12 -> R11 Review. Candidate remains unpromoted; accepted runtime stays `10601978228 / 0798547d...`, stable accounting **50 / 14 / 36**, project debt **3**, selector publication prohibited.
 
 ## 1. `M5-DEFN` — definitions frozen
 
@@ -171,12 +169,24 @@ The remaining failure is product/definition authority. Every phase-front edge ha
 
 `M5-CP3-TB1-R9-REV-CAND-01` is **OPEN / RP-01 AUTHORITY_DOMAIN_CONFLATION / same-region periodic local-gauge comparison / NON-STABLE / +0**. Direction observation and both nonzero debts remain open because rows4/5 still fail before source/A3 witness selection/materialization/tamper. Exact successor is product-only `M5-CP3-CB11`; compile-green routes to unchanged 446-process `M5-CP3-TB1-R10-EXEC` and mandatory Review.
 
+## 4.10 `M5-CP3-TB1-R10-REV` — CB11-specific recovery closes; storage-order direction authority fails
+
+R10 Review independently re-parses all ledgers/raw row4/5 evidence, re-hashes selector430/first427, compares candidate and current semantic source surfaces with zero drift, and upholds the exact **444/2** vector plus immutable postflight. The result artifact has 912 non-manifest evidence files but only 911 self-manifest rows; all listed rows verify and only `driver-authority.txt` is omitted. That orchestration omission blocks acceptance/promotion credit and is frozen for correction in fresh R11 finalization rather than repaired in place.
+
+The specific R9 defect is recovery-proved: CB11 gates raw family/sign comparison to cross-region HardRail only, while fresh produced rows1/2/3/6 remain PASS, so the `R=0` reduction observation is discharged. Source review then finds a distinct authority-domain violation at same-region relation construction: reciprocal group membership is correct, but representation order determines `first -> second` for `generator_route_for_span(...)` and `periodic_action_for_pair(...)`. Frozen §14.3 already prohibits vector/insertion-order relation synthesis, and §16 already requires the exact directed A3/source-path orientation. Interval authority provides one Forward and one Reverse copy; therefore CB12 is frozen to bind Forward -> Reverse semantically before the one generator/action construction. No frozen semantic amendment, inverse fallback, search, or test correction is authorized. R11 reuses all 446 identities and must be followed by mandatory Review.
+
+
 ## 5. Folded-document index
 
 Historical citations in frozen/normative records to filenames listed here are provenance-only and resolve through this index plus git history; frozen text is not rewritten merely to chase a folded filename.
 
 | Folded filename | Verdict / retained home |
 |---|---|
+| `Architecture_M5_CP3_TB1_R9_Artifact_Only_Test_Benchmark_Report.md` (125 lines) | **SUPERSEDED R9 RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R10-REV`.** R9 444/2 vector and correspondence frontier remain in §§4.9-4.10, tracker/changelog, R10 Review and git history. |
+| `Architecture_M5_CP3_TB1_R9_Review_Record.md` (318 lines) | **SUPERSEDED R9 REVIEW / FOLDED BY `M5-CP3-TB1-R10-REV`.** CB10 witness recovery, frozen §16 rationale, raw-label candidate and R=0 observation disposition remain in §§4.9-4.10, frozen definitions, current Review/tracker and git history. |
+| `Architecture_M5_CP3_CB11_Code_Build_Report.md` (108 lines) | **SUPERSEDED CB11 BUILD REPORT / FOLDED BY `M5-CP3-TB1-R10-REV`.** Candidate/source/compile-package authority remains in §4.10, retained R10 report/Review, changelog and git history. |
+| `Architecture_M5_CP3_CB11_Rotation_Aware_Periodic_Pairing_Correction_Plan.md` (188 lines) | **CONSUMED CB11 PLAN / FOLDED BY `M5-CP3-TB1-R10-REV`.** Its bounded raw-label correction and preserved exact correspondence requirements are recovery-adjudicated in §4.10/current Review; successor plan is CB12. |
+| `Architecture_M5_CP3_TB1_R10_Artifact_Only_Test_Benchmark_Plan.md` (131 lines) | **CONSUMED R10 EXECUTION PLAN / FOLDED BY `M5-CP3-TB1-R10-REV`.** Exact 446-process gate and R10 evidence-finalization defect are retained in the current R10 report/Review, §4.10, tracker and git history; R11 restores complete manifest finalization. |
 | `Architecture_M5_CP3_TB1_R8_Artifact_Only_Test_Benchmark_Report.md` (112 lines) | **SUPERSEDED R8 RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R9-REV`.** R8 444/2 vector, row6 recovery evidence and `InvalidBoundedDiskChart` frontier remain in §§4.8-4.9, tracker/changelog and git history. |
 | `Architecture_M5_CP3_TB1_R8_Review_Record.md` (236 lines) | **SUPERSEDED R8 REVIEW / FOLDED BY `M5-CP3-TB1-R9-REV`.** Row6 adjudication, chart-inadmissibility proof and CB10 no-tuning precommitment remain in §§4.8-4.9, frozen/current Review authority, tracker and git history. |
 | `Architecture_M5_CP3_CB10_Chart_Admissible_Nonzero_Z4_Witness_Correction_Plan.md` (167 lines) | **CONSUMED CB10 PLAN / FOLDED BY `M5-CP3-TB1-R9-REV`.** Exact seam-ramp/chart-oracle requirements and no-tuning rule are recovery-proved and retained in §4.9, current R9 Review, tracker/changelog and git history. |

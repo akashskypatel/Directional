@@ -1,20 +1,60 @@
+## 2026-09-22 — `M5-CP3-TB1-R10-REV`: CB11-specific raw-label recovery closes; insertion-order directed-authority defect proved — **PRODUCT + FROZEN-CONTRACT AUTHORITY / RP-01 / NON-STABLE / +0**
+
+**Stable totals remain 50 events / 14 categories / 36 recurrences. Produced-witness debt remains 3.**
+
+Independent Review re-derives R10 candidate `10678487447` / source `53a21f550cf67e643e8c67a633bb63a20b055c6a`, run/job `35691705806 / 106629921249`, as **444 PASS / 2 RED** across all **446/446** exact-one/zero-skip processes: mechanism 9/9, focused atlas 1/1, produced 4/6, selector430 430/430, benchmark 0 and exact immutable postflight. Rows4/5 alone stop at exact `PeriodicActionCorrespondenceMismatch` before `select_torus_source_witness(...)`, materialization/certificate consumption or action-only tamper.
+
+### `M5-CP3-TB1-R10-EXEC-CAND-01` — UPHELD / result self-manifest finalization omission
+
+**Status:** UPHELD / ORCHESTRATION-EVIDENCE / MANIFEST FINALIZATION OMISSION / NON-STABLE / OWNER R11 EXECUTION FINALIZATION -> R11 REVIEW / +0.
+
+Review independently enumerates **912 required non-manifest evidence files** but only **911 `SHA256SUMS` rows**. Every listed row verifies; `driver-authority.txt` is the sole omitted file and hashes to `37d0dc701fd5a788b892cb1c9b4f77d3a58c428b44b55bf2bdb55751d26cd3c5`. The artifact remains useful for diagnosis but is not acceptance/promotion evidence. Root cause is exact orchestration order: R10 generated the self-manifest before copying driver authority. Fresh R11 must copy authority first, regenerate the self-excluding manifest, verify every row and independently prove row count equals the non-manifest file count. The original R10 artifact is not repaired.
+
+### `M5-CP3-TB1-R9-REV-CAND-01` — CLOSED AS THE SPECIFIC RAW LOCAL-GAUGE PRE-VETO DEFECT
+
+**Status:** CLOSED / SPECIFIC DEFECT RECOVERY PROVED / NON-STABLE / +0.
+
+Exact candidate source confirms CB11 removed raw same-region `family`/`advanceSign` as a pre-rotation veto while keeping that direct check for cross-region HardRail. Fresh R10 produced rows1/2/3/6 all remain PASS. Therefore the specific R9 authority defect is recovered and `M5-CP3-TB1-R9-REV-OBS-01-A` is **DISCHARGED**. This closure does not credit the two nonzero-Z4 debts because a distinct directed-authority defect remains.
+
+### `M5-CP3-TB1-R10-REV-CAND-01` — OPEN / pair storage order owns a directed A3 semantic fact
+
+**Status:** OPEN / PRODUCT + FROZEN-CONTRACT AUTHORITY / `RP-01 AUTHORITY_DOMAIN_CONFLATION` / REPRESENTATION-ORDER MECHANISM / NON-STABLE / OWNER `M5-CP3-CB12` -> `M5-CP3-TB1-R11-REV` / +0.
+
+Exact executed `SurfaceCellTracing.cpp` builds reciprocal hard-rail groups by appending edge indices in `result.edges` order, binds `first=result.edges[pair[0]]` and `second=result.edges[pair[1]]`, then for same-region promotion derives `generator_route_for_span(...)` and `periodic_action_for_pair(...)` in exactly that `first -> second` direction. The pair checks semantic reciprocal membership and opposite interval orientation, but never re-orients the two members semantically before choosing the directed transform.
+
+Frozen §14.3 explicitly prohibits edge/group/vector ordinal or insertion order from naming or synthesizing a relation, and §16 requires the exact directed A3/source-path rotation. The required direction already exists: the reciprocal intervals contain exactly one `Orientation::Forward` and one `Orientation::Reverse`, and the independent row4/5 source witness independently selects **Forward -> Reverse** from A3 boundary incidence. Therefore vector storage order is the wrong authority domain for a directed semantic fact. This is primary `RP-01`, not a new stable category; `RP-05` is related mechanically but semantic relation identity itself is not being redefined.
+
+The unchanged R10 error string is **not** treated as proof that the first failing pair is stored backwards because R10 emits no direction subclause. The source violation itself is independently proved and is a concrete nonzero-only mechanism consistent with zero-rotation rows1/2/3/6 remaining green: for `R=0`, forward and inverse rotations coincide.
+
+### Observation/debt disposition
+
+- `M5-CP3-TB1-R10-EXEC-CAND-02`: **ADJUDICATED / SUPERSEDED BY `M5-CP3-TB1-R10-REV-CAND-01` AS CORRECTION OWNER**; raw semantic RED remains preserved evidence.
+- `M5-CP3-TB1-R9-REV-OBS-01-A`: **DISCHARGED**; rows1/2/3/6 all remain PASS under CB11.
+- `M5-CP3-TB1-R6-REV-OBS-01`: **OPEN / DIRECTION COMPARATOR STILL NOT REACHED / OWNER CB12 -> R11 REVIEW**.
+- `M5-CP2-TB1-REV-OBS-01`: **OPEN / CARRIED**; selector publication remains prohibited until one corrected complete pre-publication gate is independently all-green.
+- `FullPeriodicRotationAndTranslationMaterialize`: **OPEN / M5**.
+- `TamperedFullPeriodicTransformIsRejected`: **OPEN / M5**.
+- closed-complex produced witness: **OPEN / M6**.
+
+Accepted runtime authority remains package/source `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316`; candidate `10678487447` remains unpromoted. No selector row regressed, so there is **+0 event / +0 category / +0 recurrence**. Exact successor is product-only runtime-free `M5-CP3-CB12`.
+
 ## 2026-09-22 — `M5-CP3-TB1-R10-EXEC`: 446-process runtime completes; rows4/5 remain RED; result manifest finalization omitted — **SEMANTIC RED + ORCHESTRATION EVIDENCE INVALID / NON-STABLE / +0**
 
 **Stable totals remain 50 events / 14 categories / 36 recurrences. Produced-witness debt remains 3 in EXEC.**
 
 R10 candidate `10678487447` / source `53a21f550cf67e643e8c67a633bb63a20b055c6a` executes all **446/446** fresh exact-filter processes at **9/9 mechanism + 1/1 focused atlas + 4/6 produced + selector430 430/430**, exact-one/zero-skip, benchmark 0 and exact candidate/source/execution-view postflight. Runtime authority is run/job `35691705806 / 106629921249`; original result/log artifacts are `10679167694 / 10678548342`.
 
-### `M5-CP3-TB1-R10-EXEC-CAND-01` — OPEN / orchestration evidence self-manifest coverage gap
+### `M5-CP3-TB1-R10-EXEC-CAND-01` — UPHELD BY R10 REVIEW / orchestration evidence self-manifest coverage gap
 
-**Status:** OPEN / ORCHESTRATION-EVIDENCE / MANIFEST FINALIZATION OMISSION / NON-STABLE / OWNER R10 REVIEW / +0.
+**Status:** UPHELD BY R10 REVIEW / ORCHESTRATION-EVIDENCE / MANIFEST FINALIZATION OMISSION / NON-STABLE / OWNER R11 FINALIZATION -> R11 REVIEW / +0.
 
 The result artifact contains 913 files. `SHA256SUMS` has 911 entries and all listed entries verify. `SHA256SUMS` itself is intentionally excluded, but `driver-authority.txt` is also absent from the manifest even though R10 Plan §5 requires every non-manifest evidence file to be self-manifested. The omitted file independently hashes to `37d0dc701fd5a788b892cb1c9b4f77d3a58c428b44b55bf2bdb55751d26cd3c5`; manifest SHA-256 is `f9364f0c9945eaf4f71f05db9e02ed08109894261027ea4ae08b28f1a75747bc`.
 
 Root cause is bounded to orchestration: the established R9 caller copied `driver-authority.txt` and then regenerated/verified the result manifest, while the R10 caller used the older wrapper order in which the driver writes its manifest first and the workflow copies `driver-authority.txt` afterward. This violated the frozen instruction to reuse the established R9 orchestration shape. Directional runtime had already executed, so the frozen no-restart rule prohibits a same-turn rerun; EXEC does not rewrite the original artifact to hide the defect.
 
-### `M5-CP3-TB1-R10-EXEC-CAND-02` — OPEN / rows4/5 still stop at `PeriodicActionCorrespondenceMismatch`
+### `M5-CP3-TB1-R10-EXEC-CAND-02` — ADJUDICATED / rows4/5 still stop at `PeriodicActionCorrespondenceMismatch`
 
-**Status:** OPEN / SEMANTIC RED / CAUSE UNADJUDICATED / NON-STABLE / OWNER R10 REVIEW / +0.
+**Status:** ADJUDICATED BY R10 REVIEW / SEMANTIC RED PRESERVED / SUPERSEDED BY `M5-CP3-TB1-R10-REV-CAND-01` AS CORRECTION OWNER / NON-STABLE / +0.
 
 Produced rows1/2/3/6 remain PASS and selector430 remains **430/430**, including protected ordinals 191/192/247/408. Rows4/5 nevertheless both throw `torus nonzero-Z4 source witness producer failed: PeriodicActionCorrespondenceMismatch` before `select_torus_source_witness(...)`, row4 materialization/certificate consumption, or row5 action-only tamper. This is the same named frontier observed in R9, but EXEC does not assume string equality proves root-cause equality after CB11. Review must determine whether the prior authority-domain correction is not reached/effective or another exact correspondence constraint remains.
 
@@ -42,13 +82,13 @@ Independent Review re-verifies R9 candidate/result/source authority and the comp
 
 The R8 chart-subject defect is gone. R9 reaches the later production `PeriodicActionCorrespondenceMismatch`, so CB10's witness correction is not another inadmissible test subject. `M5-CP3-TB1-R8-REV-OBS-01` closes with the exact authored constant/phase/normalization and chart predicates independently upheld.
 
-### `M5-CP3-TB1-R9-REV-CAND-01` — OPEN / same-region local-gauge comparison forbids nonzero periodic rotation
+### `M5-CP3-TB1-R9-REV-CAND-01` — CLOSED AT R10 REVIEW / same-region local-gauge comparison forbids nonzero periodic rotation
 
-**Status:** OPEN / IMPLEMENTATION + FROZEN-CONTRACT AUTHORITY / `RP-01 AUTHORITY_DOMAIN_CONFLATION` / NON-STABLE / CB11 COMPILE-GREEN / OWNER R10 REVIEW / +0.
+**Status:** CLOSED AT R10 REVIEW AS THE SPECIFIC RAW LOCAL-GAUGE PRE-VETO DEFECT / RECOVERY PROVED / `RP-01 AUTHORITY_DOMAIN_CONFLATION` / NON-STABLE / +0.
 
 Frozen §14.2 and pre-CB11 production required same-region paired chart copies to have matching local `family` and opposing `advanceSign`. Because family/sign is derived from unit integer edge delta, this means `d2=-d1`. Frozen §14.3 and `periodic_action_for_pair(...)` require one exact action mapping `first.from -> second.to` and `first.to -> second.from`; subtracting gives `R(d1)=-d2=d1`. A nonzero cardinal vector is fixed only by identity Z4 rotation. The old rule therefore structurally excluded every genuine nonzero-Z4 relation required by M5 debts 3/4.
 
-**Correction authority:** frozen §16 plus CB11 semantic source `53a21f550cf67e643e8c67a633bb63a20b055c6a`. CB11 gates the raw family/sign reciprocity to cross-region HardRail pairs and leaves the exact directed generator route, `periodic_action_for_pair(...)`, both branch/end-point checks and checked holonomy construction unchanged. Compile run/job `35689915209 / 106624528816` packages all eight GMP/GMPXX targets green as candidate `10678487447`, root manifest 28/28, `runtimeExecution=false`. The candidate remains open/unpromoted until unchanged 446-process R10 and mandatory Review prove runtime recovery and the frozen `R==0` reduction.
+**Correction authority:** frozen §16 plus CB11 semantic source `53a21f550cf67e643e8c67a633bb63a20b055c6a`. CB11 gates the raw family/sign reciprocity to cross-region HardRail pairs and leaves the exact directed generator route, `periodic_action_for_pair(...)`, both branch/end-point checks and checked holonomy construction unchanged. Compile run/job `35689915209 / 106624528816` packages all eight GMP/GMPXX targets green as candidate `10678487447`, root manifest 28/28, `runtimeExecution=false`. The candidate remains open/unpromoted until unchanged 446-process R10 and mandatory Review prove runtime recovery and the frozen `R==0` reduction. **R10 Review disposition:** exact source confirms this specific edit and rows1/2/3/6 remain PASS, so this candidate closes as the specific raw-label defect; the separate R10-REV-CAND-01 owns the remaining directed-authority correction.
 
 ### Observations/debts
 
@@ -9339,7 +9379,7 @@ No semantic RED exists and no accepted behavior is lost. Stable accounting remai
 
 ## `M5-CP2-TB1-REV-OBS-01` — exact M5 selector publication precommitment
 
-**Status.** OPEN / NON-STABLE / owner: first independently green corrected CP3 pre-publication Review (expected `M5-CP3-TB1-R2-REV`) / must close before any M5 selector publication CB.
+**Status.** OPEN / NON-STABLE / owner: first independently green corrected CP3 pre-publication Review (currently R11 Review or later) / must close before any M5 selector publication CB.
 
 The governance sequence is frozen and the six `M5CP3.Produced...` identities now exist in compiled reviewed form, but corrected R1 proves they are **not yet green** on the CP3 candidate: produced is 0/6 and selector ordinal408 is RED. Therefore the publication precommitment remains intentionally absent. After `M5-CP3-CB3` corrects the implementation-authority defect, a fresh complete pre-publication gate must execute the nine known outside-selector M5 mechanism identities + the same six produced identities + selector430. The first subsequent independent Review that accepts that complete set green (expected `M5-CP3-TB1-R2-REV`) must freeze the exact publication bytes/order, LF SHA-256, selector430 prefix hash and complete owner census **before** authorizing publication Code + Build.
 
@@ -9588,7 +9628,7 @@ shown preserved rather than merely relabelled. See `[[M5-CP2-CB1-OBS-01]]`.
 
 ## `M5-CP3-TB1-R6-REV-OBS-01` — CB8 has a membership falsifier but no direction falsifier
 
-**Status.** OPEN / R7 GENERATOR-ROUTE RECOVERY PROVED / DIRECTION FALSIFIER NOT SATISFIED / OWNER `M5-CP3-CB9` -> `M5-CP3-TB1-R8-REV` / NON-STABLE.
+**Status.** OPEN / GENERATOR-ROUTE RECOVERY PROVED / DIRECTION FALSIFIER STILL NOT REACHED THROUGH R10 / OWNER `M5-CP3-CB12` -> `M5-CP3-TB1-R11-REV` / NON-STABLE.
 
 R6 dynamically localized the failure to branch 1: `generator_route_for_span` returns no route, reported through
 CB7's new `SurfacePhaseFrontFailureReason::PeriodicGeneratorRouteUnavailable`
@@ -9731,7 +9771,7 @@ retained unchanged.
 
 ## `M5-CP3-TB1-R9-REV-OBS-01-A` — frozen §16's `R = 0` reduction is asserted, and four green rows depend on it
 
-**Status.** OPEN / GATING ON `M5-CP3-TB1-R10-REV` / NON-STABLE.
+**Status.** DISCHARGED AT `M5-CP3-TB1-R10-REV` / R=0 PRESERVATION RUNTIME-PROVED / NON-STABLE.
 
 Frozen §16 replaces §14.2 item 4's raw `family`/`advanceSign` comparison with the exact lattice condition
 `rotate(R, d1) == -d2`. The amendment is **necessary**: verified from source, `SurfaceCellTracing.cpp:6214`
@@ -9751,3 +9791,5 @@ regress those rows — un-proving two discharged debts.
 **How to apply:** `M5-CP3-TB1-R10-REV` must confirm produced rows **1, 2, 3 and 6 remain PASS**. That is the
 empirical test of the reduction clause, not merely a regression check: a failure there **falsifies §16's
 reduction claim**, and the amendment must be revised rather than the result treated as a CB11 implementation bug.
+
+**R10 Review disposition:** DISCHARGED. Fresh produced rows1/2/3/6 all PASS on CB11 candidate `10678487447`, so the required empirical reduction falsifier is green.

@@ -2,13 +2,13 @@
 
 Last updated: 2026-09-22 UTC
 
-## Latest Review turn — `M5-CP3-TB1-R9-REV`
+## Latest Review turn — `M5-CP3-TB1-R10-REV`
 
-R9 Review independently upholds the complete 446-process evidence and closes the CB10 witness-authority work: exact `delta(theta)=(pi-theta)/6` matches the no-tuning precommitment, the 18-edge chart is independently admissible, and genuine nonzero hard-edge Z4 authority exists before product inspection. `R7-CAND-02 / RP-02` and `R8-REV-OBS-01` close non-stably. The remaining RED is product/definition authority: raw same-region family/sign comparison plus exact reciprocal action correspondence mathematically forces rotation zero. Frozen §16 now requires transported lattice-delta correspondence under the exact directed generator rotation. New `R9-REV-CAND-01` is OPEN / RP-01 authority-domain conflation / non-stable. Stable accounting remains **50 / 14 / 36**, project debt **3**, candidate unpromoted, publication prohibited. That Review routed to CB11; CB11 and R10 EXEC have since completed, and exact current next is `M5-CP3-TB1-R10-REV`.
+R10 Review independently re-derives **444 PASS / 2 RED / 446 exact-one-zero-skip**, exact immutable postflight and selector430 **430/430**. It upholds the R10 result self-manifest defect (**911/912** required non-manifest files; `driver-authority.txt` omitted), so candidate `10678487447` cannot earn acceptance/promotion credit. CB11's specific raw same-region family/sign pre-veto correction is present and rows1/2/3/6 remain green: `R9-REV-CAND-01` closes as that specific defect and `R9-REV-OBS-01-A` is discharged. Exact source independently proves a distinct frozen-contract violation: same-region generator/action direction is selected by `pair[0] -> pair[1]` insertion order instead of A3 interval orientation. New `R10-REV-CAND-01` is OPEN / `RP-01 AUTHORITY_DOMAIN_CONFLATION` / non-stable / +0. Stable accounting remains **50 / 14 / 36**, project debt **3**, candidate unpromoted, selector publication prohibited. Exact next is product-only runtime-free `M5-CP3-CB12`.
 
 ## Latest Test + Benchmark turn — `M5-CP3-TB1-R10-EXEC`
 
-R10 executes all **446/446** immutable fresh processes at **9/9 mechanism + 1/1 focused atlas + 4/6 produced + selector430 430/430**, exact-one/zero-skip and benchmark **0**. Produced rows1/2/3/6 and protected selector ordinals 191/192/247/408 remain PASS. Rows4/5 remain RED at exact `PeriodicActionCorrespondenceMismatch` before source/A3-selected direction, materialization/certificate consumption, or action-only tamper. Candidate `10678487447` remains unpromoted and cause is Review-owned. Runtime/postflight bytes are immutable, but the original result artifact has an orchestration evidence defect: 913 files with only **911/912** required non-manifest files listed in `SHA256SUMS`; `driver-authority.txt` is the sole unintended omission. No repair or rerun is authorized after runtime began. Exact next is mandatory `M5-CP3-TB1-R10-REV`.
+R10 executes all **446/446** immutable fresh processes at **9/9 mechanism + 1/1 focused atlas + 4/6 produced + selector430 430/430**, exact-one/zero-skip and benchmark **0**. Produced rows1/2/3/6 and protected selector ordinals 191/192/247/408 remain PASS. Rows4/5 remain RED at exact `PeriodicActionCorrespondenceMismatch` before source/A3-selected direction, materialization/certificate consumption, or action-only tamper. Candidate `10678487447` remains unpromoted and cause is Review-owned. Runtime/postflight bytes are immutable, but the original result artifact has an orchestration evidence defect: 913 files with only **911/912** required non-manifest files listed in `SHA256SUMS`; `driver-authority.txt` is the sole unintended omission. No repair or rerun was authorized after runtime began. R10 Review has since upheld the evidence defect and localized a distinct insertion-order directed-authority product defect; exact current next is `M5-CP3-CB12`.
 
 ## Latest Code + Build turn — `M5-CP3-CB11`
 
@@ -19,7 +19,7 @@ HardRail pairs but no longer pre-vetoes same-region periodic promotion before th
 `SurfacePeriodicHolonomy::make(...)` remain unchanged; no inverse/search/fallback was added. Semantic source
 `53a21f550cf67e643e8c67a633bb63a20b055c6a` packages all eight mandatory targets as candidate `10678487447`; compile
 run/job `35689915209 / 106624528816`, explicit GMPXX+GMP, root manifest **28/28**, clean source receipts and
-`runtimeExecution=false`. No Directional runtime ran in CB11. Its immutable R10 EXEC successor has since completed; exact current next is `M5-CP3-TB1-R10-REV`.
+`runtimeExecution=false`. No Directional runtime ran in CB11. R10 EXEC and independent R10 Review have since completed; exact current next is `M5-CP3-CB12`.
 
 ## M5 checkpoint sequence
 
@@ -27,8 +27,8 @@ run/job `35689915209 / 106624528816`, explicit GMPXX+GMP, root manifest **28/28*
 - [x] `M5-CP3` R1→R7 recovery chain: stable ordinal408 `RP-01` event **RECOVERY PROVED** at R7 Review.
 - [x] M5 produced debt 1 — relation owners/container reorder: **DISCHARGED at R7 Review** on produced rows1/2 with >=2 relations and >=2 owned periodic edges.
 - [x] M5 produced debt 2 — missing relation owner: **DISCHARGED at R7 Review** on produced rows1/3 with exact typed rejection.
-- [ ] M5 produced debt 3 — genuine nonzero-Z4 rotation+translation through production/materialization: **OPEN / R10 ROW4 STILL RED BEFORE MATERIALIZATION / OWNER R10 REVIEW**.
-- [ ] M5 produced debt 4 — tampered produced nonzero-Z4 transform rejects typed: **OPEN / R10 ROW5 STILL RED BEFORE TAMPER / OWNER R10 REVIEW**.
+- [ ] M5 produced debt 3 — genuine nonzero-Z4 rotation+translation through production/materialization: **OPEN / R10 ROW4 STILL RED BEFORE MATERIALIZATION / OWNER CB12 -> R11 REVIEW**.
+- [ ] M5 produced debt 4 — tampered produced nonzero-Z4 transform rejects typed: **OPEN / R10 ROW5 STILL RED BEFORE TAMPER / OWNER CB12 -> R11 REVIEW**.
 - [ ] M6 closed-complex produced debt: **OPEN / M6-owned**.
 - [x] `M5-CP3-CB9` — **COMPLETE / TEST-ONLY / RUNTIME-FREE / COMPILE GREEN**. Candidate `10660365136` / source `1023eea6090...`; all-eight GMP compile/package green, no runtime.
 - [x] `M5-CP3-TB1-R8-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. Vector 9/9 + 1/1 + 4/6 + 430/430; row6 recovers, rows4/5 stop at `InvalidBoundedDiskChart`; immutable postflight exact.
@@ -38,7 +38,8 @@ run/job `35689915209 / 106624528816`, explicit GMPXX+GMP, root manifest **28/28*
 - [x] `M5-CP3-TB1-R9-REV` — **COMPLETE / CB10 WITNESS RECOVERY PROVED / ROTATION-AWARE PAIRING DEFECT PROVED**.
 - [x] `M5-CP3-CB11` — **COMPLETE / PRODUCT-ONLY / RUNTIME-FREE / COMPILE GREEN**. Candidate `10678487447` / source `53a21f550cf...`; exact same-region pre-rotation family/sign veto removed while cross-region/raw and exact transported action semantics remain.
 - [x] `M5-CP3-TB1-R10-EXEC` — **COMPLETE EXECUTION / 444 PASS + 2 RED / EVIDENCE-MANIFEST CONTRACT INVALID**. Rows4/5 remain at `PeriodicActionCorrespondenceMismatch`; 446/446 exact-one/zero-skip, selector430 430/430, postflight exact; no rerun after runtime began.
-- [ ] `M5-CP3-TB1-R10-REV` — **EXACT NEXT / RUNTIME-FREE**. Adjudicate unchanged RED frontier plus result self-manifest omission before any promotion/debt/publication decision.
+- [x] `M5-CP3-TB1-R10-REV` — **COMPLETE / MANIFEST DEFECT UPHELD / CB11-SPECIFIC RAW-LABEL DEFECT CLOSED / INSERTION-ORDER DIRECTED-AUTHORITY DEFECT PROVED**. Candidate remains unpromoted.
+- [ ] `M5-CP3-CB12` — **EXACT NEXT / PRODUCT-ONLY / RUNTIME-FREE**. Orient same-region relation construction by exact A3 interval orientation Forward -> Reverse; preserve cross-region and all exact correspondence semantics; compile all eight GMP targets only.
 - [ ] M5 selector publication Code + Build / cumulative artifact-only runtime / Review — blocked until frozen §13.3 precommitment exists.
 
 ## Current observations
@@ -46,8 +47,9 @@ run/job `35689915209 / 106624528816`, explicit GMPXX+GMP, root manifest **28/28*
 - [x] `M5-CP3-TB1-R5-REV-OBS-01` — recovery proved by R7.
 - [x] `M5-CP3-TB1-R2-REV-OBS-01` — successful atlas-owned value consumption proved at R7 while hard-feature nontraversal control remains green.
 - [x] `M5-CP3-TB1-R8-REV-OBS-01` — **CLOSED / NO-TUNING + CHART ADMISSIBILITY INDEPENDENTLY UPHELD AT R9 REVIEW**.
-- [ ] `M5-CP3-TB1-R6-REV-OBS-01` — **OPEN / DIRECTION DISCRIMINATOR STILL NOT REACHED / OWNER R10 REVIEW**. R9 fails before `select_torus_source_witness`; CB11/R10 must preserve the exact directed generator orientation and forbid inverse fallback.
-- [ ] `M5-CP2-TB1-REV-OBS-01` — **OPEN**; R9 Review confirms semantic RED, so selector publication remains prohibited until an independently green corrected Review.
+- [ ] `M5-CP3-TB1-R6-REV-OBS-01` — **OPEN / DIRECTION DISCRIMINATOR STILL NOT REACHED / OWNER CB12 -> R11 REVIEW**. R10 still fails before `select_torus_source_witness`; CB12 must derive exact Forward -> Reverse A3 direction and forbid inverse fallback.
+- [ ] `M5-CP2-TB1-REV-OBS-01` — **OPEN**; R10 Review confirms the corrected CP3 gate is still not independently green, so selector publication remains prohibited.
+- [x] `M5-CP3-TB1-R9-REV-OBS-01-A` — **DISCHARGED AT R10 REVIEW**; produced rows1/2/3/6 remain PASS under CB11, empirically upholding frozen §16's `R=0` reduction.
 
 ## Deferred hygiene
 
@@ -73,7 +75,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. M4 handed four periodic/relation debts to M5 and one closed-complex debt to M6; R7 Review has since discharged two M5 debts, leaving the two nonzero-Z4 M5 debts plus the one M6 debt.
-- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 R10 EXEC COMPLETE / R10 REVIEW NEXT**. Accepted runtime package remains `10601978228`. R9 Review closed the chart/no-tuning witness gap and froze the §16 same-region pairing correction; CB11 compiled that product correction as candidate `10678487447` / source `53a21f550cf...`. R10 has now executed that candidate over the unchanged 446-process vector at **9/9 + 1/1 + 4/6 + 430/430** with exact candidate postflight, while rows4/5 remain RED and the result artifact has an evidence self-manifest omission; mandatory R10 Review is next. Candidate remains unpromoted; the two M5 nonzero-Z4 debts remain open. Stable accounting remains **50 / 14 / 36**, debt **3**.
+- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 R10 REVIEW COMPLETE / CB12 NEXT**. Accepted runtime package remains `10601978228`. R10 Review upholds the **444/2** semantic vector and exact postflight but rejects the result artifact for acceptance because its self-manifest covers only **911/912** required evidence files. CB11's specific raw-label defect is closed and its `R=0` preservation observation discharged. Exact candidate source proves the remaining product defect: same-region generator/action direction comes from pair insertion order rather than the frozen A3 Forward -> Reverse authority. CB12 owns that one-file product correction before unchanged R11 + mandatory Review. Candidate remains unpromoted; two M5 nonzero-Z4 debts remain open; stable accounting **50 / 14 / 36**, debt **3**.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.
@@ -112,4 +114,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current corrected totals are **50 events / 14 categories / 36 recurrences**, debt **3**. M4, M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**; accepted runtime authority remains package `10601978228` / source `0798547d...` under selector430 **430/430**. R10 candidate `10678487447` / source `53a21f550cf...` executed all 446 processes at **9/9 + 1/1 + 4/6 + 430/430** with exact candidate/source/execution-view postflight; rows4/5 still stop at `PeriodicActionCorrespondenceMismatch`, and the result artifact self-manifest omits `driver-authority.txt`. Candidate remains unpromoted. Two nonzero-Z4 M5 debts and the M6 closed-complex debt remain open; selector publication remains prohibited. Exact successor is runtime-free mandatory **`M5-CP3-TB1-R10-REV`**; no same-turn rerun or evidence repair is authorized. PR #8 remains open, draft, and unmerged.
+Current corrected totals are **50 events / 14 categories / 36 recurrences**, debt **3**. M4, M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**; accepted runtime authority remains package `10601978228` / source `0798547d...` under selector430 **430/430**. R10 candidate `10678487447` / source `53a21f550cf...` remains unpromoted: Review independently upholds the **444/2** runtime diagnosis but finds its result self-manifest incomplete at **911/912**, closes the specific CB11 raw-label defect, discharges the `R=0` preservation observation, and proves a distinct `RP-01` insertion-order directed-authority violation. Two nonzero-Z4 M5 debts and the M6 closed-complex debt remain open; selector publication remains prohibited. Exact successor is product-only runtime-free **`M5-CP3-CB12`**, followed after green compile by fresh R11 and mandatory Review. PR #8 remains open, draft, and unmerged.

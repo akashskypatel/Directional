@@ -234,9 +234,9 @@ All `M5-DEFN` stop rules are resolved:
 
 ## 11. Current exact successor
 
-**`M5-CP3-CB11`** under `Architecture_M5_CP3_CB11_Rotation_Aware_Periodic_Pairing_Correction_Plan.md`.
+**`M5-CP3-CB12`** under `Architecture_M5_CP3_CB12_A3_Directed_Periodic_Pair_Ordering_Correction_Plan.md`.
 
-`M5-CP3-TB1-R9-REV` independently upholds the complete R9 evidence, closes the CB10 witness/no-tuning gap, and proves that the remaining nonzero-Z4 production frontier is a same-region quotient-contract inconsistency: raw chart-local family/sign equality was compared across a periodic seam before applying the exact directed generator rotation. §16 freezes the transported lattice-delta condition while preserving the exact action/certificate contracts. CB11 changes only that product pairing locus and compiles/packages runtime-free; a green package proceeds to unchanged 446-process R10 plus mandatory Review.
+`M5-CP3-TB1-R10-REV` independently upholds the R10 **444 PASS / 2 RED** diagnosis and exact immutable postflight, but rejects the result artifact for acceptance because its self-manifest covers only **911/912** required non-manifest evidence files. Review closes CB11's specific raw same-region family/sign pre-veto defect and discharges the §16 `R=0` preservation observation. Exact executed source nevertheless chooses same-region generator/action direction from reciprocal-pair insertion order. That is an implementation violation of existing §14.3's explicit no-vector/insertion-order authority rule and §16's exact directed A3/source-path requirement; **no semantic amendment to §§14–16 is made**. CB12 changes only that product direction-selection locus so exact A3 interval orientation binds Forward -> Reverse before the one generator/action construction. Compile-green routes to the unchanged 446-process R11 plus mandatory Review, with complete post-copy result self-manifest finalization required.
 
 ## 12. Supersession and citation map
 
