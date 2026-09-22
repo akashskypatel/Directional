@@ -1,4 +1,0 @@
-M5-CP3-CB11 Drive patch application trigger
-Base: 5e446cb3e91ef1190321c09745262944db2765b0
-Patch SHA-256: 7cbd3551db9d73169c12e8f26f599a7a364d1e9de96942d0fa59df6f4a7fd5f1
-Retry: 0
