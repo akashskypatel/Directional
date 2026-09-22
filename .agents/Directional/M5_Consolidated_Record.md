@@ -1,15 +1,15 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-22 at `M5-CP3-TB1-R10-REV`
+**Last updated:** 2026-09-22 at `M5-CP3-CB12`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Corrected stable accounting is **50 / 14 / 36**, produced-witness debt **3**; M5 owns two of those debts and M6 owns one.
 
-## Current CP3 authority — R10 Review proves directed-authority storage-order defect; CB12 next
+## Current CP3 authority — CB12 A3-directed ordering compiles green; R11 runtime next
 
-R10 Review independently re-derives candidate `10678487447` / source `53a21f550cf67e643e8c67a633bb63a20b055c6a` over the complete **446/446** immutable runtime: **9/9 mechanism + 1/1 focused atlas + 4/6 produced + selector430 430/430 = 444 PASS / 2 RED**, exact-one/zero-skip, benchmark 0 and exact postflight. The result artifact remains diagnostic rather than acceptance-valid because its self-manifest lists **911/912** required non-manifest evidence files; `driver-authority.txt` is the sole omission.
+CB12 corrects the R10 Review defect at its product locus: exact interval orientation selects Forward as directed source and Reverse as target before the unchanged generator-route/action/checked-holonomy construction. Helpers and cross-region behavior are unchanged.
 
-Exact source confirms CB11 removed the raw same-region family/sign pre-veto, and rows1/2/3/6 remain green, so `M5-CP3-TB1-R9-REV-CAND-01` closes as that specific defect and `R9-REV-OBS-01-A` is discharged. A distinct implementation violation of frozen §§14.3/16 remains: `hardRailGroups` obtains reciprocal members in edge-vector insertion order and same-region relation construction uses `pair[0] -> pair[1]` as the directed generator/action orientation. Exact interval/A3 authority already carries one Forward and one Reverse occurrence, and the independent witness uses Forward -> Reverse. New `M5-CP3-TB1-R10-REV-CAND-01` is **OPEN / RP-01 AUTHORITY_DOMAIN_CONFLATION / NON-STABLE / +0**, owned by product-only CB12 -> R11 Review. Candidate remains unpromoted; accepted runtime stays `10601978228 / 0798547d...`, stable accounting **50 / 14 / 36**, project debt **3**, selector publication prohibited.
+Semantic source `8ff6fdc720b3e8da5c4f5765850f8fe69d4b2188` packages all eight GMP/GMPXX targets green in run/job `35767608403 / 106881074883`; candidate/log `10713410215 / 10713170611`; candidate SHA-256 `faf4def9e6823f718e56091876bb97047f5e91a8bfb561ca40d91d70d2af61ce`; root manifest **28/28**; `runtimeExecution=false`. Compile success does not prove runtime recovery. Accepted runtime remains `10601978228 / 0798547d...`; stable accounting **50 / 14 / 36**, debt **3**, publication prohibited. Exact next is `M5-CP3-TB1-R11-EXEC` under the frozen R11 artifact-only plan, then mandatory Review.
 
 ## 1. `M5-DEFN` — definitions frozen
 

@@ -234,9 +234,9 @@ All `M5-DEFN` stop rules are resolved:
 
 ## 11. Current exact successor
 
-**`M5-CP3-CB12`** under `Architecture_M5_CP3_CB12_A3_Directed_Periodic_Pair_Ordering_Correction_Plan.md`.
+**`M5-CP3-TB1-R11-EXEC`** under `Architecture_M5_CP3_TB1_R11_Artifact_Only_Test_Benchmark_Plan.md`, followed by mandatory **`M5-CP3-TB1-R11-REV`**.
 
-`M5-CP3-TB1-R10-REV` independently upholds the R10 **444 PASS / 2 RED** diagnosis and exact immutable postflight, but rejects the result artifact for acceptance because its self-manifest covers only **911/912** required non-manifest evidence files. Review closes CB11's specific raw same-region family/sign pre-veto defect and discharges the §16 `R=0` preservation observation. Exact executed source nevertheless chooses same-region generator/action direction from reciprocal-pair insertion order. That is an implementation violation of existing §14.3's explicit no-vector/insertion-order authority rule and §16's exact directed A3/source-path requirement; **no semantic amendment to §§14–16 is made**. CB12 changes only that product direction-selection locus so exact A3 interval orientation binds Forward -> Reverse before the one generator/action construction. Compile-green routes to the unchanged 446-process R11 plus mandatory Review, with complete post-copy result self-manifest finalization required.
+`M5-CP3-CB12` compile-green source `8ff6fdc720b3e8da5c4f5765850f8fe69d4b2188` changes only the product direction-selection locus identified by R10 Review: exact A3 interval orientation now binds Forward -> Reverse before the unchanged one generator/action/checked-relation construction. All eight GMP/GMPXX targets package green as candidate `10713410215`, root manifest **28/28**, `runtimeExecution=false`. Runtime recovery, the two nonzero-Z4 debts and Review observations remain open. **No semantic amendment to §§14–16 is made.** R11 executes the unchanged 446-process vector and complete post-copy self-manifest finalization before mandatory Review.
 
 ## 12. Supersession and citation map
 

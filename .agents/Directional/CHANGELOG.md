@@ -1,3 +1,13 @@
+## 2026-09-22 — `M5-CP3-CB12`: A3-directed same-region periodic pair ordering compiles/packages GREEN
+
+Runtime-free product-only Code + Build. CB12 changes only `src/geometry/SurfaceCellTracing.cpp` (**+30 / -6**). Exact A3 interval orientation now binds one Forward member as directed source and one Reverse member as directed target before the unchanged single generator-route/action/checked-holonomy construction. Cross-region HardRail behavior is unchanged; helper definitions are byte-identical; no inverse/search/fallback, endpoint rewrite, relation identity/canonicalization, test/fixture/selector/routing/build semantic change, or Directional runtime was introduced.
+
+Semantic source `8ff6fdc720b3e8da5c4f5765850f8fe69d4b2188`; compile run/job `35767608403 / 106881074883`; candidate/log `10713410215 / 10713170611`; ZIP SHA-256 `faf4def9e6823f718e56091876bb97047f5e91a8bfb561ca40d91d70d2af61ce / 6111b5eb2886f9da7a8a53226b299f417ee4116fc524d5263eadc1e35e12eaee`; root manifest **28/28** at `352f7553e2f0dc627ada385d78327bcb93d4f3b66125f4faf540d6965a1c2c33`; packaged source SHA-256 `506e9d75976802f7045b95344ef8cc0ff1e4d39b8343bdaddaa009a58e04a673`; exact GMP/GMPXX, clean source, `runtimeExecution=false`.
+
+Static falsifiers pass. Runtime recovery remains unproved: `M5-CP3-TB1-R10-REV-CAND-01`, both nonzero-Z4 debts and Review observations remain OPEN. Stable accounting **50 / 14 / 36**, debt **3**, accepted runtime unchanged. CB12 freezes the unchanged 446-process R11 plan with benchmark 0 and corrected complete post-copy self-manifest finalization, then mandatory Review.
+
+Process note: initial authority reads preceded the explicit `READ_MODE=snapshot` declaration; piecemeal inspection stopped and the rest of static work used one exact verified snapshot. Semantic/build authority is unaffected. Exact turn-local tool-call count was lost during context compaction and is reported partial/unknown rather than guessed.
+
 ## 2026-09-22 — `M5-CP3-TB1-R10-REV` review: R=0 reduction falsifier resolved; manifest acceptance rule recorded
 
 Runtime-free review. **Upheld.** Accounting holds at **50 events / 14 categories / 36 recurrences**, debt **3**;

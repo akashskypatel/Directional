@@ -1,3 +1,17 @@
+## 2026-09-22 — `M5-CP3-CB12`: A3-directed ordering correction — **COMPILE GREEN / RUNTIME RECOVERY PENDING / +0**
+
+**Stable totals remain 50 events / 14 categories / 36 recurrences. Produced-witness debt remains 3.**
+
+CB12 changes only `src/geometry/SurfaceCellTracing.cpp`: same-region reciprocal pairs now bind exact interval Forward as directed source and Reverse as target before the unchanged one generator/action/checked-holonomy construction. Cross-region behavior and helper definitions are unchanged; static falsifiers prove one-file scope and no inverse/search/fallback.
+
+Source `8ff6fdc720b3e8da5c4f5765850f8fe69d4b2188` compiles all eight GMP/GMPXX targets green in run/job `35767608403 / 106881074883`; candidate/log `10713410215 / 10713170611`; root manifest **28/28**; `runtimeExecution=false`.
+
+### `M5-CP3-TB1-R10-REV-CAND-01` — OPEN / correction compiled, runtime recovery pending
+
+**Status:** OPEN / `RP-01 AUTHORITY_DOMAIN_CONFLATION` / NON-STABLE / CORRECTION COMPILED / OWNER `M5-CP3-TB1-R11-REV` / +0.
+
+Compile success does not prove row4/5 reaches the independent direction discriminator, materialization, certificate consumption, or typed tamper rejection. Fresh R11 plus mandatory Review owns closure/credit. `M5-CP3-TB1-R10-EXEC-CAND-01`, `M5-CP3-TB1-R10-REV-OBS-01`, `M5-CP3-TB1-R6-REV-OBS-01`, and `M5-CP2-TB1-REV-OBS-01` remain carried. Accepted runtime remains unchanged; selector publication remains prohibited. Exact successor is R11 EXEC -> R11 Review.
+
 ## 2026-09-22 — `M5-CP3-TB1-R10-REV`: CB11-specific raw-label recovery closes; insertion-order directed-authority defect proved — **PRODUCT + FROZEN-CONTRACT AUTHORITY / RP-01 / NON-STABLE / +0**
 
 **Stable totals remain 50 events / 14 categories / 36 recurrences. Produced-witness debt remains 3.**
@@ -18,7 +32,7 @@ Exact candidate source confirms CB11 removed raw same-region `family`/`advanceSi
 
 ### `M5-CP3-TB1-R10-REV-CAND-01` — OPEN / pair storage order owns a directed A3 semantic fact
 
-**Status:** OPEN / PRODUCT + FROZEN-CONTRACT AUTHORITY / `RP-01 AUTHORITY_DOMAIN_CONFLATION` / REPRESENTATION-ORDER MECHANISM / NON-STABLE / OWNER `M5-CP3-CB12` -> `M5-CP3-TB1-R11-REV` / +0.
+**Status:** OPEN / PRODUCT + FROZEN-CONTRACT AUTHORITY / `RP-01 AUTHORITY_DOMAIN_CONFLATION` / REPRESENTATION-ORDER MECHANISM / NON-STABLE / OWNER `M5-CP3-TB1-R11-REV` / +0.
 
 Exact executed `SurfaceCellTracing.cpp` builds reciprocal hard-rail groups by appending edge indices in `result.edges` order, binds `first=result.edges[pair[0]]` and `second=result.edges[pair[1]]`, then for same-region promotion derives `generator_route_for_span(...)` and `periodic_action_for_pair(...)` in exactly that `first -> second` direction. The pair checks semantic reciprocal membership and opposite interval orientation, but never re-orients the two members semantically before choosing the directed transform.
 
@@ -30,7 +44,7 @@ The unchanged R10 error string is **not** treated as proof that the first failin
 
 - `M5-CP3-TB1-R10-EXEC-CAND-02`: **ADJUDICATED / SUPERSEDED BY `M5-CP3-TB1-R10-REV-CAND-01` AS CORRECTION OWNER**; raw semantic RED remains preserved evidence.
 - `M5-CP3-TB1-R9-REV-OBS-01-A`: **DISCHARGED**; rows1/2/3/6 all remain PASS under CB11.
-- `M5-CP3-TB1-R6-REV-OBS-01`: **OPEN / DIRECTION COMPARATOR STILL NOT REACHED / OWNER CB12 -> R11 REVIEW**.
+- `M5-CP3-TB1-R6-REV-OBS-01`: **OPEN / DIRECTION COMPARATOR STILL NOT REACHED / OWNER R11 REVIEW**.
 - `M5-CP2-TB1-REV-OBS-01`: **OPEN / CARRIED**; selector publication remains prohibited until one corrected complete pre-publication gate is independently all-green.
 - `FullPeriodicRotationAndTranslationMaterialize`: **OPEN / M5**.
 - `TamperedFullPeriodicTransformIsRejected`: **OPEN / M5**.
