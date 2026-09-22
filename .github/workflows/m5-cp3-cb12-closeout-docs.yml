@@ -1,0 +1,48 @@
+name: M5 CP3 CB12 Closeout Docs
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m5-cp3-cb12-closeout-docs-20260922.txt
+
+permissions:
+  actions: read
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m5-cp3-cb12-closeout-docs-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m5-cp3-cb12-closeout-docs.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m5-cp3-cb12-closeout-docs
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1iibkw7eniherQL-MiuHZclUF86p0VM3I
+      patch_sha256: 20bac9186dbf0679aded89031352673e32a4a3929a476163d6021703dca24b65
+      base_sha: 730f89f3f25cc3ddc15411f8a68faab961d07eae
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close M5-CP3-CB12 and freeze R11"
+    secrets: inherit
