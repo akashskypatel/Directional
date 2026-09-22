@@ -1,3 +1,0 @@
-M5-CP3-CB13 source snapshot trigger
-Expected pre-trigger head: 5c2ac6d0391017900c40155cbba43d3124985cdd
-Purpose: freeze exact current repository authority for control-plane-only CB13 implementation and static verification.

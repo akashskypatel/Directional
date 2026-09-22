@@ -1,4 +1,0 @@
-M5-CP3-CB13 documentation patch trigger
-Patch file ID: 1fTI56rqLeUM-2TJ7ybkowi8kciY6L46a
-Patch SHA-256: 39fa5bd45ce63af1d7519ec43194acaca3964dd9eae969050664e24e8414414c
-Base: a74ba20739ad710604e004983eb7061ff7973b89
