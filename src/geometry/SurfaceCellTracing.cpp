@@ -17226,10 +17226,33 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
 
     SurfaceFrontEventKind mergeKind = SurfaceFrontEventKind::HardRailMerge;
     if (sameSourceRegion) {
+      SurfaceFrontEdge *directedFirst = nullptr;
+      SurfaceFrontEdge *directedSecond = nullptr;
+      if (first.sharedBoundaryInterval->orientation ==
+              authority::Orientation::Forward &&
+          second.sharedBoundaryInterval->orientation ==
+              authority::Orientation::Reverse) {
+        directedFirst = &first;
+        directedSecond = &second;
+      } else if (first.sharedBoundaryInterval->orientation ==
+                     authority::Orientation::Reverse &&
+                 second.sharedBoundaryInterval->orientation ==
+                     authority::Orientation::Forward) {
+        directedFirst = &second;
+        directedSecond = &first;
+      } else {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidHardRailPairing,
+            static_cast<int>(first.filledCell.index()), first.filledSide);
+        return result;
+      }
+
       const auto generatorRoute = generator_route_for_span(
-          first.sharedBoundaryInterval->span,
-          *first.sharedBoundaryInterval->boundaryOccurrence,
-          *second.sharedBoundaryInterval->boundaryOccurrence);
+          directedFirst->sharedBoundaryInterval->span,
+          *directedFirst->sharedBoundaryInterval->boundaryOccurrence,
+          *directedSecond->sharedBoundaryInterval->boundaryOccurrence);
       if (!generatorRoute.has_value()) {
         result.disposition = SurfaceCellProducerDisposition::Rejected;
         set_phase_front_failure(
@@ -17240,8 +17263,8 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
       }
       const authority::QuarterTurn generatorRotation =
           generatorRoute->composed_transport().rotation;
-      const auto action =
-          periodic_action_for_pair(first, second, generatorRotation);
+      const auto action = periodic_action_for_pair(
+          *directedFirst, *directedSecond, generatorRotation);
       if (!action.has_value() ||
           generatorRoute->composed_transport().rotation != action->rotation) {
         result.disposition = SurfaceCellProducerDisposition::Rejected;
@@ -17252,7 +17275,8 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
         return result;
       }
       auto construction = SurfacePeriodicHolonomy::make(
-          first.sourceTopologyRegion, *action, *generatorRoute, first.route);
+          directedFirst->sourceTopologyRegion, *action, *generatorRoute,
+          directedFirst->route);
       auto *relation = std::get_if<SurfacePeriodicHolonomy>(&construction);
       if (relation == nullptr) {
         const auto &error = std::get<SurfacePeriodicHolonomyError>(construction);
