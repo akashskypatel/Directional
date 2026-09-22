@@ -1,0 +1,24 @@
+name: M5 CP3 R11 R1 Review Docs Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m5-cp3-r11-r1-review-docs-apply.txt
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1X_GWWC9YmtQSO1Ja7YB_4WhOtCJL2K_J
+      patch_sha256: 99b1b9c6f88b6dc3b6487eb41d4b419d121cbba6c8ed1236e4f91570646b2e0a
+      base_sha: 9a0837190b139de3cadf0d91586991f22afabe15
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close M5-CP3 R11-R1 review and consolidate"
+      retention_days: 7
+    secrets: inherit
