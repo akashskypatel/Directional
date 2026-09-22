@@ -1,0 +1,4 @@
+M5-CP3-TB1-R11-R1-REV source snapshot trigger
+READ_MODE=snapshot
+Expected pre-trigger head: 2eb12edc2fcbd0639dc63a9279dac858115ecddd
+Purpose: freeze exact current repository authority for runtime-free independent Review.
