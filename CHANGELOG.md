@@ -1,3 +1,9 @@
+## 2026-09-23 — `M5-CP3-TB1-R12-REV`: storage-canonical periodic orientation regression proved
+
+Runtime-free Review upholds R12's **439/446** semantic result and **912/912** evidence. The ordinary torus/ordinal408 regression is proved as existing `RP-01`: relation storage canonicalization can invert action/routes while exact A3 edge authority remains Forward -> Reverse, and CB14's new checked-product path incorrectly consumes the storage representative as semantic direction. Rows4/5 remain at `PeriodicActionCorrespondenceMismatch`; the new CB14 helper does not expose enough state to identify its first false predicate, so no further gauge change is authorized yet.
+
+Stable accounting remains **50 / 14 / 36**, debt **3**, accepted runtime unchanged. The R6 independent direction observation remains **OPEN** under the later R11-R1 Review amendment; R12 still does not reach its comparator. Exact successor `M5-CP3-CB15` performs the bounded semantic/storage direction correction and adds typed first-false correspondence diagnostics; no runtime in CB15. Compile-green routes to R13 with one new focused semantic-orientation identity plus the unchanged 446 R12 identities (**447 fresh processes total**).
+
 ## 2026-09-22 — `M5-CP3-TB1-R11-R1-REV`: CB12 direction recovery proved; periodic endpoint-gauge authority defect localized
 
 Runtime-free Review independently upholds R11-R1 run/job `35778555375 / 106917917282`, complete result self-manifest **912/912** and the fresh **444 PASS / 2 RED** vector. CB12's exact A3 Forward -> Reverse selection is storage-order independent, closing `M5-CP3-TB1-R10-REV-CAND-01` recovery-proved and discharging the R6 direction observation.

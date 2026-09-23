@@ -1,3 +1,25 @@
+## 2026-09-23 — `M5-CP3-TB1-R12-REV`: ordinary-torus regression cause proved; nonzero CB14 subpredicate remains unobserved — **EXISTING RP-01 / +0**
+
+**Stable totals remain 50 events / 14 categories / 36 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**
+
+Review independently upholds R12's complete **912/912** evidence and **439 PASS / 7 RED** vector. Candidate/source remain `10725395682 / b8dc3e906dd03525861a1985ea574bad1ad5c69a`; selector430/first427 independently re-hash to `1c412850...a9db6 / f9c883...ae86f`.
+
+### `M5-CP3-TB1-R12-CAND-01` — CAUSE PROVED / storage-canonical orientation consumed as semantic direction
+
+**Status:** CAUSE PROVED / PRODUCT / EXISTING `RP-01 AUTHORITY_DOMAIN_CONFLATION` CONTINUATION / STORAGE-CANONICAL RELATION ORIENTATION CONSUMED AS SEMANTIC A3 FORWARD->REVERSE AUTHORITY / NON-STABLE / OWNER `M5-CP3-CB15` / +0.
+
+CB14 constructs the same-region action in exact A3 Forward -> Reverse direction and then stores the relation through `canonicalize_periodic_holonomy(...)`, which may replace action/routes by the inverse representation while keeping orientation-neutral `PeriodicRelationId`. The edge's semantic interval roles and endpoint-gauge states are not rebound. The new exact-A3 checked-product branch requires semantic Forward route to equal stored `cutRoute` and uses the stored action as Forward -> Reverse.
+
+The R12 failure proves an inverse storage representative was selected: if storage had preserved the semantic representative, every new checked-product predicate is satisfied by the immediately preceding builder construction using the same routes, endpoint-state constructor and action. With inverse storage, the route equality is the first false new predicate. Rows1/2/3/6 and ordinal408 are one shared defect, not five events.
+
+### `M5-CP3-TB1-R11-R1-CAND-01` — FAILED RECOVERY / CB14 first false predicate unresolved
+
+**Status:** OPEN / FAILED RECOVERY / EXISTING RP-01 CHAIN / CB14 FIRST SUBPREDICATE UNOBSERVED / NON-STABLE / OWNER `M5-CP3-CB15 -> R13 REVIEW` / +0.
+
+Rows4/5 still stop at `PeriodicActionCorrespondenceMismatch`, but CB14 changed the helper's authority domain. R12 publishes no typed subreason or endpoint-state operands. Source alone cannot honestly choose among the new same-edge chart, occurrence, scale/branch, transported-delta and endpoint-map predicates on the real produced witness. CB15 is therefore forbidden to change the gauge formula; it must publish a typed first-false-predicate receipt for the unchanged helper.
+
+`M5-CP3-TB1-R6-REV-OBS-01` remains **OPEN**; row4 still does not reach the independent Forward -> Reverse comparator or inverted-pair rejection. `M5-CP2-TB1-REV-OBS-01` remains **OPEN**. Historical relation-owner/container-order and missing-owner produced debts remain discharged on prior accepted evidence; the current unpromoted candidate regression does not revoke them. Both M5 nonzero-Z4 debts remain open. Selector publication remains prohibited.
+
 ## 2026-09-23 — `M5-CP3-TB1-R12-EXEC`: CB14 runtime is mechanically complete but regresses the ordinary torus and does not recover nonzero-Z4 — **439 PASS / 7 RED / REVIEW REQUIRED / +0**
 
 **Stable totals remain 50 events / 14 categories / 36 recurrences pending mandatory Review. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**

@@ -1,3 +1,11 @@
+## 2026-09-23 — `M5-CP3-TB1-R12-REV`: ordinary regression cause proved; CB15 next
+
+Runtime-free Review independently upholds R12 run/job `35802519951 / 106995887964`, complete **912/912** evidence and the exact **439 PASS / 7 RED** vector. It proves `M5-CP3-TB1-R12-CAND-01`: CB14 constructs semantic A3 Forward -> Reverse relation authority, then canonical storage may invert action/routes without rebinding edge direction; the new checked-product branch consumes that storage representative as semantic direction. If storage had not inverted, the same builder-authored routes/states/action would satisfy the new checks, so the ordinary torus/ordinal408 rejection proves this representation-direction conflation. Existing `RP-01`, non-stable, +0.
+
+Rows4/5 still stop at `PeriodicActionCorrespondenceMismatch`. Because CB14 introduced new endpoint-state predicates and R12 emits neither typed subreason nor operands, Review refuses to guess which is first false and forbids another gauge-formula edit before observability exists. R6 direction observation remains OPEN. Stable accounting stays **50 / 14 / 36**, debt **3**; accepted runtime unchanged and CB14 unpromoted.
+
+Exact successor is runtime-free Code + Build `M5-CP3-CB15`: deterministic route/A3-based conversion from canonical storage to semantic Forward -> Reverse plus typed correspondence diagnostics, with no nonzero gauge change. Compile-green routes to R13 with one new focused semantic-orientation identity plus the unchanged 446 R12 identities (**447 fresh processes total**).
+
 ## 2026-09-23 — `M5-CP3-TB1-R12-EXEC`: mechanically complete runtime exposes 7 semantic REDs; mandatory Review next
 
 Fresh immutable R12 run/job `35802519951 / 106995887964` consumes CB14 candidate/source
