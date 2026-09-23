@@ -1557,6 +1557,12 @@ private:
   authority::CanonicalRoute cutRoute_;
 };
 
+[[nodiscard]] std::optional<authority::GridAutomorphism>
+resolve_periodic_relation_semantic_action(
+    const SurfacePeriodicHolonomy &storedRelation,
+    const SurfaceFrontEdge &semanticForwardEdge,
+    const SurfaceFrontEdge &semanticReverseEdge);
+
 enum class SurfacePeriodicHolonomyInsertStatus : int {
   Inserted = 0,
   Equivalent = 1,
@@ -1686,6 +1692,17 @@ enum class SurfacePhaseFrontFailureReason : int {
   PeriodicHolonomyMissingGeneratorRoute = 53,
   PeriodicHolonomyMissingCutRoute = 54,
   PeriodicHolonomyInvalidRelationIdentity = 55,
+  PeriodicActionEndpointStateUnavailable = 56,
+  PeriodicActionOccurrenceOrientationMismatch = 57,
+  PeriodicActionGeneratorRotationMismatch = 58,
+  PeriodicActionSourceChartMismatch = 59,
+  PeriodicActionBoundaryOccurrenceMismatch = 60,
+  PeriodicActionScaleMismatch = 61,
+  PeriodicActionFirstBranchMismatch = 62,
+  PeriodicActionSecondBranchMismatch = 63,
+  PeriodicActionTransportedDeltaMismatch = 64,
+  PeriodicActionFirstEndpointMismatch = 65,
+  PeriodicActionSecondEndpointMismatch = 66,
 };
 
 struct SurfacePhaseFrontFailure {

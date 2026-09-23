@@ -2956,6 +2956,147 @@ TEST(M5CP3, PeriodicRelationEndpointGaugeIsIndependentAndExact) {
   EXPECT_EQ(reverseFrom.latticeCoordinate, zeroState->latticeCoordinate);
 }
 
+TEST(M5CP3, StorageCanonicalPeriodicRelationResolvesSemanticForwardReverse) {
+  const auto &fixture = torus_fixture();
+  const auto &product = fixture.network.phaseFront.product();
+
+  const directional::geometry::SurfacePeriodicHolonomy *storedRelation = nullptr;
+  const directional::geometry::SurfaceFrontEdge *forwardEdge = nullptr;
+  const directional::geometry::SurfaceFrontEdge *reverseEdge = nullptr;
+  for (const auto &relation : product.periodicHolonomies()) {
+    const directional::geometry::SurfaceFrontEdge *candidateForward = nullptr;
+    const directional::geometry::SurfaceFrontEdge *candidateReverse = nullptr;
+    for (const auto &edge : product.edges()) {
+      if (edge.periodicRelation != relation.id() ||
+          !edge.sharedBoundaryInterval.has_value() ||
+          !edge.sharedBoundaryInterval->boundaryOccurrence.has_value()) {
+        continue;
+      }
+      if (edge.sharedBoundaryInterval->orientation ==
+          directional::authority::Orientation::Forward) {
+        candidateForward = &edge;
+      } else if (edge.sharedBoundaryInterval->orientation ==
+                 directional::authority::Orientation::Reverse) {
+        candidateReverse = &edge;
+      }
+    }
+    if (candidateForward == nullptr || candidateReverse == nullptr) continue;
+    if (relation.cutRoute().reversed() == candidateForward->route &&
+        relation.cutRoute() == candidateReverse->route) {
+      storedRelation = &relation;
+      forwardEdge = candidateForward;
+      reverseEdge = candidateReverse;
+      break;
+    }
+  }
+
+  ASSERT_NE(nullptr, storedRelation)
+      << "ordinary torus must retain a relation whose storage-canonical "
+         "representative is inverse to semantic A3 Forward -> Reverse";
+  ASSERT_NE(nullptr, forwardEdge);
+  ASSERT_NE(nullptr, reverseEdge);
+  ASSERT_TRUE(forwardEdge->periodicFromLattice.has_value());
+  ASSERT_TRUE(forwardEdge->periodicToLattice.has_value());
+  ASSERT_TRUE(reverseEdge->periodicFromLattice.has_value());
+  ASSERT_TRUE(reverseEdge->periodicToLattice.has_value());
+
+  const auto canonical = directional::geometry::surface_cell_tracing_detail::
+      canonicalize_periodic_holonomy(*storedRelation);
+  EXPECT_EQ(storedRelation->id(), canonical.id());
+  EXPECT_EQ(storedRelation->action(), canonical.action());
+  EXPECT_EQ(storedRelation->route(), canonical.route());
+  EXPECT_EQ(storedRelation->cutRoute(), canonical.cutRoute());
+
+  const auto semanticAction =
+      directional::geometry::resolve_periodic_relation_semantic_action(
+          *storedRelation, *forwardEdge, *reverseEdge);
+  ASSERT_TRUE(semanticAction.has_value());
+  EXPECT_EQ(storedRelation->action().inverse(), *semanticAction);
+  EXPECT_NE(storedRelation->action(), *semanticAction);
+
+  auto semanticRelation = directional::geometry::SurfacePeriodicHolonomy::make(
+      storedRelation->sourceTopologyRegion(), *semanticAction,
+      storedRelation->route().reversed(), storedRelation->cutRoute().reversed());
+  const auto *semanticValue =
+      std::get_if<directional::geometry::SurfacePeriodicHolonomy>(
+          &semanticRelation);
+  ASSERT_NE(nullptr, semanticValue);
+  EXPECT_EQ(storedRelation->id(), semanticValue->id());
+  const auto recanonicalized =
+      directional::geometry::surface_cell_tracing_detail::
+          canonicalize_periodic_holonomy(*semanticValue);
+  EXPECT_EQ(storedRelation->id(), recanonicalized.id());
+  EXPECT_EQ(storedRelation->action(), recanonicalized.action());
+  EXPECT_EQ(storedRelation->route(), recanonicalized.route());
+  EXPECT_EQ(storedRelation->cutRoute(), recanonicalized.cutRoute());
+
+  const auto expectedForwardFrom =
+      directional::geometry::make_periodic_relation_endpoint_state(
+          forwardEdge->fromLattice, *forwardEdge->sharedBoundaryInterval,
+          semanticAction->rotation);
+  const auto expectedForwardTo =
+      directional::geometry::make_periodic_relation_endpoint_state(
+          forwardEdge->toLattice, *forwardEdge->sharedBoundaryInterval,
+          semanticAction->rotation);
+  const auto expectedReverseFrom =
+      directional::geometry::make_periodic_relation_endpoint_state(
+          reverseEdge->fromLattice, *reverseEdge->sharedBoundaryInterval,
+          semanticAction->rotation);
+  const auto expectedReverseTo =
+      directional::geometry::make_periodic_relation_endpoint_state(
+          reverseEdge->toLattice, *reverseEdge->sharedBoundaryInterval,
+          semanticAction->rotation);
+  ASSERT_TRUE(expectedForwardFrom.has_value());
+  ASSERT_TRUE(expectedForwardTo.has_value());
+  ASSERT_TRUE(expectedReverseFrom.has_value());
+  ASSERT_TRUE(expectedReverseTo.has_value());
+  EXPECT_EQ(*expectedForwardFrom, *forwardEdge->periodicFromLattice);
+  EXPECT_EQ(*expectedForwardTo, *forwardEdge->periodicToLattice);
+  EXPECT_EQ(*expectedReverseFrom, *reverseEdge->periodicFromLattice);
+  EXPECT_EQ(*expectedReverseTo, *reverseEdge->periodicToLattice);
+  EXPECT_EQ(reverseEdge->periodicToLattice->latticeCoordinate,
+            semanticAction->apply(
+                forwardEdge->periodicFromLattice->latticeCoordinate));
+  EXPECT_EQ(reverseEdge->periodicFromLattice->latticeCoordinate,
+            semanticAction->apply(
+                forwardEdge->periodicToLattice->latticeCoordinate));
+  EXPECT_EQ(
+      reverseEdge->periodicToLattice->branchRotation,
+      compose(semanticAction->rotation,
+              forwardEdge->periodicFromLattice->branchRotation));
+  EXPECT_EQ(
+      reverseEdge->periodicFromLattice->branchRotation,
+      compose(semanticAction->rotation,
+              forwardEdge->periodicToLattice->branchRotation));
+
+  EXPECT_FALSE(
+      directional::geometry::resolve_periodic_relation_semantic_action(
+          *storedRelation, *reverseEdge, *forwardEdge)
+          .has_value());
+
+  PhaseFrontDraft tampered = phase_front_draft(product);
+  const auto relation = std::find_if(
+      tampered.periodicHolonomies.begin(), tampered.periodicHolonomies.end(),
+      [&](const auto &candidate) { return candidate.id() == storedRelation->id(); });
+  ASSERT_NE(tampered.periodicHolonomies.end(), relation);
+  auto tamperedAction = relation->action();
+  ++tamperedAction.shift.x;
+  ASSERT_NE(relation->action(), tamperedAction);
+  auto rebuilt = directional::geometry::SurfacePeriodicHolonomy::make(
+      relation->sourceTopologyRegion(), tamperedAction, relation->route(),
+      relation->cutRoute());
+  auto *rebuiltValue =
+      std::get_if<directional::geometry::SurfacePeriodicHolonomy>(&rebuilt);
+  ASSERT_NE(nullptr, rebuiltValue);
+  ASSERT_EQ(relation->id(), rebuiltValue->id());
+  *relation = std::move(*rebuiltValue);
+
+  expect_phase_front_product_error(
+      construct_phase_front_product(std::move(tampered)),
+      directional::geometry::SurfacePhaseFrontProductErrorCode::
+          NonReciprocalPeriodicRelation);
+}
+
 TEST(M5CP3, ProducedTorusNonzeroZ4RotationTranslationMaterializes) {
   const auto &witnessFixture = nonzero_z4_torus_witness_fixture();
   const auto &fixture = witnessFixture.fixture;

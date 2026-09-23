@@ -3849,23 +3849,52 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
           result.failure = "InvalidPeriodicFrontTransport";
           return result;
         }
-        if (forwardEdge->route != relation.cutRoute() ||
-            reverseEdge->route != relation.cutRoute().reversed() ||
+        const auto semanticAction =
+            geometry::resolve_periodic_relation_semantic_action(
+                relation, *forwardEdge, *reverseEdge);
+        if (!semanticAction.has_value() ||
             !forwardEdge->periodicFromLattice.has_value() ||
             !forwardEdge->periodicToLattice.has_value() ||
             !reverseEdge->periodicFromLattice.has_value() ||
-            !reverseEdge->periodicToLattice.has_value() ||
+            !reverseEdge->periodicToLattice.has_value()) {
+          result.failure = "InvalidPeriodicFrontTransport";
+          return result;
+        }
+        const auto expectedForwardFrom =
+            geometry::make_periodic_relation_endpoint_state(
+                forwardEdge->fromLattice, *forwardEdge->sharedBoundaryInterval,
+                semanticAction->rotation);
+        const auto expectedForwardTo =
+            geometry::make_periodic_relation_endpoint_state(
+                forwardEdge->toLattice, *forwardEdge->sharedBoundaryInterval,
+                semanticAction->rotation);
+        const auto expectedReverseFrom =
+            geometry::make_periodic_relation_endpoint_state(
+                reverseEdge->fromLattice, *reverseEdge->sharedBoundaryInterval,
+                semanticAction->rotation);
+        const auto expectedReverseTo =
+            geometry::make_periodic_relation_endpoint_state(
+                reverseEdge->toLattice, *reverseEdge->sharedBoundaryInterval,
+                semanticAction->rotation);
+        if (!expectedForwardFrom.has_value() || !expectedForwardTo.has_value() ||
+            !expectedReverseFrom.has_value() || !expectedReverseTo.has_value() ||
+            *forwardEdge->periodicFromLattice != *expectedForwardFrom ||
+            *forwardEdge->periodicToLattice != *expectedForwardTo ||
+            *reverseEdge->periodicFromLattice != *expectedReverseFrom ||
+            *reverseEdge->periodicToLattice != *expectedReverseTo ||
             !relation_action_matches(*forwardEdge->periodicFromLattice,
-                                     *reverseEdge->periodicToLattice, action) ||
+                                     *reverseEdge->periodicToLattice,
+                                     *semanticAction) ||
             !relation_action_matches(*forwardEdge->periodicToLattice,
-                                     *reverseEdge->periodicFromLattice, action)) {
+                                     *reverseEdge->periodicFromLattice,
+                                     *semanticAction)) {
           result.failure = "InvalidPeriodicFrontTransport";
           return result;
         }
         selectedDirection = firstIsForward ? authority::Orientation::Forward
                                            : authority::Orientation::Reverse;
-        selectedAppliedTransport =
-            firstIsForward ? action : action.inverse();
+        selectedAppliedTransport = firstIsForward ? *semanticAction
+                                                  : semanticAction->inverse();
       } else {
         if (first.route != relation.cutRoute() ||
             second.route != relation.cutRoute().reversed()) {
