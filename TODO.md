@@ -10,9 +10,9 @@ Last updated: 2026-09-23 UTC
 
 **COMPLETE / SELECTOR448 PUBLISHED / RUNTIME-FREE / COMPILE+PACKAGE GREEN / NOT ACCEPTED.** Exact selector448 is published at 448 unique rows, 36,382 bytes, SHA-256 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, exact selector430 prefix, standard-owner census 32/300/75/41; routing receipt SHA-256 is `c91a5e2f3d84d7d38b7c7c58afd157448cb225ebdbbfac3da2ef6259e811dd7c`. Publication source is `cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1`. Compile run/job `35910024971 / 107347291148`, result/log artifacts `10771899191 / 10772810906`, root manifest 28/28; all eight GMP/GMPXX targets link and `runtimeExecution=false`. Selector448 remains PUBLISHED / NOT YET ACCEPTED; CB19 remains current accepted runtime authority.
 
-## Latest Test + Benchmark turn — `M5-CP3-TB1-R16-EXEC`
+## Latest Test + Benchmark turn — `M5-CP3-TB2-EXEC`
 
-**COMPLETE / MECHANICALLY GREEN / 448 PASS + 0 RED / REVIEW REQUIRED.** Fresh run/job `35889831381 / 107279255523` executes all 448 processes with exact-one selection and zero skips: mechanism 11/11, focused atlas 1/1, produced 6/6, selector430 430/430; protected 191/192/247/408 PASS, benchmark 0, result evidence complete 921/921 and immutable postflight exact. Rows16/17 both PASS. EXEC grants no promotion, debt discharge, observation closure, selector publication or accounting change; exact successor is mandatory runtime-free `M5-CP3-TB1-R16-REV`.
+**COMPLETE / MECHANICALLY GREEN / PUBLISHED SELECTOR448 448 PASS + 0 RED / REVIEW REQUIRED.** Fresh run/job `35913334490 / 107358491487` consumes CB20 artifact/source `10771899191 / cef1c6ee...` immutably and executes selector448 as **448 fresh exact-filter processes**: 448/448 PASS, exact-one selection, zero skips, owner census 32/300/75/41, protected 191/192/247/408 PASS, all appended 431-448 PASS, benchmark 0, result evidence 917/917 and exact immutable postflight. Result/log artifacts are `10775185139 / 10774217117`. No regression was observed; accounting stays 51 / 14 / 37 and project debt 1 M6-owned. EXEC grants no selector acceptance or M5 closure; exact successor is mandatory `M5-CP3-TB2-REV`.
 
 ## Latest Definition turn — `M5-CP3-DEFN-R1`
 
@@ -26,9 +26,9 @@ CB17 is **COMPLETE / RUNTIME-FREE / COMPILE GREEN**, candidate `10742798135 / 1a
 
 **COMPLETE / CONTROL-PLANE GREEN / RUNTIME-FREE / NO DIRECTIONAL COMPILE / NO REPACKAGE.** Canonical R15-R1 harness/caller are frozen at SHA-256 `7867e779...81b7 / 0f0a12f9...a15c`. Static run `35864475136` proves corrected literal GTest accounting `selected/passed/skipped=1/1/0`, historical parser `0/0`, skip probe `1/0/1`, and both workflow schemas green. No semantic input changed; accounting remains 51 / 14 / 37, debt 3.
 
-## Exact next turn — `M5-CP3-TB2-EXEC`
+## Exact next turn — `M5-CP3-TB2-REV`
 
-Fresh artifact-only execution from CB20 result artifact `10771899191` / exact semantic source `cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1`. Execute the published selector448 as **448 fresh exact-filter processes**, require exact-one selection and zero skips, benchmark 0, and exact immutable postflight. Do not stitch R16 runtime credit. Mandatory `M5-CP3-TB2-REV` follows and alone may accept selector448 and close M5.
+Mandatory independent runtime-free final M5 Review. Reopen TB2 result/log bytes, re-hash selector448/prefix430/routing authority, re-verify all 448 ledger rows and the complete 917/917 evidence manifest, then decide selector448 acceptance and M5 closure. Review also owns `M5-DEFN-REV-OBS-01`, the explicit no-credit/later-owner disposition for the two never-gated CB14 identities (`M5-CP3-TB1-R16-REV-OBS-01`), and consolidated-record numbering/citation repair (`-OBS-03`).
 
 ## M5 checkpoint sequence
 
@@ -56,7 +56,7 @@ Fresh artifact-only execution from CB20 result artifact `10771899191` / exact se
 - [x] `M5-CP3-TB1-R16-EXEC` — **COMPLETE / MECHANICALLY GREEN / 448 PASS + 0 RED / REVIEW REQUIRED**. Fresh run/job `35889831381 / 107279255523`; mechanism 11/11, focused atlas 1/1, produced 6/6, selector430 430/430, benchmark 0, complete 921/921 evidence and exact immutable postflight. No promotion/debt/observation/accounting disposition is made in EXEC.
 - [x] `M5-CP3-TB1-R16-REV` — **COMPLETE / APPROVED / CANDIDATE PROMOTED / M5 DEBTS COMPLETE / SELECTOR448 PRECOMMITTED.** Independent 448/448 + 921/921 acceptance; debt 3->1 (M6 only); R6/CP2/R15-R1 observations discharged; exact successor CB20.
 - [x] `M5-CP3-CB20` — **COMPLETE / SELECTOR448 PUBLISHED / COMPILE+PACKAGE GREEN / RUNTIME-FREE / NOT ACCEPTED.** Exact selector448 `70ff0860...c75789`, routing receipt `c91a5e2f...1dd7c`, source `cef1c6ee...`, compile run/job `35910024971 / 107347291148`, result artifact `10771899191`, 28/28 root manifest; no runtime.
-- [ ] `M5-CP3-TB2-EXEC` — fresh artifact-only published-selector448 448/448 gate, benchmark 0.
+- [x] `M5-CP3-TB2-EXEC` — **COMPLETE / MECHANICALLY GREEN / 448/448 PASS / REVIEW REQUIRED.** Run/job `35913334490 / 107358491487`, result/log `10775185139 / 10774217117`, exact-one/zero-skip, owners 32/300/75/41, benchmark 0, 917/917 evidence, immutable postflight exact; no regression observed.
 - [ ] `M5-CP3-TB2-REV` — final independent M5 closure Review; owns selector448 acceptance, `M5-DEFN-REV-OBS-01`, `M5-CP3-TB1-R16-REV-OBS-01` (disposition of the ungated CB14 `M5CP3` identities) and `-OBS-03` (consolidated-record numbering repair in the closure fold).
 
 - [x] `M5-CP1` and `M5-CP2`: CLOSED / ACCEPTED for mechanism credit; R16 Review later promotes current M5 runtime package `10763242885`.
@@ -120,7 +120,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. M4 handed four periodic/relation debts to M5 and one closed-complex debt to M6; R7 Review discharged two M5 debts and R16 Review discharges the remaining two nonzero-Z4 M5 debts. The sole remaining project debt is the M6 closed-complex subject.
-- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 R16 REVIEW ACCEPTED / SELECTOR448 PUBLISHED / TB2 NEXT**. Package/source `10763242885 / a8b33cb...` is promoted under still-published selector430. All four M5 produced debts are discharged; stable accounting **51 / 14 / 37**, project debt **1** M6-owned. Exact selector448 is published at `70ff0860...c75789`, owners 32/300/75/41; M5 remains open for fresh TB2 execution + final Review.
+- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 R16 REVIEW ACCEPTED / SELECTOR448 PUBLISHED / TB2 EXEC GREEN / FINAL REVIEW NEXT**. Package/source `10763242885 / a8b33cb...` is promoted under still-published selector430. All four M5 produced debts are discharged; stable accounting **51 / 14 / 37**, project debt **1** M6-owned. Exact selector448 is published at `70ff0860...c75789`, owners 32/300/75/41; M5 remains open for fresh TB2 execution + final Review.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.
@@ -159,4 +159,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current corrected totals are **51 events / 14 categories / 37 recurrences**, project debt **1** (M6 only). M4, M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**; current accepted M5 runtime authority is package/source `10763242885 / a8b33cb...` under selector430 **430/430**. R16 Review accepts the pre-publication 448/448 vector and CB20 publishes selector448 with compile/package green, but M5 remains open until fresh TB2 execution and final Review. Exact successor is **`M5-CP3-TB2-EXEC`**. PR #8 remains open, draft, and unmerged.
+Current corrected totals are **51 events / 14 categories / 37 recurrences**, project debt **1** (M6 only). M4, M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**; current accepted M5 runtime authority is package/source `10763242885 / a8b33cb...` under selector430 **430/430**. R16 Review accepted the pre-publication 448/448 vector, CB20 published selector448 with compile/package green, and TB2 now executes the published selector **448/448 PASS** with exact immutable postflight. M5 remains open until final Review. Exact successor is **`M5-CP3-TB2-REV`**. PR #8 remains open, draft, and unmerged.
