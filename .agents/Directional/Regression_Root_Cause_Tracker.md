@@ -1,3 +1,19 @@
+## 2026-09-23 — `M5-CP3-TB1-R13-REV`: ordinary recovery accepted; first-branch authority root proved — **EXISTING RP-01 / +0**
+
+**Stable totals remain 50 events / 14 categories / 36 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**
+
+Review independently re-verifies R13 result **914/914**, all 447 exact-filter outcomes at **445 PASS / 2 RED**, selector430/first427 hashes, immutable postflight and zero prohibited-operation counters. Tested semantic source `4dfe392d...` has no code-surface drift to the exact Review snapshot.
+
+### `M5-CP3-TB1-R12-CAND-01` — CLOSED / recovery proved / +0
+
+CB15's semantic-action identity PASSes; produced rows1/2/3/6 and selector408 recover to PASS. The storage-canonical-vs-semantic-direction defect is therefore runtime-recovered and remains only historical existing RP-01 evidence.
+
+### `M5-CP3-TB1-R13-CAND-01` — CAUSE PROVED / occurrence-branch authority conflation / +0
+
+Rows4/5 alone RED at typed first-false `PeriodicActionFirstBranchMismatch` after orientation, generator rotation, source chart, occurrence and scale predicates pass. The generator rotation is exact transport between accepted A3 occurrence-carrier faces, while `SurfacePeriodicRelationEndpointState.branchRotation` is copied from `LocalLatticeState`, whose branch is authored from the cell corner's trace/source face plus chart-U branch. The endpoint constructor carries the A3 occurrence only as metadata and never re-expresses that local branch at the occurrence-carrier face. R13 therefore runtime-falsifies the implicit cross-domain equality. **Status:** CAUSE PROVED / PRODUCT / EXISTING `RP-01 AUTHORITY_DOMAIN_CONFLATION` CONTINUATION / RELATION ENDPOINT BRANCH AUTHORITY CONFLATION / NON-STABLE / OWNER `M5-CP3-CB16` / +0.
+
+`M5-CP3-TB1-R11-R1-CAND-01` remains OPEN as the broader failed endpoint-gauge recovery chain, now narrowed to the proved branch-authority seam. Later delta/map predicates are unexecuted and unclassified. `M5-CP3-TB1-R6-REV-OBS-01` remains OPEN because row4 does not reach the independent direction comparator/inverted-pair rejection. `M5-CP2-TB1-REV-OBS-01` remains OPEN because frozen §13 requires a completely green corrected CP3 pre-publication gate, not only a green selector430 sub-vector inside a 445/447 RED run. Both M5 nonzero-Z4 debts remain open; no selector publication or candidate promotion.
+
 ## 2026-09-23 — `M5-CP3-TB1-R13-EXEC`: ordinary recovery green; nonzero first branch correspondence mismatch isolated — **445/447 / REVIEW REQUIRED / +0**
 
 **Stable totals remain 50 events / 14 categories / 36 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**

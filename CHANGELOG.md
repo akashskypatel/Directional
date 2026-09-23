@@ -1,3 +1,9 @@
+## 2026-09-23 — `M5-CP3-TB1-R13-REV`: first-branch periodic authority root proved
+
+Independent Review upholds R13 at **445/447 PASS** with complete **914/914** evidence and selector430 **430/430**. CB15's storage-canonical -> semantic direction correction is recovery-proved. Rows4/5 alone stop at typed `PeriodicActionFirstBranchMismatch`; the cause is existing `RP-01`: generator transport is owned by exact A3 occurrence-carrier faces while relation endpoint branch/gauge is still copied from local cell/trace-face authority without a deterministic gauge bridge.
+
+Stable accounting remains **50 / 14 / 36**, debt **3**, accepted runtime unchanged and candidate unpromoted. Exact successor `M5-CP3-CB16` performs only the occurrence-branch gauge authority correction plus an independent focused falsifier, compile/package only; fresh R14 follows at 448 processes and mandatory Review.
+
 ## 2026-09-23 — `M5-CP3-CB15`: semantic periodic-direction correction compiles green
 
 Runtime-free CB15 deterministically converts canonical stored periodic relations to exact A3 semantic Forward -> Reverse action at checked-product/materialization consumers and adds typed first-false correspondence diagnostics without changing the CB14 nonzero gauge formula. Exact source `4dfe392d28d60b448e2f32253f7d170221ac57ec` compiles all eight required GMP/GMPXX targets in run/job `35811645725 / 107024364608`; candidate artifact `10730261023` is manifest-clean **28/28** with `runtimeExecution=false`. Selector430 remains byte-identical.

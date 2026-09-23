@@ -6,17 +6,17 @@ Last updated: 2026-09-23 UTC
 
 Mechanically complete **445/447 PASS** with self-manifest **914/914**. Semantic+mechanism 10/10, focused 1/1, produced 4/6, selector430 430/430. Rows4/5 alone RED at typed `PeriodicActionFirstBranchMismatch`; benchmark 0; exact immutable postflight.
 
-## Latest Review turn — `M5-CP3-TB1-R12-REV`
+## Latest Review turn — `M5-CP3-TB1-R13-REV`
 
-Review proves the ordinary regression as storage-canonical relation orientation consumed as semantic A3 direction and requires typed observability before any further nonzero-gauge change. Stable accounting remains **50 / 14 / 36**, debt **3**.
+Review independently upholds R13 **445/447** / **914/914**, closes the R12 ordinary storage-direction candidate recovery-proved, and proves the surviving `PeriodicActionFirstBranchMismatch` is existing RP-01: endpoint branch/gauge uses local cell/trace-face authority while generator transport uses exact A3 occurrence-carrier faces. Stable accounting remains **50 / 14 / 36**, debt **3**; R6 direction and CP2 publication observations remain OPEN.
 
 ## Latest Code + Build turn — `M5-CP3-CB15`
 
 CB15 is **COMPLETE / RUNTIME-FREE / COMPILE GREEN** at candidate `10730261023` / source `4dfe392d28d60b448e2f32253f7d170221ac57ec`. Exact A3 route/orientation now deterministically resolves canonical stored relation representation to semantic Forward -> Reverse action at checked-product/materialization consumers. The unchanged CB14 correspondence helper now publishes typed first-false reasons. Compile run/job `35811645725 / 107024364608` links all eight GMP/GMPXX targets with root manifest **28/28**, clean source receipts and `runtimeExecution=false`. Selector430/first427 are byte-identical.
 
-## Exact next turn — `M5-CP3-TB1-R13-REV`
+## Exact next turn — `M5-CP3-CB16`
 
-Mandatory runtime-free Review of R13 evidence. Independently adjudicate CB15 ordinary recovery, localize `PeriodicActionFirstBranchMismatch`, decide observation/stable-accounting disposition, update ORIENTATION, consolidate superseded per-turn docs, and issue exactly one bounded successor.
+Runtime-free Code + Build. Re-express each periodic endpoint's local chart branch at its exact accepted A3 occurrence-carrier face, author relation branch and nonzero coordinate gauge from that one authority, add one independent branch-authority falsifier, compile/package all eight mandatory GMP/GMPXX targets, and execute no generated runtime. Compile-green routes to fresh R14 at 448 processes then mandatory Review.
 
 ## M5 checkpoint sequence
 
@@ -28,14 +28,16 @@ Mandatory runtime-free Review of R13 evidence. Independently adjudicate CB15 ord
 - [x] `M5-CP3-TB1-R12-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. 439/446 PASS, complete 912/912 evidence; produced rows1/2/3/6 plus selector408 regress and rows4/5 fail recovery.
 - [x] `M5-CP3-TB1-R12-REV` — **COMPLETE / RUNTIME-FREE / CAUSE PROVED + DIAGNOSTIC GAP**. Ordinary torus/ordinal408 root is storage-canonical orientation consumed as semantic A3 direction; nonzero CB14 first false predicate remains unobserved; accounting unchanged.
 - [x] `M5-CP3-CB15` — **COMPLETE / PRODUCT + TEST-SUPPORT / RUNTIME-FREE / COMPILE GREEN**. Candidate `10730261023` / source `4dfe392d28d60b448e2f32253f7d170221ac57ec`; deterministic semantic/storage conversion + typed fixed-order correspondence diagnostics; all eight GMP/GMPXX targets compile/link; root manifest 28/28; no runtime.
-- [ ] `M5-CP3-TB1-R13-EXEC` — **EXACT NEXT / ARTIFACT-ONLY 447-PROCESS GATE**. New semantic-orientation identity first, then unchanged R12 vector; benchmark 0; mandatory Review follows any mechanically complete run.
+- [x] `M5-CP3-TB1-R13-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. 445/447 PASS, complete 914/914 evidence; ordinary recovery green, rows4/5 exact first-branch mismatch, selector430 430/430.
+- [x] `M5-CP3-TB1-R13-REV` — **COMPLETE / RUNTIME-FREE / ORDINARY RECOVERY PROVED + FIRST-BRANCH ROOT PROVED**. Existing RP-01 occurrence-branch authority conflation; accounting unchanged.
+- [ ] `M5-CP3-CB16` — **EXACT NEXT / RUNTIME-FREE CODE + BUILD**. Correct exact occurrence-carrier branch/gauge authority only, add independent branch falsifier, compile/package; no runtime.
 
 - [x] `M5-CP1` and `M5-CP2`: CLOSED / ACCEPTED for mechanism credit; accepted package `10601978228`.
 - [x] `M5-CP3` R1→R7 recovery chain: stable ordinal408 `RP-01` event **RECOVERY PROVED** at R7 Review.
 - [x] M5 produced debt 1 — relation owners/container reorder: **DISCHARGED at R7 Review** on produced rows1/2 with >=2 relations and >=2 owned periodic edges.
 - [x] M5 produced debt 2 — missing relation owner: **DISCHARGED at R7 Review** on produced rows1/3 with exact typed rejection.
-- [ ] M5 produced debt 3 — genuine nonzero-Z4 rotation+translation through production/materialization: **OPEN / CB15 COMPILE-GREEN / OWNER R13 EXEC -> REVIEW**.
-- [ ] M5 produced debt 4 — tampered produced nonzero-Z4 transform rejects typed: **OPEN / CB15 COMPILE-GREEN / OWNER R13 EXEC -> REVIEW**.
+- [ ] M5 produced debt 3 — genuine nonzero-Z4 rotation+translation through production/materialization: **OPEN / FIRST-BRANCH AUTHORITY ROOT PROVED / OWNER CB16 -> R14 REVIEW**.
+- [ ] M5 produced debt 4 — tampered produced nonzero-Z4 transform rejects typed: **OPEN / FIRST-BRANCH AUTHORITY ROOT PROVED / OWNER CB16 -> R14 REVIEW**.
 - [ ] M6 closed-complex produced debt: **OPEN / M6-owned**.
 - [x] `M5-CP3-CB9` — **COMPLETE / TEST-ONLY / RUNTIME-FREE / COMPILE GREEN**. Candidate `10660365136` / source `1023eea6090...`; all-eight GMP compile/package green, no runtime.
 - [x] `M5-CP3-TB1-R8-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. Vector 9/9 + 1/1 + 4/6 + 430/430; row6 recovers, rows4/5 stop at `InvalidBoundedDiskChart`; immutable postflight exact.
@@ -56,7 +58,7 @@ Mandatory runtime-free Review of R13 evidence. Independently adjudicate CB15 ord
 - [x] `M5-CP3-TB1-R2-REV-OBS-01` — successful atlas-owned value consumption proved at R7 while hard-feature nontraversal control remains green.
 - [x] `M5-CP3-TB1-R8-REV-OBS-01` — **CLOSED / NO-TUNING + CHART ADMISSIBILITY INDEPENDENTLY UPHELD AT R9 REVIEW**.
 - [ ] `M5-CP3-TB1-R6-REV-OBS-01` — **OPEN / REOPENED BY R11-R1 REVIEW AMENDMENT**. CB12's source-ordering correction remains closed, but reaching the directed path does not independently prove its runtime direction. The first Review where produced row4 passes item 5 must show independent Forward -> Reverse agreement and inverted-pair rejection.
-- [ ] `M5-CP2-TB1-REV-OBS-01` — **OPEN**; R12 selector430 is 429/430 with accepted ordinal408 RED, so publication remains prohibited.
+- [ ] `M5-CP2-TB1-REV-OBS-01` — **OPEN**; R13 selector430 is 430/430, but the complete corrected CP3 pre-publication gate is still 445/447 RED, so frozen §13 does not yet authorize selector precommitment/publication.
 - [x] `M5-CP3-TB1-R9-REV-OBS-01-A` — **DISCHARGED AT R10 REVIEW**; produced rows1/2/3/6 remain PASS under CB11, empirically upholding frozen §16's `R=0` reduction.
 
 ## Deferred hygiene
@@ -83,7 +85,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. M4 handed four periodic/relation debts to M5 and one closed-complex debt to M6; R7 Review has since discharged two M5 debts, leaving the two nonzero-Z4 M5 debts plus the one M6 debt.
-- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 R12 REVIEW COMPLETE / CB15 NEXT**. Accepted runtime package remains `10601978228`. R12 on CB14 candidate `10725395682 / b8dc3e906dd...` is mechanically complete at **439/446 PASS** with complete **912/912** evidence. Review proves rows1/2/3/6 plus selector408 share existing `RP-01` storage-canonical-vs-semantic-direction conflation; rows4/5 remain at an unobserved CB14 correspondence subpredicate. Candidate remains unpromoted; two nonzero-Z4 debts remain open; stable accounting remains **50 / 14 / 36**, debt **3**. Exact next is `M5-CP3-CB15`.
+- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 R13 REVIEW COMPLETE / CB16 NEXT**. Accepted runtime package remains `10601978228`. R13 on CB15 candidate `10730261023 / 4dfe392d...` is mechanically complete at **445/447 PASS** with complete **914/914** evidence and selector430 430/430. Review accepts ordinary recovery and proves rows4/5 first-branch failure as existing `RP-01` occurrence-carrier branch/gauge authority conflation. Candidate remains unpromoted; two nonzero-Z4 debts and direction/publication observations remain open; stable accounting remains **50 / 14 / 36**, debt **3**. Exact next is `M5-CP3-CB16`.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.

@@ -1,13 +1,13 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-23 at `M5-CP3-CB15`
+**Last updated:** 2026-09-23 at `M5-CP3-TB1-R13-REV`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Corrected stable accounting is **50 / 14 / 36**, produced-witness debt **3**; M5 owns two of those debts and M6 owns one.
 
-## Current CP3 authority — R13 mechanically complete / mandatory Review next
+## Current CP3 authority — R13 Review complete / CB16 next
 
-R13 run/job `35814092644 / 107031820541` on CB15 candidate/source `10730261023 / 4dfe392d28d60b448e2f32253f7d170221ac57ec` is mechanically complete with **914/914** evidence and **445/447 PASS**. The new semantic-orientation identity PASSes; produced rows1/2/3/6 and selector408 recover to PASS; selector430 is 430/430. Produced rows4/5 alone fail with typed `PeriodicActionFirstBranchMismatch`, before materialization/tamper/independent-direction comparator. Stable accounting remains **50 / 14 / 36**, debt **3**; candidate unpromoted. Exact next is mandatory `M5-CP3-TB1-R13-REV`.
+R13 run/job `35814092644 / 107031820541` on CB15 candidate/source `10730261023 / 4dfe392d28d60b448e2f32253f7d170221ac57ec` is mechanically complete with **914/914** evidence and **445/447 PASS**; selector430 is **430/430**. R13 Review closes the R12 storage-canonical/semantic-direction candidate recovery-proved. Rows4/5 alone fail typed `PeriodicActionFirstBranchMismatch`; source re-derivation proves generator transport is owned by exact A3 occurrence-carrier faces while relation endpoint branch/gauge is still copied from cell/trace-face local authority. This is existing RP-01, non-stable +0. Stable accounting remains **50 / 14 / 36**, debt **3**; candidate unpromoted, direction/publication observations open. Exact next is runtime-free `M5-CP3-CB16`.
 
 ## 1. `M5-DEFN` — definitions frozen
 
@@ -225,12 +225,24 @@ Rows4/5 do not justify a second semantic correction. The CB14 endpoint-gauge hel
 
 Fresh artifact-only R13 executes 447 exact-filter processes with exact-one/zero-skip and complete 914/914 evidence. Semantic+mechanism is 10/10, focused 1/1, produced 4/6, selector430 430/430. CB15 recovers the R12 ordinary torus regression and ordinal408. The only REDs are nonzero-Z4 produced rows4/5, both at typed `PeriodicActionFirstBranchMismatch`. Review must adjudicate the branch-authority cause and observations; EXEC changes no stable count, promotion, debt or publication authority.
 
+## 4.15 `M5-CP3-TB1-R13-REV` — ordinary recovery accepted; occurrence-branch authority root proved
+
+Review independently reopens R13's **914/914** result and **445 PASS / 2 RED** vector and re-hashes selector430/first427. CB15's semantic-action identity, produced rows1/2/3/6 and selector408 all PASS, closing `M5-CP3-TB1-R12-CAND-01` recovery-proved. The two remaining REDs are rows4/5 at exact first-false `PeriodicActionFirstBranchMismatch`.
+
+Static authority tracing proves the mismatch domain. `generator_route_for_span` gets `R` from exact accepted A3 Forward-occurrence carrier face -> Reverse-occurrence carrier face transition. `make_periodic_relation_endpoint_state`, however, copies `LocalLatticeState.branchRotation`, which was authored from the cell corner's retained trace/source face plus bounded-disk chart-U branch. The A3 occurrence carried into the endpoint state is metadata only; it does not re-express the local branch at the occurrence carrier face. R13 runtime therefore falsifies the implicit cross-domain equality. `M5-CP3-TB1-R13-CAND-01` is cause-proved as an existing RP-01 continuation; the broader R11-R1 endpoint-gauge recovery remains open until later predicates execute.
+
+Stable accounting remains **50 / 14 / 36**, debt **3**. R6 direction observation and CP2 publication observation remain OPEN; full CP3 gate is not green, so no selector precommitment. CB16 is frozen to re-express local chart branch in exact occurrence-carrier authority, use that branch consistently for nonzero relation coordinate gauge, add an independent focused falsifier, and compile/package only. Compile green routes to fresh R14 at **448** processes (new branch identity + unchanged R13 447), then mandatory Review.
+
 ## 5. Folded-document index
 
 Historical citations in frozen/normative records to filenames listed here are provenance-only and resolve through this index plus git history; frozen text is not rewritten merely to chase a folded filename.
 
 | Folded filename | Verdict / retained home |
 |---|---|
+| `Architecture_M5_CP3_TB1_R12_Artifact_Only_Test_Benchmark_Report.md` (118 lines) | **SUPERSEDED R12 RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R13-REV`.** R12 439/446 vector, ordinary regression and failed CB14 recovery remain in §§4.12-4.15, tracker/changelog and git history. |
+| `Architecture_M5_CP3_TB1_R12_Review_Record.md` (119 lines) | **SUPERSEDED R12 REVIEW / FOLDED BY `M5-CP3-TB1-R13-REV`.** Storage-canonical/semantic-direction root, diagnostic requirement and carried observations are adjudicated by R13 recovery and retained in §§4.13-4.15/tracker/frozen authority. |
+| `Architecture_M5_CP3_CB15_Semantic_Periodic_Direction_And_Correspondence_Diagnostics_Plan.md` (105 lines) | **CONSUMED CB15 PLAN / FOLDED BY `M5-CP3-TB1-R13-REV`.** Semantic direction correction is recovery-proved; typed diagnostic isolated first branch mismatch. Durable outcome is in §§4.14-4.15/current Review. |
+| `Architecture_M5_CP3_TB1_R13_Artifact_Only_Test_Benchmark_Plan.md` (86 lines) | **CONSUMED R13 EXECUTION PLAN / FOLDED BY `M5-CP3-TB1-R13-REV`.** Exact 447-process gate completed with 914/914 evidence; retained authority is the R13 runtime report and current Review. |
 | `Architecture_M5_CP3_TB1_R11_R1_Review_Record.md` (285 lines) | **SUPERSEDED R11-R1 REVIEW / FOLDED BY `M5-CP3-TB1-R12-REV`.** Direction-source correction, CB12 endpoint-gauge cause proof and reopened direction-observation addendum remain in §§4.11-4.13, tracker/frozen definitions and git history. |
 | `Architecture_M5_CP3_TB1_R12_Review_Plan.md` (24 lines) | **CONSUMED R12 REVIEW PLAN / FOLDED BY `M5-CP3-TB1-R12-REV`.** Evidence, ordinary-regression, nonzero-localization, accounting and successor obligations are adjudicated in §4.13/current Review/CB15 plan. |
 | `Architecture_M5_CP3_TB1_R11_R1_Review_Plan.md` (92 lines) | **CONSUMED R11-R1 REVIEW PLAN / FOLDED BY `M5-CP3-TB1-R11-R1-REV`.** Independent evidence, direction re-derivation, split-guard and adjudication obligations are discharged in §4.11 and the retained Review record; exact successor is CB14. |

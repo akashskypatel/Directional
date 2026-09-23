@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-23 (`M5-CP3-CB15` COMPLETE / runtime-free / compile green. Candidate `10730261023 / 4dfe392d28d60b448e2f32253f7d170221ac57ec` implements deterministic canonical-storage -> semantic A3 relation action plus typed fixed-order correspondence diagnostics, compiles all eight GMP/GMPXX targets with manifest 28/28 and `runtimeExecution=false`; selector430 unchanged. Latest runtime remains R12 at 439/446. Stable accounting **50 / 14 / 36**, debt **3**, candidate unpromoted. Exact next `M5-CP3-TB1-R13-EXEC` at 447 fresh processes, then mandatory Review.)
+**Status date:** 2026-09-23 (`M5-CP3-TB1-R13-REV` COMPLETE / runtime-free. R13 candidate `10730261023 / 4dfe392d28d60b448e2f32253f7d170221ac57ec` is 445/447 with complete 914/914 evidence and selector430 430/430. Ordinary CB15 recovery is proved; rows4/5 alone fail exact `PeriodicActionFirstBranchMismatch`. Review proves an existing RP-01 relation-endpoint branch authority conflation between local trace-face branch state and exact A3 occurrence-carrier transport. Stable accounting **50 / 14 / 36**, debt **3**, candidate unpromoted. Exact next `M5-CP3-CB16`, then fresh R14.)
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 
