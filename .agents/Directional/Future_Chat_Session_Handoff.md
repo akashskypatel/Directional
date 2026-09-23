@@ -12,6 +12,8 @@ Produced rows 16/17 alone are RED. Row16 publishes a relation but observes indep
 
 Accepted runtime authority remains package `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316`; CB17 candidate remains unpromoted. Stable accounting remains **51 / 14 / 37**, produced-witness debt **3** pending Review. R15 remains historical zero-credit orchestration provenance; R15-R1 now supersedes R14 as the latest mechanically valid CP3 runtime.
 
+Operational note: resumed-session run `35878323220` at event SHA `bb994ebecf064c034808823faa00b4f9b9bf866b` was accidentally triggered after the authoritative R15-R1 execution had already completed. It is explicitly **non-authoritative / zero-credit** regardless of outcome and must not be used by Review. Its temporary caller/marker were retired workflow-first when the duplication was recognized.
+
 ## Exact next turn
 
 **`M5-CP3-TB1-R15-R1-REV`** — runtime-free independent Review.
