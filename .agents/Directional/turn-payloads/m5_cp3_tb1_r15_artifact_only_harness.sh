@@ -92,8 +92,10 @@ BOUNDARY
 finish() {
   status=$?
   set +e
-  if [[ "$boundary_written" != true ]]; then write_boundary; fi
-  echo "script_exit=${status}" >> "${RESULT}/execution-boundary.txt"
+  if [[ "$boundary_written" != true ]]; then
+    write_boundary
+    echo "script_exit=${status}" >> "${RESULT}/execution-boundary.txt"
+  fi
   echo "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$LOG"
 }
 trap finish EXIT
@@ -290,6 +292,7 @@ manifest_after=28/28
 if [[ "$MODE" == '--preflight-only' ]]; then
   postflight
   write_boundary
+  echo 'script_exit=0' >> "${RESULT}/execution-boundary.txt"
   echo "${TURN_ID}_PREFLIGHT_COMPLETE"
   exit 0
 fi
@@ -304,9 +307,9 @@ run_identity() {
   (cd "$work" && /usr/bin/time -v -o "$resource" env GTEST_FAIL_IF_NO_TEST_SELECTED=1 GTEST_COLOR=no "$EXEC_VIEW/bin/$binary" --gtest_filter="$identity") >"$raw" 2>&1
   code=$?
   set -e
-  selected="$(grep -Ec '^[ RUN      ] ' "$raw" || true)"
-  skipped="$(grep -Ec '^[  SKIPPED ] ' "$raw" || true)"
-  passed="$(grep -Ec '^[       OK ] ' "$raw" || true)"
+  selected="$(grep -Ec '^\\[ RUN      \\] ' "$raw" || true)"
+  skipped="$(grep -Ec '^\\[  SKIPPED \\] ' "$raw" || true)"
+  passed="$(grep -Ec '^\\[       OK \\] ' "$raw" || true)"
   [[ "$selected" -eq 1 ]] || { selection_integrity=false; fail_orchestration "exact-one selection failed for ${identity}: ${selected}"; }
   [[ "$skipped" -eq 0 ]] || { selection_integrity=false; fail_orchestration "skip observed for ${identity}: ${skipped}"; }
   result=RED; [[ "$code" -eq 0 && "$passed" -eq 1 ]] && result=PASS
@@ -399,6 +402,7 @@ postflight
 [[ "$benchmark_execution" == false && "$EXPECTED_BENCHMARK_COUNT" -eq 0 ]] || fail_orchestration 'benchmark boundary violated'
 [[ $((nonselector_executed + selector_executed)) -eq "$EXPECTED_TOTAL_PROCESS_COUNT" ]] || fail_orchestration 'total execution count mismatch'
 write_boundary
+echo 'script_exit=0' >> "${RESULT}/execution-boundary.txt"
 
 manifest_tmp="${RUNNER_TEMP}/${SAFE_TURN_ID}-SHA256SUMS.tmp"
 (
