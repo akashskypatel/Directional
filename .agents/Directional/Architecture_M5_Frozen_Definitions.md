@@ -1,6 +1,6 @@
 # M5 Frozen Definitions — Certificate-Carrying Chart and Quotient Relations
 
-**Status:** FROZEN / `M5-DEFN` COMPLETE / CP1 + CP2 CLOSED / CP3 R14 SEMANTIC RED / EXACT NEXT = `M5-CP3-DEFN-R1` / RUNTIME-FREE REVIEW AMENDMENT 2026-09-23
+**Status:** FROZEN / `M5-DEFN` COMPLETE / CP1 + CP2 CLOSED / CP3 DEFN-R1 GAUGE MODEL FROZEN / EXACT NEXT = `M5-CP3-CB17` / RUNTIME-FREE DEFINITION AMENDMENT 2026-09-23
 **Date:** 2026-09-19
 **Definition authority:** this record is the normative M5 contract for canonical periodic-relation identity, producer-selected relation-path certificates, consumer validation, failure ownership, and the CP1/CP2/CP3 split. It refines `DESIGN.md` §14 M5 without changing accepted M4 semantics or M6 occurrence-complex ownership.
 
@@ -423,6 +423,68 @@ one `GridAutomorphism`. This clarification separates authority domains; it does 
 Sections 16 and 16.1 remain binding semantic obligations, including one directed action, reciprocal branch/delta/endpoint equations, deterministic semantic direction, the `R == 0` reduction and every no-search/no-fitting prohibition. R14 proves only that those sections are **insufficient implementation authority** for the nonzero seam: they do not yet define the exact change of gauge between the A1 source-face frame, cut-open phase-front frame, relation-endpoint frame and canonical storage representation.
 
 No further same-region nonzero-Z4 semantic Code + Build turn is authorized until runtime-free `M5-CP3-DEFN-R1` freezes that mapping and assigns one producer/reader domain to the generator rotation, endpoint branch component, endpoint lattice coordinates and relation action/translation. The definition may not be chosen by trying an inverse, fitting a partner or translation, inspecting downstream success, using insertion order/minimum-region heuristics, weakening the accepted selector, tuning the fixture/field/A3 authority, or pulling M6 occurrence authority backward. If one unique relation action cannot be derived from existing producer-owned facts, the definition turn must stop with a definition blocker.
+
+### 16.3 DEFN-R1 amendment — semantic Forward-anchored relation gauge
+
+`M5-CP3-DEFN-R1` closes §16.2's definition gap without changing A1 transport, A3 occurrence authority, ordinary A4 cell placement, `PeriodicRelationId`, fixture/field bytes or selector430.
+
+Name four frames explicitly. `S_f` is the A1 source-face frame on source face `f`. `C` is the accepted cut-domain phase-front trivialization. The existing `faceBranchRotation` at `f`, written `G_f`, maps cut-domain branch components into `S_f`. `E_F/E_R` are relation endpoint gauges authored only after exact semantic A3 Forward/Reverse occurrences are known. `K` is canonical storage representation and is not semantic direction.
+
+Let `F` and `R` be the exact A3 Forward and Reverse occurrences of the generator carrier, with source faces `f_F` and `f_R`. Let
+
+```text
+A   = FieldTransportAtlas::transition_value(carrier, f_F, f_R).transport.rotation
+G_F = faceBranchRotation[f_F]
+G_R = faceBranchRotation[f_R]
+```
+
+in their existing producer-owned domains. The unique same-region quotient turn is
+
+```text
+Q = G_R^-1 o A o G_F.
+```
+
+In Z4 integer notation this is `q = -g_R + a + g_F (mod 4)`. `Q`, not raw `A`, is relation rotation authority. Reverse semantic direction is exactly `Q^-1 = G_F^-1 o A^-1 o G_R`; trying both directions and selecting by success remains prohibited.
+
+For a source-face branch label `B_f`, first recover its cut-domain component `c_f = G_f^-1 o B_f`. A4 authors one chart-global +U component (`LocalLatticeState.branchRotation = G_f + chartUBranch`, or the equivalent zero-root form), so reciprocal cut copies recover the same `c_f = chartUBranch` before quotient transport. Relation endpoint branch authority is then
+
+```text
+Forward: b_F = c_F
+Reverse: b_R = Q o c_R.
+```
+
+This yields the one frozen branch correspondence `Q o b_F = b_R`, equivalently `G_R o b_R = A o G_F o b_F`. A relation endpoint may not copy a source-face branch label directly across the seam.
+
+Ordinary A4 cell-placement lattice coordinates remain unchanged. Let `x_F`, `x_R` denote those raw cut-domain integer coordinates at corresponding semantic endpoint copies. Relation-owned endpoint coordinates are authored in the semantic Forward-anchored convention
+
+```text
+y_F = x_F
+y_R = rotate(Q, x_R).
+```
+
+The asymmetry is semantic authority, not a search: A3 Forward fixes the relation anchor, and canonical storage order may not choose another gauge. The accepted cut-open chart authors both reciprocal copies in one common integer basis; before seam transport their matched raw boundary deltas are oppositely oriented. Therefore rotating the Reverse relation-owned coordinates by the same `Q` makes the frozen transported-delta equation a direct consequence rather than an independently fitted condition. For reciprocal boundary edges `(F.from,F.to)` and `(R.from,R.to)`, A3 correspondence is `F.from -> R.to`, `F.to -> R.from`. The semantic action is
+
+```text
+T(p) = rotate(Q,p) + t
+t = y_R,to - rotate(Q,y_F,from)
+  = rotate(Q, x_R,to - x_F,from).
+```
+
+The second endpoint equality
+
+```text
+y_R,from == rotate(Q,y_F,to) + t
+```
+
+is validation only; no alternative translation may be solved from it. The two endpoint maps imply the existing transported-delta obligation `rotate(Q,d_F) == -d_R` in relation endpoint coordinates. Semantic reversal is exactly `T^-1 = (Q^-1, -rotate(Q^-1,t))`.
+
+Canonical storage is representation-only. Derive semantic `T` before storage canonicalization. If canonical storage orientation agrees with A3 Forward -> Reverse, store `T`; if it reverses representation, store `T^-1` and reverse the associated routes exactly. `PeriodicRelationId` remains unchanged, and deterministic semantic resolution must return `T` from A3 roles rather than pair insertion/storage order. Relation endpoint states remain in the Forward-anchored relation gauge and are not regenerated when storage reverses.
+
+The zero-turn reduction is defined by **`Q == identity`**, not by raw `A == identity`. In that case Reverse normalization is identity, relation endpoint coordinates equal ordinary cut-domain coordinates, and the existing ordinary translation/branch behavior is recovered exactly. No ordinary cell-placement producer changes.
+
+The nonzero-Z4 produced witness criterion is also relation-gauge authority: compute `Q` from exact A3 occurrences, directed A1 transport and accepted cut gauges **before relation publication**, and require `Q != identity`. The committed torus row4/5 witness satisfies this independently. Static principal-matching reconstruction over the committed 216-edge torus finds exactly five nonzero source transitions — `(0,3)`, `(3,25)`, `(25,37)`, `(37,49)`, `(0,61)` — and all five belong to the exact 18-edge accepted hard-cut set. Thus every retained dual transition used by A4 gauge propagation is zero and `faceBranchRotation` is identically zero. Mandatory full-edge source paths use canonical edge orientation, so `(0,3)` Forward `0 -> 3` is owned by face `22` and Reverse `3 -> 0` by face `1`; stored source transport is `+1` in direction `1 -> 22`, so semantic `A(22 -> 1)=3`, while `G_F=G_R=0`. Therefore the independently expected quotient turn is **`Q=3 mod 4`**. The current fixture/field/A3 witness is valid and must not be retuned. Its full expected relation action is uniquely `T=(3, rotate(3, x_R,to - x_F,from))`, with the second endpoint map as an independent exact check.
+
+This amendment discharges `M5-CP3-TB1-R14-REV-OBS-01`. It supersedes only §16.2's statement that implementation authority is absent; §§14–16.2 remain binding historical/semantic context, including all no-search/no-fitting rules. Product recovery is not claimed from this runtime-free definition. Exactly one implementation successor is authorized: `M5-CP3-CB17`, bounded to this mapping plus directly coupled focused test-contract correction and compile-only validation.
 
 ## Independent verification addendum (reviewing agent)
 

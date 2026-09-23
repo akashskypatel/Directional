@@ -1,3 +1,25 @@
+## 2026-09-23 — `M5-CP3-DEFN-R1`: same-region nonzero-Z4 gauge model frozen — **DEFINITION AMBIGUITY CLOSED / PRODUCT RECOVERY OPEN / EXISTING RP-01 / +0**
+
+**Stable totals remain 51 events / 14 categories / 37 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**
+
+DEFN-R1 freezes the previously missing change of gauge across the exact A1 source-face frame, cut-open A4 phase-front frame, relation endpoint state and canonical storage. With exact semantic A3 Forward/Reverse occurrence faces `f_F/f_R`, raw directed A1 carrier turn `A`, and accepted cut gauges `G_F/G_R`, the one quotient turn is now normative:
+
+```text
+Q = G_R^-1 o A o G_F.
+```
+
+Relation endpoint authority is Forward-anchored: Forward keeps cut-domain branch/coordinate authority; Reverse branch and raw cut coordinate are normalized by `Q`. Translation is constructed once from the semantic Forward endpoint anchor and the exact reciprocal A3 endpoint correspondence; the partner endpoint only validates. Reverse semantic direction is exactly the inverse action. Canonical storage may store the action or its inverse but cannot redefine semantic direction or endpoint gauge. `Q==identity` reduces exactly to the accepted ordinary relation behavior and leaves A4 cell placement untouched.
+
+### `M5-CP3-TB1-R14-CAND-01` — definition ambiguity CLOSED / implementation recovery OPEN
+
+The R14 cause remains an existing `RP-01 AUTHORITY_DOMAIN_CONFLATION` recurrence rather than a new category. DEFN-R1 closes only the **missing-definition** portion: the previous implicit raw-A1-equals-relation-gauge assumption is replaced by the exact `Q` algebra above. Runtime recovery is not claimed and remains owned by `M5-CP3-CB17 -> M5-CP3-TB1-R15-EXEC/REV`.
+
+The existing torus row4/5 source witness is independently adjudicated **valid**, not a test-authority mismatch. Exact static source/A3 derivation selects source edge `(0,3)`, semantic Forward face `22`, Reverse face `1`, and directed raw A1 `A=3 mod4`. Independent principal-matching reconstruction finds exactly five nonzero torus transitions and all five are accepted hard cuts, so every retained dual transition is zero and the accepted occurrence gauges are `G_F=G_R=0`; hence **relation-gauge `Q=3`** before relation publication. `M5-CP3-TB1-R14-REV-OBS-01` is therefore **DISCHARGED**. No fixture, field, A3 route, selector or accepted authority is changed.
+
+**Owner/falsifier:** `M5-CP3-CB17` must implement the frozen mapping and compile it without generated runtime. Its focused contract must include a case where `Q != A`, exact inverse direction, non-fitted translation rejection, storage invariance and `Q==0` reduction. Fresh R15 runtime/Review must then prove produced rows4/5 and carry the independent R6 direction falsifier. **Prohibited:** inverse/best-of-two search, free gauge choice, partner/translation fitting, A3/fixture/field retuning, selector mutation, M6 pullback or canonical-storage re-anchoring.
+
+Carried obligations: `M5-CP3-TB1-R6-REV-OBS-01`, `M5-CP2-TB1-REV-OBS-01`, `M5-DEFN-REV-OBS-01`, both nonzero-Z4 M5 debts and product recovery remain OPEN. `M5-CP3-TB1-R13-REV-OBS-01` remains discharged as triggered. Exact successor is `M5-CP3-CB17`.
+
 ## 2026-09-23 — `M5-CP3-TB1-R14-REV`: focused helper green, production gauge model under-specified — **DEFINITION AUTHORITY / EXISTING RP-01 / +0**
 
 **Stable totals remain 51 events / 14 categories / 37 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**

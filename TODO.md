@@ -6,17 +6,17 @@ Last updated: 2026-09-23 UTC
 
 Mechanically complete **446/448 PASS** with self-manifest **916/916**. Branch+semantic+mechanism 11/11, focused 1/1, produced 4/6, selector430 430/430. The CB16 branch-authority identity PASSes, while rows4/5 alone remain exact `PeriodicActionFirstBranchMismatch`; benchmark 0 and postflight exact.
 
-## Latest Review turn — `M5-CP3-TB1-R14-REV`
+## Latest Definition turn — `M5-CP3-DEFN-R1`
 
-Review independently upholds the complete R14 evidence, accepts CB16's focused helper contract at its actual scope, and proves the remaining production seam is definition authority: raw A1 generator-carrier transport and cut-open branch/lattice gauge are separately valid but frozen §§16/16.1 do not define their exact change of gauge. `M5-CP3-TB1-R14-CAND-01` is existing `RP-01`, non-stable +0. The R13 convergence observation is discharged as triggered; `CB17` is prohibited. Accounting remains **51 / 14 / 37**, debt **3**.
+Runtime-free DEFN-R1 freezes the missing same-region nonzero-Z4 gauge contract. With exact semantic A3 occurrence gauges `G_F/G_R` and raw directed A1 carrier turn `A`, relation rotation is `Q = G_R^-1 A G_F`; Forward anchors relation endpoint gauge, Reverse branch/coordinates are normalized by `Q`, translation is constructed once from the Forward endpoint correspondence, and canonical storage reversal is exact inversion only. The committed row4/5 torus witness independently yields relation-gauge **`Q=3`**, so fixture/field/A3 authority is valid and unchanged. `M5-CP3-TB1-R14-REV-OBS-01` is discharged. Accounting remains **51 / 14 / 37**, debt **3**.
 
 ## Latest Code + Build turn — `M5-CP3-CB16`
 
 CB16 remains **COMPLETE / RUNTIME-FREE / COMPILE GREEN**, candidate `10733058003 / 6bad9eb5626e77a234ffb2c14f621195105e4ba1`. Its helper-level occurrence-gauge correction is now runtime-proved green, but production recovery failed; candidate remains unpromoted.
 
-## Exact next turn — `M5-CP3-DEFN-R1`
+## Exact next turn — `M5-CP3-CB17`
 
-Runtime-free same-region nonzero-Z4 gauge-definition reconciliation. Freeze one exact authority model across A1 source-face transport, cut-domain phase-front gauge, relation endpoint state and canonical storage before any further implementation. No generated runtime/build/test/selector mutation; stop if a unique action cannot be derived without search, fitting, heuristics, downstream inspection or M6 authority.
+Runtime-free Code + Build implementation of frozen §16.3. Apply `Q = G_R^-1 A G_F`, semantic Forward-anchored relation endpoint normalization and anchored non-fitted translation; update only directly coupled focused test contracts, including one case where `Q != A`; preserve fixture/field/A3/selector bytes. Compile/package with mandatory GMP/GMPXX targets only; no generated runtime.
 
 ## M5 checkpoint sequence
 
@@ -33,14 +33,15 @@ Runtime-free same-region nonzero-Z4 gauge-definition reconciliation. Freeze one 
 - [x] `M5-CP3-CB16` — **COMPLETE / RUNTIME-FREE / COMPILE GREEN / RUNTIME UNPROVED**. Candidate `10733058003 / 6bad9eb5626e77a234ffb2c14f621195105e4ba1`; exact occurrence-carrier branch/gauge authority bridge + independent branch falsifier; all eight GMP/GMPXX targets compile/link; root manifest 28/28; no runtime.
 - [x] `M5-CP3-TB1-R14-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. 446/448 PASS, complete 916/916 evidence; branch-authority focus PASS, produced rows4/5 remain exact `PeriodicActionFirstBranchMismatch`, selector430 430/430. Convergence trigger fired.
 - [x] `M5-CP3-TB1-R14-REV` — **COMPLETE / RUNTIME-FREE / DEFINITION AUTHORITY PROVED**. Independently re-opened R14 916/916 evidence and 446/448 vector; helper green, production gauge model under-specified; convergence trigger enforced.
-- [ ] `M5-CP3-DEFN-R1` — **EXACT NEXT / RUNTIME-FREE DEFINITION RECONCILIATION**. Freeze source/cut-domain/relation/storage gauge authority and one relation-gauge nonzero-Z4 witness criterion; no `CB17` before completion.
+- [x] `M5-CP3-DEFN-R1` — **COMPLETE / RUNTIME-FREE / DEFINITIONS FROZEN**. Exact relation turn `Q = G_R^-1 A G_F`; Forward-anchored endpoint normalization; current torus witness independently valid at `Q=3`; no runtime/build/selector mutation.
+- [ ] `M5-CP3-CB17` — **EXACT NEXT / RUNTIME-FREE CODE + BUILD**. Implement frozen §16.3 and directly coupled focused contracts; fixture/field/A3/selector unchanged; compile/package only.
 
 - [x] `M5-CP1` and `M5-CP2`: CLOSED / ACCEPTED for mechanism credit; accepted package `10601978228`.
 - [x] `M5-CP3` R1→R7 recovery chain: stable ordinal408 `RP-01` event **RECOVERY PROVED** at R7 Review.
 - [x] M5 produced debt 1 — relation owners/container reorder: **DISCHARGED at R7 Review** on produced rows1/2 with >=2 relations and >=2 owned periodic edges.
 - [x] M5 produced debt 2 — missing relation owner: **DISCHARGED at R7 Review** on produced rows1/3 with exact typed rejection.
-- [ ] M5 produced debt 3 — genuine nonzero-Z4 rotation+translation through production/materialization: **OPEN / DEFINITION-GAUGE OWNER `M5-CP3-DEFN-R1`**.
-- [ ] M5 produced debt 4 — tampered produced nonzero-Z4 transform rejects typed: **OPEN / DEFINITION-GAUGE OWNER `M5-CP3-DEFN-R1`**.
+- [ ] M5 produced debt 3 — genuine nonzero-Z4 rotation+translation through production/materialization: **OPEN / PRODUCT OWNER `M5-CP3-CB17 -> R15`**; definition and witness criterion are frozen.
+- [ ] M5 produced debt 4 — tampered produced nonzero-Z4 transform rejects typed: **OPEN / PRODUCT OWNER `M5-CP3-CB17 -> R15`**; definition and witness criterion are frozen.
 - [ ] M6 closed-complex produced debt: **OPEN / M6-owned**.
 - [x] `M5-CP3-CB9` — **COMPLETE / TEST-ONLY / RUNTIME-FREE / COMPILE GREEN**. Candidate `10660365136` / source `1023eea6090...`; all-eight GMP compile/package green, no runtime.
 - [x] `M5-CP3-TB1-R8-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. Vector 9/9 + 1/1 + 4/6 + 430/430; row6 recovers, rows4/5 stop at `InvalidBoundedDiskChart`; immutable postflight exact.
@@ -63,7 +64,8 @@ Runtime-free same-region nonzero-Z4 gauge-definition reconciliation. Freeze one 
 - [ ] `M5-CP3-TB1-R6-REV-OBS-01` — **OPEN / REOPENED BY R11-R1 REVIEW AMENDMENT**. CB12's source-ordering correction remains closed, but reaching the directed path does not independently prove its runtime direction. The first Review where produced row4 passes item 5 must show independent Forward -> Reverse agreement and inverted-pair rejection.
 - [ ] `M5-CP2-TB1-REV-OBS-01` — **OPEN**; R14 selector430 is 430/430, but the complete corrected CP3 pre-publication gate is still 446/448 RED, so frozen §13 does not yet authorize selector precommitment/publication.
 - [x] `M5-CP3-TB1-R9-REV-OBS-01-A` — **DISCHARGED AT R10 REVIEW**; produced rows1/2/3/6 remain PASS under CB11, empirically upholding frozen §16's `R=0` reduction.
-- [x] `M5-CP3-TB1-R13-REV-OBS-01` — **DISCHARGED AS TRIGGERED AT R14 REVIEW**; CB16 did not make produced rows4/5 both green, so `M5-CP3-DEFN-R1` is mandatory and `CB17` is prohibited.
+- [x] `M5-CP3-TB1-R13-REV-OBS-01` — **DISCHARGED AS TRIGGERED AT R14 REVIEW**; it forced DEFN-R1 before any CB17 semantic implementation.
+- [x] `M5-CP3-TB1-R14-REV-OBS-01` — **DISCHARGED AT DEFN-R1**; independent committed-torus source/A3 derivation yields relation-gauge `Q=3` before relation publication.
 
 ## Deferred hygiene
 
@@ -89,7 +91,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. M4 handed four periodic/relation debts to M5 and one closed-complex debt to M6; R7 Review has since discharged two M5 debts, leaving the two nonzero-Z4 M5 debts plus the one M6 debt.
-- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 R14 REVIEW COMPLETE / DEFN-R1 NEXT**. Accepted runtime package remains `10601978228`. R14 is **446/448 PASS** / **916/916** with selector430 430/430; Review proves the remaining nonzero seam requires definition reconciliation, not another implementation patch. Candidate remains unpromoted; two nonzero-Z4 debts plus direction/publication observations remain open; corrected accounting is **51 / 14 / 37**, debt **3**.
+- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 DEFN-R1 COMPLETE / CB17 NEXT**. Accepted runtime package remains `10601978228`. R14 remains **446/448 PASS** / **916/916** with selector430 430/430 and candidate unpromoted. DEFN-R1 freezes the exact relation gauge and independently validates the current torus witness at `Q=3`; two nonzero-Z4 debts plus direction/publication observations remain open pending CB17/R15; accounting is **51 / 14 / 37**, debt **3**.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.

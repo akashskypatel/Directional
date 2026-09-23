@@ -1,3 +1,9 @@
+## 2026-09-23 — `M5-CP3-DEFN-R1`: same-region nonzero-Z4 relation gauge frozen; CB17 next
+
+Runtime-free Definition freezes the missing relation-frame authority proved by R14. For exact semantic A3 Forward/Reverse occurrence faces, raw directed A1 carrier turn `A` and accepted cut gauges `G_F/G_R`, relation rotation is now `Q = G_R^-1 o A o G_F`. Forward anchors relation endpoint gauge; Reverse branch/coordinates are normalized by `Q`; translation is constructed once from the semantic Forward endpoint correspondence; reverse semantics are exactly the inverse action; canonical storage is representation-only. Ordinary A4 cell placement remains unchanged.
+
+The committed torus row4/5 witness is independently valid in relation gauge: first selected carrier `(0,3)`, semantic faces `22 -> 1`, raw directed `A=3`, occurrence cut gauges `0/0`, hence **`Q=3`** before relation publication. `M5-CP3-TB1-R14-REV-OBS-01` is discharged; no fixture/field/A3/selector change and no runtime/build execution occurred. Stable accounting remains **51 / 14 / 37**, debt **3**, R14 candidate unpromoted. Exact successor is runtime-free Code + Build `M5-CP3-CB17`.
+
 ## 2026-09-23 — `M5-CP3-TB1-R14-REV` review: trigger honoured; freeze condition recorded for DEFN-R1
 
 Runtime-free review. **Upheld.** Accounting holds at **51 events / 14 categories / 37 recurrences**, debt **3**;

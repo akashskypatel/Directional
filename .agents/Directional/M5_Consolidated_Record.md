@@ -1,15 +1,15 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-23 at `M5-CP3-TB1-R14-REV`
+**Last updated:** 2026-09-23 at `M5-CP3-DEFN-R1`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. The R13 Review accounting addendum corrects stable accounting to **51 / 14 / 37**, produced-witness debt **3**; M5 owns two of those debts and M6 owns one.
 
-## Current CP3 authority — R14 Review complete / definition reconciliation next
+## Current CP3 authority — DEFN-R1 complete / relation gauge frozen / CB17 next
 
-R14 run/job `35824161895 / 107062198724` on CB16 candidate/source `10733058003 / 6bad9eb5626e77a234ffb2c14f621195105e4ba1` remains the latest runtime evidence: complete **916/916** self-manifest, **446/448 PASS**, selector430 **430/430**, benchmark 0 and exact immutable postflight. Independent Review re-verifies the full ledger, selector430/first427, routing owner census and immutable boundary. The CB16 focused branch-authority identity is genuinely green while produced rows4/5 alone remain exact `PeriodicActionFirstBranchMismatch`.
+R14 run/job `35824161895 / 107062198724` on CB16 candidate/source `10733058003 / 6bad9eb5626e77a234ffb2c14f621195105e4ba1` remains the latest runtime evidence: complete **916/916** self-manifest, **446/448 PASS**, selector430 **430/430**, benchmark 0 and exact immutable postflight. Candidate remains unpromoted; DEFN-R1 executes no Directional runtime and claims no product recovery.
 
-R14 Review proves a definition-authority seam rather than another bounded implementation defect: production obtains raw directed A1 generator transport across the accepted carrier independently from a cut-open bounded-disk branch/lattice trivialization whose propagation omits that cut carrier. Frozen §§16/16.1 require one relation action but do not define the exact change of gauge between those domains. `M5-CP3-TB1-R14-CAND-01` is therefore an existing `RP-01` definition-authority continuation, non-stable +0. The R13 convergence observation is discharged as triggered; `CB17` is prohibited. Corrected stable accounting remains **51 / 14 / 37**, debt **3**; R6 direction, CP2 publication, both nonzero debts and the broader endpoint-gauge chain remain open. Exact successor is runtime-free `M5-CP3-DEFN-R1`.
+DEFN-R1 closes the missing-definition portion of the existing `RP-01` endpoint-gauge chain. For exact semantic A3 Forward/Reverse occurrence faces, raw directed A1 carrier turn `A` and accepted cut gauges `G_F/G_R`, the one relation turn is `Q = G_R^-1 o A o G_F`. Forward anchors relation endpoint branch/coordinate authority; Reverse is normalized by `Q`; translation is constructed once from the Forward endpoint correspondence; reverse semantics are exactly the inverse action; canonical storage is representation-only. The committed torus source/A3 witness independently selects carrier `(0,3)`, semantic faces `22 -> 1`, `A=3`, `G_F=G_R=0`, hence **`Q=3`** before relation publication. `M5-CP3-TB1-R14-REV-OBS-01` is discharged; fixture/field/A3/selector authority remains unchanged. Corrected stable accounting remains **51 / 14 / 37**, debt **3**. Exact successor is runtime-free Code + Build `M5-CP3-CB17`.
 
 ## 1. `M5-DEFN` — definitions frozen
 
@@ -262,6 +262,21 @@ Review independently re-opens R14 result/log/routing bytes, verifies the **916/9
 Static source authority separates the two domains the focused test does not derive. Production computes `faceBranchRotation` on the accepted cut-open dual graph and explicitly omits accepted cut carriers from that propagation. Same-region promotion later reads the exact A1 `transition_value(...)` across the accepted A3 generator carrier and applies it directly to endpoint branch/lattice states expressed through the cut-domain gauge. Frozen §§16/16.1 name the equations but not the exact source-frame -> cut-domain -> relation-frame change of gauge, so the branch equality is not currently a theorem of the construction.
 
 `M5-CP3-TB1-R14-CAND-01` is cause-proved as **DEFINITION AUTHORITY / EXISTING `RP-01 AUTHORITY_DOMAIN_CONFLATION` / NON-STABLE / +0**. CB16's helper correction is accepted locally, but the produced recovery and the broader endpoint-gauge chain remain open. The precommitted R13 convergence observation is discharged as triggered and forbids `CB17`. Exact successor is runtime-free `M5-CP3-DEFN-R1`, which must freeze one coherent authority model for A1 source-face transport, cut-domain phase-front gauge, relation-endpoint state and canonical storage before any further implementation. Stable accounting remains **51 / 14 / 37**, debt **3**.
+
+## 4.19 `M5-CP3-DEFN-R1` — same-region relation gauge frozen; current torus witness valid
+
+Runtime-free DEFN-R1 resolves the definition seam identified by R14. It distinguishes A1 source-face frame `S_f`, accepted cut-domain phase-front frame `C`, semantic relation endpoint gauges and canonical storage. If `A` is exact A1 transport from the semantic A3 Forward occurrence face to Reverse, and `G_F/G_R` are the accepted cut-domain face gauges, the relation rotation is uniquely
+
+```text
+Q = G_R^-1 o A o G_F.
+```
+
+The semantic Forward occurrence anchors relation endpoint gauge. Forward endpoint branch/coordinate authority is the cut-domain authority; Reverse branch/coordinate authority is normalized by `Q`. Translation is constructed once from the exact Forward endpoint correspondence and the reciprocal partner only validates. Reverse semantic direction is exactly the inverse action. Canonical storage may store either representation but cannot change semantic action or `PeriodicRelationId`. `Q==identity` reduces exactly to the already-green ordinary behavior and does not rewrite A4 cell placement.
+
+The R14 independent-freeze observation is discharged by a concrete source/A3 derivation. The committed torus witness's first selected nonzero hard carrier is `(0,3)`; canonical full-edge orientation makes semantic A3 Forward source face `22` and Reverse face `1`; stored source transition is `+1` in direction `1 -> 22`, so semantic `A(22 -> 1)=3`. Static principal matching over all 216 source edges finds exactly five nonzero transitions and all five are among the accepted 18 hard cuts; every retained dual transition is therefore zero and both occurrence gauges are `0`. Hence relation-gauge **`Q=3`** before relation publication. The source witness is valid; no fixture/field/A3 correction is authorized.
+
+Stable accounting stays **51 / 14 / 37**, debt **3**, and accepted runtime stays unchanged. `M5-CP3-TB1-R14-CAND-01` has its definition ambiguity CLOSED but implementation recovery remains OPEN. R6 direction, CP2 publication, M5-DEFN observation and both nonzero-Z4 produced debts are carried. Exactly one successor is frozen: runtime-free Code + Build `M5-CP3-CB17`, followed by fresh R15 artifact-only runtime + mandatory Review if compile green.
+
 
 ## 5. Folded-document index
 
