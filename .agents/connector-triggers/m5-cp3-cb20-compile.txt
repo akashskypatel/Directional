@@ -1,3 +1,0 @@
-purpose=compile/package M5-CP3-CB20 selector448 publication source
-source_sha=cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1
-retry=0

@@ -1,3 +1,0 @@
-.agents/connector-triggers/source-snapshot/m5-cp3-cb20-20260923.txt
-.agents/connector-triggers/m5-cp3-cb20-drive-apply-1.txt
-.agents/connector-triggers/m5-cp3-cb20-compile.txt

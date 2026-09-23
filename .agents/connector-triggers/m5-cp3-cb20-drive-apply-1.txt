@@ -1,4 +1,0 @@
-purpose=apply verified M5-CP3-CB20 selector448 publication patch
-patch_sha256=0d3f5fed066572311d09e8b5376a39961df862e48302948d3cec37b9ae541c10
-base_sha=326b108197cda6e70e52325d1d0208d8194a5ff1
-retry=1
