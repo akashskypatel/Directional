@@ -1,0 +1,47 @@
+name: M5 CP3 CB16 Apply R1
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m5-cp3-cb16-apply-r1-20260923.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m5-cp3-cb16-apply-r1
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m5-cp3-cb16-apply-r1.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m5-cp3-cb16-apply-r1
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1wpaWUnQ68I35K9ihU-1oQSSclbv1W6tQ
+      patch_sha256: 9d6dc388b4a4f1ff48876b2eea46cf4abfdba301f964b00ac90e61d370ca9747
+      base_sha: 11a82a4bd190260648214498da78f93ca106142b
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'M5-CP3-CB16: retain periodic occurrence branch gauge authority'
+    secrets: inherit
