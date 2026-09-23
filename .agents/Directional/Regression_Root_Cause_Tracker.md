@@ -1,3 +1,9 @@
+## 2026-09-23 — `M5-CP3-TB2-EXEC`: published selector448 fresh gate is 448/448 green — **NO OBSERVED REGRESSION / +0**
+
+**Stable totals remain 51 events / 14 categories / 37 recurrences; project debt remains 1 (M6-owned).** Authoritative run/job `35913334490 / 107358491487` consumes immutable CB20 artifact/source `10771899191 / cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1` and executes all 448 published selector identities as fresh exact-filter processes. Result is **448 PASS / 0 RED**, exact-one selection, zero skips, owner census 32/300/75/41, benchmark 0, exact package/source/execution-view postflight, and complete 917/917 result evidence. Result/log artifacts are `10775185139 / 10774217117`; selector ledger SHA-256 is `91c861fca2a7627b256ae6f7cb3241c5992689056da57d1622a135519bd600c3`.
+
+No accepted-green identity regressed and no orchestration or immutability defect occurred. Therefore this turn supplies no evidence for a new stable event, recurrence, category, or non-stable regression candidate. Selector acceptance and M5 closure remain Review-owned at `M5-CP3-TB2-REV`; this EXEC entry records only the mandatory Test + Benchmark regression-documentation disposition.
+
 ## 2026-09-23 — `M5-CP3-TB1-R16-REV` reviewing-agent addendum — **ADJUDICATION UPHELD / CLOSEOUT GAPS FIXED / +0**
 
 **Stable totals unchanged: 51 events / 14 categories / 37 recurrences; project debt 1 (M6).** No regression candidate. The reviewing agent downloaded fresh copies of the R16 result/log and CB19 candidate artifacts and re-hashed them. It re-verified 921/921 and 28/28, all 448 ledger rows and raw-log hashes, and selector448 bytes, hash and prefix. It re-derived the owner census twice, from runtime routing and from static CMake target membership, and both give 32/300/75/41 row for row. It fixed the closeout gaps listed in the review record addendum (frozen §11/§8.2/§9, manifest promotion line, ORIENTATION §8, CB20 plan §6) and records three items:
