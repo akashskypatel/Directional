@@ -38,10 +38,10 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1dzTFmnxSNzHKXiAvQRPeHubVZxO2Od9Y
-      patch_sha256: 13cbee5aef8de0eb2d16520c7d2186a469779bdd10d4236f20a8578a5c17cb82
-      base_sha: bc6d10e52b25bb99b653be8a2512ba9ed3963a0d
+      file_id: 1w5ATtRf6RC7mprkxjQlmC82zM-o0kf7T
+      patch_sha256: cbf921c224a18230cce47a6f186caa69440c8d7010d3ceb46ffe610cded04d5d
+      base_sha: ac5b95cb2a4604acd6d31c44072248e4dde4bc01
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: 'M5-CP3-CB17: apply relation-frame gauge cutover'
+      commit_message: 'docs: close M5-CP3-CB17 and freeze R15 plan'
       retention_days: 14
     secrets: inherit
