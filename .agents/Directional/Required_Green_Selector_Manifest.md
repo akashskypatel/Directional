@@ -76,6 +76,7 @@ Future selector files are named by their resulting identity count.
 | **426** | 426 | `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114` | 425 | 1 | superseded accepted prefix |
 | **427** | 427 | `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f` | 426 | 1 | **ACCEPTED HISTORICAL PREFIX OF SELECTOR430** |
 | **430** | 430 | `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6` | 427 | 3 | **ACCEPTED CURRENT AUTHORITY** |
+| **448** | 448 | `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789` | 430 | 18 | **PUBLISHED / NOT YET ACCEPTED** |
 
 `Prefix parent` **none** marks a file that is *not* an extension of the previous one — a superseded or withdrawn
 branch carrying unique bytes. Those are not redundant with anything and cannot be reconstructed from the chain.
@@ -838,6 +839,12 @@ TB3 run/job `35470130614 / 105969470184` then executes the exact selector430 as 
 `M5-CP2-TB1-REV` subsequently promotes package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` as the **current accepted runtime package under the same byte-frozen selector430** after focused 7/7 + selector430 430/430 artifact-only runtime and independent Review. Selector membership, ordering, LF hash `1c412850...9db6`, first427 prefix and owner census **31/283/75/41** are unchanged. M5 §13 now freezes the later CP3 publication sequence; no selector append occurs in CP2.
 
 `M5-CP3-TB1-R16-REV` subsequently promotes package `10763242885` / source `a8b33cb7145d5a99d47eaf5f70bb12f1c71238d1` as the **current accepted runtime package under the same byte-frozen selector430**. The basis is the complete fresh R16 pre-publication gate (run/job `35889831381 / 107279255523`): 18 nonselector identities 18/18 + selector430 430/430, 921/921 result evidence, and independent Review. Selector membership, ordering, LF hash `1c412850...9db6`, first427 prefix and owner census **31/283/75/41** are unchanged. The same Review **precommits** selector448 (SHA-256 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, selector430 as exact first430 prefix, owners **32/300/75/41**; `Architecture_M5_Frozen_Definitions.md` §17). It is **not a published selector file** and gets no row in the table above until `M5-CP3-CB20` publishes it. It is not accepted until `M5-CP3-TB2-REV`. *(Added by the R16-REV reviewing-agent addendum; the delegated closeout marked this manifest n/a and missed the package promotion.)*
+
+### 448 — PUBLISHED / NOT YET ACCEPTED
+
+`Architecture_M5_CP3_CB20_Required_Green_Selector_448.txt` — **448 identities**, LF SHA-256 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`. Its first430 LF rows are byte-identical to accepted selector430 SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`.
+
+`M5-CP3-CB20` publishes exactly the 18 identities precommitted by `M5-CP3-TB1-R16-REV`, in frozen order. Static ownership across the four standard owner executables is **32 authority-kernel / 300 producer / 75 completion / 41 validation**. The exact 448-row routing receipt is `Architecture_M5_CP3_CB20_Selector_448_Static_Routing_Receipt.tsv`, SHA-256 `c91a5e2f3d84d7d38b7c7c58afd157448cb225ebdbbfac3da2ef6259e811dd7c`. This selector is **published only**; it is not accepted until fresh artifact-only `M5-CP3-TB2-EXEC` and independent `M5-CP3-TB2-REV` succeed.
 
 ## Separate lineage — M1
 
