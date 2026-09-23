@@ -1,5 +1,0 @@
-Turn: M5-CP3-CB17
-Purpose: apply verified durable closeout and R15-plan patch
-Patch base: ac5b95cb2a4604acd6d31c44072248e4dde4bc01
-Patch sha256: cbf921c224a18230cce47a6f186caa69440c8d7010d3ceb46ffe610cded04d5d
-Retry: 1
