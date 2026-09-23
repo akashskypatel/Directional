@@ -1,17 +1,19 @@
-## 2026-09-23 — `M5-CP3-TB1-R12-EXEC`: CB14 candidate is mechanically valid but semantic RED at 439/446; Review next
+## 2026-09-23 — `M5-CP3-TB1-R12-EXEC`: mechanically complete runtime exposes 7 semantic REDs; mandatory Review next
 
-Fresh immutable run/job `35802519951 / 106995887964` consumes CB14 candidate/source
-`10725395682 / b8dc3e906dd03525861a1985ea574bad1ad5c69a`. Result/log artifacts `10726868409 / 10726518857` hash to
-`3f5978b7e0753dccd68fa53ddc50e50b3a5d4d3ea61d2bbd6e9da688531877bc / 146fa160681f012c10979eb8018f6b91e1ad41b2ce5ef5c02c70dc0f36a9d265`;
-result evidence is complete at **912/912** and immutable postflight is exact.
+Fresh immutable R12 run/job `35802519951 / 106995887964` consumes CB14 candidate/source
+`10725395682 / b8dc3e906dd03525861a1985ea574bad1ad5c69a`. All **446/446** exact-filter processes select once with zero skips and
+complete with exact immutable postflight: mechanism **9/9**, focused atlas **1/1**, produced **0/6**, selector430 **429/430**, total
+**439 PASS / 7 RED**, benchmark 0. Result/log artifacts `10726868409 / 10726518857` hash to
+`3f5978b7e0753dccd68fa53ddc50e50b3a5d4d3ea61d2bbd6e9da688531877bc /
+146fa160681f012c10979eb8018f6b91e1ad41b2ce5ef5c02c70dc0f36a9d265`; self-manifest is **912/912** at
+`fd3ad48624f311feb1bfb5a19e00a9515dc00f231f90b2409bb9676677891524`.
 
-All **446/446** planned exact-filter processes select once with zero skips: mechanism **9/9**, focused **1/1**, produced **0/6**,
-selector430 **429/430**, benchmark 0. Produced rows1/2/3/6 regress from R11-R1 green to `InvalidFinalCellState`; rows4/5 remain at
-`PeriodicActionCorrespondenceMismatch`; protected selector ordinal408 regresses to RED while 191/192/247 remain PASS.
-
-Tracker candidates `M5-CP3-TB1-R12-CAND-01` and `-02` separate failed nonzero-Z4 recovery from the newly exposed zero-rotation/direct
-production regression. Stable accounting remains **50 / 14 / 36**, debt **3** pending independent Review; accepted runtime remains
-unchanged, candidate unpromoted and selector publication prohibited. Exact successor is runtime-free `M5-CP3-TB1-R12-REV`.
+Produced rows1/2/3/6 regress from R11-R1 PASS to `InvalidFinalCellState`; accepted selector ordinal408 also regresses to a rejected
+phase front. EXEC opens non-stable `M5-CP3-TB1-R12-CAND-01` and statically localizes the new front to CB14's exact-A3 checked-product
+validation, with a concrete representation/gauge authority hazard around relation inverse canonicalization that Review must prove or
+reject. Rows4/5 remain at `PeriodicActionCorrespondenceMismatch`, so CB14 does not recover the existing nonzero-Z4 endpoint-gauge
+candidate. Stable accounting stays **50 / 14 / 36** pending Review, debt **3**, candidate unpromoted and selector publication prohibited.
+Exact successor is runtime-free `M5-CP3-TB1-R12-REV`.
 
 ## 2026-09-23 — `M5-CP3-CB14`: periodic relation endpoint-gauge authority correction compiles cleanly; R12 next
 

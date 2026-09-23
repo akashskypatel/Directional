@@ -7,30 +7,28 @@ Last updated: 2026-09-23 UTC
 R12 is **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. Run/job `35802519951 / 106995887964` executes all **446** fresh
 processes at **9/9 mechanism + 1/1 focused + 0/6 produced + 429/430 selector = 439 PASS / 7 RED**, exact-one/zero-skip,
 benchmark 0 and exact immutable postflight. Complete result manifest is **912/912**. Produced rows1/2/3/6 regress to
-`InvalidFinalCellState`; rows4/5 remain at `PeriodicActionCorrespondenceMismatch`; protected selector ordinal408 regresses to RED at
-its required `Produced` assertion.
+`InvalidFinalCellState`, rows4/5 remain at `PeriodicActionCorrespondenceMismatch`, and accepted selector ordinal408 regresses to a
+rejected phase front. `M5-CP3-TB1-R12-CAND-01` is open/non-stable pending mandatory Review.
 
 ## Latest Review turn — `M5-CP3-TB1-R11-R1-REV`
 
-Review independently upholds the prior R11-R1 runtime and proves CB12's semantic Forward -> Reverse source-ordering correction. The
-remaining nonzero-Z4 root was classified as existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION`; the later Review amendment keeps the
-independent runtime direction observation open until row4 reaches the comparator and independently proves Forward -> Reverse agreement
-plus inverted-pair rejection. R12 does not reach that comparator.
+Review independently upheld R11-R1 and proved the prior raw endpoint-gauge authority defect, but its later amendment keeps the R6
+direction observation open until a row4 run reaches an independent Forward -> Reverse comparator and inverted-pair falsifier. R12 does
+not reach that comparator, so the observation remains open.
 
 ## Latest Code + Build turn — `M5-CP3-CB14`
 
-CB14 is **COMPLETE / PRODUCT-ONLY / RUNTIME-FREE / COMPILE GREEN / RUNTIME RECOVERY FAILED AT R12**. Candidate
-`10725395682 / b8dc3e906dd03525861a1985ea574bad1ad5c69a` introduced relation-owned endpoint gauge authority and compiled all eight
-GMP/GMPXX targets with manifest **28/28**, but R12 shows the nonzero-Z4 failure persists and the previously green zero-rotation/direct
-production controls now regress.
+CB14 is **COMPLETE / PRODUCT-ONLY / RUNTIME-FREE / COMPILE GREEN / RUNTIME-FAILED**. Candidate
+`10725395682 / b8dc3e906dd03525861a1985ea574bad1ad5c69a` compiles/packages all eight GMP/GMPXX targets with manifest **28/28** and no
+runtime, but R12 does not recover its primary nonzero-Z4 target and introduces an ordinary-torus/ordinal408 regression candidate.
 
 ## Exact next turn — `M5-CP3-TB1-R12-REV`
 
-Mandatory runtime-free Review + Plan. Independently adjudicate `M5-CP3-TB1-R12-CAND-01` (failed nonzero-Z4 recovery) and
-`M5-CP3-TB1-R12-CAND-02` (new rows1/2/3/6 + ordinal408 regression), determine the first false predicates from source authority, decide
-stable accounting/category ownership, and freeze exactly one bounded corrective successor. Accepted runtime remains
-`10601978228 / 0798547d...`, stable accounting remains **50 / 14 / 36**, debt **3**; candidate unpromoted and selector publication
-prohibited.
+Runtime-free mandatory Review + Plan of the complete R12 semantic RED. Independently verify the **912/912** evidence contract and
+**439/446 PASS** vector; adjudicate the new ordinary-torus/ordinal408 regression candidate; split rows4/5's surviving
+`PeriodicActionCorrespondenceMismatch`; decide stable accounting and the reopened direction observation; then issue one bounded
+successor plan. No retry or Code + Build before Review. Accepted runtime remains `10601978228 / 0798547d...`; candidate unpromoted,
+debt **3**, selector publication prohibited.
 
 ## M5 checkpoint sequence
 
@@ -39,15 +37,15 @@ prohibited.
 - [x] `M5-CP3-TB1-R11-R1-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. Fresh 446-process gate is 444 PASS / 2 RED; complete self-manifest 912/912; rows4/5 stop at `PeriodicActionCorrespondenceMismatch`.
 - [x] `M5-CP3-TB1-R11-R1-REV` — **COMPLETE / CAUSE PROVED / EXISTING RP-01 CONTINUATION**. CB12 source-ordering correction is proved; second endpoint map fails because raw cut-domain cell coordinates are not quotient-seam endpoint authority under nonzero transport. R10 candidate closes recovery-proved; the later Review amendment reopens the independent R6 runtime direction observation pending a row4 comparator proof.
 - [x] `M5-CP3-CB14` — **COMPLETE / PRODUCT-ONLY / RUNTIME-FREE / COMPILE GREEN / RUNTIME UNPROVED**. Candidate `10725395682` / source `b8dc3e906dd...`; relation-endpoint gauge separated from ordinary cell placement; all eight GMP/GMPXX targets compile/link; root manifest 28/28; no runtime.
-- [x] `M5-CP3-TB1-R12-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. Fresh 446-process gate is 439 PASS / 7 RED; complete self-manifest 912/912; rows1/2/3/6 regress to `InvalidFinalCellState`, rows4/5 remain at `PeriodicActionCorrespondenceMismatch`, selector408 regresses to RED.
-- [ ] `M5-CP3-TB1-R12-REV` — **EXACT NEXT / MANDATORY REVIEW + PLAN**. Adjudicate failed CB14 recovery plus new zero-rotation/direct-production regression; no runtime or product mutation.
+- [x] `M5-CP3-TB1-R12-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. 439/446 PASS, complete 912/912 evidence; produced rows1/2/3/6 plus selector408 regress and rows4/5 fail recovery.
+- [ ] `M5-CP3-TB1-R12-REV` — **EXACT NEXT**. Runtime-free independent adjudication of R12 evidence, regressions, accounting and bounded successor scope.
 
 - [x] `M5-CP1` and `M5-CP2`: CLOSED / ACCEPTED for mechanism credit; accepted package `10601978228`.
 - [x] `M5-CP3` R1→R7 recovery chain: stable ordinal408 `RP-01` event **RECOVERY PROVED** at R7 Review.
 - [x] M5 produced debt 1 — relation owners/container reorder: **DISCHARGED at R7 Review** on produced rows1/2 with >=2 relations and >=2 owned periodic edges.
 - [x] M5 produced debt 2 — missing relation owner: **DISCHARGED at R7 Review** on produced rows1/3 with exact typed rejection.
-- [ ] M5 produced debt 3 — genuine nonzero-Z4 rotation+translation through production/materialization: **OPEN / CB14 RECOVERY FAILED AT R12 / OWNER R12 REVIEW**.
-- [ ] M5 produced debt 4 — tampered produced nonzero-Z4 transform rejects typed: **OPEN / CB14 RECOVERY FAILED AT R12 / OWNER R12 REVIEW**.
+- [ ] M5 produced debt 3 — genuine nonzero-Z4 rotation+translation through production/materialization: **OPEN / R12 FAILED RECOVERY / REVIEW NEXT**.
+- [ ] M5 produced debt 4 — tampered produced nonzero-Z4 transform rejects typed: **OPEN / R12 FAILED RECOVERY / REVIEW NEXT**.
 - [ ] M6 closed-complex produced debt: **OPEN / M6-owned**.
 - [x] `M5-CP3-CB9` — **COMPLETE / TEST-ONLY / RUNTIME-FREE / COMPILE GREEN**. Candidate `10660365136` / source `1023eea6090...`; all-eight GMP compile/package green, no runtime.
 - [x] `M5-CP3-TB1-R8-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. Vector 9/9 + 1/1 + 4/6 + 430/430; row6 recovers, rows4/5 stop at `InvalidBoundedDiskChart`; immutable postflight exact.
@@ -68,7 +66,7 @@ prohibited.
 - [x] `M5-CP3-TB1-R2-REV-OBS-01` — successful atlas-owned value consumption proved at R7 while hard-feature nontraversal control remains green.
 - [x] `M5-CP3-TB1-R8-REV-OBS-01` — **CLOSED / NO-TUNING + CHART ADMISSIBILITY INDEPENDENTLY UPHELD AT R9 REVIEW**.
 - [ ] `M5-CP3-TB1-R6-REV-OBS-01` — **OPEN / REOPENED BY R11-R1 REVIEW AMENDMENT**. CB12's source-ordering correction remains closed, but reaching the directed path does not independently prove its runtime direction. The first Review where produced row4 passes item 5 must show independent Forward -> Reverse agreement and inverted-pair rejection.
-- [ ] `M5-CP2-TB1-REV-OBS-01` — **OPEN**; R10 Review confirms the corrected CP3 gate is still not independently green, so selector publication remains prohibited.
+- [ ] `M5-CP2-TB1-REV-OBS-01` — **OPEN**; R12 selector430 is 429/430 with accepted ordinal408 RED, so publication remains prohibited.
 - [x] `M5-CP3-TB1-R9-REV-OBS-01-A` — **DISCHARGED AT R10 REVIEW**; produced rows1/2/3/6 remain PASS under CB11, empirically upholding frozen §16's `R=0` reduction.
 
 ## Deferred hygiene
@@ -95,7 +93,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. M4 handed four periodic/relation debts to M5 and one closed-complex debt to M6; R7 Review has since discharged two M5 debts, leaving the two nonzero-Z4 M5 debts plus the one M6 debt.
-- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 R12 SEMANTIC RED / REVIEW NEXT**. Accepted runtime package remains `10601978228`. R12 on CB14 candidate `10725395682 / b8dc3e906dd...` is mechanically complete at **439/446 PASS** with **912/912** evidence: rows1/2/3/6 and protected selector408 regress, while rows4/5 remain at nonzero-Z4 correspondence failure. Candidate remains unpromoted; stable accounting **50 / 14 / 36**, debt **3** pending mandatory R12 Review.
+- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 R12 SEMANTIC RED / REVIEW NEXT**. Accepted runtime package remains `10601978228`. R12 on CB14 candidate `10725395682 / b8dc3e906dd...` is mechanically complete at **439/446 PASS** with complete **912/912** evidence: rows1/2/3/6 plus selector408 regress and rows4/5 remain at correspondence mismatch. Candidate remains unpromoted; two nonzero-Z4 debts remain open; stable accounting **50 / 14 / 36** pending Review, debt **3**. Exact next is `M5-CP3-TB1-R12-REV`.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.
@@ -134,4 +132,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current corrected totals are **50 events / 14 categories / 36 recurrences**, debt **3**. M4, M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**; accepted runtime authority remains package `10601978228` / source `0798547d...` under selector430 **430/430**. R12 is now the latest runtime evidence on CB14 candidate `10725395682 / b8dc3e906dd...`: mechanically complete at **439/446 PASS**, self-manifest **912/912**, with rows1/2/3/6 plus protected selector408 newly RED and rows4/5 still at `PeriodicActionCorrespondenceMismatch`. Candidate remains unpromoted, both nonzero-Z4 M5 debts remain open, stable accounting is unchanged pending mandatory Review, and selector publication remains prohibited. Exact successor is **`M5-CP3-TB1-R12-REV`**. PR #8 remains open, draft, and unmerged.
+Current corrected totals are **50 events / 14 categories / 36 recurrences**, debt **3**. M4, M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**; accepted runtime authority remains package `10601978228` / source `0798547d...` under selector430 **430/430**. R12 on CB14 candidate `10725395682 / b8dc3e906dd...` is the latest runtime evidence and is semantic RED at **439/446 PASS** with complete **912/912** evidence. Produced rows1/2/3/6 plus selector408 regress; rows4/5 retain `PeriodicActionCorrespondenceMismatch`. Candidate remains unpromoted, both nonzero-Z4 M5 debts remain open, and selector publication remains prohibited. Stable accounting stays **50 / 14 / 36** pending mandatory Review. Exact successor is **`M5-CP3-TB1-R12-REV`**. PR #8 remains open, draft, and unmerged.

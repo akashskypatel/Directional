@@ -1,47 +1,42 @@
 # M5-CP3-TB1-R12 Artifact-Only Test + Benchmark Report
 
 **Turn:** `M5-CP3-TB1-R12-EXEC`
-**Boundary:** immutable artifact-only Test + Benchmark on CB14 candidate
-**Disposition:** **MECHANICALLY COMPLETE / SEMANTIC RED / 439 PASS + 7 RED / CB14 RECOVERY FAILED / NEW ZERO-ROTATION CONTROL REGRESSION / REVIEW REQUIRED**
+**Boundary:** immutable artifact-only Test + Benchmark on CB14 candidate `10725395682 / b8dc3e906dd03525861a1985ea574bad1ad5c69a`
+**Disposition:** **MECHANICALLY COMPLETE / SEMANTIC RED / 439 PASS + 7 RED / REVIEW REQUIRED**
 **Exact successor:** `M5-CP3-TB1-R12-REV`
 
 ## 1. Immutable authority
 
-R12 consumes only CB14 candidate artifact `10725395682`, semantic source
-`b8dc3e906dd03525861a1985ea574bad1ad5c69a`, accepted routing artifact `10592987234`, and byte-frozen selector430.
-The candidate ZIP/provider digest is
-`1995b8cf3de6190bff60f0e8d4ad74de90cc82327b80fd5c29f2fc0eb089d902`; root manifest SHA-256 is
-`92fb6c0747db81514b2060ab195d3b7e68ede14c035c1b7f116a4e8a36679279` and verifies **28/28**. Packaged source archive SHA-256 is
-`1bfd66e0a2c9a4b78dffe0280859130eed8bcd6e34032c07255bd0aaa83829bd`. Routing ZIP and identity-map SHA-256 remain
-`352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce` and
-`7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c`; selector430 / first427 remain
-`1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6 / f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`.
+R12 consumes only the compile-green CB14 candidate and the previously frozen routing/selector authority:
 
-Preflight confirms executable mode, clean source receipts, GMP/GMPXX linkage evidence, and `runtimeExecution=false`. No package repair,
-mode repair, compile, relink, configure, generated discovery, source/test/fixture/selector mutation, or benchmark execution occurs.
+- semantic source `b8dc3e906dd03525861a1985ea574bad1ad5c69a`;
+- compile run/job `35798853372 / 106984376759`;
+- candidate artifact `10725395682`, ZIP SHA-256 `1995b8cf3de6190bff60f0e8d4ad74de90cc82327b80fd5c29f2fc0eb089d902`;
+- root package manifest SHA-256 `92fb6c0747db81514b2060ab195d3b7e68ede14c035c1b7f116a4e8a36679279`, **28/28**;
+- packaged source archive SHA-256 `1bfd66e0a2c9a4b78dffe0280859130eed8bcd6e34032c07255bd0aaa83829bd`;
+- routing artifact `10592987234`, ZIP SHA-256 `352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`;
+- routing identity-map SHA-256 `7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c`;
+- selector430 SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`;
+- first427 SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`.
 
-## 2. Runtime and evidence contract
+Preflight verified provider/download digest equality, executable modes, clean packaged source receipts, GMP/GMPXX evidence, `runtimeExecution=false`, exact selector/routing identity and the frozen owner census. No package repair or permission repair occurred.
 
-R12 run/job is `35802519951 / 106995887964`, event SHA `eaa54350b5cbd83182709d2e640ffaf6f12fbe7d`.
-Schema validation and the runtime job conclude success; job success means orchestration completed, not that the semantic gate is green.
+## 2. Runtime and complete evidence contract
+
+R12 run/job is `35802519951 / 106995887964`, event SHA `eaa54350b5cbd83182709d2e640ffaf6f12fbe7d`. Workflow schema validation and the runtime job both conclude success; runtime-job success means orchestration completed, not semantic green.
 
 Result/log artifacts are:
 
 - result `10726868409`, ZIP SHA-256 `3f5978b7e0753dccd68fa53ddc50e50b3a5d4d3ea61d2bbd6e9da688531877bc`;
 - log `10726518857`, ZIP SHA-256 `146fa160681f012c10979eb8018f6b91e1ad41b2ce5ef5c02c70dc0f36a9d265`.
 
-The result contains **912 actual non-manifest evidence files** and exactly **912 manifest rows**. Every row verifies; result
-`SHA256SUMS` SHA-256 is `fd3ad48624f311feb1bfb5a19e00a9515dc00f231f90b2409bb9676677891524`.
-`driver_exit=0`, `orchestration_failure=false`, and immutable package/source/execution-view postflight is exact.
+The result contains exactly **912 actual non-manifest evidence files** and **912 manifest rows**. Every row verifies. Result `SHA256SUMS` SHA-256 is `fd3ad48624f311feb1bfb5a19e00a9515dc00f231f90b2409bb9676677891524`. The execution boundary records `preflight_completed=true`, `runtime_started=true`, `runtime_completed=true`, `orchestration_failure=false`, and all prohibited-operation counters at zero.
 
-Driver authority records template SHA-256
-`f6509aa8e191db679ebe2ab983e00c735993d8899554856cdf1da4c6a350a4f5`, writer SHA-256
-`d8b7d77d7425c02de4327aae47ac20614e1fbc36afe1c66b3af9d1d3a8128995`, and rendered-driver SHA-256
-`3f518fe03adcd131fc3c59e41ba67ce62c8cc4249dae3edb2a195edecffb4936`.
+Driver authority records template SHA-256 `f6509aa8e191db679ebe2ab983e00c735993d8899554856cdf1da4c6a350a4f5`, writer SHA-256 `d8b7d77d7425c02de4327aae47ac20614e1fbc36afe1c66b3af9d1d3a8128995`, and rendered-driver SHA-256 `3f518fe03adcd131fc3c59e41ba67ce62c8cc4249dae3edb2a195edecffb4936`.
 
 ## 3. Fresh 446-process semantic ledger
 
-All **446/446** planned processes execute freshly, each selecting exactly one test with zero skips:
+All **446/446** planned processes execute freshly. Every process selects exactly one test and skips zero tests.
 
 | Phase | PASS | RED | Total |
 |---|---:|---:|---:|
@@ -51,71 +46,73 @@ All **446/446** planned processes execute freshly, each selecting exactly one te
 | selector430 | 429 | 1 | 430 |
 | **total** | **439** | **7** | **446** |
 
-Produced rows **1/2/3/6**, which were PASS in R11-R1 and were frozen regression controls for R12, all reject during real torus
-production with `InvalidFinalCellState` before their relation-owner/container-order discriminators execute.
+Protected selector ordinals **191, 192 and 247 PASS**. Protected ordinal **408 REDs**. Benchmark count is **0**.
 
-Produced rows **4/5** remain RED at the same public frontier as R11-R1: both fail while constructing the nonzero-Z4 witness with
-`PeriodicActionCorrespondenceMismatch`. Row4 therefore still does not reach relation materialization/certificate consumption, and row5
-still does not reach its transform-only tamper or typed `NonReciprocalPeriodicRelation` assertion.
+The seven RED identities split into two distinct runtime fronts.
 
-Selector ordinals **191, 192 and 247** remain PASS. Protected ordinal **408** regresses to RED at its required production assertion:
-`SurfaceCellProducerDisposition::Produced` was expected but the phase-front disposition is rejected; its diagnostic surface reports
-`NotProductionReady/tracing/None`. Selector430 is therefore **429/430**, not green. Benchmark count is **0**.
+### 3.1 New regression front: produced rows 1/2/3/6 plus selector ordinal408
 
-## 4. Regression categorization and bounded root-cause analysis
+Produced rows 1/2/3/6 all fail while constructing the ordinary torus production fixture with:
 
-### `M5-CP3-TB1-R12-CAND-01` — failed recovery of existing nonzero-Z4 correspondence defect
+```text
+torus pipeline producer failed: InvalidFinalCellState
+```
 
-**Status:** OPEN / PRODUCT SEMANTIC RED / EXISTING `RP-01 / AUTHORITY_DOMAIN_CONFLATION` RECOVERY NOT PROVED / NON-STABLE / +0 / OWNER `M5-CP3-TB1-R12-REV`.
+Those same four produced controls were PASS in authoritative R11-R1 runtime. Selector ordinal408,
+`RemeshPipeline.ExactA3ToA4TorusProductionPathPublishesTypedSharedBoundaryIdentity`, also changes from PASS in R11-R1 to RED in R12. It reaches the retained trace network but observes `phaseFront.disposition()==Rejected` instead of `Produced`; the pipeline surface reports `NotProductionReady/tracing/None`.
 
-CB14 does not move rows4/5 past `PeriodicActionCorrespondenceMismatch`. The new relation-owned endpoint state is therefore not yet
-runtime-proved to satisfy the real produced nonzero-Z4 pair. EXEC cannot truthfully select the failing internal predicate because
-`periodic_action_for_pair(...)` still collapses occurrence/orientation, chart, scale, branch-rotation, delta, and exact endpoint-map
-conditions to one public reason and the produced witness emits no operands before throwing. Mandatory Review must re-derive those
-predicates from source authority rather than infer them from the generic reason.
+This regression happens before rows 1/2/3/6 reach their relation-specific assertions, so none of their previously discharged debt/control claims may be re-used as R12 PASS evidence.
 
-### `M5-CP3-TB1-R12-CAND-02` — CB14 introduces a zero-rotation/direct-production regression candidate
+### 3.2 Failed recovery front: produced rows 4/5
 
-**Status:** OPEN / PRODUCT REGRESSION CANDIDATE / R11-R1 GREEN CONTROLS -> R12 RED / PROTECTED SELECTOR408 PASS -> RED / EXACT PRODUCT PREDICATE UNRESOLVED / NON-STABLE / +0 / OWNER `M5-CP3-TB1-R12-REV`.
+Rows 4/5 remain RED at the exact pre-CB14 public frontier:
 
-R11-R1 proved produced rows1/2/3/6 and selector430 **430/430** green on CB12. R12 changes no gate identity, routing, selector, fixture,
-or execution contract, yet all four produced controls now fail `InvalidFinalCellState` and protected ordinal408 becomes RED. The CB14
-semantic delta adds relation-endpoint state plus an exact-A3 checked-product validation branch and changes same-region action construction.
-The four zero-rotation controls do **not** stop at the producer's typed `PeriodicActionCorrespondenceMismatch`; they reach the later
-generic `InvalidFinalCellState` surface. Current public failure reporting maps checked-product construction failure to that generic reason,
-so EXEC cannot claim the exact failing validator predicate. Review must independently determine whether the new exact-A3 checked-product
-endpoint-state checks are the first false predicate and whether the historical frozen `R=0` reduction remains semantically valid under
-CB14.
+```text
+torus nonzero-Z4 source witness producer failed: PeriodicActionCorrespondenceMismatch
+```
 
-The two candidates are kept distinct entering Review: row4/5 show **failed recovery** of the prior nonzero-Z4 target, while rows1/2/3/6
-plus ordinal408 are a **new regression surface** introduced on previously green controls. Review may merge them only if one proved cause
-owns both.
+Row4 still does not reach relation materialization, selected-certificate consumption, or `consumedPeriodicHolonomies > 0`. Row5 still does not reach its transform-only tamper or typed `NonReciprocalPeriodicRelation` assertion. CB14 therefore does **not** runtime-prove recovery of `M5-CP3-TB1-R11-R1-CAND-01`.
 
-Stable accounting remains **50 events / 14 categories / 36 recurrences** in EXEC. This candidate is unpromoted and the exact new
-regression cause/category has not yet been independently adjudicated; no stable ID/count is invented here. Produced-witness debt remains
-**3**.
+## 4. Bounded root-cause analysis for mandatory Review
+
+### 4.1 `M5-CP3-TB1-R12-CAND-01` — exact-A3 checked-product representation/gauge mismatch candidate
+
+**Status:** OPEN / PRODUCT SEMANTIC REGRESSION / NON-STABLE / REVIEW ADJUDICATION REQUIRED / +0.
+
+The four ordinary produced rows report `InvalidFinalCellState`. In the candidate source, `publish_phase_front_result(...)` overwrites the public reason with `InvalidFinalCellState` specifically when `SurfacePhaseFrontProduct::make(...)` rejects the completed build state. This localizes the new regression after phase-front construction and before a checked product is published.
+
+CB14 changed that checked-product path for exact A3 periodic pairs. It now binds `forwardEdge`/`reverseEdge` from A3 occurrence orientation and validates their new `periodicFromLattice` / `periodicToLattice` states against the stored relation's `action()` and `cutRoute()`.
+
+A concrete static authority hazard exists immediately before that validation: `insert_periodic_holonomy(...)` calls `canonicalize_periodic_holonomy(...)`, which is allowed to replace a relation with `inverseAction`, `route.reversed()` and `cutRoute.reversed()` when the inverse representation has the lower canonical action key. `PeriodicRelationId` is orientation-neutral, while the already-authored edge endpoint states and A3 Forward/Reverse occurrence labels are not rewritten after this canonicalization. The checked-product branch then compares those semantic A3-directed endpoint states against the storage-canonical relation representation.
+
+That is a bounded, source-supported `RP-01`-class authority-domain candidate: **semantic A3 direction / endpoint gauge may be conflated with storage-canonical relation orientation**. EXEC does not claim the canonicalizer definitely inverted the failing torus pair because the final public failure drops the `SurfacePhaseFrontProductError` subcode and no operand receipt was emitted. Mandatory Review must prove or reject this candidate before assigning stable recurrence credit or authorizing a code change.
+
+### 4.2 Existing R11-R1 endpoint-gauge candidate remains unrecovered
+
+Rows4/5 still stop at `PeriodicActionCorrespondenceMismatch`. CB14 refactored `periodic_action_for_pair(...)` to consume four typed endpoint states, but the public reason still merges `action == nullopt` with route/action rotation disagreement. A returned action is built with the supplied generator rotation, so the remaining runtime evidence strongly localizes to action construction, but the helper now contains several new predicates and R12 emits none of their operands. EXEC therefore does not invent a first-false subpredicate.
+
+`M5-CP3-TB1-R11-R1-CAND-01` remains OPEN as a failed recovery of existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION`. The reopened `M5-CP3-TB1-R6-REV-OBS-01` also remains OPEN because row4 still does not pass the correspondence comparator; neither independent Forward -> Reverse agreement nor inverted-pair rejection executes.
+
+### 4.3 Accounting
+
+Stable accounting remains **50 events / 14 categories / 36 recurrences** and produced-witness debt remains **3**. R12 exposes a real accepted-selector-row regression at ordinal408, but this candidate is unpromoted and the exact recurrence/category assignment is reserved for mandatory Review. No stable count is changed in EXEC.
 
 ## 5. Immutable postflight
 
-Postflight proves:
+Postflight is exact:
 
-- package byte/mode census unchanged;
+- candidate package byte/mode census unchanged;
 - packaged-source census unchanged;
 - execution-view census unchanged;
-- candidate manifest remains **28/28**;
-- selector430 / first427 unchanged;
+- candidate manifest still **28/28**;
+- selector430 and first427 unchanged;
 - routing identity map unchanged;
 - benchmark/configure/compile/relink/generated-discovery/package-repair/mode-repair/source-test-fixture-selector-mutation counters all **0**.
 
-No rerun or repair occurred after runtime began.
+No rebuild, configure, relink, generated discovery, source/test/fixture/selector mutation, package mutation, permission repair, rerun, or evidence stitching occurred.
 
 ## 6. Authority and successor
 
-CB14 candidate `10725395682 / b8dc3e906dd03525861a1985ea574bad1ad5c69a` remains **unpromoted**. Accepted runtime authority remains
-`10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316` under selector430 **430/430**. Selector publication remains prohibited;
-no M5 debt or inherited observation is discharged by EXEC.
+CB14 candidate `10725395682 / b8dc3e906dd03525861a1985ea574bad1ad5c69a` remains **unpromoted**. Accepted runtime authority remains `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316` under selector430 **430/430**. The two nonzero-Z4 M5 debts remain open and selector publication remains prohibited.
 
-The exact mandatory successor is runtime-free **`M5-CP3-TB1-R12-REV`**. It must independently re-open the R12 evidence and semantic
-delta, adjudicate both candidates, determine whether the new zero-rotation regression is a new stable recurrence or continuation of the
-existing `RP-01` event, and freeze exactly one corrective successor. Because row4 does not pass the second-endpoint correspondence path,
-the reopened independent Forward -> Reverse observation remains open.
+The mandatory runtime-free successor is **`M5-CP3-TB1-R12-REV`**. It must independently re-open R12 evidence, adjudicate `M5-CP3-TB1-R12-CAND-01`, split the surviving row4/5 correspondence frontier as far as evidence permits, decide stable accounting, and issue exactly one bounded successor plan. No retry or Code + Build is authorized before that Review.

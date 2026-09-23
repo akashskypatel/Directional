@@ -7,23 +7,21 @@ Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current 
 
 ## Current CP3 authority — R12 semantic RED; mandatory Review next
 
-Fresh R12 run/job `35802519951 / 106995887964` consumes CB14 candidate
-`10725395682 / b8dc3e906dd03525861a1985ea574bad1ad5c69a` through the unchanged 446-process immutable gate. It is mechanically
-complete: exact-one/zero-skip for all 446 processes, result self-manifest **912/912**, benchmark 0, and exact package/source/execution-view
-postflight with all prohibited-operation counters zero.
+R12 is the latest runtime evidence on CB14 candidate `10725395682 / b8dc3e906dd03525861a1985ea574bad1ad5c69a`. Run/job
+`35802519951 / 106995887964` completes the unchanged 446-process gate with exact-one/zero-skip, benchmark 0, complete **912/912**
+result evidence and exact immutable postflight. Vector is **9/9 mechanism + 1/1 focused atlas + 0/6 produced + 429/430 selector =
+439 PASS / 7 RED**.
 
-The semantic vector is **9/9 mechanism + 1/1 focused + 0/6 produced + 429/430 selector = 439 PASS / 7 RED**. Produced rows1/2/3/6,
-which were green in R11-R1, now reject with `InvalidFinalCellState`; produced rows4/5 remain at
-`PeriodicActionCorrespondenceMismatch`; protected selector ordinal408 regresses to RED at its required production assertion while
-191/192/247 remain green.
+Produced rows1/2/3/6 regress from R11-R1 PASS to `InvalidFinalCellState`; accepted selector ordinal408 also regresses from PASS to a
+rejected phase front. Rows4/5 remain at `PeriodicActionCorrespondenceMismatch`, so CB14 has not recovered the nonzero-Z4 endpoint-gauge
+frontier. EXEC opens non-stable `M5-CP3-TB1-R12-CAND-01`: source localizes the ordinary-torus failure to the new exact-A3 checked-product
+path and exposes a bounded authority hazard between semantic A3 Forward/Reverse endpoint-gauge state and independently canonicalized
+relation representation, but runtime does not expose the final subpredicate, so Review must adjudicate it.
 
-R12 therefore opens two non-stable Review candidates: failed recovery of the existing nonzero-Z4 `RP-01` endpoint-correspondence defect,
-and a new zero-rotation/direct-production regression surface introduced by CB14 on rows1/2/3/6 plus ordinal408. Runtime does not expose
-the exact row4 internal predicate or the exact checked-product predicate behind `InvalidFinalCellState`, so EXEC records the frontiers
-without inventing a root. Mandatory `M5-CP3-TB1-R12-REV` owns independent adjudication and the next bounded corrective plan.
-
-Accepted runtime remains `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316`; stable accounting remains **50 / 14 / 36**,
-debt **3**, CB14 candidate unpromoted and selector publication prohibited. The reopened independent direction observation remains open.
+Accepted runtime remains `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316`; stable accounting remains **50 / 14 / 36**
+pending Review, debt **3**, candidate unpromoted and selector publication prohibited. Exact next is runtime-free
+`M5-CP3-TB1-R12-REV`. The reopened direction observation remains open because row4 still does not reach its comparator/inverted-pair
+falsifier.
 
 ## 1. `M5-DEFN` — definitions frozen
 
@@ -210,6 +208,25 @@ cut-domain cell coordinate used as quotient-seam endpoint authority / NON-STABLE
 authority remains valid; the two nonzero-Z4 debts stay open. CB14 is frozen to keep ordinary cell placement unchanged while deriving
 a separate relation-owned endpoint lattice gauge independently from each endpoint's exact A3 occurrence/source-chart/branch and the
 one directed generator transport. No partner fitting, inverse retry, endpoint rewrite or search is authorized.
+
+## 4.12 `M5-CP3-TB1-R12-EXEC` — CB14 runtime regresses ordinary torus and fails nonzero-Z4 recovery
+
+R12 run/job `35802519951 / 106995887964` is mechanically complete with result/log artifacts `10726868409 / 10726518857`. All 446
+fresh processes select exactly once with zero skips; result evidence verifies **912/912** and immutable postflight is exact. The semantic
+vector is **439 PASS / 7 RED**: mechanism 9/9, focused atlas 1/1, produced 0/6 and selector430 429/430. Protected ordinals 191/192/247
+PASS while accepted ordinal408 REDs.
+
+The RED set splits. Rows1/2/3/6 and ordinal408 newly regress on the ordinary torus path; the produced rows report
+`InvalidFinalCellState`, which candidate source localizes to `SurfacePhaseFrontProduct::make(...)` rejecting the completed build state.
+CB14's exact-A3 product validation compares A3-directed endpoint-gauge states against the stored relation representation, while relation
+insertion can independently canonicalize to inverse action plus reversed generator/cut routes without rebinding the edge's semantic A3
+orientation. This is recorded as non-stable `M5-CP3-TB1-R12-CAND-01`, a bounded `RP-01`-class representation/gauge authority candidate
+that mandatory Review must prove or reject before stable accounting changes.
+
+Rows4/5 independently remain at `PeriodicActionCorrespondenceMismatch`, so `M5-CP3-TB1-R11-R1-CAND-01` is a failed recovery rather
+than closed. The helper's individual new predicates are not emitted, so EXEC does not guess the first false one. The reopened direction
+observation remains open. Candidate stays unpromoted, stable totals remain **50 / 14 / 36** pending Review, debt remains **3**, and exact
+successor is `M5-CP3-TB1-R12-REV`.
 
 ## 5. Folded-document index
 

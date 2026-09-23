@@ -1,37 +1,38 @@
-## 2026-09-23 — `M5-CP3-TB1-R12-EXEC`: CB14 recovery fails and previously green torus controls regress — **REVIEW REQUIRED / NON-STABLE / +0**
+## 2026-09-23 — `M5-CP3-TB1-R12-EXEC`: CB14 runtime is mechanically complete but regresses the ordinary torus and does not recover nonzero-Z4 — **439 PASS / 7 RED / REVIEW REQUIRED / +0**
 
-**Stable totals remain 50 events / 14 categories / 36 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**
+**Stable totals remain 50 events / 14 categories / 36 recurrences pending mandatory Review. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**
 
-Fresh R12 run/job `35802519951 / 106995887964` consumes CB14 candidate
-`10725395682 / b8dc3e906dd03525861a1985ea574bad1ad5c69a` immutably and is mechanically valid: all **446/446** exact-filter
-processes select once with zero skips, result self-manifest is **912/912**, postflight is exact, and all prohibited-operation counters are
-zero. The semantic vector is **9/9 mechanism + 1/1 focused + 0/6 produced + 429/430 selector = 439 PASS / 7 RED**.
+R12 run/job `35802519951 / 106995887964` consumes immutable CB14 candidate
+`10725395682 / b8dc3e906dd03525861a1985ea574bad1ad5c69a`. All **446/446** fresh exact-filter processes select once with zero
+skips; result evidence is complete **912/912** with exact immutable postflight. Vector: mechanism **9/9**, focused atlas **1/1**,
+produced **0/6**, selector430 **429/430**. Protected ordinals 191/192/247 PASS; accepted ordinal408 REDs. Result/log artifacts are
+`10726868409 / 10726518857` at ZIP SHA-256
+`3f5978b7e0753dccd68fa53ddc50e50b3a5d4d3ea61d2bbd6e9da688531877bc /
+146fa160681f012c10979eb8018f6b91e1ad41b2ce5ef5c02c70dc0f36a9d265`.
 
-### `M5-CP3-TB1-R12-CAND-01` — failed recovery of existing nonzero-Z4 endpoint correspondence
+### `M5-CP3-TB1-R12-CAND-01` — OPEN / exact-A3 checked-product representation/gauge mismatch candidate
 
-**Status:** OPEN / PRODUCT / EXISTING `RP-01 / AUTHORITY_DOMAIN_CONFLATION` RECOVERY NOT PROVED / `PeriodicActionCorrespondenceMismatch` / NON-STABLE / OWNER `M5-CP3-TB1-R12-REV` / +0.
+Produced rows1/2/3/6, all PASS at R11-R1, now fail while creating the ordinary torus fixture with
+`InvalidFinalCellState`; selector ordinal408 likewise changes from PASS to a rejected phase front (`NotProductionReady/tracing/None`).
+Candidate source localizes this public reason to `SurfacePhaseFrontProduct::make(...)` rejecting the completed phase-front build.
 
-Produced rows4/5 still stop at `PeriodicActionCorrespondenceMismatch`, so CB14 does not runtime-prove its endpoint-gauge correction on
-the real nonzero-Z4 witness. Row4 does not reach relation materialization/certificate consumption and row5 does not reach its transform-only
-tamper. The helper collapses multiple exact predicates and publishes no operand receipts before the witness throws, so EXEC does not guess
-which new endpoint-gauge predicate remains false.
+CB14's new exact-A3 checked-product branch validates A3 Forward/Reverse edge endpoint states against the stored relation's action/cut
+route. Immediately before publication, `insert_periodic_holonomy(...)` independently canonicalizes relation representation and may replace
+it with inverse action plus reversed generator/cut routes, while `PeriodicRelationId` remains orientation-neutral and the edge's A3
+occurrence orientation / endpoint-gauge state is not correspondingly rebound. This creates a bounded `RP-01`-class authority hazard:
+**semantic A3 direction may be conflated with storage-canonical relation orientation**. Runtime does not expose the final checked-product
+subcode or prove that the failing torus pair took the inverse-canonicalization branch, so this remains a non-stable candidate for R12
+Review rather than a claimed stable recurrence.
 
-### `M5-CP3-TB1-R12-CAND-02` — new zero-rotation/direct-production regression candidate
+### `M5-CP3-TB1-R11-R1-CAND-01` — FAILED RECOVERY / still `PeriodicActionCorrespondenceMismatch`
 
-**Status:** OPEN / PRODUCT REGRESSION CANDIDATE / R11-R1 GREEN -> R12 RED / PROTECTED ORDINAL408 PASS -> RED / EXACT PRODUCT PREDICATE UNRESOLVED / NON-STABLE / OWNER `M5-CP3-TB1-R12-REV` / +0.
+Produced rows4/5 remain at the same correspondence failure and still do not reach materialization/tamper assertions. CB14 therefore has
+not runtime-proved the endpoint-gauge correction. The refactored action helper now contains multiple unreported predicates; EXEC does not
+invent the first false one. Existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` remains open pending mandatory Review.
 
-R11-R1 had produced rows1/2/3/6 PASS and selector430 **430/430**. Under the unchanged 446-process gate, R12 now has rows1/2/3/6 all
-rejecting with `InvalidFinalCellState`, while protected ordinal408 rejects at its required `Produced` assertion and reports
-`NotProductionReady/tracing/None`. CB14 changed product semantics by adding relation-endpoint state, same-region action construction over
-that state, and an exact-A3 checked-product validation branch. The four control rows do not stop at the producer's typed correspondence
-reason; they reach the later generic final-state surface. Because checked-product rejection is collapsed to `InvalidFinalCellState`, EXEC
-cannot prove the exact first false validator predicate. Review must independently localize it and decide whether this is a new stable
-recurrence or another manifestation of existing `RP-01`.
-
-No stable count changes in EXEC: the candidate is unpromoted and the new regression cause/category has not yet been independently
-adjudicated. `M5-CP3-TB1-R9-REV-OBS-01-A` remains historical evidence that the CB11 `R=0` path was green; R12 proves only that CB14 no
-longer preserves that control surface. The reopened independent direction observation also remains OPEN because row4 still does not reach
-the required comparator.
+`M5-CP3-TB1-R6-REV-OBS-01` remains **OPEN** because row4 still does not reach the independent Forward -> Reverse comparator or its
+inverted-pair falsifier. `M5-CP2-TB1-REV-OBS-01` remains **OPEN** because selector430 is not independently green. Candidate remains
+unpromoted; no debt is discharged and selector publication remains prohibited. Exact successor is `M5-CP3-TB1-R12-REV`.
 
 ## 2026-09-23 — `M5-CP3-CB14`: endpoint-gauge correction compile-green — **RUNTIME PROOF PENDING / +0**
 
