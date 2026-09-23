@@ -1,3 +1,17 @@
+## 2026-09-23 — `M5-CP3-CB14`: endpoint-gauge correction compile-green — **RUNTIME PROOF PENDING / +0**
+
+**Stable totals remain 50 events / 14 categories / 36 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**
+
+CB14 implements the existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` correction with a typed periodic relation endpoint state derived
+independently from each endpoint's own cut-domain coordinate, branch, source chart, scale and exact A3 occurrence/orientation under the
+one directed generator rotation. Ordinary cell placement remains unchanged. Producer action construction and checked-product validation
+consume/rederive the same authority; the exact A3 path has no partner fitting, endpoint rewrite, inverse retry or transform search.
+
+Final compile/package run/job `35798853372 / 106984376759` on source `b8dc3e906dd03525861a1985ea574bad1ad5c69a` is green; candidate
+artifact `10725395682` has eight GMP/GMPXX targets, root manifest **28/28**, clean source receipts and `runtimeExecution=false`. This is
+compile evidence only: the existing R11-R1 candidate remains the latest runtime subject and the root-cause event gains no stable credit.
+Exact owner of recovery proof is `M5-CP3-TB1-R12-EXEC` -> mandatory Review.
+
 ## 2026-09-22 — `M5-CP3-TB1-R11-R1-REV`: endpoint-gauge authority defect proved — **EXISTING `RP-01` CONTINUATION / NON-STABLE / +0**
 
 **Stable totals remain 50 events / 14 categories / 36 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**
@@ -10,7 +24,7 @@ Produced rows4/5 alone fail at `PeriodicActionCorrespondenceMismatch` before mat
 ### `M5-CP3-TB1-R11-R1-CAND-01` — CAUSE PROVED / product endpoint-gauge authority-domain conflation
 
 **Status:** CAUSE PROVED / PRODUCT / EXISTING `RP-01 AUTHORITY_DOMAIN_CONFLATION` CONTINUATION /
-CUT-DOMAIN CELL COORDINATE USED AS QUOTIENT-SEAM ENDPOINT AUTHORITY / NON-STABLE / OWNER `M5-CP3-CB14` / +0.
+CUT-DOMAIN CELL COORDINATE USED AS QUOTIENT-SEAM ENDPOINT AUTHORITY / NON-STABLE / CB14 CORRECTION COMPILE-GREEN / R12 REVIEW PROOF PENDING / +0.
 
 Review proves CB12's semantic Forward -> Reverse direction is exact and storage-order independent. The collapsed correspondence guard
 can fail only because `periodic_action_for_pair(...)` returns no action: a returned action carries the supplied generator rotation by
@@ -32,10 +46,11 @@ CB12 removes pair insertion/storage order from the directed transform. R11-R1 re
 successful generator-route construction before the downstream endpoint-gauge mismatch. The R10 insertion-order defect is therefore
 not the remaining cause.
 
-### `M5-CP3-TB1-R6-REV-OBS-01` — CLOSED / direction authority proved
+### `M5-CP3-TB1-R6-REV-OBS-01` — ORIGINAL R11-R1 DISPOSITION SUPERSEDED / REOPENED BELOW
 
-Fresh nonzero-Z4 R11-R1 reaches the semantically directed Forward -> Reverse construction path. The previous zero-Z4 inability to
-discriminate forward from inverse is discharged; the surviving RED is downstream endpoint-gauge authority.
+R11-R1 originally treated reaching the semantically directed Forward -> Reverse construction path as direction-authority proof. The
+subsequent Review amendment below supersedes only that observation disposition: CB12's source-ordering correction remains closed, but
+the independent runtime direction observation is OPEN until row4 reaches the comparator and proves both agreement and inverted-pair rejection.
 
 ### `M5-CP3-TB1-R11-EXEC-CAND-01` — CLOSED / orchestration correction runtime-confirmed
 

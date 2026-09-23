@@ -170,3 +170,31 @@ typed `NonReciprocalPeriodicRelation`. Rows1/2/3/6 and selector430 must remain g
 
 Any mechanically complete R12 routes to mandatory Review. No candidate promotion, debt discharge or selector publication occurs
 in CB14 or R12 EXEC.
+
+## 8. Closeout — COMPLETE / compile-green / runtime unproved
+
+The pre-mutation derivation in §2.1 was implemented without changing ordinary `LocalLatticeState::latticeCoordinate` ownership.
+`SurfacePeriodicRelationEndpointState` now carries the relation-owned coordinate together with branch, scale, source-chart, exact A3
+boundary occurrence/orientation, and the one directed generator rotation. For `R=0` its coordinate remains the ordinary cut-domain
+coordinate; for nonzero `R` it is the endpoint's own branch-rotated coordinate. The same independently derived state is consumed by
+periodic action construction and recomputed by the checked `SurfacePhaseFrontProduct` validator. The exact A3 Forward -> Reverse
+direction remains authoritative; there is no partner fitting, endpoint rewrite, inverse retry, or rotation/translation search.
+
+The first compile attempt exposed one test-source mistake: the new focused test treated `DomainResult<T>` as dereferenceable with `*`.
+That was incorrect; its public access is `.value()`. The bounded correction changed only those six test expressions. No Directional
+binary executed in either compile attempt.
+
+Final compile/package run/job `35798853372 / 106984376759` is **GREEN** on exact semantic source
+`b8dc3e906dd03525861a1985ea574bad1ad5c69a`. Candidate result/log artifacts are `10725395682 / 10725570501` with provider
+ZIP SHA-256 `1995b8cf3de6190bff60f0e8d4ad74de90cc82327b80fd5c29f2fc0eb089d902 /
+e2393d77f6ab0ac324e13f793975ccede0702156e40d922b14fb528d77940a40`. The package root manifest is **28/28**,
+SHA-256 `92fb6c0747db81514b2060ab195d3b7e68ede14c035c1b7f116a4e8a36679279`; all source-status receipts are empty;
+`runtimeExecution=false`; GMP/GMPXX is linked; and all eight required targets compile/link.
+
+No implementation test, selector, benchmark, generated executable, discovery command, or custom input was executed. CB14 therefore
+claims compile authority only. Candidate `10725395682 / b8dc3e906dd03525861a1985ea574bad1ad5c69a` is **UNPROMOTED /
+RUNTIME UNPROVED**. Stable accounting remains **50 / 14 / 36**, produced-witness debt remains **3**, and accepted runtime remains
+`10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316`.
+
+Exact successor: fresh artifact-only **`M5-CP3-TB1-R12-EXEC`** on candidate `10725395682`, using the unchanged 446 identities,
+benchmark 0 and immutable postflight, followed by mandatory Review.

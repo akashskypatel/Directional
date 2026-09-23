@@ -1,3 +1,22 @@
+## 2026-09-23 — `M5-CP3-CB14`: periodic relation endpoint-gauge authority correction compiles cleanly; R12 next
+
+Runtime-free Code + Build. CB14 records and implements the pre-mutation derivation `q=rotate(G,c)`, with `G=I` for zero generator
+rotation and `G=B` (the endpoint's own exact branch rotation) for nonzero transport. Ordinary `LocalLatticeState` cell placement is
+unchanged. New typed `SurfacePeriodicRelationEndpointState` carries the relation-owned coordinate plus branch/scale/source-chart/A3
+occurrence/orientation/generator rotation; producer action construction and checked-product validation use/rederive that same authority.
+No partner fitting, endpoint rewrite, inverse retry, transform search, field/fixture/A3 retuning or selector change was introduced.
+
+The first compile-only attempt exposed one agent mistake in the new focused test: `DomainResult<T>` was used with `*` although its
+interface requires `.value()`. The bounded same-turn repair changed only those six test expressions. No generated Directional binary
+ran in either attempt.
+
+Final compile/package run/job `35798853372 / 106984376759` on exact source `b8dc3e906dd03525861a1985ea574bad1ad5c69a` is green.
+Candidate result/log `10725395682 / 10725570501` hash to
+`1995b8cf3de6190bff60f0e8d4ad74de90cc82327b80fd5c29f2fc0eb089d902 / e2393d77f6ab0ac324e13f793975ccede0702156e40d922b14fb528d77940a40`;
+package manifest is **28/28**, GMP/GMPXX is linked, all eight required targets compile/link, source-status receipts are empty and
+`runtimeExecution=false`. Candidate stays unpromoted; accepted runtime, stable accounting **50 / 14 / 36**, debt **3**, and selector
+publication state are unchanged. Exact successor is fresh artifact-only `M5-CP3-TB1-R12-EXEC`, then mandatory Review.
+
 ## 2026-09-22 — `M5-CP3-TB1-R11-R1-REV` review: upheld; direction observation reopened
 
 Runtime-free review. **Upheld with one disposition reversed.** Accounting holds at **50 events / 14 categories /

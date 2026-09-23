@@ -1,29 +1,29 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-22 at `M5-CP3-TB1-R11-R1-REV`
+**Last updated:** 2026-09-23 at `M5-CP3-CB14`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Corrected stable accounting is **50 / 14 / 36**, produced-witness debt **3**; M5 owns two of those debts and M6 owns one.
 
-## Current CP3 authority — R11-R1 Review proves endpoint-gauge authority defect; CB14 next
+## Current CP3 authority — CB14 compile-green candidate; R12 next
 
-Fresh R11-R1 run/job `35778555375 / 106917917282` on CB12 candidate
-`10713410215 / 8ff6fdc720b3e8da5c4f5765850f8fe69d4b2188` is mechanically valid at **444 PASS / 2 RED**, with result/log
-`10717297354 / 10717921412`, complete result self-manifest **912/912**, benchmark 0 and exact immutable postflight. Rows4/5 alone
-stop at `PeriodicActionCorrespondenceMismatch`.
+R11-R1 remains the latest runtime evidence: candidate `10713410215 / 8ff6fdc720b3...` is mechanically valid at **444 PASS / 2 RED**
+with complete 912/912 evidence, and Review proves the remaining failure is existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` at the
+periodic seam endpoint gauge.
 
-R11-R1 Review independently proves CB12's exact A3 Forward -> Reverse direction correction, closing the R10 insertion-order
-candidate and discharging the R6 direction observation. It also splits the collapsed correspondence guard: source-chart and scale
-preconditions pass, branch correspondence follows the exact directed source transition, the first endpoint map is true by shift
-construction, and the **second exact endpoint map is the first false predicate**. The accepted four-run rectangle gives `d2=-d1`,
-so frozen `rotate(R,d1) == -d2` becomes `rotate(R,d1)==d1`, impossible for genuine nonzero quarter-turn `R`. The remaining root is
-existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION`: raw cut-domain cell-grid coordinates are being reused as quotient-seam endpoint
-authority.
+CB14 implements the bounded correction without changing ordinary cell-grid placement. A new relation-owned endpoint state derives its
+coordinate independently from that endpoint's own cut-domain coordinate and exact branch gauge (`G=I` for zero generator rotation,
+`G=B` otherwise), while carrying exact source chart, scale, A3 boundary occurrence/orientation and directed generator rotation. Producer
+and checked validator consume/rederive the same state; no partner fitting, inverse retry or transform search exists on the exact A3 path.
 
-Accepted runtime remains `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316`; stable accounting remains
-**50 / 14 / 36**, debt **3**, candidate unpromoted and selector publication prohibited. Exact next is runtime-free product-only
-`M5-CP3-CB14`, which separates cell placement from independently derived periodic relation endpoint-gauge authority before fresh
-R12 runtime.
+Final compile/package run/job `35798853372 / 106984376759` is green on source
+`b8dc3e906dd03525861a1985ea574bad1ad5c69a`; candidate artifact `10725395682` has root manifest **28/28**, all eight GMP/GMPXX
+targets compile/link, source receipts are clean and `runtimeExecution=false`. No Directional executable was run. The first compile-only
+attempt exposed and then corrected one focused-test `DomainResult<T>` access mistake; the final green source above is authoritative.
+
+Accepted runtime remains `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316`; stable accounting remains **50 / 14 / 36**,
+debt **3**, CB14 candidate unpromoted and selector publication prohibited. Exact next is fresh artifact-only `M5-CP3-TB1-R12-EXEC`,
+then mandatory Review. The later R11-R1 Review amendment keeps the independent direction-observation runtime proof open for that Review.
 
 ## 1. `M5-DEFN` — definitions frozen
 
@@ -194,7 +194,9 @@ The specific R9 defect is recovery-proved: CB11 gates raw family/sign comparison
 
 R11-R1 Review independently upholds the complete **912/912** evidence contract and the fresh **444 PASS / 2 RED** runtime vector.
 CB12's semantic Forward -> Reverse selection is exact and storage-order independent, so `M5-CP3-TB1-R10-REV-CAND-01` closes
-**RECOVERY PROVED** and `M5-CP3-TB1-R6-REV-OBS-01` closes **DIRECTION AUTHORITY PROVED**.
+**RECOVERY PROVED**. R11-R1 originally also closed `M5-CP3-TB1-R6-REV-OBS-01`, but the later Review amendment supersedes only that
+observation disposition: the source-ordering correction stays closed while the independent runtime direction observation is OPEN until
+row4 passes item 5 and the comparator proves Forward -> Reverse agreement plus inverted-pair rejection.
 
 The remaining `PeriodicActionCorrespondenceMismatch` is split exactly. `periodic_action_for_pair(...)` can only be the failing side
 of the collapsed guard because a returned action carries the supplied generator rotation by construction. Source-chart presence and

@@ -2,51 +2,55 @@
 
 ## Current authority
 
-`M5-CP3-TB1-R11-R1-REV` is **COMPLETE / CAUSE PROVED / EXISTING `RP-01` CONTINUATION** once terminal `STATUS` is published.
+`M5-CP3-CB14` is **COMPLETE / PRODUCT-ONLY / RUNTIME-FREE / COMPILE GREEN / RUNTIME UNPROVED** once terminal `STATUS` is published.
 
-Fresh R11-R1 run/job `35778555375 / 106917917282` on CB12 candidate/source
-`10713410215 / 8ff6fdc720b3e8da5c4f5765850f8fe69d4b2188` is mechanically valid at **444 PASS / 2 RED**, with result/log
-`10717297354 / 10717921412`, complete **912/912** self-manifest, benchmark 0 and exact immutable postflight. Rows4/5 alone stop at
-`PeriodicActionCorrespondenceMismatch` before materialization/tamper assertions.
+CB14 implements the R11-R1 proved `RP-01 / AUTHORITY_DOMAIN_CONFLATION` correction by separating ordinary cut-domain cell placement
+from same-region periodic relation endpoint gauge. The independently derived endpoint state keeps exact branch, scale, source chart,
+A3 boundary occurrence/orientation and directed generator rotation; nonzero transport uses the endpoint's own branch-rotated coordinate,
+while zero rotation preserves the ordinary lattice coordinate exactly. Producer action construction and checked-product validation
+consume the same relation-owned authority. No partner fitting, endpoint rewrite, inverse retry, transform search, field/fixture/A3 retuning,
+or selector change was introduced.
 
-Review proves CB12's A3 Forward -> Reverse direction correction is exact and storage-order independent, so
-`M5-CP3-TB1-R10-REV-CAND-01` closes recovery-proved and `M5-CP3-TB1-R6-REV-OBS-01` closes direction-authority proved. The surviving
-correspondence failure is downstream. A returned action necessarily carries the supplied generator rotation; source-chart/scale and
-branch correspondence pass and the first endpoint map is true by shift construction. The second endpoint map is the first false
-predicate. On the accepted four-run rectangle raw cell-grid deltas satisfy `d2=-d1`; frozen §16 then requires
-`rotate(R,d1)==d1`, impossible for genuine nonzero quarter-turn `R`.
+Final compile/package run/job `35798853372 / 106984376759` on exact semantic source
+`b8dc3e906dd03525861a1985ea574bad1ad5c69a` is green. Candidate result/log artifacts `10725395682 / 10725570501` have ZIP SHA-256
+`1995b8cf3de6190bff60f0e8d4ad74de90cc82327b80fd5c29f2fc0eb089d902 / e2393d77f6ab0ac324e13f793975ccede0702156e40d922b14fb528d77940a40`;
+root manifest is **28/28**, all source-status receipts are empty, GMP/GMPXX is linked, all eight required targets compile/link, and
+`runtimeExecution=false`. The initial compile-only attempt found one test-source API mistake (`DomainResult<T>` was incorrectly used
+with `*` instead of `.value()`); the bounded correction touched only those six expressions and the green run above supersedes it.
 
-`M5-CP3-TB1-R11-R1-CAND-01` is therefore **CAUSE PROVED / PRODUCT / existing `RP-01 AUTHORITY_DOMAIN_CONFLATION` continuation /
-cut-domain cell coordinate used as quotient-seam endpoint authority / NON-STABLE / +0 / owner `M5-CP3-CB14`**. The test's source/A3
-nonzero witness remains valid. Stable accounting remains **50 / 14 / 36**, produced-witness debt **3**. Accepted runtime remains
-`10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316`; CB12 candidate stays unpromoted; selector publication remains prohibited.
+No Directional runtime was executed. Candidate `10725395682 / b8dc3e906dd03525861a1985ea574bad1ad5c69a` is unpromoted. Stable
+accounting remains **50 / 14 / 36**, produced-witness debt **3**, accepted runtime remains `10601978228 /
+0798547dedd8be05f9cd7a096b07e6bd94755316`, and selector publication remains prohibited. The later R11-R1 Review amendment also
+keeps the direction-observation runtime proof open: CB12's source-ordering correction is closed, but the first Review that gets row4 past
+the second endpoint map must still report an independent Forward -> Reverse agreement check and inverted-pair failure.
 
 ## Exact next turn
 
-**`M5-CP3-CB14`** under
-`.agents/Directional/Architecture_M5_CP3_CB14_Periodic_Seam_Lattice_Gauge_Authority_Correction_Plan.md`.
+**`M5-CP3-TB1-R12-EXEC`** — fresh artifact-only Test + Benchmark on candidate `10725395682 /
+b8dc3e906dd03525861a1985ea574bad1ad5c69a`, using the unchanged **446** exact-filter processes in the same order:
+9 mechanism + 1 focused atlas + 6 produced + selector430 430, benchmark **0**, exact-one selection, zero skips, complete result
+self-manifest, and immutable package/source/execution-view postflight. No configure, compile, relink, discovery, repair, fixture mutation,
+or package mutation is permitted.
 
-CB14 is runtime-free product-only. Before mutation it must prove a deterministic relation-endpoint gauge can be derived independently
-from each endpoint's own exact A3 boundary occurrence, semantic Forward/Reverse role, source-chart/branch state, cut-domain integer
-state and the one directed generator transport. Preserve ordinary cell-grid coordinates. Producer and checked validator then consume
-the same relation-owned endpoint authority. No partner fitting, endpoint rewrite, inverse retry, rotation/translation search or test
-retuning is permitted. If the required authority cannot be derived from current products, stop before mutation and return to Review.
-Green compile/package with all eight mandatory GMP/GMPXX targets freezes fresh `M5-CP3-TB1-R12-EXEC` using all unchanged 446
-identities, benchmark 0, then mandatory Review.
+Primary falsifiers remain frozen: produced row4 must progress beyond `PeriodicActionCorrespondenceMismatch` and prove genuine nonzero
+rotation+translation through selected-certificate/materialization consumption; row5 must reach its transform-only tamper and reject typed
+`NonReciprocalPeriodicRelation`; rows1/2/3/6 and selector430 must remain green. Any mechanically complete R12 routes to mandatory Review.
+No promotion, debt discharge, or selector publication occurs in EXEC.
 
 ## Resume-critical evidence
 
-- current runtime report: `.agents/Directional/Architecture_M5_CP3_TB1_R11_R1_Artifact_Only_Test_Benchmark_Report.md`
-- current Review record: `.agents/Directional/Architecture_M5_CP3_TB1_R11_R1_Review_Record.md`
-- exact CB14 plan: `.agents/Directional/Architecture_M5_CP3_CB14_Periodic_Seam_Lattice_Gauge_Authority_Correction_Plan.md`
-- R11-R1 run/job: `35778555375 / 106917917282`
-- R11-R1 result/log: `10717297354 / 10717921412`
-- result/log ZIP SHA-256: `d76dff757919a0c8bb139b6aa4d54840f5344fc9bf0b88f57a5d9629d3807656 / c09c1c5797640e85ed485d5b6a034970a266c36fb0bbf488441be1674aff0cd0`
-- complete result manifest: `912/912`, SHA-256 `16dfe18019afee726ce2d2d1845187619c27c74bfa9ff238904237c7de3ab589`
-- candidate/source: `10713410215 / 8ff6fdc720b3e8da5c4f5765850f8fe69d4b2188`
+- CB14 plan/closeout: `.agents/Directional/Architecture_M5_CP3_CB14_Periodic_Seam_Lattice_Gauge_Authority_Correction_Plan.md`
+- final compile run/job: `35798853372 / 106984376759`
+- candidate result/log: `10725395682 / 10725570501`
+- result/log ZIP SHA-256: `1995b8cf3de6190bff60f0e8d4ad74de90cc82327b80fd5c29f2fc0eb089d902 / e2393d77f6ab0ac324e13f793975ccede0702156e40d922b14fb528d77940a40`
+- exact candidate source: `b8dc3e906dd03525861a1985ea574bad1ad5c69a`
+- package manifest: `28/28`, SHA-256 `92fb6c0747db81514b2060ab195d3b7e68ede14c035c1b7f116a4e8a36679279`
+- packaged source archive SHA-256: `1bfd66e0a2c9a4b78dffe0280859130eed8bcd6e34032c07255bd0aaa83829bd`
+- command boundary: `runtimeExecution=false`; eight GMP/GMPXX targets compiled/linked; source status clean
+- prior runtime report: `.agents/Directional/Architecture_M5_CP3_TB1_R11_R1_Artifact_Only_Test_Benchmark_Report.md`
+- prior Review record: `.agents/Directional/Architecture_M5_CP3_TB1_R11_R1_Review_Record.md`
 - accepted runtime: `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316`
 - selector430 / first427 SHA-256: `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6 / f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`
-- Review source snapshot run/artifact: `35789577173 / 10721696280`, provider ZIP SHA-256 `be3a48cc07f4af55344c6d3a4819888a3ee89c36950d81a0b387eb198f92e522`
 - frozen semantics: `.agents/Directional/Architecture_M5_Frozen_Definitions.md` §§14–16.1
 - durable tracker/history: `.agents/Directional/Regression_Root_Cause_Tracker.md`, `.agents/Directional/M5_Consolidated_Record.md`
 
@@ -54,20 +58,19 @@ identities, benchmark 0, then mandatory Review.
 
 ```yaml
 load_next:
-  - references/turns/CB.md
+  - references/turns/TB.md
 conditional_modules:
-  - trigger: GitHub Actions compile/package orchestration
+  - trigger: GitHub Actions artifact-only execution orchestration
     path: modules/github-connector/MODULE.md
 deep_references:
-  - .agents/Directional/Architecture_M5_CP3_TB1_R11_R1_Review_Record.md
   - .agents/Directional/Architecture_M5_CP3_CB14_Periodic_Seam_Lattice_Gauge_Authority_Correction_Plan.md
+  - .agents/Directional/Architecture_M5_CP3_TB1_R11_R1_Review_Record.md
   - .agents/Directional/Architecture_M5_Frozen_Definitions.md
   - .agents/Directional/Regression_Root_Cause_Tracker.md
   - .agents/Directional/M5_Consolidated_Record.md
 do_not_preload:
-  - Directional runtime or benchmarks in CB14
+  - any compile, relink, discovery or package mutation in R12
   - field/fixture/A3/selector/routing retuning
-  - partner-fitted endpoint gauges, inverse retries or transform search
-  - candidate promotion or selector publication
+  - candidate promotion or selector publication in EXEC
   - M6 occurrence work
 ```
