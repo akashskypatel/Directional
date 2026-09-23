@@ -83,5 +83,5 @@ Exact successor is runtime-free `M6-DEFN`. Its plan freezes the four M6 stage pr
 | Successor frozen | exactly `M6-DEFN`; falsifiers/stop rules in `Architecture_M6_DEFN_Occurrence_Embedding_Verifier_Plan.md` |
 | Turn boundary held | runtime-free Review; no product/test/fixture/selector/benchmark/build source mutation |
 | review_check.py boundary | PASS — all checks passed, including no product/test/fixture/build mutation, no selector mutation, and selector448 declared hash |
-| `STATUS` lifecycle maintained | entry beacon published for `M5-CP3-TB2-REV`; final COMPLETE beacon must name `M6-DEFN` and preserve start timestamp |
-| Pushed to origin, branch in sync | PENDING_FINAL_PUSH_CONFIRMATION |
+| `STATUS` lifecycle maintained | entry/resume beacon maintained for `M5-CP3-TB2-REV`; final COMPLETE beacon will name `M6-DEFN` and preserve `Started at` / `Resumed at` |
+| Pushed to origin, branch in sync | CONFIRMED — closure patch push `d15c7278d690aa5ad62c3d47767ed5c6ff1ebef0` succeeded; temporary state cleanup succeeded at `65be47ef694ed39e7e6a51823a5dbd25071da175`; this final documentation update is a direct remote write with no unpublished local state |
