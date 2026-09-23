@@ -1,5 +1,0 @@
-M5-DEFN-R1 drive patch trigger
-caller_install_sha=2787b82324876009278d67605a63ae8195d58418
-patch_file_id=1LU_5CxPtKbsjVouOqNglzfNT5dqcBj-c
-patch_sha256=3db03145f010d4b6db48d1673413300418811e42d70d4e3d0c2881c226101c91
-base_sha=56a6e667c731bc78163b751554d5b8f4148f430f
