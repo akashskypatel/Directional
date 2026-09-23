@@ -1,0 +1,2 @@
+.agents/connector-triggers/source-snapshot/m5-cp3-tb2-rev-20260923.txt
+.agents/connector-triggers/m5-cp3-tb2-rev-drive-apply.txt
