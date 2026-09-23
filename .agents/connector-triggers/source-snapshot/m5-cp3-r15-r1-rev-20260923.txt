@@ -1,3 +1,0 @@
-Purpose: verified source/document snapshot for M5-CP3-TB1-R15-R1-REV
-Requested authority: current branch after Review start beacon
-Runtime execution: false

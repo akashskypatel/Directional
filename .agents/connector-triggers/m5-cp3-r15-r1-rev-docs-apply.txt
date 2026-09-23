@@ -1,4 +1,0 @@
-Purpose: apply independently reviewed M5-CP3-TB1-R15-R1-REV durable docs/consolidation patch
-Patch SHA-256: e5737c1c945f7ff6532b327a870e5498d43f3244dd7a728cd394eb6ae025696a
-Base: 5c745f486d32434986b70440d538d3f5125616e8
-Retry: 0
