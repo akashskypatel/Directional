@@ -1,0 +1,4 @@
+turn=M5-CP3-CB16
+purpose=apply verified occurrence branch/gauge authority patch
+base_sha=c56769e634273ccc872fab4da385bd15f450308c
+retry=0
