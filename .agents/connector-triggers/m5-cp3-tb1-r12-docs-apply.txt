@@ -1,4 +1,0 @@
-turn=M5-CP3-TB1-R12-EXEC
-purpose=apply verified closeout documentation patch
-patch_file_id=19q23hpNFJlkjfd7ECYi10J_9wjSD6PrO
-base_sha=ca731d41bbc91928dc9e354f6f31c24821ad2770
