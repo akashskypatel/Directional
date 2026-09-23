@@ -1,0 +1,2 @@
+# M5-CP3-CB19 post-compile temporary-state cleanup
+.agents/connector-triggers/m5-cp3-cb19-compile/trigger.txt
