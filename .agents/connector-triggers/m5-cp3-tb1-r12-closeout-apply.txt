@@ -1,0 +1,5 @@
+turn=M5-CP3-TB1-R12-EXEC
+purpose=apply durable R12 closeout documentation patch
+patch_file_id=1exIQmBzBXEEjKOY2bSlu5IQjP1NvtdXx
+patch_sha256=35dc9700c763a751c936c3f288403c56c138c48666caeb19e318190e0045da5f
+base_sha=ca731d41bbc91928dc9e354f6f31c24821ad2770
