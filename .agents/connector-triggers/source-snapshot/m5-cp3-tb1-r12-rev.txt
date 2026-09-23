@@ -1,3 +1,0 @@
-turn=M5-CP3-TB1-R12-REV
-purpose=review-source-snapshot
-read_mode=snapshot
