@@ -1,4 +1,0 @@
-M5-CP4-CB1 patch apply trigger
-Caller install: c6e89e12ebe30d4879d5c717f04506bf58c91ff5
-Patch base: 0ca68c9689b165db34eb0b52ccce89263afb7499
-Retry: 0
