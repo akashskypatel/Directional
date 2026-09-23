@@ -1,5 +1,0 @@
-M5-CP4-CB1 compile trigger
-Exact source SHA: 535ec760b7c39dd437de69afebec568fafb44aab
-Targets: authority-kernel producer completion validation
-Runtime execution: forbidden
-Retry: 0
