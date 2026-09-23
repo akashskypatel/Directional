@@ -2,9 +2,9 @@
 
 Last updated: 2026-09-23 UTC
 
-## Latest Test + Benchmark turn — `M5-CP3-TB1-R13-EXEC`
+## Latest Test + Benchmark turn — `M5-CP3-TB1-R14-EXEC`
 
-Mechanically complete **445/447 PASS** with self-manifest **914/914**. Semantic+mechanism 10/10, focused 1/1, produced 4/6, selector430 430/430. Rows4/5 alone RED at typed `PeriodicActionFirstBranchMismatch`; benchmark 0; exact immutable postflight.
+Mechanically complete **446/448 PASS** with self-manifest **916/916**. Branch+semantic+mechanism 11/11, focused 1/1, produced 4/6, selector430 430/430. The new CB16 branch-authority identity PASSes, but rows4/5 alone remain RED at typed `PeriodicActionFirstBranchMismatch`; benchmark 0; exact immutable postflight. The R13 convergence trigger condition is met.
 
 ## Latest Review turn — `M5-CP3-TB1-R13-REV`
 
@@ -14,9 +14,9 @@ Review independently upholds R13 **445/447** / **914/914**, closes the R12 ordin
 
 CB16 is **COMPLETE / RUNTIME-FREE / COMPILE GREEN / RUNTIME UNPROVED** at candidate `10733058003` / source `6bad9eb5626e77a234ffb2c14f621195105e4ba1`. Relation endpoint branch/gauge now preserves the bounded-disk chart offset while re-expressing it at the exact accepted A3 occurrence-carrier face; checked-product/materialization consumers validate the same carried authority. The new `M5CP3.PeriodicRelationEndpointBranchUsesAcceptedOccurrenceAuthority` falsifier compiles but was not executed. Compile retry run/job `35820794471 / 107052021973` links all eight GMP/GMPXX targets with root manifest **28/28**, clean source receipts and `runtimeExecution=false`.
 
-## Exact next turn — `M5-CP3-TB1-R14-EXEC`
+## Exact next turn — `M5-CP3-TB1-R14-REV`
 
-Immutable artifact-only runtime on CB16 candidate `10733058003`: execute the new branch-authority identity first plus the unchanged R13 447 identities, exactly **448 fresh processes**, benchmark 0, immutable postflight, then mandatory Review. Rows4/5 must both become green to satisfy the R13 convergence trigger; otherwise Review must route to gauge-definition reconciliation rather than `CB17`.
+Mandatory runtime-free independent Review of R14 result artifact `10734153401`. Reopen the **916/916** evidence and **446/448** ledger, adjudicate the failed CB16 recovery, preserve selector430 430/430 authority, and apply the already-fired R13 convergence trigger. The post-Review semantic successor must be same-region nonzero-Z4 gauge-definition reconciliation rather than `CB17`; Review owns the exact frozen turn ID/scope.
 
 ## M5 checkpoint sequence
 
@@ -31,7 +31,8 @@ Immutable artifact-only runtime on CB16 candidate `10733058003`: execute the new
 - [x] `M5-CP3-TB1-R13-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. 445/447 PASS, complete 914/914 evidence; ordinary recovery green, rows4/5 exact first-branch mismatch, selector430 430/430.
 - [x] `M5-CP3-TB1-R13-REV` — **COMPLETE / RUNTIME-FREE / ORDINARY RECOVERY PROVED + FIRST-BRANCH ROOT PROVED / ACCOUNTING ADDENDUM**. Existing RP-01 occurrence-branch authority conflation; addendum records the R12 ordinal408 re-regression as a stable RP-01 recurrence and corrects totals to 51 / 14 / 37.
 - [x] `M5-CP3-CB16` — **COMPLETE / RUNTIME-FREE / COMPILE GREEN / RUNTIME UNPROVED**. Candidate `10733058003 / 6bad9eb5626e77a234ffb2c14f621195105e4ba1`; exact occurrence-carrier branch/gauge authority bridge + independent branch falsifier; all eight GMP/GMPXX targets compile/link; root manifest 28/28; no runtime.
-- [ ] `M5-CP3-TB1-R14-EXEC` — **EXACT NEXT / ARTIFACT-ONLY**. New branch-authority identity + unchanged R13 vector = 448 fresh processes, benchmark 0, then mandatory Review. Rows4/5 both green or definition reconciliation is required.
+- [x] `M5-CP3-TB1-R14-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. 446/448 PASS, complete 916/916 evidence; branch-authority focus PASS, produced rows4/5 remain exact `PeriodicActionFirstBranchMismatch`, selector430 430/430. Convergence trigger fired.
+- [ ] `M5-CP3-TB1-R14-REV` — **EXACT NEXT / RUNTIME-FREE REVIEW**. Independently re-open R14 evidence, adjudicate the failed recovery and freeze the required same-region nonzero-Z4 gauge-definition reconciliation successor; no CB17.
 
 - [x] `M5-CP1` and `M5-CP2`: CLOSED / ACCEPTED for mechanism credit; accepted package `10601978228`.
 - [x] `M5-CP3` R1→R7 recovery chain: stable ordinal408 `RP-01` event **RECOVERY PROVED** at R7 Review.
@@ -86,7 +87,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. M4 handed four periodic/relation debts to M5 and one closed-complex debt to M6; R7 Review has since discharged two M5 debts, leaving the two nonzero-Z4 M5 debts plus the one M6 debt.
-- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 CB16 COMPILE GREEN / R14 NEXT**. Accepted runtime package remains `10601978228`. CB16 candidate `10733058003 / 6bad9eb...` re-expresses relation endpoint branch/gauge at exact accepted A3 occurrence-carrier authority and compiles all eight GMP/GMPXX targets with no runtime. R13 remains the latest runtime at **445/447 PASS** / **914/914** with selector430 430/430. Candidate remains unpromoted; two nonzero-Z4 debts plus direction/publication/convergence observations remain open; corrected accounting is **51 / 14 / 37**, debt **3**. Exact next is `M5-CP3-TB1-R14-EXEC`.
+- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 R14 SEMANTIC RED / REVIEW NEXT**. Accepted runtime package remains `10601978228`. R14 on CB16 candidate `10733058003 / 6bad9eb...` is mechanically complete at **446/448 PASS** / **916/916**, selector430 430/430. The new branch-authority focus is green but produced rows4/5 remain at `PeriodicActionFirstBranchMismatch`, so the convergence trigger has fired. Candidate remains unpromoted; two nonzero-Z4 debts plus direction/publication/convergence observations remain open; corrected accounting is **51 / 14 / 37**, debt **3**. Exact next is `M5-CP3-TB1-R14-REV`.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.

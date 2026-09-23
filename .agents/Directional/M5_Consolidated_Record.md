@@ -1,15 +1,15 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-23 at `M5-CP3-CB16`
+**Last updated:** 2026-09-23 at `M5-CP3-TB1-R14-EXEC`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. The R13 Review accounting addendum corrects stable accounting to **51 / 14 / 37**, produced-witness debt **3**; M5 owns two of those debts and M6 owns one.
 
-## Current CP3 authority — CB16 compile green / R14 artifact-only next
+## Current CP3 authority — R14 mechanically complete semantic RED / mandatory Review next
 
-R13 run/job `35814092644 / 107031820541` on CB15 candidate/source `10730261023 / 4dfe392d28d60b448e2f32253f7d170221ac57ec` remains the latest runtime authority for the current CP3 recovery chain: **914/914** evidence, **445/447 PASS**, selector430 **430/430**, with rows4/5 alone at typed `PeriodicActionFirstBranchMismatch`. R13 Review proves existing RP-01 occurrence-carrier branch/gauge authority conflation and its accounting addendum records the recovered R12 ordinal408 PASS -> RED transition as a stable RP-01 recurrence, correcting totals to **51 / 14 / 37**, debt **3**.
+R14 run/job `35824161895 / 107062198724` on CB16 candidate/source `10733058003 / 6bad9eb5626e77a234ffb2c14f621195105e4ba1` is the latest runtime evidence: complete **916/916** self-manifest, **446/448 PASS**, selector430 **430/430**, benchmark 0 and exact immutable postflight. The new CB16 branch-authority identity, CB15 semantic-orientation identity, produced rows1/2/3/6 and all protected selector rows pass. Produced rows4/5 alone remain at exact `PeriodicActionFirstBranchMismatch`.
 
-CB16 implements only that proved branch/gauge seam. It preserves the bounded-disk chart offset, re-expresses the branch at each exact accepted A3 occurrence-carrier face, authors the nonzero relation coordinate gauge from that same authority, and adds the independent `M5CP3.PeriodicRelationEndpointBranchUsesAcceptedOccurrenceAuthority` falsifier. After one bounded same-turn compile repair that retained the already-authored per-face gauge through periodic reconciliation, source `6bad9eb5626e77a234ffb2c14f621195105e4ba1` compiles/packages all eight mandatory GMP/GMPXX targets in run/job `35820794471 / 107052021973`; candidate artifact `10733058003` has root manifest **28/28** and `runtimeExecution=false`. Candidate remains unpromoted and runtime-unproved. Exact next is immutable `M5-CP3-TB1-R14-EXEC` at **448 fresh processes**, then mandatory Review. If produced rows4 and row5 are not both green, the Review convergence trigger requires same-region nonzero-Z4 gauge-definition reconciliation rather than `CB17`.
+The focused CB16 authority contract is therefore runtime-green but the genuine nonzero-Z4 production witness remains RED at the same first branch predicate. EXEC does not infer a replacement cause. The precommitted R13 convergence trigger has fired because rows4/5 are not both green; mandatory `M5-CP3-TB1-R14-REV` must independently adjudicate the evidence and freeze same-region nonzero-Z4 gauge-definition reconciliation rather than `CB17`. Candidate remains unpromoted. Corrected stable accounting remains **51 / 14 / 37**, debt **3**; R6 direction, CP2 publication, both nonzero debts and the broader endpoint-gauge chain remain open.
 
 ## 1. `M5-DEFN` — definitions frozen
 
@@ -246,6 +246,14 @@ The first compile attempt at source `11a82a4bd190260648214498da78f93ca106142b` f
 Final semantic source `6bad9eb5626e77a234ffb2c14f621195105e4ba1` compiles/packages green in run/job `35820794471 / 107052021973`. Candidate/log artifacts are `10733058003 / 10732709067` with ZIP SHA-256 `96e313e822bea8ebc6b7478c75c99d4c9245c7d88913b0d14d449a0ec73013f0 / 3cfde85027f85bbb21f22c87918bbb911879f17bdc03014618c819a04343eeaa`. All eight required targets compile/link with mandatory GMP/GMPXX, preflight/build exit `0 / 0`, clean source receipts, root manifest **28/28** (`f77684128606428a82fe236b749b2d8357948e610745db55f98775a6b4217629`), source archive `45bb6ccaba68772e998ebd41d75334041b54e5eadb36e4f3c0cd68b46b9b988b`, and `runtimeExecution=false`.
 
 CB16 is compile-green only and remains unpromoted. Corrected stable accounting remains **51 / 14 / 37**, debt **3**; the two nonzero-Z4 M5 debts plus R6 direction, CP2 publication, and R13 convergence observations remain open. Exact successor is artifact-only `M5-CP3-TB1-R14-EXEC`: the new branch-authority identity followed by the unchanged R13 447 identities, exactly **448 fresh processes**, benchmark 0, then mandatory Review.
+
+## 4.17 `M5-CP3-TB1-R14-EXEC` — focused branch authority passes; produced seam still first-branch RED
+
+Fresh artifact-only R14 executes all **448** exact-filter processes with exact-one selection and zero skips. Branch+semantic+mechanism is **11/11**, focused atlas **1/1**, produced **4/6**, selector430 **430/430**: **446 PASS / 2 RED** total. Result evidence is complete **916/916** at manifest SHA-256 `db2ccb2a5e1821018a71032ca9bdcf34e5c0a97fee6ae384d3710656320fd5ce`; result/log artifacts are `10734153401 / 10734178551` at ZIP SHA-256 `ba6ab62396ff572aabb6850643e2d460cbfa0b5b196813bb3b8a91e6a31e3088 / 2e32386ee9e9ad67391f31227d2ddac1504f67f321e94c6296e62cb055b29b7f`. Benchmark and all prohibited-operation counters are zero; package/source/execution-view postflight is exact.
+
+`M5CP3.PeriodicRelationEndpointBranchUsesAcceptedOccurrenceAuthority` passes, proving the focused CB16 branch-authority contract itself. The semantic-orientation identity, ordinary produced controls and selector430 also remain green. Rows4/5 alone still fail while constructing the real nonzero-Z4 source witness at `PeriodicActionFirstBranchMismatch`, before row4's independent direction comparator and before row5's transform-only tamper. `M5-CP3-TB1-R14-CAND-01` is therefore recorded OPEN as a failed CB16 recovery inside the existing RP-01 endpoint-gauge chain; no accepted selector regression occurs and stable accounting remains **51 / 14 / 37**, debt **3**.
+
+The R13 convergence condition is now met. EXEC does not diagnose the focused-PASS/produced-RED discrepancy. Mandatory runtime-free `M5-CP3-TB1-R14-REV` must reopen the evidence, adjudicate the failed recovery and freeze same-region nonzero-Z4 gauge-definition reconciliation; `CB17` is prohibited by the precommitted trigger.
 
 ## 5. Folded-document index
 

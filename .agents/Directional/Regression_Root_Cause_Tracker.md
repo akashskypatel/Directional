@@ -1,3 +1,17 @@
+## 2026-09-23 — `M5-CP3-TB1-R14-EXEC`: CB16 focused authority green; produced nonzero seam still first-branch RED — **446/448 / REVIEW REQUIRED / +0**
+
+**Corrected stable totals remain 51 events / 14 categories / 37 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**
+
+R14 run/job `35824161895 / 107062198724` on CB16 candidate `10733058003 / 6bad9eb5626e77a234ffb2c14f621195105e4ba1` is mechanically complete with self-manifest **916/916** and fresh **446 PASS / 2 RED**: branch+semantic+mechanism **11/11**, focused atlas **1/1**, produced **4/6**, selector430 **430/430**. All 448 processes select exactly one test with zero skips; benchmark and every prohibited-operation counter are zero; package/source/execution-view postflight is exact. Protected selector ordinals 191/192/247/408 all PASS.
+
+### `M5-CP3-TB1-R14-CAND-01` — OPEN / failed CB16 recovery / existing RP-01 endpoint-gauge chain / non-stable / +0
+
+The new `M5CP3.PeriodicRelationEndpointBranchUsesAcceptedOccurrenceAuthority` identity PASSes, as do the CB15 semantic-orientation identity, produced rows1/2/3/6 and the complete selector. Produced rows4/5 alone remain RED at exact `PeriodicActionFirstBranchMismatch`. Row4 still stops before materialization/certificate consumption and the independent Forward -> Reverse comparator/inverted-pair rejection; row5 still stops before its transform-only tamper and exact `NonReciprocalPeriodicRelation` assertion.
+
+This is a failed recovery of the existing endpoint-gauge `RP-01` chain, not a new stable event: no accepted selector row transitions to RED. EXEC does not infer a new root cause from the repeated reason or from the focused PASS. `M5-CP3-TB1-R13-REV-OBS-01` has now met its precommitted runtime trigger condition because rows4/5 are not both green; mandatory R14 Review owns the formal disposition and must route the next semantic turn to same-region nonzero-Z4 gauge-definition reconciliation rather than `CB17`.
+
+`M5-CP3-TB1-R6-REV-OBS-01`, `M5-CP2-TB1-REV-OBS-01`, both nonzero-Z4 M5 debts, and the broader `M5-CP3-TB1-R11-R1-CAND-01` remain OPEN. Candidate remains unpromoted; no selector publication or debt credit occurs in EXEC.
+
 ## 2026-09-23 — `M5-CP3-CB16`: occurrence-carrier branch/gauge correction compile green — **RUNTIME PROOF PENDING / +0**
 
 **Corrected stable totals remain 51 events / 14 categories / 37 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**
