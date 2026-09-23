@@ -1,3 +1,17 @@
+## 2026-09-23 — `M5-CP3-TB1-R14-REV`: focused helper green, production gauge model under-specified — **DEFINITION AUTHORITY / EXISTING RP-01 / +0**
+
+**Stable totals remain 51 events / 14 categories / 37 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**
+
+Review independently re-opens R14 result artifact `10734153401` and re-verifies self-manifest **916/916**, all **448** fresh exact-filter outcomes at **446 PASS / 2 RED**, selector430 **430/430**, protected ordinals 191/192/247/408, exact routing owner census **31 / 283 / 75 / 41**, and immutable package/source/execution-view postflight. The new CB16 branch-authority identity is genuinely non-vacuous and PASSes; produced rows4/5 alone remain `PeriodicActionFirstBranchMismatch`.
+
+### `M5-CP3-TB1-R14-CAND-01` — CAUSE PROVED / definition authority / existing RP-01 continuation
+
+The focused helper hand-authors local-face and occurrence-carrier face gauges that already satisfy its expected relation correspondence. Production derives those gauges differently. Its bounded-disk `faceBranchRotation` is propagated on the cut-open dual graph with accepted cut carriers omitted, while same-region periodic promotion independently reads the exact A1 directed source-face `transition_value(...)` across the accepted A3 generator carrier. Frozen §§16/16.1 require those quantities to participate in one relation action but do not define their exact change of gauge. R14 therefore falsifies the implicit assumption that raw A1 transport and cut-open relation-endpoint gauge already coincide.
+
+**Status:** CAUSE PROVED / DEFINITION AUTHORITY / EXISTING `RP-01 AUTHORITY_DOMAIN_CONFLATION` CONTINUATION / SAME-REGION NONZERO-Z4 RAW-TRANSPORT VS CUT-DOMAIN-GAUGE MODEL UNDER-SPECIFIED / NON-STABLE / OWNER `M5-CP3-DEFN-R1` / +0. No specific conjugation, inverse direction, free translation, partner fitting or fixture correction is inferred from the repeated reason string.
+
+CB16's helper correction remains valid at its stated scope, but `M5-CP3-TB1-R13-CAND-01` is not closed recovery-proved and the broader `M5-CP3-TB1-R11-R1-CAND-01` endpoint-gauge chain remains OPEN under DEFN-R1 ownership. `M5-CP3-TB1-R13-REV-OBS-01` is **DISCHARGED AS TRIGGERED** because rows4/5 did not both become green; its precommitted action is now enforced and `CB17` is prohibited. `M5-CP3-TB1-R6-REV-OBS-01`, `M5-CP2-TB1-REV-OBS-01`, `M5-DEFN-REV-OBS-01` and both nonzero-Z4 M5 debts remain OPEN. Exact successor is runtime-free `M5-CP3-DEFN-R1`, which must freeze one coherent source/cut-domain/relation/storage gauge model before any further implementation.
+
 ## 2026-09-23 — `M5-CP3-TB1-R14-EXEC`: CB16 focused authority green; produced nonzero seam still first-branch RED — **446/448 / REVIEW REQUIRED / +0**
 
 **Corrected stable totals remain 51 events / 14 categories / 37 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**

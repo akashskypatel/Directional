@@ -1,6 +1,6 @@
 # M5 Frozen Definitions — Certificate-Carrying Chart and Quotient Relations
 
-**Status:** FROZEN / `M5-DEFN` COMPLETE / CP1 + CP2 CLOSED / EXACT NEXT = `M5-CP3-CB1` / RUNTIME-FREE REVIEW AMENDMENT 2026-09-20
+**Status:** FROZEN / `M5-DEFN` COMPLETE / CP1 + CP2 CLOSED / CP3 R14 SEMANTIC RED / EXACT NEXT = `M5-CP3-DEFN-R1` / RUNTIME-FREE REVIEW AMENDMENT 2026-09-23
 **Date:** 2026-09-19
 **Definition authority:** this record is the normative M5 contract for canonical periodic-relation identity, producer-selected relation-path certificates, consumer validation, failure ownership, and the CP1/CP2/CP3 split. It refines `DESIGN.md` §14 M5 without changing accepted M4 semantics or M6 occurrence-complex ownership.
 
@@ -415,6 +415,14 @@ or select among multiple gauges based on which one passes.
 After both relation endpoint states are independently authored, the frozen §16 equations remain unchanged and are the validation
 contract: one directed `R`, exact `rotate(R,d1) == -d2`, both branch correspondences and both exact integer endpoint mappings through
 one `GridAutomorphism`. This clarification separates authority domains; it does not weaken §§14–16 or change relation identity.
+
+### 16.2 R14 Review stop amendment — same-region nonzero-Z4 gauge reconciliation required
+
+`M5-CP3-TB1-R14-REV` independently verifies that CB16's focused occurrence-branch helper contract is green while the genuine produced nonzero-Z4 subject still fails at the first branch correspondence. Static source authority proves that the quantities entering that correspondence are authored in two separately valid domains: the accepted cut carrier is omitted from the bounded-disk dual propagation that defines `faceBranchRotation`, while `generatorRotation` is read independently as exact directed A1 `transition_value(...)` across the accepted A3 generator carrier.
+
+Sections 16 and 16.1 remain binding semantic obligations, including one directed action, reciprocal branch/delta/endpoint equations, deterministic semantic direction, the `R == 0` reduction and every no-search/no-fitting prohibition. R14 proves only that those sections are **insufficient implementation authority** for the nonzero seam: they do not yet define the exact change of gauge between the A1 source-face frame, cut-open phase-front frame, relation-endpoint frame and canonical storage representation.
+
+No further same-region nonzero-Z4 semantic Code + Build turn is authorized until runtime-free `M5-CP3-DEFN-R1` freezes that mapping and assigns one producer/reader domain to the generator rotation, endpoint branch component, endpoint lattice coordinates and relation action/translation. The definition may not be chosen by trying an inverse, fitting a partner or translation, inspecting downstream success, using insertion order/minimum-region heuristics, weakening the accepted selector, tuning the fixture/field/A3 authority, or pulling M6 occurrence authority backward. If one unique relation action cannot be derived from existing producer-owned facts, the definition turn must stop with a definition blocker.
 
 ## Independent verification addendum (reviewing agent)
 

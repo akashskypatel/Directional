@@ -1,15 +1,15 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-23 at `M5-CP3-TB1-R14-EXEC`
+**Last updated:** 2026-09-23 at `M5-CP3-TB1-R14-REV`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. The R13 Review accounting addendum corrects stable accounting to **51 / 14 / 37**, produced-witness debt **3**; M5 owns two of those debts and M6 owns one.
 
-## Current CP3 authority — R14 mechanically complete semantic RED / mandatory Review next
+## Current CP3 authority — R14 Review complete / definition reconciliation next
 
-R14 run/job `35824161895 / 107062198724` on CB16 candidate/source `10733058003 / 6bad9eb5626e77a234ffb2c14f621195105e4ba1` is the latest runtime evidence: complete **916/916** self-manifest, **446/448 PASS**, selector430 **430/430**, benchmark 0 and exact immutable postflight. The new CB16 branch-authority identity, CB15 semantic-orientation identity, produced rows1/2/3/6 and all protected selector rows pass. Produced rows4/5 alone remain at exact `PeriodicActionFirstBranchMismatch`.
+R14 run/job `35824161895 / 107062198724` on CB16 candidate/source `10733058003 / 6bad9eb5626e77a234ffb2c14f621195105e4ba1` remains the latest runtime evidence: complete **916/916** self-manifest, **446/448 PASS**, selector430 **430/430**, benchmark 0 and exact immutable postflight. Independent Review re-verifies the full ledger, selector430/first427, routing owner census and immutable boundary. The CB16 focused branch-authority identity is genuinely green while produced rows4/5 alone remain exact `PeriodicActionFirstBranchMismatch`.
 
-The focused CB16 authority contract is therefore runtime-green but the genuine nonzero-Z4 production witness remains RED at the same first branch predicate. EXEC does not infer a replacement cause. The precommitted R13 convergence trigger has fired because rows4/5 are not both green; mandatory `M5-CP3-TB1-R14-REV` must independently adjudicate the evidence and freeze same-region nonzero-Z4 gauge-definition reconciliation rather than `CB17`. Candidate remains unpromoted. Corrected stable accounting remains **51 / 14 / 37**, debt **3**; R6 direction, CP2 publication, both nonzero debts and the broader endpoint-gauge chain remain open.
+R14 Review proves a definition-authority seam rather than another bounded implementation defect: production obtains raw directed A1 generator transport across the accepted carrier independently from a cut-open bounded-disk branch/lattice trivialization whose propagation omits that cut carrier. Frozen §§16/16.1 require one relation action but do not define the exact change of gauge between those domains. `M5-CP3-TB1-R14-CAND-01` is therefore an existing `RP-01` definition-authority continuation, non-stable +0. The R13 convergence observation is discharged as triggered; `CB17` is prohibited. Corrected stable accounting remains **51 / 14 / 37**, debt **3**; R6 direction, CP2 publication, both nonzero debts and the broader endpoint-gauge chain remain open. Exact successor is runtime-free `M5-CP3-DEFN-R1`.
 
 ## 1. `M5-DEFN` — definitions frozen
 
@@ -255,12 +255,25 @@ Fresh artifact-only R14 executes all **448** exact-filter processes with exact-o
 
 The R13 convergence condition is now met. EXEC does not diagnose the focused-PASS/produced-RED discrepancy. Mandatory runtime-free `M5-CP3-TB1-R14-REV` must reopen the evidence, adjudicate the failed recovery and freeze same-region nonzero-Z4 gauge-definition reconciliation; `CB17` is prohibited by the precommitted trigger.
 
+## 4.18 `M5-CP3-TB1-R14-REV` — production gauge model under-specified; definition reconciliation required
+
+Review independently re-opens R14 result/log/routing bytes, verifies the **916/916** self-manifest, exact **446 PASS / 2 RED** over 448 fresh processes, selector430 **430/430**, protected ordinals 191/192/247/408, owner census **31 / 283 / 75 / 41**, and exact immutable postflight. The new CB16 occurrence-branch helper test is non-vacuous and PASSes; produced rows4/5 alone remain exact first-branch RED.
+
+Static source authority separates the two domains the focused test does not derive. Production computes `faceBranchRotation` on the accepted cut-open dual graph and explicitly omits accepted cut carriers from that propagation. Same-region promotion later reads the exact A1 `transition_value(...)` across the accepted A3 generator carrier and applies it directly to endpoint branch/lattice states expressed through the cut-domain gauge. Frozen §§16/16.1 name the equations but not the exact source-frame -> cut-domain -> relation-frame change of gauge, so the branch equality is not currently a theorem of the construction.
+
+`M5-CP3-TB1-R14-CAND-01` is cause-proved as **DEFINITION AUTHORITY / EXISTING `RP-01 AUTHORITY_DOMAIN_CONFLATION` / NON-STABLE / +0**. CB16's helper correction is accepted locally, but the produced recovery and the broader endpoint-gauge chain remain open. The precommitted R13 convergence observation is discharged as triggered and forbids `CB17`. Exact successor is runtime-free `M5-CP3-DEFN-R1`, which must freeze one coherent authority model for A1 source-face transport, cut-domain phase-front gauge, relation-endpoint state and canonical storage before any further implementation. Stable accounting remains **51 / 14 / 37**, debt **3**.
+
 ## 5. Folded-document index
 
 Historical citations in frozen/normative records to filenames listed here are provenance-only and resolve through this index plus git history; frozen text is not rewritten merely to chase a folded filename.
 
 | Folded filename | Verdict / retained home |
 |---|---|
+| `Architecture_M5_CP3_TB1_R13_Artifact_Only_Test_Benchmark_Report.md` (95 lines) | **SUPERSEDED R13 RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R14-REV`.** R13 445/447 evidence, ordinary recovery and first-branch localization remain in §§4.14-4.18, tracker/changelog and git history. |
+| `Architecture_M5_CP3_TB1_R13_Review_Record.md` (194 lines) | **SUPERSEDED R13 REVIEW / FOLDED BY `M5-CP3-TB1-R14-REV`.** Occurrence-branch diagnosis, accounting addendum and convergence trigger are retained in §§4.15-4.18, frozen definitions, tracker and git history. |
+| `Architecture_M5_CP3_CB16_Occurrence_Branch_Gauge_Authority_Correction_Plan.md` (120 lines) | **CONSUMED CB16 PLAN / FOLDED BY `M5-CP3-TB1-R14-REV`.** Bounded occurrence-gauge correction and R14 falsifier are retained in §§4.16-4.18/current Review/git history. |
+| `Architecture_M5_CP3_CB16_Code_Build_Report.md` (128 lines) | **SUPERSEDED CB16 BUILD REPORT / FOLDED BY `M5-CP3-TB1-R14-REV`.** Source/candidate/compile authority and helper correction remain in §§4.16-4.18/current R14 report/Review/changelog. |
+| `Architecture_M5_CP3_TB1_R14_Artifact_Only_Test_Benchmark_Plan.md` (116 lines) | **CONSUMED R14 EXECUTION PLAN / FOLDED BY `M5-CP3-TB1-R14-REV`.** Exact 448-process gate and convergence stop rule are executed and retained in §§4.17-4.18/current R14 report/Review. |
 | `Architecture_M5_CP3_TB1_R12_Artifact_Only_Test_Benchmark_Report.md` (118 lines) | **SUPERSEDED R12 RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R13-REV`.** R12 439/446 vector, ordinary regression and failed CB14 recovery remain in §§4.12-4.15, tracker/changelog and git history. |
 | `Architecture_M5_CP3_TB1_R12_Review_Record.md` (119 lines) | **SUPERSEDED R12 REVIEW / FOLDED BY `M5-CP3-TB1-R13-REV`.** Storage-canonical/semantic-direction root, diagnostic requirement and carried observations are adjudicated by R13 recovery and retained in §§4.13-4.15/tracker/frozen authority. |
 | `Architecture_M5_CP3_CB15_Semantic_Periodic_Direction_And_Correspondence_Diagnostics_Plan.md` (105 lines) | **CONSUMED CB15 PLAN / FOLDED BY `M5-CP3-TB1-R13-REV`.** Semantic direction correction is recovery-proved; typed diagnostic isolated first branch mismatch. Durable outcome is in §§4.14-4.15/current Review. |
