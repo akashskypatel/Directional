@@ -1,5 +1,0 @@
-turn=M5-CP3-CB15
-purpose=apply verified CB15 closeout documentation patch
-base_sha=4dfe392d28d60b448e2f32253f7d170221ac57ec
-patch_sha256=e2fdd6b032c74a717b9222bb21543f4e260f0fb8d90771e0920d42c0f73c773f
-retry=0

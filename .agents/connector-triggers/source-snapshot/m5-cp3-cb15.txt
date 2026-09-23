@@ -1,3 +1,0 @@
-turn=M5-CP3-CB15
-purpose=code-build-source-snapshot
-read_mode=snapshot
