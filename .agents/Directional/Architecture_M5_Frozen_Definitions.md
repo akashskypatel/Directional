@@ -486,6 +486,39 @@ The nonzero-Z4 produced witness criterion is also relation-gauge authority: comp
 
 This amendment discharges `M5-CP3-TB1-R14-REV-OBS-01`. It supersedes only §16.2's statement that implementation authority is absent; §§14–16.2 remain binding historical/semantic context, including all no-search/no-fitting rules. Product recovery is not claimed from this runtime-free definition. Exactly one implementation successor is authorized: `M5-CP3-CB17`, bounded to this mapping plus directly coupled focused test-contract correction and compile-only validation.
 
+## 17. CP3 R16 Review amendment — exact cumulative selector448 publication precommit
+
+`M5-CP3-TB1-R16-REV` independently accepts the complete corrected pre-publication gate and freezes the exact cumulative selector that may be published next. This section changes no product/test/fixture/field/A3 semantics; it completes frozen §13.3 step 3 only.
+
+The accepted published prefix remains selector430 at SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`, 430 unique LF-terminated rows and 35,001 bytes. The successor selector is exactly that byte prefix followed by the 18 R16 nonselector identities in their pre-execution order. It has **448 rows / 448 unique identities / 36,382 bytes / 448 LF / terminal LF**, SHA-256 **`70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`**, and owner census **32 authority-kernel / 300 producer / 75 completion / 41 validation**.
+
+| ordinal | exact appended identity |
+|---:|---|
+| 431 | `M5CP3.PeriodicRelationRotationUsesBothAcceptedOccurrenceGauges` |
+| 432 | `M5CP3.StorageCanonicalPeriodicRelationResolvesSemanticForwardReverse` |
+| 433 | `SurfaceCellsPhase10.PeriodicHolonomyReverseDescriptionCanonicalizesWithoutDuplicateGenerator` |
+| 434 | `SurfaceCellsPhase10.PeriodicHolonomySameRegionTopologyDistinctRelationsAreRetained` |
+| 435 | `M5CP1.ComponentAggregationPreservesCanonicalPeriodicRelationIdWithoutOffsetRemap` |
+| 436 | `M5CP1.SelectedRelationPathCertificateSurvivesRelationContainerPermutation` |
+| 437 | `M5CP1.UnusedValidPeriodicRelationDoesNotChangeSelectedCertificate` |
+| 438 | `M5CP1.AlteredSelectedRelationTransformFailsCertificateValidation` |
+| 439 | `SurfacePhaseFrontProductFactoryAuthority.ConflictingPeriodicRelationValueRejectsAtCheckedFactory` |
+| 440 | `SurfacePhaseFrontProductFactoryAuthority.NonReciprocalPeriodicRelationRejectsAtCheckedFactory` |
+| 441 | `SurfacePhaseFrontProductFactoryAuthority.RepresentationRenumberedPeriodicRelationRejectsAtCheckedFactory` |
+| 442 | `FieldTransportAtlas.RetainsDirectedTransitionValueForHardFeatureWithoutTraversalAdjacency` |
+| 443 | `M5CP3.ProducedTorusPublishesTwoCanonicalPeriodicRelationsAndOwnedEdges` |
+| 444 | `M5CP3.ProducedTorusPeriodicRelationStoragePermutationPreservesSelectedCertificate` |
+| 445 | `M5CP3.ProducedTorusMissingPeriodicRelationOwnerRejectsTyped` |
+| 446 | `M5CP3.ProducedTorusNonzeroZ4RotationTranslationMaterializes` |
+| 447 | `M5CP3.ProducedTorusTamperedNonzeroZ4TransformRejectsTyped` |
+| 448 | `M5CP3.ProducedTorusUnusedValidRelationDoesNotAlterSelectedCertificate` |
+
+Publication path is frozen as `.agents/Directional/Architecture_M5_CP3_CB20_Required_Green_Selector_448.txt`. `M5-CP3-CB20` may create only those exact bytes. It may not derive order from discovery, sort or target ownership; owner inspection validates membership only. Any byte/hash/prefix/census discrepancy fails closed.
+
+This precommit is not selector acceptance. Frozen §13.3 remains binding: CB20 publishes and compile/packages without runtime; `M5-CP3-TB2-EXEC` then executes all 448 published identities freshly with exact-one/zero-skip and immutable postflight; only mandatory `M5-CP3-TB2-REV` may accept the published selector and close M5 after re-verifying the full exit theorem.
+
+R16 Review discharges all four M5 produced debts, but project debt remains **1** because the closed-complex `G4-B002` obligation is M6-owned. Stable regression accounting remains **51 / 14 / 37**.
+
 ## Independent verification addendum (reviewing agent)
 
 Runtime-free. **Upheld.** M5-DEFN is complete and well-constructed. Entering authority is exact, all four

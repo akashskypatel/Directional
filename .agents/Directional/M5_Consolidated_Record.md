@@ -1,21 +1,21 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-23 at `M5-CP3-TB1-R16-EXEC`
+**Last updated:** 2026-09-23 at `M5-CP3-TB1-R16-REV`
 
-Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. The R13 Review accounting addendum corrects stable accounting to **51 / 14 / 37**, produced-witness debt **3**; M5 owns two of those debts and M6 owns one.
+Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is promoted to package `10763242885` / source `a8b33cb7145d5a99d47eaf5f70bb12f1c71238d1` under still-published selector430 **430/430**. Stable accounting remains **51 / 14 / 37**; project produced-witness debt is now **1**, M6-owned.
 
-## Current CP3 authority — R16 execution mechanically green / mandatory Review next
+## Current CP3 authority — R16 Review accepted / selector448 precommitted / CB20 next
 
-Fresh R16 run/job `35889831381 / 107279255523` is now the latest mechanically valid CP3 runtime: **448/448 PASS**, mechanism 11/11, focused atlas 1/1, produced 6/6, selector430 430/430, benchmark 0, complete **921/921** evidence and exact immutable postflight. Result/log artifacts `10765221644 / 10764573644` hash to `d2ec2703f2255cdfa7797da3989aab20e6d10d7203e006ba4068892df1909f46 / 3b8d16d1dbed5ee96e7990f6482d7961f454be1410e35097ba08c931d3097103`; result `SHA256SUMS` hashes to `c2f898912e19fb57061b50945a58e79af74e244c145de9c5d6ef367ee3185784` and verifies 921/921.
+R16 Review independently upholds run/job `35889831381 / 107279255523` at **448/448 PASS**, complete **921/921** evidence and immutable postflight; rows16/17 prove the corrected inverse-storage semantic contract and reach their final materialization/tamper discriminators. Both remaining M5 nonzero-Z4 debts are discharged, the R6 direction observation and CP2 publication precondition close, and CB19 package/source `10763242885 / a8b33cb...` is promoted.
 
-Rows16/17 both PASS under CB19's corrected storage-to-semantic test contract, but EXEC grants no semantic disposition. The CB19 candidate remains unpromoted; both nonzero-Z4 debts, R6 direction, CP2 publication, M5 closure and selector publication remain Review-owned. Stable accounting therefore remains **51 / 14 / 37**, debt **3**, and accepted runtime stays package `10601978228` until Review decides otherwise. Exact successor is runtime-free `M5-CP3-TB1-R16-REV`.
+Exact selector448 is precommitted at SHA-256 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, preserving selector430 as its byte-identical first430 prefix; owner census is 32/300/75/41. Selector448 is not yet published or accepted. M5 remains open through the separate `CB20 -> TB2-EXEC -> TB2-REV` publication sequence.
 
 ## 1. `M5-DEFN` — definitions frozen
 
 `M5-DEFN` is **COMPLETE / APPROVED_WITH_AMENDMENTS / RUNTIME-FREE**. `PeriodicRelationId` is content-derived from topology-region scope plus orientation-neutral generator/cut carrier paths; action/transport is relation value. The producer publishes one ordered selected relation-path certificate and consumers validate that exact certificate without semantic path search. Unused valid relations are decision-neutral. Missing, duplicate, conflicting, nonreciprocal, and representation-renumbered relations have frozen typed failure ownership for CP2.
 
-Production evidence remains deliberately uncredited. Direct/helper relation tests are mechanism-only. All four M5 produced-witness debts remain open with their original discriminators.
+At definition freeze, production evidence was deliberately uncredited and all four M5 produced-witness debts were open with their original discriminators. R7 later discharged two; R16 Review discharges the remaining two. The definition text remains the authority those later proofs satisfy.
 
 ## 2. `M5-CP1` — CLOSED / ACCEPTED
 
@@ -304,6 +304,16 @@ Authoritative run/job `35889831381 / 107279255523` executes all **448** exact-fi
 
 Produced row16 `M5CP3.ProducedTorusNonzeroZ4RotationTranslationMaterializes` and row17 `M5CP3.ProducedTorusTamperedNonzeroZ4TransformRejectsTyped` both PASS. EXEC does not promote the candidate, discharge either nonzero-Z4 debt, close R6/CP2 observations, publish a selector, close M5 or alter stable accounting. The standing gauge note also remains: the CP3 witness has cancelling occurrence gauges, so produced green is not independent validation of the gauge formula; the CB17 mechanism identity supplies that proof and also passes here. Stable accounting stays **51 / 14 / 37**, debt **3**, accepted runtime stays package `10601978228`. Exact successor is mandatory runtime-free `M5-CP3-TB1-R16-REV`, which owns all semantic adjudication.
 
+## 4.26 `M5-CP3-TB1-R16-REV` — candidate promoted, M5 debts complete, selector448 precommitted
+
+Independent Review reopens the CB19 package/source and R16 result/log bytes. Candidate ZIP, 28/28 root manifest, source archive, result/log ZIPs, 921/921 result self-manifest, all 448 ledger/raw-log pairs and immutable package/source/execution-view postflight verify. The accepted R16 vector is **11/11 mechanism + 1/1 focused atlas + 6/6 produced + 430/430 selector = 448/448 PASS**, exact-one/zero-skip, benchmark 0; protected selector ordinals 191/192/247/408 PASS.
+
+Rows16/17 are non-vacuous. Independent source/A3 authority fixes semantic `Q=3`; the committed produced relation actually stores the inverse representative `1`, and both tests require stored action/route to differ from resolved semantic authority. Row16 therefore reaches nonzero translation, all endpoint/action equations, materialization, selected relation certificate and positive consumed holonomy. Row17 reaches its one-transform mutation and exact `NonReciprocalPeriodicRelation` rejection. The CP3 witness's gauges cancel, so gauge-correction validation remains owned by the separately green `PeriodicRelationRotationUsesBothAcceptedOccurrenceGauges` mechanism identity.
+
+Both remaining M5 `G4-B003` produced debts are discharged; project debt moves **3 -> 1** with the sole remainder M6-owned. `M5-CP3-TB1-R6-REV-OBS-01`, `M5-CP2-TB1-REV-OBS-01` and `M5-CP3-TB1-R15-R1-REV-OBS-01` close. `M5-DEFN-REV-OBS-01` remains carried to final M5 Review. Stable accounting stays **51 / 14 / 37**. `M5-CP3-TB1-R15-R1-CAND-01` is recovery-proved/non-stable +0, and package/source `10763242885 / a8b33cb...` is promoted under still-published selector430.
+
+Review constructs the frozen §13.3 successor selector as exact selector430 plus all 18 precommitted R16 nonselector identities in gate order. It is **448 rows / 448 unique / 36,382 bytes / 448 LF**, SHA-256 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, exact first430 prefix hash `1c412850...9db6`, owner census **32 / 300 / 75 / 41**. Frozen §17 and `Architecture_M5_CP3_CB20_Selector_448_Publication_Code_Build_Plan.md` make those bytes the only authorized publication. M5 remains open until CB20 publishes them, TB2 executes the published selector fresh, and mandatory TB2 Review accepts final closure.
+
 ### R15-R1 Review folded-document index additions
 
 | Folded filename | Verdict / retained home |
@@ -325,6 +335,9 @@ Historical citations in frozen/normative records to filenames listed here are pr
 
 | Folded filename | Verdict / retained home |
 |---|---|
+| `Architecture_M5_CP3_CB19_Storage_Canonical_Produced_Test_Correction_Plan.md` (90 lines) | **CONSUMED CB19 PLAN / FOLDED BY `M5-CP3-TB1-R16-REV`.** Exact correction and non-vacuity contract is runtime-proved by R16; retained in §§4.24-4.26, frozen §17, current Review and git history. |
+| `Architecture_M5_CP3_TB1_R15_R1_Artifact_Only_Test_Benchmark_Report.md` (94 lines) | **SUPERSEDED R15-R1 RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R16-REV`.** The 446/448 frontier and storage-representation diagnosis remain in §§4.22-4.26/current Review/tracker/git history; R16 is the current runtime report. |
+| `Architecture_M5_CP3_TB1_R15_R1_Review_Record.md` (235 lines) | **SUPERSEDED R15-R1 REVIEW / FOLDED BY `M5-CP3-TB1-R16-REV`.** Test-authority cause, independent-Q guard and carried observations are discharged/adjudicated in §4.26/current Review/frozen §17/git history. |
 | `Architecture_M5_CP3_TB1_R13_Artifact_Only_Test_Benchmark_Report.md` (95 lines) | **SUPERSEDED R13 RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R14-REV`.** R13 445/447 evidence, ordinary recovery and first-branch localization remain in §§4.14-4.18, tracker/changelog and git history. |
 | `Architecture_M5_CP3_TB1_R13_Review_Record.md` (194 lines) | **SUPERSEDED R13 REVIEW / FOLDED BY `M5-CP3-TB1-R14-REV`.** Occurrence-branch diagnosis, accounting addendum and convergence trigger are retained in §§4.15-4.18, frozen definitions, tracker and git history. |
 | `Architecture_M5_CP3_CB16_Occurrence_Branch_Gauge_Authority_Correction_Plan.md` (120 lines) | **CONSUMED CB16 PLAN / FOLDED BY `M5-CP3-TB1-R14-REV`.** Bounded occurrence-gauge correction and R14 falsifier are retained in §§4.16-4.18/current Review/git history. |

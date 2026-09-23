@@ -1,3 +1,15 @@
+## 2026-09-23 — `M5-CP3-TB1-R16-REV`: corrected produced gate independently accepted — **RECOVERY PROVED / CANDIDATE PROMOTED / M5 DEBTS COMPLETE / +0**
+
+**Stable totals remain 51 events / 14 categories / 37 recurrences. Project produced-witness debt moves 3 -> 1; the remaining debt is M6-owned. Accepted runtime authority is promoted to package/source `10763242885 / a8b33cb7145d5a99d47eaf5f70bb12f1c71238d1` under still-published selector430.**
+
+Review independently re-hashes R16 result/log bytes, verifies the complete 921/921 self-manifest, the 448 exact-one/zero-skip ledger and immutable postflight. The fresh vector is mechanism 11/11, focused atlas 1/1, produced 6/6 and selector430 430/430. Rows16/17 now execute the inverse-storage case non-vacuously: independent source/A3 authority requires semantic `Q=3`, while the actual canonical representative stores its inverse `1`; both tests prove stored action/route differ from resolved semantic authority before reaching their final discriminators. Row16 reaches nonzero rotation+translation, endpoint equations, materialization, relation-certificate use and positive consumed holonomy. Row17 mutates exactly one relation transform and reaches exact typed `NonReciprocalPeriodicRelation`.
+
+### `M5-CP3-TB1-R15-R1-CAND-01` — RECOVERY PROVED / CLOSED / non-stable / +0
+
+CB19 removed only the stale test-authority storage-representation assumption; R16 proves the corrected tests without weakening their product discriminators. No new stable event or recurrence is created. Both remaining M5 `G4-B003` debts are discharged. `M5-CP3-TB1-R6-REV-OBS-01`, `M5-CP2-TB1-REV-OBS-01` and `M5-CP3-TB1-R15-R1-REV-OBS-01` are discharged; `M5-DEFN-REV-OBS-01` remains carried to final M5 Review.
+
+R16 Review precommits exact selector448, SHA-256 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, preserving selector430 as the exact first430 prefix and owner census 32/300/75/41. This is publication authority only: selector448 is not yet published or accepted. Exact successor is `M5-CP3-CB20`, followed by fresh published-selector TB2 and mandatory final Review.
+
 ## 2026-09-23 — `M5-CP3-TB1-R15-R1-REV`: storage-canonical representation consumed as semantic produced-test authority — **CAUSE PROVED / TEST AUTHORITY / NON-STABLE / +0**
 
 **Stable totals remain 51 events / 14 categories / 37 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**

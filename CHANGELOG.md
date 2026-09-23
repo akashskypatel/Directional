@@ -1,3 +1,7 @@
+## 2026-09-23 — `M5-CP3-TB1-R16-REV`: corrected pre-publication gate accepted; selector448 frozen for publication
+
+Independent Review accepts R16 at **448/448 PASS** with complete **921/921** immutable evidence, promotes package/source `10763242885 / a8b33cb7145d5a99d47eaf5f70bb12f1c71238d1` under still-published selector430, and discharges both remaining M5 nonzero-Z4 produced debts. Project debt moves **3 -> 1** (M6 only); stable regression accounting remains **51 / 14 / 37**. Exact cumulative selector448 is precommitted at SHA-256 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, exact selector430 prefix, owner census 32/300/75/41. M5 remains open for separate `CB20 -> TB2-EXEC -> TB2-REV` publication proof.
+
 ## 2026-09-23 — `M5-CP3-DEFN-R1`: same-region nonzero-Z4 relation gauge frozen; CB17 next
 
 ## 2026-09-23 — `M5-CP3-TB1-R15-R1-REV`: storage-canonical produced-test authority defect proved; CB19 next
