@@ -1,0 +1,3 @@
+turn=M5-CP3-TB1-R12-REV
+purpose=refresh-review-authority-after-concurrent-closeout-doc-changes
+read_mode=snapshot
