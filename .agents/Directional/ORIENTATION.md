@@ -29,7 +29,7 @@ the content beneath it.
 
  > **Current milestone authority (2026-09-23, after `M5-DEFN-R2`):** M4 is **CLOSED / ACCEPTED**. **M5 closure is HELD pending bounded `M5-CP4`.** Selector448 (`70ff0860...c75789`) and §13.1 conjuncts 1-7 are accepted; package/source `10771899191 / cef1c6ee...` is current. DEFN-R2 freezes the `G4-B004` M5 half as one pipeline-produced topology region that is multi-isolation with a checked internal-seam certificate **and** owns a periodic quotient relation named by reciprocal `PeriodicCut` edges. Selector448 does not yet prove that same-subject join. Stable accounting is **51 / 14 / 37** and debt **1** (M6). Exact next is **`M5-CP4-CB1`**; `M6-DEFN` remains deferred until final CP4 Review.
 
-**Currency.** `M5-DEFN-R2`, 2026-09-23 UTC
+**Currency.** `M5-DEFN-R2` (incl. reviewing-agent addendum), 2026-09-23 UTC
 
 **Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` §16.3 is the active same-region nonzero-Z4 contract. `PeriodicRelationId` remains carrier-content identity; relation rotation is the gauge-adjusted quotient `Q`, action/transport is relation value, and canonical storage may invert representation only after semantic Forward -> Reverse authority is fixed. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 
@@ -198,7 +198,13 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M5-CP4-CB1` — NEXT / RUNTIME-FREE CODE + BUILD / M5 CLOSURE-GATING.** Author exactly one focused producer-boundary committed-torus identity proving the DEFN-R2 same-region multi-isolation + checked-seam-certificate + quotient-owner join. Keep selector448 byte-frozen, make no product/fixture/field semantic changes, compile/package only, and execute no Directional runtime. Plan: `Architecture_M5_CP4_CB1_Multi_Isolation_Quotient_Witness_Plan.md`.
+1. **`M5-CP4-CB1` — NEXT / RUNTIME-FREE CODE + BUILD / M5 CLOSURE-GATING.** Author exactly one focused producer-boundary committed-torus identity proving the DEFN-R2 same-region multi-isolation + checked-seam-certificate + quotient-owner join. Keep selector448 byte-frozen, make no product/fixture/field semantic changes, compile/package only, and execute no Directional runtime. Plan: `Architecture_M5_CP4_CB1_Multi_Isolation_Quotient_Witness_Plan.md`. **Binding clarifications in plan §7 (reviewing agent):**
+- falsifiers 1 and 4 are evaluated at TB1, not CB1;
+- the subject `torus_fixture()` (with the 18 hard edges) is fixed, and switching after runtime is prohibited;
+- the six facts are asserted in order with fact-naming messages;
+- CB1 records the row-449 owner.
+
+Feasibility of the join on this subject is unestablished; the only multi-sheet evidence is a never-executed no-hard-edge test.
 
 1a. **`M6-DEFN` — DEFERRED behind bounded `M5-CP4` and M5 closure.** Freeze four complete occurrence/quotient/embedding/verifier stage products, the verifier recompute-vs-repair boundary, `G4-B001` ownership, the remaining closed-complex debt route and the `G4-B004` M6 half before any M6 implementation.
 

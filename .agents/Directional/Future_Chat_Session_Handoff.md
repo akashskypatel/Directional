@@ -23,6 +23,13 @@ The turn must:
 4. Keep product semantics, fixture/field bytes and selector448 unchanged.
 5. Compile/package all eventual 449-gate owner executables through mandatory GMP/GMPXX reusable compile workflow with `runtimeExecution=false` and execute no Directional binary.
 
+6. Apply plan **§7**, the reviewing-agent clarifications:
+   - falsifiers 1 and 4 are runtime facts, evaluated at TB1;
+   - the subject `torus_fixture()` is fixed, with no post-runtime switch;
+   - assert the six facts in order with fact-naming messages;
+   - record the row-449 static owner and routing row;
+   - do not touch any ungated identity.
+
 Compile-green routes to `M5-CP4-TB1-EXEC`, then mandatory Review. A semantic RED or need for product change stops CB1; it is not authorization to repair product source in the same turn.
 
 `M6-DEFN` stays deferred until final `M5-CP4-TB2-REV` accepts conjunct8 and closes M5.

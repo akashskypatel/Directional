@@ -66,7 +66,7 @@ None of those accepted rows proves that **the same torus topology region** is bo
 Two existing identities receive zero acceptance credit:
 
 - `SurfaceCellTransitionQuotient.MultiIsolationMaterializationRetainsAllLocalSheets` uses the split-square fixture and proves multi-sheet output lineage, but it is a materialization-side identity with test-supplied sheets and no periodic quotient owner.
-- `SurfaceCellsPhase10.ExactCommittedTorusDoesNotTreatIsolationSeamAsBoundedDiskBoundary` is much closer: it runs the committed torus pipeline, sees a multi-sheet topology region with an internal isolation seam, sees isolation certificates, and sees periodic holonomies. But it also asserts final materialization/output facts that belong to M6, and it does **not** explicitly bind a named periodic relation owner to the same multi-isolation topology region.
+- `SurfaceCellsPhase10.ExactCommittedTorusDoesNotTreatIsolationSeamAsBoundedDiskBoundary` is much closer: it runs the committed torus pipeline, sees a multi-sheet topology region with an internal isolation seam, sees isolation certificates, and sees periodic holonomies. But it also asserts final materialization/output facts that belong to M6, and it does **not** explicitly bind a named periodic relation owner to the same multi-isolation topology region. *[Reviewing-agent precision note: this test has never been executed, and it runs the committed torus **without** the 18 row408 hard edges. It shows what the test would **assert**, not an observed fact about `torus_fixture()`, the CB1 subject. Feasibility of the join on that subject is unestablished until TB1; see the CB1 plan §7.2.]*
 
 Gating either identity unchanged would therefore not be a truthful proof of the frozen M5 contract. The correct action is a bounded Code + Build test-authority turn that authors one focused producer-only identity.
 
@@ -125,3 +125,49 @@ The turn selected `READ_MODE=snapshot` only after several repository-document re
 | Tool-use ledger | **Partial/unknown after context compaction, reported rather than reconstructed.** Known categories: Files/start-file retrieval; GitHub connector status/orientation, source snapshot, caller/marker control, run/artifact evidence and cleanup; local container diff/hash checks; connected Drive staging/retirement; user-visible patch emission. |
 | `STATUS` lifecycle maintained | `Turn=M5-DEFN-R2`; entry `IN_PROGRESS` at `2026-09-23T22:32:05Z`; final `COMPLETE -> M5-CP4-CB1` is reserved as the final repository write. |
 | Pushed to origin, branch in sync | Documentation is on origin. Static run `35931631220` proved its trigger head equaled the remote branch; cleanup run `35931880115` then completed successfully and pushed cleanup commit `1667402564ffb0817473b2b8352ad85b20829d10`. After this closeout-evidence write, the only permitted repository mutation is the final `STATUS` COMPLETE beacon. |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **UPHELD: reading (c) and disposition B stand. The successor `M5-CP4-CB1` is unchanged.** I made four corrections, listed at the end.
+
+**The chronology and non-redundancy falsifiers pass on independent grounds.** Before M5, the committed torus produced **zero** periodic holonomies (frozen §8.1, M4 R3). No evidence accepted before M5 could therefore contain a periodic relation owned by a multi-isolation region, which is consistent with `G4-B004` staying open and being assigned to M5. The same-region join also gives "multi-isolation quotient" content that a bare seam certificate lacks.
+
+**B over A is confirmed from test bodies, not names.** I scanned the bodies of all 448 selector448 identities. Only five touch both isolation certificates and periodic relations: 123, 124, 294, 299 and 406. All five are negative factory tests that pass `product.isolationSeamTransportCertificates()` and `product.periodicHolonomies()` through to `make`. None of the twelve torus rows (408, 443-448 and others) asserts isolation seams. So no accepted row proves the join.
+
+**DEFN-R2's process met the rules that R1 broke.** The docs landed (23:01-23:08Z) before the COMPLETE beacon (23:09:03Z). The tracker entry was appended, not rewritten. My own `review_check.py ledgers --base 87d1a472` PASSes. The READ_MODE miss is correctly recorded as an existing-pattern instance.
+
+**Corrections:**
+
+1. **A never-executed test was presented as evidence.** §3.2 above and frozen §18 said the never-executed `ExactCommittedTorusDoesNotTreatIsolationSeamAsBoundedDiskBoundary` "sees" or "demonstrates" a multi-sheet region. It has never run, and it builds the committed torus **without** the 18 row408 hard edges. The CB1 subject, `torus_fixture()`, **includes** them. Sheets come from a flood-fill (`SurfaceCellTracing.cpp:7569-7632`) stopped by barriers, components, sharp bends and close-sheet conflicts. Row 240 forbids treating a hard feature as an isolation seam. Nothing observed shows that `torus_fixture()`'s single region spans ≥2 sheets with a non-hard-feature seam. A TB1 RED is a real outcome, not a remote one. Both passages are annotated in place.
+2. **The CB1 plan was inconsistent with a compile-only turn.** Its stop rules 1 and 4 are runtime facts that CB1 cannot evaluate. Plan §7 now:
+   - moves those rules to TB1/TB1-REV;
+   - fixes the subject and prohibits a post-runtime switch (`LESSONS.md` 170, 177);
+   - requires ordered, fact-naming asserts, so a RED localizes without another diagnostic CB;
+   - requires a row-449 static owner and routing record for TB1.
+3. **Frozen §11 was stale.** It still named `M5-DEFN-R2` as the current successor and cited a "§18 note" that this turn deleted. It is corrected to `M5-CP4-CB1`. This is the third time §11 or the header has gone stale.
+4. **Consolidation was skipped.** The consumed `Architecture_M5_DEFN_R2_G4_B004_Reading_Plan.md` is folded. The closeout had said "n/a" and left two plans live.
+
+### Review closeout — reviewing-agent addendum
+
+| Duty | Answer |
+|---|---|
+| Accepted selector prefix re-hashed | `boundary --expect-selector 448=70ff0860… 430=1c412850…` at commit |
+| Decisive claims independently re-derived | Pre-M5 torus periodic count (§8.1); a body scan of all 448 identities for the isolation+periodic join; torus-row assertions; `torus_fixture()` construction (18 user hard edges) against the no-hard-edge ungated test; sheet flood-fill rules; DEFN-R2 write ordering; `ledgers` from `87d1a472` |
+| Non-vacuity checked | The planned test is non-vacuous only if all six facts are asserted on one region. The new ordered asserts make a RED diagnosable. Feasibility on the chosen subject is explicitly unestablished. |
+| Prior obligations discharged/carried | `M5-CP3-TB2-REV-OBS-01` is carried to `M5-CP4`, unchanged. The new CB1 §7 obligations fall on CB1 and TB1-REV. |
+| Stable accounting | 51 / 14 / 37; debt 1 (M6); package `10771899191 / cef1c6ee…`; selector448 |
+| New candidates/obligations recorded | Tracker addendum entry; no new stable candidate |
+| ORIENTATION currency line | `M5-DEFN-R2` (incl. reviewing-agent addendum), 2026-09-23 UTC |
+| ORIENTATION §3 / §4 / §7 / §8 | §7 item 1 gains the §7 clarifications. §3/§4/§8 are unchanged and correct. |
+| CHANGELOG | Agent entry amended |
+| ROADMAP | n/a — its status is correct |
+| Selector manifest | n/a |
+| LESSONS | 170 and 177 cited; no new lesson |
+| Consolidation under CLEAN_UP_POLICY | Consumed R2 plan folded |
+| Successor frozen | `M5-CP4-CB1`, per plan §§5 and 7 |
+| Turn boundary held | Runtime-free; no product/test/fixture/selector/CMake/benchmark change |
+| review_check.py | `boundary --expect-selector 448=70ff0860… 430=1c412850…`: **ALL CHECKS PASSED**. No product/test/build or selector mutation; durable markers 1→1, 3→3, 13→13. `ledgers --base 87d1a472`: **ALL CHECKS PASSED**. |
+| `STATUS` lifecycle | Resume beacon first; final `COMPLETE → M5-CP4-CB1` last |
+| Pushed, in sync | Confirmed by `git status -sb` after the final push |

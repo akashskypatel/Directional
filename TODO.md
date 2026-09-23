@@ -18,6 +18,13 @@ Runtime-free Code + Build under `.agents/Directional/Architecture_M5_CP4_CB1_Mul
 
 **Deferred:** `M6-DEFN` remains blocked until final `M5-CP4-TB2-REV` accepts conjunct8 and closes M5.
 
+**Reviewing-agent amendment — plan §7 is binding.**
+- Falsifiers 1 and 4 are evaluated at TB1, not CB1.
+- The subject `torus_fixture()` is fixed, and switching after runtime is prohibited.
+- Assert the six facts in order with fact-naming messages.
+- Record the row-449 static owner and routing row.
+- Leave every ungated identity untouched.
+
 ## Latest Review turn — `M5-DEFN-R1-REV`
 
 **COMPLETE / DISPOSITION A NOT ACCEPTED / M5 CLOSURE HELD.** The independent Review upholds DEFN-R1's evidence: rows 183-188/239 are TB2-green and the split fixture is producer-built. It rejects DEFN-R1's reading. Rows 186/188/239 are in the **M1** accepted selector, yet `G4-B004` stayed open and was assigned to M5 afterwards, so reading A makes that assignment vacuous; it also makes "multi-" redundant. `M5-CP3-TB2-REV-OBS-01` is carried to `M5-DEFN-R2`. It also records process defect `M5-DEFN-R1-REV-OBS-01` (COMPLETE was published before the work was on the branch) and `LESSONS.md` 177. Earlier: `M5-CP3-TB2-REV` accepted selector448 and promoted package `10771899191 / cef1c6ee...`.

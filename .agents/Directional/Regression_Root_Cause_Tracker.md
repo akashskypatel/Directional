@@ -1,3 +1,20 @@
+## 2026-09-23 — `M5-DEFN-R2` reviewing-agent addendum — **UPHELD WITH AMENDMENTS / +0**
+
+**Stable totals unchanged: 51 / 14 / 37; debt 1 (M6).** No regression candidate.
+- **Reading (c) survives both falsifiers.** For chronology: before M5 the torus produced zero periodic holonomies (frozen §8.1), so pre-M5 evidence could not satisfy the join. For non-redundancy: the same-region quotient-owner join adds meaning.
+- **B over A is confirmed independently.** A body scan of all 448 selector rows finds only five that touch both isolation certificates and periodic relations (123, 124, 294, 299, 406), and all are negative factory tests passing product fields through. None of the twelve torus rows asserts isolation seams.
+- **DEFN-R2's process was correct this time.** Docs landed before the COMPLETE beacon, the tracker was appended rather than rewritten, and `ledgers --base 87d1a472` PASSes.
+
+Amendments recorded as obligations on the successor chain:
+1. **CB1 plan §7** makes the following binding on `M5-CP4-CB1`:
+   - falsifiers 1 and 4 are runtime facts, evaluated at TB1/TB1-REV;
+   - the subject `torus_fixture()` is fixed, and switching after runtime is prohibited;
+   - the six facts are asserted in order with fact-naming messages, so a RED localizes itself;
+   - CB1 records the row-449 static owner and routing row.
+2. **Precision.** DEFN-R2 §3.2 and frozen §18 said the never-executed `ExactCommittedTorusDoesNotTreatIsolationSeamAsBoundedDiskBoundary` "demonstrates"/"sees" a multi-sheet region. It has never run, and it uses the committed torus **without** the 18 hard edges. Feasibility on `torus_fixture()` is unestablished, and row 240 forbids treating hard features as isolation seams. **`M5-CP4-TB1-REV` must classify any RED by the first unmet fact** and must not switch subject or weaken the join.
+3. **Consolidation.** The consumed R2 reading plan is folded, since DEFN-R2 had marked consolidation n/a.
+4. **Stale frozen §11, third instance.** Frozen §11 still named `M5-DEFN-R2` as the current successor after DEFN-R2, and it cited a "§18 note" that DEFN-R2 had deleted. It is corrected to `M5-CP4-CB1`. This recurs: CB14 went stale at R12, the header at DEFN-R1, and now this. The next Review/DEFN closeout must grep frozen §11 and the header for the successor it names.
+
 ## 2026-09-23 — `M5-DEFN-R2`: reading (c) frozen; bounded CP4 required — **DEFINITION FROZEN / M5 CLOSURE HELD / +0**
 
 **Stable totals unchanged: 51 events / 14 categories / 37 recurrences; project debt 1 (M6).** No semantic regression candidate. DEFN-R2 freezes `G4-B004` as a same-subject producer contract: one pipeline-produced topology region must be multi-isolation with a checked internal-seam certificate and also own a canonical periodic quotient relation explicitly named by reciprocal `PeriodicCut` edges. Selector448 contains the component facts on separate accepted subjects but no accepted identity joins them. Disposition B freezes bounded `M5-CP4`; owner of `M5-CP3-TB2-REV-OBS-01` moves to `M5-CP4`.

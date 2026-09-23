@@ -6,6 +6,15 @@
 - Chose disposition B. Exact next `M5-CP4-CB1` adds one focused producer-only committed-torus test; selector448/package/conjuncts1-7 remain accepted and unchanged; accounting stays 51/14/37, project debt 1 M6-owned.
 - Recorded `M5-DEFN-R2-OBS-01`: READ_MODE was chosen after initial connector document reads; substantive work switched to verified snapshot `35929006744 / 10780133120 / 07a4ab64...`, +0 semantic/stable accounting.
 
+
+**Reviewing-agent addendum (same turn) — UPHELD with amendments.** Reading (c) survives chronology, because the torus produced no periodic relations before M5 (frozen §8.1). It also survives non-redundancy. B over A is independently confirmed: no row among the 448 asserts the same-region join, and the only five touching both surfaces are negative factory tests. The CB1 plan gains §7:
+- runtime falsifiers are evaluated at TB1;
+- the subject is fixed, with no post-runtime switch;
+- ordered, fact-naming asserts are required;
+- a row-449 routing record is required.
+
+The never-executed committed-torus test is marked as unverified, no-hard-edge evidence, not an observation about `torus_fixture()`. The consumed R2 plan is folded. Frozen §11, which still named `M5-DEFN-R2` as next, is corrected. Successor `M5-CP4-CB1` is unchanged, and accounting stays at 51/14/37 with debt 1.
+
 ## 2026-09-23 — `M5-DEFN-R1-REV`: disposition A not accepted; M5 closure held; reading re-adjudication next
 
 The independent runtime-free Review (reviewing agent) upholds every **evidence** claim of DEFN-R1. Selector448 rows 183-188, 237, 239, 240, 242, 253 and 254 are fresh-green in TB2 result `10775185139`. `split_isolation_fixture()` is producer-built (`build_surface_cell_network` + `require_produced`) from test-supplied sheets. Rows 239 and 186 assert the certificate owner, seam, transition, distinct-sheet and reciprocal facts claimed, and materialization consumes the certificate.

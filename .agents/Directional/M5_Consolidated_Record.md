@@ -437,12 +437,25 @@ This survives the chronology falsifier because the M1 seam rows lack the same-su
 
 Disposition **B** freezes bounded `M5-CP4`: CB1 focused producer-test authority + compile/package, TB1 prepublication gate, Review selector449 precommit, CB2 publication, TB2 fresh cumulative runtime, final Review. Selector448/package authority, conjuncts1-7, accounting 51/14/37 and project debt1 M6-owned remain unchanged. Exact successor is `M5-CP4-CB1`.
 
+**`M5-DEFN-R2` reviewing-agent addendum — UPHELD with amendments.**
+- **Chronology holds for reading (c).** Before M5 the torus produced zero periodic relations (frozen §8.1), so no pre-M5 evidence could satisfy the join.
+- **B over A is independently confirmed.** Among all 448 selector rows, only five mention both isolation certificates and periodic relations, and all five are negative factory tests that pass product fields through. No torus row asserts isolation seams.
+
+The addendum amends the CB1 plan (§7):
+- runtime-dependent falsifiers are evaluated at TB1;
+- the subject is fixed before runtime;
+- ordered, fact-naming asserts are required so a RED localizes itself;
+- the row-449 routing record is required.
+
+It also marks the never-executed committed-torus test as unverified, different-config evidence, and folds the consumed R2 reading plan.
+
 ## 5. Folded-document index
 
 Historical citations in frozen/normative records to filenames listed here are provenance-only and resolve through this index plus git history; frozen text is not rewritten merely to chase a folded filename.
 
 | Folded filename | Verdict / retained home |
 |---|---|
+| `Architecture_M5_DEFN_R2_G4_B004_Reading_Plan.md` (55 lines) | **CONSUMED DEFN-R2 PLAN / FOLDED BY the `M5-DEFN-R2` reviewing-agent addendum.** Its readings and falsifiers are resolved in `Architecture_M5_DEFN_R2_G4_B004_Definition_Record.md` §2 and frozen §§13.1/18. DEFN-R2 had marked consolidation n/a and left two plans live. |
 | `Architecture_M5_DEFN_R1_G4_B004_Exit_Reconciliation_Record.md` (131 lines) | **DEFN-R1 RECORD / DISPOSITION A NOT ACCEPTED / FOLDED BY `M5-DEFN-R1-REV`.** Its evidence census is upheld and its reading is rejected on chronology/redundancy. Arguments are summarized in `Architecture_M5_DEFN_R1_G4_B004_Review_Record.md` §§1-2 and §4.32-4.33; full text is in git history (`d17aada2`). |
 | `Architecture_M5_DEFN_R1_G4_B004_Review_Plan.md` (44 lines) | **CONSUMED REVIEW PLAN / FOLDED BY `M5-DEFN-R1-REV`.** Its required checks were executed. Its falsifier list omitted the chronology test that decided the Review. |
 | `Architecture_M5_CP3_TB2_Review_Record.md` (230 lines) | **SUPERSEDED TB2 REVIEW / FOLDED BY `M5-DEFN-R1`.** Its accepted selector448/package evidence and closure-hold addendum are retained in §§4.31-4.32, `M5_Closure_Record.md`, frozen definitions, tracker/changelogs, the retained TB2 runtime report and git history. |
