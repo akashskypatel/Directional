@@ -107,14 +107,14 @@ Runtime-free. **Runtime and package evidence UPHELD. Selector448 acceptance and 
 
 - **No M5 record ever took it on.** `git log --all -S"G4-B004"` over every M5 definition, consolidated, closure and review file returns nothing, and the M5 frozen record never mentions multi-isolation. This Review's seven-conjunct exit and `M5_Closure_Record.md` omit it. The `M6-DEFN` plan omitted the M6 half too.
 - **The state documents contradicted the verdict.** Even after this Review, ORIENTATION §7 item 9 read "`G4-B004` … ADJUDICATED. M5 owns focused positive relation/certificate production", and TODO still listed "`G4-B004` … M5/M6" as open.
-- **No accepted row satisfies it.** Selector448's only positive isolation-seam materialization row is ordinal 186, `ReciprocalIsolationSeamCertificateMaterializes` (`tests/SurfaceCellTransitionQuotientTests.cpp:2288`). It asserts **exactly one** isolation certificate and `consumedInternalIsolationSeams == 1`, so it is single-isolation. The other isolation rows (183-185, 187-188, 210, 237-254) are typed-failure or classification rows. The M5 torus is one topology region cut by HardFeature edges, not isolation seams.
+- **No accepted row satisfies it.** Selector448's only positive isolation-seam materialization row is ordinal 186, `ReciprocalIsolationSeamCertificateMaterializes` (`tests/SurfaceCellTransitionQuotientTests.cpp:2288`). It asserts **exactly one** isolation certificate and `consumedInternalIsolationSeams == 1`, so it is single-isolation. The other isolation rows (183-185, 187-188, 210, 237-254) are typed-failure or classification rows. The M5 torus is one topology region cut by HardFeature edges, not isolation seams. **[CORRECTED at the second pass, below: ordinal 239 is also positive, and under a ≥2-sheets reading rows 183-188 may satisfy the obligation. This bullet overclaimed.]**
 - **Why it was missed.** `G4-B004` was never counted as produced-witness debt, and M4-DEFN had explicitly said it "adds no **M4** gate identity/debt". So it fell outside both the debt ledger and `DESIGN.md` §14 M5's acceptance list, the two sources §13.1 was reconciled against. `M5-DEFN-REV-OBS-01` existed for exactly this risk, M5's exit being "stated in several places and nowhere in full". Its discharge here reconciled only the places already known. This is a direct instance of `LESSONS.md` 168.
 
 **Disposition.**
 - I **withdraw** "M5 CLOSED" and hold closure.
 - The §13.1 conjuncts 1-7, selector448 acceptance and the package promotion are unaffected.
 - `M5-DEFN-REV-OBS-01`'s discharge is withdrawn in part and merged into **`M5-CP3-TB2-REV-OBS-01`**, owned by **`M5-DEFN-R1`**.
-- I have not decided the substance, whether the obligation is satisfied, needs `M5-CP4`, or should be re-homed. That is definition authority, and `M5-DEFN-R1` must decide it from primary sources under falsifiers that forbid crediting ordinal 186 and forbid a re-home without a named missing M6 stage authority.
+- I have not decided the substance, whether the obligation is satisfied, needs `M5-CP4`, or should be re-homed. That is definition authority, and `M5-DEFN-R1` must decide it from primary sources under falsifiers that forbid crediting ordinal 186 and forbid a re-home without a named missing M6 stage authority. **[CORRECTED: the "forbid crediting ordinal 186" falsifier prejudged the reading and was removed from the plan at the second pass.]**
 - `M6-DEFN` cannot correctly proceed first, because its `G4-B004` half consumes "the M5-produced authority".
 
 ### V3 — the durable tracker had been overwritten, and I restored it
@@ -126,7 +126,7 @@ Commit **`ce9bf3cb`** (2026-09-22, "docs: track R11 manifest finalization orches
 
 **Fix:**
 - Appended `ce9bf3cb~1`'s tracker verbatim under a "RESTORED HISTORY" heading, and byte-verified the tail against the source.
-- Added the tracker to `review_check.py` `DURABLE_FILES`. The check would have failed at `ce9bf3cb`, where the marker count went 6 → 0.
+- Added the tracker to `review_check.py` `DURABLE_FILES`. The check would have failed at `ce9bf3cb`, where the marker count went 6 → 0. **[CORRECTED: false. `boundary` sees only uncommitted edits, so it could not catch a committed overwrite. See `ledgers` at the second pass.]**
 - Recorded `M5-CP3-TB2-REV-OBS-02` (recovered) and `LESSONS.md` 176.
 
 The accounting reconciles: the restored ledger ends at 50/14/36, and the retained R13-REV addendum corrects that to 51/14/37.
@@ -151,7 +151,7 @@ The two plan files are a deliberate, temporary exception to "exactly one next-tu
 |---|---|
 | Accepted selector prefix re-hashed | selector448 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789` (448 / 36,382 B), first430 = selector430 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`; packaged copy byte-identical |
 | Decisive claims independently re-derived | Fresh download and re-hash of TB2 result/log and CB20 package; 917/917 and 28/28; all 448 rows, raw hashes and GTest protocol; routing equals receipt; harness SHA and packaged-source reads; code equal to `a8b33cb7`; GMP; §13.1 row resolution; `G4-B004` census from frozen records and git history; tracker line counts across `ce9bf3cb` |
-| Non-vacuity checked | Protocol shows exactly one matching RUN/OK per row, so no vacuous PASS. Ordinal 186 is shown single-isolation (`ASSERT_EQ(1U, …)`, `consumedInternalIsolationSeams == 1`), so it cannot carry a multi-isolation claim. |
+| Non-vacuity checked | Protocol shows exactly one matching RUN/OK per row, so no vacuous PASS. **[CORRECTED at the second pass: the following single-isolation conclusion prejudged the reading.]** Ordinal 186 is shown single-isolation (`ASSERT_EQ(1U, …)`, `consumedInternalIsolationSeams == 1`), so it cannot carry a multi-isolation claim. |
 | Prior obligations discharged/carried | R16 `-OBS-01` no-credit disposition upheld, with M6-DEFN still owning its hygiene decision. `-OBS-02` still recorded. `-OBS-03` discharge upheld: numbering is unique and ordered, and the §4.11, §4.12, §4.25 and §4.31 citations resolve. **`M5-DEFN-REV-OBS-01` discharge withdrawn in part, merged into `M5-CP3-TB2-REV-OBS-01` → `M5-DEFN-R1`.** |
 | Stable accounting | 51 / 14 / 37; debt 1 (M6), which may become 2 under `M5-DEFN-R1` disposition C. Package `10771899191 / cef1c6ee...` under selector448 448/448. |
 | New candidates/obligations recorded | `M5-CP3-TB2-REV-OBS-01` (open, closure-blocking) and `-OBS-02` (recovered), both in the tracker. |
@@ -167,3 +167,64 @@ The two plan files are a deliberate, temporary exception to "exactly one next-tu
 | review_check.py boundary | **PASS / ALL CHECKS PASSED** with `--expect-selector 448=70ff0860… 430=1c412850…` over the 15-document addendum diff. No product/test/fixture/build or selector mutation. Durable markers: handoff 1→1, ORIENTATION 2→4, tracker **0→11** (restoration; newly guarded). |
 | `STATUS` lifecycle maintained | Resume beacon `IN_PROGRESS` (Resumed at = handoff `2026-09-23T21:16:54Z`) published first. Final `COMPLETE → M5-DEFN-R1` is the last write. |
 | Pushed to origin, branch in sync | Confirmed with `git status -sb` after the final push |
+
+---
+
+## Second reviewing-agent pass (re-handoff at 14:37:23)
+
+Runtime-free. Origin had **no new commits** since the first addendum. The only intervening writes were the concurrent implementation session's two STATUS commits (`a051b203`, `cca8de6a`), which re-closed this turn as `COMPLETE → M6-DEFN`, and that re-close triggered this handoff. The first addendum's final beacon (`COMPLETE → M5-DEFN-R1`) was already later on origin and remains authoritative. This pass audited the current state and my own first addendum as hostile input (`REVIEW_TURN_POLICY.md` §6.2). **Verdict:** the closure hold is upheld. Two of my own claims were wrong or overstated and are corrected here, and one further durable-data loss is repaired.
+
+### P1 — the central finding survives a broader search
+
+`git log --all -S"G4-B004"` and `-S"multi-isolation"` over **every** M5-named path in history return only my own first-addendum commit. No M5 record ever absorbed the M4-DEFN §11.2 obligation, so closing M5 without adjudicating it remains a `LESSONS.md` 168 failure. The hold and `M5-DEFN-R1` stand.
+
+### P2 — my census overclaimed and prejudged the definition (corrected)
+
+The first addendum called ordinal 186 "the only positive isolation row", "single-isolation" and "cannot be credited", and wrote that into `M5-DEFN-R1`'s falsifiers. On re-examination:
+- Ordinal **239** (`ExactReciprocalTransportCrossesSourceAdjacentIsolationSeam`) is a second positive, producer-built, materialized isolation row. It also asserts one certificate across two sheets.
+- `split_isolation_fixture()` is **producer-built** (`build_surface_cell_network` + `require_produced`) from test-supplied sheet labels `{0,1}`. So 186 and the tamper family 183-185/187-188 are producer output, not direct/helper rows.
+- The repository's own ungated test `SurfaceCellTransitionQuotient.MultiIsolationMaterializationRetainsAllLocalSheets` uses **"multi-isolation" to mean ≥2 isolation sheets** on that same single-seam fixture. `tests/TESTING_STRATEGY.md` §8.4 lists "multi-isolation relation graphs" under occurrence quotient, which is M6.
+- A second ungated produced witness exists: `SurfaceCellsPhase10.ExactCommittedTorusDoesNotTreatIsolationSeamAsBoundedDiskBoundary`, a pipeline torus with internal isolation seams, a multi-sheet region and every certificate and periodic relation consumed. Neither ungated test has ever been executed in any gate, and neither is mentioned in any record.
+- More broadly, **360 of 808** identities compiled into the four gate binaries are in no selector. That is a known design property, historical rows are not gated, but it means census claims must be made from source, not from the selector alone.
+
+So whether accepted evidence already satisfies the obligation **depends on the reading**, which is `M5-DEFN-R1`'s decision. Disposition A (rows 183-188 under a ≥2-sheets reading) is a live, possibly likely, outcome. I corrected the census and falsifiers in the plan, the frozen §13.1 note, ORIENTATION, TODO, the handoff, ROADMAP, the consolidated record, the M6-DEFN plan and tracker OBS-01. The replacement falsifier forbids crediting anything under a reading the DEFN has not frozen with cited authority, in either direction.
+
+### P3 — the guard I added was inert against the real failure path (corrected)
+
+I claimed the new `DURABLE_FILES` entry "would have failed at `ce9bf3cb`". It could not have. `boundary` compares only the reviewer's uncommitted tree with HEAD, and the overwrite was committed by an EXEC turn that never runs the check. I added `review_check.py ledgers --base <rev>`, which scans **committed** history for any >10% shrink of the tracker, agent CHANGELOG, LESSONS and root CHANGELOG. Verified: `--base ce9bf3cb~2` **FAILs** and names `ce9bf3cb 9837→21` and `0043dd4c 13317→14`. `--base d9441606` **PASSes**. `LESSONS.md` 176 now states both corollaries: test a guard against the incident path, and search for sibling instances.
+
+### P4 — a second durable ledger had been overwritten (restored)
+
+Commit **`0043dd4c`** (2026-09-22 12:27, "docs: log R11 orchestration-invalid attempt"), from the same minute and action as `ce9bf3cb`, overwrote the **agent CHANGELOG** from 13,317 lines (466 entries) to 14. It was never restored. My first addendum fixed the tracker and wrote a lesson about the pattern without looking for siblings. I then scanned every durable and agent document since 2026-08-20 for surviving files that shrank by more than 65%:
+- `ce9bf3cb` and `0043dd4c` are the only unauthorized losses.
+- `a1c8753c` ("noop", emptied the M4 CP-COND TB3 review record) was restored the same day by `ca518917`.
+- The remaining hits are named consolidations with DURABLE markers preserved.
+
+The agent CHANGELOG is restored verbatim under "RESTORED HISTORY", with its tail byte-verified. Recorded as `M5-CP3-TB2-REV-OBS-03`.
+
+### P5 — process note: concurrent implementation session
+
+At 14:30:12 the monitor started a new implementation session while the first addendum was in progress. That session read the `IN_PROGRESS` beacon, "resumed" this turn and re-closed it with its own remembered successor, `M6-DEFN`. The first addendum's later beacon superseded it. Had STATUS instead still read `COMPLETE → M6-DEFN`, the new session would have started M6-DEFN concurrently with this Review. This is recorded for the user. It is monitor behaviour, which is outside the repository and outside this Review's authority.
+
+## Review closeout — second reviewing-agent pass
+
+| Duty | Answer |
+|---|---|
+| Accepted selector prefix re-hashed | Unchanged since the first addendum; re-confirmed by `boundary --expect-selector 448=70ff0860… 430=1c412850…` |
+| Decisive claims independently re-derived | All-history `G4-B004` / multi-isolation search over M5 paths; isolation-row census from test source (186, 239, 183-188, two ungated); fixture construction path; ungated-identity count (360/808); durable-document shrink scan; `ledgers` verified against the incident range |
+| Non-vacuity checked | The new guard FAILs on the real incident commits and PASSes otherwise. The census now distinguishes gated from ungated and producer-built from helper. |
+| Prior obligations discharged/carried | `M5-CP3-TB2-REV-OBS-01` stays open with its census corrected, owner `M5-DEFN-R1`. OBS-02 is recovered, with its guard claim corrected. **OBS-03** is new and recovered. R16 OBS-01 and OBS-02 are unchanged. |
+| Stable accounting | 51 / 14 / 37; debt 1 (M6); package `10771899191 / cef1c6ee…` under selector448 |
+| New candidates/obligations recorded | `M5-CP3-TB2-REV-OBS-03` (recovered), in the tracker |
+| ORIENTATION currency line | `M5-CP3-TB2-REV` (incl. two reviewing-agent passes), 2026-09-23 UTC |
+| ORIENTATION §3 / §4 / §7 / §8 | §3 census sentence corrected. §4 unchanged. §7 item 1 census corrected. §8 ledger entry corrected to name both overwrites and the effective guard. |
+| CHANGELOG | Agent CHANGELOG restored and TB2-REV entry amended. Root entry amended. |
+| ROADMAP | M5 section census sentence corrected |
+| Selector manifest | n/a — no selector change |
+| LESSONS | 176 corrected: inert-guard and sibling-search corollaries |
+| Consolidation under CLEAN_UP_POLICY | n/a — nothing further to fold |
+| Successor frozen | Exactly `M5-DEFN-R1`, with falsifiers and stop rules in the plan §§3-4 (corrected) |
+| Turn boundary held | Runtime-free; no product/test/fixture/CMake/benchmark/selector change. `tools/review_check.py` gains the read-only `ledgers` subcommand. |
+| review_check.py boundary | All checks **PASS except** `durable markers preserved in ORIENTATION.md 4 -> 3`. This is a **false positive**: the removed occurrence is my own first-pass prose ("`review_check.py` now guards its DURABLE markers"), deleted because that claim was false. ORIENTATION's DURABLE heading (line 1) is intact. I deliberately did not re-insert the word to satisfy the counter (`LESSONS.md` 172). Selectors 448/430 match their declared hashes, with no product/test/fixture/build or selector mutation. **`review_check.py ledgers --base d9441606`: ALL PASS.** |
+| `STATUS` lifecycle maintained | Resume `IN_PROGRESS` (Resumed at = re-handoff `2026-09-23T21:37:23Z`) published first. The final `COMPLETE → M5-DEFN-R1` is the last write. |
+| Pushed to origin, branch in sync | Confirmed by `git status -sb` after the final push |

@@ -27,7 +27,7 @@ Freeze the M6 vertical contract before any occurrence, quotient, embedding, or v
 - A closed-complex debt plan that credits mechanism-only evidence as direct production **falsifies** closure ownership.
 - Any treatment of the two dormant CB14 identities as historical M5 evidence **falsifies** the no-credit disposition.
 - Any unresolved ownership conflict between occurrence creation, quotient construction, embedding, and verification **halts** M6 implementation.
-- A `G4-B004` M6 contract that consumes authority M5 has not been shown to produce, or credits single-isolation evidence as multi-isolation, **falsifies** the definition.
+- A `G4-B004` M6 contract that consumes authority M5 has not been shown to produce, or credits evidence under a "multi-isolation" reading that `M5-DEFN-R1` did not freeze, **falsifies** the definition.
 
 ## Stop rules
 

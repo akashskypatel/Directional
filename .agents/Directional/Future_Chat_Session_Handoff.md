@@ -6,7 +6,7 @@
 
 `M5-CP3-TB2-REV` is **COMPLETE / APPROVED / SELECTOR448 ACCEPTED — M5 CLOSURE HELD** by its reviewing-agent addendum. The runtime evidence is independently re-verified: TB2 run/job `35913334490 / 107358491487`, result/log `10775185139 / 10774217117`, 917/917 evidence, all 448 ledger/raw/protocol rows, selector448 `70ff0860...c75789` with exact selector430 prefix, routing receipt `c91a5e2f...1dd7c`, and owners 32/300/75/41. The CB20 package/source `10771899191 / cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1` is the current accepted M5 runtime authority, and §13.1 conjuncts 1-7 hold.
 
-M5 is **not closed**. `Architecture_M4_DEFN_Frozen_Definitions.md` §11.2 assigns M5 the focused positive multi-isolation quotient relation/certificate witness (`G4-B004` M5 half), and no M5 record absorbed or adjudicated it. Selector448's only positive isolation row, ordinal 186, is single-isolation. `M5-DEFN-REV-OBS-01`'s discharge is withdrawn in part and merged into `M5-CP3-TB2-REV-OBS-01`. The addendum also restored `Regression_Root_Cause_Tracker.md`, which commit `ce9bf3cb` had overwritten from 9,837 lines to 21 (`-OBS-02`, `LESSONS.md` 176). Stable accounting remains **51 / 14 / 37**; project debt is **1**, M6-owned.
+M5 is **not closed**. `Architecture_M4_DEFN_Frozen_Definitions.md` §11.2 assigns M5 the focused positive multi-isolation quotient relation/certificate witness (`G4-B004` M5 half), and no M5 record absorbed or adjudicated it. *(Census corrected at the second reviewing-agent pass.)* Whether any accepted row already satisfies it depends on what "multi-isolation" means, which `M5-DEFN-R1` must freeze. Under a ≥2-isolation-**sheets** reading, producer-built `split_isolation_fixture` rows 183-188 are candidates, and the repository's own ungated test `MultiIsolationMaterializationRetainsAllLocalSheets` uses that reading. Under a ≥2-isolation-**seams** reading, no gated row qualifies, since ordinals 186 and 239 each assert exactly one certificate. `M5-DEFN-REV-OBS-01`'s discharge is withdrawn in part and merged into `M5-CP3-TB2-REV-OBS-01`. The reviewing-agent passes also restored two durable ledgers that 2026-09-22 whole-file writes had overwritten: the tracker (`ce9bf3cb`, `-OBS-02`) and the agent CHANGELOG (`0043dd4c`, `-OBS-03`) (`LESSONS.md` 176). Every turn that edits either ledger must edit, never whole-file write. Every Review must run `review_check.py ledgers --base <previous-review-commit>`. Stable accounting remains **51 / 14 / 37**; project debt is **1**, M6-owned.
 
 ## Exact next turn
 
@@ -17,7 +17,7 @@ Freeze exactly one disposition:
 - **(B)** A bounded `M5-CP4` focused production contract, with at least two produced isolation authorities, explicit owners/certificates consumed exactly once, and an owner tamper.
 - **(C)** A re-home to M6 with a concrete missing-stage-authority reason, M4-DEFN §11.2 amended in place and the debt priced 1 → 2.
 
-Ordinal 186 and any direct/helper row get zero credit. No product/test/selector mutation, compile or runtime. `M6-DEFN` is **deferred** behind this turn and its Review.
+No row gets credit under a reading the turn has not frozen with cited authority. Never-executed identities and direct/helper rows get zero credit. No product/test/selector mutation, compile or runtime. `M6-DEFN` is **deferred** behind this turn and its Review.
 
 ## Resume-critical evidence
 

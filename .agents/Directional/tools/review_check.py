@@ -15,12 +15,20 @@ Two things every REVIEW turn does by hand, now one command each:
   boundary    The pre-commit gate for a REVIEW turn. Proves the turn mutated no product,
               test, fixture, benchmark, build or selector byte; that every selector still
               hashes to its committed value; and that durable section markers survived.
+              It sees only the reviewer's UNCOMMITTED changes against HEAD.
+
+  ledgers     Scans COMMITTED history in BASE..HEAD for any commit that shrank an
+              append-only durable ledger by more than 10% of its lines. `boundary` cannot
+              catch a ledger overwrite committed by another turn, because HEAD already
+              contains it. This is the check that would have caught ce9bf3cb and 0043dd4c.
+              Pass the previous Review's final commit as BASE.
 
 Usage
 -----
     python3 review_check.py authority 71ece3ca184e90858d9222fb014b37c16d292294
     python3 review_check.py boundary
     python3 review_check.py boundary --expect-selector 378=86259d91...440b8
+    python3 review_check.py ledgers --base <previous-review-final-commit>
 
 Exit codes: 0 = all checks passed, 1 = at least one check failed.
 """
@@ -37,9 +45,18 @@ CODE_SURFACES = ["src", "include", "tests", "benchmarks", "CMakeLists.txt", "cma
 DURABLE_FILES = {
     ".agents/Directional/Future_Chat_Session_Handoff.md": "DURABLE",
     ".agents/Directional/ORIENTATION.md": "DURABLE",
-    # Overwritten to 21 lines at ce9bf3cb (2026-09-22) and undetected for ~20 turns; restored at M5-CP3-TB2-REV.
+    # Protects only against the reviewer's own uncommitted edits; see `ledgers` for committed overwrites.
     ".agents/Directional/Regression_Root_Cause_Tracker.md": "DURABLE",
 }
+
+# Append-only durable ledgers (RETENTION_POLICY.md). Whole-file writes overwrote the first two
+# at ce9bf3cb / 0043dd4c on 2026-09-22; both were restored at M5-CP3-TB2-REV.
+APPEND_ONLY_LEDGERS = [
+    ".agents/Directional/Regression_Root_Cause_Tracker.md",
+    ".agents/Directional/CHANGELOG.md",
+    ".agents/Directional/LESSONS.md",
+    "CHANGELOG.md",
+]
 
 FAILED = []
 
@@ -185,6 +202,24 @@ def cmd_boundary(args):
         print("      %s" % p)
 
 
+def _line_count(rev, path):
+    blob = git("show", "%s:%s" % (rev, path))
+    return blob.stdout.count("\n") if blob.returncode == 0 else None
+
+
+def cmd_ledgers(args):
+    print("append-only ledger shrink scan %s..HEAD" % args.base)
+    for path in APPEND_ONLY_LEDGERS:
+        revs = git("rev-list", "--reverse", "%s..HEAD" % args.base, "--", path)
+        shrinks = []
+        for rev in [r for r in revs.stdout.split() if r]:
+            before, after = _line_count(rev + "~1", path), _line_count(rev, path)
+            if before and after is not None and after < before * 0.9:
+                shrinks.append("%s %d->%d" % (rev[:8], before, after))
+        report(not shrinks, "no >10%% shrink of %s" % path,
+               "clean" if not shrinks else "; ".join(shrinks))
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Authority and review-boundary checks (review aid only).")
@@ -197,6 +232,10 @@ def main():
     p = subs.add_parser("boundary")
     p.add_argument("--expect-selector", nargs="*")
     p.set_defaults(fn=cmd_boundary)
+
+    p = subs.add_parser("ledgers")
+    p.add_argument("--base", required=True)
+    p.set_defaults(fn=cmd_ledgers)
 
     args = parser.parse_args()
     args.fn(args)
