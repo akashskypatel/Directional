@@ -1,0 +1,3 @@
+turn=M5-CP3-CB19
+semantic_source_sha=16446bbce290174209835e263cda7a52d5039458
+purpose=source-snapshot
