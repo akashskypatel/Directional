@@ -1,0 +1,2 @@
+# M5-CP3-TB1-R16-REV source-snapshot cleanup
+.agents/connector-triggers/source-snapshot/M5-CP3-TB1-R16-REV-20260923T1729Z.txt
