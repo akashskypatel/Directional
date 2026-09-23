@@ -1423,6 +1423,17 @@ struct SurfaceSharedBoundaryInterval {
   auto operator<=>(const SurfaceSharedBoundaryInterval &) const = default;
 };
 
+/** Exact face-gauge inputs used to re-express one relation endpoint branch. */
+struct SurfacePeriodicRelationEndpointBranchAuthority {
+  authority::SourceFaceId localFace;
+  authority::QuarterTurn localFaceBranchRotation;
+  authority::SourceFaceId occurrenceCarrierFace;
+  authority::QuarterTurn occurrenceCarrierFaceBranchRotation;
+
+  auto operator<=>(const SurfacePeriodicRelationEndpointBranchAuthority &) const =
+      default;
+};
+
 /**
  * Exact same-region periodic endpoint state in the quotient-relation gauge.
  *
@@ -1434,6 +1445,7 @@ struct SurfacePeriodicRelationEndpointState {
   authority::QuarterTurn branchRotation;
   int scaleLevel = 0;
   authority::FieldChartId sourceChart;
+  SurfacePeriodicRelationEndpointBranchAuthority branchAuthority;
   SurfaceBoundaryOccurrenceId boundaryOccurrence;
   authority::Orientation occurrenceOrientation = authority::Orientation::Forward;
   authority::QuarterTurn generatorRotation;
@@ -1445,7 +1457,8 @@ struct SurfacePeriodicRelationEndpointState {
 make_periodic_relation_endpoint_state(
     const LocalLatticeState &localState,
     const SurfaceSharedBoundaryInterval &interval,
-    authority::QuarterTurn generatorRotation);
+    authority::QuarterTurn generatorRotation,
+    const SurfacePeriodicRelationEndpointBranchAuthority &branchAuthority);
 
 /** Immutable receipt proving which accepted A2b/A3 plans A4 consumed. */
 struct SurfaceConformityPlanReceipt {

@@ -7907,19 +7907,30 @@ std::optional<SurfacePeriodicRelationEndpointState>
 make_periodic_relation_endpoint_state(
     const LocalLatticeState &localState,
     const SurfaceSharedBoundaryInterval &interval,
-    const authority::QuarterTurn generatorRotation) {
+    const authority::QuarterTurn generatorRotation,
+    const SurfacePeriodicRelationEndpointBranchAuthority &branchAuthority) {
   if (!localState.sourceChart.has_value() ||
       !interval.boundaryOccurrence.has_value()) {
     return std::nullopt;
   }
-  const authority::QuarterTurn branchRotation =
+
+  // Relation endpoint branches are expressed at the exact accepted A3
+  // occurrence-carrier face, not at the retained trace-point face. Preserve
+  // the bounded-disk chart +U offset C while changing only that face gauge:
+  //   C     = B_local - B_face_local (mod 4)
+  //   B_rel = B_face_occ + C          (mod 4).
+  const authority::QuarterTurn localBranch =
       authority::QuarterTurn::from_integer(localState.branchRotation);
+  const authority::QuarterTurn chartOffset = compose(
+      branchAuthority.localFaceBranchRotation.inverse(), localBranch);
+  const authority::QuarterTurn relationBranch = compose(
+      branchAuthority.occurrenceCarrierFaceBranchRotation, chartOffset);
   const authority::QuarterTurn gaugeRotation =
       generatorRotation == authority::QuarterTurn{} ? authority::QuarterTurn{}
-                                                    : branchRotation;
+                                                    : relationBranch;
   return SurfacePeriodicRelationEndpointState{
-      rotate(gaugeRotation, localState.latticeCoordinate), branchRotation,
-      localState.scaleLevel, *localState.sourceChart,
+      rotate(gaugeRotation, localState.latticeCoordinate), relationBranch,
+      localState.scaleLevel, *localState.sourceChart, branchAuthority,
       *interval.boundaryOccurrence, interval.orientation, generatorRotation};
 }
 
@@ -8033,6 +8044,36 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
            compose(action.rotation, first.branchRotation) ==
                second.branchRotation &&
            first.scaleLevel == second.scaleLevel;
+  };
+  const auto occurrence_face_contains_carrier = [&](
+      const authority::SourceFaceId face,
+      const authority::SourceEdgeTopologyKey &carrier) {
+    if (face.index() >= sourceTopologyRegions.face_count()) return false;
+    const auto &vertices = sourceTopologyRegions.topology_for_row(face).vertices();
+    const auto contains = [&](const authority::SourceVertexId vertex) {
+      return std::find(vertices.begin(), vertices.end(), vertex) != vertices.end();
+    };
+    return contains(carrier.first()) && contains(carrier.second());
+  };
+  const auto endpoint_branch_authority_matches = [&](
+      const SurfaceFrontEdge &edge, const SurfaceTracePoint &point,
+      const SurfacePeriodicRelationEndpointState &state,
+      const authority::SourceEdgeTopologyKey &carrier) {
+    const auto &branchAuthority = state.branchAuthority;
+    if (point.face < 0 ||
+        branchAuthority.localFace.index() !=
+            static_cast<std::size_t>(point.face) ||
+        branchAuthority.localFace.index() >= sourceTopologyRegions.face_count() ||
+        branchAuthority.occurrenceCarrierFace.index() >=
+            sourceTopologyRegions.face_count() ||
+        sourceTopologyRegions.region_for_row(branchAuthority.localFace) !=
+            edge.sourceTopologyRegion ||
+        sourceTopologyRegions.region_for_row(
+            branchAuthority.occurrenceCarrierFace) != edge.sourceTopologyRegion) {
+      return false;
+    }
+    return occurrence_face_contains_carrier(
+        branchAuthority.occurrenceCarrierFace, carrier);
   };
 
   for (std::size_t edgeIndex = 0; edgeIndex < edges.size(); ++edgeIndex) {
@@ -8179,7 +8220,28 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
           if (!forwardEdge->periodicFromLattice.has_value() ||
               !forwardEdge->periodicToLattice.has_value() ||
               !reverseEdge->periodicFromLattice.has_value() ||
-              !reverseEdge->periodicToLattice.has_value()) {
+              !reverseEdge->periodicToLattice.has_value() ||
+              owner->second->route().steps().size() != 1U) {
+            error.code = SurfacePhaseFrontProductErrorCode::
+                NonReciprocalPeriodicRelation;
+            error.edge = static_cast<int>(edgeIndex);
+            error.periodicRelation = edge.periodicRelation;
+            return error;
+          }
+          const authority::SourceEdgeTopologyKey &generatorCarrier =
+              owner->second->route().steps().front().topology();
+          if (!endpoint_branch_authority_matches(
+                  *forwardEdge, forwardEdge->from,
+                  *forwardEdge->periodicFromLattice, generatorCarrier) ||
+              !endpoint_branch_authority_matches(
+                  *forwardEdge, forwardEdge->to,
+                  *forwardEdge->periodicToLattice, generatorCarrier) ||
+              !endpoint_branch_authority_matches(
+                  *reverseEdge, reverseEdge->from,
+                  *reverseEdge->periodicFromLattice, generatorCarrier) ||
+              !endpoint_branch_authority_matches(
+                  *reverseEdge, reverseEdge->to,
+                  *reverseEdge->periodicToLattice, generatorCarrier)) {
             error.code = SurfacePhaseFrontProductErrorCode::
                 NonReciprocalPeriodicRelation;
             error.edge = static_cast<int>(edgeIndex);
@@ -8188,16 +8250,20 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
           }
           const auto expectedForwardFrom = make_periodic_relation_endpoint_state(
               forwardEdge->fromLattice, *forwardEdge->sharedBoundaryInterval,
-              semanticAction->rotation);
+              semanticAction->rotation,
+              forwardEdge->periodicFromLattice->branchAuthority);
           const auto expectedForwardTo = make_periodic_relation_endpoint_state(
               forwardEdge->toLattice, *forwardEdge->sharedBoundaryInterval,
-              semanticAction->rotation);
+              semanticAction->rotation,
+              forwardEdge->periodicToLattice->branchAuthority);
           const auto expectedReverseFrom = make_periodic_relation_endpoint_state(
               reverseEdge->fromLattice, *reverseEdge->sharedBoundaryInterval,
-              semanticAction->rotation);
+              semanticAction->rotation,
+              reverseEdge->periodicFromLattice->branchAuthority);
           const auto expectedReverseTo = make_periodic_relation_endpoint_state(
               reverseEdge->toLattice, *reverseEdge->sharedBoundaryInterval,
-              semanticAction->rotation);
+              semanticAction->rotation,
+              reverseEdge->periodicToLattice->branchAuthority);
           if (!expectedForwardFrom.has_value() || !expectedForwardTo.has_value() ||
               !expectedReverseFrom.has_value() || !expectedReverseTo.has_value() ||
               *forwardEdge->periodicFromLattice != *expectedForwardFrom ||
@@ -17135,6 +17201,31 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
     return &result.sourceTopologyRegions->region(id);
   };
 
+  const auto accepted_occurrence_face_for_carrier = [&](
+      const SurfaceBoundaryOccurrenceId &occurrence,
+      const authority::NetworkArcId span,
+      const authority::SourceEdgeTopologyKey &carrier)
+      -> std::optional<authority::SourceFaceId> {
+    const auto accepted = result.acceptedCutBoundaryFaceAuthority.find(
+        AcceptedCutBoundaryFaceAuthorityKey{occurrence, span, carrier});
+    if (accepted == result.acceptedCutBoundaryFaceAuthority.end()) {
+      return std::nullopt;
+    }
+    const auto incidentFaces = sourceEdgeFaces.find(carrier);
+    if (incidentFaces == sourceEdgeFaces.end()) return std::nullopt;
+    const auto firstIncidentFace =
+        source_face_id(incidentFaces->second[0], faces.rows());
+    const auto secondIncidentFace =
+        source_face_id(incidentFaces->second[1], faces.rows());
+    if (!firstIncidentFace.has_value() || !secondIncidentFace.has_value() ||
+        firstIncidentFace == secondIncidentFace ||
+        (accepted->second != *firstIncidentFace &&
+         accepted->second != *secondIncidentFace)) {
+      return std::nullopt;
+    }
+    return accepted->second;
+  };
+
   const auto generator_route_for_span = [&](
       const authority::NetworkArcId span,
       const SurfaceBoundaryOccurrenceId &fromOccurrence,
@@ -17177,14 +17268,12 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
           transitionIndex->second, sourceMatchingIndices.size());
       if (!transition) return std::nullopt;
 
-      const auto fromFaceAuthority = result.acceptedCutBoundaryFaceAuthority.find(
-          AcceptedCutBoundaryFaceAuthorityKey{fromOccurrence, span,
-                                              carrier->edge});
-      const auto toFaceAuthority = result.acceptedCutBoundaryFaceAuthority.find(
-          AcceptedCutBoundaryFaceAuthorityKey{toOccurrence, span, carrier->edge});
-      if (fromFaceAuthority == result.acceptedCutBoundaryFaceAuthority.end() ||
-          toFaceAuthority == result.acceptedCutBoundaryFaceAuthority.end() ||
-          fromFaceAuthority->second == toFaceAuthority->second) {
+      const auto fromFaceAuthority = accepted_occurrence_face_for_carrier(
+          fromOccurrence, span, carrier->edge);
+      const auto toFaceAuthority = accepted_occurrence_face_for_carrier(
+          toOccurrence, span, carrier->edge);
+      if (!fromFaceAuthority.has_value() || !toFaceAuthority.has_value() ||
+          *fromFaceAuthority == *toFaceAuthority) {
         return std::nullopt;
       }
       const auto incidentFaces = sourceEdgeFaces.find(carrier->edge);
@@ -17198,7 +17287,7 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
         return std::nullopt;
       }
       const std::array<authority::SourceFaceId, 2> resolvedFaces{
-          fromFaceAuthority->second, toFaceAuthority->second};
+          *fromFaceAuthority, *toFaceAuthority};
       const std::array<authority::SourceFaceId, 2> carrierFaces{
           *firstIncidentFace, *secondIncidentFace};
       if (!((resolvedFaces[0] == carrierFaces[0] &&
@@ -17209,7 +17298,7 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
       }
 
       const auto transitionValue = options.fieldTransportAtlas->transition_value(
-          carrier->edge, fromFaceAuthority->second, toFaceAuthority->second);
+          carrier->edge, *fromFaceAuthority, *toFaceAuthority);
       if (!transitionValue.has_value()) return std::nullopt;
 
       authority::GridAutomorphism transport =
@@ -17439,20 +17528,94 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
             static_cast<int>(first.filledCell.index()), first.filledSide);
         return result;
       }
+      if (generatorRoute->steps().size() != 1U) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::PeriodicGeneratorRouteUnavailable,
+            static_cast<int>(first.filledCell.index()), first.filledSide);
+        return result;
+      }
+      const authority::SourceEdgeTopologyKey &generatorCarrier =
+          generatorRoute->steps().front().topology();
+      const auto firstOccurrenceFace = accepted_occurrence_face_for_carrier(
+          *directedFirst->sharedBoundaryInterval->boundaryOccurrence,
+          directedFirst->sharedBoundaryInterval->span, generatorCarrier);
+      const auto secondOccurrenceFace = accepted_occurrence_face_for_carrier(
+          *directedSecond->sharedBoundaryInterval->boundaryOccurrence,
+          directedSecond->sharedBoundaryInterval->span, generatorCarrier);
+
+      const auto endpoint_branch_authority = [&](
+          const SurfaceFrontEdge &edge, const SurfaceTracePoint &point,
+          const std::optional<authority::SourceFaceId> &occurrenceFace)
+          -> std::optional<SurfacePeriodicRelationEndpointBranchAuthority> {
+        if (!occurrenceFace.has_value() ||
+            !result.sourceTopologyRegions.has_value()) {
+          return std::nullopt;
+        }
+        const auto localFace = source_face_id(point.face, faces.rows());
+        if (!localFace.has_value() ||
+            localFace->index() >= faceBranchRotation.size() ||
+            occurrenceFace->index() >= faceBranchRotation.size() ||
+            result.sourceTopologyRegions->region_for_row(*localFace) !=
+                edge.sourceTopologyRegion ||
+            result.sourceTopologyRegions->region_for_row(*occurrenceFace) !=
+                edge.sourceTopologyRegion) {
+          return std::nullopt;
+        }
+        const int localFaceBranch =
+            faceBranchRotation[static_cast<std::size_t>(localFace->index())];
+        const int occurrenceFaceBranch = faceBranchRotation[
+            static_cast<std::size_t>(occurrenceFace->index())];
+        if (localFaceBranch < 0 || occurrenceFaceBranch < 0) {
+          return std::nullopt;
+        }
+        return SurfacePeriodicRelationEndpointBranchAuthority{
+            *localFace,
+            authority::QuarterTurn::from_integer(localFaceBranch),
+            *occurrenceFace,
+            authority::QuarterTurn::from_integer(occurrenceFaceBranch)};
+      };
+
+      const auto firstFromBranchAuthority = endpoint_branch_authority(
+          *directedFirst, directedFirst->from, firstOccurrenceFace);
+      const auto firstToBranchAuthority = endpoint_branch_authority(
+          *directedFirst, directedFirst->to, firstOccurrenceFace);
+      const auto secondFromBranchAuthority = endpoint_branch_authority(
+          *directedSecond, directedSecond->from, secondOccurrenceFace);
+      const auto secondToBranchAuthority = endpoint_branch_authority(
+          *directedSecond, directedSecond->to, secondOccurrenceFace);
+
       const authority::QuarterTurn generatorRotation =
           generatorRoute->composed_transport().rotation;
-      const auto firstFromState = make_periodic_relation_endpoint_state(
-          directedFirst->fromLattice, *directedFirst->sharedBoundaryInterval,
-          generatorRotation);
-      const auto firstToState = make_periodic_relation_endpoint_state(
-          directedFirst->toLattice, *directedFirst->sharedBoundaryInterval,
-          generatorRotation);
-      const auto secondFromState = make_periodic_relation_endpoint_state(
-          directedSecond->fromLattice, *directedSecond->sharedBoundaryInterval,
-          generatorRotation);
-      const auto secondToState = make_periodic_relation_endpoint_state(
-          directedSecond->toLattice, *directedSecond->sharedBoundaryInterval,
-          generatorRotation);
+      const auto firstFromState =
+          firstFromBranchAuthority.has_value()
+              ? make_periodic_relation_endpoint_state(
+                    directedFirst->fromLattice,
+                    *directedFirst->sharedBoundaryInterval, generatorRotation,
+                    *firstFromBranchAuthority)
+              : std::nullopt;
+      const auto firstToState =
+          firstToBranchAuthority.has_value()
+              ? make_periodic_relation_endpoint_state(
+                    directedFirst->toLattice,
+                    *directedFirst->sharedBoundaryInterval, generatorRotation,
+                    *firstToBranchAuthority)
+              : std::nullopt;
+      const auto secondFromState =
+          secondFromBranchAuthority.has_value()
+              ? make_periodic_relation_endpoint_state(
+                    directedSecond->fromLattice,
+                    *directedSecond->sharedBoundaryInterval, generatorRotation,
+                    *secondFromBranchAuthority)
+              : std::nullopt;
+      const auto secondToState =
+          secondToBranchAuthority.has_value()
+              ? make_periodic_relation_endpoint_state(
+                    directedSecond->toLattice,
+                    *directedSecond->sharedBoundaryInterval, generatorRotation,
+                    *secondToBranchAuthority)
+              : std::nullopt;
       PeriodicActionForPairResult actionResult;
       if (!firstFromState.has_value() || !firstToState.has_value() ||
           !secondFromState.has_value() || !secondToState.has_value()) {

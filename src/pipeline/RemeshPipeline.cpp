@@ -2152,6 +2152,15 @@ std::uint64_t hash_trace_network(
       hash_combine_i64(seed, static_cast<int>(state.branchRotation.value()));
       hash_combine_i64(seed, state.scaleLevel);
       hash_semantic_id(seed, state.sourceChart);
+      hash_semantic_id(seed, state.branchAuthority.localFace);
+      hash_combine_i64(
+          seed, static_cast<int>(
+                    state.branchAuthority.localFaceBranchRotation.value()));
+      hash_semantic_id(seed, state.branchAuthority.occurrenceCarrierFace);
+      hash_combine_i64(
+          seed, static_cast<int>(state.branchAuthority
+                                     .occurrenceCarrierFaceBranchRotation
+                                     .value()));
       hash_semantic_id(seed, state.boundaryOccurrence.region);
       hash_combine_u64(
           seed, state.boundaryOccurrence.canonicalBoundaryOccurrenceOrdinal);
@@ -3704,6 +3713,41 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
                second.branchRotation &&
            first.scaleLevel == second.scaleLevel;
   };
+  const auto occurrence_face_contains_carrier = [&](
+      const authority::SourceFaceId face,
+      const authority::SourceEdgeTopologyKey &carrier) {
+    if (face.index() >= phaseFront.sourceTopologyRegions().face_count()) {
+      return false;
+    }
+    const auto &vertices =
+        phaseFront.sourceTopologyRegions().topology_for_row(face).vertices();
+    const auto contains = [&](const authority::SourceVertexId vertex) {
+      return std::find(vertices.begin(), vertices.end(), vertex) != vertices.end();
+    };
+    return contains(carrier.first()) && contains(carrier.second());
+  };
+  const auto endpoint_branch_authority_matches = [&](
+      const geometry::SurfaceFrontEdge &edge,
+      const geometry::SurfaceTracePoint &point,
+      const geometry::SurfacePeriodicRelationEndpointState &state,
+      const authority::SourceEdgeTopologyKey &carrier) {
+    const auto &branchAuthority = state.branchAuthority;
+    if (point.face < 0 ||
+        branchAuthority.localFace.index() !=
+            static_cast<std::size_t>(point.face) ||
+        branchAuthority.localFace.index() >=
+            phaseFront.sourceTopologyRegions().face_count() ||
+        branchAuthority.occurrenceCarrierFace.index() >=
+            phaseFront.sourceTopologyRegions().face_count() ||
+        phaseFront.sourceTopologyRegions().region_for_row(
+            branchAuthority.localFace) != edge.sourceTopologyRegion ||
+        phaseFront.sourceTopologyRegions().region_for_row(
+            branchAuthority.occurrenceCarrierFace) != edge.sourceTopologyRegion) {
+      return false;
+    }
+    return occurrence_face_contains_carrier(
+        branchAuthority.occurrenceCarrierFace, carrier);
+  };
   for (int edgeIndex = 0;
        edgeIndex < static_cast<int>(phaseFront.edges().size()); ++edgeIndex) {
     const auto &first = phaseFront.edges()[static_cast<std::size_t>(edgeIndex)];
@@ -3856,26 +3900,48 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
             !forwardEdge->periodicFromLattice.has_value() ||
             !forwardEdge->periodicToLattice.has_value() ||
             !reverseEdge->periodicFromLattice.has_value() ||
-            !reverseEdge->periodicToLattice.has_value()) {
+            !reverseEdge->periodicToLattice.has_value() ||
+            relation.route().steps().size() != 1U) {
+          result.failure = "InvalidPeriodicFrontTransport";
+          return result;
+        }
+        const authority::SourceEdgeTopologyKey &generatorCarrier =
+            relation.route().steps().front().topology();
+        if (!endpoint_branch_authority_matches(
+                *forwardEdge, forwardEdge->from,
+                *forwardEdge->periodicFromLattice, generatorCarrier) ||
+            !endpoint_branch_authority_matches(
+                *forwardEdge, forwardEdge->to,
+                *forwardEdge->periodicToLattice, generatorCarrier) ||
+            !endpoint_branch_authority_matches(
+                *reverseEdge, reverseEdge->from,
+                *reverseEdge->periodicFromLattice, generatorCarrier) ||
+            !endpoint_branch_authority_matches(
+                *reverseEdge, reverseEdge->to,
+                *reverseEdge->periodicToLattice, generatorCarrier)) {
           result.failure = "InvalidPeriodicFrontTransport";
           return result;
         }
         const auto expectedForwardFrom =
             geometry::make_periodic_relation_endpoint_state(
                 forwardEdge->fromLattice, *forwardEdge->sharedBoundaryInterval,
-                semanticAction->rotation);
+                semanticAction->rotation,
+                forwardEdge->periodicFromLattice->branchAuthority);
         const auto expectedForwardTo =
             geometry::make_periodic_relation_endpoint_state(
                 forwardEdge->toLattice, *forwardEdge->sharedBoundaryInterval,
-                semanticAction->rotation);
+                semanticAction->rotation,
+                forwardEdge->periodicToLattice->branchAuthority);
         const auto expectedReverseFrom =
             geometry::make_periodic_relation_endpoint_state(
                 reverseEdge->fromLattice, *reverseEdge->sharedBoundaryInterval,
-                semanticAction->rotation);
+                semanticAction->rotation,
+                reverseEdge->periodicFromLattice->branchAuthority);
         const auto expectedReverseTo =
             geometry::make_periodic_relation_endpoint_state(
                 reverseEdge->toLattice, *reverseEdge->sharedBoundaryInterval,
-                semanticAction->rotation);
+                semanticAction->rotation,
+                reverseEdge->periodicToLattice->branchAuthority);
         if (!expectedForwardFrom.has_value() || !expectedForwardTo.has_value() ||
             !expectedReverseFrom.has_value() || !expectedReverseTo.has_value() ||
             *forwardEdge->periodicFromLattice != *expectedForwardFrom ||

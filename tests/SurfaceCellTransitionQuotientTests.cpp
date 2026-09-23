@@ -2908,19 +2908,31 @@ TEST(M5CP3, PeriodicRelationEndpointGaugeIsIndependentAndExact) {
   directional::geometry::LocalLatticeState reverseTo = reverseFrom;
   reverseTo.latticeCoordinate = {3, 0};
 
+  const auto localFace =
+      directional::authority::SourceFaceId::from_index(0U, 2U);
+  const auto occurrenceFace =
+      directional::authority::SourceFaceId::from_index(1U, 2U);
+  ASSERT_TRUE(localFace.has_value());
+  ASSERT_TRUE(occurrenceFace.has_value());
+  const directional::geometry::SurfacePeriodicRelationEndpointBranchAuthority
+      preservingBranchAuthority{localFace.value(),
+                                directional::authority::QuarterTurn{},
+                                occurrenceFace.value(),
+                                directional::authority::QuarterTurn{}};
+
   const auto rotation = directional::authority::QuarterTurn::from_integer(1);
   const auto firstFrom =
       directional::geometry::make_periodic_relation_endpoint_state(
-          forwardFrom, forwardInterval, rotation);
+          forwardFrom, forwardInterval, rotation, preservingBranchAuthority);
   const auto firstTo =
       directional::geometry::make_periodic_relation_endpoint_state(
-          forwardTo, forwardInterval, rotation);
+          forwardTo, forwardInterval, rotation, preservingBranchAuthority);
   const auto secondFrom =
       directional::geometry::make_periodic_relation_endpoint_state(
-          reverseFrom, reverseInterval, rotation);
+          reverseFrom, reverseInterval, rotation, preservingBranchAuthority);
   const auto secondTo =
       directional::geometry::make_periodic_relation_endpoint_state(
-          reverseTo, reverseInterval, rotation);
+          reverseTo, reverseInterval, rotation, preservingBranchAuthority);
   ASSERT_TRUE(firstFrom.has_value());
   ASSERT_TRUE(firstTo.has_value());
   ASSERT_TRUE(secondFrom.has_value());
@@ -2951,9 +2963,117 @@ TEST(M5CP3, PeriodicRelationEndpointGaugeIsIndependentAndExact) {
   const auto zeroRotation = directional::authority::QuarterTurn{};
   const auto zeroState =
       directional::geometry::make_periodic_relation_endpoint_state(
-          reverseFrom, reverseInterval, zeroRotation);
+          reverseFrom, reverseInterval, zeroRotation, preservingBranchAuthority);
   ASSERT_TRUE(zeroState.has_value());
   EXPECT_EQ(reverseFrom.latticeCoordinate, zeroState->latticeCoordinate);
+}
+
+TEST(M5CP3, PeriodicRelationEndpointBranchUsesAcceptedOccurrenceAuthority) {
+  const auto span = directional::authority::NetworkArcId::from_index(0U, 1U);
+  const auto region =
+      directional::authority::NetworkRegionId::from_index(0U, 1U);
+  const auto forwardChart =
+      directional::authority::FieldChartId::from_index(0U, 2U);
+  const auto reverseChart =
+      directional::authority::FieldChartId::from_index(1U, 2U);
+  const auto forwardLocalFace =
+      directional::authority::SourceFaceId::from_index(0U, 4U);
+  const auto forwardOccurrenceFace =
+      directional::authority::SourceFaceId::from_index(1U, 4U);
+  const auto reverseLocalFace =
+      directional::authority::SourceFaceId::from_index(2U, 4U);
+  const auto reverseOccurrenceFace =
+      directional::authority::SourceFaceId::from_index(3U, 4U);
+  ASSERT_TRUE(span.has_value());
+  ASSERT_TRUE(region.has_value());
+  ASSERT_TRUE(forwardChart.has_value());
+  ASSERT_TRUE(reverseChart.has_value());
+  ASSERT_TRUE(forwardLocalFace.has_value());
+  ASSERT_TRUE(forwardOccurrenceFace.has_value());
+  ASSERT_TRUE(reverseLocalFace.has_value());
+  ASSERT_TRUE(reverseOccurrenceFace.has_value());
+
+  const directional::geometry::SurfaceSharedBoundaryInterval forwardInterval{
+      span.value(),
+      directional::authority::FieldExactRational::from_integer(0),
+      directional::authority::FieldExactRational::from_integer(1),
+      directional::authority::Orientation::Forward,
+      directional::geometry::SurfaceBoundaryOccurrenceId{region.value(), 0U}};
+  const directional::geometry::SurfaceSharedBoundaryInterval reverseInterval{
+      span.value(),
+      directional::authority::FieldExactRational::from_integer(1),
+      directional::authority::FieldExactRational::from_integer(0),
+      directional::authority::Orientation::Reverse,
+      directional::geometry::SurfaceBoundaryOccurrenceId{region.value(), 1U}};
+
+  directional::geometry::LocalLatticeState forward;
+  forward.latticeCoordinate = {2, 1};
+  forward.branchRotation = 1;
+  forward.sourceChart = forwardChart.value();
+  directional::geometry::LocalLatticeState reverse;
+  reverse.latticeCoordinate = {5, -2};
+  reverse.branchRotation = 0;
+  reverse.sourceChart = reverseChart.value();
+
+  const auto zero = directional::authority::QuarterTurn{};
+  const auto one = directional::authority::QuarterTurn::from_integer(1);
+  const auto two = directional::authority::QuarterTurn::from_integer(2);
+  const directional::geometry::SurfacePeriodicRelationEndpointBranchAuthority
+      forwardAuthority{forwardLocalFace.value(), zero,
+                       forwardOccurrenceFace.value(), two};
+  const directional::geometry::SurfacePeriodicRelationEndpointBranchAuthority
+      reverseAuthority{reverseLocalFace.value(), zero,
+                       reverseOccurrenceFace.value(), zero};
+
+  const auto forwardChartOffset = compose(
+      forwardAuthority.localFaceBranchRotation.inverse(),
+      directional::authority::QuarterTurn::from_integer(
+          forward.branchRotation));
+  const auto expectedForwardBranch = compose(
+      forwardAuthority.occurrenceCarrierFaceBranchRotation,
+      forwardChartOffset);
+  const auto reverseChartOffset = compose(
+      reverseAuthority.localFaceBranchRotation.inverse(),
+      directional::authority::QuarterTurn::from_integer(reverse.branchRotation));
+  const auto expectedReverseBranch = compose(
+      reverseAuthority.occurrenceCarrierFaceBranchRotation,
+      reverseChartOffset);
+  ASSERT_NE(forwardAuthority.localFaceBranchRotation,
+            forwardAuthority.occurrenceCarrierFaceBranchRotation);
+  ASSERT_EQ(expectedReverseBranch, compose(one, expectedForwardBranch));
+  ASSERT_NE(directional::authority::QuarterTurn::from_integer(
+                reverse.branchRotation),
+            compose(one, directional::authority::QuarterTurn::from_integer(
+                             forward.branchRotation)));
+
+  const auto forwardState =
+      directional::geometry::make_periodic_relation_endpoint_state(
+          forward, forwardInterval, one, forwardAuthority);
+  const auto reverseState =
+      directional::geometry::make_periodic_relation_endpoint_state(
+          reverse, reverseInterval, one, reverseAuthority);
+  ASSERT_TRUE(forwardState.has_value());
+  ASSERT_TRUE(reverseState.has_value());
+  EXPECT_EQ(expectedForwardBranch, forwardState->branchRotation);
+  EXPECT_EQ(expectedReverseBranch, reverseState->branchRotation);
+  EXPECT_EQ(expectedReverseBranch,
+            compose(one, forwardState->branchRotation));
+  EXPECT_EQ(directional::authority::rotate(expectedForwardBranch,
+                                           forward.latticeCoordinate),
+            forwardState->latticeCoordinate);
+  EXPECT_NE(directional::authority::rotate(
+                directional::authority::QuarterTurn::from_integer(
+                    forward.branchRotation),
+                forward.latticeCoordinate),
+            forwardState->latticeCoordinate);
+
+  const auto zeroTransportState =
+      directional::geometry::make_periodic_relation_endpoint_state(
+          forward, forwardInterval, zero, forwardAuthority);
+  ASSERT_TRUE(zeroTransportState.has_value());
+  EXPECT_EQ(forward.latticeCoordinate,
+            zeroTransportState->latticeCoordinate);
+  EXPECT_EQ(expectedForwardBranch, zeroTransportState->branchRotation);
 }
 
 TEST(M5CP3, StorageCanonicalPeriodicRelationResolvesSemanticForwardReverse) {
@@ -3033,19 +3153,23 @@ TEST(M5CP3, StorageCanonicalPeriodicRelationResolvesSemanticForwardReverse) {
   const auto expectedForwardFrom =
       directional::geometry::make_periodic_relation_endpoint_state(
           forwardEdge->fromLattice, *forwardEdge->sharedBoundaryInterval,
-          semanticAction->rotation);
+          semanticAction->rotation,
+          forwardEdge->periodicFromLattice->branchAuthority);
   const auto expectedForwardTo =
       directional::geometry::make_periodic_relation_endpoint_state(
           forwardEdge->toLattice, *forwardEdge->sharedBoundaryInterval,
-          semanticAction->rotation);
+          semanticAction->rotation,
+          forwardEdge->periodicToLattice->branchAuthority);
   const auto expectedReverseFrom =
       directional::geometry::make_periodic_relation_endpoint_state(
           reverseEdge->fromLattice, *reverseEdge->sharedBoundaryInterval,
-          semanticAction->rotation);
+          semanticAction->rotation,
+          reverseEdge->periodicFromLattice->branchAuthority);
   const auto expectedReverseTo =
       directional::geometry::make_periodic_relation_endpoint_state(
           reverseEdge->toLattice, *reverseEdge->sharedBoundaryInterval,
-          semanticAction->rotation);
+          semanticAction->rotation,
+          reverseEdge->periodicToLattice->branchAuthority);
   ASSERT_TRUE(expectedForwardFrom.has_value());
   ASSERT_TRUE(expectedForwardTo.has_value());
   ASSERT_TRUE(expectedReverseFrom.has_value());
@@ -3149,19 +3273,23 @@ TEST(M5CP3, ProducedTorusNonzeroZ4RotationTranslationMaterializes) {
   const auto expectedForwardFrom =
       directional::geometry::make_periodic_relation_endpoint_state(
           forwardEdge->fromLattice, *forwardEdge->sharedBoundaryInterval,
-          relation->action().rotation);
+          relation->action().rotation,
+          forwardEdge->periodicFromLattice->branchAuthority);
   const auto expectedForwardTo =
       directional::geometry::make_periodic_relation_endpoint_state(
           forwardEdge->toLattice, *forwardEdge->sharedBoundaryInterval,
-          relation->action().rotation);
+          relation->action().rotation,
+          forwardEdge->periodicToLattice->branchAuthority);
   const auto expectedReverseFrom =
       directional::geometry::make_periodic_relation_endpoint_state(
           reverseEdge->fromLattice, *reverseEdge->sharedBoundaryInterval,
-          relation->action().rotation);
+          relation->action().rotation,
+          reverseEdge->periodicFromLattice->branchAuthority);
   const auto expectedReverseTo =
       directional::geometry::make_periodic_relation_endpoint_state(
           reverseEdge->toLattice, *reverseEdge->sharedBoundaryInterval,
-          relation->action().rotation);
+          relation->action().rotation,
+          reverseEdge->periodicToLattice->branchAuthority);
   ASSERT_TRUE(expectedForwardFrom.has_value());
   ASSERT_TRUE(expectedForwardTo.has_value());
   ASSERT_TRUE(expectedReverseFrom.has_value());
