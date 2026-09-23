@@ -1804,6 +1804,65 @@ produced_relation_for_witness(const ProducedTorusWitnessFixture &fixture) {
   return relation == product.periodicHolonomies().end() ? nullptr : &*relation;
 }
 
+struct ProducedTorusSemanticPeriodicRelation {
+  const directional::geometry::SurfacePeriodicHolonomy *storedRelation = nullptr;
+  const directional::geometry::SurfaceFrontEdge *forwardEdge = nullptr;
+  const directional::geometry::SurfaceFrontEdge *reverseEdge = nullptr;
+  directional::authority::GridAutomorphism semanticAction;
+  directional::authority::CanonicalRoute semanticGeneratorRoute;
+  bool storageInverted = false;
+};
+
+std::optional<ProducedTorusSemanticPeriodicRelation>
+produced_semantic_relation_for_witness(
+    const ProducedTorusWitnessFixture &fixture) {
+  const auto *relation = produced_relation_for_witness(fixture);
+  if (relation == nullptr) return std::nullopt;
+
+  const auto &product = fixture.fixture.network.phaseFront.product();
+  const directional::geometry::SurfaceFrontEdge *forwardEdge = nullptr;
+  const directional::geometry::SurfaceFrontEdge *reverseEdge = nullptr;
+  for (const auto &edge : product.edges()) {
+    if (edge.periodicRelation != relation->id() ||
+        !edge.sharedBoundaryInterval.has_value() ||
+        !edge.sharedBoundaryInterval->boundaryOccurrence.has_value() ||
+        edge.sharedBoundaryInterval->span != fixture.witness.span) {
+      continue;
+    }
+
+    const auto occurrence =
+        *edge.sharedBoundaryInterval->boundaryOccurrence;
+    const auto orientation = edge.sharedBoundaryInterval->orientation;
+    if (occurrence == fixture.witness.fromOccurrence &&
+        orientation == directional::authority::Orientation::Forward) {
+      if (forwardEdge != nullptr) return std::nullopt;
+      forwardEdge = &edge;
+    } else if (occurrence == fixture.witness.toOccurrence &&
+               orientation == directional::authority::Orientation::Reverse) {
+      if (reverseEdge != nullptr) return std::nullopt;
+      reverseEdge = &edge;
+    }
+  }
+  if (forwardEdge == nullptr || reverseEdge == nullptr) return std::nullopt;
+
+  const auto semanticAction =
+      directional::geometry::resolve_periodic_relation_semantic_action(
+          *relation, *forwardEdge, *reverseEdge);
+  if (!semanticAction.has_value()) return std::nullopt;
+
+  if (relation->cutRoute() == forwardEdge->route) {
+    return ProducedTorusSemanticPeriodicRelation{
+        relation, forwardEdge, reverseEdge, *semanticAction, relation->route(),
+        false};
+  }
+  if (relation->cutRoute().reversed() == forwardEdge->route) {
+    return ProducedTorusSemanticPeriodicRelation{
+        relation, forwardEdge, reverseEdge, *semanticAction,
+        relation->route().reversed(), true};
+  }
+  return std::nullopt;
+}
+
 bool certificate_references_periodic_relation(
     const std::vector<directional::geometry::SelectedRelationPathCertificate>
         &certificates,
@@ -3223,46 +3282,47 @@ TEST(M5CP3, ProducedTorusNonzeroZ4RotationTranslationMaterializes) {
   const auto &witnessFixture = nonzero_z4_torus_witness_fixture();
   const auto &fixture = witnessFixture.fixture;
   const auto &witness = witnessFixture.witness;
-  ASSERT_NE(directional::authority::QuarterTurn{}, witness.sourceRotation);
+  ASSERT_EQ(directional::authority::QuarterTurn::from_integer(3),
+            witness.sourceRotation);
   ASSERT_EQ(witness.sourceRotation, witness.atlasRotation);
 
-  const auto *relation = produced_relation_for_witness(witnessFixture);
-  ASSERT_NE(nullptr, relation)
-      << "source/A3-selected nonzero-Z4 hard-edge witness must publish a relation";
-  EXPECT_EQ(witness.generatorRoute, relation->route())
-      << "published generator route must preserve the independently directed "
-         "source transition";
-  const auto expectedId = independent_periodic_relation_id(
-      relation->sourceTopologyRegion(), witness.generatorRoute,
-      relation->cutRoute());
-  ASSERT_TRUE(expectedId.has_value());
-  EXPECT_EQ(relation->id(), *expectedId);
-  EXPECT_EQ(witness.sourceRotation, relation->action().rotation);
-  EXPECT_NE(directional::authority::QuarterTurn{}, relation->action().rotation);
-  EXPECT_NE((directional::authority::LatticeTranslation{0, 0}),
-            relation->action().shift);
-
-  const auto &product = fixture.network.phaseFront.product();
-  const directional::geometry::SurfaceFrontEdge *forwardEdge = nullptr;
-  const directional::geometry::SurfaceFrontEdge *reverseEdge = nullptr;
-  for (const auto &edge : product.edges()) {
-    if (edge.periodicRelation != relation->id() ||
-        !edge.sharedBoundaryInterval.has_value() ||
-        !edge.sharedBoundaryInterval->boundaryOccurrence.has_value() ||
-        edge.sharedBoundaryInterval->span != witness.span) {
-      continue;
-    }
-    if (edge.sharedBoundaryInterval->orientation ==
-        directional::authority::Orientation::Forward) {
-      forwardEdge = &edge;
-    } else {
-      reverseEdge = &edge;
-    }
-  }
+  const auto semanticRelation =
+      produced_semantic_relation_for_witness(witnessFixture);
+  ASSERT_TRUE(semanticRelation.has_value())
+      << "source/A3-selected nonzero-Z4 hard-edge witness must publish a "
+         "deterministically resolvable semantic relation";
+  const auto *relation = semanticRelation->storedRelation;
+  const auto *forwardEdge = semanticRelation->forwardEdge;
+  const auto *reverseEdge = semanticRelation->reverseEdge;
+  ASSERT_NE(nullptr, relation);
   ASSERT_NE(nullptr, forwardEdge);
   ASSERT_NE(nullptr, reverseEdge);
-  ASSERT_EQ(relation->cutRoute(), forwardEdge->route);
-  ASSERT_EQ(relation->cutRoute().reversed(), reverseEdge->route);
+
+  ASSERT_TRUE(semanticRelation->storageInverted)
+      << "committed torus witness must exercise inverse canonical storage";
+  ASSERT_EQ(relation->cutRoute().reversed(), forwardEdge->route);
+  ASSERT_EQ(relation->cutRoute(), reverseEdge->route);
+  EXPECT_NE(relation->action(), semanticRelation->semanticAction);
+  EXPECT_NE(relation->route(), semanticRelation->semanticGeneratorRoute);
+  EXPECT_EQ(witness.generatorRoute, semanticRelation->semanticGeneratorRoute)
+      << "resolved semantic generator route must preserve independent A3 "
+         "Forward -> Reverse authority";
+
+  const auto storedId = independent_periodic_relation_id(
+      relation->sourceTopologyRegion(), relation->route(), relation->cutRoute());
+  ASSERT_TRUE(storedId.has_value());
+  EXPECT_EQ(relation->id(), *storedId);
+  const auto semanticId = independent_periodic_relation_id(
+      relation->sourceTopologyRegion(),
+      semanticRelation->semanticGeneratorRoute, forwardEdge->route);
+  ASSERT_TRUE(semanticId.has_value());
+  EXPECT_EQ(relation->id(), *semanticId);
+
+  EXPECT_EQ(witness.sourceRotation, semanticRelation->semanticAction.rotation);
+  EXPECT_NE(directional::authority::QuarterTurn{},
+            semanticRelation->semanticAction.rotation);
+  EXPECT_NE((directional::authority::LatticeTranslation{0, 0}),
+            semanticRelation->semanticAction.shift);
   ASSERT_TRUE(forwardEdge->periodicFromLattice.has_value());
   ASSERT_TRUE(forwardEdge->periodicToLattice.has_value());
   ASSERT_TRUE(reverseEdge->periodicFromLattice.has_value());
@@ -3271,22 +3331,22 @@ TEST(M5CP3, ProducedTorusNonzeroZ4RotationTranslationMaterializes) {
   const auto expectedForwardFrom =
       directional::geometry::make_periodic_relation_endpoint_state(
           forwardEdge->fromLattice, *forwardEdge->sharedBoundaryInterval,
-          relation->action().rotation,
+          semanticRelation->semanticAction.rotation,
           forwardEdge->periodicFromLattice->branchAuthority);
   const auto expectedForwardTo =
       directional::geometry::make_periodic_relation_endpoint_state(
           forwardEdge->toLattice, *forwardEdge->sharedBoundaryInterval,
-          relation->action().rotation,
+          semanticRelation->semanticAction.rotation,
           forwardEdge->periodicToLattice->branchAuthority);
   const auto expectedReverseFrom =
       directional::geometry::make_periodic_relation_endpoint_state(
           reverseEdge->fromLattice, *reverseEdge->sharedBoundaryInterval,
-          relation->action().rotation,
+          semanticRelation->semanticAction.rotation,
           reverseEdge->periodicFromLattice->branchAuthority);
   const auto expectedReverseTo =
       directional::geometry::make_periodic_relation_endpoint_state(
           reverseEdge->toLattice, *reverseEdge->sharedBoundaryInterval,
-          relation->action().rotation,
+          semanticRelation->semanticAction.rotation,
           reverseEdge->periodicToLattice->branchAuthority);
   ASSERT_TRUE(expectedForwardFrom.has_value());
   ASSERT_TRUE(expectedForwardTo.has_value());
@@ -3297,18 +3357,18 @@ TEST(M5CP3, ProducedTorusNonzeroZ4RotationTranslationMaterializes) {
   EXPECT_EQ(*expectedReverseFrom, *reverseEdge->periodicFromLattice);
   EXPECT_EQ(*expectedReverseTo, *reverseEdge->periodicToLattice);
   EXPECT_EQ(reverseEdge->periodicToLattice->latticeCoordinate,
-            relation->action().apply(
+            semanticRelation->semanticAction.apply(
                 forwardEdge->periodicFromLattice->latticeCoordinate));
   EXPECT_EQ(reverseEdge->periodicFromLattice->latticeCoordinate,
-            relation->action().apply(
+            semanticRelation->semanticAction.apply(
                 forwardEdge->periodicToLattice->latticeCoordinate));
   EXPECT_EQ(
       reverseEdge->periodicToLattice->branchRotation,
-      compose(relation->action().rotation,
+      compose(semanticRelation->semanticAction.rotation,
               forwardEdge->periodicFromLattice->branchRotation));
   EXPECT_EQ(
       reverseEdge->periodicFromLattice->branchRotation,
-      compose(relation->action().rotation,
+      compose(semanticRelation->semanticAction.rotation,
               forwardEdge->periodicToLattice->branchRotation));
 
   const auto materialized = materialize(fixture, fixture.network.phaseFront);
@@ -3383,13 +3443,41 @@ TEST(M5CP3,
 
 TEST(M5CP3, ProducedTorusTamperedNonzeroZ4TransformRejectsTyped) {
   const auto &witnessFixture = nonzero_z4_torus_witness_fixture();
-  const auto *published = produced_relation_for_witness(witnessFixture);
+  const auto &witness = witnessFixture.witness;
+  ASSERT_EQ(directional::authority::QuarterTurn::from_integer(3),
+            witness.sourceRotation);
+  ASSERT_EQ(witness.sourceRotation, witness.atlasRotation);
+
+  const auto semanticRelation =
+      produced_semantic_relation_for_witness(witnessFixture);
+  ASSERT_TRUE(semanticRelation.has_value())
+      << "source/A3-selected nonzero-Z4 hard-edge witness must publish a "
+         "deterministically resolvable semantic relation";
+  const auto *published = semanticRelation->storedRelation;
+  const auto *forwardEdge = semanticRelation->forwardEdge;
+  const auto *reverseEdge = semanticRelation->reverseEdge;
   ASSERT_NE(nullptr, published);
-  ASSERT_EQ(witnessFixture.witness.generatorRoute, published->route());
-  ASSERT_EQ(witnessFixture.witness.sourceRotation,
-            published->action().rotation);
-  ASSERT_NE(directional::authority::QuarterTurn{},
-            published->action().rotation);
+  ASSERT_NE(nullptr, forwardEdge);
+  ASSERT_NE(nullptr, reverseEdge);
+
+  ASSERT_TRUE(semanticRelation->storageInverted)
+      << "committed torus witness must exercise inverse canonical storage";
+  ASSERT_EQ(published->cutRoute().reversed(), forwardEdge->route);
+  ASSERT_EQ(published->cutRoute(), reverseEdge->route);
+  EXPECT_NE(published->action(), semanticRelation->semanticAction);
+  EXPECT_NE(published->route(), semanticRelation->semanticGeneratorRoute);
+  EXPECT_EQ(witness.generatorRoute, semanticRelation->semanticGeneratorRoute);
+  EXPECT_EQ(witness.sourceRotation, semanticRelation->semanticAction.rotation);
+  EXPECT_NE(directional::authority::QuarterTurn{},
+            semanticRelation->semanticAction.rotation);
+  EXPECT_NE((directional::authority::LatticeTranslation{0, 0}),
+            semanticRelation->semanticAction.shift);
+
+  const auto semanticId = independent_periodic_relation_id(
+      published->sourceTopologyRegion(),
+      semanticRelation->semanticGeneratorRoute, forwardEdge->route);
+  ASSERT_TRUE(semanticId.has_value());
+  EXPECT_EQ(published->id(), *semanticId);
 
   PhaseFrontDraft tampered =
       phase_front_draft(witnessFixture.fixture.network.phaseFront);
