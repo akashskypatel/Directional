@@ -1,0 +1,3 @@
+Purpose: source snapshot for M5-CP3-CB18
+Requested semantic authority before trigger: 57d4809fe3fe3dca8a4c2d935925e0a815a1538c
+Retry: 0
