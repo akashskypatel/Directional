@@ -1,0 +1,46 @@
+name: M5 CP4 CB1 Apply Closeout Docs
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m5-cp4-cb1-docs-20260923.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  id-token: write
+
+concurrency:
+  group: m5-cp4-cb1-docs
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m5-cp4-cb1-docs
+      commit_run_file: false
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m5-cp4-cb1-docs.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1SWguPdNzRMH5sXg0fCyN8KrXWt0mY5dO
+      patch_sha256: f8663664ca388d29412759f13b907841d504284c52604f6bdef913dd8354ee59
+      base_sha: c8adfd96821e2948c910e8eda0deecc4f8321770
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close M5-CP4-CB1 code-build turn"
+    secrets: inherit
