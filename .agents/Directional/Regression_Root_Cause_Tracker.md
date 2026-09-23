@@ -290,3 +290,33 @@ which authority domain owns the branch component, the lattice gauge, the endpoin
 storage form, and where each may be read. Precedent: `[[M4-CP4-DEFN-R1]]` and `M4-CP4-DEFN-R2` stopped to
 reconcile definitions rather than iterate implementations, and both produced durable progress. The trigger is
 stated now, while CB16 may still succeed, so it is not a judgement made under fatigue afterwards.
+
+## `M5-CP3-TB1-R14-REV-OBS-01` — the gauge model must be checked against one independently derived instance before it is frozen
+
+**Status.** OPEN / CONDITION ON THE `M5-CP3-DEFN-R1` FREEZE (not a block on the turn proceeding) / NON-STABLE.
+
+`M5-CP3-DEFN-R1`'s acceptance criteria (§5) are seven falsifiers — gauge closure, direction uniqueness, storage
+invariance, zero-rotation reduction, nonzero-witness non-vacuity, translation consistency, stage ownership — plus
+stop rules barring free gauge choice, region heuristics, insertion order, floating search and downstream output
+inspection. That set is strong, and "direction uniqueness" (reversing semantic roles yields exactly the inverse,
+not a second candidate selected by success) directly forecloses the failure mode behind
+`[[M5-CP3-TB1-R6-REV-OBS-01]]`.
+
+**But every one of those checks tests the model against itself.** A model can satisfy all seven and still assign
+the wrong action in the nonzero case; internal coherence is not correctness. Nothing in §5 or §6 requires the
+model to reproduce an **independently derived expected value for a concrete instance**.
+
+**Why that matters more here than usual:**
+
+1. **Track record.** Thirteen corrections in this seam were internally plausible and wrong. What worked was
+   independent derivation — R6's instrumentation localizing the branch from runtime rather than argument, and
+   R9's `(family, sign)` Z4 algebra proving the old rule admitted only `R = 0`.
+2. **Asymmetric cost.** Every previous wrong answer cost one Code + Build turn. A wrong **frozen** gauge model
+   costs a full amendment sequence to unwind — frozen §16 required an entire review turn to establish, and that
+   was a correct amendment. The asymmetry argues for one more check before freezing rather than after.
+
+**How to apply:** before freezing, derive from A3/source authority alone — and without reference to the model —
+the expected relation action for the existing nonzero-Z4 witness, then require the frozen model to reproduce it.
+One worked instance converts "unambiguous" from *self-consistent* into *self-consistent and right at least once*.
+If the model cannot be evaluated against even one independently computed instance, that is itself a finding to
+stop on. This is the same form as the pre-commitment discipline that has now held six consecutive times.

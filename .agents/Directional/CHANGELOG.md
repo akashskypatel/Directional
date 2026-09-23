@@ -1,3 +1,36 @@
+## 2026-09-23 — `M5-CP3-TB1-R14-REV` review: trigger honoured; freeze condition recorded for DEFN-R1
+
+Runtime-free review. **Upheld.** Accounting holds at **51 events / 14 categories / 37 recurrences**, debt **3**;
+selector430 **430/430** so R14 records no further event; rows 1/2/3/6 and ordinal 408 PASS, leaving the two debts
+discharged at R7 and §16's `R = 0` reduction intact.
+
+**The trigger fired and was honoured on its terms.** `M5-CP3-TB1-R13-REV-OBS-01` pre-committed that if CB16 did
+not bring produced rows 4 and 5 green, the successor must be a definition reconciliation with `CB17` prohibited.
+CB16 did not; §61 discharges the observation **as triggered**, bars `CB17`, and freezes `M5-CP3-DEFN-R1`. The
+corrected accounting from R13 is carried without re-litigation.
+
+**The structural reading is vindicated in the record.** §51: *"No frozen M5 definition currently specifies the
+exact change of gauge between those two representations."* That is not a fourteenth bug — it is the missing model
+whose absence produced six consecutive distinct gauge defects, each fix relocating the inconsistency rather than
+removing it. `M5-CP3-TB1-R6-REV-OBS-01` also correctly remains OPEN, having now survived two opportunities to be
+closed on by-construction grounds.
+
+DEFN-R1 is a real definition turn: runtime-free, no product/test/fixture/selector mutation, with stop rules
+barring free gauge choice, region heuristics, insertion order, floating search and downstream output inspection.
+Its "direction uniqueness" falsifier — reversing semantic roles yields exactly the inverse, not a second
+candidate selected by success — directly forecloses the failure mode behind the reopened observation, and its
+`R = 0` reduction check protects the four green rows.
+
+New: `M5-CP3-TB1-R14-REV-OBS-01` (condition on the freeze, not a block on the turn). All seven acceptance
+falsifiers test the model **against itself**; none requires it to reproduce an independently derived expected
+value for a concrete instance. Internal coherence is not correctness, and two facts sharpen that: thirteen
+corrections in this seam were internally plausible and wrong, while what worked was independent derivation; and
+unlike those, this artefact gets **frozen**, where a wrong answer costs a full amendment sequence rather than one
+Code + Build turn. Before freezing, derive the expected relation action for the existing nonzero-Z4 witness from
+A3/source authority alone and require the model to reproduce it.
+
+Exact successor: `M5-CP3-DEFN-R1` — same-region nonzero-Z4 gauge reconciliation, runtime-free.
+
 ## 2026-09-23 — `M5-CP3-TB1-R14-REV`: focused helper accepted; nonzero production gauge definition under-specified
 
 Runtime-free Review independently re-verifies R14 result **916/916**, all 448 exact-filter outcomes at **446 PASS / 2 RED**, selector430 **430/430**, protected ordinals 191/192/247/408, routing owner census **31 / 283 / 75 / 41**, and exact immutable postflight. The CB16 occurrence-branch helper is genuinely green, but produced rows4/5 alone remain exact `PeriodicActionFirstBranchMismatch`.

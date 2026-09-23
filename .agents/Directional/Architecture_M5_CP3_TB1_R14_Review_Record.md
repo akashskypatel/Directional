@@ -102,3 +102,84 @@ If the definition cannot derive one unique relation action from existing produce
 | review_check.py boundary | **PASS / ALL CHECKS PASSED** with selector430/first427 declarations after the documentation patch. |
 | `STATUS` lifecycle maintained | Entry/resume beacon maintained; terminal COMPLETE with successor `M5-CP3-DEFN-R1` is reserved for the final repository mutation. |
 | Pushed to origin, branch in sync | Durable Review/plan/docs are transported to the working branch; final branch-head verification is performed after cleanup before the terminal `STATUS` write. |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld.** The trigger was honoured, the corrected accounting was adopted, and the successor is a
+genuine definition turn rather than a relabelled Code + Build. Accounting holds at **51 events / 14 categories /
+37 recurrences**, debt **3**. One gap in the freeze criteria is recorded.
+
+### V1 — the trigger fired and was honoured on its terms
+
+`M5-CP3-TB1-R13-REV-OBS-01` pre-committed that if CB16 did not bring produced rows 4 and 5 green, the successor
+must be a definition reconciliation and **`CB17` is prohibited**. CB16 did not, and §61 discharges the
+observation **as triggered**, with `CB17` explicitly barred and `M5-CP3-DEFN-R1` frozen instead. Stating that
+trigger while CB16 might still have succeeded is what made it a rule rather than a retrospective judgement.
+
+The corrected accounting from R13 — **51 / 14 / 37** — is carried at §§65 and 91 without re-litigation. R14 is
+correctly not a further event: selector430 is **430/430**, so no accepted-prefix ordinal transitioned PASS → RED.
+Rows 1/2/3/6 and ordinal 408 are PASS, so the two debts discharged at R7 and §16's `R = 0` reduction remain
+intact; debt stays **3** with no credit taken for CB16's two added mechanism identities.
+
+### V2 — the diagnosis vindicates the structural reading, and says so plainly
+
+§51 is the sentence that settles the argument I raised at R13: **"No frozen M5 definition currently specifies the
+exact change of gauge between those two representations"** — A1's directed source-face transition on the removed
+carrier, and the cut-open endpoint representation. That is not a fourteenth bug. It is the missing model whose
+absence produced six consecutive distinct gauge defects, each fix relocating the inconsistency rather than
+removing it.
+
+`M5-CP3-TB1-R6-REV-OBS-01` also correctly remains **OPEN** (§63): row 4 still stops before the Forward → Reverse
+comparator and inverted-pair rejection. That observation has now survived two opportunities to be closed on
+by-construction grounds, which is the outcome I reopened it for.
+
+### V3 — DEFN-R1 is a real definition turn
+
+The plan is runtime-free with no product, test, fixture, selector, benchmark or build mutation, and its stop
+rules bar precisely the shortcuts that failed repeatedly here: free gauge choice, minimum/stable-region
+heuristics, pair insertion order, floating search, downstream output inspection. Two falsifiers deserve specific
+credit:
+
+- **Direction uniqueness** — "reversing semantic roles yields exactly its **inverse**, not a second candidate
+  selected by success" — directly forecloses the failure mode behind my reopened observation: an ordering that is
+  merely self-consistent rather than correct.
+- **Zero-rotation reduction** — the model must reproduce accepted `R == 0` behaviour, protecting the four green
+  produced rows and the two discharged debts.
+
+Requiring the turn to *adjudicate whether the current row4/5 witness is even valid* for relation-gauge nonzero-Z4
+credit is also right: after CB9's inadmissible chart, the witness should not be assumed sound merely because it
+now runs.
+
+### V4 — GAP: every freeze criterion is internal; none checks the model against an independent derivation
+
+All seven falsifiers test the model against **itself** — closure, uniqueness, storage invariance, `R = 0`
+reduction, non-vacuity, translation consistency, stage ownership. A model can satisfy every one of them and still
+assign the wrong action in the nonzero case, because internal coherence is not correctness. Nothing in §5 or §6
+requires the model to reproduce an **independently derived expected value for a concrete instance**.
+
+Two facts make that gap matter more here than it normally would.
+
+First, this checkpoint's record: thirteen corrections were internally plausible and wrong. What finally worked
+was independent derivation — R6's instrumentation localizing the branch from runtime rather than argument, and
+R9's `(family, sign)` Z4 algebra proving the old rule admitted only `R = 0`. Internal plausibility has a
+thirteen-for-thirteen losing record in this seam.
+
+Second, and more important: **this artefact gets frozen.** Every previous wrong answer cost one Code + Build
+turn. A wrong frozen gauge model costs a full amendment sequence to unwind — §16 needed an entire review turn to
+establish, and it was a *correct* amendment. The asymmetry argues for one more check before freezing, not after.
+
+**The check is cheap.** Derive, from A3/source authority alone and without reference to the model, the expected
+relation action for the existing nonzero-Z4 witness; then require the frozen model to reproduce it. One worked
+instance turns "unambiguous" from *self-consistent* into *self-consistent and right at least once*. If the model
+cannot be evaluated against even one independently computed instance, that is itself a finding worth stopping on.
+
+Recorded as `M5-CP3-TB1-R14-REV-OBS-01`. This does not block DEFN-R1 from proceeding; it is a condition on the
+freeze, in the same form as the pre-commitment discipline that has now held six consecutive times.
+
+### V5 — verification limits
+
+Re-derived from repository bytes: selector430's rows, hash and 427-row prefix; the DEFN-R1 plan's boundary,
+falsifier set, stop rules and deliverables. Accepted as reported: R14 artifact hashes, the four-ledger tallies
+(11/11, 1/1, 4/6, 430/430 for 446 PASS / 2 RED), routing digests and manifest coverage.
