@@ -1,3 +1,11 @@
+## 2026-09-23 — `M5-CP4-CB1`: focused same-region producer witness authored; compile/package green
+
+- Added exactly one focused committed-torus producer identity, `M5CP4.ProducedTorusPeriodicRelationOwnsMultiIsolationRegion`, to the existing producer owner source. It statically binds the six DEFN-R2 facts to one region and remains strictly producer-boundary; no product source, fixture/field bytes, sheet labels, selector448, or ungated identity changed.
+- Frozen TB1-only row449 routing: `449<TAB>M5CP4.ProducedTorusPeriodicRelationOwnsMultiIsolationRegion<TAB>directional_surface_cell_producer_tests`. Selector448 remains 448 rows / SHA-256 `70ff0860...c75789`; accepted routing remains `c91a5e2f...1dd7c`.
+- Mandatory reusable compile run/job `35934640705 / 107428875643` is green on exact source `535ec760b7c39dd437de69afebec568fafb44aab`. Result/log artifacts `10782841045 / 10782293664`; result digest `3772d2c3...42da6`; GMP/GMPXX linkage is present; 26/26 package manifest rows verify; source is clean; `runtimeExecution=false`.
+- No Directional runtime/test/benchmark ran. Conjunct8 remains unaccepted, selector449 unpublished, M5 closure held, accounting 51/14/37 and debt1 unchanged. Exact successor is artifact-only `M5-CP4-TB1-EXEC`, then mandatory Review.
+- Process observations `M5-CP4-CB1-OBS-01/02` record the corrected READ_MODE ordering miss and workload-gated rather than prepublication workflow-schema validation; neither changes semantic evidence.
+
 ## 2026-09-23 — `M5-DEFN-R2`: `G4-B004` reading (c) frozen; bounded CP4 next
 
 - Re-adjudicated the omitted M5 `G4-B004` half under pre-stated chronology and non-redundancy falsifiers.

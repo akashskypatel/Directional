@@ -2,28 +2,29 @@
 
 Last updated: 2026-09-23 UTC
 
-## Latest Definition turn — `M5-DEFN-R2`
+## Latest Code + Build turn — `M5-CP4-CB1`
 
-**COMPLETE / READING (c) FROZEN / DISPOSITION B / M5 CLOSURE HELD.** The `G4-B004` M5 half now means one pipeline-produced topology region that spans >=2 isolation sheets, owns an internal checked isolation-seam certificate, and also owns a canonical periodic quotient relation explicitly named by reciprocal `PeriodicCut` edges. Accepted selector448 does not prove that same-subject join. Stable accounting stays **51 / 14 / 37**; project debt stays **1** M6-owned.
+**COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE / NO SEMANTIC ACCEPTANCE CLAIM.** Added exactly one focused producer identity, `M5CP4.ProducedTorusPeriodicRelationOwnsMultiIsolationRegion`, without product/fixture/field/selector448 changes. Exact compile source `535ec760b7c39dd437de69afebec568fafb44aab`; run/job `35934640705 / 107428875643`; result/log artifacts `10782841045 / 10782293664`; mandatory GMP/GMPXX linkage proved; 26/26 package manifest rows verify; `runtimeExecution=false`.
 
-## Exact next turn — `M5-CP4-CB1`
+Static row449 owner/routing is frozen for TB1 only:
 
-Runtime-free Code + Build under `.agents/Directional/Architecture_M5_CP4_CB1_Multi_Isolation_Quotient_Witness_Plan.md`:
+`449	M5CP4.ProducedTorusPeriodicRelationOwnsMultiIsolationRegion	directional_surface_cell_producer_tests`
 
-- [ ] Add exactly one focused committed-torus producer identity for the same-region multi-isolation + quotient-owner contract.
-- [ ] Keep product source, fixture/field bytes and selector448 unchanged.
-- [ ] Compile/package all selector448 owner executables plus the new test owner through mandatory GMP/GMPXX reusable compile workflow; execute no Directional binary.
-- [ ] On compile-green route to artifact-only `M5-CP4-TB1-EXEC` (449 fresh exact-filter processes), then mandatory Review.
-- [ ] Stop if proof requires M6 materialization/occurrence/embedding/verifier authority or a product semantic change.
+Conjunct8 is not accepted, selector449 is not published, and M5 remains closure-held. Stable accounting stays **51 / 14 / 37**; project debt stays **1** M6-owned.
+
+## Exact next turn — `M5-CP4-TB1-EXEC`
+
+Artifact-only prepublication gate using immutable CB1 artifact `10782841045` / source `535ec760b7c39dd437de69afebec568fafb44aab`:
+
+- [ ] Verify artifact/source/manifest authority before execution; do not repair package bytes or permissions.
+- [ ] Execute selector448 + the frozen row449 as **449 fresh exact-filter processes**, exact-one selection, zero skips, benchmark 0.
+- [ ] Keep `torus_fixture()` fixed; do not switch subject after runtime.
+- [ ] Record the first unmet fact directly from fact-naming assertion output if row449 is RED.
+- [ ] Categorize every observed regression/candidate in `Regression_Root_Cause_Tracker.md` before closeout.
+- [ ] Do not configure, compile, relink, regenerate, publish selector449, accept conjunct8, or claim M5 closure.
+- [ ] Route to mandatory `M5-CP4-TB1-REV` after execution.
 
 **Deferred:** `M6-DEFN` remains blocked until final `M5-CP4-TB2-REV` accepts conjunct8 and closes M5.
-
-**Reviewing-agent amendment — plan §7 is binding.**
-- Falsifiers 1 and 4 are evaluated at TB1, not CB1.
-- The subject `torus_fixture()` is fixed, and switching after runtime is prohibited.
-- Assert the six facts in order with fact-naming messages.
-- Record the row-449 static owner and routing row.
-- Leave every ungated identity untouched.
 
 ## Latest Review turn — `M5-DEFN-R1-REV`
 

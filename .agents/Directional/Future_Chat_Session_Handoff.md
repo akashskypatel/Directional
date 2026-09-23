@@ -4,40 +4,35 @@
 
 ## Current authority
 
-`M5-DEFN-R2` is **COMPLETE: READING (c) FROZEN / DISPOSITION B / M5 CLOSURE HELD**.
+`M5-CP4-CB1` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE / NO SEMANTIC ACCEPTANCE CLAIM**.
 
-The `G4-B004` M5 half is now unambiguous: one **pipeline-produced** topology region must span at least two isolation sheets, own an internal checked isolation-seam certificate, and **that same region** must own a canonical periodic quotient relation explicitly named by reciprocal `PeriodicCut` edges. M5 credit ends at production; M6 later owns exact-once materialization/occurrence/embedding/verifier consumption.
+Exactly one focused producer identity, `M5CP4.ProducedTorusPeriodicRelationOwnsMultiIsolationRegion`, was added to `tests/SurfaceCellTransitionQuotientTests.cpp`. Product semantics, the fixed committed-torus subject, fixture/field bytes, selector448 and all ungated identities are unchanged. The identity checks the six DEFN-R2 facts in order and stays at producer authority; runtime truth is intentionally deferred to TB1.
 
-Selector448 (`70ff0860...c75789`), package/source `10771899191 / cef1c6ee...`, §13.1 conjuncts1-7, accounting **51 / 14 / 37**, and debt **1** (M6) are unchanged. Conjunct8 is defined but not accepted. The never-gated committed-torus test is census evidence only and receives no acceptance credit.
+Compile source `535ec760b7c39dd437de69afebec568fafb44aab` is green under mandatory GMP/GMPXX reusable compilation. Run/job `35934640705 / 107428875643`; result/log artifacts `10782841045 / 10782293664`; result SHA-256 `3772d2c323bb4995bcb4503960d1bef1251442a3a7a95d8c0660680008042da6`; 26/26 package manifest rows verify; `runtimeExecution=false`. Static row449 routes to `directional_surface_cell_producer_tests`.
 
-Process observation `M5-DEFN-R2-OBS-01`: READ_MODE was selected after several connector document reads, contrary to the pre-read gate. Piecemeal inspection stopped immediately; substantive work used verified snapshot run `35929006744`, artifact `10780133120`, SHA `07a4ab641910a366068c6c4fc27c2b42591f7871`. This is process-only and does not affect semantic authority.
+Selector448 remains byte-identical (`70ff0860...c75789`) and accepted package/source `10771899191 / cef1c6ee...` remains current runtime authority until a later Review promotes anything newer. §13.1 conjuncts1-7, stable accounting **51 / 14 / 37**, and debt **1** (M6) are unchanged. Conjunct8 remains defined but **not accepted** and M5 closure remains held.
+
+Process observations are recorded in `Architecture_M5_CP4_CB1_Code_Build_Report.md`: an early READ_MODE ordering miss was corrected before substantive source work, and temporary callers used successful workload-gating schema validation rather than strict prepublication validation because no direct reusable-workflow dispatch action was exposed. Both are process-only.
 
 ## Exact next turn
 
-**`M5-CP4-CB1`** — runtime-free Code + Build under `.agents/Directional/Architecture_M5_CP4_CB1_Multi_Isolation_Quotient_Witness_Plan.md`.
+**`M5-CP4-TB1-EXEC`** — artifact-only prepublication gate over immutable result artifact `10782841045` / source `535ec760b7c39dd437de69afebec568fafb44aab`.
 
 The turn must:
-1. Add exactly one focused committed-torus producer identity proving the same-region multi-isolation + checked-seam-certificate + quotient-owner contract.
-2. Use pipeline-derived sheet authority; no direct/draft/helper product and no test-supplied sheet labels.
-3. Assert producer authority only; no materialization/output/occurrence/embedding/verifier claim in the new M5 identity.
-4. Keep product semantics, fixture/field bytes and selector448 unchanged.
-5. Compile/package all eventual 449-gate owner executables through mandatory GMP/GMPXX reusable compile workflow with `runtimeExecution=false` and execute no Directional binary.
-
-6. Apply plan **§7**, the reviewing-agent clarifications:
-   - falsifiers 1 and 4 are runtime facts, evaluated at TB1;
-   - the subject `torus_fixture()` is fixed, with no post-runtime switch;
-   - assert the six facts in order with fact-naming messages;
-   - record the row-449 static owner and routing row;
-   - do not touch any ungated identity.
-
-Compile-green routes to `M5-CP4-TB1-EXEC`, then mandatory Review. A semantic RED or need for product change stops CB1; it is not authorization to repair product source in the same turn.
+1. extract the immutable artifact without permission/content repair and verify package/source/manifest authority before execution;
+2. route rows 1-448 from accepted receipt `c91a5e2f...1dd7c` and row 449 exactly as `449<TAB>M5CP4.ProducedTorusPeriodicRelationOwnsMultiIsolationRegion<TAB>directional_surface_cell_producer_tests`;
+3. execute **449 fresh exact-filter processes**, exact-one selection, zero skips, benchmark 0, with no configure/compile/relink/regeneration or package/fixture mutation;
+4. evaluate the fixed `torus_fixture()` subject without post-runtime switching; a RED must identify the first failed fact through the pre-authored fact-naming assertion messages;
+5. preserve immutable postflight and record every regression/candidate outcome in `Regression_Root_Cause_Tracker.md` before closeout;
+6. make no selector449 publication or conjunct8/M5 acceptance claim. Exact successor after execution is mandatory **`M5-CP4-TB1-REV`**.
 
 `M6-DEFN` stays deferred until final `M5-CP4-TB2-REV` accepts conjunct8 and closes M5.
 
 ## Resume-critical evidence
 
 - current Definition record: `.agents/Directional/Architecture_M5_DEFN_R2_G4_B004_Definition_Record.md`
-- next-turn plan: `.agents/Directional/Architecture_M5_CP4_CB1_Multi_Isolation_Quotient_Witness_Plan.md`
+- completed CB1 report: `.agents/Directional/Architecture_M5_CP4_CB1_Code_Build_Report.md`
+- CB1 implementation plan: `.agents/Directional/Architecture_M5_CP4_CB1_Multi_Isolation_Quotient_Witness_Plan.md`
 - predecessor Review: `.agents/Directional/Architecture_M5_DEFN_R1_G4_B004_Review_Record.md`
 - DEFN-R1 record (folded; full text in git `d17aada2`): summarized in the Review §§1-2 and `M5_Consolidated_Record.md` §§4.32-4.33
 - `G4-B004` source authority: `.agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md` §11.2; `REORIENTATION_PLAN.md` §9; persistent-blocker table in the restored tracker
@@ -55,6 +50,7 @@ Compile-green routes to `M5-CP4-TB1-EXEC`, then mandatory Review. A semantic RED
 
 ```yaml
 load_next:
+  - .agents/Directional/Architecture_M5_CP4_CB1_Code_Build_Report.md
   - .agents/Directional/Architecture_M5_CP4_CB1_Multi_Isolation_Quotient_Witness_Plan.md
   - .agents/Directional/Architecture_M5_DEFN_R2_G4_B004_Definition_Record.md
   - .agents/Directional/Architecture_M5_Frozen_Definitions.md

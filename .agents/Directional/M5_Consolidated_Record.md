@@ -556,3 +556,11 @@ Historical citations in frozen/normative records to filenames listed here are pr
 | `Architecture_M5_CP3_CB1_Stop_Record.md` | **ADJUDICATED / FOLDED BY `M5-CP3-CB1-REV`.** The HardRail/PeriodicCut/shared-interval contradiction, no-mutation/no-compile boundary and accepted-authority facts are retained in the current Review, this record, tracker and changelog. |
 
 CP2's consumed CB1 plan/report and TB1 execution plan remain indexed in durable `M5_CP2_Closure_Record.md`; its superseded TB1 runtime report and Review are now folded above.
+
+## 4.35 `M5-CP4-CB1` — focused producer witness authored; compile/package green
+
+CB1 adds exactly one producer identity, `M5CP4.ProducedTorusPeriodicRelationOwnsMultiIsolationRegion`, on the fixed committed-torus subject. It checks the six DEFN-R2 facts in order while remaining below the M6 materialization/occurrence/embedding/verifier boundary. Product semantics, fixtures/field bytes, pipeline sheet authority, selector448 and all ungated identities are unchanged. The implementation commit is `094d235e0f0f1fcea97fd7147320b8697565e36c`.
+
+The frozen prepublication routing extension is `449<TAB>M5CP4.ProducedTorusPeriodicRelationOwnsMultiIsolationRegion<TAB>directional_surface_cell_producer_tests`; selector449 is not published by CB1. Selector448 remains `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, and its 448-row routing receipt remains `c91a5e2f3d84d7d38b7c7c58afd157448cb225ebdbbfac3da2ef6259e811dd7c`.
+
+Mandatory GMP/GMPXX compile/package is green on exact source `535ec760b7c39dd437de69afebec568fafb44aab`: run/job `35934640705 / 107428875643`, result/log `10782841045 / 10782293664`, result digest `3772d2c323bb4995bcb4503960d1bef1251442a3a7a95d8c0660680008042da6`, 26/26 manifest rows, clean source, `runtimeExecution=false`. CB1 executes no Directional runtime and claims no semantic acceptance. Conjunct8 remains unaccepted, M5 closure remains held, and 51/14/37 plus debt1 are unchanged. Exact successor is `M5-CP4-TB1-EXEC`, then mandatory `M5-CP4-TB1-REV`.
