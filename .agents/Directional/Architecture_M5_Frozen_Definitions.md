@@ -196,12 +196,14 @@ This rule forbids downstream “choose the lexicographically smallest path in th
 
 Fixture-file presence, direct builders, synthetic products, and successful phase-front reachability without produced periodic relations do not discharge a production debt.
 
-### 8.2 Four M5 debts remain unchanged
+### 8.2 Four M5 debts — requirements unchanged; all four now DISCHARGED
 
 1. `PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization`: **M5-CP1 mechanism / M5-CP3 direct-production re-proof**, retaining the original **`>=2` distinct produced relations and `>=2` owned periodic edges** discriminator.
 2. `MissingPeriodicRelationOwnerIsRejected`: **M5-CP2 mechanism / M5-CP3 direct-production re-proof** on produced periodic authority.
 3. `FullPeriodicRotationAndTranslationMaterialize`: **M5-CP3** direct production with a genuinely nonzero Z4 rotation and nonzero translation, carried through materialization/lineage/quotient acceptance.
 4. `TamperedFullPeriodicTransformIsRejected`: **M5-CP3** same direct-production subject with a discriminating nonzero-Z4 transform tamper.
+
+**Disposition (added by the `M5-CP3-TB1-R16-REV` reviewing-agent addendum; requirements above are unweakened).** This heading read "remain unchanged", which a cold reader takes as "still open". Debts 1 and 2 were discharged at `M5-CP3-TB1-R7-REV`; debts 3 and 4 at `M5-CP3-TB1-R16-REV` by `M5CP3.ProducedTorusNonzeroZ4RotationTranslationMaterializes` and `M5CP3.ProducedTorusTamperedNonzeroZ4TransformRejectsTyped`. Scope of debt 3's translation proof: the produced translation is shown **nonzero**, consistent with all four Forward/Reverse endpoint lattice states, and accepted by materialization with positive periodic-holonomy consumption. No independently derived translation *value* exists for this witness; only the rotation `Q=3` is independently fixed (DEFN-R1 §7). That meets the text above, which requires a nonzero translation. It must not be described as an independently derived translation.
 
 M6 retains the separate closed candidate-bearing-complex `G4-B002` debt. M5 may not pull A5 occurrence ownership backward to obtain evidence.
 
@@ -215,7 +217,7 @@ Implement the non-ordinal `PeriodicRelationId`, preserve it through aggregation,
 
 Complete the five-class relation failure matrix with independent negative oracles. Missing/duplicate/conflicting/nonreciprocal/representation-renumbered failures must reject at the named authority boundary without repair. This checkpoint supplies the mechanism credit for `MissingPeriodicRelationOwnerIsRejected` but not its production debt.
 
-### `M5-CP3` — direct-production exit
+### `M5-CP3` — direct-production exit — **R16 REVIEW ACCEPTED / ALL FOUR DEBTS DISCHARGED / OPEN FOR §13.3 PUBLICATION STEPS 4-6**
 
 Use the accepted row408-class one-region torus precondition to prove production emits at least two canonical same-region relations/owned periodic edges, then carry direct nonzero-Z4 authority through lineage/quotient materialization. Prove unused-valid-relation invariance on that production subject and discharge all four M5 debts without weakening their discriminators.
 
@@ -234,14 +236,16 @@ All `M5-DEFN` stop rules are resolved:
 
 ## 11. Current exact successor
 
-**`M5-CP3-CB14`** under
-`Architecture_M5_CP3_CB14_Periodic_Seam_Lattice_Gauge_Authority_Correction_Plan.md`.
+**`M5-CP3-CB20`** — publication-only Code + Build under §17 and
+`Architecture_M5_CP3_CB20_Selector_448_Publication_Code_Build_Plan.md`. Green CB20 routes to `M5-CP3-TB2-EXEC`, then
+mandatory `M5-CP3-TB2-REV` (§13.3 steps 4-6).
 
-Fresh R11-R1 is mechanically valid at 444 PASS / 2 RED with complete 912/912 evidence. R11-R1 Review proves CB12's exact A3
-Forward -> Reverse direction correction and closes the R10 insertion-order candidate, then proves the surviving product defect:
-cut-domain cell-grid coordinates are being reused as same-region quotient-seam endpoint authority under nonzero transport. CB14 is
-runtime-free and may correct only that endpoint-gauge authority seam before fresh R12. Stable accounting remains **50 / 14 / 36**,
-debt **3**, accepted runtime unchanged, candidate unpromoted and selector publication prohibited.
+*Corrected by the `M5-CP3-TB1-R16-REV` reviewing-agent addendum.* This section named `M5-CP3-CB14` (the R11-R1 Review
+successor) and was not updated by any of the Review/DEFN turns that followed (R12-REV through R16-REV, including
+DEFN-R1), so it was false from `M5-CP3-TB1-R12-EXEC` onward.
+The superseded CB14 rationale — R11-R1 at 444/446 with 912/912 evidence, cut-domain cell-grid coordinates reused as
+quotient-seam endpoint authority — is retained in `M5_Consolidated_Record.md` §4.11 and git history. §§16.1-17 are the
+later normative amendments; this section is a pointer only and carries no semantics of its own.
 
 ## 12. Supersession and citation map
 

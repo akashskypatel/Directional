@@ -20,7 +20,13 @@ R16 Review precommits the exact cumulative selector448: selector430 bytes as row
 
 Create `.agents/Directional/Architecture_M5_CP3_CB20_Required_Green_Selector_448.txt` with exactly the frozen §17/precommit bytes and no other selector/product/test/fixture/field/A3/CMake/benchmark semantic edit. Verify 448/448 unique, SHA/prefix/owner census, then mandatory GMP/GMPXX compile/package all eight standard targets with `runtimeExecution=false`.
 
-If compile/package is green, exact successor is **`M5-CP3-TB2-EXEC`**: immutable artifact-only execution of the **published selector448 as 448 fresh exact-filter processes**, exact-one/zero-skip, benchmark 0 and exact postflight. No R16 process credit may be stitched. Mandatory **`M5-CP3-TB2-REV`** follows and alone may accept selector448 and close M5.
+Apply the plan's **§6 clarifications** (R16-REV reviewing-agent addendum):
+- Count owners over the four standard owner executables only. Seven prefix identities also appear in the optional historical target, and that is not a falsifier.
+- Record the 448-row static routing receipt with its SHA-256 for TB2.
+- Index selector448 in `Required_Green_Selector_Manifest.md` as PUBLISHED / NOT YET ACCEPTED.
+- Do not touch the ungated CB14 `M5CP3` identities (`M5-CP3-TB1-R16-REV-OBS-01`).
+
+If compile/package is green, exact successor is **`M5-CP3-TB2-EXEC`**: immutable artifact-only execution of the **published selector448 as 448 fresh exact-filter processes**, exact-one/zero-skip, benchmark 0 and exact postflight. No R16 process credit may be stitched. Mandatory **`M5-CP3-TB2-REV`** follows and alone may accept selector448 and close M5. It also owns `M5-DEFN-REV-OBS-01`, `M5-CP3-TB1-R16-REV-OBS-01` and `-OBS-03`.
 
 ## Resume-critical evidence
 

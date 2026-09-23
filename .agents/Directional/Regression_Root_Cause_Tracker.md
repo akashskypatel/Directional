@@ -1,3 +1,30 @@
+## 2026-09-23 — `M5-CP3-TB1-R16-REV` reviewing-agent addendum — **ADJUDICATION UPHELD / CLOSEOUT GAPS FIXED / +0**
+
+**Stable totals unchanged: 51 events / 14 categories / 37 recurrences; project debt 1 (M6).** No regression candidate. The reviewing agent downloaded fresh copies of the R16 result/log and CB19 candidate artifacts and re-hashed them. It re-verified 921/921 and 28/28, all 448 ledger rows and raw-log hashes, and selector448 bytes, hash and prefix. It re-derived the owner census twice, from runtime routing and from static CMake target membership, and both give 32/300/75/41 row for row. It fixed the closeout gaps listed in the review record addendum (frozen §11/§8.2/§9, manifest promotion line, ORIENTATION §8, CB20 plan §6) and records three items:
+
+### `M5-CP3-TB1-R16-REV-OBS-01` — two compiled `M5CP3` identities never gated or adjudicated — OPEN / owner `M5-CP3-TB2-REV`
+
+- **Fact:** `M5CP3.PeriodicRelationEndpointGaugeIsIndependentAndExact` and `M5CP3.ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection` were added at `M5-CP3-CB14` (`fd7de8a1`). They are compiled into `directional_surface_cell_producer_tests`. `git log --all -S` finds their names in no document, harness vector or selector.
+- **Root cause:** a CB turn authored test identities without routing them into the next gate vector. No later Review enumerated the `M5CP3` namespace against the gate.
+- **Falsifier:** the M5 closure Review lists every `TEST(M5CP3, ...)` in source and states, for each, whether it is in selector448 or has a written disposition. Any identity with neither fails the closure.
+- **Required disposition:** never executed; excluded from selector448 (correctly, since §13.3 precommits only reviewed-green identities); no credit toward any §13.1 conjunct. Deletion or gating is routed to a named later turn.
+- **Prohibited:** adding them to CB20 or the TB2 vector; stitching in a report-only run; citing either as M5 evidence.
+
+### `M5-CP3-TB1-R16-REV-OBS-02` — rows16/17 pin current inverse canonical storage — RECORDED / NOT FIRING
+
+- **Fact:** `ASSERT_TRUE(semanticRelation->storageInverted)` (`tests/SurfaceCellTransitionQuotientTests.cpp:3301`, `:3463`) is deliberate. It is what makes the inverse-storage path non-vacuous (`LESSONS.md` 171).
+- **Risk:** after selector448 acceptance, a representation-only change to canonical orientation would turn ordinals 446/447 RED with no semantic defect.
+- **If it fires:** classify as test-authority representation drift, non-stable unless accepted green is lost for a product reason. Supply a witness that still exercises inverse storage.
+- **Prohibited:** deleting the pin or making it conditional.
+
+### `M5-CP3-TB1-R16-REV-OBS-03` — `M5_Consolidated_Record.md` section numbering is ambiguous — OPEN / owner `M5-CP3-TB2-REV` closure consolidation
+
+- **Fact:** there are two §4.17 (CB16, CB17) and two §4.18 (R14-EXEC, R15-EXEC), and §§4.17-4.22 sit after §5. The defect predates R16-REV.
+- **Falsifier:** after the closure fold, every section number is unique and ordered, and every live `M5_Consolidated_Record.md §x` citation resolves to exactly one section.
+- **Prohibited:** renumbering without repairing citations.
+
+**Correction to a prior reviewing-agent statement.** My `M5-CP3-TB1-R15-R1-REV` addendum V3 said the expectation is cross-checked against `witness.atlasRotation` "in the test's own opening assertion". That assertion cannot fail, because witness selection already filters on atlas/source agreement (`:1233-1237`). Independence rests on the hard-coded `Q=3`, the source cross-field and the pipeline-equals-source transition check. The R15-R1 guard and its discharge are unaffected.
+
 ## 2026-09-23 — `M5-CP3-TB1-R16-REV`: corrected produced gate independently accepted — **RECOVERY PROVED / CANDIDATE PROMOTED / M5 DEBTS COMPLETE / +0**
 
 **Stable totals remain 51 events / 14 categories / 37 recurrences. Project produced-witness debt moves 3 -> 1; the remaining debt is M6-owned. Accepted runtime authority is promoted to package/source `10763242885 / a8b33cb7145d5a99d47eaf5f70bb12f1c71238d1` under still-published selector430.**

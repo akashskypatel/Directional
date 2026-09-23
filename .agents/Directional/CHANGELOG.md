@@ -4,6 +4,15 @@ Independent runtime-free Review re-hashes CB19 candidate/source and R16 result/l
 
 Package/source `10763242885 / a8b33cb7145d5a99d47eaf5f70bb12f1c71238d1` is promoted under still-published selector430. R6 direction, CP2 publication-precondition and CB19 runtime-proof observations close; `M5-DEFN-REV-OBS-01` carries to final M5 Review. Exact selector448 is precommitted as selector430 + the fixed 18 R16 nonselector identities: 448 unique rows, SHA-256 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, exact selector430 prefix, owner census 32/300/75/41. Selector448 is not yet published or accepted. Exact successor is publication-only `M5-CP3-CB20`, then fresh published-selector TB2 and mandatory final Review.
 
+**Reviewing-agent addendum (same turn).** The adjudication is **upheld** after fresh re-hashing of the R16 result/log and CB19 candidate artifacts. The owner census was re-derived statically from CMake and from runtime routing: 32/300/75/41, agreeing row for row. The addendum fixed these closeout gaps:
+- Frozen §11 still named `M5-CP3-CB14` as the current successor. It now names CB20.
+- The §8.2 and §9 headings were stale. §8.2 now scopes debt 3 to a nonzero, consistent translation rather than an independently derived one.
+- The selector manifest lacked the CB19 package promotion under selector430.
+- An ORIENTATION §8 clause was superseded.
+- The atlas "cross-check" was overstated. It is a selection filter, so its assertion cannot fail.
+
+It also records `M5-CP3-TB1-R16-REV-OBS-01`: two CB14-authored `M5CP3` identities were never gated, and `M5-CP3-TB2-REV` must give them an explicit no-credit disposition. `-OBS-02` records that rows 446/447 pin inverse storage (recorded, not firing). `-OBS-03` carries the consolidated-record section-numbering repair to the M5 closure fold. The CB20 plan gains §6: owners are scoped to the four standard executables (seven prefix identities also appear in the optional historical target), CB20 must record a 448-row static routing receipt for TB2, and CB20 must add a manifest index row. Selector bytes, hash, prefix, census, accounting and successor are unchanged.
+
 ## 2026-09-23 — `M5-CP3-TB1-R16-EXEC`: corrected fresh gate is mechanically green 448/448; Review required
 
 Fresh artifact-only R16 run/job `35889831381 / 107279255523` consumes CB19 candidate/source `10763242885 / a8b33cb7145d5a99d47eaf5f70bb12f1c71238d1` with the CB18-frozen exact-one/zero-skip parser and unchanged 448-identity vector. All processes execute freshly: mechanism **11/11**, focused atlas **1/1**, produced **6/6**, selector430 **430/430**, total **448/448 PASS**, benchmark 0. Protected selector ordinals 191/192/247/408 PASS. Rows16/17 both PASS.

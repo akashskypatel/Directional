@@ -173,3 +173,75 @@ Closeout control-plane note: a redundant late Drive patch-apply attempt (`359004
 | review_check.py boundary | **PASS / ALL CHECKS PASSED** on the complete Review/consolidation diff. |
 | `STATUS` lifecycle maintained | Entry beacon published for `M5-CP3-TB1-R16-REV`; terminal COMPLETE -> `M5-CP3-CB20` is reserved for the final repository mutation. |
 | Pushed to origin, branch in sync | **YES** — durable Review batch is pushed; temporary workflow/trigger state is retired before terminal STATUS. |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Adjudication UPHELD.** Candidate promotion, both debt discharges, the three observation discharges, the carry of `M5-DEFN-REV-OBS-01` and selector448 are all correct. I re-derived each from primary bytes rather than from this record. The **closeout was incomplete**: a frozen definition stayed false, the selector manifest missed the package promotion, and two compiled M5 identities went unmentioned. Per `REVIEW_TURN_POLICY.md` §6.1 I fixed those gaps in this addendum rather than only noting them. Accounting is unchanged at **51 / 14 / 37**, project debt **1**, successor **`M5-CP3-CB20`**.
+
+### V1 — primary evidence re-derived from bytes, not from this record
+
+- **R16 artifacts downloaded fresh from GitHub.** Result/log ZIP SHA-256 `d2ec2703...9f46 / 3b8d16d1...3097` match. `SHA256SUMS` hashes to `c2f89891...5784`, has 921 rows over 921 non-manifest files, and all 921 verify, with no unlisted or missing file.
+- **Ledgers.** Ledger SHA-256s `5716a0b6...8987 / 9b2f4e1d...fd25` match. All **448** rows are `exit=0 / selected=1 / skipped=0 / passed=1 / PASS`. **All 448 raw-log SHA-256s** re-hash to their ledger values. The selector-ledger identity sequence equals selector430 bytes exactly, and the nonselector order equals precommit rows 431-448 exactly. Protected ordinals 191/192/247/408 PASS. `execution-boundary.txt` shows every forbidden counter false, and the package/source/execution-view censuses are byte-identical before and after.
+- **Candidate package downloaded fresh.** ZIP `abe4c381...90aa`, 28/28 manifest at `cda95dd9...0c25`, source archive `54962d49...6d91`. The unpacked `src/`, `tests/` and `include/` trees are identical to the working branch. `compiled-targets.txt` lists the eight standard targets, and the link lines show GMPXX+GMP.
+- **Selector448 rebuilt independently** as selector430 plus §5 rows 431-448: **448 rows / 36,382 bytes / SHA-256 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`**, first-430 SHA `1c412850...9db6`, first-427 SHA `f9c88380...e86f`, zero duplicates.
+- **Owner census re-derived two independent ways.** (a) Runtime routing binaries in the R16 ledgers. (b) **Static** `cmake/DirectionalTests.cmake` target membership, parsing every `TEST/TEST_F/TEST_P` in each standard owner's sources. Both give **32 / 300 / 75 / 41** and agree row for row on all 448 rows.
+
+### V2 — rows16/17 non-vacuity holds, with one assertion that cannot fail
+
+The load-bearing claims hold from source (`tests/SurfaceCellTransitionQuotientTests.cpp:3281-3507`, helper `:1816-1864`). The expectation `Q=3` is a hard-coded constant (DEFN-R1 §7), checked against the source cross-field's directed transition. The pipeline transition must equal the pre-finalized source transition (`:1371-1377`). The production resolver only *normalizes representation*. It never supplies the expected value. `storageInverted` is computed by the test from `cutRoute` versus the Forward edge's route. If the product were direction-inverted, the resolved rotation would be `1`, and `EXPECT_EQ(witness.sourceRotation, semanticAction.rotation)` would fail. `Q=3` is not self-inverse, so the check discriminates. The guard `M5-CP3-TB1-R15-R1-REV-OBS-01` set for CB19 is therefore honored, and its discharge is correct.
+
+**Correction — the atlas "cross-check" is a selection filter, not a falsifier.** `select_torus_source_witness` already `continue`s whenever `atlasValue->transport != *sourceRotation` (`:1233-1237`). That makes `ASSERT_EQ(witness.sourceRotation, witness.atlasRotation)` (`:3287`, `:3449`) unable to fail (`LESSONS.md` 64r). §2 above and `ORIENTATION.md` §8 present the atlas as part of the independent expectation. My own R15-R1 addendum V3 made the same overstatement ("cross-checked against `witness.atlasRotation` in the test's own opening assertion"), and I withdraw it. The conclusion stands, because the constant, the source cross-field and the pipeline-equals-source check carry the independence. The atlas contributes only witness *selection*.
+
+**Row17 positive control — checked, holds by construction.** Row17 never shows that the *untampered* nonzero-witness draft round-trips through `construct_phase_front_product`. The only gated test that does so on this fixture would be `ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection`, which is ungated (V4). The round-trip is nevertheless guaranteed. `SurfacePhaseFrontProduct` has a private constructor (`include/directional/geometry/SurfaceCellTracing.h:1831-1832`), so `make` is its only construction path. `PhaseFrontDraft` carries all nine `make` arguments, and the produced product therefore already passed `make` on identical inputs. The typed rejection is attributable to the single tamper. No obligation is issued.
+
+**Translation scope.** Row16 proves the translation is nonzero, consistent with all four endpoint lattice states and accepted by materialization. It does not prove an independently derived translation value, because none exists for this witness. That satisfies §8.2 debt 3 as written. I recorded the scope in frozen §8.2 so the final Review cannot overstate it.
+
+**Certificate check is direction-agnostic by design.** Row16 accepts `appliedTransport == action()` **or** `action().inverse()` (`:3385-3386`). A path step may traverse the seam either way, so the certificate check proves the relation is *named and consumed*. It does not prove direction. Direction is carried by the rotation assertion and the four lattice/branch equations. §2.1's wording is accurate on this point.
+
+### V3 — closeout gaps found and fixed in this addendum
+
+| # | Gap | Fix |
+|---|---|---|
+| G1 | `Architecture_M5_Frozen_Definitions.md` §11 "Current exact successor" still named **`M5-CP3-CB14`**. It had been false since R12, and every later Review/DEFN missed it, this one included. A cold start reading the frozen record is sent to a superseded turn. §8.2's heading "Four M5 debts remain unchanged" read as "still open", and §9's M5-CP3 heading carried no status. `REVIEW_TURN_POLICY.md` §3.2 requires editing a frozen document whose claim is false. | §11 now names CB20 → TB2-EXEC → TB2-REV and marks the CB14 text as superseded, citing where it is retained. §8.2 gains a discharge note and translation-scope note with requirements unweakened. §9 M5-CP3 gains its status. |
+| G2 | The `Required_Green_Selector_Manifest.md` closeout said "n/a — selector448 not published". That misses the **package promotion**: CP1-REV and CP2-REV each recorded their promotion under selector430 there (lines for `10600353027` and `10601978228`). The manifest therefore still implied `10601978228` was current. | Added the R16-REV promotion line. Selector448 is recorded as precommitted only, with no table row. |
+| G3 | **Two compiled M5CP3 identities are in no gate and no durable document:** `M5CP3.PeriodicRelationEndpointGaugeIsIndependentAndExact` and `M5CP3.ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection`. Both were added at CB14 (`fd7de8a1`). `git log --all -S` finds each name only in that test-source commit, so they have never been executed or adjudicated. Excluding them from selector448 is **correct**, since §13.3 lets a Review precommit only identities it accepted green. The gap is that §5 presents the 18 as the complete reviewed set without saying 2 of the file's 10 `M5CP3` identities are excluded or why. They stay compiled into the producer binary with unknown status. | Recorded **`M5-CP3-TB1-R16-REV-OBS-01`**, owned by `M5-CP3-TB2-REV`. CB20 plan §6.4 prohibits touching them. |
+| G4 | The ORIENTATION §8 `RP-01` bullet still said "product debt proof remains pending fresh R16 after test-only CB19". That is a superseded clause left standing (`REVIEW_TURN_POLICY.md` §3.1 item 4). The new §8 storage entry also repeated the atlas overstatement (V2). | Both edited in place. |
+| G5 | Nothing recorded that `ASSERT_TRUE(storageInverted)` pins rows 446/447 to the *current* canonical storage orientation. That pin is intentional, because it is what makes the inverse path non-vacuous (`LESSONS.md` 171). But once selector448 is accepted, a later representation-only canonicalization change would turn both rows RED with no product defect. | Recorded **`M5-CP3-TB1-R16-REV-OBS-02` — RECORDED / NOT FIRING**, parallel to the ordinal307 entry. |
+| G6 | `M5_Consolidated_Record.md` has duplicate section numbers: two §4.17 (CB16, CB17) and two §4.18 (R14-EXEC, R15-EXEC). §§4.17-4.22 also sit after §5. Any citation of "§4.17" or "§4.18" is ambiguous. The disorder predates R16-REV, and this consolidation did not introduce it. | Not restructured here, to keep the change surgical. Carried as **`M5-CP3-TB1-R16-REV-OBS-03`** to the M5 closure consolidation at `M5-CP3-TB2-REV`. |
+| G7 | The CB20 plan's falsifier 5 ("exactly one approved owner target") would fire spuriously on seven prefix identities. Six `MilestoneGP26.*` identities (ordinals 41-46) and `SurfaceArrangementPhase16.FaceInteriorSupport...` (ordinal 113) are also defined in sources compiled only into the optional `historical_tests` target. The plan also gave TB2 no routing authority for rows 431-448, because routing map `7a92e7a3...` covers only 430 rows. | CB20 plan §6 scopes owners to the four standard executables, requires a recorded 448-row static routing receipt and requires the manifest index, following the CB8 precedent. Selector bytes, hash, prefix and census are unchanged. |
+
+G1-G7 do not change any adjudicated outcome. None of them could have turned the gate red. They are closeout and completeness defects of the kind `REVIEW_TURN_POLICY.md` §1 describes.
+
+### V4 — obligations after this addendum
+
+- `M5-DEFN-REV-OBS-01`: **carried** to `M5-CP3-TB2-REV` (unchanged).
+- `M5-CP3-TB1-R16-REV-OBS-01` (G3): **new, carried** to `M5-CP3-TB2-REV`. That Review must state an explicit disposition for both identities: never executed, excluded from selector448, and **no credit toward any §13.1 conjunct**. It must route their deletion or gating to a named later turn. It may not add them to the TB2 vector or stitch in a report-only run.
+- `M5-CP3-TB1-R16-REV-OBS-02` (G5): **recorded / not firing**. If rows 446/447 fail solely on `storageInverted`, classify the failure as test-authority representation drift. Do not delete the pin. Supply a witness that exercises inverse storage instead.
+- `M5-CP3-TB1-R16-REV-OBS-03` (G6): **carried** to `M5-CP3-TB2-REV` consolidation. Renumber or fold so every section number is unique and ordered, and repair citations.
+
+Each new item passes the deletion test. Without OBS-01, M5 could close while two dormant `M5CP3` tests of unknown status sat in its gate binary with no stated disposition. Without OBS-03, the closure fold would inherit ambiguous citations. OBS-02 carries no obligation until it fires, which is why it is recorded rather than assigned.
+
+## Review closeout — reviewing-agent addendum
+
+| Duty | Answer |
+|---|---|
+| Accepted selector prefix re-hashed | selector430 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6` (430 rows / 35,001 B); first427 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`; rebuilt selector448 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789` with first430 equal to selector430. |
+| Decisive claims independently re-derived | Fresh GitHub download and re-hash of the result/log/candidate ZIPs; 921/921 and 28/28 manifests; all 448 ledger rows and raw-log hashes; boundary/census postflight; packaged source equal to the branch; owner census computed both statically and from routing, agreeing row for row; row16/17 source paths. |
+| Non-vacuity checked | Direction inversion would give `Q=1≠3`. The atlas assertion is tautological (corrected). Row17's untampered control holds via the private-ctor/`make` invariant. The certificate check is direction-agnostic by design. Translation is nonzero plus consistent, not independently valued. |
+| Prior obligations discharged/carried | Upheld: R6-OBS, CP2-OBS and R15-R1-OBS discharged; both nonzero-Z4 debts discharged; `M5-DEFN-REV-OBS-01` carried to TB2-REV. |
+| Stable accounting | **51 / 14 / 37**; project debt **1** (M6). Accepted package `10763242885 / a8b33cb7...` under selector430 430/430. |
+| New candidates/obligations recorded | `M5-CP3-TB1-R16-REV-OBS-01/-02/-03`, all in the tracker. No regression candidate. |
+| ORIENTATION currency line | `M5-CP3-TB1-R16-REV` (reviewing-agent addendum), 2026-09-23 UTC. |
+| ORIENTATION §3 / §4 / §7 / §8 | §3 unchanged (state is correct). §4 unchanged. §7 gains OBS-01 and OBS-02. §8 `RP-01` bullet's superseded clause edited, and the atlas overstatement in the storage entry edited. |
+| CHANGELOG | The agent changelog's R16-REV entry is amended. No second entry was added. |
+| ROADMAP | n/a — checkpoint status did not move; the delegated update is correct. |
+| Selector manifest | Updated — R16-REV package promotion under selector430 (G2). |
+| LESSONS | Cited 64r (the assertion that cannot fail), 171 (discriminating twin / pinned inverse storage) and 33 (circular oracle, guard honored). No new lesson. |
+| Consolidation under CLEAN_UP_POLICY | Nothing to fold: the R16 report and review are current and the CB20 plan is live. The pre-existing numbering defect is carried as OBS-03. |
+| Successor frozen | Exactly `M5-CP3-CB20`. Falsifiers are in the CB20 plan §4, with the §6 clarifications, and in frozen §17. |
+| Turn boundary held | Yes. Runtime-free, and no product/test/fixture/CMake/benchmark/selector bytes changed. Artifact downloads were read-only, and no Directional binary was executed. |
+| review_check.py boundary | **PASS / ALL CHECKS PASSED** with `--expect-selector 430=1c4128500cb2...9db6` on the addendum's 10-file documentation diff (9 documents plus the selector manifest, which the tool excludes from its document list). No product/test/fixture/build or selector mutation. Durable markers preserved (handoff 1→1, ORIENTATION 2→2). |
+| `STATUS` lifecycle maintained | Resume beacon `IN_PROGRESS` published first (`Resumed at` = review handoff `2026-09-23T18:52:24Z`, `Started at` preserved). The final `COMPLETE → M5-CP3-CB20` beacon is the last write. |
+| Pushed to origin, branch in sync | Confirmed with `git status -sb` after the final push (no ahead/behind). |

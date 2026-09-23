@@ -314,6 +314,8 @@ Both remaining M5 `G4-B003` produced debts are discharged; project debt moves **
 
 Review constructs the frozen §13.3 successor selector as exact selector430 plus all 18 precommitted R16 nonselector identities in gate order. It is **448 rows / 448 unique / 36,382 bytes / 448 LF**, SHA-256 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, exact first430 prefix hash `1c412850...9db6`, owner census **32 / 300 / 75 / 41**. Frozen §17 and `Architecture_M5_CP3_CB20_Selector_448_Publication_Code_Build_Plan.md` make those bytes the only authorized publication. M5 remains open until CB20 publishes them, TB2 executes the published selector fresh, and mandatory TB2 Review accepts final closure.
 
+**Reviewing-agent addendum (same turn).** The adjudication is upheld on freshly downloaded and re-hashed artifacts, and the owner census 32/300/75/41 was re-derived statically and from routing, agreeing row for row. The addendum fixed the closeout gaps: frozen §11 still named CB14, the §8.2/§9 headings were stale, the manifest lacked the promotion line, an ORIENTATION §8 clause was superseded, and the atlas assertion was overstated (it cannot fail). The CB20 plan gains §6 clarifications. New items: `M5-CP3-TB1-R16-REV-OBS-01` (two ungated CB14 `M5CP3` identities; disposition owned by TB2-REV), `-OBS-02` (rows 446/447 pin inverse storage; recorded, not firing) and `-OBS-03` (this record's duplicate §4.17/§4.18 numbering; to be repaired in the closure fold).
+
 ### R15-R1 Review folded-document index additions
 
 | Folded filename | Verdict / retained home |

@@ -28,7 +28,7 @@ CB17 is **COMPLETE / RUNTIME-FREE / COMPILE GREEN**, candidate `10742798135 / 1a
 
 ## Exact next turn — `M5-CP3-CB20`
 
-Publication-only Code + Build. Publish exact frozen selector448 at `.agents/Directional/Architecture_M5_CP3_CB20_Required_Green_Selector_448.txt` (448 unique rows, SHA `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, exact selector430 prefix, owners 32/300/75/41), then compile/package all eight standard targets with mandatory GMP/GMPXX and no runtime. Green CB20 routes to fresh published-selector `M5-CP3-TB2-EXEC`, then mandatory final Review.
+Publication-only Code + Build. Publish exact frozen selector448 at `.agents/Directional/Architecture_M5_CP3_CB20_Required_Green_Selector_448.txt` (448 unique rows, SHA `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, exact selector430 prefix, owners 32/300/75/41), then compile/package all eight standard targets with mandatory GMP/GMPXX and no runtime. Apply CB20 plan §6 (R16-REV reviewing-agent addendum). Count owners over the four standard owner executables only. Record the 448-row static routing receipt with its SHA-256. Index selector448 in the manifest as PUBLISHED / NOT YET ACCEPTED. Leave the two ungated CB14 `M5CP3` identities untouched. Green CB20 routes to fresh published-selector `M5-CP3-TB2-EXEC`, then mandatory final Review.
 
 ## M5 checkpoint sequence
 
@@ -57,7 +57,7 @@ Publication-only Code + Build. Publish exact frozen selector448 at `.agents/Dire
 - [x] `M5-CP3-TB1-R16-REV` — **COMPLETE / APPROVED / CANDIDATE PROMOTED / M5 DEBTS COMPLETE / SELECTOR448 PRECOMMITTED.** Independent 448/448 + 921/921 acceptance; debt 3->1 (M6 only); R6/CP2/R15-R1 observations discharged; exact successor CB20.
 - [ ] `M5-CP3-CB20` — publish exact selector448 only, mandatory GMP/GMPXX compile/package, no runtime.
 - [ ] `M5-CP3-TB2-EXEC` — fresh artifact-only published-selector448 448/448 gate, benchmark 0.
-- [ ] `M5-CP3-TB2-REV` — final independent M5 closure Review; owns selector448 acceptance and `M5-DEFN-REV-OBS-01`.
+- [ ] `M5-CP3-TB2-REV` — final independent M5 closure Review; owns selector448 acceptance, `M5-DEFN-REV-OBS-01`, `M5-CP3-TB1-R16-REV-OBS-01` (disposition of the ungated CB14 `M5CP3` identities) and `-OBS-03` (consolidated-record numbering repair in the closure fold).
 
 - [x] `M5-CP1` and `M5-CP2`: CLOSED / ACCEPTED for mechanism credit; R16 Review later promotes current M5 runtime package `10763242885`.
 - [x] `M5-CP3` R1→R7 recovery chain: stable ordinal408 `RP-01` event **RECOVERY PROVED** at R7 Review.
@@ -91,6 +91,10 @@ Publication-only Code + Build. Publish exact frozen selector448 at `.agents/Dire
 - [x] `M5-CP3-DEFN-R1-REV-OBS-01` — **DISCHARGED AT R15-R1 REVIEW**. The `Q != A` mechanism identity passes in a complete mechanically valid ledger and falsifies omission of either occurrence gauge; mechanism-only, no produced-debt credit.
 - [x] `M5-CP3-TB1-R14-REV-OBS-01` — **DISCHARGED AT DEFN-R1**; independent committed-torus source/A3 derivation yields relation-gauge `Q=3` before relation publication.
 - [x] `M5-CP3-TB1-R15-REV-OBS-01` — **DISCHARGED / RUNTIME-PROVED AT R15-R1 REVIEW**. Frozen corrected parser accounts for all 448 exact-one/zero-skip processes in a complete valid ledger.
+- [x] `M5-CP3-TB1-R15-R1-REV-OBS-01` — **DISCHARGED AT R16 REVIEW**. CB19 kept the expectation independent (hard-coded `Q=3`) while using the resolver only to normalize representation; R16 proves it at runtime.
+- [ ] `M5-CP3-TB1-R16-REV-OBS-01` — **OPEN / owner `M5-CP3-TB2-REV`**. `M5CP3.PeriodicRelationEndpointGaugeIsIndependentAndExact` and `M5CP3.ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection` (CB14) were never gated or adjudicated. They need an explicit no-credit disposition and a named cleanup/gating owner, and they must not enter CB20 or TB2.
+- [ ] `M5-CP3-TB1-R16-REV-OBS-02` — **RECORDED / NOT FIRING**. Rows 446/447 pin inverse canonical storage. If it fires, classify as test-authority drift and keep the pin.
+- [ ] `M5-CP3-TB1-R16-REV-OBS-03` — **OPEN / owner `M5-CP3-TB2-REV` closure fold**. Repair the duplicate §4.17/§4.18 numbering in `M5_Consolidated_Record.md` and its citations.
 
 ## Deferred hygiene
 
