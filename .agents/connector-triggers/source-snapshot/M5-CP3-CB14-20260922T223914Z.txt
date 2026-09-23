@@ -1,2 +1,0 @@
-turn=M5-CP3-CB14
-requested_after_status_commit=b1ae90ba9f7cac53d741bd05212bb7f25d39fb3e

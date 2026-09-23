@@ -1,4 +1,0 @@
-turn=M5-CP3-CB14
-purpose=compile-package
-source_sha=b8dc3e906dd03525861a1985ea574bad1ad5c69a
-attempt=2

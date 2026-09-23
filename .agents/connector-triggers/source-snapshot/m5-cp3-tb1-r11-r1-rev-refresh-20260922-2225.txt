@@ -1,4 +1,0 @@
-M5-CP3-TB1-R11-R1-REV refreshed documentation/source snapshot
-READ_MODE=snapshot
-Expected pre-trigger head: 35b43915b3a133babc336adb82bb255e4156a195
-Purpose: materialize exact current review record/plan plus unchanged semantic source for coherent Review consolidation patch.

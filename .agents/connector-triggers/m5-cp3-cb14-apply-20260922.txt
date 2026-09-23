@@ -1,3 +1,0 @@
-turn=M5-CP3-CB14
-purpose=apply-code-patch
-retry=2
