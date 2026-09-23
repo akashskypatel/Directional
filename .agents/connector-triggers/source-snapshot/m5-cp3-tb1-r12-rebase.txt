@@ -1,2 +1,0 @@
-turn=M5-CP3-TB1-R12-EXEC
-purpose=rebase-closeout-doc-patch-after-prior-partial-apply
