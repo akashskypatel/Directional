@@ -84,11 +84,11 @@ Publication-only Code + Build. Publish exact frozen selector448 at `.agents/Dire
 - [x] `M5-CP3-TB1-R5-REV-OBS-01` — recovery proved by R7.
 - [x] `M5-CP3-TB1-R2-REV-OBS-01` — successful atlas-owned value consumption proved at R7 while hard-feature nontraversal control remains green.
 - [x] `M5-CP3-TB1-R8-REV-OBS-01` — **CLOSED / NO-TUNING + CHART ADMISSIBILITY INDEPENDENTLY UPHELD AT R9 REVIEW**.
-- [ ] `M5-CP3-TB1-R6-REV-OBS-01` — **OPEN / REOPENED BY R11-R1 REVIEW AMENDMENT**. CB12's source-ordering correction remains closed, but reaching the directed path does not independently prove its runtime direction. The first Review where produced row4 passes item 5 must show independent Forward -> Reverse agreement and inverted-pair rejection.
-- [ ] `M5-CP2-TB1-REV-OBS-01` — **OPEN**; R14 selector430 is 430/430, but the complete corrected CP3 pre-publication gate is still 446/448 RED, so frozen §13 does not yet authorize selector precommitment/publication.
+- [x] `M5-CP3-TB1-R6-REV-OBS-01` — **DISCHARGED AT R16 REVIEW**. Independent source/A3 authority fixes semantic Forward -> Reverse `Q=3`; the accepted produced relation concretely stores the inverse quarter-turn `1`, and corrected row16 proves stored action/route differ before resolving back to the independent semantic authority.
+- [x] `M5-CP2-TB1-REV-OBS-01` — **DISCHARGED BY R16 REVIEW PRECOMMITMENT**. The corrected pre-publication gate is independently accepted at 448/448 with complete evidence, and exact selector448 is precommitted under frozen §13.3; publication itself remains owned by `M5-CP3-CB20`.
 - [x] `M5-CP3-TB1-R9-REV-OBS-01-A` — **DISCHARGED AT R10 REVIEW**; produced rows1/2/3/6 remain PASS under CB11, empirically upholding frozen §16's `R=0` reduction.
 - [x] `M5-CP3-TB1-R13-REV-OBS-01` — **DISCHARGED AS TRIGGERED AT R14 REVIEW**; it forced DEFN-R1 before any CB17 semantic implementation.
-- [ ] `M5-CP3-DEFN-R1-REV-OBS-01` — **DISCHARGED AT R15-R1 REVIEW**. The `Q != A` mechanism identity passes in a complete mechanically valid ledger and falsifies omission of either occurrence gauge; mechanism-only, no produced-debt credit.
+- [x] `M5-CP3-DEFN-R1-REV-OBS-01` — **DISCHARGED AT R15-R1 REVIEW**. The `Q != A` mechanism identity passes in a complete mechanically valid ledger and falsifies omission of either occurrence gauge; mechanism-only, no produced-debt credit.
 - [x] `M5-CP3-TB1-R14-REV-OBS-01` — **DISCHARGED AT DEFN-R1**; independent committed-torus source/A3 derivation yields relation-gauge `Q=3` before relation publication.
 - [x] `M5-CP3-TB1-R15-REV-OBS-01` — **DISCHARGED / RUNTIME-PROVED AT R15-R1 REVIEW**. Frozen corrected parser accounts for all 448 exact-one/zero-skip processes in a complete valid ledger.
 
