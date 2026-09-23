@@ -1,5 +1,0 @@
-turn=M5-CP3-CB16
-purpose=compile/package corrected exact source
-source_sha=6bad9eb5626e77a234ffb2c14f621195105e4ba1
-runtimeExecution=false
-retry=1

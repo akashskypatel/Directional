@@ -1,5 +1,0 @@
-.agents/connector-triggers/m5-cp3-cb16-apply-20260923.txt
-.agents/connector-triggers/m5-cp3-cb16-apply-r1-20260923.txt
-.agents/connector-triggers/m5-cp3-cb16-compile-20260923.txt
-.agents/connector-triggers/m5-cp3-cb16-compile-r1-20260923.txt
-.agents/connector-triggers/source-snapshot/m5-cp3-cb16-20260923T043159Z.txt

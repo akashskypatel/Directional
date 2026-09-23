@@ -1,4 +1,0 @@
-turn=M5-CP3-CB16
-purpose=exact source snapshot for code/build inspection
-expected_branch=agent/surface_cell_quad/p5-recover-bridge-healing
-retry=0
