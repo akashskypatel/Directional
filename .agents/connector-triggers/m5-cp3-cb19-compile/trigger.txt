@@ -1,5 +1,0 @@
-turn=M5-CP3-CB19
-purpose=compile-test-only-storage-semantic-correction
-source_sha=a8b33cb7145d5a99d47eaf5f70bb12f1c71238d1
-retry=0
-runtimeExecution=false
