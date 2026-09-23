@@ -30,7 +30,7 @@ Artifact-only prepublication gate using immutable CB1 artifact `10782841045` / s
 
 **COMPLETE / DISPOSITION A NOT ACCEPTED / M5 CLOSURE HELD.** The independent Review upholds DEFN-R1's evidence: rows 183-188/239 are TB2-green and the split fixture is producer-built. It rejects DEFN-R1's reading. Rows 186/188/239 are in the **M1** accepted selector, yet `G4-B004` stayed open and was assigned to M5 afterwards, so reading A makes that assignment vacuous; it also makes "multi-" redundant. `M5-CP3-TB2-REV-OBS-01` is carried to `M5-DEFN-R2`. It also records process defect `M5-DEFN-R1-REV-OBS-01` (COMPLETE was published before the work was on the branch) and `LESSONS.md` 177. Earlier: `M5-CP3-TB2-REV` accepted selector448 and promoted package `10771899191 / cef1c6ee...`.
 
-## Latest Code + Build turn — `M5-CP3-CB20`
+## Previous accepted Code + Build turn — `M5-CP3-CB20`
 
 **COMPLETE / SELECTOR448 PUBLISHED / RUNTIME-FREE / COMPILE+PACKAGE GREEN.** At CB20, exact selector448 was published at 448 unique rows, 36,382 bytes, SHA-256 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, exact selector430 prefix, standard-owner census 32/300/75/41; routing receipt SHA-256 is `c91a5e2f3d84d7d38b7c7c58afd157448cb225ebdbbfac3da2ef6259e811dd7c`. Publication source is `cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1`. Compile run/job `35910024971 / 107347291148`, result/log artifacts `10771899191 / 10772810906`, root manifest 28/28; all eight GMP/GMPXX targets link and `runtimeExecution=false`. CB20 itself made no acceptance claim; `M5-CP3-TB2-REV` later accepts these exact bytes and promotes this package.
 
@@ -38,7 +38,7 @@ Artifact-only prepublication gate using immutable CB1 artifact `10782841045` / s
 
 **COMPLETE / MECHANICALLY GREEN / PUBLISHED SELECTOR448 448 PASS + 0 RED / REVIEW REQUIRED.** Fresh run/job `35913334490 / 107358491487` consumes CB20 artifact/source `10771899191 / cef1c6ee...` immutably and executes selector448 as **448 fresh exact-filter processes**: 448/448 PASS, exact-one selection, zero skips, owner census 32/300/75/41, protected 191/192/247/408 PASS, all appended 431-448 PASS, benchmark 0, result evidence 917/917 and exact immutable postflight. Result/log artifacts are `10775185139 / 10774217117`. No regression was observed; accounting stays 51 / 14 / 37 and project debt 1 M6-owned. EXEC grants no selector acceptance or M5 closure; exact successor is mandatory `M5-CP3-TB2-REV`.
 
-## Latest Definition turn — `M5-DEFN-R1`
+## Previous Definition turn — `M5-DEFN-R1`
 
 **COMPLETE / RUNTIME-FREE / DISPOSITION A — NOT ACCEPTED at `M5-DEFN-R1-REV`.** It proposed that M5 focused multi-isolation means ≥2 isolation sheets joined by a checked isolation-seam certificate, credited rows 186/239, and froze conjunct 8. The Review rejected that on chronology and redundancy grounds. The record is folded (git `d17aada2`).
 
