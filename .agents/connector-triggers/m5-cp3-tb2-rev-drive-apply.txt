@@ -1,0 +1,4 @@
+purpose=apply verified M5-CP3-TB2-REV closeout preservation patch
+patch_sha256=2a43eba37405014ecb3d60496e107b69ba757a8bb9f11c79579594a4abcb26f0
+base_sha=886484c87f33c0e7b5b2b128ea827150f7a223bc
+retry=0
