@@ -126,8 +126,8 @@ def main():
         compile_receipt=root/'compile-log-artifact-authority.tmp'
         download_artifact(repo,token,COMPILE_LOG,COMPILE_LOG_SHA,compile_log_zip,compile_receipt)
         with (result/'candidate-artifact-authority.txt').open('a',encoding='utf-8') as f:
-            f.write('compile_log_')
-            f.write(compile_receipt.read_text(encoding='utf-8').replace('\n','\ncompile_log_').rstrip('compile_log_') + '\n')
+            for line in compile_receipt.read_text(encoding='utf-8').splitlines():
+                f.write(f'compile_log_{line}\n')
         download_artifact(repo,token,ROUTING,ROUTING_SHA,routing_zip,result/'routing-artifact-authority.txt')
         run(['unzip','-q',str(candidate_zip),'-d',str(pkg)]); run(['unzip','-q',str(routing_zip),'-d',str(routing)])
         manifest_check(pkg,result/'candidate-manifest-check.txt')
