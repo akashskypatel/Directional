@@ -1,3 +1,0 @@
-Purpose: exact source snapshot for M5-CP3-CB17
-Semantic source before trigger: 1c17c666f61988c1a9a0f76470de67421b529634
-Retry: 0
