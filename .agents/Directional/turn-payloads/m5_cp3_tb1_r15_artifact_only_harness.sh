@@ -122,8 +122,7 @@ for path in [root, *sorted(root.rglob('*'), key=lambda p:p.relative_to(root).as_
     elif stat.S_ISDIR(st.st_mode): kind,digest,target='directory','-','-'
     elif stat.S_ISLNK(st.st_mode): kind,digest,target='symlink','-',os.readlink(path)
     else: kind,digest,target='other','-','-'
-    rows.append(f'{rel}	{kind}	{mode}	{st.st_size}	{digest}	{target}
-')
+    rows.append(f'{rel}\t{kind}\t{mode}\t{st.st_size}\t{digest}\t{target}\n')
 out.write_text(''.join(rows))
 PY
 }
@@ -204,31 +203,23 @@ identity_map="$ROUTING/identity-map.tsv"
 [[ -f "$identity_map" ]] || fail_orchestration 'routing identity-map.tsv absent'
 [[ "$(sha_file "$identity_map")" == "$EXPECTED_IDENTITY_MAP_SHA256" ]] || fail_orchestration 'routing identity-map digest mismatch'
 
-python3 - "$selector" "$identity_map" "${RESULT}/selector-authority.txt" "${RESULT}/routing-authority.txt" <<'PY'
+python3 - "$selector" "$identity_map" "\${RESULT}/selector-authority.txt" "\${RESULT}/routing-authority.txt" <<'PY'
 import collections,csv,hashlib,pathlib,sys
 selector=pathlib.Path(sys.argv[1]); imap=pathlib.Path(sys.argv[2]); sout=pathlib.Path(sys.argv[3]); rout=pathlib.Path(sys.argv[4])
 data=selector.read_bytes(); lines=data.splitlines(keepends=True)
-if b'' in data or len(lines)!=430 or any(not x.endswith(b'
-') for x in lines): raise SystemExit('selector byte/row contract mismatch')
+if b'\r' in data or len(lines)!=430 or any(not x.endswith(b'\n') for x in lines): raise SystemExit('selector byte/row contract mismatch')
 sha=hashlib.sha256(data).hexdigest(); prefix=hashlib.sha256(b''.join(lines[:427])).hexdigest()
 if sha!='1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6': raise SystemExit('selector430 digest mismatch')
 if prefix!='f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f': raise SystemExit('selector427 prefix mismatch')
-ids=[x.decode().rstrip('
-') for x in lines]
-rows=list(csv.DictReader(imap.open(), delimiter='	'))
+ids=[x.decode().rstrip('\n') for x in lines]
+rows=list(csv.DictReader(imap.open(), delimiter='\t'))
 if len(rows)!=430 or [int(r['ordinal']) for r in rows]!=list(range(1,431)): raise SystemExit('routing ordinal/count mismatch')
 if [r['identity'] for r in rows]!=ids: raise SystemExit('routing identity sequence differs from selector430 bytes')
 counts=collections.Counter(r['binary'] for r in rows)
 expected={'directional_surface_cell_authority_kernel_tests':31,'directional_surface_cell_producer_tests':283,'directional_surface_cell_completion_tests':75,'directional_surface_cell_validation_tests':41}
 if counts!=expected: raise SystemExit(f'owner census mismatch: {dict(counts)}')
-sout.write_text(f'selector_rows=430
-selector_sha256={sha}
-selector427_sha256={prefix}
-')
-rout.write_text('routing_rows=430
-routing_sequence_equals_selector=true
-'+''.join(f'{k}={expected[k]}
-' for k in expected))
+sout.write_text(f'selector_rows=430\nselector_sha256={sha}\nselector427_sha256={prefix}\n')
+rout.write_text('routing_rows=430\nrouting_sequence_equals_selector=true\n'+''.join(f'{k}={expected[k]}\n' for k in expected))
 PY
 
 nonselector="${RESULT}/nonselector-routing.tsv"
@@ -346,9 +337,9 @@ done < "$identity_map"
 sha256sum "$selector_ledger" > "${RESULT}/selector-ledger.sha256"
 runtime_completed=true
 
-python3 - "$nonselector_ledger" "$selector_ledger" "${RESULT}/semantic-summary.txt" "${RESULT}/protected-selector.tsv" <<'PY'
+python3 - "$nonselector_ledger" "$selector_ledger" "\${RESULT}/semantic-summary.txt" "\${RESULT}/protected-selector.tsv" <<'PY'
 import csv,pathlib,sys
-non=list(csv.DictReader(open(sys.argv[1]),delimiter='	')); sel=list(csv.DictReader(open(sys.argv[2]),delimiter='	'))
+non=list(csv.DictReader(open(sys.argv[1]),delimiter='\t')); sel=list(csv.DictReader(open(sys.argv[2]),delimiter='\t'))
 out=pathlib.Path(sys.argv[3]); prot=pathlib.Path(sys.argv[4])
 if len(non)!=18 or [int(r['ordinal']) for r in non]!=list(range(1,19)): raise SystemExit('nonselector ledger coverage mismatch')
 if len(sel)!=430 or [int(r['ordinal']) for r in sel]!=list(range(1,431)): raise SystemExit('selector ledger coverage mismatch')
@@ -357,35 +348,13 @@ def stats(rows):
 mp=[r for r in non if r['phase']=='mechanism']; at=[r for r in non if r['phase']=='atlas']; pr=[r for r in non if r['phase']=='produced']
 mpass,mred=stats(mp); apass,ared=stats(at); ppass,pred=stats(pr); spass,sred=stats(sel)
 out.write_text(
- f'mechanism_total=11
-mechanism_pass={mpass}
-mechanism_red={len(mred)}
-mechanism_red_ordinals={mred}
-'
- f'atlas_total=1
-atlas_pass={apass}
-atlas_red={len(ared)}
-atlas_red_ordinals={ared}
-'
- f'produced_total=6
-produced_pass={ppass}
-produced_red={len(pred)}
-produced_red_ordinals={pred}
-'
- f'selector_total=430
-selector_pass={spass}
-selector_red={len(sred)}
-selector_red_ordinals={sred}
-'
- f'total_processes=448
-total_pass={mpass+apass+ppass+spass}
-total_red={len(mred)+len(ared)+len(pred)+len(sred)}
-benchmark_execution=0
-')
+ f'mechanism_total=11\nmechanism_pass={mpass}\nmechanism_red={len(mred)}\nmechanism_red_ordinals={mred}\n'
+ f'atlas_total=1\natlas_pass={apass}\natlas_red={len(ared)}\natlas_red_ordinals={ared}\n'
+ f'produced_total=6\nproduced_pass={ppass}\nproduced_red={len(pred)}\nproduced_red_ordinals={pred}\n'
+ f'selector_total=430\nselector_pass={spass}\nselector_red={len(sred)}\nselector_red_ordinals={sred}\n'
+ f'total_processes=448\ntotal_pass={mpass+apass+ppass+spass}\ntotal_red={len(mred)+len(ared)+len(pred)+len(sred)}\nbenchmark_execution=0\n')
 protected={191,192,247,408}
-prot.write_text('ordinal	identity	result	exit	raw_sha256
-'+''.join(f"{r['ordinal']}	{r['identity']}	{r['result']}	{r['exit']}	{r['raw_sha256']}
-" for r in sel if int(r['ordinal']) in protected))
+prot.write_text('ordinal\tidentity\tresult\texit\traw_sha256\n'+''.join(f"{r['ordinal']}\t{r['identity']}\t{r['result']}\t{r['exit']}\t{r['raw_sha256']}\n" for r in sel if int(r['ordinal']) in protected))
 PY
 
 {
