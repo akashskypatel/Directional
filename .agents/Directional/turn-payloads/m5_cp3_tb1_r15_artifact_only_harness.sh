@@ -203,7 +203,7 @@ identity_map="$ROUTING/identity-map.tsv"
 [[ -f "$identity_map" ]] || fail_orchestration 'routing identity-map.tsv absent'
 [[ "$(sha_file "$identity_map")" == "$EXPECTED_IDENTITY_MAP_SHA256" ]] || fail_orchestration 'routing identity-map digest mismatch'
 
-python3 - "$selector" "$identity_map" "\${RESULT}/selector-authority.txt" "\${RESULT}/routing-authority.txt" <<'PY'
+python3 - "$selector" "$identity_map" "${RESULT}/selector-authority.txt" "${RESULT}/routing-authority.txt" <<'PY'
 import collections,csv,hashlib,pathlib,sys
 selector=pathlib.Path(sys.argv[1]); imap=pathlib.Path(sys.argv[2]); sout=pathlib.Path(sys.argv[3]); rout=pathlib.Path(sys.argv[4])
 data=selector.read_bytes(); lines=data.splitlines(keepends=True)
@@ -337,7 +337,7 @@ done < "$identity_map"
 sha256sum "$selector_ledger" > "${RESULT}/selector-ledger.sha256"
 runtime_completed=true
 
-python3 - "$nonselector_ledger" "$selector_ledger" "\${RESULT}/semantic-summary.txt" "\${RESULT}/protected-selector.tsv" <<'PY'
+python3 - "$nonselector_ledger" "$selector_ledger" "${RESULT}/semantic-summary.txt" "${RESULT}/protected-selector.tsv" <<'PY'
 import csv,pathlib,sys
 non=list(csv.DictReader(open(sys.argv[1]),delimiter='\t')); sel=list(csv.DictReader(open(sys.argv[2]),delimiter='\t'))
 out=pathlib.Path(sys.argv[3]); prot=pathlib.Path(sys.argv[4])
