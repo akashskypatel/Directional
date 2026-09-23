@@ -2,9 +2,9 @@
 
 Last updated: 2026-09-23 UTC
 
-## Latest Test + Benchmark turn — `M5-CP3-TB1-R14-EXEC`
+## Latest Test + Benchmark turn — `M5-CP3-TB1-R15-EXEC`
 
-Mechanically complete **446/448 PASS** with self-manifest **916/916**. Branch+semantic+mechanism 11/11, focused 1/1, produced 4/6, selector430 430/430. The CB16 branch-authority identity PASSes, while rows4/5 alone remain exact `PeriodicActionFirstBranchMismatch`; benchmark 0 and postflight exact.
+**COMPLETE EXECUTION / ORCHESTRATION INVALID / NO COMPLETE SEMANTIC LEDGER.** Attempt 0 (`35850838725 / 107147928250`) stopped before generated runtime on a temporary-harness Python escaping defect. The diagnosed retry (`35851321165 / 107149476143`) completed immutable preflight and began runtime, but the first exact process was falsely counted as zero-selected because the temporary parser stored doubled bracket escapes. Raw GTest output shows that focused identity actually ran once and returned `[ OK ]`, but policy forbids retry after runtime start; the remaining 447 processes did not run and no R15 PASS/RED vector or product credit exists.
 
 ## Latest Definition turn — `M5-CP3-DEFN-R1`
 
@@ -14,9 +14,9 @@ Runtime-free DEFN-R1 freezes the missing same-region nonzero-Z4 gauge contract. 
 
 CB17 is **COMPLETE / RUNTIME-FREE / COMPILE GREEN**, candidate `10742798135 / 1a36f6483738e1047b5d8ddbefb48cc5ab6fd4a3`. It implements frozen §16.3 exactly: `Q = G_R^-1 A G_F`, Forward cut-domain branch/raw coordinate authority, Reverse `Q` normalization, and relation-owned checked-product validation. The new synthetic contract proves `Q != A` and fails if either accepted occurrence-gauge term is deleted. All eight mandatory GMP/GMPXX targets compile/link; no Directional runtime was executed. Candidate remains unpromoted pending R15.
 
-## Exact next turn — `M5-CP3-TB1-R15-EXEC`
+## Exact next turn — `M5-CP3-TB1-R15-REV`
 
-Fresh immutable artifact-only runtime under `.agents/Directional/Architecture_M5_CP3_TB1_R15_Artifact_Only_Test_Benchmark_Plan.md`: exactly **448 processes** = corrected mechanism/semantic 11 + focused atlas 1 + produced rows1–6 + selector430, benchmark 0. Mandatory successor is `M5-CP3-TB1-R15-REV`.
+Mandatory Review of the invalid R15 execution. It must independently verify both orchestration attempts, preserve zero semantic/product credit, and decide whether a bounded fresh `R15-R1` is authorized after correcting only the temporary exact-one selection parser.
 
 ## M5 checkpoint sequence
 
@@ -35,7 +35,8 @@ Fresh immutable artifact-only runtime under `.agents/Directional/Architecture_M5
 - [x] `M5-CP3-TB1-R14-REV` — **COMPLETE / RUNTIME-FREE / DEFINITION AUTHORITY PROVED**. Independently re-opened R14 916/916 evidence and 446/448 vector; helper green, production gauge model under-specified; convergence trigger enforced.
 - [x] `M5-CP3-DEFN-R1` — **COMPLETE / RUNTIME-FREE / DEFINITIONS FROZEN**. Exact relation turn `Q = G_R^-1 A G_F`; Forward-anchored endpoint normalization; current torus witness independently valid at `Q=3`; no runtime/build/selector mutation.
 - [x] `M5-CP3-CB17` — **COMPLETE / RUNTIME-FREE / COMPILE GREEN / RUNTIME UNPROVED**. Frozen §16.3 relation-gauge cutover; synthetic `Q != A` focused contract; fixture/field/A3/selector unchanged; all-eight GMP/GMPXX compile/package green.
-- [ ] `M5-CP3-TB1-R15-EXEC` — **EXACT NEXT / IMMUTABLE ARTIFACT-ONLY RUNTIME**. 448 fresh exact-filter processes, benchmark 0, then mandatory R15 Review.
+- [x] `M5-CP3-TB1-R15-EXEC` — **COMPLETE EXECUTION / ORCHESTRATION INVALID / NO COMPLETE SEMANTIC LEDGER**. Attempt 0 stopped pre-runtime on harness Python escaping; retry began runtime but falsely classified the first actually-green process as zero-selected due doubled regex escapes. Policy forbids another EXEC retry after runtime start.
+- [ ] `M5-CP3-TB1-R15-REV` — **EXACT NEXT / MANDATORY REVIEW**. Independently adjudicate the invalid R15 evidence and authorize any fresh corrected execution.
 
 - [x] `M5-CP1` and `M5-CP2`: CLOSED / ACCEPTED for mechanism credit; accepted package `10601978228`.
 - [x] `M5-CP3` R1→R7 recovery chain: stable ordinal408 `RP-01` event **RECOVERY PROVED** at R7 Review.

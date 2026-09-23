@@ -2,29 +2,19 @@
 
 ## Current authority
 
-`M5-CP3-CB17` is **COMPLETE / RUNTIME-FREE / COMPILE GREEN / RUNTIME UNPROVED** once terminal `STATUS` is published.
+`M5-CP3-TB1-R15-EXEC` is **COMPLETE EXECUTION / ORCHESTRATION INVALID / NO COMPLETE SEMANTIC LEDGER** once terminal `STATUS` is published.
 
-Accepted runtime authority remains package `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316` under selector430 **430/430**. R14 on CB16 remains the latest runtime at **446/448 PASS** with complete **916/916** evidence; produced rows4/5 remain the only RED identities and that candidate remains unpromoted. Stable accounting remains **51 events / 14 categories / 37 recurrences**; produced-witness debt remains **3**.
+CB17 candidate `10742798135 / 1a36f6483738e1047b5d8ddbefb48cc5ab6fd4a3` remains unpromoted. Accepted runtime authority remains package `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316`; R14 remains the latest mechanically valid CP3 runtime at **446/448 PASS** with selector430 **430/430** and complete **916/916** evidence. Stable accounting remains **51 / 14 / 37**, produced-witness debt **3**.
 
-CB17 implements frozen §16.3 at semantic source `1a36f6483738e1047b5d8ddbefb48cc5ab6fd4a3`:
+R15 had two orchestration attempts. Attempt 0, run/job `35850838725 / 107147928250`, verified the candidate **28/28** manifest but stopped before generated runtime because the temporary harness had malformed Python escape materialization. Because `runtime_started=false`, a bounded harness-only retry was allowed. Attempt 1, `35851321165 / 107149476143`, completed immutable preflight and began the first prescribed process. Raw output proves `M5CP3.PeriodicRelationRotationUsesBothAcceptedOccurrenceGauges` ran once and returned `[ OK ]` / exit 0, but the temporary exact-one parser contained doubled bracket escapes and therefore reported `selected=0`. It failed closed with `runtime_started=true`, `selection_integrity=false`, zero committed ledger rows, and no remaining 447 processes executed.
 
-```text
-Q = G_R^-1 o A o G_F
-Forward: branch = G_F^-1 sourceBranch; coord = rawCutCoord
-Reverse: branch = Q o (G_R^-1 sourceBranch); coord = rotate(Q, rawCutCoord)
-```
-
-`Q`, not raw `A`, is relation rotation authority. `SurfacePeriodicRelationEndpointState.generatorRotation` is renamed to `relationRotation`; checked-product validation consumes the same authority. A synthetic focused contract uses `A=1, G_F=2, G_R=1`, yielding `Q=2 != A`, and independently proves both gauge terms are required. Fixture/field/A3/`PeriodicRelationId`/selector430 bytes remain unchanged.
-
-CB17 compile/package evidence is `35845003340 / 107128980299`, candidate/log artifacts `10742798135 / 10743207155`; all eight mandatory targets compile/link with GMP/GMPXX, root manifest is **28/28**, source receipts are clean and `runtimeExecution=false`. No Directional binary was executed.
+Per artifact-only policy, runtime start prohibits another retry in this EXEC turn. There is therefore no R15 448-process PASS/RED vector and no product/recovery/debt/selector credit. The raw first-process result is diagnostic provenance only.
 
 ## Exact next turn
 
-**`M5-CP3-TB1-R15-EXEC`** under `.agents/Directional/Architecture_M5_CP3_TB1_R15_Artifact_Only_Test_Benchmark_Plan.md`.
+**`M5-CP3-TB1-R15-REV`** is mandatory.
 
-R15 is immutable artifact-only runtime of the CB17 candidate. Exact final CB17 inventory freezes **448 fresh processes**: corrected mechanism/semantic **11**, focused atlas **1**, produced **6**, selector430 **430**, benchmark **0**. It must then route to mandatory **`M5-CP3-TB1-R15-REV`** regardless of PASS/RED.
-
-R15 Review must independently adjudicate product recovery, the carried R6 direction observation, the two nonzero-Z4 produced debts, the CP2 publication observation, and R14-REV's requirement that the synthetic nonzero-gauge mechanism be explicitly distinguished from the committed produced witness's zero-gauge `G_F=G_R=0` case.
+Review must independently re-open attempt-0 result/log artifacts `10745895043 / 10745825171` and attempt-1 result/log artifacts `10745985740 / 10745542559`, verify the execution boundaries and first raw process, classify the invalid gate, and decide the bounded successor. Any authorization for a fresh corrected `R15-R1` must be Review-owned and limited to orchestration correction; EXEC did not rerun after runtime start and did not promote CB17.
 
 ## Resume-critical evidence
 
@@ -32,7 +22,8 @@ R15 Review must independently adjudicate product recovery, the carried R6 direct
 - exact next plan: `.agents/Directional/Architecture_M5_CP3_TB1_R15_Artifact_Only_Test_Benchmark_Plan.md`
 - frozen definition record: `.agents/Directional/Architecture_M5_CP3_DEFN_R1_Same_Region_Nonzero_Z4_Gauge_Reconciliation_Definition_Record.md`
 - frozen definitions: `.agents/Directional/Architecture_M5_Frozen_Definitions.md` §16.3
-- latest runtime report: `.agents/Directional/Architecture_M5_CP3_TB1_R14_Artifact_Only_Test_Benchmark_Report.md`
+- latest execution report: `.agents/Directional/Architecture_M5_CP3_TB1_R15_Artifact_Only_Test_Benchmark_Report.md`
+- latest mechanically valid runtime report: `.agents/Directional/Architecture_M5_CP3_TB1_R14_Artifact_Only_Test_Benchmark_Report.md`
 - tracker: `.agents/Directional/Regression_Root_Cause_Tracker.md`
 - consolidated history: `.agents/Directional/M5_Consolidated_Record.md`
 - CB17 semantic source: `1a36f6483738e1047b5d8ddbefb48cc5ab6fd4a3`
@@ -47,8 +38,8 @@ R15 Review must independently adjudicate product recovery, the carried R6 direct
 
 ```yaml
 load_next:
+  - .agents/Directional/Architecture_M5_CP3_TB1_R15_Artifact_Only_Test_Benchmark_Report.md
   - .agents/Directional/Architecture_M5_CP3_TB1_R15_Artifact_Only_Test_Benchmark_Plan.md
-  - .agents/Directional/Architecture_M5_CP3_CB17_Relation_Frame_Gauge_Cutover_Code_Build_Record.md
 deep_references:
   - .agents/Directional/Architecture_M5_Frozen_Definitions.md
   - .agents/Directional/Architecture_M5_CP3_DEFN_R1_Same_Region_Nonzero_Z4_Gauge_Reconciliation_Definition_Record.md

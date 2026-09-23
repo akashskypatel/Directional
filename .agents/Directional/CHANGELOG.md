@@ -1,3 +1,11 @@
+## 2026-09-23 — M5-CP3-TB1-R15-EXEC — orchestration invalid after runtime start
+
+- Candidate `10742798135 / 1a36f6483738e1047b5d8ddbefb48cc5ab6fd4a3` immutable authority verified; root manifest **28/28**, routing/selector hashes and owner census exact, benchmark 0.
+- Attempt 0 `35850838725 / 107147928250` stopped pre-runtime on temporary-harness Python escaping; bounded correction allowed.
+- Attempt 1 `35851321165 / 107149476143` completed preflight and ran the first exact focused process green, but doubled bracket escapes in the temporary exact-one parser falsely reported zero selected and stopped the gate.
+- Runtime had begun, so no further retry is allowed in EXEC. No complete semantic ledger, selector430 run, product credit, debt discharge, candidate promotion, or stable regression increment is claimed.
+- Exact successor: mandatory `M5-CP3-TB1-R15-REV`.
+
 
 ## 2026-09-23 — `M5-CP3-CB17`: frozen relation-frame gauge cutover compile green; R15 next
 

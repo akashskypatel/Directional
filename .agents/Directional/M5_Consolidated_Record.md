@@ -1,15 +1,15 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-23 at `M5-CP3-DEFN-R1`
+**Last updated:** 2026-09-23 at `M5-CP3-TB1-R15-EXEC`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. The R13 Review accounting addendum corrects stable accounting to **51 / 14 / 37**, produced-witness debt **3**; M5 owns two of those debts and M6 owns one.
 
-## Current CP3 authority — DEFN-R1 complete / relation gauge frozen / CB17 next
+## Current CP3 authority — CB17 compile-green / R15 execution orchestration-invalid / Review next
 
-R14 run/job `35824161895 / 107062198724` on CB16 candidate/source `10733058003 / 6bad9eb5626e77a234ffb2c14f621195105e4ba1` remains the latest runtime evidence: complete **916/916** self-manifest, **446/448 PASS**, selector430 **430/430**, benchmark 0 and exact immutable postflight. Candidate remains unpromoted; DEFN-R1 executes no Directional runtime and claims no product recovery.
+R14 run/job `35824161895 / 107062198724` remains the latest **mechanically valid** CP3 runtime: complete **916/916** self-manifest, **446/448 PASS**, selector430 **430/430**, benchmark 0 and exact immutable postflight. CB17 candidate/source `10742798135 / 1a36f6483738e1047b5d8ddbefb48cc5ab6fd4a3` implements frozen §16.3 and remains unpromoted.
 
-DEFN-R1 closes the missing-definition portion of the existing `RP-01` endpoint-gauge chain. For exact semantic A3 Forward/Reverse occurrence faces, raw directed A1 carrier turn `A` and accepted cut gauges `G_F/G_R`, the one relation turn is `Q = G_R^-1 o A o G_F`. Forward anchors relation endpoint branch/coordinate authority; Reverse is normalized by `Q`; translation is constructed once from the Forward endpoint correspondence; reverse semantics are exactly the inverse action; canonical storage is representation-only. The committed torus source/A3 witness independently selects carrier `(0,3)`, semantic faces `22 -> 1`, `A=3`, `G_F=G_R=0`, hence **`Q=3`** before relation publication. `M5-CP3-TB1-R14-REV-OBS-01` is discharged; fixture/field/A3/selector authority remains unchanged. Corrected stable accounting remains **51 / 14 / 37**, debt **3**. Exact successor is runtime-free Code + Build `M5-CP3-CB17`.
+R15 EXEC did not establish a new semantic vector. Attempt 0 `35850838725 / 107147928250` stopped before runtime on temporary-harness Python escaping. Attempt 1 `35851321165 / 107149476143` completed immutable preflight and actually ran the first focused `Q != A` identity green, but a doubled-escape exact-one parser falsely classified it as zero-selected and failed closed. Because runtime had started, EXEC did not retry. No complete ledger, selector430 execution, product recovery, debt discharge, or promotion exists. Stable accounting remains **51 / 14 / 37**, debt **3**. Exact successor is mandatory `M5-CP3-TB1-R15-REV`.
 
 ## 1. `M5-DEFN` — definitions frozen
 
@@ -381,3 +381,9 @@ CB17 implements DEFN-R1/§16.3 directly. Raw A1 Forward->Reverse carrier turn `A
 The focused source contract is deliberately stronger than the committed produced torus witness: `A=1, G_F=2, G_R=1` yields `Q=2 != A` and deletion of either gauge term changes the result. This resolves the mechanism-coverage concern left by R14 Review while preserving the real fixture/field/A3/selector bytes. The existing endpoint exactness contract is updated for Forward raw / Reverse rotated coordinates.
 
 Exact semantic source `1a36f6483738e1047b5d8ddbefb48cc5ab6fd4a3` compiles/packages GREEN in run/job `35845003340 / 107128980299`; candidate/log artifacts are `10742798135 / 10743207155`, root manifest **28/28**, all eight mandatory targets link with GMP/GMPXX, source receipts are clean and `runtimeExecution=false`. Candidate remains runtime-unproved/unpromoted and accounting remains **51 / 14 / 37**, debt **3**. Final test inventory stays exactly **448** processes for R15 because the CB16 mechanism identity was replaced one-for-one. Exact successor is immutable artifact-only `M5-CP3-TB1-R15-EXEC`, then mandatory Review.
+
+## 4.18 `M5-CP3-TB1-R15-EXEC` — immutable preflight valid; runtime gate orchestration-invalid
+
+R15 attempted the frozen 448-process CB17 artifact-only gate without modifying candidate/source/test/fixture/selector authority. Attempt 0 failed before runtime because the temporary harness embedded invalid Python escapes; this was corrected under the pre-runtime orchestration allowance. Attempt 1 verified the candidate 28/28 manifest, semantic source, routing artifact, selector430/first427 hashes and owner census, then began the first focused process. That process itself ran exactly once and returned `[ OK ]`/exit 0, but the temporary parser used doubled bracket escapes and falsely reported zero selected. The gate failed closed before committing a ledger row; the remaining 447 processes never ran.
+
+Because generated runtime had begun, no second retry is allowed within EXEC. The attempt is zero semantic/product credit and does not change stable accounting, debts, accepted runtime authority or candidate promotion state. Result/log artifacts are `10745985740 / 10745542559`; pre-runtime attempt artifacts are `10745895043 / 10745825171`. Mandatory successor is `M5-CP3-TB1-R15-REV`.

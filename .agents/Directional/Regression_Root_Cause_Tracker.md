@@ -1,3 +1,17 @@
+## 2026-09-23 — `M5-CP3-TB1-R15-EXEC`: temporary harness selection-accounting failure — **ORCHESTRATION INVALID / NON-STABLE / +0**
+
+**Stable totals remain 51 events / 14 categories / 37 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**
+
+R15 did not produce a valid semantic gate. Attempt 0 (`35850838725 / 107147928250`) failed before generated runtime because temporary-harness Python escape sequences were materialized incorrectly; its boundary records `runtime_started=false`. The diagnosed harness-only retry (`35851321165 / 107149476143`) completed immutable preflight and started the first prescribed process. That raw process ran `M5CP3.PeriodicRelationRotationUsesBothAcceptedOccurrenceGauges` exactly once, returned `[ OK ]`, and exited 0, but the harness selection parser had doubled bracket escapes (`^\\[ RUN      \\] `), falsely yielding `selected=0`.
+
+### `M5-CP3-TB1-R15-EXEC-CAND-01` — orchestration/evidence defect; no product classification
+
+**Status:** ORCHESTRATION INVALID / TEMPORARY TEST-HARNESS EXACT-ONE PARSER / GENERATED RUNTIME STARTED / NO COMPLETE SEMANTIC LEDGER / NON-STABLE / +0.
+
+The retry failed closed with `runtime_started=true`, `preflight_completed=true`, `orchestration_failure=true`, `selection_integrity=false`, no committed process-ledger rows, zero selector processes, and no complete result self-manifest. Because generated runtime had started, policy forbids another retry in EXEC. The first raw green test is diagnostic provenance only and does not recover CB17 or discharge any debt/observation.
+
+This is not a new product regression category and does not alter `RP-01` accounting. CB17 candidate `10742798135` remains unpromoted; R14 remains the latest mechanically valid CP3 runtime. Mandatory `M5-CP3-TB1-R15-REV` owns independent verification and any authorization for a bounded fresh corrected execution.
+
 ## 2026-09-23 — `M5-CP3-DEFN-R1`: same-region nonzero-Z4 gauge model frozen — **DEFINITION AMBIGUITY CLOSED / PRODUCT RECOVERY OPEN / EXISTING RP-01 / +0**
 
 ## 2026-09-23 — `M5-CP3-CB17`: relation-gauge definition implemented, compile green — **RUNTIME PROOF PENDING / +0**
