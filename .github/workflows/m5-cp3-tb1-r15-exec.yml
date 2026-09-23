@@ -42,7 +42,7 @@ jobs:
       GH_TOKEN: ${{ secrets.GH_TOKEN || github.token }}
       TURN_ID: M5-CP3-TB1-R15-EXEC
       HARNESS_PATH: .agents/Directional/turn-payloads/m5_cp3_tb1_r15_artifact_only_harness.sh
-      EXPECTED_HARNESS_SHA256: fb4ae53a703b92e19bde5455c7d513c95bb2658ed73ecb42fb7aec091fffc438
+      EXPECTED_HARNESS_BLOB_SHA: c6f645b8b0a9551a0c154d963207f5edea97da84
     steps:
       - name: Checkout canonical executor source
         uses: actions/checkout@v4
@@ -56,8 +56,8 @@ jobs:
         run: |
           set -euo pipefail
           test -f "$HARNESS_PATH"
-          actual="$(sha256sum "$HARNESS_PATH" | awk '{print $1}')"
-          test "$actual" = "$EXPECTED_HARNESS_SHA256"
+          actual="$(git hash-object "$HARNESS_PATH")"
+          test "$actual" = "$EXPECTED_HARNESS_BLOB_SHA"
           bash -n "$HARNESS_PATH"
 
       - name: Execute immutable artifact-only gate
