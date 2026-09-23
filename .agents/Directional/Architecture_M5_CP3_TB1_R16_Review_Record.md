@@ -149,6 +149,8 @@ This Review therefore does **not** close M5 and does not label selector448 accep
 
 This Review is runtime-free: no Directional executable, benchmark, configure, compile, relink or generated project runtime was invoked. Product/test/fixture/CMake/benchmark/selector bytes are unchanged. Cross-file substantive inspection used a verified source snapshot after an initial setup-order miss: several repository documents were fetched directly before the turn recognized that the snapshot threshold was mandatory. Piecemeal inspection stopped, exact snapshot authority was established, and all substantive cross-file source review proceeded from verified snapshot bytes. This is an existing `LESSONS.md` 152 process-pattern instance only; it contributes no product or semantic evidence.
 
+Closeout control-plane note: a redundant late Drive patch-apply attempt (`35900492250`) was fail-closed before mutation because the already-landed Review batch had changed one intended historical path. Its staged Drive file, temporary caller and trigger were retired; the only follow-up repository correction was a surgical TODO reconciliation that marked the already-adjudicated R6, CP2 and DEFN-R1 observations consistently closed. This orchestration-only duplicate contributes no semantic/runtime evidence.
+
 ## Review closeout
 
 | Duty | Answer |
