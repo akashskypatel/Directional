@@ -1,0 +1,4 @@
+purpose=apply verified M5-CP3-CB20 closeout documentation patch
+patch_sha256=98dc98f55b4aca87aff059ed2194a7570061189d792625acb72b61af45baa097
+base_sha=cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1
+retry=0
