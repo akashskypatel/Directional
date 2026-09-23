@@ -1,13 +1,13 @@
 # M5 Consolidated Record
 
-**Status:** SELECTOR448 ACCEPTED / §13.1 CONJUNCTS 1-7 ACCEPTED / **M5 CLOSURE HELD pending `M5-DEFN-R2`** (`G4-B004` M5 half; DEFN-R1 disposition A not accepted) — DURABLE FAMILY RECORD
-**Last updated:** 2026-09-23 at `M5-DEFN-R1-REV` *(this header still read "pending `M5-DEFN-R1`" / "TB2-REV" after DEFN-R1)*
+**Status:** SELECTOR448 ACCEPTED / §13.1 CONJUNCTS 1-7 ACCEPTED / **CONJUNCT 8 DEFINED BY `M5-DEFN-R2` / M5 CLOSURE HELD pending bounded `M5-CP4`** — DURABLE FAMILY RECORD
+**Last updated:** 2026-09-23 at `M5-DEFN-R2`
 
-Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Final accepted M5 runtime authority is package `10771899191` / source `cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1` under accepted selector448 **448/448**. Stable accounting remains **51 / 14 / 37**; project produced-witness debt is **1**, M6-owned.
+Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted M5 runtime authority is package `10771899191` / source `cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1` under accepted selector448 **448/448**. Stable accounting remains **51 / 14 / 37**; project produced-witness debt is **1**, M6-owned; closure is held only on newly defined conjunct8 pending M5-CP4.
 
-## Final M5 authority — selector448 accepted / M5 closed
+## Current M5 authority — selector448 accepted / closure held
 
-Final Review independently accepts the exact CB20-published selector448 after fresh TB2 execution: run/job `35913334490 / 107358491487` is **448/448 PASS**, exact-one/zero-skip, complete **917/917** evidence and immutable postflight. Published selector448 hashes to `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, selector430 is its byte-identical first430 prefix, and static/runtime owner authority is **32 / 300 / 75 / 41**. CB20 package/source `10771899191 / cef1c6ee...` is the accepted final M5 runtime authority. All four M5 produced debts are discharged; project debt is one M6-owned closed-complex subject. Exact successor is `M6-DEFN`.
+Final Review independently accepts the exact CB20-published selector448 after fresh TB2 execution: run/job `35913334490 / 107358491487` is **448/448 PASS**, exact-one/zero-skip, complete **917/917** evidence and immutable postflight. Published selector448 hashes to `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, selector430 is its byte-identical first430 prefix, and static/runtime owner authority is **32 / 300 / 75 / 41**. CB20 package/source `10771899191 / cef1c6ee...` is the accepted current M5 runtime authority. All four earlier M5 produced debts are discharged; project debt is one M6-owned closed-complex subject. Milestone closure is held on conjunct8; exact successor is `M5-CP4-CB1`.
 
 ## 1. `M5-DEFN` — definitions frozen
 
@@ -398,7 +398,7 @@ Every frozen §13.1 M5 exit conjunct is satisfied on the reviewed authority chai
 
 `M5-DEFN-REV-OBS-01` is discharged by this one explicit exit reconciliation. `M5-CP3-TB1-R16-REV-OBS-01` receives its required no-credit disposition: the two CB14 identities were never executed, are intentionally absent from selector448, and receive **no M5 credit**; `M6-DEFN` owns freezing their deletion-or-gating disposition for the first appropriate M6 Code + Build. `-OBS-02` remains recorded/not firing because rows446/447 are fresh-green. `-OBS-03` is discharged by the unique chronological §4.1-§4.31 numbering and repaired live citations in this closure fold.
 
-Selector448 is **ACCEPTED CURRENT AUTHORITY** and CB20 package/source `10771899191 / cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1` is promoted as the accepted M5 runtime package/source. Stable accounting remains **51 events / 14 categories / 37 recurrences**; project debt remains **1**, M6-owned. **M5 is CLOSED / ACCEPTED.** Exact successor is runtime-free `M6-DEFN`.
+Selector448 is **ACCEPTED CURRENT AUTHORITY** and CB20 package/source `10771899191 / cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1` is promoted as the accepted M5 runtime package/source. Stable accounting remains **51 events / 14 categories / 37 recurrences**; project debt remains **1**, M6-owned. **M5 closure is held on conjunct 8.** Exact successor is bounded `M5-CP4-CB1`; `M6-DEFN` remains deferred.
 
 **Reviewing-agent addendum (same turn) — closure HELD.** Fresh re-hash of the TB2 result/log and CB20 package upholds every runtime and package claim above. It covers 917/917, 28/28, all 448 ledger/raw/protocol rows, the routing receipt and harness, and packaged code equal to `a8b33cb7` under GMP. Closure is nonetheless premature. M4-DEFN §11.2 assigns M5 the focused positive multi-isolation relation/certificate witness (`G4-B004` M5 half), and no M5 record absorbed or adjudicated it. Whether accepted rows 183-188 already satisfy it depends on a reading `M5-DEFN-R1` must freeze (census corrected at the second reviewing-agent pass). `M5-DEFN-REV-OBS-01`'s discharge is withdrawn in part and merged into `M5-CP3-TB2-REV-OBS-01`, owned by runtime-free `M5-DEFN-R1`, and `M6-DEFN` is deferred. The addendum also restores the tracker, which commit `ce9bf3cb` had overwritten from 9,837 lines to 21 (`-OBS-02`, `LESSONS.md` 176). It restores the TODO open item for the M6 closed-complex debt and recovers the line counts of the three files TB2-EXEC retired.
 
@@ -428,6 +428,14 @@ It **rejects the reading** on three grounds:
 §13.1 conjunct 8 as worded is not accepted; the M4-DEFN §11.2 obligation stands. `M5-CP3-TB2-REV-OBS-01` is carried to `M5-DEFN-R2`.
 
 Process defect `M5-DEFN-R1-REV-OBS-01`: DEFN-R1 published COMPLETE (22:11:35Z) while its work existed only as an unapplied Drive preservation patch. Review handoff (22:15:11Z) preceded the docs landing (22:16:25Z), and STATUS was rewritten afterwards. The tracker OBS-01 bullets that DEFN-R1 dropped are restored. New `LESSONS.md` 177. Accounting 51/14/37 and debt 1 are unchanged. Exact successor is runtime-free `M5-DEFN-R2`.
+
+## 4.34 `M5-DEFN-R2` — reading (c) frozen; disposition B creates bounded M5-CP4
+
+Runtime-free DEFN-R2 re-adjudicates the `G4-B004` M5 half after DEFN-R1-REV rejected reading A. It freezes the focused M5 producer minimum as a **same-subject join**: one pipeline-produced topology region spans at least two isolation sheets and owns an internal checked isolation-seam certificate, while that same region owns a canonical periodic quotient relation explicitly named by a reciprocal `PeriodicCut` edge pair. Materialization/occurrence/embedding/verifier exact-once consumption remains M6.
+
+This survives the chronology falsifier because the M1 seam rows lack the same-subject quotient owner, and survives the non-redundancy falsifier because a seam certificate alone is insufficient. Reading (b) is too weak because it leaves “quotient” unused; reading (d) invents a >=2-seam count not stated by primary authority. Accepted selector448 does not yet prove the joined condition. The never-gated committed-torus identity is near evidence but mixes M6 outcomes and lacks an explicit same-region relation-owner assertion, so it receives zero credit.
+
+Disposition **B** freezes bounded `M5-CP4`: CB1 focused producer-test authority + compile/package, TB1 prepublication gate, Review selector449 precommit, CB2 publication, TB2 fresh cumulative runtime, final Review. Selector448/package authority, conjuncts1-7, accounting 51/14/37 and project debt1 M6-owned remain unchanged. Exact successor is `M5-CP4-CB1`.
 
 ## 5. Folded-document index
 

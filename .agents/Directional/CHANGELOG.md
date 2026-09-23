@@ -1,3 +1,11 @@
+## 2026-09-23 — `M5-DEFN-R2`: `G4-B004` reading (c) frozen; bounded CP4 next
+
+- Re-adjudicated the omitted M5 `G4-B004` half under pre-stated chronology and non-redundancy falsifiers.
+- Rejected (a) M1 >=2-sheet seam reading as chronological/redundant, (b) pipeline-derived sheets alone as too weak, and (d) >=2 seams as unsupported cardinality.
+- Froze (c) at the M5 producer boundary: one pipeline-produced topology region must be multi-isolation with a checked internal-seam certificate and also own a canonical periodic quotient relation explicitly named by reciprocal `PeriodicCut` edges. M6 retains materialization/occurrence/embedding/verifier exact-once consumption.
+- Chose disposition B. Exact next `M5-CP4-CB1` adds one focused producer-only committed-torus test; selector448/package/conjuncts1-7 remain accepted and unchanged; accounting stays 51/14/37, project debt 1 M6-owned.
+- Recorded `M5-DEFN-R2-OBS-01`: READ_MODE was chosen after initial connector document reads; substantive work switched to verified snapshot `35929006744 / 10780133120 / 07a4ab64...`, +0 semantic/stable accounting.
+
 ## 2026-09-23 — `M5-DEFN-R1-REV`: disposition A not accepted; M5 closure held; reading re-adjudication next
 
 The independent runtime-free Review (reviewing agent) upholds every **evidence** claim of DEFN-R1. Selector448 rows 183-188, 237, 239, 240, 242, 253 and 254 are fresh-green in TB2 result `10775185139`. `split_isolation_fixture()` is producer-built (`build_surface_cell_network` + `require_produced`) from test-supplied sheets. Rows 239 and 186 assert the certificate owner, seam, transition, distinct-sheet and reciprocal facts claimed, and materialization consumes the certificate.

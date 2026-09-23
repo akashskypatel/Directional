@@ -1,3 +1,7 @@
+## 2026-09-23 — M5-DEFN-R2 freezes the final `G4-B004` producer reading
+
+Runtime-free definition chooses disposition B: M5 must prove one pipeline-produced topology region is both multi-isolation with a checked internal seam certificate and owner of an explicitly named periodic quotient relation. Existing selector448 does not join those facts, so M5 closure stays held for bounded M5-CP4. Accepted package/selector, conjuncts1-7, accounting 51/14/37 and debt1 remain unchanged. Exact next: `M5-CP4-CB1`.
+
 ## 2026-09-23 — `M5-DEFN-R1-REV`: DEFN-R1 reading not accepted; M5 closure held
 
 Independent Review upholds DEFN-R1's evidence but rejects its reading of the `G4-B004` M5 half. The credited rows 186/239 were already accepted at M1, before the obligation was kept open and assigned to M5, and the reading makes "multi-" redundant. M5 stays open, and next is runtime-free `M5-DEFN-R2` to freeze a non-vacuous reading or block for the user. Selector448, package `10771899191 / cef1c6ee...`, accounting **51 / 14 / 37** and debt **1** are unchanged.

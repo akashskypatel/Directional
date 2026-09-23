@@ -2,9 +2,9 @@
 
 **Milestone:** M5 — certificate-carrying chart and quotient relations
 **Closure turn:** `M5-CP3-TB2-REV`
-**Disposition:** **SELECTOR448 ACCEPTED / §13.1 CONJUNCTS 1-7 ACCEPTED / CONJUNCT 8 (DEFN-R1 WORDING) NOT ACCEPTED at `M5-DEFN-R1-REV` / CLOSURE HELD pending `M5-DEFN-R2`**
+**Disposition:** **SELECTOR448 ACCEPTED / §13.1 CONJUNCTS 1-7 ACCEPTED / CONJUNCT 8 DEFINED BY `M5-DEFN-R2` BUT NOT YET RUNTIME-ACCEPTED / CLOSURE HELD pending bounded `M5-CP4`**
 
-> **Closure remains held.** Everything below concerning selector448, the CB20 package and §13.1 conjuncts 1-7 stands. The `G4-B004` M5 half (M4-DEFN §11.2) is still not satisfied on an accepted reading. `M5-DEFN-R1` proposed that M1-era rows 186/239 satisfy it ("≥2 isolation sheets"). `M5-DEFN-R1-REV` did not accept that reading: those rows were accepted at M1, before the obligation was kept open and assigned to M5, and the reading makes "multi-" redundant. `M5-DEFN-R2` must freeze a reading that survives both objections, or block for the user.
+> **Closure remains held.** Everything below concerning selector448, the CB20 package and §13.1 conjuncts 1-7 stands. `M5-DEFN-R2` now freezes conjunct 8 as a same-subject producer requirement: one pipeline-produced topology region must be multi-isolation with a checked internal-seam certificate **and** own a periodic quotient relation named by a reciprocal `PeriodicCut` edge pair. Accepted selector448 does not join those facts on one subject. Exact successor is bounded `M5-CP4-CB1`; final `M5-CP4-TB2-REV` alone may accept conjunct 8 and close M5.
 
 ## Accepted authority
 
@@ -19,16 +19,16 @@
 
 `M5-CP3-TB2-REV` independently re-derived the complete evidence and accepts all seven original frozen §13.1 exit conjuncts: selected relation-path certificates are retained and verified; unused valid relations are decision-neutral; missing/duplicate/conflicting/nonreciprocal/representation-renumbered relations fail typed; torus quotient lineage is direct production; all four M5 produced debts are discharged on produced authority; CP1/CP2 mechanism rows remain required-green without substituting for production; and selector448 completed the precommit -> publication -> fresh artifact-only execution -> independent Review sequence.
 
-`M5-DEFN-R1` now freezes the omitted eighth conjunct from primary authority. Row239 is the strongest accepted positive: real producer `Produced`, one topology region with an internal isolation seam, explicit owner/seam/transition/distinct-sheet/reciprocal certificate, multi-sheet cell scope, successful materialization, and exact certificate consumption. Row186 independently proves focused reciprocal-certificate materialization. Rows183-185/187-188 supply typed duplicate/missing/nonreciprocal/wrong-owner/wrong-sheet falsifiers. The definition does not credit either ungated multi-isolation source test.
+`M5-DEFN-R2` now freezes the omitted eighth conjunct from primary authority without claiming it accepted. M1-era rows186/239 remain valid positive seam-certificate evidence, and M5 row443 remains valid torus quotient-owner evidence, but no accepted selector448 identity proves the required **same-region join**. The never-gated committed-torus identity is useful census evidence only; it mixes downstream materialization/output assertions and does not explicitly bind a periodic relation owner to the same multi-isolation region. Bounded `M5-CP4` must supply the focused producer-only gate.
 
 The fresh selector448 gate is **448 PASS / 0 RED**, exact-one selection, zero skips, benchmark 0, with immutable package/source/execution-view postflight. Rows446/447 re-prove the nonzero-Z4 rotation+translation and transform-only typed-rejection debts, while row448 proves unused-produced-relation invariance.
 
 ## Debt and observation disposition
 
-All four M5 produced debts are closed: relation/container reorder and missing-owner typing at R7 Review; genuine nonzero-Z4 materialization/consumption and tampered-transform typed rejection at R16 Review, freshly retained by TB2. The merged `M5-DEFN-REV-OBS-01` / `M5-CP3-TB2-REV-OBS-01` is **OPEN**: DEFN-R1's disposition A was not accepted at `M5-DEFN-R1-REV`, and the owner is `M5-DEFN-R2`. The two never-gated CB14 `M5CP3` identities receive no M5 credit, and `M6-DEFN` owns freezing their later deletion-or-gating disposition. The R16 inverse-storage risk remains recorded/not firing. Consolidated numbering/citation ambiguity is repaired.
+All four M5 produced debts are closed: relation/container reorder and missing-owner typing at R7 Review; genuine nonzero-Z4 materialization/consumption and tampered-transform typed rejection at R16 Review, freshly retained by TB2. The merged `M5-DEFN-REV-OBS-01` / `M5-CP3-TB2-REV-OBS-01` is **DEFINITION-FROZEN / CLOSURE-GATE-PENDING**: DEFN-R2 selects the same-region multi-isolation + quotient-owner reading, and the owner is now `M5-CP4`. The two never-gated CB14 `M5CP3` identities receive no M5 credit, and `M6-DEFN` owns freezing their later deletion-or-gating disposition. The R16 inverse-storage risk remains recorded/not firing. Consolidated numbering/citation ambiguity is repaired.
 
 Stable accounting remains **51 events / 14 categories / 37 recurrences**. The sole project produced-witness debt is the separate **M6-owned closed-complex `G4-B002` debt**.
 
 ## Successor boundary
 
-No M6 implementation is part of the held M5 closure. Exact successor is runtime-free **`M5-DEFN-R2`** (`G4-B004` M5-half reading re-adjudication). `M6-DEFN` follows only after M5 closes.
+No M6 implementation is part of the held M5 closure. Exact successor is runtime-free **`M5-CP4-CB1`** under `Architecture_M5_CP4_CB1_Multi_Isolation_Quotient_Witness_Plan.md`. `M6-DEFN` follows only after final `M5-CP4-TB2-REV` accepts conjunct 8 and closes M5.

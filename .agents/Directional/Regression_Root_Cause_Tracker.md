@@ -1,3 +1,17 @@
+## 2026-09-23 — `M5-DEFN-R2`: reading (c) frozen; bounded CP4 required — **DEFINITION FROZEN / M5 CLOSURE HELD / +0**
+
+**Stable totals unchanged: 51 events / 14 categories / 37 recurrences; project debt 1 (M6).** No semantic regression candidate. DEFN-R2 freezes `G4-B004` as a same-subject producer contract: one pipeline-produced topology region must be multi-isolation with a checked internal-seam certificate and also own a canonical periodic quotient relation explicitly named by reciprocal `PeriodicCut` edges. Selector448 contains the component facts on separate accepted subjects but no accepted identity joins them. Disposition B freezes bounded `M5-CP4`; owner of `M5-CP3-TB2-REV-OBS-01` moves to `M5-CP4`.
+
+### `M5-DEFN-R2-OBS-01` — READ_MODE chosen after initial document reads — RECORDED / process / non-stable
+
+- **Fact:** the turn performed several connector document reads before explicitly selecting `READ_MODE=snapshot`, despite the mandatory checklist already making the >=3-file threshold knowable.
+- **Recovery:** after detecting the miss, piecemeal source/document inspection stopped. Substantive cross-file work used verified snapshot run `35929006744`, artifact `10780133120`, exact SHA `07a4ab641910a366068c6c4fc27c2b42591f7871`; archive and 5302-file manifest were verified locally.
+- **Root cause:** start-of-turn execution followed the document checklist before applying `TOOL_USE_CONSERVATION_POLICY.md` §2's pre-read mode gate.
+- **Falsifier:** on the next turn whose checklist implies >=3 repository files, the turn records `READ_MODE=snapshot` before its first repository source/document read and obtains the snapshot before inspection.
+- **Owner:** every future ChatGPT Web repository turn.
+- **Prohibited:** normalizing the early reads by continuing piecemeal access, or treating them as semantic acceptance evidence.
+- **Classification:** existing setup-order/snapshot-threshold pattern (`LESSONS.md` 152); +0 stable accounting.
+
 ## 2026-09-23 — `M5-DEFN-R1-REV`: disposition A not accepted — **M5 CLOSURE HELD / READING RE-ADJUDICATION NEXT / +0**
 
 **Stable totals unchanged: 51 / 14 / 37; project debt 1 (M6).** No regression candidate. The independent Review re-verifies DEFN-R1's evidence (TB2 ledger rows 183-188/237/239/240/242/253/254 green; split fixture producer-built; row 239/186 assertions) but rejects its reading. Rows 186/188/239 are in `M1_Full_Required_Green_Selector.txt`, so reading A says the `G4-B004` M5 half was satisfied at M1. That is before the persistent-blocker table kept it open and before M4-DEFN §11.2 assigned it as future M5 work, and no record explains that. A also makes "multi-" redundant. A torus-family reading (quotient relations inside a multi-isolation-sheet region) was not examined. `M5-CP3-TB2-REV-OBS-01` stays open, owner `M5-DEFN-R2`. New rule: `LESSONS.md` 177.
@@ -41,6 +55,8 @@
 - **[restored; dropped by DEFN-R1 rewrite] Prohibited:** crediting any row under an unfrozen reading, any never-executed identity, or any direct/helper row; treating the torus's same-region periodic relations as multi-isolation; a re-home with no named missing stage authority; starting `M6-DEFN` before this is adjudicated.
 - **Unaffected:** selector448 acceptance, CB20 package/source promotion, §13.1 conjuncts 1-7, stable accounting **51 / 14 / 37**, and project debt **1** (M6-owned) are unchanged.
 - **`M5-DEFN-R1-REV` outcome (reviewing agent):** disposition A is **NOT ACCEPTED**. The evidence census is upheld; the reading fails on chronology (rows 186/188/239 were accepted at M1, before `G4-B004` was kept open and assigned to M5) and on redundancy (under A every positive isolation certificate is "multi-isolation"). **Status: OPEN / CLOSURE-BLOCKING / owner `M5-DEFN-R2`.**
+- **`M5-DEFN-R2` outcome:** reading (c) is frozen at the producer boundary: the same pipeline-produced topology region must be multi-isolation with checked seam certificate and own an explicitly named periodic quotient relation. **Disposition B / closure gate pending / owner `M5-CP4`.** Selector448 does not yet prove this joined fact; no accepted evidence is retroactively reclassified.
+- **CP4 falsifier:** if the focused committed-torus producer identity cannot establish all joined facts without downstream M6 authority, test-supplied sheets, or product semantic change, CP4 must stop for Review rather than compose separate facts or weaken the reading.
 
 ### `M5-CP3-TB2-REV-OBS-02` — durable tracker overwritten at `ce9bf3cb` — RECOVERED / process / non-stable
 

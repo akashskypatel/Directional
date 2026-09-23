@@ -2,9 +2,9 @@
 
 **Turn:** `M6-DEFN`
 **Boundary:** runtime-free definition only
-**Predecessor:** the Review that finally accepts the `G4-B004` M5-half reading and closes M5. That is currently pending `M5-DEFN-R2`, because `M5-DEFN-R1-REV` did not accept DEFN-R1's disposition A.
+**Predecessor:** final `M5-CP4-TB2-REV`, which must independently accept the `M5-DEFN-R2` `G4-B004` M5-half producer reading and close M5.
 
-**DEFERRED — NOT THE CURRENT NEXT TURN.** M5 closure is held. `M5-DEFN-R1-REV` did not accept DEFN-R1's "multi-isolation-sheet" reading of the `G4-B004` M5 half, on chronology and redundancy grounds. The exact next turn is `M5-DEFN-R2` (`Architecture_M5_DEFN_R2_G4_B004_Reading_Plan.md`). This plan becomes live only after that reading is frozen and Review-accepted. Item 7 must then be re-read against it. *(DEFN-R1 had rewritten this banner and item 7 to assume its disposition A. The reviewing agent reverted them to neutral.)*
+**DEFERRED — NOT THE CURRENT NEXT TURN.** M5 closure is held. `M5-DEFN-R2` has now frozen the `G4-B004` M5-half reading, but conjunct 8 is not runtime-accepted. Exact next is `M5-CP4-CB1` under `Architecture_M5_CP4_CB1_Multi_Isolation_Quotient_Witness_Plan.md`; this M6 plan becomes live only after final `M5-CP4-TB2-REV` accepts the focused producer witness and closes M5.
 
 ## Goal
 
@@ -18,7 +18,7 @@ Freeze the M6 vertical contract before any occurrence, quotient, embedding, or v
 4. Freeze ownership and proof route for the remaining M6 closed-complex `G4-B002` debt: M6-CP1 mechanism/stage separation and M6-CP3 direct-production re-proof must remain distinct.
 5. Adjudicate `G4-B001 / PR8-R034 / G4-R007` at the earliest M6 boundary: either freeze it as an M6-owned product-contract defect with a specific checkpoint owner, or prove from current authority that its precondition belongs later. Do not implement a fix in DEFN.
 6. Resolve the two dormant CB14 identities from `M5-CP3-TB1-R16-REV-OBS-01` with **no retroactive M5 credit**: for each identity, freeze either deletion as superseded/redundant test authority or a concrete later M6 gating owner. Name the first implementation checkpoint/turn family that may act.
-7. **`G4-B004` M6 half.** Under M4-DEFN §11.2, M6 must prove that the M5-produced positive multi-isolation authority is materialized/consumed exactly once and independently verified on the **representative occurrence/embedding/verifier path**. It must do so under whatever M5-half reading is finally frozen and Review-accepted (pending `M5-DEFN-R2`). Do not assume a reading, and do not assume M5 produced the authority until that Review accepts it.
+7. **`G4-B004` M6 half.** Under M4-DEFN §11.2 and the reading frozen by `M5-DEFN-R2`, M6 must prove representative exact-once materialization/consumption and independent verification of the **same produced authority accepted by M5-CP4**: one pipeline-produced topology region that is multi-isolation with a checked internal-seam certificate and that owns a canonical periodic quotient relation explicitly named by reciprocal `PeriodicCut` edges. M6 owns occurrence, quotient materialization, source-attached embedding, and verifier proof; it may not reconstruct or weaken the producer fact, and M6 evidence never grants retroactive M5 credit.
 
 ## Required falsifiers
 
@@ -27,7 +27,7 @@ Freeze the M6 vertical contract before any occurrence, quotient, embedding, or v
 - A closed-complex debt plan that credits mechanism-only evidence as direct production **falsifies** closure ownership.
 - Any treatment of the two dormant CB14 identities as historical M5 evidence **falsifies** the no-credit disposition.
 - Any unresolved ownership conflict between occurrence creation, quotient construction, embedding, and verification **halts** M6 implementation.
-- A `G4-B004` M6 contract that assumes an M5-half reading or M5 production not yet Review-accepted, that credits focused M5 evidence as representative M6 evidence, or that credits M6 representative work back to M5, **falsifies** the definition.
+- A `G4-B004` M6 contract that starts before final M5-CP4 acceptance, changes the frozen same-region producer reading, credits focused M5 evidence as representative M6 evidence, or credits M6 representative work back to M5, **falsifies** the definition.
 
 ## Stop rules
 

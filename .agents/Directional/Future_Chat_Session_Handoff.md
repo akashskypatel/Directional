@@ -4,33 +4,34 @@
 
 ## Current authority
 
-`M5-DEFN-R1-REV` (independent Review, reviewing agent) is **COMPLETE: DISPOSITION A NOT ACCEPTED / M5 CLOSURE HELD**.
+`M5-DEFN-R2` is **COMPLETE: READING (c) FROZEN / DISPOSITION B / M5 CLOSURE HELD**.
 
-DEFN-R1's evidence is upheld: rows 183-188/237/239/240/242/253/254 are fresh-green in TB2, the split fixture is producer-built, and the row 239/186 certificate assertions hold. Its **reading** is rejected on two grounds:
-- **Chronology.** Rows 186/188/239 are in `M1_Full_Required_Green_Selector.txt`, so reading A says the `G4-B004` M5 half was met at M1. But `G4-B004` stayed a persistent blocker after M1, and M4-DEFN §11.2 then assigned it to M5 as future work. No record explains that.
-- **Redundancy.** Under A, every positive isolation certificate is "multi-isolation".
+The `G4-B004` M5 half is now unambiguous: one **pipeline-produced** topology region must span at least two isolation sheets, own an internal checked isolation-seam certificate, and **that same region** must own a canonical periodic quotient relation explicitly named by reciprocal `PeriodicCut` edges. M5 credit ends at production; M6 later owns exact-once materialization/occurrence/embedding/verifier consumption.
 
-A torus-family reading (quotient relations inside a multi-isolation-sheet region) was not examined; its natural candidate is the never-gated `ExactCommittedTorusDoesNotTreatIsolationSeamAsBoundedDiskBoundary`.
+Selector448 (`70ff0860...c75789`), package/source `10771899191 / cef1c6ee...`, §13.1 conjuncts1-7, accounting **51 / 14 / 37**, and debt **1** (M6) are unchanged. Conjunct8 is defined but not accepted. The never-gated committed-torus test is census evidence only and receives no acceptance credit.
 
-Unchanged: selector448 `70ff0860...c75789` (prefix430 `1c412850...9db6`), package/source `10771899191 / cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1`, §13.1 conjuncts 1-7, accounting **51 / 14 / 37** and debt **1** (M6).
-
-Process defect `M5-DEFN-R1-REV-OBS-01`: DEFN-R1 published COMPLETE before its work was on the branch, so the Review handoff preceded the docs. **COMPLETE must be the final write of a turn.**
+Process observation `M5-DEFN-R2-OBS-01`: READ_MODE was selected after several connector document reads, contrary to the pre-read gate. Piecemeal inspection stopped immediately; substantive work used verified snapshot run `35929006744`, artifact `10780133120`, SHA `07a4ab641910a366068c6c4fc27c2b42591f7871`. This is process-only and does not affect semantic authority.
 
 ## Exact next turn
 
-**`M5-DEFN-R2`** — runtime-free `G4-B004` M5-half reading re-adjudication under `.agents/Directional/Architecture_M5_DEFN_R2_G4_B004_Reading_Plan.md`.
+**`M5-CP4-CB1`** — runtime-free Code + Build under `.agents/Directional/Architecture_M5_CP4_CB1_Multi_Isolation_Quotient_Witness_Plan.md`.
 
 The turn must:
-1. Enumerate the candidate readings: (a) sheets on the M1 surface, (b) pipeline-derived sheets, (c) quotient relations inside a multi-isolation-sheet region, (d) ≥2 seams.
-2. Freeze one reading that survives the **chronology** and **non-redundancy** falsifiers.
-3. Choose disposition A, B (bounded `M5-CP4`; gating a never-executed test counts as B) or C (a priced re-home with a concrete stage dependency), or stop **BLOCKED** with the exact user question in plan §4.
+1. Add exactly one focused committed-torus producer identity proving the same-region multi-isolation + checked-seam-certificate + quotient-owner contract.
+2. Use pipeline-derived sheet authority; no direct/draft/helper product and no test-supplied sheet labels.
+3. Assert producer authority only; no materialization/output/occurrence/embedding/verifier claim in the new M5 identity.
+4. Keep product semantics, fixture/field bytes and selector448 unchanged.
+5. Compile/package all eventual 449-gate owner executables through mandatory GMP/GMPXX reusable compile workflow with `runtimeExecution=false` and execute no Directional binary.
 
-`M6-DEFN` stays deferred.
+Compile-green routes to `M5-CP4-TB1-EXEC`, then mandatory Review. A semantic RED or need for product change stops CB1; it is not authorization to repair product source in the same turn.
+
+`M6-DEFN` stays deferred until final `M5-CP4-TB2-REV` accepts conjunct8 and closes M5.
 
 ## Resume-critical evidence
 
-- current Review: `.agents/Directional/Architecture_M5_DEFN_R1_G4_B004_Review_Record.md`
-- next-turn plan: `.agents/Directional/Architecture_M5_DEFN_R2_G4_B004_Reading_Plan.md`
+- current Definition record: `.agents/Directional/Architecture_M5_DEFN_R2_G4_B004_Definition_Record.md`
+- next-turn plan: `.agents/Directional/Architecture_M5_CP4_CB1_Multi_Isolation_Quotient_Witness_Plan.md`
+- predecessor Review: `.agents/Directional/Architecture_M5_DEFN_R1_G4_B004_Review_Record.md`
 - DEFN-R1 record (folded; full text in git `d17aada2`): summarized in the Review §§1-2 and `M5_Consolidated_Record.md` §§4.32-4.33
 - `G4-B004` source authority: `.agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md` §11.2; `REORIENTATION_PLAN.md` §9; persistent-blocker table in the restored tracker
 - chronology evidence: `.agents/Directional/M1_Full_Required_Green_Selector.txt` (rows at lines 116 and 169)
@@ -47,11 +48,11 @@ The turn must:
 
 ```yaml
 load_next:
-  - .agents/Directional/Architecture_M5_DEFN_R2_G4_B004_Reading_Plan.md
-  - .agents/Directional/Architecture_M5_DEFN_R1_G4_B004_Review_Record.md
-  - .agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md
+  - .agents/Directional/Architecture_M5_CP4_CB1_Multi_Isolation_Quotient_Witness_Plan.md
+  - .agents/Directional/Architecture_M5_DEFN_R2_G4_B004_Definition_Record.md
   - .agents/Directional/Architecture_M5_Frozen_Definitions.md
   - .agents/Directional/M5_Closure_Record.md
+  - .agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md
 conditional_modules:
   - trigger: github_connector or GitHub Actions/control-plane work
     path: modules/github-connector/MODULE.md
