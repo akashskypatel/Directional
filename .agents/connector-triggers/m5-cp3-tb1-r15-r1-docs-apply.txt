@@ -1,3 +1,0 @@
-Purpose: apply M5-CP3-TB1-R15-R1-EXEC durable documentation patch
-Patch sha256: dae331c446412c7bc2fdf087448eb1a6ac5417df5bf75364e8458c6c16dbf949
-Base: f6a740a38bff6abee6c42973551f747addd41692
