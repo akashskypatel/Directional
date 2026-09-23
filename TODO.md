@@ -14,13 +14,17 @@ Last updated: 2026-09-23 UTC
 
 Runtime-free DEFN-R1 freezes the missing same-region nonzero-Z4 gauge contract. With exact semantic A3 occurrence gauges `G_F/G_R` and raw directed A1 carrier turn `A`, relation rotation is `Q = G_R^-1 A G_F`; Forward anchors relation endpoint gauge, Reverse branch/coordinates are normalized by `Q`, translation is constructed once from the Forward endpoint correspondence, and canonical storage reversal is exact inversion only. The committed row4/5 torus witness independently yields relation-gauge **`Q=3`**, so fixture/field/A3 authority is valid and unchanged. `M5-CP3-TB1-R14-REV-OBS-01` is discharged. Accounting remains **51 / 14 / 37**, debt **3**.
 
-## Latest Code + Build turn — `M5-CP3-CB17`
+## Previous semantic Code + Build turn — `M5-CP3-CB17`
 
 CB17 is **COMPLETE / RUNTIME-FREE / COMPILE GREEN**, candidate `10742798135 / 1a36f6483738e1047b5d8ddbefb48cc5ab6fd4a3`. It implements frozen §16.3 exactly: `Q = G_R^-1 A G_F`, Forward cut-domain branch/raw coordinate authority, Reverse `Q` normalization, and relation-owned checked-product validation. The new synthetic contract proves `Q != A` and fails if either accepted occurrence-gauge term is deleted. All eight mandatory GMP/GMPXX targets compile/link; no Directional runtime was executed. Candidate remains unpromoted pending R15.
 
-## Exact next turn — `M5-CP3-CB18`
+## Latest Code + Build turn — `M5-CP3-CB18`
 
-Control-plane-only, runtime-free, no-compile correction. Freeze and statically falsify the corrected exact-one parser/caller without changing product/test/fixture/A3/selector/candidate semantics. If CB18 is green, fresh `M5-CP3-TB1-R15-R1-EXEC` must restart all 448 original R15 processes from process 1, benchmark 0, followed by mandatory R15-R1 Review.
+**COMPLETE / CONTROL-PLANE GREEN / RUNTIME-FREE / NO DIRECTIONAL COMPILE / NO REPACKAGE.** Canonical R15-R1 harness/caller are frozen at SHA-256 `7867e779...81b7 / 0f0a12f9...a15c`. Static run `35864475136` proves corrected literal GTest accounting `selected/passed/skipped=1/1/0`, historical parser `0/0`, skip probe `1/0/1`, and both workflow schemas green. No semantic input changed; accounting remains 51 / 14 / 37, debt 3.
+
+## Exact next turn — `M5-CP3-TB1-R15-R1-EXEC`
+
+Artifact-only, no-build, benchmark-0 fresh restart of all original 448 R15 processes from process 1 using the canonical CB18 harness/caller. No carry-forward from either invalid R15 attempt. Mandatory successor is `M5-CP3-TB1-R15-R1-REV`.
 
 ## M5 checkpoint sequence
 
@@ -41,15 +45,15 @@ Control-plane-only, runtime-free, no-compile correction. Freeze and statically f
 - [x] `M5-CP3-CB17` — **COMPLETE / RUNTIME-FREE / COMPILE GREEN / RUNTIME UNPROVED**. Frozen §16.3 relation-gauge cutover; synthetic `Q != A` focused contract; fixture/field/A3/selector unchanged; all-eight GMP/GMPXX compile/package green.
 - [x] `M5-CP3-TB1-R15-EXEC` — **COMPLETE EXECUTION / ORCHESTRATION INVALID / NO COMPLETE SEMANTIC LEDGER**. Attempt 0 stopped pre-runtime on harness Python escaping; retry began runtime but falsely classified the first actually-green process as zero-selected due doubled regex escapes. Policy forbids another EXEC retry after runtime start.
 - [x] `M5-CP3-TB1-R15-REV` — **COMPLETE / APPROVED WITH AMENDMENTS / CONTROL-PLANE ROOT CAUSE PROVED / +0**. R15 zero-credit disposition upheld; doubled-bracket exact-one parser independently falsified; fresh retry requires CB18 freeze first.
-- [ ] `M5-CP3-CB18` — **EXACT NEXT / CONTROL-PLANE-ONLY / RUNTIME-FREE / NO COMPILE**. Statically prove corrected literal GTest protocol accounting and freeze R15-R1 harness/caller; semantic inputs unchanged.
-- [ ] `M5-CP3-TB1-R15-R1-EXEC` — **AUTHORIZED ONLY AFTER CB18 GREEN**. Fresh original 448-process gate from process 1; no carry-forward from invalid R15; benchmark 0; mandatory Review afterward.
+- [x] `M5-CP3-CB18` — **COMPLETE / CONTROL-PLANE GREEN / RUNTIME-FREE / NO COMPILE**. Corrected literal GTest parser statically discriminates historical defect; canonical R15-R1 harness/caller frozen; both schemas green; semantic inputs unchanged.
+- [ ] `M5-CP3-TB1-R15-R1-EXEC` — **EXACT NEXT / AUTHORIZED**. Fresh original 448-process gate from process 1 using CB18-frozen control bytes; no carry-forward from invalid R15; benchmark 0; mandatory Review afterward.
 
 - [x] `M5-CP1` and `M5-CP2`: CLOSED / ACCEPTED for mechanism credit; accepted package `10601978228`.
 - [x] `M5-CP3` R1→R7 recovery chain: stable ordinal408 `RP-01` event **RECOVERY PROVED** at R7 Review.
 - [x] M5 produced debt 1 — relation owners/container reorder: **DISCHARGED at R7 Review** on produced rows1/2 with >=2 relations and >=2 owned periodic edges.
 - [x] M5 produced debt 2 — missing relation owner: **DISCHARGED at R7 Review** on produced rows1/3 with exact typed rejection.
-- [ ] M5 produced debt 3 — genuine nonzero-Z4 rotation+translation through production/materialization: **OPEN / PRODUCT OWNER `M5-CP3-CB17 -> CB18 -> R15-R1`**; definition and witness criterion are frozen.
-- [ ] M5 produced debt 4 — tampered produced nonzero-Z4 transform rejects typed: **OPEN / PRODUCT OWNER `M5-CP3-CB17 -> CB18 -> R15-R1`**; definition and witness criterion are frozen.
+- [ ] M5 produced debt 3 — genuine nonzero-Z4 rotation+translation through production/materialization: **OPEN / PRODUCT OWNER `M5-CP3-TB1-R15-R1-EXEC -> REV`**; definition and witness criterion are frozen.
+- [ ] M5 produced debt 4 — tampered produced nonzero-Z4 transform rejects typed: **OPEN / PRODUCT OWNER `M5-CP3-TB1-R15-R1-EXEC -> REV`**; definition and witness criterion are frozen.
 - [ ] M6 closed-complex produced debt: **OPEN / M6-owned**.
 - [x] `M5-CP3-CB9` — **COMPLETE / TEST-ONLY / RUNTIME-FREE / COMPILE GREEN**. Candidate `10660365136` / source `1023eea6090...`; all-eight GMP compile/package green, no runtime.
 - [x] `M5-CP3-TB1-R8-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. Vector 9/9 + 1/1 + 4/6 + 430/430; row6 recovers, rows4/5 stop at `InvalidBoundedDiskChart`; immutable postflight exact.

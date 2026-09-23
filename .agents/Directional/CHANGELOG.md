@@ -1,3 +1,9 @@
+## 2026-09-23 — `M5-CP3-CB18`: corrected R15-R1 control plane statically green; fresh R15-R1 next
+
+Control-plane-only CB18 freezes the R15-R1 artifact-only harness/caller without Directional runtime, compile or repackage. Canonical harness/caller SHA-256 are `7867e779ee1d276617cbf7c0e1a9910dbd5b7388a5fe6bde7aac32a47efb81b7 / 0f0a12f9b1b4ef43cde9f42726a60d91ea3ab4606cd3765c04ba6eaae076a15c`. Static validation run `35864475136` proves literal GTest protocol accounting `1 selected / 1 passed / 0 skipped`, historical doubled-escape counts `0/0`, skip detection `1/0/1`, and both caller schemas green. Evidence artifact `10751925972` hashes to `bbd5ef8070d004c146781c443a548cf309a032f3604084d4ea932ccebd0362b4`.
+
+No semantic candidate/routing/selector authority changed; no product/test/fixture/A3/CMake bytes changed; stable accounting remains **51 / 14 / 37**, debt **3**, accepted runtime unchanged, CB17 candidate unpromoted. Exact successor is fresh `M5-CP3-TB1-R15-R1-EXEC`: all 448 original processes from process 1, benchmark 0, no carry-forward from invalid R15, then mandatory Review.
+
 ## 2026-09-23 — `M5-CP3-TB1-R15-REV` review: zero-credit upheld; evidence-parser replay rule recorded
 
 Runtime-free review. **Upheld.** Accounting holds at **51 events / 14 categories / 37 recurrences**, debt **3**;

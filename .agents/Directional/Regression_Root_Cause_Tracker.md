@@ -1,3 +1,13 @@
+## 2026-09-23 — `M5-CP3-CB18`: R15 parser correction statically proved — **ORCHESTRATION OWNER CORRECTED / NON-STABLE / +0**
+
+**Stable totals remain 51 events / 14 categories / 37 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**
+
+CB18 freezes the exact R15-R1 harness/caller without Directional runtime, compile, repackage, or semantic-input mutation. Static control run `35864475136` proves corrected literal GTest accounting `selected/passed/skipped=1/1/0`, historical doubled-escape accounting `0/0`, and skipped-row detection `1/0/1`; both caller schemas validate. Canonical harness/caller SHA-256 are `7867e779ee1d276617cbf7c0e1a9910dbd5b7388a5fe6bde7aac32a47efb81b7 / 0f0a12f9b1b4ef43cde9f42726a60d91ea3ab4606cd3765c04ba6eaae076a15c`.
+
+### `M5-CP3-TB1-R15-EXEC-CAND-01` — OWNER CORRECTION GREEN / RUNTIME RECOVERY UNPROVED / non-stable / +0
+
+**Status:** R15 remains ORCHESTRATION INVALID / ZERO CREDIT; its exact parser cause is corrected and statically falsified by CB18. Exact recovery owner is now `M5-CP3-TB1-R15-R1-EXEC -> M5-CP3-TB1-R15-R1-REV`, starting all 448 processes from process 1. No R15 PASS, selector credit, debt discharge, observation closure, publication or candidate promotion carries forward.
+
 ## 2026-09-23 — `M5-CP3-TB1-R15-REV`: R15 parser root independently proved — **ORCHESTRATION / NON-STABLE / +0**
 
 **Stable totals remain 51 events / 14 categories / 37 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**
