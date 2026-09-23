@@ -1,6 +1,0 @@
-turn=M5-CP3-TB1-R16-EXEC
-purpose=fresh-artifact-only-448-process-gate
-candidate_artifact_id=10763242885
-candidate_source_sha=a8b33cb7145d5a99d47eaf5f70bb12f1c71238d1
-benchmark_count=0
-retry=0

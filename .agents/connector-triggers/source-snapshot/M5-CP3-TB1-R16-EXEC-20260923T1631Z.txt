@@ -1,3 +1,0 @@
-turn=M5-CP3-TB1-R16-EXEC
-semantic_source_sha=d7909c3e043201c3b56b21c9fec4bdc0a7ea9c87
-purpose=source-snapshot
