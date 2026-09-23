@@ -1,4 +1,0 @@
-Purpose: execute immutable artifact-only M5-CP3-TB1-R15-R1 gate
-Candidate artifact: 10742798135
-Expected semantic source: 1a36f6483738e1047b5d8ddbefb48cc5ab6fd4a3
-Retry: 0
