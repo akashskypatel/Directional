@@ -2,9 +2,9 @@
 
 **Turn:** `M6-DEFN`
 **Boundary:** runtime-free definition only
-**Predecessor:** `M5-DEFN-R1-REV` — only after it independently accepts frozen M5 §13.1 conjunct 8 and finalizes M5 closure
+**Predecessor:** the Review that finally accepts the `G4-B004` M5-half reading and closes M5. That is currently pending `M5-DEFN-R2`, because `M5-DEFN-R1-REV` did not accept DEFN-R1's disposition A.
 
-**DEFERRED — NOT THE CURRENT NEXT TURN.** `M5-DEFN-R1` has frozen disposition A for the previously omitted M5 half of `G4-B004`: focused positive multi-isolation means produced authority spanning at least two distinct isolation sheets joined by an explicit checked isolation-seam certificate consumed exactly once. M5 closure is still held because that definition is not self-accepting. The exact next turn is `M5-DEFN-R1-REV` under `Architecture_M5_DEFN_R1_G4_B004_Review_Plan.md`. This M6 plan becomes live only if that Review accepts conjunct 8 and finalizes M5 closure.
+**DEFERRED — NOT THE CURRENT NEXT TURN.** M5 closure is held. `M5-DEFN-R1-REV` did not accept DEFN-R1's "multi-isolation-sheet" reading of the `G4-B004` M5 half, on chronology and redundancy grounds. The exact next turn is `M5-DEFN-R2` (`Architecture_M5_DEFN_R2_G4_B004_Reading_Plan.md`). This plan becomes live only after that reading is frozen and Review-accepted. Item 7 must then be re-read against it. *(DEFN-R1 had rewritten this banner and item 7 to assume its disposition A. The reviewing agent reverted them to neutral.)*
 
 ## Goal
 
@@ -18,7 +18,7 @@ Freeze the M6 vertical contract before any occurrence, quotient, embedding, or v
 4. Freeze ownership and proof route for the remaining M6 closed-complex `G4-B002` debt: M6-CP1 mechanism/stage separation and M6-CP3 direct-production re-proof must remain distinct.
 5. Adjudicate `G4-B001 / PR8-R034 / G4-R007` at the earliest M6 boundary: either freeze it as an M6-owned product-contract defect with a specific checkpoint owner, or prove from current authority that its precondition belongs later. Do not implement a fix in DEFN.
 6. Resolve the two dormant CB14 identities from `M5-CP3-TB1-R16-REV-OBS-01` with **no retroactive M5 credit**: for each identity, freeze either deletion as superseded/redundant test authority or a concrete later M6 gating owner. Name the first implementation checkpoint/turn family that may act.
-7. **`G4-B004` M6 half.** Under M4-DEFN §11.2 and frozen M5-DEFN-R1 disposition A, M6 must consume the M5-focused authority — at least two distinct isolation sheets joined by a producer-emitted checked isolation-seam certificate — on the **representative occurrence/embedding/verifier path**, prove each owned relation is materialized/consumed exactly once, and independently verify it. Multi-seam/multi-relation graph complexity belongs here: M6 must not reinterpret M5’s focused minimum as a retroactive ≥2-seam requirement, and it must not treat the focused M5 gate as representative M6 evidence. This item becomes authoritative only after `M5-DEFN-R1-REV` accepts the M5 definition.
+7. **`G4-B004` M6 half.** Under M4-DEFN §11.2, M6 must prove that the M5-produced positive multi-isolation authority is materialized/consumed exactly once and independently verified on the **representative occurrence/embedding/verifier path**. It must do so under whatever M5-half reading is finally frozen and Review-accepted (pending `M5-DEFN-R2`). Do not assume a reading, and do not assume M5 produced the authority until that Review accepts it.
 
 ## Required falsifiers
 
@@ -27,7 +27,7 @@ Freeze the M6 vertical contract before any occurrence, quotient, embedding, or v
 - A closed-complex debt plan that credits mechanism-only evidence as direct production **falsifies** closure ownership.
 - Any treatment of the two dormant CB14 identities as historical M5 evidence **falsifies** the no-credit disposition.
 - Any unresolved ownership conflict between occurrence creation, quotient construction, embedding, and verification **halts** M6 implementation.
-- A `G4-B004` M6 contract that does not consume the Review-accepted M5 focused multi-sheet certificate authority, that retroactively changes M5 into a ≥2-seam requirement, or that substitutes focused M5 evidence for representative M6 occurrence/embedding/verifier evidence, **falsifies** the definition.
+- A `G4-B004` M6 contract that assumes an M5-half reading or M5 production not yet Review-accepted, that credits focused M5 evidence as representative M6 evidence, or that credits M6 representative work back to M5, **falsifies** the definition.
 
 ## Stop rules
 

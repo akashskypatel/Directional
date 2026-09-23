@@ -1,3 +1,7 @@
+## 2026-09-23 — `M5-DEFN-R1-REV`: DEFN-R1 reading not accepted; M5 closure held
+
+Independent Review upholds DEFN-R1's evidence but rejects its reading of the `G4-B004` M5 half. The credited rows 186/239 were already accepted at M1, before the obligation was kept open and assigned to M5, and the reading makes "multi-" redundant. M5 stays open, and next is runtime-free `M5-DEFN-R2` to freeze a non-vacuous reading or block for the user. Selector448, package `10771899191 / cef1c6ee...`, accounting **51 / 14 / 37** and debt **1** are unchanged.
+
 ## 2026-09-23 — `M5-DEFN-R1`: focused multi-isolation M5 witness frozen; Review next
 
 Runtime-free Definition chooses `G4-B004` disposition A. The M5 focused minimum is ≥2 distinct isolation sheets joined by producer-emitted checked isolation-seam certificate authority consumed exactly once. Accepted selector448 rows 186/239 are the positives and 183-185/187-188 are the typed falsifiers. §13.1 conjunct 8 is frozen; selector448/runtime package authority, stable **51 / 14 / 37** accounting and project debt **1** remain unchanged. M5 closure is still held pending independent `M5-DEFN-R1-REV`; `M6-DEFN` remains deferred behind it.

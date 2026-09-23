@@ -1,3 +1,16 @@
+## 2026-09-23 — `M5-DEFN-R1-REV`: disposition A not accepted; M5 closure held; reading re-adjudication next
+
+The independent runtime-free Review (reviewing agent) upholds every **evidence** claim of DEFN-R1. Selector448 rows 183-188, 237, 239, 240, 242, 253 and 254 are fresh-green in TB2 result `10775185139`. `split_isolation_fixture()` is producer-built (`build_surface_cell_network` + `require_produced`) from test-supplied sheets. Rows 239 and 186 assert the certificate owner, seam, transition, distinct-sheet and reciprocal facts claimed, and materialization consumes the certificate.
+
+It **rejects the reading**:
+- **Chronology.** Rows 186/188/239 are in `M1_Full_Required_Green_Selector.txt`, so reading A says the `G4-B004` M5 half was satisfied at M1. But `G4-B004` stayed a persistent blocker after M1, M4-DEFN §11.2 then assigned it to M5 as future work, and no record explains that.
+- **Redundancy.** DEFN-R1's own argument makes every positive isolation certificate "multi-isolation".
+- **An unexamined alternative.** A torus-family reading (quotient relations inside a multi-isolation-sheet region, with the never-gated committed-torus test as candidate) was never considered.
+
+§13.1 conjunct 8 as worded is not accepted, and the obligation stands. `M5-CP3-TB2-REV-OBS-01` is carried to runtime-free **`M5-DEFN-R2`**, whose falsifiers are stated before the turn. The M6-DEFN plan is reverted to neutral wording.
+
+The Review also records process defect `M5-DEFN-R1-REV-OBS-01`: COMPLETE was published at 22:11:35Z while the work existed only as an unapplied Drive preservation patch, the Review handoff preceded the docs, and STATUS was rewritten afterwards. It restores the tracker bullets DEFN-R1 dropped, folds the DEFN-R1 record and Review plan, and adds `LESSONS.md` 177. Accounting is unchanged at 51 / 14 / 37 with debt 1.
+
 ## 2026-09-23 — `M5-DEFN-R1`: `G4-B004` M5 half resolved by disposition A; independent Review next
 
 Runtime-free Definition resolves the M5 closure omission from M4-DEFN §11.2. Focused positive multi-isolation is now frozen as **producer-built authority spanning at least two distinct isolation sheets joined by an explicit checked `SurfaceIsolationSeamTransportCertificate` consumed exactly once**. Accepted selector448 rows **186 and 239** are the positive witnesses; rows **183-185 and 187-188** provide duplicate/missing/nonreciprocal/wrong-owner/wrong-sheet falsifiers. Multi-seam/multi-relation graph complexity remains representative M6 occurrence/materialization scope; the ungated multi-isolation source tests receive zero acceptance credit.

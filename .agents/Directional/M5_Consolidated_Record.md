@@ -1,7 +1,7 @@
 # M5 Consolidated Record
 
-**Status:** SELECTOR448 ACCEPTED / §13.1 CONJUNCTS 1-7 ACCEPTED / **M5 CLOSURE HELD pending `M5-DEFN-R1`** (`G4-B004` M5 half) — DURABLE FAMILY RECORD
-**Last updated:** 2026-09-23 at `M5-CP3-TB2-REV`
+**Status:** SELECTOR448 ACCEPTED / §13.1 CONJUNCTS 1-7 ACCEPTED / **M5 CLOSURE HELD pending `M5-DEFN-R2`** (`G4-B004` M5 half; DEFN-R1 disposition A not accepted) — DURABLE FAMILY RECORD
+**Last updated:** 2026-09-23 at `M5-DEFN-R1-REV` *(this header still read "pending `M5-DEFN-R1`" / "TB2-REV" after DEFN-R1)*
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Final accepted M5 runtime authority is package `10771899191` / source `cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1` under accepted selector448 **448/448**. Stable accounting remains **51 / 14 / 37**; project produced-witness debt is **1**, M6-owned.
 
@@ -413,12 +413,30 @@ The fixture’s `{0,1}` source-sheet labels are input authority to the real `bui
 
 `Architecture_M5_Frozen_Definitions.md` §13.1 now carries conjunct 8. No M4 definition changes, no `M5-CP4` is created, selector448 and accepted package/source remain unchanged, stable accounting remains **51 / 14 / 37**, and project produced-witness debt remains **1**, M6-owned. The merged `M5-CP3-TB2-REV-OBS-01` / remainder of `M5-DEFN-REV-OBS-01` is **definition-adjudicated / Review-pending**. A Definition turn cannot accept its own new exit condition, so M5 closure remains held. Exact successor is runtime-free **`M5-DEFN-R1-REV`**; if it independently accepts the reading and rows 186/239 with the typed falsifier family, it may finally close M5 and route to `M6-DEFN`.
 
+## 4.33 `M5-DEFN-R1-REV` — disposition A not accepted; reading re-adjudication next
+
+The independent Review (reviewing agent) **re-verifies every evidence claim of DEFN-R1**:
+- rows 183-188, 237, 239, 240, 242, 253 and 254 are fresh-green in TB2;
+- the split fixture is producer-built from test-supplied sheets;
+- rows 239 and 186 assert what DEFN-R1 says.
+
+It **rejects the reading** on three grounds:
+- **Chronology.** Rows 186/188/239 are in `M1_Full_Required_Green_Selector.txt`, so reading A says `G4-B004`'s M5 half was met at M1. That is before the persistent-blocker table kept it open and before M4-DEFN §11.2 assigned it as future M5 work, and no record explains the persistence.
+- **Redundancy.** DEFN-R1's own argument makes every positive isolation certificate "multi-isolation".
+- **An unexamined alternative.** Under a torus-family reading, quotient relations inside a multi-isolation-sheet region, the never-gated `ExactCommittedTorusDoesNotTreatIsolationSeamAsBoundedDiskBoundary` is the natural candidate.
+
+§13.1 conjunct 8 as worded is not accepted; the M4-DEFN §11.2 obligation stands. `M5-CP3-TB2-REV-OBS-01` is carried to `M5-DEFN-R2`.
+
+Process defect `M5-DEFN-R1-REV-OBS-01`: DEFN-R1 published COMPLETE (22:11:35Z) while its work existed only as an unapplied Drive preservation patch. Review handoff (22:15:11Z) preceded the docs landing (22:16:25Z), and STATUS was rewritten afterwards. The tracker OBS-01 bullets that DEFN-R1 dropped are restored. New `LESSONS.md` 177. Accounting 51/14/37 and debt 1 are unchanged. Exact successor is runtime-free `M5-DEFN-R2`.
+
 ## 5. Folded-document index
 
 Historical citations in frozen/normative records to filenames listed here are provenance-only and resolve through this index plus git history; frozen text is not rewritten merely to chase a folded filename.
 
 | Folded filename | Verdict / retained home |
 |---|---|
+| `Architecture_M5_DEFN_R1_G4_B004_Exit_Reconciliation_Record.md` (131 lines) | **DEFN-R1 RECORD / DISPOSITION A NOT ACCEPTED / FOLDED BY `M5-DEFN-R1-REV`.** Its evidence census is upheld and its reading is rejected on chronology/redundancy. Arguments are summarized in `Architecture_M5_DEFN_R1_G4_B004_Review_Record.md` §§1-2 and §4.32-4.33; full text is in git history (`d17aada2`). |
+| `Architecture_M5_DEFN_R1_G4_B004_Review_Plan.md` (44 lines) | **CONSUMED REVIEW PLAN / FOLDED BY `M5-DEFN-R1-REV`.** Its required checks were executed. Its falsifier list omitted the chronology test that decided the Review. |
 | `Architecture_M5_CP3_TB2_Review_Record.md` (230 lines) | **SUPERSEDED TB2 REVIEW / FOLDED BY `M5-DEFN-R1`.** Its accepted selector448/package evidence and closure-hold addendum are retained in §§4.31-4.32, `M5_Closure_Record.md`, frozen definitions, tracker/changelogs, the retained TB2 runtime report and git history. |
 | `Architecture_M5_DEFN_R1_G4_B004_Exit_Reconciliation_Plan.md` (60 lines) | **CONSUMED DEFN-R1 PLAN / FOLDED BY `M5-DEFN-R1`.** Its three-way disposition contract is resolved as A; retained authority is §4.32, `Architecture_M5_DEFN_R1_G4_B004_Exit_Reconciliation_Record.md`, frozen §13.1/§18, and the successor Review plan. |
 | `Architecture_M5_CP3_TB1_R16_Review_Record.md` (247 lines) | **SUPERSEDED REVIEW / FOLDED BY `M5-CP3-TB2-REV`.** R16 promotion, selector448 precommitment, debt discharge and the three closure observations are retained in §§4.28-4.31, `M5_Closure_Record.md`, frozen definitions, tracker/changelog and git history. |

@@ -2,9 +2,9 @@
 
 **Milestone:** M5 — certificate-carrying chart and quotient relations
 **Closure turn:** `M5-CP3-TB2-REV`
-**Disposition:** **SELECTOR448 ACCEPTED / §13.1 CONJUNCTS 1-7 ACCEPTED / CONJUNCT 8 FROZEN BY `M5-DEFN-R1` DISPOSITION A / CLOSURE HELD pending `M5-DEFN-R1-REV`**
+**Disposition:** **SELECTOR448 ACCEPTED / §13.1 CONJUNCTS 1-7 ACCEPTED / CONJUNCT 8 (DEFN-R1 WORDING) NOT ACCEPTED at `M5-DEFN-R1-REV` / CLOSURE HELD pending `M5-DEFN-R2`**
 
-> **Closure remains held, now only for independent Review.** The `M5-CP3-TB2-REV` addendum correctly found an omitted M5 exit obligation. `M5-DEFN-R1` has now adjudicated it under disposition A and frozen §13.1 conjunct 8: focused multi-isolation means a producer-built region spanning at least two distinct isolation sheets joined by an explicit checked isolation-seam certificate that materialization consumes exactly once. Accepted positive rows are 186 and 239; rows 183-185/187-188 are the typed falsifier family. Selector448/runtime/package authority is unchanged. This record becomes final **M5 CLOSED / ACCEPTED** only if `M5-DEFN-R1-REV` independently accepts that reading and evidence (`M5-CP3-TB2-REV-OBS-01`).
+> **Closure remains held.** Everything below concerning selector448, the CB20 package and §13.1 conjuncts 1-7 stands. The `G4-B004` M5 half (M4-DEFN §11.2) is still not satisfied on an accepted reading. `M5-DEFN-R1` proposed that M1-era rows 186/239 satisfy it ("≥2 isolation sheets"). `M5-DEFN-R1-REV` did not accept that reading: those rows were accepted at M1, before the obligation was kept open and assigned to M5, and the reading makes "multi-" redundant. `M5-DEFN-R2` must freeze a reading that survives both objections, or block for the user.
 
 ## Accepted authority
 
@@ -25,10 +25,10 @@ The fresh selector448 gate is **448 PASS / 0 RED**, exact-one selection, zero sk
 
 ## Debt and observation disposition
 
-All four M5 produced debts are closed: relation/container reorder and missing-owner typing at R7 Review; genuine nonzero-Z4 materialization/consumption and tampered-transform typed rejection at R16 Review, freshly retained by TB2. The merged `M5-DEFN-REV-OBS-01` / `M5-CP3-TB2-REV-OBS-01` is **definition-adjudicated / Review-pending**: disposition A resolves the semantic omission, and `M5-DEFN-R1-REV` owns final discharge together with M5 closure. The two never-gated CB14 `M5CP3` identities receive no M5 credit; `M6-DEFN` owns freezing their later deletion-or-gating disposition. The R16 inverse-storage risk remains recorded/not firing. Consolidated numbering/citation ambiguity is repaired.
+All four M5 produced debts are closed: relation/container reorder and missing-owner typing at R7 Review; genuine nonzero-Z4 materialization/consumption and tampered-transform typed rejection at R16 Review, freshly retained by TB2. The merged `M5-DEFN-REV-OBS-01` / `M5-CP3-TB2-REV-OBS-01` is **OPEN**: DEFN-R1's disposition A was not accepted at `M5-DEFN-R1-REV`, and the owner is `M5-DEFN-R2`. The two never-gated CB14 `M5CP3` identities receive no M5 credit, and `M6-DEFN` owns freezing their later deletion-or-gating disposition. The R16 inverse-storage risk remains recorded/not firing. Consolidated numbering/citation ambiguity is repaired.
 
 Stable accounting remains **51 events / 14 categories / 37 recurrences**. The sole project produced-witness debt is the separate **M6-owned closed-complex `G4-B002` debt**.
 
 ## Successor boundary
 
-No M6 implementation is part of the held M5 closure. Exact successor is runtime-free **`M5-DEFN-R1-REV`**, which must independently re-derive disposition A and accepted rows 186/239 before changing this record to final closure. If Review accepts, runtime-free `M6-DEFN` follows and must freeze occurrence/quotient/embedding/verifier stage products, the verifier recompute authority and the `G4-B004` M6 half before any M6 Code + Build.
+No M6 implementation is part of the held M5 closure. Exact successor is runtime-free **`M5-DEFN-R2`** (`G4-B004` M5-half reading re-adjudication). `M6-DEFN` follows only after M5 closes.

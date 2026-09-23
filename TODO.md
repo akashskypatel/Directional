@@ -2,9 +2,9 @@
 
 Last updated: 2026-09-23 UTC
 
-## Latest Review turn — `M5-CP3-TB2-REV`
+## Latest Review turn — `M5-DEFN-R1-REV`
 
-**COMPLETE / APPROVED / SELECTOR448 ACCEPTED — M5 CLOSURE HELD by reviewing-agent addendum (`G4-B004` M5 half unadjudicated; `M5-DEFN-R1` next; tracker restored).** Final Review independently re-opens TB2 run/job `35913334490 / 107358491487`, verifies result/log artifacts, 917/917 evidence, all 448 ledger/raw-log receipts, selector448 `70ff0860...c75789`, exact selector430 prefix and routing owners 32/300/75/41. CB20 package/source `10771899191 / cef1c6ee...` is promoted under selector448 **448/448**. All seven frozen M5 §13.1 exit conjuncts are satisfied; all four M5 produced debts are closed. Stable accounting stays **51 / 14 / 37**; project debt **1**, M6-owned. The reviewing-agent addendum held closure and routed to `M5-DEFN-R1`; that definition is now complete under disposition A, with independent `M5-DEFN-R1-REV` next.
+**COMPLETE / DISPOSITION A NOT ACCEPTED / M5 CLOSURE HELD.** The independent Review upholds DEFN-R1's evidence: rows 183-188/239 are TB2-green and the split fixture is producer-built. It rejects DEFN-R1's reading. Rows 186/188/239 are in the **M1** accepted selector, yet `G4-B004` stayed open and was assigned to M5 afterwards, so reading A makes that assignment vacuous; it also makes "multi-" redundant. `M5-CP3-TB2-REV-OBS-01` is carried to `M5-DEFN-R2`. It also records process defect `M5-DEFN-R1-REV-OBS-01` (COMPLETE was published before the work was on the branch) and `LESSONS.md` 177. Earlier: `M5-CP3-TB2-REV` accepted selector448 and promoted package `10771899191 / cef1c6ee...`.
 
 ## Latest Code + Build turn — `M5-CP3-CB20`
 
@@ -16,7 +16,7 @@ Last updated: 2026-09-23 UTC
 
 ## Latest Definition turn — `M5-DEFN-R1`
 
-**COMPLETE / RUNTIME-FREE / DISPOSITION A FROZEN — REVIEW PENDING.** `G4-B004` M5 focused multi-isolation is defined as producer-built authority spanning at least two distinct isolation sheets joined by an explicit checked isolation-seam certificate consumed exactly once. Accepted selector448 rows **186 and 239** are the positive witnesses; rows **183-185 and 187-188** are typed duplicate/missing/nonreciprocal/wrong-owner/wrong-sheet falsifiers. Multi-seam/multi-relation graphs remain representative M6 complexity. §13.1 conjunct 8 is frozen; M5 closure remains held pending `M5-DEFN-R1-REV`. Stable accounting remains **51 / 14 / 37**, project debt **1** M6-owned.
+**COMPLETE / RUNTIME-FREE / DISPOSITION A — NOT ACCEPTED at `M5-DEFN-R1-REV`.** It proposed that M5 focused multi-isolation means ≥2 isolation sheets joined by a checked isolation-seam certificate, credited rows 186/239, and froze conjunct 8. The Review rejected that on chronology and redundancy grounds. The record is folded (git `d17aada2`).
 
 ## Previous semantic Code + Build turn — `M5-CP3-CB17`
 
@@ -26,9 +26,9 @@ CB17 is **COMPLETE / RUNTIME-FREE / COMPILE GREEN**, candidate `10742798135 / 1a
 
 **COMPLETE / CONTROL-PLANE GREEN / RUNTIME-FREE / NO DIRECTIONAL COMPILE / NO REPACKAGE.** Canonical R15-R1 harness/caller are frozen at SHA-256 `7867e779...81b7 / 0f0a12f9...a15c`. Static run `35864475136` proves corrected literal GTest accounting `selected/passed/skipped=1/1/0`, historical parser `0/0`, skip probe `1/0/1`, and both workflow schemas green. No semantic input changed; accounting remains 51 / 14 / 37, debt 3.
 
-## Exact next turn — `M5-DEFN-R1-REV`
+## Exact next turn — `M5-DEFN-R2`
 
-Runtime-free independent Review under `.agents/Directional/Architecture_M5_DEFN_R1_G4_B004_Review_Plan.md`. It must re-derive disposition A from primary authority, verify selector448/prefix hashes and accepted runtime status, prove producer-built positive rows 186/239 plus the 183-185/187-188 tamper family, and confirm that focused M5 means multiple isolation **sheets** while representative multi-relation graph complexity remains M6-owned. If green it may accept conjunct 8, discharge the merged closure observation, finalize M5 closure and route to `M6-DEFN`. No product/test/fixture/selector mutation, compile or runtime.
+Runtime-free definition under `.agents/Directional/Architecture_M5_DEFN_R2_G4_B004_Reading_Plan.md`. Enumerate the readings of the `G4-B004` M5 half: (a) M1 sheets, (b) pipeline-derived sheets, (c) quotient relations inside a multi-isolation-sheet region, (d) ≥2 seams. Freeze one that survives the **chronology** and **non-redundancy** falsifiers. Choose A, B (bounded `M5-CP4`; gating a never-executed test counts as B) or C (a priced re-home), or stop BLOCKED with the user question in plan §4. COMPLETE must be the final write. `M6-DEFN` stays deferred.
 
 **Deferred behind it:** `M6-DEFN` (`Architecture_M6_DEFN_Occurrence_Embedding_Verifier_Plan.md`). It freezes the four stage products and verifier boundary, adjudicates `G4-B001` and the M6 closed-complex debt, disposes dormant CB14 identities without retroactive M5 credit, and proves representative `G4-B004` occurrence/embedding/verifier consumption without redefining M5's focused minimum.
 
@@ -46,7 +46,8 @@ Runtime-free independent Review under `.agents/Directional/Architecture_M5_DEFN_
 - [x] `M5-CP3-TB1-R15-REV-OBS-01` — **DISCHARGED / RUNTIME-PROVED AT R15-R1 REVIEW**. Frozen corrected parser accounts for all 448 exact-one/zero-skip processes in a complete valid ledger.
 - [x] `M5-CP3-TB1-R15-R1-REV-OBS-01` — **DISCHARGED AT R16 REVIEW**. CB19 kept the expectation independent (hard-coded `Q=3`) while using the resolver only to normalize representation; R16 proves it at runtime.
 - [x] `M5-CP3-TB1-R16-REV-OBS-01` — **DISPOSED AT TB2 REVIEW / NO M5 CREDIT.** The two CB14 identities were never executed, remain absent from selector448 and receive no M5 credit. `M6-DEFN` owns freezing their deletion-or-gating disposition before M6 implementation uses either.
-- [ ] `M5-CP3-TB2-REV-OBS-01` — **DEFINITION-ADJUDICATED / REVIEW-PENDING / owner `M5-DEFN-R1-REV`.** `M5-DEFN-R1` froze disposition A: focused M5 multi-isolation means ≥2 distinct isolation sheets joined by an explicit producer-emitted checked certificate consumed exactly once; rows 186/239 are accepted positives and 183-185/187-188 its tamper family. Final discharge/M5 closure requires independent Review.
+- [ ] `M5-CP3-TB2-REV-OBS-01` — **OPEN / CLOSURE-BLOCKING / owner `M5-DEFN-R2`.** DEFN-R1's disposition A (M1-era rows 186/239 under a ≥2-sheets reading) was not accepted at `M5-DEFN-R1-REV` on chronology and redundancy grounds. The `G4-B004` M5 half remains unresolved.
+- [ ] `M5-DEFN-R1-REV-OBS-01` — **RECORDED / process.** COMPLETE was published before the turn's durable work was on the branch. Every implementation turn must make COMPLETE its final write.
 - [x] `M5-CP3-TB2-REV-OBS-02` — **RECOVERED.** Tracker overwritten at `ce9bf3cb` (9,837 → 21 lines) and restored verbatim (`LESSONS.md` 176).
 - [x] `M5-CP3-TB2-REV-OBS-03` — **RECOVERED.** Agent CHANGELOG overwritten at `0043dd4c` (13,317 → 14 lines) and restored verbatim. The committed-history guard is `review_check.py ledgers --base <previous-review-commit>`. Every Review should run it.
 - [ ] M6 closed-complex produced debt (`G4-B002`, `CandidateExtractionBaselineForCanonicalSourceScopeIdentityIsNonVacuous`): **OPEN / M6-owned.** M6-CP1 mechanism, M6-CP3 direct production. *(Restored. TB2-REV had dropped this open item.)*
@@ -97,7 +98,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [ ] `G4-B001 / PR8-R034 / G4-R007`: direct torus final `LocalSheetMismatch`; downstream of A2b and not a CP4c witness collision.
 - [x] `G4-B002` main exact-torus hard-rail pairing blocker — **CLOSED / RECOVERY PROVED at M4-CP3-TB8-REV** on accepted package `10307919492` / selector408 **408/408**. The three produced-witness debts remain open: one closed-complex debt is M6-owned after DEFN-R2 and two periodic debts are M5-owned after DEFN-R1. This checkbox closes the blocker, not those debt items.
 - [x] `G4-B003`: nonzero periodic Z4 production — **DISCHARGED at M5 R16 Review**; both direct-production debts are runtime/review proved.
-- [ ] `G4-B004`: positive multi-isolation quotient witness. **M5 half DEFINITION-ADJUDICATED by `M5-DEFN-R1` disposition A; acceptance/closure pending `M5-DEFN-R1-REV`.** M6 representative-consumption half remains owned by `M6-DEFN` item 7.
+- [ ] `G4-B004`: positive multi-isolation quotient witness. **M5 half UNRESOLVED.** DEFN-R1's disposition A was not accepted, and `M5-DEFN-R2` is next. The M6 half is owned by `M6-DEFN` item 7.
 - [ ] Bunny/Vase representative production and resource acceptance — later product gates.
 
 ## Design and calibration backlog
@@ -116,4 +117,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current corrected totals are **51 events / 14 categories / 37 recurrences**, project debt **1** (M6 only). M4 is **CLOSED / ACCEPTED**. M5 selector448/runtime authority remains accepted, and §13.1 conjunct 8 is now frozen by `M5-DEFN-R1` disposition A, but **M5 closure remains held pending `M5-DEFN-R1-REV`**. Final runtime authority remains package/source `10771899191 / cef1c6ee...` under selector448 **448/448** with exact immutable TB2 postflight. Exact successor is **`M5-DEFN-R1-REV`**; `M6-DEFN` is deferred behind it. PR #8 remains open, draft, and unmerged.
+Current corrected totals are **51 events / 14 categories / 37 recurrences**, project debt **1** (M6 only). M4 is **CLOSED / ACCEPTED**. M5 selector448 (`70ff0860...c75789`) and package/source `10771899191 / cef1c6ee...` are accepted, and §13.1 conjuncts 1-7 hold. **M5 closure is HELD** on the `G4-B004` M5 half: DEFN-R1's disposition A was not accepted, and the exact successor is **`M5-DEFN-R2`**. PR #8 remains open, draft, and unmerged.
