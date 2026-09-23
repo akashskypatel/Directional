@@ -1,0 +1,3 @@
+# M5-CP3-TB1-R12-REV temporary-state cleanup
+.agents/connector-triggers/source-snapshot/m5-cp3-tb1-r12-rev.txt
+.agents/connector-triggers/source-snapshot/m5-cp3-tb1-r12-rev-final.txt
