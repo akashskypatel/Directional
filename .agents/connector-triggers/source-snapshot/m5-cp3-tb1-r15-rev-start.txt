@@ -1,0 +1,4 @@
+Purpose: exact source/document snapshot for M5-CP3-TB1-R15-REV
+Authority before trigger: f9eb236c9dcee337ff0fb1a438592bcbb093845d
+READ_MODE: snapshot
+Retry: 0
