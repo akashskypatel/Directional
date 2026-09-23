@@ -37,6 +37,8 @@ CODE_SURFACES = ["src", "include", "tests", "benchmarks", "CMakeLists.txt", "cma
 DURABLE_FILES = {
     ".agents/Directional/Future_Chat_Session_Handoff.md": "DURABLE",
     ".agents/Directional/ORIENTATION.md": "DURABLE",
+    # Overwritten to 21 lines at ce9bf3cb (2026-09-22) and undetected for ~20 turns; restored at M5-CP3-TB2-REV.
+    ".agents/Directional/Regression_Root_Cause_Tracker.md": "DURABLE",
 }
 
 FAILED = []

@@ -2,6 +2,17 @@
 
 Independent runtime-free Review re-opened TB2 result/log artifacts and CB20 package authority, verified 917/917 evidence, every one of 448 ledger/raw-log receipts, selector448/prefix430/routing hashes, exact owner census 32/300/75/41 and immutable postflight. Selector448 is accepted; package/source `10771899191 / cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1` is final M5 authority. All seven frozen M5 exit conjuncts hold; all four M5 produced debts are closed; stable accounting remains 51/14/37 and project debt 1 M6-owned. R16 OBS-01 receives no-credit disposition with M6-DEFN hygiene ownership, OBS-03 numbering/citations are repaired, and `M5_Closure_Record.md` is created. Exact successor: `M6-DEFN`.
 
+**Reviewing-agent addendum (same turn) — runtime evidence upheld, M5 closure HELD.** Fresh downloads and re-hashes of the TB2 result/log and CB20 package confirm every runtime and package claim. That covers 917/917, 28/28, all 448 ledger, raw-log and GTest-protocol rows, the routing receipt, the harness SHA, packaged code equal to `a8b33cb7`, and GMP/GMPXX linkage. Selector448 acceptance and the package promotion stand.
+
+Closure does not stand. `Architecture_M4_DEFN_Frozen_Definitions.md` §11.2 assigns M5 the focused positive multi-isolation quotient relation/certificate witness (`G4-B004` M5 half), and no M5 record ever absorbed or adjudicated it. Selector448's only positive isolation row, ordinal 186, is single-isolation. `M5-DEFN-REV-OBS-01`'s discharge is withdrawn in part and merged into `M5-CP3-TB2-REV-OBS-01`, and the successor changes to runtime-free **`M5-DEFN-R1`**, with `M6-DEFN` deferred. The M6-DEFN plan gains the omitted `G4-B004` M6 half and drops its claim that `review_check.py` is not required for a definition turn.
+
+The addendum also **restores `Regression_Root_Cause_Tracker.md`**. Commit `ce9bf3cb` (2026-09-22) had overwritten it from 9,837 lines to 21, deleting every earlier event record and the DURABLE Stable-event criterion. The content is appended verbatim and byte-verified. `review_check.py` now guards the tracker's DURABLE markers, and `LESSONS.md` 176 records the rule. It fixes three more stale items:
+- The frozen-definitions header still read `EXACT NEXT = M5-CP3-CB17`.
+- ROADMAP's M5 milestone row still read `CB20 NEXT`.
+- TB2-REV had dropped the TODO open item for the M6 closed-complex debt.
+
+It also recovers the line counts of the three files TB2-EXEC retired. Accounting is unchanged at 51 / 14 / 37 with debt 1.
+
 ## 2026-09-23 — `M5-CP3-TB2-EXEC`: published selector448 executes 448/448 green; final Review next
 
 Fresh artifact-only run/job `35913334490 / 107358491487` consumes CB20 result artifact/source `10771899191 / cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1` with no rebuild or repair. Exact published selector448 SHA `70ff0860...c75789` and routing receipt `c91a5e2f...1dd7c` drive **448 fresh exact-filter processes** in file order: 448 PASS / 0 RED, exact-one selection, zero skips, owners 32/300/75/41, benchmark 0, and exact package/source/execution-view postflight. Result/log artifacts `10775185139 / 10774217117` hash to `01142fbc1f4cf0a4fb695cda1ed973d39b3b51e5dc11e05ff34336b84875261b / b58678cbf37d9c7757e8a36e8b590381919f5d1413a6ac02d11038e12e040fc6`; result evidence is 917/917 with `SHA256SUMS` `9681fda2...43c1` and selector ledger `91c861fc...0c3`. No regression is observed, so stable accounting stays 51 / 14 / 37 and project debt 1 M6-owned. Selector448 remains not yet accepted; mandatory `M5-CP3-TB2-REV` alone may accept it and close M5.

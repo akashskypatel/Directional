@@ -1,6 +1,6 @@
 # M5 Consolidated Record
 
-**Status:** M5 CLOSED / ACCEPTED — DURABLE FAMILY RECORD
+**Status:** SELECTOR448 ACCEPTED / §13.1 CONJUNCTS 1-7 ACCEPTED / **M5 CLOSURE HELD pending `M5-DEFN-R1`** (`G4-B004` M5 half) — DURABLE FAMILY RECORD
 **Last updated:** 2026-09-23 at `M5-CP3-TB2-REV`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Final accepted M5 runtime authority is package `10771899191` / source `cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1` under accepted selector448 **448/448**. Stable accounting remains **51 / 14 / 37**; project produced-witness debt is **1**, M6-owned.
@@ -400,6 +400,8 @@ Every frozen §13.1 M5 exit conjunct is satisfied on the reviewed authority chai
 
 Selector448 is **ACCEPTED CURRENT AUTHORITY** and CB20 package/source `10771899191 / cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1` is promoted as the accepted M5 runtime package/source. Stable accounting remains **51 events / 14 categories / 37 recurrences**; project debt remains **1**, M6-owned. **M5 is CLOSED / ACCEPTED.** Exact successor is runtime-free `M6-DEFN`.
 
+**Reviewing-agent addendum (same turn) — closure HELD.** Fresh re-hash of the TB2 result/log and CB20 package upholds every runtime and package claim above. It covers 917/917, 28/28, all 448 ledger/raw/protocol rows, the routing receipt and harness, and packaged code equal to `a8b33cb7` under GMP. Closure is nonetheless premature. M4-DEFN §11.2 assigns M5 the focused positive multi-isolation relation/certificate witness (`G4-B004` M5 half), and no M5 record absorbed or adjudicated it. The only positive isolation row in selector448, ordinal 186, is single-isolation. `M5-DEFN-REV-OBS-01`'s discharge is withdrawn in part and merged into `M5-CP3-TB2-REV-OBS-01`, owned by runtime-free `M5-DEFN-R1`, and `M6-DEFN` is deferred. The addendum also restores the tracker, which commit `ce9bf3cb` had overwritten from 9,837 lines to 21 (`-OBS-02`, `LESSONS.md` 176). It restores the TODO open item for the M6 closed-complex debt and recovers the line counts of the three files TB2-EXEC retired.
+
 ## 5. Folded-document index
 
 Historical citations in frozen/normative records to filenames listed here are provenance-only and resolve through this index plus git history; frozen text is not rewritten merely to chase a folded filename.
@@ -407,9 +409,9 @@ Historical citations in frozen/normative records to filenames listed here are pr
 | Folded filename | Verdict / retained home |
 |---|---|
 | `Architecture_M5_CP3_TB1_R16_Review_Record.md` (247 lines) | **SUPERSEDED REVIEW / FOLDED BY `M5-CP3-TB2-REV`.** R16 promotion, selector448 precommitment, debt discharge and the three closure observations are retained in §§4.28-4.31, `M5_Closure_Record.md`, frozen definitions, tracker/changelog and git history. |
-| `Architecture_M5_CP3_TB1_R16_Artifact_Only_Test_Benchmark_Report.md` (retired before TB2-REV) | **SUPERSEDED R16 RUNTIME REPORT / INDEXED BY FINAL REVIEW.** R16 pre-publication evidence remains in §§4.27-4.28, the closure record, tracker/changelog and immutable Actions artifacts. |
-| `Architecture_M5_CP3_CB20_Selector_448_Publication_Code_Build_Plan.md` (retired before TB2-REV) | **CONSUMED CB20 PLAN / INDEXED BY FINAL REVIEW.** Exact publication precommitment remains in frozen §17 and §§4.28-4.29. |
-| `Architecture_M5_CP3_CB20_Selector_448_Publication_Code_Build_Report.md` (retired before TB2-REV) | **SUPERSEDED CB20 BUILD REPORT / INDEXED BY FINAL REVIEW.** Published selector/routing/package authority remains in §§4.29-4.31, selector manifest and `M5_Closure_Record.md`. |
+| `Architecture_M5_CP3_TB1_R16_Artifact_Only_Test_Benchmark_Report.md` (68 lines; retired by TB2-EXEC) | **SUPERSEDED R16 RUNTIME REPORT / INDEXED BY FINAL REVIEW.** R16 pre-publication evidence remains in §§4.27-4.28, the closure record, tracker/changelog and immutable Actions artifacts. |
+| `Architecture_M5_CP3_CB20_Selector_448_Publication_Code_Build_Plan.md` (106 lines; retired by TB2-EXEC) | **CONSUMED CB20 PLAN / INDEXED BY FINAL REVIEW.** Exact publication precommitment remains in frozen §17 and §§4.28-4.29. |
+| `Architecture_M5_CP3_CB20_Selector_448_Publication_Code_Build_Report.md` (487 lines; retired by TB2-EXEC) | **SUPERSEDED CB20 BUILD REPORT / INDEXED BY FINAL REVIEW.** Published selector/routing/package authority remains in §§4.29-4.31, selector manifest and `M5_Closure_Record.md`. |
 | `Architecture_M5_CP3_CB19_Storage_Canonical_Produced_Test_Correction_Plan.md` (90 lines) | **CONSUMED CB19 PLAN / FOLDED BY `M5-CP3-TB1-R16-REV`.** Exact correction and non-vacuity contract is runtime-proved by R16; retained in §§4.26-4.28, frozen §17, current Review and git history. |
 | `Architecture_M5_CP3_TB1_R15_R1_Artifact_Only_Test_Benchmark_Report.md` (94 lines) | **SUPERSEDED R15-R1 RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R16-REV`.** The 446/448 frontier and storage-representation diagnosis remain in §§4.24-4.28/current Review/tracker/git history; R16 is the current runtime report. |
 | `Architecture_M5_CP3_TB1_R15_R1_Review_Record.md` (235 lines) | **SUPERSEDED R15-R1 REVIEW / FOLDED BY `M5-CP3-TB1-R16-REV`.** Test-authority cause, independent-Q guard and carried observations are discharged/adjudicated in §4.28/current Review/frozen §17/git history. |

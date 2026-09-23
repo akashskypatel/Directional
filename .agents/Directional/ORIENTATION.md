@@ -27,9 +27,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
- > **Current milestone authority (2026-09-23, after `M5-CP3-TB2-REV`):** M4 and M5 are **CLOSED / ACCEPTED**. Final M5 authority is CB20 package/source `10771899191 / cef1c6ee...` under accepted selector448 **448/448**, SHA `70ff0860...c75789`, owners 32/300/75/41. Final TB2 run/job `35913334490 / 107358491487` is fresh exact-one/zero-skip 448/448 with complete 917/917 evidence and immutable postflight. Stable accounting remains **51 / 14 / 37**; project debt is **1**, M6-owned. Exact next is runtime-free **`M6-DEFN`**.
+ > **Current milestone authority (2026-09-23, after `M5-CP3-TB2-REV` + reviewing-agent addendum):** M4 is **CLOSED / ACCEPTED**. **M5 closure is HELD.** Selector448 and §13.1 conjuncts 1-7 are accepted, but the M5 half of `G4-B004` (`Architecture_M4_DEFN_Frozen_Definitions.md` §11.2, a focused positive multi-isolation relation/certificate witness) was never adjudicated. Exact next is runtime-free **`M5-DEFN-R1`**, and `M6-DEFN` is deferred behind it. Current M5 runtime authority is CB20 package/source `10771899191 / cef1c6ee...` under accepted selector448 **448/448**, SHA `70ff0860...c75789`, owners 32/300/75/41. Final TB2 run/job `35913334490 / 107358491487` is fresh exact-one/zero-skip 448/448 with complete 917/917 evidence and immutable postflight. Stable accounting remains **51 / 14 / 37**; project debt is **1**, M6-owned (this may move to 2 if `M5-DEFN-R1` re-homes `G4-B004` to M6).
 
-**Currency.** `M5-CP3-TB2-REV`, 2026-09-23 UTC
+**Currency.** `M5-CP3-TB2-REV` (incl. reviewing-agent addendum), 2026-09-23 UTC
 
 **Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` §16.3 is the active same-region nonzero-Z4 contract. `PeriodicRelationId` remains carrier-content identity; relation rotation is the gauge-adjusted quotient `Q`, action/transport is relation value, and canonical storage may invert representation only after semantic Forward -> Reverse authority is fixed. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 
@@ -81,7 +81,7 @@ A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on t
 
 DEFN-R1/R2 debt ownership remains the provenance authority. The two periodic `G4-B002` M5 debts are **DISCHARGED at R7 Review** on produced authority: relation/container-order ownership (rows1/2) and missing-owner typing (rows1/3). The two `G4-B003` nonzero-Z4 M5 debts are now **DISCHARGED at R16 Review** by rows16/17. The closed candidate-bearing-complex `G4-B002` debt remains **M6-owned** at M6-CP1 mechanism / M6-CP3 direct-production proof. No produced-witness debt is M4-owned.
 
-M5-DEFN is **COMPLETE / DEFINITIONS FROZEN**; M5-CP1, M5-CP2 and M5-CP3 are **CLOSED / ACCEPTED**. Final `M5-CP3-TB2-REV` independently re-opens complete TB2 evidence, accepts published selector448 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789` with exact selector430 prefix and owner census **32/300/75/41**, and promotes CB20 package/source `10771899191 / cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1` as final M5 runtime authority. All four M5 produced debts and the final exit-reconciliation observation are discharged. Stable accounting remains **51 / 14 / 37**; project debt is **1**, M6-owned. Exact next is runtime-free **`M6-DEFN`**.
+M5-DEFN is **COMPLETE / DEFINITIONS FROZEN**; M5-CP1, M5-CP2 and M5-CP3 are **CLOSED / ACCEPTED**. Final `M5-CP3-TB2-REV` independently re-opens complete TB2 evidence, accepts published selector448 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789` with exact selector430 prefix and owner census **32/300/75/41**, and promotes CB20 package/source `10771899191 / cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1` as final M5 runtime authority. All four M5 produced debts are discharged. The reviewing-agent addendum **holds M5 closure**: the exit reconciliation missed the M4-DEFN §11.2 `G4-B004` M5 half, so `M5-DEFN-REV-OBS-01` is merged into `M5-CP3-TB2-REV-OBS-01`. Selector448's only positive isolation row, ordinal 186, is single-isolation. Stable accounting remains **51 / 14 / 37**; project debt is **1**, M6-owned. Exact next is runtime-free **`M5-DEFN-R1`**.
 
 ## 4. The witnesses — the fastest way to understand the problem
 
@@ -198,7 +198,9 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M6-DEFN` — NEXT / RUNTIME-FREE DEFINITION.** Freeze four complete occurrence/quotient/embedding/verifier stage products, the verifier recompute-vs-repair boundary, `G4-B001` ownership, and the remaining closed-complex debt proof route before any M6 implementation.
+1. **`M5-DEFN-R1` — NEXT / RUNTIME-FREE DEFINITION / M5 CLOSURE-BLOCKING (`M5-CP3-TB2-REV-OBS-01`).** Adjudicate the `G4-B004` M5 half from M4-DEFN §11.2 and REORIENTATION §9. There are three possible outcomes. (A) Accepted rows already satisfy it: name them as §13.1 conjunct 8. (B) Freeze a bounded `M5-CP4` focused production witness with at least two isolation authorities, explicit owners/certificates and an owner tamper. (C) Re-home it to M6 with a concrete stage-dependency reason, amend §11.2 in place and price the debt. Ordinal 186 is single-isolation and cannot be credited. Plan: `Architecture_M5_DEFN_R1_G4_B004_Exit_Reconciliation_Plan.md`.
+
+1a. **`M6-DEFN` — DEFERRED behind `M5-DEFN-R1`.** Freeze four complete occurrence/quotient/embedding/verifier stage products, the verifier recompute-vs-repair boundary, `G4-B001` ownership, the remaining closed-complex debt proof route and the `G4-B004` M6 half (plan item 7) before any M6 implementation.
 
 2. **Dormant CB14 test hygiene — M6-DEFN-owned, NO M5 CREDIT.** `M5CP3.PeriodicRelationEndpointGaugeIsIndependentAndExact` and `M5CP3.ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection` were never gated and are excluded from accepted selector448. M6-DEFN must freeze deletion or a concrete later M6 gating owner for each; neither can be cited as M5 evidence.
 
@@ -214,13 +216,17 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 8. **Ordinal374 folded-cone witness — ACTIVE / DEFERRED TEST PRECONDITION, separate from S2.** Its authored flat-star field is invalid on the non-flat cone star; eventual repair remains test-only and selector374 stays frozen.
 
-9. **`G4-B004` positive multi-isolation quotient witness — ADJUDICATED.** M5 owns focused positive relation/certificate production; M6 owns occurrence/embedding/verifier consumption.
+9. **`G4-B004` positive multi-isolation quotient witness — M5 HALF UNADJUDICATED (see item 1); M6 HALF owned by `M6-DEFN` item 7.** Ownership was frozen at M4-DEFN §11.2 but never carried into the M5 definitions, and M5 was declared closed without it. *(This line read "ADJUDICATED" through the M5 "closure" until the reviewing-agent addendum.)*
 
 10. **Accepted ordinal307 latent stale equality — RECORDED / NOT FIRING.** Do not weaken it pre-emptively; classify as test-authority drift if it fires.
 
 11. **Rows16/17 (selector448 ordinals 446/447) pin inverse canonical storage — RECORDED / NOT FIRING (`M5-CP3-TB1-R16-REV-OBS-02`).** `ASSERT_TRUE(storageInverted)` deliberately makes the inverse path non-vacuous. If a later representation-only canonicalization change fires it, classify the failure as test-authority drift, not a product regression. Keep the pin and supply a witness that still exercises inverse storage (`LESSONS.md` 171).
 
 ## 8. Recurring defect patterns
+
+**A milestone closure reconciled only the obligations restated in its own definition record — `M5-CP3-TB2-REV` instance of `LESSONS.md` 168.** The M5 exit theorem (§13.1) and its closure Review reconciled `DESIGN.md` §14 M5 against the M5 frozen record. They never searched the other frozen/durable records that assign M5 work: M4-DEFN §11.2 and REORIENTATION §9, which cover the `G4-B004` M5 half. `M5-DEFN-REV-OBS-01` had been created for exactly this risk and was discharged anyway. **Before closing a milestone, grep every frozen and durable record for the milestone's name and its owned blocker IDs. The definition record's own list is not the census.**
+
+**An append-only durable ledger was replaced by a whole-file write, and nothing noticed for ~20 turns — `LESSONS.md` 176.** Commit `ce9bf3cb` (2026-09-22) wrote a new tracker entry as the entire file. That cut `Regression_Root_Cause_Tracker.md` from 9,837 lines to 21 and deleted the DURABLE *Stable-event criterion* that defines the 51/14/37 accounting. Every later closeout reported "tracker updated", which was true and irrelevant. It was restored verbatim at the TB2-REV reviewing-agent addendum, and `review_check.py` now guards its DURABLE markers.
 
 **Canonical storage can be intentionally opposite semantic direction; a test must normalize representation without deriving its expectation from the product — M5-CP3 R16 recovery-proved instance.** R15-R1 exposed stale produced tests that compared canonical storage directly against semantic A3 authority. CB19 keeps the expectation independent (hard-coded `Q=3` from DEFN-R1 §7, checked against the source cross-field and pipeline-equals-source transition; the atlas agreement is only a witness-selection filter, so its assertion cannot fail — `LESSONS.md` 64r) while using production only to normalize representation, and R16 additionally proves the committed object is actually inverse-stored (`1`) before final discriminators. This is an existing representation-vs-authority/non-vacuity pattern, now recovery-proved, not a new stable category.
 

@@ -2,8 +2,8 @@
 
 **Turn:** `M5-CP3-TB2-REV`
 **Boundary:** independent, runtime-free Review of the published selector448 TB2 evidence
-**Verdict:** **APPROVED / SELECTOR448 ACCEPTED / M5 CLOSED**
-**Exact successor:** `M6-DEFN`
+**Verdict:** **APPROVED / SELECTOR448 ACCEPTED** — ~~M5 CLOSED~~ → **M5 CLOSURE HELD** (reviewing-agent addendum, below)
+**Exact successor:** ~~`M6-DEFN`~~ → **`M5-DEFN-R1`**; `M6-DEFN` deferred
 
 ## 1. Authority independently reopened
 
@@ -85,3 +85,85 @@ Exact successor is runtime-free `M6-DEFN`. Its plan freezes the four M6 stage pr
 | review_check.py boundary | PASS — all checks passed, including no product/test/fixture/build mutation, no selector mutation, and selector448 declared hash |
 | `STATUS` lifecycle maintained | entry/resume beacon maintained for `M5-CP3-TB2-REV`; final COMPLETE beacon will name `M6-DEFN` and preserve `Started at` / `Resumed at` |
 | Pushed to origin, branch in sync | CONFIRMED — closure patch push `d15c7278d690aa5ad62c3d47767ed5c6ff1ebef0` succeeded; temporary state cleanup succeeded at `65be47ef694ed39e7e6a51823a5dbd25071da175`; this final documentation update is a direct remote write with no unpublished local state |
+
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Runtime and package evidence UPHELD. Selector448 acceptance and the CB20 package promotion STAND. The M5 closure verdict is WITHDRAWN and closure is HELD.** Successor changes from `M6-DEFN` to runtime-free **`M5-DEFN-R1`**. Accounting is unchanged at **51 / 14 / 37**, debt **1**.
+
+### V1 — primary evidence re-derived from fresh downloads
+
+- **TB2 result/log** `10775185139 / 10774217117`: ZIP SHA-256 `01142fbc...261b / b58678cb...0fc6` match. `SHA256SUMS` hashes to `9681fda2...43c1`, and 917 rows cover 917 files with 0 failures. The selector ledger hashes to `91c861fc...00c3`. All **448** rows are `exit0 / selected1 / skipped0 / passed1 / PASS`. Every raw-log hash matches its row. Every raw log has exactly one `[ RUN ]` and one `[ OK ]` naming its identity, one test run and no `SKIPPED`. The ledger identity column equals selector448 bytes. `ordinal / identity / binary` equals the routing receipt row for row. Package, source and execution-view censuses are identical before and after. Protected ordinals 191/192/247/408 and 446-448 PASS.
+- **CB20 package** `10771899191`: ZIP `d0f26b16...2cbe`, 28/28 at `b3afa490...c3f3`, and source archive `dabed7ea...80b7`, all re-hashed. `source-commit.txt` is `cef1c6ee`. The packaged `src/tests/include/cmake` trees are identical to the branch, with zero diff against `a8b33cb7`. The packaged selector448 and routing receipt are byte-identical to the repository copies. `DIRECTIONAL_ENABLE_GMP=ON`, the link lines carry `libgmpxx`/`libgmp`, all eight targets are linked and the build exits 0.
+- **Harness.** The staged TB2 harness (`e3d3f2fe`) hashes to `78d4549b...4f25` as reported. It reads selector448 and the receipt from the **packaged** source, not the live branch.
+- **Independent corroboration.** Published selector448 is byte-identical to the precommit I rebuilt at R16. The CB20 routing receipt `c91a5e2f...1dd7c` is byte-identical to the static owner map I derived independently from CMake target membership at R16.
+- **§13.1 row citations** resolve correctly: 220 and 445 missing-owner, **296** `DuplicatePeriodicRelationIdentityRejectsAtCheckedFactory`, 439/440/441, 435-438, 443-448 and 408. One precision note: conjunct 1's "independently verified" is best evidenced by ordinal **438** (`AlteredSelectedRelationTransformFailsCertificateValidation`, consumer-side certificate rejection), which the conjunct-1 bullet does not cite.
+
+### V2 — BLOCKING: an M5 exit obligation outside §13.1 was never adjudicated
+
+`Architecture_M4_DEFN_Frozen_Definitions.md` §11.2 (frozen, normative) says: "**M5 owns the focused positive multi-isolation quotient relation/certificate witness.** It must prove the relation producer emits positive multi-isolation authority with explicit owners/certificate, matching `REORIENTATION_PLAN.md` §9". M6's half is to prove "the M5-produced authority is materialized/consumed exactly once and independently verified". `REORIENTATION_PLAN.md` §9 (durable) and the `ROADMAP.md` `G4-B004` row restate the M5 ownership.
+
+- **No M5 record ever took it on.** `git log --all -S"G4-B004"` over every M5 definition, consolidated, closure and review file returns nothing, and the M5 frozen record never mentions multi-isolation. This Review's seven-conjunct exit and `M5_Closure_Record.md` omit it. The `M6-DEFN` plan omitted the M6 half too.
+- **The state documents contradicted the verdict.** Even after this Review, ORIENTATION §7 item 9 read "`G4-B004` … ADJUDICATED. M5 owns focused positive relation/certificate production", and TODO still listed "`G4-B004` … M5/M6" as open.
+- **No accepted row satisfies it.** Selector448's only positive isolation-seam materialization row is ordinal 186, `ReciprocalIsolationSeamCertificateMaterializes` (`tests/SurfaceCellTransitionQuotientTests.cpp:2288`). It asserts **exactly one** isolation certificate and `consumedInternalIsolationSeams == 1`, so it is single-isolation. The other isolation rows (183-185, 187-188, 210, 237-254) are typed-failure or classification rows. The M5 torus is one topology region cut by HardFeature edges, not isolation seams.
+- **Why it was missed.** `G4-B004` was never counted as produced-witness debt, and M4-DEFN had explicitly said it "adds no **M4** gate identity/debt". So it fell outside both the debt ledger and `DESIGN.md` §14 M5's acceptance list, the two sources §13.1 was reconciled against. `M5-DEFN-REV-OBS-01` existed for exactly this risk, M5's exit being "stated in several places and nowhere in full". Its discharge here reconciled only the places already known. This is a direct instance of `LESSONS.md` 168.
+
+**Disposition.**
+- I **withdraw** "M5 CLOSED" and hold closure.
+- The §13.1 conjuncts 1-7, selector448 acceptance and the package promotion are unaffected.
+- `M5-DEFN-REV-OBS-01`'s discharge is withdrawn in part and merged into **`M5-CP3-TB2-REV-OBS-01`**, owned by **`M5-DEFN-R1`**.
+- I have not decided the substance, whether the obligation is satisfied, needs `M5-CP4`, or should be re-homed. That is definition authority, and `M5-DEFN-R1` must decide it from primary sources under falsifiers that forbid crediting ordinal 186 and forbid a re-home without a named missing M6 stage authority.
+- `M6-DEFN` cannot correctly proceed first, because its `G4-B004` half consumes "the M5-produced authority".
+
+### V3 — the durable tracker had been overwritten, and I restored it
+
+Commit **`ce9bf3cb`** (2026-09-22, "docs: track R11 manifest finalization orchestration defect") recorded one new entry by writing it as the **entire** `Regression_Root_Cause_Tracker.md`: 9,837 lines became 21.
+- **What was lost:** every stable-event record before 2026-09-22, and the DURABLE sections *Stable-event criterion* (the rule behind "51 / 14 / 37"), *Closure constraint — CP-COND conjunct 4* and *Closure constraint — CP-SCALE S5*. The criterion existed **nowhere** in the repository until this addendum.
+- **Why it matters:** `RETENTION_POLICY.md` lists the tracker as durable project authority requiring user authorization to remove, and none exists.
+- **How long it went unnoticed:** about 20 turns, including my own R15-R1 and R16 addenda. That is on me as much as anyone. `review_check.py` guarded only the handoff and ORIENTATION.
+
+**Fix:**
+- Appended `ce9bf3cb~1`'s tracker verbatim under a "RESTORED HISTORY" heading, and byte-verified the tail against the source.
+- Added the tracker to `review_check.py` `DURABLE_FILES`. The check would have failed at `ce9bf3cb`, where the marker count went 6 → 0.
+- Recorded `M5-CP3-TB2-REV-OBS-02` (recovered) and `LESSONS.md` 176.
+
+The accounting reconciles: the restored ledger ends at 50/14/36, and the retained R13-REV addendum corrects that to 51/14/37.
+
+### V4 — other closeout gaps fixed
+
+| # | Gap | Fix |
+|---|---|---|
+| G1 | The frozen M5 header still read `EXACT NEXT = M5-CP3-CB17`, three successors stale. My R16 addendum fixed §11 but missed this header. | Header and §11 now state held closure and name `M5-DEFN-R1`. §13.1 gains an omission note, with conjuncts unweakened. V5's discharge is marked withdrawn in part. |
+| G2 | The ROADMAP milestone table still read "CP3 R16 REVIEW ACCEPTED / SELECTOR448 PRECOMMITTED / **CB20 NEXT**", unchanged through CB20, TB2-EXEC and this Review. | Row updated. The `G4-B004` row is annotated. |
+| G3 | TB2-REV removed the M5 checklist from TODO, and with it the only open item for the **M6 closed-complex debt**. | Open item restored. |
+| G4 | The folded-index entries for the three files TB2-EXEC retired said "(retired before TB2-REV)" instead of recovering line counts from git, as `CLEAN_UP_POLICY.md` procedure item 3 requires. | Recovered 106 / 487 / 68 lines. |
+| G5 | The M6-DEFN plan said `review_check.py boundary` "is not required for a definition turn", contradicting `REVIEW_TURN_POLICY.md`, which governs DEFN turns. It also omitted the `G4-B004` M6 half. | Corrected. Added item 7 and a falsifier. Marked DEFERRED. |
+| G6 | `M5_Closure_Record.md` named the package without its compile run, ZIP, manifest or source-archive hashes. | Added and re-verified. |
+| G7 | No root `CHANGELOG.md` entry for this turn. | Added. |
+
+The two plan files are a deliberate, temporary exception to "exactly one next-turn plan". `M5-DEFN-R1` is the one live plan, and the M6-DEFN plan is retained but marked **DEFERRED**, because deleting a reviewed plan that remains the intended M6 entry would destroy work rather than consolidate it.
+
+## Review closeout — reviewing-agent addendum
+
+| Duty | Answer |
+|---|---|
+| Accepted selector prefix re-hashed | selector448 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789` (448 / 36,382 B), first430 = selector430 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`; packaged copy byte-identical |
+| Decisive claims independently re-derived | Fresh download and re-hash of TB2 result/log and CB20 package; 917/917 and 28/28; all 448 rows, raw hashes and GTest protocol; routing equals receipt; harness SHA and packaged-source reads; code equal to `a8b33cb7`; GMP; §13.1 row resolution; `G4-B004` census from frozen records and git history; tracker line counts across `ce9bf3cb` |
+| Non-vacuity checked | Protocol shows exactly one matching RUN/OK per row, so no vacuous PASS. Ordinal 186 is shown single-isolation (`ASSERT_EQ(1U, …)`, `consumedInternalIsolationSeams == 1`), so it cannot carry a multi-isolation claim. |
+| Prior obligations discharged/carried | R16 `-OBS-01` no-credit disposition upheld, with M6-DEFN still owning its hygiene decision. `-OBS-02` still recorded. `-OBS-03` discharge upheld: numbering is unique and ordered, and the §4.11, §4.12, §4.25 and §4.31 citations resolve. **`M5-DEFN-REV-OBS-01` discharge withdrawn in part, merged into `M5-CP3-TB2-REV-OBS-01` → `M5-DEFN-R1`.** |
+| Stable accounting | 51 / 14 / 37; debt 1 (M6), which may become 2 under `M5-DEFN-R1` disposition C. Package `10771899191 / cef1c6ee...` under selector448 448/448. |
+| New candidates/obligations recorded | `M5-CP3-TB2-REV-OBS-01` (open, closure-blocking) and `-OBS-02` (recovered), both in the tracker. |
+| ORIENTATION currency line | `M5-CP3-TB2-REV` (incl. reviewing-agent addendum), 2026-09-23 UTC |
+| ORIENTATION §3 / §4 / §7 / §8 | §3 banner and M5 paragraph updated to held closure. §4 unchanged, since torus witness state is correct. §7 reprioritized: item 1 is `M5-DEFN-R1`, 1a is `M6-DEFN` deferred, and the stale "ADJUDICATED" in item 9 is edited in place. §8 gains two instances, closure-census miss (`LESSONS.md` 168) and ledger overwrite (176). |
+| CHANGELOG | Agent entry amended; root entry added |
+| ROADMAP | Status line, stale M5 milestone row, M5 section and `G4-B004` row updated |
+| Selector manifest | n/a. The existing 448 ACCEPTED row is correct and makes no closure claim. |
+| LESSONS | New 176 (append-only ledger overwrite). Cited 168. |
+| Consolidation under CLEAN_UP_POLICY | Line counts recovered for the three TB2-EXEC-retired files. Addendum paragraph added to the consolidated record. Nothing further to fold. |
+| Successor frozen | Exactly `M5-DEFN-R1`. Falsifiers and stop rules are in `Architecture_M5_DEFN_R1_G4_B004_Exit_Reconciliation_Plan.md` §§3-4. |
+| Turn boundary held | Runtime-free. No product/test/fixture/CMake/benchmark/selector change. One review-tool guard added (`tools/review_check.py` `DURABLE_FILES`), outside the code surfaces. |
+| review_check.py boundary | **PASS / ALL CHECKS PASSED** with `--expect-selector 448=70ff0860… 430=1c412850…` over the 15-document addendum diff. No product/test/fixture/build or selector mutation. Durable markers: handoff 1→1, ORIENTATION 2→4, tracker **0→11** (restoration; newly guarded). |
+| `STATUS` lifecycle maintained | Resume beacon `IN_PROGRESS` (Resumed at = handoff `2026-09-23T21:16:54Z`) published first. Final `COMPLETE → M5-DEFN-R1` is the last write. |
+| Pushed to origin, branch in sync | Confirmed with `git status -sb` after the final push |

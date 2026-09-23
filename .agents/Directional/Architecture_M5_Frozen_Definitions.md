@@ -1,6 +1,6 @@
 # M5 Frozen Definitions — Certificate-Carrying Chart and Quotient Relations
 
-**Status:** FROZEN / `M5-DEFN` COMPLETE / CP1 + CP2 CLOSED / CP3 DEFN-R1 GAUGE MODEL FROZEN / EXACT NEXT = `M5-CP3-CB17` / RUNTIME-FREE DEFINITION AMENDMENT 2026-09-23
+**Status:** FROZEN / `M5-DEFN` COMPLETE / CP1 + CP2 + CP3 CLOSED / SELECTOR448 ACCEPTED / §13.1 CONJUNCTS 1-7 ACCEPTED / **M5 CLOSURE HELD — `G4-B004` M5 HALF UNADJUDICATED** / EXACT NEXT = `M5-DEFN-R1` (see §11) / last amended 2026-09-23 *(this line read "EXACT NEXT = `M5-CP3-CB17`" from DEFN-R1 until corrected by the `M5-CP3-TB2-REV` reviewing-agent addendum)*
 **Date:** 2026-09-19
 **Definition authority:** this record is the normative M5 contract for canonical periodic-relation identity, producer-selected relation-path certificates, consumer validation, failure ownership, and the CP1/CP2/CP3 split. It refines `DESIGN.md` §14 M5 without changing accepted M4 semantics or M6 occurrence-complex ownership.
 
@@ -236,7 +236,7 @@ All `M5-DEFN` stop rules are resolved:
 
 ## 11. Historical exit and current exact successor
 
-Frozen §13.3 is now complete: R16 precommitted selector448, CB20 published those exact bytes, TB2 executed the published selector freshly, and `M5-CP3-TB2-REV` independently accepted closure. **M5 is CLOSED / ACCEPTED.** Current exact successor is runtime-free **`M6-DEFN`**. No M6 implementation semantics are defined by this M5 record.
+Frozen §13.3 is complete: R16 precommitted selector448, CB20 published those exact bytes, TB2 executed the published selector freshly, and `M5-CP3-TB2-REV` independently accepted selector448 and §13.1 conjuncts 1-7. **M5 closure is HELD** (`M5-CP3-TB2-REV` reviewing-agent addendum). The M5 half of `G4-B004`, assigned by `Architecture_M4_DEFN_Frozen_Definitions.md` §11.2, was never absorbed into this record or adjudicated (see the §13.1 note). Current exact successor is runtime-free **`M5-DEFN-R1`** under `Architecture_M5_DEFN_R1_G4_B004_Exit_Reconciliation_Plan.md`. `M6-DEFN` is deferred behind it. No M6 implementation semantics are defined by this M5 record.
 
 *Corrected by the `M5-CP3-TB1-R16-REV` reviewing-agent addendum.* This section named `M5-CP3-CB14` (the R11-R1 Review
 successor) and was not updated by any of the Review/DEFN turns that followed (R12-REV through R16-REV, including
@@ -278,6 +278,8 @@ M5 may close only when **all** of the following are true on one reviewed authori
 7. the cumulative selector containing the reviewed M5 mechanism/production identities has been published only after exact pre-commitment, executed completely artifact-only, and independently reviewed green.
 
 The final M5 Review must explicitly check every conjunct. It may not infer one from another.
+
+**Omission recorded by the `M5-CP3-TB2-REV` reviewing-agent addendum. The seven conjuncts above are unweakened.** This list is not M5's complete exit. `Architecture_M4_DEFN_Frozen_Definitions.md` §11.2 separately assigns M5 "the focused positive multi-isolation quotient relation/certificate witness", and requires proof that "the relation producer emits positive multi-isolation authority with explicit owners/certificate". `REORIENTATION_PLAN.md` §9 restates it. No conjunct here covers it, and no M5 turn adjudicated it. Selector448's only positive isolation-seam materialization row, ordinal 186, is single-isolation. `M5-DEFN-R1` must add the obligation as conjunct 8 with its witness contract, or re-home it with a concrete stage-dependency reason by amending M4-DEFN §11.2 in place. Until then M5 may not be recorded as closed (`M5-CP3-TB2-REV-OBS-01`).
 
 ### 13.2 Nine reviewed M5 mechanism identities outside selector430
 
@@ -599,7 +601,7 @@ mechanism-only prohibition, the CP1/CP2/CP3 bindings — live in §§8-9 of this
 the same division that produced `M4-CP4-TB3-REV-OBS-01`, where the two halves diverged and the divergence only
 became visible at the moment of closure.
 
-**Discharged at `M5-CP3-TB2-REV`.** Final Review states the seven-conjunct M5 exit once, explicitly reconciles `DESIGN.md` §14 M5 with §§8-9/13 of this document, confirms all four debts on produced authority, and preserves the prohibition on mechanism-only production credit. `M5-DEFN-REV-OBS-01` is closed.
+**Discharge at `M5-CP3-TB2-REV` — WITHDRAWN IN PART by that turn's reviewing-agent addendum.** Final Review stated the seven-conjunct exit once, reconciled `DESIGN.md` §14 M5 with §§8-9/13, confirmed all four debts on produced authority, and preserved the mechanism-only prohibition. All of that stands. But the risk this section named then materialized: an M5 exit condition stated elsewhere (M4-DEFN §11.2, `G4-B004` M5 half) was not reconciled. `M5-DEFN-REV-OBS-01` stays open, now merged with `M5-CP3-TB2-REV-OBS-01` and owned by `M5-DEFN-R1`.
 
 ### V6 — successor scope and verification limits
 

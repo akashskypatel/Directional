@@ -1,3 +1,7 @@
+## 2026-09-23 — `M5-CP3-TB2-REV`: selector448 accepted; M5 closure held for `G4-B004`; tracker restored
+
+The final M5 Review accepts published selector448 (`70ff0860...c75789`, 448/448 fresh with 917/917 evidence) and promotes package/source `10771899191 / cef1c6ee...`. The reviewing-agent addendum re-verifies that evidence from fresh downloads but **holds M5 closure**. The M5 half of `G4-B004` (a focused positive multi-isolation relation/certificate witness, M4-DEFN §11.2) was never adjudicated. Next is runtime-free `M5-DEFN-R1`, then `M6-DEFN`. The addendum also restores `Regression_Root_Cause_Tracker.md`, which commit `ce9bf3cb` had overwritten from 9,837 lines to 21, and guards it in `review_check.py`. Stable accounting remains **51 / 14 / 37**; project debt is **1** (M6).
+
 ## 2026-09-23 — `M5-CP3-TB1-R16-REV`: corrected pre-publication gate accepted; selector448 frozen for publication
 
 Independent Review accepts R16 at **448/448 PASS** with complete **921/921** immutable evidence, promotes package/source `10763242885 / a8b33cb7145d5a99d47eaf5f70bb12f1c71238d1` under still-published selector430, and discharges both remaining M5 nonzero-Z4 produced debts. Project debt moves **3 -> 1** (M6 only); stable regression accounting remains **51 / 14 / 37**. Exact cumulative selector448 is precommitted at SHA-256 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, exact selector430 prefix, owner census 32/300/75/41. M5 remains open for separate `CB20 -> TB2-EXEC -> TB2-REV` publication proof.

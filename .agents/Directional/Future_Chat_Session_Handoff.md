@@ -4,23 +4,30 @@
 
 ## Current authority
 
-`M5-CP3-TB2-REV` is **COMPLETE / APPROVED / SELECTOR448 ACCEPTED / M5 CLOSED** once terminal `STATUS` is published. Final Review independently re-opens TB2 run/job `35913334490 / 107358491487`, result/log artifacts `10775185139 / 10774217117`, complete **917/917** evidence, all 448 ledger/raw-log receipts, selector448/prefix430/routing hashes and exact owner census **32/300/75/41**. Published selector448 SHA-256 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789` is accepted current authority; selector430 `1c412850...9db6` is its exact historical prefix. CB20 package/source `10771899191 / cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1` is promoted as final accepted M5 runtime authority.
+`M5-CP3-TB2-REV` is **COMPLETE / APPROVED / SELECTOR448 ACCEPTED — M5 CLOSURE HELD** by its reviewing-agent addendum. The runtime evidence is independently re-verified: TB2 run/job `35913334490 / 107358491487`, result/log `10775185139 / 10774217117`, 917/917 evidence, all 448 ledger/raw/protocol rows, selector448 `70ff0860...c75789` with exact selector430 prefix, routing receipt `c91a5e2f...1dd7c`, and owners 32/300/75/41. The CB20 package/source `10771899191 / cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1` is the current accepted M5 runtime authority, and §13.1 conjuncts 1-7 hold.
 
-All seven frozen M5 §13.1 exit conjuncts are satisfied, all four M5 produced debts are discharged, and `M5-DEFN-REV-OBS-01` plus the R16 consolidated-numbering observation are closed. The two never-gated CB14 identities receive explicit no-credit disposition; M6-DEFN owns freezing their later deletion-or-gating owner. Stable accounting remains **51 events / 14 categories / 37 recurrences**; project debt remains **1**, M6-owned.
+M5 is **not closed**. `Architecture_M4_DEFN_Frozen_Definitions.md` §11.2 assigns M5 the focused positive multi-isolation quotient relation/certificate witness (`G4-B004` M5 half), and no M5 record absorbed or adjudicated it. Selector448's only positive isolation row, ordinal 186, is single-isolation. `M5-DEFN-REV-OBS-01`'s discharge is withdrawn in part and merged into `M5-CP3-TB2-REV-OBS-01`. The addendum also restored `Regression_Root_Cause_Tracker.md`, which commit `ce9bf3cb` had overwritten from 9,837 lines to 21 (`-OBS-02`, `LESSONS.md` 176). Stable accounting remains **51 / 14 / 37**; project debt is **1**, M6-owned.
 
 ## Exact next turn
 
-**`M6-DEFN`** — runtime-free occurrence / quotient / embedding / independent-verifier definition turn.
+**`M5-DEFN-R1`** — runtime-free `G4-B004` M5-half exit reconciliation under `.agents/Directional/Architecture_M5_DEFN_R1_G4_B004_Exit_Reconciliation_Plan.md`.
 
-Freeze the four M6 stage products, verifier recompute-vs-repair boundary, remaining closed-complex `G4-B002` debt proof ownership, `G4-B001` disposition, and the no-credit cleanup/gating disposition for the two dormant CB14 identities. Do not begin M6 Code + Build while any of those authorities is ambiguous. No generated Directional runtime belongs in M6-DEFN.
+Freeze exactly one disposition:
+- **(A)** Accepted rows already prove the witness: name them as §13.1 conjunct 8.
+- **(B)** A bounded `M5-CP4` focused production contract, with at least two produced isolation authorities, explicit owners/certificates consumed exactly once, and an owner tamper.
+- **(C)** A re-home to M6 with a concrete missing-stage-authority reason, M4-DEFN §11.2 amended in place and the debt priced 1 → 2.
+
+Ordinal 186 and any direct/helper row get zero credit. No product/test/selector mutation, compile or runtime. `M6-DEFN` is **deferred** behind this turn and its Review.
 
 ## Resume-critical evidence
 
-- M5 closure: `.agents/Directional/M5_Closure_Record.md`
+- next-turn plan: `.agents/Directional/Architecture_M5_DEFN_R1_G4_B004_Exit_Reconciliation_Plan.md`
+- `G4-B004` source authority: `.agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md` §11.2; `REORIENTATION_PLAN.md` §9
+- M5 closure (held): `.agents/Directional/M5_Closure_Record.md`
 - final M5 Review: `.agents/Directional/Architecture_M5_CP3_TB2_Review_Record.md`
 - final M5 runtime report: `.agents/Directional/Architecture_M5_CP3_TB2_Artifact_Only_Test_Benchmark_Report.md`
 - frozen M5 definitions: `.agents/Directional/Architecture_M5_Frozen_Definitions.md`
-- M6 definition plan: `.agents/Directional/Architecture_M6_DEFN_Occurrence_Embedding_Verifier_Plan.md`
+- M6 definition plan (deferred): `.agents/Directional/Architecture_M6_DEFN_Occurrence_Embedding_Verifier_Plan.md`
 - consolidated M5 history: `.agents/Directional/M5_Consolidated_Record.md` §4.31
 - accepted selector448: `.agents/Directional/Architecture_M5_CP3_CB20_Required_Green_Selector_448.txt`, SHA-256 `70ff0860...c75789`
 - final accepted M5 package/source: `10771899191 / cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1`
@@ -31,7 +38,8 @@ Freeze the four M6 stage products, verifier recompute-vs-repair boundary, remain
 
 ```yaml
 load_next:
-  - .agents/Directional/Architecture_M6_DEFN_Occurrence_Embedding_Verifier_Plan.md
+  - .agents/Directional/Architecture_M5_DEFN_R1_G4_B004_Exit_Reconciliation_Plan.md
+  - .agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md
   - .agents/Directional/M5_Closure_Record.md
   - .agents/Directional/Architecture_M5_CP3_TB2_Review_Record.md
 conditional_modules:
@@ -42,7 +50,7 @@ deep_references:
   - .agents/Directional/Regression_Root_Cause_Tracker.md
   - .agents/Directional/M5_Consolidated_Record.md
 do_not_preload:
-  - M6 occurrence work
+  - M6 occurrence work and the deferred M6-DEFN plan
   - product/test/fixture/field/A3 semantic edits
   - any R16 ledger stitching into TB2 Review
   - selector alternatives or order regeneration

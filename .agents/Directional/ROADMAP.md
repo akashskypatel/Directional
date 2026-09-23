@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-23 (`M5-CP3-TB2-REV` COMPLETE / selector448 accepted / M5 CLOSED. Final M5 package/source `10771899191 / cef1c6ee...` is accepted under selector448 448/448; stable accounting 51 / 14 / 37, project debt 1 M6-owned. Exact next `M6-DEFN`.)**
+**Status date:** 2026-09-23 (`M5-CP3-TB2-REV` COMPLETE / selector448 accepted / §13.1 conjuncts 1-7 accepted / **M5 CLOSURE HELD** by the reviewing-agent addendum: the `G4-B004` M5 half from M4-DEFN §11.2 was never adjudicated. M5 package/source `10771899191 / cef1c6ee...` is accepted under selector448 448/448. Stable accounting 51 / 14 / 37, project debt 1 M6-owned. Exact next `M5-DEFN-R1`, then `M6-DEFN`.)**
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 
@@ -100,7 +100,7 @@ DEFN-R2 froze Reading B and re-homed the closed candidate-bearing-complex debt t
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
 | M3 | **CLOSED / ACCEPTED** | `M3_Closure_Record.md`; package113/TB48 reviewed at 405 PASS / 4 RED on final audit surface; accepted required-green selector365 remains 365/365. |
 | M4 | **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`** | `M4_Closure_Record.md`; package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**, SHA `1c412850…9db6`, owners **31/283/75/41**. |
-| M5 | **CP1 + CP2 CLOSED / ACCEPTED; CP3 R16 REVIEW ACCEPTED / SELECTOR448 PRECOMMITTED / CB20 NEXT** | `Architecture_M5_Frozen_Definitions.md` §§16.3/17; `M5_Consolidated_Record.md`; package/source `10763242885 / a8b33cb...` promoted under still-published selector430. All four M5 produced debts discharged; project debt 1 M6-owned. Selector448 precommitted at `70ff0860...c75789`, owners 32/300/75/41; publication/runtime/final Review still required. |
+| M5 | **CP1 + CP2 + CP3 CLOSED / SELECTOR448 ACCEPTED / MILESTONE CLOSURE HELD — `M5-DEFN-R1` NEXT** | `Architecture_M5_Frozen_Definitions.md` §§13/17 and §13.1 omission note; `M5_Consolidated_Record.md`; `M5_Closure_Record.md` (held). Package/source `10771899191 / cef1c6ee...` under selector448 **448/448**, SHA `70ff0860...c75789`, owners 32/300/75/41. All four M5 produced debts discharged; project debt 1 M6-owned. The `G4-B004` M5 half (M4-DEFN §11.2) is unadjudicated. *(This row read "CB20 NEXT" through CB20, TB2-EXEC and TB2-REV until the reviewing-agent addendum.)* |
 | M6–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
@@ -529,7 +529,7 @@ TB2-R2 executed the frozen corrected gate in exactly **799** fresh processes: re
 
 M4 owns **no** produced-witness debt after DEFN-R2. The closed candidate-bearing-complex `G4-B002` debt is M6-owned: M6-CP1 owns occurrence-complex/stage-separation mechanism and M6-CP3 owns its direct-production re-proof. The two periodic `G4-B002` debts were re-homed to M5 at M4 closure—canonical relation/container-order identity through M5-CP1/CP3 and missing-owner typing through M5-CP2/CP3—and were discharged at `M5-CP3-TB1-R7-REV`. `G4-B004` remains explicitly split: focused positive multi-isolation relation/certificate production in M5, representative occurrence/embedding/verifier consumption in M6; no M4 gate identity is added.
 
-### M5 — certificate-carrying chart and quotient relations (§14 M5) — **CLOSED / ACCEPTED at `M5-CP3-TB2-REV`**
+### M5 — certificate-carrying chart and quotient relations (§14 M5) — **CP1/CP2/CP3 CLOSED; SELECTOR448 ACCEPTED; MILESTONE CLOSURE HELD pending `M5-DEFN-R1` (`G4-B004` M5 half)**
 
 | Checkpoint | Semantic domain |
 |---|---|
@@ -540,7 +540,7 @@ M4 owns **no** produced-witness debt after DEFN-R2. The closed candidate-bearing
 
 M5 originally owned four produced-witness debts. R7 Review discharged relation-owner/container-reorder and missing-owner typing. R16 Review now discharges the two `G4-B003` nonzero-periodic-Z4 debts through direct materialization/consumption and transform-only typed rejection. **All four M5 produced debts are discharged.** The separate closed-complex `G4-B002` debt remains M6-owned; total project debt is **1**.
 
-Final TB2 Review completes frozen §13.3: exact selector448 was precommitted, separately published, freshly executed **448/448**, and independently accepted. Final M5 authority is package/source `10771899191 / cef1c6ee...` under selector448. M5 is closed; exact next is `M6-DEFN`.
+Final TB2 Review completes frozen §13.3: exact selector448 was precommitted, separately published, freshly executed **448/448**, and independently accepted. Final M5 authority is package/source `10771899191 / cef1c6ee...` under selector448. M5 is **not yet closed**. The `G4-B004` M5 half (focused positive multi-isolation relation/certificate witness, M4-DEFN §11.2 and the `G4-B004` row below) was never adjudicated, and selector448's only positive isolation row, ordinal 186, is single-isolation. The exact next turn is `M5-DEFN-R1`, which freezes it as a satisfied conjunct, as a bounded `M5-CP4`, or as a justified and priced re-home to M6. `M6-DEFN` follows.
 
 ### M6 — occurrence, embedding, independent verification (§14 M6)
 
@@ -588,7 +588,7 @@ These are **not** M3 obligations and must not be claimed closed by M3 evidence.
 | `G4-B001` / `PR8-R034` / `G4-R007` | completion/materializer — hard rail promoted into `IsolationSheetId` authority, rejected by `close_completion_lineage_source_authority(...)` | M6 at the earliest; adjudicate at `M6-DEFN` |
 | `G4-B002` | **main exact-torus pairing blocker CLOSED at CP3; two M5 periodic debts discharged at R7 Review; one closed-complex production debt remains** | remaining closed-complex debt: M6-CP1 mechanism / M6-CP3 production proof |
 | `G4-B003` | quotient/chart relations — both nonzero-Z4 production debts **DISCHARGED at `M5-CP3-TB1-R16-REV`** | M5 (complete) |
-| `G4-B004` | quotient relation/certificate then representative occurrence/verification | M5 focused production + M6 representative consumption; no M4 gate/debt |
+| `G4-B004` | quotient relation/certificate then representative occurrence/verification | M5 focused production + M6 representative consumption; no M4 gate/debt. **M5 half UNADJUDICATED at the attempted M5 closure. Owner: `M5-DEFN-R1` (`M5-CP3-TB2-REV-OBS-01`).** |
 
 Produced-witness debt stands at **1**: all four M5 debts are discharged (two periodic `G4-B002` at R7, two nonzero-Z4 `G4-B003` at R16 Review); the sole remaining debt is the M6-owned closed-complex `G4-B002` subject.
 
