@@ -1,0 +1,5 @@
+turn=M5-CP3-TB1-R14-EXEC
+purpose=execute frozen 448-process artifact-only gate
+candidate_artifact=10733058003
+semantic_source=6bad9eb5626e77a234ffb2c14f621195105e4ba1
+retry=0
