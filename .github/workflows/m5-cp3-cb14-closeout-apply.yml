@@ -1,0 +1,48 @@
+name: M5 CP3 CB14 Closeout Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m5-cp3-cb14-closeout-apply-20260923.txt
+
+permissions:
+  actions: read
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m5-cp3-cb14-closeout-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m5-cp3-cb14-closeout-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m5-cp3-cb14-closeout-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1HMGsPD-Kq-ZrDm65rhRzlrVSiotfDuod
+      patch_sha256: 17cdda2c767991bb17c10a3589ccaa52cc20abe35b2060a2517f7393f4bd405d
+      base_sha: 767bd0f0f9d3fd8b664cfca2c0b2c283ed083558
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "M5-CP3-CB14: close out compile-green candidate"
+    secrets: inherit
