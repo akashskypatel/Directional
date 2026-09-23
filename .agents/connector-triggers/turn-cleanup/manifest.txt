@@ -1,2 +1,0 @@
-# M5-CP3-TB1-R12-EXEC temporary state
-.agents/connector-triggers/source-snapshot/m5-cp3-tb1-r12-closeout.txt
