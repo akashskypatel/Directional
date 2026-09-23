@@ -1,0 +1,5 @@
+turn=M5-CP3-TB1-R12-EXEC
+purpose=fresh immutable artifact-only 446-process gate
+candidate_artifact=10725395682
+candidate_source=b8dc3e906dd03525861a1985ea574bad1ad5c69a
+retry=0
