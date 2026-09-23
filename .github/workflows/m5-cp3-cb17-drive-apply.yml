@@ -1,0 +1,47 @@
+name: M5 CP3 CB17 Drive Patch Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m5-cp3-cb17-drive-apply.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  id-token: write
+
+concurrency:
+  group: m5-cp3-cb17-drive-apply
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m5-cp3-cb17-drive-apply
+      commit_run_file: false
+      trim_stale_comments: false
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m5-cp3-cb17-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 11Gnuw1CAaJbOttf9FMA-LQy2onAcp-cU
+      patch_sha256: 305da9d69cf6267af8b0ec29dc3b3dd1a51c068993c8f1fa15c5099570c26913
+      base_sha: bc6d10e52b25bb99b653be8a2512ba9ed3963a0d
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "M5-CP3-CB17: apply frozen relation-frame gauge cutover"
+    secrets: inherit
