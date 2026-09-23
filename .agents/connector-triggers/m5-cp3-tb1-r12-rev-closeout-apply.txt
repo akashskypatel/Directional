@@ -1,5 +1,0 @@
-turn=M5-CP3-TB1-R12-REV
-purpose=apply verified review closeout documentation patch
-base_sha=b036ea648c1085de7a237c5903869e02eb7d08c2
-patch_sha256=f228e6e8fd4bb211193987f38c0868533ce0c60e2806c3e4f1f0e5f812cb48ff
-retry=0
