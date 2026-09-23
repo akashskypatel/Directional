@@ -1,0 +1,2 @@
+# M5-CP3-CB18 reconciliation cleanup
+.agents/connector-triggers/source-snapshot/m5-cp3-cb18-reconcile-20260923.txt
