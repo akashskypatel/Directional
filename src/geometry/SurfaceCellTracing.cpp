@@ -11874,6 +11874,11 @@ struct SurfacePhaseFrontBuildState {
   std::optional<SurfaceConformityPlanReceipt> conformityPlanReceipt;
   std::map<AcceptedCutBoundaryFaceAuthorityKey, authority::SourceFaceId>
       acceptedCutBoundaryFaceAuthority;
+  // Exact per-face +U branch gauge retained by bounded-disk producers until
+  // same-region periodic cut copies are reconciled. This is internal build
+  // authority only; published relation endpoints carry the two consumed face
+  // values explicitly in branchAuthority.
+  std::vector<int> faceBranchRotation;
   SurfacePhaseFrontFailure failure;
   std::vector<SurfaceFrontEdge> edges;
   std::vector<SurfaceFrontEvent> events;
@@ -16589,6 +16594,7 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
                             SurfacePhaseFrontFailureReason::InvalidFinalCellState);
     return result;
   }
+  result.faceBranchRotation = faceBranchRotation;
   result.disposition = SurfaceCellProducerDisposition::Produced;
   return result;
 }
@@ -17555,18 +17561,30 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
         }
         const auto localFace = source_face_id(point.face, faces.rows());
         if (!localFace.has_value() ||
-            localFace->index() >= faceBranchRotation.size() ||
-            occurrenceFace->index() >= faceBranchRotation.size() ||
             result.sourceTopologyRegions->region_for_row(*localFace) !=
                 edge.sourceTopologyRegion ||
             result.sourceTopologyRegions->region_for_row(*occurrenceFace) !=
                 edge.sourceTopologyRegion) {
           return std::nullopt;
         }
-        const int localFaceBranch =
-            faceBranchRotation[static_cast<std::size_t>(localFace->index())];
-        const int occurrenceFaceBranch = faceBranchRotation[
-            static_cast<std::size_t>(occurrenceFace->index())];
+        const auto regionalBuild = std::find_if(
+            regionBuilds.begin(), regionBuilds.end(),
+            [&](const RegionBuild &build) {
+              return build.work != nullptr && build.work->region != nullptr &&
+                     build.work->region->id() == edge.sourceTopologyRegion;
+            });
+        if (regionalBuild == regionBuilds.end() ||
+            localFace->index() >=
+                regionalBuild->result.faceBranchRotation.size() ||
+            occurrenceFace->index() >=
+                regionalBuild->result.faceBranchRotation.size()) {
+          return std::nullopt;
+        }
+        const int localFaceBranch = regionalBuild->result.faceBranchRotation[
+            static_cast<std::size_t>(localFace->index())];
+        const int occurrenceFaceBranch =
+            regionalBuild->result.faceBranchRotation[
+                static_cast<std::size_t>(occurrenceFace->index())];
         if (localFaceBranch < 0 || occurrenceFaceBranch < 0) {
           return std::nullopt;
         }
