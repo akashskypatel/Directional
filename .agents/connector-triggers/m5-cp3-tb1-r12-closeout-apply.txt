@@ -1,0 +1,5 @@
+turn=M5-CP3-TB1-R12-EXEC
+purpose=apply-rebased-closeout-documentation-patch
+base_sha=dd553b74b7a82bc05d21e58a00d98db7b6eda9a5
+patch_sha256=8d91de923214b37f1c5e7a65623dc6ec3681ad5dfcd4b291d7f888ecae861f22
+retry=1
