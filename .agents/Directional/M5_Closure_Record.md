@@ -2,9 +2,9 @@
 
 **Milestone:** M5 — certificate-carrying chart and quotient relations
 **Closure turn:** `M5-CP3-TB2-REV`
-**Disposition:** **SELECTOR448 ACCEPTED / §13.1 CONJUNCTS 1-7 ACCEPTED / CLOSURE HELD pending `M5-DEFN-R1`**
+**Disposition:** **SELECTOR448 ACCEPTED / §13.1 CONJUNCTS 1-7 ACCEPTED / CONJUNCT 8 FROZEN BY `M5-DEFN-R1` DISPOSITION A / CLOSURE HELD pending `M5-DEFN-R1-REV`**
 
-> **Closure held by the `M5-CP3-TB2-REV` reviewing-agent addendum.** Everything below that concerns selector448, the CB20 package and the seven §13.1 conjuncts is independently re-verified and stands. `Architecture_M4_DEFN_Frozen_Definitions.md` §11.2 assigns M5 the focused positive multi-isolation quotient relation/certificate witness (`G4-B004` M5 half), and no M5 turn adjudicated it. `M5-DEFN-R1` must either freeze it as conjunct 8 (satisfied by named accepted rows, or proved by a bounded `M5-CP4`) or re-home it with a concrete stage-dependency reason. This record becomes a closure record only after that adjudication and its Review (`M5-CP3-TB2-REV-OBS-01`).
+> **Closure remains held, now only for independent Review.** The `M5-CP3-TB2-REV` addendum correctly found an omitted M5 exit obligation. `M5-DEFN-R1` has now adjudicated it under disposition A and frozen §13.1 conjunct 8: focused multi-isolation means a producer-built region spanning at least two distinct isolation sheets joined by an explicit checked isolation-seam certificate that materialization consumes exactly once. Accepted positive rows are 186 and 239; rows 183-185/187-188 are the typed falsifier family. Selector448/runtime/package authority is unchanged. This record becomes final **M5 CLOSED / ACCEPTED** only if `M5-DEFN-R1-REV` independently accepts that reading and evidence (`M5-CP3-TB2-REV-OBS-01`).
 
 ## Accepted authority
 
@@ -17,16 +17,18 @@
 
 ## Exit reasoning
 
-`M5-CP3-TB2-REV` independently re-derived the complete evidence and accepts all seven frozen §13.1 exit conjuncts: selected relation-path certificates are retained and verified; unused valid relations are decision-neutral; missing/duplicate/conflicting/nonreciprocal/representation-renumbered relations fail typed; torus quotient lineage is direct production; all four M5 produced debts are discharged on produced authority; CP1/CP2 mechanism rows remain required-green without substituting for production; and selector448 completed the precommit -> publication -> fresh artifact-only execution -> independent Review sequence.
+`M5-CP3-TB2-REV` independently re-derived the complete evidence and accepts all seven original frozen §13.1 exit conjuncts: selected relation-path certificates are retained and verified; unused valid relations are decision-neutral; missing/duplicate/conflicting/nonreciprocal/representation-renumbered relations fail typed; torus quotient lineage is direct production; all four M5 produced debts are discharged on produced authority; CP1/CP2 mechanism rows remain required-green without substituting for production; and selector448 completed the precommit -> publication -> fresh artifact-only execution -> independent Review sequence.
+
+`M5-DEFN-R1` now freezes the omitted eighth conjunct from primary authority. Row239 is the strongest accepted positive: real producer `Produced`, one topology region with an internal isolation seam, explicit owner/seam/transition/distinct-sheet/reciprocal certificate, multi-sheet cell scope, successful materialization, and exact certificate consumption. Row186 independently proves focused reciprocal-certificate materialization. Rows183-185/187-188 supply typed duplicate/missing/nonreciprocal/wrong-owner/wrong-sheet falsifiers. The definition does not credit either ungated multi-isolation source test.
 
 The fresh selector448 gate is **448 PASS / 0 RED**, exact-one selection, zero skips, benchmark 0, with immutable package/source/execution-view postflight. Rows446/447 re-prove the nonzero-Z4 rotation+translation and transform-only typed-rejection debts, while row448 proves unused-produced-relation invariance.
 
 ## Debt and observation disposition
 
-All four M5 produced debts are closed: relation/container reorder and missing-owner typing at R7 Review; genuine nonzero-Z4 materialization/consumption and tampered-transform typed rejection at R16 Review, freshly retained by TB2. `M5-DEFN-REV-OBS-01` is **not** fully discharged. The final reconciliation missed M4-DEFN §11.2, so it is merged into `M5-CP3-TB2-REV-OBS-01` and owned by `M5-DEFN-R1`. The two never-gated CB14 `M5CP3` identities receive no M5 credit; `M6-DEFN` owns freezing their later deletion-or-gating disposition. The R16 inverse-storage risk remains recorded/not firing. Consolidated numbering/citation ambiguity is repaired at closure.
+All four M5 produced debts are closed: relation/container reorder and missing-owner typing at R7 Review; genuine nonzero-Z4 materialization/consumption and tampered-transform typed rejection at R16 Review, freshly retained by TB2. The merged `M5-DEFN-REV-OBS-01` / `M5-CP3-TB2-REV-OBS-01` is **definition-adjudicated / Review-pending**: disposition A resolves the semantic omission, and `M5-DEFN-R1-REV` owns final discharge together with M5 closure. The two never-gated CB14 `M5CP3` identities receive no M5 credit; `M6-DEFN` owns freezing their later deletion-or-gating disposition. The R16 inverse-storage risk remains recorded/not firing. Consolidated numbering/citation ambiguity is repaired.
 
 Stable accounting remains **51 events / 14 categories / 37 recurrences**. The sole project produced-witness debt is the separate **M6-owned closed-complex `G4-B002` debt**.
 
 ## Successor boundary
 
-No M6 implementation is part of M5 closure. Exact successor is runtime-free **`M5-DEFN-R1`**, the bounded `G4-B004` M5-half adjudication. After that turn and its Review, runtime-free `M6-DEFN` must freeze the occurrence/quotient/embedding/verifier stage products, the verifier recompute authority and the `G4-B004` M6 half before any M6 Code + Build. *(Successor changed from `M6-DEFN` by the reviewing-agent addendum.)*
+No M6 implementation is part of the held M5 closure. Exact successor is runtime-free **`M5-DEFN-R1-REV`**, which must independently re-derive disposition A and accepted rows 186/239 before changing this record to final closure. If Review accepts, runtime-free `M6-DEFN` follows and must freeze occurrence/quotient/embedding/verifier stage products, the verifier recompute authority and the `G4-B004` M6 half before any M6 Code + Build.
