@@ -1,0 +1,3 @@
+purpose=M5-CP3-CB20 source snapshot
+semantic_base=a1e2b2045263eb828ea9b292df7726e4ca57c8a6
+retry=0
