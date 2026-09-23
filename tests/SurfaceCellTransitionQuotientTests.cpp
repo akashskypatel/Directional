@@ -2881,6 +2881,167 @@ TEST(M5CP3, ProducedTorusPublishesTwoCanonicalPeriodicRelationsAndOwnedEdges) {
   EXPECT_GE(promotedIntervalEdges, 2U);
 }
 
+TEST(M5CP4, ProducedTorusPeriodicRelationOwnsMultiIsolationRegion) {
+  const auto &fixture = torus_fixture();
+  ASSERT_EQ(SurfaceCellProducerDisposition::Produced,
+            fixture.network.phaseFront.disposition())
+      << "fact 1: committed torus phase front is pipeline-produced";
+  ASSERT_TRUE(fixture.network.phaseFront.is_produced())
+      << "fact 1: committed torus phase front is pipeline-produced";
+
+  const auto &product = fixture.network.phaseFront.product();
+  const auto &sourceAuthority = product.sourceTopologyRegions();
+  const directional::geometry::SurfaceTopologyRegion *witnessRegion = nullptr;
+  std::set<directional::authority::IsolationSheetId> witnessSheets;
+  for (const auto &candidate : sourceAuthority.regions()) {
+    std::set<directional::authority::IsolationSheetId> candidateSheets;
+    const auto rows = sourceAuthority.rows_for_region(candidate.id());
+    if (rows.size() != candidate.faces().size()) continue;
+    for (const auto row : rows) {
+      candidateSheets.insert(sourceAuthority.sheet_for_row(row));
+    }
+    if (candidateSheets.size() < 2U) continue;
+    witnessRegion = &candidate;
+    witnessSheets = std::move(candidateSheets);
+    break;
+  }
+  ASSERT_NE(nullptr, witnessRegion)
+      << "fact 2: one authoritative region spans >=2 isolation sheets";
+  ASSERT_GE(witnessSheets.size(), 2U)
+      << "fact 2: one authoritative region spans >=2 isolation sheets";
+
+  const auto &region = *witnessRegion;
+  ASSERT_FALSE(region.isolation_seams().empty())
+      << "fact 3: the same multi-isolation region owns an internal isolation seam";
+
+  const auto certificate = std::find_if(
+      product.isolationSeamTransportCertificates().begin(),
+      product.isolationSeamTransportCertificates().end(), [&](const auto &entry) {
+        return entry.region() == region.id() &&
+               std::binary_search(region.isolation_seams().begin(),
+                                  region.isolation_seams().end(), entry.seam());
+      });
+  ASSERT_NE(product.isolationSeamTransportCertificates().end(), certificate)
+      << "fact 4: the region/seam owns a checked reciprocal transport certificate";
+  const auto *firstFace = region.find_face(certificate->firstFace());
+  const auto *secondFace = region.find_face(certificate->secondFace());
+  ASSERT_NE(nullptr, firstFace)
+      << "fact 4: certificate first face is owned by the witness region";
+  ASSERT_NE(nullptr, secondFace)
+      << "fact 4: certificate second face is owned by the witness region";
+  ASSERT_EQ(firstFace->sheet, certificate->firstSheet())
+      << "fact 4: certificate first sheet matches authoritative face ownership";
+  ASSERT_EQ(secondFace->sheet, certificate->secondSheet())
+      << "fact 4: certificate second sheet matches authoritative face ownership";
+  ASSERT_NE(certificate->firstSheet(), certificate->secondSheet())
+      << "fact 4: certificate endpoint sheets are distinct";
+  ASSERT_EQ(certificate->forward().inverse(), certificate->reverse())
+      << "fact 4: certificate quarter-turn transport is reciprocal";
+  const auto sourceIncidence = directional::geometry::
+      surface_cell_tracing_detail::edge_faces(fixture.mesh.F);
+  const auto seamIncidence = sourceIncidence.find(certificate->seam());
+  ASSERT_NE(sourceIncidence.end(), seamIncidence)
+      << "fact 4: certificate source faces are incident to the owned seam";
+  ASSERT_GE(seamIncidence->second[0], 0)
+      << "fact 4: certificate seam has a first incident source face";
+  ASSERT_GE(seamIncidence->second[1], 0)
+      << "fact 4: certificate seam has a second incident source face";
+  const auto firstRow = sourceAuthority.row_for_topology(certificate->firstFace());
+  const auto secondRow =
+      sourceAuthority.row_for_topology(certificate->secondFace());
+  ASSERT_TRUE(firstRow.has_value())
+      << "fact 4: certificate first face has an authoritative source row";
+  ASSERT_TRUE(secondRow.has_value())
+      << "fact 4: certificate second face has an authoritative source row";
+  const std::set<std::size_t> certificateRows{firstRow->index(),
+                                               secondRow->index()};
+  const std::set<std::size_t> incidentRows{
+      static_cast<std::size_t>(seamIncidence->second[0]),
+      static_cast<std::size_t>(seamIncidence->second[1])};
+  ASSERT_EQ(incidentRows, certificateRows)
+      << "fact 4: certificate source faces exactly own the seam incidence";
+  const auto sourceMatchingIndices = directional::geometry::
+      surface_cell_tracing_detail::edge_matching_indices(sourceIncidence);
+  const auto transition = sourceMatchingIndices.find(certificate->seam());
+  ASSERT_NE(sourceMatchingIndices.end(), transition)
+      << "fact 4: certificate seam has an explicit source transition";
+  ASSERT_EQ(static_cast<std::size_t>(transition->second),
+            certificate->transition().index())
+      << "fact 4: certificate transition names the source-wide seam transition";
+
+  std::map<directional::authority::PeriodicRelationId,
+           const directional::geometry::SurfacePeriodicHolonomy *>
+      canonicalRelations;
+  for (const auto &relation : product.periodicHolonomies()) {
+    if (relation.sourceTopologyRegion() != region.id()) continue;
+    const auto expected = independent_periodic_relation_id(
+        region.id(), relation.route(), relation.cutRoute());
+    ASSERT_TRUE(expected.has_value())
+        << "fact 5: same-region periodic relation has a canonical independent ID";
+    ASSERT_EQ(relation.id(), *expected)
+        << "fact 5: same-region periodic relation ID matches its canonical carriers";
+    ASSERT_TRUE(canonicalRelations.emplace(relation.id(), &relation).second)
+        << "fact 5: same-region periodic relation IDs are unique";
+  }
+  ASSERT_FALSE(canonicalRelations.empty())
+      << "fact 5: the same multi-isolation region owns a canonical periodic relation";
+
+  bool witnessedOwnedPeriodicPair = false;
+  for (std::size_t edgeIndex = 0U; edgeIndex < product.edges().size();
+       ++edgeIndex) {
+    const auto &edge = product.edges()[edgeIndex];
+    if (edge.boundaryKind != SurfaceFrontBoundaryKind::PeriodicCut ||
+        edge.sourceTopologyRegion != region.id() ||
+        !edge.periodicRelation.has_value() ||
+        canonicalRelations.find(*edge.periodicRelation) == canonicalRelations.end() ||
+        !edge.sharedBoundaryInterval.has_value()) {
+      continue;
+    }
+    ASSERT_GE(edge.oppositeEdge, 0)
+        << "fact 6: PeriodicCut owner has a reciprocal opposite edge";
+    ASSERT_LT(static_cast<std::size_t>(edge.oppositeEdge), product.edges().size())
+        << "fact 6: PeriodicCut reciprocal edge index is valid";
+    const auto &opposite =
+        product.edges()[static_cast<std::size_t>(edge.oppositeEdge)];
+    ASSERT_EQ(SurfaceFrontBoundaryKind::PeriodicCut, opposite.boundaryKind)
+        << "fact 6: reciprocal owner is also a PeriodicCut";
+    ASSERT_EQ(static_cast<int>(edgeIndex), opposite.oppositeEdge)
+        << "fact 6: PeriodicCut opposite ownership is reciprocal";
+    ASSERT_EQ(region.id(), opposite.sourceTopologyRegion)
+        << "fact 6: reciprocal PeriodicCut remains in the same topology region";
+    ASSERT_EQ(edge.periodicRelation, opposite.periodicRelation)
+        << "fact 6: reciprocal PeriodicCut names the exact same relation owner";
+    ASSERT_TRUE(opposite.sharedBoundaryInterval.has_value())
+        << "fact 6: reciprocal PeriodicCut retains shared-boundary provenance";
+    ASSERT_EQ(edge.route, opposite.route.reversed())
+        << "fact 6: reciprocal PeriodicCut source routes are reversed";
+    ASSERT_EQ(edge.sharedBoundaryInterval->span,
+              opposite.sharedBoundaryInterval->span)
+        << "fact 6: reciprocal PeriodicCut provenance spans agree";
+    ASSERT_EQ(edge.sharedBoundaryInterval->firstOrdinal,
+              opposite.sharedBoundaryInterval->secondOrdinal)
+        << "fact 6: reciprocal PeriodicCut provenance ordinals are reversed";
+    ASSERT_EQ(edge.sharedBoundaryInterval->secondOrdinal,
+              opposite.sharedBoundaryInterval->firstOrdinal)
+        << "fact 6: reciprocal PeriodicCut provenance ordinals are reversed";
+    ASSERT_NE(edge.sharedBoundaryInterval->orientation,
+              opposite.sharedBoundaryInterval->orientation)
+        << "fact 6: reciprocal PeriodicCut provenance orientations oppose";
+    ASSERT_TRUE(edge.sharedBoundaryInterval->boundaryOccurrence.has_value())
+        << "fact 6: forward PeriodicCut has an explicit boundary occurrence";
+    ASSERT_TRUE(opposite.sharedBoundaryInterval->boundaryOccurrence.has_value())
+        << "fact 6: reverse PeriodicCut has an explicit boundary occurrence";
+    ASSERT_NE(edge.sharedBoundaryInterval->boundaryOccurrence,
+              opposite.sharedBoundaryInterval->boundaryOccurrence)
+        << "fact 6: reciprocal PeriodicCut occurrences are distinct";
+    witnessedOwnedPeriodicPair = true;
+    break;
+  }
+  ASSERT_TRUE(witnessedOwnedPeriodicPair)
+      << "fact 6: reciprocal PeriodicCut pair names a canonical relation "
+         "owned by the same region";
+}
+
 TEST(M5CP3,
      ProducedTorusPeriodicRelationStoragePermutationPreservesSelectedCertificate) {
   const auto &fixture = torus_fixture();
