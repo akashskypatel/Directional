@@ -1,3 +1,34 @@
+## 2026-09-23 — `M5-CP3-TB1-R15-R1-REV` review: test-authority verdict upheld under scrutiny; CB19 guard recorded
+
+Runtime-free review. **Upheld.** Accounting holds at **51 events / 14 categories / 37 recurrences**, debt **3**;
+selector430 **430/430** with protected ordinals 191/192/247/408 PASS; neither nonzero-Z4 debt discharged; no
+publication or pre-commitment authorized.
+
+**The test-authority classification survives adversarial pressure.** After fifteen attempts, a successor that
+corrects the *test* is exactly where "adjust until it passes" would appear, so it was treated as hostile. It
+holds on four independent legs: the expectation `Q = 3` was independently derived from committed bytes at
+DEFN-R1 §7; the observed stored action is quarter-turn **1**, exactly its inverse (`3 + 1 = 0 mod 4`), which
+canonical storage of the reversed orientation predicts and an arbitrary defect would not; rows 16/17 compare raw
+stored representation while production resolves through `resolve_periodic_relation_semantic_action(...)`
+(`SurfaceCellTracing.cpp:7945`, called at `RemeshPipeline.cpp:3897`); and that resolver is independently proved
+by the passing `StorageCanonicalPeriodicRelationResolvesSemanticForwardReverse`. It surfaced only now because a
+test's own defect cannot become the frontier until the product stops failing earlier.
+
+**Two carried observations discharged on real evidence.** `M5-CP3-DEFN-R1-REV-OBS-01` is discharged: the CB17
+`Q != A` mechanism identity now passes inside a mechanically valid ledger — the first **runtime** proof of frozen
+§16.3's correction term, closing the gap that the freeze was validated only where the gauges cancel.
+`M5-CP3-TB1-R15-REV-OBS-01` is discharged in the strong form: CB18 replayed the corrected parser against literal
+protocol bytes *before* the gate, exactly as the rule intends. `M5-CP3-TB1-R6-REV-OBS-01` correctly remains OPEN,
+now having survived three opportunities to be closed on convenience.
+
+New: `M5-CP3-TB1-R15-R1-REV-OBS-01`. The natural fix — call the resolver on the published relation and compare —
+is circular if the expectation also comes from the product: `resolve(product) == derive_from(product)` goes green
+while proving nothing. CB19 must resolve the **representation** through the documented resolver while keeping the
+**expectation** independently derived, asserting the resolved semantic rotation equals the source-derived value
+(3 for this witness), and must not weaken the nonzero discriminators that make rows 16/17 debt-bearing.
+
+Exact successor: `M5-CP3-CB19` — storage-canonical produced test correction.
+
 ## 2026-09-23 — `M5-CP3-TB1-R15-R1-EXEC`: corrected 448-process gate completes at 446 PASS / 2 RED
 
 ## 2026-09-23 — `M5-CP3-TB1-R15-R1-REV`: storage-canonical produced-test authority defect proved; CB19 next

@@ -455,3 +455,37 @@ reproduce that run's recorded counts** before the gate is triggered. `M5-CP3-TB1
 this replay and obtained `corrected_selected=1` / `corrected_passed=1` in seconds; run before the gate rather
 than in the post-mortem, it costs nothing and saves the turn. A parser that cannot be replayed against preserved
 evidence is not ready to gate a run.
+
+## `M5-CP3-TB1-R15-R1-REV-OBS-01` — CB19 must resolve the representation without making the oracle circular
+
+**Status.** OPEN / GATING ON `M5-CP3-CB19` AND `M5-CP3-TB1-R16-REV` / NON-STABLE.
+
+`M5-CP3-TB1-R15-R1` proved the rows 16/17 RED is a **test-authority** defect, and the classification survives
+adversarial scrutiny on four independent legs: the expectation `Q = 3` was independently derived from committed
+bytes at `[[M5-CP3-DEFN-R1]]` §7; the observed stored action is quarter-turn **1**, exactly its inverse
+(`3 + 1 = 0 mod 4`), which is what canonical storage of the reversed orientation predicts rather than what an
+arbitrary defect would produce; the tests compare raw stored representation
+(`EXPECT_EQ(witness.sourceRotation, relation->action().rotation)`,
+`EXPECT_EQ(witness.generatorRoute, relation->route())`) while production resolves through
+`resolve_periodic_relation_semantic_action(...)` (`src/geometry/SurfaceCellTracing.cpp:7945`); and that
+resolver's correctness is independently proved by the passing
+`M5CP3.StorageCanonicalPeriodicRelationResolvesSemanticForwardReverse`.
+
+**The risk in the fix.** The natural implementation — call the resolver on the published relation and compare —
+is circular if the expectation is also taken from the product: `resolve(product) == derive_from(product)` is a
+self-authorizing oracle that goes green while proving nothing. After fifteen attempts, a test correction is
+exactly where that shortcut is most tempting.
+
+**How to apply:** CB19 resolves the **representation** through the documented resolver while keeping the
+**expectation** independently derived — assert that the resolved semantic rotation equals the source-derived
+value (**3** for this witness, per DEFN-R1 §7), with the stored action's inverse relationship stated explicitly
+rather than assumed. `witness.sourceRotation` is already cross-checked against `witness.atlasRotation` in the
+test's opening assertion, so the independent path exists and must be preserved. Do not weaken
+`EXPECT_NE(QuarterTurn{}, relation->action().rotation)` or the other nonzero discriminators that make rows 16/17
+debt-bearing — a corrected test that no longer requires a genuinely nonzero Z4 relation cannot discharge debts 3
+or 4 whatever its colour.
+
+**Standing note from the freeze:** when rows 16/17 pass, the Review must still record that the gauge correction
+is **not exercised by the CP3 witness** (both gauges cancel there), so CP3 green is never cited as validating the
+gauge model. That validation rests on the CB17 mechanism identity, which now passes in a mechanically valid
+ledger.

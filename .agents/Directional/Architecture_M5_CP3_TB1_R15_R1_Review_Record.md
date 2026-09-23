@@ -149,3 +149,87 @@ These are control-plane/process deviations only and contribute no product eviden
 | review_check.py boundary | **PASS / ALL CHECKS PASSED** on the complete 15-document Review/consolidation diff; no product/test/fixture/build/selector mutation. |
 | `STATUS` lifecycle maintained | Entry beacon published for `M5-CP3-TB1-R15-R1-REV`; terminal COMPLETE -> `M5-CP3-CB19` reserved for final repository mutation. |
 | Pushed to origin, branch in sync | **YES.** Drive patch apply run `35882287277` pushed reviewed documentation as commit `dcd0637aa6a4ed9d56d37aadba072d614715b13b`; owner-side Drive retirement completed after the workflow reported `drive_file_retirement_required=true`. Temporary caller retired workflow-first; cleanup run `35882505298` removed the source-snapshot and apply markers in commit `61e0a0b9e57c41bb04d2dd56f4375d36f8b5f9cc`. Final authority check found only the seven durable workflows and no trigger/observation/turn-payload directory. |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld.** The test-authority classification is well-supported rather than convenient, all three
+observations this reviewer carried are handled correctly, and no debt credit was taken. Accounting holds at
+**51 events / 14 categories / 37 recurrences**, debt **3**. One guard is recorded for CB19.
+
+### V1 — the test-authority verdict survives adversarial pressure
+
+After fifteen attempts, a successor that corrects the *test* is exactly where "adjust it until it passes" would
+appear, so I treated the claim as hostile. It holds, on four independent legs:
+
+1. **The expectation is independently derived.** `M5-CP3-DEFN-R1` §7 derived `Q = 3` for this witness from
+   committed bytes before any relation was published — fixture `72/216/144`, carrier `(0,3)`, stored transition
+   `+1` on face `1 -> 22`, semantic Forward `22 -> 1` giving `A = 3`, with both cut gauges zero.
+2. **The observed stored value is exactly its inverse.** Raw evidence records a stored action of quarter-turn
+   **1**, and `3 + 1 = 4 = 0 mod 4`. That is not a coincidence an arbitrary product defect would produce; it is
+   precisely what canonical storage of the reversed orientation predicts.
+3. **The test bypasses the documented resolver.** Verified in
+   `tests/SurfaceCellTransitionQuotientTests.cpp`: row 16 asserts
+   `EXPECT_EQ(witness.sourceRotation, relation->action().rotation)` and
+   `EXPECT_EQ(witness.generatorRoute, relation->route())` — raw stored representation — while production resolves
+   through `resolve_periodic_relation_semantic_action(...)` (`src/geometry/SurfaceCellTracing.cpp:7945`, used at
+   `RemeshPipeline.cpp:3897` and `SurfaceCellTracing.cpp:8218`). Row 17 fails the same way on
+   `witness.generatorRoute == published->route()`.
+4. **The resolver's correctness is independently proved.**
+   `M5CP3.StorageCanonicalPeriodicRelationResolvesSemanticForwardReverse` passes in the same mechanically valid
+   ledger.
+
+It is also worth saying why this surfaced only now rather than being suspicious: rows 4/5 have failed since R7
+for a chain of genuine *product* defects, several confirmed from source by this reviewer. A test's own defect
+cannot become the frontier until the product stops failing earlier. This is the expected terminal state of
+peeling, not a late change of story.
+
+### V2 — both of my discharged observations were discharged on real evidence
+
+`M5-CP3-DEFN-R1-REV-OBS-01` is **discharged properly**. The CB17 `Q != A` mechanism identity — `A=1, G_F=2,
+G_R=1` expecting `Q=2`, with negatives excluding both one-sided rules — now passes inside a mechanically valid
+complete ledger. That is the first **runtime** proof of frozen §16.3's correction term, and it closes the gap I
+raised at the freeze: the model's distinctive content is no longer validated only by a witness where the gauges
+cancel.
+
+`M5-CP3-TB1-R15-REV-OBS-01` is **discharged / runtime-proved** in the strong form: CB18 statically replayed the
+corrected parser against literal protocol bytes *before* the gate, and R15-R1 then exercised the frozen parser
+for real. That is the rule working as intended — the replay done beforehand rather than in the post-mortem.
+
+`M5-CP3-TB1-R6-REV-OBS-01` correctly remains **OPEN**, since row 16 still dies before the Forward → Reverse
+comparator. It has now survived three opportunities to be closed on convenience.
+
+Credit discipline holds throughout: neither nonzero-Z4 debt is discharged, no selector publication or
+pre-commitment is authorized, selector430 is 430/430 with protected ordinals 191/192/247/408 PASS, and the
+accidental duplicate run `35878323220` is explicitly excluded as non-authoritative rather than quietly ignored.
+
+### V3 — GUARD FOR CB19: resolve the representation, but keep the expectation independent
+
+The correction CB19 must make is to compare **semantic** values rather than stored ones. The obvious way to
+implement that is to call `resolve_periodic_relation_semantic_action(...)` on the published relation and compare
+the result — and that is where this turn's fix could quietly become circular, because the resolver is production
+code and the relation is production output. `resolve(product) == derive_from(product)` would be a
+self-authorizing oracle: green, and proving nothing.
+
+**The protection already exists and must be used.** `Q = 3` for this witness is an independently derived constant
+from DEFN-R1 §7, and `witness.sourceRotation` is cross-checked against `witness.atlasRotation` in the test's own
+opening assertion, so the expectation comes from source/atlas authority rather than from the relation.
+
+**Required of CB19:** resolve the *representation* through the documented resolver, and keep the *expectation*
+independently derived — asserting the resolved semantic rotation equals the source-derived value (**3** for this
+witness), with the stored action's inverse relationship stated explicitly rather than assumed. The test must not
+be reduced to checking the product against its own resolver, and must not weaken `EXPECT_NE(QuarterTurn{},
+relation->action().rotation)` or the other nonzero discriminators that make these rows debt-bearing. Recorded as
+`M5-CP3-TB1-R15-R1-REV-OBS-01`.
+
+One standing note carried from the freeze: when rows 16/17 do pass, the Review must still record that the gauge
+correction is **not exercised by the CP3 witness** (both gauges cancel there), so CP3 green is never cited as
+validating the gauge model. That validation now rests on the CB17 mechanism identity, which is where it belongs.
+
+### V4 — verification limits
+
+Re-derived from repository bytes: rows 16/17's raw comparisons against stored representation, the resolver's
+existence and its production call sites, the inverse relationship `3 + 1 = 0 mod 4`, selector430's rows, hash and
+427-row prefix. Accepted as reported: R15-R1 artifact hashes, ledger tallies (11/11, 1/1, 4/6, 430/430), manifest
+coverage, and the raw-evidence quarter-turn values recorded for the two RED processes.
