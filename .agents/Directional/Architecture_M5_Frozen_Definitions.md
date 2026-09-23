@@ -217,7 +217,7 @@ Implement the non-ordinal `PeriodicRelationId`, preserve it through aggregation,
 
 Complete the five-class relation failure matrix with independent negative oracles. Missing/duplicate/conflicting/nonreciprocal/representation-renumbered failures must reject at the named authority boundary without repair. This checkpoint supplies the mechanism credit for `MissingPeriodicRelationOwnerIsRejected` but not its production debt.
 
-### `M5-CP3` — direct-production exit — **R16 REVIEW ACCEPTED / ALL FOUR DEBTS DISCHARGED / OPEN FOR §13.3 PUBLICATION STEPS 4-6**
+### `M5-CP3` — direct-production exit — **CLOSED / ACCEPTED at `M5-CP3-TB2-REV`; SELECTOR448 ACCEPTED**
 
 Use the accepted row408-class one-region torus precondition to prove production emits at least two canonical same-region relations/owned periodic edges, then carry direct nonzero-Z4 authority through lineage/quotient materialization. Prove unused-valid-relation invariance on that production subject and discharge all four M5 debts without weakening their discriminators.
 
@@ -234,11 +234,9 @@ All `M5-DEFN` stop rules are resolved:
 
 **Decision:** `approved_with_amendments`. The milestone split is preserved, but relation identity is explicitly separated from relation transport/value so transform tamper becomes a conflict on one stable semantic relation rather than a new identity.
 
-## 11. Current exact successor
+## 11. Historical exit and current exact successor
 
-**`M5-CP3-CB20`** — publication-only Code + Build under §17 and
-`Architecture_M5_CP3_CB20_Selector_448_Publication_Code_Build_Plan.md`. Green CB20 routes to `M5-CP3-TB2-EXEC`, then
-mandatory `M5-CP3-TB2-REV` (§13.3 steps 4-6).
+Frozen §13.3 is now complete: R16 precommitted selector448, CB20 published those exact bytes, TB2 executed the published selector freshly, and `M5-CP3-TB2-REV` independently accepted closure. **M5 is CLOSED / ACCEPTED.** Current exact successor is runtime-free **`M6-DEFN`**. No M6 implementation semantics are defined by this M5 record.
 
 *Corrected by the `M5-CP3-TB1-R16-REV` reviewing-agent addendum.* This section named `M5-CP3-CB14` (the R11-R1 Review
 successor) and was not updated by any of the Review/DEFN turns that followed (R12-REV through R16-REV, including
@@ -581,7 +579,7 @@ same-region generators distinguishable without guessing a basis by discovery ord
 product comment refused. The re-homing was therefore not debt deferral: the obligation arrived with a concrete
 mechanism and a checkpoint that must prove it.
 
-### V5 — RECORDED RISK: M5's exit conditions are stated in two places and nowhere in full
+### V5 — DISCHARGED AT `M5-CP3-TB2-REV`: M5 exit conditions reconciled once at closure
 
 At `M4-CP4-TB3-REV` I required M5's exit theorem to appear in the governing M5 document. It does not:
 `Architecture_M5_Frozen_Definitions.md` contains no "M5 closes when…" clause, and neither does the DEFN record
@@ -601,10 +599,7 @@ mechanism-only prohibition, the CP1/CP2/CP3 bindings — live in §§8-9 of this
 the same division that produced `M4-CP4-TB3-REV-OBS-01`, where the two halves diverged and the divergence only
 became visible at the moment of closure.
 
-**Required before M5 closes, not now:** the turn that adjudicates M5 closure must state M5's exit once,
-explicitly, reconciling `DESIGN.md` §14 M5 with §§8-9 of this document, and must confirm against **both** that
-all four debts are discharged on produced authority with no mechanism-only credit. Recorded as
-`M5-DEFN-REV-OBS-01`, owned by `M5-CP3`.
+**Discharged at `M5-CP3-TB2-REV`.** Final Review states the seven-conjunct M5 exit once, explicitly reconciles `DESIGN.md` §14 M5 with §§8-9/13 of this document, confirms all four debts on produced authority, and preserves the prohibition on mechanism-only production credit. `M5-DEFN-REV-OBS-01` is closed.
 
 ### V6 — successor scope and verification limits
 

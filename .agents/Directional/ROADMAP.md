@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-23 (`M5-CP3-TB1-R16-REV` COMPLETE / approved. CB19 package `10763242885` promoted under selector430; all M5 produced debts discharged; stable accounting 51 / 14 / 37, project debt 1 M6-owned. Exact selector448 SHA `70ff0860...c75789` precommitted with owners 32/300/75/41. Exact next `M5-CP3-CB20`, then fresh selector448 TB2 + final Review.)**
+**Status date:** 2026-09-23 (`M5-CP3-TB2-REV` COMPLETE / selector448 accepted / M5 CLOSED. Final M5 package/source `10771899191 / cef1c6ee...` is accepted under selector448 448/448; stable accounting 51 / 14 / 37, project debt 1 M6-owned. Exact next `M6-DEFN`.)**
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 
@@ -529,18 +529,18 @@ TB2-R2 executed the frozen corrected gate in exactly **799** fresh processes: re
 
 M4 owns **no** produced-witness debt after DEFN-R2. The closed candidate-bearing-complex `G4-B002` debt is M6-owned: M6-CP1 owns occurrence-complex/stage-separation mechanism and M6-CP3 owns its direct-production re-proof. The two periodic `G4-B002` debts were re-homed to M5 at M4 closure—canonical relation/container-order identity through M5-CP1/CP3 and missing-owner typing through M5-CP2/CP3—and were discharged at `M5-CP3-TB1-R7-REV`. `G4-B004` remains explicitly split: focused positive multi-isolation relation/certificate production in M5, representative occurrence/embedding/verifier consumption in M6; no M4 gate identity is added.
 
-### M5 — certificate-carrying chart and quotient relations (§14 M5) — **CP1 + CP2 CLOSED / ACCEPTED; CP3 R16 REVIEW ACCEPTED / SELECTOR448 PRECOMMITTED / CB20 NEXT**
+### M5 — certificate-carrying chart and quotient relations (§14 M5) — **CLOSED / ACCEPTED at `M5-CP3-TB2-REV`**
 
 | Checkpoint | Semantic domain |
 |---|---|
 | `M5-DEFN` | **COMPLETE** — canonical relation IDs, selected path certificates, cutover, failure matrix, invariance, and debt ownership frozen in `Architecture_M5_Frozen_Definitions.md` |
 | `M5-CP1` | **CLOSED / ACCEPTED at `M5-CP1-TB1-R3-REV`.** Canonical relation ID domain and explicit path certificates replace verifier-side reachability reconstruction. Accepted package `10600353027` / source `8a86710d...` is green at focused 9/9 + selector430 430/430; the corrected row6 pure-permutation falsifier passes. Mechanism credit retained; the relation-reorder production debt is discharged at `M5-CP3-TB1-R7-REV`. |
 | `M5-CP2` | **CLOSED / ACCEPTED at `M5-CP2-TB1-REV`.** Five-class checked factory failure matrix is runtime-green with independent one-fact oracles; package `10601978228` / source `0798547d...` promoted under unchanged selector430. Mechanism credit retained; the missing-owner production debt is discharged at `M5-CP3-TB1-R7-REV`. |
-| `M5-CP3` | **R16 REVIEW ACCEPTED / CANDIDATE PROMOTED / SELECTOR448 PRECOMMITTED.** R16 is 448/448 with complete 921/921 evidence; rows16/17 discharge the two remaining nonzero-Z4 M5 debts. Package/source `10763242885 / a8b33cb...` promoted under published selector430. Stable accounting **51 / 14 / 37**, project debt **1** (M6 only). Exact selector448 SHA `70ff0860...c75789`, prefix430 exact, owners 32/300/75/41; CB20 publication -> TB2 -> final Review remain. |
+| `M5-CP3` | **CLOSED / ACCEPTED at `M5-CP3-TB2-REV`.** CB20 published exact selector448; TB2 executed it fresh at 448/448 with complete 917/917 evidence and immutable postflight; final Review independently accepts selector448 and promotes package/source `10771899191 / cef1c6ee...`. All four M5 produced debts are discharged. Stable accounting **51 / 14 / 37**, project debt **1** (M6 only). |
 
 M5 originally owned four produced-witness debts. R7 Review discharged relation-owner/container-reorder and missing-owner typing. R16 Review now discharges the two `G4-B003` nonzero-periodic-Z4 debts through direct materialization/consumption and transform-only typed rejection. **All four M5 produced debts are discharged.** The separate closed-complex `G4-B002` debt remains M6-owned; total project debt is **1**.
 
-R16 Review independently accepts the complete 448/448 pre-publication gate, promotes CB19 package/source, and precommits exact selector448. M5 remains open solely because frozen §13.3 still requires separate selector publication, fresh published-selector execution and final independent Review. Exact next is `M5-CP3-CB20`.
+Final TB2 Review completes frozen §13.3: exact selector448 was precommitted, separately published, freshly executed **448/448**, and independently accepted. Final M5 authority is package/source `10771899191 / cef1c6ee...` under selector448. M5 is closed; exact next is `M6-DEFN`.
 
 ### M6 — occurrence, embedding, independent verification (§14 M6)
 

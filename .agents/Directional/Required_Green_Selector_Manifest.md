@@ -75,8 +75,8 @@ Future selector files are named by their resulting identity count.
 | **425** | 425 | `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b` | 424 | 1 | superseded accepted prefix |
 | **426** | 426 | `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114` | 425 | 1 | superseded accepted prefix |
 | **427** | 427 | `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f` | 426 | 1 | **ACCEPTED HISTORICAL PREFIX OF SELECTOR430** |
-| **430** | 430 | `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6` | 427 | 3 | **ACCEPTED CURRENT AUTHORITY** |
-| **448** | 448 | `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789` | 430 | 18 | **PUBLISHED / NOT YET ACCEPTED** |
+| **430** | 430 | `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6` | 427 | 3 | **ACCEPTED HISTORICAL PREFIX OF SELECTOR448** |
+| **448** | 448 | `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789` | 430 | 18 | **ACCEPTED CURRENT AUTHORITY** |
 
 `Prefix parent` **none** marks a file that is *not* an extension of the previous one — a superseded or withdrawn
 branch carrying unique bytes. Those are not redundant with anything and cannot be reconstructed from the chain.
@@ -820,7 +820,7 @@ Appended 1 producer-owned identity to selector426:
 
 CB24 static ownership is **30 authority-kernel / 281 producer / 75 completion / 41 validation**. `M4-CP-SCALE-TB13-EXEC` run/job `35393657851 / 105757517161` executes selector427 **427/427 PASS** in exact file order with exact immutable postflight. `M4-CP-SCALE-TB13-REV` independently re-hashes the selector/prefix, re-parses every one-selected PASS row, verifies the package/result manifests and pre/post censuses, and promotes package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef`. S5 therefore has cumulative required-green credit and selector427 is accepted current M4 authority.
 
-### 430 — ACCEPTED CURRENT AUTHORITY
+### 430 — ACCEPTED HISTORICAL PREFIX OF SELECTOR448
 
 `Architecture_M4_CP4_CB8_Required_Green_Selector_430.txt` — **430 identities**, LF SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`. Its first427 LF rows are byte-identical to accepted selector427 SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`.
 
@@ -838,13 +838,13 @@ TB3 run/job `35470130614 / 105969470184` then executes the exact selector430 as 
 
 `M5-CP2-TB1-REV` subsequently promotes package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` as the **current accepted runtime package under the same byte-frozen selector430** after focused 7/7 + selector430 430/430 artifact-only runtime and independent Review. Selector membership, ordering, LF hash `1c412850...9db6`, first427 prefix and owner census **31/283/75/41** are unchanged. M5 §13 now freezes the later CP3 publication sequence; no selector append occurs in CP2.
 
-`M5-CP3-TB1-R16-REV` subsequently promotes package `10763242885` / source `a8b33cb7145d5a99d47eaf5f70bb12f1c71238d1` as the **current accepted runtime package under the same byte-frozen selector430**. The basis is the complete fresh R16 pre-publication gate (run/job `35889831381 / 107279255523`): 18 nonselector identities 18/18 + selector430 430/430, 921/921 result evidence, and independent Review. Selector membership, ordering, LF hash `1c412850...9db6`, first427 prefix and owner census **31/283/75/41** are unchanged. The same Review **precommits** selector448 (SHA-256 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, selector430 as exact first430 prefix, owners **32/300/75/41**; `Architecture_M5_Frozen_Definitions.md` §17). It is **not a published selector file** and gets no row in the table above until `M5-CP3-CB20` publishes it. It is not accepted until `M5-CP3-TB2-REV`. *(Added by the R16-REV reviewing-agent addendum; the delegated closeout marked this manifest n/a and missed the package promotion.)*
+`M5-CP3-TB1-R16-REV` subsequently promotes package `10763242885` / source `a8b33cb7145d5a99d47eaf5f70bb12f1c71238d1` as the **current accepted runtime package under the same byte-frozen selector430**. The basis is the complete fresh R16 pre-publication gate (run/job `35889831381 / 107279255523`): 18 nonselector identities 18/18 + selector430 430/430, 921/921 result evidence, and independent Review. Selector membership, ordering, LF hash `1c412850...9db6`, first427 prefix and owner census **31/283/75/41** are unchanged. The same Review **precommits** selector448 (SHA-256 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, selector430 as exact first430 prefix, owners **32/300/75/41**; `Architecture_M5_Frozen_Definitions.md` §17). At the R16 Review point it was **not yet a published selector file** and therefore had no table row; CB20 later published those exact bytes and `M5-CP3-TB2-REV` accepted them. *(Added by the R16-REV reviewing-agent addendum; the delegated closeout marked this manifest n/a and missed the package promotion.)*
 
-### 448 — PUBLISHED / NOT YET ACCEPTED
+### 448 — ACCEPTED CURRENT AUTHORITY
 
 `Architecture_M5_CP3_CB20_Required_Green_Selector_448.txt` — **448 identities**, LF SHA-256 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`. Its first430 LF rows are byte-identical to accepted selector430 SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`.
 
-`M5-CP3-CB20` publishes exactly the 18 identities precommitted by `M5-CP3-TB1-R16-REV`, in frozen order. Static ownership across the four standard owner executables is **32 authority-kernel / 300 producer / 75 completion / 41 validation**. The exact 448-row routing receipt is `Architecture_M5_CP3_CB20_Selector_448_Static_Routing_Receipt.tsv`, SHA-256 `c91a5e2f3d84d7d38b7c7c58afd157448cb225ebdbbfac3da2ef6259e811dd7c`. This selector is **published only**; it is not accepted until fresh artifact-only `M5-CP3-TB2-EXEC` and independent `M5-CP3-TB2-REV` succeed.
+`M5-CP3-CB20` publishes exactly the 18 identities precommitted by `M5-CP3-TB1-R16-REV`, in frozen order. Static ownership across the four standard owner executables is **32 authority-kernel / 300 producer / 75 completion / 41 validation**. The exact 448-row routing receipt is `Architecture_M5_CP3_CB20_Selector_448_Static_Routing_Receipt.tsv`, SHA-256 `c91a5e2f3d84d7d38b7c7c58afd157448cb225ebdbbfac3da2ef6259e811dd7c`. `M5-CP3-TB2-EXEC` run/job `35913334490 / 107358491487` executes this exact published selector as **448/448 PASS** fresh exact-filter processes with zero skips, benchmark 0, exact owner census **32/300/75/41**, complete 917/917 result evidence and immutable postflight. `M5-CP3-TB2-REV` independently re-hashes selector448/prefix430/routing authority and all 448 ledger/raw-log receipts, then **accepts selector448 and promotes CB20 package/source `10771899191 / cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1` as the current accepted M5 runtime authority**. Selector430 remains the exact accepted historical first430 prefix.
 
 ## Separate lineage — M1
 

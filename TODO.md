@@ -2,13 +2,13 @@
 
 Last updated: 2026-09-23 UTC
 
-## Latest Review turn — `M5-CP3-TB1-R16-REV`
+## Latest Review turn — `M5-CP3-TB2-REV`
 
-**COMPLETE / APPROVED / CANDIDATE PROMOTED / M5 PRODUCED DEBTS COMPLETE / SELECTOR448 PRECOMMITTED.** Review independently upholds R16 at 448/448 with complete 921/921 evidence and exact immutable postflight. Rows16/17 prove the committed inverse-storage case against independent source/A3 `Q=3`, then reach materialization/certificate/consumption and one-transform typed rejection respectively. CB19 package/source `10763242885 / a8b33cb...` is promoted under still-published selector430. Stable accounting remains **51 / 14 / 37**; project debt is **1**, M6-owned. Exact selector448 SHA-256 `70ff0860...c75789`, prefix430 unchanged, owner census 32/300/75/41. Exact successor is publication-only `M5-CP3-CB20`.
+**COMPLETE / APPROVED / SELECTOR448 ACCEPTED / M5 CLOSED.** Final Review independently re-opens TB2 run/job `35913334490 / 107358491487`, verifies result/log artifacts, 917/917 evidence, all 448 ledger/raw-log receipts, selector448 `70ff0860...c75789`, exact selector430 prefix and routing owners 32/300/75/41. CB20 package/source `10771899191 / cef1c6ee...` is promoted under selector448 **448/448**. All seven frozen M5 §13.1 exit conjuncts are satisfied; all four M5 produced debts are closed. Stable accounting stays **51 / 14 / 37**; project debt **1**, M6-owned. Exact successor is runtime-free `M6-DEFN`.
 
 ## Latest Code + Build turn — `M5-CP3-CB20`
 
-**COMPLETE / SELECTOR448 PUBLISHED / RUNTIME-FREE / COMPILE+PACKAGE GREEN / NOT ACCEPTED.** Exact selector448 is published at 448 unique rows, 36,382 bytes, SHA-256 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, exact selector430 prefix, standard-owner census 32/300/75/41; routing receipt SHA-256 is `c91a5e2f3d84d7d38b7c7c58afd157448cb225ebdbbfac3da2ef6259e811dd7c`. Publication source is `cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1`. Compile run/job `35910024971 / 107347291148`, result/log artifacts `10771899191 / 10772810906`, root manifest 28/28; all eight GMP/GMPXX targets link and `runtimeExecution=false`. Selector448 remains PUBLISHED / NOT YET ACCEPTED; CB19 remains current accepted runtime authority.
+**COMPLETE / SELECTOR448 PUBLISHED / RUNTIME-FREE / COMPILE+PACKAGE GREEN.** At CB20, exact selector448 was published at 448 unique rows, 36,382 bytes, SHA-256 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, exact selector430 prefix, standard-owner census 32/300/75/41; routing receipt SHA-256 is `c91a5e2f3d84d7d38b7c7c58afd157448cb225ebdbbfac3da2ef6259e811dd7c`. Publication source is `cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1`. Compile run/job `35910024971 / 107347291148`, result/log artifacts `10771899191 / 10772810906`, root manifest 28/28; all eight GMP/GMPXX targets link and `runtimeExecution=false`. CB20 itself made no acceptance claim; `M5-CP3-TB2-REV` later accepts these exact bytes and promotes this package.
 
 ## Latest Test + Benchmark turn — `M5-CP3-TB2-EXEC`
 
@@ -26,58 +26,9 @@ CB17 is **COMPLETE / RUNTIME-FREE / COMPILE GREEN**, candidate `10742798135 / 1a
 
 **COMPLETE / CONTROL-PLANE GREEN / RUNTIME-FREE / NO DIRECTIONAL COMPILE / NO REPACKAGE.** Canonical R15-R1 harness/caller are frozen at SHA-256 `7867e779...81b7 / 0f0a12f9...a15c`. Static run `35864475136` proves corrected literal GTest accounting `selected/passed/skipped=1/1/0`, historical parser `0/0`, skip probe `1/0/1`, and both workflow schemas green. No semantic input changed; accounting remains 51 / 14 / 37, debt 3.
 
-## Exact next turn — `M5-CP3-TB2-REV`
+## Exact next turn — `M6-DEFN`
 
-Mandatory independent runtime-free final M5 Review. Reopen TB2 result/log bytes, re-hash selector448/prefix430/routing authority, re-verify all 448 ledger rows and the complete 917/917 evidence manifest, then decide selector448 acceptance and M5 closure. Review also owns `M5-DEFN-REV-OBS-01`, the explicit no-credit/later-owner disposition for the two never-gated CB14 identities (`M5-CP3-TB1-R16-REV-OBS-01`), and consolidated-record numbering/citation repair (`-OBS-03`).
-
-## M5 checkpoint sequence
-
-- [x] `M5-CP3-TB1-R11-EXEC` — **ORCHESTRATION INVALID / NO SEMANTIC LEDGER**. Run/job `35771152416 / 106892972571`; 913 manifest rows vs 912 actual non-manifest files because `SHA256SUMS.new` was inside the enumerated result tree.
-- [x] `M5-CP3-CB13` — **COMPLETE / CONTROL-PLANE-ONLY / RUNTIME-FREE / STATIC+SYNTHETIC GREEN**. Validation run `35775766068`; external manifest temp and fail-closed completeness proof accepted for retry.
-- [x] `M5-CP3-TB1-R11-R1-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. Fresh 446-process gate is 444 PASS / 2 RED; complete self-manifest 912/912; rows4/5 stop at `PeriodicActionCorrespondenceMismatch`.
-- [x] `M5-CP3-TB1-R11-R1-REV` — **COMPLETE / CAUSE PROVED / EXISTING RP-01 CONTINUATION**. CB12 source-ordering correction is proved; second endpoint map fails because raw cut-domain cell coordinates are not quotient-seam endpoint authority under nonzero transport. R10 candidate closes recovery-proved; the later Review amendment reopens the independent R6 runtime direction observation pending a row4 comparator proof.
-- [x] `M5-CP3-CB14` — **COMPLETE / PRODUCT-ONLY / RUNTIME-FREE / COMPILE GREEN / RUNTIME UNPROVED**. Candidate `10725395682` / source `b8dc3e906dd...`; relation-endpoint gauge separated from ordinary cell placement; all eight GMP/GMPXX targets compile/link; root manifest 28/28; no runtime.
-- [x] `M5-CP3-TB1-R12-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. 439/446 PASS, complete 912/912 evidence; produced rows1/2/3/6 plus selector408 regress and rows4/5 fail recovery.
-- [x] `M5-CP3-TB1-R12-REV` — **COMPLETE / RUNTIME-FREE / CAUSE PROVED + DIAGNOSTIC GAP**. Ordinary torus/ordinal408 root is storage-canonical orientation consumed as semantic A3 direction; nonzero CB14 first false predicate remains unobserved; accounting unchanged.
-- [x] `M5-CP3-CB15` — **COMPLETE / PRODUCT + TEST-SUPPORT / RUNTIME-FREE / COMPILE GREEN**. Candidate `10730261023` / source `4dfe392d28d60b448e2f32253f7d170221ac57ec`; deterministic semantic/storage conversion + typed fixed-order correspondence diagnostics; all eight GMP/GMPXX targets compile/link; root manifest 28/28; no runtime.
-- [x] `M5-CP3-TB1-R13-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. 445/447 PASS, complete 914/914 evidence; ordinary recovery green, rows4/5 exact first-branch mismatch, selector430 430/430.
-- [x] `M5-CP3-TB1-R13-REV` — **COMPLETE / RUNTIME-FREE / ORDINARY RECOVERY PROVED + FIRST-BRANCH ROOT PROVED / ACCOUNTING ADDENDUM**. Existing RP-01 occurrence-branch authority conflation; addendum records the R12 ordinal408 re-regression as a stable RP-01 recurrence and corrects totals to 51 / 14 / 37.
-- [x] `M5-CP3-CB16` — **COMPLETE / RUNTIME-FREE / COMPILE GREEN / RUNTIME UNPROVED**. Candidate `10733058003 / 6bad9eb5626e77a234ffb2c14f621195105e4ba1`; exact occurrence-carrier branch/gauge authority bridge + independent branch falsifier; all eight GMP/GMPXX targets compile/link; root manifest 28/28; no runtime.
-- [x] `M5-CP3-TB1-R14-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. 446/448 PASS, complete 916/916 evidence; branch-authority focus PASS, produced rows4/5 remain exact `PeriodicActionFirstBranchMismatch`, selector430 430/430. Convergence trigger fired.
-- [x] `M5-CP3-TB1-R14-REV` — **COMPLETE / RUNTIME-FREE / DEFINITION AUTHORITY PROVED**. Independently re-opened R14 916/916 evidence and 446/448 vector; helper green, production gauge model under-specified; convergence trigger enforced.
-- [x] `M5-CP3-DEFN-R1` — **COMPLETE / RUNTIME-FREE / DEFINITIONS FROZEN**. Exact relation turn `Q = G_R^-1 A G_F`; Forward-anchored endpoint normalization; current torus witness independently valid at `Q=3`; no runtime/build/selector mutation.
-- [x] `M5-CP3-CB17` — **COMPLETE / RUNTIME-FREE / COMPILE GREEN / RUNTIME UNPROVED**. Frozen §16.3 relation-gauge cutover; synthetic `Q != A` focused contract; fixture/field/A3/selector unchanged; all-eight GMP/GMPXX compile/package green.
-- [x] `M5-CP3-TB1-R15-EXEC` — **COMPLETE EXECUTION / ORCHESTRATION INVALID / NO COMPLETE SEMANTIC LEDGER**. Attempt 0 stopped pre-runtime on harness Python escaping; retry began runtime but falsely classified the first actually-green process as zero-selected due doubled regex escapes. Policy forbids another EXEC retry after runtime start.
-- [x] `M5-CP3-TB1-R15-REV` — **COMPLETE / APPROVED WITH AMENDMENTS / CONTROL-PLANE ROOT CAUSE PROVED / +0**. R15 zero-credit disposition upheld; doubled-bracket exact-one parser independently falsified; fresh retry requires CB18 freeze first.
-- [x] `M5-CP3-CB18` — **COMPLETE / CONTROL-PLANE GREEN / RUNTIME-FREE / NO COMPILE**. Corrected literal GTest parser statically discriminates historical defect; canonical R15-R1 harness/caller frozen; both schemas green; semantic inputs unchanged.
-- [x] `M5-CP3-TB1-R15-R1-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. Fresh 448/448 exact-filter gate is 446 PASS / 2 RED with selector430 430/430, protected 191/192/247/408 PASS, complete 921/921 evidence, benchmark 0 and exact immutable postflight; produced rows16/17 alone RED before their final product falsifiers.
-- [x] `M5-CP3-TB1-R15-R1-REV` — **COMPLETE / TEST-AUTHORITY ROOT CAUSE PROVED / +0**. Mechanics upheld at 446/448; rows16/17 directly consume storage-canonical representation as semantic direction. DEFN-R1/parser observations discharged; product debts remain open.
-- [x] `M5-CP3-CB19` — **COMPLETE / TEST-ONLY / RUNTIME-FREE / COMPILE+PACKAGE GREEN**. Rows16/17 resolve storage-canonical representation to semantic A3 authority while preserving independent `Q=3`, inverse-storage non-vacuity and original product falsifiers; all eight GMP/GMPXX targets compile/link; no runtime.
-- [x] `M5-CP3-TB1-R16-EXEC` — **COMPLETE / MECHANICALLY GREEN / 448 PASS + 0 RED / REVIEW REQUIRED**. Fresh run/job `35889831381 / 107279255523`; mechanism 11/11, focused atlas 1/1, produced 6/6, selector430 430/430, benchmark 0, complete 921/921 evidence and exact immutable postflight. No promotion/debt/observation/accounting disposition is made in EXEC.
-- [x] `M5-CP3-TB1-R16-REV` — **COMPLETE / APPROVED / CANDIDATE PROMOTED / M5 DEBTS COMPLETE / SELECTOR448 PRECOMMITTED.** Independent 448/448 + 921/921 acceptance; debt 3->1 (M6 only); R6/CP2/R15-R1 observations discharged; exact successor CB20.
-- [x] `M5-CP3-CB20` — **COMPLETE / SELECTOR448 PUBLISHED / COMPILE+PACKAGE GREEN / RUNTIME-FREE / NOT ACCEPTED.** Exact selector448 `70ff0860...c75789`, routing receipt `c91a5e2f...1dd7c`, source `cef1c6ee...`, compile run/job `35910024971 / 107347291148`, result artifact `10771899191`, 28/28 root manifest; no runtime.
-- [x] `M5-CP3-TB2-EXEC` — **COMPLETE / MECHANICALLY GREEN / 448/448 PASS / REVIEW REQUIRED.** Run/job `35913334490 / 107358491487`, result/log `10775185139 / 10774217117`, exact-one/zero-skip, owners 32/300/75/41, benchmark 0, 917/917 evidence, immutable postflight exact; no regression observed.
-- [ ] `M5-CP3-TB2-REV` — final independent M5 closure Review; owns selector448 acceptance, `M5-DEFN-REV-OBS-01`, `M5-CP3-TB1-R16-REV-OBS-01` (disposition of the ungated CB14 `M5CP3` identities) and `-OBS-03` (consolidated-record numbering repair in the closure fold).
-
-- [x] `M5-CP1` and `M5-CP2`: CLOSED / ACCEPTED for mechanism credit; R16 Review later promotes current M5 runtime package `10763242885`.
-- [x] `M5-CP3` R1→R7 recovery chain: stable ordinal408 `RP-01` event **RECOVERY PROVED** at R7 Review.
-- [x] M5 produced debt 1 — relation owners/container reorder: **DISCHARGED at R7 Review** on produced rows1/2 with >=2 relations and >=2 owned periodic edges.
-- [x] M5 produced debt 2 — missing relation owner: **DISCHARGED at R7 Review** on produced rows1/3 with exact typed rejection.
-- [x] M5 produced debt 3 — genuine nonzero-Z4 rotation+translation through production/materialization: **DISCHARGED at R16 Review** by non-vacuous row16 materialization/certificate/positive-consumption proof.
-- [x] M5 produced debt 4 — tampered produced nonzero-Z4 transform rejects typed: **DISCHARGED at R16 Review** by row17 one-transform exact `NonReciprocalPeriodicRelation` proof.
-- [ ] M6 closed-complex produced debt: **OPEN / M6-owned**.
-- [x] `M5-CP3-CB9` — **COMPLETE / TEST-ONLY / RUNTIME-FREE / COMPILE GREEN**. Candidate `10660365136` / source `1023eea6090...`; all-eight GMP compile/package green, no runtime.
-- [x] `M5-CP3-TB1-R8-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. Vector 9/9 + 1/1 + 4/6 + 430/430; row6 recovers, rows4/5 stop at `InvalidBoundedDiskChart`; immutable postflight exact.
-- [x] `M5-CP3-TB1-R8-REV` — **COMPLETE / ROW6 RECOVERY PROVED / ROWS4-5 TEST-WITNESS DEFECT PROVED**.
-- [x] `M5-CP3-CB10` — **COMPLETE / TEST-ONLY / RUNTIME-FREE / COMPILE GREEN**. Candidate `10668437359` / source `9040f74a8de...`; exact seam ramp + independent chart-admissibility oracle compiled in all eight GMP targets with no runtime.
-- [x] `M5-CP3-TB1-R9-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. Vector 9/9 + 1/1 + 4/6 + 430/430; CB10 chart oracle clears, rows4/5 stop at exact `PeriodicActionCorrespondenceMismatch`; immutable postflight exact.
-- [x] `M5-CP3-TB1-R9-REV` — **COMPLETE / CB10 WITNESS RECOVERY PROVED / ROTATION-AWARE PAIRING DEFECT PROVED**.
-- [x] `M5-CP3-CB11` — **COMPLETE / PRODUCT-ONLY / RUNTIME-FREE / COMPILE GREEN**. Candidate `10678487447` / source `53a21f550cf...`; exact same-region pre-rotation family/sign veto removed while cross-region/raw and exact transported action semantics remain.
-- [x] `M5-CP3-TB1-R10-EXEC` — **COMPLETE EXECUTION / 444 PASS + 2 RED / EVIDENCE-MANIFEST CONTRACT INVALID**. Rows4/5 remain at `PeriodicActionCorrespondenceMismatch`; 446/446 exact-one/zero-skip, selector430 430/430, postflight exact; no rerun after runtime began.
-- [x] `M5-CP3-TB1-R10-REV` — **COMPLETE / MANIFEST DEFECT UPHELD / CB11-SPECIFIC RAW-LABEL DEFECT CLOSED / INSERTION-ORDER DIRECTED-AUTHORITY DEFECT PROVED**. Candidate remains unpromoted.
-- [x] `M5-CP3-CB12` — **COMPLETE / PRODUCT-ONLY / RUNTIME-FREE / COMPILE GREEN**. Exact A3 Forward -> Reverse now owns same-region direction; candidate `10713410215` / source `8ff6fdc720b3...`; runtime unproved.
-- [x] `M5-CP3-TB1-R11-EXEC` — **ORCHESTRATION INVALID / NO SEMANTIC LEDGER**. Preserved as invalid-attempt provenance; superseded only for execution by fresh R11-R1 after CB13.
-- [ ] M5 selector publication Code + Build / cumulative artifact-only runtime / Review — blocked until frozen §13.3 precommitment exists.
+Runtime-free M6 definition turn. Freeze the four occurrence/quotient/embedding/verifier stage products and verifier recompute boundary, adjudicate `G4-B001` and the remaining M6-owned closed-complex debt route, and freeze deletion-or-gating ownership for the two dormant CB14 identities without retroactive M5 credit. No M6 implementation starts until those authorities are coherent.
 
 ## Current observations
 
@@ -92,9 +43,9 @@ Mandatory independent runtime-free final M5 Review. Reopen TB2 result/log bytes,
 - [x] `M5-CP3-TB1-R14-REV-OBS-01` — **DISCHARGED AT DEFN-R1**; independent committed-torus source/A3 derivation yields relation-gauge `Q=3` before relation publication.
 - [x] `M5-CP3-TB1-R15-REV-OBS-01` — **DISCHARGED / RUNTIME-PROVED AT R15-R1 REVIEW**. Frozen corrected parser accounts for all 448 exact-one/zero-skip processes in a complete valid ledger.
 - [x] `M5-CP3-TB1-R15-R1-REV-OBS-01` — **DISCHARGED AT R16 REVIEW**. CB19 kept the expectation independent (hard-coded `Q=3`) while using the resolver only to normalize representation; R16 proves it at runtime.
-- [ ] `M5-CP3-TB1-R16-REV-OBS-01` — **OPEN / owner `M5-CP3-TB2-REV`**. `M5CP3.PeriodicRelationEndpointGaugeIsIndependentAndExact` and `M5CP3.ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection` (CB14) were never gated or adjudicated. They need an explicit no-credit disposition and a named cleanup/gating owner, and they must not enter CB20 or TB2.
+- [x] `M5-CP3-TB1-R16-REV-OBS-01` — **DISPOSED AT TB2 REVIEW / NO M5 CREDIT.** The two CB14 identities were never executed, remain absent from selector448 and receive no M5 credit. `M6-DEFN` owns freezing their deletion-or-gating disposition before M6 implementation uses either.
 - [ ] `M5-CP3-TB1-R16-REV-OBS-02` — **RECORDED / NOT FIRING**. Rows 446/447 pin inverse canonical storage. If it fires, classify as test-authority drift and keep the pin.
-- [ ] `M5-CP3-TB1-R16-REV-OBS-03` — **OPEN / owner `M5-CP3-TB2-REV` closure fold**. Repair the duplicate §4.17/§4.18 numbering in `M5_Consolidated_Record.md` and its citations.
+- [x] `M5-CP3-TB1-R16-REV-OBS-03` — **DISCHARGED AT TB2 REVIEW.** `M5_Consolidated_Record.md` now has one chronological unique §4.1-§4.31 sequence and live citations are repaired.
 
 ## Deferred hygiene
 
@@ -120,7 +71,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. M4 handed four periodic/relation debts to M5 and one closed-complex debt to M6; R7 Review discharged two M5 debts and R16 Review discharges the remaining two nonzero-Z4 M5 debts. The sole remaining project debt is the M6 closed-complex subject.
-- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 R16 REVIEW ACCEPTED / SELECTOR448 PUBLISHED / TB2 EXEC GREEN / FINAL REVIEW NEXT**. Package/source `10763242885 / a8b33cb...` is promoted under still-published selector430. All four M5 produced debts are discharged; stable accounting **51 / 14 / 37**, project debt **1** M6-owned. Exact selector448 is published at `70ff0860...c75789`, owners 32/300/75/41; M5 remains open for fresh TB2 execution + final Review.
+- [x] **M5** certificate-carrying chart/quotient relations — **CLOSED / ACCEPTED at `M5-CP3-TB2-REV`.** Final authority is package/source `10771899191 / cef1c6ee...` under selector448 **448/448** (`70ff0860...c75789`, owners 32/300/75/41). All four M5 produced debts are discharged; stable accounting **51 / 14 / 37**, project debt **1** M6-owned. Closure: `M5_Closure_Record.md`.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.
@@ -159,4 +110,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current corrected totals are **51 events / 14 categories / 37 recurrences**, project debt **1** (M6 only). M4, M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**; current accepted M5 runtime authority is package/source `10763242885 / a8b33cb...` under selector430 **430/430**. R16 Review accepted the pre-publication 448/448 vector, CB20 published selector448 with compile/package green, and TB2 now executes the published selector **448/448 PASS** with exact immutable postflight. M5 remains open until final Review. Exact successor is **`M5-CP3-TB2-REV`**. PR #8 remains open, draft, and unmerged.
+Current corrected totals are **51 events / 14 categories / 37 recurrences**, project debt **1** (M6 only). M4 and M5 are **CLOSED / ACCEPTED**. Final M5 authority is package/source `10771899191 / cef1c6ee...` under accepted selector448 **448/448** with exact immutable TB2 postflight. Exact successor is **`M6-DEFN`**. PR #8 remains open, draft, and unmerged.

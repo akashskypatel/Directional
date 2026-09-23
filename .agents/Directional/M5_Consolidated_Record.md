@@ -1,15 +1,13 @@
 # M5 Consolidated Record
 
-**Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-23 at `M5-CP3-CB20`
+**Status:** M5 CLOSED / ACCEPTED — DURABLE FAMILY RECORD
+**Last updated:** 2026-09-23 at `M5-CP3-TB2-REV`
 
-Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is promoted to package `10763242885` / source `a8b33cb7145d5a99d47eaf5f70bb12f1c71238d1` under still-published selector430 **430/430**. Stable accounting remains **51 / 14 / 37**; project produced-witness debt is now **1**, M6-owned.
+Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Final accepted M5 runtime authority is package `10771899191` / source `cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1` under accepted selector448 **448/448**. Stable accounting remains **51 / 14 / 37**; project produced-witness debt is **1**, M6-owned.
 
-## Current CP3 authority — R16 Review accepted / selector448 precommitted / CB20 next
+## Final M5 authority — selector448 accepted / M5 closed
 
-R16 Review independently upholds run/job `35889831381 / 107279255523` at **448/448 PASS**, complete **921/921** evidence and immutable postflight; rows16/17 prove the corrected inverse-storage semantic contract and reach their final materialization/tamper discriminators. Both remaining M5 nonzero-Z4 debts are discharged, the R6 direction observation and CP2 publication precondition close, and CB19 package/source `10763242885 / a8b33cb...` is promoted.
-
-Exact selector448 is precommitted at SHA-256 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, preserving selector430 as its byte-identical first430 prefix; owner census is 32/300/75/41. Selector448 is not yet published or accepted. M5 remains open through the separate `CB20 -> TB2-EXEC -> TB2-REV` publication sequence.
+Final Review independently accepts the exact CB20-published selector448 after fresh TB2 execution: run/job `35913334490 / 107358491487` is **448/448 PASS**, exact-one/zero-skip, complete **917/917** evidence and immutable postflight. Published selector448 hashes to `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, selector430 is its byte-identical first430 prefix, and static/runtime owner authority is **32 / 300 / 75 / 41**. CB20 package/source `10771899191 / cef1c6ee...` is the accepted final M5 runtime authority. All four M5 produced debts are discharged; project debt is one M6-owned closed-complex subject. Exact successor is `M6-DEFN`.
 
 ## 1. `M5-DEFN` — definitions frozen
 
@@ -31,7 +29,7 @@ CB1 added the frozen five-class checked relation failure matrix and independent 
 
 The Review also resolves the prior selector-governance gap by adding frozen §13 to `Architecture_M5_Frozen_Definitions.md`: selector430 stays the byte-frozen prefix through CP3 implementation and pre-publication runtime; **only a green independent pre-publication Review** may pre-commit exact successor-selector bytes/order/hash/owner census before a separate publication Code + Build; a complete published-selector artifact-only run and final Review are mandatory before M5 closes. R1 Review proves the first complete gate is semantic RED, so `M5-CP2-TB1-REV-OBS-01` remains open and selector precommitment is carried to the first corrected green Review rather than invented on a failing candidate.
 
-## 4. Current open M5 boundary — `M5-CP3`
+## 4. M5-CP3 historical recovery and closure sequence
 
 `M5-CP3-CB2` produced compile/package-green candidate `10615252806` at semantic source `fc2aa5fa68cac890051614c2104979aef4a60d21`. Its reviewed representation rule remains valid: exact reciprocal same-region A3 cut copies may become owned `PeriodicCut` while retaining `sharedBoundaryInterval` provenance; cross-region pairs remain HardRail and CP2 checked relation semantics remain binding.
 
@@ -278,7 +276,56 @@ The R14 independent-freeze observation is discharged by a concrete source/A3 der
 Stable accounting stays **51 / 14 / 37**, debt **3**, and accepted runtime stays unchanged. `M5-CP3-TB1-R14-CAND-01` has its definition ambiguity CLOSED but implementation recovery remains OPEN. R6 direction, CP2 publication, M5-DEFN observation and both nonzero-Z4 produced debts are carried. Exactly one successor is frozen: runtime-free Code + Build `M5-CP3-CB17`, followed by fresh R15 artifact-only runtime + mandatory Review if compile green.
 
 
-## 4.23 `M5-CP3-TB1-R15-R1-REV` — mechanically valid RED upheld; produced-test storage/semantic representation root proved
+## 4.20 `M5-CP3-CB17` — frozen relation-frame gauge cutover compiles green
+
+CB17 implements DEFN-R1/§16.3 directly. Raw A1 Forward->Reverse carrier turn `A` is converted into relation rotation `Q = G_R^-1 A G_F` from the accepted semantic occurrence gauges. Forward endpoint state recovers the cut branch with `G_F^-1`, keeps raw cut coordinates, and Reverse applies `Q` to both recovered cut branch and raw cut coordinate. `SurfacePeriodicRelationEndpointState` now records `relationRotation`; product checked validation compares the authored action to `Q`, not raw `A`. Canonical storage semantics remain deterministic `T`/`T.inverse()` only.
+
+The focused source contract is deliberately stronger than the committed produced torus witness: `A=1, G_F=2, G_R=1` yields `Q=2 != A` and deletion of either gauge term changes the result. This resolves the mechanism-coverage concern left by R14 Review while preserving the real fixture/field/A3/selector bytes. The existing endpoint exactness contract is updated for Forward raw / Reverse rotated coordinates.
+
+Exact semantic source `1a36f6483738e1047b5d8ddbefb48cc5ab6fd4a3` compiles/packages GREEN in run/job `35845003340 / 107128980299`; candidate/log artifacts are `10742798135 / 10743207155`, root manifest **28/28**, all eight mandatory targets link with GMP/GMPXX, source receipts are clean and `runtimeExecution=false`. Candidate remains runtime-unproved/unpromoted and accounting remains **51 / 14 / 37**, debt **3**. Final test inventory stays exactly **448** processes for R15 because the CB16 mechanism identity was replaced one-for-one. Exact successor is immutable artifact-only `M5-CP3-TB1-R15-EXEC`, then mandatory Review.
+
+## 4.21 `M5-CP3-TB1-R15-EXEC` — immutable preflight valid; runtime gate orchestration-invalid
+
+R15 attempted the frozen 448-process CB17 artifact-only gate without modifying candidate/source/test/fixture/selector authority. Attempt 0 failed before runtime because the temporary harness embedded invalid Python escapes; this was corrected under the pre-runtime orchestration allowance. Attempt 1 verified the candidate 28/28 manifest, semantic source, routing artifact, selector430/first427 hashes and owner census, then began the first focused process. That process itself ran exactly once and returned `[ OK ]`/exit 0, but the temporary parser used doubled bracket escapes and falsely reported zero selected. The gate failed closed before committing a ledger row; the remaining 447 processes never ran.
+
+Because generated runtime had begun, no second retry is allowed within EXEC. The attempt is zero semantic/product credit and does not change stable accounting, debts, accepted runtime authority or candidate promotion state. Result/log artifacts are `10745985740 / 10745542559`; pre-runtime attempt artifacts are `10745895043 / 10745825171`. Mandatory successor is `M5-CP3-TB1-R15-REV`.
+
+## 4.22 `M5-CP3-TB1-R15-REV` — parser root proved; zero-credit gate routes through CB18
+
+Review independently re-opens both R15 artifact pairs and the exact retry harness rather than relying on the EXEC summary. Attempt 0 result/log ZIPs independently hash to `0700b240545c182f546e6c2927a792fd00c0b743cead22eb3f7d06bfe210e806 / 03d490b60519118dc8dcb2887b644234c81dbb94318511da1afce36425d112d8`; its boundary is pre-runtime. Attempt 1 result/log ZIPs independently hash to `b863d7a5a88cb9fda5b1019ba6a9d9161594455e5ca118bdabeddf563cb1d13c / 4be730a0a3cad33115e66f70616123d5ac427687d172fc462d1dc550d6631622`; its boundary records runtime started, preflight complete, orchestration failure and no committed ledger rows.
+
+The first attempt-1 process visibly executes `M5CP3.PeriodicRelationRotationUsesBothAcceptedOccurrenceGauges` exactly once to `[ OK ]` / exit0. Historical harness blob `5b2f569a1ef4d54daf65ed0d1af3604a3b87db28` used doubled bracket escapes; Review reproduces historical selected/PASS count 0 versus corrected count 1, with skipped 0. Root cause is therefore the temporary evidence parser. R15 remains zero semantic/product credit because the 448-process contract is incomplete and generated runtime had already started before the defect was diagnosed. R14 remains latest valid runtime; CB17 candidate `10742798135 / 1a36f648...` remains unpromoted; accounting stays **51 / 14 / 37**, debt **3**.
+
+Review decision is **approved with amendments**: do not launch another ad-hoc runtime retry. Exact next `M5-CP3-CB18` is control-plane-only/runtime-free/no-compile and must statically falsify the corrected exact-one parser, freeze exact harness/caller bytes and preserve every semantic input. Green CB18 authorizes a fresh `M5-CP3-TB1-R15-R1-EXEC` from process 1 over all original 448 identities, benchmark 0, then mandatory Review. `M5-CP3-DEFN-R1-REV-OBS-01` is partially satisfied by CB17 source plus invalid-R15 raw PASS but remains open for valid-ledger re-proof; R6 direction, CP2 publication, M5-DEFN and both nonzero debts remain open.
+
+### R15 Review folded-document index additions
+
+| Folded filename | Lines | Verdict / retained home |
+|---|---:|---|
+| `Architecture_M5_CP3_TB1_R14_Review_Record.md` | 185 | **SUPERSEDED REVIEW / FOLDED BY R15 REVIEW.** R14 definition diagnosis, convergence trigger and independent-instance requirement remain in §§4.18-4.20, frozen definitions, tracker/changelog and git history. |
+| `Architecture_M5_CP3_DEFN_R1_Same_Region_Nonzero_Z4_Gauge_Reconciliation_Plan.md` | 81 | **CONSUMED DEFINITION PLAN / FOLDED BY R15 REVIEW.** Accepted contract is frozen in `Architecture_M5_Frozen_Definitions.md` §16.3; provenance remains in §4.22/tracker/changelog/git history. |
+| `Architecture_M5_CP3_DEFN_R1_Same_Region_Nonzero_Z4_Gauge_Reconciliation_Definition_Record.md` | 351 | **SUPERSEDED DEFINITION TURN RECORD / FOLDED BY R15 REVIEW.** Normative gauge algebra and witness authority remain in frozen §16.3, this record, tracker/changelog and git history. |
+| `Architecture_M5_CP3_CB17_Relation_Frame_Gauge_Cutover_Plan.md` | 105 | **CONSUMED CB17 PLAN / FOLDED BY R15 REVIEW.** Exact implementation scope/falsifiers remain in §§4.20/4.22, frozen definitions, current Review/CB18 plan and git history. |
+| `Architecture_M5_CP3_CB17_Relation_Frame_Gauge_Cutover_Code_Build_Record.md` | 92 | **SUPERSEDED BUILD RECORD / FOLDED BY R15 REVIEW.** Semantic source/candidate/compile/package identities remain in §§4.20/4.22, current Review, changelog/handoff and git history. |
+| `Architecture_M5_CP3_TB1_R15_Artifact_Only_Test_Benchmark_Plan.md` | 116 | **CONSUMED R15 EXECUTION PLAN / FOLDED BY R15 REVIEW.** Exact 448-process vector, immutable boundary and no-retry rule remain in §4.22/current Review/CB18 successor plan. |
+| `Architecture_M5_CP3_TB1_R15_Artifact_Only_Test_Benchmark_Report.md` | 109 | **SUPERSEDED INVALID R15 REPORT / FOLDED BY R15 REVIEW.** Attempt IDs/artifacts/boundaries and zero-credit verdict remain in §4.22, current Review, tracker/changelog and git history. |
+## 4.23 `M5-CP3-CB18` — R15-R1 exact-one parser/caller frozen and statically proved
+
+Control-plane-only CB18 corrects the R15 temporary harness parser from doubled bracket escaping to literal GTest protocol matching and publishes canonical durable control bytes: harness SHA-256 `7867e779ee1d276617cbf7c0e1a9910dbd5b7388a5fe6bde7aac32a47efb81b7`, caller SHA-256 `0f0a12f9b1b4ef43cde9f42726a60d91ea3ab4606cd3765c04ba6eaae076a15c`. Validation run `35864475136` proves `selected/passed/skipped=1/1/0` on a literal green probe, historical counts `0/0`, skip detection `1/0/1`, both workflow schemas green, frozen exact process count 448 and benchmark 0. `runtimeExecution=false`, `configureExecution=false`, `compileExecution=false`, `repackageExecution=false`, timeout/watchdog=false and semantic-input mutation=false.
+
+The CB17 candidate/routing/selector authorities remain byte-frozen and unpromoted. Stable accounting remains **51 / 14 / 37**, debt **3**; R14 remains latest mechanically valid CP3 runtime and R15 remains zero-credit. Exact successor is fresh artifact-only `M5-CP3-TB1-R15-R1-EXEC` from process 1, followed by mandatory Review.
+
+## 4.24 `M5-CP3-TB1-R15-R1-EXEC` — complete corrected gate is 446/448 semantic RED
+
+Fresh R15-R1 run/job `35869756879 / 107210502570` uses the CB18-frozen parser/caller and CB17 candidate `10742798135 / 1a36f6483738e1047b5d8ddbefb48cc5ab6fd4a3`. It completes all **448** prescribed exact-filter processes with exact-one selection and zero skips. The vector is mechanism **11/11**, focused atlas **1/1**, produced **4/6**, selector430 **430/430**, total **446 PASS / 2 RED**. Protected selector ordinals 191/192/247/408 PASS. Result/log artifacts are `10755930241 / 10755397122` at ZIP SHA-256 `949920d13a6b256ceaad3934c9667df17098243c59075a914156ae5c635cf3e5 / ad04fa61f4fc9e4d81da632a40f730785d3ace11b4f3e6645f130d1b14423f00`; the result self-manifest is complete **921/921** at manifest-file SHA-256 `05b6ae8befc542937485679310f47a57f6fa400a71638807525d730563779d79`.
+
+Mechanical boundary is fully green: candidate/routing/provider digests, candidate 28/28 manifest, selector430/first427, owner census 31/283/75/41, immutable package/source/execution-view censuses and postflight all verify; benchmark/configure/compile/relink/discovery/repair/mutation/retry counters are false. The CB17 `Q != A` mechanism identity PASSes in this complete ledger, supplying runtime evidence for the carried DEFN-R1 observation without closing it in EXEC.
+
+Produced rows16/17 are the only REDs. Row16 publishes the relation but first observes independently expected generator-route mismatch, independent source rotation `3` versus published action rotation `1`, then fatally fails `relation->cutRoute() == forwardEdge->route`, before the independent Forward -> Reverse comparator or materialization. Row17 fatally fails independent generator-route equality before transform-only tamper or typed `NonReciprocalPeriodicRelation` rejection. EXEC deliberately does not infer a root from those observations.
+
+R15-R1 supersedes R14 as latest mechanically valid CP3 runtime but does not promote CB17. Stable accounting stays **51 / 14 / 37**, debt **3**, accepted runtime authority remains package `10601978228`, and selector publication remains Review-gated. Exact successor is runtime-free `M5-CP3-TB1-R15-R1-REV`.
+
+## 4.25 `M5-CP3-TB1-R15-R1-REV` — mechanically valid RED upheld; produced-test storage/semantic representation root proved
 
 Review independently re-opens R15-R1 result/log/candidate bytes, re-hashes the 921/921 self-manifest and selector430/first427, and upholds the fresh **446/448** vector with exact immutable postflight. Only produced rows16/17 are RED.
 
@@ -286,9 +333,9 @@ Frozen §16.3 and exact CB17 source prove the RED preconditions are stale test a
 
 `M5-CP3-TB1-R15-R1-CAND-01` is **CAUSE PROVED / TEST-AUTHORITY STORAGE-REPRESENTATION CONFLATION / NON-STABLE / +0**. Stable totals stay **51 / 14 / 37**, debt **3**; no product/fixture/field/A3/selector correction or candidate promotion is authorized. DEFN-R1 mechanism and R15 parser observations close; R6 direction, CP2 publication, M5-DEFN closure and both nonzero-Z4 debts carry. Exact successor is test-only `M5-CP3-CB19`, followed by a fresh 448-process R16 and mandatory Review if compile green.
 
-## 4.24 `M5-CP3-CB19` — storage-canonical produced-test correction compiles green
+## 4.26 `M5-CP3-CB19` — storage-canonical produced-test correction compiles green
 
-CB19 is the bounded test-authority correction authorized by §4.23. It changes only `tests/SurfaceCellTransitionQuotientTests.cpp`: a shared test helper binds the exact A3 Forward and Reverse periodic edges by occurrence, orientation, span and relation ID, resolves the canonical stored relation through `resolve_periodic_relation_semantic_action(...)`, and deterministically maps the stored generator route into the same semantic orientation. The committed witness is required to exercise inverse canonical storage rather than merely tolerate it.
+CB19 is the bounded test-authority correction authorized by §4.25. It changes only `tests/SurfaceCellTransitionQuotientTests.cpp`: a shared test helper binds the exact A3 Forward and Reverse periodic edges by occurrence, orientation, span and relation ID, resolves the canonical stored relation through `resolve_periodic_relation_semantic_action(...)`, and deterministically maps the stored generator route into the same semantic orientation. The committed witness is required to exercise inverse canonical storage rather than merely tolerate it.
 
 The oracle remains independent. Rows16/17 first require source-derived `Q=3` and its existing atlas cross-check; only the **representation** comes through the product resolver. They then require the stored action/route to differ from the semantic action/route in the committed inverted-storage case and require the semantic route to equal the independent A3 witness route. Row16 retains nonzero translation, exact endpoint-state and Forward -> Reverse action equations, materialization, certificate consumption and nonzero consumed periodic holonomies. Row17 establishes the same non-vacuous semantic witness before applying its original single stored-transform tamper and preserving exact `NonReciprocalPeriodicRelation`. Product/fixture/field/A3/frozen-definition/selector/CMake/benchmark semantics are untouched.
 
@@ -296,7 +343,7 @@ Patch application produced test commit `46733e170cb3698e10d8c87937ec8cdc7356057b
 
 No runtime credit, package promotion, debt discharge, observation closure, selector publication or accounting change is claimed. R15-R1 remains latest mechanically valid CP3 runtime at 446/448; accepted runtime remains package `10601978228`. `M5-CP3-TB1-R15-R1-REV-OBS-01` is satisfied at source/compile level but awaits R16 Review for runtime adjudication. Stable accounting remains **51 / 14 / 37**, debt **3**. Exact successor is fresh artifact-only `M5-CP3-TB1-R16-EXEC` over the same 448 identities, benchmark 0, followed by mandatory Review.
 
-## 4.25 `M5-CP3-TB1-R16-EXEC` — fresh corrected gate is mechanically green 448/448
+## 4.27 `M5-CP3-TB1-R16-EXEC` — fresh corrected gate is mechanically green 448/448
 
 R16 consumes the compile-green CB19 candidate artifact/source `10763242885 / a8b33cb7145d5a99d47eaf5f70bb12f1c71238d1` and preserves the CB18-frozen R15-R1 parser/vector. The runner-local R16 harness differs from frozen harness SHA-256 `7867e779ee1d276617cbf7c0e1a9910dbd5b7388a5fe6bde7aac32a47efb81b7` only in five candidate-authority constants and hashes to `5d383089aa12f9e78367ec5c673c7fda3b79040da4a42d3234c7dcc5a4ca6cdf`. No R15-R1 ledger credit is carried.
 
@@ -304,7 +351,7 @@ Authoritative run/job `35889831381 / 107279255523` executes all **448** exact-fi
 
 Produced row16 `M5CP3.ProducedTorusNonzeroZ4RotationTranslationMaterializes` and row17 `M5CP3.ProducedTorusTamperedNonzeroZ4TransformRejectsTyped` both PASS. EXEC does not promote the candidate, discharge either nonzero-Z4 debt, close R6/CP2 observations, publish a selector, close M5 or alter stable accounting. The standing gauge note also remains: the CP3 witness has cancelling occurrence gauges, so produced green is not independent validation of the gauge formula; the CB17 mechanism identity supplies that proof and also passes here. Stable accounting stays **51 / 14 / 37**, debt **3**, accepted runtime stays package `10601978228`. Exact successor is mandatory runtime-free `M5-CP3-TB1-R16-REV`, which owns all semantic adjudication.
 
-## 4.26 `M5-CP3-TB1-R16-REV` — candidate promoted, M5 debts complete, selector448 precommitted
+## 4.28 `M5-CP3-TB1-R16-REV` — candidate promoted, M5 debts complete, selector448 precommitted
 
 Independent Review reopens the CB19 package/source and R16 result/log bytes. Candidate ZIP, 28/28 root manifest, source archive, result/log ZIPs, 921/921 result self-manifest, all 448 ledger/raw-log pairs and immutable package/source/execution-view postflight verify. The accepted R16 vector is **11/11 mechanism + 1/1 focused atlas + 6/6 produced + 430/430 selector = 448/448 PASS**, exact-one/zero-skip, benchmark 0; protected selector ordinals 191/192/247/408 PASS.
 
@@ -312,11 +359,11 @@ Rows16/17 are non-vacuous. Independent source/A3 authority fixes semantic `Q=3`;
 
 Both remaining M5 `G4-B003` produced debts are discharged; project debt moves **3 -> 1** with the sole remainder M6-owned. `M5-CP3-TB1-R6-REV-OBS-01`, `M5-CP2-TB1-REV-OBS-01` and `M5-CP3-TB1-R15-R1-REV-OBS-01` close. `M5-DEFN-REV-OBS-01` remains carried to final M5 Review. Stable accounting stays **51 / 14 / 37**. `M5-CP3-TB1-R15-R1-CAND-01` is recovery-proved/non-stable +0, and package/source `10763242885 / a8b33cb...` is promoted under still-published selector430.
 
-Review constructs the frozen §13.3 successor selector as exact selector430 plus all 18 precommitted R16 nonselector identities in gate order. It is **448 rows / 448 unique / 36,382 bytes / 448 LF**, SHA-256 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, exact first430 prefix hash `1c412850...9db6`, owner census **32 / 300 / 75 / 41**. Frozen §17 and `Architecture_M5_CP3_CB20_Selector_448_Publication_Code_Build_Plan.md` make those bytes the only authorized publication. M5 remains open until CB20 publishes them, TB2 executes the published selector fresh, and mandatory TB2 Review accepts final closure.
+Review constructs the frozen §13.3 successor selector as exact selector430 plus all 18 precommitted R16 nonselector identities in gate order. It is **448 rows / 448 unique / 36,382 bytes / 448 LF**, SHA-256 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, exact first430 prefix hash `1c412850...9db6`, owner census **32 / 300 / 75 / 41**. Frozen §17 made those bytes the only authorized publication; CB20 subsequently published them exactly. M5 remains open until CB20 publishes them, TB2 executes the published selector fresh, and mandatory TB2 Review accepts final closure.
 
 **Reviewing-agent addendum (same turn).** The adjudication is upheld on freshly downloaded and re-hashed artifacts, and the owner census 32/300/75/41 was re-derived statically and from routing, agreeing row for row. The addendum fixed the closeout gaps: frozen §11 still named CB14, the §8.2/§9 headings were stale, the manifest lacked the promotion line, an ORIENTATION §8 clause was superseded, and the atlas assertion was overstated (it cannot fail). The CB20 plan gains §6 clarifications. New items: `M5-CP3-TB1-R16-REV-OBS-01` (two ungated CB14 `M5CP3` identities; disposition owned by TB2-REV), `-OBS-02` (rows 446/447 pin inverse storage; recorded, not firing) and `-OBS-03` (this record's duplicate §4.17/§4.18 numbering; to be repaired in the closure fold).
 
-## 4.27 `M5-CP3-CB20` — selector448 published; mandatory compile/package green
+## 4.29 `M5-CP3-CB20` — selector448 published; mandatory compile/package green
 
 CB20 publishes the exact frozen §17 successor selector and does not alter product, test, fixture, field, A3, CMake or benchmark semantics. `.agents/Directional/Architecture_M5_CP3_CB20_Required_Green_Selector_448.txt` is **448 rows / 448 unique / 36,382 bytes / 448 LF + terminal LF**, SHA-256 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, with a byte-identical selector430 prefix and standard-owner census **32 / 300 / 75 / 41**. The exact 448-row routing receipt hashes to `c91a5e2f3d84d7d38b7c7c58afd157448cb225ebdbbfac3da2ef6259e811dd7c`. The two ungated CB14 `M5CP3` identities remain unchanged and are not admitted. The selector manifest records 448 as **PUBLISHED / NOT YET ACCEPTED**.
 
@@ -328,16 +375,30 @@ The first patch-apply run verified/applied the exact bytes but lost a non-fast-f
 
 | Folded filename | Verdict / retained home |
 |---|---|
-| `Architecture_M5_CP3_TB1_R14_Artifact_Only_Test_Benchmark_Report.md` (96 lines) | **SUPERSEDED R14 RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Retained in §4.23/tracker/changelog/git history; R15-R1 is current mechanically valid runtime. |
-| `Architecture_M5_CP3_TB1_R15_Review_Record.md` (264 lines) | **SUPERSEDED R15 REVIEW / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Parser cause/replay obligation retained in §§4.20-4.23/current Review and git history. |
-| `Architecture_M5_CP3_CB18_R15_R1_Orchestration_Correction_Plan.md` (161 lines) | **CONSUMED CB18 PLAN / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Frozen parser/caller contract is runtime-proved by R15-R1 and retained in §§4.21-4.23. |
-| `Architecture_M5_CP3_CB18_R15_R1_Orchestration_Correction_Report.md` (130 lines) | **SUPERSEDED CB18 REPORT / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Static control proof retained in §§4.21-4.23/current runtime/Review. |
-| `Architecture_M5_CP3_TB1_R15_R1_Artifact_Only_Test_Benchmark_Plan.md` (123 lines) | **CONSUMED R15-R1 PLAN / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Executed 448-process contract retained in current runtime report/Review/§4.23. |
+| `Architecture_M5_CP3_TB1_R14_Artifact_Only_Test_Benchmark_Report.md` (96 lines) | **SUPERSEDED R14 RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Retained in §4.25/tracker/changelog/git history; R15-R1 is current mechanically valid runtime. |
+| `Architecture_M5_CP3_TB1_R15_Review_Record.md` (264 lines) | **SUPERSEDED R15 REVIEW / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Parser cause/replay obligation retained in §§4.22-4.25/current Review and git history. |
+| `Architecture_M5_CP3_CB18_R15_R1_Orchestration_Correction_Plan.md` (161 lines) | **CONSUMED CB18 PLAN / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Frozen parser/caller contract is runtime-proved by R15-R1 and retained in §§4.23-4.25. |
+| `Architecture_M5_CP3_CB18_R15_R1_Orchestration_Correction_Report.md` (130 lines) | **SUPERSEDED CB18 REPORT / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Static control proof retained in §§4.23-4.25/current runtime/Review. |
+| `Architecture_M5_CP3_TB1_R15_R1_Artifact_Only_Test_Benchmark_Plan.md` (123 lines) | **CONSUMED R15-R1 PLAN / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Executed 448-process contract retained in current runtime report/Review/§4.25. |
 | `Architecture_M5_CP3_TB1_R14_Artifact_Only_Test_Benchmark_Report.md` (96 lines) | **SUPERSEDED R14 RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** R14 446/448 evidence and convergence trigger remain in §§4.17-4.22, frozen definitions, tracker/changelog and git history; R15-R1 is the latest mechanically valid runtime. |
-| `Architecture_M5_CP3_TB1_R15_Review_Record.md` (264 lines) | **SUPERSEDED R15 REVIEW / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Parser cause proof, zero-credit disposition and replay observation remain in §§4.20-4.23, tracker/changelog and git history; parser observation is discharged by valid R15-R1 execution. |
-| `Architecture_M5_CP3_CB18_R15_R1_Orchestration_Correction_Plan.md` (161 lines) | **CONSUMED CB18 PLAN / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Corrected parser/caller freeze is runtime-proved by R15-R1; durable control outcome remains in §§4.21-4.23 and git history. |
-| `Architecture_M5_CP3_CB18_R15_R1_Orchestration_Correction_Report.md` (130 lines) | **SUPERSEDED CB18 REPORT / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Static parser proof and frozen harness/caller authority are retained in §§4.21-4.23/current Review/runtime report and git history. |
-| `Architecture_M5_CP3_TB1_R15_R1_Artifact_Only_Test_Benchmark_Plan.md` (123 lines) | **CONSUMED R15-R1 EXECUTION PLAN / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Exact 448-process gate is fully executed; retained authority is the current R15-R1 runtime report, Review, §4.23 and git history. |
+| `Architecture_M5_CP3_TB1_R15_Review_Record.md` (264 lines) | **SUPERSEDED R15 REVIEW / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Parser cause proof, zero-credit disposition and replay observation remain in §§4.22-4.25, tracker/changelog and git history; parser observation is discharged by valid R15-R1 execution. |
+| `Architecture_M5_CP3_CB18_R15_R1_Orchestration_Correction_Plan.md` (161 lines) | **CONSUMED CB18 PLAN / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Corrected parser/caller freeze is runtime-proved by R15-R1; durable control outcome remains in §§4.23-4.25 and git history. |
+| `Architecture_M5_CP3_CB18_R15_R1_Orchestration_Correction_Report.md` (130 lines) | **SUPERSEDED CB18 REPORT / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Static parser proof and frozen harness/caller authority are retained in §§4.23-4.25/current Review/runtime report and git history. |
+| `Architecture_M5_CP3_TB1_R15_R1_Artifact_Only_Test_Benchmark_Plan.md` (123 lines) | **CONSUMED R15-R1 EXECUTION PLAN / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Exact 448-process gate is fully executed; retained authority is the current R15-R1 runtime report, Review, §4.25 and git history. |
+
+## 4.30 `M5-CP3-TB2-EXEC` — published selector448 executes 448/448 fresh and immutable
+
+TB2 run/job `35913334490 / 107358491487` consumes only CB20 artifact/source `10771899191 / cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1`. It executes the published selector448 as **448 fresh exact-filter processes** in exact file order with **448 PASS / 0 RED**, exact-one selection, zero skips, owner census **32 / 300 / 75 / 41**, benchmark 0, and exact package/source/execution-view postflight. Protected ordinals 191/192/247/408 and all appended ordinals 431-448 PASS. Result/log artifacts are `10775185139 / 10774217117`; result evidence is complete **917/917**, `SHA256SUMS` SHA-256 `9681fda2357103470162e7cd1362713df07078732dc2a1e8a4fff17b75a843c1`, selector ledger SHA-256 `91c861fca2a7627b256ae6f7cb3241c5992689056da57d1622a135519bd600c3`. No regression is observed. EXEC makes no acceptance or closure decision.
+
+## 4.31 `M5-CP3-TB2-REV` — selector448 accepted; M5 CLOSED / ACCEPTED
+
+Final independent Review re-opens the TB2 result/log bytes and the CB20 package instead of relying on the EXEC report. It independently verifies the result artifact ZIP SHA-256 `01142fbc1f4cf0a4fb695cda1ed973d39b3b51e5dc11e05ff34336b84875261b`, complete **917/917** self-manifest, all 448 ledger rows and raw-log hashes, exact-one/zero-skip/PASS/exit0 for every identity, and unchanged immutable postflight. Published selector448 is independently re-hashed to `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`; its first430 rows are byte-identical to accepted selector430 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`, and the 448-row routing receipt hashes to `c91a5e2f3d84d7d38b7c7c58afd157448cb225ebdbbfac3da2ef6259e811dd7c` with exact **32 / 300 / 75 / 41** ownership.
+
+Every frozen §13.1 M5 exit conjunct is satisfied on the reviewed authority chain. Selected-path retention/invariance is fresh-green in rows435-438 and produced authority; the five checked failure classes remain required-green through missing (220/445), duplicate (296), conflicting (439), nonreciprocal (440) and representation-renumbered (441) rejection; torus relation/materialization lineage is direct production; all four M5 produced debts are discharged on produced authority (R7 for relation/container reorder and missing owner, R16/TB2 for genuine nonzero-Z4 rotation+translation and transform-only typed rejection); CP1/CP2 mechanism evidence remains required-green without being credited as production; and the exact precommit -> publication -> fresh published-selector execution -> independent Review sequence is complete.
+
+`M5-DEFN-REV-OBS-01` is discharged by this one explicit exit reconciliation. `M5-CP3-TB1-R16-REV-OBS-01` receives its required no-credit disposition: the two CB14 identities were never executed, are intentionally absent from selector448, and receive **no M5 credit**; `M6-DEFN` owns freezing their deletion-or-gating disposition for the first appropriate M6 Code + Build. `-OBS-02` remains recorded/not firing because rows446/447 are fresh-green. `-OBS-03` is discharged by the unique chronological §4.1-§4.31 numbering and repaired live citations in this closure fold.
+
+Selector448 is **ACCEPTED CURRENT AUTHORITY** and CB20 package/source `10771899191 / cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1` is promoted as the accepted M5 runtime package/source. Stable accounting remains **51 events / 14 categories / 37 recurrences**; project debt remains **1**, M6-owned. **M5 is CLOSED / ACCEPTED.** Exact successor is runtime-free `M6-DEFN`.
 
 ## 5. Folded-document index
 
@@ -345,9 +406,13 @@ Historical citations in frozen/normative records to filenames listed here are pr
 
 | Folded filename | Verdict / retained home |
 |---|---|
-| `Architecture_M5_CP3_CB19_Storage_Canonical_Produced_Test_Correction_Plan.md` (90 lines) | **CONSUMED CB19 PLAN / FOLDED BY `M5-CP3-TB1-R16-REV`.** Exact correction and non-vacuity contract is runtime-proved by R16; retained in §§4.24-4.26, frozen §17, current Review and git history. |
-| `Architecture_M5_CP3_TB1_R15_R1_Artifact_Only_Test_Benchmark_Report.md` (94 lines) | **SUPERSEDED R15-R1 RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R16-REV`.** The 446/448 frontier and storage-representation diagnosis remain in §§4.22-4.26/current Review/tracker/git history; R16 is the current runtime report. |
-| `Architecture_M5_CP3_TB1_R15_R1_Review_Record.md` (235 lines) | **SUPERSEDED R15-R1 REVIEW / FOLDED BY `M5-CP3-TB1-R16-REV`.** Test-authority cause, independent-Q guard and carried observations are discharged/adjudicated in §4.26/current Review/frozen §17/git history. |
+| `Architecture_M5_CP3_TB1_R16_Review_Record.md` (247 lines) | **SUPERSEDED REVIEW / FOLDED BY `M5-CP3-TB2-REV`.** R16 promotion, selector448 precommitment, debt discharge and the three closure observations are retained in §§4.28-4.31, `M5_Closure_Record.md`, frozen definitions, tracker/changelog and git history. |
+| `Architecture_M5_CP3_TB1_R16_Artifact_Only_Test_Benchmark_Report.md` (retired before TB2-REV) | **SUPERSEDED R16 RUNTIME REPORT / INDEXED BY FINAL REVIEW.** R16 pre-publication evidence remains in §§4.27-4.28, the closure record, tracker/changelog and immutable Actions artifacts. |
+| `Architecture_M5_CP3_CB20_Selector_448_Publication_Code_Build_Plan.md` (retired before TB2-REV) | **CONSUMED CB20 PLAN / INDEXED BY FINAL REVIEW.** Exact publication precommitment remains in frozen §17 and §§4.28-4.29. |
+| `Architecture_M5_CP3_CB20_Selector_448_Publication_Code_Build_Report.md` (retired before TB2-REV) | **SUPERSEDED CB20 BUILD REPORT / INDEXED BY FINAL REVIEW.** Published selector/routing/package authority remains in §§4.29-4.31, selector manifest and `M5_Closure_Record.md`. |
+| `Architecture_M5_CP3_CB19_Storage_Canonical_Produced_Test_Correction_Plan.md` (90 lines) | **CONSUMED CB19 PLAN / FOLDED BY `M5-CP3-TB1-R16-REV`.** Exact correction and non-vacuity contract is runtime-proved by R16; retained in §§4.26-4.28, frozen §17, current Review and git history. |
+| `Architecture_M5_CP3_TB1_R15_R1_Artifact_Only_Test_Benchmark_Report.md` (94 lines) | **SUPERSEDED R15-R1 RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R16-REV`.** The 446/448 frontier and storage-representation diagnosis remain in §§4.24-4.28/current Review/tracker/git history; R16 is the current runtime report. |
+| `Architecture_M5_CP3_TB1_R15_R1_Review_Record.md` (235 lines) | **SUPERSEDED R15-R1 REVIEW / FOLDED BY `M5-CP3-TB1-R16-REV`.** Test-authority cause, independent-Q guard and carried observations are discharged/adjudicated in §4.28/current Review/frozen §17/git history. |
 | `Architecture_M5_CP3_TB1_R13_Artifact_Only_Test_Benchmark_Report.md` (95 lines) | **SUPERSEDED R13 RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R14-REV`.** R13 445/447 evidence, ordinary recovery and first-branch localization remain in §§4.14-4.18, tracker/changelog and git history. |
 | `Architecture_M5_CP3_TB1_R13_Review_Record.md` (194 lines) | **SUPERSEDED R13 REVIEW / FOLDED BY `M5-CP3-TB1-R14-REV`.** Occurrence-branch diagnosis, accounting addendum and convergence trigger are retained in §§4.15-4.18, frozen definitions, tracker and git history. |
 | `Architecture_M5_CP3_CB16_Occurrence_Branch_Gauge_Authority_Correction_Plan.md` (120 lines) | **CONSUMED CB16 PLAN / FOLDED BY `M5-CP3-TB1-R14-REV`.** Bounded occurrence-gauge correction and R14 falsifier are retained in §§4.16-4.18/current Review/git history. |
@@ -437,52 +502,3 @@ Historical citations in frozen/normative records to filenames listed here are pr
 | `Architecture_M5_CP3_CB1_Stop_Record.md` | **ADJUDICATED / FOLDED BY `M5-CP3-CB1-REV`.** The HardRail/PeriodicCut/shared-interval contradiction, no-mutation/no-compile boundary and accepted-authority facts are retained in the current Review, this record, tracker and changelog. |
 
 CP2's consumed CB1 plan/report and TB1 execution plan remain indexed in durable `M5_CP2_Closure_Record.md`; its superseded TB1 runtime report and Review are now folded above.
-
-## 4.17 `M5-CP3-CB17` — frozen relation-frame gauge cutover compiles green
-
-CB17 implements DEFN-R1/§16.3 directly. Raw A1 Forward->Reverse carrier turn `A` is converted into relation rotation `Q = G_R^-1 A G_F` from the accepted semantic occurrence gauges. Forward endpoint state recovers the cut branch with `G_F^-1`, keeps raw cut coordinates, and Reverse applies `Q` to both recovered cut branch and raw cut coordinate. `SurfacePeriodicRelationEndpointState` now records `relationRotation`; product checked validation compares the authored action to `Q`, not raw `A`. Canonical storage semantics remain deterministic `T`/`T.inverse()` only.
-
-The focused source contract is deliberately stronger than the committed produced torus witness: `A=1, G_F=2, G_R=1` yields `Q=2 != A` and deletion of either gauge term changes the result. This resolves the mechanism-coverage concern left by R14 Review while preserving the real fixture/field/A3/selector bytes. The existing endpoint exactness contract is updated for Forward raw / Reverse rotated coordinates.
-
-Exact semantic source `1a36f6483738e1047b5d8ddbefb48cc5ab6fd4a3` compiles/packages GREEN in run/job `35845003340 / 107128980299`; candidate/log artifacts are `10742798135 / 10743207155`, root manifest **28/28**, all eight mandatory targets link with GMP/GMPXX, source receipts are clean and `runtimeExecution=false`. Candidate remains runtime-unproved/unpromoted and accounting remains **51 / 14 / 37**, debt **3**. Final test inventory stays exactly **448** processes for R15 because the CB16 mechanism identity was replaced one-for-one. Exact successor is immutable artifact-only `M5-CP3-TB1-R15-EXEC`, then mandatory Review.
-
-## 4.18 `M5-CP3-TB1-R15-EXEC` — immutable preflight valid; runtime gate orchestration-invalid
-
-R15 attempted the frozen 448-process CB17 artifact-only gate without modifying candidate/source/test/fixture/selector authority. Attempt 0 failed before runtime because the temporary harness embedded invalid Python escapes; this was corrected under the pre-runtime orchestration allowance. Attempt 1 verified the candidate 28/28 manifest, semantic source, routing artifact, selector430/first427 hashes and owner census, then began the first focused process. That process itself ran exactly once and returned `[ OK ]`/exit 0, but the temporary parser used doubled bracket escapes and falsely reported zero selected. The gate failed closed before committing a ledger row; the remaining 447 processes never ran.
-
-Because generated runtime had begun, no second retry is allowed within EXEC. The attempt is zero semantic/product credit and does not change stable accounting, debts, accepted runtime authority or candidate promotion state. Result/log artifacts are `10745985740 / 10745542559`; pre-runtime attempt artifacts are `10745895043 / 10745825171`. Mandatory successor is `M5-CP3-TB1-R15-REV`.
-
-## 4.20 `M5-CP3-TB1-R15-REV` — parser root proved; zero-credit gate routes through CB18
-
-Review independently re-opens both R15 artifact pairs and the exact retry harness rather than relying on the EXEC summary. Attempt 0 result/log ZIPs independently hash to `0700b240545c182f546e6c2927a792fd00c0b743cead22eb3f7d06bfe210e806 / 03d490b60519118dc8dcb2887b644234c81dbb94318511da1afce36425d112d8`; its boundary is pre-runtime. Attempt 1 result/log ZIPs independently hash to `b863d7a5a88cb9fda5b1019ba6a9d9161594455e5ca118bdabeddf563cb1d13c / 4be730a0a3cad33115e66f70616123d5ac427687d172fc462d1dc550d6631622`; its boundary records runtime started, preflight complete, orchestration failure and no committed ledger rows.
-
-The first attempt-1 process visibly executes `M5CP3.PeriodicRelationRotationUsesBothAcceptedOccurrenceGauges` exactly once to `[ OK ]` / exit0. Historical harness blob `5b2f569a1ef4d54daf65ed0d1af3604a3b87db28` used doubled bracket escapes; Review reproduces historical selected/PASS count 0 versus corrected count 1, with skipped 0. Root cause is therefore the temporary evidence parser. R15 remains zero semantic/product credit because the 448-process contract is incomplete and generated runtime had already started before the defect was diagnosed. R14 remains latest valid runtime; CB17 candidate `10742798135 / 1a36f648...` remains unpromoted; accounting stays **51 / 14 / 37**, debt **3**.
-
-Review decision is **approved with amendments**: do not launch another ad-hoc runtime retry. Exact next `M5-CP3-CB18` is control-plane-only/runtime-free/no-compile and must statically falsify the corrected exact-one parser, freeze exact harness/caller bytes and preserve every semantic input. Green CB18 authorizes a fresh `M5-CP3-TB1-R15-R1-EXEC` from process 1 over all original 448 identities, benchmark 0, then mandatory Review. `M5-CP3-DEFN-R1-REV-OBS-01` is partially satisfied by CB17 source plus invalid-R15 raw PASS but remains open for valid-ledger re-proof; R6 direction, CP2 publication, M5-DEFN and both nonzero debts remain open.
-
-### R15 Review folded-document index additions
-
-| Folded filename | Lines | Verdict / retained home |
-|---|---:|---|
-| `Architecture_M5_CP3_TB1_R14_Review_Record.md` | 185 | **SUPERSEDED REVIEW / FOLDED BY R15 REVIEW.** R14 definition diagnosis, convergence trigger and independent-instance requirement remain in §§4.18-4.20, frozen definitions, tracker/changelog and git history. |
-| `Architecture_M5_CP3_DEFN_R1_Same_Region_Nonzero_Z4_Gauge_Reconciliation_Plan.md` | 81 | **CONSUMED DEFINITION PLAN / FOLDED BY R15 REVIEW.** Accepted contract is frozen in `Architecture_M5_Frozen_Definitions.md` §16.3; provenance remains in §4.20/tracker/changelog/git history. |
-| `Architecture_M5_CP3_DEFN_R1_Same_Region_Nonzero_Z4_Gauge_Reconciliation_Definition_Record.md` | 351 | **SUPERSEDED DEFINITION TURN RECORD / FOLDED BY R15 REVIEW.** Normative gauge algebra and witness authority remain in frozen §16.3, this record, tracker/changelog and git history. |
-| `Architecture_M5_CP3_CB17_Relation_Frame_Gauge_Cutover_Plan.md` | 105 | **CONSUMED CB17 PLAN / FOLDED BY R15 REVIEW.** Exact implementation scope/falsifiers remain in §§4.17/4.20, frozen definitions, current Review/CB18 plan and git history. |
-| `Architecture_M5_CP3_CB17_Relation_Frame_Gauge_Cutover_Code_Build_Record.md` | 92 | **SUPERSEDED BUILD RECORD / FOLDED BY R15 REVIEW.** Semantic source/candidate/compile/package identities remain in §§4.17/4.20, current Review, changelog/handoff and git history. |
-| `Architecture_M5_CP3_TB1_R15_Artifact_Only_Test_Benchmark_Plan.md` | 116 | **CONSUMED R15 EXECUTION PLAN / FOLDED BY R15 REVIEW.** Exact 448-process vector, immutable boundary and no-retry rule remain in §4.20/current Review/CB18 successor plan. |
-| `Architecture_M5_CP3_TB1_R15_Artifact_Only_Test_Benchmark_Report.md` | 109 | **SUPERSEDED INVALID R15 REPORT / FOLDED BY R15 REVIEW.** Attempt IDs/artifacts/boundaries and zero-credit verdict remain in §4.20, current Review, tracker/changelog and git history. |
-## 4.21 `M5-CP3-CB18` — R15-R1 exact-one parser/caller frozen and statically proved
-
-Control-plane-only CB18 corrects the R15 temporary harness parser from doubled bracket escaping to literal GTest protocol matching and publishes canonical durable control bytes: harness SHA-256 `7867e779ee1d276617cbf7c0e1a9910dbd5b7388a5fe6bde7aac32a47efb81b7`, caller SHA-256 `0f0a12f9b1b4ef43cde9f42726a60d91ea3ab4606cd3765c04ba6eaae076a15c`. Validation run `35864475136` proves `selected/passed/skipped=1/1/0` on a literal green probe, historical counts `0/0`, skip detection `1/0/1`, both workflow schemas green, frozen exact process count 448 and benchmark 0. `runtimeExecution=false`, `configureExecution=false`, `compileExecution=false`, `repackageExecution=false`, timeout/watchdog=false and semantic-input mutation=false.
-
-The CB17 candidate/routing/selector authorities remain byte-frozen and unpromoted. Stable accounting remains **51 / 14 / 37**, debt **3**; R14 remains latest mechanically valid CP3 runtime and R15 remains zero-credit. Exact successor is fresh artifact-only `M5-CP3-TB1-R15-R1-EXEC` from process 1, followed by mandatory Review.
-
-## 4.22 `M5-CP3-TB1-R15-R1-EXEC` — complete corrected gate is 446/448 semantic RED
-
-Fresh R15-R1 run/job `35869756879 / 107210502570` uses the CB18-frozen parser/caller and CB17 candidate `10742798135 / 1a36f6483738e1047b5d8ddbefb48cc5ab6fd4a3`. It completes all **448** prescribed exact-filter processes with exact-one selection and zero skips. The vector is mechanism **11/11**, focused atlas **1/1**, produced **4/6**, selector430 **430/430**, total **446 PASS / 2 RED**. Protected selector ordinals 191/192/247/408 PASS. Result/log artifacts are `10755930241 / 10755397122` at ZIP SHA-256 `949920d13a6b256ceaad3934c9667df17098243c59075a914156ae5c635cf3e5 / ad04fa61f4fc9e4d81da632a40f730785d3ace11b4f3e6645f130d1b14423f00`; the result self-manifest is complete **921/921** at manifest-file SHA-256 `05b6ae8befc542937485679310f47a57f6fa400a71638807525d730563779d79`.
-
-Mechanical boundary is fully green: candidate/routing/provider digests, candidate 28/28 manifest, selector430/first427, owner census 31/283/75/41, immutable package/source/execution-view censuses and postflight all verify; benchmark/configure/compile/relink/discovery/repair/mutation/retry counters are false. The CB17 `Q != A` mechanism identity PASSes in this complete ledger, supplying runtime evidence for the carried DEFN-R1 observation without closing it in EXEC.
-
-Produced rows16/17 are the only REDs. Row16 publishes the relation but first observes independently expected generator-route mismatch, independent source rotation `3` versus published action rotation `1`, then fatally fails `relation->cutRoute() == forwardEdge->route`, before the independent Forward -> Reverse comparator or materialization. Row17 fatally fails independent generator-route equality before transform-only tamper or typed `NonReciprocalPeriodicRelation` rejection. EXEC deliberately does not infer a root from those observations.
-
-R15-R1 supersedes R14 as latest mechanically valid CP3 runtime but does not promote CB17. Stable accounting stays **51 / 14 / 37**, debt **3**, accepted runtime authority remains package `10601978228`, and selector publication remains Review-gated. Exact successor is runtime-free `M5-CP3-TB1-R15-R1-REV`.

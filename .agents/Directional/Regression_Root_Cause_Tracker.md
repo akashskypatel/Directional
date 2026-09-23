@@ -1,3 +1,9 @@
+## 2026-09-23 — `M5-CP3-TB2-REV`: selector448 accepted and M5 closed — **NO OBSERVED REGRESSION / +0**
+
+**Stable totals remain 51 events / 14 categories / 37 recurrences; project debt remains 1 (M6-owned).** Final Review independently re-verifies TB2 result/log authority, complete 917/917 evidence, all 448 ledger/raw-log receipts, selector448/prefix430/routing hashes and owner census 32/300/75/41. No accepted-green identity regressed; no orchestration/immutability defect is present; therefore no new stable event, recurrence, category or non-stable candidate is added. Selector448 is accepted and CB20 package/source `10771899191 / cef1c6ee...` is promoted as final M5 authority.
+
+`M5-DEFN-REV-OBS-01` is **DISCHARGED** by the explicit seven-conjunct M5 exit reconciliation. `M5-CP3-TB1-R16-REV-OBS-01` is **DISPOSED / NO M5 CREDIT**: the two CB14 identities were never executed, remain excluded from selector448, and M6-DEFN owns freezing their later deletion-or-gating disposition. `M5-CP3-TB1-R16-REV-OBS-02` remains **RECORDED / NOT FIRING** because rows446/447 fresh-pass. `M5-CP3-TB1-R16-REV-OBS-03` is **DISCHARGED** by the unique chronological M5 consolidated numbering/citation repair.
+
 ## 2026-09-23 — `M5-CP3-TB2-EXEC`: published selector448 fresh gate is 448/448 green — **NO OBSERVED REGRESSION / +0**
 
 **Stable totals remain 51 events / 14 categories / 37 recurrences; project debt remains 1 (M6-owned).** Authoritative run/job `35913334490 / 107358491487` consumes immutable CB20 artifact/source `10771899191 / cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1` and executes all 448 published selector identities as fresh exact-filter processes. Result is **448 PASS / 0 RED**, exact-one selection, zero skips, owner census 32/300/75/41, benchmark 0, exact package/source/execution-view postflight, and complete 917/917 result evidence. Result/log artifacts are `10775185139 / 10774217117`; selector ledger SHA-256 is `91c861fca2a7627b256ae6f7cb3241c5992689056da57d1622a135519bd600c3`.
@@ -8,7 +14,7 @@ No accepted-green identity regressed and no orchestration or immutability defect
 
 **Stable totals unchanged: 51 events / 14 categories / 37 recurrences; project debt 1 (M6).** No regression candidate. The reviewing agent downloaded fresh copies of the R16 result/log and CB19 candidate artifacts and re-hashed them. It re-verified 921/921 and 28/28, all 448 ledger rows and raw-log hashes, and selector448 bytes, hash and prefix. It re-derived the owner census twice, from runtime routing and from static CMake target membership, and both give 32/300/75/41 row for row. It fixed the closeout gaps listed in the review record addendum (frozen §11/§8.2/§9, manifest promotion line, ORIENTATION §8, CB20 plan §6) and records three items:
 
-### `M5-CP3-TB1-R16-REV-OBS-01` — two compiled `M5CP3` identities never gated or adjudicated — OPEN / owner `M5-CP3-TB2-REV`
+### `M5-CP3-TB1-R16-REV-OBS-01` — two compiled `M5CP3` identities never gated or adjudicated — DISPOSED AT TB2 REVIEW / NO M5 CREDIT
 
 - **Fact:** `M5CP3.PeriodicRelationEndpointGaugeIsIndependentAndExact` and `M5CP3.ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection` were added at `M5-CP3-CB14` (`fd7de8a1`). They are compiled into `directional_surface_cell_producer_tests`. `git log --all -S` finds their names in no document, harness vector or selector.
 - **Root cause:** a CB turn authored test identities without routing them into the next gate vector. No later Review enumerated the `M5CP3` namespace against the gate.
@@ -23,7 +29,7 @@ No accepted-green identity regressed and no orchestration or immutability defect
 - **If it fires:** classify as test-authority representation drift, non-stable unless accepted green is lost for a product reason. Supply a witness that still exercises inverse storage.
 - **Prohibited:** deleting the pin or making it conditional.
 
-### `M5-CP3-TB1-R16-REV-OBS-03` — `M5_Consolidated_Record.md` section numbering is ambiguous — OPEN / owner `M5-CP3-TB2-REV` closure consolidation
+### `M5-CP3-TB1-R16-REV-OBS-03` — `M5_Consolidated_Record.md` section numbering was ambiguous — DISCHARGED AT TB2 REVIEW
 
 - **Fact:** there are two §4.17 (CB16, CB17) and two §4.18 (R14-EXEC, R15-EXEC), and §§4.17-4.22 sit after §5. The defect predates R16-REV.
 - **Falsifier:** after the closure fold, every section number is unique and ordered, and every live `M5_Consolidated_Record.md §x` citation resolves to exactly one section.

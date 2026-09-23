@@ -4,43 +4,36 @@
 
 ## Current authority
 
-`M5-CP3-TB2-EXEC` is **COMPLETE / MECHANICALLY GREEN / PUBLISHED SELECTOR448 448/448 / REVIEW REQUIRED** once terminal `STATUS` is published.
+`M5-CP3-TB2-REV` is **COMPLETE / APPROVED / SELECTOR448 ACCEPTED / M5 CLOSED** once terminal `STATUS` is published. Final Review independently re-opens TB2 run/job `35913334490 / 107358491487`, result/log artifacts `10775185139 / 10774217117`, complete **917/917** evidence, all 448 ledger/raw-log receipts, selector448/prefix430/routing hashes and exact owner census **32/300/75/41**. Published selector448 SHA-256 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789` is accepted current authority; selector430 `1c412850...9db6` is its exact historical prefix. CB20 package/source `10771899191 / cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1` is promoted as final accepted M5 runtime authority.
 
-TB2 consumed only CB20 result artifact `10771899191` from semantic source `cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1`. Run/job `35913334490 / 107358491487` executed all **448 published selector448 identities as 448 fresh exact-filter processes** in exact file order: **448 PASS / 0 RED**, exact-one selection, zero skips, owner census **32 authority-kernel / 300 producer / 75 completion / 41 validation**, benchmark 0, and exact package/source/execution-view postflight. Result/log artifacts are `10775185139 / 10774217117` at provider ZIP SHA-256 `01142fbc1f4cf0a4fb695cda1ed973d39b3b51e5dc11e05ff34336b84875261b / b58678cbf37d9c7757e8a36e8b590381919f5d1413a6ac02d11038e12e040fc6`. Result evidence is complete at **917/917**, `SHA256SUMS` SHA-256 `9681fda2357103470162e7cd1362713df07078732dc2a1e8a4fff17b75a843c1`; selector ledger SHA-256 is `91c861fca2a7627b256ae6f7cb3241c5992689056da57d1622a135519bd600c3`.
-
-Selector448 remains exact published bytes SHA-256 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, with selector430 as exact prefix and routing receipt SHA-256 `c91a5e2f3d84d7d38b7c7c58afd157448cb225ebdbbfac3da2ef6259e811dd7c`. All new rows431-448 PASS, including rows446/447/448. TB2 observed no regression; stable accounting remains **51 / 14 / 37** and project debt remains **1**, M6-owned.
-
-TB2 is execution evidence only. Selector448 is **PUBLISHED / EXECUTED GREEN / NOT YET ACCEPTED**. CB19 package/source `10763242885 / a8b33cb7145d5a99d47eaf5f70bb12f1c71238d1` under accepted selector430 remains accepted runtime authority until final Review.
+All seven frozen M5 §13.1 exit conjuncts are satisfied, all four M5 produced debts are discharged, and `M5-DEFN-REV-OBS-01` plus the R16 consolidated-numbering observation are closed. The two never-gated CB14 identities receive explicit no-credit disposition; M6-DEFN owns freezing their later deletion-or-gating owner. Stable accounting remains **51 events / 14 categories / 37 recurrences**; project debt remains **1**, M6-owned.
 
 ## Exact next turn
 
-**`M5-CP3-TB2-REV`** — mandatory independent runtime-free M5 closure Review.
+**`M6-DEFN`** — runtime-free occurrence / quotient / embedding / independent-verifier definition turn.
 
-Review must independently reopen TB2 result/log authority, re-hash selector448/prefix430/routing ownership, re-verify all 448 ledger rows/raw hashes and the 917/917 evidence manifest, and decide selector448 acceptance/M5 closure. It also owns `M5-DEFN-REV-OBS-01`, `M5-CP3-TB1-R16-REV-OBS-01` (explicit no-credit disposition and later owner for the two never-gated CB14 identities), and `M5-CP3-TB1-R16-REV-OBS-03` (unique ordered consolidated-record numbering plus citation repair). No M6 work may begin in this turn.
+Freeze the four M6 stage products, verifier recompute-vs-repair boundary, remaining closed-complex `G4-B002` debt proof ownership, `G4-B001` disposition, and the no-credit cleanup/gating disposition for the two dormant CB14 identities. Do not begin M6 Code + Build while any of those authorities is ambiguous. No generated Directional runtime belongs in M6-DEFN.
 
 ## Resume-critical evidence
 
-- current Test + Benchmark report: `.agents/Directional/Architecture_M5_CP3_TB2_Artifact_Only_Test_Benchmark_Report.md`
-- published selector448: `.agents/Directional/Architecture_M5_CP3_CB20_Required_Green_Selector_448.txt`
-- static routing receipt: `.agents/Directional/Architecture_M5_CP3_CB20_Selector_448_Static_Routing_Receipt.tsv`, SHA-256 `c91a5e2f3d84d7d38b7c7c58afd157448cb225ebdbbfac3da2ef6259e811dd7c`
-- current Review: `.agents/Directional/Architecture_M5_CP3_TB1_R16_Review_Record.md`
-- frozen definitions: `.agents/Directional/Architecture_M5_Frozen_Definitions.md` §§13, 16.3, 17
-- tracker: `.agents/Directional/Regression_Root_Cause_Tracker.md`
-- consolidated history: `.agents/Directional/M5_Consolidated_Record.md` §4.27
-- accepted runtime package/source pending final Review: `10763242885 / a8b33cb7145d5a99d47eaf5f70bb12f1c71238d1`
-- TB2 consumed package/source: `10771899191 / cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1`
-- TB2 run/job: `35913334490 / 107358491487`
-- TB2 result/log artifacts: `10775185139 / 10774217117`
-- TB2 result evidence: 917/917, SHA256SUMS `9681fda2357103470162e7cd1362713df07078732dc2a1e8a4fff17b75a843c1`
-- TB2 selector ledger: `91c861fca2a7627b256ae6f7cb3241c5992689056da57d1622a135519bd600c3`
-- selector430 / selector448: `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6 / 70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`
+- M5 closure: `.agents/Directional/M5_Closure_Record.md`
+- final M5 Review: `.agents/Directional/Architecture_M5_CP3_TB2_Review_Record.md`
+- final M5 runtime report: `.agents/Directional/Architecture_M5_CP3_TB2_Artifact_Only_Test_Benchmark_Report.md`
+- frozen M5 definitions: `.agents/Directional/Architecture_M5_Frozen_Definitions.md`
+- M6 definition plan: `.agents/Directional/Architecture_M6_DEFN_Occurrence_Embedding_Verifier_Plan.md`
+- consolidated M5 history: `.agents/Directional/M5_Consolidated_Record.md` §4.31
+- accepted selector448: `.agents/Directional/Architecture_M5_CP3_CB20_Required_Green_Selector_448.txt`, SHA-256 `70ff0860...c75789`
+- final accepted M5 package/source: `10771899191 / cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1`
+- TB2 run/job: `35913334490 / 107358491487`; result/log `10775185139 / 10774217117`; result evidence 917/917
+- stable accounting: 51 / 14 / 37; project debt 1 M6-owned
 
 ## Context Load Plan
 
 ```yaml
 load_next:
-  - .agents/Directional/Architecture_M5_CP3_TB2_Artifact_Only_Test_Benchmark_Report.md
-  - .agents/Directional/Architecture_M5_CP3_TB1_R16_Review_Record.md
+  - .agents/Directional/Architecture_M6_DEFN_Occurrence_Embedding_Verifier_Plan.md
+  - .agents/Directional/M5_Closure_Record.md
+  - .agents/Directional/Architecture_M5_CP3_TB2_Review_Record.md
 conditional_modules:
   - trigger: github_connector or GitHub Actions/control-plane work
     path: modules/github-connector/MODULE.md
