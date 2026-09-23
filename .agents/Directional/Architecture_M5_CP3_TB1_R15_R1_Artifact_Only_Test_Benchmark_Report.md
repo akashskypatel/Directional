@@ -83,6 +83,12 @@ EXEC makes no stable-regression adjudication, no debt discharge, no observation 
 
 The corrected exact-one parser is exercised over all 448 processes with exact-one selection and zero skips, supplying the runtime evidence required by `M5-CP3-TB1-R15-REV-OBS-01`; closure remains Review-owned.
 
-## 6. Successor
+## 6. Operational deviation — accidental duplicate trigger
+
+After the authoritative run above had already completed, been recorded, and had its temporary caller/marker retired, a resumed session failed to reconcile that completed repository state before reinstalling the same frozen caller and triggering a second run, `35878323220` at event SHA `bb994ebecf064c034808823faa00b4f9b9bf866b`. This was an agent orchestration mistake. It is **not** a permitted retry and has **zero semantic, ledger, selector, debt, recovery, or promotion authority regardless of its eventual result**. The authoritative R15-R1 execution remains exclusively run/job `35869756879 / 107210502570` and artifacts `10755930241 / 10755397122`.
+
+Once recognized, the accidental caller and marker were retired workflow-first to prevent any further trigger. No product, test, fixture, selector, candidate, or reusable-workflow semantic bytes were changed by the duplicate trigger.
+
+## 7. Successor
 
 Exact successor is runtime-free **`M5-CP3-TB1-R15-R1-REV`**. Review must independently reopen result/log bytes and manifests, verify the 446/448 vector and immutable boundary, adjudicate the row16/17 route/rotation/cut-route evidence without assuming its cause, dispose the carried R6 / DEFN-R1 / parser / CP2-publication observations and nonzero-Z4 debts, and decide candidate/promotion/publication successor authority.
