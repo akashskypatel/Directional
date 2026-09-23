@@ -1,0 +1,47 @@
+name: M5 CP3 R15 R1 Docs Patch Apply
+
+on:
+  push:
+    branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
+    paths: [.agents/connector-triggers/m5-cp3-tb1-r15-r1-docs-apply.txt]
+
+permissions:
+  actions: read
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m5-cp3-tb1-r15-r1-docs-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m5-cp3-tb1-r15-r1-docs-apply
+      commit_run_file: false
+      trim_stale_comments: false
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m5-cp3-tb1-r15-r1-docs-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1U-1OYOL6i4kugj1xwb7QPEFivA7hYP2Q
+      patch_sha256: dae331c446412c7bc2fdf087448eb1a6ac5417df5bf75364e8458c6c16dbf949
+      base_sha: f6a740a38bff6abee6c42973551f747addd41692
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'M5-CP3-TB1-R15-R1-EXEC: record runtime evidence'
+      retention_days: 7
+    secrets: inherit
