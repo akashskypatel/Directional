@@ -99,3 +99,96 @@ CB16 must add one focused independent branch-authority identity that distinguish
 | review_check.py boundary | **PASS / ALL CHECKS PASSED** with declared selector430/selector427 hashes; no product/test/fixture/build or selector mutation. |
 | `STATUS` lifecycle maintained | Entry beacon published; terminal COMPLETE/CB16 beacon reserved for the final repository write. |
 | Publication / branch sync | Review documentation must be pushed, temporary control state cleaned, and terminal `STATUS` written last before closeout. |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Diagnosis upheld; accounting corrected.** The R13 cause analysis is careful and the carried
+obligations are handled correctly. But the stable-accounting disposition inherited from `M5-CP3-TB1-R12-REV` and
+restated here is **wrong**: accounting moves to **51 events / 14 categories / 37 recurrences**. Debt remains
+**3**.
+
+### V1 — CORRECTION: R12 regressed an accepted ordinal *after* its recovery was proved. That is a new event.
+
+The R12 evidence is explicit in `M5_Consolidated_Record.md` §4.12: selector430 ran **429/430**, "Protected
+ordinals 191/192/247 PASS while **accepted ordinal408 REDs**", and "Rows1/2/3/6 and ordinal408 **newly
+regress**". Seven REDs reconcile exactly as six produced rows plus ordinal 408.
+
+The durable criterion fires on an ordinal inside the accepted selector prefix transitioning PASS → RED. The only
+reason R2-R6 were not separate events is the continuation doctrine I affirmed at `M5-CP3-TB1-R2-REV`, and that
+doctrine rests on one stated condition: ordinal 408 **"has not transitioned again, having never returned to PASS
+in between."** That condition is false here.
+
+Ordinal 408 was PASS on five consecutive candidates — R7, R8, R9, R10 and R11-R1, each at selector430 **430/430**
+— and R7's recovery was not incidental but the headline verdict of that turn, **"R1 `RP-01` RECOVERY PROVED"**.
+R12 then drove it RED again from a **different cause**: `InvalidFinalCellState` at
+`SurfacePhaseFrontProduct::make(...)`, arising from CB14's exact-A3 endpoint-gauge validation interacting with
+relation-insertion canonicalization — not R1's exact-span transport defect.
+
+**The two claims cannot both stand.** If R12 is a continuation of the R1 event, then R7's "recovery proved" was
+not a recovery. If R7's recovery was real — and it was, verified at the time across a full gate — then R12 is a
+fresh PASS → RED transition of an accepted ordinal and must be recorded. Intervening recovery plus distinct root
+cause point the same way.
+
+The usual grounds for non-stable do not apply and have already been ruled out in this project: the candidate
+being unpromoted was ruled invalid at `M4-CP-SCALE-TB6-REV` (it would make the rule unfirable), and recovery not
+decrementing was fixed as precedent at R7 — a regression that is later repaired stays in the historical ledger.
+R13 repairing R12 is exactly that case.
+
+**Corrected accounting: 51 events / 14 categories / 37 recurrences.** `M5-CP3-TB1-R12-CAND-01` is classified
+`RP-01`-class representation/gauge authority, an existing category, so categories stay at 14 and recurrences
+move 36 → 37. Its disposition changes from `CLOSED / RECOVERY PROVED / NON-STABLE / +0` to **CLOSED / RECOVERY
+PROVED / STABLE EVENT RECORDED / `RP-01` recurrence**. Nothing else moves: candidate unpromoted, accepted
+authority unchanged, debt 3, and R13's own surviving defect remains correctly non-stable since it exposes no
+accepted-prefix transition.
+
+### V2 — what R13 gets right, and it is not little
+
+The reopened direction observation is **honoured, not quietly re-closed**. §60 states plainly that row 4 still
+does not reach the Forward → Reverse comparator or inverted-pair rejection, so `M5-CP3-TB1-R6-REV-OBS-01`
+remains OPEN. After I reversed that discharge last turn, the easy path was to re-argue it; this Review instead
+states what is not yet decidable.
+
+The §3 diagnosis shows comparable restraint: it names relation endpoint branch authority conflation as the
+cause, identifies `make_periodic_relation_endpoint_state(...)` copying `LocalLatticeState::branchRotation`
+across authority domains while the constructor receives the A3 occurrence ID only as metadata — and then
+explicitly declines to assert that generator direction is inverted, declines to authorize trying `R.inverse()`,
+and declines to infer a free translation. Refusing three tempting adjacent conclusions is the discipline this
+checkpoint learned the expensive way.
+
+Non-vacuity is argued rather than assumed, `M5-CP2-TB1-REV-OBS-01` correctly stays OPEN under §13's requirement
+for the first *independently green* pre-publication gate, and manifest coverage is complete.
+
+### V3 — the convergence question now needs a stated trigger, not another attempt
+
+Since the genuine fix at R7, rows 4/5 have consumed R8, R9, R10, R11-R1, R12 and R13 — six further turns, each
+finding a *distinct* authority or gauge defect in the same seam: chart admissibility, the family/sign rule
+implying zero rotation, raw local-gauge pre-veto, insertion-order pair ordering, storage-canonical versus
+semantic direction, and now occurrence-carrier branch gauge. Every individual diagnosis has been sound, and each
+failure has moved deeper, which is why I have called this convergence three times.
+
+That reading is now near its limit. Six consecutive *distinct* gauge-authority defects concentrated in one seam
+is weak evidence of six independent bugs and stronger evidence of a **missing coherent gauge model** for
+same-region nonzero-Z4 promotion — the frozen design specifying what must be true without fixing which authority
+domain owns each quantity, so each fix relocates the inconsistency rather than removing it. R12 is corroboration:
+a correction that fixed its target *regressed an accepted ordinal*, which is what happens when a change lands in
+a seam whose ownership rules are underdetermined.
+
+This project has the right precedent: `M4-CP4-DEFN-R1` and `DEFN-R2` stopped and reconciled definitions rather
+than iterating implementations, and both produced durable progress.
+
+**Recorded as `M5-CP3-TB1-R13-REV-OBS-01`: if `M5-CP3-CB16` does not bring produced rows 4 and 5 green, the next
+turn must be a definition reconciliation — not `CB17`.** That turn should establish, for the same-region
+nonzero-Z4 seam, a single explicit statement of which authority domain owns the branch component, the lattice
+gauge, the endpoint states and the canonicalized storage form, and where each is permitted to be read. Stating
+the trigger now, while CB16 may still succeed, is what keeps it from becoming a judgement made under fatigue
+after the fact.
+
+### V4 — verification limits
+
+Re-derived from repository bytes: selector430's rows and hash, and the R12 evidence recorded in
+`M5_Consolidated_Record.md` §§4.12-4.13 (429/430, ordinal 408 RED, 439 PASS / 7 RED, 912/912). R7's ordinal-408
+recovery is taken from the durable record of that turn, which this reviewer verified at the time across a full
+gate. Accepted as reported: R13 artifact hashes, the 914/914 manifest, gate tallies, and the runtime predicate
+outcomes underlying the first-false-predicate analysis.

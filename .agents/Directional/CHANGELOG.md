@@ -1,3 +1,40 @@
+## 2026-09-23 — `M5-CP3-TB1-R13-REV` review: diagnosis upheld; accounting corrected to 51 / 14 / 37
+
+Runtime-free review. **Diagnosis upheld, accounting corrected.** Debt remains **3**; candidate unpromoted;
+accepted authority unchanged.
+
+**Correction — R12 regressed an accepted ordinal after its recovery was proved.** `M5_Consolidated_Record.md`
+§4.12 records R12 at selector430 **429/430**: "Protected ordinals 191/192/247 PASS while **accepted ordinal408
+REDs**", and "Rows1/2/3/6 and ordinal408 **newly regress**". The continuation doctrine affirmed at
+`M5-CP3-TB1-R2-REV` rests on one stated condition — that ordinal 408 "has not transitioned again, **having never
+returned to PASS in between**" — and that condition fails: 408 was PASS on five consecutive candidates (R7-R11-R1,
+each 430/430), R7's headline verdict was "R1 `RP-01` RECOVERY PROVED", and R12's cause is different
+(`InvalidFinalCellState` at `SurfacePhaseFrontProduct::make(...)` from CB14's endpoint-gauge validation meeting
+relation-insertion canonicalization). **The two claims are mutually exclusive:** if R12 continues the R1 event,
+R7's recovery was not a recovery; if the recovery was real, R12 is a fresh accepted-prefix PASS → RED transition.
+Unpromoted candidacy was ruled invalid at `M4-CP-SCALE-TB6-REV`, and recovery-does-not-decrement was fixed at R7.
+
+**Corrected totals: 51 events / 14 categories / 37 recurrences.** `M5-CP3-TB1-R12-CAND-01` moves to CLOSED /
+RECOVERY PROVED / **STABLE EVENT RECORDED** / `RP-01` recurrence; categories stay 14. R13's own surviving defect
+remains correctly non-stable — it exposes no accepted-prefix transition.
+
+**What R13 gets right.** The reopened direction observation is honoured rather than quietly re-closed: §60 states
+plainly that row 4 still does not reach the Forward → Reverse comparator or inverted-pair rejection, so
+`M5-CP3-TB1-R6-REV-OBS-01` stays OPEN. The §3 diagnosis names relation endpoint branch authority conflation,
+identifies `make_periodic_relation_endpoint_state(...)` copying `LocalLatticeState::branchRotation` across
+authority domains, and then explicitly declines to assert inverted generator direction, to authorize
+`R.inverse()`, or to infer a free translation — refusing three tempting adjacent conclusions.
+
+New: `M5-CP3-TB1-R13-REV-OBS-01`. Since the genuine fix at R7, rows 4/5 have consumed six further turns, each
+finding a *distinct* gauge-authority defect in the same seam. Six consecutive distinct defects in one seam is
+weak evidence of six independent bugs and stronger evidence of a missing coherent gauge model — and R12
+corroborates, since a correction that fixed its own target regressed an accepted ordinal. **If CB16 does not
+bring rows 4 and 5 green, the next turn must be a definition reconciliation, not CB17**, establishing which
+authority domain owns the branch component, lattice gauge, endpoint states and canonicalized storage form.
+Precedent: `M4-CP4-DEFN-R1`/`DEFN-R2`. The trigger is stated now, while CB16 may still succeed.
+
+Exact successor: `M5-CP3-CB16` — occurrence branch gauge authority correction.
+
 ## 2026-09-23 — `M5-CP3-TB1-R13-REV`: ordinary recovery proved; occurrence-branch authority defect proved; CB16 next
 
 Runtime-free Review independently re-verifies R13 **914/914** evidence and **445/447 PASS** vector with selector430 430/430. CB15's semantic-action identity plus produced rows1/2/3/6 and selector408 prove the R12 storage-canonical/semantic-direction candidate recovered. Rows4/5 alone fail exact first-branch correspondence. Source re-derivation proves generator `R` is exact transport between accepted A3 occurrence-carrier faces while relation endpoint branch/gauge still comes from cell/trace-face `LocalLatticeState` with no occurrence-face gauge bridge. This is existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION`, non-stable +0.

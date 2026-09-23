@@ -194,3 +194,61 @@ failure. The ordering-**source** defect `M5-CP3-TB1-R10-REV-CAND-01` stays **CLO
 CB12's `directedFirst`/`directedSecond` selection by exact A3 orientation is verified at
 `src/geometry/SurfaceCellTracing.cpp:17229-17241` — and nothing else in R11-R1 depends on the reopened
 observation.
+
+## 2026-09-23 — `M5-CP3-TB1-R13-REV` accounting correction: R12 regression is a stable event; totals now 51 / 14 / 37
+
+**Corrected totals: 51 events / 14 categories / 37 recurrences. Produced-witness debt 3 (unchanged).**
+
+`M5-CP3-TB1-R12-REV` recorded `M5-CP3-TB1-R12-CAND-01` as non-stable `+0`, and `M5-CP3-TB1-R13-REV` restated
+"no stable counter change is justified". That is corrected here.
+
+**Event.** `M5-CP3-TB1-R12-EXEC` ran selector430 at **429/430** with **accepted ordinal408 RED**
+(`M5_Consolidated_Record.md` §4.12: "Protected ordinals 191/192/247 PASS while accepted ordinal408 REDs";
+"Rows1/2/3/6 and ordinal408 newly regress"). Seven REDs reconcile as six produced rows plus ordinal 408.
+
+**Why this is a new event and not a continuation.** The continuation doctrine affirmed at
+`[[M5-CP3-TB1-R2-REV]]` rests on one stated condition — ordinal 408 "has not transitioned again, **having never
+returned to PASS in between**". That condition fails:
+
+1. ordinal 408 was PASS on five consecutive candidates (R7, R8, R9, R10, R11-R1), each selector430 **430/430**;
+2. R7's verdict was explicitly **"R1 `RP-01` RECOVERY PROVED"** — the recovery was the headline finding, not an
+   incidental observation;
+3. R12's cause is **different**: `InvalidFinalCellState` at `SurfacePhaseFrontProduct::make(...)` from CB14's
+   exact-A3 endpoint-gauge validation interacting with relation-insertion canonicalization, not R1's exact-span
+   transport defect.
+
+**The two claims are mutually exclusive.** If R12 continues the R1 event, R7's "recovery proved" was not a
+recovery. If R7's recovery was real, R12 is a fresh accepted-prefix PASS → RED transition and must be recorded.
+
+Neither standard non-stable ground applies: unpromoted candidacy was ruled invalid at
+`[[M4-CP-SCALE-TB6-REV]]`, and recovery-does-not-decrement was fixed at R7 — a regression later repaired stays in
+the historical ledger, which is precisely the R12 → R13 case.
+
+**Disposition.** `M5-CP3-TB1-R12-CAND-01` becomes **CLOSED / RECOVERY PROVED / STABLE EVENT RECORDED / `RP-01`
+recurrence**. Category `RP-01` already exists, so categories stay 14 and recurrences move 36 → 37. R13's own
+surviving defect remains correctly non-stable — it exposes no accepted-prefix transition. Candidate unpromoted;
+accepted authority unchanged; debt 3.
+
+## `M5-CP3-TB1-R13-REV-OBS-01` — stated trigger: if CB16 fails, reconcile the gauge model instead of writing CB17
+
+**Status.** OPEN / GATING ON THE TURN AFTER `M5-CP3-CB16` / NON-STABLE.
+
+Since the genuine fix at R7, produced rows 4/5 have consumed R8, R9, R10, R11-R1, R12 and R13 — six further
+turns, each finding a **distinct** authority or gauge defect in the same seam: chart admissibility; the
+family/sign rule implying zero rotation; raw local-gauge pre-veto; insertion-order pair ordering;
+storage-canonical versus semantic direction; and occurrence-carrier branch gauge. Each individual diagnosis has
+been sound and each failure moved deeper, which is why the reviewing agent called this convergence three times.
+
+**That reading is now at its limit.** Six consecutive distinct gauge-authority defects concentrated in one seam
+is weak evidence of six independent bugs and stronger evidence of a **missing coherent gauge model** for
+same-region nonzero-Z4 promotion: the frozen design says what must hold without fixing which authority domain
+owns each quantity, so each fix relocates the inconsistency instead of removing it. R12 corroborates — a
+correction that fixed its own target **regressed an accepted ordinal**, which is what happens when a change lands
+in a seam whose ownership rules are underdetermined.
+
+**How to apply:** if `M5-CP3-CB16` does not bring produced rows 4 and 5 green, the next turn is a **definition
+reconciliation, not `CB17`**. It must establish, for the same-region nonzero-Z4 seam, one explicit statement of
+which authority domain owns the branch component, the lattice gauge, the endpoint states and the canonicalized
+storage form, and where each may be read. Precedent: `[[M4-CP4-DEFN-R1]]` and `M4-CP4-DEFN-R2` stopped to
+reconcile definitions rather than iterate implementations, and both produced durable progress. The trigger is
+stated now, while CB16 may still succeed, so it is not a judgement made under fatigue afterwards.
