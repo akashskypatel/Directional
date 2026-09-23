@@ -1,5 +1,14 @@
 ## 2026-09-23 — `M5-CP3-DEFN-R1`: same-region nonzero-Z4 gauge model frozen — **DEFINITION AMBIGUITY CLOSED / PRODUCT RECOVERY OPEN / EXISTING RP-01 / +0**
 
+## 2026-09-23 — `M5-CP3-CB17`: relation-gauge definition implemented, compile green — **RUNTIME PROOF PENDING / +0**
+
+**Stable totals remain 51 events / 14 categories / 37 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**
+
+CB17 source `1a36f6483738e1047b5d8ddbefb48cc5ab6fd4a3` implements the frozen same-region relation-frame authority `Q = G_R^-1 A G_F` without changing fixture/field/A3/selector authority. `Q` is computed once from raw directed A1 source transport and the accepted Forward/Reverse cut gauges, then owns both endpoint normalization and checked-product validation. The new focused `M5CP3.PeriodicRelationRotationUsesBothAcceptedOccurrenceGauges` contract proves a synthetic `Q != A` case and falsifies omission of either gauge term. This is compile/static evidence only.
+
+Compile/package run/job `35845003340 / 107128980299` is GREEN on all eight required GMP/GMPXX targets; candidate `10742798135` is unpromoted and `runtimeExecution=false`. No stable event, recurrence, debt discharge, observation closure or selector publication is claimed. Exact runtime owner is `M5-CP3-TB1-R15-EXEC -> M5-CP3-TB1-R15-REV` at **448** fresh processes.
+
+
 **Stable totals remain 51 events / 14 categories / 37 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**
 
 DEFN-R1 freezes the previously missing change of gauge across the exact A1 source-face frame, cut-open A4 phase-front frame, relation endpoint state and canonical storage. With exact semantic A3 Forward/Reverse occurrence faces `f_F/f_R`, raw directed A1 carrier turn `A`, and accepted cut gauges `G_F/G_R`, the one quotient turn is now normative:

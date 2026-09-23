@@ -1,3 +1,12 @@
+
+## 2026-09-23 — `M5-CP3-CB17`: frozen relation-frame gauge cutover compile green; R15 next
+
+Runtime-free Code + Build. Semantic source `1a36f6483738e1047b5d8ddbefb48cc5ab6fd4a3` implements frozen §16.3 exactly: relation rotation is `Q = G_R^-1 A G_F`; Forward endpoint branch/coordinates remain in cut-domain gauge; Reverse is normalized by `Q`; endpoint state/hash/checker plumbing now names and consumes `relationRotation` rather than raw generator transport. A synthetic focused identity uses `A=1, G_F=2, G_R=1 -> Q=2`, proves `Q != A`, and separately falsifies deletion of either gauge term. Fixture, raw field, A3 route, `PeriodicRelationId` and selector430 bytes are unchanged.
+
+Compile run/job `35845003340 / 107128980299` on exact semantic source is GREEN on all eight mandatory GMP/GMPXX targets. Candidate/log artifacts `10742798135 / 10743207155` hash to `eb1e2be55150022cdba05acf6b38433eb16352e4b3b6a561742e62de26cfd866 / cc58680de72ec58dc3cc74d3a1971d881f6232be923f0eb8672dad711e69354c`; root manifest is **28/28** at `a6c288ff4ef5afff8122f9dae0e330fe1cab4928b7bd5b5604b7d2fd5e32b951`, packaged source archive is `e6bed804841ecf590ccd1c372c906e19b927e5cf0d253d0d361993fa92ce68e0`, source receipts are clean and `runtimeExecution=false`. No Directional runtime was executed. Candidate remains unpromoted; accounting remains **51 / 14 / 37**, debt **3**.
+
+Final test inventory is cardinality-preserving versus R14: the old CB16 focus is replaced one-for-one, so exact successor `M5-CP3-TB1-R15-EXEC` is **448 fresh processes** (11 mechanism/semantic + 1 focused atlas + 6 produced + selector430), benchmark 0, then mandatory Review.
+
 ## 2026-09-23 — `M5-CP3-DEFN-R1` review: model frozen soundly; distinctive term unexercised by its only instance
 
 Runtime-free review. **Upheld.** Accounting holds at **51 events / 14 categories / 37 recurrences**, debt **3**.

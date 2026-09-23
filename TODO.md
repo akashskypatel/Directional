@@ -10,13 +10,13 @@ Mechanically complete **446/448 PASS** with self-manifest **916/916**. Branch+se
 
 Runtime-free DEFN-R1 freezes the missing same-region nonzero-Z4 gauge contract. With exact semantic A3 occurrence gauges `G_F/G_R` and raw directed A1 carrier turn `A`, relation rotation is `Q = G_R^-1 A G_F`; Forward anchors relation endpoint gauge, Reverse branch/coordinates are normalized by `Q`, translation is constructed once from the Forward endpoint correspondence, and canonical storage reversal is exact inversion only. The committed row4/5 torus witness independently yields relation-gauge **`Q=3`**, so fixture/field/A3 authority is valid and unchanged. `M5-CP3-TB1-R14-REV-OBS-01` is discharged. Accounting remains **51 / 14 / 37**, debt **3**.
 
-## Latest Code + Build turn — `M5-CP3-CB16`
+## Latest Code + Build turn — `M5-CP3-CB17`
 
-CB16 remains **COMPLETE / RUNTIME-FREE / COMPILE GREEN**, candidate `10733058003 / 6bad9eb5626e77a234ffb2c14f621195105e4ba1`. Its helper-level occurrence-gauge correction is now runtime-proved green, but production recovery failed; candidate remains unpromoted.
+CB17 is **COMPLETE / RUNTIME-FREE / COMPILE GREEN**, candidate `10742798135 / 1a36f6483738e1047b5d8ddbefb48cc5ab6fd4a3`. It implements frozen §16.3 exactly: `Q = G_R^-1 A G_F`, Forward cut-domain branch/raw coordinate authority, Reverse `Q` normalization, and relation-owned checked-product validation. The new synthetic contract proves `Q != A` and fails if either accepted occurrence-gauge term is deleted. All eight mandatory GMP/GMPXX targets compile/link; no Directional runtime was executed. Candidate remains unpromoted pending R15.
 
-## Exact next turn — `M5-CP3-CB17`
+## Exact next turn — `M5-CP3-TB1-R15-EXEC`
 
-Runtime-free Code + Build implementation of frozen §16.3. Apply `Q = G_R^-1 A G_F`, semantic Forward-anchored relation endpoint normalization and anchored non-fitted translation; update only directly coupled focused test contracts, including one case where `Q != A`; preserve fixture/field/A3/selector bytes. Compile/package with mandatory GMP/GMPXX targets only; no generated runtime.
+Fresh immutable artifact-only runtime under `.agents/Directional/Architecture_M5_CP3_TB1_R15_Artifact_Only_Test_Benchmark_Plan.md`: exactly **448 processes** = corrected mechanism/semantic 11 + focused atlas 1 + produced rows1–6 + selector430, benchmark 0. Mandatory successor is `M5-CP3-TB1-R15-REV`.
 
 ## M5 checkpoint sequence
 
@@ -34,7 +34,8 @@ Runtime-free Code + Build implementation of frozen §16.3. Apply `Q = G_R^-1 A G
 - [x] `M5-CP3-TB1-R14-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. 446/448 PASS, complete 916/916 evidence; branch-authority focus PASS, produced rows4/5 remain exact `PeriodicActionFirstBranchMismatch`, selector430 430/430. Convergence trigger fired.
 - [x] `M5-CP3-TB1-R14-REV` — **COMPLETE / RUNTIME-FREE / DEFINITION AUTHORITY PROVED**. Independently re-opened R14 916/916 evidence and 446/448 vector; helper green, production gauge model under-specified; convergence trigger enforced.
 - [x] `M5-CP3-DEFN-R1` — **COMPLETE / RUNTIME-FREE / DEFINITIONS FROZEN**. Exact relation turn `Q = G_R^-1 A G_F`; Forward-anchored endpoint normalization; current torus witness independently valid at `Q=3`; no runtime/build/selector mutation.
-- [ ] `M5-CP3-CB17` — **EXACT NEXT / RUNTIME-FREE CODE + BUILD**. Implement frozen §16.3 and directly coupled focused contracts; fixture/field/A3/selector unchanged; compile/package only.
+- [x] `M5-CP3-CB17` — **COMPLETE / RUNTIME-FREE / COMPILE GREEN / RUNTIME UNPROVED**. Frozen §16.3 relation-gauge cutover; synthetic `Q != A` focused contract; fixture/field/A3/selector unchanged; all-eight GMP/GMPXX compile/package green.
+- [ ] `M5-CP3-TB1-R15-EXEC` — **EXACT NEXT / IMMUTABLE ARTIFACT-ONLY RUNTIME**. 448 fresh exact-filter processes, benchmark 0, then mandatory R15 Review.
 
 - [x] `M5-CP1` and `M5-CP2`: CLOSED / ACCEPTED for mechanism credit; accepted package `10601978228`.
 - [x] `M5-CP3` R1→R7 recovery chain: stable ordinal408 `RP-01` event **RECOVERY PROVED** at R7 Review.

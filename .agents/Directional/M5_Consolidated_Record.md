@@ -373,3 +373,11 @@ Historical citations in frozen/normative records to filenames listed here are pr
 | `Architecture_M5_CP3_CB1_Stop_Record.md` | **ADJUDICATED / FOLDED BY `M5-CP3-CB1-REV`.** The HardRail/PeriodicCut/shared-interval contradiction, no-mutation/no-compile boundary and accepted-authority facts are retained in the current Review, this record, tracker and changelog. |
 
 CP2's consumed CB1 plan/report and TB1 execution plan remain indexed in durable `M5_CP2_Closure_Record.md`; its superseded TB1 runtime report and Review are now folded above.
+
+## 4.17 `M5-CP3-CB17` — frozen relation-frame gauge cutover compiles green
+
+CB17 implements DEFN-R1/§16.3 directly. Raw A1 Forward->Reverse carrier turn `A` is converted into relation rotation `Q = G_R^-1 A G_F` from the accepted semantic occurrence gauges. Forward endpoint state recovers the cut branch with `G_F^-1`, keeps raw cut coordinates, and Reverse applies `Q` to both recovered cut branch and raw cut coordinate. `SurfacePeriodicRelationEndpointState` now records `relationRotation`; product checked validation compares the authored action to `Q`, not raw `A`. Canonical storage semantics remain deterministic `T`/`T.inverse()` only.
+
+The focused source contract is deliberately stronger than the committed produced torus witness: `A=1, G_F=2, G_R=1` yields `Q=2 != A` and deletion of either gauge term changes the result. This resolves the mechanism-coverage concern left by R14 Review while preserving the real fixture/field/A3/selector bytes. The existing endpoint exactness contract is updated for Forward raw / Reverse rotated coordinates.
+
+Exact semantic source `1a36f6483738e1047b5d8ddbefb48cc5ab6fd4a3` compiles/packages GREEN in run/job `35845003340 / 107128980299`; candidate/log artifacts are `10742798135 / 10743207155`, root manifest **28/28**, all eight mandatory targets link with GMP/GMPXX, source receipts are clean and `runtimeExecution=false`. Candidate remains runtime-unproved/unpromoted and accounting remains **51 / 14 / 37**, debt **3**. Final test inventory stays exactly **448** processes for R15 because the CB16 mechanism identity was replaced one-for-one. Exact successor is immutable artifact-only `M5-CP3-TB1-R15-EXEC`, then mandatory Review.
