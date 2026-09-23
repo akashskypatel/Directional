@@ -1,18 +1,28 @@
-## 2026-09-23 — `M5-CP3-TB1-R13-REV`: ordinary recovery accepted; first-branch authority root proved — **EXISTING RP-01 / +0**
+## 2026-09-23 — `M5-CP3-CB16`: occurrence-carrier branch/gauge correction compile green — **RUNTIME PROOF PENDING / +0**
 
-**Stable totals remain 50 events / 14 categories / 36 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**
+**Corrected stable totals remain 51 events / 14 categories / 37 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**
+
+CB16 source `6bad9eb5626e77a234ffb2c14f621195105e4ba1` applies the R13 cause-proved `RP-01` correction at the owned authority seam only: it preserves the bounded-disk chart branch offset, re-expresses that branch at the exact accepted A3 occurrence-carrier face, uses the same occurrence-owned branch for the nonzero relation coordinate gauge, and validates the carried authority at checked-product/materialization consumers. The independent `M5CP3.PeriodicRelationEndpointBranchUsesAcceptedOccurrenceAuthority` falsifier compiles but has not run.
+
+An initial compile exposed a scope/lifetime defect in the new code: exact per-face branch gauge existed inside regional production but was not retained to same-region periodic reconciliation. The same turn corrected that by retaining the already-authoritative per-face gauge in internal build state; no semantic fallback, inverse search, fixture change, A3 change, selector change, or generated runtime execution occurred. Final compile/package run/job `35820794471 / 107052021973` is GREEN on all eight GMP/GMPXX targets with candidate `10733058003`, root manifest **28/28**, clean source receipts and `runtimeExecution=false`.
+
+No regression is closed from compile evidence. `M5-CP3-TB1-R13-CAND-01` remains the existing RP-01 occurrence-branch authority continuation pending fresh R14 runtime. `M5-CP3-TB1-R11-R1-CAND-01` remains the broader endpoint-gauge recovery chain. `M5-CP3-TB1-R6-REV-OBS-01`, `M5-CP2-TB1-REV-OBS-01`, and `M5-CP3-TB1-R13-REV-OBS-01` remain OPEN. Exact runtime owner is `M5-CP3-TB1-R14-EXEC -> M5-CP3-TB1-R14-REV`; if rows4/5 are not both green, Review must route to gauge-definition reconciliation rather than `CB17`.
+
+## 2026-09-23 — `M5-CP3-TB1-R13-REV`: ordinary recovery accepted; first-branch authority root proved — **EXISTING RP-01 / ACCOUNTING ADDENDUM**
+
+**The Review addendum corrects stable totals to 51 events / 14 categories / 37 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**
 
 Review independently re-verifies R13 result **914/914**, all 447 exact-filter outcomes at **445 PASS / 2 RED**, selector430/first427 hashes, immutable postflight and zero prohibited-operation counters. Tested semantic source `4dfe392d...` has no code-surface drift to the exact Review snapshot.
 
-### `M5-CP3-TB1-R12-CAND-01` — CLOSED / recovery proved / +0
+### `M5-CP3-TB1-R12-CAND-01` — CLOSED / recovery proved / STABLE EVENT RECORDED / RP-01 recurrence
 
-CB15's semantic-action identity PASSes; produced rows1/2/3/6 and selector408 recover to PASS. The storage-canonical-vs-semantic-direction defect is therefore runtime-recovered and remains only historical existing RP-01 evidence.
+CB15's semantic-action identity PASSes; produced rows1/2/3/6 and selector408 recover to PASS. The storage-canonical-vs-semantic-direction defect is runtime-recovered. The Review addendum proves ordinal408 had already returned to accepted PASS at R7 and remained PASS through R11-R1 before R12 drove it RED from this distinct cause, so the R12 PASS -> RED transition remains a historical stable `RP-01` recurrence after recovery.
 
 ### `M5-CP3-TB1-R13-CAND-01` — CAUSE PROVED / occurrence-branch authority conflation / +0
 
 Rows4/5 alone RED at typed first-false `PeriodicActionFirstBranchMismatch` after orientation, generator rotation, source chart, occurrence and scale predicates pass. The generator rotation is exact transport between accepted A3 occurrence-carrier faces, while `SurfacePeriodicRelationEndpointState.branchRotation` is copied from `LocalLatticeState`, whose branch is authored from the cell corner's trace/source face plus chart-U branch. The endpoint constructor carries the A3 occurrence only as metadata and never re-expresses that local branch at the occurrence-carrier face. R13 therefore runtime-falsifies the implicit cross-domain equality. **Status:** CAUSE PROVED / PRODUCT / EXISTING `RP-01 AUTHORITY_DOMAIN_CONFLATION` CONTINUATION / RELATION ENDPOINT BRANCH AUTHORITY CONFLATION / NON-STABLE / OWNER `M5-CP3-CB16` / +0.
 
-`M5-CP3-TB1-R11-R1-CAND-01` remains OPEN as the broader failed endpoint-gauge recovery chain, now narrowed to the proved branch-authority seam. Later delta/map predicates are unexecuted and unclassified. `M5-CP3-TB1-R6-REV-OBS-01` remains OPEN because row4 does not reach the independent direction comparator/inverted-pair rejection. `M5-CP2-TB1-REV-OBS-01` remains OPEN because frozen §13 requires a completely green corrected CP3 pre-publication gate, not only a green selector430 sub-vector inside a 445/447 RED run. Both M5 nonzero-Z4 debts remain open; no selector publication or candidate promotion.
+`M5-CP3-TB1-R11-R1-CAND-01` remains OPEN as the broader failed endpoint-gauge recovery chain, now narrowed to the proved branch-authority seam. Later delta/map predicates are unexecuted and unclassified. `M5-CP3-TB1-R6-REV-OBS-01` remains OPEN because row4 does not reach the independent direction comparator/inverted-pair rejection. `M5-CP2-TB1-REV-OBS-01` remains OPEN because frozen §13 requires a completely green corrected CP3 pre-publication gate, not only a green selector430 sub-vector inside a 445/447 RED run. Both M5 nonzero-Z4 debts remain open; no selector publication or candidate promotion. The Review addendum also records `M5-CP3-TB1-R13-REV-OBS-01`: after CB16, rows4 and row5 must both be green or the next semantic turn is a same-region nonzero-Z4 gauge-definition reconciliation. The recovered R12 ordinal408 PASS -> RED transition is recorded as a stable RP-01 recurrence; categories and debt are unchanged.
 
 ## 2026-09-23 — `M5-CP3-TB1-R13-EXEC`: ordinary recovery green; nonzero first branch correspondence mismatch isolated — **445/447 / REVIEW REQUIRED / +0**
 

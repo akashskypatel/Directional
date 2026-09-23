@@ -1,3 +1,11 @@
+## 2026-09-23 — `M5-CP3-CB16`: occurrence-carrier branch/gauge authority correction compile green; R14 next
+
+CB16 preserves the bounded-disk chart branch offset while re-expressing periodic endpoint branch authority at the exact accepted A3 occurrence-carrier face, uses that same authority for nonzero relation coordinates, and adds the independent `M5CP3.PeriodicRelationEndpointBranchUsesAcceptedOccurrenceAuthority` falsifier. The first compile exposed a scope/lifetime gap in retaining the already-authored per-face gauge; the same turn repaired only that internal retention path. No A3/fixture/selector retuning, inverse search, semantic fallback, or generated runtime execution occurred.
+
+Final source `6bad9eb5626e77a234ffb2c14f621195105e4ba1` is compile/package GREEN in run/job `35820794471 / 107052021973`. Candidate/log artifacts `10733058003 / 10732709067` hash to `96e313e822bea8ebc6b7478c75c99d4c9245c7d88913b0d14d449a0ec73013f0 / 3cfde85027f85bbb21f22c87918bbb911879f17bdc03014618c819a04343eeaa`; all eight mandatory GMP/GMPXX targets link, root manifest is **28/28** (`f77684128606428a82fe236b749b2d8357948e610745db55f98775a6b4217629`), source archive is `45bb6ccaba68772e998ebd41d75334041b54e5eadb36e4f3c0cd68b46b9b988b`, source receipts are clean and `runtimeExecution=false`. Candidate remains unpromoted and runtime-unproved.
+
+The R13 Review accounting addendum is the current count authority: **51 events / 14 categories / 37 recurrences**, debt **3**. Exact successor is immutable `M5-CP3-TB1-R14-EXEC`: new branch-authority identity + unchanged R13 vector = **448 fresh processes**, benchmark 0, then mandatory Review. If produced rows4/5 are not both green, Review must route to same-region nonzero-Z4 gauge-definition reconciliation rather than `CB17`.
+
 ## 2026-09-23 — `M5-CP3-TB1-R13-REV` review: diagnosis upheld; accounting corrected to 51 / 14 / 37
 
 Runtime-free review. **Diagnosis upheld, accounting corrected.** Debt remains **3**; candidate unpromoted;

@@ -2,34 +2,54 @@
 
 ## Current authority
 
-`M5-CP3-TB1-R13-REV` is **COMPLETE / RUNTIME-FREE / ORDINARY RECOVERY PROVED / FIRST-BRANCH ROOT PROVED / EXISTING RP-01 / CB16 NEXT** once terminal `STATUS` is published.
+`M5-CP3-CB16` is **COMPLETE / RUNTIME-FREE / COMPILE GREEN / RUNTIME UNPROVED** once terminal `STATUS` is published.
 
-R13 run/job `35814092644 / 107031820541` on candidate/source `10730261023 / 4dfe392d28d60b448e2f32253f7d170221ac57ec` is independently upheld at **445 PASS / 2 RED** across **447/447** exact-filter processes with complete **914/914** result evidence and selector430 **430/430**. New semantic-orientation identity, produced rows1/2/3/6 and selector408 PASS. `M5-CP3-TB1-R12-CAND-01` is CLOSED recovery-proved.
+CB16 corrects only the R13-proved relation-endpoint branch/gauge authority seam. `SurfacePeriodicRelationEndpointBranchAuthority` now carries the retained local-face +U branch and exact accepted A3 occurrence-carrier-face +U branch. Relation endpoint state preserves the bounded-disk chart offset while re-expressing it at occurrence authority:
 
-Rows4/5 alone stop at exact typed `PeriodicActionFirstBranchMismatch`. Review proves the generator rotation is exact transport between accepted A3 Forward/Reverse occurrence-carrier faces, while `SurfacePeriodicRelationEndpointState.branchRotation` is copied from `LocalLatticeState`, which is authored from the cell corner/trace source face plus bounded-disk chart-U branch. No bridge re-expresses that local branch in the occurrence-carrier face gauge. `M5-CP3-TB1-R13-CAND-01` is therefore cause-proved as existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION`, non-stable +0; later delta/map predicates remain unexecuted.
+```text
+C     = B_local - B_face_local  (mod 4)
+B_rel = B_face_occ + C          (mod 4)
+```
 
-Accepted runtime remains `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316`. Stable accounting remains **50 / 14 / 36**, produced-witness debt **3**. R13 candidate remains unpromoted. `M5-CP3-TB1-R6-REV-OBS-01` remains OPEN because row4 never reaches the independent direction comparator/inverted-pair rejection. `M5-CP2-TB1-REV-OBS-01` remains OPEN because frozen §13 requires a completely green corrected CP3 pre-publication gate; R13 is semantic RED despite selector430 430/430. Selector publication remains prohibited.
+`branchRotation` and the nonzero relation coordinate gauge now use the same `B_rel`; `R == 0` preserves the raw cut-domain coordinate exactly. Checked-product and materialization consumers independently validate/rederive the same carried authority. Canonical relation storage/direction semantics from CB15, ordinary `LocalLatticeState`, field/A3 authority and selector430 are unchanged.
+
+The first compile correctly exposed a scope/lifetime defect in the new bridge (`faceBranchRotation` was referenced outside the regional producer). The same-turn bounded correction retains each regional producer's exact per-face branch gauge in internal build state and reads it from the selected regional build during same-region periodic reconciliation. No new semantic owner was introduced.
+
+Final semantic source `6bad9eb5626e77a234ffb2c14f621195105e4ba1` compiles all eight mandatory GMP/GMPXX targets in run/job `35820794471 / 107052021973`. Candidate artifact `10733058003` is root-manifest **28/28**, ZIP SHA-256 `96e313e822bea8ebc6b7478c75c99d4c9245c7d88913b0d14d449a0ec73013f0`; root `SHA256SUMS` is `f77684128606428a82fe236b749b2d8357948e610745db55f98775a6b4217629`; packaged source archive is `45bb6ccaba68772e998ebd41d75334041b54e5eadb36e4f3c0cd68b46b9b988b`. Log artifact `10732709067` hashes to `3cfde85027f85bbb21f22c87918bbb911879f17bdc03014618c819a04343eeaa`. GMP and GMPXX are present on authoritative link evidence and `runtimeExecution=false`.
+
+No runtime recovery, promotion, debt discharge, observation closure or selector publication is claimed. Accepted runtime remains `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316`. The R13 Review addendum corrected historical accounting to **51 events / 14 categories / 37 recurrences**, produced-witness debt **3**.
 
 ## Exact next turn
 
-**`M5-CP3-CB16`** under `.agents/Directional/Architecture_M5_CP3_CB16_Occurrence_Branch_Gauge_Authority_Correction_Plan.md`.
+**`M5-CP3-TB1-R14-EXEC`** under `.agents/Directional/Architecture_M5_CP3_TB1_R14_Artifact_Only_Test_Benchmark_Plan.md`.
 
-CB16 is runtime-free Code + Build. Correct only the relation-endpoint branch/gauge authority seam: preserve local chart +U offset but deterministically re-express it at the endpoint's exact accepted A3 occurrence-carrier face; use that relation-owned branch for both `branchRotation` and the nonzero relation coordinate gauge. Preserve raw coordinates exactly at `R==0`. Add one independent branch-authority falsifier, compile/package all eight mandatory GMP/GMPXX targets, and run no generated Directional binary. No partner fitting, inverse retry, transform/translation search, fixture/field/A3/selector tuning or predicate weakening.
+R14 is immutable artifact-only runtime. Execute the new CB16 branch-authority identity first, then the unchanged R13 447 identities in exact order, for **448 fresh exact-filter processes** total. Require exact-one selection, zero skips, benchmark `0`, complete self-manifest, immutable package/source/execution-view postflight and zero prohibited-operation counters. Preserve archived executable modes; do not repair the package.
 
-Compile-green CB16 routes to fresh artifact-only `M5-CP3-TB1-R14-EXEC`: new branch-authority identity first plus unchanged R13 447 identities = **448 fresh processes**, then mandatory Review. Rows4/5 must progress beyond `PeriodicActionFirstBranchMismatch`; ordinary rows1/2/3/6 and selector430 (especially 191/192/247/408) must remain green. Later typed REDs are Review evidence, not same-EXEC repair authority.
+Primary falsifiers:
+
+- `M5CP3.PeriodicRelationEndpointBranchUsesAcceptedOccurrenceAuthority` PASS;
+- CB15 semantic-orientation identity remains PASS;
+- produced rows1/2/3/6 remain PASS;
+- selector430 remains **430/430**, especially 191/192/247/408;
+- produced rows4/5 must both PASS to satisfy the R13 convergence trigger;
+- row4 must reach the independent Forward -> Reverse comparator/inverted-pair rejection before Review may close the direction observation;
+- row5 must reject the transform-only tamper as typed `NonReciprocalPeriodicRelation` before Review may grant the remaining nonzero-Z4 debt credit.
+
+Any mechanically complete R14 routes to mandatory `M5-CP3-TB1-R14-REV`. If either row4 or row5 remains RED, `M5-CP3-TB1-R13-REV-OBS-01` requires the next semantic turn to be a same-region nonzero-Z4 **gauge-definition reconciliation**, not `CB17`.
 
 ## Resume-critical evidence
 
+- CB16 report: `.agents/Directional/Architecture_M5_CP3_CB16_Code_Build_Report.md`
+- R14 plan: `.agents/Directional/Architecture_M5_CP3_TB1_R14_Artifact_Only_Test_Benchmark_Plan.md`
 - R13 Review: `.agents/Directional/Architecture_M5_CP3_TB1_R13_Review_Record.md`
-- CB16 plan: `.agents/Directional/Architecture_M5_CP3_CB16_Occurrence_Branch_Gauge_Authority_Correction_Plan.md`
-- R13 runtime report: `.agents/Directional/Architecture_M5_CP3_TB1_R13_Artifact_Only_Test_Benchmark_Report.md`
-- R13 run/job: `35814092644 / 107031820541`
-- result/log: `10730508643 / 10731102663`
-- result/log ZIP SHA-256: `0c93f72b3a73752002567dd1a39e19a30ff5c5be352a15cb6e4318f519ab6c01 / aeddb30487479d8324f3ef6797ea068061dc8da000b56d494c7149110025c777`
-- result self-manifest: **914/914**, SHA256SUMS `29cebe48a81c4bd243dc3949f9caf11baed6d991c3e96a34078bd8729bc440a7`
-- candidate/source: `10730261023 / 4dfe392d28d60b448e2f32253f7d170221ac57ec`
+- frozen definitions: `.agents/Directional/Architecture_M5_Frozen_Definitions.md` §§14–16.1
+- final CB16 source: `6bad9eb5626e77a234ffb2c14f621195105e4ba1`
+- compile run/job: `35820794471 / 107052021973`
+- candidate/log artifacts: `10733058003 / 10732709067`
+- candidate/log ZIP SHA-256: `96e313e822bea8ebc6b7478c75c99d4c9245c7d88913b0d14d449a0ec73013f0 / 3cfde85027f85bbb21f22c87918bbb911879f17bdc03014618c819a04343eeaa`
+- root manifest/source archive: `f77684128606428a82fe236b749b2d8357948e610745db55f98775a6b4217629 / 45bb6ccaba68772e998ebd41d75334041b54e5eadb36e4f3c0cd68b46b9b988b`
+- routing artifact/identity map: `10592987234 / 7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c`
 - selector430/first427: `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6 / f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`
-- frozen semantics: `.agents/Directional/Architecture_M5_Frozen_Definitions.md` §§14-16.1
 - tracker: `.agents/Directional/Regression_Root_Cause_Tracker.md`
 - consolidated history: `.agents/Directional/M5_Consolidated_Record.md`
 
@@ -37,18 +57,20 @@ Compile-green CB16 routes to fresh artifact-only `M5-CP3-TB1-R14-EXEC`: new bran
 
 ```yaml
 load_next:
-  - references/turns/CB.md
+  - references/turns/TB-EXEC.md
 conditional_modules:
-  - trigger: GitHub Actions compile/package orchestration
+  - trigger: GitHub Actions artifact-only runtime
     path: modules/github-connector/MODULE.md
 deep_references:
+  - .agents/Directional/Architecture_M5_CP3_TB1_R14_Artifact_Only_Test_Benchmark_Plan.md
+  - .agents/Directional/Architecture_M5_CP3_CB16_Code_Build_Report.md
   - .agents/Directional/Architecture_M5_CP3_TB1_R13_Review_Record.md
-  - .agents/Directional/Architecture_M5_CP3_CB16_Occurrence_Branch_Gauge_Authority_Correction_Plan.md
   - .agents/Directional/Architecture_M5_Frozen_Definitions.md
   - .agents/Directional/Regression_Root_Cause_Tracker.md
   - .agents/Directional/M5_Consolidated_Record.md
 do_not_preload:
   - M6 occurrence work
-  - selector publication
+  - selector publication before R14 Review
   - fixture/field/A3 retuning
+  - CB17 if R14 rows4/5 are not both green
 ```
