@@ -1,4 +1,0 @@
-turn=M5-CP3-TB1-R14-REV
-purpose=exact runtime-free review source snapshot
-expected_branch=agent/surface_cell_quad/p5-recover-bridge-healing
-retry=0

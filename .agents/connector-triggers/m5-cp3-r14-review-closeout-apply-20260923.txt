@@ -1,4 +1,0 @@
-turn=M5-CP3-TB1-R14-REV
-purpose=apply verified runtime-free Review closeout and DEFN-R1 authority patch
-base_sha=98a65c9ddd09bcf02aad027379464f32006ca66b
-retry=0
