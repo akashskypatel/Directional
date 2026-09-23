@@ -6,6 +6,10 @@ Last updated: 2026-09-23 UTC
 
 **COMPLETE / APPROVED WITH AMENDMENTS / TEST-AUTHORITY ROOT CAUSE PROVED / +0.** Review independently upholds R15-R1 at 446/448 with complete 921/921 evidence and proves rows16/17 are stale produced-test assumptions: canonical storage may invert semantic Forward -> Reverse action/routes, but both tests compare stored `route/action/cutRoute` directly to semantic witness facts. The observed `Q=3` versus stored `1` is the exact inverse signature. Product/fixture/field/A3/selector semantics remain fixed. Exact successor is test-only `M5-CP3-CB19`, then fresh R16 + mandatory Review if compile green.
 
+## Latest Code + Build turn — `M5-CP3-CB19`
+
+**COMPLETE / TEST-ONLY / RUNTIME-FREE / COMPILE+PACKAGE GREEN.** Only `tests/SurfaceCellTransitionQuotientTests.cpp` changed. Rows16/17 now bind exact A3 Forward/Reverse edges, resolve canonical storage to semantic direction through the production resolver, preserve independent source/A3 `Q=3` expectation, and explicitly prove inverse-storage non-vacuity before their original materialization/certificate or tamper/rejection falsifiers. Product/fixture/field/A3/selector/CMake/benchmark semantics are unchanged. Compile run/job `35887450241 / 107271175635`, artifact `10763242885`, root manifest 28/28; all eight GMP/GMPXX targets link and `runtimeExecution=false`.
+
 ## Latest Test + Benchmark turn — `M5-CP3-TB1-R15-R1-EXEC`
 
 **COMPLETE / MECHANICALLY VALID / SEMANTIC RED / 446 PASS + 2 RED.** Fresh run/job `35869756879 / 107210502570` executes all 448 processes with exact-one selection and zero skips: mechanism 11/11, focused atlas 1/1, produced 4/6, selector430 430/430; result evidence is complete 921/921 and immutable postflight is exact. Produced rows16/17 alone RED. Row16 observes generator-route mismatch, source rotation 3 versus published relation rotation 1, then fatally stops on cut-route/Forward-edge-route mismatch before the independent direction comparator or materialization. Row17 stops on the generator-route assertion before transform tamper/typed rejection. Exact successor is mandatory runtime-free Review; EXEC grants no promotion, debt discharge, observation closure or stable-accounting change.
@@ -18,13 +22,13 @@ Runtime-free DEFN-R1 freezes the missing same-region nonzero-Z4 gauge contract. 
 
 CB17 is **COMPLETE / RUNTIME-FREE / COMPILE GREEN**, candidate `10742798135 / 1a36f6483738e1047b5d8ddbefb48cc5ab6fd4a3`. It implements frozen §16.3 exactly: `Q = G_R^-1 A G_F`, Forward cut-domain branch/raw coordinate authority, Reverse `Q` normalization, and relation-owned checked-product validation. The new synthetic contract proves `Q != A` and fails if either accepted occurrence-gauge term is deleted. All eight mandatory GMP/GMPXX targets compile/link; no Directional runtime was executed. Candidate remains unpromoted pending R15.
 
-## Latest Code + Build turn — `M5-CP3-CB18`
+## Previous control-plane Code + Build turn — `M5-CP3-CB18`
 
 **COMPLETE / CONTROL-PLANE GREEN / RUNTIME-FREE / NO DIRECTIONAL COMPILE / NO REPACKAGE.** Canonical R15-R1 harness/caller are frozen at SHA-256 `7867e779...81b7 / 0f0a12f9...a15c`. Static run `35864475136` proves corrected literal GTest accounting `selected/passed/skipped=1/1/0`, historical parser `0/0`, skip probe `1/0/1`, and both workflow schemas green. No semantic input changed; accounting remains 51 / 14 / 37, debt 3.
 
-## Exact next turn — `M5-CP3-CB19`
+## Exact next turn — `M5-CP3-TB1-R16-EXEC`
 
-Test-only runtime-free correction of rows16/17 so storage-canonical relations are resolved to exact semantic A3 Forward -> Reverse authority before witness checks. Preserve the inverted-storage non-vacuity discriminator, row16 materialization/certificate checks and row17 one-transform typed rejection. No product/fixture/field/A3/selector change. Compile-green routes to fresh `M5-CP3-TB1-R16-EXEC` over the same 448 identities, then mandatory `M5-CP3-TB1-R16-REV`.
+Fresh artifact-only execution over the same **448** exact identities, benchmark 0, against the immutable CB19 compile/package candidate. No R15-R1 ledger credit carries forward. Preserve CB18 exact-one/zero-skip accounting and immutable postflight. Mechanically complete R16 is followed by mandatory `M5-CP3-TB1-R16-REV`; EXEC itself cannot promote, discharge debt, close observations or alter accounting.
 
 ## M5 checkpoint sequence
 
@@ -48,14 +52,15 @@ Test-only runtime-free correction of rows16/17 so storage-canonical relations ar
 - [x] `M5-CP3-CB18` — **COMPLETE / CONTROL-PLANE GREEN / RUNTIME-FREE / NO COMPILE**. Corrected literal GTest parser statically discriminates historical defect; canonical R15-R1 harness/caller frozen; both schemas green; semantic inputs unchanged.
 - [x] `M5-CP3-TB1-R15-R1-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. Fresh 448/448 exact-filter gate is 446 PASS / 2 RED with selector430 430/430, protected 191/192/247/408 PASS, complete 921/921 evidence, benchmark 0 and exact immutable postflight; produced rows16/17 alone RED before their final product falsifiers.
 - [x] `M5-CP3-TB1-R15-R1-REV` — **COMPLETE / TEST-AUTHORITY ROOT CAUSE PROVED / +0**. Mechanics upheld at 446/448; rows16/17 directly consume storage-canonical representation as semantic direction. DEFN-R1/parser observations discharged; product debts remain open.
-- [ ] `M5-CP3-CB19` — **EXACT NEXT / AUTHORIZED / TEST-ONLY**. Correct only rows16/17 semantic-resolution contract, compile/package runtime-free; green routes to fresh R16 over the same 448 identities.
+- [x] `M5-CP3-CB19` — **COMPLETE / TEST-ONLY / RUNTIME-FREE / COMPILE+PACKAGE GREEN**. Rows16/17 resolve storage-canonical representation to semantic A3 authority while preserving independent `Q=3`, inverse-storage non-vacuity and original product falsifiers; all eight GMP/GMPXX targets compile/link; no runtime.
+- [ ] `M5-CP3-TB1-R16-EXEC` — **EXACT NEXT / AUTHORIZED / ARTIFACT-ONLY**. Fresh 448-process gate, benchmark 0, no R15-R1 row carry-forward; mandatory Review follows if mechanically complete.
 
 - [x] `M5-CP1` and `M5-CP2`: CLOSED / ACCEPTED for mechanism credit; accepted package `10601978228`.
 - [x] `M5-CP3` R1→R7 recovery chain: stable ordinal408 `RP-01` event **RECOVERY PROVED** at R7 Review.
 - [x] M5 produced debt 1 — relation owners/container reorder: **DISCHARGED at R7 Review** on produced rows1/2 with >=2 relations and >=2 owned periodic edges.
 - [x] M5 produced debt 2 — missing relation owner: **DISCHARGED at R7 Review** on produced rows1/3 with exact typed rejection.
-- [ ] M5 produced debt 3 — genuine nonzero-Z4 rotation+translation through production/materialization: **OPEN / PRODUCT OWNER `M5-CP3-CB19 -> M5-CP3-TB1-R16-EXEC -> REV`**; definition and witness criterion are frozen.
-- [ ] M5 produced debt 4 — tampered produced nonzero-Z4 transform rejects typed: **OPEN / PRODUCT OWNER `M5-CP3-CB19 -> M5-CP3-TB1-R16-EXEC -> REV`**; definition and witness criterion are frozen.
+- [ ] M5 produced debt 3 — genuine nonzero-Z4 rotation+translation through production/materialization: **OPEN / PRODUCT OWNER `M5-CP3-TB1-R16-EXEC -> REV`**; definition and witness criterion are frozen.
+- [ ] M5 produced debt 4 — tampered produced nonzero-Z4 transform rejects typed: **OPEN / PRODUCT OWNER `M5-CP3-TB1-R16-EXEC -> REV`**; definition and witness criterion are frozen.
 - [ ] M6 closed-complex produced debt: **OPEN / M6-owned**.
 - [x] `M5-CP3-CB9` — **COMPLETE / TEST-ONLY / RUNTIME-FREE / COMPILE GREEN**. Candidate `10660365136` / source `1023eea6090...`; all-eight GMP compile/package green, no runtime.
 - [x] `M5-CP3-TB1-R8-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. Vector 9/9 + 1/1 + 4/6 + 430/430; row6 recovers, rows4/5 stop at `InvalidBoundedDiskChart`; immutable postflight exact.
@@ -107,7 +112,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. M4 handed four periodic/relation debts to M5 and one closed-complex debt to M6; R7 Review has since discharged two M5 debts, leaving the two nonzero-Z4 M5 debts plus the one M6 debt.
-- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 R15-R1 REVIEW COMPLETE / CB19 NEXT**. R15-R1 remains the latest mechanically valid CP3 runtime at 446/448 with selector430 430/430 and complete 921/921 evidence. Review proves the two REDs are stale produced-test storage-vs-semantic assumptions, not product recovery evidence. CB17 candidate remains unpromoted; two nonzero-Z4 debts plus direction/publication observations remain open; accounting stays **51 / 14 / 37**, debt **3**.
+- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 CB19 COMPILE GREEN / R16 NEXT**. R15-R1 remains the latest mechanically valid CP3 runtime at 446/448 with selector430 430/430 and complete 921/921 evidence. CB19 compiles the test-only storage-to-semantic correction without runtime credit; CB17/CB19 candidate remains unpromoted; two nonzero-Z4 debts plus direction/publication observations remain open; accounting stays **51 / 14 / 37**, debt **3**.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.
@@ -146,4 +151,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current corrected totals are **51 events / 14 categories / 37 recurrences**, debt **3**. M4, M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**; accepted runtime authority remains package `10601978228 / 0798547d...` under selector430 **430/430**. R15-R1 is the latest mechanically valid CP3 runtime at **446/448 PASS** with complete **921/921** evidence. R15-R1 Review proves rows16/17 are non-stable test-authority storage-representation conflation; CB17 candidate remains unpromoted. Both nonzero-Z4 M5 debts and R6 direction/CP2 publication observations remain open. Exact successor is **`M5-CP3-CB19`**. PR #8 remains open, draft, and unmerged.
+Current corrected totals are **51 events / 14 categories / 37 recurrences**, debt **3**. M4, M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**; accepted runtime authority remains package `10601978228 / 0798547d...` under selector430 **430/430**. R15-R1 is the latest mechanically valid CP3 runtime at **446/448 PASS** with complete **921/921** evidence. CB19 compiles the bounded test-authority correction with no runtime execution or promotion. Both nonzero-Z4 M5 debts and R6 direction/CP2 publication observations remain open. Exact successor is **`M5-CP3-TB1-R16-EXEC`**. PR #8 remains open, draft, and unmerged.

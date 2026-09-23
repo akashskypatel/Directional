@@ -1,3 +1,11 @@
+## 2026-09-23 — `M5-CP3-CB19`: storage-canonical produced-test correction compiles/package green; R16 next
+
+Test-only CB19 changes only `tests/SurfaceCellTransitionQuotientTests.cpp`. Rows16/17 now bind the exact A3 Forward/Reverse edges before semantic comparisons, resolve canonical storage with `resolve_periodic_relation_semantic_action(...)`, and reverse the stored generator route only when the stored cut route proves inverse canonical orientation. The expected semantic action remains independent source/A3 authority: committed witness `Q=3`, cross-checked against atlas authority. Both tests explicitly require the committed storage form to be inverted (`stored action != semantic action`, stored route differs from semantic generator route), avoiding a circular product-derived oracle.
+
+Row16 retains nonzero translation, endpoint-state/action equations, materialization, relation-certificate use and `consumedPeriodicHolonomies>0`. Row17 retains exactly one stored-transform tamper and exact typed `NonReciprocalPeriodicRelation` rejection. No product/fixture/field/A3/frozen-definition/selector/CMake/benchmark semantic change occurred. Test patch commit is `46733e170cb3698e10d8c87937ec8cdc7356057b`; exact compile source is `a8b33cb7145d5a99d47eaf5f70bb12f1c71238d1`.
+
+Compile/package run/job `35887450241 / 107271175635` is GREEN. Result/log artifacts `10763242885 / 10763022776` have provider ZIP SHA-256 `abe4c381511d3b4025f22612978388bb554bd686b86b6f9dc406538998e990aa / 18b657e71b9834233b30cd72f15ab50b1833ea0b5db6df5859095f7fefc324df`; root manifest verifies 28/28 at SHA-256 `cda95dd99d7c201fb4fc1f5021f24c6e720e82dc737a89418245e687bf010c25`, source archive hashes to `54962d495891b35dd800fbede63ddc7d622c28091b42a0faeb8e8b3597726d91`, all eight mandatory targets link with GMP/GMPXX, source status is clean and `runtimeExecution=false`. No runtime credit/promotion/debt discharge is claimed. Accounting remains **51 / 14 / 37**, debt **3**. Exact successor is fresh artifact-only `M5-CP3-TB1-R16-EXEC` over the same 448 identities, benchmark 0, followed by mandatory Review.
+
 ## 2026-09-23 — `M5-CP3-TB1-R15-R1-REV` review: test-authority verdict upheld under scrutiny; CB19 guard recorded
 
 Runtime-free review. **Upheld.** Accounting holds at **51 events / 14 categories / 37 recurrences**, debt **3**;
