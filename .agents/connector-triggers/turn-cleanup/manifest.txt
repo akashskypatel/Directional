@@ -1,0 +1,2 @@
+# M5-CP3-TB1-R16-EXEC final temporary-state cleanup
+.agents/connector-triggers/m5-cp3-r16-docs-apply/trigger.txt
