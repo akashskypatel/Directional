@@ -1,2 +1,0 @@
-# M5-CP4-CB1 temporary-state cleanup
-.agents/connector-triggers/source-snapshot/m5-cp4-cb1-20260923T2325Z.txt
