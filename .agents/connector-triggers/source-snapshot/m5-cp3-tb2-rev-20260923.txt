@@ -1,3 +1,0 @@
-purpose=M5-CP3-TB2-REV exact review snapshot
-semantic_base=adcbb79885177f8f3e7e38dd4723a1205d3719be
-retry=0
