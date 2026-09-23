@@ -42,7 +42,7 @@ jobs:
       GH_TOKEN: ${{ secrets.GH_TOKEN || github.token }}
       TURN_ID: M5-CP3-TB1-R15-EXEC
       HARNESS_PATH: .agents/Directional/turn-payloads/m5_cp3_tb1_r15_artifact_only_harness.sh
-      EXPECTED_HARNESS_BLOB_SHA: c6f645b8b0a9551a0c154d963207f5edea97da84
+      EXPECTED_HARNESS_BLOB_SHA: 5b2f569a1ef4d54daf65ed0d1af3604a3b87db28
     steps:
       - name: Checkout canonical executor source
         uses: actions/checkout@v4
