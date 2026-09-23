@@ -1,0 +1,48 @@
+name: M5 CP4 CB1 Compile Focused Witness
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m5-cp4-cb1-compile-20260923.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  actions: write
+
+concurrency:
+  group: m5-cp4-cb1-compile
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m5-cp4-cb1-compile
+      commit_run_file: false
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m5-cp4-cb1-compile.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  compile:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-compile-reusable.yml
+    with:
+      source_sha: 535ec760b7c39dd437de69afebec568fafb44aab
+      targets: >-
+        directional_surface_cell_authority_kernel_tests
+        directional_surface_cell_producer_tests
+        directional_surface_cell_completion_tests
+        directional_surface_cell_validation_tests
+      artifact_prefix: directional-m5-cp4-cb1
+    secrets: inherit
