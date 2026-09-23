@@ -1,3 +1,0 @@
-Purpose: reconcile concurrent M5-CP3-CB17 branch authority after intended-path CAS conflict
-Requested authority before trigger: 7c930c87604b331cb7b1f94bc369a8d966a71a7a
-Retry: 0
