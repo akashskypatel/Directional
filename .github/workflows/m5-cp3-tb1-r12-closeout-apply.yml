@@ -1,0 +1,48 @@
+name: M5 CP3 TB1 R12 Closeout Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m5-cp3-tb1-r12-closeout-apply.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m5-cp3-tb1-r12-closeout-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m5-cp3-tb1-r12-closeout-apply
+      commit_run_file: false
+      trim_stale_comments: false
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m5-cp3-tb1-r12-closeout-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1kCvZf44ExYzfKKKqDeOnz0ooYbYuhrRL
+      patch_sha256: 28b15ccac46a19a2bd970acab91b0a1550b37000f47fdb6d12ec1c3aa058c6cc
+      base_sha: ca731d41bbc91928dc9e354f6f31c24821ad2770
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "M5-CP3-TB1-R12: close out artifact-only execution"
+      retention_days: 14
+    secrets: inherit
