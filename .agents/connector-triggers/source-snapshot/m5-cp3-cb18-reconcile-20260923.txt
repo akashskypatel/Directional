@@ -1,0 +1,2 @@
+Purpose: refresh exact source snapshot after concurrent M5-CP3-CB18 branch advancement
+Reconcile authority: 4ffc7873cabd8f1b9963cb00f6331f09c64040c8
