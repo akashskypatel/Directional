@@ -1,0 +1,5 @@
+turn=M5-CP3-CB15
+purpose=apply verified source patch
+base_sha=5708be8fc7a44ca39963d84bc35df04df1e8cdca
+patch_sha256=7a418678efb7a4e9fe491c843423b241cea0bd33059b98c0e23215dfd89cbf55
+retry=0
