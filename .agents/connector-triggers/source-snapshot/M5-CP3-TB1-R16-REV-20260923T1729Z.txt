@@ -1,0 +1,3 @@
+turn=M5-CP3-TB1-R16-REV
+semantic_source_sha=aded2b4025e319b5c296211a2bcfedac5e8c47b7
+purpose=source-snapshot
