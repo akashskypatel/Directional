@@ -1,4 +1,0 @@
-Purpose: apply verified M5-DEFN-R2 documentation patch from Google Drive
-Patch SHA-256: 534bd493324dd845c06b87358d9635c42abed27632671b01d09cc546a7279fd9
-Base SHA: 07a4ab641910a366068c6c4fc27c2b42591f7871
-Retry: 0
