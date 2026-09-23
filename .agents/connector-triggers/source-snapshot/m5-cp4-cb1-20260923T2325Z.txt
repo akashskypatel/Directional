@@ -1,0 +1,3 @@
+M5-CP4-CB1 source snapshot trigger
+Base authority before trigger: 7f60f5d564e376b93fcbba4f2e84f277864a6a07
+Purpose: exact source snapshot for runtime-free Code + Build inspection
