@@ -1,7 +1,0 @@
-Turn: M5-CP3-CB17
-Purpose: compile/package frozen relation-frame gauge cutover
-Source SHA: 1a36f6483738e1047b5d8ddbefb48cc5ab6fd4a3
-Targets: mandatory eight GMP/GMPXX targets
-Runtime execution: prohibited
-Retry: 1
-Correction: caller permission ceiling raised to contents:write per current observer reusable contract
