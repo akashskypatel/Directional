@@ -1,0 +1,4 @@
+purpose=M5-CP3-TB2-EXEC fresh published selector448 artifact-only gate
+artifact_id=10771899191
+semantic_source=cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1
+retry=0
