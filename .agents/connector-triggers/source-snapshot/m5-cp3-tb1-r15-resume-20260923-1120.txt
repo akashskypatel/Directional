@@ -1,3 +1,0 @@
-Purpose: exact repository snapshot for resumed M5-CP3-TB1-R15-EXEC closeout authority
-Authority before trigger: 50d17b7c5008f69d997271edaf0ababc18da39da
-Retry: 0

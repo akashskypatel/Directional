@@ -1,3 +1,0 @@
-Purpose: exact source/document snapshot for M5-CP3-TB1-R15-EXEC
-Authority before trigger: b70db3af0cbf69577dd6ef00b17e2e2ffc39a608
-Retry: 0

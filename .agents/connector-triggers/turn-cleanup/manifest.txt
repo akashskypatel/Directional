@@ -1,6 +1,0 @@
-# M5-CP3-TB1-R15-EXEC terminal cleanup
-.agents/connector-triggers/m5-cp3-r15-closeout-apply.txt
-.agents/connector-triggers/m5-cp3-tb1-r15-exec.txt
-.agents/connector-triggers/source-snapshot/m5-cp3-tb1-r15-exec-start.txt
-.agents/connector-triggers/source-snapshot/m5-cp3-tb1-r15-resume-20260923-1120.txt
-.agents/Directional/turn-payloads/m5_cp3_tb1_r15_artifact_only_harness.sh
