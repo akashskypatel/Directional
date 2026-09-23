@@ -1,3 +1,0 @@
-.agents/connector-triggers/source-snapshot/m5-cp3-tb2-exec-20260923-195701.txt
-.agents/connector-triggers/m5-cp3-tb2-exec.txt
-.agents/Directional/turn-payloads/m5-cp3-tb2-exec-harness.sh

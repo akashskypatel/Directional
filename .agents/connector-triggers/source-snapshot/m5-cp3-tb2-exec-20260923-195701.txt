@@ -1,3 +1,0 @@
-purpose=M5-CP3-TB2-EXEC source snapshot
-semantic_base=05d4a950e987e1ca1323f4211239c2cd5ec0ed9d
-retry=0
