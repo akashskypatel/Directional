@@ -1,6 +1,0 @@
-# M5-CP3-TB1-R12-EXEC temporary-state cleanup
-.agents/connector-triggers/m5-cp3-tb1-r12-closeout-apply.txt
-.agents/connector-triggers/m5-cp3-tb1-r12-docs-apply.txt
-.agents/connector-triggers/source-snapshot/m5-cp3-tb1-r12-closeout.txt
-.agents/connector-triggers/source-snapshot/m5-cp3-tb1-r12-rebase.txt
-.agents/Directional/turn-payloads/m5_cp3_tb1_r12_exec.py.in
