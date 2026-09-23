@@ -1,15 +1,15 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-23 at `M5-CP3-TB1-R15-EXEC`
+**Last updated:** 2026-09-23 at `M5-CP3-TB1-R15-R1-EXEC`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. The R13 Review accounting addendum corrects stable accounting to **51 / 14 / 37**, produced-witness debt **3**; M5 owns two of those debts and M6 owns one.
 
-## Current CP3 authority — CB17 compile-green / R15 execution orchestration-invalid / Review next
+## Current CP3 authority — R15-R1 mechanically valid semantic RED / Review next
 
-R14 run/job `35824161895 / 107062198724` remains the latest **mechanically valid** CP3 runtime: complete **916/916** self-manifest, **446/448 PASS**, selector430 **430/430**, benchmark 0 and exact immutable postflight. CB17 candidate/source `10742798135 / 1a36f6483738e1047b5d8ddbefb48cc5ab6fd4a3` implements frozen §16.3 and remains unpromoted.
+R15-R1 run/job `35869756879 / 107210502570` is now the latest **mechanically valid** CP3 runtime. It executes all **448/448** fresh exact-filter processes with exact-one selection and zero skips: mechanism **11/11**, focused atlas **1/1**, produced **4/6**, selector430 **430/430**, total **446 PASS / 2 RED**, benchmark 0 and exact immutable postflight. Result artifact `10755930241` hashes to `949920d13a6b256ceaad3934c9667df17098243c59075a914156ae5c635cf3e5`; log artifact `10755397122` hashes to `ad04fa61f4fc9e4d81da632a40f730785d3ace11b4f3e6645f130d1b14423f00`; result self-manifest is complete **921/921**.
 
-R15 EXEC did not establish a new semantic vector. Attempt 0 `35850838725 / 107147928250` stopped before runtime on temporary-harness Python escaping. Attempt 1 `35851321165 / 107149476143` completed immutable preflight and actually ran the first focused `Q != A` identity green, but a doubled-escape exact-one parser falsely classified it as zero-selected and failed closed. Because runtime had started, EXEC did not retry. No complete ledger, selector430 execution, product recovery, debt discharge, or promotion exists. Stable accounting remains **51 / 14 / 37**, debt **3**. Exact successor is mandatory `M5-CP3-TB1-R15-REV`.
+Produced rows16/17 alone remain RED. Row16 reaches relation publication, then disagrees with the independent generator route and source rotation (`3` versus published `1`) before a fatal cut-route/Forward-edge-route mismatch; it does not reach the independent direction comparator or materialization. Row17 stops at its first fatal generator-route equality before transform tamper/typed rejection. EXEC assigns no root cause, stable event, debt discharge, observation closure or promotion. CB17 candidate/source `10742798135 / 1a36f6483738e1047b5d8ddbefb48cc5ab6fd4a3` remains unpromoted; accepted runtime remains package `10601978228`. Stable accounting remains **51 / 14 / 37**, debt **3** pending mandatory `M5-CP3-TB1-R15-R1-REV`.
 
 ## 1. `M5-DEFN` — definitions frozen
 
@@ -412,3 +412,13 @@ Review decision is **approved with amendments**: do not launch another ad-hoc ru
 Control-plane-only CB18 corrects the R15 temporary harness parser from doubled bracket escaping to literal GTest protocol matching and publishes canonical durable control bytes: harness SHA-256 `7867e779ee1d276617cbf7c0e1a9910dbd5b7388a5fe6bde7aac32a47efb81b7`, caller SHA-256 `0f0a12f9b1b4ef43cde9f42726a60d91ea3ab4606cd3765c04ba6eaae076a15c`. Validation run `35864475136` proves `selected/passed/skipped=1/1/0` on a literal green probe, historical counts `0/0`, skip detection `1/0/1`, both workflow schemas green, frozen exact process count 448 and benchmark 0. `runtimeExecution=false`, `configureExecution=false`, `compileExecution=false`, `repackageExecution=false`, timeout/watchdog=false and semantic-input mutation=false.
 
 The CB17 candidate/routing/selector authorities remain byte-frozen and unpromoted. Stable accounting remains **51 / 14 / 37**, debt **3**; R14 remains latest mechanically valid CP3 runtime and R15 remains zero-credit. Exact successor is fresh artifact-only `M5-CP3-TB1-R15-R1-EXEC` from process 1, followed by mandatory Review.
+
+## 4.22 `M5-CP3-TB1-R15-R1-EXEC` — complete corrected gate is 446/448 semantic RED
+
+Fresh R15-R1 run/job `35869756879 / 107210502570` uses the CB18-frozen parser/caller and CB17 candidate `10742798135 / 1a36f6483738e1047b5d8ddbefb48cc5ab6fd4a3`. It completes all **448** prescribed exact-filter processes with exact-one selection and zero skips. The vector is mechanism **11/11**, focused atlas **1/1**, produced **4/6**, selector430 **430/430**, total **446 PASS / 2 RED**. Protected selector ordinals 191/192/247/408 PASS. Result/log artifacts are `10755930241 / 10755397122` at ZIP SHA-256 `949920d13a6b256ceaad3934c9667df17098243c59075a914156ae5c635cf3e5 / ad04fa61f4fc9e4d81da632a40f730785d3ace11b4f3e6645f130d1b14423f00`; the result self-manifest is complete **921/921** at manifest-file SHA-256 `05b6ae8befc542937485679310f47a57f6fa400a71638807525d730563779d79`.
+
+Mechanical boundary is fully green: candidate/routing/provider digests, candidate 28/28 manifest, selector430/first427, owner census 31/283/75/41, immutable package/source/execution-view censuses and postflight all verify; benchmark/configure/compile/relink/discovery/repair/mutation/retry counters are false. The CB17 `Q != A` mechanism identity PASSes in this complete ledger, supplying runtime evidence for the carried DEFN-R1 observation without closing it in EXEC.
+
+Produced rows16/17 are the only REDs. Row16 publishes the relation but first observes independently expected generator-route mismatch, independent source rotation `3` versus published action rotation `1`, then fatally fails `relation->cutRoute() == forwardEdge->route`, before the independent Forward -> Reverse comparator or materialization. Row17 fatally fails independent generator-route equality before transform-only tamper or typed `NonReciprocalPeriodicRelation` rejection. EXEC deliberately does not infer a root from those observations.
+
+R15-R1 supersedes R14 as latest mechanically valid CP3 runtime but does not promote CB17. Stable accounting stays **51 / 14 / 37**, debt **3**, accepted runtime authority remains package `10601978228`, and selector publication remains Review-gated. Exact successor is runtime-free `M5-CP3-TB1-R15-R1-REV`.

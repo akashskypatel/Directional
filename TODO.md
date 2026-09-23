@@ -6,9 +6,9 @@ Last updated: 2026-09-23 UTC
 
 **COMPLETE / APPROVED WITH AMENDMENTS / R15 ORCHESTRATION ROOT CAUSE PROVED / ZERO GATE CREDIT.** Review independently re-opened both R15 artifact pairs, verified attempt 0 stayed pre-runtime, verified attempt 1 began runtime, and reproduced the exact parser defect: historical doubled bracket escapes count the preserved `[ RUN ]`/`[ OK ]` process as zero while the corrected expression counts one. This is a control-plane/evidence defect, not product RED. The first raw green process is diagnostic provenance only; no R15 row, selector, debt, recovery or promotion credit is granted. Exact successor is control-plane-only `M5-CP3-CB18`; if green, R15-R1 restarts the unchanged 448-process gate from process 1.
 
-## Latest Test + Benchmark turn — `M5-CP3-TB1-R15-EXEC`
+## Latest Test + Benchmark turn — `M5-CP3-TB1-R15-R1-EXEC`
 
-**COMPLETE EXECUTION / ORCHESTRATION INVALID / NO COMPLETE SEMANTIC LEDGER.** Attempt 0 (`35850838725 / 107147928250`) stopped before generated runtime on a temporary-harness Python escaping defect. The diagnosed retry (`35851321165 / 107149476143`) completed immutable preflight and began runtime, but the first exact process was falsely counted as zero-selected because the temporary parser stored doubled bracket escapes. Raw GTest output shows that focused identity actually ran once and returned `[ OK ]`, but policy forbids retry after runtime start; the remaining 447 processes did not run and no R15 PASS/RED vector or product credit exists.
+**COMPLETE / MECHANICALLY VALID / SEMANTIC RED / 446 PASS + 2 RED.** Fresh run/job `35869756879 / 107210502570` executes all 448 processes with exact-one selection and zero skips: mechanism 11/11, focused atlas 1/1, produced 4/6, selector430 430/430; result evidence is complete 921/921 and immutable postflight is exact. Produced rows16/17 alone RED. Row16 observes generator-route mismatch, source rotation 3 versus published relation rotation 1, then fatally stops on cut-route/Forward-edge-route mismatch before the independent direction comparator or materialization. Row17 stops on the generator-route assertion before transform tamper/typed rejection. Exact successor is mandatory runtime-free Review; EXEC grants no promotion, debt discharge, observation closure or stable-accounting change.
 
 ## Latest Definition turn — `M5-CP3-DEFN-R1`
 
@@ -22,9 +22,9 @@ CB17 is **COMPLETE / RUNTIME-FREE / COMPILE GREEN**, candidate `10742798135 / 1a
 
 **COMPLETE / CONTROL-PLANE GREEN / RUNTIME-FREE / NO DIRECTIONAL COMPILE / NO REPACKAGE.** Canonical R15-R1 harness/caller are frozen at SHA-256 `7867e779...81b7 / 0f0a12f9...a15c`. Static run `35864475136` proves corrected literal GTest accounting `selected/passed/skipped=1/1/0`, historical parser `0/0`, skip probe `1/0/1`, and both workflow schemas green. No semantic input changed; accounting remains 51 / 14 / 37, debt 3.
 
-## Exact next turn — `M5-CP3-TB1-R15-R1-EXEC`
+## Exact next turn — `M5-CP3-TB1-R15-R1-REV`
 
-Artifact-only, no-build, benchmark-0 fresh restart of all original 448 R15 processes from process 1 using the canonical CB18 harness/caller. No carry-forward from either invalid R15 attempt. Mandatory successor is `M5-CP3-TB1-R15-R1-REV`.
+Runtime-free independent Review of the mechanically complete 446/448 R15-R1 evidence. Reopen the result/log bytes and 921/921 self-manifest, adjudicate produced rows16/17 without assuming the cause, and dispose carried observations/debts/candidate/publication authority. Do not rerun or repair inside Review.
 
 ## M5 checkpoint sequence
 
@@ -46,7 +46,8 @@ Artifact-only, no-build, benchmark-0 fresh restart of all original 448 R15 proce
 - [x] `M5-CP3-TB1-R15-EXEC` — **COMPLETE EXECUTION / ORCHESTRATION INVALID / NO COMPLETE SEMANTIC LEDGER**. Attempt 0 stopped pre-runtime on harness Python escaping; retry began runtime but falsely classified the first actually-green process as zero-selected due doubled regex escapes. Policy forbids another EXEC retry after runtime start.
 - [x] `M5-CP3-TB1-R15-REV` — **COMPLETE / APPROVED WITH AMENDMENTS / CONTROL-PLANE ROOT CAUSE PROVED / +0**. R15 zero-credit disposition upheld; doubled-bracket exact-one parser independently falsified; fresh retry requires CB18 freeze first.
 - [x] `M5-CP3-CB18` — **COMPLETE / CONTROL-PLANE GREEN / RUNTIME-FREE / NO COMPILE**. Corrected literal GTest parser statically discriminates historical defect; canonical R15-R1 harness/caller frozen; both schemas green; semantic inputs unchanged.
-- [ ] `M5-CP3-TB1-R15-R1-EXEC` — **EXACT NEXT / AUTHORIZED**. Fresh original 448-process gate from process 1 using CB18-frozen control bytes; no carry-forward from invalid R15; benchmark 0; mandatory Review afterward.
+- [x] `M5-CP3-TB1-R15-R1-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. Fresh 448/448 exact-filter gate is 446 PASS / 2 RED with selector430 430/430, protected 191/192/247/408 PASS, complete 921/921 evidence, benchmark 0 and exact immutable postflight; produced rows16/17 alone RED before their final product falsifiers.
+- [ ] `M5-CP3-TB1-R15-R1-REV` — **EXACT NEXT / AUTHORIZED**. Independently reopen R15-R1 evidence, adjudicate rows16/17 and carried observations/debts, then freeze exactly one successor.
 
 - [x] `M5-CP1` and `M5-CP2`: CLOSED / ACCEPTED for mechanism credit; accepted package `10601978228`.
 - [x] `M5-CP3` R1→R7 recovery chain: stable ordinal408 `RP-01` event **RECOVERY PROVED** at R7 Review.
@@ -104,7 +105,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. M4 handed four periodic/relation debts to M5 and one closed-complex debt to M6; R7 Review has since discharged two M5 debts, leaving the two nonzero-Z4 M5 debts plus the one M6 debt.
-- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 CB18 COMPLETE / R15 INVALID / R15-R1 NEXT**. Accepted runtime package remains `10601978228`. R14 remains **446/448 PASS** / **916/916** with selector430 430/430. CB17 candidate `10742798135 / 1a36f648...` remains unpromoted; CB18 froze and statically validated the corrected R15-R1 control plane after the zero-credit R15 parser defect. Two nonzero-Z4 debts plus direction/publication observations remain open pending fresh R15-R1; accounting is **51 / 14 / 37**, debt **3**.
+- [ ] **M5** certificate-carrying chart/quotient relations — **CP1 + CP2 CLOSED / ACCEPTED; CP3 R15-R1 MECHANICALLY VALID 446/448 / REVIEW NEXT**. Accepted runtime package remains `10601978228`; CB17 candidate `10742798135 / 1a36f648...` remains unpromoted. R15-R1 supersedes R14 as the latest mechanically valid CP3 runtime with selector430 430/430 and complete 921/921 evidence, but produced rows16/17 remain RED and Review owns adjudication. Two nonzero-Z4 debts plus direction/publication observations remain open; accounting stays **51 / 14 / 37**, debt **3** pending Review.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.
@@ -143,4 +144,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current corrected totals are **51 events / 14 categories / 37 recurrences**, debt **3**. M4, M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**; accepted runtime authority remains package `10601978228 / 0798547d...` under selector430 **430/430**. R14 is the latest runtime evidence at **446/448 PASS** with complete **916/916** evidence. CB16 candidate `10733058003 / 6bad9eb5626e77a234ffb2c14f621195105e4ba1` remains unpromoted. Both nonzero-Z4 M5 debts and the R6 direction/CP2 publication observations remain open; the R13 convergence observation is discharged as triggered. Exact successor is **`M5-CP3-TB1-R15-R1-EXEC`**. PR #8 remains open, draft, and unmerged.
+Current corrected totals are **51 events / 14 categories / 37 recurrences**, debt **3**. M4, M5-CP1 and M5-CP2 are **CLOSED / ACCEPTED**; accepted runtime authority remains package `10601978228 / 0798547d...` under selector430 **430/430**. R14 is the latest runtime evidence at **446/448 PASS** with complete **916/916** evidence. CB16 candidate `10733058003 / 6bad9eb5626e77a234ffb2c14f621195105e4ba1` remains unpromoted. Both nonzero-Z4 M5 debts and the R6 direction/CP2 publication observations remain open; the R13 convergence observation is discharged as triggered. Exact successor is **`M5-CP3-TB1-R15-R1-REV`**. PR #8 remains open, draft, and unmerged.

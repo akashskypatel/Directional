@@ -1,3 +1,15 @@
+## 2026-09-23 — `M5-CP3-TB1-R15-R1-EXEC`: corrected full gate mechanically valid, two produced REDs — **REVIEW REQUIRED / NON-STABLE / +0**
+
+**Stable totals remain 51 events / 14 categories / 37 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**
+
+Fresh run/job `35869756879 / 107210502570` completes all **448/448** exact-filter processes with exact-one selection and zero skips. Mechanism is **11/11**, focused atlas **1/1**, produced **4/6**, selector430 **430/430**, protected 191/192/247/408 PASS, benchmark 0, complete **921/921** result evidence and exact immutable postflight. Result/log artifacts are `10755930241 / 10755397122` at SHA-256 `949920d13a6b256ceaad3934c9667df17098243c59075a914156ae5c635cf3e5 / ad04fa61f4fc9e4d81da632a40f730785d3ace11b4f3e6645f130d1b14423f00`.
+
+### `M5-CP3-TB1-R15-R1-CAND-01` — OPEN / PRODUCED EXPECTATION MISMATCH / REVIEW REQUIRED / non-stable / +0
+
+Produced rows16/17 alone RED. Row16 reaches relation publication, then records independent generator-route mismatch, source rotation `3` versus published action rotation `1`, and fatal cut-route/Forward-edge-route mismatch before endpoint comparator/materialization. Row17 fatally fails the independent generator-route equality before transform tamper/typed nonreciprocal rejection. EXEC does not classify the semantic root or alter stable accounting; mandatory Review owns that decision.
+
+The CB17 `Q != A` mechanism identity now PASSes in a mechanically complete ledger, and the corrected evidence parser successfully accounts for every one of the 448 processes with zero skips. Those runtime conditions are met, but closure of `M5-CP3-DEFN-R1-REV-OBS-01` and `M5-CP3-TB1-R15-REV-OBS-01` remains Review-owned. `M5-CP3-TB1-R6-REV-OBS-01` remains OPEN because row16 still stops before the independent Forward -> Reverse comparator/inverted-pair falsifier. `M5-CP2-TB1-REV-OBS-01` remains OPEN because the complete CP3 gate is semantic RED.
+
 ## 2026-09-23 — `M5-CP3-CB18`: R15 parser correction statically proved — **ORCHESTRATION OWNER CORRECTED / NON-STABLE / +0**
 
 **Stable totals remain 51 events / 14 categories / 37 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**
