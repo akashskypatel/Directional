@@ -1,0 +1,4 @@
+turn=M5-CP3-TB1-R14-EXEC
+purpose=exact branch snapshot for TB closeout document batch
+read_mode=snapshot
+retry=0
