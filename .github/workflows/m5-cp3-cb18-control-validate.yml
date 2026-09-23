@@ -1,0 +1,149 @@
+name: M5 CP3 CB18 Control Validation
+
+on:
+  push:
+    branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
+    paths: [.agents/connector-triggers/m5-cp3-cb18-control-validate.txt]
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m5-cp3-cb18-control-validate-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m5-cp3-cb18-control-validate
+      commit_run_file: false
+      trim_stale_comments: false
+    secrets: inherit
+
+  validate-caller:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m5-cp3-cb18-control-validate.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  validate-successor:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .agents/Directional/tools/m5_cp3_tb1_r15_r1_executor.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  static-control:
+    needs: [validate-caller, validate-successor]
+    if: ${{ needs.validate-caller.outputs.valid == 'true' && needs.validate-successor.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    env:
+      HARNESS: .agents/Directional/tools/m5_cp3_tb1_r15_r1_artifact_only_harness.sh
+      EXECUTOR: .agents/Directional/tools/m5_cp3_tb1_r15_r1_executor.yml
+      EXPECTED_HARNESS_SHA256: 7867e779ee1d276617cbf7c0e1a9910dbd5b7388a5fe6bde7aac32a47efb81b7
+    steps:
+      - name: Checkout exact control source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          token: ${{ secrets.GH_TOKEN || github.token }}
+
+      - name: Prove frozen control plane
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/m5-cp3-cb18-control-validation"
+          mkdir -p "$out"
+          bash -n "$HARNESS"
+          actual="$(sha256sum "$HARNESS" | awk '{print $1}')"
+          test "$actual" = "$EXPECTED_HARNESS_SHA256"
+
+          probe="${RUNNER_TEMP}/gtest-probe.txt"
+          cat > "$probe" <<'PROBE'
+          [ RUN      ] Probe.Test
+          [       OK ] Probe.Test (0 ms)
+          PROBE
+          selected="$(grep -Ec '^\[ RUN      \] ' "$probe" || true)"
+          passed="$(grep -Ec '^\[       OK \] ' "$probe" || true)"
+          skipped="$(grep -Ec '^\[  SKIPPED \] ' "$probe" || true)"
+          historical_selected="$(grep -Ec '^\\[ RUN      \\] ' "$probe" || true)"
+          historical_passed="$(grep -Ec '^\\[       OK \\] ' "$probe" || true)"
+          test "$selected" -eq 1
+          test "$passed" -eq 1
+          test "$skipped" -eq 0
+          test "$historical_selected" -eq 0
+          test "$historical_passed" -eq 0
+
+          cat > "$probe" <<'PROBE'
+          [ RUN      ] Probe.Skip
+          [  SKIPPED ] Probe.Skip (0 ms)
+          PROBE
+          skip_selected="$(grep -Ec '^\[ RUN      \] ' "$probe" || true)"
+          skip_passed="$(grep -Ec '^\[       OK \] ' "$probe" || true)"
+          skip_count="$(grep -Ec '^\[  SKIPPED \] ' "$probe" || true)"
+          test "$skip_selected" -eq 1
+          test "$skip_passed" -eq 0
+          test "$skip_count" -eq 1
+          if [[ "$skip_selected" -eq 1 && "$skip_count" -eq 0 ]]; then
+            echo 'skip contract unexpectedly accepted' >&2
+            exit 1
+          fi
+
+          grep -Fq "selected=\"\$(grep -Ec '^\\[ RUN      \\] ' \"\$raw\" || true)\"" "$HARNESS"
+          grep -Fq "skipped=\"\$(grep -Ec '^\\[  SKIPPED \\] ' \"\$raw\" || true)\"" "$HARNESS"
+          grep -Fq "passed=\"\$(grep -Ec '^\\[       OK \\] ' \"\$raw\" || true)\"" "$HARNESS"
+          grep -Fq 'EXPECTED_TOTAL_PROCESS_COUNT=448' "$HARNESS"
+          grep -Fq 'EXPECTED_NONSEL_COUNT=18' "$HARNESS"
+          grep -Fq 'EXPECTED_SELECTOR_PROCESS_COUNT=430' "$HARNESS"
+          grep -Fq 'EXPECTED_BENCHMARK_COUNT=0' "$HARNESS"
+          grep -Fq "EXPECTED_CANDIDATE_ZIP_SHA256='eb1e2be55150022cdba05acf6b38433eb16352e4b3b6a561742e62de26cfd866'" "$HARNESS"
+          grep -Fq "EXPECTED_ROUTING_ZIP_SHA256='352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce'" "$HARNESS"
+          grep -Fq "EXPECTED_SELECTOR_SHA256='1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6'" "$HARNESS"
+          grep -Fq "EXPECTED_IDENTITY_MAP_SHA256='7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c'" "$HARNESS"
+
+          ! grep -Eq 'timeout-minutes|(^|[;&|[:space:]])timeout([[:space:]]|$)|watchdog' "$HARNESS" "$EXECUTOR"
+          ! grep -Eq '(^|[[:space:]])chmod([[:space:]]|$)' "$HARNESS"
+          test "$(grep -Fc 'paths: [.agents/connector-triggers/m5-cp3-tb1-r15-r1-exec.txt]' "$EXECUTOR")" -eq 1
+          grep -Fq 'contents: write' "$EXECUTOR"
+          grep -Fq 'issues: write' "$EXECUTOR"
+          grep -Fq 'pull-requests: write' "$EXECUTOR"
+          grep -Fq "EXPECTED_HARNESS_SHA256: ${EXPECTED_HARNESS_SHA256}" "$EXECUTOR"
+
+          cat > "$out/validation.txt" <<REPORT
+          turn=M5-CP3-CB18
+          event_sha=${GITHUB_SHA}
+          harness_sha256=${actual}
+          syntax_check=PASS
+          literal_probe_selected=${selected}
+          literal_probe_passed=${passed}
+          literal_probe_skipped=${skipped}
+          historical_selected=${historical_selected}
+          historical_passed=${historical_passed}
+          skip_probe_selected=${skip_selected}
+          skip_probe_passed=${skip_passed}
+          skip_probe_skipped=${skip_count}
+          exact_process_count=448
+          benchmark_count=0
+          runtimeExecution=false
+          configureExecution=false
+          compileExecution=false
+          repackageExecution=false
+          timeout_watchdog=false
+          mode_repair=false
+          semantic_input_mutation=false
+          REPORT
+
+      - name: Upload control validation evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: directional-m5-cp3-cb18-control-validation-${{ github.run_id }}
+          path: ${{ runner.temp }}/m5-cp3-cb18-control-validation
+          if-no-files-found: error
+          retention-days: 7
