@@ -458,7 +458,7 @@ evidence is not ready to gate a run.
 
 ## `M5-CP3-TB1-R15-R1-REV-OBS-01` — CB19 must resolve the representation without making the oracle circular
 
-**Status.** PARTIALLY SATISFIED / CB19 SOURCE+COMPILE GREEN / GATING ON `M5-CP3-TB1-R16-REV` / NON-STABLE.
+**Status.** R16 RUNTIME GREEN / REVIEW DISPOSITION PENDING / GATING ON `M5-CP3-TB1-R16-REV` / NON-STABLE.
 
 `M5-CP3-TB1-R15-R1` proved the rows 16/17 RED is a **test-authority** defect, and the classification survives
 adversarial scrutiny on four independent legs: the expectation `Q = 3` was independently derived from committed
@@ -486,6 +486,8 @@ debt-bearing — a corrected test that no longer requires a genuinely nonzero Z4
 or 4 whatever its colour.
 
 **CB19 disposition (2026-09-23).** The source-side requirement is satisfied without weakening the oracle. The corrected tests bind exact A3 Forward/Reverse edges, use the production resolver only to normalize the **stored representation**, and retain independent source/A3 `Q=3` plus atlas cross-check as the semantic expectation. The committed witness is asserted to be inverse-stored (`stored action != semantic action`, stored generator route differs from semantic A3 route), so a same-representation/vacuous pass cannot satisfy the test. Row16 retains materialization/certificate/consumption checks; row17 retains its one-transform tamper and exact typed rejection. Compile/package run/job `35887450241 / 107271175635` is green on all eight GMP/GMPXX targets with `runtimeExecution=false`. The observation remains open because only fresh R16 runtime plus mandatory Review may decide whether rows16/17 actually satisfy the corrected contracts.
+
+**R16 execution evidence (2026-09-23).** Fresh run/job `35889831381 / 107279255523` executes all 448 prescribed processes with exact-one selection and zero skips: mechanism 11/11, focused atlas 1/1, produced 6/6, selector430 430/430, total 448/448, benchmark 0. Rows16/17 both PASS; result evidence is complete 921/921 and immutable package/source/execution-view postflight is exact. This satisfies the observation's runtime precondition but does **not** close it in EXEC. Mandatory R16 Review must independently prove the inverse-storage non-vacuity remains real, row16 reaches materialization/certificate/consumption, row17 reaches the single-transform typed `NonReciprocalPeriodicRelation` rejection, and the semantic expectation remains independent source/A3 `Q=3` rather than product-derived.
 
 **Standing note from the freeze:** when rows 16/17 pass, the Review must still record that the gauge correction
 is **not exercised by the CP3 witness** (both gauges cancel there), so CP3 green is never cited as validating the

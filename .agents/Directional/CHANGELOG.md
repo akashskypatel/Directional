@@ -1,3 +1,11 @@
+## 2026-09-23 — `M5-CP3-TB1-R16-EXEC`: corrected fresh gate is mechanically green 448/448; Review required
+
+Fresh artifact-only R16 run/job `35889831381 / 107279255523` consumes CB19 candidate/source `10763242885 / a8b33cb7145d5a99d47eaf5f70bb12f1c71238d1` with the CB18-frozen exact-one/zero-skip parser and unchanged 448-identity vector. All processes execute freshly: mechanism **11/11**, focused atlas **1/1**, produced **6/6**, selector430 **430/430**, total **448/448 PASS**, benchmark 0. Protected selector ordinals 191/192/247/408 PASS. Rows16/17 both PASS.
+
+Result/log artifacts `10765221644 / 10764573644` have provider ZIP SHA-256 `d2ec2703f2255cdfa7797da3989aab20e6d10d7203e006ba4068892df1909f46 / 3b8d16d1dbed5ee96e7990f6482d7961f454be1410e35097ba08c931d3097103`. Result evidence is exactly **921/921** with `SHA256SUMS` SHA-256 `c2f898912e19fb57061b50945a58e79af74e244c145de9c5d6ef367ee3185784`; candidate manifest remains 28/28 and package/source/execution-view postflight is exact. The runner-local R16 harness changes only the five candidate-authority constants from frozen parser SHA `7867e779...` and hashes to `5d383089...`.
+
+EXEC makes no promotion, debt discharge, observation closure, selector publication, M5 closure or accounting decision. Stable accounting remains **51 / 14 / 37**, debt **3**, and accepted runtime remains package `10601978228 / 0798547d...` pending mandatory runtime-free `M5-CP3-TB1-R16-REV`.
+
 ## 2026-09-23 — `M5-CP3-CB19`: storage-canonical produced-test correction compiles/package green; R16 next
 
 Test-only CB19 changes only `tests/SurfaceCellTransitionQuotientTests.cpp`. Rows16/17 now bind the exact A3 Forward/Reverse edges before semantic comparisons, resolve canonical storage with `resolve_periodic_relation_semantic_action(...)`, and reverse the stored generator route only when the stored cut route proves inverse canonical orientation. The expected semantic action remains independent source/A3 authority: committed witness `Q=3`, cross-checked against atlas authority. Both tests explicitly require the committed storage form to be inverted (`stored action != semantic action`, stored route differs from semantic generator route), avoiding a circular product-derived oracle.

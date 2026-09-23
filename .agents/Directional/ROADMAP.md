@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-23 (`M5-CP3-TB1-R15-R1-REV` COMPLETE / test-authority cause proved. Authoritative R15-R1 remains mechanically valid at 446/448 with selector430 430/430 and complete 921/921 evidence. Rows16/17 are stale storage-canonical-vs-semantic produced-test assumptions; product/fixture/field/A3/selector authority is unchanged. CB17 candidate remains unpromoted; accounting 51 / 14 / 37, debt 3. Exact next `M5-CP3-CB19`.)**
+**Status date:** 2026-09-23 (`M5-CP3-TB1-R16-EXEC` COMPLETE / mechanically green 448/448 / Review required. Fresh R16 has mechanism 11/11, focused atlas 1/1, produced 6/6, selector430 430/430, complete 921/921 evidence and exact immutable postflight. CB19 candidate remains unpromoted; accounting 51 / 14 / 37, debt 3. Exact next `M5-CP3-TB1-R16-REV`.)**
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 
@@ -529,18 +529,18 @@ TB2-R2 executed the frozen corrected gate in exactly **799** fresh processes: re
 
 M4 owns **no** produced-witness debt after DEFN-R2. The closed candidate-bearing-complex `G4-B002` debt is M6-owned: M6-CP1 owns occurrence-complex/stage-separation mechanism and M6-CP3 owns its direct-production re-proof. The two periodic `G4-B002` debts were re-homed to M5 at M4 closure—canonical relation/container-order identity through M5-CP1/CP3 and missing-owner typing through M5-CP2/CP3—and were discharged at `M5-CP3-TB1-R7-REV`. `G4-B004` remains explicitly split: focused positive multi-isolation relation/certificate production in M5, representative occurrence/embedding/verifier consumption in M6; no M4 gate identity is added.
 
-### M5 — certificate-carrying chart and quotient relations (§14 M5) — **CP1 + CP2 CLOSED / ACCEPTED; CP3 R15-R1 REVIEW COMPLETE / CB19 NEXT**
+### M5 — certificate-carrying chart and quotient relations (§14 M5) — **CP1 + CP2 CLOSED / ACCEPTED; CP3 R16 EXEC GREEN / REVIEW NEXT**
 
 | Checkpoint | Semantic domain |
 |---|---|
 | `M5-DEFN` | **COMPLETE** — canonical relation IDs, selected path certificates, cutover, failure matrix, invariance, and debt ownership frozen in `Architecture_M5_Frozen_Definitions.md` |
 | `M5-CP1` | **CLOSED / ACCEPTED at `M5-CP1-TB1-R3-REV`.** Canonical relation ID domain and explicit path certificates replace verifier-side reachability reconstruction. Accepted package `10600353027` / source `8a86710d...` is green at focused 9/9 + selector430 430/430; the corrected row6 pure-permutation falsifier passes. Mechanism credit retained; the relation-reorder production debt is discharged at `M5-CP3-TB1-R7-REV`. |
 | `M5-CP2` | **CLOSED / ACCEPTED at `M5-CP2-TB1-REV`.** Five-class checked factory failure matrix is runtime-green with independent one-fact oracles; package `10601978228` / source `0798547d...` promoted under unchanged selector430. Mechanism credit retained; the missing-owner production debt is discharged at `M5-CP3-TB1-R7-REV`. |
-| `M5-CP3` | **R15-R1 REVIEW COMPLETE / TEST-AUTHORITY CAUSE PROVED / CB19 NEXT.** Run/job `35869756879 / 107210502570` remains mechanically valid at 446/448 with mechanism 11/11, focused 1/1, produced 4/6, selector430 430/430 and complete 921/921 evidence. Review proves rows16/17 consume canonical storage representation as semantic Forward -> Reverse authority; product/fixture/field/A3/selector semantics stay fixed. CB17 candidate remains unpromoted. Accounting remains **51 / 14 / 37**, debt **3**. Exact next is test-only runtime-free `M5-CP3-CB19`, then fresh R16 + mandatory Review if compile green. |
+| `M5-CP3` | **R16 EXEC MECHANICALLY GREEN / REVIEW NEXT.** Fresh run/job `35889831381 / 107279255523` is 448/448 with mechanism 11/11, focused 1/1, produced 6/6, selector430 430/430 and complete 921/921 evidence. Rows16/17 PASS under CB19 test authority, but EXEC makes no promotion/debt/observation/publication decision. CB19 candidate remains unpromoted; accounting remains **51 / 14 / 37**, debt **3**. Exact next is runtime-free `M5-CP3-TB1-R16-REV`. |
 
 M5 originally owned four produced-witness debts. R7 Review discharges the two re-homed periodic `G4-B002` debts on direct production authority: relation-owner/container reorder and missing-owner typing. The two `G4-B003` nonzero-periodic-Z4 debts remain M5-owned; the separate closed-complex `G4-B002` debt remains M6-owned. Total project debt is now **3**.
 
-R15-R1 is the latest mechanically valid CP3 runtime at **446/448 PASS** with **921/921** evidence: mechanism 11/11, focused 1/1, produced 4/6, selector430 430/430. R15-R1 Review upholds mechanics and proves rows16/17 are non-stable test-authority storage-representation conflation: canonical storage selected the inverse representative (`Q=3` semantic versus stored `1`) while the tests compared stored action/routes directly to semantic witness facts. CB19 corrects only those test contracts; product/fixture/field/A3/selector authority remains fixed. Candidate remains unpromoted; selector publication and both nonzero-Z4 debts remain open.
+R16 is the latest mechanically valid CP3 runtime at **448/448 PASS** with **921/921** evidence: mechanism 11/11, focused 1/1, produced 6/6, selector430 430/430. Rows16/17 now PASS under CB19's bounded storage-to-semantic test correction. EXEC itself grants no semantic disposition: candidate promotion, selector publication, both nonzero-Z4 debts and carried observations remain open for mandatory R16 Review.
 
 ### M6 — occurrence, embedding, independent verification (§14 M6)
 

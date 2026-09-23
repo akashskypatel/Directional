@@ -1,17 +1,15 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-23 at `M5-CP3-TB1-R15-R1-REV`
+**Last updated:** 2026-09-23 at `M5-CP3-TB1-R16-EXEC`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. The R13 Review accounting addendum corrects stable accounting to **51 / 14 / 37**, produced-witness debt **3**; M5 owns two of those debts and M6 owns one.
 
-## Current CP3 authority — R15-R1 Review complete / test-authority cause proved / CB19 next
+## Current CP3 authority — R16 execution mechanically green / mandatory Review next
 
-R15-R1 run/job `35869756879 / 107210502570` remains the latest mechanically valid CP3 runtime: **446/448 PASS**, mechanism 11/11, focused atlas 1/1, produced 4/6, selector430 430/430, benchmark 0, complete **921/921** evidence and exact immutable postflight. Result/log artifacts `10755930241 / 10755397122` hash to `949920d13a6b256ceaad3934c9667df17098243c59075a914156ae5c635cf3e5 / ad04fa61f4fc9e4d81da632a40f730785d3ace11b4f3e6645f130d1b14423f00`.
+Fresh R16 run/job `35889831381 / 107279255523` is now the latest mechanically valid CP3 runtime: **448/448 PASS**, mechanism 11/11, focused atlas 1/1, produced 6/6, selector430 430/430, benchmark 0, complete **921/921** evidence and exact immutable postflight. Result/log artifacts `10765221644 / 10764573644` hash to `d2ec2703f2255cdfa7797da3989aab20e6d10d7203e006ba4068892df1909f46 / 3b8d16d1dbed5ee96e7990f6482d7961f454be1410e35097ba08c931d3097103`; result `SHA256SUMS` hashes to `c2f898912e19fb57061b50945a58e79af74e244c145de9c5d6ef367ee3185784` and verifies 921/921.
 
-R15-R1 Review proves rows16/17 are non-stable **test-authority storage-representation conflation**, not a product semantic correction target. Frozen §16.3 allows canonical storage to retain semantic action `T` or its inverse with both routes reversed. CB17 implements and tests deterministic semantic resolution; that mechanism identity passes. Rows16/17 instead compare stored `route/action/cutRoute` directly against semantic A3 Forward -> Reverse witness facts. The concrete `Q=3` versus stored rotation `1` is the inverse-representation signature, and both tests stop before materialization/tamper falsifiers.
-
-Stable accounting remains **51 / 14 / 37**, debt **3**. DEFN-R1 mechanism and parser observations are discharged; R6 direction, CP2 publication, M5-DEFN closure and both nonzero-Z4 produced debts remain open. CB17 candidate remains unpromoted; accepted runtime stays package `10601978228`. Exact successor is test-only `M5-CP3-CB19`; compile-green routes to a fresh 448-process R16 + mandatory Review.
+Rows16/17 both PASS under CB19's corrected storage-to-semantic test contract, but EXEC grants no semantic disposition. The CB19 candidate remains unpromoted; both nonzero-Z4 debts, R6 direction, CP2 publication, M5 closure and selector publication remain Review-owned. Stable accounting therefore remains **51 / 14 / 37**, debt **3**, and accepted runtime stays package `10601978228` until Review decides otherwise. Exact successor is runtime-free `M5-CP3-TB1-R16-REV`.
 
 ## 1. `M5-DEFN` — definitions frozen
 
@@ -297,6 +295,14 @@ The oracle remains independent. Rows16/17 first require source-derived `Q=3` and
 Patch application produced test commit `46733e170cb3698e10d8c87937ec8cdc7356057b`; exact compile source after temporary-state cleanup is `a8b33cb7145d5a99d47eaf5f70bb12f1c71238d1`. Compile/package run/job `35887450241 / 107271175635` is GREEN. Result/log artifacts are `10763242885 / 10763022776` at provider ZIP SHA-256 `abe4c381511d3b4025f22612978388bb554bd686b86b6f9dc406538998e990aa / 18b657e71b9834233b30cd72f15ab50b1833ea0b5db6df5859095f7fefc324df`; root manifest is **28/28** with `SHA256SUMS` SHA-256 `cda95dd99d7c201fb4fc1f5021f24c6e720e82dc737a89418245e687bf010c25`, source archive SHA-256 `54962d495891b35dd800fbede63ddc7d622c28091b42a0faeb8e8b3597726d91`, all eight required targets link with GMP/GMPXX, source receipts are clean and `runtimeExecution=false`.
 
 No runtime credit, package promotion, debt discharge, observation closure, selector publication or accounting change is claimed. R15-R1 remains latest mechanically valid CP3 runtime at 446/448; accepted runtime remains package `10601978228`. `M5-CP3-TB1-R15-R1-REV-OBS-01` is satisfied at source/compile level but awaits R16 Review for runtime adjudication. Stable accounting remains **51 / 14 / 37**, debt **3**. Exact successor is fresh artifact-only `M5-CP3-TB1-R16-EXEC` over the same 448 identities, benchmark 0, followed by mandatory Review.
+
+## 4.25 `M5-CP3-TB1-R16-EXEC` — fresh corrected gate is mechanically green 448/448
+
+R16 consumes the compile-green CB19 candidate artifact/source `10763242885 / a8b33cb7145d5a99d47eaf5f70bb12f1c71238d1` and preserves the CB18-frozen R15-R1 parser/vector. The runner-local R16 harness differs from frozen harness SHA-256 `7867e779ee1d276617cbf7c0e1a9910dbd5b7388a5fe6bde7aac32a47efb81b7` only in five candidate-authority constants and hashes to `5d383089aa12f9e78367ec5c673c7fda3b79040da4a42d3234c7dcc5a4ca6cdf`. No R15-R1 ledger credit is carried.
+
+Authoritative run/job `35889831381 / 107279255523` executes all **448** exact-filter processes with exact-one selection and zero skips: mechanism **11/11**, focused atlas **1/1**, produced **6/6**, selector430 **430/430**, total **448/448**. Protected selector ordinals 191/192/247/408 PASS and benchmark count is 0. Result/log artifacts are `10765221644 / 10764573644` at provider ZIP SHA-256 `d2ec2703f2255cdfa7797da3989aab20e6d10d7203e006ba4068892df1909f46 / 3b8d16d1dbed5ee96e7990f6482d7961f454be1410e35097ba08c931d3097103`. Result evidence is exactly **921/921** and its `SHA256SUMS` hashes to `c2f898912e19fb57061b50945a58e79af74e244c145de9c5d6ef367ee3185784`; candidate manifest remains 28/28 and package/source/execution-view postflight is unchanged.
+
+Produced row16 `M5CP3.ProducedTorusNonzeroZ4RotationTranslationMaterializes` and row17 `M5CP3.ProducedTorusTamperedNonzeroZ4TransformRejectsTyped` both PASS. EXEC does not promote the candidate, discharge either nonzero-Z4 debt, close R6/CP2 observations, publish a selector, close M5 or alter stable accounting. The standing gauge note also remains: the CP3 witness has cancelling occurrence gauges, so produced green is not independent validation of the gauge formula; the CB17 mechanism identity supplies that proof and also passes here. Stable accounting stays **51 / 14 / 37**, debt **3**, accepted runtime stays package `10601978228`. Exact successor is mandatory runtime-free `M5-CP3-TB1-R16-REV`, which owns all semantic adjudication.
 
 ### R15-R1 Review folded-document index additions
 
