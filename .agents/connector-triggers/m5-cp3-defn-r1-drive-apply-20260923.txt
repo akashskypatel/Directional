@@ -1,5 +1,0 @@
-turn=M5-CP3-DEFN-R1
-purpose=apply frozen definition closeout patch from Google Drive
-base_sha=cda22bb588d23f8a9a9f2a14cfb7b9dfb06eb332
-patch_sha256=31c1c1c4761f67b27235bac23cdb3618ecdd22ccd408504f2436e7dc0db03f38
-retry=0

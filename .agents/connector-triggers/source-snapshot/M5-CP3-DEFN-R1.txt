@@ -1,3 +1,0 @@
-turn=M5-CP3-DEFN-R1
-semantic_base=4e3337f65053adf3fef1cb70e68d593a008103a9
-purpose=exact-source-snapshot
