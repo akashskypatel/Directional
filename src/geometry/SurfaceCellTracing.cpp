@@ -7903,35 +7903,42 @@ SurfacePeriodicHolonomy::ConstructionResult SurfacePeriodicHolonomy::make(
                                  std::move(route), std::move(cutRoute));
 }
 
+authority::QuarterTurn periodic_relation_rotation(
+    const authority::QuarterTurn sourceTransport,
+    const authority::QuarterTurn forwardCutGauge,
+    const authority::QuarterTurn reverseCutGauge) noexcept {
+  return compose(reverseCutGauge.inverse(),
+                 compose(sourceTransport, forwardCutGauge));
+}
+
 std::optional<SurfacePeriodicRelationEndpointState>
 make_periodic_relation_endpoint_state(
     const LocalLatticeState &localState,
     const SurfaceSharedBoundaryInterval &interval,
-    const authority::QuarterTurn generatorRotation,
+    const authority::QuarterTurn relationRotation,
     const SurfacePeriodicRelationEndpointBranchAuthority &branchAuthority) {
   if (!localState.sourceChart.has_value() ||
       !interval.boundaryOccurrence.has_value()) {
     return std::nullopt;
   }
 
-  // Relation endpoint branches are expressed at the exact accepted A3
-  // occurrence-carrier face, not at the retained trace-point face. Preserve
-  // the bounded-disk chart +U offset C while changing only that face gauge:
-  //   C     = B_local - B_face_local (mod 4)
-  //   B_rel = B_face_occ + C          (mod 4).
+  // Recover the cut-domain branch component C from the local source-face
+  // gauge. A3 Forward fixes the relation gauge: Forward keeps C and raw cut
+  // coordinates, while Reverse applies the one relation turn Q.
   const authority::QuarterTurn localBranch =
       authority::QuarterTurn::from_integer(localState.branchRotation);
-  const authority::QuarterTurn chartOffset = compose(
+  const authority::QuarterTurn cutBranch = compose(
       branchAuthority.localFaceBranchRotation.inverse(), localBranch);
-  const authority::QuarterTurn relationBranch = compose(
-      branchAuthority.occurrenceCarrierFaceBranchRotation, chartOffset);
-  const authority::QuarterTurn gaugeRotation =
-      generatorRotation == authority::QuarterTurn{} ? authority::QuarterTurn{}
-                                                    : relationBranch;
+  const bool reverse = interval.orientation == authority::Orientation::Reverse;
+  const authority::QuarterTurn relationBranch =
+      reverse ? compose(relationRotation, cutBranch) : cutBranch;
+  const authority::LatticeTranslation relationCoordinate =
+      reverse ? rotate(relationRotation, localState.latticeCoordinate)
+              : localState.latticeCoordinate;
   return SurfacePeriodicRelationEndpointState{
-      rotate(gaugeRotation, localState.latticeCoordinate), relationBranch,
-      localState.scaleLevel, *localState.sourceChart, branchAuthority,
-      *interval.boundaryOccurrence, interval.orientation, generatorRotation};
+      relationCoordinate, relationBranch, localState.scaleLevel,
+      *localState.sourceChart, branchAuthority, *interval.boundaryOccurrence,
+      interval.orientation, relationRotation};
 }
 
 std::optional<authority::GridAutomorphism>
@@ -17343,12 +17350,12 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
       return reject(SurfacePhaseFrontFailureReason::
                         PeriodicActionOccurrenceOrientationMismatch);
     }
-    if (firstFrom.generatorRotation != rotation ||
-        firstTo.generatorRotation != rotation ||
-        secondFrom.generatorRotation != rotation ||
-        secondTo.generatorRotation != rotation) {
+    if (firstFrom.relationRotation != rotation ||
+        firstTo.relationRotation != rotation ||
+        secondFrom.relationRotation != rotation ||
+        secondTo.relationRotation != rotation) {
       return reject(SurfacePhaseFrontFailureReason::
-                        PeriodicActionGeneratorRotationMismatch);
+                        PeriodicActionRelationRotationMismatch);
     }
     if (firstFrom.sourceChart != firstTo.sourceChart ||
         secondFrom.sourceChart != secondTo.sourceChart) {
@@ -17604,55 +17611,65 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
       const auto secondToBranchAuthority = endpoint_branch_authority(
           *directedSecond, directedSecond->to, secondOccurrenceFace);
 
-      const authority::QuarterTurn generatorRotation =
+      const authority::QuarterTurn sourceTransport =
           generatorRoute->composed_transport().rotation;
+      const std::optional<authority::QuarterTurn> relationRotation =
+          firstFromBranchAuthority.has_value() &&
+                  secondFromBranchAuthority.has_value()
+              ? std::optional<authority::QuarterTurn>{periodic_relation_rotation(
+                    sourceTransport,
+                    firstFromBranchAuthority
+                        ->occurrenceCarrierFaceBranchRotation,
+                    secondFromBranchAuthority
+                        ->occurrenceCarrierFaceBranchRotation)}
+              : std::nullopt;
       const auto firstFromState =
-          firstFromBranchAuthority.has_value()
+          firstFromBranchAuthority.has_value() && relationRotation.has_value()
               ? make_periodic_relation_endpoint_state(
                     directedFirst->fromLattice,
-                    *directedFirst->sharedBoundaryInterval, generatorRotation,
+                    *directedFirst->sharedBoundaryInterval, *relationRotation,
                     *firstFromBranchAuthority)
               : std::nullopt;
       const auto firstToState =
-          firstToBranchAuthority.has_value()
+          firstToBranchAuthority.has_value() && relationRotation.has_value()
               ? make_periodic_relation_endpoint_state(
                     directedFirst->toLattice,
-                    *directedFirst->sharedBoundaryInterval, generatorRotation,
+                    *directedFirst->sharedBoundaryInterval, *relationRotation,
                     *firstToBranchAuthority)
               : std::nullopt;
       const auto secondFromState =
-          secondFromBranchAuthority.has_value()
+          secondFromBranchAuthority.has_value() && relationRotation.has_value()
               ? make_periodic_relation_endpoint_state(
                     directedSecond->fromLattice,
-                    *directedSecond->sharedBoundaryInterval, generatorRotation,
+                    *directedSecond->sharedBoundaryInterval, *relationRotation,
                     *secondFromBranchAuthority)
               : std::nullopt;
       const auto secondToState =
-          secondToBranchAuthority.has_value()
+          secondToBranchAuthority.has_value() && relationRotation.has_value()
               ? make_periodic_relation_endpoint_state(
                     directedSecond->toLattice,
-                    *directedSecond->sharedBoundaryInterval, generatorRotation,
+                    *directedSecond->sharedBoundaryInterval, *relationRotation,
                     *secondToBranchAuthority)
               : std::nullopt;
       PeriodicActionForPairResult actionResult;
       if (!firstFromState.has_value() || !firstToState.has_value() ||
-          !secondFromState.has_value() || !secondToState.has_value()) {
+          !secondFromState.has_value() || !secondToState.has_value() ||
+          !relationRotation.has_value()) {
         actionResult.failureReason = SurfacePhaseFrontFailureReason::
             PeriodicActionEndpointStateUnavailable;
       } else {
         actionResult = periodic_action_for_pair(
             *firstFromState, *firstToState, *secondFromState, *secondToState,
-            generatorRotation);
+            *relationRotation);
       }
-      if (!actionResult.action.has_value() ||
-          generatorRoute->composed_transport().rotation !=
-              actionResult.action->rotation) {
+      if (!actionResult.action.has_value() || !relationRotation.has_value() ||
+          *relationRotation != actionResult.action->rotation) {
         result.disposition = SurfaceCellProducerDisposition::Rejected;
         const SurfacePhaseFrontFailureReason reason =
             actionResult.failureReason != SurfacePhaseFrontFailureReason::None
                 ? actionResult.failureReason
                 : SurfacePhaseFrontFailureReason::
-                      PeriodicActionGeneratorRotationMismatch;
+                      PeriodicActionRelationRotationMismatch;
         set_phase_front_failure(
             result.failure, reason,
             static_cast<int>(first.filledCell.index()), first.filledSide);
@@ -17823,7 +17840,7 @@ const char *surface_phase_front_failure_reason_name(
   case SurfacePhaseFrontFailureReason::PeriodicHolonomyInvalidRelationIdentity: return "PeriodicHolonomyInvalidRelationIdentity";
   case SurfacePhaseFrontFailureReason::PeriodicActionEndpointStateUnavailable: return "PeriodicActionEndpointStateUnavailable";
   case SurfacePhaseFrontFailureReason::PeriodicActionOccurrenceOrientationMismatch: return "PeriodicActionOccurrenceOrientationMismatch";
-  case SurfacePhaseFrontFailureReason::PeriodicActionGeneratorRotationMismatch: return "PeriodicActionGeneratorRotationMismatch";
+  case SurfacePhaseFrontFailureReason::PeriodicActionRelationRotationMismatch: return "PeriodicActionRelationRotationMismatch";
   case SurfacePhaseFrontFailureReason::PeriodicActionSourceChartMismatch: return "PeriodicActionSourceChartMismatch";
   case SurfacePhaseFrontFailureReason::PeriodicActionBoundaryOccurrenceMismatch: return "PeriodicActionBoundaryOccurrenceMismatch";
   case SurfacePhaseFrontFailureReason::PeriodicActionScaleMismatch: return "PeriodicActionScaleMismatch";

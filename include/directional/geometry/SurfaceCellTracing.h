@@ -1448,16 +1448,21 @@ struct SurfacePeriodicRelationEndpointState {
   SurfacePeriodicRelationEndpointBranchAuthority branchAuthority;
   SurfaceBoundaryOccurrenceId boundaryOccurrence;
   authority::Orientation occurrenceOrientation = authority::Orientation::Forward;
-  authority::QuarterTurn generatorRotation;
+  authority::QuarterTurn relationRotation;
 
   auto operator<=>(const SurfacePeriodicRelationEndpointState &) const = default;
 };
+
+[[nodiscard]] authority::QuarterTurn periodic_relation_rotation(
+    authority::QuarterTurn sourceTransport,
+    authority::QuarterTurn forwardCutGauge,
+    authority::QuarterTurn reverseCutGauge) noexcept;
 
 [[nodiscard]] std::optional<SurfacePeriodicRelationEndpointState>
 make_periodic_relation_endpoint_state(
     const LocalLatticeState &localState,
     const SurfaceSharedBoundaryInterval &interval,
-    authority::QuarterTurn generatorRotation,
+    authority::QuarterTurn relationRotation,
     const SurfacePeriodicRelationEndpointBranchAuthority &branchAuthority);
 
 /** Immutable receipt proving which accepted A2b/A3 plans A4 consumed. */
@@ -1707,7 +1712,7 @@ enum class SurfacePhaseFrontFailureReason : int {
   PeriodicHolonomyInvalidRelationIdentity = 55,
   PeriodicActionEndpointStateUnavailable = 56,
   PeriodicActionOccurrenceOrientationMismatch = 57,
-  PeriodicActionGeneratorRotationMismatch = 58,
+  PeriodicActionRelationRotationMismatch = 58,
   PeriodicActionSourceChartMismatch = 59,
   PeriodicActionBoundaryOccurrenceMismatch = 60,
   PeriodicActionScaleMismatch = 61,

@@ -2165,7 +2165,7 @@ std::uint64_t hash_trace_network(
       hash_combine_u64(
           seed, state.boundaryOccurrence.canonicalBoundaryOccurrenceOrdinal);
       hash_combine_i64(seed, static_cast<int>(state.occurrenceOrientation));
-      hash_combine_i64(seed, static_cast<int>(state.generatorRotation.value()));
+      hash_combine_i64(seed, static_cast<int>(state.relationRotation.value()));
     };
     hash_combine_u64(seed, phaseFront->edges().size());
     for (const geometry::SurfaceFrontEdge &edge : phaseFront->edges()) {
