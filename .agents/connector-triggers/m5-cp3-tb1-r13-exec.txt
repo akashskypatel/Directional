@@ -1,5 +1,0 @@
-turn=M5-CP3-TB1-R13-EXEC
-purpose=fresh immutable artifact-only 447-process gate
-candidate_artifact=10730261023
-candidate_source=4dfe392d28d60b448e2f32253f7d170221ac57ec
-retry=0

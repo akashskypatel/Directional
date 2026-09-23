@@ -1,5 +1,0 @@
-turn=M5-CP3-TB1-R13-EXEC
-purpose=apply verified R13 closeout documentation patch
-base_sha=c673cc36abff860be35360d2e948ab6e2080cf05
-patch_sha256=1399ac86baebabcbfc8834f14b950567724b96e4ebbfa87e936eb6333a269cc2
-retry=0

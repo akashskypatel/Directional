@@ -1,3 +1,0 @@
-turn=M5-CP3-TB1-R13-EXEC
-purpose=artifact-only-r13-execution-source-snapshot
-read_mode=snapshot
