@@ -1,0 +1,118 @@
+name: Agent M5 DEFN R2 Static Review
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m5-defn-r2-static-review.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-m5-defn-r2-static-review-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m5-defn-r2-static-review.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m5-defn-r2-static-review
+      commit_run_file: false
+      trim_stale_comments: false
+    secrets: inherit
+
+  static-review:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Initialize static-review log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m5-defn-r2-static-review.log"
+          : > "$log"
+          printf '%s\n' \
+            "workflow=${GITHUB_WORKFLOW}" \
+            "run_id=${GITHUB_RUN_ID}" \
+            "event_sha=${GITHUB_SHA}" \
+            "runtimeExecution=false" \
+            "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$log"
+
+      - name: Checkout exact trigger source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          token: ${{ secrets.GH_TOKEN || github.token }}
+
+      - name: Run review boundary and ledger checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m5-defn-r2-static-review.log"
+          exec > >(tee -a "$log") 2>&1
+          python3 .agents/Directional/tools/review_check.py boundary
+          python3 .agents/Directional/tools/review_check.py ledgers --base 87d1a4725e0d35cc142755e7d30942f23b81afb2
+
+      - name: Verify committed turn boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m5-defn-r2-static-review.log"
+          exec > >(tee -a "$log") 2>&1
+          base=87d1a4725e0d35cc142755e7d30942f23b81afb2
+          changed="${RUNNER_TEMP}/m5-defn-r2-changed-paths.txt"
+          git diff --name-only "${base}" HEAD | LC_ALL=C sort > "$changed"
+          echo 'turn_changed_paths:'
+          cat "$changed"
+          if grep -E '^(src/|include/|tests/|benchmarks/|cmake/|CMakeLists\.txt$)' "$changed"; then
+            echo 'forbidden product/test/build path changed in M5-DEFN-R2' >&2
+            exit 2
+          fi
+          if grep -E 'Required_Green_Selector_[0-9]+\.txt$|M1_Full_Required_Green_Selector\.txt$' "$changed"; then
+            echo 'selector mutation detected in M5-DEFN-R2' >&2
+            exit 3
+          fi
+          remote_sha="$(git ls-remote origin refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing | cut -f1)"
+          echo "head_sha=$(git rev-parse HEAD)"
+          echo "remote_sha=${remote_sha}"
+          test "$(git rev-parse HEAD)" = "$remote_sha"
+          git status -sb
+
+      - name: Write static-review result
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/m5-defn-r2-static-review-result"
+          mkdir -p "$out"
+          cp "${RUNNER_TEMP}/m5-defn-r2-static-review.log" "$out/static-review.log"
+          cp "${RUNNER_TEMP}/m5-defn-r2-changed-paths.txt" "$out/changed-paths.txt" 2>/dev/null || true
+          printf '%s\n' \
+            "event_sha=${GITHUB_SHA}" \
+            "ledger_base=87d1a4725e0d35cc142755e7d30942f23b81afb2" \
+            "runtimeExecution=false" \
+            "job_status=${{ job.status }}" \
+            "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$out/result.env"
+
+      - name: Upload static-review result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m5-defn-r2-static-review-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/m5-defn-r2-static-review-result
+          if-no-files-found: error
+          retention-days: 14
