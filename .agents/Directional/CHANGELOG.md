@@ -1,3 +1,34 @@
+## 2026-09-23 — `M5-CP3-DEFN-R1` review: model frozen soundly; distinctive term unexercised by its only instance
+
+Runtime-free review. **Upheld.** Accounting holds at **51 events / 14 categories / 37 recurrences**, debt **3**.
+
+**Deliverables met, and §7's derivation is real.** `M5-CP3-TB1-R14-REV-OBS-01` required an independently derived
+concrete value before the freeze; §7 supplies one traceable to committed bytes — fixture `72/216/144` (matching
+this reviewer's independent census at `M4-CP3-DEFN-R1`), 18 row408 hard edges, five nonzero source-edge
+transitions of 216, carrier `(0,3)`, stored `+1` on face `1 -> 22`, semantic Forward `22 -> 1` giving
+`A = 3 mod 4`, derived before relation publication rather than read back from it. Frozen **§16.3** landed in
+`98052fa8`; the row4/5 witness is adjudicated valid rather than assumed; §6's `Q == identity` reduction protects
+the four green produced rows, ordinal 408 and the R7 debt discharges; and §3's closure equation
+`G_R o Q = A o G_F` is a genuine structural insight. `CB17` is now legitimately authorized — the R14 bar was on
+implementing *instead of* reconciling, and the reconciliation has substance.
+
+**Limitation recorded as `M5-CP3-DEFN-R1-REV-OBS-01`.** §2 states the test itself: "A raw A1 turn `A` may equal
+`Q` only when the two cut-domain gauges happen to cancel." §7 then establishes `faceBranchRotation` identically
+zero at both occurrence faces, so `g_F = g_R = 0` and `q = -g_R + a + g_F = a = 3`. The gauges cancel, so every
+candidate rule returns 3 here: `Q = 3` shows the model is non-degenerate and evaluable, but does not discriminate
+it from alternatives. **The `+g_F - g_R` correction — the closure equation §3 calls missing from §§16/16.1, and
+the reason this turn existed — is not exercised by any concrete instance.** §8's falsifier table does not close
+this; "Gauge closure — PASS" describes the formula's construction, not an instance exercising it.
+
+The consequence falls on R15: if rows 4/5 go green, that proves `q = a` on a degenerate case, and a sign error or
+operand swap in the correction would pass undetected while frozen, shipped and apparently proved by a green gate.
+Two non-blocking remedies: R15's Review must record explicitly that the correction is unexercised, so no later
+turn cites CP3 green as validating the gauge model; and a focused mechanism identity should construct
+`g_F != g_R` directly and check the correction against an independently computed expectation — mechanism-level
+algebra needing no produced subject.
+
+Exact successor: `M5-CP3-CB17` — relation frame gauge cutover.
+
 ## 2026-09-23 — `M5-CP3-DEFN-R1`: same-region nonzero-Z4 relation gauge frozen; CB17 next
 
 Runtime-free Definition freezes the missing relation-frame authority proved by R14. For exact semantic A3 Forward/Reverse occurrence faces, raw directed A1 carrier turn `A` and accepted cut gauges `G_F/G_R`, relation rotation is now `Q = G_R^-1 o A o G_F`. Forward anchors relation endpoint gauge; Reverse branch/coordinates are normalized by `Q`; translation is constructed once from the semantic Forward endpoint correspondence; reverse semantics are exactly the inverse action; canonical storage is representation-only. Ordinary A4 cell placement remains unchanged.

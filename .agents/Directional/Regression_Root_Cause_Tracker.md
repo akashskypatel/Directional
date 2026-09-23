@@ -342,3 +342,39 @@ the expected relation action for the existing nonzero-Z4 witness, then require t
 One worked instance converts "unambiguous" from *self-consistent* into *self-consistent and right at least once*.
 If the model cannot be evaluated against even one independently computed instance, that is itself a finding to
 stop on. This is the same form as the pre-commitment discipline that has now held six consecutive times.
+
+## `M5-CP3-DEFN-R1-REV-OBS-01` — the frozen gauge model's distinctive term is unexercised by its only instance
+
+**Status.** OPEN / GATING ON `M5-CP3-TB1-R15-REV` / NON-STABLE / does not block `M5-CP3-CB17`.
+
+`M5-CP3-DEFN-R1` froze the same-region nonzero-Z4 relation gauge as `Q = G_R^-1 o A o G_F`, i.e.
+`q = -g_R + a + g_F (mod 4)` (frozen **§16.3**), and discharged
+`[[M5-CP3-TB1-R14-REV-OBS-01]]` with an independently derived `Q = 3` from committed bytes. That derivation is
+genuine — fixture `72/216/144`, five nonzero transitions of 216, carrier `(0,3)`, stored `+1` on face `1 -> 22`,
+semantic Forward `22 -> 1` giving `A = 3`.
+
+**But the instance is degenerate for what is being frozen.** §2 states the test itself: "A raw A1 turn `A` may
+equal `Q` only when the two cut-domain gauges happen to cancel." §7 establishes that `faceBranchRotation` is
+identically zero at both occurrence faces, so `g_F = g_R = 0` and `q = a = 3`. Every candidate rule that converts
+through the cut-domain gauges returns 3 here. The `+g_F - g_R` correction — the closure equation
+`G_R o Q = A o G_F` that §3 identifies as missing from §§16/16.1, and the entire reason this turn existed — is
+**not exercised by any concrete instance**.
+
+§8's falsifier table does not close this: "Gauge closure — PASS" describes how the formula is constructed, and
+"Nonzero witness non-vacuity — PASS" records that `Q = 3` was derived independently. Neither asserts that an
+instance exercises the correction, and no section flags that none does.
+
+**Why it matters:** if produced rows 4/5 go green at R15, that proves `q = a` on a case where the gauges vanish.
+A sign error or operand swap (`+g_F - g_R` versus `-g_F + g_R`) would pass undetected while being frozen,
+shipped, and apparently proved by a green cumulative gate — `LESSONS.md` 171 raised to the level of a frozen
+model, in a seam that has already shown a coherent wrong answer can survive many turns.
+
+**How to apply — two remedies, neither blocking CB17:**
+
+1. `M5-CP3-TB1-R15-REV` must **record explicitly that the gauge correction is unexercised** (both gauges identity
+   on the CP3 witness), so no later turn — at M6 or M5 closure — cites CP3 green as evidence the gauge model is
+   validated. What CP3 will have proved is the degenerate case.
+2. Author a focused **mechanism** identity constructing `g_F != g_R` directly and checking the correction against
+   an independently computed expectation. It needs no produced subject and no admissible chart — mechanism-level
+   algebra over the frozen equations, the class CP1/CP2 already carry — and it is the only cheap way to test what
+   §16.3 freezes.

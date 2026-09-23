@@ -267,3 +267,85 @@ Stable accounting remains **51 events / 14 categories / 37 recurrences** and pro
 | `review_check.py boundary` | **PASS / ALL CHECKS PASSED** after the complete additive/corrective documentation patch. |
 | `STATUS` lifecycle maintained | Entry beacon published for `M5-CP3-DEFN-R1`; terminal COMPLETE with successor `M5-CP3-CB17` is reserved for the final repository mutation. |
 | Repository transport / cleanup | **Closeout precondition:** terminal `STATUS` may become COMPLETE only after this documentation patch is durably applied, temporary control state is cleaned, and final branch sync is verified. |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld; the model is frozen soundly and the deliverables are met.** One material limitation in
+the validation is recorded — the freeze condition was met in letter, but the instance chosen cannot exercise the
+model's distinctive content. Accounting holds at **51 events / 14 categories / 37 recurrences**, debt **3**.
+
+### V1 — §7 is a real derivation, and the deliverables landed
+
+`M5-CP3-TB1-R14-REV-OBS-01` required an independently derived concrete value before the freeze. §7 supplies one
+and the chain is traceable to committed bytes: fixture `torus.obj` at `V/E/F = 72/216/144` (matching the census
+this reviewer computed independently at `M4-CP3-DEFN-R1`), 18 row408 hard edges, five nonzero source-edge
+transitions out of 216 under static re-evaluation of the seam ramp, carrier `(0,3)` selected first in sorted
+order, stored transition `+1` for face `1 -> 22`, hence semantic A3 Forward `22 -> 1` reading its inverse
+`A = 3 mod 4`. The value is derived before relation publication, not read back from it.
+
+The other deliverables are met: frozen **§16.3** landed in `98052fa8`; the row4/5 witness is **adjudicated**
+valid rather than assumed, which matters after CB9's inadmissible chart; §6's `Q == identity` reduction protects
+the four green produced rows, ordinal 408 and the two debts discharged at R7; and §3's closure equation
+`G_R o Q = A o G_F` is a genuine structural insight — the relation endpoint branch must not copy a source-face
+branch label directly, which is precisely what was "missing from §§16/16.1".
+
+`CB17` is now legitimately authorized. The R14 prohibition barred a further implementation attempt *in place of*
+a definition reconciliation; the reconciliation happened and has substance, so the bar is discharged rather than
+evaded.
+
+### V2 — LIMITATION: the only concrete instance is degenerate for the part of the model being frozen
+
+§2 states the test itself: *"A raw A1 turn `A` may equal `Q` only when the two cut-domain gauges happen to
+cancel."* §7 then establishes that on the chosen witness `faceBranchRotation` is **identically zero** at both
+occurrence faces, so `g_F = g_R = 0` and
+
+```text
+q = -g_R + a + g_F = a = 3.
+```
+
+The gauges cancel. Every candidate rule of the form "convert through the cut-domain gauges" returns 3 here, so
+`Q = 3` confirms the model is **non-degenerate and evaluable** — which is real and was worth establishing — but
+it does not discriminate the model from its alternatives. **The `+g_F - g_R` correction, the closure equation
+§3 identifies as the thing missing from §§16/16.1 and the entire reason this turn exists, is not exercised by
+the only concrete instance.**
+
+§8's falsifier table does not close this. "Gauge closure — PASS" is a statement about how the formula is
+constructed, and "Nonzero witness non-vacuity — PASS" records that `Q = 3` was derived independently. Neither
+asserts that any instance exercises the correction term, and no section flags that none does.
+
+**The consequence falls on CB17 and R15.** If produced rows 4 and 5 go green, that greenness demonstrates
+`q = a` on a case where the gauges vanish. A sign error or operand swap in the correction — `+g_F - g_R` against
+`-g_F + g_R` — would pass undetected while being frozen, shipped, and apparently proved by a green cumulative
+gate. That is "structural presence is not behavioural coverage" (`LESSONS.md` 171) raised to the level of a
+frozen model, and this seam has already shown that a confident, coherent, wrong answer survives many turns.
+
+Two remedies, neither blocking:
+
+1. **R15's Review must record explicitly that the gauge correction is unexercised** (both gauges identity on the
+   CP3 witness), so that no later turn — at M6, or at M5 closure — cites CP3 green as evidence that the gauge
+   model is validated. What CP3 will have proved is the degenerate case.
+2. **Author a focused mechanism identity that constructs `g_F != g_R` directly** and checks the correction term
+   against an independently computed expectation. This needs no produced subject and no admissible chart — it is
+   mechanism-level algebra over the frozen equations, exactly the class CP1/CP2 already carry — and it is the
+   only cheap way to test the content §16.3 freezes.
+
+Recorded as `M5-CP3-DEFN-R1-REV-OBS-01`.
+
+### V3 — uniqueness is argued, and rests on producer ownership rather than convenience
+
+§2's uniqueness claim — "There is no free conjugation in Z4 and no permitted alternate direction" — is grounded
+correctly: semantic A3 Forward → Reverse fixes `A`, and the accepted bounded-disk producer fixes `G_F` and `G_R`,
+so no term is available to choose. That is the right shape for a uniqueness argument; it derives from ownership
+rather than asserting that no alternative was found. §5's canonical storage and §4's translation construction
+follow the same discipline, and the plan's stop rules on free gauge choice, heuristics, insertion order and
+floating search are respected.
+
+### V4 — verification limits
+
+Re-derived from repository bytes: the fixture census `72/216/144`, the presence and scope of frozen §16.3 and its
+commit, and the record's own algebra (`q = -g_R + a + g_F`, `Q = 3` given `g_F = g_R = 0`). Accepted as reported:
+the five-nonzero-transition static re-evaluation of the seam-ramp field, the `(0,3)` carrier selection order, and
+the `+1` stored transition on face `1 -> 22` — each traceable in principle but requiring the field evaluation
+this Review does not re-run.
