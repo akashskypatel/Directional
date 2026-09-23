@@ -1,3 +1,18 @@
+## 2026-09-23 — `M5-CP3-TB1-R12-EXEC`: CB14 candidate is mechanically valid but semantic RED at 439/446; Review next
+
+Fresh immutable run/job `35802519951 / 106995887964` consumes CB14 candidate/source
+`10725395682 / b8dc3e906dd03525861a1985ea574bad1ad5c69a`. Result/log artifacts `10726868409 / 10726518857` hash to
+`3f5978b7e0753dccd68fa53ddc50e50b3a5d4d3ea61d2bbd6e9da688531877bc / 146fa160681f012c10979eb8018f6b91e1ad41b2ce5ef5c02c70dc0f36a9d265`;
+result evidence is complete at **912/912** and immutable postflight is exact.
+
+All **446/446** planned exact-filter processes select once with zero skips: mechanism **9/9**, focused **1/1**, produced **0/6**,
+selector430 **429/430**, benchmark 0. Produced rows1/2/3/6 regress from R11-R1 green to `InvalidFinalCellState`; rows4/5 remain at
+`PeriodicActionCorrespondenceMismatch`; protected selector ordinal408 regresses to RED while 191/192/247 remain PASS.
+
+Tracker candidates `M5-CP3-TB1-R12-CAND-01` and `-02` separate failed nonzero-Z4 recovery from the newly exposed zero-rotation/direct
+production regression. Stable accounting remains **50 / 14 / 36**, debt **3** pending independent Review; accepted runtime remains
+unchanged, candidate unpromoted and selector publication prohibited. Exact successor is runtime-free `M5-CP3-TB1-R12-REV`.
+
 ## 2026-09-23 — `M5-CP3-CB14`: periodic relation endpoint-gauge authority correction compiles cleanly; R12 next
 
 Runtime-free Code + Build. CB14 records and implements the pre-mutation derivation `q=rotate(G,c)`, with `G=I` for zero generator

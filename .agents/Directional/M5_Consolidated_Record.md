@@ -1,29 +1,29 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-23 at `M5-CP3-CB14`
+**Last updated:** 2026-09-23 at `M5-CP3-TB1-R12-EXEC`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Corrected stable accounting is **50 / 14 / 36**, produced-witness debt **3**; M5 owns two of those debts and M6 owns one.
 
-## Current CP3 authority — CB14 compile-green candidate; R12 next
+## Current CP3 authority — R12 semantic RED; mandatory Review next
 
-R11-R1 remains the latest runtime evidence: candidate `10713410215 / 8ff6fdc720b3...` is mechanically valid at **444 PASS / 2 RED**
-with complete 912/912 evidence, and Review proves the remaining failure is existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` at the
-periodic seam endpoint gauge.
+Fresh R12 run/job `35802519951 / 106995887964` consumes CB14 candidate
+`10725395682 / b8dc3e906dd03525861a1985ea574bad1ad5c69a` through the unchanged 446-process immutable gate. It is mechanically
+complete: exact-one/zero-skip for all 446 processes, result self-manifest **912/912**, benchmark 0, and exact package/source/execution-view
+postflight with all prohibited-operation counters zero.
 
-CB14 implements the bounded correction without changing ordinary cell-grid placement. A new relation-owned endpoint state derives its
-coordinate independently from that endpoint's own cut-domain coordinate and exact branch gauge (`G=I` for zero generator rotation,
-`G=B` otherwise), while carrying exact source chart, scale, A3 boundary occurrence/orientation and directed generator rotation. Producer
-and checked validator consume/rederive the same state; no partner fitting, inverse retry or transform search exists on the exact A3 path.
+The semantic vector is **9/9 mechanism + 1/1 focused + 0/6 produced + 429/430 selector = 439 PASS / 7 RED**. Produced rows1/2/3/6,
+which were green in R11-R1, now reject with `InvalidFinalCellState`; produced rows4/5 remain at
+`PeriodicActionCorrespondenceMismatch`; protected selector ordinal408 regresses to RED at its required production assertion while
+191/192/247 remain green.
 
-Final compile/package run/job `35798853372 / 106984376759` is green on source
-`b8dc3e906dd03525861a1985ea574bad1ad5c69a`; candidate artifact `10725395682` has root manifest **28/28**, all eight GMP/GMPXX
-targets compile/link, source receipts are clean and `runtimeExecution=false`. No Directional executable was run. The first compile-only
-attempt exposed and then corrected one focused-test `DomainResult<T>` access mistake; the final green source above is authoritative.
+R12 therefore opens two non-stable Review candidates: failed recovery of the existing nonzero-Z4 `RP-01` endpoint-correspondence defect,
+and a new zero-rotation/direct-production regression surface introduced by CB14 on rows1/2/3/6 plus ordinal408. Runtime does not expose
+the exact row4 internal predicate or the exact checked-product predicate behind `InvalidFinalCellState`, so EXEC records the frontiers
+without inventing a root. Mandatory `M5-CP3-TB1-R12-REV` owns independent adjudication and the next bounded corrective plan.
 
 Accepted runtime remains `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316`; stable accounting remains **50 / 14 / 36**,
-debt **3**, CB14 candidate unpromoted and selector publication prohibited. Exact next is fresh artifact-only `M5-CP3-TB1-R12-EXEC`,
-then mandatory Review. The later R11-R1 Review amendment keeps the independent direction-observation runtime proof open for that Review.
+debt **3**, CB14 candidate unpromoted and selector publication prohibited. The reopened independent direction observation remains open.
 
 ## 1. `M5-DEFN` — definitions frozen
 

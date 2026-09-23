@@ -1,3 +1,38 @@
+## 2026-09-23 — `M5-CP3-TB1-R12-EXEC`: CB14 recovery fails and previously green torus controls regress — **REVIEW REQUIRED / NON-STABLE / +0**
+
+**Stable totals remain 50 events / 14 categories / 36 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**
+
+Fresh R12 run/job `35802519951 / 106995887964` consumes CB14 candidate
+`10725395682 / b8dc3e906dd03525861a1985ea574bad1ad5c69a` immutably and is mechanically valid: all **446/446** exact-filter
+processes select once with zero skips, result self-manifest is **912/912**, postflight is exact, and all prohibited-operation counters are
+zero. The semantic vector is **9/9 mechanism + 1/1 focused + 0/6 produced + 429/430 selector = 439 PASS / 7 RED**.
+
+### `M5-CP3-TB1-R12-CAND-01` — failed recovery of existing nonzero-Z4 endpoint correspondence
+
+**Status:** OPEN / PRODUCT / EXISTING `RP-01 / AUTHORITY_DOMAIN_CONFLATION` RECOVERY NOT PROVED / `PeriodicActionCorrespondenceMismatch` / NON-STABLE / OWNER `M5-CP3-TB1-R12-REV` / +0.
+
+Produced rows4/5 still stop at `PeriodicActionCorrespondenceMismatch`, so CB14 does not runtime-prove its endpoint-gauge correction on
+the real nonzero-Z4 witness. Row4 does not reach relation materialization/certificate consumption and row5 does not reach its transform-only
+tamper. The helper collapses multiple exact predicates and publishes no operand receipts before the witness throws, so EXEC does not guess
+which new endpoint-gauge predicate remains false.
+
+### `M5-CP3-TB1-R12-CAND-02` — new zero-rotation/direct-production regression candidate
+
+**Status:** OPEN / PRODUCT REGRESSION CANDIDATE / R11-R1 GREEN -> R12 RED / PROTECTED ORDINAL408 PASS -> RED / EXACT PRODUCT PREDICATE UNRESOLVED / NON-STABLE / OWNER `M5-CP3-TB1-R12-REV` / +0.
+
+R11-R1 had produced rows1/2/3/6 PASS and selector430 **430/430**. Under the unchanged 446-process gate, R12 now has rows1/2/3/6 all
+rejecting with `InvalidFinalCellState`, while protected ordinal408 rejects at its required `Produced` assertion and reports
+`NotProductionReady/tracing/None`. CB14 changed product semantics by adding relation-endpoint state, same-region action construction over
+that state, and an exact-A3 checked-product validation branch. The four control rows do not stop at the producer's typed correspondence
+reason; they reach the later generic final-state surface. Because checked-product rejection is collapsed to `InvalidFinalCellState`, EXEC
+cannot prove the exact first false validator predicate. Review must independently localize it and decide whether this is a new stable
+recurrence or another manifestation of existing `RP-01`.
+
+No stable count changes in EXEC: the candidate is unpromoted and the new regression cause/category has not yet been independently
+adjudicated. `M5-CP3-TB1-R9-REV-OBS-01-A` remains historical evidence that the CB11 `R=0` path was green; R12 proves only that CB14 no
+longer preserves that control surface. The reopened independent direction observation also remains OPEN because row4 still does not reach
+the required comparator.
+
 ## 2026-09-23 — `M5-CP3-CB14`: endpoint-gauge correction compile-green — **RUNTIME PROOF PENDING / +0**
 
 **Stable totals remain 50 events / 14 categories / 36 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**
