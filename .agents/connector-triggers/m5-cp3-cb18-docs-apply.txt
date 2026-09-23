@@ -1,0 +1,5 @@
+Purpose: land durable M5-CP3-CB18 report, R15-R1 plan, and authority updates
+Drive file: 1Fc2GSFisMsouC6TzOuS2uQbtFtueiPMO
+Patch SHA-256: e3f23c87d2535426846a580d1fc22b0fae818099a3e41afa2b2b33ef022f35b6
+Base SHA: 7696b366bf6aa8e836f2bda6763f42a5c4898b54
+Retry: 0
