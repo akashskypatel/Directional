@@ -1,16 +1,14 @@
-## 2026-09-23 — `M5-CP3-TB1-R15-EXEC`: temporary harness selection-accounting failure — **ORCHESTRATION INVALID / NON-STABLE / +0**
+## 2026-09-23 — `M5-CP3-TB1-R15-REV`: R15 parser root independently proved — **ORCHESTRATION / NON-STABLE / +0**
 
 **Stable totals remain 51 events / 14 categories / 37 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**
 
-R15 did not produce a valid semantic gate. Attempt 0 (`35850838725 / 107147928250`) failed before generated runtime because temporary-harness Python escape sequences were materialized incorrectly; its boundary records `runtime_started=false`. The diagnosed harness-only retry (`35851321165 / 107149476143`) completed immutable preflight and started the first prescribed process. That raw process ran `M5CP3.PeriodicRelationRotationUsesBothAcceptedOccurrenceGauges` exactly once, returned `[ OK ]`, and exited 0, but the harness selection parser had doubled bracket escapes (`^\\[ RUN      \\] `), falsely yielding `selected=0`.
+Review independently re-opens both R15 result/log artifact pairs and the exact retry harness. Attempt 0 remained pre-runtime. Attempt 1 completed immutable preflight and visibly ran `M5CP3.PeriodicRelationRotationUsesBothAcceptedOccurrenceGauges` exactly once to `[ OK ]` / exit0, but historical parser bytes used doubled bracket escapes. On the preserved raw log, the historical selected/PASS expressions return 0 while the corrected literal-bracket expressions return 1; skipped remains 0. The root is therefore control-plane/evidence parsing, not product semantics.
 
-### `M5-CP3-TB1-R15-EXEC-CAND-01` — orchestration/evidence defect; no product classification
+### `M5-CP3-TB1-R15-EXEC-CAND-01` — REVIEW-CONFIRMED / CAUSE PROVED / control-plane exact-one parser / non-stable / +0
 
-**Status:** ORCHESTRATION INVALID / TEMPORARY TEST-HARNESS EXACT-ONE PARSER / GENERATED RUNTIME STARTED / NO COMPLETE SEMANTIC LEDGER / NON-STABLE / +0.
+**Status:** ORCHESTRATION INVALID / TEMPORARY TEST-HARNESS EXACT-ONE PARSER / GENERATED RUNTIME STARTED / NO COMPLETE SEMANTIC LEDGER / CAUSE PROVED / OWNER `M5-CP3-CB18` / NON-STABLE / +0.
 
-The retry failed closed with `runtime_started=true`, `preflight_completed=true`, `orchestration_failure=true`, `selection_integrity=false`, no committed process-ledger rows, zero selector processes, and no complete result self-manifest. Because generated runtime had started, policy forbids another retry in EXEC. The first raw green test is diagnostic provenance only and does not recover CB17 or discharge any debt/observation.
-
-This is not a new product regression category and does not alter `RP-01` accounting. CB17 candidate `10742798135` remains unpromoted; R14 remains the latest mechanically valid CP3 runtime. Mandatory `M5-CP3-TB1-R15-REV` owns independent verification and any authorization for a bounded fresh corrected execution.
+The invalid gate grants no candidate recovery, selector credit, debt discharge, observation closure, publication credit or stable event. R14 remains the latest mechanically valid CP3 runtime; CB17 candidate `10742798135` remains unpromoted. Because generated runtime had started, the raw first-process PASS cannot be stitched into a retry ledger. CB18 must freeze and statically falsify the corrected parser without Directional runtime/compile/repackage; only then may `M5-CP3-TB1-R15-R1-EXEC` restart the unchanged 448-process gate from process 1.
 
 ## 2026-09-23 — `M5-CP3-DEFN-R1`: same-region nonzero-Z4 gauge model frozen — **DEFINITION AMBIGUITY CLOSED / PRODUCT RECOVERY OPEN / EXISTING RP-01 / +0**
 
@@ -368,7 +366,7 @@ stop on. This is the same form as the pre-commitment discipline that has now hel
 
 ## `M5-CP3-DEFN-R1-REV-OBS-01` — the frozen gauge model's distinctive term is unexercised by its only instance
 
-**Status.** OPEN / GATING ON `M5-CP3-TB1-R15-REV` / NON-STABLE / does not block `M5-CP3-CB17`.
+**Status.** PARTIALLY SATISFIED / CARRIED TO `M5-CP3-TB1-R15-R1-REV` / NON-STABLE. CB17 authored the required discriminating `Q != A` mechanism case; invalid R15 raw output shows it ran green once, but R15 has zero gate credit and cannot close the observation.
 
 `M5-CP3-DEFN-R1` froze the same-region nonzero-Z4 relation gauge as `Q = G_R^-1 o A o G_F`, i.e.
 `q = -g_R + a + g_F (mod 4)` (frozen **§16.3**), and discharged
@@ -401,3 +399,5 @@ model, in a seam that has already shown a coherent wrong answer can survive many
    an independently computed expectation. It needs no produced subject and no admissible chart — mechanism-level
    algebra over the frozen equations, the class CP1/CP2 already carry — and it is the only cheap way to test what
    §16.3 freezes.
+
+**R15 Review disposition (2026-09-23).** Requirement 1 is satisfied explicitly: the produced torus witness remains degenerate for the gauge correction (`g_F=g_R=0`), so no future CP3 green result may be cited as production evidence for the nonzero gauge terms alone. Requirement 2 is source-authored by CB17 with `A=1, G_F=2, G_R=1 -> Q=2 != A`, and the first invalid-R15 raw process visibly PASSes it. Because the containing gate is orchestration-invalid and policy assigns zero credit, the observation remains open until fresh R15-R1 executes that identity inside a mechanically complete ledger and Review independently accepts it.

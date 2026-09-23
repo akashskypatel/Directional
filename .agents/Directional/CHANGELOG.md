@@ -1,3 +1,11 @@
+## 2026-09-23 — `M5-CP3-TB1-R15-REV`: invalid gate upheld; parser cause proved; CB18 next
+
+Runtime-free Review independently re-opened R15 attempt artifacts and the exact historical retry harness. Attempt 0 stayed pre-runtime. Attempt 1 completed immutable preflight and its first exact mechanism process visibly ran once and returned `[ OK ]`/exit0, but doubled bracket escapes in the temporary exact-one parser returned selected/PASS counts of zero. The same raw bytes return selected=1, passed=1, skipped=0 with the corrected literal-bracket expression. R15 is therefore a control-plane/evidence-parser failure, not product RED.
+
+The R15 gate remains **ORCHESTRATION INVALID / ZERO GATE CREDIT**: 447 prescribed processes never ran, the ledger is header-only, and no candidate recovery, selector credit, nonzero debt discharge, observation closure or promotion is claimed. R14 remains latest mechanically valid CP3 runtime at 446/448 with 916/916 evidence; accepted runtime remains package `10601978228`. Stable accounting stays **51 / 14 / 37**, debt **3**. `M5-CP3-DEFN-R1-REV-OBS-01` is only partially satisfied because its CB17 mechanism case ran inside an invalid gate.
+
+Decision: **approved with amendments**. Exact successor `M5-CP3-CB18` is control-plane-only/runtime-free/no-compile: statically prove the corrected parser against literal GTest protocol and freeze exact harness/caller authority. If green, `M5-CP3-TB1-R15-R1-EXEC` restarts the unchanged 448-process gate from process 1, then mandatory Review.
+
 ## 2026-09-23 — M5-CP3-TB1-R15-EXEC — orchestration invalid after runtime start
 
 - Candidate `10742798135 / 1a36f6483738e1047b5d8ddbefb48cc5ab6fd4a3` immutable authority verified; root manifest **28/28**, routing/selector hashes and owner census exact, benchmark 0.
