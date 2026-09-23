@@ -1,0 +1,4 @@
+Purpose: apply verified M5-CP3-CB17 relation-frame gauge cutover patch
+Patch base: bc6d10e52b25bb99b653be8a2512ba9ed3963a0d
+Patch SHA-256: 305da9d69cf6267af8b0ec29dc3b3dd1a51c068993c8f1fa15c5099570c26913
+Retry: 0
