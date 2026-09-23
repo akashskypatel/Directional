@@ -1,0 +1,3 @@
+Purpose: runtime-free static review checks for M5-DEFN-R2
+Ledger base: 87d1a4725e0d35cc142755e7d30942f23b81afb2
+Retry: 0
