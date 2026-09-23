@@ -39,7 +39,7 @@ jobs:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
       file_id: 1agMOaq7AfuBuYQfg3OjwmgW11z9h1Jqp
-      patch_sha256: 0995eb718c0764ff21b5ac8559ee24e787774940e437a8fec74478abb1568493
+      patch_sha256: f4a3f9b2fe7bd57677f5bb3cd04278b076ad338e9bbc0a5d2beb09295d142702
       base_sha: 9af25bb4e198a53d3f4bb05bc352873adc90cdd6
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: 'docs: approve M5 CP3 R16 and precommit selector448'
