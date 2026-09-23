@@ -529,7 +529,7 @@ TB2-R2 executed the frozen corrected gate in exactly **799** fresh processes: re
 
 M4 owns **no** produced-witness debt after DEFN-R2. The closed candidate-bearing-complex `G4-B002` debt is M6-owned: M6-CP1 owns occurrence-complex/stage-separation mechanism and M6-CP3 owns its direct-production re-proof. The two periodic `G4-B002` debts were re-homed to M5 at M4 closure—canonical relation/container-order identity through M5-CP1/CP3 and missing-owner typing through M5-CP2/CP3—and were discharged at `M5-CP3-TB1-R7-REV`. `G4-B004` remains explicitly split: focused positive multi-isolation relation/certificate production in M5, representative occurrence/embedding/verifier consumption in M6; no M4 gate identity is added.
 
-### M5 — certificate-carrying chart and quotient relations (§14 M5) — **CP1 + CP2 CLOSED / ACCEPTED; CP3 R12 REVIEW COMPLETE / CB15 NEXT**
+### M5 — certificate-carrying chart and quotient relations (§14 M5) — **CP1 + CP2 CLOSED / ACCEPTED; CP3 R13 EXEC COMPLETE / REVIEW NEXT**
 
 | Checkpoint | Semantic domain |
 |---|---|
@@ -539,6 +539,8 @@ M4 owns **no** produced-witness debt after DEFN-R2. The closed candidate-bearing
 | `M5-CP3` | **R12 REVIEW COMPLETE / CB15 NEXT.** R12 candidate remains unpromoted at **439/446** with complete 912/912 evidence. Review proves ordinary torus/ordinal408 REDs share an existing RP-01 storage-representation/semantic-direction defect; rows4/5 still require typed predicate observability before any further gauge change. Exact next `M5-CP3-CB15`, then R13 with one new focused semantic-orientation identity plus the unchanged 446 R12 identities (**447 total**). |
 
 M5 originally owned four produced-witness debts. R7 Review discharges the two re-homed periodic `G4-B002` debts on direct production authority: relation-owner/container reorder and missing-owner typing. The two `G4-B003` nonzero-periodic-Z4 debts remain M5-owned; the separate closed-complex `G4-B002` debt remains M6-owned. Total project debt is now **3**.
+
+R13 on CB15 candidate `10730261023 / 4dfe392d...` is mechanically complete at **445/447 PASS** with **914/914** evidence: semantic+mechanism 10/10, focused 1/1, produced 4/6, selector430 430/430. CB15 recovers the ordinary R12 regression and ordinal408; rows4/5 alone expose typed `PeriodicActionFirstBranchMismatch`. Candidate remains unpromoted; exact next is mandatory `M5-CP3-TB1-R13-REV`.
 
 ### M6 — occurrence, embedding, independent verification (§14 M6)
 

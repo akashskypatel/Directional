@@ -2,9 +2,9 @@
 
 Last updated: 2026-09-23 UTC
 
-## Latest Test + Benchmark turn — `M5-CP3-TB1-R12-EXEC`
+## Latest Test + Benchmark turn — `M5-CP3-TB1-R13-EXEC`
 
-R12 remains the latest runtime evidence: **439 PASS / 7 RED** over 446 fresh exact-filter processes with complete **912/912** evidence. Rows1/2/3/6 plus selector408 regress; rows4/5 stop at `PeriodicActionCorrespondenceMismatch`.
+Mechanically complete **445/447 PASS** with self-manifest **914/914**. Semantic+mechanism 10/10, focused 1/1, produced 4/6, selector430 430/430. Rows4/5 alone RED at typed `PeriodicActionFirstBranchMismatch`; benchmark 0; exact immutable postflight.
 
 ## Latest Review turn — `M5-CP3-TB1-R12-REV`
 
@@ -14,9 +14,9 @@ Review proves the ordinary regression as storage-canonical relation orientation 
 
 CB15 is **COMPLETE / RUNTIME-FREE / COMPILE GREEN** at candidate `10730261023` / source `4dfe392d28d60b448e2f32253f7d170221ac57ec`. Exact A3 route/orientation now deterministically resolves canonical stored relation representation to semantic Forward -> Reverse action at checked-product/materialization consumers. The unchanged CB14 correspondence helper now publishes typed first-false reasons. Compile run/job `35811645725 / 107024364608` links all eight GMP/GMPXX targets with root manifest **28/28**, clean source receipts and `runtimeExecution=false`. Selector430/first427 are byte-identical.
 
-## Exact next turn — `M5-CP3-TB1-R13-EXEC`
+## Exact next turn — `M5-CP3-TB1-R13-REV`
 
-Fresh immutable artifact-only gate on `10730261023`. Execute `M5CP3.StorageCanonicalPeriodicRelationResolvesSemanticForwardReverse` first and then the unchanged 446 R12 identities, **447 fresh processes total**, exact-one/zero-skip, benchmark 0 and exact immutable postflight. Rows1/2/3/6 and selector408 must recover; rows4/5 must either pass or expose an exact CB15 typed correspondence subreason. Any mechanically complete R13 routes to mandatory Review. No promotion/debt discharge/selector publication in EXEC.
+Mandatory runtime-free Review of R13 evidence. Independently adjudicate CB15 ordinary recovery, localize `PeriodicActionFirstBranchMismatch`, decide observation/stable-accounting disposition, update ORIENTATION, consolidate superseded per-turn docs, and issue exactly one bounded successor.
 
 ## M5 checkpoint sequence
 

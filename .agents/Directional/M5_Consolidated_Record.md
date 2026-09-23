@@ -5,15 +5,9 @@
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Corrected stable accounting is **50 / 14 / 36**, produced-witness debt **3**; M5 owns two of those debts and M6 owns one.
 
-## Current CP3 authority — CB15 compile-green / R13 next
+## Current CP3 authority — R13 mechanically complete / mandatory Review next
 
-R12 Review remains the latest runtime adjudication: CB14 candidate `10725395682 / b8dc3e906dd...` is **439/446 PASS**, ordinary rows1/2/3/6 plus ordinal408 regress through proved storage-canonical-vs-semantic-direction conflation, and nonzero rows4/5 stop at the collapsed correspondence frontier. Accepted runtime remains unchanged.
-
-CB15 exact source `4dfe392d28d60b448e2f32253f7d170221ac57ec` implements only the bounded Review correction and diagnostic authority. Exact A3 Forward/Reverse roles plus route identity deterministically select the semantic relation representative from canonical storage; checked-product and materializer consumers use the same action. The CB14 nonzero gauge formula is unchanged. The pair helper now emits fixed-order typed first-false reasons covering all correspondence predicates required by the Review. One new focused semantic-orientation identity is compiled for R13.
-
-Compile/package run/job `35811645725 / 107024364608` is GREEN. Candidate result/log `10730261023 / 10730111645` have ZIP SHA-256 `d124bf4456c11cc7d7eb2022a94391d9a8c6f1ebd368ad04403f1dc46d3f521d / 081ef836af579e8e428cfd12cb0b1aa83afcad77ec4e3ae134284cd8feeeff5b`; root manifest **28/28** at `29e900f4a8e0d6ba814f9ed4efe3d9a3b2f0f499690c3562b51a28873efa2e6b`, source archive `9bb73290f341101f5b7009df52ff085ec256ac9702a6da5765aa330a5118a81d`, all eight GMP/GMPXX targets linked, clean source receipts and `runtimeExecution=false`. Selector430/first427 remain `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6 / f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`.
-
-CB15 is compile evidence only. Stable accounting remains **50 / 14 / 36**, debt **3**; candidate unpromoted, both nonzero-Z4 M5 debts and inherited observations remain open, selector publication prohibited. Exact next is fresh artifact-only `M5-CP3-TB1-R13-EXEC` at **447 processes**, then mandatory Review.
+R13 run/job `35814092644 / 107031820541` on CB15 candidate/source `10730261023 / 4dfe392d28d60b448e2f32253f7d170221ac57ec` is mechanically complete with **914/914** evidence and **445/447 PASS**. The new semantic-orientation identity PASSes; produced rows1/2/3/6 and selector408 recover to PASS; selector430 is 430/430. Produced rows4/5 alone fail with typed `PeriodicActionFirstBranchMismatch`, before materialization/tamper/independent-direction comparator. Stable accounting remains **50 / 14 / 36**, debt **3**; candidate unpromoted. Exact next is mandatory `M5-CP3-TB1-R13-REV`.
 
 ## 1. `M5-DEFN` — definitions frozen
 
@@ -226,6 +220,10 @@ Review independently re-verifies CB14 package/routing/selector identity and R12'
 
 Rows4/5 do not justify a second semantic correction. The CB14 endpoint-gauge helper now owns new source-chart/occurrence/branch/delta/map predicates and R12 emits no typed subreason or exact endpoint operands. Review therefore retains the R11-R1 root as historically proved but classifies CB14 as failed recovery with first new false predicate unresolved. R6 direction observation remains OPEN. CB15 is frozen to correct only the proved storage/semantic orientation boundary and add typed first-false correspondence diagnostics without changing the gauge formula. Compile-green routes to R13 with one new focused semantic-orientation identity plus the unchanged 446 R12 identities (**447 fresh processes total**) and mandatory Review.
 
+
+## 4.14 `M5-CP3-TB1-R13-EXEC` — ordinary recovery green; first branch predicate is surviving nonzero frontier
+
+Fresh artifact-only R13 executes 447 exact-filter processes with exact-one/zero-skip and complete 914/914 evidence. Semantic+mechanism is 10/10, focused 1/1, produced 4/6, selector430 430/430. CB15 recovers the R12 ordinary torus regression and ordinal408. The only REDs are nonzero-Z4 produced rows4/5, both at typed `PeriodicActionFirstBranchMismatch`. Review must adjudicate the branch-authority cause and observations; EXEC changes no stable count, promotion, debt or publication authority.
 
 ## 5. Folded-document index
 

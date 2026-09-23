@@ -1,3 +1,19 @@
+## 2026-09-23 — `M5-CP3-TB1-R13-EXEC`: ordinary recovery green; nonzero first branch correspondence mismatch isolated — **445/447 / REVIEW REQUIRED / +0**
+
+**Stable totals remain 50 events / 14 categories / 36 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**
+
+R13 run/job `35814092644 / 107031820541` on CB15 candidate `10730261023 / 4dfe392d28d60b448e2f32253f7d170221ac57ec` is mechanically complete with self-manifest **914/914** and fresh **445 PASS / 2 RED**: semantic+mechanism 10/10, focused 1/1, produced 4/6, selector430 430/430. Protected ordinals 191/192/247/408 all PASS. Immutable postflight is exact; benchmark 0 and all prohibited-operation counters are zero.
+
+### `M5-CP3-TB1-R12-CAND-01` — runtime recovery observed / Review disposition pending
+
+The new `M5CP3.StorageCanonicalPeriodicRelationResolvesSemanticForwardReverse` identity PASSes, produced rows1/2/3/6 recover from R12 `InvalidFinalCellState` to PASS, and selector408 recovers to PASS. This is direct runtime recovery evidence for CB15's deterministic semantic Forward -> Reverse conversion from storage-canonical relation representation. EXEC does not close/promote the candidate; R13 Review owns disposition.
+
+### `M5-CP3-TB1-R13-CAND-01` — OPEN / exact first branch correspondence mismatch / non-stable / +0
+
+Produced rows4/5 alone RED while constructing the nonzero-Z4 source witness with typed `PeriodicActionFirstBranchMismatch`. The diagnostic split therefore localizes the old generic correspondence frontier to the **first branch correspondence predicate**. Row4 does not reach materialization/certificate consumption or the independent direction comparator; row5 does not reach transform tamper / typed `NonReciprocalPeriodicRelation`. Review must inspect the real relation-owned endpoint states and branch transport and prove the cause rather than infer it from the reason name.
+
+`M5-CP3-TB1-R6-REV-OBS-01` remains OPEN. `M5-CP2-TB1-REV-OBS-01` has fresh selector430 430/430 evidence but remains Review-owned. Candidate is unpromoted; both nonzero-Z4 debts remain open; no debt discharge or selector publication occurs in EXEC.
+
 ## 2026-09-23 — `M5-CP3-CB15`: R12 ordinary regression correction + typed nonzero correspondence diagnostics compile green — **RUNTIME PROOF PENDING / +0**
 
 **Stable totals remain 50 events / 14 categories / 36 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**
