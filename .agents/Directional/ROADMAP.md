@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-23 (`M5-CP3-TB1-R12-REV` COMPLETE / runtime-free. R12 **439/446** and 912/912 upheld. Ordinary torus/ordinal408 regression cause proved as existing RP-01 storage-canonical relation orientation consumed as semantic A3 direction; rows4/5 remain unlocalized inside CB14 correspondence helper. Accepted runtime unchanged, candidate unpromoted, stable accounting **50 / 14 / 36**, debt **3**. Exact next `M5-CP3-CB15`.)
+**Status date:** 2026-09-23 (`M5-CP3-CB15` COMPLETE / runtime-free / compile green. Candidate `10730261023 / 4dfe392d28d60b448e2f32253f7d170221ac57ec` implements deterministic canonical-storage -> semantic A3 relation action plus typed fixed-order correspondence diagnostics, compiles all eight GMP/GMPXX targets with manifest 28/28 and `runtimeExecution=false`; selector430 unchanged. Latest runtime remains R12 at 439/446. Stable accounting **50 / 14 / 36**, debt **3**, candidate unpromoted. Exact next `M5-CP3-TB1-R13-EXEC` at 447 fresh processes, then mandatory Review.)
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 

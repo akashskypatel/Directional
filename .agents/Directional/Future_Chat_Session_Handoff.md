@@ -2,35 +2,35 @@
 
 ## Current authority
 
-`M5-CP3-TB1-R12-REV` is **COMPLETE / RUNTIME-FREE / ORDINARY REGRESSION CAUSE PROVED / NONZERO CB14 SUBPREDICATE UNRESOLVED** once terminal `STATUS` is published.
+`M5-CP3-CB15` is **COMPLETE / PRODUCT + TEST-SUPPORT / RUNTIME-FREE / COMPILE GREEN / R13 REQUIRED** once terminal `STATUS` is published.
 
-Review independently upholds R12 candidate/source `10725395682 / b8dc3e906dd03525861a1985ea574bad1ad5c69a`, run/job `35802519951 / 106995887964`, complete result manifest **912/912**, and semantic vector **439 PASS / 7 RED**. Selector430/first427 independently re-hash to `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6 / f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`.
+CB15 candidate source `4dfe392d28d60b448e2f32253f7d170221ac57ec` implements the R12 Review's bounded correction without changing canonical relation IDs/storage or the CB14 nonzero endpoint-gauge formula. Exact A3 Forward/Reverse roles plus carrier identity deterministically convert a stored canonical relation to the one semantic Forward -> Reverse action: stored action when stored `cutRoute` is Forward, exact inverse when its reversed carrier is Forward, rejection otherwise. Checked-product validation and authoritative materialization consume that semantic action; there is no action/inverse trial search.
 
-`M5-CP3-TB1-R12-CAND-01` is **CAUSE PROVED / existing RP-01 / non-stable / +0**. CB14 builds relation authority in exact A3 Forward -> Reverse direction, but `insert_periodic_holonomy` canonicalizes storage and may invert action plus routes without rebinding edge A3 orientation/state. The new checked product treats stored canonical orientation as semantic direction. If storage stayed semantic, all new checks are true by construction; R12's ordinary-torus rejection therefore proves inverse storage occurred, with Forward-route vs stored-cutRoute equality the first false new predicate.
+The CB14 pair helper now reports the first false predicate through typed `SurfacePhaseFrontFailureReason` values covering endpoint-state availability, occurrence orientation, generator rotation, source-chart relation, boundary occurrence, reciprocal scale, first/second branch correspondence, transported delta, and first/second endpoint map. Acceptance order and gauge construction are unchanged. New identity `M5CP3.StorageCanonicalPeriodicRelationResolvesSemanticForwardReverse` compiles but has not run.
 
-Rows4/5 still fail `PeriodicActionCorrespondenceMismatch`. CB14's helper adds new chart/occurrence/branch/delta/map predicates but R12 emits no typed subreason/operands; Review does not guess the first false predicate and forbids another gauge change until it is observable. `M5-CP3-TB1-R6-REV-OBS-01` remains OPEN. Historical relation-owner/missing-owner debt discharges remain valid; the current unpromoted regression does not revoke them.
+Compile/package run/job `35811645725 / 107024364608` is GREEN. Result/log artifacts `10730261023 / 10730111645` have ZIP SHA-256 `d124bf4456c11cc7d7eb2022a94391d9a8c6f1ebd368ad04403f1dc46d3f521d / 081ef836af579e8e428cfd12cb0b1aa83afcad77ec4e3ae134284cd8feeeff5b`; root manifest is **28/28** at `29e900f4a8e0d6ba814f9ed4efe3d9a3b2f0f499690c3562b51a28873efa2e6b`; source archive is `9bb73290f341101f5b7009df52ff085ec256ac9702a6da5765aa330a5118a81d`. All eight required targets compile/link with GMP/GMPXX, source-status receipts are clean, and `runtimeExecution=false`. Selector430/first427 remain `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6 / f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`.
 
-Accepted runtime stays `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316`; stable accounting **50 / 14 / 36**, debt **3**, CB14 unpromoted, selector publication prohibited.
+No runtime recovery is credited in CB15. Accepted runtime remains `10601978228 / 0798547dedd8be05f9cd7a096b07e6bd94755316`; stable accounting remains **50 / 14 / 36**, produced-witness debt **3**, candidate unpromoted, selector publication prohibited.
 
 ## Exact next turn
 
-**`M5-CP3-CB15`** — runtime-free Code + Build under `Architecture_M5_CP3_CB15_Semantic_Periodic_Direction_And_Correspondence_Diagnostics_Plan.md`.
+**`M5-CP3-TB1-R13-EXEC`** — fresh immutable artifact-only execution under `Architecture_M5_CP3_TB1_R13_Artifact_Only_Test_Benchmark_Plan.md`. Execute the new semantic-orientation identity first, then the unchanged R12 446-process vector for **447 fresh processes total**, exact-one selection/zero skips, benchmark 0, complete result self-manifest and exact immutable postflight.
 
-Implement only: (1) deterministic exact-route/A3 conversion from canonical stored relation representation to semantic Forward -> Reverse action at checked-product/materialization consumers; (2) typed first-false-predicate diagnostics for the unchanged CB14 nonzero correspondence helper. Do **not** change the endpoint-gauge formula, field, fixture, A3 plan, selector, relation ID/storage canonicalization, or validation semantics. Compile all required targets through the reusable GMP/GMPXX workflow with `runtimeExecution=false`. Compile-green routes to fresh `M5-CP3-TB1-R13-EXEC`: one new focused semantic-orientation identity plus the unchanged 446 R12 identities (**447 fresh processes total**), then mandatory Review.
+Primary falsifiers: new focused identity PASS; produced rows1/2/3/6 and protected ordinal408 recover to PASS while 191/192/247 stay PASS; rows4/5 either pass or expose one exact CB15 typed correspondence subreason rather than the old generic collapse. Any mechanically complete R13 routes to mandatory `M5-CP3-TB1-R13-REV`; EXEC grants no promotion, debt discharge, observation closure or selector publication.
 
 ## Resume-critical evidence
 
+- R13 plan: `.agents/Directional/Architecture_M5_CP3_TB1_R13_Artifact_Only_Test_Benchmark_Plan.md`
+- CB15 plan/outcome: `.agents/Directional/Architecture_M5_CP3_CB15_Semantic_Periodic_Direction_And_Correspondence_Diagnostics_Plan.md`
+- CB15 compile run/job: `35811645725 / 107024364608`
+- CB15 result/log: `10730261023 / 10730111645`
+- result/log ZIP SHA-256: `d124bf4456c11cc7d7eb2022a94391d9a8c6f1ebd368ad04403f1dc46d3f521d / 081ef836af579e8e428cfd12cb0b1aa83afcad77ec4e3ae134284cd8feeeff5b`
+- root manifest: `28/28`, SHA-256 `29e900f4a8e0d6ba814f9ed4efe3d9a3b2f0f499690c3562b51a28873efa2e6b`
+- exact source/archive: `4dfe392d28d60b448e2f32253f7d170221ac57ec / 9bb73290f341101f5b7009df52ff085ec256ac9702a6da5765aa330a5118a81d`
+- routing artifact / ZIP / identity map: `10592987234 / 352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce / 7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c`
+- selector430 / first427 SHA-256: `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6 / f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`
 - current runtime report: `.agents/Directional/Architecture_M5_CP3_TB1_R12_Artifact_Only_Test_Benchmark_Report.md`
 - current Review authority: `.agents/Directional/Architecture_M5_CP3_TB1_R12_Review_Record.md`
-- R12 run/job: `35802519951 / 106995887964`
-- R12 result/log: `10726868409 / 10726518857`
-- result/log ZIP SHA-256: `3f5978b7e0753dccd68fa53ddc50e50b3a5d4d3ea61d2bbd6e9da688531877bc / 146fa160681f012c10979eb8018f6b91e1ad41b2ce5ef5c02c70dc0f36a9d265`
-- result self-manifest: `912/912`, SHA-256 `fd3ad48624f311feb1bfb5a19e00a9515dc00f231f90b2409bb9676677891524`
-- candidate: `10725395682 / b8dc3e906dd03525861a1985ea574bad1ad5c69a`
-- candidate ZIP/root-manifest/source-archive SHA-256: `1995b8cf3de6190bff60f0e8d4ad74de90cc82327b80fd5c29f2fc0eb089d902 / 92fb6c0747db81514b2060ab195d3b7e68ede14c035c1b7f116a4e8a36679279 / 1bfd66e0a2c9a4b78dffe0280859130eed8bcd6e34032c07255bd0aaa83829bd`
-- routing artifact/map: `10592987234 / 7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c`
-- selector430 / first427 SHA-256: `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6 / f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`
-- folded prior Review/history: `.agents/Directional/M5_Consolidated_Record.md` §§4.11-4.13 and §5 folded-document index
 - frozen semantics: `.agents/Directional/Architecture_M5_Frozen_Definitions.md` §§14-16.1
 - durable tracker/history: `.agents/Directional/Regression_Root_Cause_Tracker.md`, `.agents/Directional/M5_Consolidated_Record.md`
 
@@ -38,21 +38,21 @@ Implement only: (1) deterministic exact-route/A3 conversion from canonical store
 
 ```yaml
 load_next:
-  - .agents/Directional/Architecture_M5_CP3_CB15_Semantic_Periodic_Direction_And_Correspondence_Diagnostics_Plan.md
-  - .agents/Directional/GMP_COMPILE_POLICY.md
+  - .agents/Directional/Architecture_M5_CP3_TB1_R13_Artifact_Only_Test_Benchmark_Plan.md
 conditional_modules:
-  - trigger: GitHub Actions compile/package orchestration
+  - trigger: GitHub Actions artifact-only execution orchestration
     path: .agents/Directional/GitHub_Workflow_Policy.md
 deep_references:
+  - .agents/Directional/Architecture_M5_CP3_CB15_Semantic_Periodic_Direction_And_Correspondence_Diagnostics_Plan.md
   - .agents/Directional/Architecture_M5_CP3_TB1_R12_Review_Record.md
   - .agents/Directional/Architecture_M5_CP3_TB1_R12_Artifact_Only_Test_Benchmark_Report.md
   - .agents/Directional/Architecture_M5_Frozen_Definitions.md
   - .agents/Directional/Regression_Root_Cause_Tracker.md
   - .agents/Directional/M5_Consolidated_Record.md
 do_not_preload:
-  - any runtime execution inside CB15
+  - any configure, compile, relink, discovery or package mutation in R13
   - endpoint-gauge formula, field, fixture, A3, selector or routing retuning
-  - best-of-two action/inverse validation search
-  - candidate promotion or selector publication
+  - action/inverse best-of-two validation search
+  - candidate promotion or selector publication in EXEC
   - M6 occurrence work
 ```

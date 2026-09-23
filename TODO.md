@@ -2,21 +2,21 @@
 
 Last updated: 2026-09-23 UTC
 
-## Latest Review turn — `M5-CP3-TB1-R12-REV`
-
-R12 Review is **COMPLETE / RUNTIME-FREE**. It upholds **439/446** with **912/912** evidence and proves the ordinary torus/ordinal408 regression is existing `RP-01`: canonical relation storage may invert action/routes while A3 edge authority remains semantic Forward -> Reverse, and CB14's checked product consumed the storage representative as semantic direction. Rows4/5 still fail `PeriodicActionCorrespondenceMismatch`; CB14's new helper does not expose enough operands to select its first false predicate, so no further gauge edit is authorized yet. Stable accounting remains **50 / 14 / 36**, debt **3**.
-
 ## Latest Test + Benchmark turn — `M5-CP3-TB1-R12-EXEC`
 
-R12 is mechanically complete at **9/9 mechanism + 1/1 focused + 0/6 produced + 429/430 selector = 439 PASS / 7 RED**, exact-one/zero-skip, benchmark 0, complete **912/912** manifest and exact immutable postflight. Rows1/2/3/6 and ordinal408 share the now-proved storage/semantic-direction regression; rows4/5 are failed nonzero recovery.
+R12 remains the latest runtime evidence: **439 PASS / 7 RED** over 446 fresh exact-filter processes with complete **912/912** evidence. Rows1/2/3/6 plus selector408 regress; rows4/5 stop at `PeriodicActionCorrespondenceMismatch`.
 
-## Latest Code + Build turn — `M5-CP3-CB14`
+## Latest Review turn — `M5-CP3-TB1-R12-REV`
 
-CB14 remains **COMPILE GREEN / RUNTIME FAILED / UNPROMOTED** at candidate `10725395682 / b8dc3e906dd...`. Its typed relation-endpoint state compiles, but R12 proves an ordinary checked-product regression and does not recover the nonzero witness.
+Review proves the ordinary regression as storage-canonical relation orientation consumed as semantic A3 direction and requires typed observability before any further nonzero-gauge change. Stable accounting remains **50 / 14 / 36**, debt **3**.
 
-## Exact next turn — `M5-CP3-CB15`
+## Latest Code + Build turn — `M5-CP3-CB15`
 
-Runtime-free Code + Build. Deterministically orient canonical stored relation authority to exact A3 Forward -> Reverse from route identity at consumers, and add typed first-false diagnostics for the unchanged CB14 correspondence helper. No field/fixture/A3/selector change, no action/inverse search, and no nonzero gauge-formula change before R13 evidence. Mandatory GMP/GMPXX compile; then R13 executes one new focused semantic-orientation identity plus the unchanged 446 R12 identities (**447 fresh processes total**).
+CB15 is **COMPLETE / RUNTIME-FREE / COMPILE GREEN** at candidate `10730261023` / source `4dfe392d28d60b448e2f32253f7d170221ac57ec`. Exact A3 route/orientation now deterministically resolves canonical stored relation representation to semantic Forward -> Reverse action at checked-product/materialization consumers. The unchanged CB14 correspondence helper now publishes typed first-false reasons. Compile run/job `35811645725 / 107024364608` links all eight GMP/GMPXX targets with root manifest **28/28**, clean source receipts and `runtimeExecution=false`. Selector430/first427 are byte-identical.
+
+## Exact next turn — `M5-CP3-TB1-R13-EXEC`
+
+Fresh immutable artifact-only gate on `10730261023`. Execute `M5CP3.StorageCanonicalPeriodicRelationResolvesSemanticForwardReverse` first and then the unchanged 446 R12 identities, **447 fresh processes total**, exact-one/zero-skip, benchmark 0 and exact immutable postflight. Rows1/2/3/6 and selector408 must recover; rows4/5 must either pass or expose an exact CB15 typed correspondence subreason. Any mechanically complete R13 routes to mandatory Review. No promotion/debt discharge/selector publication in EXEC.
 
 ## M5 checkpoint sequence
 
@@ -27,14 +27,15 @@ Runtime-free Code + Build. Deterministically orient canonical stored relation au
 - [x] `M5-CP3-CB14` — **COMPLETE / PRODUCT-ONLY / RUNTIME-FREE / COMPILE GREEN / RUNTIME UNPROVED**. Candidate `10725395682` / source `b8dc3e906dd...`; relation-endpoint gauge separated from ordinary cell placement; all eight GMP/GMPXX targets compile/link; root manifest 28/28; no runtime.
 - [x] `M5-CP3-TB1-R12-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. 439/446 PASS, complete 912/912 evidence; produced rows1/2/3/6 plus selector408 regress and rows4/5 fail recovery.
 - [x] `M5-CP3-TB1-R12-REV` — **COMPLETE / RUNTIME-FREE / CAUSE PROVED + DIAGNOSTIC GAP**. Ordinary torus/ordinal408 root is storage-canonical orientation consumed as semantic A3 direction; nonzero CB14 first false predicate remains unobserved; accounting unchanged.
-- [ ] `M5-CP3-CB15` — **EXACT NEXT / CODE + BUILD / RUNTIME-FREE**. Correct semantic-vs-storage orientation deterministically and add typed first-false correspondence diagnostics; no endpoint-gauge formula change; compile with GMP/GMPXX.
+- [x] `M5-CP3-CB15` — **COMPLETE / PRODUCT + TEST-SUPPORT / RUNTIME-FREE / COMPILE GREEN**. Candidate `10730261023` / source `4dfe392d28d60b448e2f32253f7d170221ac57ec`; deterministic semantic/storage conversion + typed fixed-order correspondence diagnostics; all eight GMP/GMPXX targets compile/link; root manifest 28/28; no runtime.
+- [ ] `M5-CP3-TB1-R13-EXEC` — **EXACT NEXT / ARTIFACT-ONLY 447-PROCESS GATE**. New semantic-orientation identity first, then unchanged R12 vector; benchmark 0; mandatory Review follows any mechanically complete run.
 
 - [x] `M5-CP1` and `M5-CP2`: CLOSED / ACCEPTED for mechanism credit; accepted package `10601978228`.
 - [x] `M5-CP3` R1→R7 recovery chain: stable ordinal408 `RP-01` event **RECOVERY PROVED** at R7 Review.
 - [x] M5 produced debt 1 — relation owners/container reorder: **DISCHARGED at R7 Review** on produced rows1/2 with >=2 relations and >=2 owned periodic edges.
 - [x] M5 produced debt 2 — missing relation owner: **DISCHARGED at R7 Review** on produced rows1/3 with exact typed rejection.
-- [ ] M5 produced debt 3 — genuine nonzero-Z4 rotation+translation through production/materialization: **OPEN / R12 FAILED RECOVERY / OWNER CB15 -> R13 REVIEW**.
-- [ ] M5 produced debt 4 — tampered produced nonzero-Z4 transform rejects typed: **OPEN / R12 FAILED RECOVERY / OWNER CB15 -> R13 REVIEW**.
+- [ ] M5 produced debt 3 — genuine nonzero-Z4 rotation+translation through production/materialization: **OPEN / CB15 COMPILE-GREEN / OWNER R13 EXEC -> REVIEW**.
+- [ ] M5 produced debt 4 — tampered produced nonzero-Z4 transform rejects typed: **OPEN / CB15 COMPILE-GREEN / OWNER R13 EXEC -> REVIEW**.
 - [ ] M6 closed-complex produced debt: **OPEN / M6-owned**.
 - [x] `M5-CP3-CB9` — **COMPLETE / TEST-ONLY / RUNTIME-FREE / COMPILE GREEN**. Candidate `10660365136` / source `1023eea6090...`; all-eight GMP compile/package green, no runtime.
 - [x] `M5-CP3-TB1-R8-EXEC` — **COMPLETE / MECHANICALLY VALID / SEMANTIC RED**. Vector 9/9 + 1/1 + 4/6 + 430/430; row6 recovers, rows4/5 stop at `InvalidBoundedDiskChart`; immutable postflight exact.

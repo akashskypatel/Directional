@@ -1,3 +1,13 @@
+## 2026-09-23 — `M5-CP3-CB15`: R12 ordinary regression correction + typed nonzero correspondence diagnostics compile green — **RUNTIME PROOF PENDING / +0**
+
+**Stable totals remain 50 events / 14 categories / 36 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**
+
+CB15 exact source `4dfe392d28d60b448e2f32253f7d170221ac57ec` implements the proved `M5-CP3-TB1-R12-CAND-01` correction by deriving one semantic Forward -> Reverse action from exact A3 roles plus carrier identity while leaving canonical relation ID/storage unchanged. The conversion is deterministic: stored action when stored `cutRoute` is Forward, exact inverse when the reversed stored carrier is Forward, rejection otherwise. Checked-product validation and authoritative materialization consume the same semantic representative; there is no best-of-two search.
+
+For the still-open nonzero-Z4 chain, the CB14 pair helper now returns typed first-false reasons for endpoint-state availability, occurrence orientation, generator rotation, source chart, boundary occurrence, reciprocal scale, first/second branch correspondence, transported delta and first/second endpoint map. Predicate order and Boolean acceptance are preserved and `make_periodic_relation_endpoint_state(...)` plus the CB14 gauge formula are unchanged. Thus `M5-CP3-TB1-R11-R1-CAND-01` remains OPEN but R13 now has sufficient ordinary runtime observability to localize the first false predicate without a diagnostic-only test rewrite.
+
+Compile/package run/job `35811645725 / 107024364608` is GREEN on all eight GMP/GMPXX targets with candidate `10730261023 / 4dfe392d28d60b448e2f32253f7d170221ac57ec`, root manifest **28/28**, clean source receipts and `runtimeExecution=false`. Compile evidence does not recover R12 semantics, discharge either nonzero M5 debt, close `M5-CP3-TB1-R6-REV-OBS-01`, or change stable accounting. Exact owner of runtime proof is `M5-CP3-TB1-R13-EXEC -> M5-CP3-TB1-R13-REV`.
+
 ## 2026-09-23 — `M5-CP3-TB1-R12-REV`: ordinary-torus regression cause proved; nonzero CB14 subpredicate remains unobserved — **EXISTING RP-01 / +0**
 
 **Stable totals remain 50 events / 14 categories / 36 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**

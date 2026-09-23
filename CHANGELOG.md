@@ -1,3 +1,9 @@
+## 2026-09-23 — `M5-CP3-CB15`: semantic periodic-direction correction compiles green
+
+Runtime-free CB15 deterministically converts canonical stored periodic relations to exact A3 semantic Forward -> Reverse action at checked-product/materialization consumers and adds typed first-false correspondence diagnostics without changing the CB14 nonzero gauge formula. Exact source `4dfe392d28d60b448e2f32253f7d170221ac57ec` compiles all eight required GMP/GMPXX targets in run/job `35811645725 / 107024364608`; candidate artifact `10730261023` is manifest-clean **28/28** with `runtimeExecution=false`. Selector430 remains byte-identical.
+
+No runtime recovery or promotion is claimed. Exact successor `M5-CP3-TB1-R13-EXEC` executes the new semantic-orientation falsifier plus the unchanged 446 R12 identities (**447 fresh processes total**), then mandatory Review. Stable accounting remains **50 / 14 / 36**, debt **3**.
+
 ## 2026-09-23 — `M5-CP3-TB1-R12-REV`: storage-canonical periodic orientation regression proved
 
 Runtime-free Review upholds R12's **439/446** semantic result and **912/912** evidence. The ordinary torus/ordinal408 regression is proved as existing `RP-01`: relation storage canonicalization can invert action/routes while exact A3 edge authority remains Forward -> Reverse, and CB14's new checked-product path incorrectly consumes the storage representative as semantic direction. Rows4/5 remain at `PeriodicActionCorrespondenceMismatch`; the new CB14 helper does not expose enough state to identify its first false predicate, so no further gauge change is authorized yet.

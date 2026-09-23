@@ -1,17 +1,19 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-23 at `M5-CP3-TB1-R12-REV`
+**Last updated:** 2026-09-23 at `M5-CP3-CB15`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is package `10601978228` / source `0798547dedd8be05f9cd7a096b07e6bd94755316` under unchanged selector430 **430/430**. Corrected stable accounting is **50 / 14 / 36**, produced-witness debt **3**; M5 owns two of those debts and M6 owns one.
 
-## Current CP3 authority — R12 Review cause-proved / CB15 next
+## Current CP3 authority — CB15 compile-green / R13 next
 
-R12 run/job `35802519951 / 106995887964` on CB14 candidate `10725395682 / b8dc3e906dd03525861a1985ea574bad1ad5c69a` is mechanically complete at **439/446 PASS**, result self-manifest **912/912** and exact immutable postflight. Mandatory Review independently upholds those facts.
+R12 Review remains the latest runtime adjudication: CB14 candidate `10725395682 / b8dc3e906dd...` is **439/446 PASS**, ordinary rows1/2/3/6 plus ordinal408 regress through proved storage-canonical-vs-semantic-direction conflation, and nonzero rows4/5 stop at the collapsed correspondence frontier. Accepted runtime remains unchanged.
 
-Review proves the ordinary torus regression: CB14 creates exact A3 Forward -> Reverse relation authority, but canonical storage may invert action/routes while the edge's semantic interval/state remains Forward/Reverse. The new exact-A3 checked-product path consumes that storage orientation as semantic direction. If storage had stayed semantic, its new predicates are true by the builder's immediately preceding construction; therefore the observed rejection proves the inverse representative and the Forward-route/stored-cutRoute comparison is first false. `R12-CAND-01` is cause-proved existing RP-01 / non-stable / +0.
+CB15 exact source `4dfe392d28d60b448e2f32253f7d170221ac57ec` implements only the bounded Review correction and diagnostic authority. Exact A3 Forward/Reverse roles plus route identity deterministically select the semantic relation representative from canonical storage; checked-product and materializer consumers use the same action. The CB14 nonzero gauge formula is unchanged. The pair helper now emits fixed-order typed first-false reasons covering all correspondence predicates required by the Review. One new focused semantic-orientation identity is compiled for R13.
 
-Rows4/5 remain at `PeriodicActionCorrespondenceMismatch`. CB14's new helper does not publish enough endpoint operands/subreason to select its first false predicate, so Review forbids another gauge formula change and freezes CB15 diagnostic authority. R6 direction observation remains OPEN. Stable accounting remains **50 / 14 / 36**, debt **3**, accepted runtime unchanged, candidate unpromoted, selector publication prohibited. Exact next `M5-CP3-CB15`.
+Compile/package run/job `35811645725 / 107024364608` is GREEN. Candidate result/log `10730261023 / 10730111645` have ZIP SHA-256 `d124bf4456c11cc7d7eb2022a94391d9a8c6f1ebd368ad04403f1dc46d3f521d / 081ef836af579e8e428cfd12cb0b1aa83afcad77ec4e3ae134284cd8feeeff5b`; root manifest **28/28** at `29e900f4a8e0d6ba814f9ed4efe3d9a3b2f0f499690c3562b51a28873efa2e6b`, source archive `9bb73290f341101f5b7009df52ff085ec256ac9702a6da5765aa330a5118a81d`, all eight GMP/GMPXX targets linked, clean source receipts and `runtimeExecution=false`. Selector430/first427 remain `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6 / f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`.
+
+CB15 is compile evidence only. Stable accounting remains **50 / 14 / 36**, debt **3**; candidate unpromoted, both nonzero-Z4 M5 debts and inherited observations remain open, selector publication prohibited. Exact next is fresh artifact-only `M5-CP3-TB1-R13-EXEC` at **447 processes**, then mandatory Review.
 
 ## 1. `M5-DEFN` — definitions frozen
 
