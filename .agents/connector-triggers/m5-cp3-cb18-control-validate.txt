@@ -1,0 +1,5 @@
+Purpose: validate and freeze M5-CP3-CB18 corrected R15-R1 control plane
+Expected harness SHA-256: 7867e779ee1d276617cbf7c0e1a9910dbd5b7388a5fe6bde7aac32a47efb81b7
+Runtime execution: false
+Compile execution: false
+Retry: 0
