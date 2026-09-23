@@ -1,7 +1,7 @@
 # M5 Consolidated Record
 
 **Status:** CURRENT M5 FAMILY RECORD
-**Last updated:** 2026-09-23 at `M5-CP3-TB1-R16-REV`
+**Last updated:** 2026-09-23 at `M5-CP3-CB20`
 
 Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted runtime authority is promoted to package `10763242885` / source `a8b33cb7145d5a99d47eaf5f70bb12f1c71238d1` under still-published selector430 **430/430**. Stable accounting remains **51 / 14 / 37**; project produced-witness debt is now **1**, M6-owned.
 
@@ -315,6 +315,14 @@ Both remaining M5 `G4-B003` produced debts are discharged; project debt moves **
 Review constructs the frozen §13.3 successor selector as exact selector430 plus all 18 precommitted R16 nonselector identities in gate order. It is **448 rows / 448 unique / 36,382 bytes / 448 LF**, SHA-256 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, exact first430 prefix hash `1c412850...9db6`, owner census **32 / 300 / 75 / 41**. Frozen §17 and `Architecture_M5_CP3_CB20_Selector_448_Publication_Code_Build_Plan.md` make those bytes the only authorized publication. M5 remains open until CB20 publishes them, TB2 executes the published selector fresh, and mandatory TB2 Review accepts final closure.
 
 **Reviewing-agent addendum (same turn).** The adjudication is upheld on freshly downloaded and re-hashed artifacts, and the owner census 32/300/75/41 was re-derived statically and from routing, agreeing row for row. The addendum fixed the closeout gaps: frozen §11 still named CB14, the §8.2/§9 headings were stale, the manifest lacked the promotion line, an ORIENTATION §8 clause was superseded, and the atlas assertion was overstated (it cannot fail). The CB20 plan gains §6 clarifications. New items: `M5-CP3-TB1-R16-REV-OBS-01` (two ungated CB14 `M5CP3` identities; disposition owned by TB2-REV), `-OBS-02` (rows 446/447 pin inverse storage; recorded, not firing) and `-OBS-03` (this record's duplicate §4.17/§4.18 numbering; to be repaired in the closure fold).
+
+## 4.27 `M5-CP3-CB20` — selector448 published; mandatory compile/package green
+
+CB20 publishes the exact frozen §17 successor selector and does not alter product, test, fixture, field, A3, CMake or benchmark semantics. `.agents/Directional/Architecture_M5_CP3_CB20_Required_Green_Selector_448.txt` is **448 rows / 448 unique / 36,382 bytes / 448 LF + terminal LF**, SHA-256 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, with a byte-identical selector430 prefix and standard-owner census **32 / 300 / 75 / 41**. The exact 448-row routing receipt hashes to `c91a5e2f3d84d7d38b7c7c58afd157448cb225ebdbbfac3da2ef6259e811dd7c`. The two ungated CB14 `M5CP3` identities remain unchanged and are not admitted. The selector manifest records 448 as **PUBLISHED / NOT YET ACCEPTED**.
+
+Publication commit `cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1` is mandatory-GMP compile/package green at run/job `35910024971 / 107347291148`. Result/log artifacts are `10771899191 / 10772810906` at provider ZIP SHA-256 `d0f26b1615cbc69d3dd977f726296ad8e76728b682ad3428dc10c07ddb1d2cbe / 1b619f03517fc8a6c7e0d0306903a79c888ea7f6fa784006c97a2a59cf72137d`; root manifest is **28/28** with `SHA256SUMS` SHA-256 `b3afa49083701f466d7a1d6b98aea83d6d5a58078f0336727d29c4184a7dc3f3`, and the packaged source archive hashes to `dabed7ea7f37565aec320bc7cfd34a51a840f519c2115015994f459880e580b7`. All eight standard targets compile/link against GMP/GMPXX; source-status receipts are empty and `runtimeExecution=false`.
+
+The first patch-apply run verified/applied the exact bytes but lost a non-fast-forward push race to a same-turn `STATUS` resume write; the diagnosed retry pushed the identical SHA-pinned patch. This is control-plane-only evidence and grants no semantic credit. CB20 executes no Directional runtime and therefore does not accept selector448, promote a new runtime package, alter stable **51 / 14 / 37** accounting, discharge/introduce project debt, adjudicate carried observations or close M5. CB19 package/source `10763242885 / a8b33cb...` remains accepted runtime authority. Exact successor is `M5-CP3-TB2-EXEC`, followed by mandatory `M5-CP3-TB2-REV`.
 
 ### R15-R1 Review folded-document index additions
 

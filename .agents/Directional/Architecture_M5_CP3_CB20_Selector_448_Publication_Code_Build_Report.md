@@ -474,7 +474,13 @@ The canonical receipt bytes are LF-terminated TSV with **no header**, one row pe
 
 ## Compile/package evidence
 
-Pending. This section must be replaced only from the mandatory compile workflow evidence. No Directional runtime is authorized in this turn.
+The publication patch was applied at commit `cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1`. The first Drive-apply attempt (`35908597463 / 107342488116`) verified and applied the exact patch locally but lost a non-fast-forward push race against the same-turn `STATUS` resume write; no semantic path changed. The diagnosed retry (`35909589924 / 107345815155`) applied and pushed the same SHA-pinned patch successfully with `runtimeExecution=false`. The transient Drive patch was then permanently deleted through the owner-authorized control plane.
+
+Mandatory compile/package run/job `35910024971 / 107347291148` checked out exact semantic source `cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1` and completed successfully. Result/log artifacts are `10771899191 / 10772810906`, with provider ZIP SHA-256 `d0f26b1615cbc69d3dd977f726296ad8e76728b682ad3428dc10c07ddb1d2cbe / 1b619f03517fc8a6c7e0d0306903a79c888ea7f6fa784006c97a2a59cf72137d`. The packaged root manifest verifies **28/28**, with `SHA256SUMS` SHA-256 `b3afa49083701f466d7a1d6b98aea83d6d5a58078f0336727d29c4184a7dc3f3`; the packaged source archive hashes to `dabed7ea7f37565aec320bc7cfd34a51a840f519c2115015994f459880e580b7`. Preflight/build exits are `0 / 0`, all source-status receipts are empty, and all eight required targets compile/link.
+
+GMP is authoritative: the package records `exactArithmeticBackend=GMP`, `GMP_ROOT=/usr`, and the generated link evidence includes both `gmpxx` and `gmp`. The boundary receipt records `runtimeExecution=false` and `turnBoundary=Code+Build-only`; no generated Directional binary, test, benchmark, discovery command, `ctest`, CLI, fuzzer, help/version command, or custom input was executed.
+
+Selector448 is therefore **PUBLISHED / NOT YET ACCEPTED**. CB20 grants no runtime credit, package promotion, regression/accounting change, observation disposition, selector acceptance, or M5 closure. Exact successor is `M5-CP3-TB2-EXEC`, followed by mandatory independent `M5-CP3-TB2-REV`.
 
 ## Tool-use preflight note
 

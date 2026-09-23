@@ -4,51 +4,42 @@
 
 ## Current authority
 
-`M5-CP3-TB1-R16-REV` is **COMPLETE / APPROVED / CANDIDATE PROMOTED / ALL M5 PRODUCED DEBTS DISCHARGED / SELECTOR448 PRECOMMITTED** once terminal `STATUS` is published.
+`M5-CP3-CB20` is **COMPLETE / SELECTOR448 PUBLISHED / COMPILE+PACKAGE GREEN / RUNTIME-FREE / NOT ACCEPTED** once terminal `STATUS` is published.
 
-Independent Review upholds R16 run/job `35889831381 / 107279255523`: mechanism 11/11, focused atlas 1/1, produced 6/6, selector430 430/430, total **448/448 PASS**, exact-one/zero-skip, benchmark 0, complete **921/921** result evidence and exact immutable postflight. Result/log artifacts remain `10765221644 / 10764573644` at provider ZIP SHA-256 `d2ec2703f2255cdfa7797da3989aab20e6d10d7203e006ba4068892df1909f46 / 3b8d16d1dbed5ee96e7990f6482d7961f454be1410e35097ba08c931d3097103`.
+Exact selector448 now exists at `.agents/Directional/Architecture_M5_CP3_CB20_Required_Green_Selector_448.txt`: **448 rows / 448 unique / 36,382 bytes / 448 LF + terminal LF**, SHA-256 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`. Its first 430 rows are byte-identical to accepted selector430 SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`. The four-standard-owner census is exactly **32 authority-kernel / 300 producer / 75 completion / 41 validation**. Static routing receipt SHA-256 is `c91a5e2f3d84d7d38b7c7c58afd157448cb225ebdbbfac3da2ef6259e811dd7c`. The two ungated CB14 `M5CP3` identities remain untouched and absent from selector448.
 
-Rows16/17 are independently accepted as non-vacuous direct-production proof. Source/A3 authority fixes semantic `Q=3`; the committed produced relation actually exercises inverse canonical storage with stored quarter-turn `1`, and both tests prove stored action/route differ from semantic authority before their final discriminators. Row16 reaches nonzero rotation+translation, endpoint equations, materialization, relation-certificate use and positive consumed periodic holonomy. Row17 changes exactly one stored transform and reaches exact typed `NonReciprocalPeriodicRelation`. Both remaining M5 `G4-B003` debts are discharged. Project debt is now **1**, M6-owned. Stable accounting stays **51 / 14 / 37**.
+Publication commit `cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1` is compile/package green. Run/job `35910024971 / 107347291148` produced result/log artifacts `10771899191 / 10772810906` at provider ZIP SHA-256 `d0f26b1615cbc69d3dd977f726296ad8e76728b682ad3428dc10c07ddb1d2cbe / 1b619f03517fc8a6c7e0d0306903a79c888ea7f6fa784006c97a2a59cf72137d`. Root manifest is **28/28**, `SHA256SUMS` SHA-256 `b3afa49083701f466d7a1d6b98aea83d6d5a58078f0336727d29c4184a7dc3f3`; packaged source archive SHA-256 is `dabed7ea7f37565aec320bc7cfd34a51a840f519c2115015994f459880e580b7`. All eight mandatory targets compile/link with GMP/GMPXX and `runtimeExecution=false`.
 
-CB19 candidate package/source `10763242885 / a8b33cb7145d5a99d47eaf5f70bb12f1c71238d1` is promoted as current accepted M5 runtime authority under still-published selector430. `M5-CP3-TB1-R6-REV-OBS-01`, `M5-CP2-TB1-REV-OBS-01` and `M5-CP3-TB1-R15-R1-REV-OBS-01` are discharged. `M5-DEFN-REV-OBS-01` remains carried to final M5 Review.
-
-R16 Review precommits the exact cumulative selector448: selector430 bytes as rows1-430 plus all 18 R16 nonselector identities in their fixed gate order. Selector448 is **448 unique rows / 36,382 bytes / 448 LF**, SHA-256 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, exact first430 prefix SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`, owner census **32 / 300 / 75 / 41**. It is precommitted only, not yet published or accepted.
+CB20 is publication and compile evidence only. Selector448 remains **PUBLISHED / NOT YET ACCEPTED**; no runtime process was executed, no R16 process credit is stitched forward, no new package is promoted as runtime authority, stable accounting stays **51 / 14 / 37**, and project debt stays **1**, M6-owned. CB19 package/source `10763242885 / a8b33cb7145d5a99d47eaf5f70bb12f1c71238d1` remains current accepted M5 runtime authority until TB2 Review adjudicates the published selector.
 
 ## Exact next turn
 
-**`M5-CP3-CB20`** — publication-only Code + Build.
+**`M5-CP3-TB2-EXEC`** — fresh immutable artifact-only execution of the published selector448.
 
-Create `.agents/Directional/Architecture_M5_CP3_CB20_Required_Green_Selector_448.txt` with exactly the frozen §17/precommit bytes and no other selector/product/test/fixture/field/A3/CMake/benchmark semantic edit. Verify 448/448 unique, SHA/prefix/owner census, then mandatory GMP/GMPXX compile/package all eight standard targets with `runtimeExecution=false`.
-
-Apply the plan's **§6 clarifications** (R16-REV reviewing-agent addendum):
-- Count owners over the four standard owner executables only. Seven prefix identities also appear in the optional historical target, and that is not a falsifier.
-- Record the 448-row static routing receipt with its SHA-256 for TB2.
-- Index selector448 in `Required_Green_Selector_Manifest.md` as PUBLISHED / NOT YET ACCEPTED.
-- Do not touch the ungated CB14 `M5CP3` identities (`M5-CP3-TB1-R16-REV-OBS-01`).
-
-If compile/package is green, exact successor is **`M5-CP3-TB2-EXEC`**: immutable artifact-only execution of the **published selector448 as 448 fresh exact-filter processes**, exact-one/zero-skip, benchmark 0 and exact postflight. No R16 process credit may be stitched. Mandatory **`M5-CP3-TB2-REV`** follows and alone may accept selector448 and close M5. It also owns `M5-DEFN-REV-OBS-01`, `M5-CP3-TB1-R16-REV-OBS-01` and `-OBS-03`.
+Use CB20 result artifact `10771899191` from exact semantic source `cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1`. Execute the **448 published selector identities as 448 fresh exact-filter processes**, require exact-one selection and zero skips, run benchmark count 0, preserve immutable package/source/execution-view postflight, and do not stitch any R16 runtime credit. The Test + Benchmark turn must categorize every observed regression in the root-cause tracker before closeout. Mandatory **`M5-CP3-TB2-REV`** follows and alone may accept selector448 and close M5; it also owns `M5-DEFN-REV-OBS-01`, `M5-CP3-TB1-R16-REV-OBS-01`, and `M5-CP3-TB1-R16-REV-OBS-03`.
 
 ## Resume-critical evidence
 
+- current Code + Build report: `.agents/Directional/Architecture_M5_CP3_CB20_Selector_448_Publication_Code_Build_Report.md`
+- published selector448: `.agents/Directional/Architecture_M5_CP3_CB20_Required_Green_Selector_448.txt`
+- static routing receipt: `.agents/Directional/Architecture_M5_CP3_CB20_Selector_448_Static_Routing_Receipt.tsv`, SHA-256 `c91a5e2f3d84d7d38b7c7c58afd157448cb225ebdbbfac3da2ef6259e811dd7c`
 - current Review: `.agents/Directional/Architecture_M5_CP3_TB1_R16_Review_Record.md`
-- current runtime report: `.agents/Directional/Architecture_M5_CP3_TB1_R16_Artifact_Only_Test_Benchmark_Report.md`
-- successor plan: `.agents/Directional/Architecture_M5_CP3_CB20_Selector_448_Publication_Code_Build_Plan.md`
 - frozen definitions: `.agents/Directional/Architecture_M5_Frozen_Definitions.md` §§13, 16.3, 17
 - tracker: `.agents/Directional/Regression_Root_Cause_Tracker.md`
-- consolidated history: `.agents/Directional/M5_Consolidated_Record.md` §4.26
-- accepted package/source: `10763242885 / a8b33cb7145d5a99d47eaf5f70bb12f1c71238d1`
-- R16 run/job: `35889831381 / 107279255523`
-- R16 result/log: `10765221644 / 10764573644`
-- R16 result manifest: 921/921, SHA256SUMS `c2f898912e19fb57061b50945a58e79af74e244c145de9c5d6ef367ee3185784`
-- selector430 / first427: `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6 / f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`
-- precommitted selector448: `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, owners 32/300/75/41
+- consolidated history: `.agents/Directional/M5_Consolidated_Record.md` §4.27
+- current accepted runtime package/source: `10763242885 / a8b33cb7145d5a99d47eaf5f70bb12f1c71238d1`
+- CB20 publication source: `cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1`
+- CB20 compile run/job: `35910024971 / 107347291148`
+- CB20 result/log artifacts: `10771899191 / 10772810906`
+- CB20 result manifest: 28/28, SHA256SUMS `b3afa49083701f466d7a1d6b98aea83d6d5a58078f0336727d29c4184a7dc3f3`
+- selector430 / selector448: `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6 / 70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`
 
 ## Context Load Plan
 
 ```yaml
 load_next:
+  - .agents/Directional/Architecture_M5_CP3_CB20_Selector_448_Publication_Code_Build_Report.md
   - .agents/Directional/Architecture_M5_CP3_TB1_R16_Review_Record.md
-  - .agents/Directional/Architecture_M5_CP3_CB20_Selector_448_Publication_Code_Build_Plan.md
 conditional_modules:
   - trigger: github_connector or GitHub Actions/control-plane work
     path: modules/github-connector/MODULE.md
