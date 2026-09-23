@@ -1,0 +1,3 @@
+# M5-CP3-CB17 closeout
+# Temporary workflow caller and turn markers were already removed connector-first.
+# No remaining inventoried non-workflow temporary paths; this manifest self-removes.
