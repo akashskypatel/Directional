@@ -1,14 +1,18 @@
-## 2026-09-23 — `M5-CP3-TB1-R15-R1-EXEC`: corrected full gate mechanically valid, two produced REDs — **REVIEW REQUIRED / NON-STABLE / +0**
+## 2026-09-23 — `M5-CP3-TB1-R15-R1-REV`: storage-canonical representation consumed as semantic produced-test authority — **CAUSE PROVED / TEST AUTHORITY / NON-STABLE / +0**
 
 **Stable totals remain 51 events / 14 categories / 37 recurrences. Produced-witness debt remains 3. Accepted runtime authority remains unchanged.**
 
-Fresh run/job `35869756879 / 107210502570` completes all **448/448** exact-filter processes with exact-one selection and zero skips. Mechanism is **11/11**, focused atlas **1/1**, produced **4/6**, selector430 **430/430**, protected 191/192/247/408 PASS, benchmark 0, complete **921/921** result evidence and exact immutable postflight. Result/log artifacts are `10755930241 / 10755397122` at SHA-256 `949920d13a6b256ceaad3934c9667df17098243c59075a914156ae5c635cf3e5 / ad04fa61f4fc9e4d81da632a40f730785d3ace11b4f3e6645f130d1b14423f00`.
+Review independently upholds authoritative run/job `35869756879 / 107210502570`: **448/448** exact-filter processes, mechanism **11/11**, focused atlas **1/1**, produced **4/6**, selector430 **430/430**, protected 191/192/247/408 PASS, complete **921/921** evidence and exact immutable postflight. Result/log artifacts remain `10755930241 / 10755397122` at SHA-256 `949920d13a6b256ceaad3934c9667df17098243c59075a914156ae5c635cf3e5 / ad04fa61f4fc9e4d81da632a40f730785d3ace11b4f3e6645f130d1b14423f00`.
 
-### `M5-CP3-TB1-R15-R1-CAND-01` — OPEN / PRODUCED EXPECTATION MISMATCH / REVIEW REQUIRED / non-stable / +0
+### `M5-CP3-TB1-R15-R1-CAND-01` — CAUSE PROVED / TEST-AUTHORITY STORAGE-REPRESENTATION CONFLATION / non-stable / +0 / OWNER `M5-CP3-CB19`
 
-Produced rows16/17 alone RED. Row16 reaches relation publication, then records independent generator-route mismatch, source rotation `3` versus published action rotation `1`, and fatal cut-route/Forward-edge-route mismatch before endpoint comparator/materialization. Row17 fatally fails the independent generator-route equality before transform tamper/typed nonreciprocal rejection. EXEC does not classify the semantic root or alter stable accounting; mandatory Review owns that decision.
+Frozen §16.3 explicitly makes canonical storage representation-only: semantic Forward -> Reverse action is derived first, while storage may choose the inverse and reverse both routes. Candidate `canonicalize_periodic_holonomy(...)` implements that rule; `resolve_periodic_relation_semantic_action(...)` deterministically restores semantic direction from the exact Forward/Reverse pair. R15-R1 mechanism identity `M5CP3.StorageCanonicalPeriodicRelationResolvesSemanticForwardReverse` PASSes in the complete valid ledger.
 
-The CB17 `Q != A` mechanism identity now PASSes in a mechanically complete ledger, and the corrected evidence parser successfully accounts for every one of the 448 processes with zero skips. Those runtime conditions are met, but closure of `M5-CP3-DEFN-R1-REV-OBS-01` and `M5-CP3-TB1-R15-REV-OBS-01` remains Review-owned. `M5-CP3-TB1-R6-REV-OBS-01` remains OPEN because row16 still stops before the independent Forward -> Reverse comparator/inverted-pair falsifier. `M5-CP2-TB1-REV-OBS-01` remains OPEN because the complete CP3 gate is semantic RED.
+Rows16/17 bypass that resolver and compare storage-canonical `route/action/cutRoute` directly with semantic witness authority. The concrete RED is the inverse signature: independent semantic `Q=3`, stored rotation `1 = 3^-1 mod4`, and stored cut-route orientation opposite semantic Forward. Both tests therefore terminate before their binding product falsifiers. This is existing test-authority/representation-vs-semantic discipline, not a product regression and not a new stable event.
+
+**Owner/falsifier:** test-only `M5-CP3-CB19` must resolve semantic action/route deterministically from A3 Forward/Reverse + cut-route alignment, explicitly prove the inverted-storage case, preserve row16 materialization/certificate consumption and row17 transform-only typed `NonReciprocalPeriodicRelation` rejection, and compile/package without runtime. If green, fresh R16 reruns all 448 identities; no R15-R1 ledger stitching.
+
+`M5-CP3-DEFN-R1-REV-OBS-01` and `M5-CP3-TB1-R15-REV-OBS-01` are discharged by the valid ledger/parser execution. `M5-CP3-TB1-R6-REV-OBS-01`, `M5-CP2-TB1-REV-OBS-01`, `M5-DEFN-REV-OBS-01`, and both nonzero-Z4 produced debts remain OPEN. Candidate remains unpromoted; selector publication remains prohibited.
 
 ## 2026-09-23 — `M5-CP3-CB18`: R15 parser correction statically proved — **ORCHESTRATION OWNER CORRECTED / NON-STABLE / +0**
 

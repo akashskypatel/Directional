@@ -1,5 +1,12 @@
 ## 2026-09-23 — `M5-CP3-DEFN-R1`: same-region nonzero-Z4 relation gauge frozen; CB17 next
 
+## 2026-09-23 — `M5-CP3-TB1-R15-R1-REV`: storage-canonical produced-test authority defect proved; CB19 next
+
+Independent Review upholds authoritative R15-R1 run/job `35869756879 / 107210502570` at **446/448 PASS**, selector430 **430/430**, complete **921/921** evidence and exact immutable postflight. Rows16/17 alone are RED. Frozen §16.3 plus exact CB17 source prove both tests compare canonical storage representation directly with semantic A3 Forward -> Reverse witness authority; the concrete semantic `Q=3` versus stored rotation `1` is the expected inverse representation. Product/fixture/field/A3/selector semantics are unchanged.
+
+`M5-CP3-TB1-R15-R1-CAND-01` is non-stable test-authority storage-representation conflation, +0. DEFN-R1 mechanism and parser observations close; R6 direction, CP2 publication and both nonzero-Z4 produced debts remain open. Exact successor is test-only `M5-CP3-CB19`; compile-green routes to fresh 448-process R16 + mandatory Review.
+
+
 Runtime-free Definition freezes the missing relation-frame authority proved by R14. For exact semantic A3 Forward/Reverse occurrence faces, raw directed A1 carrier turn `A` and accepted cut gauges `G_F/G_R`, relation rotation is now `Q = G_R^-1 o A o G_F`. Forward anchors relation endpoint gauge; Reverse branch/coordinates are normalized by `Q`; translation is constructed once from the semantic Forward endpoint correspondence; reverse semantics are exactly the inverse action; canonical storage is representation-only. Ordinary A4 cell placement remains unchanged.
 
 The committed torus row4/5 witness is independently valid in relation gauge: first selected carrier `(0,3)`, semantic faces `22 -> 1`, raw directed `A=3`, occurrence cut gauges `0/0`, hence **`Q=3`** before relation publication. `M5-CP3-TB1-R14-REV-OBS-01` is discharged; no fixture/field/A3/selector change and no runtime/build execution occurred. Stable accounting remains **51 / 14 / 37**, debt **3**, R14 candidate unpromoted. Exact successor is runtime-free Code + Build `M5-CP3-CB17`.

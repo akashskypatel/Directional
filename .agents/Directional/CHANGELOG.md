@@ -1,5 +1,12 @@
 ## 2026-09-23 — `M5-CP3-TB1-R15-R1-EXEC`: corrected 448-process gate completes at 446 PASS / 2 RED
 
+## 2026-09-23 — `M5-CP3-TB1-R15-R1-REV`: storage-canonical produced-test authority defect proved; CB19 next
+
+Independent Review upholds authoritative R15-R1 run/job `35869756879 / 107210502570` at **446/448 PASS**, selector430 **430/430**, complete **921/921** evidence and exact immutable postflight. Rows16/17 alone are RED. Frozen §16.3 plus exact CB17 source prove both tests compare canonical storage representation directly with semantic A3 Forward -> Reverse witness authority; the concrete semantic `Q=3` versus stored rotation `1` is the expected inverse representation. Product/fixture/field/A3/selector semantics are unchanged.
+
+`M5-CP3-TB1-R15-R1-CAND-01` is non-stable test-authority storage-representation conflation, +0. DEFN-R1 mechanism and parser observations close; R6 direction, CP2 publication and both nonzero-Z4 produced debts remain open. Exact successor is test-only `M5-CP3-CB19`; compile-green routes to fresh 448-process R16 + mandatory Review.
+
+
 Fresh immutable run/job `35869756879 / 107210502570` consumes CB17 candidate/source `10742798135 / 1a36f6483738e1047b5d8ddbefb48cc5ab6fd4a3` through the CB18-frozen executor. All **448/448** exact-filter processes select once with zero skips: mechanism 11/11, focused atlas 1/1, produced 4/6, selector430 430/430, benchmark 0. Protected selector ordinals 191/192/247/408 PASS. Result/log artifacts `10755930241 / 10755397122` hash to `949920d13a6b256ceaad3934c9667df17098243c59075a914156ae5c635cf3e5 / ad04fa61f4fc9e4d81da632a40f730785d3ace11b4f3e6645f130d1b14423f00`; result evidence is complete 921/921 and immutable postflight is exact.
 
 Produced rows16/17 alone RED. Row16 publishes a relation, then observes generator-route mismatch, source rotation 3 versus published rotation 1, and a fatal cut-route/Forward-edge-route mismatch before the independent direction comparator/materialization. Row17 stops on generator-route equality before transform tamper/typed rejection. EXEC assigns no semantic root, promotion, debt/observation disposition or accounting change. Stable totals remain 51 / 14 / 37, debt 3; candidate remains unpromoted. Mandatory successor: `M5-CP3-TB1-R15-R1-REV`.
