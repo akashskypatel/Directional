@@ -1,0 +1,218 @@
+name: M5 CP3 TB1 R14 Artifact-Only Test Benchmark
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m5-cp3-tb1-r14-exec.txt
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m5-cp3-tb1-r14-exec-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m5-cp3-tb1-r14-exec
+      commit_run_file: false
+      trim_stale_comments: false
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m5-cp3-tb1-r14-exec.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  runtime:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    env:
+      GH_TOKEN: ${{ github.token }}
+      DRIVER_TEMPLATE: .agents/Directional/turn-payloads/m5_cp3_tb1_r14_exec.py.in
+      DRIVER_BASENAME: m5_cp3_tb1_r14_exec.py
+      PLAN_FILE: .agents/Directional/Architecture_M5_CP3_TB1_R14_Artifact_Only_Test_Benchmark_Plan.md
+      TURN_ID: M5-CP3-TB1-R14-EXEC
+    steps:
+      - name: Initialize persistent diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/${TURN_ID}.log"
+          : > "$log"
+          {
+            echo "workflow=$GITHUB_WORKFLOW"
+            echo "run_id=$GITHUB_RUN_ID"
+            echo "event=$GITHUB_EVENT_NAME"
+            echo "event_sha=$GITHUB_SHA"
+            echo "ref=$GITHUB_REF"
+            echo "repository=$GITHUB_REPOSITORY"
+            echo "runner_os=$RUNNER_OS"
+            echo "turn_boundary=Test+Benchmark-only"
+            echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Checkout orchestration authority
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          submodules: false
+          lfs: false
+
+      - name: Materialize and verify frozen runtime driver
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/${TURN_ID}.log"
+          exec > >(tee -a "$log") 2>&1
+          test -f "$DRIVER_TEMPLATE"
+          test -f "$PLAN_FILE"
+          test -f .agents/Directional/tools/write_orchestration_payload.py
+          driver="${RUNNER_TEMP}/${DRIVER_BASENAME}"
+          env_file="${RUNNER_TEMP}/m5-cp3-tb1-r14-sha.env"
+          python3 - "$PLAN_FILE" "$env_file" <<'PY'
+          import pathlib, re, sys
+          plan = pathlib.Path(sys.argv[1]).read_text(encoding="utf-8")
+          keys = [
+              "CANDIDATE_SHA256",
+              "COMPILE_LOG_SHA256",
+              "ROOT_MANIFEST_SHA256",
+              "SOURCE_ARCHIVE_SHA256",
+              "ROUTING_SHA256",
+              "IDENTITY_MAP_SHA256",
+              "SELECTOR_SHA256",
+              "PREFIX427_SHA256",
+          ]
+          rows = []
+          for key in keys:
+              match = re.search(rf"^{key}=([0-9a-f]{{64}})$", plan, re.M)
+              if not match:
+                  raise SystemExit(f"missing or invalid {key} in {sys.argv[1]}")
+              rows.append(f"{key}={match.group(1)}")
+          pathlib.Path(sys.argv[2]).write_text("\n".join(rows) + "\n", encoding="utf-8")
+          PY
+          source "$env_file"
+          python3 .agents/Directional/tools/write_orchestration_payload.py \
+            --template "$DRIVER_TEMPLATE" \
+            --output "$driver" \
+            --sha256 "candidate=$CANDIDATE_SHA256" \
+            --sha256 "compile_log=$COMPILE_LOG_SHA256" \
+            --sha256 "root_manifest=$ROOT_MANIFEST_SHA256" \
+            --sha256 "source_archive=$SOURCE_ARCHIVE_SHA256" \
+            --sha256 "routing=$ROUTING_SHA256" \
+            --sha256 "identity_map=$IDENTITY_MAP_SHA256" \
+            --sha256 "selector=$SELECTOR_SHA256" \
+            --sha256 "prefix427=$PREFIX427_SHA256"
+          python3 - "$driver" <<'PY'
+          import pathlib, sys
+          path = pathlib.Path(sys.argv[1])
+          compile(path.read_text(encoding="utf-8"), str(path), "exec")
+          PY
+          echo "DRIVER_PATH=$driver" >> "$GITHUB_ENV"
+          receipt="${RUNNER_TEMP}/${TURN_ID}-driver-authority.txt"
+          {
+            echo "template_path=$DRIVER_TEMPLATE"
+            echo "template_sha256=$(sha256sum "$DRIVER_TEMPLATE" | awk '{print $1}')"
+            echo "writer_sha256=$(sha256sum .agents/Directional/tools/write_orchestration_payload.py | awk '{print $1}')"
+            echo "rendered_driver_sha256=$(sha256sum "$driver" | awk '{print $1}')"
+            cat "$env_file"
+          } > "$receipt"
+          cat "$receipt"
+          git status --short
+
+      - name: Execute frozen artifact-only plan
+        id: gate
+        shell: bash
+        run: |
+          set +e
+          log="${RUNNER_TEMP}/${TURN_ID}.log"
+          exec > >(tee -a "$log") 2>&1
+          python3 "$DRIVER_PATH"
+          status=$?
+          result="${RUNNER_TEMP}/${TURN_ID}-result"
+          authority="${RUNNER_TEMP}/${TURN_ID}-driver-authority.txt"
+          manifest_tmp="${RUNNER_TEMP}/${TURN_ID}-SHA256SUMS.final"
+          finalization_status=0
+          if [ -d "$result" ] && [ -f "$authority" ]; then
+            cp "$authority" "$result/driver-authority.txt" || finalization_status=$?
+            if [ "$finalization_status" -eq 0 ]; then
+              (
+                set -euo pipefail
+                case "$manifest_tmp" in
+                  "$result"/*)
+                    echo "final manifest temporary path must be outside result tree: $manifest_tmp" >&2
+                    exit 93
+                    ;;
+                esac
+                rm -f "$manifest_tmp"
+                cd "$result"
+                find . -type f ! -name SHA256SUMS -print0 \
+                  | LC_ALL=C sort -z \
+                  | xargs -0 sha256sum > "$manifest_tmp"
+                mv "$manifest_tmp" SHA256SUMS
+                sha256sum -c SHA256SUMS
+                manifest_rows="$(grep -cve '^$' SHA256SUMS)"
+                actual_non_manifest="$(find . -type f ! -name SHA256SUMS | wc -l | tr -d ' ')"
+                echo "result_manifest_rows=$manifest_rows"
+                echo "result_non_manifest_files=$actual_non_manifest"
+                test "$manifest_rows" = "$actual_non_manifest"
+              ) || finalization_status=$?
+            fi
+          else
+            echo "result finalization inputs missing: result=$result authority=$authority" >&2
+            finalization_status=92
+          fi
+          if [ "$finalization_status" -ne 0 ]; then
+            echo "result_finalization_exit=$finalization_status" >&2
+            status=$finalization_status
+          fi
+          echo "driver_exit=$status"
+          echo "driver_exit=$status" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Upload runtime result evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: directional-m5-cp3-tb1-r14-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/M5-CP3-TB1-R14-EXEC-result
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Record final runtime status
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          log="${RUNNER_TEMP}/${TURN_ID}.log"
+          {
+            echo "driver_exit=${{ steps.gate.outputs.driver_exit }}"
+            echo "final_job_status=${{ job.status }}"
+            echo "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Upload diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: directional-m5-cp3-tb1-r14-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/M5-CP3-TB1-R14-EXEC.log
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Fail closed on orchestration failure
+        if: always()
+        shell: bash
+        run: test "${{ steps.gate.outputs.driver_exit }}" = "0"
