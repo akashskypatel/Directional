@@ -1,3 +1,36 @@
+## 2026-09-23 — `M5-CP3-TB1-R15-REV` review: zero-credit upheld; evidence-parser replay rule recorded
+
+Runtime-free review. **Upheld.** Accounting holds at **51 events / 14 categories / 37 recurrences**, debt **3**;
+nothing executed, so no accepted-prefix transition and no new event.
+
+**Zero credit is drawn completely.** R15 never started runtime (`runtime_started=false`,
+`preflight_completed=false`, zero executed processes, `script_exit=1`), and the no-retry-after-runtime-start rule
+correctly barred a same-EXEC correction. The refusals are enumerated — no selector430 runtime credit, no
+nonzero-Z4 debt discharge, no CP3 publication credit — with R14 retained as the latest mechanically valid CP3
+runtime. That completeness matters because a visibly passing `[  PASSED  ] 1 test.` line sits in the preserved
+evidence; taking partial credit from it would have been the tempting move, and the Review declines it.
+
+**`M5-CP3-DEFN-R1-REV-OBS-01` is satisfied in authorship, and exceeds what was asked.**
+`TEST(M5CP3, PeriodicRelationRotationUsesBothAcceptedOccurrenceGauges)` constructs `A=1, G_F=2, G_R=1` and
+expects `Q=2`, matching frozen §16.3's `q = -g_R + a + g_F = 2`. It adds three discriminating negatives that rule
+out the alternatives rather than confirming one value: `Q != A` (2≠1, so the degenerate case is escaped),
+`Q != G_R^-1∘A` (0≠2), and `Q != A∘G_F` (3≠2). It then checks §3's closure equation in endpoint form and the
+lattice rotation. Exposing `periodic_relation_rotation(...)` as a named function is the right design response.
+"PARTIALLY SATISFIED / RUNTIME CREDIT CARRIED" is honest — it has never executed. Caveat carried: it is a
+*mechanism* identity, so under §8.1 it carries no produced-witness credit and cannot discharge debts 3 or 4.
+
+New: `M5-CP3-TB1-R15-REV-OBS-01`. The defect is **double-escaping**: `grep -Ec '^\\[ RUN      \\] '` passes
+`\\[` to ERE, which reads a literal backslash then a bracket expression, matching lines gtest never emits —
+hence `historical_passed=0` against a log containing a real `[       OK ]`. Correct is `'^\[ RUN      \] '`.
+This is the third embedded-harness escaping/encoding failure in M5 and the fourth orchestration-class turn loss.
+The existing rules cover literals asserted about *artifacts* and executor end-to-end validation, but an evidence
+parser is a literal asserting something about **output format**, which only real output can validate. Rule
+recorded: any change to evidence-parsing logic must be replayed against preserved raw evidence from a known-good
+prior run and reproduce its recorded counts before the gate is triggered — the replay this Review performed in
+seconds, after the fact.
+
+Exact successor: `M5-CP3-CB18` — R15-R1 orchestration correction.
+
 ## 2026-09-23 — `M5-CP3-TB1-R15-REV`: invalid gate upheld; parser cause proved; CB18 next
 
 Runtime-free Review independently re-opened R15 attempt artifacts and the exact historical retry harness. Attempt 0 stayed pre-runtime. Attempt 1 completed immutable preflight and its first exact mechanism process visibly ran once and returned `[ OK ]`/exit0, but doubled bracket escapes in the temporary exact-one parser returned selected/PASS counts of zero. The same raw bytes return selected=1, passed=1, skipped=0 with the corrected literal-bracket expression. R15 is therefore a control-plane/evidence-parser failure, not product RED.

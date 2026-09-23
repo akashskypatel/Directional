@@ -401,3 +401,31 @@ model, in a seam that has already shown a coherent wrong answer can survive many
    §16.3 freezes.
 
 **R15 Review disposition (2026-09-23).** Requirement 1 is satisfied explicitly: the produced torus witness remains degenerate for the gauge correction (`g_F=g_R=0`), so no future CP3 green result may be cited as production evidence for the nonzero gauge terms alone. Requirement 2 is source-authored by CB17 with `A=1, G_F=2, G_R=1 -> Q=2 != A`, and the first invalid-R15 raw process visibly PASSes it. Because the containing gate is orchestration-invalid and policy assigns zero credit, the observation remains open until fresh R15-R1 executes that identity inside a mechanically complete ledger and Review independently accepts it.
+
+## `M5-CP3-TB1-R15-REV-OBS-01` — evidence parsers must be replayed against preserved evidence before the gate
+
+**Status.** OPEN / GATING ON `M5-CP3-CB18` AND EVERY LATER HARNESS CHANGE / process-class / NON-STABLE.
+
+`M5-CP3-TB1-R15-EXEC` was orchestration-invalid because its harness counted with
+`grep -Ec '^\\[ RUN      \\] '`. Inside single quotes the shell passes `\\[` through, so ERE sees a **literal
+backslash** followed by a bracket expression — matching lines that begin with a backslash, which gtest never
+emits. Against a raw log containing a genuine `[ RUN      ]` / `[       OK ]` pair this yields
+`historical_selected=0`, `historical_passed=0`. The correct pattern is `'^\[ RUN      \] '`. It is a
+**double-escaping** bug: a script embedded in another layer, escaped for a layer that does not exist.
+
+This is the **third embedded-harness escaping/encoding failure in M5** — after malformed frozen digests
+(`[[M5-CP1-TB1-EXEC-OBS-01]]`, escalated at `[[M5-CP3-TB1-REV-OBS-01]]`) and harness decode/path repairs
+(`[[M5-CP1-TB1-R1-EXEC-OBS-01]]`) — and the fourth orchestration-class turn loss counting the R10 manifest
+finalization defect (`[[M5-CP3-TB1-R10-REV-OBS-01]]`).
+
+**Why the existing rules miss it.** They cover *literals asserted about artifacts* (check length; copy from the
+durable record) and *executor end-to-end validation* (decode the harness; resolve package paths). An evidence
+parser is neither: it is a literal asserting something about **output format**, and only real output can validate
+it.
+
+**How to apply:** any change to evidence-parsing logic — selection counts, pass/skip counts, stop reasons, ledger
+or manifest extraction — must be **replayed against preserved raw evidence from a known-good prior run and
+reproduce that run's recorded counts** before the gate is triggered. `M5-CP3-TB1-R15-REV` §2 performed exactly
+this replay and obtained `corrected_selected=1` / `corrected_passed=1` in seconds; run before the gate rather
+than in the post-mortem, it costs nothing and saves the turn. A parser that cannot be replayed against preserved
+evidence is not ready to gate a run.

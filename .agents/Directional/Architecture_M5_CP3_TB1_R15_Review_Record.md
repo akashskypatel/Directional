@@ -177,3 +177,88 @@ The authoritative next plan is `.agents/Directional/Architecture_M5_CP3_CB18_R15
 | review_check.py boundary | **PASS / ALL CHECKS PASSED** on the complete documentation/consolidation diff with declared selector430 hash `1c412850...a9db6`. |
 | `STATUS` lifecycle maintained | Entry beacon: Turn `M5-CP3-TB1-R15-REV`, IN_PROGRESS, successor self, Started at `2026-09-23T11:30:44Z`, latest Resumed at `2026-09-23T11:49:01Z`, Ended at empty. Terminal COMPLETE -> `M5-CP3-CB18` is reserved for the final repository mutation. |
 | Pushed to origin, branch in sync | n/a to local `git status -sb` — this is a connector-native turn with no authoritative local branch; exact PR head and temporary-control directories are re-read after cleanup before terminal `STATUS`. |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld.** The zero-credit disposition is correct and complete, and the CB17 mechanism identity
+satisfies my freeze observation in authorship — exceeding what was asked. Accounting correctly holds at
+**51 events / 14 categories / 37 recurrences**, debt **3**. One targeted process finding is recorded.
+
+### V1 — zero credit is the right call and is drawn completely
+
+R15 never started runtime by the preserved boundary (`runtime_started=false`, `preflight_completed=false`, zero
+executed processes, `script_exit=1`), and the no-retry-after-runtime-start rule correctly barred a same-EXEC
+correction once attempt 1 had begun. The refusals are enumerated rather than gestured at: no selector430 runtime
+credit, no nonzero-Z4 debt discharge, no CP3 publication credit, with R14 retained as the latest mechanically
+valid CP3 runtime.
+
+That completeness matters here, because a visibly passing `[  PASSED  ] 1 test.` line sits in the preserved
+evidence. Taking partial credit from it would have been the tempting move, and the Review declines it. Accounting
+is right for the same reason: nothing executed, so no accepted-prefix ordinal transitioned and no event arises.
+
+### V2 — my freeze observation is satisfied in authorship, and better than specified
+
+`M5-CP3-DEFN-R1-REV-OBS-01` asked for a focused mechanism identity constructing `g_F != g_R` and checking the
+correction against an independently computed expectation. `TEST(M5CP3, PeriodicRelationRotationUsesBothAcceptedOccurrenceGauges)`
+does exactly that, and the algebra checks out against frozen §16.3:
+
+`A = 1`, `G_F = 2`, `G_R = 1` gives `q = -g_R + a + g_F = -1 + 1 + 2 = 2`, and the test expects **2**.
+
+What makes it stronger than requested are three discriminating negatives, which rule out the alternatives rather
+than merely confirming one value:
+
+- `EXPECT_NE(sourceTransport, relationRotation)` — `2 != 1`, so the correction is non-trivial and the degenerate
+  case that worried me is genuinely escaped;
+- `EXPECT_NE(relationRotation, compose(G_R.inverse(), A))` — rules out a reverse-gauge-only rule (`0 != 2`);
+- `EXPECT_NE(relationRotation, compose(A, G_F))` — rules out a forward-gauge-only rule (`3 != 2`).
+
+It then checks §3's closure equation in endpoint form (`reverseState->branchRotation ==
+compose(relationRotation, forwardState->branchRotation)`) and the lattice rotation. Exposing
+`periodic_relation_rotation(sourceTransport, forwardCutGauge, reverseCutGauge)` as a named function is the right
+design response — it makes the frozen model directly testable without a produced subject, which is what the
+observation was reaching for.
+
+**"PARTIALLY SATISFIED / RUNTIME CREDIT CARRIED" is the honest disposition**: the identity exists and is correct
+by inspection, but R15 was orchestration-invalid, so it has never executed. One caveat to carry forward: this is
+a **mechanism** identity over hand-constructed states, so under frozen §8.1 it carries no produced-witness credit
+and cannot discharge debts 3 or 4 even when green. It validates the model, not the production witness.
+
+### V3 — FINDING: the defect is double-escaping, and evidence parsers are outside the existing rules
+
+The harness counted with `grep -Ec '^\\[ RUN      \\] '`. Inside single quotes the shell passes `\\[` through, so
+ERE sees a **literal backslash** followed by a bracket expression — it matches lines beginning with a backslash,
+which gtest never emits. Hence `historical_selected=0` and `historical_passed=0` against a log containing a
+genuine `[ RUN      ]` / `[       OK ]` pair. The correct pattern is `'^\[ RUN      \] '`. This is a
+double-escaping bug from embedding a script inside another layer and escaping for a layer that does not exist.
+
+That makes it the **third embedded-harness escaping or encoding failure in M5** — after the malformed frozen
+digests (`M5-CP1-TB1-EXEC-OBS-01`, escalated at `M5-CP3-TB1-REV-OBS-01`) and the harness decode/path repairs
+(`M5-CP1-TB1-R1-EXEC-OBS-01`) — and the fourth orchestration-class turn loss overall, counting the R10 manifest
+finalization defect.
+
+The existing rules do not reach it. They cover **literals asserted about artifacts** (check length, copy from the
+durable record) and **executor end-to-end validation** (decode the harness, resolve package paths). An evidence
+parser is neither: it is a literal that asserts something about *output format*, and the only thing that can
+validate it is real output.
+
+**The check is trivial, and this Review performed it — afterwards.** §2 replays the pattern against the preserved
+raw log and obtains `corrected_selected=1`, `corrected_passed=1` in seconds. Run before the gate instead of in
+the post-mortem, it costs nothing and saves the turn.
+
+Recorded as `M5-CP3-TB1-R15-REV-OBS-01`: **any change to evidence-parsing logic must be replayed against
+preserved raw evidence from a known-good prior run, and must reproduce that run's recorded counts, before the
+gate is triggered.**
+
+### V4 — carried items and verification limits
+
+`M5-CP3-TB1-R6-REV-OBS-01` correctly remains OPEN — row 4 never reached the Forward → Reverse comparator or
+inverted-pair rejection in a mechanically valid gate, so nothing about direction became decidable.
+`M5-CP2-TB1-REV-OBS-01` remains open under §13.3. Debts 3 and 4 remain OPEN; the M6 closed-complex debt remains
+M6-owned.
+
+Re-derived from repository bytes: the full body of the CB17 mechanism identity and its algebra against §16.3, the
+three discriminating negatives, the new `periodic_relation_rotation` signature, CB17's change scope, and the ERE
+semantics of the failing pattern. Accepted as reported: the preserved execution-boundary flags, harness blob
+identity, and the replayed historical/corrected counts.
