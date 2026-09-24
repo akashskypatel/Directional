@@ -13824,3 +13824,11 @@ authorization and applies it to CP2b.
 - Process note: an early cleanup-manifest write triggered cleanup run `34294735581` before temporary-state inventory was
   complete. Its compare-and-swap correctly failed after the branch advanced; it made no cleanup commit and executed no
   Directional runtime. The session also corrected an initial READ_MODE sequencing miss before semantic execution.
+
+## 2026-09-24 — M5-CP4-TB1-REV
+
+- Independently re-opened CB1/TB1 immutable artifacts and re-derived 449/449 exact-filter PASS evidence, manifests, raw-log hashes and immutable postflight.
+- Accepted `M5CP4.ProducedTorusPeriodicRelationOwnsMultiIsolationRegion` as non-vacuous **prepublication** proof of the frozen same-region multi-isolation + checked-seam-certificate + quotient-owner producer contract without crossing into M6 authority.
+- Precommitted selector449 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414` and routing449 `9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707` with exact selector448/routing448 prefixes and owners 32/301/75/41; no selector file was published.
+- Kept accepted M5 runtime authority at selector448/package `10771899191 / cef1c6ee...`; conjunct8 and M5 closure remain held pending CB2 publication, fresh TB2 and final Review.
+- Folded consumed CB1 plan/report and superseded DEFN-R1 Review into `M5_Consolidated_Record.md`; froze exact next `M5-CP4-CB2`.

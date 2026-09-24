@@ -4,7 +4,7 @@
 **Boundary:** runtime-free definition only
 **Predecessor:** final `M5-CP4-TB2-REV`, which must independently accept the `M5-DEFN-R2` `G4-B004` M5-half producer reading and close M5.
 
-**DEFERRED — NOT THE CURRENT NEXT TURN.** M5 closure is held. `M5-DEFN-R2` has now frozen the `G4-B004` M5-half reading, but conjunct 8 is not runtime-accepted. Exact next is `M5-CP4-CB1` under `Architecture_M5_CP4_CB1_Multi_Isolation_Quotient_Witness_Plan.md`; this M6 plan becomes live only after final `M5-CP4-TB2-REV` accepts the focused producer witness and closes M5.
+**DEFERRED — NOT THE CURRENT NEXT TURN.** M5 closure is held. `M5-CP4-TB1-REV` accepts the frozen `G4-B004` M5-half row449 only as prepublication producer proof and precommits selector449/routing449. Exact next is `M5-CP4-CB2` under `Architecture_M5_CP4_CB2_Selector_449_Publication_Code_Build_Plan.md`; this M6 plan becomes live only after CB2 publication, fresh TB2 execution and final `M5-CP4-TB2-REV` acceptance close M5.
 
 ## Goal
 

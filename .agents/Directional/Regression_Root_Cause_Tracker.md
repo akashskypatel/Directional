@@ -2,11 +2,11 @@
 
 **Stable totals unchanged: 51 events / 14 categories / 37 recurrences; project debt 1 (M6).** Immutable CB1 artifact `10782841045 / 535ec760...` executed selector448 plus frozen row449 as **449 fresh exact-filter processes**, all PASS with exact-one selection, zero skips, benchmark 0, and exact package/source postflight. Accepted prefix remains 448/448 green; row449 `M5CP4.ProducedTorusPeriodicRelationOwnsMultiIsolationRegion` PASSes on the fixed `torus_fixture()` subject, so no first-failed-fact classification fires. Result/log `10784376393 / 10784391222`; result self-manifest 912/912; execution ledger SHA-256 `34eec870...001c`. No semantic regression candidate is added.
 
-### `M5-CP4-TB1-EXEC-OBS-01` — workload-gated schema validation repeated — RECORDED / process / non-stable
+### `M5-CP4-TB1-EXEC-OBS-01` — workload-gated schema validation repeated — REVIEW-CONFIRMED PROCESS-ONLY / non-stable / +0
 
 The connector still exposes no direct reusable-workflow dispatch action, so strict prepublication SchemaStore validation of the temporary caller was unavailable. Runtime was fail-closed behind the durable schema-validator reusable, which completed successfully before the runtime job. This repeats the CB1 control-plane limitation; it grants no semantic credit and does not alter stable accounting.
 
-### `M5-CP4-TB1-EXEC-OBS-02` — first documentation patch omitted its new report from the diff body — RECORDED / process / non-stable
+### `M5-CP4-TB1-EXEC-OBS-02` — first documentation patch omitted its new report from the diff body — REVIEW-CONFIRMED PROCESS-ONLY / non-stable / +0
 
 The first durable-document apply run `35939148804 / 107442990646` downloaded and verified the staged patch and applied its diff in the runner worktree, but the reusable's expected/actual changed-path gate failed before commit/push. Root cause: `intended_paths` listed the new `Architecture_M5_CP4_TB1_Artifact_Only_Test_Benchmark_Report.md`, while the locally generated `git diff` body contained only already-tracked files and therefore did not contain that untracked report. The reusable correctly rejected the mismatch; no durable document commit was pushed and runtime evidence was unaffected. Recovery creates the isolated small report directly, then stages only the tracked-document diff against the new head. Classification is orchestration/process only, **+0 stable accounting**.
 

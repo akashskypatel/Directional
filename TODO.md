@@ -1,37 +1,39 @@
 # Directional Surface-Cell TODO
 
-Last updated: 2026-09-23 UTC
+Last updated: 2026-09-24 UTC
+
+## Latest Review turn — `M5-CP4-TB1-REV`
+
+**COMPLETE / PREPUBLICATION ROW449 ACCEPTED / SELECTOR449 PRECOMMITTED / M5 CLOSURE HELD.** Review independently re-opens CB1/TB1 immutable artifacts, verifies 26/26 + 912/912 manifests, all 449 fresh exact-filter processes, exact-one/zero-skip semantics, protected rows, immutable postflight, and the fixed-subject six-fact same-region producer contract. Row449 is accepted as non-vacuous prepublication proof without using M6 materialization/occurrence/embedding/verifier authority.
+
+Precommit only — **not published in Review**:
+
+- selector449 SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`, exact selector448 prefix `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`;
+- routing449 SHA-256 `9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707`, exact routing448 prefix `c91a5e2f3d84d7d38b7c7c58afd157448cb225ebdbbfac3da2ef6259e811dd7c`;
+- row449 `M5CP4.ProducedTorusPeriodicRelationOwnsMultiIsolationRegion` -> `directional_surface_cell_producer_tests`; owners 32/301/75/41.
+
+Accepted runtime authority remains selector448/package `10771899191 / cef1c6ee...`. Conjunct8 remains not milestone-accepted and M5 remains closure-held.
+
+## Exact next turn — `M5-CP4-CB2`
+
+Runtime-free Code + Build under `.agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Publication_Code_Build_Plan.md`:
+
+- [ ] Publish only the exact precommitted selector449 and routing449 bytes.
+- [ ] Keep product/test/fixture/field/CMake semantics and every accepted earlier selector/routing byte unchanged.
+- [ ] Compile/package all four standard selector owners through mandatory GMP/GMPXX `agent-compile-reusable.yml`.
+- [ ] Execute no Directional binary and record `runtimeExecution=false`.
+- [ ] Stop on any selector/prefix/routing/hash drift, semantic change, non-GMP authority, missing owner executable, or runtime attempt.
+- [ ] On compile-green route only to artifact-only `M5-CP4-TB2-EXEC`; final `M5-CP4-TB2-REV` alone may accept conjunct8 and close M5.
+
+**Deferred:** `M6-DEFN` remains blocked until final `M5-CP4-TB2-REV` closes M5.
 
 ## Latest Test + Benchmark turn — `M5-CP4-TB1-EXEC`
 
-**COMPLETE / MECHANICALLY GREEN / 449 PASS + 0 RED / REVIEW REQUIRED.** Immutable CB1 artifact/source `10782841045 / 535ec760...` executed accepted selector448 plus frozen row449 as 449 fresh exact-filter processes with exact-one selection, zero skips, benchmark 0 and exact postflight. Run/job `35937669401 / 107438319768`; result/log `10784376393 / 10784391222`; result self-manifest 912/912. Row449 PASSes on the fixed torus subject. No regression/candidate; accounting remains **51 / 14 / 37**, debt **1** M6-owned. No selector449 publication, conjunct8 acceptance, package promotion or M5 closure is claimed.
+**COMPLETE / 449 PASS + 0 RED / REVIEWED PREPUBLICATION EVIDENCE.** Run/job `35937669401 / 107438319768`; result/log `10784376393 / 10784391222`; exact-one selection, zero skips, benchmark 0, immutable postflight. TB1-REV accepts row449's producer proof but does not promote this package to accepted M5 runtime authority.
 
 ## Latest Code + Build turn — `M5-CP4-CB1`
 
-**COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE / NO SEMANTIC ACCEPTANCE CLAIM.** Added exactly one focused producer identity, `M5CP4.ProducedTorusPeriodicRelationOwnsMultiIsolationRegion`, without product/fixture/field/selector448 changes. Exact compile source `535ec760b7c39dd437de69afebec568fafb44aab`; run/job `35934640705 / 107428875643`; result/log artifacts `10782841045 / 10782293664`; mandatory GMP/GMPXX linkage proved; 26/26 package manifest rows verify; `runtimeExecution=false`.
-
-Static row449 owner/routing is frozen for TB1 only:
-
-`449	M5CP4.ProducedTorusPeriodicRelationOwnsMultiIsolationRegion	directional_surface_cell_producer_tests`
-
-Conjunct8 is not accepted, selector449 is not published, and M5 remains closure-held. Stable accounting stays **51 / 14 / 37**; project debt stays **1** M6-owned.
-
-## Exact next turn — `M5-CP4-TB1-REV`
-
-Mandatory runtime-free independent Review:
-
-- [ ] Re-open/verify TB1 result/log and CB1 package/source independently.
-- [ ] Verify all 449 ledger rows, exact-one selection, zero skips, routing/prefix authority and immutable postflight.
-- [ ] Adjudicate row449 against all six frozen DEFN-R2 facts and the M5/M6 boundary.
-- [ ] Confirm no semantic regression candidate and classify the schema-validation limitation as process-only.
-- [ ] If accepted, precommit exact selector449/routing for CB2; do not publish them in Review.
-- [ ] Keep M5 closure held until CB2 publication, TB2 fresh 449-row gate and final Review.
-
-**Deferred:** `M6-DEFN` remains blocked until final `M5-CP4-TB2-REV` accepts conjunct8 and closes M5.
-
-## Latest Review turn — `M5-DEFN-R1-REV`
-
-**COMPLETE / DISPOSITION A NOT ACCEPTED / M5 CLOSURE HELD.** The independent Review upholds DEFN-R1's evidence: rows 183-188/239 are TB2-green and the split fixture is producer-built. It rejects DEFN-R1's reading. Rows 186/188/239 are in the **M1** accepted selector, yet `G4-B004` stayed open and was assigned to M5 afterwards, so reading A makes that assignment vacuous; it also makes "multi-" redundant. `M5-CP3-TB2-REV-OBS-01` is carried to `M5-DEFN-R2`. It also records process defect `M5-DEFN-R1-REV-OBS-01` (COMPLETE was published before the work was on the branch) and `LESSONS.md` 177. Earlier: `M5-CP3-TB2-REV` accepted selector448 and promoted package `10771899191 / cef1c6ee...`.
+**COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE.** Candidate artifact/source `10782841045 / 535ec760...`; mandatory GMP/GMPXX linkage, 26/26 package manifest, `runtimeExecution=false`. CB1 plan/report are folded by TB1 Review; immutable artifact evidence remains authoritative.
 
 ## Previous accepted Code + Build turn — `M5-CP3-CB20`
 

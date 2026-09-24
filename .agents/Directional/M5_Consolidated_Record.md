@@ -375,6 +375,9 @@ The first patch-apply run verified/applied the exact bytes but lost a non-fast-f
 
 | Folded filename | Verdict / retained home |
 |---|---|
+| `Architecture_M5_CP4_CB1_Multi_Isolation_Quotient_Witness_Plan.md` (92 lines) | **CONSUMED CB1 PLAN / FOLDED BY `M5-CP4-TB1-REV`.** Frozen six-fact contract, fixed subject, falsifiers and M5/M6 boundary are adjudicated in §4.35, the current Review and frozen §18. |
+| `Architecture_M5_CP4_CB1_Code_Build_Report.md` (83 lines) | **SUPERSEDED CB1 BUILD REPORT / FOLDED BY `M5-CP4-TB1-REV`.** Exact source/artifact/GMP/runtime-free compile authority is retained in §4.35, the current TB1 report/Review and immutable Actions artifacts. |
+| `Architecture_M5_DEFN_R1_G4_B004_Review_Record.md` (95 lines) | **SUPERSEDED DEFN-R1 REVIEW / FOLDED BY `M5-CP4-TB1-REV`.** Rejection of disposition A, chronology/non-redundancy reasoning and process observation are retained in §§4.32-4.35, frozen §18, tracker/changelog and git history. |
 | `Architecture_M5_CP3_TB1_R14_Artifact_Only_Test_Benchmark_Report.md` (96 lines) | **SUPERSEDED R14 RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Retained in §4.25/tracker/changelog/git history; R15-R1 is current mechanically valid runtime. |
 | `Architecture_M5_CP3_TB1_R15_Review_Record.md` (264 lines) | **SUPERSEDED R15 REVIEW / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Parser cause/replay obligation retained in §§4.22-4.25/current Review and git history. |
 | `Architecture_M5_CP3_CB18_R15_R1_Orchestration_Correction_Plan.md` (161 lines) | **CONSUMED CB18 PLAN / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Frozen parser/caller contract is runtime-proved by R15-R1 and retained in §§4.23-4.25. |
@@ -449,6 +452,17 @@ The addendum amends the CB1 plan (§7):
 
 It also marks the never-executed committed-torus test as unverified, different-config evidence, and folds the consumed R2 reading plan.
 
+
+## 4.35 `M5-CP4-CB1 -> TB1 -> REV` — same-region producer join prepublication proof accepted
+
+CB1 added exactly one focused producer-owned identity, `M5CP4.ProducedTorusPeriodicRelationOwnsMultiIsolationRegion`, without changing product semantics, fixture/field bytes or selector448. Mandatory GMP/GMPXX compile/package authority is artifact `10782841045` from source `535ec760b7c39dd437de69afebec568fafb44aab`; the 26/26 package manifest is immutable and `runtimeExecution=false`.
+
+TB1 run/job `35937669401 / 107438319768` consumed that artifact and executed accepted selector448 plus frozen row449 as **449 fresh exact-filter processes**: 449 PASS / 0 RED, exact-one selection, zero skips, benchmark 0, owners **32/301/75/41**, result/log `10784376393 / 10784391222`, 912/912 result evidence and exact postflight.
+
+`M5-CP4-TB1-REV` independently re-opened those artifacts, re-parsed all 449 ledger/raw receipts, re-hashed accepted selector448/routing448, and statically re-derived the six DEFN-R2 facts from the fixed `torus_fixture()` subject plus checked product constructors. The Review **accepts row449 as non-vacuous prepublication producer proof**: one produced topology region spans >=2 authoritative isolation sheets, owns an internal checked isolation seam certificate, owns a canonical carrier-content `SurfacePeriodicHolonomy`, and has a reciprocal same-region `PeriodicCut` pair naming that owner. No M6 materialization/occurrence/embedding/verifier acceptance is used.
+
+The Review precommits selector449 SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414` as exact selector448 prefix `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789` plus row449, and routing449 SHA-256 `9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707` as exact routing448 prefix `c91a5e2f3d84d7d38b7c7c58afd157448cb225ebdbbfac3da2ef6259e811dd7c` plus the producer-owned row. **Nothing is published by Review.** Accepted M5 runtime authority remains selector448/package `10771899191 / cef1c6ee...`; conjunct8 and M5 closure remain held until CB2 publication, fresh TB2 execution and final Review. Exact successor is `M5-CP4-CB2`.
+
 ## 5. Folded-document index
 
 Historical citations in frozen/normative records to filenames listed here are provenance-only and resolve through this index plus git history; frozen text is not rewritten merely to chase a folded filename.
@@ -456,7 +470,7 @@ Historical citations in frozen/normative records to filenames listed here are pr
 | Folded filename | Verdict / retained home |
 |---|---|
 | `Architecture_M5_DEFN_R2_G4_B004_Reading_Plan.md` (55 lines) | **CONSUMED DEFN-R2 PLAN / FOLDED BY the `M5-DEFN-R2` reviewing-agent addendum.** Its readings and falsifiers are resolved in `Architecture_M5_DEFN_R2_G4_B004_Definition_Record.md` §2 and frozen §§13.1/18. DEFN-R2 had marked consolidation n/a and left two plans live. |
-| `Architecture_M5_DEFN_R1_G4_B004_Exit_Reconciliation_Record.md` (131 lines) | **DEFN-R1 RECORD / DISPOSITION A NOT ACCEPTED / FOLDED BY `M5-DEFN-R1-REV`.** Its evidence census is upheld and its reading is rejected on chronology/redundancy. Arguments are summarized in `Architecture_M5_DEFN_R1_G4_B004_Review_Record.md` §§1-2 and §4.32-4.33; full text is in git history (`d17aada2`). |
+| `Architecture_M5_DEFN_R1_G4_B004_Exit_Reconciliation_Record.md` (131 lines) | **DEFN-R1 RECORD / DISPOSITION A NOT ACCEPTED / FOLDED BY `M5-DEFN-R1-REV`.** Its evidence census is upheld and its reading is rejected on chronology/redundancy. Arguments are summarized in §§4.32-4.35 and the frozen §18 chronology record; full text is in git history (`d17aada2`). |
 | `Architecture_M5_DEFN_R1_G4_B004_Review_Plan.md` (44 lines) | **CONSUMED REVIEW PLAN / FOLDED BY `M5-DEFN-R1-REV`.** Its required checks were executed. Its falsifier list omitted the chronology test that decided the Review. |
 | `Architecture_M5_CP3_TB2_Review_Record.md` (230 lines) | **SUPERSEDED TB2 REVIEW / FOLDED BY `M5-DEFN-R1`.** Its accepted selector448/package evidence and closure-hold addendum are retained in §§4.31-4.32, `M5_Closure_Record.md`, frozen definitions, tracker/changelogs, the retained TB2 runtime report and git history. |
 | `Architecture_M5_DEFN_R1_G4_B004_Exit_Reconciliation_Plan.md` (60 lines) | **CONSUMED DEFN-R1 PLAN / FOLDED BY `M5-DEFN-R1`.** Its three-way disposition contract is resolved as A; retained authority is §4.32, `Architecture_M5_DEFN_R1_G4_B004_Exit_Reconciliation_Record.md`, frozen §13.1/§18, and the successor Review plan. |

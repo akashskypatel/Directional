@@ -2,9 +2,9 @@
 
 **Milestone:** M5 — certificate-carrying chart and quotient relations
 **Closure turn:** `M5-CP3-TB2-REV`
-**Disposition:** **SELECTOR448 ACCEPTED / §13.1 CONJUNCTS 1-7 ACCEPTED / CONJUNCT 8 DEFINED + TB1 PREPUBLICATION GREEN BUT NOT REVIEW-ACCEPTED / CLOSURE HELD pending bounded `M5-CP4`**
+**Disposition:** **SELECTOR448 ACCEPTED / §13.1 CONJUNCTS 1-7 ACCEPTED / ROW449 PREPUBLICATION PROOF REVIEW-ACCEPTED + SELECTOR449 PRECOMMITTED / CONJUNCT 8 NOT YET MILESTONE-ACCEPTED / CLOSURE HELD**
 
-> **Closure remains held.** Everything below concerning selector448, the CB20 package and §13.1 conjuncts 1-7 stands. `M5-DEFN-R2` now freezes conjunct 8 as a same-subject producer requirement: one pipeline-produced topology region must be multi-isolation with a checked internal-seam certificate **and** own a periodic quotient relation named by a reciprocal `PeriodicCut` edge pair. Accepted selector448 does not join those facts on one subject. CB1 has authored the focused row449 and TB1 executes the fixed subject green at 449/449, but EXEC cannot accept it. Exact successor is mandatory `M5-CP4-TB1-REV`; final `M5-CP4-TB2-REV` alone may accept conjunct 8 and close M5.
+> **Closure remains held.** Everything below concerning selector448, the CB20 package and §13.1 conjuncts 1-7 stands. `M5-DEFN-R2` now freezes conjunct 8 as a same-subject producer requirement: one pipeline-produced topology region must be multi-isolation with a checked internal-seam certificate **and** own a periodic quotient relation named by a reciprocal `PeriodicCut` edge pair. Accepted selector448 does not join those facts on one subject. CB1 authored the focused row449, TB1 executed the fixed subject green at 449/449, and `M5-CP4-TB1-REV` independently accepts that row as non-vacuous prepublication proof. The same Review precommits exact selector449/routing449 bytes, but nothing is published yet. Exact successor is `M5-CP4-CB2`; final `M5-CP4-TB2-REV` alone may accept conjunct 8 and close M5.
 
 ## Accepted authority
 
@@ -25,10 +25,10 @@ The fresh selector448 gate is **448 PASS / 0 RED**, exact-one selection, zero sk
 
 ## Debt and observation disposition
 
-All four M5 produced debts are closed: relation/container reorder and missing-owner typing at R7 Review; genuine nonzero-Z4 materialization/consumption and tampered-transform typed rejection at R16 Review, freshly retained by TB2. The merged `M5-DEFN-REV-OBS-01` / `M5-CP3-TB2-REV-OBS-01` is **DEFINITION-FROZEN / CLOSURE-GATE-PENDING**: DEFN-R2 selects the same-region multi-isolation + quotient-owner reading, and the owner is now `M5-CP4`. The two never-gated CB14 `M5CP3` identities receive no M5 credit, and `M6-DEFN` owns freezing their later deletion-or-gating disposition. The R16 inverse-storage risk remains recorded/not firing. Consolidated numbering/citation ambiguity is repaired.
+All four M5 produced debts are closed: relation/container reorder and missing-owner typing at R7 Review; genuine nonzero-Z4 materialization/consumption and tampered-transform typed rejection at R16 Review, freshly retained by TB2. The merged `M5-DEFN-REV-OBS-01` / `M5-CP3-TB2-REV-OBS-01` is **PREPUBLICATION-PROVED / CLOSURE-GATE-PENDING**: DEFN-R2 selects the same-region multi-isolation + quotient-owner reading, TB1 Review accepts row449 on that reading, and ownership advances through `M5-CP4-CB2 -> TB2-EXEC -> TB2-REV`. The two never-gated CB14 `M5CP3` identities receive no M5 credit, and `M6-DEFN` owns freezing their later deletion-or-gating disposition. The R16 inverse-storage risk remains recorded/not firing. Consolidated numbering/citation ambiguity is repaired.
 
 Stable accounting remains **51 events / 14 categories / 37 recurrences**. The sole project produced-witness debt is the separate **M6-owned closed-complex `G4-B002` debt**.
 
 ## Successor boundary
 
-No M6 implementation is part of the held M5 closure. CB1 and TB1-EXEC are complete; TB1 is mechanically green at 449/449 without granting acceptance. Exact successor is runtime-free **`M5-CP4-TB1-REV`**. `M6-DEFN` follows only after final `M5-CP4-TB2-REV` accepts conjunct 8 and closes M5.
+No M6 implementation is part of the held M5 closure. CB1, TB1-EXEC and TB1-REV are complete; row449 is Review-accepted only as prepublication proof and exact selector449/routing449 bytes are precommitted. Exact successor is runtime-free **`M5-CP4-CB2`**. `M6-DEFN` follows only after final `M5-CP4-TB2-REV` accepts conjunct 8 and closes M5.
