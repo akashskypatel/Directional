@@ -1,3 +1,0 @@
-M6-CP1-TB2-REV durable documentation apply
-base: 6a1c3a53e1cc9ece9c0dd08e2630da60fceca645
-patch: 36f62efd88ed919344b75c5f8e485d0760316bace11ddebe7d4ba579852bd1a5
