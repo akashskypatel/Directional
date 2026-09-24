@@ -1,0 +1,3 @@
+M6-CP1-TB1-REV source snapshot trigger
+source_head=6d386815d0d60d5ba960705bbed4bd1952e2654b
+purpose=freeze exact review-start repository authority for independent runtime-free review
