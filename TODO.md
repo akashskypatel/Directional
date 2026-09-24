@@ -2,6 +2,10 @@
 
 Last updated: 2026-09-23 UTC
 
+## Latest Test + Benchmark turn — `M5-CP4-TB1-EXEC`
+
+**COMPLETE / MECHANICALLY GREEN / 449 PASS + 0 RED / REVIEW REQUIRED.** Immutable CB1 artifact/source `10782841045 / 535ec760...` executed accepted selector448 plus frozen row449 as 449 fresh exact-filter processes with exact-one selection, zero skips, benchmark 0 and exact postflight. Run/job `35937669401 / 107438319768`; result/log `10784376393 / 10784391222`; result self-manifest 912/912. Row449 PASSes on the fixed torus subject. No regression/candidate; accounting remains **51 / 14 / 37**, debt **1** M6-owned. No selector449 publication, conjunct8 acceptance, package promotion or M5 closure is claimed.
+
 ## Latest Code + Build turn — `M5-CP4-CB1`
 
 **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE / NO SEMANTIC ACCEPTANCE CLAIM.** Added exactly one focused producer identity, `M5CP4.ProducedTorusPeriodicRelationOwnsMultiIsolationRegion`, without product/fixture/field/selector448 changes. Exact compile source `535ec760b7c39dd437de69afebec568fafb44aab`; run/job `35934640705 / 107428875643`; result/log artifacts `10782841045 / 10782293664`; mandatory GMP/GMPXX linkage proved; 26/26 package manifest rows verify; `runtimeExecution=false`.
@@ -12,17 +16,16 @@ Static row449 owner/routing is frozen for TB1 only:
 
 Conjunct8 is not accepted, selector449 is not published, and M5 remains closure-held. Stable accounting stays **51 / 14 / 37**; project debt stays **1** M6-owned.
 
-## Exact next turn — `M5-CP4-TB1-EXEC`
+## Exact next turn — `M5-CP4-TB1-REV`
 
-Artifact-only prepublication gate using immutable CB1 artifact `10782841045` / source `535ec760b7c39dd437de69afebec568fafb44aab`:
+Mandatory runtime-free independent Review:
 
-- [ ] Verify artifact/source/manifest authority before execution; do not repair package bytes or permissions.
-- [ ] Execute selector448 + the frozen row449 as **449 fresh exact-filter processes**, exact-one selection, zero skips, benchmark 0.
-- [ ] Keep `torus_fixture()` fixed; do not switch subject after runtime.
-- [ ] Record the first unmet fact directly from fact-naming assertion output if row449 is RED.
-- [ ] Categorize every observed regression/candidate in `Regression_Root_Cause_Tracker.md` before closeout.
-- [ ] Do not configure, compile, relink, regenerate, publish selector449, accept conjunct8, or claim M5 closure.
-- [ ] Route to mandatory `M5-CP4-TB1-REV` after execution.
+- [ ] Re-open/verify TB1 result/log and CB1 package/source independently.
+- [ ] Verify all 449 ledger rows, exact-one selection, zero skips, routing/prefix authority and immutable postflight.
+- [ ] Adjudicate row449 against all six frozen DEFN-R2 facts and the M5/M6 boundary.
+- [ ] Confirm no semantic regression candidate and classify the schema-validation limitation as process-only.
+- [ ] If accepted, precommit exact selector449/routing for CB2; do not publish them in Review.
+- [ ] Keep M5 closure held until CB2 publication, TB2 fresh 449-row gate and final Review.
 
 **Deferred:** `M6-DEFN` remains blocked until final `M5-CP4-TB2-REV` accepts conjunct8 and closes M5.
 

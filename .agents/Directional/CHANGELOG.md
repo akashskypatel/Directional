@@ -1,3 +1,13 @@
+## 2026-09-24 — `M5-CP4-TB1-EXEC`: frozen prepublication row449 gate is 449/449 green
+
+- Consumed immutable CB1 artifact/source `10782841045 / 535ec760...`; exact package/source/selector/routing preflight and postflight pass with no repair, configure, compile, relink, regeneration or mutation.
+- Run/job `35937669401 / 107438319768`; result/log `10784376393 / 10784391222`; result ZIP `9860fa75...173`; self-manifest 912/912; execution ledger `34eec870...001c`.
+- Accepted selector448 plus frozen row449 executed as **449 fresh exact-filter processes: 449 PASS / 0 RED**, exact-one selection, zero skips, benchmark 0, prepublication owner census 32/301/75/41. Protected rows 191/192/247/408/446/447/448/449 PASS.
+- Row449 `M5CP4.ProducedTorusPeriodicRelationOwnsMultiIsolationRegion` PASSes on fixed `torus_fixture()`; no regression/candidate is observed. Accounting remains 51/14/37, debt1 M6-owned.
+- EXEC makes no acceptance/publication/promotion/closure claim. Exact successor is mandatory runtime-free `M5-CP4-TB1-REV`.
+- `M5-CP4-TB1-EXEC-OBS-01` records successful workload-gated schema validation instead of strict prepublication validation because no direct reusable-workflow dispatch action was exposed; process-only, +0.
+- `M5-CP4-TB1-EXEC-OBS-02` records the first documentation patch failing closed before commit/push because its intended-path metadata named the new TB1 report but the generated diff body omitted that untracked file; recovery splits isolated report creation from the tracked-doc patch; process-only, +0.
+
 ## 2026-09-23 — `M5-CP4-CB1`: focused same-region producer witness authored; compile/package green
 
 - Added exactly one focused committed-torus producer identity, `M5CP4.ProducedTorusPeriodicRelationOwnsMultiIsolationRegion`, to the existing producer owner source. It statically binds the six DEFN-R2 facts to one region and remains strictly producer-boundary; no product source, fixture/field bytes, sheet labels, selector448, or ungated identity changed.

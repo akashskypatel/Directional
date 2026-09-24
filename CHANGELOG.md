@@ -1,3 +1,7 @@
+## 2026-09-24 — M5-CP4 TB1 prepublication gate passes 449/449
+
+Immutable CB1 package `10782841045` executed selector448 plus the frozen focused row449 as 449 fresh exact-filter processes: **449 PASS / 0 RED**, exact-one selection, zero skips, benchmark 0 and exact immutable postflight. Row449 passes on the fixed committed-torus subject. This execution publishes or accepts nothing: selector449 remains unpublished, conjunct8 remains unaccepted and M5 closure remains held. No regression candidate; accounting stays 51/14/37 and debt1. Exact next: `M5-CP4-TB1-REV`.
+
 ## 2026-09-23 — M5-DEFN-R2 freezes the final `G4-B004` producer reading
 
 Runtime-free definition chooses disposition B: M5 must prove one pipeline-produced topology region is both multi-isolation with a checked internal seam certificate and owner of an explicitly named periodic quotient relation. Existing selector448 does not join those facts, so M5 closure stays held for bounded M5-CP4. Accepted package/selector, conjuncts1-7, accounting 51/14/37 and debt1 remain unchanged. Exact next: `M5-CP4-CB1`.

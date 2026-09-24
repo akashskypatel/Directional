@@ -2,9 +2,9 @@
 
 **Milestone:** M5 — certificate-carrying chart and quotient relations
 **Closure turn:** `M5-CP3-TB2-REV`
-**Disposition:** **SELECTOR448 ACCEPTED / §13.1 CONJUNCTS 1-7 ACCEPTED / CONJUNCT 8 DEFINED BY `M5-DEFN-R2` BUT NOT YET RUNTIME-ACCEPTED / CLOSURE HELD pending bounded `M5-CP4`**
+**Disposition:** **SELECTOR448 ACCEPTED / §13.1 CONJUNCTS 1-7 ACCEPTED / CONJUNCT 8 DEFINED + TB1 PREPUBLICATION GREEN BUT NOT REVIEW-ACCEPTED / CLOSURE HELD pending bounded `M5-CP4`**
 
-> **Closure remains held.** Everything below concerning selector448, the CB20 package and §13.1 conjuncts 1-7 stands. `M5-DEFN-R2` now freezes conjunct 8 as a same-subject producer requirement: one pipeline-produced topology region must be multi-isolation with a checked internal-seam certificate **and** own a periodic quotient relation named by a reciprocal `PeriodicCut` edge pair. Accepted selector448 does not join those facts on one subject. Exact successor is bounded `M5-CP4-CB1`; final `M5-CP4-TB2-REV` alone may accept conjunct 8 and close M5.
+> **Closure remains held.** Everything below concerning selector448, the CB20 package and §13.1 conjuncts 1-7 stands. `M5-DEFN-R2` now freezes conjunct 8 as a same-subject producer requirement: one pipeline-produced topology region must be multi-isolation with a checked internal-seam certificate **and** own a periodic quotient relation named by a reciprocal `PeriodicCut` edge pair. Accepted selector448 does not join those facts on one subject. CB1 has authored the focused row449 and TB1 executes the fixed subject green at 449/449, but EXEC cannot accept it. Exact successor is mandatory `M5-CP4-TB1-REV`; final `M5-CP4-TB2-REV` alone may accept conjunct 8 and close M5.
 
 ## Accepted authority
 
@@ -31,4 +31,4 @@ Stable accounting remains **51 events / 14 categories / 37 recurrences**. The so
 
 ## Successor boundary
 
-No M6 implementation is part of the held M5 closure. Exact successor is runtime-free **`M5-CP4-CB1`** under `Architecture_M5_CP4_CB1_Multi_Isolation_Quotient_Witness_Plan.md`. `M6-DEFN` follows only after final `M5-CP4-TB2-REV` accepts conjunct 8 and closes M5.
+No M6 implementation is part of the held M5 closure. CB1 and TB1-EXEC are complete; TB1 is mechanically green at 449/449 without granting acceptance. Exact successor is runtime-free **`M5-CP4-TB1-REV`**. `M6-DEFN` follows only after final `M5-CP4-TB2-REV` accepts conjunct 8 and closes M5.
