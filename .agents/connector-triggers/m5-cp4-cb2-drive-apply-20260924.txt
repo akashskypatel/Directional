@@ -1,7 +1,0 @@
-turn=M5-CP4-CB2
-purpose=apply-closeout-docs
-caller_install=ce17b71e03ee6ed3535940f6a317b857c887f92e
-patch_file_id=1-JLcFljPdoB-A0FsCz1sB-ng1V71pLrF
-patch_sha256=a2bf7d90210339343c548e2adcae255cb48219c3579a52f0028928a6a664efe5
-retry=0
-base_sha=e284fea7c101eb86650d1c87c92d0fefa66050e7

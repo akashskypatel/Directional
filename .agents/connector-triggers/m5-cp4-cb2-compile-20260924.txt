@@ -1,5 +1,0 @@
-turn=M5-CP4-CB2
-purpose=eight-target-gmp-compile
-source_sha=e284fea7c101eb86650d1c87c92d0fefa66050e7
-caller_install=cfe2406d2c48c698462b7c251eb98d0f612eb821
-retry=0
