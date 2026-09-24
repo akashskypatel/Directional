@@ -1,4 +1,0 @@
-.agents/Directional/turn-payloads/m6_cp1_tb2_exec_harness.sh
-.agents/connector-triggers/m6-cp1-tb2-exec-20260924.txt
-.agents/connector-triggers/source-snapshot/M6-CP1-TB2-EXEC-closeout.txt
-.agents/connector-triggers/drive-patch/M6-CP1-TB2-EXEC-DOCS.txt
