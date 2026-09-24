@@ -1,16 +1,20 @@
+## Latest Test + Benchmark turn — `M6-CP1-TB1-EXEC`
+
+**COMPLETE / MECHANICALLY VALID / SEMANTIC RED / REVIEW REQUIRED.** Run/job `36045055975 / 107786525272` consumed immutable candidate `10826090221 / ee8b8ac...` and completed all **455** fresh exact-filter processes: focused **3/6**, selector449 **437/449**, total **440 PASS / 15 RED**, exact-one selection, zero skips/crashes/selection mismatches, benchmark 0 and exact immutable postflight. Result/log `10828084810 / 10827949954`; result manifest 933/933. Twelve accepted selector rows regress at the common new `OccurrenceInvalidCornerAuthority` A5 boundary, so one stable `RP-01` event is recorded: accounting **52 / 14 / 38**, debt 1. Candidate gets no promotion or M6/G4 credit.
+
+## Exact next turn — `M6-CP1-TB1-REV`
+
+Mandatory runtime-free independent Review under the TB1 plan/report. Re-open the immutable candidate and result/log, independently adjudicate the common A5 corner-authority failure and stable-event classification, then freeze only the bounded successor the evidence supports. No rerun or corrective implementation before Review.
+
 ## Latest Code + Build turn — `M6-CP1-CB1`
 
-**COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE / CANDIDATE ONLY.** Exact semantic source `ee8b8ac20571df5773f5f94bf9b382161f37a893` publishes semantic A5 occurrence identity/product authority and makes the transitional materializer consume `SurfaceOccurrenceComplex`. Final compile run/job `36038472933 / 107764451786` packages all eight standard GMP/GMPXX targets as artifact `10826090221` with 28/28 manifest, clean source receipts and `runtimeExecution=false`. Four new A5 identities compile but have not executed. Selector449 remains exact `d4a0d1b7...d6414`; stable accounting remains 51/14/37 and debt 1.
+**COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE / CANDIDATE ONLY.** Exact semantic source `ee8b8ac20571df5773f5f94bf9b382161f37a893` publishes semantic A5 occurrence identity/product authority and makes the transitional materializer consume `SurfaceOccurrenceComplex`. Final compile run/job `36038472933 / 107764451786` packages all eight standard GMP/GMPXX targets as artifact `10826090221` with 28/28 manifest, clean source receipts and `runtimeExecution=false`. Four new A5 identities compiled; TB1 has now executed the frozen six-test vector and selector449. Candidate runtime is semantic RED and unpromoted. Selector449 bytes remain exact `d4a0d1b7...d6414`; historical stable accounting is now 52/14/38 and debt 1.
 
 - [x] A5 `OccurrenceId=(CellId, canonicalCornerRole)` and immutable occurrence product/certificate extracted.
 - [x] True source-face-row permutation test authored; A4 `CellId` semantics unchanged.
 - [x] Endpoint-gauge dormant identity deleted; pair-swap identity retained for CP1 prepublication gate.
 - [x] Focus vector frozen at six identities; accepted selector449 unchanged.
 - [x] Final eight-target GMP/GMPXX compile/package green; no runtime.
-
-## Exact next turn — `M6-CP1-TB1-EXEC`
-
-Artifact-only execution under `.agents/Directional/Architecture_M6_CP1_TB1_Artifact_Only_Test_Benchmark_Plan.md`: immutable candidate `10826090221 / ee8b8ac20571df5773f5f94bf9b382161f37a893`, six focused identities + selector449 (455 fresh exact-filter processes), then mandatory `M6-CP1-TB1-REV`. No rebuild, selector publication, semantic correction or credit claim in EXEC.
 
 ## Latest Definition — `M6-DEFN`
 
@@ -134,4 +138,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current corrected totals are **51 events / 14 categories / 37 recurrences**, project debt **1** (M6 only). M4 and **M5 are CLOSED / ACCEPTED**. Final M5 authority is package/source `10814505512 / e284fea7...` under selector449 **449/449** (`d4a0d1b7...d6414`). `M6-CP1-CB1` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE / CANDIDATE ONLY**; the exact next turn is **`M6-CP1-TB1-EXEC`**, followed by mandatory `M6-CP1-TB1-REV`. PR #8 remains open, draft, and unmerged. *(The historical stale M5-closure wording was corrected by the reviewing agent.)*
+Current corrected totals are **51 events / 14 categories / 37 recurrences**, project debt **1** (M6 only). M4 and **M5 are CLOSED / ACCEPTED**. Final M5 authority is package/source `10814505512 / e284fea7...` under selector449 **449/449** (`d4a0d1b7...d6414`). `M6-CP1-TB1-EXEC` is **COMPLETE / MECHANICALLY VALID / SEMANTIC RED / CANDIDATE UNPROMOTED**; the exact next turn is mandatory **`M6-CP1-TB1-REV`**. Stable accounting is **52 / 14 / 38** and project debt remains **1**, M6-owned. PR #8 remains open, draft, and unmerged. *(The historical stale M5-closure wording was corrected by the reviewing agent.)*

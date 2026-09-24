@@ -1,9 +1,9 @@
 # M6 Consolidated Record
 
-**Status:** M6 ACTIVE / `M6-CP1-CB1` compile-green candidate / exact next `M6-CP1-TB1-EXEC`
+**Status:** M6 ACTIVE / `M6-CP1-TB1-EXEC` semantic RED / exact next `M6-CP1-TB1-REV`
 **Last updated:** 2026-09-24
 
-Normative M6 semantics live in `Architecture_M6_Frozen_Definitions.md`. Entering accepted authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449 PASS**, SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. Stable accounting is **51 / 14 / 37** and produced-witness debt is **1**, M6-owned.
+Normative M6 semantics live in `Architecture_M6_Frozen_Definitions.md`. Entering accepted authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449 PASS**, SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. Stable accounting is **52 / 14 / 38** after TB1 accepted-prefix loss; produced-witness debt is **1**, M6-owned.
 
 ## 1. `M6-DEFN` — four products and verifier boundary frozen
 
@@ -30,6 +30,14 @@ CB1 extracts only the frozen A5 seam. Exact source `ee8b8ac20571df5773f5f94bf9b3
 Four new compile-visible `M6CP1` identities plus the retained multi-isolation and edge-storage pair-swap identities form the six-test CP1 prepublication vector. The endpoint-gauge dormant identity is deleted; pair-swap is retained; selector449 remains exact `d4a0d1b7...d6414`. Final run/job `36038472933 / 107764451786` packages all eight standard targets with GMP/GMPXX as artifact `10826090221`, manifest 28/28, clean source receipts and `runtimeExecution=false`. CB1 grants no semantic credit; exact next is artifact-only `M6-CP1-TB1-EXEC`, then mandatory Review.
 
 The two compile-only integration corrections (`OccurrenceId` semantic hash and benchmark serialization) are recorded as non-stable `M6-CP1-CB1-OBS-01`; accounting remains 51/14/37 and debt 1.
+
+## 3. `M6-CP1-TB1-EXEC` — A5 candidate runtime exposes accepted-prefix loss
+
+TB1 consumed artifact/source `10826090221 / ee8b8ac...` immutably. Authoritative run/job `36045055975 / 107786525272` executes the frozen six focused identities plus all 449 accepted selector identities as **455** fresh exact-filter processes with exact-one/zero-skip discipline. Outcome is **3/6 focused PASS + 437/449 selector PASS = 440/455 PASS**, 15 semantic RED, zero crashes/selection mismatches, benchmark 0, and exact immutable postflight. Result/log authority is `10828084810 / 10827949954`; result manifest is 933/933.
+
+The twelve accepted selector losses are ordinals 115, 116, 139, 140, 141, 143, 186, 225, 239, 444, 446 and 448. All stop at `OccurrenceInvalidCornerAuthority` after the new A5 cutover. Focused rows2/5/6 stop at the same A5 surface. Static source bounds the defect to corner-authority publication and exposes existing `RP-01` authority-domain conflation: a projection-chart face/row is consumed as occurrence ownership authority even though canonical source-support semantics permit edge/vertex points to use any incident projection face. The exact failing sub-predicate remains mandatory-Review work.
+
+This is **one new stable event / one recurrence in existing RP-01**, not twelve independent events: totals advance to **52 / 14 / 38**. Candidate remains unpromoted, accepted M5 package/selector449 authority remains unchanged, debt stays 1, and no M6 credit is granted. Exact next is runtime-free `M6-CP1-TB1-REV`.
 
 ## Folded document index
 

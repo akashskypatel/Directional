@@ -1,3 +1,11 @@
+## 2026-09-24 — `M6-CP1-TB1-EXEC`: artifact-only A5 gate is mechanically complete and semantic RED
+
+- Immutable candidate `10826090221 / ee8b8ac...` executed exactly **455** fresh exact-filter processes under run/job `36045055975 / 107786525272`: focused **3/6 PASS**, selector449 **437/449 PASS**, total **440 PASS / 15 RED**, exact-one selection, zero skips/crashes/selection mismatches, benchmark 0.
+- Result/log `10828084810 / 10827949954`; result provider SHA `796dc825...e1d7bd`, self-manifest **933/933**; execution ledger `fbbb6bd6...5c98e`; immutable package/source/selector postflight exact.
+- Accepted selector RED ordinals **115,116,139,140,141,143,186,225,239,444,446,448** and focused rows2/5/6 share the new A5 `OccurrenceInvalidCornerAuthority` failure surface. Static source exposes existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` at corner publication; exact sub-predicate remains Review-owned.
+- One new stable accepted-prefix event advances accounting to **52 / 14 / 38**; debt remains 1. Candidate is unpromoted and receives no A5/CP1/G4 credit. No retry, rebuild, semantic edit or selector publication occurred.
+- Exact successor: mandatory runtime-free `M6-CP1-TB1-REV`.
+
 ## 2026-09-24 — `M6-CP1-CB1`: A5 SurfaceOccurrenceComplex candidate compile/package green
 
 - Exact semantic source `ee8b8ac20571df5773f5f94bf9b382161f37a893` extracts A5 occurrence authority behind `SurfaceOccurrenceComplexProducer`; `OccurrenceId` is `(CellId, canonicalCornerRole)`, and the transitional phase-front materializer consumes the immutable A5 product without extracting A6/A7/A8.

@@ -27,9 +27,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
- > **Current milestone authority (2026-09-24, after `M6-CP1-CB1`):** M4 and M5 remain CLOSED / ACCEPTED. M6 A5 occurrence-product source `ee8b8ac20571df5773f5f94bf9b382161f37a893` is compile/package green only as candidate artifact `10826090221`; no runtime acceptance is claimed. Selector449 remains `d4a0d1b7...d6414`; stable accounting 51/14/37, debt 1. Exact next is **`M6-CP1-TB1-EXEC`**, then mandatory Review.
+ > **Current milestone authority (2026-09-24, after `M6-CP1-TB1-EXEC`):** M4 and M5 remain CLOSED / ACCEPTED. M6 A5 candidate `10826090221 / ee8b8ac...` is mechanically exercised but **SEMANTIC RED / UNPROMOTED**: focused 3/6 and accepted selector449 437/449, with twelve accepted rows stopping at `OccurrenceInvalidCornerAuthority`. One stable RP-01 event advances accounting to 52/14/38; debt remains 1. Exact next is mandatory **`M6-CP1-TB1-REV`**.
 
-**Currency.** `M6-CP1-CB1`, 2026-09-24 UTC
+**Currency.** `M6-CP1-TB1-EXEC`, 2026-09-24 UTC
 
 **Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` §16.3 is the active same-region nonzero-Z4 contract. `PeriodicRelationId` remains carrier-content identity; relation rotation is the gauge-adjusted quotient `Q`, action/transport is relation value, and canonical storage may invert representation only after semantic Forward -> Reverse authority is fixed. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 
@@ -75,7 +75,7 @@ A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on t
 
 ## 3. Where we are
 
-**M3 and M4 are CLOSED / ACCEPTED.** M4's final cumulative authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` under selector430 **430/430** (`1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`; owners **31 / 283 / 75 / 41**). Accepted selector427 is the exact historical first427 prefix. Stable accounting is **51 / 14 / 37**, produced-witness debt **1** (M6-owned).
+**M3 and M4 are CLOSED / ACCEPTED.** M4's final cumulative authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` under selector430 **430/430** (`1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`; owners **31 / 283 / 75 / 41**). Accepted selector427 is the exact historical first427 prefix. Stable accounting is **52 / 14 / 38**, produced-witness debt **1** (M6-owned).
 
 `M4-CP4-TB3-REV` independently re-opened the CB8 package and TB3 result evidence: package **26/26**, result manifest **447/447**, all 430 ordinals identity-equal to selector430 with exact-one selection / zero skip / PASS / exit0 and matching raw-log hashes, plus exact immutable package/source/execution-view postflight. It independently established non-vacuity of the three appended rows: bounded/reproducible A3 work with tamper rejection, direct produced same-region multiplicity-two preserved through the A2b→baseline binder with deletion rejection, and flat-success/non-flat-`NonIntegralCycleLift` separation for the zero-transport helper.
 
@@ -83,7 +83,7 @@ DEFN-R1/R2 debt ownership remains the provenance authority. The two periodic `G4
 
 M5-DEFN is **COMPLETE / DEFINITIONS FROZEN**; M5-CP1 through M5-CP4 are **CLOSED / ACCEPTED**. `M5-CP4-TB2-REV` accepts selector449 and promotes CB2 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` after fresh **449/449** runtime. The DEFN-R2 same-region multi-isolation + quotient-owner producer conjunct is accepted as §13.1 conjunct8 without crossing into M6 occurrence/materialization/verifier authority. **M5 is CLOSED.** Stable accounting remains **51 / 14 / 37**; project debt is **1**, M6-owned.
 
-`M6-CP1-CB1` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE CANDIDATE**. Source `ee8b8ac20571df5773f5f94bf9b382161f37a893` implements the first A5 occurrence-product seam and compiles all eight GMP/GMPXX targets into artifact `10826090221`. The six-test CP1 prepublication vector is frozen, but none has executed; accepted M5 authority and selector449 remain unchanged. Exact next is `M6-CP1-TB1-EXEC`, then mandatory Review.
+`M6-CP1-TB1-EXEC` is **COMPLETE / MECHANICALLY VALID / SEMANTIC RED / UNPROMOTED**. Candidate `10826090221 / ee8b8ac...` completes all 455 planned fresh processes at focused 3/6 plus selector449 437/449; twelve accepted rows stop at the new A5 `OccurrenceInvalidCornerAuthority` boundary. Accepted M5 authority and selector449 bytes remain unchanged. One stable RP-01 event advances accounting to 52/14/38; exact next is mandatory `M6-CP1-TB1-REV`.
 
 ## 4. The witnesses — the fastest way to understand the problem
 
