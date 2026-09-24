@@ -29,7 +29,7 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: m6-cp1-cb1-closeout-docs-drive-apply
+      label: m6-cp1-cb1-closeout-docs-drive-apply-r1
       commit_run_file: false
       trim_stale_comments: true
     secrets: inherit
@@ -40,7 +40,7 @@ jobs:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
       file_id: 18xhFT06rlThJu1KuDcd7wSIddeWJ7Yq6
-      patch_sha256: 810df1ac187b027f00302f2d0a34302deb2e8b58d89d1dd7107ddcaec4e03a13
+      patch_sha256: 75e2393b9a9887d914ab7efa2a9542ad45248eb1d4f0d6e0df451972965bc34d
       base_sha: 07e1a2ae139bb139883a56f3b79b0ab6715404a7
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: 'M6-CP1-CB1: record A5 candidate and TB1 handoff'
