@@ -1,5 +1,0 @@
-# M6-CP1-TB1-EXEC temporary-state cleanup
-.agents/Directional/turn-payloads/m6_cp1_tb1_exec_harness.sh
-.agents/connector-triggers/m6-cp1-tb1-exec-20260924.txt
-.agents/connector-triggers/m6-cp1-tb1-harness-drive-apply-20260924.txt
-.agents/connector-triggers/source-snapshot/m6-cp1-tb1-exec-start-20260924T1835Z.txt

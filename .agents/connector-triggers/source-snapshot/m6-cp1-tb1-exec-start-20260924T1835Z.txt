@@ -1,3 +1,0 @@
-M6-CP1-TB1-EXEC source snapshot trigger
-source_head=7a8c1d65c7ec710da24d20b00d79e6fe53da6d1d
-purpose=freeze exact turn-start repository state for artifact-only TB orchestration
