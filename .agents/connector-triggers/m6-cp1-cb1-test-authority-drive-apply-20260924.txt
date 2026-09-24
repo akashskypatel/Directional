@@ -1,0 +1,4 @@
+M6-CP1-CB1 test-authority Drive patch apply trigger
+caller_install=4a2711bec48185ac75948c9dda902b644074a7a9
+patch_sha256=6e7070afe9b531b4595aecdb5cab178ecdd896472ee35557e2c725492e7a4603
+retry=0
