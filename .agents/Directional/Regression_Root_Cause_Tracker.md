@@ -1,3 +1,17 @@
+## 2026-09-24 — `M6-CP1-TB1-REV`: A5 accepted-prefix loss is a cross-temporary iterator-range defect — **CAUSE PROVED / EXEC CATEGORY CORRECTED / RECOVERY OPEN**
+
+**Corrected stable totals: 52 events / 15 categories / 37 recurrences; project debt remains 1 (M6).** Review upholds the one-event grouping and all TB1 mechanics but supersedes EXEC's `RP-01` attribution.
+
+### `M6-CP1-TB1-EXEC-CAND-01` — STABLE / `CROSS_TEMPORARY_ITERATOR_RANGE` singleton / owner `M6-CP1-CB2 -> TB2-EXEC -> TB2-REV`
+
+- **Accepted-green loss upheld:** selector449 ordinals **115, 116, 139, 140, 141, 143, 186, 225, 239, 444, 446, 448** transition from accepted M5 PASS to candidate RED; focused rows2/5/6 localize the same A5 seam. One event remains the correct grouping.
+- **Exact root cause:** `SurfaceTopologyRegion::isolation_sheets()` returns `std::vector<IsolationSheetId>` by value. Candidate A5 passes `region->second->isolation_sheets().begin()` and a second call's `.end()` to the same `std::binary_search`; the iterators belong to distinct temporary vectors and do not define a valid range. This is undefined behavior at the sheet-membership sub-predicate.
+- **Why EXEC's `RP-01` envelope is rejected:** accepted M5 already checks the same source region, source component and `IsolationSheetId` membership, using one stable `regionSheetsById` vector, and passes selector449 449/449. `SourceTopologyRegions.h` is byte-identical across accepted/candidate source. Projection-chart/support semantics are therefore not the differential that introduced the RED.
+- **Category/accounting:** this is the first stable event in new singleton category **`CROSS_TEMPORARY_ITERATOR_RANGE`**. Event count stays 52; categories advance **14 -> 15**; recurrences correct **38 -> 37** because the event is no longer an RP-01 recurrence. Historical EXEC classification remains below as superseded provenance.
+- **Falsifier/recovery:** CB2 may only materialize/reuse one stable sheet container and preserve all semantic validation. Fresh TB2 must restore **the unchanged six focused identities and selector449** to 6/6 + 449/449 with exact immutable postflight. Any test/selector weakening, removal of region/component/sheet checks, or RED is failed recovery.
+
+- **Competing downstream hypothesis:** A4/support-resolver barycentric bounds are not identical, but TB1 cannot credit a downstream support cause while the preceding sheet-membership expression is undefined. No simplex/support correction is authorized in CB2; only fresh post-range-repair TB2 evidence may re-open it.
+
 ## 2026-09-24 — `M6-CP1-TB1-EXEC`: A5 corner authority breaks accepted selector prefix — **SEMANTIC RED / ONE NEW STABLE EVENT / REVIEW REQUIRED**
 
 **Stable totals advance: 51 -> 52 events / 14 categories / 37 -> 38 recurrences; project debt remains 1 (M6).** Immutable candidate `10826090221 / ee8b8ac20571df5773f5f94bf9b382161f37a893` executed exactly **455** fresh exact-filter processes in run/job `36045055975 / 107786525272`: focused **3/6 PASS**, accepted selector449 **437/449 PASS**, total **440 PASS / 15 RED**, exact-one selection, zero skips/crashes/selection mismatches, benchmark 0 and exact immutable postflight. Result/log are `10828084810 / 10827949954`.
@@ -8980,6 +8994,19 @@ good: explicit local<->global mapping preserves certificate meaning.
 Invariant: component execution does not change global semantic ownership.
 
 Counterexample: reorder/partition components and compare remapped global certificates.
+
+### Singleton — cross-temporary iterator range
+
+```text
+bad:  algorithm(value_container().begin(), value_container().end())
+good: const auto values = value_container(); algorithm(values.begin(), values.end())
+```
+
+Invariant: every iterator/sentinel pair supplied as one range belongs to the same container instance and remains valid for the algorithm call.
+
+Counterexample: a getter returning a container by value is called separately for `begin()` and `end()`; even identical contents do not make those iterators one range.
+
+Current category key: `CROSS_TEMPORARY_ITERATOR_RANGE` (singleton, first observed at `M6-CP1-TB1-REV`).
 
 ## Test-authority defects
 

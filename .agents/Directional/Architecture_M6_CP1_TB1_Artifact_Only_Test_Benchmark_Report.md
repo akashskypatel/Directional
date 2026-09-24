@@ -56,3 +56,9 @@ Postflight proves package/source/execution-view censuses unchanged, selector/rou
 The semantic RED is preserved exactly. TB1 performed no retry, rebuild, semantic correction, selector publication, candidate promotion, A5 acceptance, CP1 closure, or G4/debt credit. Accepted runtime authority remains M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449 PASS**.
 
 `M6-CP1-TB1-REV` must independently re-open the immutable package/result/log evidence, adjudicate the one new stable `RP-01` event and exact `InvalidCornerAuthority` sub-predicate, and either freeze a bounded corrective successor or reject the candidate. No Code + Build correction is authorized before that Review.
+
+## Independent Review correction (`M6-CP1-TB1-REV`)
+
+The runtime/mechanical evidence and one-event grouping above are upheld, but §3's `RP-01 / AUTHORITY_DOMAIN_CONFLATION` root-cause envelope is **superseded by independent Review**. Exact candidate source proves `SurfaceTopologyRegion::isolation_sheets()` returns a vector by value while the new A5 check calls it twice to supply `begin()` and `end()` to one `std::binary_search`. Those iterators belong to different temporary vectors and do not define a valid range. Accepted M5 already enforced the same region/component/sheet semantics with one materialized `regionSheetsById` vector and passed selector449 449/449.
+
+Review therefore reclassifies `M6-CP1-TB1-EXEC-CAND-01` as one stable event in new singleton category `CROSS_TEMPORARY_ITERATOR_RANGE`. Corrected stable accounting is **52 events / 15 categories / 37 recurrences**, debt **1** M6-owned. Candidate `10826090221` remains unpromoted. Exact recovery owner is bounded `M6-CP1-CB2`, followed by unchanged 455-process `M6-CP1-TB2-EXEC` and mandatory Review. See `Architecture_M6_CP1_TB1_Review_Record.md`.

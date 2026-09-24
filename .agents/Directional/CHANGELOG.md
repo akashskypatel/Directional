@@ -1,3 +1,10 @@
+## 2026-09-24 — `M6-CP1-TB1-REV`: accepted-prefix RED cause proved; CB2 recovery frozen
+
+- Independently re-opened candidate `10826090221` (28/28, `ee8b8ac...`), TB1 result/log `10828084810 / 10827949954` (result 933/933), accepted M5 package `10814505512`, selector449/routing449 and the complete seven-run TB1 Actions window.
+- Upheld mechanics at **440/455 PASS** and the single accepted-prefix event, but rejected EXEC's RP-01 attribution: A5 forms one `binary_search` range from separate by-value `isolation_sheets()` temporaries. Accepted M5 already performs the same region/component/sheet validation using one stable vector and passes 449/449.
+- Reclassified the stable event to new singleton `CROSS_TEMPORARY_ITERATOR_RANGE`; corrected accounting is **52 / 15 / 37**, debt 1 M6-owned. Candidate remains unpromoted.
+- Froze exact successor `M6-CP1-CB2`: one-variable stable-range correction, no test/selector/later-stage change, runtime-free eight-target GMP/GMPXX package; unchanged 455-process TB2 + mandatory Review follows.
+
 ## 2026-09-24 — `M6-CP1-TB1-EXEC`: artifact-only A5 gate is mechanically complete and semantic RED
 
 - Immutable candidate `10826090221 / ee8b8ac...` executed exactly **455** fresh exact-filter processes under run/job `36045055975 / 107786525272`: focused **3/6 PASS**, selector449 **437/449 PASS**, total **440 PASS / 15 RED**, exact-one selection, zero skips/crashes/selection mismatches, benchmark 0.

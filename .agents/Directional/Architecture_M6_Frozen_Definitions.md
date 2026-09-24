@@ -351,7 +351,7 @@ Any such result halts the current M6 checkpoint and returns to definition/review
 
 ## 12. Exact bounded successor
 
-Exactly one successor is authorized: **`M6-CP1-CB1`**, under `Architecture_M6_CP1_CB1_Occurrence_Product_Code_Build_Plan.md`.
+Exactly one successor was authorized from this frozen definition: **`M6-CP1-CB1`**. That consumed per-turn plan is now folded under `M6_Consolidated_Record.md` §2 and its folded-document index; the semantic CB1 boundary below remains the historical frozen authorization.
 
 CB1 is intentionally limited to the first A5 seam: introduce content-semantic occurrence identity and a complete immutable `SurfaceOccurrenceComplex` producer, make the existing transitional materializer consume that product instead of allocating A5 occurrence authority inline, and perform the two §9 dormant-test deletions. It does **not** implement A6 quotient extraction as a new product, A7 embedding, A8 verifier, selector publication, runtime execution, or any G4 debt closure.
 

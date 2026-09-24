@@ -27,9 +27,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
- > **Current milestone authority (2026-09-24, after `M6-CP1-TB1-EXEC`):** M4 and M5 remain CLOSED / ACCEPTED. M6 A5 candidate `10826090221 / ee8b8ac...` is mechanically exercised but **SEMANTIC RED / UNPROMOTED**: focused 3/6 and accepted selector449 437/449, with twelve accepted rows stopping at `OccurrenceInvalidCornerAuthority`. One stable RP-01 event advances accounting to 52/14/38; debt remains 1. Exact next is mandatory **`M6-CP1-TB1-REV`**.
+ > **Current milestone authority (2026-09-24, after `M6-CP1-TB1-REV`):** M4 and M5 remain CLOSED / ACCEPTED. M6 A5 candidate `10826090221 / ee8b8ac...` remains **SEMANTIC RED / UNPROMOTED** at focused 3/6 and selector449 437/449. Independent Review proves the accepted-prefix loss is the A5 `isolation_sheets()` **cross-temporary iterator range**, not projection-chart authority conflation, and corrects accounting to **52/15/37**. Debt remains 1. Exact next is bounded runtime-free Code + Build **`M6-CP1-CB2`**.
 
-**Currency.** `M6-CP1-TB1-EXEC`, 2026-09-24 UTC
+**Currency.** `M6-CP1-TB1-REV`, 2026-09-24 UTC
 
 **Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` §16.3 is the active same-region nonzero-Z4 contract. `PeriodicRelationId` remains carrier-content identity; relation rotation is the gauge-adjusted quotient `Q`, action/transport is relation value, and canonical storage may invert representation only after semantic Forward -> Reverse authority is fixed. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 
@@ -75,7 +75,7 @@ A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on t
 
 ## 3. Where we are
 
-**M3 and M4 are CLOSED / ACCEPTED.** M4's final cumulative authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` under selector430 **430/430** (`1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`; owners **31 / 283 / 75 / 41**). Accepted selector427 is the exact historical first427 prefix. Stable accounting is **52 / 14 / 38**, produced-witness debt **1** (M6-owned).
+**M3 and M4 are CLOSED / ACCEPTED.** M4's final cumulative authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` under selector430 **430/430** (`1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`; owners **31 / 283 / 75 / 41**). Accepted selector427 is the exact historical first427 prefix. Stable accounting is **52 / 15 / 37**, produced-witness debt **1** (M6-owned).
 
 `M4-CP4-TB3-REV` independently re-opened the CB8 package and TB3 result evidence: package **26/26**, result manifest **447/447**, all 430 ordinals identity-equal to selector430 with exact-one selection / zero skip / PASS / exit0 and matching raw-log hashes, plus exact immutable package/source/execution-view postflight. It independently established non-vacuity of the three appended rows: bounded/reproducible A3 work with tamper rejection, direct produced same-region multiplicity-two preserved through the A2b→baseline binder with deletion rejection, and flat-success/non-flat-`NonIntegralCycleLift` separation for the zero-transport helper.
 
@@ -83,7 +83,7 @@ DEFN-R1/R2 debt ownership remains the provenance authority. The two periodic `G4
 
 M5-DEFN is **COMPLETE / DEFINITIONS FROZEN**; M5-CP1 through M5-CP4 are **CLOSED / ACCEPTED**. `M5-CP4-TB2-REV` accepts selector449 and promotes CB2 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` after fresh **449/449** runtime. The DEFN-R2 same-region multi-isolation + quotient-owner producer conjunct is accepted as §13.1 conjunct8 without crossing into M6 occurrence/materialization/verifier authority. **M5 is CLOSED.** Stable accounting remains **51 / 14 / 37**; project debt is **1**, M6-owned.
 
-`M6-CP1-TB1-EXEC` is **COMPLETE / MECHANICALLY VALID / SEMANTIC RED / UNPROMOTED**. Candidate `10826090221 / ee8b8ac...` completes all 455 planned fresh processes at focused 3/6 plus selector449 437/449; twelve accepted rows stop at the new A5 `OccurrenceInvalidCornerAuthority` boundary. Accepted M5 authority and selector449 bytes remain unchanged. One stable RP-01 event advances accounting to 52/14/38; exact next is mandatory `M6-CP1-TB1-REV`.
+`M6-CP1-TB1-REV` independently upholds TB1 mechanics and the single accepted-prefix event but **corrects the root cause**. The new A5 sheet-membership check forms `std::binary_search` endpoints from two separate value-returning `isolation_sheets()` temporaries; accepted M5 already enforced the same semantic region/component/sheet checks with one stable vector. The event is therefore singleton `CROSS_TEMPORARY_ITERATOR_RANGE`, not RP-01. Accounting is **52 / 15 / 37**. Candidate remains unpromoted; exact next is bounded `M6-CP1-CB2`, then unchanged 455-process TB2 and Review.
 
 ## 4. The witnesses — the fastest way to understand the problem
 
@@ -200,10 +200,7 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M6-CP1-TB1-EXEC` — NEXT / A5 PREPUBLICATION RUNTIME GATE.** Consume candidate artifact/source `10826090221 / ee8b8ac20571df5773f5f94bf9b382161f37a893` immutably; run the six focused A5/CP1 identities plus accepted selector449 as 455 fresh exact-filter processes. No rebuild, repair, publication or acceptance claim; mandatory `M6-CP1-TB1-REV` follows. **CB1 completed the binding amendments:**
-- The A5 permutation test permutes **source face rows**, because cell storage is already row 213.
-- `OccurrenceId` inherits A4 `CellId`, a canonical rank that renumbers on insertion or omission (frozen §3.3 note; `M7-DEFN` must revisit).
-- Delete only the endpoint-gauge dormant test. The pair-swap test is retained for the CP1 gate as the only edge-storage-permutation witness.
+1. **`M6-CP1-CB2` — NEXT / ONE-VARIABLE A5 RANGE RECOVERY.** Review proves CB1 constructed a `binary_search` range from two independent by-value `isolation_sheets()` temporaries. Materialize/reuse one stable sheet container, preserve every region/component/sheet/support/chart check, change no test/fixture/selector/later-stage semantics, and compile/package the standard eight GMP/GMPXX targets with no runtime. If compile-green, `M6-CP1-TB2-EXEC` reruns the **unchanged six focused + selector449 = 455** fresh processes, then mandatory Review. Any need to weaken validation or edit the gate returns to Review.
 
 2. **`G4-B002` produced closed-complex debt — OPEN / M6.** M6-DEFN freezes CP1 mechanism/stage separation and CP3 direct-production proof. Preserve the independent eligibility oracle, hard-feature tamper and fail-closed/no-recovery contract; mechanism evidence cannot close production debt.
 
@@ -226,6 +223,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 11. **Rows16/17 (selector448 ordinals 446/447) pin inverse canonical storage — RECORDED / NOT FIRING (`M5-CP3-TB1-R16-REV-OBS-02`).** Keep the inverse-storage pin; if a representation-only change fires it, classify as test-authority drift and supply a witness still exercising inverse storage (`LESSONS.md` 171).
 
 ## 8. Recurring defect patterns
+
+**Cross-temporary iterator range — `M6-CP1-TB1-REV` / `CROSS_TEMPORARY_ITERATOR_RANGE`.** A5 called a by-value `isolation_sheets()` accessor independently for `begin()` and `end()` of one `std::binary_search`; those iterators belong to distinct temporary vectors. Accepted M5 used one materialized vector and passed the same semantic membership check. **Materialize value-returning containers once before forming any iterator range.** This is a new singleton product category, not RP-01; stable accounting is 52/15/37.
 
 **COMPLETE published before the turn's last write — second instance (`M5-CP4-TB2-REV`) of `M5-DEFN-R1-REV-OBS-01`.** TB2-REV wrote `COMPLETE → M6-DEFN` at 15:59:41Z. It then installed, triggered and removed a ledger-guard workflow, **edited its own review record**, and re-published COMPLETE at 16:03:10Z. The edit came from a resumed session working from stale memory, and it stripped valid `LESSONS.md` 178 citations because it assumed that lesson did not exist. The rule is already in the end-of-turn checklist (items 11-12). It is not being followed under resume. **After COMPLETE a turn is over. Any fix belongs to the next turn or to the Review addendum.**
 

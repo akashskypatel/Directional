@@ -1,9 +1,9 @@
 # M6 Consolidated Record
 
-**Status:** M6 ACTIVE / `M6-CP1-TB1-EXEC` semantic RED / exact next `M6-CP1-TB1-REV`
+**Status:** M6 ACTIVE / `M6-CP1-TB1-REV` cause proved / candidate unpromoted / exact next `M6-CP1-CB2`
 **Last updated:** 2026-09-24
 
-Normative M6 semantics live in `Architecture_M6_Frozen_Definitions.md`. Entering accepted authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449 PASS**, SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. Stable accounting is **52 / 14 / 38** after TB1 accepted-prefix loss; produced-witness debt is **1**, M6-owned.
+Normative M6 semantics live in `Architecture_M6_Frozen_Definitions.md`. Entering accepted authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449 PASS**, SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. TB1's one accepted-prefix event is independently reclassified to new singleton `CROSS_TEMPORARY_ITERATOR_RANGE`; stable accounting is **52 / 15 / 37** and produced-witness debt is **1**, M6-owned.
 
 ## 1. `M6-DEFN` — four products and verifier boundary frozen
 
@@ -39,8 +39,19 @@ The twelve accepted selector losses are ordinals 115, 116, 139, 140, 141, 143, 1
 
 This is **one new stable event / one recurrence in existing RP-01**, not twelve independent events: totals advance to **52 / 14 / 38**. Candidate remains unpromoted, accepted M5 package/selector449 authority remains unchanged, debt stays 1, and no M6 credit is granted. Exact next is runtime-free `M6-CP1-TB1-REV`.
 
+## 4. `M6-CP1-TB1-REV` — accepted-prefix loss cause proved; bounded recovery frozen
+
+Review independently re-verifies candidate `10826090221` (28/28; source `ee8b8ac...`), TB1 result `10828084810` (933/933; 455 processes), accepted predecessor `10814505512 / e284fea7...`, selector449/routing449 bytes and the complete seven-run TB1 Actions window. The 440/455 outcome and one-event grouping are upheld.
+
+The EXEC `RP-01` attribution is corrected. `SurfaceTopologyRegion::isolation_sheets()` returns a vector by value, but A5 calls it separately for the `begin()` and `end()` passed to `std::binary_search`, producing an invalid cross-temporary iterator range. Accepted M5 performed the same semantic region/component/sheet validation using one materialized `regionSheetsById` vector and passed selector449 449/449; current source-support/projection-chart semantics therefore do not explain the transition. This is one stable event in new singleton `CROSS_TEMPORARY_ITERATOR_RANGE`: totals **52 / 15 / 37**, debt 1.
+
+Candidate remains unpromoted. Exactly `M6-CP1-CB2` is authorized to materialize/reuse one stable sheet vector while preserving every semantic check and changing no tests/selectors/later-stage authority. Compile/package is runtime-free. Fresh `M6-CP1-TB2-EXEC` must rerun the unchanged six focused + selector449 as 455 processes, then mandatory `M6-CP1-TB2-REV`.
+
 ## Folded document index
 
 | Retired filename | Disposition |
 |---|---|
 | `Architecture_M6_DEFN_Occurrence_Embedding_Verifier_Plan.md` | **CONSUMED M6-DEFN PLAN / FOLDED BY M6-DEFN.** All required outputs, falsifiers, blocker/debt ownership, dormant-test dispositions and successor constraints are preserved in `Architecture_M6_Frozen_Definitions.md` and this record; full text remains in git history. |
+| `Architecture_M6_CP1_CB1_Occurrence_Product_Code_Build_Plan.md` (78 lines) | **CONSUMED CB1 PLAN / FOLDED BY M6-CP1-TB1-REV.** Its A5-only scope, semantic `OccurrenceId`, retained/deleted focused-test dispositions, GMP compile boundary and no-runtime constraints are preserved in §2, the frozen definitions and the TB1 Review record; full text remains in git history. |
+| `Architecture_M6_CP1_CB1_Occurrence_Product_Code_Build_Report.md` (94 lines) | **SUPERSEDED CB1 COMPILE REPORT / FOLDED BY M6-CP1-TB1-REV.** Exact source/package/run identities, eight-target GMP/GMPXX compile evidence, selector449 preservation and compile-only observations are preserved in §2, changelogs and the TB1 Review record; full text remains in git history. |
+| `Architecture_M6_CP1_TB1_Artifact_Only_Test_Benchmark_Plan.md` (66 lines) | **CONSUMED TB1 EXEC PLAN / FOLDED BY M6-CP1-TB1-REV.** Immutable artifact identity, six-focused-plus-selector449 process contract, no-benchmark boundary and Review successor are preserved in §3, the retained TB1 report and TB1 Review record; full text remains in git history. |

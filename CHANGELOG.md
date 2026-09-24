@@ -1,3 +1,6 @@
+## 2026-09-24 — M6-CP1 TB1 Review proves cross-temporary range defect
+
+Independent Review upholds TB1's 440/455 semantic RED and one accepted-prefix event but proves the exact cause is an invalid `std::binary_search` range constructed from two separate by-value `isolation_sheets()` temporaries. Accepted M5 uses one stable vector for the same region/component/sheet contract and remains 449/449. The event is reclassified from RP-01 recurrence to new singleton `CROSS_TEMPORARY_ITERATOR_RANGE`, correcting stable accounting to **52 events / 15 categories / 37 recurrences** with debt 1 M6-owned. Candidate `10826090221` remains unpromoted. Exact next is bounded runtime-free `M6-CP1-CB2`, followed by the unchanged 455-process TB2 recovery gate and mandatory Review.
 ## 2026-09-24 — `M6-CP1-TB1-EXEC`: artifact-only A5 gate is mechanically complete and semantic RED
 
 - Immutable candidate `10826090221 / ee8b8ac...` executed exactly **455** fresh exact-filter processes under run/job `36045055975 / 107786525272`: focused **3/6 PASS**, selector449 **437/449 PASS**, total **440 PASS / 15 RED**, exact-one selection, zero skips/crashes/selection mismatches, benchmark 0.

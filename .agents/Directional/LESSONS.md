@@ -20,6 +20,10 @@ lesson.
 
 ## 1. Evidence and acceptance
 
+### Materialize value-returning containers before forming iterator ranges
+
+A range algorithm needs both endpoints from the **same container instance**. If an accessor returns a container by value, `algorithm(owner.values().begin(), owner.values().end())` calls the accessor twice and can hand the algorithm iterators from two different temporaries. Equal contents do not make that a valid range. Materialize once (`const auto values = owner.values();`) or use stable referenced storage, then take both endpoints from that object. `M6-CP1-TB1` lost twelve accepted selector rows because a newly extracted A5 sheet-membership check violated this rule; accepted M5 had already used one materialized vector. Pair static source review with the unchanged accepted-prefix runtime gate so undefined range construction cannot hide behind a lucky green execution.
+
 ### Structured diagnostic fields outrank grep over assertion prose
 
 A machine summary must not infer a typed first rejection by grepping an entire GoogleTest failure stream for enum names. Assertion output prints expected values before actual values, so the expected enum can be misclassified as the observed rejection. Prefer a structured product diagnostic or parse the explicit actual field; retain identity-scoped raw streams as final authority. A reporting-parser defect does not invalidate otherwise correct selector/process/package evidence, but it must be corrected before its classification field is used for planning.
