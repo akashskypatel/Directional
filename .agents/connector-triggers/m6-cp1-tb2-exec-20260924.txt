@@ -1,0 +1,3 @@
+turn=M6-CP1-TB2-EXEC
+artifact_id=10834642074
+purpose=immutable artifact-only 6 focused + selector449 execution
