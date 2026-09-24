@@ -492,6 +492,18 @@ Corrections:
 - **Changelog placement.** Both TB1-REV changelog entries had been appended at the file **end**, below restored history, and were moved to the top.
 - **Stale TODO.** The M5 milestone line was stale and is fixed.
 
+## 4.38 `M5-CP4-TB2-EXEC` — published selector449 executes 449/449 fresh and immutable
+
+TB2 consumes the final CB2 eight-target GMP/GMPXX package `10814505512` from exact publication source `e284fea7c101eb86650d1c87c92d0fefa66050e7`. Package authority re-verifies the provider ZIP `047c3a1d...959aae`, root manifest **28/28**, packaged source archive `92af40d8...1f315`, clean source receipts and `runtimeExecution=false` build boundary.
+
+Published selector449/routing449 are re-hashed as `d4a0d1b7...d88d6414 / 9c88a5ed...16c5707`; their first 448 rows are byte-identical to accepted selector448/routing448 `70ff0860...c75789 / c91a5e2f...11dd7c`; owner census is **32/301/75/41**.
+
+Authoritative run/job `36017291483 / 107693066103` executes **449 fresh exact-filter processes**: **449 PASS / 0 RED**, exact-one selected, zero skips, all exits 0 and benchmark 0. Result/log artifacts are `10815911956 / 10815438959`; result provider SHA-256 is `5b7bf7ab...a8a39f`; execution-ledger SHA-256 is `9b4fc28e...62c7ac2`. Protected rows 191/192/247/408/446/447/448/449 all PASS. Row449 `M5CP4.ProducedTorusPeriodicRelationOwnsMultiIsolationRegion` PASSes and records `first_unmet_fact=none`.
+
+Postflight re-hashes the complete package and packaged source with identical path/mode/size/SHA censuses; manifest remains 28/28. No configure, compile, relink, discovery, repair, regeneration or benchmark occurred in TB2. No semantic regression candidate is observed; stable accounting remains **51 / 14 / 37** and project debt remains **1**, M6-owned.
+
+EXEC does **not** accept selector449, promote the package, accept conjunct8 or close M5. Accepted runtime authority remains selector448/package `10771899191 / cef1c6ee...` until mandatory `M5-CP4-TB2-REV`. Exact successor is that runtime-free Review; `M6-DEFN` remains deferred.
+
 ## 5. Folded-document index
 
 Historical citations in frozen/normative records to filenames listed here are provenance-only and resolve through this index plus git history; frozen text is not rewritten merely to chase a folded filename.

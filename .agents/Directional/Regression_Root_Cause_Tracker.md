@@ -1,3 +1,9 @@
+## 2026-09-24 — `M5-CP4-TB2-EXEC`: published selector449 fresh gate is 449/449 green — **NO OBSERVED REGRESSION / +0**
+
+**Stable totals unchanged: 51 events / 14 categories / 37 recurrences; project debt 1 (M6).** Immutable CB2 artifact/source `10814505512 / e284fea7...` passes exact preflight, then run/job `36017291483 / 107693066103` executes all **449 published selector identities as fresh exact-filter processes** with 449 PASS / 0 RED, exact-one selection, zero skips, all exits 0, benchmark 0 and owner census 32/301/75/41. Protected rows 191/192/247/408/446/447/448/449 PASS; row449 has `first_unmet_fact=none`. Result/log artifacts `10815911956 / 10815438959`; execution-ledger SHA-256 `9b4fc28e...62c7ac2`. Package/source postflight is exact and the 28/28 manifest remains valid.
+
+No new semantic failure, recurrence, category, or debt is introduced. This EXEC turn grants no acceptance or closure; mandatory `M5-CP4-TB2-REV` owns selector449/package promotion, conjunct8 and M5 closure.
+
 ## 2026-09-24 — `M5-CP4-CB2`: selector449 published; eight-target GMP package green — **NO SEMANTIC REGRESSION / +0**
 
 **Stable totals unchanged: 51 / 14 / 37; debt 1 (M6).** Exact selector449/routing449 publication is byte- and prefix-verified at source `e284fea7c101eb86650d1c87c92d0fefa66050e7`; owner census is 32/301/75/41. Compile run/job `36013904054 / 107681435506` succeeds on all eight durable-default targets with GMP/GMPXX, 28/28 payload manifest, clean source receipts and `runtimeExecution=false`. No semantic candidate is added.

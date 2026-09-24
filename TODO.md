@@ -2,26 +2,27 @@
 
 Last updated: 2026-09-24 UTC
 
+## Latest Test + Benchmark turn — `M5-CP4-TB2-EXEC`
+
+**COMPLETE / MECHANICALLY GREEN 449/449 / PUBLISHED SELECTOR449 IMMUTABLE / REVIEW REQUIRED / M5 CLOSURE HELD.** TB2 run/job `36017291483 / 107693066103` consumes CB2 artifact/source `10814505512 / e284fea7...` immutably. All **449 fresh exact-filter processes PASS**, exact-one selected, zero skips, all exits 0, benchmark 0, owners 32/301/75/41, and package/source postflight is exact. Result/log artifacts are `10815911956 / 10815438959`; row449 PASSes with `first_unmet_fact=none`.
+
+EXEC grants no promotion or acceptance. Stable accounting remains 51/14/37, debt 1 M6-owned, accepted M5 runtime authority remains selector448/package `10771899191 / cef1c6ee...`, and conjunct8/M5 closure remain held pending Review.
+
+## Exact next turn — `M5-CP4-TB2-REV`
+
+Independent runtime-free final Review:
+
+- [ ] Re-open CB2 package `10814505512` and TB2 result/log `10815911956 / 10815438959` independently.
+- [ ] Verify 28/28 package authority, GMP/GMPXX, exact selector449/routing449 hashes and selector448/routing448 prefixes, census 32/301/75/41, all 449 ledger/raw receipts, protected rows and immutable postflight.
+- [ ] Re-check the frozen DEFN-R2 same-region six-fact producer contract and M5/M6 boundary without running binaries or changing semantic inputs.
+- [ ] Adjudicate selector449/package promotion, conjunct8 and M5 closure only in Review.
+- [ ] Authorize `M6-DEFN` only if M5 formally closes; otherwise preserve the exact remaining M5 obligation.
+
+**Deferred:** `M6-DEFN` remains blocked until `M5-CP4-TB2-REV` closes M5.
+
 ## Latest Code + Build turn — `M5-CP4-CB2`
 
-**COMPLETE / SELECTOR449 PUBLISHED / EIGHT-TARGET GMP COMPILE+PACKAGE GREEN / RUNTIME-FREE / M5 CLOSURE HELD.** Exact publication source `e284fea7c101eb86650d1c87c92d0fefa66050e7` contains selector449 SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414` with exact selector448 prefix, routing449 SHA-256 `9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707` with exact routing448 prefix, row449 producer ownership, and census 32/301/75/41.
-
-Compile run/job `36013904054 / 107681435506` is green; result/log artifacts `10814505512 / 10814141518`; all eight durable-default targets are present, package payload manifest is 28/28, GMP/GMPXX is explicit, source receipts are clean and `runtimeExecution=false`. Accepted runtime authority remains selector448/package `10771899191 / cef1c6ee...` until fresh TB2 + final Review.
-
-## Exact next turn — `M5-CP4-TB2-EXEC`
-
-Artifact-only runtime on immutable CB2 artifact `10814505512`:
-
-- [ ] Verify exact package/source/selector449/routing449 hashes, selector448/routing448 prefixes, owner census 32/301/75/41, modes, GMP/GMPXX, clean source receipts and immutable preflight.
-- [ ] Execute selector449 as **449 fresh exact-filter processes** across the four owner executables, exact-one selected, zero skips, benchmark 0.
-- [ ] Continue through semantic RED, preserve complete raw evidence and perform exact immutable postflight.
-- [ ] Do not configure, compile, relink, regenerate, repair, mutate source/selector/routing, or claim acceptance/promotion/closure.
-- [ ] Route any orchestration-valid semantic result to mandatory `M5-CP4-TB2-REV`; only that Review may accept conjunct8 and close M5.
-- [ ] On resume, inspect branch/Actions first and never re-arm a green authoritative run without proving it orchestration-invalid.
-
-**Deferred:** `M6-DEFN` remains blocked until final `M5-CP4-TB2-REV` closes M5.
-
-- [ ] `M5-CP4-TB1-REV-OBS-02` — **RECORDED / process / owner: every resumed turn.** TB1-EXEC attempted a second full 449-process execution after its authoritative runtime completed. It was blocked only by malformed orchestration. No second runtime executed (`LESSONS.md` 178).
+**COMPLETE / SELECTOR449 PUBLISHED / EIGHT-TARGET GMP COMPILE+PACKAGE GREEN / RUNTIME-FREE.** Publication source `e284fea7c101eb86650d1c87c92d0fefa66050e7`; compile run/job `36013904054 / 107681435506`; result/log `10814505512 / 10814141518`; package manifest 28/28; `runtimeExecution=false`. TB2 has now mechanically validated this exact package, but final acceptance remains Review-owned.
 
 ## Latest Test + Benchmark turn — `M5-CP4-TB1-EXEC`
 

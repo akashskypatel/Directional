@@ -1,3 +1,10 @@
+## 2026-09-24 — `M5-CP4-TB2-EXEC`: published selector449 fresh gate is 449/449 green; final Review next
+
+- Immutable CB2 package/source `10814505512 / e284fea7...` re-verifies 28/28, GMP/GMPXX, clean source receipts, selector449/routing449 exact hashes and selector448/routing448 exact prefixes.
+- Authoritative run/job `36017291483 / 107693066103` executes **449 fresh exact-filter processes**: 449 PASS / 0 RED, exact-one selected, zero skips, all exits 0, benchmark 0, census 32/301/75/41.
+- Result/log `10815911956 / 10815438959`; result provider SHA `5b7bf7ab...a8a39f`; execution-ledger SHA `9b4fc28e...62c7ac2`; row449 PASSes with `first_unmet_fact=none`; immutable postflight is exact.
+- No semantic regression is observed; accounting remains 51/14/37 and debt 1 M6-owned. EXEC makes no promotion/closure claim; exact successor is runtime-free `M5-CP4-TB2-REV`.
+
 ## 2026-09-24 — M5-CP4-TB1-REV
 
 - Independently re-opened CB1/TB1 immutable artifacts and re-derived 449/449 exact-filter PASS evidence, manifests, raw-log hashes and immutable postflight.
