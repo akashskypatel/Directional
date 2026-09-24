@@ -1,4 +1,0 @@
-Purpose: apply verified M6-DEFN durable-document patch
-Patch SHA-256: f8429d1f49adf9945b58ed2cf506f4477a5b9ef5872f0b49e3d1c8f7b9f8aab7
-Patch base: c9be476d75e6f5d6df11304ad6b926b27b36430f
-Retry: 0

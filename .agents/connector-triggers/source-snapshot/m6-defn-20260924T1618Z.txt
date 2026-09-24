@@ -1,3 +1,0 @@
-Purpose: M6-DEFN exact source snapshot
-Semantic source authority: 1b18bda09a723640c55d2bee0c7aedf95f99ec6b
-Retry: 0
