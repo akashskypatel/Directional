@@ -85,3 +85,10 @@ No generated Directional binary, test, benchmark, discovery/list/help/version co
 ## 6. Disposition
 
 `M6-CP1-CB1` is complete as a **candidate A5 package only**. It grants no M6 semantic credit, no CP1 closure and no G4 debt closure. The exact successor is `M6-CP1-TB1-EXEC`, which must consume the final package immutably, execute the six focused prepublication identities plus accepted selector449, and then hand off to mandatory `M6-CP1-TB1-REV`.
+
+
+## 7. Closeout reconciliation and hygiene
+
+A resumed closeout detected that concurrent turn-local work had already advanced the branch with the final relation-rejection test authority, final compile/package evidence, and durable CB1/TB1 records. A locally prepared redundant closeout-doc patch therefore failed closed in `agent-google-drive-reusable.yml` because intended paths had changed since its base; it applied no bytes and its staged Drive file was permanently deleted. The stale bottom summary in `TODO.md` was corrected to the already-authoritative successor `M6-CP1-TB1-EXEC`.
+
+Final temporary-state cleanup run/job `36041971342 / 107776072302` succeeded. Result/log artifacts are `10825764480 / 10826779202`; cleanup commit `90e14c552827a1e5d99e71948346d4ada3da6396` removed all nine inventoried CB1 connector markers plus the cleanup manifest. The final workflow inventory contains exactly the seven durable agent workflows, with no connector-trigger, workflow-observation, or turn-payload directory remaining. Cleanup records `runtimeExecution=false` and deleted only temporary PR observation comments. No semantic source, candidate package, selector, accepted M5 authority, regression accounting, or M6 credit changed during closeout.
