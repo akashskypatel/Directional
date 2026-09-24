@@ -1,3 +1,34 @@
+## 2026-09-24 — `M5-CP4-TB1-REV` reviewing-agent addendum — **UPHELD WITH CORRECTIONS / +0**
+
+**Stable totals unchanged: 51 / 14 / 37; debt 1 (M6).** No semantic regression candidate. The reviewing agent downloaded and re-hashed the TB1 result/log (`9860fa75… / f1d291a5…`) and CB1 package (`3772d2c3…`). It confirms:
+- 912/912 and 26/26;
+- all 449 ledger rows exit0 / selected1 / skipped0 / PASS, with raw-log hashes and single-RUN/OK protocol verified;
+- prefix identities equal to selector448 and prefix binaries equal to routing448, with owners 32/301/75/41;
+- `row449-diagnostic.txt` reports `first_unmet_fact=none`;
+- package and source censuses identical;
+- selector449 `d4a0d1b7…` and routing449 `9c88a5ed…` rebuilt byte-for-byte, with routing449 equal to the TB1 runner copy;
+- the row449 source asserts six ordered, fact-named facts on one region with independent oracles, and no product source changed.
+
+**The DEFN-R2 review's feasibility risk did not materialize.** `torus_fixture()`'s region does span ≥2 sheets and owns the periodic relation.
+
+### `M5-CP4-TB1-REV-OBS-02` — resumed TB1-EXEC attempted a second full gate execution after runtime — RECORDED / process / non-stable
+
+- **Fact:** the authoritative run `35937669401` completed at 00:16Z and its report landed at 00:41Z. Continued at 02:59Z, the turn committed a new 449-process harness (`c1869d57`) and executor workflow (`3bb4401d`) and triggered them (`573e7e9c`). Runs `35950324087`, `35950354425`, `35950685368` and `35950686347` all failed at startup with **0 jobs**, because the workflow file was malformed (stored as binary). The harness also named `…Required_Gren_Selector_448.txt`, which would have failed preflight. No second runtime executed and no artifact was produced.
+- **Root cause:** after a long stall the resumed session re-derived its plan instead of its progress, and it did not check that its gate had already run.
+- **Detection gap:** the TB1 report claims "no retry-after-runtime-start" without qualification, and TB1-REV reviewed only the named run, not the Actions history of the turn window.
+- **Falsifier:** for every turn, the Actions runs in the turn window reconcile to its report, with each extra run explained.
+- **Owner:** every implementation turn (resume discipline) and every Review (window reconciliation).
+- **Prohibited:** re-arming an EXEC gate after a green authoritative run unless that run is proved orchestration-invalid and a Review authorizes it.
+- **Rule:** `LESSONS.md` 178.
+
+### Other corrections
+
+1. **Package narrowing.** CB1 compiled 4 of the 8 standard targets (26/26 against CB20's 28/28). That was authorized by the CB1 plan, whose narrowing the DEFN-R2 review missed. The CB2 plan §8 now requires all eight for the final M5 package.
+2. **Consolidated record numbering.** Duplicate `## 4.35` and post-§5 sections (a regression of R16 OBS-03) are repaired to §§4.35-4.37, and the three misplaced index rows are moved to §5.
+3. **Changelog placement.** Both TB1-REV changelog entries had been appended at the file end, below the restored history. They are moved to the top, with line counts preserved.
+4. **Stale TODO.** The M5 milestone line still said "Exact next is `M5-CP4-CB1`" and is fixed.
+5. **Missing ledgers row.** TB1-REV recorded no `ledgers` result. The reviewing agent's `ledgers --base 20761d5a` PASSes.
+
 ## 2026-09-24 — `M5-CP4-TB1-EXEC`: prepublication row449 gate is 449/449 green — **NO OBSERVED REGRESSION / +0**
 
 **Stable totals unchanged: 51 events / 14 categories / 37 recurrences; project debt 1 (M6).** Immutable CB1 artifact `10782841045 / 535ec760...` executed selector448 plus frozen row449 as **449 fresh exact-filter processes**, all PASS with exact-one selection, zero skips, benchmark 0, and exact package/source postflight. Accepted prefix remains 448/448 green; row449 `M5CP4.ProducedTorusPeriodicRelationOwnsMultiIsolationRegion` PASSes on the fixed `torus_fixture()` subject, so no first-failed-fact classification fires. Result/log `10784376393 / 10784391222`; result self-manifest 912/912; execution ledger SHA-256 `34eec870...001c`. No semantic regression candidate is added.

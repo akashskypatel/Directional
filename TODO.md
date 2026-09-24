@@ -20,12 +20,14 @@ Runtime-free Code + Build under `.agents/Directional/Architecture_M5_CP4_CB2_Sel
 
 - [ ] Publish only the exact precommitted selector449 and routing449 bytes.
 - [ ] Keep product/test/fixture/field/CMake semantics and every accepted earlier selector/routing byte unchanged.
-- [ ] Compile/package all four standard selector owners through mandatory GMP/GMPXX `agent-compile-reusable.yml`.
+- [ ] Compile/package **all eight standard targets** (reusable default; plan §8) through mandatory GMP/GMPXX `agent-compile-reusable.yml`. TB2 executes the four owners. On resume, check branch/Actions before re-arming (`LESSONS.md` 178).
 - [ ] Execute no Directional binary and record `runtimeExecution=false`.
 - [ ] Stop on any selector/prefix/routing/hash drift, semantic change, non-GMP authority, missing owner executable, or runtime attempt.
 - [ ] On compile-green route only to artifact-only `M5-CP4-TB2-EXEC`; final `M5-CP4-TB2-REV` alone may accept conjunct8 and close M5.
 
 **Deferred:** `M6-DEFN` remains blocked until final `M5-CP4-TB2-REV` closes M5.
+
+- [ ] `M5-CP4-TB1-REV-OBS-02` — **RECORDED / process / owner: every resumed turn.** TB1-EXEC attempted a second full 449-process execution after its authoritative runtime completed. It was blocked only by a malformed workflow (4 startup failures, 0 jobs) and a misspelled selector path. It was undisclosed, and TB1-REV missed it. Evidence is unaffected (`LESSONS.md` 178).
 
 ## Latest Test + Benchmark turn — `M5-CP4-TB1-EXEC`
 
@@ -102,7 +104,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. M4 handed four periodic/relation debts to M5 and one closed-complex debt to M6; R7 Review discharged two M5 debts and R16 Review discharges the remaining two nonzero-Z4 M5 debts. The sole remaining project debt is the M6 closed-complex subject.
-- [ ] **M5** certificate-carrying chart/quotient relations — **SELECTOR448 ACCEPTED / §13.1 CONJUNCTS 1-7 ACCEPTED / CONJUNCT 8 DEFINED BY `M5-DEFN-R2` / CLOSURE HELD pending bounded `M5-CP4`.** Final runtime authority is package/source `10771899191 / cef1c6ee...` under selector448 **448/448**. DEFN-R2 freezes the `G4-B004` M5 half as a same-region multi-isolation + checked-seam-certificate + quotient-owner producer gate; selector448 does not yet prove that joined condition. Exact next is `M5-CP4-CB1`.
+- [ ] **M5** certificate-carrying chart/quotient relations — **SELECTOR448 ACCEPTED / §13.1 CONJUNCTS 1-7 ACCEPTED / CONJUNCT 8 PREPUBLICATION PROOF REVIEW-ACCEPTED (row449 green at TB1) / SELECTOR449 PRECOMMITTED / CLOSURE HELD.** Current runtime authority is package/source `10771899191 / cef1c6ee...` under selector448 **448/448**. Exact next is `M5-CP4-CB2` (publication + eight-target compile), then `M5-CP4-TB2-EXEC` and final `M5-CP4-TB2-REV`. *(This line still said "Exact next is `M5-CP4-CB1`" after TB1-REV; corrected by the reviewing agent.)*
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.

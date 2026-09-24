@@ -1,3 +1,13 @@
+## 2026-09-24 — M5-CP4-TB1-REV
+
+- Independently re-opened CB1/TB1 immutable artifacts and re-derived 449/449 exact-filter PASS evidence, manifests, raw-log hashes and immutable postflight.
+- Accepted `M5CP4.ProducedTorusPeriodicRelationOwnsMultiIsolationRegion` as non-vacuous **prepublication** proof of the frozen same-region multi-isolation + checked-seam-certificate + quotient-owner producer contract without crossing into M6 authority.
+- Precommitted selector449 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414` and routing449 `9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707` with exact selector448/routing448 prefixes and owners 32/301/75/41; no selector file was published.
+- Kept accepted M5 runtime authority at selector448/package `10771899191 / cef1c6ee...`; conjunct8 and M5 closure remain held pending CB2 publication, fresh TB2 and final Review.
+- Folded consumed CB1 plan/report and superseded DEFN-R1 Review into `M5_Consolidated_Record.md`; froze exact next `M5-CP4-CB2`.
+
+
+**Reviewing-agent addendum (same turn) — UPHELD with corrections.** The prepublication proof and the selector449/routing449 precommit are re-verified from fresh downloads. TB1-EXEC had attempted a prohibited second 449-process execution after its authoritative run; it was blocked only by a malformed workflow, it was undisclosed, and TB1-REV missed it (`M5-CP4-TB1-REV-OBS-02`, `LESSONS.md` 178). The CB2 plan §8 now requires all eight standard targets for the final M5 package. The duplicate consolidated §4.35 is renumbered to §§4.35-4.37, this entry is moved from the file end to the top, and the stale TODO line is fixed. Accounting is unchanged.
 ## 2026-09-24 — M5-CP4 TB1 prepublication gate passes 449/449
 
 Immutable CB1 package `10782841045` executed selector448 plus the frozen focused row449 as 449 fresh exact-filter processes: **449 PASS / 0 RED**, exact-one selection, zero skips, benchmark 0 and exact immutable postflight. Row449 passes on the fixed committed-torus subject. This execution publishes or accepts nothing: selector449 remains unpublished, conjunct8 remains unaccepted and M5 closure remains held. No regression candidate; accounting stays 51/14/37 and debt1. Exact next: `M5-CP4-TB1-REV`.
@@ -886,11 +896,3 @@ CB2 W7–W9 completed Code + Build at semantic source `a5edb1a31c315d51df216f3bb
 ## 2026-08-24 — M3-CP4c-DG1-DG-EXEC
 
 Artifact-only DG1 completed GREEN on authoritative run/job `32776212123 / 97587757347`: frozen predecessor 304/304 plus CP4ab 12/12, combined 316/316, zero orchestration errors, diagnostic 1/2 consumed, acceptance 0/3 unchanged. Result artifact `9538137947` (`e5ed2cea…26a7`), execution log `9538138294` (`626c6b70…691e`), control log `9538138652` (`e4655e09…9908`). Earlier run `32775399340` is non-authoritative process evidence caused by fixture-source materialization outside the compiled absolute workspace; runner-only correction was schema-validated by `32776159932` and changed no semantic/package/test/fixture/selector bytes. Exact next: independent `M3-CP4c-DG1-DG-REV`.
-
-## 2026-09-24 — M5-CP4-TB1-REV
-
-- Independently re-opened CB1/TB1 immutable artifacts and re-derived 449/449 exact-filter PASS evidence, manifests, raw-log hashes and immutable postflight.
-- Accepted `M5CP4.ProducedTorusPeriodicRelationOwnsMultiIsolationRegion` as non-vacuous **prepublication** proof of the frozen same-region multi-isolation + checked-seam-certificate + quotient-owner producer contract without crossing into M6 authority.
-- Precommitted selector449 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414` and routing449 `9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707` with exact selector448/routing448 prefixes and owners 32/301/75/41; no selector file was published.
-- Kept accepted M5 runtime authority at selector448/package `10771899191 / cef1c6ee...`; conjunct8 and M5 closure remain held pending CB2 publication, fresh TB2 and final Review.
-- Folded consumed CB1 plan/report and superseded DEFN-R1 Review into `M5_Consolidated_Record.md`; froze exact next `M5-CP4-CB2`.

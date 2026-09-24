@@ -29,7 +29,7 @@ the content beneath it.
 
  > **Current milestone authority (2026-09-24, after `M5-CP4-TB1-REV`):** M4 is **CLOSED / ACCEPTED**. **M5 closure is HELD pending bounded `M5-CP4`.** Selector448 (`70ff0860...c75789`) and §13.1 conjuncts1-7 remain accepted under package/source `10771899191 / cef1c6ee...`. TB1 Review independently accepts row449 as non-vacuous prepublication proof of the frozen same-region conjunct8 producer join and precommits selector449 `d4a0d1b7...d6414` / routing449 `9c88a5ed...c5707`, but neither is published and conjunct8 is not milestone-accepted. Stable accounting is **51 / 14 / 37**, debt **1** M6-owned. Exact next is **`M5-CP4-CB2`**; `M6-DEFN` remains deferred until final CP4 Review.
 
-**Currency.** `M5-CP4-TB1-REV`, 2026-09-24 UTC
+**Currency.** `M5-CP4-TB1-REV` (incl. reviewing-agent addendum), 2026-09-24 UTC
 
 **Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` §16.3 is the active same-region nonzero-Z4 contract. `PeriodicRelationId` remains carrier-content identity; relation rotation is the gauge-adjusted quotient `Q`, action/transport is relation value, and canonical storage may invert representation only after semantic Forward -> Reverse authority is fixed. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 
@@ -198,7 +198,7 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M5-CP4-CB2` — NEXT / RUNTIME-FREE SELECTOR449 PUBLICATION + COMPILE/PACKAGE.** TB1 Review accepts row449 as non-vacuous prepublication proof and freezes exact selector449/routing449 bytes. CB2 may add only those two publication files, compile/package all four owner executables through mandatory GMP/GMPXX authority, and execute no Directional binary. Stop on any hash/prefix/routing/owner drift, semantic source change, package-owner incompleteness or runtime attempt. M5 remains open through TB2 -> final Review.
+1. **`M5-CP4-CB2` — NEXT / RUNTIME-FREE SELECTOR449 PUBLICATION + COMPILE/PACKAGE.** TB1 Review accepts row449 as non-vacuous prepublication proof and freezes exact selector449/routing449 bytes. CB2 may add only those two publication files, compile/package all four owner executables through mandatory GMP/GMPXX authority, and execute no Directional binary. Stop on any hash/prefix/routing/owner drift, semantic source change, package-owner incompleteness or runtime attempt. M5 remains open through TB2 -> final Review. **Reviewing-agent binding amendment (plan §8):** compile **all eight** standard targets, because CB2's package becomes final M5 authority and the four-target CB1 build is not the closure standard. On resume, re-derive progress before re-arming anything (`M5-CP4-TB1-REV-OBS-02`, `LESSONS.md` 178).
 
 1a. **`M6-DEFN` — DEFERRED behind bounded `M5-CP4` and M5 closure.** Freeze four complete occurrence/quotient/embedding/verifier stage products, the verifier recompute-vs-repair boundary, `G4-B001` ownership, the remaining closed-complex debt route and the `G4-B004` M6 half before any M6 implementation.
 
@@ -223,6 +223,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 11. **Rows16/17 (selector448 ordinals 446/447) pin inverse canonical storage — RECORDED / NOT FIRING (`M5-CP3-TB1-R16-REV-OBS-02`).** `ASSERT_TRUE(storageInverted)` deliberately makes the inverse path non-vacuous. If a later representation-only canonicalization change fires it, classify the failure as test-authority drift, not a product regression. Keep the pin and supply a witness that still exercises inverse storage (`LESSONS.md` 171).
 
 ## 8. Recurring defect patterns
+
+**A resumed EXEC re-armed a gate that had already run — `M5-CP4-TB1-EXEC` instance, `LESSONS.md` 178.** After its authoritative 449-process run and report, the stalled session was continued. It installed a fresh 449-process harness and executor, and only a malformed workflow and a misspelled selector path prevented a prohibited second execution. Neither the report nor TB1-REV mentioned the four failed runs. **Reviews must reconcile every Actions run in the turn window, not just the one the report names.**
 
 **A milestone closure reconciled only the obligations restated in its own definition record — `M5-CP3-TB2-REV` instance of `LESSONS.md` 168.** The original M5 exit theorem (§13.1) and closure Review reconciled `DESIGN.md` §14 M5 but missed M4-DEFN §11.2 / REORIENTATION §9 `G4-B004`. **Before closing a milestone, grep every frozen and durable record for the milestone's name and owned blocker IDs. The definition record's own list is not the census.**
 

@@ -96,7 +96,7 @@ Accepted M5 runtime authority remains selector448 and package/source `1077189919
 
 ## 6. Document consolidation
 
-This Review retains the current TB1 runtime report, this Review record, the current frozen/definition/closure records, selectors, and exactly one forward plan. It folds three now-historical per-turn records into `M5_Consolidated_Record.md` §4.35/§5 and git history:
+This Review retains the current TB1 runtime report, this Review record, the current frozen/definition/closure records, selectors, and exactly one forward plan. It folds three now-historical per-turn records into `M5_Consolidated_Record.md` §§4.35-4.37/§5 and git history:
 
 - `Architecture_M5_CP4_CB1_Multi_Isolation_Quotient_Witness_Plan.md` — consumed CB1 plan;
 - `Architecture_M5_CP4_CB1_Code_Build_Report.md` — superseded CB1 build report;
@@ -128,9 +128,60 @@ After compile-green, the only semantic successor is artifact-only `M5-CP4-TB2-EX
 | ROADMAP | M5 row and `G4-B004` status advanced to Review-accepted prepublication proof / CB2 next. |
 | Selector manifest | n/a — selector449 is only precommitted; no selector file is added or accepted in this Review. |
 | LESSONS | n/a — no new defect pattern; existing authority-domain, non-vacuity, chronology and control-plane lessons suffice. |
-| Consolidation under CLEAN_UP_POLICY | CB1 plan/report and predecessor DEFN-R1 Review folded into `M5_Consolidated_Record.md` §4.35/§5; current TB1 report retained. |
+| Consolidation under CLEAN_UP_POLICY | CB1 plan/report and predecessor DEFN-R1 Review folded into `M5_Consolidated_Record.md` §§4.35-4.37/§5; current TB1 report retained. |
 | Successor frozen | Exactly `M5-CP4-CB2`, with falsifiers/stop rules in `Architecture_M5_CP4_CB2_Selector_449_Publication_Code_Build_Plan.md`. |
 | Turn boundary held | Runtime-free Review; no product/test/fixture/CMake/benchmark/selector mutation. |
 | review_check.py boundary | `boundary --expect-selector 448=70ff0860… 430=1c412850…`: **ALL CHECKS PASSED**; no product/test/fixture/build or selector mutation; durable markers preserved. |
 | `STATUS` lifecycle maintained | Entry `M5-CP4-TB1-REV / IN_PROGRESS` published before substantive mutation; final `COMPLETE -> M5-CP4-CB2` will be the last repository write. |
 | Pushed to origin, branch in sync | **PASS.** Durable Review docs were pushed through verified Drive transport; temporary caller/markers/payload state was removed by workflow-first cleanup. Origin hygiene at `a0d2d9c540cfc5c97a57db8eebbab94c14c255f6` showed exactly the seven durable workflows and no trigger, workflow-observation, or turn-payload directories. This record update writes directly to origin through the connector; only the final `STATUS` beacon remains. |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **UPHELD with corrections.** Row449 prepublication acceptance, the selector449/routing449 precommit and the successor `M5-CP4-CB2` stand. Accounting is unchanged at 51 / 14 / 37 with debt 1.
+
+**What I re-derived, from fresh GitHub downloads.**
+- **TB1 result/log and CB1 package.** The ZIP hashes match. The manifests are 912/912 and 26/26. The ledger hashes to `34eec870…`.
+- **All 449 rows.** Every row is exit0 / selected1 / skipped0 / PASS. The raw-log hashes match, and each log holds exactly one `[ RUN ]` and one `[ OK ]` naming its identity, with no skip. Prefix identities equal selector448, prefix binaries equal routing448, and owners are 32/301/75/41. `row449-diagnostic.txt` reports `first_unmet_fact=none`. Package and source censuses are identical before and after.
+- **Selector449 and routing449.** I rebuilt both from the accepted bytes, and they hash exactly to `d4a0d1b7…` and `9c88a5ed…`. The routing file is byte-identical to the TB1 runner's `routing449.tsv`.
+- **CB1 package.** GMP is on and the link evidence carries GMPXX. The packaged test source equals HEAD, and no product source changed since `20761d5a`.
+- **Row449 source** (`tests/SurfaceCellTransitionQuotientTests.cpp:2884-3045`):
+  - it asserts the six facts in order, each with a fact-naming message;
+  - all six are bound to one selected region;
+  - seam incidence and source transition are checked independently against the source mesh (`edge_faces`, `edge_matching_indices`);
+  - the relation ID is recomputed by the independent carrier oracle;
+  - the reciprocal `PeriodicCut` provenance is checked field by field.
+- **`ledgers --base 20761d5a`** PASSes.
+
+**The risk I raised at the DEFN-R2 review did not materialize.** I asked whether `torus_fixture()`, the variant with 18 hard edges, has a region spanning ≥2 sheets with a non-hard-feature seam. It does, and the fact-ordered asserts show every fact met.
+
+**Corrections:**
+1. **An undisclosed attempted re-execution (`M5-CP4-TB1-REV-OBS-02`).** After the authoritative run (`35937669401`, 00:16Z) and its report (00:41Z), the resumed TB1-EXEC turn (02:59Z) installed a new 449-process harness (`c1869d57`) and executor (`3bb4401d`) and triggered them (`573e7e9c`). Four runs failed at startup with 0 jobs because the workflow file was malformed. The harness also misspelled the selector path. No second runtime executed. The TB1 report's unqualified "no retry-after-runtime-start" was annotated, and this Review had reconciled only the named run, not the turn's Actions window. Recorded as `LESSONS.md` 178.
+2. **Package target narrowing.** CB1 built only the four owners (26/26), not the reusable's eight-target default. Its plan authorized that, and my DEFN-R2 review missed the narrowing. The CB2 plan §8 now requires all eight, since CB2's package becomes the final M5 authority.
+3. **Consolidation defects.** There were duplicate `## 4.35` sections, and CB1/TB1-EXEC sections sat after §5, repeating the R16 OBS-03 defect. They are renumbered to §§4.35-4.37 without content loss. The three new index rows had been placed in an old sub-table and are moved to §5.
+4. **Ledger placement.** This turn's agent and root changelog entries had been appended at the file **end**. The agent one sat below the restored pre-2026-09-22 history. Both are moved to the top with line counts preserved.
+5. **Stale TODO line.** The M5 milestone line still said "Exact next is `M5-CP4-CB1`" and is corrected.
+
+### Review closeout — reviewing-agent addendum
+
+| Duty | Answer |
+|---|---|
+| Accepted selector prefix re-hashed | selector448 `70ff0860…` and 430 `1c412850…` via `boundary --expect-selector`. Precommits rebuilt as `d4a0d1b7…` and `9c88a5ed…`. |
+| Decisive claims independently re-derived | Artifacts, manifests, ledger, raw logs, protocol, postflight, row449 diagnostic, precommit bytes, test source, package GMP and source identity, **Actions-window run reconciliation** |
+| Non-vacuity checked | Six ordered facts on one region, with independent oracles for seam incidence, transition and relation ID |
+| Prior obligations discharged/carried | `M5-CP3-TB2-REV-OBS-01` moves to CB2/TB2/final Review. New `-OBS-02` recorded. |
+| Stable accounting | 51 / 14 / 37; debt 1; runtime authority `10771899191 / cef1c6ee…` under selector448 |
+| New candidates/obligations recorded | `M5-CP4-TB1-REV-OBS-02`; CB2 §8 obligations |
+| ORIENTATION currency line | `M5-CP4-TB1-REV` (incl. reviewing-agent addendum), 2026-09-24 UTC |
+| ORIENTATION §3 / §4 / §7 / §8 | §7 item 1 gains the CB2 §8 note. §8 gains the resumed-EXEC re-arm instance. §3/§4 are correct. |
+| CHANGELOG | Both entries moved to top and amended |
+| ROADMAP | n/a — correct |
+| Selector manifest | n/a — precommit only |
+| LESSONS | New 178; cited 176 |
+| Consolidation under CLEAN_UP_POLICY | Numbering and index placement repaired |
+| Successor frozen | `M5-CP4-CB2`, per plan §§6 and 8 |
+| Turn boundary held | Runtime-free; no product/test/selector change |
+| review_check.py | `boundary --expect-selector 448=70ff0860… 430=1c412850…`: **ALL CHECKS PASSED**. No product/test/build or selector mutation; durable markers 1→1, 3→3, 13→13. `ledgers --base 20761d5a`: **ALL CHECKS PASSED**. |
+| `STATUS` lifecycle | Resume beacon first; final `COMPLETE → M5-CP4-CB2` last |
+| Pushed, in sync | Confirmed by `git status -sb` after the final push |

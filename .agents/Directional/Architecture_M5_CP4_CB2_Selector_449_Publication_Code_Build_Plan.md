@@ -83,3 +83,12 @@ No repair by selector weakening, identity substitution, fixture mutation, test s
 ## 7. Successor
 
 On exact publication + compile/package green, route to **`M5-CP4-TB2-EXEC`**. TB2 must consume the immutable CB2 package artifact-only and execute the **published** selector449 as 449 fresh exact-filter processes. `M5-CP4-TB2-REV` remains the only turn authorized to accept conjunct8 and close M5.
+
+## 8. Reviewing-agent amendment (`M5-CP4-TB1-REV` review) — binding
+
+1. **Compile all eight standard targets, not four.** Invoke `agent-compile-reusable.yml` **without overriding `targets`**, so it builds its durable default: `directional_core`, `directional_pipeline`, the four `directional_surface_cell_*_tests` owners, `directional_compiled_api_tests` and `directional_benchmarks`.
+   - CB2's package becomes the **final M5 runtime authority** if TB2-REV accepts it. Every earlier milestone authority package was an eight-target build (M4 CB8, M5 CB19, CB20: 28/28 root manifest).
+   - The CB1 prepublication package built only the four owners (26/26). That was authorized by the CB1 plan, whose narrowing the DEFN-R2 review missed, and it is acceptable for prepublication evidence. It must not become the closure standard.
+   - TB2 still executes only the four owner executables. The other two must compile, link against GMP/GMPXX and be packaged.
+   - **Falsifier 8 is extended:** any of the eight standard targets failing to compile or link, or being absent from the package, stops CB2.
+2. **Resume discipline (`M5-CP4-TB1-REV-OBS-02`).** If this turn is resumed after any interruption, first re-derive its progress from the branch and Actions history. That means publication files present, compile run id and conclusion, and report written. Do not re-trigger a compile or re-arm any workflow when a green authoritative run already exists for the same source. Re-arming is allowed only if that run is shown orchestration-invalid, and the reason must be recorded.

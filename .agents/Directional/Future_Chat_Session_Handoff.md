@@ -26,7 +26,7 @@ TB1 primary evidence: run/job `35937669401 / 107438319768`, result/log `10784376
 The turn must:
 1. publish only exact selector449/routing449 precommitted bytes;
 2. preserve selector448/routing448 as exact prefixes and change no product/test/fixture/field/CMake semantics;
-3. compile/package all four owner executables through mandatory GMP/GMPXX reusable compile authority;
+3. compile/package **all eight standard targets** (reusable default; do not override `targets`) through mandatory GMP/GMPXX reusable compile authority. Plan §8 is binding: CB2's package becomes the final M5 authority, and the CB1 four-target build is not the closure standard. On any resume, re-derive progress from branch/Actions before re-arming anything (`LESSONS.md` 178);
 4. execute no Directional binary;
 5. stop on any hash/prefix/routing/owner drift, semantic change, GMP failure, package-owner incompleteness or runtime attempt;
 6. on compile-green route only to artifact-only `M5-CP4-TB2-EXEC`, then final `M5-CP4-TB2-REV`.
