@@ -238,7 +238,56 @@ using TraceId = SemanticId<detail::TraceTag>;
 using SourceVertexFanId = SemanticId<detail::SourceVertexFanTag>;
 using HardRailId = SemanticId<detail::HardRailTag>;
 using CellId = SemanticId<detail::CellTag>;
-using OccurrenceId = SemanticId<detail::OccurrenceTag>;
+
+/**
+ * Semantic identity for one A5 surface-cell occurrence.
+ *
+ * Occurrences are owned by an A4 CellId and one canonical corner role in that
+ * cell's immutable directed-side cycle. Container position, coordinates,
+ * source-sheet representative choice, and output numbering are deliberately
+ * excluded from identity.
+ */
+class OccurrenceId {
+public:
+  OccurrenceId() = delete;
+
+  [[nodiscard]] static constexpr AuthorityDomain domain() noexcept {
+    return AuthorityDomain::Occurrence;
+  }
+
+  [[nodiscard]] static DomainResult<OccurrenceId>
+  from_cell_corner(CellId cell, std::int64_t canonicalCornerRole) {
+    constexpr std::size_t kCornerCount = 4U;
+    if (canonicalCornerRole < 0) {
+      return DomainResult<OccurrenceId>(DomainError{
+          DomainErrorCode::NegativeIndex, domain(), std::nullopt,
+          canonicalCornerRole, kCornerCount});
+    }
+    if (static_cast<std::size_t>(canonicalCornerRole) >= kCornerCount) {
+      return DomainResult<OccurrenceId>(DomainError{
+          DomainErrorCode::IndexOutOfRange, domain(), std::nullopt,
+          canonicalCornerRole, kCornerCount});
+    }
+    return DomainResult<OccurrenceId>(OccurrenceId(
+        cell, static_cast<std::uint8_t>(canonicalCornerRole)));
+  }
+
+  [[nodiscard]] constexpr CellId cell() const noexcept { return cell_; }
+  [[nodiscard]] constexpr std::uint8_t canonical_corner_role() const noexcept {
+    return canonicalCornerRole_;
+  }
+
+  auto operator<=>(const OccurrenceId &) const = default;
+
+private:
+  explicit constexpr OccurrenceId(CellId cell,
+                                  std::uint8_t canonicalCornerRole) noexcept
+      : cell_(cell), canonicalCornerRole_(canonicalCornerRole) {}
+
+  CellId cell_;
+  std::uint8_t canonicalCornerRole_ = 0U;
+};
+
 using QuotientClassId = SemanticId<detail::QuotientClassTag>;
 
 // WU2A0 compile contracts: numeric values are explicit representation

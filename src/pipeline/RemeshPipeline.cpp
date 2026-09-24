@@ -3013,6 +3013,428 @@ std::set<std::uint64_t> relief_representation_edges(
 
 namespace directional::pipeline {
 
+const char *surface_occurrence_complex_error_name(
+    const SurfaceOccurrenceComplexErrorCode code) {
+  switch (code) {
+  case SurfaceOccurrenceComplexErrorCode::SourceAuthorityMismatch:
+    return "OccurrenceSourceAuthorityMismatch";
+  case SurfaceOccurrenceComplexErrorCode::MissingCellOwnership:
+    return "OccurrenceMissingCellOwnership";
+  case SurfaceOccurrenceComplexErrorCode::DuplicateCellOwnership:
+    return "OccurrenceDuplicateCellOwnership";
+  case SurfaceOccurrenceComplexErrorCode::MissingCornerOccurrence:
+    return "OccurrenceMissingCorner";
+  case SurfaceOccurrenceComplexErrorCode::DuplicateCornerOccurrence:
+    return "OccurrenceDuplicateCorner";
+  case SurfaceOccurrenceComplexErrorCode::InvalidDirectedSideCycle:
+    return "OccurrenceInvalidDirectedSideCycle";
+  case SurfaceOccurrenceComplexErrorCode::RelationEndpointMissing:
+    return "OccurrenceRelationEndpointMissing";
+  case SurfaceOccurrenceComplexErrorCode::DuplicateRelationDeclaration:
+    return "OccurrenceDuplicateRelationDeclaration";
+  case SurfaceOccurrenceComplexErrorCode::UnownedRelation:
+    return "OccurrenceUnownedRelation";
+  case SurfaceOccurrenceComplexErrorCode::InvalidCornerAuthority:
+    return "OccurrenceInvalidCornerAuthority";
+  case SurfaceOccurrenceComplexErrorCode::InvalidChartAuthority:
+    return "OccurrenceInvalidChartAuthority";
+  }
+  return "OccurrenceUnknownFailure";
+}
+
+namespace {
+
+SurfaceOccurrenceRelationId make_occurrence_relation_id(
+    const SurfaceOccurrenceRelationKind kind,
+    authority::OccurrenceId first, authority::OccurrenceId second,
+    const std::optional<authority::HardRailId> hardRail,
+    const std::optional<authority::PeriodicRelationId> periodicRelation) {
+  if (second < first) std::swap(first, second);
+  return SurfaceOccurrenceRelationId(kind, first, second, hardRail,
+                                     periodicRelation);
+}
+
+} // namespace
+
+SurfaceOccurrenceComplexProducer::ConstructionResult
+SurfaceOccurrenceComplexProducer::publish_records_for_validation(
+    std::vector<SurfaceOccurrenceCell> cells,
+    std::vector<SurfaceOccurrence> occurrences,
+    std::vector<SurfaceOccurrenceRelation> relations) {
+  SurfaceOccurrenceComplexError error;
+
+  std::sort(cells.begin(), cells.end(),
+            [](const auto &first, const auto &second) {
+              return first.id < second.id;
+            });
+  std::sort(occurrences.begin(), occurrences.end(),
+            [](const auto &first, const auto &second) {
+              return first.id < second.id;
+            });
+  std::sort(relations.begin(), relations.end(),
+            [](const auto &first, const auto &second) {
+              return first.id < second.id;
+            });
+
+  std::map<authority::CellId, const SurfaceOccurrenceCell *> cellById;
+  for (const SurfaceOccurrenceCell &cell : cells) {
+    if (!cellById.emplace(cell.id, &cell).second) {
+      error.code = SurfaceOccurrenceComplexErrorCode::DuplicateCellOwnership;
+      error.cell = cell.id;
+      return error;
+    }
+    for (std::size_t corner = 0; corner < cell.cornerOccurrences.size(); ++corner) {
+      const authority::OccurrenceId occurrence = cell.cornerOccurrences[corner];
+      if (occurrence.cell() != cell.id ||
+          occurrence.canonical_corner_role() != corner) {
+        error.code = SurfaceOccurrenceComplexErrorCode::InvalidCornerAuthority;
+        error.cell = cell.id;
+        error.occurrence = occurrence;
+        return error;
+      }
+      const auto expectedSide = std::pair{
+          occurrence,
+          cell.cornerOccurrences[(corner + 1U) % cell.cornerOccurrences.size()]};
+      if (cell.directedSides[corner] != expectedSide) {
+        error.code = SurfaceOccurrenceComplexErrorCode::InvalidDirectedSideCycle;
+        error.cell = cell.id;
+        return error;
+      }
+    }
+  }
+  if (cellById.empty()) {
+    error.code = SurfaceOccurrenceComplexErrorCode::MissingCellOwnership;
+    return error;
+  }
+
+  std::map<authority::OccurrenceId, const SurfaceOccurrence *> occurrenceById;
+  std::map<authority::CellId, std::size_t> occurrenceCountByCell;
+  for (const SurfaceOccurrence &occurrence : occurrences) {
+    const auto cell = cellById.find(occurrence.id.cell());
+    if (cell == cellById.end()) {
+      error.code = SurfaceOccurrenceComplexErrorCode::MissingCellOwnership;
+      error.occurrence = occurrence.id;
+      return error;
+    }
+    if (!occurrenceById.emplace(occurrence.id, &occurrence).second) {
+      error.code = SurfaceOccurrenceComplexErrorCode::DuplicateCornerOccurrence;
+      error.cell = occurrence.id.cell();
+      error.occurrence = occurrence.id;
+      return error;
+    }
+    ++occurrenceCountByCell[occurrence.id.cell()];
+  }
+
+  for (const SurfaceOccurrenceCell &cell : cells) {
+    if (occurrenceCountByCell[cell.id] != cell.cornerOccurrences.size()) {
+      error.code = SurfaceOccurrenceComplexErrorCode::MissingCornerOccurrence;
+      error.cell = cell.id;
+      return error;
+    }
+    for (const authority::OccurrenceId occurrence : cell.cornerOccurrences) {
+      if (occurrenceById.count(occurrence) != 1U) {
+        error.code = SurfaceOccurrenceComplexErrorCode::MissingCornerOccurrence;
+        error.cell = cell.id;
+        error.occurrence = occurrence;
+        return error;
+      }
+    }
+  }
+  if (occurrences.size() != cells.size() * 4U) {
+    error.code = SurfaceOccurrenceComplexErrorCode::MissingCornerOccurrence;
+    return error;
+  }
+
+  std::set<SurfaceOccurrenceRelationId> relationIds;
+  for (const SurfaceOccurrenceRelation &relation : relations) {
+    if (relation.firstOccurrence == relation.secondOccurrence ||
+        occurrenceById.count(relation.firstOccurrence) != 1U ||
+        occurrenceById.count(relation.secondOccurrence) != 1U) {
+      error.code = SurfaceOccurrenceComplexErrorCode::RelationEndpointMissing;
+      error.relation = relation.id;
+      return error;
+    }
+    const SurfaceOccurrenceRelationId expectedId = make_occurrence_relation_id(
+        relation.id.kind, relation.firstOccurrence, relation.secondOccurrence,
+        relation.id.hardRail, relation.id.periodicRelation);
+    const bool ownerValid =
+        (relation.id.kind == SurfaceOccurrenceRelationKind::OrdinaryFront &&
+         !relation.id.hardRail.has_value() &&
+         !relation.id.periodicRelation.has_value()) ||
+        (relation.id.kind == SurfaceOccurrenceRelationKind::HardRail &&
+         relation.id.hardRail.has_value() &&
+         !relation.id.periodicRelation.has_value()) ||
+        (relation.id.kind == SurfaceOccurrenceRelationKind::Periodic &&
+         !relation.id.hardRail.has_value() &&
+         relation.id.periodicRelation.has_value()) ||
+        (relation.id.kind == SurfaceOccurrenceRelationKind::SingularityPort &&
+         !relation.id.hardRail.has_value() &&
+         !relation.id.periodicRelation.has_value());
+    if (!ownerValid || relation.id != expectedId) {
+      error.code = SurfaceOccurrenceComplexErrorCode::UnownedRelation;
+      error.relation = relation.id;
+      return error;
+    }
+    if (!relationIds.insert(relation.id).second) {
+      error.code =
+          SurfaceOccurrenceComplexErrorCode::DuplicateRelationDeclaration;
+      error.relation = relation.id;
+      return error;
+    }
+  }
+
+  OccurrenceComplexCertificate certificate;
+  certificate.cellCount = cells.size();
+  certificate.occurrenceCount = occurrences.size();
+  certificate.directedSideCount = cells.size() * 4U;
+  certificate.ownedRelationCount = relations.size();
+  certificate.exactCellOwnership = true;
+  certificate.exactCornerOwnership = true;
+  certificate.exactDirectedSideCycles = true;
+  certificate.exactRelationEndpointOwnership = true;
+  certificate.geometricCoincidenceInferenceUsed = false;
+  return SurfaceOccurrenceComplex(std::move(cells), std::move(occurrences),
+                                  std::move(relations), certificate);
+}
+
+SurfaceOccurrenceComplexProducer::ConstructionResult
+SurfaceOccurrenceComplexProducer::produce(
+    const Eigen::MatrixXd &sourceVertices, const Eigen::MatrixXi &sourceFaces,
+    const geometry::SurfacePhaseFrontProduct &phaseFront) {
+  SurfaceOccurrenceComplexError error;
+  if (sourceVertices.cols() != 3 || sourceFaces.cols() != 3 ||
+      phaseFront.cells().empty() ||
+      phaseFront.sourceTopologyRegions().face_count() !=
+          static_cast<std::size_t>(sourceFaces.rows())) {
+    error.code = SurfaceOccurrenceComplexErrorCode::SourceAuthorityMismatch;
+    return error;
+  }
+
+  std::set<authority::SourceEdgeTopologyKey> hardFeatureEdges;
+  for (const geometry::SurfaceFrontEdge &edge : phaseFront.edges()) {
+    if (edge.boundaryKind != geometry::SurfaceFrontBoundaryKind::HardRail) {
+      continue;
+    }
+    for (const authority::TransitionStep &step : edge.route.steps()) {
+      hardFeatureEdges.insert(step.topology());
+    }
+  }
+  const geometry::SourceChartTransitionGraph chartTransitions(
+      sourceFaces, phaseFront.sourceTopologyRegions(), hardFeatureEdges);
+  if (!chartTransitions.available()) {
+    error.code = SurfaceOccurrenceComplexErrorCode::InvalidChartAuthority;
+    return error;
+  }
+  const geometry::SurfacePointSourceSupportResolver supportResolver(sourceFaces);
+
+  std::map<authority::TopologyRegionId,
+           const geometry::SurfaceTopologyRegion *>
+      regionById;
+  for (const geometry::SurfaceTopologyRegion &region :
+       phaseFront.sourceTopologyRegions().regions()) {
+    if (!regionById.emplace(region.id(), &region).second) {
+      error.code = SurfaceOccurrenceComplexErrorCode::SourceAuthorityMismatch;
+      return error;
+    }
+  }
+
+  const auto source_face_id = [&](const int face)
+      -> std::optional<authority::SourceFaceId> {
+    const auto id = authority::SourceFaceId::from_index(
+        face, static_cast<std::size_t>(sourceFaces.rows()));
+    return id ? std::optional<authority::SourceFaceId>(id.value())
+              : std::nullopt;
+  };
+  const auto make_surface_point = [&](const geometry::SurfaceTracePoint &trace) {
+    geometry::SurfacePoint point;
+    if (trace.face < 0 || trace.face >= sourceFaces.rows() ||
+        !trace.barycentric.allFinite() ||
+        std::abs(trace.barycentric.sum() - 1.0) > 1.0e-8 ||
+        trace.barycentric.minCoeff() < -1.0e-8) {
+      return point;
+    }
+    point.face = trace.face;
+    point.component = -1;
+    point.sheet = -1;
+    point.barycentric = trace.barycentric.transpose();
+    point.position =
+        point.barycentric(0) *
+            sourceVertices.row(sourceFaces(trace.face, 0)).transpose() +
+        point.barycentric(1) *
+            sourceVertices.row(sourceFaces(trace.face, 1)).transpose() +
+        point.barycentric(2) *
+            sourceVertices.row(sourceFaces(trace.face, 2)).transpose();
+    point.squaredDistance = 0.0;
+    return point;
+  };
+
+  std::vector<SurfaceOccurrenceCell> cells;
+  std::vector<SurfaceOccurrence> occurrences;
+  cells.reserve(phaseFront.cells().size());
+  occurrences.reserve(phaseFront.cells().size() * 4U);
+  std::map<authority::CellId, std::array<authority::OccurrenceId, 4>>
+      occurrenceIdsByCell;
+
+  for (const geometry::SurfacePhaseFrontCell &cell : phaseFront.cells()) {
+    const auto region = regionById.find(cell.sourceTopologyRegion);
+    if (!cell.orientationValidated || region == regionById.end()) {
+      error.code = SurfaceOccurrenceComplexErrorCode::MissingCellOwnership;
+      error.cell = cell.id;
+      return error;
+    }
+
+    std::array<authority::OccurrenceId, 4> cornerOccurrences = {
+        authority::OccurrenceId::from_cell_corner(cell.id, 0).value(),
+        authority::OccurrenceId::from_cell_corner(cell.id, 1).value(),
+        authority::OccurrenceId::from_cell_corner(cell.id, 2).value(),
+        authority::OccurrenceId::from_cell_corner(cell.id, 3).value()};
+    if (!occurrenceIdsByCell.emplace(cell.id, cornerOccurrences).second) {
+      error.code = SurfaceOccurrenceComplexErrorCode::DuplicateCellOwnership;
+      error.cell = cell.id;
+      return error;
+    }
+
+    std::array<std::pair<authority::OccurrenceId, authority::OccurrenceId>, 4>
+        directedSides = {
+            std::pair{cornerOccurrences[0], cornerOccurrences[1]},
+            std::pair{cornerOccurrences[1], cornerOccurrences[2]},
+            std::pair{cornerOccurrences[2], cornerOccurrences[3]},
+            std::pair{cornerOccurrences[3], cornerOccurrences[0]}};
+    cells.emplace_back(cell.id, cornerOccurrences, directedSides);
+
+    for (int corner = 0; corner < 4; ++corner) {
+      const geometry::SurfaceTracePoint &trace =
+          cell.corners[static_cast<std::size_t>(corner)];
+      const auto faceId = source_face_id(trace.face);
+      if (!faceId.has_value() ||
+          phaseFront.sourceTopologyRegions().region_for_row(*faceId) !=
+              cell.sourceTopologyRegion) {
+        error.code = SurfaceOccurrenceComplexErrorCode::InvalidCornerAuthority;
+        error.cell = cell.id;
+        error.occurrence = cornerOccurrences[static_cast<std::size_t>(corner)];
+        return error;
+      }
+      const authority::SourceComponentId component =
+          phaseFront.sourceTopologyRegions().component_for_row(*faceId);
+      const authority::IsolationSheetId sheet =
+          phaseFront.sourceTopologyRegions().sheet_for_row(*faceId);
+      if (component != region->second->component() ||
+          !std::binary_search(region->second->isolation_sheets().begin(),
+                              region->second->isolation_sheets().end(), sheet)) {
+        error.code = SurfaceOccurrenceComplexErrorCode::InvalidCornerAuthority;
+        error.cell = cell.id;
+        error.occurrence = cornerOccurrences[static_cast<std::size_t>(corner)];
+        return error;
+      }
+
+      geometry::SurfacePoint point = make_surface_point(trace);
+      const auto support = supportResolver.resolve(point);
+      const geometry::LocalLatticeState &lattice =
+          cell.lattice[static_cast<std::size_t>(corner)];
+      if (!point.valid() || !point.position.allFinite() || !support.valid() ||
+          !support.identity.has_value() || !lattice.sourceChart.has_value()) {
+        error.code = SurfaceOccurrenceComplexErrorCode::InvalidCornerAuthority;
+        error.cell = cell.id;
+        error.occurrence = cornerOccurrences[static_cast<std::size_t>(corner)];
+        return error;
+      }
+      const geometry::SourceProjectionChart projectionChart(
+          lattice.sourceChart.value(),
+          phaseFront.sourceTopologyRegions().topology_for_row(*faceId));
+      const int componentIndex =
+          chartTransitions.chart_component(projectionChart);
+      const geometry::SourceChartComponentIdentity &componentIdentity =
+          chartTransitions.chart_component_identity(componentIndex);
+      if (componentIndex < 0 || !componentIdentity.valid) {
+        error.code = SurfaceOccurrenceComplexErrorCode::InvalidChartAuthority;
+        error.cell = cell.id;
+        error.occurrence = cornerOccurrences[static_cast<std::size_t>(corner)];
+        return error;
+      }
+      occurrences.emplace_back(
+          cornerOccurrences[static_cast<std::size_t>(corner)], std::move(point),
+          support.identity.value(), projectionChart, componentIdentity, lattice,
+          cell.sourceTopologyRegion, sheet);
+    }
+  }
+
+  std::vector<SurfaceOccurrenceRelation> relations;
+  relations.reserve(phaseFront.edges().size());
+  for (int edgeIndex = 0;
+       edgeIndex < static_cast<int>(phaseFront.edges().size()); ++edgeIndex) {
+    const geometry::SurfaceFrontEdge &first =
+        phaseFront.edges()[static_cast<std::size_t>(edgeIndex)];
+    if (first.oppositeEdge < 0 || edgeIndex > first.oppositeEdge) continue;
+    if (first.oppositeEdge >= static_cast<int>(phaseFront.edges().size())) {
+      error.code = SurfaceOccurrenceComplexErrorCode::UnownedRelation;
+      return error;
+    }
+    const geometry::SurfaceFrontEdge &second =
+        phaseFront.edges()[static_cast<std::size_t>(first.oppositeEdge)];
+    const auto firstCell = occurrenceIdsByCell.find(first.filledCell);
+    const auto secondCell = occurrenceIdsByCell.find(second.filledCell);
+    if (firstCell == occurrenceIdsByCell.end() ||
+        secondCell == occurrenceIdsByCell.end() || first.filledSide < 0 ||
+        first.filledSide >= 4 || second.filledSide < 0 ||
+        second.filledSide >= 4) {
+      error.code = SurfaceOccurrenceComplexErrorCode::RelationEndpointMissing;
+      return error;
+    }
+
+    SurfaceOccurrenceRelationKind relationKind;
+    std::optional<authority::HardRailId> hardRail;
+    std::optional<authority::PeriodicRelationId> periodicRelation;
+    if (first.boundaryKind == geometry::SurfaceFrontBoundaryKind::OrdinaryInterior &&
+        second.boundaryKind == first.boundaryKind) {
+      relationKind = SurfaceOccurrenceRelationKind::OrdinaryFront;
+    } else if (first.boundaryKind == geometry::SurfaceFrontBoundaryKind::HardRail &&
+               second.boundaryKind == first.boundaryKind) {
+      if (first.railId.has_value() && second.railId.has_value() &&
+          first.railId != second.railId) {
+        error.code = SurfaceOccurrenceComplexErrorCode::UnownedRelation;
+        return error;
+      }
+      hardRail = first.railId.has_value() ? first.railId : second.railId;
+      if (!hardRail.has_value()) {
+        error.code = SurfaceOccurrenceComplexErrorCode::UnownedRelation;
+        return error;
+      }
+      relationKind = SurfaceOccurrenceRelationKind::HardRail;
+    } else if (first.boundaryKind ==
+                   geometry::SurfaceFrontBoundaryKind::PeriodicCut &&
+               second.boundaryKind == first.boundaryKind &&
+               first.periodicRelation.has_value() &&
+               first.periodicRelation == second.periodicRelation) {
+      periodicRelation = first.periodicRelation;
+      relationKind = SurfaceOccurrenceRelationKind::Periodic;
+    } else {
+      error.code = SurfaceOccurrenceComplexErrorCode::UnownedRelation;
+      return error;
+    }
+
+    const std::size_t firstSide = static_cast<std::size_t>(first.filledSide);
+    const std::size_t secondSide = static_cast<std::size_t>(second.filledSide);
+    const std::array<std::pair<authority::OccurrenceId, authority::OccurrenceId>,
+                     2>
+        endpointPairs = {
+            std::pair{firstCell->second[firstSide],
+                      secondCell->second[(secondSide + 1U) % 4U]},
+            std::pair{firstCell->second[(firstSide + 1U) % 4U],
+                      secondCell->second[secondSide]}};
+    for (const auto &[firstOccurrence, secondOccurrence] : endpointPairs) {
+      relations.emplace_back(
+          make_occurrence_relation_id(relationKind, firstOccurrence,
+                                      secondOccurrence, hardRail,
+                                      periodicRelation),
+          firstOccurrence, secondOccurrence, edgeIndex, first.oppositeEdge);
+    }
+  }
+
+  return publish_records_for_validation(std::move(cells),
+                                        std::move(occurrences),
+                                        std::move(relations));
+}
+
 AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     const Eigen::MatrixXd &sourceVertices,
     const Eigen::MatrixXi &sourceFaces,
@@ -3056,54 +3478,6 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     return id ? std::optional<authority::SourceFaceId>(id.value())
               : std::nullopt;
   };
-  const auto make_surface_point = [&](const geometry::SurfaceTracePoint &trace) {
-    geometry::SurfacePoint point;
-    if (trace.face < 0 || trace.face >= sourceFaces.rows() ||
-        !trace.barycentric.allFinite() ||
-        std::abs(trace.barycentric.sum() - 1.0) > 1.0e-8 ||
-        trace.barycentric.minCoeff() < -1.0e-8) {
-      return point;
-    }
-    const auto faceId = source_face_id(trace.face);
-    if (!faceId.has_value()) {
-      return point;
-    }
-    point.face = trace.face;
-    // Semantic component/sheet ownership stays in typed source authority and
-    // lineage support. SurfacePoint's legacy integer fields are representation
-    // payload only and must not mirror typed authority IDs.
-    point.component = -1;
-    point.sheet = -1;
-    point.barycentric = trace.barycentric.transpose();
-    point.position =
-        point.barycentric(0) *
-            sourceVertices.row(sourceFaces(trace.face, 0)).transpose() +
-        point.barycentric(1) *
-            sourceVertices.row(sourceFaces(trace.face, 1)).transpose() +
-        point.barycentric(2) *
-            sourceVertices.row(sourceFaces(trace.face, 2)).transpose();
-    point.squaredDistance = 0.0;
-    return point;
-  };
-  const geometry::SurfacePointSourceSupportResolver sourceSupportResolver(
-      sourceFaces);
-  std::set<authority::SourceEdgeTopologyKey> phaseFrontHardFeatureEdges;
-  for (const geometry::SurfaceFrontEdge &edge : phaseFront.edges()) {
-    if (edge.boundaryKind != geometry::SurfaceFrontBoundaryKind::HardRail) {
-      continue;
-    }
-    for (const authority::TransitionStep &step : edge.route.steps()) {
-      phaseFrontHardFeatureEdges.insert(step.topology());
-    }
-  }
-  const geometry::SourceChartTransitionGraph sourceChartTransitions(
-      sourceFaces, phaseFront.sourceTopologyRegions(),
-      phaseFrontHardFeatureEdges);
-  if (!sourceChartTransitions.available()) {
-    result.failure = "MissingAuthoritativeSourceChartTransitions";
-    return result;
-  }
-
   std::map<authority::TopologyRegionId,
            const geometry::SurfaceTopologyRegion *> topologyRegionById;
   if (phaseFront.sourceTopologyRegions().face_count() !=
@@ -3328,34 +3702,42 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     }
   }
 
-  struct OccurrenceData {
-    OccurrenceData(authority::OccurrenceId occurrenceId,
-                   geometry::SurfacePoint sourcePoint,
-                   authority::SourceSupport sourceSupport,
-                   geometry::SourceProjectionChart sourceChart,
-                   geometry::SourceChartComponentIdentity componentIdentity,
-                   geometry::LocalLatticeState latticeState,
-                   authority::TopologyRegionId region,
-                   authority::IsolationSheetId sheet, int cornerIndex)
-        : id(occurrenceId), point(std::move(sourcePoint)),
-          support(std::move(sourceSupport)), chart(std::move(sourceChart)),
-          chartComponent(std::move(componentIdentity)),
-          lattice(std::move(latticeState)), topologyRegion(region),
-          isolationSheet(sheet), corner(cornerIndex) {}
+  auto occurrenceConstruction = SurfaceOccurrenceComplexProducer::produce(
+      sourceVertices, sourceFaces, phaseFront);
+  const auto *occurrenceComplex =
+      std::get_if<SurfaceOccurrenceComplex>(&occurrenceConstruction);
+  if (occurrenceComplex == nullptr) {
+    const auto *occurrenceError =
+        std::get_if<SurfaceOccurrenceComplexError>(&occurrenceConstruction);
+    result.failure = occurrenceError == nullptr
+                         ? "OccurrenceUnknownFailure"
+                         : surface_occurrence_complex_error_name(
+                               occurrenceError->code);
+    if (occurrenceError != nullptr && occurrenceError->cell.has_value()) {
+      result.invalidCell =
+          static_cast<int>(occurrenceError->cell->index());
+    }
+    return result;
+  }
 
-    authority::OccurrenceId id;
-    geometry::SurfacePoint point;
-    authority::SourceSupport support;
-    geometry::SourceProjectionChart chart;
-    geometry::SourceChartComponentIdentity chartComponent;
-    geometry::LocalLatticeState lattice;
-    authority::TopologyRegionId topologyRegion;
-    authority::IsolationSheetId isolationSheet;
-    int corner = -1;
-  };
-  const int occurrenceCount = static_cast<int>(phaseFront.cells().size()) * 4;
-  std::vector<OccurrenceData> occurrences;
-  occurrences.reserve(static_cast<std::size_t>(occurrenceCount));
+  const auto &occurrences = occurrenceComplex->occurrences();
+  const int occurrenceCount = static_cast<int>(occurrences.size());
+  std::map<authority::CellId, const SurfaceOccurrenceCell *> occurrenceCellById;
+  for (const SurfaceOccurrenceCell &cell : occurrenceComplex->cells()) {
+    occurrenceCellById.emplace(cell.id, &cell);
+  }
+  std::map<authority::OccurrenceId, int> occurrenceIndexById;
+  for (int occurrenceIndex = 0; occurrenceIndex < occurrenceCount;
+       ++occurrenceIndex) {
+    if (!occurrenceIndexById
+             .emplace(occurrences[static_cast<std::size_t>(occurrenceIndex)].id,
+                      occurrenceIndex)
+             .second) {
+      result.failure = "OccurrenceDuplicateCorner";
+      return result;
+    }
+  }
+
   std::vector<int> parents(static_cast<std::size_t>(occurrenceCount));
   std::vector<int> ranks(static_cast<std::size_t>(occurrenceCount), 0);
   std::iota(parents.begin(), parents.end(), 0);
@@ -3403,107 +3785,17 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       return result;
     }
   }
-  using OccurrenceOwnerKey = std::pair<authority::CellId, int>;
-  std::set<OccurrenceOwnerKey> occurrenceOwnerKeys;
-  for (const auto &cell : phaseFront.cells()) {
-    for (int corner = 0; corner < 4; ++corner) {
-      if (!occurrenceOwnerKeys.emplace(cell.id, corner).second) {
-        result.invalidCell = static_cast<int>(cell.id.index());
-        result.failure = "InvalidAuthoritativePhaseFrontCorner";
-        return result;
-      }
-    }
-  }
-  if (occurrenceOwnerKeys.size() != static_cast<std::size_t>(occurrenceCount)) {
-    result.failure = "InvalidAuthoritativePhaseFrontCorner";
-    return result;
-  }
-  std::map<OccurrenceOwnerKey, authority::OccurrenceId> occurrenceIdByOwner;
-  std::size_t canonicalOccurrenceOrdinal = 0U;
-  for (const OccurrenceOwnerKey &owner : occurrenceOwnerKeys) {
-    const auto occurrenceId = authority::OccurrenceId::from_index(
-        static_cast<std::int64_t>(canonicalOccurrenceOrdinal),
-        static_cast<std::size_t>(occurrenceCount));
-    if (!occurrenceId ||
-        !occurrenceIdByOwner.emplace(owner, occurrenceId.value()).second) {
-      result.failure = "InvalidAuthoritativePhaseFrontCorner";
-      return result;
-    }
-    ++canonicalOccurrenceOrdinal;
-  }
+
   std::set<authority::TopologyRegionId> consumedTopologyRegions;
-  for (int cellIndex = 0;
-       cellIndex < static_cast<int>(phaseFront.cells().size()); ++cellIndex) {
-    const auto &cell = phaseFront.cells()[static_cast<std::size_t>(cellIndex)];
-    result.invalidCell = static_cast<int>(cell.id.index());
-    const auto region = topologyRegionById.find(cell.sourceTopologyRegion);
-    if (!cell.orientationValidated || region == topologyRegionById.end() ||
-        regionSheetsById.at(cell.sourceTopologyRegion).empty() ||
-        !isolation_sheets_connected_typed(
-            cell.sourceTopologyRegion,
-            regionSheetsById.at(cell.sourceTopologyRegion))) {
-      result.failure = "InvalidAuthoritativePhaseFrontCell";
-      return result;
-    }
-    consumedTopologyRegions.insert(cell.sourceTopologyRegion);
-    for (int corner = 0; corner < 4; ++corner) {
-      const auto &trace = cell.corners[static_cast<std::size_t>(corner)];
-      const auto faceId = source_face_id(trace.face);
-      if (!faceId.has_value()) {
-        result.failure = "AuthoritativePhaseFrontSourceLabelMismatch";
-        return result;
-      }
-      const authority::SourceComponentId typedComponent =
-          phaseFront.sourceTopologyRegions().component_for_row(*faceId);
-      const authority::IsolationSheetId typedSheet =
-          phaseFront.sourceTopologyRegions().sheet_for_row(*faceId);
-      if (typedComponent != region->second->component() ||
-          phaseFront.sourceTopologyRegions().region_for_row(*faceId) !=
-              cell.sourceTopologyRegion ||
-          !std::binary_search(
-              regionSheetsById.at(cell.sourceTopologyRegion).begin(),
-              regionSheetsById.at(cell.sourceTopologyRegion).end(),
-              typedSheet)) {
-        result.failure = "AuthoritativePhaseFrontSourceLabelMismatch";
-        return result;
-      }
-      geometry::SurfacePoint point = make_surface_point(trace);
-      const auto resolvedSupport = sourceSupportResolver.resolve(point);
-      const geometry::LocalLatticeState &lattice =
-          cell.lattice[static_cast<std::size_t>(corner)];
-      const auto occurrenceOwner =
-          occurrenceIdByOwner.find(OccurrenceOwnerKey{cell.id, corner});
-      if (!point.valid() || !point.position.allFinite() ||
-          !resolvedSupport.valid() || !resolvedSupport.identity.has_value() ||
-          !lattice.sourceChart.has_value() ||
-          occurrenceOwner == occurrenceIdByOwner.end()) {
-        result.failure = "InvalidAuthoritativePhaseFrontCorner";
-        return result;
-      }
-      const geometry::SourceProjectionChart projectionChart(
-          lattice.sourceChart.value(),
-          phaseFront.sourceTopologyRegions().topology_for_row(*faceId));
-      const int chartComponent =
-          sourceChartTransitions.chart_component(projectionChart);
-      const geometry::SourceChartComponentIdentity &componentIdentity =
-          sourceChartTransitions.chart_component_identity(chartComponent);
-      if (chartComponent < 0 || !componentIdentity.valid) {
-        result.failure = "InvalidAuthoritativePhaseFrontChartComponent";
-        return result;
-      }
-      occurrences.emplace_back(
-          occurrenceOwner->second, std::move(point),
-          resolvedSupport.identity.value(), projectionChart, componentIdentity,
-          lattice, cell.sourceTopologyRegion, typedSheet, corner);
-    }
+  for (const SurfaceOccurrence &occurrence : occurrences) {
+    consumedTopologyRegions.insert(occurrence.topologyRegion);
   }
   if (consumedTopologyRegions.size() != topologyRegionById.size()) {
     result.failure = "IncompleteAuthoritativeTopologyRegionConsumption";
     return result;
   }
 
-  std::vector<int> edgeByCellSide(
-      static_cast<std::size_t>(occurrenceCount), -1);
+  std::map<std::pair<authority::CellId, int>, int> edgeByCellSide;
   std::vector<std::vector<authority::SourceEdgeTopologyKey>>
       isolationSeamsByFrontEdge(phaseFront.edges().size());
   const auto exact_interior_route_valid =
@@ -3543,9 +3835,9 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     }
     const auto &owner =
         phaseFront.cells()[static_cast<std::size_t>(cell->second)];
-    const int slot = cell->second * 4 + edge.filledSide;
+    const auto sideOwner = std::pair{edge.filledCell, edge.filledSide};
     const auto edgeRegion = topologyRegionById.find(edge.sourceTopologyRegion);
-    if (edgeByCellSide[static_cast<std::size_t>(slot)] >= 0 ||
+    if (edgeByCellSide.count(sideOwner) != 0U ||
         edge.sourceTopologyRegion != owner.sourceTopologyRegion ||
         edgeRegion == topologyRegionById.end() ||
         !trace_equal(edge.from,
@@ -3563,7 +3855,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       result.failure = "InvalidAuthoritativePhaseFrontSideAuthority";
       return result;
     }
-    edgeByCellSide[static_cast<std::size_t>(slot)] = edgeIndex;
+    edgeByCellSide.emplace(sideOwner, edgeIndex);
     auto &crossedIsolationSeams =
         isolationSeamsByFrontEdge[static_cast<std::size_t>(edgeIndex)];
     for (const auto &segment :
@@ -3665,10 +3957,18 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       break;
     }
   }
-  if (std::any_of(edgeByCellSide.begin(), edgeByCellSide.end(),
-                  [](const int edge) { return edge < 0; })) {
+  if (edgeByCellSide.size() !=
+      occurrenceComplex->certificate().directedSideCount) {
     result.failure = "IncompleteAuthoritativePhaseFrontSides";
     return result;
+  }
+  for (const SurfaceOccurrenceCell &cell : occurrenceComplex->cells()) {
+    for (int side = 0; side < 4; ++side) {
+      if (edgeByCellSide.count({cell.id, side}) != 1U) {
+        result.failure = "IncompleteAuthoritativePhaseFrontSides";
+        return result;
+      }
+    }
   }
 
   std::map<authority::PeriodicRelationId,
@@ -3748,6 +4048,21 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     return occurrence_face_contains_carrier(
         branchAuthority.occurrenceCarrierFace, carrier);
   };
+  std::map<std::pair<int, int>,
+           std::vector<const SurfaceOccurrenceRelation *>>
+      occurrenceRelationsByFrontPair;
+  for (const SurfaceOccurrenceRelation &relation :
+       occurrenceComplex->owned_relations()) {
+    const int firstEdge = std::min(relation.firstFrontEdge, relation.secondFrontEdge);
+    const int secondEdge = std::max(relation.firstFrontEdge, relation.secondFrontEdge);
+    if (firstEdge < 0 || secondEdge < 0 ||
+        secondEdge >= static_cast<int>(phaseFront.edges().size())) {
+      result.failure = "OccurrenceUnownedRelation";
+      return result;
+    }
+    occurrenceRelationsByFrontPair[{firstEdge, secondEdge}].push_back(&relation);
+  }
+
   for (int edgeIndex = 0;
        edgeIndex < static_cast<int>(phaseFront.edges().size()); ++edgeIndex) {
     const auto &first = phaseFront.edges()[static_cast<std::size_t>(edgeIndex)];
@@ -3766,18 +4081,33 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       result.failure = "IncompatibleAuthoritativeFrontPair";
       return result;
     }
-    const int firstCell = cellIndexById[first.filledCell];
-    const int secondCell = cellIndexById[second.filledCell];
-    const int firstFrom = firstCell * 4 + first.filledSide;
-    const int firstTo = firstCell * 4 + (first.filledSide + 1) % 4;
-    const int secondFrom = secondCell * 4 + second.filledSide;
-    const int secondTo = secondCell * 4 + (second.filledSide + 1) % 4;
-    if (occurrences[static_cast<std::size_t>(firstFrom)].support !=
-            occurrences[static_cast<std::size_t>(secondTo)].support ||
-        occurrences[static_cast<std::size_t>(firstTo)].support !=
-            occurrences[static_cast<std::size_t>(secondFrom)].support) {
-      result.failure = "AuthoritativeFrontPairSourceSupportMismatch";
+    const auto pairRelations = occurrenceRelationsByFrontPair.find(
+        {edgeIndex, secondIndex});
+    if (pairRelations == occurrenceRelationsByFrontPair.end() ||
+        pairRelations->second.size() != 2U) {
+      result.failure = "OccurrenceRelationEndpointMissing";
       return result;
+    }
+    std::array<std::pair<int, int>, 2> relationOccurrenceIndices;
+    for (std::size_t relationIndex = 0; relationIndex < 2U; ++relationIndex) {
+      const SurfaceOccurrenceRelation &relation =
+          *pairRelations->second[relationIndex];
+      const auto firstOccurrence =
+          occurrenceIndexById.find(relation.firstOccurrence);
+      const auto secondOccurrence =
+          occurrenceIndexById.find(relation.secondOccurrence);
+      if (firstOccurrence == occurrenceIndexById.end() ||
+          secondOccurrence == occurrenceIndexById.end()) {
+        result.failure = "OccurrenceRelationEndpointMissing";
+        return result;
+      }
+      relationOccurrenceIndices[relationIndex] =
+          {firstOccurrence->second, secondOccurrence->second};
+      if (occurrences[static_cast<std::size_t>(firstOccurrence->second)].support !=
+          occurrences[static_cast<std::size_t>(secondOccurrence->second)].support) {
+        result.failure = "AuthoritativeFrontPairSourceSupportMismatch";
+        return result;
+      }
     }
 
     geometry::PureQuadEquivalenceProvenance equivalence;
@@ -3808,11 +4138,14 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
           std::unique(equivalence.isolationSeams.begin(),
                       equivalence.isolationSeams.end()),
           equivalence.isolationSeams.end());
-      const bool crossesSheets =
-          occurrences[static_cast<std::size_t>(firstFrom)].isolationSheet !=
-              occurrences[static_cast<std::size_t>(secondTo)].isolationSheet ||
-          occurrences[static_cast<std::size_t>(firstTo)].isolationSheet !=
-              occurrences[static_cast<std::size_t>(secondFrom)].isolationSheet;
+      const bool crossesSheets = std::any_of(
+          relationOccurrenceIndices.begin(), relationOccurrenceIndices.end(),
+          [&](const auto &pair) {
+            return occurrences[static_cast<std::size_t>(pair.first)]
+                       .isolationSheet !=
+                   occurrences[static_cast<std::size_t>(pair.second)]
+                       .isolationSheet;
+          });
       if (crossesSheets && equivalence.isolationSeams.empty()) {
         result.failure = "MissingIsolationSeamEquivalenceAuthority";
         return result;
@@ -4011,20 +4344,13 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       step.appliedTransport = selectedAppliedTransport.value();
       return step;
     };
-    const bool selectedFirstJoin = unite(firstFrom, secondTo);
-    if (selectedFirstJoin) {
+    for (const auto &[firstOccurrence, secondOccurrence] :
+         relationOccurrenceIndices) {
+      if (!unite(firstOccurrence, secondOccurrence)) continue;
       selectedQuotientJoins.push_back(
-          {firstFrom, secondTo, selected_step(firstFrom, secondTo)});
-      for (const int occurrence : {firstFrom, secondTo}) {
-        occurrenceEquivalences[static_cast<std::size_t>(occurrence)].push_back(
-            equivalence);
-      }
-    }
-    const bool selectedSecondJoin = unite(firstTo, secondFrom);
-    if (selectedSecondJoin) {
-      selectedQuotientJoins.push_back(
-          {firstTo, secondFrom, selected_step(firstTo, secondFrom)});
-      for (const int occurrence : {firstTo, secondFrom}) {
+          {firstOccurrence, secondOccurrence,
+           selected_step(firstOccurrence, secondOccurrence)});
+      for (const int occurrence : {firstOccurrence, secondOccurrence}) {
         occurrenceEquivalences[static_cast<std::size_t>(occurrence)].push_back(
             equivalence);
       }
@@ -4362,8 +4688,20 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     pending.cellIndex = cellIndex;
     std::array<Eigen::RowVector3d, 4> positions;
     Eigen::RowVector3d expectedNormal = Eigen::RowVector3d::Zero();
+    const auto occurrenceCell = occurrenceCellById.find(cell.id);
+    if (occurrenceCell == occurrenceCellById.end()) {
+      result.failure = "OccurrenceMissingCellOwnership";
+      return result;
+    }
     for (int corner = 0; corner < 4; ++corner) {
-      const int root = find_root(cellIndex * 4 + corner);
+      const authority::OccurrenceId occurrenceId =
+          occurrenceCell->second->cornerOccurrences[static_cast<std::size_t>(corner)];
+      const auto occurrence = occurrenceIndexById.find(occurrenceId);
+      if (occurrence == occurrenceIndexById.end()) {
+        result.failure = "OccurrenceMissingCorner";
+        return result;
+      }
+      const int root = find_root(occurrence->second);
       pending.vertices.push_back(outputVertexByRoot[root]);
       positions[static_cast<std::size_t>(corner)] =
           result.mesh.vertexPositions.row(pending.vertices.back());
@@ -4439,7 +4777,9 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       }
       meshEdges[std::minmax(from, to)].push_back(
           {outputQuad, side,
-           edgeByCellSide[static_cast<std::size_t>(pending.cellIndex * 4 + side)],
+           edgeByCellSide.at({
+               phaseFront.cells()[static_cast<std::size_t>(pending.cellIndex)].id,
+               side}),
            from, to});
     }
   }
@@ -12918,7 +13258,7 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
   std::size_t nextTopologyRegion = 0U;
   std::size_t nextFieldChart = 0U;
   int frontEdgeOffset = 0;
-  std::size_t occurrenceOffset = 0U;
+  std::size_t occurrenceCellOffset = 0U;
   std::size_t quotientClassOffset = 0U;
   std::map<authority::PeriodicRelationId,
            std::tuple<authority::GridAutomorphism, authority::CanonicalRoute,
@@ -13611,17 +13951,25 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
         occurrenceIdRemap;
     std::map<authority::QuotientClassId, authority::QuotientClassId>
         quotientClassIdRemap;
+    std::size_t localMaximumOccurrenceCell = 0U;
+    bool hasOccurrenceCell = false;
     const auto remap_occurrence_id = [&](const authority::OccurrenceId local)
         -> std::optional<authority::OccurrenceId> {
       const auto existing = occurrenceIdRemap.find(local);
       if (existing != occurrenceIdRemap.end()) return existing->second;
-      const std::size_t globalIndex = occurrenceOffset + occurrenceIdRemap.size();
-      if (globalIndex < occurrenceOffset) return std::nullopt;
-      const auto global = authority::OccurrenceId::from_index(
-          static_cast<std::int64_t>(globalIndex), globalIndex + 1U);
+      const std::size_t localCell = local.cell().index();
+      const std::size_t globalCell = occurrenceCellOffset + localCell;
+      if (globalCell < occurrenceCellOffset) return std::nullopt;
+      const auto remappedCell = authority::CellId::from_index(
+          static_cast<std::int64_t>(globalCell), globalCell + 1U);
+      if (!remappedCell) return std::nullopt;
+      const auto global = authority::OccurrenceId::from_cell_corner(
+          remappedCell.value(), local.canonical_corner_role());
       if (!global || !occurrenceIdRemap.emplace(local, global.value()).second) {
         return std::nullopt;
       }
+      localMaximumOccurrenceCell = std::max(localMaximumOccurrenceCell, localCell);
+      hasOccurrenceCell = true;
       return global.value();
     };
     const auto remap_quotient_class_id =
@@ -14154,7 +14502,9 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
     nextTopologyRegion = typedAuthorityDomain->nextTopologyRegion;
     nextFieldChart = typedAuthorityDomain->nextFieldChart;
     frontEdgeOffset += localMaximumFrontEdge + 1;
-    occurrenceOffset += occurrenceIdRemap.size();
+    if (hasOccurrenceCell) {
+      occurrenceCellOffset += localMaximumOccurrenceCell + 1U;
+    }
     quotientClassOffset += quotientClassIdRemap.size();
   }
 

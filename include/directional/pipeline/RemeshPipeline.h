@@ -31,6 +31,7 @@
 #include <thread>
 #include <tuple>
 #include <utility>
+#include <variant>
 #include <vector>
 
 #include <Eigen/Core>
@@ -53,6 +54,7 @@
 #include <directional/geometry/ReliefTopology.h>
 #include <directional/geometry/SurfaceArrangement.h>
 #include <directional/geometry/SurfaceCellTracing.h>
+#include <directional/geometry/SourceChartTransitions.h>
 #include <directional/geometry/SurfaceComplexSimplification.h>
 #include <directional/geometry/SurfaceMeshOptimizer.h>
 #include <directional/geometry/SurfaceOptimizationRailConstraints.h>
@@ -750,6 +752,176 @@ struct AuthoritativePhaseFrontMeshResult {
   std::size_t consumedPeriodicHolonomies = 0U;
   std::string failure;
   geometry::PureQuadMesh mesh;
+};
+
+enum class SurfaceOccurrenceRelationKind : std::uint8_t {
+  OrdinaryFront = 0,
+  HardRail = 1,
+  Periodic = 2,
+  SingularityPort = 3,
+};
+
+struct SurfaceOccurrenceRelationId {
+  SurfaceOccurrenceRelationId(
+      SurfaceOccurrenceRelationKind relationKind,
+      authority::OccurrenceId firstEndpoint,
+      authority::OccurrenceId secondEndpoint,
+      std::optional<authority::HardRailId> rail = std::nullopt,
+      std::optional<authority::PeriodicRelationId> periodic = std::nullopt)
+      : kind(relationKind), first(firstEndpoint), second(secondEndpoint),
+        hardRail(rail), periodicRelation(periodic) {}
+
+  SurfaceOccurrenceRelationKind kind =
+      SurfaceOccurrenceRelationKind::OrdinaryFront;
+  authority::OccurrenceId first;
+  authority::OccurrenceId second;
+  std::optional<authority::HardRailId> hardRail;
+  std::optional<authority::PeriodicRelationId> periodicRelation;
+
+  auto operator<=>(const SurfaceOccurrenceRelationId &) const = default;
+};
+
+struct SurfaceOccurrence {
+  SurfaceOccurrence(authority::OccurrenceId occurrenceId,
+                    geometry::SurfacePoint sourcePoint,
+                    authority::SourceSupport sourceSupport,
+                    geometry::SourceProjectionChart sourceChart,
+                    geometry::SourceChartComponentIdentity componentIdentity,
+                    geometry::LocalLatticeState latticeState,
+                    authority::TopologyRegionId region,
+                    authority::IsolationSheetId sheet)
+      : id(occurrenceId), point(std::move(sourcePoint)),
+        support(std::move(sourceSupport)), chart(std::move(sourceChart)),
+        chartComponent(std::move(componentIdentity)),
+        lattice(std::move(latticeState)), topologyRegion(region),
+        isolationSheet(sheet) {}
+
+  authority::OccurrenceId id;
+  geometry::SurfacePoint point;
+  authority::SourceSupport support;
+  geometry::SourceProjectionChart chart;
+  geometry::SourceChartComponentIdentity chartComponent;
+  geometry::LocalLatticeState lattice;
+  authority::TopologyRegionId topologyRegion;
+  authority::IsolationSheetId isolationSheet;
+};
+
+struct SurfaceOccurrenceCell {
+  SurfaceOccurrenceCell(
+      authority::CellId cellId,
+      std::array<authority::OccurrenceId, 4> cornerOccurrenceIds,
+      std::array<std::pair<authority::OccurrenceId, authority::OccurrenceId>, 4>
+          sideCycle)
+      : id(cellId), cornerOccurrences(std::move(cornerOccurrenceIds)),
+        directedSides(std::move(sideCycle)) {}
+
+  authority::CellId id;
+  std::array<authority::OccurrenceId, 4> cornerOccurrences;
+  std::array<std::pair<authority::OccurrenceId, authority::OccurrenceId>, 4>
+      directedSides;
+};
+
+struct SurfaceOccurrenceRelation {
+  SurfaceOccurrenceRelation(SurfaceOccurrenceRelationId relationId,
+                            authority::OccurrenceId firstEndpoint,
+                            authority::OccurrenceId secondEndpoint,
+                            int firstEdge, int secondEdge)
+      : id(std::move(relationId)), firstOccurrence(firstEndpoint),
+        secondOccurrence(secondEndpoint), firstFrontEdge(firstEdge),
+        secondFrontEdge(secondEdge) {}
+
+  SurfaceOccurrenceRelationId id;
+  authority::OccurrenceId firstOccurrence;
+  authority::OccurrenceId secondOccurrence;
+  int firstFrontEdge = -1;  // representation projection only
+  int secondFrontEdge = -1; // representation projection only
+};
+
+struct OccurrenceComplexCertificate {
+  std::size_t cellCount = 0U;
+  std::size_t occurrenceCount = 0U;
+  std::size_t directedSideCount = 0U;
+  std::size_t ownedRelationCount = 0U;
+  bool exactCellOwnership = false;
+  bool exactCornerOwnership = false;
+  bool exactDirectedSideCycles = false;
+  bool exactRelationEndpointOwnership = false;
+  bool geometricCoincidenceInferenceUsed = false;
+};
+
+enum class SurfaceOccurrenceComplexErrorCode : std::uint8_t {
+  SourceAuthorityMismatch = 0,
+  MissingCellOwnership = 1,
+  DuplicateCellOwnership = 2,
+  MissingCornerOccurrence = 3,
+  DuplicateCornerOccurrence = 4,
+  InvalidDirectedSideCycle = 5,
+  RelationEndpointMissing = 6,
+  DuplicateRelationDeclaration = 7,
+  UnownedRelation = 8,
+  InvalidCornerAuthority = 9,
+  InvalidChartAuthority = 10,
+};
+
+const char *surface_occurrence_complex_error_name(
+    SurfaceOccurrenceComplexErrorCode code);
+
+struct SurfaceOccurrenceComplexError {
+  SurfaceOccurrenceComplexErrorCode code =
+      SurfaceOccurrenceComplexErrorCode::SourceAuthorityMismatch;
+  std::optional<authority::CellId> cell;
+  std::optional<authority::OccurrenceId> occurrence;
+  std::optional<SurfaceOccurrenceRelationId> relation;
+};
+
+class SurfaceOccurrenceComplex {
+public:
+  [[nodiscard]] const std::vector<SurfaceOccurrenceCell> &cells() const noexcept {
+    return cells_;
+  }
+  [[nodiscard]] const std::vector<SurfaceOccurrence> &occurrences() const noexcept {
+    return occurrences_;
+  }
+  [[nodiscard]] const std::vector<SurfaceOccurrenceRelation> &owned_relations()
+      const noexcept {
+    return ownedRelations_;
+  }
+  [[nodiscard]] const OccurrenceComplexCertificate &certificate() const noexcept {
+    return certificate_;
+  }
+
+private:
+  friend class SurfaceOccurrenceComplexProducer;
+  SurfaceOccurrenceComplex(std::vector<SurfaceOccurrenceCell> cells,
+                           std::vector<SurfaceOccurrence> occurrences,
+                           std::vector<SurfaceOccurrenceRelation> relations,
+                           OccurrenceComplexCertificate certificate)
+      : cells_(std::move(cells)), occurrences_(std::move(occurrences)),
+        ownedRelations_(std::move(relations)),
+        certificate_(std::move(certificate)) {}
+
+  std::vector<SurfaceOccurrenceCell> cells_;
+  std::vector<SurfaceOccurrence> occurrences_;
+  std::vector<SurfaceOccurrenceRelation> ownedRelations_;
+  OccurrenceComplexCertificate certificate_;
+};
+
+class SurfaceOccurrenceComplexProducer {
+public:
+  using ConstructionResult =
+      std::variant<SurfaceOccurrenceComplex, SurfaceOccurrenceComplexError>;
+
+  static ConstructionResult produce(
+      const Eigen::MatrixXd &sourceVertices,
+      const Eigen::MatrixXi &sourceFaces,
+      const geometry::SurfacePhaseFrontProduct &phaseFront);
+
+  // Compile-visible A5 publication gate used by focused ownership tests. The
+  // production overload above is the only path that derives records from A4/M5.
+  static ConstructionResult publish_records_for_validation(
+      std::vector<SurfaceOccurrenceCell> cells,
+      std::vector<SurfaceOccurrence> occurrences,
+      std::vector<SurfaceOccurrenceRelation> relations);
 };
 
 AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(

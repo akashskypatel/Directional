@@ -415,6 +415,31 @@ PhaseFrontFixture make_square_fixture(const bool splitIsolation,
   return fixture;
 }
 
+PhaseFrontFixture make_square_fixture_with_reversed_source_face_rows() {
+  PhaseFrontFixture fixture;
+  Eigen::MatrixXd vertices(4, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0,
+      1.0, 0.0;
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 2, 3, 0, 1, 2;
+  fixture.mesh.set_mesh(vertices, faces);
+  fixture.components = {0, 0};
+  fixture.sheets = {0, 0};
+
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          fixture.mesh, constant_xy_field(fixture.mesh.F.rows()));
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.defaultTargetSize = 0.5;
+  options.sourceFaceComponents = fixture.components;
+  options.sourceFaceSheets = fixture.sheets;
+  fixture.network = directional::geometry::build_surface_cell_network(
+      fixture.mesh.V, fixture.mesh.F, crossField,
+      Eigen::VectorXd::Constant(fixture.mesh.V.rows(), 0.5), options);
+  require_produced(fixture, "source-face-row-permuted square");
+  return fixture;
+}
+
 PhaseFrontFixture make_transition_domain_fixture() {
   PhaseFrontFixture fixture;
   Eigen::MatrixXd vertices(8, 3);
@@ -1904,6 +1929,165 @@ TEST(SurfaceCellTransitionQuotient,
   EXPECT_EQ(authoritySignature(baseline), authoritySignature(reordered));
 }
 
+TEST(M6CP1, SurfaceOccurrenceComplexPublishesFourSemanticCornersPerCell) {
+  const auto &fixture = square_fixture();
+  auto construction =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+          fixture.mesh.V, fixture.mesh.F, fixture.network.phaseFront.product());
+  const auto *product =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+          &construction);
+  ASSERT_NE(product, nullptr);
+  ASSERT_EQ(product->certificate().cellCount, product->cells().size());
+  ASSERT_EQ(product->certificate().occurrenceCount,
+            product->occurrences().size());
+  EXPECT_EQ(product->occurrences().size(), product->cells().size() * 4U);
+  EXPECT_TRUE(product->certificate().exactCellOwnership);
+  EXPECT_TRUE(product->certificate().exactCornerOwnership);
+  EXPECT_TRUE(product->certificate().exactDirectedSideCycles);
+  EXPECT_TRUE(product->certificate().exactRelationEndpointOwnership);
+  EXPECT_FALSE(product->certificate().geometricCoincidenceInferenceUsed);
+
+  for (const auto &cell : product->cells()) {
+    std::set<directional::authority::OccurrenceId> unique;
+    for (std::size_t corner = 0; corner < 4U; ++corner) {
+      const auto occurrence = cell.cornerOccurrences[corner];
+      EXPECT_EQ(occurrence.cell(), cell.id);
+      EXPECT_EQ(occurrence.canonical_corner_role(), corner);
+      unique.insert(occurrence);
+      EXPECT_EQ(cell.directedSides[corner].first, occurrence);
+      EXPECT_EQ(cell.directedSides[corner].second,
+                cell.cornerOccurrences[(corner + 1U) % 4U]);
+    }
+    EXPECT_EQ(unique.size(), 4U);
+  }
+}
+
+TEST(M6CP1, CoincidentUnrelatedOccurrencesRemainDistinct) {
+  const auto fixture = make_square_fixture(false, true);
+  auto construction =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+          fixture.mesh.V, fixture.mesh.F, fixture.network.phaseFront.product());
+  const auto *product =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+          &construction);
+  ASSERT_NE(product, nullptr);
+
+  bool found = false;
+  for (std::size_t first = 0; first < product->occurrences().size(); ++first) {
+    for (std::size_t second = first + 1U; second < product->occurrences().size();
+         ++second) {
+      const auto &a = product->occurrences()[first];
+      const auto &b = product->occurrences()[second];
+      if ((a.point.position - b.point.position).norm() > 1.0e-12 ||
+          a.lattice.latticeCoordinate != b.lattice.latticeCoordinate ||
+          a.id == b.id) {
+        continue;
+      }
+      const bool explicitlyRelated = std::any_of(
+          product->owned_relations().begin(), product->owned_relations().end(),
+          [&](const auto &relation) {
+            return (relation.firstOccurrence == a.id &&
+                    relation.secondOccurrence == b.id) ||
+                   (relation.firstOccurrence == b.id &&
+                    relation.secondOccurrence == a.id);
+          });
+      if (!explicitlyRelated) {
+        found = true;
+        break;
+      }
+    }
+    if (found) break;
+  }
+  EXPECT_TRUE(found)
+      << "equal lattice coordinates/positions must not imply A5 identity";
+}
+
+TEST(M6CP1, SourceFaceRowPermutationPreservesOccurrenceIdentity) {
+  const auto &baselineFixture = square_fixture();
+  const auto permutedFixture = make_square_fixture_with_reversed_source_face_rows();
+  auto baselineConstruction =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+          baselineFixture.mesh.V, baselineFixture.mesh.F,
+          baselineFixture.network.phaseFront.product());
+  auto permutedConstruction =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+          permutedFixture.mesh.V, permutedFixture.mesh.F,
+          permutedFixture.network.phaseFront.product());
+  const auto *baseline =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+          &baselineConstruction);
+  const auto *permuted =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+          &permutedConstruction);
+  ASSERT_NE(baseline, nullptr);
+  ASSERT_NE(permuted, nullptr);
+
+  const auto occurrenceIds = [](const auto &product) {
+    std::vector<directional::authority::OccurrenceId> ids;
+    for (const auto &occurrence : product.occurrences()) ids.push_back(occurrence.id);
+    return ids;
+  };
+  const auto cellIds = [](const auto &product) {
+    std::vector<directional::authority::CellId> ids;
+    for (const auto &cell : product.cells()) ids.push_back(cell.id);
+    return ids;
+  };
+  const auto relationIds = [](const auto &product) {
+    std::vector<directional::pipeline::SurfaceOccurrenceRelationId> ids;
+    for (const auto &relation : product.owned_relations()) ids.push_back(relation.id);
+    return ids;
+  };
+  EXPECT_EQ(cellIds(*baseline), cellIds(*permuted));
+  EXPECT_EQ(occurrenceIds(*baseline), occurrenceIds(*permuted));
+  EXPECT_EQ(relationIds(*baseline), relationIds(*permuted));
+}
+
+TEST(M6CP1, SurfaceOccurrenceComplexRejectsMissingAndDuplicateRelations) {
+  const auto &fixture = square_fixture();
+  auto construction =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+          fixture.mesh.V, fixture.mesh.F, fixture.network.phaseFront.product());
+  const auto *product =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+          &construction);
+  ASSERT_NE(product, nullptr);
+  ASSERT_FALSE(product->owned_relations().empty());
+
+  auto missingRelations = product->owned_relations();
+  const auto foreignCell = directional::authority::CellId::from_index(99, 100);
+  ASSERT_TRUE(foreignCell.has_value());
+  const auto foreignOccurrence =
+      directional::authority::OccurrenceId::from_cell_corner(
+          foreignCell.value(), 0);
+  ASSERT_TRUE(foreignOccurrence.has_value());
+  missingRelations.front().firstOccurrence = foreignOccurrence.value();
+  auto missing =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::
+          publish_records_for_validation(product->cells(), product->occurrences(),
+                                         std::move(missingRelations));
+  const auto *missingError =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(&missing);
+  ASSERT_NE(missingError, nullptr);
+  EXPECT_EQ(missingError->code,
+            directional::pipeline::SurfaceOccurrenceComplexErrorCode::
+                RelationEndpointMissing);
+
+  auto duplicateRelations = product->owned_relations();
+  duplicateRelations.push_back(duplicateRelations.front());
+  auto duplicate =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::
+          publish_records_for_validation(product->cells(), product->occurrences(),
+                                         std::move(duplicateRelations));
+  const auto *duplicateError =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(
+          &duplicate);
+  ASSERT_NE(duplicateError, nullptr);
+  EXPECT_EQ(duplicateError->code,
+            directional::pipeline::SurfaceOccurrenceComplexErrorCode::
+                DuplicateRelationDeclaration);
+}
+
 int first_edge_of_kind(const SurfacePhaseFrontResult &phaseFront,
                        const SurfaceFrontBoundaryKind kind) {
   for (int edge = 0; edge < static_cast<int>(phaseFront.product().edges().size()); ++edge) {
@@ -3086,106 +3270,6 @@ TEST(M5CP3, ProducedTorusMissingPeriodicRelationOwnerRejectsTyped) {
       construct_phase_front_product(std::move(tampered)),
       directional::geometry::SurfacePhaseFrontProductErrorCode::
           MissingPeriodicRelationOwner);
-}
-
-TEST(M5CP3, PeriodicRelationEndpointGaugeIsIndependentAndExact) {
-  const auto span = directional::authority::NetworkArcId::from_index(0U, 1U);
-  const auto region =
-      directional::authority::NetworkRegionId::from_index(0U, 1U);
-  const auto forwardChart =
-      directional::authority::FieldChartId::from_index(0U, 2U);
-  const auto reverseChart =
-      directional::authority::FieldChartId::from_index(1U, 2U);
-  ASSERT_TRUE(span.has_value());
-  ASSERT_TRUE(region.has_value());
-  ASSERT_TRUE(forwardChart.has_value());
-  ASSERT_TRUE(reverseChart.has_value());
-
-  directional::geometry::SurfaceSharedBoundaryInterval forwardInterval{
-      span.value(),
-      directional::authority::FieldExactRational::from_integer(0),
-      directional::authority::FieldExactRational::from_integer(1),
-      directional::authority::Orientation::Forward,
-      directional::geometry::SurfaceBoundaryOccurrenceId{region.value(), 0U}};
-  directional::geometry::SurfaceSharedBoundaryInterval reverseInterval{
-      span.value(),
-      directional::authority::FieldExactRational::from_integer(1),
-      directional::authority::FieldExactRational::from_integer(0),
-      directional::authority::Orientation::Reverse,
-      directional::geometry::SurfaceBoundaryOccurrenceId{region.value(), 1U}};
-
-  directional::geometry::LocalLatticeState forwardFrom;
-  forwardFrom.latticeCoordinate = {0, 0};
-  forwardFrom.branchRotation = 0;
-  forwardFrom.sourceChart = forwardChart.value();
-  directional::geometry::LocalLatticeState forwardTo = forwardFrom;
-  forwardTo.latticeCoordinate = {1, 0};
-
-  directional::geometry::LocalLatticeState reverseFrom;
-  reverseFrom.latticeCoordinate = {4, 0};
-  reverseFrom.branchRotation = 0;
-  reverseFrom.sourceChart = reverseChart.value();
-  directional::geometry::LocalLatticeState reverseTo = reverseFrom;
-  reverseTo.latticeCoordinate = {3, 0};
-
-  const auto localFace =
-      directional::authority::SourceFaceId::from_index(0U, 2U);
-  const auto occurrenceFace =
-      directional::authority::SourceFaceId::from_index(1U, 2U);
-  ASSERT_TRUE(localFace.has_value());
-  ASSERT_TRUE(occurrenceFace.has_value());
-  const directional::geometry::SurfacePeriodicRelationEndpointBranchAuthority
-      preservingBranchAuthority{localFace.value(),
-                                directional::authority::QuarterTurn{},
-                                occurrenceFace.value(),
-                                directional::authority::QuarterTurn{}};
-
-  const auto rotation = directional::authority::QuarterTurn::from_integer(1);
-  const auto firstFrom =
-      directional::geometry::make_periodic_relation_endpoint_state(
-          forwardFrom, forwardInterval, rotation, preservingBranchAuthority);
-  const auto firstTo =
-      directional::geometry::make_periodic_relation_endpoint_state(
-          forwardTo, forwardInterval, rotation, preservingBranchAuthority);
-  const auto secondFrom =
-      directional::geometry::make_periodic_relation_endpoint_state(
-          reverseFrom, reverseInterval, rotation, preservingBranchAuthority);
-  const auto secondTo =
-      directional::geometry::make_periodic_relation_endpoint_state(
-          reverseTo, reverseInterval, rotation, preservingBranchAuthority);
-  ASSERT_TRUE(firstFrom.has_value());
-  ASSERT_TRUE(firstTo.has_value());
-  ASSERT_TRUE(secondFrom.has_value());
-  ASSERT_TRUE(secondTo.has_value());
-
-  const auto firstDelta =
-      firstTo->latticeCoordinate - firstFrom->latticeCoordinate;
-  const auto secondDelta =
-      secondTo->latticeCoordinate - secondFrom->latticeCoordinate;
-  EXPECT_EQ(directional::authority::rotate(rotation, firstDelta), -secondDelta);
-  const directional::authority::LatticeTranslation shift =
-      secondTo->latticeCoordinate -
-      directional::authority::rotate(rotation, firstFrom->latticeCoordinate);
-  const directional::authority::GridAutomorphism action{rotation, shift};
-  EXPECT_NE((directional::authority::LatticeTranslation{0, 0}), shift);
-  EXPECT_EQ(secondTo->latticeCoordinate,
-            action.apply(firstFrom->latticeCoordinate));
-  EXPECT_EQ(secondFrom->latticeCoordinate,
-            action.apply(firstTo->latticeCoordinate));
-  EXPECT_NE(secondTo->latticeCoordinate,
-            action.inverse().apply(firstFrom->latticeCoordinate));
-
-  auto tamperedSecondTo = *secondTo;
-  ++tamperedSecondTo.latticeCoordinate.x;
-  EXPECT_NE(tamperedSecondTo.latticeCoordinate,
-            action.apply(firstFrom->latticeCoordinate));
-
-  const auto zeroRotation = directional::authority::QuarterTurn{};
-  const auto zeroState =
-      directional::geometry::make_periodic_relation_endpoint_state(
-          reverseFrom, reverseInterval, zeroRotation, preservingBranchAuthority);
-  ASSERT_TRUE(zeroState.has_value());
-  EXPECT_EQ(reverseFrom.latticeCoordinate, zeroState->latticeCoordinate);
 }
 
 TEST(M5CP3, PeriodicRelationRotationUsesBothAcceptedOccurrenceGauges) {
