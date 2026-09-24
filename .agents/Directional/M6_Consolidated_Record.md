@@ -1,6 +1,6 @@
 # M6 Consolidated Record
 
-**Status:** M6 ACTIVE / `M6-DEFN` definitions frozen / exact next `M6-CP1-CB1`
+**Status:** M6 ACTIVE / `M6-CP1-CB1` compile-green candidate / exact next `M6-CP1-TB1-EXEC`
 **Last updated:** 2026-09-24
 
 Normative M6 semantics live in `Architecture_M6_Frozen_Definitions.md`. Entering accepted authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449 PASS**, SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. Stable accounting is **51 / 14 / 37** and produced-witness debt is **1**, M6-owned.
@@ -22,6 +22,14 @@ Amendments:
 2. **Pair-swap deletion stopped.** No accepted row permutes edge storage. The identity is retained for the CP1 gate.
 3. **Tracker entries moved.** They had been buried below restored history; they are moved above it and a placement rule is added.
 4. **Stale text fixed.** The closed M5 frozen header and the TODO `G4-B001` item are updated.
+
+## 2. `M6-CP1-CB1` — A5 occurrence product candidate compiled
+
+CB1 extracts only the frozen A5 seam. Exact source `ee8b8ac20571df5773f5f94bf9b382161f37a893` makes `OccurrenceId` semantic as `(CellId, canonicalCornerRole)`, publishes immutable `SurfaceOccurrenceComplex`/`OccurrenceComplexCertificate`, moves A5 occurrence/cell/side/relation publication behind `SurfaceOccurrenceComplexProducer`, and changes the transitional materializer only enough to consume that product. A6/A7 remain inline and A8 remains unimplemented.
+
+Four new compile-visible `M6CP1` identities plus the retained multi-isolation and edge-storage pair-swap identities form the six-test CP1 prepublication vector. The endpoint-gauge dormant identity is deleted; pair-swap is retained; selector449 remains exact `d4a0d1b7...d6414`. Final run/job `36038472933 / 107764451786` packages all eight standard targets with GMP/GMPXX as artifact `10826090221`, manifest 28/28, clean source receipts and `runtimeExecution=false`. CB1 grants no semantic credit; exact next is artifact-only `M6-CP1-TB1-EXEC`, then mandatory Review.
+
+The two compile-only integration corrections (`OccurrenceId` semantic hash and benchmark serialization) are recorded as non-stable `M6-CP1-CB1-OBS-01`; accounting remains 51/14/37 and debt 1.
 
 ## Folded document index
 

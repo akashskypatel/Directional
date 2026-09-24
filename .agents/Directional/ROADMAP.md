@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-24 (`M6-DEFN` COMPLETE / RUNTIME-FREE / DEFINITIONS FROZEN. M5 remains CLOSED / ACCEPTED at package/source `10814505512 / e284fea7...` under selector449 **449/449**, SHA `d4a0d1b7...d6414`, routing `9c88a5ed...c5707`, owners 32/301/75/41. Stable accounting 51 / 14 / 37, project debt1 M6-owned. Exact next `M6-CP1-CB1`.)**
+**Status date:** 2026-09-24 (`M6-CP1-CB1` COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE candidate `10826090221 / ee8b8ac20571df5773f5f94bf9b382161f37a893`. A5 seam compiled; no runtime acceptance. Exact next `M6-CP1-TB1-EXEC`, then Review. M5 accepted authority and stable 51/14/37, debt 1 remain unchanged.)**
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 
@@ -548,7 +548,7 @@ Final CP4 Review completes the bounded conjunct8 sequence: row449 was accepted p
 | Checkpoint | Semantic domain |
 |---|---|
 | `M6-DEFN` | **COMPLETE / RUNTIME-FREE.** Four immutable products, exact occurrence/quotient identity, verifier recompute-vs-repair boundary, G4 ownership and dormant-test dispositions frozen in `Architecture_M6_Frozen_Definitions.md`. |
-| `M6-CP1` | **NEXT; first bounded turn `M6-CP1-CB1`.** Separate occurrence creation / quotient construction / geometry embedding as complete stage products; CB1 is A5 occurrence product only. |
+| `M6-CP1` | **ACTIVE.** `M6-CP1-CB1` compiles/packages the first A5 `SurfaceOccurrenceComplex` seam from source `ee8b8ac20571df5773f5f94bf9b382161f37a893` as candidate artifact `10826090221` with no runtime. Exact next `M6-CP1-TB1-EXEC` gates six focused identities + accepted selector449; A6/A7 product extraction remains future bounded CP1 Code + Build work after mandatory Review. |
 | `M6-CP2` | verifier consumes certificates and independently recomputes elementary incidence; **never repairs producer state** |
 | `M6-CP3` | M6 exit — equal coordinates without a relation remain distinct; every owned relation consumed exactly once; source-row / output-row / scheduler permutation invariance |
 

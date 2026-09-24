@@ -27,9 +27,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
- > **Current milestone authority (2026-09-24, after `M6-DEFN`):** M4 and **M5 are CLOSED / ACCEPTED**; M6 definitions are **FROZEN / RUNTIME-FREE**. Final M5 authority remains package/source `10814505512 / e284fea7...` under selector449 (`d4a0d1b7...d6414`) and routing449 (`9c88a5ed...c5707`), owners **32/301/75/41**, final TB2 **449/449 PASS**. `Architecture_M6_Frozen_Definitions.md` freezes A5 occurrence, A6 quotient, A7 embedding and A8-M6 verification boundaries. Stable accounting is **51 / 14 / 37**, debt **1** M6-owned. Exact next is **`M6-CP1-CB1`**.
+ > **Current milestone authority (2026-09-24, after `M6-CP1-CB1`):** M4 and M5 remain CLOSED / ACCEPTED. M6 A5 occurrence-product source `ee8b8ac20571df5773f5f94bf9b382161f37a893` is compile/package green only as candidate artifact `10826090221`; no runtime acceptance is claimed. Selector449 remains `d4a0d1b7...d6414`; stable accounting 51/14/37, debt 1. Exact next is **`M6-CP1-TB1-EXEC`**, then mandatory Review.
 
-**Currency.** `M6-DEFN` (incl. reviewing-agent addendum), 2026-09-24 UTC
+**Currency.** `M6-CP1-CB1`, 2026-09-24 UTC
 
 **Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` §16.3 is the active same-region nonzero-Z4 contract. `PeriodicRelationId` remains carrier-content identity; relation rotation is the gauge-adjusted quotient `Q`, action/transport is relation value, and canonical storage may invert representation only after semantic Forward -> Reverse authority is fixed. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 
@@ -83,7 +83,7 @@ DEFN-R1/R2 debt ownership remains the provenance authority. The two periodic `G4
 
 M5-DEFN is **COMPLETE / DEFINITIONS FROZEN**; M5-CP1 through M5-CP4 are **CLOSED / ACCEPTED**. `M5-CP4-TB2-REV` accepts selector449 and promotes CB2 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` after fresh **449/449** runtime. The DEFN-R2 same-region multi-isolation + quotient-owner producer conjunct is accepted as §13.1 conjunct8 without crossing into M6 occurrence/materialization/verifier authority. **M5 is CLOSED.** Stable accounting remains **51 / 14 / 37**; project debt is **1**, M6-owned.
 
-`M6-DEFN` is **COMPLETE / RUNTIME-FREE / DEFINITIONS FROZEN**. `OccurrenceId` is frozen as `(CellId, canonicalCornerRole)` and `QuotientClassId` as the complete canonical member-occurrence set; coordinate/position coincidence is never equality. A6 owns exact-once consumption of A5-owned relations, A7 cannot alter A6 topology, and A8-M6 may recompute elementary incidence but cannot infer/search/repair/substitute producer state. `G4-B001` is now a CP3 direct-torus evidence debt because current source already keeps hard rails out of isolation-sheet classification. Exact next is `M6-CP1-CB1`.
+`M6-CP1-CB1` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE CANDIDATE**. Source `ee8b8ac20571df5773f5f94bf9b382161f37a893` implements the first A5 occurrence-product seam and compiles all eight GMP/GMPXX targets into artifact `10826090221`. The six-test CP1 prepublication vector is frozen, but none has executed; accepted M5 authority and selector449 remain unchanged. Exact next is `M6-CP1-TB1-EXEC`, then mandatory Review.
 
 ## 4. The witnesses — the fastest way to understand the problem
 
@@ -200,7 +200,7 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M6-CP1-CB1` — NEXT / A5 OCCURRENCE PRODUCT.** Implement only the frozen A5 `SurfaceOccurrenceComplex` seam, content-semantic occurrence identity, transitional materializer consumption and the two no-credit dormant-CB14 deletions. Compile/package only; no generated runtime. **Reviewing-agent amendments (binding):**
+1. **`M6-CP1-TB1-EXEC` — NEXT / A5 PREPUBLICATION RUNTIME GATE.** Consume candidate artifact/source `10826090221 / ee8b8ac20571df5773f5f94bf9b382161f37a893` immutably; run the six focused A5/CP1 identities plus accepted selector449 as 455 fresh exact-filter processes. No rebuild, repair, publication or acceptance claim; mandatory `M6-CP1-TB1-REV` follows. **CB1 completed the binding amendments:**
 - The A5 permutation test permutes **source face rows**, because cell storage is already row 213.
 - `OccurrenceId` inherits A4 `CellId`, a canonical rank that renumbers on insertion or omission (frozen §3.3 note; `M7-DEFN` must revisit).
 - Delete only the endpoint-gauge dormant test. The pair-swap test is retained for the CP1 gate as the only edge-storage-permutation witness.

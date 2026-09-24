@@ -1,3 +1,12 @@
+## 2026-09-24 — `M6-CP1-CB1`: A5 SurfaceOccurrenceComplex candidate compile/package green
+
+- Exact semantic source `ee8b8ac20571df5773f5f94bf9b382161f37a893` extracts A5 occurrence authority behind `SurfaceOccurrenceComplexProducer`; `OccurrenceId` is `(CellId, canonicalCornerRole)`, and the transitional phase-front materializer consumes the immutable A5 product without extracting A6/A7/A8.
+- Four compile-visible A5 identities cover four semantic corners/cell, coincident-but-unrelated distinctness, true source-face-row permutation invariance, and malformed/missing/duplicate relation-endpoint rejection. The focused CP1 prepublication vector also carries the retained multi-isolation mechanism identity and dormant edge-storage pair-swap identity, for six focused tests total.
+- `M5CP3.PeriodicRelationEndpointGaugeIsIndependentAndExact` is deleted as authorized; `M5CP3.ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection` remains unchanged. Accepted replacements remain present and selector449 is byte-identical at `d4a0d1b7...d6414`.
+- Two bounded compile-integration projection defects were corrected runtime-free: generic hashing/benchmark serialization had assumed index-backed `OccurrenceId`. No semantic runtime evidence was produced.
+- Final mandatory GMP/GMPXX compile run/job `36038472933 / 107764451786` packages all eight standard targets as artifact `10826090221` with 28/28 manifest, clean source receipts and `runtimeExecution=false`; log artifact `10826115205`. Candidate only: no M6 semantic credit, CP1 closure or G4 closure.
+- Exact successor: artifact-only `M6-CP1-TB1-EXEC`, then mandatory `M6-CP1-TB1-REV`.
+
 ## 2026-09-24 — `M6-DEFN`: occurrence / quotient / embedding / verifier contracts frozen
 
 - Runtime-free Definition freezes A5 `SurfaceOccurrenceComplex`, A6 `SurfaceQuotientProduct`, A7 `SourceAttachedGeometryProduct`, and the M6 structural A8 `VerificationReport`; M7 retains `OutputDisposition`/degradation.

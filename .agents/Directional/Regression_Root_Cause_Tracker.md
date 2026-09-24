@@ -1,3 +1,11 @@
+## 2026-09-24 — `M6-CP1-CB1`: A5 product candidate compile green — **NO SEMANTIC REGRESSION / +0**
+
+**Stable totals unchanged: 51 / 14 / 37; debt 1 (M6).** Exact source `ee8b8ac20571df5773f5f94bf9b382161f37a893` introduces semantic A5 occurrence identity/product authority and compiles/packages all eight standard targets with GMP/GMPXX under run/job `36038472933 / 107764451786`, artifact `10826090221`. No generated Directional runtime executed, selector449 remains byte-identical, and no G4 debt is claimed closed.
+
+### `M6-CP1-CB1-OBS-01` — index-backed occurrence representation assumptions exposed at compile time — RECORDED / process-integration / non-stable
+
+Two compile-only consumers still assumed every semantic ID exposed one ordinal `.index()` projection: the pipeline semantic hash had no `OccurrenceId` vector overload, then benchmark semantic serialization called `.index()` on `OccurrenceId`. Both failures occurred before package/runtime evidence. The bounded corrections serialize the frozen semantic pair `(CellId, canonicalCornerRole)` explicitly and do not make hashes or benchmark rows identity authority. A later static scope check also strengthened the focused A5 rejection identity to exercise malformed and duplicate endpoints explicitly before the final compile. No runtime semantic failure, recurrence count, category, or debt is added.
+
 ## 2026-09-24 — `M6-DEFN` reviewing-agent addendum — **UPHELD WITH AMENDMENTS / +0**
 
 **Stable totals unchanged: 51 / 14 / 37; debt 1 (M6).** No regression candidate.

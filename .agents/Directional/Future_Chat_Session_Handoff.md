@@ -4,43 +4,24 @@
 
 ## Current authority
 
-`M6-DEFN` is **COMPLETE / RUNTIME-FREE / DEFINITIONS FROZEN**. No product, test, fixture, selector, benchmark, build source or generated Directional runtime changed in the Definition turn.
+`M6-CP1-CB1` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE / CANDIDATE ONLY**. Exact semantic source `ee8b8ac20571df5773f5f94bf9b382161f37a893` publishes the first frozen A5 `SurfaceOccurrenceComplex` product with `OccurrenceId=(CellId, canonicalCornerRole)` and makes the transitional materializer consume A5 authority. A6/A7/A8 remain transitional/unextracted.
 
-Entering accepted runtime authority remains M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under accepted selector449 SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`, routing449 `9c88a5ed...c5707`, owners **32 / 301 / 75 / 41**. Stable accounting remains **51 / 14 / 37**; project produced-witness debt remains **1**, M6-owned.
+Final compile run/job `36038472933 / 107764451786` packages all eight standard targets with mandatory GMP/GMPXX in artifact `10826090221`; log `10826115205`; manifest 28/28; clean source receipts; `runtimeExecution=false`. Accepted M5 runtime authority remains package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`, owners 32/301/75/41. Stable accounting remains 51/14/37 and project produced-witness debt remains 1, M6-owned.
 
-`Architecture_M6_Frozen_Definitions.md` is now normative M6 authority. It freezes:
-
-- A5 `SurfaceOccurrenceComplex`: four explicit occurrences per accepted cell; `OccurrenceId=(CellId, canonicalCornerRole)`; no quotient union.
-- A6 `SurfaceQuotientProduct`: quotient class identity is the complete sorted occurrence-member set; every A5-owned relation is certified/consumed exactly once; one cell -> one quad; no geometry weld.
-- A7 `SourceAttachedGeometryProduct`: exact source support/embedding keyed by quotient class; A6 topology cannot change.
-- A8-M6 `VerificationReport`: elementary incidence may be recomputed independently; repair, path search, substitution, inference, canonicalization, coordinate welding and producer mutation are forbidden. `OutputDisposition` remains M7.
-
-Debt/blocker dispositions are frozen: `G4-B002` CP1 mechanism / CP3 production; `G4-B001` is a CP3 direct-torus evidence debt because the old hard-rail->sheet root is absent from current source; `G4-B004` requires the same M5-accepted produced torus authority through A5/A6/A7/A8. The two dormant CB14 identities receive no M5 credit and are frozen for deletion at the first M6 Code + Build as redundant to accepted replacements.
+CB1 compile-visible A5 identities cover four occurrences/cell, coincident unrelated occurrence distinctness, true source-face-row permutation identity, and malformed/missing/duplicate relation-endpoint rejection. The first CP1 prepublication vector is six focused identities: those four plus `SurfaceCellTransitionQuotient.MultiIsolationMaterializationRetainsAllLocalSheets` and retained `M5CP3.ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection`. The endpoint-gauge dormant identity is deleted; accepted replacements and selector449 remain unchanged.
 
 ## Exact next turn
 
-**`M6-CP1-CB1`** — Code + Build only under `.agents/Directional/Architecture_M6_CP1_CB1_Occurrence_Product_Code_Build_Plan.md`.
+**`M6-CP1-TB1-EXEC`** — artifact-only Test + Benchmark under `.agents/Directional/Architecture_M6_CP1_TB1_Artifact_Only_Test_Benchmark_Plan.md`, consuming candidate artifact `10826090221` / source `ee8b8ac20571df5773f5f94bf9b382161f37a893` immutably.
 
-Authorized scope only:
-
-1. content-semantic A5 occurrence identity `(CellId, canonicalCornerRole)`;
-2. immutable `SurfaceOccurrenceComplex` + `OccurrenceComplexCertificate`;
-3. transitional materializer consumes A5 rather than allocating semantic occurrence authority inline;
-4. focused compile-visible A5 contracts;
-5. delete exactly the two dormant CB14 identities frozen in M6 §9 after confirming their accepted replacements and selector449 byte identity;
-6. mandatory GMP/GMPXX compile/package only; `runtimeExecution=false`.
-
-Do not extract A6/A7/A8 in CB1, edit selectors, run generated Directional runtime, alter M5 relation semantics, weaken validators, change source-grid recovery/fallback, or claim G4 debt closure.
-
-**Reviewing-agent amendments (binding; CB1 plan final section):**
-1. The A5 permutation test permutes **source face rows** and compares `OccurrenceId`s, because storage-only permutation is already row 213. If A4 `CellId` renames occurrences, stop.
-2. Delete **only** `…EndpointGaugeIsIndependentAndExact`. Keep `…PeriodicPairStorageSwapPreservesSemanticDirection` untouched and propose it for the CP1 prepublication gate.
-3. Prepend changelog/tracker entries (tracker OBS sections go above the RESTORED HISTORY block), never at file end. On resume, re-derive progress first. COMPLETE is the last write.
+Execute exactly six focused fresh exact-filter processes plus accepted selector449's 449 fresh exact-filter processes (**455 total**), require exact-one/zero-skip discipline, benchmark count 0 and immutable pre/postflight. No rebuild, package repair, selector publication, semantic edit, A5 acceptance, CP1 closure or G4 closure is authorized. Exact successor after one complete EXEC is mandatory runtime-free `M6-CP1-TB1-REV`.
 
 ## Current files
 
 - `.agents/Directional/Architecture_M6_Frozen_Definitions.md`
 - `.agents/Directional/Architecture_M6_CP1_CB1_Occurrence_Product_Code_Build_Plan.md`
+- `.agents/Directional/Architecture_M6_CP1_CB1_Occurrence_Product_Code_Build_Report.md`
+- `.agents/Directional/Architecture_M6_CP1_TB1_Artifact_Only_Test_Benchmark_Plan.md`
 - `.agents/Directional/M6_Consolidated_Record.md`
 - `.agents/Directional/Architecture_M5_CP4_TB2_Review_Record.md`
 - `.agents/Directional/M5_Closure_Record.md`

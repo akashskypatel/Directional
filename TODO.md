@@ -1,21 +1,20 @@
-# Directional Surface-Cell TODO
+## Latest Code + Build turn — `M6-CP1-CB1`
 
-Last updated: 2026-09-24 UTC
+**COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE / CANDIDATE ONLY.** Exact semantic source `ee8b8ac20571df5773f5f94bf9b382161f37a893` publishes semantic A5 occurrence identity/product authority and makes the transitional materializer consume `SurfaceOccurrenceComplex`. Final compile run/job `36038472933 / 107764451786` packages all eight standard GMP/GMPXX targets as artifact `10826090221` with 28/28 manifest, clean source receipts and `runtimeExecution=false`. Four new A5 identities compile but have not executed. Selector449 remains exact `d4a0d1b7...d6414`; stable accounting remains 51/14/37 and debt 1.
+
+- [x] A5 `OccurrenceId=(CellId, canonicalCornerRole)` and immutable occurrence product/certificate extracted.
+- [x] True source-face-row permutation test authored; A4 `CellId` semantics unchanged.
+- [x] Endpoint-gauge dormant identity deleted; pair-swap identity retained for CP1 prepublication gate.
+- [x] Focus vector frozen at six identities; accepted selector449 unchanged.
+- [x] Final eight-target GMP/GMPXX compile/package green; no runtime.
+
+## Exact next turn — `M6-CP1-TB1-EXEC`
+
+Artifact-only execution under `.agents/Directional/Architecture_M6_CP1_TB1_Artifact_Only_Test_Benchmark_Plan.md`: immutable candidate `10826090221 / ee8b8ac20571df5773f5f94bf9b382161f37a893`, six focused identities + selector449 (455 fresh exact-filter processes), then mandatory `M6-CP1-TB1-REV`. No rebuild, selector publication, semantic correction or credit claim in EXEC.
 
 ## Latest Definition — `M6-DEFN`
 
-**COMPLETE / RUNTIME-FREE / FOUR PRODUCTS FROZEN / EXACT NEXT `M6-CP1-CB1`.** `Architecture_M6_Frozen_Definitions.md` now freezes A5 `SurfaceOccurrenceComplex`, A6 `SurfaceQuotientProduct`, A7 `SourceAttachedGeometryProduct`, and the M6 structural A8 `VerificationReport`. Occurrence identity is `(CellId, canonicalCornerRole)`; quotient identity is the complete member-occurrence set; A6 owns exact-once consumption of every A5-owned relation; A8 may independently recompute elementary incidence but may never repair/search/substitute/canonicalize producer state. M7 retains `OutputDisposition` and degradation. Accepted M5 authority remains package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 `d4a0d1b7...d6414`; stable accounting remains 51/14/37 and debt 1 M6-owned.
-
-Definition dispositions:
-
-- [x] `G4-B002`: M6-CP1 mechanism/stage separation; M6-CP3 direct-production re-proof.
-- [x] `G4-B001 / PR8-R034 / G4-R007`: current source already separates hard rails from isolation-sheet barriers; carry as CP3 direct-torus evidence debt, with CP1/A7 preserving the separation.
-- [x] Dormant CB14 identities: no M5 credit. `…EndpointGaugeIsIndependentAndExact` is deleted at `M6-CP1-CB1`. `…ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection` is **retained and proposed for the M6-CP1 prepublication gate**: the reviewing agent stopped its deletion because no accepted identity permutes edge storage.
-- [x] `G4-B004` M6 half: CP1 gates focused multi-isolation mechanism preservation; CP3 must bind the same M5-accepted produced torus authority through A5 exact occurrences, A6 exact-once consumption, A7 embedding and A8 independent verification.
-
-## Exact next turn — `M6-CP1-CB1`
-
-Code + Build only under `.agents/Directional/Architecture_M6_CP1_CB1_Occurrence_Product_Code_Build_Plan.md`. Scope is the first A5 seam only: introduce content-semantic occurrence identity and immutable `SurfaceOccurrenceComplex`, make the transitional materializer consume A5 instead of allocating occurrence authority inline, and delete the two frozen dormant CB14 identities. No A6/A7/A8 extraction, selector change, generated runtime, or G4 closure claim is authorized. **The reviewing-agent amendment at the end of the plan is binding.** The A5 permutation test must permute source face rows, not only cell storage. Delete only the endpoint-gauge dormant identity. Changelog/tracker placement rules apply, and COMPLETE is the final write.
+**COMPLETE / RUNTIME-FREE / FOUR PRODUCTS FROZEN.** Normative M6 semantics remain in `Architecture_M6_Frozen_Definitions.md`; CB1 implements only the first A5 seam.
 
 ## Latest Code + Build turn — `M5-CP4-CB2`
 
