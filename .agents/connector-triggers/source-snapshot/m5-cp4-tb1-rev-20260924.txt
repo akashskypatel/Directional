@@ -1,0 +1,3 @@
+M5-CP4-TB1-REV source snapshot trigger
+Authority before trigger: f3fd95bf7d5d696f75b39ddb1c16171aeedd19c8
+Purpose: exact runtime-free independent Review snapshot
