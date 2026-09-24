@@ -73,3 +73,9 @@ No semantic/runtime regression accounting changes in Code + Build. Stable accoun
 CB2 satisfies its bounded exit gate: one proven source defect corrected, static guards passed, eight mandatory GMP/GMPXX targets compile/package green, immutable evidence is complete, and no generated Directional runtime executed.
 
 Exact successor is **`M6-CP1-TB2-EXEC`** under `Architecture_M6_CP1_TB2_Artifact_Only_Test_Benchmark_Plan.md`. TB2 must consume artifact `10834642074` immutably, execute the unchanged six focused identities plus selector449 as exactly **455 fresh exact-filter processes**, and then hand every mechanically valid semantic outcome to mandatory `M6-CP1-TB2-REV`.
+
+## 7. Durable closeout and cleanup evidence
+
+Durable documentation was applied by run/job `36062267699 / 107843821436` from verified patch SHA-256 `85b8304714d89e537d14b3c1891491a38facb37dbb7424c0f33bd218f01f494a`, authored with the repository SHA placeholder helper. Result/log artifacts are `10834791021 / 10834870925` with SHA-256 `f41fe1b4b743aeca0b8b4beb0df5a9d1c590ca6cd99c44783a4a2702cd17dcb2 / 11c03a9fec1c59c352f795096c5c82a2826fae053f3b45dffb0eda22065af338`; documentation commit is `b4c7d74cde82e833c002b10a2223b15581e6a973`. The staging Drive file was owner-retired after push.
+
+Temporary workflow callers were removed connector-first. Cleanup run/job `36062456833 / 107844370427` then removed the four inventoried turn markers and its own manifest in cleanup commit `5de9679acdaf2c0b5a79fe08ae7d2d50fb51f37e`. Cleanup result/log artifacts are `10834529083 / 10834623886`, SHA-256 `f5a618aeececd9aa9bb8e6928b7ffb892ece6f9db4caed4b08a72096f2779a71 / 5b2d79636b99b72ea566f5986bb8eef9bc97c08c484f7e44fbda9b206fa35784`. The cleanup verified the exact seven durable workflow files, deleted five PR conversation comments and zero inline review comments before its observer, and records `runtimeExecution=false`.
