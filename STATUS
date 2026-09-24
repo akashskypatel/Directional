@@ -1,8 +1,8 @@
 ---TURN_STATUS---
-Turn: M6-CP1-TB2-EXEC
-Status: COMPLETE
+Turn: M6-CP1-TB2-REV
+Status: IN_PROGRESS
 Successor: M6-CP1-TB2-REV
-Started at: 2026-09-24T21:40:37Z
+Started at: 2026-09-24T22:17:00Z
 Resumed at: 
-Ended at: 2026-09-24T22:13:52Z
+Ended at: 
 ---END_TURN_STATUS---
