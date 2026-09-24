@@ -1,0 +1,48 @@
+name: Agent M6 CP1 TB2 Docs Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/drive-patch/M6-CP1-TB2-EXEC-DOCS.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-m6-cp1-tb2-docs-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m6-cp1-tb2-docs-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m6-cp1-tb2-docs-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 12dfQNw0lNvWaAxETcBlpq-eDm2cfS9He
+      patch_sha256: a65b3f6cff118a91590992041f22bd0298340ff6bf387cd7e8926500fae7f093
+      base_sha: 0c6d8cb06e1c7fd0b76aacce4b9c0f1d1b1033a4
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "M6-CP1-TB2-EXEC: preserve artifact-only evidence and Review handoff"
+      retention_days: 7
+    secrets: inherit
