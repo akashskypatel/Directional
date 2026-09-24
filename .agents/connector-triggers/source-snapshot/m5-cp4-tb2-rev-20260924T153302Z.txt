@@ -1,3 +1,0 @@
-turn=M5-CP4-TB2-REV
-purpose=source-snapshot
-source_sha=b9c73eec020f7f096d347ba6fc59fe1659064981

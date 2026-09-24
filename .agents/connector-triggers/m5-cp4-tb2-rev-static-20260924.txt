@@ -1,7 +1,0 @@
-turn=M5-CP4-TB2-REV
-purpose=final-review-static-validation
-package_source=e284fea7c101eb86650d1c87c92d0fefa66050e7
-previous_review_final=b1029e47787e2a1f7d55cb520d53f859798d2fe8
-turn_base=ced3698057d9667c9220b7be8033009ecf201cc8
-caller_install=75853428fb3e21ed5dbc61ccddc73770a85c7192
-retry=1
