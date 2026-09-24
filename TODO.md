@@ -1,3 +1,15 @@
+## Latest Test + Benchmark turn — `M6-CP1-TB2-EXEC`
+
+**COMPLETE / MECHANICALLY VALID / SEMANTIC NON-GREEN / REVIEW REQUIRED.** Immutable candidate `10834642074 / 724316a5b3f49e33dc8e649989bb413b3dc6b7c9` executed in run/job `36063687138 / 107848407035` as exactly **455 fresh exact-filter processes**: focused **5/6 PASS**, selector449 **448/449 PASS**, total **453/455 PASS**, exact-one selection, zero skips/crashes/selection mismatches and benchmark 0. Result/log are `10835579933 / 10836175636`; result manifest is 933/933 and immutable postflight is exact.
+
+The TB1 `OccurrenceInvalidCornerAuthority` symptom is absent from all 455 processes and the retained pair-swap identity PASSes. Two different-first-failure surfaces remain: focused `MultiIsolationMaterializationRetainsAllLocalSheets` has `foundMultiIsolationLineage=false`, and accepted selector449 row140 `HardRailPairExplicitRailIdMismatchRejectsStrictTransport` returns `OccurrenceUnownedRelation` instead of expected `InvalidHardRailTransport`. They are recorded as new non-stable Review-owned candidates. Formal TB1 recovery is not claimed in EXEC because the pre-registered rule also requires selector449 449/449. Stable accounting remains **52 / 15 / 37**, debt 1; candidate remains unpromoted.
+
+## Exact next turn — `M6-CP1-TB2-REV`
+
+Mandatory runtime-free independent Review. Re-open candidate/result/log evidence, adjudicate TB1 recovery and the two new TB2 candidates, update accounting only if independently justified, and freeze the next bounded CP1 action. No compile/runtime or semantic mutation is authorized in Review.
+
+See `.agents/Directional/Architecture_M6_CP1_TB2_Artifact_Only_Test_Benchmark_Report.md`.
+
 ## Latest Code + Build turn — `M6-CP1-CB2`
 
 **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE / CANDIDATE ONLY.** Exact semantic source `724316a5b3f49e33dc8e649989bb413b3dc6b7c9` materializes the A5 region isolation-sheet vector once, eliminating the Review-proved cross-temporary iterator range without changing region/component/sheet/support/chart semantics. Whole-tree split-range scan is clean; selector449/routing449 and all six focused identities are unchanged.

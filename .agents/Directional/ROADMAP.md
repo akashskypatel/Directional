@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-24 (`M6-CP1-CB1` COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE candidate `10826090221 / ee8b8ac20571df5773f5f94bf9b382161f37a893`. A5 seam compiled; no runtime acceptance. Exact next `M6-CP1-TB1-EXEC`, then Review. M5 accepted authority and stable 51/14/37, debt 1 remain unchanged.)**
+**Status date:** 2026-09-24 (`M6-CP1-TB2-EXEC` COMPLETE / mechanically valid semantic non-green on candidate `10834642074 / 724316a5b3f49e33dc8e649989bb413b3dc6b7c9`: focused 5/6 + selector449 448/449 = 453/455. No `OccurrenceInvalidCornerAuthority`; pair-swap PASS; new row140 and focused multi-isolation candidates are Review-owned. Candidate unpromoted. Exact next `M6-CP1-TB2-REV`. Accepted M5 authority and stable 52/15/37, debt 1 remain unchanged pending Review.)**
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 

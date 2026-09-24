@@ -1,3 +1,7 @@
+## 2026-09-24 — `M6-CP1-TB2-EXEC`: artifact-only recovery gate is 453/455; Review next
+
+Immutable candidate `10834642074 / 724316a5...` executes six focused + selector449 as **455** fresh exact-filter processes: focused 5/6, selector 448/449, total 453/455 with exact-one selection, zero skips/crashes/selection mismatches, benchmark 0 and exact immutable postflight. `OccurrenceInvalidCornerAuthority` is absent and the retained pair-swap identity PASSes, but focused multi-isolation remains RED and accepted selector row140 now returns `OccurrenceUnownedRelation` instead of `InvalidHardRailTransport`. These are new non-stable Review-owned candidates; formal TB1 recovery is not claimed in EXEC because selector449 is not 449/449. Stable accounting stays 52/15/37, debt 1; candidate remains unpromoted. Exact next is mandatory `M6-CP1-TB2-REV`.
+
 ## 2026-09-24 — `M6-CP1-CB2`: bounded A5 iterator-range recovery compiles green
 
 CB2 corrects only the Review-proved cross-temporary `isolation_sheets()` iterator range in exact source `724316a5b3f49e33dc8e649989bb413b3dc6b7c9`, preserving all A5 semantic checks and the frozen test/selector surface. Mandatory GMP/GMPXX compile run/job `36061049526 / 107839861958` packages all eight standard targets as candidate artifact `10834642074` (SHA-256 `754cfeae...d0cb8`) with 28/28 manifest, clean source receipts and `runtimeExecution=false`. Candidate remains unpromoted; accounting stays 52/15/37 with debt 1. Exact next is immutable `M6-CP1-TB2-EXEC` over the unchanged 455-process gate, followed by mandatory Review.

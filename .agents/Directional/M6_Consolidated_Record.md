@@ -1,6 +1,6 @@
 # M6 Consolidated Record
 
-**Status:** M6 ACTIVE / `M6-CP1-CB2` compile+package green / candidate unpromoted / exact next `M6-CP1-TB2-EXEC`
+**Status:** M6 ACTIVE / `M6-CP1-TB2-EXEC` mechanically valid semantic non-green / candidate unpromoted / exact next `M6-CP1-TB2-REV`
 **Last updated:** 2026-09-24
 
 Normative M6 semantics live in `Architecture_M6_Frozen_Definitions.md`. Entering accepted authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449 PASS**, SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. TB1's one accepted-prefix event is independently reclassified to new singleton `CROSS_TEMPORARY_ITERATOR_RANGE`; stable accounting is **52 / 15 / 37** and produced-witness debt is **1**, M6-owned.
@@ -63,6 +63,14 @@ CB2 corrects only the Review-proved A5 iterator-range defect. Exact semantic sou
 Remote patch application run/job `36060679446 / 107838640414` produced the exact semantic source. Mandatory GMP/GMPXX compile run/job `36061049526 / 107839861958` then compiled the standard eight targets and packaged candidate `10834642074` (SHA-256 `754cfeae794da3304b39a572ef6feb6250709f908d5688dcd21f387a071d0cb8`) with root manifest **28/28**, manifest SHA `a0fffc173149d1917ed6ab6a7dbb3c70335dee0b0e4ecb6ce652438d02037c9e`, source archive `eaf577ccdc534c2e9e48b8b8fed31079849b268c4a6c1b47b0f253ff3ad6034b`, clean source receipts and `runtimeExecution=false`. Compile log artifact `10834671954` hashes to `9395b4bdaad33c6805779035a418a4f29c80561880f2a870e0d45b2bff0cb5e4`.
 
 No generated Directional runtime executed and no stable semantic accounting changes: **52 / 15 / 37**, debt 1. Candidate remains unpromoted. Exact next is immutable `M6-CP1-TB2-EXEC`, rerunning the unchanged six focused + selector449 as 455 fresh exact-filter processes under the pre-registered recovery rule, followed by mandatory `M6-CP1-TB2-REV`.
+
+## 6. `M6-CP1-TB2-EXEC` — iterator-range symptom clears; two new candidate surfaces remain
+
+TB2 consumed candidate artifact/source `10834642074 / 724316a5...` immutably. Authoritative run/job `36063687138 / 107848407035` executes the frozen six focused identities plus all 449 accepted selector identities as exactly **455** fresh exact-filter processes with exact-one/zero-skip discipline. Outcome is **5/6 focused PASS + 448/449 selector PASS = 453/455 PASS**, zero crashes/selection mismatches, benchmark 0, and exact immutable postflight. Result/log authority is `10835579933 / 10836175636`; the result manifest verifies 933/933.
+
+No process reports `OccurrenceInvalidCornerAuthority`, and the retained pair-swap identity PASSes. The two REDs are different-first-failure surfaces: focused row5 `MultiIsolationMaterializationRetainsAllLocalSheets` fails `foundMultiIsolationLineage=false`; selector449 ordinal140 `HardRailPairExplicitRailIdMismatchRejectsStrictTransport` returns `OccurrenceUnownedRelation` instead of expected `InvalidHardRailTransport`. Under the frozen TB2 classification they are recorded as new non-stable candidates for Review. Because the recovery pre-registration also requires selector449 449/449, EXEC does not itself close/recover TB1 CAND-01 despite disappearance of its original symptom.
+
+Stable accounting remains **52 / 15 / 37** pending Review, debt 1 M6-owned. Accepted M5 package/source and selector449 authority remain unchanged; candidate `10834642074` is unpromoted. Exact next is mandatory runtime-free `M6-CP1-TB2-REV`.
 
 ## Folded document index
 

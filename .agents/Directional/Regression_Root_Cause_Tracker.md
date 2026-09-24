@@ -1,3 +1,29 @@
+## 2026-09-24 — `M6-CP1-TB2-EXEC`: A5 iterator symptom absent; selector row140 and multi-isolation remain RED — **MECHANICALLY VALID / NEW CANDIDATES / +0 STABLE PENDING REVIEW**
+
+**Stable totals remain 52 events / 15 categories / 37 recurrences; project debt remains 1 (M6).** Immutable candidate `10834642074 / 724316a5b3f49e33dc8e649989bb413b3dc6b7c9` executed exactly **455** fresh exact-filter processes in run/job `36063687138 / 107848407035`: focused **5/6 PASS**, selector449 **448/449 PASS**, total **453 PASS / 2 RED**, exact-one selection, zero skips/crashes/selection mismatches, benchmark 0 and exact immutable postflight. Result/log are `10835579933 / 10836175636`.
+
+### `M6-CP1-TB2-EXEC-CAND-01` — accepted selector row140 returns `OccurrenceUnownedRelation` — ACTIVE / ACCEPTED-PREFIX CANDIDATE / NON-STABLE / REVIEW-OWNED
+
+- **Identity:** selector449 ordinal **140**, `SurfaceCellAuthorityContractCutover.HardRailPairExplicitRailIdMismatchRejectsStrictTransport`.
+- **Accepted differential:** the identity is PASS in accepted M5 selector449 authority but RED on the CB2 candidate.
+- **First failure:** `SurfaceCellsPhase10Tests.cpp:6865` expects `InvalidHardRailTransport`; candidate returns `OccurrenceUnownedRelation`.
+- **Classification:** first failure differs from TB1's `OccurrenceInvalidCornerAuthority`, so the frozen TB2 rule treats it as a new candidate rather than proof of the original iterator-range failure recurring. EXEC does not infer root cause or stable category from this one result.
+- **Accounting:** +0 stable pending mandatory independent Review.
+
+### `M6-CP1-TB2-EXEC-CAND-02` — focused multi-isolation lineage witness is false — ACTIVE / FOCUSED-ONLY CANDIDATE / NON-STABLE / REVIEW-OWNED
+
+- **Identity:** focused row5, `SurfaceCellTransitionQuotient.MultiIsolationMaterializationRetainsAllLocalSheets`.
+- **First failure:** `SurfaceCellTransitionQuotientTests.cpp:2641`, `foundMultiIsolationLineage` is false.
+- **Classification:** different from `OccurrenceInvalidCornerAuthority`; focused-only evidence has no accepted-prefix stable-accounting effect by itself. No shared cause with row140 is assumed in EXEC.
+- **Accounting:** +0 stable pending Review.
+
+### TB1 recovery evidence boundary
+
+- `OccurrenceInvalidCornerAuthority` is absent from all 455 TB2 processes.
+- The retained pair-swap identity `M5CP3.ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection` now PASSes.
+- The frozen recovery rule also requires selector449 **449/449**. TB2 is 448/449, so EXEC does **not** close/recover `M6-CP1-TB1-EXEC-CAND-01`; final disposition is `M6-CP1-TB2-REV`-owned.
+- Candidate remains unpromoted; accepted M5 authority and debt count are unchanged.
+
 ## 2026-09-24 — `M6-CP1-TB1-REV` reviewing-agent addendum — **UPHELD WITH PRE-REGISTRATION / +0 beyond TB1-REV**
 
 **Stable totals as corrected by TB1-REV: 52 events / 15 categories / 37 recurrences; debt 1 (M6).**

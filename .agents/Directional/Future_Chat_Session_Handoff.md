@@ -4,26 +4,24 @@
 
 ## Current authority
 
-`M6-CP1-CB2` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE / CANDIDATE ONLY**. The Review-proved `CROSS_TEMPORARY_ITERATOR_RANGE` was corrected surgically in exact semantic source `724316a5b3f49e33dc8e649989bb413b3dc6b7c9`: A5 now materializes the by-value isolation-sheet vector once before `std::binary_search`. Region/component/sheet/support/chart semantics are unchanged; no test/fixture/selector/A4/M5/A6/A7/A8/benchmark semantics changed. Whole-tree split-range scan is clean.
+`M6-CP1-TB2-EXEC` is **COMPLETE / MECHANICALLY VALID / SEMANTIC NON-GREEN / REVIEW REQUIRED** on immutable candidate artifact/source `10834642074 / 724316a5b3f49e33dc8e649989bb413b3dc6b7c9`.
 
-Mandatory GMP/GMPXX compile run/job `36061049526 / 107839861958` compiled the standard eight targets and packaged candidate artifact `10834642074`, SHA-256 `754cfeae794da3304b39a572ef6feb6250709f908d5688dcd21f387a071d0cb8`. Root package manifest is **28/28**; source archive is exact; source receipts are clean; `runtimeExecution=false`. Compile log artifact `10834671954` has SHA-256 `9395b4bdaad33c6805779035a418a4f29c80561880f2a870e0d45b2bff0cb5e4`.
+Authoritative run/job `36063687138 / 107848407035` executed the frozen six focused identities plus selector449 as exactly **455 fresh exact-filter processes** with exact-one selection, zero skips/crashes/selection mismatches and benchmark count 0. Outcome is **5/6 focused PASS + 448/449 selector PASS = 453/455 PASS**. Result/log artifacts are `10835579933 / 10836175636`, provider SHA-256 `c42a5b2e2026a1fb59a6692ae615c9f7eacba8c1ef59fc49bace5d0e9360d06b / 254b7f16dc8de29df74165c3c0c27a6b31107dfd26b4d9fd9e86fd9e692639f2`. Result manifest verifies **933/933** and exact immutable postflight is green.
 
-Durable closeout is complete: documentation apply run/job `36062267699 / 107843821436` produced commit `b4c7d74cde82e833c002b10a2223b15581e6a973`; cleanup run/job `36062456833 / 107844370427` produced cleanup commit `5de9679acdaf2c0b5a79fe08ae7d2d50fb51f37e`, removed all four CB2 turn markers after connector-first caller deletion, and verified the exact seven durable workflows.\n\nAccepted authority remains M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 449/449. Stable accounting remains **52 / 15 / 37**; produced-witness debt remains **1**, M6-owned. CB2 receives no runtime/acceptance credit and candidate `10834642074` is unpromoted.
+The TB1 `OccurrenceInvalidCornerAuthority` symptom is absent from all 455 processes, and the retained pair-swap identity PASSes. The gate is nevertheless not selector-green: focused row5 `SurfaceCellTransitionQuotient.MultiIsolationMaterializationRetainsAllLocalSheets` fails because `foundMultiIsolationLineage=false`, and accepted selector449 row140 `SurfaceCellAuthorityContractCutover.HardRailPairExplicitRailIdMismatchRejectsStrictTransport` fails with `OccurrenceUnownedRelation` where the existing assertion expects `InvalidHardRailTransport`. Under the pre-registered TB2 rule these are new Review-owned candidate surfaces; EXEC does not assign their root cause or stable category. Because selector449 is 448/449, EXEC also does not claim formal recovery of the TB1 candidate despite the disappearance of `OccurrenceInvalidCornerAuthority`.
+
+Stable accounting remains **52 / 15 / 37** pending Review; produced-witness debt remains **1**, M6-owned. Accepted authority remains M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 449/449. Candidate `10834642074` remains unpromoted.
 
 ## Exact next turn
 
-**`M6-CP1-TB2-EXEC`** — artifact-only Test + Benchmark under `Architecture_M6_CP1_TB2_Artifact_Only_Test_Benchmark_Plan.md`.
-
-Use immutable artifact `10834642074` only. Verify its exact digest/28-entry manifest/source/GMP/boundary evidence and extract without executable-mode repair. Run the unchanged six focused identities first, then selector449 in exact order, as exactly **455 fresh exact-filter processes** with exact-one selection, zero skips and benchmark count 0. No configure/build/relink/discovery/source/test/fixture/selector/package mutation is authorized.
-
-Pre-registered classification: TB1 CAND-01 recovers only with **no `OccurrenceInvalidCornerAuthority` in any process and selector449 449/449**. A focused RED whose first failure differs is a new candidate; the pair-swap identity is the main latent-risk case. Do not rerun a mechanically valid semantic result. Exact successor after a mechanically valid TB2 is mandatory **`M6-CP1-TB2-REV`**.
+**`M6-CP1-TB2-REV`** — mandatory runtime-free independent Review. Re-open package `10834642074`, result/log `10835579933 / 10836175636`, the TB2 report, accepted M5 authority, and the frozen pre-registration. Independently adjudicate whether TB1 CAND-01 is recovered/closed despite the new REDs, classify the accepted row140 PASS->RED and focused multi-isolation RED without assuming a shared cause, update stable accounting only if justified, and freeze the next bounded CP1 action. Do not compile, execute tests/benchmarks, mutate implementation/test/selector semantics, or promote the candidate inside Review.
 
 ## Current files
 
 - `.agents/Directional/Architecture_M6_Frozen_Definitions.md`
-- `.agents/Directional/Architecture_M6_CP1_CB2_Corner_Authority_Range_Correction_Code_Build_Report.md`
+- `.agents/Directional/Architecture_M6_CP1_TB2_Artifact_Only_Test_Benchmark_Report.md`
 - `.agents/Directional/Architecture_M6_CP1_TB2_Artifact_Only_Test_Benchmark_Plan.md`
-- `.agents/Directional/Architecture_M6_CP1_TB1_Artifact_Only_Test_Benchmark_Report.md`
+- `.agents/Directional/Architecture_M6_CP1_CB2_Corner_Authority_Range_Correction_Code_Build_Report.md`
 - `.agents/Directional/Architecture_M6_CP1_TB1_Review_Record.md`
 - `.agents/Directional/M6_Consolidated_Record.md`
 - `.agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt`
@@ -33,19 +31,19 @@ Pre-registered classification: TB1 CAND-01 recovers only with **no `OccurrenceIn
 
 ```yaml
 load_next:
-  - turn-based-coding-agent/references/turns/TB-EXEC.md
+  - turn-based-coding-agent/references/turns/REVIEW.md
 conditional_modules:
-  - trigger: github_connector / GitHub Actions / artifact execution
+  - trigger: github_connector / artifact inspection
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
   - turn-based-coding-agent/references/core/turn-boundaries.md
   - turn-based-coding-agent/references/core/evidence.md
-  - turn-based-coding-agent/references/github-connector-workflows/WORKFLOW_POLICY.md
+  - .agents/Directional/Architecture_M6_CP1_TB2_Artifact_Only_Test_Benchmark_Report.md
   - .agents/Directional/Architecture_M6_CP1_TB2_Artifact_Only_Test_Benchmark_Plan.md
-  - .agents/Directional/GitHub_Workflow_Policy.md
-  - .agents/Directional/GMP_COMPILE_POLICY.md
+  - .agents/Directional/Architecture_M6_CP1_TB1_Review_Record.md
+  - .agents/Directional/Architecture_M6_Frozen_Definitions.md
 templates_when_producing:
-  - turn-based-coding-agent/templates/TEST_REPORT.md
+  - turn-based-coding-agent/templates/REVIEW_REPORT.md
 do_not_preload:
   - sibling turn files
   - uncited historical reports

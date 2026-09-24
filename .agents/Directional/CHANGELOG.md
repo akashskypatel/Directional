@@ -1,3 +1,10 @@
+## 2026-09-24 — `M6-CP1-TB2-EXEC`: iterator-range symptom clears; gate is 453/455 and Review-owned
+
+- Immutable candidate `10834642074 / 724316a5...` executes exactly **455** fresh processes in run/job `36063687138 / 107848407035`: focused **5/6**, selector449 **448/449**, total **453/455**, exact-one selected, zero skips/crashes/selection mismatches, benchmark 0 and exact immutable postflight.
+- Result/log `10835579933 / 10836175636`; result manifest **933/933**; execution-ledger `c0edfd0e...988ff`; RED-ledger `cc5ccbe4...258a8`.
+- No process reports `OccurrenceInvalidCornerAuthority`; retained pair-swap PASSes. Remaining REDs are focused multi-isolation `foundMultiIsolationLineage=false` and selector ordinal140 `OccurrenceUnownedRelation` instead of expected `InvalidHardRailTransport`. Both are recorded as new non-stable Review-owned candidates.
+- Formal TB1 recovery is not claimed because the frozen rule also requires selector449 449/449. Stable accounting remains **52 / 15 / 37**, debt 1; candidate remains unpromoted. Exact next: runtime-free `M6-CP1-TB2-REV`.
+
 ## 2026-09-24 — `M6-CP1-CB2`: cross-temporary A5 range corrected; candidate compile/package green
 
 - Exact semantic source `724316a5b3f49e33dc8e649989bb413b3dc6b7c9` changes only the A5 isolation-sheet membership range: one by-value vector is materialized and one valid `binary_search` range is used. Region/component/sheet/support/chart semantics remain unchanged; whole-tree by-value split-range scan is clean.
