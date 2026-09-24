@@ -8,7 +8,7 @@
 
 Mandatory GMP/GMPXX compile run/job `36061049526 / 107839861958` compiled the standard eight targets and packaged candidate artifact `10834642074`, SHA-256 `754cfeae794da3304b39a572ef6feb6250709f908d5688dcd21f387a071d0cb8`. Root package manifest is **28/28**; source archive is exact; source receipts are clean; `runtimeExecution=false`. Compile log artifact `10834671954` has SHA-256 `9395b4bdaad33c6805779035a418a4f29c80561880f2a870e0d45b2bff0cb5e4`.
 
-Accepted authority remains M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 449/449. Stable accounting remains **52 / 15 / 37**; produced-witness debt remains **1**, M6-owned. CB2 receives no runtime/acceptance credit and candidate `10834642074` is unpromoted.
+Durable closeout is complete: documentation apply run/job `36062267699 / 107843821436` produced commit `b4c7d74cde82e833c002b10a2223b15581e6a973`; cleanup run/job `36062456833 / 107844370427` produced cleanup commit `5de9679acdaf2c0b5a79fe08ae7d2d50fb51f37e`, removed all four CB2 turn markers after connector-first caller deletion, and verified the exact seven durable workflows.\n\nAccepted authority remains M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 449/449. Stable accounting remains **52 / 15 / 37**; produced-witness debt remains **1**, M6-owned. CB2 receives no runtime/acceptance credit and candidate `10834642074` is unpromoted.
 
 ## Exact next turn
 
