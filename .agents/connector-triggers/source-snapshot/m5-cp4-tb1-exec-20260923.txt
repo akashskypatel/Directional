@@ -1,0 +1,3 @@
+M5-CP4-TB1-EXEC source snapshot trigger
+Requested source authority: fd06428da65e70a8754d0fc403290b99a0697be3
+Purpose: exact start-of-turn snapshot for artifact-only TB orchestration and durable-policy inspection
