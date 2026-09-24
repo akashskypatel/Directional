@@ -4,25 +4,37 @@
 
 ## Current authority
 
-`M6-CP1-TB2-EXEC` is **COMPLETE / MECHANICALLY VALID / SEMANTIC NON-GREEN / REVIEW REQUIRED** on immutable candidate artifact/source `10834642074 / 724316a5b3f49e33dc8e649989bb413b3dc6b7c9`.
+`M6-CP1-TB2-REV` is **COMPLETE / TB2 MECHANICS UPHELD / ONE NEW STABLE EVENT / ONE NON-STABLE FOCUSED MECHANISM FAILURE / CANDIDATE UNPROMOTED**.
 
-Authoritative run/job `36063687138 / 107848407035` executed the frozen six focused identities plus selector449 as exactly **455 fresh exact-filter processes** with exact-one selection, zero skips/crashes/selection mismatches and benchmark count 0. Outcome is **5/6 focused PASS + 448/449 selector PASS = 453/455 PASS**. Result/log artifacts are `10835579933 / 10836175636`, provider SHA-256 `c42a5b2e2026a1fb59a6692ae615c9f7eacba8c1ef59fc49bace5d0e9360d06b / 254b7f16dc8de29df74165c3c0c27a6b31107dfd26b4d9fd9e86fd9e692639f2`. Result manifest verifies **933/933** and exact immutable postflight is green.
+Review independently re-opened candidate artifact/source `10834642074 / 724316a5b3f49e33dc8e649989bb413b3dc6b7c9`, TB2 run/job `36063687138 / 107848407035`, result/log `10835579933 / 10836175636`, and accepted M5 authority `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7`. Candidate manifest is 28/28; result evidence is 933/933; TB2 remains mechanically valid at **5/6 focused + 448/449 selector = 453/455 PASS**, exact-one selection, zero skips/crashes/selection mismatches, benchmark 0 and exact immutable postflight.
 
-The TB1 `OccurrenceInvalidCornerAuthority` symptom is absent from all 455 processes, and the retained pair-swap identity PASSes. The gate is nevertheless not selector-green: focused row5 `SurfaceCellTransitionQuotient.MultiIsolationMaterializationRetainsAllLocalSheets` fails because `foundMultiIsolationLineage=false`, and accepted selector449 row140 `SurfaceCellAuthorityContractCutover.HardRailPairExplicitRailIdMismatchRejectsStrictTransport` fails with `OccurrenceUnownedRelation` where the existing assertion expects `InvalidHardRailTransport`. Under the pre-registered TB2 rule these are new Review-owned candidate surfaces; EXEC does not assign their root cause or stable category. Because selector449 is 448/449, EXEC also does not claim formal recovery of the TB1 candidate despite the disappearance of `OccurrenceInvalidCornerAuthority`.
+CB2 clears the TB1 `OccurrenceInvalidCornerAuthority` symptom from all 455 and the pair-swap identity PASSes. The frozen recovery rule also required selector449 449/449, so the cross-temporary event is mechanism-cleared but not formally closed.
 
-Stable accounting remains **52 / 15 / 37** pending Review; produced-witness debt remains **1**, M6-owned. Accepted authority remains M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 449/449. Candidate `10834642074` remains unpromoted.
+Accepted selector449 row140 `HardRailPairExplicitRailIdMismatchRejectsStrictTransport` is a new stable singleton **`VALIDATION_ORDER_SHADOWING`** event. A5 now rejects distinct explicit reciprocal HardRail IDs first as generic `OccurrenceUnownedRelation`, shadowing the established `InvalidHardRailTransport` contract. Do not weaken the accepted negative or make the relation valid.
+
+Focused `MultiIsolationMaterializationRetainsAllLocalSheets` is a valid **non-stable** M6 mechanism RED. The split fixture publishes a checked two-sheet seam certificate, but no quotient lineage contains both sheets. `consumedInternalIsolationSeams` is only certificate-map size, not actual quotient consumption. Review bounds the gap to A5 occurrence-sheet -> relation endpoint -> quotient union -> lineage propagation but does not assume which step or when the behavior was introduced.
+
+Stable accounting is **53 events / 16 categories / 37 recurrences**; produced-witness debt remains **1**, M6-owned. Candidate `10834642074` remains unpromoted. Accepted runtime authority remains M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449 PASS**.
 
 ## Exact next turn
 
-**`M6-CP1-TB2-REV`** — mandatory runtime-free independent Review. Re-open package `10834642074`, result/log `10835579933 / 10836175636`, the TB2 report, accepted M5 authority, and the frozen pre-registration. Independently adjudicate whether TB1 CAND-01 is recovered/closed despite the new REDs, classify the accepted row140 PASS->RED and focused multi-isolation RED without assuming a shared cause, update stable accounting only if justified, and freeze the next bounded CP1 action. Do not compile, execute tests/benchmarks, mutate implementation/test/selector semantics, or promote the candidate inside Review.
+**`M6-CP1-CB3`** — bounded runtime-free Code + Build under `Architecture_M6_CP1_CB3_Authority_And_Multi_Isolation_Recovery_Code_Build_Plan.md`.
+
+Own exactly two recovery surfaces:
+
+1. preserve A5 fail-closed relation ownership while restoring accepted row140's specific `InvalidHardRailTransport` precedence for explicit HardRail-ID mismatch;
+2. statically trace the split-isolation A5 occurrence sheets and relation endpoint unions, then correct only the first implementation locus that fails to carry both certified sheets into one legitimate quotient lineage.
+
+Preserve selector449/routing449 and all six focused identities byte/semantically unchanged. Do not extract A6/A7, publish a selector, weaken tests, change fixtures, accept geometric coincidence as equality, or use `consumedInternalIsolationSeams` as proof of quotient consumption. If the multi-isolation correction would require redefining frozen A5 authority, stop and return to Review/Definition.
+
+Compile/package the standard eight targets only through mandatory GMP/GMPXX reusable compile authority with `runtimeExecution=false`. If compile-green, exact successor is `M6-CP1-TB3-EXEC`: unchanged six focused + selector449 = 455 fresh exact-filter processes, then mandatory `M6-CP1-TB3-REV`.
 
 ## Current files
 
 - `.agents/Directional/Architecture_M6_Frozen_Definitions.md`
 - `.agents/Directional/Architecture_M6_CP1_TB2_Artifact_Only_Test_Benchmark_Report.md`
-- `.agents/Directional/Architecture_M6_CP1_TB2_Artifact_Only_Test_Benchmark_Plan.md`
-- `.agents/Directional/Architecture_M6_CP1_CB2_Corner_Authority_Range_Correction_Code_Build_Report.md`
-- `.agents/Directional/Architecture_M6_CP1_TB1_Review_Record.md`
+- `.agents/Directional/Architecture_M6_CP1_TB2_Review_Record.md`
+- `.agents/Directional/Architecture_M6_CP1_CB3_Authority_And_Multi_Isolation_Recovery_Code_Build_Plan.md`
 - `.agents/Directional/M6_Consolidated_Record.md`
 - `.agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt`
 - `.agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv`
@@ -31,21 +43,20 @@ Stable accounting remains **52 / 15 / 37** pending Review; produced-witness debt
 
 ```yaml
 load_next:
-  - turn-based-coding-agent/references/turns/REVIEW.md
+  - turn-based-coding-agent/references/turns/CB.md
 conditional_modules:
-  - trigger: github_connector / artifact inspection
+  - trigger: github_connector / GitHub Actions / patch transport
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
   - turn-based-coding-agent/references/core/turn-boundaries.md
   - turn-based-coding-agent/references/core/evidence.md
-  - .agents/Directional/Architecture_M6_CP1_TB2_Artifact_Only_Test_Benchmark_Report.md
-  - .agents/Directional/Architecture_M6_CP1_TB2_Artifact_Only_Test_Benchmark_Plan.md
-  - .agents/Directional/Architecture_M6_CP1_TB1_Review_Record.md
+  - .agents/Directional/Architecture_M6_CP1_TB2_Review_Record.md
+  - .agents/Directional/Architecture_M6_CP1_CB3_Authority_And_Multi_Isolation_Recovery_Code_Build_Plan.md
   - .agents/Directional/Architecture_M6_Frozen_Definitions.md
-templates_when_producing:
-  - turn-based-coding-agent/templates/REVIEW_REPORT.md
+  - .agents/Directional/GitHub_Workflow_Policy.md
+  - .agents/Directional/GMP_COMPILE_POLICY.md
 do_not_preload:
-  - sibling turn files
+  - folded superseded M6 per-turn records
   - uncited historical reports
   - research/provenance/examples
 ```

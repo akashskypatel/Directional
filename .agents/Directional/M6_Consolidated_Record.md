@@ -1,9 +1,9 @@
 # M6 Consolidated Record
 
-**Status:** M6 ACTIVE / `M6-CP1-TB2-EXEC` mechanically valid semantic non-green / candidate unpromoted / exact next `M6-CP1-TB2-REV`
+**Status:** M6 ACTIVE / `M6-CP1-TB2-REV` complete / one new stable validation-precedence event + one non-stable focused mechanism gap / candidate unpromoted / exact next `M6-CP1-CB3`
 **Last updated:** 2026-09-24
 
-Normative M6 semantics live in `Architecture_M6_Frozen_Definitions.md`. Entering accepted authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449 PASS**, SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. TB1's one accepted-prefix event is independently reclassified to new singleton `CROSS_TEMPORARY_ITERATOR_RANGE`; stable accounting is **52 / 15 / 37** and produced-witness debt is **1**, M6-owned.
+Normative M6 semantics live in `Architecture_M6_Frozen_Definitions.md`. Entering accepted authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449 PASS**, SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. TB1's accepted-prefix event remains independently classified as singleton `CROSS_TEMPORARY_ITERATOR_RANGE`; TB2 Review adds one accepted row140 event in new singleton `VALIDATION_ORDER_SHADOWING`. Stable accounting is **53 / 16 / 37** and produced-witness debt is **1**, M6-owned.
 
 ## 1. `M6-DEFN` — four products and verifier boundary frozen
 
@@ -72,6 +72,16 @@ No process reports `OccurrenceInvalidCornerAuthority`, and the retained pair-swa
 
 Stable accounting remains **52 / 15 / 37** pending Review, debt 1 M6-owned. Accepted M5 package/source and selector449 authority remain unchanged; candidate `10834642074` is unpromoted. Exact next is mandatory runtime-free `M6-CP1-TB2-REV`.
 
+## 7. `M6-CP1-TB2-REV` — iterator symptom cleared; validation precedence and multi-isolation recovery frozen
+
+Review independently re-opens candidate `10834642074`, TB2 result/log `10835579933 / 10836175636`, accepted M5 authority and the frozen TB2 pre-registration. TB2 mechanics are upheld at **5/6 focused + 448/449 selector = 453/455 PASS**, 0 skips/crashes/selection mismatches and exact immutable postflight. `OccurrenceInvalidCornerAuthority` is absent from all 455 and pair-swap PASSes, but the frozen CAND-01 recovery clause also requires selector449 449/449, so the cross-temporary event is mechanism-cleared but not formally closed.
+
+Accepted selector row140 is a new stable event: A5 now rejects an explicit mismatched HardRail pair as generic `UnownedRelation` before the long-standing materializer guard can return `InvalidHardRailTransport`. The unchanged accepted negative is valid; this is new singleton **`VALIDATION_ORDER_SHADOWING`**, not test-authority drift. Accounting becomes **53 / 16 / 37**. Existing `LESSONS.md` §4 lesson 22f supplies the governing rule: restore the shadowed specific validation precedence without weakening the negative.
+
+Focused `MultiIsolationMaterializationRetainsAllLocalSheets` is a valid but non-stable CP1 mechanism RED. Its split fixture does publish a checked two-sheet seam certificate and accepted row186 remains green, but the legacy `consumedInternalIsolationSeams` field counts certificate-map entries rather than quotient consumption. No output lineage spans both sheets. Review bounds the gap to A5 occurrence-sheet -> owned-relation endpoint -> quotient union -> lineage propagation, does not claim when it was introduced, and assumes no shared cause with row140.
+
+Candidate remains unpromoted, accepted M5 authority remains `10814505512 / e284fea7...` under selector449 449/449, and debt remains 1. Exact next is bounded runtime-free **`M6-CP1-CB3`**, owning only HardRail diagnostic precedence and the first proved multi-isolation propagation loss. If compile-green, fresh TB3 reruns unchanged 6+449=455 and then mandatory Review.
+
 ## Folded document index
 
 | Retired filename | Disposition |
@@ -80,3 +90,8 @@ Stable accounting remains **52 / 15 / 37** pending Review, debt 1 M6-owned. Acce
 | `Architecture_M6_CP1_CB1_Occurrence_Product_Code_Build_Plan.md` (78 lines) | **CONSUMED CB1 PLAN / FOLDED BY M6-CP1-TB1-REV.** Its A5-only scope, semantic `OccurrenceId`, retained/deleted focused-test dispositions, GMP compile boundary and no-runtime constraints are preserved in §2, the frozen definitions and the TB1 Review record; full text remains in git history. |
 | `Architecture_M6_CP1_CB1_Occurrence_Product_Code_Build_Report.md` (94 lines) | **SUPERSEDED CB1 COMPILE REPORT / FOLDED BY M6-CP1-TB1-REV.** Exact source/package/run identities, eight-target GMP/GMPXX compile evidence, selector449 preservation and compile-only observations are preserved in §2, changelogs and the TB1 Review record; full text remains in git history. |
 | `Architecture_M6_CP1_TB1_Artifact_Only_Test_Benchmark_Plan.md` (66 lines) | **CONSUMED TB1 EXEC PLAN / FOLDED BY M6-CP1-TB1-REV.** Immutable artifact identity, six-focused-plus-selector449 process contract, no-benchmark boundary and Review successor are preserved in §3, the retained TB1 report and TB1 Review record; full text remains in git history. |
+| `Architecture_M6_CP1_CB2_Corner_Authority_Range_Correction_Code_Build_Plan.md` (94 lines) | **CONSUMED CB2 PLAN / FOLDED BY M6-CP1-TB2-REV.** One-variable stable-vector correction, frozen selector/static checks, GMP compile boundary and TB2 pre-registration are preserved in §5, the retained TB2 report and current Review; full text remains in git history. |
+| `Architecture_M6_CP1_CB2_Corner_Authority_Range_Correction_Code_Build_Report.md` (81 lines) | **SUPERSEDED CB2 COMPILE REPORT / FOLDED BY M6-CP1-TB2-REV.** Exact semantic source, compile run/job, candidate artifact/digests, eight-target GMP evidence and runtime-free boundary are preserved in §5 and retained current evidence records; full text remains in git history. |
+| `Architecture_M6_CP1_TB1_Artifact_Only_Test_Benchmark_Report.md` (64 lines) | **SUPERSEDED TB1 RUNTIME REPORT / FOLDED BY M6-CP1-TB2-REV.** TB1 mechanics, accepted-prefix RED set and Review-corrected root are preserved in §3-§4, tracker and current Review; full text remains in git history. |
+| `Architecture_M6_CP1_TB1_Review_Record.md` (191 lines) | **SUPERSEDED TB1 REVIEW / FOLDED BY M6-CP1-TB2-REV.** Cross-temporary root proof, corrected accounting, whole-tree scan, recovery rule and carried obligations are preserved in §4, tracker, frozen definitions and current Review; full text remains in git history. |
+| `Architecture_M6_CP1_TB2_Artifact_Only_Test_Benchmark_Plan.md` (88 lines) | **CONSUMED TB2 EXEC PLAN / FOLDED BY M6-CP1-TB2-REV.** Candidate identity, six+449 exact-process gate, immutable boundary, recovery pre-registration and Review successor are preserved in §6-§7, retained TB2 report and current Review; full text remains in git history. |

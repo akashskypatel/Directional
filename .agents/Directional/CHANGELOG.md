@@ -1,3 +1,11 @@
+## 2026-09-24 — `M6-CP1-TB2-REV`: accepted HardRail failure precedence regression classified; CB3 frozen
+
+- Independently re-verifies candidate `10834642074 / 724316a5...`, TB2 `10835579933 / 10836175636`, 455-process mechanics and accepted M5 selector449 authority.
+- CB2 clears `OccurrenceInvalidCornerAuthority`, but formal TB1 recovery remains open under its frozen 449/449 clause.
+- Classifies accepted row140 as one new stable singleton `VALIDATION_ORDER_SHADOWING`; accounting becomes **53 / 16 / 37**.
+- Carries focused multi-isolation lineage failure as non-stable CP1 mechanism debt and proves the old consumed-seam counter is certificate inventory rather than quotient-consumption evidence.
+- Freezes bounded `M6-CP1-CB3`, updates ORIENTATION/tracker/roadmap/handoff, and folds superseded M6 per-turn records under `CLEAN_UP_POLICY.md`.
+
 ## 2026-09-24 — `M6-CP1-TB2-EXEC`: iterator-range symptom clears; gate is 453/455 and Review-owned
 
 - Immutable candidate `10834642074 / 724316a5...` executes exactly **455** fresh processes in run/job `36063687138 / 107848407035`: focused **5/6**, selector449 **448/449**, total **453/455**, exact-one selected, zero skips/crashes/selection mismatches, benchmark 0 and exact immutable postflight.

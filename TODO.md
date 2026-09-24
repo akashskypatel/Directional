@@ -1,3 +1,15 @@
+## Latest Review turn — `M6-CP1-TB2-REV`
+
+**COMPLETE / TB2 MECHANICS UPHELD / CANDIDATE UNPROMOTED.** Review independently re-verifies candidate `10834642074 / 724316a5...`, TB2 result/log `10835579933 / 10836175636`, accepted M5 authority, and the frozen recovery rule. TB2 remains focused **5/6** + selector449 **448/449** = **453/455 PASS** with exact immutable postflight.
+
+CB2 clears `OccurrenceInvalidCornerAuthority` from all 455 and pair-swap PASSes, but formal TB1 CAND-01 recovery remains open because its pre-registration also requires selector449 449/449. Selector row140 is one new stable singleton **`VALIDATION_ORDER_SHADOWING`** event: A5's generic HardRail owner-mismatch rejection shadows the accepted `InvalidHardRailTransport` guard. Focused multi-isolation is a valid non-stable CP1 mechanism failure: a checked two-sheet certificate exists, but no quotient lineage carries both sheets; the legacy consumed-seam count is only certificate inventory. Stable accounting is now **53 / 16 / 37**, debt **1**.
+
+## Exact next turn — `M6-CP1-CB3`
+
+Runtime-free Code + Build. Correct only (1) HardRail validation precedence while preserving A5 fail-closed relation ownership and (2) the first proved authority-loss locus in split-isolation A5 relation -> quotient -> lineage propagation. Do not edit tests/fixtures/selector/routing, extract A6/A7, weaken typed failures, or use certificate-count diagnostics as consumption proof. If compile-green, fresh `M6-CP1-TB3-EXEC` reruns unchanged six focused + selector449 = 455 processes, followed by mandatory Review.
+
+See `.agents/Directional/Architecture_M6_CP1_TB2_Review_Record.md` and `.agents/Directional/Architecture_M6_CP1_CB3_Authority_And_Multi_Isolation_Recovery_Code_Build_Plan.md`.
+
 ## Latest Test + Benchmark turn — `M6-CP1-TB2-EXEC`
 
 **COMPLETE / MECHANICALLY VALID / SEMANTIC NON-GREEN / REVIEW REQUIRED.** Immutable candidate `10834642074 / 724316a5b3f49e33dc8e649989bb413b3dc6b7c9` executed in run/job `36063687138 / 107848407035` as exactly **455 fresh exact-filter processes**: focused **5/6 PASS**, selector449 **448/449 PASS**, total **453/455 PASS**, exact-one selection, zero skips/crashes/selection mismatches and benchmark 0. Result/log are `10835579933 / 10836175636`; result manifest is 933/933 and immutable postflight is exact.
@@ -16,11 +28,11 @@ See `.agents/Directional/Architecture_M6_CP1_TB2_Artifact_Only_Test_Benchmark_Re
 
 Mandatory GMP/GMPXX compile run/job `36061049526 / 107839861958` packages all eight standard targets as artifact `10834642074`, SHA-256 `754cfeae794da3304b39a572ef6feb6250709f908d5688dcd21f387a071d0cb8`, with **28/28** root manifest, clean source receipts and `runtimeExecution=false`. Candidate remains unpromoted; accounting stays **52 / 15 / 37**, debt 1.
 
-## Exact next turn — `M6-CP1-TB2-EXEC`
+## Historical successor — `M6-CP1-TB2-EXEC` (completed)
 
 Consume artifact `10834642074` immutably. Execute the unchanged six focused identities followed by selector449 as exactly **455 fresh exact-filter processes**, exact-one selection and zero skips, benchmark 0, then exact immutable postflight. Recovery of `M6-CP1-TB1-EXEC-CAND-01` requires no `OccurrenceInvalidCornerAuthority` anywhere plus selector449 **449/449**. A focused RED with a different first failure is a new candidate. Every mechanically valid outcome advances to mandatory runtime-free `M6-CP1-TB2-REV` with no TB repair/rerun.
 
-See `.agents/Directional/Architecture_M6_CP1_TB2_Artifact_Only_Test_Benchmark_Plan.md`.
+The consumed TB2 plan is folded into `.agents/Directional/M6_Consolidated_Record.md`; current runtime evidence is `.agents/Directional/Architecture_M6_CP1_TB2_Artifact_Only_Test_Benchmark_Report.md`.
 
 ## Latest Code + Build turn — `M6-CP1-CB1`
 
@@ -154,4 +166,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current corrected totals are **52 events / 15 categories / 37 recurrences**, project debt **1** (M6 only). M4 and **M5 are CLOSED / ACCEPTED**. Final M5 authority is package/source `10814505512 / e284fea7...` under selector449 **449/449** (`d4a0d1b7...d6414`). `M6-CP1-TB1-REV` is **COMPLETE / CAUSE PROVED / CANDIDATE UNPROMOTED**; exact next is bounded **`M6-CP1-CB2`**, then unchanged TB2 455-process recovery gate and mandatory Review. PR #8 remains open, draft, and unmerged.
+Current corrected totals are **53 events / 16 categories / 37 recurrences**, project debt **1** (M6 only). M4 and **M5 are CLOSED / ACCEPTED**. Final M5 authority is package/source `10814505512 / e284fea7...` under selector449 **449/449** (`d4a0d1b7...d6414`). `M6-CP1-TB2-REV` is **COMPLETE / CANDIDATE UNPROMOTED**; exact next is bounded **`M6-CP1-CB3`**, then unchanged TB3 455-process recovery gate and mandatory Review. PR #8 remains open, draft, and unmerged.

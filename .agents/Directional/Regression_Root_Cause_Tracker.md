@@ -1,3 +1,27 @@
+## 2026-09-24 — `M6-CP1-TB2-REV`: HardRail validation precedence regresses accepted row140; focused multi-isolation mechanism remains absent — **ONE NEW STABLE EVENT / ONE NON-STABLE FOCUSED CANDIDATE / CB3 FROZEN**
+
+**Stable totals become 53 events / 16 categories / 37 recurrences; project debt remains 1 (M6).** Independent Review re-verifies candidate `10834642074 / 724316a5b3f49e33dc8e649989bb413b3dc6b7c9`, TB2 result/log `10835579933 / 10836175636`, the complete 455-process ledger and accepted M5 selector449 authority `10814505512 / e284fea7...` at 449/449. TB2 mechanics are upheld at focused 5/6 + selector 448/449 = 453/455 PASS with exact immutable postflight.
+
+### `M6-CP1-TB2-REV-CAND-01` — STABLE / `VALIDATION_ORDER_SHADOWING` singleton / owner `M6-CP1-CB3 -> TB3-EXEC -> TB3-REV`
+
+- **Accepted-green loss:** selector449 ordinal140 `SurfaceCellAuthorityContractCutover.HardRailPairExplicitRailIdMismatchRejectsStrictTransport` was accepted PASS and now REDs because expected `InvalidHardRailTransport` is replaced by `OccurrenceUnownedRelation`.
+- **Root cause:** new A5 runs before the established materializer validation. For a reciprocal HardRail pair with two distinct explicit `HardRailId`s, `SurfaceOccurrenceComplexProducer::produce` returns generic `UnownedRelation`; the adapter publishes `OccurrenceUnownedRelation`; the existing downstream strict-transport rail-ID mismatch guard is therefore shadowed. Both guards reject, but the newly earlier generic guard changes an accepted typed-failure contract.
+- **Test authority:** fixture and assertion are unchanged and structurally exercise the intended explicit rail-ID mismatch. `LESSONS.md` §4 lesson 22f already covers this exact earlier-guard-shadowing pattern; do not weaken the negative to accept either code.
+- **Accounting:** one accepted PASS->RED event in new singleton category `VALIDATION_ORDER_SHADOWING`; events 52 -> 53, categories 15 -> 16, recurrences remain 37.
+- **Falsifier/recovery:** preserve A5 fail-closed ownership and invalidity of the mismatched relation while restoring the specific `InvalidHardRailTransport` outcome. No duplicate semantic authority, permissive fallback, or selector/test weakening.
+
+### `M6-CP1-TB2-REV-CAND-02` — ACTIVE / FOCUSED-ONLY / NON-STABLE / owner `M6-CP1-CB3 -> TB3-EXEC -> TB3-REV`
+
+- **Identity:** `SurfaceCellTransitionQuotient.MultiIsolationMaterializationRetainsAllLocalSheets` fails `foundMultiIsolationLineage=false` after successful materialization.
+- **Evidence:** the same split-isolation fixture publishes a checked seam certificate between distinct sheets and accepted selector row186 remains PASS, but `consumedInternalIsolationSeams` is assigned from certificate-map size, not actual quotient consumption. Final lineage sheets come from the `occurrence.isolationSheet` values of quotient members, so the stronger M6 mechanism witness is non-vacuous and currently false.
+- **Root-cause bound:** the gap lies somewhere in the A5 occurrence-sheet -> owned-relation endpoint -> quotient-union -> lineage propagation path. Evidence does not yet prove the first losing step or that CB1 introduced it, and no common cause with row140 is assumed.
+- **Accounting:** focused-only, never accepted green; +0 event / +0 category / +0 recurrence.
+- **Falsifier/recovery:** CB3 must trace the exact occurrence sheets and relation endpoint unions and correct only the first authority-loss locus. Relation-only equality and exact source support remain mandatory. If the frozen A5 product cannot represent the required cross-sheet relation without definition change, stop and return to Review/Definition.
+
+### TB1 CAND-01 disposition
+
+CB2/TB2 clears `OccurrenceInvalidCornerAuthority` from all 455 processes and the pair-swap identity now PASSes, so the proved iterator-range symptom is runtime-cleared. The frozen recovery rule also required selector449 **449/449**; TB2 is 448/449. `M6-CP1-TB1-EXEC-CAND-01` therefore remains formally open until a fully green fresh selector gate satisfies the pre-registration. Candidate `10834642074` remains unpromoted.
+
 ## 2026-09-24 — `M6-CP1-TB2-EXEC`: A5 iterator symptom absent; selector row140 and multi-isolation remain RED — **MECHANICALLY VALID / NEW CANDIDATES / +0 STABLE PENDING REVIEW**
 
 **Stable totals remain 52 events / 15 categories / 37 recurrences; project debt remains 1 (M6).** Immutable candidate `10834642074 / 724316a5b3f49e33dc8e649989bb413b3dc6b7c9` executed exactly **455** fresh exact-filter processes in run/job `36063687138 / 107848407035`: focused **5/6 PASS**, selector449 **448/449 PASS**, total **453 PASS / 2 RED**, exact-one selection, zero skips/crashes/selection mismatches, benchmark 0 and exact immutable postflight. Result/log are `10835579933 / 10836175636`.

@@ -1,3 +1,9 @@
+## 2026-09-24 — M6 CP1 TB2 independent Review
+
+- Review upholds TB2 immutable mechanics at 453/455 and keeps candidate `10834642074` unpromoted.
+- Accepted selector row140 is a new stable `VALIDATION_ORDER_SHADOWING` event; focused multi-isolation remains a non-stable CP1 mechanism failure. Stable accounting is **53 / 16 / 37**, debt 1 M6-owned.
+- Exact next is bounded runtime-free `M6-CP1-CB3`; selector449 remains accepted M5 authority at 449/449.
+
 ## 2026-09-24 — `M6-CP1-TB2-EXEC`: artifact-only recovery gate is 453/455; Review next
 
 Immutable candidate `10834642074 / 724316a5...` executes six focused + selector449 as **455** fresh exact-filter processes: focused 5/6, selector 448/449, total 453/455 with exact-one selection, zero skips/crashes/selection mismatches, benchmark 0 and exact immutable postflight. `OccurrenceInvalidCornerAuthority` is absent and the retained pair-swap identity PASSes, but focused multi-isolation remains RED and accepted selector row140 now returns `OccurrenceUnownedRelation` instead of `InvalidHardRailTransport`. These are new non-stable Review-owned candidates; formal TB1 recovery is not claimed in EXEC because selector449 is not 449/449. Stable accounting stays 52/15/37, debt 1; candidate remains unpromoted. Exact next is mandatory `M6-CP1-TB2-REV`.
