@@ -1,0 +1,3 @@
+# M6-DEFN temporary state
+.agents/connector-triggers/source-snapshot/m6-defn-20260924T1618Z.txt
+.agents/connector-triggers/m6-defn-drive-apply-20260924.txt
