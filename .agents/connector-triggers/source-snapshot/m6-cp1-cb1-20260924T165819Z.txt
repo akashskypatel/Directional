@@ -1,0 +1,3 @@
+M6-CP1-CB1 source snapshot trigger
+semantic_source=40b36edb6d6b95f5ecf1ff0115fcfeb663e798fb
+purpose=freeze exact turn-start repository source for local inspection
