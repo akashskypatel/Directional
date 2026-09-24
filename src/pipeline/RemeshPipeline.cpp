@@ -1793,6 +1793,21 @@ void hash_vector(
   }
 }
 
+void hash_occurrence_id(
+    std::uint64_t &seed, const authority::OccurrenceId &value) {
+  hash_semantic_id(seed, value.cell());
+  hash_combine_u64(seed, value.canonical_corner_role());
+}
+
+void hash_vector(
+    std::uint64_t &seed,
+    const std::vector<authority::OccurrenceId> &values) {
+  hash_combine_u64(seed, values.size());
+  for (const auto &value : values) {
+    hash_occurrence_id(seed, value);
+  }
+}
+
 void hash_source_edge_topology_key(
     std::uint64_t &seed, const authority::SourceEdgeTopologyKey &topology) {
   hash_semantic_id(seed, topology.first());
