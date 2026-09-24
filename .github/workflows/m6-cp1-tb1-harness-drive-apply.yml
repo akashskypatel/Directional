@@ -29,7 +29,7 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: m6-cp1-tb1-harness-drive-apply
+      label: m6-cp1-tb1-harness-drive-apply-r1
       commit_run_file: false
       trim_stale_comments: true
     secrets: inherit
@@ -39,9 +39,9 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 11OBiqo9JvPxVnaDDkXG4ViH058LeeyEZ
-      patch_sha256: '8adcd86081ffe4c2a1dab29ea48ad34b743a36c3278a39c7edd379af5653c08c'
-      base_sha: c8a6b146edf32d5a0f0f9230486494d24589eb22
+      file_id: 1AMXLHSmnRTA4NdZiKe6QQVd6hp2q_bam
+      patch_sha256: 'd6ef6f6de5ec442450439135c99be6b3d5eb1d6ce1ee24af361be8e9455ce3ce'
+      base_sha: c63541703c56755e6b45561c8726cd761df99494
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: 'M6-CP1-TB1-EXEC: stage artifact-only harness'
     secrets: inherit
