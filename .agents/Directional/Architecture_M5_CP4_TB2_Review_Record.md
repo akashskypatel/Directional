@@ -51,7 +51,7 @@ The archived 449-row execution ledger was parsed from raw evidence rather than t
 - package-before/after and packaged-source-before/after censuses are byte-identical; the package manifest remains 28/28;
 - TB2 records `configure=false`, `compile=false`, `relink=false`, `discovery=false`, `repair=false`, `benchmark=false`.
 
-The Review's independent evidence script performed 2806 mechanical checks with zero failures.
+The Review's independent evidence script completed with zero failures across the full 449-row ledger/raw-log, selector/routing, package-manifest, and immutable-postflight checks described above.
 
 ## 4. Frozen DEFN-R2 six-fact producer contract
 
@@ -74,7 +74,7 @@ The two dormant CB14 identities remain **NO M5 CREDIT**. `M6-DEFN` still owns fr
 
 ## 6. Actions-window and control-plane reconciliation
 
-Per `LESSONS.md` 178, the complete TB2-EXEC Actions window `2026-09-24T14:57:42Z..2026-09-24T15:29:09Z` was reconciled, not only the run named by the report. Exactly five runs exist on the working branch in that window:
+Per the durable lesson **A resumed turn must re-derive its own progress from the repository and Actions history before arming anything**, the complete TB2-EXEC Actions window `2026-09-24T14:57:42Z..2026-09-24T15:29:09Z` was reconciled, not only the run named by the report. Exactly five runs exist on the working branch in that window:
 
 1. source snapshot `36016669227` — success;
 2. the sole runtime `36017291483` — success;
@@ -84,7 +84,7 @@ Per `LESSONS.md` 178, the complete TB2-EXEC Actions window `2026-09-24T14:57:42Z
 
 There is **no second runtime and no re-arm** after the authoritative green gate. This discharges the specific resumed-EXEC hazard for TB2 without creating a new defect pattern.
 
-Review-control note: the first static-validation caller, run `36023626890`, failed at workflow startup with **zero jobs** and produced no Directional runtime or semantic evidence. The caller was simplified without changing Review semantics; retry `36023789881 / 107715011095` completed successfully with `runtimeExecution=false`. This is process-only / non-stable / +0 and creates no new semantic candidate or lesson.
+Review-control note: the first static-validation caller, run `36023626890`, failed at workflow startup with **zero jobs** and produced no Directional runtime or semantic evidence. The caller was simplified without changing Review semantics; retry `36023789881 / 107715011095` completed successfully with `runtimeExecution=false`. This is process-only / non-stable / +0 and creates no new semantic candidate or lesson. A later resumed-session sanity check, run/job `36024245088 / 107716597555`, redundantly reran only the durable-ledger shrink guard after the completion beacon because the resumed session initially operated from stale conversational state. It passed, executed no Directional runtime, and its temporary caller/marker were removed before restoring the final completion beacon. This is likewise process-only / non-stable / +0 and repeats the existing resumed-turn state-reconciliation lesson.
 
 ## 7. Final adjudication
 
@@ -132,15 +132,15 @@ No M6 implementation, compile, package, test, benchmark, product/test/fixture/fi
 | Stable accounting | **51 / 14 / 37; debt 1 M6-owned.** No new semantic candidate. |
 | New candidates/obligations recorded | None. M6 inherits only already-owned M6 work. |
 | ORIENTATION currency line | `M5-CP4-TB2-REV`, 2026-09-24 UTC. |
-| ORIENTATION §3 / §4 / §7 / §8 | M5 advanced to CLOSED and selector449 authority; `G4-B004` M5 half discharged/M6 half retained; M6-DEFN moved to priority 1; §8 adds no new pattern and confirms `LESSONS.md` 178 was applied. |
+| ORIENTATION §3 / §4 / §7 / §8 | M5 advanced to CLOSED and selector449 authority; `G4-B004` M5 half discharged/M6 half retained; M6-DEFN moved to priority 1; §8 adds no new pattern and confirms the resumed-turn state-reconciliation lesson was applied. |
 | CHANGELOG | Agent and root entries prepended. |
 | ROADMAP | M5/CP4 closed, final selector449/package authority recorded, `G4-B004` M5 half accepted, M6-DEFN next. |
 | Selector manifest | selector448 demoted to accepted historical prefix; selector449 promoted to accepted current authority. |
-| LESSONS | n/a — no new recurring defect pattern; existing 168/176/177/178 govern this closeout. |
+| LESSONS | n/a — no new recurring defect pattern; the existing milestone-exit reconciliation, append-only ledger, chronology, and resumed-turn state-reconciliation lessons govern this closeout. |
 | Consolidation under CLEAN_UP_POLICY | Four superseded CP4 per-turn records folded into `M5_Consolidated_Record.md` §4.39/§5; current TB2 report/final Review/M6 plan retained. |
 | Successor frozen | Exactly `M6-DEFN`; runtime-free definition only. |
 | Turn boundary held | Runtime-free Review; no product/test/fixture/field/selector/build semantic mutation and no generated Directional runtime. |
 | `review_check.py boundary` | **PASS** — static Review run/job `36023789881 / 107715011095`; `authority e284fea7...`, declared selector449/448/430 hashes, review boundary, and custom turn semantic-boundary checks all passed; artifact `10819670109`, SHA-256 `775fdbc69ea2a633738f2821ab252855ff0d60b10a3e165062e54e5eb16c1048`. |
 | `review_check.py ledgers` | **PASS** — `review_check.py ledgers --base b1029e47787e2a1f7d55cb520d53f859798d2fe8`; tracker, agent changelog, lessons, and root changelog all pass append-only shrink checks. |
 | `STATUS` lifecycle maintained | Start beacon published before substantive mutation; final COMPLETE -> `M6-DEFN` must be the last repository write. |
-| Pushed to origin, branch in sync | **PASS after cleanup** — final temporary-state cleanup run/job `36024051678 / 107715930107` succeeded, producing cleanup commit `83d4bceddb8ed5b191911f6fbef7074d8df43d4d`; exactly the seven durable workflows remain and all three Review markers plus the cleanup manifest were removed. This Review-record finalization is a direct origin write; only the final `STATUS` completion beacon remains. |
+| Pushed to origin, branch in sync | **PASS after cleanup** — final temporary-state cleanup run/job `36024051678 / 107715930107` succeeded, producing cleanup commit `83d4bceddb8ed5b191911f6fbef7074d8df43d4d`; exactly the seven durable workflows remain and all three original Review markers plus the cleanup manifest were removed. A later redundant ledger-only sanity run/job `36024245088 / 107716597555` also passed; its temporary caller and marker were then removed by direct connector writes. Only the restored final `STATUS` completion beacon remains. |
