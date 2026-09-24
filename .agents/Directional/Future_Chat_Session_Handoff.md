@@ -32,6 +32,11 @@ Authorized scope only:
 
 Do not extract A6/A7/A8 in CB1, edit selectors, run generated Directional runtime, alter M5 relation semantics, weaken validators, change source-grid recovery/fallback, or claim G4 debt closure.
 
+**Reviewing-agent amendments (binding; CB1 plan final section):**
+1. The A5 permutation test permutes **source face rows** and compares `OccurrenceId`s, because storage-only permutation is already row 213. If A4 `CellId` renames occurrences, stop.
+2. Delete **only** `…EndpointGaugeIsIndependentAndExact`. Keep `…PeriodicPairStorageSwapPreservesSemanticDirection` untouched and propose it for the CP1 prepublication gate.
+3. Prepend changelog/tracker entries (tracker OBS sections go above the RESTORED HISTORY block), never at file end. On resume, re-derive progress first. COMPLETE is the last write.
+
 ## Current files
 
 - `.agents/Directional/Architecture_M6_Frozen_Definitions.md`

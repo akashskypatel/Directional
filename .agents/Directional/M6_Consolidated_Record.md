@@ -11,7 +11,17 @@ Normative M6 semantics live in `Architecture_M6_Frozen_Definitions.md`. Entering
 
 `G4-B002` remains split: CP1 mechanism/stage separation, CP3 direct production. `G4-B001 / PR8-R034 / G4-R007` is adjudicated as a direct-production evidence debt rather than a currently demonstrated source defect because current classification explicitly keeps hard-feature rails out of isolation-sheet barriers; CP1 must preserve that separation and CP3 owns strict torus 3/3 re-proof. `G4-B004` requires the same M5-accepted direct torus authority through A5 exact occurrences, A6 exact-once consumption, A7 embedding, and A8 independent verification.
 
-The two dormant CB14 identities receive no M5 credit and are frozen for deletion at `M6-CP1-CB1` as redundant to named accepted M5 identities. The never-gated focused multi-isolation materialization identity is retained for CP1 mechanism gating; the never-gated committed-torus identity is retained for CP3 direct-production preservation but is insufficient alone for G4-B004 closure.
+The two dormant CB14 identities receive no M5 credit. At `M6-CP1-CB1` the endpoint-gauge identity is deleted. The pair-swap identity is **retained for the CP1 prepublication gate**: the reviewing agent stopped its deletion because its claimed replacement, row 444, permutes the relation container, not edge storage. The never-gated focused multi-isolation materialization identity is retained for CP1 mechanism gating; the never-gated committed-torus identity is retained for CP3 direct-production preservation but is insufficient alone for G4-B004 closure.
+
+**`M6-DEFN` reviewing-agent addendum — UPHELD WITH AMENDMENTS.**
+- **Clean closeout.** COMPLETE was the last write, `ledgers` PASSes, and no code changed.
+- **Confirmed.** The `G4-B001` static basis (an empty isolation-barrier set) holds, and the DESIGN A8 edit is consistent with DESIGN §14 M7.
+
+Amendments:
+1. **`CellId` basis stated.** It is a canonical rank of (region `canonicalFaceTopology` rank, chart grid ordinal), with face-row invariance accepted in rows 129, 196, 213, 245 and 254. It renumbers on insertion or omission, which `M7-DEFN` must revisit. The CB1 permutation test must permute face rows.
+2. **Pair-swap deletion stopped.** No accepted row permutes edge storage. The identity is retained for the CP1 gate.
+3. **Tracker entries moved.** They had been buried below restored history; they are moved above it and a placement rule is added.
+4. **Stale text fixed.** The closed M5 frozen header and the TODO `G4-B001` item are updated.
 
 ## Folded document index
 

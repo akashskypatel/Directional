@@ -29,7 +29,7 @@ the content beneath it.
 
  > **Current milestone authority (2026-09-24, after `M6-DEFN`):** M4 and **M5 are CLOSED / ACCEPTED**; M6 definitions are **FROZEN / RUNTIME-FREE**. Final M5 authority remains package/source `10814505512 / e284fea7...` under selector449 (`d4a0d1b7...d6414`) and routing449 (`9c88a5ed...c5707`), owners **32/301/75/41**, final TB2 **449/449 PASS**. `Architecture_M6_Frozen_Definitions.md` freezes A5 occurrence, A6 quotient, A7 embedding and A8-M6 verification boundaries. Stable accounting is **51 / 14 / 37**, debt **1** M6-owned. Exact next is **`M6-CP1-CB1`**.
 
-**Currency.** `M6-DEFN`, 2026-09-24 UTC
+**Currency.** `M6-DEFN` (incl. reviewing-agent addendum), 2026-09-24 UTC
 
 **Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` §16.3 is the active same-region nonzero-Z4 contract. `PeriodicRelationId` remains carrier-content identity; relation rotation is the gauge-adjusted quotient `Q`, action/transport is relation value, and canonical storage may invert representation only after semantic Forward -> Reverse authority is fixed. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 
@@ -200,7 +200,10 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M6-CP1-CB1` — NEXT / A5 OCCURRENCE PRODUCT.** Implement only the frozen A5 `SurfaceOccurrenceComplex` seam, content-semantic occurrence identity, transitional materializer consumption and the two no-credit dormant-CB14 deletions. Compile/package only; no generated runtime.
+1. **`M6-CP1-CB1` — NEXT / A5 OCCURRENCE PRODUCT.** Implement only the frozen A5 `SurfaceOccurrenceComplex` seam, content-semantic occurrence identity, transitional materializer consumption and the two no-credit dormant-CB14 deletions. Compile/package only; no generated runtime. **Reviewing-agent amendments (binding):**
+- The A5 permutation test permutes **source face rows**, because cell storage is already row 213.
+- `OccurrenceId` inherits A4 `CellId`, a canonical rank that renumbers on insertion or omission (frozen §3.3 note; `M7-DEFN` must revisit).
+- Delete only the endpoint-gauge dormant test. The pair-swap test is retained for the CP1 gate as the only edge-storage-permutation witness.
 
 2. **`G4-B002` produced closed-complex debt — OPEN / M6.** M6-DEFN freezes CP1 mechanism/stage separation and CP3 direct-production proof. Preserve the independent eligibility oracle, hard-feature tamper and fail-closed/no-recovery contract; mechanism evidence cannot close production debt.
 
@@ -208,7 +211,7 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 4. **`G4-B001 / PR8-R034 / G4-R007` — CP3 DIRECT-TORUS EVIDENCE DEBT.** The historical hard-rail->`IsolationSheetId` root is absent from current source: hard rails are excluded from source isolation barriers. CP1/A7 must preserve that separation; CP3 owns strict-valid torus 3/3 re-proof. If `LocalSheetMismatch` returns, classify it against the frozen A7 contract; do not weaken the validator.
 
-5. **Dormant CB14 test hygiene — FROZEN FOR `M6-CP1-CB1`, NO M5 CREDIT.** Delete `M5CP3.PeriodicRelationEndpointGaugeIsIndependentAndExact` and `M5CP3.ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection` only after confirming the accepted replacement identities named in M6 §9 remain present and selector449 is byte-identical.
+5. **Dormant CB14 test hygiene — NO M5 CREDIT.** `M5CP3.PeriodicRelationEndpointGaugeIsIndependentAndExact` is deleted at `M6-CP1-CB1`, with row 446 as its replacement. `M5CP3.ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection` is **retained and proposed for the M6-CP1 prepublication gate**. M6-DEFN had called it redundant to row 444, but row 444 permutes the relation container, not edge storage, so the §9 precondition stopped the deletion.
 
 6. **Re-homed carried observations.** S1 numeric calibration -> M8-CP2; S2-arrival exact fallback -> M8-CP2 only if observationally equivalent, otherwise reopen A2a/M3; row399 path/`sourceFaces` divergence tamper -> first legitimate row399/binder/producer touch; row408 historical provenance -> truth constraint.
 

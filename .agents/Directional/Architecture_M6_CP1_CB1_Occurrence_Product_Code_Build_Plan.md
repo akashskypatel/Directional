@@ -20,10 +20,7 @@ Extract occurrence creation from the transitional phase-front materializer into 
    - equal lattice coordinate and equal 3D position without a relation remain distinct A5 occurrences;
    - source-row / cell-storage permutation does not rename occurrence IDs;
    - malformed/missing/duplicate relation endpoints reject at A5 without quotient repair.
-6. Delete only the two dormant never-gated CB14 identities frozen for deletion in M6 §9:
-   - `M5CP3.PeriodicRelationEndpointGaugeIsIndependentAndExact`;
-   - `M5CP3.ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection`.
-   Before deletion, static review must confirm their four accepted replacement identities named in §9 still exist and selector449 remains byte-identical.
+6. Delete **only** `M5CP3.PeriodicRelationEndpointGaugeIsIndependentAndExact`. First confirm by static review that accepted replacements `M5CP3.PeriodicRelationRotationUsesBothAcceptedOccurrenceGauges` (selector449 row 431) and `M5CP3.ProducedTorusNonzeroZ4RotationTranslationMaterializes` (row 446) still exist and that selector449 is byte-identical. **Do not delete or edit `M5CP3.ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection`.** The reviewing agent stopped that deletion under M6 §9's own precondition, because no accepted identity permutes edge storage. Record it in the CB1 report as a proposed member of the M6-CP1 prepublication gate vector.
 7. Compile/package only through the mandatory reusable compile workflow with GMP/GMPXX. No generated Directional binary may execute.
 
 ## Explicitly not authorized
@@ -73,3 +70,9 @@ A compile failure may be repaired only when the correction is bounded to this au
 ## Success criterion
 
 CB1 completes only when the A5 product/certificate seam is compile/package green, static identity checks pass, the transitional materializer consumes A5 authority without later-stage refactor, the two dormant CB14 identities are removed under their frozen supersession proof, all package evidence is complete, and no generated Directional runtime has executed.
+
+## Reviewing-agent amendment (`M6-DEFN` review) — binding
+
+1. **The permutation test must permute source face rows.** The A5 focused test "source-row / cell-storage permutation does not rename occurrence IDs" must permute **source face rows**, re-run production, and compare the resulting `OccurrenceId` sets. Accepted row 213 already covers cell-storage permutation. A storage-only permutation does not satisfy item 5. If face-row permutation renames `OccurrenceId`s because of A4 `CellId`, stop under the existing "changing A4 `CellId` semantics" rule (frozen §3.3 note).
+2. **Dormant identities.** Delete only the endpoint-gauge identity (item 6). The pair-swap identity is retained and proposed for the CP1 prepublication gate.
+3. **Closeout discipline.** Prepend changelog and tracker entries at the **top**, or put tracker OBS sections just above the RESTORED HISTORY block. Never append at the end of either file. On any resume, re-derive progress from the branch and Actions history before re-arming anything (`LESSONS.md` 178). COMPLETE is the final write.

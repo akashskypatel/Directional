@@ -7,6 +7,14 @@
 - Consumed M6-DEFN plan is folded into `M6_Consolidated_Record.md`. Stable accounting remains 51/14/37; debt 1. Exact next: `M6-CP1-CB1`.
 - Process-only `M6-DEFN-OBS-01` (+0): the read-mode gate was frozen late; decisive static work was restarted from verified source snapshot `36026363482 / 10819439146` at `c9be476d...`, with 5305/5305 source-manifest verification. No new lesson or semantic evidence is claimed from pre-snapshot reads.
 
+
+**Reviewing-agent addendum (same turn) — UPHELD with amendments.** The frozen A5-A8 contract, the `G4-B001` static basis and the DESIGN A8 harmonization are confirmed, and the closeout was clean. Amendments:
+- **Stated `CellId` basis.** A canonical rank with face-row invariance already accepted; the CB1 permutation test must permute face rows; `M7-DEFN` must revisit rank renumbering.
+- **Stopped one dormant-test deletion.** The pair-swap test is the only edge-storage-permutation witness (row 444 permutes relations, not edges), so it is retained for the CP1 gate.
+- **Moved buried tracker entries.** They sat below restored history and are moved above it, with a placement rule.
+- **Fixed stale text.** The M5 frozen header and the TODO `G4-B001` item are updated.
+
+Successor `M6-CP1-CB1` is unchanged.
 ## 2026-09-24 — `M5-CP4-TB2-REV`: selector449 accepted; M5 closed
 
 - Independently re-opened CB2 package `10814505512`, TB2 result/log `10815911956 / 10815438959` and exact Review snapshot `10816641769`.

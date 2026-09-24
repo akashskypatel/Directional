@@ -1,3 +1,22 @@
+## 2026-09-24 — `M6-DEFN` reviewing-agent addendum — **UPHELD WITH AMENDMENTS / +0**
+
+**Stable totals unchanged: 51 / 14 / 37; debt 1 (M6).** No regression candidate.
+
+**What was re-derived.**
+- **Process was clean.** Docs landed before the final COMPLETE (16:41:45Z) and no write followed it. `ledgers --base 62b5ed26` PASSes, and no code surface changed.
+- **The `G4-B001` static basis is confirmed:** `RemeshPipeline.cpp:7862-7865` passes an empty `sourceIsolationBarrierEdges` set to `classify_source_surface_labels`.
+- **The `DESIGN.md` A8 edit is consistent** with DESIGN §14 M7, which already owns `OutputDisposition`.
+
+**Amendments:**
+1. **`CellId` basis was unstated.** The frozen §3.3 `OccurrenceId = (CellId, canonicalCornerRole)` never states what `CellId` is. It is `from_index(rank)` over sorted `(TopologyRegionId, region-chart grid ordinal v*width+u)`, and `TopologyRegionId` is itself a rank over regions sorted by `canonicalFaceTopology`.
+   - Face-row invariance of region, chart and periodic identity is already accepted (selector449 rows 129, 196, 213, 245, 254), so the M6 exclusions hold for face-row, storage and scheduler permutation.
+   - The ranks **renumber under cell insertion or omission**, which matters for M7 omission bookkeeping. `M7-DEFN` must decide whether rank-based `CellId` suffices.
+   - The CB1 permutation test must permute **source face rows**, because cell-storage permutation is already row 213.
+   - A note is added to frozen §3.3.
+2. **Deletion stopped for `M5CP3.ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection`.** It swaps the reciprocal `PeriodicCut` pair in **edge storage**, with event remapping, on the nonzero witness. The named replacements permute the **relation container** (444) or resolve semantic direction (432). No selector449 row permutes edge storage, and front-edge indices are a DESIGN §6.2 representation handle. Under frozen §9's own precondition, the deletion stops. The test is **retained and proposed for the M6-CP1 prepublication gate** as edge-storage invariance evidence. The `…EndpointGaugeIsIndependentAndExact` deletion stands, since row 446 checks endpoint-state construction in production.
+3. **Tracker placement.** M6-DEFN appended its tracker entries at the end of the file, below the 9,800-line restored-history block. They are moved above it, and a placement rule is added at the boundary. This is the third instance of the "append at file end of a newest-first ledger" pattern (`LESSONS.md` 176/178).
+4. **Stale records.** The closed M5 frozen header still said "EXACT NEXT = `M6-DEFN`", and the TODO `G4-B001` item was stale. Both are fixed.
+
 ## 2026-09-24 — `M5-CP4-TB2-REV` reviewing-agent addendum — **M5 CLOSURE UPHELD / +0**
 
 **Stable totals unchanged: 51 / 14 / 37; debt 1 (M6).** No regression candidate. The reviewing agent downloaded and re-hashed:
@@ -717,6 +736,33 @@ or 4 whatever its colour.
 is **not exercised by the CP3 witness** (both gauges cancel there), so CP3 green is never cited as validating the
 gauge model. That validation rests on the CB17 mechanism identity, which now passes in a mechanically valid
 ledger.
+
+## `M6-DEFN` — A5/A6/A7/A8-M6 authority split and carried blocker ownership
+
+**Status.** DEFINITIONS FROZEN / RUNTIME-FREE / stable accounting unchanged **51 / 14 / 37** / produced-witness debt **1** / exact next `M6-CP1-CB1`.
+
+**Root seam.** Current `build_authoritative_phase_front_mesh(...)` still allocates A5 occurrences, performs A6 union/materialization, chooses a geometric representative and writes A7-like lineage in one transitional procedure. M6 freezes complete immutable stage products so a later verifier cannot become a second producer. `OccurrenceId` is `(CellId, canonicalCornerRole)`; `QuotientClassId` is the complete canonical member-occurrence set. Every A5-owned relation is consumed exactly once by A6. Coordinate/lattice/world-position equality is never authority.
+
+**Verifier falsifier.** M6 A8 may independently recompute elementary source incidence/output topology and exact algebra for the **named** certificates. It may not infer missing endpoint/route/owner/chart/sheet/support, search for alternate relation paths, union occurrences, choose a representative, canonicalize malformed state, weld by coordinate/position, repair topology/source attachment, mutate producer products or invoke fallback. Any such dependency reopens M6 definitions.
+
+**`G4-B001 / PR8-R034 / G4-R007` disposition.** The historical root was hard-feature rails being reused as isolation-sheet barriers before strict closure. Current production source explicitly passes an empty `sourceIsolationBarrierEdges` set to `classify_source_surface_labels(...)` while retaining hard rails as topology-region/chart/rail barriers. The historical source defect is therefore not present at the current boundary. Carry the item as **M6-CP3 direct-production evidence debt** (strict torus 3/3), with CP1/A7 required to preserve domain separation. If `LocalSheetMismatch` reproduces, classify it against the frozen A7 embedding/source-support contract; weakening the validator or sheet authority is prohibited.
+
+**`G4-B002` owner.** Unchanged: M6-CP1 establishes real A5/A6 stage authority for the closed candidate-bearing complex; M6-CP3 alone may discharge the direct-production candidate-extraction + hard-feature-tamper debt. Mechanism evidence earns zero production credit.
+
+**`G4-B004` M6 half.** CP1 retains/gates `SurfaceCellTransitionQuotient.MultiIsolationMaterializationRetainsAllLocalSheets` as mechanism preservation only. CP3 retains/gates `SurfaceCellsPhase10.ExactCommittedTorusDoesNotTreatIsolationSeamAsBoundedDiskBoundary` as direct-torus preservation, but representative closure additionally requires a dedicated M6 direct-production identity binding the accepted M5 same-region producer fact to A5 occurrences, A6 exact-once consumption, A7 source attachment and A8 independent verification. No retroactive M5 credit.
+
+**`M5-CP3-TB1-R16-REV-OBS-01` disposition.** DISCHARGED / NO M5 CREDIT. `M5CP3.PeriodicRelationEndpointGaugeIsIndependentAndExact` and `M5CP3.ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection` are absent from accepted selector449 and are frozen for deletion at `M6-CP1-CB1` as redundant. The first is superseded by accepted `PeriodicRelationRotationUsesBothAcceptedOccurrenceGauges` plus accepted nonzero-Z4 materialization coverage. The second is superseded by accepted `StorageCanonicalPeriodicRelationResolvesSemanticForwardReverse` plus `ProducedTorusPeriodicRelationStoragePermutationPreservesSelectedCertificate`. Deletion must stop if those replacements are absent or selector449 changes.
+
+
+## `M6-DEFN-OBS-01` — snapshot read-mode gate entered late
+
+**Status.** PROCESS-ONLY / NON-STABLE / +0.
+
+At M6-DEFN start, several small repository documents were fetched directly before the mandatory `READ_MODE` was explicitly frozen. That was a tool-conservation process miss: the expected review surface was already large enough to require snapshot mode. No semantic conclusion, selector decision, or repository mutation was accepted from the pre-snapshot inspection. The turn stopped piecemeal source access, set `READ_MODE=snapshot`, and used exact source snapshot run/artifact `36026363482 / 10819439146` at SHA `c9be476d75e6f5d6df11304ad6b926b27b36430f` for all decisive static analysis; provider ZIP SHA-256 `6331c1189591e0429128495719d6168c92827c9024175b2d121387706519d762`, embedded source archive SHA-256 `b57fe2df11bd0d988196b45dee8855581bff8cce942ce66c20b68ac8ee1b1b2e`, manifest 5305/5305.
+
+The existing `TOOL_USE_CONSERVATION_POLICY.md` snapshot gate and existing process lessons already prescribe the correction. This observation changes no stable regression accounting and creates no new product debt.
+
+*(Placement rule, added by the `M6-DEFN` reviewing agent: live entries go **above** the RESTORED HISTORY block that follows. Dated turn entries go at the top of the file, and standalone OBS sections go at the end of the live section, just above this line. Never append at the end of the file, which sits inside restored history. `M6-DEFN` did that, and its entries were moved here.)*
 
 ---
 
@@ -10568,29 +10614,3 @@ tempting later.
 evidence file listed and verified — with **no exception for orchestration-only omissions**. The driver
 finalization ordering must be fixed before the first turn that needs acceptance credit, and at the latest before
 the publication gate.
-
-
-## `M6-DEFN` — A5/A6/A7/A8-M6 authority split and carried blocker ownership
-
-**Status.** DEFINITIONS FROZEN / RUNTIME-FREE / stable accounting unchanged **51 / 14 / 37** / produced-witness debt **1** / exact next `M6-CP1-CB1`.
-
-**Root seam.** Current `build_authoritative_phase_front_mesh(...)` still allocates A5 occurrences, performs A6 union/materialization, chooses a geometric representative and writes A7-like lineage in one transitional procedure. M6 freezes complete immutable stage products so a later verifier cannot become a second producer. `OccurrenceId` is `(CellId, canonicalCornerRole)`; `QuotientClassId` is the complete canonical member-occurrence set. Every A5-owned relation is consumed exactly once by A6. Coordinate/lattice/world-position equality is never authority.
-
-**Verifier falsifier.** M6 A8 may independently recompute elementary source incidence/output topology and exact algebra for the **named** certificates. It may not infer missing endpoint/route/owner/chart/sheet/support, search for alternate relation paths, union occurrences, choose a representative, canonicalize malformed state, weld by coordinate/position, repair topology/source attachment, mutate producer products or invoke fallback. Any such dependency reopens M6 definitions.
-
-**`G4-B001 / PR8-R034 / G4-R007` disposition.** The historical root was hard-feature rails being reused as isolation-sheet barriers before strict closure. Current production source explicitly passes an empty `sourceIsolationBarrierEdges` set to `classify_source_surface_labels(...)` while retaining hard rails as topology-region/chart/rail barriers. The historical source defect is therefore not present at the current boundary. Carry the item as **M6-CP3 direct-production evidence debt** (strict torus 3/3), with CP1/A7 required to preserve domain separation. If `LocalSheetMismatch` reproduces, classify it against the frozen A7 embedding/source-support contract; weakening the validator or sheet authority is prohibited.
-
-**`G4-B002` owner.** Unchanged: M6-CP1 establishes real A5/A6 stage authority for the closed candidate-bearing complex; M6-CP3 alone may discharge the direct-production candidate-extraction + hard-feature-tamper debt. Mechanism evidence earns zero production credit.
-
-**`G4-B004` M6 half.** CP1 retains/gates `SurfaceCellTransitionQuotient.MultiIsolationMaterializationRetainsAllLocalSheets` as mechanism preservation only. CP3 retains/gates `SurfaceCellsPhase10.ExactCommittedTorusDoesNotTreatIsolationSeamAsBoundedDiskBoundary` as direct-torus preservation, but representative closure additionally requires a dedicated M6 direct-production identity binding the accepted M5 same-region producer fact to A5 occurrences, A6 exact-once consumption, A7 source attachment and A8 independent verification. No retroactive M5 credit.
-
-**`M5-CP3-TB1-R16-REV-OBS-01` disposition.** DISCHARGED / NO M5 CREDIT. `M5CP3.PeriodicRelationEndpointGaugeIsIndependentAndExact` and `M5CP3.ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection` are absent from accepted selector449 and are frozen for deletion at `M6-CP1-CB1` as redundant. The first is superseded by accepted `PeriodicRelationRotationUsesBothAcceptedOccurrenceGauges` plus accepted nonzero-Z4 materialization coverage. The second is superseded by accepted `StorageCanonicalPeriodicRelationResolvesSemanticForwardReverse` plus `ProducedTorusPeriodicRelationStoragePermutationPreservesSelectedCertificate`. Deletion must stop if those replacements are absent or selector449 changes.
-
-
-## `M6-DEFN-OBS-01` — snapshot read-mode gate entered late
-
-**Status.** PROCESS-ONLY / NON-STABLE / +0.
-
-At M6-DEFN start, several small repository documents were fetched directly before the mandatory `READ_MODE` was explicitly frozen. That was a tool-conservation process miss: the expected review surface was already large enough to require snapshot mode. No semantic conclusion, selector decision, or repository mutation was accepted from the pre-snapshot inspection. The turn stopped piecemeal source access, set `READ_MODE=snapshot`, and used exact source snapshot run/artifact `36026363482 / 10819439146` at SHA `c9be476d75e6f5d6df11304ad6b926b27b36430f` for all decisive static analysis; provider ZIP SHA-256 `6331c1189591e0429128495719d6168c92827c9024175b2d121387706519d762`, embedded source archive SHA-256 `b57fe2df11bd0d988196b45dee8855581bff8cce942ce66c20b68ac8ee1b1b2e`, manifest 5305/5305.
-
-The existing `TOOL_USE_CONSERVATION_POLICY.md` snapshot gate and existing process lessons already prescribe the correction. This observation changes no stable regression accounting and creates no new product debt.

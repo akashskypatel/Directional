@@ -1,6 +1,6 @@
 # M5 Frozen Definitions — Certificate-Carrying Chart and Quotient Relations
 
-**Status:** FROZEN / `M5-DEFN` COMPLETE / CP1 + CP2 + CP3 + CP4 CLOSED / **SELECTOR449 ACCEPTED / §13.1 CONJUNCTS 1-8 ACCEPTED / M5 CLOSED at `M5-CP4-TB2-REV`** / EXACT NEXT = `M6-DEFN` (see §§13.1,18) / last amended 2026-09-24
+**Status:** FROZEN / `M5-DEFN` COMPLETE / CP1 + CP2 + CP3 + CP4 CLOSED / **SELECTOR449 ACCEPTED / §13.1 CONJUNCTS 1-8 ACCEPTED / M5 CLOSED at `M5-CP4-TB2-REV`** / SUCCESSOR MILESTONE AUTHORITY = `Architecture_M6_Frozen_Definitions.md` (M6-DEFN complete; next `M6-CP1-CB1`) (see §§13.1,18) / last amended 2026-09-24
 **Date:** 2026-09-19
 **Definition authority:** this record is the normative M5 contract for canonical periodic-relation identity, producer-selected relation-path certificates, consumer validation, failure ownership, and the CP1/CP2/CP3 split. It refines `DESIGN.md` §14 M5 without changing accepted M4 semantics or M6 occurrence-complex ownership.
 
