@@ -3,5 +3,5 @@ purpose=apply-exact-selector449-publication
 caller_install=628f9388ffc0aae04aaa084ffa05b991058fa791
 patch_file_id=1_5uR9vxM93soaDbaxdeENFdHJKYdBBW0
 patch_sha256=658c219fdeaa88fe588fe9fed1d658005b43d26f7c3dcaaa5ccbc0def602a8f3
-retry=1
-reason=corrected-missing-intended_paths-manifest
+retry=2
+reason=github-internal-server-error-rejected-push-after-verified-apply
