@@ -1,0 +1,3 @@
+turn=M5-CP4-TB2-EXEC
+purpose=source-snapshot
+source_sha=2f583727d4d415a5263b8e909a826b59233bd527
