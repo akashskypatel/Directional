@@ -1,0 +1,47 @@
+name: M6 CP1 TB1 REV Closeout Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m6-cp1-tb1-rev-closeout-drive-apply-20260924.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m6-cp1-tb1-rev-closeout-drive-apply
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m6-cp1-tb1-rev-closeout-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m6-cp1-tb1-rev-closeout-drive-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1LixMVg-X_--HkVzEs0qx7dfinypubWi2
+      patch_sha256: 6e6e583e115654d04761381071c2847e1b48fd4301713c9d1020ababaa69e9cf
+      base_sha: 0b0c79684adb49d70de0f8c3cde4794d4b3fcdd1
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'M6-CP1-TB1-REV: adjudicate A5 simplex boundary'
+    secrets: inherit
