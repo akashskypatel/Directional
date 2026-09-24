@@ -1,3 +1,0 @@
-turn=M6-CP1-CB2
-requested_by=chatgpt-web
-purpose=exact source snapshot before code inspection

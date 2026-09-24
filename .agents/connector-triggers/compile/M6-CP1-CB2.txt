@@ -1,3 +1,0 @@
-turn=M6-CP1-CB2
-purpose=compile exact CB2 source
-source_sha=724316a5b3f49e33dc8e649989bb413b3dc6b7c9

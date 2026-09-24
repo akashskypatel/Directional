@@ -1,4 +1,0 @@
-turn=M6-CP1-CB2
-purpose=apply verified A5 corner-authority iterator-range correction
-drive_file_id=1EIeqrtrhM2wCR53Y3u3wlR3w5ZMP8Q3X
-patch_sha256=d87318e9c528c5b0c274ea950b1ef64d5f61b76c8d6aae1e720e6d9ee27052c8
