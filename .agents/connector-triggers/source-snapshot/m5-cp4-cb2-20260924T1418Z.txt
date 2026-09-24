@@ -1,0 +1,3 @@
+turn=M5-CP4-CB2
+purpose=source-snapshot
+base_status_commit=4f2a938c8b555f2c57dcb392b47a55af552ff3ef
