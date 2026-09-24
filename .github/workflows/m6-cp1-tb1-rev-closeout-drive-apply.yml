@@ -39,9 +39,9 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1LixMVg-X_--HkVzEs0qx7dfinypubWi2
-      patch_sha256: 6e6e583e115654d04761381071c2847e1b48fd4301713c9d1020ababaa69e9cf
+      file_id: 1jz2pT-tEn_0RA0aBotgAVhiabZvY0NLu
+      patch_sha256: 2786388775d4b15c29b2ad5c653f4749ade20033872cf9305a39339b2e0aa936
       base_sha: 0b0c79684adb49d70de0f8c3cde4794d4b3fcdd1
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: 'M6-CP1-TB1-REV: adjudicate A5 simplex boundary'
+      commit_message: 'M6-CP1-TB1-REV: prove corner-authority range root cause'
     secrets: inherit
