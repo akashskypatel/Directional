@@ -1,5 +1,0 @@
-M6-CP1-TB1-REV closeout Drive apply
-retry=2
-reason=prior push raced mandatory STATUS resume; corrected patch authority and caller
-expected_base=0b0c79684adb49d70de0f8c3cde4794d4b3fcdd1
-patch_sha256=2786388775d4b15c29b2ad5c653f4749ade20033872cf9305a39339b2e0aa936
