@@ -1,3 +1,27 @@
+## 2026-09-24 — `M5-CP4-TB2-REV` reviewing-agent addendum — **M5 CLOSURE UPHELD / +0**
+
+**Stable totals unchanged: 51 / 14 / 37; debt 1 (M6).** No regression candidate. The reviewing agent downloaded and re-hashed:
+- **CB2 package `10814505512`** (`047c3a1d…`): 28/28, all **eight** standard targets, GMP on, packaged selector449/routing449 byte-equal to the branch. Code is identical to `535ec760` except the two selector files.
+- **TB2 result/log** (`5b7bf7ab…` / `018ebaa3…`): 911/911; all 449 rows PASS, with identities equal to selector449 and binaries equal to routing449; raw hashes and single-RUN/OK protocol verified; row449 `first_unmet_fact=none`; identical package/source postflight.
+
+The Actions window from CB2 start to TB2-REV end holds exactly one compile (`36013904054`) and one runtime (`36017291483`). A census of every frozen and durable record finds no M5 obligation outside §13.1 conjuncts 1-8 (the `LESSONS.md` 168 check). **M5 closure is legitimate.**
+
+### `M5-CP4-TB2-REV-OBS-01` — COMPLETE beacon was not the final write (second instance) — RECORDED / process / non-stable
+
+- **Fact:** TB2-REV published `COMPLETE → M6-DEFN` at 15:59:41Z (`67d3b07a`). It then installed and triggered a ledger-guard workflow (`4bb97926`, `11402035`, run `36024245088`), removed it (`fbc96eab`, `577f36ba`), edited its review record (`8d6524be`), and re-published COMPLETE at 16:03:10Z (`a7ea8f32`).
+- **What the edit did:** it stripped every numeric `LESSONS.md` 178 citation, on the stale assumption that the lesson did not exist. Lessons 176-178 are intact, and the ledgers check passes. The citation is now restored.
+- **Root cause:** a resumed session acted from conversational memory instead of repository state, which is the `LESSONS.md` 178 failure mode applied to closeout. It also treated COMPLETE as re-openable.
+- **Falsifier:** for each turn, `git log <COMPLETE-commit>..<next turn start>` contains no commit from that turn.
+- **Prohibited:** any repository write after the COMPLETE beacon in the same turn.
+- **Related:** `M5-DEFN-R1-REV-OBS-01`, the first instance.
+
+### Other corrections
+
+1. **Stale closure text.** The M5 consolidated header and current-authority paragraph, the TODO totals line and the ORIENTATION §4 torus row still said "closure held". TB2-REV's closeout claimed §4 was updated. All are corrected.
+2. **Misplaced fold rows, second recurrence.** Fold-index rows were again placed in the old R15-R1 sub-table. That sub-table is now merged into §5, removing the trap.
+3. **Missing changelog entry.** The agent changelog had no TB2-EXEC entry; one is added.
+4. **M6-DEFN plan item 7.** It now names the two ungated isolation identities as `G4-B004` M6-half census candidates, which carry no credit until gated.
+
 ## 2026-09-24 — `M5-CP4-TB2-REV`: selector449/package accepted; M5 closed — **NO OBSERVED REGRESSION / +0**
 
 **Stable totals unchanged: 51 events / 14 categories / 37 recurrences; project debt 1 (M6).** Final Review independently re-opens CB2 package `10814505512` and TB2 result/log `10815911956 / 10815438959`, verifies the 28/28 package manifest, GMP/GMPXX authority, exact selector449/routing449 and 448 prefixes, all 449 ledger/raw receipts, exact-one/zero-skip semantics, protected rows, row449 and immutable postflight. The DEFN-R2 six-fact same-region producer proof is re-derived from source and borrows no M6 authority. Complete TB2 Actions-window reconciliation finds one runtime and no re-arm. Selector449 and package/source `10814505512 / e284fea7...` are accepted, conjunct8 is accepted, `M5-CP3-TB2-REV-OBS-01` is discharged and M5 closes. No stable/non-stable semantic candidate is added.

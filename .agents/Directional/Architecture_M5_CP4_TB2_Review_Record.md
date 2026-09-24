@@ -74,7 +74,7 @@ The two dormant CB14 identities remain **NO M5 CREDIT**. `M6-DEFN` still owns fr
 
 ## 6. Actions-window and control-plane reconciliation
 
-Per the durable lesson **A resumed turn must re-derive its own progress from the repository and Actions history before arming anything**, the complete TB2-EXEC Actions window `2026-09-24T14:57:42Z..2026-09-24T15:29:09Z` was reconciled, not only the run named by the report. Exactly five runs exist on the working branch in that window:
+Per the durable lesson **A resumed turn must re-derive its own progress from the repository and Actions history before arming anything** (`LESSONS.md` 178; the numeric citation was stripped by a post-COMPLETE edit that assumed 178 did not exist, and restored by the reviewing agent), the complete TB2-EXEC Actions window `2026-09-24T14:57:42Z..2026-09-24T15:29:09Z` was reconciled, not only the run named by the report. Exactly five runs exist on the working branch in that window:
 
 1. source snapshot `36016669227` — success;
 2. the sole runtime `36017291483` — success;
@@ -144,3 +144,48 @@ No M6 implementation, compile, package, test, benchmark, product/test/fixture/fi
 | `review_check.py ledgers` | **PASS** — `review_check.py ledgers --base b1029e47787e2a1f7d55cb520d53f859798d2fe8`; tracker, agent changelog, lessons, and root changelog all pass append-only shrink checks. |
 | `STATUS` lifecycle maintained | Start beacon published before substantive mutation; final COMPLETE -> `M6-DEFN` must be the last repository write. |
 | Pushed to origin, branch in sync | **PASS after cleanup** — final temporary-state cleanup run/job `36024051678 / 107715930107` succeeded, producing cleanup commit `83d4bceddb8ed5b191911f6fbef7074d8df43d4d`; exactly the seven durable workflows remain and all three original Review markers plus the cleanup manifest were removed. A later redundant ledger-only sanity run/job `36024245088 / 107716597555` also passed; its temporary caller and marker were then removed by direct connector writes. Only the restored final `STATUS` completion beacon remains. |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **M5 CLOSURE UPHELD.** Selector449 acceptance, the CB2 package promotion, conjunct 8 and the successor `M6-DEFN` all stand.
+
+**What I re-derived, from fresh GitHub downloads.**
+- **CB2 package `10814505512`.** The ZIP hashes to `047c3a1d…`. The manifest is 28/28 at `dbcc339d…`, and the source archive hashes to `92af40d8…`. `DIRECTIONAL_ENABLE_GMP=ON`, the GMPXX link evidence is present and the build exited 0. **All eight standard targets** are compiled and packaged: six executables plus the two libraries. The packaged selector449 and routing449 are byte-equal to the branch files, which are themselves byte-equal to my TB1-REV rebuild. `src/include/tests/cmake/benchmarks` are identical to the branch, and `535ec760..e284fea7` changes only the two selector files plus temporary control files.
+- **TB2 result/log `10815911956 / 10815438959`.** The ZIP hashes match and the manifest verifies 911/911 at `9977ddbb…`. The ledger hashes to `9b4fc28e…`. It has 449 rows with ordinals 1..449, identities equal to selector449 and binaries equal to routing449. Every row is exit0 / selected1 / skipped0 / PASS. Raw-log hashes match, and each log has exactly one matching RUN/OK with no skip. Owners are 32/301/75/41. The boundary shows no configure, compile, relink, discovery, repair or benchmark. Package and source censuses are identical, and `row449-diagnostic.txt` reads `PASS / first_unmet_fact=none`.
+- **Actions window, 14:19Z-16:00Z.**
+  - CB2: one source snapshot, two failed publication applies (patch metadata, then a GitHub 500), one successful apply, **one** eight-target compile (`36013904054`, green), then closeout and cleanup.
+  - TB2-EXEC: **one** runtime (`36017291483`), matching this Review's §6.
+  - TB2-REV: the startup-failed static validation and its retry, plus the post-COMPLETE ledger guard.
+- **The milestone-close census (`LESSONS.md` 168).** I checked every frozen and durable record that assigns M5 work: DESIGN §14, REORIENTATION §9, M4-DEFN §11, the M4-CP4 and CP_COND/SCALE frozen records, the M4 closure/consolidated records and ROADMAP. None yields an obligation outside §13.1 conjuncts 1-8. The only other "M5-owned" mentions are the periodic produced debts, discharged at R7.
+
+**Corrections:**
+1. **COMPLETE was not the final write (`M5-CP4-TB2-REV-OBS-01`).** This is the second instance after `M5-DEFN-R1-REV-OBS-01`. COMPLETE was published at 15:59:41Z. The turn then installed, triggered and removed a ledger-guard workflow and edited this record (`8d6524be`), before re-publishing COMPLETE at 16:03:10Z. §6 above discloses the ledger run but not the record edit. That edit stripped valid numeric `LESSONS.md` 178 citations because the resumed session assumed the lesson did not exist; the citation in §6 is restored. The final beacon did precede the Review handoff (16:08:14Z), so the handoff itself was sound.
+2. **Closure did not propagate everywhere.** The M5 consolidated record header and current-authority paragraph still read "CLOSURE HELD … selector448/package `10771899191`". The TODO totals line still said "M5 closure is HELD … await fresh TB2". The ORIENTATION §4 torus row still read "ROW449 PREPUBLICATION … CLOSURE HELD", although the closeout row claims §4 was updated. All three are corrected.
+3. **Fold-index misplacement, second recurrence.** The four folded-file rows went into the old "R15-R1 Review folded-document index additions" sub-table (§4.29) instead of §5, as happened at TB1-REV. The sub-table, 14 rows with no duplicates, is merged into §5 and its heading removed, which eliminates the trap.
+4. **Missing agent-changelog entry.** There was no `M5-CP4-TB2-EXEC` entry in the agent changelog; the root changelog had one. It is added in newest-first position.
+5. **M6-DEFN census note.** Plan item 7 now names the two never-executed isolation identities as `G4-B004` M6-half candidates, with no credit until gated.
+
+### Review closeout — reviewing-agent addendum
+
+| Duty | Answer |
+|---|---|
+| Accepted selector prefix re-hashed | selector449 `d4a0d1b7…` (branch and package), first448 = selector448 `70ff0860…`; routing449 `9c88a5ed…`, first448 = routing448 `c91a5e2f…` |
+| Decisive claims independently re-derived | CB2 and TB2 artifacts end-to-end; package target set; published bytes; Actions-window reconciliation; the M5-obligation census across frozen and durable records |
+| Non-vacuity checked | Row449's six-fact source was unchanged since TB1-REV's verification (tests identical to `535ec760`), and it passes freshly with `first_unmet_fact=none` in the published gate |
+| Prior obligations discharged/carried | `M5-CP3-TB2-REV-OBS-01` discharge upheld. R16 OBS-01 (dormant CB14 tests) and the `G4-B004` M6 half carry to `M6-DEFN`. R16 OBS-02 remains recorded/not firing. |
+| Stable accounting | 51 / 14 / 37; debt 1 (M6); final package `10814505512 / e284fea7…` under selector449 |
+| New candidates/obligations recorded | `M5-CP4-TB2-REV-OBS-01` (process), in the tracker |
+| ORIENTATION currency line | `M5-CP4-TB2-REV` (incl. reviewing-agent addendum), 2026-09-24 UTC |
+| ORIENTATION §3 / §4 / §7 / §8 | §4 torus row fixed. §8 gains the second COMPLETE-last instance. §3/§7 were already correct. |
+| CHANGELOG | TB2-EXEC agent entry added; TB2-REV entries amended |
+| ROADMAP | n/a — correct |
+| Selector manifest | n/a — correct (449 accepted, 448 historical prefix) |
+| LESSONS | 168 and 178 cited; no new lesson, since the rule exists and the failure is compliance under resume |
+| Consolidation under CLEAN_UP_POLICY | Fold sub-table merged into §5; header corrected |
+| Successor frozen | `M6-DEFN` (plan item 7 census note added) |
+| Turn boundary held | Runtime-free; no product/test/selector change |
+| review_check.py | `boundary --expect-selector 449=d4a0d1b7… 448=70ff0860… 430=1c412850…`: **ALL CHECKS PASSED**. No product/test/build or selector mutation; durable markers 1→1, 3→3, 13→13. `ledgers --base b1029e47`: **ALL CHECKS PASSED**. |
+| `STATUS` lifecycle | Resume beacon first; final `COMPLETE → M6-DEFN` last, with no write after it |
+| Pushed, in sync | Confirmed by `git status -sb` after the final push |

@@ -6,6 +6,19 @@
 - Accepted selector449 and package/source `10814505512 / e284fea7...`, accepted §13.1 conjunct8, discharged the `G4-B004` M5-half closure observation and **closed M5**. Accounting remains 51/14/37; debt 1 M6-owned.
 - Folded four superseded CP4 per-turn records into `M5_Consolidated_Record.md`; exact successor is runtime-free `M6-DEFN`.
 
+
+**Reviewing-agent addendum (same turn) — M5 CLOSURE UPHELD.** CB2 (eight targets, 28/28) and TB2 (911/911, 449/449) were re-verified from fresh downloads. The Actions window has exactly one compile and one runtime, and the census finds no further M5 obligation. The addendum corrects stale "closure held" text in the consolidated header, the TODO totals line and the ORIENTATION torus row. It merges the misplacement-prone fold sub-table into §5, adds the missing agent-changelog TB2-EXEC entry, and adds an M6-DEFN census note. It records `M5-CP4-TB2-REV-OBS-01`: COMPLETE was published and then followed by more writes, including an edit that stripped valid `LESSONS.md` 178 citations. Successor `M6-DEFN` is unchanged.
+## 2026-09-24 — `M5-CP4-TB2-EXEC`: published selector449 fresh gate is 449/449 green; final Review next
+
+*(Entry added by the `M5-CP4-TB2-REV` reviewing agent. TB2-EXEC wrote a root-changelog entry but none here.)*
+- The immutable CB2 package/source `10814505512 / e284fea7...` re-verifies:
+  - 28/28 manifest;
+  - GMP/GMPXX linkage;
+  - selector449/routing449 exact hashes, with selector448/routing448 as exact prefixes.
+- Authoritative run/job `36017291483 / 107693066103` runs **449 fresh exact-filter processes**: 449 PASS / 0 RED, exact-one selection, zero skips, benchmark 0, census 32/301/75/41.
+- Result/log `10815911956 / 10815438959`. The result manifest verifies 911/911, and the execution-ledger SHA is `9b4fc28e…62c7ac2`. Row449 passes with `first_unmet_fact=none`, and the immutable postflight is exact.
+- No semantic regression. Accounting stays at 51/14/37 with debt 1. The successor is `M5-CP4-TB2-REV`.
+
 ## 2026-09-24 — M5-CP4-CB2
 
 - Published exactly precommitted selector449 `d4a0d1b7…d6414` and routing449 `9c88a5ed…c5707` from source `e284fea7c101eb86650d1c87c92d0fefa66050e7`; selector448/routing448 are exact prefixes, row449 remains producer-owned and census is 32/301/75/41.

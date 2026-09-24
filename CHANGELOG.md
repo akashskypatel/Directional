@@ -6,6 +6,8 @@
 - Accepted selector449 and package/source `10814505512 / e284fea7...`, accepted §13.1 conjunct8, discharged the `G4-B004` M5-half closure observation and **closed M5**. Accounting remains 51/14/37; debt 1 M6-owned.
 - Folded four superseded CP4 per-turn records into `M5_Consolidated_Record.md`; exact successor is runtime-free `M6-DEFN`.
 
+
+**Reviewing-agent addendum (same turn) — M5 CLOSURE UPHELD.** CB2 (eight targets, 28/28) and TB2 (911/911, 449/449) were re-verified from fresh downloads. The Actions window has exactly one compile and one runtime, and the census finds no further M5 obligation. The addendum corrects stale "closure held" text in the consolidated header, the TODO totals line and the ORIENTATION torus row. It merges the misplacement-prone fold sub-table into §5, adds the missing agent-changelog TB2-EXEC entry, and adds an M6-DEFN census note. It records `M5-CP4-TB2-REV-OBS-01`: COMPLETE was published and then followed by more writes, including an edit that stripped valid `LESSONS.md` 178 citations. Successor `M6-DEFN` is unchanged.
 ## 2026-09-24 — `M5-CP4-TB2-EXEC`: published selector449 fresh gate is 449/449 green; final Review next
 
 - Immutable CB2 package/source `10814505512 / e284fea7...` re-verifies 28/28, GMP/GMPXX, clean source receipts, selector449/routing449 exact hashes and selector448/routing448 exact prefixes.

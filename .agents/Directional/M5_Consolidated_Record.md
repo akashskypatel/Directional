@@ -1,11 +1,11 @@
 # M5 Consolidated Record
 
-**Status:** SELECTOR448 ACCEPTED / §13.1 CONJUNCTS 1-7 ACCEPTED / **CONJUNCT 8 DEFINED BY `M5-DEFN-R2` / M5 CLOSURE HELD pending bounded `M5-CP4`** — DURABLE FAMILY RECORD
-**Last updated:** 2026-09-23 at `M5-DEFN-R2`
+**Status:** **M5 CLOSED / ACCEPTED at `M5-CP4-TB2-REV`** / SELECTOR449 ACCEPTED / §13.1 CONJUNCTS 1-8 ACCEPTED — DURABLE FAMILY RECORD
+**Last updated:** 2026-09-24 at `M5-CP4-TB2-REV` (reviewing-agent addendum) *(this header still read "CLOSURE HELD … `M5-DEFN-R2`" after closure)*
 
-Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Current accepted M5 runtime authority is package `10771899191` / source `cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1` under accepted selector448 **448/448**. Stable accounting remains **51 / 14 / 37**; project produced-witness debt is **1**, M6-owned; closure is held only on newly defined conjunct8 pending M5-CP4.
+Normative M5 semantics live in `Architecture_M5_Frozen_Definitions.md`. Final accepted M5 runtime authority is package `10814505512` / source `e284fea7c101eb86650d1c87c92d0fefa66050e7` under accepted selector449 **449/449** (SHA `d4a0d1b7…d6414`, routing449 `9c88a5ed…c5707`, owners 32/301/75/41). Stable accounting is **51 / 14 / 37**, and project produced-witness debt is **1**, M6-owned. M5 is closed (`M5_Closure_Record.md`); the next milestone turn is `M6-DEFN`. The selector448-era section below is historical.
 
-## Current M5 authority — selector448 accepted / closure held
+## Historical M5 authority at `M5-CP3-TB2-REV` — selector448 accepted / closure then held (superseded by §4.39)
 
 Final Review independently accepts the exact CB20-published selector448 after fresh TB2 execution: run/job `35913334490 / 107358491487` is **448/448 PASS**, exact-one/zero-skip, complete **917/917** evidence and immutable postflight. Published selector448 hashes to `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, selector430 is its byte-identical first430 prefix, and static/runtime owner authority is **32 / 300 / 75 / 41**. CB20 package/source `10771899191 / cef1c6ee...` is the accepted current M5 runtime authority. All four earlier M5 produced debts are discharged; project debt is one M6-owned closed-complex subject. Milestone closure is held on conjunct8; exact successor is `M5-CP4-CB1`.
 
@@ -371,25 +371,6 @@ Publication commit `cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1` is mandatory-GMP c
 
 The first patch-apply run verified/applied the exact bytes but lost a non-fast-forward push race to a same-turn `STATUS` resume write; the diagnosed retry pushed the identical SHA-pinned patch. This is control-plane-only evidence and grants no semantic credit. CB20 executes no Directional runtime and therefore does not accept selector448, promote a new runtime package, alter stable **51 / 14 / 37** accounting, discharge/introduce project debt, adjudicate carried observations or close M5. CB19 package/source `10763242885 / a8b33cb...` remains accepted runtime authority. Exact successor is `M5-CP3-TB2-EXEC`, followed by mandatory `M5-CP3-TB2-REV`.
 
-### R15-R1 Review folded-document index additions
-
-| Folded filename | Verdict / retained home |
-|---|---|
-| `Architecture_M5_CP4_TB1_Artifact_Only_Test_Benchmark_Report.md` (47 lines) | **SUPERSEDED TB1 PREPUBLICATION RUNTIME REPORT / FOLDED BY `M5-CP4-TB2-REV`.** Prepublication 449/449 evidence remains summarized in §§4.35-4.37 and final Review; immutable Actions artifacts remain provenance. |
-| `Architecture_M5_CP4_TB1_Review_Record.md` (187 lines) | **SUPERSEDED PREPUBLICATION REVIEW / FOLDED BY `M5-CP4-TB2-REV`.** Non-vacuity adjudication and selector449 precommit are retained in §§4.37-4.39, frozen §13.1/§18 and final Review. |
-| `Architecture_M5_CP4_CB2_Selector_449_Publication_Code_Build_Plan.md` (94 lines) | **CONSUMED CB2 PLAN / FOLDED BY `M5-CP4-TB2-REV`.** Exact publication/eight-target GMP obligations are satisfied and retained in §§4.38-4.39, closure and final Review. |
-| `Architecture_M5_CP4_CB2_Selector_449_Publication_Code_Build_Report.md` (92 lines) | **SUPERSEDED CB2 BUILD REPORT / FOLDED BY `M5-CP4-TB2-REV`.** Final package/source/build identities remain in §§4.38-4.39, closure, selector manifest and immutable Actions artifacts. |
-| `Architecture_M5_CP3_TB1_R14_Artifact_Only_Test_Benchmark_Report.md` (96 lines) | **SUPERSEDED R14 RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Retained in §4.25/tracker/changelog/git history; R15-R1 is current mechanically valid runtime. |
-| `Architecture_M5_CP3_TB1_R15_Review_Record.md` (264 lines) | **SUPERSEDED R15 REVIEW / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Parser cause/replay obligation retained in §§4.22-4.25/current Review and git history. |
-| `Architecture_M5_CP3_CB18_R15_R1_Orchestration_Correction_Plan.md` (161 lines) | **CONSUMED CB18 PLAN / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Frozen parser/caller contract is runtime-proved by R15-R1 and retained in §§4.23-4.25. |
-| `Architecture_M5_CP3_CB18_R15_R1_Orchestration_Correction_Report.md` (130 lines) | **SUPERSEDED CB18 REPORT / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Static control proof retained in §§4.23-4.25/current runtime/Review. |
-| `Architecture_M5_CP3_TB1_R15_R1_Artifact_Only_Test_Benchmark_Plan.md` (123 lines) | **CONSUMED R15-R1 PLAN / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Executed 448-process contract retained in current runtime report/Review/§4.25. |
-| `Architecture_M5_CP3_TB1_R14_Artifact_Only_Test_Benchmark_Report.md` (96 lines) | **SUPERSEDED R14 RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** R14 446/448 evidence and convergence trigger remain in §§4.17-4.22, frozen definitions, tracker/changelog and git history; R15-R1 is the latest mechanically valid runtime. |
-| `Architecture_M5_CP3_TB1_R15_Review_Record.md` (264 lines) | **SUPERSEDED R15 REVIEW / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Parser cause proof, zero-credit disposition and replay observation remain in §§4.22-4.25, tracker/changelog and git history; parser observation is discharged by valid R15-R1 execution. |
-| `Architecture_M5_CP3_CB18_R15_R1_Orchestration_Correction_Plan.md` (161 lines) | **CONSUMED CB18 PLAN / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Corrected parser/caller freeze is runtime-proved by R15-R1; durable control outcome remains in §§4.23-4.25 and git history. |
-| `Architecture_M5_CP3_CB18_R15_R1_Orchestration_Correction_Report.md` (130 lines) | **SUPERSEDED CB18 REPORT / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Static parser proof and frozen harness/caller authority are retained in §§4.23-4.25/current Review/runtime report and git history. |
-| `Architecture_M5_CP3_TB1_R15_R1_Artifact_Only_Test_Benchmark_Plan.md` (123 lines) | **CONSUMED R15-R1 EXECUTION PLAN / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Exact 448-process gate is fully executed; retained authority is the current R15-R1 runtime report, Review, §4.25 and git history. |
-
 ## 4.30 `M5-CP3-TB2-EXEC` — published selector448 executes 448/448 fresh and immutable
 
 TB2 run/job `35913334490 / 107358491487` consumes only CB20 artifact/source `10771899191 / cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1`. It executes the published selector448 as **448 fresh exact-filter processes** in exact file order with **448 PASS / 0 RED**, exact-one selection, zero skips, owner census **32 / 300 / 75 / 41**, benchmark 0, and exact package/source/execution-view postflight. Protected ordinals 191/192/247/408 and all appended ordinals 431-448 PASS. Result/log artifacts are `10775185139 / 10774217117`; result evidence is complete **917/917**, `SHA256SUMS` SHA-256 `9681fda2357103470162e7cd1362713df07078732dc2a1e8a4fff17b75a843c1`, selector ledger SHA-256 `91c861fca2a7627b256ae6f7cb3241c5992689056da57d1622a135519bd600c3`. No regression is observed. EXEC makes no acceptance or closure decision.
@@ -516,12 +497,33 @@ The Review independently parses all 449 fresh-process ledger/raw receipts: **449
 
 The complete TB2-EXEC Actions window contains exactly one runtime and no re-arm. `M5-CP3-TB2-REV-OBS-01` is discharged. Selector449 and package/source `10814505512 / e284fea7...` are promoted, §13.1 conjunct8 joins conjuncts1-7 as accepted, and **M5 closes**. Accounting remains **51 / 14 / 37**, debt **1 M6-owned**. Exact successor is runtime-free `M6-DEFN`.
 
+**`M5-CP4-TB2-REV` reviewing-agent addendum — M5 CLOSURE UPHELD.**
+
+Re-verified from fresh downloads:
+- CB2 package: 28/28 with **all eight targets**, GMP on, and packaged selector449/routing449 byte-equal to the branch. Code is identical to the CB1 source.
+- TB2 result/log: 911/911, all 449 rows PASS with exact routing449 binaries and raw/protocol checks, row449 `first_unmet_fact=none`, and identical postflight.
+- The Actions window has exactly one CB2 compile and one TB2 runtime.
+- A census of every frozen and durable record finds no M5 obligation beyond conjuncts 1-8.
+
+Corrections:
+- **Stale closure text.** This record's header, the TODO totals line and the ORIENTATION torus row still said "closure held" and are updated.
+- **Fold-index trap removed.** The R15-R1 fold-index sub-table, which kept catching new rows, is merged into §5.
+- **Missing changelog entry.** The agent-changelog TB2-EXEC entry is added.
+- **COMPLETE was not the final write (second instance).** The post-COMPLETE edit's stripped `LESSONS.md` 178 citation is restored, and the event is recorded as `M5-CP4-TB2-REV-OBS-01`.
+- **M6-DEFN census note.** The M6-DEFN plan item 7 now lists the two ungated isolation identities.
+
 ## 5. Folded-document index
+
+*(The former "R15-R1 Review folded-document index additions" sub-table under §4.29 was merged into this index by the `M5-CP4-TB2-REV` reviewing-agent addendum, with exact duplicate rows dropped. It was the first table with this header in the file, so later turns kept appending their fold rows to it instead of here.)*
 
 Historical citations in frozen/normative records to filenames listed here are provenance-only and resolve through this index plus git history; frozen text is not rewritten merely to chase a folded filename.
 
 | Folded filename | Verdict / retained home |
 |---|---|
+| `Architecture_M5_CP4_TB1_Artifact_Only_Test_Benchmark_Report.md` (47 lines) | **SUPERSEDED TB1 PREPUBLICATION RUNTIME REPORT / FOLDED BY `M5-CP4-TB2-REV`.** Prepublication 449/449 evidence remains summarized in §§4.35-4.37 and final Review; immutable Actions artifacts remain provenance. |
+| `Architecture_M5_CP4_TB1_Review_Record.md` (187 lines) | **SUPERSEDED PREPUBLICATION REVIEW / FOLDED BY `M5-CP4-TB2-REV`.** Non-vacuity adjudication and selector449 precommit are retained in §§4.37-4.39, frozen §13.1/§18 and final Review. |
+| `Architecture_M5_CP4_CB2_Selector_449_Publication_Code_Build_Plan.md` (94 lines) | **CONSUMED CB2 PLAN / FOLDED BY `M5-CP4-TB2-REV`.** Exact publication/eight-target GMP obligations are satisfied and retained in §§4.38-4.39, closure and final Review. |
+| `Architecture_M5_CP4_CB2_Selector_449_Publication_Code_Build_Report.md` (92 lines) | **SUPERSEDED CB2 BUILD REPORT / FOLDED BY `M5-CP4-TB2-REV`.** Final package/source/build identities remain in §§4.38-4.39, closure, selector manifest and immutable Actions artifacts. |
 | `Architecture_M5_CP4_CB1_Multi_Isolation_Quotient_Witness_Plan.md` (92 lines) | **CONSUMED CB1 PLAN / FOLDED BY `M5-CP4-TB1-REV`.** Frozen six-fact contract, fixed subject, falsifiers and M5/M6 boundary are adjudicated in §§4.35-4.37, the current Review and frozen §18. |
 | `Architecture_M5_CP4_CB1_Code_Build_Report.md` (83 lines) | **SUPERSEDED CB1 BUILD REPORT / FOLDED BY `M5-CP4-TB1-REV`.** Exact source/artifact/GMP/runtime-free compile authority is retained in §§4.35-4.37, the current TB1 report/Review and immutable Actions artifacts. |
 | `Architecture_M5_DEFN_R1_G4_B004_Review_Record.md` (95 lines) | **SUPERSEDED DEFN-R1 REVIEW / FOLDED BY `M5-CP4-TB1-REV`.** Rejection of disposition A, chronology/non-redundancy reasoning and process observation are retained in §§4.32-4.35, frozen §18, tracker/changelog and git history. |
@@ -621,6 +623,16 @@ Historical citations in frozen/normative records to filenames listed here are pr
 | `Architecture_M5_CP1_TB1_R2_Review_Record.md` (218 lines) | **SUPERSEDED REVIEW / FOLDED BY `M5-CP1-TB1-R3-REV`.** Row6 diagnosis, falsifier and credit boundary remain in tracker and CP1 closure. |
 | `Architecture_M5_CP1_TB1_R3_Artifact_Only_Test_Benchmark_Report.md` (83 lines) | **SUPERSEDED CURRENT RUNTIME REPORT / FOLDED BY `M5-CP2-TB1-REV`.** CP1 R3 9/9 + selector430 430/430 authority and hashes remain in CP1 closure, this record, changelog and git history; current runtime report is CP2 TB1. |
 | `Architecture_M5_CP1_TB1_R3_Review_Record.md` (199 lines) | **SUPERSEDED REVIEW / FOLDED BY `M5-CP2-TB1-REV`.** CP1 promotion/falsifier adjudication and selector-publication observation remain in CP1 closure, frozen §13, tracker, this record and git history. |
+| `Architecture_M5_CP3_TB1_R14_Artifact_Only_Test_Benchmark_Report.md` (96 lines) | **SUPERSEDED R14 RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Retained in §4.25/tracker/changelog/git history; R15-R1 is current mechanically valid runtime. |
+| `Architecture_M5_CP3_TB1_R15_Review_Record.md` (264 lines) | **SUPERSEDED R15 REVIEW / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Parser cause/replay obligation retained in §§4.22-4.25/current Review and git history. |
+| `Architecture_M5_CP3_CB18_R15_R1_Orchestration_Correction_Plan.md` (161 lines) | **CONSUMED CB18 PLAN / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Frozen parser/caller contract is runtime-proved by R15-R1 and retained in §§4.23-4.25. |
+| `Architecture_M5_CP3_CB18_R15_R1_Orchestration_Correction_Report.md` (130 lines) | **SUPERSEDED CB18 REPORT / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Static control proof retained in §§4.23-4.25/current runtime/Review. |
+| `Architecture_M5_CP3_TB1_R15_R1_Artifact_Only_Test_Benchmark_Plan.md` (123 lines) | **CONSUMED R15-R1 PLAN / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Executed 448-process contract retained in current runtime report/Review/§4.25. |
+| `Architecture_M5_CP3_TB1_R14_Artifact_Only_Test_Benchmark_Report.md` (96 lines) | **SUPERSEDED R14 RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** R14 446/448 evidence and convergence trigger remain in §§4.17-4.22, frozen definitions, tracker/changelog and git history; R15-R1 is the latest mechanically valid runtime. |
+| `Architecture_M5_CP3_TB1_R15_Review_Record.md` (264 lines) | **SUPERSEDED R15 REVIEW / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Parser cause proof, zero-credit disposition and replay observation remain in §§4.22-4.25, tracker/changelog and git history; parser observation is discharged by valid R15-R1 execution. |
+| `Architecture_M5_CP3_CB18_R15_R1_Orchestration_Correction_Plan.md` (161 lines) | **CONSUMED CB18 PLAN / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Corrected parser/caller freeze is runtime-proved by R15-R1; durable control outcome remains in §§4.23-4.25 and git history. |
+| `Architecture_M5_CP3_CB18_R15_R1_Orchestration_Correction_Report.md` (130 lines) | **SUPERSEDED CB18 REPORT / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Static parser proof and frozen harness/caller authority are retained in §§4.23-4.25/current Review/runtime report and git history. |
+| `Architecture_M5_CP3_TB1_R15_R1_Artifact_Only_Test_Benchmark_Plan.md` (123 lines) | **CONSUMED R15-R1 EXECUTION PLAN / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Exact 448-process gate is fully executed; retained authority is the current R15-R1 runtime report, Review, §4.25 and git history. |
 
 | `Architecture_M5_CP3_CB1_Direct_Production_Exit_Plan.md` | **CONSUMED / SUPERSEDED AFTER FROZEN STOP.** Its subject, six names, mechanism focus, selector freeze, debt discriminators and stop rules are preserved in current frozen §§13-14, this record and the CB2 plan; provenance remains in git history. |
 | `Architecture_M5_CP3_CB1_Stop_Record.md` | **ADJUDICATED / FOLDED BY `M5-CP3-CB1-REV`.** The HardRail/PeriodicCut/shared-interval contradiction, no-mutation/no-compile boundary and accepted-authority facts are retained in the current Review, this record, tracker and changelog. |

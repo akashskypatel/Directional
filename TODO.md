@@ -138,4 +138,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current corrected totals are **51 events / 14 categories / 37 recurrences**, project debt **1** (M6 only). M4 is **CLOSED / ACCEPTED**. M5 selector448 (`70ff0860...c75789`) and package/source `10771899191 / cef1c6ee...` remain accepted runtime authority, and §13.1 conjuncts 1-7 hold. **M5 closure is HELD** while published selector449 and CB2 artifact `10814505512` await fresh `M5-CP4-TB2-EXEC` plus final `M5-CP4-TB2-REV`. PR #8 remains open, draft, and unmerged.
+Current corrected totals are **51 events / 14 categories / 37 recurrences**, project debt **1** (M6 only). M4 and **M5 are CLOSED / ACCEPTED**. Final M5 authority is package/source `10814505512 / e284fea7...` under selector449 **449/449** (`d4a0d1b7...d6414`). The exact next turn is runtime-free **`M6-DEFN`**. PR #8 remains open, draft, and unmerged. *(This line still said "M5 closure is HELD … await fresh `M5-CP4-TB2-EXEC`" after closure; corrected by the reviewing agent.)*
