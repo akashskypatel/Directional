@@ -84,4 +84,4 @@ The exact successor is bounded runtime-free Code + Build **`M6-CP1-CB3`**. It ow
 | Turn boundary held | runtime-free Review; no product/test/fixture/selector/benchmark/build-source mutation, compile, or Directional runtime |
 | review_check.py boundary | **PASS** — all review-boundary, selector-hash, and durable-marker checks passed |
 | `STATUS` lifecycle maintained | entry beacon published as `M6-CP1-TB2-REV / IN_PROGRESS`; final COMPLETE beacon is the final repository write |
-| Pushed to origin, branch in sync | documentation/cleanup will be verified on the working branch before the final beacon; no alternate ref is used |
+| Pushed to origin, branch in sync | **CONFIRMED** — documentation landed in `2affe1b11f92d12861aea582ddf7b15e4eeb3819`; cleanup run/job `36069409010 / 107866594452` removed both Review markers plus the cleanup manifest in `598f97652260c2e4460682478a485b3af82c72ab`; exact seven durable workflows remain; no alternate ref is used |
