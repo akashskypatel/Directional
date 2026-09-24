@@ -1,3 +1,0 @@
-# M5-CP4-TB2-EXEC temporary state
-.agents/connector-triggers/m5-cp4-tb2-exec-20260924.txt
-.agents/connector-triggers/source-snapshot/m5-cp4-tb2-exec-20260924T145742Z.txt
