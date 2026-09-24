@@ -1,0 +1,48 @@
+name: M6 CP1 TB2 Review Docs Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m6-cp1-tb2-rev-docs-apply-20260924.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m6-cp1-tb2-rev-docs-apply
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m6-cp1-tb2-rev-docs-apply
+      commit_run_file: false
+      trim_stale_comments: false
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m6-cp1-tb2-rev-docs-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1IENCzMrynVAVpkjawaNk41Zq3lEQx6a7
+      patch_sha256: 'b2daebb68ba78a4eb5be5042c65e902c93e7d2e5527b91fbe2d7c00384644b08'
+      base_sha: 6a1c3a53e1cc9ece9c0dd08e2630da60fceca645
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'docs: close M6-CP1-TB2-REV and freeze CB3'
+      retention_days: 7
+    secrets: inherit
