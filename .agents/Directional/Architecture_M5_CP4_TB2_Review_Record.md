@@ -84,6 +84,8 @@ Per `LESSONS.md` 178, the complete TB2-EXEC Actions window `2026-09-24T14:57:42Z
 
 There is **no second runtime and no re-arm** after the authoritative green gate. This discharges the specific resumed-EXEC hazard for TB2 without creating a new defect pattern.
 
+Review-control note: the first static-validation caller, run `36023626890`, failed at workflow startup with **zero jobs** and produced no Directional runtime or semantic evidence. The caller was simplified without changing Review semantics; retry `36023789881 / 107715011095` completed successfully with `runtimeExecution=false`. This is process-only / non-stable / +0 and creates no new semantic candidate or lesson.
+
 ## 7. Final adjudication
 
 **Accepted.** All eight frozen §13.1 conjuncts now hold on one reviewed authority chain:
@@ -138,7 +140,7 @@ No M6 implementation, compile, package, test, benchmark, product/test/fixture/fi
 | Consolidation under CLEAN_UP_POLICY | Four superseded CP4 per-turn records folded into `M5_Consolidated_Record.md` §4.39/§5; current TB2 report/final Review/M6 plan retained. |
 | Successor frozen | Exactly `M6-DEFN`; runtime-free definition only. |
 | Turn boundary held | Runtime-free Review; no product/test/fixture/field/selector/build semantic mutation and no generated Directional runtime. |
-| `review_check.py boundary` | **__STATIC_VALIDATION_RESULT__** |
-| `review_check.py ledgers` | **__LEDGER_VALIDATION_RESULT__** |
+| `review_check.py boundary` | **PASS** — static Review run/job `36023789881 / 107715011095`; `authority e284fea7...`, declared selector449/448/430 hashes, review boundary, and custom turn semantic-boundary checks all passed; artifact `10819670109`, SHA-256 `775fdbc69ea2a633738f2821ab252855ff0d60b10a3e165062e54e5eb16c1048`. |
+| `review_check.py ledgers` | **PASS** — `review_check.py ledgers --base b1029e47787e2a1f7d55cb520d53f859798d2fe8`; tracker, agent changelog, lessons, and root changelog all pass append-only shrink checks. |
 | `STATUS` lifecycle maintained | Start beacon published before substantive mutation; final COMPLETE -> `M6-DEFN` must be the last repository write. |
-| Pushed to origin, branch in sync | **__SYNC_RESULT__** |
+| Pushed to origin, branch in sync | **PASS after cleanup** — final temporary-state cleanup run/job `36024051678 / 107715930107` succeeded, producing cleanup commit `83d4bceddb8ed5b191911f6fbef7074d8df43d4d`; exactly the seven durable workflows remain and all three Review markers plus the cleanup manifest were removed. This Review-record finalization is a direct origin write; only the final `STATUS` completion beacon remains. |
