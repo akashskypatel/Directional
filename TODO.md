@@ -1,12 +1,14 @@
-## Latest Review — `M6-CP1-TB1-REV`
+## Latest Code + Build turn — `M6-CP1-CB2`
 
-**COMPLETE / SEMANTIC RED UPHELD / CAUSE PROVED / EXEC CATEGORY CORRECTED.** Review independently re-opens candidate `10826090221`, result/log `10828084810 / 10827949954`, accepted M5 package `10814505512`, selector449/routing449 and the complete TB1 Actions window. The 455-process evidence remains 440 PASS / 15 RED, but the exact cause is a `std::binary_search` range built from two distinct by-value `isolation_sheets()` temporaries. Stable event stays one, reclassified from RP-01 recurrence to new singleton `CROSS_TEMPORARY_ITERATOR_RANGE`; accounting is **52 / 15 / 37**, debt 1. Candidate remains unpromoted.
+**COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE / CANDIDATE ONLY.** Exact semantic source `724316a5b3f49e33dc8e649989bb413b3dc6b7c9` materializes the A5 region isolation-sheet vector once, eliminating the Review-proved cross-temporary iterator range without changing region/component/sheet/support/chart semantics. Whole-tree split-range scan is clean; selector449/routing449 and all six focused identities are unchanged.
 
-## Exact next turn — `M6-CP1-CB2`
+Mandatory GMP/GMPXX compile run/job `36061049526 / 107839861958` packages all eight standard targets as artifact `10834642074`, SHA-256 `754cfeae794da3304b39a572ef6feb6250709f908d5688dcd21f387a071d0cb8`, with **28/28** root manifest, clean source receipts and `runtimeExecution=false`. Candidate remains unpromoted; accounting stays **52 / 15 / 37**, debt 1.
 
-Bounded Code + Build only. Materialize/reuse one stable isolation-sheet vector for the A5 membership search; preserve all region/component/sheet/support/chart checks and change no tests/fixtures/selectors/A4/M5/A6/A7/A8 semantics. Compile/package all eight GMP/GMPXX targets runtime-free. Then `M6-CP1-TB2-EXEC` must rerun the unchanged six focused + selector449 = 455 processes, followed by mandatory Review.
+## Exact next turn — `M6-CP1-TB2-EXEC`
 
-**Reviewing-agent amendment (CB2 plan, binding).** Re-run the by-value accessor split-range scan over the whole tree. The TB2 classification is pre-registered: recovery means no `OccurrenceInvalidCornerAuthority` plus selector449 at 449/449, and a focused RED with a different first failure is a new candidate. Do not touch the `BenchmarkQuality.cpp` digest adaptation.
+Consume artifact `10834642074` immutably. Execute the unchanged six focused identities followed by selector449 as exactly **455 fresh exact-filter processes**, exact-one selection and zero skips, benchmark 0, then exact immutable postflight. Recovery of `M6-CP1-TB1-EXEC-CAND-01` requires no `OccurrenceInvalidCornerAuthority` anywhere plus selector449 **449/449**. A focused RED with a different first failure is a new candidate. Every mechanically valid outcome advances to mandatory runtime-free `M6-CP1-TB2-REV` with no TB repair/rerun.
+
+See `.agents/Directional/Architecture_M6_CP1_TB2_Artifact_Only_Test_Benchmark_Plan.md`.
 
 ## Latest Code + Build turn — `M6-CP1-CB1`
 

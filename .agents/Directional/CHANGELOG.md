@@ -1,3 +1,11 @@
+## 2026-09-24 — `M6-CP1-CB2`: cross-temporary A5 range corrected; candidate compile/package green
+
+- Exact semantic source `724316a5b3f49e33dc8e649989bb413b3dc6b7c9` changes only the A5 isolation-sheet membership range: one by-value vector is materialized and one valid `binary_search` range is used. Region/component/sheet/support/chart semantics remain unchanged; whole-tree by-value split-range scan is clean.
+- Selector449/routing449 and all six focused identities are unchanged. No test, fixture, A4/M5/A6/A7/A8, benchmark, fallback/recovery or validator semantics changed.
+- Mandatory GMP/GMPXX compile run/job `36061049526 / 107839861958` packages all eight standard targets as candidate `10834642074`, SHA-256 `754cfeae...d0cb8`, root manifest **28/28**, exact source archive, clean source receipts and `runtimeExecution=false`; log artifact `10834671954` is `9395b4bd...cb5e4`.
+- Candidate remains unpromoted; accepted M5 authority and stable accounting **52 / 15 / 37**, debt 1 are unchanged. Exact next is artifact-only `M6-CP1-TB2-EXEC`: unchanged six focused + selector449 = 455 fresh processes, then mandatory Review.
+- Process record: an initial malformed local backup patch was rejected/deleted before use; source application evidence comes only from the corrected verified patch. The source-apply caller embedded its verified patch digest directly instead of using the repository payload helper; this is recorded as a process-policy deviation, not hidden.
+
 ## 2026-09-24 — `M6-CP1-TB1-REV`: accepted-prefix RED cause proved; CB2 recovery frozen
 
 - Independently re-opened candidate `10826090221` (28/28, `ee8b8ac...`), TB1 result/log `10828084810 / 10827949954` (result 933/933), accepted M5 package `10814505512`, selector449/routing449 and the complete seven-run TB1 Actions window.

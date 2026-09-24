@@ -1,3 +1,7 @@
+## 2026-09-24 — `M6-CP1-CB2`: bounded A5 iterator-range recovery compiles green
+
+CB2 corrects only the Review-proved cross-temporary `isolation_sheets()` iterator range in exact source `724316a5b3f49e33dc8e649989bb413b3dc6b7c9`, preserving all A5 semantic checks and the frozen test/selector surface. Mandatory GMP/GMPXX compile run/job `36061049526 / 107839861958` packages all eight standard targets as candidate artifact `10834642074` (SHA-256 `754cfeae...d0cb8`) with 28/28 manifest, clean source receipts and `runtimeExecution=false`. Candidate remains unpromoted; accounting stays 52/15/37 with debt 1. Exact next is immutable `M6-CP1-TB2-EXEC` over the unchanged 455-process gate, followed by mandatory Review.
+
 ## 2026-09-24 — M6-CP1 TB1 Review proves cross-temporary range defect
 
 Independent Review upholds TB1's 440/455 semantic RED and one accepted-prefix event but proves the exact cause is an invalid `std::binary_search` range constructed from two separate by-value `isolation_sheets()` temporaries. Accepted M5 uses one stable vector for the same region/component/sheet contract and remains 449/449. The event is reclassified from RP-01 recurrence to new singleton `CROSS_TEMPORARY_ITERATOR_RANGE`, correcting stable accounting to **52 events / 15 categories / 37 recurrences** with debt 1 M6-owned. Candidate `10826090221` remains unpromoted. Exact next is bounded runtime-free `M6-CP1-CB2`, followed by the unchanged 455-process TB2 recovery gate and mandatory Review.

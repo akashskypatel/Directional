@@ -1,6 +1,6 @@
 # M6 Consolidated Record
 
-**Status:** M6 ACTIVE / `M6-CP1-TB1-REV` cause proved / candidate unpromoted / exact next `M6-CP1-CB2`
+**Status:** M6 ACTIVE / `M6-CP1-CB2` compile+package green / candidate unpromoted / exact next `M6-CP1-TB2-EXEC`
 **Last updated:** 2026-09-24
 
 Normative M6 semantics live in `Architecture_M6_Frozen_Definitions.md`. Entering accepted authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449 PASS**, SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. TB1's one accepted-prefix event is independently reclassified to new singleton `CROSS_TEMPORARY_ITERATOR_RANGE`; stable accounting is **52 / 15 / 37** and produced-witness debt is **1**, M6-owned.
@@ -55,6 +55,14 @@ Re-verified:
 - the M5 differential: the same `trace.face` predicates through a stable vector.
 
 A repo-wide scan finds no other split range over by-value accessors. TB1 focused PASSes carry no credit, because they ran under UB. TB2 classification is pre-registered in the CB2 plan: recovery means no `OccurrenceInvalidCornerAuthority` plus selector449 at 449/449, and a different-first-failure focused RED is a new candidate. The benchmark digest adaptation is accepted, and the M6 frozen header is corrected.
+
+## 5. `M6-CP1-CB2` — cross-temporary sheet range corrected; candidate compiled
+
+CB2 corrects only the Review-proved A5 iterator-range defect. Exact semantic source `724316a5b3f49e33dc8e649989bb413b3dc6b7c9` materializes `region->second->isolation_sheets()` once and searches one stable vector; region, component, typed sheet membership, source-support and chart checks are otherwise unchanged. A whole-tree scan finds no remaining split `begin()/end()` range over the known by-value accessors. Selector449/routing449 and all six focused identities remain unchanged.
+
+Remote patch application run/job `36060679446 / 107838640414` produced the exact semantic source. Mandatory GMP/GMPXX compile run/job `36061049526 / 107839861958` then compiled the standard eight targets and packaged candidate `10834642074` (SHA-256 `754cfeae794da3304b39a572ef6feb6250709f908d5688dcd21f387a071d0cb8`) with root manifest **28/28**, manifest SHA `a0fffc173149d1917ed6ab6a7dbb3c70335dee0b0e4ecb6ce652438d02037c9e`, source archive `eaf577ccdc534c2e9e48b8b8fed31079849b268c4a6c1b47b0f253ff3ad6034b`, clean source receipts and `runtimeExecution=false`. Compile log artifact `10834671954` hashes to `9395b4bdaad33c6805779035a418a4f29c80561880f2a870e0d45b2bff0cb5e4`.
+
+No generated Directional runtime executed and no stable semantic accounting changes: **52 / 15 / 37**, debt 1. Candidate remains unpromoted. Exact next is immutable `M6-CP1-TB2-EXEC`, rerunning the unchanged six focused + selector449 as 455 fresh exact-filter processes under the pre-registered recovery rule, followed by mandatory `M6-CP1-TB2-REV`.
 
 ## Folded document index
 

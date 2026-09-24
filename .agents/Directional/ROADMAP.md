@@ -548,7 +548,7 @@ Final CP4 Review completes the bounded conjunct8 sequence: row449 was accepted p
 | Checkpoint | Semantic domain |
 |---|---|
 | `M6-DEFN` | **COMPLETE / RUNTIME-FREE.** Four immutable products, exact occurrence/quotient identity, verifier recompute-vs-repair boundary, G4 ownership and dormant-test dispositions frozen in `Architecture_M6_Frozen_Definitions.md`. |
-| `M6-CP1` | **ACTIVE / TB1 CAUSE PROVED / RECOVERY CB2 NEXT.** TB1 remains **440/455** with 12 accepted-prefix losses. Independent Review proves the defect is a cross-temporary iterator range in A5 `isolation_sheets()` membership, not RP-01; stable accounting is corrected to **52/15/37**. Candidate `10826090221 / ee8b8ac...` remains unpromoted. Exact next `M6-CP1-CB2` changes only that range, then unchanged 455-process TB2 + mandatory Review. A6/A7 extraction remains prohibited. |
+| `M6-CP1` | **ACTIVE / CB2 RECOVERY CANDIDATE COMPILE-GREEN / TB2 NEXT.** Exact source `724316a5...` corrects only the Review-proved cross-temporary A5 `isolation_sheets()` range; whole-tree scan is clean and semantics/selectors remain unchanged. GMP/GMPXX compile run `36061049526` packages candidate `10834642074` with 28/28 manifest and `runtimeExecution=false`. Accounting remains **52/15/37**; accepted authority is unchanged. Exact next is immutable 455-process `M6-CP1-TB2-EXEC` + mandatory Review; A6/A7 extraction remains prohibited. |
 | `M6-CP2` | verifier consumes certificates and independently recomputes elementary incidence; **never repairs producer state** |
 | `M6-CP3` | M6 exit — equal coordinates without a relation remain distinct; every owned relation consumed exactly once; source-row / output-row / scheduler permutation invariance |
 
