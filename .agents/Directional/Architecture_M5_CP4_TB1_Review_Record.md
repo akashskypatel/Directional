@@ -89,6 +89,7 @@ Exact appended routing line:
 - `M5-DEFN-R1-REV-OBS-01`: retained as process history. This Review does not treat it as a semantic blocker; the final COMPLETE beacon remains required as the last repository write.
 - `M5-CP4-TB1-EXEC-OBS-01`: **CONFIRMED PROCESS-ONLY / +0.** Workload-gated schema validation succeeded before runtime; it changes no runtime bytes or semantic evidence and repeats an already-recorded control-plane limitation.
 - `M5-CP4-TB1-EXEC-OBS-02`: **CONFIRMED PROCESS-ONLY / +0.** The first documentation transport was rejected before commit/push on an expected/actual path mismatch; the runtime/package evidence is unaffected.
+- `M5-CP4-TB1-REV-OBS-01`: **RECORDED PROCESS-ONLY / +0.** The first Review documentation-apply caller reached GitHub as `startup_failure` before any workload job because its caller permission ceiling omitted `id-token: write`, which the durable Google Drive reusable requires for OIDC. The caller was corrected before a diagnosed retry; the retry schema validation and Drive apply completed successfully. No runtime, package, selector, source, or semantic evidence was affected. This is the already-known reusable-workflow permission-ceiling failure class and adds no new `LESSONS.md` pattern.
 - No semantic regression candidate is created. Stable accounting remains **51 events / 14 categories / 37 recurrences**; the sole project produced-witness debt remains the separate M6-owned closed-complex debt.
 
 Accepted M5 runtime authority remains selector448 and package/source `10771899191 / cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1`. TB1/CB1 are accepted as **prepublication evidence only**. §13.1 conjunct8 is still not milestone-accepted, selector449 is not published, and M5 closure remains held.
@@ -120,7 +121,7 @@ After compile-green, the only semantic successor is artifact-only `M5-CP4-TB2-EX
 | Non-vacuity checked | **PASS.** One fixed produced torus product and one selected topology region own facts2-6; no separate-region/stage composition and no M6 acceptance authority is used. |
 | Prior obligations discharged/carried | `M5-CP3-TB2-REV-OBS-01` advances as prepublication-proved but closure-pending through CB2/TB2/final Review. DEFN-R1 process OBS retained as history. TB1 EXEC OBS-01/02 confirmed process-only +0. |
 | Stable accounting | 51 / 14 / 37; debt 1 M6-owned. Accepted runtime package/source remains `10771899191 / cef1c6ee...` under selector448. |
-| New candidates/obligations recorded | No new semantic candidate. Publication/fresh-runtime/final-Review obligations are frozen in the CB2 plan and existing CP4 sequence. |
+| New candidates/obligations recorded | No new semantic candidate. `M5-CP4-TB1-REV-OBS-01` records the fail-closed caller permission-ceiling startup failure as process-only +0. Publication/fresh-runtime/final-Review obligations are frozen in the CB2 plan and existing CP4 sequence. |
 | ORIENTATION currency line | `M5-CP4-TB1-REV`, 2026-09-24 UTC. |
 | ORIENTATION §3 / §4 / §7 / §8 | §3/current M5 authority and §7 `G4-B004` owner advanced to CB2/TB2/final Review. Witness table unchanged. §8 unchanged: no new recurring defect pattern. |
 | CHANGELOG | Agent and root entries appended. |
@@ -132,4 +133,4 @@ After compile-green, the only semantic successor is artifact-only `M5-CP4-TB2-EX
 | Turn boundary held | Runtime-free Review; no product/test/fixture/CMake/benchmark/selector mutation. |
 | review_check.py boundary | `boundary --expect-selector 448=70ff0860… 430=1c412850…`: **ALL CHECKS PASSED**; no product/test/fixture/build or selector mutation; durable markers preserved. |
 | `STATUS` lifecycle maintained | Entry `M5-CP4-TB1-REV / IN_PROGRESS` published before substantive mutation; final `COMPLETE -> M5-CP4-CB2` will be the last repository write. |
-| Pushed to origin, branch in sync | **PENDING FINAL PUSH/HYGIENE CHECK**. |
+| Pushed to origin, branch in sync | **PASS.** Durable Review docs were pushed through verified Drive transport; temporary caller/markers/payload state was removed by workflow-first cleanup. Origin hygiene at `a0d2d9c540cfc5c97a57db8eebbab94c14c255f6` showed exactly the seven durable workflows and no trigger, workflow-observation, or turn-payload directories. This record update writes directly to origin through the connector; only the final `STATUS` beacon remains. |
