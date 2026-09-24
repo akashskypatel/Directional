@@ -2,38 +2,32 @@
 
 Last updated: 2026-09-24 UTC
 
-## Latest Review turn — `M5-CP4-TB1-REV`
+## Latest Code + Build turn — `M5-CP4-CB2`
 
-**COMPLETE / PREPUBLICATION ROW449 ACCEPTED / SELECTOR449 PRECOMMITTED / M5 CLOSURE HELD.** Review independently re-opens CB1/TB1 immutable artifacts, verifies 26/26 + 912/912 manifests, all 449 fresh exact-filter processes, exact-one/zero-skip semantics, protected rows, immutable postflight, and the fixed-subject six-fact same-region producer contract. Row449 is accepted as non-vacuous prepublication proof without using M6 materialization/occurrence/embedding/verifier authority.
+**COMPLETE / SELECTOR449 PUBLISHED / EIGHT-TARGET GMP COMPILE+PACKAGE GREEN / RUNTIME-FREE / M5 CLOSURE HELD.** Exact publication source `e284fea7c101eb86650d1c87c92d0fefa66050e7` contains selector449 SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414` with exact selector448 prefix, routing449 SHA-256 `9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707` with exact routing448 prefix, row449 producer ownership, and census 32/301/75/41.
 
-Precommit only — **not published in Review**:
+Compile run/job `36013904054 / 107681435506` is green; result/log artifacts `10814505512 / 10814141518`; all eight durable-default targets are present, package payload manifest is 28/28, GMP/GMPXX is explicit, source receipts are clean and `runtimeExecution=false`. Accepted runtime authority remains selector448/package `10771899191 / cef1c6ee...` until fresh TB2 + final Review.
 
-- selector449 SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`, exact selector448 prefix `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`;
-- routing449 SHA-256 `9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707`, exact routing448 prefix `c91a5e2f3d84d7d38b7c7c58afd157448cb225ebdbbfac3da2ef6259e811dd7c`;
-- row449 `M5CP4.ProducedTorusPeriodicRelationOwnsMultiIsolationRegion` -> `directional_surface_cell_producer_tests`; owners 32/301/75/41.
+## Exact next turn — `M5-CP4-TB2-EXEC`
 
-Accepted runtime authority remains selector448/package `10771899191 / cef1c6ee...`. Conjunct8 remains not milestone-accepted and M5 remains closure-held.
+Artifact-only runtime on immutable CB2 artifact `10814505512`:
 
-## Exact next turn — `M5-CP4-CB2`
-
-Runtime-free Code + Build under `.agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Publication_Code_Build_Plan.md`:
-
-- [ ] Publish only the exact precommitted selector449 and routing449 bytes.
-- [ ] Keep product/test/fixture/field/CMake semantics and every accepted earlier selector/routing byte unchanged.
-- [ ] Compile/package **all eight standard targets** (reusable default; plan §8) through mandatory GMP/GMPXX `agent-compile-reusable.yml`. TB2 executes the four owners. On resume, check branch/Actions before re-arming (`LESSONS.md` 178).
-- [ ] Execute no Directional binary and record `runtimeExecution=false`.
-- [ ] Stop on any selector/prefix/routing/hash drift, semantic change, non-GMP authority, missing owner executable, or runtime attempt.
-- [ ] On compile-green route only to artifact-only `M5-CP4-TB2-EXEC`; final `M5-CP4-TB2-REV` alone may accept conjunct8 and close M5.
+- [ ] Verify exact package/source/selector449/routing449 hashes, selector448/routing448 prefixes, owner census 32/301/75/41, modes, GMP/GMPXX, clean source receipts and immutable preflight.
+- [ ] Execute selector449 as **449 fresh exact-filter processes** across the four owner executables, exact-one selected, zero skips, benchmark 0.
+- [ ] Continue through semantic RED, preserve complete raw evidence and perform exact immutable postflight.
+- [ ] Do not configure, compile, relink, regenerate, repair, mutate source/selector/routing, or claim acceptance/promotion/closure.
+- [ ] Route any orchestration-valid semantic result to mandatory `M5-CP4-TB2-REV`; only that Review may accept conjunct8 and close M5.
+- [ ] On resume, inspect branch/Actions first and never re-arm a green authoritative run without proving it orchestration-invalid.
 
 **Deferred:** `M6-DEFN` remains blocked until final `M5-CP4-TB2-REV` closes M5.
 
-- [ ] `M5-CP4-TB1-REV-OBS-02` — **RECORDED / process / owner: every resumed turn.** TB1-EXEC attempted a second full 449-process execution after its authoritative runtime completed. It was blocked only by a malformed workflow (4 startup failures, 0 jobs) and a misspelled selector path. It was undisclosed, and TB1-REV missed it. Evidence is unaffected (`LESSONS.md` 178).
+- [ ] `M5-CP4-TB1-REV-OBS-02` — **RECORDED / process / owner: every resumed turn.** TB1-EXEC attempted a second full 449-process execution after its authoritative runtime completed. It was blocked only by malformed orchestration. No second runtime executed (`LESSONS.md` 178).
 
 ## Latest Test + Benchmark turn — `M5-CP4-TB1-EXEC`
 
 **COMPLETE / 449 PASS + 0 RED / REVIEWED PREPUBLICATION EVIDENCE.** Run/job `35937669401 / 107438319768`; result/log `10784376393 / 10784391222`; exact-one selection, zero skips, benchmark 0, immutable postflight. TB1-REV accepts row449's producer proof but does not promote this package to accepted M5 runtime authority.
 
-## Latest Code + Build turn — `M5-CP4-CB1`
+## Previous Code + Build turn — `M5-CP4-CB1`
 
 **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE.** Candidate artifact/source `10782841045 / 535ec760...`; mandatory GMP/GMPXX linkage, 26/26 package manifest, `runtimeExecution=false`. CB1 plan/report are folded by TB1 Review; immutable artifact evidence remains authoritative.
 
@@ -104,7 +98,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. M4 handed four periodic/relation debts to M5 and one closed-complex debt to M6; R7 Review discharged two M5 debts and R16 Review discharges the remaining two nonzero-Z4 M5 debts. The sole remaining project debt is the M6 closed-complex subject.
-- [ ] **M5** certificate-carrying chart/quotient relations — **SELECTOR448 ACCEPTED / §13.1 CONJUNCTS 1-7 ACCEPTED / CONJUNCT 8 PREPUBLICATION PROOF REVIEW-ACCEPTED (row449 green at TB1) / SELECTOR449 PRECOMMITTED / CLOSURE HELD.** Current runtime authority is package/source `10771899191 / cef1c6ee...` under selector448 **448/448**. Exact next is `M5-CP4-CB2` (publication + eight-target compile), then `M5-CP4-TB2-EXEC` and final `M5-CP4-TB2-REV`. *(This line still said "Exact next is `M5-CP4-CB1`" after TB1-REV; corrected by the reviewing agent.)*
+- [ ] **M5** certificate-carrying chart/quotient relations — **SELECTOR448 ACCEPTED / §13.1 CONJUNCTS 1-7 ACCEPTED / CONJUNCT 8 PREPUBLICATION PROOF REVIEW-ACCEPTED / SELECTOR449 PUBLISHED / EIGHT-TARGET GMP PACKAGE GREEN / CLOSURE HELD.** Accepted runtime authority remains package/source `10771899191 / cef1c6ee...` under selector448 **448/448**; CB2 candidate artifact/source is `10814505512 / e284fea7...` under published selector449. Exact next is artifact-only `M5-CP4-TB2-EXEC`, then final `M5-CP4-TB2-REV`.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.
@@ -124,7 +118,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [ ] `G4-B001 / PR8-R034 / G4-R007`: direct torus final `LocalSheetMismatch`; downstream of A2b and not a CP4c witness collision.
 - [x] `G4-B002` main exact-torus hard-rail pairing blocker — **CLOSED / RECOVERY PROVED at M4-CP3-TB8-REV** on accepted package `10307919492` / selector408 **408/408**. The three produced-witness debts remain open: one closed-complex debt is M6-owned after DEFN-R2 and two periodic debts are M5-owned after DEFN-R1. This checkbox closes the blocker, not those debt items.
 - [x] `G4-B003`: nonzero periodic Z4 production — **DISCHARGED at M5 R16 Review**; both direct-production debts are runtime/review proved.
-- [ ] `G4-B004`: positive multi-isolation quotient witness. **M5 half DEFINED / CP4 GATE PENDING.** `M5-CP4` must prove the same-region producer join; the M6 half remains owned by deferred `M6-DEFN` item 7 for representative exact-once consumption/embedding/verifier proof.
+- [ ] `G4-B004`: positive multi-isolation quotient witness. **M5 producer proof PREPUBLICATION-REVIEW-ACCEPTED / SELECTOR449 PUBLISHED / FRESH TB2 + FINAL REVIEW PENDING.** CB2 publishes the reviewed same-region producer join without granting runtime acceptance; the M6 half remains owned by deferred `M6-DEFN` item 7 for representative exact-once consumption/embedding/verifier proof.
 - [ ] Bunny/Vase representative production and resource acceptance — later product gates.
 
 ## Design and calibration backlog
@@ -143,4 +137,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current corrected totals are **51 events / 14 categories / 37 recurrences**, project debt **1** (M6 only). M4 is **CLOSED / ACCEPTED**. M5 selector448 (`70ff0860...c75789`) and package/source `10771899191 / cef1c6ee...` are accepted, and §13.1 conjuncts 1-7 hold. **M5 closure is HELD** on the `G4-B004` M5 half: `M5-DEFN-R2` freezes the missing producer conjunct, and the exact successor is **`M5-CP4-CB1`** for the bounded gate. PR #8 remains open, draft, and unmerged.
+Current corrected totals are **51 events / 14 categories / 37 recurrences**, project debt **1** (M6 only). M4 is **CLOSED / ACCEPTED**. M5 selector448 (`70ff0860...c75789`) and package/source `10771899191 / cef1c6ee...` remain accepted runtime authority, and §13.1 conjuncts 1-7 hold. **M5 closure is HELD** while published selector449 and CB2 artifact `10814505512` await fresh `M5-CP4-TB2-EXEC` plus final `M5-CP4-TB2-REV`. PR #8 remains open, draft, and unmerged.

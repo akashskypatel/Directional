@@ -4,32 +4,31 @@
 
 ## Current authority
 
-`M5-CP4-TB1-REV` is **COMPLETE / PREPUBLICATION ROW449 ACCEPTED / SELECTOR449 EXACTLY PRECOMMITTED / M5 CLOSURE HELD**.
+`M5-CP4-CB2` is **COMPLETE / SELECTOR449 PUBLISHED / EIGHT-TARGET GMP COMPILE+PACKAGE GREEN / RUNTIME-FREE / M5 CLOSURE HELD**.
 
-Review independently re-opened CB1/TB1 primary artifacts, verified the 26/26 CB1 and 912/912 TB1 manifests, re-parsed all 449 fresh exact-filter processes and raw hashes, re-hashed accepted selector448/routing448, and re-derived the frozen six-fact contract from source. Row449 non-vacuously proves on the fixed `torus_fixture()` product that one produced topology region spans >=2 authoritative isolation sheets, owns an internal checked isolation-seam certificate, owns a canonical periodic relation, and owns a reciprocal `PeriodicCut` pair explicitly naming that relation. No M6 materialization/occurrence/embedding/verifier acceptance is used.
-
-Exact precommit — not yet published:
+Exact published gate:
 - selector449 SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`, exact selector448 prefix `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`;
 - routing449 SHA-256 `9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707`, exact routing448 prefix `c91a5e2f3d84d7d38b7c7c58afd157448cb225ebdbbfac3da2ef6259e811dd7c`;
-- row449 owner `directional_surface_cell_producer_tests`; census 32/301/75/41.
+- row449 `M5CP4.ProducedTorusPeriodicRelationOwnsMultiIsolationRegion` -> `directional_surface_cell_producer_tests`; owner census **32/301/75/41**;
+- exact publication source commit `e284fea7c101eb86650d1c87c92d0fefa66050e7`.
 
-Accepted M5 runtime authority remains selector448/package `10771899191 / cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1`. Stable accounting stays **51 / 14 / 37**; project debt stays **1**, M6-owned. Conjunct8 remains not milestone-accepted and M5 closure remains held until publication + fresh TB2 + final Review.
+CB2 compile/package authority: run/job `36013904054 / 107681435506`, result/log artifacts `10814505512 / 10814141518`, result ZIP SHA-256 `047c3a1d7b3d5b09fe97961442237742e3dc9fac0939ca20c1dffb86b2959aae`. All eight durable-default targets compiled; package payload manifest is **28/28**, packaged source archive SHA-256 `92af40d8be93f77a44e0a396173c4965a801367bde1424318609b1826931f315`, GMPXX+GMP linkage is explicit, source receipts are clean, and `runtimeExecution=false`. No Directional binary ran.
 
-TB1 primary evidence: run/job `35937669401 / 107438319768`, result/log `10784376393 / 10784391222`, result ZIP `9860fa75...24173`, ledger `34eec870...001c`. CB1 candidate: artifact/source `10782841045 / 535ec760b7c39dd437de69afebec568fafb44aab`, ZIP `3772d2c3...42da6`, 26/26, GMP/GMPXX, `runtimeExecution=false`.
+Accepted M5 runtime authority remains selector448/package `10771899191 / cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1` until fresh TB2 + final Review. Stable accounting remains **51 / 14 / 37**; project debt remains **1**, M6-owned. Conjunct8 is still not milestone-accepted and M5 closure remains held.
 
-`M5-CP4-TB1-EXEC-OBS-01` and `-OBS-02` are Review-confirmed process-only, non-stable and +0. No semantic regression candidate is created.
+`M5-CP4-CB2-OBS-01` (missing first preservation-patch `intended_paths`) and `M5-CP4-CB2-OBS-02` (GitHub Internal Server Error rejecting one verified push) are process-only/non-stable/+0. Exact corrected retry succeeded without runtime or semantic drift.
 
 ## Exact next turn
 
-**`M5-CP4-CB2`** — runtime-free selector449 publication Code + Build under `.agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Publication_Code_Build_Plan.md`.
+**`M5-CP4-TB2-EXEC`** — artifact-only fresh runtime on immutable CB2 result artifact `10814505512`.
 
 The turn must:
-1. publish only exact selector449/routing449 precommitted bytes;
-2. preserve selector448/routing448 as exact prefixes and change no product/test/fixture/field/CMake semantics;
-3. compile/package **all eight standard targets** (reusable default; do not override `targets`) through mandatory GMP/GMPXX reusable compile authority. Plan §8 is binding: CB2's package becomes the final M5 authority, and the CB1 four-target build is not the closure standard. On any resume, re-derive progress from branch/Actions before re-arming anything (`LESSONS.md` 178);
-4. execute no Directional binary;
-5. stop on any hash/prefix/routing/owner drift, semantic change, GMP failure, package-owner incompleteness or runtime attempt;
-6. on compile-green route only to artifact-only `M5-CP4-TB2-EXEC`, then final `M5-CP4-TB2-REV`.
+1. consume the exact CB2 package/source immutably; no configure, compile, relink, regeneration, repair, source mutation or selector mutation;
+2. independently verify package/source/selector449/routing449 hashes, exact selector448/routing448 prefixes, owner census 32/301/75/41, executable modes, GMP/GMPXX evidence and immutable preflight;
+3. execute the **published selector449 as 449 fresh exact-filter processes** across the four owner executables, with exact-one selection, zero skips and benchmark 0;
+4. continue through the complete gate on semantic RED, preserve raw per-process evidence, and perform immutable postflight;
+5. make no acceptance/promotion/closure claim; route any valid semantic result to mandatory `M5-CP4-TB2-REV`;
+6. never re-arm a green authoritative run on resume unless that run is shown orchestration-invalid.
 
 `M6-DEFN` remains deferred until final `M5-CP4-TB2-REV` accepts conjunct8 and closes M5.
 
@@ -53,9 +52,10 @@ The turn must:
 
 ```yaml
 load_next:
-  - .agents/Directional/Architecture_M5_CP4_TB1_Artifact_Only_Test_Benchmark_Report.md
+  - .agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Publication_Code_Build_Report.md
+  - .agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt
+  - .agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv
   - .agents/Directional/Architecture_M5_CP4_TB1_Review_Record.md
-  - .agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Publication_Code_Build_Plan.md
   - .agents/Directional/Architecture_M5_DEFN_R2_G4_B004_Definition_Record.md
   - .agents/Directional/Architecture_M5_Frozen_Definitions.md
   - .agents/Directional/M5_Closure_Record.md

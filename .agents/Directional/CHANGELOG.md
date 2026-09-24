@@ -1,3 +1,11 @@
+## 2026-09-24 — M5-CP4-CB2
+
+- Published exactly precommitted selector449 `d4a0d1b7…d6414` and routing449 `9c88a5ed…c5707` from source `e284fea7c101eb86650d1c87c92d0fefa66050e7`; selector448/routing448 are exact prefixes, row449 remains producer-owned and census is 32/301/75/41.
+- Compile run/job `36013904054 / 107681435506` is green using the reusable default **eight targets** with mandatory GMP/GMPXX. Result/log artifacts `10814505512 / 10814141518`; result ZIP `047c3a1d…59aae`; 28/28 payload manifest; clean source receipts; `runtimeExecution=false`.
+- Independent package recheck confirms selector/routing hashes and prefixes, owner census, all eight targets, GMP/GMPXX linkage, executable modes, compile/preflight exit0 and immutable source archive `92af40d8…f315`. No Directional binary ran.
+- `M5-CP4-CB2-OBS-01` (first preservation patch missing `intended_paths`) and `-OBS-02` (GitHub Internal Server Error rejected one verified push) are process-only/non-stable/+0; exact corrected retry succeeded with no semantic drift.
+- Selector448/package `10771899191 / cef1c6ee...` remains accepted M5 runtime authority. Selector449 publication grants no runtime acceptance; exact successor is artifact-only `M5-CP4-TB2-EXEC`, then mandatory Review.
+
 ## 2026-09-24 — M5-CP4-TB1-REV
 
 - Independently re-opened CB1/TB1 immutable artifacts and re-derived 449/449 exact-filter PASS evidence, manifests, raw-log hashes and immutable postflight.

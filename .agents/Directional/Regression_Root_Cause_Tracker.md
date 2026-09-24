@@ -1,3 +1,15 @@
+## 2026-09-24 — `M5-CP4-CB2`: selector449 published; eight-target GMP package green — **NO SEMANTIC REGRESSION / +0**
+
+**Stable totals unchanged: 51 / 14 / 37; debt 1 (M6).** Exact selector449/routing449 publication is byte- and prefix-verified at source `e284fea7c101eb86650d1c87c92d0fefa66050e7`; owner census is 32/301/75/41. Compile run/job `36013904054 / 107681435506` succeeds on all eight durable-default targets with GMP/GMPXX, 28/28 payload manifest, clean source receipts and `runtimeExecution=false`. No semantic candidate is added.
+
+### `M5-CP4-CB2-OBS-01` — first preservation patch omitted required `intended_paths` metadata — RECORDED / process / non-stable
+
+Run `36013112294` failed closed during patch verification before apply/commit/push. The corrected patch was independently re-hashed before retry. No Directional source/runtime evidence was produced.
+
+### `M5-CP4-CB2-OBS-02` — GitHub rejected one verified publication push with Internal Server Error — RECORDED / external orchestration / non-stable
+
+Run `36013512299` verified the exact corrected patch and created the intended local commit, but GitHub rejected the branch push with an Internal Server Error. The identical checksum-pinned patch was retried; run `36013633517` succeeded and published source `e284fea7...`. No Directional runtime executed and no semantic bytes changed between attempts.
+
 ## 2026-09-24 — `M5-CP4-TB1-REV` reviewing-agent addendum — **UPHELD WITH CORRECTIONS / +0**
 
 **Stable totals unchanged: 51 / 14 / 37; debt 1 (M6).** No semantic regression candidate. The reviewing agent downloaded and re-hashed the TB1 result/log (`9860fa75… / f1d291a5…`) and CB1 package (`3772d2c3…`). It confirms:

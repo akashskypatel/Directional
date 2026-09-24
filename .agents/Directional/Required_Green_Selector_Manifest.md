@@ -77,6 +77,7 @@ Future selector files are named by their resulting identity count.
 | **427** | 427 | `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f` | 426 | 1 | **ACCEPTED HISTORICAL PREFIX OF SELECTOR430** |
 | **430** | 430 | `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6` | 427 | 3 | **ACCEPTED HISTORICAL PREFIX OF SELECTOR448** |
 | **448** | 448 | `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789` | 430 | 18 | **ACCEPTED CURRENT AUTHORITY** |
+| **449** | 449 | `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414` | 448 | 1 | **PUBLISHED CURRENT GATE / NOT ACCEPTED** |
 
 `Prefix parent` **none** marks a file that is *not* an extension of the previous one — a superseded or withdrawn
 branch carrying unique bytes. Those are not redundant with anything and cannot be reconstructed from the chain.
@@ -845,6 +846,13 @@ TB3 run/job `35470130614 / 105969470184` then executes the exact selector430 as 
 `Architecture_M5_CP3_CB20_Required_Green_Selector_448.txt` — **448 identities**, LF SHA-256 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`. Its first430 LF rows are byte-identical to accepted selector430 SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`.
 
 `M5-CP3-CB20` publishes exactly the 18 identities precommitted by `M5-CP3-TB1-R16-REV`, in frozen order. Static ownership across the four standard owner executables is **32 authority-kernel / 300 producer / 75 completion / 41 validation**. The exact 448-row routing receipt is `Architecture_M5_CP3_CB20_Selector_448_Static_Routing_Receipt.tsv`, SHA-256 `c91a5e2f3d84d7d38b7c7c58afd157448cb225ebdbbfac3da2ef6259e811dd7c`. `M5-CP3-TB2-EXEC` run/job `35913334490 / 107358491487` executes this exact published selector as **448/448 PASS** fresh exact-filter processes with zero skips, benchmark 0, exact owner census **32/300/75/41**, complete 917/917 result evidence and immutable postflight. `M5-CP3-TB2-REV` independently re-hashes selector448/prefix430/routing authority and all 448 ledger/raw-log receipts, then **accepts selector448 and promotes CB20 package/source `10771899191 / cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1` as the current accepted M5 runtime authority**. Selector430 remains the exact accepted historical first430 prefix.
+
+### 449 — PUBLISHED CURRENT GATE / NOT ACCEPTED
+
+`Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt` — **449 identities**, LF SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. Its first448 LF rows are byte-identical to accepted selector448 SHA-256 `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`.
+
+`M5-CP4-CB2` publishes exactly the one identity precommitted by `M5-CP4-TB1-REV`: `M5CP4.ProducedTorusPeriodicRelationOwnsMultiIsolationRegion`. Static ownership is **32 authority-kernel / 301 producer / 75 completion / 41 validation**. The exact 449-row routing receipt is `Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv`, SHA-256 `9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707`. CB2 compile run/job `36013904054 / 107681435506` packages all eight durable-default targets from exact source `e284fea7c101eb86650d1c87c92d0fefa66050e7` with GMP/GMPXX and `runtimeExecution=false`; result artifact `10814505512` verifies 28/28 payload-manifest entries. **No selector449 runtime acceptance is claimed here.** Selector448 remains accepted current M5 runtime authority until fresh `M5-CP4-TB2-EXEC` plus mandatory `M5-CP4-TB2-REV`.
+
 
 ## Separate lineage — M1
 
