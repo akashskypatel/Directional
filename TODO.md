@@ -134,4 +134,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current corrected totals are **51 events / 14 categories / 37 recurrences**, project debt **1** (M6 only). M4 and **M5 are CLOSED / ACCEPTED**. Final M5 authority is package/source `10814505512 / e284fea7...` under selector449 **449/449** (`d4a0d1b7...d6414`). `M6-DEFN` is **COMPLETE / RUNTIME-FREE / DEFINITIONS FROZEN**; the exact next turn is **`M6-CP1-CB1`**. PR #8 remains open, draft, and unmerged. *(The historical stale M5-closure wording was corrected by the reviewing agent.)*
+Current corrected totals are **51 events / 14 categories / 37 recurrences**, project debt **1** (M6 only). M4 and **M5 are CLOSED / ACCEPTED**. Final M5 authority is package/source `10814505512 / e284fea7...` under selector449 **449/449** (`d4a0d1b7...d6414`). `M6-CP1-CB1` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE / CANDIDATE ONLY**; the exact next turn is **`M6-CP1-TB1-EXEC`**, followed by mandatory `M6-CP1-TB1-REV`. PR #8 remains open, draft, and unmerged. *(The historical stale M5-closure wording was corrected by the reviewing agent.)*
