@@ -1,0 +1,46 @@
+name: M5 CP4 TB1 Review Docs Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m5-cp4-tb1-rev-docs-apply.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m5-cp4-tb1-rev-docs-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m5-cp4-tb1-rev-docs-apply
+      commit_run_file: false
+      trim_stale_comments: false
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m5-cp4-tb1-rev-docs-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1YxR4n9BOj01dP246PGGj_6JSjwnFeE12
+      patch_sha256: 4dc816eec80f5e3ccba93d80bf25762e345d43c940a437145c0b717883f6f968
+      base_sha: e0a0404e9743055d10340c8261586ca00ee5c084
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: review M5 CP4 TB1 prepublication proof"
+    secrets: inherit
