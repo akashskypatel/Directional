@@ -1,0 +1,5 @@
+M5-CP4-TB1-EXEC artifact-only gate trigger
+Candidate artifact: 10782841045
+Immutable source: 535ec760b7c39dd437de69afebec568fafb44aab
+Expected rows: accepted 1-448 plus prepublication row 449
+Retry: 0
