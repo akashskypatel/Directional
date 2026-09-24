@@ -85,3 +85,9 @@ The exact successor is bounded runtime-free Code + Build **`M6-CP1-CB3`**. It ow
 | review_check.py boundary | **PASS** — all review-boundary, selector-hash, and durable-marker checks passed |
 | `STATUS` lifecycle maintained | entry beacon published as `M6-CP1-TB2-REV / IN_PROGRESS`; final COMPLETE beacon is the final repository write |
 | Pushed to origin, branch in sync | **CONFIRMED** — documentation landed in `2affe1b11f92d12861aea582ddf7b15e4eeb3819`; cleanup run/job `36069409010 / 107866594452` removed both Review markers plus the cleanup manifest in `598f97652260c2e4460682478a485b3af82c72ab`; exact seven durable workflows remain; no alternate ref is used |
+
+## Post-closeout continuation correction
+
+A later `@cont.txt` continuation failed to re-list the completed turn's Actions history before arming orchestration, contrary to the existing resumed-turn reconciliation lesson. It therefore reinstalled the already-consumed Review documentation caller and triggered duplicate run `36071205165`. The durable Drive reusable failed closed before patch application because the Review documentation paths had changed since base `6a1c3a53e1cc9ece9c0dd08e2630da60fceca645`; no source, test, fixture, selector, benchmark, or durable Review-document patch was applied, and the run records `runtimeExecution=false`.
+
+The duplicate Drive staging file was owner-deleted, the duplicate caller was retired in `069493e25a0a2ee7b39f41cb239ed88e4e2a59a0`, and cleanup run `36071574167` removed the duplicate marker and cleanup manifest in `c4b34011222bb578d29127d40b7c26c310eb5695`. This is a process-only correction with **+0 event / +0 category / +0 recurrence**. The Review verdict, accepted authority, stable accounting **53 / 16 / 37**, debt **1**, and exact successor `M6-CP1-CB3` are unchanged.
