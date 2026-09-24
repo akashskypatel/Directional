@@ -1,0 +1,6 @@
+turn=M5-CP4-CB2
+purpose=apply-exact-selector449-publication
+caller_install=d6b0d783e719504a7bfa27cc8361c5c8518d6a64
+patch_file_id=1_5uR9vxM93soaDbaxdeENFdHJKYdBBW0
+patch_sha256=9e2b7db5da4810f339bacd642668c2b36064e2ac2110c434ac4471e22eaeca07
+retry=0
