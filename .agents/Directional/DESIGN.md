@@ -232,7 +232,7 @@ Each stage is a pure transformation over immutable inputs. A stage may create di
 | A5. Occurrence complex | all A4 outputs | `SurfaceOccurrenceComplex` | every cell corner and directed side is explicit; relations refer to occurrence IDs |
 | A6. Quotient plan and materialization | A0–A5 | `QuotientCertificate` and quad mesh | only certified equivalences merge occurrences; one accepted cell maps to one output quad |
 | A7. Geometry embedding | A0 and A6 | source-attached vertex geometry | every vertex has exact source support and remains on the intended source sheet |
-| A8. Independent verification | A0–A7 | `VerificationReport` and `OutputDisposition` | all certificates, mesh invariants, lineage, and expected topology are independently checked; the disposition tier is computed, not asserted |
+| A8. Independent verification | A0–A7 | `VerificationReport`; M7 extends A8 with `OutputDisposition` | all certificates, mesh invariants, lineage, and expected topology are independently checked; M6 verifies immutable producer state, while M7 computes disposition without changing that state |
 | A9. Diagnostics/export | verified records | logs and public result | diagnostics are derived, stable, and cannot mutate authority |
  
 No stage may write into an earlier stage's object. Aggregation is a new stage output, not normalization by mutation.
@@ -934,7 +934,7 @@ Acceptance:
 **M4-CP4-DEFN-R1 ownership amendment (2026-09-19).** The inherited `G4-B002` produced-witness debts `PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization` and `MissingPeriodicRelationOwnerIsRejected` are M5-owned because satisfying them on the one-region torus requires canonical same-sheet relation/basis identity. M5-CP1 owns canonical relation ID/path authority, M5-CP2 owns the typed missing-owner failure, and M5-CP3 owns both direct-production torus re-proofs. Their original `>=2` relation/edge and missing-owner discriminators are preserved; no M4 credit, hard-rail substitution, or direct/draft substitution is allowed.
 ### M6 — occurrence, embedding, and independent verification
  
-Separate occurrence creation, quotient construction, geometry embedding, and validation as complete stage products. The verifier consumes certificates and independently recomputes elementary incidence; it never repairs producer state.
+Separate occurrence creation, quotient construction, geometry embedding, and validation as complete stage products. The verifier consumes certificates and independently recomputes elementary incidence; it never repairs producer state. `M6-DEFN` freezes only the structural verification report; `OutputDisposition`, degradation records and verifier tier assignment remain the M7 vertical extension of A8.
  
 Acceptance:
  

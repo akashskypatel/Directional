@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-24 (`M5-CP4-TB2-REV` COMPLETE: **M5 CLOSED / ACCEPTED**. Final authority is package/source `10814505512 / e284fea7...` under selector449 **449/449**, SHA `d4a0d1b7...d6414`, routing `9c88a5ed...c5707`, owners 32/301/75/41. §13.1 conjuncts1-8 accepted. Stable accounting 51 / 14 / 37, project debt1 M6-owned. Exact next `M6-DEFN`.)**
+**Status date:** 2026-09-24 (`M6-DEFN` COMPLETE / RUNTIME-FREE / DEFINITIONS FROZEN. M5 remains CLOSED / ACCEPTED at package/source `10814505512 / e284fea7...` under selector449 **449/449**, SHA `d4a0d1b7...d6414`, routing `9c88a5ed...c5707`, owners 32/301/75/41. Stable accounting 51 / 14 / 37, project debt1 M6-owned. Exact next `M6-CP1-CB1`.)**
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 
@@ -541,14 +541,14 @@ M4 owns **no** produced-witness debt after DEFN-R2. The closed candidate-bearing
 
 M5 originally owned four produced-witness debts. R7 Review discharged relation-owner/container-reorder and missing-owner typing. R16 Review now discharges the two `G4-B003` nonzero-periodic-Z4 debts through direct materialization/consumption and transform-only typed rejection. **All four M5 produced debts are discharged.** The separate closed-complex `G4-B002` debt remains M6-owned; total project debt is **1**.
 
-Final CP4 Review completes the bounded conjunct8 sequence: row449 was accepted prepublication, selector449 was separately published, TB2 freshly executed **449/449**, and final Review independently accepted the full chain. Final accepted M5 runtime authority is package/source `10814505512 / e284fea7...` under selector449. **M5 is CLOSED / ACCEPTED.** Exact next is runtime-free `M6-DEFN`.
+Final CP4 Review completes the bounded conjunct8 sequence: row449 was accepted prepublication, selector449 was separately published, TB2 freshly executed **449/449**, and final Review independently accepted the full chain. Final accepted M5 runtime authority is package/source `10814505512 / e284fea7...` under selector449. **M5 is CLOSED / ACCEPTED.** `M6-DEFN` is now COMPLETE / runtime-free with frozen A5-A8-M6 product boundaries; exact next is `M6-CP1-CB1`.
 
 ### M6 — occurrence, embedding, independent verification (§14 M6)
 
 | Checkpoint | Semantic domain |
 |---|---|
-| `M6-DEFN` | freeze the four stage products and the verifier's recompute boundary |
-| `M6-CP1` | separate occurrence creation / quotient construction / geometry embedding as complete stage products |
+| `M6-DEFN` | **COMPLETE / RUNTIME-FREE.** Four immutable products, exact occurrence/quotient identity, verifier recompute-vs-repair boundary, G4 ownership and dormant-test dispositions frozen in `Architecture_M6_Frozen_Definitions.md`. |
+| `M6-CP1` | **NEXT; first bounded turn `M6-CP1-CB1`.** Separate occurrence creation / quotient construction / geometry embedding as complete stage products; CB1 is A5 occurrence product only. |
 | `M6-CP2` | verifier consumes certificates and independently recomputes elementary incidence; **never repairs producer state** |
 | `M6-CP3` | M6 exit — equal coordinates without a relation remain distinct; every owned relation consumed exactly once; source-row / output-row / scheduler permutation invariance |
 
@@ -586,7 +586,7 @@ These are **not** M3 obligations and must not be claimed closed by M3 evidence.
 
 | Blocker | Stage | Owner |
 |---|---|---|
-| `G4-B001` / `PR8-R034` / `G4-R007` | completion/materializer — hard rail promoted into `IsolationSheetId` authority, rejected by `close_completion_lineage_source_authority(...)` | M6 at the earliest; adjudicate at `M6-DEFN` |
+| `G4-B001` / `PR8-R034` / `G4-R007` | historical completion/materializer `LocalSheetMismatch`; original hard-rail->sheet root is absent from current source | **M6-CP3 direct-production evidence owner**; CP1/A7 must preserve hard-rail/isolation separation; reopen as A7 defect only if reproduced |
 | `G4-B002` | **main exact-torus pairing blocker CLOSED at CP3; two M5 periodic debts discharged at R7 Review; one closed-complex production debt remains** | remaining closed-complex debt: M6-CP1 mechanism / M6-CP3 production proof |
 | `G4-B003` | quotient/chart relations — both nonzero-Z4 production debts **DISCHARGED at `M5-CP3-TB1-R16-REV`** | M5 (complete) |
 | `G4-B004` | quotient relation/certificate then representative occurrence/verification | **M5 focused production ACCEPTED / DISCHARGED at `M5-CP4-TB2-REV`; M6 representative consumption OPEN.** Accepted selector449 proves the same-region multi-isolation + checked-seam-certificate + quotient-owner producer join; M6 retains representative exact-once materialization/occurrence/embedding/verifier consumption. |
@@ -601,4 +601,4 @@ From `DESIGN.md` §2.1, unchanged and not restated in full: a run is production-
 acceptance conditions hold on the full witness set with no degraded result closing a strict gate, under
 the §10.1 determinism requirements, with the §15 stop conditions never triggered.
 
-Operationally, that is `M8-CP3`. With M4 and M5 closed, the remaining semantic path is: **M6 DEFN + CP1–CP3 → M7 DEFN + CP1–CP3 → M8 CP1–CP3**. Exact future gate arithmetic remains deliberately unfrozen until each owning definition turn; freezing identity counts before the domain is defined is the failure `M3-CP4-DEFN` was created to prevent.
+Operationally, that is `M8-CP3`. With M4/M5 closed and M6-DEFN complete, the remaining semantic path is: **M6 CP1–CP3 → M7 DEFN + CP1–CP3 → M8 CP1–CP3**. Exact future gate arithmetic remains deliberately unfrozen until each owning definition turn; freezing identity counts before the domain is defined is the failure `M3-CP4-DEFN` was created to prevent.

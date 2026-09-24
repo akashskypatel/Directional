@@ -1,3 +1,12 @@
+## 2026-09-24 — `M6-DEFN`: occurrence / quotient / embedding / verifier contracts frozen
+
+- Runtime-free Definition freezes A5 `SurfaceOccurrenceComplex`, A6 `SurfaceQuotientProduct`, A7 `SourceAttachedGeometryProduct`, and the M6 structural A8 `VerificationReport`; M7 retains `OutputDisposition`/degradation.
+- `OccurrenceId` is `(CellId, canonicalCornerRole)` and quotient-class identity is the complete canonical occurrence-member set; coordinate/position coincidence never establishes equality. A6 certifies/consumes every A5-owned relation exactly once; A8 may recompute elementary incidence but may not search, infer, repair, substitute, canonicalize, weld or mutate producer state.
+- `G4-B002` remains CP1 mechanism / CP3 production; `G4-B001` is reclassified from an unproven current defect to CP3 direct-torus evidence debt because current source keeps hard rails out of isolation-sheet barriers; `G4-B004` requires the same M5-accepted produced torus authority through A5-A8.
+- Dormant CB14 identities receive no M5 credit and are frozen for deletion at `M6-CP1-CB1` as redundant to named accepted replacements. Never-gated multi-isolation mechanism and committed-torus identities are retained for CP1/CP3 gating respectively, with neither sufficient alone for representative M6 closure.
+- Consumed M6-DEFN plan is folded into `M6_Consolidated_Record.md`. Stable accounting remains 51/14/37; debt 1. Exact next: `M6-CP1-CB1`.
+- Process-only `M6-DEFN-OBS-01` (+0): the read-mode gate was frozen late; decisive static work was restarted from verified source snapshot `36026363482 / 10819439146` at `c9be476d...`, with 5305/5305 source-manifest verification. No new lesson or semantic evidence is claimed from pre-snapshot reads.
+
 ## 2026-09-24 — `M5-CP4-TB2-REV`: selector449 accepted; M5 closed
 
 - Independently re-opened CB2 package `10814505512`, TB2 result/log `10815911956 / 10815438959` and exact Review snapshot `10816641769`.

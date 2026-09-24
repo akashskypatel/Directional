@@ -27,9 +27,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
- > **Current milestone authority (2026-09-24, after `M5-CP4-TB2-REV`):** M4 and **M5 are CLOSED / ACCEPTED**. Final M5 authority is package/source `10814505512 / e284fea7...` under accepted selector449 (`d4a0d1b7...d6414`) and routing449 (`9c88a5ed...c5707`), owners **32/301/75/41**. Final TB2 is **449/449 PASS**, exact-one, zero skips, immutable. §13.1 conjuncts1-8 are accepted, including the DEFN-R2 same-region `G4-B004` M5 producer join. Stable accounting is **51 / 14 / 37**, debt **1** M6-owned. Exact next is runtime-free **`M6-DEFN`**.
+ > **Current milestone authority (2026-09-24, after `M6-DEFN`):** M4 and **M5 are CLOSED / ACCEPTED**; M6 definitions are **FROZEN / RUNTIME-FREE**. Final M5 authority remains package/source `10814505512 / e284fea7...` under selector449 (`d4a0d1b7...d6414`) and routing449 (`9c88a5ed...c5707`), owners **32/301/75/41**, final TB2 **449/449 PASS**. `Architecture_M6_Frozen_Definitions.md` freezes A5 occurrence, A6 quotient, A7 embedding and A8-M6 verification boundaries. Stable accounting is **51 / 14 / 37**, debt **1** M6-owned. Exact next is **`M6-CP1-CB1`**.
 
-**Currency.** `M5-CP4-TB2-REV` (incl. reviewing-agent addendum), 2026-09-24 UTC
+**Currency.** `M6-DEFN`, 2026-09-24 UTC
 
 **Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` §16.3 is the active same-region nonzero-Z4 contract. `PeriodicRelationId` remains carrier-content identity; relation rotation is the gauge-adjusted quotient `Q`, action/transport is relation value, and canonical storage may invert representation only after semantic Forward -> Reverse authority is fixed. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 
@@ -62,10 +62,10 @@ guarantee. The distinguishing commitments:
 | A2b | `GlobalTopologyPlan` | regions as faces of the embedded graph, with disc proofs |
 | A3 | `GlobalConformityPlan` | — |
 | A4 | `RegionCellComplex` per region | — |
-| A5 | `SurfaceOccurrenceComplex` | — |
-| A6 | `QuotientCertificate` + quad mesh | — |
-| A7 | source-attached vertex geometry | — |
-| A8 | `VerificationReport` + `OutputDisposition` | independent verifier assigns the tier |
+| A5 | `SurfaceOccurrenceComplex` | explicit cell-corner/directed-side occurrences; no quotient union |
+| A6 | `SurfaceQuotientProduct` | only certified A5-owned relations merge occurrences; exact-once ledger; one cell -> one quad |
+| A7 | `SourceAttachedGeometryProduct` | exact source support/geometry keyed by quotient class; A6 topology immutable |
+| A8-M6 | `VerificationReport` | independently checks immutable A5-A7 products; never repairs; M7 adds `OutputDisposition` |
 | A9 | logs and public result | — |
 
 A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on the produced torus. M4-CP3 is accepted through A4 on the constructed torus witness. CP-COND adds the architecturally preceding conditioning boundary: raw input is conditioned once into an immutable certified product before A0. TB5 Review now accepts cumulative selector423/package `10331193451` and closes CP-COND after independently re-deriving the boundary-truncated raw precondition and conditioner-preservation gate. A5 onward remain unreached, and the prescribed sphere still cannot reach A2b (§7).
@@ -82,6 +82,8 @@ A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on t
 DEFN-R1/R2 debt ownership remains the provenance authority. The two periodic `G4-B002` M5 debts are **DISCHARGED at R7 Review** on produced authority: relation/container-order ownership (rows1/2) and missing-owner typing (rows1/3). The two `G4-B003` nonzero-Z4 M5 debts are now **DISCHARGED at R16 Review** by rows16/17. The closed candidate-bearing-complex `G4-B002` debt remains **M6-owned** at M6-CP1 mechanism / M6-CP3 direct-production proof. No produced-witness debt is M4-owned.
 
 M5-DEFN is **COMPLETE / DEFINITIONS FROZEN**; M5-CP1 through M5-CP4 are **CLOSED / ACCEPTED**. `M5-CP4-TB2-REV` accepts selector449 and promotes CB2 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` after fresh **449/449** runtime. The DEFN-R2 same-region multi-isolation + quotient-owner producer conjunct is accepted as §13.1 conjunct8 without crossing into M6 occurrence/materialization/verifier authority. **M5 is CLOSED.** Stable accounting remains **51 / 14 / 37**; project debt is **1**, M6-owned.
+
+`M6-DEFN` is **COMPLETE / RUNTIME-FREE / DEFINITIONS FROZEN**. `OccurrenceId` is frozen as `(CellId, canonicalCornerRole)` and `QuotientClassId` as the complete canonical member-occurrence set; coordinate/position coincidence is never equality. A6 owns exact-once consumption of A5-owned relations, A7 cannot alter A6 topology, and A8-M6 may recompute elementary incidence but cannot infer/search/repair/substitute producer state. `G4-B001` is now a CP3 direct-torus evidence debt because current source already keeps hard rails out of isolation-sheet classification. Exact next is `M6-CP1-CB1`.
 
 ## 4. The witnesses — the fastest way to understand the problem
 
@@ -198,27 +200,27 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M6-DEFN` — NEXT / RUNTIME-FREE DEFINITION.** M5 is closed under accepted selector449/package `10814505512`. Freeze four complete occurrence/quotient/embedding/verifier stage products, verifier recompute-vs-repair boundaries, occurrence/quotient identity, `G4-B001` ownership, the remaining closed-complex `G4-B002` proof route, dormant-CB14-test disposition, and the `G4-B004` representative M6 half before any M6 implementation.
+1. **`M6-CP1-CB1` — NEXT / A5 OCCURRENCE PRODUCT.** Implement only the frozen A5 `SurfaceOccurrenceComplex` seam, content-semantic occurrence identity, transitional materializer consumption and the two no-credit dormant-CB14 deletions. Compile/package only; no generated runtime.
 
-2. **Dormant CB14 test hygiene — M6-DEFN-owned, NO M5 CREDIT.** `M5CP3.PeriodicRelationEndpointGaugeIsIndependentAndExact` and `M5CP3.ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection` were never gated and are excluded from accepted selector448. M6-DEFN must freeze deletion or a concrete later M6 gating owner for each; neither can be cited as M5 evidence.
+2. **`G4-B002` produced closed-complex debt — OPEN / M6.** M6-DEFN freezes CP1 mechanism/stage separation and CP3 direct-production proof. Preserve the independent eligibility oracle, hard-feature tamper and fail-closed/no-recovery contract; mechanism evidence cannot close production debt.
 
-3. **`G4-B002` produced closed-complex debt — OPEN / M6.** DEFN-R2 freezes M6-CP1 mechanism / M6-CP3 direct-production proof. Preserve the A5 occurrence-complex subject, independent eligibility oracle, hard-feature tamper, and fail-closed/no-recovery contract. Do not pull diagnostic `hasArrangement` backward into M4/M5.
+3. **`G4-B004` representative M6 half — OPEN.** M5 same-region producer fact is accepted. CP1 must preserve/gate focused multi-isolation materialization; CP3 must prove the same direct produced torus through A5 exact occurrences, A6 exact-once consumption, A7 source attachment and A8 independent verification.
 
-4. **M4-CP4 — DISCHARGED / M4 CLOSED.** `M4-CP4-TB3-REV` accepts package `10591801825` / selector430 **430/430**, independently proving exact prefix, full ledger/postflight authority, work/boundedness, same-region multiplicity-two and the zero-transport helper precondition audit.
+4. **`G4-B001 / PR8-R034 / G4-R007` — CP3 DIRECT-TORUS EVIDENCE DEBT.** The historical hard-rail->`IsolationSheetId` root is absent from current source: hard rails are excluded from source isolation barriers. CP1/A7 must preserve that separation; CP3 owns strict-valid torus 3/3 re-proof. If `LocalSheetMismatch` returns, classify it against the frozen A7 contract; do not weaken the validator.
 
-5. **Re-homed carried observations.** S1 numeric calibration -> M8-CP2; S2-arrival exact fallback -> M8-CP2 only if observationally equivalent, otherwise reopen A2a/M3; row399 path/`sourceFaces` divergence tamper -> first legitimate row399/binder/producer touch; row408 historical provenance -> truth constraint.
+5. **Dormant CB14 test hygiene — FROZEN FOR `M6-CP1-CB1`, NO M5 CREDIT.** Delete `M5CP3.PeriodicRelationEndpointGaugeIsIndependentAndExact` and `M5CP3.ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection` only after confirming the accepted replacement identities named in M6 §9 remain present and selector449 is byte-identical.
 
-6. **Ordinal369 ordinary trace-crossed proposal quality — ACTIVE / separate.** Existing proposal-quality/coverage owner remains valid.
+6. **Re-homed carried observations.** S1 numeric calibration -> M8-CP2; S2-arrival exact fallback -> M8-CP2 only if observationally equivalent, otherwise reopen A2a/M3; row399 path/`sourceFaces` divergence tamper -> first legitimate row399/binder/producer touch; row408 historical provenance -> truth constraint.
 
-7. **Prescribed sphere 368/398 — ACTIVE / deferred.** 368 remains localized to `TraceEventPositionInvalid -> NoCarrierMatch / SourceEdgeUnavailable`, trace 2/event 30; 398 remains downstream of the absent sphere cut graph.
+7. **Ordinal369 ordinary trace-crossed proposal quality — ACTIVE / separate.** Existing proposal-quality/coverage owner remains valid.
 
-8. **Ordinal374 folded-cone witness — ACTIVE / DEFERRED TEST PRECONDITION, separate from S2.** Its authored flat-star field is invalid on the non-flat cone star; eventual repair remains test-only and selector374 stays frozen.
+8. **Prescribed sphere 368/398 — ACTIVE / deferred.** 368 remains localized to `TraceEventPositionInvalid -> NoCarrierMatch / SourceEdgeUnavailable`, trace 2/event 30; 398 remains downstream of the absent sphere cut graph.
 
-9. **`G4-B004` split obligation — M5 HALF DISCHARGED / M6 HALF OPEN.** `M5-CP4-TB2-REV` accepts the same-region multi-isolation + checked-seam-certificate + quotient-owner producer join under selector449. `M6-DEFN` item7 now owns representative exact-once materialization/consumption, source-attached embedding and independent verification of that exact produced authority.
+9. **Ordinal374 folded-cone witness — ACTIVE / DEFERRED TEST PRECONDITION, separate from S2.** Its authored flat-star field is invalid on the non-flat cone star; eventual repair remains test-only and selector374 stays frozen.
 
 10. **Accepted ordinal307 latent stale equality — RECORDED / NOT FIRING.** Do not weaken it pre-emptively; classify as test-authority drift if it fires.
 
-11. **Rows16/17 (selector448 ordinals 446/447) pin inverse canonical storage — RECORDED / NOT FIRING (`M5-CP3-TB1-R16-REV-OBS-02`).** `ASSERT_TRUE(storageInverted)` deliberately makes the inverse path non-vacuous. If a later representation-only canonicalization change fires it, classify the failure as test-authority drift, not a product regression. Keep the pin and supply a witness that still exercises inverse storage (`LESSONS.md` 171).
+11. **Rows16/17 (selector448 ordinals 446/447) pin inverse canonical storage — RECORDED / NOT FIRING (`M5-CP3-TB1-R16-REV-OBS-02`).** Keep the inverse-storage pin; if a representation-only change fires it, classify as test-authority drift and supply a witness still exercising inverse storage (`LESSONS.md` 171).
 
 ## 8. Recurring defect patterns
 

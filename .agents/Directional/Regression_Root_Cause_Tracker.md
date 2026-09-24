@@ -10568,3 +10568,29 @@ tempting later.
 evidence file listed and verified — with **no exception for orchestration-only omissions**. The driver
 finalization ordering must be fixed before the first turn that needs acceptance credit, and at the latest before
 the publication gate.
+
+
+## `M6-DEFN` — A5/A6/A7/A8-M6 authority split and carried blocker ownership
+
+**Status.** DEFINITIONS FROZEN / RUNTIME-FREE / stable accounting unchanged **51 / 14 / 37** / produced-witness debt **1** / exact next `M6-CP1-CB1`.
+
+**Root seam.** Current `build_authoritative_phase_front_mesh(...)` still allocates A5 occurrences, performs A6 union/materialization, chooses a geometric representative and writes A7-like lineage in one transitional procedure. M6 freezes complete immutable stage products so a later verifier cannot become a second producer. `OccurrenceId` is `(CellId, canonicalCornerRole)`; `QuotientClassId` is the complete canonical member-occurrence set. Every A5-owned relation is consumed exactly once by A6. Coordinate/lattice/world-position equality is never authority.
+
+**Verifier falsifier.** M6 A8 may independently recompute elementary source incidence/output topology and exact algebra for the **named** certificates. It may not infer missing endpoint/route/owner/chart/sheet/support, search for alternate relation paths, union occurrences, choose a representative, canonicalize malformed state, weld by coordinate/position, repair topology/source attachment, mutate producer products or invoke fallback. Any such dependency reopens M6 definitions.
+
+**`G4-B001 / PR8-R034 / G4-R007` disposition.** The historical root was hard-feature rails being reused as isolation-sheet barriers before strict closure. Current production source explicitly passes an empty `sourceIsolationBarrierEdges` set to `classify_source_surface_labels(...)` while retaining hard rails as topology-region/chart/rail barriers. The historical source defect is therefore not present at the current boundary. Carry the item as **M6-CP3 direct-production evidence debt** (strict torus 3/3), with CP1/A7 required to preserve domain separation. If `LocalSheetMismatch` reproduces, classify it against the frozen A7 embedding/source-support contract; weakening the validator or sheet authority is prohibited.
+
+**`G4-B002` owner.** Unchanged: M6-CP1 establishes real A5/A6 stage authority for the closed candidate-bearing complex; M6-CP3 alone may discharge the direct-production candidate-extraction + hard-feature-tamper debt. Mechanism evidence earns zero production credit.
+
+**`G4-B004` M6 half.** CP1 retains/gates `SurfaceCellTransitionQuotient.MultiIsolationMaterializationRetainsAllLocalSheets` as mechanism preservation only. CP3 retains/gates `SurfaceCellsPhase10.ExactCommittedTorusDoesNotTreatIsolationSeamAsBoundedDiskBoundary` as direct-torus preservation, but representative closure additionally requires a dedicated M6 direct-production identity binding the accepted M5 same-region producer fact to A5 occurrences, A6 exact-once consumption, A7 source attachment and A8 independent verification. No retroactive M5 credit.
+
+**`M5-CP3-TB1-R16-REV-OBS-01` disposition.** DISCHARGED / NO M5 CREDIT. `M5CP3.PeriodicRelationEndpointGaugeIsIndependentAndExact` and `M5CP3.ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection` are absent from accepted selector449 and are frozen for deletion at `M6-CP1-CB1` as redundant. The first is superseded by accepted `PeriodicRelationRotationUsesBothAcceptedOccurrenceGauges` plus accepted nonzero-Z4 materialization coverage. The second is superseded by accepted `StorageCanonicalPeriodicRelationResolvesSemanticForwardReverse` plus `ProducedTorusPeriodicRelationStoragePermutationPreservesSelectedCertificate`. Deletion must stop if those replacements are absent or selector449 changes.
+
+
+## `M6-DEFN-OBS-01` — snapshot read-mode gate entered late
+
+**Status.** PROCESS-ONLY / NON-STABLE / +0.
+
+At M6-DEFN start, several small repository documents were fetched directly before the mandatory `READ_MODE` was explicitly frozen. That was a tool-conservation process miss: the expected review surface was already large enough to require snapshot mode. No semantic conclusion, selector decision, or repository mutation was accepted from the pre-snapshot inspection. The turn stopped piecemeal source access, set `READ_MODE=snapshot`, and used exact source snapshot run/artifact `36026363482 / 10819439146` at SHA `c9be476d75e6f5d6df11304ad6b926b27b36430f` for all decisive static analysis; provider ZIP SHA-256 `6331c1189591e0429128495719d6168c92827c9024175b2d121387706519d762`, embedded source archive SHA-256 `b57fe2df11bd0d988196b45dee8855581bff8cce942ce66c20b68ac8ee1b1b2e`, manifest 5305/5305.
+
+The existing `TOOL_USE_CONSERVATION_POLICY.md` snapshot gate and existing process lessons already prescribe the correction. This observation changes no stable regression accounting and creates no new product debt.

@@ -2,23 +2,20 @@
 
 Last updated: 2026-09-24 UTC
 
-## Latest Review — `M5-CP4-TB2-REV`
+## Latest Definition — `M6-DEFN`
 
-**COMPLETE / SELECTOR449 ACCEPTED / CB2 PACKAGE PROMOTED / CONJUNCT8 ACCEPTED / M5 CLOSED.** Final accepted authority is package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`, routing449 `9c88a5ed...c5707`, owner census 32/301/75/41. Final fresh TB2 run/job `36017291483 / 107693066103` is **449/449 PASS**, exact-one, zero skips, benchmark0 and immutable postflight. Stable accounting remains 51/14/37; debt 1 M6-owned.
+**COMPLETE / RUNTIME-FREE / FOUR PRODUCTS FROZEN / EXACT NEXT `M6-CP1-CB1`.** `Architecture_M6_Frozen_Definitions.md` now freezes A5 `SurfaceOccurrenceComplex`, A6 `SurfaceQuotientProduct`, A7 `SourceAttachedGeometryProduct`, and the M6 structural A8 `VerificationReport`. Occurrence identity is `(CellId, canonicalCornerRole)`; quotient identity is the complete member-occurrence set; A6 owns exact-once consumption of every A5-owned relation; A8 may independently recompute elementary incidence but may never repair/search/substitute/canonicalize producer state. M7 retains `OutputDisposition` and degradation. Accepted M5 authority remains package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 `d4a0d1b7...d6414`; stable accounting remains 51/14/37 and debt 1 M6-owned.
 
-## Exact next turn — `M6-DEFN`
+Definition dispositions:
 
-Runtime-free definition only:
+- [x] `G4-B002`: M6-CP1 mechanism/stage separation; M6-CP3 direct-production re-proof.
+- [x] `G4-B001 / PR8-R034 / G4-R007`: current source already separates hard rails from isolation-sheet barriers; carry as CP3 direct-torus evidence debt, with CP1/A7 preserving the separation.
+- [x] Dormant CB14 identities: no M5 credit; both frozen for deletion as redundant at `M6-CP1-CB1`, with named accepted replacement authority.
+- [x] `G4-B004` M6 half: CP1 gates focused multi-isolation mechanism preservation; CP3 must bind the same M5-accepted produced torus authority through A5 exact occurrences, A6 exact-once consumption, A7 embedding and A8 independent verification.
 
-- [ ] Freeze four complete immutable stage products: occurrence creation, quotient construction, source-attached geometry embedding, independent verification.
-- [ ] Freeze verifier recompute-vs-repair boundary and exact occurrence/quotient identity rules.
-- [ ] Freeze M6-CP1 mechanism / M6-CP3 direct-production route for the remaining closed-complex `G4-B002` debt.
-- [ ] Adjudicate `G4-B001 / PR8-R034 / G4-R007` ownership.
-- [ ] Freeze deletion or a concrete later M6 gating owner for both dormant CB14 identities; no retroactive M5 credit.
-- [ ] Freeze the `G4-B004` M6 half: representative exact-once materialization/consumption, embedding and independent verification of the same producer authority accepted by M5-CP4.
-- [ ] Authorize exactly one bounded successor only after all definition stop rules are resolved.
+## Exact next turn — `M6-CP1-CB1`
 
-No M6 implementation/runtime is authorized in DEFN.
+Code + Build only under `.agents/Directional/Architecture_M6_CP1_CB1_Occurrence_Product_Code_Build_Plan.md`. Scope is the first A5 seam only: introduce content-semantic occurrence identity and immutable `SurfaceOccurrenceComplex`, make the transitional materializer consume A5 instead of allocating occurrence authority inline, and delete the two frozen dormant CB14 identities. No A6/A7/A8 extraction, selector change, generated runtime, or G4 closure claim is authorized.
 
 ## Latest Code + Build turn — `M5-CP4-CB2`
 
@@ -66,7 +63,7 @@ CB17 is **COMPLETE / RUNTIME-FREE / COMPILE GREEN**, candidate `10742798135 / 1a
 - [x] `M5-CP3-TB1-R14-REV-OBS-01` — **DISCHARGED AT DEFN-R1**; independent committed-torus source/A3 derivation yields relation-gauge `Q=3` before relation publication.
 - [x] `M5-CP3-TB1-R15-REV-OBS-01` — **DISCHARGED / RUNTIME-PROVED AT R15-R1 REVIEW**. Frozen corrected parser accounts for all 448 exact-one/zero-skip processes in a complete valid ledger.
 - [x] `M5-CP3-TB1-R15-R1-REV-OBS-01` — **DISCHARGED AT R16 REVIEW**. CB19 kept the expectation independent (hard-coded `Q=3`) while using the resolver only to normalize representation; R16 proves it at runtime.
-- [x] `M5-CP3-TB1-R16-REV-OBS-01` — **DISPOSED AT TB2 REVIEW / NO M5 CREDIT.** The two CB14 identities were never executed, remain absent from selector448 and receive no M5 credit. `M6-DEFN` owns freezing their deletion-or-gating disposition before M6 implementation uses either.
+- [x] `M5-CP3-TB1-R16-REV-OBS-01` — **DISPOSED AT TB2 REVIEW / NO M5 CREDIT.** The two CB14 identities were never executed, remain absent from selector448 and receive no M5 credit. `M6-DEFN` DISCHARGED this obligation: both are frozen for no-credit deletion as superseded at `M6-CP1-CB1`; accepted replacement identities are named in `Architecture_M6_Frozen_Definitions.md` §9.
 - [x] `M5-CP3-TB2-REV-OBS-01` — **DISCHARGED AT `M5-CP4-TB2-REV`.** DEFN-R2 froze the same-region producer join; row449 proved it, selector449 was published and freshly executed 449/449, and final Review accepts conjunct8 and closes M5. The representative M6 half remains M6-owned.
 - [ ] `M5-DEFN-R1-REV-OBS-01` — **RECORDED / process.** COMPLETE was published before the turn's durable work was on the branch. Every implementation turn must make COMPLETE its final write.
 - [x] `M5-CP3-TB2-REV-OBS-02` — **RECOVERED.** Tracker overwritten at `ce9bf3cb` (9,837 → 21 lines) and restored verbatim (`LESSONS.md` 176).
@@ -99,7 +96,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. M4 handed four periodic/relation debts to M5 and one closed-complex debt to M6; R7 Review discharged two M5 debts and R16 Review discharges the remaining two nonzero-Z4 M5 debts. The sole remaining project debt is the M6 closed-complex subject.
-- [x] **M5** certificate-carrying chart/quotient relations — **CLOSED / ACCEPTED at `M5-CP4-TB2-REV`.** Final authority is package/source `10814505512 / e284fea7...` under accepted selector449 **449/449**, SHA `d4a0d1b7...d6414`, owners 32/301/75/41. All §13.1 conjuncts 1-8 are accepted; exact next is runtime-free `M6-DEFN`.
+- [x] **M5** certificate-carrying chart/quotient relations — **CLOSED / ACCEPTED at `M5-CP4-TB2-REV`.** Final authority is package/source `10814505512 / e284fea7...` under accepted selector449 **449/449**, SHA `d4a0d1b7...d6414`, owners 32/301/75/41. All §13.1 conjuncts 1-8 are accepted; M6 Definition is now frozen and exact next is `M6-CP1-CB1`.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.
@@ -138,4 +135,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current corrected totals are **51 events / 14 categories / 37 recurrences**, project debt **1** (M6 only). M4 and **M5 are CLOSED / ACCEPTED**. Final M5 authority is package/source `10814505512 / e284fea7...` under selector449 **449/449** (`d4a0d1b7...d6414`). The exact next turn is runtime-free **`M6-DEFN`**. PR #8 remains open, draft, and unmerged. *(This line still said "M5 closure is HELD … await fresh `M5-CP4-TB2-EXEC`" after closure; corrected by the reviewing agent.)*
+Current corrected totals are **51 events / 14 categories / 37 recurrences**, project debt **1** (M6 only). M4 and **M5 are CLOSED / ACCEPTED**. Final M5 authority is package/source `10814505512 / e284fea7...` under selector449 **449/449** (`d4a0d1b7...d6414`). `M6-DEFN` is **COMPLETE / RUNTIME-FREE / DEFINITIONS FROZEN**; the exact next turn is **`M6-CP1-CB1`**. PR #8 remains open, draft, and unmerged. *(The historical stale M5-closure wording was corrected by the reviewing agent.)*
