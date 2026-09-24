@@ -4,7 +4,7 @@
 **Boundary:** runtime-free definition only
 **Predecessor:** final `M5-CP4-TB2-REV`, which must independently accept the `M5-DEFN-R2` `G4-B004` M5-half producer reading and close M5.
 
-**DEFERRED — NOT THE CURRENT NEXT TURN.** M5 closure is held. `M5-CP4-TB1-REV` accepts the frozen `G4-B004` M5-half row449 only as prepublication producer proof and precommits selector449/routing449. Exact next is `M5-CP4-CB2` under `Architecture_M5_CP4_CB2_Selector_449_Publication_Code_Build_Plan.md`; this M6 plan becomes live only after CB2 publication, fresh TB2 execution and final `M5-CP4-TB2-REV` acceptance close M5.
+**AUTHORIZED — CURRENT NEXT TURN.** `M5-CP4-TB2-REV` independently accepts the frozen `G4-B004` M5-half producer reading, selector449 and final CB2 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7`, and closes M5. This plan is now the live successor. M6-DEFN remains runtime-free and may not implement product/test/fixture/selector semantics, compile, package, or execute generated Directional runtime.
 
 ## Goal
 

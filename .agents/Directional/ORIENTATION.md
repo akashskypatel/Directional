@@ -27,9 +27,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
- > **Current milestone authority (2026-09-24, after `M5-CP4-TB1-REV`):** M4 is **CLOSED / ACCEPTED**. **M5 closure is HELD pending bounded `M5-CP4`.** Selector448 (`70ff0860...c75789`) and §13.1 conjuncts1-7 remain accepted under package/source `10771899191 / cef1c6ee...`. TB1 Review independently accepts row449 as non-vacuous prepublication proof of the frozen same-region conjunct8 producer join and precommits selector449 `d4a0d1b7...d6414` / routing449 `9c88a5ed...c5707`, but neither is published and conjunct8 is not milestone-accepted. Stable accounting is **51 / 14 / 37**, debt **1** M6-owned. Exact next is **`M5-CP4-CB2`**; `M6-DEFN` remains deferred until final CP4 Review.
+ > **Current milestone authority (2026-09-24, after `M5-CP4-TB2-REV`):** M4 and **M5 are CLOSED / ACCEPTED**. Final M5 authority is package/source `10814505512 / e284fea7...` under accepted selector449 (`d4a0d1b7...d6414`) and routing449 (`9c88a5ed...c5707`), owners **32/301/75/41**. Final TB2 is **449/449 PASS**, exact-one, zero skips, immutable. §13.1 conjuncts1-8 are accepted, including the DEFN-R2 same-region `G4-B004` M5 producer join. Stable accounting is **51 / 14 / 37**, debt **1** M6-owned. Exact next is runtime-free **`M6-DEFN`**.
 
-**Currency.** `M5-CP4-TB1-REV` (incl. reviewing-agent addendum), 2026-09-24 UTC
+**Currency.** `M5-CP4-TB2-REV`, 2026-09-24 UTC
 
 **Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` §16.3 is the active same-region nonzero-Z4 contract. `PeriodicRelationId` remains carrier-content identity; relation rotation is the gauge-adjusted quotient `Q`, action/transport is relation value, and canonical storage may invert representation only after semantic Forward -> Reverse authority is fixed. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 
@@ -81,7 +81,7 @@ A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on t
 
 DEFN-R1/R2 debt ownership remains the provenance authority. The two periodic `G4-B002` M5 debts are **DISCHARGED at R7 Review** on produced authority: relation/container-order ownership (rows1/2) and missing-owner typing (rows1/3). The two `G4-B003` nonzero-Z4 M5 debts are now **DISCHARGED at R16 Review** by rows16/17. The closed candidate-bearing-complex `G4-B002` debt remains **M6-owned** at M6-CP1 mechanism / M6-CP3 direct-production proof. No produced-witness debt is M4-owned.
 
-M5-DEFN is **COMPLETE / DEFINITIONS FROZEN**; M5-CP1, M5-CP2 and M5-CP3 are **CLOSED / ACCEPTED**. `M5-CP3-TB2-REV` accepts selector448 and promotes CB20 package/source `10771899191 / cef1c6ee26ca6fb6791f0e80a66f9b0dc441e0f1`. `M5-DEFN-R2` freezes the missing `G4-B004` conjunct as a same-region multi-isolation + quotient-owner producer fact. `M5-CP4-TB1-REV` now independently accepts row449 as non-vacuous prepublication proof of that joined producer fact and precommits selector449/routing449, but **M5 closure remains held** until CB2 publishes those exact bytes, TB2 executes the published selector freshly, and final Review accepts conjunct8. Stable accounting remains **51 / 14 / 37**; project debt is **1**, M6-owned.
+M5-DEFN is **COMPLETE / DEFINITIONS FROZEN**; M5-CP1 through M5-CP4 are **CLOSED / ACCEPTED**. `M5-CP4-TB2-REV` accepts selector449 and promotes CB2 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` after fresh **449/449** runtime. The DEFN-R2 same-region multi-isolation + quotient-owner producer conjunct is accepted as §13.1 conjunct8 without crossing into M6 occurrence/materialization/verifier authority. **M5 is CLOSED.** Stable accounting remains **51 / 14 / 37**; project debt is **1**, M6-owned.
 
 ## 4. The witnesses — the fastest way to understand the problem
 
@@ -198,9 +198,7 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M5-CP4-CB2` — NEXT / RUNTIME-FREE SELECTOR449 PUBLICATION + COMPILE/PACKAGE.** TB1 Review accepts row449 as non-vacuous prepublication proof and freezes exact selector449/routing449 bytes. CB2 may add only those two publication files, compile/package all four owner executables through mandatory GMP/GMPXX authority, and execute no Directional binary. Stop on any hash/prefix/routing/owner drift, semantic source change, package-owner incompleteness or runtime attempt. M5 remains open through TB2 -> final Review. **Reviewing-agent binding amendment (plan §8):** compile **all eight** standard targets, because CB2's package becomes final M5 authority and the four-target CB1 build is not the closure standard. On resume, re-derive progress before re-arming anything (`M5-CP4-TB1-REV-OBS-02`, `LESSONS.md` 178).
-
-1a. **`M6-DEFN` — DEFERRED behind bounded `M5-CP4` and M5 closure.** Freeze four complete occurrence/quotient/embedding/verifier stage products, the verifier recompute-vs-repair boundary, `G4-B001` ownership, the remaining closed-complex debt route and the `G4-B004` M6 half before any M6 implementation.
+1. **`M6-DEFN` — NEXT / RUNTIME-FREE DEFINITION.** M5 is closed under accepted selector449/package `10814505512`. Freeze four complete occurrence/quotient/embedding/verifier stage products, verifier recompute-vs-repair boundaries, occurrence/quotient identity, `G4-B001` ownership, the remaining closed-complex `G4-B002` proof route, dormant-CB14-test disposition, and the `G4-B004` representative M6 half before any M6 implementation.
 
 2. **Dormant CB14 test hygiene — M6-DEFN-owned, NO M5 CREDIT.** `M5CP3.PeriodicRelationEndpointGaugeIsIndependentAndExact` and `M5CP3.ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection` were never gated and are excluded from accepted selector448. M6-DEFN must freeze deletion or a concrete later M6 gating owner for each; neither can be cited as M5 evidence.
 
@@ -216,7 +214,7 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 8. **Ordinal374 folded-cone witness — ACTIVE / DEFERRED TEST PRECONDITION, separate from S2.** Its authored flat-star field is invalid on the non-flat cone star; eventual repair remains test-only and selector374 stays frozen.
 
-9. **`G4-B004` positive multi-isolation quotient witness — M5 PREPUBLICATION PROOF ACCEPTED; PUBLICATION/FRESH-RUNTIME/FINAL-REVIEW PENDING.** `M5-CP4-TB1-REV` accepts row449 on the frozen same-region producer reading and precommits exact selector449/routing449. `M5-CP4-CB2` owns publication, then TB2 fresh cumulative runtime and final Review. The M6 half remains owned by deferred `M6-DEFN` item7.
+9. **`G4-B004` split obligation — M5 HALF DISCHARGED / M6 HALF OPEN.** `M5-CP4-TB2-REV` accepts the same-region multi-isolation + checked-seam-certificate + quotient-owner producer join under selector449. `M6-DEFN` item7 now owns representative exact-once materialization/consumption, source-attached embedding and independent verification of that exact produced authority.
 
 10. **Accepted ordinal307 latent stale equality — RECORDED / NOT FIRING.** Do not weaken it pre-emptively; classify as test-authority drift if it fires.
 

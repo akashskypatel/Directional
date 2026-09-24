@@ -2,23 +2,23 @@
 
 Last updated: 2026-09-24 UTC
 
-## Latest Test + Benchmark turn — `M5-CP4-TB2-EXEC`
+## Latest Review — `M5-CP4-TB2-REV`
 
-**COMPLETE / MECHANICALLY GREEN 449/449 / PUBLISHED SELECTOR449 IMMUTABLE / REVIEW REQUIRED / M5 CLOSURE HELD.** TB2 run/job `36017291483 / 107693066103` consumes CB2 artifact/source `10814505512 / e284fea7...` immutably. All **449 fresh exact-filter processes PASS**, exact-one selected, zero skips, all exits 0, benchmark 0, owners 32/301/75/41, and package/source postflight is exact. Result/log artifacts are `10815911956 / 10815438959`; row449 PASSes with `first_unmet_fact=none`.
+**COMPLETE / SELECTOR449 ACCEPTED / CB2 PACKAGE PROMOTED / CONJUNCT8 ACCEPTED / M5 CLOSED.** Final accepted authority is package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`, routing449 `9c88a5ed...c5707`, owner census 32/301/75/41. Final fresh TB2 run/job `36017291483 / 107693066103` is **449/449 PASS**, exact-one, zero skips, benchmark0 and immutable postflight. Stable accounting remains 51/14/37; debt 1 M6-owned.
 
-EXEC grants no promotion or acceptance. Stable accounting remains 51/14/37, debt 1 M6-owned, accepted M5 runtime authority remains selector448/package `10771899191 / cef1c6ee...`, and conjunct8/M5 closure remain held pending Review.
+## Exact next turn — `M6-DEFN`
 
-## Exact next turn — `M5-CP4-TB2-REV`
+Runtime-free definition only:
 
-Independent runtime-free final Review:
+- [ ] Freeze four complete immutable stage products: occurrence creation, quotient construction, source-attached geometry embedding, independent verification.
+- [ ] Freeze verifier recompute-vs-repair boundary and exact occurrence/quotient identity rules.
+- [ ] Freeze M6-CP1 mechanism / M6-CP3 direct-production route for the remaining closed-complex `G4-B002` debt.
+- [ ] Adjudicate `G4-B001 / PR8-R034 / G4-R007` ownership.
+- [ ] Freeze deletion or a concrete later M6 gating owner for both dormant CB14 identities; no retroactive M5 credit.
+- [ ] Freeze the `G4-B004` M6 half: representative exact-once materialization/consumption, embedding and independent verification of the same producer authority accepted by M5-CP4.
+- [ ] Authorize exactly one bounded successor only after all definition stop rules are resolved.
 
-- [ ] Re-open CB2 package `10814505512` and TB2 result/log `10815911956 / 10815438959` independently.
-- [ ] Verify 28/28 package authority, GMP/GMPXX, exact selector449/routing449 hashes and selector448/routing448 prefixes, census 32/301/75/41, all 449 ledger/raw receipts, protected rows and immutable postflight.
-- [ ] Re-check the frozen DEFN-R2 same-region six-fact producer contract and M5/M6 boundary without running binaries or changing semantic inputs.
-- [ ] Adjudicate selector449/package promotion, conjunct8 and M5 closure only in Review.
-- [ ] Authorize `M6-DEFN` only if M5 formally closes; otherwise preserve the exact remaining M5 obligation.
-
-**Deferred:** `M6-DEFN` remains blocked until `M5-CP4-TB2-REV` closes M5.
+No M6 implementation/runtime is authorized in DEFN.
 
 ## Latest Code + Build turn — `M5-CP4-CB2`
 
@@ -67,7 +67,7 @@ CB17 is **COMPLETE / RUNTIME-FREE / COMPILE GREEN**, candidate `10742798135 / 1a
 - [x] `M5-CP3-TB1-R15-REV-OBS-01` — **DISCHARGED / RUNTIME-PROVED AT R15-R1 REVIEW**. Frozen corrected parser accounts for all 448 exact-one/zero-skip processes in a complete valid ledger.
 - [x] `M5-CP3-TB1-R15-R1-REV-OBS-01` — **DISCHARGED AT R16 REVIEW**. CB19 kept the expectation independent (hard-coded `Q=3`) while using the resolver only to normalize representation; R16 proves it at runtime.
 - [x] `M5-CP3-TB1-R16-REV-OBS-01` — **DISPOSED AT TB2 REVIEW / NO M5 CREDIT.** The two CB14 identities were never executed, remain absent from selector448 and receive no M5 credit. `M6-DEFN` owns freezing their deletion-or-gating disposition before M6 implementation uses either.
-- [ ] `M5-CP3-TB2-REV-OBS-01` — **DEFINITION-FROZEN / CLOSURE-GATE-PENDING / owner `M5-CP4`.** DEFN-R2 freezes the same-region multi-isolation + checked-seam-certificate + quotient-owner producer reading. Selector448 does not yet prove that joined condition.
+- [x] `M5-CP3-TB2-REV-OBS-01` — **DISCHARGED AT `M5-CP4-TB2-REV`.** DEFN-R2 froze the same-region producer join; row449 proved it, selector449 was published and freshly executed 449/449, and final Review accepts conjunct8 and closes M5. The representative M6 half remains M6-owned.
 - [ ] `M5-DEFN-R1-REV-OBS-01` — **RECORDED / process.** COMPLETE was published before the turn's durable work was on the branch. Every implementation turn must make COMPLETE its final write.
 - [x] `M5-CP3-TB2-REV-OBS-02` — **RECOVERED.** Tracker overwritten at `ce9bf3cb` (9,837 → 21 lines) and restored verbatim (`LESSONS.md` 176).
 - [x] `M5-CP3-TB2-REV-OBS-03` — **RECOVERED.** Agent CHANGELOG overwritten at `0043dd4c` (13,317 → 14 lines) and restored verbatim. The committed-history guard is `review_check.py ledgers --base <previous-review-commit>`. Every Review should run it.
@@ -99,7 +99,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [x] **M3 — field-aligned curve network.** **CLOSED / ACCEPTED at `M3-CP4c-3-TB48-REV`.** Package113/TB48 is reviewed authority at 405 PASS / 4 RED over the final audit surface, with accepted required-green selector365 at 365/365 and the AU0–AU9 mechanical-witness criterion met. Closure: `M3_Closure_Record.md`.
 
 - [x] **M4** global conformity plan — **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`**. Final runtime authority is package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**. Closure: `M4_Closure_Record.md`; CP4 closure: `M4_CP4_Closure_Record.md`. M4 handed four periodic/relation debts to M5 and one closed-complex debt to M6; R7 Review discharged two M5 debts and R16 Review discharges the remaining two nonzero-Z4 M5 debts. The sole remaining project debt is the M6 closed-complex subject.
-- [ ] **M5** certificate-carrying chart/quotient relations — **SELECTOR448 ACCEPTED / §13.1 CONJUNCTS 1-7 ACCEPTED / CONJUNCT 8 PREPUBLICATION PROOF REVIEW-ACCEPTED / SELECTOR449 PUBLISHED / EIGHT-TARGET GMP PACKAGE GREEN / CLOSURE HELD.** Accepted runtime authority remains package/source `10771899191 / cef1c6ee...` under selector448 **448/448**; CB2 candidate artifact/source is `10814505512 / e284fea7...` under published selector449. Exact next is artifact-only `M5-CP4-TB2-EXEC`, then final `M5-CP4-TB2-REV`.
+- [x] **M5** certificate-carrying chart/quotient relations — **CLOSED / ACCEPTED at `M5-CP4-TB2-REV`.** Final authority is package/source `10814505512 / e284fea7...` under accepted selector449 **449/449**, SHA `d4a0d1b7...d6414`, owners 32/301/75/41. All §13.1 conjuncts 1-8 are accepted; exact next is runtime-free `M6-DEFN`.
 - [ ] **M6** occurrence, embedding, independent verification.
 - [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
 - [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.
@@ -119,7 +119,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 - [ ] `G4-B001 / PR8-R034 / G4-R007`: direct torus final `LocalSheetMismatch`; downstream of A2b and not a CP4c witness collision.
 - [x] `G4-B002` main exact-torus hard-rail pairing blocker — **CLOSED / RECOVERY PROVED at M4-CP3-TB8-REV** on accepted package `10307919492` / selector408 **408/408**. The three produced-witness debts remain open: one closed-complex debt is M6-owned after DEFN-R2 and two periodic debts are M5-owned after DEFN-R1. This checkbox closes the blocker, not those debt items.
 - [x] `G4-B003`: nonzero periodic Z4 production — **DISCHARGED at M5 R16 Review**; both direct-production debts are runtime/review proved.
-- [ ] `G4-B004`: positive multi-isolation quotient witness. **M5 producer proof PREPUBLICATION-REVIEW-ACCEPTED / SELECTOR449 PUBLISHED / FRESH TB2 + FINAL REVIEW PENDING.** CB2 publishes the reviewed same-region producer join without granting runtime acceptance; the M6 half remains owned by deferred `M6-DEFN` item 7 for representative exact-once consumption/embedding/verifier proof.
+- [ ] `G4-B004`: positive multi-isolation quotient witness. **M5 producer half ACCEPTED / DISCHARGED at `M5-CP4-TB2-REV`; M6 representative-consumption half OPEN.** Selector449 final authority proves the same-region producer join. `M6-DEFN` item 7 now owns representative exact-once materialization/consumption, embedding and independent verifier proof without weakening or reconstructing the producer fact.
 - [ ] Bunny/Vase representative production and resource acceptance — later product gates.
 
 ## Design and calibration backlog

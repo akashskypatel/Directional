@@ -1,3 +1,11 @@
+## 2026-09-24 — `M5-CP4-TB2-REV`: selector449 accepted; M5 closed
+
+- Independently re-opened CB2 package `10814505512`, TB2 result/log `10815911956 / 10815438959` and exact Review snapshot `10816641769`.
+- Re-verified 28/28 package authority, all eight GMP/GMPXX targets, selector449/routing449 hashes and 448 prefixes, owner census 32/301/75/41, all 449 fresh ledger/raw receipts and exact immutable postflight.
+- Re-derived the DEFN-R2 six-fact same-region producer contract from row449 source and confirmed the M5/M6 boundary; complete Actions-window reconciliation found one runtime and no re-arm.
+- Accepted selector449 and package/source `10814505512 / e284fea7...`, accepted §13.1 conjunct8, discharged the `G4-B004` M5-half closure observation and **closed M5**. Accounting remains 51/14/37; debt 1 M6-owned.
+- Folded four superseded CP4 per-turn records into `M5_Consolidated_Record.md`; exact successor is runtime-free `M6-DEFN`.
+
 ## 2026-09-24 — M5-CP4-CB2
 
 - Published exactly precommitted selector449 `d4a0d1b7…d6414` and routing449 `9c88a5ed…c5707` from source `e284fea7c101eb86650d1c87c92d0fefa66050e7`; selector448/routing448 are exact prefixes, row449 remains producer-owned and census is 32/301/75/41.

@@ -375,6 +375,10 @@ The first patch-apply run verified/applied the exact bytes but lost a non-fast-f
 
 | Folded filename | Verdict / retained home |
 |---|---|
+| `Architecture_M5_CP4_TB1_Artifact_Only_Test_Benchmark_Report.md` (47 lines) | **SUPERSEDED TB1 PREPUBLICATION RUNTIME REPORT / FOLDED BY `M5-CP4-TB2-REV`.** Prepublication 449/449 evidence remains summarized in §§4.35-4.37 and final Review; immutable Actions artifacts remain provenance. |
+| `Architecture_M5_CP4_TB1_Review_Record.md` (187 lines) | **SUPERSEDED PREPUBLICATION REVIEW / FOLDED BY `M5-CP4-TB2-REV`.** Non-vacuity adjudication and selector449 precommit are retained in §§4.37-4.39, frozen §13.1/§18 and final Review. |
+| `Architecture_M5_CP4_CB2_Selector_449_Publication_Code_Build_Plan.md` (94 lines) | **CONSUMED CB2 PLAN / FOLDED BY `M5-CP4-TB2-REV`.** Exact publication/eight-target GMP obligations are satisfied and retained in §§4.38-4.39, closure and final Review. |
+| `Architecture_M5_CP4_CB2_Selector_449_Publication_Code_Build_Report.md` (92 lines) | **SUPERSEDED CB2 BUILD REPORT / FOLDED BY `M5-CP4-TB2-REV`.** Final package/source/build identities remain in §§4.38-4.39, closure, selector manifest and immutable Actions artifacts. |
 | `Architecture_M5_CP3_TB1_R14_Artifact_Only_Test_Benchmark_Report.md` (96 lines) | **SUPERSEDED R14 RUNTIME REPORT / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Retained in §4.25/tracker/changelog/git history; R15-R1 is current mechanically valid runtime. |
 | `Architecture_M5_CP3_TB1_R15_Review_Record.md` (264 lines) | **SUPERSEDED R15 REVIEW / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Parser cause/replay obligation retained in §§4.22-4.25/current Review and git history. |
 | `Architecture_M5_CP3_CB18_R15_R1_Orchestration_Correction_Plan.md` (161 lines) | **CONSUMED CB18 PLAN / FOLDED BY `M5-CP3-TB1-R15-R1-REV`.** Frozen parser/caller contract is runtime-proved by R15-R1 and retained in §§4.23-4.25. |
@@ -503,6 +507,14 @@ Authoritative run/job `36017291483 / 107693066103` executes **449 fresh exact-fi
 Postflight re-hashes the complete package and packaged source with identical path/mode/size/SHA censuses; manifest remains 28/28. No configure, compile, relink, discovery, repair, regeneration or benchmark occurred in TB2. No semantic regression candidate is observed; stable accounting remains **51 / 14 / 37** and project debt remains **1**, M6-owned.
 
 EXEC does **not** accept selector449, promote the package, accept conjunct8 or close M5. Accepted runtime authority remains selector448/package `10771899191 / cef1c6ee...` until mandatory `M5-CP4-TB2-REV`. Exact successor is that runtime-free Review; `M6-DEFN` remains deferred.
+
+## 4.39 `M5-CP4-TB2-REV` — selector449 accepted; M5 closed
+
+Final runtime-free Review independently re-opens CB2 package `10814505512`, TB2 result/log `10815911956 / 10815438959` and snapshot `10816641769`. Package authority is 28/28 with source `e284fea7...`, all eight GMP/GMPXX targets and `runtimeExecution=false`. Selector449/routing449 re-hash to `d4a0d1b7...d6414 / 9c88a5ed...c5707`, exact selector448/routing448 prefixes, owners **32/301/75/41**.
+
+The Review independently parses all 449 fresh-process ledger/raw receipts: **449/449 PASS**, exact-one selected, zero skips, benchmark0, protected rows green and exact immutable postflight. Row449's source is re-derived against the frozen DEFN-R2 contract: one fixed produced torus product and one region jointly prove >=2 authoritative isolation sheets, one internal isolation seam, the checked same-region seam certificate, one canonical same-region periodic quotient relation and reciprocal `PeriodicCut` ownership. No A5 occurrence/materialization/embedding/verifier authority is borrowed.
+
+The complete TB2-EXEC Actions window contains exactly one runtime and no re-arm. `M5-CP3-TB2-REV-OBS-01` is discharged. Selector449 and package/source `10814505512 / e284fea7...` are promoted, §13.1 conjunct8 joins conjuncts1-7 as accepted, and **M5 closes**. Accounting remains **51 / 14 / 37**, debt **1 M6-owned**. Exact successor is runtime-free `M6-DEFN`.
 
 ## 5. Folded-document index
 
