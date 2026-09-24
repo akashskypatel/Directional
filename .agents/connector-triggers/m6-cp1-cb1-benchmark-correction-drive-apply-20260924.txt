@@ -1,4 +1,0 @@
-M6-CP1-CB1 benchmark correction Drive patch apply trigger
-caller_install=d9b2075c2681f67171276f3e477e5aa2e1a9fb23
-patch_sha256=12bfb2f4bb1d399a7a7208167542171a77d5f2e291a9d33e0e17331edf86671c
-retry=0

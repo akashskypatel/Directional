@@ -1,3 +1,0 @@
-M6-CP1-CB1 resume snapshot
-base_head=d4a7a408f38bfa3f71cd8a618e308e0d60ebea24
-purpose=re-derive concurrent closeout state before any retry
