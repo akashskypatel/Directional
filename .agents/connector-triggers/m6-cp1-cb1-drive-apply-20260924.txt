@@ -1,0 +1,4 @@
+M6-CP1-CB1 Drive patch apply trigger
+caller_install=28d938e4b9b5249156a73f7bc15e43f5a16d1136
+patch_sha256=5ddc9d02105803f96e5e080fb10793caff33d93b1b785beedd845776abb18baf
+retry=0
