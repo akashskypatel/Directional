@@ -1,0 +1,10 @@
+# M6-CP1-CB1 temporary-state cleanup
+.agents/connector-triggers/m6-cp1-cb1-benchmark-correction-drive-apply-20260924.txt
+.agents/connector-triggers/m6-cp1-cb1-closeout-docs-apply-20260924.txt
+.agents/connector-triggers/m6-cp1-cb1-closeout-docs-drive-apply-20260924.txt
+.agents/connector-triggers/m6-cp1-cb1-compile-20260924.txt
+.agents/connector-triggers/m6-cp1-cb1-correction-drive-apply-20260924.txt
+.agents/connector-triggers/m6-cp1-cb1-drive-apply-20260924.txt
+.agents/connector-triggers/m6-cp1-cb1-test-authority-drive-apply-20260924.txt
+.agents/connector-triggers/source-snapshot/m6-cp1-cb1-20260924T165819Z.txt
+.agents/connector-triggers/source-snapshot/m6-cp1-cb1-resume-20260924T1827Z.txt
