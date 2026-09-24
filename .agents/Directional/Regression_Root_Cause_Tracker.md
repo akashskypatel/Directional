@@ -1,3 +1,20 @@
+## 2026-09-24 — `M6-CP1-TB1-REV` reviewing-agent addendum — **UPHELD WITH PRE-REGISTRATION / +0 beyond TB1-REV**
+
+**Stable totals as corrected by TB1-REV: 52 events / 15 categories / 37 recurrences; debt 1 (M6).**
+
+**Independently re-derived:**
+- **Artifacts.** TB1 result/log and CB1 package re-hash (`796dc825…` / `144a5832…` / `6e3c3b09…`). The manifest verifies 933/933. The ledger has 455 rows, with the selector phase in exact selector449 order and 0 selection or skip anomalies. All 455 raw-log hashes match.
+- **Failure codes.** All 12 accepted-prefix REDs (115, 116, 139, 140, 141, 143, 186, 225, 239, 444, 446, 448) and focused rows 5-6 log `OccurrenceInvalidCornerAuthority`.
+- **Source.** `SourceTopologyRegions.h:74` returns `isolation_sheets()` by value, and `RemeshPipeline.cpp:3337-3338` splits `begin()`/`end()` across two calls.
+- **The differential is valid.** Accepted M5 (`e284fea7:RemeshPipeline.cpp:3449-3468`) applies the **same** `trace.face` → component/region/sheet predicates through a stable `regionSheetsById` vector. EXEC's RP-01 projection-face reading is therefore correctly rejected.
+- **No other instance of this defect class.** A codebase-wide scan of all eight by-value container accessors finds only this one split range.
+
+**Additions:**
+1. **TB1's three focused PASSes carry no credit**, because they ran the undefined range on the single-region `square_fixture()`.
+2. **Pre-registered TB2 rule.** CAND-01 counts as recovered only with zero `OccurrenceInvalidCornerAuthority` and selector449 at 449/449. A focused RED with a different first failure is a **new** candidate. This matters most for the never-before-clean pair-swap edge-storage identity.
+3. **CB1's `BenchmarkQuality.cpp` edit** was a necessary compile adaptation (new `OccurrenceId` digest domain) that TB1-REV left unadjudicated. It is accepted.
+4. **Stale header fixed.** The M6 frozen header still named `M6-CP1-CB1` as next.
+
 ## 2026-09-24 — `M6-CP1-TB1-REV`: A5 accepted-prefix loss is a cross-temporary iterator-range defect — **CAUSE PROVED / EXEC CATEGORY CORRECTED / RECOVERY OPEN**
 
 **Corrected stable totals: 52 events / 15 categories / 37 recurrences; project debt remains 1 (M6).** Review upholds the one-event grouping and all TB1 mechanics but supersedes EXEC's `RP-01` attribution.

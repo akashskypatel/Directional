@@ -12,6 +12,11 @@ The exact accepted->RED cause is **not** projection-chart/support authority conf
 
 **`M6-CP1-CB2`** — bounded Code + Build correction under `Architecture_M6_CP1_CB2_Corner_Authority_Range_Correction_Code_Build_Plan.md`. Materialize the region isolation-sheet vector once (or use equivalently stable storage), perform membership search with endpoints from that same object, preserve every region/component/sheet/support/chart check, and change no test/fixture/selector/A4/M5/A6/A7/A8 semantics. Compile/package the standard eight GMP/GMPXX targets with `runtimeExecution=false`. Exact successor on compile-green evidence is `M6-CP1-TB2-EXEC`, rerunning the **same six focused + selector449 = 455** fresh processes, followed by mandatory `M6-CP1-TB2-REV`.
 
+**Reviewing-agent amendment (binding; CB2 plan final section).**
+- Re-run the by-value accessor split-range scan over the whole tree. The reviewing agent found exactly one instance, at `RemeshPipeline.cpp:3337-3338`.
+- TB1's three focused PASSes carry no credit.
+- TB2 classification is pre-registered: recovery means no `OccurrenceInvalidCornerAuthority` plus selector449 at 449/449, and a focused RED with a different first failure is a new candidate. This matters most for the pair-swap identity.
+
 ## Current files
 
 - `.agents/Directional/Architecture_M6_Frozen_Definitions.md`

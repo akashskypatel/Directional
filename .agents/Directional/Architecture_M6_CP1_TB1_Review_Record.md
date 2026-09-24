@@ -147,3 +147,45 @@ That unapplied draft attributed the failure to downstream source-simplex canonic
 | `review_check.py boundary` | **PASS on the exact verified Review snapshot with the proposed durable diff**; selector449 declared hash matched and no product/test/fixture/build or selector mutation was present. |
 | `STATUS` lifecycle maintained | Entry/resume beacons maintained for `M6-CP1-TB1-REV`; COMPLETE -> `M6-CP1-CB2` is reserved for the final repository write after durable docs and cleanup. |
 | Pushed to origin, branch in sync | Connector-mode closeout: no local origin branch exists in the analysis container; final remote PR head/hygiene is re-read after apply/cleanup before COMPLETE. This is the connector equivalent of the in-sync confirmation. |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **UPHELD.** The UB root cause, the one-event grouping, the new singleton category (52 / 15 / 37), candidate rejection and the one-variable `M6-CP1-CB2` scope all stand.
+
+**What I re-derived:**
+- **Artifacts, downloaded fresh.** TB1 result/log `796dc825…` / `144a5832…` and CB1 package `6e3c3b09…` (source `ee8b8ac2`, eight targets). The manifest verifies 933/933. The 455-row ledger has 6 focused rows plus 449 selector rows in exact selector449 order, 0 selection or skip anomalies, and all raw-log hashes match.
+- **Failure codes.** The RED selector ordinals are exactly 115, 116, 139, 140, 141, 143, 186, 225, 239, 444, 446 and 448. Each of them, and focused rows 5-6, logs `OccurrenceInvalidCornerAuthority`.
+- **The defect.** `SourceTopologyRegions.h:74` returns `isolation_sheets()` by value, and `RemeshPipeline.cpp:3337-3338` calls it separately for `begin()` and `end()`.
+- **The differential.** I opened accepted M5's corner check (`e284fea7:RemeshPipeline.cpp:3449-3468`). It applies the **same** `trace.face` → component/region/sheet predicates as the candidate, through one stable `regionSheetsById` vector. The only difference is the iterator range, which confirms that EXEC's RP-01 projection-face reading is correctly rejected. §3 above compares against the isolation-certificate block, but the corner check is the exact counterpart and supports the same conclusion.
+- **No other instance of the defect class.** I scanned every header for by-value container accessors (eight: `isolation_sheets`, `oriented_steps`, `carrier_identity`, `region_by_face`, `singularity_vertices` and three string accessors). Only one `X().begin() … X().end()` split range exists in `src/`, `tests/` and `include/`: this one. CB2's one-variable scope is therefore sufficient.
+
+**Additions:**
+1. **TB1's focused PASSes are not evidence.** `…PublishesFourSemanticCornersPerCell`, `…SourceFaceRowPermutationPreservesOccurrenceIdentity` and `…RejectsMalformedMissingAndDuplicateRelationEndpoints` each run `SurfaceOccurrenceComplexProducer::produce` on the single-region `square_fixture()`, through the undefined range. Their PASS may be chance. This record credited nothing to them explicitly, and it should have said so. Only TB2 can credit them.
+2. **TB2 classification is pre-registered in the CB2 plan.** `M6-CP1-TB1-EXEC-CAND-01` counts as recovered only if no process reports `OccurrenceInvalidCornerAuthority` **and** selector449 is 449/449. A focused RED whose first failure is different is a **new** candidate, not a failed recovery. This matters for `M5CP3.ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection`, which has never run cleanly and could expose a latent M5 edge-storage-order dependence.
+3. **The benchmark edit is accepted.** CB1 changed `src/bench/BenchmarkQuality.cpp` despite its plan's "no benchmark change". The edit hashes the new semantic `OccurrenceId` as `(cell, canonical_corner_role)` because `.index()` no longer exists. It was a necessary compile adaptation that changes the digest domain, not benchmark inputs. §§1-3 above list the file but never reconcile it with the prohibition.
+4. **Stale header fixed.** The M6 frozen-definitions header still read `EXACT NEXT = M6-CP1-CB1`.
+
+### Review closeout — reviewing-agent addendum
+
+| Duty | Answer |
+|---|---|
+| Accepted selector prefix re-hashed | selector449 `d4a0d1b7…`, 448 `70ff0860…`, 430 `1c412850…` via `boundary --expect-selector`. The TB1 selector phase order equals selector449. |
+| Decisive claims independently re-derived | Artifacts, manifest, ledger, raw hashes and RED codes; the by-value accessor and split range; the M5 corner-check differential; a repo-wide split-range scan; the benchmark diff |
+| Non-vacuity checked | Focused PASSes under UB are declared uncredited. Accepted-prefix losses discriminate, because M5 passes the same predicates with a valid range. |
+| Prior obligations discharged/carried | CAND-01 recovery is carried to CB2/TB2/TB2-REV under the pre-registered rule. `G4-B002`, the `G4-B004` M6 half and `G4-B001` are unchanged. |
+| Stable accounting | 52 / 15 / 37; debt 1 (M6); accepted authority `10814505512 / e284fea7…` under selector449 |
+| New candidates/obligations recorded | Tracker addendum; CB2 plan pre-registration |
+| ORIENTATION currency line | `M6-CP1-TB1-REV` (incl. reviewing-agent addendum), 2026-09-24 UTC |
+| ORIENTATION §3 / §4 / §7 / §8 | §7 item 1 gains the pre-registration. §3, §4 and §8 are correct. |
+| CHANGELOG | Agent and root entries amended |
+| ROADMAP | n/a — correct |
+| Selector manifest | n/a |
+| LESSONS | This Review's new lesson ("Materialize value-returning containers…") is upheld, and the scan confirms the single instance |
+| Consolidation under CLEAN_UP_POLICY | n/a — correctly done by this Review |
+| Successor frozen | `M6-CP1-CB2`, per its plan plus the binding amendment |
+| Turn boundary held | Runtime-free; no product/test/selector change |
+| review_check.py | `boundary --expect-selector 449=d4a0d1b7… 448=70ff0860… 430=1c412850…`: **ALL CHECKS PASSED**. No product/test/build or selector mutation; durable markers 1→1, 3→3, 13→13. `ledgers --base 009c679b`: **ALL CHECKS PASSED**. |
+| `STATUS` lifecycle | Resume beacon first; final `COMPLETE → M6-CP1-CB2` last |
+| Pushed, in sync | Confirmed by `git status -sb` after the final push |

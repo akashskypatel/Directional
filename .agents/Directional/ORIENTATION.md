@@ -29,7 +29,7 @@ the content beneath it.
 
  > **Current milestone authority (2026-09-24, after `M6-CP1-TB1-REV`):** M4 and M5 remain CLOSED / ACCEPTED. M6 A5 candidate `10826090221 / ee8b8ac...` remains **SEMANTIC RED / UNPROMOTED** at focused 3/6 and selector449 437/449. Independent Review proves the accepted-prefix loss is the A5 `isolation_sheets()` **cross-temporary iterator range**, not projection-chart authority conflation, and corrects accounting to **52/15/37**. Debt remains 1. Exact next is bounded runtime-free Code + Build **`M6-CP1-CB2`**.
 
-**Currency.** `M6-CP1-TB1-REV`, 2026-09-24 UTC
+**Currency.** `M6-CP1-TB1-REV` (incl. reviewing-agent addendum), 2026-09-24 UTC
 
 **Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` §16.3 is the active same-region nonzero-Z4 contract. `PeriodicRelationId` remains carrier-content identity; relation rotation is the gauge-adjusted quotient `Q`, action/transport is relation value, and canonical storage may invert representation only after semantic Forward -> Reverse authority is fixed. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 
@@ -200,7 +200,7 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M6-CP1-CB2` — NEXT / ONE-VARIABLE A5 RANGE RECOVERY.** Review proves CB1 constructed a `binary_search` range from two independent by-value `isolation_sheets()` temporaries. Materialize/reuse one stable sheet container, preserve every region/component/sheet/support/chart check, change no test/fixture/selector/later-stage semantics, and compile/package the standard eight GMP/GMPXX targets with no runtime. If compile-green, `M6-CP1-TB2-EXEC` reruns the **unchanged six focused + selector449 = 455** fresh processes, then mandatory Review. Any need to weaken validation or edit the gate returns to Review.
+1. **`M6-CP1-CB2` — NEXT / ONE-VARIABLE A5 RANGE RECOVERY.** Review proves CB1 constructed a `binary_search` range from two independent by-value `isolation_sheets()` temporaries. Materialize/reuse one stable sheet container, preserve every region/component/sheet/support/chart check, change no test/fixture/selector/later-stage semantics, and compile/package the standard eight GMP/GMPXX targets with no runtime. If compile-green, `M6-CP1-TB2-EXEC` reruns the **unchanged six focused + selector449 = 455** fresh processes, then mandatory Review. Any need to weaken validation or edit the gate returns to Review. **Pre-registered for TB2 (CB2 plan, reviewing-agent amendment).** Recovery means no `OccurrenceInvalidCornerAuthority` and selector449 at 449/449. A focused RED with a different first failure, notably the never-clean pair-swap edge-storage identity, is a new candidate. TB1's three focused PASSes carry no credit because they ran under UB.
 
 2. **`G4-B002` produced closed-complex debt — OPEN / M6.** M6-DEFN freezes CP1 mechanism/stage separation and CP3 direct-production proof. Preserve the independent eligibility oracle, hard-feature tamper and fail-closed/no-recovery contract; mechanism evidence cannot close production debt.
 

@@ -47,6 +47,15 @@ The EXEC `RP-01` attribution is corrected. `SurfaceTopologyRegion::isolation_she
 
 Candidate remains unpromoted. Exactly `M6-CP1-CB2` is authorized to materialize/reuse one stable sheet vector while preserving every semantic check and changing no tests/selectors/later-stage authority. Compile/package is runtime-free. Fresh `M6-CP1-TB2-EXEC` must rerun the unchanged six focused + selector449 as 455 processes, then mandatory `M6-CP1-TB2-REV`.
 
+**`M6-CP1-TB1-REV` reviewing-agent addendum — UPHELD.**
+
+Re-verified:
+- artifacts: 933/933, the 455-row ledger, all raw hashes, and `OccurrenceInvalidCornerAuthority` on every A5-seam RED;
+- the by-value split range;
+- the M5 differential: the same `trace.face` predicates through a stable vector.
+
+A repo-wide scan finds no other split range over by-value accessors. TB1 focused PASSes carry no credit, because they ran under UB. TB2 classification is pre-registered in the CB2 plan: recovery means no `OccurrenceInvalidCornerAuthority` plus selector449 at 449/449, and a different-first-failure focused RED is a new candidate. The benchmark digest adaptation is accepted, and the M6 frozen header is corrected.
+
 ## Folded document index
 
 | Retired filename | Disposition |

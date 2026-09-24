@@ -5,6 +5,8 @@
 - Reclassified the stable event to new singleton `CROSS_TEMPORARY_ITERATOR_RANGE`; corrected accounting is **52 / 15 / 37**, debt 1 M6-owned. Candidate remains unpromoted.
 - Froze exact successor `M6-CP1-CB2`: one-variable stable-range correction, no test/selector/later-stage change, runtime-free eight-target GMP/GMPXX package; unchanged 455-process TB2 + mandatory Review follows.
 
+
+**Reviewing-agent addendum (same turn) — UPHELD.** The UB root cause was re-verified from source and fresh artifacts. M5's accepted corner check applies the same `trace.face` predicates through a stable vector, so the differential is valid. A codebase-wide scan of the eight by-value accessors finds only this one split range, so the one-variable CB2 scope is sufficient. TB1's three focused PASSes ran under UB and carry no credit. The CB2 plan pre-registers the TB2 rule: recovery means no `OccurrenceInvalidCornerAuthority` and selector449 at 449/449, and a focused RED with a different first failure, such as the never-clean pair-swap identity, is a new candidate. The benchmark digest adaptation is accepted. The stale M6 frozen header is fixed. Successor `M6-CP1-CB2` is unchanged.
 ## 2026-09-24 — `M6-CP1-TB1-EXEC`: artifact-only A5 gate is mechanically complete and semantic RED
 
 - Immutable candidate `10826090221 / ee8b8ac...` executed exactly **455** fresh exact-filter processes under run/job `36045055975 / 107786525272`: focused **3/6 PASS**, selector449 **437/449 PASS**, total **440 PASS / 15 RED**, exact-one selection, zero skips/crashes/selection mismatches, benchmark 0.

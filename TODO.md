@@ -6,6 +6,8 @@
 
 Bounded Code + Build only. Materialize/reuse one stable isolation-sheet vector for the A5 membership search; preserve all region/component/sheet/support/chart checks and change no tests/fixtures/selectors/A4/M5/A6/A7/A8 semantics. Compile/package all eight GMP/GMPXX targets runtime-free. Then `M6-CP1-TB2-EXEC` must rerun the unchanged six focused + selector449 = 455 processes, followed by mandatory Review.
 
+**Reviewing-agent amendment (CB2 plan, binding).** Re-run the by-value accessor split-range scan over the whole tree. The TB2 classification is pre-registered: recovery means no `OccurrenceInvalidCornerAuthority` plus selector449 at 449/449, and a focused RED with a different first failure is a new candidate. Do not touch the `BenchmarkQuality.cpp` digest adaptation.
+
 ## Latest Code + Build turn — `M6-CP1-CB1`
 
 **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE / CANDIDATE ONLY.** Exact semantic source `ee8b8ac20571df5773f5f94bf9b382161f37a893` publishes semantic A5 occurrence identity/product authority and makes the transitional materializer consume `SurfaceOccurrenceComplex`. Final compile run/job `36038472933 / 107764451786` packages all eight standard GMP/GMPXX targets as artifact `10826090221` with 28/28 manifest, clean source receipts and `runtimeExecution=false`. Four new A5 identities compiled; TB1 has now executed the frozen six-test vector and selector449. Candidate runtime is semantic RED and unpromoted. Selector449 bytes remain exact `d4a0d1b7...d6414`; historical TB1 mechanics are Review-adjudicated at corrected stable accounting 52/15/37 and debt 1.
