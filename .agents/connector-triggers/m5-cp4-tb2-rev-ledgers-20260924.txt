@@ -1,3 +1,0 @@
-turn=M5-CP4-TB2-REV
-purpose=review-ledger-shrink-guard
-base=b1029e47787e2a1f7d55cb520d53f859798d2fe8
