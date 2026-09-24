@@ -1,0 +1,149 @@
+name: M5 CP4 TB1 Artifact-Only Gate
+
+on:
+  push:
+    branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
+    paths: [.agents/connector-triggers/m5-cp4-tb1-exec-20260924.txt]
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m5-cp4-tb1-exec-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m5-cp4-tb1-exec
+      commit_run_file: false
+      trim_stale_comments: false
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m5-cp4-tb1-exec-compact.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  runtime:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN || github.token }}
+      ARTIFACT_ID: '10782841045'
+      ZIP_SHA: 3772d2c323bb4995bcb4503960d1bef1251442a3a7a95d8c0660680008042da6
+      SOURCE_SHA: 535ec760b7c39dd437de69afebec568fafb44aab
+      ROOT_MANIFEST_SHA: ab5d9d7bdbc5583b3df69d781830dff91afe6b619386a6fde3c8e57447743985
+      SOURCE_ARCHIVE_SHA: 004be77dd02bd7f691cb3bf6a29aa551601b78a621e54dbdaa366f709e17112d
+      SELECTOR_SHA: 70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789
+      ROUTING_SHA: c91a5e2f3d84d7d38b7c7c58afd157448cb225ebdbbfac3da2ef6259e811dd7c
+    steps:
+      - name: Initialize diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > "$RUNNER_TEMP/M5-CP4-TB1-EXEC.log"
+          { echo "run_id=$GITHUB_RUN_ID"; echo "event_sha=$GITHUB_SHA"; echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"; } | tee -a "$RUNNER_TEMP/M5-CP4-TB1-EXEC.log"
+
+      - name: Execute immutable 449-row gate
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="$RUNNER_TEMP/M5-CP4-TB1-EXEC.log"
+          exec > >(tee -a "$log") 2>&1
+          root="$RUNNER_TEMP/m5-cp4-tb1"; pkg="$root/pkg"; src="$root/src"; view="$root/view"; out="$RUNNER_TEMP/M5-CP4-TB1-EXEC-result"
+          mkdir -p "$pkg" "$src" "$view/bin" "$view/test-data/benchmarks" "$out/raw" "$out/resources" "$root/work"
+          echo 'runtimeExecution=true' > "$out/execution-boundary.txt"
+          printf 'configure=false\ncompile=false\nrelink=false\ndiscovery=false\nrepair=false\nbenchmark=false\n' >> "$out/execution-boundary.txt"
+          meta="$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$ARTIFACT_ID")"
+          provider="$(python3 -c 'import json,sys; print(json.load(sys.stdin).get("digest",""))' <<<"$meta")"
+          test "$provider" = "sha256:$ZIP_SHA"
+          curl -LfsS -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$ARTIFACT_ID/zip" -o "$root/package.zip"
+          test "$(sha256sum "$root/package.zip"|cut -d' ' -f1)" = "$ZIP_SHA"
+          unzip -q "$root/package.zip" -d "$pkg"
+          test "$(sha256sum "$pkg/SHA256SUMS"|cut -d' ' -f1)" = "$ROOT_MANIFEST_SHA"
+          (cd "$pkg" && sha256sum -c SHA256SUMS) | tee "$out/manifest-before.txt"
+          test "$(grep -c ': OK$' "$out/manifest-before.txt")" -eq 26
+          test "$(cat "$pkg/metadata/source-commit.txt")" = "$SOURCE_SHA"
+          test "$(cat "$pkg/metadata/build-exit-code.txt")" = 0
+          test "$(cat "$pkg/metadata/preflight-exit-code.txt")" = 0
+          grep -Fxq 'runtimeExecution=false' "$pkg/metadata/command-boundary.txt"
+          grep -Fxq 'exactArithmeticBackend=GMP' "$pkg/metadata/command-boundary.txt"
+          grep -Fq 'libgmpxx.so' "$pkg/metadata/gmp-evidence.txt"; grep -Fq 'libgmp.so' "$pkg/metadata/gmp-evidence.txt"
+          for f in "$pkg"/metadata/source-status-*.txt; do test ! -s "$f"; done
+          archive="$pkg/source/source-$SOURCE_SHA.tar.gz"; test "$(sha256sum "$archive"|cut -d' ' -f1)" = "$SOURCE_ARCHIVE_SHA"
+          tar -xzf "$archive" -C "$src"
+          selector="$src/.agents/Directional/Architecture_M5_CP3_CB20_Required_Green_Selector_448.txt"
+          routing="$src/.agents/Directional/Architecture_M5_CP3_CB20_Selector_448_Static_Routing_Receipt.tsv"
+          test "$(sha256sum "$selector"|cut -d' ' -f1)" = "$SELECTOR_SHA"; test "$(sha256sum "$routing"|cut -d' ' -f1)" = "$ROUTING_SHA"
+          python3 - "$selector" "$routing" "$out/routing449.tsv" "$out/routing-authority.txt" <<'PY'
+          import collections,hashlib,pathlib,sys
+          s,r,o,a=map(pathlib.Path,sys.argv[1:]); ids=s.read_text().splitlines(); rows=[x.split('\t') for x in r.read_text().splitlines()]
+          assert len(ids)==448 and len(rows)==448 and [int(x[0]) for x in rows]==list(range(1,449)) and [x[1] for x in rows]==ids
+          c=collections.Counter(x[2] for x in rows); assert c=={'directional_surface_cell_authority_kernel_tests':32,'directional_surface_cell_producer_tests':300,'directional_surface_cell_completion_tests':75,'directional_surface_cell_validation_tests':41}
+          rows.append(['449','M5CP4.ProducedTorusPeriodicRelationOwnsMultiIsolationRegion','directional_surface_cell_producer_tests'])
+          o.write_text(''.join('\t'.join(x)+'\n' for x in rows)); c=collections.Counter(x[2] for x in rows)
+          a.write_text(f'selector448_sha256={hashlib.sha256(s.read_bytes()).hexdigest()}\nrouting448_sha256={hashlib.sha256(r.read_bytes()).hexdigest()}\naccepted_census=32/300/75/41\nprepublication_census=32/301/75/41\nrow449_identity={rows[-1][1]}\nrow449_binary={rows[-1][2]}\n')
+          PY
+          for exe in directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests; do test -x "$pkg/bin/$exe"; cp -p "$pkg/bin/$exe" "$view/bin/$exe"; done
+          cp -a "$src/benchmarks/fixtures" "$view/test-data/benchmarks/"
+          (cd "$pkg" && find . -type f -printf '%p\t%m\t%s\t' -exec sha256sum {} \;) > "$out/package-before.tsv"
+          (cd "$src" && find . -type f -printf '%p\t%m\t%s\t' -exec sha256sum {} \;) > "$out/source-before.tsv"
+          printf 'ordinal\tidentity\tbinary\texit\tselected\tskipped\tpassed\tresult\traw_sha256\n' > "$out/execution-ledger.tsv"
+          while IFS=$'\t' read -r n id bin; do
+            raw="$out/raw/ordinal-$(printf '%03d' "$n").log"; res="$out/resources/ordinal-$(printf '%03d' "$n").time.txt"; wd="$root/work/$n"; mkdir -p "$wd"
+            set +e; (cd "$wd" && /usr/bin/time -v -o "$res" env GTEST_FAIL_IF_NO_TEST_SELECTED=1 GTEST_COLOR=no "$view/bin/$bin" --gtest_filter="$id") >"$raw" 2>&1; ec=$?; set -e
+            selected="$(grep -Ec '^\[ RUN      \] ' "$raw" || true)"; skipped="$(grep -Ec '^\[  SKIPPED \] ' "$raw" || true)"; passed="$(grep -Ec '^\[       OK \] ' "$raw" || true)"
+            test "$selected" -eq 1; test "$skipped" -eq 0
+            result=RED; if test "$ec" -eq 0 && test "$passed" -eq 1; then result=PASS; fi
+            printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$n" "$id" "$bin" "$ec" "$selected" "$skipped" "$passed" "$result" "$(sha256sum "$raw"|cut -d' ' -f1)" >> "$out/execution-ledger.tsv"
+          done < "$out/routing449.tsv"
+          test "$(tail -n +2 "$out/execution-ledger.tsv"|wc -l)" -eq 449
+          python3 - "$out/execution-ledger.tsv" "$out/semantic-summary.txt" "$out/protected-rows.tsv" <<'PY'
+          import csv,pathlib,sys
+          rows=list(csv.DictReader(open(sys.argv[1]),delimiter='\t')); assert len(rows)==449 and [int(r['ordinal']) for r in rows]==list(range(1,450))
+          red=[int(r['ordinal']) for r in rows if r['result']!='PASS']; pathlib.Path(sys.argv[2]).write_text(f'total_processes=449\npass={449-len(red)}\nred={len(red)}\nred_ordinals={red}\nexact_one_selection=true\nzero_skips=true\nbenchmark_execution=0\n')
+          keep={191,192,247,408,446,447,448,449}; pathlib.Path(sys.argv[3]).write_text('ordinal\tidentity\tresult\texit\traw_sha256\n'+''.join(f"{r['ordinal']}\t{r['identity']}\t{r['result']}\t{r['exit']}\t{r['raw_sha256']}\n" for r in rows if int(r['ordinal']) in keep))
+          PY
+          result449="$(awk -F'\t' '$1==449{print $8}' "$out/execution-ledger.tsv")"; fact=none; if test "$result449" = RED; then fact="$(grep -Eim1 'fact[[:space:]]+[1-6][[:space:]]*:' "$out/raw/ordinal-449.log" || echo not-localized-by-message)"; fi; printf 'row449_result=%s\nfirst_unmet_fact=%s\n' "$result449" "$fact" > "$out/row449-diagnostic.txt"
+          (cd "$pkg" && find . -type f -printf '%p\t%m\t%s\t' -exec sha256sum {} \;) > "$out/package-after.tsv"; cmp "$out/package-before.tsv" "$out/package-after.tsv"
+          (cd "$src" && find . -type f -printf '%p\t%m\t%s\t' -exec sha256sum {} \;) > "$out/source-after.tsv"; cmp "$out/source-before.tsv" "$out/source-after.tsv"
+          (cd "$pkg" && sha256sum -c SHA256SUMS) | tee "$out/manifest-after.txt"; test "$(grep -c ': OK$' "$out/manifest-after.txt")" -eq 26
+          printf 'package_immutable=true\nsource_immutable=true\nselector448_unchanged=true\nrouting448_unchanged=true\nmanifest_after=26/26\n' > "$out/immutability.txt"
+          printf 'runtimeExecution=true\nprocesses=449\nexact_one_selection=true\nzero_skips=true\nbenchmark=false\nconfigure=false\ncompile=false\nrelink=false\ndiscovery=false\nrepair=false\n' > "$out/execution-boundary.txt"
+          (cd "$out" && find . -type f ! -name SHA256SUMS -print0 | LC_ALL=C sort -z | xargs -0 sha256sum) > "$out/SHA256SUMS"
+          (cd "$out" && sha256sum -c SHA256SUMS >/dev/null)
+
+      - name: Record final source status
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          { echo "final_job_status=${{ job.status }}"; echo "final_event_sha=$GITHUB_SHA"; echo "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"; } | tee -a "$RUNNER_TEMP/M5-CP4-TB1-EXEC.log"
+
+      - name: Upload result evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: directional-m5-cp4-tb1-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/M5-CP4-TB1-EXEC-result
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: directional-m5-cp4-tb1-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/M5-CP4-TB1-EXEC.log
+          if-no-files-found: error
+          retention-days: 7
