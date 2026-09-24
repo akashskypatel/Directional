@@ -3333,9 +3333,10 @@ SurfaceOccurrenceComplexProducer::produce(
           phaseFront.sourceTopologyRegions().component_for_row(*faceId);
       const authority::IsolationSheetId sheet =
           phaseFront.sourceTopologyRegions().sheet_for_row(*faceId);
+      const std::vector<authority::IsolationSheetId> regionSheets =
+          region->second->isolation_sheets();
       if (component != region->second->component() ||
-          !std::binary_search(region->second->isolation_sheets().begin(),
-                              region->second->isolation_sheets().end(), sheet)) {
+          !std::binary_search(regionSheets.begin(), regionSheets.end(), sheet)) {
         error.code = SurfaceOccurrenceComplexErrorCode::InvalidCornerAuthority;
         error.cell = cell.id;
         error.occurrence = cornerOccurrences[static_cast<std::size_t>(corner)];
