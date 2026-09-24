@@ -2043,7 +2043,8 @@ TEST(M6CP1, SourceFaceRowPermutationPreservesOccurrenceIdentity) {
   EXPECT_EQ(relationIds(*baseline), relationIds(*permuted));
 }
 
-TEST(M6CP1, SurfaceOccurrenceComplexRejectsMissingAndDuplicateRelations) {
+TEST(M6CP1,
+     SurfaceOccurrenceComplexRejectsMalformedMissingAndDuplicateRelationEndpoints) {
   const auto &fixture = square_fixture();
   auto construction =
       directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
@@ -2072,6 +2073,34 @@ TEST(M6CP1, SurfaceOccurrenceComplexRejectsMissingAndDuplicateRelations) {
   EXPECT_EQ(missingError->code,
             directional::pipeline::SurfaceOccurrenceComplexErrorCode::
                 RelationEndpointMissing);
+
+  auto duplicateEndpointRelations = product->owned_relations();
+  duplicateEndpointRelations.front().secondOccurrence =
+      duplicateEndpointRelations.front().firstOccurrence;
+  auto duplicateEndpoint =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::
+          publish_records_for_validation(product->cells(), product->occurrences(),
+                                         std::move(duplicateEndpointRelations));
+  const auto *duplicateEndpointError =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(
+          &duplicateEndpoint);
+  ASSERT_NE(duplicateEndpointError, nullptr);
+  EXPECT_EQ(duplicateEndpointError->code,
+            directional::pipeline::SurfaceOccurrenceComplexErrorCode::
+                RelationEndpointMissing);
+
+  auto malformedRelations = product->owned_relations();
+  malformedRelations.front().id.first = malformedRelations.front().secondOccurrence;
+  auto malformed =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::
+          publish_records_for_validation(product->cells(), product->occurrences(),
+                                         std::move(malformedRelations));
+  const auto *malformedError =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(&malformed);
+  ASSERT_NE(malformedError, nullptr);
+  EXPECT_EQ(malformedError->code,
+            directional::pipeline::SurfaceOccurrenceComplexErrorCode::
+                UnownedRelation);
 
   auto duplicateRelations = product->owned_relations();
   duplicateRelations.push_back(duplicateRelations.front());
