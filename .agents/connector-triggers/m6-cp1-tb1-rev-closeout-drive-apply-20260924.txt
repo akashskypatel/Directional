@@ -1,0 +1,4 @@
+M6-CP1-TB1-REV closeout Drive apply
+base=0b0c79684adb49d70de0f8c3cde4794d4b3fcdd1
+patch_sha256=6e6e583e115654d04761381071c2847e1b48fd4301713c9d1020ababaa69e9cf
+retry=0
