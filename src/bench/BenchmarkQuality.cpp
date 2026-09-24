@@ -986,6 +986,17 @@ benchmark_output_semantic_hash(const pipeline::RemeshResult &result) {
       target.push_back(static_cast<std::int64_t>(value.index()));
     }
   };
+  const auto append_occurrence_ids = [](
+      Record &target, std::vector<authority::OccurrenceId> values) {
+    std::sort(values.begin(), values.end());
+    values.erase(std::unique(values.begin(), values.end()), values.end());
+    target.push_back(static_cast<std::int64_t>(values.size()));
+    for (const authority::OccurrenceId value : values) {
+      target.push_back(static_cast<std::int64_t>(value.cell().index()));
+      target.push_back(
+          static_cast<std::int64_t>(value.canonical_corner_role()));
+    }
+  };
   const auto append_periodic_relation_id = [](
       Record &target,
       const std::optional<authority::PeriodicRelationId> &relation) {
@@ -1098,7 +1109,7 @@ benchmark_output_semantic_hash(const pipeline::RemeshResult &result) {
                          ? static_cast<std::int64_t>(
                                lineage.quotientClass->index())
                          : -1);
-    append_semantic_ids(record, lineage.sourceOccurrences);
+    append_occurrence_ids(record, lineage.sourceOccurrences);
 
     std::vector<geometry::SourceProjectionChart> charts =
         lineage.sourceCharts;
