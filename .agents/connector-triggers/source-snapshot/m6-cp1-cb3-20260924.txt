@@ -1,0 +1,3 @@
+M6-CP1-CB3 source snapshot trigger
+Frozen semantic source before control-plane entry: c3ebf6aa4bc706fb28ff96aff8b23e0b82e411ac
+Purpose: exact start-of-turn snapshot for inspection
