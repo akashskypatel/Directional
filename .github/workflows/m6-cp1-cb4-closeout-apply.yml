@@ -1,0 +1,47 @@
+name: M6 CP1 CB4 Closeout Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m6-cp1-cb4-closeout-apply/trigger.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m6-cp1-cb4-closeout-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m6-cp1-cb4-closeout-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m6-cp1-cb4-closeout-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1FGcgSPX99iAvKs6Dy-IWGUVGYtYE-8iN
+      patch_sha256: cf7005046c599a8dd5701ed4963943ab15b745da39614f0b10e589ec2792a18d
+      base_sha: 43f95ae51beadf36d969880a1c57c3c652f12e2a
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'M6-CP1-CB4: close code build turn'
+      retention_days: 7
+    secrets: inherit
