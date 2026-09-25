@@ -35,6 +35,6 @@ jobs:
   validate-draft:
     uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
     with:
-      workflow_path: .agents/Directional/turn-payloads/m6-cp1-cb3-compile-draft.yml
+      workflow_path: .agents/Directional/turn-payloads/m6-cp1-cb3-drive-apply-draft.yml
       source_ref: ${{ github.sha }}
     secrets: inherit
