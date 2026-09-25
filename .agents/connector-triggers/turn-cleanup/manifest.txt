@@ -1,0 +1,4 @@
+# M6-CP1-TB4-EXEC temporary-state cleanup
+.agents/connector-triggers/m6-cp1-tb4-closeout-apply/trigger.txt
+.agents/connector-triggers/m6-cp1-tb4-exec/trigger.txt
+.agents/connector-triggers/source-snapshot/m6-cp1-tb4-exec-20260925T1542Z.txt
