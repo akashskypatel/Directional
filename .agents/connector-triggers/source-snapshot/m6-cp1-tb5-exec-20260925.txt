@@ -1,4 +1,0 @@
-M6-CP1-TB5-EXEC start-of-turn snapshot
-Purpose: freeze exact repository authority for artifact-only execution planning and closeout
-Retry: 0
-Expected pre-trigger head: b9097e0d93d0487a2de3c7645db79962d305f345
