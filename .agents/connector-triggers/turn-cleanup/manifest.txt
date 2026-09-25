@@ -1,3 +1,0 @@
-# M6-CP1-TB5-EXEC residual temporary state
-.agents/connector-triggers/source-snapshot/m6-cp1-tb5-draft-20260925.txt
-.agents/Directional/turn-payloads/m6-cp1-tb5-exec.template.yml
