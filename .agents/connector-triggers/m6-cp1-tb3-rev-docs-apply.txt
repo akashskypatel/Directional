@@ -1,0 +1,4 @@
+M6-CP1-TB3-REV documentation/consolidation patch apply
+Patch base: 7fbce1c2fd6c85834643a9d3489e38b78ae0ef79
+Patch SHA-256: 17f14654fb397a35e90ff65e42dab0e390b30f2411cde314837caa281840d58a
+Retry: 0
