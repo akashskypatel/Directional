@@ -1,0 +1,47 @@
+name: M6 CP1 TB4 Review Closeout Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m6-cp1-tb4-rev-closeout-apply/trigger.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m6-cp1-tb4-rev-closeout-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m6-cp1-tb4-rev-closeout-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m6-cp1-tb4-rev-closeout-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1jetx6nhX9GJKl187ZVQrDU6zKp37qjK_
+      patch_sha256: 4f7a105c189a828dcf845d14ca5e1cd776eff33ee705904f8a5a5837bccbb68a
+      base_sha: 231c9d908a7650cfb647215a390e30507b8804ea
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'M6-CP1-TB4-REV: classify RP-01 recurrence and freeze CB5'
+      retention_days: 7
+    secrets: inherit
