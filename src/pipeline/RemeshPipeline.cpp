@@ -3089,8 +3089,8 @@ const char *surface_occurrence_complex_error_name(
 }
 
 static const char *surface_occurrence_complex_legacy_failure_name(
-    const SurfaceOccurrenceComplexErrorCode code) {
-  switch (code) {
+    const SurfaceOccurrenceComplexError &error) {
+  switch (error.code) {
   case SurfaceOccurrenceComplexErrorCode::HardRailOwnerMissing:
     return "MissingHardRailRelationOwner";
   case SurfaceOccurrenceComplexErrorCode::HardRailOwnerMismatch:
@@ -3100,11 +3100,15 @@ static const char *surface_occurrence_complex_legacy_failure_name(
   case SurfaceOccurrenceComplexErrorCode::RelationKindMismatch:
     return "IncompatibleAuthoritativeFrontPair";
   case SurfaceOccurrenceComplexErrorCode::MissingIsolationEvidence:
-    return "MissingIsolationSeamEquivalenceAuthority";
+    return error.occurrence.has_value()
+               ? "MissingIsolationSeamEquivalenceAuthority:a5-wedge"
+               : "MissingIsolationSeamEquivalenceAuthority:a5-side";
   case SurfaceOccurrenceComplexErrorCode::MismatchedIsolationEvidence:
-    return "InvalidIsolationSeamEquivalenceAuthority";
+    return error.occurrence.has_value()
+               ? "InvalidIsolationSeamEquivalenceAuthority:a5-wedge"
+               : "InvalidIsolationSeamEquivalenceAuthority:a5-side";
   default:
-    return surface_occurrence_complex_error_name(code);
+    return surface_occurrence_complex_error_name(error.code);
   }
 }
 
@@ -4329,7 +4333,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     result.failure = occurrenceError == nullptr
                          ? "OccurrenceUnknownFailure"
                          : surface_occurrence_complex_legacy_failure_name(
-                               occurrenceError->code);
+                               *occurrenceError);
     if (occurrenceError != nullptr && occurrenceError->cell.has_value()) {
       result.invalidCell =
           static_cast<int>(occurrenceError->cell->index());
@@ -4737,12 +4741,14 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
        const authority::TopologyRegionId expectedRegion)
       -> std::optional<std::string> {
     if (transition.region != expectedRegion) {
-      return std::string("InvalidIsolationSeamEquivalenceAuthority");
+      return std::string(
+          "InvalidIsolationSeamEquivalenceAuthority:a6-side-evidence");
     }
     const auto certificate = isolationCertificateBySeam.find(
         {transition.region, transition.seam});
     if (certificate == isolationCertificateBySeam.end()) {
-      return std::string("MissingIsolationSeamEquivalenceAuthority");
+      return std::string(
+          "MissingIsolationSeamEquivalenceAuthority:a6-side-evidence");
     }
     const auto &value = *certificate->second;
     const bool forward = transition.fromSheet == value.firstSheet() &&
@@ -4750,7 +4756,8 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     const bool reverse = transition.fromSheet == value.secondSheet() &&
                          transition.toSheet == value.firstSheet();
     if ((!forward && !reverse) || transition.fromSheet == transition.toSheet) {
-      return std::string("InvalidIsolationSeamEquivalenceAuthority");
+      return std::string(
+          "InvalidIsolationSeamEquivalenceAuthority:a6-side-evidence");
     }
     return std::nullopt;
   };
@@ -4780,6 +4787,16 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     return std::find(span.isolationTransitions.begin(),
                      span.isolationTransitions.end(), expected) !=
            span.isolationTransitions.end();
+  };
+  const auto non_seam_span_pair_matches = [&](
+      const SurfaceOccurrenceSideSpan &firstSpan,
+      const SurfaceOccurrenceSideSpan &secondSpan,
+      const SurfaceOccurrence &firstOccurrence,
+      const SurfaceOccurrence &secondOccurrence) {
+    const authority::IsolationSheetId sheet = firstSpan.interiorBinding.sheet;
+    return sheet == secondSpan.interiorBinding.sheet &&
+           wedge_contains_sheet(firstOccurrence, sheet) &&
+           wedge_contains_sheet(secondOccurrence, sheet);
   };
 
   for (int edgeIndex = 0;
@@ -4890,11 +4907,8 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
           return result;
         }
         if (!firstSpan->collinearEdge.has_value()) {
-          const authority::IsolationSheetId sheet =
-              firstSpan->interiorBinding.sheet;
-          if (sheet != secondSpan->interiorBinding.sheet ||
-              !wedge_contains_sheet(firstOccurrence, sheet) ||
-              !wedge_contains_sheet(secondOccurrence, sheet)) {
+          if (!non_seam_span_pair_matches(
+                  *firstSpan, *secondSpan, firstOccurrence, secondOccurrence)) {
             result.failure = "QuotientReciprocalSideAuthorityMismatch";
             return result;
           }
@@ -4910,8 +4924,12 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
         const auto certificate = isolationCertificateBySeam.find(
             {first.sourceTopologyRegion, seam});
         if (certificate == isolationCertificateBySeam.end()) {
-          result.failure = "MissingIsolationSeamEquivalenceAuthority";
-          return result;
+          if (!non_seam_span_pair_matches(
+                  *firstSpan, *secondSpan, firstOccurrence, secondOccurrence)) {
+            result.failure = "QuotientReciprocalSideAuthorityMismatch";
+            return result;
+          }
+          continue;
         }
         const auto &value = *certificate->second;
         const bool forward =
@@ -4925,7 +4943,8 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
             firstSpan->interiorBinding.sheet == value.secondSheet() &&
             secondSpan->interiorBinding.sheet == value.firstSheet();
         if (!forward && !reverse) {
-          result.failure = "InvalidIsolationSeamEquivalenceAuthority";
+          result.failure =
+              "InvalidIsolationSeamEquivalenceAuthority:a6-seam-faces";
           return result;
         }
         const geometry::CornerWedgeIsolationTransition forwardEvidence{
@@ -4938,7 +4957,8 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
             firstSpan->interiorBinding.sheet};
         if (!span_has_transition(*firstSpan, forwardEvidence) ||
             !span_has_transition(*secondSpan, reverseEvidence)) {
-          result.failure = "MissingIsolationSeamEquivalenceAuthority";
+          result.failure =
+              "MissingIsolationSeamEquivalenceAuthority:a6-seam-span-transition";
           return result;
         }
       }
