@@ -1,3 +1,11 @@
+## 2026-09-25 — `M6-CP1-TB4-REV` review-agent addendum — **+0 EVENTS / 55/16/39 / debt 1 / NEXT `M6-CP1-CB5` + RA-12**
+
+- **Upheld:** `M6-CP1-TB4-EXEC-CAND-01` is one `RP-01` recurrence, with the root cause at A6 `RemeshPipeline.cpp:4908-4914`.
+- **Proof strengthened:** four sites emit `MissingIsolationSeamEquivalenceAuthority`: A5 adapter `:3102`, A6 side evidence `:4745`, collinear span `:4913`, seam span `:4941`. Single-sheet fixtures exclude all but `:4913`, and all 21 new losses are single-sheet.
+- **Correction:** the carried torus REDs (focused row6, 444/446/448) are multi-sheet, so their cause is open. A TB5 falsifier is registered.
+- **RA-12:** site-qualified suffixes on the legacy names. Lesson 181.
+- **Debts:** dead legacy single-valued occurrence fields (CP1 precondition); unsorted aggregated `equivalences`.
+
 ## 2026-09-25 — `M6-CP1-TB4-REV`: generic source-edge collinearity consumed as isolation-seam authority — **ONE NEW STABLE EVENT / EXISTING RP-01 RECURRENCE / CB5 FROZEN**
 
 **Stable totals become 55 events / 16 categories / 39 recurrences; project debt remains 1 (M6).** Review independently re-verifies CB4 package/source `10871935178 / 20f60bb1...` (28/28), TB4 result `10874311495` (932/932; 456 exact processes), accepted M5 result `10815911956` (911/911; selector449 449/449), selector/prefix/routing hashes and the TB3 differential. Candidate remains unpromoted; accepted M5 authority is unchanged.

@@ -1,3 +1,9 @@
+## 2026-09-25 — M6 CB5 plan tightened after review
+
+- The review confirmed the cause of the 21 new test failures (a check that confused "lies on a mesh edge" with "lies on a seam").
+- Four of the remaining failures, on the torus, may have a different cause. The next code turn will make failure messages say which check fired, so any leftover failure can be pinned down directly.
+- Next: code turn CB5, then the 456-test run. Accounting 55/16/39, debt 1.
+
 ## 2026-09-25 — `M6-CP1-TB4-REV`: one stable RP-01 recurrence; CB5 frozen
 
 Independent Review upholds the mechanically valid 456-process TB4 gate at **431/456 PASS** but classifies its 21 newly RED accepted-selector identities as one stable existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence. A5 `collinearEdge` denotes generic exact source-edge support and permits same-sheet/no-certificate spans; A6 OrdinaryFront P2 incorrectly treats every such edge as an isolation seam and requires a checked seam certificate. Stable accounting advances to **55/16/39**, debt 1. Candidate `10871935178` remains unpromoted; accepted M5 authority remains selector449 449/449. Exact next is bounded runtime-free `M6-CP1-CB5`, then unchanged 456-process TB5 and mandatory Review.

@@ -1,3 +1,11 @@
+## Currency — `M6-CP1-TB4-REV` review-agent addendum; exact next `M6-CP1-CB5` + RA-12 (2026-09-25 UTC)
+
+TB4-REV's root cause (A6 treats generic source-edge collinearity as a seam) and accounting 55/16/39 are upheld. The attribution of the 21 new losses is now proved: on single-sheet fixtures, only that branch can emit the legacy string, and all 21 are single-sheet.
+- Corrected: the carried torus REDs (focused row6, selectors 444/446/448) are multi-sheet, so their cause is not proved. Their recovery is a TB5 prediction with a falsifier.
+- RA-12 (required in CB5): legacy isolation-failure names become prefixes with site suffixes, so a residual RED identifies the check that fired.
+- Debts: dead legacy single-valued `SurfaceOccurrence` fields (a CP1-acceptance precondition); unsorted aggregated `equivalences`. Lesson 181.
+
+### Superseded currency note
 ## Currency — `M6-CP1-TB4-REV` COMPLETE / one stable RP-01 recurrence; exact next `M6-CP1-CB5` (2026-09-25 UTC)
 
 TB4 Review independently re-opens CB4 package `10871935178`, TB4 result `10874311495`, accepted M5 result/package authority and the exact R2/A5/A6 source. TB4 mechanics are upheld at **431/456 PASS**. The 21 newly RED accepted selector identities are one stable `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence: `collinearEdge` means generic exact source-edge support, but A6 OrdinaryFront P2 incorrectly treats every such edge as an isolation seam. Stable accounting is now **55/16/39**, debt 1. Candidate remains unpromoted.
@@ -240,7 +248,7 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M6-CP1-CB5` — NEXT / RUNTIME-FREE CODE + BUILD.** Correct only A6 reciprocal `OrdinaryFront` P2 seam classification. `collinearEdge` is generic exact source-edge support, not seam ownership. For matching source-edge-collinear spans, absence of `(region,edge)` isolation certificate uses the ordinary same-sheet + both-wedges rule; presence of the exact certificate keeps the current seam face/sheet/reciprocal-transition rule. Do not change A5 publication/schema/support, tests/fixtures/selectors, HardRail/Periodic semantics or search/guess certificate authority. Compile-green → unchanged `M6-CP1-TB5-EXEC` 7+449=456 → mandatory Review. If existing certificate authority cannot make the distinction without definition/product changes, stop for Review/Definition.
+1. **`M6-CP1-CB5` — NEXT / RUNTIME-FREE CODE + BUILD, amended by RA-12 (site-qualified isolation-failure suffixes) and the torus falsifier.** CP1 acceptance additionally requires removing or relabelling the dead legacy single-valued `SurfaceOccurrence` fields. Correct only A6 reciprocal `OrdinaryFront` P2 seam classification. `collinearEdge` is generic exact source-edge support, not seam ownership. For matching source-edge-collinear spans, absence of `(region,edge)` isolation certificate uses the ordinary same-sheet + both-wedges rule; presence of the exact certificate keeps the current seam face/sheet/reciprocal-transition rule. Do not change A5 publication/schema/support, tests/fixtures/selectors, HardRail/Periodic semantics or search/guess certificate authority. Compile-green → unchanged `M6-CP1-TB5-EXEC` 7+449=456 → mandatory Review. If existing certificate authority cannot make the distinction without definition/product changes, stop for Review/Definition.
 2. **`G4-B002` produced closed-complex debt — OPEN / M6.** M6-DEFN freezes CP1 mechanism/stage separation and CP3 direct-production proof. Preserve the independent eligibility oracle, hard-feature tamper and fail-closed/no-recovery contract; mechanism evidence cannot close production debt.
 
 3. **`G4-B004` representative M6 half — OPEN.** M5 same-region producer fact is accepted. CP1 must preserve/gate focused multi-isolation materialization; CP3 must prove the same direct produced torus through A5 exact occurrences, A6 exact-once consumption, A7 source attachment and A8 independent verification.
@@ -262,6 +270,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 11. **Rows16/17 (selector448 ordinals 446/447) pin inverse canonical storage — RECORDED / NOT FIRING (`M5-CP3-TB1-R16-REV-OBS-02`).** Keep the inverse-storage pin; if a representation-only change fires it, classify as test-authority drift and supply a witness still exercising inverse storage (`LESSONS.md` 171).
 
 ## 8. Recurring defect patterns
+
+**A compatibility failure name must not erase which check fired — `M6-CP1-TB4-REV` review addendum, lesson 181.** RA-7 mapped four emission sites onto one legacy string. TB4's 17 identical failures could then be attributed only by a single-sheet exclusivity argument, and the multi-sheet torus rows not at all. RA-12 keeps legacy names as prefixes and adds site suffixes.
 
 **Exact source-edge collinearity is not isolation-seam authority — `M6-CP1-TB4-REV` / existing `RP-01 AUTHORITY_DOMAIN_CONFLATION`.** `SourceEdgeSupport` answers where a span lies. The checked `(region,seam)` certificate answers whether that source edge is an isolation seam and owns the cross-sheet transition. A5 already permits same-sheet edge-collinear spans with no certificate; A6 CB4 incorrectly required a seam certificate for every `collinearEdge`, producing 21 new accepted-prefix losses. Keep support classification and semantic seam ownership separate. The prior TB3 RP-01 repair is active (row5 + 186/214/239 recover) but not formally recovered until the complete frozen gate is green. Existing lessons 22 and 179 apply; no new lesson is needed.
 

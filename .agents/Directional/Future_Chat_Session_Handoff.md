@@ -1,4 +1,23 @@
-## Resume-critical update — `M6-CP1-TB4-REV` COMPLETE; exact next `M6-CP1-CB5` (2026-09-25)
+## Resume-critical update — exact next `M6-CP1-CB5`, as amended by the TB4-REV review-agent addendum (RA-12) (2026-09-25)
+
+**Start `M6-CP1-CB5` as a new runtime-free Code + Build turn.** Enter with `Turn: M6-CP1-CB5 / IN_PROGRESS / Successor: UNKNOWN`, a new `Started at`, and empty `Resumed at` / `Ended at`. Do not rerun TB4 and do not resume CB4.
+
+The review agent upheld TB4-REV:
+- the 21 new losses come from A6 treating any source-edge-collinear span as a seam (`RemeshPipeline.cpp:4908-4914`);
+- one `RP-01` recurrence; accounting **55 / 16 / 39**, debt 1.
+
+It also proved the attribution. On a single-sheet fixture only that branch can emit `MissingIsolationSeamEquivalenceAuthority`, and all 21 losses use single-sheet fixtures.
+
+Amendments:
+- **RA-12 (required in CB5):** keep the legacy isolation-failure names as prefixes and add site suffixes (`:a5-wedge`, `:a5-side`, `:a6-side-evidence`, `:a6-collinear-span`, `:a6-seam-span-transition`, `:a6-seam-faces`). Diagnostic only; no test or production code compares these strings.
+- **Torus falsifier:** recovery of focused row6 and selectors 444/446/448 is a prediction, not a proof. The torus is multi-sheet, so the A5 and seam-span sites remain possible. If any stays RED in TB5, TB5-REV classifies it by its suffix.
+- **Debts (not CB5):** legacy single-valued `SurfaceOccurrence` fields (`isolationSheet`, `chart`, `point`, `chartComponent`, `lattice`) are dead but published. Removing them or marking them representation-only is a CP1-acceptance precondition. Aggregated `equivalences` are not re-sorted.
+
+Full record: `Architecture_M6_CP1_TB4_Review_Record.md` (TB4-REV plus the addendum). Plan: `Architecture_M6_CP1_CB5_Ordinary_Front_Seam_Classification_Recovery_Code_Build_Plan.md`.
+
+## Superseded resume notes (historical — do not act on)
+
+### `M6-CP1-TB4-REV` COMPLETE; exact next `M6-CP1-CB5` (2026-09-25)
 
 **Do not rerun TB4 and do not resume CB4. Start bounded runtime-free `M6-CP1-CB5`, then immutable `M6-CP1-TB5-EXEC`, then mandatory `M6-CP1-TB5-REV`.**
 
@@ -12,7 +31,7 @@ Compile-green TB5 reruns the same **7 focused + selector449 = 456** processes. R
 
 Full current adjudication: `Architecture_M6_CP1_TB4_Review_Record.md`. Exact plan: `Architecture_M6_CP1_CB5_Ordinary_Front_Seam_Classification_Recovery_Code_Build_Plan.md`.
 
-## Resume-critical update — `M6-CP1-TB4-EXEC` COMPLETE; exact next `M6-CP1-TB4-REV` (2026-09-25)
+### `M6-CP1-TB4-EXEC` COMPLETE; exact next `M6-CP1-TB4-REV` (2026-09-25)
 
 **Do not rerun TB4 or start corrective implementation. Start mandatory runtime-free `M6-CP1-TB4-REV`.**
 
@@ -26,7 +45,7 @@ TB4 consumed CB4 candidate artifact/source `10871935178 / 20f60bb1412424a6f1093f
 
 Review must independently reopen the candidate and TB4 result/log artifacts, compare all 24 selector REDs to accepted M5 authority, adjudicate candidate grouping/root cause/recovery, and only then authorize any successor beyond Review. Full execution record: `Architecture_M6_CP1_TB4_Artifact_Only_Test_Benchmark_Report.md`.
 
-## Resume-critical update — `M6-CP1-CB4` COMPLETE; exact next `M6-CP1-TB4-EXEC` (2026-09-25)
+### `M6-CP1-CB4` COMPLETE; exact next `M6-CP1-TB4-EXEC` (2026-09-25)
 
 **Do not resume CB4. Start immutable artifact-only `M6-CP1-TB4-EXEC`, then mandatory `M6-CP1-TB4-REV`.**
 
@@ -44,7 +63,7 @@ Stable accounting remains **54 / 16 / 38**, debt **1**. Accepted runtime authori
 
 Full evidence: `M6_Consolidated_Record.md §17 (folded CB4 compile authority)`.
 
-## Resume-critical update — `M6-CP1-CB4` UNBLOCKED by RA-11: resume the same turn (2026-09-25T09:41:20Z)
+### `M6-CP1-CB4` UNBLOCKED by RA-11: resume the same turn (2026-09-25T09:41:20Z)
 
 **Resume `M6-CP1-CB4`.** This is the same turn: keep `Started at 2026-09-25T06:19:30Z` and set a new `Resumed at`. It is not a new turn, and no Definition turn is pending.
 
@@ -58,8 +77,6 @@ RA-11 in brief:
 - Stop rule: if CB4 finds another consumer that needs a wedge-face branch, stop and return to Review.
 
 Normative text is at the end of `Architecture_M6_Frozen_Definitions.md`. Evidence is in `M6_Consolidated_Record.md §16 (folded RA-11 blocker authority)`, "Review-agent adjudication". No A4 or test change, and TB4 stays 7 + 449 = 456. Accounting 54/16/38, debt 1.
-
-## Superseded resume notes (historical — do not act on)
 
 ### `M6-CP1-CB4` BLOCKED on per-face branch authority (2026-09-25) — RESOLVED by RA-11
 
@@ -138,91 +155,47 @@ Review must independently re-open source/evidence and re-derive: split-square v0
 
 ## Current authority
 
-`M6-DEFN-R2-REV` is **COMPLETE: `M6-DEFN-R2` ACCEPTED WITH REVIEW AMENDMENTS RA-1 – RA-10**. The seam-incident definition chain is closed:
+`M6-CP1-TB4-REV` is **COMPLETE** (review-agent addendum included). CB4 candidate `10871935178 / 20f60bb1...` ran cleanly but is unpromoted, at focused **6/7** + selector449 **425/449** = **431/456**:
+- recovered: focused rows 5 and 7, selectors 186/214/239;
+- 21 new accepted losses, one `RP-01` recurrence: generic source-edge-collinear support consumed as isolation-seam authority in A6 (`RemeshPipeline.cpp:4908-4914`);
+- still RED from TB3: focused row6 and selectors 444/446/448 (multi-sheet torus; cause not proved).
 
-- **DEFN-R1 core:** corner-wedge sheet sets; wedge/side certificates keyed by `(region, seam edge)`; owner-less `OrdinaryFront`; A6 membership validation; A7 union; no mixed-face records.
-- **DEFN-R2:**
-  - evidence-only `CornerWedgeIsolation` lineage transitions;
-  - complete binding signatures;
-  - relation-local path charts;
-  - winding-selected interior faces (orientation premise proved in all three builders);
-  - one-to-one A5 relation failures;
-  - P1-P4.
-- **RA-1 – RA-10:**
-  - boundary and region-boundary collinear edges;
-  - P3/P4 keyed only on arc failure, never on vertex category;
-  - row-invariant permutation checks rather than `hash_completion`;
-  - `OccurrenceUnownedRelation` name and row3's enum `UnownedRelation` kept;
-  - lineage sheets = wedge union only;
-  - `crossesSheets` retired, with adapter mapping to the legacy isolation-seam names;
-  - wedge-arc endpoints and direction;
-  - resolver-defined span support (1e-8);
-  - transitional `quotientClass` unchanged.
-
-- **RA-11** (CB4 blocker resolution): wedge bindings are `(face, sheet, chart)` with no branch; the A4 corner `LocalLatticeState` is published verbatim as face-labelled `CornerPlacementProvenance`; no A4 product change.
-
-Accepted runtime authority is unchanged: M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7`, selector449 **449/449 PASS**. TB3 candidate `10840014758 / 660015f2...` remains unpromoted. Stable accounting is **54 events / 16 categories / 38 recurrences**, debt **1**.
+Definition authority: DEFN-R1 core, R2, and RA-1 – RA-12 at the end of `Architecture_M6_Frozen_Definitions.md`. Accepted runtime authority is unchanged: M5 `10814505512 / e284fea7...`, selector449 **449/449**. Stable accounting **55 / 16 / 39**, debt **1** (M6). Formal recovery of TB1 and TB3 is still open. The TB2 candidate is closed.
 
 ## Exact next turn
 
-**`M6-CP1-CB4` (resume, same turn)** — runtime-free Code + Build under `M6_Consolidated_Record.md §§12-18 (folded CB4 plan authority)` (AUTHORIZED), as amended by RA-1 – RA-11. Compile-green → immutable `M6-CP1-TB4-EXEC` (7 focused + selector449 = **456** fresh exact-filter processes, benchmark 0) → mandatory `M6-CP1-TB4-REV`.
+**`M6-CP1-CB5`** — bounded runtime-free Code + Build under `Architecture_M6_CP1_CB5_Ordinary_Front_Seam_Classification_Recovery_Code_Build_Plan.md`, including its review-agent amendment block.
 
-**Entry (resume).** Follow lesson 178:
-1. List this turn's commits, Actions runs and Drive staging.
-   - The only CB4 commits so far are docs, beacon and ops: the start snapshot `36104814370 / 10850013454` and the blocker-docs apply.
-   - No production/test patch or compile candidate exists.
-2. Write `M6-CP1-CB4 / IN_PROGRESS`, preserving `Started at 2026-09-25T06:19:30Z` with a new `Resumed at`, as the first repository write.
-3. Freeze `READ_MODE=snapshot` before reading documents.
-4. Apply RA-11 when building wedge bindings, the class key and the representative key.
+1. **The single semantic change,** in the A6 reciprocal `OrdinaryFront` endpoint-span check:
+   - keep presence parity and the same-edge requirement;
+   - neither span collinear → the existing non-seam P2 rule;
+   - both collinear on the same edge → look up `isolationCertificateBySeam[{region, edge}]`:
+     - **no certificate** → the same non-seam P2 rule (same interior sheet, in both wedge sets; failure emits `QuotientReciprocalSideAuthorityMismatch`);
+     - **certificate present** → the current seam branch, unchanged.
+2. **RA-12 site suffixes** on every isolation-failure emission (A5 adapter and the four A6 sites). Diagnostic only.
+3. **Frozen:** A5 span construction; support resolver; RA-1 – RA-11 semantics; schemas; occurrence/relation identity; quotient equality; HardRail/Periodic; remap; every test and fixture; selector449 `d4a0d1b7...d6414`; routing449 `9c88a5ed...c5707`. No new focused identity.
+4. **Compile** the eight GMP/GMPXX targets via `agent-compile-reusable.yml` with `runtimeExecution=false`. No Directional runtime.
 
-**Recommended work order.** This is a single coherent patch, ordered by dependency; the plan's stop rules still apply.
-1. **Static derivations first,** recorded in the CB4 report:
-   - split-square v0/centre/v2 wedges and transitions (v0 `1→0`, v2 `0→1`);
-   - one seam-vertex two-edge fan;
-   - one collinear side each for boundary, internal and hard-rail edges (RA-1);
-   - the row140 and row3 failure flows (RA-5);
-   - the audit list in plan §9 (focused 1-6, selector 140/186/214/239/444/446/448, Phase10 HardRail single-sheet rows).
-2. **Types.** Wedge face bindings, the isolation-transition tuple, the new A5 occurrence fields, and `PureQuadEquivalenceKind::CornerWedgeIsolation` with its transitions field. Include it in comparison and in `hash_completion`.
-3. **A5.**
-   - span support per RA-9, interior face per RA-1, wedge arc per RA-8, wedge/side evidence;
-   - P3/P4 per RA-2/RA-3;
-   - one-to-one relation failures per RA-5, with the adapter's legacy-name table per R2 §6 and RA-5/RA-7.
-4. **A6 / transitional materializer.**
-   - remove `crossesSheets` (`RemeshPipeline.cpp:4180-4191`) and add span membership plus reciprocal-side checks (RA-7);
-   - class key from complete binding signatures, with the `quotientClass` ordinal unchanged (RA-10);
-   - representative key per R2 §4.3; relation-local step and path charts;
-   - delete only the duplicate owner/kind branches.
-5. **A7 lineage.**
-   - sheets = wedge union (RA-6); `sourceCharts` = union of binding charts;
-   - `CornerWedgeIsolation` entries (front edges −1, identity action);
-   - remap complete tuples before projecting.
-6. **Seventh identity** `M6CP1.SeamEndpointOccurrencesPublishCompleteCornerWedgeSheetAuthority`, plus one test-local reversed-row split-square helper. Permutation checks compare only row-invariant semantic data (RA-4).
-7. **Checks and compile.**
-   - by-value accessor split-range scan clean;
-   - selector449 `d4a0d1b7...d6414` and routing449 `9c88a5ed...c5707` byte-identical;
-   - no existing test or fixture edited;
-   - compile/package the standard eight GMP/GMPXX targets via `agent-compile-reusable.yml`, with `runtimeExecution=false`.
-
-**Durability.** This turn is large. Emit the `RETENTION_POLICY.md` / `Durable_Handoff_Policy.md` item 13 work-preservation patch to Drive before any long compile loop, and before yielding. If the turn must yield, publish `IN_PROGRESS` or `BLOCKED` after the last repository write.
+**Successor if compile-green:** immutable `M6-CP1-TB5-EXEC`, running the same 7 focused + selector449 = **456** processes (benchmark 0), then mandatory `M6-CP1-TB5-REV`.
+- **Recovery-green:** 7/7 and 449/449, row140 PASS, no `OccurrenceInvalidCornerAuthority`.
+- **Residual REDs** are classified by RA-12 suffix. Downstream-casualty and torus falsifiers apply, and nothing is repaired or rerun inside TB5.
 
 ## Completed predecessor turns (reference only)
 
-- `M6-DEFN-R2-REV` — accepted R2 with RA-1 – RA-10 (`Architecture_M6_DEFN_R2_Review_Record.md`).
-- `M6-DEFN-R2` — B1-B4 and P1-P4 amendments (`Architecture_M6_DEFN_R2_Seam_Incident_Authority_Amendment_Definition_Record.md`).
-- `M6-DEFN-R1-REV` — core upheld, four blockers (`Architecture_M6_DEFN_R1_Review_Record.md`).
-- `M6-DEFN-R1` — corner-wedge model (`Architecture_M6_DEFN_R1_Seam_Incident_Occurrence_Sheet_Authority_Definition_Record.md`).
+- `M6-CP1-TB4-REV` (+ review-agent addendum) — `Architecture_M6_CP1_TB4_Review_Record.md`.
+- `M6-CP1-TB4-EXEC` — `Architecture_M6_CP1_TB4_Artifact_Only_Test_Benchmark_Report.md`.
+- `M6-CP1-CB4` — source `20f60bb1`, candidate `10871935178` (folded into `M6_Consolidated_Record.md`).
+- `M6-DEFN-R2-REV`, `M6-DEFN-R2`, `M6-DEFN-R1-REV`, `M6-DEFN-R1` — the definition chain.
 
 ## Current files
 
-- `.agents/Directional/M6_Consolidated_Record.md §§12-18 (folded CB4 plan authority)` (AUTHORIZED implementation plan; filename historical)
-- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` (normative; RA-1 – RA-11 at the end)
-- `.agents/Directional/M6_Consolidated_Record.md §16 (folded RA-11 blocker authority)` (blocker + RA-11 adjudication)
-- `.agents/Directional/Architecture_M6_DEFN_R2_Review_Record.md` (acceptance + RA rationale)
+- `.agents/Directional/Architecture_M6_CP1_CB5_Ordinary_Front_Seam_Classification_Recovery_Code_Build_Plan.md` (exact next; amended)
+- `.agents/Directional/Architecture_M6_CP1_TB4_Review_Record.md` (TB4-REV + review-agent addendum)
+- `.agents/Directional/Architecture_M6_CP1_TB4_Artifact_Only_Test_Benchmark_Report.md` (latest runtime report)
+- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` (normative; RA-1 – RA-12 at the end)
+- `.agents/Directional/Architecture_M6_DEFN_R2_Review_Record.md`
 - `.agents/Directional/Architecture_M6_DEFN_R2_Seam_Incident_Authority_Amendment_Definition_Record.md`
 - `.agents/Directional/Architecture_M6_DEFN_R1_Seam_Incident_Occurrence_Sheet_Authority_Definition_Record.md`
-- `.agents/Directional/Architecture_M6_DEFN_R1_Review_Record.md`
-- `.agents/Directional/M6_Consolidated_Record.md §§9-11 (folded TB3 runtime authority)` (latest runtime report)
-- `.agents/Directional/M6_Consolidated_Record.md §§10-16 (folded TB3 Review authority)` (TB3 Review + addendum)
 - `.agents/Directional/M6_Consolidated_Record.md`
 - `.agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt`
 - `.agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv`
@@ -232,18 +205,15 @@ Accepted runtime authority is unchanged: M5 package/source `10814505512 / e284fe
 ```yaml
 load_next:
   - turn-based-coding-agent/references/turns/CODE_BUILD.md
-  - .agents/Directional/M6_Consolidated_Record.md §§12-18 (folded CB4 plan authority)
-  - .agents/Directional/Architecture_M6_DEFN_R2_Review_Record.md
-  - .agents/Directional/Architecture_M6_Frozen_Definitions.md  # RA-1..RA-11 at end are normative
-  - .agents/Directional/M6_Consolidated_Record.md §16 (folded RA-11 blocker authority)  # RA-11 adjudication
-  - .agents/Directional/Architecture_M6_DEFN_R2_Seam_Incident_Authority_Amendment_Definition_Record.md
+  - .agents/Directional/Architecture_M6_CP1_CB5_Ordinary_Front_Seam_Classification_Recovery_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M6_CP1_TB4_Review_Record.md  # includes review-agent addendum
+  - .agents/Directional/Architecture_M6_Frozen_Definitions.md  # RA-1..RA-12 at end are normative
 conditional_modules:
   - trigger: github_connector / GitHub Actions / patch transport
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
-  - .agents/Directional/Architecture_M6_DEFN_R1_Seam_Incident_Occurrence_Sheet_Authority_Definition_Record.md
-  - .agents/Directional/Architecture_M6_DEFN_R1_Review_Record.md
-  - .agents/Directional/M6_Consolidated_Record.md §§10-16 (folded TB3 Review authority)
+  - .agents/Directional/Architecture_M6_CP1_TB4_Artifact_Only_Test_Benchmark_Report.md
+  - .agents/Directional/Architecture_M6_DEFN_R2_Seam_Incident_Authority_Amendment_Definition_Record.md
   - .agents/Directional/M6_Consolidated_Record.md
   - turn-based-coding-agent/references/core/turn-boundaries.md
   - turn-based-coding-agent/references/core/evidence.md

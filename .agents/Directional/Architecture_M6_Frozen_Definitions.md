@@ -1,6 +1,6 @@
 # M6 Frozen Definitions — Occurrence, Quotient, Embedding, Independent Verification
 
-**Status:** FROZEN / `M6-DEFN-R2-REV` ACCEPTED WITH REVIEW AMENDMENTS RA-1 – RA-10, plus **RA-11** (review-agent resolution of the CB4 per-face branch blocker; see the end of this document) / CB4 UNBLOCKED (see the end of this document and `Architecture_M6_DEFN_R2_Review_Record.md`) / EXACT NEXT = `M6-CP1-CB4` / EARLIER: FROZEN CANDIDATE / `M6-DEFN-R2` COMPLETE / RUNTIME-FREE / B1-B4 + P1-P4 amended and frozen for mandatory independent `M6-DEFN-R2-REV`; CB4 remains HELD / exact next = `M6-DEFN-R2-REV`.
+**Status:** FROZEN / `M6-DEFN-R2-REV` ACCEPTED WITH REVIEW AMENDMENTS RA-1 – RA-10, plus **RA-11** and **RA-12** (site-qualified isolation-failure diagnostics, `M6-CP1-TB4-REV` addendum) (review-agent resolution of the CB4 per-face branch blocker; see the end of this document) / CB4 UNBLOCKED (see the end of this document and `Architecture_M6_DEFN_R2_Review_Record.md`) / EXACT NEXT = `M6-CP1-CB4` / EARLIER: FROZEN CANDIDATE / `M6-DEFN-R2` COMPLETE / RUNTIME-FREE / B1-B4 + P1-P4 amended and frozen for mandatory independent `M6-DEFN-R2-REV`; CB4 remains HELD / exact next = `M6-DEFN-R2-REV`.
 **Date:** 2026-09-25
 **Definition authority:** this record is the normative M6 contract for A5 occurrence creation, A6 quotient construction/materialization, A7 source-attached geometry embedding, and the M6 structural portion of A8 independent verification. It refines `DESIGN.md` §14 M6 without changing accepted M5 producer semantics or pulling M7 disposition/degradation work forward.
 
@@ -509,4 +509,15 @@ Rationale and evidence: folded RA-11 blocker authority in `M6_Consolidated_Recor
 3. Transitional class key = region + complete ordered binding signatures + lattice coordinate + scale + labelled placement provenance `(selected-face topology, branchRotation, sourceChart)`. Representative key = exact support + binding signatures + `OccurrenceId`.
 4. "No mixed-face record" means every face-dependent value is published together with the face it is expressed in. Pairing the selected face's `sourceChart` with another face's topology is forbidden.
 5. Stop rule: any A5/A6/A7 consumer needing a wedge-face branch returns CB4 to Review. That consumer would trigger an A4 product amendment to publish per-face branch authority. That amendment is rejected for now: no consumer needs it, and the builders have no uniform meaning for the branch.
+
+## RA-12 — site-qualified isolation-failure diagnostics (normative, 2026-09-25, `M6-CP1-TB4-REV` review-agent addendum)
+
+This amends RA-7. The legacy M5 names `MissingIsolationSeamEquivalenceAuthority` and `InvalidIsolationSeamEquivalenceAuthority` are kept as **prefixes**, and each emission site appends a stable suffix:
+- `:a5-wedge` / `:a5-side` — A5 `MissingIsolationEvidence` / `MismatchedIsolationEvidence`, raised during wedge-fan or side traversal;
+- `:a6-side-evidence` — ordered whole-side evidence certificate lookup;
+- `:a6-collinear-span` — collinear endpoint span with no certificate;
+- `:a6-seam-span-transition` — seam branch missing the reciprocal span transition;
+- `:a6-seam-faces` — certificate faces or sheets mismatch.
+
+Diagnostic only: predicates, ordering and outcomes are unchanged. No test or production code compares these strings exactly (verified at `M6-CP1-TB4-REV`). Rationale: `Architecture_M6_CP1_TB4_Review_Record.md`, review-agent addendum §B3-§B4.
 

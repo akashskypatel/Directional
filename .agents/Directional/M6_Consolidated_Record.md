@@ -1,6 +1,6 @@
 # M6 Consolidated Record
 
-**Status:** M6 ACTIVE / `M6-CP1-TB4-REV` COMPLETE / one new stable RP-01 recurrence / candidate `10871935178` unpromoted / exact next `M6-CP1-CB5` / stable 55/16/39, debt 1
+**Status:** M6 ACTIVE / `M6-CP1-TB4-REV` COMPLETE / one new stable RP-01 recurrence / candidate `10871935178` unpromoted / exact next `M6-CP1-CB5` / stable 55/16/39, debt 1 / TB4-REV review-agent addendum: RA-12 + torus falsifier + legacy-field CP1 precondition
 **Last updated:** 2026-09-25
 
 Normative M6 semantics live in `Architecture_M6_Frozen_Definitions.md`. Entering accepted authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449 PASS**, SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. TB1's accepted-prefix event remains independently classified as singleton `CROSS_TEMPORARY_ITERATOR_RANGE`; TB2 row140 `VALIDATION_ORDER_SHADOWING` is recovery-proved closed but remains historical; TB3 Review adds one accepted-prefix event as an existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence. TB4 Review adds one accepted-prefix event as another existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence. Stable accounting is **55 / 16 / 39** and produced-witness debt is **1**, M6-owned.
@@ -243,3 +243,16 @@ Independent Review upholds TB4 mechanics at **431/456 PASS** and reopens accepte
 `M6-CP1-TB4-EXEC-CAND-01` is therefore one new stable event / existing `RP-01 AUTHORITY_DOMAIN_CONFLATION` recurrence. Stable accounting is **55 / 16 / 39**, debt 1. TB3 formal recovery remains open despite row5 + 186/214/239 recovering; TB1 formal 449/449 recovery remains open; TB2 validation-order recovery remains closed. Candidate `10871935178` remains unpromoted and accepted M5 package/source `10814505512 / e284fea7...` remains runtime authority.
 
 Exact next is bounded runtime-free `M6-CP1-CB5`: only correct A6 OrdinaryFront P2 so generic source-edge-collinear/no-certificate spans use the non-seam same-sheet/wedge-membership rule, while certificate-backed spans retain the exact seam face/sheet/reciprocal-evidence rule. Compile-green advances to unchanged **7 + 449 = 456** `M6-CP1-TB5-EXEC`, then mandatory Review.
+
+## `M6-CP1-TB4-REV` review-agent addendum
+
+The review agent upheld TB4-REV's root cause (A6 `:4908-4914` treats generic source-edge collinearity as seam authority), the one-`RP-01` classification and 55/16/39.
+
+It proved the attribution of the 21 new losses by single-sheet exclusivity. There are four `MissingIsolationSeamEquivalenceAuthority` emission sites: A5 adapter, A6 side evidence, A6 collinear span and A6 seam-span transition. On a single-sheet fixture only the collinear branch can fire, and all 21 losses use single-sheet fixtures.
+
+Corrections and additions:
+- The carried torus REDs (multi-sheet) are not proved to be the same site; their recovery is a TB5 prediction with a falsifier.
+- RA-12 (required in CB5) turns legacy names into prefixes with site suffixes.
+- Verified that A5's collinear seam-span transitions agree with CB5's seam branch.
+- Debts: dead legacy single-valued `SurfaceOccurrence` fields (CP1-acceptance precondition); unsorted aggregated `equivalences`.
+

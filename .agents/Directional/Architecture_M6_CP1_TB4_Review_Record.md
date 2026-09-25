@@ -100,3 +100,81 @@ Compile-green advances to immutable `M6-CP1-TB5-EXEC` with the **same seven focu
 | review_check.py boundary | **PASS — all review boundary and selector integrity checks passed.** |
 | `STATUS` lifecycle maintained | Entered `M6-CP1-TB4-REV / IN_PROGRESS` before substantive work; final `COMPLETE / Successor: M6-CP1-CB5` is reserved as the final repository write. |
 | Pushed to origin, branch in sync | **Verified after the final push: working branch was re-read with no unexpected source drift; temporary review control state was removed before the final STATUS beacon.** |
+
+## Review-agent addendum — `M6-CP1-TB4-REV` (2026-09-25 UTC)
+
+**Disposition:** TB4 mechanics, the accepted-prefix differential, the root cause for the 21 new losses, the classification (one `RP-01` recurrence), accounting **55 / 16 / 39**, debt 1 and the prior-candidate dispositions are **UPHELD**. The review agent adds a stronger proof for the new losses. It **corrects one overclaim** about the carried torus REDs, **amends the CB5 plan with RA-12** (site-qualified failure diagnostics), and records two debts. Exact successor stays **`M6-CP1-CB5`**, as amended.
+
+### B1. Evidence independently re-derived
+
+- **CB4 candidate `10871935178`:** provider digest and download SHA-256 are both `dc6e979a...7998`; manifest **28/28**. The packaged `RemeshPipeline.cpp` is byte-identical to `20f60bb1` (`ef976666...`), and `git diff 20f60bb1 HEAD -- src include tests` is empty.
+- **TB4 result `10874311495`:** digest `32dca965...3e24`; **932/932**. The selector ledger lists 449 rows in exact selector order, **425 PASS**, all exact-one/zero-skip. The RED set matches the report exactly. Focused rows 1-5 and 7 PASS; row 6 is RED. The raw logs contain **0** `OccurrenceInvalidCornerAuthority`.
+
+### B2. Stronger proof for the 21 new losses: single-sheet exclusivity
+
+After CB4, `MissingIsolationSeamEquivalenceAuthority` has **four** emission sites, because RA-7 maps several failures to the one legacy name:
+- **(a)** A5 `MissingIsolationEvidence`, mapped at the adapter (`RemeshPipeline.cpp:3102-3103`). It is raised by `transition_between` (`:3476-3482`) only when a wedge fan or side crosses an edge between **different** sheets that has no certificate.
+- **(b)** Side-evidence certificate lookup (`:4745`). Side evidence exists only where A5 already found a certificate.
+- **(c)** The A6 collinear no-certificate branch (`:4908-4914`), which is TB4-REV's root cause.
+- **(d)** The seam branch's missing span transition (`:4938-4942`), which requires a certificate to exist.
+
+On a **single-sheet** fixture, (a) cannot occur (there is no sheet change), and (b) and (d) cannot occur (there are no certificates). Only (c) remains. All 21 new losses use single-sheet fixtures: hard-rail rectangles, cylinder/annulus, the committed plane and the REPackage meshes.
+
+The attribution is therefore proved, not inferred from the failure string. This includes the eight downstream casualties. For example, row122 fails with "fixture must expose hard-feature authority to tamper", and rows 176/201/238 fail with `NotProductionReady` at tracing.
+
+### B3. Correction: the carried torus REDs are not proved to be site (c)
+
+TB4-REV §4 says focused row6 and selectors 444/446/448 "remain RED behind the newly proved A6 overclassification". The produced torus is **multi-sheet** (row449 asserts at least two sheets in one region), so sites (a), (c) and (d) are all possible there, and the failure string cannot tell them apart. Their recovery under CB5 is a **prediction, not a consequence**.
+
+- Site (a) is plausible on the torus: a close-sheet boundary that meets a rail-conformal corner or side.
+- Site (d) cannot be excluded statically either.
+
+**Falsifier, added to the TB5 pre-registration:** if any torus row remains RED after CB5, TB5-REV must identify the emission site from the RA-12 suffix. It must not assume site (c), and it must not broaden CB5.
+
+### B4. RA-12 — site-qualified isolation-failure diagnostics (amends RA-7; required in CB5)
+
+RA-7, the review agent's own amendment, collapsed four distinguishable failure sites into one legacy string. That is the many-to-one problem B4 removed from A5, reintroduced at the adapter output, and it is exactly why §B3 cannot be settled from TB4 evidence. No test and no production code compares these strings exactly. Tests only assert `success` and print the string; the only source hits are emission sites.
+
+*Amendment:* keep the legacy name as a **prefix** and add a site suffix:
+- `MissingIsolationSeamEquivalenceAuthority:a5-wedge` / `:a5-side`: the A5 `MissingIsolationEvidence` code, split by whether the wedge fan or the side traversal raised it;
+- `:a6-side-evidence` (site b);
+- `:a6-collinear-span` (site c, which CB5 makes reachable only for a genuinely uncertified cross-sheet collinear span);
+- `:a6-seam-span-transition` (site d);
+- the same treatment for `InvalidIsolationSeamEquivalenceAuthority`: `:a5-wedge`, `:a5-side`, `:a6-side-evidence`, `:a6-seam-faces`.
+
+This is diagnostic only: no predicate, ordering or success outcome changes. Pipeline wrappers such as `NotProductionReady:tracing:<failure>` carry the suffix unchanged.
+
+### B5. CB5 fix verified against A5 publication
+
+A5 publishes interior → opposite transitions for a collinear span on a certified seam (`:3664-3702`). The A side carries `(sA→sB)` and the B side `(sB→sA)`, which satisfies both the A6 seam-branch span check and the reciprocal whole-side check. A5 publishes none for a non-seam collinear span. CB5's "no certificate → exact non-seam P2 (same interior sheet in both wedge sets)" rule therefore agrees with A5 and cannot admit different-sheet endpoints.
+
+When the non-seam predicate fails on a collinear no-certificate pair, it emits `QuotientReciprocalSideAuthorityMismatch`, the same as the non-collinear branch today.
+
+### B6. Debts recorded (not CB5 scope)
+
+1. **Legacy single-valued `SurfaceOccurrence` fields.** CB4 still populates `isolationSheet` and `chart` from `wedgeBindings.front()`, `point` from the node's selected face, plus `chartComponent` and `lattice` (`RemeshPipeline.cpp:3938-3946`). No production or test code reads them: every A6/A7 consumer uses wedge bindings, placement provenance and spans. They still publish an unlabelled representative sheet on the public A5 product, which contradicts frozen §3.2 (`CornerWedgeSheetSet`, not `IsolationSheetId`) and RA-11.4.
+   - *Obligation, a CP1-acceptance precondition:* remove these fields or explicitly relabel them as representation-only before CP1 closes.
+2. **Aggregated lineage `equivalences` are not re-sorted after tuple remap** (`:14830-14850`). `CornerWedgeIsolation` entries share front edges of −1, so remapped region/seam/sheet IDs can reorder them. No consumer checks the order and the hash is deterministic. Minor; re-sort at the next touch of that code.
+
+### Review-agent closeout
+
+| Duty | Answer |
+|---|---|
+| Accepted selector prefix re-hashed | selector449 `d4a0d1b7...d6414`, ledger order exact; routing449 `9c88a5ed...c5707` |
+| Decisive claims independently re-derived | candidate 28/28 and source byte-identity; result 932/932, RED set, row outcomes; four emission sites and the single-sheet exclusivity proof; A5 collinear-span transition publication vs the A6 seam branch; no exact-string consumers |
+| Non-vacuity checked | the single-sheet proof makes the 21-loss attribution exact; the torus attribution is explicitly left open with a falsifier |
+| Prior obligations discharged/carried | TB2 closed; TB3 and TB1 formal recovery carried (upheld); debts B6.1 (CP1 precondition) and B6.2 added |
+| Stable accounting | **55 / 16 / 39**, debt 1; +0 from this addendum |
+| New candidates/obligations recorded | RA-12 (CB5 scope); TB5 torus falsifier; B6 debts |
+| ORIENTATION currency line | `M6-CP1-TB4-REV` (review-agent addendum), 2026-09-25 UTC |
+| ORIENTATION §3 / §4 / §7 / §8 | §3, §7 and §8 amended; §4 n/a |
+| CHANGELOG | root and Directional prepended |
+| ROADMAP | M6-CP1 row amended (CB5 + RA-12) |
+| Selector manifest | n/a |
+| LESSONS | 181 added (a compatibility name must not erase which check fired) |
+| Consolidation under CLEAN_UP_POLICY | none needed; CB5 plan amended in place |
+| Successor frozen | `M6-CP1-CB5` as amended by RA-12 |
+| Turn boundary held | runtime-free; no source/test/fixture/selector/benchmark/build mutation |
+| review_check.py boundary / ledgers | recorded in the commit message |
+| `STATUS` lifecycle maintained | resume `IN_PROGRESS` (`Resumed at` = operator handoff `2026-09-25T17:06:03Z`) → docs → COMPLETE last |
+| Pushed to origin, branch in sync | verified after the final push |

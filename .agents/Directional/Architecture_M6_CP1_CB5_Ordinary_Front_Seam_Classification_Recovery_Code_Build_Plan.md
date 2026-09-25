@@ -2,7 +2,18 @@
 
 **Turn:** `M6-CP1-CB5`
 **Type:** bounded runtime-free Code + Build
-**Status:** AUTHORIZED BY `M6-CP1-TB4-REV`
+**Status:** AUTHORIZED BY `M6-CP1-TB4-REV`, **as amended by the review-agent addendum (RA-12 plus the torus falsifier)**
+
+> **Review-agent amendment (2026-09-25):**
+> 1. **RA-12 is in scope and required.** Append the site suffixes defined at the end of `Architecture_M6_Frozen_Definitions.md` to every emission of `MissingIsolationSeamEquivalenceAuthority` / `InvalidIsolationSeamEquivalenceAuthority`:
+>    - A5 adapter mapping: `:a5-wedge` / `:a5-side`. Distinguish them either from error context (wedge failures set `occurrence`, side failures do not) or with split A5 codes. Existing A5 enum members and focused row3's expectations stay unchanged.
+>    - A6: `:a6-side-evidence`, `:a6-collinear-span`, `:a6-seam-span-transition`, `:a6-seam-faces`.
+>
+>    Diagnostic only: no predicate or outcome change.
+> 2. **Torus falsifier.** The recovery of focused row6 and selectors 444/446/448 is a prediction. The torus is multi-sheet, so the A5 site and the seam-span site cannot be excluded statically. If any of them remains RED in TB5, TB5-REV classifies it by its RA-12 suffix. Neither CB5 nor TB5 may be widened.
+> 3. Unchanged: the semantic correction below, the frozen surfaces, the seven focused identities, and TB5 = 7 + 449 = 456.
+>
+> Rationale: `Architecture_M6_CP1_TB4_Review_Record.md`, review-agent addendum.
 **Input candidate:** `10871935178 / 20f60bb1412424a6f1093fc8076884d1ea23f1c5`
 **Accepted runtime authority:** `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7`, selector449 449/449
 **Runtime successor if compile-green:** `M6-CP1-TB5-EXEC` → mandatory `M6-CP1-TB5-REV`
@@ -27,7 +38,7 @@ In the A6 reciprocal `OrdinaryFront` endpoint-span check:
 6. **Certificate present:** keep the current seam branch exactly — the selected interior faces/sheets must match the certificate's two incident face/sheet pairs in either direction, and each endpoint span must carry the exact reciprocal `CornerWedgeIsolationTransition`.
 7. Keep the existing ordered whole-side `isolationEvidence` certificate validation and reciprocal-list check unchanged.
 
-A small local helper that removes duplication of the non-seam predicate is allowed. No public schema change is authorized.
+A small local helper that removes duplication of the non-seam predicate is allowed. On failure, the non-seam predicate emits `QuotientReciprocalSideAuthorityMismatch`, as the non-collinear branch does today. RA-12's string suffixes are the only other authorized change. No public schema change is authorized.
 
 ## Frozen surfaces — do not change
 
