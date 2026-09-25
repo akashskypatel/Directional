@@ -1,3 +1,7 @@
+## 2026-09-25 — M6-DEFN-R1 seam-incident authority definition
+
+Runtime-free Definition amendment froze complete corner-wedge sheet/certificate authority, exact seam-collinear directed-side authority, per-wedge face/chart/branch provenance, owner-less OrdinaryFront A6 validation, A7 union lineage, and row140 adapter-only legacy naming. Re-scoped CB4 remains held pending mandatory `M6-DEFN-R1-REV`; TB4 is pre-registered as 7 focused + selector449 = 456. Accepted runtime authority, selectors, stable accounting 54/16/38, and debt 1 are unchanged.
+
 ## 2026-09-25 — M6 CP1 TB3 review: CB4 put on hold pending a definition decision
 
 - An independent check confirms the TB3 result: 447/455, and six accepted rows now fail. Stable accounting stays **54/16/38**, debt 1.

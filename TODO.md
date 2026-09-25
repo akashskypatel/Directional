@@ -1,3 +1,15 @@
+## Definition complete — `M6-DEFN-R1` (2026-09-25)
+
+**RUNTIME-FREE / eight seam-incident authority decisions frozen / CB4 re-scoped but HELD / exact next `M6-DEFN-R1-REV`.** Occurrence isolation authority is now the complete corner-wedge sheet set with per-wedge face/chart/branch provenance; seam certificates live on the wedge or directed side that actually crosses/runs along the seam; `OrdinaryFront` remains owner-less; seam-collinear sides use exact incident-cell interior-face authority; A7 lineage unions member wedge sets; row140 legacy naming is adapter-only.
+
+- [x] Freeze corner-wedge sheet/certificate authority and seam-vertex rule.
+- [x] Freeze A6 ordinary relation membership/side-evidence checks with unchanged `OccurrenceRelationId`.
+- [x] Freeze seam-collinear side semantics and per-wedge provenance.
+- [x] Freeze A7 lineage completeness and row140 adapter/duplicate-check policy.
+- [x] Re-scope CB4/TB4; new focused identity `M6CP1.SeamEndpointOccurrencesPublishCompleteCornerWedgeSheetAuthority`; gate **7+449=456**.
+- [ ] Mandatory `M6-DEFN-R1-REV` independently accepts or amends Definition.
+- [ ] Only after Review acceptance: re-scoped `M6-CP1-CB4` → `M6-CP1-TB4-EXEC` → `M6-CP1-TB4-REV`.
+
 ## Review-agent addendum — `M6-CP1-TB3-REV` (2026-09-25)
 
 **Accounting upheld 54/16/38, debt 1. Root cause corrected; CB4 HELD; exact next `M6-DEFN-R1`.** CB3's outgoing-side occurrence sheet is a representative choice at seam-incident corners, where a cell's wedge spans two sheets. A relation-owned certificate is on the wrong object and is ambiguous at seam vertices. See the TB3 Review addendum A2-A7.

@@ -1,3 +1,12 @@
+## 2026-09-25 — `M6-DEFN-R1` seam-incident occurrence authority frozen (runtime-free)
+
+- Amended M6 A5/A6/A7 semantics from one representative occurrence sheet to complete corner-wedge sheet sets with per-wedge face/chart/branch provenance.
+- Moved isolation certificate authority to the corner wedge or directed side that crosses/is collinear with the seam; `OrdinaryFront` stays owner-less and `OccurrenceRelationId` unchanged.
+- Defined exact seam-collinear incident-cell interior-face authority and A6 membership/evidence checks.
+- Froze A7 lineage union completeness and row140 adapter/duplicate-check policy.
+- Re-scoped held CB4 and pre-registered TB4 as 7 focused + selector449 = 456; no source/test/selector/runtime/build byte changed.
+- Stable accounting remains 54 / 16 / 38, debt 1. Exact next: `M6-DEFN-R1-REV`.
+
 ## 2026-09-25 — `M6-CP1-TB3-REV` review-agent addendum: root cause corrected; CB4 held; next `M6-DEFN-R1`
 
 - Independently re-verified:

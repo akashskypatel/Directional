@@ -1,3 +1,7 @@
+## M6 CP1 interlock — `M6-DEFN-R1` complete, Review pending (2026-09-25)
+
+The TB3 seam-incident authority ambiguity has been resolved at Definition level, not accepted at runtime. M6 A5 now specifies complete corner-wedge sheet/certificate authority and side evidence; A6 keeps OrdinaryFront owner-less and consumes only A5-published evidence; A7 takes the union of member wedge sets. Re-scoped CB4 remains **HELD** until `M6-DEFN-R1-REV`. If accepted, CB4 implements the contract compile-only and TB4 evaluates **7 focused + selector449 = 456** immutable processes. M6 checkpoint acceptance, M5 accepted runtime authority, selectors, accounting **54 / 16 / 38**, and debt 1 are unchanged.
+
 # Directional Surface-Cell Roadmap — accepted state to production-ready
 
 **Purpose.** One forward-looking map from the current accepted gate to a production-ready
@@ -10,7 +14,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-25 (`M6-CP1-TB3-REV` COMPLETE / candidate `10840014758 / 660015f2f15359fd426e2c855aea9f4201c70216` remains unpromoted after mechanically valid TB3 at focused 4/6 + selector449 443/449. Review classifies one new stable existing-`RP-01` event, advancing accounting to 54/16/38 with debt 1. Accepted M5 runtime authority is unchanged. Exact next `M6-CP1-CB4`, then immutable TB4 + mandatory Review. **Review-agent addendum:** root cause corrected, CB4 HELD, exact next runtime-free `M6-DEFN-R1` (seam-incident occurrence sheet authority and certificate carrier), then `M6-DEFN-R1-REV`.)**
+**Status date:** 2026-09-25 (`M6-DEFN-R1` COMPLETE / runtime-free seam-incident authority amendment frozen / candidate `10840014758 / 660015f2...` remains unpromoted / stable accounting 54/16/38, debt 1 / accepted M5 runtime authority unchanged. CB4 is re-scoped and HELD. Exact next `M6-DEFN-R1-REV`; only an accepting Review may authorize CB4. TB4 is pre-registered as 7 focused + selector449 = 456.)**
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 
@@ -548,7 +552,7 @@ Final CP4 Review completes the bounded conjunct8 sequence: row449 was accepted p
 | Checkpoint | Semantic domain |
 |---|---|
 | `M6-DEFN` | **COMPLETE / RUNTIME-FREE.** Four immutable products, exact occurrence/quotient identity, verifier recompute-vs-repair boundary, G4 ownership and dormant-test dispositions frozen in `Architecture_M6_Frozen_Definitions.md`. |
-| `M6-CP1` | **ACTIVE / TB3 REVIEW COMPLETE / CB4 NEXT.** Candidate `10840014758 / 660015f2...` executes 455 fresh processes at focused 4/6 + selector449 443/449. Row140 recovery is proved, but six accepted rows plus two focused controls stop at `MissingIsolationSeamEquivalenceAuthority`. Review classifies one stable existing-`RP-01` event: A5 ordinary relations omit their frozen typed isolation-certificate owner while the transitional consumer reconstructs it from boundary-path representation. Accounting is **54/16/38**, debt 1; candidate unpromoted. Exact next is runtime-free `M6-CP1-CB4`, then unchanged TB4 6+449=455 and mandatory Review. **Review-agent addendum:** CB3's outgoing-side sheet is a representative choice at seam-incident corners, and the relation is the wrong certificate carrier. CB4 HELD; exact next `M6-DEFN-R1` → `M6-DEFN-R1-REV` → re-scoped CB4. |
+| `M6-CP1` | **ACTIVE / `M6-DEFN-R1` COMPLETE / DEFINITION REVIEW NEXT.** TB3 candidate `10840014758 / 660015f2...` remains unpromoted at 447/455. Definition freezes complete corner-wedge sheet/evidence authority, exact seam-collinear side authority, per-wedge face/chart/branch provenance, owner-less OrdinaryFront A6 validation, A7 union lineage, and row140 adapter-only compatibility. Accounting is **54/16/38**, debt 1. Re-scoped CB4 is HELD; exact next is mandatory `M6-DEFN-R1-REV`. If accepted, CB4 compile-only precedes immutable TB4 **7+449=456**, then mandatory Review. |
 | `M6-CP2` | verifier consumes certificates and independently recomputes elementary incidence; **never repairs producer state** |
 | `M6-CP3` | M6 exit — equal coordinates without a relation remain distinct; every owned relation consumed exactly once; source-row / output-row / scheduler permutation invariance |
 

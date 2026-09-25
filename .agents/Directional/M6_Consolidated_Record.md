@@ -1,6 +1,6 @@
 # M6 Consolidated Record
 
-**Status:** M6 ACTIVE / `M6-CP1-TB3-REV` complete plus review-agent addendum / one stable RP-01 recurrence (root cause corrected) / candidate unpromoted / CB4 HELD / exact next `M6-DEFN-R1`
+**Status:** M6 ACTIVE / `M6-DEFN-R1` complete runtime-free / seam-incident corner-wedge authority frozen / one stable RP-01 recurrence unchanged / candidate unpromoted / CB4 re-scoped and HELD / exact next `M6-DEFN-R1-REV`
 **Last updated:** 2026-09-25
 
 Normative M6 semantics live in `Architecture_M6_Frozen_Definitions.md`. Entering accepted authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449 PASS**, SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. TB1's accepted-prefix event remains independently classified as singleton `CROSS_TEMPORARY_ITERATOR_RANGE`; TB2 row140 `VALIDATION_ORDER_SHADOWING` is recovery-proved closed but remains historical; TB3 Review adds one accepted-prefix event as an existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence. Stable accounting is **54 / 16 / 38** and produced-witness debt is **1**, M6-owned.
@@ -146,3 +146,11 @@ Exact next is runtime-free `M6-DEFN-R1` (TB3 Review addendum A7), then `M6-DEFN-
 | `Architecture_M6_CP1_TB1_Artifact_Only_Test_Benchmark_Report.md` (64 lines) | **SUPERSEDED TB1 RUNTIME REPORT / FOLDED BY M6-CP1-TB2-REV.** TB1 mechanics, accepted-prefix RED set and Review-corrected root are preserved in §3-§4, tracker and current Review; full text remains in git history. |
 | `Architecture_M6_CP1_TB1_Review_Record.md` (191 lines) | **SUPERSEDED TB1 REVIEW / FOLDED BY M6-CP1-TB2-REV.** Cross-temporary root proof, corrected accounting, whole-tree scan, recovery rule and carried obligations are preserved in §4, tracker, frozen definitions and current Review; full text remains in git history. |
 | `Architecture_M6_CP1_TB2_Artifact_Only_Test_Benchmark_Plan.md` (88 lines) | **CONSUMED TB2 EXEC PLAN / FOLDED BY M6-CP1-TB2-REV.** Candidate identity, six+449 exact-process gate, immutable boundary, recovery pre-registration and Review successor are preserved in §6-§7, retained TB2 report and current Review; full text remains in git history. |
+
+## 12. `M6-DEFN-R1` — seam-incident occurrence authority frozen; CB4 re-scoped and held
+
+Runtime-free Definition resolves the TB3 Review addendum's semantic gap. Occurrence isolation authority is the complete cell corner wedge: sorted sheet set, contiguous per-face bindings, and exact seam-edge certificate references. Directed sides carry mid-side and seam-collinear seam evidence; OrdinaryFront remains owner-less. Seam-collinear side sheet authority comes from the incident cell interior side under exact chart orientation rather than the tracer's lexicographic representative. A7 lineage unions all member wedge sheets. Row140 legacy naming is adapter-only and duplicate downstream structural owner checks are designated for removal without weakening transport/content validation.
+
+The split-square analytic derivation confirms v0 and v2 each require `{0,1}` despite being single-occurrence quotient classes, and the center's four occurrences collectively cover both sheets. At a source seam vertex where two seam edges share a sheet pair, edge-keyed certificate identity remains unique whether the wedge crosses one or both edges.
+
+CB4 is rewritten to implement these semantics only and stays HELD until mandatory `M6-DEFN-R1-REV`. One new focused identity is pre-registered, making TB4 **7 + 449 = 456** processes. Accepted runtime authority, selector/routing bytes, stable accounting **54 / 16 / 38**, and debt 1 are unchanged. No generated runtime or compile occurred.

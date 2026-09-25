@@ -1,6 +1,6 @@
 # M6 Frozen Definitions — Occurrence, Quotient, Embedding, Independent Verification
 
-**Status:** FROZEN / `M6-DEFN` COMPLETE / RUNTIME-FREE / M6-CP1 ACTIVE: TB3 REVIEW proves one stable `RP-01` event; the review-agent addendum finds that seam-incident occurrence sheet authority and its certificate carrier are undefined here (§3.2 has no `OrdinaryFront` isolation owner; §3.3/§5 single sheet vs A7 completeness) / CB4 HELD / EXACT NEXT = `M6-DEFN-R1`
+**Status:** FROZEN / `M6-DEFN-R1` COMPLETE / RUNTIME-FREE / seam-incident authority amended to complete corner-wedge sheet sets plus wedge/side certificate evidence; `OrdinaryFront` remains owner-less / CB4 RE-SCOPED AND HELD / EXACT NEXT = `M6-DEFN-R1-REV`
 **Date:** 2026-09-24
 **Definition authority:** this record is the normative M6 contract for A5 occurrence creation, A6 quotient construction/materialization, A7 source-attached geometry embedding, and the M6 structural portion of A8 independent verification. It refines `DESIGN.md` §14 M6 without changing accepted M5 producer semantics or pulling M7 disposition/degradation work forward.
 
@@ -48,26 +48,36 @@ SurfaceOccurrenceComplex
   cells[]
     CellId
     cornerOccurrences[4] : OccurrenceId
-    directedSides[4]     : (OccurrenceId from, OccurrenceId to)
+    directedSides[4]
+      from / to OccurrenceId
+      exact incident-cell interior-side source authority
+      ordered DirectedSideIsolationEvidence
   occurrences[]
     OccurrenceId
     CellId owner
     canonicalCornerRole
-    SourceSupport
+    exact SourceSupport
     TopologyRegionId
-    IsolationSheetId
-    FieldChartId / exact chart binding where required
-    LocalLatticeState as value/provenance, not identity
+    CornerWedgeSheetSet              // sorted, unique, non-empty
+    CornerWedgeFaceBindings[]        // ordered contiguous fan; per-face sheet/chart/branch
+    CornerWedgeIsolationEvidence[]   // exact (region,seam-edge) refs + traversal orientation
+    face-independent lattice phase / coordinate / scale provenance
   ownedRelations[]
     OccurrenceRelationId
     relationKind          // OrdinaryFront | HardRail | Periodic | SingularityPort
     firstOccurrence
     secondOccurrence
-    typed relation owner / certificate reference
+    kind-specific owner   // none for OrdinaryFront; existing HardRail/Periodic authority unchanged
   OccurrenceComplexCertificate
 ```
 
 Every accepted A4 cell appears exactly once and owns exactly four distinct corner occurrences and four directed sides. Every relation endpoint names an occurrence that exists in this product. A5 **does not union occurrences** and does not choose an output representative.
+
+For a seam-incident corner, `CornerWedgeSheetSet` is the sheet set of the contiguous source-face fan arc covered by the cell interior between the last positive-length incoming side segment and first positive-length outgoing side segment. Edge support spans at most its incident faces; vertex support spans the exact contiguous fan arc. The corresponding wedge certificate references are exactly the checked seam edges crossed by that fan. At a non-seam corner the set is a singleton.
+
+A seam-collinear directed side derives its incident-cell interior source face by exact chart orientation and canonical cell interior, never by source-face row or lexicographic triangle selection. Its side evidence names the exact checked seam certificate. Mid-side seam crossings are likewise published on the directed side.
+
+Face-dependent field chart, branch rotation, and sheet provenance are per wedge binding/side. A seam occurrence must not combine sheet/support selected from one face with chart/branch selected from another. Face-independent lattice phase, coordinate, and scale remain value/provenance and are not identity.
 
 ### 3.3 Occurrence identity
 
@@ -101,11 +111,12 @@ Only A6 may equate them, and only through a verified A5 owned relation.
 - one A5 cell record per accepted A4 `CellId`;
 - exactly four unique occurrence IDs per cell;
 - the four directed sides form the cell's exact ordered cycle;
-- every occurrence has exactly one cell/corner owner;
-- every owned relation has two existing, distinct typed endpoints and one typed owner/certificate reference;
-- no occurrence or relation was inferred from geometric coincidence.
+- every occurrence has exactly one cell/corner owner and one complete contiguous wedge authority;
+- every required seam crossing on a wedge or directed side names exactly one matching checked `(TopologyRegionId, SourceEdgeTopologyKey)` certificate;
+- every relation has two existing, distinct typed endpoints and satisfies its **kind-specific** owner contract: `OrdinaryFront` has no owner, HardRail/Periodic keep their accepted typed owners;
+- no occurrence, wedge, side, or relation authority was inferred from geometric coincidence or global certificate search.
 
-A5 owns fail-closed `OccurrenceConstructionFailure` codes for missing/duplicate cell ownership, missing/duplicate corner occurrence, invalid directed-side cycle, relation endpoint missing, duplicate relation declaration, unowned relation, and source-authority mismatch. A rejected A5 product is not consumable.
+A5 owns fail-closed `OccurrenceConstructionFailure` codes for missing/duplicate cell ownership, missing/duplicate corner occurrence, invalid directed-side cycle, invalid/noncontiguous wedge authority, missing/duplicate/mismatched wedge-or-side isolation evidence, relation endpoint missing, duplicate relation declaration, unowned owner-required relation, relation-kind/owner mismatch, and source-authority mismatch. The A5 HardRail structural mismatch is externally named `OccurrenceHardRailOwnerMismatch`; the transitional M5-compatible adapter alone maps it to legacy `InvalidHardRailTransport` for the frozen row140 surface. A rejected A5 product is not consumable.
 
 ## 4. Stage A6 — `SurfaceQuotientProduct`
 
@@ -113,7 +124,7 @@ A5 owns fail-closed `OccurrenceConstructionFailure` codes for missing/duplicate 
 
 **Sole producer:** `SurfaceQuotientProducer` (M6 A6).
 
-**Typed inputs:** immutable A0 source authority plus exactly one complete `SurfaceOccurrenceComplex`. A6 may look up the typed M5 relation values named by A5, but may not search for an alternative relation or synthesize a missing one.
+**Typed inputs:** immutable A0 source authority plus exactly one complete `SurfaceOccurrenceComplex`. A6 may verify only typed M5 values referenced by A5 wedge/side evidence or by the existing kind-specific HardRail/Periodic relation owners. It may not search global certificate inventory, choose an alternative certificate, reconstruct semantic authority from raw boundary paths, or synthesize a missing one.
 
 ### 4.2 Immutable output
 
@@ -149,7 +160,16 @@ The phrase **owned relation** means an `OccurrenceRelationId` explicitly publish
 
 For every A5 owned relation, A6 must record exactly one `QuotientRelationCertificate` and exactly one consumption-ledger row. Zero consumption, duplicate consumption, conflicting endpoint use, relation substitution, or consumption by an unowned relation is typed failure. This is the M6 meaning of "every owned relation is consumed exactly once" and is consistent with M5's accepted unused-valid-relation contract.
 
-### 4.5 A6 certificate and failures
+
+### 4.5 Ordinary-front sheet/evidence validation
+
+`OrdinaryFront` remains owner-less and `OccurrenceRelationId` is unchanged. For each non-seam-collinear endpoint pair, the incident directed-side near-endpoint sheet must belong to both endpoint `CornerWedgeSheetSet` values. Side-interior seam crossings are accepted only through the ordered `DirectedSideIsolationEvidence` published by A5 and exact verification of those checked certificates.
+
+For reciprocal ordinary sides collinear with an isolation seam, both side records must name the same checked seam certificate; their incident-cell interior-side sheets must be the certificate's two distinct incident sheets; and each side sheet must belong to its own endpoint wedge sets. That side-carried certificate is the authority for cross-sheet quotient equality. Disjoint singleton endpoint wedge sets are therefore legal only in this explicit collinear case.
+
+A6 records in its quotient relation certificate which wedge/side certificate references were actually verified. It never infers equality from a representative sheet.
+
+### 4.6 A6 certificate and failures
 
 `QuotientCertificate` proves the class partition is exactly the transitive closure of **verified A5 owned relations** and nothing else. `MaterializationCertificate` proves:
 
@@ -157,9 +177,10 @@ For every A5 owned relation, A6 must record exactly one `QuotientRelationCertifi
 - every output quad corner maps to the `QuotientClassId` containing that cell's corresponding `OccurrenceId`;
 - every quotient class is non-empty;
 - no class arose from coordinate/position equality;
-- every A5 owned relation appears exactly once in the relation-consumption ledger.
+- every A5 owned relation appears exactly once in the relation-consumption ledger;
+- every cross-sheet union step has the exact A5-published wedge/side certificate evidence required by §4.5.
 
-A6 owns fail-closed `QuotientConstructionFailure` codes for missing/duplicate/conflicting/nonreciprocal relation authority, unowned relation use, zero/duplicate relation consumption, invalid class partition, missing occurrence member, degenerate classed quad, and non-bijective cell-to-quad materialization. M5's accepted typed relation failures remain unweakened; M6 does not rename a valid M5 failure into success.
+A6 owns fail-closed `QuotientConstructionFailure` codes for missing/duplicate/conflicting/nonreciprocal relation authority, invalid wedge/side sheet membership, missing/invalid seam-collinear certificate evidence, unowned relation use, zero/duplicate relation consumption, invalid class partition, missing occurrence member, degenerate classed quad, and non-bijective cell-to-quad materialization. M5's accepted typed relation failures remain unweakened; M6 does not rename a valid M5 failure into success.
 
 ## 5. Stage A7 — `SourceAttachedGeometryProduct`
 
@@ -185,7 +206,7 @@ SourceAttachedGeometryProduct
 
 The vertex's semantic identity remains its `QuotientClassId`. Position is a value derived from exact source support and cannot merge, split, or rename a quotient class.
 
-A quotient class spanning multiple certified chart/sheet representations is legal only when the A5/A6 relation certificates explicitly establish that equivalence. A7 records the complete compatible source authority; it never selects a representative sheet and silently discards the others.
+A quotient class spanning multiple certified chart/sheet representations is legal only when A6's verified A5-published wedge/side evidence establishes every cross-sheet step that requires certification. `sourceIsolationSheets` is the sorted unique union of every member occurrence's `CornerWedgeSheetSet`. A7 records the complete compatible source authority and the wedge/side certificate evidence referenced by the quotient certificates; it never selects a representative sheet and silently discards the others.
 
 ### 5.3 A7 certificate and failures
 
@@ -349,11 +370,13 @@ The M6 definition is falsified by any implementation that:
 
 Any such result halts the current M6 checkpoint and returns to definition/review rather than being patched downstream.
 
-## 12. Exact bounded successor
+## 12. Original `M6-DEFN` bounded successor (historical)
 
-Exactly one successor was authorized from this frozen definition: **`M6-CP1-CB1`**. That consumed per-turn plan is now folded under `M6_Consolidated_Record.md` §2 and its folded-document index; the semantic CB1 boundary below remains the historical frozen authorization.
+The original `M6-DEFN` authorized exactly one successor: **`M6-CP1-CB1`**. That consumed per-turn plan is now folded under `M6_Consolidated_Record.md` §2 and its folded-document index; the semantic CB1 boundary below remains the historical frozen authorization.
 
 CB1 is intentionally limited to the first A5 seam: introduce content-semantic occurrence identity and a complete immutable `SurfaceOccurrenceComplex` producer, make the existing transitional materializer consume that product instead of allocating A5 occurrence authority inline, and perform the two §9 dormant-test deletions. It does **not** implement A6 quotient extraction as a new product, A7 embedding, A8 verifier, selector publication, runtime execution, or any G4 debt closure.
+
+**Current amendment authority:** §M6-DEFN-R1 below supersedes only the seam-incident sheet/certificate portions of §§3–5 and freezes exact successor `M6-DEFN-R1-REV`; the historical CB1 authorization remains provenance only.
 
 ## Review closeout
 
@@ -417,3 +440,6 @@ Runtime-free. **UPHELD WITH AMENDMENTS.** The A5/A6/A7/A8-M6 product split, the 
 | review_check.py | `boundary --expect-selector 449=d4a0d1b7… 448=70ff0860… 430=1c412850…`: **ALL CHECKS PASSED**. No product/test/build or selector mutation; durable markers 1→1, 3→3, 13→13. `ledgers --base 62b5ed26`: **ALL CHECKS PASSED**. |
 | `STATUS` lifecycle | Resume beacon first; final `COMPLETE → M6-CP1-CB1` last |
 | Pushed, in sync | Confirmed by `git status -sb` after the final push |
+## M6-DEFN-R1 seam-incident authority amendment (2026-09-25, runtime-free)
+
+This amendment supersedes only the earlier singular-sheet/relation-certificate wording described in §§3–5. It freezes the eight decisions in `Architecture_M6_DEFN_R1_Seam_Incident_Occurrence_Sheet_Authority_Definition_Record.md`: corner-wedge sheet sets; wedge/side certificate carriers; owner-less OrdinaryFront membership validation; exact seam-collinear side authority; A7 union completeness; per-wedge face/chart/branch provenance; row140 adapter placement plus duplicate-check removal; and the re-scoped CB4/TB4 7+449 gate. Identity, accepted M5 authority, selector/routing bytes, HardRail/Periodic semantic owners, stable accounting **54 / 16 / 38**, and debt 1 are unchanged. Exact successor is mandatory `M6-DEFN-R1-REV`.

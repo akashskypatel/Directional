@@ -1,109 +1,106 @@
-# M6-CP1-CB4 Relation-Owned Isolation Equivalence Code + Build Plan
+# M6-CP1-CB4 Corner-Wedge Isolation Authority Code + Build Plan
 
-> **HELD by the `M6-CP1-TB3-REV` review-agent addendum (2026-09-25). Do not execute as written.**
-> - Seam certificates cannot be derived from relations: a cross-sheet A5 endpoint pair reflects the neighbouring cell's corner wedge crossing the seam, not the relation.
-> - "Already-frozen" is an overclaim: `OrdinaryFront` has no frozen isolation owner.
-> - "Exactly one certificate" is ambiguous at seam vertices.
-> - The "Required static derivation" cannot be done runtime-free for the produced-torus fixtures.
-> - "Do not restore the rejected CB3 approach" misdescribes 3feb24ef's keyed support lookup.
-> - The plan freezes CB3's outgoing-side sheet together with the node-face lattice state, i.e. a two-face occurrence record.
->
-> `M6-DEFN-R1` re-scopes this plan (TB3 Review addendum A7). The frozen validation surface and compile gate below remain valid references.
+> **HELD pending `M6-DEFN-R1-REV`. Do not execute before that Review accepts the Definition.**
 
 **Turn:** `M6-CP1-CB4`
 **Type:** Code + Build, runtime-free
-**Predecessor:** `M6-CP1-TB3-REV`
+**Predecessor:** accepted `M6-DEFN-R1-REV` only
 **Accepted runtime authority:** `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7`, selector449 **449/449 PASS**
 **Recovery candidate basis:** `10840014758 / 660015f2f15359fd426e2c855aea9f4201c70216`
 **If compile-green successor:** `M6-CP1-TB4-EXEC`, then mandatory `M6-CP1-TB4-REV`
 
 ## Goal
 
-Correct exactly one Review-proved implementation gap: A5 must explicitly publish the accepted isolation-seam certificate authority that owns an ordinary occurrence relation when its endpoints span isolation sheets, and the transitional A6/materializer must consume that relation-owned reference. Do not infer semantic relation ownership later from front-edge/boundary-path representation traversal.
+Implement only the accepted `M6-DEFN-R1` seam-incident authority cutover: complete corner-wedge sheet/certificate authority, exact directed-side seam evidence including seam-collinear sides, per-wedge face/chart/branch provenance, and A6 consumption of those A5-published facts. Remove only the duplicate downstream relation-owner checks explicitly transferred to A5.
 
-This implements the already-frozen `SurfaceOccurrenceComplex.ownedRelations[].typed relation owner / certificate reference` obligation. It does **not** redefine A5/A6/A7 semantics.
+No generated Directional runtime is permitted in CB4.
+
+## Scope A — A5 occurrence wedge authority
+
+For every occurrence, derive and publish from accepted A4 canonical cell cycle plus exact source topology:
+
+- sorted non-empty `CornerWedgeSheetSet`;
+- ordered/per-face `CornerWedgeFaceBindings` with source-face topology identity, sheet, field chart and branch rotation;
+- `CornerWedgeIsolationEvidence` keyed by exact `(TopologyRegionId, SourceEdgeTopologyKey)` for every seam edge crossed by the wedge fan.
+
+Occurrence-wide support/identity/lattice values stay occurrence-wide. Face-dependent chart/branch/sheet values must not be taken from a single representative face.
+
+A missing, duplicate, inconsistent, noncontiguous, or uncertified required wedge authority fails closed with an `Occurrence*` A5 error.
+
+## Scope B — directed-side source/seam authority
+
+For every directed side, publish the exact incident-cell interior-side source authority and ordered isolation evidence.
+
+- Non-collinear segments use their exact source route and checked seam crossings.
+- A seam-collinear segment chooses the incident source face lying on the owning cell's interior side by exact chart orientation; the lexicographically smallest triangle may remain a representation leaf but cannot be semantic authority.
+- Reciprocal seam-collinear ordinary sides must name the same seam certificate and opposite certificate sheets.
+
+Do not infer side authority from world position, epsilons, row order, or certificate inventory size.
+
+## Scope C — A5 relation validation and compatibility naming
+
+Keep `OrdinaryFront` owner-less and keep `OccurrenceRelationId` unchanged. Preserve HardRail/Periodic owners.
+
+Rename A5's externally reported HardRail structural-owner mismatch to `OccurrenceHardRailOwnerMismatch`. Preserve selector row140's legacy `InvalidHardRailTransport` only through the transitional M5-compatible adapter mapping.
+
+Once A5 validates relation kind/owner structure, remove the duplicate structural branches for:
+
+- `MissingHardRailRelationOwner`;
+- owner-presence/equality part of `InvalidPeriodicRelationOwner`;
+- boundary-kind compatibility part of `IncompatibleAuthoritativeFrontPair`.
+
+Do not remove route/transport/content validation.
+
+## Scope D — A6 consumes only A5-published wedge/side evidence
+
+For every non-collinear ordinary endpoint pair, verify the incident side sheet belongs to both endpoint wedge sets. For side-interior seam crossings, verify exactly the A5-published ordered seam references. For seam-collinear reciprocal sides, verify the common seam certificate plus the two opposite incident-side sheets.
+
+A6 may not search global certificate inventory, infer from geometric/lattice coincidence, or reconstruct semantic authority from raw boundary-path traversal. Only verified A5 owned relations may union occurrences.
+
+A7 lineage publication must use the union of member wedge sheet sets and the certificate evidence actually verified by A6.
 
 ## Required static derivation before editing
 
-For each TB3 failing subject, trace at least one cross-sheet `OrdinaryFront` relation from:
+Record in the CB4 report:
 
-1. the two A5 `OccurrenceId` endpoints and their exact `SourceSupport` / `IsolationSheetId` values;
-2. the accepted A4/M5 source relation and checked `SurfaceIsolationSeamTransportCertificate` authority available to A5;
-3. the unique certificate identity that authorizes equality of those endpoint sheet representations;
-4. the A5 relation record that must carry that identity; and
-5. the A6/transitional consumer that verifies and consumes it exactly once.
+1. split-square v0/center/v2 wedge derivation and certificate orientation;
+2. one source-vertex fan crossing two seam edges with the same sheet pair;
+3. one seam-collinear directed side and the exact incident-cell interior-face derivation;
+4. exact old A5 → adapter → materializer failure flow for row140;
+5. exact duplicate downstream branches removed versus transport/content branches retained.
 
-Record the derivation in the CB4 report. The derivation must not use output position, lattice coincidence, output lineage, test names, selector ordinals, global certificate-count inventory, or a search for any certificate that merely makes the consumer pass.
-
-## Scope A — publish relation-owned isolation certificate authority at A5
-
-Add the minimum typed field/value needed for an `OrdinaryFront` A5 owned relation to name the exact checked isolation-seam certificate when its resolved occurrence endpoints cross sheets. Prefer semantic source authority such as the certificate's region + canonical seam identity (or an equivalent already-typed certificate reference); raw source-face rows, phase-front vector indices, and `firstFrontEdge/secondFrontEdge` remain representation leaves and are not certificate identity.
-
-Required invariants:
-
-- the existing `OccurrenceId = (CellId, canonicalCornerRole)` contract is unchanged;
-- CB3 outgoing-directed-side occurrence sheet authority is unchanged;
-- every occurrence keeps exactly one typed `IsolationSheetId` and exact `SourceSupport`;
-- relation endpoints remain the existing explicit A5 endpoint pairs;
-- a cross-sheet ordinary relation is publishable only when exactly one already-accepted typed certificate authority proves that equivalence for the relation; zero or ambiguous authority fails closed with a typed A5 error;
-- HardRail and Periodic relation owners remain unchanged;
-- geometric position, lattice equality, certificate inventory size and downstream output state are forbidden as owner selectors.
-
-Do not broaden A5 by copying the whole certificate table into every relation. Publish only the exact owner/reference needed by that relation.
-
-## Scope B — consume only the A5 relation-owned reference
-
-At the transitional A6/materializer seam, construct ordinary equivalence provenance from the verified A5 relation-owned certificate reference. Verify that the named certificate exists exactly once, belongs to the relation's topology region, has the endpoint sheet pair required by the relation, and satisfies its already-checked reciprocal transport contract before union.
-
-The existing `isolationSeamsByFrontEdge` / `boundaryPaths[*].entryRoute` traversal may remain only as representation validation or diagnostic evidence if useful; it may **not** be the semantic source of relation isolation-equivalence ownership. Do not restore the rejected CB3 approach that augments a relation from all available isolation certificates.
-
-Only verified A5-owned relations may union occurrences. Final `sourceIsolationSheets` must continue to come from actual quotient members, sorted/unique, with no representative-sheet collapse.
-
-## Falsifier and stop rule
-
-**Stop and return to Review/Definition without a speculative semantic patch** if any of these occurs:
-
-- the accepted A4/M5 authority cannot uniquely identify the certificate that owns a cross-sheet A5 relation;
-- satisfying the gate would require changing occurrence identity, outgoing-side sheet assignment, exact source support or quotient equality;
-- the only available implementation requires A6 to search global certificate inventory or infer an owner from geometry/position;
-- a frozen A5/A6 semantic statement must be changed rather than merely implemented.
-
-A new typed failure used to reject zero/ambiguous owner authority is allowed; weakening a current accepted failure or accepting uncertified cross-sheet union is not.
+If any derivation is not unique from typed source authority, stop for Review/Definition.
 
 ## Frozen validation surface
 
-Do not modify tests, fixtures, selector449, routing449, or focused identities. Preserve:
+Existing tests/fixtures and selector/routing files stay unchanged. Preserve exact selector449 LF SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414` and routing449 SHA-256 `9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707`.
 
-- selector449 SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`, exactly 449 LF rows;
-- routing449 SHA-256 `9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707`;
-- focused order:
-  1. `M6CP1.SurfaceOccurrenceComplexPublishesFourSemanticCornersPerCell`
-  2. `M6CP1.SourceFaceRowPermutationPreservesOccurrenceIdentity`
-  3. `M6CP1.SurfaceOccurrenceComplexRejectsMalformedMissingAndDuplicateRelationEndpoints`
-  4. `M6CP1.CoincidentUnrelatedOccurrencesRemainDistinct`
-  5. `SurfaceCellTransitionQuotient.MultiIsolationMaterializationRetainsAllLocalSheets`
-  6. `M5CP3.ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection`
+Frozen focused order for TB4:
 
-Preserve row140's recovered `InvalidHardRailTransport` behavior and the clean by-value iterator-range correction. No benchmark semantic adaptation is authorized.
+1. `M6CP1.SurfaceOccurrenceComplexPublishesFourSemanticCornersPerCell`
+2. `M6CP1.SourceFaceRowPermutationPreservesOccurrenceIdentity`
+3. `M6CP1.SurfaceOccurrenceComplexRejectsMalformedMissingAndDuplicateRelationEndpoints`
+4. `M6CP1.CoincidentUnrelatedOccurrencesRemainDistinct`
+5. `SurfaceCellTransitionQuotient.MultiIsolationMaterializationRetainsAllLocalSheets`
+6. `M5CP3.ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection`
+7. **new in CB4:** `M6CP1.SeamEndpointOccurrencesPublishCompleteCornerWedgeSheetAuthority`
+
+The new identity must assert at least split-square v0 and v2 `{0,1}` authority plus their exact wedge seam-certificate orientations. Do not weaken existing focused identities to make the new contract pass.
+
+## Falsifier and stop rule
+
+Stop without a speculative patch if implementation would require any of the following: representative-face occurrence authority; global certificate search; geometric/lattice welding; relation-owned isolation owner for OrdinaryFront; change to `OccurrenceId`, `CellId`, `QuotientClassId`, relation-only equality, HardRail/Periodic owner semantics, selector449/routing449, or any existing test/fixture; or weakening row140 transport semantics.
 
 ## Compile/package gate
 
-After the smallest semantic patch, compile/package exactly the standard eight targets through `.github/workflows/agent-compile-reusable.yml` with mandatory GMP/GMPXX authority:
+Compile/package exactly the standard eight targets through `agent-compile-reusable.yml` with mandatory GMP/GMPXX: `directional_core`, `directional_pipeline`, `directional_surface_cell_authority_kernel_tests`, `directional_surface_cell_producer_tests`, `directional_surface_cell_completion_tests`, `directional_surface_cell_validation_tests`, `directional_compiled_api_tests`, `directional_benchmarks`.
 
-`directional_core`, `directional_pipeline`, `directional_surface_cell_authority_kernel_tests`, `directional_surface_cell_producer_tests`, `directional_surface_cell_completion_tests`, `directional_surface_cell_validation_tests`, `directional_compiled_api_tests`, `directional_benchmarks`.
-
-Require `DIRECTIONAL_ENABLE_GMP=ON`, generated link evidence for both `gmpxx` and `gmp`, `exactArithmeticBackend=GMP`, clean source receipts, complete recursive manifest and `runtimeExecution=false`. Code + Build may run static/compile-time checks only; no Directional tests, benchmarks, discovery, CLI/help/version or other generated runtime.
+Require `DIRECTIONAL_ENABLE_GMP=ON`, generated link evidence for `gmpxx` and `gmp`, `exactArithmeticBackend=GMP`, clean source receipts, complete recursive manifest and `runtimeExecution=false`. No Directional test, benchmark, discovery, CLI/help/version, or other generated runtime may execute.
 
 ## TB4 pre-registration
 
-If compile/package is green, `M6-CP1-TB4-EXEC` consumes the exact artifact immutably and executes the unchanged **six focused + selector449 = 455** fresh exact-filter processes, in the frozen order, exact-one selection, zero skips and benchmark 0.
+Compile-green advances to immutable `M6-CP1-TB4-EXEC`, consuming the exact artifact with **7 focused + selector449 = 456 fresh exact-filter processes**, exact-one selection, zero skips, benchmark 0, then exact immutable postflight.
 
-Recovery-green is **455/455 PASS** with exact immutable postflight. In particular:
+Recovery-green is **456/456 PASS** and includes: no `OccurrenceInvalidCornerAuthority`; v0/v2 complete wedge authority; selector row140 PASS with legacy `InvalidHardRailTransport` surface; selector ordinals 186/214/239/444/446/448 recovered; focused multi-isolation lineage complete; pair-swap PASS.
 
-- no `OccurrenceInvalidCornerAuthority` anywhere;
-- selector row140 remains PASS under `InvalidHardRailTransport`;
-- selector ordinals **186, 214, 239, 444, 446, 448** recover;
-- focused multi-isolation reaches and proves at least one legitimate multi-sheet quotient lineage with relation equivalence evidence;
-- focused pair-swap PASSes.
-
-A mechanically valid RED is preserved and sent directly to mandatory `M6-CP1-TB4-REV`; do not repair or rerun inside TB4. CB4 alone grants no promotion, stable-event recovery, CP1 closure or debt credit.
+Any mechanically valid RED is preserved and routed directly to mandatory `M6-CP1-TB4-REV`; TB4 does not repair or rerun. CB4 grants no promotion, stable-event recovery, CP1 closure, or debt credit.

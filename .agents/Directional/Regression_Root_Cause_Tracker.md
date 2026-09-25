@@ -1,3 +1,17 @@
+## `M6-DEFN-R1` definition disposition — no new runtime event (2026-09-25)
+
+**Stable accounting remains 54 events / 16 categories / 38 recurrences; debt 1.** This runtime-free turn resolves the semantic repair model for the existing TB3 `RP-01 / AUTHORITY_DOMAIN_CONFLATION` event without adding a candidate or recurrence.
+
+- Root authority: seam-incident occurrence isolation is the **cell corner wedge**, not one selected node/outgoing face and not an OrdinaryFront relation owner.
+- Carrier: checked isolation evidence is keyed by `(TopologyRegionId, SourceEdgeTopologyKey)` on the wedge or directed side that crosses/is collinear with the seam.
+- Provenance: face-dependent sheet/chart/branch values are per wedge binding; no mixed outgoing-face/node-face occurrence record.
+- Seam-collinear side: exact incident-cell interior source face from chart orientation, never the lexicographic triangle tie-break.
+- A7: `sourceIsolationSheets` is the sorted union of member wedge sheet sets.
+- Row140: legacy `InvalidHardRailTransport` naming is adapter-only; duplicate downstream structural owner checks are scheduled for removal while transport-content checks remain.
+- Process-only recurrence (+0): this turn repeated existing `M6-DEFN-OBS-01` by choosing snapshot read mode late; decisive analysis was re-derived from verified snapshot `63330339…`. Existing policy/lesson coverage is sufficient.
+
+Exact successor: mandatory runtime-free `M6-DEFN-R1-REV`; re-scoped CB4 stays held.
+
 ## 2026-09-25 — `M6-CP1-TB3-REV` review-agent addendum: CB3's outgoing-side sheet is a representative choice; the relation is the wrong certificate carrier — **ACCOUNTING UPHELD 54/16/38 / ROOT CAUSE CORRECTED / CB4 HELD / NEXT `M6-DEFN-R1`**
 
 **Stable totals stay 54 events / 16 categories / 38 recurrences; project debt stays 1 (M6).** Independently re-derived:
