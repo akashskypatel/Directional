@@ -1,0 +1,3 @@
+turn=M6-DEFN-R1
+requested_base_sha=4ab491afd48238d56b76d42d82572ab3f29f488e
+purpose=exact source snapshot for ChatGPT Web session
