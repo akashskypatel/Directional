@@ -1,0 +1,3 @@
+M6-CP1-CB5 source snapshot trigger
+Purpose: freeze exact start-of-turn source for local inspection
+Retry: 0
