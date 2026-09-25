@@ -1,4 +1,21 @@
-## Resume-critical update — `M6-CP1-CB4` BLOCKED on missing per-face branch authority (2026-09-25)
+## Resume-critical update — `M6-CP1-CB4` UNBLOCKED by RA-11: resume the same turn (2026-09-25T09:41:20Z)
+
+**Resume `M6-CP1-CB4`.** This is the same turn: keep `Started at 2026-09-25T06:19:30Z` and set a new `Resumed at`. It is not a new turn, and no Definition turn is pending.
+
+The per-face branch blocker is **resolved by review-agent amendment RA-11**. The blocker's facts are upheld. Its two proposed directions (an A4 product change, or deriving the branch) are unnecessary, because **nothing consumes a per-face branch**. The only A5-A7 reader of an occurrence branch is the transitional class key. Relation transport checks use A4 edge/endpoint lattice states.
+
+RA-11 in brief:
+- `CornerWedgeFaceBinding` = `(face, sheet, chart)`, with no branch.
+- Each occurrence publishes `CornerPlacementProvenance`: the A4 corner `LocalLatticeState` verbatim, labelled with its A4 selected corner face. This is placement provenance only; the periodic builder leaves its branch at `0`.
+- Class key = binding signatures + coordinate + scale + labelled placement provenance.
+- Representative key has no branch.
+- Stop rule: if CB4 finds another consumer that needs a wedge-face branch, stop and return to Review.
+
+Normative text is at the end of `Architecture_M6_Frozen_Definitions.md`. Evidence is in `Architecture_M6_CP1_CB4_Per_Face_Branch_Authority_Blocker.md`, "Review-agent adjudication". No A4 or test change, and TB4 stays 7 + 449 = 456. Accounting 54/16/38, debt 1.
+
+## Superseded resume notes (historical — do not act on)
+
+### `M6-CP1-CB4` BLOCKED on per-face branch authority (2026-09-25) — RESOLVED by RA-11
 
 **Do not continue CB4 implementation or start TB4. No production/test patch or compile candidate was created.**
 
@@ -10,7 +27,7 @@ Static derivation against exact source snapshot run/artifact `36104814370 / 1085
 - Required resolution: a bounded Definition amendment must either preserve A4-computed per-face branch authority in an authorized A4 product field, or redefine the binding branch value so it is derivable from existing A4 products with proofs for uniform, periodic-chart and bounded-disk producers.
 - **No authorized successor turn ID is frozen yet.** Repository `STATUS` is BLOCKED with successor `UNKNOWN`; do not invent a Definition turn identifier.
 
-## Resume-critical update — exact next turn is `M6-CP1-CB4` (recovery reconciliation, 2026-09-25T06:15:13Z)
+### Recovery reconciliation — CB4 not started (2026-09-25T06:15:13Z)
 
 **Start `M6-CP1-CB4` as a new runtime-free Code + Build turn. Nothing is held; no definition or review turn is pending.**
 
@@ -27,8 +44,6 @@ Static derivation against exact source snapshot run/artifact `36104814370 / 1085
 
   The CB4 plan's status is **AUTHORIZED**. Its RA block overrides any older "HELD" wording in that file.
 - **Unchanged:** stable accounting **54 / 16 / 38**, debt 1; accepted runtime authority `10814505512 / e284fea7...` under selector449 449/449; candidate `10840014758 / 660015f2...` unpromoted.
-
-## Superseded resume notes (historical — do not act on)
 
 ### `M6-DEFN-R2` COMPLETE (2026-09-25)
 
@@ -98,16 +113,21 @@ Review must independently re-open source/evidence and re-derive: split-square v0
   - resolver-defined span support (1e-8);
   - transitional `quotientClass` unchanged.
 
+- **RA-11** (CB4 blocker resolution): wedge bindings are `(face, sheet, chart)` with no branch; the A4 corner `LocalLatticeState` is published verbatim as face-labelled `CornerPlacementProvenance`; no A4 product change.
+
 Accepted runtime authority is unchanged: M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7`, selector449 **449/449 PASS**. TB3 candidate `10840014758 / 660015f2...` remains unpromoted. Stable accounting is **54 events / 16 categories / 38 recurrences**, debt **1**.
 
 ## Exact next turn
 
-**`M6-CP1-CB4`** — runtime-free Code + Build under `Architecture_M6_CP1_CB4_Relation_Owned_Isolation_Equivalence_Code_Build_Plan.md` (AUTHORIZED), as amended by RA-1 – RA-10. Compile-green → immutable `M6-CP1-TB4-EXEC` (7 focused + selector449 = **456** fresh exact-filter processes, benchmark 0) → mandatory `M6-CP1-TB4-REV`.
+**`M6-CP1-CB4` (resume, same turn)** — runtime-free Code + Build under `Architecture_M6_CP1_CB4_Relation_Owned_Isolation_Equivalence_Code_Build_Plan.md` (AUTHORIZED), as amended by RA-1 – RA-11. Compile-green → immutable `M6-CP1-TB4-EXEC` (7 focused + selector449 = **456** fresh exact-filter processes, benchmark 0) → mandatory `M6-CP1-TB4-REV`.
 
-**Entry.** Follow lesson 178, and treat this as a fresh turn:
-1. List origin commits, Actions runs and Drive staging for `M6-CP1-CB4`. None existed at recovery.
-2. Write the `M6-CP1-CB4 / IN_PROGRESS` beacon (new `Started at`) as the first repository write.
+**Entry (resume).** Follow lesson 178:
+1. List this turn's commits, Actions runs and Drive staging.
+   - The only CB4 commits so far are docs, beacon and ops: the start snapshot `36104814370 / 10850013454` and the blocker-docs apply.
+   - No production/test patch or compile candidate exists.
+2. Write `M6-CP1-CB4 / IN_PROGRESS`, preserving `Started at 2026-09-25T06:19:30Z` with a new `Resumed at`, as the first repository write.
 3. Freeze `READ_MODE=snapshot` before reading documents.
+4. Apply RA-11 when building wedge bindings, the class key and the representative key.
 
 **Recommended work order.** This is a single coherent patch, ordered by dependency; the plan's stop rules still apply.
 1. **Static derivations first,** recorded in the CB4 report:
@@ -149,7 +169,8 @@ Accepted runtime authority is unchanged: M5 package/source `10814505512 / e284fe
 ## Current files
 
 - `.agents/Directional/Architecture_M6_CP1_CB4_Relation_Owned_Isolation_Equivalence_Code_Build_Plan.md` (AUTHORIZED implementation plan; filename historical)
-- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` (normative; RA-1 – RA-10 at the end)
+- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` (normative; RA-1 – RA-11 at the end)
+- `.agents/Directional/Architecture_M6_CP1_CB4_Per_Face_Branch_Authority_Blocker.md` (blocker + RA-11 adjudication)
 - `.agents/Directional/Architecture_M6_DEFN_R2_Review_Record.md` (acceptance + RA rationale)
 - `.agents/Directional/Architecture_M6_DEFN_R2_Seam_Incident_Authority_Amendment_Definition_Record.md`
 - `.agents/Directional/Architecture_M6_DEFN_R1_Seam_Incident_Occurrence_Sheet_Authority_Definition_Record.md`
@@ -167,7 +188,8 @@ load_next:
   - turn-based-coding-agent/references/turns/CODE_BUILD.md
   - .agents/Directional/Architecture_M6_CP1_CB4_Relation_Owned_Isolation_Equivalence_Code_Build_Plan.md
   - .agents/Directional/Architecture_M6_DEFN_R2_Review_Record.md
-  - .agents/Directional/Architecture_M6_Frozen_Definitions.md  # RA section at end is normative
+  - .agents/Directional/Architecture_M6_Frozen_Definitions.md  # RA-1..RA-11 at end are normative
+  - .agents/Directional/Architecture_M6_CP1_CB4_Per_Face_Branch_Authority_Blocker.md  # RA-11 adjudication
   - .agents/Directional/Architecture_M6_DEFN_R2_Seam_Incident_Authority_Amendment_Definition_Record.md
 conditional_modules:
   - trigger: github_connector / GitHub Actions / patch transport

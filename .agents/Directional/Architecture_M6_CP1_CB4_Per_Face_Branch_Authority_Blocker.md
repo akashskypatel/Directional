@@ -67,3 +67,47 @@ Until that decision is frozen and reviewed, no CB4 source/test patch or compile 
 ## Accounting
 
 This is a static definition/authority gap, not a runtime regression. It adds no stable event/category/recurrence and does not alter the accepted M5 runtime authority, selector449, routing449, or produced-witness debt.
+
+## Review-agent adjudication and resolution — RA-11 (2026-09-25)
+
+**Disposition: BLOCKER FACTS UPHELD / RESOLVED BY NARROWING D6 (RA-11) / NO A4 CHANGE / CB4 UNBLOCKED — resume the same turn.**
+
+### Blocker facts re-verified
+
+- **Snapshot.** Artifact `10850013454` digest is `ff39ad51...bb12`, and `git diff 660015f2 a304bd0b -- src include tests` is empty.
+- **Fact 2 upheld.** A4 publishes one `LocalLatticeState` per corner. Its own header documents `branchRotation` as "local branch index that represents the domain +U lattice direction" and `sourceChart` as owned by "this point's *selected* source face" (`SurfaceCellTracing.h:1267-1275`). It is cut-domain placement data for a selected face, not per-face field authority.
+- **Facts 4-6 upheld.** The materializer's `sourceTransitionByTopology` maps edges only to `InteriorTransitionId` indices (`RemeshPipeline.cpp:3568-3576`). Quarter-turn matching exists only inside the `entryRoute` of segments that actually traverse an edge (`SurfaceCellTracing.cpp:11473-11515`). A fan face that no side traverses has no derivable branch.
+- **Additional fact: corner branch meaning differs by builder.** Uniform uses the selected face's `frame.faceBranchRotation` (`:12094-12095`). Bounded-disk uses the face branch plus `chartUBranch` (`:16324-16326`). The periodic-annulus builder never assigns it, so it stays at the default `0` (`:13749-13767`).
+
+### What the blocker missed: nothing consumes a per-face branch
+
+The only A5/A6/A7 reader of an occurrence's branch is the transitional class key (`QuotientDomainState`, `RemeshPipeline.cpp:4427-4432`).
+- Relation transport checks read **A4** edge and endpoint lattice states, not A5 occurrences: `lattice_equal` at `:3502-3511` and `action_matches` / `relation_action_matches` at `:4034-4053`.
+- Lineage, A7 geometry and the completion hash do not read an occurrence branch.
+- No test asserts an occurrence branch. All test uses at `SurfaceCellTransitionQuotientTests.cpp:3344-3521` concern A4/M5 periodic endpoint states.
+
+D6's per-face `branchRotation` was therefore an over-specification. Its purpose was to forbid a record that **presents** one face's sheet/chart with another face's branch. It never needed a branch for every wedge face.
+
+### RA-11 (normative; frozen at the end of `Architecture_M6_Frozen_Definitions.md`)
+
+1. `CornerWedgeFaceBinding` is `(sourceFaceTopology, IsolationSheetId, SourceProjectionChart)`, with **no `branchRotation`**. Sheet and chart are derivable for every wedge face from the source topology regions and `SourceChartTransitionGraph::chart(face)`.
+2. Each occurrence also publishes a **`CornerPlacementProvenance`**: the A4 corner `LocalLatticeState` copied verbatim (phase, lattice coordinate, `branchRotation`, scale, `sourceChart`), **labelled with the A4 selected corner face** (the topology key of `cell.corners[c].face`).
+   - It is A4 cut-domain placement provenance, with builder-specific branch meaning.
+   - It is not wedge authority, and no A5/A6/A7 rule may read its branch as the branch of any wedge face.
+   - This mirrors the existing A4 pattern of pairing a branch with its face (`SurfacePeriodicRelationEndpointBranchAuthority{localFace, localFaceBranchRotation}`, `SurfaceCellTracing.h:1427-1435`).
+3. **Transitional class key** (replaces the R2 §4.2 tuple): region, the complete ordered binding signatures, lattice coordinate, scale, and the labelled placement provenance `(selected-face topology, branchRotation, sourceChart)`. All occurrences at a node share the A4 corner point, so this keeps M5's branch discrimination (e.g. periodic copies) without fragmenting classes. The `quotientClass` ordinal stays as in RA-10.
+4. **Representative key** (R2 §4.3): exact support, complete binding signatures, then `OccurrenceId`. No branch.
+5. D6's "no mixed-face record" now means: every face-dependent value is published together with the face it is expressed in. Wedge bindings carry `(face, sheet, chart)`; placement provenance carries `(selected face, branch, chart)`. CB3's `SourceProjectionChart(lattice.sourceChart, topology_for_row(F_out))` construction is forbidden.
+6. **Stop rule.** If CB4's static derivation finds any A5/A6/A7 consumer, other than the transitional class key, that needs a wedge-face branch, stop and return to Review. That would be the trigger for the rejected A4 option below.
+
+### Rejected alternatives
+
+- **Add a per-face branch table to the A4 product.** This is a schema change to an accepted M5 product with no current consumer. It would also first require defining what "branch" means uniformly, since the periodic builder leaves it unset. Deferred until a stage (A8/M7) actually needs it; that is RA-11.6's trigger.
+- **Derive a per-face branch from existing products.** Impossible for untraversed fan faces (facts 4-6).
+- **Repeat the corner branch on every binding.** This is exactly the face mixing D6 forbids.
+
+### Effect on CB4
+
+- CB4 resumes **the same turn** (`M6-CP1-CB4`, preserved `Started at 2026-09-25T06:19:30Z`, new `Resumed at`). It is not a new turn and not a Definition turn.
+- The plan, RA-1 – RA-10 and TB4 (7 + 449 = 456) are otherwise unchanged. The seventh identity asserts no branch, so it is unaffected.
+- Accounting stays 54 / 16 / 38, debt 1, +0.

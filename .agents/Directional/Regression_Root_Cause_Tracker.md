@@ -1,3 +1,15 @@
+## 2026-09-25 — `M6-CP1-CB4` static blocker resolved by RA-11 — **+0 EVENTS / 54/16/38 / debt 1 / CB4 RESUMES**
+
+- **Blocker (upheld):** D6/R2 required a per-face `branchRotation` in every `CornerWedgeFaceBinding`, but A4 has no per-face field branch for untraversed wedge-fan faces:
+  - one selected-face `LocalLatticeState` per corner (`SurfaceCellTracing.h:1267-1275`);
+  - `sourceTransitionByTopology` holds only `InteriorTransitionId` (`RemeshPipeline.cpp:3568-3576`);
+  - builder-specific branch meaning; periodic leaves it `0` (`:13749-13767`).
+- **Resolution:** RA-11 narrows D6. The sole A5-A7 reader of an occurrence branch is the transitional class key (`:4427-4432`); transport checks use A4 states (`:3502-3511`, `:4034-4053`).
+  - Bindings are `(face, sheet, chart)`.
+  - The A4 corner state becomes face-labelled `CornerPlacementProvenance`.
+  - No A4 change.
+- Static definition gap only; no runtime event.
+
 ## 2026-09-25 — `M6-DEFN-R2-REV`: definition accepted with ten review amendments — **+0 EVENTS / 54/16/38 / debt 1 / NEXT `M6-CP1-CB4`**
 
 - **Upheld:** B1 evidence-only `CornerWedgeIsolation` (consumers are kind-gated and front edges guarded); B2 binding rules; the B3 orientation premise, proved per builder; B4 one-to-one failures; P1/P2.

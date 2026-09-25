@@ -1,6 +1,6 @@
 # M6 Frozen Definitions — Occurrence, Quotient, Embedding, Independent Verification
 
-**Status:** FROZEN / `M6-DEFN-R2-REV` ACCEPTED WITH REVIEW AMENDMENTS RA-1 – RA-10 (see the end of this document and `Architecture_M6_DEFN_R2_Review_Record.md`) / EXACT NEXT = `M6-CP1-CB4` / EARLIER: FROZEN CANDIDATE / `M6-DEFN-R2` COMPLETE / RUNTIME-FREE / B1-B4 + P1-P4 amended and frozen for mandatory independent `M6-DEFN-R2-REV`; CB4 remains HELD / exact next = `M6-DEFN-R2-REV`.
+**Status:** FROZEN / `M6-DEFN-R2-REV` ACCEPTED WITH REVIEW AMENDMENTS RA-1 – RA-10, plus **RA-11** (review-agent resolution of the CB4 per-face branch blocker; see the end of this document) / CB4 UNBLOCKED (see the end of this document and `Architecture_M6_DEFN_R2_Review_Record.md`) / EXACT NEXT = `M6-CP1-CB4` / EARLIER: FROZEN CANDIDATE / `M6-DEFN-R2` COMPLETE / RUNTIME-FREE / B1-B4 + P1-P4 amended and frozen for mandatory independent `M6-DEFN-R2-REV`; CB4 remains HELD / exact next = `M6-DEFN-R2-REV`.
 **Date:** 2026-09-25
 **Definition authority:** this record is the normative M6 contract for A5 occurrence creation, A6 quotient construction/materialization, A7 source-attached geometry embedding, and the M6 structural portion of A8 independent verification. It refines `DESIGN.md` §14 M6 without changing accepted M5 producer semantics or pulling M7 disposition/degradation work forward.
 
@@ -59,7 +59,8 @@ SurfaceOccurrenceComplex
     exact SourceSupport
     TopologyRegionId
     CornerWedgeSheetSet              // sorted, unique, non-empty
-    CornerWedgeFaceBindings[]        // ordered contiguous fan; per-face sheet/chart/branch
+    CornerWedgeFaceBindings[]        // ordered contiguous fan; per-face (face, sheet, chart); no branch (RA-11)
+    CornerPlacementProvenance        // A4 corner LocalLatticeState verbatim + its selected-face label; placement only (RA-11)
     CornerWedgeIsolationEvidence[]   // exact (region,seam-edge) refs + traversal orientation
     face-independent lattice phase / coordinate / scale provenance
   ownedRelations[]
@@ -496,4 +497,16 @@ The frozen-test audit covers focused rows 5/6, selector rows 186/214/239/444/446
 - **RA-8 — wedge arc.** The arc endpoints are the interior faces of the incoming side's last support span and the outgoing side's first support span: RA-1 for collinear spans, otherwise the face containing the span's open interior. The arc runs counter-clockwise in source winding from the outgoing face to the incoming face around the corner support. Recorded transition orientation stays incoming → outgoing (v0 `1→0`, v2 `0→1`).
 - **RA-9 — span support.** Span support is defined by `SurfacePointSourceSupportResolver` (barycentric tolerance `1e-8`) applied to the span's open-interior midpoint and both endpoints. The span is collinear with an edge iff the midpoint resolves to that `SourceEdgeSupport` and the endpoints resolve within that edge's closure. The builder tie-break tolerance plays no part.
 - **RA-10 — transitional `QuotientClassId`.** CB4 keeps the transitional ordinal in `lineage.quotientClass` and its hash unchanged in representation. Only the class-key tuple feeding it changes (complete binding signatures). The member-set `QuotientClassId` (§4.3) is realized at A6 extraction, not in CB4.
+
+## RA-11 — per-face branch authority (normative, 2026-09-25, review-agent resolution of the CB4 blocker)
+
+Rationale and evidence: `Architecture_M6_CP1_CB4_Per_Face_Branch_Authority_Blocker.md`, section "Review-agent adjudication". This amends D6, R2 §4.1-§4.3 and RA-10's class-key tuple.
+
+1. `CornerWedgeFaceBinding` = `(sourceFaceTopology, IsolationSheetId, SourceProjectionChart)`. It has **no `branchRotation`**.
+2. Each occurrence publishes `CornerPlacementProvenance`: the A4 corner `LocalLatticeState` verbatim (phase, coordinate, `branchRotation`, scale, `sourceChart`), labelled with the A4 selected corner face (`cell.corners[c].face` topology key).
+   - It is placement provenance only, with builder-specific branch meaning; the periodic builder leaves it `0`.
+   - No A5/A6/A7 rule may read it as the branch of any wedge face.
+3. Transitional class key = region + complete ordered binding signatures + lattice coordinate + scale + labelled placement provenance `(selected-face topology, branchRotation, sourceChart)`. Representative key = exact support + binding signatures + `OccurrenceId`.
+4. "No mixed-face record" means every face-dependent value is published together with the face it is expressed in. Pairing the selected face's `sourceChart` with another face's topology is forbidden.
+5. Stop rule: any A5/A6/A7 consumer needing a wedge-face branch returns CB4 to Review. That consumer would trigger an A4 product amendment to publish per-face branch authority. That amendment is rejected for now: no consumer needs it, and the builders have no uniform meaning for the branch.
 

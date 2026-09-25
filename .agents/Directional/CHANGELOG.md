@@ -1,3 +1,15 @@
+## 2026-09-25 — `M6-CP1-CB4` per-face branch blocker resolved by review amendment RA-11
+
+- Re-verified the CB4 blocker (snapshot `10850013454` digest `ff39ad51`, source equivalent to `660015f2`). A4 cannot supply a per-face branch for untraversed wedge-fan faces, and the periodic builder leaves the corner branch `0`.
+- Found no consumer for the field: the only A5-A7 reader of an occurrence branch is the transitional class key, relation transport uses A4 edge/endpoint states, and no test asserts an occurrence branch.
+- Froze RA-11:
+  - `CornerWedgeFaceBinding` = (face, sheet, chart);
+  - `CornerPlacementProvenance` = A4 corner `LocalLatticeState` verbatim plus its selected-face label (placement only);
+  - class key uses the labelled provenance; the representative key has no branch;
+  - stop rule for any new branch consumer.
+- Rejected an A4 per-face branch table, derivation, and a repeated corner branch.
+- Updated the blocker record (adjudication), frozen defs, CB4 plan, handoff, ORIENTATION, TODO, consolidated record and tracker. CB4 resumes the same turn; TB4 456; accounting 54/16/38, debt 1.
+
 ## 2026-09-25 — `M6-DEFN-R2-REV` recovery reconciliation: CB4 confirmed not started; handoff made unambiguous
 
 - The operator loop recorded `CHAT_UNKNOWN` after an implementation session opened at 05:40:26Z, before the Review's COMPLETE beacon (05:42:01Z). Verified that no `M6-CP1-CB4` commits, Actions runs (latest `36097522915`, 05:11Z) or Drive staging patches exist.

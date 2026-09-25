@@ -1,3 +1,12 @@
+## Currency — `M6-CP1-CB4` unblocked by RA-11; resume CB4 (2026-09-25 UTC)
+
+CB4 stopped on a real gap: A4 publishes no per-face field branch for untraversed corner-fan faces. The review agent resolved it by **narrowing D6 (RA-11)** instead of widening A4. Nothing in A5-A7 consumes a per-face branch; the only reader is the transitional class key.
+- Wedge bindings are `(face, sheet, chart)`.
+- The A4 corner `LocalLatticeState` is published verbatim as face-labelled `CornerPlacementProvenance` (placement only; the periodic builder leaves its branch at `0`).
+
+Resume the same CB4 turn; TB4 stays 7 + 449 = 456.
+
+### Superseded currency note
 ## Currency — `M6-DEFN-R2-REV` complete; exact next `M6-CP1-CB4` (2026-09-25 UTC)
 
 The review agent accepted `M6-DEFN-R2` with review amendments RA-1 – RA-10 (`Architecture_M6_DEFN_R2_Review_Record.md`). Each amendment closes a place where a literal CB4 implementation would fail a frozen gate: boundary-collinear perimeter sides, P3/P4 keyed on vertex category (torus rail nodes), a face-row-dependent `hash_completion` in the permutation clause, focused row3's `UnownedRelation`, lineage-sheet widening by side transitions, the stale `crossesSheets` guard, wedge-arc endpoints and direction, resolver tolerance, and the transitional `quotientClass`. CB4 is authorized under the amended plan; TB4 = 7 + 449 = 456.
@@ -228,7 +237,7 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M6-CP1-CB4` — NEXT / RUNTIME-FREE CODE + BUILD under the RA-amended plan.** Implement R2 as amended by RA-1 – RA-10, compile the standard eight GMP targets, and write the seventh identity with RA-4 semantic permutation checks. Then TB4 7 + 449 = 456 and mandatory Review.
+1. **`M6-CP1-CB4` — NEXT (RESUME SAME TURN) / RUNTIME-FREE CODE + BUILD under RA-1 – RA-11.** RA-11 resolved the per-face branch blocker: bindings are `(face, sheet, chart)` and the A4 corner lattice state is face-labelled placement provenance. Implement R2 as amended by RA-1 – RA-10, compile the standard eight GMP targets, and write the seventh identity with RA-4 semantic permutation checks. Then TB4 7 + 449 = 456 and mandatory Review.
    *(Completed: `M6-DEFN-R2-REV`, accepted with amendments; original scope:)* Re-open R2 source/evidence and independently falsify or accept:
    - **B1:** put wedge evidence into `PureQuadVertexLineage::equivalences` so frozen row5 holds at v0/v2, and have the seventh identity assert lineage;
    - **B2:** a binding-selection rule per face-dependent consumer (transitional class key/`QuotientClassId` ordinal, `representative_key`, selected-path charts and components, `sourceCharts`);
@@ -259,6 +268,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 11. **Rows16/17 (selector448 ordinals 446/447) pin inverse canonical storage — RECORDED / NOT FIRING (`M5-CP3-TB1-R16-REV-OBS-02`).** Keep the inverse-storage pin; if a representation-only change fires it, classify as test-authority drift and supply a witness still exercising inverse storage (`LESSONS.md` 171).
 
 ## 8. Recurring defect patterns
+
+**Before widening an upstream product to satisfy a definition field, check that some consumer needs the field — CB4 blocker / RA-11.** D6 required a per-face `branchRotation` in every wedge binding, and A4 could not supply it for fan faces that no side traverses. The only reader of an occurrence branch was the transitional class key, so the fix was to narrow the field, not to change an accepted A4 product.
 
 **A definition rule scoped to the interior case silently fails the boundary cases of its own witness — `M6-DEFN-R2-REV`.** R2's interior-face rule required two incident faces, but the split-square witness has eight boundary-collinear sides. P3's "excluded" collided with the codebase term for rail vertices, which are lattice nodes on the torus. A "structural hash" permutation clause pointed at a hash of face rows. Each would have failed a frozen gate under a literal implementation (lesson 180 applies).
 

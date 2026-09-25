@@ -1,3 +1,9 @@
+## 2026-09-25 — M6 CB4 unblocked: the missing per-face value turned out to be unneeded
+
+- CB4 stopped because the definition asked for a per-face branch value that the upstream product doesn't provide for every face.
+- Review found nothing uses that value. The definition now drops it and records the upstream per-corner value as labelled provenance, so no upstream product change is needed.
+- CB4 resumes; the test plan (456) and accounting (54/16/38, debt 1) are unchanged.
+
 ## 2026-09-25 — M6 definition accepted with review corrections; implementation (CB4) unblocked
 
 - The second seam-sheet definition is accepted. The review fixed ten places where a literal implementation would have failed an existing gate.

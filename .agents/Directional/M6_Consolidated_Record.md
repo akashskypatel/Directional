@@ -1,6 +1,6 @@
 # M6 Consolidated Record
 
-**Status:** M6 ACTIVE / `M6-DEFN-R2-REV` accepted R2 with review amendments RA-1 – RA-10 / candidate unpromoted / stable 54/16/38, debt 1 / exact next `M6-CP1-CB4`
+**Status:** M6 ACTIVE / `M6-CP1-CB4` blocker (per-face branch authority) resolved by review amendment RA-11 / CB4 resumes the same turn / candidate unpromoted / stable 54/16/38, debt 1
 **Last updated:** 2026-09-25
 
 Normative M6 semantics live in `Architecture_M6_Frozen_Definitions.md`. Entering accepted authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449 PASS**, SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. TB1's accepted-prefix event remains independently classified as singleton `CROSS_TEMPORARY_ITERATOR_RANGE`; TB2 row140 `VALIDATION_ORDER_SHADOWING` is recovery-proved closed but remains historical; TB3 Review adds one accepted-prefix event as an existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence. Stable accounting is **54 / 16 / 38** and produced-witness debt is **1**, M6-owned.
@@ -197,4 +197,19 @@ Ten amendments close places where a literal CB4 implementation would fail a froz
 - **RA-10:** CB4 keeps the transitional `quotientClass`.
 
 Accounting 54/16/38, debt 1, +0. Exact next `M6-CP1-CB4` (amended plan) → TB4 456 → Review.
+
+## 16. `M6-CP1-CB4` blocker and RA-11 resolution
+
+CB4 stopped before any production or test change. A static proof on snapshot `10850013454` (source equivalent to `660015f2`) showed that D6/R2's per-face `CornerWedgeFaceBinding.branchRotation` cannot be supplied for corner-fan faces that no side traverses:
+- A4 publishes one selected-face `LocalLatticeState` per corner;
+- the edge transition map carries indices, not quarter-turns;
+- branch meaning differs by builder, and the periodic builder leaves it `0`.
+
+The review agent upheld these facts but resolved the block by narrowing D6 (**RA-11**). The only A5-A7 reader of an occurrence branch is the transitional class key; transport checks use A4 edge and endpoint states, and no test asserts an occurrence branch.
+- Wedge bindings are `(face, sheet, chart)`.
+- The A4 corner lattice state is published verbatim as face-labelled `CornerPlacementProvenance`, which feeds the class key only.
+- The representative key has no branch.
+- Rejected: an A4 per-face branch table (no consumer, and no uniform meaning across builders), derivation (impossible), and a repeated corner branch (face mixing).
+
+CB4 resumes the same turn; TB4 stays 456. Accounting 54/16/38, debt 1, +0.
 

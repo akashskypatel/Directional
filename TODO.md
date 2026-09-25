@@ -1,9 +1,17 @@
+## CB4 blocker resolved — RA-11 (2026-09-25, review agent)
+
+**`M6-CP1-CB4` is UNBLOCKED; resume the same turn.** No consumer needs a per-face branch. Wedge bindings are `(face, sheet, chart)`, and the A4 corner lattice state is published as face-labelled placement provenance. See the blocker record's "Review-agent adjudication".
+
+- [x] Blocker facts re-verified; RA-11 frozen (no A4 change, no raw field input, no representative branch).
+- [ ] Resume `M6-CP1-CB4` (preserve `Started at 2026-09-25T06:19:30Z`) and implement R2 + RA-1 – RA-11; compile the eight GMP targets.
+- [ ] `M6-CP1-TB4-EXEC` 7 + 449 = 456 → `M6-CP1-TB4-REV`.
+
 ## CB4 static blocker — per-face branch authority unavailable at A5 boundary (2026-09-25)
 
 **`M6-CP1-CB4` stopped before production/test mutation and before compile.** Exact snapshot inspection shows D6/R2 requires a per-source-face `branchRotation` in every `CornerWedgeFaceBinding`, while immutable A4 `SurfacePhaseFrontProduct` exposes only corner-selected `LocalLatticeState.branchRotation`, side-segment branch data, and isolation-seam transport certificates. It does not preserve the builders' complete per-face branch table or an ordinary-edge field-transport atlas. An intermediate corner-wedge face can therefore have no derivable exact branch value at A5. See `Architecture_M6_CP1_CB4_Per_Face_Branch_Authority_Blocker.md`.
 
-- [ ] Freeze a Definition amendment resolving the per-face branch authority source; no turn ID is authorized yet.
-- [ ] Only after independent acceptance, re-authorize/resume CB4 under the amended immutable boundary.
+- [x] Per-face branch authority source resolved by review amendment RA-11 (no Definition turn needed).
+- [x] CB4 re-authorized: resume the same turn under RA-1 – RA-11.
 - [ ] TB4 remains held; no compile artifact or runtime credit exists for this CB4 attempt.
 
 ## Review — `M6-DEFN-R2-REV` (2026-09-25)

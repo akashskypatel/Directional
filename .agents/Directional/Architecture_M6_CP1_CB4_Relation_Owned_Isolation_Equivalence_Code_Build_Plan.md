@@ -2,6 +2,15 @@
 
 **Status:** AUTHORIZED by `M6-DEFN-R2-REV` (accepted with review amendments RA-1 – RA-10). Implement R2 **as amended by RA-1 – RA-10** (end of `Architecture_M6_Frozen_Definitions.md`; rationale in `Architecture_M6_DEFN_R2_Review_Record.md` §3). Where this plan and an RA differ, the RA governs.
 
+> **RA-11 (2026-09-25, resolves the per-face branch blocker; CB4 resumes the same turn):**
+> - `CornerWedgeFaceBinding` = (face, sheet, chart), with no branch.
+> - Publish `CornerPlacementProvenance` (the A4 corner `LocalLatticeState` verbatim + its selected-face label) as placement provenance only.
+> - Class key = binding signatures + coordinate + scale + labelled placement provenance.
+> - Representative key has no branch.
+> - Stop if any A5/A6/A7 consumer other than the class key needs a wedge-face branch.
+>
+> See the "Review-agent adjudication" section of `Architecture_M6_CP1_CB4_Per_Face_Branch_Authority_Blocker.md`.
+>
 > **Review amendments that change this plan's text:**
 > - **§3.3:** the interior-face rule covers internal, source-boundary and hard-rail/region-boundary edges (RA-1). The split-square perimeter sides are boundary-collinear.
 > - **§3.4:** P3/P4 fire only on arc-computation failure or a rail-crossing arc, never on vertex category (RA-2/RA-3). Torus rail vertices are lattice nodes.
