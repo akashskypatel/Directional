@@ -1,0 +1,2 @@
+M6-CP1-CB3 schema validation trigger
+Validate the temporary validator and exact Drive-apply caller draft before publication.
