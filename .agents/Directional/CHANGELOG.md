@@ -1,3 +1,10 @@
+## 2026-09-25 — `M6-CP1-TB5-REV` review-agent addendum: CP1 scope corrected; CB6 held; next `M6-DEFN-R3`
+
+- Re-verified candidate `10879581622` (28/28; source `82b86a28`) and TB5 result `10880392759` (933/933; 456/456; empty RED ledger; zero failure strings). The CB5 diff matches the plan.
+- Upheld recovery, promotion, 55/16/39 with debt 1, and the B6.2 withdrawal (the review agent's own error).
+- Corrected: CP1 still owes the A6 and A7 products, a thin adapter, the exact-once ledger (cycle-closing relations skipped at `:5179`), member-set class identity and the `G4-B002` A6 boundary, per frozen §8.1/§10.
+- CB6 is HELD and folded into the A6 CB. The CP1 exit scope is restated in the frozen definitions, `Architecture_M6_DEFN_R3_CP1_Product_Separation_Plan.md` is added, and lesson 183 is added.
+
 ## 2026-09-25 — `M6-CP1-TB5-REV`: full recovery accepted; runtime promoted; CP1 held on three dead public fields
 
 - Re-opened candidate `10879581622 / 82b86a28...` (28/28), TB5 result `10880392759` (933/933), log `10880502706`, selector/routing/source hashes and exact current source; 456/456 mechanics and immutable postflight are upheld.

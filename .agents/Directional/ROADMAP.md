@@ -1,3 +1,7 @@
+## M6 CP1 — scope correction by the `M6-CP1-TB5-REV` review-agent addendum; exact next `M6-DEFN-R3` (2026-09-25)
+
+TB5 recovery and the runtime promotion stand. CP1 remains **OPEN on its frozen product-separation scope**, which is outstanding: A6 quotient product, A7 geometry product, thin adapter, exact-once ledger, member-set class identity and the `G4-B002` A6 boundary. Planned sequence: `M6-DEFN-R3` → Review → A6 CB (plus legacy fields) → A7 CB (plus adapter) → `G4-B002` boundary CB → CP1 closure Review.
+
 ## M6 CP1 — `M6-CP1-TB5-REV` accepts recovery and promotes runtime authority; bounded CB6 next (2026-09-25)
 
 Independent Review upholds TB5 at **456/456 PASS**, formally recovery-proves TB1/TB3/TB4 while preserving historical accounting **55/16/39**, and promotes CB5/TB5 package/source `10879581622 / 82b86a28...` as current reviewed runtime authority under unchanged selector449. Project debt remains 1 and is not CP1-dischargeable.
@@ -593,7 +597,7 @@ Final CP4 Review completes the bounded conjunct8 sequence: row449 was accepted p
 | Checkpoint | Semantic domain |
 |---|---|
 | `M6-DEFN` | **COMPLETE / RUNTIME-FREE.** Four immutable products, exact occurrence/quotient identity, verifier recompute-vs-repair boundary, G4 ownership and dormant-test dispositions frozen in `Architecture_M6_Frozen_Definitions.md`. |
-| `M6-CP1` | **ACTIVE / TB5 REVIEW RECOVERY ACCEPTED / CURRENT RUNTIME AUTHORITY `10879581622 / 82b86a28...` / EXACT NEXT `M6-CP1-CB6`.** TB5 is 456/456; TB1/TB3/TB4 formal recovery is proved with stable history 55/16/39 unchanged. CP1 closure is held only by retirement of unread public `SurfaceOccurrence.chart/lattice/isolationSheet`; compile-green CB6 advances to unchanged TB6 7+449=456 and Review. |
+| `M6-CP1` | **ACTIVE / TB5 REVIEW RECOVERY ACCEPTED / CURRENT RUNTIME AUTHORITY `10879581622 / 82b86a28...` / EXACT NEXT `M6-CP1-CB6`.** TB5 is 456/456; TB1/TB3/TB4 formal recovery is proved with stable history 55/16/39 unchanged. CP1 closure is held only by retirement of unread public `SurfaceOccurrence.chart/lattice/isolationSheet`; compile-green CB6 advances to unchanged TB6 7+449=456 and Review. **Review-agent correction:** CP1 is open on A6/A7 product separation (frozen §10/§8.1), not only on legacy fields; exact next `M6-DEFN-R3`. |
 | `M6-CP2` | verifier consumes certificates and independently recomputes elementary incidence; **never repairs producer state** |
 | `M6-CP3` | M6 exit — equal coordinates without a relation remain distinct; every owned relation consumed exactly once; source-row / output-row / scheduler permutation invariance |
 

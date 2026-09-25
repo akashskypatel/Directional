@@ -1,3 +1,15 @@
+## 2026-09-25 — `M6-CP1-TB5-REV` review-agent addendum — **+0 EVENTS / 55/16/39 / debt 1 / CP1 SCOPE CORRECTED / NEXT `M6-DEFN-R3`**
+
+- **Upheld:** TB5 456/456 (independent re-derivation: 933/933; empty RED ledger; zero failure strings; source `82b86a28`); TB1/TB3/TB4 formal recovery; promotion of `10879581622`; B6.2 withdrawal.
+- **Open obligation (CP1, frozen §8.1/§10), previously untracked:**
+  - A6 `SurfaceQuotientProduct` (member-set `QuotientClassId`, per-relation certificates, exact-once ledger);
+  - A7 `SourceAttachedGeometryProduct`;
+  - thin adapter;
+  - `G4-B002` A6 stage boundary;
+  - legacy-field retirement.
+- **Evidence:** 0 A6/A7 product types in src/include/tests; `build_authoritative_phase_front_mesh` is 1,768 lines (`RemeshPipeline.cpp:4043-5811`); `:5179` `if (!unite(...)) continue;` skips cycle-closing relations with no certificate or holonomy check; candidate extraction consumes `SurfaceCellComplex`.
+- **Owner:** `M6-DEFN-R3` → `M6-DEFN-R3-REV` → A6 CB → A7 CB → `G4-B002` boundary CB → CP1 closure Review. Lesson 183.
+
 ## 2026-09-25 — `M6-CP1-TB5-REV`: full 456/456 recovery accepted — **TB1/TB3/TB4 RECOVERY PROVED / +0 HISTORY REPRICING / RUNTIME PROMOTED**
 
 **Stable totals remain 55 events / 16 categories / 39 recurrences; project debt remains 1 (M6).** Independent Review re-opens package/source `10879581622 / 82b86a28...`, TB5 result/log `10880392759 / 10880502706`, and exact source. It upholds focused **7/7** + selector449 **449/449** = **456/456 PASS**, exact-one selection, zero skips/crashes/mismatches and immutable postflight.

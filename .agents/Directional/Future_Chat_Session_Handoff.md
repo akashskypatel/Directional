@@ -1,4 +1,21 @@
-## Resume-critical update — `M6-CP1-TB5-REV` COMPLETE / runtime recovery accepted / CP1 held only by legacy A5 fields / exact next `M6-CP1-CB6` (2026-09-25)
+## Resume-critical update — `M6-CP1-TB5-REV` review-agent addendum: CP1 scope corrected; CB6 HELD; exact next `M6-DEFN-R3` (2026-09-25)
+
+**Start runtime-free `M6-DEFN-R3` as a new turn** (Definition amendment and CP1 sequencing). **Do not start CB6 as planned, and do not close CP1.**
+
+The review agent upheld TB5 (456/456), the TB1/TB3/TB4 formal recovery, accounting 55/16/39 with debt 1, the runtime promotion of `10879581622 / 82b86a28...`, and the withdrawal of the B6.2 sort debt.
+
+It **corrected the CP1 scope.** TB5-REV said CP1 was held "only" by three legacy A5 fields. Frozen §10 requires complete **A6 quotient and A7 geometry products** behind stage APIs, with a thin adapter, and §8.1 requires the `G4-B002` A6 stage boundary. None exists:
+- 0 A6/A7 product types in source;
+- a 1,768-line transitional materializer still owns every quotient and embedding decision;
+- §4.4 exact-once consumption is unimplemented (`:5179` skips cycle-closing relations with no certificate or holonomy check);
+- the §4.3 member-set `QuotientClassId` is deferred (RA-10);
+- candidate extraction still consumes `SurfaceCellComplex`.
+
+CB6 (field retirement) is folded into the first A6 extraction CB. See `Architecture_M6_CP1_TB5_Review_Record.md` (review-agent addendum) and `Architecture_M6_DEFN_R3_CP1_Product_Separation_Plan.md`.
+
+## Superseded resume notes (historical — do not act on)
+
+### `M6-CP1-TB5-REV` COMPLETE / runtime recovery accepted / CP1 held only by legacy A5 fields / exact next `M6-CP1-CB6` (2026-09-25)
 
 **Start bounded runtime-free `M6-CP1-CB6`; do not rerun TB5, reopen CB5, start CP2, or close CP1 first.**
 
@@ -10,7 +27,7 @@ CB5/TB5 artifact/source `10879581622 / 82b86a28...` is promoted as the **current
 
 `M6-CP1-CB6` removes only those three dead members plus their constructor/call-site arguments, changes no tests/fixtures/selectors/semantic relation authority, and compile/packages the standard eight GMP/GMPXX targets with no runtime. Compile-green advances to immutable `M6-CP1-TB6-EXEC`, unchanged **7 + 449 = 456**, then mandatory `M6-CP1-TB6-REV`. Full Review authority: `Architecture_M6_CP1_TB5_Review_Record.md`; governing successor plan: `Architecture_M6_CP1_CB6_Legacy_Occurrence_Field_Retirement_Code_Build_Plan.md`.
 
-## Resume-critical update — `M6-CP1-TB5-EXEC` COMPLETE / 456/456 mechanically green / exact next `M6-CP1-TB5-REV` (2026-09-25)
+### `M6-CP1-TB5-EXEC` COMPLETE / 456/456 mechanically green / exact next `M6-CP1-TB5-REV` (2026-09-25)
 
 **Start mandatory runtime-free `M6-CP1-TB5-REV`; do not rerun TB5, resume CB5, promote the candidate, or start another Code + Build turn first.**
 
@@ -28,8 +45,6 @@ Result/log authority is `10880392759 / 10880502706`; provider/download SHA-256 v
 EXEC records **no new regression candidate** and performs no stable repricing. Stable accounting remains **55 / 16 / 39**, debt **1**. Candidate `10879581622` remains unpromoted and accepted runtime authority remains M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 449/449 until Review. Formal closure/recovery of TB1/TB3/TB4 events, candidate promotion, CP1 acceptance, and any debt/accounting effect belong to Review.
 
 The CP1-acceptance precondition for unread legacy `SurfaceOccurrence.isolationSheet/chart/lattice` remains open; minor aggregated `equivalences` sorting also remains open. Full execution evidence: `Architecture_M6_CP1_TB5_Artifact_Only_Test_Benchmark_Report.md` and `M6_Consolidated_Record.md §21`.
-
-## Superseded resume notes (historical — do not act on)
 
 ### Superseded live note — `M6-CP1-CB5` COMPLETE / compile-green candidate / exact next `M6-CP1-TB5-EXEC` (2026-09-25)
 
@@ -191,56 +206,65 @@ Review must independently re-open source/evidence and re-derive: split-square v0
 
 ## Current authority
 
-`M6-CP1-TB5-REV` is **COMPLETE / RECOVERY ACCEPTED / CANDIDATE PROMOTED / CP1 STILL OPEN**. Current reviewed runtime authority is CB5/TB5 package/source `10879581622 / 82b86a285292379cfd92cdc4e10d74181b38f1e8` under unchanged selector449 **449/449**. TB5 is **456/456 PASS** and formally recovery-proves the TB1, TB3 and TB4 mechanisms; TB2 recovery remains proved. Stable historical accounting is **55 / 16 / 39**, produced-witness debt **1**.
+`M6-CP1-TB5-REV` is **COMPLETE** (review-agent addendum included): TB5 recovery accepted; `10879581622 / 82b86a285292379cfd92cdc4e10d74181b38f1e8` promoted as current reviewed runtime authority under selector449 **449/449**; stable accounting **55 / 16 / 39**, debt **1**.
 
-CP1 closure is held only by one static A5-product precondition: remove the unread legacy `SurfaceOccurrence.chart`, `.lattice`, and `.isolationSheet` representation fields. Exact source already re-sorts and de-duplicates aggregated lineage `equivalences` after tuple remap, so the prior minor sorting debt is withdrawn without code change.
+**CP1 is OPEN.** Its frozen product-separation scope is outstanding:
+- A6 `SurfaceQuotientProduct` with member-set identity, per-relation certificates and the exact-once ledger;
+- A7 `SourceAttachedGeometryProduct` with support and embedding certificates;
+- a thin adapter;
+- the `G4-B002` A6 stage boundary;
+- retirement of the legacy `SurfaceOccurrence` `isolationSheet` / `chart` / `lattice`.
+
+Definition authority: R1, R2 and RA-1 – RA-12 (end of `Architecture_M6_Frozen_Definitions.md`).
 
 ## Exact next turn
 
-**`M6-CP1-CB6`** — bounded runtime-free Code + Build under `Architecture_M6_CP1_CB6_Legacy_Occurrence_Field_Retirement_Code_Build_Plan.md`.
+**`M6-DEFN-R3`** — runtime-free Definition amendment and CP1 sequencing under `Architecture_M6_DEFN_R3_CP1_Product_Separation_Plan.md`. It must freeze:
+- the CP1 exit checklist;
+- A6 class-identity representation versus the RA-10 lineage ordinal;
+- exact-once ledger and cycle-closing transport/holonomy semantics, proved on the accepted fixtures;
+- where selected-path certificates live;
+- the A7 product;
+- the `G4-B002` A6 stage boundary;
+- the failure vocabulary;
+- CB sequencing with pre-registered focused identities;
+- the frozen-test audit.
 
-Remove only the unread public `SurfaceOccurrence.chart`, `.lattice`, and `.isolationSheet` members plus their constructor/call-site arguments. Preserve `point`, `support`, `chartComponent`, `topologyRegion`, complete wedge bindings/sheets, labelled placement provenance and isolation evidence. No test, fixture, selector, routing, A6/A7 semantic, HardRail/Periodic, or frozen-definition change is authorized.
-
-Compile/package the standard eight targets through the durable GMP/GMPXX compile workflow; generated Directional runtime is forbidden. Compile-green advances to immutable `M6-CP1-TB6-EXEC`, unchanged seven focused + selector449 = **456** fresh exact-filter processes, then mandatory `M6-CP1-TB6-REV`.
-
-**Mandatory successor after compile-green:** `M6-CP1-TB6-EXEC`.
+No source edits, compile or runtime. Then mandatory `M6-DEFN-R3-REV`, then the first A6 extraction CB, which also retires the legacy fields.
 
 ## Completed predecessor turns (reference only)
 
-- `M6-CP1-CB5` — semantic `2ec8c735...`, compile source `82b86a28...`, candidate `10879581622` (folded into `M6_Consolidated_Record.md §20`).
-- `M6-CP1-TB4-REV` (+ review-agent addendum) — `Architecture_M6_CP1_TB4_Review_Record.md`.
-- `M6-CP1-TB4-EXEC` — `Architecture_M6_CP1_TB4_Artifact_Only_Test_Benchmark_Report.md`.
-- `M6-CP1-CB4` — source `20f60bb1`, candidate `10871935178` (folded into `M6_Consolidated_Record.md`).
-- `M6-DEFN-R2-REV`, `M6-DEFN-R2`, `M6-DEFN-R1-REV`, `M6-DEFN-R1` — the definition chain.
+- `M6-CP1-TB5-REV` (+ review-agent addendum) — `Architecture_M6_CP1_TB5_Review_Record.md`.
+- `M6-CP1-TB5-EXEC` — `Architecture_M6_CP1_TB5_Artifact_Only_Test_Benchmark_Report.md` (456/456).
+- `M6-CP1-CB5` — source `82b86a28`, candidate `10879581622` (promoted).
+- `M6-CP1-TB4-REV`, `M6-CP1-CB4`, and the DEFN-R1/R2 chain — see `M6_Consolidated_Record.md`.
 
 ## Current files
 
-- `.agents/Directional/Architecture_M6_CP1_TB5_Review_Record.md` — current Review authority
-- `.agents/Directional/Architecture_M6_CP1_CB6_Legacy_Occurrence_Field_Retirement_Code_Build_Plan.md` — exact successor plan
-- `.agents/Directional/Architecture_M6_CP1_TB5_Artifact_Only_Test_Benchmark_Report.md` — accepted 456/456 runtime evidence
-- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — normative RA-1 – RA-12 product contract
-- `.agents/Directional/M6_Consolidated_Record.md` — durable M6 history and current §22 disposition
-- `.agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt` — frozen selector449
-- `.agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv` — frozen routing449
+- `.agents/Directional/Architecture_M6_DEFN_R3_CP1_Product_Separation_Plan.md` — exact next
+- `.agents/Directional/Architecture_M6_CP1_TB5_Review_Record.md` — TB5-REV + review-agent addendum
+- `.agents/Directional/Architecture_M6_CP1_TB5_Artifact_Only_Test_Benchmark_Report.md` — 456/456 runtime evidence
+- `.agents/Directional/Architecture_M6_CP1_CB6_Legacy_Occurrence_Field_Retirement_Code_Build_Plan.md` — HELD (folded into the A6 CB)
+- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — normative (§4-§5 A6/A7, §8.1, §10; RA-1 – RA-12)
+- `.agents/Directional/M6_Consolidated_Record.md`
+- `.agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt`
+- `.agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv`
 
 ## Context Load Plan
 
 ```yaml
 load_next:
-  - .agents/Directional/Future_Chat_Session_Handoff.md
-  - .agents/Directional/Architecture_M6_CP1_TB5_Review_Record.md
-  - .agents/Directional/Architecture_M6_CP1_CB6_Legacy_Occurrence_Field_Retirement_Code_Build_Plan.md
-  - .agents/Directional/Architecture_M6_Frozen_Definitions.md
-  - .agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt
-  - .agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv
+  - .agents/Directional/Architecture_M6_DEFN_R3_CP1_Product_Separation_Plan.md
+  - .agents/Directional/Architecture_M6_CP1_TB5_Review_Record.md  # review-agent addendum C3-C4
+  - .agents/Directional/Architecture_M6_Frozen_Definitions.md  # §4-§5, §8.1, §10, RA-1..RA-12
+  - .agents/Directional/M6_Consolidated_Record.md
 conditional_modules:
-  - trigger: github_connector / GitHub Actions / compile or patch transport
+  - trigger: github_connector / GitHub Actions / patch transport
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
+  - .agents/Directional/Architecture_M6_DEFN_R2_Seam_Incident_Authority_Amendment_Definition_Record.md
   - .agents/Directional/Architecture_M6_CP1_TB5_Artifact_Only_Test_Benchmark_Report.md
-  - .agents/Directional/M6_Consolidated_Record.md
   - .agents/Directional/Regression_Root_Cause_Tracker.md
-  - .agents/Directional/GitHub_Workflow_Policy.md
 do_not_preload:
   - folded superseded M6 per-turn records
   - uncited historical reports

@@ -1,6 +1,6 @@
 # M6 Consolidated Record
 
-**Status:** M6 ACTIVE / `M6-CP1-TB4-REV` COMPLETE / one new stable RP-01 recurrence / candidate `10871935178` unpromoted / exact next `M6-CP1-CB5` / stable 55/16/39, debt 1 / TB4-REV review-agent addendum: RA-12 + torus falsifier + legacy-field CP1 precondition
+**Status:** M6 ACTIVE / `M6-CP1-TB5-REV` complete (+ review-agent addendum): recovery accepted; `10879581622` promoted; CP1 OPEN on frozen §10 product separation (A6/A7, thin adapter, ledger, member-set identity, `G4-B002` boundary); CB6 held/folded / exact next `M6-DEFN-R3` / stable 55/16/39, debt 1
 **Last updated:** 2026-09-25
 
 Normative M6 semantics live in `Architecture_M6_Frozen_Definitions.md`. Entering accepted authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449 PASS**, SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. TB1's accepted-prefix event remains independently classified as singleton `CROSS_TEMPORARY_ITERATOR_RANGE`; TB2 row140 `VALIDATION_ORDER_SHADOWING` is recovery-proved closed but remains historical; TB3 Review adds one accepted-prefix event as an existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence. TB4 Review adds one accepted-prefix event as another existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence. Stable accounting is **55 / 16 / 39** and produced-witness debt is **1**, M6-owned.
@@ -295,3 +295,17 @@ TB1 `CROSS_TEMPORARY_ITERATOR_RANGE`, TB3 RP-01 and TB4 RP-01 are formally **REC
 CP1 remains open because public `SurfaceOccurrence` still contains unread `chart`, `lattice`, `isolationSheet` representative fields excluded by frozen §3.2/RA-11. Exact C++ reader search finds none; `point` is live and `chartComponent` remains legitimate. The TB4-REV aggregated-`equivalences` sorting debt is withdrawn because exact candidate source already sorts/de-duplicates after tuple remap.
 
 Exact successor `M6-CP1-CB6` retires only those three dead fields, compile/packages without runtime, then hands an immutable candidate to unchanged TB6 7+449=456 and mandatory Review. Full authority: `Architecture_M6_CP1_TB5_Review_Record.md`; plan: `Architecture_M6_CP1_CB6_Legacy_Occurrence_Field_Retirement_Code_Build_Plan.md`.
+
+## `M6-CP1-TB5-REV` review-agent addendum — CP1 scope corrected
+
+Upheld: TB5 456/456 (independently re-derived), the TB1/TB3/TB4 recovery, the promotion, 55/16/39 with debt 1, and the B6.2 withdrawal (the review agent's own earlier finding was wrong).
+
+Corrected: TB5-REV said CP1 was held only by three legacy A5 fields. Frozen §10/§8.1 require A6 and A7 products behind stage APIs, a thin adapter and the `G4-B002` A6 boundary. The source shows none of this:
+- 0 A6/A7 product types;
+- a 1,768-line materializer;
+- §4.4 exact-once consumption unimplemented (`:5179` skips cycle-closing relations, with no holonomy check);
+- §4.3 member-set identity deferred;
+- candidate extraction still on `SurfaceCellComplex`.
+
+CB6 is HELD and folded into the A6 CB. The CP1 exit scope is restated in the frozen definitions. Exact next is `M6-DEFN-R3` (`Architecture_M6_DEFN_R3_CP1_Product_Separation_Plan.md`). Lesson 183.
+

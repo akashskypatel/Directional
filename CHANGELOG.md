@@ -1,3 +1,9 @@
+## 2026-09-25 — M6 checkpoint 1 is further from done than the last review said
+
+- The latest test run is fully green (456/456), and that result stands.
+- Checkpoint 1 was meant to split the surface pipeline into three separate stages. Only the first stage exists so far; the other two, and a key hand-off point, are still missing. That scope had quietly fallen off the tracking documents.
+- The planned small cleanup turn is on hold and will be merged into the next real piece of work. Next is a design turn that plans the two missing stages.
+
 ## 2026-09-25 — M6 CP1 TB5 Review accepts recovery; CB6 cleanup next
 
 - Independent Review upholds CB5/TB5 at **456/456 PASS**, formally recovery-proves the TB1/TB3/TB4 defects, and keeps historical accounting at **55/16/39**, debt 1.

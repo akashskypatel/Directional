@@ -1,3 +1,14 @@
+## Review-agent addendum — `M6-CP1-TB5-REV` (2026-09-25)
+
+**TB5 recovery and promotion upheld; CP1 scope corrected; exact next `M6-DEFN-R3`.** See `Architecture_M6_CP1_TB5_Review_Record.md` (addendum) and `Architecture_M6_DEFN_R3_CP1_Product_Separation_Plan.md`.
+
+- [ ] `M6-DEFN-R3`: CP1 exit checklist; A6 class identity vs the RA-10 ordinal; exact-once ledger plus cycle-closing holonomy (prove on accepted fixtures); selected-path ownership; A7 product; `G4-B002` A6 boundary; failure names; CB sequencing with pre-registered focused identities; frozen-test audit.
+- [ ] `M6-DEFN-R3-REV`.
+- [ ] A6 extraction CB (absorbs the CB6 legacy-field retirement), then TB, then Review.
+- [ ] A7 extraction and adapter thinning CB, then TB, then Review.
+- [ ] `G4-B002` A6 stage-boundary CB, then TB, then Review, then CP1 closure Review against the restated exit scope.
+- [x] ~~CB6 standalone legacy-field retirement~~ — HELD and folded into the A6 CB.
+
 ## M6-CP1-TB5 Review complete — bounded CB6 product-surface cleanup next (2026-09-25)
 
 **TB5 Review: RECOVERY ACCEPTED / runtime candidate PROMOTED / CP1 OPEN only on static A5 product shape. Exact next: `M6-CP1-CB6`.** Current reviewed runtime authority is `10879581622 / 82b86a28...` under selector449 **449/449**. Stable accounting remains **55/16/39**, debt **1**.

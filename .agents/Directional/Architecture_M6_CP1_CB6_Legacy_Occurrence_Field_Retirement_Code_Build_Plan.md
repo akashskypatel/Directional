@@ -1,6 +1,11 @@
 # M6-CP1-CB6 — Legacy SurfaceOccurrence Field Retirement — Code + Build Plan
 
-**Status:** AUTHORIZED BY `M6-CP1-TB5-REV` / RUNTIME-FREE CODE + BUILD ONLY
+> **HELD by the `M6-CP1-TB5-REV` review-agent addendum (2026-09-25). Do not execute standalone.**
+> - Retiring the three unread fields is folded into the first A6 extraction CB, which `M6-DEFN-R3` sequences.
+> - This plan's CP1-closure sentences are **struck**. CP1 also requires the A6 and A7 products, a thin adapter, the exact-once ledger, member-set class identity and the `G4-B002` A6 stage boundary (frozen §8.1/§10).
+> - The static reader census and the frozen-surface rules below remain valid for the folded work.
+
+**Earlier status:** AUTHORIZED BY `M6-CP1-TB5-REV` / RUNTIME-FREE CODE + BUILD ONLY
 **Exact successor on compile-green:** `M6-CP1-TB6-EXEC`
 **Mandatory Review after TB6:** `M6-CP1-TB6-REV`
 

@@ -84,3 +84,75 @@ Compile/package the standard eight targets with mandatory GMP/GMPXX and `runtime
 | Selector/routing | unchanged `d4a0d1b7...d6414` / `9c88a5ed...c5707` |
 | Turn boundary | runtime-free Review; no source/test/fixture/selector/build/runtime mutation |
 | Successor | exactly `M6-CP1-CB6` |
+
+## Review-agent addendum — `M6-CP1-TB5-REV` (2026-09-25 UTC)
+
+**Disposition:** TB5 mechanics, the TB1/TB3/TB4 formal recovery, the TB2 status, accounting **55 / 16 / 39**, debt 1, the runtime promotion, and the withdrawal of the B6.2 sort debt are **UPHELD**. §5-§6's CP1 closure scope is **CORRECTED**: CP1 is not one static field-retirement away from closure. `M6-CP1-CB6`, as planned, is **HELD**. Exact next is runtime-free **`M6-DEFN-R3`** (CP1 A6/A7 product-separation definition and sequencing).
+
+### C1. Evidence independently re-derived
+
+- **CB5 candidate `10879581622`:** digest `578845a2...57c6`; **28/28**. The packaged `RemeshPipeline.cpp` is byte-identical to `82b86a28` (`4386e4a7...`), and there is no `src/include/tests` drift since.
+- **TB5 result `10880392759`:** digest `71095935...1216`; **933/933**. The ledger (`06c1d016...0a11`) has 456 rows, all PASS, exact-one/zero-skip, with selector order byte-identical to selector449. `red-ledger.tsv` is header-only. **Zero** raw logs contain `OccurrenceInvalidCornerAuthority`, `*IsolationSeamEquivalenceAuthority` or `QuotientReciprocalSideAuthorityMismatch`.
+- **The CB5 diff matches the amended plan.** The no-certificate collinear case runs the non-seam P2 rule (`non_seam_span_pair_matches`), the seam branch is unchanged, and the RA-12 suffixes are present. A5 wedge vs side is distinguished by `error.occurrence`, which only wedge failures set.
+- **RA-12 precision note:** `:a6-collinear-span` is now unreachable, because that case emits `QuotientReciprocalSideAuthorityMismatch` as specified. The suffix list at the end of the frozen definitions is annotated accordingly.
+
+### C2. Upheld decisions
+
+- **Recovery and accounting:** as §3.
+- **Promotion (§4):** consistent with precedent. `M3-CP4c-3-TB39-REV` and the `M4-CP-SCALE` reviews promoted current runtime authority before checkpoint closure. Promotion is runtime authority, not acceptance.
+- **B6.2 withdrawal:** correct. `std::sort(lineage.equivalences…)` already existed in the CB4 source (`20f60bb1:RemeshPipeline.cpp:14992`). The review agent's own finding was wrong, and lesson 182 records the pattern.
+
+### C3. Correction: what CP1 still owes (TB5-REV §5-§6 and the CB6 plan understate it)
+
+TB5-REV says CP1 is held "only by the three dead legacy public A5 fields". The CB6 plan lets TB6-REV close CP1 once those fields are gone and TB6 is green. Both contradict the frozen CP1 contract:
+
+- **Frozen §10, M6-CP1 "product separation":** "Establish complete A5 occurrence, **A6 quotient, and A7 geometry products** … semantic occurrence/quotient/embedding decisions must move behind the stage-product APIs … proves no coordinate/position weld."
+- **Frozen §8.1, the `G4-B002` CP1 mechanism owner:** "establish the real A5 occurrence product **and A6 stage boundary** from which candidate extraction can consume closed-complex authority without `SurfaceCellPipelineContext::hasArrangement`."
+- **Frozen §12:** CB1 was "intentionally limited to the first A5 seam … does **not** implement A6 quotient extraction as a new product, A7 embedding…". The CB3-CB5 recovery plans then said "do not extract A6/A7". That scope was deferred, never discharged, and has since dropped out of ROADMAP, ORIENTATION and the consolidated record.
+
+State of the exact source (`82b86a28`):
+1. **No A6 or A7 product exists.** `SurfaceQuotientProduct` / `SurfaceQuotientProducer`, `QuotientRelationCertificate`, the consumption ledger, `QuotientCertificate`, `MaterializationCertificate`, and `SourceAttachedGeometryProduct` / `Producer`: 0 occurrences in `src/`, `include/` and `tests/`.
+2. **The transitional adapter is not thin.** `build_authoritative_phase_front_mesh` is 1,768 lines (`RemeshPipeline.cpp:4043-5811`). It still owns the union-find, the class key and the transitional `QuotientClassId` ordinal, representative selection, selected-path certificates, positions and lineage.
+3. **Frozen §4.4 exact-once consumption is not implemented.** At `:5179`, `if (!unite(first, second)) continue;` skips every relation whose endpoints are already joined. There is no certificate, no ledger row and no zero/duplicate-consumption check. A cycle-closing relation's transport is never checked against the path that already joined its endpoints, so a class could close with inconsistent holonomy undetected. This is inherited M5 behaviour, but §4.4 makes a per-relation certificate an M6 A6 obligation.
+4. **Frozen §4.3 semantic `QuotientClassId` (sorted member set) is not realized.** RA-10 deferred it explicitly "to A6 extraction, not CB4".
+5. **The `G4-B002` CP1 mechanism is not established.** Candidate extraction still consumes the arrangement-era `SurfaceCellComplex` (`SurfaceComplexSimplification.h:418-426`), and `hasArrangement` remains the pipeline flag (`RemeshPipeline.h:405`, `RemeshPipeline.cpp:8618/9930`).
+6. The legacy `SurfaceOccurrence` `isolationSheet` / `chart` / `lattice` fields (TB5-REV §5) are **one** item among these, not the last.
+
+**Consequence:** strike the CP1-closure sentences in TB5-REV §5-§6 and in the CB6 plan. CP1 cannot close until items 1-6 are met and a fresh gate is green.
+
+### C4. Successor: `M6-DEFN-R3`, then its review, then bounded extraction CBs
+
+A standalone CB6 would spend a full compile, 456-process and Review cycle on deleting three unread fields. The A6 extraction must reshape how `SurfaceOccurrence` is consumed anyway, so the field retirement is **folded into the first A6 extraction CB**. CB6 as planned is HELD.
+
+The A6/A7 contracts are frozen (§4-§5), but several representation and semantic decisions have compatibility consequences and are not settled. They belong in a runtime-free Definition turn rather than a reviewer amendment; see `Architecture_M6_DEFN_R3_CP1_Product_Separation_Plan.md` for the full scope:
+- how `QuotientClassId` as a member set coexists with the lineage ordinal (RA-10);
+- ledger semantics and transport/holonomy consistency for cycle-closing relations;
+- where selected-relation-path certificates live;
+- the `G4-B002` A6 stage boundary;
+- CB sequencing and new pre-registered focused identities.
+
+### C5. Accounting
+
+No event; **55 / 16 / 39**, debt 1. Promotion stands. CP1 is **OPEN** with the corrected scope.
+
+### Review-agent closeout
+
+| Duty | Answer |
+|---|---|
+| Accepted selector prefix re-hashed | selector449 `d4a0d1b7...d6414`, TB5 selector order exact; routing449 `9c88a5ed...c5707` |
+| Decisive claims independently re-derived | candidate 28/28 and source identity; TB5 933/933, 456/456, empty RED ledger, zero failure strings; CB5 diff vs plan; B6.2 sort present since CB4; A6/A7 product absence; materializer extent; `:5179` skip; candidate-extraction input type |
+| Non-vacuity checked | the CP1 scope correction rests on frozen §8.1/§10/§12 text and source greps, not inference |
+| Prior obligations discharged/carried | TB1/TB3/TB4 recovery proved (upheld); CP1 product-separation obligations 1-6 recorded; CB6 folded |
+| Stable accounting | **55 / 16 / 39**, debt 1; +0 |
+| New candidates/obligations recorded | CP1 exit checklist (restated from the frozen text); `M6-DEFN-R3` scope; tracker +0 entry |
+| ORIENTATION currency line | `M6-CP1-TB5-REV` (review-agent addendum), 2026-09-25 UTC |
+| ORIENTATION §3 / §4 / §7 / §8 | §3, §7 and §8 amended; §4 n/a |
+| CHANGELOG | root and Directional prepended |
+| ROADMAP | M6-CP1 row and interlock corrected (A6/A7 product separation outstanding) |
+| Selector manifest | unchanged (TB5-REV's promotion note stands) |
+| LESSONS | 183 added (deferred checkpoint scope must stay on the ledger) |
+| Consolidation under CLEAN_UP_POLICY | CB6 plan kept, marked HELD/folded; new DEFN-R3 plan is the single live successor plan |
+| Successor frozen | exactly `M6-DEFN-R3`, then `M6-DEFN-R3-REV` |
+| Turn boundary held | runtime-free; documents only |
+| review_check.py boundary / ledgers | recorded in the commit message |
+| `STATUS` lifecycle maintained | resume `IN_PROGRESS` (`Resumed at` = operator handoff `2026-09-25T20:01:58Z`) → docs → COMPLETE last |

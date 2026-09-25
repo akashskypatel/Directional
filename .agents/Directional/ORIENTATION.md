@@ -1,3 +1,12 @@
+## Currency — `M6-CP1-TB5-REV` review-agent addendum: CP1 scope corrected; exact next `M6-DEFN-R3` (2026-09-25 UTC)
+
+TB5 456/456, the TB1/TB3/TB4 recovery, the promotion of `10879581622`, and 55/16/39 with debt 1 are upheld. **Corrected:** CP1 is not "held only by three legacy A5 fields". Frozen §10/§8.1 require A6 and A7 products behind stage APIs, a thin adapter, the §4.4 exact-once ledger, the §4.3 member-set class identity and the `G4-B002` A6 boundary, and none of these exists yet:
+- the transitional materializer is 1,768 lines;
+- `:5179` skips cycle-closing relations.
+
+CB6 is HELD and folded into the first A6 CB. Exact next is runtime-free `M6-DEFN-R3`. Lesson 183.
+
+### Superseded currency note
 ## Currency — `M6-CP1-TB5-REV` COMPLETE / recovery accepted / runtime promoted / exact next `M6-CP1-CB6` (2026-09-25 UTC)
 
 TB5 Review independently upholds **456/456**, formally recovery-proves TB1/TB3/TB4 (TB2 remains recovered), and promotes `10879581622 / 82b86a28...` as current reviewed runtime authority under unchanged selector449. Stable historical accounting remains **55/16/39**; debt remains **1** for M6-CP3 production proof. CP1 stays open only because public A5 still exposes unread representative `chart`, `lattice`, `isolationSheet` fields. The prior aggregated-equivalence sort debt is withdrawn: exact source already sorts/deduplicates after remap. Exact next is bounded `M6-CP1-CB6`, then unchanged TB6 7+449=456 and Review.
@@ -251,7 +260,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M6-CP1-CB6` — NEXT / RUNTIME-FREE CODE + BUILD.** Remove only unread public `SurfaceOccurrence.chart`, `.lattice`, `.isolationSheet` plus their constructor/call-site arguments. Preserve all live A5 authority and change no tests/fixtures/selectors/A6/A7 semantics. Compile the standard eight GMP/GMPXX targets with no runtime; compile-green -> unchanged `M6-CP1-TB6-EXEC` 7+449=456 -> mandatory Review. Stop if any exact-source semantic reader exists or removal requires a definition change.
+1. **`M6-DEFN-R3` — NEXT / RUNTIME-FREE DEFINITION + CP1 SEQUENCING.** Freeze the CP1 exit checklist, the A6 class identity versus the RA-10 ordinal, the exact-once ledger and cycle holonomy, selected-path ownership, the A7 product, the `G4-B002` A6 boundary, failure names, and CB sequencing with focused identities. Then `M6-DEFN-R3-REV`, then the A6 extraction CB (which absorbs CB6).
+   **HELD:** `M6-CP1-CB6` — Remove only unread public `SurfaceOccurrence.chart`, `.lattice`, `.isolationSheet` plus their constructor/call-site arguments. Preserve all live A5 authority and change no tests/fixtures/selectors/A6/A7 semantics. Compile the standard eight GMP/GMPXX targets with no runtime; compile-green -> unchanged `M6-CP1-TB6-EXEC` 7+449=456 -> mandatory Review. Stop if any exact-source semantic reader exists or removal requires a definition change.
 2. **`G4-B002` produced closed-complex debt — OPEN / M6.** M6-DEFN freezes CP1 mechanism/stage separation and CP3 direct-production proof. Preserve the independent eligibility oracle, hard-feature tamper and fail-closed/no-recovery contract; mechanism evidence cannot close production debt.
 
 3. **`G4-B004` representative M6 half — OPEN.** M5 same-region producer fact is accepted. CP1 must preserve/gate focused multi-isolation materialization; CP3 must prove the same direct produced torus through A5 exact occurrences, A6 exact-once consumption, A7 source attachment and A8 independent verification.
@@ -273,6 +283,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 11. **Rows16/17 (selector448 ordinals 446/447) pin inverse canonical storage — RECORDED / NOT FIRING (`M5-CP3-TB1-R16-REV-OBS-02`).** Keep the inverse-storage pin; if a representation-only change fires it, classify as test-authority drift and supply a witness still exercising inverse storage (`LESSONS.md` 171).
 
 ## 8. Recurring defect patterns
+
+**Deferred checkpoint scope silently disappears — `M6-CP1-TB5-REV` review addendum, lesson 183.** CB1 deferred A6/A7 and the recovery CBs repeated the deferral. The obligation then fell off the living documents, and TB5-REV declared CP1 nearly closable with two of its three frozen products missing.
 
 **A static review debt must be reproduced in the exact reviewed source before it becomes successor work — `M6-CP1-TB5-REV`, lesson 182.** TB4 Review recorded an unsorted post-remap `lineage.equivalences` debt, but the exact CB5/TB5 source already performs the required sort/de-dup immediately after remap. TB5 Review withdraws that stale obligation rather than scheduling no-op code. Source evidence outranks remembered line numbers.
 

@@ -1,6 +1,6 @@
 # M6 Frozen Definitions — Occurrence, Quotient, Embedding, Independent Verification
 
-**Status:** FROZEN / `M6-CP1-TB5-REV` RECOVERY ACCEPTED / CURRENT REVIEWED RUNTIME `10879581622 / 82b86a28...` / CP1 OPEN ON LEGACY A5 FIELD RETIREMENT / EXACT NEXT = `M6-CP1-CB6`; RA-1 – RA-12 remain normative and unchanged.
+**Status:** FROZEN / `M6-CP1-TB5-REV` RECOVERY ACCEPTED / CURRENT REVIEWED RUNTIME `10879581622 / 82b86a28...` / CP1 OPEN on its §10 product-separation scope (A6/A7 products, thin adapter, §4.4 ledger, §4.3 member-set identity, §8.1 `G4-B002` A6 boundary, legacy-field retirement; review-agent addendum) / EXACT NEXT = `M6-DEFN-R3`; RA-1 – RA-12 remain normative and unchanged.
 **Date:** 2026-09-25
 **Definition authority:** this record is the normative M6 contract for A5 occurrence creation, A6 quotient construction/materialization, A7 source-attached geometry embedding, and the M6 structural portion of A8 independent verification. It refines `DESIGN.md` §14 M6 without changing accepted M5 producer semantics or pulling M7 disposition/degradation work forward.
 
@@ -520,4 +520,18 @@ This amends RA-7. The legacy M5 names `MissingIsolationSeamEquivalenceAuthority`
 - `:a6-seam-faces` — certificate faces or sheets mismatch.
 
 Diagnostic only: predicates, ordering and outcomes are unchanged. No test or production code compares these strings exactly (verified at `M6-CP1-TB4-REV`). Rationale: `Architecture_M6_CP1_TB4_Review_Record.md`, review-agent addendum §B3-§B4.
+
+**RA-12 annotation (`M6-CP1-TB5-REV` review-agent addendum):** after CB5, an uncertified collinear span runs the non-seam P2 rule and fails as `QuotientReciprocalSideAuthorityMismatch`. The `:a6-collinear-span` suffix is therefore never emitted. The other suffixes are live.
+
+## CP1 exit scope — restated (`M6-CP1-TB5-REV` review-agent addendum; no new semantics)
+
+M6-CP1 cannot close until, on exact source plus a fresh green gate, all of the following hold:
+1. The A5 product is conformant (§3), including retirement of the unread legacy `SurfaceOccurrence` `isolationSheet` / `chart` / `lattice`.
+2. The A6 `SurfaceQuotientProduct` exists with member-set `QuotientClassId` (§4.3), one `QuotientRelationCertificate` and one ledger row per owned relation (§4.4), and `QuotientCertificate` / `MaterializationCertificate` (§4.6).
+3. The A7 `SourceAttachedGeometryProduct` exists with its certificates (§5).
+4. `build_authoritative_phase_front_mesh` is a thin adapter with no semantic decision (§10).
+5. The `G4-B002` A6 stage boundary exists (§8.1).
+6. There is no coordinate/position weld, and the focused multi-isolation identity is green (§10).
+
+`M6-DEFN-R3` freezes the representation and sequencing decisions for items 2-5.
 
