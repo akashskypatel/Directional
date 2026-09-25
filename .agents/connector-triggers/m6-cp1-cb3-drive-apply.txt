@@ -1,2 +1,2 @@
 M6-CP1-CB3 Drive patch apply trigger
-Retry 3: apply corrected reconciliation patch base 721058d254b3903fc4791b9b000bc894743f7d00.
+Closeout docs: apply verified documentation patch base 660015f2f15359fd426e2c855aea9f4201c70216.
