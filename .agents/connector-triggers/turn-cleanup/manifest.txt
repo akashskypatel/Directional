@@ -1,3 +1,0 @@
-# M6-DEFN-R1 temporary repository state
-.agents/connector-triggers/source-snapshot/M6-DEFN-R1-20260925T033820Z.txt
-.agents/connector-triggers/m6-defn-r1-drive-apply.txt
