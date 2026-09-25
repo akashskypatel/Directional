@@ -238,7 +238,7 @@ jobs:
           pathlib.Path(sys.argv[3]).write_text(f'focused_total=6\nfocused_pass={fp}\nfocused_red={len(fr)}\nfocused_red_ordinals={fr}\nselector_total=449\nselector_pass={sp}\nselector_red={len(sr)}\nselector_red_ordinals={sr}\ntotal_processes=455\ntotal_pass={fp+sp}\ntotal_red={len(fr)+len(sr)}\nbenchmark_execution=0\n')
           pathlib.Path(sys.argv[4]).write_text(f'row140_identity={s[139]["identity"]}\nrow140_result={s[139]["result"]}\nmulti_isolation_identity={f[4]["identity"]}\nmulti_isolation_result={f[4]["result"]}\npair_swap_identity={f[5]["identity"]}\npair_swap_result={f[5]["result"]}\n')
           PY
-          grep -Rho 'OccurrenceInvalidCornerAuthority' "$RESULT/raw" | wc -l | tr -d ' ' | awk '{print "occurrence_invalid_corner_authority_mentions="$1}' >> "$RESULT/recovery-observations.txt"
+          { grep -Rho 'OccurrenceInvalidCornerAuthority' "$RESULT/raw" || true; } | wc -l | tr -d ' ' | awk '{print "occurrence_invalid_corner_authority_mentions="$1}' >> "$RESULT/recovery-observations.txt"
 
           census "$PKG" "$RESULT/package-census-after.tsv"
           census "$SRC" "$RESULT/source-census-after.tsv"
