@@ -2,4 +2,4 @@ M6-CP1-TB3-EXEC durable documentation patch application
 Drive file: 1txBF16-RC0oAddhlbHXvxc7YvLzLyx3z
 Patch sha256: 183d71019ae45a08f34df7d32c8fc5fb0d17e1d4b3931ce59f86421ca41b305a
 Base: 800534057e5d190d5e1cf37cb5d9db9e2212e285
-Retry: 0
+Retry: 1 (corrected YAML quoting)
