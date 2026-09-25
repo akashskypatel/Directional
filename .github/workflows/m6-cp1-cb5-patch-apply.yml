@@ -1,0 +1,46 @@
+name: M6 CP1 CB5 Patch Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m6-cp1-cb5-patch-apply.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m6-cp1-cb5-patch-apply
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m6-cp1-cb5-patch-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m6-cp1-cb5-patch-apply
+      commit_run_file: false
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 18zNW_oYaEI59UPLJKbcd9yfWvb-Jo-cY
+      patch_sha256: c4789d192ab48dd5137fd2de7121d85538635f5156e3f23a058423a949a79324
+      base_sha: 28275f1004caf9659e2bf17be1bb8d6a0c3e6460
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "M6-CP1-CB5: classify uncertified collinear spans as non-seams"
+    secrets: inherit
