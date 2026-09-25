@@ -1,5 +1,0 @@
-# M6-CP1-CB4 temporary-state cleanup
-.agents/connector-triggers/m6-cp1-cb4-closeout-apply/trigger.txt
-.agents/Directional/turn-payloads/M6-CP1-CB4-blocker-docs.patch
-.agents/connector-triggers/source-snapshot/M6-CP1-CB4-start.txt
-.agents/connector-triggers/source-snapshot/m6-cp1-cb4-20260925.txt

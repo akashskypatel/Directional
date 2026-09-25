@@ -1,5 +1,0 @@
-turn=M6-CP1-CB4
-purpose=start-snapshot
-parent_sha=0fe87800d09d13d131c4ed0b72a301ad566e050c
-read_mode=snapshot
-runtimeExecution=false

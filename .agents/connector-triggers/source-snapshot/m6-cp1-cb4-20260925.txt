@@ -1,4 +1,0 @@
-turn=M6-CP1-CB4
-purpose=freeze exact source snapshot for implementation inspection
-semantic_base=6257b0effcf68bea0d2738b61dce7cf52124af02
-retry=0

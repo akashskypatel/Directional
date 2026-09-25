@@ -1,4 +1,0 @@
-M6-CP1-CB4 closeout documentation patch apply.
-Patch base: 43f95ae51beadf36d969880a1c57c3c652f12e2a
-Patch SHA-256: cf7005046c599a8dd5701ed4963943ab15b745da39614f0b10e589ec2792a18d
-Retry: 0
