@@ -1,4 +1,16 @@
-## M6-CP1-TB5 EXEC complete — mandatory Review next (2026-09-25)
+## M6-CP1-TB5 Review complete — bounded CB6 product-surface cleanup next (2026-09-25)
+
+**TB5 Review: RECOVERY ACCEPTED / runtime candidate PROMOTED / CP1 OPEN only on static A5 product shape. Exact next: `M6-CP1-CB6`.** Current reviewed runtime authority is `10879581622 / 82b86a28...` under selector449 **449/449**. Stable accounting remains **55/16/39**, debt **1**.
+
+- [x] Independently re-open candidate package/source and TB5 result/log: package 28/28, result 933/933, exact 456/456 mechanics and immutable postflight upheld.
+- [x] Formal recovery: TB1 iterator-range, TB3 RP-01 and TB4 RP-01 are RECOVERY PROVED; TB2 validation-order remains recovery-proved. Historical stable counts remain intact.
+- [x] Promote CB5/TB5 package/source `10879581622 / 82b86a28...` as current reviewed runtime authority under unchanged selector449.
+- [x] Correct stale TB4-REV debt: aggregated lineage `equivalences` are already sorted/de-duplicated after tuple remap in exact candidate source; no code change required.
+- [ ] `M6-CP1-CB6`: remove unread public `SurfaceOccurrence.chart`, `.lattice`, `.isolationSheet` plus matching constructor/call-site arguments only; preserve every live A5 semantic field.
+- [ ] CB6 compile/package standard eight GMP/GMPXX targets with `runtimeExecution=false`; no generated runtime.
+- [ ] Compile-green -> `M6-CP1-TB6-EXEC`, unchanged **7 focused + selector449 = 456** -> mandatory `M6-CP1-TB6-REV`; only that Review may close CP1.
+
+## Historical — M6-CP1-TB5 EXEC complete (2026-09-25)
 
 **TB5 is COMPLETE / MECHANICALLY GREEN / 456/456 / CANDIDATE UNPROMOTED. Exact next: `M6-CP1-TB5-REV`.** Stable accounting remains **55/16/39** in EXEC, debt **1**; accepted M5 package `10814505512` / selector449 449/449 remains runtime authority pending Review.
 
@@ -6,9 +18,9 @@
 - [x] Execute exactly **7 focused + selector449 = 456** fresh exact-filter processes: **456/456 PASS**, exact-one, zero skips/crashes/selection mismatches, benchmark 0.
 - [x] Recover all 21 TB4 accepted-prefix losses and the carried torus falsifier (focused row6 + selector 444/446/448); keep rows5/7 and row140 green.
 - [x] Record regression gate: **no new regression candidate / +0 stable accounting in EXEC**; formal recovery and promotion remain Review-owned.
-- [ ] **Exact next `M6-CP1-TB5-REV`:** independently reopen candidate/result/log bytes, verify 456/456 recovery and immutable postflight, adjudicate TB1/TB3/TB4 recovery, promotion, CP1 acceptance, stable accounting, and debt.
-- [ ] CP1-acceptance precondition: remove or relabel unread legacy `SurfaceOccurrence` fields `isolationSheet`, `chart`, `lattice`; keep `point` and `chartComponent` as live authority.
-- [ ] Minor: re-sort aggregated lineage `equivalences` after tuple remap.
+- [x] `M6-CP1-TB5-REV`: recovery accepted and candidate promoted; CP1 held only by the static legacy-field precondition.
+- [ ] Moved to exact successor `M6-CP1-CB6`: remove unread legacy `SurfaceOccurrence.chart`, `.lattice`, `.isolationSheet`; keep `point` and `chartComponent`.
+- [x] Review correction: exact source already sorts/de-duplicates aggregated lineage `equivalences` after tuple remap; stale debt withdrawn.
 
 ## M6-CP1-CB5 complete — immutable TB5 next (2026-09-25)
 
@@ -19,9 +31,9 @@
 - [x] Static audit: only `src/pipeline/RemeshPipeline.cpp` changed semantically; selector449/routing449 hashes remain frozen.
 - [x] Compile/package the standard eight targets with GMP/GMPXX; run/job `36168827294 / 108183151046`, artifact `10879581622`, manifest 28/28, clean source receipts, `runtimeExecution=false`.
 - [x] **TB5:** artifact `10879581622` consumed immutably; **7/7 focused + 449/449 selector = 456/456 PASS** with exact immutable postflight.
-- [ ] **TB5 Review:** independently adjudicate all residual REDs, recovery of the 21 TB4 losses, torus falsifier outcome, TB1/TB3 formal recovery, and candidate promotion.
-- [ ] CP1-acceptance precondition: remove or relabel unread legacy `SurfaceOccurrence` fields `isolationSheet`, `chart`, `lattice`; keep `point` and `chartComponent` as live authority.
-- [ ] Minor: re-sort aggregated lineage `equivalences` after tuple remap.
+- [x] **TB5 Review:** 456/456 upheld; TB1/TB3/TB4 recovery proved; candidate promoted; CP1 remains open only on CB6 field retirement.
+- [ ] Current owner `M6-CP1-CB6`: retire unread legacy `SurfaceOccurrence.chart`, `.lattice`, `.isolationSheet`; keep `point` and `chartComponent`.
+- [x] TB5 Review correction: exact source already sorts/de-duplicates after tuple remap; no implementation owed.
 
 ## Review-agent addendum — `M6-CP1-TB4-REV` (2026-09-25)
 

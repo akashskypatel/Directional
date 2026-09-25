@@ -1,3 +1,15 @@
+## Resume-critical update — `M6-CP1-TB5-REV` COMPLETE / runtime recovery accepted / CP1 held only by legacy A5 fields / exact next `M6-CP1-CB6` (2026-09-25)
+
+**Start bounded runtime-free `M6-CP1-CB6`; do not rerun TB5, reopen CB5, start CP2, or close CP1 first.**
+
+Independent TB5 Review re-opened CB5 package `10879581622 / 82b86a285292379cfd92cdc4e10d74181b38f1e8`, TB5 run/job `36172157965 / 108194136911`, result/log `10880392759 / 10880502706`, and exact current source. TB5 is upheld at **7/7 focused + 449/449 selector = 456/456 PASS**, exact-one, zero skips/crashes/mismatches, benchmark 0 and immutable postflight. The complete TB4 21-row loss set and the torus pair-swap/444/446/448 falsifier recover.
+
+Review formally marks the TB1 `CROSS_TEMPORARY_ITERATOR_RANGE` event and the TB3/TB4 `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrences **RECOVERY PROVED**; TB2 validation-order recovery remains proved. Historical stable accounting does not shrink: **55 events / 16 categories / 39 recurrences**. Produced-witness debt remains **1**, owned by M6-CP3 direct-production proof.
+
+CB5/TB5 artifact/source `10879581622 / 82b86a28...` is promoted as the **current reviewed runtime authority under unchanged selector449 449/449**. `M6-CP1` nevertheless remains **OPEN** because the public A5 `SurfaceOccurrence` still exposes unread representative fields `chart`, `lattice`, and `isolationSheet`, contrary to frozen §3.2/RA-11. Exact source has zero C++ readers for all three; `point` is live and `chartComponent` is legitimate. The old TB4-REV “unsorted aggregated equivalences” debt is withdrawn: exact candidate source already sorts and de-duplicates `lineage.equivalences` after tuple remap.
+
+`M6-CP1-CB6` removes only those three dead members plus their constructor/call-site arguments, changes no tests/fixtures/selectors/semantic relation authority, and compile/packages the standard eight GMP/GMPXX targets with no runtime. Compile-green advances to immutable `M6-CP1-TB6-EXEC`, unchanged **7 + 449 = 456**, then mandatory `M6-CP1-TB6-REV`. Full Review authority: `Architecture_M6_CP1_TB5_Review_Record.md`; governing successor plan: `Architecture_M6_CP1_CB6_Legacy_Occurrence_Field_Retirement_Code_Build_Plan.md`.
+
 ## Resume-critical update — `M6-CP1-TB5-EXEC` COMPLETE / 456/456 mechanically green / exact next `M6-CP1-TB5-REV` (2026-09-25)
 
 **Start mandatory runtime-free `M6-CP1-TB5-REV`; do not rerun TB5, resume CB5, promote the candidate, or start another Code + Build turn first.**
@@ -179,24 +191,19 @@ Review must independently re-open source/evidence and re-derive: split-square v0
 
 ## Current authority
 
-`M6-CP1-CB5` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE**. The only semantic source change is the reviewed A6 OrdinaryFront P2 correction: source-edge-collinear spans with no checked isolation certificate use exact non-seam same-sheet + both-wedge membership; certificate-backed spans retain the exact seam face/sheet/reciprocal-transition rule. RA-12 diagnostics are site-qualified. No tests, fixtures, selectors, A5 product/schema/support authority, HardRail, Periodic, or frozen definitions changed.
+`M6-CP1-TB5-REV` is **COMPLETE / RECOVERY ACCEPTED / CANDIDATE PROMOTED / CP1 STILL OPEN**. Current reviewed runtime authority is CB5/TB5 package/source `10879581622 / 82b86a285292379cfd92cdc4e10d74181b38f1e8` under unchanged selector449 **449/449**. TB5 is **456/456 PASS** and formally recovery-proves the TB1, TB3 and TB4 mechanisms; TB2 recovery remains proved. Stable historical accounting is **55 / 16 / 39**, produced-witness debt **1**.
 
-Semantic commit is `2ec8c7358858f0b74ce6fc2a30c55d366b53ba71`; mandatory compile source is `82b86a285292379cfd92cdc4e10d74181b38f1e8`. Compile run/job `36168827294 / 108183151046` produced candidate artifact `10879581622` (`sha256:578845a2135ef2296e982e8bac9a378b7659d2968aa9ab5b2702f841288d57c6`) and log artifact `10879491574` (`sha256:a67873ca9bb8ef0e447ed16badff37bcd602a4aad363ed31f9c42ca9c7af516c`). All eight standard targets compile/link with GMP/GMPXX; package manifest 28/28; clean source; `runtimeExecution=false`.
-
-Accepted runtime authority is unchanged: M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7`, selector449 **449/449**. Stable accounting is **55 / 16 / 39**, debt **1**. CB5 candidate `10879581622` is unpromoted and grants no CP1/G4 closure. Formal TB1/TB3 recovery remains Review-owned.
+CP1 closure is held only by one static A5-product precondition: remove the unread legacy `SurfaceOccurrence.chart`, `.lattice`, and `.isolationSheet` representation fields. Exact source already re-sorts and de-duplicates aggregated lineage `equivalences` after tuple remap, so the prior minor sorting debt is withdrawn without code change.
 
 ## Exact next turn
 
-**`M6-CP1-TB5-EXEC`** — immutable artifact-only Test + Benchmark on candidate artifact `10879581622`. Do **not** rebuild, relink, patch, repair, regenerate discovery/code, or mutate packaged source/fixtures/manifests. Extraction must preserve archived executable mode bits.
+**`M6-CP1-CB6`** — bounded runtime-free Code + Build under `Architecture_M6_CP1_CB6_Legacy_Occurrence_Field_Retirement_Code_Build_Plan.md`.
 
-Execute exactly the frozen **7 focused + selector449 = 456** fresh exact-filter processes, one process per identity, benchmark 0, exact-one selection, zero skips/selection mismatch, no full-suite watchdog, and immutable pre/post package/source/execution-view census. Selector449 is `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`; routing449 is `9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707`.
+Remove only the unread public `SurfaceOccurrence.chart`, `.lattice`, and `.isolationSheet` members plus their constructor/call-site arguments. Preserve `point`, `support`, `chartComponent`, `topologyRegion`, complete wedge bindings/sheets, labelled placement provenance and isolation evidence. No test, fixture, selector, routing, A6/A7 semantic, HardRail/Periodic, or frozen-definition change is authorized.
 
-- Recovery prediction: the 21 TB4 newly-lost accepted selector rows recover under the corrected no-certificate branch.
-- Torus falsifier: focused row6 and selector 444/446/448 are multi-sheet and may identify a different RA-12-qualified site; recovery is not assumed.
-- Any RED is recorded and handed to mandatory `M6-CP1-TB5-REV`; no correction or rerun occurs inside EXEC.
-- `Regression_Root_Cause_Tracker.md` must categorize every observed regression before EXEC closes.
+Compile/package the standard eight targets through the durable GMP/GMPXX compile workflow; generated Directional runtime is forbidden. Compile-green advances to immutable `M6-CP1-TB6-EXEC`, unchanged seven focused + selector449 = **456** fresh exact-filter processes, then mandatory `M6-CP1-TB6-REV`.
 
-**Mandatory successor:** `M6-CP1-TB5-REV`.
+**Mandatory successor after compile-green:** `M6-CP1-TB6-EXEC`.
 
 ## Completed predecessor turns (reference only)
 
@@ -208,32 +215,29 @@ Execute exactly the frozen **7 focused + selector449 = 456** fresh exact-filter 
 
 ## Current files
 
-- `.agents/Directional/Architecture_M6_CP1_CB5_Ordinary_Front_Seam_Classification_Recovery_Code_Build_Plan.md` (completed CB5 governing plan; amended)
-- `.agents/Directional/Architecture_M6_CP1_TB4_Review_Record.md` (TB4-REV + review-agent addendum)
-- `.agents/Directional/Architecture_M6_CP1_TB4_Artifact_Only_Test_Benchmark_Report.md` (latest runtime report)
-- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` (normative; RA-1 – RA-12 at the end)
-- `.agents/Directional/Architecture_M6_DEFN_R2_Review_Record.md`
-- `.agents/Directional/Architecture_M6_DEFN_R2_Seam_Incident_Authority_Amendment_Definition_Record.md`
-- `.agents/Directional/Architecture_M6_DEFN_R1_Seam_Incident_Occurrence_Sheet_Authority_Definition_Record.md`
-- `.agents/Directional/M6_Consolidated_Record.md`
-- `.agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt`
-- `.agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv`
+- `.agents/Directional/Architecture_M6_CP1_TB5_Review_Record.md` — current Review authority
+- `.agents/Directional/Architecture_M6_CP1_CB6_Legacy_Occurrence_Field_Retirement_Code_Build_Plan.md` — exact successor plan
+- `.agents/Directional/Architecture_M6_CP1_TB5_Artifact_Only_Test_Benchmark_Report.md` — accepted 456/456 runtime evidence
+- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — normative RA-1 – RA-12 product contract
+- `.agents/Directional/M6_Consolidated_Record.md` — durable M6 history and current §22 disposition
+- `.agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt` — frozen selector449
+- `.agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv` — frozen routing449
 
 ## Context Load Plan
 
 ```yaml
 load_next:
   - .agents/Directional/Future_Chat_Session_Handoff.md
-  - .agents/Directional/Architecture_M6_CP1_TB4_Review_Record.md  # TB5 recovery/falsifier authority
-  - .agents/Directional/Architecture_M6_Frozen_Definitions.md  # RA-1..RA-12 normative
+  - .agents/Directional/Architecture_M6_CP1_TB5_Review_Record.md
+  - .agents/Directional/Architecture_M6_CP1_CB6_Legacy_Occurrence_Field_Retirement_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M6_Frozen_Definitions.md
   - .agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt
   - .agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv
 conditional_modules:
-  - trigger: github_connector / GitHub Actions / artifact-only execution
+  - trigger: github_connector / GitHub Actions / compile or patch transport
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
-  - .agents/Directional/Architecture_M6_CP1_CB5_Ordinary_Front_Seam_Classification_Recovery_Code_Build_Plan.md
-  - .agents/Directional/Architecture_M6_CP1_TB4_Artifact_Only_Test_Benchmark_Report.md
+  - .agents/Directional/Architecture_M6_CP1_TB5_Artifact_Only_Test_Benchmark_Report.md
   - .agents/Directional/M6_Consolidated_Record.md
   - .agents/Directional/Regression_Root_Cause_Tracker.md
   - .agents/Directional/GitHub_Workflow_Policy.md

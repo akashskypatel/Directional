@@ -285,3 +285,13 @@ Runtime outcome is **7/7 focused + 449/449 selector = 456/456 PASS**. All 21 TB4
 Result/log artifacts are `10880392759 / 10880502706` with SHA-256 `71095935dedf52277df946e05cf181713ecb0ebe0842aa91f35ab9b65dd91216 / 0a41be59d2c31138623e770eb6fb30202fa6e511aad691343f40cfee5e3e29df`. Result self-manifest verifies **933/933** and execution-ledger SHA-256 is `06c1d0166ac0165d4a931c10d2aa4f95b433b05f7a40217f7c8003de3d460a11`. Package/source/execution-view censuses and pre/post hashes are identical; selector/routing/source archive are unchanged; package manifest remains 28/28.
 
 TB5 EXEC records no new regression candidate and performs no stable repricing. Stable accounting remains **55 / 16 / 39**, debt 1. Candidate remains unpromoted and accepted M5 package/source `10814505512 / e284fea7...` under selector449 449/449 remains runtime authority. Mandatory runtime-free `M6-CP1-TB5-REV` owns formal recovery of prior events, candidate promotion, CP1 acceptance, and any accounting/debt disposition. The legacy `SurfaceOccurrence.isolationSheet/chart/lattice` acceptance precondition remains open.
+
+## 22. `M6-CP1-TB5-REV` — recovery accepted; runtime promoted; CP1 held only by static A5 product cleanup
+
+Independent Review re-opens candidate `10879581622 / 82b86a285292379cfd92cdc4e10d74181b38f1e8`, TB5 run/job `36172157965 / 108194136911`, result/log `10880392759 / 10880502706`, and exact current source. Package 28/28, result 933/933, source archive/selector/routing hashes, GMP boundary and immutable postflight all independently verify. The complete gate is upheld at **456/456 PASS**.
+
+TB1 `CROSS_TEMPORARY_ITERATOR_RANGE`, TB3 RP-01 and TB4 RP-01 are formally **RECOVERY PROVED**; TB2 validation-order remains recovery-proved. Historical counts remain **55/16/39** and project debt remains 1. CB5/TB5 is promoted as current reviewed runtime authority under unchanged selector449.
+
+CP1 remains open because public `SurfaceOccurrence` still contains unread `chart`, `lattice`, `isolationSheet` representative fields excluded by frozen §3.2/RA-11. Exact C++ reader search finds none; `point` is live and `chartComponent` remains legitimate. The TB4-REV aggregated-`equivalences` sorting debt is withdrawn because exact candidate source already sorts/de-duplicates after tuple remap.
+
+Exact successor `M6-CP1-CB6` retires only those three dead fields, compile/packages without runtime, then hands an immutable candidate to unchanged TB6 7+449=456 and mandatory Review. Full authority: `Architecture_M6_CP1_TB5_Review_Record.md`; plan: `Architecture_M6_CP1_CB6_Legacy_Occurrence_Field_Retirement_Code_Build_Plan.md`.

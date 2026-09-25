@@ -1,3 +1,11 @@
+## 2026-09-25 — `M6-CP1-TB5-REV`: full recovery accepted; runtime promoted; CP1 held on three dead public fields
+
+- Re-opened candidate `10879581622 / 82b86a28...` (28/28), TB5 result `10880392759` (933/933), log `10880502706`, selector/routing/source hashes and exact current source; 456/456 mechanics and immutable postflight are upheld.
+- Formally marks TB1 iterator-range and TB3/TB4 RP-01 mechanisms RECOVERY PROVED; TB2 validation-order remains recovered. Stable history stays **55/16/39**, debt 1.
+- Promotes CB5/TB5 as current reviewed runtime authority under unchanged selector449; promotion does not close CP1.
+- CP1 acceptance remains blocked only by unread public `SurfaceOccurrence.chart`, `.lattice`, `.isolationSheet`. The prior unsorted-equivalences debt is withdrawn because exact source already sorts/de-duplicates after remap.
+- Freezes exact next `M6-CP1-CB6`, then immutable TB6 7+449=456 and mandatory Review.
+
 ## 2026-09-25 — `M6-CP1-TB5-EXEC`: frozen 456-process gate returns green; Review next
 
 - Immutable CB5 candidate `10879581622 / 82b86a28...` executed in run/job `36172157965 / 108194136911`: focused **7/7**, selector449 **449/449**, aggregate **456/456 PASS**, exact-one, zero skips/crashes/mismatches, benchmark 0 and immutable postflight.

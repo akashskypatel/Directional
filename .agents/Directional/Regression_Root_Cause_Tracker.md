@@ -1,3 +1,15 @@
+## 2026-09-25 — `M6-CP1-TB5-REV`: full 456/456 recovery accepted — **TB1/TB3/TB4 RECOVERY PROVED / +0 HISTORY REPRICING / RUNTIME PROMOTED**
+
+**Stable totals remain 55 events / 16 categories / 39 recurrences; project debt remains 1 (M6).** Independent Review re-opens package/source `10879581622 / 82b86a28...`, TB5 result/log `10880392759 / 10880502706`, and exact source. It upholds focused **7/7** + selector449 **449/449** = **456/456 PASS**, exact-one selection, zero skips/crashes/mismatches and immutable postflight.
+
+- `M6-CP1-TB1-EXEC-CAND-01` / `CROSS_TEMPORARY_ITERATOR_RANGE`: **RECOVERY PROVED**. The symptom is absent and its pre-registered full selector449 condition is satisfied.
+- `M6-CP1-TB2-REV-CAND-01` / `VALIDATION_ORDER_SHADOWING`: remains **RECOVERY PROVED**; row140 remains PASS.
+- `M6-CP1-TB3-EXEC-CAND-01` / `RP-01 AUTHORITY_DOMAIN_CONFLATION`: **RECOVERY PROVED**. The direct multi-isolation rows and carried pair-swap/444/446/448 are all green in one complete fresh gate.
+- `M6-CP1-TB4-EXEC-CAND-01` / `RP-01 AUTHORITY_DOMAIN_CONFLATION`: **RECOVERY PROVED**. All 21 newly lost accepted-prefix rows recover and no residual family requires splitting.
+- Recovery changes current defect state, not historical counts. Stable events/categories/recurrences remain append-only at **55/16/39**.
+- CB5/TB5 `10879581622 / 82b86a28...` is promoted as current reviewed runtime authority under unchanged selector449. CP1 remains open solely on the static legacy-field product precondition; project debt remains 1 because CP3 owns direct-production proof.
+- Prior TB4-REV minor debt “unsorted aggregated `equivalences` after remap” is **WITHDRAWN / FALSE STATIC OBSERVATION**: exact candidate source already sorts/de-duplicates immediately after remap. +0 accounting.
+
 ## 2026-09-25 — `M6-CP1-TB5-EXEC`: frozen gate returns 456/456 — **NO NEW REGRESSION / +0 STABLE IN EXEC / REVIEW REQUIRED**
 
 **Stable totals remain 55 events / 16 categories / 39 recurrences; project debt remains 1 (M6).** Immutable candidate `10879581622 / 82b86a285292379cfd92cdc4e10d74181b38f1e8` executed exactly **456** fresh exact-filter processes in run/job `36172157965 / 108194136911`: focused **7/7 PASS**, selector449 **449/449 PASS**, exact-one selection, zero skips/crashes/selection mismatches, benchmark 0 and exact immutable postflight. Result/log authority is `10880392759 / 10880502706`; result self-manifest verifies 933/933.

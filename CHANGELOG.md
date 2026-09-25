@@ -1,3 +1,10 @@
+## 2026-09-25 — M6 CP1 TB5 Review accepts recovery; CB6 cleanup next
+
+- Independent Review upholds CB5/TB5 at **456/456 PASS**, formally recovery-proves the TB1/TB3/TB4 defects, and keeps historical accounting at **55/16/39**, debt 1.
+- Package/source `10879581622 / 82b86a28...` is promoted as current reviewed runtime authority under unchanged selector449.
+- CP1 stays open only because public A5 still exposes unread `SurfaceOccurrence.chart/lattice/isolationSheet`; exact source already sorts aggregated equivalences after remap, so that earlier minor debt is withdrawn.
+- Next is bounded `M6-CP1-CB6` field retirement, compile only, then unchanged TB6 7+449=456 and Review.
+
 ## 2026-09-25 — M6 CP1 TB5 returns 456/456
 
 - Executed the CB5 candidate artifact immutably across seven focused tests plus the full frozen selector449: **456/456 PASS** with exact-one selection, zero skips/crashes/mismatches and no rebuild or benchmark execution.

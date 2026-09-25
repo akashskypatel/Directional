@@ -1,3 +1,9 @@
+## M6 CP1 — `M6-CP1-TB5-REV` accepts recovery and promotes runtime authority; bounded CB6 next (2026-09-25)
+
+Independent Review upholds TB5 at **456/456 PASS**, formally recovery-proves TB1/TB3/TB4 while preserving historical accounting **55/16/39**, and promotes CB5/TB5 package/source `10879581622 / 82b86a28...` as current reviewed runtime authority under unchanged selector449. Project debt remains 1 and is not CP1-dischargeable.
+
+CP1 remains open only because public A5 `SurfaceOccurrence` still carries unread representative fields `chart`, `lattice`, `isolationSheet`, excluded by frozen §3.2/RA-11. The prior aggregated-`equivalences` sorting debt is withdrawn: exact source already sorts/de-duplicates after tuple remap. Exact next is `M6-CP1-CB6`, limited to retiring those three fields; compile-green -> unchanged TB6 7+449=456 -> mandatory Review.
+
 ## M6 CP1 — `M6-CP1-CB5` compile green; immutable TB5 next (2026-09-25)
 
 CB5 applies only the reviewed A6 OrdinaryFront P2 correction: uncertified source-edge-collinear spans are ordinary non-seams and require exact same-sheet + both-wedge membership; exact certificate-backed spans retain seam validation. RA-12 site-qualified diagnostics are compiled in. No test/selector/A5 product/frozen-definition semantic changed.
@@ -587,7 +593,7 @@ Final CP4 Review completes the bounded conjunct8 sequence: row449 was accepted p
 | Checkpoint | Semantic domain |
 |---|---|
 | `M6-DEFN` | **COMPLETE / RUNTIME-FREE.** Four immutable products, exact occurrence/quotient identity, verifier recompute-vs-repair boundary, G4 ownership and dormant-test dispositions frozen in `Architecture_M6_Frozen_Definitions.md`. |
-| `M6-CP1` | **ACTIVE / `M6-CP1-TB5-EXEC` COMPLETE / MECHANICALLY GREEN / EXACT NEXT `M6-CP1-TB5-REV`.** CB5 candidate artifact/source `10879581622 / 82b86a28...` executed the complete frozen **7+449=456** gate at **7/7 focused + 449/449 selector = 456/456 PASS** with exact-one selection, zero skips/crashes/mismatches, benchmark 0 and immutable postflight. All 21 TB4 accepted-prefix losses and the carried torus pair-swap/444/446/448 falsifier recover mechanically; rows5/7 and row140 remain green. EXEC records no new regression candidate and makes no stable repricing. Candidate remains unpromoted; stable accounting stays **55/16/39**, debt 1, and accepted M5 runtime authority is unchanged pending mandatory Review. The legacy occurrence-field CP1-acceptance precondition remains open. |
+| `M6-CP1` | **ACTIVE / TB5 REVIEW RECOVERY ACCEPTED / CURRENT RUNTIME AUTHORITY `10879581622 / 82b86a28...` / EXACT NEXT `M6-CP1-CB6`.** TB5 is 456/456; TB1/TB3/TB4 formal recovery is proved with stable history 55/16/39 unchanged. CP1 closure is held only by retirement of unread public `SurfaceOccurrence.chart/lattice/isolationSheet`; compile-green CB6 advances to unchanged TB6 7+449=456 and Review. |
 | `M6-CP2` | verifier consumes certificates and independently recomputes elementary incidence; **never repairs producer state** |
 | `M6-CP3` | M6 exit — equal coordinates without a relation remain distinct; every owned relation consumed exactly once; source-row / output-row / scheduler permutation invariance |
 
