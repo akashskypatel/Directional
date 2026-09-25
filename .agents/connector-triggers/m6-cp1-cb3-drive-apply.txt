@@ -1,0 +1,2 @@
+M6-CP1-CB3 Drive patch apply trigger
+Apply exact staged patch base c3ebf6aa4bc706fb28ff96aff8b23e0b82e411ac.
