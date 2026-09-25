@@ -1,3 +1,0 @@
-Purpose: materialize exact source snapshot for M6-CP1-TB4-REV review.
-Expected source boundary: current working-branch authority after resume STATUS beacon.
-Attempt: 1
