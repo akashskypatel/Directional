@@ -1,0 +1,47 @@
+name: Agent M6 DEFN R1 Drive Patch Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m6-defn-r1-drive-apply.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m6-defn-r1-drive-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m6-defn-r1-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1__HieRtQ9dJBTQaaKeJqNGeh_nImnzBp
+      patch_sha256: "3a71ac6c43d1989837c1a59c9be5dc5fa09cf6bda2d85149411751cf05b8beeb"
+      base_sha: 63330339b116c8a6a56740de5b1160e8b4195992
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: freeze M6 DEFN R1 seam occurrence authority"
+      retention_days: 7
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m6-defn-r1-drive-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
