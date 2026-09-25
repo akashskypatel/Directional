@@ -1,2 +1,2 @@
 M6-CP1-CB3 schema validation trigger
-Retry 2: validate unchanged temporary validator and reconciliation Drive-apply caller draft.
+Retry 3: validate corrected reconciliation Drive-apply caller draft.
