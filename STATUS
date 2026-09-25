@@ -1,8 +1,8 @@
 ---TURN_STATUS---
 Turn: M6-CP1-CB4
-Status: IN_PROGRESS
-Successor: UNKNOWN
+Status: COMPLETE
+Successor: M6-CP1-TB4-EXEC
 Started at: 2026-09-25T06:19:30Z
 Resumed at: 2026-09-25T09:48:50Z
-Ended at: 
+Ended at: 2026-09-25T15:40:07Z
 ---END_TURN_STATUS---
