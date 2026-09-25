@@ -1,3 +1,0 @@
-M6-CP1-TB4-REV source/document snapshot.
-Authority before trigger: 05c36605fd63f3f3148799831f56902ac1e1dfe3
-READ_MODE=snapshot
