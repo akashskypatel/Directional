@@ -1,4 +1,25 @@
-## Resume-critical update — `M6-CP1-CB5` COMPLETE / compile-green candidate / exact next `M6-CP1-TB5-EXEC` (2026-09-25)
+## Resume-critical update — `M6-CP1-TB5-EXEC` COMPLETE / 456/456 mechanically green / exact next `M6-CP1-TB5-REV` (2026-09-25)
+
+**Start mandatory runtime-free `M6-CP1-TB5-REV`; do not rerun TB5, resume CB5, promote the candidate, or start another Code + Build turn first.**
+
+TB5 consumed CB5 candidate artifact/source `10879581622 / 82b86a285292379cfd92cdc4e10d74181b38f1e8` immutably and executed the complete frozen gate in run/job `36172157965 / 108194136911`: **7/7 focused + 449/449 selector = 456/456 PASS**. Every process selected exactly one test with zero skips/crashes/selection mismatches; benchmark 0; no timeout/watchdog; exact package/source/execution-view postflight is unchanged.
+
+Recovery evidence is complete at EXEC mechanics:
+- all **21** TB4 newly-lost accepted selector identities recover;
+- focused pair-swap row6 and torus selector **444/446/448** recover;
+- focused multi-isolation row5 and new seam-endpoint/wedge-lineage row7 remain PASS;
+- row140 remains PASS and selector449 is restored to **449/449**;
+- no raw gate log contains `OccurrenceInvalidCornerAuthority` or any RA-12 legacy isolation-failure prefix.
+
+Result/log authority is `10880392759 / 10880502706`; provider/download SHA-256 values are `71095935dedf52277df946e05cf181713ecb0ebe0842aa91f35ab9b65dd91216 / 0a41be59d2c31138623e770eb6fb30202fa6e511aad691343f40cfee5e3e29df`. Result self-manifest verifies **933/933** and the complete execution ledger hashes `06c1d0166ac0165d4a931c10d2aa4f95b433b05f7a40217f7c8003de3d460a11`.
+
+EXEC records **no new regression candidate** and performs no stable repricing. Stable accounting remains **55 / 16 / 39**, debt **1**. Candidate `10879581622` remains unpromoted and accepted runtime authority remains M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 449/449 until Review. Formal closure/recovery of TB1/TB3/TB4 events, candidate promotion, CP1 acceptance, and any debt/accounting effect belong to Review.
+
+The CP1-acceptance precondition for unread legacy `SurfaceOccurrence.isolationSheet/chart/lattice` remains open; minor aggregated `equivalences` sorting also remains open. Full execution evidence: `Architecture_M6_CP1_TB5_Artifact_Only_Test_Benchmark_Report.md` and `M6_Consolidated_Record.md §21`.
+
+## Superseded resume notes (historical — do not act on)
+
+### Superseded live note — `M6-CP1-CB5` COMPLETE / compile-green candidate / exact next `M6-CP1-TB5-EXEC` (2026-09-25)
 
 **Start immutable artifact-only `M6-CP1-TB5-EXEC`; do not resume CB5 and do not rebuild the candidate.** TB5 executes the unchanged frozen surface: **7 focused + selector449 = 456** fresh exact-filter processes, then mandatory `M6-CP1-TB5-REV`.
 
@@ -19,7 +40,6 @@ TB5 recovery remains a falsifiable prediction, not a CB5 claim: the 21 TB4 newly
 
 Full implementation record: `M6_Consolidated_Record.md §20`. Governing plan: `Architecture_M6_CP1_CB5_Ordinary_Front_Seam_Classification_Recovery_Code_Build_Plan.md`.
 
-## Superseded resume notes (historical — do not act on)
 
 ### `M6-CP1-TB4-REV` COMPLETE; exact next `M6-CP1-CB5` (2026-09-25)
 

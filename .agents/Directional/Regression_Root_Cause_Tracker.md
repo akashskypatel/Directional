@@ -1,3 +1,13 @@
+## 2026-09-25 — `M6-CP1-TB5-EXEC`: frozen gate returns 456/456 — **NO NEW REGRESSION / +0 STABLE IN EXEC / REVIEW REQUIRED**
+
+**Stable totals remain 55 events / 16 categories / 39 recurrences; project debt remains 1 (M6).** Immutable candidate `10879581622 / 82b86a285292379cfd92cdc4e10d74181b38f1e8` executed exactly **456** fresh exact-filter processes in run/job `36172157965 / 108194136911`: focused **7/7 PASS**, selector449 **449/449 PASS**, exact-one selection, zero skips/crashes/selection mismatches, benchmark 0 and exact immutable postflight. Result/log authority is `10880392759 / 10880502706`; result self-manifest verifies 933/933.
+
+- **Regression categorization:** no PASS-to-RED identity is observed, so TB5 creates no candidate event and no stable event/category/recurrence increment.
+- **Recovery evidence:** all 21 TB4 newly lost accepted selector rows recover; focused pair-swap row6 and selector 444/446/448 recover; focused rows5/7 and row140 remain green. Selector449 is restored to 449/449 and no gate raw log contains `OccurrenceInvalidCornerAuthority` or any RA-12 isolation-failure prefix.
+- **Stable-history disposition:** TB4's already-stable `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence and the TB1/TB3 formal recovery clauses remain historical authority. EXEC does not delete or close them; mandatory TB5 Review owns formal recovery status, promotion and any accounting/debt interpretation.
+- **Candidate authority:** remains unpromoted. Accepted M5 package/source `10814505512 / e284fea7...` remains runtime authority until Review.
+- **Open acceptance debt:** unread legacy `SurfaceOccurrence.isolationSheet/chart/lattice` remains a CP1-acceptance precondition; minor aggregated `equivalences` sorting remains open.
+
 ## 2026-09-25 — `M6-CP1-CB5-OBS-01` — READ_MODE declaration lag — **PROCESS-ONLY / NON-STABLE / +0 / 55/16/39 / debt 1**
 
 - At CB5 entry, several repository authority/document reads occurred before the mandatory turn-local `READ_MODE=snapshot` declaration was made. Under `TOOL_USE_CONSERVATION_POLICY.md` §2 this is a process miss, not semantic evidence.

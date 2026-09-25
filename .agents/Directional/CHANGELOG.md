@@ -1,3 +1,10 @@
+## 2026-09-25 — `M6-CP1-TB5-EXEC`: frozen 456-process gate returns green; Review next
+
+- Immutable CB5 candidate `10879581622 / 82b86a28...` executed in run/job `36172157965 / 108194136911`: focused **7/7**, selector449 **449/449**, aggregate **456/456 PASS**, exact-one, zero skips/crashes/mismatches, benchmark 0 and immutable postflight.
+- All 21 TB4 accepted-prefix losses and the carried torus pair-swap/444/446/448 falsifier recover; rows5/7 and row140 remain green; no RA-12/occurrence-authority failure token remains in gate logs.
+- Result/log `10880392759 / 10880502706`; result 933/933; no new regression candidate and no EXEC repricing. Accounting stays **55/16/39**, debt 1; candidate remains unpromoted.
+- Exact next is mandatory runtime-free `M6-CP1-TB5-REV`; legacy occurrence-field CP1-acceptance debt remains open.
+
 ## 2026-09-25 — `M6-CP1-CB5`: OrdinaryFront no-certificate collinear spans corrected; compile/package green
 
 - Implemented only the TB4-REV-authorized A6 P2 correction in `RemeshPipeline.cpp`: generic collinear spans without a checked isolation certificate now use exact non-seam same-sheet + both-wedge validation; certificate-backed spans retain exact seam face/sheet/transition checks.

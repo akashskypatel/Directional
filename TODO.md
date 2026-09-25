@@ -1,3 +1,15 @@
+## M6-CP1-TB5 EXEC complete — mandatory Review next (2026-09-25)
+
+**TB5 is COMPLETE / MECHANICALLY GREEN / 456/456 / CANDIDATE UNPROMOTED. Exact next: `M6-CP1-TB5-REV`.** Stable accounting remains **55/16/39** in EXEC, debt **1**; accepted M5 package `10814505512` / selector449 449/449 remains runtime authority pending Review.
+
+- [x] Consume candidate artifact `10879581622` immutably; verify package/source/selector/routing and archived executable modes without repair.
+- [x] Execute exactly **7 focused + selector449 = 456** fresh exact-filter processes: **456/456 PASS**, exact-one, zero skips/crashes/selection mismatches, benchmark 0.
+- [x] Recover all 21 TB4 accepted-prefix losses and the carried torus falsifier (focused row6 + selector 444/446/448); keep rows5/7 and row140 green.
+- [x] Record regression gate: **no new regression candidate / +0 stable accounting in EXEC**; formal recovery and promotion remain Review-owned.
+- [ ] **Exact next `M6-CP1-TB5-REV`:** independently reopen candidate/result/log bytes, verify 456/456 recovery and immutable postflight, adjudicate TB1/TB3/TB4 recovery, promotion, CP1 acceptance, stable accounting, and debt.
+- [ ] CP1-acceptance precondition: remove or relabel unread legacy `SurfaceOccurrence` fields `isolationSheet`, `chart`, `lattice`; keep `point` and `chartComponent` as live authority.
+- [ ] Minor: re-sort aggregated lineage `equivalences` after tuple remap.
+
 ## M6-CP1-CB5 complete — immutable TB5 next (2026-09-25)
 
 **CB5 is COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE. Exact next: `M6-CP1-TB5-EXEC` → mandatory `M6-CP1-TB5-REV`.** Stable accounting remains **55/16/39**, debt **1**; accepted M5 package `10814505512` / selector449 449/449 remains runtime authority.
@@ -6,7 +18,7 @@
 - [x] Implement RA-12 site-qualified legacy isolation diagnostics without changing tests or semantic failure prefixes.
 - [x] Static audit: only `src/pipeline/RemeshPipeline.cpp` changed semantically; selector449/routing449 hashes remain frozen.
 - [x] Compile/package the standard eight targets with GMP/GMPXX; run/job `36168827294 / 108183151046`, artifact `10879581622`, manifest 28/28, clean source receipts, `runtimeExecution=false`.
-- [ ] **TB5:** consume artifact `10879581622` immutably and execute exactly **7 focused + selector449 = 456** fresh exact-filter processes; no rebuild/repair/mutation.
+- [x] **TB5:** artifact `10879581622` consumed immutably; **7/7 focused + 449/449 selector = 456/456 PASS** with exact immutable postflight.
 - [ ] **TB5 Review:** independently adjudicate all residual REDs, recovery of the 21 TB4 losses, torus falsifier outcome, TB1/TB3 formal recovery, and candidate promotion.
 - [ ] CP1-acceptance precondition: remove or relabel unread legacy `SurfaceOccurrence` fields `isolationSheet`, `chart`, `lattice`; keep `point` and `chartComponent` as live authority.
 - [ ] Minor: re-sort aggregated lineage `equivalences` after tuple remap.
@@ -15,9 +27,9 @@
 
 **Upheld 55/16/39; exact next `M6-CP1-CB5` as amended.** See `Architecture_M6_CP1_TB4_Review_Record.md`, addendum.
 
-- [ ] CB5: A6 collinear span with no certificate → non-seam P2 rule; certificate present → seam branch unchanged.
-- [ ] CB5: RA-12 site suffixes on every `Missing/InvalidIsolationSeamEquivalenceAuthority` emission (A5 adapter and the four A6 sites).
-- [ ] TB5 (456): classify any residual RED by its RA-12 suffix. The torus rows (focused 6, 444/446/448) are predicted to recover, not proved to.
+- [x] CB5: A6 collinear span with no certificate → non-seam P2 rule; certificate present → seam branch unchanged.
+- [x] CB5: RA-12 site suffixes on every `Missing/InvalidIsolationSeamEquivalenceAuthority` emission (A5 adapter and the four A6 sites).
+- [x] TB5 (456): **456/456 PASS**; there is no residual RA-12 failure to classify in EXEC. Formal recovery is Review-owned.
 - [ ] CP1-acceptance precondition: remove or relabel the unread legacy `SurfaceOccurrence` fields `isolationSheet`, `chart` and `lattice` (`point` is live; `chartComponent` is legitimate).
 - [ ] Minor: re-sort aggregated lineage `equivalences` after tuple remap.
 

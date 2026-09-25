@@ -1,3 +1,9 @@
+## 2026-09-25 — M6 CP1 TB5 returns 456/456
+
+- Executed the CB5 candidate artifact immutably across seven focused tests plus the full frozen selector449: **456/456 PASS** with exact-one selection, zero skips/crashes/mismatches and no rebuild or benchmark execution.
+- All 21 accepted-selector losses observed in TB4 recovered, as did the carried torus pair-swap and periodic rows 444/446/448; the split-sheet and row140 controls remain green.
+- Candidate `10879581622` is still unpromoted. Accounting remains 55/16/39, debt 1, until mandatory `M6-CP1-TB5-REV` independently adjudicates recovery, promotion and CP1 acceptance.
+
 ## 2026-09-25 — M6 CP1 CB5 compile green
 
 - Corrected A6 OrdinaryFront classification so an exact source-edge-collinear span without an isolation certificate is treated as an ordinary non-seam and checked by same-sheet + both-wedge authority; certificate-backed seam validation is unchanged.
