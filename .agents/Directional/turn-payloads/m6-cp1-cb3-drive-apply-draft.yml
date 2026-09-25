@@ -1,0 +1,37 @@
+name: M6 CP1 CB3 Drive Patch Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m6-cp1-cb3-drive-apply.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  id-token: write
+
+concurrency:
+  group: m6-cp1-cb3-drive-apply
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m6-cp1-cb3-drive-apply
+      commit_run_file: false
+    secrets: inherit
+
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1Yw9hCsnmpDPfyZ5tyCJXhKCI6L1Nh61E
+      patch_sha256: 'aa2a19589446a55d9422f9b0323ee3b0066678b8be3494f75fa05c20a6ee5706'
+      base_sha: c3ebf6aa4bc706fb28ff96aff8b23e0b82e411ac
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'M6-CP1-CB3: restore occurrence and HardRail authority'
+    secrets: inherit
