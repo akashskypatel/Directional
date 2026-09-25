@@ -1,3 +1,11 @@
+## 2026-09-25 — `M6-CP1-CB3`: authority recovery compiles/packages green
+
+- Exact semantic source `660015f2f15359fd426e2c855aea9f4201c70216` restores accepted HardRail-specific `InvalidHardRailTransport` precedence at A5 and corrects split-isolation occurrence projection authority while retaining frozen occurrence identity/lattice state and relation-owned quotient union.
+- Selector449/routing449 and all six focused identities remain unchanged; known by-value accessor split-range scan is clean.
+- Mandatory GMP/GMPXX compile run/job `36077715921 / 107892575831` packages all eight standard targets as candidate `10840014758` (`sha256:b1117c6e...ed5c66`) with **28/28** manifest, clean source receipts, packaged source SHA `90c63051...67ecc` and `runtimeExecution=false`; log artifact `10840034587`.
+- Two pre-compile apply attempts were rejected by stale-path/path-set guards and grant no evidence; the corrected one-path reconciliation was applied before the authoritative compile.
+- Candidate remains unpromoted; accounting stays **53 / 16 / 37**, debt 1. Exact next is immutable `M6-CP1-TB3-EXEC` for unchanged 455-process runtime evidence, then mandatory Review.
+
 ## 2026-09-24 — `M6-CP1-TB2-REV`: accepted HardRail failure precedence regression classified; CB3 frozen
 
 - Independently re-verifies candidate `10834642074 / 724316a5...`, TB2 `10835579933 / 10836175636`, 455-process mechanics and accepted M5 selector449 authority.

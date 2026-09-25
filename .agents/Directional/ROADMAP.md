@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-24 (`M6-CP1-TB2-REV` COMPLETE / candidate `10834642074 / 724316a5b3f49e33dc8e649989bb413b3dc6b7c9` unpromoted after mechanically valid TB2 at focused 5/6 + selector449 448/449. Review classifies accepted row140 as new singleton `VALIDATION_ORDER_SHADOWING`, carries focused multi-isolation as non-stable CP1 mechanism debt, and sets stable accounting to 53/16/37 with debt 1. Exact next `M6-CP1-CB3`; accepted M5 authority remains unchanged.)**
+**Status date:** 2026-09-25 (`M6-CP1-CB3` COMPLETE / exact semantic source `660015f2f15359fd426e2c855aea9f4201c70216` compile+package green as candidate `10840014758`, 28/28 manifest, GMP/GMPXX, `runtimeExecution=false`. Stable accounting remains 53/16/37 with debt 1; accepted M5 runtime authority is unchanged. Exact next `M6-CP1-TB3-EXEC`, then mandatory Review.)**
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 
@@ -548,7 +548,7 @@ Final CP4 Review completes the bounded conjunct8 sequence: row449 was accepted p
 | Checkpoint | Semantic domain |
 |---|---|
 | `M6-DEFN` | **COMPLETE / RUNTIME-FREE.** Four immutable products, exact occurrence/quotient identity, verifier recompute-vs-repair boundary, G4 ownership and dormant-test dispositions frozen in `Architecture_M6_Frozen_Definitions.md`. |
-| `M6-CP1` | **ACTIVE / TB2 REVIEWED / CB3 NEXT.** Candidate `10834642074 / 724316a5...` is mechanically valid at focused 5/6 + selector449 448/449 but unpromoted. CB2 clears the cross-temporary symptom; Review adds stable singleton `VALIDATION_ORDER_SHADOWING` for accepted row140 and carries focused multi-isolation as non-stable mechanism debt. Accounting is **53/16/37**. Exact next `M6-CP1-CB3` is bounded to HardRail failure precedence plus first proved multi-isolation lineage-authority loss; A6/A7 extraction remains prohibited. |
+| `M6-CP1` | **ACTIVE / CB3 COMPILE+PACKAGE GREEN / TB3 NEXT.** Exact semantic source `660015f2...` restores HardRail-specific validation precedence and corrects the first proved split-isolation occurrence projection-authority loss while preserving frozen A5 identity/lattice and relation-owned quotient union. Candidate `10840014758` packages all eight GMP/GMPXX targets with 28/28 manifest and no runtime. Accounting remains **53/16/37**, debt 1. Exact next is immutable `M6-CP1-TB3-EXEC` over unchanged 6+449=455, then mandatory Review. |
 | `M6-CP2` | verifier consumes certificates and independently recomputes elementary incidence; **never repairs producer state** |
 | `M6-CP3` | M6 exit — equal coordinates without a relation remain distinct; every owned relation consumed exactly once; source-row / output-row / scheduler permutation invariance |
 

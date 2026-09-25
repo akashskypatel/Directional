@@ -1,7 +1,7 @@
 # M6 Consolidated Record
 
-**Status:** M6 ACTIVE / `M6-CP1-TB2-REV` complete / one new stable validation-precedence event + one non-stable focused mechanism gap / candidate unpromoted / exact next `M6-CP1-CB3`
-**Last updated:** 2026-09-24
+**Status:** M6 ACTIVE / `M6-CP1-CB3` complete / compile+package green / candidate unpromoted / exact next `M6-CP1-TB3-EXEC`
+**Last updated:** 2026-09-25
 
 Normative M6 semantics live in `Architecture_M6_Frozen_Definitions.md`. Entering accepted authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449 PASS**, SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. TB1's accepted-prefix event remains independently classified as singleton `CROSS_TEMPORARY_ITERATOR_RANGE`; TB2 Review adds one accepted row140 event in new singleton `VALIDATION_ORDER_SHADOWING`. Stable accounting is **53 / 16 / 37** and produced-witness debt is **1**, M6-owned.
 
@@ -81,6 +81,19 @@ Accepted selector row140 is a new stable event: A5 now rejects an explicit misma
 Focused `MultiIsolationMaterializationRetainsAllLocalSheets` is a valid but non-stable CP1 mechanism RED. Its split fixture does publish a checked two-sheet seam certificate and accepted row186 remains green, but the legacy `consumedInternalIsolationSeams` field counts certificate-map entries rather than quotient consumption. No output lineage spans both sheets. Review bounds the gap to A5 occurrence-sheet -> owned-relation endpoint -> quotient union -> lineage propagation, does not claim when it was introduced, and assumes no shared cause with row140.
 
 Candidate remains unpromoted, accepted M5 authority remains `10814505512 / e284fea7...` under selector449 449/449, and debt remains 1. Exact next is bounded runtime-free **`M6-CP1-CB3`**, owning only HardRail diagnostic precedence and the first proved multi-isolation propagation loss. If compile-green, fresh TB3 reruns unchanged 6+449=455 and then mandatory Review.
+
+
+## 8. `M6-CP1-CB3` — HardRail precedence and split-isolation occurrence authority corrected; candidate compiled
+
+CB3 restores the accepted HardRail-specific failure precedence without weakening A5 relation ownership, and corrects the first proved split-isolation authority-loss locus without extracting A6/A7. The final semantic source is `660015f2f15359fd426e2c855aea9f4201c70216`. Explicit reciprocal HardRail-ID mismatch remains fail-closed at A5 through `HardRailOwnerMismatch`, externally preserving `InvalidHardRailTransport`; the later materializer no longer duplicates that mismatch predicate. For split-isolation occurrences, semantic identity and frozen lattice state remain unchanged while the authoritative outgoing directed-side start selects the projection face/sheet. Canonical-corner and side-attached representations must resolve to the same exact source support or A5 fails closed. Quotient union remains relation-owned only, and lineage sheet sets remain derived from actual quotient members; certificate inventory is not substituted for quotient consumption.
+
+The frozen runtime surface is unchanged: selector449 is exactly 449 LF rows at `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`, routing449 remains `9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707`, all six focused identities are unchanged, and the known by-value accessor split-range scan is clean.
+
+Mandatory GMP/GMPXX compile run/job `36077715921 / 107892575831` compiles and links all eight standard targets from exact source `660015f2...` and packages candidate artifact `10840014758` (`sha256:b1117c6efe2cdc8a04e46647fd1bb5af79094234a03348df8ffd6e6ae5ed5c66`). Root manifest verifies **28/28**, generated link authority contains both `gmpxx` and `gmp`, `exactArithmeticBackend=GMP`, source receipts are clean, packaged source archive SHA-256 is `90c6305132ceca1bcd5f12dfd03a7a3b818fe3e9462128dedb5c3f5788f67ecc`, and `runtimeExecution=false`. Compile log artifact `10840034587` has provider digest `sha256:eb2504f3824c6626ab37f2cc5e5e39c869187b93615e7f94346e7a7124ace077`.
+
+Two pre-compile orchestration attempts were rejected rather than normalized: one stale-base apply detected changed intended source paths, and one reconciliation patch declared an unchanged header in its intended-path set and failed exact path-set comparison. The corrected one-path patch was then applied and compiled. These rejected attempts grant no evidence.
+
+CB3 grants no runtime credit, promotion, CP1 closure or debt discharge. Stable accounting remains **53 / 16 / 37** and produced-witness debt remains **1**, M6-owned. Exact next is immutable **`M6-CP1-TB3-EXEC`** over the unchanged six focused identities plus selector449 as 455 fresh exact-filter processes, followed by mandatory `M6-CP1-TB3-REV`.
 
 ## Folded document index
 

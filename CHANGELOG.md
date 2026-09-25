@@ -1,3 +1,7 @@
+## 2026-09-25 — `M6-CP1-CB3`: bounded authority correction compiles green
+
+CB3 publishes exact semantic source `660015f2f15359fd426e2c855aea9f4201c70216`, restoring accepted HardRail-specific failure precedence and correcting split-isolation occurrence projection authority without changing the frozen test/selector surface or relation-owned quotient semantics. Mandatory GMP/GMPXX run/job `36077715921 / 107892575831` packages all eight standard targets as candidate `10840014758` with 28/28 manifest, clean source receipts and `runtimeExecution=false`. Candidate remains unpromoted; accounting stays 53/16/37 with debt 1. Exact next is immutable `M6-CP1-TB3-EXEC` over unchanged 6+449=455, followed by mandatory Review.
+
 ## 2026-09-24 — M6 CP1 TB2 independent Review
 
 - Review upholds TB2 immutable mechanics at 453/455 and keeps candidate `10834642074` unpromoted.

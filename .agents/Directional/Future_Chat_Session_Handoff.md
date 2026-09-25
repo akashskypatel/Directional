@@ -4,37 +4,30 @@
 
 ## Current authority
 
-`M6-CP1-TB2-REV` is **COMPLETE / TB2 MECHANICS UPHELD / ONE NEW STABLE EVENT / ONE NON-STABLE FOCUSED MECHANISM FAILURE / CANDIDATE UNPROMOTED**.
+`M6-CP1-CB3` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE / CANDIDATE ONLY**.
 
-Review independently re-opened candidate artifact/source `10834642074 / 724316a5b3f49e33dc8e649989bb413b3dc6b7c9`, TB2 run/job `36063687138 / 107848407035`, result/log `10835579933 / 10836175636`, and accepted M5 authority `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7`. Candidate manifest is 28/28; result evidence is 933/933; TB2 remains mechanically valid at **5/6 focused + 448/449 selector = 453/455 PASS**, exact-one selection, zero skips/crashes/selection mismatches, benchmark 0 and exact immutable postflight.
+Exact semantic source `660015f2f15359fd426e2c855aea9f4201c70216` restores accepted HardRail-specific `InvalidHardRailTransport` precedence at A5 while preserving fail-closed relation ownership. Split-isolation occurrence authority now takes its projection face/sheet from the authoritative outgoing directed-side start while retaining frozen occurrence identity and lattice state; canonical-corner and side-attached representations must resolve to the same exact source support. Quotient union remains relation-owned only, and final lineage sheets remain derived from actual quotient members rather than certificate inventory.
 
-CB2 clears the TB1 `OccurrenceInvalidCornerAuthority` symptom from all 455 and the pair-swap identity PASSes. The frozen recovery rule also required selector449 449/449, so the cross-temporary event is mechanism-cleared but not formally closed.
+Selector449 remains exactly 449 LF rows at `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`; routing449 remains `9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707`; all six focused identities are unchanged. No Directional runtime executed.
 
-Accepted selector449 row140 `HardRailPairExplicitRailIdMismatchRejectsStrictTransport` is a new stable singleton **`VALIDATION_ORDER_SHADOWING`** event. A5 now rejects distinct explicit reciprocal HardRail IDs first as generic `OccurrenceUnownedRelation`, shadowing the established `InvalidHardRailTransport` contract. Do not weaken the accepted negative or make the relation valid.
+Mandatory GMP/GMPXX compile run/job `36077715921 / 107892575831` packages all eight standard targets as candidate artifact `10840014758` (`sha256:b1117c6efe2cdc8a04e46647fd1bb5af79094234a03348df8ffd6e6ae5ed5c66`) with root manifest **28/28**, clean source receipts, exact GMP backend/link evidence and `runtimeExecution=false`. Log artifact `10840034587` is `sha256:eb2504f3824c6626ab37f2cc5e5e39c869187b93615e7f94346e7a7124ace077`.
 
-Focused `MultiIsolationMaterializationRetainsAllLocalSheets` is a valid **non-stable** M6 mechanism RED. The split fixture publishes a checked two-sheet seam certificate, but no quotient lineage contains both sheets. `consumedInternalIsolationSeams` is only certificate-map size, not actual quotient consumption. Review bounds the gap to A5 occurrence-sheet -> relation endpoint -> quotient union -> lineage propagation but does not assume which step or when the behavior was introduced.
-
-Stable accounting is **53 events / 16 categories / 37 recurrences**; produced-witness debt remains **1**, M6-owned. Candidate `10834642074` remains unpromoted. Accepted runtime authority remains M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449 PASS**.
+Accepted runtime authority remains M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449 PASS**. Stable accounting remains **53 events / 16 categories / 37 recurrences**; produced-witness debt remains **1**, M6-owned. CB3 grants no promotion, CP1 closure or runtime credit.
 
 ## Exact next turn
 
-**`M6-CP1-CB3`** — bounded runtime-free Code + Build under `Architecture_M6_CP1_CB3_Authority_And_Multi_Isolation_Recovery_Code_Build_Plan.md`.
+**`M6-CP1-TB3-EXEC`** — immutable artifact-only Test + Benchmark under `Architecture_M6_CP1_TB3_Artifact_Only_Test_Benchmark_Plan.md`.
 
-Own exactly two recovery surfaces:
+Consume exact candidate artifact/source `10840014758 / 660015f2f15359fd426e2c855aea9f4201c70216` without rebuilding or repairing it. Execute exactly **455 fresh exact-filter processes**: the unchanged six focused CP1 identities first, then all 449 selector449 identities in selector order. Require exact-one selection, zero skips and benchmark count 0, then exact immutable postflight.
 
-1. preserve A5 fail-closed relation ownership while restoring accepted row140's specific `InvalidHardRailTransport` precedence for explicit HardRail-ID mismatch;
-2. statically trace the split-isolation A5 occurrence sheets and relation endpoint unions, then correct only the first implementation locus that fails to carry both certified sheets into one legitimate quotient lineage.
-
-Preserve selector449/routing449 and all six focused identities byte/semantically unchanged. Do not extract A6/A7, publish a selector, weaken tests, change fixtures, accept geometric coincidence as equality, or use `consumedInternalIsolationSeams` as proof of quotient consumption. If the multi-isolation correction would require redefining frozen A5 authority, stop and return to Review/Definition.
-
-Compile/package the standard eight targets only through mandatory GMP/GMPXX reusable compile authority with `runtimeExecution=false`. If compile-green, exact successor is `M6-CP1-TB3-EXEC`: unchanged six focused + selector449 = 455 fresh exact-filter processes, then mandatory `M6-CP1-TB3-REV`.
+Mechanically green requires focused **6/6**, selector449 **449/449**, total **455/455**, no `OccurrenceInvalidCornerAuthority`, row140 through `InvalidHardRailTransport`, legitimate multi-isolation lineage derived from actual quotient members spanning more than one sheet, and retained pair-swap PASS. Any mechanically valid RED is preserved and advances directly to mandatory `M6-CP1-TB3-REV`; do not repair/rerun in TB3-EXEC.
 
 ## Current files
 
 - `.agents/Directional/Architecture_M6_Frozen_Definitions.md`
-- `.agents/Directional/Architecture_M6_CP1_TB2_Artifact_Only_Test_Benchmark_Report.md`
+- `.agents/Directional/Architecture_M6_CP1_CB3_Authority_And_Multi_Isolation_Recovery_Code_Build_Report.md`
+- `.agents/Directional/Architecture_M6_CP1_TB3_Artifact_Only_Test_Benchmark_Plan.md`
 - `.agents/Directional/Architecture_M6_CP1_TB2_Review_Record.md`
-- `.agents/Directional/Architecture_M6_CP1_CB3_Authority_And_Multi_Isolation_Recovery_Code_Build_Plan.md`
 - `.agents/Directional/M6_Consolidated_Record.md`
 - `.agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt`
 - `.agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv`
@@ -43,15 +36,15 @@ Compile/package the standard eight targets only through mandatory GMP/GMPXX reus
 
 ```yaml
 load_next:
-  - turn-based-coding-agent/references/turns/CB.md
+  - turn-based-coding-agent/references/turns/TB.md
 conditional_modules:
   - trigger: github_connector / GitHub Actions / patch transport
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
   - turn-based-coding-agent/references/core/turn-boundaries.md
   - turn-based-coding-agent/references/core/evidence.md
-  - .agents/Directional/Architecture_M6_CP1_TB2_Review_Record.md
-  - .agents/Directional/Architecture_M6_CP1_CB3_Authority_And_Multi_Isolation_Recovery_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M6_CP1_CB3_Authority_And_Multi_Isolation_Recovery_Code_Build_Report.md
+  - .agents/Directional/Architecture_M6_CP1_TB3_Artifact_Only_Test_Benchmark_Plan.md
   - .agents/Directional/Architecture_M6_Frozen_Definitions.md
   - .agents/Directional/GitHub_Workflow_Policy.md
   - .agents/Directional/GMP_COMPILE_POLICY.md
