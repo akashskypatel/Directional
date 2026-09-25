@@ -1,0 +1,34 @@
+name: M6 DEFN R3 Caller Schema Validate
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m6-defn-r3-schema-validate-20260925.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m6-defn-r3-schema-validate
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m6-defn-r3-schema-validate
+      commit_run_file: false
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .agents/Directional/turn-payloads/m6-defn-r3-drive-apply.yml
+      source_ref: ${{ github.sha }}
+      retention_days: 7
+    secrets: inherit
