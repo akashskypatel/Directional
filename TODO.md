@@ -1,3 +1,13 @@
+## M6-DEFN-R3 bounded definition complete — exact next `M6-DEFN-R3-REV` (2026-09-25)
+
+- [x] Freeze CP1 exit checklist, A6 member-set identity, exact-once joining/cycle-closing ledger, cycle transport consistency, selected-path ownership and A6 failure vocabulary.
+- [x] Record analytic split-square / uniform hard-rail / ordinary-identity holonomy proof and pre-register produced cylinder row232 + torus rows444/446/448/449 as TB falsifiers.
+- [x] Write `Architecture_M6_DEFN_R3_A6_Product_Separation_Definition_Record.md` and the normative frozen-definition amendment.
+- [x] Write held `Architecture_M6_CP1_CB6_A6_Quotient_Product_Extraction_Code_Build_Plan.md`; four new focused identities; later gate = **11 + 449 = 460**.
+- [x] Mark standalone legacy-field CB6 plan superseded/held; retirement is folded into A6 extraction.
+- [ ] **Exact next:** `M6-DEFN-R3-REV`; only accepted Review may authorize `M6-CP1-CB6-A6`.
+- [ ] `M6-DEFN-R4` before A7 CB: freeze A7 product representation and exact `G4-B002` A6 stage boundary.
+
 ## Recovery — `M6-DEFN-R3` stalled after its start beacon; resume the same turn with the bounded scope (2026-09-25T21:13:47Z)
 
 - [x] Recovery verified: only beacon `cd084a0d`; no record, snapshot or Drive patch. Beacon repaired to canonical form (it had `NONE` values).
@@ -8,9 +18,9 @@
 
 **TB5 recovery and promotion upheld; CP1 scope corrected; exact next `M6-DEFN-R3`.** See `Architecture_M6_CP1_TB5_Review_Record.md` (addendum) and `Architecture_M6_DEFN_R3_CP1_Product_Separation_Plan.md`.
 
-- [ ] `M6-DEFN-R3`: CP1 exit checklist; A6 class identity vs the RA-10 ordinal; exact-once ledger plus cycle-closing holonomy (prove on accepted fixtures); selected-path ownership; A7 product; `G4-B002` A6 boundary; failure names; CB sequencing with pre-registered focused identities; frozen-test audit.
-- [ ] `M6-DEFN-R3-REV`.
-- [ ] A6 extraction CB (absorbs the CB6 legacy-field retirement), then TB, then Review.
+- [x] `M6-DEFN-R3`: bounded A6 definition complete. A7 representation and exact `G4-B002` boundary intentionally deferred to `M6-DEFN-R4`.
+- [ ] `M6-DEFN-R3-REV` — exact next; review the bounded R3 record and held A6 plan.
+- [ ] `M6-CP1-CB6-A6` (HELD pending R3 Review) absorbs legacy-field retirement; compile-green -> 11 focused + selector449 = 460 -> mandatory Review.
 - [ ] A7 extraction and adapter thinning CB, then TB, then Review.
 - [ ] `G4-B002` A6 stage-boundary CB, then TB, then Review, then CP1 closure Review against the restated exit scope.
 - [x] ~~CB6 standalone legacy-field retirement~~ — HELD and folded into the A6 CB.

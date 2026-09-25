@@ -1,5 +1,7 @@
 # M6-CP1-CB6 — Legacy SurfaceOccurrence Field Retirement — Code + Build Plan
 
+> **SUPERSEDED / HELD (M6-DEFN-R3):** Do not execute this standalone plan. Legacy-field retirement is folded into `Architecture_M6_CP1_CB6_A6_Quotient_Product_Extraction_Code_Build_Plan.md`, which remains held pending `M6-DEFN-R3-REV`.
+
 > **HELD by the `M6-CP1-TB5-REV` review-agent addendum (2026-09-25). Do not execute standalone.**
 > - Retiring the three unread fields is folded into the first A6 extraction CB, which `M6-DEFN-R3` sequences.
 > - This plan's CP1-closure sentences are **struck**. CP1 also requires the A6 and A7 products, a thin adapter, the exact-once ledger, member-set class identity and the `G4-B002` A6 stage boundary (frozen §8.1/§10).

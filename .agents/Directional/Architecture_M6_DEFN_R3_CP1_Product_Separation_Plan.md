@@ -4,6 +4,7 @@
 **Type:** Definition amendment and CP1 sequencing, runtime-free
 **Predecessor:** `M6-CP1-TB5-REV`, review-agent addendum (`Architecture_M6_CP1_TB5_Review_Record.md` §C3-§C4)
 **Successor:** mandatory `M6-DEFN-R3-REV`, then the first A6 extraction Code + Build
+**Disposition:** BOUNDED DEFINITION COMPLETE; implementation remains held pending Review
 
 > **Recovery amendment (review agent, 2026-09-25T21:13:47Z) — this overrides the rest of this plan where they conflict.**
 >
@@ -100,3 +101,7 @@ A5 semantics (R1/R2/RA-1 – RA-12), `OccurrenceId`, `CellId`, relation-only equ
 - The A6 CB plan is written with its focused identities pre-registered and its gate size stated. `Architecture_M6_CP1_CB6_*_Plan.md` is marked superseded by it.
 - The A7 product and `G4-B002` boundary are recorded as intent only and assigned to `M6-DEFN-R4`.
 - Accounting stays 55 / 16 / 39, debt 1.
+
+## 6. Completion record
+
+The bounded §5 decisions are frozen in `Architecture_M6_DEFN_R3_A6_Product_Separation_Definition_Record.md` and appended normatively to `Architecture_M6_Frozen_Definitions.md`. The first A6 implementation plan is `Architecture_M6_CP1_CB6_A6_Quotient_Product_Extraction_Code_Build_Plan.md`. Exact successor is mandatory `M6-DEFN-R3-REV`; no CB is authorized by this Definition turn itself.

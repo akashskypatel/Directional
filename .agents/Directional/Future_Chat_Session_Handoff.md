@@ -1,4 +1,25 @@
-## Resume-critical update — RESUME `M6-DEFN-R3` (same turn) with the bounded scope (2026-09-25T21:13:47Z)
+## Resume-critical update — `M6-DEFN-R3` bounded definition complete; mandatory Review next (2026-09-25)
+
+**Exact next: `M6-DEFN-R3-REV` — independent runtime-free Review. Do not start `M6-CP1-CB6-A6` first.**
+
+`M6-DEFN-R3` completed the bounded recovery scope from `Architecture_M6_DEFN_R3_CP1_Product_Separation_Plan.md` §5. Normative decisions are in `Architecture_M6_DEFN_R3_A6_Product_Separation_Definition_Record.md` and the appended `M6-DEFN-R3 A6 quotient-product amendment` in `Architecture_M6_Frozen_Definitions.md`.
+
+Frozen for Review:
+- CP1 exit checklist keeps A5 + A6 + later A7 + thin adapter + no weld + later `G4-B002` A6 boundary + fresh preservation gate.
+- A6 semantic class identity is `pipeline::SurfaceQuotientClassId` = exact sorted unique non-empty member `OccurrenceId` set. The current `authority::QuotientClassId` remains adapter-only lineage ordinal, assigned after lexicographic member-set sorting.
+- Every A5-owned relation gets exactly one `QuotientRelationCertificate` and one consumption row. Disposition is `Joining` or `CycleClosing`; cycle-closing relations are no longer skipped.
+- Joining relations form a deterministic selected forest. A cycle-closing relation's exact relation-oriented `GridAutomorphism` must equal the exact composed transport of the unique existing forest path, else `QuotientHolonomyConflict`. Non-identity Periodic actions are allowed; direct/path equality is the rule.
+- Split square, planar uniform hard-rail rectangle and ordinary-identity classes satisfy the rule analytically. Produced cylinder selector row232 and torus rows444/446/448/449 are TB falsifiers. A documented evidence-only fallback is Review-only; CB/TB may not weaken the rule.
+- Selected relation paths are A6 authority. A7 only projects them; legacy lineage `selectedRelationPaths` remains HardRail/Periodic-only, preserving split-square emptiness and current relation-local chart/component semantics.
+- A6 typed failure vocabulary and adapter-only legacy mappings are frozen.
+- First implementation plan is `Architecture_M6_CP1_CB6_A6_Quotient_Product_Extraction_Code_Build_Plan.md`, **HELD pending Review**. It folds in the old standalone legacy-field retirement and pre-registers four new focused identities. Compile-green would later advance to **11 focused + selector449 = 460** immutable processes.
+- A7 product representation and the exact `G4-B002` stage-boundary representation are deferred to `M6-DEFN-R4`; R3 records intent only.
+
+Source inspection was from snapshot run/artifact `36199074014 / 10890838063`; no Directional runtime or compile occurred. Stable accounting remains **55 / 16 / 39**, produced-witness debt **1**, current reviewed runtime authority remains `10879581622 / 82b86a28...`, selector449 remains 449/449.
+
+### Superseded recovery note — do not resume R3
+
+#### Historical recovery instruction — R3 was incomplete at 2026-09-25T21:13:47Z
 
 **Resume `M6-DEFN-R3` — the same incomplete turn.** Keep `Started at 2026-09-25T20:10:00Z`, set a new `Resumed at`, and keep `Status: IN_PROGRESS`, `Successor: UNKNOWN` and an empty `Ended at`. Never write the literal `NONE`.
 

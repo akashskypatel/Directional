@@ -1,3 +1,9 @@
+# M6 consolidated record
+
+## 0. `M6-DEFN-R3` — bounded A6 quotient-product definition complete
+
+Runtime-free R3 freezes `pipeline::SurfaceQuotientClassId` as the exact sorted member-occurrence set; exact one certificate + ledger row per A5-owned relation; `Joining` versus `CycleClosing` dispositions; a deterministic selected relation forest; exact direct-relation versus unique-path `GridAutomorphism` equality with `QuotientHolonomyConflict` on mismatch; A6-owned selected paths; and the stable A6 error vocabulary. Split square/uniform planar hard-rail/ordinary-identity cases are analytically consistent; produced cylinder row232 and torus rows444/446/448/449 are TB falsifiers. A7 representation and the exact `G4-B002` boundary move to R4. Held `M6-CP1-CB6-A6` absorbs legacy A5 field retirement and adds four focused identities; later TB shape is 11 + selector449 = 460. Exact next is `M6-DEFN-R3-REV`. Stable accounting 55/16/39, debt 1; no runtime/compile in R3.
+
 # M6 Consolidated Record
 
 **Status:** M6 ACTIVE / `M6-CP1-TB5-REV` complete (+ review-agent addendum): recovery accepted; `10879581622` promoted; CP1 OPEN on frozen §10 product separation (A6/A7, thin adapter, ledger, member-set identity, `G4-B002` boundary); CB6 held/folded / exact next `M6-DEFN-R3` / stable 55/16/39, debt 1
@@ -308,4 +314,3 @@ Corrected: TB5-REV said CP1 was held only by three legacy A5 fields. Frozen §10
 - candidate extraction still on `SurfaceCellComplex`.
 
 CB6 is HELD and folded into the A6 CB. The CP1 exit scope is restated in the frozen definitions. Exact next is `M6-DEFN-R3` (`Architecture_M6_DEFN_R3_CP1_Product_Separation_Plan.md`). Lesson 183.
-

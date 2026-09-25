@@ -1,3 +1,7 @@
+# Current orientation — M6-DEFN-R3 bounded definition complete; Review next (2026-09-25)
+
+`M6-DEFN-R3` is definition-complete for its bounded A6 scope. Exact next is mandatory runtime-free `M6-DEFN-R3-REV`; `M6-CP1-CB6-A6` is held. The A6 definition freezes member-set class IDs, exact-once joining/cycle-closing relation consumption, selected-forest path authority, exact direct-vs-path transport consistency (`QuotientHolonomyConflict`), A6 failure names, four new focused identities, and a later **11 + 449 = 460** gate. A7 representation and `G4-B002` stage-boundary representation move to `M6-DEFN-R4`. Accounting stays 55/16/39, debt 1; runtime authority stays `10879581622 / 82b86a28...`. See `Architecture_M6_DEFN_R3_A6_Product_Separation_Definition_Record.md`.
+
 ## Currency — `M6-DEFN-R3` recovery: resume the same turn with the bounded scope (2026-09-25T21:13:47Z)
 
 The first R3 session stalled after a non-canonical start beacon, with no work product. The review agent repaired the beacon and bounded R3 to the A6 decisions plus the A6 CB plan, deferring A7 and `G4-B002` to `M6-DEFN-R4`. It also replaced an infeasible static holonomy proof on produced fixtures with an analytic proof plus a pre-registered TB falsifier.

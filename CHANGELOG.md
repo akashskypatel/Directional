@@ -1,3 +1,10 @@
+## 2026-09-25 — M6 A6 quotient stage is now specified for review
+
+- Defined the missing quotient-stage product: class identity is the exact set of member occurrences, not a temporary row/root/hash.
+- Every owned relation must now be accounted for exactly once, including relations that close an already-connected cycle. Cycle transport must agree with the existing selected path or fail explicitly.
+- The first implementation turn is planned but held for independent review. It will also absorb the old legacy-field cleanup; its later runtime gate expands from 456 to 460 exact processes.
+- Geometry-stage and candidate-extraction boundary details remain deferred to the next Definition turn. No code/runtime changed in this Definition turn.
+
 ## 2026-09-25 — M6 checkpoint 1 is further from done than the last review said
 
 - The latest test run is fully green (456/456), and that result stands.
