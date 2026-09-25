@@ -1,3 +1,0 @@
-M6-CP1-CB3 compile trigger
-source_sha=c2b384dc6f52970dfc0ba5d57ba08c7d7daadfaa
-retry=0
