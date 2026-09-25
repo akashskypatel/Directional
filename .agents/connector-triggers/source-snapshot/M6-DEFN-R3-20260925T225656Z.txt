@@ -1,0 +1,3 @@
+turn=M6-DEFN-R3
+requested_semantic_source_sha=c4d046289276f6b4ecc496ae41c697e0a7852d16
+read_mode=snapshot
