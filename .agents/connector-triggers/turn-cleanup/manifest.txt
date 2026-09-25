@@ -1,2 +1,0 @@
-# M6-DEFN-R1 stale continuation cleanup
-.agents/connector-triggers/m6-defn-r1-drive-apply-20260925.txt

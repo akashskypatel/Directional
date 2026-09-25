@@ -1,4 +1,0 @@
-turn=M6-DEFN-R1
-purpose=apply verified definition closeout patch from Google Drive
-caller_install_sha=379acf9049511cea80af68aada171588af98cd0a
-retry=0
