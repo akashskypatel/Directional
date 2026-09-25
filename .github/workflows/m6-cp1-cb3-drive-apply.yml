@@ -29,9 +29,9 @@ jobs:
   apply:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1Yw9hCsnmpDPfyZ5tyCJXhKCI6L1Nh61E
-      patch_sha256: 'aa2a19589446a55d9422f9b0323ee3b0066678b8be3494f75fa05c20a6ee5706'
-      base_sha: c3ebf6aa4bc706fb28ff96aff8b23e0b82e411ac
+      file_id: 1GqswMolZN8OJhqKEAvyEY-rL6LVQMpl1
+      patch_sha256: '8bdbabe6c3bb44c0d70d89cf04929462f580bec433918b82872f6ece0870e530'
+      base_sha: 721058d254b3903fc4791b9b000bc894743f7d00
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: 'M6-CP1-CB3: restore occurrence and HardRail authority'
+      commit_message: 'M6-CP1-CB3: reconcile occurrence authority propagation'
     secrets: inherit
