@@ -1,3 +1,10 @@
+## 2026-09-25 — `M6-CP1-CB5-OBS-01` — READ_MODE declaration lag — **PROCESS-ONLY / NON-STABLE / +0 / 55/16/39 / debt 1**
+
+- At CB5 entry, several repository authority/document reads occurred before the mandatory turn-local `READ_MODE=snapshot` declaration was made. Under `TOOL_USE_CONSERVATION_POLICY.md` §2 this is a process miss, not semantic evidence.
+- Inspection immediately switched to snapshot mode. Exact snapshot run/artifact `36167832798 / 10878083220` froze source `28275f1004caf9659e2bf17be1bb8d6a0c3e6460`; artifact digest `19569c24852c1b8461f67f9bdb0f42aa876197f1a84af36bb210103e57cc0467`, 5,313 files, manifest/archive verification green, `runtimeExecution=false`.
+- All semantic source analysis and the CB5 edit were performed against that verified local snapshot; the pre-snapshot reads did not determine or mutate production semantics.
+- **Disposition:** recorded for process accountability only. No event/category/recurrence/debt change; stable accounting remains **55/16/39**, debt 1. Future turns must declare `READ_MODE` before their first repository source/document inspection.
+
 ## 2026-09-25 — `M6-CP1-TB4-REV` review-agent second pass — **+0 EVENTS / 55/16/39 / debt 1 / NEXT `M6-CP1-CB5`**
 
 - **Correction to the first addendum:** single-sheet exclusivity proves site `:4913` only for the 13 rows that print `MissingIsolationSeamEquivalenceAuthority`.

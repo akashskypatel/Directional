@@ -1,3 +1,10 @@
+## 2026-09-25 — M6 CP1 CB5 compile green
+
+- Corrected A6 OrdinaryFront classification so an exact source-edge-collinear span without an isolation certificate is treated as an ordinary non-seam and checked by same-sheet + both-wedge authority; certificate-backed seam validation is unchanged.
+- Added RA-12 site-qualified isolation-failure diagnostics without changing tests, selectors, or A5 product authority.
+- Compile run `36168827294` built all eight standard GMP/GMPXX targets from source `82b86a285292379cfd92cdc4e10d74181b38f1e8`; candidate artifact `10879581622` verifies 28/28 with `runtimeExecution=false`.
+- Candidate remains unpromoted. Accounting stays 55/16/39, debt 1. Next: immutable 456-process `M6-CP1-TB5-EXEC`, then mandatory Review.
+
 ## 2026-09-25 — M6 TB4 review, second look
 
 - Two statements from the earlier review were stronger than the evidence and have been narrowed. The plan for the next code turn (CB5) is unchanged.

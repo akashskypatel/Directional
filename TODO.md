@@ -1,3 +1,16 @@
+## M6-CP1-CB5 complete — immutable TB5 next (2026-09-25)
+
+**CB5 is COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE. Exact next: `M6-CP1-TB5-EXEC` → mandatory `M6-CP1-TB5-REV`.** Stable accounting remains **55/16/39**, debt **1**; accepted M5 package `10814505512` / selector449 449/449 remains runtime authority.
+
+- [x] Correct A6 OrdinaryFront collinear/no-certificate spans to the non-seam same-sheet + both-wedges P2 predicate; preserve certificate-backed seam validation.
+- [x] Implement RA-12 site-qualified legacy isolation diagnostics without changing tests or semantic failure prefixes.
+- [x] Static audit: only `src/pipeline/RemeshPipeline.cpp` changed semantically; selector449/routing449 hashes remain frozen.
+- [x] Compile/package the standard eight targets with GMP/GMPXX; run/job `36168827294 / 108183151046`, artifact `10879581622`, manifest 28/28, clean source receipts, `runtimeExecution=false`.
+- [ ] **TB5:** consume artifact `10879581622` immutably and execute exactly **7 focused + selector449 = 456** fresh exact-filter processes; no rebuild/repair/mutation.
+- [ ] **TB5 Review:** independently adjudicate all residual REDs, recovery of the 21 TB4 losses, torus falsifier outcome, TB1/TB3 formal recovery, and candidate promotion.
+- [ ] CP1-acceptance precondition: remove or relabel unread legacy `SurfaceOccurrence` fields `isolationSheet`, `chart`, `lattice`; keep `point` and `chartComponent` as live authority.
+- [ ] Minor: re-sort aggregated lineage `equivalences` after tuple remap.
+
 ## Review-agent addendum — `M6-CP1-TB4-REV` (2026-09-25)
 
 **Upheld 55/16/39; exact next `M6-CP1-CB5` as amended.** See `Architecture_M6_CP1_TB4_Review_Record.md`, addendum.
@@ -271,4 +284,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current corrected totals are **54 events / 16 categories / 38 recurrences**, project debt **1** (M6 only). M4 and **M5 are CLOSED / ACCEPTED**. Final M5 authority is package/source `10814505512 / e284fea7...` under selector449 **449/449** (`d4a0d1b7...d6414`). `M6-DEFN-R2` is **COMPLETE / RUNTIME-FREE / pending mandatory independent Review**; TB3 candidate `10840014758 / 660015f2...` remains unpromoted. Exact next is **`M6-DEFN-R2-REV`**; CB4 remains HELD. PR #8 remains open, draft, and unmerged.
+Current corrected totals are **55 events / 16 categories / 39 recurrences**, project debt **1** (M6 only). M4 and **M5 are CLOSED / ACCEPTED**. Final accepted M5 authority remains package/source `10814505512 / e284fea7...` under selector449 **449/449** (`d4a0d1b7...d6414`). `M6-CP1-CB5` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE**; candidate artifact/source `10879581622 / 82b86a28...` is unpromoted. Exact next is immutable **`M6-CP1-TB5-EXEC`** over 456 processes, then mandatory `M6-CP1-TB5-REV`. PR #8 remains open, draft, and unmerged.

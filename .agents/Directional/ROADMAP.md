@@ -1,3 +1,9 @@
+## M6 CP1 — `M6-CP1-CB5` compile green; immutable TB5 next (2026-09-25)
+
+CB5 applies only the reviewed A6 OrdinaryFront P2 correction: uncertified source-edge-collinear spans are ordinary non-seams and require exact same-sheet + both-wedge membership; exact certificate-backed spans retain seam validation. RA-12 site-qualified diagnostics are compiled in. No test/selector/A5 product/frozen-definition semantic changed.
+
+Mandatory compile run/job `36168827294 / 108183151046` packages the standard eight GMP/GMPXX targets as candidate artifact `10879581622` (`sha256:578845a2...57c6`), root manifest 28/28, clean source, `runtimeExecution=false`. Candidate remains unpromoted; accepted M5 runtime authority remains selector449 449/449. Stable accounting remains **55/16/39**, debt 1. Exact next is artifact-only `M6-CP1-TB5-EXEC`, unchanged **7 + 449 = 456**, then mandatory Review.
+
 ## M6 CP1 — `M6-CP1-TB4-REV` classifies one RP-01 recurrence; bounded CB5 next (2026-09-25)
 
 Independent Review upholds TB4's mechanically valid **431/456** result and proves one new stable `RP-01 / AUTHORITY_DOMAIN_CONFLATION` event: A6 consumes generic exact source-edge collinearity as isolation-seam certificate authority. Stable accounting is **55/16/39**, debt 1. Candidate `10871935178` remains unpromoted; accepted M5 runtime authority remains selector449 449/449.
@@ -42,7 +48,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-25 (`M6-CP1-TB4-REV` COMPLETE / one stable RP-01 recurrence / stable accounting 55/16/39, debt 1 / candidate unpromoted / exact next `M6-CP1-CB5` → TB5 456 → Review.)**
+**Status date:** 2026-09-25 (`M6-CP1-CB5` COMPLETE / compile-green unpromoted candidate `10879581622` / stable accounting 55/16/39, debt 1 / exact next `M6-CP1-TB5-EXEC` 456 → mandatory Review.)**
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 

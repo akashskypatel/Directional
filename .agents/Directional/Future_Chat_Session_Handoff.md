@@ -1,20 +1,23 @@
-## Resume-critical update — exact next `M6-CP1-CB5`, as amended by the TB4-REV review-agent addendum (RA-12) (2026-09-25)
+## Resume-critical update — `M6-CP1-CB5` COMPLETE / compile-green candidate / exact next `M6-CP1-TB5-EXEC` (2026-09-25)
 
-**Start `M6-CP1-CB5` as a new runtime-free Code + Build turn.** Enter with `Turn: M6-CP1-CB5 / IN_PROGRESS / Successor: UNKNOWN`, a new `Started at`, and empty `Resumed at` / `Ended at`. Do not rerun TB4 and do not resume CB4.
+**Start immutable artifact-only `M6-CP1-TB5-EXEC`; do not resume CB5 and do not rebuild the candidate.** TB5 executes the unchanged frozen surface: **7 focused + selector449 = 456** fresh exact-filter processes, then mandatory `M6-CP1-TB5-REV`.
 
-The review agent upheld TB4-REV:
-- the 21 new losses come from A6 treating any source-edge-collinear span as a seam (`RemeshPipeline.cpp:4908-4914`);
-- one `RP-01` recurrence; accounting **55 / 16 / 39**, debt 1.
+CB5 made only the bounded A6 reciprocal `OrdinaryFront` correction authorized by TB4 Review. Matching source-edge-collinear spans with **no exact isolation certificate** now use the same non-seam P2 predicate as ordinary spans: exact interior-sheet equality plus membership of that sheet in both endpoint wedge sets. Certificate-backed spans retain the prior exact seam face/sheet/reciprocal-transition validation. No A5 product/schema/support rule, test, fixture, selector, HardRail, Periodic, or frozen-definition byte changed.
 
-It also proved the attribution. On a single-sheet fixture only that branch can emit `MissingIsolationSeamEquivalenceAuthority`, and all 21 losses use single-sheet fixtures.
+RA-12 diagnostics are also implemented: legacy `Missing/InvalidIsolationSeamEquivalenceAuthority` names remain prefixes and every remaining emission is site-qualified (`:a5-wedge`, `:a5-side`, `:a6-side-evidence`, `:a6-seam-span-transition`, `:a6-seam-faces`). The former no-certificate collinear-span failure site is removed by the semantic correction; a failed non-seam predicate is `QuotientReciprocalSideAuthorityMismatch`.
 
-Amendments:
-- **RA-12 (required in CB5):** keep the legacy isolation-failure names as prefixes and add site suffixes (`:a5-wedge`, `:a5-side`, `:a6-side-evidence`, `:a6-collinear-span`, `:a6-seam-span-transition`, `:a6-seam-faces`). Diagnostic only; no test or production code compares these strings.
-- **Torus falsifier:** recovery of focused row6 and selectors 444/446/448 is a prediction, not a proof. The torus is multi-sheet, so the A5 and seam-span sites remain possible. If any stays RED in TB5, TB5-REV classifies it by its suffix.
-- **Debts (not CB5):** the unread legacy `SurfaceOccurrence` fields `isolationSheet`, `chart` and `lattice` (unlabelled representative or duplicate data; `point` is live, `chartComponent` is legitimate) must be removed or relabelled before CP1 acceptance. Aggregated `equivalences` are not re-sorted.
-- **Second pass (2026-09-25T17:2x):** the 21-loss attribution is *proved* for the 13 rows that print the string and *bound* for the 8 downstream rows; TB4-REV's downstream falsifier stays in force.
+Authority/evidence:
+- semantic patch commit: `2ec8c7358858f0b74ce6fc2a30c55d366b53ba71`; compile source: `82b86a285292379cfd92cdc4e10d74181b38f1e8`;
+- patch apply run/job `36168631350 / 108182514195`; exact patch SHA-256 `c4789d192ab48dd5137fd2de7121d85538635f5156e3f23a058423a949a79324`;
+- mandatory compile run/job `36168827294 / 108183151046`; result artifact `10879581622`, SHA-256 `578845a2135ef2296e982e8bac9a378b7659d2968aa9ab5b2702f841288d57c6`; log artifact `10879491574`, SHA-256 `a67873ca9bb8ef0e447ed16badff37bcd602a4aad363ed31f9c42ca9c7af516c`;
+- all eight standard targets compiled/linked; mandatory GMP/GMPXX evidence is present; root package manifest **28/28** verifies; all packaged source-status receipts are empty; `preflight=0`, `build=0`, `runtimeExecution=false`;
+- selector449 remains byte-identical at `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`; routing449 remains `9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707`.
 
-Full record: `Architecture_M6_CP1_TB4_Review_Record.md` (TB4-REV plus the addendum). Plan: `Architecture_M6_CP1_CB5_Ordinary_Front_Seam_Classification_Recovery_Code_Build_Plan.md`.
+CB5 grants **no runtime credit or promotion**. Stable accounting remains **55 / 16 / 39**, debt **1**. Accepted runtime authority remains M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449**. The CB5 candidate is unpromoted until TB5 + Review.
+
+TB5 recovery remains a falsifiable prediction, not a CB5 claim: the 21 TB4 newly-lost accepted rows should recover; the multi-sheet torus rows (focused 6, selectors 444/446/448) may expose another RA-12-qualified site. Any RED is Review-owned and must not be repaired inside TB5. The CP1-acceptance debt for legacy `SurfaceOccurrence.isolationSheet/chart/lattice` remains open.
+
+Full implementation record: `M6_Consolidated_Record.md §20`. Governing plan: `Architecture_M6_CP1_CB5_Ordinary_Front_Seam_Classification_Recovery_Code_Build_Plan.md`.
 
 ## Superseded resume notes (historical — do not act on)
 
@@ -156,33 +159,28 @@ Review must independently re-open source/evidence and re-derive: split-square v0
 
 ## Current authority
 
-`M6-CP1-TB4-REV` is **COMPLETE** (review-agent addendum included). CB4 candidate `10871935178 / 20f60bb1...` ran cleanly but is unpromoted, at focused **6/7** + selector449 **425/449** = **431/456**:
-- recovered: focused rows 5 and 7, selectors 186/214/239;
-- 21 new accepted losses, one `RP-01` recurrence: generic source-edge-collinear support consumed as isolation-seam authority in A6 (`RemeshPipeline.cpp:4908-4914`);
-- still RED from TB3: focused row6 and selectors 444/446/448 (multi-sheet torus; cause not proved).
+`M6-CP1-CB5` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE**. The only semantic source change is the reviewed A6 OrdinaryFront P2 correction: source-edge-collinear spans with no checked isolation certificate use exact non-seam same-sheet + both-wedge membership; certificate-backed spans retain the exact seam face/sheet/reciprocal-transition rule. RA-12 diagnostics are site-qualified. No tests, fixtures, selectors, A5 product/schema/support authority, HardRail, Periodic, or frozen definitions changed.
 
-Definition authority: DEFN-R1 core, R2, and RA-1 – RA-12 at the end of `Architecture_M6_Frozen_Definitions.md`. Accepted runtime authority is unchanged: M5 `10814505512 / e284fea7...`, selector449 **449/449**. Stable accounting **55 / 16 / 39**, debt **1** (M6). Formal recovery of TB1 and TB3 is still open. The TB2 candidate is closed.
+Semantic commit is `2ec8c7358858f0b74ce6fc2a30c55d366b53ba71`; mandatory compile source is `82b86a285292379cfd92cdc4e10d74181b38f1e8`. Compile run/job `36168827294 / 108183151046` produced candidate artifact `10879581622` (`sha256:578845a2135ef2296e982e8bac9a378b7659d2968aa9ab5b2702f841288d57c6`) and log artifact `10879491574` (`sha256:a67873ca9bb8ef0e447ed16badff37bcd602a4aad363ed31f9c42ca9c7af516c`). All eight standard targets compile/link with GMP/GMPXX; package manifest 28/28; clean source; `runtimeExecution=false`.
+
+Accepted runtime authority is unchanged: M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7`, selector449 **449/449**. Stable accounting is **55 / 16 / 39**, debt **1**. CB5 candidate `10879581622` is unpromoted and grants no CP1/G4 closure. Formal TB1/TB3 recovery remains Review-owned.
 
 ## Exact next turn
 
-**`M6-CP1-CB5`** — bounded runtime-free Code + Build under `Architecture_M6_CP1_CB5_Ordinary_Front_Seam_Classification_Recovery_Code_Build_Plan.md`, including its review-agent amendment block.
+**`M6-CP1-TB5-EXEC`** — immutable artifact-only Test + Benchmark on candidate artifact `10879581622`. Do **not** rebuild, relink, patch, repair, regenerate discovery/code, or mutate packaged source/fixtures/manifests. Extraction must preserve archived executable mode bits.
 
-1. **The single semantic change,** in the A6 reciprocal `OrdinaryFront` endpoint-span check:
-   - keep presence parity and the same-edge requirement;
-   - neither span collinear → the existing non-seam P2 rule;
-   - both collinear on the same edge → look up `isolationCertificateBySeam[{region, edge}]`:
-     - **no certificate** → the same non-seam P2 rule (same interior sheet, in both wedge sets; failure emits `QuotientReciprocalSideAuthorityMismatch`);
-     - **certificate present** → the current seam branch, unchanged.
-2. **RA-12 site suffixes** on every isolation-failure emission (A5 adapter and the four A6 sites). Diagnostic only.
-3. **Frozen:** A5 span construction; support resolver; RA-1 – RA-11 semantics; schemas; occurrence/relation identity; quotient equality; HardRail/Periodic; remap; every test and fixture; selector449 `d4a0d1b7...d6414`; routing449 `9c88a5ed...c5707`. No new focused identity.
-4. **Compile** the eight GMP/GMPXX targets via `agent-compile-reusable.yml` with `runtimeExecution=false`. No Directional runtime.
+Execute exactly the frozen **7 focused + selector449 = 456** fresh exact-filter processes, one process per identity, benchmark 0, exact-one selection, zero skips/selection mismatch, no full-suite watchdog, and immutable pre/post package/source/execution-view census. Selector449 is `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`; routing449 is `9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707`.
 
-**Successor if compile-green:** immutable `M6-CP1-TB5-EXEC`, running the same 7 focused + selector449 = **456** processes (benchmark 0), then mandatory `M6-CP1-TB5-REV`.
-- **Recovery-green:** 7/7 and 449/449, row140 PASS, no `OccurrenceInvalidCornerAuthority`.
-- **Residual REDs** are classified by RA-12 suffix. Downstream-casualty and torus falsifiers apply, and nothing is repaired or rerun inside TB5.
+- Recovery prediction: the 21 TB4 newly-lost accepted selector rows recover under the corrected no-certificate branch.
+- Torus falsifier: focused row6 and selector 444/446/448 are multi-sheet and may identify a different RA-12-qualified site; recovery is not assumed.
+- Any RED is recorded and handed to mandatory `M6-CP1-TB5-REV`; no correction or rerun occurs inside EXEC.
+- `Regression_Root_Cause_Tracker.md` must categorize every observed regression before EXEC closes.
+
+**Mandatory successor:** `M6-CP1-TB5-REV`.
 
 ## Completed predecessor turns (reference only)
 
+- `M6-CP1-CB5` — semantic `2ec8c735...`, compile source `82b86a28...`, candidate `10879581622` (folded into `M6_Consolidated_Record.md §20`).
 - `M6-CP1-TB4-REV` (+ review-agent addendum) — `Architecture_M6_CP1_TB4_Review_Record.md`.
 - `M6-CP1-TB4-EXEC` — `Architecture_M6_CP1_TB4_Artifact_Only_Test_Benchmark_Report.md`.
 - `M6-CP1-CB4` — source `20f60bb1`, candidate `10871935178` (folded into `M6_Consolidated_Record.md`).
@@ -190,7 +188,7 @@ Definition authority: DEFN-R1 core, R2, and RA-1 – RA-12 at the end of `Archit
 
 ## Current files
 
-- `.agents/Directional/Architecture_M6_CP1_CB5_Ordinary_Front_Seam_Classification_Recovery_Code_Build_Plan.md` (exact next; amended)
+- `.agents/Directional/Architecture_M6_CP1_CB5_Ordinary_Front_Seam_Classification_Recovery_Code_Build_Plan.md` (completed CB5 governing plan; amended)
 - `.agents/Directional/Architecture_M6_CP1_TB4_Review_Record.md` (TB4-REV + review-agent addendum)
 - `.agents/Directional/Architecture_M6_CP1_TB4_Artifact_Only_Test_Benchmark_Report.md` (latest runtime report)
 - `.agents/Directional/Architecture_M6_Frozen_Definitions.md` (normative; RA-1 – RA-12 at the end)
@@ -205,21 +203,20 @@ Definition authority: DEFN-R1 core, R2, and RA-1 – RA-12 at the end of `Archit
 
 ```yaml
 load_next:
-  - turn-based-coding-agent/references/turns/CODE_BUILD.md
-  - .agents/Directional/Architecture_M6_CP1_CB5_Ordinary_Front_Seam_Classification_Recovery_Code_Build_Plan.md
-  - .agents/Directional/Architecture_M6_CP1_TB4_Review_Record.md  # includes review-agent addendum
-  - .agents/Directional/Architecture_M6_Frozen_Definitions.md  # RA-1..RA-12 at end are normative
+  - .agents/Directional/Future_Chat_Session_Handoff.md
+  - .agents/Directional/Architecture_M6_CP1_TB4_Review_Record.md  # TB5 recovery/falsifier authority
+  - .agents/Directional/Architecture_M6_Frozen_Definitions.md  # RA-1..RA-12 normative
+  - .agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt
+  - .agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv
 conditional_modules:
-  - trigger: github_connector / GitHub Actions / patch transport
+  - trigger: github_connector / GitHub Actions / artifact-only execution
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
+  - .agents/Directional/Architecture_M6_CP1_CB5_Ordinary_Front_Seam_Classification_Recovery_Code_Build_Plan.md
   - .agents/Directional/Architecture_M6_CP1_TB4_Artifact_Only_Test_Benchmark_Report.md
-  - .agents/Directional/Architecture_M6_DEFN_R2_Seam_Incident_Authority_Amendment_Definition_Record.md
   - .agents/Directional/M6_Consolidated_Record.md
-  - turn-based-coding-agent/references/core/turn-boundaries.md
-  - turn-based-coding-agent/references/core/evidence.md
+  - .agents/Directional/Regression_Root_Cause_Tracker.md
   - .agents/Directional/GitHub_Workflow_Policy.md
-  - .agents/Directional/GMP_COMPILE_POLICY.md
 do_not_preload:
   - folded superseded M6 per-turn records
   - uncited historical reports

@@ -1,3 +1,12 @@
+## 2026-09-25 — `M6-CP1-CB5`: OrdinaryFront no-certificate collinear spans corrected; compile/package green
+
+- Implemented only the TB4-REV-authorized A6 P2 correction in `RemeshPipeline.cpp`: generic collinear spans without a checked isolation certificate now use exact non-seam same-sheet + both-wedge validation; certificate-backed spans retain exact seam face/sheet/transition checks.
+- Implemented RA-12 site suffixes on the remaining legacy isolation-failure emissions. No test, fixture, selector, A5 schema/support, HardRail, Periodic or frozen-definition change. Selector449/routing449 remain `d4a0d1b7...d6414` / `9c88a5ed...c5707`.
+- Patch run/job `36168631350 / 108182514195` applied exact patch `c4789d19...79324` as semantic commit `2ec8c735...ba71`.
+- Mandatory compile run/job `36168827294 / 108183151046` produced artifact `10879581622` (`sha256:578845a2...57c6`) plus log `10879491574` (`sha256:a67873ca...516c`), standard eight targets, GMP/GMPXX, manifest 28/28, clean source, preflight/build 0/0, `runtimeExecution=false`.
+- Process observation `M6-CP1-CB5-OBS-01` records a pre-READ_MODE declaration lag; all semantic inspection/editing used verified snapshot `10878083220`. Stable accounting is unaffected.
+- Candidate remains unpromoted; stable accounting **55/16/39**, debt 1; accepted M5 authority unchanged. Exact next `M6-CP1-TB5-EXEC` (7 + 449 = 456), then mandatory `M6-CP1-TB5-REV`.
+
 ## 2026-09-25 — `M6-CP1-TB4-REV` review-agent second pass: first-addendum overclaims corrected; CB4 code outside TB4's reach verified
 
 - Proof scope narrowed to what the evidence shows: 13 rows proved, 8 downstream rows bound (the falsifier stays).

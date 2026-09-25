@@ -1,10 +1,10 @@
-## Currency — `M6-CP1-TB4-REV` review-agent addendum; exact next `M6-CP1-CB5` + RA-12 (2026-09-25 UTC)
+## Currency — `M6-CP1-CB5` COMPLETE / compile-green candidate; exact next `M6-CP1-TB5-EXEC` (2026-09-25 UTC)
 
-TB4-REV's root cause (A6 treats generic source-edge collinearity as a seam) and accounting 55/16/39 are upheld. The attribution of the 21 new losses is now proved: on single-sheet fixtures, only that branch can emit the legacy string, and all 21 are single-sheet.
-- Corrected: the carried torus REDs (focused row6, selectors 444/446/448) are multi-sheet, so their cause is not proved. Their recovery is a TB5 prediction with a falsifier.
-- RA-12 (required in CB5): legacy isolation-failure names become prefixes with site suffixes, so a residual RED identifies the check that fired.
-- Debts: the unread legacy `SurfaceOccurrence` fields `isolationSheet`/`chart`/`lattice` (a CP1-acceptance precondition; the second pass narrowed this list); unsorted aggregated `equivalences`. Lesson 181.
-- Second pass: the attribution is proved for the 13 rows that print the string and bound, not proved, for the 8 downstream rows.
+CB5 implements the one bounded TB4-Review correction: A6 reciprocal OrdinaryFront spans that are source-edge-collinear **without** an exact isolation certificate are non-seams and must satisfy exact same-interior-sheet + both-endpoint-wedge membership. Certificate-backed collinear spans keep the frozen seam face/sheet/transition checks. RA-12 site diagnostics are present; no tests, selectors, A5 schema/support authority, HardRail, Periodic, or frozen definitions changed.
+
+Mandatory compile run/job `36168827294 / 108183151046` is green at source `82b86a285292379cfd92cdc4e10d74181b38f1e8`: all eight standard targets, GMP/GMPXX, package manifest 28/28, clean source, and `runtimeExecution=false`. Candidate artifact `10879581622` (`sha256:578845a2...57c6`) is **unpromoted**. Selector449/routing449 remain byte-identical.
+
+Stable accounting stays **55/16/39**, debt 1. Accepted runtime authority remains M5 package/source `10814505512 / e284fea7...`, selector449 449/449. **Exact next:** immutable `M6-CP1-TB5-EXEC`, 7 focused + selector449 = 456, then mandatory `M6-CP1-TB5-REV`. The torus recovery is a falsifier/prediction, not a CB5 proof. Legacy occurrence-field debt remains a CP1-acceptance precondition.
 
 ### Superseded currency note
 ## Currency — `M6-CP1-TB4-REV` COMPLETE / one stable RP-01 recurrence; exact next `M6-CP1-CB5` (2026-09-25 UTC)
@@ -74,9 +74,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
- > **Current milestone authority (2026-09-25, after `M6-CP1-TB4-REV`):** M4 and M5 remain CLOSED / ACCEPTED. Accepted runtime authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 449/449. M6 CP1 remains ACTIVE; TB4 candidate `10871935178` is unpromoted. Stable accounting is **55/16/39**, debt 1. Exact next is bounded runtime-free `M6-CP1-CB5` → TB5 456 → Review.
+ > **Current milestone authority (2026-09-25, after `M6-CP1-CB5`):** M4 and M5 remain CLOSED / ACCEPTED. Accepted runtime authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 449/449. M6 CP1 remains ACTIVE; CB5 candidate artifact `10879581622` / source `82b86a285292379cfd92cdc4e10d74181b38f1e8` is compile-green and unpromoted. Stable accounting is **55/16/39**, debt 1. Exact next is immutable `M6-CP1-TB5-EXEC` 456 → mandatory Review.
 
-**Currency.** `M6-CP1-TB4-REV` (review), 2026-09-25 UTC
+**Currency.** `M6-CP1-CB5` (Code + Build), 2026-09-25 UTC
 
 **Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` §16.3 is the active same-region nonzero-Z4 contract. `PeriodicRelationId` remains carrier-content identity; relation rotation is the gauge-adjusted quotient `Q`, action/transport is relation value, and canonical storage may invert representation only after semantic Forward -> Reverse authority is fixed. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 
@@ -124,11 +124,11 @@ A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on t
 
 **M3, M4 and M5 are CLOSED / ACCEPTED. M6 is ACTIVE at CP1.** Current accepted runtime authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449**, selector SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`, routing `9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707`, owners **32 / 301 / 75 / 41**.
 
-`M6-CP1-TB4-REV` independently upholds CB4/TB4 mechanics but rejects candidate promotion. Twenty-one newly RED accepted-selector identities are one stable existing-`RP-01` recurrence: A5 publishes generic exact source-edge-collinear spans, including valid same-sheet/no-certificate spans, while A6 reciprocal `OrdinaryFront` P2 treats every `collinearEdge` as an isolation seam and requires a checked seam certificate. Stable accounting is **55 events / 16 categories / 39 recurrences**; produced-witness debt is **1**, M6-owned.
+`M6-CP1-CB5` is compile/package green. The TB4-Review correction is implemented: uncertified source-edge-collinear reciprocal OrdinaryFront spans now use exact non-seam same-sheet + both-wedge authority, while certificate-backed spans retain exact seam face/sheet/reciprocal-transition validation. RA-12 site diagnostics are compiled. Mandatory compile run/job `36168827294 / 108183151046` produced candidate artifact/source `10879581622 / 82b86a285292379cfd92cdc4e10d74181b38f1e8`; all eight standard targets link with GMP/GMPXX, manifest 28/28, clean source, and `runtimeExecution=false`. Stable accounting remains **55 events / 16 categories / 39 recurrences**; produced-witness debt is **1**, M6-owned.
 
-Prior M6 obligations remain explicit. `M6-CP1-TB2-REV-CAND-01 / VALIDATION_ORDER_SHADOWING` is recovery-proved closed (row140 remains PASS). `M6-CP1-TB1-EXEC-CAND-01 / CROSS_TEMPORARY_ITERATOR_RANGE` has its mechanism cleared but formal recovery still requires selector449 449/449. The TB3 RP-01 event is partially recovered — focused row5 and selector186/214/239 are PASS — but its full-gate recovery remains open because focused pair-swap and selector444/446/448 remain RED behind the new A6 overclassification.
+Prior M6 obligations remain explicit. `M6-CP1-TB2-REV-CAND-01 / VALIDATION_ORDER_SHADOWING` is recovery-proved closed. `M6-CP1-TB1-EXEC-CAND-01 / CROSS_TEMPORARY_ITERATOR_RANGE` has its mechanism cleared but formal recovery still requires selector449 449/449. The TB3 RP-01 event is partially recovered; its full-gate recovery is Review-owned.
 
-Candidate `10871935178 / 20f60bb1412424a6f1093fc8076884d1ea23f1c5` remains unpromoted and grants no CP1/G4 closure or debt discharge. Exact next is `M6-CP1-CB5`: change only the A6 OrdinaryFront P2 predicate so source-edge-collinear/no-certificate spans use the non-seam same-sheet+wedge-membership rule while certificate-backed spans retain exact seam face/sheet/reciprocal-evidence validation. Compile-green advances to unchanged **7 + 449 = 456** TB5 processes and mandatory Review.
+Candidate `10879581622 / 82b86a28...` remains unpromoted and grants no CP1/G4 closure or debt discharge. Exact next is immutable `M6-CP1-TB5-EXEC`: unchanged **7 + 449 = 456** artifact-only processes, then mandatory `M6-CP1-TB5-REV`. The 21 TB4 losses are predicted to recover; focused pair-swap + selector444/446/448 are the explicit multi-sheet torus falsifier and are not assumed green.
 
 **Historical accounting note:** M5 closed at **51 / 14 / 37**. Those numbers describe the historical M5 closure point, not current project accounting; subsequent M6 stable events advance the current totals to **55 / 16 / 39**.
 
