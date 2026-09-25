@@ -1,0 +1,2 @@
+.agents/connector-triggers/m6-cp1-tb5-rev-doc-apply-20260925.txt
+.agents/connector-triggers/source-snapshot/m6-cp1-tb5-rev-20260925.txt
