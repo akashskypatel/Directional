@@ -1,3 +1,10 @@
+## 2026-09-25 — `M6-CP1-TB3-EXEC`: 455-process gate mechanically valid, semantic RED
+
+- Consumed candidate `10840014758 / 660015f2...` immutably in run/job `36084948588 / 107914657100`; executed exactly six focused + selector449 = **455** fresh exact-filter processes with exact-one selection, zero skips and benchmark 0.
+- Outcome: focused **4/6**, selector449 **443/449**, aggregate **447/455 PASS**; row140 is restored and `OccurrenceInvalidCornerAuthority` is absent.
+- Eight REDs share `MissingIsolationSeamEquivalenceAuthority`: focused multi-isolation/pair-swap plus selector ordinals 186/214/239/444/446/448. Recorded non-stable `M6-CP1-TB3-EXEC-CAND-01`; stable totals stay **53/16/37**, debt 1 pending Review.
+- Result/log `10844285398 / 10844020833`; result self-manifest **929/929** and immutable postflight exact. No repair/rerun or promotion. Exact next `M6-CP1-TB3-REV`.
+
 ## 2026-09-25 — `M6-CP1-CB3`: authority recovery compiles/packages green
 
 - Exact semantic source `660015f2f15359fd426e2c855aea9f4201c70216` restores accepted HardRail-specific `InvalidHardRailTransport` precedence at A5 and corrects split-isolation occurrence projection authority while retaining frozen occurrence identity/lattice state and relation-owned quotient union.

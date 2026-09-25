@@ -1,6 +1,6 @@
 # M6 Consolidated Record
 
-**Status:** M6 ACTIVE / `M6-CP1-CB3` complete / compile+package green / candidate unpromoted / exact next `M6-CP1-TB3-EXEC`
+**Status:** M6 ACTIVE / `M6-CP1-TB3-EXEC` complete / mechanically valid semantic RED / candidate unpromoted / exact next `M6-CP1-TB3-REV`
 **Last updated:** 2026-09-25
 
 Normative M6 semantics live in `Architecture_M6_Frozen_Definitions.md`. Entering accepted authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449 PASS**, SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. TB1's accepted-prefix event remains independently classified as singleton `CROSS_TEMPORARY_ITERATOR_RANGE`; TB2 Review adds one accepted row140 event in new singleton `VALIDATION_ORDER_SHADOWING`. Stable accounting is **53 / 16 / 37** and produced-witness debt is **1**, M6-owned.
@@ -94,6 +94,14 @@ Mandatory GMP/GMPXX compile run/job `36077715921 / 107892575831` compiles and li
 Two pre-compile orchestration attempts were rejected rather than normalized: one stale-base apply detected changed intended source paths, and one reconciliation patch declared an unchanged header in its intended-path set and failed exact path-set comparison. The corrected one-path patch was then applied and compiled. These rejected attempts grant no evidence.
 
 CB3 grants no runtime credit, promotion, CP1 closure or debt discharge. Stable accounting remains **53 / 16 / 37** and produced-witness debt remains **1**, M6-owned. Exact next is immutable **`M6-CP1-TB3-EXEC`** over the unchanged six focused identities plus selector449 as 455 fresh exact-filter processes, followed by mandatory `M6-CP1-TB3-REV`.
+
+## 9. `M6-CP1-TB3-EXEC` — HardRail recovery holds; relation-equivalence guard exposes eight REDs
+
+TB3 consumed candidate artifact/source `10840014758 / 660015f2...` immutably. Authoritative run/job `36084948588 / 107914657100` executed the frozen six focused identities followed by selector449 as exactly **455 fresh exact-filter processes** with exact-one selection and zero skips. Outcome is **4/6 focused + 443/449 selector = 447/455 PASS**, benchmark 0, and exact immutable postflight. Result/log authority is `10844285398 / 10844020833`; result evidence verifies **929/929**.
+
+Accepted selector row140 is restored and `OccurrenceInvalidCornerAuthority` is absent from all 455. The remaining eight REDs share one earlier first-failure surface: `MissingIsolationSeamEquivalenceAuthority`. Affected focused identities are multi-isolation and retained pair-swap; accepted selector losses are ordinals 186, 214, 239, 444, 446 and 448. Static source bounds the activation chain to CB3's corrected outgoing-side occurrence sheet authority making relations cross sheets while the existing materializer requires relation-owned `equivalence.isolationSeams`; certificate inventory is deliberately not substituted for that authority. Final ownership and stable classification remain Review-owned.
+
+EXEC records one non-stable candidate family, `M6-CP1-TB3-EXEC-CAND-01`, and makes no stable-accounting change: **53 / 16 / 37**, debt 1. Candidate remains unpromoted, accepted M5 authority remains unchanged, and the TB1 formal recovery precondition is still unmet because selector449 is not 449/449. Exact successor is mandatory runtime-free **`M6-CP1-TB3-REV`**.
 
 ## Folded document index
 

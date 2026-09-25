@@ -1,14 +1,14 @@
-## Latest Code + Build turn — `M6-CP1-CB3`
+## Latest Test + Benchmark turn — `M6-CP1-TB3-EXEC`
 
-**COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE / CANDIDATE ONLY.** Exact semantic source `660015f2f15359fd426e2c855aea9f4201c70216` restores HardRail-specific `InvalidHardRailTransport` precedence at A5 and corrects split-isolation occurrence projection authority without changing frozen occurrence identity/lattice state or introducing coincidence-based union. Selector449/routing449 and all six focused identities remain unchanged.
+**COMPLETE / MECHANICALLY VALID / SEMANTIC NON-GREEN / REVIEW REQUIRED / CANDIDATE UNPROMOTED.** Immutable candidate `10840014758 / 660015f2f15359fd426e2c855aea9f4201c70216` executed in run/job `36084948588 / 107914657100` as exactly **455 fresh exact-filter processes**: focused **4/6**, selector449 **443/449**, total **447/455 PASS**, exact-one selection, zero skips/selection mismatches and benchmark 0. Result/log are `10844285398 / 10844020833`; result manifest is **929/929** and immutable postflight is exact.
 
-Mandatory GMP/GMPXX compile run/job `36077715921 / 107892575831` packages all eight standard targets as candidate `10840014758` (`sha256:b1117c6efe2cdc8a04e46647fd1bb5af79094234a03348df8ffd6e6ae5ed5c66`), root manifest **28/28**, clean source receipts and `runtimeExecution=false`; log artifact `10840034587`. Stable accounting stays **53 / 16 / 37**, debt **1**. No runtime credit or candidate promotion is claimed.
+Row140 is restored to PASS through `InvalidHardRailTransport`, and `OccurrenceInvalidCornerAuthority` is absent from all 455. Eight processes instead stop at `MissingIsolationSeamEquivalenceAuthority`: focused multi-isolation and pair-swap, plus accepted selector ordinals **186, 214, 239, 444, 446, 448**. They are grouped as non-stable `M6-CP1-TB3-EXEC-CAND-01`; final classification is Review-owned. Stable accounting remains **53 / 16 / 37**, debt **1**; candidate remains unpromoted.
 
-## Exact next turn — `M6-CP1-TB3-EXEC`
+## Exact next turn — `M6-CP1-TB3-REV`
 
-Consume candidate `10840014758 / 660015f2...` immutably. Execute unchanged six focused identities followed by selector449 as exactly **455 fresh exact-filter processes**, exact-one selection and zero skips, benchmark 0, then exact immutable postflight. Any mechanically valid outcome advances to mandatory `M6-CP1-TB3-REV`; TB3 performs no repair or rerun.
+Mandatory runtime-free independent Review. Reopen the candidate and TB3 result/log evidence, verify the 455-process ledger/postflight, adjudicate the common isolation-equivalence failure family and prior TB1/TB2 candidate status, update accounting only if independently justified, and freeze the next bounded CP1 action. No compile/runtime or semantic mutation is authorized in Review.
 
-See `.agents/Directional/Architecture_M6_CP1_CB3_Authority_And_Multi_Isolation_Recovery_Code_Build_Report.md` and `.agents/Directional/Architecture_M6_CP1_TB3_Artifact_Only_Test_Benchmark_Plan.md`.
+See `.agents/Directional/Architecture_M6_CP1_TB3_Artifact_Only_Test_Benchmark_Report.md`.
 
 ## Latest Review turn — `M6-CP1-TB2-REV`
 
@@ -173,4 +173,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current corrected totals are **53 events / 16 categories / 37 recurrences**, project debt **1** (M6 only). M4 and **M5 are CLOSED / ACCEPTED**. Final M5 authority is package/source `10814505512 / e284fea7...` under selector449 **449/449** (`d4a0d1b7...d6414`). `M6-CP1-CB3` is **COMPLETE / COMPILE+PACKAGE GREEN / CANDIDATE UNPROMOTED** at `10840014758 / 660015f2...`; exact next is immutable **`M6-CP1-TB3-EXEC`**, then mandatory Review. PR #8 remains open, draft, and unmerged.
+Current corrected totals are **53 events / 16 categories / 37 recurrences**, project debt **1** (M6 only). M4 and **M5 are CLOSED / ACCEPTED**. Final M5 authority is package/source `10814505512 / e284fea7...` under selector449 **449/449** (`d4a0d1b7...d6414`). `M6-CP1-TB3-EXEC` is **COMPLETE / MECHANICALLY VALID / SEMANTIC NON-GREEN / CANDIDATE UNPROMOTED** at result/log `10844285398 / 10844020833`; exact next is mandatory runtime-free **`M6-CP1-TB3-REV`**. PR #8 remains open, draft, and unmerged.

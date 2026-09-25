@@ -1,3 +1,17 @@
+## 2026-09-25 — `M6-CP1-TB3-EXEC`: HardRail row140 recovers; eight processes stop at relation-owned isolation-equivalence guard — **MECHANICALLY VALID / ONE NON-STABLE REVIEW-OWNED CANDIDATE FAMILY / +0 STABLE IN EXEC**
+
+**Stable totals remain 53 events / 16 categories / 37 recurrences; project debt remains 1 (M6).** Immutable candidate `10840014758 / 660015f2f15359fd426e2c855aea9f4201c70216` executed exactly **455** fresh exact-filter processes in run/job `36084948588 / 107914657100`: focused **4/6 PASS**, selector449 **443/449 PASS**, total **447 PASS / 8 RED**, exact-one selection, zero skips/selection mismatches, benchmark 0 and exact immutable postflight. Result/log are `10844285398 / 10844020833`.
+
+### `M6-CP1-TB3-EXEC-CAND-01` — ACTIVE / NON-STABLE / COMMON FIRST-FAILURE FAMILY / REVIEW-OWNED
+
+- **Affected focused identities:** row5 `SurfaceCellTransitionQuotient.MultiIsolationMaterializationRetainsAllLocalSheets` and row6 `M5CP3.ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection`.
+- **Accepted selector losses:** ordinals **186, 214, 239, 444, 446, 448**. All six are accepted selector449 PASS identities on M5 authority and are RED on the CB3 candidate.
+- **Common first failure:** every affected process returns `MissingIsolationSeamEquivalenceAuthority` before its former downstream assertion.
+- **Static activation chain:** CB3 makes occurrence `isolationSheet` come from the authoritative outgoing directed-side start. The existing materializer guard rejects a relation when its resolved endpoints now cross sheets but its relation-owned `equivalence.isolationSeams` set is empty. CB3 explicitly removed certificate-map seam augmentation, so certificate inventory does not substitute for relation-owned equivalence authority. This bounds the common locus but does **not** decide whether implementation, fixture/test authority, or frozen-definition ownership must change.
+- **Differentials:** selector row140 now PASSes through the accepted `InvalidHardRailTransport` contract; `OccurrenceInvalidCornerAuthority` is absent from all 455. The pair-swap identity regresses from TB2 PASS to the common equivalence-authority RED. The focused multi-isolation identity moves from TB2's downstream `foundMultiIsolationLineage=false` to this earlier guard.
+- **Accounting:** EXEC assigns **+0 stable**. Mandatory `M6-CP1-TB3-REV` owns final event/category/recurrence classification and any candidate disposition.
+- **TB1 recovery boundary:** the original iterator symptom remains absent, but formal recovery still requires selector449 449/449. TB3 is 443/449, so `M6-CP1-TB1-EXEC-CAND-01` is not closed by EXEC.
+
 ## 2026-09-24 — `M6-CP1-TB2-REV`: HardRail validation precedence regresses accepted row140; focused multi-isolation mechanism remains absent — **ONE NEW STABLE EVENT / ONE NON-STABLE FOCUSED CANDIDATE / CB3 FROZEN**
 
 **Stable totals become 53 events / 16 categories / 37 recurrences; project debt remains 1 (M6).** Independent Review re-verifies candidate `10834642074 / 724316a5b3f49e33dc8e649989bb413b3dc6b7c9`, TB2 result/log `10835579933 / 10836175636`, the complete 455-process ledger and accepted M5 selector449 authority `10814505512 / e284fea7...` at 449/449. TB2 mechanics are upheld at focused 5/6 + selector 448/449 = 453/455 PASS with exact immutable postflight.

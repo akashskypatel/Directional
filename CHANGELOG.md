@@ -1,3 +1,9 @@
+## 2026-09-25 — `M6-CP1-TB3-EXEC`: immutable CP1 recovery gate remains semantic RED
+
+- Candidate `10840014758 / 660015f2...` executed exactly 455 fresh exact-filter processes: **447 PASS / 8 RED**, exact-one, zero skips, benchmark 0, immutable postflight exact.
+- HardRail row140 recovers and the old `OccurrenceInvalidCornerAuthority` symptom stays absent. Eight tests instead stop at `MissingIsolationSeamEquivalenceAuthority`, including six accepted selector449 identities.
+- Candidate stays unpromoted; stable accounting stays **53/16/37**, debt 1. Mandatory next is runtime-free `M6-CP1-TB3-REV`.
+
 ## 2026-09-25 — `M6-CP1-CB3`: bounded authority correction compiles green
 
 CB3 publishes exact semantic source `660015f2f15359fd426e2c855aea9f4201c70216`, restoring accepted HardRail-specific failure precedence and correcting split-isolation occurrence projection authority without changing the frozen test/selector surface or relation-owned quotient semantics. Mandatory GMP/GMPXX run/job `36077715921 / 107892575831` packages all eight standard targets as candidate `10840014758` with 28/28 manifest, clean source receipts and `runtimeExecution=false`. Candidate remains unpromoted; accounting stays 53/16/37 with debt 1. Exact next is immutable `M6-CP1-TB3-EXEC` over unchanged 6+449=455, followed by mandatory Review.
