@@ -1,3 +1,10 @@
+## 2026-09-25 — `M6-DEFN-R3` recovery: beacon repaired, scope bounded
+
+- The first R3 session left only a start beacon (`cd084a0d`), with non-canonical `NONE` values and no record, snapshot or Drive patch. The loop recorded `CHAT_UNKNOWN`.
+- Repaired the beacon (same turn; Started at preserved; Successor `UNKNOWN`; empty Ended at).
+- Bounded the DEFN-R3 plan (§5): A6-only decisions plus the A6 CB plan; A7 and `G4-B002` deferred to `M6-DEFN-R4`. Replaced §2.3's infeasible static holonomy proof on produced fixtures with an analytic proof plus a TB falsifier and fallback. This was the review agent's own plan defect.
+- Handoff, TODO and ORIENTATION updated. No accounting change (55/16/39, debt 1).
+
 ## 2026-09-25 — `M6-CP1-TB5-REV` review-agent addendum: CP1 scope corrected; CB6 held; next `M6-DEFN-R3`
 
 - Re-verified candidate `10879581622` (28/28; source `82b86a28`) and TB5 result `10880392759` (933/933; 456/456; empty RED ledger; zero failure strings). The CB5 diff matches the plan.

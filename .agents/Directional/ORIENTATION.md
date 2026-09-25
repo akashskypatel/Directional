@@ -1,3 +1,8 @@
+## Currency — `M6-DEFN-R3` recovery: resume the same turn with the bounded scope (2026-09-25T21:13:47Z)
+
+The first R3 session stalled after a non-canonical start beacon, with no work product. The review agent repaired the beacon and bounded R3 to the A6 decisions plus the A6 CB plan, deferring A7 and `G4-B002` to `M6-DEFN-R4`. It also replaced an infeasible static holonomy proof on produced fixtures with an analytic proof plus a pre-registered TB falsifier.
+
+### Superseded currency note
 ## Currency — `M6-CP1-TB5-REV` review-agent addendum: CP1 scope corrected; exact next `M6-DEFN-R3` (2026-09-25 UTC)
 
 TB5 456/456, the TB1/TB3/TB4 recovery, the promotion of `10879581622`, and 55/16/39 with debt 1 are upheld. **Corrected:** CP1 is not "held only by three legacy A5 fields". Frozen §10/§8.1 require A6 and A7 products behind stage APIs, a thin adapter, the §4.4 exact-once ledger, the §4.3 member-set class identity and the `G4-B002` A6 boundary, and none of these exists yet:

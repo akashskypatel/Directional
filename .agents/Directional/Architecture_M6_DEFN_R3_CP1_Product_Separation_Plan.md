@@ -4,6 +4,10 @@
 **Type:** Definition amendment and CP1 sequencing, runtime-free
 **Predecessor:** `M6-CP1-TB5-REV`, review-agent addendum (`Architecture_M6_CP1_TB5_Review_Record.md` §C3-§C4)
 **Successor:** mandatory `M6-DEFN-R3-REV`, then the first A6 extraction Code + Build
+
+> **Recovery amendment (review agent, 2026-09-25T21:13:47Z) — this overrides the rest of this plan where they conflict.**
+>
+> The first `M6-DEFN-R3` session stalled after its entry beacon, with no document, snapshot or Drive patch. This plan asked for too much in one runtime-free turn and contained one unsatisfiable requirement. Resume the **same turn** with the bounded scope in §5.
 **Current reviewed runtime:** `10879581622 / 82b86a285292379cfd92cdc4e10d74181b38f1e8`, selector449 **449/449** (TB5 456/456)
 
 ## 1. Why
@@ -61,13 +65,38 @@ The contracts in §4-§5 are frozen. The decisions below have compatibility cons
    - lineage `quotientClass`, `equivalences`, `selectedRelationPaths`, hashes;
    - rows 436/437/438/444/446/448, focused 1-7, row140, and the Phase10 HardRail rows.
 
+## 5. Bounded scope for this turn (recovery amendment; overrides §2 where they conflict)
+
+**R3 decides only what the first A6 extraction CB needs:**
+- §2.1 (the CP1 exit checklist, already restated in the frozen definitions; confirm or refine it);
+- §2.2 (A6 class identity);
+- §2.3 (ledger semantics, as amended below);
+- §2.4 (selected-path ownership);
+- §2.7 (A6 failure names);
+- §2.8, limited to the **A6 CB plan and its focused identities**;
+- §2.9, limited to the **A6 CB**.
+
+**Deferred to a later Definition turn before the A7 CB (`M6-DEFN-R4`):** §2.5 (the A7 product) and §2.6 (the `G4-B002` A6 stage boundary). R3 records only a one-paragraph intent for each.
+
+**§2.3 amended: no static proof on produced fixtures.** The produced torus and cylinder fixtures only exist by running the pipeline, so a runtime-free turn cannot trace their classes. This is the same infeasibility found in the CB4 plan.
+- R3 freezes the cycle-closing rule (recommended: the relation's transport equals the composed transport of the existing path, else `QuotientHolonomyConflict`).
+- It **proves the rule analytically only where that is possible**: the split square, the uniform hard-rail rectangles, and a reasoned argument for ordinary-only classes, whose transports are identity.
+- For produced fixtures it **pre-registers a TB falsifier**. If any accepted row fails with `QuotientHolonomyConflict` in the A6 TB, TB-REV must classify it as either a true holonomy defect or a rule too strict for legitimate non-trivial holonomy. That Review decides between a definition change and the evidence-only alternative; neither CB nor TB may weaken the rule.
+- The evidence-only alternative (record the composed transport in the ledger without rejecting) stays documented as the fallback, with its reason.
+
+**Durability.**
+- Write the definition record incrementally.
+- After each decided item, emit a `RETENTION_POLICY.md` work-preservation patch to Drive, or land it on the branch.
+- Keep the STATUS beacon canonical (Durable_Handoff_Policy item 15): `Successor: UNKNOWN` until complete, empty `Ended at`, and never the literal `NONE`.
+
 ## 3. Must not change
 
 A5 semantics (R1/R2/RA-1 – RA-12), `OccurrenceId`, `CellId`, relation-only equality, HardRail/Periodic owner semantics, selector449 `d4a0d1b7...d6414`, routing449 `9c88a5ed...c5707`, and all existing tests and fixtures. No source edits, compile or runtime in this turn.
 
-## 4. Exit criteria (checked by `M6-DEFN-R3-REV`)
+## 4. Exit criteria (checked by `M6-DEFN-R3-REV`; bounded per §5)
 
-- §2.1-§2.9 are decided with reasons, written into `Architecture_M6_Frozen_Definitions.md`, and consistent with §4-§5 and RA-10.
-- The §2.3 holonomy analysis covers every accepted periodic/HardRail fixture family.
-- The CB6 plan is written with its identities pre-registered and its gate size stated.
+- The §5 bounded items (§2.1, §2.2, §2.3 as amended, §2.4, §2.7, and the A6 CB portions of §2.8/§2.9) are decided with reasons and written into `Architecture_M6_Frozen_Definitions.md`, consistent with §4-§5 and RA-10.
+- The §2.3 holonomy rule is proved analytically where the fixture allows, and pre-registered as a TB falsifier for produced fixtures, with the fallback documented.
+- The A6 CB plan is written with its focused identities pre-registered and its gate size stated. `Architecture_M6_CP1_CB6_*_Plan.md` is marked superseded by it.
+- The A7 product and `G4-B002` boundary are recorded as intent only and assigned to `M6-DEFN-R4`.
 - Accounting stays 55 / 16 / 39, debt 1.

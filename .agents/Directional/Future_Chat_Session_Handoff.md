@@ -1,4 +1,29 @@
-## Resume-critical update — `M6-CP1-TB5-REV` review-agent addendum: CP1 scope corrected; CB6 HELD; exact next `M6-DEFN-R3` (2026-09-25)
+## Resume-critical update — RESUME `M6-DEFN-R3` (same turn) with the bounded scope (2026-09-25T21:13:47Z)
+
+**Resume `M6-DEFN-R3` — the same incomplete turn.** Keep `Started at 2026-09-25T20:10:00Z`, set a new `Resumed at`, and keep `Status: IN_PROGRESS`, `Successor: UNKNOWN` and an empty `Ended at`. Never write the literal `NONE`.
+
+**Recovery facts** (verified by the review agent at 2026-09-25T21:13:47Z):
+- The first R3 session wrote only a start beacon (`cd084a0d`, 20:41:49Z), and that beacon was non-canonical (`NONE` values).
+- There is no definition record, no source snapshot (no Actions run after 19:07Z) and no Drive patch.
+- The operator loop then recorded `CHAT_UNKNOWN` twice.
+- The beacon has been repaired to canonical form.
+
+**Scope is now bounded** (`Architecture_M6_DEFN_R3_CP1_Product_Separation_Plan.md` §5 overrides §2). R3 decides only what the first A6 extraction CB needs:
+- the CP1 exit checklist;
+- A6 class identity (member set vs the RA-10 ordinal);
+- exact-once ledger and cycle-closing holonomy rule;
+- selected-path ownership;
+- A6 failure names;
+- the A6 CB plan with pre-registered focused identities;
+- its frozen-test audit.
+
+The A7 product and the `G4-B002` boundary are deferred to `M6-DEFN-R4`. The holonomy rule is proved **analytically only** (split square, uniform rectangles, ordinary-only classes). For produced torus and cylinder fixtures it is pre-registered as a TB falsifier with a documented evidence-only fallback, because no runtime-free static proof is possible there.
+
+Work incrementally: preserve each decided item to Drive or the branch.
+
+## Superseded resume notes (historical — do not act on)
+
+### `M6-CP1-TB5-REV` review-agent addendum: CP1 scope corrected; CB6 HELD; exact next `M6-DEFN-R3` (2026-09-25)
 
 **Start runtime-free `M6-DEFN-R3` as a new turn** (Definition amendment and CP1 sequencing). **Do not start CB6 as planned, and do not close CP1.**
 
@@ -12,8 +37,6 @@ It **corrected the CP1 scope.** TB5-REV said CP1 was held "only" by three legacy
 - candidate extraction still consumes `SurfaceCellComplex`.
 
 CB6 (field retirement) is folded into the first A6 extraction CB. See `Architecture_M6_CP1_TB5_Review_Record.md` (review-agent addendum) and `Architecture_M6_DEFN_R3_CP1_Product_Separation_Plan.md`.
-
-## Superseded resume notes (historical — do not act on)
 
 ### `M6-CP1-TB5-REV` COMPLETE / runtime recovery accepted / CP1 held only by legacy A5 fields / exact next `M6-CP1-CB6` (2026-09-25)
 
@@ -219,7 +242,7 @@ Definition authority: R1, R2 and RA-1 – RA-12 (end of `Architecture_M6_Frozen_
 
 ## Exact next turn
 
-**`M6-DEFN-R3`** — runtime-free Definition amendment and CP1 sequencing under `Architecture_M6_DEFN_R3_CP1_Product_Separation_Plan.md`. It must freeze:
+**`M6-DEFN-R3` (resume, same turn)** — runtime-free Definition amendment under `Architecture_M6_DEFN_R3_CP1_Product_Separation_Plan.md`, **bounded by its §5 recovery amendment**: A6 decisions and the A6 CB plan only; the A7 product and `G4-B002` boundary go to `M6-DEFN-R4`; holonomy is proved analytically, plus a TB falsifier for produced fixtures. It must freeze:
 - the CP1 exit checklist;
 - A6 class-identity representation versus the RA-10 lineage ordinal;
 - exact-once ledger and cycle-closing transport/holonomy semantics, proved on the accepted fixtures;

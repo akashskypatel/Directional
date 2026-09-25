@@ -1,3 +1,9 @@
+## Recovery — `M6-DEFN-R3` stalled after its start beacon; resume the same turn with the bounded scope (2026-09-25T21:13:47Z)
+
+- [x] Recovery verified: only beacon `cd084a0d`; no record, snapshot or Drive patch. Beacon repaired to canonical form (it had `NONE` values).
+- [x] DEFN-R3 plan bounded (§5): A6-only decisions plus the A6 CB plan. A7 and `G4-B002` deferred to `M6-DEFN-R4`. The holonomy static proof on produced fixtures is replaced by an analytic proof plus a TB falsifier.
+- [ ] Resume `M6-DEFN-R3` (keep Started at 20:10:00Z; new Resumed at) → `M6-DEFN-R3-REV` → A6 extraction CB.
+
 ## Review-agent addendum — `M6-CP1-TB5-REV` (2026-09-25)
 
 **TB5 recovery and promotion upheld; CP1 scope corrected; exact next `M6-DEFN-R3`.** See `Architecture_M6_CP1_TB5_Review_Record.md` (addendum) and `Architecture_M6_DEFN_R3_CP1_Product_Separation_Plan.md`.
