@@ -3321,6 +3321,12 @@ SurfaceOccurrenceComplexProducer::produce(
 
     for (int corner = 0; corner < 4; ++corner) {
       const std::size_t cornerIndex = static_cast<std::size_t>(corner);
+      const geometry::SurfaceTracePoint &canonicalTrace =
+          cell.corners[cornerIndex];
+      // A canonical corner role owns the start of its directed side. Keep the
+      // occurrence's chart/sheet representation attached to that side rather
+      // than to the region-global geometric corner representative, which may
+      // choose a different incident source face on an isolation seam.
       const auto &outgoingPath = cell.boundaryPaths[cornerIndex];
       if (outgoingPath.empty()) {
         error.code = SurfaceOccurrenceComplexErrorCode::InvalidCornerAuthority;
@@ -3328,11 +3334,11 @@ SurfaceOccurrenceComplexProducer::produce(
         error.occurrence = cornerOccurrences[cornerIndex];
         return error;
       }
-      const geometry::SurfaceTraceSegment &outgoing = outgoingPath.front();
-      geometry::SurfaceTracePoint trace;
-      trace.face = outgoing.face;
-      trace.barycentric = outgoing.startBarycentric;
-      const auto faceId = source_face_id(trace.face);
+
+      geometry::SurfaceTracePoint occurrenceTrace;
+      occurrenceTrace.face = outgoingPath.front().face;
+      occurrenceTrace.barycentric = outgoingPath.front().startBarycentric;
+      const auto faceId = source_face_id(occurrenceTrace.face);
       if (!faceId.has_value() ||
           phaseFront.sourceTopologyRegions().region_for_row(*faceId) !=
               cell.sourceTopologyRegion) {
@@ -3355,36 +3361,17 @@ SurfaceOccurrenceComplexProducer::produce(
         return error;
       }
 
-      geometry::SurfacePoint point = make_surface_point(trace);
+      geometry::SurfacePoint canonicalPoint = make_surface_point(canonicalTrace);
+      geometry::SurfacePoint point = make_surface_point(occurrenceTrace);
+      const auto canonicalSupport = supportResolver.resolve(canonicalPoint);
       const auto support = supportResolver.resolve(point);
-      geometry::LocalLatticeState lattice = cell.lattice[cornerIndex];
-      const authority::LatticeTranslation latticeDelta =
-          cell.lattice[(cornerIndex + 1U) % 4U].latticeCoordinate -
-          lattice.latticeCoordinate;
-      int globalBranch = -1;
-      if (latticeDelta == authority::LatticeTranslation{1, 0}) {
-        globalBranch = 0;
-      } else if (latticeDelta == authority::LatticeTranslation{0, 1}) {
-        globalBranch = 1;
-      } else if (latticeDelta == authority::LatticeTranslation{-1, 0}) {
-        globalBranch = 2;
-      } else if (latticeDelta == authority::LatticeTranslation{0, -1}) {
-        globalBranch = 3;
-      }
-      if (globalBranch < 0 || !outgoing.sourceChart.has_value()) {
-        error.code = SurfaceOccurrenceComplexErrorCode::InvalidCornerAuthority;
-        error.cell = cell.id;
-        error.occurrence = cornerOccurrences[cornerIndex];
-        return error;
-      }
-      const int localBranch =
-          geometry::surface_cell_tracing_detail::branch_from_family_sign(
-              outgoing.family, outgoing.sign);
-      lattice.branchRotation =
-          ((localBranch - globalBranch) % 4 + 4) % 4;
-      lattice.sourceChart = outgoing.sourceChart;
-      if (!point.valid() || !point.position.allFinite() || !support.valid() ||
-          !support.identity.has_value()) {
+      const geometry::LocalLatticeState &lattice = cell.lattice[cornerIndex];
+      if (!canonicalPoint.valid() || !canonicalPoint.position.allFinite() ||
+          !canonicalSupport.valid() || !canonicalSupport.identity.has_value() ||
+          !point.valid() || !point.position.allFinite() || !support.valid() ||
+          !support.identity.has_value() ||
+          canonicalSupport.identity != support.identity ||
+          !lattice.sourceChart.has_value()) {
         error.code = SurfaceOccurrenceComplexErrorCode::InvalidCornerAuthority;
         error.cell = cell.id;
         error.occurrence = cornerOccurrences[cornerIndex];
@@ -3395,15 +3382,9 @@ SurfaceOccurrenceComplexProducer::produce(
           phaseFront.sourceTopologyRegions().topology_for_row(*faceId));
       const int componentIndex =
           chartTransitions.chart_component(projectionChart);
-      if (componentIndex < 0) {
-        error.code = SurfaceOccurrenceComplexErrorCode::InvalidChartAuthority;
-        error.cell = cell.id;
-        error.occurrence = cornerOccurrences[cornerIndex];
-        return error;
-      }
       const geometry::SourceChartComponentIdentity &componentIdentity =
           chartTransitions.chart_component_identity(componentIndex);
-      if (!componentIdentity.valid) {
+      if (componentIndex < 0 || !componentIdentity.valid) {
         error.code = SurfaceOccurrenceComplexErrorCode::InvalidChartAuthority;
         error.cell = cell.id;
         error.occurrence = cornerOccurrences[cornerIndex];
@@ -4190,38 +4171,6 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       equivalence.isolationSeams.insert(
           equivalence.isolationSeams.end(), secondSeams.begin(),
           secondSeams.end());
-      for (const auto &pair : relationOccurrenceIndices) {
-        const auto &firstOccurrence =
-            occurrences[static_cast<std::size_t>(pair.first)];
-        const auto &secondOccurrence =
-            occurrences[static_cast<std::size_t>(pair.second)];
-        if (firstOccurrence.isolationSheet == secondOccurrence.isolationSheet) {
-          continue;
-        }
-        const auto *edgeSupport =
-            std::get_if<authority::SourceEdgeSupport>(&firstOccurrence.support);
-        if (edgeSupport == nullptr ||
-            firstOccurrence.support != secondOccurrence.support) {
-          continue;
-        }
-        const auto certificate = isolationCertificateBySeam.find(
-            {first.sourceTopologyRegion, edgeSupport->edge});
-        if (certificate == isolationCertificateBySeam.end()) {
-          continue;
-        }
-        const bool matchesCertifiedSheets =
-            (certificate->second->firstSheet() ==
-                 firstOccurrence.isolationSheet &&
-             certificate->second->secondSheet() ==
-                 secondOccurrence.isolationSheet) ||
-            (certificate->second->firstSheet() ==
-                 secondOccurrence.isolationSheet &&
-             certificate->second->secondSheet() ==
-                 firstOccurrence.isolationSheet);
-        if (matchesCertifiedSheets) {
-          equivalence.isolationSeams.push_back(edgeSupport->edge);
-        }
-      }
       std::sort(equivalence.isolationSeams.begin(),
                 equivalence.isolationSeams.end());
       equivalence.isolationSeams.erase(
@@ -4251,8 +4200,6 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     } else if (first.boundaryKind ==
                geometry::SurfaceFrontBoundaryKind::HardRail) {
       if (first.sourceTopologyRegion == second.sourceTopologyRegion ||
-          (first.railId.has_value() && second.railId.has_value() &&
-           first.railId != second.railId) ||
           first.route != second.route.reversed()) {
         result.failure = "InvalidHardRailTransport";
         return result;
