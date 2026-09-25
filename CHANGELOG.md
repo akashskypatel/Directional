@@ -1,3 +1,8 @@
+## 2026-09-25 — M6 TB4 review, second look
+
+- Two statements from the earlier review were stronger than the evidence and have been narrowed. The plan for the next code turn (CB5) is unchanged.
+- Code the last test run couldn't reach was checked and found consistent.
+
 ## 2026-09-25 — M6 CB5 plan tightened after review
 
 - The review confirmed the cause of the 21 new test failures (a check that confused "lies on a mesh edge" with "lies on a seam").

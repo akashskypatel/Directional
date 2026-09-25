@@ -1,3 +1,10 @@
+## 2026-09-25 — `M6-CP1-TB4-REV` review-agent second pass: first-addendum overclaims corrected; CB4 code outside TB4's reach verified
+
+- Proof scope narrowed to what the evidence shows: 13 rows proved, 8 downstream rows bound (the falsifier stays).
+- Legacy-field debt narrowed to `isolationSheet`/`chart`/`lattice` (`point` is live; `chartComponent` is legitimate).
+- Verified with no defect: selected-path chart anchoring at completion, validator chart authority, sorted `hardRailEquivalences`.
+- No change to accounting (55/16/39), CB5 scope, RA-12 or the torus falsifier.
+
 ## 2026-09-25 — `M6-CP1-TB4-REV` review-agent addendum: attribution proved, torus overclaim corrected, RA-12 added to CB5
 
 - Re-verified candidate `10871935178` (28/28; source byte-identical to `20f60bb1`) and result `10874311495` (932/932; RED set and exact order), with zero `OccurrenceInvalidCornerAuthority`.

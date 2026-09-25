@@ -5,7 +5,7 @@
 - [ ] CB5: A6 collinear span with no certificate → non-seam P2 rule; certificate present → seam branch unchanged.
 - [ ] CB5: RA-12 site suffixes on every `Missing/InvalidIsolationSeamEquivalenceAuthority` emission (A5 adapter and the four A6 sites).
 - [ ] TB5 (456): classify any residual RED by its RA-12 suffix. The torus rows (focused 6, 444/446/448) are predicted to recover, not proved to.
-- [ ] CP1-acceptance precondition: remove or relabel the dead legacy single-valued `SurfaceOccurrence` fields (`isolationSheet`, `chart`, `point`, `chartComponent`, `lattice`).
+- [ ] CP1-acceptance precondition: remove or relabel the unread legacy `SurfaceOccurrence` fields `isolationSheet`, `chart` and `lattice` (`point` is live; `chartComponent` is legitimate).
 - [ ] Minor: re-sort aggregated lineage `equivalences` after tuple remap.
 
 ## M6-CP1-TB4 Review complete — bounded CB5 next (2026-09-25)

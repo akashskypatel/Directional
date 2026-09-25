@@ -1,3 +1,12 @@
+## 2026-09-25 — `M6-CP1-TB4-REV` review-agent second pass — **+0 EVENTS / 55/16/39 / debt 1 / NEXT `M6-CP1-CB5`**
+
+- **Correction to the first addendum:** single-sheet exclusivity proves site `:4913` only for the 13 rows that print `MissingIsolationSeamEquivalenceAuthority`.
+  - Rows 122/130/132/134/137 are strongly bound: same fixture and options as row150; stage products are exported only after a component completes (`RemeshPipeline.cpp:11289-11300`).
+  - Rows 176/201/238 are only consistent.
+  - TB4-REV's downstream falsifier stays in force.
+- **Debt narrowed:** unread `SurfaceOccurrence::isolationSheet` / `chart` / `lattice` (a CP1 precondition). `point` is live and `chartComponent` is legitimate.
+- **Verified with no defect:** R2 §4.4 selected-path charts are re-anchored at completion (`PureQuadCompletion.cpp:990-1045`); the validator chart-authority union holds; `hardRailEquivalences` are sorted.
+
 ## 2026-09-25 — `M6-CP1-TB4-REV` review-agent addendum — **+0 EVENTS / 55/16/39 / debt 1 / NEXT `M6-CP1-CB5` + RA-12**
 
 - **Upheld:** `M6-CP1-TB4-EXEC-CAND-01` is one `RP-01` recurrence, with the root cause at A6 `RemeshPipeline.cpp:4908-4914`.

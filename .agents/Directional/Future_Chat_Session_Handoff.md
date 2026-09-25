@@ -11,7 +11,8 @@ It also proved the attribution. On a single-sheet fixture only that branch can e
 Amendments:
 - **RA-12 (required in CB5):** keep the legacy isolation-failure names as prefixes and add site suffixes (`:a5-wedge`, `:a5-side`, `:a6-side-evidence`, `:a6-collinear-span`, `:a6-seam-span-transition`, `:a6-seam-faces`). Diagnostic only; no test or production code compares these strings.
 - **Torus falsifier:** recovery of focused row6 and selectors 444/446/448 is a prediction, not a proof. The torus is multi-sheet, so the A5 and seam-span sites remain possible. If any stays RED in TB5, TB5-REV classifies it by its suffix.
-- **Debts (not CB5):** legacy single-valued `SurfaceOccurrence` fields (`isolationSheet`, `chart`, `point`, `chartComponent`, `lattice`) are dead but published. Removing them or marking them representation-only is a CP1-acceptance precondition. Aggregated `equivalences` are not re-sorted.
+- **Debts (not CB5):** the unread legacy `SurfaceOccurrence` fields `isolationSheet`, `chart` and `lattice` (unlabelled representative or duplicate data; `point` is live, `chartComponent` is legitimate) must be removed or relabelled before CP1 acceptance. Aggregated `equivalences` are not re-sorted.
+- **Second pass (2026-09-25T17:2x):** the 21-loss attribution is *proved* for the 13 rows that print the string and *bound* for the 8 downstream rows; TB4-REV's downstream falsifier stays in force.
 
 Full record: `Architecture_M6_CP1_TB4_Review_Record.md` (TB4-REV plus the addendum). Plan: `Architecture_M6_CP1_CB5_Ordinary_Front_Seam_Classification_Recovery_Code_Build_Plan.md`.
 

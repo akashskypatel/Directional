@@ -178,3 +178,47 @@ When the non-seam predicate fails on a collinear no-certificate pair, it emits `
 | review_check.py boundary / ledgers | recorded in the commit message |
 | `STATUS` lifecycle maintained | resume `IN_PROGRESS` (`Resumed at` = operator handoff `2026-09-25T17:06:03Z`) → docs → COMPLETE last |
 | Pushed to origin, branch in sync | verified after the final push |
+
+## Review-agent second pass — `M6-CP1-TB4-REV` (2026-09-25 UTC)
+
+**Origin delta since the first addendum:** STATUS and trigger housekeeping only. No semantic, test or document change. This pass re-examines CB4 code that TB4 could not exercise, and **corrects two overclaims in the first review-agent addendum**. Accounting stays **55 / 16 / 39**, debt 1, and the successor stays `M6-CP1-CB5` (as amended).
+
+### S1. Correction to addendum §B2: the eight downstream rows are bound, not proved
+
+Single-sheet exclusivity proves the site only for the **13 rows whose logs show** `MissingIsolationSeamEquivalenceAuthority`. The eight downstream rows never print their underlying failure string, so exclusivity does not reach them. The first addendum's "this includes the eight downstream casualties" was an overclaim.
+
+What does hold:
+- **Hard-feature rows 122/130/132/134/137:** strongly bound. They use `make_disconnected_rectangular_feature_pair_mesh` with the same per-component options as row150's failing components. Row122 passes `producedBeforeTamper`, which means A4 produced. It then finds no HardFeature rail, because `componentProducts->authoritativeRails` is exported only after the component completes (`RemeshPipeline.cpp:11289-11300`). That signature fits any failure after A4, and row150 on the same fixture reports site (c).
+- **Rows 176/201/238:** consistent only. They show A4 Produced, then `NotProductionReady` at tracing; row238 prints only `code:stage`. RA-12 cannot help these rows, because their tests never print the reason.
+
+TB4-REV's own downstream falsifier stays the controlling rule. If any of the eight rows is RED in TB5, split it rather than attributing it to site (c).
+
+### S2. Correction to addendum §B6.1: the legacy-field debt, narrowed
+
+`SurfaceOccurrence::point` is **live**: it supplies the vertex position, `vertexProvenance` and lineage `sourcePoint` (`:5305-5307`, `:5440-5445`). It is legitimate representation. The validator requires its face's chart to be in `sourceCharts`, and the member wedges tile the node's fan within the region, so that holds.
+
+`chartComponent` is a legitimate occurrence-wide value (R2 §4.1; A5 enforces one component per wedge) that CB4 simply no longer reads.
+
+The debt is therefore exactly `isolationSheet` (unlabelled representative sheet), `chart` (first-binding chart) and `lattice` (unlabelled duplicate of `placement.lattice`). None has a reader. Remove or relabel them before CP1 acceptance.
+
+### S3. Areas verified with no defect (not observable in TB4 because rows failed upstream)
+
+1. **Selected relation paths.** CB4 derives `startChart/endChart` and components from the first/last selected steps (`:5406-5431`), as R2 §4.4 permits, instead of M5's construction-time anchor to representative/target occurrences. This is not a weakening. Completion-stage validation (`PureQuadCompletion.cpp:990-1045`) re-anchors every certificate to the vertex:
+   - start and end charts must be retained lineage charts, incident to the support, with matching components;
+   - every step must be continuous and its components retained.
+
+   The relation-side interior face is an RA-8 arc endpoint, so it is always one of the occurrence's wedge bindings, and therefore retained.
+2. **Final validator chart authority.** `SourceVertexChartAuthority` requires a sorted, unique `sourceCharts` that contains the provenance point's declared chart and lies in one source component (`SourceAuthoritativeMeshValidator.cpp:795-860`). CB4's `std::set` union of wedge charts satisfies this. `hardRailEquivalences` are explicitly sorted and de-duplicated (`RemeshPipeline.cpp:6344-6349`), so addendum §B6.2 stays cosmetic.
+3. **Negative front edges** on `CornerWedgeIsolation` entries are guarded in aggregation and ignored by kind-gated consumers, as previously re-confirmed.
+
+### S4. Net effect
+
+No change to the classification, accounting, CB5 scope, RA-12 or the torus falsifier. The only changes are that the first addendum's proof and debt statements are narrowed to what the evidence supports.
+
+| Duty | Answer |
+|---|---|
+| Decisive claims re-derived | origin delta; downstream-row evidence limits; `point` consumers; stage-product export timing; completion-stage path validation; validator chart authority |
+| Stable accounting | **55 / 16 / 39**, debt 1; +0 |
+| Obligations | B6.1 narrowed to `isolationSheet` / `chart` / `lattice`; downstream falsifier reaffirmed |
+| Turn boundary held | runtime-free; documents only |
+| `STATUS` lifecycle maintained | resume `IN_PROGRESS` (`Resumed at` = operator handoff `2026-09-25T17:22:06Z`) → docs → COMPLETE last |

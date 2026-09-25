@@ -256,3 +256,11 @@ Corrections and additions:
 - Verified that A5's collinear seam-span transitions agree with CB5's seam branch.
 - Debts: dead legacy single-valued `SurfaceOccurrence` fields (CP1-acceptance precondition); unsorted aggregated `equivalences`.
 
+### Second review-agent pass
+
+The first addendum overclaimed in two places, now corrected:
+- Single-sheet exclusivity proves the site only for the 13 rows that print the string. The 8 downstream rows are bound by fixture sharing and stage-product export timing, not proved; the downstream falsifier stays in force.
+- The legacy-field debt is narrowed to `isolationSheet`, `chart` and `lattice`. `point` is live, and `chartComponent` is legitimate.
+
+Verified with no defect: the R2 §4.4 selected-path charts are re-anchored by completion validation, and validator chart authority is satisfied by the wedge-chart union.
+
