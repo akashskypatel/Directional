@@ -1,3 +1,9 @@
+## M6 CP1 — `M6-CP1-TB4-REV` classifies one RP-01 recurrence; bounded CB5 next (2026-09-25)
+
+Independent Review upholds TB4's mechanically valid **431/456** result and proves one new stable `RP-01 / AUTHORITY_DOMAIN_CONFLATION` event: A6 consumes generic exact source-edge collinearity as isolation-seam certificate authority. Stable accounting is **55/16/39**, debt 1. Candidate `10871935178` remains unpromoted; accepted M5 runtime authority remains selector449 449/449.
+
+Exact next is runtime-free `M6-CP1-CB5`, limited to the A6 OrdinaryFront P2 seam-classification predicate. Compile-green advances to unchanged `M6-CP1-TB5-EXEC` **7 + 449 = 456**, then mandatory Review. No CP1/G4 closure or candidate promotion is granted by TB4 Review.
+
 ## M6 CP1 — `M6-CP1-TB4-EXEC` mechanically valid; mandatory Review next (2026-09-25)
 
 TB4 consumed CB4 candidate `10871935178 / 20f60bb1...` immutably and executed **456/456** frozen processes with exact-one selection, zero skips/selection mismatches and exact postflight. Result is focused **6/7** + selector449 **425/449** = **431/456 PASS**. Twenty-one accepted selector identities are newly RED relative to TB3; candidate `M6-CP1-TB4-EXEC-CAND-01` is non-stable pending Review. Candidate remains unpromoted, stable accounting remains **54/16/38**, debt 1, and accepted M5 runtime authority is unchanged. Exact next is runtime-free `M6-CP1-TB4-REV`; no corrective implementation is authorized first.
@@ -36,7 +42,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-25 (`M6-CP1-TB4-EXEC` COMPLETE / mechanically valid 456-process artifact-only gate / 431 PASS + 25 RED / candidate artifact `10871935178` remains unpromoted / stable accounting 54/16/38, debt 1 / accepted M5 runtime authority unchanged. Exact next mandatory `M6-CP1-TB4-REV`; no corrective implementation first.)**
+**Status date:** 2026-09-25 (`M6-CP1-TB4-REV` COMPLETE / one stable RP-01 recurrence / stable accounting 55/16/39, debt 1 / candidate unpromoted / exact next `M6-CP1-CB5` → TB5 456 → Review.)**
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 
@@ -127,7 +133,8 @@ DEFN-R2 froze Reading B and re-homed the closed candidate-bearing-complex debt t
 | M3 | **CLOSED / ACCEPTED** | `M3_Closure_Record.md`; package113/TB48 reviewed at 405 PASS / 4 RED on final audit surface; accepted required-green selector365 remains 365/365. |
 | M4 | **CLOSED / ACCEPTED at `M4-CP4-TB3-REV`** | `M4_Closure_Record.md`; package `10591801825` / source `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431` / selector430 **430/430**, SHA `1c412850…9db6`, owners **31/283/75/41**. |
 | M5 | **CLOSED / ACCEPTED at `M5-CP4-TB2-REV`; SELECTOR449 FINAL AUTHORITY** | `M5_Closure_Record.md`; final package/source `10814505512 / e284fea7...` under selector449 **449/449**, SHA `d4a0d1b7...d6414`, routing `9c88a5ed...c5707`, owners 32/301/75/41. All §13.1 conjuncts 1-8 are accepted; the `G4-B004` M5 producer half is discharged. Project debt 1 remains M6-owned. |
-| M6–M8 | not started | — |
+| M6 | **ACTIVE — CP1 repair chain** | TB4 Review proves source-edge/support vs isolation-seam authority conflation; exact next `M6-CP1-CB5` → TB5 → Review. |
+| M7–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
 `M3-CP4-DEFN` is complete. CP4a/CP4b are superseded into CP4ab.

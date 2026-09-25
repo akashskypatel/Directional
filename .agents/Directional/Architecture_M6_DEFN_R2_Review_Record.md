@@ -90,7 +90,7 @@ With RA-1 – RA-10 the audit covers all seven focused identities and selector r
 
 ## 5. Successor
 
-Exact next: runtime-free **`M6-CP1-CB4`**, under the amended plan (`Architecture_M6_CP1_CB4_Relation_Owned_Isolation_Equivalence_Code_Build_Plan.md`, "Review amendments" block). Compile-green → immutable `M6-CP1-TB4-EXEC` (7 + 449 = **456**) → mandatory `M6-CP1-TB4-REV`.
+Exact next: runtime-free **`M6-CP1-CB4`**, under the amended CB4 plan authority now folded into `M6_Consolidated_Record.md` §§12-18. Compile-green → immutable `M6-CP1-TB4-EXEC` (7 + 449 = **456**) → mandatory `M6-CP1-TB4-REV`.
 
 ## Review closeout
 

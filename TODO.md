@@ -1,3 +1,14 @@
+## M6-CP1-TB4 Review complete — bounded CB5 next (2026-09-25)
+
+**Review verdict:** TB4 mechanics are upheld; `M6-CP1-TB4-EXEC-CAND-01` is one new stable `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence. Stable accounting is **55 / 16 / 39**, debt **1**. Candidate `10871935178` stays unpromoted; accepted M5 package `10814505512` / selector449 449/449 remains authority.
+
+- [x] Independently re-verify candidate package 28/28, TB4 result 932/932, accepted M5 result 911/911, exact 456-process mechanics and selector/prefix/routing hashes.
+- [x] Prove root: A5's `collinearEdge` is generic source-edge support, while A6 incorrectly consumes every such edge as isolation-seam certificate authority.
+- [x] Record one new stable RP-01 recurrence; totals **55/16/39**. Carry TB3 and TB1 formal recovery clauses; keep TB2 validation-order recovery closed.
+- [ ] **Exact next `M6-CP1-CB5`:** one A6 OrdinaryFront P2 correction only — no certificate means non-seam same-sheet + both-wedges validation; exact certificate means existing seam face/sheet/reciprocal-evidence validation.
+- [ ] CB5 compile/package only, standard eight GMP/GMPXX targets, `runtimeExecution=false`; no test/fixture/selector or A5/schema change.
+- [ ] Compile-green → `M6-CP1-TB5-EXEC`, unchanged **7 + 449 = 456** exact processes → mandatory `M6-CP1-TB5-REV`.
+
 ## M6-CP1-TB4 EXEC complete — mandatory Review next (2026-09-25)
 
 **TB4 is COMPLETE / MECHANICALLY VALID / SEMANTIC NON-GREEN / CANDIDATE UNPROMOTED.** Run/job `36157505252 / 108145613689` executed exactly 456 fresh exact-filter processes from immutable artifact `10871935178`: focused **6/7**, selector449 **425/449**, aggregate **431/456 PASS**.
@@ -30,7 +41,7 @@ Stable accounting remains **54 / 16 / 38**, debt 1. Accepted runtime authority r
 
 ## CB4 static blocker — per-face branch authority unavailable at A5 boundary (2026-09-25)
 
-**`M6-CP1-CB4` stopped before production/test mutation and before compile.** Exact snapshot inspection shows D6/R2 requires a per-source-face `branchRotation` in every `CornerWedgeFaceBinding`, while immutable A4 `SurfacePhaseFrontProduct` exposes only corner-selected `LocalLatticeState.branchRotation`, side-segment branch data, and isolation-seam transport certificates. It does not preserve the builders' complete per-face branch table or an ordinary-edge field-transport atlas. An intermediate corner-wedge face can therefore have no derivable exact branch value at A5. See `Architecture_M6_CP1_CB4_Per_Face_Branch_Authority_Blocker.md`.
+**`M6-CP1-CB4` stopped before production/test mutation and before compile.** Exact snapshot inspection shows D6/R2 requires a per-source-face `branchRotation` in every `CornerWedgeFaceBinding`, while immutable A4 `SurfacePhaseFrontProduct` exposes only corner-selected `LocalLatticeState.branchRotation`, side-segment branch data, and isolation-seam transport certificates. It does not preserve the builders' complete per-face branch table or an ordinary-edge field-transport atlas. An intermediate corner-wedge face can therefore have no derivable exact branch value at A5. See `M6_Consolidated_Record.md §16 (folded RA-11 blocker authority)`.
 
 - [x] Per-face branch authority source resolved by review amendment RA-11 (no Definition turn needed).
 - [x] CB4 re-authorized: resume the same turn under RA-1 – RA-11.
@@ -104,7 +115,7 @@ Runtime-free Code + Build, **not authorized until `M6-DEFN-R2-REV` accepts**. Im
 
 Compile-green then advances to immutable `M6-CP1-TB4-EXEC` with seven focused + selector449 = **456** fresh exact-filter processes, then mandatory Review.
 
-See `.agents/Directional/Architecture_M6_CP1_TB3_Review_Record.md` and `.agents/Directional/Architecture_M6_CP1_CB4_Relation_Owned_Isolation_Equivalence_Code_Build_Plan.md`.
+See `.agents/Directional/M6_Consolidated_Record.md §§10-16 (folded TB3 Review authority)` and `.agents/Directional/M6_Consolidated_Record.md §§12-18 (folded CB4 plan authority)`.
 
 ## Latest Code + Build turn — `M6-CP1-CB2`
 
@@ -116,7 +127,7 @@ Mandatory GMP/GMPXX compile run/job `36061049526 / 107839861958` packages all ei
 
 Consume artifact `10834642074` immutably. Execute the unchanged six focused identities followed by selector449 as exactly **455 fresh exact-filter processes**, exact-one selection and zero skips, benchmark 0, then exact immutable postflight. Recovery of `M6-CP1-TB1-EXEC-CAND-01` requires no `OccurrenceInvalidCornerAuthority` anywhere plus selector449 **449/449**. A focused RED with a different first failure is a new candidate. Every mechanically valid outcome advances to mandatory runtime-free `M6-CP1-TB2-REV` with no TB repair/rerun.
 
-Superseded TB2 plan/report/Review authority is folded into `.agents/Directional/M6_Consolidated_Record.md`; current retained runtime evidence is `.agents/Directional/Architecture_M6_CP1_TB3_Artifact_Only_Test_Benchmark_Report.md`, with adjudication in `.agents/Directional/Architecture_M6_CP1_TB3_Review_Record.md`.
+Superseded TB2 plan/report/Review authority is folded into `.agents/Directional/M6_Consolidated_Record.md`; current retained runtime evidence is `.agents/Directional/M6_Consolidated_Record.md §§9-11 (folded TB3 runtime authority)`, with adjudication in `.agents/Directional/M6_Consolidated_Record.md §§10-16 (folded TB3 Review authority)`.
 
 ## Latest Code + Build turn — `M6-CP1-CB1`
 

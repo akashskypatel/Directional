@@ -1,3 +1,17 @@
+## Resume-critical update — `M6-CP1-TB4-REV` COMPLETE; exact next `M6-CP1-CB5` (2026-09-25)
+
+**Do not rerun TB4 and do not resume CB4. Start bounded runtime-free `M6-CP1-CB5`, then immutable `M6-CP1-TB5-EXEC`, then mandatory `M6-CP1-TB5-REV`.**
+
+Independent Review upholds TB4 mechanics at focused **6/7** + selector449 **425/449** = **431/456 PASS**, but adjudicates `M6-CP1-TB4-EXEC-CAND-01` as **one new stable `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence**. A5 `collinearEdge` is generic exact source-edge support and permits same-sheet/no-certificate spans; A6 OrdinaryFront P2 incorrectly treats every such span as an isolation seam and requires `isolationCertificateBySeam[(region,edge)]`. R2 P2 separates these domains.
+
+Stable accounting is now **55 events / 16 categories / 39 recurrences**, debt **1**, M6-owned. Candidate `10871935178 / 20f60bb1412424a6f1093fc8076884d1ea23f1c5` remains unpromoted. Accepted runtime authority remains M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449**.
+
+`M6-CP1-CB5` changes only A6 reciprocal `OrdinaryFront` near-endpoint classification: matching source-edge-collinear spans with **no exact isolation certificate** use the non-seam same-sheet + both-wedges rule; certificate-backed spans retain the existing exact seam face/sheet/reciprocal-transition rule. No A5/schema/support/test/fixture/selector/HardRail/Periodic change is authorized. Stop if existing certificate authority cannot make this distinction without a definition/product change.
+
+Compile-green TB5 reruns the same **7 focused + selector449 = 456** processes. Recovery-green is 7/7 + 449/449 with all 21 new TB4 losses and carried pair-swap/444/446/448 recovered, row140/rows5/7 still PASS, no `OccurrenceInvalidCornerAuthority`, exact-one/zero-skip and immutable postflight. Any RED is Review-owned.
+
+Full current adjudication: `Architecture_M6_CP1_TB4_Review_Record.md`. Exact plan: `Architecture_M6_CP1_CB5_Ordinary_Front_Seam_Classification_Recovery_Code_Build_Plan.md`.
+
 ## Resume-critical update — `M6-CP1-TB4-EXEC` COMPLETE; exact next `M6-CP1-TB4-REV` (2026-09-25)
 
 **Do not rerun TB4 or start corrective implementation. Start mandatory runtime-free `M6-CP1-TB4-REV`.**
@@ -28,7 +42,7 @@ TB4 is frozen at **7 focused + selector449 = 456 fresh exact-filter processes**.
 
 Stable accounting remains **54 / 16 / 38**, debt **1**. Accepted runtime authority remains M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449**. CB4 grants no runtime credit or promotion.
 
-Full evidence: `Architecture_M6_CP1_CB4_Code_Build_Report.md`.
+Full evidence: `M6_Consolidated_Record.md §17 (folded CB4 compile authority)`.
 
 ## Resume-critical update — `M6-CP1-CB4` UNBLOCKED by RA-11: resume the same turn (2026-09-25T09:41:20Z)
 
@@ -43,7 +57,7 @@ RA-11 in brief:
 - Representative key has no branch.
 - Stop rule: if CB4 finds another consumer that needs a wedge-face branch, stop and return to Review.
 
-Normative text is at the end of `Architecture_M6_Frozen_Definitions.md`. Evidence is in `Architecture_M6_CP1_CB4_Per_Face_Branch_Authority_Blocker.md`, "Review-agent adjudication". No A4 or test change, and TB4 stays 7 + 449 = 456. Accounting 54/16/38, debt 1.
+Normative text is at the end of `Architecture_M6_Frozen_Definitions.md`. Evidence is in `M6_Consolidated_Record.md §16 (folded RA-11 blocker authority)`, "Review-agent adjudication". No A4 or test change, and TB4 stays 7 + 449 = 456. Accounting 54/16/38, debt 1.
 
 ## Superseded resume notes (historical — do not act on)
 
@@ -53,7 +67,7 @@ Normative text is at the end of `Architecture_M6_Frozen_Definitions.md`. Evidenc
 
 Static derivation against exact source snapshot run/artifact `36104814370 / 10850013454` proved that accepted D6/R2 requires every `CornerWedgeFaceBinding` to carry the exact `branchRotation` for that source face, but immutable A4 `SurfacePhaseFrontProduct` does not publish a per-face branch table or field-transport authority from which A5 can derive that value for an intermediate corner-wedge face. `SourceChartTransitionGraph` carries chart/simplex connectivity rather than field branch transport, and isolation-seam certificates cover only seam edges, not ordinary same-sheet fan edges. Any CB4 implementation would therefore have to invent a representative value, consume raw field authority outside the frozen A5 input boundary, or change the A4 product. All are outside the authorized plan.
 
-- Blocker record: `.agents/Directional/Architecture_M6_CP1_CB4_Per_Face_Branch_Authority_Blocker.md`.
+- Blocker record: `.agents/Directional/M6_Consolidated_Record.md §16 (folded RA-11 blocker authority)`.
 - Exact snapshot: source/event SHA `a304bd0b36011f2c100b8a6c127d8ba3c11810cf`; provider digest `ff39ad5104fbfadbb245c4e406428588b5c8142d4b84d723c876c2b7704ebb12`; embedded archive SHA-256 `bb5d91e6aca68fd491ad9c643d406e8273a520a96b1f5a814ac8b896baac8d2e`; 5314/5314 manifest rows verified; `runtimeExecution=false`.
 - Stable accounting, debt, accepted M5 package/source, selector449 and routing449 are unchanged. This is a static definition/authority gap, not a runtime event.
 - Required resolution: a bounded Definition amendment must either preserve A4-computed per-face branch authority in an authorized A4 product field, or redefine the binding branch value so it is derivable from existing A4 products with proofs for uniform, periodic-chart and bounded-disk producers.
@@ -151,7 +165,7 @@ Accepted runtime authority is unchanged: M5 package/source `10814505512 / e284fe
 
 ## Exact next turn
 
-**`M6-CP1-CB4` (resume, same turn)** — runtime-free Code + Build under `Architecture_M6_CP1_CB4_Relation_Owned_Isolation_Equivalence_Code_Build_Plan.md` (AUTHORIZED), as amended by RA-1 – RA-11. Compile-green → immutable `M6-CP1-TB4-EXEC` (7 focused + selector449 = **456** fresh exact-filter processes, benchmark 0) → mandatory `M6-CP1-TB4-REV`.
+**`M6-CP1-CB4` (resume, same turn)** — runtime-free Code + Build under `M6_Consolidated_Record.md §§12-18 (folded CB4 plan authority)` (AUTHORIZED), as amended by RA-1 – RA-11. Compile-green → immutable `M6-CP1-TB4-EXEC` (7 focused + selector449 = **456** fresh exact-filter processes, benchmark 0) → mandatory `M6-CP1-TB4-REV`.
 
 **Entry (resume).** Follow lesson 178:
 1. List this turn's commits, Actions runs and Drive staging.
@@ -200,15 +214,15 @@ Accepted runtime authority is unchanged: M5 package/source `10814505512 / e284fe
 
 ## Current files
 
-- `.agents/Directional/Architecture_M6_CP1_CB4_Relation_Owned_Isolation_Equivalence_Code_Build_Plan.md` (AUTHORIZED implementation plan; filename historical)
+- `.agents/Directional/M6_Consolidated_Record.md §§12-18 (folded CB4 plan authority)` (AUTHORIZED implementation plan; filename historical)
 - `.agents/Directional/Architecture_M6_Frozen_Definitions.md` (normative; RA-1 – RA-11 at the end)
-- `.agents/Directional/Architecture_M6_CP1_CB4_Per_Face_Branch_Authority_Blocker.md` (blocker + RA-11 adjudication)
+- `.agents/Directional/M6_Consolidated_Record.md §16 (folded RA-11 blocker authority)` (blocker + RA-11 adjudication)
 - `.agents/Directional/Architecture_M6_DEFN_R2_Review_Record.md` (acceptance + RA rationale)
 - `.agents/Directional/Architecture_M6_DEFN_R2_Seam_Incident_Authority_Amendment_Definition_Record.md`
 - `.agents/Directional/Architecture_M6_DEFN_R1_Seam_Incident_Occurrence_Sheet_Authority_Definition_Record.md`
 - `.agents/Directional/Architecture_M6_DEFN_R1_Review_Record.md`
-- `.agents/Directional/Architecture_M6_CP1_TB3_Artifact_Only_Test_Benchmark_Report.md` (latest runtime report)
-- `.agents/Directional/Architecture_M6_CP1_TB3_Review_Record.md` (TB3 Review + addendum)
+- `.agents/Directional/M6_Consolidated_Record.md §§9-11 (folded TB3 runtime authority)` (latest runtime report)
+- `.agents/Directional/M6_Consolidated_Record.md §§10-16 (folded TB3 Review authority)` (TB3 Review + addendum)
 - `.agents/Directional/M6_Consolidated_Record.md`
 - `.agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt`
 - `.agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv`
@@ -218,10 +232,10 @@ Accepted runtime authority is unchanged: M5 package/source `10814505512 / e284fe
 ```yaml
 load_next:
   - turn-based-coding-agent/references/turns/CODE_BUILD.md
-  - .agents/Directional/Architecture_M6_CP1_CB4_Relation_Owned_Isolation_Equivalence_Code_Build_Plan.md
+  - .agents/Directional/M6_Consolidated_Record.md §§12-18 (folded CB4 plan authority)
   - .agents/Directional/Architecture_M6_DEFN_R2_Review_Record.md
   - .agents/Directional/Architecture_M6_Frozen_Definitions.md  # RA-1..RA-11 at end are normative
-  - .agents/Directional/Architecture_M6_CP1_CB4_Per_Face_Branch_Authority_Blocker.md  # RA-11 adjudication
+  - .agents/Directional/M6_Consolidated_Record.md §16 (folded RA-11 blocker authority)  # RA-11 adjudication
   - .agents/Directional/Architecture_M6_DEFN_R2_Seam_Incident_Authority_Amendment_Definition_Record.md
 conditional_modules:
   - trigger: github_connector / GitHub Actions / patch transport
@@ -229,7 +243,7 @@ conditional_modules:
 deep_references:
   - .agents/Directional/Architecture_M6_DEFN_R1_Seam_Incident_Occurrence_Sheet_Authority_Definition_Record.md
   - .agents/Directional/Architecture_M6_DEFN_R1_Review_Record.md
-  - .agents/Directional/Architecture_M6_CP1_TB3_Review_Record.md
+  - .agents/Directional/M6_Consolidated_Record.md §§10-16 (folded TB3 Review authority)
   - .agents/Directional/M6_Consolidated_Record.md
   - turn-based-coding-agent/references/core/turn-boundaries.md
   - turn-based-coding-agent/references/core/evidence.md

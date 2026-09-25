@@ -1,3 +1,7 @@
+## 2026-09-25 — `M6-CP1-TB4-REV`: one stable RP-01 recurrence; CB5 frozen
+
+Independent Review upholds the mechanically valid 456-process TB4 gate at **431/456 PASS** but classifies its 21 newly RED accepted-selector identities as one stable existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence. A5 `collinearEdge` denotes generic exact source-edge support and permits same-sheet/no-certificate spans; A6 OrdinaryFront P2 incorrectly treats every such edge as an isolation seam and requires a checked seam certificate. Stable accounting advances to **55/16/39**, debt 1. Candidate `10871935178` remains unpromoted; accepted M5 authority remains selector449 449/449. Exact next is bounded runtime-free `M6-CP1-CB5`, then unchanged 456-process TB5 and mandatory Review.
+
 ## 2026-09-25 — `M6-CP1-TB4-EXEC`: immutable 456-process gate is mechanically valid and semantic RED
 
 - Candidate `10871935178 / 20f60bb1...` ran exactly seven focused + selector449 = **456** fresh exact-filter processes in run/job `36157505252 / 108145613689`; exact-one selection, zero skips/selection mismatches, benchmark 0, no watchdog and exact immutable postflight.

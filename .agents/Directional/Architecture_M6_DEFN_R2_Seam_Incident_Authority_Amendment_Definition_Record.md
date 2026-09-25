@@ -234,7 +234,7 @@ Selector449 and its routing receipt bytes are untouched.
 
 ## 9. CB4/TB4 authorization shape
 
-`M6-CP1-CB4` is re-scoped by `Architecture_M6_CP1_CB4_Relation_Owned_Isolation_Equivalence_Code_Build_Plan.md` and remains **HELD** until independent `M6-DEFN-R2-REV` accepts this Definition.
+`M6-CP1-CB4` was re-scoped by the now-folded CB4 plan authority preserved in `M6_Consolidated_Record.md` §§12-18 and remained **HELD** until independent `M6-DEFN-R2-REV` accepted this Definition.
 
 The seventh focused identity is still:
 

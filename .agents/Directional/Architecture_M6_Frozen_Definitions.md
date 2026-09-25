@@ -500,7 +500,7 @@ The frozen-test audit covers focused rows 5/6, selector rows 186/214/239/444/446
 
 ## RA-11 — per-face branch authority (normative, 2026-09-25, review-agent resolution of the CB4 blocker)
 
-Rationale and evidence: `Architecture_M6_CP1_CB4_Per_Face_Branch_Authority_Blocker.md`, section "Review-agent adjudication". This amends D6, R2 §4.1-§4.3 and RA-10's class-key tuple.
+Rationale and evidence: folded RA-11 blocker authority in `M6_Consolidated_Record.md` §16 and git history. This amends D6, R2 §4.1-§4.3 and RA-10's class-key tuple.
 
 1. `CornerWedgeFaceBinding` = `(sourceFaceTopology, IsolationSheetId, SourceProjectionChart)`. It has **no `branchRotation`**.
 2. Each occurrence publishes `CornerPlacementProvenance`: the A4 corner `LocalLatticeState` verbatim (phase, coordinate, `branchRotation`, scale, `sourceChart`), labelled with the A4 selected corner face (`cell.corners[c].face` topology key).

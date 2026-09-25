@@ -1,9 +1,9 @@
 # M6 Consolidated Record
 
-**Status:** M6 ACTIVE / `M6-CP1-TB4-EXEC` COMPLETE mechanically valid at 431/456 PASS / candidate artifact `10871935178` unpromoted / exact next mandatory TB4 Review / stable 54/16/38, debt 1
+**Status:** M6 ACTIVE / `M6-CP1-TB4-REV` COMPLETE / one new stable RP-01 recurrence / candidate `10871935178` unpromoted / exact next `M6-CP1-CB5` / stable 55/16/39, debt 1
 **Last updated:** 2026-09-25
 
-Normative M6 semantics live in `Architecture_M6_Frozen_Definitions.md`. Entering accepted authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449 PASS**, SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. TB1's accepted-prefix event remains independently classified as singleton `CROSS_TEMPORARY_ITERATOR_RANGE`; TB2 row140 `VALIDATION_ORDER_SHADOWING` is recovery-proved closed but remains historical; TB3 Review adds one accepted-prefix event as an existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence. Stable accounting is **54 / 16 / 38** and produced-witness debt is **1**, M6-owned.
+Normative M6 semantics live in `Architecture_M6_Frozen_Definitions.md`. Entering accepted authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449 PASS**, SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. TB1's accepted-prefix event remains independently classified as singleton `CROSS_TEMPORARY_ITERATOR_RANGE`; TB2 row140 `VALIDATION_ORDER_SHADOWING` is recovery-proved closed but remains historical; TB3 Review adds one accepted-prefix event as an existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence. TB4 Review adds one accepted-prefix event as another existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence. Stable accounting is **55 / 16 / 39** and produced-witness debt is **1**, M6-owned.
 
 ## 1. `M6-DEFN` — four products and verifier boundary frozen
 
@@ -132,6 +132,11 @@ Exact next is runtime-free `M6-DEFN-R1` (TB3 Review addendum A7), then `M6-DEFN-
 
 | Retired filename | Disposition |
 |---|---|
+| `Architecture_M6_CP1_TB3_Artifact_Only_Test_Benchmark_Report.md` (64 lines) | **SUPERSEDED TB3 RUNTIME REPORT / FOLDED BY M6-CP1-TB4-REV.** TB3 447/455 mechanics, eight `MissingIsolationSeamEquivalenceAuthority` outcomes and immutable artifact authority are preserved in §§9-11, tracker, current TB4 Review and git history. |
+| `Architecture_M6_CP1_TB3_Review_Record.md` (181 lines) | **SUPERSEDED TB3 REVIEW / FOLDED BY M6-CP1-TB4-REV.** The stable RP-01 event, definition-chain handoff and carried recovery obligations are preserved in §§10-16, tracker, current TB4 Review and git history. |
+| `Architecture_M6_CP1_CB4_Code_Build_Report.md` (104 lines) | **SUPERSEDED CB4 COMPILE REPORT / FOLDED BY M6-CP1-TB4-REV.** Exact source `20f60bb...`, compile run/artifacts, eight-target GMP/GMPXX and runtime-free authority are preserved in §§17-19, changelogs, current TB4 report/Review and git history. |
+| `Architecture_M6_CP1_CB4_Per_Face_Branch_Authority_Blocker.md` (113 lines) | **RESOLVED CB4 STATIC BLOCKER / FOLDED BY M6-CP1-TB4-REV.** RA-11 facts/resolution are preserved in frozen definitions, §16, tracker/changelogs and git history. |
+| `Architecture_M6_CP1_CB4_Relation_Owned_Isolation_Equivalence_Code_Build_Plan.md` (177 lines) | **CONSUMED CB4 PLAN / FOLDED BY M6-CP1-TB4-REV.** R2+RA scope, stop rules and 456-process gate are preserved in §§12-18, normative definition records, TB4 report/current Review and git history. |
 | `Architecture_M6_CP1_CB3_Authority_And_Multi_Isolation_Recovery_Code_Build_Plan.md` (100 lines) | **CONSUMED CB3 PLAN / FOLDED BY M6-CP1-TB3-REV.** HardRail recovery, multi-isolation first-loss scope, frozen six+449 runtime surface and stop rules are preserved in §8-§10, the TB3 report/Review and current CB4 plan; full text remains in git history. |
 | `Architecture_M6_CP1_CB3_Authority_And_Multi_Isolation_Recovery_Code_Build_Report.md` (62 lines) | **SUPERSEDED CB3 COMPILE REPORT / FOLDED BY M6-CP1-TB3-REV.** Exact source, compile run/job, artifact/digests, HardRail/outgoing-side changes and runtime-free package authority are preserved in §8-§10, changelogs and the retained TB3 Review; full text remains in git history. |
 | `Architecture_M6_CP1_TB2_Artifact_Only_Test_Benchmark_Report.md` (70 lines) | **SUPERSEDED TB2 RUNTIME REPORT / FOLDED BY M6-CP1-TB3-REV.** TB2 453/455 mechanics, row140/multi-isolation candidates and immutable authority are preserved in §6-§7, tracker and TB3 Review prior-candidate dispositions; full text remains in git history. |
@@ -229,3 +234,12 @@ TB4 consumes CB4 artifact/source `10871935178 / 20f60bb1412424a6f1093fc8076884d1
 Runtime outcome is focused **6/7 PASS** plus selector449 **425/449 PASS**, aggregate **431/456 PASS / 25 RED**. Relative to TB3, focused multi-isolation row5 and selector 186/214/239 recover; the strengthened seventh seam-endpoint/wedge-lineage identity PASSes. Focused pair-swap row6 and selector 444/446/448 remain RED. Twenty-one accepted selector identities newly turn RED: 115, 116, 122, 130, 132, 134, 137, 141, 143, 150, 176, 201, 217, 218, 231, 232, 238, 246, 436, 437, 438.
 
 EXEC records `M6-CP1-TB4-EXEC-CAND-01` as a non-stable Review-owned envelope and does not group, classify, reprice or authorize correction. Stable accounting remains **54 / 16 / 38**, debt 1. Candidate remains unpromoted and accepted M5 package/source `10814505512 / e284fea7...` under selector449 449/449 remains runtime authority. Exact next is mandatory runtime-free `M6-CP1-TB4-REV`.
+
+
+## 19. `M6-CP1-TB4-REV` — source-edge support / isolation-seam domain conflation proved; CB5 frozen
+
+Independent Review upholds TB4 mechanics at **431/456 PASS** and reopens accepted M5 selector449 **449/449** as the differential control. Twenty-one selector identities are newly accepted-green losses; carried pair-swap + 444/446/448 remain RED. The new direct family is not an A5 evidence omission: A5 deliberately publishes generic source-edge-collinear same-sheet spans without a seam certificate. A6 then treats every `collinearEdge` as an isolation seam and requires a certificate. R2 P2 explicitly distinguishes non-seam from seam-collinear spans.
+
+`M6-CP1-TB4-EXEC-CAND-01` is therefore one new stable event / existing `RP-01 AUTHORITY_DOMAIN_CONFLATION` recurrence. Stable accounting is **55 / 16 / 39**, debt 1. TB3 formal recovery remains open despite row5 + 186/214/239 recovering; TB1 formal 449/449 recovery remains open; TB2 validation-order recovery remains closed. Candidate `10871935178` remains unpromoted and accepted M5 package/source `10814505512 / e284fea7...` remains runtime authority.
+
+Exact next is bounded runtime-free `M6-CP1-CB5`: only correct A6 OrdinaryFront P2 so generic source-edge-collinear/no-certificate spans use the non-seam same-sheet/wedge-membership rule, while certificate-backed spans retain the exact seam face/sheet/reciprocal-evidence rule. Compile-green advances to unchanged **7 + 449 = 456** `M6-CP1-TB5-EXEC`, then mandatory Review.
