@@ -1,0 +1,6 @@
+turn=M6-CP1-CB4
+purpose=apply-seam-incident-authority
+caller_install_sha=a3df40e3c97296d678a112df760965ad32adcd6b
+patch_sha256=1be2b2b3785d46bdde23cd3d24af4346a649591a430595960e44a557b279235b
+retry=1
+runtimeExecution=false
