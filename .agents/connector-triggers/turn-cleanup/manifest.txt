@@ -1,0 +1,5 @@
+# M6-CP1-TB5-EXEC temporary state
+.agents/connector-triggers/source-snapshot/m6-cp1-tb5-exec-20260925.txt
+.agents/connector-triggers/m6-cp1-tb5-exec-20260925.txt
+.agents/connector-triggers/m6-cp1-tb5-doc-apply-20260925.txt
+.agents/Directional/turn-payloads/m6_cp1_tb5_exec_harness.sh
