@@ -1,5 +1,0 @@
-M6-CP1-TB5-REV durable closeout documentation apply
-Patch: Directional__M6-CP1-TB5-REV__closeout-docs.patch
-Base: c54d9a87c35ef69e9ca365004480341edb12057e
-Patch SHA-256: bfee1c3d21f35672e091bf91dffefb7d07dda38bada739d55e077ffa9537da6e
-Retry: 0
