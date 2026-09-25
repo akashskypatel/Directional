@@ -1,4 +1,5 @@
 purpose=apply M6-DEFN-R3 bounded definition/docs patch
 base_sha=fbbb4cac835887b60aa5fc22083cc6d068ee886c
-patch_sha256=61fa9d5bcedfe2d5de1753cc39119de32d499652408fb30e2b35507280e9e1bc
-retry=1
+patch_sha256=e25796750cd5515fd99e57b9799bef6ec635ff332cef0c850b3f23ff492bbda9
+retry=2
+diagnosis=first payload omitted required intended_paths metadata
