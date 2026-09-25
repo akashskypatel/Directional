@@ -1,4 +1,9 @@
-## Currency — `M6-DEFN-R1` complete; exact next `M6-DEFN-R1-REV` (2026-09-25 UTC)
+## Currency — `M6-DEFN-R1-REV` complete; exact next `M6-DEFN-R2` (2026-09-25 UTC)
+
+The review agent upheld the DEFN-R1 corner-wedge core model but did not accept the definition as frozen. The decisive finding: frozen focused row5 requires non-empty lineage `equivalences` for every multi-sheet lineage. Under D5 the split-square v0 and v2 are relation-free `{0,1}` singleton classes, so TB4 would be RED by construction. B2 (binding selection per consumer), B3 (tie-broken wedge endpoints across three side builders) and B4 (D7 vs §4.6 failure vocabulary) are also blocking. Exact next is runtime-free `M6-DEFN-R2` (`Architecture_M6_DEFN_R2_Amendment_Plan.md`); CB4 stays HELD.
+
+### Superseded currency note
+*`M6-DEFN-R1` complete; its successor `M6-DEFN-R1-REV` is now complete.*
 
 Runtime-free Definition froze the seam-incident A5/A6/A7 authority gap exposed by TB3. A seam-incident occurrence owns a complete corner-wedge sheet set and per-wedge face/chart/branch bindings; seam certificates live on the corner wedge or directed side that crosses/runs along them. OrdinaryFront remains owner-less. Seam-collinear sides use exact incident-cell interior-face authority, not a representative triangle. A7 lineage is the union of member wedge sets. CB4 is re-scoped and held pending Review; TB4 is pre-registered as **7 focused + selector449 = 456**. Accepted M5 package/selector authority and stable accounting **54 / 16 / 38**, debt 1, are unchanged.
 
@@ -33,9 +38,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
- > **Current milestone authority (2026-09-25, after `M6-DEFN-R1`):** M4 and M5 remain CLOSED / ACCEPTED. CB3 candidate `10840014758 / 660015f2...` remains unpromoted after TB3 447/455. The six accepted selector losses remain one stable existing-`RP-01` event (**54/16/38**, debt 1). Runtime-free `M6-DEFN-R1` freezes complete corner-wedge sheet/evidence authority, exact seam-collinear side authority, per-wedge provenance, A6 owner-less OrdinaryFront semantics, A7 union lineage and the row140 adapter boundary. `M6-CP1-CB4` is re-scoped but HELD. Exact next is mandatory **`M6-DEFN-R1-REV`**.
+ > **Current milestone authority (2026-09-25, after `M6-DEFN-R1-REV`):** Review upheld the corner-wedge core model but did not accept DEFN-R1 as frozen (B1-B4; the decisive finding is that focused row5 would fail on the relation-free v0/v2 `{0,1}` lineage). Exact next runtime-free **`M6-DEFN-R2`**; CB4 HELD. Earlier state follows. M4 and M5 remain CLOSED / ACCEPTED. CB3 candidate `10840014758 / 660015f2...` remains unpromoted after TB3 447/455. The six accepted selector losses remain one stable existing-`RP-01` event (**54/16/38**, debt 1). Runtime-free `M6-DEFN-R1` freezes complete corner-wedge sheet/evidence authority, exact seam-collinear side authority, per-wedge provenance, A6 owner-less OrdinaryFront semantics, A7 union lineage and the row140 adapter boundary. `M6-CP1-CB4` is re-scoped but HELD. Exact next is mandatory **`M6-DEFN-R1-REV`**.
 
-**Currency.** `M6-DEFN-R1`, 2026-09-25 UTC
+**Currency.** `M6-DEFN-R1-REV` (review agent), 2026-09-25 UTC
 
 **Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` §16.3 is the active same-region nonzero-Z4 contract. `PeriodicRelationId` remains carrier-content identity; relation rotation is the gauge-adjusted quotient `Q`, action/transport is relation value, and canonical storage may invert representation only after semantic Forward -> Reverse authority is fixed. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 
@@ -88,6 +93,8 @@ A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on t
 DEFN-R1/R2 debt ownership remains the provenance authority. The two periodic `G4-B002` M5 debts are **DISCHARGED at R7 Review** on produced authority: relation/container-order ownership (rows1/2) and missing-owner typing (rows1/3). The two `G4-B003` nonzero-Z4 M5 debts are now **DISCHARGED at R16 Review** by rows16/17. The closed candidate-bearing-complex `G4-B002` debt remains **M6-owned** at M6-CP1 mechanism / M6-CP3 direct-production proof. No produced-witness debt is M4-owned.
 
 M5-DEFN is **COMPLETE / DEFINITIONS FROZEN**; M5-CP1 through M5-CP4 are **CLOSED / ACCEPTED**. `M5-CP4-TB2-REV` accepts selector449 and promotes CB2 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` after fresh **449/449** runtime. The DEFN-R2 same-region multi-isolation + quotient-owner producer conjunct is accepted as §13.1 conjunct8 without crossing into M6 occurrence/materialization/verifier authority. **M5 is CLOSED.** Stable accounting remains **51 / 14 / 37**; project debt is **1**, M6-owned.
+
+**`M6-DEFN-R1-REV` (2026-09-25):** core model upheld, amendments B1-B4/P1-P4 required; see `Architecture_M6_DEFN_R1_Review_Record.md`. Exact next `M6-DEFN-R2`.
 
 **`M6-DEFN-R1` current state (2026-09-25):** TB3 mechanics/accounting remain upheld at **54/16/38**, debt 1, and candidate `10840014758 / 660015f2...` remains unpromoted. Runtime-free Definition resolves the addendum's semantic repair model: occurrence sheet authority at a seam is the complete cell corner wedge, not one selected source face; exact seam certificates live on the wedge or directed side that crosses/runs along the seam; face-specific sheet/chart/branch provenance is per wedge binding; `OrdinaryFront` remains owner-less; A7 lineage is the union of member wedge sets. Seam-collinear sides use the exact incident-cell interior source face instead of the tracer's lexicographic representative. CB4 is re-scoped but HELD. Exact next is mandatory `M6-DEFN-R1-REV`; accepted M5 runtime authority remains `10814505512 / e284fea7...` under selector449 449/449.
 
@@ -206,7 +213,14 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M6-DEFN-R1-REV` — NEXT / MANDATORY RUNTIME-FREE DEFINITION REVIEW.** Independently re-derive the split-square v0/center/v2 wedge/certificate orientations, all eight endpoint-pair sheet memberships, the two-edge interior seam-vertex uniqueness case, exact seam-collinear incident-cell side authority, per-wedge face/chart/branch provenance, row140 adapter boundary and selector/routing hashes. Accept or amend the Definition; do not start CB4 in the same turn.
+1. **`M6-DEFN-R2` — NEXT / RUNTIME-FREE DEFINITION AMENDMENT.** Resolve the `M6-DEFN-R1-REV` blocking findings:
+   - **B1:** put wedge evidence into `PureQuadVertexLineage::equivalences` so frozen row5 holds at v0/v2, and have the seventh identity assert lineage;
+   - **B2:** a binding-selection rule per face-dependent consumer (transitional class key/`QuotientClassId` ordinal, `representative_key`, selected-path charts and components, `sourceCharts`);
+   - **B3:** exact collinearity by segment `SourceSupport`, one interior-face rule for all three side builders, and the orientation premise proved per builder;
+   - **B4:** split the A5 relation codes 1:1 and map them at the adapter so §4.6 holds.
+
+   Also P1-P4 and a frozen-test audit. Then `M6-DEFN-R2-REV`.
+   *(Completed: `M6-DEFN-R1-REV` — mandatory runtime-free definition review; original scope:)* independently re-derive the split-square v0/center/v2 wedge/certificate orientations, all eight endpoint-pair sheet memberships, the two-edge interior seam-vertex uniqueness case, exact seam-collinear incident-cell side authority, per-wedge face/chart/branch provenance, row140 adapter boundary and selector/routing hashes. Accept or amend the Definition; do not start CB4 in the same turn.
    **HELD:** re-scoped `M6-CP1-CB4` — implement only accepted corner-wedge sheet/evidence authority, directed-side seam evidence (including collinear sides), per-wedge provenance, A6 owner-less OrdinaryFront checks, A7 union lineage and row140 adapter/duplicate-check cutover. The seventh focused identity is `M6CP1.SeamEndpointOccurrencesPublishCompleteCornerWedgeSheetAuthority`; compile-green TB4 is **7 focused + selector449 = 456** immutable processes.
 2. **`G4-B002` produced closed-complex debt — OPEN / M6.** M6-DEFN freezes CP1 mechanism/stage separation and CP3 direct-production proof. Preserve the independent eligibility oracle, hard-feature tamper and fail-closed/no-recovery contract; mechanism evidence cannot close production debt.
 
@@ -229,6 +243,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 11. **Rows16/17 (selector448 ordinals 446/447) pin inverse canonical storage — RECORDED / NOT FIRING (`M5-CP3-TB1-R16-REV-OBS-02`).** Keep the inverse-storage pin; if a representation-only change fires it, classify as test-authority drift and supply a witness still exercising inverse storage (`LESSONS.md` 171).
 
 ## 8. Recurring defect patterns
+
+**A definition that widens an output must be checked against every frozen assertion over that output's co-fields — `M6-DEFN-R1-REV`, lesson 180.** D5 correctly widened seam-vertex lineage sheets to the complete wedge union. But frozen row5 pairs "more than one sheet" with "non-empty `equivalences`", and equivalences come only from relation unions, so relation-free singleton seam vertices violate it. The definition's own falsifiers and self-authored review plan audited only the new rules.
 
 **Validation-order shadowing — `M6-CP1-TB2-REV` / `VALIDATION_ORDER_SHADOWING`, RECOVERY PROVED AT TB3 REVIEW.** CB3 restores the explicit mismatched-HardRail negative to the accepted `InvalidHardRailTransport` outcome while keeping A5 fail-closed; TB3 row140 fresh-PASSes. The historical stable event remains counted. **Preserve the specific validation precedence rather than weakening the negative or accepting both codes.** Existing `LESSONS.md` §4 lesson 22f covers the mechanism.
 

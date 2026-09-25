@@ -1,3 +1,7 @@
+## M6 CP1 interlock — `M6-DEFN-R1-REV` complete; `M6-DEFN-R2` next (2026-09-25)
+
+Review upheld the corner-wedge model but found DEFN-R1 not implementable to a green TB4 as frozen. Frozen focused row5 needs lineage `equivalences` at the relation-free v0/v2 seam singletons (B1). There are also unspecified binding consumers (B2), tie-broken wedge endpoints across three side builders (B3), and a D7 vs §4.6 failure-vocabulary conflict (B4). Runtime-free `M6-DEFN-R2` amends; CB4 stays HELD. Accepted runtime authority and 54/16/38, debt 1 are unchanged.
+
 ## M6 CP1 interlock — `M6-DEFN-R1` complete, Review pending (2026-09-25)
 
 The TB3 seam-incident authority ambiguity has been resolved at Definition level, not accepted at runtime. M6 A5 now specifies complete corner-wedge sheet/certificate authority and side evidence; A6 keeps OrdinaryFront owner-less and consumes only A5-published evidence; A7 takes the union of member wedge sets. Re-scoped CB4 remains **HELD** until `M6-DEFN-R1-REV`. If accepted, CB4 implements the contract compile-only and TB4 evaluates **7 focused + selector449 = 456** immutable processes. M6 checkpoint acceptance, M5 accepted runtime authority, selectors, accounting **54 / 16 / 38**, and debt 1 are unchanged.
@@ -552,7 +556,7 @@ Final CP4 Review completes the bounded conjunct8 sequence: row449 was accepted p
 | Checkpoint | Semantic domain |
 |---|---|
 | `M6-DEFN` | **COMPLETE / RUNTIME-FREE.** Four immutable products, exact occurrence/quotient identity, verifier recompute-vs-repair boundary, G4 ownership and dormant-test dispositions frozen in `Architecture_M6_Frozen_Definitions.md`. |
-| `M6-CP1` | **ACTIVE / `M6-DEFN-R1` COMPLETE / DEFINITION REVIEW NEXT.** TB3 candidate `10840014758 / 660015f2...` remains unpromoted at 447/455. Definition freezes complete corner-wedge sheet/evidence authority, exact seam-collinear side authority, per-wedge face/chart/branch provenance, owner-less OrdinaryFront A6 validation, A7 union lineage, and row140 adapter-only compatibility. Accounting is **54/16/38**, debt 1. Re-scoped CB4 is HELD; exact next is mandatory `M6-DEFN-R1-REV`. If accepted, CB4 compile-only precedes immutable TB4 **7+449=456**, then mandatory Review. |
+| `M6-CP1` | **ACTIVE / `M6-DEFN-R1-REV` COMPLETE: core upheld, amendments B1-B4 required / EXACT NEXT `M6-DEFN-R2` / CB4 HELD.** Earlier: `M6-DEFN-R1` COMPLETE / DEFINITION REVIEW NEXT. TB3 candidate `10840014758 / 660015f2...` remains unpromoted at 447/455. Definition freezes complete corner-wedge sheet/evidence authority, exact seam-collinear side authority, per-wedge face/chart/branch provenance, owner-less OrdinaryFront A6 validation, A7 union lineage, and row140 adapter-only compatibility. Accounting is **54/16/38**, debt 1. Re-scoped CB4 is HELD; exact next is mandatory `M6-DEFN-R1-REV`. If accepted, CB4 compile-only precedes immutable TB4 **7+449=456**, then mandatory Review. |
 | `M6-CP2` | verifier consumes certificates and independently recomputes elementary incidence; **never repairs producer state** |
 | `M6-CP3` | M6 exit — equal coordinates without a relation remain distinct; every owned relation consumed exactly once; source-row / output-row / scheduler permutation invariance |
 

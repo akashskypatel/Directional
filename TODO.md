@@ -1,3 +1,14 @@
+## Review — `M6-DEFN-R1-REV` (2026-09-25)
+
+**Core corner-wedge model UPHELD; not accepted as frozen; CB4 HELD; exact next `M6-DEFN-R2`.** See `Architecture_M6_DEFN_R1_Review_Record.md` and `Architecture_M6_DEFN_R2_Amendment_Plan.md`.
+
+- [ ] B1: represent verified wedge/collinear-side evidence in `PureQuadVertexLineage::equivalences` (new equivalence kind); prove focused row5 passes at v0 and v2; the seventh identity also asserts lineage (v0/centre/v2 `{0,1}`, others singleton).
+- [ ] B2: binding-selection rule for the transitional `QuotientDomainState`/`QuotientClassId` ordinal, `representative_key`, selected-path charts and chart components (rows 444/448), and lineage `sourceCharts`; `chartComponent` occurrence-wide with a fail-closed check.
+- [ ] B3: collinearity by exact segment `SourceSupport`; one interior-face rule across `segment_on_source`, `periodic_chart_segment` and `bounded_disk_chart_segment`; prove per builder that cell orientation agrees with source winding.
+- [ ] B4: split A5 relation failures 1:1 and map them at the adapter to legacy M5 names (or amend §4.6 explicitly).
+- [ ] P1-P4, and a frozen-test audit over rows 5, 6, 186, 214, 239, 444, 446, 448 and the HardRail single-sheet rows.
+- [ ] `M6-DEFN-R2-REV`, then the re-scoped `M6-CP1-CB4` → TB4 (7+449=456) → TB4-REV.
+
 ## Definition complete — `M6-DEFN-R1` (2026-09-25)
 
 **RUNTIME-FREE / eight seam-incident authority decisions frozen / CB4 re-scoped but HELD / exact next `M6-DEFN-R1-REV`.** Occurrence isolation authority is now the complete corner-wedge sheet set with per-wedge face/chart/branch provenance; seam certificates live on the wedge or directed side that actually crosses/runs along the seam; `OrdinaryFront` remains owner-less; seam-collinear sides use exact incident-cell interior-face authority; A7 lineage unions member wedge sets; row140 legacy naming is adapter-only.
@@ -7,7 +18,7 @@
 - [x] Freeze seam-collinear side semantics and per-wedge provenance.
 - [x] Freeze A7 lineage completeness and row140 adapter/duplicate-check policy.
 - [x] Re-scope CB4/TB4; new focused identity `M6CP1.SeamEndpointOccurrencesPublishCompleteCornerWedgeSheetAuthority`; gate **7+449=456**.
-- [ ] Mandatory `M6-DEFN-R1-REV` independently accepts or amends Definition.
+- [x] Mandatory `M6-DEFN-R1-REV`: core upheld; amendments B1-B4/P1-P4 routed to `M6-DEFN-R2`.
 - [ ] Only after Review acceptance: re-scoped `M6-CP1-CB4` → `M6-CP1-TB4-EXEC` → `M6-CP1-TB4-REV`.
 
 ## Review-agent addendum — `M6-CP1-TB3-REV` (2026-09-25)

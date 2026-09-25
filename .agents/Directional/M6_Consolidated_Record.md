@@ -1,6 +1,6 @@
 # M6 Consolidated Record
 
-**Status:** M6 ACTIVE / `M6-DEFN-R1` complete runtime-free / seam-incident corner-wedge authority frozen / one stable RP-01 recurrence unchanged / candidate unpromoted / CB4 re-scoped and HELD / exact next `M6-DEFN-R1-REV`
+**Status:** M6 ACTIVE / `M6-DEFN-R1-REV` complete: core corner-wedge model upheld, not accepted as frozen (four blocking amendments) / one stable RP-01 recurrence unchanged / candidate unpromoted / CB4 HELD / exact next `M6-DEFN-R2`
 **Last updated:** 2026-09-25
 
 Normative M6 semantics live in `Architecture_M6_Frozen_Definitions.md`. Entering accepted authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449 PASS**, SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. TB1's accepted-prefix event remains independently classified as singleton `CROSS_TEMPORARY_ITERATOR_RANGE`; TB2 row140 `VALIDATION_ORDER_SHADOWING` is recovery-proved closed but remains historical; TB3 Review adds one accepted-prefix event as an existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence. Stable accounting is **54 / 16 / 38** and produced-witness debt is **1**, M6-owned.
@@ -146,6 +146,8 @@ Exact next is runtime-free `M6-DEFN-R1` (TB3 Review addendum A7), then `M6-DEFN-
 | `Architecture_M6_CP1_TB1_Artifact_Only_Test_Benchmark_Report.md` (64 lines) | **SUPERSEDED TB1 RUNTIME REPORT / FOLDED BY M6-CP1-TB2-REV.** TB1 mechanics, accepted-prefix RED set and Review-corrected root are preserved in §3-§4, tracker and current Review; full text remains in git history. |
 | `Architecture_M6_CP1_TB1_Review_Record.md` (191 lines) | **SUPERSEDED TB1 REVIEW / FOLDED BY M6-CP1-TB2-REV.** Cross-temporary root proof, corrected accounting, whole-tree scan, recovery rule and carried obligations are preserved in §4, tracker, frozen definitions and current Review; full text remains in git history. |
 | `Architecture_M6_CP1_TB2_Artifact_Only_Test_Benchmark_Plan.md` (88 lines) | **CONSUMED TB2 EXEC PLAN / FOLDED BY M6-CP1-TB2-REV.** Candidate identity, six+449 exact-process gate, immutable boundary, recovery pre-registration and Review successor are preserved in §6-§7, retained TB2 report and current Review; full text remains in git history. |
+| `Architecture_M6_DEFN_R1_Seam_Incident_Occurrence_Sheet_Authority_Plan.md` (67 lines) | **CONSUMED DEFN-R1 PLAN (review-authored) / FOLDED BY M6-DEFN-R1-REV.** Its eight decisions and split-square worked example are preserved in the DEFN-R1 definition record and in §12-§13; full text remains in git history. |
+| `Architecture_M6_DEFN_R1_Review_Plan.md` (32 lines) | **CONSUMED DEFN-R1 SELF-AUTHORED REVIEW PLAN / FOLDED BY M6-DEFN-R1-REV.** Its ten checks were executed. It lacked a check that existing frozen assertions stay satisfiable, which is how B1 went unseen (lesson 180). Full text remains in git history. |
 
 ## 12. `M6-DEFN-R1` — seam-incident occurrence authority frozen; CB4 re-scoped and held
 
@@ -154,3 +156,14 @@ Runtime-free Definition resolves the TB3 Review addendum's semantic gap. Occurre
 The split-square analytic derivation confirms v0 and v2 each require `{0,1}` despite being single-occurrence quotient classes, and the center's four occurrences collectively cover both sheets. At a source seam vertex where two seam edges share a sheet pair, edge-keyed certificate identity remains unique whether the wedge crosses one or both edges.
 
 CB4 is rewritten to implement these semantics only and stays HELD until mandatory `M6-DEFN-R1-REV`. One new focused identity is pre-registered, making TB4 **7 + 449 = 456** processes. Accepted runtime authority, selector/routing bytes, stable accounting **54 / 16 / 38**, and debt 1 are unchanged. No generated runtime or compile occurred.
+
+## 13. `M6-DEFN-R1-REV` — core model upheld; four blocking amendments; `M6-DEFN-R2` next
+
+The review agent independently re-verified snapshot `10846121134` (source byte-identical to `660015f2`), the split-square table, the eight endpoint memberships and the seam-vertex chain. The corner-wedge sheet set, the wedge/side certificate carriers, owner-less `OrdinaryFront`, A6 membership validation and the A7 union are **upheld**. The definition is **not accepted as frozen**:
+
+- **B1 — decisive.** Frozen focused row5 requires non-empty `equivalences` for every multi-sheet lineage. Lineage equivalences come only from relation unions, so under D5 the relation-free singleton classes at v0 and v2 become `{0,1}` with no equivalences, and TB4 is RED by construction. Fix: represent wedge evidence in `equivalences`, and have the seventh identity assert lineage.
+- **B2.** D6 leaves the binding selection undefined for the transitional class key/`QuotientClassId` ordinal, `representative_key`, the selected relation path certificates and chart components (torus rows 444/448), and lineage `sourceCharts`.
+- **B3.** Wedge endpoints still use tie-broken segment faces for sides collinear with any source edge. There are three side builders; the split square uses `segment_on_source`, whose tie-break is by source-face row. The fix is one exact collinearity/interior-face rule, with the orientation premise proved per builder.
+- **B4.** D7 contradicts frozen §4.6: A5's many-to-one `UnownedRelation` lets the specific M5 codes become generic. Fix: split the A5 codes 1:1 and map them at the adapter.
+
+Precision items P1-P4 are also carried. Accounting **54 / 16 / 38**, debt 1, +0. Exact next is runtime-free `M6-DEFN-R2` (`Architecture_M6_DEFN_R2_Amendment_Plan.md`), then `M6-DEFN-R2-REV`, then the re-scoped CB4.

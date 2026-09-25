@@ -1,3 +1,9 @@
+## 2026-09-25 — M6 definition review: model upheld, amendments required before code
+
+- The new corner-wedge rules for isolation sheets are the right model. As written, though, they would make an existing gating test fail: two split-square corner vertices would claim two sheets with no recorded evidence.
+- Three more gaps block implementation: which face each consumer uses, face tie-breaks in the side tracers, and the failure-code policy.
+- Next is runtime-free `M6-DEFN-R2`; code (CB4) stays on hold. Accounting is unchanged at 54/16/38, debt 1.
+
 ## 2026-09-25 — M6-DEFN-R1 seam-incident authority definition
 
 Runtime-free Definition amendment froze complete corner-wedge sheet/certificate authority, exact seam-collinear directed-side authority, per-wedge face/chart/branch provenance, owner-less OrdinaryFront A6 validation, A7 union lineage, and row140 adapter-only legacy naming. Re-scoped CB4 remains held pending mandatory `M6-DEFN-R1-REV`; TB4 is pre-registered as 7 focused + selector449 = 456. Accepted runtime authority, selectors, stable accounting 54/16/38, and debt 1 are unchanged.

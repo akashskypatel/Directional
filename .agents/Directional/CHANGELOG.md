@@ -1,3 +1,13 @@
+## 2026-09-25 — `M6-DEFN-R1-REV`: corner-wedge core upheld; four blocking amendments; next `M6-DEFN-R2`
+
+- Re-verified the DEFN-R1 snapshot `10846121134`: source byte-identical to `660015f2`, selector449/routing449 unchanged, and the seventh identity not yet present.
+- Upheld D1-D3, D5 and D6 intent; the split-square table, the eight endpoint memberships and the seam-vertex chain re-derive exactly.
+- **B1 (decisive):** frozen focused row5 needs non-empty `equivalences` for every multi-sheet lineage. Equivalences come only from relation unions, so the D5 `{0,1}` lineage at relation-free v0/v2 fails and TB4 is RED by construction.
+- **B2:** binding selection is unspecified for the transitional class key/`QuotientClassId` ordinal, `representative_key`, selected-path charts and components, and `sourceCharts`.
+- **B3:** wedge endpoints are tie-broken faces. There are three side builders; the split square uses `segment_on_source`, which ties by face row. This also corrects the reviewer's earlier bounded-disk citation.
+- **B4:** D7 conflicts with §4.6 because A5's `UnownedRelation` is many-to-one.
+- Folded the consumed DEFN-R1 plan and review plan. Wrote `Architecture_M6_DEFN_R2_Amendment_Plan.md`. Added lesson 180. Accounting 54/16/38, debt 1.
+
 ## 2026-09-25 — `M6-DEFN-R1` seam-incident occurrence authority frozen (runtime-free)
 
 - Amended M6 A5/A6/A7 semantics from one representative occurrence sheet to complete corner-wedge sheet sets with per-wedge face/chart/branch provenance.

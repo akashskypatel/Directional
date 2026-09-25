@@ -1,3 +1,10 @@
+## 2026-09-25 — `M6-DEFN-R1-REV`: definition review catches a by-construction TB4 RED before code — **+0 EVENTS / 54/16/38 / debt 1 / NEXT `M6-DEFN-R2`**
+
+- **Upheld:** corner-wedge sheet sets, wedge/side certificate carriers keyed by `(region, seam edge)`, owner-less `OrdinaryFront`, A6 membership validation, A7 union and no mixed-face records. The snapshot `10846121134` source is byte-identical to `660015f2`.
+- **B1 (pre-runtime catch):** focused row5 (`SurfaceCellTransitionQuotientTests.cpp:2639`, unchanged since `e284fea7`) asserts non-empty `equivalences` for every multi-sheet lineage. `equivalences` are only pushed on relation unions (`RemeshPipeline.cpp:4384-4393`). Under D5, v0 and v2 (relation-free singletons) become `{0,1}` with empty equivalences. Had CB4 implemented DEFN-R1 as frozen, TB4 would have been RED. No event is counted because nothing ran.
+- **B2-B4:** undefined binding selection for face-dependent consumers; tie-broken wedge endpoints across three side builders (`segment_on_source` ties by face row, `:11239`); D7 vs §4.6 with a many-to-one A5 `UnownedRelation`.
+- **Lesson 180:** when a definition widens an output, audit every frozen assertion over that output's co-fields.
+
 ## `M6-DEFN-R1` definition disposition — no new runtime event (2026-09-25)
 
 **Stable accounting remains 54 events / 16 categories / 38 recurrences; debt 1.** This runtime-free turn resolves the semantic repair model for the existing TB3 `RP-01 / AUTHORITY_DOMAIN_CONFLATION` event without adding a candidate or recurrence.

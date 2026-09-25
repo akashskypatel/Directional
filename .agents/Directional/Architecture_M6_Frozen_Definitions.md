@@ -1,6 +1,6 @@
 # M6 Frozen Definitions — Occurrence, Quotient, Embedding, Independent Verification
 
-**Status:** FROZEN / `M6-DEFN-R1` COMPLETE / RUNTIME-FREE / seam-incident authority amended to complete corner-wedge sheet sets plus wedge/side certificate evidence; `OrdinaryFront` remains owner-less / CB4 RE-SCOPED AND HELD / EXACT NEXT = `M6-DEFN-R1-REV`
+**Status:** FROZEN / `M6-DEFN-R1-REV`: DEFN-R1 core upheld, NOT accepted as frozen. Amendments B1-B4 are required by `M6-DEFN-R2`; see `Architecture_M6_DEFN_R1_Review_Record.md`. §4.6 "M5's accepted typed relation failures remain unweakened" currently conflicts with the DEFN-R1 D7 duplicate-check removal. / EARLIER: `M6-DEFN-R1` COMPLETE / RUNTIME-FREE / seam-incident authority amended to complete corner-wedge sheet sets plus wedge/side certificate evidence; `OrdinaryFront` remains owner-less / CB4 RE-SCOPED AND HELD / EXACT NEXT = `M6-DEFN-R1-REV`
 **Date:** 2026-09-24
 **Definition authority:** this record is the normative M6 contract for A5 occurrence creation, A6 quotient construction/materialization, A7 source-attached geometry embedding, and the M6 structural portion of A8 independent verification. It refines `DESIGN.md` §14 M6 without changing accepted M5 producer semantics or pulling M7 disposition/degradation work forward.
 
@@ -443,3 +443,15 @@ Runtime-free. **UPHELD WITH AMENDMENTS.** The A5/A6/A7/A8-M6 product split, the 
 ## M6-DEFN-R1 seam-incident authority amendment (2026-09-25, runtime-free)
 
 This amendment supersedes only the earlier singular-sheet/relation-certificate wording described in §§3–5. It freezes the eight decisions in `Architecture_M6_DEFN_R1_Seam_Incident_Occurrence_Sheet_Authority_Definition_Record.md`: corner-wedge sheet sets; wedge/side certificate carriers; owner-less OrdinaryFront membership validation; exact seam-collinear side authority; A7 union completeness; per-wedge face/chart/branch provenance; row140 adapter placement plus duplicate-check removal; and the re-scoped CB4/TB4 7+449 gate. Identity, accepted M5 authority, selector/routing bytes, HardRail/Periodic semantic owners, stable accounting **54 / 16 / 38**, and debt 1 are unchanged. Exact successor is mandatory `M6-DEFN-R1-REV`.
+
+## M6-DEFN-R1-REV review note (2026-09-25, runtime-free)
+
+**Core upheld; not accepted as frozen.** The amendment above is correct in model but incomplete in four blocking respects (`Architecture_M6_DEFN_R1_Review_Record.md` §3):
+
+- **B1.** §5's union makes relation-free seam singletons multi-sheet, which violates frozen focused row5's non-empty-`equivalences` assertion unless wedge evidence is represented in lineage `equivalences`.
+- **B2.** The per-binding provenance of §3.2 lacks a selection rule for each transitional consumer.
+- **B3.** The §3.2 wedge endpoints must not come from tie-broken segment faces in any of the three side builders.
+- **B4.** §3.4/D7 must be reconciled with §4.6.
+
+CB4 must not start until `M6-DEFN-R2` resolves these and `M6-DEFN-R2-REV` accepts.
+

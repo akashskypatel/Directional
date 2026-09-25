@@ -1,6 +1,11 @@
 # M6-CP1-CB4 Corner-Wedge Isolation Authority Code + Build Plan
 
-> **HELD pending `M6-DEFN-R1-REV`. Do not execute before that Review accepts the Definition.**
+> **HELD — `M6-DEFN-R1-REV` did not accept DEFN-R1 as frozen. Do not execute; `M6-DEFN-R2` must revise this plan.**
+> As written it would be RED by construction: focused row5 requires non-empty `equivalences` on the v0/v2 `{0,1}` lineage (B1).
+> It also leaves unspecified the binding selection for the transitional class key, `representative_key`, selected-path charts and `sourceCharts` (B2).
+> Its Scope B collinear rule names only the lexicographic tie-break; the split-square builder `segment_on_source` ties by face row (B3).
+> Its Scope C removes duplicate checks although A5's `UnownedRelation` is many-to-one, contradicting §4.6 (B4).
+> See `Architecture_M6_DEFN_R1_Review_Record.md` and `Architecture_M6_DEFN_R2_Amendment_Plan.md`.
 
 **Turn:** `M6-CP1-CB4`
 **Type:** Code + Build, runtime-free
