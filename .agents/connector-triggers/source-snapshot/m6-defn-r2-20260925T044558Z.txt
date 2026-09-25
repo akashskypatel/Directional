@@ -1,4 +1,0 @@
-Purpose: M6-DEFN-R2 exact source snapshot
-Requested semantic source: 9eec0dce79ee4d137d6155aed3867dfd8934f0c5
-Read mode: snapshot
-Retry: 0

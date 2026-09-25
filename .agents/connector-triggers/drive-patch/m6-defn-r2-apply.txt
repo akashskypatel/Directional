@@ -1,4 +1,0 @@
-Purpose: apply verified M6-DEFN-R2 documentation patch from Google Drive
-Patch base: 342a306ebd3ba68cb6e1135cf9e25726bd8ad461
-Patch SHA-256: b9dc7890e36be199f1a65a530330f045626ebc98e42ef0dce7c9c83a791a9d4c
-Retry: 0

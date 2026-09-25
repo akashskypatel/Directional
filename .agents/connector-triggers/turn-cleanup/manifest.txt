@@ -1,2 +1,0 @@
-.agents/connector-triggers/drive-patch/m6-defn-r2-apply.txt
-.agents/connector-triggers/source-snapshot/m6-defn-r2-20260925T044558Z.txt
