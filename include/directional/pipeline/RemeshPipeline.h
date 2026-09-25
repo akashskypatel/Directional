@@ -861,6 +861,7 @@ enum class SurfaceOccurrenceComplexErrorCode : std::uint8_t {
   UnownedRelation = 8,
   InvalidCornerAuthority = 9,
   InvalidChartAuthority = 10,
+  HardRailOwnerMismatch = 11,
 };
 
 const char *surface_occurrence_complex_error_name(

@@ -3053,6 +3053,8 @@ const char *surface_occurrence_complex_error_name(
     return "OccurrenceInvalidCornerAuthority";
   case SurfaceOccurrenceComplexErrorCode::InvalidChartAuthority:
     return "OccurrenceInvalidChartAuthority";
+  case SurfaceOccurrenceComplexErrorCode::HardRailOwnerMismatch:
+    return "InvalidHardRailTransport";
   }
   return "OccurrenceUnknownFailure";
 }
@@ -3318,15 +3320,25 @@ SurfaceOccurrenceComplexProducer::produce(
     cells.emplace_back(cell.id, cornerOccurrences, directedSides);
 
     for (int corner = 0; corner < 4; ++corner) {
-      const geometry::SurfaceTracePoint &trace =
-          cell.corners[static_cast<std::size_t>(corner)];
+      const std::size_t cornerIndex = static_cast<std::size_t>(corner);
+      const auto &outgoingPath = cell.boundaryPaths[cornerIndex];
+      if (outgoingPath.empty()) {
+        error.code = SurfaceOccurrenceComplexErrorCode::InvalidCornerAuthority;
+        error.cell = cell.id;
+        error.occurrence = cornerOccurrences[cornerIndex];
+        return error;
+      }
+      const geometry::SurfaceTraceSegment &outgoing = outgoingPath.front();
+      geometry::SurfaceTracePoint trace;
+      trace.face = outgoing.face;
+      trace.barycentric = outgoing.startBarycentric;
       const auto faceId = source_face_id(trace.face);
       if (!faceId.has_value() ||
           phaseFront.sourceTopologyRegions().region_for_row(*faceId) !=
               cell.sourceTopologyRegion) {
         error.code = SurfaceOccurrenceComplexErrorCode::InvalidCornerAuthority;
         error.cell = cell.id;
-        error.occurrence = cornerOccurrences[static_cast<std::size_t>(corner)];
+        error.occurrence = cornerOccurrences[cornerIndex];
         return error;
       }
       const authority::SourceComponentId component =
@@ -3339,19 +3351,43 @@ SurfaceOccurrenceComplexProducer::produce(
           !std::binary_search(regionSheets.begin(), regionSheets.end(), sheet)) {
         error.code = SurfaceOccurrenceComplexErrorCode::InvalidCornerAuthority;
         error.cell = cell.id;
-        error.occurrence = cornerOccurrences[static_cast<std::size_t>(corner)];
+        error.occurrence = cornerOccurrences[cornerIndex];
         return error;
       }
 
       geometry::SurfacePoint point = make_surface_point(trace);
       const auto support = supportResolver.resolve(point);
-      const geometry::LocalLatticeState &lattice =
-          cell.lattice[static_cast<std::size_t>(corner)];
-      if (!point.valid() || !point.position.allFinite() || !support.valid() ||
-          !support.identity.has_value() || !lattice.sourceChart.has_value()) {
+      geometry::LocalLatticeState lattice = cell.lattice[cornerIndex];
+      const authority::LatticeTranslation latticeDelta =
+          cell.lattice[(cornerIndex + 1U) % 4U].latticeCoordinate -
+          lattice.latticeCoordinate;
+      int globalBranch = -1;
+      if (latticeDelta == authority::LatticeTranslation{1, 0}) {
+        globalBranch = 0;
+      } else if (latticeDelta == authority::LatticeTranslation{0, 1}) {
+        globalBranch = 1;
+      } else if (latticeDelta == authority::LatticeTranslation{-1, 0}) {
+        globalBranch = 2;
+      } else if (latticeDelta == authority::LatticeTranslation{0, -1}) {
+        globalBranch = 3;
+      }
+      if (globalBranch < 0 || !outgoing.sourceChart.has_value()) {
         error.code = SurfaceOccurrenceComplexErrorCode::InvalidCornerAuthority;
         error.cell = cell.id;
-        error.occurrence = cornerOccurrences[static_cast<std::size_t>(corner)];
+        error.occurrence = cornerOccurrences[cornerIndex];
+        return error;
+      }
+      const int localBranch =
+          geometry::surface_cell_tracing_detail::branch_from_family_sign(
+              outgoing.family, outgoing.sign);
+      lattice.branchRotation =
+          ((localBranch - globalBranch) % 4 + 4) % 4;
+      lattice.sourceChart = outgoing.sourceChart;
+      if (!point.valid() || !point.position.allFinite() || !support.valid() ||
+          !support.identity.has_value()) {
+        error.code = SurfaceOccurrenceComplexErrorCode::InvalidCornerAuthority;
+        error.cell = cell.id;
+        error.occurrence = cornerOccurrences[cornerIndex];
         return error;
       }
       const geometry::SourceProjectionChart projectionChart(
@@ -3359,16 +3395,22 @@ SurfaceOccurrenceComplexProducer::produce(
           phaseFront.sourceTopologyRegions().topology_for_row(*faceId));
       const int componentIndex =
           chartTransitions.chart_component(projectionChart);
-      const geometry::SourceChartComponentIdentity &componentIdentity =
-          chartTransitions.chart_component_identity(componentIndex);
-      if (componentIndex < 0 || !componentIdentity.valid) {
+      if (componentIndex < 0) {
         error.code = SurfaceOccurrenceComplexErrorCode::InvalidChartAuthority;
         error.cell = cell.id;
-        error.occurrence = cornerOccurrences[static_cast<std::size_t>(corner)];
+        error.occurrence = cornerOccurrences[cornerIndex];
+        return error;
+      }
+      const geometry::SourceChartComponentIdentity &componentIdentity =
+          chartTransitions.chart_component_identity(componentIndex);
+      if (!componentIdentity.valid) {
+        error.code = SurfaceOccurrenceComplexErrorCode::InvalidChartAuthority;
+        error.cell = cell.id;
+        error.occurrence = cornerOccurrences[cornerIndex];
         return error;
       }
       occurrences.emplace_back(
-          cornerOccurrences[static_cast<std::size_t>(corner)], std::move(point),
+          cornerOccurrences[cornerIndex], std::move(point),
           support.identity.value(), projectionChart, componentIdentity, lattice,
           cell.sourceTopologyRegion, sheet);
     }
@@ -3407,7 +3449,7 @@ SurfaceOccurrenceComplexProducer::produce(
                second.boundaryKind == first.boundaryKind) {
       if (first.railId.has_value() && second.railId.has_value() &&
           first.railId != second.railId) {
-        error.code = SurfaceOccurrenceComplexErrorCode::UnownedRelation;
+        error.code = SurfaceOccurrenceComplexErrorCode::HardRailOwnerMismatch;
         return error;
       }
       hardRail = first.railId.has_value() ? first.railId : second.railId;
@@ -4148,6 +4190,38 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       equivalence.isolationSeams.insert(
           equivalence.isolationSeams.end(), secondSeams.begin(),
           secondSeams.end());
+      for (const auto &pair : relationOccurrenceIndices) {
+        const auto &firstOccurrence =
+            occurrences[static_cast<std::size_t>(pair.first)];
+        const auto &secondOccurrence =
+            occurrences[static_cast<std::size_t>(pair.second)];
+        if (firstOccurrence.isolationSheet == secondOccurrence.isolationSheet) {
+          continue;
+        }
+        const auto *edgeSupport =
+            std::get_if<authority::SourceEdgeSupport>(&firstOccurrence.support);
+        if (edgeSupport == nullptr ||
+            firstOccurrence.support != secondOccurrence.support) {
+          continue;
+        }
+        const auto certificate = isolationCertificateBySeam.find(
+            {first.sourceTopologyRegion, edgeSupport->edge});
+        if (certificate == isolationCertificateBySeam.end()) {
+          continue;
+        }
+        const bool matchesCertifiedSheets =
+            (certificate->second->firstSheet() ==
+                 firstOccurrence.isolationSheet &&
+             certificate->second->secondSheet() ==
+                 secondOccurrence.isolationSheet) ||
+            (certificate->second->firstSheet() ==
+                 secondOccurrence.isolationSheet &&
+             certificate->second->secondSheet() ==
+                 firstOccurrence.isolationSheet);
+        if (matchesCertifiedSheets) {
+          equivalence.isolationSeams.push_back(edgeSupport->edge);
+        }
+      }
       std::sort(equivalence.isolationSeams.begin(),
                 equivalence.isolationSeams.end());
       equivalence.isolationSeams.erase(
