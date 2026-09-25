@@ -1,3 +1,7 @@
+## M6 CP1 interlock — `M6-DEFN-R2-REV` accepted with amendments; `M6-CP1-CB4` next (2026-09-25)
+
+The definition chain for seam-incident authority is closed: DEFN-R1 core, the R2 amendments, and review amendments RA-1 – RA-10. `M6-CP1-CB4` is authorized under the amended plan, followed by TB4 7 + 449 = 456 and Review. Accepted runtime authority and 54/16/38, debt 1 are unchanged.
+
 ## M6 checkpoint update — `M6-DEFN-R2` complete, Review required (2026-09-25)
 
 M6 remains **OPEN**. `M6-DEFN-R2` is runtime-free Definition authority only: it freezes the B1-B4/P1-P4 seam-incident amendment and re-scopes CB4, but grants no runtime credit, candidate promotion, debt discharge, or checkpoint closure. Exact next is mandatory `M6-DEFN-R2-REV`; only an accepted Review may authorize `M6-CP1-CB4`, whose intended TB4 surface remains 7 focused + selector449 = 456.
@@ -560,7 +564,7 @@ Final CP4 Review completes the bounded conjunct8 sequence: row449 was accepted p
 | Checkpoint | Semantic domain |
 |---|---|
 | `M6-DEFN` | **COMPLETE / RUNTIME-FREE.** Four immutable products, exact occurrence/quotient identity, verifier recompute-vs-repair boundary, G4 ownership and dormant-test dispositions frozen in `Architecture_M6_Frozen_Definitions.md`. |
-| `M6-CP1` | **ACTIVE / `M6-DEFN-R2` COMPLETE RUNTIME-FREE / EXACT NEXT `M6-DEFN-R2-REV` / CB4 HELD.** R2 freezes B1-B4/P1-P4: evidence-only `CornerWedgeIsolation` lineage transitions, complete binding tuples, exact cell-interior seam-collinear face authority, one-to-one A5 failure mapping, ordered reciprocal span rules and hard-rail/singular fail-closed boundaries. TB3 candidate `10840014758 / 660015f2...` remains unpromoted at 447/455. Accounting is **54/16/38**, debt 1. Only an accepted R2 Review may authorize re-scoped CB4; compile-green CB4 then precedes immutable TB4 **7+449=456**, then mandatory Review. |
+| `M6-CP1` | **ACTIVE / `M6-DEFN-R2-REV` ACCEPTED WITH AMENDMENTS RA-1 – RA-10 / EXACT NEXT `M6-CP1-CB4`.** Earlier: `M6-DEFN-R2` COMPLETE RUNTIME-FREE / EXACT NEXT `M6-DEFN-R2-REV` / CB4 HELD. R2 freezes B1-B4/P1-P4: evidence-only `CornerWedgeIsolation` lineage transitions, complete binding tuples, exact cell-interior seam-collinear face authority, one-to-one A5 failure mapping, ordered reciprocal span rules and hard-rail/singular fail-closed boundaries. TB3 candidate `10840014758 / 660015f2...` remains unpromoted at 447/455. Accounting is **54/16/38**, debt 1. Only an accepted R2 Review may authorize re-scoped CB4; compile-green CB4 then precedes immutable TB4 **7+449=456**, then mandatory Review. |
 | `M6-CP2` | verifier consumes certificates and independently recomputes elementary incidence; **never repairs producer state** |
 | `M6-CP3` | M6 exit — equal coordinates without a relation remain distinct; every owned relation consumed exactly once; source-row / output-row / scheduler permutation invariance |
 

@@ -1,6 +1,17 @@
 # M6-CP1-CB4 — Complete Seam-Incident Occurrence/Lineage Authority Code + Build Plan
 
-**Status:** HELD / RE-SCOPED BY `M6-DEFN-R2` / IMPLEMENTATION NOT AUTHORIZED UNTIL `M6-DEFN-R2-REV` ACCEPTS
+**Status:** AUTHORIZED by `M6-DEFN-R2-REV` (accepted with review amendments RA-1 – RA-10). Implement R2 **as amended by RA-1 – RA-10** (end of `Architecture_M6_Frozen_Definitions.md`; rationale in `Architecture_M6_DEFN_R2_Review_Record.md` §3). Where this plan and an RA differ, the RA governs.
+
+> **Review amendments that change this plan's text:**
+> - **§3.3:** the interior-face rule covers internal, source-boundary and hard-rail/region-boundary edges (RA-1). The split-square perimeter sides are boundary-collinear.
+> - **§3.4:** P3/P4 fire only on arc-computation failure or a rail-crossing arc, never on vertex category (RA-2/RA-3). Torus rail vertices are lattice nodes.
+> - **§4:** keep `OccurrenceUnownedRelation` as its external name, and keep enum `UnownedRelation` for relation-identity/owner-encoding mismatch (frozen focused row3). An out-of-range opposite edge becomes `RelationEndpointMissing` (RA-5).
+> - **§6.1-6.2:** keep the transitional ordinal in `lineage.quotientClass` unchanged (RA-10). `sourceIsolationSheets` = wedge union only (RA-6).
+> - **§7:** remove the `crossesSheets` guard (`RemeshPipeline.cpp:4180-4191`) and map its replacements at the adapter (RA-7). Span support per RA-9. Wedge arc per RA-8.
+> - **§8 last bullet:** compare row-invariant semantic data only, never `hash_completion` (RA-4). One test-local reversed-row split-square helper is permitted.
+> - **§9 audit:** also re-open focused rows 1-4 (row3 per RA-5) and selector row140.
+
+**Earlier status:** HELD / RE-SCOPED BY `M6-DEFN-R2` / IMPLEMENTATION NOT AUTHORIZED UNTIL `M6-DEFN-R2-REV` ACCEPTS
 **Turn type:** Code + Build, runtime-free
 **Required predecessor:** accepted `M6-DEFN-R2-REV`
 **Expected successor if compile/package green:** `M6-CP1-TB4-EXEC`
@@ -105,7 +116,7 @@ It must construct/materialize the analytic split-square and assert at minimum:
 - v2: lineage sheets `{0,1}`, non-empty `CornerWedgeIsolation`, reciprocal transition orientation;
 - every other lattice vertex is single-sheet;
 - the new equivalence kind does not populate selected HardRail/Periodic relation paths;
-- source-face-row permutation preserves semantic identity and structural hash.
+- source-face-row permutation preserves the RA-4 row-invariant semantic data (not `hash_completion`).
 
 No other test may be edited unless mandatory Review explicitly amends this plan.
 
@@ -113,6 +124,8 @@ No other test may be edited unless mandatory Review explicitly amends this plan.
 
 Before publishing the compile candidate, re-open but do not edit:
 
+- focused rows 1-4, especially row3's `RelationEndpointMissing` / `UnownedRelation` / `DuplicateRelationDeclaration` expectations (RA-5);
+- selector row140 (`InvalidHardRailTransport` via the adapter);
 - focused row5 `MultiIsolationMaterializationRetainsAllLocalSheets`;
 - focused row6 periodic pair storage semantic-direction test;
 - selector rows 186, 214, 239, 444, 446, 448;

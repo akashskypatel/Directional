@@ -1,3 +1,9 @@
+## 2026-09-25 — M6 definition accepted with review corrections; implementation (CB4) unblocked
+
+- The second seam-sheet definition is accepted. The review fixed ten places where a literal implementation would have failed an existing gate.
+- Examples: the square test's boundary sides; hard-rail vertices on the torus; a permutation check aimed at a hash that includes face row numbers; one test's expected error code.
+- Next is the code-and-compile turn (CB4), then a 456-test run and review. Accounting is unchanged at 54/16/38, debt 1.
+
 ## 2026-09-25 — M6-DEFN-R2 seam-incident authority amendment complete
 
 - Runtime-free Definition; exact source snapshot run/artifact `36095854118 / 10847467936` at `342a306ebd3ba68cb6e1135cf9e25726bd8ad461`; no Directional runtime or compile.

@@ -1,6 +1,6 @@
 # M6 Consolidated Record
 
-**Status:** M6 ACTIVE / `M6-DEFN-R2` complete runtime-free; B1-B4/P1-P4 frozen pending mandatory `M6-DEFN-R2-REV` / candidate unpromoted / CB4 HELD / stable 54/16/38, debt 1 / exact next `M6-DEFN-R2-REV`
+**Status:** M6 ACTIVE / `M6-DEFN-R2-REV` accepted R2 with review amendments RA-1 – RA-10 / candidate unpromoted / stable 54/16/38, debt 1 / exact next `M6-CP1-CB4`
 **Last updated:** 2026-09-25
 
 Normative M6 semantics live in `Architecture_M6_Frozen_Definitions.md`. Entering accepted authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449 PASS**, SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. TB1's accepted-prefix event remains independently classified as singleton `CROSS_TEMPORARY_ITERATOR_RANGE`; TB2 row140 `VALIDATION_ORDER_SHADOWING` is recovery-proved closed but remains historical; TB3 Review adds one accepted-prefix event as an existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence. Stable accounting is **54 / 16 / 38** and produced-witness debt is **1**, M6-owned.
@@ -148,6 +148,7 @@ Exact next is runtime-free `M6-DEFN-R1` (TB3 Review addendum A7), then `M6-DEFN-
 | `Architecture_M6_CP1_TB2_Artifact_Only_Test_Benchmark_Plan.md` (88 lines) | **CONSUMED TB2 EXEC PLAN / FOLDED BY M6-CP1-TB2-REV.** Candidate identity, six+449 exact-process gate, immutable boundary, recovery pre-registration and Review successor are preserved in §6-§7, retained TB2 report and current Review; full text remains in git history. |
 | `Architecture_M6_DEFN_R1_Seam_Incident_Occurrence_Sheet_Authority_Plan.md` (67 lines) | **CONSUMED DEFN-R1 PLAN (review-authored) / FOLDED BY M6-DEFN-R1-REV.** Its eight decisions and split-square worked example are preserved in the DEFN-R1 definition record and in §12-§13; full text remains in git history. |
 | `Architecture_M6_DEFN_R1_Review_Plan.md` (32 lines) | **CONSUMED DEFN-R1 SELF-AUTHORED REVIEW PLAN / FOLDED BY M6-DEFN-R1-REV.** Its ten checks were executed. It lacked a check that existing frozen assertions stay satisfiable, which is how B1 went unseen (lesson 180). Full text remains in git history. |
+| `Architecture_M6_DEFN_R2_Amendment_Plan.md` | **CONSUMED DEFN-R2 PLAN (review-authored) / FOLDED BY M6-DEFN-R2-REV.** Its A1-A4/P1-P4 scope and frozen-test audit requirement were executed by the DEFN-R2 record and extended by RA-1 – RA-10; full text remains in git history. |
 
 ## 12. `M6-DEFN-R1` — seam-incident occurrence authority frozen; CB4 re-scoped and held
 
@@ -175,3 +176,25 @@ Precision items P1-P4 are also carried. Accounting **54 / 16 / 38**, debt 1, +0.
 The frozen-test audit covers focused rows 5/6, selector rows 186/214/239/444/446/448 and HardRail single-sheet assertions. The split-square v0/center/v2 materialized lineage is now definitionally satisfiable without invented relations. CB4 is rewritten around these rules and remains HELD until mandatory `M6-DEFN-R2-REV`. TB4 remains **7+449=456** if later authorized. No source/test/fixture/selector/build bytes or runtime were changed/executed. Accounting remains **54 / 16 / 38**, debt 1, +0.
 
 New retained authority: `Architecture_M6_DEFN_R2_Seam_Incident_Authority_Amendment_Definition_Record.md`.
+
+## 15. `M6-DEFN-R2-REV` — R2 accepted with review amendments RA-1 – RA-10; CB4 authorized
+
+The review agent independently re-verified snapshot `10847467936` (byte-identical to `660015f2` on the decisive files). It upheld:
+- B1: `CornerWedgeIsolation` is evidence-only, and existing consumers are kind-gated with front-edge guards;
+- B2: the binding rules;
+- B3: the orientation premise, proved in the uniform (reference-face normal), periodic and bounded-disk (corner-face normals) builders;
+- B4 and P1/P2.
+
+Ten amendments close places where a literal CB4 implementation would fail a frozen gate:
+- **RA-1:** boundary-collinear sides; all eight split-square perimeter sides are boundary-collinear.
+- **RA-2/3:** P3/P4 must not key on vertex category; torus rail vertices ("excluded", 72 − 55 = 17) are lattice nodes.
+- **RA-4:** row-invariant permutation checks; `hash_completion` hashes face rows and front-edge indices.
+- **RA-5:** `OccurrenceUnownedRelation` keeps its name, and focused row3 keeps enum `UnownedRelation`.
+- **RA-6:** lineage sheets = wedge union only.
+- **RA-7:** retire `crossesSheets` and map its replacements at the adapter.
+- **RA-8:** wedge-arc endpoints and direction.
+- **RA-9:** resolver-defined span support.
+- **RA-10:** CB4 keeps the transitional `quotientClass`.
+
+Accounting 54/16/38, debt 1, +0. Exact next `M6-CP1-CB4` (amended plan) → TB4 456 → Review.
+

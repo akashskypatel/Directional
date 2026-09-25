@@ -1,3 +1,13 @@
+## 2026-09-25 — `M6-DEFN-R2-REV`: definition accepted with ten review amendments — **+0 EVENTS / 54/16/38 / debt 1 / NEXT `M6-CP1-CB4`**
+
+- **Upheld:** B1 evidence-only `CornerWedgeIsolation` (consumers are kind-gated and front edges guarded); B2 binding rules; the B3 orientation premise, proved per builder; B4 one-to-one failures; P1/P2.
+- **Pre-runtime catches (no events):** each would have failed a frozen gate under a literal CB4.
+  - RA-1: R2's interior-face rule needed two incident faces, but the eight split-square perimeter sides are boundary-collinear.
+  - RA-2: P3's "excluded" matches the code term for rail vertices (`GlobalTopologyPlan.cpp:2343`; torus 17 = 6 + 12 − 1), which are lattice nodes, so it would have failed rows 444/446/448 and focused row6.
+  - RA-4: the seventh identity's "structural hash" would be `hash_completion`, which hashes face rows (`:1913`) and front-edge indices (`:2711`).
+  - RA-5: the adapter table invented a legacy `"UnownedRelation"` name absent from M5, and narrowing the code would have broken focused row3's malformed-ID expectation.
+  - RA-6 – RA-10 remove residual ambiguity (lineage widening, `crossesSheets` retirement, arc definition, resolver tolerance, transitional `quotientClass`).
+
 ## M6-DEFN-R2 — seam-incident authority amendment (2026-09-25)
 
 **Disposition:** DEFINITION COMPLETE / RUNTIME-FREE / +0 stable accounting. `M6-DEFN-R1-REV` blockers B1-B4 and P1-P4 are resolved in definition authority pending mandatory independent `M6-DEFN-R2-REV`. Stable accounting remains **54 events / 16 categories / 38 recurrences**, produced-witness debt **1**.

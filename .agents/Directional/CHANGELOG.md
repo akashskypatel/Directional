@@ -1,3 +1,20 @@
+## 2026-09-25 — `M6-DEFN-R2-REV`: R2 accepted with review amendments RA-1 – RA-10; CB4 authorized
+
+- Re-verified snapshot `10847467936` (digest `a19261e0`, archive `c0ca5581`, 5,312 files; decisive files byte-identical to `660015f2`). Selector449/routing449 unchanged; the seventh identity is absent.
+- Upheld B1: `CornerWedgeIsolation` is evidence-only; consumers are kind-gated at `PureQuadCompletion.cpp:801/925/1019/1059`, `RemeshPipeline.cpp:5556/5624` and the validator `:680`; aggregation guards front edges at `:14114`.
+- Upheld B2, B4 and P1/P2. The B3 orientation premise is proved in all three builders: uniform uses the reference face normal; periodic and bounded-disk use corner-face normals.
+- Froze RA-1 – RA-10:
+  - RA-1: boundary and region-boundary collinear edges (eight split-square perimeter sides);
+  - RA-2/3: P3/P4 not keyed on vertex category (torus rail vertices, 72 − 55 = 17, are lattice nodes);
+  - RA-4: row-invariant permutation checks (`hash_completion` hashes face rows and front-edge indices);
+  - RA-5: keep `OccurrenceUnownedRelation` and row3's enum `UnownedRelation` (M5 has no `"UnownedRelation"` string);
+  - RA-6: wedge-union lineage sheets;
+  - RA-7: retire `crossesSheets` and map its replacements to the legacy isolation-seam names;
+  - RA-8: wedge-arc endpoints and direction;
+  - RA-9: resolver-defined span support (`1e-8`);
+  - RA-10: transitional `quotientClass` unchanged.
+- Folded the consumed R2 plan; CB4 plan amended. Accounting 54/16/38, debt 1, +0. Exact next `M6-CP1-CB4`.
+
 ## 2026-09-25 — M6-DEFN-R2 seam-incident authority amendment complete
 
 - Runtime-free Definition; exact source snapshot run/artifact `36095854118 / 10847467936` at `342a306ebd3ba68cb6e1135cf9e25726bd8ad461`; no Directional runtime or compile.

@@ -1,4 +1,9 @@
-## Currency — `M6-DEFN-R2` complete; exact next `M6-DEFN-R2-REV` (2026-09-25 UTC)
+## Currency — `M6-DEFN-R2-REV` complete; exact next `M6-CP1-CB4` (2026-09-25 UTC)
+
+The review agent accepted `M6-DEFN-R2` with review amendments RA-1 – RA-10 (`Architecture_M6_DEFN_R2_Review_Record.md`). Each amendment closes a place where a literal CB4 implementation would fail a frozen gate: boundary-collinear perimeter sides, P3/P4 keyed on vertex category (torus rail nodes), a face-row-dependent `hash_completion` in the permutation clause, focused row3's `UnownedRelation`, lineage-sheet widening by side transitions, the stale `crossesSheets` guard, wedge-arc endpoints and direction, resolver tolerance, and the transitional `quotientClass`. CB4 is authorized under the amended plan; TB4 = 7 + 449 = 456.
+
+### Superseded currency note
+*`M6-DEFN-R2` complete; its successor `M6-DEFN-R2-REV` is now complete.*
 
 Runtime-free `M6-DEFN-R2` resolves the four DEFN-R1 Review blockers while preserving the upheld corner-wedge model. The new `CornerWedgeIsolation` lineage equivalence carries ordered checked seam transitions but creates no quotient relation; all semantic consumers use complete wedge face/sheet/chart/branch bindings; seam-collinear interior-face authority is topological after accepted cell orientation; A5 relation failures are one-to-one with legacy mapping confined to the adapter. P1-P4 are now explicit. Frozen rows 5/6, 186/214/239/444/446/448 and HardRail single-sheet assertions remain statically satisfiable. Stable accounting remains **54/16/38**, debt 1. CB4 remains HELD pending mandatory independent `M6-DEFN-R2-REV`.
 
@@ -42,9 +47,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
- > **Current milestone authority (2026-09-25, after `M6-DEFN-R2`):** R2 is COMPLETE / runtime-free and freezes B1-B4/P1-P4 for mandatory independent Review. `CornerWedgeIsolation` is lineage evidence only; complete binding tuples are semantic authority; seam-collinear interior faces derive from accepted cell orientation/source winding; relation failures are one-to-one with legacy names adapter-only. M4 and M5 remain CLOSED / ACCEPTED. CB3 candidate `10840014758 / 660015f2...` remains unpromoted after TB3 447/455. Stable accounting remains **54/16/38**, debt 1. `M6-CP1-CB4` is re-scoped but HELD. Exact next is **`M6-DEFN-R2-REV`**.
+ > **Current milestone authority (2026-09-25, after `M6-DEFN-R2-REV`):** R2 accepted with review amendments RA-1 – RA-10; exact next **`M6-CP1-CB4`** (amended plan), then TB4 456 + Review. Earlier state follows. R2 is COMPLETE / runtime-free and freezes B1-B4/P1-P4 for mandatory independent Review. `CornerWedgeIsolation` is lineage evidence only; complete binding tuples are semantic authority; seam-collinear interior faces derive from accepted cell orientation/source winding; relation failures are one-to-one with legacy names adapter-only. M4 and M5 remain CLOSED / ACCEPTED. CB3 candidate `10840014758 / 660015f2...` remains unpromoted after TB3 447/455. Stable accounting remains **54/16/38**, debt 1. `M6-CP1-CB4` is re-scoped but HELD. Exact next is **`M6-DEFN-R2-REV`**.
 
-**Currency.** `M6-DEFN-R2` (Definition amendment), 2026-09-25 UTC
+**Currency.** `M6-DEFN-R2-REV` (review agent), 2026-09-25 UTC
 
 **Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` §16.3 is the active same-region nonzero-Z4 contract. `PeriodicRelationId` remains carrier-content identity; relation rotation is the gauge-adjusted quotient `Q`, action/transport is relation value, and canonical storage may invert representation only after semantic Forward -> Reverse authority is fixed. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 
@@ -221,7 +226,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M6-DEFN-R2-REV` — NEXT / MANDATORY INDEPENDENT RUNTIME-FREE REVIEW.** Re-open R2 source/evidence and independently falsify or accept:
+1. **`M6-CP1-CB4` — NEXT / RUNTIME-FREE CODE + BUILD under the RA-amended plan.** Implement R2 as amended by RA-1 – RA-10, compile the standard eight GMP targets, and write the seventh identity with RA-4 semantic permutation checks. Then TB4 7 + 449 = 456 and mandatory Review.
+   *(Completed: `M6-DEFN-R2-REV`, accepted with amendments; original scope:)* Re-open R2 source/evidence and independently falsify or accept:
    - **B1:** put wedge evidence into `PureQuadVertexLineage::equivalences` so frozen row5 holds at v0/v2, and have the seventh identity assert lineage;
    - **B2:** a binding-selection rule per face-dependent consumer (transitional class key/`QuotientClassId` ordinal, `representative_key`, selected-path charts and components, `sourceCharts`);
    - **B3:** exact collinearity by segment `SourceSupport`, one interior-face rule for all three side builders, and the orientation premise proved per builder;
@@ -251,6 +257,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 11. **Rows16/17 (selector448 ordinals 446/447) pin inverse canonical storage — RECORDED / NOT FIRING (`M5-CP3-TB1-R16-REV-OBS-02`).** Keep the inverse-storage pin; if a representation-only change fires it, classify as test-authority drift and supply a witness still exercising inverse storage (`LESSONS.md` 171).
 
 ## 8. Recurring defect patterns
+
+**A definition rule scoped to the interior case silently fails the boundary cases of its own witness — `M6-DEFN-R2-REV`.** R2's interior-face rule required two incident faces, but the split-square witness has eight boundary-collinear sides. P3's "excluded" collided with the codebase term for rail vertices, which are lattice nodes on the torus. A "structural hash" permutation clause pointed at a hash of face rows. Each would have failed a frozen gate under a literal implementation (lesson 180 applies).
 
 **M6-DEFN-R2 recurrence of `M6-DEFN-OBS-01` — process-only, +0.** Several small repository documents were opened before `READ_MODE=snapshot` was explicitly frozen. Piecemeal inspection stopped; all decisive R2 conclusions were re-derived from verified snapshot `36095854118 / 10847467936`. Existing tool-conservation guidance and lesson 152 already cover the pattern, so no new semantic event/category/debt or lesson is created.
 

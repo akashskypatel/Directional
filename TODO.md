@@ -1,3 +1,12 @@
+## Review — `M6-DEFN-R2-REV` (2026-09-25)
+
+**ACCEPTED WITH REVIEW AMENDMENTS RA-1 – RA-10; exact next `M6-CP1-CB4`.** See `Architecture_M6_DEFN_R2_Review_Record.md`.
+
+- [x] B1-B4 and P1-P4 re-derived; the orientation premise is proved in all three builders; consumer neutrality of `CornerWedgeIsolation` confirmed.
+- [x] RA-1 – RA-10 frozen (boundary edges, P3/P4 predicates, row-invariant permutation checks, row3 `UnownedRelation`, wedge-union lineage, `crossesSheets` retirement, arc endpoints and direction, resolver tolerance, transitional `quotientClass`).
+- [ ] `M6-CP1-CB4` under the amended plan → compile/package the eight GMP targets (no runtime).
+- [ ] `M6-CP1-TB4-EXEC` 7 + 449 = 456 → `M6-CP1-TB4-REV`.
+
 ## Definition amendment complete — `M6-DEFN-R2` (2026-09-25)
 
 **RUNTIME-FREE / B1-B4 + P1-P4 frozen for Review / CB4 HELD / exact next `M6-DEFN-R2-REV`.** See `Architecture_M6_DEFN_R2_Seam_Incident_Authority_Amendment_Definition_Record.md`.

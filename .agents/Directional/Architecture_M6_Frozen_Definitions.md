@@ -1,6 +1,6 @@
 # M6 Frozen Definitions — Occurrence, Quotient, Embedding, Independent Verification
 
-**Status:** FROZEN CANDIDATE / `M6-DEFN-R2` COMPLETE / RUNTIME-FREE / B1-B4 + P1-P4 amended and frozen for mandatory independent `M6-DEFN-R2-REV`; CB4 remains HELD / exact next = `M6-DEFN-R2-REV`.
+**Status:** FROZEN / `M6-DEFN-R2-REV` ACCEPTED WITH REVIEW AMENDMENTS RA-1 – RA-10 (see the end of this document and `Architecture_M6_DEFN_R2_Review_Record.md`) / EXACT NEXT = `M6-CP1-CB4` / EARLIER: FROZEN CANDIDATE / `M6-DEFN-R2` COMPLETE / RUNTIME-FREE / B1-B4 + P1-P4 amended and frozen for mandatory independent `M6-DEFN-R2-REV`; CB4 remains HELD / exact next = `M6-DEFN-R2-REV`.
 **Date:** 2026-09-25
 **Definition authority:** this record is the normative M6 contract for A5 occurrence creation, A6 quotient construction/materialization, A7 source-attached geometry embedding, and the M6 structural portion of A8 independent verification. It refines `DESIGN.md` §14 M6 without changing accepted M5 producer semantics or pulling M7 disposition/degradation work forward.
 
@@ -471,3 +471,29 @@ CB4 must not start until `M6-DEFN-R2` resolves these and `M6-DEFN-R2-REV` accept
 - **P1-P4:** ordered maximal support spans, reciprocal near-endpoint agreement, fail-closed unsupported singular/SingularityPort corners, and hard-rail/region wedge boundaries are explicit. HardRail-adjacent no-seam corners remain single-sheet.
 
 The frozen-test audit covers focused rows 5/6, selector rows 186/214/239/444/446/448 and the Phase10 HardRail single-sheet assertions. No test/selector/routing byte changes. Stable accounting remains **54 / 16 / 38**, debt 1, +0. CB4 remains HELD pending mandatory independent `M6-DEFN-R2-REV`; if accepted, TB4 remains **7 + 449 = 456** fresh exact-filter processes.
+
+## M6-DEFN-R2-REV review amendments RA-1 – RA-10 (normative, 2026-09-25, runtime-free)
+
+`M6-DEFN-R2` is **accepted with the following amendments**. Where they conflict with earlier text in §§3–5, the DEFN-R1 record or the DEFN-R2 record, these govern. Rationale and evidence: `Architecture_M6_DEFN_R2_Review_Record.md` §3.
+
+- **RA-1 — collinear-span interior face.**
+  - Internal edge: the incident face whose source winding contains the side's directed edge.
+  - Source boundary edge: the single incident face, which must satisfy the same winding test.
+  - Hard-rail or topology-region-boundary edge: the winding-selected face, which must also lie in the cell's `TopologyRegionId`.
+
+  Any failed test is a typed A5 failure.
+- **RA-2 — `OccurrenceUnsupportedSingularWedge`.** Fires only when the RA-8 fan arc cannot be computed (nonmanifold vertex fan, or an arc not contained in one `TopologyRegionId` and one chart component). It never fires because of a vertex category (boundary, barrier, hard-rail or "excluded" support vertex). `OccurrenceUnsupportedSingularityPort` fires only for a corner that participates in a SingularityPort relation.
+- **RA-3 — `OccurrenceUnsupportedHardRailSeamWedge`.** Fires exactly when the RA-8 arc would have to cross a hard-rail edge. For a validated cell this is a fail-closed assertion. A seam edge ending at a rail vertex inside an admissible arc is ordinary wedge evidence.
+- **RA-4 — permutation checks in the seventh identity.** These compare only row-invariant semantic data:
+  - `OccurrenceId`s;
+  - per-occurrence `CornerWedgeSheetSet` and ordered `CornerWedgeIsolation` transitions;
+  - per class (keyed by sorted member `OccurrenceId`s): lineage sheets and transitions.
+
+  They never compare `hash_completion`, which hashes source-face rows and front-edge indices. One test-local split-square fixture helper with reversed face rows is permitted for this identity only.
+- **RA-5 — `OccurrenceUnownedRelation` and enum `UnownedRelation`.** `OccurrenceUnownedRelation` keeps its current external name, with no legacy remap. The enum `UnownedRelation` continues to cover relation-identity/owner-encoding mismatch in `publish_records_for_validation`, as frozen focused row3 requires. The new owner/kind codes apply to the producer-side conditions only. An out-of-range opposite edge is `RelationEndpointMissing`.
+- **RA-6 — lineage sheets.** `sourceIsolationSheets` is exactly the union of member `CornerWedgeSheetSet`s. Directed-side transitions are `equivalences` evidence only and add no sheets.
+- **RA-7 — retire the endpoint-equality guard.** The transitional endpoint-sheet-equality guard (`crossesSheets` → `MissingIsolationSeamEquivalenceAuthority`) is removed and replaced by span-membership validation. At the adapter, missing seam evidence for a cross-sheet step maps to `MissingIsolationSeamEquivalenceAuthority`, and an absent or wrong named certificate maps to `InvalidIsolationSeamEquivalenceAuthority`. `QuotientReciprocalSideAuthorityMismatch` keeps its new name.
+- **RA-8 — wedge arc.** The arc endpoints are the interior faces of the incoming side's last support span and the outgoing side's first support span: RA-1 for collinear spans, otherwise the face containing the span's open interior. The arc runs counter-clockwise in source winding from the outgoing face to the incoming face around the corner support. Recorded transition orientation stays incoming → outgoing (v0 `1→0`, v2 `0→1`).
+- **RA-9 — span support.** Span support is defined by `SurfacePointSourceSupportResolver` (barycentric tolerance `1e-8`) applied to the span's open-interior midpoint and both endpoints. The span is collinear with an edge iff the midpoint resolves to that `SourceEdgeSupport` and the endpoints resolve within that edge's closure. The builder tie-break tolerance plays no part.
+- **RA-10 — transitional `QuotientClassId`.** CB4 keeps the transitional ordinal in `lineage.quotientClass` and its hash unchanged in representation. Only the class-key tuple feeding it changes (complete binding signatures). The member-set `QuotientClassId` (§4.3) is realized at A6 extraction, not in CB4.
+

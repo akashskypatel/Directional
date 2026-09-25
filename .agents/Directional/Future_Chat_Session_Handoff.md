@@ -1,6 +1,25 @@
-## Resume-critical update — `M6-DEFN-R2` COMPLETE (2026-09-25)
+## Resume-critical update — `M6-DEFN-R2-REV` COMPLETE (2026-09-25)
 
-**Exact next turn: `M6-DEFN-R2-REV` (mandatory independent runtime-free Review). CB4 stays HELD.**
+**Exact next turn: `M6-CP1-CB4` (runtime-free Code + Build), under the amended plan.**
+
+The review agent **accepted `M6-DEFN-R2` with review amendments RA-1 – RA-10** (`Architecture_M6_DEFN_R2_Review_Record.md`; normative text at the end of `Architecture_M6_Frozen_Definitions.md`). Upheld: B1 `CornerWedgeIsolation` evidence-only lineage, B2 binding rules, the B3 orientation premise (proved in all three builders), B4 one-to-one relation failures, P1/P2.
+
+Each amendment closes a gap where a literal CB4 would fail a frozen gate:
+- **RA-1:** boundary-edge collinear sides. All eight split-square perimeter sides.
+- **RA-2/3:** P3/P4 never key on vertex category; torus rail vertices ("excluded", 72 − 55 = 17) are lattice nodes.
+- **RA-4:** the permutation check in the seventh identity compares row-invariant semantic data, not `hash_completion`, which hashes face rows and front-edge indices.
+- **RA-5:** keep the `OccurrenceUnownedRelation` name and enum `UnownedRelation` for malformed relation IDs (focused row3).
+- **RA-6:** lineage sheets = wedge union only.
+- **RA-7:** retire the `crossesSheets` guard and map its replacements at the adapter.
+- **RA-8:** wedge arc from interior faces, counter-clockwise from outgoing.
+- **RA-9:** span support is resolver-defined (1e-8).
+- **RA-10:** CB4 keeps the transitional `quotientClass` ordinal.
+
+Accounting 54/16/38, debt 1. TB4 = 7 + 449 = 456.
+
+## Superseded resume note — `M6-DEFN-R2` COMPLETE (2026-09-25)
+
+*(Historical; `M6-DEFN-R2-REV` is complete and has authorized CB4.)*
 
 `M6-DEFN-R2` resolved all four DEFN-R1 Review blockers and P1-P4 without touching source/test/selector bytes:
 
@@ -64,7 +83,11 @@ The split-square analytic witness requires v0 and v2, although each is a single 
 
 ## Exact next turn
 
-**`M6-DEFN-R2-REV`** — mandatory independent runtime-free Review. Re-open the R2 definition and exact source evidence; independently re-derive B1-B4/P1-P4, the split-square v0/center/v2 lineage, all three builder orientation premises, failure-map compatibility, and frozen-test audit. If accepted, authorize re-scoped `M6-CP1-CB4`; do not start CB4 in Review.
+**`M6-CP1-CB4`** — runtime-free Code + Build under `Architecture_M6_CP1_CB4_Relation_Owned_Isolation_Equivalence_Code_Build_Plan.md` as amended by RA-1 – RA-10. Compile-green → immutable `M6-CP1-TB4-EXEC` (7 + 449 = 456) → mandatory `M6-CP1-TB4-REV`.
+
+### Completed — `M6-DEFN-R2-REV`
+
+**`M6-DEFN-R2-REV`** — accepted with review amendments (review agent). Re-open the R2 definition and exact source evidence; independently re-derive B1-B4/P1-P4, the split-square v0/center/v2 lineage, all three builder orientation premises, failure-map compatibility, and frozen-test audit. If accepted, authorize re-scoped `M6-CP1-CB4`; do not start CB4 in Review.
 
 ### Completed — `M6-DEFN-R1-REV`
 
@@ -81,7 +104,7 @@ If R2 Review accepts, implement the accepted Definition only: complete wedge bin
 - `.agents/Directional/Architecture_M6_DEFN_R2_Seam_Incident_Authority_Amendment_Definition_Record.md` (current Definition amendment)
 - `.agents/Directional/Architecture_M6_Frozen_Definitions.md` (normative frozen candidate)
 - `.agents/Directional/Architecture_M6_CP1_CB4_Relation_Owned_Isolation_Equivalence_Code_Build_Plan.md` (held implementation plan)
-- `.agents/Directional/Architecture_M6_DEFN_R2_Amendment_Plan.md` (consumed R2 plan; retained pending Review)
+- `.agents/Directional/Architecture_M6_DEFN_R2_Review_Record.md` (acceptance + RA-1 – RA-10)
 - `.agents/Directional/Architecture_M6_DEFN_R1_Review_Record.md` (predecessor Review)
 - `.agents/Directional/Architecture_M6_Frozen_Definitions.md` (normative)
 - `.agents/Directional/Architecture_M6_CP1_TB3_Artifact_Only_Test_Benchmark_Report.md` (current runtime report)
@@ -95,7 +118,9 @@ If R2 Review accepts, implement the accepted Definition only: complete wedge bin
 
 ```yaml
 load_next:
-  - .agents/Directional/Architecture_M6_DEFN_R2_Amendment_Plan.md
+  - .agents/Directional/Architecture_M6_CP1_CB4_Relation_Owned_Isolation_Equivalence_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M6_DEFN_R2_Review_Record.md
+  - .agents/Directional/Architecture_M6_DEFN_R2_Seam_Incident_Authority_Amendment_Definition_Record.md
   - .agents/Directional/Architecture_M6_DEFN_R1_Review_Record.md
   - .agents/Directional/Architecture_M6_DEFN_R1_Seam_Incident_Occurrence_Sheet_Authority_Definition_Record.md
   - .agents/Directional/Architecture_M6_CP1_TB3_Review_Record.md  # predecessor addendum A2-A7
