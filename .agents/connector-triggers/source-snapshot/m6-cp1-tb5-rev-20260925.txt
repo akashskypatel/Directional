@@ -1,0 +1,4 @@
+M6-CP1-TB5-REV exact source snapshot
+Purpose: review repository authority, runtime evidence references, static CP1 acceptance preconditions, and successor disposition
+Expected pre-trigger head: 26a2dda2b76c3c5cab0e94c13400102e06c5ea99
+Retry: 0
