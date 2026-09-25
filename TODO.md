@@ -4,7 +4,7 @@
 
 - [x] B1-B4 and P1-P4 re-derived; the orientation premise is proved in all three builders; consumer neutrality of `CornerWedgeIsolation` confirmed.
 - [x] RA-1 – RA-10 frozen (boundary edges, P3/P4 predicates, row-invariant permutation checks, row3 `UnownedRelation`, wedge-union lineage, `crossesSheets` retirement, arc endpoints and direction, resolver tolerance, transitional `quotientClass`).
-- [ ] `M6-CP1-CB4` under the amended plan → compile/package the eight GMP targets (no runtime).
+- [ ] `M6-CP1-CB4` under the amended plan → compile/package the eight GMP targets (no runtime). **Not yet started**: the aborted 05:40Z session produced nothing, so enter as a fresh turn (see handoff recovery note).
 - [ ] `M6-CP1-TB4-EXEC` 7 + 449 = 456 → `M6-CP1-TB4-REV`.
 
 ## Definition amendment complete — `M6-DEFN-R2` (2026-09-25)

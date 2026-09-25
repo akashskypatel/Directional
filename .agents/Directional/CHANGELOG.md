@@ -1,3 +1,9 @@
+## 2026-09-25 — `M6-DEFN-R2-REV` recovery reconciliation: CB4 confirmed not started; handoff made unambiguous
+
+- The operator loop recorded `CHAT_UNKNOWN` after an implementation session opened at 05:40:26Z, before the Review's COMPLETE beacon (05:42:01Z). Verified that no `M6-CP1-CB4` commits, Actions runs (latest `36097522915`, 05:11Z) or Drive staging patches exist.
+- Rewrote the handoff's live section, which still said "CB4 HELD / do not start CB4", to name a single exact next turn: `M6-CP1-CB4` as a **fresh** turn. Added entry rules and a dependency-ordered work sequence mapped to RA-1 – RA-10, and put `CODE_BUILD.md` on the load list.
+- ORIENTATION and TODO received recovery notes. STATUS was resumed and closed again with successor `M6-CP1-CB4`. No definition, accounting or authority change.
+
 ## 2026-09-25 — `M6-DEFN-R2-REV`: R2 accepted with review amendments RA-1 – RA-10; CB4 authorized
 
 - Re-verified snapshot `10847467936` (digest `a19261e0`, archive `c0ca5581`, 5,312 files; decisive files byte-identical to `660015f2`). Selector449/routing449 unchanged; the seventh identity is absent.

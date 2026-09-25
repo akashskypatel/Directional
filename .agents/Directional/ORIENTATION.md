@@ -2,6 +2,8 @@
 
 The review agent accepted `M6-DEFN-R2` with review amendments RA-1 – RA-10 (`Architecture_M6_DEFN_R2_Review_Record.md`). Each amendment closes a place where a literal CB4 implementation would fail a frozen gate: boundary-collinear perimeter sides, P3/P4 keyed on vertex category (torus rail nodes), a face-row-dependent `hash_completion` in the permutation clause, focused row3's `UnownedRelation`, lineage-sheet widening by side transitions, the stale `crossesSheets` guard, wedge-arc endpoints and direction, resolver tolerance, and the transitional `quotientClass`. CB4 is authorized under the amended plan; TB4 = 7 + 449 = 456.
 
+**Recovery (2026-09-25T06:15Z).** An implementation session opened at 05:40:26Z, before the Review's COMPLETE beacon, and produced nothing: no commits, Actions runs or Drive patches. `M6-CP1-CB4` has not started and begins as a fresh turn (new `Started at`, empty `Resumed at`).
+
 ### Superseded currency note
 *`M6-DEFN-R2` complete; its successor `M6-DEFN-R2-REV` is now complete.*
 
