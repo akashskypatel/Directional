@@ -891,27 +891,60 @@ bool close_completion_lineage_source_authority(
       lineage.sourceCharts;
   const std::vector<authority::TopologyRegionId> retainedSourceRegions =
       lineage.sourceTopologyRegions;
-  lineage.sourceTopologyRegions = {selectedRegion};
-  lineage.sourceIsolationSheets = {selectedSheet};
-  lineage.sourceCharts.clear();
+  const std::vector<authority::IsolationSheetId> retainedSourceSheets =
+      lineage.sourceIsolationSheets;
+  const bool hasOccurrenceBindingAuthority = !lineage.sourceOccurrences.empty();
+  if (hasOccurrenceBindingAuthority) {
+    if (retainedSourceCharts.empty() || retainedSourceRegions.empty() ||
+        retainedSourceSheets.empty() ||
+        !std::binary_search(retainedSourceRegions.begin(),
+                            retainedSourceRegions.end(), selectedRegion) ||
+        !std::binary_search(retainedSourceSheets.begin(),
+                            retainedSourceSheets.end(), selectedSheet)) {
+      failure = "CompletionOwnershipInvalidRetainedSourceAuthority";
+      return false;
+    }
+    for (const SourceProjectionChart &chart : retainedSourceCharts) {
+      const auto row = transitionGraph.source_face_row(chart);
+      if (!row.has_value() ||
+          std::find(support.incidentFaces.begin(), support.incidentFaces.end(),
+                    row.value()) == support.incidentFaces.end() ||
+          std::find(retainedSourceRegions.begin(), retainedSourceRegions.end(),
+                    sourceAuthority->region_for_row(row.value())) ==
+              retainedSourceRegions.end() ||
+          std::find(retainedSourceSheets.begin(), retainedSourceSheets.end(),
+                    sourceAuthority->sheet_for_row(row.value())) ==
+              retainedSourceSheets.end()) {
+        failure = "CompletionOwnershipInvalidRetainedSourceChart";
+        return false;
+      }
+    }
 
-  // A source vertex/edge can be represented on multiple incident source
-  // faces. Publish only the complete chart closure of the selected typed
-  // region/sheet owner before considering explicitly certified quotient
-  // relations.
-  for (const authority::SourceFaceId incidentFace : support.incidentFaces) {
-    if (sourceAuthority->region_for_row(incidentFace) != selectedRegion ||
-        sourceAuthority->sheet_for_row(incidentFace) != selectedSheet) {
-      continue;
-    }
-    const int candidateFace = static_cast<int>(incidentFace.index());
-    SurfacePoint rebound;
-    if (!transitionGraph.rebind(lineage.sourcePoint, candidateFace, rebound)) {
-      continue;
-    }
-    if (const auto chart = transitionGraph.chart(candidateFace);
-        chart.has_value()) {
-      lineage.sourceCharts.push_back(chart.value());
+    // Complete occurrence bindings are the A7 chart/sheet/region authority.
+    // Selected relation paths validate how members may be joined; they do not
+    // broaden or replace the binding-derived projections.
+    lineage.sourceTopologyRegions = retainedSourceRegions;
+    lineage.sourceIsolationSheets = retainedSourceSheets;
+    lineage.sourceCharts = retainedSourceCharts;
+  } else {
+    // Non-A5 completion paths keep the established selected-chart closure.
+    lineage.sourceTopologyRegions = {selectedRegion};
+    lineage.sourceIsolationSheets = {selectedSheet};
+    lineage.sourceCharts.clear();
+    for (const authority::SourceFaceId incidentFace : support.incidentFaces) {
+      if (sourceAuthority->region_for_row(incidentFace) != selectedRegion ||
+          sourceAuthority->sheet_for_row(incidentFace) != selectedSheet) {
+        continue;
+      }
+      const int candidateFace = static_cast<int>(incidentFace.index());
+      SurfacePoint rebound;
+      if (!transitionGraph.rebind(lineage.sourcePoint, candidateFace, rebound)) {
+        continue;
+      }
+      if (const auto chart = transitionGraph.chart(candidateFace);
+          chart.has_value()) {
+        lineage.sourceCharts.push_back(chart.value());
+      }
     }
   }
 
@@ -955,27 +988,32 @@ bool close_completion_lineage_source_authority(
       }
       retainedChartComponents.insert(identity.value());
     }
-    const auto selectedChart = transitionGraph.chart(lineage.sourcePoint.face);
-    if (!selectedChart.has_value()) {
-      failure = "CompletionOwnershipMissingPublishedSourceChart";
-      return false;
-    }
-    const auto selectedChartComponent = component_identity(*selectedChart);
-    if (!selectedChartComponent.has_value()) {
-      failure = "CompletionOwnershipMissingPublishedSourceChart";
-      return false;
-    }
-
     for (const SelectedRelationPathCertificate &certificate :
          lineage.selectedRelationPaths) {
       if (!certificate.valid() || certificate.sourceSupport != support.identity ||
           !certificate.startChart.has_value() ||
           !certificate.endChart.has_value() ||
-          certificate.startChart.value() != selectedChart.value() ||
-          certificate.startChartComponent != selectedChartComponent.value() ||
           !retained_chart(certificate.startChart.value()) ||
           !retained_chart(certificate.endChart.value())) {
         failure = "CompletionOwnershipInvalidSelectedRelationPath";
+        return false;
+      }
+
+      const auto startRow =
+          transitionGraph.source_face_row(certificate.startChart.value());
+      const auto actualStartChart = startRow.has_value()
+                                        ? transitionGraph.chart(
+                                              static_cast<int>(startRow->index()))
+                                        : std::nullopt;
+      const auto startComponent =
+          component_identity(certificate.startChart.value());
+      if (!startRow.has_value() || !actualStartChart.has_value() ||
+          actualStartChart.value() != certificate.startChart.value() ||
+          !startComponent.has_value() ||
+          startComponent.value() != certificate.startChartComponent ||
+          std::find(support.incidentFaces.begin(), support.incidentFaces.end(),
+                    startRow.value()) == support.incidentFaces.end()) {
+        failure = "CompletionOwnershipInvalidSelectedRelationEndpoint";
         return false;
       }
 
@@ -1001,7 +1039,19 @@ bool close_completion_lineage_source_authority(
       SourceChartComponentIdentity current =
           certificate.startChartComponent;
       for (const SelectedRelationStep &step : certificate.orderedSteps) {
+        const auto fromComponent = step.fromChart.has_value()
+                                       ? component_identity(step.fromChart.value())
+                                       : std::nullopt;
+        const auto toComponent = step.toChart.has_value()
+                                     ? component_identity(step.toChart.value())
+                                     : std::nullopt;
         if (!step.valid() || step.fromChartComponent != current ||
+            !step.fromChart.has_value() || !step.toChart.has_value() ||
+            !retained_chart(step.fromChart.value()) ||
+            !retained_chart(step.toChart.value()) ||
+            !fromComponent.has_value() || !toComponent.has_value() ||
+            fromComponent.value() != step.fromChartComponent ||
+            toComponent.value() != step.toChartComponent ||
             retainedChartComponents.count(step.fromChartComponent) == 0U ||
             retainedChartComponents.count(step.toChartComponent) == 0U) {
           failure = "CompletionOwnershipDiscontinuousSelectedRelationPath";
@@ -1106,8 +1156,6 @@ bool close_completion_lineage_source_authority(
         failure = "CompletionOwnershipInvalidSelectedRelationDestination";
         return false;
       }
-      lineage.sourceCharts.push_back(certificate.endChart.value());
-      lineage.sourceTopologyRegions.push_back(candidateRegion.value());
     }
   }
 
@@ -1117,6 +1165,12 @@ bool close_completion_lineage_source_authority(
       std::unique(lineage.sourceTopologyRegions.begin(),
                   lineage.sourceTopologyRegions.end()),
       lineage.sourceTopologyRegions.end());
+  std::sort(lineage.sourceIsolationSheets.begin(),
+            lineage.sourceIsolationSheets.end());
+  lineage.sourceIsolationSheets.erase(
+      std::unique(lineage.sourceIsolationSheets.begin(),
+                  lineage.sourceIsolationSheets.end()),
+      lineage.sourceIsolationSheets.end());
   std::sort(lineage.sourceCharts.begin(), lineage.sourceCharts.end());
   lineage.sourceCharts.erase(
       std::unique(lineage.sourceCharts.begin(), lineage.sourceCharts.end()),

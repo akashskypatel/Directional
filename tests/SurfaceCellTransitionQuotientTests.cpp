@@ -440,6 +440,31 @@ PhaseFrontFixture make_square_fixture_with_reversed_source_face_rows() {
   return fixture;
 }
 
+PhaseFrontFixture make_split_isolation_fixture_with_reversed_source_face_rows() {
+  PhaseFrontFixture fixture;
+  Eigen::MatrixXd vertices(4, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0,
+      1.0, 0.0;
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 2, 3, 0, 1, 2;
+  fixture.mesh.set_mesh(vertices, faces);
+  fixture.components = {0, 0};
+  fixture.sheets = {1, 0};
+
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          fixture.mesh, constant_xy_field(fixture.mesh.F.rows()));
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.defaultTargetSize = 0.5;
+  options.sourceFaceComponents = fixture.components;
+  options.sourceFaceSheets = fixture.sheets;
+  fixture.network = directional::geometry::build_surface_cell_network(
+      fixture.mesh.V, fixture.mesh.F, crossField,
+      Eigen::VectorXd::Constant(fixture.mesh.V.rows(), 0.5), options);
+  require_produced(fixture, "source-face-row-permuted split-isolation square");
+  return fixture;
+}
+
 PhaseFrontFixture make_transition_domain_fixture() {
   PhaseFrontFixture fixture;
   Eigen::MatrixXd vertices(8, 3);
@@ -2041,6 +2066,158 @@ TEST(M6CP1, SourceFaceRowPermutationPreservesOccurrenceIdentity) {
   EXPECT_EQ(cellIds(*baseline), cellIds(*permuted));
   EXPECT_EQ(occurrenceIds(*baseline), occurrenceIds(*permuted));
   EXPECT_EQ(relationIds(*baseline), relationIds(*permuted));
+}
+
+TEST(M6CP1, SeamEndpointOccurrencesPublishCompleteCornerWedgeSheetAuthority) {
+  const auto &baselineFixture = split_isolation_fixture();
+  const auto permutedFixture =
+      make_split_isolation_fixture_with_reversed_source_face_rows();
+
+  auto baselineConstruction =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+          baselineFixture.mesh.V, baselineFixture.mesh.F,
+          baselineFixture.network.phaseFront.product());
+  auto permutedConstruction =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+          permutedFixture.mesh.V, permutedFixture.mesh.F,
+          permutedFixture.network.phaseFront.product());
+  const auto *baselineOccurrences =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+          &baselineConstruction);
+  const auto *permutedOccurrences =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+          &permutedConstruction);
+  ASSERT_NE(baselineOccurrences, nullptr);
+  ASSERT_NE(permutedOccurrences, nullptr);
+
+  const auto occurrenceSignature = [](const auto &product) {
+    using Entry = std::tuple<
+        directional::authority::OccurrenceId,
+        std::vector<directional::authority::IsolationSheetId>,
+        std::vector<directional::geometry::CornerWedgeIsolationTransition>>;
+    std::vector<Entry> signature;
+    signature.reserve(product.occurrences().size());
+    for (const auto &occurrence : product.occurrences()) {
+      signature.emplace_back(occurrence.id, occurrence.cornerWedgeSheets,
+                             occurrence.cornerWedgeIsolation);
+    }
+    std::sort(signature.begin(), signature.end());
+    return signature;
+  };
+  EXPECT_EQ(occurrenceSignature(*baselineOccurrences),
+            occurrenceSignature(*permutedOccurrences));
+
+  const auto baseline =
+      materialize(baselineFixture, baselineFixture.network.phaseFront);
+  const auto permuted =
+      materialize(permutedFixture, permutedFixture.network.phaseFront);
+  ASSERT_TRUE(baseline.success) << baseline.failure;
+  ASSERT_TRUE(permuted.success) << permuted.failure;
+
+  const auto &sourceAuthority =
+      baselineFixture.network.phaseFront.product().sourceTopologyRegions();
+  ASSERT_EQ(1U, sourceAuthority.regions().size());
+  const auto expectedSheets = sourceAuthority.regions().front().isolation_sheets();
+  ASSERT_EQ(2U, expectedSheets.size());
+  const auto &certificates = baselineFixture.network.phaseFront.product()
+                                 .isolationSeamTransportCertificates();
+  ASSERT_EQ(1U, certificates.size());
+  const auto &certificate = certificates.front();
+
+  const auto cornerIsolation = [](const auto &lineage) {
+    std::vector<std::vector<directional::geometry::CornerWedgeIsolationTransition>>
+        evidence;
+    for (const auto &equivalence : lineage.equivalences) {
+      if (equivalence.kind !=
+          directional::geometry::PureQuadEquivalenceKind::CornerWedgeIsolation) {
+        continue;
+      }
+      evidence.push_back(equivalence.isolationTransitions);
+    }
+    std::sort(evidence.begin(), evidence.end());
+    return evidence;
+  };
+  const auto hasTransition = [](
+                                 const auto &evidence,
+                                 const directional::authority::TopologyRegionId region,
+                                 const directional::authority::SourceEdgeTopologyKey seam,
+                                 const directional::authority::IsolationSheetId from,
+                                 const directional::authority::IsolationSheetId to) {
+    return std::any_of(evidence.begin(), evidence.end(), [&](const auto &sequence) {
+      return std::find(sequence.begin(), sequence.end(),
+                       directional::geometry::CornerWedgeIsolationTransition{
+                           region, seam, from, to}) != sequence.end();
+    });
+  };
+  const auto findLineageAt = [](const auto &mesh, const Eigen::Vector3d &point)
+      -> const directional::geometry::PureQuadVertexLineage * {
+    for (const auto &lineage : mesh.vertexLineage) {
+      if ((lineage.sourcePoint.position - point).norm() <= 1.0e-12) {
+        return &lineage;
+      }
+    }
+    return nullptr;
+  };
+
+  const auto *v0 = findLineageAt(baseline.mesh, Eigen::Vector3d(0.0, 0.0, 0.0));
+  const auto *center =
+      findLineageAt(baseline.mesh, Eigen::Vector3d(0.5, 0.5, 0.0));
+  const auto *v2 = findLineageAt(baseline.mesh, Eigen::Vector3d(1.0, 1.0, 0.0));
+  ASSERT_NE(v0, nullptr);
+  ASSERT_NE(center, nullptr);
+  ASSERT_NE(v2, nullptr);
+
+  EXPECT_EQ(expectedSheets, v0->sourceIsolationSheets);
+  EXPECT_EQ(expectedSheets, center->sourceIsolationSheets);
+  EXPECT_EQ(expectedSheets, v2->sourceIsolationSheets);
+  const auto v0Evidence = cornerIsolation(*v0);
+  const auto centerEvidence = cornerIsolation(*center);
+  const auto v2Evidence = cornerIsolation(*v2);
+  EXPECT_FALSE(v0Evidence.empty());
+  EXPECT_FALSE(centerEvidence.empty());
+  EXPECT_FALSE(v2Evidence.empty());
+  EXPECT_TRUE(hasTransition(v0Evidence, certificate.region(), certificate.seam(),
+                            expectedSheets[1], expectedSheets[0]));
+  EXPECT_TRUE(hasTransition(v2Evidence, certificate.region(), certificate.seam(),
+                            expectedSheets[0], expectedSheets[1]));
+  for (const auto &sequence : centerEvidence) {
+    for (const auto &transition : sequence) {
+      EXPECT_EQ(certificate.region(), transition.region);
+      EXPECT_EQ(certificate.seam(), transition.seam);
+      EXPECT_NE(transition.fromSheet, transition.toSheet);
+      EXPECT_TRUE(std::binary_search(expectedSheets.begin(), expectedSheets.end(),
+                                     transition.fromSheet));
+      EXPECT_TRUE(std::binary_search(expectedSheets.begin(), expectedSheets.end(),
+                                     transition.toSheet));
+    }
+  }
+
+  for (const auto &lineage : baseline.mesh.vertexLineage) {
+    const bool isSeamEndpointOrCenter =
+        &lineage == v0 || &lineage == center || &lineage == v2;
+    if (!isSeamEndpointOrCenter) {
+      EXPECT_EQ(1U, lineage.sourceIsolationSheets.size());
+    }
+    EXPECT_TRUE(lineage.selectedRelationPaths.empty());
+  }
+
+  const auto classSignature = [&](const auto &mesh) {
+    using Evidence =
+        std::vector<std::vector<directional::geometry::CornerWedgeIsolationTransition>>;
+    using Entry = std::tuple<
+        std::vector<directional::authority::OccurrenceId>,
+        std::vector<directional::authority::IsolationSheetId>, Evidence>;
+    std::vector<Entry> signature;
+    signature.reserve(mesh.vertexLineage.size());
+    for (const auto &lineage : mesh.vertexLineage) {
+      signature.emplace_back(lineage.sourceOccurrences,
+                             lineage.sourceIsolationSheets,
+                             cornerIsolation(lineage));
+    }
+    std::sort(signature.begin(), signature.end());
+    return signature;
+  };
+  EXPECT_EQ(classSignature(baseline.mesh), classSignature(permuted.mesh));
 }
 
 TEST(M6CP1,

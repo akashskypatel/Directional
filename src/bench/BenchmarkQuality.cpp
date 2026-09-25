@@ -1158,6 +1158,19 @@ benchmark_output_semantic_hash(const pipeline::RemeshResult &result) {
         relation.push_back(static_cast<std::int64_t>(topology.first().index()));
         relation.push_back(static_cast<std::int64_t>(topology.second().index()));
       }
+      relation.push_back(
+          static_cast<std::int64_t>(equivalence.isolationTransitions.size()));
+      for (const auto &transition : equivalence.isolationTransitions) {
+        relation.push_back(static_cast<std::int64_t>(transition.region.index()));
+        relation.push_back(
+            static_cast<std::int64_t>(transition.seam.first().index()));
+        relation.push_back(
+            static_cast<std::int64_t>(transition.seam.second().index()));
+        relation.push_back(
+            static_cast<std::int64_t>(transition.fromSheet.index()));
+        relation.push_back(
+            static_cast<std::int64_t>(transition.toSheet.index()));
+      }
       equivalenceRecords.push_back(std::move(relation));
     }
     std::sort(equivalenceRecords.begin(), equivalenceRecords.end());
@@ -1209,6 +1222,8 @@ benchmark_output_semantic_hash(const pipeline::RemeshResult &result) {
                            : -1);
         append_periodic_relation_id(path, step.periodicRelation);
         path.push_back(static_cast<std::int64_t>(step.direction));
+        append_projection_chart(path, step.fromChart);
+        append_projection_chart(path, step.toChart);
         append_chart_component(path, step.fromChartComponent);
         append_chart_component(path, step.toChartComponent);
         path.push_back(

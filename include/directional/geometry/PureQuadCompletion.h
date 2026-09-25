@@ -188,6 +188,16 @@ enum class PureQuadEquivalenceKind : int {
   OrdinaryFront = 0,
   HardRail = 1,
   PeriodicHolonomy = 2,
+  CornerWedgeIsolation = 3,
+};
+
+struct CornerWedgeIsolationTransition {
+  authority::TopologyRegionId region;
+  authority::SourceEdgeTopologyKey seam;
+  authority::IsolationSheetId fromSheet;
+  authority::IsolationSheetId toSheet;
+
+  auto operator<=>(const CornerWedgeIsolationTransition &) const = default;
 };
 
 enum class SelectedRelationKind : int {
@@ -200,6 +210,8 @@ struct SelectedRelationStep {
   std::optional<authority::HardRailId> railId;
   std::optional<authority::PeriodicRelationId> periodicRelation;
   authority::Orientation direction = authority::Orientation::Forward;
+  std::optional<SourceProjectionChart> fromChart;
+  std::optional<SourceProjectionChart> toChart;
   SourceChartComponentIdentity fromChartComponent;
   SourceChartComponentIdentity toChartComponent;
   authority::GridAutomorphism appliedTransport =
@@ -210,7 +222,8 @@ struct SelectedRelationStep {
         relationKind == SelectedRelationKind::HardRail
             ? railId.has_value() && !periodicRelation.has_value()
             : periodicRelation.has_value() && !railId.has_value();
-    return typedOwner && fromChartComponent.valid && toChartComponent.valid;
+    return typedOwner && fromChart.has_value() && toChart.has_value() &&
+           fromChartComponent.valid && toChartComponent.valid;
   }
 
   auto operator<=>(const SelectedRelationStep &) const = default;
@@ -230,6 +243,10 @@ struct SelectedRelationPathCertificate {
     return sourceSupport.has_value() && startChartComponent.valid &&
            endChartComponent.valid && startChart.has_value() &&
            endChart.has_value() && !orderedSteps.empty() &&
+           orderedSteps.front().fromChart == startChart &&
+           orderedSteps.front().fromChartComponent == startChartComponent &&
+           orderedSteps.back().toChart == endChart &&
+           orderedSteps.back().toChartComponent == endChartComponent &&
            std::all_of(orderedSteps.begin(), orderedSteps.end(),
                        [](const auto &step) { return step.valid(); });
   }
@@ -248,6 +265,7 @@ struct PureQuadEquivalenceProvenance {
   authority::CanonicalRoute route;
   authority::CanonicalRoute cutRoute;
   std::vector<authority::SourceEdgeTopologyKey> isolationSeams;
+  std::vector<CornerWedgeIsolationTransition> isolationTransitions;
 
   auto operator<=>(const PureQuadEquivalenceProvenance &) const = default;
 };

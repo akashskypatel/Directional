@@ -781,6 +781,36 @@ struct SurfaceOccurrenceRelationId {
   auto operator<=>(const SurfaceOccurrenceRelationId &) const = default;
 };
 
+struct CornerWedgeFaceBinding {
+  authority::SourceFaceTopologyKey face;
+  authority::IsolationSheetId sheet;
+  geometry::SourceProjectionChart chart;
+
+  auto operator<=>(const CornerWedgeFaceBinding &) const = default;
+};
+
+struct CornerPlacementProvenance {
+  authority::SourceFaceTopologyKey selectedFace;
+  geometry::LocalLatticeState lattice;
+};
+
+struct SurfaceOccurrenceSideSpan {
+  authority::SourceSupport support;
+  CornerWedgeFaceBinding interiorBinding;
+  std::optional<authority::SourceEdgeTopologyKey> collinearEdge;
+  std::vector<geometry::CornerWedgeIsolationTransition> isolationTransitions;
+
+  auto operator<=>(const SurfaceOccurrenceSideSpan &) const = default;
+};
+
+struct SurfaceOccurrenceDirectedSideAuthority {
+  std::vector<SurfaceOccurrenceSideSpan> spans;
+  std::vector<geometry::CornerWedgeIsolationTransition> isolationEvidence;
+
+  auto operator<=>(const SurfaceOccurrenceDirectedSideAuthority &) const =
+      default;
+};
+
 struct SurfaceOccurrence {
   SurfaceOccurrence(authority::OccurrenceId occurrenceId,
                     geometry::SurfacePoint sourcePoint,
@@ -789,12 +819,20 @@ struct SurfaceOccurrence {
                     geometry::SourceChartComponentIdentity componentIdentity,
                     geometry::LocalLatticeState latticeState,
                     authority::TopologyRegionId region,
-                    authority::IsolationSheetId sheet)
+                    authority::IsolationSheetId sheet,
+                    std::vector<authority::IsolationSheetId> wedgeSheets,
+                    std::vector<CornerWedgeFaceBinding> wedgeBindings,
+                    CornerPlacementProvenance placementProvenance,
+                    std::vector<geometry::CornerWedgeIsolationTransition>
+                        wedgeIsolation)
       : id(occurrenceId), point(std::move(sourcePoint)),
         support(std::move(sourceSupport)), chart(std::move(sourceChart)),
         chartComponent(std::move(componentIdentity)),
         lattice(std::move(latticeState)), topologyRegion(region),
-        isolationSheet(sheet) {}
+        isolationSheet(sheet), cornerWedgeSheets(std::move(wedgeSheets)),
+        cornerWedgeBindings(std::move(wedgeBindings)),
+        placement(std::move(placementProvenance)),
+        cornerWedgeIsolation(std::move(wedgeIsolation)) {}
 
   authority::OccurrenceId id;
   geometry::SurfacePoint point;
@@ -804,6 +842,10 @@ struct SurfaceOccurrence {
   geometry::LocalLatticeState lattice;
   authority::TopologyRegionId topologyRegion;
   authority::IsolationSheetId isolationSheet;
+  std::vector<authority::IsolationSheetId> cornerWedgeSheets;
+  std::vector<CornerWedgeFaceBinding> cornerWedgeBindings;
+  CornerPlacementProvenance placement;
+  std::vector<geometry::CornerWedgeIsolationTransition> cornerWedgeIsolation;
 };
 
 struct SurfaceOccurrenceCell {
@@ -811,14 +853,17 @@ struct SurfaceOccurrenceCell {
       authority::CellId cellId,
       std::array<authority::OccurrenceId, 4> cornerOccurrenceIds,
       std::array<std::pair<authority::OccurrenceId, authority::OccurrenceId>, 4>
-          sideCycle)
+          sideCycle,
+      std::array<SurfaceOccurrenceDirectedSideAuthority, 4> sideAuthority = {})
       : id(cellId), cornerOccurrences(std::move(cornerOccurrenceIds)),
-        directedSides(std::move(sideCycle)) {}
+        directedSides(std::move(sideCycle)),
+        directedSideAuthority(std::move(sideAuthority)) {}
 
   authority::CellId id;
   std::array<authority::OccurrenceId, 4> cornerOccurrences;
   std::array<std::pair<authority::OccurrenceId, authority::OccurrenceId>, 4>
       directedSides;
+  std::array<SurfaceOccurrenceDirectedSideAuthority, 4> directedSideAuthority;
 };
 
 struct SurfaceOccurrenceRelation {
@@ -862,6 +907,16 @@ enum class SurfaceOccurrenceComplexErrorCode : std::uint8_t {
   InvalidCornerAuthority = 9,
   InvalidChartAuthority = 10,
   HardRailOwnerMismatch = 11,
+  HardRailOwnerMissing = 12,
+  PeriodicOwnerMismatch = 13,
+  RelationKindMismatch = 14,
+  UnsupportedSingularWedge = 15,
+  UnsupportedSingularityPort = 16,
+  UnsupportedHardRailSeamWedge = 17,
+  InvalidWedgeAuthority = 18,
+  MissingIsolationEvidence = 19,
+  DuplicateIsolationEvidence = 20,
+  MismatchedIsolationEvidence = 21,
 };
 
 const char *surface_occurrence_complex_error_name(
