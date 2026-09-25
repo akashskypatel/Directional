@@ -1,4 +1,0 @@
-# M6-CP1-CB5 final temporary-state cleanup
-.agents/connector-triggers/m6-cp1-cb5-docs-apply.txt
-.agents/connector-triggers/m6-cp1-cb5-compile.txt
-.agents/connector-triggers/source-snapshot/m6-cp1-cb5-20260925.txt
