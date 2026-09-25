@@ -1,0 +1,2 @@
+M6-CP1-CB4 resume source snapshot.
+Semantic head before trigger: 54104d4f5638171c97d0739cdbceab388f070396
