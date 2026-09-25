@@ -1,6 +1,0 @@
-turn=M6-CP1-CB4
-purpose=compile-only
-caller_install_sha=7954cb85653b75d0579245fa399ed5df52355a61
-source_sha=20f60bb1412424a6f1093fc8076884d1ea23f1c5
-retry=1
-runtimeExecution=false
