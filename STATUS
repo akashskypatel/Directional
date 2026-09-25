@@ -1,7 +1,7 @@
 ---TURN_STATUS---
 Turn: M6-CP1-CB4
-Status: IN_PROGRESS
-Successor: M6-CP1-CB4
+Status: BLOCKED
+Successor: UNKNOWN
 Started at: 2026-09-25T06:19:30Z
 Resumed at: 2026-09-25T07:36:00Z
 Ended at: 
