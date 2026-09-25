@@ -1,3 +1,18 @@
+## M6-DEFN-R2 — seam-incident authority amendment (2026-09-25)
+
+**Disposition:** DEFINITION COMPLETE / RUNTIME-FREE / +0 stable accounting. `M6-DEFN-R1-REV` blockers B1-B4 and P1-P4 are resolved in definition authority pending mandatory independent `M6-DEFN-R2-REV`. Stable accounting remains **54 events / 16 categories / 38 recurrences**, produced-witness debt **1**.
+
+- B1: `CornerWedgeIsolation` lineage evidence freezes exact ordered `(region,seam,fromSheet,toSheet)` transitions without creating quotient equality.
+- B2: complete binding tuples replace scalar representative sheet/chart authority at class-key, representative, selected-path and lineage/remap consumers.
+- B3: exact support-span collinearity + canonical cell-interior face rule replaces all three builder tie-break faces for semantic seam authority.
+- B4: HardRail/Periodic/kind/unowned A5 failures are split one-to-one and mapped in the compatibility adapter; M5 semantic transport/content checks remain live.
+- P1-P4: ordered spans, reciprocal near-endpoint rules, unsupported singular/SingularityPort fail-closed behavior, and hard-rail/region wedge boundaries are frozen.
+- Frozen-test audit found no required assertion conflict after the amendment. No selector/routing/test byte changed.
+
+**Process recurrence `M6-DEFN-OBS-01` (+0):** the turn again opened several small repository documents before explicitly freezing `READ_MODE=snapshot`. It then stopped piecemeal access and re-derived all decisive conclusions from verified snapshot `36095854118 / 10847467936`. Existing policy/lesson already covers the behavior, so this is not a new stable event/category/debt.
+
+**Exact next:** `M6-DEFN-R2-REV`; CB4 remains held.
+
 ## 2026-09-25 — `M6-DEFN-R1-REV`: definition review catches a by-construction TB4 RED before code — **+0 EVENTS / 54/16/38 / debt 1 / NEXT `M6-DEFN-R2`**
 
 - **Upheld:** corner-wedge sheet sets, wedge/side certificate carriers keyed by `(region, seam edge)`, owner-less `OrdinaryFront`, A6 membership validation, A7 union and no mixed-face records. The snapshot `10846121134` source is byte-identical to `660015f2`.

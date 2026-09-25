@@ -1,7 +1,7 @@
 # M6 Frozen Definitions — Occurrence, Quotient, Embedding, Independent Verification
 
-**Status:** FROZEN / `M6-DEFN-R1-REV`: DEFN-R1 core upheld, NOT accepted as frozen. Amendments B1-B4 are required by `M6-DEFN-R2`; see `Architecture_M6_DEFN_R1_Review_Record.md`. §4.6 "M5's accepted typed relation failures remain unweakened" currently conflicts with the DEFN-R1 D7 duplicate-check removal. / EARLIER: `M6-DEFN-R1` COMPLETE / RUNTIME-FREE / seam-incident authority amended to complete corner-wedge sheet sets plus wedge/side certificate evidence; `OrdinaryFront` remains owner-less / CB4 RE-SCOPED AND HELD / EXACT NEXT = `M6-DEFN-R1-REV`
-**Date:** 2026-09-24
+**Status:** FROZEN CANDIDATE / `M6-DEFN-R2` COMPLETE / RUNTIME-FREE / B1-B4 + P1-P4 amended and frozen for mandatory independent `M6-DEFN-R2-REV`; CB4 remains HELD / exact next = `M6-DEFN-R2-REV`.
+**Date:** 2026-09-25
 **Definition authority:** this record is the normative M6 contract for A5 occurrence creation, A6 quotient construction/materialization, A7 source-attached geometry embedding, and the M6 structural portion of A8 independent verification. It refines `DESIGN.md` §14 M6 without changing accepted M5 producer semantics or pulling M7 disposition/degradation work forward.
 
 This definition turn changes documentation/planning only. It changes no product source, test, fixture, selector, benchmark, or build source and executes no generated Directional runtime.
@@ -79,6 +79,11 @@ A seam-collinear directed side derives its incident-cell interior source face by
 
 Face-dependent field chart, branch rotation, and sheet provenance are per wedge binding/side. A seam occurrence must not combine sheet/support selected from one face with chart/branch selected from another. Face-independent lattice phase, coordinate, and scale remain value/provenance and are not identity.
 
+
+**R2 exact side/binding law.** A directed side is partitioned in traversal order into maximal positive-length exact `SourceSupport` spans. A span is source-edge-collinear exactly when its open interior support is that `SourceEdgeSupport`. For an accepted `orientationValidated` A4 cell, the semantic incident-cell interior face of such a span is the unique incident source face selected by canonical directed-edge winding and the accepted cell-interior side; builder-local row/lexicographic representative-face tie-breaks are non-authoritative. The rule applies identically to uniform, periodic-chart, and bounded-disk builders. An occurrence's canonical binding signature is the complete ordered tuple set `(sourceFaceTopology, IsolationSheetId, SourceProjectionChart, branchRotation)`. Every admissible wedge stays within one topology region and one chart component and stops at source/region/hard-rail boundaries.
+
+**R2 lineage evidence carrier.** Complete wedge/side isolation evidence is additionally projectable as lineage equivalence kind `CornerWedgeIsolation` with one or more ordered semantic transitions `(TopologyRegionId, SourceEdgeTopologyKey, fromSheet, toSheet)`. That kind is evidence-only: it is not an A5 `ownedRelation`, carries no HardRail/Periodic owner, selects no relation path, and never creates quotient equality.
+
 ### 3.3 Occurrence identity
 
 `OccurrenceId` is the semantic pair:
@@ -116,7 +121,7 @@ Only A6 may equate them, and only through a verified A5 owned relation.
 - every relation has two existing, distinct typed endpoints and satisfies its **kind-specific** owner contract: `OrdinaryFront` has no owner, HardRail/Periodic keep their accepted typed owners;
 - no occurrence, wedge, side, or relation authority was inferred from geometric coincidence or global certificate search.
 
-A5 owns fail-closed `OccurrenceConstructionFailure` codes for missing/duplicate cell ownership, missing/duplicate corner occurrence, invalid directed-side cycle, invalid/noncontiguous wedge authority, missing/duplicate/mismatched wedge-or-side isolation evidence, relation endpoint missing, duplicate relation declaration, unowned owner-required relation, relation-kind/owner mismatch, and source-authority mismatch. The A5 HardRail structural mismatch is externally named `OccurrenceHardRailOwnerMismatch`; the transitional M5-compatible adapter alone maps it to legacy `InvalidHardRailTransport` for the frozen row140 surface. A rejected A5 product is not consumable.
+A5 owns fail-closed `OccurrenceConstructionFailure` codes for missing/duplicate cell ownership, missing/duplicate corner occurrence, invalid directed-side cycle, invalid/noncontiguous wedge authority, missing/duplicate/mismatched wedge-or-side isolation evidence, relation endpoint missing, duplicate relation declaration, unsupported singular/nonmanifold wedge, unsupported SingularityPort corner, unsupported hard-rail/seam wedge, and source-authority mismatch. Relation failures are **not** many-to-one: `OccurrenceHardRailOwnerMissing`, `OccurrenceHardRailOwnerMismatch`, `OccurrencePeriodicOwnerMismatch`, `OccurrenceRelationKindMismatch`, and `OccurrenceUnownedRelation` (genuinely unowned cases only) are distinct. The transitional compatibility adapter alone maps them respectively to the frozen M5-compatible names `MissingHardRailRelationOwner`, `InvalidHardRailTransport`, `InvalidPeriodicRelationOwner`, `IncompatibleAuthoritativeFrontPair`, and `UnownedRelation`. Structural endpoint/range defects remain structural failures rather than `UnownedRelation`. A rejected A5 product is not consumable.
 
 ## 4. Stage A6 — `SurfaceQuotientProduct`
 
@@ -163,11 +168,11 @@ For every A5 owned relation, A6 must record exactly one `QuotientRelationCertifi
 
 ### 4.5 Ordinary-front sheet/evidence validation
 
-`OrdinaryFront` remains owner-less and `OccurrenceRelationId` is unchanged. For each non-seam-collinear endpoint pair, the incident directed-side near-endpoint sheet must belong to both endpoint `CornerWedgeSheetSet` values. Side-interior seam crossings are accepted only through the ordered `DirectedSideIsolationEvidence` published by A5 and exact verification of those checked certificates.
+`OrdinaryFront` remains owner-less and `OccurrenceRelationId` is unchanged. Side validation is performed over the ordered maximal positive-length exact-support spans frozen by A5. For a non-seam-collinear near-endpoint span, reciprocal records must agree on the mapped incident-cell interior sheet and that sheet must belong to both endpoint `CornerWedgeSheetSet` values. Side-interior seam crossings are accepted only through the ordered `DirectedSideIsolationEvidence` published by A5 and exact verification of those checked certificates.
 
-For reciprocal ordinary sides collinear with an isolation seam, both side records must name the same checked seam certificate; their incident-cell interior-side sheets must be the certificate's two distinct incident sheets; and each side sheet must belong to its own endpoint wedge sets. That side-carried certificate is the authority for cross-sheet quotient equality. Disjoint singleton endpoint wedge sets are therefore legal only in this explicit collinear case.
+For a seam-collinear near-endpoint span, both reciprocal side records must name the same checked seam certificate/span; their exact incident-cell interior faces are the two incident source faces; their sheets are the certificate's two opposite incident sheets; and the ordered evidence lists are reverse-compatible with every sheet transition inverted. Disjoint singleton endpoint wedge sets are legal only in this explicit collinear case. Any disagreement is typed `QuotientReciprocalSideAuthorityMismatch`.
 
-A6 records in its quotient relation certificate which wedge/side certificate references were actually verified. It never infers equality from a representative sheet.
+A6 records in its quotient relation certificate which wedge/side certificate references were actually verified. It never infers equality from a representative sheet. For selected HardRail/Periodic path steps, endpoint charts/chart-components come from the relation-side interior-face bindings; path start/end charts come from the first/last selected steps, never from a quotient representative face. `CornerWedgeIsolation` lineage evidence does not create a selected relation path.
 
 ### 4.6 A6 certificate and failures
 
@@ -180,7 +185,7 @@ A6 records in its quotient relation certificate which wedge/side certificate ref
 - every A5 owned relation appears exactly once in the relation-consumption ledger;
 - every cross-sheet union step has the exact A5-published wedge/side certificate evidence required by §4.5.
 
-A6 owns fail-closed `QuotientConstructionFailure` codes for missing/duplicate/conflicting/nonreciprocal relation authority, invalid wedge/side sheet membership, missing/invalid seam-collinear certificate evidence, unowned relation use, zero/duplicate relation consumption, invalid class partition, missing occurrence member, degenerate classed quad, and non-bijective cell-to-quad materialization. M5's accepted typed relation failures remain unweakened; M6 does not rename a valid M5 failure into success.
+A6 owns fail-closed `QuotientConstructionFailure` codes for missing/duplicate/conflicting/nonreciprocal relation authority, invalid wedge/side sheet membership, missing/invalid seam-collinear certificate evidence, unowned relation use, zero/duplicate relation consumption, invalid class partition, missing occurrence member, degenerate classed quad, and non-bijective cell-to-quad materialization. M5's accepted typed relation failures remain unweakened. A5 owns the one-to-one semantic relation-failure vocabulary frozen in §3.4 and the compatibility adapter owns the legacy-name mapping. Once A5 certifies owner presence/equality and relation-kind compatibility, only those duplicate structural predicates may disappear from the transitional materializer; route reversal/content, periodic shift, exact relation value, exact transport application, source-support, and other M5 semantic checks remain live. M6 does not rename a valid M5 failure into success or an unrelated generic failure.
 
 ## 5. Stage A7 — `SourceAttachedGeometryProduct`
 
@@ -206,7 +211,7 @@ SourceAttachedGeometryProduct
 
 The vertex's semantic identity remains its `QuotientClassId`. Position is a value derived from exact source support and cannot merge, split, or rename a quotient class.
 
-A quotient class spanning multiple certified chart/sheet representations is legal only when A6's verified A5-published wedge/side evidence establishes every cross-sheet step that requires certification. `sourceIsolationSheets` is the sorted unique union of every member occurrence's `CornerWedgeSheetSet`. A7 records the complete compatible source authority and the wedge/side certificate evidence referenced by the quotient certificates; it never selects a representative sheet and silently discards the others.
+A quotient class spanning multiple certified chart/sheet representations is legal only when A6's verified A5-published wedge/side evidence establishes every cross-sheet step that requires certification. `sourceIsolationSheets` is the sorted unique union of every member occurrence's `CornerWedgeSheetSet`. `sourceCharts` is the sorted unique union of every member `CornerWedgeFaceBinding.chart`. Component remapping first remaps complete binding tuples and ordered `CornerWedgeIsolation` transition tuples, and only then derives legacy region/sheet/chart projections; independent-set or cross-product validation is not semantic authority. A7 records the complete compatible source authority and the wedge/side certificate evidence referenced by the quotient certificates; it never selects a representative sheet/chart and silently discards the others.
 
 ### 5.3 A7 certificate and failures
 
@@ -455,3 +460,14 @@ This amendment supersedes only the earlier singular-sheet/relation-certificate w
 
 CB4 must not start until `M6-DEFN-R2` resolves these and `M6-DEFN-R2-REV` accepts.
 
+## M6-DEFN-R2 seam-incident authority amendment (2026-09-25, runtime-free)
+
+`M6-DEFN-R2` resolves the four blockers and four precision items from `M6-DEFN-R1-REV`; normative detail is in `Architecture_M6_DEFN_R2_Seam_Incident_Authority_Amendment_Definition_Record.md`.
+
+- **B1:** lineage now has evidence-only `CornerWedgeIsolation` equivalences carrying ordered exact `(region,seam,fromSheet,toSheet)` transitions. They neither own nor select quotient relations. Split-square v0/center/v2 are therefore multi-sheet with non-empty lineage evidence without inventing v0/v2 relations.
+- **B2:** every semantic consumer uses complete per-face wedge binding signatures. Transitional class keys cannot collapse to one sheet/chart; representatives are representation-only; HardRail/Periodic path charts are relation-side bindings; A7 chart/sheet/region projections derive from full binding tuples; remap preserves tuples before projection.
+- **B3:** edge collinearity is exact `SourceSupport`, and the semantic incident-cell interior face is selected from canonical accepted cell orientation plus source-edge winding. Uniform, periodic and bounded-disk builders all establish the required orientation premise before A4 acceptance.
+- **B4:** A5 relation failures are one-to-one and adapter-mapped to the frozen M5 names. Only duplicate owner/kind structural checks may move earlier; relation content/transport/support falsifiers stay live.
+- **P1-P4:** ordered maximal support spans, reciprocal near-endpoint agreement, fail-closed unsupported singular/SingularityPort corners, and hard-rail/region wedge boundaries are explicit. HardRail-adjacent no-seam corners remain single-sheet.
+
+The frozen-test audit covers focused rows 5/6, selector rows 186/214/239/444/446/448 and the Phase10 HardRail single-sheet assertions. No test/selector/routing byte changes. Stable accounting remains **54 / 16 / 38**, debt 1, +0. CB4 remains HELD pending mandatory independent `M6-DEFN-R2-REV`; if accepted, TB4 remains **7 + 449 = 456** fresh exact-filter processes.

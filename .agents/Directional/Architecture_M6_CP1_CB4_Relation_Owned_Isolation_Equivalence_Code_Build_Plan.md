@@ -1,111 +1,153 @@
-# M6-CP1-CB4 Corner-Wedge Isolation Authority Code + Build Plan
+# M6-CP1-CB4 — Complete Seam-Incident Occurrence/Lineage Authority Code + Build Plan
 
-> **HELD — `M6-DEFN-R1-REV` did not accept DEFN-R1 as frozen. Do not execute; `M6-DEFN-R2` must revise this plan.**
-> As written it would be RED by construction: focused row5 requires non-empty `equivalences` on the v0/v2 `{0,1}` lineage (B1).
-> It also leaves unspecified the binding selection for the transitional class key, `representative_key`, selected-path charts and `sourceCharts` (B2).
-> Its Scope B collinear rule names only the lexicographic tie-break; the split-square builder `segment_on_source` ties by face row (B3).
-> Its Scope C removes duplicate checks although A5's `UnownedRelation` is many-to-one, contradicting §4.6 (B4).
-> See `Architecture_M6_DEFN_R1_Review_Record.md` and `Architecture_M6_DEFN_R2_Amendment_Plan.md`.
+**Status:** HELD / RE-SCOPED BY `M6-DEFN-R2` / IMPLEMENTATION NOT AUTHORIZED UNTIL `M6-DEFN-R2-REV` ACCEPTS
+**Turn type:** Code + Build, runtime-free
+**Required predecessor:** accepted `M6-DEFN-R2-REV`
+**Expected successor if compile/package green:** `M6-CP1-TB4-EXEC`
+**TB4 gate:** 7 focused identities + unchanged selector449 = **456 fresh exact-filter processes**
+**Compile boundary:** standard eight GMP/GMPXX targets only; no generated Directional binary may execute.
 
-**Turn:** `M6-CP1-CB4`
-**Type:** Code + Build, runtime-free
-**Predecessor:** accepted `M6-DEFN-R1-REV` only
-**Accepted runtime authority:** `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7`, selector449 **449/449 PASS**
-**Recovery candidate basis:** `10840014758 / 660015f2f15359fd426e2c855aea9f4201c70216`
-**If compile-green successor:** `M6-CP1-TB4-EXEC`, then mandatory `M6-CP1-TB4-REV`
+## 1. Goal
 
-## Goal
+Implement only the accepted `M6-DEFN-R2` A5/A6/A7 seam-incident authority amendments. The change must make complete corner-wedge sheet/binding/evidence authority survive occurrence construction, quotient consumption, component remapping and final lineage materialization without changing semantic occurrence identity, quotient equality, accepted M5 relation owners, or any frozen test/selector byte.
 
-Implement only the accepted `M6-DEFN-R1` seam-incident authority cutover: complete corner-wedge sheet/certificate authority, exact directed-side seam evidence including seam-collinear sides, per-wedge face/chart/branch provenance, and A6 consumption of those A5-published facts. Remove only the duplicate downstream relation-owner checks explicitly transferred to A5.
+Normative authority is `Architecture_M6_Frozen_Definitions.md` as amended by `Architecture_M6_DEFN_R2_Seam_Incident_Authority_Amendment_Definition_Record.md`. If Review changes any R2 rule, update this plan before implementation.
 
-No generated Directional runtime is permitted in CB4.
+## 2. Immutable boundaries
 
-## Scope A — A5 occurrence wedge authority
+Do not change:
 
-For every occurrence, derive and publish from accepted A4 canonical cell cycle plus exact source topology:
+- `OccurrenceId=(CellId, canonicalCornerRole)` or A4 `CellId` semantics;
+- `OccurrenceRelationId` or relation-only quotient equality;
+- `OrdinaryFront` ownerlessness;
+- accepted HardRail/Periodic owner/action/transport semantics;
+- M5 producer relation/certificate facts;
+- test assertions, fixtures, selector449, routing449, benchmarks, or accepted test names;
+- source-grid recovery, fallback, validators, or unrelated production code;
+- A4 products or builder topology to make A5 easier.
 
-- sorted non-empty `CornerWedgeSheetSet`;
-- ordered/per-face `CornerWedgeFaceBindings` with source-face topology identity, sheet, field chart and branch rotation;
-- `CornerWedgeIsolationEvidence` keyed by exact `(TopologyRegionId, SourceEdgeTopologyKey)` for every seam edge crossed by the wedge fan.
+Do not weld by coordinate/position, search a global certificate inventory, choose unused valid relations, or invent a representative sheet/chart.
 
-Occurrence-wide support/identity/lattice values stay occurrence-wide. Face-dependent chart/branch/sheet values must not be taken from a single representative face.
+## 3. Scope A — complete A5 corner authority
 
-A missing, duplicate, inconsistent, noncontiguous, or uncertified required wedge authority fails closed with an `Occurrence*` A5 error.
+1. Materialize `CornerWedgeFaceBindings` for every occurrence as the ordered admissible cell-interior fan.
+2. Materialize ordered `CornerWedgeIsolationEvidence` and directed-side isolation evidence as exact `(region,seam,fromSheet,toSheet)` tuples.
+3. Apply the R2 exact support-span rule to all three side builders. For source-edge-collinear spans, derive the cell-interior incident face from accepted cell orientation and source winding; never use the builder's tie-broken face for semantic sheet/chart authority.
+4. Enforce P3/P4 fail-closed exclusions for singular/nonmanifold/SingularityPort and hard-rail-crossing wedge cases.
+5. Preserve one region per wedge and one chart component per admissible wedge.
 
-## Scope B — directed-side source/seam authority
+**Verify statically:** every builder path reaches the same helper/rule; no semantic caller uses source-face row/lexicographic triangle selection for seam-collinear authority.
 
-For every directed side, publish the exact incident-cell interior-side source authority and ordered isolation evidence.
+## 4. Scope B — exact A5 failure split and compatibility adapter
 
-- Non-collinear segments use their exact source route and checked seam crossings.
-- A seam-collinear segment chooses the incident source face lying on the owning cell's interior side by exact chart orientation; the lexicographically smallest triangle may remain a representation leaf but cannot be semantic authority.
-- Reciprocal seam-collinear ordinary sides must name the same seam certificate and opposite certificate sheets.
+Add the R2 semantic failures:
 
-Do not infer side authority from world position, epsilons, row order, or certificate inventory size.
+- `OccurrenceHardRailOwnerMissing`;
+- `OccurrenceHardRailOwnerMismatch`;
+- `OccurrencePeriodicOwnerMismatch`;
+- `OccurrenceRelationKindMismatch`;
+- `OccurrenceUnownedRelation` only for genuinely unowned cases;
+- P3/P4 typed unsupported-corner failures.
 
-## Scope C — A5 relation validation and compatibility naming
+Implement exactly one transitional compatibility mapping to the frozen M5 external names. Remove only structural duplicate predicates already proved by the accepted A5 certificate: owner presence/equality and relation-kind compatibility. Keep route reversal/content, periodic shift, exact relation values, transport application, support, and every semantic M5 falsifier.
 
-Keep `OrdinaryFront` owner-less and keep `OccurrenceRelationId` unchanged. Preserve HardRail/Periodic owners.
+**Verify statically:** no former accepted typed M5 defect maps to success or unrelated generic failure.
 
-Rename A5's externally reported HardRail structural-owner mismatch to `OccurrenceHardRailOwnerMismatch`. Preserve selector row140's legacy `InvalidHardRailTransport` only through the transitional M5-compatible adapter mapping.
+## 5. Scope C — B1 lineage-equivalence projection
 
-Once A5 validates relation kind/owner structure, remove the duplicate structural branches for:
+Add `PureQuadEquivalenceKind::CornerWedgeIsolation` and an authoritative ordered isolation-transition payload equivalent to:
 
-- `MissingHardRailRelationOwner`;
-- owner-presence/equality part of `InvalidPeriodicRelationOwner`;
-- boundary-kind compatibility part of `IncompatibleAuthoritativeFrontPair`.
+```text
+(region, seam, fromSheet, toSheet)
+```
 
-Do not remove route/transport/content validation.
+Rules:
 
-## Scope D — A6 consumes only A5-published wedge/side evidence
+- evidence-only; never an A5 `ownedRelation`;
+- no front-edge/HardRail/Periodic owner;
+- no selected relation path;
+- deduplicate by complete ordered semantic transition sequence;
+- include new fields in deterministic structural hashing, benchmark structural evidence, aggregation/remap and serialization paths that already expose lineage equivalences.
 
-For every non-collinear ordinary endpoint pair, verify the incident side sheet belongs to both endpoint wedge sets. For side-interior seam crossings, verify exactly the A5-published ordered seam references. For seam-collinear reciprocal sides, verify the common seam certificate plus the two opposite incident-side sheets.
+**Verify statically:** existing HardRail/Periodic consumers remain kind-gated and decision-neutral to the new kind.
 
-A6 may not search global certificate inventory, infer from geometric/lattice coincidence, or reconstruct semantic authority from raw boundary-path traversal. Only verified A5 owned relations may union occurrences.
+## 6. Scope D — B2 exact binding consumers and component remap
 
-A7 lineage publication must use the union of member wedge sheet sets and the certificate evidence actually verified by A6.
+1. Replace scalar occurrence sheet/chart use in transitional class/domain duplicate keys with the complete canonical binding signature.
+2. Keep semantic `QuotientClassId` as the sorted member-OccurrenceId set; any numeric class row remains adapter-local.
+3. Make representative selection use exact support + complete binding signature + semantic OccurrenceId; representative choice cannot define semantic authority.
+4. Select HardRail/Periodic path chart/component from the relation-side interior-face binding for each endpoint.
+5. Derive path start/end charts from selected relation steps, not quotient representative faces.
+6. Remap full binding and isolation-transition tuples first; only then derive legacy region/sheet/chart lineage projections.
+7. Derive lineage `sourceCharts` from the union of all member face bindings.
 
-## Required static derivation before editing
+**Verify statically:** rows 444/448 remain selected-relation exact and no code searches alternatives because a new binding was introduced.
 
-Record in the CB4 report:
+## 7. Scope E — P1/P2 reciprocal side validation
 
-1. split-square v0/center/v2 wedge derivation and certificate orientation;
-2. one source-vertex fan crossing two seam edges with the same sheet pair;
-3. one seam-collinear directed side and the exact incident-cell interior-face derivation;
-4. exact old A5 → adapter → materializer failure flow for row140;
-5. exact duplicate downstream branches removed versus transport/content branches retained.
+Implement ordered maximal positive-length support-span evidence. Near-endpoint classification is per span:
 
-If any derivation is not unique from typed source authority, stop for Review/Definition.
+- ordinary non-collinear reciprocal sides require mapped interior-sheet agreement and membership in both endpoint wedge sets;
+- seam-collinear reciprocal sides require the same exact seam certificate/span, opposite incident faces/sheets, and reverse-compatible transition lists.
 
-## Frozen validation surface
+Use typed `QuotientReciprocalSideAuthorityMismatch` for disagreement. Do not silently fall back to representative sheet equality.
 
-Existing tests/fixtures and selector/routing files stay unchanged. Preserve exact selector449 LF SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414` and routing449 SHA-256 `9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707`.
+## 8. Required new focused identity
 
-Frozen focused order for TB4:
+Strengthen the already-pre-registered seventh identity:
 
-1. `M6CP1.SurfaceOccurrenceComplexPublishesFourSemanticCornersPerCell`
-2. `M6CP1.SourceFaceRowPermutationPreservesOccurrenceIdentity`
-3. `M6CP1.SurfaceOccurrenceComplexRejectsMalformedMissingAndDuplicateRelationEndpoints`
-4. `M6CP1.CoincidentUnrelatedOccurrencesRemainDistinct`
-5. `SurfaceCellTransitionQuotient.MultiIsolationMaterializationRetainsAllLocalSheets`
-6. `M5CP3.ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection`
-7. **new in CB4:** `M6CP1.SeamEndpointOccurrencesPublishCompleteCornerWedgeSheetAuthority`
+`M6CP1.SeamEndpointOccurrencesPublishCompleteCornerWedgeSheetAuthority`
 
-The new identity must assert at least split-square v0 and v2 `{0,1}` authority plus their exact wedge seam-certificate orientations. Do not weaken existing focused identities to make the new contract pass.
+It must construct/materialize the analytic split-square and assert at minimum:
 
-## Falsifier and stop rule
+- v0: lineage sheets `{0,1}`, non-empty `CornerWedgeIsolation`, exact expected transition orientation;
+- center: lineage sheets `{0,1}`, non-empty exact isolation lineage evidence;
+- v2: lineage sheets `{0,1}`, non-empty `CornerWedgeIsolation`, reciprocal transition orientation;
+- every other lattice vertex is single-sheet;
+- the new equivalence kind does not populate selected HardRail/Periodic relation paths;
+- source-face-row permutation preserves semantic identity and structural hash.
 
-Stop without a speculative patch if implementation would require any of the following: representative-face occurrence authority; global certificate search; geometric/lattice welding; relation-owned isolation owner for OrdinaryFront; change to `OccurrenceId`, `CellId`, `QuotientClassId`, relation-only equality, HardRail/Periodic owner semantics, selector449/routing449, or any existing test/fixture; or weakening row140 transport semantics.
+No other test may be edited unless mandatory Review explicitly amends this plan.
 
-## Compile/package gate
+## 9. Frozen static regression audit before compile
 
-Compile/package exactly the standard eight targets through `agent-compile-reusable.yml` with mandatory GMP/GMPXX: `directional_core`, `directional_pipeline`, `directional_surface_cell_authority_kernel_tests`, `directional_surface_cell_producer_tests`, `directional_surface_cell_completion_tests`, `directional_surface_cell_validation_tests`, `directional_compiled_api_tests`, `directional_benchmarks`.
+Before publishing the compile candidate, re-open but do not edit:
 
-Require `DIRECTIONAL_ENABLE_GMP=ON`, generated link evidence for `gmpxx` and `gmp`, `exactArithmeticBackend=GMP`, clean source receipts, complete recursive manifest and `runtimeExecution=false`. No Directional test, benchmark, discovery, CLI/help/version, or other generated runtime may execute.
+- focused row5 `MultiIsolationMaterializationRetainsAllLocalSheets`;
+- focused row6 periodic pair storage semantic-direction test;
+- selector rows 186, 214, 239, 444, 446, 448;
+- accepted Phase10 HardRail single-sheet assertions.
 
-## TB4 pre-registration
+Demonstrate in the Code + Build report why each remains satisfiable under the concrete implementation. Hash selector449/routing449 and prove byte identity.
 
-Compile-green advances to immutable `M6-CP1-TB4-EXEC`, consuming the exact artifact with **7 focused + selector449 = 456 fresh exact-filter processes**, exact-one selection, zero skips, benchmark 0, then exact immutable postflight.
+## 10. Compile-only build
 
-Recovery-green is **456/456 PASS** and includes: no `OccurrenceInvalidCornerAuthority`; v0/v2 complete wedge authority; selector row140 PASS with legacy `InvalidHardRailTransport` surface; selector ordinals 186/214/239/444/446/448 recovered; focused multi-isolation lineage complete; pair-swap PASS.
+Use only `.github/workflows/agent-compile-reusable.yml`, with mandatory GMP/GMPXX linkage, to compile/package the standard eight targets required by current M6 policy. Do not execute any generated Directional test, benchmark, discovery, list, help, CLI, or other binary. Package evidence must say `runtimeExecution=false` and include the normal recursive manifest/source receipts.
 
-Any mechanically valid RED is preserved and routed directly to mandatory `M6-CP1-TB4-REV`; TB4 does not repair or rerun. CB4 grants no promotion, stable-event recovery, CP1 closure, or debt credit.
+A compile failure may receive only a bounded compile correction within this same Code + Build turn. Any semantic ambiguity stops the turn instead of inventing authority.
+
+## 11. Stop rules
+
+Stop for Review/Definition if any of the following occurs:
+
+- the exact cell-interior source face is not uniquely derivable after accepted A4 orientation;
+- an admissible wedge needs more than one chart component or crosses a hard rail/region boundary;
+- complete binding semantics require changing A4 `CellId`, `OccurrenceId`, `OccurrenceRelationId`, or relation-only quotient equality;
+- row5 can pass only by inventing an A5 relation for v0/v2;
+- rows 444/448 require selecting or searching a different Periodic relation;
+- an accepted M5 typed failure must be weakened or renamed generically;
+- any frozen test, fixture, selector, routing receipt, benchmark, or unrelated source must change;
+- product runtime would need to execute during Code + Build.
+
+## 12. Exit gate
+
+CB4 may close only when:
+
+1. the concrete code matches every accepted R2 rule;
+2. the strengthened seventh identity compiles;
+3. all standard eight GMP/GMPXX targets compile/link;
+4. selector/routing bytes are unchanged;
+5. no generated Directional runtime executed;
+6. compile/package evidence is complete and source-clean.
+
+Then and only then authorize immutable `M6-CP1-TB4-EXEC` over exactly **456 fresh exact-filter processes**, followed by mandatory `M6-CP1-TB4-REV`. CB4 itself grants no runtime credit, promotion, debt discharge, or milestone closure.

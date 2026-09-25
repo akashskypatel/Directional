@@ -1,3 +1,11 @@
+## 2026-09-25 — M6-DEFN-R2 seam-incident authority amendment complete
+
+- Runtime-free Definition; exact source snapshot run/artifact `36095854118 / 10847467936` at `342a306ebd3ba68cb6e1135cf9e25726bd8ad461`; no Directional runtime or compile.
+- Froze evidence-only `CornerWedgeIsolation` lineage transitions, complete binding-consumer rules, exact seam-collinear cell-interior face selection, one-to-one A5 failure vocabulary/adapter, and P1-P4.
+- Frozen-test audit covers focused rows 5/6, selector rows 186/214/239/444/446/448 and HardRail single-sheet assertions; selector/routing bytes unchanged.
+- Re-scoped CB4 and strengthened the seventh focused identity; TB4 remains 7+449=456 if Review accepts and CB4 later compiles.
+- Accounting unchanged at **54 / 16 / 38**, debt 1. `M6-DEFN-OBS-01` recurred as +0 process-only. Exact next `M6-DEFN-R2-REV`; CB4 HELD.
+
 ## 2026-09-25 — M6 definition review: model upheld, amendments required before code
 
 - The new corner-wedge rules for isolation sheets are the right model. As written, though, they would make an existing gating test fail: two split-square corner vertices would claim two sheets with no recorded evidence.

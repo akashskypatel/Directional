@@ -1,6 +1,6 @@
 # M6 Consolidated Record
 
-**Status:** M6 ACTIVE / `M6-DEFN-R1-REV` complete: core corner-wedge model upheld, not accepted as frozen (four blocking amendments) / one stable RP-01 recurrence unchanged / candidate unpromoted / CB4 HELD / exact next `M6-DEFN-R2`
+**Status:** M6 ACTIVE / `M6-DEFN-R2` complete runtime-free; B1-B4/P1-P4 frozen pending mandatory `M6-DEFN-R2-REV` / candidate unpromoted / CB4 HELD / stable 54/16/38, debt 1 / exact next `M6-DEFN-R2-REV`
 **Last updated:** 2026-09-25
 
 Normative M6 semantics live in `Architecture_M6_Frozen_Definitions.md`. Entering accepted authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449 PASS**, SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. TB1's accepted-prefix event remains independently classified as singleton `CROSS_TEMPORARY_ITERATOR_RANGE`; TB2 row140 `VALIDATION_ORDER_SHADOWING` is recovery-proved closed but remains historical; TB3 Review adds one accepted-prefix event as an existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence. Stable accounting is **54 / 16 / 38** and produced-witness debt is **1**, M6-owned.
@@ -167,3 +167,11 @@ The review agent independently re-verified snapshot `10846121134` (source byte-i
 - **B4.** D7 contradicts frozen §4.6: A5's many-to-one `UnownedRelation` lets the specific M5 codes become generic. Fix: split the A5 codes 1:1 and map them at the adapter.
 
 Precision items P1-P4 are also carried. Accounting **54 / 16 / 38**, debt 1, +0. Exact next is runtime-free `M6-DEFN-R2` (`Architecture_M6_DEFN_R2_Amendment_Plan.md`), then `M6-DEFN-R2-REV`, then the re-scoped CB4.
+
+## 14. `M6-DEFN-R2` — four blockers resolved in runtime-free Definition; CB4 still held
+
+`M6-DEFN-R2` retains the DEFN-R1 corner-wedge model and resolves the independent Review's B1-B4/P1-P4 amendments. Lineage receives evidence-only `CornerWedgeIsolation` transitions; semantic consumers operate on complete wedge binding tuples; seam-collinear authority uses exact source support and canonical cell-interior winding rather than builder tie-break faces; A5 relation failures are one-to-one with legacy naming confined to the adapter; and ordered-span/reciprocal/singular/hard-rail precision rules are explicit.
+
+The frozen-test audit covers focused rows 5/6, selector rows 186/214/239/444/446/448 and HardRail single-sheet assertions. The split-square v0/center/v2 materialized lineage is now definitionally satisfiable without invented relations. CB4 is rewritten around these rules and remains HELD until mandatory `M6-DEFN-R2-REV`. TB4 remains **7+449=456** if later authorized. No source/test/fixture/selector/build bytes or runtime were changed/executed. Accounting remains **54 / 16 / 38**, debt 1, +0.
+
+New retained authority: `Architecture_M6_DEFN_R2_Seam_Incident_Authority_Amendment_Definition_Record.md`.

@@ -1,4 +1,22 @@
-## Resume-critical update — `M6-DEFN-R1-REV` COMPLETE (2026-09-25)
+## Resume-critical update — `M6-DEFN-R2` COMPLETE (2026-09-25)
+
+**Exact next turn: `M6-DEFN-R2-REV` (mandatory independent runtime-free Review). CB4 stays HELD.**
+
+`M6-DEFN-R2` resolved all four DEFN-R1 Review blockers and P1-P4 without touching source/test/selector bytes:
+
+- B1: evidence-only `CornerWedgeIsolation` lineage equivalence with ordered exact `(region,seam,fromSheet,toSheet)` transitions; split-square v0/center/v2 can be `{0,1}` with non-empty lineage evidence without inventing quotient relations.
+- B2: complete per-occurrence binding signatures; relation-local HardRail/Periodic selected-path charts/components; A7 lineage charts are union-of-all bindings; component remap preserves exact binding/transition tuples before legacy projections.
+- B3: source-edge collinearity is exact `SourceSupport`; cell-interior incident face is selected topologically from accepted canonical cell orientation plus source winding. The orientation premise was re-proved for uniform, periodic-chart and bounded-disk builders.
+- B4: A5 relation failures are one-to-one and mapped by the adapter to frozen M5 names; only duplicate structural owner/kind predicates may move earlier, while semantic route/transport/value/support checks stay live.
+- P1-P4: ordered maximal support spans, reciprocal near-endpoint agreement, fail-closed singular/SingularityPort exclusions, and hard-rail/region wedge limits are frozen.
+
+Frozen-test audit: focused rows 5/6, selector rows 186/214/239/444/446/448, and HardRail single-sheet assertions remain statically satisfiable. Seventh focused identity is strengthened to materialize/assert v0/center/v2 lineage. TB4 remains 7+449=456 if Review accepts and CB4 later compiles.
+
+Exact source snapshot: run/artifact `36095854118 / 10847467936`, SHA `342a306ebd3ba68cb6e1135cf9e25726bd8ad461`, provider SHA-256 `a19261e06e11293b9240b8a44c24f95042190df1d7154ba330c5e677fb9875c2`, embedded archive SHA-256 `c0ca5581851b76b1a169cdffb4c3b7243070d54225f176e6510ce909b152ab1c`, `runtimeExecution=false`.
+
+Stable accounting remains **54 / 16 / 38**, debt 1, +0. Accepted M5 authority remains package/source `10814505512 / e284fea7...` under selector449 449/449. `M6-DEFN-OBS-01` recurred as the already-known pre-READ_MODE process miss; decisive conclusions were re-derived from the verified snapshot and no new lesson/event is created.
+
+## Superseded resume note — `M6-DEFN-R1-REV` COMPLETE (2026-09-25)
 
 **Exact next turn: `M6-DEFN-R2` (runtime-free Definition amendment). CB4 stays HELD.**
 
@@ -27,24 +45,26 @@ Review must independently re-open source/evidence and re-derive: split-square v0
 
 ## Current authority
 
-`M6-DEFN-R1` is **COMPLETE / RUNTIME-FREE / SEAM-INCIDENT AUTHORITY FROZEN / CB4 RE-SCOPED AND HELD**. Exact source-snapshot authority for the Definition is run/artifact `36091204501 / 10846121134` at SHA `63330339b116c8a6a56740de5b1160e8b4195992`; no generated Directional runtime or compile occurred.
+`M6-DEFN-R2` is **COMPLETE / RUNTIME-FREE / B1-B4 + P1-P4 FROZEN FOR REVIEW / CB4 HELD**. Exact source-snapshot authority is run/artifact `36095854118 / 10847467936` at SHA `342a306ebd3ba68cb6e1135cf9e25726bd8ad461`; no generated Directional runtime or compile occurred.
 
 Accepted runtime authority is unchanged: M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7`, selector449 **449/449 PASS**. TB3 candidate `10840014758 / 660015f2...` remains unpromoted. Stable accounting remains **54 events / 16 categories / 38 recurrences**, debt **1**.
 
-The Definition freezes:
+The current Definition freezes:
 
-- a sorted complete corner-wedge sheet set per occurrence, with per-wedge face/chart/branch bindings;
-- seam certificate evidence on the corner wedge or directed side that actually crosses/runs along the seam;
-- owner-less `OrdinaryFront` and unchanged `OccurrenceRelationId`;
-- A6 side-sheet membership checks plus exact side evidence, including a special certified seam-collinear rule;
-- A7 lineage as the sorted union of member wedge sheet sets;
-- row140's legacy `InvalidHardRailTransport` string at the adapter boundary only, with duplicate downstream structural owner checks removed in CB4 while transport/content checks remain.
+- complete corner-wedge sheet sets and ordered per-face sheet/chart/branch bindings;
+- ordered wedge/side isolation transitions keyed by exact checked `(region,seam)` authority;
+- evidence-only `CornerWedgeIsolation` lineage equivalences;
+- exact source-support collinearity and canonical cell-interior incident-face selection;
+- relation-local selected-path binding rules and tuple-preserving component remap;
+- one-to-one A5 relation failures with legacy names confined to the adapter;
+- P1-P4 reciprocal/singular/hard-rail precision rules;
+- unchanged owner-less `OrdinaryFront`, HardRail/Periodic owners, occurrence/relation identities, relation-only quotient equality, and A7 union semantics.
 
 The split-square analytic witness requires v0 and v2, although each is a single occurrence, to publish `{0,1}` plus the wedge seam certificate. A source seam vertex with two seam edges sharing one sheet pair is unambiguous because certificate identity includes the seam-edge key.
 
 ## Exact next turn
 
-**`M6-DEFN-R2`** — runtime-free Definition amendment. Resolve B1-B4 and P1-P4 exactly as scoped in `Architecture_M6_DEFN_R2_Amendment_Plan.md`, including the frozen-test audit and the per-builder orientation proof. Then mandatory `M6-DEFN-R2-REV`; only after that the re-scoped `M6-CP1-CB4`.
+**`M6-DEFN-R2-REV`** — mandatory independent runtime-free Review. Re-open the R2 definition and exact source evidence; independently re-derive B1-B4/P1-P4, the split-square v0/center/v2 lineage, all three builder orientation premises, failure-map compatibility, and frozen-test audit. If accepted, authorize re-scoped `M6-CP1-CB4`; do not start CB4 in Review.
 
 ### Completed — `M6-DEFN-R1-REV`
 
@@ -54,12 +74,14 @@ If any semantic rule is ambiguous or needs representative/global-search authorit
 
 ### HELD — re-scoped `M6-CP1-CB4`
 
-Implement the accepted Definition only: corner-wedge sheet/evidence authority, directed-side seam authority, per-wedge provenance, A6 owner-less OrdinaryFront checks, A7 union lineage, and row140 adapter/duplicate-check cutover. The frozen new focused identity is `M6CP1.SeamEndpointOccurrencesPublishCompleteCornerWedgeSheetAuthority`; compile-green TB4 is **7 focused + selector449 = 456** processes.
+If R2 Review accepts, implement the accepted Definition only: complete wedge bindings/evidence, `CornerWedgeIsolation` lineage projection, exact seam-collinear interior-face authority, one-to-one failure mapping, relation-local path bindings, tuple-preserving remap, and reciprocal span validation. The frozen focused identity `M6CP1.SeamEndpointOccurrencesPublishCompleteCornerWedgeSheetAuthority` must materialize/assert v0/center/v2 lineage; compile-green TB4 is **7 focused + selector449 = 456** processes.
 
 ## Current files
 
-- `.agents/Directional/Architecture_M6_DEFN_R1_Seam_Incident_Occurrence_Sheet_Authority_Definition_Record.md` (current Definition result)
-- `.agents/Directional/Architecture_M6_DEFN_R2_Amendment_Plan.md` (exact next)
+- `.agents/Directional/Architecture_M6_DEFN_R2_Seam_Incident_Authority_Amendment_Definition_Record.md` (current Definition amendment)
+- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` (normative frozen candidate)
+- `.agents/Directional/Architecture_M6_CP1_CB4_Relation_Owned_Isolation_Equivalence_Code_Build_Plan.md` (held implementation plan)
+- `.agents/Directional/Architecture_M6_DEFN_R2_Amendment_Plan.md` (consumed R2 plan; retained pending Review)
 - `.agents/Directional/Architecture_M6_DEFN_R1_Review_Record.md` (predecessor Review)
 - `.agents/Directional/Architecture_M6_Frozen_Definitions.md` (normative)
 - `.agents/Directional/Architecture_M6_CP1_TB3_Artifact_Only_Test_Benchmark_Report.md` (current runtime report)

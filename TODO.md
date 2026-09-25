@@ -1,4 +1,16 @@
-## Review — `M6-DEFN-R1-REV` (2026-09-25)
+## Definition amendment complete — `M6-DEFN-R2` (2026-09-25)
+
+**RUNTIME-FREE / B1-B4 + P1-P4 frozen for Review / CB4 HELD / exact next `M6-DEFN-R2-REV`.** See `Architecture_M6_DEFN_R2_Seam_Incident_Authority_Amendment_Definition_Record.md`.
+
+- [x] B1: freeze evidence-only `CornerWedgeIsolation` lineage equivalence with ordered exact `(region,seam,fromSheet,toSheet)` transitions; v0/center/v2 row5 semantics now satisfiable without invented relations.
+- [x] B2: freeze complete occurrence binding signatures, relation-local selected-path charts/components, tuple-preserving remap, and union-of-all-bindings lineage charts.
+- [x] B3: freeze exact `SourceSupport` collinearity + canonical cell-interior incident-face rule and prove its orientation premise for uniform, periodic-chart and bounded-disk builders.
+- [x] B4: split A5 relation failures 1:1 and freeze compatibility-adapter mappings without weakening M5 semantic checks.
+- [x] P1-P4 and frozen-test audit over focused rows 5/6, selector rows 186/214/239/444/446/448, and HardRail single-sheet assertions.
+- [x] Re-scope CB4 implementation and strengthen the seventh focused identity; TB4 remains **7+449=456**.
+- [ ] Mandatory `M6-DEFN-R2-REV`; only an accepted Review may authorize `M6-CP1-CB4`.
+
+## Historical Review — `M6-DEFN-R1-REV` (2026-09-25)
 
 **Core corner-wedge model UPHELD; not accepted as frozen; CB4 HELD; exact next `M6-DEFN-R2`.** See `Architecture_M6_DEFN_R1_Review_Record.md` and `Architecture_M6_DEFN_R2_Amendment_Plan.md`.
 
@@ -39,11 +51,11 @@
 
 All six plus focused multi-isolation/pair-swap stop at `MissingIsolationSeamEquivalenceAuthority`. Root cause is the missing frozen A5 relation-owned isolation-certificate reference for cross-sheet ordinary relations: the transitional consumer currently reconstructs semantic owner authority from front-edge boundary-path representation. This is one stable existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence. Stable accounting is **54 / 16 / 38**, debt **1**. Row140 recovery is proved; TB1 formal 449/449 recovery clause remains carried.
 
-## HELD (re-scoped by `M6-DEFN-R1`) — `M6-CP1-CB4`
+## HELD (re-scoped by `M6-DEFN-R2`) — `M6-CP1-CB4`
 
-Runtime-free Code + Build. Implement only the already-frozen A5 typed isolation-certificate relation owner and make transitional A6 consume it. Preserve occurrence identity/sheet/support, relation-only quotient equality, tests/fixtures/selector449/routing449, Periodic/HardRail semantics and row140 recovery. Do not infer relation ownership from boundary-path traversal or global certificate inventory. Stop for Review/Definition if accepted A4/M5 authority cannot uniquely identify the owner without new semantics.
+Runtime-free Code + Build, **not authorized until `M6-DEFN-R2-REV` accepts**. Implement complete wedge bindings/evidence, evidence-only `CornerWedgeIsolation` lineage projection, exact seam-collinear interior-face authority, the one-to-one A5 failure vocabulary/adapter, relation-local selected-path charts, tuple-preserving component remap, and P1/P2 reciprocal validation. Preserve occurrence/relation identity, relation-only quotient equality, tests/fixtures/selector449/routing449, Periodic/HardRail semantic owners and all M5 content/transport falsifiers.
 
-Compile-green advances to unchanged `M6-CP1-TB4-EXEC` six focused + selector449 = **455** fresh exact-filter processes, then mandatory Review.
+Compile-green then advances to immutable `M6-CP1-TB4-EXEC` with seven focused + selector449 = **456** fresh exact-filter processes, then mandatory Review.
 
 See `.agents/Directional/Architecture_M6_CP1_TB3_Review_Record.md` and `.agents/Directional/Architecture_M6_CP1_CB4_Relation_Owned_Isolation_Equivalence_Code_Build_Plan.md`.
 
@@ -69,9 +81,9 @@ Superseded TB2 plan/report/Review authority is folded into `.agents/Directional/
 - [x] Focus vector frozen at six identities; accepted selector449 unchanged.
 - [x] Final eight-target GMP/GMPXX compile/package green; no runtime.
 
-## Latest Definition — `M6-DEFN`
+## Latest Definition — `M6-DEFN-R2`
 
-**COMPLETE / RUNTIME-FREE / FOUR PRODUCTS FROZEN.** Normative M6 semantics remain in `Architecture_M6_Frozen_Definitions.md`; CB1 implements only the first A5 seam.
+**COMPLETE / RUNTIME-FREE / B1-B4 + P1-P4 FROZEN FOR REVIEW.** Normative M6 semantics are the R2-amended `Architecture_M6_Frozen_Definitions.md`; CB4 remains HELD until `M6-DEFN-R2-REV` accepts.
 
 ## Latest Code + Build turn — `M5-CP4-CB2`
 
@@ -191,4 +203,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current corrected totals are **53 events / 16 categories / 37 recurrences**, project debt **1** (M6 only). M4 and **M5 are CLOSED / ACCEPTED**. Final M5 authority is package/source `10814505512 / e284fea7...` under selector449 **449/449** (`d4a0d1b7...d6414`). `M6-CP1-TB3-EXEC` is **COMPLETE / MECHANICALLY VALID / SEMANTIC NON-GREEN / CANDIDATE UNPROMOTED** at result/log `10844285398 / 10844020833`; exact next is mandatory runtime-free **`M6-CP1-TB3-REV`**. PR #8 remains open, draft, and unmerged.
+Current corrected totals are **54 events / 16 categories / 38 recurrences**, project debt **1** (M6 only). M4 and **M5 are CLOSED / ACCEPTED**. Final M5 authority is package/source `10814505512 / e284fea7...` under selector449 **449/449** (`d4a0d1b7...d6414`). `M6-DEFN-R2` is **COMPLETE / RUNTIME-FREE / pending mandatory independent Review**; TB3 candidate `10840014758 / 660015f2...` remains unpromoted. Exact next is **`M6-DEFN-R2-REV`**; CB4 remains HELD. PR #8 remains open, draft, and unmerged.
