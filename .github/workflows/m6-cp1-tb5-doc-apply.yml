@@ -1,0 +1,48 @@
+name: M6 CP1 TB5 Closeout Documentation Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m6-cp1-tb5-doc-apply-20260925.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m6-cp1-tb5-doc-apply
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m6-cp1-tb5-doc-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m6-cp1-tb5-doc-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1EIxGFApYopgdMiMmbtkOWSFwkhk96esh
+      patch_sha256: '128d5d73e1799529dd4dea8f5ed1f2dac4585591da1486e9824b7c961fcb6fd7'
+      base_sha: d10aaeba9f877b49b7f2362ea90c7915e8c7bde0
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'docs(agent): record M6-CP1-TB5 execution evidence'
+      retention_days: 7
+    secrets: inherit
