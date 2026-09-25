@@ -1,2 +1,2 @@
 M6-CP1-CB3 schema validation trigger
-Retry 3: validate corrected reconciliation Drive-apply caller draft.
+Compile phase: validate schema-validator self and exact compile caller draft.
