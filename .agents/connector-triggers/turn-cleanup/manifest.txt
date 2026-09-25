@@ -1,0 +1,4 @@
+# M6-CP1-TB3-EXEC temporary-state cleanup
+.agents/connector-triggers/m6-cp1-tb3-exec.txt
+.agents/connector-triggers/m6-cp1-tb3-docs-apply.txt
+.agents/connector-triggers/source-snapshot/m6-cp1-tb3-exec-20260925.txt
