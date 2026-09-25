@@ -1,0 +1,47 @@
+name: M6 CP1 TB3 Documentation Patch Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m6-cp1-tb3-docs-apply.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  id-token: write
+
+concurrency:
+  group: m6-cp1-tb3-docs-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m6-cp1-tb3-docs-apply
+      commit_run_file: false
+      trim_stale_comments: false
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m6-cp1-tb3-docs-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1txBF16-RC0oAddhlbHXvxc7YvLzLyx3z
+      patch_sha256: 183d71019ae45a08f34df7d32c8fc5fb0d17e1d4b3931ce59f86421ca41b305a
+      base_sha: 800534057e5d190d5e1cf37cb5d9db9e2212e285
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: docs: record M6-CP1-TB3 execution evidence
+    secrets: inherit
