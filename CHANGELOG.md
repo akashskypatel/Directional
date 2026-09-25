@@ -1,3 +1,10 @@
+## 2026-09-25 — `M6-CP1-TB4-EXEC`: immutable 456-process gate is mechanically valid and semantic RED
+
+- Candidate `10871935178 / 20f60bb1...` ran exactly seven focused + selector449 = **456** fresh exact-filter processes in run/job `36157505252 / 108145613689`; exact-one selection, zero skips/selection mismatches, benchmark 0, no watchdog and exact immutable postflight.
+- Outcome: focused **6/7**, selector449 **425/449**, aggregate **431/456 PASS / 25 RED**. Focused row5 and selector 186/214/239 recover from TB3; new seventh focused identity PASSes; row6 + selector 444/446/448 remain RED; **21 accepted selector identities newly turn RED**.
+- Result/log artifacts `10874311495 / 10873574681`; result SHA `32dca965...93e24`, self-manifest **932/932**; log SHA `9d50f4e6...b4757`.
+- EXEC records non-stable `M6-CP1-TB4-EXEC-CAND-01`, leaves stable accounting **54/16/38**, debt 1, and keeps the candidate unpromoted. Exact next is mandatory runtime-free `M6-CP1-TB4-REV`; no corrective implementation first.
+
 ## 2026-09-25 — M6 CP1 CB4 seam-incident authority compile green
 
 - Implemented the reviewed seam-corner authority model at source `20f60bb1412424a6f1093fc8076884d1ea23f1c5`: complete wedge bindings, exact isolation-transition lineage, relation-local path authority and reciprocal-side validation.

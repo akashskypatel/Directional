@@ -1,3 +1,17 @@
+## Resume-critical update — `M6-CP1-TB4-EXEC` COMPLETE; exact next `M6-CP1-TB4-REV` (2026-09-25)
+
+**Do not rerun TB4 or start corrective implementation. Start mandatory runtime-free `M6-CP1-TB4-REV`.**
+
+TB4 consumed CB4 candidate artifact/source `10871935178 / 20f60bb1412424a6f1093fc8076884d1ea23f1c5` immutably and executed the entire frozen gate in run/job `36157505252 / 108145613689`: **7 focused + selector449 = 456 fresh exact-filter processes**, exact-one selection, zero skips/selection mismatches, no watchdog, benchmark 0, and exact immutable postflight. Result/log artifacts are `10874311495 / 10873574681`.
+
+- focused: **6/7 PASS**; only retained pair-swap row6 is RED at `MissingIsolationSeamEquivalenceAuthority`; multi-isolation row5 and the new seventh seam-endpoint/wedge-lineage identity PASS;
+- selector449: **425/449 PASS / 24 RED**; RED ordinals `115,116,122,130,132,134,137,141,143,150,176,201,217,218,231,232,238,246,436,437,438,444,446,448`;
+- relative to TB3, focused row5 and selector 186/214/239 recover, while row6 + 444/446/448 remain RED and **21 accepted selector identities newly turn RED**;
+- result SHA-256 `32dca965d68d060c32e1e8f79ac146cf6381eb6cf5762c0854c5d792ae693e24`, evidence manifest **932/932**; log SHA-256 `9d50f4e6adb6e17a20bc13071107b41ea8113b55854a7b8dd1f2cafe8d9b4757`;
+- EXEC records non-stable `M6-CP1-TB4-EXEC-CAND-01` and makes **no stable repricing**. Stable accounting remains **54 / 16 / 38**, debt **1**. Candidate remains unpromoted; accepted runtime authority remains M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 449/449.
+
+Review must independently reopen the candidate and TB4 result/log artifacts, compare all 24 selector REDs to accepted M5 authority, adjudicate candidate grouping/root cause/recovery, and only then authorize any successor beyond Review. Full execution record: `Architecture_M6_CP1_TB4_Artifact_Only_Test_Benchmark_Report.md`.
+
 ## Resume-critical update — `M6-CP1-CB4` COMPLETE; exact next `M6-CP1-TB4-EXEC` (2026-09-25)
 
 **Do not resume CB4. Start immutable artifact-only `M6-CP1-TB4-EXEC`, then mandatory `M6-CP1-TB4-REV`.**

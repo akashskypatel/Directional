@@ -1,3 +1,16 @@
+## 2026-09-25 — `M6-CP1-TB4-EXEC`: CB4 candidate executes full 456-process gate with 21 new accepted-selector REDs — **MECHANICALLY VALID / NON-STABLE REVIEW-OWNED CANDIDATE / +0 STABLE IN EXEC**
+
+**Stable totals remain 54 events / 16 categories / 38 recurrences; project debt remains 1 (M6).** Immutable candidate `10871935178 / 20f60bb1412424a6f1093fc8076884d1ea23f1c5` executed exactly **456** fresh exact-filter processes in run/job `36157505252 / 108145613689`: focused **6/7 PASS**, selector449 **425/449 PASS**, total **431 PASS / 25 RED**, exact-one selection, zero skips/selection mismatches, benchmark 0 and exact immutable postflight. Result/log are `10874311495 / 10873574681`.
+
+### `M6-CP1-TB4-EXEC-CAND-01` — ACTIVE / NON-STABLE / 21 NEW ACCEPTED-PREFIX LOSSES / REVIEW-OWNED
+
+- **Recovered from TB3:** focused multi-isolation row5 and accepted selector ordinals **186, 214, 239** now PASS. The strengthened seventh focused seam-endpoint/wedge-lineage identity also PASSes.
+- **Carried TB3 RED:** focused pair-swap row6 plus selector **444, 446, 448** remain at `MissingIsolationSeamEquivalenceAuthority`.
+- **New accepted-selector losses:** **115, 116, 122, 130, 132, 134, 137, 141, 143, 150, 176, 201, 217, 218, 231, 232, 238, 246, 436, 437, 438**. All were PASS under accepted M5 selector449 authority.
+- **Observed surfaces only; no EXEC adjudication:** sixteen selector REDs plus focused row6 expose `MissingIsolationSeamEquivalenceAuthority` directly or through tracing `NotProductionReady`; five feature/hard-rail negatives fail because the fixture no longer reaches/exposes the required authority seam; rows 176/201/238 terminate earlier at tracing/`NotProductionReady` instead of their downstream expectation. Mandatory Review owns grouping, cause, category, recovery and any stable repricing.
+- **Mechanical integrity:** result artifact SHA-256 `32dca965...93e24`, self-manifest **932/932**, ledgers `e5adb0ef...fa754 / 3f07cbc9...726e2`; package/source/execution-view censuses are unchanged and all prohibited mutation/build/benchmark flags are false.
+- **Disposition:** candidate remains unpromoted. Accepted M5 package/source `10814505512 / e284fea7...` at selector449 449/449 remains authority. Exact successor is `M6-CP1-TB4-REV`; no corrective CB is authorized by EXEC.
+
 ## 2026-09-25 — `M6-CP1-CB4` static blocker resolved by RA-11 — **+0 EVENTS / 54/16/38 / debt 1 / CB4 RESUMES**
 
 - **Blocker (upheld):** D6/R2 required a per-face `branchRotation` in every `CornerWedgeFaceBinding`, but A4 has no per-face field branch for untraversed wedge-fan faces:

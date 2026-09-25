@@ -1,6 +1,6 @@
 # M6 Consolidated Record
 
-**Status:** M6 ACTIVE / `M6-CP1-CB4` COMPLETE compile/package green at `20f60bb1...` / candidate artifact `10871935178` unpromoted / exact next TB4 456 + Review / stable 54/16/38, debt 1
+**Status:** M6 ACTIVE / `M6-CP1-TB4-EXEC` COMPLETE mechanically valid at 431/456 PASS / candidate artifact `10871935178` unpromoted / exact next mandatory TB4 Review / stable 54/16/38, debt 1
 **Last updated:** 2026-09-25
 
 Normative M6 semantics live in `Architecture_M6_Frozen_Definitions.md`. Entering accepted authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449 PASS**, SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. TB1's accepted-prefix event remains independently classified as singleton `CROSS_TEMPORARY_ITERATOR_RANGE`; TB2 row140 `VALIDATION_ORDER_SHADOWING` is recovery-proved closed but remains historical; TB3 Review adds one accepted-prefix event as an existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence. Stable accounting is **54 / 16 / 38** and produced-witness debt is **1**, M6-owned.
@@ -222,3 +222,10 @@ The frozen static audit leaves focused rows1-4 unchanged; preserves row140 exter
 Patch application run/job `36150018237 / 108120755401` commits the exact six-file semantic patch. Mandatory compile run/job `36150253128 / 108121497728` packages all eight standard targets as artifact `10871935178` (`sha256:dc6e979ac62b4599c2c8b15528524513f3bc5b45eb9068ed508fd3d08ccf7998`) with log artifact `10871960013` (`sha256:bbdfe584c0aefa433f614f699c28686ab83c9bc8194b3f868c1db96589c2eabf`), 28/28 root manifest, clean source receipts, GMP/GMPXX link evidence and `runtimeExecution=false`.
 
 CB4 grants no runtime credit, promotion, debt discharge or CP1 closure. Stable accounting remains **54 / 16 / 38**, debt 1. Accepted runtime authority remains M5 package `10814505512` / selector449 449/449. Exact next is immutable artifact-only `M6-CP1-TB4-EXEC` over **7 focused + 449 = 456** fresh exact-filter processes, then mandatory `M6-CP1-TB4-REV`.
+## 18. `M6-CP1-TB4-EXEC` — complete 456-process gate is mechanically valid and semantic RED
+
+TB4 consumes CB4 artifact/source `10871935178 / 20f60bb1412424a6f1093fc8076884d1ea23f1c5` immutably. Run/job `36157505252 / 108145613689` executes exactly seven focused identities followed by selector449, one fresh exact-filter process per identity, with zero skips/selection mismatches, no watchdog, benchmark 0 and no configure/compile/relink/discovery/repair/mutation. Result/log authority is `10874311495 / 10873574681`; result evidence is **932/932**, and package/source/execution-view censuses are byte-and-mode identical pre/post.
+
+Runtime outcome is focused **6/7 PASS** plus selector449 **425/449 PASS**, aggregate **431/456 PASS / 25 RED**. Relative to TB3, focused multi-isolation row5 and selector 186/214/239 recover; the strengthened seventh seam-endpoint/wedge-lineage identity PASSes. Focused pair-swap row6 and selector 444/446/448 remain RED. Twenty-one accepted selector identities newly turn RED: 115, 116, 122, 130, 132, 134, 137, 141, 143, 150, 176, 201, 217, 218, 231, 232, 238, 246, 436, 437, 438.
+
+EXEC records `M6-CP1-TB4-EXEC-CAND-01` as a non-stable Review-owned envelope and does not group, classify, reprice or authorize correction. Stable accounting remains **54 / 16 / 38**, debt 1. Candidate remains unpromoted and accepted M5 package/source `10814505512 / e284fea7...` under selector449 449/449 remains runtime authority. Exact next is mandatory runtime-free `M6-CP1-TB4-REV`.
