@@ -1,7 +1,0 @@
-# M6-CP1-CB3 temporary state cleanup
-.agents/Directional/turn-payloads/m6-cp1-cb3-compile-draft.yml
-.agents/Directional/turn-payloads/m6-cp1-cb3-drive-apply-draft.yml
-.agents/connector-triggers/m6-cp1-cb3-compile.txt
-.agents/connector-triggers/m6-cp1-cb3-drive-apply.txt
-.agents/connector-triggers/m6-cp1-cb3-schema-validate.txt
-.agents/connector-triggers/source-snapshot/m6-cp1-cb3-refresh-20260925.txt

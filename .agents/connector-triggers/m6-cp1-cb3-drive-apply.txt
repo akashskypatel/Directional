@@ -1,2 +1,0 @@
-M6-CP1-CB3 Drive patch apply trigger
-Closeout docs: apply verified documentation patch base 660015f2f15359fd426e2c855aea9f4201c70216.

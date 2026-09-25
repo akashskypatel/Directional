@@ -1,3 +1,0 @@
-M6-CP1-CB3 refreshed source snapshot trigger
-Prior patch application attempt reported intended source paths changed since base.
-Purpose: freeze current semantic source before further diagnosis.
