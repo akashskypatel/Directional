@@ -1,0 +1,4 @@
+# M6-DEFN-R3 temporary-state cleanup
+.agents/connector-triggers/m6-defn-r3-drive-apply-20260925.txt
+.agents/Directional/turn-payloads/m6-defn-r3-drive-apply.yml
+.agents/connector-triggers/source-snapshot/M6-DEFN-R3-20260925T225656Z.txt
