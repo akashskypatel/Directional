@@ -1,3 +1,9 @@
+## M6 CP1 — `M6-CP1-CB4` compile green; immutable `M6-CP1-TB4-EXEC` next (2026-09-25)
+
+CB4 completed the accepted R2 + RA-1 – RA-11 seam-incident occurrence/lineage authority at semantic source `20f60bb1412424a6f1093fc8076884d1ea23f1c5`. Mandatory compile run/job `36150253128 / 108121497728` produced candidate artifact `10871935178` (`sha256:dc6e979a...f7998`) with all eight standard targets, GMP/GMPXX linkage, 28/28 manifest, clean source receipts and `runtimeExecution=false`. Selector449/routing449 remain byte-identical.
+
+The candidate is **unpromoted** and grants no runtime credit. Exact next is artifact-only `M6-CP1-TB4-EXEC`: **7 focused + selector449 = 456** fresh exact-filter processes, followed by mandatory `M6-CP1-TB4-REV`. Stable accounting remains **54 / 16 / 38**, debt 1; accepted M5 runtime authority is unchanged.
+
 ## M6 CP1 interlock — `M6-DEFN-R2-REV` accepted with amendments; `M6-CP1-CB4` next (2026-09-25)
 
 The definition chain for seam-incident authority is closed: DEFN-R1 core, the R2 amendments, and review amendments RA-1 – RA-10. `M6-CP1-CB4` is authorized under the amended plan, followed by TB4 7 + 449 = 456 and Review. Accepted runtime authority and 54/16/38, debt 1 are unchanged.
@@ -26,7 +32,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-25 (`M6-DEFN-R2` COMPLETE / runtime-free B1-B4 + P1-P4 amendment frozen for independent Review / candidate `10840014758 / 660015f2...` remains unpromoted / stable accounting 54/16/38, debt 1 / accepted M5 runtime authority unchanged. CB4 is re-scoped and HELD. Exact next `M6-DEFN-R2-REV`; only an accepting Review may authorize CB4. TB4 remains pre-registered as 7 focused + selector449 = 456.)**
+**Status date:** 2026-09-25 (`M6-CP1-CB4` COMPLETE / compile green / runtime-free at semantic source `20f60bb1412424a6f1093fc8076884d1ea23f1c5` / candidate artifact `10871935178` remains unpromoted / stable accounting 54/16/38, debt 1 / accepted M5 runtime authority unchanged. Exact next `M6-CP1-TB4-EXEC`: 7 focused + selector449 = 456 fresh exact-filter processes, followed by `M6-CP1-TB4-REV`.)**
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 
@@ -564,7 +570,7 @@ Final CP4 Review completes the bounded conjunct8 sequence: row449 was accepted p
 | Checkpoint | Semantic domain |
 |---|---|
 | `M6-DEFN` | **COMPLETE / RUNTIME-FREE.** Four immutable products, exact occurrence/quotient identity, verifier recompute-vs-repair boundary, G4 ownership and dormant-test dispositions frozen in `Architecture_M6_Frozen_Definitions.md`. |
-| `M6-CP1` | **ACTIVE / `M6-DEFN-R2-REV` ACCEPTED WITH AMENDMENTS RA-1 – RA-10 / EXACT NEXT `M6-CP1-CB4`.** Earlier: `M6-DEFN-R2` COMPLETE RUNTIME-FREE / EXACT NEXT `M6-DEFN-R2-REV` / CB4 HELD. R2 freezes B1-B4/P1-P4: evidence-only `CornerWedgeIsolation` lineage transitions, complete binding tuples, exact cell-interior seam-collinear face authority, one-to-one A5 failure mapping, ordered reciprocal span rules and hard-rail/singular fail-closed boundaries. TB3 candidate `10840014758 / 660015f2...` remains unpromoted at 447/455. Accounting is **54/16/38**, debt 1. Only an accepted R2 Review may authorize re-scoped CB4; compile-green CB4 then precedes immutable TB4 **7+449=456**, then mandatory Review. |
+| `M6-CP1` | **ACTIVE / `M6-CP1-CB4` COMPLETE / COMPILE GREEN / RUNTIME-FREE / EXACT NEXT `M6-CP1-TB4-EXEC`.** CB4 implements the accepted R2 + RA-1 – RA-11 seam-incident occurrence/lineage authority at semantic source `20f60bb1412424a6f1093fc8076884d1ea23f1c5`; candidate artifact `10871935178` is unpromoted. Selector449/routing449 remain byte-identical. Stable accounting is **54/16/38**, debt 1, and accepted M5 runtime authority is unchanged. TB4 is immutable at **7 focused + selector449 = 456** fresh exact-filter processes, followed by mandatory `M6-CP1-TB4-REV`. |
 | `M6-CP2` | verifier consumes certificates and independently recomputes elementary incidence; **never repairs producer state** |
 | `M6-CP3` | M6 exit — equal coordinates without a relation remain distinct; every owned relation consumed exactly once; source-row / output-row / scheduler permutation invariance |
 

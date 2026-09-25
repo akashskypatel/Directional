@@ -1,3 +1,15 @@
+## M6-CP1-CB4 complete — immutable TB4 next (2026-09-25)
+
+**CB4 is COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE.** Semantic source `20f60bb1412424a6f1093fc8076884d1ea23f1c5`; candidate artifact `10871935178` is unpromoted.
+
+- [x] Implement R2 + RA-1 – RA-11 complete wedge binding/isolation authority, relation-local selected-path charts, tuple-first remap, reciprocal side validation and the strengthened seventh focused identity.
+- [x] Static frozen-gate audit complete; selector449/routing449 remain byte-identical (`d4a0d1b7...d6414` / `9c88a5ed...c5707`).
+- [x] Compile/package all eight standard targets with mandatory GMP/GMPXX; run/job `36150253128 / 108121497728`, artifact `10871935178`; `runtimeExecution=false`.
+- [ ] **Exact next:** `M6-CP1-TB4-EXEC` — immutable artifact `10871935178`, exactly 7 focused + selector449 = **456** fresh exact-filter processes; no rebuild/repair.
+- [ ] Then mandatory `M6-CP1-TB4-REV`.
+
+Stable accounting remains **54 / 16 / 38**, debt 1. Accepted runtime authority remains M5 package `10814505512`; no CB4 runtime credit/promotion.
+
 ## CB4 blocker resolved — RA-11 (2026-09-25, review agent)
 
 **`M6-CP1-CB4` is UNBLOCKED; resume the same turn.** No consumer needs a per-face branch. Wedge bindings are `(face, sheet, chart)`, and the A4 corner lattice state is published as face-labelled placement provenance. See the blocker record's "Review-agent adjudication".

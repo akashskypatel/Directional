@@ -1,6 +1,6 @@
 # M6 Consolidated Record
 
-**Status:** M6 ACTIVE / `M6-CP1-CB4` blocker (per-face branch authority) resolved by review amendment RA-11 / CB4 resumes the same turn / candidate unpromoted / stable 54/16/38, debt 1
+**Status:** M6 ACTIVE / `M6-CP1-CB4` COMPLETE compile/package green at `20f60bb1...` / candidate artifact `10871935178` unpromoted / exact next TB4 456 + Review / stable 54/16/38, debt 1
 **Last updated:** 2026-09-25
 
 Normative M6 semantics live in `Architecture_M6_Frozen_Definitions.md`. Entering accepted authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449 PASS**, SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. TB1's accepted-prefix event remains independently classified as singleton `CROSS_TEMPORARY_ITERATOR_RANGE`; TB2 row140 `VALIDATION_ORDER_SHADOWING` is recovery-proved closed but remains historical; TB3 Review adds one accepted-prefix event as an existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence. Stable accounting is **54 / 16 / 38** and produced-witness debt is **1**, M6-owned.
@@ -213,3 +213,12 @@ The review agent upheld these facts but resolved the block by narrowing D6 (**RA
 
 CB4 resumes the same turn; TB4 stays 456. Accounting 54/16/38, debt 1, +0.
 
+## 17. `M6-CP1-CB4` — complete seam-incident authority implemented; candidate compiled
+
+CB4 resumes after RA-11 and completes the accepted R2 + RA-1 – RA-11 scope at exact semantic source `20f60bb1412424a6f1093fc8076884d1ea23f1c5`. A5 now publishes complete `(face,sheet,chart)` corner-wedge bindings, RA-11 labelled corner placement provenance, exact ordered isolation transition evidence and one-to-one typed failures. A6 carries `CornerWedgeIsolation` as evidence-only lineage, uses complete binding signatures for the transitional class key, derives selected relation path charts/components from the selected relation sides, and validates reciprocal ordinary/seam-collinear side authority without representative-sheet fallback. Component aggregation remaps exact binding/isolation tuples before legacy projections. A7 lineage takes charts/sheets from the complete member bindings. The strengthened split-square identity compiles.
+
+The frozen static audit leaves focused rows1-4 unchanged; preserves row140 externally as `InvalidHardRailTransport` via the adapter; preserves row5 multi-isolation wedge-union evidence, row6 semantic periodic direction, rows186/214/239 isolation/remap/reciprocal semantics and rows444/446/448 selected Periodic relation semantics. Selector449 is byte-identical `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414` (449 LF rows) and routing449 is `9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707`.
+
+Patch application run/job `36150018237 / 108120755401` commits the exact six-file semantic patch. Mandatory compile run/job `36150253128 / 108121497728` packages all eight standard targets as artifact `10871935178` (`sha256:dc6e979ac62b4599c2c8b15528524513f3bc5b45eb9068ed508fd3d08ccf7998`) with log artifact `10871960013` (`sha256:bbdfe584c0aefa433f614f699c28686ab83c9bc8194b3f868c1db96589c2eabf`), 28/28 root manifest, clean source receipts, GMP/GMPXX link evidence and `runtimeExecution=false`.
+
+CB4 grants no runtime credit, promotion, debt discharge or CP1 closure. Stable accounting remains **54 / 16 / 38**, debt 1. Accepted runtime authority remains M5 package `10814505512` / selector449 449/449. Exact next is immutable artifact-only `M6-CP1-TB4-EXEC` over **7 focused + 449 = 456** fresh exact-filter processes, then mandatory `M6-CP1-TB4-REV`.

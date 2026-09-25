@@ -1,3 +1,21 @@
+## Resume-critical update — `M6-CP1-CB4` COMPLETE; exact next `M6-CP1-TB4-EXEC` (2026-09-25)
+
+**Do not resume CB4. Start immutable artifact-only `M6-CP1-TB4-EXEC`, then mandatory `M6-CP1-TB4-REV`.**
+
+CB4 implemented the accepted R2 + RA-1 – RA-11 seam-incident occurrence/lineage authority at exact semantic source `20f60bb1412424a6f1093fc8076884d1ea23f1c5`. The candidate is compile/package green and **unpromoted**. No generated Directional runtime executed.
+
+- patch apply run/job `36150018237 / 108120755401`; exact patch SHA-256 `1be2b2b3785d46bdde23cd3d24af4346a649591a430595960e44a557b279235b`; applied source `20f60bb1...`;
+- compile run/job `36150253128 / 108121497728`; result artifact `10871935178`, SHA-256 `dc6e979ac62b4599c2c8b15528524513f3bc5b45eb9068ed508fd3d08ccf7998`; log artifact `10871960013`, SHA-256 `bbdfe584c0aefa433f614f699c28686ab83c9bc8194b3f868c1db96589c2eabf`;
+- all eight standard targets compiled/linked with GMP/GMPXX; root manifest 28/28; source clean; `runtimeExecution=false`;
+- selector449 remains 449 LF rows at `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`; routing449 remains `9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707`;
+- strengthened focused identity `M6CP1.SeamEndpointOccurrencesPublishCompleteCornerWedgeSheetAuthority` compiles; no runtime result is claimed.
+
+TB4 is frozen at **7 focused + selector449 = 456 fresh exact-filter processes**. Use artifact `10871935178` immutably; do not rebuild or repair it. The Test + Benchmark turn must obey the artifact-only extraction/mode rules and update `Regression_Root_Cause_Tracker.md` for every observed regression before closeout.
+
+Stable accounting remains **54 / 16 / 38**, debt **1**. Accepted runtime authority remains M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449**. CB4 grants no runtime credit or promotion.
+
+Full evidence: `Architecture_M6_CP1_CB4_Code_Build_Report.md`.
+
 ## Resume-critical update — `M6-CP1-CB4` UNBLOCKED by RA-11: resume the same turn (2026-09-25T09:41:20Z)
 
 **Resume `M6-CP1-CB4`.** This is the same turn: keep `Started at 2026-09-25T06:19:30Z` and set a new `Resumed at`. It is not a new turn, and no Definition turn is pending.

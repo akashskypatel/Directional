@@ -1,3 +1,10 @@
+## 2026-09-25 — `M6-CP1-CB4`: complete seam-incident occurrence/lineage authority compiles green
+
+- Exact semantic source `20f60bb1412424a6f1093fc8076884d1ea23f1c5` implements R2 + RA-1 – RA-11: complete `(face,sheet,chart)` wedge bindings, labelled A4 corner placement provenance, exact corner-wedge isolation transitions, evidence-only `CornerWedgeIsolation` lineage, relation-local path charts/components, tuple-first component remap, exact reciprocal side validation, and the one-to-one A5 failure adapter.
+- The strengthened seventh identity `M6CP1.SeamEndpointOccurrencesPublishCompleteCornerWedgeSheetAuthority` compiles and asserts split-square v0/center/v2 two-sheet lineage/evidence plus row-invariant semantics. Existing frozen gates were audited statically; selector449/routing449 remain exact at `d4a0d1b7...d6414` / `9c88a5ed...c5707`.
+- Patch apply run/job `36150018237 / 108120755401` produced the semantic commit. Mandatory compile run/job `36150253128 / 108121497728` packages all eight standard targets as artifact `10871935178` (`sha256:dc6e979a...f7998`) with log artifact `10871960013`, mandatory GMP/GMPXX, root manifest 28/28, clean source receipts and `runtimeExecution=false`.
+- No generated Directional runtime executed. Candidate remains unpromoted; accounting stays **54/16/38**, debt 1. Exact next `M6-CP1-TB4-EXEC` is immutable artifact-only, **7 focused + selector449 = 456**, then mandatory `M6-CP1-TB4-REV`.
+
 ## 2026-09-25 — `M6-CP1-CB4` per-face branch blocker resolved by review amendment RA-11
 
 - Re-verified the CB4 blocker (snapshot `10850013454` digest `ff39ad51`, source equivalent to `660015f2`). A4 cannot supply a per-face branch for untraversed wedge-fan faces, and the periodic builder leaves the corner branch `0`.

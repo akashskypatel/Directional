@@ -1,6 +1,8 @@
 # M6-CP1-CB4 — Complete Seam-Incident Occurrence/Lineage Authority Code + Build Plan
 
-**Status:** AUTHORIZED by `M6-DEFN-R2-REV` (accepted with review amendments RA-1 – RA-10). Implement R2 **as amended by RA-1 – RA-10** (end of `Architecture_M6_Frozen_Definitions.md`; rationale in `Architecture_M6_DEFN_R2_Review_Record.md` §3). Where this plan and an RA differ, the RA governs.
+**Status:** COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE at semantic source `20f60bb1412424a6f1093fc8076884d1ea23f1c5`; candidate artifact `10871935178` is unpromoted. Exact next: `M6-CP1-TB4-EXEC`, then `M6-CP1-TB4-REV`.
+
+**Implementation authority:** `M6-DEFN-R2-REV` accepted R2 with RA-1 – RA-10; RA-11 subsequently resolved the per-face branch blocker. This plan was executed as amended by RA-1 – RA-11. Full compile/static evidence is `Architecture_M6_CP1_CB4_Code_Build_Report.md`.
 
 > **RA-11 (2026-09-25, resolves the per-face branch blocker; CB4 resumes the same turn):**
 > - `CornerWedgeFaceBinding` = (face, sheet, chart), with no branch.

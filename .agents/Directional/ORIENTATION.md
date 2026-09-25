@@ -1,3 +1,10 @@
+## Currency — `M6-CP1-CB4` COMPLETE / compile green; exact next `M6-CP1-TB4-EXEC` (2026-09-25 UTC)
+
+CB4 implements R2 + RA-1 – RA-11 at semantic source `20f60bb1412424a6f1093fc8076884d1ea23f1c5`. Candidate artifact `10871935178` is compile/package green with all eight standard targets, mandatory GMP/GMPXX, 28/28 manifest, clean source receipts and `runtimeExecution=false`. Selector449/routing449 are unchanged. The candidate is unpromoted and has no runtime credit.
+
+**Exact next:** immutable artifact-only `M6-CP1-TB4-EXEC`, exactly **7 focused + selector449 = 456** fresh exact-filter processes, then `M6-CP1-TB4-REV`. Stable accounting **54/16/38**, debt 1.
+
+### Superseded currency note
 ## Currency — `M6-CP1-CB4` unblocked by RA-11; resume CB4 (2026-09-25 UTC)
 
 CB4 stopped on a real gap: A4 publishes no per-face field branch for untraversed corner-fan faces. The review agent resolved it by **narrowing D6 (RA-11)** instead of widening A4. Nothing in A5-A7 consumes a per-face branch; the only reader is the transitional class key.
@@ -58,9 +65,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
- > **Current milestone authority (2026-09-25, after `M6-DEFN-R2-REV`):** R2 accepted with review amendments RA-1 – RA-10; exact next **`M6-CP1-CB4`** (amended plan), then TB4 456 + Review. Earlier state follows. R2 is COMPLETE / runtime-free and freezes B1-B4/P1-P4 for mandatory independent Review. `CornerWedgeIsolation` is lineage evidence only; complete binding tuples are semantic authority; seam-collinear interior faces derive from accepted cell orientation/source winding; relation failures are one-to-one with legacy names adapter-only. M4 and M5 remain CLOSED / ACCEPTED. CB3 candidate `10840014758 / 660015f2...` remains unpromoted after TB3 447/455. Stable accounting remains **54/16/38**, debt 1. `M6-CP1-CB4` is re-scoped but HELD. Exact next is **`M6-DEFN-R2-REV`**.
+ > **Current milestone authority (2026-09-25, after `M6-CP1-CB4`):** R2 + RA-1 – RA-11 are implemented at semantic source `20f60bb1412424a6f1093fc8076884d1ea23f1c5`; candidate artifact `10871935178` is compile/package green and unpromoted with `runtimeExecution=false`. M4 and M5 remain CLOSED / ACCEPTED. Stable accounting remains **54/16/38**, debt 1. Exact next is immutable **`M6-CP1-TB4-EXEC`** over 456 processes, then mandatory Review.
 
-**Currency.** `M6-DEFN-R2-REV` (review agent), 2026-09-25 UTC
+**Currency.** `M6-CP1-CB4` (implementation), 2026-09-25 UTC
 
 **Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` §16.3 is the active same-region nonzero-Z4 contract. `PeriodicRelationId` remains carrier-content identity; relation rotation is the gauge-adjusted quotient `Q`, action/transport is relation value, and canonical storage may invert representation only after semantic Forward -> Reverse authority is fixed. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 

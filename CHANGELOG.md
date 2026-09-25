@@ -1,3 +1,9 @@
+## 2026-09-25 — M6 CP1 CB4 seam-incident authority compile green
+
+- Implemented the reviewed seam-corner authority model at source `20f60bb1412424a6f1093fc8076884d1ea23f1c5`: complete wedge bindings, exact isolation-transition lineage, relation-local path authority and reciprocal-side validation.
+- Compile run `36150253128` produced candidate artifact `10871935178`; all eight standard targets linked with GMP/GMPXX, package manifest 28/28, and no generated Directional runtime executed.
+- Selector449/routing449 remain unchanged. The candidate is unpromoted; next is the immutable 456-process `M6-CP1-TB4-EXEC` followed by Review. Accounting remains 54/16/38, debt 1.
+
 ## 2026-09-25 — M6 CB4 unblocked: the missing per-face value turned out to be unneeded
 
 - CB4 stopped because the definition asked for a per-face branch value that the upstream product doesn't provide for every face.
