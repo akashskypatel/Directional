@@ -1,33 +1,16 @@
-## Latest Test + Benchmark turn — `M6-CP1-TB3-EXEC`
+## Latest Review turn — `M6-CP1-TB3-REV`
 
-**COMPLETE / MECHANICALLY VALID / SEMANTIC NON-GREEN / REVIEW REQUIRED / CANDIDATE UNPROMOTED.** Immutable candidate `10840014758 / 660015f2f15359fd426e2c855aea9f4201c70216` executed in run/job `36084948588 / 107914657100` as exactly **455 fresh exact-filter processes**: focused **4/6**, selector449 **443/449**, total **447/455 PASS**, exact-one selection, zero skips/selection mismatches and benchmark 0. Result/log are `10844285398 / 10844020833`; result manifest is **929/929** and immutable postflight is exact.
+**COMPLETE / ONE NEW STABLE RP-01 RECURRENCE / CANDIDATE UNPROMOTED.** Independent Review upholds TB3 at focused **4/6** + selector449 **443/449** = **447/455 PASS** with exact immutable postflight. Accepted M5 result `10815911956` independently re-verifies **449/449 PASS**, confirming selector losses **186, 214, 239, 444, 446, 448** are accepted-prefix regressions.
 
-Row140 is restored to PASS through `InvalidHardRailTransport`, and `OccurrenceInvalidCornerAuthority` is absent from all 455. Eight processes instead stop at `MissingIsolationSeamEquivalenceAuthority`: focused multi-isolation and pair-swap, plus accepted selector ordinals **186, 214, 239, 444, 446, 448**. They are grouped as non-stable `M6-CP1-TB3-EXEC-CAND-01`; final classification is Review-owned. Stable accounting remains **53 / 16 / 37**, debt **1**; candidate remains unpromoted.
+All six plus focused multi-isolation/pair-swap stop at `MissingIsolationSeamEquivalenceAuthority`. Root cause is the missing frozen A5 relation-owned isolation-certificate reference for cross-sheet ordinary relations: the transitional consumer currently reconstructs semantic owner authority from front-edge boundary-path representation. This is one stable existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence. Stable accounting is **54 / 16 / 38**, debt **1**. Row140 recovery is proved; TB1 formal 449/449 recovery clause remains carried.
 
-## Exact next turn — `M6-CP1-TB3-REV`
+## Exact next turn — `M6-CP1-CB4`
 
-Mandatory runtime-free independent Review. Reopen the candidate and TB3 result/log evidence, verify the 455-process ledger/postflight, adjudicate the common isolation-equivalence failure family and prior TB1/TB2 candidate status, update accounting only if independently justified, and freeze the next bounded CP1 action. No compile/runtime or semantic mutation is authorized in Review.
+Runtime-free Code + Build. Implement only the already-frozen A5 typed isolation-certificate relation owner and make transitional A6 consume it. Preserve occurrence identity/sheet/support, relation-only quotient equality, tests/fixtures/selector449/routing449, Periodic/HardRail semantics and row140 recovery. Do not infer relation ownership from boundary-path traversal or global certificate inventory. Stop for Review/Definition if accepted A4/M5 authority cannot uniquely identify the owner without new semantics.
 
-See `.agents/Directional/Architecture_M6_CP1_TB3_Artifact_Only_Test_Benchmark_Report.md`.
+Compile-green advances to unchanged `M6-CP1-TB4-EXEC` six focused + selector449 = **455** fresh exact-filter processes, then mandatory Review.
 
-## Latest Review turn — `M6-CP1-TB2-REV`
-
-**COMPLETE / TB2 MECHANICS UPHELD / CANDIDATE UNPROMOTED.** Review independently re-verifies candidate `10834642074 / 724316a5...`, TB2 result/log `10835579933 / 10836175636`, accepted M5 authority, and the frozen recovery rule. TB2 remains focused **5/6** + selector449 **448/449** = **453/455 PASS** with exact immutable postflight.
-
-CB2 clears `OccurrenceInvalidCornerAuthority` from all 455 and pair-swap PASSes, but formal TB1 CAND-01 recovery remains open because its pre-registration also requires selector449 449/449. Selector row140 is one new stable singleton **`VALIDATION_ORDER_SHADOWING`** event: A5's generic HardRail owner-mismatch rejection shadows the accepted `InvalidHardRailTransport` guard. Focused multi-isolation is a valid non-stable CP1 mechanism failure: a checked two-sheet certificate exists, but no quotient lineage carries both sheets; the legacy consumed-seam count is only certificate inventory. Stable accounting is now **53 / 16 / 37**, debt **1**.
-
-
-## Latest Test + Benchmark turn — `M6-CP1-TB2-EXEC`
-
-**COMPLETE / MECHANICALLY VALID / SEMANTIC NON-GREEN / REVIEW REQUIRED.** Immutable candidate `10834642074 / 724316a5b3f49e33dc8e649989bb413b3dc6b7c9` executed in run/job `36063687138 / 107848407035` as exactly **455 fresh exact-filter processes**: focused **5/6 PASS**, selector449 **448/449 PASS**, total **453/455 PASS**, exact-one selection, zero skips/crashes/selection mismatches and benchmark 0. Result/log are `10835579933 / 10836175636`; result manifest is 933/933 and immutable postflight is exact.
-
-The TB1 `OccurrenceInvalidCornerAuthority` symptom is absent from all 455 processes and the retained pair-swap identity PASSes. Two different-first-failure surfaces remain: focused `MultiIsolationMaterializationRetainsAllLocalSheets` has `foundMultiIsolationLineage=false`, and accepted selector449 row140 `HardRailPairExplicitRailIdMismatchRejectsStrictTransport` returns `OccurrenceUnownedRelation` instead of expected `InvalidHardRailTransport`. They are recorded as new non-stable Review-owned candidates. Formal TB1 recovery is not claimed in EXEC because the pre-registered rule also requires selector449 449/449. Stable accounting remains **52 / 15 / 37**, debt 1; candidate remains unpromoted.
-
-## Exact next turn — `M6-CP1-TB2-REV`
-
-Mandatory runtime-free independent Review. Re-open candidate/result/log evidence, adjudicate TB1 recovery and the two new TB2 candidates, update accounting only if independently justified, and freeze the next bounded CP1 action. No compile/runtime or semantic mutation is authorized in Review.
-
-See `.agents/Directional/Architecture_M6_CP1_TB2_Artifact_Only_Test_Benchmark_Report.md`.
+See `.agents/Directional/Architecture_M6_CP1_TB3_Review_Record.md` and `.agents/Directional/Architecture_M6_CP1_CB4_Relation_Owned_Isolation_Equivalence_Code_Build_Plan.md`.
 
 ## Latest Code + Build turn — `M6-CP1-CB2`
 
@@ -39,7 +22,7 @@ Mandatory GMP/GMPXX compile run/job `36061049526 / 107839861958` packages all ei
 
 Consume artifact `10834642074` immutably. Execute the unchanged six focused identities followed by selector449 as exactly **455 fresh exact-filter processes**, exact-one selection and zero skips, benchmark 0, then exact immutable postflight. Recovery of `M6-CP1-TB1-EXEC-CAND-01` requires no `OccurrenceInvalidCornerAuthority` anywhere plus selector449 **449/449**. A focused RED with a different first failure is a new candidate. Every mechanically valid outcome advances to mandatory runtime-free `M6-CP1-TB2-REV` with no TB repair/rerun.
 
-The consumed TB2 plan is folded into `.agents/Directional/M6_Consolidated_Record.md`; current runtime evidence is `.agents/Directional/Architecture_M6_CP1_TB2_Artifact_Only_Test_Benchmark_Report.md`.
+Superseded TB2 plan/report/Review authority is folded into `.agents/Directional/M6_Consolidated_Record.md`; current retained runtime evidence is `.agents/Directional/Architecture_M6_CP1_TB3_Artifact_Only_Test_Benchmark_Report.md`, with adjudication in `.agents/Directional/Architecture_M6_CP1_TB3_Review_Record.md`.
 
 ## Latest Code + Build turn — `M6-CP1-CB1`
 

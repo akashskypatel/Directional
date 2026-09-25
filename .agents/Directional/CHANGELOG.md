@@ -1,5 +1,9 @@
 ## 2026-09-25 — `M6-CP1-TB3-EXEC`: 455-process gate mechanically valid, semantic RED
 
+## 2026-09-25 — `M6-CP1-TB3-REV`: relation-owned isolation-equivalence gap classified; CB4 frozen
+
+Independent runtime-free Review re-verifies CB3 candidate `10840014758 / 660015f2...`, TB3 result `10844285398` (**929/929**, 455 processes) and accepted M5 result `10815911956` (**911/911**, 449/449). TB3 remains focused 4/6 + selector449 443/449 = 447/455 with exact-one/zero-skip and immutable postflight. Six accepted losses plus two focused controls share `MissingIsolationSeamEquivalenceAuthority`. Static source and frozen A5/A6 contracts prove one existing-`RP-01` defect: ordinary A5 relations omit the required typed isolation-certificate reference while the transitional consumer reconstructs semantic owner authority from front-edge boundary-path representation. Stable accounting advances to **54/16/38**, debt 1; candidate remains unpromoted. Row140 validation-order recovery is proved. Exact next: runtime-free `M6-CP1-CB4`, then unchanged 455-process TB4 + Review.
+
 - Consumed candidate `10840014758 / 660015f2...` immutably in run/job `36084948588 / 107914657100`; executed exactly six focused + selector449 = **455** fresh exact-filter processes with exact-one selection, zero skips and benchmark 0.
 - Outcome: focused **4/6**, selector449 **443/449**, aggregate **447/455 PASS**; row140 is restored and `OccurrenceInvalidCornerAuthority` is absent.
 - Eight REDs share `MissingIsolationSeamEquivalenceAuthority`: focused multi-isolation/pair-swap plus selector ordinals 186/214/239/444/446/448. Recorded non-stable `M6-CP1-TB3-EXEC-CAND-01`; stable totals stay **53/16/37**, debt 1 pending Review.

@@ -1,3 +1,21 @@
+## 2026-09-25 — `M6-CP1-TB3-REV`: six accepted losses expose missing A5 relation-owned isolation certificate authority — **ONE NEW STABLE EVENT / EXISTING `RP-01` RECURRENCE / CB4 FROZEN**
+
+**Stable totals advance to 54 events / 16 categories / 38 recurrences; project debt remains 1 (M6).** Independent Review re-opens candidate `10840014758 / 660015f2f15359fd426e2c855aea9f4201c70216`, TB3 result `10844285398`, accepted M5 result `10815911956`, selector449/routing449, frozen M6 definitions and exact current source. TB3 mechanics are upheld at focused **4/6** + selector **443/449** = **447/455 PASS**, exact-one selection, zero skips, benchmark 0 and exact immutable postflight. The accepted predecessor independently re-verifies **449/449 PASS**.
+
+### `M6-CP1-TB3-EXEC-CAND-01` — STABLE / `RP-01 AUTHORITY_DOMAIN_CONFLATION` recurrence / owner `M6-CP1-CB4 -> TB4-EXEC -> TB4-REV`
+
+- **Accepted-green loss:** selector449 ordinals **186, 214, 239, 444, 446, 448** were PASS on accepted M5 authority and all RED on CB3 candidate authority. Focused multi-isolation and pair-swap hit the same first-failure family but add no stable events.
+- **Common first failure:** all eight affected processes stop at `MissingIsolationSeamEquivalenceAuthority`. Row140 separately recovers to PASS through `InvalidHardRailTransport`; `OccurrenceInvalidCornerAuthority` remains absent.
+- **Root cause:** frozen A5 requires every owned relation to publish one typed relation owner/certificate reference, and A6 may consume only that declared authority. Current `SurfaceOccurrenceRelation` publishes ordinary endpoints plus front-edge indices only; the transitional materializer later tries to reconstruct cross-sheet equivalence from each front edge's owning cell-side `boundaryPaths[*].entryRoute`. CB3's corrected outgoing-side occurrence sheet authority makes legitimate relation endpoints span sheets, but that representation traversal need not cross the isolation seam that semantically owns the relation. The later guard therefore sees cross-sheet endpoints with no relation-owned seam. Replacing this with global certificate inventory would also be wrong because unrelated valid certificates are decision-neutral.
+- **Category:** existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION`: representation-path traversal is being consumed as semantic relation-certificate ownership instead of the A5 relation carrying its accepted typed owner. One common accepted-prefix PASS -> RED mechanism yields one stable event; categories stay 16 and recurrences advance 37 -> 38.
+- **Recovery:** CB4 must implement the already-frozen relation-owned isolation-certificate reference at A5 and make A6/transitional materialization consume that exact reference. It must preserve occurrence identity/sheet/support, relation-only union, HardRail/Periodic ownership, tests/fixtures/selectors and the no-global-certificate-substitution rule. If accepted A4/M5 authority cannot uniquely identify the relation owner without new semantics, stop for Review/Definition.
+
+### Prior M6 candidate dispositions
+
+- `M6-CP1-TB2-REV-CAND-01` / `VALIDATION_ORDER_SHADOWING`: **CLOSED / RECOVERY PROVED** by fresh row140 PASS; historical stable event remains counted.
+- `M6-CP1-TB2-REV-CAND-02`: **MERGED INTO TB3 CAND-01 / STILL OPEN**; its downstream lineage failure is superseded by the earlier proved missing relation-owner boundary.
+- `M6-CP1-TB1-EXEC-CAND-01` / `CROSS_TEMPORARY_ITERATOR_RANGE`: original mechanism remains cleared, but formal recovery stays open because its frozen rule also requires selector449 **449/449** and TB3 is 443/449.
+
 ## 2026-09-25 — `M6-CP1-TB3-EXEC`: HardRail row140 recovers; eight processes stop at relation-owned isolation-equivalence guard — **MECHANICALLY VALID / ONE NON-STABLE REVIEW-OWNED CANDIDATE FAMILY / +0 STABLE IN EXEC**
 
 **Stable totals remain 53 events / 16 categories / 37 recurrences; project debt remains 1 (M6).** Immutable candidate `10840014758 / 660015f2f15359fd426e2c855aea9f4201c70216` executed exactly **455** fresh exact-filter processes in run/job `36084948588 / 107914657100`: focused **4/6 PASS**, selector449 **443/449 PASS**, total **447 PASS / 8 RED**, exact-one selection, zero skips/selection mismatches, benchmark 0 and exact immutable postflight. Result/log are `10844285398 / 10844020833`.
