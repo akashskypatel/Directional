@@ -1,3 +1,0 @@
-M6-CP1-TB5 draft materialization snapshot
-Purpose: materialize the exact placeholder workflow draft through the required orchestration writer
-Retry: 0
