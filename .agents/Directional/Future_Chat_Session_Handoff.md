@@ -1,3 +1,15 @@
+## Resume-critical update — `M6-CP1-CB4` BLOCKED on missing per-face branch authority (2026-09-25)
+
+**Do not continue CB4 implementation or start TB4. No production/test patch or compile candidate was created.**
+
+Static derivation against exact source snapshot run/artifact `36104814370 / 10850013454` proved that accepted D6/R2 requires every `CornerWedgeFaceBinding` to carry the exact `branchRotation` for that source face, but immutable A4 `SurfacePhaseFrontProduct` does not publish a per-face branch table or field-transport authority from which A5 can derive that value for an intermediate corner-wedge face. `SourceChartTransitionGraph` carries chart/simplex connectivity rather than field branch transport, and isolation-seam certificates cover only seam edges, not ordinary same-sheet fan edges. Any CB4 implementation would therefore have to invent a representative value, consume raw field authority outside the frozen A5 input boundary, or change the A4 product. All are outside the authorized plan.
+
+- Blocker record: `.agents/Directional/Architecture_M6_CP1_CB4_Per_Face_Branch_Authority_Blocker.md`.
+- Exact snapshot: source/event SHA `a304bd0b36011f2c100b8a6c127d8ba3c11810cf`; provider digest `ff39ad5104fbfadbb245c4e406428588b5c8142d4b84d723c876c2b7704ebb12`; embedded archive SHA-256 `bb5d91e6aca68fd491ad9c643d406e8273a520a96b1f5a814ac8b896baac8d2e`; 5314/5314 manifest rows verified; `runtimeExecution=false`.
+- Stable accounting, debt, accepted M5 package/source, selector449 and routing449 are unchanged. This is a static definition/authority gap, not a runtime event.
+- Required resolution: a bounded Definition amendment must either preserve A4-computed per-face branch authority in an authorized A4 product field, or redefine the binding branch value so it is derivable from existing A4 products with proofs for uniform, periodic-chart and bounded-disk producers.
+- **No authorized successor turn ID is frozen yet.** Repository `STATUS` is BLOCKED with successor `UNKNOWN`; do not invent a Definition turn identifier.
+
 ## Resume-critical update — exact next turn is `M6-CP1-CB4` (recovery reconciliation, 2026-09-25T06:15:13Z)
 
 **Start `M6-CP1-CB4` as a new runtime-free Code + Build turn. Nothing is held; no definition or review turn is pending.**

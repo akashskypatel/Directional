@@ -1,3 +1,11 @@
+## CB4 static blocker — per-face branch authority unavailable at A5 boundary (2026-09-25)
+
+**`M6-CP1-CB4` stopped before production/test mutation and before compile.** Exact snapshot inspection shows D6/R2 requires a per-source-face `branchRotation` in every `CornerWedgeFaceBinding`, while immutable A4 `SurfacePhaseFrontProduct` exposes only corner-selected `LocalLatticeState.branchRotation`, side-segment branch data, and isolation-seam transport certificates. It does not preserve the builders' complete per-face branch table or an ordinary-edge field-transport atlas. An intermediate corner-wedge face can therefore have no derivable exact branch value at A5. See `Architecture_M6_CP1_CB4_Per_Face_Branch_Authority_Blocker.md`.
+
+- [ ] Freeze a Definition amendment resolving the per-face branch authority source; no turn ID is authorized yet.
+- [ ] Only after independent acceptance, re-authorize/resume CB4 under the amended immutable boundary.
+- [ ] TB4 remains held; no compile artifact or runtime credit exists for this CB4 attempt.
+
 ## Review — `M6-DEFN-R2-REV` (2026-09-25)
 
 **ACCEPTED WITH REVIEW AMENDMENTS RA-1 – RA-10; exact next `M6-CP1-CB4`.** See `Architecture_M6_DEFN_R2_Review_Record.md`.
