@@ -1,8 +1,15 @@
-## 2026-09-25 — `M6-CP1-TB3-EXEC`: immutable CP1 recovery gate remains semantic RED
+## 2026-09-25 — M6 CP1 TB3 review: CB4 put on hold pending a definition decision
+
+- An independent check confirms the TB3 result: 447/455, and six accepted rows now fail. Stable accounting stays **54/16/38**, debt 1.
+- The CB3 change that takes each occurrence's sheet from its outgoing side is a representative choice, not an authority. On a seam, a cell's corner can cover two sheets, and the split-square witness already drops a sheet at two vertices.
+- Attaching seam certificates to relations puts them on the wrong object. It would also be ambiguous at seam vertices.
+- `M6-CP1-CB4` is on hold. Next is runtime-free `M6-DEFN-R1`, which decides how isolation sheets and seam certificates are owned at seam corners, followed by its review.
 
 ## 2026-09-25 — `M6-CP1-TB3-REV`: relation-owned isolation-equivalence gap classified; CB4 frozen
 
 Independent runtime-free Review re-verifies CB3 candidate `10840014758 / 660015f2...`, TB3 result `10844285398` (**929/929**, 455 processes) and accepted M5 result `10815911956` (**911/911**, 449/449). TB3 remains focused 4/6 + selector449 443/449 = 447/455 with exact-one/zero-skip and immutable postflight. Six accepted losses plus two focused controls share `MissingIsolationSeamEquivalenceAuthority`. Static source and frozen A5/A6 contracts prove one existing-`RP-01` defect: ordinary A5 relations omit the required typed isolation-certificate reference while the transitional consumer reconstructs semantic owner authority from front-edge boundary-path representation. Stable accounting advances to **54/16/38**, debt 1; candidate remains unpromoted. Row140 validation-order recovery is proved. Exact next: runtime-free `M6-CP1-CB4`, then unchanged 455-process TB4 + Review.
+
+## 2026-09-25 — `M6-CP1-TB3-EXEC`: immutable CP1 recovery gate remains semantic RED
 
 - Candidate `10840014758 / 660015f2...` executed exactly 455 fresh exact-filter processes: **447 PASS / 8 RED**, exact-one, zero skips, benchmark 0, immutable postflight exact.
 - HardRail row140 recovers and the old `OccurrenceInvalidCornerAuthority` symptom stays absent. Eight tests instead stop at `MissingIsolationSeamEquivalenceAuthority`, including six accepted selector449 identities.

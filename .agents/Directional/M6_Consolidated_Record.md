@@ -1,6 +1,6 @@
 # M6 Consolidated Record
 
-**Status:** M6 ACTIVE / `M6-CP1-TB3-REV` complete / one stable RP-01 recurrence / candidate unpromoted / exact next `M6-CP1-CB4`
+**Status:** M6 ACTIVE / `M6-CP1-TB3-REV` complete plus review-agent addendum / one stable RP-01 recurrence (root cause corrected) / candidate unpromoted / CB4 HELD / exact next `M6-DEFN-R1`
 **Last updated:** 2026-09-25
 
 Normative M6 semantics live in `Architecture_M6_Frozen_Definitions.md`. Entering accepted authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449 PASS**, SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. TB1's accepted-prefix event remains independently classified as singleton `CROSS_TEMPORARY_ITERATOR_RANGE`; TB2 row140 `VALIDATION_ORDER_SHADOWING` is recovery-proved closed but remains historical; TB3 Review adds one accepted-prefix event as an existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence. Stable accounting is **54 / 16 / 38** and produced-witness debt is **1**, M6-owned.
@@ -112,6 +112,21 @@ All eight TB3 REDs stop at `MissingIsolationSeamEquivalenceAuthority`. CB3's out
 `M6-CP1-TB3-EXEC-CAND-01` is therefore one stable accepted-prefix event in existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION`: events **53 -> 54**, categories remain **16**, recurrences **37 -> 38**. Row140 recovery proves the TB2 `VALIDATION_ORDER_SHADOWING` event closed while retaining its history. TB2 focused multi-isolation merges into the new relation-owner event. TB1's iterator mechanism stays cleared but its formal recovery remains open because selector449 is not yet 449/449. Candidate remains unpromoted; accepted M5 authority and debt 1 remain unchanged.
 
 Exact next is runtime-free `M6-CP1-CB4`. It may implement only the already-frozen A5 relation-owned isolation certificate reference and make the transitional A6/materializer consume it. It must not restore global certificate-inventory augmentation, change occurrence identity/sheet/support, change tests/fixtures/selectors, or infer equality from geometry/lattice coincidence. If the certificate owner cannot be derived uniquely from accepted A4/M5 typed authority without new semantics, stop for Review/Definition. Compile-green advances to immutable `M6-CP1-TB4-EXEC` over unchanged six focused + selector449 = 455 processes, then mandatory Review.
+
+## 11. `M6-CP1-TB3-REV` review-agent addendum — root cause corrected; CB4 held; `M6-DEFN-R1` next
+
+TB3 mechanics, the accepted-prefix differential (`10815911956`, 449/449), accounting **54 / 16 / 38**, debt 1 and the prior-candidate dispositions are independently re-derived and upheld.
+
+- **Seam nodes.** The eight `MissingIsolationSeamEquivalenceAuthority` REDs can only arise at lattice nodes on seams. There the cell's corner wedge spans two sheets, so CB3's outgoing-side occurrence sheet is a representative choice. The pre-CB3 shared-node rule, identical in accepted M5, made multi-sheet classes impossible, so the TB2 focused RED was never green.
+- **A7 conflict.** In the split-square witness, vertices v0 and v2 record one sheet each although both sheets meet there.
+- **Wrong carrier.** A cross-sheet A5 endpoint pair reflects the neighbouring cell's wedge crossing the seam, not the relation. The relation-owned CB4 plan therefore:
+  - needs a new `OrdinaryFront` owner type, a definition change;
+  - is ambiguous at seam vertices, since certificates are per seam edge and seams are edge chains;
+  - misdescribes 3feb24ef, whose keyed `(region, shared SourceEdgeSupport)` lookup is the only typed derivation that model has.
+- **Mixed-face record.** At `660015f2` each occurrence record is built from two faces: sheet and support from the outgoing face; lattice chart and branch rotation from the node face.
+- **Row140 notes.** The M5 failure-string mapping belongs in the adapter, and three M5 duplicate checks are now unreachable.
+
+Exact next is runtime-free `M6-DEFN-R1` (TB3 Review addendum A7), then `M6-DEFN-R1-REV`, then the re-scoped `M6-CP1-CB4`.
 
 ## Folded document index
 

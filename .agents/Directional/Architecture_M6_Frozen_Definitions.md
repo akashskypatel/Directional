@@ -1,6 +1,6 @@
 # M6 Frozen Definitions — Occurrence, Quotient, Embedding, Independent Verification
 
-**Status:** FROZEN / `M6-DEFN` COMPLETE / RUNTIME-FREE / M6-CP1 ACTIVE: TB3 REVIEW proves one stable `RP-01` relation-owned isolation-equivalence implementation gap / EXACT NEXT = `M6-CP1-CB4`
+**Status:** FROZEN / `M6-DEFN` COMPLETE / RUNTIME-FREE / M6-CP1 ACTIVE: TB3 REVIEW proves one stable `RP-01` event; the review-agent addendum finds that seam-incident occurrence sheet authority and its certificate carrier are undefined here (§3.2 has no `OrdinaryFront` isolation owner; §3.3/§5 single sheet vs A7 completeness) / CB4 HELD / EXACT NEXT = `M6-DEFN-R1`
 **Date:** 2026-09-24
 **Definition authority:** this record is the normative M6 contract for A5 occurrence creation, A6 quotient construction/materialization, A7 source-attached geometry embedding, and the M6 structural portion of A8 independent verification. It refines `DESIGN.md` §14 M6 without changing accepted M5 producer semantics or pulling M7 disposition/degradation work forward.
 

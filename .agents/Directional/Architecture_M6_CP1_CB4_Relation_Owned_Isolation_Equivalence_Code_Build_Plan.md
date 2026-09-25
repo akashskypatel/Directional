@@ -1,5 +1,15 @@
 # M6-CP1-CB4 Relation-Owned Isolation Equivalence Code + Build Plan
 
+> **HELD by the `M6-CP1-TB3-REV` review-agent addendum (2026-09-25). Do not execute as written.**
+> - Seam certificates cannot be derived from relations: a cross-sheet A5 endpoint pair reflects the neighbouring cell's corner wedge crossing the seam, not the relation.
+> - "Already-frozen" is an overclaim: `OrdinaryFront` has no frozen isolation owner.
+> - "Exactly one certificate" is ambiguous at seam vertices.
+> - The "Required static derivation" cannot be done runtime-free for the produced-torus fixtures.
+> - "Do not restore the rejected CB3 approach" misdescribes 3feb24ef's keyed support lookup.
+> - The plan freezes CB3's outgoing-side sheet together with the node-face lattice state, i.e. a two-face occurrence record.
+>
+> `M6-DEFN-R1` re-scopes this plan (TB3 Review addendum A7). The frozen validation surface and compile gate below remain valid references.
+
 **Turn:** `M6-CP1-CB4`
 **Type:** Code + Build, runtime-free
 **Predecessor:** `M6-CP1-TB3-REV`

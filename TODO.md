@@ -1,10 +1,22 @@
+## Review-agent addendum — `M6-CP1-TB3-REV` (2026-09-25)
+
+**Accounting upheld 54/16/38, debt 1. Root cause corrected; CB4 HELD; exact next `M6-DEFN-R1`.** CB3's outgoing-side occurrence sheet is a representative choice at seam-incident corners, where a cell's wedge spans two sheets. A relation-owned certificate is on the wrong object and is ambiguous at seam vertices. See the TB3 Review addendum A2-A7.
+
+- [ ] `M6-DEFN-R1`: freeze occurrence sheet authority at seam-incident corners (recommended: corner-wedge sheet set).
+- [ ] `M6-DEFN-R1`: freeze the certificate carrier (recommended: wedge certificates keyed by the seam edges the wedge crosses) and the rule at seam vertices.
+- [ ] `M6-DEFN-R1`: A6 relation check (side sheet in both endpoint wedge sets); `OrdinaryFront` stays owner-less and `OccurrenceRelationId` is unchanged.
+- [ ] `M6-DEFN-R1`: A7 lineage completeness (split-square v0 and v2 record {0,1}); single-face occurrence record; sides collinear with a seam.
+- [ ] `M6-DEFN-R1`: policy for the row140 adapter mapping and the three unreachable duplicate M5 checks.
+- [ ] `M6-DEFN-R1`: re-scope CB4/TB4; recommended new focused identity (7+449=456).
+- [ ] `M6-DEFN-R1-REV`, then re-scoped `M6-CP1-CB4` → TB4 → TB4-REV.
+
 ## Latest Review turn — `M6-CP1-TB3-REV`
 
 **COMPLETE / ONE NEW STABLE RP-01 RECURRENCE / CANDIDATE UNPROMOTED.** Independent Review upholds TB3 at focused **4/6** + selector449 **443/449** = **447/455 PASS** with exact immutable postflight. Accepted M5 result `10815911956` independently re-verifies **449/449 PASS**, confirming selector losses **186, 214, 239, 444, 446, 448** are accepted-prefix regressions.
 
 All six plus focused multi-isolation/pair-swap stop at `MissingIsolationSeamEquivalenceAuthority`. Root cause is the missing frozen A5 relation-owned isolation-certificate reference for cross-sheet ordinary relations: the transitional consumer currently reconstructs semantic owner authority from front-edge boundary-path representation. This is one stable existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence. Stable accounting is **54 / 16 / 38**, debt **1**. Row140 recovery is proved; TB1 formal 449/449 recovery clause remains carried.
 
-## Exact next turn — `M6-CP1-CB4`
+## HELD (re-scoped by `M6-DEFN-R1`) — `M6-CP1-CB4`
 
 Runtime-free Code + Build. Implement only the already-frozen A5 typed isolation-certificate relation owner and make transitional A6 consume it. Preserve occurrence identity/sheet/support, relation-only quotient equality, tests/fixtures/selector449/routing449, Periodic/HardRail semantics and row140 recovery. Do not infer relation ownership from boundary-path traversal or global certificate inventory. Stop for Review/Definition if accepted A4/M5 authority cannot uniquely identify the owner without new semantics.
 

@@ -1,8 +1,24 @@
-## 2026-09-25 — `M6-CP1-TB3-EXEC`: 455-process gate mechanically valid, semantic RED
+## 2026-09-25 — `M6-CP1-TB3-REV` review-agent addendum: root cause corrected; CB4 held; next `M6-DEFN-R1`
+
+- Independently re-verified:
+  - candidate `10840014758`: 28/28, packaged source byte-identical to `660015f2`;
+  - TB3 result `10844285398`: 929/929, 443/449, eight raw `MissingIsolationSeamEquivalenceAuthority` failures, zero `OccurrenceInvalidCornerAuthority`;
+  - accepted `10815911956`: 911/911 and 449/449.
+- Accounting **54/16/38**, debt 1, and the prior-candidate dispositions are upheld.
+- Corrected: CB3's outgoing-side occurrence sheet is a representative choice, not an authority. The eight REDs prove the failing lattice nodes lie on seams, where a cell's corner wedge spans both sheets. Split-square vertices v0 and v2 already record only one sheet each, against frozen A7.
+- A cross-sheet A5 endpoint pair reflects the neighbouring cell's corner wedge crossing the seam, not the relation. The relation-owned CB4 plan therefore:
+  - needs a new `OrdinaryFront` owner type (a definition change);
+  - is ambiguous at seam vertices;
+  - requires a runtime-free trace that is impossible for the produced-torus fixtures.
+- New code finding: at `660015f2` each occurrence record is built from two faces (sheet and support from the outgoing face; lattice chart and branch rotation from the node face).
+- Row140 notes: the M5 failure-string mapping belongs in the adapter, and A5 leaves three unreachable duplicate M5 checks.
+- `M6-CP1-CB4` is HELD. Exact next is runtime-free `M6-DEFN-R1` (seam-incident occurrence sheet authority and certificate carrier), then `M6-DEFN-R1-REV`. Lesson 179 added.
 
 ## 2026-09-25 — `M6-CP1-TB3-REV`: relation-owned isolation-equivalence gap classified; CB4 frozen
 
 Independent runtime-free Review re-verifies CB3 candidate `10840014758 / 660015f2...`, TB3 result `10844285398` (**929/929**, 455 processes) and accepted M5 result `10815911956` (**911/911**, 449/449). TB3 remains focused 4/6 + selector449 443/449 = 447/455 with exact-one/zero-skip and immutable postflight. Six accepted losses plus two focused controls share `MissingIsolationSeamEquivalenceAuthority`. Static source and frozen A5/A6 contracts prove one existing-`RP-01` defect: ordinary A5 relations omit the required typed isolation-certificate reference while the transitional consumer reconstructs semantic owner authority from front-edge boundary-path representation. Stable accounting advances to **54/16/38**, debt 1; candidate remains unpromoted. Row140 validation-order recovery is proved. Exact next: runtime-free `M6-CP1-CB4`, then unchanged 455-process TB4 + Review.
+
+## 2026-09-25 — `M6-CP1-TB3-EXEC`: 455-process gate mechanically valid, semantic RED
 
 - Consumed candidate `10840014758 / 660015f2...` immutably in run/job `36084948588 / 107914657100`; executed exactly six focused + selector449 = **455** fresh exact-filter processes with exact-one selection, zero skips and benchmark 0.
 - Outcome: focused **4/6**, selector449 **443/449**, aggregate **447/455 PASS**; row140 is restored and `OccurrenceInvalidCornerAuthority` is absent.
