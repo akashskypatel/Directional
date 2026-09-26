@@ -4185,8 +4185,9 @@ SurfaceOccurrenceComplexProducer::produce(
       }
     }
 
-    const auto *firstSide = side_authority_for_front_edge(edgeIndex);
-    const auto *secondSide = side_authority_for_front_edge(first.oppositeEdge);
+    const auto *firstSideAuthority = side_authority_for_front_edge(edgeIndex);
+    const auto *secondSideAuthority =
+        side_authority_for_front_edge(first.oppositeEdge);
     for (const auto &[firstOccurrence, secondOccurrence] : endpointPairs) {
       const SurfaceOccurrenceRelationId relationId =
           make_occurrence_relation_id(relationKind, firstOccurrence,
@@ -4194,11 +4195,13 @@ SurfaceOccurrenceComplexProducer::produce(
                                       periodicRelation);
       SurfaceOccurrenceRelationEvidence evidence;
       evidence.equivalence = sharedEquivalence;
-      if (firstSide != nullptr) {
-        evidence.firstSideIsolationEvidence = firstSide->isolationEvidence;
+      if (firstSideAuthority != nullptr) {
+        evidence.firstSideIsolationEvidence =
+            firstSideAuthority->isolationEvidence;
       }
-      if (secondSide != nullptr) {
-        evidence.secondSideIsolationEvidence = secondSide->isolationEvidence;
+      if (secondSideAuthority != nullptr) {
+        evidence.secondSideIsolationEvidence =
+            secondSideAuthority->isolationEvidence;
       }
       const auto *firstSpan =
           endpoint_span_for_front_edge(edgeIndex, firstOccurrence);
@@ -6139,14 +6142,14 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
   result.boundaryLoopCount =
       static_cast<int>(result.mesh.boundaryLoops.size());
   result.eulerCharacteristic =
-      static_cast<int>(quotientClasses.size()) -
+      static_cast<int>(quotientProduct->classes().size()) -
       static_cast<int>(meshEdges.size()) +
       static_cast<int>(pendingQuads.size());
 
-  std::vector<std::set<int>> incidentQuadsByVertex(quotientClasses.size());
+  std::vector<std::set<int>> incidentQuadsByVertex(quotientProduct->classes().size());
   std::vector<std::map<int, std::set<int>>> fanAdjacency(
-      quotientClasses.size());
-  std::vector<int> boundaryEdgesByVertex(quotientClasses.size(), 0);
+      quotientProduct->classes().size());
+  std::vector<int> boundaryEdgesByVertex(quotientProduct->classes().size(), 0);
   for (const auto &[edgeKey, incidence] : meshEdges) {
     for (const MeshSideRef &side : incidence) {
       incidentQuadsByVertex[static_cast<std::size_t>(edgeKey.first)].insert(
@@ -6166,7 +6169,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       }
     }
   }
-  for (int vertex = 0; vertex < static_cast<int>(quotientClasses.size());
+  for (int vertex = 0; vertex < static_cast<int>(quotientProduct->classes().size());
        ++vertex) {
     const auto &incident =
         incidentQuadsByVertex[static_cast<std::size_t>(vertex)];
