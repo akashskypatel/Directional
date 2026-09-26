@@ -1,0 +1,1725 @@
+## Current orientation — `M6-DEFN-R3-REV` complete (2026-09-25)
+
+R3's A6 product-separation design is accepted with four binding Review amendments: certificate direction derives from canonical relation-ID endpoints; OrdinaryFront quotient transport is identity; A5 relations must carry enough canonical kind-specific transport/owner evidence for the frozen A5→A6 boundary; and selected-path `GridAutomorphism` composition order is explicit. The strict holonomy equality rule remains subject to its already-frozen cylinder/torus TB falsifier.
+
+**Exact next:** `M6-CP1-CB6-A6` compile/package-only. Runtime authority remains `10879581622 / 82b86a28...` at selector449 449/449; stable accounting **55/16/39**, debt 1. Do not start R4/A7/`G4-B002` or runtime work first.
+
+# Current orientation — M6-DEFN-R3 bounded definition complete; Review next (2026-09-25)
+
+`M6-DEFN-R3` is definition-complete for its bounded A6 scope. Exact next is mandatory runtime-free `M6-DEFN-R3-REV`; `M6-CP1-CB6-A6` is held. The A6 definition freezes member-set class IDs, exact-once joining/cycle-closing relation consumption, selected-forest path authority, exact direct-vs-path transport consistency (`QuotientHolonomyConflict`), A6 failure names, four new focused identities, and a later **11 + 449 = 460** gate. A7 representation and `G4-B002` stage-boundary representation move to `M6-DEFN-R4`. Accounting stays 55/16/39, debt 1; runtime authority stays `10879581622 / 82b86a28...`. See `Architecture_M6_DEFN_R3_A6_Product_Separation_Definition_Record.md`.
+
+## Currency — `M6-DEFN-R3` recovery: resume the same turn with the bounded scope (2026-09-25T21:13:47Z)
+
+The first R3 session stalled after a non-canonical start beacon, with no work product. The review agent repaired the beacon and bounded R3 to the A6 decisions plus the A6 CB plan, deferring A7 and `G4-B002` to `M6-DEFN-R4`. It also replaced an infeasible static holonomy proof on produced fixtures with an analytic proof plus a pre-registered TB falsifier.
+
+### Superseded currency note
+## Currency — `M6-CP1-TB5-REV` review-agent addendum: CP1 scope corrected; exact next `M6-DEFN-R3` (2026-09-25 UTC)
+
+TB5 456/456, the TB1/TB3/TB4 recovery, the promotion of `10879581622`, and 55/16/39 with debt 1 are upheld. **Corrected:** CP1 is not "held only by three legacy A5 fields". Frozen §10/§8.1 require A6 and A7 products behind stage APIs, a thin adapter, the §4.4 exact-once ledger, the §4.3 member-set class identity and the `G4-B002` A6 boundary, and none of these exists yet:
+- the transitional materializer is 1,768 lines;
+- `:5179` skips cycle-closing relations.
+
+CB6 is HELD and folded into the first A6 CB. Exact next is runtime-free `M6-DEFN-R3`. Lesson 183.
+
+### Superseded currency note
+## Currency — `M6-CP1-TB5-REV` COMPLETE / recovery accepted / runtime promoted / exact next `M6-CP1-CB6` (2026-09-25 UTC)
+
+TB5 Review independently upholds **456/456**, formally recovery-proves TB1/TB3/TB4 (TB2 remains recovered), and promotes `10879581622 / 82b86a28...` as current reviewed runtime authority under unchanged selector449. Stable historical accounting remains **55/16/39**; debt remains **1** for M6-CP3 production proof. CP1 stays open only because public A5 still exposes unread representative `chart`, `lattice`, `isolationSheet` fields. The prior aggregated-equivalence sort debt is withdrawn: exact source already sorts/deduplicates after remap. Exact next is bounded `M6-CP1-CB6`, then unchanged TB6 7+449=456 and Review.
+
+## Currency — `M6-CP1-CB5` COMPLETE / compile-green candidate; exact next `M6-CP1-TB5-EXEC` (2026-09-25 UTC)
+
+CB5 implements the one bounded TB4-Review correction: A6 reciprocal OrdinaryFront spans that are source-edge-collinear **without** an exact isolation certificate are non-seams and must satisfy exact same-interior-sheet + both-endpoint-wedge membership. Certificate-backed collinear spans keep the frozen seam face/sheet/transition checks. RA-12 site diagnostics are present; no tests, selectors, A5 schema/support authority, HardRail, Periodic, or frozen definitions changed.
+
+Mandatory compile run/job `36168827294 / 108183151046` is green at source `82b86a285292379cfd92cdc4e10d74181b38f1e8`: all eight standard targets, GMP/GMPXX, package manifest 28/28, clean source, and `runtimeExecution=false`. Candidate artifact `10879581622` (`sha256:578845a2...57c6`) is **unpromoted**. Selector449/routing449 remain byte-identical.
+
+Stable accounting stays **55/16/39**, debt 1. Accepted runtime authority remains M5 package/source `10814505512 / e284fea7...`, selector449 449/449. **Exact next:** immutable `M6-CP1-TB5-EXEC`, 7 focused + selector449 = 456, then mandatory `M6-CP1-TB5-REV`. The torus recovery is a falsifier/prediction, not a CB5 proof. Legacy occurrence-field debt remains a CP1-acceptance precondition.
+
+### Superseded currency note
+## Currency — `M6-CP1-TB4-REV` COMPLETE / one stable RP-01 recurrence; exact next `M6-CP1-CB5` (2026-09-25 UTC)
+
+TB4 Review independently re-opens CB4 package `10871935178`, TB4 result `10874311495`, accepted M5 result/package authority and the exact R2/A5/A6 source. TB4 mechanics are upheld at **431/456 PASS**. The 21 newly RED accepted selector identities are one stable `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence: `collinearEdge` means generic exact source-edge support, but A6 OrdinaryFront P2 incorrectly treats every such edge as an isolation seam. Stable accounting is now **55/16/39**, debt 1. Candidate remains unpromoted.
+
+**Exact next:** runtime-free `M6-CP1-CB5`, one A6 P2 classification correction only; compile-green → unchanged 7+449 `M6-CP1-TB5-EXEC` → mandatory Review.
+
+### Superseded currency note
+## Currency — `M6-CP1-CB4` unblocked by RA-11; resume CB4 (2026-09-25 UTC)
+
+CB4 stopped on a real gap: A4 publishes no per-face field branch for untraversed corner-fan faces. The review agent resolved it by **narrowing D6 (RA-11)** instead of widening A4. Nothing in A5-A7 consumes a per-face branch; the only reader is the transitional class key.
+- Wedge bindings are `(face, sheet, chart)`.
+- The A4 corner `LocalLatticeState` is published verbatim as face-labelled `CornerPlacementProvenance` (placement only; the periodic builder leaves its branch at `0`).
+
+Resume the same CB4 turn; TB4 stays 7 + 449 = 456.
+
+### Superseded currency note
+## Currency — `M6-DEFN-R2-REV` complete; exact next `M6-CP1-CB4` (2026-09-25 UTC)
+
+The review agent accepted `M6-DEFN-R2` with review amendments RA-1 – RA-10 (`Architecture_M6_DEFN_R2_Review_Record.md`). Each amendment closes a place where a literal CB4 implementation would fail a frozen gate: boundary-collinear perimeter sides, P3/P4 keyed on vertex category (torus rail nodes), a face-row-dependent `hash_completion` in the permutation clause, focused row3's `UnownedRelation`, lineage-sheet widening by side transitions, the stale `crossesSheets` guard, wedge-arc endpoints and direction, resolver tolerance, and the transitional `quotientClass`. CB4 is authorized under the amended plan; TB4 = 7 + 449 = 456.
+
+**Recovery (2026-09-25T06:15Z).** An implementation session opened at 05:40:26Z, before the Review's COMPLETE beacon, and produced nothing: no commits, Actions runs or Drive patches. `M6-CP1-CB4` has not started and begins as a fresh turn (new `Started at`, empty `Resumed at`).
+
+### Superseded currency note
+*`M6-DEFN-R2` complete; its successor `M6-DEFN-R2-REV` is now complete.*
+
+Runtime-free `M6-DEFN-R2` resolves the four DEFN-R1 Review blockers while preserving the upheld corner-wedge model. The new `CornerWedgeIsolation` lineage equivalence carries ordered checked seam transitions but creates no quotient relation; all semantic consumers use complete wedge face/sheet/chart/branch bindings; seam-collinear interior-face authority is topological after accepted cell orientation; A5 relation failures are one-to-one with legacy mapping confined to the adapter. P1-P4 are now explicit. Frozen rows 5/6, 186/214/239/444/446/448 and HardRail single-sheet assertions remain statically satisfiable. Stable accounting remains **54/16/38**, debt 1. CB4 remains HELD pending mandatory independent `M6-DEFN-R2-REV`.
+
+## Superseded currency — `M6-DEFN-R1-REV` complete (2026-09-25 UTC)
+
+The review agent upheld the DEFN-R1 corner-wedge core model but did not accept the definition as frozen. The decisive finding: frozen focused row5 requires non-empty lineage `equivalences` for every multi-sheet lineage. Under D5 the split-square v0 and v2 are relation-free `{0,1}` singleton classes, so TB4 would be RED by construction. B2 (binding selection per consumer), B3 (tie-broken wedge endpoints across three side builders) and B4 (D7 vs §4.6 failure vocabulary) are also blocking. Exact next is runtime-free `M6-DEFN-R2` (`Architecture_M6_DEFN_R2_Amendment_Plan.md`); CB4 stays HELD.
+
+### Superseded currency note
+*`M6-DEFN-R1` complete; its successor `M6-DEFN-R1-REV` is now complete.*
+
+Runtime-free Definition froze the seam-incident A5/A6/A7 authority gap exposed by TB3. A seam-incident occurrence owns a complete corner-wedge sheet set and per-wedge face/chart/branch bindings; seam certificates live on the corner wedge or directed side that crosses/runs along them. OrdinaryFront remains owner-less. Seam-collinear sides use exact incident-cell interior-face authority, not a representative triangle. A7 lineage is the union of member wedge sets. CB4 is re-scoped and held pending Review; TB4 is pre-registered as **7 focused + selector449 = 456**. Accepted M5 package/selector authority and stable accounting **54 / 16 / 38**, debt 1, are unchanged.
+
+Open critical path: `M6-DEFN-R1-REV` must independently re-derive the split-square wedge table, seam-vertex two-edge uniqueness, seam-collinear side rule, row140 adapter boundary, and frozen selector hashes. Only an accepted Review may authorize re-scoped `M6-CP1-CB4`.
+
+## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
+
+**This document is durable project authority.** It may be corrected or extended. It must **not** be deleted,
+renamed away, collapsed into another document, or replaced by a summary without explicit user authorization.
+The same protection covers the rule below: consolidating this file may not remove it.
+
+**Every REVIEW turn must update this file before closing**, so a cold-start agent is never more than one review
+behind. The required update covers:
+
+1. the **currency line** below — turn ID and date;
+2. **§3 Where we are** — selector authority, stable accounting, checkpoint status;
+3. **§4 the witness table** — if any witness's state changed;
+4. **§7 Open problems** — re-ordered by current priority, with resolved items removed or explicitly marked
+   discharged. When a turn resolves a warning recorded here, **edit that bullet**; appending the new state
+   below a stale one leaves the file contradicting itself;
+5. **§8 Recurring defect patterns** — if the turn found a new pattern or a new instance of an existing one.
+
+The same REVIEW turn also performs **document consolidation** under `CLEAN_UP_POLICY.md`.
+
+A minimal lifecycle `STATUS` beacon at repository top level carries `Turn`, `Status`, `Successor`, plus UTC
+`Started at`, `Resumed at`, and `Ended at` timestamps. Both Review and Implementation agents publish it on turn
+entry/resume and closeout; its exact lifecycle rules are `Durable_Handoff_Policy.md` item 15. It is a beacon, not
+authority — where it disagrees with this file or the tracker, they win.
+
+`REVIEW_TURN_POLICY.md` is the authoritative superset of these duties and carries the mandatory closeout block
+every review record must answer. This rule was itself deleted by a consolidation in `f6a784cf` and restored on
+2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
+the content beneath it.
+
+ > **Current milestone authority (2026-09-25, after `M6-CP1-CB5`):** M4 and M5 remain CLOSED / ACCEPTED. Accepted runtime authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 449/449. M6 CP1 remains ACTIVE; CB5 candidate artifact `10879581622` / source `82b86a285292379cfd92cdc4e10d74181b38f1e8` is compile-green and unpromoted. Stable accounting is **55/16/39**, debt 1. Exact next is immutable `M6-CP1-TB5-EXEC` 456 → mandatory Review.
+
+**Currency.** `M6-CP1-CB5` (Code + Build), 2026-09-25 UTC
+
+**Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` §16.3 is the active same-region nonzero-Z4 contract. `PeriodicRelationId` remains carrier-content identity; relation rotation is the gauge-adjusted quotient `Q`, action/transport is relation value, and canonical storage may invert representation only after semantic Forward -> Reverse authority is fixed. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
+
+## 1. What the project is
+
+A hard fork of **libdirectional** adding a **quad-remeshing pipeline** built on exact arithmetic. Given a
+triangle mesh and a cross field, it produces a pure-quad mesh carrying an explicit, independently verified
+guarantee. The distinguishing commitments:
+
+- **Exact arithmetic, no tolerances** in topological decisions. `FieldExactRational` / GMP-backed integers.
+  A predicate that needs an epsilon is treated as a design defect, not a tuning problem.
+- **Single-writer authority.** Every datum has exactly one producer. Consumers get `const` views or typed IDs.
+  Products are immutable once produced; a later stage may not repair an earlier stage's output.
+- **Derived, not assumed.** Regions, ports, terminations and certificates are computed and certified, never
+  asserted by fiat.
+- **Typed failure over silent degradation.** Every stage fails closed with a typed error and a locus.
+
+`DESIGN.md` is the normative architecture. `ROADMAP.md` maps checkpoints to the production-ready exit
+(`M8-CP3`).
+
+## 2. Pipeline stages
+
+| Stage | Product | One-line contract |
+|---|---|---|
+| **Conditioning** | `ConditionedSourceProduct` + certificate, or typed refusal | sole value-changing raw-input boundary; exact/certified correspondence |
+| A0 | `SourceAuthoritySnapshot` | exact source support, typed IDs, topology regions; consumes immutable conditioned input |
+| A1 | `FieldTransportAtlas` | per-face cross frame + typed transport across every interior edge; singularities |
+| A2a | `FieldAlignedCurveNetwork` | traces from singularity ports + mandatory edges from features/boundaries |
+| **A2a′** | **`SurfaceCutGraph`** | **added cuts guaranteeing the network's complement is a disjoint union of discs** |
+| A2b | `GlobalTopologyPlan` | regions as faces of the embedded graph, with disc proofs |
+| A3 | `GlobalConformityPlan` | — |
+| A4 | `RegionCellComplex` per region | — |
+| A5 | `SurfaceOccurrenceComplex` | explicit cell-corner/directed-side occurrences; no quotient union |
+| A6 | `SurfaceQuotientProduct` | only certified A5-owned relations merge occurrences; exact-once ledger; one cell -> one quad |
+| A7 | `SourceAttachedGeometryProduct` | exact source support/geometry keyed by quotient class; A6 topology immutable |
+| A8-M6 | `VerificationReport` | independently checks immutable A5-A7 products; never repairs; M7 adds `OutputDisposition` |
+| A9 | logs and public result | — |
+
+A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on the produced torus. M4-CP3 is accepted through A4 on the constructed torus witness. CP-COND adds the architecturally preceding conditioning boundary: raw input is conditioned once into an immutable certified product before A0. TB5 Review now accepts cumulative selector423/package `10331193451` and closes CP-COND after independently re-deriving the boundary-truncated raw precondition and conditioner-preservation gate. A5 onward remain unreached, and the prescribed sphere still cannot reach A2b (§7).
+
+**Disposition ladder** (assigned by A8, never asserted by a producer; a run only moves down):
+`D0 Certified` → `D1 QualityRelaxed` → `D2 LocallyDegraded` → `D3 Partial` → `D4 DiagnosticOnly`.
+
+## 3. Where we are
+
+**M3, M4 and M5 are CLOSED / ACCEPTED. M6 is ACTIVE at CP1.** `M6-CP1-TB5-REV` promotes CB5/TB5 package/source `10879581622 / 82b86a285292379cfd92cdc4e10d74181b38f1e8` as the **current reviewed runtime authority** under selector449 **449/449**, selector SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`, routing `9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707`, owners **32 / 301 / 75 / 41**.
+
+TB5 run/job `36172157965 / 108194136911` is independently upheld at **7/7 focused + 449/449 selector = 456/456 PASS** with exact immutable postflight. Formal recovery is proved for the TB1 iterator-range event and the TB3/TB4 RP-01 recurrences; TB2 validation-order remains recovered. Historical stable accounting remains **55 events / 16 categories / 39 recurrences**. Produced-witness debt remains **1**, M6-owned for CP3 direct-production proof.
+
+`M6-CP1` is not yet closed. Frozen A5 §3.2/RA-11 excludes unlabelled representative sheet/chart/lattice authority, but public `SurfaceOccurrence` still contains unread `chart`, `lattice`, `isolationSheet` members. Exact repository-wide C++ search finds zero readers. `M6-CP1-CB6` removes only those three fields and matching constructor/call-site arguments; compile-green -> unchanged TB6 **7+449=456** -> mandatory Review. The earlier “unsorted aggregated equivalences” debt was stale: exact source already sorts/de-duplicates them after tuple remap.
+
+**Historical accounting note:** M5 closed at **51 / 14 / 37**. Those numbers describe the historical M5 closure point; current project accounting is **55 / 16 / 39**.
+
+## 4. The witnesses — the fastest way to understand the problem
+
+**Current M6 split-square witness.** Two source triangles `(0,1,2)` / `(0,2,3)` occupy sheets 0/1 and share the internal isolation seam `(v0,v2)`. Under R2, v0 and v2 are each single-occurrence quotient classes whose **lineage** still spans `{0,1}`; that is legal because their corner wedges cross the checked seam and publish evidence-only `CornerWedgeIsolation` transitions (`v0: 1->0`, `v2: 0->1`). The center's four occurrence members also materialize `{0,1}` with the same checked seam authority. No new quotient relation is invented for v0/v2. This is the fastest falsifier for B1/B2 and the strengthened CB4 seventh identity.
+
+| witness | source | A2a result | current state |
+|---|---|---|---|
+| **torus** | fixture, closed genus 1, `χ=0`, V/E/F = 72/216/144 | **accepted row408 hard-rail path is production-reachable** with exactly 18 effective HardFeature edges from the proven two-generator cut graph; accepted authority reaches `Produced`; DEFN-R1 independently proves those cuts still leave one 144-face source topology region | **M5 CLOSED / SELECTOR449 ACCEPTED (`M5-CP4-TB2-REV`).** The fixed torus product carries every M5 authority. Its single region owns ≥2 canonical periodic relations with owned `PeriodicCut` edges (rows 443-445/448). It has the nonzero-Z4 inverse-storage relation with materialization and typed tamper (446/447). **Row449** shows the same region spans ≥2 isolation sheets with a checked internal seam certificate and owns the periodic relation. Published selector449 re-proves all of it at 449/449, and package `10814505512` is final M5 authority. M6 must consume this authority on the representative path (`G4-B004` M6 half). *(This cell still read "CLOSURE HELD / precommitted only" after closure.)* |
+| **genus-two S5** | retained deterministic fixture, closed orientable genus 2, `χ=-2`, V/E/F = 120/366/244 | production S5 authority includes authoritative-rail hard-feature partition plus production source component/sheet labels; R10 independently rebuilds source authority/atlas and verifies production A3 | **S5 CUMULATIVE ACCEPTED / M4 CLOSED:** TB13 Review first accepted S5 under selector427; final TB3 Review preserves that exact prefix and promotes package `10591801825` under selector430 **430/430**. R9/R4 RP-01 remains recovery-proved closed. |
+| **prescribed sphere** | fixture, closed genus 0, `χ=2`, V/E/F = 98/288/192, zero mandatory edges | 24 traces / 56 events | A2a′ remains deferred. TB6 report-only ordinal 368 localizes the current producer stop to `TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. This is localization only; no sphere semantic fix is authorized. |
+| **two-ring** | constructed, disc, `χ=1`, V/E/F = 11/25/15 | 3 traces / 8 events | actual embedded graph `V/E/F = 9/11/3`; the accepted invariance witness, and the **only** witness on which the A2a′ semantic/provenance split is runtime-proved |
+| **mechanical feature** | fixture, 152 V / 450 E / 300 F, closed, `chi=2`, 0 boundary edges | clears A1/A2a and reaches A2b certification | **Final M3 selector409 audit is 405/4.** Ordinals366/367 and protected 390/393/406/407 are green/non-vacuous under package113; the AU0–AU9 mechanical-witness criterion is MET and CP4c-3 is closed. Remaining audit REDs are separately owned and do not alter this witness. |
+
+**CP-COND acceptance witness (not a milestone production witness):** CB5's five-face raw boundary fan is deliberately test-local. TB5 Review independently derives its `-1` singularity and strict interior hit on real source-boundary edge `{1,2}` from exactified raw bytes, proves a field mutation changes the exact terminal parameter, and confirms the production-identity conditioner certificate reconstructs the same oracle. It closes the conditioner coverage obligation without changing the torus/sphere/two-ring/mechanical witness claims above.
+
+**CP-SCALE reachability note:** TB1 measures exact A2a trace-state rationals as two-ring `9 / 105 / 107 / 107`, torus `0 / 0 / 0 / 0`, mechanical feature `60 / 1 / 1 / 1`, prescribed sphere `186 / 429 / 429 / 429` (`sampleCount / numeratorBitsMax / denominatorBitsMax / magnitudeBitsMax`). Review accepts the measurement mechanism but freezes **no** numeric bound. The sphere's retained circulation is not an S3 exact-repeat witness; its exact entry position drifts. R10 supplied the focused S5 reachability proof on retained genus-two OBJ `120/366/244`, `chi=-2`, genus `2`; TB13 now supplies fresh selector427 cumulative runtime and Review independently accepts it. Earlier R4/R7/R9 ownership REDs remain historical falsifiers of the repaired `RP-01` seam; they are recovery-proved closed, not erased.
+
+## 5. The central theorem of CP4c-2
+
+**Authority-domain distinction, refined by DEFN-R7.** A certificate claim transfers only through an exact identity
+binding. Here A2a′ and A2b rebuild the same deterministic `ActualEmbeddedGraph`; an A2b region boundary is exactly
+one non-exterior face-walk orbit, so the matching `SurfaceCutGraphFaceCertificate` and the plan region refer to the
+**same actual-embedded face**. `region.sourceFaces`, reduced/full source-mesh Euler counts, and split/barrier counts
+are different support/projection domains and cannot replace or override that face certificate.
+`RegionBoundaryNotSingleWalk` remains a current-candidate/synthetic tamper validator for 312/409, not an independent
+second disc theorem; `RegionEulerCharacteristicNotOne` is retired from normative disc authority by Part XI.
+
+For a graph embedded in a closed surface with every complement component an open disc, Euler gives
+`V − E + F = χ`. The torus network has `V = 48`, `E = 48`, `χ = 0`, so `F = 0` — impossible, since the
+complement is non-empty. **At least one component is not a disc.**
+
+Stronger and more useful: a disjoint union of closed curves always has `E = V`, so **no disjoint union of closed
+curves can ever be a cut graph of the torus.** This is not a defect of the committed fixture and cannot be fixed
+by choosing better feature curves. A cut graph of a genus-`g` surface needs vertices of degree ≥ 3 and must
+realize a homology basis; a feature/singularity-derived network guarantees neither.
+
+That is why A2a′ exists. `UncutFaceComponentOrbitSeedNotUnique` at `GlobalTopologyPlan.cpp:1741` was **correct
+behaviour reporting a missing input** — there was never a bug at that line.
+
+## 6. The normative complex — read this before touching A2a′
+
+Frozen by **DEFN-R1 Amendment 13**. The complex in which cellularity is certified is the **actual embedded
+graph** of `FieldAlignedCurveNetwork ∪ cutEdges`:
+
+- **vertices** = network nodes + nodes created by cuts
+- **edges** = network arcs + cut arcs
+- **faces** = **dart orbits** under the node rotation system
+
+The machinery already exists and must be reused, never reimplemented:
+
+| concept | where |
+|---|---|
+| arc, dart | `GlobalTopologyArc`, `GlobalTopologyOrientedArc` — `include/directional/geometry/GlobalTopologyPlan.h:33-47` |
+| rotation | `GlobalTopologyNodeRotation.counterClockwise` |
+| face walk | `walk_graph_faces(arcs, rotations)` → `FaceWalkResult{orbits, orbitByDart}` — `src/geometry/GlobalTopologyPlan.cpp:1168-1260` |
+| fragment | `fragmentOrbits[SourceFaceTopologyKey] → {orbit}` — `:1534-1660` |
+| shared authority | `src/geometry/EmbeddedGraphTopology.{h,cpp}` — created by CB4, the single owner |
+
+**Two conventions decide correctness and must be derived, not guessed:**
+
+1. **Exterior-orbit exclusion** on surfaces with boundary. The two-ring walks 4 orbits, exactly one exterior →
+   `F = 3`. On a closed surface there is no exterior orbit.
+2. **Disconnected-graph correction.** The torus's 48 arcs over 48 degree-2 nodes form **four components**;
+   unqualified `V − E + F = χ` is false there *before* any cut is considered. Mistaking that for
+   non-cellularity is right for the wrong reason.
+
+**Withdrawn:** the whole-source-face / source-edge-barrier partition is **not** cellularity authority. It
+survives only as a cut-proposal heuristic and diagnostic provenance, and any publication of it must say so.
+Two complexes exist for the two-ring and both satisfy Euler — actual `9/11/3` and proxy `10/11/2` — which is
+precisely why self-consistency proves nothing about *which* object was measured.
+
+**Cut admissibility — revised by Amendment 14 (DEFN-R2); the old rule below it is withdrawn.** A cut is a source
+edge promoted to a graph arc, and **every source edge that is not already a graph arc is admissible, including one
+a trace crosses at an interior point.** Promoting a crossed edge adds one arc per sub-interval between consecutive
+crossings and one cut-created node per crossing, and splits the trace arc **in the derived arrangement only**.
+
+The old rule — "a trace-crossed source edge is inadmissible because promoting it would subdivide an immutable
+trace" — rested on a premise that is false about this codebase. `build_arcs` already emits **one trace arc per
+event**, so a trace is many arcs, not one; it already splits a mandatory source edge at a trace terminal; and the
+crossing point is already published exactly by the network as `segments[i].entryPoint`, at a segment position the
+subdivision machinery already keys on. Nothing upstream is mutated either way. Amendment 12 forbids A2a′ *repairing*
+an upstream product; it never forbade A2a′'s own arrangement from placing a node where the network already says two
+curves meet.
+
+**Completeness is therefore proved outright.** The complement of the source 1-skeleton is the open triangles, each
+a disc; trace sub-arcs cut those discs into discs; so `network ∪ (source 1-skeleton)` is cellular, a sufficient cut
+set always exists, and at most `|E_source|` promotions are ever needed. `NoAdmissibleCutForNonDiscComponent` can no
+longer describe a real configuration and is retired; a distinct code reports "the search heuristic made no
+progress", and saturation — promoting the component's remaining admissible edges — is the defined, *published*
+last resort. It must never fire silently, and is predicted never to fire on the three witnesses.
+
+**The one real gap this opens:** at an edge-locus node, `build_rotation_system` handles only `Mandatory` (at exactly
+degree three) and `Trace` rays — a `Cut` ray there is an unhandled shape. A crossing node is two collinear `Cut`
+rays plus two `Trace` rays, degree four, and the existing four-sector model generalizes to it. CB7 implemented that
+generalization; ordinal 364 would prove it and **has not yet executed**.
+
+**Building an A2a′ witness by hand — the trap that produced R8's red.** The production feature authority is a
+**chain of four products**, and it is acyclic:
+
+```
+featureMap → build_authoritative_surface_cell_rails → authoritativeRails
+           → hard_feature_edge_keys_from_rails      → hardFeatureEdges
+           → SourceTopologyRegions(hardFeatureEdges, componentByFace, localSheetByFace, authoritativeRails)
+           → FieldTransportAtlas::make(…, hardFeatureEdges, …)
+```
+
+The test helper `rails_from_atlas` reads rails **back out** of an atlas, keeping only `SourceBoundary` and
+`HardFeature` non-traversable edges. That is correct only if the atlas was built with the hard features already.
+On a **closed** witness built with `hardFeatureEdges = {}` it returns **nothing**: no boundary, no declared
+features, and uniform component/sheet labels leave no `NonTraversable` edges either. The result is an empty rail
+set, an empty network, and a red that looks like a cut-graph failure. `make_source_authority(mesh)` supplies none
+of the four products — it zeroes components and sheets and passes no rails. Two call sites already do this right:
+`observe_cp4c_witness` (all four production inputs) and `build_cp4c_trace_crossed_cut_fixture` (computes hard
+features first, then threads them through source authority *and* atlas). Copy one of those; never call
+`rails_from_atlas` on an atlas that was not told about the features.
+
+## 7. Open problems, in priority order
+
+1. **`M6-DEFN-R3` — NEXT / RUNTIME-FREE DEFINITION + CP1 SEQUENCING.** Freeze the CP1 exit checklist, the A6 class identity versus the RA-10 ordinal, the exact-once ledger and cycle holonomy, selected-path ownership, the A7 product, the `G4-B002` A6 boundary, failure names, and CB sequencing with focused identities. Then `M6-DEFN-R3-REV`, then the A6 extraction CB (which absorbs CB6).
+   **HELD:** `M6-CP1-CB6` — Remove only unread public `SurfaceOccurrence.chart`, `.lattice`, `.isolationSheet` plus their constructor/call-site arguments. Preserve all live A5 authority and change no tests/fixtures/selectors/A6/A7 semantics. Compile the standard eight GMP/GMPXX targets with no runtime; compile-green -> unchanged `M6-CP1-TB6-EXEC` 7+449=456 -> mandatory Review. Stop if any exact-source semantic reader exists or removal requires a definition change.
+2. **`G4-B002` produced closed-complex debt — OPEN / M6.** M6-DEFN freezes CP1 mechanism/stage separation and CP3 direct-production proof. Preserve the independent eligibility oracle, hard-feature tamper and fail-closed/no-recovery contract; mechanism evidence cannot close production debt.
+
+3. **`G4-B004` representative M6 half — OPEN.** M5 same-region producer fact is accepted. CP1 must preserve/gate focused multi-isolation materialization; CP3 must prove the same direct produced torus through A5 exact occurrences, A6 exact-once consumption, A7 source attachment and A8 independent verification.
+
+4. **`G4-B001 / PR8-R034 / G4-R007` — CP3 DIRECT-TORUS EVIDENCE DEBT.** The historical hard-rail->`IsolationSheetId` root is absent from current source: hard rails are excluded from source isolation barriers. CP1/A7 must preserve that separation; CP3 owns strict-valid torus 3/3 re-proof. If `LocalSheetMismatch` returns, classify it against the frozen A7 contract; do not weaken the validator.
+
+5. **Dormant CB14 test hygiene — NO M5 CREDIT.** `M5CP3.PeriodicRelationEndpointGaugeIsIndependentAndExact` is deleted at `M6-CP1-CB1`, with row 446 as its replacement. `M5CP3.ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection` is **retained and proposed for the M6-CP1 prepublication gate**. M6-DEFN had called it redundant to row 444, but row 444 permutes the relation container, not edge storage, so the §9 precondition stopped the deletion.
+
+6. **Re-homed carried observations.** S1 numeric calibration -> M8-CP2; S2-arrival exact fallback -> M8-CP2 only if observationally equivalent, otherwise reopen A2a/M3; row399 path/`sourceFaces` divergence tamper -> first legitimate row399/binder/producer touch; row408 historical provenance -> truth constraint.
+
+7. **Ordinal369 ordinary trace-crossed proposal quality — ACTIVE / separate.** Existing proposal-quality/coverage owner remains valid.
+
+8. **Prescribed sphere 368/398 — ACTIVE / deferred.** 368 remains localized to `TraceEventPositionInvalid -> NoCarrierMatch / SourceEdgeUnavailable`, trace 2/event 30; 398 remains downstream of the absent sphere cut graph.
+
+9. **Ordinal374 folded-cone witness — ACTIVE / DEFERRED TEST PRECONDITION, separate from S2.** Its authored flat-star field is invalid on the non-flat cone star; eventual repair remains test-only and selector374 stays frozen.
+
+10. **Accepted ordinal307 latent stale equality — RECORDED / NOT FIRING.** Do not weaken it pre-emptively; classify as test-authority drift if it fires.
+
+11. **Rows16/17 (selector448 ordinals 446/447) pin inverse canonical storage — RECORDED / NOT FIRING (`M5-CP3-TB1-R16-REV-OBS-02`).** Keep the inverse-storage pin; if a representation-only change fires it, classify as test-authority drift and supply a witness still exercising inverse storage (`LESSONS.md` 171).
+
+## 8. Recurring defect patterns
+
+**Deferred checkpoint scope silently disappears — `M6-CP1-TB5-REV` review addendum, lesson 183.** CB1 deferred A6/A7 and the recovery CBs repeated the deferral. The obligation then fell off the living documents, and TB5-REV declared CP1 nearly closable with two of its three frozen products missing.
+
+**A static review debt must be reproduced in the exact reviewed source before it becomes successor work — `M6-CP1-TB5-REV`, lesson 182.** TB4 Review recorded an unsorted post-remap `lineage.equivalences` debt, but the exact CB5/TB5 source already performs the required sort/de-dup immediately after remap. TB5 Review withdraws that stale obligation rather than scheduling no-op code. Source evidence outranks remembered line numbers.
+
+
+**A compatibility failure name must not erase which check fired — `M6-CP1-TB4-REV` review addendum, lesson 181.** RA-7 mapped four emission sites onto one legacy string. TB4's 17 identical failures could then be attributed only by a single-sheet exclusivity argument, and the multi-sheet torus rows not at all. RA-12 keeps legacy names as prefixes and adds site suffixes.
+
+**Exact source-edge collinearity is not isolation-seam authority — `M6-CP1-TB4-REV` / existing `RP-01 AUTHORITY_DOMAIN_CONFLATION`.** `SourceEdgeSupport` answers where a span lies. The checked `(region,seam)` certificate answers whether that source edge is an isolation seam and owns the cross-sheet transition. A5 already permits same-sheet edge-collinear spans with no certificate; A6 CB4 incorrectly required a seam certificate for every `collinearEdge`, producing 21 new accepted-prefix losses. Keep support classification and semantic seam ownership separate. The prior TB3 RP-01 repair is active (row5 + 186/214/239 recover) but not formally recovered until the complete frozen gate is green. Existing lessons 22 and 179 apply; no new lesson is needed.
+
+**Before widening an upstream product to satisfy a definition field, check that some consumer needs the field — CB4 blocker / RA-11.** D6 required a per-face `branchRotation` in every wedge binding, and A4 could not supply it for fan faces that no side traverses. The only reader of an occurrence branch was the transitional class key, so the fix was to narrow the field, not to change an accepted A4 product.
+
+**A definition rule scoped to the interior case silently fails the boundary cases of its own witness — `M6-DEFN-R2-REV`.** R2's interior-face rule required two incident faces, but the split-square witness has eight boundary-collinear sides. P3's "excluded" collided with the codebase term for rail vertices, which are lattice nodes on the torus. A "structural hash" permutation clause pointed at a hash of face rows. Each would have failed a frozen gate under a literal implementation (lesson 180 applies).
+
+**M6-DEFN-R2 recurrence of `M6-DEFN-OBS-01` — process-only, +0.** Several small repository documents were opened before `READ_MODE=snapshot` was explicitly frozen. Piecemeal inspection stopped; all decisive R2 conclusions were re-derived from verified snapshot `36095854118 / 10847467936`. Existing tool-conservation guidance and lesson 152 already cover the pattern, so no new semantic event/category/debt or lesson is created.
+
+**A definition that widens an output must be checked against every frozen assertion over that output's co-fields — `M6-DEFN-R1-REV`, lesson 180.** D5 correctly widened seam-vertex lineage sheets to the complete wedge union. But frozen row5 pairs "more than one sheet" with "non-empty `equivalences`", and equivalences come only from relation unions, so relation-free singleton seam vertices violate it. The definition's own falsifiers and self-authored review plan audited only the new rules.
+
+**Validation-order shadowing — `M6-CP1-TB2-REV` / `VALIDATION_ORDER_SHADOWING`, RECOVERY PROVED AT TB3 REVIEW.** CB3 restores the explicit mismatched-HardRail negative to the accepted `InvalidHardRailTransport` outcome while keeping A5 fail-closed; TB3 row140 fresh-PASSes. The historical stable event remains counted. **Preserve the specific validation precedence rather than weakening the negative or accepting both codes.** Existing `LESSONS.md` §4 lesson 22f covers the mechanism.
+
+
+**A side-start face is not occurrence sheet authority; certify a transition on the object where it happens — `M6-CP1-TB3-REV` review-agent addendum / existing `RP-01`.** At a seam-incident corner the cell's wedge spans both sheets, so taking the sheet from the start of the outgoing side is a representative choice. A cross-sheet endpoint pair then reflects the neighbour's wedge, not the relation, so attaching a certificate to the relation puts it on the wrong object. Lesson 179.
+
+**A front-edge/boundary-path representation is not A5 relation-certificate ownership — `M6-CP1-TB3-REV` / existing `RP-01 AUTHORITY_DOMAIN_CONFLATION`.** Frozen A5 requires each owned relation to publish its typed owner/certificate reference, but current ordinary relations carry only endpoints plus representation front-edge indices. The transitional consumer then scans cell-side boundary-path `entryRoute` steps to reconstruct isolation seams. CB3 correctly exposes distinct endpoint sheets, so six accepted rows now fail when that representation path carries no seam even though accepted checked seam authority exists. **Publish the exact relation-owned certificate at A5 and consume it at A6; never search global certificate inventory or treat traversal representation as semantic ownership.** This is the prior TB3 stable RP-01 event. CB4 repairs its direct row5/186/214/239 witnesses, but formal full-gate recovery remains open because pair-swap/444/446/448 are still blocked by the newer source-edge/seam-domain conflation. Existing single-authority/representation lessons 22 and 30 apply.
+
+**Cross-temporary iterator range — `M6-CP1-TB1-REV` / `CROSS_TEMPORARY_ITERATOR_RANGE`.** A5 called a by-value `isolation_sheets()` accessor independently for `begin()` and `end()` of one `std::binary_search`; those iterators belong to distinct temporary vectors. Accepted M5 used one materialized vector and passed the same semantic membership check. **Materialize value-returning containers once before forming any iterator range.** This entered as a new singleton product category, not RP-01; current project accounting after TB4 Review is 55/16/39.
+
+**COMPLETE published before the turn's last write — second instance (`M5-CP4-TB2-REV`) of `M5-DEFN-R1-REV-OBS-01`.** TB2-REV wrote `COMPLETE → M6-DEFN` at 15:59:41Z. It then installed, triggered and removed a ledger-guard workflow, **edited its own review record**, and re-published COMPLETE at 16:03:10Z. The edit came from a resumed session working from stale memory, and it stripped valid `LESSONS.md` 178 citations because it assumed that lesson did not exist. The rule is already in the end-of-turn checklist (items 11-12). It is not being followed under resume. **After COMPLETE a turn is over. Any fix belongs to the next turn or to the Review addendum.**
+
+**A resumed EXEC re-armed a gate that had already run — `M5-CP4-TB1-EXEC` instance, `LESSONS.md` 178.** After its authoritative 449-process run and report, the stalled session was continued. It installed a fresh 449-process harness and executor, and only a malformed workflow and a misspelled selector path prevented a prohibited second execution. Neither the report nor TB1-REV mentioned the four failed runs. **Reviews must reconcile every Actions run in the turn window, not just the one the report names.**
+
+**A milestone closure reconciled only the obligations restated in its own definition record — `M5-CP3-TB2-REV` instance of `LESSONS.md` 168.** The original M5 exit theorem (§13.1) and closure Review reconciled `DESIGN.md` §14 M5 but missed M4-DEFN §11.2 / REORIENTATION §9 `G4-B004`. **Before closing a milestone, grep every frozen and durable record for the milestone's name and owned blocker IDs. The definition record's own list is not the census.**
+
+**A reading that credits evidence older than the obligation it discharges — `M5-DEFN-R1` instance, `LESSONS.md` 177.** DEFN-R1 read `G4-B004` so that M1-era rows 186/239 satisfied it, even though the blocker stayed open after M1 and was assigned to M5 later. Under that reading the obligation was vacuous when issued, and "multi-" is redundant. The Review plan DEFN-R1 wrote for its own reviewer omitted exactly that falsifier. **Check when credited evidence was first accepted. Self-authored review criteria are themselves reviewable.**
+
+**An append-only durable ledger was replaced by a whole-file write, and nothing noticed for ~20 turns — `LESSONS.md` 176.** Commit `ce9bf3cb` (2026-09-22) wrote a new tracker entry as the entire file. That cut `Regression_Root_Cause_Tracker.md` from 9,837 lines to 21 and deleted the DURABLE *Stable-event criterion* that defines the 51/14/37 accounting. Every later closeout reported "tracker updated", which was true and irrelevant. The same action also overwrote the agent CHANGELOG (`0043dd4c`, 13,317 → 14 lines), which the first repair missed. Both ledgers were restored verbatim at TB2-REV. The effective guard is `review_check.py ledgers --base <previous-review-commit>`, which scans committed history. The first repair's `boundary`-based guard was inert against committed overwrites and was corrected at the second pass.
+
+**Canonical storage can be intentionally opposite semantic direction; a test must normalize representation without deriving its expectation from the product — M5-CP3 R16 recovery-proved instance.** R15-R1 exposed stale produced tests that compared canonical storage directly against semantic A3 authority. CB19 keeps the expectation independent (hard-coded `Q=3` from DEFN-R1 §7, checked against the source cross-field and pipeline-equals-source transition; the atlas agreement is only a witness-selection filter, so its assertion cannot fail — `LESSONS.md` 64r) while using production only to normalize representation, and R16 additionally proves the committed object is actually inverse-stored (`1`) before final discriminators. This is an existing representation-vs-authority/non-vacuity pattern, now recovery-proved, not a new stable category.
+
+**Setup-order snapshot-threshold miss — R16 Review and M5-DEFN-R1 instances.** In both turns, several small repository documents were read directly before the mandatory read mode was declared and an exact source snapshot obtained. Piecemeal inspection stopped before substantive cross-file adjudication; decisive analysis used verified snapshot bytes. This is the existing `LESSONS.md` 152 process pattern and contributes no semantic evidence.
+
+- **Evidence parsers must be falsified against literal protocol output before a full immutable gate — M5-CP3 R15 orchestration instance, RUNTIME-PROVED AT R15-R1.** The first CB17 mechanism process visibly emitted one `[ RUN ]` and one `[ OK ]`, but the temporary harness stored doubled bracket escapes and therefore reported `selected=0`. R15 Review reproduced historical count 0 versus corrected count 1; CB18 froze the corrected parser and R15-R1 then accounted for all 448 exact-one/zero-skip processes in a complete ledger. This is evidence-plane guidance, not a product regression category; invalid-attempt PASS evidence never carries into a fresh gate.
+- **Raw source transport and cut-open branch gauge are not automatically one relation frame — M5-CP3 R14 `RP-01` instance, DEFINITION RESOLVED AT DEFN-R1.** Production deliberately removes accepted cut carriers from the dual propagation that authors `faceBranchRotation`, while same-region promotion reads raw A1 `transition_value(...)` across that carrier. DEFN-R1 freezes the exact reconciliation rather than guessing: semantic relation rotation is `Q = G_R^-1 A G_F`; Forward anchors relation endpoint gauge, Reverse branch/coordinate values are normalized by `Q`, translation is constructed once from the semantic Forward endpoint correspondence, and storage reversal is exact inversion only. The current torus witness independently yields `Q=3`. R15-R1 proves the `Q != A` mechanism green; its remaining produced RED is now adjudicated as stale test representation authority, and after test-only CB19 the product debt proof completed at `M5-CP3-TB1-R16-REV` (rows16/17 green on the inverse-stored produced relation). Existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION`, not a new stable category.
+- **A branch value is meaningful only in the face/gauge that owns the transport being checked — M5-CP3 R13 `RP-01` continuation.** The generator quarter-turn is exact transport from the Forward accepted A3 occurrence-carrier face to the Reverse occurrence-carrier face, while the CB14 endpoint state copied a branch authored from the cell corner's retained trace/source face plus bounded-disk chart offset. Comparing those values directly silently assumes the faces/gauges coincide; R13's typed first-branch failure disproves that assumption on the nonzero subject. Preserve the local chart offset but deterministically re-express it at the exact occurrence-carrier face before relation validation; never cure the mismatch by inverting/searching transport. Existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION`, not a new stable category.
+- **Canonical storage orientation is not semantic directed authority — M5-CP3 R12 `RP-01` continuation.** An orientation-neutral relation ID permits canonical storage to choose either representative, including inverse action plus reversed routes. Exact A3 Forward/Reverse edge authority does not change when storage normalizes. A consumer must deterministically orient the stored representative to the semantic carrier before validating directed endpoint maps; it may not assume storage orientation is semantic direction or try both directions and choose a passing one. This is the same representation-vs-authority discipline as lesson 30 and existing `RP-01`, not a new stable category. R15-R1 Review adds a non-stable test-authority recurrence: produced rows16/17 compared the storage representative directly to semantic witness authority and therefore stopped on the valid inverse representation; tests must use deterministic semantic resolution before asserting Forward -> Reverse facts.
+- **Cell-grid placement coordinates are not quotient-seam endpoint authority under nonzero transport — M5-CP3 R11-R1 `RP-01` continuation.** The accepted four-run bounded-disk chart places reciprocal copies on opposite rectangle sides, so raw cell-grid deltas satisfy `d2=-d1`. Reusing those raw coordinates in a same-region periodic action then makes frozen `rotate(R,d1) == -d2` reduce to `rotate(R,d1)==d1`, impossible for any genuine nonzero quarter-turn on a nonzero cardinal edge. Keep ordinary cell placement unchanged, but express periodic relation endpoints in an independently derived relation-owned gauge before exact action construction. Never derive that gauge by fitting to the partner, rewriting endpoints after a mismatch, or searching an inverse. This is the existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION`, not a new stable category.
+- **Unordered membership is not directed authority — M5-CP3 R10 `RP-01` instance.** A reciprocal pair may be identified correctly as an unordered set while still choosing the wrong orientation for a directed transform. R10 exact source grouped the right two edges but used `pair[0] -> pair[1]` storage order to choose the generator/action direction. Derive direction from semantic incidence/orientation first — here exact A3 Forward -> Reverse — then compute the one directed transport. Zero rotation can mask an inversion because forward and inverse coincide, so require a nonzero direction discriminator. This is existing authority-domain discipline, not a new stable category.
+- **Chart-local axis/sign labels are not cross-seam authority under nonzero quotient transport — M5-CP3 R9 `RP-01` instance.** Same-region periodic pairing compared raw `family`/`advanceSign` before applying the authoritative generator rotation. Equal family/opposite sign plus exact reciprocal endpoint mapping algebraically forces Z4 rotation zero. Compare semantic data only after expressing both sides in the same gauge: here `rotate(R,d1) == -d2`, with the one directed source/A3 rotation and exact endpoint/branch action checks retained. Never “fix” a direction mismatch by trying the inverse. This is existing authority-domain discipline applied to quotient chart coordinates.
+- **A nonzero source transition is not by itself a valid bounded-disk chart witness — M5-CP3 R8 `RP-02` refinement.** CB9 corrected the zero-Z4 precondition, but its global quarter winding produced a boundary with valid local alignment and turn sum yet a macroscopic developed closure residual. Independently prove the whole upstream subject required by the next semantic stage — here branch alignment, canonical run structure, index and polygon closure — before treating a downstream fail-closed result as product evidence. This is the existing `RP-02 / TEST_AUTHORITY_COVERAGE_GAP` pattern, not a new category.
+- **A debt witness cannot search product output for the precondition it is supposed to establish — M5-CP3 R7 `RP-02` instance.** Rows4/5 searched the produced relation table for a nonzero-Z4 action, but exact source-field re-derivation shows the committed torus has Z4=0 on every source edge. Establish the source transition and direction before product inspection; otherwise absence is a witness failure, not product evidence. Existing `RP-02 / TEST_AUTHORITY_COVERAGE_GAP`, not a new category.
+- **A deterministic transform that produced an unused identity in a direct helper is not an absence oracle on a produced relation table — M5-CP3 R7 `RP-02` instance.** Row6 swapped one owner's routes and collided with an already-produced semantic ID. Prove absence/unowned/unselected status before insertion; do not infer it from construction shape. Existing non-vacuity/test-authority rule, not a new category.
+- **A representation point can carry a valid face provenance and still be the wrong face authority for an incident carrier — M5-CP3 R6 `RP-01` instance.** Accepted A3 cut construction derives the exact oriented source face for each carrier occurrence, but A4 point deduplication keeps whichever face first inserted a shared endpoint. Reusing that point face to direct a different carrier transition conflates representation provenance with edge-incidence authority. Resolve direction from the exact interval occurrence; use the carrier incidence table only to validate membership, never to invent ordering. This is existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION`, not a new stable category.
+- **A generic typed failure can still be too coarse to authorize the next semantic edit — M5-CP3 R5 `RP-01` continuation.** R5 proves the product is still wrong but `PeriodicHolonomyMismatch` collapses generator-route lookup, lattice/action correspondence and checked relation construction. After the R4 static carrier-distinctness candidate failed dynamically, Review requires branch observability before another semantic correction. Keep the disposition fail-closed; refine diagnostics without changing semantics, then let runtime select the next authority seam. This is an existing RP-01/non-vacuity instance, not a new stable category.
+- **Extending production semantic identity requires extending every independent identity oracle in the same semantic domain — M5-CP3 R4 `RP-02` instance, RECOVERY PROVED BY R5.** CB5 correctly added retained interior-edge transition values to atlas semantic identity, but six accepted tests reconstructed only the old atlas domain and therefore rejected a valid baseline before their tamper discriminators. An independent oracle must stay independent, but it must still model the complete public contract. This is existing `RP-02 / TEST_AUTHORITY_COVERAGE_GAP`, non-stable on the unpromoted candidate, not six product regressions.
+- **An extra inequality between two valid semantic roles is not authority merely because it sounds discriminating — M5-CP3 R4 `RP-01` continuation, FALSIFIER REFUTED AS COMPLETE CAUSE BY R5.** Same-region promotion rejects when exact generator and cut carrier identities coincide, but frozen relation identity/factory authority never requires them to differ and the accepted one-edge A3 span can legitimately make both roles name the same source-edge carrier. Preserve the named role/provenance checks; do not invent distinctness as a proxy for independence. This is the existing RP-01 recovery chain, not a new stable category.
+- **The correct value is still wrong authority if production has cut that ingress off — M5-CP3 R3 `RP-01` refinement.** R2 correctly separated hard-feature relation value from traversable adjacency, but CB4 read that value back from raw `CrossFieldEdgeTransition` in the consumer. Production already establishes `FieldTransportAtlas` as the immutable A1 owner and deliberately nulls raw transition ingress, so the new check is unreachable. Preserve one owner through the cutover: validate/retain the transition value inside the atlas independently of barrier/traversal classification, keep hard features nontraversable, and query the atlas-owned semantic fact. This is the same `RP-01 / AUTHORITY_DOMAIN_CONFLATION` event as R1/R2, not a new category or second stable event.
+- **A hard-feature relation value is not the same domain as a traversable atlas adjacency — M5-CP3 R2 `RP-01` refinement.** CB3 correctly moved generator carrier authority onto the exact A3 `Mandatory` source path, but then asked `FieldTransportAtlas::transport` for that hard-feature support. The atlas deliberately publishes hard features as nontraversable barriers and omits traversal adjacency, while the exact `CrossFieldEdgeTransition` record already carries the edge/face-pair matching value before barrier classification. Preserve both truths: hard features remain nontraversable, while relation construction may consume their exact transition value as semantic metadata. This is the same `RP-01 / AUTHORITY_DOMAIN_CONFLATION` event as R1, not a new category or second stable event.
+- **An exact carrier path cannot be replaced by a global gauge/consistency reconstruction — M5-CP3 R1 implementation-authority instance.** Frozen §14.3 names the A3 `span` source path as relation-carrier authority, but CB2 separately scans every branch transport in the topology region, requires a path-independent face rotation, then writes that aggregate rotation into one otherwise identity-transport route step. On the periodic torus this asks the product to erase/reject the nontrivial cycle transport it is supposed to encode. Keep carrier identity and transport on one exact authority chain; if the published path cannot resolve the transport, fail closed rather than search or guess. This is an instance of existing single-authority guidance and `LESSONS.md` 58 (never publish a guessed value as authority), not a new stable regression category.
+- **Frozen artifact literals must be validated against immutable bytes before freeze; TB execution must still fail closed if they are wrong — M5-CP3 TB1.** The predecessor plan copied a 62-character routing ZIP literal even though accepted M4-TB3 provider/download authority was a different 64-character SHA-256. TB-EXEC correctly refused to repair that frozen authority. Review independently re-downloaded the artifact and froze a fresh R1 plan with the exact provider/local digest. This is another instance of existing authority/receipt discipline, not a new stable regression category.
+- **A provenance field can outlive the boundary kind that first carried it — M5-CP3 CB1 stop, resolved before mutation.** Row408's exact A3 interval was coupled in the checked factory to final `HardRail`, but the same one-region cut pair must become `PeriodicCut` to represent quotient ownership. CB1 correctly stopped rather than weakening the materializer. CB1-REV applies existing lessons 22h/22k/22e and single-authority rules: preserve the A3 fact as provenance, change the operative kind/owner vertically, and convert the accepted row408 final-kind assertion without changing its 18-edge subject. This is a representation-coupling instance, not a new stable regression category.
+- **A permutation invariant needs a genuinely permutable witness — M5-CP1 row6 instance, RECOVERY PROVED.** R2 row6 named relation-container permutation but its materializable helper supplied one relation, so `>=2` failed before any reorder. R3's corrected witness establishes two distinct IDs and identical table membership, proves reversal nontrivial, changes only storage order, materializes both subjects and compares complete certificate/output semantics; runtime is green. `M5-CP1-TB1-R2-REV-OBS-01` is discharged without a second witness adjustment. This remains an instance of existing structural-presence/non-vacuity discipline, not a new stable category.
+- **Frozen orchestration literals need immutable-byte validation before freeze — M5-CP1-TB1 instance.** The first CP1 TB plan transcribed a 63-character map digest and guessed the ninth suite as `M4CP4`; both failed before runtime. Independent Review re-derived the 64-character map SHA from accepted artifact `10592987234` and the exact suite from candidate packaged source. Execution was right to stop rather than self-repair. Future plans that freeze digests or exact identities must validate them against the bytes they name before becoming execution authority; this is the standing `M5-CP1-TB1-EXEC-OBS-01` process rule, not a product regression.
+- **Diagnostic retention is not stage authority — DEFN-R2 closes the CP4 instance.** `SurfaceCellPipelineContext` explicitly forbids semantic stage authority, while `hasArrangement` is a post-tracing debug-retention flag over a global occurrence-bearing arrangement. A stage gate must bind the normative product named by `DESIGN.md`, not a convenient diagnostic snapshot with a similar shape. This is the resolved form of existing lesson 22d / authority-domain discipline, not a new stable category.
+- **M5-DEFN freezes identity/value separation at the periodic-relation seam.** A relation is named by region + orientation-neutral semantic carrier paths; action/transport is its value. This is the concrete application of the project rule that representation ordinals and independent re-enumerations cannot be semantic identity. A downstream validator validates the producer-selected path and never searches for a substitute.
+- **DEFN-R1 resolves the R3 representation-expressibility instance by respecting the milestone authority boundary.** The exact torus has one source topology region, so the product cannot use its already-supported distinct-sheet multiplicity path; a second same-sheet generator needs canonical relation/basis identity. That identity is M5 relation/path authority, not a reason to add order-derived ownership to M4. This remains an instance of existing lesson 22d, not a new stable regression category.
+- **R3/R2 test-authority sequence is resolved at its correct owners.** Row6's exact typed expectation is runtime-proved and closed non-stably. Row2's remaining mismatch was not another fixture defect: DEFN-R2 proves the requested retained arrangement belongs to later occurrence authority and re-homes the unchanged debt to M6.
+- **CP4-DEFN adds no new regression pattern.** It applies existing produced-witness, independent-oracle, append-only-selector, and reachability-precondition lessons. The work-ledger definition corrects an accounting-domain issue before implementation: current production baseline includes both producer and self-validator schedules, so `1+2E` alone is not whole-stage work. This is definition hygiene, not a runtime regression.
+- **RP-01 authority-domain conflation — source-boundary alias instance (DEFN-R1), RECOVERY PROVED by R10.** A whole-source boundary-cycle index was projected to vertices and later treated as if each alias had one regional boundary owner. Hard-feature cuts make that false. DEFN-R1/CB23 correct the seam by keeping one typed global fact and exact regional support associations; R10's multi-region/single-face/alias-tamper controls plus production S5 are green. Keep the pattern because it remains reusable, but the active R4/R9 instances are closed non-stably.
+ — the highest-value section
+
+**A producer boundary-loop index can be aliased across vertices and then fan out across regional boundaries — CP-SCALE TB12-R9 `RP-01` instance.** `dual_cycles` gives every vertex on one source boundary loop the same global cycle row, and `effort_to_indices` projects that one index back to vertex-keyed entries. After hard-feature cuts, one such alias vertex can lie on several region-relative boundary loops. A `map<vertex, one regional owner>` therefore invents uniqueness, and comparing any chosen relative lift to the global alias repeats the R7 cross-domain mistake. Collapse legacy aliases at their true global owner and reconcile them there; regional incidence is not automatically semantic ownership. This is existing `LESSONS.md` 42 + 65 and existing `RP-01 AUTHORITY_DOMAIN_CONFLATION`, not a new category.
+
+**A hand-authored transition can make its own singularity index look exact while disagreeing with the field that must realize it — CP-SCALE TB12-R8 `RP-02` instance.** The separating-owner control gave every face the same planar cross directions, then injected one radial edge with nonzero matching/effort and computed a `+1/-1` pair from that same authored effort. The arithmetic cycle check therefore looked self-consistent while branch-sector geometry later exposed only four classes for the handwritten `-1` companion. This is not evidence to weaken `4-index`: matching, effort and singularities must come from one accepted producer or be independently proved against the per-face field. Reuse producer-consistent witnesses and independently remeasure the transition chain before treating downstream RED as product evidence. This is existing `RP-02 / TEST_AUTHORITY_COVERAGE_GAP`, not a new category.
+
+**A global source-vertex singularity index is not a per-region relative boundary-loop lift — CP-SCALE TB12-R7 `RP-01` refinement.** CB18 correctly introduced a source-region-boundary owner for a separating hard feature, but then required `BoundaryLoop.turningLift == rawSingularity[vertex]`. The two values live in different authority domains: the raw singularity is attached to one global source vertex, while a region boundary loop participates in that region's aggregate index balance and the canonical boundary loop may absorb the region-level correction. R7's valid `sourceVertex=8` owner-count failure falsifies the equality; the direct test mirrored it and therefore could not authorize it independently. Ownership should come from incidence/containment and stable identity, while the raw numerator remains the singularity's numeric fact. This is the same `RP-01 / AUTHORITY_DOMAIN_CONFLATION` family as R4, not a new category.
+
+**A globally nontraversable hard feature can be a source-region boundary without being an intra-region local barrier — CP-SCALE TB12-R4 `RP-01` instance.** Source topology removes hard-feature edges from face adjacency, so a separating feature can put one globally interior singular vertex on several region boundaries. `make_local_region_mesh` adds a hard edge to local `barrierVertices` only when both incident faces are already in the same region; reusing that local set as the only `BarrierAbsorbed` owner path therefore leaves separating-boundary singularities ownerless. The retained genus-two witness exposes exactly this at source vertex 0. Preserve the two authority domains explicitly: source-region boundary ownership and intra-region slit ownership are related but not interchangeable. This is existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` and existing lessons 65, 150 and 153, not a new category.
+
+**A correction gate must preserve the authority surface whose defect it claims to test — CP-SCALE TB12-R3 `RP-02` instance.** The retained genus-two mesh is closed and has zero source boundary loops. The failed Gate-A control reset every face to component/sheet zero, supplied no hard-feature edges, and then demanded a `BoundaryLoop` atlas row. Production S5 instead partitions source topology using authoritative-rail hard features and production source labels — exactly the authority that previously exposed row14. A fixture's bytes do not make two reconstructions equivalent. Prove the subject on the exact authority supplied to the consumer before using the gate as product evidence. This is an instance of `LESSONS.md` 145 plus existing `RP-02 / TEST_AUTHORITY_COVERAGE_GAP`, not a new category.
+
+**An algebraic cycle basis is not automatically one simple ordered face loop — CP-SCALE TB12-R2 instance (`RP-07`).** TB12-R2 resolves the genus-two atlas stop to boundary row14 with 34 support edges / 34 unique outgoing source faces and `SupportEdgeReused` at face0. Static re-derivation matters: `order_cycle_steps` sorts by `(fromFace,toFace,sourceEdge)`, starts at the least `fromFace`, and marks each outgoing edge once. Reuse at non-negative minimum face0 therefore means the first successor orbit returned to its own start before all support was consumed; it does **not** mean the sparse row duplicated an edge. `dual_cycles` forms boundary rows by algebraically summing boundary-vertex one-rings, so valid support can comprise multiple closed successor components. This is a concrete instance of existing **`RP-07 / CYCLIC_TOPOLOGY_LINEARIZATION`**: preserve the algebraic row and canonicalize all closed components instead of erasing support or editing the field.
+
+**A correct numeric tuple attached to the wrong witness is false authority — CP-SCALE TB8 instance, closed by TB9.** CB9's focus constructed the production torus but asserted `18/30/18,c=1`, the retained prescribed-sphere pre-cut tuple. Accepted torus authority was already `48/48,c=4` with four annular complement components, so runtime's observed `48` was a corroboration of accepted authority, not a product regression. The same test then compared connected complement-component count with product face-walk-orbit count on a non-cellular state, conflating two representations that coincide only after the disc premise holds. CB10 corrected both defects and TB9 Review independently accepted the corrected negative/positive/adversarial/enumeration/decision-neutral proof, discharging `DEFN-OBS-03`. This remains an instance of existing lessons, not a new category: **read a witness by its construction, not by its name; an absolute count is a hidden function of the semantics that produce it; test your own hypothesis before you write it into the record.** Freeze witness identity and counting domain alongside every expected number.
+
+
+**Production derivation is measurement, not precondition satisfaction — CP-SCALE TB3 instance.** CB3 correctly stopped hand-authoring matching/effort and let `principal_matching` derive them, but then treated that derivation path as if it guaranteed a regular field. It does not: on the non-flat center the authored cross carries zero aggregate cycle effort, so production faithfully derives the singularity/lift `1`. The same helper also mixed cross handedness by reversing face 2's secondary. The control is `LESSONS.md` 22r: author and independently certify the required field winding (`sum effort=-4K`) and tangent-frame orientation **before** route/comparator coverage. A production-derived invalid result is evidence that the precondition is false, not a reason to weaken the validator.
+
+**A known fixture-helper precondition can recur when a new gate cites route reachability without revalidating the whole producer precondition — CP-SCALE TB2 instance.** S2 CB2 reused `make_zero_transport_field` on the same three-right-angle non-flat cone that `M3-CP4c3-TB7-CAND-02`, this file's §7 and `LESSONS.md` 22r already classify as invalid. The new integer seed changed the intended comparator side but did not repair the field's cycle authority: zero effort/no singularity still conflicts with exact center lift `1`, so atlas construction correctly stops before the comparator. The control is not another lesson; it is to treat **reachability through all upstream semantic preconditions** as part of the oracle contract and to make the fixture assert those preconditions before claiming route coverage.
+
+**Fail-fast evidence must initialize the untouched remainder before the first semantic process — CP-SCALE TB2 instance.** TB2 correctly stopped after focused semantic RED, but because its selector ledger was only materialized after the focused phase, the required 423-row `UNEXECUTED` remainder vanished with the early exit. The next harness must initialize the complete expected ledger and immutable input/census receipts before runtime so fail-fast preserves explicit non-execution rather than absence. This is evidence-control/provenance hygiene, not product semantics, and is tracked as `M4-CP-SCALE-TB2-REV-OBS-01`.
+
+**A required parsed table needs an archived derivation, not only correct final bytes — resolved CP-SCALE TB1 instance.** The retained S1 table is ten columns while the archived main harness version emits nine. Review independently reconstructs every decisive value from the manifest-covered raw focused log and source, so package promotion is unaffected, but the provenance gap is real. Future post-processing that changes a required evidence schema must be archived or the harness must emit the final schema directly. This is an instance of existing source-of-truth/evidence-record lessons (`LESSONS.md` 109/131), not a new category.
+
+**Setup-order/snapshot-threshold misses are control-plane evidence, never semantic evidence — CP-SCALE TB1, M5-CP3 R3 Review, and M5-DEFN-R2 instances.** The earlier CP-SCALE Review inspected its start checklist before fully establishing tool-policy/`READ_MODE`; R3 Review similarly read several repository documents directly before recognizing the mandatory snapshot threshold. In both cases piecemeal inspection stopped, the exact policies/snapshot authority were established, and substantive cross-file review proceeded from verified snapshot bytes. The repair prevents contamination but does not erase the process miss. These are `LESSONS.md` 152 instances; no runtime/product authority is derived from the early reads.
+
+**A periodic combinatorial route is not an exact-state limit cycle when an exact coordinate drifts.** CP-SCALE DEFN re-read the S3 history and source together: the prescribed sphere revisits the same position-free 32-state circuit while exact entry parameters change, so it is evidence for recurrence pressure but not the frozen exact-repeat precondition. This is an instance of existing reachability/non-vacuity lessons, not a new category: name the complete semantic state first, then prove the witness repeats that state before assigning typed-cycle gate credit.
+
+**Focused runtime evidence is not cumulative selector credit when the frozen exit says selector — discharged instance.** TB3 proved all fourteen CP-COND identities GREEN while selector408 still held only predecessor authority. CB4 published exact-prefix selector422 and TB4 re-proved it 422/422; TB4 Review accepts that authority. The reusable rule remains: preserve the accepted prefix exactly and publish already-proved gates rather than weakening the exit contract.
+
+**An intended construction is not an independent raw oracle — CP-COND boundary instance discharged.** TB5 Review confirms CB5 followed the rule rather than merely naming it: the boundary route/locus is derived from exactified raw topology/field bytes before conditioner execution, an independently re-run exact calculation reproduces the `-1` carrier and strict source-boundary hit, and the discriminating raw-field twin changes the exact boundary parameter. This closes the CP-COND instance while preserving the reusable lessons **“An oracle built on the mechanism it tests is not yet a test”**, **“An independent oracle is independent in derivation, not exempt from the contract”**, and **“A fixture can contain a structure without exercising it — require the discriminating twin.”** No new defect pattern is created by this Review.
+
+**Compile-green is not cumulative selector package closure.** CP-COND CB1 compiled every directly affected target it chose, yet its frozen TB successor required accepted selector408 whose identities span four owner executables. TB1 correctly failed before runtime when three owners were absent. This is a new instance, not a new category, of the package-closure rule already captured by `LESSONS.md` 3; the correction must hold all semantic bytes fixed and change only package completeness per Lesson 170.
+
+**The CB5-era test-authority coverage gap is recovery-proved, and the full accepted-prefix census found no hidden sibling regression.** TB7 exposed ordinal211 only after earlier fail-fast blockers were repaired. CB10 migrated the shared fixture onto production A2b/A3 authority, and TB8 then ran all six fixture consumers A/B plus accepted selector403 to completion: **403/403**, empty RED census. This closes the current `RP-02 / TEST_AUTHORITY_COVERAGE_GAP` instance without creating a new defect pattern. The reusable lesson is already present: when an accepted prefix has suffered serial fail-fast discovery, enumerate the complete accepted prefix once after the repair rather than assuming the named blast radius is exhaustive.
+
+**Producer inapplicability is not authority corruption; an early validity guard can shadow a later applicability guard.** TB6 ordinal138 supplies valid, total A2b/A3 boundary authority for two one-face discs, but each has only three boundary segments. CB8's new early `acceptedSegments.size()<4` rejection fires before the producer's established `<4 => NotApplicable` gate and changes a reviewed fail-closed aggregate contract. Keep structural/identity contradictions typed and fatal, but keep minimum-domain/cardinality limits as applicability outcomes. This is the existing early-guard-shadowing and authority-domain family, not a new `LESSONS.md` category.
+
+**A production witness must prove the complete effective input authority that makes its claimed seam reachable; an additive fixture knob is not the final precondition.** TB3 row408 supplied no explicit hard-feature edges. CB6 then added a correct 18-edge torus cut graph, but TB4 Review showed production's adaptive classifier deterministically composed **48 additional Hard edges** before A1. The guard proved its requested subset and still failed to prove the input the consumer actually received. **When a gate says “prove X on fixture Y,” derive the exact post-composition authority at X's ingress, not merely the option fragment the test added.** For topology-cut witnesses, freeze the effective rail set after user tags, automatic classification and rail admission; then prove the topology of that exact set.
+
+**A topology certificate can be preserved while its authority domain is collapsed at the next producer.** TB5 row408 arrives at A4 with an accepted A2b disc certificate and exact A3 schedule, yet curved bounded-disk applicability recomputes Euler from the uncut source-face submesh and later chart structures key state by raw source vertex. The datum is not missing; its **cut-open occurrence domain** is. A nonseparating cut creates two boundary sides and repeated occurrences of the same source vertex, so copying raw vertex ids or forcing Euler cannot repair the contract. When a stage consumes a certified cut domain, carry occurrence identity through applicability, boundary construction and chart state until the authority-defined pairing step. This is a new instance of the existing authority-domain/projection-collapse family; no new LESSONS number is required.
+
+**When a required test identity is replaced, migrate the literal packaged-test ownership marker in the same bounded cutover.** R3 exposed this when CMake still required the retired row400 name. R4 repaired exactly that one marker, packaged green, and TB2-R2 review accepted the result; the instance is closed. The reusable rule remains `LESSONS.md` 49: stale literal build-contract markers are build-contract drift, and the repair is the smallest literal migration rather than a compatibility alias or selector weakening.
+
+**Do not manufacture a conversion seam merely because a test was written as though it existed.** TB2 row400 exposed a decorative `sourceRow`; CB4-R2 proved that upstream seam did not exist and Review moved the subject to the real A2b rotation-ranking basis boundary. R3/R4 plus TB2-R2 then proved the exact discriminator (`1/3` correct versus `2/3` no-remap) and closed the instance. The reusable rule remains `LESSONS.md` 171 plus authority-domain lessons 118/145: test the actual basis transition with a mutation-discriminating value, not an invented seam.
+
+**A guard that counts markers does not protect content.** This file's own "every REVIEW turn must update" rule was deleted by a consolidation in `f6a784cf` while its `DURABLE — DO NOT DELETE` heading survived, and `review_check.py` passed it as `durable markers preserved: 1 -> 1` because that check compares marker counts, not the text beneath them. The rule stayed gone for several turns and this file went stale twice. **If deleting the protected content leaves the check green, the check does not cover that content.** `REVIEW_TURN_POLICY.md` now owns the review duties and the closeout block; the tooling residual is tracked as `PROCESS-01` (`LESSONS.md` 172).
+
+**CP2 recovery status.** The four CP2 examples immediately below are now historical recovered patterns: package117/R1 proves the `±2` feature is load-bearing, the receipt is success-visible, WorkLedger field families are independently derived/tampered, and the output has a distinct semantic digest. Keep the patterns because they remain reusable review rules; do not read their present-tense defect language as an open CP2 blocker.
+
+**Structural presence is not behavioural coverage — mutate the feature out and re-solve.** M4-CP2's ordinal374 fixture carried the `±2` bidirected coefficients its obligation demanded, and they cancelled: row 1 forced `x2 = x3`, row 0 collapsed to `2(x0 - x1) = 0`, and the magnitude-1 twin returned the identical optimum. "Contains `±2`" was satisfied literally while the risk the obligation existed to expose stayed untested — and the mandated receipt would have published that inert fact as evidence. The decisive check is cheap: **remove the feature and re-solve; if the answer is unchanged, the feature is decoration.** Build the twin comparison into the identity so the receipt cannot outlive its subject. Same family as the two entries below and `LESSONS.md` 157/160/171.
+
+**Failure diagnostics are not success receipts.** M4-CP2 row374 put the exact review-mandated `coordinateCount=4` and `±2` metadata into `SCOPED_TRACE`. The test passed three times, so none of that text appeared in raw evidence while the report still credited the receipt. If acceptance needs a fact on PASS, emit it on the success path and make the harness assert its presence. `LESSONS.md` 171.
+
+**A tamper matrix must cover field families, not merely the broad noun in the test name.** The CP2 certificate promised a structured WorkLedger — initializer dimensions, radix/bit widths, refinement history, peak matching dimensions, assurance class and maxima — but the negative changed only `refinementM`, and the verifier ignored most of the rest. Map every frozen field family to an independent derivation and tamper at least one representative from each. `LESSONS.md` 172.
+
+**Problem identity and output semantic identity are different layers.** CP2's `normalizedProblemDigest` correctly identifies a normalized input problem, but omits ordered support paths and necessarily cannot bind produced certificates/infeasible outcomes. When a stage adds semantic evidence or alternatives, give the stage output its own canonical semantic digest; do not stretch an input digest into an output identity. `LESSONS.md` 173.
+
+**Package closure follows the frozen selector, not the target that changed.** M4 CP1 repeated the earlier M2 package-closure failure at a larger scale: selector373 had four intentional owner binaries, while package114 carried only producer, producing exactly 30+75+41=146 MISSING rows; the same launch omitted the consumer-visible `test-data` view. CB4 corrected only package ownership and package-source-derived execution-view staging, and TB2 then passed 373/373 with immutable postflight. That control closes the two non-stable candidates and strengthens the rule: before freezing any package as TB-runnable, derive the selector-to-owner partition and prove every owner executable plus the exact path the consumer resolves from package-owned bytes.
+
+**Specialize the frozen objective before freezing a general solver.** CP1 originally demanded a general exact Bi-MDF implementation plus a literature-backed per-transition polynomial countdown, even though M4 had already frozen the primary objective to `sum|x-d|`. That L1 special case linearizes exactly to Integral Bi-MCF, and a theorem-derived finite optimum cap gives polynomial-width capacities plus an exact lexicographic radix. The blocker was therefore not evidence that polynomial exact scheduling was unavailable; it was evidence that the definition had committed to a more general solver/evidence representation than the objective required. Freeze the semantic objective first, derive the narrowest exact combinatorial problem it actually needs, and only then freeze the implementation theorem and WorkLedger fields.
+
+**Direct gate evidence outranks an inferred supersession story.** M4-DEFN found that a later independent verification amendment had declared CP4c-0 TB-R9 unrun after a narrow history scan. Primary Actions run inventory plus retained changelog/tracker/consolidated history show `33079817998` ran and passed 346/346. When a closure row names a gate, search the complete retained family record and primary run inventory before inventing cumulative-inclusion closure or re-opening the milestone.
+
+
+**A red list is not an exit condition.** TB48-REV is the direct application of `LESSONS.md` 167: once a blocking surface clears, re-evaluate the checkpoint's frozen criterion before scheduling another repair. CP4c-3's exit was the mechanical witness under AU0–AU9; package113 proved the last pending ordinal370 correction while the remaining 368/369/374/398 rows stayed under separate owners. Continuing to chase those rows inside CP4c-3 would have replaced the checkpoint contract with "make the audit all green" after the fact. Freeze the exit criterion, keep audit debt visible, and close when the stated criterion is actually met.
+
+**Independent derivation does not authorize a stale normative predicate.** TB47 runtime-proves the ordinal367 fix,
+but the same review still finds the retired equality at accepted ordinal307. This is the stronger instance of lesson
+166: when a normative rule changes, search the *predicate shape* across every consumer, including currently green
+accepted identities. Independence of data derivation never makes an obsolete invariant valid; a green latent
+restatement is debt to record, not permission to weaken it pre-emptively.
+
+### Ownership projections must share the same separation predicate
+
+TB43-REV found a new instance of representation drift: two consumers used the same actual embedded face-walk
+orbits but disagreed about whether a final no-barrier segment separates owners. Region construction checked the
+certified dart-side orbits; corner ownership inferred non-separation from terminal metadata alone. When a derived
+ownership map and the region it certifies are both keyed by the same upstream face-walk authority, their separation
+predicate must be shared or re-derived identically. Absence of `terminalBarrier` is not itself proof that a final
+segment is non-separating.
+
+**A projection may preserve the right datum and still collapse its authority domain one level later.** TB44 adds a second instance to the same ownership-projection family. `RayCut` already stores exact `sourceCorner`, but the next container is keyed only by `sourceFace` and then asserts every row shares the first corner. The data survived; its grouping authority did not. When a record carries an identity key, audit every aggregation layer that can erase that key before blaming the producer.
+
+**Conditional evidence contracts must preserve their preconditions in shared helpers.** Part XII R8.3 says "when a failure is raised while certifying a current region"; the protected helper silently dropped that clause and keyed behavior to later-stage chronology. TB44 exposed the error when certification failed before the region loop. A shared helper may factor assertions, but it may not broaden the set of subjects for which those assertions are authoritative.
+
+**A protected evidence test must not require the producer to fail merely to expose its census.** TB45 adds the
+success-path form of the same authority mistake. Once the mechanical plan lawfully succeeded, four tests failed at
+`ASSERT_FALSE(plan.has_value())` before their Part XII predicates. If evidence is required across both failure and
+success, publish the already-computed producer evidence on the successful immutable product; do not force a new
+failure or substitute a synthetic fixture.
+
+
+**A stage name used as a domain guard is a proxy, and proxies drift.** Four identities checked a census over an
+**unlabelled-face** partition and guarded it with `if (stage != "UncutComponent")`. That stood in for the real
+condition — *is the failing object inside the partition this census describes?* — and the two agreed only while the
+pipeline always stopped at that stage. Once it advanced, the assertion demanded evidence about a disjoint object:
+the partition held **226 faces in 9 components**, the failing region held **10 faces, 0 in the partition**. **Write
+the membership test, not the name of the stage where membership happened to hold** — and when a census is empty,
+ask whether the failing object is in its domain before asking why the lookup missed. `LESSONS.md` §4 161.
+
+**Before repairing a census, count its population.** Three consecutive turns fixed the wrong half of an evidence
+census: a proof obligation whose verifier passed over zero rows; a per-face certificate whose deciding field was one
+complex-level bit repeated N times; and a locator broadening over a partition that may contain nothing. Each time
+the consumption was debugged and **the population was never counted**. When a census comes back empty or uniform,
+measure how many things there were to find and whether the failing objects are inside that set's domain — before
+changing a lookup. `LESSONS.md` §4 159.
+
+**A guarded oracle that returns early is green without asserting, and the ledger cannot tell the difference.** Four
+protected identities wrapped their real check in `if (stage != "UncutComponent") { … return; }`. The stage was
+always `UncutComponent`, so the check never ran and all four reported PASS for the whole checkpoint. When an
+unrelated correction advanced the pipeline, they went RED together — **an assertion reaching its subject for the
+first time, not a behaviour loss**. Don't classify that as a regression, and make guarded oracles publish which
+branch they took. `LESSONS.md` §4 160.
+
+**An independent oracle's ordinals are foreign — it may assert content, cardinality and bijectivity, never an
+index.** A binding contract paired regions 1:1 with certified faces, and the census proved it: 4 against 4, one
+match each, injective, arc counts equal, disc established everywhere. Four accepted identities still went RED,
+because they compared the production orbit ordinal (assigned by dart index) against the index the test's own
+re-derivation had assigned (by iterating a sorted set of oriented arcs). Same partition, different labels, two
+orbits transposed. **The independence that makes the oracle valuable is what makes its ordinals meaningless
+outside itself.** Check too whether the producer publishes anything content-derived that could confirm its own
+label — here it did not — and whether the accompanying controls can fail: the arc-count check passed on the
+transposed rows only because those two regions had equal arc counts. `LESSONS.md` §4 158.
+
+**Read where the producer writes a field before requiring it as proof.** A contract bound one stage's disc proof to
+another stage's per-face certificate and required `boundaryWalkCount == 1 && boundaryArcCount == n &&
+proves_disc_topology()`. The producer writes `boundaryWalkCount` as the **literal `1U`** for every face, so that
+conjunct can never fail; and `discTopologyEstablished` is a **single complex-level boolean** stamped identically
+onto every face, so a census of N regions publishes one bit N times while reading as N observations. The binding was
+still correct — complex-level cellularity *is* the theorem that every non-exterior face is a disc — but the evidence
+had to be renamed. **A constant is structure, not evidence; a uniform value should be published once with its
+inputs, not repeated per row.** `LESSONS.md` §4 157, and §4 155 for the empty-table form of the same error.
+
+**Do not re-certify an upstream semantic object by counting a downstream support projection.** A2a′ already
+certifies each actual-embedded face-walk orbit as a disc, and A2b emits exactly those faces as regions. The later
+region certificate nevertheless rebuilt a topological verdict from `region.sourceFaces` and gradually mixed
+whole-face, reduced, split-corner and source-edge notions until two fixtures required opposite formulas. The bug is
+not that one count is off; it is that **support/provenance data became a second authority for an object whose owner
+already published the proof**. Bind to producer authority when the producer already computes the semantic fact;
+measure projections only as diagnostics. DEFN-R7 makes the repair structural: both stages rebuild the same canonical
+face walk, so the consumer binds by current orbit equality and exact upstream face-certificate value rather than
+copying a trust flag or inventing another formula. This is `RP-01 / AUTHORITY_DOMAIN_CONFLATION` and an instance of
+`LESSONS.md` 118, 145, 148, 150 and 156.
+
+**A frozen proof obligation needs a witness count, or it passes over an empty table.** A definition turn required
+a per-region equivalence proof on every accepted fixture and explicitly refused the hand-wave excuse. The
+implementing turn emitted the record correctly — behind an environment-variable gate the accepted identities never
+set. Zero rows; verifier reported success; the regression the obligation existed to prevent happened anyway.
+**Specify "at least one row per X" and make the verifier fail on zero.** `LESSONS.md` §4 155.
+
+**One fixture cannot tell "correct" from "coincidentally agrees".** A region Euler criterion was corrected from a
+single mechanical region where the full count was right and the reduced count was wrong by 4. On the torus the same
+change was wrong the other way — reduced 1, full 0 — because that region is a one-triangle-wide annular band whose
+one interior barrier edge the reduced form drops, which is what the trace along it does. **A discrepancy that
+changes sign between fixtures is proof that neither candidate is the right object.** `LESSONS.md` §4 156.
+
+**Withdrawing an assumption means deleting every statement of it, not the one the failure pointed at.** The Euler
+cancellation premise appeared twice — above the χ assignment in the `.cpp`, and again on the certificate's
+`vertexCount` field in the header, restated verbatim. The review that ordered the withdrawal named only the first,
+because that is where the failure surfaced. One deletion would have left the assumption fully documented for the
+next reader and, a turn later, indistinguishable from never having withdrawn it — which is how this premise
+survived from TB34 to TB37. **Grep the assumption's wording, not the file, and name every site in the frozen
+definition.** `LESSONS.md` §4 154, and §4 53 for the same obligation on implementing a rule.
+
+**A "boundary" defined by a barrier set is not the boundary of the complex you are counting.** A region
+certificate computed χ over a source sub-mesh but took its boundary from the **network's** barrier set — mandatory
+and cut edges. A barrier edge with **both** incident faces inside the region, which is exactly what a terminal slit
+is, is an **interior** cell of that sub-mesh; the certificate dropped it from the edge count and dropped its
+endpoints from the vertex count, asymmetrically, and χ came out 4 low on a region that is a genuine disc. The
+stated cancellation premise was never the problem — the true boundary cancelled exactly, 20 against 20. **When one
+subsystem's "boundary" is used to classify another subsystem's cells, check the classification on the cells that
+belong to both.** `LESSONS.md` §4 153 and the `RP-01 / AUTHORITY_DOMAIN_CONFLATION` category.
+
+**A measurement freezes a domain as well as a quantity — say which one, in the definition.** A definition turn
+froze an exact multiplicity census to test whether a boundary's vertices and edges cancel out of an Euler formula.
+The implementation counted them over the **network graph**; the formula counts a **sub-mesh of source triangles**,
+and a network arc can be a trace chord that is not a source edge at all. Both counts came out 22, the report read
+that as the premise holding, and the question the turn existed to answer was untouched. The definition named the
+fields and their exactness but never named the **domain**, so a faithful implementation measured the wrong object.
+When freezing a measurement, state the domain of every count and the identity it must satisfy — and when a census
+returns a suspiciously clean equality, check that both sides live in the same space. `LESSONS.md` §4 150.
+
+**A property established at construction is not established after a copy — and the tests copy.** Two drafts of one
+definition turn proposed opposite provenance rules: a flag set in `build_regions` and stored on the region, versus
+a relation derived on demand by exact equality against the authoritative face-walk orbits. The deciding fact was in
+the test file — the synthetic negatives take `plan.validation_candidate()`, a **copy of a real region**, and then
+mutate its boundary. The stored flag survives that copy and goes stale; the derived relation correctly disappears.
+The construction-time rule would have re-broken accepted ordinal 312 by a second route. Derive a trusted property
+on demand whenever it can be carried across a copy into a mutated object, and read how the negatives are actually
+built before choosing. `LESSONS.md` §4 148.
+
+**A comment naming an assumption is a dependency edge — grep for it before removing the thing it names.** χ was
+computed as `V_interior − E_interior + F`, and the comment directly above said the boundary terms were omitted
+*because* the validated no-pinch condition made them cancel. A turn removed the guard and read the resulting
+`RegionEulerCharacteristicNotOne` as a **second, independent** defect the guard had been masking. It was the
+arithmetic losing its own stated premise. When a failure appears *behind* a guard you just removed, the first
+hypothesis is that you invalidated a downstream premise. `LESSONS.md` §4 147.
+
+**Do not freeze a closed-form correction whose formula you have only checked on the easy case.** A draft derived
+`χ = 1 − k` from the boundary walk's node-revisit count and proposed coupling the Euler correction to the guard
+change. The identity holds only when every boundary **edge** is traversed once — and a bridge is traversed once per
+dart, which is what ten terminal slits produce. Repeated edges leave the deficit underdetermined by k, so the
+correction was underivable and the coupling collapsed. The surviving turn froze a **measurement** requiring
+occurrence *and* distinct counts for arcs *and* nodes separately. `LESSONS.md` §4 149.
+
+**When a checker flips twice, the missing artefact is the contract, not the verdict.** One boundary predicate was
+removed as a false rejection, restored after it cost an accepted-green regression, and only then was the deciding
+fact established: the production input carries a single-closed-walk guarantee by construction and the synthetic
+input carries none. Nothing recorded which guarantee a boundary carried, so neither review could see the other's
+input. Write the guarantee where the checker can see it. `LESSONS.md` §4 146.
+
+**Before removing a rejection, grep the accepted corpus for the code it raises.** A review froze the removal of a
+guard on a source derivation; an accepted identity named `RejectsRegionWithMultipleBoundaryWalks` had asserted the
+opposite contract all along, and the code appeared exactly twice in the whole test file. The first runtime after the
+change lost accepted green. The obligation belongs to the review that freezes the removal. `LESSONS.md` §4 144.
+
+**A certificate's claim transfers only through an exact identity binding.** The earlier warning was correct about
+unbound objects but its application here is now refined: DEFN-R7 proves the A2a′ certified face and A2b region are
+the **same actual-embedded face** because both stages rebuild the same canonical graph and the current ordered
+region boundary exactly equals one face-walk orbit. The producer certificate transfers through that relation;
+`region.sourceFaces` remains a different support projection and cannot inherit the claim. `LESSONS.md` §4 145.
+
+**A walk may pass through its own start node.** A boundary validator treated "returned to the start with arcs
+remaining" as proof of a second loop. With ten terminal slits, a face boundary traverses each slit twice and
+legitimately revisits the slit's base node. The chain test already rejects disconnected loops; the early return only
+added the rejection of a legitimate pinch. **When a traversal check has both a chain test and an early
+back-at-the-start test, suspect the second.** `LESSONS.md` §4 143.
+
+**A pass/fail ledger digest is not a semantic fingerprint.** TB31 and TB32 produced byte-identical ledger hashes
+while every failure reason differed; the ledger's columns encode no failure detail. Provenance rests on artifact
+digests and censuses, not on that hash. `LESSONS.md` §4 141.
+
+**When a stage stops failing, a witness of that stage needs a justified *cleared* outcome, not a deleted
+assertion.** Four identities kept failing after their hard-coded failure code was removed, because their remaining
+assertions demand evidence only that stage's failure produces. Give such a witness two admissible outcomes and
+never let absence of evidence be one of them. `LESSONS.md` §4 142.
+
+**Line order is not call order.** A review inferred one guard sat upstream of another from its smaller line number,
+recorded its reachability as unexplained, and demanded a log transcription. The guards live in different functions;
+`grep` for the call sites settled it in one step — the "earlier" one runs later and had been unreachable all along.
+Establish call order from callers. `LESSONS.md` §4 139.
+
+**A guard that contradicts another path in its own function is an inconsistency, not a protection.** One branch of
+`build_fragment_corner_incidence` rejected equal dart orbits outright while its ray branch accepted them silently
+and handled them correctly. Check whether a function already accepts what its guard forbids before preserving the
+guard. `LESSONS.md` §4 140.
+
+**A witness that hard-codes which failure the product currently makes reds on every forward step.** Six identities
+across two corrections went red because each asserted a specific terminal failure code and the product stopped
+producing it — which was the goal. The two that survived both steps, 404 and 408, assert **publication and
+completeness** rather than an outcome. Pin a witness to the contract it owns. `LESSONS.md` §4 137.
+
+**A key that has been injective on every witness so far is not an identity.** Fragments were keyed `(face, orbit)`;
+that is unique only while no arc is a bridge. The guard rejecting bridges was defending the key, not stating a fact
+about geometry — so the fix is the key, not the check. `LESSONS.md` §4 138.
+
+**When a rule is frozen, name every site that implements it.** One correction was frozen and named the function
+being diagnosed; the identical guard existed in a second file governing a second partition. Ownership went from
+74/300 to 300/300 established and the failing ordinals did not move by a single field. Grep for the predicate the
+rule replaces and list the sites in the freeze. `LESSONS.md` §4 135.
+
+**A gate's name outlives the reason it was red.** Ordinal 398 was described for many turns as the gate on ownership
+totality. Ownership became total and it stayed red — on a deferred sphere fixture it had always also covered. Re-read
+what a long-red gate asserts, and which assertion is failing, before using its colour as evidence. `LESSONS.md` §4
+136.
+
+**A witness that asserts a defect is still present cannot be told apart from a correct one until the defect is
+fixed — and then it blocks the fix.** Ordinal 404's contract said "publication and completeness only, never a
+value"; the implementation added a loop requiring that **no** face had established ownership. It passed vacuously
+for four turns and fired the moment the correction worked. When a review forbids value assertions, read the
+implementation for assertions that the broken state persists. `LESSONS.md` §4 133.
+
+**Never match two partitions by index.** Ordinal 390 located the certifier census by
+`row.component == locus.component`, matching indices across two partitions with different domains and face sets. It
+agreed while both were `0` with equal counts. Match by face-set digest or a published correspondence — never by an
+integer two independent constructions both start at zero. `LESSONS.md` §4 134.
+
+**A control run is worth more than a clever measurement.** After eight turns of elaborate diagnostics, what
+settled which of two contradictory gates was measuring the product was changing **one** variable — the harness —
+against an unchanged package and comparing ledgers line-for-line. Deliberately *not* recompiling is what made the
+comparison mean anything. When two results disagree, reproduce the older one before explaining the newer one.
+`LESSONS.md` §4 132.
+
+**Evidence that exists only inside an artifact is not in the record.** Three consecutive turns produced a required
+datum and failed to put it where a reviewer reads: orbits serialized as counts, then a summary with no ledger, then
+a census published into a runtime log the review had no copy of. A retained document must carry the values a
+downstream decision depends on. `LESSONS.md` §4 131.
+
+**A status change with no behaviour change is a harness result, not a product result.** A gate that had reported
+7 RED reported 407 PASS one turn later, on a package whose only source change read the ownership state and never
+wrote it. Before recording a status change, name the behaviour change that caused it; if none exists, the instrument
+moved. `LESSONS.md` §4 129.
+
+**"Exit 0 is PASS" needs proof that something ran.** GoogleTest exits 0 when a filter matches no tests. Route 407
+identities spread across five binaries to one binary and four-fifths of them exit 0 unmatched. Require a per-row
+selection count and treat "zero tests selected" as a failure. `LESSONS.md` §4 130.
+
+**A per-segment property cannot decide a per-arc or per-face classification.** A trace's last segment being a
+terminal slit was used to exclude that segment's *face* from the trace-cut set and its carriers from the barrier
+set — and a review then inferred from the same flag that the whole *arc* must be a bridge. Runtime found two of four
+such arcs separating. State the quantifier before classifying the larger object. `LESSONS.md` §4 127.
+
+**When a measurement chain reaches its third turn, freeze the stop rule and pre-name the corrections.** Six
+successive turns measured one ownership frontier, each correctly explaining why the last could not answer. Every
+step was justified; the sequence was the larger risk. Write the exhaustive outcome list, the correction each outcome
+selects, and the default on ambiguity, so "insufficient evidence" stops being available. `LESSONS.md` §4 128.
+
+**An incidence count is not a separation — publish the field that carries the distinction.** The frozen
+discriminator asked whether a *separating* arc meets a component's interior; the runtime reported `interiorArcs=4`
+and the turn read that as the horn selected. An arc separates only if its two darts lie in different orbits, and the
+census stored both orbits per row while printing the count. The same report admitted it could not name the four
+arcs. `LESSONS.md` §4 125.
+
+**A diagnostic must be computed on the object that failed.** Two partitions of one mesh exist — the plan's over
+faces with no fragment orbits, the certifier's over faces not crossed by a trace — and the entire CJ6 census was
+computed on the second while the RED is raised on the first. Their boundary counts differ, 97 versus 76, precisely
+because they are different objects. `LESSONS.md` §4 126.
+
+**A census over "established" values is vacuous exactly where nothing is established.** The CH8 conflict census
+emitted a row only when both faces of an edge had an established singleton owner; all 191 faces of the component
+under investigation were `Unavailable`, so `rowCount=0` was structural. Third structural zero in this checkpoint,
+after `projectionFaithfulnessResidual` and the seed-aliased certificate columns. Checking that a measurement runs on
+the failure path is not enough — check that its **inputs** survive the failure. `LESSONS.md` §4 122.
+
+**A required-green assertion must never encode a hypothesis still under investigation.** Ordinal 390's
+`ASSERT_GT(distinctCount, 1U)` was authored when the count was 3 and the component was believed to span several
+certified faces. When the count came back 0, the gate failed on the hypothesis rather than on the contract the
+identity owns, and its RED said nothing about the product. `LESSONS.md` §4 123.
+
+**A diagnostic must not be gated on the success of the thing it diagnoses.** D3 was defined to read the published
+owner map; the same definition made publication conditional on the ownership derivation succeeding. The only runs in
+which D3 could report were the runs with nothing to decide — on the failing case it returned "unavailable" for all
+191 faces. The same ordering defect cost four more surfaces: the producer's typed error replaced the certificate, so
+five witnesses built to observe the consumer's failure never got a subject, and the consumer's complete, correct
+evidence census sat one stage below a return statement. Ask which path runs when the measured thing is broken, and
+put the measurement there. `LESSONS.md` §4 120.
+
+**Moving a computation to the correct authority does not give it more information.** DEFN-R3 correctly ruled that
+the certifier, not the consumer, owns source-face ownership — but justified it as "publication, not computation".
+The certifier holds a dart only for arc-incident and trace-crossed faces; every other face still needs the same
+propagation. The relocated code reproduced the original ambiguity at the identical locus with the identical orbit
+ids `[0,1,3]`. Check that the destination can derive the value from data the source lacked. `LESSONS.md` §4 121.
+
+**A consumer must never re-derive a partition its producer already computed.** The cut-graph certifier builds the
+entire embedded topology and its face walk, then publishes four scalars per face; the plan rebuilds the identical
+structure and tries to reconstruct ownership from fragments of it. Four turns of diagnostics failed on that
+reconstruction — an unsatisfiable residual, columns aliased to the seed, a projection coarser than the partition it
+adjudicated. When a value is hard to measure downstream, check whether the producer discarded it. `LESSONS.md` §4
+118.
+
+**A prohibition inherits the premise of the finding that motivated it.** "Do not weaken the fragment-count
+invariant" was written when the only observed instance was the torus, where non-cellularity was independently
+proved. On a certified cellular witness containing a bridge the invariant is simply false, so the prohibition could
+not be honoured as written — it had to be lifted with reasons by the definition authority, not quietly worked
+around. Re-check a prohibition's premise before treating it as binding on a new witness. `LESSONS.md` §4 119.
+
+**If three independent measurement attempts collapse the same way, stop measuring and check whether the datum
+exists.** The residual was unsatisfiable, the certificate columns were aliased, and the certified-face projection
+re-derived the seed — all because the certificate publishes an orbit id and three counts and no source-face
+membership. The question was never measurable; each contract was a new way of reconstructing an answer the system
+does not record. `LESSONS.md` §4 115.
+
+**A falsifiability witness earns its keep by splitting "can" from "does".** The unit witness proving the pair
+measurement *can* report a non-zero differing count passes, while the production witness proving it *does not*
+here reds. Without that pair, `differing=0` would have been reported as a clean result — exactly as CB24's
+structural zero was. `LESSONS.md` §4 116.
+
+**A derived partition must be at least as fine as the one whose property it is testing.** The certified-face
+projection united faces across everything except mandatory and cut edges, omitting `traceTouchedEdges`, so its
+components were strictly coarser than the seed guard's — guaranteeing multi-owner sets and `unavailable` for every
+face. `LESSONS.md` §4 117.
+
+**A resolver for a required precondition must fail closed.** `test_data_root()` checks two candidate fixture
+locations and, when neither exists, returns one of them anyway. A harness slip that should have produced one typed
+stop instead produced a complete 397-process ledger with 38 accepted-prefix failures that then had to be argued
+away as non-semantic. A helper that resolves a precondition must report when it cannot. `LESSONS.md` §4 112.
+
+**A preflight must check the path the consumer resolves, not a path that merely holds the same bytes.** The TB23
+harness verified fixtures in the extracted source workspace while the packaged binaries resolve `test-data`
+relative to their own executable directory. Both locations held the same files, so the check looked correct and
+proved nothing. Verify preconditions **through the consumer's own resolution rule**. `LESSONS.md` §4 113.
+
+**When several turns pass on an arrangement no artifact records, that arrangement is an undocumented dependency.**
+TB18–TB22 worked because their harnesses staged fixtures into an executable-relative view; nothing in the package,
+the reusable compile workflow, or any durable document said that staging was required, so the first harness that
+omitted it had no way to know. Write the required runtime layout into the frozen plan. `LESSONS.md` §4 114.
+
+**A diagnostic measure must name its source of truth, not just its output field.** "Attribute each edge's sides
+to certificate faces" was implemented by a helper called `certificate_side_orbit` that reads `edgeOrbitEvidence`
+and `fragmentOrbits` — the seed machinery — and never touches the certificate. The field name matched the request;
+the value answered a different question, and three columns of a report turned out to be one number printed three
+times. Specify **which authority** a diagnostic reads from, and make the witness prove it read from there.
+`LESSONS.md` §4 109.
+
+**A measurement that cannot vary is not evidence — state what would falsify it.** The faithfulness residual
+quantifies over a set intersected with the complement of one of its own supersets, so it is `0` on every mesh
+forever; its required-green witness passes because the field is *published*, never because it could have been
+non-zero. Every diagnostic contract should state the condition under which it would report a different value, and
+the witness should exercise that condition. `LESSONS.md` §4 110.
+
+**Two mechanisms for one quantity means the reachable one is probably the wrong one.** `GlobalTopologyPlan.cpp`
+computes certificate side orbits twice: once genuinely from `walk.orbitByDart` on mandatory/cut arcs, once from the
+seed lookups. The genuine one is consulted only inside unreachable code; the circular one feeds every published
+row. When a value has two producers, check which one the shipped path actually calls. `LESSONS.md` §4 111.
+
+**Bounded evidence must be retained by distinctness, not by position.** A first-N window preserves the majority
+and can drop exactly the outliers a "not unique" failure exists to report. Component 0's boundary census is
+**81 / 1 / 1** across three orbits; the two rows that decide the defect are single rows among 97, and both survived
+only by luck of ordering. When capping evidence for a uniqueness failure, retain at least one row per distinct
+value **before** filling the remaining budget in order. `LESSONS.md` §4 106.
+
+**A cross-witness diagnostic identity inherits the blockers of every witness it spans.** Requiring one census
+witness to cover mechanical, torus and prescribed sphere turned the known-red sphere surface into a new RED in an
+otherwise clean diagnostic turn. Scope a diagnostic per witness, or make each half report independently.
+`LESSONS.md` §4 107.
+
+**Carry the premise, not just the conclusion.** A frozen finding of the form "X implies Y" gets cited as "Y" once
+it is a turn or two old. TB20-REV applied Part I §3's conclusion — "the network is not a cut graph" — to a witness
+whose antecedent it had not checked, and the census it ordered in the same breath disproved the antecedent. When
+citing a frozen finding, restate its premise and verify it holds for the witness in hand. `LESSONS.md` §4 108.
+
+**Check the frozen definitions' prohibited list before authorizing a correction, not after.** TB18-REV proved a
+real mathematical fact — `|owners| = k+1` is not a universal invariant — and authorized relaxing the check that
+asserts it. Two frozen definition revisions explicitly prohibit relaxing that invariant, and a third section
+explains why: the guard **detects a missing input** rather than asserting a theorem. Correct mathematics about a
+check says nothing about whether the check is load-bearing. `LESSONS.md` §4 103.
+
+**When a frontier "advances" without the underlying condition changing, the previous turn removed a detector
+rather than a defect.** Ordinal 366 moved from `TraceCutFaceFragmentCountMismatch` to
+`UncutFaceComponentOrbitSeedNotUnique`; both are downstream detectors of the same missing cut graph. Frontier
+movement is progress only when the thing being detected changed. `LESSONS.md` §4 104.
+
+**An architectural theorem proved on one witness bounds its own scope.** Part I's torus proof turns on `χ = 0` and
+on cycles having `E = V`; it says nothing about a closed genus-0 surface. The mechanical witness reaches the same
+conclusion by a route the theorem does not describe — new information, not a repetition. `LESSONS.md` §4 105.
+
+**An error code plus a source locus that two unrelated witnesses both produce is a symptom, not an identity.**
+The torus (0 traces, 72/216/144) and the mechanical witness (12 traces, 152/450/300) both report
+`UncutFaceComponentOrbitSeedNotUnique` at face `(0,1,2)` — because `(0,1,2)` is row 0 of both meshes and the emitter
+reports the first unlabeled face in `std::map` order. The torus case is provably the zero-seed branch (no traces, so
+no labeled face can seed anything); the mechanical case has 70 labeled faces and 6 orbits. Before merging two
+failures by name and locus, ask whether the locus is a property of the defect or of the iteration.
+`LESSONS.md` §4 100.
+
+**A guard that reports "not exactly one" must say which side it fell off.** `seeds == end()` and `size() > 1` are
+opposite defects with opposite corrections, and the emitter distinguishes them internally and then discards the
+distinction. `LESSONS.md` §4 101.
+
+**A witness that exercises none of the disputed behaviour cannot settle it.** All 70 retained mechanical face
+arrangements are non-crossing, which says nothing about crossing arrangements — and `SurfaceCellTracing.cpp` builds
+`TraceIntersection` contact nodes bound to a source face, so crossings are a modelled case in which `k` chords make
+`k + 1 + c` local fragments, not `k+1`. `LESSONS.md` §4 102.
+
+**A diagnostic is reachable only when both its position and its enabling condition hold on the failing path.**
+TB17-REV found the `fragment_reconciliation` record sitting thirty lines *below* the early return that needed it.
+CB20 moved it above the return — and it still never appeared, because it stays behind
+`getenv("DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS") == "1"`, which the frozen artifact-only gate runner never sets and
+is forbidden from setting. Position was fixed; reachability was not. `LESSONS.md` §4 97.
+
+**The two ends of a curve are asymmetric in the code and symmetric in the topology.** `is_terminal_slit` correctly
+removes a trace's last segment from the chord count — that segment materializes no chord. But what a free end
+actually establishes is a property of the **whole trace**: a dangling path separates nothing globally, so *every*
+chord that trace cuts also fails to produce a second owner. The exclusion fixes the last segment and leaves the
+preceding ones counted as if they separated. Fifth instance of the class. `LESSONS.md` §4 99.
+
+**A diagnostic that is unreachable on the failing path is not a diagnostic.** `build_regions` computes the actual
+fragment count, the piece count and the expected count for **every** face, and formats all three into a
+`fragment_reconciliation` record — thirty lines below a `return failure;` that fires precisely when those three
+numbers are the question. The instrumentation was written for this failure and cannot be reached by it. Place
+diagnostics where errors are **raised**, not where the successful path ends. `LESSONS.md` §4 95.
+
+**Counting a local quantity with a global identifier silently assumes injectivity.** "k chords make k+1 fragments"
+is a statement about one triangle; `|set of orbit ids|` is a statement about the whole surface. Equating them
+assumes distinct local pieces never share a global owner — true often enough to ship, false on a closed surface,
+and invisible until a face carries two chords. When a check compares a count to a set's cardinality, name the map
+between them and say why it is injective. `LESSONS.md` §4 96.
+
+**A predicate copied into a second consumer inherits the original's defect and then diverges — and the divergence,
+not the inherited defect, decides which copy fires.** `build_regions` and `build_fragment_corner_incidence` hold
+the same carrier-less trace-segment predicate on the same trace-global datum, so both carry the same wrong binding.
+Only the region loop lacks the terminal-slit skip, and that is the sole reason TB16 shows
+`RegionTraceSourcePortCarrierNotAdmissible` rather than `TraceSourcePortCarrierNotAdmissible`. Diagnosing the
+shared defect alone would have produced a correction scoped to the symptom, leaving the region loop still consuming
+a carrier its sibling calls hypothetical. **When two consumers share a predicate, diff what each one *skips* before
+concluding anything from which one failed.**
+
+**An earlier identical check that passed is evidence about the input, not noise.** The whole reconstruction of the
+TB16 incidence rests on a negative: the fragment-corner loop ran first, over the same arcs and the same segment
+ranges, with a byte-identical predicate, and accepted the segment. Since the predicates cannot disagree on
+identical inputs, the only escape is the one `continue` that loop has and the other does not — which pins the
+failing segment to a terminal slit without any datum the run failed to retain. Order of execution across functions
+is usable evidence in the same way order across turns is (lesson 89).
+
+**The fourth instance of a class is a signal about the audit, not about the code.** `trace.sourceVertex` bound to a
+per-segment decision has now been found in the vertex-locus helper (CB16), the edge-locus fallback (CB17/CB18), the
+rotation fallback, and now the region builder — each found and fixed at its own site, one turn at a time. The
+scoping error is not in any of the fixes; it is that no measure ever ran the search *"a per-segment decision bound
+to a datum owned by the whole trace"* across the codebase. A class that recurs is owed a predicate-scoped sweep,
+not a fifth point fix.
+
+**An absent optional means whatever its producer's last branch chose to leave unset.**
+`FieldAlignedCandidateTraceSegment::incomingCarrier` is `nullopt` for two entirely different reasons — a port
+origin, and a vertex transit — because `proposal.nextIncomingCarrier` is assigned only on the edge-exit
+continuation and the `VertexHit` branch simply returns without it. Consumers then read one absence as the other,
+which is exactly how the edge-locus fallback came to ask about a trace's origin singularity. When an optional is
+set on some producer paths and skipped on others, the skip carries meaning and belongs in the type: a named
+alternative, not a hole. `LESSONS.md` §4 93.
+
+**A rank derived relative to a locus must be derived relative to it in every branch.** In
+`edge_locus_secondary_rank` the carrier branch measures from `contactIndex` and the fallback measures from the
+face's absolute corner numbering. They agree on exactly one of three possible contact indices — so the
+disagreement is invisible two thirds of the time, and entirely invisible on the very witness that exposed the
+neighbouring defect. When two branches feed one ordering, check that they share an **origin**, not merely a range.
+`LESSONS.md` §4 94.
+
+**Third instance of one class, and the reason to stop fixing instances.** `port->ordinal` at the vertex locus
+(TB12-REV), the missing vertex-exit case (TB13-REV), and `trace.sourceVertex` at the edge locus (TB15-REV) are the
+same defect: a value correct in the scope that produced it, used in a scope that does not make it unique. Each was
+found only when a preceding correction made its code newly reachable. The standing check is cheap — at every
+locus-relative computation, ask which scope guarantees the datum, and whether it is the scope being ordered.
+
+**Clearing a stage exposes the next stage's untested contract.** CB16 fixed the last vertex-locus defect and the
+very next node the rotation reached was the **first contact node ever processed on this witness** — whose
+edge-locus rank helper had never run here. Neither the helper nor its diagnostics were wrong for the inputs they
+had previously seen; they had simply never been exercised. When a correction unblocks a traversal, expect the newly
+reachable code to carry the diagnostic maturity of code that has never failed, and budget a diagnostic turn for it
+rather than reading the first red as a regression. `LESSONS.md` §4 91.
+
+**A typed-reason split is a pattern, not a patch.** CB16 correctly applied BL3 to the vertex helper and left the
+structurally identical edge helper with five untyped `return std::nullopt` statements — so the next failure was
+again unattributable, for the same reason, one helper over. When a turn fixes a diagnostic-collapse defect, the
+measure should name the **class** — every helper that funnels multiple conditions into one bare `nullopt` behind a
+single typed reason — not the single instance the current red exposed. `LESSONS.md` §4 92.
+
+**A turn that mints a typed reason must audit the reasons it reuses.** CB15 correctly created
+`RotationVertexTraceRaysExactlyCoincident` for its fail-close case, then routed its *other* new failure into the
+pre-existing `VertexTracePortOrdinalInvalid` — recreating, in the same commit, the collapsed-reason ambiguity that
+lessons 79, 82 and 84 already record, and costing a full review turn to undo. The authoring control: when a change
+adds a condition, ask not only "does this need a name" but "does the name I am reusing still mean one thing".
+`LESSONS.md` §4 88.
+
+**Execution order across turns is usable evidence.** The legacy emitter at v10 was excluded without reading its
+logic: CB15 touched no file upstream of the rotation system, so the network was byte-identical to TB12's; node ids
+are monotone in vertex index and the incidence map is keyed by node id, so v10 is processed *before* v47 — and
+TB12 reached v47. The same code had therefore already passed that vertex on those exact inputs. When a successor
+changes one layer and the failure moves, the untouched layers' **prior successes** are a proof instrument.
+`LESSONS.md` §4 89.
+
+**A fallback chain owes coverage, not arithmetic.** `vertex_locus_secondary_parameter`'s projection and guards are
+correct; the defect is that `vertex_trace_ray_second_point` enumerates four ways to locate a ray's second point and
+omits a fifth the producer can emit — the `VertexHit` exit, which this project documented as Amendment 3 back at
+TB7-REV. When a function's body is a lookup chain, review the chain against the **producer's case list**, not the
+mathematics after it. `LESSONS.md` §4 90.
+
+**One field, two branches, one of them already right.** The vertex locus and the edge locus fill the same
+`RayOrderKey::secondary` slot. The edge branch computes a locus-relative, exact, geometry-free rank and says so in
+a comment; the vertex branch substitutes the ray's **origin** port ordinal. The correct design was already
+implemented forty lines away in the same function. Before designing a rank, a key, or a tiebreak, diff the sibling
+implementations of the same field — the convention may already exist. `LESSONS.md` §4 86.
+
+**A quantity that is only incidentally correct is wrong the first time it matters.** `port->ordinal` was consistent
+for a singularity's own emanating rays — and the v47 census shows `primary` already separated those, so it never
+did any work there. It became load-bearing only for rays arriving from **other** vertices, which is exactly where
+it is meaningless. Before trusting a tiebreak, ask which inputs actually reach it. `LESSONS.md` §4 87.
+
+**A fail-closed uniqueness assertion that compares less than the key it asserts on.** `RayOrderKey` sorts on six
+members and is checked for collisions on two. That is defensible only if the other four are known-irrelevant to the
+invariant — and if so, the guard should say so and the key should not carry them. As written the predicate cannot
+tell "the key is under-determined" from "the input is duplicated", which is exactly the ambiguity that blocked the
+TB11 review. The authoring control: when a guard asserts injectivity, state which projection of the key is supposed
+to be injective and why the remaining members are irrelevant. `LESSONS.md` §4 84.
+
+**An identifier used as an ordering key outside the scope that makes it unique.** `port->ordinal` is injective over
+the ports of **one** singularity. `build_rotation_system` uses it as the within-sector tiebreak at an arbitrary
+vertex, with no check that the port's source vertex is the locus vertex — so rays that merely arrive at or pass
+through the vertex contribute ordinals minted elsewhere. Before borrowing an id as a sort key, check that the scope
+guaranteeing its uniqueness is the scope you are ordering within. `LESSONS.md` §4 85.
+
+**A default rendered as an observation — third recurrence.** `nonDiscComponentCount` and
+`remainingAdmissibleEdgeCount` are assigned **only** on the `CutSearchExhaustedBeforeCellularity` returns
+(`SurfaceCutGraph.cpp:365`, `:367`); the certification-failure return at `:345` assigns neither, yet
+`RemeshPipeline.cpp:6877-6878` projects them unconditionally. So TB11's `nonDiscComponentCount=0;
+remainingAdmissibleEdgeCount=0` are **struct defaults, not measurements**. This follows `publishedFaces` (TB8-REV)
+and the trace-scoped group (TB9-REV). The durable fix is not another one-off: **a locus field should be printed
+only where the path that produced it assigns it.** `LESSONS.md` §4 80.
+
+**A discriminator added only to the sites that already had a locus discriminates nothing new.** Nine of
+`EmbeddedGraphTopology.cpp`'s forty-six `RotationSystemInconsistent` sites gained a
+`RotationSystemInconsistencyReason` — and all nine already published a `sourceEdge` or a `sourceFace`. The cases
+that were already localisable became more legible; the twenty-eight that published nothing stayed silent, and one
+of those is the current gating red. When resolving a collapsed error code, **enumerate the sites that publish
+nothing and start there** — the ones you can already localise are the ones that least need a name. This is the
+counterpart of `LESSONS.md` 57/64: it is not enough to add a reason, the reason has to reach the *silent* sites.
+
+**Count the losses before repairing one.** The TB10 report localised a real projection loss — `cut_graph_failure_locus`
+publishes only two of the ten fields `SurfaceCutGraphError` carries — and named it the cause. There were **three**
+losses of the same datum in series (silent producers → a mapper with no `sourceVertex` field → the projection), and
+the reported one was the **last**. Repairing it alone would have bought a whole turn of identical evidence. Before
+proposing a diagnostic fix, walk the datum from producer to reader and count every boundary that drops it; then fix
+the earliest.
+
+**Two identities observing the same stage can have very different eyesight, and the idiom decides.** The prescribed
+sphere's cut-graph failure is fully legible at ordinal 368 because it uses `observe_cp4c_witness`, which calls
+`SurfaceCutGraph::make` directly and holds the typed error. The mechanical failure is opaque at ordinal 366 because
+it uses `build_cp4c_production_fixture`, which throws a string assembled from the lossy pipeline locus. Same stage,
+same error family, same test file — different observation idiom. When one witness is legible and another is not,
+compare the observation idioms before concluding anything about the witnesses.
+
+**A shared fixture helper's precondition is a coupling that can silence contracts for many turns.** Ordinals 371 and
+372 assert only about the A1 atlas, which has been available and correct throughout, yet they have been unmeasurable
+since TB2 because the helper that hands them the atlas also demands four downstream products. A helper that returns
+*all or nothing* converts every downstream failure into a blackout over every upstream contract that shares it.
+
+**Shared error strings are not shared causes.** Ordinals 366 and 370 both render `CellularityNotEstablished`. One
+arrives through `topology_error` carrying `origin=RotationSystemInconsistent`; the other is a direct `cut_error`
+with no origin. Check the producer before merging two reds that read alike.
+
+**An origin credential used as an arrival credential.** A singularity **port** records where a trace may
+*start*; a singularity **node** records what a trace may *end at*. The product allocates the node
+**unconditionally** and the port **conditionally** (`portPolicy == BarrierAbsorbed` emits none), then asks the port
+a question only the node can answer — so the very policy whose purpose is to suppress ports made a legitimate
+arrival unrepresentable. The authoring control: when two tables model the same entity at different cardinalities,
+name which one the question is about before writing the lookup. A lookup that reaches its real target *through* an
+optional table (`terminalPort->node`) is the smell. `LESSONS.md` §4 81.
+
+**A reachability witness proves the name, not the branch.** CB11's BB5 measure demanded a witness for each
+surviving emission site, and its witness for the port-ownership condition is valid — but it fires the *third*
+disjunct (a port exists owning a different vertex), which TB9-REV proves the production path **cannot reach**. The
+production path always fires the *second* (no port at all). A condition that is a disjunction owes a witness **per
+disjunct**; "reachable by some route" is not "reachable by the route production takes". `LESSONS.md` §4 82.
+
+**Geometry locates a failure; only the source predicate adjudicates it.** Every edge of TB9's traced chain has an
+exactly 90° dihedral, and the natural inference — sharp implies barrier — is **false on this witness**: v47 is
+equally sharp and provably emits ports. The barrier set is region-restricted at `FieldTransportAtlas.cpp:962`
+(both incident faces must lie inside the region), so a hard feature edge that *bounds* a region is not a barrier
+while one *interior* to it is. Reconstructing a fixture is the right way to find where a trace went and the wrong
+way to decide whether the product was correct. `LESSONS.md` §4 83.
+
+**A guarantee is scoped by its call graph, not by its name.** Accepted ordinal 329,
+`NetworkDiagnosticsPublishEveryRequiredLocusLosslessly`, has passed every gate since it was written — while the
+production projection silently discards fifteen fields of `FieldAlignedCurveNetworkError`. The identity constructs
+errors by hand and asserts tokens against `network_error_locus`, a **test-local** renderer. The path every CP4c
+production witness reports through — `network_failure_locus` → `SurfaceCellFailureLocusDiagnostics` →
+`append_cp4c_failure_locus` — is never touched. The authoring control: an identity whose name asserts a property of
+*the system* must be routed through the entry point the system actually uses; if it constructs the DTO itself, its
+name may only claim a property of the DTO. `LESSONS.md` §4 78.
+
+**One typed name over many emission conditions is an untyped failure.**
+`FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership` is emitted at **twelve** distinct sites for
+twelve distinct conditions. When it fired at ordinal 366, static proof could eliminate ten and no further. CB10's
+AZ3 rule — one typed name per condition — was applied to the three vertex-star seed conditions and nowhere else.
+The generalization has a catch worth remembering: **splitting the enum is often unavailable**, because an accepted
+identity may assert the name (ordinal 328 asserts this one). The discriminator then belongs in an **added field**,
+which is additive and cannot break an accepted assertion. `LESSONS.md` §4 79.
+
+**A measurement produced and then discarded at a stage boundary — the fourth consecutive instance.** AS1, AU1/AU3,
+AY7, and now the trace-scoped group (`traceSeedVertex`, `traceSeedSingularity`, `traceHistory`, `traceSteps`, …).
+Each fix corrected the instance that turn's red exposed and left the class intact. AZ5 even required the consumer
+set to be found *by search against a predicate* — and it was, for the fields AY7 named. The predicate was scoped to
+the wrong set: it must be **every field of the error DTO that has no projected counterpart**, not every field this
+turn added. A related smell in the same family: `FieldAlignedCurveNetworkError::publishedFaces` is **declared and
+never assigned anywhere**, so `publishedFaceCount=0` renders as an observation on every network error and means
+nothing. A dead diagnostic field is worse than a missing one.
+
+**A convention that makes a choice unique is not a precondition on one of the alternatives.** The half-open sector
+rule `next > 0 ∧ prev ≥ 0` exists so that exactly one sector of a fan owns each ray — its asymmetry is deliberate
+and correct. CB9 asked it a different question: *is this one face the owner of the ray I arrived on?* Asked that
+way, the deliberate exclusion of the `previous` ray becomes an arbitrary, orientation-dependent rejection of a
+perfectly ordinary arrival, and the answer depends on which side of a shared edge the mesh happened to number
+first. The family is familiar — two authorities for one datum, two classifications never proved to coincide — but
+this instance is new and sharper: **one correct rule, reused for a question it was not written to answer.** The
+authoring control is cheap: when a predicate's name or comment says *partition*, *elect*, *own*, or *choose*, it
+answers a question about a **set**; a question about a **single member** needs its own predicate, and the two must
+not share a call. `LESSONS.md` §4 77.
+
+**A fixture helper's silent precondition surfaces the first time a witness stops being degenerate.**
+`make_zero_transport_field` declares `effort ≡ 0` and no singularities, which is consistent **only** on a mesh that
+is intrinsically flat at every interior vertex — because `exactLift = 4K/2π` is `0` only when the angle defect `K`
+is. Every consumer before AY5 satisfied that by accident: `make_four_triangle_fan` is entirely planar. AY5 needed
+the project's *first* non-flat star — `DEFN-R2` §7.2 asked for a non-coplanar hinge precisely because vertex 30 is
+flat and cannot separate `β = α + Θ/2` from `β = α + π` — and inherited the flat-only helper unchanged, producing a
+witness the atlas correctly refuses. This is the degenerate-fixture family arriving from the opposite direction:
+not a witness too degenerate to exercise the code, but a helper too degenerate to describe the witness. The
+counter-control is the one CP3a demonstrated: **make the helper assert its own precondition at runtime**, so the
+next author cannot inherit it silently. `LESSONS.md` §2 22r.
+
+**A witness written around an implementation's restriction cannot falsify that restriction.** `DEFN-R2` §7.2 item 5
+required a seed "placed exactly on a radial ray". CB9's guards make that unreachable in `FaceInterior` mode, so its
+third AY5 instance was written in `EdgeTransit` mode with the comment *"EdgeTransit is the admissible arrival mode
+for that exact radial seed"* — encoding the invented restriction into the witness that existed to test it. The
+production defect then survived its own falsifier. When a witness must choose a mode, a flag, or a path to make an
+assertion pass, ask whether the thing being avoided is the contract or the implementation.
+
+**A measure that orders a projection must name the consumer that renders it, not only the struct it fills.** AY7
+said "extend the `RemeshDiagnostics` projection in the same change so the rows have a reader", and CB9 implemented
+that exactly: 26 new fields on `SurfaceCellFailureLocusDiagnostics`, all populated in `network_failure_locus`, and
+not one of them printed by `append_cp4c_failure_locus`, which is the only renderer the gate identities use. The
+field set grew and no reader appeared, because "the projection" named the producer-side artefact. Third consecutive
+turn for this pattern (AS1, AU1/AU3, AY7), each one layer further out. Related and equally cheap: **"record the
+diagnostic before the guard" means the whole diagnostic, including its container** — AY4 was honoured for the rows
+and missed for the audit object, which left `VertexStarTransitState::SeedUnavailable` reachable by no execution at
+all. `LESSONS.md` §4 75.
+
+**A representation gap can reveal that the semantic operation itself was never defined.** CB8 first looked like a
+missing exact transport type: branch lift is exact, arbitrary-ray transport is not. CB8-REV found the deeper gap:
+for a general non-flat vertex star the design has never stated what "straight through the vertex" means when an
+intrinsic development has a gap or overlap. Choosing an algebraic type, moving an owner upstream, or adding a
+certificate before that semantic choice would only encode an undefined operation more carefully. **Define the
+reference geometry and all typed non-owner states before choosing its representation.** This is `LESSONS.md` 74a.
+
+**A definition gap can hide behind a *cost* — and the cost is a first-class architectural fact.** Having frozen
+what continuation *means* (Amendment 22), DEFN-R2 found the next layer: electing a developed sector is the sign of a
+signed sum of arccosines, and composing the fan's rotations exactly lands in a tower of degree up to `4^k` in fan
+length. There is no bounded algebraic representation as valence grows. The wrong responses are all tempting and all
+familiar — carry the value through `double` and exactify (the CB6 defect), pick a tolerance, or let "the filter was
+inconclusive" become an answer. The right response is to **publish the budget**: a certified filter that returns the
+correct answer or defers, an exact fallback that is actually implemented (here it is the *only* path that can decide
+a continuation lying exactly on a radial ray, so it is load-bearing rather than ceremonial), and a declared limit
+with a typed fail-closed state above it. An unbounded computation with no declared limit is Amendment 19's
+unreportable exit wearing a performance costume. Worth recording alongside it: the *worst* case need not be the
+*measured* case — at vertex 30 every sign test collapsed to rational identities, and an exactly-recognizable
+rational short-circuit is a legitimate optimization as long as it is an exact identity and the general path stays
+reachable. `DESIGN.md` Amendment 23, `LESSONS.md` 76.
+
+**A measurement is evidence only if some identity or projection carries it.** `vertexTransitStates` was built at the
+failure site by CB6, extended exactly and correctly by CB7, attached to the typed error — and read zero times,
+because it has no projection out of the producer. Three consecutive measures (AS1, AU1, AU3) ordered it; three
+consecutive reviews observed its absence; every turn complied exactly. The two authoring-time controls cost nothing:
+**a measure that orders a measurement must name the identity or projection that will carry it**, and **a diagnostic
+added to a typed error for operational reporting must have its projection extended in the same change**. A
+diagnostic built and destroyed at a stage boundary is unexecuted authority (`LESSONS.md` 56) wearing a diagnostic's
+costume. `LESSONS.md` 75.
+
+**Exact representation can still carry the wrong semantic authority.** TB6-REV adds a sharper instance to the
+single-authority family. CB7 correctly removed the CB6 float round-trip and made every value reaching the sector
+predicate exact, but the transition step then renamed each target face's `nextPairing->direction` as
+`incomingDirection`. Exactness was restored while Amendment 17's one-datum invariant was lost: a branch
+**correspondence** (`signedLift`) is not an exact continuous transport of an arbitrary geometric ray, and a local
+field representative is not a projection of the original datum merely because it has the corresponding branch
+label. **Audit the writer of the semantic datum after every representation correction, not only its numeric type.**
+This is also a diagnostic-funnel instance: the resolver owns the exact state rows but the production DTO drops them,
+so the most important evidence disappears at a stage boundary.
+
+
+Four families account for nearly every CP4c-2 turn that went sideways. Check against these *before* writing a
+plan or a fix.
+
+**`RP-01 / AUTHORITY_DOMAIN_CONFLATION` — two authorities for one datum.** Rails from `rails_from_atlas` versus
+the pipeline's `authoritativeRails` has now bitten **five** times, most recently as R8's gating red at ordinal 359.
+A number and the expectation it is compared against must come from the same authority, and every published record
+should name the authority it used. Two refinements the fifth instance taught: the production authority is a **chain
+of four products** (rails, hard-feature edges, component labels, sheet labels), so naming one of them is not naming
+the authority; and a **corrective measure can introduce the very pattern it was written to prevent** — R7-REV's AF3
+narrowed "the production torus authority" to "the field" in a parenthetical, and CB7 implemented that exactly.
+`LESSONS.md` 59.
+
+**Two classifications of the same datum that were never proved to coincide — the sixth instance, and the first
+that is not about rails.** A1's cycle-basis machinery assumes region **boundaries** and **non-traversable** edges
+are the same set. That holds for source boundaries and for *separating* feature curves, and is false for a feature
+that does not separate — which is exactly the historical mechanical witness.
+ Neither classifier is wrong on its
+own terms; nobody ever wrote down that they agree, and the code depends on it. When two subsystems partition the
+same set of edges/faces for different purposes, state the coincidence as an invariant and test it, or make one
+derive from the other.
+
+**`RP-05 / REPRESENTATION_DEPENDENT_IDENTITY` — one digest, two domains.** Semantic identity contaminated with
+gauge-dependent provenance. Stabilized at CP2b, fixed for the network at CP3a, and reintroduced by A2a′ now.
+Semantic and provenance are **two digests**, always.
+
+**A representation change breaks its consumers in two ways, and only one of them tells you.** Amendment 14 gave a
+promoted source edge several derived arcs. A2b read that in two places: a binding check demanding exactly one arc,
+which failed **loudly** with a typed code and was localized in one runtime; and a `boundaryVertices` insertion that
+assumed a whole-edge arc and therefore **over-inserts into a skip list**, suppressing an ownership check with no
+error and no symptom. Fixing only the loud one converts a red gate into a quiet weakening. After changing a
+representation, grep every consumer and classify each **by failure mode**, not by whether it compiles — a
+permissive consumer is the dangerous one precisely because nothing will report it. `LESSONS.md` 62.
+
+**Two paths that reconcile the same obligation, and only one fails closed.** The sharpest form of the pattern
+above, found while deriving Amendment 15. `FieldTransportAtlas` splits prescribed singularities into an interior
+map and a boundary map, then reconciles them in two loops written years apart in spirit: the boundary loop
+demands an owner and raises `SingularityMismatch` without one; the interior loop looks the owner up, and on a miss
+leaves two `std::optional` fields empty and carries on. Both loops "handle" a missing owner. Only one reports it.
+A change that moves items from one path to the other — which is exactly what cutting a region does — silently
+converts a verified fact into an unverified one. **When one obligation is discharged by two paths, diff their
+failure behaviour, not their success behaviour**, and be most suspicious when the split key belongs to a
+*different* object than the thing being reconciled (here: the **global** mesh's boundary flag deciding how a
+**local** mesh's cycle is checked). `LESSONS.md` 65.
+
+**Wrong-representation, right-arithmetic.** A computation can be internally flawless and describe the wrong
+object. Self-consistency is never evidence that the complex is the right one. `LESSONS.md` 22d/22e: check that
+the representation can *express* the answer before debugging the algorithm, and convert every consumer of a
+representation or none.
+
+**Product property applied to the representation — the same family, one level up.** DEFN-R1 excluded trace-crossed
+cut edges by reasoning "the trace is an immutable product, therefore the arrangement may not subdivide it." True
+premise, invalid conclusion: `build_arcs` already emits one trace arc per event, and already splits a mandatory
+source edge at a trace terminal, without touching the product. An immutability guarantee constrains the *writer*,
+not the *derived view*. Before ruling a representation out on an upstream guarantee, read what the existing
+consumers of that representation already do — the same control (`LESSONS.md` 22e) that the R2 error missed.
+
+**A green gate proves exactly what it enumerates, and its silence is the finding.** CP4c-2 closed at 365/365 with
+one of its three witnesses — the prescribed sphere — unable to reach A2b at all, and with Amendment 14's ordinary
+proposal path unexercised. Both were outside the gate by recorded decision, and both are real. A closure record that
+lists only what went green is a misleading record: say what the gate did **not** cover, in the same breath. The
+converse discipline matters equally — once a gate is frozen and its evidence arrives, do not add conditions to it,
+whether the new information favours strictness (`PR8-R044` at R7-REV) or leniency (`AH6` at R10-REV).
+
+**One typed name over many mechanisms — the pattern that has cost the most.** It has now been found twice, in two
+different stages, and both times it was believed. `SurfaceCutGraph::topology_error` collapses 36
+`GlobalTopologyPlanErrorCode` values into `CellularityNotEstablished`, and the sphere's eight-turn misdiagnosis was
+the cost. `FieldTransportAtlas`'s `IncompleteCycleBasis` collapses **seven distinct conditions across eight sites**,
+five of which publish only a region id, and the mechanical witness has never been diagnosed at all. **Before
+planning around any typed failure that crossed a stage boundary or aggregated several checks, find the translation
+site and count how many conditions share the name.** The fix is cheap and additive both times: carry the originating
+reason as provenance (AF0 for A2a′, AK1 for A1) without touching the mapping. `LESSONS.md` 57.
+
+**…and the reason you add may itself be a collapse.** The sphere has now been resolved three times, one layer per
+turn: `topology_error` collapsed 36 codes → AF0 gave `RotationSystemInconsistent`; nine sites shared that name →
+AK3 gave `TraceEventPositionInvalid`; that name covers **two** conditions with opposite fixes. Every layer was
+worth resolving and none was wasted, but each was declared "the cause" one turn too early. The rule that falls out:
+**when instrumenting a collapsed error, check whether the reason you are adding is itself a collapse before
+declaring the layer done** — read the site that sets it and count the distinct conditions that reach it. A one-line
+check at authoring time replaces a whole turn. `LESSONS.md` 64.
+
+**Gated observation — the measurement suppressed by its own harness.** Publications gated behind a call that
+fails; one error code collapsing several mechanisms with no locus; one witness's failure aborting the loop
+before the others publish; a typed error flattened to a bare string. **The witness the design reasoned about is
+not the witness that exercises the code** — this bit at ordinal 13, at the C5 torus, and at the sphere. Its most
+expensive instance to date is §7 item 1: a `default:` case that assigned a semantic-sounding name to 36 distinct
+errors and was believed for eight turns. Related and equally cheap to avoid: an assertion that discards a typed
+error it already holds (`ASSERT_TRUE(atlasBuild)` where `atlasBuild.error()` and
+`field_atlas_build_error_code_name()` both exist); a diagnostic loop whose per-witness rows are collected and then
+summarized down to one row; and a frozen non-gating selector a plan silently declines to run.
+
+**An audit scoped by symbol is not an audit scoped by assumption — and the search can be done perfectly and still
+miss.** The sharpest form of the enumeration family, and the first where the discipline was honoured. AM2 told the
+implementer that `globalVertexByLocal` becomes many-to-one and that **every consumer of it** must be found *by
+search, not by copying the measure's list*. That search was correct, and correctly returned nothing about
+`build_singularity_attachments` — which touches neither that map, nor the local mesh, nor the cut, and which holds
+the exact assumption Amendment 15 invalidated: *the transport neighbourhood is fully traversable*. It broke the
+moment the cut let execution reach it. **Write the audit predicate as the invalidated assumption, in words, and
+name at least one consumer that does not touch the changed data structure** — that last item is the evidence the
+predicate was not silently reduced to a symbol search. `LESSONS.md` 66.
+
+**A diagnostic channel rebuilt once per stage is a funnel defect wearing three costumes — and the scope of a
+measure should come from its reasoning, not from the code you read.** These are one pattern seen from two sides,
+and together they account for the last three turns. On the diagnostics side: `fail_surface_cells` takes only
+`(code, stage)` and every caller drops the typed error it holds, so TB1, TB2 and TB3-R1 each recovered a locus by
+elimination, and each was answered with a bespoke per-code channel — one site had already grown a hand-rolled one
+by string-concatenating stage and code. **When the same information is lost at the same boundary twice, give the
+boundary a typed payload and convert every call site at once.** On the measures side: AM2 scoped a consumer audit
+by **symbol**, AN1 scoped instrumentation by **enum**, and Amendment 16 was written for **A1** — each narrower
+than the reasoning that produced it, and each invisible because the implementer complied exactly. **Write the
+scope from the argument, and prefer a predicate a reader can apply to code you have not read over an enumeration
+of the code you have.** `LESSONS.md` 68 and 69.
+
+**A witness set built to isolate contracts is guaranteed to be silent about degeneracy, so its silence carries no
+information.** Every witness this project has run is near-uniform and sliver-free: measured area ratios 2.05–3.17,
+maximum aspect ratios 1.72–2.67, valences 4–6, ≤ 152 vertices, all singularities `+1`, genus ≤ 1, every input field
+admissible by construction. Production inputs carry area ratios of `10⁶`+ and aspect ratios in the hundreds. Five
+architecture proposals were rejected as *unnecessary* on the strength of measurements from that base, and five were
+reversed once the base itself was measured. **A rejection of the form "unnecessary, no such case is observed" is
+invalid when the evidence cannot produce the case** — the correct disposition is **"unmeasured, witness owed."**
+Always separate *"wrong as a diagnosis of what we measured"* from *"wrong as an architecture"*; the first almost
+never implies the second. `LESSONS.md` 74.
+
+**Exactness is a property of the derivation chain, not of the final comparison — and a measure that names an
+operator will be satisfied by changing the operand.** Amendment 17 required an election to test one datum; AS9
+prohibited any tolerance *in the predicate*. CB6 complied with both and still broke the guarantee: it left the
+predicate exact and carried the datum through **world-space `double`** — exact barycentric → `to_double()` →
+normalized vector → transported in doubles → `from_double_exact()` → exact comparison. An exact comparison on a
+float-derived operand is a floating-point decision with an exact final rounding step, and the conversions brought
+three silent failure modes into the least observable place in the pipeline. Where speed demands it, only a
+**certified filter** is admissible: it returns the provably-correct answer or defers to exact, never an
+approximation. `DESIGN.md` Amendment 18, `LESSONS.md` 72.
+
+**A producer with an unreportable exit will eventually report a name that is false.** Four paths in
+`resolve_field_vertex_transit` skip a state *before* the per-state diagnostic is recorded, so when the seed itself
+dropped, the function returned `VertexTransitSectorUnresolved` with zero candidates **and zero diagnostic rows** —
+a typed name asserting an election that never ran. Record the diagnostic **before** any conditional that can skip
+the state, and make an empty diagnostic set its own named condition: *"we examined nothing"* and *"we examined
+everything and none qualified"* are opposite findings and must never share a code. `DESIGN.md` Amendment 19,
+`LESSONS.md` 73.
+
+**An enumeration of candidate *mechanisms* is as dangerous as an enumeration of candidate *consumers*, and a
+partition test needs one point, not one point per cell.** At TB3-R1-REV three mechanisms were enumerated for the
+vertex-transit red — barrier truncation, singular-vertex holonomy, and a port-policy consumer mismatch — and one
+run falsified **all three**: cardinality 2 rather than 0, a vertex that is neither barrier-incident nor
+barrier-absorbed, and — proved from the fixture — a **regular** vertex with trivial holonomy. The frozen plan had
+listed "exact sector predicate/election defect" among five options and the review's own enumeration dropped it.
+**Enumerate mechanisms to design the measurement, never to bound the answer**, and say which observation would fall
+outside every listed mechanism. The measurement design was the part that worked: one published field discriminated
+all three at once. The technical residue is reusable: the sector predicate is an **exact** half-open partition of
+the turn, so a single direction elects at most one wedge — two elections **prove** two distinct directions were
+tested, because the routine feeds each cell its own representative. **When an election looks ambiguous, check
+whether every candidate is tested against the same datum before touching the partition; when the predicate is
+already exact, ambiguity is evidence about the inputs, never a reason to add a tolerance.** `LESSONS.md` 70 and 71.
+
+**Instrument the stage's error surface, not the site that is failing.** AK1/AK2 resolved `IncompleteCycleBasis`
+into an enumerated reason plus a full locus row, and did it well — scoped to that one code. One turn later the same
+producer failed on the neighbouring code, whose typed error already carries `sourceEdge`, `sourceFace`,
+`sourceVertex` and `topologyRegion`, and the harness published only `code/stage`, so the locus had to be recovered
+by elimination instead of read. A per-site instrumentation measure buys exactly one turn of visibility.
+`LESSONS.md` 67.
+
+**An enumeration inside a measure is read as exhaustive.** Twice in consecutive turns a corrective measure listed
+items next to a universal instruction and the list was taken for the instruction's scope. AF3 named "the production
+torus authority" then narrowed it in a parenthetical to *the field*, leaving three of four products unconverted;
+DEFN-R2 §4 itemized five Amendment-14 changes under "convert every consumer" and omitted A2b's cut-arc binding. Both
+were implemented exactly as written and both went red on the omitted part. Put the enumeration in the measure,
+produced by search — or say explicitly that the implementer owes it, and require the search rather than a copy.
+`LESSONS.md` 59 and 61.
+
+**Transcribed constants and abbreviated digests.** A hash copied from prose is not evidence; a hash written as
+`PREFIX…SUFFIX` in a table where values belong invites a later reader to reconstruct the middle, and the
+reconstruction looks plausible. Four such values reached an executor and one was not even 64 characters.
+Recompute from the named file, and validate any expected digest as exactly 64 lowercase hex at authoring time.
+**This has now happened three times** — `R7-ORCH-01`, and again in a rejected TB1 control that transcribed a
+packaged-source SHA-256 as a **63-hex** value, despite `LESSONS.md` 22n and measure AE4 existing to prevent
+precisely it. A rule that has failed to prevent its own defect twice needs a **mechanism**: AL8 moves the 64-hex
+validation into the orchestration payload authoring path, so the check runs where the value is written rather than
+depending on an author remembering it.
+
+A sixth, meta-level: **a result that discharges a premise must be reported as a finding, not left as a field
+value.** The torus's `pipelinePlanAvailable=true` — the fact that A2a′ works end to end — sat unremarked in an
+evidence table under a "semantic red" verdict.
+
+**Artifact bytes are not the whole package contract.** Executable permission is semantic runtime metadata for packaged binaries. A transport can preserve every file hash while silently destroying executability. If a package crosses Actions artifact download/upload boundaries, carry permission-sensitive trees inside a mode-preserving archive and verify modes after a clean round trip. Never make TB repair package permissions: that hides a packaging defect and invalidates immutable-artifact authority.
+
+## 9. Where to look
+
+- `.agents/Directional/tools/` — read-only review helpers: `review_check.py` (authority +
+  boundary), `selector_probe.py` (selector hashes, ordinal ↔ identity, test-line → ordinal), and
+  `fixture_probe.py` (fixture topology, dihedrals, vertex fans). See `tools/README.md` for the caveats.
+
+**Architecture and plan:** `DESIGN.md` (§4.5 grazing, §4.6 motorcycle graph, §7.2 region derivation with
+Amendments 12 and 13), `ROADMAP.md`, `REORIENTATION_PLAN.md`.
+
+**Current state:** `TODO.md` current-focus block; `Future_Chat_Session_Handoff.md` next-turn block;
+`Regression_Root_Cause_Tracker.md` for every open defect; `CHANGELOG.md` newest-first for how we got here.
+
+**Durable knowledge:** `LESSONS.md` — organized in eight sections; §2 fixtures/witnesses, §4 single authority,
+§5 cross-field conventions and §6 gate authoring carry the most reusable content.
+
+**CP4c history:** `M3_CP4c_Consolidated_Record.md` holds the retired per-turn records with their evidence,
+review arcs and withdrawn predictions. Closure records: `M1_`, `M2_`, `M3_CP2_`, `M3_CP2b_`, `M3_CP3_`,
+`M3_CP4ab_`, `M3_CP4c1_Closure_Record.md`.
+
+**Key source:**
+
+| what | where |
+|---|---|
+| tracing, grazing transit, termination | `src/geometry/SurfaceCellTracing.cpp`, `include/directional/geometry/SurfaceCellTracing.h` |
+| cut graph (A2a′) | `src/geometry/SurfaceCutGraph.cpp`, `include/directional/geometry/SurfaceCutGraph.h` |
+| shared embedded-graph authority | `src/geometry/EmbeddedGraphTopology.{h,cpp}` |
+| region derivation (A2b) | `src/geometry/GlobalTopologyPlan.cpp` |
+| pipeline wiring, product snapshots | `src/pipeline/RemeshPipeline.cpp` (~6560-6640) |
+| exact arithmetic | `include/directional/numerics/BigInteger.h`, `ENumberGMP.h`, `authority/FieldTransportAtlas.h` |
+| the whole test suite | `tests/FieldAlignedCurveNetworkTests.cpp` |
+
+**Witness fixtures:** `benchmarks/fixtures/milestone-g/{torus,sphere_prescribed,mechanical_feature}.{obj,rawfield}`.
+The two-ring is constructed in the test file, not a fixture.
+
+## 10. Facts worth not re-deriving
+
+- Sphere: 98 V / 192 F / 288 E, `χ=2`, 8 index-¼ singularities at cube corners, 24 ports, 24 traces, 56 events,
+  **zero mandatory edges**. Its pre-cut actual embedded graph is `V/E/F = 18/30/18`, one component, `χ=6` — excess
+  4 over `sourceChi=2`, hence non-cellular.
+  Of 48 directed trace ends, 42 terminate at singularities; the remaining 6 once circulated forever and are now
+  terminated by crash-on-contact.
+- Torus: 72 V / 144 F / 216 E, `χ=0`, zero singularities, 48 hard-feature mandatory edges forming (inferred,
+  and consistent with the measurements) four loops of twelve edges; four annular complement components. Those
+  loops **separate** the torus into the four annuli, which is precisely why its hard-feature edges land on region
+  boundaries and never enter a local mesh's inner adjacency set.
+- Mechanical feature: 152 V / 300 F, and **one** topology region covering all 300 faces —
+  `V/E/F = 152/450/300`, `χ=2`, `genus=0`, `boundaryLoops=0`, 152 interior local vertices, 152 expected cycles,
+  450 inner adjacencies, `globalEF = localEF = 1,158` at edge `0-3`. Its hard features therefore do **not**
+  separate, and since every closed curve on a sphere separates, the feature set must contain at least one **open
+  arc**. This is the whole of criterion C2's difficulty.
+- Two-ring: actual embedded graph `V/E/F = 9/11/3`; source-edge-barrier proxy `10/11/2`. Both satisfy Euler.
+- Torus actual embedded graph **after** cuts: `V/E/F = 72/76/4`, `χ = 0 = sourceChi` — i.e. cuts added 24 vertices
+  and 28 edges to the 48/48 pre-cut network.
+- `SurfaceCutGraphErrorCode::CellularityNotEstablished` is **not** always a cellularity finding. Via
+  `topology_error`'s `default:` it is the bucket for 36 distinct `GlobalTopologyPlanErrorCode` values. Check
+  whether the error carries a `sourceFace`: only `topology_error` sets one, so a populated `sourceFace` means the
+  failure came from `EmbeddedGraphTopology`, upstream of any cellularity decision. On the prescribed sphere the
+  full resolved chain is now `CellularityNotEstablished → RotationSystemInconsistent → TraceEventPositionInvalid`,
+  and the last of those is still two conditions wide.
+- Cutting a surface along a subgraph `B` of its 1-skeleton: duplicate each vertex into one copy per connected
+  component of `star(v) ∖ B` — `copies(v) = d_B(v)` interior, `d_B(v) + 1` on the boundary, so a degree-1 **tip is
+  not duplicated**. Then `ΔV = (2|B| − |V(B)|) + ∂`, `ΔE = |B|`, `ΔF = 0`, giving
+  **`χ(cut) = χ − χ(B) + ∂`** where `χ(B) = |V(B)| − |B|` and `∂` counts `B`'s vertices already on the boundary.
+  Verified against: sphere + one arc → disc; torus + one non-separating loop → annulus; disc + arc to the
+  boundary → disc; disc + arc between two boundary points → two discs.
+- `dual_cycles` (`geometry/MeshTopology.h:55-74`) emits `#V − #b` inner-vertex cycles **in vertex order**, then
+  `#b` boundary cycles, then `2g` generators, with columns indexed into **inner edges only**. That column rule is
+  why making an edge a boundary edge removes it from the cycle basis entirely — the mechanism Amendment 15 relies
+  on. The row count exceeds the dual cycle space dimension by exactly **1** (one linear dependency), on both the
+  uncut and the cut mesh.
+- `TriMesh::set_mesh` (`core/TriMesh.h:202-241`) derives `EV`, `EF`, `isBoundaryVertex`, `isBoundaryEdge` and
+  `boundaryLoops` from V/F, and `gaussian_curvature` consumes `isBoundaryVertex`. So a cut expressed purely as a
+  rewritten face array propagates to every count and curvature with no further bookkeeping.
+- `build_source_topology_regions` requires **every** region-boundary vertex to have exactly two boundary
+  neighbours (`SurfaceCellTracing.cpp:6905`) and fails the whole `SourceTopologyRegions` product otherwise. An
+  open slit is therefore inexpressible at the region level — its tip would have one — which is why Amendment 15
+  puts the cut in A1's derived local mesh instead.
+- `trace_event_position` (`EmbeddedGraphTopology.cpp:138-173`) returns `std::nullopt` from a single
+  `if (positions.size() != 1U)`, so "no carrier matched" and "several carriers matched" are indistinguishable at
+  the call site. It also runs **two** passes — segments whose `sourceFace` matches the event's, then, only if that
+  found nothing, all segments ignoring the face — so the widening pass can report an *ambiguous* failure for an
+  event whose precise pass was *empty*.
+- Terminal event kinds: `SingularityPortOrigin(0)`, `FirstContact(1)`, `TraceIntersection(2)`,
+  `MandatoryBarrierTermination(3)`, `SingularityTermination(4)`, `SingularityPortJunction(5)`,
+  `TraceSelfClosure(6)`. The observed terminal union across witnesses is exactly `{2, 3, 4}`.
+- `direction_in_vertex_sector` (`FieldTransportAtlas.cpp:1623-1653` → `direction_in_incident_vertex_sector`
+  `:404-426`) is exactly `direction[next] > 0 && direction[previous] >= 0`, indexed **by vertex identity** —
+  `SourceFaceTopologyKey::make` **sorts** its three vertices, so canonical-key order is not the mesh row's corner
+  order, and `next`/`previous` come from `F(row, (c+1)%3)` / `F(row, (c+2)%3)`. It includes the `next` radial ray
+  and excludes the `previous` one. It is an **ownership partition of a fan**, not a membership test for one face.
+- A `VertexHit` arrives with **two** possible shapes. `|M| = 2` is the ordinary T2 transit: `d[hit] > 0` and both
+  other coordinates negative, so the reversed arrival ray is strictly inside the wedge. `|M| = 1` with a vertex
+  landing is Amendment 3: some `d[k] = 0` **exactly** and `p[k] = 0`, meaning the trace runs along the mesh edge
+  opposite `v_k` and stops at its far endpoint — and then the reversed arrival ray lies exactly **on** a radial ray.
+  Both publish `arrivalMode = FaceInterior`.
+- On the mechanical witness, face `(8,10,11)` is mesh row 8 with corner order `[8,10,11]`, and its branch-1
+  direction is `(0, −2.77777777777777857, +2.77777777777777857)` over `(v8, v10, v11)` — an exact IEEE zero at
+  `v8`. Vertex **10** is one of the four port-emitting singularities (10, 35, 47, 71), so the first segment of that
+  port trace is the mesh edge `10 → 11`.
+- `FieldTransportAtlas::make` derives a cycle's lift as `exactLift = (cycles · effort + 4 · cycleCurvature) / 2π`,
+  where `cycleCurvature` for an inner-vertex cycle is *the Gaussian curvature* (angle defect `2π − Θ`) and `effort`
+  is read from `CrossFieldEdgeTransition::effort` — **never recomputed**. Branch transport is
+  `QuarterTurn::from_integer(raw.matching)`. So a synthetic field that declares `effort ≡ 0` is asserting a flat
+  star, and a synthetic field whose matching does not compose to the resulting lift fails `CycleTransportMismatch`
+  before anything else looks at it.
+- Vertex-star transit only ever runs at a **regular** vertex: both call sites check
+  `field_aligned_singularity_at` first and terminate the trace with `SingularityTermination` when a singularity
+  fact exists there. So a witness for vertex-star continuation may not put its interesting geometry on a singular
+  vertex — a non-flat center must carry `Σ_cycle effort = −4K` so that its lift is `0`.
+- `EmbeddedGraphTopology.cpp` emits `GlobalTopologyPlanErrorCode::RotationSystemInconsistent` from **46 sites**,
+  all reachable from `SurfaceCutGraph::make` via `build_embedded_graph_topology` (`build_cut_node_bindings`,
+  `build_arcs`, `build_rotation_system`, `walk_graph_faces`) and `exterior_boundary_orbits`. Only **9** publish a
+  `RotationSystemInconsistencyReason`, and all 9 also set `sourceEdge` and/or `sourceFace`. Per function —
+  `build_arcs` 4 sites / 2 reasons, `build_node_loci` 5 / 3, `build_rotation_system` 27 / 4, `walk_graph_faces`
+  9 / 0, `exterior_boundary_orbits` 1 / 0. `GlobalTopologyPlan.cpp` emits the same code from a further 8 sites.
+- The `RotationSystemInconsistent` datum is dropped at **three** boundaries in series: the silent producer sites;
+  `SurfaceCutGraph::topology_error`, whose `SurfaceCutGraphError` has **no `sourceVertex` field**; and
+  `RemeshPipeline::cut_graph_failure_locus`, which publishes only `sourceEdge`/`sourceFace` out of the ten fields
+  the error carries.
+- `SurfaceCellDiagnosticProductSnapshots` retains `fieldTransportAtlasError` but has **no** `surfaceCutGraphError`
+  and no `globalTopologyPlanError`; `productSnapshots.surfaceCutGraph` is assigned only on success. So a cut-graph
+  failure leaves no typed object behind.
+- The two CP4c witness-observation idioms differ in what they can see. `build_cp4c_production_fixture` **throws**
+  unless all five of `sourceAuthority`, `atlas`, `network`, `cutGraph`, `plan` are retained, rendering only
+  `terminalFailureLocus` through `append_cp4c_failure_locus`. `observe_cp4c_witness` re-invokes each stage directly
+  from the four production inputs and therefore holds each typed error, rendering the cut-graph reason, trace,
+  event and position diagnostics. Ordinals 366 and 368 differ by exactly this choice.
+- `SurfaceCutGraph::make` certifies inside a `while(true)` cut-proposal loop and returns the **first**
+  `certify_actual_embedded_graph` failure, so a published cut-graph error does not say whether it came from the
+  initial uncut certification or from a later proposal.
+- Grazing is **edge transit**, not termination — decided on a continuity argument, not on cost data.
+- Trace termination is **crash-on-contact** (motorcycle graph), on an exact predicate, with mutual termination
+  on a tie; the production arrival priority is `ArcLengthFiltered` with a certified forward error bound.
+- GMP/GMPXX linkage is mandatory for every compile; fallback exact arithmetic is not authoritative build
+  evidence.
+- `FieldAlignedCurveNetworkError` carries far more than the locus can render. The projection
+  `RemeshPipeline.cpp::network_failure_locus` → `SurfaceCellFailureLocusDiagnostics` carries `sourceVertex`,
+  `sourceEdge`, `sourceFace`, `branch`, `topologyRegion`, `vertexArrivalMode`, `vertexTransitStates`,
+  `vertexStarTransit` and `publishedFaces` — **and nothing else**. `traceSeedVertex`, `traceSeedSingularity`,
+  `traceHistory`, `traceSteps`, `traceStepBudget`, `traceCombinatorialVisits`, `traceCombinatorialVisitAllowance`,
+  `singularity`, `rail`, `relatedSourceFace`, `relatedBranch`, `signedLift`, `parameter`, `exactValues` and
+  `publishedEdges` have **no projected field at all**. Their only readers are the test-local renderer
+  `network_error_locus` (`tests/FieldAlignedCurveNetworkTests.cpp:4808-4834`) and assertions in ordinals 328/329.
+- `append_cp4c_failure_locus` prints in a **fixed order**: `sourceVertex`, `sourceEdge`, `sourceFace`, `branch`,
+  `topologyRegion`, `arrivalMode`, `publishedFaceCount`, `publishedFaces`, `barrier*`,
+  `transportStarComponentCount`, `vertexTransitState[…]`, `vertexStar*`. So a **missing** token proves the
+  underlying optional was empty — absence is evidence, not truncation.
+- `FieldAlignedCurveNetworkError::publishedFaces` is declared (`SurfaceCellTracing.h:311`) and **never assigned**
+  anywhere in `src/` or `include/`. Every network-stage error renders `publishedFaceCount=0` by construction.
+- The mechanical fixture is **closed with `χ = 2`** — 152 V / 300 F, 0 boundary edges. Its `x = ±1.4` sides are
+  50-face **coplanar** patches, so many interior edges there have an exactly 0° dihedral and can never be hard
+  feature edges (and therefore never barriers, and never a `terminalBarrier`). Face row 51 is exactly `(36,38,39)`.
+- `terminalContact` is set by `field_aligned_publish_contact` but is **never read in
+  `finalize_field_aligned_events`**; that function branches only on `terminalSingularity` and `terminalBarrier`,
+  and everything else falls through to a **loop-closure** test. `field_aligned_first_trace_contact` compares trace
+  `i` only against indices `< i`, so it can never match trace 0 — and it declares a contact on **mere source-face
+  coincidence**, with no crossing test (`field_aligned_segments_properly_cross` feeds the census only).
+- A singularity **port** and a singularity **node** are different authorities with different cardinality.
+  `nodeVertices.insert(singularity.sourceVertex)` runs for **every** singularity, before and outside the
+  `portPolicy` test, and `candidate.nodes` is materialized **before** `candidate.singularityPorts`. The port loop
+  then skips `BarrierAbsorbed` entirely, so such a singularity has a node and **zero** ports. Ports constrain a
+  trace's **origin** only.
+- `FieldSingularityFact::PortPolicy` is `BarrierAbsorbed` iff the vertex is in `slitCycleByGlobalVertex`
+  (`FieldTransportAtlas.cpp:2467-2470`), populated at `:2296-2300` iff *not a mesh-boundary vertex* ∧
+  *in `local->barrierVertices`* ∧ *singular*. Local-cycle and slit-cycle ownership are an exclusive XOR over all
+  singularities (`:2428-2432`). On a closed witness this reduces to **singular ∧ barrier-incident**.
+- **Barrier edges are region-restricted, not merely sharp** (`FieldTransportAtlas.cpp:955-966`): a hard feature
+  edge becomes a barrier only when **both** incident faces lie in the region being localized. So a sharp edge that
+  bounds a region is not a barrier. Do not use dihedral angle as a proxy for `barrierVertices` — v47 has three
+  exactly-90° incident edges and is proved `Emit` by TB9's own trace seed.
+- `FieldBoundaryPoint::source_support()` (`FieldTransportAtlas.h:601-610`) returns `SourceVertexSupport{edge.first()}`
+  at parameter 0, `SourceVertexSupport{edge.second()}` at parameter 1, and `SourceEdgeSupport` strictly between.
+  Both `VertexHit` constructions are built to invert exactly that mapping, so on the production path the terminal
+  support vertex always equals `decision.sourceVertex`.
+- `trace.terminalSingularity` is set at exactly one place — the `VertexHit` branch of
+  `field_aligned_advance_trace_proposal` — via `field_aligned_singularity_at(atlas, *decision.sourceVertex, …)`,
+  which matches **by vertex**. The `VertexHit` check runs **before** the `mandatoryByEdge` barrier check, so a
+  vertex that is both a barrier endpoint and a singularity is adjudicated as a singularity termination.
+- Trace history in a production locus is exact: `entryParameter=1/1` on every row means every entry point sat on a
+  vertex, i.e. the trace transited vertices rather than edge interiors. `incomingCarrier=none` on a first segment
+  is a port origin.
+- `RayOrderKey` (`src/geometry/EmbeddedGraphTopology.cpp:811`) lives in an **anonymous namespace** inside
+  `directional::geometry::embedded_graph_topology_detail` and appears in no header. Every use is in that one file
+  (`:978`, `:995`, `:1117`, `:1206-1207`), so it has **no external consumers** — a change to the key or its
+  predicate cannot leak by linkage, only through the rotation that file publishes.
+- At a **vertex** locus, `key.primary = 2·faceSlot + 1` for a trace ray and `2·edgeSlot` for a Mandatory/Cut ray,
+  so trace rays interleave between edge rays; `key.secondary = port->ordinal` for trace rays and defaults to `0`
+  otherwise, which is why the collision predicate additionally requires `kind == Trace` on both sides. At an
+  **edge** locus the formulas differ (`sideRank`-based `primary`, `edge_locus_secondary_rank` `secondary`) and the
+  collision predicate does not apply, because it tests `locus.vertex.has_value()`.
+- The rotation incidence map pushes `Forward` at `arc.firstNode` and `Reverse` at `arc.secondNode`
+  **unconditionally**, so a **self-loop arc contributes two darts to the same node**. Both darts share `arc.trace`,
+  hence the same origin port and the same `secondary`; only `orientation` (via `trace_ray_face` reading
+  `segments[firstSegment]` vs `segments[onePastLastSegment-1]`) can separate them.
+- `certificationAttemptIndex` counts **completed non-cellular certifications** (`SurfaceCutGraph.cpp:344-346`): the
+  counter increments only after a certification succeeds but fails `proves_cellularity()`. So
+  `certificationAttempt=0` with `certificationCutEdges=0` means the failure occurred on the **first certification
+  of the uncut graph, before any cut proposal was evaluated**. `cutCandidateCount` **is** a real measurement on
+  that path (`result.cutCandidates = evidence`); `nonDiscComponentCount` and `remainingAdmissibleEdgeCount` are
+  **not** — they are defaults there.
+- `GlobalTopologyPlanError` declares `arc`, `networkEdge`, `trace`, **`secondTrace`**, `sourceEdge`, `sourceFace`,
+  **`secondSourceFace`**, `singularity`, `sourceVertex` and the rotation reason — the `second*` fields exist for
+  two-sided comparisons. It has **no field for the colliding `primary`/`secondary` values**, so those are
+  unrecoverable from any current locus render.
+- At a vertex locus `RayOrderKey::secondary` is written at **exactly one** site (`build_rotation_system`, vertex
+  branch) as `port->ordinal` — the ordinal of the port the trace **originated** from, with no check that the
+  port's source vertex is the locus vertex. At an **edge** locus the same field is written from
+  `edge_locus_secondary_rank`, which is locus-relative, exact and explicitly geometry-free. The vertex branch is
+  the outlier; the edge branch is the convention to follow.
+- `secondary` is the **second** member of a defaulted `operator<=>`, so it is consulted **only when `primary`
+  ties**. For two trace rays `primary` ties **iff they share a wedge**. Consequence, useful for any future change:
+  in every configuration that certifies today, `secondary` is never consulted for trace rays, so redefining it
+  cannot alter a rotation that currently succeeds.
+- A singularity's own emanating rays are separated by `primary` alone when each port occupies a different wedge —
+  which is the ordinary case. At v47 the three ports (ordinals 0, 1, 2) sit in three of its four wedges, so the
+  ordinal tiebreak was never load-bearing there.
+- `tools/fixture_probe.py fan <v>` reproduces `build_vertex_fan_slots` and prints both `primary` forms. For v47 it
+  independently reproduces the TB12 runtime census exactly: face slots 1, 3, 5, 7 in rows 59, 100, 101, 290 with
+  trace-ray primaries 3, 7, 11, 15, and a closed fan.
+- `segment.edgeTransitExit` is assigned on exactly two lines (`SurfaceCellTracing.cpp:2399`, `:3061`), both from
+  `edgeTransit.exitPoint` — i.e. **only on the edge-transit path. A `VertexHit` exit never sets it.** Any consumer
+  that treats it as "the segment's exit" silently excludes every Amendment-3 vertex arrival.
+- `vertex_trace_ray_second_point` resolves a ray's second point differently by orientation. **`Reverse` always
+  succeeds**: it returns the segment's own `entryPoint`, which lies on an edge of that segment's face by
+  construction. **`Forward` can fail**: its chain is `edgeTransitExit` → next segment's entry *expressible in this
+  face* → `terminalContact` in this face → `terminalPoint` expressible in this face → `nullopt`.
+- `VertexTracePortOrdinalInvalid` is emitted at **two** sites in `build_rotation_system`
+  (`EmbeddedGraphTopology.cpp:1204` legacy port lookup / negative ordinal, and `:1217` CB15's
+  `vertex_locus_secondary_parameter == nullopt`), both setting only reason + `sourceVertex` + `sourceFace`. The
+  rendered locus cannot separate them.
+- Network **node ids are monotone in vertex index** — `nodeVertices` is a `std::set<SourceVertexId>` and nodes are
+  assigned in that sorted order (`SurfaceCellTracing.cpp:4239-4244`) — and `build_rotation_system` iterates
+  `incidences`, a `std::map` keyed by node id. So rotation processing visits vertices in increasing vertex index,
+  which makes "an earlier TB reached a later vertex" a proof that every earlier vertex passed.
+- Vertex **10** mirrors vertex 47: degree 4, closed fan, angle defect exactly `π/2`, three 90° edges and one 0°
+  edge. Face `(8,10,11)` is **mesh row 8** at **fan slot 7**, bounded by edges `10-11` (slot 6) and `8-10`
+  (slot 0). Reproduce with `tools/fixture_probe.py fan 10`.
+- **Node ids order the rotation, and contact nodes come last.** Vertex nodes are created first by iterating
+  `nodeVertices` (a `std::set<SourceVertexId>`); `field_aligned_append_contact_node` then takes
+  `nodeIndex = candidate.nodes.size()`. `build_rotation_system` iterates `incidences`, a `std::map` keyed by node
+  id, so **every vertex locus is processed before every edge locus**. This makes "an earlier TB failed at a vertex
+  locus" a proof that no edge locus had been reached.
+- **An edge locus is not only a cut crossing.** `build_node_loci` assigns `NodeLocus.edge` from
+  `cutNodes.syntheticCrossings` *and*, in its events loop, to **any node with no vertex locus whose event carries a
+  `sourceEdge`**. Vertex loci come only from singularity ports and mandatory-edge endpoints, so the remainder are
+  **contact nodes** — which is why an edge locus can appear with `certificationCutEdges = 0`.
+- `edge_locus_secondary_rank` has **five** `return std::nullopt` sites and no typed reason: ray-face unavailable,
+  source-face record missing, contact edge not in the face, opposite carrier missing or coincident with the contact
+  index, and the source-vertex fallback failing to bind. Its single emitter
+  (`EmbeddedGraphTopology.cpp:1440`) retains only `sourceEdge`, `sourceFace` and the reason — no arc, trace,
+  orientation, segment interval or carriers.
+- The helper's two rank families are indexed differently: carrier-to-carrier ranks are
+  `2·((otherIndex + 3 − contactIndex) mod 3)`, indexed by **edge** order, while the source-vertex fallback returns
+  `1 + 2·corner`, indexed by **corner** order. Any change must show they stay mutually consistent and
+  collision-free.
+- Face `(25,30,31)` is **mesh row 41** — the row `DEFN-R2` proved unreachable **as a vertex-30 continuation
+  owner**. That proof is about continuation ownership at vertex 30 and is *not* contradicted by a trace holding a
+  segment in row 41 reached through ordinary transits. Vertex 30's fan is degree 6 and closed: rows 43, 218, 209,
+  208, 41, 40 at slots 1, 3, 5, 7, 9, 11.
+- `proposal.nextIncomingCarrier` is assigned at exactly **one** site (`SurfaceCellTracing.cpp:3122`), on the
+  **edge-exit** continuation. The `VertexHit` continuation returns having set only `nextFace`, `nextBranch`,
+  `nextEntryPoint` and `endArrival`. So **a segment entered by a vertex transit carries
+  `incomingCarrier == std::nullopt`**, indistinguishable by type from a port-origin first segment — the two are
+  separated only by whether the segment is the trace's first.
+- `SourceFaceRecord::edges[i] = (vertices[i], vertices[i+1 mod 3])` — the convention `face_orients_edge_forward`
+  walks. So edge `i` joins corners `i` and `i+1`, and is opposite corner `i+2`. TB15's retained
+  `contactIndex = 2` for locus `25-31` in face `(25,30,31)` reproduces from this exactly, which is a free
+  cross-check on any retained edge-locus evidence.
+- `edge_locus_secondary_rank` ranks a ray by its **far end inside the face** — the end opposite the contact edge:
+  the entry side for `Reverse`, the exit side for `Forward`. Carrier far ends take even ranks
+  `2·((otherIndex + 3 − contactIndex) mod 3) ∈ {2,4}`; corner far ends take odd ranks. Walking the boundary from
+  contact edge `c` gives the order `corner c+1, edge c+1, corner c+2, edge c+2, corner c`, so the corner rank must
+  be `1 + 2·((corner + 2 − contactIndex) mod 3)` — the shipped `1 + 2·corner` coincides **only at
+  `contactIndex = 2`**.
+- The four port-emitting singularities of the mechanical fixture are **v10, v35, v47, v71**. `trace.sourceVertex`
+  always names one of them and says nothing about which face a later segment is in — it is trace-global
+  provenance, not a face-local datum.
+- `GlobalTopologyPlan.cpp` fragment accounting: per non-terminal-slit segment the region loop does
+  `++tracePieceCount[face]` **once** and `add_fragment_orbit(face, forwardOrbit)` / `(face, reverseOrbit)` —
+  **two** insertions into a `std::set<std::size_t>` of global orbit ids. `add_fragment_orbit` silently **skips**
+  any orbit in `exteriorOrbits`. The validation at `:779` then asserts `set.size() == tracePieceCount + 1`.
+- A **terminal slit** contributes zero to `k`: the loop `continue`s on `is_terminal_slit` before touching either
+  `tracePieceCount` or the orbit set, so slits are excluded from **both** sides consistently. The mechanical
+  witness has **10** terminal slits.
+- `build_regions` publishes a full `fragment_reconciliation` diagnostic — `source_face`, `fragment_orbit_count`,
+  `trace_piece_count`, `expected_fragment_count` — for every face after all validation passes, and since CB20 also
+  for the first failing face immediately before its early return. **Both are gated on
+  `fragment_diagnostics_enabled()`** (`GlobalTopologyPlan.cpp:81–84`), which reads
+  `DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS`; when unset, `diagnostics` is `nullptr` at `:1814–1816` and every
+  `M3_CP4AB_FRAGMENT_DIAG` record is suppressed. The artifact-only gate runner never sets it.
+- Face `(0,1,102)` is **mesh row 259**, stored corner order `(102,1,0)`. Vertex 0 is a chamfered box corner:
+  degree 4, angle defect **1.767801150**, edge `0-1` a **90 degree** sharp edge shared by rows 0 and 259.
+- **CP4c document layout since 2026-09-03:** `M3_CP4c_Current_And_Forward.md` holds current state, the frozen
+  successor and the candidate index; `M3_CP4c_Consolidated_Record.md` holds history and carries a **folded
+  document index** that resolves all 35 folded per-turn plans/reports/records (their full text stays in git
+  history). The six frozen-definition documents were merged **verbatim** into `M3_CP4c_Frozen_Definitions.md`
+  (Parts I–VI, with a citation map from the former filenames; operative definitions are Part III for CP4c-2 and
+  Part VI for CP4c-3). Every `Required_Green_Selector_*.txt` is untouched. All former `Architecture_M3_CP4ab_*`
+  references now resolve to `M3_CP4ab_Closure_Record.md`, which carries their index. Since 2026-09-03 every
+  REVIEW turn folds its own superseded per-turn documents into that index under `CLEAN_UP_POLICY.md`.
+- The face walk at `EmbeddedGraphTopology.cpp:1698–1775` is the canonical rotation-system face permutation:
+  `successor[dart(reversed(inc))] = dart(rotation.counterClockwise[(index + count - 1) % count])`. It is validated
+  total before use — each dart has incidence count exactly 1, every successor is assigned, each orbit closes within
+  the dart budget, and `FaceWalkOrbitReenteredAtDifferentStart` rejects a foreign re-entry. **Its orbits are the
+  cycles of a permutation, so it cannot merge darts that a valid rotation system separates.**
+- Two darts of one arc share a face orbit exactly when the arc lies on no cycle (a bridge) or is non-separating in
+  the embedding. A pendant end anywhere on a trace makes every arc of that trace's path a bridge. The mechanical
+  witness has **10 terminal slits**, i.e. 10 pendant ends.
+- After validation, `fragmentOrbits[face]` is consumed only at `GlobalTopologyPlan.cpp:925–945`, to register the
+  face with the region draft of each owning orbit. A face whose two sides share one owner is registered once — the
+  correct membership under shared ownership — so loosening the count check introduces no downstream inconsistency.
+- Mechanical fixture, **vertex 1**: degree 6, angle defect **−0.000000000** (regular), edges `0-1` and `1-4` both
+  **90°** sharp; `0-1` shared by rows 0/259, `1-102` shared by rows 258/259. It is the corner the failing
+  carrier-less incidence binds to.
+- `kFragmentFailureEvidenceLimit = 8` bounds every retained fragment-failure evidence list.
+- The unlabeled-face seeding block is `GlobalTopologyPlan.cpp:1102–1165`. `unlabeledFaces` is built by iterating
+  `topology.faces` (a `std::map`, so **key order**) and keeping every face with no `fragmentOrbits` entry, so the
+  first unlabeled face is normally the lexicographically minimal face key. **`(0,1,2)` is row 0 of the mechanical
+  fixture and row 0 of the torus fixture.**
+- The seeding skip at `:1136–1139` is silent: when a two-owner labeled face has no unique
+  `edgeOrbitEvidence[(face, edge)]` row, the edge contributes no seed and leaves **no trace at all**.
+- `SurfaceCellTracing.cpp` constructs contact nodes at trace intersections bound to a source face
+  (`field_aligned_append_contact_node(candidate, *nextFace)`, `FieldAlignedNetworkEventKind::TraceIntersection`,
+  `contact->sourceFace`). **Chord crossings inside a face are a modelled case**, so `localFragments = k + 1 + c`
+  for `c` interior crossings — `k+1` is only the non-crossing special case.
+- TB19 mechanical census: **70** face rows (all evaluated, all `chordsCrossInside=false`, 18 with `ownerDeficit=1`,
+  none above 1), **26** arc rows, **12** trace rows, all untruncated; total face-walk orbits **6**, exterior **0**,
+  non-exterior **6**; arc 15 `sharesOrbit=true`; trace 1 `terminalSlit=false`.
+- CB21's `TraceFragmentOwnerEvidenceDiagnostic` (`include/directional/geometry/GlobalTopologyPlan.h:299–319`,
+  projected through `RemeshDiagnostics.h:162–180`) is the established production-path census channel; extend it
+  rather than adding a parallel one.
+- **`M3_CP4c_Frozen_Definitions.md` Part I §3 is the normative adjudication of
+  `UncutFaceComponentOrbitSeedNotUnique`:** the guard is correct, the producer is behaving correctly, there is no
+  bug at that line, and multiple seeds report a missing input — the network is not a cut graph. **Parts IV and V**
+  prohibit relaxing `proves_cellularity()`, the fragment-count invariant, or that guard. **Part VI** is scoped to
+  vertex-star continuation and lifts none of them.
+- Cellularity test for any witness: `V − E + F = χ(S)` per connected component of the embedded graph. Part I
+  settled the torus with `V = E = 48`, `χ = 0` ⇒ `F = 0`, a contradiction. The mechanical witness has `χ = 2` and
+  `F = 6`; its `V`, `E` and component count are **not retained**, which is the entire missing datum.
+- TB19's "26 arcs" is the **fragment-owner** census over trace arcs, not the embedded graph's `E` — the graph also
+  carries cut-graph arcs. Do not substitute one for the other.
+- TB20 component census: **9** components, untruncated. Component 0 has **191** faces and **97** boundary edges;
+  64 rows of each are retained and explicitly truncated. Owner counts in the window split 47×1 / 17×2; barrier
+  classes 46 `none` / 18 `traceTouched`; seeds 44×orbit 0, 1×orbit 1, 1×orbit 3.
+- **Selector naming and the chain:** `Required_Green_Selector_Manifest.md` is the derived index of all 19
+  selector files — identity count, LF SHA-256, prefix parent, appended identities, role. **A selector filename is
+  not an identity count:** files 357–384 are named by their count, but
+  `Architecture_M3_CP4c3_Required_Green_Selector_385.txt` holds **388** identities. Its bytes are frozen and
+  correct; future files are named by their resulting count. **357 and 358 are off-chain** — 357 is not a prefix of
+  358 and 358 is not a prefix of 361 — so they hold unique bytes; 361 through the current gate form one strict
+  prefix chain. Regenerate the manifest with `tools/selector_manifest.py`.
+- **The mechanical actual embedded complex is cellular:** `V=22, E=26, F=6, componentCount=1, sourceChi=2,
+  residual=0`. `SurfaceCutGraphCellularityCertificate::proves_cellularity()`
+  (`src/geometry/SurfaceCutGraph.cpp:478`) additionally requires `graphComponentCount == sourceComponentCount`,
+  `eulerCharacteristic == sourceEulerCharacteristic`, balanced boundary-orbit accounting, and **every face to
+  satisfy `proves_disc_topology()`**. `canonical_candidate` returns a cut graph only after it holds.
+- **Part I §3 is an implication with a premise.** It licenses "the network is not a cut graph" only where the
+  complex is independently shown non-cellular — as on the torus, via `V = E = 48`, `chi = 0`, so `F = 0`. It says
+  nothing about the source-face projection, and nothing about a witness whose complex certifies cellular.
+- **The certificate and the seed guard test different objects.** Certificate faces are regions of the surface
+  bounded by arcs through triangle interiors; the seed guard's components are sets of whole source triangles joined
+  across non-barrier source edges. The projection is faithful only if every pair of adjacent uncut triangles in
+  different certificate faces is separated by a `componentBarriers` edge - stated and checked by neither.
+- **Component 0 boundary attribution (complete, untruncated):** orbit 0 -> **81** edges, orbit 1 -> **1**, orbit 3
+  -> **1**, plus **14** barrier/no-seed, totalling 97. TB20's first-64 window showed 44/1/1, so **both minority
+  rows lie inside the retained window** in both runs.
+- Ordinals **371 and 372 pass** as of TB21, reaching their own assertions for the first time. Their fixture
+  accessor is **test-only** and is never product authority.
+- **`projectionFaithfulnessResidual` is a structural zero.** `GlobalTopologyPlan.cpp:1362–1389` requires an edge
+  to be in `certificateSeparatingSourceEdges` **and not** in `componentBarriers`. The first set is populated only
+  from Mandatory and Cut arcs (`:1191–1200`); those source edges are exactly `mandatoryEdges` (`:674`) and
+  `cutEdges` (`:649`), and `componentBarriers = mandatoryEdges ∪ traceTouchedEdges ∪ cutEdges` (`:1114–1116`).
+  **The conjunction is empty. The loop body never executes.**
+- **`certificate_side_orbit` (`:1172–1184`) is not the certificate.** It returns
+  `edgeOrbitEvidence[(face,edge)]` when unique, else `fragmentOrbits[face]` when size 1 — the same two lookups the
+  seed rule uses (`:1284–1299`). The row's component-side value is then **assigned equal** to the labeled side
+  whenever `barrierClass == None` (`:1272–1278`).
+- **`certificateSideOrbitsByEdge` (`:1204–1212`) *is* certificate-derived** — it reads `walk.orbitByDart` for the
+  arc on a mandatory or cut edge — but it is consulted only inside the unreachable residual loop.
+- TB22 minority rows: edge `10-79` seed **3**, faces `10,79,151` ↔ `10,11,79`; edge `29-35` seed **1**, faces
+  `28,29,35` ↔ `29,35,91`. Both `seedRule=edgeOrbitEvidence`, `labeledFaceOwnerCount=2`, `barrierClass=none`.
+  Their reported certificate-face agreement is a **tautology**, not corroboration.
+- Torus census at TB22: `V=72, E=76, F=4, componentCount=1, sourceChi=0, residual=0` — `72 − 76 + 4 = 0 = χ`, so
+  the torus complex is cellular once its cut edges are present.
+- **The immutable package never contains a `test-data` tree.** `.github/workflows/agent-compile-reusable.yml`
+  copies only the eight compiled targets into `$OUT/bin` and the two static libraries into `$OUT/lib`, plus the
+  source archive and metadata. No workflow in the repository references `test-data`. Fixtures reach the binaries
+  only because the **execution harness stages them**.
+- **`tests/TestFixturePaths.h:51–64` resolves fixtures** as (1) `executableDirectory.parent_path()/test-data` when
+  `…/benchmarks/fixtures` exists, else (2) `executableDirectory/test-data` — the layout
+  `cmake/DirectionalTests.cmake`'s `directional_copy_manifest_fixture` builds under `$<TARGET_FILE_DIR>` — else
+  **(3) it returns the sibling path regardless of existence**. Branch 3 is the fail-open.
+- **`GlobalTopologyCertificateDiagnostics.h` is CB25's certificate authority.** `certifiedFaceBySourceFace` is
+  built from `directCertifiedFaces` plus per-component certified-face sets and assigns a face's owner only when
+  that set has exactly one element (`:135–137`). `certificate_side_orbit` no longer exists.
+- **CB25's CA3 pair measurement is satisfiable** (`:181–200`): it quantifies over edges with two incident faces,
+  not in `componentBarriers`, **both sides uncut**, incrementing `examinedPairCount` for each and
+  `differingPairCount` only when both certified faces are known and differ. There is no
+  `certificateSeparatingSourceEdges` intersection, so CB24's structural zero cannot recur in this form.
+- TB23-EXEC raw invalid-attempt fields, **audit-only**: 342 PASS / 55 RED, accepted 327/365, ledger
+  `839e95fe…7ffc76e85e8d`, ordinals 394–397 `PASS,PASS,PASS,RED`, CA2/CA3/CA4 row counts `0/0/0`.
+- **`SurfaceCutGraphFaceCertificate` (`include/directional/geometry/SurfaceCutGraph.h:53–63`) publishes `orbit`,
+  `boundaryWalkCount`, `boundaryArcCount`, `discTopologyEstablished` — and nothing else.** No source-face
+  membership, no boundary arc list. `certificateFaceOrbits` is only the *set of those orbit ids*, used as a
+  membership filter.
+- **CB25's edge-side certified faces are the seed by another route.**
+  `add_direct(segment.sourceFace, thirdEdge, sideOrbit)` and the carrier-less
+  `add_direct(…, forwardEdge/reverseEdge, forwardOrbit/reverseOrbit)` write `walk.orbitByDart[dart]` — the same
+  quantity `edgeOrbitEvidence` records — filtered only by `certificateFaceOrbits`. Hence every available labeled
+  certified face **equals its seed**.
+- **`resolve_certificate_face_projection` unites across every edge not in `embeddedGraphSourceEdges`**, which holds
+  only mandatory and cut source edges (`GlobalTopologyPlan.cpp:427`). It therefore merges across trace-crossed
+  edges and is **coarser** than `componentBarriers`.
+- TB23-R1 mechanical evidence: `m3Cp4c3CA3;examined=273;differing=0;witnessCount=64;truncated=true`;
+  `m3Cp4c3CA4;observed=0;unavailable=191;distinct=0;multiset=;truncated=false`; minority rows `10-79` seed 3 and
+  `29-35` seed 1, both with `componentCertifiedFace=unavailable` and `labeledCertifiedFace` equal to the seed.
+- Ordinal 397's exact difference: expected `;sourceFace=2,4,6`, received `;sourceFace=2,4,6;cutCandidateCount=0`.
+- **`certify_actual_embedded_graph` (`src/geometry/SurfaceCutGraph.cpp:356–380`) calls the same
+  `build_embedded_graph_topology(sourceFaces, sourceVertexCount, sourceAuthority, network, cutEdges)` the plan
+  calls at `GlobalTopologyPlan.cpp:2364`**, derives `embedded.faceWalk` from it, and then publishes only counts.
+  The two invocations are independent — one object, two constructions (`M3-CP4c3-DEFN-R3-CAND-01`).
+- **Part VII (DEFN-R3) is the operative CP4c-3 definition alongside Part VI**, and supersedes Parts IV–VI where
+  they conflict. It lifts the fragment-count prohibition with reasons, strengthens `proves_cellularity()`, and
+  relocates `UncutFaceComponentOrbitSeedNotUnique` into a map-consistency check.
+- **The branch discriminator is a lookup, not a measurement:** certified owners of component 0's 191 faces — not
+  all equal ⇒ missing barrier; all equal ⇒ mis-read seed.

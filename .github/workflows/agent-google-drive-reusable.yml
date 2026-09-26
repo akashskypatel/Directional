@@ -1,0 +1,284 @@
+name: Agent Google Drive Patch Apply
+
+on:
+  workflow_call:
+    inputs:
+      file_id: {required: true, type: string}
+      patch_sha256: {required: true, type: string}
+      base_sha: {required: true, type: string}
+      target_branch: {required: false, type: string, default: ""}
+      commit_message: {required: false, type: string, default: "agent: apply Google Drive staged patch"}
+      retention_days: {required: false, type: number, default: 14}
+    secrets:
+      GH_TOKEN: {required: false}
+      GOOGLE_PROJECT_ID: {required: true}
+      GOOGLE_PROVIDER: {required: true}
+      GOOGLE_SERVICE_ACCOUNT: {required: true}
+  workflow_dispatch:
+    inputs:
+      file_id: {required: true, type: string}
+      patch_sha256: {required: true, type: string}
+      base_sha: {required: true, type: string}
+      target_branch: {required: false, type: string, default: ""}
+      commit_message: {required: false, type: string, default: "agent: apply Google Drive staged patch"}
+      retention_days: {required: false, type: number, default: 14}
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  apply-drive-patch:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Initialize diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/agent-google-drive-patch-apply.log"
+          : > "$log"
+          printf '%s\n' "workflow=$GITHUB_WORKFLOW" "run_id=$GITHUB_RUN_ID" \
+            "event=$GITHUB_EVENT_NAME" "event_sha=$GITHUB_SHA" "ref=$GITHUB_REF" \
+            "repository=$GITHUB_REPOSITORY" 'runtimeExecution=false' \
+            "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$log"
+
+      - name: Checkout exact control source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          token: ${{ secrets.GH_TOKEN || github.token }}
+
+      - name: Authenticate to Google Drive
+        id: auth
+        uses: google-github-actions/auth@v3
+        with:
+          project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
+          workload_identity_provider: ${{ secrets.GOOGLE_PROVIDER }}
+          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
+          token_format: access_token
+          access_token_scopes: https://www.googleapis.com/auth/drive
+          create_credentials_file: false
+
+      - name: Download and verify Drive patch
+        id: verify
+        env:
+          ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
+          FILE_ID: ${{ inputs.file_id }}
+          EXPECTED_PATCH_SHA256: ${{ inputs.patch_sha256 }}
+          EXPECTED_BASE_SHA: ${{ inputs.base_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/agent-google-drive-patch-apply.log"
+          exec > >(tee -a "$log") 2>&1
+          trap 'status=$?; echo "download_verify_exit=${status}"' EXIT
+          patch="${RUNNER_TEMP}/directional.patch"
+          fetch_method=files.get
+          set +e
+          curl --fail-with-body --silent --show-error --location --max-time 120 \
+            -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+            "https://www.googleapis.com/drive/v3/files/${FILE_ID}?alt=media&supportsAllDrives=true" \
+            -o "$patch"
+          get_status=$?
+          set -e
+          if [[ "$get_status" -eq 28 ]]; then
+            echo 'files.get exceeded 120 seconds; falling back to files.download'
+            fetch_method=files.download
+            rm -f "$patch"
+            operation="${RUNNER_TEMP}/drive-download-operation.json"
+            curl --fail-with-body --silent --show-error --location --request POST \
+              -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+              -H 'Content-Length: 0' \
+              -H 'Accept: application/json' \
+              "https://www.googleapis.com/drive/v3/files/${FILE_ID}/download" \
+              -o "$operation"
+            if ! jq -e '.done == true' "$operation" >/dev/null; then
+              operation_name="$(jq -r '.name // empty' "$operation")"
+              test -n "$operation_name"
+              case "$operation_name" in
+                operations/*) operation_path="$operation_name" ;;
+                *) operation_path="operations/${operation_name}" ;;
+              esac
+              delay=1
+              for attempt in 1 2 3 4 5 6; do
+                sleep "$delay"
+                curl --fail-with-body --silent --show-error --location \
+                  -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+                  -H 'Accept: application/json' \
+                  "https://www.googleapis.com/drive/v3/${operation_path}?alt=json" \
+                  -o "$operation"
+                if jq -e '.done == true' "$operation" >/dev/null; then
+                  break
+                fi
+                delay=$((delay * 2))
+              done
+            fi
+            jq -e '.done == true' "$operation" >/dev/null
+            if jq -e '.error != null' "$operation" >/dev/null; then
+              cat "$operation" >&2
+              exit 1
+            fi
+            download_uri="$(jq -r '.response.downloadUri // empty' "$operation")"
+            test -n "$download_uri"
+            curl --fail-with-body --silent --show-error --location \
+              -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+              "$download_uri" \
+              -o "$patch"
+          elif [[ "$get_status" -ne 0 ]]; then
+            echo "files.get failed with curl status ${get_status}; fallback is reserved for the 120-second timeout" >&2
+            exit "$get_status"
+          fi
+          actual="$(sha256sum "$patch" | awk '{print $1}')"
+          test "$actual" = "$EXPECTED_PATCH_SHA256"
+          base="$(sed -n 's/^# base_sha=//p' "$patch" | head -1)"
+          body_sha="$(sed -n 's/^# diff_body_sha256=//p' "$patch" | head -1)"
+          intended="$(sed -n 's/^# intended_paths=//p' "$patch" | head -1)"
+          test "$base" = "$EXPECTED_BASE_SHA"
+          test -n "$body_sha"; test -n "$intended"
+          first="$(grep -n -m1 '^diff --git ' "$patch" | cut -d: -f1)"
+          test -n "$first"
+          tail -n "+${first}" "$patch" > "${RUNNER_TEMP}/patch.body"
+          test "$(sha256sum "${RUNNER_TEMP}/patch.body" | awk '{print $1}')" = "$body_sha"
+          printf '%s\n' "file_id=$FILE_ID" "drive_fetch_method=$fetch_method" "patch_sha256=$actual" "base_sha=$base" "diff_body_sha256=$body_sha"
+          echo "patch_path=$patch" >> "$GITHUB_OUTPUT"
+          echo "intended=$intended" >> "$GITHUB_OUTPUT"
+
+      - name: Apply, commit, and push patch
+        id: apply
+        env:
+          PATCH_PATH: ${{ steps.verify.outputs.patch_path }}
+          INTENDED: ${{ steps.verify.outputs.intended }}
+          BASE_SHA: ${{ inputs.base_sha }}
+          TARGET_BRANCH_INPUT: ${{ inputs.target_branch }}
+          COMMIT_MESSAGE: ${{ inputs.commit_message }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/agent-google-drive-patch-apply.log"
+          exec > >(tee -a "$log") 2>&1
+          trap 'status=$?; echo "apply_push_exit=${status}"' EXIT
+          target="${TARGET_BRANCH_INPUT:-$GITHUB_REF_NAME}"
+          test -n "$target"; git cat-file -e "${BASE_SHA}^{commit}"
+          IFS=';' read -r -a paths <<< "$INTENDED"
+          test "${#paths[@]}" -gt 0
+          for path in "${paths[@]}"; do
+            test -n "$path"
+            case "$path" in .github/workflows/*) echo "workflow path forbidden: $path" >&2; exit 3;; esac
+          done
+          if ! git diff --quiet "$BASE_SHA" "$GITHUB_SHA" -- "${paths[@]}"; then
+            echo 'intended paths changed since patch base' >&2
+            git diff --name-only "$BASE_SHA" "$GITHUB_SHA" -- "${paths[@]}"
+            exit 2
+          fi
+          git apply --check "$PATCH_PATH"
+          git apply "$PATCH_PATH"
+          git diff --check
+          printf '%s\n' "${paths[@]}" | LC_ALL=C sort -u > "${RUNNER_TEMP}/expected.txt"
+          { git diff --name-only; git ls-files --others --exclude-standard; } | LC_ALL=C sort -u > "${RUNNER_TEMP}/actual.txt"
+          diff -u "${RUNNER_TEMP}/expected.txt" "${RUNNER_TEMP}/actual.txt"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A -- "${paths[@]}"
+          git diff --cached --check
+          test -n "$(git diff --cached --name-only)"
+          git commit -m "$COMMIT_MESSAGE"
+          commit_sha="$(git rev-parse HEAD)"
+          git push origin "HEAD:${target}"
+          echo "applied_commit_sha=$commit_sha" >> "$GITHUB_OUTPUT"
+          echo "applied_commit_sha=$commit_sha"
+
+      - name: Move Drive patch to trash after successful push
+        id: trash
+        env:
+          ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
+          FILE_ID: ${{ inputs.file_id }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/agent-google-drive-patch-apply.log"
+          exec > >(tee -a "$log") 2>&1
+          trap 'status=$?; echo "drive_trash_exit=${status}"' EXIT
+          metadata="${RUNNER_TEMP}/drive-trash-metadata.json"
+          response="${RUNNER_TEMP}/drive-trash-response.json"
+          curl --fail-with-body --silent --show-error --location \
+            -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+            "https://www.googleapis.com/drive/v3/files/${FILE_ID}?supportsAllDrives=true&fields=id,trashed,capabilities(canTrash)" \
+            -o "$metadata"
+          already_trashed="$(jq -r '.trashed // false' "$metadata")"
+          can_trash="$(jq -r '.capabilities.canTrash // false' "$metadata")"
+          if [[ "$already_trashed" == true ]]; then
+            trashed=true
+            retirement_required=false
+            reason=already-trashed
+          elif [[ "$can_trash" == true ]]; then
+            curl --fail-with-body --silent --show-error --location -X PATCH \
+              -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+              -H 'Content-Type: application/json' \
+              --data '{"trashed":true}' \
+              "https://www.googleapis.com/drive/v3/files/${FILE_ID}?supportsAllDrives=true&fields=id,trashed" \
+              -o "$response"
+            test "$(jq -r .trashed "$response")" = true
+            trashed=true
+            retirement_required=false
+            reason=trashed-by-workflow
+          else
+            echo 'Drive identity cannot trash this file; owner-authorized control-plane retirement is required'
+            trashed=false
+            retirement_required=true
+            reason=owner-cleanup-required
+          fi
+          echo "drive_file_trashed=$trashed" >> "$GITHUB_OUTPUT"
+          echo "drive_file_retirement_required=$retirement_required" >> "$GITHUB_OUTPUT"
+          echo "drive_trash_reason=$reason" >> "$GITHUB_OUTPUT"
+          echo "drive_file_trashed=$trashed"
+          echo "drive_file_retirement_required=$retirement_required"
+          echo "drive_trash_reason=$reason"
+
+      - name: Write result
+        if: always()
+        env:
+          APPLIED_SHA: ${{ steps.apply.outputs.applied_commit_sha }}
+          DRIVE_TRASHED: ${{ steps.trash.outputs.drive_file_trashed }}
+          DRIVE_RETIREMENT_REQUIRED: ${{ steps.trash.outputs.drive_file_retirement_required }}
+          DRIVE_TRASH_REASON: ${{ steps.trash.outputs.drive_trash_reason }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/agent-google-drive-patch-result"; mkdir -p "$out"
+          printf '%s\n' "event_sha=$GITHUB_SHA" "base_sha=${{ inputs.base_sha }}" \
+            "file_id=${{ inputs.file_id }}" "patch_sha256=${{ inputs.patch_sha256 }}" \
+            "applied_commit_sha=${APPLIED_SHA:-unavailable}" "drive_file_trashed=${DRIVE_TRASHED:-false}" \
+            "drive_file_retirement_required=${DRIVE_RETIREMENT_REQUIRED:-false}" \
+            "drive_trash_reason=${DRIVE_TRASH_REASON:-unavailable}" \
+            'runtimeExecution=false' "job_status=${{ job.status }}" \
+            "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$out/result.env"
+          cat "$out/result.env" | tee -a "${RUNNER_TEMP}/agent-google-drive-patch-apply.log"
+
+      - name: Upload result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-google-drive-patch-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/agent-google-drive-patch-result
+          if-no-files-found: error
+          retention-days: ${{ inputs.retention_days || 14 }}
+
+      - name: Record final source status
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          printf '%s\n' "final_job_status=${{ job.status }}" \
+            "final_sha=$(git rev-parse HEAD 2>/dev/null || echo unavailable)" \
+            "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "${RUNNER_TEMP}/agent-google-drive-patch-apply.log"
+          git status --short 2>&1 | tee -a "${RUNNER_TEMP}/agent-google-drive-patch-apply.log" || true
+
+      - name: Upload diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-google-drive-patch-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/agent-google-drive-patch-apply.log
+          if-no-files-found: error
+          retention-days: ${{ inputs.retention_days || 14 }}

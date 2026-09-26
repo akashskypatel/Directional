@@ -1,0 +1,2 @@
+# Preserve immutable staged control payload bytes across runner line-ending settings.
+.agents/Directional/turn-payloads/** -text

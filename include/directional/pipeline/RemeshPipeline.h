@@ -23,6 +23,7 @@
 #include <limits>
 #include <map>
 #include <numeric>
+#include <optional>
 #include <set>
 #include <sstream>
 #include <stdexcept>
@@ -30,12 +31,14 @@
 #include <thread>
 #include <tuple>
 #include <utility>
+#include <variant>
 #include <vector>
 
 #include <Eigen/Core>
 
 #include <directional/core/CartesianField.h>
 #include <directional/core/TriMesh.h>
+#include <directional/authority/FieldTransportAtlas.h>
 #include <directional/diagnostics/RemeshDiagnostics.h>
 #include <directional/fields/CrossFieldTransfer.h>
 #include <directional/fields/CrossField.h>
@@ -43,15 +46,20 @@
 #include <directional/geometry/AdaptiveFeatureMap.h>
 #include <directional/geometry/AdaptiveTargetSize.h>
 #include <directional/geometry/FlowRepStrands.h>
+#include <directional/geometry/GlobalTopologyPlan.h>
+#include <directional/geometry/GlobalConformityBaseline.h>
+#include <directional/geometry/SurfaceCutGraph.h>
 #include <directional/geometry/PatchDescriptor.h>
 #include <directional/geometry/PureQuadCompletion.h>
 #include <directional/geometry/ReliefTopology.h>
 #include <directional/geometry/SurfaceArrangement.h>
 #include <directional/geometry/SurfaceCellTracing.h>
+#include <directional/geometry/SourceChartTransitions.h>
 #include <directional/geometry/SurfaceComplexSimplification.h>
 #include <directional/geometry/SurfaceMeshOptimizer.h>
 #include <directional/geometry/SurfaceOptimizationRailConstraints.h>
 #include <directional/geometry/BoundedMeshPreconditioner.h>
+#include <directional/validation/SourceAuthoritativeMeshValidator.h>
 #include <directional/geometry/MeshComponents.h>
 #include <directional/geometry/SurfacePoint.h>
 #include <directional/fields/PCFaceTangentBundle.h>
@@ -83,14 +91,17 @@ enum class SurfaceCellFallbackPolicy {
   Fail,
   ReturnInputMesh,
   ReturnQuadDominant [[deprecated("Use ReturnInputMesh.")]] = ReturnInputMesh,
-  TryLegacy
+  TryLegacy [[deprecated(
+      "Legacy integration fallback is disabled; use Fail.")]] = Fail
 };
 
 enum class SurfaceCellFailureCode {
   None,
+  InputConditioningRejected,
   InvalidFieldDimensions,
   MissingMatching,
   MissingSingularities,
+  InvalidFieldTransportAtlas,
   MissingConfidence,
   UncoveredFaces,
   UnsupportedInput,
@@ -133,6 +144,11 @@ struct SurfaceCellOptions {
   bool requireMatching = true;
   bool requireSingularities = true;
   bool preserveDebugArtifacts = false;
+  /// Retain heavyweight trace, arrangement, simplification, and completion
+  /// geometry in SurfaceCellPipelineContext. Disabled by default so production
+  /// callers receive scalar diagnostics and lineage without retaining every
+  /// consumed stage payload simultaneously.
+  bool retainIntermediateGeometry = false;
   /// Proof-fixture mode: skip source-grid recovery when completion returns
   /// only adjacent source-triangle pair boundaries. Pair-boundary-only output
   /// is never accepted as a production remesh; this option exposes that
@@ -143,7 +159,7 @@ struct SurfaceCellOptions {
   /// accepted cell is refined into four new quads using source-edge midpoints
   /// and a source-surface center. Ambiguous or incomplete source-cell matching
   /// leaves general patch completion authoritative.
-  bool allowSourceGridRecovery = true;
+  bool allowSourceGridRecovery = false;
   /// Maximum factor by which the topology-constrained source-grid recovery
   /// may relax the requested final edge size. Recovery has fixed connectivity;
   /// requests outside this bound remain visible as validation failures.
@@ -281,20 +297,70 @@ struct SurfaceCellContextProductDebug {
   bool available = false;
 };
 
+/**
+ * @brief Diagnostic-only snapshots of stage products.
+ *
+ * These copies are one-way observation payloads. Production consumers must
+ * use the declared stage products instead of reading these snapshots back as
+ * semantic authority.
+ */
+struct SurfaceCellDiagnosticProductSnapshots {
+  fields::CrossFieldResult crossField;
+  bool hasCrossField = false;
+
+  std::optional<authority::FieldTransportAtlas> fieldTransportAtlas;
+  std::optional<authority::FieldAtlasBuildError> fieldTransportAtlasError;
+  std::optional<geometry::FieldAlignedCurveNetwork> fieldAlignedCurveNetwork;
+  std::optional<geometry::SurfaceCutGraph> surfaceCutGraph;
+  std::optional<geometry::GlobalTopologyPlan> globalTopologyPlan;
+  std::optional<geometry::GlobalConformityBaselinePlan> globalConformityBaseline;
+
+  std::vector<geometry::SurfaceCellRail> authoritativeRails;
+  bool hasAuthoritativeRails = false;
+
+  geometry::SourceSurfaceLabels sourceSurfaceLabels;
+  bool hasSourceSurfaceLabels = false;
+  std::optional<geometry::SourceTopologyRegions> sourceTopologyRegions;
+
+  geometry::SurfaceCellNetwork traceNetwork;
+  std::vector<geometry::FlowRepArc> flowRepArcs;
+  geometry::FlowRepSparseNetwork flowRepNetwork;
+  std::vector<geometry::SurfaceArrangementArc> embeddedArrangementArcs;
+  geometry::SurfaceCellComplex arrangement;
+
+  std::vector<geometry::PureQuadMesh> completedPatches;
+  geometry::PureQuadOutputLineageValidation outputLineageValidation;
+
+  bool sourceGridRecoveryUsed = false;
+  Eigen::VectorXd sourceGridRecoveryTargetSize;
+  bool hasSourceGridRecoveryTargetSize = false;
+  bool sourceGridRecoveryTargetSizeRelaxed = false;
+  double sourceGridRecoveryTargetSizeMaxRelaxationRatio = 1.0;
+
+  geometry::SurfaceOptimizationResult optimizationResult;
+  bool hasOptimizationResult = false;
+  geometry::SurfaceFinalValidationReport validationResult;
+  bool hasValidationResult = false;
+};
+
+/**
+ * @brief Diagnostic-only surface-cell observation context.
+ *
+ * This type must not carry semantic stage authority. Product-shaped members
+ * are snapshots for diagnostics, retention, and benchmark observation only.
+ */
 struct SurfaceCellPipelineContext {
+  SurfaceCellDiagnosticProductSnapshots productSnapshots;
+
   TriMesh sourceMesh;
   bool hasSourceMesh = false;
 
-  fields::CrossFieldResult crossField;
-  bool hasCrossField = false;
   bool crossFieldHasMatching = false;
   bool crossFieldHasSingularities = false;
 
   geometry::AdaptiveFeatureMap featureMap;
   bool hasFeatureMap = false;
 
-  std::vector<geometry::SurfaceCellRail> authoritativeRails;
-  bool hasAuthoritativeRails = false;
 
 
   geometry::AdaptiveTargetSizeResult metricField;
@@ -305,33 +371,75 @@ struct SurfaceCellPipelineContext {
 
   geometry::ReliefRootSelectionResult reliefRootSelection;
   bool hasReliefRootSelection = false;
-  std::set<std::uint64_t> reliefBarrierEdges;
+  std::set<authority::SourceEdgeTopologyKey> reliefBarrierEdges;
   bool hasReliefBarrierEdges = false;
 
-  geometry::SourceSurfaceLabels sourceSurfaceLabels;
-  bool hasSourceSurfaceLabels = false;
 
-  geometry::SurfaceCellNetwork traceNetwork;
+
   bool hasTraceNetwork = false;
+  /// Diagnostic proof of the production A2a cutover; semantic authority lives
+  /// in the declared FieldAlignedCurveNetwork product, never these booleans.
+  bool fieldAlignedNetworkAuthorityUsed = false;
+  bool rawSingularityProjectionUsed = false;
+  std::uint64_t tracingCurrentOwnedBytes = 0U;
+  std::uint64_t tracingPeakOwnedBytes = 0U;
+  bool traceStorageReleasedAfterFlowRep = false;
 
-  std::vector<geometry::FlowRepArc> flowRepArcs;
-  geometry::FlowRepSparseNetwork flowRepNetwork;
   bool flowRepEndpointCompletionAttempted = false;
   int flowRepOpenEndpointsBeforeCompletion = 0;
   int flowRepResolvedEndpoints = 0;
   int flowRepUnresolvedEndpoints = 0;
+  int flowRepUnresolvedRequiredEndpoints = 0;
   int flowRepEndpointCompletionAddedArcs = 0;
+  std::array<int, 9> flowRepEndpointTerminationCounts{};
+  std::vector<geometry::FlowRepEndpointCompletionDiagnostic>
+      flowRepEndpointDiagnostics;
   std::string flowRepEndpointCompletionFailure;
   bool hasFlowRepNetwork = false;
+  std::uint64_t flowRepCurrentOwnedBytes = 0U;
+  std::uint64_t flowRepPeakOwnedBytes = 0U;
+  bool flowRepSelectionStorageReleasedAfterSelection = false;
 
-  std::vector<geometry::SurfaceArrangementArc> embeddedArrangementArcs;
   bool hasEmbeddedArrangementArcs = false;
 
-  geometry::SurfaceCellComplex arrangement;
   bool hasArrangement = false;
+  std::uint64_t arrangementCurrentOwnedBytes = 0U;
+  std::uint64_t arrangementPeakOwnedBytes = 0U;
+  bool embeddedArrangementStorageReleasedAfterArrangement = false;
+  std::uint64_t tracingLogicalPayloadBytes = 0U;
+  std::uint64_t tracingRetainedCapacityBytes = 0U;
+  std::uint64_t flowRepLogicalPayloadBytes = 0U;
+  std::uint64_t flowRepRetainedCapacityBytes = 0U;
+  std::uint64_t arrangementLogicalPayloadBytes = 0U;
+  std::uint64_t arrangementRetainedCapacityBytes = 0U;
+  std::uint64_t simplificationLogicalPayloadBytes = 0U;
+  std::uint64_t simplificationRetainedCapacityBytes = 0U;
+  std::uint64_t completionLogicalPayloadBytes = 0U;
+  std::uint64_t completionRetainedCapacityBytes = 0U;
+  std::uint64_t estimatedPeakSimultaneousOwnedBytes = 0U;
+  std::vector<SurfaceCellMemoryOwnershipEvent> memoryOwnershipTimeline;
 
   geometry::SurfaceCellComplex simplifiedComplex;
   bool hasSimplifiedComplex = false;
+  int simplificationCandidateCount = 0;
+  int simplificationTopologyHealingCandidateCount = 0;
+  int simplificationCommitted = 0;
+  int simplificationRejected = 0;
+  int simplificationGeneratedCandidates = 0;
+  int simplificationDeduplicatedCandidates = 0;
+  int simplificationInvalidatedCandidates = 0;
+  int simplificationStaleGenerationCandidates = 0;
+  int simplificationFrontierGenerations = 0;
+  int simplificationPeakLiveCandidates = 0;
+  double simplificationEvaluatedCandidates = 0.0;
+  std::vector<geometry::SurfaceSimplificationCandidate>
+      simplificationTopologyHealingCandidates;
+  std::vector<geometry::SurfaceSimplificationTransaction>
+      simplificationTransactions;
+  bool hasSimplificationDiagnostics = false;
+  std::uint64_t simplificationCurrentOwnedBytes = 0U;
+  std::uint64_t simplificationPeakOwnedBytes = 0U;
+  int maxSimultaneousLiveLargeStructures = 0;
 
   geometry::SurfaceCellComplex completionComplex;
   bool hasCompletionComplex = false;
@@ -339,6 +447,14 @@ struct SurfaceCellPipelineContext {
   int completionOddCellsAfterRepair = 0;
   int completionParitySplitEdges = 0;
   int completionParityHardFeatureSplits = 0;
+  int completionParityAlternativeCandidateBudget = 0;
+  int completionParityAlternativeCandidatesAttempted = 0;
+  int completionParityAlternativeVisitedStates = 0;
+  int completionParityAlternativeSelectedExclusion = -1;
+  std::uint64_t completionParityAlternativeStateSequenceHash = 0U;
+  geometry::SurfaceCellParityAlternativeDisposition
+      completionParityAlternativeDisposition =
+          geometry::SurfaceCellParityAlternativeDisposition::None;
   int completionSideInfeasibleBeforeRepair = 0;
   int completionSideInfeasibleAfterRepair = 0;
   int completionSideInitialEquationDefect = 0;
@@ -348,40 +464,98 @@ struct SurfaceCellPipelineContext {
   int completionSideInsertedVertices = 0;
   int completionSideSplitEdges = 0;
   int completionSideHardFeatureSplits = 0;
+  bool completionSideRollbackEquivalent = false;
+  std::uint64_t completionSideRollbackIdentityHashBefore = 0U;
+  std::uint64_t completionSideRollbackIdentityHashAfter = 0U;
+  std::uint64_t completionSideRollbackUndoOwnedBytes = 0U;
+  int completionAttemptedPatches = 0;
+  int completionFailedPatches = 0;
+  int completionOwnershipRepairAttempts = 0;
+  int completionTemplateInitialConflictCount = 0;
+  int completionTemplateFinalConflictCount = 0;
+  int completionTemplateConflictComponentCount = 0;
+  int completionTemplateChangedPatchCount = 0;
+  int completionTemplateAssemblyPasses = 0;
+  int completionOwnershipStructuralRepairAttempts = 0;
+  int completionOwnershipInsertedBoundaryVertices = 0;
+  int completionOwnershipStructuralCandidateBudget = 0;
+  int completionOwnershipStructuralCandidatesConsumed = 0;
+  int completionOwnershipVisitedStateCount = 0;
+  int completionOwnershipFullRecomputationPasses = 0;
+  int completionOwnershipIncrementalRecomputationPasses = 0;
+  int completionOwnershipPreConflictCount = 0;
+  int completionOwnershipPostConflictCount = 0;
+  int completionOwnershipRetainedConflictCount = 0;
+  int completionOwnershipRemovedConflictCount = 0;
+  int completionOwnershipIntroducedConflictCount = 0;
+  int completionOwnershipConflictComponentCount = 0;
+  int completionOwnershipIndependentComponentCount = 0;
+  int completionOwnershipReusedPatchCompletions = 0;
+  int completionOwnershipRecomputedPatchCompletions = 0;
+  int completionOwnershipProductCacheHashMisses = 0;
+  int completionOwnershipProductCacheExactMismatches = 0;
+  std::uint64_t completionOwnershipPreConflictInventoryHash = 0U;
+  std::uint64_t completionOwnershipPostConflictInventoryHash = 0U;
+  std::uint64_t completionOwnershipConflictFrontierOwnedBytes = 0U;
+  std::uint64_t completionOwnershipProductCacheOwnedBytes = 0U;
+  int completionOwnershipCurrentLiveCandidateComplexes = 0;
+  int completionOwnershipPeakLiveCandidateComplexes = 0;
+  int completionOwnershipLastCandidateHalfedge = -1;
+  std::vector<int> completionOwnershipLastCandidateHalfedges;
+  std::vector<int> completionOwnershipLastAffectedPatches;
+  int completionOwnershipRouteCandidateCount = 0;
+  std::uint64_t completionOwnershipRollbackOwnedBytes = 0U;
+  std::uint64_t completionOwnershipCandidateOwnedBytes = 0U;
+  std::uint64_t completionOwnershipDescriptorOwnedBytes = 0U;
+  std::uint64_t completionOwnershipCompletedPatchOwnedBytes = 0U;
+  std::uint64_t completionOwnershipAssemblyOwnedBytes = 0U;
+  std::uint64_t completionOwnershipCurrentStructuralOwnedBytes = 0U;
+  std::uint64_t completionOwnershipPeakStructuralOwnedBytes = 0U;
+  geometry::SurfaceCellStructuralRepairExhaustionReason
+      completionOwnershipStructuralExhaustionReason =
+          geometry::SurfaceCellStructuralRepairExhaustionReason::None;
+  std::vector<geometry::SurfaceCellOwnershipRepairAttempt>
+      completionOwnershipRepairLog;
+  geometry::PureQuadCompletionOwnershipRejection
+      firstCompletionOwnershipRejection;
+  geometry::PureQuadEmbeddingFailure firstCompletionEmbeddingFailure;
+  std::string completionFailure;
+  geometry::SurfaceCellDomainIdentityAudit completionDomainIdentityAudit;
+  bool hasCompletionDomainIdentityAudit = false;
+  geometry::SurfaceCellReplacementScopeFailure completionParityScopeFailure;
+  bool hasCompletionParityScopeFailure = false;
+  std::vector<geometry::PatchCompletionReuseMismatch>
+      completionOwnershipProductCacheMismatchVector;
 
   std::vector<geometry::PatchDescriptor> patchDescriptors;
   std::vector<int> completionUnresolvedSingularVertices;
   bool hasPatchDescriptors = false;
 
-  std::vector<geometry::PureQuadMesh> completedPatches;
   Eigen::MatrixXd completedVertices;
   Eigen::MatrixXi completedQuads;
   std::vector<geometry::SurfacePoint> completedProvenance;
   std::vector<geometry::PureQuadVertexLineage> completedVertexLineage;
   std::vector<geometry::PureQuadFaceLineage> completedQuadLineage;
-  geometry::PureQuadOutputLineageValidation outputLineageValidation;
-  bool sourceGridRecoveryUsed = false;
-  Eigen::VectorXd sourceGridRecoveryTargetSize;
-  bool hasSourceGridRecoveryTargetSize = false;
-  bool sourceGridRecoveryTargetSizeRelaxed = false;
-  double sourceGridRecoveryTargetSizeMaxRelaxationRatio = 1.0;
   bool hasCompletedPatches = false;
 
-  geometry::SurfaceOptimizationResult optimizationResult;
-  bool hasOptimizationResult = false;
 
-  geometry::SurfaceFinalValidationReport validationResult;
-  bool hasValidationResult = false;
+
+  // Final disconnected-aggregate source-authoritative oracle evidence is
+  // independent of whether every component published a legacy aggregate
+  // validation report. This distinguishes "oracle ran and passed" from
+  // "oracle result unavailable" without fabricating incomplete aggregate
+  // quality metrics.
+  validation::SourceAuthoritativeMeshValidationResult
+      finalSourceAuthorityValidationResult;
+  bool hasFinalSourceAuthorityValidationResult = false;
+  bool componentValidationReportsComplete = false;
 
   std::vector<SurfaceCellContextProductDebug> debugProducts;
 };
 /**
- * @brief Geometry and diagnostic outputs produced by the remeshing pipeline.
+ * @brief Closed semantic payload produced by the remeshing pipeline.
  */
-struct RemeshResult {
-  /// True when the final mesher emitted a valid output mesh.
-  bool success = false;
-
+struct RemeshProduct {
   /// Generated output vertex positions.
   Eigen::MatrixXd vertices;
 
@@ -422,13 +596,628 @@ struct RemeshResult {
 
   /// Integer singularity numerators; actual indices are divided by four.
   Eigen::VectorXi crossFieldSingularIndices;
+};
 
-  /// Typed SurfaceCells intermediates preserved for diagnostics and downstream stages.
+enum class RemeshProductKind {
+  Meshed,
+  IntegrationOnly,
+  InputMeshFallback
+};
+
+struct RemeshPublishedProduct {
+  RemeshProduct output;
+  RemeshProductKind kind = RemeshProductKind::Meshed;
+  bool crossFieldAccepted = false;
+};
+
+enum class RemeshFailureKind {
+  None,
+  SurfaceCellRejected,
+  MesherRejected,
+  ComponentRejected,
+  Exception
+};
+
+struct RemeshFailure {
+  RemeshFailureKind kind = RemeshFailureKind::None;
+  SurfaceCellFailureCode surfaceCellFailure = SurfaceCellFailureCode::None;
+  std::string stage;
+  bool crossFieldAccepted = false;
+};
+
+/**
+ * @brief Closed remeshing outcome plus diagnostic-only observation channels.
+ */
+class RemeshResult {
+public:
+  using Product = RemeshPublishedProduct;
+  using Failure = RemeshFailure;
+  using Outcome =
+      geometry::ProducerOutcome<Product, Failure>;
+
+  RemeshResult() = default;
+  RemeshResult(const RemeshResult &) = default;
+  RemeshResult(RemeshResult &&) noexcept = default;
+  RemeshResult &operator=(const RemeshResult &) = default;
+  RemeshResult &operator=(RemeshResult &&) noexcept = default;
+
+  [[nodiscard]] static RemeshResult produced(
+      RemeshProduct output, RemeshProductKind kind, bool crossFieldAccepted,
+      SurfaceCellPipelineContext diagnosticsContext = {},
+      directional::RemeshDiagnostics diagnostics = {}) {
+    if (kind != RemeshProductKind::IntegrationOnly &&
+        (output.vertices.rows() == 0 || output.faces.rows() == 0)) {
+      throw std::invalid_argument(
+          "Produced remesh outcome requires a nonempty output mesh.");
+    }
+    Product product;
+    product.output = std::move(output);
+    product.kind = kind;
+    product.crossFieldAccepted = crossFieldAccepted;
+    return RemeshResult(
+        Outcome{geometry::Produced<Product>{
+            std::move(product)}},
+        std::move(diagnosticsContext), std::move(diagnostics));
+  }
+
+  [[nodiscard]] static RemeshResult rejected(
+      Failure failure, SurfaceCellPipelineContext diagnosticsContext = {},
+      directional::RemeshDiagnostics diagnostics = {}) {
+    if (failure.kind == RemeshFailureKind::None) {
+      throw std::invalid_argument(
+          "Rejected remesh outcome requires a typed failure.");
+    }
+    return RemeshResult(
+        Outcome{geometry::Rejected<Failure>{
+            std::move(failure)}},
+        std::move(diagnosticsContext), std::move(diagnostics));
+  }
+
+  [[nodiscard]] bool is_produced() const noexcept {
+    return std::holds_alternative<
+        geometry::Produced<Product>>(outcome_);
+  }
+  [[nodiscard]] bool is_rejected() const noexcept {
+    return std::holds_alternative<
+        geometry::Rejected<Failure>>(outcome_);
+  }
+  [[nodiscard]] bool is_not_applicable() const noexcept {
+    return std::holds_alternative<
+        geometry::NotApplicable>(outcome_);
+  }
+  [[nodiscard]] Product *produced_product() noexcept {
+    auto *produced = std::get_if<
+        geometry::Produced<Product>>(&outcome_);
+    return produced == nullptr ? nullptr : &produced->product;
+  }
+  [[nodiscard]] const Product *produced_product() const noexcept {
+    const auto *produced = std::get_if<
+        geometry::Produced<Product>>(&outcome_);
+    return produced == nullptr ? nullptr : &produced->product;
+  }
+  [[nodiscard]] RemeshProduct &product() & {
+    return std::get<
+               geometry::Produced<Product>>(
+               outcome_)
+        .product.output;
+  }
+  [[nodiscard]] const RemeshProduct &product() const & {
+    return std::get<
+               geometry::Produced<Product>>(
+               outcome_)
+        .product.output;
+  }
+  [[nodiscard]] const Failure *rejection() const noexcept {
+    const auto *rejected = std::get_if<
+        geometry::Rejected<Failure>>(&outcome_);
+    return rejected == nullptr ? nullptr : &rejected->failure;
+  }
+  [[nodiscard]] bool cross_field_accepted() const noexcept {
+    if (const Product *product = produced_product()) {
+      return product->crossFieldAccepted;
+    }
+    if (const Failure *failure = rejection()) {
+      return failure->crossFieldAccepted;
+    }
+    return false;
+  }
+  [[nodiscard]] const Outcome &outcome() const & noexcept { return outcome_; }
+  [[nodiscard]] Outcome &&outcome() && noexcept { return std::move(outcome_); }
+
+  /// Diagnostic-only surface-cell snapshots and counters.
   SurfaceCellPipelineContext surfaceCellContext;
 
-  /// Machine-readable timing and count diagnostics for this pipeline run.
+  /// Runtime diagnostics and timing measurements.
   directional::RemeshDiagnostics diagnostics;
+
+private:
+  RemeshResult(Outcome outcome, SurfaceCellPipelineContext diagnosticsContext,
+               directional::RemeshDiagnostics diagnosticsValue)
+      : surfaceCellContext(std::move(diagnosticsContext)),
+        diagnostics(std::move(diagnosticsValue)), outcome_(std::move(outcome)) {}
+
+  Outcome outcome_;
 };
+
+/** Compile-visible result of explicit constructive-front quotient assembly. */
+struct AuthoritativePhaseFrontMeshResult {
+  bool success = false;
+  int invalidCell = -1;
+  int invalidEdge = -1;
+  int connectedComponents = 0;
+  int boundaryLoopCount = 0;
+  int eulerCharacteristic = 0;
+  std::size_t consumedTopologyRegions = 0U;
+  std::size_t consumedInternalIsolationSeams = 0U;
+  std::size_t consumedPeriodicHolonomies = 0U;
+  std::string failure;
+  geometry::PureQuadMesh mesh;
+};
+
+enum class SurfaceOccurrenceRelationKind : std::uint8_t {
+  OrdinaryFront = 0,
+  HardRail = 1,
+  Periodic = 2,
+  SingularityPort = 3,
+};
+
+struct SurfaceOccurrenceRelationId {
+  SurfaceOccurrenceRelationId(
+      SurfaceOccurrenceRelationKind relationKind,
+      authority::OccurrenceId firstEndpoint,
+      authority::OccurrenceId secondEndpoint,
+      std::optional<authority::HardRailId> rail = std::nullopt,
+      std::optional<authority::PeriodicRelationId> periodic = std::nullopt)
+      : kind(relationKind), first(firstEndpoint), second(secondEndpoint),
+        hardRail(rail), periodicRelation(periodic) {}
+
+  SurfaceOccurrenceRelationKind kind =
+      SurfaceOccurrenceRelationKind::OrdinaryFront;
+  authority::OccurrenceId first;
+  authority::OccurrenceId second;
+  std::optional<authority::HardRailId> hardRail;
+  std::optional<authority::PeriodicRelationId> periodicRelation;
+
+  auto operator<=>(const SurfaceOccurrenceRelationId &) const = default;
+};
+
+struct CornerWedgeFaceBinding {
+  authority::SourceFaceTopologyKey face;
+  authority::IsolationSheetId sheet;
+  geometry::SourceProjectionChart chart;
+
+  auto operator<=>(const CornerWedgeFaceBinding &) const = default;
+};
+
+struct CornerPlacementProvenance {
+  authority::SourceFaceTopologyKey selectedFace;
+  geometry::LocalLatticeState lattice;
+};
+
+struct SurfaceOccurrenceSideSpan {
+  authority::SourceSupport support;
+  CornerWedgeFaceBinding interiorBinding;
+  std::optional<authority::SourceEdgeTopologyKey> collinearEdge;
+  std::vector<geometry::CornerWedgeIsolationTransition> isolationTransitions;
+
+  auto operator<=>(const SurfaceOccurrenceSideSpan &) const = default;
+};
+
+struct SurfaceOccurrenceDirectedSideAuthority {
+  std::vector<SurfaceOccurrenceSideSpan> spans;
+  std::vector<geometry::CornerWedgeIsolationTransition> isolationEvidence;
+
+  auto operator<=>(const SurfaceOccurrenceDirectedSideAuthority &) const =
+      default;
+};
+
+struct SurfaceOccurrence {
+  SurfaceOccurrence(authority::OccurrenceId occurrenceId,
+                    geometry::SurfacePoint sourcePoint,
+                    authority::SourceSupport sourceSupport,
+                    geometry::SourceChartComponentIdentity componentIdentity,
+                    authority::TopologyRegionId region,
+                    std::vector<authority::IsolationSheetId> wedgeSheets,
+                    std::vector<CornerWedgeFaceBinding> wedgeBindings,
+                    CornerPlacementProvenance placementProvenance,
+                    std::vector<geometry::CornerWedgeIsolationTransition>
+                        wedgeIsolation)
+      : id(occurrenceId), point(std::move(sourcePoint)),
+        support(std::move(sourceSupport)),
+        chartComponent(std::move(componentIdentity)), topologyRegion(region),
+        cornerWedgeSheets(std::move(wedgeSheets)),
+        cornerWedgeBindings(std::move(wedgeBindings)),
+        placement(std::move(placementProvenance)),
+        cornerWedgeIsolation(std::move(wedgeIsolation)) {}
+
+  authority::OccurrenceId id;
+  geometry::SurfacePoint point;
+  authority::SourceSupport support;
+  geometry::SourceChartComponentIdentity chartComponent;
+  authority::TopologyRegionId topologyRegion;
+  std::vector<authority::IsolationSheetId> cornerWedgeSheets;
+  std::vector<CornerWedgeFaceBinding> cornerWedgeBindings;
+  CornerPlacementProvenance placement;
+  std::vector<geometry::CornerWedgeIsolationTransition> cornerWedgeIsolation;
+};
+
+struct SurfaceOccurrenceCell {
+  SurfaceOccurrenceCell(
+      authority::CellId cellId,
+      std::array<authority::OccurrenceId, 4> cornerOccurrenceIds,
+      std::array<std::pair<authority::OccurrenceId, authority::OccurrenceId>, 4>
+          sideCycle,
+      std::array<SurfaceOccurrenceDirectedSideAuthority, 4> sideAuthority = {})
+      : id(cellId), cornerOccurrences(std::move(cornerOccurrenceIds)),
+        directedSides(std::move(sideCycle)),
+        directedSideAuthority(std::move(sideAuthority)) {}
+
+  authority::CellId id;
+  std::array<authority::OccurrenceId, 4> cornerOccurrences;
+  std::array<std::pair<authority::OccurrenceId, authority::OccurrenceId>, 4>
+      directedSides;
+  std::array<SurfaceOccurrenceDirectedSideAuthority, 4> directedSideAuthority;
+};
+
+struct SurfaceOccurrenceRelationEvidence {
+  std::optional<authority::GridAutomorphism> canonicalTransport;
+  geometry::PureQuadEquivalenceProvenance equivalence;
+  std::optional<geometry::SelectedRelationStep> canonicalSelectedStep;
+  std::optional<SurfaceOccurrenceSideSpan> firstEndpointSpan;
+  std::optional<SurfaceOccurrenceSideSpan> secondEndpointSpan;
+  std::vector<geometry::CornerWedgeIsolationTransition>
+      firstSideIsolationEvidence;
+  std::vector<geometry::CornerWedgeIsolationTransition>
+      secondSideIsolationEvidence;
+};
+
+struct SurfaceOccurrenceRelation {
+  SurfaceOccurrenceRelation(
+      SurfaceOccurrenceRelationId relationId,
+      authority::OccurrenceId firstEndpoint,
+      authority::OccurrenceId secondEndpoint, int firstEdge, int secondEdge,
+      SurfaceOccurrenceRelationEvidence relationEvidence = {})
+      : id(std::move(relationId)), firstOccurrence(firstEndpoint),
+        secondOccurrence(secondEndpoint), firstFrontEdge(firstEdge),
+        secondFrontEdge(secondEdge), evidence(std::move(relationEvidence)) {}
+
+  SurfaceOccurrenceRelationId id;
+  authority::OccurrenceId firstOccurrence;
+  authority::OccurrenceId secondOccurrence;
+  int firstFrontEdge = -1;  // representation projection only
+  int secondFrontEdge = -1; // representation projection only
+  SurfaceOccurrenceRelationEvidence evidence;
+};
+
+struct OccurrenceComplexCertificate {
+  std::size_t cellCount = 0U;
+  std::size_t occurrenceCount = 0U;
+  std::size_t directedSideCount = 0U;
+  std::size_t ownedRelationCount = 0U;
+  bool exactCellOwnership = false;
+  bool exactCornerOwnership = false;
+  bool exactDirectedSideCycles = false;
+  bool exactRelationEndpointOwnership = false;
+  bool geometricCoincidenceInferenceUsed = false;
+};
+
+enum class SurfaceOccurrenceComplexErrorCode : std::uint8_t {
+  SourceAuthorityMismatch = 0,
+  MissingCellOwnership = 1,
+  DuplicateCellOwnership = 2,
+  MissingCornerOccurrence = 3,
+  DuplicateCornerOccurrence = 4,
+  InvalidDirectedSideCycle = 5,
+  RelationEndpointMissing = 6,
+  DuplicateRelationDeclaration = 7,
+  UnownedRelation = 8,
+  InvalidCornerAuthority = 9,
+  InvalidChartAuthority = 10,
+  HardRailOwnerMismatch = 11,
+  HardRailOwnerMissing = 12,
+  PeriodicOwnerMismatch = 13,
+  RelationKindMismatch = 14,
+  UnsupportedSingularWedge = 15,
+  UnsupportedSingularityPort = 16,
+  UnsupportedHardRailSeamWedge = 17,
+  InvalidWedgeAuthority = 18,
+  MissingIsolationEvidence = 19,
+  DuplicateIsolationEvidence = 20,
+  MismatchedIsolationEvidence = 21,
+};
+
+const char *surface_occurrence_complex_error_name(
+    SurfaceOccurrenceComplexErrorCode code);
+
+struct SurfaceOccurrenceComplexError {
+  SurfaceOccurrenceComplexErrorCode code =
+      SurfaceOccurrenceComplexErrorCode::SourceAuthorityMismatch;
+  std::optional<authority::CellId> cell;
+  std::optional<authority::OccurrenceId> occurrence;
+  std::optional<SurfaceOccurrenceRelationId> relation;
+};
+
+class SurfaceOccurrenceComplex {
+public:
+  [[nodiscard]] const std::vector<SurfaceOccurrenceCell> &cells() const noexcept {
+    return cells_;
+  }
+  [[nodiscard]] const std::vector<SurfaceOccurrence> &occurrences() const noexcept {
+    return occurrences_;
+  }
+  [[nodiscard]] const std::vector<SurfaceOccurrenceRelation> &owned_relations()
+      const noexcept {
+    return ownedRelations_;
+  }
+  [[nodiscard]] const OccurrenceComplexCertificate &certificate() const noexcept {
+    return certificate_;
+  }
+
+private:
+  friend class SurfaceOccurrenceComplexProducer;
+  SurfaceOccurrenceComplex(std::vector<SurfaceOccurrenceCell> cells,
+                           std::vector<SurfaceOccurrence> occurrences,
+                           std::vector<SurfaceOccurrenceRelation> relations,
+                           OccurrenceComplexCertificate certificate)
+      : cells_(std::move(cells)), occurrences_(std::move(occurrences)),
+        ownedRelations_(std::move(relations)),
+        certificate_(std::move(certificate)) {}
+
+  std::vector<SurfaceOccurrenceCell> cells_;
+  std::vector<SurfaceOccurrence> occurrences_;
+  std::vector<SurfaceOccurrenceRelation> ownedRelations_;
+  OccurrenceComplexCertificate certificate_;
+};
+
+class SurfaceOccurrenceComplexProducer {
+public:
+  using ConstructionResult =
+      std::variant<SurfaceOccurrenceComplex, SurfaceOccurrenceComplexError>;
+
+  static ConstructionResult produce(
+      const Eigen::MatrixXd &sourceVertices,
+      const Eigen::MatrixXi &sourceFaces,
+      const geometry::SurfacePhaseFrontProduct &phaseFront);
+
+  // Compile-visible A5 publication gate used by focused ownership tests. The
+  // production overload above is the only path that derives records from A4/M5.
+  static ConstructionResult publish_records_for_validation(
+      std::vector<SurfaceOccurrenceCell> cells,
+      std::vector<SurfaceOccurrence> occurrences,
+      std::vector<SurfaceOccurrenceRelation> relations);
+};
+
+struct SurfaceQuotientClassId {
+  std::vector<authority::OccurrenceId> members;
+
+  auto operator<=>(const SurfaceQuotientClassId &) const = default;
+};
+
+struct QuotientRelationCertificate {
+  QuotientRelationCertificate(
+      SurfaceOccurrenceRelationId relationId, authority::OccurrenceId firstEndpoint,
+      authority::OccurrenceId secondEndpoint)
+      : relation(std::move(relationId)), first(firstEndpoint),
+        second(secondEndpoint) {}
+
+  SurfaceOccurrenceRelationId relation;
+  authority::OccurrenceId first;
+  authority::OccurrenceId second;
+  authority::GridAutomorphism relationTransport =
+      authority::GridAutomorphism::identity();
+  geometry::PureQuadEquivalenceProvenance evidence;
+  std::optional<geometry::SelectedRelationStep> selectedRelationStep;
+
+  auto operator<=>(const QuotientRelationCertificate &) const = default;
+};
+
+enum class QuotientRelationDisposition : std::uint8_t {
+  Joining = 0,
+  CycleClosing = 1,
+};
+
+struct QuotientRelationConsumption {
+  QuotientRelationConsumption(SurfaceOccurrenceRelationId relationId,
+                              QuotientRelationDisposition rowDisposition)
+      : relation(std::move(relationId)), disposition(rowDisposition) {}
+
+  SurfaceOccurrenceRelationId relation;
+  QuotientRelationDisposition disposition =
+      QuotientRelationDisposition::Joining;
+  authority::GridAutomorphism selectedPathTransport =
+      authority::GridAutomorphism::identity();
+
+  auto operator<=>(const QuotientRelationConsumption &) const = default;
+};
+
+struct QuotientForestEdge {
+  QuotientForestEdge(SurfaceOccurrenceRelationId relationId,
+                     authority::OccurrenceId firstEndpoint,
+                     authority::OccurrenceId secondEndpoint)
+      : relation(std::move(relationId)), first(firstEndpoint),
+        second(secondEndpoint) {}
+
+  SurfaceOccurrenceRelationId relation;
+  authority::OccurrenceId first;
+  authority::OccurrenceId second;
+
+  auto operator<=>(const QuotientForestEdge &) const = default;
+};
+
+struct QuotientSelectedPathCertificate {
+  QuotientSelectedPathCertificate(SurfaceQuotientClassId classId,
+                                  authority::OccurrenceId rootOccurrence,
+                                  authority::OccurrenceId targetOccurrence)
+      : quotientClass(std::move(classId)), root(rootOccurrence),
+        target(targetOccurrence) {}
+
+  SurfaceQuotientClassId quotientClass;
+  authority::OccurrenceId root;
+  authority::OccurrenceId target;
+  std::vector<SurfaceOccurrenceRelationId> orderedRelations;
+  std::vector<authority::Orientation> traversalOrientations;
+  authority::GridAutomorphism composedTransport =
+      authority::GridAutomorphism::identity();
+  std::optional<geometry::SelectedRelationPathCertificate> legacyProjection;
+
+  auto operator<=>(const QuotientSelectedPathCertificate &) const = default;
+};
+
+struct SurfaceQuotientClass {
+  SurfaceQuotientClassId id;
+  std::vector<authority::OccurrenceId> members;
+  std::vector<geometry::PureQuadEquivalenceProvenance> equivalences;
+
+  auto operator<=>(const SurfaceQuotientClass &) const = default;
+};
+
+struct SurfaceQuotientCell {
+  SurfaceQuotientCell(
+      authority::CellId cellId,
+      std::array<SurfaceQuotientClassId, 4> cornerClasses)
+      : id(cellId), corners(std::move(cornerClasses)) {}
+
+  authority::CellId id;
+  std::array<SurfaceQuotientClassId, 4> corners;
+
+  auto operator<=>(const SurfaceQuotientCell &) const = default;
+};
+
+struct QuotientCertificate {
+  std::size_t ownedRelationCount = 0U;
+  std::size_t relationCertificateCount = 0U;
+  std::size_t consumptionCount = 0U;
+  std::size_t joiningCount = 0U;
+  std::size_t cycleClosingCount = 0U;
+  bool relationBijection = false;
+  bool exactForest = false;
+  bool exactCycleConsistency = false;
+  bool exactTransitivePartition = false;
+};
+
+struct MaterializationCertificate {
+  std::size_t sourceCellCount = 0U;
+  std::size_t classedCellCount = 0U;
+  std::size_t sourceOccurrenceCount = 0U;
+  std::size_t classMemberCount = 0U;
+  bool exactCellBijection = false;
+  bool exactOccurrencePartition = false;
+  bool noDegenerateClassedQuad = false;
+};
+
+enum class SurfaceQuotientProductErrorCode : std::uint8_t {
+  SourceAuthorityMismatch = 0,
+  RelationEndpointMissing = 1,
+  RelationAuthorityConflict = 2,
+  RelationCertificateMissing = 3,
+  RelationCertificateDuplicate = 4,
+  RelationCertificateConflict = 5,
+  ReciprocalSideAuthorityMismatch = 6,
+  MissingIsolationEvidence = 7,
+  InvalidIsolationEvidence = 8,
+  InvalidHardRailTransport = 9,
+  InvalidPeriodicTransport = 10,
+  UnsupportedSingularityPort = 11,
+  UnownedRelationUse = 12,
+  RelationConsumptionMissing = 13,
+  RelationConsumptionDuplicate = 14,
+  RelationConsumptionConflict = 15,
+  HolonomyConflict = 16,
+  InvalidClassPartition = 17,
+  MissingOccurrenceMember = 18,
+  DegenerateClassedQuad = 19,
+  NonBijectiveMaterialization = 20,
+};
+
+const char *surface_quotient_product_error_name(
+    SurfaceQuotientProductErrorCode code);
+
+struct SurfaceQuotientProductError {
+  SurfaceQuotientProductErrorCode code =
+      SurfaceQuotientProductErrorCode::SourceAuthorityMismatch;
+  std::optional<SurfaceOccurrenceRelationId> relation;
+  std::optional<authority::OccurrenceId> occurrence;
+  std::optional<authority::CellId> cell;
+};
+
+struct SurfaceQuotientValidationRecords {
+  std::vector<QuotientRelationCertificate> relationCertificates;
+  std::vector<QuotientRelationConsumption> relationConsumptions;
+  std::vector<QuotientForestEdge> selectedForest;
+  std::vector<QuotientSelectedPathCertificate> selectedPaths;
+  std::vector<SurfaceQuotientClass> classes;
+  std::vector<SurfaceQuotientCell> classedCells;
+};
+
+class SurfaceQuotientProduct {
+public:
+  [[nodiscard]] const std::vector<QuotientRelationCertificate> &
+  relation_certificates() const noexcept {
+    return records_.relationCertificates;
+  }
+  [[nodiscard]] const std::vector<QuotientRelationConsumption> &
+  relation_consumptions() const noexcept {
+    return records_.relationConsumptions;
+  }
+  [[nodiscard]] const std::vector<QuotientForestEdge> &selected_forest() const
+      noexcept {
+    return records_.selectedForest;
+  }
+  [[nodiscard]] const std::vector<QuotientSelectedPathCertificate> &
+  selected_paths() const noexcept {
+    return records_.selectedPaths;
+  }
+  [[nodiscard]] const std::vector<SurfaceQuotientClass> &classes() const
+      noexcept {
+    return records_.classes;
+  }
+  [[nodiscard]] const std::vector<SurfaceQuotientCell> &classed_cells() const
+      noexcept {
+    return records_.classedCells;
+  }
+  [[nodiscard]] const QuotientCertificate &certificate() const noexcept {
+    return quotientCertificate_;
+  }
+  [[nodiscard]] const MaterializationCertificate &
+  materialization_certificate() const noexcept {
+    return materializationCertificate_;
+  }
+  [[nodiscard]] const SurfaceQuotientValidationRecords &
+  validation_records() const noexcept {
+    return records_;
+  }
+
+private:
+  friend class SurfaceQuotientProducer;
+  SurfaceQuotientProduct(SurfaceQuotientValidationRecords records,
+                         QuotientCertificate quotientCertificate,
+                         MaterializationCertificate materializationCertificate)
+      : records_(std::move(records)),
+        quotientCertificate_(std::move(quotientCertificate)),
+        materializationCertificate_(std::move(materializationCertificate)) {}
+
+  SurfaceQuotientValidationRecords records_;
+  QuotientCertificate quotientCertificate_;
+  MaterializationCertificate materializationCertificate_;
+};
+
+class SurfaceQuotientProducer {
+public:
+  using ConstructionResult =
+      std::variant<SurfaceQuotientProduct, SurfaceQuotientProductError>;
+
+  static ConstructionResult produce(const SurfaceOccurrenceComplex &occurrences);
+
+  // Focused A6 malformed-ledger publication seam. Production uses produce().
+  static ConstructionResult publish_records_for_validation(
+      const SurfaceOccurrenceComplex &occurrences,
+      SurfaceQuotientValidationRecords records);
+};
+
+AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
+    const Eigen::MatrixXd &sourceVertices,
+    const Eigen::MatrixXi &sourceFaces,
+    const geometry::SurfacePhaseFrontProduct &phaseFront);
 
 using RemeshPipelineClock = std::chrono::steady_clock;
 
@@ -553,7 +1342,8 @@ fields::CrossFieldResult make_surface_cell_cross_field_context(
 
 fields::CrossFieldResult finalize_surface_cell_raw_cross_field(
     const TriMesh &meshWhole, const Eigen::MatrixXd &rawCrossField);
-std::uint64_t surface_cell_source_edge_key(const int a, const int b);
+authority::SourceEdgeTopologyKey surface_cell_source_edge_key(
+    int a, int b, std::size_t vertexExtent);
 
 bool cross_field_transitions_match_source_edges(
     const TriMesh &meshWhole, const fields::CrossFieldResult &crossField);
@@ -573,9 +1363,18 @@ geometry::SurfaceCellRailSample make_surface_cell_rail_sample(
 bool surface_cell_feature_edge_is_rail(
     const geometry::AdaptiveFeatureEdge &edge);
 
-struct SurfaceCellRailBuildResult {
-  bool success = true;
+struct SurfaceCellRailBuildProduct {
   std::vector<geometry::SurfaceCellRail> rails;
+};
+
+enum class SurfaceCellRailBuildFailureKind {
+  None,
+  InvalidFeatureEdge,
+  InvalidRailIntervals
+};
+
+struct SurfaceCellRailBuildFailure {
+  SurfaceCellRailBuildFailureKind kind = SurfaceCellRailBuildFailureKind::None;
   int failedEdgeIndex = -1;
   int failedRailId = -1;
   int failedIntervalIndex = -1;
@@ -583,17 +1382,83 @@ struct SurfaceCellRailBuildResult {
       geometry::surface_cell_tracing_detail::RailBuildStatus::Valid;
 };
 
+class SurfaceCellRailBuildResult {
+public:
+  using Product = SurfaceCellRailBuildProduct;
+  using Failure = SurfaceCellRailBuildFailure;
+  using Outcome =
+      geometry::ProducerOutcome<Product, Failure>;
+
+  SurfaceCellRailBuildResult() = default;
+
+  [[nodiscard]] static SurfaceCellRailBuildResult produced(Product product) {
+    return SurfaceCellRailBuildResult(
+        Outcome{geometry::Produced<Product>{
+            std::move(product)}});
+  }
+  [[nodiscard]] static SurfaceCellRailBuildResult rejected(Failure failure) {
+    if (failure.kind == SurfaceCellRailBuildFailureKind::None) {
+      throw std::invalid_argument(
+          "Rejected rail-build outcome requires a typed failure.");
+    }
+    return SurfaceCellRailBuildResult(
+        Outcome{geometry::Rejected<Failure>{
+            std::move(failure)}});
+  }
+  [[nodiscard]] bool is_produced() const noexcept {
+    return std::holds_alternative<
+        geometry::Produced<Product>>(outcome_);
+  }
+  [[nodiscard]] bool is_rejected() const noexcept {
+    return std::holds_alternative<
+        geometry::Rejected<Failure>>(outcome_);
+  }
+  [[nodiscard]] bool is_not_applicable() const noexcept {
+    return std::holds_alternative<
+        geometry::NotApplicable>(outcome_);
+  }
+  [[nodiscard]] const Product *produced_product() const noexcept {
+    const auto *produced = std::get_if<
+        geometry::Produced<Product>>(&outcome_);
+    return produced == nullptr ? nullptr : &produced->product;
+  }
+  [[nodiscard]] const Product &product() const {
+    return std::get<
+               geometry::Produced<Product>>(
+               outcome_)
+        .product;
+  }
+  [[nodiscard]] const Failure *rejection() const noexcept {
+    const auto *rejected = std::get_if<
+        geometry::Rejected<Failure>>(&outcome_);
+    return rejected == nullptr ? nullptr : &rejected->failure;
+  }
+  [[nodiscard]] const Outcome &outcome() const & noexcept { return outcome_; }
+
+private:
+  explicit SurfaceCellRailBuildResult(Outcome outcome)
+      : outcome_(std::move(outcome)) {}
+
+  Outcome outcome_;
+};
+
 SurfaceCellRailBuildResult build_authoritative_surface_cell_rails(
     const TriMesh &meshWhole, const geometry::AdaptiveFeatureMap &featureMap);
 
-std::set<std::uint64_t> relief_barrier_edges_from_topology(
-    const geometry::ReliefTopologyResult &topology);
+std::set<authority::SourceEdgeTopologyKey> relief_barrier_edges_from_topology(
+    const geometry::ReliefTopologyResult &topology, std::size_t vertexExtent);
 
 std::uint64_t hash_relief_operational_inputs(
     const geometry::ReliefRootSelectionResult &roots,
-    const std::set<std::uint64_t> &barriers);
-std::set<std::uint64_t> hard_feature_edge_keys_from_rails(
-    const std::vector<geometry::SurfaceCellRail> &rails);
+    const std::set<authority::SourceEdgeTopologyKey> &barriers);
+std::set<authority::SourceEdgeTopologyKey> hard_feature_edge_keys_from_rails(
+    const std::vector<geometry::SurfaceCellRail> &rails,
+    std::size_t vertexExtent);
+
+bool project_surface_cell_vertex_chart_authority(
+    const std::vector<geometry::PureQuadVertexLineage> &lineages,
+    int outputVertexCount, std::size_t railCount,
+    std::vector<validation::SourceVertexChartAuthority> &projected);
 
 void fill_surface_cell_rail_constraints(
     const std::vector<geometry::SurfaceCellRail> &rails,
@@ -641,7 +1506,10 @@ void orient_quads_to_source_normals(
 std::vector<geometry::SurfaceArrangementArc>
 surface_arrangement_arcs_from_flow_rep(
     const std::vector<geometry::FlowRepArc> &arcs,
-    const geometry::FlowRepSparseNetwork &sparseNetwork);
+    const geometry::FlowRepSparseNetwork &sparseNetwork,
+    const Eigen::MatrixXi &sourceFaces,
+    const geometry::SourceTopologyRegions *sourceAuthority,
+    const std::set<authority::SourceEdgeTopologyKey> *hardFeatureEdges);
 
 struct FieldAlignedSourceQuadRecoveryResult {
   bool success = false;
@@ -666,9 +1534,8 @@ int source_quad_edge_family(
 FieldAlignedSourceQuadRecoveryResult
 recover_unique_field_aligned_source_quads(
     const TriMesh &mesh, const fields::CrossFieldResult &crossField,
-    const std::vector<int> *sourceFaceComponents = nullptr,
-    const std::vector<int> *sourceFaceSheets = nullptr,
-    const std::set<std::uint64_t> *excludedDiagonalEdges = nullptr);
+    const geometry::SourceTopologyRegions *sourceAuthority,
+    const std::set<authority::SourceEdgeTopologyKey> *excludedDiagonalEdges);
 
 struct SourceGridRecoveryTargetSizeResult {
   Eigen::VectorXd targetSize;
@@ -701,8 +1568,8 @@ double derive_absolute_target_length(const Eigen::MatrixXd &vertices,
 RemeshResult
 remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
                                  const Eigen::MatrixXd &rawCrossField,
-                                 const RemeshOptions &options = {},
-                                 const fields::CrossFieldResult *authoritativeCrossField = nullptr);
+                                 const RemeshOptions &options,
+                                 const fields::CrossFieldResult *authoritativeCrossField);
 
 RemeshResult remesh_surface_cells_from_cross_field_impl(
     const TriMesh &meshWhole, const fields::CrossFieldResult &crossField,
@@ -718,7 +1585,129 @@ fields::CrossFieldResult remap_surface_cell_cross_field_component(
 
 geometry::SurfacePoint remap_component_surface_point(
     geometry::SurfacePoint point, const geometry::FaceComponent &component,
-    const std::size_t componentIndex, const int sheetOffset);
+    std::size_t componentIndex,
+    std::optional<authority::IsolationSheetId> typedGlobalSheet);
+
+struct ComponentTypedAuthorityRemapDomain {
+  std::map<authority::TopologyRegionId, authority::TopologyRegionId>
+      topologyRegions;
+  std::map<authority::IsolationSheetId, authority::IsolationSheetId>
+      isolationSheets;
+  std::map<authority::FieldChartId, authority::FieldChartId> fieldCharts;
+  std::set<std::pair<authority::TopologyRegionId,
+                     authority::IsolationSheetId>>
+      localRegionSheets;
+  std::vector<geometry::SourceProjectionChart> localChartsByFace;
+  std::vector<authority::TopologyRegionId> localRegionsByFace;
+  std::vector<authority::IsolationSheetId> localSheetsByFace;
+  std::size_t nextTopologyRegion = 0U;
+  std::size_t nextIsolationSheet = 0U;
+  std::size_t nextFieldChart = 0U;
+
+  [[nodiscard]] bool complete() const noexcept {
+    return !topologyRegions.empty() && !isolationSheets.empty() &&
+           !fieldCharts.empty() && !localRegionSheets.empty() &&
+           localChartsByFace.size() == localRegionsByFace.size() &&
+           localChartsByFace.size() == localSheetsByFace.size() &&
+           !localChartsByFace.empty();
+  }
+};
+
+std::optional<ComponentTypedAuthorityRemapDomain>
+make_component_typed_authority_remap_domain(
+    const geometry::FaceComponent &component,
+    const geometry::SourceTopologyRegions &sourceAuthority,
+    const std::set<authority::SourceEdgeTopologyKey> &hardFeatureEdges,
+    std::size_t topologyRegionBase, std::size_t isolationSheetBase,
+    std::size_t fieldChartBase);
+
+bool remap_component_typed_lineage_authority(
+    geometry::PureQuadVertexLineage &lineage,
+    const geometry::FaceComponent &component,
+    std::size_t globalSourceVertexCount, std::size_t globalSourceFaceCount,
+    const ComponentTypedAuthorityRemapDomain &domain);
+
+namespace remesh_pipeline_detail {
+
+/**
+ * Diagnostic-only projection used by the production surface-cell failure path.
+ * Tests may call this seam to verify that network error provenance survives the
+ * exact projection consumed by CP4c failure rendering.
+ */
+SurfaceCellFailureLocusDiagnostics
+project_field_aligned_curve_network_failure_locus(
+    const geometry::FieldAlignedCurveNetworkError &error,
+    const authority::FieldTransportAtlas &atlas);
+
+/** Diagnostic-only projection used by the production cut-graph failure path. */
+SurfaceCellFailureLocusDiagnostics
+project_surface_cut_graph_failure_locus(
+    const geometry::SurfaceCutGraphError &error);
+
+/** Diagnostic-only projection used by the production topology-plan failure path. */
+SurfaceCellFailureLocusDiagnostics
+project_global_topology_plan_failure_locus(
+    const geometry::GlobalTopologyPlanError &error);
+
+/** Exact A2b -> baseline-A3 binder. Copies published arc support verbatim. */
+geometry::GlobalConformityBaselineInput make_global_conformity_baseline_input(
+    const Eigen::MatrixXd &sourceVertices, const Eigen::VectorXd &targetSize,
+    const geometry::GlobalTopologyPlan &topology);
+
+struct SurfaceCellComponentStageProducts {
+  std::optional<geometry::SourceTopologyRegions> sourceTopologyRegions;
+  std::optional<authority::FieldTransportAtlas> fieldTransportAtlas;
+  std::optional<geometry::FieldAlignedCurveNetwork> fieldAlignedCurveNetwork;
+  std::optional<geometry::SurfaceCutGraph> surfaceCutGraph;
+  std::optional<geometry::GlobalTopologyPlan> globalTopologyPlan;
+  std::optional<geometry::GlobalConformityBaselinePlan> globalConformityBaseline;
+  std::vector<geometry::SurfaceCellRail> authoritativeRails;
+  std::optional<geometry::SourceSurfaceLabels> sourceSurfaceLabels;
+  std::vector<geometry::PureQuadMesh> completedPatches;
+  bool sourceGridRecoveryUsed = false;
+  Eigen::VectorXd sourceGridRecoveryTargetSize;
+  bool hasSourceGridRecoveryTargetSize = false;
+  bool sourceGridRecoveryTargetSizeRelaxed = false;
+  double sourceGridRecoveryTargetSizeMaxRelaxationRatio = 1.0;
+  std::optional<geometry::SurfaceOptimizationResult> optimizationResult;
+  std::optional<geometry::SurfaceFinalValidationReport> validationResult;
+};
+
+using ComponentAggregationInputMutator =
+    std::function<void(std::size_t, RemeshResult &,
+                       SurfaceCellComponentStageProducts &)>;
+using FinalAggregateValidationAuthorityMutator = std::function<void(
+    validation::SourceAuthoritativeMeshValidatorOptions &)>;
+
+/**
+ * Counterfactual seam over the production disconnected-component aggregator.
+ * The mutator runs after each component has completed and before the first
+ * aggregation read. It receives both the component result representation and
+ * the declared stage-product authority consumed by aggregation, so tests can
+ * mutate the same semantic boundary as production without reconstructing
+ * stage products from SurfaceCellPipelineContext.
+ */
+RemeshResult remesh_surface_cell_components_from_cross_field_counterfactual(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const fields::CrossFieldResult &authoritativeCrossField,
+    const RemeshOptions &options,
+    const ComponentAggregationInputMutator &beforeAggregation);
+
+/**
+ * Counterfactual seam immediately before the final disconnected-aggregate
+ * source-authoritative oracle. Component seam/capture checks have already
+ * passed, so this hook can prove the final oracle independently rejects
+ * missing or corrupted globally remapped authority. Production entry points
+ * never supply this mutator.
+ */
+RemeshResult
+remesh_surface_cell_components_from_cross_field_final_validation_counterfactual(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const fields::CrossFieldResult &authoritativeCrossField,
+    const RemeshOptions &options,
+    const FinalAggregateValidationAuthorityMutator &beforeFinalValidation);
+
+} // namespace remesh_pipeline_detail
 
 void append_polygon_faces(
     Eigen::MatrixXi &targetFaces, Eigen::VectorXi &targetDegrees,

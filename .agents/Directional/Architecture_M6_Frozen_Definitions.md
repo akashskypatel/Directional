@@ -1,0 +1,565 @@
+# M6 Frozen Definitions — Occurrence, Quotient, Embedding, Independent Verification
+
+**Status:** FROZEN / `M6-DEFN-R3-REV` ACCEPTED R3 WITH RA-1 – RA-4 / CURRENT REVIEWED RUNTIME `10879581622 / 82b86a28...` / CP1 OPEN on A6/A7 extraction, thin adapter, `G4-B002` boundary and fresh preservation gate / EXACT NEXT = `M6-CP1-CB6-A6`; earlier RA-1 – RA-12 plus the R3-REV amendment below are normative.
+**Date:** 2026-09-25
+**Definition authority:** this record is the normative M6 contract for A5 occurrence creation, A6 quotient construction/materialization, A7 source-attached geometry embedding, and the M6 structural portion of A8 independent verification. It refines `DESIGN.md` §14 M6 without changing accepted M5 producer semantics or pulling M7 disposition/degradation work forward.
+
+This definition turn changes documentation/planning only. It changes no product source, test, fixture, selector, benchmark, or build source and executes no generated Directional runtime.
+
+## 1. Entering authority
+
+M6 enters only after final `M5-CP4-TB2-REV` acceptance:
+
+- accepted package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7`;
+- accepted selector449: **449/449 PASS**, LF SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`;
+- routing449 SHA-256 prefix `9c88a5ed...c5707`, owner census **32 / 301 / 75 / 41**;
+- stable accounting **51 events / 14 categories / 37 recurrences**;
+- produced-witness debt **1**, the M6-owned closed-complex `G4-B002` subject.
+
+The Definition audit used exact source snapshot run/artifact `36026363482 / 10819439146` at source SHA `c9be476d75e6f5d6df11304ad6b926b27b36430f`; provider artifact SHA-256 `6331c1189591e0429128495719d6168c92827c9024175b2d121387706519d762`, embedded source archive SHA-256 `b57fe2df11bd0d988196b45dee8855581bff8cce942ce66c20b68ac8ee1b1b2e`, and all **5305/5305** source manifest rows verified. No generated Directional runtime executed.
+
+**Process-only observation (`M6-DEFN-OBS-01`, +0):** several small repository documents were fetched directly before the turn fixed the mandatory `READ_MODE`. No semantic conclusion or mutation was accepted from that pre-snapshot inspection. The turn then froze `READ_MODE=snapshot`, acquired and verified the exact source authority above, and all decisive static adjudication used those verified bytes. Existing tool-conservation guidance already covers the pattern, so no new `LESSONS.md` rule is created.
+
+The M5 `G4-B004` half is accepted and immutable: one **pipeline-produced** topology region is multi-isolation, owns a checked internal isolation-seam certificate, and owns a canonical periodic relation explicitly named by reciprocal `PeriodicCut` edges. M6 consumes that fact; it does not reconstruct, weaken, or reinterpret it.
+
+## 2. Current implementation diagnosis
+
+The current transitional function `build_authoritative_phase_front_mesh(...)` performs several future stages inline: it allocates corner occurrences, verifies relation ownership, performs quotient union, chooses quotient representatives, writes geometry, and publishes lineage into `PureQuadMesh`. This is precisely the stage coupling M6 must remove.
+
+Two source facts constrain the cutover:
+
+1. the production classifier now passes an explicit **empty isolation-barrier set** to `classify_source_surface_labels(...)`; hard-feature rails remain topology-region/chart/rail barriers and are not automatically `IsolationSheetId` barriers;
+2. the transitional materializer still contains geometric representative consistency and output-lineage publication in the same procedure as quotient construction.
+
+M6 therefore separates products rather than adding another downstream repair layer.
+
+## 3. Stage A5 — `SurfaceOccurrenceComplex`
+
+### 3.1 Sole producer and inputs
+
+**Sole producer:** `SurfaceOccurrenceComplexProducer` (M6 A5).
+
+**Typed inputs:** the complete immutable set of accepted A4 `RegionCellComplex` products plus the already-accepted M5 relation/certificate authority carried by those products. A5 does not consume output vertex rows, `PureQuadMesh`, world-space weld results, `SurfaceCellPipelineContext`, or diagnostic hashes as semantic authority.
+
+### 3.2 Immutable output
+
+```text
+SurfaceOccurrenceComplex
+  cells[]
+    CellId
+    cornerOccurrences[4] : OccurrenceId
+    directedSides[4]
+      from / to OccurrenceId
+      exact incident-cell interior-side source authority
+      ordered DirectedSideIsolationEvidence
+  occurrences[]
+    OccurrenceId
+    CellId owner
+    canonicalCornerRole
+    exact SourceSupport
+    TopologyRegionId
+    CornerWedgeSheetSet              // sorted, unique, non-empty
+    CornerWedgeFaceBindings[]        // ordered contiguous fan; per-face (face, sheet, chart); no branch (RA-11)
+    CornerPlacementProvenance        // A4 corner LocalLatticeState verbatim + its selected-face label; placement only (RA-11)
+    CornerWedgeIsolationEvidence[]   // exact (region,seam-edge) refs + traversal orientation
+    face-independent lattice phase / coordinate / scale provenance
+  ownedRelations[]
+    OccurrenceRelationId
+    relationKind          // OrdinaryFront | HardRail | Periodic | SingularityPort
+    firstOccurrence
+    secondOccurrence
+    kind-specific owner   // none for OrdinaryFront; existing HardRail/Periodic authority unchanged
+  OccurrenceComplexCertificate
+```
+
+Every accepted A4 cell appears exactly once and owns exactly four distinct corner occurrences and four directed sides. Every relation endpoint names an occurrence that exists in this product. A5 **does not union occurrences** and does not choose an output representative.
+
+For a seam-incident corner, `CornerWedgeSheetSet` is the sheet set of the contiguous source-face fan arc covered by the cell interior between the last positive-length incoming side segment and first positive-length outgoing side segment. Edge support spans at most its incident faces; vertex support spans the exact contiguous fan arc. The corresponding wedge certificate references are exactly the checked seam edges crossed by that fan. At a non-seam corner the set is a singleton.
+
+A seam-collinear directed side derives its incident-cell interior source face by exact chart orientation and canonical cell interior, never by source-face row or lexicographic triangle selection. Its side evidence names the exact checked seam certificate. Mid-side seam crossings are likewise published on the directed side.
+
+Face-dependent field chart, branch rotation, and sheet provenance are per wedge binding/side. A seam occurrence must not combine sheet/support selected from one face with chart/branch selected from another. Face-independent lattice phase, coordinate, and scale remain value/provenance and are not identity.
+
+
+**R2 exact side/binding law.** A directed side is partitioned in traversal order into maximal positive-length exact `SourceSupport` spans. A span is source-edge-collinear exactly when its open interior support is that `SourceEdgeSupport`. For an accepted `orientationValidated` A4 cell, the semantic incident-cell interior face of such a span is the unique incident source face selected by canonical directed-edge winding and the accepted cell-interior side; builder-local row/lexicographic representative-face tie-breaks are non-authoritative. The rule applies identically to uniform, periodic-chart, and bounded-disk builders. An occurrence's canonical binding signature is the complete ordered tuple set `(sourceFaceTopology, IsolationSheetId, SourceProjectionChart, branchRotation)`. Every admissible wedge stays within one topology region and one chart component and stops at source/region/hard-rail boundaries.
+
+**R2 lineage evidence carrier.** Complete wedge/side isolation evidence is additionally projectable as lineage equivalence kind `CornerWedgeIsolation` with one or more ordered semantic transitions `(TopologyRegionId, SourceEdgeTopologyKey, fromSheet, toSheet)`. That kind is evidence-only: it is not an A5 `ownedRelation`, carries no HardRail/Periodic owner, selects no relation path, and never creates quotient equality.
+
+### 3.3 Occurrence identity
+
+`OccurrenceId` is the semantic pair:
+
+```text
+(CellId, canonicalCornerRole)
+```
+
+where `canonicalCornerRole` is the corner between two adjacent directed sides in the A4 cell's immutable canonical cycle. The cycle's orientation/rotation is fixed by A4 semantic authority before A5; storage row, vector position, scheduler order, output row, world-space position, lattice coordinate, representative face/sheet, hash, and cache index are excluded.
+
+Two occurrences remain distinct even when all of these coincide:
+
+- lattice coordinate;
+- exact source support;
+- chart-local coordinate;
+- 3D position.
+
+Only A6 may equate them, and only through a verified A5 owned relation.
+
+**`CellId` basis (reviewing-agent note; the definition is unchanged).**
+- **What `CellId` is today.** The accepted A4 `CellId` is `from_index(rank)` over the sorted set of `(TopologyRegionId, region-chart grid ordinal v*width+u)` (`SurfaceCellTracing.cpp:17060-17075`, `:7785-7793`). `TopologyRegionId` is itself a rank over regions sorted by `canonicalFaceTopology`, a key built from source-vertex IDs (`:8520-8575`, `:8687`). Its semantic content is therefore (region canonical face topology, canonical chart cell coordinate). The chart position is legitimate *cell* identity, and the §3.3 lattice-coordinate exclusion concerns equality **between** occurrences.
+- **Invariance evidence.** Face-row invariance of region, chart and periodic-cut identity is already accepted: selector449 rows 129, 196, 213, 245 and 254.
+- **Known limit.** Rank-based IDs **renumber when a cell is inserted or omitted anywhere**. M6 does not rely on stability across differing cell sets, but M7 omission bookkeeping will, and `M7-DEFN` must decide whether a content-keyed `CellId` is required then.
+- **Consequence for CB1.** The A5 permutation test must permute **source face rows**, not only cell storage (row 213 already covers storage). If face-row permutation renames `OccurrenceId`s because of A4 `CellId`, that is the CB1 stop rule "changing A4 `CellId` semantics". It routes to Review/Definition and must not be satisfied by a storage-only test.
+
+### 3.4 A5 certificate and failures
+
+`OccurrenceComplexCertificate` proves:
+
+- one A5 cell record per accepted A4 `CellId`;
+- exactly four unique occurrence IDs per cell;
+- the four directed sides form the cell's exact ordered cycle;
+- every occurrence has exactly one cell/corner owner and one complete contiguous wedge authority;
+- every required seam crossing on a wedge or directed side names exactly one matching checked `(TopologyRegionId, SourceEdgeTopologyKey)` certificate;
+- every relation has two existing, distinct typed endpoints and satisfies its **kind-specific** owner contract: `OrdinaryFront` has no owner, HardRail/Periodic keep their accepted typed owners;
+- no occurrence, wedge, side, or relation authority was inferred from geometric coincidence or global certificate search.
+
+A5 owns fail-closed `OccurrenceConstructionFailure` codes for missing/duplicate cell ownership, missing/duplicate corner occurrence, invalid directed-side cycle, invalid/noncontiguous wedge authority, missing/duplicate/mismatched wedge-or-side isolation evidence, relation endpoint missing, duplicate relation declaration, unsupported singular/nonmanifold wedge, unsupported SingularityPort corner, unsupported hard-rail/seam wedge, and source-authority mismatch. Relation failures are **not** many-to-one: `OccurrenceHardRailOwnerMissing`, `OccurrenceHardRailOwnerMismatch`, `OccurrencePeriodicOwnerMismatch`, `OccurrenceRelationKindMismatch`, and `OccurrenceUnownedRelation` (genuinely unowned cases only) are distinct. The transitional compatibility adapter alone maps them respectively to the frozen M5-compatible names `MissingHardRailRelationOwner`, `InvalidHardRailTransport`, `InvalidPeriodicRelationOwner`, `IncompatibleAuthoritativeFrontPair`, and `UnownedRelation`. Structural endpoint/range defects remain structural failures rather than `UnownedRelation`. A rejected A5 product is not consumable.
+
+## 4. Stage A6 — `SurfaceQuotientProduct`
+
+### 4.1 Sole producer and inputs
+
+**Sole producer:** `SurfaceQuotientProducer` (M6 A6).
+
+**Typed inputs:** immutable A0 source authority plus exactly one complete `SurfaceOccurrenceComplex`. A6 may verify only typed M5 values referenced by A5 wedge/side evidence or by the existing kind-specific HardRail/Periodic relation owners. It may not search global certificate inventory, choose an alternative certificate, reconstruct semantic authority from raw boundary paths, or synthesize a missing one.
+
+### 4.2 Immutable output
+
+```text
+SurfaceQuotientProduct
+  classes[]
+    QuotientClassId
+    sorted member OccurrenceId set
+  relationCertificates[] : QuotientRelationCertificate
+  consumptionLedger[]
+    OccurrenceRelationId
+    firstOccurrence
+    secondOccurrence
+    exactlyOneConsumption
+  topology
+    quotient vertices identified by QuotientClassId
+    one ordered quad per accepted CellId
+  MaterializationCertificate
+  QuotientCertificate
+```
+
+A6 is **topological**. It creates no source-attached 3D vertex representative and no geometric weld. One accepted A5 cell maps to exactly one output quad. An A5 relation becomes quotient authority only after the producer verifies that exact declared relation; an unrelated valid M5 relation remains decision-neutral.
+
+### 4.3 Quotient identity and equality
+
+`QuotientClassId` is the canonical, sorted, non-empty **set of member `OccurrenceId` values**. It is not the smallest member, a sequential class row, the union-find root, a representative sheet, a coordinate, or a hash.
+
+Two classes are equal if and only if their complete member sets are equal. Relation application is deterministic over canonical relation identity, but union-find roots and traversal order are representation leaves only.
+
+### 4.4 Exact-once relation ownership
+
+The phrase **owned relation** means an `OccurrenceRelationId` explicitly published in A5 `ownedRelations`. Available but unreferenced M5 relation-table entries are not A5-owned relations and remain decision-neutral.
+
+For every A5 owned relation, A6 must record exactly one `QuotientRelationCertificate` and exactly one consumption-ledger row. Zero consumption, duplicate consumption, conflicting endpoint use, relation substitution, or consumption by an unowned relation is typed failure. This is the M6 meaning of "every owned relation is consumed exactly once" and is consistent with M5's accepted unused-valid-relation contract.
+
+
+### 4.5 Ordinary-front sheet/evidence validation
+
+`OrdinaryFront` remains owner-less and `OccurrenceRelationId` is unchanged. Side validation is performed over the ordered maximal positive-length exact-support spans frozen by A5. For a non-seam-collinear near-endpoint span, reciprocal records must agree on the mapped incident-cell interior sheet and that sheet must belong to both endpoint `CornerWedgeSheetSet` values. Side-interior seam crossings are accepted only through the ordered `DirectedSideIsolationEvidence` published by A5 and exact verification of those checked certificates.
+
+For a seam-collinear near-endpoint span, both reciprocal side records must name the same checked seam certificate/span; their exact incident-cell interior faces are the two incident source faces; their sheets are the certificate's two opposite incident sheets; and the ordered evidence lists are reverse-compatible with every sheet transition inverted. Disjoint singleton endpoint wedge sets are legal only in this explicit collinear case. Any disagreement is typed `QuotientReciprocalSideAuthorityMismatch`.
+
+A6 records in its quotient relation certificate which wedge/side certificate references were actually verified. It never infers equality from a representative sheet. For selected HardRail/Periodic path steps, endpoint charts/chart-components come from the relation-side interior-face bindings; path start/end charts come from the first/last selected steps, never from a quotient representative face. `CornerWedgeIsolation` lineage evidence does not create a selected relation path.
+
+### 4.6 A6 certificate and failures
+
+`QuotientCertificate` proves the class partition is exactly the transitive closure of **verified A5 owned relations** and nothing else. `MaterializationCertificate` proves:
+
+- every `CellId` maps to one and only one output quad;
+- every output quad corner maps to the `QuotientClassId` containing that cell's corresponding `OccurrenceId`;
+- every quotient class is non-empty;
+- no class arose from coordinate/position equality;
+- every A5 owned relation appears exactly once in the relation-consumption ledger;
+- every cross-sheet union step has the exact A5-published wedge/side certificate evidence required by §4.5.
+
+A6 owns fail-closed `QuotientConstructionFailure` codes for missing/duplicate/conflicting/nonreciprocal relation authority, invalid wedge/side sheet membership, missing/invalid seam-collinear certificate evidence, unowned relation use, zero/duplicate relation consumption, invalid class partition, missing occurrence member, degenerate classed quad, and non-bijective cell-to-quad materialization. M5's accepted typed relation failures remain unweakened. A5 owns the one-to-one semantic relation-failure vocabulary frozen in §3.4 and the compatibility adapter owns the legacy-name mapping. Once A5 certifies owner presence/equality and relation-kind compatibility, only those duplicate structural predicates may disappear from the transitional materializer; route reversal/content, periodic shift, exact relation value, exact transport application, source-support, and other M5 semantic checks remain live. M6 does not rename a valid M5 failure into success or an unrelated generic failure.
+
+## 5. Stage A7 — `SourceAttachedGeometryProduct`
+
+### 5.1 Sole producer and inputs
+
+**Sole producer:** `SourceAttachedGeometryProducer` (M6 A7).
+
+**Typed inputs:** immutable A0 source authority and one complete `SurfaceQuotientProduct`, with the A5 occurrence/source-support evidence referenced by the quotient certificates. A7 may not change A6 topology or quotient membership.
+
+### 5.2 Immutable output
+
+```text
+SourceAttachedGeometryProduct
+  topology                 // identical semantic A6 topology
+  vertices[]
+    QuotientClassId
+    exact SourceSupport
+    source-attached coordinates / barycentric representation
+    intended component / isolation-sheet authority
+  SourceSupportCertificate[]
+  GeometryEmbeddingCertificate
+```
+
+The vertex's semantic identity remains its `QuotientClassId`. Position is a value derived from exact source support and cannot merge, split, or rename a quotient class.
+
+A quotient class spanning multiple certified chart/sheet representations is legal only when A6's verified A5-published wedge/side evidence establishes every cross-sheet step that requires certification. `sourceIsolationSheets` is the sorted unique union of every member occurrence's `CornerWedgeSheetSet`. `sourceCharts` is the sorted unique union of every member `CornerWedgeFaceBinding.chart`. Component remapping first remaps complete binding tuples and ordered `CornerWedgeIsolation` transition tuples, and only then derives legacy region/sheet/chart projections; independent-set or cross-product validation is not semantic authority. A7 records the complete compatible source authority and the wedge/side certificate evidence referenced by the quotient certificates; it never selects a representative sheet/chart and silently discards the others.
+
+### 5.3 A7 certificate and failures
+
+For each quotient class, `SourceSupportCertificate` proves that every contributing occurrence is incident to the published exact support under the already-certified relation path and that the embedded value remains on the intended source component/sheet authority. `GeometryEmbeddingCertificate` proves topology is unchanged from A6 and every quotient vertex is embedded exactly once.
+
+A7 owns fail-closed `GeometryEmbeddingFailure` codes for missing/ambiguous source support, support/certificate mismatch, cross-component or uncertified cross-sheet binding, missing quotient vertex embedding, duplicate embedding, non-finite geometry, and topology mutation. Nearest-position coincidence and epsilon welding are forbidden recovery mechanisms.
+
+## 6. Stage A8-M6 — `VerificationReport`
+
+### 6.1 M6 scope and M7 boundary
+
+**Sole producer:** `SurfaceProductVerifier` (M6 structural A8).
+
+**Typed inputs:** immutable A0, A5, A6, and A7 products and their certificates. The verifier outputs immutable `VerificationReport` only.
+
+`OutputDisposition`, `DegradationCertificate`, tier assignment, omission, and degraded production remain **M7**. The full DESIGN A8 contract is completed in M7; M6 must not pull disposition/degradation forward merely because the verifier exists first.
+
+### 6.2 What the verifier may recompute
+
+The verifier may independently recompute only elementary facts from immutable inputs:
+
+- source face/edge/vertex incidence and component adjacency from A0;
+- exact incidence of a published `SourceSupport` using the shared source-support kernel;
+- occurrence ownership counts and directed-side cycle incidence from A5;
+- output quad incidence, edge incidence, connected components, boundary loops, Euler characteristic, and manifoldness from A6 topology;
+- cell-to-quad and occurrence-to-class membership by reading the published A5/A6 IDs;
+- exact composition/inversion of a **named** relation certificate's recorded transport;
+- source-support incidence of an A7 embedded vertex;
+- deterministic equality of immutable certificate payloads under semantic ordering.
+
+Shared primitive value types and exact algebra are allowed. Reusing a producer's **decision procedure** is not independent verification.
+
+### 6.3 What the verifier may never do
+
+The verifier may never:
+
+- create or renumber an `OccurrenceId` or `QuotientClassId`;
+- union occurrences or choose a quotient representative;
+- search a relation graph for a replacement route/path;
+- infer a missing endpoint, route, owner, chart, sheet, source support, or relation;
+- canonicalize malformed producer state into an acceptable form;
+- substitute an equivalent relation or reverse relation not explicitly certified by the producer;
+- weld by lattice coordinate, barycentric tolerance, 3D position, or proximity;
+- repair a directed-side cycle, quad incidence, source attachment, or certificate;
+- mutate A5/A6/A7 or emit a corrected product;
+- invoke fallback/recovery or convert a producer rejection into a verified product.
+
+On any violation it emits a typed `VerificationFailure` in the report. A report is successful only when the original immutable products verify as published.
+
+### 6.4 Verification report identity
+
+Findings are keyed and ordered by semantic stage/locus IDs, never by discovery order. The report may include representation indices as diagnostics, but changing source-row, output-row, or scheduler order cannot change the semantic finding set.
+
+## 7. Product dependency and mutation law
+
+The only M6 authority flow is:
+
+```text
+A4 RegionCellComplex set
+  -> A5 SurfaceOccurrenceComplex
+  -> A6 SurfaceQuotientProduct
+  -> A7 SourceAttachedGeometryProduct
+  -> A8-M6 VerificationReport
+```
+
+A later stage may reference earlier immutable IDs/certificates; it may not write into them. Aggregation is a new immutable output, never in-place normalization. `PureQuadVertexLineage`, `SurfaceCellPipelineContext`, diagnostics, hashes, output row numbers, and existing transitional materializer locals may be retained temporarily as compatibility/diagnostic surfaces, but none may become semantic stage authority.
+
+## 8. M6 debt and blocker ownership
+
+### 8.1 `G4-B002` closed-complex produced witness
+
+The original contract remains unchanged: fail-closed `SurfaceCells`, recovery/fallback disabled, closed source, independently validated candidate eligibility, and a discriminating hard-feature/protection tamper. Synthetic/direct arrangement authority receives zero credit.
+
+- **M6-CP1 mechanism owner:** establish the real A5 occurrence product and A6 stage boundary from which candidate extraction can consume closed-complex authority without `SurfaceCellPipelineContext::hasArrangement`.
+- **M6-CP3 evidence owner:** re-prove the unchanged candidate-extraction eligibility oracle and hard-feature tamper on direct production after A5-A8 are complete.
+
+CP1 mechanism evidence cannot close the production debt.
+
+### 8.2 `G4-B001 / PR8-R034 / G4-R007`
+
+**Disposition: not a currently demonstrated M6 implementation defect; carry as a direct-production evidence debt to `M6-CP3`.**
+
+The historical root was a hard feature being promoted into `IsolationSheetId` authority, after which strict closure reported `LocalSheetMismatch`. Current production source explicitly separates those domains: `hardFeatureRailEdges` remain topology-region/chart/rail barriers while `classify_source_surface_labels(...)` receives an empty `sourceIsolationBarrierEdges` set. The original root condition is therefore not present at the current source boundary.
+
+M6 must nevertheless preserve this separation:
+
+- CP1/A5-A7 must not derive an isolation sheet from hard-rail membership;
+- A7 may cross a chart/region boundary only under certified quotient relation authority and must preserve complete sheet evidence;
+- CP3 owns the historical strict-valid torus **3/3** direct-production re-proof.
+
+If CP3 reproduces `LocalSheetMismatch`, the new failure must be classified against the frozen A7 source-support/embedding contract; validators or sheet authority may not be weakened to obtain green output.
+
+### 8.3 `G4-B004` M6 representative-consumption half
+
+M6 closure requires the **same direct produced torus authority** accepted by M5-CP4, not a synthetic substitute. The proof chain is:
+
+1. retain the accepted M5 same-region producer fact unchanged;
+2. A5 materializes four explicit occurrences per cell and relation endpoints by occurrence ID;
+3. A6 consumes every A5-owned relation exactly once and publishes quotient/materialization certificates;
+4. A7 embeds the resulting quotient classes with complete source-support and multi-isolation evidence;
+5. A8 independently verifies the same immutable A5-A7 products without reconstructing the M5 relation or isolation-seam fact.
+
+Existing never-gated identities are disposed as follows:
+
+- `SurfaceCellTransitionQuotient.MultiIsolationMaterializationRetainsAllLocalSheets` — **retain and gate during M6-CP1** as focused mechanism preservation only. It is not representative direct-production credit by itself.
+- `SurfaceCellsPhase10.ExactCommittedTorusDoesNotTreatIsolationSeamAsBoundedDiskBoundary` — **retain and gate during M6-CP3** as direct torus preservation. It is necessary but insufficient by itself for M6 closure because it does not independently prove the new A5/A6 exact-once ledger and A8 verification.
+
+M6-CP3 must therefore add/use a dedicated representative M6 identity that binds the accepted M5 producer fact to A5 occurrence ownership, A6 exact-once consumption, A7 embedding, and A8 independent verification in one direct production result. No M6 evidence grants retroactive M5 credit.
+
+## 9. Dormant CB14 identity disposition
+
+`M5-CP3-TB1-R16-REV-OBS-01` is now fully resolved with **no M5 credit**: one deletion, and one retention with a named gating owner (see the re-adjudication below the table).
+
+| Dormant identity | Disposition | Existing accepted replacement authority | First action owner |
+|---|---|---|---|
+| `M5CP3.PeriodicRelationEndpointGaugeIsIndependentAndExact` | **DELETE as superseded/redundant** | accepted `M5CP3.PeriodicRelationRotationUsesBothAcceptedOccurrenceGauges` covers the exact occurrence-gauge/branch rotation seam; accepted nonzero-Z4 production identities cover nonzero translation/materialization | `M6-CP1-CB1` test-source cleanup only |
+| `M5CP3.ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection` | ~~DELETE as superseded/redundant~~ → **RETAIN AND GATE in the first M6-CP1 prepublication gate** *(deletion stopped by the §9 precondition; see note below)* | ~~row 444 covers storage permutation~~. Row 444 reverses the **relation container** and row 432 resolves semantic direction. Neither permutes **edge storage**, and no selector449 row does. | `M6-CP1` prepublication gate (vector frozen by the CB1 report / TB1 plan) |
+
+Deletion removes dormant, never-gated duplicate authority; it does not modify an accepted selector and cannot be cited as evidence for M5 or M6. If either accepted replacement ceases to cover the stated property, deletion must stop and be re-adjudicated before test source changes.
+
+**Reviewing-agent re-adjudication of row 2.** The pair-swap identity swaps the reciprocal `PeriodicCut` edge pair **in `edges` storage**, remaps events and compares selected certificates after materialization, all on the nonzero-Z4 witness. Front-edge indices are a DESIGN §6.2 representation handle, and the A5 cutover must not depend on them. No accepted identity covers this permutation, so the precondition above fires. The identity is **retained untouched** and becomes a candidate in the M6-CP1 prepublication gate. Classification rules if it runs RED:
+- if it is RED on the CB1 candidate, that is an edge-storage-order dependence, a §11 falsifier-1-class finding;
+- its pre-cutover status is unknown, so Review must determine whether CB1 introduced the dependence.
+
+It still carries **no M5 credit**. Row 1's deletion is upheld, because accepted row 446 checks `make_periodic_relation_endpoint_state` outputs against produced edges.
+
+## 10. M6 checkpoint split
+
+### M6-CP1 — product separation
+
+Establish complete A5 occurrence, A6 quotient, and A7 geometry products in bounded Code + Build / artifact-only TB steps. Transitional `build_authoritative_phase_front_mesh(...)` may remain as a thin adapter during the cutover, but semantic occurrence/quotient/embedding decisions must move behind the stage-product APIs. CP1 also gates the focused multi-isolation mechanism identity and proves no coordinate/position weld.
+
+### M6-CP2 — independent verifier
+
+Introduce `SurfaceProductVerifier` consuming immutable A0/A5/A6/A7 products and certificates. It independently recomputes only §6.2 elementary facts and fails typed on every §6.3 malformed-authority class. It never calls producer repair/canonicalization/search routines.
+
+### M6-CP3 — direct production exit
+
+Fresh direct-production evidence must prove:
+
+- equal coordinates/positions without a certified relation remain distinct;
+- every A5-owned relation is consumed exactly once;
+- source support is exact/shared, with no consumer-specific quantized identity;
+- source-row, output-row, and scheduler permutation invariance;
+- the unchanged `G4-B002` candidate-extraction + hard-feature tamper contract;
+- `G4-B001` strict torus 3/3 re-proof;
+- `G4-B004` representative same-produced-authority occurrence/quotient/embedding/verifier chain.
+
+## 11. Frozen falsifiers
+
+The M6 definition is falsified by any implementation that:
+
+1. uses world-space position, lattice coordinate, vector row, output row, scheduler order, representative sheet, hash, or cache index as `OccurrenceId`/`QuotientClassId` equality;
+2. lets A5 union occurrences or A7 change A6 quotient/topology;
+3. consumes an A5 owned relation zero or more than once, or lets an unrelated valid relation affect the selected quotient;
+4. lets the verifier search, infer, repair, substitute, canonicalize, weld, or mutate producer state;
+5. credits CP1 mechanism evidence as the direct `G4-B002` or `G4-B004` production proof;
+6. treats dormant CB14 identities as M5 evidence or deletes them without the replacement-authority precondition in §9;
+7. re-promotes hard features into isolation-sheet authority or weakens `LocalSheetMismatch` to close `G4-B001`;
+8. implements `OutputDisposition`/degradation before M7.
+
+Any such result halts the current M6 checkpoint and returns to definition/review rather than being patched downstream.
+
+## 12. Original `M6-DEFN` bounded successor (historical)
+
+The original `M6-DEFN` authorized exactly one successor: **`M6-CP1-CB1`**. That consumed per-turn plan is now folded under `M6_Consolidated_Record.md` §2 and its folded-document index; the semantic CB1 boundary below remains the historical frozen authorization.
+
+CB1 is intentionally limited to the first A5 seam: introduce content-semantic occurrence identity and a complete immutable `SurfaceOccurrenceComplex` producer, make the existing transitional materializer consume that product instead of allocating A5 occurrence authority inline, and perform the two §9 dormant-test deletions. It does **not** implement A6 quotient extraction as a new product, A7 embedding, A8 verifier, selector publication, runtime execution, or any G4 debt closure.
+
+**Current amendment authority:** §M6-DEFN-R1 below supersedes only the seam-incident sheet/certificate portions of §§3–5 and freezes exact successor `M6-DEFN-R1-REV`; the historical CB1 authorization remains provenance only.
+
+## Review closeout
+
+| Duty | Answer |
+|---|---|
+| Accepted selector prefix re-hashed | selector449 LF SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`; unchanged |
+| Decisive claims independently re-derived | current hard-rail/isolation classifier separation; current inline occurrence/quotient/geometry coupling; dormant CB14 selector absence and accepted replacement identities; M6/M7 sequencing |
+| Non-vacuity checked | coordinate/position coincidence is explicitly excluded from identity; exact-once ledger can fail at zero/duplicate consumption; verifier repair/search/substitution are explicit falsifiers; direct production remains distinct from mechanism evidence |
+| Prior obligations discharged/carried | `M5-CP3-TB1-R16-REV-OBS-01` discharged by §9 no-credit deletion disposition; M6 `G4-B002`, `G4-B001`, and `G4-B004` carried with checkpoint owners in §8 |
+| Stable accounting | `51 / 14 / 37`; debt `1`; accepted package/source `10814505512 / e284fea7...`; selector449 accepted |
+| New candidates/obligations recorded | M6 A5-A8 stage contract, `G4-B001` CP3 evidence owner, `G4-B004` CP1/CP3 gate split; tracker updated |
+| ORIENTATION currency line | `M6-DEFN`, 2026-09-24 |
+| ORIENTATION §3 / §4 / §7 / §8 | §3 and §7 updated for M6; §4 unchanged because no witness ran; §8 no new recurring defect pattern |
+| CHANGELOG | root and agent changelogs updated for `M6-DEFN` |
+| ROADMAP | M6-DEFN marked complete; exact next `M6-CP1-CB1` |
+| Selector manifest | n/a — no selector byte added, changed, published, or accepted |
+| LESSONS | n/a — no genuinely new recurring process/product pattern; existing identity/authority and no-synthetic-success rules apply |
+| Consolidation under CLEAN_UP_POLICY | consumed `Architecture_M6_DEFN_Occurrence_Embedding_Verifier_Plan.md` folded into the new M6 consolidated record/index; frozen definitions and one next-turn plan retained |
+| Successor frozen | exactly `M6-CP1-CB1`; falsifiers in this record §11 and successor plan |
+| Turn boundary held | runtime-free; no product/test/fixture/selector/benchmark/build mutation; no generated Directional runtime |
+| review_check.py boundary | **PASS** — `review_check.py boundary --expect-selector 449=d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`; no product/test/fixture/build or selector mutation; durable markers preserved |
+| `STATUS` lifecycle maintained | `M6-DEFN / IN_PROGRESS` at entry; final COMPLETE beacon is the required last repository write |
+| Pushed to origin, branch in sync | **CONFIRMED.** Verified Drive patch transport run/job `36028759747 / 107731931289` pushed exact patch SHA-256 `f8429d1f49adf9945b58ed2cf506f4477a5b9ef5872f0b49e3d1c8f7b9f8aab7` with schema validation PASS and `runtimeExecution=false`; owner-side Drive retirement succeeded. Turn-cleanup run/job `36028922947 / 107732420524` removed both M6-DEFN trigger markers; recursive tree verification at cleanup head found exactly the seven durable workflows and no connector-trigger/workflow-observation/turn-payload state. This isolated closeout-row update is applied against the current blob by exact SHA before the final STATUS beacon. |
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **UPHELD WITH AMENDMENTS.** The A5/A6/A7/A8-M6 product split, the exact-once owned-relation ledger, the verifier's recompute-only / never-repair boundary, the CP1/CP2/CP3 split, the M7 disposition boundary and the successor `M6-CP1-CB1` all stand.
+
+**Verified:**
+- **Clean process.** Docs landed (16:38Z) before the COMPLETE beacon (16:41:45Z), and nothing was written after it. `review_check.py ledgers --base 62b5ed26` PASSes, and no code surface changed.
+- **§2/§8.2 `G4-B001` basis.** `RemeshPipeline.cpp:7862-7865` constructs an empty `sourceIsolationBarrierEdges` set and passes it to `classify_source_surface_labels`, as claimed. The last measurement of `G4-B001` is still pre-M1 (0/3 at artifact `9031804178`), so the CP3 re-proof is its first fresh measurement.
+- **The `DESIGN.md` A8 row edit** is consistent with DESIGN §14 M7, which already introduces `OutputDisposition`. The dropped "computed, not asserted" wording survives as M7's "labeled by the verifier, never by a producer".
+
+**Amendments:**
+1. **§3.3 `CellId` basis was unstated.** `OccurrenceId = (CellId, role)` was declared free of representation handles without examining `CellId`. `CellId` is a canonical rank of (region canonical-face-topology rank, region-chart grid ordinal). Face-row invariance is accepted (selector449 rows 129, 196, 213, 245 and 254), so M6's permutation exclusions hold. The rank renumbers on insertion or omission, which is flagged for `M7-DEFN`. The CB1 permutation test must permute face rows. A note is added in §3.3, with the definition unchanged.
+2. **§9 row 2 deletion stopped.** `ProducedTorusPeriodicPairStorageSwapPreservesSemanticDirection` permutes **edge storage** on the nonzero witness. Its named replacement, row 444, permutes the relation container, and no selector449 row permutes edge storage. Front-edge indices are a DESIGN §6.2 representation handle that A5 must not depend on. Under §9's own precondition the identity is retained and proposed for the CP1 prepublication gate. The row-1 deletion stands.
+3. **Tracker entries were buried.** This turn appended them at the end of `Regression_Root_Cause_Tracker.md`, below the 9,800-line restored history. They are moved above it, and a placement rule is added at the boundary. This is the third "append at end of a newest-first ledger" instance.
+4. **Stale text.** The closed M5 frozen header still said "EXACT NEXT = `M6-DEFN`", and the TODO `G4-B001` item was stale. Both are fixed.
+
+### Review closeout — reviewing-agent addendum
+
+| Duty | Answer |
+|---|---|
+| Accepted selector prefix re-hashed | selector449 `d4a0d1b7…`, 448 `70ff0860…`, 430 `1c412850…` via `boundary --expect-selector` |
+| Decisive claims independently re-derived | `CellId` and `TopologyRegionId` construction from source; face-row invariance rows; the `G4-B001` classifier input; each dormant test against its named replacement's actual permutation; DESIGN M7 ownership of `OutputDisposition`; turn write ordering; `ledgers` |
+| Non-vacuity checked | The CB1 permutation test is now required to permute face rows, because storage-only is row 213. The edge-storage witness is retained rather than deleted. |
+| Prior obligations discharged/carried | R16 OBS-01 resolved: one deletion, plus one retention with a named gate owner. `G4-B002`, `G4-B001` and `G4-B004` are carried as frozen in §8. |
+| Stable accounting | 51 / 14 / 37; debt 1 (M6); entry package `10814505512 / e284fea7…`; selector449 |
+| New candidates/obligations recorded | Tracker addendum entry (moved M6-DEFN entries plus a placement rule) |
+| ORIENTATION currency line | `M6-DEFN` (incl. reviewing-agent addendum), 2026-09-24 UTC |
+| ORIENTATION §3 / §4 / §7 / §8 | §7 items 1 and 5 amended. §3, §4 and §8 are unchanged and correct. |
+| CHANGELOG | Agent and root entries amended |
+| ROADMAP | n/a — correct |
+| Selector manifest | n/a |
+| LESSONS | 176 and 178 cited; no new lesson |
+| Consolidation under CLEAN_UP_POLICY | n/a — the M6 consolidated record exists and the DEFN plan is indexed |
+| Successor frozen | `M6-CP1-CB1`, per its plan plus the binding reviewing-agent amendment |
+| Turn boundary held | Runtime-free; no product/test/selector change |
+| review_check.py | `boundary --expect-selector 449=d4a0d1b7… 448=70ff0860… 430=1c412850…`: **ALL CHECKS PASSED**. No product/test/build or selector mutation; durable markers 1→1, 3→3, 13→13. `ledgers --base 62b5ed26`: **ALL CHECKS PASSED**. |
+| `STATUS` lifecycle | Resume beacon first; final `COMPLETE → M6-CP1-CB1` last |
+| Pushed, in sync | Confirmed by `git status -sb` after the final push |
+## M6-DEFN-R1 seam-incident authority amendment (2026-09-25, runtime-free)
+
+This amendment supersedes only the earlier singular-sheet/relation-certificate wording described in §§3–5. It freezes the eight decisions in `Architecture_M6_DEFN_R1_Seam_Incident_Occurrence_Sheet_Authority_Definition_Record.md`: corner-wedge sheet sets; wedge/side certificate carriers; owner-less OrdinaryFront membership validation; exact seam-collinear side authority; A7 union completeness; per-wedge face/chart/branch provenance; row140 adapter placement plus duplicate-check removal; and the re-scoped CB4/TB4 7+449 gate. Identity, accepted M5 authority, selector/routing bytes, HardRail/Periodic semantic owners, stable accounting **54 / 16 / 38**, and debt 1 are unchanged. Exact successor is mandatory `M6-DEFN-R1-REV`.
+
+## M6-DEFN-R1-REV review note (2026-09-25, runtime-free)
+
+**Core upheld; not accepted as frozen.** The amendment above is correct in model but incomplete in four blocking respects (`Architecture_M6_DEFN_R1_Review_Record.md` §3):
+
+- **B1.** §5's union makes relation-free seam singletons multi-sheet, which violates frozen focused row5's non-empty-`equivalences` assertion unless wedge evidence is represented in lineage `equivalences`.
+- **B2.** The per-binding provenance of §3.2 lacks a selection rule for each transitional consumer.
+- **B3.** The §3.2 wedge endpoints must not come from tie-broken segment faces in any of the three side builders.
+- **B4.** §3.4/D7 must be reconciled with §4.6.
+
+CB4 must not start until `M6-DEFN-R2` resolves these and `M6-DEFN-R2-REV` accepts.
+
+## M6-DEFN-R2 seam-incident authority amendment (2026-09-25, runtime-free)
+
+`M6-DEFN-R2` resolves the four blockers and four precision items from `M6-DEFN-R1-REV`; normative detail is in `Architecture_M6_DEFN_R2_Seam_Incident_Authority_Amendment_Definition_Record.md`.
+
+- **B1:** lineage now has evidence-only `CornerWedgeIsolation` equivalences carrying ordered exact `(region,seam,fromSheet,toSheet)` transitions. They neither own nor select quotient relations. Split-square v0/center/v2 are therefore multi-sheet with non-empty lineage evidence without inventing v0/v2 relations.
+- **B2:** every semantic consumer uses complete per-face wedge binding signatures. Transitional class keys cannot collapse to one sheet/chart; representatives are representation-only; HardRail/Periodic path charts are relation-side bindings; A7 chart/sheet/region projections derive from full binding tuples; remap preserves tuples before projection.
+- **B3:** edge collinearity is exact `SourceSupport`, and the semantic incident-cell interior face is selected from canonical accepted cell orientation plus source-edge winding. Uniform, periodic and bounded-disk builders all establish the required orientation premise before A4 acceptance.
+- **B4:** A5 relation failures are one-to-one and adapter-mapped to the frozen M5 names. Only duplicate owner/kind structural checks may move earlier; relation content/transport/support falsifiers stay live.
+- **P1-P4:** ordered maximal support spans, reciprocal near-endpoint agreement, fail-closed unsupported singular/SingularityPort corners, and hard-rail/region wedge boundaries are explicit. HardRail-adjacent no-seam corners remain single-sheet.
+
+The frozen-test audit covers focused rows 5/6, selector rows 186/214/239/444/446/448 and the Phase10 HardRail single-sheet assertions. No test/selector/routing byte changes. Stable accounting remains **54 / 16 / 38**, debt 1, +0. CB4 remains HELD pending mandatory independent `M6-DEFN-R2-REV`; if accepted, TB4 remains **7 + 449 = 456** fresh exact-filter processes.
+
+## M6-DEFN-R2-REV review amendments RA-1 – RA-10 (normative, 2026-09-25, runtime-free)
+
+`M6-DEFN-R2` is **accepted with the following amendments**. Where they conflict with earlier text in §§3–5, the DEFN-R1 record or the DEFN-R2 record, these govern. Rationale and evidence: `Architecture_M6_DEFN_R2_Review_Record.md` §3.
+
+- **RA-1 — collinear-span interior face.**
+  - Internal edge: the incident face whose source winding contains the side's directed edge.
+  - Source boundary edge: the single incident face, which must satisfy the same winding test.
+  - Hard-rail or topology-region-boundary edge: the winding-selected face, which must also lie in the cell's `TopologyRegionId`.
+
+  Any failed test is a typed A5 failure.
+- **RA-2 — `OccurrenceUnsupportedSingularWedge`.** Fires only when the RA-8 fan arc cannot be computed (nonmanifold vertex fan, or an arc not contained in one `TopologyRegionId` and one chart component). It never fires because of a vertex category (boundary, barrier, hard-rail or "excluded" support vertex). `OccurrenceUnsupportedSingularityPort` fires only for a corner that participates in a SingularityPort relation.
+- **RA-3 — `OccurrenceUnsupportedHardRailSeamWedge`.** Fires exactly when the RA-8 arc would have to cross a hard-rail edge. For a validated cell this is a fail-closed assertion. A seam edge ending at a rail vertex inside an admissible arc is ordinary wedge evidence.
+- **RA-4 — permutation checks in the seventh identity.** These compare only row-invariant semantic data:
+  - `OccurrenceId`s;
+  - per-occurrence `CornerWedgeSheetSet` and ordered `CornerWedgeIsolation` transitions;
+  - per class (keyed by sorted member `OccurrenceId`s): lineage sheets and transitions.
+
+  They never compare `hash_completion`, which hashes source-face rows and front-edge indices. One test-local split-square fixture helper with reversed face rows is permitted for this identity only.
+- **RA-5 — `OccurrenceUnownedRelation` and enum `UnownedRelation`.** `OccurrenceUnownedRelation` keeps its current external name, with no legacy remap. The enum `UnownedRelation` continues to cover relation-identity/owner-encoding mismatch in `publish_records_for_validation`, as frozen focused row3 requires. The new owner/kind codes apply to the producer-side conditions only. An out-of-range opposite edge is `RelationEndpointMissing`.
+- **RA-6 — lineage sheets.** `sourceIsolationSheets` is exactly the union of member `CornerWedgeSheetSet`s. Directed-side transitions are `equivalences` evidence only and add no sheets.
+- **RA-7 — retire the endpoint-equality guard.** The transitional endpoint-sheet-equality guard (`crossesSheets` → `MissingIsolationSeamEquivalenceAuthority`) is removed and replaced by span-membership validation. At the adapter, missing seam evidence for a cross-sheet step maps to `MissingIsolationSeamEquivalenceAuthority`, and an absent or wrong named certificate maps to `InvalidIsolationSeamEquivalenceAuthority`. `QuotientReciprocalSideAuthorityMismatch` keeps its new name.
+- **RA-8 — wedge arc.** The arc endpoints are the interior faces of the incoming side's last support span and the outgoing side's first support span: RA-1 for collinear spans, otherwise the face containing the span's open interior. The arc runs counter-clockwise in source winding from the outgoing face to the incoming face around the corner support. Recorded transition orientation stays incoming → outgoing (v0 `1→0`, v2 `0→1`).
+- **RA-9 — span support.** Span support is defined by `SurfacePointSourceSupportResolver` (barycentric tolerance `1e-8`) applied to the span's open-interior midpoint and both endpoints. The span is collinear with an edge iff the midpoint resolves to that `SourceEdgeSupport` and the endpoints resolve within that edge's closure. The builder tie-break tolerance plays no part.
+- **RA-10 — transitional `QuotientClassId`.** CB4 keeps the transitional ordinal in `lineage.quotientClass` and its hash unchanged in representation. Only the class-key tuple feeding it changes (complete binding signatures). The member-set `QuotientClassId` (§4.3) is realized at A6 extraction, not in CB4.
+
+## RA-11 — per-face branch authority (normative, 2026-09-25, review-agent resolution of the CB4 blocker)
+
+Rationale and evidence: folded RA-11 blocker authority in `M6_Consolidated_Record.md` §16 and git history. This amends D6, R2 §4.1-§4.3 and RA-10's class-key tuple.
+
+1. `CornerWedgeFaceBinding` = `(sourceFaceTopology, IsolationSheetId, SourceProjectionChart)`. It has **no `branchRotation`**.
+2. Each occurrence publishes `CornerPlacementProvenance`: the A4 corner `LocalLatticeState` verbatim (phase, coordinate, `branchRotation`, scale, `sourceChart`), labelled with the A4 selected corner face (`cell.corners[c].face` topology key).
+   - It is placement provenance only, with builder-specific branch meaning; the periodic builder leaves it `0`.
+   - No A5/A6/A7 rule may read it as the branch of any wedge face.
+3. Transitional class key = region + complete ordered binding signatures + lattice coordinate + scale + labelled placement provenance `(selected-face topology, branchRotation, sourceChart)`. Representative key = exact support + binding signatures + `OccurrenceId`.
+4. "No mixed-face record" means every face-dependent value is published together with the face it is expressed in. Pairing the selected face's `sourceChart` with another face's topology is forbidden.
+5. Stop rule: any A5/A6/A7 consumer needing a wedge-face branch returns CB4 to Review. That consumer would trigger an A4 product amendment to publish per-face branch authority. That amendment is rejected for now: no consumer needs it, and the builders have no uniform meaning for the branch.
+
+## RA-12 — site-qualified isolation-failure diagnostics (normative, 2026-09-25, `M6-CP1-TB4-REV` review-agent addendum)
+
+This amends RA-7. The legacy M5 names `MissingIsolationSeamEquivalenceAuthority` and `InvalidIsolationSeamEquivalenceAuthority` are kept as **prefixes**, and each emission site appends a stable suffix:
+- `:a5-wedge` / `:a5-side` — A5 `MissingIsolationEvidence` / `MismatchedIsolationEvidence`, raised during wedge-fan or side traversal;
+- `:a6-side-evidence` — ordered whole-side evidence certificate lookup;
+- `:a6-collinear-span` — collinear endpoint span with no certificate;
+- `:a6-seam-span-transition` — seam branch missing the reciprocal span transition;
+- `:a6-seam-faces` — certificate faces or sheets mismatch.
+
+Diagnostic only: predicates, ordering and outcomes are unchanged. No test or production code compares these strings exactly (verified at `M6-CP1-TB4-REV`). Rationale: `Architecture_M6_CP1_TB4_Review_Record.md`, review-agent addendum §B3-§B4.
+
+**RA-12 annotation (`M6-CP1-TB5-REV` review-agent addendum):** after CB5, an uncertified collinear span runs the non-seam P2 rule and fails as `QuotientReciprocalSideAuthorityMismatch`. The `:a6-collinear-span` suffix is therefore never emitted. The other suffixes are live.
+
+## CP1 exit scope — restated (`M6-CP1-TB5-REV` review-agent addendum; no new semantics)
+
+M6-CP1 cannot close until, on exact source plus a fresh green gate, all of the following hold:
+1. The A5 product is conformant (§3), including retirement of the unread legacy `SurfaceOccurrence` `isolationSheet` / `chart` / `lattice`.
+2. The A6 `SurfaceQuotientProduct` exists with member-set `QuotientClassId` (§4.3), one `QuotientRelationCertificate` and one ledger row per owned relation (§4.4), and `QuotientCertificate` / `MaterializationCertificate` (§4.6).
+3. The A7 `SourceAttachedGeometryProduct` exists with its certificates (§5).
+4. `build_authoritative_phase_front_mesh` is a thin adapter with no semantic decision (§10).
+5. The `G4-B002` A6 stage boundary exists (§8.1).
+6. There is no coordinate/position weld, and the focused multi-isolation identity is green (§10).
+
+`M6-DEFN-R3` freezes the representation and sequencing decisions for items 2-5.
+
+## M6-DEFN-R3 A6 quotient-product amendment (2026-09-25, runtime-free)
+
+`M6-DEFN-R3` completes the bounded A6 decisions required before quotient extraction. Normative detail and rationale are in `Architecture_M6_DEFN_R3_A6_Product_Separation_Definition_Record.md`; where the points below conflict with the earlier conceptual A6 wording or RA-10, these govern.
+
+- **CP1 exit checklist:** CP1 requires conformant A5 (including retirement of unread `chart/lattice/isolationSheet`), a complete immutable A6 product, later A7 product, thin adapter, no coordinate/position weld, the later `G4-B002` A6 boundary, focused multi-isolation preservation, and a fresh selector449 449/449 gate.
+- **Semantic class identity:** A6 uses `pipeline::SurfaceQuotientClassId`, exactly the sorted unique non-empty member `OccurrenceId` vector. Equality and order are member-set semantic; no root/hash/support/lattice/chart/row/position/representative participates. `authority::QuotientClassId` remains an adapter-only ordinal assigned after lexicographic member-set sorting for legacy lineage projection.
+- **Exact-once:** every A5-owned relation produces exactly one `QuotientRelationCertificate` and one `QuotientRelationConsumption` row. Disposition is `Joining` or `CycleClosing`; already-connected relations are never skipped.
+- **Transport consistency:** relation certificates carry one exact relation-oriented `GridAutomorphism`. Joining relations form the deterministic selected relation forest. For a cycle-closing relation, its direct transport must equal the exact composed transport of the unique existing forest path between its endpoints; mismatch is typed `QuotientHolonomyConflict`. The compared transports may be non-identity.
+- **Analytical scope:** the split square, uniform hard-rail rectangle and ordinary-identity classes satisfy the rule analytically under their planar constant-field construction. Produced cylinder row232 and torus rows444/446/448/449 are pre-registered TB falsifiers. If one first-fails `QuotientHolonomyConflict`, mandatory Review decides true defect versus a required definition amendment; CB/TB may not weaken the rule. Evidence-only residual recording is documented only as a Review-authorized fallback.
+- **Selected paths:** selection is A6 authority. Each class roots evidence at its smallest semantic member; unique forest paths store ordered relation certificates, orientation, relation-local binding evidence and composed transport. A7 may project but not reselect. Legacy `selectedRelationPaths` projection remains limited to paths containing HardRail/Periodic selected steps, preserving split-square emptiness.
+- **A6 errors:** semantic enum names are `SourceAuthorityMismatch`, `RelationEndpointMissing`, `RelationAuthorityConflict`, `RelationCertificateMissing`, `RelationCertificateDuplicate`, `RelationCertificateConflict`, `ReciprocalSideAuthorityMismatch`, `MissingIsolationEvidence`, `InvalidIsolationEvidence`, `InvalidHardRailTransport`, `InvalidPeriodicTransport`, `UnsupportedSingularityPort`, `UnownedRelationUse`, `RelationConsumptionMissing`, `RelationConsumptionDuplicate`, `RelationConsumptionConflict`, `HolonomyConflict`, `InvalidClassPartition`, `MissingOccurrenceMember`, `DegenerateClassedQuad`, `NonBijectiveMaterialization`. External A6 diagnostics use `Quotient` prefix; legacy-name mapping is adapter-only where frozen accepted behavior requires it, including RA-12 isolation prefixes.
+- **First A6 CB:** after mandatory `M6-DEFN-R3-REV`, `M6-CP1-CB6-A6` extracts A6 and folds in the legacy A5 field retirement. Four new focused identities are frozen in its plan. Compile-green advances to an immutable gate of **11 focused + selector449 = 460** processes. The previous standalone legacy-field CB6 plan is superseded/held.
+- **Deferred:** A7 product representation and the exact `G4-B002` A6 stage-boundary representation are owned by later `M6-DEFN-R4`; R3 records intent only and grants no implementation authorization for them.
+
+Stable accounting remains **55 / 16 / 39**, produced-witness debt **1**, selector449/routing449 bytes unchanged. Exact successor is mandatory `M6-DEFN-R3-REV`; the A6 Code + Build remains held until Review.
+
+## M6-DEFN-R3-REV A6 quotient-product review amendment (normative, 2026-09-25, runtime-free)
+
+`M6-DEFN-R3` is **accepted with RA-1 – RA-4**. Where the R3 definition record or held A6 CB plan conflicts with these rules, these govern. Full evidence and rationale: `Architecture_M6_DEFN_R3_Review_Record.md`.
+
+- **RA-1 — canonical relation-certificate direction.** Every `QuotientRelationCertificate` is oriented `relation.id.first -> relation.id.second`. The separately stored `relation.firstOccurrence` / `secondOccurrence` and `firstFrontEdge` / `secondFrontEdge` are representation provenance only and cannot determine semantic certificate direction. Any exact evidence obtained opposite the canonical direction is inverted before publication.
+- **RA-2 — OrdinaryFront quotient transport.** Every accepted `OrdinaryFront` certificate has `GridAutomorphism::identity()` as its quotient relation transport. Checked isolation-seam quarter-turns remain source-chart/sheet validation evidence and are never reapplied as quotient transport.
+- **RA-3 — A5 relation evidence completeness.** Frozen A6 still consumes A0 source authority plus one complete A5 occurrence complex. Therefore each A5-owned relation must carry/reference the immutable kind-specific evidence required to validate its RA-1 canonical transport without dereferencing representation-owned front-edge/global arrays. OrdinaryFront transport is identity; HardRail carries its exact accepted owner/route/transport; Periodic carries its exact semantic action plus required route/cut evidence; all non-identity evidence is normalized to canonical endpoint direction. This may enrich A5 relation evidence but may not change relation identity/equality/owner selection or the accepted relation set.
+- **RA-4 — exact path-composition recurrence.** Traverse from `a` to `b` with `path=identity`; for each certificate edge in traversal order choose its canonical transport or exact inverse according to traversal direction, then set `path=compose(T,path)`. A cycle-closing certificate is accepted iff its direct canonical transport equals that exact path transport.
+
+The strict direct-vs-path holonomy rule remains provisional only through the already-frozen runtime falsifier: cylinder row232 and torus rows444/446/448/449 must execute after compile-green implementation, and only mandatory TB Review may invoke R3's documented evidence-only fallback. The four A6 focused identities and total **11 + 449 = 460** process gate remain unchanged in count; the storage-invariance identity additionally protects canonical certificate direction/transport, and the holonomy negative must alter an otherwise individually valid cycle certificate rather than fabricate an invalid OrdinaryFront transform.
+
+Stable accounting remains **55 / 16 / 39**, debt **1**. Exact next is `M6-CP1-CB6-A6`, then immutable `M6-CP1-TB6-A6-EXEC`, then mandatory `M6-CP1-TB6-A6-REV`.
