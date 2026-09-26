@@ -1,3 +1,0 @@
-turn=M6-DEFN-R3-REV
-requested_parent=2fe569f1d456c99bc22c7b8977594136bfc00cb1
-purpose=runtime-free independent review source snapshot

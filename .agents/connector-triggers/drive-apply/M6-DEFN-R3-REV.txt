@@ -1,3 +1,0 @@
-turn=M6-DEFN-R3-REV
-patch_sha256=f06f58245e0b1274c4c492d2c90ad437fee2d4380fa1ea84075abb67aa86a118
-base_sha=dba4fbba516f3b309103c4b6529ad6194b9caa52
