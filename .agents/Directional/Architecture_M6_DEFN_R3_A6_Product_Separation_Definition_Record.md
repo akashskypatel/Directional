@@ -3,10 +3,12 @@
 **Turn:** `M6-DEFN-R3`
 **Type:** runtime-free Definition amendment
 **Predecessor:** `M6-CP1-TB5-REV` review-agent addendum
-**Exact successor:** mandatory independent `M6-DEFN-R3-REV`
-**First implementation if Review accepts:** `M6-CP1-CB6-A6`
+**Review:** `M6-DEFN-R3-REV` COMPLETE / ACCEPTED WITH RA-1 – RA-4
+**Exact next implementation:** `M6-CP1-CB6-A6`
 **Reviewed runtime entering the turn:** package/source `10879581622 / 82b86a285292379cfd92cdc4e10d74181b38f1e8`, selector449 `449/449`
 **Stable accounting:** `55 / 16 / 39`, produced-witness debt `1`
+
+> **Reviewed by `M6-DEFN-R3-REV`: ACCEPTED WITH RA-1 – RA-4.** The historical R3 text below is preserved, but the Review amendments in `Architecture_M6_DEFN_R3_Review_Record.md` and the appended `M6-DEFN-R3-REV` amendment in `Architecture_M6_Frozen_Definitions.md` govern conflicts. In particular: canonical certificate direction is `relation.id.first -> relation.id.second`; every accepted OrdinaryFront quotient transport is identity; A5 relations must carry evidence sufficient for A6 HardRail/Periodic canonical transport without representation lookup; and selected-path `GridAutomorphism` composition order is explicit. Exact next is `M6-CP1-CB6-A6`.
 
 ## 1. Scope and evidence boundary
 

@@ -1,10 +1,13 @@
 # M6-DEFN-R3 — CP1 A6/A7 Product Separation — Definition Plan
 
+> **Review disposition:** `M6-DEFN-R3-REV` accepted R3 with binding RA-1 – RA-4 and authorized `M6-CP1-CB6-A6`. See `Architecture_M6_DEFN_R3_Review_Record.md`. This plan is retained as R3 provenance; A7 and `G4-B002` representation remain deferred to `M6-DEFN-R4`.
+
 **Turn:** `M6-DEFN-R3`
 **Type:** Definition amendment and CP1 sequencing, runtime-free
 **Predecessor:** `M6-CP1-TB5-REV`, review-agent addendum (`Architecture_M6_CP1_TB5_Review_Record.md` §C3-§C4)
-**Successor:** mandatory `M6-DEFN-R3-REV`, then the first A6 extraction Code + Build
-**Disposition:** BOUNDED DEFINITION COMPLETE; implementation remains held pending Review
+**Review:** `M6-DEFN-R3-REV` COMPLETE / ACCEPTED WITH RA-1 – RA-4
+**Exact next:** `M6-CP1-CB6-A6`
+**Disposition:** BOUNDED DEFINITION COMPLETE; implementation authorized only under the R3-REV amendments
 
 > **Recovery amendment (review agent, 2026-09-25T21:13:47Z) — this overrides the rest of this plan where they conflict.**
 >

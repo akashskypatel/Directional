@@ -1,6 +1,6 @@
 # M6 Frozen Definitions — Occurrence, Quotient, Embedding, Independent Verification
 
-**Status:** FROZEN / `M6-CP1-TB5-REV` RECOVERY ACCEPTED / CURRENT REVIEWED RUNTIME `10879581622 / 82b86a28...` / CP1 OPEN on its §10 product-separation scope (A6/A7 products, thin adapter, §4.4 ledger, §4.3 member-set identity, §8.1 `G4-B002` A6 boundary, legacy-field retirement; review-agent addendum) / EXACT NEXT = `M6-DEFN-R3`; RA-1 – RA-12 remain normative and unchanged.
+**Status:** FROZEN / `M6-DEFN-R3-REV` ACCEPTED R3 WITH RA-1 – RA-4 / CURRENT REVIEWED RUNTIME `10879581622 / 82b86a28...` / CP1 OPEN on A6/A7 extraction, thin adapter, `G4-B002` boundary and fresh preservation gate / EXACT NEXT = `M6-CP1-CB6-A6`; earlier RA-1 – RA-12 plus the R3-REV amendment below are normative.
 **Date:** 2026-09-25
 **Definition authority:** this record is the normative M6 contract for A5 occurrence creation, A6 quotient construction/materialization, A7 source-attached geometry embedding, and the M6 structural portion of A8 independent verification. It refines `DESIGN.md` §14 M6 without changing accepted M5 producer semantics or pulling M7 disposition/degradation work forward.
 
@@ -550,3 +550,16 @@ M6-CP1 cannot close until, on exact source plus a fresh green gate, all of the f
 - **Deferred:** A7 product representation and the exact `G4-B002` A6 stage-boundary representation are owned by later `M6-DEFN-R4`; R3 records intent only and grants no implementation authorization for them.
 
 Stable accounting remains **55 / 16 / 39**, produced-witness debt **1**, selector449/routing449 bytes unchanged. Exact successor is mandatory `M6-DEFN-R3-REV`; the A6 Code + Build remains held until Review.
+
+## M6-DEFN-R3-REV A6 quotient-product review amendment (normative, 2026-09-25, runtime-free)
+
+`M6-DEFN-R3` is **accepted with RA-1 – RA-4**. Where the R3 definition record or held A6 CB plan conflicts with these rules, these govern. Full evidence and rationale: `Architecture_M6_DEFN_R3_Review_Record.md`.
+
+- **RA-1 — canonical relation-certificate direction.** Every `QuotientRelationCertificate` is oriented `relation.id.first -> relation.id.second`. The separately stored `relation.firstOccurrence` / `secondOccurrence` and `firstFrontEdge` / `secondFrontEdge` are representation provenance only and cannot determine semantic certificate direction. Any exact evidence obtained opposite the canonical direction is inverted before publication.
+- **RA-2 — OrdinaryFront quotient transport.** Every accepted `OrdinaryFront` certificate has `GridAutomorphism::identity()` as its quotient relation transport. Checked isolation-seam quarter-turns remain source-chart/sheet validation evidence and are never reapplied as quotient transport.
+- **RA-3 — A5 relation evidence completeness.** Frozen A6 still consumes A0 source authority plus one complete A5 occurrence complex. Therefore each A5-owned relation must carry/reference the immutable kind-specific evidence required to validate its RA-1 canonical transport without dereferencing representation-owned front-edge/global arrays. OrdinaryFront transport is identity; HardRail carries its exact accepted owner/route/transport; Periodic carries its exact semantic action plus required route/cut evidence; all non-identity evidence is normalized to canonical endpoint direction. This may enrich A5 relation evidence but may not change relation identity/equality/owner selection or the accepted relation set.
+- **RA-4 — exact path-composition recurrence.** Traverse from `a` to `b` with `path=identity`; for each certificate edge in traversal order choose its canonical transport or exact inverse according to traversal direction, then set `path=compose(T,path)`. A cycle-closing certificate is accepted iff its direct canonical transport equals that exact path transport.
+
+The strict direct-vs-path holonomy rule remains provisional only through the already-frozen runtime falsifier: cylinder row232 and torus rows444/446/448/449 must execute after compile-green implementation, and only mandatory TB Review may invoke R3's documented evidence-only fallback. The four A6 focused identities and total **11 + 449 = 460** process gate remain unchanged in count; the storage-invariance identity additionally protects canonical certificate direction/transport, and the holonomy negative must alter an otherwise individually valid cycle certificate rather than fabricate an invalid OrdinaryFront transform.
+
+Stable accounting remains **55 / 16 / 39**, debt **1**. Exact next is `M6-CP1-CB6-A6`, then immutable `M6-CP1-TB6-A6-EXEC`, then mandatory `M6-CP1-TB6-A6-REV`.

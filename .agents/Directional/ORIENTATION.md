@@ -1,3 +1,9 @@
+## Current orientation — `M6-DEFN-R3-REV` complete (2026-09-25)
+
+R3's A6 product-separation design is accepted with four binding Review amendments: certificate direction derives from canonical relation-ID endpoints; OrdinaryFront quotient transport is identity; A5 relations must carry enough canonical kind-specific transport/owner evidence for the frozen A5→A6 boundary; and selected-path `GridAutomorphism` composition order is explicit. The strict holonomy equality rule remains subject to its already-frozen cylinder/torus TB falsifier.
+
+**Exact next:** `M6-CP1-CB6-A6` compile/package-only. Runtime authority remains `10879581622 / 82b86a28...` at selector449 449/449; stable accounting **55/16/39**, debt 1. Do not start R4/A7/`G4-B002` or runtime work first.
+
 # Current orientation — M6-DEFN-R3 bounded definition complete; Review next (2026-09-25)
 
 `M6-DEFN-R3` is definition-complete for its bounded A6 scope. Exact next is mandatory runtime-free `M6-DEFN-R3-REV`; `M6-CP1-CB6-A6` is held. The A6 definition freezes member-set class IDs, exact-once joining/cycle-closing relation consumption, selected-forest path authority, exact direct-vs-path transport consistency (`QuotientHolonomyConflict`), A6 failure names, four new focused identities, and a later **11 + 449 = 460** gate. A7 representation and `G4-B002` stage-boundary representation move to `M6-DEFN-R4`. Accounting stays 55/16/39, debt 1; runtime authority stays `10879581622 / 82b86a28...`. See `Architecture_M6_DEFN_R3_A6_Product_Separation_Definition_Record.md`.

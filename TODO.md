@@ -1,4 +1,14 @@
-## M6-DEFN-R3 bounded definition complete — exact next `M6-DEFN-R3-REV` (2026-09-25)
+## Current — `M6-DEFN-R3-REV` accepted; exact next `M6-CP1-CB6-A6`
+
+- [x] Independent runtime-free Review accepted R3 with binding RA-1 – RA-4: canonical relation-ID certificate direction, OrdinaryFront identity transport, evidence-complete A5 relation publication for canonical HardRail/Periodic transport, and explicit noncommutative path-composition order.
+- [ ] Execute `M6-CP1-CB6-A6` only: extract immutable A6 quotient product, enrich A5 relation evidence only as required by RA-3 without changing relation semantics, retire unread `chart/lattice/isolationSheet`, add exactly four focused A6 identities, and compile/package the standard eight GMP/GMPXX targets. **No generated Directional runtime.**
+- [ ] If compile-green, execute immutable `M6-CP1-TB6-A6-EXEC`: 11 focused + selector449 = **460** fresh exact-filter processes, preserving cylinder row232 and torus rows444/446/448/449 as holonomy falsifiers.
+- [ ] Mandatory `M6-CP1-TB6-A6-REV` before any promotion, fallback, R4, A7 or `G4-B002` work.
+- [ ] `M6-DEFN-R4` remains deferred until the A6 implementation/gate/Review sequence completes.
+
+Accounting remains **55 / 16 / 39**, debt 1. Reviewed runtime authority remains `10879581622 / 82b86a28...`, selector449 449/449.
+
+## Superseded historical checklist — `M6-DEFN-R3` definition closeout (Review now complete)
 
 - [x] Freeze CP1 exit checklist, A6 member-set identity, exact-once joining/cycle-closing ledger, cycle transport consistency, selected-path ownership and A6 failure vocabulary.
 - [x] Record analytic split-square / uniform hard-rail / ordinary-identity holonomy proof and pre-register produced cylinder row232 + torus rows444/446/448/449 as TB falsifiers.

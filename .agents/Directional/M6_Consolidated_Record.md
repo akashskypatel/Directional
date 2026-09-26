@@ -1,6 +1,12 @@
 # M6 consolidated record
 
-## 0. `M6-DEFN-R3` — bounded A6 quotient-product definition complete
+## 0. `M6-DEFN-R3-REV` — R3 accepted with four binding A6 precision amendments
+
+Independent runtime-free Review accepts the R3 A6 product separation while correcting four implementation-critical ambiguities: certificates are oriented by canonical `SurfaceOccurrenceRelationId.first -> second`, accepted OrdinaryFront quotient transport is identity even when seam evidence is present, A5 relation publication must carry enough canonical HardRail/Periodic evidence for A6 to avoid representation/global-array lookups, and selected-path `GridAutomorphism` composition order is frozen explicitly. The strict direct-vs-path holonomy rule and its cylinder/torus runtime falsifier remain unchanged. The same four new focused identities remain; later gate stays **11 + 449 = 460**.
+
+Review source snapshot run/artifact `36207017645 / 10894735898` is static/runtime-free and contains no source/test delta from reviewed runtime semantic source `82b86a28...`; selector/routing449 remain unchanged. Stable accounting remains **55/16/39**, debt 1. `M6-CP1-CB6-A6` is now authorized; exact next is that compile-only Code + Build turn, followed by immutable `M6-CP1-TB6-A6-EXEC` and mandatory Review. Full authority: `Architecture_M6_DEFN_R3_Review_Record.md` plus the R3-REV amendment in `Architecture_M6_Frozen_Definitions.md`.
+
+## 0.1. `M6-DEFN-R3` — bounded A6 quotient-product definition complete
 
 Runtime-free R3 freezes `pipeline::SurfaceQuotientClassId` as the exact sorted member-occurrence set; exact one certificate + ledger row per A5-owned relation; `Joining` versus `CycleClosing` dispositions; a deterministic selected relation forest; exact direct-relation versus unique-path `GridAutomorphism` equality with `QuotientHolonomyConflict` on mismatch; A6-owned selected paths; and the stable A6 error vocabulary. Split square/uniform planar hard-rail/ordinary-identity cases are analytically consistent; produced cylinder row232 and torus rows444/446/448/449 are TB falsifiers. A7 representation and the exact `G4-B002` boundary move to R4. Held `M6-CP1-CB6-A6` absorbs legacy A5 field retirement and adds four focused identities; later TB shape is 11 + selector449 = 460. Exact next is `M6-DEFN-R3-REV`. Stable accounting 55/16/39, debt 1; no runtime/compile in R3.
 
@@ -8,7 +14,7 @@ Closeout authority: source snapshot run/artifact `36199074014 / 10890838063` ver
 
 # M6 Consolidated Record
 
-**Status:** M6 ACTIVE / `M6-DEFN-R3` complete: bounded A6 product-separation definition frozen; CP1 remains OPEN on A6/A7 extraction, thin adapter and `G4-B002`; `M6-CP1-CB6-A6` HELD pending Review / exact next `M6-DEFN-R3-REV` / stable 55/16/39, debt 1
+**Status:** M6 ACTIVE / `M6-DEFN-R3-REV` accepted R3 with RA-1 – RA-4; CP1 remains OPEN on A6/A7 extraction, thin adapter and `G4-B002` / `M6-CP1-CB6-A6` AUTHORIZED / exact next `M6-CP1-CB6-A6` / stable 55/16/39, debt 1
 **Last updated:** 2026-09-25
 
 Normative M6 semantics live in `Architecture_M6_Frozen_Definitions.md`. Entering accepted authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449 PASS**, SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. TB1's accepted-prefix event remains independently classified as singleton `CROSS_TEMPORARY_ITERATOR_RANGE`; TB2 row140 `VALIDATION_ORDER_SHADOWING` is recovery-proved closed but remains historical; TB3 Review adds one accepted-prefix event as an existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence. TB4 Review adds one accepted-prefix event as another existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence. Stable accounting is **55 / 16 / 39** and produced-witness debt is **1**, M6-owned.

@@ -1,3 +1,10 @@
+## 2026-09-25 — `M6-DEFN-R3-REV` definition adjudication — **+0 EVENTS / 55/16/39 / debt 1 / A6 CB AUTHORIZED**
+
+- **No runtime regression was observed or repriced.** Review is static/runtime-free and the accepted runtime authority stays `10879581622 / 82b86a28...`, selector449 449/449.
+- R3 is **accepted with RA-1 – RA-4**. The Review found four pre-implementation definition/evidence defects rather than product regressions: storage-oriented relation fields could choose certificate direction; seam evidence was incorrectly proposed as an extra OrdinaryFront quotient transform; A5 relation records lacked enough exact HardRail/Periodic action evidence for the frozen A0+A5 A6 input boundary; and path-composition order was underspecified.
+- Corrective authority is definition-level and folded into `M6-CP1-CB6-A6`; it does not add a stable regression event/category/recurrence. The existing produced cylinder/torus holonomy falsifier remains mandatory and may create a runtime candidate only if the future immutable gate actually turns accepted authority RED.
+- Exact next: `M6-CP1-CB6-A6`, then 460-process TB, then mandatory Review.
+
 ## 2026-09-25 — `M6-CP1-TB5-REV` review-agent addendum — **+0 EVENTS / 55/16/39 / debt 1 / CP1 SCOPE CORRECTED / NEXT `M6-DEFN-R3`**
 
 - **Upheld:** TB5 456/456 (independent re-derivation: 933/933; empty RED ledger; zero failure strings; source `82b86a28`); TB1/TB3/TB4 formal recovery; promotion of `10879581622`; B6.2 withdrawal.

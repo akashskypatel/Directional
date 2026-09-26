@@ -1,14 +1,14 @@
 # M6-CP1-CB6-A6 — quotient-product extraction + legacy A5 field retirement — Code + Build plan
 
-**Status:** HELD pending `M6-DEFN-R3-REV` acceptance
+**Status:** AUTHORIZED by `M6-DEFN-R3-REV`; RA-1 – RA-4 binding
 **Turn:** `M6-CP1-CB6-A6`
 **Predecessor:** `M6-DEFN-R3-REV`
 **Type:** source/test Code + Build; compile/package only; no generated Directional runtime
-**Frozen definition:** `Architecture_M6_DEFN_R3_A6_Product_Separation_Definition_Record.md`
+**Frozen definition:** `Architecture_M6_DEFN_R3_A6_Product_Separation_Definition_Record.md` as amended by `Architecture_M6_DEFN_R3_Review_Record.md` and `Architecture_M6_Frozen_Definitions.md`
 
 ## 1. Goal
 
-Extract the already-frozen A6 quotient semantics from `build_authoritative_phase_front_mesh(...)` into an immutable `SurfaceQuotientProduct` / `SurfaceQuotientProducer`, while preserving the accepted A5 product and transitional A7/output behavior. In the same bounded cutover, retire the three unread A5 representative fields `SurfaceOccurrence::{chart,lattice,isolationSheet}`. Do not extract A7 and do not implement the `G4-B002` stage boundary in this turn.
+Extract the already-frozen A6 quotient semantics from `build_authoritative_phase_front_mesh(...)` into an immutable `SurfaceQuotientProduct` / `SurfaceQuotientProducer`, while preserving accepted A5 **semantics** and transitional A7/output behavior. RA-3 permits only the evidence-carrier enrichment required to make the existing A5→A6 boundary self-sufficient; it does not permit a relation-identity/equality/ownership change. In the same bounded cutover, retire the three unread A5 representative fields `SurfaceOccurrence::{chart,lattice,isolationSheet}`. Do not extract A7 and do not implement the `G4-B002` stage boundary in this turn.
 
 ## 2. Required product surface
 
@@ -16,7 +16,7 @@ Introduce compile-visible A6 types sufficient to represent, without consulting t
 
 - `SurfaceQuotientClassId` — sorted unique non-empty member `OccurrenceId` set;
 - `SurfaceQuotientClass` — semantic ID/member set plus classed cell incidence needed by A7;
-- `QuotientRelationCertificate` — one per A5-owned relation with exact relation-oriented transport and evidence;
+- `QuotientRelationCertificate` — one per A5-owned relation, always oriented `relation.id.first -> relation.id.second`, with exact canonical relation transport and evidence;
 - `QuotientRelationConsumption` — one per A5-owned relation, `Joining` or `CycleClosing`;
 - deterministic selected relation forest/path certificates owned by A6;
 - `QuotientCertificate` and `MaterializationCertificate`;
@@ -26,13 +26,24 @@ Introduce compile-visible A6 types sufficient to represent, without consulting t
 
 Keep `authority::QuotientClassId` out of A6 semantic identity. The transitional adapter assigns it deterministically from A6 member-set order solely for `PureQuadVertexLineage::quotientClass` compatibility.
 
+### 2.1 Binding Review amendment — A5 relation evidence completeness
+
+The A5 relation record may be enriched only enough to make the already-frozen A5→A6 boundary self-sufficient. For every A5-owned relation publish immutable evidence from which A6 can validate the canonical `relation.id.first -> relation.id.second` certificate without dereferencing `firstFrontEdge` / `secondFrontEdge` or any global phase-front representation table. This enrichment does not change A5 relation identity, equality, owner selection, accepted relation set, or cell topology.
+
+- OrdinaryFront canonical quotient transport is identity; isolation seam transitions remain validating evidence only.
+- HardRail carries/references its exact accepted owner/route/transport normalized to canonical relation direction.
+- Periodic carries/references its exact semantic owner action plus required route/cut evidence normalized to canonical relation direction.
+- SingularityPort remains unsupported.
+
+`firstOccurrence` / `secondOccurrence` and `firstFrontEdge` / `secondFrontEdge` are representation provenance and cannot select semantic certificate direction or transport. If satisfying this requirement would change A5 relation semantics rather than enrich evidence, stop and return to Review.
+
 ## 3. Exact-once algorithm
 
-1. Consume only A5 `owned_relations()`; canonicalize processing by `SurfaceOccurrenceRelationId`.
-2. Reuse the current accepted OrdinaryFront span/wedge/seam, HardRail and Periodic authority checks; move those semantic checks behind A6 instead of duplicating them in the adapter.
-3. Emit exactly one `QuotientRelationCertificate` and one `QuotientRelationConsumption` for each owned relation.
+1. Consume only A5 `owned_relations()`; canonicalize processing by `SurfaceOccurrenceRelationId`. Every certificate direction is `relation.id.first -> relation.id.second`, never the storage-oriented `relation.firstOccurrence -> relation.secondOccurrence`.
+2. Reuse the current accepted OrdinaryFront span/wedge/seam, HardRail and Periodic authority checks behind A6, consuming the evidence-complete A5 relation record. OrdinaryFront relation transport is identity; seam quarter-turn evidence is not reapplied as quotient transport.
+3. Emit exactly one `QuotientRelationCertificate` and one `QuotientRelationConsumption` for each owned relation. Normalize HardRail/Periodic transport to the canonical certificate direction, inverting exact evidence when required.
 4. Joining relations form the selected forest and union the endpoint classes.
-5. Cycle-closing relations are never skipped: compose the unique selected-forest path transport and require exact equality with the direct relation transport; mismatch -> `HolonomyConflict` / external `QuotientHolonomyConflict`.
+5. Cycle-closing relations are never skipped. Traverse the unique selected-forest path from `a` to `b` with `path=identity`; for each traversal transform `T` (inverse when traversed opposite its certificate direction), set `path=compose(T,path)`. Require exact `directRelationTransport == path`; mismatch -> `HolonomyConflict` / external `QuotientHolonomyConflict`.
 6. Build semantic classes from the verified transitive closure and identify them by sorted member sets.
 7. Publish classed quads one-to-one with A5 cells and validate partition/materialization certificates before returning Produced.
 8. Project A6-selected HardRail/Periodic paths to the existing lineage compatibility surface. Ordinary-only paths remain A6 evidence and do not populate legacy `selectedRelationPaths`.
@@ -64,6 +75,7 @@ Add exactly these four identities to the producer-test target:
 1. `M6CP1.QuotientClassIdIsSortedMemberSetAndStorageInvariant`
    - semantic IDs equal their exact sorted source-occurrence member sets;
    - relation/cell/source-face storage permutations preserve the member-set IDs;
+   - reciprocal front-edge storage swap and the other storage permutations preserve canonical relation-certificate endpoint direction and transport signature;
    - adapter ordinals may be inspected only as deterministic projection rows.
 2. `M6CP1.EveryOwnedRelationHasExactlyOneConsumptionRecord`
    - certificate and ledger IDs are exact bijections with A5-owned relation IDs;
@@ -73,7 +85,9 @@ Add exactly these four identities to the producer-test target:
    - independently tamper missing, duplicate and disposition/certificate-conflicting consumption and require the matching typed code;
    - no fabricated passing ledger.
 4. `M6CP1.CycleClosingRelationTransportConflictRejected`
-   - construct a valid A5/A6 relation cycle, alter exactly one direct cycle-closing transport, and require `HolonomyConflict` while the untampered cycle publishes.
+   - construct an individually valid certified A5/A6 relation cycle;
+   - through the A6 validation-publication seam, alter exactly one otherwise admissible direct cycle-closing certificate transport; do not fabricate an invalid OrdinaryFront transport;
+   - require `HolonomyConflict` while the untampered cycle publishes.
 
 No existing test or fixture is weakened or rewritten to obtain green output.
 

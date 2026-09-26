@@ -1,3 +1,12 @@
+## 2026-09-25 — `M6-DEFN-R3-REV` accepts A6 definition with four binding precision amendments
+
+- Independent runtime-free Review accepts R3's member-set class identity, exact-once relation ledger, deterministic selected forest, strict direct-vs-path holonomy rule, A6 path ownership and error vocabulary.
+- RA-1 canonicalizes every relation certificate to `relation.id.first -> relation.id.second`, preventing reciprocal front-edge storage order from choosing semantic direction.
+- RA-2 makes every accepted OrdinaryFront quotient transport identity; isolation-seam quarter-turn stays validation evidence rather than being reapplied as quotient transport.
+- RA-3 requires evidence-complete A5 relations for canonical HardRail/Periodic transport so A6 can honor the frozen A0+A5 input boundary without global front-edge lookup; relation identity/equality/owner selection do not change.
+- RA-4 freezes exact `GridAutomorphism` path composition: `path=compose(T,path)` in traversal order, invert on reverse traversal.
+- `M6-CP1-CB6-A6` is authorized; same four new focused identities, later **11+449=460** gate. No runtime/compile in Review; authority/accounting remain `10879581622 / 82b86a28...`, 55/16/39, debt 1.
+
 ## 2026-09-25 — `M6-DEFN-R3` recovery: beacon repaired, scope bounded
 
 - The first R3 session left only a start beacon (`cd084a0d`), with non-canonical `NONE` values and no record, snapshot or Drive patch. The loop recorded `CHAT_UNKNOWN`.

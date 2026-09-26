@@ -1,3 +1,11 @@
+## 2026-09-25 — M6 A6 design review accepts the quotient stage with four implementation safeguards
+
+- The quotient-stage design is accepted, with semantic relation direction anchored to canonical occurrence IDs rather than reciprocal edge storage order.
+- Ordinary front joins are explicitly identity transforms; seam rotations remain evidence used to validate the join, not another transform applied by the quotient stage.
+- A5 relation records must carry the exact HardRail/Periodic evidence A6 needs, so the new stage does not reach back into mutable/index-based front representation.
+- Noncommutative path-transform composition order is now explicit. The planned four tests and 460-process later gate are unchanged in count.
+- Next is compile-only `M6-CP1-CB6-A6`; no runtime, selector, regression-accounting, or accepted-package authority changed in this Review.
+
 ## 2026-09-25 — M6 A6 quotient stage is now specified for review
 
 - Defined the missing quotient-stage product: class identity is the exact set of member occurrences, not a temporary row/root/hash.

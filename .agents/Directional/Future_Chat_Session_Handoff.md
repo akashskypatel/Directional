@@ -1,3 +1,19 @@
+## Resume-critical update — `M6-DEFN-R3-REV` accepted R3 with RA-1 – RA-4; A6 CB authorized (2026-09-25)
+
+**Exact next: `M6-CP1-CB6-A6` — Code + Build, compile/package only. Do not start `M6-DEFN-R4`, A7, `G4-B002`, or runtime TB first.**
+
+Independent runtime-free Review accepts the R3 A6 quotient-product design with four binding amendments:
+- certificate direction is canonical `relation.id.first -> relation.id.second`; storage-oriented occurrence/front-edge fields are representation provenance only;
+- every accepted OrdinaryFront quotient relation transport is identity; isolation-seam quarter-turn remains validating evidence only;
+- A5 owned relations must publish enough canonical HardRail/Periodic owner/route/transport evidence for A6 to consume only A0+A5 without representation/global-array lookup; this enriches evidence only and may not change relation identity/equality/owner selection;
+- selected-forest path composition is exactly `path=compose(T,path)` in traversal order, using `T.inverse()` for reverse traversal.
+
+The strict direct-vs-path holonomy rule remains binding and the produced cylinder row232 plus torus rows444/446/448/449 remain TB falsifiers. The four new A6 focused identities are unchanged in count; focused storage invariance now also covers canonical certificate direction/transport. Compile-green advances to immutable `M6-CP1-TB6-A6-EXEC`: **11 focused + selector449 = 460** fresh exact-filter processes, then mandatory `M6-CP1-TB6-A6-REV`.
+
+Review snapshot run/artifact `36207017645 / 10894735898` was static/runtime-free; no `src/`, `include/`, or `tests/` file changed relative to current reviewed runtime semantic source `82b86a28...`. Runtime authority remains package/source `10879581622 / 82b86a28...`, selector449 449/449. Stable accounting remains **55 / 16 / 39**, debt **1**. Full Review authority: `Architecture_M6_DEFN_R3_Review_Record.md` and the appended R3-REV amendment in `Architecture_M6_Frozen_Definitions.md`.
+
+### Superseded recovery note — do not resume R3 Review
+
 ## Resume-critical update — `M6-DEFN-R3` bounded definition complete; mandatory Review next (2026-09-25)
 
 **Exact next: `M6-DEFN-R3-REV` — independent runtime-free Review. Do not start `M6-CP1-CB6-A6` first.**

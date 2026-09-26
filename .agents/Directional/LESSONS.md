@@ -20,6 +20,10 @@ lesson.
 
 ## 1. Evidence and acceptance
 
+### Semantic relation direction must come from semantic IDs, and downstream products need self-sufficient evidence
+
+When a relation has both canonical endpoint identity and representation-oriented endpoint/index fields, downstream certificate direction must derive from the canonical identity. Storage order can be deliberately permuted while semantic direction stays fixed. Likewise, an immutable stage boundary is not real if the consumer must dereference representation indices or search a broader global product to rediscover the relation's transform. Publish the exact owner/transport evidence at the producing boundary, normalize it to canonical semantic direction, and make later stages consume that evidence only. `M6-DEFN-R3-REV` caught both defects before A6 implementation: `SurfaceOccurrenceRelationId` sorted endpoints while separate front-edge-oriented fields could reverse, and Periodic relation identity intentionally excluded its action.
+
 ### Materialize value-returning containers before forming iterator ranges
 
 A range algorithm needs both endpoints from the **same container instance**. If an accessor returns a container by value, `algorithm(owner.values().begin(), owner.values().end())` calls the accessor twice and can hand the algorithm iterators from two different temporaries. Equal contents do not make that a valid range. Materialize once (`const auto values = owner.values();`) or use stable referenced storage, then take both endpoints from that object. `M6-CP1-TB1` lost twelve accepted selector rows because a newly extracted A5 sheet-membership check violated this rule; accepted M5 had already used one materialized vector. Pair static source review with the unchanged accepted-prefix runtime gate so undefined range construction cannot hide behind a lucky green execution.
