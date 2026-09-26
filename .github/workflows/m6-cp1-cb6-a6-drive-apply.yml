@@ -1,0 +1,47 @@
+name: M6 CP1 CB6 A6 Drive Patch Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m6-cp1-cb6-a6-drive-apply.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m6-cp1-cb6-a6-drive-apply
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m6-cp1-cb6-a6-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m6-cp1-cb6-a6-drive-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1eVheJRORXUoWr2oUQPAsBy5ZIvc7NYX9
+      patch_sha256: '11d703404f062e58ddf9816afd4346a71e3d9990b86f3377840705ebbe90b83a'
+      base_sha: ec09a6f5a6aa31c67a182c2d5fa8704562dad136
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: M6-CP1-CB6-A6 extract immutable quotient product
+    secrets: inherit
