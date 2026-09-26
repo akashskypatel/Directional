@@ -2005,7 +2005,8 @@ TEST(M6CP1, CoincidentUnrelatedOccurrencesRemainDistinct) {
       const auto &a = product->occurrences()[first];
       const auto &b = product->occurrences()[second];
       if ((a.point.position - b.point.position).norm() > 1.0e-12 ||
-          a.lattice.latticeCoordinate != b.lattice.latticeCoordinate ||
+          a.placement.lattice.latticeCoordinate !=
+              b.placement.lattice.latticeCoordinate ||
           a.id == b.id) {
         continue;
       }
@@ -2292,6 +2293,362 @@ TEST(M6CP1,
   EXPECT_EQ(duplicateError->code,
             directional::pipeline::SurfaceOccurrenceComplexErrorCode::
                 DuplicateRelationDeclaration);
+}
+
+
+TEST(M6CP1, QuotientClassIdIsSortedMemberSetAndStorageInvariant) {
+  const auto &baselineFixture = square_fixture();
+  const auto sourcePermutedFixture =
+      make_square_fixture_with_reversed_source_face_rows();
+
+  const auto produceQuotient = [](const PhaseFrontFixture &fixture,
+                                  const directional::geometry::SurfacePhaseFrontProduct &front) {
+    auto occurrenceConstruction =
+        directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+            fixture.mesh.V, fixture.mesh.F, front);
+    auto *occurrences =
+        std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+            &occurrenceConstruction);
+    if (occurrences == nullptr) {
+      throw std::runtime_error("A5 occurrence production failed.");
+    }
+    return directional::pipeline::SurfaceQuotientProducer::produce(*occurrences);
+  };
+  const auto classSignature = [](const auto &product) {
+    std::vector<directional::pipeline::SurfaceQuotientClassId> ids;
+    for (const auto &quotient : product.classes()) {
+      EXPECT_FALSE(quotient.id.members.empty());
+      EXPECT_EQ(quotient.id.members, quotient.members);
+      EXPECT_TRUE(std::is_sorted(quotient.id.members.begin(),
+                                 quotient.id.members.end()));
+      EXPECT_EQ(std::adjacent_find(quotient.id.members.begin(),
+                                   quotient.id.members.end()),
+                quotient.id.members.end());
+      ids.push_back(quotient.id);
+    }
+    return ids;
+  };
+  const auto certificateSignature = [](const auto &product) {
+    using Entry = std::tuple<
+        directional::pipeline::SurfaceOccurrenceRelationId,
+        directional::authority::OccurrenceId,
+        directional::authority::OccurrenceId,
+        directional::authority::GridAutomorphism>;
+    std::vector<Entry> signature;
+    for (const auto &certificate : product.relation_certificates()) {
+      EXPECT_EQ(certificate.relation.first, certificate.first);
+      EXPECT_EQ(certificate.relation.second, certificate.second);
+      signature.emplace_back(certificate.relation, certificate.first,
+                             certificate.second,
+                             certificate.relationTransport);
+    }
+    return signature;
+  };
+
+  auto baselineConstruction = produceQuotient(
+      baselineFixture, baselineFixture.network.phaseFront.product());
+  auto sourcePermutedConstruction = produceQuotient(
+      sourcePermutedFixture, sourcePermutedFixture.network.phaseFront.product());
+  const auto *baseline =
+      std::get_if<directional::pipeline::SurfaceQuotientProduct>(
+          &baselineConstruction);
+  const auto *sourcePermuted =
+      std::get_if<directional::pipeline::SurfaceQuotientProduct>(
+          &sourcePermutedConstruction);
+  ASSERT_NE(baseline, nullptr);
+  ASSERT_NE(sourcePermuted, nullptr);
+  EXPECT_EQ(classSignature(*baseline), classSignature(*sourcePermuted));
+  EXPECT_EQ(certificateSignature(*baseline),
+            certificateSignature(*sourcePermuted));
+
+  auto occurrenceConstruction =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+          baselineFixture.mesh.V, baselineFixture.mesh.F,
+          baselineFixture.network.phaseFront.product());
+  const auto *occurrenceProduct =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+          &occurrenceConstruction);
+  ASSERT_NE(occurrenceProduct, nullptr);
+  auto cells = occurrenceProduct->cells();
+  auto occurrences = occurrenceProduct->occurrences();
+  auto relations = occurrenceProduct->owned_relations();
+  std::reverse(cells.begin(), cells.end());
+  std::reverse(occurrences.begin(), occurrences.end());
+  std::reverse(relations.begin(), relations.end());
+  auto reorderedA5 =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::
+          publish_records_for_validation(std::move(cells), std::move(occurrences),
+                                         std::move(relations));
+  const auto *reorderedOccurrences =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(&reorderedA5);
+  ASSERT_NE(reorderedOccurrences, nullptr);
+  auto reorderedConstruction =
+      directional::pipeline::SurfaceQuotientProducer::produce(
+          *reorderedOccurrences);
+  const auto *reordered =
+      std::get_if<directional::pipeline::SurfaceQuotientProduct>(
+          &reorderedConstruction);
+  ASSERT_NE(reordered, nullptr);
+  EXPECT_EQ(classSignature(*baseline), classSignature(*reordered));
+  EXPECT_EQ(certificateSignature(*baseline), certificateSignature(*reordered));
+
+  PhaseFrontDraft swapped =
+      phase_front_draft(baselineFixture.network.phaseFront);
+  int firstEdge = -1;
+  int secondEdge = -1;
+  for (int edge = 0; edge < static_cast<int>(swapped.edges.size()); ++edge) {
+    if (swapped.edges[static_cast<std::size_t>(edge)].oppositeEdge > edge) {
+      firstEdge = edge;
+      secondEdge = swapped.edges[static_cast<std::size_t>(edge)].oppositeEdge;
+      break;
+    }
+  }
+  ASSERT_GE(firstEdge, 0);
+  ASSERT_GE(secondEdge, 0);
+  std::swap(swapped.edges[static_cast<std::size_t>(firstEdge)],
+            swapped.edges[static_cast<std::size_t>(secondEdge)]);
+  swapped.edges[static_cast<std::size_t>(firstEdge)].oppositeEdge = secondEdge;
+  swapped.edges[static_cast<std::size_t>(secondEdge)].oppositeEdge = firstEdge;
+  for (auto &event : swapped.events) {
+    if (event.firstEdge == firstEdge) event.firstEdge = secondEdge;
+    else if (event.firstEdge == secondEdge) event.firstEdge = firstEdge;
+    if (event.secondEdge == firstEdge) event.secondEdge = secondEdge;
+    else if (event.secondEdge == secondEdge) event.secondEdge = firstEdge;
+  }
+  const auto swappedFront = publish_phase_front_draft(std::move(swapped));
+  auto swappedConstruction =
+      produceQuotient(baselineFixture, swappedFront.product());
+  const auto *swappedProduct =
+      std::get_if<directional::pipeline::SurfaceQuotientProduct>(
+          &swappedConstruction);
+  ASSERT_NE(swappedProduct, nullptr);
+  EXPECT_EQ(classSignature(*baseline), classSignature(*swappedProduct));
+  EXPECT_EQ(certificateSignature(*baseline),
+            certificateSignature(*swappedProduct));
+}
+
+TEST(M6CP1, EveryOwnedRelationHasExactlyOneConsumptionRecord) {
+  const auto &fixture = square_fixture();
+  auto occurrenceConstruction =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+          fixture.mesh.V, fixture.mesh.F, fixture.network.phaseFront.product());
+  const auto *occurrences =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+          &occurrenceConstruction);
+  ASSERT_NE(occurrences, nullptr);
+  auto quotientConstruction =
+      directional::pipeline::SurfaceQuotientProducer::produce(*occurrences);
+  const auto *quotient =
+      std::get_if<directional::pipeline::SurfaceQuotientProduct>(
+          &quotientConstruction);
+  ASSERT_NE(quotient, nullptr);
+
+  std::set<directional::pipeline::SurfaceOccurrenceRelationId> owned;
+  std::set<directional::pipeline::SurfaceOccurrenceRelationId> certified;
+  std::set<directional::pipeline::SurfaceOccurrenceRelationId> consumed;
+  for (const auto &relation : occurrences->owned_relations()) owned.insert(relation.id);
+  for (const auto &certificate : quotient->relation_certificates()) {
+    certified.insert(certificate.relation);
+    EXPECT_EQ(certificate.relation.first, certificate.first);
+    EXPECT_EQ(certificate.relation.second, certificate.second);
+  }
+  std::size_t cycleClosing = 0U;
+  for (const auto &row : quotient->relation_consumptions()) {
+    consumed.insert(row.relation);
+    if (row.disposition ==
+        directional::pipeline::QuotientRelationDisposition::CycleClosing) {
+      ++cycleClosing;
+    }
+  }
+  EXPECT_EQ(owned, certified);
+  EXPECT_EQ(owned, consumed);
+  EXPECT_EQ(owned.size(), quotient->relation_certificates().size());
+  EXPECT_EQ(owned.size(), quotient->relation_consumptions().size());
+  EXPECT_GT(cycleClosing, 0U)
+      << "fixture must non-vacuously exercise exact-once cycle consumption";
+}
+
+TEST(M6CP1, QuotientRejectsMissingDuplicateOrConflictingConsumption) {
+  const auto &fixture = square_fixture();
+  auto occurrenceConstruction =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+          fixture.mesh.V, fixture.mesh.F, fixture.network.phaseFront.product());
+  const auto *occurrences =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+          &occurrenceConstruction);
+  ASSERT_NE(occurrences, nullptr);
+  auto quotientConstruction =
+      directional::pipeline::SurfaceQuotientProducer::produce(*occurrences);
+  const auto *quotient =
+      std::get_if<directional::pipeline::SurfaceQuotientProduct>(
+          &quotientConstruction);
+  ASSERT_NE(quotient, nullptr);
+  ASSERT_FALSE(quotient->relation_consumptions().empty());
+
+  auto missingRecords = quotient->validation_records();
+  missingRecords.relationConsumptions.pop_back();
+  auto missing =
+      directional::pipeline::SurfaceQuotientProducer::
+          publish_records_for_validation(*occurrences, std::move(missingRecords));
+  const auto *missingError =
+      std::get_if<directional::pipeline::SurfaceQuotientProductError>(&missing);
+  ASSERT_NE(missingError, nullptr);
+  EXPECT_EQ(missingError->code,
+            directional::pipeline::SurfaceQuotientProductErrorCode::
+                RelationConsumptionMissing);
+
+  auto duplicateRecords = quotient->validation_records();
+  duplicateRecords.relationConsumptions.push_back(
+      duplicateRecords.relationConsumptions.front());
+  auto duplicate =
+      directional::pipeline::SurfaceQuotientProducer::
+          publish_records_for_validation(*occurrences,
+                                         std::move(duplicateRecords));
+  const auto *duplicateError =
+      std::get_if<directional::pipeline::SurfaceQuotientProductError>(&duplicate);
+  ASSERT_NE(duplicateError, nullptr);
+  EXPECT_EQ(duplicateError->code,
+            directional::pipeline::SurfaceQuotientProductErrorCode::
+                RelationConsumptionDuplicate);
+
+  auto conflictRecords = quotient->validation_records();
+  conflictRecords.relationConsumptions.front().disposition =
+      conflictRecords.relationConsumptions.front().disposition ==
+              directional::pipeline::QuotientRelationDisposition::Joining
+          ? directional::pipeline::QuotientRelationDisposition::CycleClosing
+          : directional::pipeline::QuotientRelationDisposition::Joining;
+  auto conflict =
+      directional::pipeline::SurfaceQuotientProducer::
+          publish_records_for_validation(*occurrences,
+                                         std::move(conflictRecords));
+  const auto *conflictError =
+      std::get_if<directional::pipeline::SurfaceQuotientProductError>(&conflict);
+  ASSERT_NE(conflictError, nullptr);
+  EXPECT_EQ(conflictError->code,
+            directional::pipeline::SurfaceQuotientProductErrorCode::
+                RelationConsumptionConflict);
+}
+
+TEST(M6CP1, CycleClosingRelationTransportConflictRejected) {
+  const auto &fixture = square_fixture();
+  auto occurrenceConstruction =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+          fixture.mesh.V, fixture.mesh.F, fixture.network.phaseFront.product());
+  const auto *baselineOccurrences =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+          &occurrenceConstruction);
+  ASSERT_NE(baselineOccurrences, nullptr);
+  auto baselineQuotientConstruction =
+      directional::pipeline::SurfaceQuotientProducer::produce(
+          *baselineOccurrences);
+  const auto *baselineQuotient =
+      std::get_if<directional::pipeline::SurfaceQuotientProduct>(
+          &baselineQuotientConstruction);
+  ASSERT_NE(baselineQuotient, nullptr);
+
+  const auto cycle = std::find_if(
+      baselineQuotient->relation_consumptions().begin(),
+      baselineQuotient->relation_consumptions().end(), [](const auto &row) {
+        return row.disposition ==
+               directional::pipeline::QuotientRelationDisposition::CycleClosing;
+      });
+  ASSERT_NE(cycle, baselineQuotient->relation_consumptions().end());
+
+  auto cells = baselineOccurrences->cells();
+  auto occurrenceRows = baselineOccurrences->occurrences();
+  auto relations = baselineOccurrences->owned_relations();
+  auto relation = std::find_if(relations.begin(), relations.end(),
+                               [&](const auto &candidate) {
+                                 return candidate.id == cycle->relation;
+                               });
+  ASSERT_NE(relation, relations.end());
+  const auto railId = directional::authority::HardRailId::from_index(0, 1);
+  ASSERT_TRUE(railId.has_value());
+  relation->id.kind = directional::pipeline::SurfaceOccurrenceRelationKind::HardRail;
+  relation->id.hardRail = railId.value();
+  relation->id.periodicRelation.reset();
+  relation->evidence.canonicalTransport =
+      directional::authority::GridAutomorphism::identity();
+  relation->evidence.equivalence.kind =
+      directional::geometry::PureQuadEquivalenceKind::HardRail;
+  relation->evidence.equivalence.railId = railId.value();
+  relation->evidence.equivalence.periodicRelation.reset();
+  relation->evidence.equivalence.route = test_interior_route(0, 1, 0);
+  relation->evidence.equivalence.action =
+      directional::authority::GridAutomorphism::identity();
+  ASSERT_TRUE(relation->evidence.firstEndpointSpan.has_value());
+  ASSERT_TRUE(relation->evidence.secondEndpointSpan.has_value());
+  const auto firstOccurrence = std::find_if(
+      occurrenceRows.begin(), occurrenceRows.end(), [&](const auto &candidate) {
+        return candidate.id == relation->id.first;
+      });
+  const auto secondOccurrence = std::find_if(
+      occurrenceRows.begin(), occurrenceRows.end(), [&](const auto &candidate) {
+        return candidate.id == relation->id.second;
+      });
+  ASSERT_NE(firstOccurrence, occurrenceRows.end());
+  ASSERT_NE(secondOccurrence, occurrenceRows.end());
+  directional::geometry::SelectedRelationStep step;
+  step.relationKind = directional::geometry::SelectedRelationKind::HardRail;
+  step.railId = railId.value();
+  step.direction = directional::authority::Orientation::Forward;
+  step.fromChart =
+      relation->evidence.firstEndpointSpan->interiorBinding.chart;
+  step.toChart = relation->evidence.secondEndpointSpan->interiorBinding.chart;
+  step.fromChartComponent = firstOccurrence->chartComponent;
+  step.toChartComponent = secondOccurrence->chartComponent;
+  step.appliedTransport = directional::authority::GridAutomorphism::identity();
+  ASSERT_TRUE(step.valid());
+  relation->evidence.canonicalSelectedStep = step;
+
+  auto syntheticA5 =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::
+          publish_records_for_validation(std::move(cells),
+                                         std::move(occurrenceRows),
+                                         std::move(relations));
+  const auto *cycleOccurrences =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(&syntheticA5);
+  ASSERT_NE(cycleOccurrences, nullptr);
+  auto validCycleConstruction =
+      directional::pipeline::SurfaceQuotientProducer::produce(*cycleOccurrences);
+  const auto *validCycle =
+      std::get_if<directional::pipeline::SurfaceQuotientProduct>(
+          &validCycleConstruction);
+  ASSERT_NE(validCycle, nullptr);
+
+  const auto hardRailCycle = std::find_if(
+      validCycle->relation_consumptions().begin(),
+      validCycle->relation_consumptions().end(), [&](const auto &row) {
+        return row.relation.kind ==
+                   directional::pipeline::SurfaceOccurrenceRelationKind::HardRail &&
+               row.disposition ==
+                   directional::pipeline::QuotientRelationDisposition::CycleClosing;
+      });
+  ASSERT_NE(hardRailCycle, validCycle->relation_consumptions().end());
+
+  auto tampered = validCycle->validation_records();
+  const directional::authority::GridAutomorphism conflictingTransport{
+      directional::authority::QuarterTurn{}, {1, 0}};
+  auto certificate = std::find_if(
+      tampered.relationCertificates.begin(),
+      tampered.relationCertificates.end(), [&](const auto &candidate) {
+        return candidate.relation == hardRailCycle->relation;
+      });
+  ASSERT_NE(certificate, tampered.relationCertificates.end());
+  certificate->relationTransport = conflictingTransport;
+  ASSERT_TRUE(certificate->selectedRelationStep.has_value());
+  certificate->selectedRelationStep->appliedTransport = conflictingTransport;
+  certificate->evidence.action = conflictingTransport;
+
+  auto rejected =
+      directional::pipeline::SurfaceQuotientProducer::
+          publish_records_for_validation(*cycleOccurrences, std::move(tampered));
+  const auto *error =
+      std::get_if<directional::pipeline::SurfaceQuotientProductError>(&rejected);
+  ASSERT_NE(error, nullptr);
+  EXPECT_EQ(error->code,
+            directional::pipeline::SurfaceQuotientProductErrorCode::
+                HolonomyConflict);
 }
 
 int first_edge_of_kind(const SurfacePhaseFrontResult &phaseFront,

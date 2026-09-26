@@ -815,21 +815,17 @@ struct SurfaceOccurrence {
   SurfaceOccurrence(authority::OccurrenceId occurrenceId,
                     geometry::SurfacePoint sourcePoint,
                     authority::SourceSupport sourceSupport,
-                    geometry::SourceProjectionChart sourceChart,
                     geometry::SourceChartComponentIdentity componentIdentity,
-                    geometry::LocalLatticeState latticeState,
                     authority::TopologyRegionId region,
-                    authority::IsolationSheetId sheet,
                     std::vector<authority::IsolationSheetId> wedgeSheets,
                     std::vector<CornerWedgeFaceBinding> wedgeBindings,
                     CornerPlacementProvenance placementProvenance,
                     std::vector<geometry::CornerWedgeIsolationTransition>
                         wedgeIsolation)
       : id(occurrenceId), point(std::move(sourcePoint)),
-        support(std::move(sourceSupport)), chart(std::move(sourceChart)),
-        chartComponent(std::move(componentIdentity)),
-        lattice(std::move(latticeState)), topologyRegion(region),
-        isolationSheet(sheet), cornerWedgeSheets(std::move(wedgeSheets)),
+        support(std::move(sourceSupport)),
+        chartComponent(std::move(componentIdentity)), topologyRegion(region),
+        cornerWedgeSheets(std::move(wedgeSheets)),
         cornerWedgeBindings(std::move(wedgeBindings)),
         placement(std::move(placementProvenance)),
         cornerWedgeIsolation(std::move(wedgeIsolation)) {}
@@ -837,11 +833,8 @@ struct SurfaceOccurrence {
   authority::OccurrenceId id;
   geometry::SurfacePoint point;
   authority::SourceSupport support;
-  geometry::SourceProjectionChart chart;
   geometry::SourceChartComponentIdentity chartComponent;
-  geometry::LocalLatticeState lattice;
   authority::TopologyRegionId topologyRegion;
-  authority::IsolationSheetId isolationSheet;
   std::vector<authority::IsolationSheetId> cornerWedgeSheets;
   std::vector<CornerWedgeFaceBinding> cornerWedgeBindings;
   CornerPlacementProvenance placement;
@@ -866,20 +859,34 @@ struct SurfaceOccurrenceCell {
   std::array<SurfaceOccurrenceDirectedSideAuthority, 4> directedSideAuthority;
 };
 
+struct SurfaceOccurrenceRelationEvidence {
+  std::optional<authority::GridAutomorphism> canonicalTransport;
+  geometry::PureQuadEquivalenceProvenance equivalence;
+  std::optional<geometry::SelectedRelationStep> canonicalSelectedStep;
+  std::optional<SurfaceOccurrenceSideSpan> firstEndpointSpan;
+  std::optional<SurfaceOccurrenceSideSpan> secondEndpointSpan;
+  std::vector<geometry::CornerWedgeIsolationTransition>
+      firstSideIsolationEvidence;
+  std::vector<geometry::CornerWedgeIsolationTransition>
+      secondSideIsolationEvidence;
+};
+
 struct SurfaceOccurrenceRelation {
-  SurfaceOccurrenceRelation(SurfaceOccurrenceRelationId relationId,
-                            authority::OccurrenceId firstEndpoint,
-                            authority::OccurrenceId secondEndpoint,
-                            int firstEdge, int secondEdge)
+  SurfaceOccurrenceRelation(
+      SurfaceOccurrenceRelationId relationId,
+      authority::OccurrenceId firstEndpoint,
+      authority::OccurrenceId secondEndpoint, int firstEdge, int secondEdge,
+      SurfaceOccurrenceRelationEvidence relationEvidence = {})
       : id(std::move(relationId)), firstOccurrence(firstEndpoint),
         secondOccurrence(secondEndpoint), firstFrontEdge(firstEdge),
-        secondFrontEdge(secondEdge) {}
+        secondFrontEdge(secondEdge), evidence(std::move(relationEvidence)) {}
 
   SurfaceOccurrenceRelationId id;
   authority::OccurrenceId firstOccurrence;
   authority::OccurrenceId secondOccurrence;
   int firstFrontEdge = -1;  // representation projection only
   int secondFrontEdge = -1; // representation projection only
+  SurfaceOccurrenceRelationEvidence evidence;
 };
 
 struct OccurrenceComplexCertificate {
@@ -978,6 +985,233 @@ public:
       std::vector<SurfaceOccurrenceCell> cells,
       std::vector<SurfaceOccurrence> occurrences,
       std::vector<SurfaceOccurrenceRelation> relations);
+};
+
+struct SurfaceQuotientClassId {
+  std::vector<authority::OccurrenceId> members;
+
+  auto operator<=>(const SurfaceQuotientClassId &) const = default;
+};
+
+struct QuotientRelationCertificate {
+  QuotientRelationCertificate(
+      SurfaceOccurrenceRelationId relationId, authority::OccurrenceId firstEndpoint,
+      authority::OccurrenceId secondEndpoint)
+      : relation(std::move(relationId)), first(firstEndpoint),
+        second(secondEndpoint) {}
+
+  SurfaceOccurrenceRelationId relation;
+  authority::OccurrenceId first;
+  authority::OccurrenceId second;
+  authority::GridAutomorphism relationTransport =
+      authority::GridAutomorphism::identity();
+  geometry::PureQuadEquivalenceProvenance evidence;
+  std::optional<geometry::SelectedRelationStep> selectedRelationStep;
+
+  auto operator<=>(const QuotientRelationCertificate &) const = default;
+};
+
+enum class QuotientRelationDisposition : std::uint8_t {
+  Joining = 0,
+  CycleClosing = 1,
+};
+
+struct QuotientRelationConsumption {
+  QuotientRelationConsumption(SurfaceOccurrenceRelationId relationId,
+                              QuotientRelationDisposition rowDisposition)
+      : relation(std::move(relationId)), disposition(rowDisposition) {}
+
+  SurfaceOccurrenceRelationId relation;
+  QuotientRelationDisposition disposition =
+      QuotientRelationDisposition::Joining;
+  authority::GridAutomorphism selectedPathTransport =
+      authority::GridAutomorphism::identity();
+
+  auto operator<=>(const QuotientRelationConsumption &) const = default;
+};
+
+struct QuotientForestEdge {
+  QuotientForestEdge(SurfaceOccurrenceRelationId relationId,
+                     authority::OccurrenceId firstEndpoint,
+                     authority::OccurrenceId secondEndpoint)
+      : relation(std::move(relationId)), first(firstEndpoint),
+        second(secondEndpoint) {}
+
+  SurfaceOccurrenceRelationId relation;
+  authority::OccurrenceId first;
+  authority::OccurrenceId second;
+
+  auto operator<=>(const QuotientForestEdge &) const = default;
+};
+
+struct QuotientSelectedPathCertificate {
+  QuotientSelectedPathCertificate(SurfaceQuotientClassId classId,
+                                  authority::OccurrenceId rootOccurrence,
+                                  authority::OccurrenceId targetOccurrence)
+      : quotientClass(std::move(classId)), root(rootOccurrence),
+        target(targetOccurrence) {}
+
+  SurfaceQuotientClassId quotientClass;
+  authority::OccurrenceId root;
+  authority::OccurrenceId target;
+  std::vector<SurfaceOccurrenceRelationId> orderedRelations;
+  std::vector<authority::Orientation> traversalOrientations;
+  authority::GridAutomorphism composedTransport =
+      authority::GridAutomorphism::identity();
+  std::optional<geometry::SelectedRelationPathCertificate> legacyProjection;
+
+  auto operator<=>(const QuotientSelectedPathCertificate &) const = default;
+};
+
+struct SurfaceQuotientClass {
+  SurfaceQuotientClassId id;
+  std::vector<authority::OccurrenceId> members;
+  std::vector<geometry::PureQuadEquivalenceProvenance> equivalences;
+
+  auto operator<=>(const SurfaceQuotientClass &) const = default;
+};
+
+struct SurfaceQuotientCell {
+  SurfaceQuotientCell(
+      authority::CellId cellId,
+      std::array<SurfaceQuotientClassId, 4> cornerClasses)
+      : id(cellId), corners(std::move(cornerClasses)) {}
+
+  authority::CellId id;
+  std::array<SurfaceQuotientClassId, 4> corners;
+
+  auto operator<=>(const SurfaceQuotientCell &) const = default;
+};
+
+struct QuotientCertificate {
+  std::size_t ownedRelationCount = 0U;
+  std::size_t relationCertificateCount = 0U;
+  std::size_t consumptionCount = 0U;
+  std::size_t joiningCount = 0U;
+  std::size_t cycleClosingCount = 0U;
+  bool relationBijection = false;
+  bool exactForest = false;
+  bool exactCycleConsistency = false;
+  bool exactTransitivePartition = false;
+};
+
+struct MaterializationCertificate {
+  std::size_t sourceCellCount = 0U;
+  std::size_t classedCellCount = 0U;
+  std::size_t sourceOccurrenceCount = 0U;
+  std::size_t classMemberCount = 0U;
+  bool exactCellBijection = false;
+  bool exactOccurrencePartition = false;
+  bool noDegenerateClassedQuad = false;
+};
+
+enum class SurfaceQuotientProductErrorCode : std::uint8_t {
+  SourceAuthorityMismatch = 0,
+  RelationEndpointMissing = 1,
+  RelationAuthorityConflict = 2,
+  RelationCertificateMissing = 3,
+  RelationCertificateDuplicate = 4,
+  RelationCertificateConflict = 5,
+  ReciprocalSideAuthorityMismatch = 6,
+  MissingIsolationEvidence = 7,
+  InvalidIsolationEvidence = 8,
+  InvalidHardRailTransport = 9,
+  InvalidPeriodicTransport = 10,
+  UnsupportedSingularityPort = 11,
+  UnownedRelationUse = 12,
+  RelationConsumptionMissing = 13,
+  RelationConsumptionDuplicate = 14,
+  RelationConsumptionConflict = 15,
+  HolonomyConflict = 16,
+  InvalidClassPartition = 17,
+  MissingOccurrenceMember = 18,
+  DegenerateClassedQuad = 19,
+  NonBijectiveMaterialization = 20,
+};
+
+const char *surface_quotient_product_error_name(
+    SurfaceQuotientProductErrorCode code);
+
+struct SurfaceQuotientProductError {
+  SurfaceQuotientProductErrorCode code =
+      SurfaceQuotientProductErrorCode::SourceAuthorityMismatch;
+  std::optional<SurfaceOccurrenceRelationId> relation;
+  std::optional<authority::OccurrenceId> occurrence;
+  std::optional<authority::CellId> cell;
+};
+
+struct SurfaceQuotientValidationRecords {
+  std::vector<QuotientRelationCertificate> relationCertificates;
+  std::vector<QuotientRelationConsumption> relationConsumptions;
+  std::vector<QuotientForestEdge> selectedForest;
+  std::vector<QuotientSelectedPathCertificate> selectedPaths;
+  std::vector<SurfaceQuotientClass> classes;
+  std::vector<SurfaceQuotientCell> classedCells;
+};
+
+class SurfaceQuotientProduct {
+public:
+  [[nodiscard]] const std::vector<QuotientRelationCertificate> &
+  relation_certificates() const noexcept {
+    return records_.relationCertificates;
+  }
+  [[nodiscard]] const std::vector<QuotientRelationConsumption> &
+  relation_consumptions() const noexcept {
+    return records_.relationConsumptions;
+  }
+  [[nodiscard]] const std::vector<QuotientForestEdge> &selected_forest() const
+      noexcept {
+    return records_.selectedForest;
+  }
+  [[nodiscard]] const std::vector<QuotientSelectedPathCertificate> &
+  selected_paths() const noexcept {
+    return records_.selectedPaths;
+  }
+  [[nodiscard]] const std::vector<SurfaceQuotientClass> &classes() const
+      noexcept {
+    return records_.classes;
+  }
+  [[nodiscard]] const std::vector<SurfaceQuotientCell> &classed_cells() const
+      noexcept {
+    return records_.classedCells;
+  }
+  [[nodiscard]] const QuotientCertificate &certificate() const noexcept {
+    return quotientCertificate_;
+  }
+  [[nodiscard]] const MaterializationCertificate &
+  materialization_certificate() const noexcept {
+    return materializationCertificate_;
+  }
+  [[nodiscard]] const SurfaceQuotientValidationRecords &
+  validation_records() const noexcept {
+    return records_;
+  }
+
+private:
+  friend class SurfaceQuotientProducer;
+  SurfaceQuotientProduct(SurfaceQuotientValidationRecords records,
+                         QuotientCertificate quotientCertificate,
+                         MaterializationCertificate materializationCertificate)
+      : records_(std::move(records)),
+        quotientCertificate_(std::move(quotientCertificate)),
+        materializationCertificate_(std::move(materializationCertificate)) {}
+
+  SurfaceQuotientValidationRecords records_;
+  QuotientCertificate quotientCertificate_;
+  MaterializationCertificate materializationCertificate_;
+};
+
+class SurfaceQuotientProducer {
+public:
+  using ConstructionResult =
+      std::variant<SurfaceQuotientProduct, SurfaceQuotientProductError>;
+
+  static ConstructionResult produce(const SurfaceOccurrenceComplex &occurrences);
+
+  // Focused A6 malformed-ledger publication seam. Production uses produce().
+  static ConstructionResult publish_records_for_validation(
+      const SurfaceOccurrenceComplex &occurrences,
+      SurfaceQuotientValidationRecords records);
 };
 
 AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(

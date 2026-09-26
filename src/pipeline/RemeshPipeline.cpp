@@ -3943,13 +3943,81 @@ SurfaceOccurrenceComplexProducer::produce(
       }
       occurrences.emplace_back(
           cornerOccurrences[cornerIndex], std::move(canonicalPoint), support,
-          wedgeBindings.front().chart, wedgeComponent.value(), lattice,
-          cell.sourceTopologyRegion, wedgeBindings.front().sheet,
+          wedgeComponent.value(), cell.sourceTopologyRegion,
           std::move(wedgeSheets), std::move(wedgeBindings),
           CornerPlacementProvenance{selectedFace, lattice},
           std::move(wedgeEvidence));
     }
   }
+
+  std::map<authority::CellId, const SurfaceOccurrenceCell *> publishedCellById;
+  for (const SurfaceOccurrenceCell &cell : cells) {
+    publishedCellById.emplace(cell.id, &cell);
+  }
+  std::map<authority::OccurrenceId, const SurfaceOccurrence *>
+      publishedOccurrenceById;
+  for (const SurfaceOccurrence &occurrence : occurrences) {
+    publishedOccurrenceById.emplace(occurrence.id, &occurrence);
+  }
+  const auto side_authority_for_front_edge =
+      [&](const int frontEdge)
+      -> const SurfaceOccurrenceDirectedSideAuthority * {
+    if (frontEdge < 0 ||
+        frontEdge >= static_cast<int>(phaseFront.edges().size())) {
+      return nullptr;
+    }
+    const auto &edge = phaseFront.edges()[static_cast<std::size_t>(frontEdge)];
+    const auto cell = publishedCellById.find(edge.filledCell);
+    if (cell == publishedCellById.end() || edge.filledSide < 0 ||
+        edge.filledSide >= 4) {
+      return nullptr;
+    }
+    return &cell->second->directedSideAuthority[static_cast<std::size_t>(
+        edge.filledSide)];
+  };
+  const auto endpoint_span_for_front_edge =
+      [&](const int frontEdge, const authority::OccurrenceId occurrence)
+      -> const SurfaceOccurrenceSideSpan * {
+    if (frontEdge < 0 ||
+        frontEdge >= static_cast<int>(phaseFront.edges().size())) {
+      return nullptr;
+    }
+    const auto &edge = phaseFront.edges()[static_cast<std::size_t>(frontEdge)];
+    const auto cell = publishedCellById.find(edge.filledCell);
+    if (cell == publishedCellById.end() || edge.filledSide < 0 ||
+        edge.filledSide >= 4) {
+      return nullptr;
+    }
+    const std::size_t side = static_cast<std::size_t>(edge.filledSide);
+    const auto &sideAuthority = cell->second->directedSideAuthority[side];
+    if (sideAuthority.spans.empty()) return nullptr;
+    if (cell->second->directedSides[side].first == occurrence) {
+      return &sideAuthority.spans.front();
+    }
+    if (cell->second->directedSides[side].second == occurrence) {
+      return &sideAuthority.spans.back();
+    }
+    return nullptr;
+  };
+  std::map<authority::PeriodicRelationId,
+           const geometry::SurfacePeriodicHolonomy *>
+      periodicRelationById;
+  for (const auto &relation : phaseFront.periodicHolonomies()) {
+    periodicRelationById.emplace(relation.id(), &relation);
+  }
+  const auto action_matches = [&](const geometry::LocalLatticeState &first,
+                                  const geometry::LocalLatticeState &second,
+                                  const authority::GridAutomorphism &action) {
+    const authority::LatticeTranslation transformed =
+        action.apply(first.latticeCoordinate);
+    const authority::QuarterTurn transformedRotation =
+        compose(action.rotation,
+                authority::QuarterTurn::from_integer(first.branchRotation));
+    return transformed == second.latticeCoordinate &&
+           transformedRotation ==
+               authority::QuarterTurn::from_integer(second.branchRotation) &&
+           first.scaleLevel == second.scaleLevel;
+  };
 
   std::vector<SurfaceOccurrenceRelation> relations;
   relations.reserve(phaseFront.edges().size());
@@ -4026,18 +4094,1174 @@ SurfaceOccurrenceComplexProducer::produce(
                       secondCell->second[(secondSide + 1U) % 4U]},
             std::pair{firstCell->second[(firstSide + 1U) % 4U],
                       secondCell->second[secondSide]}};
+    geometry::PureQuadEquivalenceProvenance sharedEquivalence;
+    sharedEquivalence.firstFrontEdge = edgeIndex;
+    sharedEquivalence.secondFrontEdge = first.oppositeEdge;
+    std::optional<authority::GridAutomorphism> storageTransport;
+    std::optional<geometry::SelectedRelationKind> selectedKind;
+    if (relationKind == SurfaceOccurrenceRelationKind::OrdinaryFront) {
+      sharedEquivalence.kind = geometry::PureQuadEquivalenceKind::OrdinaryFront;
+      const auto *firstSide = side_authority_for_front_edge(edgeIndex);
+      if (firstSide != nullptr) {
+        sharedEquivalence.isolationTransitions = firstSide->isolationEvidence;
+        for (const auto &transition : sharedEquivalence.isolationTransitions) {
+          sharedEquivalence.isolationSeams.push_back(transition.seam);
+        }
+        std::sort(sharedEquivalence.isolationSeams.begin(),
+                  sharedEquivalence.isolationSeams.end());
+        sharedEquivalence.isolationSeams.erase(
+            std::unique(sharedEquivalence.isolationSeams.begin(),
+                        sharedEquivalence.isolationSeams.end()),
+            sharedEquivalence.isolationSeams.end());
+      }
+      storageTransport = authority::GridAutomorphism::identity();
+    } else if (relationKind == SurfaceOccurrenceRelationKind::HardRail) {
+      sharedEquivalence.kind = geometry::PureQuadEquivalenceKind::HardRail;
+      sharedEquivalence.railId = hardRail;
+      sharedEquivalence.route = first.route;
+      sharedEquivalence.action = first.route.composed_transport();
+      storageTransport = sharedEquivalence.action;
+      selectedKind = geometry::SelectedRelationKind::HardRail;
+    } else if (relationKind == SurfaceOccurrenceRelationKind::Periodic) {
+      sharedEquivalence.kind = geometry::PureQuadEquivalenceKind::PeriodicHolonomy;
+      sharedEquivalence.periodicRelation = periodicRelation;
+      selectedKind = geometry::SelectedRelationKind::PeriodicHolonomy;
+      const auto owner = periodicRelationById.find(*periodicRelation);
+      if (owner != periodicRelationById.end()) {
+        const auto &storedRelation = *owner->second;
+        sharedEquivalence.action = storedRelation.action();
+        sharedEquivalence.route = storedRelation.route();
+        sharedEquivalence.cutRoute = storedRelation.cutRoute();
+        const bool exactA3Pair =
+            first.sharedBoundaryInterval.has_value() &&
+            second.sharedBoundaryInterval.has_value() &&
+            first.sharedBoundaryInterval->boundaryOccurrence.has_value() &&
+            second.sharedBoundaryInterval->boundaryOccurrence.has_value();
+        if (exactA3Pair) {
+          const geometry::SurfaceFrontEdge *forwardEdge = nullptr;
+          const geometry::SurfaceFrontEdge *reverseEdge = nullptr;
+          const bool firstIsForward =
+              first.sharedBoundaryInterval->orientation ==
+              authority::Orientation::Forward;
+          if (firstIsForward &&
+              second.sharedBoundaryInterval->orientation ==
+                  authority::Orientation::Reverse) {
+            forwardEdge = &first;
+            reverseEdge = &second;
+          } else if (!firstIsForward &&
+                     first.sharedBoundaryInterval->orientation ==
+                         authority::Orientation::Reverse &&
+                     second.sharedBoundaryInterval->orientation ==
+                         authority::Orientation::Forward) {
+            forwardEdge = &second;
+            reverseEdge = &first;
+          }
+          if (forwardEdge != nullptr && reverseEdge != nullptr) {
+            const auto semanticAction =
+                geometry::resolve_periodic_relation_semantic_action(
+                    storedRelation, *forwardEdge, *reverseEdge);
+            if (semanticAction.has_value()) {
+              storageTransport =
+                  firstIsForward ? *semanticAction : semanticAction->inverse();
+            }
+          }
+        } else {
+          const authority::GridAutomorphism inverseAction =
+              storedRelation.action().inverse();
+          const bool forward =
+              action_matches(first.fromLattice, second.toLattice,
+                             storedRelation.action()) &&
+              action_matches(first.toLattice, second.fromLattice,
+                             storedRelation.action());
+          const bool reverse =
+              action_matches(first.fromLattice, second.toLattice,
+                             inverseAction) &&
+              action_matches(first.toLattice, second.fromLattice,
+                             inverseAction);
+          if (forward != reverse) {
+            storageTransport = forward ? storedRelation.action() : inverseAction;
+          }
+        }
+      }
+    }
+
+    const auto *firstSide = side_authority_for_front_edge(edgeIndex);
+    const auto *secondSide = side_authority_for_front_edge(first.oppositeEdge);
     for (const auto &[firstOccurrence, secondOccurrence] : endpointPairs) {
-      relations.emplace_back(
+      const SurfaceOccurrenceRelationId relationId =
           make_occurrence_relation_id(relationKind, firstOccurrence,
                                       secondOccurrence, hardRail,
-                                      periodicRelation),
-          firstOccurrence, secondOccurrence, edgeIndex, first.oppositeEdge);
+                                      periodicRelation);
+      SurfaceOccurrenceRelationEvidence evidence;
+      evidence.equivalence = sharedEquivalence;
+      if (firstSide != nullptr) {
+        evidence.firstSideIsolationEvidence = firstSide->isolationEvidence;
+      }
+      if (secondSide != nullptr) {
+        evidence.secondSideIsolationEvidence = secondSide->isolationEvidence;
+      }
+      const auto *firstSpan =
+          endpoint_span_for_front_edge(edgeIndex, firstOccurrence);
+      const auto *secondSpan =
+          endpoint_span_for_front_edge(first.oppositeEdge, secondOccurrence);
+      const bool storageIsCanonical = firstOccurrence == relationId.first;
+      if (storageIsCanonical) {
+        if (firstSpan != nullptr) evidence.firstEndpointSpan = *firstSpan;
+        if (secondSpan != nullptr) evidence.secondEndpointSpan = *secondSpan;
+      } else {
+        if (secondSpan != nullptr) evidence.firstEndpointSpan = *secondSpan;
+        if (firstSpan != nullptr) evidence.secondEndpointSpan = *firstSpan;
+        std::swap(evidence.firstSideIsolationEvidence,
+                  evidence.secondSideIsolationEvidence);
+      }
+      if (storageTransport.has_value()) {
+        evidence.canonicalTransport =
+            storageIsCanonical ? storageTransport
+                               : std::optional<authority::GridAutomorphism>(
+                                     storageTransport->inverse());
+      }
+      if (selectedKind.has_value() && evidence.canonicalTransport.has_value() &&
+          evidence.firstEndpointSpan.has_value() &&
+          evidence.secondEndpointSpan.has_value()) {
+        const auto firstRecord = publishedOccurrenceById.find(relationId.first);
+        const auto secondRecord = publishedOccurrenceById.find(relationId.second);
+        if (firstRecord != publishedOccurrenceById.end() &&
+            secondRecord != publishedOccurrenceById.end()) {
+          geometry::SelectedRelationStep step;
+          step.relationKind = selectedKind.value();
+          step.railId = hardRail;
+          step.periodicRelation = periodicRelation;
+          step.direction = authority::Orientation::Forward;
+          step.fromChart = evidence.firstEndpointSpan->interiorBinding.chart;
+          step.toChart = evidence.secondEndpointSpan->interiorBinding.chart;
+          step.fromChartComponent = firstRecord->second->chartComponent;
+          step.toChartComponent = secondRecord->second->chartComponent;
+          step.appliedTransport = evidence.canonicalTransport.value();
+          evidence.canonicalSelectedStep = std::move(step);
+        }
+      }
+      relations.emplace_back(relationId, firstOccurrence, secondOccurrence,
+                             edgeIndex, first.oppositeEdge,
+                             std::move(evidence));
     }
   }
 
   return publish_records_for_validation(std::move(cells),
                                         std::move(occurrences),
                                         std::move(relations));
+}
+
+const char *surface_quotient_product_error_name(
+    const SurfaceQuotientProductErrorCode code) {
+  switch (code) {
+  case SurfaceQuotientProductErrorCode::SourceAuthorityMismatch:
+    return "QuotientSourceAuthorityMismatch";
+  case SurfaceQuotientProductErrorCode::RelationEndpointMissing:
+    return "QuotientRelationEndpointMissing";
+  case SurfaceQuotientProductErrorCode::RelationAuthorityConflict:
+    return "QuotientRelationAuthorityConflict";
+  case SurfaceQuotientProductErrorCode::RelationCertificateMissing:
+    return "QuotientRelationCertificateMissing";
+  case SurfaceQuotientProductErrorCode::RelationCertificateDuplicate:
+    return "QuotientRelationCertificateDuplicate";
+  case SurfaceQuotientProductErrorCode::RelationCertificateConflict:
+    return "QuotientRelationCertificateConflict";
+  case SurfaceQuotientProductErrorCode::ReciprocalSideAuthorityMismatch:
+    return "QuotientReciprocalSideAuthorityMismatch";
+  case SurfaceQuotientProductErrorCode::MissingIsolationEvidence:
+    return "QuotientMissingIsolationEvidence";
+  case SurfaceQuotientProductErrorCode::InvalidIsolationEvidence:
+    return "QuotientInvalidIsolationEvidence";
+  case SurfaceQuotientProductErrorCode::InvalidHardRailTransport:
+    return "QuotientInvalidHardRailTransport";
+  case SurfaceQuotientProductErrorCode::InvalidPeriodicTransport:
+    return "QuotientInvalidPeriodicTransport";
+  case SurfaceQuotientProductErrorCode::UnsupportedSingularityPort:
+    return "QuotientUnsupportedSingularityPort";
+  case SurfaceQuotientProductErrorCode::UnownedRelationUse:
+    return "QuotientUnownedRelationUse";
+  case SurfaceQuotientProductErrorCode::RelationConsumptionMissing:
+    return "QuotientRelationConsumptionMissing";
+  case SurfaceQuotientProductErrorCode::RelationConsumptionDuplicate:
+    return "QuotientRelationConsumptionDuplicate";
+  case SurfaceQuotientProductErrorCode::RelationConsumptionConflict:
+    return "QuotientRelationConsumptionConflict";
+  case SurfaceQuotientProductErrorCode::HolonomyConflict:
+    return "QuotientHolonomyConflict";
+  case SurfaceQuotientProductErrorCode::InvalidClassPartition:
+    return "QuotientInvalidClassPartition";
+  case SurfaceQuotientProductErrorCode::MissingOccurrenceMember:
+    return "QuotientMissingOccurrenceMember";
+  case SurfaceQuotientProductErrorCode::DegenerateClassedQuad:
+    return "QuotientDegenerateClassedQuad";
+  case SurfaceQuotientProductErrorCode::NonBijectiveMaterialization:
+    return "QuotientNonBijectiveMaterialization";
+  }
+  return "QuotientUnknownFailure";
+}
+
+namespace {
+
+bool reciprocal_isolation_evidence(
+    const std::vector<geometry::CornerWedgeIsolationTransition> &first,
+    const std::vector<geometry::CornerWedgeIsolationTransition> &second) {
+  if (first.size() != second.size()) return false;
+  for (std::size_t index = 0; index < first.size(); ++index) {
+    const auto &a = first[index];
+    const auto &b = second[second.size() - 1U - index];
+    if (a.region != b.region || a.seam != b.seam ||
+        a.fromSheet != b.toSheet || a.toSheet != b.fromSheet) {
+      return false;
+    }
+  }
+  return true;
+}
+
+bool wedge_contains_sheet(const SurfaceOccurrence &occurrence,
+                          const authority::IsolationSheetId sheet) {
+  return std::binary_search(occurrence.cornerWedgeSheets.begin(),
+                            occurrence.cornerWedgeSheets.end(), sheet);
+}
+
+bool span_has_transition(
+    const SurfaceOccurrenceSideSpan &span,
+    const geometry::CornerWedgeIsolationTransition &expected) {
+  return std::find(span.isolationTransitions.begin(),
+                   span.isolationTransitions.end(), expected) !=
+         span.isolationTransitions.end();
+}
+
+geometry::SelectedRelationStep reverse_selected_relation_step(
+    const geometry::SelectedRelationStep &forward) {
+  geometry::SelectedRelationStep reverse = forward;
+  reverse.direction = authority::reverse_orientation(forward.direction);
+  std::swap(reverse.fromChart, reverse.toChart);
+  std::swap(reverse.fromChartComponent, reverse.toChartComponent);
+  reverse.appliedTransport = forward.appliedTransport.inverse();
+  return reverse;
+}
+
+struct QuotientForestTraversalEdge {
+  authority::OccurrenceId next;
+  SurfaceOccurrenceRelationId relation;
+  authority::Orientation orientation;
+};
+
+std::optional<std::vector<QuotientForestTraversalEdge>> quotient_forest_path(
+    const authority::OccurrenceId start, const authority::OccurrenceId target,
+    const std::vector<QuotientForestEdge> &forest) {
+  std::map<authority::OccurrenceId, std::vector<QuotientForestTraversalEdge>>
+      adjacency;
+  for (const QuotientForestEdge &edge : forest) {
+    adjacency[edge.first].push_back(
+        {edge.second, edge.relation, authority::Orientation::Forward});
+    adjacency[edge.second].push_back(
+        {edge.first, edge.relation, authority::Orientation::Reverse});
+  }
+  for (auto &[occurrence, edges] : adjacency) {
+    (void)occurrence;
+    std::sort(edges.begin(), edges.end(), [](const auto &a, const auto &b) {
+      return std::tie(a.next, a.relation, a.orientation) <
+             std::tie(b.next, b.relation, b.orientation);
+    });
+  }
+
+  struct Parent {
+    authority::OccurrenceId previous;
+    SurfaceOccurrenceRelationId relation;
+    authority::Orientation orientation;
+  };
+  std::map<authority::OccurrenceId, std::optional<Parent>> parent;
+  parent.emplace(start, std::nullopt);
+  std::vector<authority::OccurrenceId> stack{start};
+  while (!stack.empty() && parent.count(target) == 0U) {
+    const authority::OccurrenceId current = stack.back();
+    stack.pop_back();
+    const auto adjacent = adjacency.find(current);
+    if (adjacent == adjacency.end()) continue;
+    for (auto it = adjacent->second.rbegin(); it != adjacent->second.rend();
+         ++it) {
+      if (parent.count(it->next) != 0U) continue;
+      parent.emplace(it->next,
+                     Parent{current, it->relation, it->orientation});
+      stack.push_back(it->next);
+    }
+  }
+  if (parent.count(target) == 0U) return std::nullopt;
+
+  std::vector<QuotientForestTraversalEdge> reversed;
+  for (authority::OccurrenceId current = target; current != start;) {
+    const auto found = parent.find(current);
+    if (found == parent.end() || !found->second.has_value()) {
+      return std::nullopt;
+    }
+    const Parent &entry = found->second.value();
+    reversed.push_back({current, entry.relation, entry.orientation});
+    current = entry.previous;
+  }
+  std::reverse(reversed.begin(), reversed.end());
+  return reversed;
+}
+
+} // namespace
+
+SurfaceQuotientProducer::ConstructionResult SurfaceQuotientProducer::produce(
+    const SurfaceOccurrenceComplex &occurrenceComplex) {
+  SurfaceQuotientValidationRecords records;
+  const auto &occurrences = occurrenceComplex.occurrences();
+  const auto &relations = occurrenceComplex.owned_relations();
+  if (occurrences.empty() || occurrenceComplex.cells().empty()) {
+    SurfaceQuotientProductError error;
+    error.code = SurfaceQuotientProductErrorCode::SourceAuthorityMismatch;
+    return error;
+  }
+
+  std::map<authority::OccurrenceId, const SurfaceOccurrence *> occurrenceById;
+  for (const SurfaceOccurrence &occurrence : occurrences) {
+    if (!occurrenceById.emplace(occurrence.id, &occurrence).second) {
+      SurfaceQuotientProductError error;
+      error.code = SurfaceQuotientProductErrorCode::SourceAuthorityMismatch;
+      error.occurrence = occurrence.id;
+      return error;
+    }
+  }
+
+  std::vector<const SurfaceOccurrenceRelation *> orderedRelations;
+  orderedRelations.reserve(relations.size());
+  for (const SurfaceOccurrenceRelation &relation : relations) {
+    orderedRelations.push_back(&relation);
+  }
+  std::sort(orderedRelations.begin(), orderedRelations.end(),
+            [](const auto *first, const auto *second) {
+              return first->id < second->id;
+            });
+
+  std::map<authority::OccurrenceId, int> occurrenceIndex;
+  for (int index = 0; index < static_cast<int>(occurrences.size()); ++index) {
+    occurrenceIndex.emplace(occurrences[static_cast<std::size_t>(index)].id,
+                            index);
+  }
+  std::vector<int> parent(occurrences.size());
+  std::vector<int> rank(occurrences.size(), 0);
+  std::iota(parent.begin(), parent.end(), 0);
+  const auto find_root = [&](int value) {
+    int root = value;
+    while (parent[static_cast<std::size_t>(root)] != root) {
+      root = parent[static_cast<std::size_t>(root)];
+    }
+    while (parent[static_cast<std::size_t>(value)] != value) {
+      const int next = parent[static_cast<std::size_t>(value)];
+      parent[static_cast<std::size_t>(value)] = root;
+      value = next;
+    }
+    return root;
+  };
+  const auto unite = [&](int first, int second) {
+    int firstRoot = find_root(first);
+    int secondRoot = find_root(second);
+    if (firstRoot == secondRoot) return false;
+    if (rank[static_cast<std::size_t>(firstRoot)] <
+        rank[static_cast<std::size_t>(secondRoot)]) {
+      std::swap(firstRoot, secondRoot);
+    }
+    parent[static_cast<std::size_t>(secondRoot)] = firstRoot;
+    if (rank[static_cast<std::size_t>(firstRoot)] ==
+        rank[static_cast<std::size_t>(secondRoot)]) {
+      ++rank[static_cast<std::size_t>(firstRoot)];
+    }
+    return true;
+  };
+
+  std::map<SurfaceOccurrenceRelationId, QuotientRelationCertificate>
+      certificateByRelation;
+  for (const SurfaceOccurrenceRelation *relation : orderedRelations) {
+    const auto firstOccurrence = occurrenceById.find(relation->id.first);
+    const auto secondOccurrence = occurrenceById.find(relation->id.second);
+    if (firstOccurrence == occurrenceById.end() ||
+        secondOccurrence == occurrenceById.end()) {
+      SurfaceQuotientProductError error;
+      error.code = SurfaceQuotientProductErrorCode::RelationEndpointMissing;
+      error.relation = relation->id;
+      return error;
+    }
+    if (firstOccurrence->second->support != secondOccurrence->second->support) {
+      SurfaceQuotientProductError error;
+      error.code = SurfaceQuotientProductErrorCode::RelationAuthorityConflict;
+      error.relation = relation->id;
+      return error;
+    }
+
+    QuotientRelationCertificate certificate(relation->id, relation->id.first,
+                                            relation->id.second);
+    certificate.evidence = relation->evidence.equivalence;
+    certificate.selectedRelationStep =
+        relation->evidence.canonicalSelectedStep;
+
+    switch (relation->id.kind) {
+    case SurfaceOccurrenceRelationKind::OrdinaryFront: {
+      const auto &firstLattice = firstOccurrence->second->placement.lattice;
+      const auto &secondLattice = secondOccurrence->second->placement.lattice;
+      const bool latticeEqual =
+          firstLattice.sourceChart.has_value() &&
+          secondLattice.sourceChart.has_value() &&
+          firstLattice.latticeCoordinate == secondLattice.latticeCoordinate &&
+          firstLattice.branchRotation == secondLattice.branchRotation &&
+          firstLattice.scaleLevel == secondLattice.scaleLevel &&
+          firstLattice.sourceChart.value() == secondLattice.sourceChart.value() &&
+          (firstLattice.phase - secondLattice.phase).norm() <= 1.0e-10;
+      if (relation->id.hardRail.has_value() ||
+          relation->id.periodicRelation.has_value() ||
+          !relation->evidence.canonicalTransport.has_value() ||
+          relation->evidence.canonicalTransport.value() !=
+              authority::GridAutomorphism::identity() || !latticeEqual ||
+          certificate.evidence.kind !=
+              geometry::PureQuadEquivalenceKind::OrdinaryFront) {
+        SurfaceQuotientProductError error;
+        error.code = SurfaceQuotientProductErrorCode::RelationCertificateConflict;
+        error.relation = relation->id;
+        return error;
+      }
+      if (!relation->evidence.firstEndpointSpan.has_value() ||
+          !relation->evidence.secondEndpointSpan.has_value()) {
+        SurfaceQuotientProductError error;
+        error.code =
+            SurfaceQuotientProductErrorCode::ReciprocalSideAuthorityMismatch;
+        error.relation = relation->id;
+        return error;
+      }
+      if (!reciprocal_isolation_evidence(
+              relation->evidence.firstSideIsolationEvidence,
+              relation->evidence.secondSideIsolationEvidence)) {
+        SurfaceQuotientProductError error;
+        error.code =
+            SurfaceQuotientProductErrorCode::ReciprocalSideAuthorityMismatch;
+        error.relation = relation->id;
+        return error;
+      }
+      const SurfaceOccurrenceSideSpan &firstSpan =
+          relation->evidence.firstEndpointSpan.value();
+      const SurfaceOccurrenceSideSpan &secondSpan =
+          relation->evidence.secondEndpointSpan.value();
+      if (firstSpan.collinearEdge.has_value() !=
+          secondSpan.collinearEdge.has_value()) {
+        SurfaceQuotientProductError error;
+        error.code =
+            SurfaceQuotientProductErrorCode::ReciprocalSideAuthorityMismatch;
+        error.relation = relation->id;
+        return error;
+      }
+      if (!firstSpan.collinearEdge.has_value()) {
+        const auto sheet = firstSpan.interiorBinding.sheet;
+        if (sheet != secondSpan.interiorBinding.sheet ||
+            !wedge_contains_sheet(*firstOccurrence->second, sheet) ||
+            !wedge_contains_sheet(*secondOccurrence->second, sheet)) {
+          SurfaceQuotientProductError error;
+          error.code =
+              SurfaceQuotientProductErrorCode::ReciprocalSideAuthorityMismatch;
+          error.relation = relation->id;
+          return error;
+        }
+      } else if (firstSpan.collinearEdge != secondSpan.collinearEdge) {
+        SurfaceQuotientProductError error;
+        error.code =
+            SurfaceQuotientProductErrorCode::ReciprocalSideAuthorityMismatch;
+        error.relation = relation->id;
+        return error;
+      } else if (firstSpan.interiorBinding.sheet !=
+                 secondSpan.interiorBinding.sheet) {
+        const geometry::CornerWedgeIsolationTransition forward{
+            firstOccurrence->second->topologyRegion,
+            firstSpan.collinearEdge.value(), firstSpan.interiorBinding.sheet,
+            secondSpan.interiorBinding.sheet};
+        const geometry::CornerWedgeIsolationTransition reverse{
+            firstOccurrence->second->topologyRegion,
+            firstSpan.collinearEdge.value(), secondSpan.interiorBinding.sheet,
+            firstSpan.interiorBinding.sheet};
+        if (!span_has_transition(firstSpan, forward) ||
+            !span_has_transition(secondSpan, reverse)) {
+          SurfaceQuotientProductError error;
+          error.code = SurfaceQuotientProductErrorCode::MissingIsolationEvidence;
+          error.relation = relation->id;
+          return error;
+        }
+      }
+      certificate.relationTransport = authority::GridAutomorphism::identity();
+      certificate.selectedRelationStep.reset();
+      break;
+    }
+    case SurfaceOccurrenceRelationKind::HardRail:
+      if (!relation->id.hardRail.has_value() ||
+          relation->id.periodicRelation.has_value() ||
+          certificate.evidence.kind !=
+              geometry::PureQuadEquivalenceKind::HardRail ||
+          certificate.evidence.railId != relation->id.hardRail ||
+          certificate.evidence.route.empty() ||
+          !relation->evidence.canonicalTransport.has_value() ||
+          !certificate.selectedRelationStep.has_value() ||
+          !certificate.selectedRelationStep->valid() ||
+          certificate.selectedRelationStep->relationKind !=
+              geometry::SelectedRelationKind::HardRail ||
+          certificate.selectedRelationStep->railId != relation->id.hardRail ||
+          certificate.selectedRelationStep->appliedTransport !=
+              relation->evidence.canonicalTransport.value()) {
+        SurfaceQuotientProductError error;
+        error.code = SurfaceQuotientProductErrorCode::InvalidHardRailTransport;
+        error.relation = relation->id;
+        return error;
+      }
+      certificate.relationTransport =
+          relation->evidence.canonicalTransport.value();
+      break;
+    case SurfaceOccurrenceRelationKind::Periodic:
+      if (relation->id.hardRail.has_value() ||
+          !relation->id.periodicRelation.has_value() ||
+          certificate.evidence.kind !=
+              geometry::PureQuadEquivalenceKind::PeriodicHolonomy ||
+          certificate.evidence.periodicRelation !=
+              relation->id.periodicRelation ||
+          certificate.evidence.route.empty() ||
+          certificate.evidence.cutRoute.empty() ||
+          !relation->evidence.canonicalTransport.has_value() ||
+          !certificate.selectedRelationStep.has_value() ||
+          !certificate.selectedRelationStep->valid() ||
+          certificate.selectedRelationStep->relationKind !=
+              geometry::SelectedRelationKind::PeriodicHolonomy ||
+          certificate.selectedRelationStep->periodicRelation !=
+              relation->id.periodicRelation ||
+          certificate.selectedRelationStep->appliedTransport !=
+              relation->evidence.canonicalTransport.value()) {
+        SurfaceQuotientProductError error;
+        error.code = SurfaceQuotientProductErrorCode::InvalidPeriodicTransport;
+        error.relation = relation->id;
+        return error;
+      }
+      certificate.relationTransport =
+          relation->evidence.canonicalTransport.value();
+      break;
+    case SurfaceOccurrenceRelationKind::SingularityPort: {
+      SurfaceQuotientProductError error;
+      error.code = SurfaceQuotientProductErrorCode::UnsupportedSingularityPort;
+      error.relation = relation->id;
+      return error;
+    }
+    }
+
+    if (!certificateByRelation.emplace(relation->id, certificate).second) {
+      SurfaceQuotientProductError error;
+      error.code = SurfaceQuotientProductErrorCode::RelationCertificateDuplicate;
+      error.relation = relation->id;
+      return error;
+    }
+    records.relationCertificates.push_back(certificate);
+
+    const int firstIndex = occurrenceIndex.at(relation->id.first);
+    const int secondIndex = occurrenceIndex.at(relation->id.second);
+    if (unite(firstIndex, secondIndex)) {
+      records.relationConsumptions.emplace_back(
+          relation->id, QuotientRelationDisposition::Joining);
+      records.relationConsumptions.back().selectedPathTransport =
+          certificate.relationTransport;
+      records.selectedForest.emplace_back(relation->id, relation->id.first,
+                                          relation->id.second);
+    } else {
+      const auto path = quotient_forest_path(relation->id.first,
+                                             relation->id.second,
+                                             records.selectedForest);
+      if (!path.has_value()) {
+        SurfaceQuotientProductError error;
+        error.code = SurfaceQuotientProductErrorCode::RelationConsumptionConflict;
+        error.relation = relation->id;
+        return error;
+      }
+      authority::GridAutomorphism pathTransport =
+          authority::GridAutomorphism::identity();
+      for (const QuotientForestTraversalEdge &edge : path.value()) {
+        const auto prior = certificateByRelation.find(edge.relation);
+        if (prior == certificateByRelation.end()) {
+          SurfaceQuotientProductError error;
+          error.code = SurfaceQuotientProductErrorCode::RelationCertificateMissing;
+          error.relation = edge.relation;
+          return error;
+        }
+        authority::GridAutomorphism transport =
+            prior->second.relationTransport;
+        if (edge.orientation == authority::Orientation::Reverse) {
+          transport = transport.inverse();
+        }
+        pathTransport = compose(transport, pathTransport);
+      }
+      records.relationConsumptions.emplace_back(
+          relation->id, QuotientRelationDisposition::CycleClosing);
+      records.relationConsumptions.back().selectedPathTransport = pathTransport;
+      if (pathTransport != certificate.relationTransport) {
+        SurfaceQuotientProductError error;
+        error.code = SurfaceQuotientProductErrorCode::HolonomyConflict;
+        error.relation = relation->id;
+        return error;
+      }
+    }
+  }
+
+  std::map<int, std::vector<authority::OccurrenceId>> membersByRoot;
+  for (const auto &[id, index] : occurrenceIndex) {
+    membersByRoot[find_root(index)].push_back(id);
+  }
+  std::map<authority::OccurrenceId, SurfaceQuotientClassId> classByOccurrence;
+  for (auto &[root, members] : membersByRoot) {
+    (void)root;
+    std::sort(members.begin(), members.end());
+    members.erase(std::unique(members.begin(), members.end()), members.end());
+    SurfaceQuotientClass quotient;
+    quotient.id.members = members;
+    quotient.members = members;
+    for (const authority::OccurrenceId member : members) {
+      classByOccurrence.emplace(member, quotient.id);
+      const auto &occurrence = *occurrenceById.at(member);
+      if (!occurrence.cornerWedgeIsolation.empty()) {
+        geometry::PureQuadEquivalenceProvenance equivalence;
+        equivalence.kind =
+            geometry::PureQuadEquivalenceKind::CornerWedgeIsolation;
+        equivalence.isolationTransitions = occurrence.cornerWedgeIsolation;
+        for (const auto &transition : equivalence.isolationTransitions) {
+          equivalence.isolationSeams.push_back(transition.seam);
+        }
+        std::sort(equivalence.isolationSeams.begin(),
+                  equivalence.isolationSeams.end());
+        equivalence.isolationSeams.erase(
+            std::unique(equivalence.isolationSeams.begin(),
+                        equivalence.isolationSeams.end()),
+            equivalence.isolationSeams.end());
+        quotient.equivalences.push_back(std::move(equivalence));
+      }
+    }
+    for (const QuotientRelationCertificate &certificate :
+         records.relationCertificates) {
+      if (std::binary_search(members.begin(), members.end(), certificate.first) &&
+          std::binary_search(members.begin(), members.end(), certificate.second)) {
+        quotient.equivalences.push_back(certificate.evidence);
+      }
+    }
+    std::sort(quotient.equivalences.begin(), quotient.equivalences.end());
+    quotient.equivalences.erase(
+        std::unique(quotient.equivalences.begin(), quotient.equivalences.end()),
+        quotient.equivalences.end());
+    records.classes.push_back(std::move(quotient));
+  }
+  std::sort(records.classes.begin(), records.classes.end(),
+            [](const auto &first, const auto &second) {
+              return first.id < second.id;
+            });
+
+  for (const SurfaceQuotientClass &quotient : records.classes) {
+    const authority::OccurrenceId root = quotient.id.members.front();
+    for (const authority::OccurrenceId target : quotient.id.members) {
+      if (target == root) continue;
+      const auto path =
+          quotient_forest_path(root, target, records.selectedForest);
+      if (!path.has_value()) {
+        SurfaceQuotientProductError error;
+        error.code = SurfaceQuotientProductErrorCode::InvalidClassPartition;
+        error.occurrence = target;
+        return error;
+      }
+      QuotientSelectedPathCertificate pathCertificate(quotient.id, root, target);
+      geometry::SelectedRelationPathCertificate legacy;
+      legacy.sourceSupport = occurrenceById.at(root)->support;
+      legacy.composedTransport = authority::GridAutomorphism::identity();
+      bool hasProjectedStep = false;
+      for (const QuotientForestTraversalEdge &edge : path.value()) {
+        const auto certificate = certificateByRelation.find(edge.relation);
+        if (certificate == certificateByRelation.end()) {
+          SurfaceQuotientProductError error;
+          error.code = SurfaceQuotientProductErrorCode::RelationCertificateMissing;
+          error.relation = edge.relation;
+          return error;
+        }
+        pathCertificate.orderedRelations.push_back(edge.relation);
+        pathCertificate.traversalOrientations.push_back(edge.orientation);
+        authority::GridAutomorphism transport =
+            certificate->second.relationTransport;
+        std::optional<geometry::SelectedRelationStep> projectedStep =
+            certificate->second.selectedRelationStep;
+        if (edge.orientation == authority::Orientation::Reverse) {
+          transport = transport.inverse();
+          if (projectedStep.has_value()) {
+            projectedStep = reverse_selected_relation_step(projectedStep.value());
+          }
+        }
+        pathCertificate.composedTransport =
+            compose(transport, pathCertificate.composedTransport);
+        if (projectedStep.has_value()) {
+          if (!legacy.orderedSteps.empty() &&
+              legacy.orderedSteps.back().toChartComponent !=
+                  projectedStep->fromChartComponent) {
+            SurfaceQuotientProductError error;
+            error.code = SurfaceQuotientProductErrorCode::RelationCertificateConflict;
+            error.relation = edge.relation;
+            return error;
+          }
+          legacy.composedTransport =
+              compose(projectedStep->appliedTransport, legacy.composedTransport);
+          legacy.orderedSteps.push_back(projectedStep.value());
+          hasProjectedStep = true;
+        }
+      }
+      if (hasProjectedStep) {
+        legacy.startChartComponent = legacy.orderedSteps.front().fromChartComponent;
+        legacy.endChartComponent = legacy.orderedSteps.back().toChartComponent;
+        legacy.startChart = legacy.orderedSteps.front().fromChart;
+        legacy.endChart = legacy.orderedSteps.back().toChart;
+        if (!legacy.valid()) {
+          SurfaceQuotientProductError error;
+          error.code = SurfaceQuotientProductErrorCode::RelationCertificateConflict;
+          return error;
+        }
+        pathCertificate.legacyProjection = std::move(legacy);
+      }
+      records.selectedPaths.push_back(std::move(pathCertificate));
+    }
+  }
+  std::sort(records.selectedPaths.begin(), records.selectedPaths.end());
+
+  for (const SurfaceOccurrenceCell &cell : occurrenceComplex.cells()) {
+    std::array<SurfaceQuotientClassId, 4> cornerClasses = {
+        classByOccurrence.at(cell.cornerOccurrences[0]),
+        classByOccurrence.at(cell.cornerOccurrences[1]),
+        classByOccurrence.at(cell.cornerOccurrences[2]),
+        classByOccurrence.at(cell.cornerOccurrences[3])};
+    records.classedCells.emplace_back(cell.id, std::move(cornerClasses));
+  }
+  std::sort(records.classedCells.begin(), records.classedCells.end(),
+            [](const auto &first, const auto &second) {
+              return first.id < second.id;
+            });
+
+  return publish_records_for_validation(occurrenceComplex, std::move(records));
+}
+
+SurfaceQuotientProducer::ConstructionResult
+SurfaceQuotientProducer::publish_records_for_validation(
+    const SurfaceOccurrenceComplex &occurrenceComplex,
+    SurfaceQuotientValidationRecords records) {
+  SurfaceQuotientProductError error;
+  const auto &ownedRelations = occurrenceComplex.owned_relations();
+  const auto &occurrences = occurrenceComplex.occurrences();
+
+  std::map<authority::OccurrenceId, const SurfaceOccurrence *> occurrenceById;
+  for (const SurfaceOccurrence &occurrence : occurrences) {
+    if (!occurrenceById.emplace(occurrence.id, &occurrence).second) {
+      error.code = SurfaceQuotientProductErrorCode::SourceAuthorityMismatch;
+      error.occurrence = occurrence.id;
+      return error;
+    }
+  }
+  std::set<SurfaceOccurrenceRelationId> ownedIds;
+  for (const SurfaceOccurrenceRelation &relation : ownedRelations) {
+    ownedIds.insert(relation.id);
+  }
+
+  std::map<SurfaceOccurrenceRelationId, const QuotientRelationCertificate *>
+      certificateById;
+  for (const QuotientRelationCertificate &certificate :
+       records.relationCertificates) {
+    if (ownedIds.count(certificate.relation) == 0U) {
+      error.code = SurfaceQuotientProductErrorCode::UnownedRelationUse;
+      error.relation = certificate.relation;
+      return error;
+    }
+    if (!certificateById.emplace(certificate.relation, &certificate).second) {
+      error.code = SurfaceQuotientProductErrorCode::RelationCertificateDuplicate;
+      error.relation = certificate.relation;
+      return error;
+    }
+    if (certificate.first != certificate.relation.first ||
+        certificate.second != certificate.relation.second ||
+        occurrenceById.count(certificate.first) == 0U ||
+        occurrenceById.count(certificate.second) == 0U) {
+      error.code = SurfaceQuotientProductErrorCode::RelationCertificateConflict;
+      error.relation = certificate.relation;
+      return error;
+    }
+    if (certificate.relation.kind ==
+            SurfaceOccurrenceRelationKind::OrdinaryFront &&
+        certificate.relationTransport != authority::GridAutomorphism::identity()) {
+      error.code = SurfaceQuotientProductErrorCode::RelationCertificateConflict;
+      error.relation = certificate.relation;
+      return error;
+    }
+  }
+  for (const SurfaceOccurrenceRelationId &owned : ownedIds) {
+    if (certificateById.count(owned) == 0U) {
+      error.code = SurfaceQuotientProductErrorCode::RelationCertificateMissing;
+      error.relation = owned;
+      return error;
+    }
+  }
+
+  std::map<SurfaceOccurrenceRelationId, const QuotientRelationConsumption *>
+      consumptionById;
+  for (const QuotientRelationConsumption &consumption :
+       records.relationConsumptions) {
+    if (ownedIds.count(consumption.relation) == 0U) {
+      error.code = SurfaceQuotientProductErrorCode::UnownedRelationUse;
+      error.relation = consumption.relation;
+      return error;
+    }
+    if (!consumptionById.emplace(consumption.relation, &consumption).second) {
+      error.code = SurfaceQuotientProductErrorCode::RelationConsumptionDuplicate;
+      error.relation = consumption.relation;
+      return error;
+    }
+  }
+  for (const SurfaceOccurrenceRelationId &owned : ownedIds) {
+    if (consumptionById.count(owned) == 0U) {
+      error.code = SurfaceQuotientProductErrorCode::RelationConsumptionMissing;
+      error.relation = owned;
+      return error;
+    }
+  }
+
+  std::map<authority::OccurrenceId, int> dispositionIndex;
+  for (int index = 0; index < static_cast<int>(occurrences.size()); ++index) {
+    dispositionIndex.emplace(occurrences[static_cast<std::size_t>(index)].id,
+                             index);
+  }
+  std::vector<int> dispositionParent(occurrences.size());
+  std::vector<int> dispositionRank(occurrences.size(), 0);
+  std::iota(dispositionParent.begin(), dispositionParent.end(), 0);
+  const auto disposition_find = [&](int value) {
+    int root = value;
+    while (dispositionParent[static_cast<std::size_t>(root)] != root) {
+      root = dispositionParent[static_cast<std::size_t>(root)];
+    }
+    while (dispositionParent[static_cast<std::size_t>(value)] != value) {
+      const int next = dispositionParent[static_cast<std::size_t>(value)];
+      dispositionParent[static_cast<std::size_t>(value)] = root;
+      value = next;
+    }
+    return root;
+  };
+  const auto disposition_unite = [&](const authority::OccurrenceId first,
+                                     const authority::OccurrenceId second) {
+    int firstRoot = disposition_find(dispositionIndex.at(first));
+    int secondRoot = disposition_find(dispositionIndex.at(second));
+    if (firstRoot == secondRoot) return false;
+    if (dispositionRank[static_cast<std::size_t>(firstRoot)] <
+        dispositionRank[static_cast<std::size_t>(secondRoot)]) {
+      std::swap(firstRoot, secondRoot);
+    }
+    dispositionParent[static_cast<std::size_t>(secondRoot)] = firstRoot;
+    if (dispositionRank[static_cast<std::size_t>(firstRoot)] ==
+        dispositionRank[static_cast<std::size_t>(secondRoot)]) {
+      ++dispositionRank[static_cast<std::size_t>(firstRoot)];
+    }
+    return true;
+  };
+  for (const auto &[relation, certificate] : certificateById) {
+    const bool joining = disposition_unite(certificate->first, certificate->second);
+    const auto expectedDisposition =
+        joining ? QuotientRelationDisposition::Joining
+                : QuotientRelationDisposition::CycleClosing;
+    const auto *consumption = consumptionById.at(relation);
+    if (consumption->disposition != expectedDisposition ||
+        (joining && consumption->selectedPathTransport !=
+                        certificate->relationTransport)) {
+      error.code = SurfaceQuotientProductErrorCode::RelationConsumptionConflict;
+      error.relation = relation;
+      return error;
+    }
+  }
+
+  std::set<SurfaceOccurrenceRelationId> forestRelations;
+  for (const QuotientForestEdge &edge : records.selectedForest) {
+    const auto consumption = consumptionById.find(edge.relation);
+    const auto certificate = certificateById.find(edge.relation);
+    if (consumption == consumptionById.end() ||
+        certificate == certificateById.end() ||
+        consumption->second->disposition !=
+            QuotientRelationDisposition::Joining ||
+        edge.first != certificate->second->first ||
+        edge.second != certificate->second->second ||
+        !forestRelations.insert(edge.relation).second) {
+      error.code = SurfaceQuotientProductErrorCode::RelationConsumptionConflict;
+      error.relation = edge.relation;
+      return error;
+    }
+  }
+  for (const auto &[relation, consumption] : consumptionById) {
+    const bool inForest = forestRelations.count(relation) != 0U;
+    if ((consumption->disposition == QuotientRelationDisposition::Joining) !=
+        inForest) {
+      error.code = SurfaceQuotientProductErrorCode::RelationConsumptionConflict;
+      error.relation = relation;
+      return error;
+    }
+    if (consumption->disposition == QuotientRelationDisposition::CycleClosing) {
+      const auto path = quotient_forest_path(
+          certificateById.at(relation)->first,
+          certificateById.at(relation)->second, records.selectedForest);
+      if (!path.has_value()) {
+        error.code = SurfaceQuotientProductErrorCode::RelationConsumptionConflict;
+        error.relation = relation;
+        return error;
+      }
+      authority::GridAutomorphism pathTransport =
+          authority::GridAutomorphism::identity();
+      for (const QuotientForestTraversalEdge &edge : path.value()) {
+        const auto pathCertificate = certificateById.find(edge.relation);
+        if (pathCertificate == certificateById.end()) {
+          error.code = SurfaceQuotientProductErrorCode::RelationCertificateMissing;
+          error.relation = edge.relation;
+          return error;
+        }
+        authority::GridAutomorphism transport =
+            pathCertificate->second->relationTransport;
+        if (edge.orientation == authority::Orientation::Reverse) {
+          transport = transport.inverse();
+        }
+        pathTransport = compose(transport, pathTransport);
+      }
+      if (pathTransport != consumption->selectedPathTransport) {
+        error.code = SurfaceQuotientProductErrorCode::RelationConsumptionConflict;
+        error.relation = relation;
+        return error;
+      }
+      if (pathTransport != certificateById.at(relation)->relationTransport) {
+        error.code = SurfaceQuotientProductErrorCode::HolonomyConflict;
+        error.relation = relation;
+        return error;
+      }
+    }
+  }
+
+  std::set<authority::OccurrenceId> partitionedOccurrences;
+  std::map<authority::OccurrenceId, SurfaceQuotientClassId> classByOccurrence;
+  for (const SurfaceQuotientClass &quotient : records.classes) {
+    if (quotient.id.members.empty() || quotient.members != quotient.id.members ||
+        !std::is_sorted(quotient.id.members.begin(), quotient.id.members.end()) ||
+        std::adjacent_find(quotient.id.members.begin(), quotient.id.members.end()) !=
+            quotient.id.members.end()) {
+      error.code = SurfaceQuotientProductErrorCode::InvalidClassPartition;
+      return error;
+    }
+    for (const authority::OccurrenceId member : quotient.id.members) {
+      if (occurrenceById.count(member) == 0U) {
+        error.code = SurfaceQuotientProductErrorCode::MissingOccurrenceMember;
+        error.occurrence = member;
+        return error;
+      }
+      if (!partitionedOccurrences.insert(member).second) {
+        error.code = SurfaceQuotientProductErrorCode::InvalidClassPartition;
+        error.occurrence = member;
+        return error;
+      }
+      classByOccurrence.emplace(member, quotient.id);
+    }
+  }
+  if (partitionedOccurrences.size() != occurrences.size()) {
+    error.code = SurfaceQuotientProductErrorCode::MissingOccurrenceMember;
+    return error;
+  }
+  for (const QuotientRelationCertificate &certificate :
+       records.relationCertificates) {
+    if (classByOccurrence.at(certificate.first) !=
+        classByOccurrence.at(certificate.second)) {
+      error.code = SurfaceQuotientProductErrorCode::InvalidClassPartition;
+      error.relation = certificate.relation;
+      return error;
+    }
+  }
+
+  std::map<authority::OccurrenceId, int> closureIndex;
+  for (int index = 0; index < static_cast<int>(occurrences.size()); ++index) {
+    closureIndex.emplace(occurrences[static_cast<std::size_t>(index)].id, index);
+  }
+  std::vector<int> closureParent(occurrences.size());
+  std::iota(closureParent.begin(), closureParent.end(), 0);
+  const auto closure_find = [&](int value) {
+    int root = value;
+    while (closureParent[static_cast<std::size_t>(root)] != root) {
+      root = closureParent[static_cast<std::size_t>(root)];
+    }
+    while (closureParent[static_cast<std::size_t>(value)] != value) {
+      const int next = closureParent[static_cast<std::size_t>(value)];
+      closureParent[static_cast<std::size_t>(value)] = root;
+      value = next;
+    }
+    return root;
+  };
+  const auto closure_unite = [&](const authority::OccurrenceId first,
+                                 const authority::OccurrenceId second) {
+    const int firstRoot = closure_find(closureIndex.at(first));
+    const int secondRoot = closure_find(closureIndex.at(second));
+    if (firstRoot != secondRoot) {
+      closureParent[static_cast<std::size_t>(secondRoot)] = firstRoot;
+    }
+  };
+  for (const QuotientRelationCertificate &certificate :
+       records.relationCertificates) {
+    closure_unite(certificate.first, certificate.second);
+  }
+  std::map<int, std::vector<authority::OccurrenceId>> closureMembers;
+  for (const auto &[id, index] : closureIndex) {
+    closureMembers[closure_find(index)].push_back(id);
+  }
+  std::set<SurfaceQuotientClassId> expectedClasses;
+  for (auto &[root, members] : closureMembers) {
+    (void)root;
+    std::sort(members.begin(), members.end());
+    expectedClasses.insert(SurfaceQuotientClassId{members});
+  }
+  std::set<SurfaceQuotientClassId> publishedClasses;
+  for (const SurfaceQuotientClass &quotient : records.classes) {
+    publishedClasses.insert(quotient.id);
+  }
+  if (expectedClasses != publishedClasses) {
+    error.code = SurfaceQuotientProductErrorCode::InvalidClassPartition;
+    return error;
+  }
+
+  std::set<std::pair<SurfaceQuotientClassId, authority::OccurrenceId>>
+      publishedPathTargets;
+  for (const QuotientSelectedPathCertificate &published : records.selectedPaths) {
+    if (published.quotientClass.members.empty() ||
+        published.root != published.quotientClass.members.front() ||
+        published.target == published.root ||
+        !std::binary_search(published.quotientClass.members.begin(),
+                            published.quotientClass.members.end(),
+                            published.target) ||
+        published.orderedRelations.size() !=
+            published.traversalOrientations.size() ||
+        !publishedPathTargets
+             .insert({published.quotientClass, published.target})
+             .second) {
+      error.code = SurfaceQuotientProductErrorCode::RelationConsumptionConflict;
+      return error;
+    }
+    const auto expectedPath = quotient_forest_path(
+        published.root, published.target, records.selectedForest);
+    if (!expectedPath.has_value() ||
+        expectedPath->size() != published.orderedRelations.size()) {
+      error.code = SurfaceQuotientProductErrorCode::RelationConsumptionConflict;
+      return error;
+    }
+    authority::GridAutomorphism composed =
+        authority::GridAutomorphism::identity();
+    std::vector<geometry::SelectedRelationStep> projectedSteps;
+    for (std::size_t index = 0; index < expectedPath->size(); ++index) {
+      const auto &edge = expectedPath.value()[index];
+      if (published.orderedRelations[index] != edge.relation ||
+          published.traversalOrientations[index] != edge.orientation) {
+        error.code = SurfaceQuotientProductErrorCode::RelationConsumptionConflict;
+        error.relation = edge.relation;
+        return error;
+      }
+      const auto certificate = certificateById.find(edge.relation);
+      if (certificate == certificateById.end()) {
+        error.code = SurfaceQuotientProductErrorCode::RelationCertificateMissing;
+        error.relation = edge.relation;
+        return error;
+      }
+      authority::GridAutomorphism transport =
+          certificate->second->relationTransport;
+      std::optional<geometry::SelectedRelationStep> step =
+          certificate->second->selectedRelationStep;
+      if (edge.orientation == authority::Orientation::Reverse) {
+        transport = transport.inverse();
+        if (step.has_value()) {
+          step = reverse_selected_relation_step(step.value());
+        }
+      }
+      composed = compose(transport, composed);
+      if (step.has_value()) projectedSteps.push_back(step.value());
+    }
+    if (published.composedTransport != composed ||
+        published.legacyProjection.has_value() != !projectedSteps.empty()) {
+      error.code = SurfaceQuotientProductErrorCode::RelationConsumptionConflict;
+      return error;
+    }
+    if (published.legacyProjection.has_value()) {
+      const auto &legacy = published.legacyProjection.value();
+      if (legacy.orderedSteps != projectedSteps || !legacy.valid()) {
+        error.code = SurfaceQuotientProductErrorCode::RelationConsumptionConflict;
+        return error;
+      }
+    }
+  }
+  std::size_t expectedPathCount = 0U;
+  for (const SurfaceQuotientClass &quotient : records.classes) {
+    expectedPathCount += quotient.id.members.size() - 1U;
+  }
+  if (publishedPathTargets.size() != expectedPathCount) {
+    error.code = SurfaceQuotientProductErrorCode::RelationConsumptionConflict;
+    return error;
+  }
+
+  std::set<authority::CellId> classedCellIds;
+  for (const SurfaceQuotientCell &cell : records.classedCells) {
+    if (!classedCellIds.insert(cell.id).second) {
+      error.code = SurfaceQuotientProductErrorCode::NonBijectiveMaterialization;
+      error.cell = cell.id;
+      return error;
+    }
+    if (std::set<SurfaceQuotientClassId>(cell.corners.begin(), cell.corners.end())
+            .size() != 4U) {
+      error.code = SurfaceQuotientProductErrorCode::DegenerateClassedQuad;
+      error.cell = cell.id;
+      return error;
+    }
+  }
+  std::set<authority::CellId> sourceCellIds;
+  for (const SurfaceOccurrenceCell &cell : occurrenceComplex.cells()) {
+    sourceCellIds.insert(cell.id);
+    const auto classed = std::find_if(
+        records.classedCells.begin(), records.classedCells.end(),
+        [&](const SurfaceQuotientCell &candidate) { return candidate.id == cell.id; });
+    if (classed == records.classedCells.end()) {
+      error.code = SurfaceQuotientProductErrorCode::NonBijectiveMaterialization;
+      error.cell = cell.id;
+      return error;
+    }
+    for (std::size_t corner = 0; corner < 4U; ++corner) {
+      if (classed->corners[corner] !=
+          classByOccurrence.at(cell.cornerOccurrences[corner])) {
+        error.code = SurfaceQuotientProductErrorCode::NonBijectiveMaterialization;
+        error.cell = cell.id;
+        return error;
+      }
+    }
+  }
+  if (sourceCellIds != classedCellIds) {
+    error.code = SurfaceQuotientProductErrorCode::NonBijectiveMaterialization;
+    return error;
+  }
+
+  QuotientCertificate quotientCertificate;
+  quotientCertificate.ownedRelationCount = ownedIds.size();
+  quotientCertificate.relationCertificateCount =
+      records.relationCertificates.size();
+  quotientCertificate.consumptionCount = records.relationConsumptions.size();
+  quotientCertificate.joiningCount = forestRelations.size();
+  quotientCertificate.cycleClosingCount =
+      records.relationConsumptions.size() - forestRelations.size();
+  quotientCertificate.relationBijection =
+      certificateById.size() == ownedIds.size() &&
+      consumptionById.size() == ownedIds.size();
+  quotientCertificate.exactForest = true;
+  quotientCertificate.exactCycleConsistency = true;
+  quotientCertificate.exactTransitivePartition = true;
+
+  MaterializationCertificate materializationCertificate;
+  materializationCertificate.sourceCellCount = occurrenceComplex.cells().size();
+  materializationCertificate.classedCellCount = records.classedCells.size();
+  materializationCertificate.sourceOccurrenceCount = occurrences.size();
+  materializationCertificate.classMemberCount = partitionedOccurrences.size();
+  materializationCertificate.exactCellBijection = true;
+  materializationCertificate.exactOccurrencePartition = true;
+  materializationCertificate.noDegenerateClassedQuad = true;
+
+  return SurfaceQuotientProduct(std::move(records), quotientCertificate,
+                                materializationCertificate);
 }
 
 AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
@@ -4342,98 +5566,6 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
   }
 
   const auto &occurrences = occurrenceComplex->occurrences();
-  const int occurrenceCount = static_cast<int>(occurrences.size());
-  std::map<authority::CellId, const SurfaceOccurrenceCell *> occurrenceCellById;
-  for (const SurfaceOccurrenceCell &cell : occurrenceComplex->cells()) {
-    occurrenceCellById.emplace(cell.id, &cell);
-  }
-  std::map<authority::OccurrenceId, int> occurrenceIndexById;
-  for (int occurrenceIndex = 0; occurrenceIndex < occurrenceCount;
-       ++occurrenceIndex) {
-    if (!occurrenceIndexById
-             .emplace(occurrences[static_cast<std::size_t>(occurrenceIndex)].id,
-                      occurrenceIndex)
-             .second) {
-      result.failure = "OccurrenceDuplicateCorner";
-      return result;
-    }
-  }
-
-  const auto side_authority_for_front_edge =
-      [&](const int frontEdge)
-      -> const SurfaceOccurrenceDirectedSideAuthority * {
-    if (frontEdge < 0 || frontEdge >= static_cast<int>(phaseFront.edges().size())) {
-      return nullptr;
-    }
-    const auto &edge = phaseFront.edges()[static_cast<std::size_t>(frontEdge)];
-    const auto cell = occurrenceCellById.find(edge.filledCell);
-    if (cell == occurrenceCellById.end() || edge.filledSide < 0 ||
-        edge.filledSide >= 4) {
-      return nullptr;
-    }
-    return &cell->second->directedSideAuthority[static_cast<std::size_t>(
-        edge.filledSide)];
-  };
-  const auto endpoint_span_for_front_edge =
-      [&](const int frontEdge, const authority::OccurrenceId occurrence)
-      -> const SurfaceOccurrenceSideSpan * {
-    if (frontEdge < 0 || frontEdge >= static_cast<int>(phaseFront.edges().size())) {
-      return nullptr;
-    }
-    const auto &edge = phaseFront.edges()[static_cast<std::size_t>(frontEdge)];
-    const auto cell = occurrenceCellById.find(edge.filledCell);
-    if (cell == occurrenceCellById.end() || edge.filledSide < 0 ||
-        edge.filledSide >= 4) {
-      return nullptr;
-    }
-    const std::size_t side = static_cast<std::size_t>(edge.filledSide);
-    const auto &authority = cell->second->directedSideAuthority[side];
-    if (authority.spans.empty()) return nullptr;
-    if (cell->second->directedSides[side].first == occurrence) {
-      return &authority.spans.front();
-    }
-    if (cell->second->directedSides[side].second == occurrence) {
-      return &authority.spans.back();
-    }
-    return nullptr;
-  };
-
-  std::vector<int> parents(static_cast<std::size_t>(occurrenceCount));
-  std::vector<int> ranks(static_cast<std::size_t>(occurrenceCount), 0);
-  std::iota(parents.begin(), parents.end(), 0);
-  const auto find_root = [&](int value) {
-    int root = value;
-    while (parents[static_cast<std::size_t>(root)] != root) {
-      root = parents[static_cast<std::size_t>(root)];
-    }
-    while (parents[static_cast<std::size_t>(value)] != value) {
-      const int next = parents[static_cast<std::size_t>(value)];
-      parents[static_cast<std::size_t>(value)] = root;
-      value = next;
-    }
-    return root;
-  };
-  const auto unite = [&](int first, int second) {
-    int firstRoot = find_root(first);
-    int secondRoot = find_root(second);
-    if (firstRoot == secondRoot) return false;
-    if (ranks[static_cast<std::size_t>(firstRoot)] <
-        ranks[static_cast<std::size_t>(secondRoot)]) {
-      std::swap(firstRoot, secondRoot);
-    }
-    parents[static_cast<std::size_t>(secondRoot)] = firstRoot;
-    if (ranks[static_cast<std::size_t>(firstRoot)] ==
-        ranks[static_cast<std::size_t>(secondRoot)]) {
-      ++ranks[static_cast<std::size_t>(firstRoot)];
-    }
-    return true;
-  };
-  struct SelectedQuotientJoin {
-    int firstOccurrence = -1;
-    int secondOccurrence = -1;
-    std::optional<geometry::SelectedRelationStep> relationStep;
-  };
-  std::vector<SelectedQuotientJoin> selectedQuotientJoins;
 
   std::map<authority::CellId, int> cellIndexById;
   for (int cellIndex = 0;
@@ -4621,706 +5753,100 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     }
   }
 
-  std::map<authority::PeriodicRelationId,
-           const geometry::SurfacePeriodicHolonomy *> periodicRelationById;
-  for (const auto &relation : phaseFront.periodicHolonomies()) {
-    const auto region = topologyRegionById.find(relation.sourceTopologyRegion());
-    if (region == topologyRegionById.end() ||
-        !periodicRelationById.emplace(relation.id(), &relation).second ||
-        !isolation_sheets_connected_typed(
-            relation.sourceTopologyRegion(), region->second->isolation_sheets())) {
-      result.failure = "InvalidPeriodicRelationIsolationAuthority";
+  auto quotientConstruction = SurfaceQuotientProducer::produce(*occurrenceComplex);
+  const auto *quotientProduct =
+      std::get_if<SurfaceQuotientProduct>(&quotientConstruction);
+  if (quotientProduct == nullptr) {
+    const auto *quotientError =
+        std::get_if<SurfaceQuotientProductError>(&quotientConstruction);
+    if (quotientError == nullptr) {
+      result.failure = "QuotientUnknownFailure";
       return result;
     }
+    switch (quotientError->code) {
+    case SurfaceQuotientProductErrorCode::MissingIsolationEvidence:
+      result.failure =
+          "MissingIsolationSeamEquivalenceAuthority:a6-side-evidence";
+      break;
+    case SurfaceQuotientProductErrorCode::InvalidIsolationEvidence:
+      result.failure =
+          "InvalidIsolationSeamEquivalenceAuthority:a6-side-evidence";
+      break;
+    case SurfaceQuotientProductErrorCode::ReciprocalSideAuthorityMismatch:
+      result.failure = "QuotientReciprocalSideAuthorityMismatch";
+      break;
+    case SurfaceQuotientProductErrorCode::InvalidHardRailTransport:
+      result.failure = "InvalidHardRailTransport";
+      break;
+    case SurfaceQuotientProductErrorCode::InvalidPeriodicTransport:
+      result.failure = "InvalidPeriodicFrontTransport";
+      break;
+    default:
+      result.failure = surface_quotient_product_error_name(quotientError->code);
+      break;
+    }
+    if (quotientError->cell.has_value()) {
+      result.invalidCell = static_cast<int>(quotientError->cell->index());
+    }
+    return result;
   }
 
   std::set<authority::PeriodicRelationId> consumedPeriodicRelations;
-  std::vector<std::vector<geometry::PureQuadEquivalenceProvenance>>
-      occurrenceEquivalences(static_cast<std::size_t>(occurrenceCount));
-  for (int occurrenceIndex = 0; occurrenceIndex < occurrenceCount;
-       ++occurrenceIndex) {
-    const auto &occurrence =
-        occurrences[static_cast<std::size_t>(occurrenceIndex)];
-    if (occurrence.cornerWedgeIsolation.empty()) continue;
-    geometry::PureQuadEquivalenceProvenance equivalence;
-    equivalence.kind = geometry::PureQuadEquivalenceKind::CornerWedgeIsolation;
-    equivalence.firstFrontEdge = -1;
-    equivalence.secondFrontEdge = -1;
-    equivalence.isolationTransitions = occurrence.cornerWedgeIsolation;
-    equivalence.isolationSeams.reserve(equivalence.isolationTransitions.size());
-    for (const auto &transition : equivalence.isolationTransitions) {
-      equivalence.isolationSeams.push_back(transition.seam);
-    }
-    std::sort(equivalence.isolationSeams.begin(),
-              equivalence.isolationSeams.end());
-    equivalence.isolationSeams.erase(
-        std::unique(equivalence.isolationSeams.begin(),
-                    equivalence.isolationSeams.end()),
-        equivalence.isolationSeams.end());
-    occurrenceEquivalences[static_cast<std::size_t>(occurrenceIndex)]
-        .push_back(std::move(equivalence));
-  }
-  const auto canonical_route = [](std::vector<std::uint64_t> route) {
-    std::vector<std::uint64_t> reversed(route.rbegin(), route.rend());
-    return reversed < route ? reversed : route;
-  };
-  const auto action_matches = [&](const geometry::LocalLatticeState &first,
-                                  const geometry::LocalLatticeState &second,
-                                  const authority::GridAutomorphism &action) {
-    const authority::LatticeTranslation transformed =
-        action.apply(first.latticeCoordinate);
-    const authority::QuarterTurn transformedRotation =
-        compose(action.rotation,
-                authority::QuarterTurn::from_integer(first.branchRotation));
-    return transformed == second.latticeCoordinate &&
-           transformedRotation ==
-               authority::QuarterTurn::from_integer(second.branchRotation) &&
-           first.scaleLevel == second.scaleLevel;
-  };
-  const auto relation_action_matches = [&](
-      const geometry::SurfacePeriodicRelationEndpointState &first,
-      const geometry::SurfacePeriodicRelationEndpointState &second,
-      const authority::GridAutomorphism &action) {
-    return action.apply(first.latticeCoordinate) == second.latticeCoordinate &&
-           compose(action.rotation, first.branchRotation) ==
-               second.branchRotation &&
-           first.scaleLevel == second.scaleLevel;
-  };
-  const auto occurrence_face_contains_carrier = [&](
-      const authority::SourceFaceId face,
-      const authority::SourceEdgeTopologyKey &carrier) {
-    if (face.index() >= phaseFront.sourceTopologyRegions().face_count()) {
-      return false;
-    }
-    const auto &vertices =
-        phaseFront.sourceTopologyRegions().topology_for_row(face).vertices();
-    const auto contains = [&](const authority::SourceVertexId vertex) {
-      return std::find(vertices.begin(), vertices.end(), vertex) != vertices.end();
-    };
-    return contains(carrier.first()) && contains(carrier.second());
-  };
-  const auto endpoint_branch_authority_matches = [&](
-      const geometry::SurfaceFrontEdge &edge,
-      const geometry::SurfaceTracePoint &point,
-      const geometry::SurfacePeriodicRelationEndpointState &state,
-      const authority::SourceEdgeTopologyKey &carrier) {
-    const auto &branchAuthority = state.branchAuthority;
-    if (point.face < 0 ||
-        branchAuthority.localFace.index() !=
-            static_cast<std::size_t>(point.face) ||
-        branchAuthority.localFace.index() >=
-            phaseFront.sourceTopologyRegions().face_count() ||
-        branchAuthority.occurrenceCarrierFace.index() >=
-            phaseFront.sourceTopologyRegions().face_count() ||
-        phaseFront.sourceTopologyRegions().region_for_row(
-            branchAuthority.localFace) != edge.sourceTopologyRegion ||
-        phaseFront.sourceTopologyRegions().region_for_row(
-            branchAuthority.occurrenceCarrierFace) != edge.sourceTopologyRegion) {
-      return false;
-    }
-    return occurrence_face_contains_carrier(
-        branchAuthority.occurrenceCarrierFace, carrier);
-  };
-  std::map<std::pair<int, int>,
-           std::vector<const SurfaceOccurrenceRelation *>>
-      occurrenceRelationsByFrontPair;
-  for (const SurfaceOccurrenceRelation &relation :
-       occurrenceComplex->owned_relations()) {
-    const int firstEdge = std::min(relation.firstFrontEdge, relation.secondFrontEdge);
-    const int secondEdge = std::max(relation.firstFrontEdge, relation.secondFrontEdge);
-    if (firstEdge < 0 || secondEdge < 0 ||
-        secondEdge >= static_cast<int>(phaseFront.edges().size())) {
-      result.failure = "OccurrenceUnownedRelation";
-      return result;
-    }
-    occurrenceRelationsByFrontPair[{firstEdge, secondEdge}].push_back(&relation);
-  }
-
-  const auto transition_certificate_failure = [&]
-      (const geometry::CornerWedgeIsolationTransition &transition,
-       const authority::TopologyRegionId expectedRegion)
-      -> std::optional<std::string> {
-    if (transition.region != expectedRegion) {
-      return std::string(
-          "InvalidIsolationSeamEquivalenceAuthority:a6-side-evidence");
-    }
-    const auto certificate = isolationCertificateBySeam.find(
-        {transition.region, transition.seam});
-    if (certificate == isolationCertificateBySeam.end()) {
-      return std::string(
-          "MissingIsolationSeamEquivalenceAuthority:a6-side-evidence");
-    }
-    const auto &value = *certificate->second;
-    const bool forward = transition.fromSheet == value.firstSheet() &&
-                         transition.toSheet == value.secondSheet();
-    const bool reverse = transition.fromSheet == value.secondSheet() &&
-                         transition.toSheet == value.firstSheet();
-    if ((!forward && !reverse) || transition.fromSheet == transition.toSheet) {
-      return std::string(
-          "InvalidIsolationSeamEquivalenceAuthority:a6-side-evidence");
-    }
-    return std::nullopt;
-  };
-  const auto reciprocal_transition_lists = [](
-      const std::vector<geometry::CornerWedgeIsolationTransition> &first,
-      const std::vector<geometry::CornerWedgeIsolationTransition> &second) {
-    if (first.size() != second.size()) return false;
-    for (std::size_t index = 0; index < first.size(); ++index) {
-      const auto &a = first[index];
-      const auto &b = second[second.size() - 1U - index];
-      if (a.region != b.region || a.seam != b.seam ||
-          a.fromSheet != b.toSheet || a.toSheet != b.fromSheet) {
-        return false;
-      }
-    }
-    return true;
-  };
-  const auto wedge_contains_sheet = [](
-      const SurfaceOccurrence &occurrence,
-      const authority::IsolationSheetId sheet) {
-    return std::binary_search(occurrence.cornerWedgeSheets.begin(),
-                              occurrence.cornerWedgeSheets.end(), sheet);
-  };
-  const auto span_has_transition = [](
-      const SurfaceOccurrenceSideSpan &span,
-      const geometry::CornerWedgeIsolationTransition &expected) {
-    return std::find(span.isolationTransitions.begin(),
-                     span.isolationTransitions.end(), expected) !=
-           span.isolationTransitions.end();
-  };
-  const auto non_seam_span_pair_matches = [&](
-      const SurfaceOccurrenceSideSpan &firstSpan,
-      const SurfaceOccurrenceSideSpan &secondSpan,
-      const SurfaceOccurrence &firstOccurrence,
-      const SurfaceOccurrence &secondOccurrence) {
-    const authority::IsolationSheetId sheet = firstSpan.interiorBinding.sheet;
-    return sheet == secondSpan.interiorBinding.sheet &&
-           wedge_contains_sheet(firstOccurrence, sheet) &&
-           wedge_contains_sheet(secondOccurrence, sheet);
-  };
-
-  for (int edgeIndex = 0;
-       edgeIndex < static_cast<int>(phaseFront.edges().size()); ++edgeIndex) {
-    const auto &first = phaseFront.edges()[static_cast<std::size_t>(edgeIndex)];
-    if (first.oppositeEdge < 0 || edgeIndex > first.oppositeEdge) continue;
-    result.invalidEdge = edgeIndex;
-    const int secondIndex = first.oppositeEdge;
-    const auto &second =
-        phaseFront.edges()[static_cast<std::size_t>(secondIndex)];
-    const bool periodicPair =
-        first.boundaryKind ==
-        geometry::SurfaceFrontBoundaryKind::PeriodicCut;
-    if (!periodicPair &&
-        (first.family != second.family ||
-         first.advanceSign == second.advanceSign)) {
-      result.failure = "IncompatibleAuthoritativeFrontPair";
-      return result;
-    }
-    const auto pairRelations = occurrenceRelationsByFrontPair.find(
-        {edgeIndex, secondIndex});
-    if (pairRelations == occurrenceRelationsByFrontPair.end() ||
-        pairRelations->second.size() != 2U) {
-      result.failure = "OccurrenceRelationEndpointMissing";
-      return result;
-    }
-    std::array<std::pair<int, int>, 2> relationOccurrenceIndices;
-    for (std::size_t relationIndex = 0; relationIndex < 2U; ++relationIndex) {
-      const SurfaceOccurrenceRelation &relation =
-          *pairRelations->second[relationIndex];
-      const auto firstOccurrence =
-          occurrenceIndexById.find(relation.firstOccurrence);
-      const auto secondOccurrence =
-          occurrenceIndexById.find(relation.secondOccurrence);
-      if (firstOccurrence == occurrenceIndexById.end() ||
-          secondOccurrence == occurrenceIndexById.end()) {
-        result.failure = "OccurrenceRelationEndpointMissing";
-        return result;
-      }
-      relationOccurrenceIndices[relationIndex] =
-          {firstOccurrence->second, secondOccurrence->second};
-      if (occurrences[static_cast<std::size_t>(firstOccurrence->second)].support !=
-          occurrences[static_cast<std::size_t>(secondOccurrence->second)].support) {
-        result.failure = "AuthoritativeFrontPairSourceSupportMismatch";
-        return result;
-      }
-    }
-
-    geometry::PureQuadEquivalenceProvenance equivalence;
-    equivalence.firstFrontEdge = edgeIndex;
-    equivalence.secondFrontEdge = secondIndex;
-    std::optional<geometry::SelectedRelationKind> selectedRelationKind;
-    std::optional<authority::GridAutomorphism> selectedAppliedTransport;
-    authority::Orientation selectedDirection = authority::Orientation::Forward;
-    if (first.boundaryKind ==
-        geometry::SurfaceFrontBoundaryKind::OrdinaryInterior) {
-      if (!lattice_equal(first.fromLattice, second.toLattice) ||
-          !lattice_equal(first.toLattice, second.fromLattice) ||
-          first.sourceTopologyRegion != second.sourceTopologyRegion) {
-        result.failure = "InvalidOrdinaryFrontTransport";
-        return result;
-      }
-      const auto *firstSide = side_authority_for_front_edge(edgeIndex);
-      const auto *secondSide = side_authority_for_front_edge(secondIndex);
-      if (firstSide == nullptr || secondSide == nullptr) {
-        result.failure = "QuotientReciprocalSideAuthorityMismatch";
-        return result;
-      }
-      for (const auto &transition : firstSide->isolationEvidence) {
-        const auto failure = transition_certificate_failure(
-            transition, first.sourceTopologyRegion);
-        if (failure.has_value()) {
-          result.failure = failure.value();
-          return result;
-        }
-      }
-      for (const auto &transition : secondSide->isolationEvidence) {
-        const auto failure = transition_certificate_failure(
-            transition, first.sourceTopologyRegion);
-        if (failure.has_value()) {
-          result.failure = failure.value();
-          return result;
-        }
-      }
-      if (!reciprocal_transition_lists(firstSide->isolationEvidence,
-                                       secondSide->isolationEvidence)) {
-        result.failure = "QuotientReciprocalSideAuthorityMismatch";
-        return result;
-      }
-
-      for (const auto &[firstOccurrenceIndex, secondOccurrenceIndex] :
-           relationOccurrenceIndices) {
-        const SurfaceOccurrence &firstOccurrence =
-            occurrences[static_cast<std::size_t>(firstOccurrenceIndex)];
-        const SurfaceOccurrence &secondOccurrence =
-            occurrences[static_cast<std::size_t>(secondOccurrenceIndex)];
-        const auto *firstSpan = endpoint_span_for_front_edge(
-            edgeIndex, firstOccurrence.id);
-        const auto *secondSpan = endpoint_span_for_front_edge(
-            secondIndex, secondOccurrence.id);
-        if (firstSpan == nullptr || secondSpan == nullptr) {
-          result.failure = "QuotientReciprocalSideAuthorityMismatch";
-          return result;
-        }
-        if (firstSpan->collinearEdge.has_value() !=
-            secondSpan->collinearEdge.has_value()) {
-          result.failure = "QuotientReciprocalSideAuthorityMismatch";
-          return result;
-        }
-        if (!firstSpan->collinearEdge.has_value()) {
-          if (!non_seam_span_pair_matches(
-                  *firstSpan, *secondSpan, firstOccurrence, secondOccurrence)) {
-            result.failure = "QuotientReciprocalSideAuthorityMismatch";
-            return result;
-          }
-          continue;
-        }
-
-        const authority::SourceEdgeTopologyKey seam =
-            firstSpan->collinearEdge.value();
-        if (secondSpan->collinearEdge.value() != seam) {
-          result.failure = "QuotientReciprocalSideAuthorityMismatch";
-          return result;
-        }
-        const auto certificate = isolationCertificateBySeam.find(
-            {first.sourceTopologyRegion, seam});
-        if (certificate == isolationCertificateBySeam.end()) {
-          if (!non_seam_span_pair_matches(
-                  *firstSpan, *secondSpan, firstOccurrence, secondOccurrence)) {
-            result.failure = "QuotientReciprocalSideAuthorityMismatch";
-            return result;
-          }
-          continue;
-        }
-        const auto &value = *certificate->second;
-        const bool forward =
-            firstSpan->interiorBinding.face == value.firstFace() &&
-            secondSpan->interiorBinding.face == value.secondFace() &&
-            firstSpan->interiorBinding.sheet == value.firstSheet() &&
-            secondSpan->interiorBinding.sheet == value.secondSheet();
-        const bool reverse =
-            firstSpan->interiorBinding.face == value.secondFace() &&
-            secondSpan->interiorBinding.face == value.firstFace() &&
-            firstSpan->interiorBinding.sheet == value.secondSheet() &&
-            secondSpan->interiorBinding.sheet == value.firstSheet();
-        if (!forward && !reverse) {
-          result.failure =
-              "InvalidIsolationSeamEquivalenceAuthority:a6-seam-faces";
-          return result;
-        }
-        const geometry::CornerWedgeIsolationTransition forwardEvidence{
-            first.sourceTopologyRegion, seam,
-            firstSpan->interiorBinding.sheet,
-            secondSpan->interiorBinding.sheet};
-        const geometry::CornerWedgeIsolationTransition reverseEvidence{
-            first.sourceTopologyRegion, seam,
-            secondSpan->interiorBinding.sheet,
-            firstSpan->interiorBinding.sheet};
-        if (!span_has_transition(*firstSpan, forwardEvidence) ||
-            !span_has_transition(*secondSpan, reverseEvidence)) {
-          result.failure =
-              "MissingIsolationSeamEquivalenceAuthority:a6-seam-span-transition";
-          return result;
-        }
-      }
-
-      equivalence.kind = geometry::PureQuadEquivalenceKind::OrdinaryFront;
-      equivalence.isolationTransitions = firstSide->isolationEvidence;
-      equivalence.isolationSeams.reserve(equivalence.isolationTransitions.size());
-      for (const auto &transition : equivalence.isolationTransitions) {
-        equivalence.isolationSeams.push_back(transition.seam);
-      }
-      std::sort(equivalence.isolationSeams.begin(),
-                equivalence.isolationSeams.end());
-      equivalence.isolationSeams.erase(
-          std::unique(equivalence.isolationSeams.begin(),
-                      equivalence.isolationSeams.end()),
-          equivalence.isolationSeams.end());
-    } else if (first.boundaryKind ==
-               geometry::SurfaceFrontBoundaryKind::HardRail) {
-      if (first.sourceTopologyRegion == second.sourceTopologyRegion ||
-          first.route != second.route.reversed()) {
-        result.failure = "InvalidHardRailTransport";
-        return result;
-      }
-      equivalence.kind = geometry::PureQuadEquivalenceKind::HardRail;
-      equivalence.railId = first.railId;
-      equivalence.route = first.route;
-      equivalence.action = first.route.composed_transport();
-      selectedRelationKind = geometry::SelectedRelationKind::HardRail;
-      selectedAppliedTransport = equivalence.action;
-    } else if (first.boundaryKind ==
-               geometry::SurfaceFrontBoundaryKind::PeriodicCut) {
-      const auto relationOwner = periodicRelationById.find(*first.periodicRelation);
-      if (relationOwner == periodicRelationById.end()) {
-        result.failure = "InvalidPeriodicRelationOwner";
-        return result;
-      }
-      const auto &relation = *relationOwner->second;
-      if (relation.sourceTopologyRegion() != first.sourceTopologyRegion ||
-          (relation.action().shift.x == 0 && relation.action().shift.y == 0) ||
-          !exact_interior_route_valid(relation.route()) ||
-          !exact_interior_route_valid(relation.cutRoute())) {
-        result.failure = "InvalidPeriodicRelation";
-        return result;
-      }
-      const authority::GridAutomorphism &action = relation.action();
-      const bool exactA3Pair =
-          first.sharedBoundaryInterval.has_value() &&
-          second.sharedBoundaryInterval.has_value() &&
-          first.sharedBoundaryInterval->boundaryOccurrence.has_value() &&
-          second.sharedBoundaryInterval->boundaryOccurrence.has_value();
-      if (exactA3Pair) {
-        const geometry::SurfaceFrontEdge *forwardEdge = nullptr;
-        const geometry::SurfaceFrontEdge *reverseEdge = nullptr;
-        const bool firstIsForward =
-            first.sharedBoundaryInterval->orientation ==
-            authority::Orientation::Forward;
-        if (firstIsForward &&
-            second.sharedBoundaryInterval->orientation ==
-                authority::Orientation::Reverse) {
-          forwardEdge = &first;
-          reverseEdge = &second;
-        } else if (!firstIsForward &&
-                   first.sharedBoundaryInterval->orientation ==
-                       authority::Orientation::Reverse &&
-                   second.sharedBoundaryInterval->orientation ==
-                       authority::Orientation::Forward) {
-          forwardEdge = &second;
-          reverseEdge = &first;
-        } else {
-          result.failure = "InvalidPeriodicFrontTransport";
-          return result;
-        }
-        const auto semanticAction =
-            geometry::resolve_periodic_relation_semantic_action(
-                relation, *forwardEdge, *reverseEdge);
-        if (!semanticAction.has_value() ||
-            !forwardEdge->periodicFromLattice.has_value() ||
-            !forwardEdge->periodicToLattice.has_value() ||
-            !reverseEdge->periodicFromLattice.has_value() ||
-            !reverseEdge->periodicToLattice.has_value() ||
-            relation.route().steps().size() != 1U) {
-          result.failure = "InvalidPeriodicFrontTransport";
-          return result;
-        }
-        const authority::SourceEdgeTopologyKey &generatorCarrier =
-            relation.route().steps().front().topology();
-        if (!endpoint_branch_authority_matches(
-                *forwardEdge, forwardEdge->from,
-                *forwardEdge->periodicFromLattice, generatorCarrier) ||
-            !endpoint_branch_authority_matches(
-                *forwardEdge, forwardEdge->to,
-                *forwardEdge->periodicToLattice, generatorCarrier) ||
-            !endpoint_branch_authority_matches(
-                *reverseEdge, reverseEdge->from,
-                *reverseEdge->periodicFromLattice, generatorCarrier) ||
-            !endpoint_branch_authority_matches(
-                *reverseEdge, reverseEdge->to,
-                *reverseEdge->periodicToLattice, generatorCarrier)) {
-          result.failure = "InvalidPeriodicFrontTransport";
-          return result;
-        }
-        const auto expectedForwardFrom =
-            geometry::make_periodic_relation_endpoint_state(
-                forwardEdge->fromLattice, *forwardEdge->sharedBoundaryInterval,
-                semanticAction->rotation,
-                forwardEdge->periodicFromLattice->branchAuthority);
-        const auto expectedForwardTo =
-            geometry::make_periodic_relation_endpoint_state(
-                forwardEdge->toLattice, *forwardEdge->sharedBoundaryInterval,
-                semanticAction->rotation,
-                forwardEdge->periodicToLattice->branchAuthority);
-        const auto expectedReverseFrom =
-            geometry::make_periodic_relation_endpoint_state(
-                reverseEdge->fromLattice, *reverseEdge->sharedBoundaryInterval,
-                semanticAction->rotation,
-                reverseEdge->periodicFromLattice->branchAuthority);
-        const auto expectedReverseTo =
-            geometry::make_periodic_relation_endpoint_state(
-                reverseEdge->toLattice, *reverseEdge->sharedBoundaryInterval,
-                semanticAction->rotation,
-                reverseEdge->periodicToLattice->branchAuthority);
-        if (!expectedForwardFrom.has_value() || !expectedForwardTo.has_value() ||
-            !expectedReverseFrom.has_value() || !expectedReverseTo.has_value() ||
-            *forwardEdge->periodicFromLattice != *expectedForwardFrom ||
-            *forwardEdge->periodicToLattice != *expectedForwardTo ||
-            *reverseEdge->periodicFromLattice != *expectedReverseFrom ||
-            *reverseEdge->periodicToLattice != *expectedReverseTo ||
-            !relation_action_matches(*forwardEdge->periodicFromLattice,
-                                     *reverseEdge->periodicToLattice,
-                                     *semanticAction) ||
-            !relation_action_matches(*forwardEdge->periodicToLattice,
-                                     *reverseEdge->periodicFromLattice,
-                                     *semanticAction)) {
-          result.failure = "InvalidPeriodicFrontTransport";
-          return result;
-        }
-        selectedDirection = firstIsForward ? authority::Orientation::Forward
-                                           : authority::Orientation::Reverse;
-        selectedAppliedTransport = firstIsForward ? *semanticAction
-                                                  : semanticAction->inverse();
-      } else {
-        if (first.route != relation.cutRoute() ||
-            second.route != relation.cutRoute().reversed()) {
-          result.failure = "InvalidPeriodicRelation";
-          return result;
-        }
-        const authority::GridAutomorphism inverseAction = action.inverse();
-        const bool forward =
-            action_matches(first.fromLattice, second.toLattice, action) &&
-            action_matches(first.toLattice, second.fromLattice, action);
-        const bool inverse =
-            action_matches(first.fromLattice, second.toLattice, inverseAction) &&
-            action_matches(first.toLattice, second.fromLattice, inverseAction);
-        if (!forward && !inverse) {
-          result.failure = "InvalidPeriodicFrontTransport";
-          return result;
-        }
-        selectedDirection = forward ? authority::Orientation::Forward
-                                    : authority::Orientation::Reverse;
-        selectedAppliedTransport = forward ? action : inverseAction;
-      }
-      consumedPeriodicRelations.insert(*first.periodicRelation);
-      equivalence.kind =
-          geometry::PureQuadEquivalenceKind::PeriodicHolonomy;
-      equivalence.periodicRelation = first.periodicRelation;
-      equivalence.action = relation.action();
-      equivalence.route = relation.route();
-      equivalence.cutRoute = relation.cutRoute();
-      selectedRelationKind = geometry::SelectedRelationKind::PeriodicHolonomy;
-    } else {
-      result.failure = "InvalidPairedBoundaryKind";
-      return result;
-    }
-    const auto selected_step = [&](const int fromOccurrence,
-                                   const int toOccurrence)
-        -> std::optional<geometry::SelectedRelationStep> {
-      if (!selectedRelationKind.has_value()) return std::nullopt;
-      if (!selectedAppliedTransport.has_value()) return std::nullopt;
-      geometry::SelectedRelationStep step;
-      step.relationKind = selectedRelationKind.value();
-      step.railId = equivalence.railId;
-      step.periodicRelation = equivalence.periodicRelation;
-      step.direction = selectedDirection;
-      const SurfaceOccurrence &from =
-          occurrences[static_cast<std::size_t>(fromOccurrence)];
-      const SurfaceOccurrence &to =
-          occurrences[static_cast<std::size_t>(toOccurrence)];
-      const auto *fromSpan =
-          endpoint_span_for_front_edge(edgeIndex, from.id);
-      const auto *toSpan =
-          endpoint_span_for_front_edge(secondIndex, to.id);
-      if (fromSpan == nullptr || toSpan == nullptr) return std::nullopt;
-      step.fromChart = fromSpan->interiorBinding.chart;
-      step.toChart = toSpan->interiorBinding.chart;
-      const int fromComponentIndex =
-          chartTransitions.chart_component(fromSpan->interiorBinding.chart);
-      const int toComponentIndex =
-          chartTransitions.chart_component(toSpan->interiorBinding.chart);
-      if (fromComponentIndex < 0 || toComponentIndex < 0) return std::nullopt;
-      const auto &fromComponent =
-          chartTransitions.chart_component_identity(fromComponentIndex);
-      const auto &toComponent =
-          chartTransitions.chart_component_identity(toComponentIndex);
-      if (!fromComponent.valid || !toComponent.valid) return std::nullopt;
-      step.fromChartComponent = fromComponent;
-      step.toChartComponent = toComponent;
-      step.appliedTransport = selectedAppliedTransport.value();
-      return step;
-    };
-    for (const auto &[firstOccurrence, secondOccurrence] :
-         relationOccurrenceIndices) {
-      const auto relationStep =
-          selected_step(firstOccurrence, secondOccurrence);
-      if (selectedRelationKind.has_value() && !relationStep.has_value()) {
-        result.failure = "InvalidSelectedRelationPathCertificate";
-        return result;
-      }
-      if (!unite(firstOccurrence, secondOccurrence)) continue;
-      selectedQuotientJoins.push_back(
-          {firstOccurrence, secondOccurrence, relationStep});
-      for (const int occurrence : {firstOccurrence, secondOccurrence}) {
-        occurrenceEquivalences[static_cast<std::size_t>(occurrence)].push_back(
-            equivalence);
-      }
+  for (const QuotientRelationCertificate &certificate :
+       quotientProduct->relation_certificates()) {
+    if (certificate.relation.periodicRelation.has_value()) {
+      consumedPeriodicRelations.insert(
+          certificate.relation.periodicRelation.value());
     }
   }
-  std::map<int, std::vector<int>> membersByRoot;
-  for (int occurrence = 0; occurrence < occurrenceCount; ++occurrence) {
-    membersByRoot[find_root(occurrence)].push_back(occurrence);
+
+  std::map<authority::OccurrenceId, const SurfaceOccurrence *> occurrenceById;
+  for (const SurfaceOccurrence &occurrence : occurrences) {
+    occurrenceById.emplace(occurrence.id, &occurrence);
   }
-  using QuotientDomainState = std::tuple<
-      authority::TopologyRegionId, std::vector<CornerWedgeFaceBinding>,
-      std::int64_t, std::int64_t, int, authority::SourceFaceTopologyKey, int,
-      authority::FieldChartId>;
-  struct QuotientClass {
-    int root = -1; // union-find representation index only
-    std::vector<int> memberIndices; // occurrence-vector representation indices
-    std::vector<authority::OccurrenceId> members;
-    std::optional<authority::QuotientClassId> id;
-    std::optional<authority::SourceSupport> support;
-    std::vector<QuotientDomainState> domainStates;
-  };
-  using QuotientClassKey =
-      std::pair<authority::SourceSupport, std::vector<QuotientDomainState>>;
-  std::vector<QuotientClass> quotientClasses;
-  std::set<QuotientClassKey> uniqueClassKeys;
-  for (auto &[root, members] : membersByRoot) {
-    const authority::SourceSupport &support =
-        occurrences[static_cast<std::size_t>(members.front())].support;
-    std::vector<QuotientDomainState> domainStates;
-    std::map<authority::TopologyRegionId, std::set<authority::IsolationSheetId>>
-        sheetsByTopologyRegion;
-    for (const int member : members) {
-      const auto &occurrence = occurrences[static_cast<std::size_t>(member)];
-      if (occurrence.support != support) {
-        result.failure = "QuotientSourceSupportConflict";
-        return result;
-      }
-      if (!occurrence.placement.lattice.sourceChart.has_value() ||
-          occurrence.cornerWedgeBindings.empty() ||
-          occurrence.cornerWedgeSheets.empty()) {
-        result.failure = "InvalidAuthoritativeQuotientClassAuthority";
-        return result;
-      }
-      domainStates.emplace_back(
-          occurrence.topologyRegion, occurrence.cornerWedgeBindings,
-          occurrence.placement.lattice.latticeCoordinate.x,
-          occurrence.placement.lattice.latticeCoordinate.y,
-          occurrence.placement.lattice.scaleLevel,
-          occurrence.placement.selectedFace,
-          occurrence.placement.lattice.branchRotation,
-          occurrence.placement.lattice.sourceChart.value());
-      for (const authority::IsolationSheetId sheet :
-           occurrence.cornerWedgeSheets) {
-        sheetsByTopologyRegion[occurrence.topologyRegion].insert(sheet);
-      }
-    }
-    for (const auto &[regionId, sheetSet] : sheetsByTopologyRegion) {
-      const std::vector<authority::IsolationSheetId> sheets(
-          sheetSet.begin(), sheetSet.end());
-      if (!isolation_sheets_connected_typed(regionId, sheets)) {
-        result.failure = "DisconnectedQuotientIsolationAuthority";
-        return result;
-      }
-    }
-    std::sort(domainStates.begin(), domainStates.end());
-    domainStates.erase(std::unique(domainStates.begin(), domainStates.end()),
-                       domainStates.end());
-    QuotientClass quotient;
-    quotient.root = root;
-    quotient.memberIndices = std::move(members);
-    quotient.members.reserve(quotient.memberIndices.size());
-    for (const int memberIndex : quotient.memberIndices) {
-      quotient.members.push_back(
-          occurrences[static_cast<std::size_t>(memberIndex)].id);
-    }
-    std::sort(quotient.members.begin(), quotient.members.end());
-    quotient.support = support;
-    quotient.domainStates = std::move(domainStates);
-    const QuotientClassKey key{support, quotient.domainStates};
-    if (!uniqueClassKeys.insert(key).second) {
-      result.failure = "UnpairedDuplicateAuthoritativeCorner";
-      return result;
-    }
-    quotientClasses.push_back(std::move(quotient));
+  std::map<SurfaceQuotientClassId, int> outputVertexByClass;
+  std::map<authority::CellId, const SurfaceQuotientCell *> quotientCellById;
+  for (const SurfaceQuotientCell &cell : quotientProduct->classed_cells()) {
+    quotientCellById.emplace(cell.id, &cell);
   }
-  std::map<QuotientClassKey, authority::QuotientClassId>
-      quotientClassIdByKey;
-  std::size_t canonicalQuotientOrdinal = 0U;
-  for (const QuotientClassKey &key : uniqueClassKeys) {
-    const auto quotientClassId = authority::QuotientClassId::from_index(
-        static_cast<std::int64_t>(canonicalQuotientOrdinal),
-        uniqueClassKeys.size());
-    if (!quotientClassId ||
-        !quotientClassIdByKey.emplace(key, quotientClassId.value()).second) {
-      result.failure = "InvalidAuthoritativeQuotientClassId";
-      return result;
-    }
-    ++canonicalQuotientOrdinal;
-  }
-  std::sort(quotientClasses.begin(), quotientClasses.end(),
-            [](const QuotientClass &first, const QuotientClass &second) {
-              return std::tie(first.support.value(), first.domainStates) <
-                     std::tie(second.support.value(), second.domainStates);
-            });
-  for (QuotientClass &quotient : quotientClasses) {
-    const QuotientClassKey key{quotient.support.value(), quotient.domainStates};
-    const auto quotientClassId = quotientClassIdByKey.find(key);
-    if (quotientClassId == quotientClassIdByKey.end()) {
-      result.failure = "InvalidAuthoritativeQuotientClassId";
-      return result;
-    }
-    quotient.id = quotientClassId->second;
+  std::multimap<SurfaceQuotientClassId,
+                const QuotientSelectedPathCertificate *>
+      selectedPathsByClass;
+  for (const QuotientSelectedPathCertificate &path :
+       quotientProduct->selected_paths()) {
+    selectedPathsByClass.emplace(path.quotientClass, &path);
   }
 
   result.mesh.vertexPositions.resize(
-      static_cast<int>(quotientClasses.size()), 3);
-  std::map<int, int> outputVertexByRoot;
+      static_cast<int>(quotientProduct->classes().size()), 3);
   for (int outputVertex = 0;
-       outputVertex < static_cast<int>(quotientClasses.size());
+       outputVertex < static_cast<int>(quotientProduct->classes().size());
        ++outputVertex) {
-    QuotientClass &quotient =
-        quotientClasses[static_cast<std::size_t>(outputVertex)];
-    outputVertexByRoot[quotient.root] = outputVertex;
-    const auto representative_key = [&](const int member) {
-      const auto &occurrence = occurrences[static_cast<std::size_t>(member)];
+    const SurfaceQuotientClass &quotient =
+        quotientProduct->classes()[static_cast<std::size_t>(outputVertex)];
+    if (!outputVertexByClass.emplace(quotient.id, outputVertex).second ||
+        quotient.members.empty()) {
+      result.failure = "QuotientInvalidClassPartition";
+      return result;
+    }
+    const auto representative_key = [&](const authority::OccurrenceId member) {
+      const SurfaceOccurrence &occurrence = *occurrenceById.at(member);
       return std::tuple{occurrence.support, occurrence.cornerWedgeBindings,
                         occurrence.id};
     };
-    const int representative = *std::min_element(
-        quotient.memberIndices.begin(), quotient.memberIndices.end(),
-        [&](const int first, const int second) {
+    const authority::OccurrenceId representative = *std::min_element(
+        quotient.members.begin(), quotient.members.end(),
+        [&](const authority::OccurrenceId first,
+            const authority::OccurrenceId second) {
           return representative_key(first) < representative_key(second);
         });
-    const auto &representativeOccurrence =
-        occurrences[static_cast<std::size_t>(representative)];
+    const SurfaceOccurrence &representativeOccurrence =
+        *occurrenceById.at(representative);
     std::set<geometry::SourceProjectionChart> charts;
     std::set<authority::TopologyRegionId> topologyRegions;
     std::set<authority::IsolationSheetId> isolationSheets;
-    std::vector<geometry::PureQuadEquivalenceProvenance> equivalences;
-    for (const int member : quotient.memberIndices) {
-      const auto &occurrence = occurrences[static_cast<std::size_t>(member)];
+    for (const authority::OccurrenceId member : quotient.members) {
+      const SurfaceOccurrence &occurrence = *occurrenceById.at(member);
       const double tolerance = 1.0e-9 * std::max(
           {1.0, representativeOccurrence.point.position.norm(),
            occurrence.point.position.norm()});
@@ -5336,120 +5862,14 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       topologyRegions.insert(occurrence.topologyRegion);
       isolationSheets.insert(occurrence.cornerWedgeSheets.begin(),
                              occurrence.cornerWedgeSheets.end());
-      const auto &memberEquivalences =
-          occurrenceEquivalences[static_cast<std::size_t>(member)];
-      equivalences.insert(equivalences.end(), memberEquivalences.begin(),
-                          memberEquivalences.end());
-    }
-    std::sort(equivalences.begin(), equivalences.end());
-    equivalences.erase(
-        std::unique(equivalences.begin(), equivalences.end()),
-        equivalences.end());
-
-    struct SelectedPathEdge {
-      int next = -1;
-      std::optional<geometry::SelectedRelationStep> relationStep;
-    };
-    std::set<int> quotientMembers(quotient.memberIndices.begin(),
-                                  quotient.memberIndices.end());
-    std::map<int, std::vector<SelectedPathEdge>> selectedAdjacency;
-    const auto reverse_selected_step = [](
-        const geometry::SelectedRelationStep &forward) {
-      geometry::SelectedRelationStep reverse = forward;
-      reverse.direction = authority::reverse_orientation(forward.direction);
-      std::swap(reverse.fromChart, reverse.toChart);
-      std::swap(reverse.fromChartComponent, reverse.toChartComponent);
-      reverse.appliedTransport = forward.appliedTransport.inverse();
-      return reverse;
-    };
-    for (const SelectedQuotientJoin &join : selectedQuotientJoins) {
-      if (quotientMembers.count(join.firstOccurrence) == 0U ||
-          quotientMembers.count(join.secondOccurrence) == 0U) {
-        continue;
-      }
-      selectedAdjacency[join.firstOccurrence].push_back(
-          {join.secondOccurrence, join.relationStep});
-      selectedAdjacency[join.secondOccurrence].push_back(
-          {join.firstOccurrence,
-           join.relationStep.has_value()
-               ? std::optional<geometry::SelectedRelationStep>(
-                     reverse_selected_step(join.relationStep.value()))
-               : std::nullopt});
-    }
-    for (auto &[member, edges] : selectedAdjacency) {
-      (void)member;
-      std::sort(edges.begin(), edges.end(),
-                [](const SelectedPathEdge &a, const SelectedPathEdge &b) {
-                  return a.next < b.next;
-                });
     }
 
     std::vector<geometry::SelectedRelationPathCertificate> selectedPaths;
-    for (const int target : quotient.memberIndices) {
-      if (target == representative) continue;
-      std::map<int, std::pair<int, std::optional<geometry::SelectedRelationStep>>>
-          parent;
-      std::vector<int> stack{representative};
-      parent.emplace(representative,
-                     std::pair<int, std::optional<geometry::SelectedRelationStep>>{
-                         -1, std::nullopt});
-      while (!stack.empty() && parent.count(target) == 0U) {
-        const int current = stack.back();
-        stack.pop_back();
-        const auto adjacent = selectedAdjacency.find(current);
-        if (adjacent == selectedAdjacency.end()) continue;
-        for (auto edgeIt = adjacent->second.rbegin();
-             edgeIt != adjacent->second.rend(); ++edgeIt) {
-          if (parent.count(edgeIt->next) != 0U) continue;
-          parent.emplace(edgeIt->next,
-                         std::make_pair(current, edgeIt->relationStep));
-          stack.push_back(edgeIt->next);
-        }
+    const auto range = selectedPathsByClass.equal_range(quotient.id);
+    for (auto path = range.first; path != range.second; ++path) {
+      if (path->second->legacyProjection.has_value()) {
+        selectedPaths.push_back(path->second->legacyProjection.value());
       }
-      if (parent.count(target) == 0U) {
-        result.failure = "MissingSelectedQuotientJoinPath";
-        return result;
-      }
-
-      std::vector<std::optional<geometry::SelectedRelationStep>> pathEdges;
-      for (int current = target; current != representative;) {
-        const auto found = parent.find(current);
-        if (found == parent.end() || found->second.first < 0) {
-          result.failure = "InvalidSelectedQuotientJoinPath";
-          return result;
-        }
-        pathEdges.push_back(found->second.second);
-        current = found->second.first;
-      }
-      std::reverse(pathEdges.begin(), pathEdges.end());
-
-      geometry::SelectedRelationPathCertificate certificate;
-      certificate.sourceSupport = representativeOccurrence.support;
-      certificate.composedTransport = authority::GridAutomorphism::identity();
-      for (const auto &pathEdge : pathEdges) {
-        if (!pathEdge.has_value()) continue;
-        if (!certificate.orderedSteps.empty() &&
-            certificate.orderedSteps.back().toChartComponent !=
-                pathEdge->fromChartComponent) {
-          result.failure = "DiscontinuousSelectedRelationPath";
-          return result;
-        }
-        certificate.composedTransport = compose(
-            pathEdge->appliedTransport, certificate.composedTransport);
-        certificate.orderedSteps.push_back(pathEdge.value());
-      }
-      if (certificate.orderedSteps.empty()) continue;
-      certificate.startChartComponent =
-          certificate.orderedSteps.front().fromChartComponent;
-      certificate.endChartComponent =
-          certificate.orderedSteps.back().toChartComponent;
-      certificate.startChart = certificate.orderedSteps.front().fromChart;
-      certificate.endChart = certificate.orderedSteps.back().toChart;
-      if (!certificate.valid()) {
-        result.failure = "InvalidSelectedRelationPathCertificate";
-        return result;
-      }
-      selectedPaths.push_back(std::move(certificate));
     }
     std::sort(selectedPaths.begin(), selectedPaths.end());
     selectedPaths.erase(std::unique(selectedPaths.begin(), selectedPaths.end()),
@@ -5471,13 +5891,15 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     lineage.sourceIsolationSheets.assign(isolationSheets.begin(),
                                          isolationSheets.end());
     lineage.sourceSupport = representativeOccurrence.support;
-    if (!quotient.id.has_value()) {
-      result.failure = "MissingAuthoritativeQuotientClassId";
+    const auto compatibilityId = authority::QuotientClassId::from_index(
+        outputVertex, quotientProduct->classes().size());
+    if (!compatibilityId.has_value()) {
+      result.failure = "InvalidAuthoritativeQuotientClassId";
       return result;
     }
-    lineage.quotientClass = quotient.id.value();
+    lineage.quotientClass = compatibilityId.value();
     lineage.sourceOccurrences = quotient.members;
-    lineage.equivalences = std::move(equivalences);
+    lineage.equivalences = quotient.equivalences;
     lineage.selectedRelationPaths = std::move(selectedPaths);
     result.mesh.vertexLineage.push_back(std::move(lineage));
   }
@@ -5517,21 +5939,20 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     pending.cellIndex = cellIndex;
     std::array<Eigen::RowVector3d, 4> positions;
     Eigen::RowVector3d expectedNormal = Eigen::RowVector3d::Zero();
-    const auto occurrenceCell = occurrenceCellById.find(cell.id);
-    if (occurrenceCell == occurrenceCellById.end()) {
-      result.failure = "OccurrenceMissingCellOwnership";
+    const auto quotientCell = quotientCellById.find(cell.id);
+    if (quotientCell == quotientCellById.end()) {
+      result.failure = "QuotientNonBijectiveMaterialization";
       return result;
     }
     for (int corner = 0; corner < 4; ++corner) {
-      const authority::OccurrenceId occurrenceId =
-          occurrenceCell->second->cornerOccurrences[static_cast<std::size_t>(corner)];
-      const auto occurrence = occurrenceIndexById.find(occurrenceId);
-      if (occurrence == occurrenceIndexById.end()) {
-        result.failure = "OccurrenceMissingCorner";
+      const SurfaceQuotientClassId &classId =
+          quotientCell->second->corners[static_cast<std::size_t>(corner)];
+      const auto outputVertex = outputVertexByClass.find(classId);
+      if (outputVertex == outputVertexByClass.end()) {
+        result.failure = "QuotientMissingOccurrenceMember";
         return result;
       }
-      const int root = find_root(occurrence->second);
-      pending.vertices.push_back(outputVertexByRoot[root]);
+      pending.vertices.push_back(outputVertex->second);
       positions[static_cast<std::size_t>(corner)] =
           result.mesh.vertexPositions.row(pending.vertices.back());
       const int face = cell.corners[static_cast<std::size_t>(corner)].face;
