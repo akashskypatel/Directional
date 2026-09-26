@@ -1,2 +1,0 @@
-turn=M6-CP1-CB6-A6
-purpose=apply-verified-drive-patch
