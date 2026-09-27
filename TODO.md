@@ -1,18 +1,13 @@
-## Recovery — `M6-CP1-CB6-A6` compile-green, closeout pending (2026-09-27T23:16:03Z)
+## Current — `M6-CP1-CB6-A6` COMPLETE; exact next `M6-CP1-TB6-A6-EXEC` (2026-09-27)
 
-- [x] Recovery verified. Compile R1 `36212725707` is green (candidate `10896307843`, source `a532f803`, 28/28, eight targets, GMP, `runtimeExecution=false`), and the static plan checks pass. Beacon repaired (it had a non-canonical successor).
-- [ ] Resume `M6-CP1-CB6-A6` for **closeout only**: CB report (incl. the row4 `lattice` → `placement.lattice` value-identical migration and RA-1 – RA-4 compliance), temporary-state cleanup, docs, COMPLETE → `M6-CP1-TB6-A6-EXEC`.
-- [ ] `M6-CP1-TB6-A6-EXEC` (11 + 449 = 460), then `M6-CP1-TB6-A6-REV`.
-
-## Current — `M6-DEFN-R3-REV` accepted; exact next `M6-CP1-CB6-A6`
-
-- [x] Independent runtime-free Review accepted R3 with binding RA-1 – RA-4: canonical relation-ID certificate direction, OrdinaryFront identity transport, evidence-complete A5 relation publication for canonical HardRail/Periodic transport, and explicit noncommutative path-composition order.
-- [ ] Execute `M6-CP1-CB6-A6` only: extract immutable A6 quotient product, enrich A5 relation evidence only as required by RA-3 without changing relation semantics, retire unread `chart/lattice/isolationSheet`, add exactly four focused A6 identities, and compile/package the standard eight GMP/GMPXX targets. **No generated Directional runtime.**
-- [ ] If compile-green, execute immutable `M6-CP1-TB6-A6-EXEC`: 11 focused + selector449 = **460** fresh exact-filter processes, preserving cylinder row232 and torus rows444/446/448/449 as holonomy falsifiers.
+- [x] A6 quotient-product extraction and legacy-field retirement are compile/package green at semantic source `a532f803bd2f0ef92342652ea3f1a9b64945ba69`.
+- [x] Compile R1 `36212725707 / 108322509801` packages candidate `10896307843` (28/28, eight GMP/GMPXX targets, clean receipts, `runtimeExecution=false`). First compile `36212343902` failed on declaration clashes and was superseded only by the bounded `a532f803` compile fix.
+- [x] CB report records RA-1 – RA-4 static compliance and the focused row4 `lattice` → `placement.lattice` value-identical migration. Prior CB6-A6 compile/snapshot temporary state was retired through cleanup run `36358568335`.
+- [ ] Execute immutable `M6-CP1-TB6-A6-EXEC`: 11 focused + selector449 = **460** fresh exact-filter processes, benchmark 0, preserving cylinder row232 and torus rows444/446/448/449 as holonomy falsifiers.
 - [ ] Mandatory `M6-CP1-TB6-A6-REV` before any promotion, fallback, R4, A7 or `G4-B002` work.
 - [ ] `M6-DEFN-R4` remains deferred until the A6 implementation/gate/Review sequence completes.
 
-Accounting remains **55 / 16 / 39**, debt 1. Reviewed runtime authority remains `10879581622 / 82b86a28...`, selector449 449/449.
+Accounting remains **55 / 16 / 39**, debt 1. Reviewed runtime authority remains `10879581622 / 82b86a28...`, selector449 449/449; candidate `10896307843 / a532f803` is unpromoted.
 
 ## Superseded historical checklist — `M6-DEFN-R3` definition closeout (Review now complete)
 
@@ -21,7 +16,7 @@ Accounting remains **55 / 16 / 39**, debt 1. Reviewed runtime authority remains 
 - [x] Write `Architecture_M6_DEFN_R3_A6_Product_Separation_Definition_Record.md` and the normative frozen-definition amendment.
 - [x] Write held `Architecture_M6_CP1_CB6_A6_Quotient_Product_Extraction_Code_Build_Plan.md`; four new focused identities; later gate = **11 + 449 = 460**.
 - [x] Mark standalone legacy-field CB6 plan superseded/held; retirement is folded into A6 extraction.
-- [ ] **Exact next:** `M6-DEFN-R3-REV`; only accepted Review may authorize `M6-CP1-CB6-A6`.
+- [x] **Historical exact next completed:** `M6-DEFN-R3-REV` accepted and authorized `M6-CP1-CB6-A6`.
 - [ ] `M6-DEFN-R4` before A7 CB: freeze A7 product representation and exact `G4-B002` A6 stage boundary.
 
 ## Recovery — `M6-DEFN-R3` stalled after its start beacon; resume the same turn with the bounded scope (2026-09-25T21:13:47Z)
@@ -35,8 +30,8 @@ Accounting remains **55 / 16 / 39**, debt 1. Reviewed runtime authority remains 
 **TB5 recovery and promotion upheld; CP1 scope corrected; exact next `M6-DEFN-R3`.** See `Architecture_M6_CP1_TB5_Review_Record.md` (addendum) and `Architecture_M6_DEFN_R3_CP1_Product_Separation_Plan.md`.
 
 - [x] `M6-DEFN-R3`: bounded A6 definition complete. A7 representation and exact `G4-B002` boundary intentionally deferred to `M6-DEFN-R4`.
-- [ ] `M6-DEFN-R3-REV` — exact next; review the bounded R3 record and held A6 plan.
-- [ ] `M6-CP1-CB6-A6` (HELD pending R3 Review) absorbs legacy-field retirement; compile-green -> 11 focused + selector449 = 460 -> mandatory Review.
+- [x] `M6-DEFN-R3-REV` — accepted; bounded R3 record and A6 plan reviewed.
+- [x] `M6-CP1-CB6-A6` — completed compile/package green; runtime gate remains 11 focused + selector449 = 460 -> mandatory Review.
 - [ ] A7 extraction and adapter thinning CB, then TB, then Review.
 - [ ] `G4-B002` A6 stage-boundary CB, then TB, then Review, then CP1 closure Review against the restated exit scope.
 - [x] ~~CB6 standalone legacy-field retirement~~ — HELD and folded into the A6 CB.

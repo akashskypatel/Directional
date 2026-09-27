@@ -1,6 +1,7 @@
 ## 2026-09-27 — `M6-CP1-CB6-A6` recovery note — **+0 EVENTS / 55/16/39 / debt 1**
 
-- CB6-A6 is compile/package green (`10896307843 / a532f803`); closeout is pending.
+- CB6-A6 is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE** on candidate `10896307843 / a532f803`; semantic acceptance remains Review-owned and the reviewed runtime authority remains `10879581622 / 82b86a28...`.
+- **Closeout process observation (+0):** on the 2026-09-27 resume, repository authority/document reads preceded the explicit turn-local `READ_MODE=snapshot` declaration. The miss was corrected before semantic source inspection; verified snapshot run/artifact `36358391103 / 10944138788` froze source `6ff6b0c174e7268c7973713ac58c7a0bc0fe501c` with `runtimeExecution=false`. All resumed semantic inspection used that snapshot. This is process-only and does not change 55/16/39 or debt 1.
 - **Census correction:** the TB5-REV and review-agent "zero readers" census for the retired `SurfaceOccurrence::lattice` missed a **test** reader. Focused row4 (`M6CP1.CoincidentUnrelatedOccurrencesRemainDistinct`) read `a.lattice.latticeCoordinate`, and CB6-A6 migrated it to `a.placement.lattice.latticeCoordinate`. This is value-identical by construction, since both come from the same `cell.lattice[cornerIndex]`. TB6-A6-REV must confirm row4's meaning is unchanged. No production reader existed; all eight targets compile.
 
 ## 2026-09-25 — `M6-DEFN-R3-REV` definition adjudication — **+0 EVENTS / 55/16/39 / debt 1 / A6 CB AUTHORIZED**

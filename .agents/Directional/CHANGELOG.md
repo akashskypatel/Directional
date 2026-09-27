@@ -1,9 +1,11 @@
-## 2026-09-27 — `M6-CP1-CB6-A6` recovery: compile-green verified; closeout pending
+## 2026-09-27 — `M6-CP1-CB6-A6` COMPLETE: A6 quotient product compile/package green
 
-- Verified Compile R1 `36212725707`: artifact `10896307843` (`54eb7708…`), 28/28, source `a532f803`, eight targets, exit 0/0, clean receipts, GMP, `runtimeExecution=false`. The first compile `36212343902` failed on conflicting declarations; the fix was a bounded syntactic rename.
-- Static plan checks pass: A6 types present, legacy fields retired, cycle-closing skip removed, four focused identities, selector/routing unchanged.
-- Recorded that focused row4 was migrated from `lattice` to `placement.lattice` (value-identical by construction). This corrects the earlier "zero readers" census.
-- Repaired the non-canonical beacon and rewrote the handoff (the live section still pointed at DEFN-R3). Next: resume CB6-A6 for closeout only, then TB6-A6 (460).
+- Closed the Code + Build turn at semantic source `a532f803bd2f0ef92342652ea3f1a9b64945ba69`; Compile R1 `36212725707 / 108322509801` packages candidate `10896307843` (`sha256:54eb770889822ef265053494e55e25af79616f77305d1ac6900f2f8969f56b7e`), root manifest 28/28, eight GMP/GMPXX targets, exit 0/0, clean receipts, and `runtimeExecution=false`.
+- The first compile `36212343902 / 108321392040` failed on conflicting declarations; the only compile repair was the bounded `a532f803` rename/class-count correction. No generated Directional runtime was executed.
+- Static plan checks and RA-1 – RA-4 are satisfied: canonical relation-ID certificate direction, identity OrdinaryFront transport, evidence-complete A5 relation consumption without front-edge dereference in A6, and traversal-order `compose(T,path)` with reverse inversion and typed holonomy rejection.
+- Recorded focused row4's mechanical `lattice` → `placement.lattice` migration as value-identical by construction; TB6-A6-REV must confirm that its test meaning is unchanged.
+- Retired the prior CB6-A6 compile/snapshot temporary state through cleanup run `36358568335`; durable closeout report is `Architecture_M6_CP1_CB6_A6_Code_Build_Report.md`. Stable accounting remains 55/16/39, debt 1; candidate remains unpromoted.
+- Exact next is immutable `M6-CP1-TB6-A6-EXEC`: **11 focused + selector449 = 460** fresh exact-filter processes, benchmark 0, followed by mandatory `M6-CP1-TB6-A6-REV`.
 
 ## 2026-09-25 — `M6-DEFN-R3-REV` accepts A6 definition with four binding precision amendments
 

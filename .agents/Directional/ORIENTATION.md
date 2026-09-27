@@ -1,8 +1,8 @@
-## Currency — `M6-CP1-CB6-A6` recovery: compile-green, resume for closeout only (2026-09-27T23:16:03Z)
+## Currency — `M6-CP1-CB6-A6` COMPLETE / compile-package green; immutable TB6-A6 next (2026-09-27 UTC)
 
-CB6-A6 extracted the A6 quotient product (`faca79e3`, then bounded compile fix `a532f803`), and Compile R1 `36212725707` is green (candidate `10896307843`). The session stalled before closeout. Resume the same turn for closeout only, then TB6-A6 (460) and its Review.
+CB6-A6 extracted the immutable A6 quotient product (`faca79e3`, then bounded compile fix `a532f803`) and closed compile/package green on run/job `36212725707 / 108322509801`, candidate `10896307843`. Root manifest is 28/28, all eight standard GMP/GMPXX targets compiled, source receipts are clean, and `runtimeExecution=false`. The candidate is **unpromoted**; reviewed runtime authority remains `10879581622 / 82b86a28...`, selector449 449/449.
 
-Recorded caveat: focused row4's source was mechanically migrated from `lattice` to `placement.lattice`, which is value-identical. The earlier "zero readers" census missed this test read.
+Static closeout confirms RA-1 – RA-4 and records focused row4's mechanical `lattice` → `placement.lattice` migration as value-identical by construction. Exact next is `M6-CP1-TB6-A6-EXEC`: **11 focused + selector449 = 460**, benchmark 0, then mandatory `M6-CP1-TB6-A6-REV`. Do not begin R4/A7/`G4-B002` before that Review.
 
 ### Superseded currency note
 ## Current orientation — `M6-DEFN-R3-REV` complete (2026-09-25)

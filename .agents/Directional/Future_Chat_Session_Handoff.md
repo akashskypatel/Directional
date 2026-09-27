@@ -1,34 +1,20 @@
-## Resume-critical update — RESUME `M6-CP1-CB6-A6` for CLOSEOUT ONLY: compile/package is already green (2026-09-27T23:16:03Z)
+## Resume-critical update — `M6-CP1-CB6-A6` COMPLETE; exact next `M6-CP1-TB6-A6-EXEC` (2026-09-27 UTC)
 
-**Resume `M6-CP1-CB6-A6` (same turn).** Keep `Started at 2026-09-26T02:06:00Z` and set a new `Resumed at`, with `Status: IN_PROGRESS`, `Successor: UNKNOWN` and an empty `Ended at`. **Do not recompile, do not change source/tests, and do not start TB6.**
+**Do not resume CB6-A6. Do not rebuild or repair candidate `10896307843`.** The Code + Build turn is complete, compile/package green, runtime-free and unpromoted.
 
-**Recovery facts** (verified by the review agent at 2026-09-27T23:16:03Z):
-- **Semantic source.** `faca79e3` (A6 extraction) plus `a532f803` (bounded compile fix). The fix only renamed `firstSide`/`secondSide`, which clashed with new declarations, and switched to the A6 product's class count. HEAD source equals `a532f803`.
-- **First compile.** Run `36212343902` failed (conflicting declarations, `RemeshPipeline.cpp:4188-4197`) and was superseded by the fix.
-- **Authoritative compile/package.** Compile R1, run/job `36212725707 / 108322509801`, is **GREEN**:
-  - result artifact `10896307843` (digest `sha256:54eb770889822ef265053494e55e25af79616f77305d1ac6900f2f8969f56b7e`); log artifact `10896347611`;
-  - root manifest **28/28**; packaged source `source-a532f803bd2f0ef92342652ea3f1a9b64945ba69.tar.gz` (`e48ad4a9...9a45`);
-  - all eight standard targets built; build/preflight exit `0/0`; all five source-status receipts empty; GMP/GMPXX linked; `runtimeExecution=false`, `turnBoundary=Code+Build-only`.
-- **Static plan checks pass on `a532f803`:**
-  - the A6 types exist: `SurfaceQuotientProduct` / `Producer`, `SurfaceQuotientClassId`, `QuotientRelationCertificate`, `QuotientRelationConsumption`, `QuotientCertificate`, `MaterializationCertificate`, `SurfaceQuotientProductErrorCode` with `HolonomyConflict`;
-  - `SurfaceOccurrence::{chart,lattice,isolationSheet}` are retired;
-  - the `if (!unite(...)) continue;` skip is gone;
-  - exactly the four pre-registered focused identities are present;
-  - selector449 `d4a0d1b7...d6414` and routing449 `9c88a5ed...c5707` are unchanged.
-- **One frozen focused test was edited, and the edit must be recorded.** Focused row4 `M6CP1.CoincidentUnrelatedOccurrencesRemainDistinct` read the retired `a.lattice.latticeCoordinate`. CB6-A6 migrated it to `a.placement.lattice.latticeCoordinate`. This is **value-identical by construction**: both were copied from the same `cell.lattice[cornerIndex]` (`82b86a28` producer; `a532f803:RemeshPipeline.cpp:3747`, `:3948`). The earlier "zero readers" census (TB5-REV and the review agent) missed this test read. Record it in the CB report as a mechanical migration so that TB6-A6-REV can confirm row4's meaning is unchanged.
-- **Why this note exists.** The session stalled after the green compile (last commit 2026-09-26T02:46Z) and was nudged repeatedly on 2026-09-26. The loop then reported `local_attempt_timestamp_newer_than_status_beacon` / `CHAT_UNKNOWN`. The beacon's `Successor` was also the turn itself, which is non-canonical; it has been repaired.
+**Closed CB6-A6 authority:**
+- Semantic source `a532f803bd2f0ef92342652ea3f1a9b64945ba69` = A6 extraction `faca79e3` plus the bounded compile fix. The first compile run/job `36212343902 / 108321392040` failed on declaration clashes; no runtime executed.
+- Authoritative Compile R1 run/job `36212725707 / 108322509801` is green. Result artifact `10896307843` has digest `sha256:54eb770889822ef265053494e55e25af79616f77305d1ac6900f2f8969f56b7e`; log artifact `10896347611` has digest `sha256:d0d70351dff0197182a28449361127862d6df404cc6a35d42ace519a9817c98b`. Root manifest is **28/28**; source archive `source-a532f803bd2f0ef92342652ea3f1a9b64945ba69.tar.gz` hashes to `e48ad4a919e450ccd9809083af0c02e2260b7c040d40ee94741aa79428fc9a45`.
+- All eight standard GMP/GMPXX targets compiled; preflight/build exit `0/0`; all five source-status receipts are empty; `runtimeExecution=false`, `turnBoundary=Code+Build-only`.
+- Static closeout confirms RA-1 – RA-4: certificates use canonical `relation.id.first -> relation.id.second`; OrdinaryFront quotient transport is identity; A6 consumes A5 canonical evidence without dereferencing `firstFrontEdge`/`secondFrontEdge`; selected-path composition uses `path=compose(T,path)` with reverse inversion and cycle-closing mismatch typed as `HolonomyConflict`.
+- `SurfaceOccurrence::{chart,lattice,isolationSheet}` are retired; the old cycle-closing skip is gone; exactly four pre-registered A6 focused identities exist; selector449 `d4a0d1b7...d6414` and routing449 `9c88a5ed...c5707` are unchanged.
+- Focused row4 `M6CP1.CoincidentUnrelatedOccurrencesRemainDistinct` was mechanically migrated from `a.lattice.latticeCoordinate` to `a.placement.lattice.latticeCoordinate`. The values are identical by construction because both originate from the same `cell.lattice[cornerIndex]`. TB6-A6-REV must explicitly confirm the test meaning is unchanged.
+- Prior CB6-A6 compile/snapshot temporary state was retired through cleanup run `36358568335`. Closeout source inspection used verified runtime-free snapshot `36358391103 / 10944138788`; a process-only READ_MODE declaration lag is recorded at +0.
+- Durable report: `Architecture_M6_CP1_CB6_A6_Code_Build_Report.md`.
 
-**Closeout to do.**
-1. Write `Architecture_M6_CP1_CB6_A6_Code_Build_Report.md`, covering:
-   - the exact source, both compile runs, and the artifact IDs/digests above;
-   - the static checks;
-   - the row4 migration;
-   - RA-1 – RA-4 compliance statements: canonical certificate direction, identity OrdinaryFront transport, evidence-complete A5 relations with no front-edge dereference in A6, and the frozen composition order.
-2. Retire the temporary CB6-A6 compile/drive callers and triggers under the cleanup policy.
-3. Update the tracker (+0), CHANGELOG, ORIENTATION, ROADMAP, TODO and handoff.
-4. Publish COMPLETE with `Successor: M6-CP1-TB6-A6-EXEC` as the final write.
+**Exact next:** `M6-CP1-TB6-A6-EXEC` consumes candidate `10896307843` **immutably**. Execute **11 focused + selector449 = 460** fresh exact-filter processes, benchmark 0. Row232 and torus rows444/446/448/449 are the pre-registered holonomy falsifiers. Preserve artifact-only rules: no configure, compile, relink, fixture repair, manifest repair or binary permission repair. Mandatory `M6-CP1-TB6-A6-REV` follows. Do not begin `M6-DEFN-R4`, A7 or `G4-B002` before that Review.
 
-Then `M6-CP1-TB6-A6-EXEC` consumes `10896307843` immutably: **11 focused + selector449 = 460** fresh exact-filter processes, benchmark 0. Row232 and torus rows 444/446/448/449 are the pre-registered holonomy falsifiers. Mandatory `M6-CP1-TB6-A6-REV` follows.
+Reviewed runtime authority remains `10879581622 / 82b86a28...`, selector449 449/449. Stable accounting remains **55 / 16 / 39**, debt **1**.
 
 ## Superseded resume notes (historical — do not act on)
 
@@ -302,15 +288,14 @@ Definition chain: DEFN-R1, DEFN-R2, RA-1 – RA-12, plus `M6-DEFN-R3` (A6 produc
 
 Current reviewed runtime authority: `10879581622 / 82b86a28` (TB5 456/456) under selector449. Stable accounting **55 / 16 / 39**, debt **1**. CP1 is **OPEN** on its frozen product-separation scope.
 
-`M6-CP1-CB6-A6` is **IN_PROGRESS, compile/package green, closeout pending**. The candidate is `10896307843 / a532f803` (unpromoted).
+`M6-CP1-CB6-A6` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE**. Candidate `10896307843 / a532f803` is unpromoted.
 
 ## Exact next turn
 
-**`M6-CP1-CB6-A6` (resume, same turn) — closeout only.** No compile and no source/test change. Record the report, static checks, the row4 mechanical migration and RA-1 – RA-4 compliance; clean temporary state; publish COMPLETE → `M6-CP1-TB6-A6-EXEC`.
+**`M6-CP1-TB6-A6-EXEC` — immutable Test + Benchmark.** Consume `10896307843` without rebuild or repair and execute 11 focused + selector449 = **460** fresh exact-filter processes, benchmark 0. Row232 and 444/446/448/449 are the holonomy falsifiers.
 
 After that:
-- `M6-CP1-TB6-A6-EXEC`: immutable 11 + 449 = **460**; row232 and 444/446/448/449 are the holonomy falsifiers;
-- `M6-CP1-TB6-A6-REV`;
+- mandatory `M6-CP1-TB6-A6-REV`;
 - `M6-DEFN-R4` (A7 product and `G4-B002` boundary);
 - the A7 CB, then the `G4-B002` CB, then a CP1 closure Review.
 

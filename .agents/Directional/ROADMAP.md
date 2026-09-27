@@ -1,18 +1,18 @@
-## Live M6 routing — after `M6-DEFN-R3-REV`
+## Live M6 routing — after `M6-CP1-CB6-A6`
 
 | Checkpoint | State | Exact next / gate |
 |---|---|---|
 | M6 CP1 A5 | Accepted runtime authority retained | `10879581622 / 82b86a28...`, selector449 449/449 |
 | M6 R3 A6 definition | **Accepted with RA-1 – RA-4** | Review record + frozen amendment govern |
-| M6 CP1 A6 extraction | **AUTHORIZED / NEXT** | `M6-CP1-CB6-A6`, compile/package only |
-| M6 CP1 A6 runtime gate | Held behind compile | `M6-CP1-TB6-A6-EXEC`, 11+449=460, then mandatory Review |
-| M6 R4 / A7 / `G4-B002` boundary | Deferred | Must not begin before A6 CB/TB/Review |
+| M6 CP1 A6 extraction | **COMPLETE / COMPILE+PACKAGE GREEN / UNPROMOTED** | `10896307843 / a532f803`, runtime-free |
+| M6 CP1 A6 runtime gate | **EXACT NEXT** | `M6-CP1-TB6-A6-EXEC`, 11+449=460, then mandatory Review |
+| M6 R4 / A7 / `G4-B002` boundary | Deferred | Must not begin before A6 TB/Review |
 
 Stable accounting: **55 / 16 / 39**, debt 1.
 
-## M6 CP1 — R3 A6 definition complete; exact next `M6-DEFN-R3-REV` (2026-09-25)
+## M6 CP1 — `M6-CP1-CB6-A6` complete; exact next `M6-CP1-TB6-A6-EXEC` (2026-09-27)
 
-R3 froze the bounded A6 product split: member-set semantic class IDs, exact-once relation certificates/ledger including cycle-closing relations, deterministic selected relation forest/path authority, exact transport-consistency holonomy rejection, A6 failure vocabulary, and the first held A6 extraction plan. The standalone legacy-field cleanup is folded into `M6-CP1-CB6-A6`; compile-green would later gate 11 focused + selector449 = 460. A7 product representation and `G4-B002` boundary representation are deferred to `M6-DEFN-R4`. Mandatory Review is next; no CB is authorized yet.
+A6 quotient-product extraction and legacy-field retirement compile/package green at semantic source `a532f803bd2f0ef92342652ea3f1a9b64945ba69`. Compile R1 run/job `36212725707 / 108322509801` packages candidate `10896307843` with 28/28 manifest, eight GMP/GMPXX targets, clean source receipts and `runtimeExecution=false`. RA-1 – RA-4 are statically confirmed. Candidate remains unpromoted; reviewed runtime authority remains `10879581622 / 82b86a28...`. Exact next is immutable 460-process TB6-A6, then mandatory Review. A7 representation and `G4-B002` boundary representation remain deferred to `M6-DEFN-R4`.
 
 ## M6 CP1 — scope correction by the `M6-CP1-TB5-REV` review-agent addendum; exact next `M6-DEFN-R3` (2026-09-25)
 
@@ -613,7 +613,7 @@ Final CP4 Review completes the bounded conjunct8 sequence: row449 was accepted p
 | Checkpoint | Semantic domain |
 |---|---|
 | `M6-DEFN` | **COMPLETE / RUNTIME-FREE.** Four immutable products, exact occurrence/quotient identity, verifier recompute-vs-repair boundary, G4 ownership and dormant-test dispositions frozen in `Architecture_M6_Frozen_Definitions.md`. |
-| `M6-CP1` | **ACTIVE / R3 BOUNDED A6 DEFINITION COMPLETE / EXACT NEXT `M6-DEFN-R3-REV`.** Runtime authority remains `10879581622 / 82b86a28...`, selector449 449/449, accounting 55/16/39, debt 1. Held next implementation is `M6-CP1-CB6-A6` (A6 extraction + legacy-field retirement), then 11+449=460 TB/Review. A7 and `G4-B002` representation await `M6-DEFN-R4`. |
+| `M6-CP1` | **ACTIVE / A6 EXTRACTION COMPILE-GREEN / EXACT NEXT `M6-CP1-TB6-A6-EXEC`.** Reviewed runtime authority remains `10879581622 / 82b86a28...`, selector449 449/449, accounting 55/16/39, debt 1. Candidate `10896307843 / a532f803` is unpromoted and runtime-free. TB6-A6 executes 11+449=460, then mandatory Review; A7 and `G4-B002` representation await `M6-DEFN-R4`. |
 | `M6-CP2` | verifier consumes certificates and independently recomputes elementary incidence; **never repairs producer state** |
 | `M6-CP3` | M6 exit — equal coordinates without a relation remain distinct; every owned relation consumed exactly once; source-row / output-row / scheduler permutation invariance |
 
