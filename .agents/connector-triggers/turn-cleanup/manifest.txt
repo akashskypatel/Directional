@@ -1,2 +1,0 @@
-# M6-CP1-CB6-A6 closeout documentation transport cleanup
-.agents/connector-triggers/m6-cp1-cb6-a6-closeout-docs-r1.txt

@@ -1,4 +1,0 @@
-purpose=M6-CP1-CB6-A6 durable closeout documentation
-base_sha=f156dec8b160eacdb7b993b3c81695270d1c46be
-patch_sha256=5f863d592a2703839118499653d053b55e4061653c58a624da5e8e29da238e24
-retry=0
