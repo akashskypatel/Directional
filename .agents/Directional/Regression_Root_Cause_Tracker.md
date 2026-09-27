@@ -1,3 +1,8 @@
+## 2026-09-27 — `M6-CP1-CB6-A6` recovery note — **+0 EVENTS / 55/16/39 / debt 1**
+
+- CB6-A6 is compile/package green (`10896307843 / a532f803`); closeout is pending.
+- **Census correction:** the TB5-REV and review-agent "zero readers" census for the retired `SurfaceOccurrence::lattice` missed a **test** reader. Focused row4 (`M6CP1.CoincidentUnrelatedOccurrencesRemainDistinct`) read `a.lattice.latticeCoordinate`, and CB6-A6 migrated it to `a.placement.lattice.latticeCoordinate`. This is value-identical by construction, since both come from the same `cell.lattice[cornerIndex]`. TB6-A6-REV must confirm row4's meaning is unchanged. No production reader existed; all eight targets compile.
+
 ## 2026-09-25 — `M6-DEFN-R3-REV` definition adjudication — **+0 EVENTS / 55/16/39 / debt 1 / A6 CB AUTHORIZED**
 
 - **No runtime regression was observed or repriced.** Review is static/runtime-free and the accepted runtime authority stays `10879581622 / 82b86a28...`, selector449 449/449.

@@ -1,3 +1,10 @@
+## Currency — `M6-CP1-CB6-A6` recovery: compile-green, resume for closeout only (2026-09-27T23:16:03Z)
+
+CB6-A6 extracted the A6 quotient product (`faca79e3`, then bounded compile fix `a532f803`), and Compile R1 `36212725707` is green (candidate `10896307843`). The session stalled before closeout. Resume the same turn for closeout only, then TB6-A6 (460) and its Review.
+
+Recorded caveat: focused row4's source was mechanically migrated from `lattice` to `placement.lattice`, which is value-identical. The earlier "zero readers" census missed this test read.
+
+### Superseded currency note
 ## Current orientation — `M6-DEFN-R3-REV` complete (2026-09-25)
 
 R3's A6 product-separation design is accepted with four binding Review amendments: certificate direction derives from canonical relation-ID endpoints; OrdinaryFront quotient transport is identity; A5 relations must carry enough canonical kind-specific transport/owner evidence for the frozen A5→A6 boundary; and selected-path `GridAutomorphism` composition order is explicit. The strict holonomy equality rule remains subject to its already-frozen cylinder/torus TB falsifier.

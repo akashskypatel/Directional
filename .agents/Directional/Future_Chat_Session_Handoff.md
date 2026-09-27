@@ -1,4 +1,38 @@
-## Resume-critical update — `M6-DEFN-R3-REV` accepted R3 with RA-1 – RA-4; A6 CB authorized (2026-09-25)
+## Resume-critical update — RESUME `M6-CP1-CB6-A6` for CLOSEOUT ONLY: compile/package is already green (2026-09-27T23:16:03Z)
+
+**Resume `M6-CP1-CB6-A6` (same turn).** Keep `Started at 2026-09-26T02:06:00Z` and set a new `Resumed at`, with `Status: IN_PROGRESS`, `Successor: UNKNOWN` and an empty `Ended at`. **Do not recompile, do not change source/tests, and do not start TB6.**
+
+**Recovery facts** (verified by the review agent at 2026-09-27T23:16:03Z):
+- **Semantic source.** `faca79e3` (A6 extraction) plus `a532f803` (bounded compile fix). The fix only renamed `firstSide`/`secondSide`, which clashed with new declarations, and switched to the A6 product's class count. HEAD source equals `a532f803`.
+- **First compile.** Run `36212343902` failed (conflicting declarations, `RemeshPipeline.cpp:4188-4197`) and was superseded by the fix.
+- **Authoritative compile/package.** Compile R1, run/job `36212725707 / 108322509801`, is **GREEN**:
+  - result artifact `10896307843` (digest `sha256:54eb770889822ef265053494e55e25af79616f77305d1ac6900f2f8969f56b7e`); log artifact `10896347611`;
+  - root manifest **28/28**; packaged source `source-a532f803bd2f0ef92342652ea3f1a9b64945ba69.tar.gz` (`e48ad4a9...9a45`);
+  - all eight standard targets built; build/preflight exit `0/0`; all five source-status receipts empty; GMP/GMPXX linked; `runtimeExecution=false`, `turnBoundary=Code+Build-only`.
+- **Static plan checks pass on `a532f803`:**
+  - the A6 types exist: `SurfaceQuotientProduct` / `Producer`, `SurfaceQuotientClassId`, `QuotientRelationCertificate`, `QuotientRelationConsumption`, `QuotientCertificate`, `MaterializationCertificate`, `SurfaceQuotientProductErrorCode` with `HolonomyConflict`;
+  - `SurfaceOccurrence::{chart,lattice,isolationSheet}` are retired;
+  - the `if (!unite(...)) continue;` skip is gone;
+  - exactly the four pre-registered focused identities are present;
+  - selector449 `d4a0d1b7...d6414` and routing449 `9c88a5ed...c5707` are unchanged.
+- **One frozen focused test was edited, and the edit must be recorded.** Focused row4 `M6CP1.CoincidentUnrelatedOccurrencesRemainDistinct` read the retired `a.lattice.latticeCoordinate`. CB6-A6 migrated it to `a.placement.lattice.latticeCoordinate`. This is **value-identical by construction**: both were copied from the same `cell.lattice[cornerIndex]` (`82b86a28` producer; `a532f803:RemeshPipeline.cpp:3747`, `:3948`). The earlier "zero readers" census (TB5-REV and the review agent) missed this test read. Record it in the CB report as a mechanical migration so that TB6-A6-REV can confirm row4's meaning is unchanged.
+- **Why this note exists.** The session stalled after the green compile (last commit 2026-09-26T02:46Z) and was nudged repeatedly on 2026-09-26. The loop then reported `local_attempt_timestamp_newer_than_status_beacon` / `CHAT_UNKNOWN`. The beacon's `Successor` was also the turn itself, which is non-canonical; it has been repaired.
+
+**Closeout to do.**
+1. Write `Architecture_M6_CP1_CB6_A6_Code_Build_Report.md`, covering:
+   - the exact source, both compile runs, and the artifact IDs/digests above;
+   - the static checks;
+   - the row4 migration;
+   - RA-1 – RA-4 compliance statements: canonical certificate direction, identity OrdinaryFront transport, evidence-complete A5 relations with no front-edge dereference in A6, and the frozen composition order.
+2. Retire the temporary CB6-A6 compile/drive callers and triggers under the cleanup policy.
+3. Update the tracker (+0), CHANGELOG, ORIENTATION, ROADMAP, TODO and handoff.
+4. Publish COMPLETE with `Successor: M6-CP1-TB6-A6-EXEC` as the final write.
+
+Then `M6-CP1-TB6-A6-EXEC` consumes `10896307843` immutably: **11 focused + selector449 = 460** fresh exact-filter processes, benchmark 0. Row232 and torus rows 444/446/448/449 are the pre-registered holonomy falsifiers. Mandatory `M6-CP1-TB6-A6-REV` follows.
+
+## Superseded resume notes (historical — do not act on)
+
+### `M6-DEFN-R3-REV` accepted R3 with RA-1 – RA-4; A6 CB authorized (2026-09-25)
 
 **Exact next: `M6-CP1-CB6-A6` — Code + Build, compile/package only. Do not start `M6-DEFN-R4`, A7, `G4-B002`, or runtime TB first.**
 
@@ -14,7 +48,7 @@ Review snapshot run/artifact `36207017645 / 10894735898` was static/runtime-free
 
 ### Superseded recovery note — do not resume R3 Review
 
-## Resume-critical update — `M6-DEFN-R3` bounded definition complete; mandatory Review next (2026-09-25)
+### `M6-DEFN-R3` bounded definition complete; mandatory Review next (2026-09-25)
 
 **Exact next: `M6-DEFN-R3-REV` — independent runtime-free Review. Do not start `M6-CP1-CB6-A6` first.**
 
@@ -57,8 +91,6 @@ Source inspection was from snapshot run/artifact `36199074014 / 10890838063`; no
 The A7 product and the `G4-B002` boundary are deferred to `M6-DEFN-R4`. The holonomy rule is proved **analytically only** (split square, uniform rectangles, ordinary-only classes). For produced torus and cylinder fixtures it is pre-registered as a TB falsifier with a documented evidence-only fallback, because no runtime-free static proof is possible there.
 
 Work incrementally: preserve each decided item to Drive or the branch.
-
-## Superseded resume notes (historical — do not act on)
 
 ### `M6-CP1-TB5-REV` review-agent addendum: CP1 scope corrected; CB6 HELD; exact next `M6-DEFN-R3` (2026-09-25)
 
@@ -266,65 +298,54 @@ Review must independently re-open source/evidence and re-derive: split-square v0
 
 ## Current authority
 
-`M6-CP1-TB5-REV` is **COMPLETE** (review-agent addendum included): TB5 recovery accepted; `10879581622 / 82b86a285292379cfd92cdc4e10d74181b38f1e8` promoted as current reviewed runtime authority under selector449 **449/449**; stable accounting **55 / 16 / 39**, debt **1**.
+Definition chain: DEFN-R1, DEFN-R2, RA-1 – RA-12, plus `M6-DEFN-R3` (A6 product separation) accepted by `M6-DEFN-R3-REV` with RA-1 – RA-4 (`Architecture_M6_DEFN_R3_Review_Record.md`). The A7 product and `G4-B002` boundary are deferred to `M6-DEFN-R4`.
 
-**CP1 is OPEN.** Its frozen product-separation scope is outstanding:
-- A6 `SurfaceQuotientProduct` with member-set identity, per-relation certificates and the exact-once ledger;
-- A7 `SourceAttachedGeometryProduct` with support and embedding certificates;
-- a thin adapter;
-- the `G4-B002` A6 stage boundary;
-- retirement of the legacy `SurfaceOccurrence` `isolationSheet` / `chart` / `lattice`.
+Current reviewed runtime authority: `10879581622 / 82b86a28` (TB5 456/456) under selector449. Stable accounting **55 / 16 / 39**, debt **1**. CP1 is **OPEN** on its frozen product-separation scope.
 
-Definition authority: R1, R2 and RA-1 – RA-12 (end of `Architecture_M6_Frozen_Definitions.md`).
+`M6-CP1-CB6-A6` is **IN_PROGRESS, compile/package green, closeout pending**. The candidate is `10896307843 / a532f803` (unpromoted).
 
 ## Exact next turn
 
-**`M6-DEFN-R3` (resume, same turn)** — runtime-free Definition amendment under `Architecture_M6_DEFN_R3_CP1_Product_Separation_Plan.md`, **bounded by its §5 recovery amendment**: A6 decisions and the A6 CB plan only; the A7 product and `G4-B002` boundary go to `M6-DEFN-R4`; holonomy is proved analytically, plus a TB falsifier for produced fixtures. It must freeze:
-- the CP1 exit checklist;
-- A6 class-identity representation versus the RA-10 lineage ordinal;
-- exact-once ledger and cycle-closing transport/holonomy semantics, proved on the accepted fixtures;
-- where selected-path certificates live;
-- the A7 product;
-- the `G4-B002` A6 stage boundary;
-- the failure vocabulary;
-- CB sequencing with pre-registered focused identities;
-- the frozen-test audit.
+**`M6-CP1-CB6-A6` (resume, same turn) — closeout only.** No compile and no source/test change. Record the report, static checks, the row4 mechanical migration and RA-1 – RA-4 compliance; clean temporary state; publish COMPLETE → `M6-CP1-TB6-A6-EXEC`.
 
-No source edits, compile or runtime. Then mandatory `M6-DEFN-R3-REV`, then the first A6 extraction CB, which also retires the legacy fields.
+After that:
+- `M6-CP1-TB6-A6-EXEC`: immutable 11 + 449 = **460**; row232 and 444/446/448/449 are the holonomy falsifiers;
+- `M6-CP1-TB6-A6-REV`;
+- `M6-DEFN-R4` (A7 product and `G4-B002` boundary);
+- the A7 CB, then the `G4-B002` CB, then a CP1 closure Review.
 
 ## Completed predecessor turns (reference only)
 
+- `M6-DEFN-R3-REV` — accepted R3 with RA-1 – RA-4 (`Architecture_M6_DEFN_R3_Review_Record.md`).
+- `M6-DEFN-R3` — `Architecture_M6_DEFN_R3_A6_Product_Separation_Definition_Record.md`.
 - `M6-CP1-TB5-REV` (+ review-agent addendum) — `Architecture_M6_CP1_TB5_Review_Record.md`.
-- `M6-CP1-TB5-EXEC` — `Architecture_M6_CP1_TB5_Artifact_Only_Test_Benchmark_Report.md` (456/456).
-- `M6-CP1-CB5` — source `82b86a28`, candidate `10879581622` (promoted).
-- `M6-CP1-TB4-REV`, `M6-CP1-CB4`, and the DEFN-R1/R2 chain — see `M6_Consolidated_Record.md`.
+- Earlier M6 turns — `M6_Consolidated_Record.md`.
 
 ## Current files
 
-- `.agents/Directional/Architecture_M6_DEFN_R3_CP1_Product_Separation_Plan.md` — exact next
-- `.agents/Directional/Architecture_M6_CP1_TB5_Review_Record.md` — TB5-REV + review-agent addendum
-- `.agents/Directional/Architecture_M6_CP1_TB5_Artifact_Only_Test_Benchmark_Report.md` — 456/456 runtime evidence
-- `.agents/Directional/Architecture_M6_CP1_CB6_Legacy_Occurrence_Field_Retirement_Code_Build_Plan.md` — HELD (folded into the A6 CB)
-- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — normative (§4-§5 A6/A7, §8.1, §10; RA-1 – RA-12)
+- `.agents/Directional/Architecture_M6_CP1_CB6_A6_Quotient_Product_Extraction_Code_Build_Plan.md` — governing CB plan
+- `.agents/Directional/Architecture_M6_DEFN_R3_A6_Product_Separation_Definition_Record.md` + `Architecture_M6_DEFN_R3_Review_Record.md` — A6 definition authority
+- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — normative
+- `.agents/Directional/Architecture_M6_CP1_TB5_Review_Record.md`, `Architecture_M6_CP1_TB5_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority evidence
 - `.agents/Directional/M6_Consolidated_Record.md`
-- `.agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt`
-- `.agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv`
+- `.agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt`, `Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv`
 
 ## Context Load Plan
 
 ```yaml
 load_next:
-  - .agents/Directional/Architecture_M6_DEFN_R3_CP1_Product_Separation_Plan.md
-  - .agents/Directional/Architecture_M6_CP1_TB5_Review_Record.md  # review-agent addendum C3-C4
-  - .agents/Directional/Architecture_M6_Frozen_Definitions.md  # §4-§5, §8.1, §10, RA-1..RA-12
-  - .agents/Directional/M6_Consolidated_Record.md
+  - turn-based-coding-agent/references/turns/CODE_BUILD.md
+  - .agents/Directional/Future_Chat_Session_Handoff.md  # top recovery note: closeout-only facts
+  - .agents/Directional/Architecture_M6_CP1_CB6_A6_Quotient_Product_Extraction_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M6_DEFN_R3_Review_Record.md
 conditional_modules:
-  - trigger: github_connector / GitHub Actions / patch transport
+  - trigger: github_connector / GitHub Actions / cleanup
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
-  - .agents/Directional/Architecture_M6_DEFN_R2_Seam_Incident_Authority_Amendment_Definition_Record.md
-  - .agents/Directional/Architecture_M6_CP1_TB5_Artifact_Only_Test_Benchmark_Report.md
-  - .agents/Directional/Regression_Root_Cause_Tracker.md
+  - .agents/Directional/Architecture_M6_DEFN_R3_A6_Product_Separation_Definition_Record.md
+  - .agents/Directional/Architecture_M6_Frozen_Definitions.md
+  - .agents/Directional/M6_Consolidated_Record.md
+  - .agents/Directional/CLEAN_UP_POLICY.md
 do_not_preload:
   - folded superseded M6 per-turn records
   - uncited historical reports

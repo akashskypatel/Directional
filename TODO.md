@@ -1,3 +1,9 @@
+## Recovery — `M6-CP1-CB6-A6` compile-green, closeout pending (2026-09-27T23:16:03Z)
+
+- [x] Recovery verified. Compile R1 `36212725707` is green (candidate `10896307843`, source `a532f803`, 28/28, eight targets, GMP, `runtimeExecution=false`), and the static plan checks pass. Beacon repaired (it had a non-canonical successor).
+- [ ] Resume `M6-CP1-CB6-A6` for **closeout only**: CB report (incl. the row4 `lattice` → `placement.lattice` value-identical migration and RA-1 – RA-4 compliance), temporary-state cleanup, docs, COMPLETE → `M6-CP1-TB6-A6-EXEC`.
+- [ ] `M6-CP1-TB6-A6-EXEC` (11 + 449 = 460), then `M6-CP1-TB6-A6-REV`.
+
 ## Current — `M6-DEFN-R3-REV` accepted; exact next `M6-CP1-CB6-A6`
 
 - [x] Independent runtime-free Review accepted R3 with binding RA-1 – RA-4: canonical relation-ID certificate direction, OrdinaryFront identity transport, evidence-complete A5 relation publication for canonical HardRail/Periodic transport, and explicit noncommutative path-composition order.

@@ -1,3 +1,10 @@
+## 2026-09-27 — `M6-CP1-CB6-A6` recovery: compile-green verified; closeout pending
+
+- Verified Compile R1 `36212725707`: artifact `10896307843` (`54eb7708…`), 28/28, source `a532f803`, eight targets, exit 0/0, clean receipts, GMP, `runtimeExecution=false`. The first compile `36212343902` failed on conflicting declarations; the fix was a bounded syntactic rename.
+- Static plan checks pass: A6 types present, legacy fields retired, cycle-closing skip removed, four focused identities, selector/routing unchanged.
+- Recorded that focused row4 was migrated from `lattice` to `placement.lattice` (value-identical by construction). This corrects the earlier "zero readers" census.
+- Repaired the non-canonical beacon and rewrote the handoff (the live section still pointed at DEFN-R3). Next: resume CB6-A6 for closeout only, then TB6-A6 (460).
+
 ## 2026-09-25 — `M6-DEFN-R3-REV` accepts A6 definition with four binding precision amendments
 
 - Independent runtime-free Review accepts R3's member-set class identity, exact-once relation ledger, deterministic selected forest, strict direct-vs-path holonomy rule, A6 path ownership and error vocabulary.
