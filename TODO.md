@@ -1,3 +1,9 @@
+## TB6-A6 gate frozen (review-agent reconciliation, 2026-09-28)
+
+- [x] CB6-A6 COMPLETE (candidate `10896307843 / a532f803`); handoff consistent.
+- [x] Froze the exact 460-process order in `Architecture_M6_CP1_TB6_A6_Artifact_Only_Test_Benchmark_Plan.md`: focused 1-7 in TB5 order, new 8-11, then selector449; all focused route to the producer tests. Holonomy falsifiers are row232 and 444/446/448/449, with no `QuotientHolonomyConflict` allowed.
+- [ ] `M6-CP1-TB6-A6-EXEC` (new turn) → `M6-CP1-TB6-A6-REV`.
+
 ## Current — `M6-CP1-CB6-A6` COMPLETE; exact next `M6-CP1-TB6-A6-EXEC` (2026-09-27)
 
 - [x] A6 quotient-product extraction and legacy-field retirement are compile/package green at semantic source `a532f803bd2f0ef92342652ea3f1a9b64945ba69`.

@@ -1,3 +1,10 @@
+## 2026-09-28 — review-agent reconciliation after `M6-CP1-CB6-A6` closeout: TB6-A6 gate frozen
+
+- CB6-A6 closed cleanly (report, cleanup, COMPLETE → `M6-CP1-TB6-A6-EXEC`), and the loop then recorded `CHAT_UNKNOWN`. The handoff and beacon are consistent.
+- Added `Architecture_M6_CP1_TB6_A6_Artifact_Only_Test_Benchmark_Plan.md`, fixing the exact 460-process order and routing (focused 1-7 as TB5, new 8-11, selector449 with routing449) and the recovery-green shape, including the holonomy falsifiers.
+- Replaced the handoff's stale Code+Build load plan with a TB load plan.
+- Note: the closeout replaced the review agent's recovery entries in this CHANGELOG and the tracker in place rather than prepending. The facts are preserved in the CB report (lesson 176, append-only ledgers).
+
 ## 2026-09-27 — `M6-CP1-CB6-A6` COMPLETE: A6 quotient product compile/package green
 
 - Closed the Code + Build turn at semantic source `a532f803bd2f0ef92342652ea3f1a9b64945ba69`; Compile R1 `36212725707 / 108322509801` packages candidate `10896307843` (`sha256:54eb770889822ef265053494e55e25af79616f77305d1ac6900f2f8969f56b7e`), root manifest 28/28, eight GMP/GMPXX targets, exit 0/0, clean receipts, and `runtimeExecution=false`.

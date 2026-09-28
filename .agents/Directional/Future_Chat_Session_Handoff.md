@@ -17,6 +17,12 @@
 
 Reviewed runtime authority remains `10879581622 / 82b86a28...`, selector449 449/449. Stable accounting remains **55 / 16 / 39**, debt **1**.
 
+**Frozen gate (review-agent reconciliation, 2026-09-28):** `Architecture_M6_CP1_TB6_A6_Artifact_Only_Test_Benchmark_Plan.md` fixes the exact 460-process order.
+- Focused 1-7 run in TB5 order, then the four new A6 identities 8-11 in CB6-A6 plan §6 order. All route to `directional_surface_cell_producer_tests`.
+- Selector449 follows in file order with routing449.
+- Recovery-green also requires no `QuotientHolonomyConflict` anywhere and rows 232/444/446/448/449 PASS.
+- Do not improvise the order. Enter TB6-A6-EXEC as a **new** turn: `IN_PROGRESS`, `Successor: UNKNOWN`, new `Started at`, empty `Resumed at` / `Ended at`.
+
 ## Superseded resume notes (historical — do not act on)
 
 ### `M6-DEFN-R3-REV` accepted R3 with RA-1 – RA-4; A6 CB authorized (2026-09-25)
@@ -293,7 +299,7 @@ Current reviewed runtime authority: `10879581622 / 82b86a28` (TB5 456/456) under
 
 ## Exact next turn
 
-**`M6-CP1-TB6-A6-EXEC` — immutable Test + Benchmark.** Consume `10896307843` without rebuild or repair and execute 11 focused + selector449 = **460** fresh exact-filter processes, benchmark 0. Row232 and 444/446/448/449 are the holonomy falsifiers.
+**`M6-CP1-TB6-A6-EXEC` — immutable Test + Benchmark under `Architecture_M6_CP1_TB6_A6_Artifact_Only_Test_Benchmark_Plan.md` (frozen 460-process order).** Consume `10896307843` without rebuild or repair and execute 11 focused + selector449 = **460** fresh exact-filter processes, benchmark 0. Row232 and 444/446/448/449 are the holonomy falsifiers.
 
 After that:
 - mandatory `M6-CP1-TB6-A6-REV`;
@@ -309,6 +315,7 @@ After that:
 
 ## Current files
 
+- `.agents/Directional/Architecture_M6_CP1_TB6_A6_Artifact_Only_Test_Benchmark_Plan.md` — frozen TB6-A6 gate (exact next)
 - `.agents/Directional/Architecture_M6_CP1_CB6_A6_Quotient_Product_Extraction_Code_Build_Plan.md` — governing CB plan
 - `.agents/Directional/Architecture_M6_DEFN_R3_A6_Product_Separation_Definition_Record.md` + `Architecture_M6_DEFN_R3_Review_Record.md` — A6 definition authority
 - `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — normative
@@ -320,18 +327,19 @@ After that:
 
 ```yaml
 load_next:
-  - turn-based-coding-agent/references/turns/CODE_BUILD.md
-  - .agents/Directional/Future_Chat_Session_Handoff.md  # top recovery note: closeout-only facts
-  - .agents/Directional/Architecture_M6_CP1_CB6_A6_Quotient_Product_Extraction_Code_Build_Plan.md
-  - .agents/Directional/Architecture_M6_DEFN_R3_Review_Record.md
+  - turn-based-coding-agent/references/turns/TB.md
+  - .agents/Directional/Architecture_M6_CP1_TB6_A6_Artifact_Only_Test_Benchmark_Plan.md
+  - .agents/Directional/Architecture_M6_CP1_CB6_A6_Code_Build_Report.md
+  - .agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt
+  - .agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv
 conditional_modules:
-  - trigger: github_connector / GitHub Actions / cleanup
+  - trigger: github_connector / GitHub Actions / artifact-only harness
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
-  - .agents/Directional/Architecture_M6_DEFN_R3_A6_Product_Separation_Definition_Record.md
-  - .agents/Directional/Architecture_M6_Frozen_Definitions.md
-  - .agents/Directional/M6_Consolidated_Record.md
-  - .agents/Directional/CLEAN_UP_POLICY.md
+  - .agents/Directional/Architecture_M6_CP1_TB5_Artifact_Only_Test_Benchmark_Report.md  # prior 456-process harness shape
+  - .agents/Directional/Architecture_M6_CP1_CB6_A6_Quotient_Product_Extraction_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M6_DEFN_R3_Review_Record.md
+  - .agents/Directional/GitHub_Workflow_Policy.md
 do_not_preload:
   - folded superseded M6 per-turn records
   - uncited historical reports
