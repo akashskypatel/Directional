@@ -42,7 +42,7 @@ jobs:
       TURN_ID: M6-CP1-TB6-A6-EXEC
       GH_TOKEN: ${{ secrets.GH_TOKEN || github.token }}
       HARNESS_PATH: .agents/Directional/turn-payloads/m6_cp1_tb6_a6_artifact_only_harness.sh
-      EXPECTED_HARNESS_SHA256: 6a5002bff459388891534c42a3becd142bbb12a8380ea1ac87692de9c6814146
+      EXPECTED_HARNESS_SHA256: f5186bb4354b37eab6527cd71f337e9f49ea64cc4f67896bd3e5fa8a1042edf8
     steps:
       - name: Initialize diagnostic log
         shell: bash
