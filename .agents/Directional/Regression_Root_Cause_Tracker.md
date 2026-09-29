@@ -1,3 +1,11 @@
+## 2026-09-29 — `M6-CP1-TB6-A6-EXEC` orchestration-invalid execution view — **+0 EVENTS / 55/16/39 / debt 1**
+
+- Candidate `10896307843 / a532f803...` re-verifies immutably (ZIP `54eb7708...56b7e`, source archive `e48ad4a9...9a45`, package manifest 28/28, selector/routing449 unchanged).
+- The local EXEC attempt incorrectly ran immutable package binaries without the standard separate execution view that places packaged-source `benchmarks/fixtures` at adjacent `test-data/benchmarks/fixtures`. Focused row6 and selector ordinals 41/42/43/44/46 therefore all threw the same deterministic `Directional test-data package not found adjacent to test executable` exception.
+- The attempt was stopped after 149 completed exact-filter processes (11 focused + selector ordinals1-138): 143 process PASS exits and 6 fixture-root failures. Selector ordinal139 was in flight; row140 and holonomy falsifiers 232/444/446/448/449 were not reached. No semantic result is creditable.
+- **Regression categorization:** process/orchestration-only, non-stable, no product PASS-to-RED event. Stable accounting remains **55/16/39**, debt 1; reviewed runtime authority remains `10879581622 / 82b86a28...`, selector449 449/449.
+- Frozen plan forbids retry after runtime starts. Exact successor is mandatory `M6-CP1-TB6-A6-REV`, which must adjudicate this failed execution and authorize any distinct fresh retry turn before R4/A7/`G4-B002`.
+
 ## 2026-09-27 — `M6-CP1-CB6-A6` recovery note — **+0 EVENTS / 55/16/39 / debt 1**
 
 - CB6-A6 is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE** on candidate `10896307843 / a532f803`; semantic acceptance remains Review-owned and the reviewed runtime authority remains `10879581622 / 82b86a28...`.

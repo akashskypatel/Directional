@@ -1,3 +1,11 @@
+## 2026-09-29 — `M6-CP1-TB6-A6-EXEC` closes orchestration-invalid; mandatory Review next
+
+- Re-verified immutable candidate `10896307843 / a532f803...`: candidate digest `54eb7708...56b7e`, packaged source `e48ad4a9...9a45`, root manifest 28/28, selector/routing449 unchanged, archived executable modes intact.
+- The local executor omitted the standard separate execution view and ran package binaries without adjacent `test-data/benchmarks/fixtures`. Focused row6 and selector 41/42/43/44/46 all failed on the same missing-test-data exception; this is orchestration-only, not candidate semantic evidence.
+- Stopped the invalid attempt after 149 completed processes (143 process PASS exits, 6 fixture-root failures). Row140 and the 232/444/446/448/449 holonomy falsifiers were not reached. Package/source postflight remains byte/mode identical.
+- No rerun occurred because the frozen gate forbids retry after runtime starts. Stable accounting stays 55/16/39, debt 1; `10896307843` remains unpromoted and reviewed runtime authority remains `10879581622 / 82b86a28...`.
+- Exact successor is `M6-CP1-TB6-A6-REV`, which owns zero-credit adjudication and any authorization of a distinct fresh retry turn.
+
 ## 2026-09-28 — review-agent reconciliation after `M6-CP1-CB6-A6` closeout: TB6-A6 gate frozen
 
 - CB6-A6 closed cleanly (report, cleanup, COMPLETE → `M6-CP1-TB6-A6-EXEC`), and the loop then recorded `CHAT_UNKNOWN`. The handoff and beacon are consistent.

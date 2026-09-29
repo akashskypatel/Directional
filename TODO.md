@@ -1,15 +1,26 @@
-## TB6-A6 gate frozen (review-agent reconciliation, 2026-09-28)
+## Current — `M6-CP1-TB6-A6-EXEC` COMPLETE / ORCHESTRATION INVALID; exact next Review (2026-09-29)
+
+- [x] Re-verify candidate `10896307843 / a532f803...` immutably: ZIP/source hashes, root 28/28, selector/routing449, owner census and executable modes unchanged.
+- [x] Record the execution error: package binaries were run without the standard separate adjacent `test-data/benchmarks/fixtures` execution view. Six completed tests failed only on that missing fixture package.
+- [x] Stop invalid attempt after 149 completed exact-filter processes; do not rerun because the frozen plan forbids retry after runtime starts.
+- [x] Record +0 regression/accounting disposition and preserve candidate immutability.
+- [ ] `M6-CP1-TB6-A6-REV`: mandatory next turn; adjudicate zero semantic credit and explicitly authorize/name any fresh retry turn if warranted.
+- [ ] Keep `M6-DEFN-R4`, A7 and `G4-B002` held until valid runtime evidence plus Review.
+
+Accounting remains **55 / 16 / 39**, debt 1. Reviewed runtime authority remains `10879581622 / 82b86a28...`; candidate `10896307843 / a532f803...` is unpromoted.
+
+## Superseded TB6-A6 pre-execution gate (review-agent reconciliation, 2026-09-28)
 
 - [x] CB6-A6 COMPLETE (candidate `10896307843 / a532f803`); handoff consistent.
 - [x] Froze the exact 460-process order in `Architecture_M6_CP1_TB6_A6_Artifact_Only_Test_Benchmark_Plan.md`: focused 1-7 in TB5 order, new 8-11, then selector449; all focused route to the producer tests. Holonomy falsifiers are row232 and 444/446/448/449, with no `QuotientHolonomyConflict` allowed.
-- [ ] `M6-CP1-TB6-A6-EXEC` (new turn) → `M6-CP1-TB6-A6-REV`.
+- [x] `M6-CP1-TB6-A6-EXEC` completed as orchestration-invalid / zero semantic credit → mandatory `M6-CP1-TB6-A6-REV`.
 
-## Current — `M6-CP1-CB6-A6` COMPLETE; exact next `M6-CP1-TB6-A6-EXEC` (2026-09-27)
+## Superseded — `M6-CP1-CB6-A6` COMPLETE; TB6-A6 attempt now closed invalid
 
 - [x] A6 quotient-product extraction and legacy-field retirement are compile/package green at semantic source `a532f803bd2f0ef92342652ea3f1a9b64945ba69`.
 - [x] Compile R1 `36212725707 / 108322509801` packages candidate `10896307843` (28/28, eight GMP/GMPXX targets, clean receipts, `runtimeExecution=false`). First compile `36212343902` failed on declaration clashes and was superseded only by the bounded `a532f803` compile fix.
 - [x] CB report records RA-1 – RA-4 static compliance and the focused row4 `lattice` → `placement.lattice` value-identical migration. Prior CB6-A6 compile/snapshot temporary state was retired through cleanup run `36358568335`.
-- [ ] Execute immutable `M6-CP1-TB6-A6-EXEC`: 11 focused + selector449 = **460** fresh exact-filter processes, benchmark 0, preserving cylinder row232 and torus rows444/446/448/449 as holonomy falsifiers.
+- [x] TB6-A6 EXEC attempted; orchestration invalid because the standard adjacent test-data execution view was not constructed. No semantic gate credit and no same-turn retry.
 - [ ] Mandatory `M6-CP1-TB6-A6-REV` before any promotion, fallback, R4, A7 or `G4-B002` work.
 - [ ] `M6-DEFN-R4` remains deferred until the A6 implementation/gate/Review sequence completes.
 

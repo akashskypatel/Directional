@@ -1,4 +1,17 @@
-## Resume-critical update — `M6-CP1-CB6-A6` COMPLETE; exact next `M6-CP1-TB6-A6-EXEC` (2026-09-27 UTC)
+## Resume-critical update — `M6-CP1-TB6-A6-EXEC` COMPLETE / ORCHESTRATION INVALID; exact next `M6-CP1-TB6-A6-REV` (2026-09-29 UTC)
+
+**Do not rerun TB6-A6 inside EXEC and do not promote candidate `10896307843`.** The frozen 460-process gate did not obtain valid runtime evidence.
+
+- Immutable candidate authority still verifies: artifact/source `10896307843 / a532f803bd2f0ef92342652ea3f1a9b64945ba69`, ZIP `54eb7708...56b7e`, source archive `e48ad4a9...9a45`, root manifest 28/28, selector449 `d4a0d1b7...d6414`, routing449 `9c88a5ed...c5707`, owner census 32/301/75/41.
+- The local EXEC attempt failed at the **execution-view orchestration layer**. It ran package binaries directly instead of constructing the standard separate view with packaged-source `benchmarks/fixtures` at adjacent `test-data/benchmarks/fixtures`. Focused row6 and selector ordinals 41/42/43/44/46 all threw the same missing-test-data exception.
+- The invalid attempt was stopped after **149 completed processes**: focused 11 and selector ordinals1-138, with 143 process PASS exits and 6 fixture-root failures. Selector139 was in flight. Row140 and holonomy falsifiers 232/444/446/448/449 were not reached. No partial result receives semantic credit.
+- Package and packaged-source byte/mode censuses remained unchanged; post-abort root manifest is still 28/28. No configure, compile, relink, fixture/package repair, permission repair, benchmark, or retry occurred.
+- Frozen plan says no retry after runtime starts. The turn therefore closes invalid rather than silently re-executing. Durable report: `Architecture_M6_CP1_TB6_A6_Artifact_Only_Test_Benchmark_Report.md`.
+- Stable accounting remains **55 / 16 / 39**, debt 1. Candidate `10896307843` stays unpromoted; reviewed runtime authority remains `10879581622 / 82b86a28...`, selector449 449/449.
+
+**Exact next:** mandatory runtime-free `M6-CP1-TB6-A6-REV`. Review must adjudicate zero semantic credit and explicitly authorize/name any distinct fresh retry turn. Do not begin `M6-DEFN-R4`, A7, or `G4-B002` first.
+
+## Superseded pre-EXEC handoff — `M6-CP1-CB6-A6` COMPLETE; TB6-A6 gate had not yet run
 
 **Do not resume CB6-A6. Do not rebuild or repair candidate `10896307843`.** The Code + Build turn is complete, compile/package green, runtime-free and unpromoted.
 
