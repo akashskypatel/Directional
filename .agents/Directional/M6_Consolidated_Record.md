@@ -1,5 +1,7 @@
 # M6 consolidated record
 
+**Current authority after `M6-CP1-TB6-A6-REV` (2026-09-29):** candidate `10896307843 / a532f803...` is rejected/unpromoted after authoritative TB6-A6 run `36362570974` returns **456/460 PASS**. Reviewed runtime remains `10879581622 / 82b86a28...`, selector449 449/449. Stable accounting is **57 / 16 / 41**, debt 1. Exact next is bounded `M6-CP1-CB7-A6`; R4/A7/`G4-B002` remain held. Frozen definitions now record exact cycle residual `H=compose(P.inverse(),D)` rather than universally rejecting nonidentity residual holonomy, and retain accepted HardRail reciprocal region/reversed-route validation at A5 publication.
+
 ## 0. `M6-DEFN-R3-REV` — R3 accepted with four binding A6 precision amendments
 
 Independent runtime-free Review accepts the R3 A6 product separation while correcting four implementation-critical ambiguities: certificates are oriented by canonical `SurfaceOccurrenceRelationId.first -> second`, accepted OrdinaryFront quotient transport is identity even when seam evidence is present, A5 relation publication must carry enough canonical HardRail/Periodic evidence for A6 to avoid representation/global-array lookups, and selected-path `GridAutomorphism` composition order is frozen explicitly. The strict direct-vs-path holonomy rule and its cylinder/torus runtime falsifier remain unchanged. The same four new focused identities remain; later gate stays **11 + 449 = 460**.
@@ -142,10 +144,35 @@ TB3 mechanics, the accepted-prefix differential (`10815911956`, 449/449), accoun
 
 Exact next is runtime-free `M6-DEFN-R1` (TB3 Review addendum A7), then `M6-DEFN-R1-REV`, then the re-scoped `M6-CP1-CB4`.
 
+## 23. `M6-CP1-CB6-A6` — A6 product extracted and compile/package green
+
+CB6-A6 extracts the immutable `SurfaceQuotientProduct`, retires legacy A5 `chart/lattice/isolationSheet`, implements member-set quotient IDs, exact-one relation certificates/consumption, deterministic selected forest/path evidence and the initial strict cycle transport rule. Exact semantic source is `a532f803bd2f0ef92342652ea3f1a9b64945ba69`; Compile R1 run/job `36212725707 / 108322509801` packages candidate `10896307843` with root manifest **28/28**, all eight GMP/GMPXX targets, clean source receipts and `runtimeExecution=false`. The first compile failed only on declaration clashes and was superseded by the bounded compile repair.
+
+Candidate remained unpromoted pending TB6-A6. Selector449/routing449 stayed byte-identical. Focused row4's test-only `lattice -> placement.lattice` access change is value-identical by construction and later runtime-green in TB6-A6.
+
+## 24. `M6-CP1-TB6-A6-EXEC` — authoritative second run exists; four semantic REDs
+
+The first executor run `36362470435 / 108742278782` is orchestration-invalid and receives no semantic credit. A second executor run `36362570974 / 108742561290` is mechanically valid and authoritative. Result/log artifacts `10947080007 / 10946089412` verify a **946/946** result manifest and exact **11 focused + selector449 = 460** fresh exact-filter processes with exact-one selection, zero skips, benchmark 0 and immutable postflight.
+
+Outcome is **10/11 focused + 446/449 selector = 456/460 PASS**. Exact RED identities are focused6 and selector446 at `QuotientHolonomyConflict`, plus selector139/142 unexpectedly succeeding instead of accepted `InvalidHardRailTransport`. All four new A6 focused identities 8-11 PASS; selector140/232/444/448/449 and focused5/7 PASS. The prior EXEC report's statement that no authoritative runtime existed is superseded by this reconciled Actions evidence.
+
+## 25. `M6-CP1-TB6-A6-REV` — two stable recurrences; R3 fallback invoked; CB7-A6 frozen
+
+Independent Review re-hashes selector449/448 and routing449, re-opens accepted TB5 runtime, and source-audits both TB6 loss mechanisms. Selector446 is one stable recurrence of existing `RP-07 / CYCLIC_TOPOLOGY_LINEARIZATION`: the accepted nonzero-Z4 torus relation legitimately carries nonidentity residual holonomy relative to a deterministic selected forest. R3's pre-registered fallback is invoked. For direct `D:a->b` and selected path `P:a->b`, A6 publishes exact residual `H=compose(P.inverse(),D)`; nonidentity `H` is evidence absent a separately frozen zero-holonomy obligation.
+
+Selector139/142 share one stable recurrence of existing `VALIDATION_ORDER_SHADOWING`: accepted pre-A6 materialization required different source topology regions plus exact reversed HardRail routes, while CB6-A6 A5 relation publication kept only the common `HardRailId` owner check before freezing relation evidence. The guard must be restored at A5 publication; A6 must validate certificates against immutable A5 authority rather than duplicate relation semantics.
+
+Stable accounting advances **55/16/39 -> 57/16/41**, debt remains 1. Candidate `10896307843 / a532f803...` is rejected/unpromoted; reviewed runtime stays `10879581622 / 82b86a28...`, selector449 449/449. Exact next is `M6-CP1-CB7-A6`, limited to those two relation-validation corrections plus the existing focused-test assertions required to falsify them. Compile-green -> fresh `M6-CP1-TB7-A6-EXEC` **11+449=460** -> mandatory Review. R4/A7/G4 remain held. Full authority is `Architecture_M6_CP1_TB6_A6_Review_Record.md` and the TB6-A6-REV amendment in `Architecture_M6_Frozen_Definitions.md`.
+
 ## Folded document index
 
 | Retired filename | Disposition |
 |---|---|
+| `Architecture_M6_CP1_CB6_A6_Quotient_Product_Extraction_Code_Build_Plan.md` | **CONSUMED CB6-A6 PLAN / FOLDED BY TB6-A6-REV.** Scope, RA-1-RA-4 implementation obligations, four focused identities, compile boundary and 460-process successor are preserved in §§23-25, frozen definitions, current Review/CB7 plan and git history. |
+| `Architecture_M6_CP1_CB6_A6_Code_Build_Report.md` | **SUPERSEDED CB6-A6 COMPILE REPORT / FOLDED BY TB6-A6-REV.** Exact source, compile run/job/artifacts, 28/28 GMP package and runtime-free authority are preserved in §23, changelog, handoff and git history. |
+| `Architecture_M6_CP1_TB6_A6_Artifact_Only_Test_Benchmark_Plan.md` | **CONSUMED TB6-A6 PLAN / FOLDED BY TB6-A6-REV.** Candidate, exact 11+449 order, immutable process boundary and pre-registered holonomy falsifier are preserved in §§24-25, current Review and git history. |
+| `Architecture_M6_CP1_TB6_A6_Artifact_Only_Test_Benchmark_Report.md` | **SUPERSEDED/INCOMPLETE EXEC REPORT / FOLDED BY TB6-A6-REV.** Its first-run orchestration evidence is preserved, while §24 and current Review record the authoritative second run that the report omitted. Full text remains in git history. |
+| `Architecture_M6_CP1_CB6_Legacy_Occurrence_Field_Retirement_Code_Build_Plan.md` | **SUPERSEDED STANDALONE CB6 PLAN / FOLDED BY TB6-A6-REV.** Legacy-field retirement was absorbed into CB6-A6 and compiled; retained facts are preserved in §§22-23 and frozen CP1 exit scope. |
 | `Architecture_M6_CP1_TB3_Artifact_Only_Test_Benchmark_Report.md` (64 lines) | **SUPERSEDED TB3 RUNTIME REPORT / FOLDED BY M6-CP1-TB4-REV.** TB3 447/455 mechanics, eight `MissingIsolationSeamEquivalenceAuthority` outcomes and immutable artifact authority are preserved in §§9-11, tracker, current TB4 Review and git history. |
 | `Architecture_M6_CP1_TB3_Review_Record.md` (181 lines) | **SUPERSEDED TB3 REVIEW / FOLDED BY M6-CP1-TB4-REV.** The stable RP-01 event, definition-chain handoff and carried recovery obligations are preserved in §§10-16, tracker, current TB4 Review and git history. |
 | `Architecture_M6_CP1_CB4_Code_Build_Report.md` (104 lines) | **SUPERSEDED CB4 COMPILE REPORT / FOLDED BY M6-CP1-TB4-REV.** Exact source `20f60bb...`, compile run/artifacts, eight-target GMP/GMPXX and runtime-free authority are preserved in §§17-19, changelogs, current TB4 report/Review and git history. |

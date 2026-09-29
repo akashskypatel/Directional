@@ -1,14 +1,16 @@
-## Live M6 routing — after `M6-CP1-CB6-A6`
+## Live M6 routing — after `M6-CP1-TB6-A6-REV`
 
 | Checkpoint | State | Exact next / gate |
 |---|---|---|
-| M6 CP1 A5 | Accepted runtime authority retained | `10879581622 / 82b86a28...`, selector449 449/449 |
-| M6 R3 A6 definition | **Accepted with RA-1 – RA-4** | Review record + frozen amendment govern |
-| M6 CP1 A6 extraction | **COMPLETE / COMPILE+PACKAGE GREEN / UNPROMOTED** | `10896307843 / a532f803`, runtime-free |
-| M6 CP1 A6 runtime gate | **EXACT NEXT** | `M6-CP1-TB6-A6-EXEC`, 11+449=460, then mandatory Review |
-| M6 R4 / A7 / `G4-B002` boundary | Deferred | Must not begin before A6 TB/Review |
+| M6 CP1 accepted runtime | Retained | `10879581622 / 82b86a28...`, selector449 449/449 |
+| M6 CP1 A6 extraction candidate | **REJECTED / UNPROMOTED** | `10896307843 / a532f803`, TB6-A6 456/460 |
+| M6 CP1 A6 relation recovery | **EXACT NEXT** | `M6-CP1-CB7-A6` |
+| M6 CP1 recovery runtime | Held until compile-green | `M6-CP1-TB7-A6-EXEC`, 11+449=460, then mandatory Review |
+| M6 R4 / A7 / `G4-B002` boundary | **HELD** | must not begin before TB7-A6 Review |
 
-Stable accounting: **55 / 16 / 39**, debt 1.
+Stable accounting: **57 / 16 / 41**, debt 1.
+
+TB6-A6 Review independently reconciles authoritative run `36362570974` at **456/460 PASS** and proves two accepted-prefix regressions: selector446 is an existing `RP-07 / CYCLIC_TOPOLOGY_LINEARIZATION` recurrence that triggers R3's residual-holonomy fallback; selector139+142 share an existing `VALIDATION_ORDER_SHADOWING` recurrence from omitted A5 HardRail reciprocal route/region validation. CB7-A6 is bounded to those two surfaces and may not advance A7/R4/G4.
 
 ## M6 CP1 — `M6-CP1-CB6-A6` complete; exact next `M6-CP1-TB6-A6-EXEC` (2026-09-27)
 

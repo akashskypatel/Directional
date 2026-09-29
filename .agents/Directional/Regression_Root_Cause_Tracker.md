@@ -1,3 +1,26 @@
+## 2026-09-29 — `M6-CP1-TB6-A6-REV` authoritative 460-process adjudication — **+2 EVENTS / 57/16/41 / debt 1 / CANDIDATE REJECTED**
+
+Independent Review reconciles the complete Actions history and supersedes the immediately following EXEC-only interpretation. A second executor run, `36362570974 / 108742561290`, is mechanically valid and authoritative: result/log `10947080007 / 10946089412`, result self-manifest **946/946**, 11 focused + selector449 = **460 fresh exact-filter processes**, exact-one selection, zero skips, benchmark 0, immutable postflight. Outcome is focused **10/11** + selector **446/449** = **456/460 PASS**. Accepted prior authority `10879581622 / 82b86a28...` proves focused6 and selector139/142/446 were previously green.
+
+### `M6-CP1-TB6-A6-REV-CAND-01` — STABLE / `RP-07 CYCLIC_TOPOLOGY_LINEARIZATION` recurrence / owner `M6-CP1-CB7-A6 -> TB7-A6-EXEC -> TB7-A6-REV`
+
+- **Accepted-green loss:** selector446 `M5CP3.ProducedTorusNonzeroZ4RotationTranslationMaterializes` first-fails `QuotientHolonomyConflict`; focused pair-swap row6 independently first-fails the same way but is not separately priced.
+- **Controls:** selector232/444/448/449 PASS. The loss is specific to the accepted nonzero-Z4 periodic witness, not a general periodic/selected-forest failure.
+- **Root cause:** R3/RA-4 linearizes a cycle-closing relation through one deterministic selected forest and universally requires the direct periodic transform to equal that path transform. The accepted torus relation legitimately carries nonidentity residual deck-transform holonomy relative to that cut. Requiring residual identity is the existing `RP-07` mechanism.
+- **Definition disposition:** the pre-registered R3 fallback is invoked. For direct `D:a->b` and selected path `P:a->b`, A6 must publish exact residual `H=compose(P.inverse(),D)`. Nonidentity `H` is evidence, not rejection absent a separately frozen zero-holonomy obligation. `QuotientHolonomyConflict` remains for algebraic inconsistency or violation of an explicit zero-residual contract.
+- **Falsifier/recovery:** CB7-A6 must preserve exact A5 certificate authority while recording nonidentity residual; selector446/focused6 recover without weakening 232/444/448/449 or exact-once consumption.
+- **Accounting:** one accepted PASS->RED event in existing RP-07; events +1, categories unchanged, recurrences +1.
+
+### `M6-CP1-TB6-A6-REV-CAND-02` — STABLE / `VALIDATION_ORDER_SHADOWING` recurrence / owner `M6-CP1-CB7-A6 -> TB7-A6-EXEC -> TB7-A6-REV`
+
+- **Accepted-green losses:** selector139 `HardRailPairChangedRouteContentRejectsStrictTransport` and selector142 `HardRailPairSameOrientationRejectsStrictTransport` unexpectedly return success instead of accepted `InvalidHardRailTransport`. The two identities share one mechanism and therefore one stable event.
+- **Control:** selector140 still PASSes its explicit rail-ID mismatch negative.
+- **Root cause:** accepted pre-A6 materialization validated reciprocal HardRail semantics (`first.sourceTopologyRegion != second.sourceTopologyRegion` and exact `first.route == second.route.reversed()`) before equivalence publication. CB6-A6 moved relation authority into A5 but retained only the common `HardRailId` owner check before freezing route/transport evidence. A6 then validates its certificate against that already-invalid A5 evidence, so the established route-content/orientation guard is shadowed by the authority cutover. Existing `LESSONS.md` 22f applies.
+- **Falsifier/recovery:** restore the reciprocal region/route predicate at A5 publication, preserving `InvalidHardRailTransport`; do not duplicate authority downstream or weaken rows139/142.
+- **Accounting:** one accepted PASS->RED event in existing singleton category `VALIDATION_ORDER_SHADOWING`; events +1, categories unchanged, recurrences +1.
+
+**Stable accounting after both findings:** **57 events / 16 categories / 41 recurrences**; project debt remains **1**, M6-owned. Candidate `10896307843 / a532f803...` is rejected/unpromoted; reviewed runtime authority remains `10879581622 / 82b86a28...` under selector449 449/449. Exact successor is bounded `M6-CP1-CB7-A6`; R4/A7/G4 remain held.
+
 ## 2026-09-29 — `M6-CP1-TB6-A6-EXEC` orchestration-invalid execution view — **+0 EVENTS / 55/16/39 / debt 1**
 
 - Candidate `10896307843 / a532f803...` re-verifies immutably (ZIP `54eb7708...56b7e`, source archive `e48ad4a9...9a45`, package manifest 28/28, selector/routing449 unchanged).

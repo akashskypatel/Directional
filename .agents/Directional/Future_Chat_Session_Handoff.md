@@ -1,4 +1,20 @@
-## Resume-critical update — `M6-CP1-TB6-A6-EXEC` COMPLETE / ORCHESTRATION INVALID; exact next `M6-CP1-TB6-A6-REV` (2026-09-29 UTC)
+## Resume-critical update — `M6-CP1-TB6-A6-REV` COMPLETE / candidate rejected; exact next `M6-CP1-CB7-A6` (2026-09-29 UTC)
+
+**Do not resume TB6-A6 and do not start R4/A7/`G4-B002`.** The mandatory Review found a mechanically valid authoritative TB6-A6 run and rejected candidate `10896307843 / a532f803...`.
+
+- Authoritative TB6-A6 run/job: `36362570974 / 108742561290`; result/log artifacts `10947080007 / 10946089412`; result manifest **946/946**. Frozen gate executed exactly **11 focused + selector449 = 460** fresh exact-filter processes, exact-one selection and zero skips; outcome **456/460 PASS**.
+- The earlier failed run `36362470435` is orchestration-invalid/no-credit. The prior EXEC report's statement that no authoritative runtime existed is superseded by Review reconciliation.
+- Exact RED set: focused6 and selector446 first-fail `QuotientHolonomyConflict`; selector139 and 142 unexpectedly succeed instead of the accepted `InvalidHardRailTransport` rejection. All four new A6 focused identities 8-11 PASS; controls 140/232/444/448/449 and focused5/7 PASS.
+- Review invokes the frozen R3 residual-holonomy fallback. For direct canonical transport `D:a->b` and selected-forest path transport `P:a->b`, cycle-closing A6 evidence publishes `H=compose(P.inverse(),D)`. Nonidentity `H` is exact evidence, not automatic rejection absent an explicit zero-holonomy contract. Frozen definitions are amended accordingly.
+- HardRail root is separate: the A5 cutover retained common `HardRailId` ownership but dropped the accepted reciprocal checks `first.sourceTopologyRegion != second.sourceTopologyRegion` and `first.route == second.route.reversed()`. Restore them at A5 publication before evidence becomes immutable.
+- Stable accounting is now **57 / 16 / 41**, debt 1. Selector446 is one existing `RP-07 / CYCLIC_TOPOLOGY_LINEARIZATION` recurrence; rows139+142 share one existing `VALIDATION_ORDER_SHADOWING` recurrence.
+- Candidate `10896307843` is rejected/unpromoted. Current reviewed runtime authority remains `10879581622 / 82b86a28...`, selector449 **449/449**.
+
+**Exact next: `M6-CP1-CB7-A6` — Code + Build, compile/package only.** Follow `Architecture_M6_CP1_CB7_A6_Relation_Validation_Recovery_Code_Build_Plan.md`. Make only the bounded A5 HardRail validation + A6 cycle-residual/certificate-authority changes and the two existing focused A6 test adjustments. Keep focused count 11; selector449/routing449 and fixtures are frozen. Compile-green -> fresh `M6-CP1-TB7-A6-EXEC` **11+449=460** -> mandatory `M6-CP1-TB7-A6-REV`.
+
+Load before implementation: `Architecture_M6_Frozen_Definitions.md` (TB6-A6-REV amendment at end), `Architecture_M6_CP1_TB6_A6_Review_Record.md`, the CB7-A6 plan, `CODE_BUILD.md`, `GitHub_Workflow_Policy.md`, and `TOOL_USE_CONSERVATION_POLICY.md`.
+
+## Superseded EXEC-only handoff — `M6-CP1-TB6-A6-EXEC` report was incomplete; Review found an authoritative second run
 
 **Do not rerun TB6-A6 inside EXEC and do not promote candidate `10896307843`.** The frozen 460-process gate did not obtain valid runtime evidence.
 
@@ -6,7 +22,7 @@
 - The local EXEC attempt failed at the **execution-view orchestration layer**. It ran package binaries directly instead of constructing the standard separate view with packaged-source `benchmarks/fixtures` at adjacent `test-data/benchmarks/fixtures`. Focused row6 and selector ordinals 41/42/43/44/46 all threw the same missing-test-data exception.
 - The invalid attempt was stopped after **149 completed processes**: focused 11 and selector ordinals1-138, with 143 process PASS exits and 6 fixture-root failures. Selector139 was in flight. Row140 and holonomy falsifiers 232/444/446/448/449 were not reached. No partial result receives semantic credit.
 - Package and packaged-source byte/mode censuses remained unchanged; post-abort root manifest is still 28/28. No configure, compile, relink, fixture/package repair, permission repair, benchmark, or retry occurred.
-- Frozen plan says no retry after runtime starts. The turn therefore closes invalid rather than silently re-executing. Durable report: `Architecture_M6_CP1_TB6_A6_Artifact_Only_Test_Benchmark_Report.md`.
+- Frozen plan says no retry after runtime starts. The turn therefore closes invalid rather than silently re-executing. This superseded EXEC-only interpretation is folded into `M6_Consolidated_Record.md` §§24-25 and corrected by `Architecture_M6_CP1_TB6_A6_Review_Record.md`.
 - Stable accounting remains **55 / 16 / 39**, debt 1. Candidate `10896307843` stays unpromoted; reviewed runtime authority remains `10879581622 / 82b86a28...`, selector449 449/449.
 
 **Exact next:** mandatory runtime-free `M6-CP1-TB6-A6-REV`. Review must adjudicate zero semantic credit and explicitly authorize/name any distinct fresh retry turn. Do not begin `M6-DEFN-R4`, A7, or `G4-B002` first.
@@ -24,13 +40,13 @@
 - Focused row4 `M6CP1.CoincidentUnrelatedOccurrencesRemainDistinct` was mechanically migrated from `a.lattice.latticeCoordinate` to `a.placement.lattice.latticeCoordinate`. The values are identical by construction because both originate from the same `cell.lattice[cornerIndex]`. TB6-A6-REV must explicitly confirm the test meaning is unchanged.
 - Prior CB6-A6 compile/snapshot temporary state was retired through cleanup run `36358568335`. Closeout source inspection used verified runtime-free snapshot `36358391103 / 10944138788`; a process-only READ_MODE declaration lag is recorded at +0.
 - Durable closeout documentation was applied by Drive run `36359008725` at commit `92c6f75301ead3724fcf2b395676a601128b154f`. The workflow reported owner cleanup required for the staged Drive patch; the user-authorized Drive control plane permanently deleted it. The temporary docs caller was retired first, final cleanup run `36359091897` removed its marker, and end-of-turn inspection shows only the seven durable workflows with trigger/observation/turn-payload directories absent.
-- Durable report: `Architecture_M6_CP1_CB6_A6_Code_Build_Report.md`.
+- Folded CB6-A6 compile authority: `M6_Consolidated_Record.md` §23; the consumed standalone report remains in git history.
 
 **Exact next:** `M6-CP1-TB6-A6-EXEC` consumes candidate `10896307843` **immutably**. Execute **11 focused + selector449 = 460** fresh exact-filter processes, benchmark 0. Row232 and torus rows444/446/448/449 are the pre-registered holonomy falsifiers. Preserve artifact-only rules: no configure, compile, relink, fixture repair, manifest repair or binary permission repair. Mandatory `M6-CP1-TB6-A6-REV` follows. Do not begin `M6-DEFN-R4`, A7 or `G4-B002` before that Review.
 
 Reviewed runtime authority remains `10879581622 / 82b86a28...`, selector449 449/449. Stable accounting remains **55 / 16 / 39**, debt **1**.
 
-**Frozen gate (review-agent reconciliation, 2026-09-28):** `Architecture_M6_CP1_TB6_A6_Artifact_Only_Test_Benchmark_Plan.md` fixes the exact 460-process order.
+**Frozen gate (review-agent reconciliation, 2026-09-28):** folded authority `M6_Consolidated_Record.md` §24 preserves the exact 460-process order from the consumed TB6-A6 plan.
 - Focused 1-7 run in TB5 order, then the four new A6 identities 8-11 in CB6-A6 plan §6 order. All route to `directional_surface_cell_producer_tests`.
 - Selector449 follows in file order with routing449.
 - Recovery-green also requires no `QuotientHolonomyConflict` anywhere and rows 232/444/446/448/449 PASS.
@@ -68,7 +84,7 @@ Frozen for Review:
 - Split square, planar uniform hard-rail rectangle and ordinary-identity classes satisfy the rule analytically. Produced cylinder selector row232 and torus rows444/446/448/449 are TB falsifiers. A documented evidence-only fallback is Review-only; CB/TB may not weaken the rule.
 - Selected relation paths are A6 authority. A7 only projects them; legacy lineage `selectedRelationPaths` remains HardRail/Periodic-only, preserving split-square emptiness and current relation-local chart/component semantics.
 - A6 typed failure vocabulary and adapter-only legacy mappings are frozen.
-- First implementation plan is `Architecture_M6_CP1_CB6_A6_Quotient_Product_Extraction_Code_Build_Plan.md`, **HELD pending Review**. It folds in the old standalone legacy-field retirement and pre-registers four new focused identities. Compile-green would later advance to **11 focused + selector449 = 460** immutable processes.
+- First implementation plan was the now-consumed CB6-A6 plan, folded into `M6_Consolidated_Record.md` §§23-25; it absorbed legacy-field retirement and pre-registered four new focused identities. Compile-green would later advance to **11 focused + selector449 = 460** immutable processes.
 - A7 product representation and the exact `G4-B002` stage-boundary representation are deferred to `M6-DEFN-R4`; R3 records intent only.
 
 Source inspection was from snapshot run/artifact `36199074014 / 10890838063`; no Directional runtime or compile occurred. Stable accounting remains **55 / 16 / 39**, produced-witness debt **1**, current reviewed runtime authority remains `10879581622 / 82b86a28...`, selector449 remains 449/449.
@@ -123,7 +139,7 @@ Review formally marks the TB1 `CROSS_TEMPORARY_ITERATOR_RANGE` event and the TB3
 
 CB5/TB5 artifact/source `10879581622 / 82b86a28...` is promoted as the **current reviewed runtime authority under unchanged selector449 449/449**. `M6-CP1` nevertheless remains **OPEN** because the public A5 `SurfaceOccurrence` still exposes unread representative fields `chart`, `lattice`, and `isolationSheet`, contrary to frozen §3.2/RA-11. Exact source has zero C++ readers for all three; `point` is live and `chartComponent` is legitimate. The old TB4-REV “unsorted aggregated equivalences” debt is withdrawn: exact candidate source already sorts and de-duplicates `lineage.equivalences` after tuple remap.
 
-`M6-CP1-CB6` removes only those three dead members plus their constructor/call-site arguments, changes no tests/fixtures/selectors/semantic relation authority, and compile/packages the standard eight GMP/GMPXX targets with no runtime. Compile-green advances to immutable `M6-CP1-TB6-EXEC`, unchanged **7 + 449 = 456**, then mandatory `M6-CP1-TB6-REV`. Full Review authority: `Architecture_M6_CP1_TB5_Review_Record.md`; governing successor plan: `Architecture_M6_CP1_CB6_Legacy_Occurrence_Field_Retirement_Code_Build_Plan.md`.
+`M6-CP1-CB6` removes only those three dead members plus their constructor/call-site arguments, changes no tests/fixtures/selectors/semantic relation authority, and compile/packages the standard eight GMP/GMPXX targets with no runtime. Compile-green advances to immutable `M6-CP1-TB6-EXEC`, unchanged **7 + 449 = 456**, then mandatory `M6-CP1-TB6-REV`. Full Review authority: `Architecture_M6_CP1_TB5_Review_Record.md`; the consumed standalone successor plan is folded into `M6_Consolidated_Record.md` §§22-23.
 
 ### `M6-CP1-TB5-EXEC` COMPLETE / 456/456 mechanically green / exact next `M6-CP1-TB5-REV` (2026-09-25)
 
@@ -304,55 +320,48 @@ Review must independently re-open source/evidence and re-derive: split-square v0
 
 ## Current authority
 
-Definition chain: DEFN-R1, DEFN-R2, RA-1 – RA-12, plus `M6-DEFN-R3` (A6 product separation) accepted by `M6-DEFN-R3-REV` with RA-1 – RA-4 (`Architecture_M6_DEFN_R3_Review_Record.md`). The A7 product and `G4-B002` boundary are deferred to `M6-DEFN-R4`.
+`M6-CP1-TB6-A6-REV` is **COMPLETE**. Candidate `10896307843 / a532f803...` is rejected/unpromoted after authoritative TB6-A6 run/job `36362570974 / 108742561290` executed the frozen **11 focused + selector449 = 460** gate at **456 PASS / 4 RED**. Reviewed runtime authority therefore remains `10879581622 / 82b86a28...`, selector449 **449/449**. Stable accounting is **57 / 16 / 41**, debt **1**.
 
-Current reviewed runtime authority: `10879581622 / 82b86a28` (TB5 456/456) under selector449. Stable accounting **55 / 16 / 39**, debt **1**. CP1 is **OPEN** on its frozen product-separation scope.
-
-`M6-CP1-CB6-A6` is **COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE**. Candidate `10896307843 / a532f803` is unpromoted.
+The Review invokes the frozen residual-holonomy fallback and freezes exact residual `H=compose(P.inverse(),D)` for cycle-closing A6 evidence; nonidentity residual is not automatic rejection absent an explicit zero-holonomy obligation. Separately, A5 must restore the accepted reciprocal HardRail different-region + reversed-route predicate before publishing immutable relation evidence. Full authority is `Architecture_M6_CP1_TB6_A6_Review_Record.md`; folded predecessor evidence is `M6_Consolidated_Record.md` §§23-25.
 
 ## Exact next turn
 
-**`M6-CP1-TB6-A6-EXEC` — immutable Test + Benchmark under `Architecture_M6_CP1_TB6_A6_Artifact_Only_Test_Benchmark_Plan.md` (frozen 460-process order).** Consume `10896307843` without rebuild or repair and execute 11 focused + selector449 = **460** fresh exact-filter processes, benchmark 0. Row232 and 444/446/448/449 are the holonomy falsifiers.
-
-After that:
-- mandatory `M6-CP1-TB6-A6-REV`;
-- `M6-DEFN-R4` (A7 product and `G4-B002` boundary);
-- the A7 CB, then the `G4-B002` CB, then a CP1 closure Review.
+**`M6-CP1-CB7-A6` — Code + Build, compile/package only.** Follow `Architecture_M6_CP1_CB7_A6_Relation_Validation_Recovery_Code_Build_Plan.md`. Restore only the A5 HardRail reciprocal validation and A6 exact residual/certificate-authority seam, adjust the two existing focused A6 identities without increasing the focused count, and leave selector449/routing449/fixtures/A7/R4/G4 unchanged. Compile-green -> `M6-CP1-TB7-A6-EXEC` over the same **11+449=460** fresh exact-filter shape -> mandatory `M6-CP1-TB7-A6-REV`.
 
 ## Completed predecessor turns (reference only)
 
+- `M6-CP1-TB6-A6-REV` — `Architecture_M6_CP1_TB6_A6_Review_Record.md`; predecessor plan/report material folded into `M6_Consolidated_Record.md` §§23-25.
 - `M6-DEFN-R3-REV` — accepted R3 with RA-1 – RA-4 (`Architecture_M6_DEFN_R3_Review_Record.md`).
-- `M6-DEFN-R3` — `Architecture_M6_DEFN_R3_A6_Product_Separation_Definition_Record.md`.
 - `M6-CP1-TB5-REV` (+ review-agent addendum) — `Architecture_M6_CP1_TB5_Review_Record.md`.
 - Earlier M6 turns — `M6_Consolidated_Record.md`.
 
 ## Current files
 
-- `.agents/Directional/Architecture_M6_CP1_TB6_A6_Artifact_Only_Test_Benchmark_Plan.md` — frozen TB6-A6 gate (exact next)
-- `.agents/Directional/Architecture_M6_CP1_CB6_A6_Quotient_Product_Extraction_Code_Build_Plan.md` — governing CB plan
-- `.agents/Directional/Architecture_M6_DEFN_R3_A6_Product_Separation_Definition_Record.md` + `Architecture_M6_DEFN_R3_Review_Record.md` — A6 definition authority
-- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — normative
-- `.agents/Directional/Architecture_M6_CP1_TB5_Review_Record.md`, `Architecture_M6_CP1_TB5_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority evidence
-- `.agents/Directional/M6_Consolidated_Record.md`
-- `.agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt`, `Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv`
+- `.agents/Directional/Architecture_M6_CP1_TB6_A6_Review_Record.md` — current Review authority.
+- `.agents/Directional/Architecture_M6_CP1_CB7_A6_Relation_Validation_Recovery_Code_Build_Plan.md` — exact next implementation plan.
+- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — normative definitions including the TB6-A6-REV residual-holonomy amendment.
+- `.agents/Directional/Architecture_M6_CP1_TB5_Review_Record.md`, `Architecture_M6_CP1_TB5_Artifact_Only_Test_Benchmark_Report.md` — current accepted runtime authority evidence.
+- `.agents/Directional/M6_Consolidated_Record.md` — folded CB6-A6/TB6-A6 predecessor authority.
+- `.agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt`, `Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv` — frozen selector/routing authority.
 
 ## Context Load Plan
 
 ```yaml
 load_next:
-  - turn-based-coding-agent/references/turns/TB.md
-  - .agents/Directional/Architecture_M6_CP1_TB6_A6_Artifact_Only_Test_Benchmark_Plan.md
-  - .agents/Directional/Architecture_M6_CP1_CB6_A6_Code_Build_Report.md
+  - turn-based-coding-agent/references/turns/CB.md
+  - .agents/Directional/Architecture_M6_CP1_TB6_A6_Review_Record.md
+  - .agents/Directional/Architecture_M6_CP1_CB7_A6_Relation_Validation_Recovery_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M6_Frozen_Definitions.md
   - .agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt
   - .agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv
 conditional_modules:
-  - trigger: github_connector / GitHub Actions / artifact-only harness
+  - trigger: github_connector / GitHub Actions / compile
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
-  - .agents/Directional/Architecture_M6_CP1_TB5_Artifact_Only_Test_Benchmark_Report.md  # prior 456-process harness shape
-  - .agents/Directional/Architecture_M6_CP1_CB6_A6_Quotient_Product_Extraction_Code_Build_Plan.md
-  - .agents/Directional/Architecture_M6_DEFN_R3_Review_Record.md
+  - .agents/Directional/M6_Consolidated_Record.md
+  - .agents/Directional/Architecture_M6_CP1_TB5_Review_Record.md
   - .agents/Directional/GitHub_Workflow_Policy.md
+  - .agents/Directional/TOOL_USE_CONSERVATION_POLICY.md
 do_not_preload:
   - folded superseded M6 per-turn records
   - uncited historical reports

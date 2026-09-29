@@ -1,3 +1,11 @@
+## 2026-09-29 — `M6-CP1-TB6-A6-REV`: authoritative 460-process gate reconciled; candidate rejected; CB7-A6 frozen
+
+- Reconciled both TB6-A6 Actions executions. Run/job `36362570974 / 108742561290` is mechanically valid and supersedes the EXEC report's “no authoritative runtime” claim: result/log `10947080007 / 10946089412`, result manifest 946/946, exact **11+449=460** processes, **456 PASS / 4 RED**, exact-one selection, zero skips, immutable postflight. Earlier `36362470435` remains orchestration-invalid/no-credit.
+- Independent accepted-authority comparison proves two stable mechanisms. Selector446 plus focused6 hit `QuotientHolonomyConflict`: existing `RP-07 / CYCLIC_TOPOLOGY_LINEARIZATION`; R3's pre-registered fallback is invoked and frozen as exact residual `H=compose(P.inverse(),D)`, with nonidentity residual treated as evidence absent an explicit zero-holonomy obligation.
+- Selector139/142 unexpectedly succeed instead of accepted `InvalidHardRailTransport`: one existing `VALIDATION_ORDER_SHADOWING` recurrence. Source comparison proves the A5 cutover dropped the accepted different-region + reversed-route HardRail predicate before freezing relation evidence.
+- Stable accounting advances **55/16/39 -> 57/16/41**, debt remains 1. Candidate `10896307843 / a532f803...` is rejected/unpromoted; reviewed runtime remains `10879581622 / 82b86a28...`, selector449 449/449.
+- Amended `Architecture_M6_Frozen_Definitions.md`; froze exact next `M6-CP1-CB7-A6` and fresh successor gate `M6-CP1-TB7-A6-EXEC` 11+449=460 -> mandatory Review. R4/A7/G4 remain held.
+
 ## 2026-09-29 — `M6-CP1-TB6-A6-EXEC` closes orchestration-invalid; mandatory Review next
 
 - Re-verified immutable candidate `10896307843 / a532f803...`: candidate digest `54eb7708...56b7e`, packaged source `e48ad4a9...9a45`, root manifest 28/28, selector/routing449 unchanged, archived executable modes intact.
@@ -9,7 +17,7 @@
 ## 2026-09-28 — review-agent reconciliation after `M6-CP1-CB6-A6` closeout: TB6-A6 gate frozen
 
 - CB6-A6 closed cleanly (report, cleanup, COMPLETE → `M6-CP1-TB6-A6-EXEC`), and the loop then recorded `CHAT_UNKNOWN`. The handoff and beacon are consistent.
-- Added `Architecture_M6_CP1_TB6_A6_Artifact_Only_Test_Benchmark_Plan.md`, fixing the exact 460-process order and routing (focused 1-7 as TB5, new 8-11, selector449 with routing449) and the recovery-green shape, including the holonomy falsifiers.
+- Added the TB6-A6 artifact-only plan (now folded into `M6_Consolidated_Record.md` §24), fixing the exact 460-process order and routing (focused 1-7 as TB5, new 8-11, selector449 with routing449) and the recovery-green shape, including the holonomy falsifiers.
 - Replaced the handoff's stale Code+Build load plan with a TB load plan.
 - Note: the closeout replaced the review agent's recovery entries in this CHANGELOG and the tracker in place rather than prepending. The facts are preserved in the CB report (lesson 176, append-only ledgers).
 
@@ -19,7 +27,7 @@
 - The first compile `36212343902 / 108321392040` failed on conflicting declarations; the only compile repair was the bounded `a532f803` rename/class-count correction. No generated Directional runtime was executed.
 - Static plan checks and RA-1 – RA-4 are satisfied: canonical relation-ID certificate direction, identity OrdinaryFront transport, evidence-complete A5 relation consumption without front-edge dereference in A6, and traversal-order `compose(T,path)` with reverse inversion and typed holonomy rejection.
 - Recorded focused row4's mechanical `lattice` → `placement.lattice` migration as value-identical by construction; TB6-A6-REV must confirm that its test meaning is unchanged.
-- Retired the prior CB6-A6 compile/snapshot temporary state through cleanup run `36358568335`; durable closeout report is `Architecture_M6_CP1_CB6_A6_Code_Build_Report.md`. Stable accounting remains 55/16/39, debt 1; candidate remains unpromoted.
+- Retired the prior CB6-A6 compile/snapshot temporary state through cleanup run `36358568335`; the consumed closeout report is now folded into `M6_Consolidated_Record.md` §23. Stable accounting remains 55/16/39, debt 1; candidate remains unpromoted.
 - Exact next is immutable `M6-CP1-TB6-A6-EXEC`: **11 focused + selector449 = 460** fresh exact-filter processes, benchmark 0, followed by mandatory `M6-CP1-TB6-A6-REV`.
 
 ## 2026-09-25 — `M6-DEFN-R3-REV` accepts A6 definition with four binding precision amendments

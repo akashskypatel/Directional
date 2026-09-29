@@ -1,4 +1,16 @@
-## Current — `M6-CP1-TB6-A6-EXEC` COMPLETE / ORCHESTRATION INVALID; exact next Review (2026-09-29)
+## Current — `M6-CP1-TB6-A6-REV` COMPLETE / exact next `M6-CP1-CB7-A6` (2026-09-29)
+
+- [x] Reconcile both TB6-A6 Actions runs; authoritative run `36362570974` is mechanically valid at **456/460 PASS**.
+- [x] Reject/unpromote candidate `10896307843 / a532f803...`; retain reviewed runtime `10879581622 / 82b86a28...`, selector449 449/449.
+- [x] Reprice stable history to **57 / 16 / 41**, debt 1: selector446 = existing `RP-07` recurrence; rows139+142 = one `VALIDATION_ORDER_SHADOWING` recurrence.
+- [x] Invoke and freeze R3 residual-holonomy fallback: cycle-closing A6 publishes exact `D`, `P`, `H=compose(P.inverse(),D)`; nonidentity residual alone is not `QuotientHolonomyConflict`.
+- [x] Confirm focused row4 migration is runtime-green/value preserving; A6 focused8-11 all PASS.
+- [ ] **Exact next `M6-CP1-CB7-A6`:** restore A5 HardRail reciprocal region/reversed-route validation; implement exact cycle residual evidence; strengthen A6 certificate-to-A5 authority validation; keep focused count 11.
+- [ ] CB7-A6 compile/package only using standard eight GMP/GMPXX targets; `runtimeExecution=false`; no selector/fixture/A7/R4/G4 mutation.
+- [ ] Compile-green -> `M6-CP1-TB7-A6-EXEC`, exact **11+449=460** fresh processes -> mandatory `M6-CP1-TB7-A6-REV`.
+- [ ] Keep `M6-DEFN-R4`, A7, `G4-B002`, `G4-B004` representative half and direct-torus debt held until recovery Review.
+
+## Superseded EXEC-only interpretation — mandatory Review found an authoritative second run
 
 - [x] Re-verify candidate `10896307843 / a532f803...` immutably: ZIP/source hashes, root 28/28, selector/routing449, owner census and executable modes unchanged.
 - [x] Record the execution error: package binaries were run without the standard separate adjacent `test-data/benchmarks/fixtures` execution view. Six completed tests failed only on that missing fixture package.
@@ -12,7 +24,7 @@ Accounting remains **55 / 16 / 39**, debt 1. Reviewed runtime authority remains 
 ## Superseded TB6-A6 pre-execution gate (review-agent reconciliation, 2026-09-28)
 
 - [x] CB6-A6 COMPLETE (candidate `10896307843 / a532f803`); handoff consistent.
-- [x] Froze the exact 460-process order in `Architecture_M6_CP1_TB6_A6_Artifact_Only_Test_Benchmark_Plan.md`: focused 1-7 in TB5 order, new 8-11, then selector449; all focused route to the producer tests. Holonomy falsifiers are row232 and 444/446/448/449, with no `QuotientHolonomyConflict` allowed.
+- [x] Froze the exact 460-process order now folded into `M6_Consolidated_Record.md` §24: focused 1-7 in TB5 order, new 8-11, then selector449; all focused route to the producer tests. Holonomy falsifiers are row232 and 444/446/448/449, with no `QuotientHolonomyConflict` allowed.
 - [x] `M6-CP1-TB6-A6-EXEC` completed as orchestration-invalid / zero semantic credit → mandatory `M6-CP1-TB6-A6-REV`.
 
 ## Superseded — `M6-CP1-CB6-A6` COMPLETE; TB6-A6 attempt now closed invalid
@@ -31,7 +43,7 @@ Accounting remains **55 / 16 / 39**, debt 1. Reviewed runtime authority remains 
 - [x] Freeze CP1 exit checklist, A6 member-set identity, exact-once joining/cycle-closing ledger, cycle transport consistency, selected-path ownership and A6 failure vocabulary.
 - [x] Record analytic split-square / uniform hard-rail / ordinary-identity holonomy proof and pre-register produced cylinder row232 + torus rows444/446/448/449 as TB falsifiers.
 - [x] Write `Architecture_M6_DEFN_R3_A6_Product_Separation_Definition_Record.md` and the normative frozen-definition amendment.
-- [x] Write held `Architecture_M6_CP1_CB6_A6_Quotient_Product_Extraction_Code_Build_Plan.md`; four new focused identities; later gate = **11 + 449 = 460**.
+- [x] Write the now-consumed CB6-A6 plan (folded into `M6_Consolidated_Record.md` §§23-25); four new focused identities; later gate = **11 + 449 = 460**.
 - [x] Mark standalone legacy-field CB6 plan superseded/held; retirement is folded into A6 extraction.
 - [x] **Historical exact next completed:** `M6-DEFN-R3-REV` accepted and authorized `M6-CP1-CB6-A6`.
 - [ ] `M6-DEFN-R4` before A7 CB: freeze A7 product representation and exact `G4-B002` A6 stage boundary.
