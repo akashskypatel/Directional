@@ -1,0 +1,47 @@
+name: M6 CP1 TB6 A6 Review Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m6-cp1-tb6-a6-rev-drive-apply.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m6-cp1-tb6-a6-rev-drive-apply
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m6-cp1-tb6-a6-rev-drive-apply
+      commit_run_file: false
+      trim_stale_comments: false
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m6-cp1-tb6-a6-rev-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1-mmdQh8dehKqpzhiJasD4zBLbuj0zDsY
+      patch_sha256: 2ba6f35c3e2ca2270f50b6ce08958237ceacdecedfadef0a5a99218e85aa97cc5
+      base_sha: 481b71e16090fe8351500f2b204420970e04ca6e
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close M6 CP1 TB6 A6 review"
+    secrets: inherit
