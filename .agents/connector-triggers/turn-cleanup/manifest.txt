@@ -1,5 +1,0 @@
-# M6-CP1-TB6-A6-REV temporary-state cleanup
-.agents/connector-triggers/m6-cp1-tb6-a6-rev-drive-apply.txt
-.agents/connector-triggers/m6-cp1-tb6-a6-exec-20260928.txt
-.agents/connector-triggers/source-snapshot/m6-cp1-tb6-a6-rev-20260929.txt
-.agents/Directional/turn-payloads/m6_cp1_tb6_a6_artifact_only_harness.sh

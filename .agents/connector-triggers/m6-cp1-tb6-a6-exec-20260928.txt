@@ -1,4 +1,0 @@
-turn=M6-CP1-TB6-A6-EXEC
-candidate_artifact=10896307843
-expected_processes=460
-retry=1
