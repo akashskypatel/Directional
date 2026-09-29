@@ -1,2 +1,0 @@
-purpose=M6-CP1-TB6-A6-EXEC authority snapshot
-retry=0
