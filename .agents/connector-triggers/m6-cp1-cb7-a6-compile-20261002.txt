@@ -1,4 +1,0 @@
-purpose=M6-CP1-CB7-A6 compile/package
-source_sha=40842caa88f8d7a08a38c91273ace77ebd7c0676
-runtimeExecution=false
-retry=0

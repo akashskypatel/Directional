@@ -1,5 +1,0 @@
-.agents/connector-triggers/m6-cp1-cb7-a6-compile-20261002.txt
-.agents/connector-triggers/m6-cp1-cb7-a6-docs-apply-20261002.txt
-.agents/connector-triggers/m6-cp1-cb7-a6-drive-apply-20261002.txt
-.agents/connector-triggers/source-snapshot/m6-cp1-cb7-a6-20261002.txt
-.agents/connector-triggers/source-snapshot/m6-cp1-cb7-a6-closeout-20261002.txt

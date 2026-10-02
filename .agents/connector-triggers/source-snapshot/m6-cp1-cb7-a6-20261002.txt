@@ -1,3 +1,0 @@
-purpose=M6-CP1-CB7-A6 source snapshot
-semantic_base=48b7a01f08dbfb297c4a7b8037b3bf54c4746246
-retry=0

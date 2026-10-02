@@ -1,5 +1,0 @@
-purpose=M6-CP1-CB7-A6 Drive patch apply
-patch_file_id=1YYHR-CK6fy9-2yJjTI7g1K5t9DG-zCYJ
-patch_sha256=64bae4be00d40d461f540aa99dbef73f6d61670820660add39050c668fe29e70
-base_sha=752cb378a0c6d7ef78dd534eec14c11e912a0903
-retry=0
