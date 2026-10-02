@@ -1,0 +1,5 @@
+purpose=M6-CP1-CB7-A6 durable closeout docs apply
+patch_file_id=1wXKl2ao_vlSS163sgWpUHwEH24HnNHTX
+patch_sha256=baa6e7ee3b820bffb72ef7dbe260a25cdf8f3f4b9fb352d8d09692a6a00b38d9
+base_sha=80fdee64aab0244bc8714adb3d6e9cd9164d30eb
+retry=0
