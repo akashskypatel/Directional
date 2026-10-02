@@ -96,7 +96,9 @@ GMP/GMPXX linkage is explicit in the generated link evidence (`libgmpxx.so`, `li
 
 A process-only observation is recorded at +0: repository/policy reads preceded the explicit `READ_MODE=snapshot` declaration in the web session. The ordering was corrected before semantic source inspection or editing, and all semantic work used verified exact-source snapshots. No product, compile, or runtime evidence depends on the preliminary reads.
 
-The source-patch and compile callers were retired before documentation closeout. Remaining temporary marker/snapshot control state is required to be batch-cleaned through the repository's mandatory turn-cleanup workflow before the final `STATUS` COMPLETE write. Cleanup result evidence is appended during final closeout; it is control-plane evidence, not Code + Build semantic evidence.
+The source-patch and compile callers were retired before documentation closeout. The durable documentation patch (SHA-256 `baa6e7ee3b820bffb72ef7dbe260a25cdf8f3f4b9fb352d8d09692a6a00b38d9`) applied successfully in run/job `37079472203 / 111076640601`, producing documentation commit `0fe698fe0f68b24df8024cd8832ce7f73bdc5410`. Its staged Drive file required owner cleanup and was permanently deleted; the temporary docs caller was then retired at commit `c55cf452e53f5e658a1213f1038264b16d0cd1ef`.
+
+Mandatory turn-cleanup run/job `37079589998 / 111076950526` succeeded. Cleanup result artifact `11257234702` has digest `sha256:b31c4abe3f4862e20497d8f5b9ef4c93b28cdfe0c37d5a21f6bba380b0b152f4`; cleanup commit `77497c29d2b56efcb5eca0fbf64e0492dd21c2a1` removed the five inventoried CB7 marker/snapshot paths plus its manifest, deleted 6 PR conversation comments and 0 inline comments, verified 0/0 remained before the observer, and recorded `runtimeExecution=false`. Post-cleanup inspection shows exactly the seven durable workflows and no `.agents/connector-triggers`, `.agents/workflow-observation`, or `.agents/Directional/turn-payloads` temporary state. This cleanup is control-plane evidence, not Code + Build semantic evidence.
 
 ## Successor gate
 
