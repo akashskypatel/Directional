@@ -349,3 +349,15 @@ Corrected: TB5-REV said CP1 was held only by three legacy A5 fields. Frozen §10
 - candidate extraction still on `SurfaceCellComplex`.
 
 CB6 is HELD and folded into the A6 CB. The CP1 exit scope is restated in the frozen definitions. Exact next is `M6-DEFN-R3` (`Architecture_M6_DEFN_R3_CP1_Product_Separation_Plan.md`). Lesson 183.
+
+## `M6-CP1-TB6-A6-REV` review-agent addendum — Finding B corrected (RA-13)
+
+TB6 runtime evidence re-verified (946/946; RED focused 6 and selectors 139/142/446). Finding A upheld; it is a fail-open guard loss at the A5 cutover rather than shadowing.
+
+Finding B was mis-diagnosed as legitimate noncontractible residual holonomy:
+- vertex-class cycles are contractible links;
+- A6 composed OrdinaryFront identity (cut-domain placement gauge) with exact-A3 Periodic `g` (relation-endpoint gauge, Reverse side rotated by Q);
+- the conflicts occur only on the nonzero-Z4 witness, while the Q=0 torus rows are green.
+
+The residual fallback is revoked. RA-13 (single-gauge transport, strict rule restored, diagnostic residual suffix) is frozen, and the CB7-A6 plan is amended. Category RP-07 → RP-01; totals 57/16/41 unchanged. Lesson 184.
+

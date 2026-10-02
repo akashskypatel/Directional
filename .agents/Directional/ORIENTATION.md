@@ -1,3 +1,10 @@
+## Currency — `M6-CP1-TB6-A6-REV` review-agent addendum: Finding B corrected (gauge mixing, RA-13); exact next `M6-CP1-CB7-A6` as amended (2026-10-02 UTC)
+
+TB6 (`10947080007`, 946/946) RED set re-verified, Finding A (HardRail reciprocity dropped at the A5 cutover, fail-open) upheld, and 57/16/41 with debt 1 upheld.
+
+**Finding B corrected.** The nonzero-Z4 `QuotientHolonomyConflict` comes from composing OrdinaryFront identity (cut-domain placement gauge) with exact-A3 Periodic `g` (relation-endpoint gauge). Lesson 175's domain split; RP-01, not RP-07. The residual fallback is revoked. RA-13 publishes every transport in the placement gauge and restores the strict cycle rule. Lesson 184.
+
+### Superseded currency note
 ## Currency — `M6-CP1-TB6-A6-REV` COMPLETE / candidate rejected; exact next `M6-CP1-CB7-A6` (2026-09-29 UTC)
 
 Independent Review reconciles the complete TB6-A6 Actions history and finds a valid authoritative second run: `36362570974 / 108742561290`, result/log `10947080007 / 10946089412`, **456/460 PASS** over the exact 11+449 gate. Candidate `10896307843 / a532f803...` is rejected/unpromoted. Reviewed runtime authority remains `10879581622 / 82b86a28...`, selector449 449/449.

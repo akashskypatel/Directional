@@ -1,3 +1,12 @@
+## 2026-10-02 — `M6-CP1-TB6-A6-REV` review-agent addendum — **+0 EVENTS / 57/16/41 / debt 1 / Finding B re-attributed RP-07 → RP-01**
+
+- **`M6-CP1-TB6-A6-REV-CAND-01` (selector 446 + focused 6), corrected root cause.** A6 cycle composition mixes OrdinaryFront identity in the cut-domain placement gauge (`RemeshPipeline.cpp:4117`) with exact-A3 Periodic semantic action `g` in the PeriodicCut relation-endpoint gauge (`:4165`; `SurfaceCellTracing.h:1438-1442`; `make_periodic_relation_endpoint_state` at `SurfaceCellTracing.cpp:7915` rotates the Reverse side by Q).
+  - Conflicts occur only on `nonzero_z4_torus_witness_fixture()`; the Q=0 torus rows 444/448/449 are green.
+  - Vertex-class cycles are contractible links, so "legitimate noncontractible residual holonomy" does not apply.
+  - Category: **RP-01 / AUTHORITY_DOMAIN_CONFLATION** (lesson 175 domain split), not RP-07. Recurrence count unchanged.
+  - Remedy: RA-13, with the strict rule kept. The residual fallback is revoked.
+- **`M6-CP1-TB6-A6-REV-CAND-02` (rows 139/142), mechanism annotated:** guard dropped at the A5/A6 cutover; fail-open acceptance, not earlier-guard shadowing. Category unchanged (no better catalogue fit).
+
 ## 2026-09-29 — `M6-CP1-TB6-A6-REV` authoritative 460-process adjudication — **+2 EVENTS / 57/16/41 / debt 1 / CANDIDATE REJECTED**
 
 Independent Review reconciles the complete Actions history and supersedes the immediately following EXEC-only interpretation. A second executor run, `36362570974 / 108742561290`, is mechanically valid and authoritative: result/log `10947080007 / 10946089412`, result self-manifest **946/946**, 11 focused + selector449 = **460 fresh exact-filter processes**, exact-one selection, zero skips, benchmark 0, immutable postflight. Outcome is focused **10/11** + selector **446/449** = **456/460 PASS**. Accepted prior authority `10879581622 / 82b86a28...` proves focused6 and selector139/142/446 were previously green.

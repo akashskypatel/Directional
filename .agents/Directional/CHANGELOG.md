@@ -1,3 +1,11 @@
+## 2026-10-02 — `M6-CP1-TB6-A6-REV` review-agent addendum: Finding B corrected (gauge mixing), RA-13, strict cycle rule restored
+
+- Re-verified TB6 result `10947080007` (946/946; RED focused 6 and selectors 139/142/446; zero OICA; two `QuotientHolonomyConflict`).
+- Upheld candidate rejection, Finding A (annotated fail-open) and 57/16/41 with debt 1.
+- Corrected Finding B: OrdinaryFront identity (placement gauge) is composed with exact-A3 Periodic `g` (relation-endpoint gauge). The conflicts are confined to the nonzero-Z4 witness, and vertex cycles are contractible.
+- Revoked the residual fallback, which was vacuous as a check. Froze RA-13: placement-gauge transports, verified in A5, with the strict cycle rule and a diagnostic residual suffix.
+- Amended the CB7 plan: §3 replaced, §4.2 revoked, focused 11 unchanged. Re-attributed RP-07 → RP-01. Added lesson 184.
+
 ## 2026-09-29 — `M6-CP1-TB6-A6-REV`: authoritative 460-process gate reconciled; candidate rejected; CB7-A6 frozen
 
 - Reconciled both TB6-A6 Actions executions. Run/job `36362570974 / 108742561290` is mechanically valid and supersedes the EXEC report's “no authoritative runtime” claim: result/log `10947080007 / 10946089412`, result manifest 946/946, exact **11+449=460** processes, **456 PASS / 4 RED**, exact-one selection, zero skips, immutable postflight. Earlier `36362470435` remains orchestration-invalid/no-credit.

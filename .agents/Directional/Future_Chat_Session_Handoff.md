@@ -1,4 +1,20 @@
-## Resume-critical update — `M6-CP1-TB6-A6-REV` COMPLETE / candidate rejected; exact next `M6-CP1-CB7-A6` (2026-09-29 UTC)
+## Resume-critical update — `M6-CP1-TB6-A6-REV` review-agent addendum: Finding B corrected (RA-13); exact next `M6-CP1-CB7-A6` as amended (2026-10-02)
+
+**Start `M6-CP1-CB7-A6` as a new runtime-free Code + Build turn,** with a new `Started at`, `Successor: UNKNOWN` and empty `Resumed at` / `Ended at`. Follow `Architecture_M6_CP1_CB7_A6_Relation_Validation_Recovery_Code_Build_Plan.md` **with its review-agent amendment block, which overrides §3 and §4.2**.
+
+The review agent re-verified TB6 (result `10947080007`, 946/946; RED focused 6 and selectors 139/142/446). It upheld the candidate rejection, Finding A and the totals **57 / 16 / 41** with debt 1.
+
+**Finding B is corrected.** The `QuotientHolonomyConflict` on selector 446 and focused 6 is **gauge mixing**, not legitimate holonomy:
+- OrdinaryFront identity is in the cut-domain placement gauge.
+- Exact-A3 Periodic `g` is in the PeriodicCut relation-endpoint gauge (`make_periodic_relation_endpoint_state` rotates the Reverse side by Q).
+- Both conflicting rows use the nonzero-Z4 witness, and the Q=0 torus rows are green.
+- Vertex-class cycles are contractible vertex links.
+
+The TB6-A6-REV residual-holonomy fallback is **revoked**. **RA-13** requires every relation transport in the placement gauge (exact-A3 Periodic `T = Γ_to⁻¹ ∘ g ∘ Γ_from`, verified by A5 against the endpoint placement states) and **restores the strict cycle rule**, with a diagnostic residual suffix. Keep focused 11 `CycleClosingRelationTransportConflictRejected` unchanged; there is no "RecordsExactResidual" test. Finding A (restore HardRail region/route reciprocity at A5, `InvalidHardRailTransport`) is unchanged.
+
+The re-attribution of Finding B to RP-01 leaves the totals unchanged.
+
+### Superseded by the 2026-10-02 review-agent addendum — `M6-CP1-TB6-A6-REV` COMPLETE / candidate rejected; exact next `M6-CP1-CB7-A6` (2026-09-29 UTC)
 
 **Do not resume TB6-A6 and do not start R4/A7/`G4-B002`.** The mandatory Review found a mechanically valid authoritative TB6-A6 run and rejected candidate `10896307843 / a532f803...`.
 
@@ -326,7 +342,7 @@ The Review invokes the frozen residual-holonomy fallback and freezes exact resid
 
 ## Exact next turn
 
-**`M6-CP1-CB7-A6` — Code + Build, compile/package only.** Follow `Architecture_M6_CP1_CB7_A6_Relation_Validation_Recovery_Code_Build_Plan.md`. Restore only the A5 HardRail reciprocal validation and A6 exact residual/certificate-authority seam, adjust the two existing focused A6 identities without increasing the focused count, and leave selector449/routing449/fixtures/A7/R4/G4 unchanged. Compile-green -> `M6-CP1-TB7-A6-EXEC` over the same **11+449=460** fresh exact-filter shape -> mandatory `M6-CP1-TB7-A6-REV`.
+**`M6-CP1-CB7-A6` — Code + Build, compile/package only.** Follow `Architecture_M6_CP1_CB7_A6_Relation_Validation_Recovery_Code_Build_Plan.md` **as amended by its review-agent block (RA-13: single-gauge transport, strict cycle rule kept; §4.2 revoked)**. Restore only the A5 HardRail reciprocal validation and A6 exact residual/certificate-authority seam, adjust the two existing focused A6 identities without increasing the focused count, and leave selector449/routing449/fixtures/A7/R4/G4 unchanged. Compile-green -> `M6-CP1-TB7-A6-EXEC` over the same **11+449=460** fresh exact-filter shape -> mandatory `M6-CP1-TB7-A6-REV`.
 
 ## Completed predecessor turns (reference only)
 

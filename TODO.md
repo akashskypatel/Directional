@@ -1,3 +1,10 @@
+## Review-agent addendum — `M6-CP1-TB6-A6-REV` (2026-10-02)
+
+- [x] TB6 re-verified; Finding A upheld (fail-open guard loss); 57/16/41 with debt 1 upheld.
+- [x] Finding B corrected: gauge mixing, not legitimate holonomy. Residual fallback revoked; RA-13 frozen; CB7 plan amended (§3 replaced, §4.2 revoked).
+- [ ] `M6-CP1-CB7-A6`: Goal A (A5 HardRail region/route reciprocity) + RA-13 (placement-gauge transports, A5 verification, strict cycle rule with diagnostic suffix). Compile only.
+- [ ] `M6-CP1-TB7-A6-EXEC` (460, same order; 446 and focused 6 must pass strict) → `M6-CP1-TB7-A6-REV`.
+
 ## Current — `M6-CP1-TB6-A6-REV` COMPLETE / exact next `M6-CP1-CB7-A6` (2026-09-29)
 
 - [x] Reconcile both TB6-A6 Actions runs; authoritative run `36362570974` is mechanically valid at **456/460 PASS**.

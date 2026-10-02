@@ -188,3 +188,76 @@ Compile-green CB7-A6 advances to a fresh immutable `M6-CP1-TB7-A6-EXEC` over the
 | review_check.py boundary | **PASS** on the prepared Review tree; selector counts/hashes and durable boundaries unchanged. |
 | `STATUS` lifecycle maintained | `M6-CP1-TB6-A6-REV` entered IN_PROGRESS with start timestamp; final COMPLETE beacon names `M6-CP1-CB7-A6` and is the final repository write. |
 | Pushed to origin, branch in sync | Final documentation patch is pushed to the working branch through exact-base CAS; closeout re-reads branch authority and leaves the prepared local tree clean. No commit hash is embedded here. |
+
+## Review-agent addendum — `M6-CP1-TB6-A6-REV` (2026-10-02 UTC)
+
+**Disposition of this addendum:**
+- **UPHELD:** TB6-A6 mechanics; the run reconciliation (`36362570974` authoritative); candidate rejection; Finding A's root cause and remedy; accounting totals **57 / 16 / 41** and debt 1.
+- **CORRECTED:** Finding A's mechanism wording. More importantly, **Finding B's root cause and remedy are wrong**: TB6 shows a gauge-mixing defect in A6 transport composition, not legitimate residual holonomy.
+- **Consequence:** the TB6-A6-REV residual-holonomy fallback is **REVOKED** and replaced by **RA-13 (single-gauge relation transport)**, with the strict cycle rule **RESTORED**. `M6-CP1-CB7-A6` stays the successor with its Goal B rewritten.
+
+### E1. Evidence independently re-derived
+
+- **Result `10947080007`** (`ebce7715…531d`): **946/946**. The focused ledger is 11 rows, 10 PASS with row6 RED. The selector ledger is 449 rows in exact selector449 order, 446 PASS with rows 139/142/446 RED. Every row is exact-one/zero-skip.
+- **Raw logs:** zero `OccurrenceInvalidCornerAuthority`. `QuotientHolonomyConflict` appears exactly in focused 6 and selector 446. Rows 139/142 fail at `rejected.success` (`SurfaceCellsPhase10Tests.cpp:6820/6840`), i.e. unexpected acceptance.
+- **Source:** `git diff a532f803 HEAD -- src include tests` is empty, so static review of HEAD is review of the candidate.
+
+### E2. Finding A — upheld, mechanism corrected (fail-open, not shadowing)
+
+The reciprocity predicates `first.sourceTopologyRegion == second.sourceTopologyRegion` and `first.route != second.route.reversed()` occur **nowhere** in the candidate source. The A5 HardRail branch checks only owner presence and equality (`RemeshPipeline.cpp` near 4058-4074), and A6's `InvalidHardRailTransport` only checks certificate self-consistency against A5 evidence.
+
+Rows 139/142 therefore **succeed**: an acceptance inversion (fail-open), not row140's earlier-guard **shadowing**, where a different rejection was returned. The guard was dropped at the A5/A6 authority cutover; it was not pre-empted. The catalogue has no closer category, so the event stays one recurrence in `VALIDATION_ORDER_SHADOWING`, annotated **"guard dropped at authority cutover — fail-open"**. The CB7 Goal A remedy (restore at A5 publication, map to `InvalidHardRailTransport`) is correct.
+
+### E3. Finding B — corrected: the residual is a gauge artifact
+
+TB6-A6-REV concluded that a "direct noncontractible periodic relation differs from the chosen spanning-forest path", that the strict rule "is an overconstraint", and it invoked the evidence-only fallback. Three facts contradict that:
+
+1. **A cycle-closing relation is inside one vertex class, so its cycle is that vertex's link.** Every member occurrence is a corner of a cell incident to the same output vertex, and relations join corners across shared sides. A cycle of such relations is the loop around the vertex: contractible, with holonomy equal to the vertex's cone angle, which is identity at a regular lattice node. A nonzero-Z4 gluing across a torus handle is a legitimate cross-field feature, but a vertex link crosses any cut once in each direction, so the crossings cancel. No "noncontractible" vertex-class cycle exists.
+2. **The certificates compose transports from two different gauges.**
+   - RA-2 makes OrdinaryFront transport identity **in the cut-domain `LocalLatticeState` gauge** (`lattice_equal` on `fromLattice`/`toLattice`; A5 `storageTransport = identity` at `RemeshPipeline.cpp:4117`).
+   - For exact-A3 Periodic pairs, A5 publishes the **semantic action `g`** (`:4165`). Accepted M5 validated `g` against `SurfacePeriodicRelationEndpointState` (`relation_action_matches(periodicFrom, periodicTo, g)`), and the A4 header says that state "is distinct from LocalLatticeState: the latter owns cut-domain cell placement" (`SurfaceCellTracing.h:1438-1442`).
+   - `make_periodic_relation_endpoint_state` (`SurfaceCellTracing.cpp:7915`) leaves the Forward side in raw cut coordinates but applies the relation turn **Q** to the Reverse side's coordinate and branch.
+   - So in the cut-domain gauge the periodic transport is `Γ_R⁻¹ ∘ g ∘ Γ_F` (≈ `R_Q⁻¹ ∘ g`), not `g`. Non-A3 periodic relations are already validated in the cut gauge (`action_matches` on `LocalLatticeState`, `:4182`).
+   - A6's cycle check (`:4661-4704`) composes all of these as if they shared one gauge.
+3. **The failure pattern is exactly the gauge prediction.** For Q = 0, `Γ_R` is identity, so the gauges coincide. Q ≠ 0 leaves a spurious Q residual on every link that crosses the cut.
+   - The only `QuotientHolonomyConflict` rows (selector 446 and focused 6) both use `nonzero_z4_torus_witness_fixture()` (`SurfaceCellTransitionQuotientTests.cpp:1340/1431`, row446 at `:4090`).
+   - The green torus rows 444/448/449 use the default `torus_fixture()`, and cylinder 232 is translation-only.
+   - Focused 6 already fails at its **baseline** materialization, before any storage swap, which a gauge error predicts and a storage-direction error does not.
+
+The fallback is also **vacuous as a check**. TB6-A6-REV keeps `QuotientHolonomyConflict` only for "algebraically inconsistent `(D,P,H)`", but `H` is *defined* as `compose(P⁻¹, D)`, so that can never fire. A6 would have no cycle-consistency check left. CB7 §4.2's planned positive identity, which "requires a deliberately nonidentity residual", would freeze the gauge defect into the gate.
+
+**Classification correction:** this is lesson 175's authority-domain error (cut-domain placement versus PeriodicCut relation-endpoint gauge), so it belongs in existing **`RP-01 / AUTHORITY_DOMAIN_CONFLATION`**, not `RP-07 / CYCLIC_TOPOLOGY_LINEARIZATION`. Totals are unchanged at **57 / 16 / 41**; only the category attribution moves.
+
+### E4. RA-13 — single-gauge relation transport (normative; replaces the TB6-A6-REV residual fallback)
+
+1. Every A6 `QuotientRelationCertificate.relationTransport` is the transport between the two endpoint occurrences' **placement (cut-domain `LocalLatticeState`) states**, in canonical `relation.id.first → second` direction (RA-1). A5 must publish it in that gauge and verify `action_matches(placement(first), placement(second), T)` — coordinate, branch and scale — before freezing the evidence. A mismatch fails closed with `InvalidPeriodicFrontTransport` (periodic) or `InvalidHardRailTransport` (HardRail).
+2. **OrdinaryFront:** identity (RA-2, unchanged; already in this gauge).
+3. **Periodic, exact-A3:** `T = Γ_to⁻¹ ∘ g ∘ Γ_from`, where Γ is the endpoint gauge map defined by `make_periodic_relation_endpoint_state`. Derive it from that single authority (Forward: identity in coordinates; Reverse: the relation turn Q; branch normalization by `localFaceBranchRotation`). Do not re-implement it independently.
+4. **Periodic, non-A3:** keep the existing cut-gauge action (`:4182`).
+5. **HardRail:** route composed transport, verified by the same placement-state check. If CB7's static derivation shows HardRail transport is not in the placement gauge, stop for Review; TB6's HardRail cycles were green under the strict rule.
+6. **The strict RA-4 cycle rule is restored.** For a cycle-closing relation, `relationTransport == pathTransport`, else `QuotientHolonomyConflict`. For diagnosis only, the failure string carries the residual as an RA-12-style suffix, for example `QuotientHolonomyConflict:residual=Q<k>,t=(x,y)`.
+7. The legitimate case of non-identity holonomy (a cone singularity at a lattice node) is out of CP1 scope, because A5 fails closed on SingularityPort corners. Any non-identity residual is therefore a defect until Review proves otherwise.
+
+### E5. CB7-A6 amendments
+
+- **Goal A unchanged.** Add distinct A5 codes for the region and route mismatches, mapped to `InvalidHardRailTransport` at the adapter.
+- **Goal B replaced by RA-13.** Do not record-and-accept non-identity residuals.
+- **§4.2 revoked:** keep `M6CP1.CycleClosingRelationTransportConflictRejected` unchanged as focused 11. There is no "RecordsExactResidual" identity.
+- **§4.1 kept:** focused 10 is strengthened with a tamper-away-from-A5 branch.
+- **TB7 falsifiers:** selector 446 and focused 6 must PASS under the strict rule. Rows 232/444/448/449 stay green, rows 139/142 reject `InvalidHardRailTransport`, and row140 stays green. If 446 or focused 6 still conflict, TB7-REV classifies the residual from the RA-13.6 suffix; no fallback without a cone-holonomy proof.
+
+### Review-agent closeout
+
+| Duty | Answer |
+|---|---|
+| Accepted selector prefix re-hashed | selector449 `d4a0d1b7…d6414`, TB6 ledger order exact; routing449 `9c88a5ed…c5707` |
+| Decisive claims independently re-derived | result 946/946, RED set, failure strings; missing HardRail predicates; A5 periodic transport gauges (`:4117/:4165/:4182`); A4 gauge note (`.h:1438-1442`); `make_periodic_relation_endpoint_state` (`:7915`); A6 cycle composition (`:4661-4704`); fixture split (446/focused6 nonzero-Z4 witness vs 444/448/449 default torus) |
+| Non-vacuity checked | the gauge hypothesis predicts exactly the observed RED/GREEN split, including focused 6 failing at baseline |
+| Prior obligations discharged/carried | the R3 holonomy falsifier is **not** discharged by falsification: it fired on a gauge defect. A strict-rule re-test is carried to TB7. Finding A's recovery is carried to CB7 |
+| Stable accounting | **57 / 16 / 41**, debt 1; Finding B re-attributed RP-07 → RP-01 (totals unchanged) |
+| New candidates/obligations recorded | RA-13; CB7 Goal B rewritten; TB7 falsifiers; tracker entry |
+| ORIENTATION / ROADMAP / handoff / TODO / CHANGELOG | updated |
+| LESSONS | 184 added (compose transports in one gauge; test the defect hypothesis before relaxing a check that fires for the first time) |
+| Turn boundary held | runtime-free; documents only |
+| review_check.py | recorded in the commit message |
+| `STATUS` lifecycle maintained | resume `IN_PROGRESS` → docs → COMPLETE → `M6-CP1-CB7-A6` |

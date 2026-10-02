@@ -1,7 +1,17 @@
 # M6-CP1-CB7-A6 Relation Validation Recovery — Code + Build Plan
 
 **Owner:** `M6-CP1-CB7-A6`
-**Authorized by:** `M6-CP1-TB6-A6-REV`
+**Authorized by:** `M6-CP1-TB6-A6-REV`, **as amended by its review-agent addendum (2026-10-02)**
+
+> **Review-agent amendment. It overrides §3 and §4.2 below.**
+> - **§3 Goal B is replaced by RA-13** (end of `Architecture_M6_Frozen_Definitions.md`). The TB6 residual comes from **gauge mixing**: OrdinaryFront identity is in the cut-domain placement gauge, while exact-A3 Periodic `g` is in the PeriodicCut relation-endpoint gauge. It is not legitimate holonomy.
+>   - Publish every relation transport in the placement gauge (exact-A3 Periodic: `Γ_to⁻¹ ∘ g ∘ Γ_from`, derived from `make_periodic_relation_endpoint_state`) and verify it against the endpoint placement states in A5.
+>   - **Keep the strict cycle rule** (`relationTransport == pathTransport`, else `QuotientHolonomyConflict`). Append the residual as a diagnostic suffix (`:residual=Q<k>,t=(x,y)`).
+>   - Do **not** record-and-accept non-identity residuals.
+> - **§4.2 is revoked.** Keep `M6CP1.CycleClosingRelationTransportConflictRejected` unchanged as focused 11. Do not add or rename to a "RecordsExactResidual" identity. **§4.1 stands** (focused 10 strengthened with a tamper-away-from-A5 branch).
+> - **Goal A stands.** Use distinct A5 codes for the region and route mismatches, mapped to `InvalidHardRailTransport` at the adapter.
+> - **§7 TB7:** the same 11 + 449 = 460 order as TB6 (focused 11 unchanged). Recovery-green also requires selector 446 and focused 6 PASS **under the strict rule**.
+> - **Stop rules added:** if the exact-A3 Γ cannot be derived from `make_periodic_relation_endpoint_state` without new semantics, or if HardRail transport is not in the placement gauge, stop for Review.
 **Turn type:** Code + Build only
 **Runtime:** forbidden
 **Successor if compile/package green:** `M6-CP1-TB7-A6-EXEC` -> mandatory `M6-CP1-TB7-A6-REV`

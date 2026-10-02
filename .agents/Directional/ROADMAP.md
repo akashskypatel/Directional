@@ -615,7 +615,7 @@ Final CP4 Review completes the bounded conjunct8 sequence: row449 was accepted p
 | Checkpoint | Semantic domain |
 |---|---|
 | `M6-DEFN` | **COMPLETE / RUNTIME-FREE.** Four immutable products, exact occurrence/quotient identity, verifier recompute-vs-repair boundary, G4 ownership and dormant-test dispositions frozen in `Architecture_M6_Frozen_Definitions.md`. |
-| `M6-CP1` | **ACTIVE / A6 EXTRACTION COMPILE-GREEN / EXACT NEXT `M6-CP1-TB6-A6-EXEC`.** Reviewed runtime authority remains `10879581622 / 82b86a28...`, selector449 449/449, accounting 55/16/39, debt 1. Candidate `10896307843 / a532f803` is unpromoted and runtime-free. TB6-A6 executes 11+449=460, then mandatory Review; A7 and `G4-B002` representation await `M6-DEFN-R4`. |
+| `M6-CP1` | **Review-agent addendum (TB6-A6-REV):** the holonomy REDs are gauge mixing (RA-13), not legitimate residuals; the strict cycle rule is restored in CB7-A6.  **ACTIVE / A6 EXTRACTION COMPILE-GREEN / EXACT NEXT `M6-CP1-TB6-A6-EXEC`.** Reviewed runtime authority remains `10879581622 / 82b86a28...`, selector449 449/449, accounting 55/16/39, debt 1. Candidate `10896307843 / a532f803` is unpromoted and runtime-free. TB6-A6 executes 11+449=460, then mandatory Review; A7 and `G4-B002` representation await `M6-DEFN-R4`. |
 | `M6-CP2` | verifier consumes certificates and independently recomputes elementary incidence; **never repairs producer state** |
 | `M6-CP3` | M6 exit — equal coordinates without a relation remain distinct; every owned relation consumed exactly once; source-row / output-row / scheduler permutation invariance |
 

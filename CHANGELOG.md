@@ -1,3 +1,8 @@
+## 2026-10-02 — M6 test review corrected: the "holonomy" failures are a units mix-up, not a geometry exception
+
+- The last review read two torus test failures as a legitimate geometric twist and loosened the check. Re-examination shows the code compared two transforms expressed in different coordinate conventions. It fails only on the one torus variant where those conventions differ.
+- The check stays strict. The next code turn puts every transform in the same convention and also restores a dropped hard-rail validation.
+
 ## 2026-09-25 — M6 A6 design review accepts the quotient stage with four implementation safeguards
 
 - The quotient-stage design is accepted, with semantic relation direction anchored to canonical occurrence IDs rather than reciprocal edge storage order.
