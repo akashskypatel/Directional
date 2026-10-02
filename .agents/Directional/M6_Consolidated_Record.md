@@ -1,6 +1,6 @@
 # M6 consolidated record
 
-**Current authority after `M6-CP1-TB6-A6-REV` (2026-09-29):** candidate `10896307843 / a532f803...` is rejected/unpromoted after authoritative TB6-A6 run `36362570974` returns **456/460 PASS**. Reviewed runtime remains `10879581622 / 82b86a28...`, selector449 449/449. Stable accounting is **57 / 16 / 41**, debt 1. Exact next is bounded `M6-CP1-CB7-A6`; R4/A7/`G4-B002` remain held. Frozen definitions now record exact cycle residual `H=compose(P.inverse(),D)` rather than universally rejecting nonidentity residual holonomy, and retain accepted HardRail reciprocal region/reversed-route validation at A5 publication.
+**Current authority after `M6-CP1-CB7-A6` (2026-10-02):** compile-only candidate `11257522199 / 40842caa88f8d7a08a38c91273ace77ebd7c0676` is compile/package green and unpromoted. CB7 restores HardRail reciprocal region/reversed-route/placement validation, implements RA-13 placement-gauge Periodic transport, keeps strict cycle equality with residual diagnostics only, and revalidates A6 certificates against immutable A5 authority. Reviewed runtime remains `10879581622 / 82b86a28...`, selector449 449/449. Stable accounting is **57 / 16 / 41**, debt 1. Exact next is immutable `M6-CP1-TB7-A6-EXEC` (11+449=460) then mandatory Review; R4/A7/`G4-B002` remain held.
 
 ## 0. `M6-DEFN-R3-REV` — R3 accepted with four binding A6 precision amendments
 
@@ -16,10 +16,10 @@ Closeout authority: source snapshot run/artifact `36199074014 / 10890838063` ver
 
 # M6 Consolidated Record
 
-**Status:** M6 ACTIVE / `M6-DEFN-R3-REV` accepted R3 with RA-1 – RA-4; CP1 remains OPEN on A6/A7 extraction, thin adapter and `G4-B002` / `M6-CP1-CB6-A6` AUTHORIZED / exact next `M6-CP1-CB6-A6` / stable 55/16/39, debt 1
-**Last updated:** 2026-09-25
+**Status:** M6 ACTIVE / `M6-CP1-CB7-A6` COMPLETE, compile/package green and runtime-free / candidate `11257522199 / 40842caa...` unpromoted / exact next `M6-CP1-TB7-A6-EXEC` -> mandatory Review / stable 57/16/41, debt 1
+**Last updated:** 2026-10-02
 
-Normative M6 semantics live in `Architecture_M6_Frozen_Definitions.md`. Entering accepted authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449 PASS**, SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. TB1's accepted-prefix event remains independently classified as singleton `CROSS_TEMPORARY_ITERATOR_RANGE`; TB2 row140 `VALIDATION_ORDER_SHADOWING` is recovery-proved closed but remains historical; TB3 Review adds one accepted-prefix event as an existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence. TB4 Review adds one accepted-prefix event as another existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence. Stable accounting is **55 / 16 / 39** and produced-witness debt is **1**, M6-owned.
+Normative M6 semantics live in `Architecture_M6_Frozen_Definitions.md`. Entering accepted authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 **449/449 PASS**, SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. TB1's accepted-prefix event remains independently classified as singleton `CROSS_TEMPORARY_ITERATOR_RANGE`; TB2 row140 `VALIDATION_ORDER_SHADOWING` is recovery-proved closed but remains historical; TB3 Review adds one accepted-prefix event as an existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence. TB4 Review adds one accepted-prefix event as another existing `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence. Stable accounting is **57 / 16 / 41** and produced-witness debt is **1**, M6-owned.
 
 ## 1. `M6-DEFN` — four products and verifier boundary frozen
 
@@ -163,6 +163,16 @@ Independent Review re-hashes selector449/448 and routing449, re-opens accepted T
 Selector139/142 share one stable recurrence of existing `VALIDATION_ORDER_SHADOWING`: accepted pre-A6 materialization required different source topology regions plus exact reversed HardRail routes, while CB6-A6 A5 relation publication kept only the common `HardRailId` owner check before freezing relation evidence. The guard must be restored at A5 publication; A6 must validate certificates against immutable A5 authority rather than duplicate relation semantics.
 
 Stable accounting advances **55/16/39 -> 57/16/41**, debt remains 1. Candidate `10896307843 / a532f803...` is rejected/unpromoted; reviewed runtime stays `10879581622 / 82b86a28...`, selector449 449/449. Exact next is `M6-CP1-CB7-A6`, limited to those two relation-validation corrections plus the existing focused-test assertions required to falsify them. Compile-green -> fresh `M6-CP1-TB7-A6-EXEC` **11+449=460** -> mandatory Review. R4/A7/G4 remain held. Full authority is `Architecture_M6_CP1_TB6_A6_Review_Record.md` and the TB6-A6-REV amendment in `Architecture_M6_Frozen_Definitions.md`.
+
+**2026-10-02 review-agent correction to Finding B:** the residual-holonomy interpretation above is historical and superseded. The conflicting torus rows mixed cut-domain placement gauge with exact-A3 Periodic relation-endpoint gauge. RA-13 requires placement-gauge transport `Γ_to⁻¹ ∘ g ∘ Γ_from`, restores strict cycle equality, and permits the residual only as a diagnostic suffix on `QuotientHolonomyConflict`. The re-attribution changes no stable totals.
+
+## 26. `M6-CP1-CB7-A6` — relation validation recovered and compile/package green
+
+CB7-A6 restores the two TB6 Review obligations without widening the product boundary. A5 HardRail publication now requires the accepted owner, different-region, reversed-route, and route-composed placement-transport predicates. Exact-A3 Periodic authority is converted from relation-endpoint gauge to placement gauge using the published endpoint state, and both endpoints must be acted on exactly. A6 retains strict direct-versus-selected-path equality; a conflict now reports the exact residual but still rejects. Before quotient-product acceptance, A6 relation certificates are rechecked against immutable A5 canonical transport, equivalence evidence, and selected-step authority. Focused identity 10 gains a tamper-away-from-A5 branch; focused identity 11 is unchanged.
+
+Exact semantic source `40842caa88f8d7a08a38c91273ace77ebd7c0676` compiled all eight standard GMP/GMPXX targets in run/job `37078118843 / 111072482082`. Result artifact `11257522199` (`sha256:bbb18e89f41b959aa82e285c20b543ac9fea9f65fad6a07b0e6cfb1d989f10fd`) and log artifact `11257522202` (`sha256:a25f02b42ed950336eda2924c3345c10facf451260395af471838b087a37bef6`) are runtime-free, root manifest **28/28**, preflight/build `0/0`, with empty source-status receipts and source archive SHA-256 `2c8981c6da6e9e72b4977f2879a687e2ba1c6c042591bd82720936f69888d27f`. Selector449/routing449 remain byte-identical at `d4a0d1b7...d6414` / `9c88a5ed...c5707`, owners 32/301/75/41.
+
+Candidate `11257522199 / 40842caa...` remains unpromoted. Reviewed runtime remains `10879581622 / 82b86a28...`; stable accounting stays **57/16/41**, debt 1. Exact next is `M6-CP1-TB7-A6-EXEC`, exact **11+449=460** fresh artifact-only processes using the packaged-fixture execution view, then mandatory `M6-CP1-TB7-A6-REV`. R4/A7/G4 remain held.
 
 ## Folded document index
 

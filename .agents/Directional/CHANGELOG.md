@@ -1,3 +1,13 @@
+## 2026-10-02 — `M6-CP1-CB7-A6` COMPLETE: placement-gauge relation validation restored; compile/package green
+
+- Restored A5 HardRail fail-closed authority: same accepted owner, different source-topology regions, exact reversed routes, and exact route-composed placement action, with typed internal failures mapped to legacy `InvalidHardRailTransport`.
+- Implemented RA-13 for exact-A3 Periodic relations as placement-gauge transport `Γ_to⁻¹ ∘ g ∘ Γ_from`; published relation-endpoint state is verified against both endpoint placement states. Strict cycle equality remains authoritative; `QuotientHolonomyConflict` now carries the exact residual only as a diagnostic.
+- Added A6 certificate-to-A5 authority revalidation before quotient-product acceptance. Strengthened focused identity 10 with a tamper-away-from-A5 branch; focused identity 11 is unchanged. Selector449/routing449 and all fixtures/benchmarks remain byte-frozen.
+- Code patch `64bae4be00d40d461f540aa99dbef73f6d61670820660add39050c668fe29e70` applied in run/job `37077973335 / 111072026039`, producing semantic source `40842caa88f8d7a08a38c91273ace77ebd7c0676`; owner-side Drive deletion of the staged patch succeeded.
+- Compile run/job `37078118843 / 111072482082` is green. Result/log artifacts `11257522199 / 11257522202` have digests `bbb18e89...9f10fd / a25f02b4...7bef6`; root manifest 28/28, eight GMP/GMPXX targets, clean source receipts, source archive `2c8981c6...88d27f`, and `runtimeExecution=false`. No Directional runtime executed.
+- Candidate remains unpromoted; reviewed runtime remains `10879581622 / 82b86a28...`, selector449 449/449. Stable accounting remains **57/16/41**, debt 1. Exact next is `M6-CP1-TB7-A6-EXEC` (11+449=460) then mandatory Review; R4/A7/G4 remain held.
+- Process-only observation (+0): the resumed web session fetched repository/policy context before explicitly declaring snapshot read mode. The sequence was corrected before semantic source inspection/edit, and no implementation/build/runtime evidence depends on those preliminary reads.
+
 ## 2026-10-02 — `M6-CP1-TB6-A6-REV` review-agent addendum: Finding B corrected (gauge mixing), RA-13, strict cycle rule restored
 
 - Re-verified TB6 result `10947080007` (946/946; RED focused 6 and selectors 139/142/446; zero OICA; two `QuotientHolonomyConflict`).

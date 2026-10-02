@@ -1,16 +1,20 @@
-## Live M6 routing — after `M6-CP1-TB6-A6-REV`
+## Live M6 routing — after `M6-CP1-CB7-A6` compile/package closeout
 
 | Checkpoint | State | Exact next / gate |
 |---|---|---|
 | M6 CP1 accepted runtime | Retained | `10879581622 / 82b86a28...`, selector449 449/449 |
 | M6 CP1 A6 extraction candidate | **REJECTED / UNPROMOTED** | `10896307843 / a532f803`, TB6-A6 456/460 |
-| M6 CP1 A6 relation recovery | **EXACT NEXT** | `M6-CP1-CB7-A6` |
-| M6 CP1 recovery runtime | Held until compile-green | `M6-CP1-TB7-A6-EXEC`, 11+449=460, then mandatory Review |
+| M6 CP1 A6 relation recovery | **COMPILE+PACKAGE GREEN / UNPROMOTED** | `11257522199 / 40842caa...` |
+| M6 CP1 recovery runtime | **EXACT NEXT** | `M6-CP1-TB7-A6-EXEC`, 11+449=460, then mandatory Review |
 | M6 R4 / A7 / `G4-B002` boundary | **HELD** | must not begin before TB7-A6 Review |
 
 Stable accounting: **57 / 16 / 41**, debt 1.
 
-TB6-A6 Review independently reconciles authoritative run `36362570974` at **456/460 PASS** and proves two accepted-prefix regressions: selector446 is an existing `RP-07 / CYCLIC_TOPOLOGY_LINEARIZATION` recurrence that triggers R3's residual-holonomy fallback; selector139+142 share an existing `VALIDATION_ORDER_SHADOWING` recurrence from omitted A5 HardRail reciprocal route/region validation. CB7-A6 is bounded to those two surfaces and may not advance A7/R4/G4.
+TB6-A6 Review independently reconciled authoritative run `36362570974` at **456/460 PASS**. Its 2026-10-02 addendum corrected selector446/focused6 from residual holonomy to RA-13 gauge mixing and kept selectors139/142 as the separate HardRail fail-open loss. CB7-A6 now implements both reviewed corrections; candidate `11257522199 / 40842caa...` is compile/package green and unpromoted. Runtime recovery is exact-next TB7-A6; A7/R4/G4 remain held.
+
+## M6 CP1 — `M6-CP1-CB7-A6` complete; exact next `M6-CP1-TB7-A6-EXEC` (2026-10-02)
+
+CB7-A6 restores A5 HardRail reciprocity and RA-13 placement-gauge relation transport, preserves strict A6 cycle equality with exact residual diagnostics, and revalidates A6 relation certificates against immutable A5 authority. Exact semantic source `40842caa...` compiles/packages green as candidate artifact `11257522199` in run/job `37078118843 / 111072482082`; root manifest 28/28, eight GMP/GMPXX targets, clean receipts, `runtimeExecution=false`. Selector449/routing449 remain frozen. Candidate is unpromoted; reviewed runtime remains `10879581622 / 82b86a28...`; stable accounting remains 57/16/41, debt 1. Exact next is artifact-only TB7-A6 **11+449=460** then mandatory Review. R4/A7/G4 remain held.
 
 ## M6 CP1 — `M6-CP1-CB6-A6` complete; exact next `M6-CP1-TB6-A6-EXEC` (2026-09-27)
 
@@ -76,7 +80,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-25 (`M6-CP1-CB5` COMPLETE / compile-green unpromoted candidate `10879581622` / stable accounting 55/16/39, debt 1 / exact next `M6-CP1-TB5-EXEC` 456 → mandatory Review.)**
+**Status date:** 2026-10-02 (`M6-CP1-CB7-A6` COMPLETE / compile-green unpromoted candidate `11257522199 / 40842caa...` / stable accounting 57/16/41, debt 1 / exact next `M6-CP1-TB7-A6-EXEC` 460 → mandatory Review.)**
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 
@@ -615,7 +619,7 @@ Final CP4 Review completes the bounded conjunct8 sequence: row449 was accepted p
 | Checkpoint | Semantic domain |
 |---|---|
 | `M6-DEFN` | **COMPLETE / RUNTIME-FREE.** Four immutable products, exact occurrence/quotient identity, verifier recompute-vs-repair boundary, G4 ownership and dormant-test dispositions frozen in `Architecture_M6_Frozen_Definitions.md`. |
-| `M6-CP1` | **Review-agent addendum (TB6-A6-REV):** the holonomy REDs are gauge mixing (RA-13), not legitimate residuals; the strict cycle rule is restored in CB7-A6.  **ACTIVE / A6 EXTRACTION COMPILE-GREEN / EXACT NEXT `M6-CP1-TB6-A6-EXEC`.** Reviewed runtime authority remains `10879581622 / 82b86a28...`, selector449 449/449, accounting 55/16/39, debt 1. Candidate `10896307843 / a532f803` is unpromoted and runtime-free. TB6-A6 executes 11+449=460, then mandatory Review; A7 and `G4-B002` representation await `M6-DEFN-R4`. |
+| `M6-CP1` | **CB7-A6 COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE.** RA-13 placement-gauge transport and HardRail fail-closed authority are implemented at `40842caa...`; candidate artifact `11257522199` is unpromoted. Reviewed runtime remains `10879581622 / 82b86a28...`, selector449 449/449, accounting 57/16/41, debt 1. **EXACT NEXT:** `M6-CP1-TB7-A6-EXEC` 11+449=460 -> mandatory Review. A7 and `G4-B002` remain held behind Review and `M6-DEFN-R4`. |
 | `M6-CP2` | verifier consumes certificates and independently recomputes elementary incidence; **never repairs producer state** |
 | `M6-CP3` | M6 exit — equal coordinates without a relation remain distinct; every owned relation consumed exactly once; source-row / output-row / scheduler permutation invariance |
 

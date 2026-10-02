@@ -1,18 +1,24 @@
-## Resume-critical update — `M6-CP1-TB6-A6-REV` review-agent addendum: Finding B corrected (RA-13); exact next `M6-CP1-CB7-A6` as amended (2026-10-02)
+## Resume-critical update — `M6-CP1-CB7-A6` COMPLETE / compile+package green; exact next `M6-CP1-TB7-A6-EXEC` (2026-10-02)
 
-**Start `M6-CP1-CB7-A6` as a new runtime-free Code + Build turn,** with a new `Started at`, `Successor: UNKNOWN` and empty `Resumed at` / `Ended at`. Follow `Architecture_M6_CP1_CB7_A6_Relation_Validation_Recovery_Code_Build_Plan.md` **with its review-agent amendment block, which overrides §3 and §4.2**.
+**Start `M6-CP1-TB7-A6-EXEC` as a new artifact-only Test + Benchmark turn,** with a new `Started at`, `Successor: UNKNOWN`, and empty `Resumed at` / `Ended at`. Consume candidate `11257522199 / 40842caa88f8d7a08a38c91273ace77ebd7c0676` immutably and follow `Architecture_M6_CP1_TB7_A6_Artifact_Only_Test_Benchmark_Plan.md`. Do not resume CB7-A6 and do not begin R4/A7/`G4-B002`.
 
-The review agent re-verified TB6 (result `10947080007`, 946/946; RED focused 6 and selectors 139/142/446). It upheld the candidate rejection, Finding A and the totals **57 / 16 / 41** with debt 1.
+CB7-A6 implemented the bounded relation-validation recovery required by the TB6 Review addendum:
+- **HardRail A5 authority restored.** Accepted HardRail relations again require one owner, different source-topology regions, exact reversed routes, and route-composed placement transport. Distinct typed A5 failures map through the legacy adapter to `InvalidHardRailTransport`.
+- **RA-13 placement gauge restored.** Exact-A3 Periodic relation-endpoint transport is converted into placement gauge as `T = Γ_to⁻¹ ∘ g ∘ Γ_from`, with `Γ` obtained from the published relation-endpoint state and both endpoint placement states checked exactly. Periodic and HardRail relations now fail closed when their canonical transport does not act correctly on published placement authority.
+- **Strict cycle equality retained.** `QuotientHolonomyConflict` remains a rejection. Its diagnostic now records the exact residual `compose(pathTransport.inverse(), directTransport)`; no residual-holonomy fallback was implemented. Focused identity 11 remains unchanged.
+- **A6 cannot self-certify stale relation evidence.** Before quotient-product acceptance, every A6 relation certificate is rechecked against the immutable A5 owned relation for canonical transport, equivalence evidence, and selected-step authority. Focused identity 10 now includes a tamper-away-from-A5 branch that must reject as `RelationCertificateConflict`.
 
-**Finding B is corrected.** The `QuotientHolonomyConflict` on selector 446 and focused 6 is **gauge mixing**, not legitimate holonomy:
-- OrdinaryFront identity is in the cut-domain placement gauge.
-- Exact-A3 Periodic `g` is in the PeriodicCut relation-endpoint gauge (`make_periodic_relation_endpoint_state` rotates the Reverse side by Q).
-- Both conflicting rows use the nonzero-Z4 witness, and the Q=0 torus rows are green.
-- Vertex-class cycles are contractible vertex links.
+**Compile/package authority:**
+- semantic source `40842caa88f8d7a08a38c91273ace77ebd7c0676`; compile run/job `37078118843 / 111072482082`;
+- result artifact `11257522199`, digest `sha256:bbb18e89f41b959aa82e285c20b543ac9fea9f65fad6a07b0e6cfb1d989f10fd`; log artifact `11257522202`, digest `sha256:a25f02b42ed950336eda2924c3345c10facf451260395af471838b087a37bef6`;
+- source archive SHA-256 `2c8981c6da6e9e72b4977f2879a687e2ba1c6c042591bd82720936f69888d27f`; root package manifest **28/28**, preflight/build `0/0`, all source-status receipts empty, eight standard targets linked with GMP/GMPXX, and `runtimeExecution=false`;
+- selector449 remains `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`; routing449 remains `9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707` with owner census `32 / 301 / 75 / 41`.
 
-The TB6-A6-REV residual-holonomy fallback is **revoked**. **RA-13** requires every relation transport in the placement gauge (exact-A3 Periodic `T = Γ_to⁻¹ ∘ g ∘ Γ_from`, verified by A5 against the endpoint placement states) and **restores the strict cycle rule**, with a diagnostic residual suffix. Keep focused 11 `CycleClosingRelationTransportConflictRejected` unchanged; there is no "RecordsExactResidual" test. Finding A (restore HardRail region/route reciprocity at A5, `InvalidHardRailTransport`) is unchanged.
+The compile candidate is **unpromoted**. Reviewed runtime authority remains `10879581622 / 82b86a28...`, selector449 **449/449**. Stable accounting remains **57 / 16 / 41**, debt 1.
 
-The re-attribution of Finding B to RP-01 leaves the totals unchanged.
+**Exact successor gate:** `M6-CP1-TB7-A6-EXEC` executes exactly **11 focused + selector449 = 460** fresh exact-filter processes, benchmark 0, using a separate execution view with packaged-source fixtures. Recovery green requires 460/460, exact-one selection, zero skips, rows 139/142 correctly rejecting `InvalidHardRailTransport`, row140 PASS, rows232/444/446/448/449 PASS, focused6 PASS under the strict cycle rule, strengthened focused10 PASS, unchanged focused11 PASS, zero accepted-produced-row `QuotientHolonomyConflict`, zero `OccurrenceInvalidCornerAuthority`, and exact immutable postflight. Mandatory `M6-CP1-TB7-A6-REV` follows before any promotion or R4/A7/G4 work.
+
+Load before execution: `Architecture_M6_CP1_TB7_A6_Artifact_Only_Test_Benchmark_Plan.md`, `Architecture_M6_CP1_CB7_A6_Code_Build_Report.md`, `Architecture_M6_Frozen_Definitions.md` (RA-13), `Architecture_M6_CP1_TB6_A6_Review_Record.md`, `TEST_BENCHMARK.md`, `GitHub_Workflow_Policy.md`, and `TOOL_USE_CONSERVATION_POLICY.md`.
 
 ### Superseded by the 2026-10-02 review-agent addendum — `M6-CP1-TB6-A6-REV` COMPLETE / candidate rejected; exact next `M6-CP1-CB7-A6` (2026-09-29 UTC)
 

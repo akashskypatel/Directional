@@ -1,11 +1,24 @@
+## Current — `M6-CP1-CB7-A6` COMPLETE / exact next `M6-CP1-TB7-A6-EXEC` (2026-10-02)
+
+- [x] Restore A5 HardRail owner/region/reversed-route/placement-transport validation with typed failures and legacy `InvalidHardRailTransport` mapping.
+- [x] Implement RA-13 exact-A3 Periodic placement-gauge transport `Γ_to⁻¹ ∘ g ∘ Γ_from`, verify published endpoint placement authority, and retain strict cycle equality with diagnostic residual only.
+- [x] Revalidate every A6 relation certificate against immutable A5 authority before product acceptance; strengthen focused identity 10 while keeping focused identity 11 unchanged.
+- [x] Preserve selector449/routing449 exactly (`d4a0d1b7...d6414` / `9c88a5ed...c5707`, owners 32/301/75/41); no fixture or benchmark edits.
+- [x] Compile/package exact semantic source `40842caa88f8d7a08a38c91273ace77ebd7c0676`: run/job `37078118843 / 111072482082`, result/log `11257522199 / 11257522202`, root manifest 28/28, eight GMP/GMPXX targets, clean receipts, `runtimeExecution=false`.
+- [ ] **Exact next `M6-CP1-TB7-A6-EXEC`:** consume `11257522199` immutably and execute exact **11+449=460** fresh processes with the packaged-fixture execution view.
+- [ ] `M6-CP1-TB7-A6-REV` — mandatory Review before promotion or any R4/A7/G4 work.
+- [ ] Keep `M6-DEFN-R4`, A7, `G4-B002`, `G4-B004` representative half and direct-torus debt held until TB7 Review.
+
+Accounting remains **57 / 16 / 41**, debt 1. Candidate `11257522199 / 40842caa...` is compile-only and unpromoted; reviewed runtime authority remains `10879581622 / 82b86a28...`, selector449 449/449.
+
 ## Review-agent addendum — `M6-CP1-TB6-A6-REV` (2026-10-02)
 
 - [x] TB6 re-verified; Finding A upheld (fail-open guard loss); 57/16/41 with debt 1 upheld.
 - [x] Finding B corrected: gauge mixing, not legitimate holonomy. Residual fallback revoked; RA-13 frozen; CB7 plan amended (§3 replaced, §4.2 revoked).
-- [ ] `M6-CP1-CB7-A6`: Goal A (A5 HardRail region/route reciprocity) + RA-13 (placement-gauge transports, A5 verification, strict cycle rule with diagnostic suffix). Compile only.
+- [x] `M6-CP1-CB7-A6`: Goal A + RA-13 implemented and compile/package green at `11257522199 / 40842caa...`; runtime remains held for TB7.
 - [ ] `M6-CP1-TB7-A6-EXEC` (460, same order; 446 and focused 6 must pass strict) → `M6-CP1-TB7-A6-REV`.
 
-## Current — `M6-CP1-TB6-A6-REV` COMPLETE / exact next `M6-CP1-CB7-A6` (2026-09-29)
+## Historical initial `M6-CP1-TB6-A6-REV` conclusion — superseded by the 2026-10-02 review-agent addendum
 
 - [x] Reconcile both TB6-A6 Actions runs; authoritative run `36362570974` is mechanically valid at **456/460 PASS**.
 - [x] Reject/unpromote candidate `10896307843 / a532f803...`; retain reviewed runtime `10879581622 / 82b86a28...`, selector449 449/449.
