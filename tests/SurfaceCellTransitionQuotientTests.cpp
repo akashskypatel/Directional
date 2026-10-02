@@ -2527,6 +2527,22 @@ TEST(M6CP1, QuotientRejectsMissingDuplicateOrConflictingConsumption) {
   EXPECT_EQ(conflictError->code,
             directional::pipeline::SurfaceQuotientProductErrorCode::
                 RelationConsumptionConflict);
+
+  auto certificateConflictRecords = quotient->validation_records();
+  ASSERT_FALSE(certificateConflictRecords.relationCertificates.empty());
+  certificateConflictRecords.relationCertificates.front().evidence.kind =
+      directional::geometry::PureQuadEquivalenceKind::HardRail;
+  auto certificateConflict =
+      directional::pipeline::SurfaceQuotientProducer::
+          publish_records_for_validation(*occurrences,
+                                         std::move(certificateConflictRecords));
+  const auto *certificateConflictError =
+      std::get_if<directional::pipeline::SurfaceQuotientProductError>(
+          &certificateConflict);
+  ASSERT_NE(certificateConflictError, nullptr);
+  EXPECT_EQ(certificateConflictError->code,
+            directional::pipeline::SurfaceQuotientProductErrorCode::
+                RelationCertificateConflict);
 }
 
 TEST(M6CP1, CycleClosingRelationTransportConflictRejected) {

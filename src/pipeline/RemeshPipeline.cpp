@@ -3084,6 +3084,14 @@ const char *surface_occurrence_complex_error_name(
     return "OccurrenceDuplicateIsolationEvidence";
   case SurfaceOccurrenceComplexErrorCode::MismatchedIsolationEvidence:
     return "OccurrenceMismatchedIsolationEvidence";
+  case SurfaceOccurrenceComplexErrorCode::HardRailRegionMismatch:
+    return "OccurrenceHardRailRegionMismatch";
+  case SurfaceOccurrenceComplexErrorCode::HardRailRouteMismatch:
+    return "OccurrenceHardRailRouteMismatch";
+  case SurfaceOccurrenceComplexErrorCode::HardRailTransportMismatch:
+    return "OccurrenceHardRailTransportMismatch";
+  case SurfaceOccurrenceComplexErrorCode::PeriodicTransportMismatch:
+    return "OccurrencePeriodicTransportMismatch";
   }
   return "OccurrenceUnknownFailure";
 }
@@ -3094,7 +3102,12 @@ static const char *surface_occurrence_complex_legacy_failure_name(
   case SurfaceOccurrenceComplexErrorCode::HardRailOwnerMissing:
     return "MissingHardRailRelationOwner";
   case SurfaceOccurrenceComplexErrorCode::HardRailOwnerMismatch:
+  case SurfaceOccurrenceComplexErrorCode::HardRailRegionMismatch:
+  case SurfaceOccurrenceComplexErrorCode::HardRailRouteMismatch:
+  case SurfaceOccurrenceComplexErrorCode::HardRailTransportMismatch:
     return "InvalidHardRailTransport";
+  case SurfaceOccurrenceComplexErrorCode::PeriodicTransportMismatch:
+    return "InvalidPeriodicFrontTransport";
   case SurfaceOccurrenceComplexErrorCode::PeriodicOwnerMismatch:
     return "InvalidPeriodicRelationOwner";
   case SurfaceOccurrenceComplexErrorCode::RelationKindMismatch:
@@ -4018,6 +4031,79 @@ SurfaceOccurrenceComplexProducer::produce(
                authority::QuarterTurn::from_integer(second.branchRotation) &&
            first.scaleLevel == second.scaleLevel;
   };
+  const auto periodic_endpoint_gauge = [&](
+      const geometry::LocalLatticeState &placement,
+      const geometry::SurfaceSharedBoundaryInterval &interval,
+      const authority::QuarterTurn relationRotation,
+      const geometry::SurfacePeriodicRelationEndpointState &published)
+      -> std::optional<authority::GridAutomorphism> {
+    const auto relationState = geometry::make_periodic_relation_endpoint_state(
+        placement, interval, relationRotation, published.branchAuthority);
+    if (!relationState.has_value() || relationState.value() != published) {
+      return std::nullopt;
+    }
+    const authority::QuarterTurn placementBranch =
+        authority::QuarterTurn::from_integer(placement.branchRotation);
+    const authority::QuarterTurn gaugeRotation =
+        compose(relationState->branchRotation, placementBranch.inverse());
+    const authority::GridAutomorphism gauge{
+        gaugeRotation,
+        relationState->latticeCoordinate -
+            authority::rotate(gaugeRotation, placement.latticeCoordinate)};
+    if (gauge.apply(placement.latticeCoordinate) !=
+            relationState->latticeCoordinate ||
+        compose(gauge.rotation, placementBranch) !=
+            relationState->branchRotation ||
+        placement.scaleLevel != relationState->scaleLevel) {
+      return std::nullopt;
+    }
+    return gauge;
+  };
+  const auto periodic_placement_transport = [&](
+      const geometry::SurfaceFrontEdge &forward,
+      const geometry::SurfaceFrontEdge &reverse,
+      const authority::GridAutomorphism &semanticAction)
+      -> std::optional<authority::GridAutomorphism> {
+    if (!forward.sharedBoundaryInterval.has_value() ||
+        !reverse.sharedBoundaryInterval.has_value() ||
+        !forward.periodicFromLattice.has_value() ||
+        !forward.periodicToLattice.has_value() ||
+        !reverse.periodicFromLattice.has_value() ||
+        !reverse.periodicToLattice.has_value()) {
+      return std::nullopt;
+    }
+    const auto forwardFromGauge = periodic_endpoint_gauge(
+        forward.fromLattice, *forward.sharedBoundaryInterval,
+        semanticAction.rotation, *forward.periodicFromLattice);
+    const auto forwardToGauge = periodic_endpoint_gauge(
+        forward.toLattice, *forward.sharedBoundaryInterval,
+        semanticAction.rotation, *forward.periodicToLattice);
+    const auto reverseFromGauge = periodic_endpoint_gauge(
+        reverse.fromLattice, *reverse.sharedBoundaryInterval,
+        semanticAction.rotation, *reverse.periodicFromLattice);
+    const auto reverseToGauge = periodic_endpoint_gauge(
+        reverse.toLattice, *reverse.sharedBoundaryInterval,
+        semanticAction.rotation, *reverse.periodicToLattice);
+    if (!forwardFromGauge.has_value() || !forwardToGauge.has_value() ||
+        !reverseFromGauge.has_value() || !reverseToGauge.has_value()) {
+      return std::nullopt;
+    }
+
+    const authority::GridAutomorphism fromTransport = compose(
+        reverseToGauge->inverse(),
+        compose(semanticAction, *forwardFromGauge));
+    const authority::GridAutomorphism toTransport = compose(
+        reverseFromGauge->inverse(),
+        compose(semanticAction, *forwardToGauge));
+    if (fromTransport != toTransport ||
+        !action_matches(forward.fromLattice, reverse.toLattice,
+                        fromTransport) ||
+        !action_matches(forward.toLattice, reverse.fromLattice,
+                        fromTransport)) {
+      return std::nullopt;
+    }
+    return fromTransport;
+  };
 
   std::vector<SurfaceOccurrenceRelation> relations;
   relations.reserve(phaseFront.edges().size());
@@ -4066,6 +4152,14 @@ SurfaceOccurrenceComplexProducer::produce(
       }
       if (first.railId != second.railId) {
         error.code = SurfaceOccurrenceComplexErrorCode::HardRailOwnerMismatch;
+        return error;
+      }
+      if (first.sourceTopologyRegion == second.sourceTopologyRegion) {
+        error.code = SurfaceOccurrenceComplexErrorCode::HardRailRegionMismatch;
+        return error;
+      }
+      if (first.route != second.route.reversed()) {
+        error.code = SurfaceOccurrenceComplexErrorCode::HardRailRouteMismatch;
         return error;
       }
       hardRail = first.railId;
@@ -4121,6 +4215,14 @@ SurfaceOccurrenceComplexProducer::produce(
       sharedEquivalence.route = first.route;
       sharedEquivalence.action = first.route.composed_transport();
       storageTransport = sharedEquivalence.action;
+      if (!action_matches(first.fromLattice, second.toLattice,
+                          *storageTransport) ||
+          !action_matches(first.toLattice, second.fromLattice,
+                          *storageTransport)) {
+        error.code =
+            SurfaceOccurrenceComplexErrorCode::HardRailTransportMismatch;
+        return error;
+      }
       selectedKind = geometry::SelectedRelationKind::HardRail;
     } else if (relationKind == SurfaceOccurrenceRelationKind::Periodic) {
       sharedEquivalence.kind = geometry::PureQuadEquivalenceKind::PeriodicHolonomy;
@@ -4161,8 +4263,13 @@ SurfaceOccurrenceComplexProducer::produce(
                 geometry::resolve_periodic_relation_semantic_action(
                     storedRelation, *forwardEdge, *reverseEdge);
             if (semanticAction.has_value()) {
-              storageTransport =
-                  firstIsForward ? *semanticAction : semanticAction->inverse();
+              const auto placementTransport = periodic_placement_transport(
+                  *forwardEdge, *reverseEdge, *semanticAction);
+              if (placementTransport.has_value()) {
+                storageTransport = firstIsForward
+                                       ? *placementTransport
+                                       : placementTransport->inverse();
+              }
             }
           }
         } else {
@@ -4182,6 +4289,14 @@ SurfaceOccurrenceComplexProducer::produce(
             storageTransport = forward ? storedRelation.action() : inverseAction;
           }
         }
+      }
+      if (!storageTransport.has_value() ||
+          !action_matches(first.fromLattice, second.toLattice,
+                          *storageTransport) ||
+          !action_matches(first.toLattice, second.fromLattice,
+                          *storageTransport)) {
+        error.code = SurfaceOccurrenceComplexErrorCode::PeriodicTransportMismatch;
+        return error;
       }
     }
 
@@ -4700,6 +4815,8 @@ SurfaceQuotientProducer::ConstructionResult SurfaceQuotientProducer::produce(
         SurfaceQuotientProductError error;
         error.code = SurfaceQuotientProductErrorCode::HolonomyConflict;
         error.relation = relation->id;
+        error.residual = compose(pathTransport.inverse(),
+                                 certificate.relationTransport);
         return error;
       }
     }
@@ -4859,8 +4976,11 @@ SurfaceQuotientProducer::publish_records_for_validation(
     }
   }
   std::set<SurfaceOccurrenceRelationId> ownedIds;
+  std::map<SurfaceOccurrenceRelationId, const SurfaceOccurrenceRelation *>
+      ownedById;
   for (const SurfaceOccurrenceRelation &relation : ownedRelations) {
     ownedIds.insert(relation.id);
+    ownedById.emplace(relation.id, &relation);
   }
 
   std::map<SurfaceOccurrenceRelationId, const QuotientRelationCertificate *>
@@ -5032,9 +5152,47 @@ SurfaceQuotientProducer::publish_records_for_validation(
       if (pathTransport != certificateById.at(relation)->relationTransport) {
         error.code = SurfaceQuotientProductErrorCode::HolonomyConflict;
         error.relation = relation;
+        error.residual = compose(
+            pathTransport.inverse(),
+            certificateById.at(relation)->relationTransport);
         return error;
       }
     }
+  }
+
+  for (const QuotientRelationCertificate &certificate :
+       records.relationCertificates) {
+    const auto owner = ownedById.find(certificate.relation);
+    if (owner == ownedById.end()) {
+      error.code = SurfaceQuotientProductErrorCode::UnownedRelationUse;
+      error.relation = certificate.relation;
+      return error;
+    }
+    const SurfaceOccurrenceRelationEvidence &authorityEvidence =
+        owner->second->evidence;
+    const bool matchesAuthority =
+        authorityEvidence.canonicalTransport.has_value() &&
+        certificate.relationTransport ==
+            authorityEvidence.canonicalTransport.value() &&
+        certificate.evidence == authorityEvidence.equivalence &&
+        certificate.selectedRelationStep ==
+            authorityEvidence.canonicalSelectedStep;
+    if (matchesAuthority) continue;
+
+    error.relation = certificate.relation;
+    switch (certificate.relation.kind) {
+    case SurfaceOccurrenceRelationKind::HardRail:
+      error.code = SurfaceQuotientProductErrorCode::InvalidHardRailTransport;
+      break;
+    case SurfaceOccurrenceRelationKind::Periodic:
+      error.code = SurfaceQuotientProductErrorCode::InvalidPeriodicTransport;
+      break;
+    case SurfaceOccurrenceRelationKind::OrdinaryFront:
+    case SurfaceOccurrenceRelationKind::SingularityPort:
+      error.code = SurfaceQuotientProductErrorCode::RelationCertificateConflict;
+      break;
+    }
+    return error;
   }
 
   std::set<authority::OccurrenceId> partitionedOccurrences;
@@ -5783,6 +5941,17 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       break;
     case SurfaceQuotientProductErrorCode::InvalidPeriodicTransport:
       result.failure = "InvalidPeriodicFrontTransport";
+      break;
+    case SurfaceQuotientProductErrorCode::HolonomyConflict:
+      result.failure = surface_quotient_product_error_name(quotientError->code);
+      if (quotientError->residual.has_value()) {
+        const auto &residual = quotientError->residual.value();
+        result.failure +=
+            ":residual=Q" +
+            std::to_string(static_cast<int>(residual.rotation.value())) +
+            ",t=(" + std::to_string(residual.shift.x) + "," +
+            std::to_string(residual.shift.y) + ")";
+      }
       break;
     default:
       result.failure = surface_quotient_product_error_name(quotientError->code);

@@ -924,6 +924,10 @@ enum class SurfaceOccurrenceComplexErrorCode : std::uint8_t {
   MissingIsolationEvidence = 19,
   DuplicateIsolationEvidence = 20,
   MismatchedIsolationEvidence = 21,
+  HardRailRegionMismatch = 22,
+  HardRailRouteMismatch = 23,
+  HardRailTransportMismatch = 24,
+  PeriodicTransportMismatch = 25,
 };
 
 const char *surface_occurrence_complex_error_name(
@@ -1138,6 +1142,7 @@ struct SurfaceQuotientProductError {
   std::optional<SurfaceOccurrenceRelationId> relation;
   std::optional<authority::OccurrenceId> occurrence;
   std::optional<authority::CellId> cell;
+  std::optional<authority::GridAutomorphism> residual;
 };
 
 struct SurfaceQuotientValidationRecords {
