@@ -1,0 +1,3 @@
+purpose=M6-CP1-CB7-A6 closeout documentation snapshot
+source_sha=d60a25cebd18d9ea0e97ab4ed93f633113db9e76
+retry=0
