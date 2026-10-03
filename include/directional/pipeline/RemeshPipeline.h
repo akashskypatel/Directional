@@ -861,6 +861,7 @@ struct SurfaceOccurrenceCell {
 
 struct SurfaceOccurrenceRelationEvidence {
   std::optional<authority::GridAutomorphism> canonicalTransport;
+  std::optional<authority::GridAutomorphism> canonicalRelationValue;
   geometry::PureQuadEquivalenceProvenance equivalence;
   std::optional<geometry::SelectedRelationStep> canonicalSelectedStep;
   std::optional<SurfaceOccurrenceSideSpan> firstEndpointSpan;
@@ -928,6 +929,7 @@ enum class SurfaceOccurrenceComplexErrorCode : std::uint8_t {
   HardRailRouteMismatch = 23,
   HardRailTransportMismatch = 24,
   PeriodicTransportMismatch = 25,
+  HardRailRouteAuthorityInvalid = 26,
 };
 
 const char *surface_occurrence_complex_error_name(

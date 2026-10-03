@@ -2293,6 +2293,81 @@ TEST(M6CP1,
   EXPECT_EQ(duplicateError->code,
             directional::pipeline::SurfaceOccurrenceComplexErrorCode::
                 DuplicateRelationDeclaration);
+
+  const auto &hardRailFixture = hard_rail_fixture();
+  const auto produceHardRailOccurrences = [&](PhaseFrontDraft draft) {
+    const auto front = publish_phase_front_draft(std::move(draft));
+    return directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+        hardRailFixture.mesh.V, hardRailFixture.mesh.F, front.product());
+  };
+
+  PhaseFrontDraft invalidRoute =
+      phase_front_draft(hardRailFixture.network.phaseFront);
+  const int hardRail =
+      first_edge_of_kind(invalidRoute, SurfaceFrontBoundaryKind::HardRail);
+  ASSERT_GE(hardRail, 0);
+  auto &invalidRouteEdge =
+      invalidRoute.edges[static_cast<std::size_t>(hardRail)];
+  ASSERT_TRUE(route_is_all_interior(invalidRouteEdge.route));
+  const auto sourceIncidence = directional::geometry::
+      surface_cell_tracing_detail::edge_faces(hardRailFixture.mesh.F);
+  const auto sourceTransitions = directional::geometry::
+      surface_cell_tracing_detail::edge_matching_indices(sourceIncidence);
+  const int current = static_cast<int>(
+      invalidRouteEdge.route.steps().front().interior()->index());
+  int alternate = -1;
+  for (const auto &[topology, compact] : sourceTransitions) {
+    (void)topology;
+    if (compact != current) {
+      alternate = compact;
+      break;
+    }
+  }
+  ASSERT_GE(alternate, 0);
+  const auto alternateId =
+      directional::authority::InteriorTransitionId::from_index(
+          alternate, sourceTransitions.size());
+  ASSERT_TRUE(alternateId);
+  std::vector<directional::authority::TransitionStep> steps(
+      invalidRouteEdge.route.steps().begin(),
+      invalidRouteEdge.route.steps().end());
+  const auto replacement = directional::authority::TransitionStep::interior(
+      steps.front().topology(), alternateId.value(),
+      steps.front().transport(), steps.front().orientation());
+  ASSERT_TRUE(replacement);
+  steps.front() = replacement.value();
+  invalidRouteEdge.route =
+      directional::authority::CanonicalRoute::from_observed_steps(
+          std::move(steps));
+  const auto invalidRouteResult =
+      produceHardRailOccurrences(std::move(invalidRoute));
+  const auto *invalidRouteError =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(
+          &invalidRouteResult);
+  ASSERT_NE(invalidRouteError, nullptr);
+  EXPECT_EQ(invalidRouteError->code,
+            directional::pipeline::SurfaceOccurrenceComplexErrorCode::
+                HardRailRouteAuthorityInvalid);
+
+  PhaseFrontDraft sameOrientation =
+      phase_front_draft(hardRailFixture.network.phaseFront);
+  const int sameOrientationRail =
+      first_edge_of_kind(sameOrientation, SurfaceFrontBoundaryKind::HardRail);
+  ASSERT_GE(sameOrientationRail, 0);
+  const int opposite = sameOrientation.edges[static_cast<std::size_t>(
+      sameOrientationRail)].oppositeEdge;
+  ASSERT_GE(opposite, 0);
+  sameOrientation.edges[static_cast<std::size_t>(opposite)].route =
+      sameOrientation.edges[static_cast<std::size_t>(sameOrientationRail)].route;
+  const auto sameOrientationResult =
+      produceHardRailOccurrences(std::move(sameOrientation));
+  const auto *sameOrientationError =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(
+          &sameOrientationResult);
+  ASSERT_NE(sameOrientationError, nullptr);
+  EXPECT_EQ(sameOrientationError->code,
+            directional::pipeline::SurfaceOccurrenceComplexErrorCode::
+                HardRailRouteMismatch);
 }
 
 
@@ -2665,6 +2740,254 @@ TEST(M6CP1, CycleClosingRelationTransportConflictRejected) {
   EXPECT_EQ(error->code,
             directional::pipeline::SurfaceQuotientProductErrorCode::
                 HolonomyConflict);
+}
+
+TEST(M6CP1, RelationPlacementTransportIsCoordinateRigidAndFaceGaugeInvariant) {
+  const auto produceA5 = [](const PhaseFrontFixture &fixture,
+                            const directional::geometry::SurfacePhaseFrontProduct &front) {
+    return directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+        fixture.mesh.V, fixture.mesh.F, front);
+  };
+  const auto occurrenceFor = [](const auto &occurrences,
+                                const directional::authority::OccurrenceId id) {
+    return std::find_if(occurrences.begin(), occurrences.end(),
+                        [&](const auto &occurrence) {
+                          return occurrence.id == id;
+                        });
+  };
+  const auto classMemberSignature = [](const auto &quotient) {
+    std::vector<std::vector<directional::authority::OccurrenceId>> members;
+    members.reserve(quotient.classes().size());
+    for (const auto &entry : quotient.classes()) members.push_back(entry.members);
+    std::sort(members.begin(), members.end());
+    return members;
+  };
+
+  const auto relationEndpointPairs = [](const auto &complex, const auto &front,
+                                        const auto &relation)
+      -> std::optional<std::array<
+          std::pair<directional::authority::OccurrenceId,
+                    directional::authority::OccurrenceId>,
+          2>> {
+    const int firstIndex = relation.evidence.equivalence.firstFrontEdge;
+    const int secondIndex = relation.evidence.equivalence.secondFrontEdge;
+    if (firstIndex < 0 || secondIndex < 0 ||
+        firstIndex >= static_cast<int>(front.edges().size()) ||
+        secondIndex >= static_cast<int>(front.edges().size())) {
+      return std::nullopt;
+    }
+    const auto &firstEdge =
+        front.edges()[static_cast<std::size_t>(firstIndex)];
+    const auto &secondEdge =
+        front.edges()[static_cast<std::size_t>(secondIndex)];
+    if (firstEdge.filledSide < 0 || firstEdge.filledSide >= 4 ||
+        secondEdge.filledSide < 0 || secondEdge.filledSide >= 4) {
+      return std::nullopt;
+    }
+    const auto firstCell = std::find_if(
+        complex.cells().begin(), complex.cells().end(), [&](const auto &cell) {
+          return cell.id == firstEdge.filledCell;
+        });
+    const auto secondCell = std::find_if(
+        complex.cells().begin(), complex.cells().end(), [&](const auto &cell) {
+          return cell.id == secondEdge.filledCell;
+        });
+    if (firstCell == complex.cells().end() ||
+        secondCell == complex.cells().end()) {
+      return std::nullopt;
+    }
+    const std::size_t firstSide =
+        static_cast<std::size_t>(firstEdge.filledSide);
+    const std::size_t secondSide =
+        static_cast<std::size_t>(secondEdge.filledSide);
+    return std::array{
+        std::pair{firstCell->cornerOccurrences[firstSide],
+                  secondCell->cornerOccurrences[(secondSide + 1U) % 4U]},
+        std::pair{firstCell->cornerOccurrences[(firstSide + 1U) % 4U],
+                  secondCell->cornerOccurrences[secondSide]}};
+  };
+
+  const auto &hardRailFixture = hard_rail_fixture();
+  auto baselineConstruction = produceA5(
+      hardRailFixture, hardRailFixture.network.phaseFront.product());
+  const auto *baseline =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+          &baselineConstruction);
+  ASSERT_NE(baseline, nullptr);
+
+  std::map<directional::pipeline::SurfaceOccurrenceRelationId,
+           directional::authority::GridAutomorphism>
+      hardRailTransportByRelation;
+  std::size_t hardRailRelationCount = 0U;
+  for (const auto &relation : baseline->owned_relations()) {
+    if (relation.id.kind !=
+        directional::pipeline::SurfaceOccurrenceRelationKind::HardRail) {
+      continue;
+    }
+    ++hardRailRelationCount;
+    ASSERT_TRUE(relation.evidence.canonicalTransport.has_value());
+    ASSERT_TRUE(relation.evidence.canonicalRelationValue.has_value());
+    ASSERT_TRUE(relation.evidence.canonicalSelectedStep.has_value());
+    const auto endpointPairs = relationEndpointPairs(
+        *baseline, hardRailFixture.network.phaseFront.product(), relation);
+    ASSERT_TRUE(endpointPairs.has_value());
+    const bool storageIsCanonical =
+        relation.firstOccurrence == relation.id.first;
+    for (const auto &[storageFirst, storageSecond] : endpointPairs.value()) {
+      const auto fromId = storageIsCanonical ? storageFirst : storageSecond;
+      const auto toId = storageIsCanonical ? storageSecond : storageFirst;
+      const auto from = occurrenceFor(baseline->occurrences(), fromId);
+      const auto to = occurrenceFor(baseline->occurrences(), toId);
+      ASSERT_NE(from, baseline->occurrences().end());
+      ASSERT_NE(to, baseline->occurrences().end());
+      EXPECT_EQ(from->placement.lattice.scaleLevel,
+                to->placement.lattice.scaleLevel);
+      EXPECT_EQ(relation.evidence.canonicalTransport->apply(
+                    from->placement.lattice.latticeCoordinate),
+                to->placement.lattice.latticeCoordinate);
+    }
+    EXPECT_EQ(relation.evidence.equivalence.action,
+              relation.evidence.equivalence.route.composed_transport());
+    const auto storageRelationValue =
+        relation.evidence.equivalence.route.composed_transport();
+    const auto expectedRelationValue =
+        relation.firstOccurrence == relation.id.first
+            ? storageRelationValue
+            : storageRelationValue.inverse();
+    EXPECT_EQ(relation.evidence.canonicalRelationValue.value(),
+              expectedRelationValue);
+    EXPECT_EQ(relation.evidence.canonicalSelectedStep->appliedTransport,
+              expectedRelationValue);
+    hardRailTransportByRelation.emplace(
+        relation.id, relation.evidence.canonicalTransport.value());
+  }
+  ASSERT_GT(hardRailRelationCount, 0U);
+
+  auto baselineQuotientConstruction =
+      directional::pipeline::SurfaceQuotientProducer::produce(*baseline);
+  const auto *baselineQuotient =
+      std::get_if<directional::pipeline::SurfaceQuotientProduct>(
+          &baselineQuotientConstruction);
+  ASSERT_NE(baselineQuotient, nullptr);
+
+  PhaseFrontDraft relabelled =
+      phase_front_draft(hardRailFixture.network.phaseFront);
+  const int firstHardRail =
+      first_edge_of_kind(relabelled, SurfaceFrontBoundaryKind::HardRail);
+  ASSERT_GE(firstHardRail, 0);
+  const int opposite =
+      relabelled.edges[static_cast<std::size_t>(firstHardRail)].oppositeEdge;
+  ASSERT_GE(opposite, 0);
+  const auto relabelRegion =
+      relabelled.edges[static_cast<std::size_t>(opposite)].sourceTopologyRegion;
+  std::size_t relabelledCells = 0U;
+  std::size_t relabelledEdges = 0U;
+  for (auto &cell : relabelled.cells) {
+    if (cell.sourceTopologyRegion != relabelRegion) continue;
+    ++relabelledCells;
+    for (auto &state : cell.lattice) {
+      state.branchRotation = (state.branchRotation + 1) % 4;
+    }
+  }
+  for (auto &edge : relabelled.edges) {
+    if (edge.sourceTopologyRegion != relabelRegion) continue;
+    ++relabelledEdges;
+    ASSERT_FALSE(edge.periodicFromLattice.has_value());
+    ASSERT_FALSE(edge.periodicToLattice.has_value());
+    edge.fromLattice.branchRotation = (edge.fromLattice.branchRotation + 1) % 4;
+    edge.toLattice.branchRotation = (edge.toLattice.branchRotation + 1) % 4;
+  }
+  ASSERT_GT(relabelledCells, 0U);
+  ASSERT_GT(relabelledEdges, 0U);
+  auto relabelledFrontConstruction =
+      construct_phase_front_product(std::move(relabelled));
+  const auto *relabelledFront =
+      std::get_if<directional::geometry::SurfacePhaseFrontProduct>(
+          &relabelledFrontConstruction);
+  ASSERT_NE(relabelledFront, nullptr);
+  auto relabelledA5Construction = produceA5(hardRailFixture, *relabelledFront);
+  const auto *relabelledA5 =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+          &relabelledA5Construction);
+  ASSERT_NE(relabelledA5, nullptr);
+  std::size_t relabelledHardRailCount = 0U;
+  for (const auto &relation : relabelledA5->owned_relations()) {
+    if (relation.id.kind !=
+        directional::pipeline::SurfaceOccurrenceRelationKind::HardRail) {
+      continue;
+    }
+    ++relabelledHardRailCount;
+    const auto expected = hardRailTransportByRelation.find(relation.id);
+    ASSERT_NE(expected, hardRailTransportByRelation.end());
+    ASSERT_TRUE(relation.evidence.canonicalTransport.has_value());
+    EXPECT_EQ(relation.evidence.canonicalTransport.value(), expected->second);
+  }
+  EXPECT_EQ(relabelledHardRailCount, hardRailRelationCount);
+  auto relabelledQuotientConstruction =
+      directional::pipeline::SurfaceQuotientProducer::produce(*relabelledA5);
+  const auto *relabelledQuotient =
+      std::get_if<directional::pipeline::SurfaceQuotientProduct>(
+          &relabelledQuotientConstruction);
+  ASSERT_NE(relabelledQuotient, nullptr);
+  EXPECT_EQ(classMemberSignature(*baselineQuotient),
+            classMemberSignature(*relabelledQuotient));
+
+  const auto &periodicWitness = nonzero_z4_torus_witness_fixture();
+  const auto semanticRelation =
+      produced_semantic_relation_for_witness(periodicWitness);
+  ASSERT_TRUE(semanticRelation.has_value());
+  const auto g = semanticRelation->semanticAction;
+  ASSERT_NE(g.rotation, directional::authority::QuarterTurn{});
+  const directional::authority::GridAutomorphism zeroGauge{
+      g.rotation.inverse(), {0, 0}};
+  const auto expectedPlacement = compose(zeroGauge, g);
+
+  auto periodicConstruction = produceA5(
+      periodicWitness.fixture,
+      periodicWitness.fixture.network.phaseFront.product());
+  const auto *periodic =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+          &periodicConstruction);
+  ASSERT_NE(periodic, nullptr);
+  std::size_t witnessPeriodicRelations = 0U;
+  for (const auto &relation : periodic->owned_relations()) {
+    if (relation.id.kind !=
+            directional::pipeline::SurfaceOccurrenceRelationKind::Periodic ||
+        relation.id.periodicRelation != semanticRelation->storedRelation->id()) {
+      continue;
+    }
+    ++witnessPeriodicRelations;
+    ASSERT_TRUE(relation.evidence.canonicalTransport.has_value());
+    ASSERT_TRUE(relation.evidence.canonicalRelationValue.has_value());
+    ASSERT_TRUE(relation.evidence.canonicalSelectedStep.has_value());
+    EXPECT_TRUE(relation.evidence.canonicalTransport.value() ==
+                    expectedPlacement ||
+                relation.evidence.canonicalTransport.value() ==
+                    expectedPlacement.inverse());
+    const auto endpointPairs = relationEndpointPairs(
+        *periodic, periodicWitness.fixture.network.phaseFront.product(), relation);
+    ASSERT_TRUE(endpointPairs.has_value());
+    const bool storageIsCanonical =
+        relation.firstOccurrence == relation.id.first;
+    for (const auto &[storageFirst, storageSecond] : endpointPairs.value()) {
+      const auto fromId = storageIsCanonical ? storageFirst : storageSecond;
+      const auto toId = storageIsCanonical ? storageSecond : storageFirst;
+      const auto from = occurrenceFor(periodic->occurrences(), fromId);
+      const auto to = occurrenceFor(periodic->occurrences(), toId);
+      ASSERT_NE(from, periodic->occurrences().end());
+      ASSERT_NE(to, periodic->occurrences().end());
+      EXPECT_EQ(from->placement.lattice.scaleLevel,
+                to->placement.lattice.scaleLevel);
+      EXPECT_EQ(relation.evidence.canonicalTransport->apply(
+                    from->placement.lattice.latticeCoordinate),
+                to->placement.lattice.latticeCoordinate);
+    }
+    EXPECT_TRUE(relation.evidence.canonicalRelationValue.value() == g ||
+                relation.evidence.canonicalRelationValue.value() == g.inverse());
+    EXPECT_EQ(relation.evidence.canonicalSelectedStep->appliedTransport,
+              relation.evidence.canonicalRelationValue.value());
+  }
+  EXPECT_EQ(witnessPeriodicRelations, 2U);
 }
 
 int first_edge_of_kind(const SurfacePhaseFrontResult &phaseFront,

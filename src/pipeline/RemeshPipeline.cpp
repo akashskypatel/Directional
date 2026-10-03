@@ -3092,6 +3092,8 @@ const char *surface_occurrence_complex_error_name(
     return "OccurrenceHardRailTransportMismatch";
   case SurfaceOccurrenceComplexErrorCode::PeriodicTransportMismatch:
     return "OccurrencePeriodicTransportMismatch";
+  case SurfaceOccurrenceComplexErrorCode::HardRailRouteAuthorityInvalid:
+    return "OccurrenceHardRailRouteAuthorityInvalid";
   }
   return "OccurrenceUnknownFailure";
 }
@@ -3101,6 +3103,8 @@ static const char *surface_occurrence_complex_legacy_failure_name(
   switch (error.code) {
   case SurfaceOccurrenceComplexErrorCode::HardRailOwnerMissing:
     return "MissingHardRailRelationOwner";
+  case SurfaceOccurrenceComplexErrorCode::HardRailRouteAuthorityInvalid:
+    return "InvalidHardRailAuthority";
   case SurfaceOccurrenceComplexErrorCode::HardRailOwnerMismatch:
   case SurfaceOccurrenceComplexErrorCode::HardRailRegionMismatch:
   case SurfaceOccurrenceComplexErrorCode::HardRailRouteMismatch:
@@ -3135,6 +3139,29 @@ SurfaceOccurrenceRelationId make_occurrence_relation_id(
   if (second < first) std::swap(first, second);
   return SurfaceOccurrenceRelationId(kind, first, second, hardRail,
                                      periodicRelation);
+}
+
+template <typename IncidenceMap, typename TransitionMap>
+bool exact_interior_route_valid(
+    const authority::CanonicalRoute &route, const IncidenceMap &incidenceByEdge,
+    const TransitionMap &transitionByEdge) {
+  if (route.empty()) return false;
+  std::set<authority::SourceEdgeTopologyKey> uniqueTopology;
+  for (const authority::TransitionStep &step : route.steps()) {
+    if (step.kind() != authority::TransitionStepKind::Interior ||
+        !step.interior().has_value() ||
+        !uniqueTopology.insert(step.topology()).second) {
+      return false;
+    }
+    const auto incidence = incidenceByEdge.find(step.topology());
+    const auto expectedTransition = transitionByEdge.find(step.topology());
+    if (incidence == incidenceByEdge.end() || incidence->second[0] < 0 ||
+        incidence->second[1] < 0 || expectedTransition == transitionByEdge.end() ||
+        step.interior().value() != expectedTransition->second) {
+      return false;
+    }
+  }
+  return true;
 }
 
 } // namespace
@@ -3309,6 +3336,23 @@ SurfaceOccurrenceComplexProducer::produce(
     return error;
   }
   const geometry::SurfacePointSourceSupportResolver supportResolver(sourceFaces);
+
+  const auto exactSourceIncidenceByTopology =
+      geometry::surface_cell_tracing_detail::edge_faces(sourceFaces);
+  const auto sourceEdgeIndices =
+      geometry::surface_cell_tracing_detail::edge_matching_indices(
+          exactSourceIncidenceByTopology);
+  std::map<authority::SourceEdgeTopologyKey, authority::InteriorTransitionId>
+      sourceTransitionByTopology;
+  for (const auto &[topology, transitionRow] : sourceEdgeIndices) {
+    const auto transition = authority::InteriorTransitionId::from_index(
+        transitionRow, sourceEdgeIndices.size());
+    if (!transition) {
+      error.code = SurfaceOccurrenceComplexErrorCode::SourceAuthorityMismatch;
+      return error;
+    }
+    sourceTransitionByTopology.emplace(topology, transition.value());
+  }
 
   std::map<authority::TopologyRegionId,
            const geometry::SurfaceTopologyRegion *>
@@ -4146,6 +4190,14 @@ SurfaceOccurrenceComplexProducer::produce(
       relationKind = SurfaceOccurrenceRelationKind::OrdinaryFront;
     } else if (first.boundaryKind ==
                geometry::SurfaceFrontBoundaryKind::HardRail) {
+      if (!exact_interior_route_valid(first.route, exactSourceIncidenceByTopology,
+                                      sourceTransitionByTopology) ||
+          !exact_interior_route_valid(second.route, exactSourceIncidenceByTopology,
+                                      sourceTransitionByTopology)) {
+        error.code =
+            SurfaceOccurrenceComplexErrorCode::HardRailRouteAuthorityInvalid;
+        return error;
+      }
       if (!first.railId.has_value() || !second.railId.has_value()) {
         error.code = SurfaceOccurrenceComplexErrorCode::HardRailOwnerMissing;
         return error;
@@ -4192,6 +4244,7 @@ SurfaceOccurrenceComplexProducer::produce(
     sharedEquivalence.firstFrontEdge = edgeIndex;
     sharedEquivalence.secondFrontEdge = first.oppositeEdge;
     std::optional<authority::GridAutomorphism> storageTransport;
+    std::optional<authority::GridAutomorphism> storageRelationValue;
     std::optional<geometry::SelectedRelationKind> selectedKind;
     if (relationKind == SurfaceOccurrenceRelationKind::OrdinaryFront) {
       sharedEquivalence.kind = geometry::PureQuadEquivalenceKind::OrdinaryFront;
@@ -4209,16 +4262,71 @@ SurfaceOccurrenceComplexProducer::produce(
             sharedEquivalence.isolationSeams.end());
       }
       storageTransport = authority::GridAutomorphism::identity();
+      storageRelationValue = authority::GridAutomorphism::identity();
     } else if (relationKind == SurfaceOccurrenceRelationKind::HardRail) {
       sharedEquivalence.kind = geometry::PureQuadEquivalenceKind::HardRail;
       sharedEquivalence.railId = hardRail;
       sharedEquivalence.route = first.route;
       sharedEquivalence.action = first.route.composed_transport();
-      storageTransport = sharedEquivalence.action;
-      if (!action_matches(first.fromLattice, second.toLattice,
-                          *storageTransport) ||
-          !action_matches(first.toLattice, second.fromLattice,
-                          *storageTransport)) {
+      storageRelationValue = sharedEquivalence.action;
+
+      const auto firstFrom = publishedOccurrenceById.find(endpointPairs[0].first);
+      const auto firstTo = publishedOccurrenceById.find(endpointPairs[1].first);
+      const auto secondTo = publishedOccurrenceById.find(endpointPairs[0].second);
+      const auto secondFrom = publishedOccurrenceById.find(endpointPairs[1].second);
+      if (firstFrom == publishedOccurrenceById.end() ||
+          firstTo == publishedOccurrenceById.end() ||
+          secondTo == publishedOccurrenceById.end() ||
+          secondFrom == publishedOccurrenceById.end()) {
+        error.code = SurfaceOccurrenceComplexErrorCode::RelationEndpointMissing;
+        return error;
+      }
+      const auto &firstFromState = firstFrom->second->placement.lattice;
+      const auto &firstToState = firstTo->second->placement.lattice;
+      const auto &secondToState = secondTo->second->placement.lattice;
+      const auto &secondFromState = secondFrom->second->placement.lattice;
+      if (firstFromState.scaleLevel != firstToState.scaleLevel ||
+          firstFromState.scaleLevel != secondToState.scaleLevel ||
+          firstFromState.scaleLevel != secondFromState.scaleLevel) {
+        error.code =
+            SurfaceOccurrenceComplexErrorCode::HardRailTransportMismatch;
+        return error;
+      }
+      const authority::LatticeTranslation e =
+          firstToState.latticeCoordinate - firstFromState.latticeCoordinate;
+      const authority::LatticeTranslation ePrime =
+          secondFromState.latticeCoordinate - secondToState.latticeCoordinate;
+      if (e == authority::LatticeTranslation{0, 0}) {
+        error.code =
+            SurfaceOccurrenceComplexErrorCode::HardRailTransportMismatch;
+        return error;
+      }
+      std::optional<authority::QuarterTurn> rigidRotation;
+      for (int quarterTurns = 0; quarterTurns < 4; ++quarterTurns) {
+        const auto rotation = authority::QuarterTurn::from_integer(quarterTurns);
+        if (authority::rotate(rotation, e) == ePrime) {
+          if (rigidRotation.has_value()) {
+            error.code =
+                SurfaceOccurrenceComplexErrorCode::HardRailTransportMismatch;
+            return error;
+          }
+          rigidRotation = rotation;
+        }
+      }
+      if (!rigidRotation.has_value()) {
+        error.code =
+            SurfaceOccurrenceComplexErrorCode::HardRailTransportMismatch;
+        return error;
+      }
+      storageTransport = authority::GridAutomorphism{
+          rigidRotation.value(),
+          secondToState.latticeCoordinate -
+              authority::rotate(rigidRotation.value(),
+                                firstFromState.latticeCoordinate)};
+      if (storageTransport->apply(firstFromState.latticeCoordinate) !=
+              secondToState.latticeCoordinate ||
+          storageTransport->apply(firstToState.latticeCoordinate) !=
+              secondFromState.latticeCoordinate) {
         error.code =
             SurfaceOccurrenceComplexErrorCode::HardRailTransportMismatch;
         return error;
@@ -4263,6 +4371,8 @@ SurfaceOccurrenceComplexProducer::produce(
                 geometry::resolve_periodic_relation_semantic_action(
                     storedRelation, *forwardEdge, *reverseEdge);
             if (semanticAction.has_value()) {
+              storageRelationValue =
+                  firstIsForward ? *semanticAction : semanticAction->inverse();
               const auto placementTransport = periodic_placement_transport(
                   *forwardEdge, *reverseEdge, *semanticAction);
               if (placementTransport.has_value()) {
@@ -4287,6 +4397,7 @@ SurfaceOccurrenceComplexProducer::produce(
                              inverseAction);
           if (forward != reverse) {
             storageTransport = forward ? storedRelation.action() : inverseAction;
+            storageRelationValue = storageTransport;
           }
         }
       }
@@ -4338,7 +4449,14 @@ SurfaceOccurrenceComplexProducer::produce(
                                : std::optional<authority::GridAutomorphism>(
                                      storageTransport->inverse());
       }
+      if (storageRelationValue.has_value()) {
+        evidence.canonicalRelationValue =
+            storageIsCanonical ? storageRelationValue
+                               : std::optional<authority::GridAutomorphism>(
+                                     storageRelationValue->inverse());
+      }
       if (selectedKind.has_value() && evidence.canonicalTransport.has_value() &&
+          evidence.canonicalRelationValue.has_value() &&
           evidence.firstEndpointSpan.has_value() &&
           evidence.secondEndpointSpan.has_value()) {
         const auto firstRecord = publishedOccurrenceById.find(relationId.first);
@@ -4354,7 +4472,7 @@ SurfaceOccurrenceComplexProducer::produce(
           step.toChart = evidence.secondEndpointSpan->interiorBinding.chart;
           step.fromChartComponent = firstRecord->second->chartComponent;
           step.toChartComponent = secondRecord->second->chartComponent;
-          step.appliedTransport = evidence.canonicalTransport.value();
+          step.appliedTransport = evidence.canonicalRelationValue.value();
           evidence.canonicalSelectedStep = std::move(step);
         }
       }
@@ -4715,13 +4833,14 @@ SurfaceQuotientProducer::ConstructionResult SurfaceQuotientProducer::produce(
           certificate.evidence.railId != relation->id.hardRail ||
           certificate.evidence.route.empty() ||
           !relation->evidence.canonicalTransport.has_value() ||
+          !relation->evidence.canonicalRelationValue.has_value() ||
           !certificate.selectedRelationStep.has_value() ||
           !certificate.selectedRelationStep->valid() ||
           certificate.selectedRelationStep->relationKind !=
               geometry::SelectedRelationKind::HardRail ||
           certificate.selectedRelationStep->railId != relation->id.hardRail ||
           certificate.selectedRelationStep->appliedTransport !=
-              relation->evidence.canonicalTransport.value()) {
+              relation->evidence.canonicalRelationValue.value()) {
         SurfaceQuotientProductError error;
         error.code = SurfaceQuotientProductErrorCode::InvalidHardRailTransport;
         error.relation = relation->id;
@@ -4740,6 +4859,7 @@ SurfaceQuotientProducer::ConstructionResult SurfaceQuotientProducer::produce(
           certificate.evidence.route.empty() ||
           certificate.evidence.cutRoute.empty() ||
           !relation->evidence.canonicalTransport.has_value() ||
+          !relation->evidence.canonicalRelationValue.has_value() ||
           !certificate.selectedRelationStep.has_value() ||
           !certificate.selectedRelationStep->valid() ||
           certificate.selectedRelationStep->relationKind !=
@@ -4747,7 +4867,7 @@ SurfaceQuotientProducer::ConstructionResult SurfaceQuotientProducer::produce(
           certificate.selectedRelationStep->periodicRelation !=
               relation->id.periodicRelation ||
           certificate.selectedRelationStep->appliedTransport !=
-              relation->evidence.canonicalTransport.value()) {
+              relation->evidence.canonicalRelationValue.value()) {
         SurfaceQuotientProductError error;
         error.code = SurfaceQuotientProductErrorCode::InvalidPeriodicTransport;
         error.relation = relation->id;
@@ -5749,30 +5869,9 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
   }
 
   std::map<std::pair<authority::CellId, int>, int> edgeByCellSide;
-  const auto exact_interior_route_valid =
-      [&](const authority::CanonicalRoute &route) {
-    if (route.empty()) return false;
-    std::set<authority::SourceEdgeTopologyKey> uniqueTopology;
-    for (const authority::TransitionStep &step : route.steps()) {
-      if (step.kind() != authority::TransitionStepKind::Interior ||
-          !step.interior().has_value() ||
-          !uniqueTopology.insert(step.topology()).second) {
-        return false;
-      }
-      const auto incidence = exactSourceIncidenceByTopology.find(step.topology());
-      const auto expectedTransition =
-          sourceTransitionByTopology.find(step.topology());
-      if (incidence == exactSourceIncidenceByTopology.end() ||
-          incidence->second[0] < 0 || incidence->second[1] < 0 ||
-          expectedTransition == sourceTransitionByTopology.end() ||
-          step.interior().value() != expectedTransition->second) {
-        return false;
-      }
-    }
-    return true;
-  };
   const auto interior_source_route_valid = [&](const auto &edge) {
-    return exact_interior_route_valid(edge.route);
+    return exact_interior_route_valid(edge.route, exactSourceIncidenceByTopology,
+                                      sourceTransitionByTopology);
   };
   for (int edgeIndex = 0;
        edgeIndex < static_cast<int>(phaseFront.edges().size()); ++edgeIndex) {
