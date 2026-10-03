@@ -1,0 +1,47 @@
+name: M6 CP1 TB8 A6 Harness Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m6-cp1-tb8-a6-harness-apply.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m6-cp1-tb8-a6-harness-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m6-cp1-tb8-a6-harness-apply
+      commit_run_file: false
+      trim_stale_comments: false
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m6-cp1-tb8-a6-harness-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1mhyb3uyBGerxwL0sA9phgsIZyYJ5B0YW
+      patch_sha256: 8773ea2c72998cbf66cc423c35204f72ad30e24bfdd39b0e8e96d30a0a63fdf7
+      base_sha: 37b77480b24d3cf011cf4d7e005ad0a29f4d928e
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "M6-CP1-TB8-A6: install frozen artifact-only harness"
+    secrets: inherit
