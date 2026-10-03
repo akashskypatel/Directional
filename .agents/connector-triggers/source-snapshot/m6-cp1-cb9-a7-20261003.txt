@@ -1,2 +1,0 @@
-M6-CP1-CB9-A7 source snapshot trigger
-parent_authority=e81e8a089de8333b46ce8831d37eec7bf8a9baac
