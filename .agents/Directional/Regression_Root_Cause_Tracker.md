@@ -1,3 +1,12 @@
+## 2026-10-03 — `M6-CP1-TB8-A6-REV` review-agent addendum — **+0 / 60/16/44 / debt 1 / promotion confirmed**
+
+- I re-derived the TB8 evidence independently: result `11273611682` digest, 954/954 manifest, five ledgers, selector449 order, and the focused-12 raw log.
+- Recovery of the three TB7 stable events is confirmed against the CB8 source diff (RA-16): HardRail coordinate-rigid transport, route-validity precedence, and the lineage relation value.
+- No new regression and no repricing.
+- One evidence-strength correction, without repricing: selector446 replicates the completion comparator rather than executing the production `validate_materialized_completion_domain_ownership`. The first A7 CB must register `M6CP1.NonzeroZ4WitnessPassesProductionCompletionOwnership`.
+
+**Stable accounting: `60 events / 16 categories / 44 recurrences`, debt 1.** Exact next: `M6-DEFN-R4` (bounded plan; RA-17).
+
 ## 2026-10-03 — `M6-CP1-TB8-A6-REV` — **TB7 RECOVERY PROVED / RUNTIME PROMOTED / +0 HISTORY REPRICING / 60/16/44 / debt 1**
 
 Independent Review re-opens candidate/result authority and upholds TB8 at **461/461 PASS** with 954/954 self-manifest, exact-one selection, zero skips, benchmark 0 and immutable postflight.

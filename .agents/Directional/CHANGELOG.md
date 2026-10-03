@@ -1,3 +1,22 @@
+## 2026-10-03 — `M6-CP1-TB8-A6-REV` review-agent addendum: promotion confirmed; RA-17; bounded R4 plan
+
+- **TB8 re-derived independently:**
+  - result `11273611682` digest, 954/954 manifest and five ledgers;
+  - selector449 and focused 1-12 order, the focused-12 raw log;
+  - HEAD semantic source == `8e0818b1`.
+- **CB8 diff reviewed against RA-16.** Implementation is faithful. Focused 3 and focused 12(b) discriminate (12(b) would fail under the RA-14 rule).
+- **Correction to TB8-REV §3.** Selector446 replicates the completion comparator but does not execute `validate_materialized_completion_domain_ownership`. Pre-registered `M6CP1.NonzeroZ4WitnessPassesProductionCompletionOwnership` for the first A7 CB.
+- **Frozen:**
+  - `Architecture_M6_CP1_Required_Green_Focused_12.txt` (SHA-256 `59a523ae...3d571c`) as a required-green prefix;
+  - RA-17: transport guard; R4 bounded to CP1 exit; `M6-DEFN-R5` owns the periodic face-gauge witness, HardRail branch certification and OrdinaryFront isolation-seam identity, as a CP3-entry gate.
+- **Written:** `Architecture_M6_DEFN_R4_CP1_A7_Thin_Adapter_G4B002_Definition_Plan.md`.
+  - D4: consumer and frozen-assertion census, first.
+  - D1: A7 product, with an exact `SourceSupport` incidence certificate replacing the adapter's `1e-9` position check as authority.
+  - D2: classification of the adapter's 55 failure sites.
+  - D3: `G4-B002` boundary.
+  - D5: CB sequencing.
+- **Updated:** lesson 188, ORIENTATION, handoff, TODO, ROADMAP, tracker (+0) and consolidated record §30. Accounting 60 / 16 / 44, debt 1.
+
 ## 2026-10-03 — `M6-CP1-TB8-A6-REV`: 461/461 accepted; candidate promoted; R4 next
 
 - Independently re-hashed candidate/result authority and verified candidate 28/28, result 954/954, exact 12+449 ordering, exact-one, zero skips, empty RED ledger and immutable postflight.

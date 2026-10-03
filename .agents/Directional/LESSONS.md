@@ -2497,3 +2497,14 @@ When a temporary workflow caller is assembled with low-level Git objects, creati
       - When a test fails after a representation change, search production code for the same comparison. If it exists, the test is evidence, not a stale assertion.
       - Keep authorities in separate fields (lesson 185) instead of migrating consumers to follow a value that changed domain.
     - Recorded at the `M6-CP1-TB7-A6-REV` review-agent addendum (RA-16 §3).
+188. **Bound a Definition turn by its checkpoint's exit items. Isolate everything else behind an explicit guard and a separate owner.**
+    - *What happened.*
+      - `M6-DEFN-R3` stalled after its entry beacon because it asked for too much in one runtime-free turn. A recovery amendment had to cut it down.
+      - `M6-CP1-TB8-A6-REV` then queued `M6-DEFN-R4` with all CP1 exit items **plus** three A5 gauge obligations: a periodic face-gauge witness, HardRail cross-region branch certification, and OrdinaryFront identity across isolation seams.
+      - Those obligations need runtime witnesses and matter only on non-constant fields (CP3).
+    - **Rule.**
+      - Before handing a Definition turn its scope, sort each item into "required for this checkpoint's exit" or not.
+      - For each item that is not, either prove it cannot reach the products being defined, by an explicit normative guard (RA-17: A6 placement transport has exactly one consumer, the strict cycle rule), or keep it in scope.
+      - Give deferred items their own owner and gate.
+      - Make the consumer census the turn's first deliverable.
+    - Recorded at the `M6-CP1-TB8-A6-REV` review-agent addendum (RA-17, R4 plan).

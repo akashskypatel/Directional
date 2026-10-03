@@ -1,4 +1,17 @@
-## Live M6 routing — after `M6-CP1-TB8-A6-REV` acceptance
+## Live M6 routing — after the `M6-CP1-TB8-A6-REV` review-agent addendum (RA-17)
+
+| Checkpoint | State | Exact next / gate |
+|---|---|---|
+| M6 CP1 reviewed runtime | **PROMOTED / 461/461** | `11265967968 / 8e0818b1...`; gate = `Architecture_M6_CP1_Required_Green_Focused_12.txt` + selector449 |
+| M6 R4 definition | **EXACT NEXT** | `M6-DEFN-R4` per `Architecture_M6_DEFN_R4_CP1_A7_Thin_Adapter_G4B002_Definition_Plan.md` (D4 census first) -> mandatory `M6-DEFN-R4-REV` |
+| A7 / thin adapter / `G4-B002` implementation | **HELD** | CBs sequenced by R4 D5; each gated by focused-12 + new identities + selector449 |
+| M6 CP1 closure | **OPEN** | A7 product, thin adapter (55 failure sites today), A6-derived boundary, fresh green gate |
+| `M6-DEFN-R5` | **CP3-entry gate** | periodic face-gauge witness/rule; HardRail branch certification; OrdinaryFront identity across isolation seams |
+
+Stable accounting: **60 / 16 / 44**, produced-witness debt **1**.
+
+### Superseded routing (pre-addendum)
+
 
 | Checkpoint | State | Exact next / gate |
 |---|---|---|
@@ -126,7 +139,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-10-03 (`M6-CP1-TB7-A6-REV` COMPLETE, with review-agent addendum / RA-16 / candidate rejected / stable accounting 60/16/44, debt 1 / exact next `M6-CP1-CB8-A6` as amended -> TB8-A6 461 -> mandatory Review.)**
+**Status date:** 2026-10-03 (`M6-CP1-TB8-A6-REV` + review-agent addendum: runtime promoted, RA-17, exact next bounded `M6-DEFN-R4`. Earlier: `M6-CP1-TB7-A6-REV` COMPLETE, with review-agent addendum / RA-16 / candidate rejected / stable accounting 60/16/44, debt 1 / exact next `M6-CP1-CB8-A6` as amended -> TB8-A6 461 -> mandatory Review.)**
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 
@@ -665,7 +678,7 @@ Final CP4 Review completes the bounded conjunct8 sequence: row449 was accepted p
 | Checkpoint | Semantic domain |
 |---|---|
 | `M6-DEFN` | **COMPLETE / RUNTIME-FREE.** Four immutable products, exact occurrence/quotient identity, verifier recompute-vs-repair boundary, G4 ownership and dormant-test dispositions frozen in `Architecture_M6_Frozen_Definitions.md`. |
-| `M6-CP1` | **TB7-A6 REVIEWED RED / CB7 CANDIDATE REJECTED.** RA-16 (review-agent addendum): coordinate-rigid HardRail placement transport; `canonicalRelationValue` decoupled from `canonicalTransport`; A5-owned route validity. Selector446 is a stable lineage-contract falsifier and stays unchanged. Reviewed runtime remains `10879581622 / 82b86a28...`, selector449 449/449; accounting **60/16/44**, debt 1. **EXACT NEXT:** `M6-CP1-CB8-A6` as amended, compile/package only -> TB8-A6 12+449=461 -> mandatory Review. A7 and `G4-B002` remain held behind that Review and `M6-DEFN-R4`. |
+| `M6-CP1` | **TB8-A6 RECOVERY PROVED (461/461) / CB8 CANDIDATE PROMOTED.** Reviewed runtime `11265967968 / 8e0818b1...`; gate = focused-12 file + selector449. RA-17 adds the transport guard and bounds R4 to CP1 exit; gauge obligations go to `M6-DEFN-R5` (CP3-entry). Accounting **60/16/44**, debt 1. **EXACT NEXT:** `M6-DEFN-R4` (bounded plan) -> `M6-DEFN-R4-REV` -> A7/adapter/G4 CBs. CP1 closes only on A7 product, thin adapter, A6 boundary and a fresh green gate. |
 | `M6-CP2` | verifier consumes certificates and independently recomputes elementary incidence; **never repairs producer state** |
 | `M6-CP3` | M6 exit — equal coordinates without a relation remain distinct; every owned relation consumed exactly once; source-row / output-row / scheduler permutation invariance |
 

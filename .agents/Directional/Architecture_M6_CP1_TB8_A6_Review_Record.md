@@ -65,3 +65,112 @@ Exact next is runtime-free **`M6-DEFN-R4`**. R4 must freeze:
 5. The bounded A7 + thin-adapter Code + Build sequence and its pre-registered focused/selector preservation gate.
 
 `M6-DEFN-R4` is Definition-only and runtime-free; implementation remains held pending its mandatory Review. A7/G4 implementation must not start in this Review turn.
+
+---
+
+## Review-agent addendum (2026-10-03, resumed `M6-CP1-TB8-A6-REV`)
+
+**Disposition.**
+- **Acceptance and promotion: CONFIRMED.** Candidate `11265967968 / 8e0818b1...` is current reviewed runtime authority.
+- **One overclaim corrected:** the §3 selector446 statement (H2).
+- **R4 scope: RE-BOUNDED.** The `M6-DEFN-R4` plan now exists: `Architecture_M6_DEFN_R4_CP1_A7_Thin_Adapter_G4B002_Definition_Plan.md`.
+- **Accounting unchanged:** 60 / 16 / 44, debt 1.
+- **Successor unchanged:** `M6-DEFN-R4`.
+
+### H1. Independent re-derivation (confirmed)
+
+**Result artifact.**
+- I downloaded result `11273611682` again; the ZIP SHA-256 equals the provider digest `55647d75...e6ad05`.
+- `SHA256SUMS` verifies **954/954**.
+- The focused vector, focused, selector, execution and RED ledgers hash to `534771e3...`, `d9a3e24a...`, `3baad8ec...`, `20ea03fa...` and `3f685d2b...`, matching the report.
+
+**Ledgers.**
+- The selector ledger equals selector449 (`d4a0d1b7...`) in exact file order: 449 PASS, and every row has selected=1 / skipped=0.
+- The focused ledger is 1-12 in the pre-registered order, 12/12 PASS. The focused-12 raw log shows `[ OK ]` (20 s).
+- The boundary file records 461 executed and no repair, mutation or retry.
+
+**Source identity.** HEAD `src/`, `include/`, `tests/`, `cmake/` and `benchmarks/` are byte-identical to `8e0818b1` (empty diff).
+
+**CB8 source against RA-16.**
+- HardRail placement transport is derived from the four `publishedOccurrenceById(...).placement.lattice` states:
+  - the endpoint pairing matches A5's `endpointPairs`;
+  - all four scales must be equal;
+  - the edge vector must be nonzero;
+  - the rotation must be unique;
+  - both coordinate pairs are verified.
+- CB7's HardRail `action_matches` (the cross-rail branch comparison) is gone.
+- `canonicalRelationValue` reproduces the `a532f803` value for every kind. Its canonical inversion is independent of `canonicalTransport`. It feeds `step.appliedTransport` and the A6 step checks (`:4833-4843`, `:4859-4870`).
+- The route predicate is one free function, called by A5 before the HardRail pair predicates and reused by the adapter.
+- Nit: the duplicate-rotation branch in the `R` search cannot fire for a nonzero edge vector. It is harmless.
+
+**Tests.**
+- Focused 3 discriminates the route-validity order: a tampered transition id fires `HardRailRouteAuthorityInvalid`, not `HardRailRouteMismatch`.
+- Focused 12(b) relabels only the opposite region, in cells and edges alike. That changes the branch difference across the rail by ±1 and leaves coordinates fixed, so the RA-14 rule would have failed it. The clause therefore discriminates.
+
+### H2. Overclaim: selector446 does not by itself prove production-completion compatibility
+
+§3 says 446 passing "proves the restored M5 selected-step relation value is compatible with production completion".
+- 446 re-implements the periodic half of the completion comparator. It does not call `validate_materialized_completion_domain_ownership`.
+- The nonzero-Z4 witness, the only Q≠0 fixture, is still never run through the production check that the authoritative pipeline applies at `RemeshPipeline.cpp:10705-10719`.
+
+The claim is a sound inference (the predicates are identical), but it is not executed evidence.
+
+**Resolution.** R4 pre-registers a focused identity for the first A7 CB: the witness materialization must pass `validate_materialized_completion_domain_ownership` with an empty failure. That CB rewrites the lineage projection, so this is exactly when the check is needed. No repricing.
+
+### H3. Re-bounding R4
+
+The §5 R4 list has five items. Items 3 and 4 are the A5 gauge obligations carried from RA-16 §4 and the TB7 addendum §G5:
+- the periodic unequal-face-gauge witness and coordinate rule;
+- HardRail cross-region branch certification;
+- OrdinaryFront coordinate identity across isolation seams.
+
+None of them is a CP1 exit item:
+- they only matter on non-constant fields (CP3, direct production on real data);
+- they need witnesses that a runtime-free turn cannot build;
+- the first Definition turn that asked for too much (`M6-DEFN-R3`) stalled and needed a recovery amendment (lesson-level evidence in `M6_Consolidated_Record.md`).
+
+So R4 is bounded to CP1 exit plus one architectural guard:
+
+- **Guard.** A7 and the adapter must not consume A6 `canonicalTransport` or `relationTransport` for geometry, lineage or chart re-anchoring. A7 embeds from exact A5 source support only (§5.1-5.3). The lineage projects `canonicalRelationValue` (RA-16 §3).
+  - Under this guard, the uncertified gauge components cannot reach geometry. Their only consumer is the A6 strict cycle check, which fails closed.
+  - The three gauge obligations therefore move to a new, bounded **`M6-DEFN-R5` (CP3-entry gate)**: they must close before any CP3 direct-production TB, not before CP1 closure.
+
+R4 must also cover three things the §5 list omitted:
+
+- **Census first** (lessons 180, 187): before freezing the A7 representation, enumerate every production and test reader of the outputs A7 extraction will produce:
+  - `vertexPositions`, `vertexProvenance`;
+  - lineage `sourcePoint`, `sourceSupport`, `sourceCharts`, `sourceIsolationSheets`, `sourceTopologyRegions`, `quotientClass`, `equivalences`, `selectedRelationPaths`;
+  - `hash_completion` and the lineage hashes.
+
+  Current count: about 400 references across src and tests. R4 must also state which frozen assertions bound each representation decision.
+- **Adapter census.** The adapter is still 955 lines with 55 failure-emission sites (`RemeshPipeline.cpp:5548-6503`). R4 must classify each site:
+  - A4-product validation → A5;
+  - A6 error projection;
+  - materialized-mesh validity (non-manifold, open boundary, degenerate/inverted quad, collapsed edge, unreferenced vertex, boundary loops) → A7 `GeometryEmbeddingCertificate`, or A8 if the check is an independent recomputation;
+  - pure projection.
+
+  "Thin" is then a checkable predicate: no semantic predicate, no selection, no floating tolerance.
+- **Exact support, not an epsilon.** The adapter's `QuotientGeometryConsistencyFailure` compares member positions under a `1e-9` relative tolerance (`:6118-6127`), and it chooses the representative with a semantic-looking key (`:6103-6113`). §5.3 requires the `SourceSupportCertificate` to prove exact support incidence; nearest-position coincidence is forbidden as recovery.
+  - R4 must define the exact incidence predicate over `SourceSupport` (vertex/edge/face support compatibility).
+  - It must keep any float comparison as a diagnostic only.
+  - It must place the representation-only representative rule in A7.
+
+### H4. Procedural repairs (folded in here, not findings)
+
+TB8-REV left the following stale, so this addendum updates them:
+- the live handoff section (still "exact next CB8") — the recurring cause of loop stalls;
+- ORIENTATION (currency, §3, §7);
+- the frozen-definitions status line.
+
+### H5. Closeout
+
+| Duty | Result |
+|---|---|
+| Primary evidence | Result digest, 954/954 manifest, ledgers and selector order re-derived; focused-12 raw log checked. |
+| Source authority | HEAD == `8e0818b1` for all semantic paths; CB8 diff reviewed line by line against RA-16. |
+| Acceptance / promotion | Confirmed. `11265967968 / 8e0818b1...` is reviewed runtime authority, selector449 449/449, plus required-green focused 1-12. |
+| Corrections | §3's selector446 "production compatibility" claim downgraded to an inference; witness production check pre-registered for the A7 CB. |
+| R4 scope | Re-bounded to CP1 exit plus the no-placement-transport-for-geometry guard, with consumer census, adapter census and exact-support rule added. Gauge obligations moved to `M6-DEFN-R5` (CP3-entry). |
+| Plan | `Architecture_M6_DEFN_R4_CP1_A7_Thin_Adapter_G4B002_Definition_Plan.md` written. |
+| Accounting | 60 / 16 / 44, debt 1 (unchanged). |
+| Turn boundary | Runtime-free; no generated Directional executable run. |

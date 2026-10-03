@@ -1,6 +1,6 @@
 # M6 Frozen Definitions — Occurrence, Quotient, Embedding, Independent Verification
 
-**Status:** FROZEN / `M6-CP1-TB7-A6-REV` + review-agent addendum: TB7 candidate rejected; **RA-16** (coordinate-rigid HardRail placement transport, lineage relation value decoupled from A6 placement transport, A5-owned route validity) supersedes RA-14 items 2-5 / EXACT NEXT = `M6-CP1-CB8-A6` as amended → `M6-CP1-TB8-A6-EXEC` (12+449=461); RA-1 – RA-13 and RA-15 normative as annotated.
+**Status:** FROZEN / `M6-CP1-TB8-A6-REV` + review-agent addendum: RA-16 recovery proved at 461/461; candidate `11265967968 / 8e0818b1` PROMOTED; **RA-17** (transport guard; R4 bounded to CP1 exit; gauge obligations → `M6-DEFN-R5` as CP3-entry gate) / EXACT NEXT = `M6-DEFN-R4` per `Architecture_M6_DEFN_R4_CP1_A7_Thin_Adapter_G4B002_Definition_Plan.md`; RA-1 – RA-16 normative as annotated.
 **Date:** 2026-09-25
 **Definition authority:** this record is the normative M6 contract for A5 occurrence creation, A6 quotient construction/materialization, A7 source-attached geometry embedding, and the M6 structural portion of A8 independent verification. It refines `DESIGN.md` §14 M6 without changing accepted M5 producer semantics or pulling M7 disposition/degradation work forward.
 
@@ -648,7 +648,7 @@ Rows227/230 prove that a malformed individual HardRail route must retain its acc
    - The `PureQuadCompletion` relation-value checks (`:1086-1132`) and selector446 stay unchanged and must PASS.
 4. **Exact-A3 Periodic stays as CB7 built it in CP1.**
    - CB7's derivation equals `rot(Q)⁻¹ ∘ g`, with `Q = g.rotation` by A4 convention, whenever it accepts.
-   - Replacing its face-gauged final check with coordinate plus relation-gauge checks is an `M6-DEFN-R4` obligation. It requires a witness whose corresponding corners have unequal face gauges.
+   - Replacing its face-gauged final check with coordinate plus relation-gauge checks is an **[owner moved by RA-17 to `M6-DEFN-R5`]** obligation. It requires a witness whose corresponding corners have unequal face gauges.
 5. **Location of route validity (RA-15 item 1).**
    - One extracted free predicate, derived from `exact_interior_route_valid`.
    - A5 applies it to both HardRail sides before any pair predicate. Failure code: `HardRailRouteAuthorityInvalid` → `InvalidHardRailAuthority`.
@@ -665,3 +665,34 @@ Rows227/230 prove that a malformed individual HardRail route must retain its acc
    - A4 visibly rejects the focused-12 relabelled draft.
 
 Stable accounting after the TB7 Review addendum is **60 / 16 / 44**, debt **1**. The extra event is TB7 CAND-03, reclassified as a stable `RP-01` lineage-contract regression. Exact successor: `M6-CP1-CB8-A6` as amended → `M6-CP1-TB8-A6-EXEC` (**12+449=461**) → mandatory `M6-CP1-TB8-A6-REV`.
+
+## RA-17 — transport guard; bounded R4; gauge obligations owned by `M6-DEFN-R5` (normative, 2026-10-03, `M6-CP1-TB8-A6-REV` review-agent addendum)
+
+Rationale: `Architecture_M6_CP1_TB8_A6_Review_Record.md`, addendum §H2-§H3.
+
+1. **Promotion.**
+   - `M6-CP1-TB8-A6-EXEC` proves RA-16 recovery at **461/461**: focused 1-12 + selector449.
+   - Candidate `11265967968 / 8e0818b1e2f8d12b86c64d8774a3572c5ed5266c` is the reviewed M6 runtime authority.
+   - `Architecture_M6_CP1_Required_Green_Focused_12.txt` (SHA-256 `59a523ae2039e0cb537cee550aab6e54936353b8a60234a3915049dc0c3d571c`) becomes a required-green prefix of every later M6 gate, alongside selector449.
+2. **Transport guard.**
+   - A6 `canonicalTransport` / `QuotientRelationCertificate.relationTransport` has exactly one consumer: the strict cycle rule.
+   - A7, the adapter, lineage, chart re-anchoring and completion must not consume it.
+   - Lineage selected steps carry `canonicalRelationValue` (RA-16 §3).
+   - A7 embeds from exact A5 source support only (§5).
+   - A future consumer of placement transport requires a Definition amendment that first discharges item 4's obligations.
+3. **Bounded R4.** `M6-DEFN-R4` decides only:
+   - A7 representation and certificates, including an exact `SourceSupport` incidence predicate that replaces the adapter's epsilon position check as authority;
+   - the thin-adapter classification of all 55 failure sites;
+   - the `G4-B002` A6 boundary and its CP1 equivalence demonstration;
+   - the consumer/frozen-assertion census;
+   - CB sequencing.
+
+   The full scope is in the R4 plan. The first A7 CB must register `M6CP1.NonzeroZ4WitnessPassesProductionCompletionOwnership`.
+4. **`M6-DEFN-R5` (CP3-entry gate) owns RA-16 §4 and the TB7 addendum §G5:**
+   - the periodic unequal-face-gauge witness, plus the coordinate / relation-gauge rule;
+   - HardRail cross-region branch certification;
+   - OrdinaryFront coordinate identity across isolation seams.
+
+   These do not block CP1 closure, because item 2's guard keeps them away from geometry. They must close before any CP3 direct-production TB.
+
+Stable accounting **60 / 16 / 44**, debt 1. Exact next: `M6-DEFN-R4` → mandatory `M6-DEFN-R4-REV`.

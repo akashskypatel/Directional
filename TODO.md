@@ -1,4 +1,27 @@
-## Current — `M6-CP1-TB8-A6-REV` ACCEPTED / runtime promoted / R4 next (2026-10-03)
+## Current — `M6-CP1-TB8-A6-REV` review-agent addendum: promotion confirmed / R4 bounded (RA-17) / R4 next (2026-10-03)
+
+- [x] Re-derive TB8 independently:
+  - result digest, 954/954 manifest and five ledgers;
+  - selector449 order, focused 1-12 order, the focused-12 raw log;
+  - HEAD semantic source == `8e0818b1`.
+- [x] Review the CB8 diff against RA-16:
+  - coordinate-rigid HardRail derivation from occurrence placements;
+  - the `canonicalRelationValue` decoupling;
+  - A5-owned route predicate;
+  - focused 3 and focused 12(b) discriminate (12(b) would fail the RA-14 rule).
+- [x] Correct TB8-REV §3's overclaim: selector446 replicates the completion comparator and does not run it. Pre-register the witness production-completion identity for the first A7 CB.
+- [x] Freeze `Architecture_M6_CP1_Required_Green_Focused_12.txt` (SHA-256 `59a523ae...3d571c`) as a required-green prefix.
+- [x] Freeze RA-17:
+  - transport guard;
+  - R4 bounded to CP1 exit;
+  - gauge obligations → `M6-DEFN-R5` (CP3-entry).
+- [x] Write `Architecture_M6_DEFN_R4_CP1_A7_Thin_Adapter_G4B002_Definition_Plan.md`. Order: D4 census first, then D1 A7, D2 adapter 55-site classification, D3 `G4-B002`, D5 CB sequencing.
+- [x] Record lesson 188.
+- [ ] **Exact next `M6-DEFN-R4`:** runtime-free; follow the plan.
+- [ ] Mandatory `M6-DEFN-R4-REV`. Then the A7/adapter/G4 CBs per D5, each gated by focused-12 + new identities + selector449.
+- [ ] `M6-DEFN-R5` (CP3-entry): periodic face-gauge witness and rule; HardRail branch certification; OrdinaryFront identity across isolation seams.
+
+## Superseded — `M6-CP1-TB8-A6-REV` pre-addendum checklist (R4 scope replaced by the R4 plan and RA-17)
 
 - [x] Independently re-hash candidate `11265967968`, verify 28/28 root manifest, source `8e0818b1...`, GMP command boundary, selector449/routing449 hashes and row counts.
 - [x] Independently verify TB8 result `11273611682`: **954/954** self-manifest, focused 12/12, selector449 449/449, aggregate **461/461**, exact-one, zero skips, benchmark 0 and empty RED ledger.

@@ -1,3 +1,12 @@
+## 2026-10-03 — `M6-CP1-TB8-A6-REV` review-agent addendum — promotion confirmed; RA-17; bounded R4
+
+- TB8 (461/461) and the promotion of `11265967968 / 8e0818b1...` are independently confirmed. Focused 1-12 is frozen as a required-green prefix.
+- RA-17:
+  - A6 placement transport feeds only the strict cycle rule;
+  - `M6-DEFN-R4` is bounded to CP1 exit, as set out in its new plan (census first, A7 exact-support certificate, adapter 55-site classification, `G4-B002` boundary, CB sequencing);
+  - the gauge obligations move to `M6-DEFN-R5` (CP3-entry).
+- Selector446's production-completion claim is downgraded to an inference. The witness production-completion identity is pre-registered for the first A7 CB. Accounting 60 / 16 / 44.
+
 ## 2026-10-03 — M6 TB8 Review accepts recovery and promotes CB8 runtime
 
 - Independently re-verified candidate `11265967968 / 8e0818b1...` and TB8 result `11273611682`; package/result manifests, selector/routing, all 461 ledgers and immutable postflight are valid.

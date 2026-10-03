@@ -1,6 +1,6 @@
 # M6 consolidated record
 
-**Current authority after `M6-CP1-TB8-A6-REV` (2026-10-03):** TB8 is independently accepted at **461/461** and candidate `11265967968 / 8e0818b1e2f8d12b86c64d8774a3572c5ed5266c` is promoted as current reviewed M6 runtime authority under selector449 449/449. TB7 recovery is formally proved; append-only accounting remains **60 / 16 / 44**, debt 1. CP1 remains open on A7/thin-adapter/`G4-B002` boundary scope. Exact next is runtime-free `M6-DEFN-R4` -> mandatory Review before implementation.
+**Current authority after the `M6-CP1-TB8-A6-REV` review-agent addendum (2026-10-03):** reviewed runtime is CB8 `11265967968 / 8e0818b1...` (focused-12 + selector449 = 461/461). RA-16 and RA-17 are normative (§§29-30). Stable accounting **60 / 16 / 44**, debt 1. Exact next: `M6-DEFN-R4` (bounded plan) → mandatory `M6-DEFN-R4-REV`.
 
 ## 30. `M6-CP1-TB8-A6-REV` — 461/461 recovery accepted; candidate promoted
 
@@ -244,6 +244,29 @@ CB8 grants compile/package evidence only. Candidate remains unpromoted; reviewed
 TB8 consumes CB8 candidate `11265967968 / 8e0818b1e2f8d12b86c64d8774a3572c5ed5266c` immutably. Run/job `37121395619 / 111198068572` executes exactly 12 focused identities followed by selector449 as **461 fresh exact-filter processes**. Result/log artifacts are `11273611682 / 11274345428`; result digest `55647d752e97cb71062c23475fe76bb870d0329c5f957ca819ccebc809e6ad05`; self-manifest **954/954**.
 
 Outcome is focused **12/12**, selector **449/449**, aggregate **461/461 PASS**, exact-one, zero skips, benchmark 0. Focused12 and every prior TB7 RED row recover; critical controls pass; raw diagnostic census is zero. Package/source/execution-view/fixture postflight is unchanged; selector/routing are unchanged; candidate root manifest remains 28/28. EXEC creates no new candidate and does not reprice stable history: **60 / 16 / 44**, debt 1. Candidate remains unpromoted pending mandatory runtime-free `M6-CP1-TB8-A6-REV`; R4/A7/G4 remain held.
+
+## 30. `M6-CP1-TB8-A6-REV` (+ review-agent addendum) — RA-16 recovery proved; runtime promoted; R4 bounded (RA-17)
+
+**Evidence.** `M6-CP1-CB8-A6` implements RA-16 at `8e0818b1`:
+- coordinate-rigid HardRail `canonicalTransport` from occurrence placements;
+- `canonicalRelationValue` feeding the lineage step and the A6 step checks;
+- A5-owned route predicate;
+- focused 3 strengthened; new focused 12.
+
+`M6-CP1-TB8-A6-EXEC` passes **461/461** (run `37121395619`, result `11273611682`, 954/954). Review promotes `11265967968 / 8e0818b1...`.
+
+**Review-agent addendum.**
+- Re-derives the evidence and confirms promotion.
+- Corrects TB8-REV §3: selector446 replicates the production completion comparator rather than executing it. A witness production-completion identity is pre-registered for the first A7 CB.
+- Freezes `Architecture_M6_CP1_Required_Green_Focused_12.txt` (SHA-256 `59a523ae...3d571c`) as a required-green prefix.
+- Freezes **RA-17**:
+  - transport guard: A6 placement transport's only consumer is the strict cycle rule;
+  - R4 bounded to CP1 exit;
+  - gauge obligations → `M6-DEFN-R5` (CP3-entry).
+- Writes `Architecture_M6_DEFN_R4_CP1_A7_Thin_Adapter_G4B002_Definition_Plan.md` (D4 census first; D1 A7 with exact-support certificate; D2 adapter 55-site classification; D3 `G4-B002`; D5 CBs).
+- Records lesson 188.
+
+**Accounting.** 60 / 16 / 44, debt 1.
 
 ## Folded document index
 
