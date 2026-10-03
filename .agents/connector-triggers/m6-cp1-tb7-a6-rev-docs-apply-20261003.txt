@@ -1,4 +1,0 @@
-Purpose: apply reviewed M6-CP1-TB7-A6 documentation/consolidation patch from Google Drive.
-Base: ea826744832357d7234ebc9d34c3d23cb9865207
-Patch SHA-256: e134ae5544bc5e8e52d99ccf61245a9347518b0989e1aa3b66646d0503ed9760
-Retry: 0
