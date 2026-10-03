@@ -1,3 +1,0 @@
-turn=M6-CP1-CB8-A6
-purpose=compile-package
-retry=1
