@@ -1,3 +1,14 @@
+## Current — `M6-CP1-TB8-A6-REV` ACCEPTED / runtime promoted / R4 next (2026-10-03)
+
+- [x] Independently re-hash candidate `11265967968`, verify 28/28 root manifest, source `8e0818b1...`, GMP command boundary, selector449/routing449 hashes and row counts.
+- [x] Independently verify TB8 result `11273611682`: **954/954** self-manifest, focused 12/12, selector449 449/449, aggregate **461/461**, exact-one, zero skips, benchmark 0 and empty RED ledger.
+- [x] Verify immutable postflight and zero diagnostic census; re-open critical focused/selector outcomes.
+- [x] Adjudicate TB7 stable recovery: HardRail placement authority, route-validation precedence and lineage-value regressions are **RECOVERY PROVED**; historical accounting stays **60 / 16 / 44**, debt 1.
+- [x] Promote `11265967968 / 8e0818b1...` as current reviewed M6 runtime authority under selector449 449/449.
+- [ ] **Exact next `M6-DEFN-R4`:** runtime-free Definition for A7 representation/certificates, thin adapter, `G4-B002` A6-derived boundary, carried periodic unequal-face-gauge witness/rule, HardRail branch certification and OrdinaryFront seam identity.
+- [ ] Mandatory `M6-DEFN-R4-REV` before any A7/G4 Code + Build implementation.
+- [ ] CP1 closure remains held until the frozen A7 / thin-adapter / `G4-B002` boundary scope is implemented and freshly gated.
+
 ## Current — `M6-CP1-TB8-A6-EXEC` COMPLETE / 461/461 GREEN / mandatory Review next (2026-10-03)
 
 - [x] Consume CB8 candidate `11265967968 / 8e0818b1...` immutably.

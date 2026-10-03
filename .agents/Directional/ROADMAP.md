@@ -1,3 +1,15 @@
+## Live M6 routing — after `M6-CP1-TB8-A6-REV` acceptance
+
+| Checkpoint | State | Exact next / gate |
+|---|---|---|
+| M6 CP1 reviewed runtime | **PROMOTED / 461/461** | `11265967968 / 8e0818b1...`, selector449 449/449 |
+| TB7 recovery obligations | **RECOVERY PROVED** | HardRail placement, route-validation precedence and lineage-value regressions recovered; history remains 60/16/44 |
+| M6 R4 definition | **EXACT NEXT** | `M6-DEFN-R4`, runtime-free -> mandatory `M6-DEFN-R4-REV` |
+| A7 / thin adapter / `G4-B002` boundary implementation | **HELD** | only after R4 Review |
+| M6 CP1 closure | **OPEN** | requires A7 product, thin adapter, A6-derived boundary and fresh green preservation gate |
+
+Stable accounting: **60 / 16 / 44**, produced-witness debt **1**. R4 also owns the carried unequal-face-gauge periodic witness/rule, HardRail cross-region branch certification and OrdinaryFront coordinate identity across isolation seams.
+
 ## Live M6 routing — after the `M6-CP1-TB7-A6-REV` review-agent addendum (RA-16)
 
 | Checkpoint | State | Exact next / gate |

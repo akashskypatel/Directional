@@ -1,6 +1,10 @@
 # M6 consolidated record
 
-**Current authority after `M6-CP1-TB8-A6-EXEC` (2026-10-03):** TB8 is mechanically GREEN at **461/461** on immutable candidate `11265967968 / 8e0818b1...`; candidate remains unpromoted pending mandatory Review. Stable accounting is **60 / 16 / 44**, debt 1. Exact next: `M6-CP1-TB8-A6-REV`; R4/A7/G4 remain held.
+**Current authority after `M6-CP1-TB8-A6-REV` (2026-10-03):** TB8 is independently accepted at **461/461** and candidate `11265967968 / 8e0818b1e2f8d12b86c64d8774a3572c5ed5266c` is promoted as current reviewed M6 runtime authority under selector449 449/449. TB7 recovery is formally proved; append-only accounting remains **60 / 16 / 44**, debt 1. CP1 remains open on A7/thin-adapter/`G4-B002` boundary scope. Exact next is runtime-free `M6-DEFN-R4` -> mandatory Review before implementation.
+
+## 30. `M6-CP1-TB8-A6-REV` — 461/461 recovery accepted; candidate promoted
+
+Independent runtime-free Review re-hashes candidate `11265967968 / 8e0818b1...`, verifies its 28/28 package manifest and frozen selector/routing authority, then independently verifies TB8 result `11273611682` at 954/954 with the exact 12+449 order, exact-one selection, zero skips, empty RED ledger and immutable postflight. All TB7 recovery populations and critical controls are green; the three TB7 stable events are formally recovery-proved without changing append-only history. `11265967968 / 8e0818b1...` is promoted as current reviewed M6 runtime authority. Stable accounting remains 60/16/44, debt 1. CP1 remains open because A7, the thin adapter and `G4-B002` A6-derived stage boundary were deferred. Exact next is runtime-free `M6-DEFN-R4`, followed by mandatory Review before implementation.
 
 ## 0. `M6-DEFN-R3-REV` — R3 accepted with four binding A6 precision amendments
 

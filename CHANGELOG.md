@@ -1,3 +1,10 @@
+## 2026-10-03 — M6 TB8 Review accepts recovery and promotes CB8 runtime
+
+- Independently re-verified candidate `11265967968 / 8e0818b1...` and TB8 result `11273611682`; package/result manifests, selector/routing, all 461 ledgers and immutable postflight are valid.
+- TB8 is accepted at **461/461 PASS**. The three TB7 stable regressions are formally recovery-proved; append-only accounting stays **60/16/44**, debt 1.
+- `11265967968 / 8e0818b1...` is promoted as current reviewed M6 runtime authority under selector449 449/449.
+- CP1 stays open on A7, the thin adapter and the `G4-B002` A6-derived stage boundary. Exact next is runtime-free `M6-DEFN-R4`, then mandatory Review before implementation.
+
 ## 2026-10-03 — M6 TB8-A6 recovery gate returns 461/461
 
 - Artifact-only run/job `37121395619 / 111198068572` consumes candidate `11265967968 / 8e0818b1...` immutably and completes exactly **12 focused + 449 selector = 461** fresh processes.

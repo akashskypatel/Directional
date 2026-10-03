@@ -1,3 +1,14 @@
+## 2026-10-03 — `M6-CP1-TB8-A6-REV` — **TB7 RECOVERY PROVED / RUNTIME PROMOTED / +0 HISTORY REPRICING / 60/16/44 / debt 1**
+
+Independent Review re-opens candidate/result authority and upholds TB8 at **461/461 PASS** with 954/954 self-manifest, exact-one selection, zero skips, benchmark 0 and immutable postflight.
+
+- TB7 CAND-01 / `RP-01 AUTHORITY_DOMAIN_CONFLATION` (HardRail carrier vs placement): **RECOVERY PROVED**; focused12 and rows115/116/141/143/150/217/231 plus downstream rows122/130/132/134/137/176/201 are green.
+- TB7 CAND-02 / `VALIDATION_ORDER_SHADOWING`: **RECOVERY PROVED**; malformed-route rows227/230 recover while valid-route controls139/142 and owner140 remain green.
+- TB7 CAND-03 / `RP-01 AUTHORITY_DOMAIN_CONFLATION` (lineage relation value vs A6 placement transport): **RECOVERY PROVED**; unchanged selector446, focused6 and periodic controls232/444/448/449 are green.
+- No new candidate is created. Recovery changes current defect state only; append-only totals remain **60 events / 16 categories / 44 recurrences**, debt 1.
+- Candidate `11265967968 / 8e0818b1...` is promoted as current reviewed M6 runtime authority under selector449 449/449.
+- Exact next is runtime-free `M6-DEFN-R4`; A7/G4 implementation remains held pending its Review.
+
 ## 2026-10-03 — `M6-CP1-TB8-A6-EXEC` recovery gate GREEN — **+0 STABLE EVENTS IN EXEC / 60/16/44 / debt 1**
 
 Immutable candidate `11265967968 / 8e0818b1...` executes the exact **12 focused + selector449 = 461** fresh exact-filter processes in run/job `37121395619 / 111198068572`. Result/log authority is `11273611682 / 11274345428`; self-manifest **954/954**; exact-one and zero skips; benchmark/configure/compile/relink/repair/discovery zero; immutable postflight.

@@ -1,3 +1,10 @@
+## 2026-10-03 — `M6-CP1-TB8-A6-REV`: 461/461 accepted; candidate promoted; R4 next
+
+- Independently re-hashed candidate/result authority and verified candidate 28/28, result 954/954, exact 12+449 ordering, exact-one, zero skips, empty RED ledger and immutable postflight.
+- Formally recovery-proved TB7 HardRail placement, route-order and lineage-value stable regressions without repricing append-only history; totals remain **60/16/44**, debt 1.
+- Promoted `11265967968 / 8e0818b1...` as current reviewed M6 runtime authority under selector449 449/449.
+- CP1 remains open on A7/thin-adapter/`G4-B002`. Exact next: runtime-free `M6-DEFN-R4` -> mandatory Review before implementation.
+
 ## 2026-10-03 — `M6-CP1-TB7-A6-REV` review-agent addendum: Finding C overturned; RA-16 frozen; CB8 amended (TB8 = 461)
 
 - **Evidence re-derived independently:**

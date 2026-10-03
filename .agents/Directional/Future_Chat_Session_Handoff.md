@@ -1,3 +1,13 @@
+## Resume-critical update — `M6-CP1-TB8-A6-REV` ACCEPTED / candidate promoted / exact next `M6-DEFN-R4` (2026-10-03)
+
+**Start `M6-DEFN-R4` as a new runtime-free Definition turn. Do not rerun TB8 and do not begin A7/G4 implementation before R4 Review.**
+
+Independent Review re-opened candidate `11265967968 / 8e0818b1e2f8d12b86c64d8774a3572c5ed5266c` and TB8 result `11273611682` directly. Candidate ZIP/root manifest/source archive, selector449/routing449, 954/954 result manifest, all 461 ledgers, exact-one/zero-skip boundary, critical controls and immutable postflight verify. TB8 is authoritative **461/461 PASS**. The prior TB7 HardRail placement, route-validation-order and lineage-value stable events are **RECOVERY PROVED**; append-only accounting remains **60 / 16 / 44**, debt 1.
+
+Candidate `11265967968 / 8e0818b1...` is now the **current reviewed M6 runtime authority**, selector449 449/449. CP1 remains open on the deliberately deferred A7 product/thin adapter and `G4-B002` A6-derived stage boundary.
+
+Exact next `M6-DEFN-R4` must freeze A7 representation/certificates, the `G4-B002` boundary representation/equivalence proof, the carried unequal-face-gauge periodic witness + coordinate/relation-gauge rule, HardRail cross-region branch certification, OrdinaryFront coordinate identity across isolation seams, and the bounded implementation/gate sequence. Full Review authority: `Architecture_M6_CP1_TB8_A6_Review_Record.md`.
+
 ## Resume-critical update — `M6-CP1-TB8-A6-EXEC` COMPLETE / 461/461 mechanically GREEN / mandatory Review next (2026-10-03)
 
 **Start `M6-CP1-TB8-A6-REV` as a new runtime-free Review turn. Do not rerun TB8, modify the candidate, or begin R4/A7/G4 first.**
