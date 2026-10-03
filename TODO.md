@@ -1,3 +1,14 @@
+## Current — `M6-DEFN-R4` D1-D5 definition work complete locally / durability closeout pending (2026-10-03)
+
+- [x] D4 complete consumer/frozen-assertion census: 1,189 exact-snapshot references, 666 production + 523 test/benchmark.
+- [x] D1 freeze immutable A7 product, exact typed SourceSupport incidence, deterministic representative, lineage projection, RA-17 transport guard and typed A7 failures.
+- [x] D2 classify all 55 direct adapter failures: 31 A5 + 4 A6 projection + 19 A7 + 1 serialization; freeze stage precedence and thin-adapter predicate.
+- [x] D3 freeze A6 `SurfaceQuotientClosedComplexView`, exact HardRail/Periodic label derivation, topology-derived strip identity, produced-torus labeled-isomorphism demonstration and independent mechanism oracle; CP3 keeps direct `G4-B002` debt proof.
+- [x] D5 freeze CB9/CB10/CB11 sequences and focused 20/24/28 gates: 469 / 473 / 477 processes, respectively.
+- [x] Append the pending-Review R4 amendment to `Architecture_M6_Frozen_Definitions.md` and write CB9/CB10/CB11 plans.
+- [ ] **Durability closeout only:** apply the preserved R4 documentation patch to the working branch, verify exact changed paths and no unrelated drift, update final COMPLETE beacon.
+- [ ] Mandatory next after durable R4 completion: `M6-DEFN-R4-REV`. No CB9 implementation before Review acceptance.
+
 ## Current — `M6-CP1-TB8-A6-REV` review-agent addendum: promotion confirmed / R4 bounded (RA-17) / R4 next (2026-10-03)
 
 - [x] Re-derive TB8 independently:

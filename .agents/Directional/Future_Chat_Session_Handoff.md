@@ -1,3 +1,17 @@
+## Resume-critical update — `M6-DEFN-R4` D1-D5 complete locally; durability closeout only remains (2026-10-03)
+
+Resume the **same `M6-DEFN-R4` turn**. Do not redo D1-D5 and do not start Review or CB9 until the preserved documentation patch is durably applied and the Definition turn is closed.
+
+Completed in the verified exact snapshot (`c7deb092e86f0912a304397e364d47dc94587a5a`):
+- D4: complete 1,189-site consumer/frozen assertion census.
+- D1: A7 product, exact typed SourceSupport certificate, deterministic representation-only representative, complete lineage projection, RA-17 transport guard, typed failures and hash disposition.
+- D2: all 55 direct adapter failure sites classified 31/4/19/1 across A5/A6 projection/A7/serialization; thin predicate and failure precedence frozen.
+- D3: A6 `SurfaceQuotientClosedComplexView`; side-incidence multigraph identity; exact HardRail/Periodic labels; opposite-edge strip identity; produced closed torus labeled combinatorial-isomorphism migration proof; independent candidate mechanism oracle; CP3 direct-production debt unchanged.
+- D5: CB9 A7 focused 13-20 -> 469 gate; CB10 A5V focused 21-24 -> 473; CB11 G4 focused 25-28 -> 477; each CB -> immutable TB -> mandatory Review; then CP1 close Review. First A7 CB includes the real production completion-ownership witness.
+- Three held Code + Build plans are written. R5 gauge obligations remain CP3-entry only.
+
+Accounting stays **60 / 16 / 44**, debt 1. No source/test/fixture/selector/build/runtime implementation occurred in R4. The only remaining work is durability: apply the exact preserved docs patch, verify branch authority and changed paths, then publish `M6-DEFN-R4` COMPLETE with successor `M6-DEFN-R4-REV`.
+
 ## Resume-critical update — `M6-CP1-TB8-A6-REV` review-agent addendum: promotion confirmed; R4 bounded by plan + RA-17 (2026-10-03)
 
 **Start `M6-DEFN-R4` as a new runtime-free Definition turn.** Follow `Architecture_M6_DEFN_R4_CP1_A7_Thin_Adapter_G4B002_Definition_Plan.md`. Do the D4 consumer census FIRST.

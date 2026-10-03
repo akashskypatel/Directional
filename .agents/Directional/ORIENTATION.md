@@ -1,3 +1,7 @@
+## Current orientation — `M6-DEFN-R4` definition content complete; durability closeout pending (2026-10-03)
+
+R4 has locally completed D1-D5 under exact snapshot `c7deb092...`: A7 exact source-support embedding, 55-site adapter thinning, A6 `G4-B002` closed-complex boundary, full consumer census, and CB9/10/11 sequencing. Accounting remains **60 / 16 / 44**, debt 1. No implementation or runtime occurred. Resume the same R4 turn only to apply/verify the preserved documentation patch and close the beacon; then mandatory `M6-DEFN-R4-REV`.
+
 ## Currency — `M6-CP1-TB8-A6-REV` + review-agent addendum: recovery proved 461/461; runtime promoted; RA-17; exact next `M6-DEFN-R4` (2026-10-03 UTC)
 
 TB8 passes **461/461** (focused 1-12 + selector449). Candidate `11265967968 / 8e0818b1...` is the reviewed runtime authority. Focused 1-12 is frozen as a required-green prefix (`Architecture_M6_CP1_Required_Green_Focused_12.txt`).
