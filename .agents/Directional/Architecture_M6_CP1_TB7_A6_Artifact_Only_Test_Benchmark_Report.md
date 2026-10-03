@@ -96,3 +96,10 @@ Exact successor: **`M6-CP1-TB7-A6-REV`**. It must independently re-open this res
 ## 6. Process note
 
 The turn-local tool-call ledger was partially lost across context compaction. Per conservation policy, the exact total is reported as **unknown/partial** rather than reconstructed by extra tool calls. No acceptance claim depends on the missing accounting metric.
+
+
+## 7. Closeout evidence
+
+The durable report/tracker/handoff/TODO/CHANGELOG patch applied successfully in run/job `37091313553 / 111112083691`, producing commit `957d9288034758ddd09d344598e9250cb457fe7a`. Its result/log artifacts are `11262004404 / 11261959558` with provider digests `sha256:5b68dbbd2bca1c1cc812e55e74cc5e37398632b707cf98c33c972634cb18d289` and `sha256:26bb0b7d6fe1b8ae2d8dab9416ac0ed8645583204dd7d32645a1d261b21a5b93`. The workflow reported `drive_file_retirement_required=true`; the user-authorized Drive control plane then permanently deleted the exact staged patch file.
+
+Mandatory turn cleanup completed successfully in run/job `37091455611 / 111112493863`. Cleanup result artifact `11261739679` has provider digest `sha256:f5c6233a8dda797443988afc91382fe322e0aeb6d695207f235e8dfbb6af95cd`; cleanup commit `4b414cdac589f76140758c22dc1ec396ba26be3c` removed the four TB7 marker paths, the frozen artifact-only harness payload, and the cleanup manifest, with `runtimeExecution=false`. Post-cleanup inspection confirms exactly the seven durable workflows remain and `.agents/connector-triggers`, `.agents/workflow-observation`, and `.agents/Directional/turn-payloads` are absent.
