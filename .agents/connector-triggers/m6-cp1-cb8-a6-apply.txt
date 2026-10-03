@@ -1,3 +1,0 @@
-turn=M6-CP1-CB8-A6
-purpose=apply verified Google Drive patch
-retry=0
