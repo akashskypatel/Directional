@@ -1,3 +1,0 @@
-turn=M6-CP1-TB8-A6-EXEC
-purpose=artifact-only-461-process-gate
-retry=0
