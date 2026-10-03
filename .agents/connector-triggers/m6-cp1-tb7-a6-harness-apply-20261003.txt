@@ -1,5 +1,0 @@
-purpose=M6-CP1-TB7-A6 harness patch apply
-patch_file_id=1YsZ1ohNHlryQ78xRQ84r-tc-ay4RdTEG
-patch_sha256=6b1d8e7d016bf8cf465a40b1a0c892c843d9ba280ad595fa93c9ded9d5d6759b
-base_sha=aef701314d8777a37bfc3351aae3f439544cd6c1
-retry=0

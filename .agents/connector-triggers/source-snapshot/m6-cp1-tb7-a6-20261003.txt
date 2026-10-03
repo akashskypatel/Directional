@@ -1,3 +1,0 @@
-purpose=M6-CP1-TB7-A6-EXEC authority snapshot
-source_base=31dd5e298f10f3ae97376e7fbfe0eb84202b2266
-retry=0
