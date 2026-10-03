@@ -1,3 +1,0 @@
-turn=M6-CP1-TB8-A6-REV
-purpose=apply-independent-review-closeout
-retry=1
