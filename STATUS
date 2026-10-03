@@ -1,8 +1,8 @@
 ---TURN_STATUS---
 Turn: M6-DEFN-R4-REV
-Status: IN_PROGRESS
-Successor: UNKNOWN
+Status: COMPLETE
+Successor: M6-CP1-CB9-A7
 Started at: 2026-10-03T19:07:50Z
 Resumed at: 
-Ended at: 
+Ended at: 2026-10-03T19:10:44Z
 ---END_TURN_STATUS---
