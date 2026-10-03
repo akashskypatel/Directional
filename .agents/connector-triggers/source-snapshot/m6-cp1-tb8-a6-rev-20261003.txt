@@ -1,0 +1,2 @@
+turn=M6-CP1-TB8-A6-REV
+purpose=freeze exact review documentation base
