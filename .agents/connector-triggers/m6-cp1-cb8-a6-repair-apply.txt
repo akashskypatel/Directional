@@ -1,3 +1,0 @@
-turn=M6-CP1-CB8-A6
-purpose=compile-repair-apply
-retry=0
