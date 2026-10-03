@@ -1,3 +1,10 @@
+## 2026-10-03 — M6 TB8-A6 recovery gate returns 461/461
+
+- Artifact-only run/job `37121395619 / 111198068572` consumes candidate `11265967968 / 8e0818b1...` immutably and completes exactly **12 focused + 449 selector = 461** fresh processes.
+- Result is **461/461 PASS** with exact-one selection, zero skips and benchmark 0; result artifact `11273611682` verifies a **954/954** self-manifest.
+- Focused12 passes and all 17 TB7 RED selector rows recover; critical focused/selector controls are all green and the diagnostic census is zero.
+- Immutable postflight and frozen selector/routing authority hold. EXEC creates no new candidate and does not reprice history: **60/16/44**, debt 1. Candidate remains unpromoted pending mandatory `M6-CP1-TB8-A6-REV`; R4/A7/G4 remain held.
+
 ## 2026-10-03 — M6 CB8 implements RA-16; compile/package green
 
 - Implemented coordinate-rigid HardRail placement transport from occurrence placements, independent of face-gauged branch rotations.

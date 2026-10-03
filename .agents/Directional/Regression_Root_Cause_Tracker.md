@@ -1,3 +1,9 @@
+## 2026-10-03 — `M6-CP1-TB8-A6-EXEC` recovery gate GREEN — **+0 STABLE EVENTS IN EXEC / 60/16/44 / debt 1**
+
+Immutable candidate `11265967968 / 8e0818b1...` executes the exact **12 focused + selector449 = 461** fresh exact-filter processes in run/job `37121395619 / 111198068572`. Result/log authority is `11273611682 / 11274345428`; self-manifest **954/954**; exact-one and zero skips; benchmark/configure/compile/relink/repair/discovery zero; immutable postflight.
+
+Outcome is focused **12/12**, selector **449/449**, aggregate **461/461 PASS**. Focused12 and the entire TB7 RED set recover; diagnostic counts for `QuotientHolonomyConflict`, `OccurrenceInvalidCornerAuthority`, `InvalidHardRailTransport`, and `RelationCertificateConflict` are all zero. EXEC creates no new candidate and does not reprice historical stable events. **Stable accounting remains `60 events / 16 categories / 44 recurrences`, debt 1.** Candidate remains unpromoted until mandatory `M6-CP1-TB8-A6-REV`.
+
 ## 2026-10-03 — `M6-CP1-TB7-A6-REV` review-agent addendum — **+1 STABLE EVENT (CAND-03 reclassified) / 60/16/44 / debt 1**
 
 The review-agent addendum confirms CAND-01's diagnosis and grouping, and CAND-02's diagnosis. It overturns CAND-03's non-stable disposition. Full text: `Architecture_M6_CP1_TB7_A6_Review_Record.md`, addendum §G1-§G7.

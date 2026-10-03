@@ -1,6 +1,6 @@
 # M6 consolidated record
 
-**Current authority after `M6-CP1-CB8-A6` (2026-10-03):** RA-16 implementation is compile/package GREEN and runtime-free at exact source `8e0818b1e2f8d12b86c64d8774a3572c5ed5266c`; candidate artifact `11265967968` is unpromoted. Reviewed runtime remains TB5 `10879581622 / 82b86a28...` (selector449 449/449). Stable accounting is **60 / 16 / 44**, debt 1. Exact next: `M6-CP1-TB8-A6-EXEC` (12+449=461) → mandatory `M6-CP1-TB8-A6-REV`; R4/A7/G4 remain held.
+**Current authority after `M6-CP1-TB8-A6-EXEC` (2026-10-03):** TB8 is mechanically GREEN at **461/461** on immutable candidate `11265967968 / 8e0818b1...`; candidate remains unpromoted pending mandatory Review. Stable accounting is **60 / 16 / 44**, debt 1. Exact next: `M6-CP1-TB8-A6-REV`; R4/A7/G4 remain held.
 
 ## 0. `M6-DEFN-R3-REV` — R3 accepted with four binding A6 precision amendments
 
@@ -234,6 +234,12 @@ The main patch applied in run/job `37101412649 / 111141538493` as semantic commi
 Mandatory compile retry `37101997642 / 111143233041` is GREEN: all eight standard targets compile, preflight/build status is 0/0, GMP/GMPXX are discovered and present on the authoritative generated link command, clean source-status receipts hold, the self-excluding package manifest verifies, and `runtimeExecution=false`. Candidate artifact `11265967968` hashes `022a35378a58463b892f1bf1d5113f726c2cc7cb8939892b24acd1da62259c4b`; log artifact `11266127622` hashes `a435590a67884432e848298ab064934b04d39674831340854bfbc2c1bcf474cd`.
 
 CB8 grants compile/package evidence only. Candidate remains unpromoted; reviewed runtime remains TB5 `10879581622 / 82b86a28...`; stable accounting remains **60 / 16 / 44**, debt 1. Exact next is artifact-only `M6-CP1-TB8-A6-EXEC`: focused 1-12 in order then selector449 in file order with routing449, **461 fresh exact-filter processes**, benchmark 0, recovery-green **461/461**, then mandatory Review. Full CB8 evidence: `Architecture_M6_CP1_CB8_A6_Code_Build_Report.md`.
+
+## 31. `M6-CP1-TB8-A6-EXEC` — complete 461-process recovery gate is mechanically GREEN
+
+TB8 consumes CB8 candidate `11265967968 / 8e0818b1e2f8d12b86c64d8774a3572c5ed5266c` immutably. Run/job `37121395619 / 111198068572` executes exactly 12 focused identities followed by selector449 as **461 fresh exact-filter processes**. Result/log artifacts are `11273611682 / 11274345428`; result digest `55647d752e97cb71062c23475fe76bb870d0329c5f957ca819ccebc809e6ad05`; self-manifest **954/954**.
+
+Outcome is focused **12/12**, selector **449/449**, aggregate **461/461 PASS**, exact-one, zero skips, benchmark 0. Focused12 and every prior TB7 RED row recover; critical controls pass; raw diagnostic census is zero. Package/source/execution-view/fixture postflight is unchanged; selector/routing are unchanged; candidate root manifest remains 28/28. EXEC creates no new candidate and does not reprice stable history: **60 / 16 / 44**, debt 1. Candidate remains unpromoted pending mandatory runtime-free `M6-CP1-TB8-A6-REV`; R4/A7/G4 remain held.
 
 ## Folded document index
 

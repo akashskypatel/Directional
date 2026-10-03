@@ -1,3 +1,15 @@
+## Resume-critical update — `M6-CP1-TB8-A6-EXEC` COMPLETE / 461/461 mechanically GREEN / mandatory Review next (2026-10-03)
+
+**Start `M6-CP1-TB8-A6-REV` as a new runtime-free Review turn. Do not rerun TB8, modify the candidate, or begin R4/A7/G4 first.**
+
+TB8 consumed CB8 candidate `11265967968 / 8e0818b1e2f8d12b86c64d8774a3572c5ed5266c` immutably. Runtime run/job `37121395619 / 111198068572` completed exactly **12 focused + selector449 = 461** fresh exact-filter processes: focused **12/12**, selector **449/449**, aggregate **461/461 PASS**, exact-one selection, zero skips, benchmark 0. Result/log artifacts `11273611682 / 11274345428` have digests `sha256:55647d752e97cb71062c23475fe76bb870d0329c5f957ca819ccebc809e6ad05` / `sha256:36f674b7dd8eab84b1ad3c9c2486ce94f8a369f81994da3418b1c41fcb34d98e`; result self-manifest verifies **954/954**.
+
+Focused12 passes; all prior TB7 RED rows `115,116,122,130,132,134,137,141,143,150,176,201,217,227,230,231,446` recover. Focused6/10/11 and selectors139/140/142/232/444/446/448/449 all PASS. Raw diagnostic census is zero for `QuotientHolonomyConflict`, `OccurrenceInvalidCornerAuthority`, `InvalidHardRailTransport` and `RelationCertificateConflict`. Package/source/execution-view/fixture postflight is immutable and selector/routing bytes remain unchanged.
+
+EXEC records no new candidate and does not reprice stable history: **60 / 16 / 44**, debt 1. Candidate remains unpromoted until Review; reviewed runtime authority remains TB5 `10879581622 / 82b86a28...`. Full evidence: `Architecture_M6_CP1_TB8_A6_Artifact_Only_Test_Benchmark_Report.md`.
+
+**Exact next:** mandatory runtime-free `M6-CP1-TB8-A6-REV`; adjudicate recovery/promotion and authorize the next M6 turn. R4/A7/G4 remain held.
+
 ## Resume-critical update — `M6-CP1-CB8-A6` COMPLETE / compile-package GREEN / exact next `M6-CP1-TB8-A6-EXEC` (2026-10-03)
 
 **Start `M6-CP1-TB8-A6-EXEC` as a new artifact-only Test + Benchmark turn. Do not resume CB8 and do not begin R4/A7/G4 first.**

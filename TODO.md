@@ -1,3 +1,13 @@
+## Current — `M6-CP1-TB8-A6-EXEC` COMPLETE / 461/461 GREEN / mandatory Review next (2026-10-03)
+
+- [x] Consume CB8 candidate `11265967968 / 8e0818b1...` immutably.
+- [x] Execute focused 1-12 then selector449: **461 fresh exact-filter processes**, **461/461 PASS**, exact-one, zero skips, benchmark 0.
+- [x] Focused12 and full TB7 RED-set recovery verified; focused6/10/11 and selector139/140/142/232/444/446/448/449 PASS.
+- [x] Zero raw holonomy/corner-authority/HardRail-transport/relation-certificate diagnostics; self-manifest **954/954**; immutable postflight.
+- [x] No new candidate or stable repricing; **60 / 16 / 44**, debt 1; candidate remains unpromoted.
+- [ ] **Exact next `M6-CP1-TB8-A6-REV`:** independently verify evidence, adjudicate recovery/promotion and authorize next work.
+- [ ] Keep R4/A7/G4 held until TB8 Review.
+
 ## Current — `M6-CP1-CB8-A6` COMPLETE / compile-package GREEN / TB8 next (2026-10-03)
 
 - [x] Implement RA-16 coordinate-rigid HardRail placement transport from occurrence placements; no branch comparison.
