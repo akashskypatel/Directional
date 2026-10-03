@@ -1,3 +1,12 @@
+## 2026-10-03 — M6 CB8 implements RA-16; compile/package green
+
+- Implemented coordinate-rigid HardRail placement transport from occurrence placements, independent of face-gauged branch rotations.
+- Decoupled lineage `canonicalRelationValue` from A6 `canonicalTransport`; exact pre-CB7 OrdinaryFront/HardRail/Periodic relation values are preserved.
+- Moved exact HardRail route-authority validation into A5, strengthened focused 3, and added focused 12 for coordinate-rigid / face-gauge-invariant transport.
+- Initial compile exposed only a test helper declaration-order error; a bounded test-local repair produced exact source `8e0818b1e2f8d12b86c64d8774a3572c5ed5266c`.
+- Authoritative compile retry `37101997642 / 111143233041` builds all eight standard GMP/GMPXX targets; candidate artifact `11265967968`, `runtimeExecution=false`.
+- Selector/routing bytes, selector446, `PureQuadCompletion.cpp`, fixtures and A7/R4/G4 remain unchanged. Exact next: `M6-CP1-TB8-A6-EXEC`, **12+449=461**, then mandatory Review. Accounting stays **60/16/44**, debt 1.
+
 ## 2026-10-03 — `M6-CP1-TB7-A6-REV` review-agent addendum — selector446 reclassified; RA-16; CB8 amended
 
 - **Selector446 is not a stale test.** CB7 coupled the M5 lineage selected-step transport to the A6 placement transport, and production completion validates that step. The TB7 CAND-03 is now a stable `RP-01` recurrence; stable accounting **60 / 16 / 44**, debt 1.

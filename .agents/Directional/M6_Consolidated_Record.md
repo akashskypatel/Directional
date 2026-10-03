@@ -1,6 +1,6 @@
 # M6 consolidated record
 
-**Current authority after the `M6-CP1-TB7-A6-REV` review-agent addendum (2026-10-03):** the TB7 candidate `11257522199 / 40842caa...` is rejected; reviewed runtime remains TB5 `10879581622 / 82b86a28...` (selector449 449/449). RA-16 is normative (§29). Stable accounting is **60 / 16 / 44**, debt 1. Exact next: `M6-CP1-CB8-A6` as amended → `M6-CP1-TB8-A6-EXEC` (12+449=461) → mandatory Review.
+**Current authority after `M6-CP1-CB8-A6` (2026-10-03):** RA-16 implementation is compile/package GREEN and runtime-free at exact source `8e0818b1e2f8d12b86c64d8774a3572c5ed5266c`; candidate artifact `11265967968` is unpromoted. Reviewed runtime remains TB5 `10879581622 / 82b86a28...` (selector449 449/449). Stable accounting is **60 / 16 / 44**, debt 1. Exact next: `M6-CP1-TB8-A6-EXEC` (12+449=461) → mandatory `M6-CP1-TB8-A6-REV`; R4/A7/G4 remain held.
 
 ## 0. `M6-DEFN-R3-REV` — R3 accepted with four binding A6 precision amendments
 
@@ -220,6 +220,20 @@ The review agent re-derives the TB7 evidence: digest, 953/953 manifest, ledgers,
 **Gate.** The CB8 plan gains an amendment block: decoupling, coordinate-rigid HardRail, A5 route validity, focused 3 strengthened, and new focused 12 (`M6CP1.RelationPlacementTransportIsCoordinateRigidAndFaceGaugeInvariant`). TB8 = **12+449 = 461**.
 
 **Accounting.** **60 / 16 / 44**, debt 1. Lessons 186-187. Full text: `Architecture_M6_CP1_TB7_A6_Review_Record.md`, addendum §G1-§G7.
+
+## 30. `M6-CP1-CB8-A6` — RA-16 implemented; compile/package GREEN
+
+CB8 implements only the RA-16 amendment. HardRail placement transport is now one coordinate-rigid `GridAutomorphism` derived from the two occurrence-placement coordinate pairs at equal scale, independent of branch rotations. Carrier/topology authority remains `equivalence.route` and `equivalence.action = route.composed_transport()`. A5 evidence gains independent `canonicalRelationValue`; selected lineage steps consume that value, while `canonicalTransport` remains A6 placement/certificate authority. Exact HardRail route validity is A5-owned through one shared `exact_interior_route_valid` helper, with the new typed A5 failure mapped back to legacy `InvalidHardRailAuthority`. Focused 3 is strengthened and focused 12 adds coordinate-rigid / face-gauge-invariance coverage.
+
+The required lineage proof re-opens pre-CB7 source `a532f803...`: OrdinaryFront identity (`:4117`), HardRail route action (`:4122-4123`), exact-A3 orientation-correct semantic action (`:4160-4165`) and non-A3 chosen action/inverse (`:4169-4182`) are reproduced by CB8 `storageRelationValue` at `:4265`, `:4270-4271`, `:4374-4379`, `:4403-4404`, then canonically inverted under the same storage direction at `:4452-4456`. `SelectedRelationStep.appliedTransport` consumes it at `:4475`. `PureQuadCompletion.cpp` and selector446 remain unchanged.
+
+Static closeout changed only `include/directional/pipeline/RemeshPipeline.h`, `src/pipeline/RemeshPipeline.cpp` and `tests/SurfaceCellTransitionQuotientTests.cpp`; `git diff --check` passed. Selector449 remains `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`, selector448 prefix `70ff08601bf244fcb4883e5d0601d5e7a3a44f52a8e855544a065c6ca5c75789`, routing449 `9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707` with owner census 32/301/75/41. No A7/R4/G4 implementation appears.
+
+The main patch applied in run/job `37101412649 / 111141538493` as semantic commit `2b182f1c...`. Initial compile `37101508913 / 111141817614` configured/preflighted but exposed a declaration-order-only test compile defect: new focused-test bodies referenced `first_edge_of_kind` before its later declaration. A bounded body-local test-helper repair applied in `37101918608 / 111142995689`, yielding exact source `8e0818b1e2f8d12b86c64d8774a3572c5ed5266c`.
+
+Mandatory compile retry `37101997642 / 111143233041` is GREEN: all eight standard targets compile, preflight/build status is 0/0, GMP/GMPXX are discovered and present on the authoritative generated link command, clean source-status receipts hold, the self-excluding package manifest verifies, and `runtimeExecution=false`. Candidate artifact `11265967968` hashes `022a35378a58463b892f1bf1d5113f726c2cc7cb8939892b24acd1da62259c4b`; log artifact `11266127622` hashes `a435590a67884432e848298ab064934b04d39674831340854bfbc2c1bcf474cd`.
+
+CB8 grants compile/package evidence only. Candidate remains unpromoted; reviewed runtime remains TB5 `10879581622 / 82b86a28...`; stable accounting remains **60 / 16 / 44**, debt 1. Exact next is artifact-only `M6-CP1-TB8-A6-EXEC`: focused 1-12 in order then selector449 in file order with routing449, **461 fresh exact-filter processes**, benchmark 0, recovery-green **461/461**, then mandatory Review. Full CB8 evidence: `Architecture_M6_CP1_CB8_A6_Code_Build_Report.md`.
 
 ## Folded document index
 

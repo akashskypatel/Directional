@@ -1,3 +1,19 @@
+## Current — `M6-CP1-CB8-A6` COMPLETE / compile-package GREEN / TB8 next (2026-10-03)
+
+- [x] Implement RA-16 coordinate-rigid HardRail placement transport from occurrence placements; no branch comparison.
+- [x] Decouple `canonicalRelationValue` from `canonicalTransport`; selected lineage steps consume the former while A6 certificates retain the latter.
+- [x] Move exact HardRail route-authority validation into A5 with shared `exact_interior_route_valid` and preserve `InvalidHardRailAuthority`.
+- [x] Strengthen focused 3 and add focused 12, `M6CP1.RelationPlacementTransportIsCoordinateRigidAndFaceGaugeInvariant`.
+- [x] Preserve selector446 / `PureQuadCompletion.cpp`, selector449 / selector448-prefix / routing449, fixtures and A7/R4/G4.
+- [x] Complete the required pre-CB7 lineage proof for OrdinaryFront, HardRail, exact-A3 Periodic and non-A3 Periodic in `Architecture_M6_CP1_CB8_A6_Code_Build_Report.md`.
+- [x] Apply source patch at `2b182f1c...`; diagnose the declaration-order-only test compile failure; apply bounded test-local repair at `8e0818b1...`.
+- [x] Mandatory compile/package retry `37101997642 / 111143233041` GREEN on all eight GMP/GMPXX targets; candidate artifact `11265967968`; `runtimeExecution=false`.
+- [ ] **Exact next `M6-CP1-TB8-A6-EXEC`:** focused 1-12 in order, then selector449 in file order with routing449 = **461** fresh exact-filter processes, benchmark 0.
+- [ ] Recovery-green is **461/461** -> mandatory `M6-CP1-TB8-A6-REV`.
+- [ ] Keep `M6-DEFN-R4`, A7, `G4-B002`, `G4-B004` representative half and direct-torus debt held until TB8 Review.
+
+Stable accounting remains **60 / 16 / 44**, debt 1. Reviewed runtime authority remains TB5 `10879581622 / 82b86a28...` until TB8 Review.
+
 ## Current — `M6-CP1-TB7-A6-REV` review-agent addendum: RA-16 / CB8 amended / TB8 = 461 (2026-10-03)
 
 - [x] Re-derive the TB7 evidence: digest, 953/953 manifest, three ledgers, selector order, 460 raw logs. Verify the downstream-row grouping in code (`RemeshPipeline.cpp:11912`, `:14302`).

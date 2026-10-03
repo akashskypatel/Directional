@@ -1,3 +1,15 @@
+## Resume-critical update — `M6-CP1-CB8-A6` COMPLETE / compile-package GREEN / exact next `M6-CP1-TB8-A6-EXEC` (2026-10-03)
+
+**Start `M6-CP1-TB8-A6-EXEC` as a new artifact-only Test + Benchmark turn. Do not resume CB8 and do not begin R4/A7/G4 first.**
+
+CB8 implements normative RA-16 and closes runtime-free at repaired semantic source `8e0818b1e2f8d12b86c64d8774a3572c5ed5266c`. The source separates A6 placement transport from the M5 lineage relation value, derives HardRail placement transport from occurrence-placement coordinates with no branch comparison, moves exact route validity into A5, strengthens focused 3 and adds focused 12. `PureQuadCompletion.cpp`, selector/routing bytes, fixtures and A7/R4/G4 remain unchanged.
+
+The initial compile on semantic commit `2b182f1c...` failed only because new focused-test code referenced `first_edge_of_kind` before its later declaration. A bounded test-local declaration-order repair produced exact source `8e0818b1...`. Authoritative compile retry `37101997642 / 111143233041` is GREEN for all eight standard GMP/GMPXX targets with `runtimeExecution=false`. Candidate/result artifact `11265967968` has digest `sha256:022a35378a58463b892f1bf1d5113f726c2cc7cb8939892b24acd1da62259c4b`; compile log `11266127622` has digest `sha256:a435590a67884432e848298ab064934b04d39674831340854bfbc2c1bcf474cd`.
+
+Full Code + Build evidence and the required pre-CB7 lineage proof are in `Architecture_M6_CP1_CB8_A6_Code_Build_Report.md`.
+
+**Exact TB8 gate:** focused 1-12 in order, then selector449 in file order with routing449 = **461 fresh exact-filter processes**, benchmark 0. Recovery-green is **461/461**. Mandatory successor is `M6-CP1-TB8-A6-REV`. Stable accounting remains **60 / 16 / 44**, debt 1; reviewed runtime authority remains TB5 `10879581622 / 82b86a28...` until Review. R4/A7/G4 remain held.
+
 ## Resume-critical update — `M6-CP1-TB7-A6-REV` review-agent addendum: RA-16; CB8 plan amended; TB8 = 12+449=461 (2026-10-03)
 
 **Start `M6-CP1-CB8-A6` as a new runtime-free Code + Build turn.** Follow the **review-agent amendment block** at the top of `Architecture_M6_CP1_CB8_A6_HardRail_Placement_Transport_Recovery_Code_Build_Plan.md`. It overrides the plan body.
