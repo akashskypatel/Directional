@@ -1,11 +1,11 @@
-## 2026-10-03 — `M6-DEFN-R4`: D1-D5 definition completed locally; durability closeout pending
+## 2026-10-03 — `M6-DEFN-R4`: COMPLETE; D1-D5 frozen; mandatory Review next
 
 - Completed D4's conservative 1,189-site consumer/frozen-assertion census from exact source snapshot `c7deb092...`.
 - Froze D1 A7 source-attached geometry semantics: typed exact SourceSupport incidence replaces the adapter epsilon as authority; representative is representation-only; lineage is class-wide A5/A6 evidence; RA-17 transport guard remains intact.
 - Partitioned all 55 direct adapter failure sites as 31 A5 / 4 A6 projection / 19 A7 / 1 serialization and froze the stage precedence / checkable thin-adapter rule.
 - Froze D3's A6 closed-complex boundary with side-incidence edge identity, exact HardRail/Periodic labels, topology-derived strip identity, produced-torus labeled-isomorphism migration proof and independent mechanism oracle. CP3 retains `G4-B002` production debt.
 - Froze D5: CB9 focused 13-20 (469 gate), CB10 focused 21-24 (473), CB11 focused 25-28 (477), each with separate immutable TB + Review; wrote all three held CB plans.
-- Appended the pending-Review R4 amendment to frozen definitions. No implementation/runtime occurred. R4 remains IN_PROGRESS only because the documentation patch still needs durable branch application and final beacon closeout.
+- Appended the pending-Review R4 amendment to frozen definitions. Exact patch `d5b06628...f147f` was applied by Actions run `37144877459` as commit `0f3024732e2f16b35c8c2a787a519378af2b9591`; result artifact `11281248325` records `runtimeExecution=false`. No implementation/runtime occurred. Exact next is mandatory `M6-DEFN-R4-REV`; CB9 remains held.
 
 ## 2026-10-03 — `M6-CP1-TB8-A6-REV` review-agent addendum: promotion confirmed; RA-17; bounded R4 plan
 

@@ -1,6 +1,6 @@
-## Resume-critical update — `M6-DEFN-R4` D1-D5 complete locally; durability closeout only remains (2026-10-03)
+## Resume-critical update — `M6-DEFN-R4` COMPLETE; mandatory `M6-DEFN-R4-REV` next (2026-10-03)
 
-Resume the **same `M6-DEFN-R4` turn**. Do not redo D1-D5 and do not start Review or CB9 until the preserved documentation patch is durably applied and the Definition turn is closed.
+`M6-DEFN-R4` is durably complete. Do not resume the Definition turn and do not start CB9. Start mandatory runtime-free `M6-DEFN-R4-REV` and review the frozen R4 A7 / thin-adapter / `G4-B002` boundary before any implementation.
 
 Completed in the verified exact snapshot (`c7deb092e86f0912a304397e364d47dc94587a5a`):
 - D4: complete 1,189-site consumer/frozen assertion census.
@@ -10,7 +10,7 @@ Completed in the verified exact snapshot (`c7deb092e86f0912a304397e364d47dc94587
 - D5: CB9 A7 focused 13-20 -> 469 gate; CB10 A5V focused 21-24 -> 473; CB11 G4 focused 25-28 -> 477; each CB -> immutable TB -> mandatory Review; then CP1 close Review. First A7 CB includes the real production completion-ownership witness.
 - Three held Code + Build plans are written. R5 gauge obligations remain CP3-entry only.
 
-Accounting stays **60 / 16 / 44**, debt 1. No source/test/fixture/selector/build/runtime implementation occurred in R4. The only remaining work is durability: apply the exact preserved docs patch, verify branch authority and changed paths, then publish `M6-DEFN-R4` COMPLETE with successor `M6-DEFN-R4-REV`.
+Accounting stays **60 / 16 / 44**, debt 1. No source/test/fixture/selector/build/runtime implementation occurred in R4. The exact R4 documentation patch was applied by Actions run `37144877459` as commit `0f3024732e2f16b35c8c2a787a519378af2b9591`; the workload recorded `runtimeExecution=false`. Mandatory successor is `M6-DEFN-R4-REV`; CB9 remains held until that Review accepts or amends the definitions.
 
 ## Resume-critical update — `M6-CP1-TB8-A6-REV` review-agent addendum: promotion confirmed; R4 bounded by plan + RA-17 (2026-10-03)
 
@@ -469,7 +469,9 @@ Mandatory successor: `M6-DEFN-R4-REV`.
 
 ## Current files
 
-- `.agents/Directional/Architecture_M6_DEFN_R4_CP1_A7_Thin_Adapter_G4B002_Definition_Plan.md` — exact next plan.
+- `.agents/Directional/Architecture_M6_DEFN_R4_A7_Boundary_Definition_Record.md` — completed R4 definition authority for Review.
+- `.agents/Directional/Architecture_M6_DEFN_R4_D4_Consumer_Census.md` — complete R4 consumer/frozen-assertion census.
+- `.agents/Directional/Architecture_M6_DEFN_R4_CP1_A7_Thin_Adapter_G4B002_Definition_Plan.md` — consumed R4 Definition plan; reference only.
 - `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — normative; §§5, 7, 8.1, 10, CP1 exit scope, RA-16, RA-17.
 - `.agents/Directional/Architecture_M6_CP1_TB8_A6_Review_Record.md` — current Review authority, with addendum §H.
 - `.agents/Directional/Architecture_M6_CP1_TB8_A6_Artifact_Only_Test_Benchmark_Report.md` — current runtime report.
@@ -482,7 +484,8 @@ Mandatory successor: `M6-DEFN-R4-REV`.
 
 ```yaml
 load_next:
-  - .agents/Directional/Architecture_M6_DEFN_R4_CP1_A7_Thin_Adapter_G4B002_Definition_Plan.md
+  - .agents/Directional/Architecture_M6_DEFN_R4_A7_Boundary_Definition_Record.md
+  - .agents/Directional/Architecture_M6_DEFN_R4_D4_Consumer_Census.md
   - .agents/Directional/Architecture_M6_Frozen_Definitions.md
   - .agents/Directional/Architecture_M6_CP1_TB8_A6_Review_Record.md
   - .agents/Directional/Architecture_M6_CP1_Required_Green_Focused_12.txt

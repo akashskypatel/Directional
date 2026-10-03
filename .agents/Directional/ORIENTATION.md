@@ -1,6 +1,6 @@
-## Current orientation — `M6-DEFN-R4` definition content complete; durability closeout pending (2026-10-03)
+## Current orientation — `M6-DEFN-R4` COMPLETE; mandatory Review next (2026-10-03)
 
-R4 has locally completed D1-D5 under exact snapshot `c7deb092...`: A7 exact source-support embedding, 55-site adapter thinning, A6 `G4-B002` closed-complex boundary, full consumer census, and CB9/10/11 sequencing. Accounting remains **60 / 16 / 44**, debt 1. No implementation or runtime occurred. Resume the same R4 turn only to apply/verify the preserved documentation patch and close the beacon; then mandatory `M6-DEFN-R4-REV`.
+R4 completed D1-D5 under exact snapshot `c7deb092...`: A7 exact source-support embedding, 55-site adapter thinning, A6 `G4-B002` closed-complex boundary, full consumer census, and CB9/10/11 sequencing. The exact documentation patch was durably applied in run `37144877459` as commit `0f3024732e2f16b35c8c2a787a519378af2b9591`; `runtimeExecution=false`. Accounting remains **60 / 16 / 44**, debt 1. Exact next is runtime-free `M6-DEFN-R4-REV`; CB9 remains held until Review acceptance.
 
 ## Currency — `M6-CP1-TB8-A6-REV` + review-agent addendum: recovery proved 461/461; runtime promoted; RA-17; exact next `M6-DEFN-R4` (2026-10-03 UTC)
 

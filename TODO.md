@@ -1,4 +1,4 @@
-## Current — `M6-DEFN-R4` D1-D5 definition work complete locally / durability closeout pending (2026-10-03)
+## Current — `M6-DEFN-R4` COMPLETE / mandatory `M6-DEFN-R4-REV` next (2026-10-03)
 
 - [x] D4 complete consumer/frozen-assertion census: 1,189 exact-snapshot references, 666 production + 523 test/benchmark.
 - [x] D1 freeze immutable A7 product, exact typed SourceSupport incidence, deterministic representative, lineage projection, RA-17 transport guard and typed A7 failures.
@@ -6,8 +6,8 @@
 - [x] D3 freeze A6 `SurfaceQuotientClosedComplexView`, exact HardRail/Periodic label derivation, topology-derived strip identity, produced-torus labeled-isomorphism demonstration and independent mechanism oracle; CP3 keeps direct `G4-B002` debt proof.
 - [x] D5 freeze CB9/CB10/CB11 sequences and focused 20/24/28 gates: 469 / 473 / 477 processes, respectively.
 - [x] Append the pending-Review R4 amendment to `Architecture_M6_Frozen_Definitions.md` and write CB9/CB10/CB11 plans.
-- [ ] **Durability closeout only:** apply the preserved R4 documentation patch to the working branch, verify exact changed paths and no unrelated drift, update final COMPLETE beacon.
-- [ ] Mandatory next after durable R4 completion: `M6-DEFN-R4-REV`. No CB9 implementation before Review acceptance.
+- [x] Durability closeout: exact documentation patch applied by run `37144877459` as commit `0f3024732e2f16b35c8c2a787a519378af2b9591`; changed-path authority verified; `runtimeExecution=false`.
+- [ ] **Exact next `M6-DEFN-R4-REV`:** mandatory runtime-free Review. No CB9 implementation before Review acceptance.
 
 ## Current — `M6-CP1-TB8-A6-REV` review-agent addendum: promotion confirmed / R4 bounded (RA-17) / R4 next (2026-10-03)
 
