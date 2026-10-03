@@ -1,5 +1,23 @@
 # M6-CP1-CB11-G4 — A6 closed-complex boundary / `G4-B002` mechanism Code + Build plan
 
+> **`M6-DEFN-R4-REV` amendment (RA-20, RA-21) — this block overrides the plan below where they conflict. Held until `M6-CP1-TB10-A5V-REV`.**
+>
+> **RA-20: two attributes per quotient edge.**
+> - `relationKind` (Ordinary / HardRail / Periodic) from A6 certificates.
+> - `hardFeatureProtected`, from typed source hard-feature authority: the HardFeature rail-edge set production passes to completion as `hardFeatureRailEdges`, supplied as an explicit input. An edge is protected iff every carrier step lies in that set.
+>
+> A HardRail edge that is not protected fails closed. Candidate extraction maps `hardFeatureProtected` to `touchesHardFeature`. Do not reuse A5's HardRail-route-only barrier set (`RemeshPipeline.cpp:3323-3331`).
+>
+> On the produced torus, the 18 user hard edges are **PeriodicCut** carriers (one region), not A5 HardRail relations. Identity 26 must show them protected.
+>
+> **RA-21: an executable oracle.**
+> - Before identity 25, establish and record the static map: arrangement halfedge `(proposalId, proposalSide)` → `network.proposals[proposalId]` → A4 `CellId` and side.
+> - Induce the vertex bijection from quad and side incidence. Arrangement nodes have no occurrence members; member-set lineage is checked on the A6 side only.
+> - Compare `hardFeatureProtected` with the arrangement's `hardFeature`.
+> - **Stop for Review** if the map is missing or not injective, if the arrangement subdivides proposal cells, or if the complexes are not isomorphic.
+>
+> Gate unchanged: **28+449 = 477**.
+
 **Held until:** `M6-CP1-TB10-A5V-REV` accepts CB10/TB10.
 **Type:** Code + Build only; no Directional runtime.
 **Successor if green:** `M6-CP1-TB11-G4-EXEC` -> mandatory `M6-CP1-TB11-G4-REV`.

@@ -1,4 +1,22 @@
-## Resume-critical update — `M6-DEFN-R4` COMPLETE; mandatory `M6-DEFN-R4-REV` next (2026-10-03)
+## Resume-critical update — `M6-DEFN-R4-REV` COMPLETE: R4 accepted with RA-18 – RA-21; exact next `M6-CP1-CB9-A7` (2026-10-03)
+
+**Start `M6-CP1-CB9-A7` as a new runtime-free Code + Build turn.** Follow `Architecture_M6_CP1_CB9_A7_Code_Build_Plan.md`; its **RA-18 block at the top overrides the body**.
+
+Review accepts R4's D4 census, D1 projection and transport guard, D2 partition, and D5 sequencing. It verified the D2 pinned-literal claim independently: only rows 212, 227/230 and 139/140/142 pin adapter literals. It also freezes four amendments:
+
+1. **RA-18 (D1).** The adapter's `1e-9` check is the only place anything verifies that relation-united occurrences are the same source point; A4/A5/A6 never compare them. Equal edge or face support does not imply the same point. So A7's support certificate becomes:
+   - typed exact common support, from A5 `occurrence.support` only, **plus**
+   - a reject-only same-simplex point-coincidence guard: edge parameter `t`, or face barycentrics, within the A5 resolver tolerance (`SourceSupportPointMismatch`).
+
+   Identity 15 is renamed to `M6CP1.A7RejectsSupportKindIdentityAndSameSimplexPointMismatches`. My earlier R4 plan / RA-17 wording ("diagnostic only") caused this gap.
+2. **RA-19 (D2, for CB10).** Moved A5 checks go after every existing A5 check. Identity 24 becomes `M6CP1.ThinAdapterOutputIsPureProjectionOfStageProducts`; the source rule becomes a static check.
+3. **RA-20 (D3, for CB11).** Candidate protection comes from the source hard-feature edge set, not relation kind. The torus's 18 user hard edges are PeriodicCut carriers, not A5 HardRail relations, so R4's rule would have left them unprotected.
+4. **RA-21 (D3, for CB11).** The equivalence oracle's key path is `(proposalId, proposalSide)` → A4 `CellId`/side, with a stop rule. Arrangement nodes carry no occurrence members.
+
+Gates are unchanged: CB9 **20+449 = 469** → TB9 → mandatory TB9 Review. Accounting **60 / 16 / 44**, debt 1. R5 remains a CP3-entry gate.
+
+## Superseded — `M6-DEFN-R4` completion note
+
 
 `M6-DEFN-R4` is durably complete. Do not resume the Definition turn and do not start CB9. Start mandatory runtime-free `M6-DEFN-R4-REV` and review the frozen R4 A7 / thin-adapter / `G4-B002` boundary before any implementation.
 
@@ -440,65 +458,64 @@ Review must independently re-open source/evidence and re-derive: split-square v0
 
 ## Current authority
 
-`M6-CP1-TB8-A6-REV` is **COMPLETE**, including its review-agent addendum of 2026-10-03.
-- TB8 run/job `37121395619 / 111198068572` passed **461/461**: focused 1-12 + selector449.
-- Candidate `11265967968 / 8e0818b1e2f8d12b86c64d8774a3572c5ed5266c` is **PROMOTED** as the reviewed M6 runtime authority.
-- Required-green gate for later M6 turns: `Architecture_M6_CP1_Required_Green_Focused_12.txt` (SHA-256 `59a523ae...3d571c`) + selector449 (`d4a0d1b7...`), with routing449 (`9c88a5ed...`).
+`M6-DEFN-R4-REV` is **COMPLETE**. R4 is **accepted with binding amendments RA-18 – RA-21**. Record: `Architecture_M6_DEFN_R4_Review_Record.md`; normative text at the end of `Architecture_M6_Frozen_Definitions.md`.
+- Reviewed runtime authority: `11265967968 / 8e0818b1e2f8d12b86c64d8774a3572c5ed5266c`.
+- Required gate: `Architecture_M6_CP1_Required_Green_Focused_12.txt` + selector449 = **461/461**.
 - Stable accounting **60 / 16 / 44**, debt **1**.
 
-Normative authorities: RA-16 (placement vs lineage value) and RA-17 (transport guard; bounded R4; `M6-DEFN-R5` owns the gauge obligations).
-
-CP1 remains **OPEN**. Still required: the A7 product, a thin adapter, and the `G4-B002` A6 boundary.
+CP1 stays **OPEN** until CB9/TB9 (A7), CB10/TB10 (thin adapter / A5 validation) and CB11/TB11 (`G4-B002` A6 boundary) are each Review-accepted, followed by `M6-CP1-CLOSE-REV`. `M6-DEFN-R5` is a CP3-entry gate.
 
 ## Exact next turn
 
-**`M6-DEFN-R4` — runtime-free Definition.** Follow `Architecture_M6_DEFN_R4_CP1_A7_Thin_Adapter_G4B002_Definition_Plan.md`:
-- D4 census first;
-- then D1 (A7), D2 (adapter classification), D3 (`G4-B002` boundary) and D5 (CB sequencing and gates).
+**`M6-CP1-CB9-A7` — Code + Build, compile/package only.** Follow `Architecture_M6_CP1_CB9_A7_Code_Build_Plan.md`; its RA-18 block governs.
 
-Write `Architecture_M6_DEFN_R4_A7_Boundary_Definition_Record.md` incrementally and append an R4 amendment to the frozen definitions. No source, test or build edits; no runtime.
+Implement the A7 `SourceAttachedGeometryProduct` and producer (R4 D1). The support certificate has two parts:
+- typed exact common support, from A5 `occurrence.support`;
+- RA-18's reject-only same-simplex point guard.
 
-Mandatory successor: `M6-DEFN-R4-REV`.
+Also:
+- remove the adapter's `1e-9` check in the same CB;
+- move the D2 category-(c)/(d) checks into A7 or serialization;
+- add focused 13-20 (15 renamed per RA-18; 20 runs the real `validate_materialized_completion_domain_ownership`);
+- create the focused-20 file with focused-12 as its exact prefix.
+
+Compile-green → `M6-CP1-TB9-A7-EXEC` (**20+449 = 469**) → mandatory `M6-CP1-TB9-A7-REV`.
 
 ## Completed predecessor turns (reference only)
 
-- `M6-CP1-TB8-A6-REV`, with its addendum — current Review authority. Promotion and R4 scope.
-- `M6-CP1-TB8-A6-EXEC` — runtime report, 461/461.
-- `M6-CP1-CB8-A6` — compile report for `8e0818b1`.
-- `M6-CP1-TB7-A6-REV` and earlier — superseded, or folded into `M6_Consolidated_Record.md`.
+- `M6-DEFN-R4-REV` — current Review authority.
+- `M6-DEFN-R4` — Definition record and D4 census, accepted with amendments.
+- `M6-CP1-TB8-A6-REV`, with its addendum — runtime promotion, RA-17.
 
 ## Current files
 
-- `.agents/Directional/Architecture_M6_DEFN_R4_A7_Boundary_Definition_Record.md` — completed R4 definition authority for Review.
-- `.agents/Directional/Architecture_M6_DEFN_R4_D4_Consumer_Census.md` — complete R4 consumer/frozen-assertion census.
-- `.agents/Directional/Architecture_M6_DEFN_R4_CP1_A7_Thin_Adapter_G4B002_Definition_Plan.md` — consumed R4 Definition plan; reference only.
-- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — normative; §§5, 7, 8.1, 10, CP1 exit scope, RA-16, RA-17.
-- `.agents/Directional/Architecture_M6_CP1_TB8_A6_Review_Record.md` — current Review authority, with addendum §H.
-- `.agents/Directional/Architecture_M6_CP1_TB8_A6_Artifact_Only_Test_Benchmark_Report.md` — current runtime report.
-- `.agents/Directional/Architecture_M6_CP1_CB8_A6_Code_Build_Report.md` — promoted candidate's build evidence.
-- `.agents/Directional/Architecture_M6_CP1_Required_Green_Focused_12.txt` — frozen focused prefix.
-- `.agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt` and `Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv` — frozen selector and routing.
-- `.agents/Directional/M6_Consolidated_Record.md` and `.agents/Directional/Regression_Root_Cause_Tracker.md` — history and accounting.
+- `.agents/Directional/Architecture_M6_CP1_CB9_A7_Code_Build_Plan.md` — exact next plan; the RA-18 block governs.
+- `.agents/Directional/Architecture_M6_DEFN_R4_A7_Boundary_Definition_Record.md` and `Architecture_M6_DEFN_R4_Review_Record.md` — definition plus review.
+- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — normative; §5, R4 amendment, RA-16 – RA-21.
+- `.agents/Directional/Architecture_M6_DEFN_R4_D4_Consumer_Census.md` — reader census.
+- `.agents/Directional/Architecture_M6_CP1_CB10_A5_Validation_Code_Build_Plan.md` and `Architecture_M6_CP1_CB11_G4_B002_Boundary_Code_Build_Plan.md` — held, amended.
+- `.agents/Directional/Architecture_M6_CP1_Required_Green_Focused_12.txt` and selector449 / routing449 — frozen gate.
 
 ## Context Load Plan
 
 ```yaml
 load_next:
+  - turn-based-coding-agent/references/turns/CB.md
+  - .agents/Directional/Architecture_M6_CP1_CB9_A7_Code_Build_Plan.md
   - .agents/Directional/Architecture_M6_DEFN_R4_A7_Boundary_Definition_Record.md
-  - .agents/Directional/Architecture_M6_DEFN_R4_D4_Consumer_Census.md
+  - .agents/Directional/Architecture_M6_DEFN_R4_Review_Record.md
   - .agents/Directional/Architecture_M6_Frozen_Definitions.md
-  - .agents/Directional/Architecture_M6_CP1_TB8_A6_Review_Record.md
   - .agents/Directional/Architecture_M6_CP1_Required_Green_Focused_12.txt
 conditional_modules:
-  - trigger: github_connector / GitHub Actions / source snapshot
+  - trigger: github_connector / GitHub Actions / compile
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
+  - .agents/Directional/Architecture_M6_DEFN_R4_D4_Consumer_Census.md
   - src/pipeline/RemeshPipeline.cpp (adapter 5548-6503; A5 3284+; A6 producer)
-  - include/directional/pipeline/RemeshPipeline.h
-  - include/directional/geometry/SurfaceComplexSimplification.h (candidate extraction 416-432)
-  - src/geometry/PureQuadCompletion.cpp (completion ownership 850-1180)
-  - .agents/Directional/M6_Consolidated_Record.md
-  - .agents/Directional/Regression_Root_Cause_Tracker.md
+  - include/directional/geometry/SurfacePointSupport.h (resolver tolerance)
+  - src/geometry/PureQuadCompletion.cpp (completion ownership 850-1240)
+  - .agents/Directional/GitHub_Workflow_Policy.md
+  - .agents/Directional/TOOL_USE_CONSERVATION_POLICY.md
 do_not_preload:
   - folded superseded M6 per-turn records
   - research/provenance/examples

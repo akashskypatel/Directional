@@ -1,5 +1,7 @@
 # M6-DEFN-R4 — A7 Product, Thin Adapter, and `G4-B002` A6 Boundary — Definition Record
 
+> **Review disposition (`M6-DEFN-R4-REV`, 2026-10-03):** ACCEPTED WITH BINDING AMENDMENTS RA-18 – RA-21 (`Architecture_M6_DEFN_R4_Review_Record.md`; normative text at the end of `Architecture_M6_Frozen_Definitions.md`). Where they conflict, the amendments override §2.2 (support guard), §3.4/§5.2 (placement inside A5; identity 24), §4.2–§4.3 (protection from source hard-feature authority) and §4.4 (oracle key path and stop rule). `M6-CP1-CB9-A7` is authorized.
+
 **Turn:** `M6-DEFN-R4`
 **Type:** Definition only; runtime-free.
 **Entering reviewed runtime:** `11265967968 / 8e0818b1e2f8d12b86c64d8774a3572c5ed5266c`, focused 1–12 + selector449 = **461/461**.

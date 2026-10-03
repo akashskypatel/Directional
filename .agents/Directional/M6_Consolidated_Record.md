@@ -1,6 +1,6 @@
 # M6 consolidated record
 
-**Current authority after the `M6-CP1-TB8-A6-REV` review-agent addendum (2026-10-03):** reviewed runtime is CB8 `11265967968 / 8e0818b1...` (focused-12 + selector449 = 461/461). RA-16 and RA-17 are normative (§§29-30). Stable accounting **60 / 16 / 44**, debt 1. Exact next: `M6-DEFN-R4` (bounded plan) → mandatory `M6-DEFN-R4-REV`.
+**Current authority after `M6-DEFN-R4-REV` (2026-10-03):** reviewed runtime `11265967968 / 8e0818b1...` (461/461). R4 is accepted with RA-18 – RA-21 (§31). Stable accounting **60 / 16 / 44**, debt 1. Exact next: `M6-CP1-CB9-A7` → TB9 (469) → Review.
 
 ## 30. `M6-CP1-TB8-A6-REV` — 461/461 recovery accepted; candidate promoted
 
@@ -267,6 +267,23 @@ Outcome is focused **12/12**, selector **449/449**, aggregate **461/461 PASS**, 
 - Records lesson 188.
 
 **Accounting.** 60 / 16 / 44, debt 1.
+
+## 31. `M6-DEFN-R4` and `M6-DEFN-R4-REV` — A7 / thin adapter / `G4-B002` defined; accepted with RA-18 – RA-21
+
+**R4 deliverables:**
+- D4 census: 1,189 exact sites.
+- D1: A7 `SourceAttachedGeometryProduct`, with typed support certificate, frozen representative key, class-wide lineage, RA-17 guard, typed failures and no new hash fields.
+- D2: 55 adapter sites partitioned 31 / 4 / 19 / 1; thin predicate.
+- D3: A6 `SurfaceQuotientClosedComplexView`, with side-incidence edges, labels and strip closure, plus a torus migration oracle.
+- D5: CB9 (469) → CB10 (473) → CB11 (477) → `M6-CP1-CLOSE-REV`.
+
+**Review** verified the pinned-literal claim (rows 212, 227/230, 139/140/142) and froze four amendments:
+- **RA-18:** a reject-only same-simplex point guard. The `1e-9` check was the only cross-relation point-coincidence detector. Support comes from A5 only.
+- **RA-19:** A5 placement after existing checks; behavioral identity 24.
+- **RA-20:** protection from source hard-feature authority. The torus's 18 hard edges are PeriodicCut carriers.
+- **RA-21:** oracle key path `(proposalId, proposalSide)` → `CellId`/side, with a stop rule.
+
+Lessons 189-190. Accounting 60 / 16 / 44. Exact next: `M6-CP1-CB9-A7`.
 
 ## Folded document index
 

@@ -1,4 +1,18 @@
-## Current — `M6-DEFN-R4` COMPLETE / mandatory `M6-DEFN-R4-REV` next (2026-10-03)
+## Current — `M6-DEFN-R4-REV` COMPLETE / R4 accepted with RA-18 – RA-21 / exact next `M6-CP1-CB9-A7` (2026-10-03)
+
+- [x] Review the R4 record, D4 census, CB9-11 plans and frozen amendment against exact source (HEAD == `8e0818b1` semantics).
+- [x] Re-derive the D2 pinned-literal claim independently: only rows 212, 227/230 and 139/140/142.
+- [x] F1 → RA-18. The `1e-9` check is the only cross-relation point-coincidence detector, so add a reject-only same-simplex point guard. Support comes from A5 `occurrence.support` only. Identity 15 renamed.
+- [x] F2 → RA-20. Protection comes from source hard-feature authority. The torus's 18 hard edges are PeriodicCut carriers.
+- [x] F3 → RA-21. Oracle key path `(proposalId, proposalSide)` → A4 `CellId`/side, with a stop rule.
+- [x] F4/F5 → RA-19. Moved A5 checks go after existing A5 checks; identity 24 is behavioral; the source rule is a static check.
+- [x] Amend the CB9/10/11 plans; lessons 189-190.
+- [ ] **Exact next `M6-CP1-CB9-A7`** (RA-18 block governs): compile/package only.
+- [ ] `M6-CP1-TB9-A7-EXEC`, **20+449 = 469**, then mandatory Review.
+- [ ] Then CB10 (473), CB11 (477), `M6-CP1-CLOSE-REV`.
+- [ ] `M6-DEFN-R5` (CP3-entry): include the A5 HardRail-route-only chart-barrier census item.
+
+## Superseded — `M6-DEFN-R4` completion checklist
 
 - [x] D4 complete consumer/frozen-assertion census: 1,189 exact-snapshot references, 666 production + 523 test/benchmark.
 - [x] D1 freeze immutable A7 product, exact typed SourceSupport incidence, deterministic representative, lineage projection, RA-17 transport guard and typed A7 failures.

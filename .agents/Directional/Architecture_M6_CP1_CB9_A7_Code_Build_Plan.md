@@ -1,5 +1,29 @@
 # M6-CP1-CB9-A7 — A7 extraction and thin-adapter Code + Build plan
 
+> **`M6-DEFN-R4-REV` amendment (RA-18) — this block overrides the plan below where they conflict. CB9 is AUTHORIZED.**
+>
+> **Goal 2 is replaced.** The adapter's `1e-9` check becomes the A7 `SourceSupportCertificate`, made of two parts:
+> - **(a) Typed exact common support.** Read from A5 `SurfaceOccurrence::support` only; never re-resolve a point.
+> - **(b) A reject-only point-coincidence guard in simplex coordinates**, with `τ` = the A5 resolver barycentric tolerance:
+>   - edge `{a<b}`: `t = β_b/(β_a+β_b)` from each member's own face barycentrics;
+>   - face-interior: per-component barycentrics in the common face.
+>
+>   A violation is `SourceSupportPointMismatch` (`:support-point`). The guard never accepts, merges or selects.
+>
+> Remove the old check in this same CB.
+>
+> **Identity 15** is renamed `M6CP1.A7RejectsSupportKindIdentityAndSameSimplexPointMismatches`. It must include:
+> - a kind mismatch;
+> - an identity mismatch;
+> - same edge support at different `t`;
+> - same face support at different barycentrics.
+>
+> All must reject, and the two same-simplex cases must reject **only** through the RA-18 guard.
+>
+> **Stop rule.** If TB9 shows `SourceSupportKindMismatch`, `SourceSupportIdentityMismatch` or `SourceSupportPointMismatch` on any previously accepted row, Review classifies it. Never relax to cross-kind coercion or to a looser tolerance.
+>
+> Everything else stands: identities 13-20 (with 15 renamed), focused-20 file, gate **20+449 = 469**.
+
 **Held until:** `M6-DEFN-R4-REV` accepts the R4 definition.
 **Type:** Code + Build only; compile/package, no Directional runtime.
 **Successor if compile/package green:** `M6-CP1-TB9-A7-EXEC` -> mandatory `M6-CP1-TB9-A7-REV`.

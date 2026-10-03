@@ -1,3 +1,11 @@
+## 2026-10-03 — `M6-DEFN-R4-REV` — A7 / thin-adapter / `G4-B002` definition accepted with four amendments
+
+- **RA-18:** A7 keeps a reject-only point-coincidence guard. The old position check was the only detector that relation-united occurrences are the same point.
+- **RA-19:** moved validation keeps its current order; the adapter-thinness test is behavioral.
+- **RA-20:** hard-feature protection comes from source authority, not relation kind. The torus's hard edges are periodic-cut carriers.
+- **RA-21:** the boundary equivalence oracle has an explicit key path and a stop rule.
+- Exact next: `M6-CP1-CB9-A7` (gate 469).
+
 ## 2026-10-03 — `M6-CP1-TB8-A6-REV` review-agent addendum — promotion confirmed; RA-17; bounded R4
 
 - TB8 (461/461) and the promotion of `11265967968 / 8e0818b1...` are independently confirmed. Focused 1-12 is frozen as a required-green prefix.

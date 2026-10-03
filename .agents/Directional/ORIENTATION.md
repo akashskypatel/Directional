@@ -1,3 +1,14 @@
+## Currency — `M6-DEFN-R4-REV` COMPLETE: R4 accepted with RA-18 – RA-21; exact next `M6-CP1-CB9-A7` (2026-10-03 UTC)
+
+R4 (A7 product, thin adapter, `G4-B002` boundary) is accepted with four amendments:
+- **RA-18:** a reject-only same-simplex point-coincidence guard replaces the `1e-9` check. That check was the only cross-relation point-coincidence detector; typed support alone would allow distinct-point welds.
+- **RA-19:** moved A5 checks go after existing A5 checks; identity 24 is behavioral.
+- **RA-20:** candidate protection comes from source hard-feature authority. The torus's 18 hard edges are PeriodicCut carriers.
+- **RA-21:** an executable oracle key path, with a stop rule.
+
+Accounting **60 / 16 / 44**, debt 1.
+
+### Superseded currency note
 ## Current orientation — `M6-DEFN-R4` COMPLETE; mandatory Review next (2026-10-03)
 
 R4 completed D1-D5 under exact snapshot `c7deb092...`: A7 exact source-support embedding, 55-site adapter thinning, A6 `G4-B002` closed-complex boundary, full consumer census, and CB9/10/11 sequencing. The exact documentation patch was durably applied in run `37144877459` as commit `0f3024732e2f16b35c8c2a787a519378af2b9591`; `runtimeExecution=false`. Accounting remains **60 / 16 / 44**, debt 1. Exact next is runtime-free `M6-DEFN-R4-REV`; CB9 remains held until Review acceptance.
@@ -152,9 +163,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
- > **Current milestone authority (2026-10-03, after the `M6-CP1-TB8-A6-REV` review-agent addendum):** M4 and M5 remain CLOSED / ACCEPTED. M6 CP1 remains ACTIVE. Reviewed runtime authority is CB8 package/source `11265967968 / 8e0818b1e2f8d12b86c64d8774a3572c5ed5266c` under focused-12 + selector449 = 461/461. Stable accounting is **60/16/44**, debt 1. RA-16 and RA-17 are normative. Exact next is `M6-DEFN-R4` (bounded plan) → mandatory `M6-DEFN-R4-REV`.
+ > **Current milestone authority (2026-10-03, after `M6-DEFN-R4-REV`):** M4 and M5 remain CLOSED / ACCEPTED. M6 CP1 remains ACTIVE. Reviewed runtime authority is `11265967968 / 8e0818b1...` (focused-12 + selector449 = 461/461). R4 is accepted with RA-18 – RA-21. Stable accounting **60/16/44**, debt 1. Exact next is `M6-CP1-CB9-A7` (gate 469).
 
-**Currency.** `M6-CP1-TB8-A6-REV` review-agent addendum (Review), 2026-10-03 UTC
+**Currency.** `M6-DEFN-R4-REV` (Review), 2026-10-03 UTC
 
 **Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` §16.3 is the active same-region nonzero-Z4 contract. `PeriodicRelationId` remains carrier-content identity; relation rotation is the gauge-adjusted quotient `Q`, action/transport is relation value, and canonical storage may invert representation only after semantic Forward -> Reverse authority is fixed. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 
@@ -208,7 +219,7 @@ A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on t
 
 The TB7 stable events are recovered (HardRail placement RP-01, route-order shadowing, lineage-value RP-01). Stable accounting stays **60 events / 16 categories / 44 recurrences**. Produced-witness debt remains **1**, M6-owned.
 
-CP1 exit items 1-2 are met: conformant A5 and complete A6. Items 3-5 are open: the A7 product, a thin adapter (955 lines, 55 failure sites today), and the `G4-B002` A6 boundary. RA-17's transport guard keeps the uncertified A5 gauge components (`M6-DEFN-R5`) away from geometry.
+CP1 exit items 1-2 are met: conformant A5 and complete A6. Items 3-5 are open: the A7 product, a thin adapter (955 lines, 55 failure sites today), and the `G4-B002` A6 boundary. RA-17's transport guard keeps the uncertified A5 gauge components (`M6-DEFN-R5`) away from geometry. `M6-DEFN-R4` defines items 3-5; `M6-DEFN-R4-REV` accepts it with RA-18 – RA-21. Implementation runs CB9 (A7, 469) → CB10 (A5 validation / thin adapter, 473) → CB11 (`G4-B002`, 477) → `M6-CP1-CLOSE-REV`.
 
 **Historical accounting note:** M5 closed at **51 / 14 / 37**; TB5 stood at **55 / 16 / 39**; TB6 Review stood at **57 / 16 / 41**; TB7 Review stood at **59 / 16 / 43**, then **60 / 16 / 44** after its addendum. TB8 recovered those events without repricing. Current project accounting is **60 / 16 / 44**.
 
@@ -329,13 +340,13 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M6-DEFN-R4` — EXACT NEXT / bounded runtime-free Definition (plan: `Architecture_M6_DEFN_R4_CP1_A7_Thin_Adapter_G4B002_Definition_Plan.md`).**
-   - D4: consumer and frozen-assertion census, done FIRST.
-   - D1: A7 representation, an exact `SourceSupport` incidence certificate replacing the `1e-9` position check, the representative rule moved into A7, and lineage projecting `canonicalRelationValue`.
-   - D2: classify the adapter's 55 failure sites, plus a checkable "thin" predicate.
-   - D3: the `G4-B002` A6 boundary and its CP1 equivalence demonstration.
-   - D5: CB sequencing, gates of focused-12 + new identities + selector449, and the witness production-completion identity.
-   - Then mandatory `M6-DEFN-R4-REV`. **HELD:** all A7/adapter/G4 implementation until then.
+1. **`M6-CP1-CB9-A7` — EXACT NEXT (R4 accepted with RA-18 – RA-21).**
+   - A7 `SourceAttachedGeometryProduct`: typed exact common support from A5, plus the RA-18 reject-only same-simplex point guard; the old `1e-9` check removed in the same CB.
+   - D2 (c)/(d) moved into A7 / serialization.
+   - Focused 13-20; gate 469 → TB9 → Review.
+   - Then CB10 (RA-19: A5 placement, behavioral identity 24; gate 473).
+   - Then CB11 (RA-20 protection from source hard-feature authority; RA-21 oracle key path and stop rule; gate 477).
+   - Then `M6-CP1-CLOSE-REV`.
 1a. **`M6-DEFN-R5` — CP3-entry gate (not CP1).**
    - Periodic unequal-face-gauge witness, plus the coordinate / relation-gauge rule.
    - HardRail cross-region branch certification.
@@ -365,6 +376,10 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 
 ## 8. Recurring defect patterns
+
+**Removing a "non-authoritative" check can remove the only detector — `M6-DEFN-R4-REV`, lesson 189.** The adapter's `1e-9` position check looked like floating-point authority, but it was the only cross-relation point-coincidence detector. Keep authority (accept / select / merge) exact and typed; keep reject-only consistency guards until something stronger replaces them.
+
+**A source property cannot be inferred from the relation kind that carries it — `M6-DEFN-R4-REV`, lesson 190.** Hard-feature protection was derived from `HardRail` relations, but on a one-region torus the user hard edges are PeriodicCut carriers.
 
 **A Definition turn bounded by the checkpoint exit, not by everything known to be open — `M6-CP1-TB8-A6-REV` addendum, lesson 188.**
 - `M6-DEFN-R3` stalled when it mixed CP1-exit decisions with work it could not do runtime-free. TB8-REV then queued R4 with three gauge obligations that need witnesses and do not block CP1.

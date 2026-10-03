@@ -2508,3 +2508,22 @@ When a temporary workflow caller is assembled with low-level Git objects, creati
       - Give deferred items their own owner and gate.
       - Make the consumer census the turn's first deliverable.
     - Recorded at the `M6-CP1-TB8-A6-REV` review-agent addendum (RA-17, R4 plan).
+189. **Before deleting a check as "non-authoritative", establish whether it is the only detector of a failure mode. Separate authority (accept, select, merge) from reject-only validation.**
+    - *What happened.*
+      - The TB8 Review addendum and the R4 plan (review agent) said the adapter's `1e-9` position check could survive only as a diagnostic. R4 then replaced it with typed `SourceSupport` equality.
+      - No stage (A4 `make`, A5 relations, A6) compares the positions of relation-paired occurrences, so the old check was the only cross-relation point-coincidence detector.
+      - Equal edge or face support only means "same simplex", not "same point". Deleting the check would have let a mis-pairing weld distinct points silently.
+    - **Rule.**
+      - Floating tolerances must never decide membership, selection or identity.
+      - A reject-only consistency guard is not "recovery" and is legitimate until something exact and at least as strong replaces it.
+      - Before removing any check, search for other detectors of the same failure. If none exists, keep or replace the guard in the same change.
+    - Recorded at `M6-DEFN-R4-REV` (RA-18).
+190. **A property of the source cannot be inferred from the relation kind that happens to carry it.**
+    - *What happened.*
+      - R4 derived candidate hard-feature protection from A5 `HardRail` relations.
+      - On the produced torus, the 18 user hard edges cut the surface into one topology region. A5 accepts `HardRail` only across distinct regions, so those hard edges are carried by `PeriodicCut` relations.
+      - They would have been labelled unprotected. The repo also says "18 HardRails" loosely for these user hard edges.
+    - **Rule.**
+      - Derive feature protection from the typed feature authority itself, and keep it as an attribute separate from the relation kind.
+      - When a definition names a fixture's features with a relation-kind word, check which relation kind actually carries them in the accepted product.
+    - Recorded at `M6-DEFN-R4-REV` (RA-20).

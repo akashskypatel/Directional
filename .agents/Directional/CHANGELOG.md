@@ -1,3 +1,12 @@
+## 2026-10-03 — `M6-DEFN-R4-REV`: R4 accepted with RA-18 – RA-21; exact next `M6-CP1-CB9-A7`
+
+- **Reviewed** the R4 record, D4 census, CB9/10/11 plans and frozen amendment against exact source. D2's pinned-literal claim is independently confirmed: rows 212, 227/230 and 139/140/142.
+- **RA-18 (D1).** A4/A5/A6 never compare the positions of relation-paired occurrences, so the adapter's `1e-9` check is the only point-coincidence detector, and typed support equality alone permits distinct-point welds on the same edge or face. Added a reject-only same-simplex point guard (edge `t` / face barycentrics within the A5 resolver tolerance, `SourceSupportPointMismatch`). Support comes from A5 `occurrence.support` only. Identity 15 renamed. The review agent's R4 plan / RA-17 wording caused the gap.
+- **RA-19 (D2).** Moved A5 checks go after the existing A5 checks. Identity 24 is now `M6CP1.ThinAdapterOutputIsPureProjectionOfStageProducts`; the source rule is a static check.
+- **RA-20 (D3).** Protection comes from source hard-feature authority (`hardFeatureProtected`), not relation kind. On the produced torus the 18 user hard edges are PeriodicCut carriers and must stay protected.
+- **RA-21 (D3).** The oracle key path is arrangement `(proposalId, proposalSide)` → A4 `CellId`/side, with a stop rule. Arrangement nodes carry no occurrence members.
+- Lessons 189-190. Accounting 60 / 16 / 44, debt 1. Gates unchanged: 469 / 473 / 477.
+
 ## 2026-10-03 — `M6-DEFN-R4`: COMPLETE; D1-D5 frozen; mandatory Review next
 
 - Completed D4's conservative 1,189-site consumer/frozen-assertion census from exact source snapshot `c7deb092...`.

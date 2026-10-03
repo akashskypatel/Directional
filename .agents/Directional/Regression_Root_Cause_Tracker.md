@@ -1,3 +1,14 @@
+## 2026-10-03 — `M6-DEFN-R4-REV` — **+0 / 60/16/44 / debt 1 / definition defects caught before implementation**
+
+This runtime-free Review prices no runtime event. It records three definition defects, all caught before code:
+- **F1 (D1).** Removing the `1e-9` check would have deleted the only cross-relation point-coincidence detector — a latent fail-open weld path. Root: the review agent's R4 plan / RA-17 wording.
+- **F2 (D3).** Protection derived from relation kind would leave the torus's 18 PeriodicCut-carried hard edges unprotected.
+- **F3 (D3).** The equivalence oracle keyed on member sets the arrangement does not carry.
+
+All three are fixed by RA-18, RA-20 and RA-21. If a future regression reproduces one of these patterns, it is a recurrence of RP-01 / authority-domain conflation (F2) or of fail-closed guard loss (F1).
+
+**Stable accounting: `60 events / 16 categories / 44 recurrences`, debt 1.**
+
 ## 2026-10-03 — `M6-CP1-TB8-A6-REV` review-agent addendum — **+0 / 60/16/44 / debt 1 / promotion confirmed**
 
 - I re-derived the TB8 evidence independently: result `11273611682` digest, 954/954 manifest, five ledgers, selector449 order, and the focused-12 raw log.

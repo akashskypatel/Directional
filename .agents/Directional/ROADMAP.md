@@ -1,3 +1,18 @@
+## Live M6 routing — after `M6-DEFN-R4-REV` (R4 accepted with RA-18 – RA-21)
+
+| Checkpoint | State | Exact next / gate |
+|---|---|---|
+| M6 CP1 reviewed runtime | Retained | `11265967968 / 8e0818b1...`; focused-12 + selector449 = 461 |
+| A7 product (CB9) | **EXACT NEXT** | `M6-CP1-CB9-A7` (RA-18) -> TB9 **20+449 = 469** -> Review |
+| A5 validation / thin adapter (CB10) | Held | RA-19; **24+449 = 473** |
+| `G4-B002` A6 boundary (CB11) | Held | RA-20/RA-21; **28+449 = 477** |
+| CP1 closure | Open | `M6-CP1-CLOSE-REV` after TB11 Review |
+| `M6-DEFN-R5` | CP3-entry gate | gauge obligations + A5 barrier-set census |
+
+Stable accounting: **60 / 16 / 44**, debt 1.
+
+### Superseded routing
+
 ## Live M6 routing — after the `M6-CP1-TB8-A6-REV` review-agent addendum (RA-17)
 
 | Checkpoint | State | Exact next / gate |
@@ -139,7 +154,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-10-03 (`M6-CP1-TB8-A6-REV` + review-agent addendum: runtime promoted, RA-17, exact next bounded `M6-DEFN-R4`. Earlier: `M6-CP1-TB7-A6-REV` COMPLETE, with review-agent addendum / RA-16 / candidate rejected / stable accounting 60/16/44, debt 1 / exact next `M6-CP1-CB8-A6` as amended -> TB8-A6 461 -> mandatory Review.)**
+**Status date:** 2026-10-03 (`M6-DEFN-R4-REV`: R4 accepted with RA-18 – RA-21, exact next `M6-CP1-CB9-A7`. Earlier: `M6-CP1-TB8-A6-REV` + review-agent addendum: runtime promoted, RA-17, exact next bounded `M6-DEFN-R4`. Earlier: `M6-CP1-TB7-A6-REV` COMPLETE, with review-agent addendum / RA-16 / candidate rejected / stable accounting 60/16/44, debt 1 / exact next `M6-CP1-CB8-A6` as amended -> TB8-A6 461 -> mandatory Review.)**
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 

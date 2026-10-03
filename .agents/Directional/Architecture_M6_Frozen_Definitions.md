@@ -1,6 +1,6 @@
 # M6 Frozen Definitions — Occurrence, Quotient, Embedding, Independent Verification
 
-**Status:** FROZEN / `M6-CP1-TB8-A6-REV` + review-agent addendum: RA-16 recovery proved at 461/461; candidate `11265967968 / 8e0818b1` PROMOTED; **RA-17** (transport guard; R4 bounded to CP1 exit; gauge obligations → `M6-DEFN-R5` as CP3-entry gate) / EXACT NEXT = `M6-DEFN-R4` per `Architecture_M6_DEFN_R4_CP1_A7_Thin_Adapter_G4B002_Definition_Plan.md`; RA-1 – RA-16 normative as annotated.
+**Status:** FROZEN / `M6-DEFN-R4-REV`: R4 (A7 product, thin adapter, `G4-B002` A6 boundary) **ACCEPTED WITH RA-18 – RA-21** / EXACT NEXT = `M6-CP1-CB9-A7` (gate 20+449=469); CB10/CB11 held behind predecessor Reviews; RA-1 – RA-17 normative as annotated.
 **Date:** 2026-09-25
 **Definition authority:** this record is the normative M6 contract for A5 occurrence creation, A6 quotient construction/materialization, A7 source-attached geometry embedding, and the M6 structural portion of A8 independent verification. It refines `DESIGN.md` §14 M6 without changing accepted M5 producer semantics or pulling M7 disposition/degradation work forward.
 
@@ -697,16 +697,75 @@ Rationale: `Architecture_M6_CP1_TB8_A6_Review_Record.md`, addendum §H2-§H3.
 
 Stable accounting **60 / 16 / 44**, debt 1. Exact next: `M6-DEFN-R4` → mandatory `M6-DEFN-R4-REV`.
 
-## M6-DEFN-R4 A7 / thin-adapter / `G4-B002` boundary amendment (2026-10-03, runtime-free; pending Review)
+## M6-DEFN-R4 A7 / thin-adapter / `G4-B002` boundary amendment (2026-10-03, runtime-free; **REVIEWED by `M6-DEFN-R4-REV`: accepted with RA-18 – RA-21, below**)
 
 `M6-DEFN-R4` freezes the remaining CP1 product-boundary definitions. Full normative detail and rationale are in `Architecture_M6_DEFN_R4_A7_Boundary_Definition_Record.md`. This amendment is Definition authority but remains **HELD FOR `M6-DEFN-R4-REV`** before implementation.
 
-1. **A7 is an immutable stage product.** `SourceAttachedGeometryProduct` publishes exactly one source-attached vertex per A6 `SurfaceQuotientClassId`, copies A6 classed-cell topology unchanged, and certifies class bijection, topology copy, complete support and no placement-transport consumption. Exact `SourceSupport` typed identity + source-face incidence replaces the adapter's `1e-9` position comparison as semantic authority. Cross-kind coercion is forbidden. The deterministic representation-only representative remains the lexicographic minimum of `(support, cornerWedgeBindings, OccurrenceId)`; it supplies compatibility point/position only, never semantic quotient identity.
+1. **[Amended by RA-18: the support certificate adds a fail-closed same-simplex point-coincidence validation.]** **A7 is an immutable stage product.** `SourceAttachedGeometryProduct` publishes exactly one source-attached vertex per A6 `SurfaceQuotientClassId`, copies A6 classed-cell topology unchanged, and certifies class bijection, topology copy, complete support and no placement-transport consumption. Exact `SourceSupport` typed identity + source-face incidence replaces the adapter's `1e-9` position comparison as semantic authority. Cross-kind coercion is forbidden. The deterministic representation-only representative remains the lexicographic minimum of `(support, cornerWedgeBindings, OccurrenceId)`; it supplies compatibility point/position only, never semantic quotient identity.
 2. **A7 lineage is class-wide A5/A6 authority.** Occurrence members, charts, wedge-union isolation sheets, topology regions, equivalences and selected paths are projected from immutable A5/A6 evidence. Selected relation steps retain `canonicalRelationValue`; A7 never consumes `canonicalTransport` / `relationTransport` for geometry, lineage, chart re-anchoring or completion input. No new A7 metadata enters existing completion/quality hashes.
-3. **The legacy materializer becomes thin.** `build_authoritative_phase_front_mesh` may invoke A5/A6/A7, map already-produced typed errors and serialize immutable products. It may not perform semantic predicates, topology/quotient/support/representative selection, relation search, floating tolerance checks, welds or repair. The current 55 literal failure sites are partitioned **31 A5 + 4 A6 projection + 19 A7 + 1 serialization**; stage precedence is A5 -> A6 -> A7 -> serialization, preserving frozen `FalseAuthoritativeSourceBoundary`, `InvalidHardRailAuthority` and `InvalidHardRailTransport` behavior.
-4. **A6 owns a closed-complex candidate boundary.** `SurfaceQuotientClosedComplexView` is derived during A6 from A5/A6 authority, with member-set quotient vertices, classed quads, side-incidence edge identity, exact HardRail/Periodic owner labels and topology-derived opposite-edge strip identity. Candidate extraction consumes this boundary without `SurfaceCellPipelineContext::hasArrangement`; HardRail is protected, Periodic is an interior quotient seam, and no coordinate/hash equality defines identity.
-5. **`G4-B002` CP1 mechanism proof.** On the existing produced closed torus fixture (`milestone-g/torus.obj` + `.rawfield`, same 18 HardRails), CB11 proves labeled combinatorial isomorphism to retained comparison authority: quad/edge incidence, exact HardRail/Periodic labels and sorted occurrence-member vertex lineage, all without positional matching. An independent candidate oracle proves one eligible path/loop candidate and a mechanism-only HardRail tamper removes that exact candidate. This **does not close the debt**; M6-CP3 retains the unchanged direct-production eligibility + hard-feature tamper proof.
+3. **[Amended by RA-19: placement of moved checks inside A5; identity 24 made behavioral.]** **The legacy materializer becomes thin.** `build_authoritative_phase_front_mesh` may invoke A5/A6/A7, map already-produced typed errors and serialize immutable products. It may not perform semantic predicates, topology/quotient/support/representative selection, relation search, floating tolerance checks, welds or repair. The current 55 literal failure sites are partitioned **31 A5 + 4 A6 projection + 19 A7 + 1 serialization**; stage precedence is A5 -> A6 -> A7 -> serialization, preserving frozen `FalseAuthoritativeSourceBoundary`, `InvalidHardRailAuthority` and `InvalidHardRailTransport` behavior.
+4. **[Amended by RA-20: protection comes from source hard-feature authority, not relation kind.]** **A6 owns a closed-complex candidate boundary.** `SurfaceQuotientClosedComplexView` is derived during A6 from A5/A6 authority, with member-set quotient vertices, classed quads, side-incidence edge identity, exact HardRail/Periodic owner labels and topology-derived opposite-edge strip identity. Candidate extraction consumes this boundary without `SurfaceCellPipelineContext::hasArrangement`; HardRail is protected, Periodic is an interior quotient seam, and no coordinate/hash equality defines identity.
+5. **[Amended by RA-21: executable key path and stop rule. The torus's 18 user hard edges are carried by PeriodicCut relations, not A5 `HardRail` relations.]** **`G4-B002` CP1 mechanism proof.** On the existing produced closed torus fixture (`milestone-g/torus.obj` + `.rawfield`, same 18 HardRails), CB11 proves labeled combinatorial isomorphism to retained comparison authority: quad/edge incidence, exact HardRail/Periodic labels and sorted occurrence-member vertex lineage, all without positional matching. An independent candidate oracle proves one eligible path/loop candidate and a mechanism-only HardRail tamper removes that exact candidate. This **does not close the debt**; M6-CP3 retains the unchanged direct-production eligibility + hard-feature tamper proof.
 6. **Frozen implementation sequence after R4 Review:** CB9 A7 (focused 13-20; gate **20+449=469**), TB9 + Review; CB10 A5-validation migration (focused 21-24; **24+449=473**), TB10 + Review; CB11 G4 boundary (focused 25-28; **28+449=477**), TB11 + Review; then `M6-CP1-CLOSE-REV`. The first A7 CB includes `M6CP1.NonzeroZ4WitnessPassesProductionCompletionOwnership` executing the real production completion-ownership validator. Each successor focused list preserves the frozen focused-12 bytes and preceding list as an exact prefix; selector449 remains unchanged.
 7. **R5 remains separate.** Unequal-face-gauge exact-A3 Periodic authority, HardRail cross-region branch certification and OrdinaryFront isolation-seam coordinate identity remain owned by `M6-DEFN-R5` as a CP3-entry gate. The RA-17 transport guard keeps them out of CP1 A7 geometry and the A6 closed-complex boundary.
 
 Stable accounting remains **60 / 16 / 44**, produced-witness debt **1**. Exact successor from this Definition is mandatory `M6-DEFN-R4-REV`; no CB is authorized until that Review accepts or amends this record.
+
+## RA-18 – RA-21 — `M6-DEFN-R4-REV` binding amendments (normative, 2026-10-03)
+
+Rationale: `Architecture_M6_DEFN_R4_Review_Record.md` §2 (F1–F5).
+
+### RA-18 — support authority and a reject-only point-coincidence guard (amends R4 D1 §2.2; supersedes RA-17 §3's "diagnostic only" wording for the old check)
+
+1. **Authority.**
+   - `SourceSupportCertificate.publishedSupport` and every member comparison use the A5 value `SurfaceOccurrence::support` only.
+   - A7 never re-resolves support from a point.
+   - A5's resolver barycentric tolerance (`SurfacePointSourceSupportResolver`, `1e-8`) is the single floating classification in the support chain, and it is A5-owned.
+   - Typed equality and face incidence are exactly as R4 D1 §2.2 states, with no cross-kind coercion.
+2. **Reject-only coincidence guard.** After typed equality holds, A7 checks that every member denotes the same point **in that simplex's own coordinates**:
+   - vertex support: trivially the same point;
+   - edge support `{a,b}` with canonical `a < b`: `t(o) = β_b / (β_a + β_b)`, computed from the member's own face barycentrics. All members must satisfy `|t(o) − t(rep)| ≤ τ`;
+   - face-interior support `{f}`: the members' barycentrics in face `f` must agree per component within `τ`.
+
+   `τ` is the A5 resolver barycentric tolerance (dimensionless). A violation fails closed with `SourceSupportPointMismatch` (`:support-point`).
+3. **What the guard may do.** It may only **reject**. It never accepts, merges, splits, selects a representative or support, alters lineage, or sets a positive certificate bit. This is validation, not the recovery that §5.3 forbids.
+4. **Replacement.** It replaces the adapter's `1e-9` relative position check (`QuotientGeometryConsistencyFailure`). The old check is removed only in the same Code + Build that installs this guard.
+5. **Test identity.** Identity 15 becomes `M6CP1.A7RejectsSupportKindIdentityAndSameSimplexPointMismatches`. It adds two negatives that the typed rule alone would accept:
+   - same edge support at different parameters;
+   - same face support at different barycentrics.
+
+### RA-19 — where moved validation goes inside A5, and identity 24 (amends R4 D2 §3.4 and D5 §5.2)
+
+1. **Placement.** Category-(a) checks moved into A5 run **after every check A5 performs today**, in their current relative order, including the per-edge loop order. This preserves the observable precedence for rows 212, 227/230 and 139/140/142.
+2. **Placement exception.** A moved check may run earlier only if the CB10 report shows, for each required test that can reach both checks, that the outcome is unchanged.
+3. **Identity 24** becomes `M6CP1.ThinAdapterOutputIsPureProjectionOfStageProducts`.
+   - On at least the hard-rail, split-isolation and produced-torus fixtures, the adapter's mesh, provenance and lineage must equal an independent test-side serialization of the A5/A6/A7 products.
+   - A stage-valid input must never be rejected by the adapter.
+4. **Static check, not a test.** The rule "no semantic literal or tolerance in the adapter" is a static Code + Build / Review check recorded in the CB10 report: failure assignments only inside typed-error mapping, and no floating-point literal comparison. It is not a gtest that reads source text.
+
+### RA-20 — candidate protection comes from source hard-feature authority (amends R4 D3 §4.1–§4.3)
+
+1. **Two independent attributes per quotient edge.**
+   - (i) `relationKind`, which is Ordinary / HardRail / Periodic, derived from A6 certificates exactly as R4 §4.2 states.
+   - (ii) `hardFeatureProtected`, derived from **typed source hard-feature authority**: the authoritative HardFeature rail-edge set that production passes to completion as `hardFeatureRailEdges`. It must be supplied to A6 boundary construction as an explicit typed input.
+   - An edge is protected iff every carrier route step lies in that set.
+2. **Consistency.** A `HardRail` edge must be protected; a mismatch fails closed. A `Periodic` edge whose cut carrier lies on hard-feature edges **is protected**.
+3. **Candidate extraction** maps `hardFeatureProtected` to `touchesHardFeature`, never `relationKind`.
+4. **Barrier set.** The boundary must not reuse A5's chart-barrier set. That set is built from HardRail front routes only (`RemeshPipeline.cpp:3323-3331`). Whether that asymmetry matters for A5 charts is a recorded `M6-DEFN-R5` census item.
+5. **Fixture correction.** On the produced torus, all 18 user hard edges are carried by PeriodicCut relations, because the torus is one region and A5 HardRail requires distinct regions. They must come out protected.
+
+### RA-21 — an executable equivalence oracle, with a stop rule (amends R4 D3 §4.4)
+
+1. **Key path.** Before writing identity 25, the CB11 author must establish statically, and record in the CB11 report, the map from arrangement halfedge `(proposalId, proposalSide)` via `network.proposals[proposalId]` to A4 `CellId` and side.
+   - Arrangement nodes carry no occurrence members.
+   - The vertex bijection is therefore induced from quad and side incidence through that map. A6-side member-set lineage is checked only on the A6 side (identity 27).
+2. **Labels.** Compare `hardFeatureProtected` with the arrangement's `hardFeature`, and HardRail/Periodic owners where both sides publish them.
+3. **Stop rule.** Stop for Review instead of weakening the oracle if any of these hold:
+   - the map does not exist or is not injective;
+   - the arrangement subdivides proposal cells (traced, non-proposal arcs);
+   - the two complexes are not isomorphic.
+
+   Review then chooses between a subdivision-equivalence oracle and a different comparison authority.
+4. **No proximity matching.** Positions, epsilons and hashes still may not establish any bijection.
+
+Gate sizes are unchanged: CB9 **20+449=469**, CB10 **24+449=473**, CB11 **28+449=477**. Stable accounting **60 / 16 / 44**, debt 1. Exact next: `M6-CP1-CB9-A7`.

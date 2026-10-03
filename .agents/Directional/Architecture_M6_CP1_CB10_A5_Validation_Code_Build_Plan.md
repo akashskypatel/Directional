@@ -1,5 +1,15 @@
 # M6-CP1-CB10-A5V — A5 validation migration / thin-adapter Code + Build plan
 
+> **`M6-DEFN-R4-REV` amendment (RA-19) — this block overrides the plan below where they conflict. Held until `M6-CP1-TB9-A7-REV`.**
+>
+> **Placement.** Moved category-(a) checks run inside A5 **after every check A5 performs today**, in their current relative and per-edge order. Earlier placement is allowed only with a per-required-test outcome proof in the CB10 report.
+>
+> **Identity 24** becomes `M6CP1.ThinAdapterOutputIsPureProjectionOfStageProducts`. On the hard-rail, split-isolation and produced-torus fixtures, the adapter's mesh, provenance and lineage must equal an independent test-side serialization of the A5/A6/A7 products, and no stage-valid input may be rejected.
+>
+> **Static check, not a test.** The "no semantic literal, tolerance or selection in the adapter" rule is a CB10-report check, not a gtest.
+>
+> Gate unchanged: **24+449 = 473**.
+
 **Held until:** `M6-CP1-TB9-A7-REV` accepts CB9/TB9.
 **Type:** Code + Build only; no Directional runtime.
 **Successor if green:** `M6-CP1-TB10-A5V-EXEC` -> mandatory `M6-CP1-TB10-A5V-REV`.
