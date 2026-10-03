@@ -1,3 +1,12 @@
+## 2026-10-03 — `M6-CP1-TB7-A6-REV` review-agent addendum — selector446 reclassified; RA-16; CB8 amended
+
+- **Selector446 is not a stale test.** CB7 coupled the M5 lineage selected-step transport to the A6 placement transport, and production completion validates that step. The TB7 CAND-03 is now a stable `RP-01` recurrence; stable accounting **60 / 16 / 44**, debt 1.
+- **RA-16 frozen:**
+  - HardRail placement transport is coordinate-rigid, from occurrence placements. RA-14's branch formula depended on the face gauge (off by the field matching across a rail).
+  - `canonicalRelationValue` (lineage) is decoupled from `canonicalTransport` (A6).
+  - Route validity is A5-owned.
+- **CB8 plan amended:** selector446 and `PureQuadCompletion.cpp` stay unchanged; new focused 12; TB8 = **12+449 = 461** → mandatory Review. R4/A7/G4 remain held.
+
 ## 2026-10-03 — `M6-CP1-TB7-A6-REV` — TB7 RED adjudicated; RA-14/RA-15 frozen
 
 - Independently verified TB7 run/job `37090507571 / 111109661723`, result/log `11262587435 / 11262387973`, result self-manifest 953/953 and aggregate **443/460 PASS** with exact RED ordinals 115/116/122/130/132/134/137/141/143/150/176/201/217/227/230/231/446.

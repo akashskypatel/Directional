@@ -1,6 +1,6 @@
 # M6 Frozen Definitions — Occurrence, Quotient, Embedding, Independent Verification
 
-**Status:** FROZEN / `M6-CP1-TB6-A6-REV` + review-agent addendum: candidate rejected; HardRail reciprocity restored at A5 (CB7 Goal A); **RA-13 single-gauge relation transport replaces the residual-holonomy fallback, with the strict cycle rule restored** / EXACT NEXT = `M6-CP1-CB7-A6` (Goal B per RA-13); RA-1 – RA-12 normative.
+**Status:** FROZEN / `M6-CP1-TB7-A6-REV` + review-agent addendum: TB7 candidate rejected; **RA-16** (coordinate-rigid HardRail placement transport, lineage relation value decoupled from A6 placement transport, A5-owned route validity) supersedes RA-14 items 2-5 / EXACT NEXT = `M6-CP1-CB8-A6` as amended → `M6-CP1-TB8-A6-EXEC` (12+449=461); RA-1 – RA-13 and RA-15 normative as annotated.
 **Date:** 2026-09-25
 **Definition authority:** this record is the normative M6 contract for A5 occurrence creation, A6 quotient construction/materialization, A7 source-attached geometry embedding, and the M6 structural portion of A8 independent verification. It refines `DESIGN.md` §14 M6 without changing accepted M5 producer semantics or pulling M7 disposition/degradation work forward.
 
@@ -574,13 +574,13 @@ The same gate exposes a separate accepted HardRail regression: selector139/142 u
 
 This supersedes the TB6-A6-REV residual-holonomy fallback. Rationale is preserved in `M6_Consolidated_Record.md` §§25/28 and lesson 184; the full retired Review text is resolved by the folded-document index.
 
-1. Every `QuotientRelationCertificate.relationTransport` is the transport between the endpoint occurrences' **placement (cut-domain `LocalLatticeState`) states**, in canonical `relation.id.first → second` direction. A5 publishes it in that gauge and verifies `action_matches(placement(first), placement(second), T)` (coordinate, branch, scale) before freezing the evidence. A mismatch fails closed with `InvalidPeriodicFrontTransport` or `InvalidHardRailTransport`.
+1. **[Branch-matching mandate WITHDRAWN by RA-16 §1. `LocalLatticeState.branchRotation` is face-gauged, so cross-face branch comparison is valid only in a gauge A4 certifies.]** Every `QuotientRelationCertificate.relationTransport` is the transport between the endpoint occurrences' **placement (cut-domain `LocalLatticeState`) states**, in canonical `relation.id.first → second` direction. A5 publishes it in that gauge and verifies `action_matches(placement(first), placement(second), T)` (coordinate, branch, scale) before freezing the evidence. A mismatch fails closed with `InvalidPeriodicFrontTransport` or `InvalidHardRailTransport`.
 2. **OrdinaryFront:** identity (RA-2).
    **Periodic, exact-A3:** `T = Γ_to⁻¹ ∘ g ∘ Γ_from`, with Γ derived from `make_periodic_relation_endpoint_state` as the single authority (Forward: identity in coordinates; Reverse: relation turn Q; branch normalization by `localFaceBranchRotation`). The semantic action `g` is in the PeriodicCut relation-endpoint gauge (`SurfaceCellTracing.h`, the note on `SurfacePeriodicRelationEndpointState`), which is a different authority domain from cut-domain placement (lesson 175).
    **Periodic, non-A3:** the existing cut-gauge action.
    **HardRail:** **[SUPERSEDED by RA-14 below]** the route composed transport, under the same placement check. The TB7 stop condition fired: the carrier route is not the placement-gauge authority.
 3. **Strict cycle rule (RA-4):** a cycle-closing relation requires `relationTransport == pathTransport`, else `QuotientHolonomyConflict`. The failure string may carry the residual for diagnosis (`QuotientHolonomyConflict:residual=Q<k>,t=(x,y)`). Non-identity residuals are never accepted as evidence in CP1. A vertex-class cycle is a contractible vertex link, and the legitimate exception (cone singularity at a lattice node) is excluded because A5 fails closed on SingularityPort corners.
-4. **Falsifiers (TB7):** selector 446 and focused 6 (nonzero-Z4 witness) PASS under the strict rule; rows 232/444/448/449 stay green. A remaining conflict is classified from its residual suffix by Review. The fallback may return only with a proof of genuine vertex cone holonomy.
+4. **[Selector446 prediction corrected by RA-16 §3: 446 also pins the M5 lineage relation value, which RA-13 never authorized changing.]** **Falsifiers (TB7):** selector 446 and focused 6 (nonzero-Z4 witness) PASS under the strict rule; rows 232/444/448/449 stay green. A remaining conflict is classified from its residual suffix by Review. The fallback may return only with a proof of genuine vertex cone holonomy.
 
 
 
@@ -589,6 +589,8 @@ This supersedes the TB6-A6-REV residual-holonomy fallback. Rationale is preserve
 This supersedes only RA-13 item 2's HardRail transport sentence. OrdinaryFront, exact-A3/non-A3 Periodic transport and RA-13 strict cycle equality remain unchanged. Rationale: `Architecture_M6_CP1_TB7_A6_Review_Record.md` §§3-3.3.
 
 1. `PureQuadEquivalenceProvenance.route` is HardRail carrier/topology/transition provenance. Its structural validity, hard-feature ownership and exact reciprocal reversal remain required, but `route.composed_transport()` is not quotient placement authority merely because the route owns the carrier.
+**[Items 2-5 SUPERSEDED by RA-16 §2-§3 (review-agent addendum). The branch-derived `R` is face-gauge dependent; publishing the placement map in `equivalence.action` or the selected step rewrites the M5 lineage contract. Items 1 and 6 stand.]**
+
 2. HardRail `canonicalTransport` is the unique cut-domain `LocalLatticeState` transform in canonical relation direction. For placement states `a -> b`, require equal scale, derive `R = branch(b) ∘ branch(a)^-1`, `t = b.coord - rotate(R,a.coord)`, construct `T={R,t}`, and verify the existing exact `action_matches(a,b,T)`.
 3. A HardRail relation independently derives this transform for both cross-endpoint pairs (`first.from -> second.to` and `first.to -> second.from`) and requires the two exact transforms to be equal. Any missing/unequal value rejects `InvalidHardRailTransport`.
 4. A5 publishes that placement transform in `equivalence.action`, `canonicalTransport` and the canonical selected step while retaining `equivalence.route` separately. A6 consumes that A5 placement transform unchanged.
@@ -599,9 +601,67 @@ This supersedes only RA-13 item 2's HardRail transport sentence. OrdinaryFront, 
 
 Rows227/230 prove that a malformed individual HardRail route must retain its accepted `InvalidHardRailAuthority` diagnostic instead of being pre-empted by pair-level `InvalidHardRailTransport`.
 
-1. The existing exact individual interior-route/source-transition validator is a single shared predicate and runs before A5 relation-pair publication.
+1. The existing exact individual interior-route/source-transition validator is a single shared predicate and runs before A5 relation-pair publication. **[Location pinned by RA-16 §5: inside A5, not an adapter preflight.]**
 2. Malformed HardRail route authority preserves `InvalidHardRailAuthority`; malformed Periodic route/cut authority preserves its existing `InvalidPeriodicCutAuthority` path.
 3. Only individually valid routes reach A5 pair-level owner/region/reversed-route checks. Those pair-level failures remain `InvalidHardRailTransport` (including selector139/142).
 4. Do not duplicate divergent route-validity semantics downstream; move/extract/reuse the existing predicate and remove or mechanically reuse the later copy.
 
-Stable accounting after TB7 Review is **59 / 16 / 43**, debt **1**. Candidate `11257522199 / 40842caa...` is rejected/unpromoted. Exact successor is `M6-CP1-CB8-A6`, then immutable `M6-CP1-TB8-A6-EXEC` **11+449=460** and mandatory Review.
+**[Superseded by the RA-16 accounting line below.]** Stable accounting after TB7 Review is **59 / 16 / 43**, debt **1**. Candidate `11257522199 / 40842caa...` is rejected/unpromoted. Exact successor is `M6-CP1-CB8-A6`, then immutable `M6-CP1-TB8-A6-EXEC` **11+449=460** and mandatory Review.
+
+## RA-16 — placement transport is a lattice-coordinate automorphism; the lineage relation value is a separate authority (normative, 2026-10-03, `M6-CP1-TB7-A6-REV` review-agent addendum)
+
+**What this changes.**
+- Supersedes RA-14 items 2-5.
+- Withdraws the branch-matching mandate in RA-13 item 1.
+- Locates RA-15 item 1.
+- Still stand: RA-13 items 2 (OrdinaryFront, Periodic) and 3 (strict cycle rule); RA-14 items 1 and 6; RA-15 items 2-4.
+- Rationale: `Architecture_M6_CP1_TB7_A6_Review_Record.md`, review-agent addendum §G2-§G6.
+
+1. **Gauge rule.**
+   - `LocalLatticeState.branchRotation` is face-gauged. It equals `faceBranchRotation[selected source face]` (propagated per region from that region's own root) plus the region chart branch (`SurfaceCellTracing.cpp:12094`, `:16324`, `:14920-14985`).
+   - A5 must never derive or check a lattice rotation from the branch difference of two states whose selected source faces may differ, unless the comparison is in a gauge A4 certifies:
+     - exact-A3 Periodic → the relation-endpoint gauge (published `SurfacePeriodicRelationEndpointState`);
+     - non-A3 Periodic → the legacy A4 placement check;
+     - HardRail → none in CP1, because A4 certifies no lattice relation across a rail.
+2. **HardRail placement transport is coordinate-rigid.**
+   - Source states: use the endpoint occurrences' `placement.lattice`, i.e. the cell corner states the relation unites. Do not use the `SurfaceFrontEdge` copies.
+   - Pairing: `first.from → second.to` and `first.to → second.from`. Write `c(·)` for a lattice coordinate.
+   - Checks and derivation:
+     - all four `scaleLevel`s are equal;
+     - `e = c(first.to) − c(first.from)` is nonzero;
+     - `e' = c(second.from) − c(second.to)`;
+     - `R` is the unique `QuarterTurn` with `rotate(R, e) == e'`. If none exists, fail `HardRailTransportMismatch` → `InvalidHardRailTransport`;
+     - `t = c(second.to) − rotate(R, c(first.from))`;
+     - `T = {R, t}`; verify `T` maps both coordinate pairs.
+   - No branch comparison.
+   - Publish `T`, in canonical direction, **only** as `canonicalTransport`. On every constant-field fixture this equals RA-14's map, since `τ = 0` and both are the unique rigid map.
+3. **The lineage relation value is decoupled.**
+   - A5 publishes `canonicalRelationValue` for each relation, in canonical direction:
+     - OrdinaryFront: identity;
+     - HardRail: `route.composed_transport()`;
+     - exact-A3 Periodic: the semantic `g`, oriented `firstIsForward ? g : g⁻¹`;
+     - non-A3 Periodic: the existing selected action.
+   - `canonicalSelectedStep.appliedTransport = canonicalRelationValue`.
+   - `equivalence.action`, `route` and `cutRoute` stay as in M5.
+   - A6's HardRail/Periodic certificate checks compare the step's `appliedTransport` with `canonicalRelationValue`. `relationTransport = canonicalTransport`, which keeps the RA-13 strict cycle rule in the placement gauge.
+   - The lineage selected-path projection must equal the pre-RA-13 projection on every accepted row.
+   - The `PureQuadCompletion` relation-value checks (`:1086-1132`) and selector446 stay unchanged and must PASS.
+4. **Exact-A3 Periodic stays as CB7 built it in CP1.**
+   - CB7's derivation equals `rot(Q)⁻¹ ∘ g`, with `Q = g.rotation` by A4 convention, whenever it accepts.
+   - Replacing its face-gauged final check with coordinate plus relation-gauge checks is an `M6-DEFN-R4` obligation. It requires a witness whose corresponding corners have unequal face gauges.
+5. **Location of route validity (RA-15 item 1).**
+   - One extracted free predicate, derived from `exact_interior_route_valid`.
+   - A5 applies it to both HardRail sides before any pair predicate. Failure code: `HardRailRouteAuthorityInvalid` → `InvalidHardRailAuthority`.
+   - The adapter reuses the same function for unpaired and exterior edges. No adapter-wide preflight.
+   - Exact-A3 periodic routes are already rejected upstream by A4 (`SurfaceCellTracing.cpp:8218-8225`).
+6. **Falsifiers.**
+   - Selector446 unchanged, PASS.
+   - Selector115 (production completion-ownership check on a HardRail fixture), PASS.
+   - New focused identity 12, `M6CP1.RelationPlacementTransportIsCoordinateRigidAndFaceGaugeInvariant` (CB8 plan amendment).
+   - TB8 gate: **12 + 449 = 461**.
+7. **Stop rules.** Stop for Review if:
+   - an accepted fixture pair has no unique `R`;
+   - decoupling would require changing `PureQuadCompletion.cpp`, selector446, `equivalence.action`/`route`, or the lineage relation values;
+   - A4 visibly rejects the focused-12 relabelled draft.
+
+Stable accounting after the TB7 Review addendum is **60 / 16 / 44**, debt **1**. The extra event is TB7 CAND-03, reclassified as a stable `RP-01` lineage-contract regression. Exact successor: `M6-CP1-CB8-A6` as amended → `M6-CP1-TB8-A6-EXEC` (**12+449=461**) → mandatory `M6-CP1-TB8-A6-REV`.

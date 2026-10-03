@@ -1,4 +1,24 @@
-## Live M6 routing — after `M6-CP1-TB7-A6-REV` adjudication
+## Live M6 routing — after the `M6-CP1-TB7-A6-REV` review-agent addendum (RA-16)
+
+| Checkpoint | State | Exact next / gate |
+|---|---|---|
+| M6 CP1 accepted runtime | Retained | `10879581622 / 82b86a28...`, selector449 449/449 |
+| M6 CP1 CB7 candidate | **REJECTED / UNPROMOTED** | `11257522199 / 40842caa...`, TB7-A6 443/460 |
+| M6 CP1 HardRail + lineage recovery | **EXACT NEXT** | `M6-CP1-CB8-A6` as amended (RA-16), runtime-free compile/package |
+| M6 CP1 recovery runtime | Held behind CB8 green | `M6-CP1-TB8-A6-EXEC`, **12+449 = 461** -> mandatory Review |
+| M6 R4 / A7 / `G4-B002` boundary | **HELD** | must not begin before TB8-A6 Review. R4 also carries the periodic face-gauge witness, cross-region branch certification, and OrdinaryFront identity across isolation seams |
+
+Stable accounting: **60 / 16 / 44**, debt 1.
+
+The TB7-A6 Review addendum makes three changes:
+- It reclassifies selector446 as a stable lineage-contract regression: CB7 coupled the M5 selected-step transport to the A6 placement transport, which production completion validates.
+- It replaces RA-14's face-gauge-dependent HardRail derivation with a coordinate-rigid one.
+- It pins route validity to A5.
+
+CB8 must leave selector446 and `PureQuadCompletion.cpp` unchanged.
+
+### Superseded routing (pre-addendum)
+
 
 | Checkpoint | State | Exact next / gate |
 |---|---|---|
@@ -94,7 +114,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-10-03 (`M6-CP1-TB7-A6-REV` COMPLETE / candidate rejected / stable accounting 59/16/43, debt 1 / exact next `M6-CP1-CB8-A6` -> TB8-A6 460 -> mandatory Review.)**
+**Status date:** 2026-10-03 (`M6-CP1-TB7-A6-REV` COMPLETE, with review-agent addendum / RA-16 / candidate rejected / stable accounting 60/16/44, debt 1 / exact next `M6-CP1-CB8-A6` as amended -> TB8-A6 461 -> mandatory Review.)**
 
 **Final M3 authority (2026-09-09):** CP4c-3 is CLOSED / ACCEPTED. Selector365 remains the accepted required-green predecessor entering M4; selector409 remains the retained final M3 audit surface. Its four RED rows 368/369/374/398 stay separately owned and visible; they are not promoted into the accepted predecessor.
 
@@ -633,7 +653,7 @@ Final CP4 Review completes the bounded conjunct8 sequence: row449 was accepted p
 | Checkpoint | Semantic domain |
 |---|---|
 | `M6-DEFN` | **COMPLETE / RUNTIME-FREE.** Four immutable products, exact occurrence/quotient identity, verifier recompute-vs-repair boundary, G4 ownership and dormant-test dispositions frozen in `Architecture_M6_Frozen_Definitions.md`. |
-| `M6-CP1` | **TB7-A6 REVIEWED RED / CB7 CANDIDATE REJECTED.** RA-14 separates HardRail carrier route from placement transport; RA-15 restores individual route validation precedence; selector446 is a non-stable test-authority migration. Reviewed runtime remains `10879581622 / 82b86a28...`, selector449 449/449; accounting **59/16/43**, debt 1. **EXACT NEXT:** `M6-CP1-CB8-A6` compile/package only -> TB8-A6 11+449=460 -> mandatory Review. A7 and `G4-B002` remain held behind Review and `M6-DEFN-R4`. |
+| `M6-CP1` | **TB7-A6 REVIEWED RED / CB7 CANDIDATE REJECTED.** RA-16 (review-agent addendum): coordinate-rigid HardRail placement transport; `canonicalRelationValue` decoupled from `canonicalTransport`; A5-owned route validity. Selector446 is a stable lineage-contract falsifier and stays unchanged. Reviewed runtime remains `10879581622 / 82b86a28...`, selector449 449/449; accounting **60/16/44**, debt 1. **EXACT NEXT:** `M6-CP1-CB8-A6` as amended, compile/package only -> TB8-A6 12+449=461 -> mandatory Review. A7 and `G4-B002` remain held behind that Review and `M6-DEFN-R4`. |
 | `M6-CP2` | verifier consumes certificates and independently recomputes elementary incidence; **never repairs producer state** |
 | `M6-CP3` | M6 exit — equal coordinates without a relation remain distinct; every owned relation consumed exactly once; source-row / output-row / scheduler permutation invariance |
 

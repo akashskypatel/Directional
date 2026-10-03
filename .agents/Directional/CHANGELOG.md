@@ -1,3 +1,27 @@
+## 2026-10-03 — `M6-CP1-TB7-A6-REV` review-agent addendum: Finding C overturned; RA-16 frozen; CB8 amended (TB8 = 461)
+
+- **Evidence re-derived independently:**
+  - result `11262587435` (digest, 953/953 manifest, three ledgers);
+  - selector449 order, 432 PASS / 17 RED, all 460 raw logs;
+  - the downstream-row grouping, verified in code (`RemeshPipeline.cpp:11912`, `:14302`).
+- **Finding A.** Diagnosis confirmed: HardRail route steps carry identity transport (`SurfaceCellTracing.cpp:11670-11672`). RA-14's remedy is corrected:
+  - `branchRotation` is face-gauged (per-region `faceBranchRotation`), so its branch-derived `R` is off by the field matching across a rail;
+  - gate fixtures are constant-field, so the gate cannot see this;
+  - RA-16 §2 uses a coordinate-rigid derivation from occurrence placements instead.
+- **Finding C overturned.**
+  - CB7 coupled the M5 lineage `SelectedRelationStep.appliedTransport` to the A6 placement transport (`:4357`, `:4723`, `:4749`).
+  - Production completion (`PureQuadCompletion.cpp:1086-1132`, run at `RemeshPipeline.cpp:10705-10719`) and selector446 validate that step against the relation value.
+  - CAND-03 is therefore a stable RP-01 recurrence. RA-16 §3 decouples `canonicalRelationValue` from `canonicalTransport`.
+- **Route validity** is pinned to A5 (RA-16 §5).
+- **Latent periodic issue.** The exact-A3 face-gauge dependence is carried to `M6-DEFN-R4`.
+- **CB8 plan amended:**
+  - selector446 and `PureQuadCompletion.cpp` are not edited;
+  - focused 3 strengthened; new focused 12 (`M6CP1.RelationPlacementTransportIsCoordinateRigidAndFaceGaugeInvariant`);
+  - TB8 = **12+449 = 461**.
+- **Accounting:** stable **60 / 16 / 44**, debt 1. Lessons 186-187.
+- **Docs updated:** frozen definitions, TB7 Review record (addendum §G), tracker, ORIENTATION, ROADMAP, TODO, handoff and M6 consolidated record.
+- **Backfill note.** The TB7-EXEC and TB7-REV turn entries were recorded only in the root `CHANGELOG.md`.
+
 ## 2026-10-02 — `M6-CP1-CB7-A6` COMPLETE: placement-gauge relation validation restored; compile/package green
 
 - Restored A5 HardRail fail-closed authority: same accepted owner, different source-topology regions, exact reversed routes, and exact route-composed placement action, with typed internal failures mapped to legacy `InvalidHardRailTransport`.

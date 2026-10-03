@@ -1,4 +1,29 @@
-## Resume-critical update — `M6-CP1-TB7-A6-REV` COMPLETE / candidate rejected / exact next `M6-CP1-CB8-A6` (2026-10-03)
+## Resume-critical update — `M6-CP1-TB7-A6-REV` review-agent addendum: RA-16; CB8 plan amended; TB8 = 12+449=461 (2026-10-03)
+
+**Start `M6-CP1-CB8-A6` as a new runtime-free Code + Build turn.** Follow the **review-agent amendment block** at the top of `Architecture_M6_CP1_CB8_A6_HardRail_Placement_Transport_Recovery_Code_Build_Plan.md`. It overrides the plan body.
+
+The addendum confirms TB7's evidence and the diagnoses of Findings A and B. It changes the following:
+
+1. **Selector446 is not stale.** CB7 coupled the M5 lineage `SelectedRelationStep.appliedTransport` to the A6 placement transport (`RemeshPipeline.cpp:4357`, `:4723`, `:4749`).
+   - Production completion (`PureQuadCompletion.cpp:1086-1132`, run at `RemeshPipeline.cpp:10705-10719`) compares that step with the relation value. So would every Q≠0 periodic relation fail in production.
+   - 446 restates that check. CAND-03 is now a stable RP-01 recurrence → **60 / 16 / 44**, debt 1.
+   - Fix: A5 publishes `canonicalRelationValue` (the M5 value) separately from `canonicalTransport` (placement, A6 only).
+   - Do **not** edit selector446 or `PureQuadCompletion.cpp`.
+2. **The RA-14 HardRail derivation is face-gauge dependent.** `branchRotation` carries the per-face, per-region `faceBranchRotation`, so a branch difference across a rail includes the field matching.
+   - Replacement (RA-16 §2): a coordinate-rigid derivation from the endpoint occurrences' `placement.lattice`, with no branch comparison.
+3. **Route validity is A5-owned** (RA-16 §5): one extracted predicate, applied to both HardRail sides before any pair predicate.
+4. **The gate gains focused identity 12**, `M6CP1.RelationPlacementTransportIsCoordinateRigidAndFaceGaugeInvariant`, which includes a branch-relabel invariance check. TB8 = **12+449 = 461**.
+
+Load:
+- the CB8 plan (amendment block first);
+- `Architecture_M6_Frozen_Definitions.md` RA-16 (end of file);
+- `Architecture_M6_CP1_TB7_A6_Review_Record.md` addendum §G1-§G7;
+- the tracker head entry;
+- `CODE_BUILD.md`, the workflow policy and the tool-use conservation policy.
+
+R4/A7/G4 remain held.
+
+## Superseded — `M6-CP1-TB7-A6-REV` pre-addendum resume note (its CB8 scope is replaced by RA-16; do not act on it)
 
 TB7 runtime is authoritative semantic RED at **443/460** (11/11 focused + 432/449 selector). Review prices two stable recurrences: HardRail route-carrier vs placement transport (`RP-01`) and route-validation precedence (`VALIDATION_ORDER_SHADOWING`). Selector446 is closed non-stable test authority. Stable accounting is **59 / 16 / 43**, debt 1. Candidate `11257522199 / 40842caa...` is rejected/unpromoted; reviewed runtime stays TB5 `10879581622 / 82b86a28...`, selector449 449/449.
 
@@ -346,29 +371,49 @@ Review must independently re-open source/evidence and re-derive: split-square v0
 
 ## Current authority
 
-`M6-CP1-TB7-A6-REV` is **COMPLETE**. Authoritative TB7 run/job `37090507571 / 111109661723` executed the frozen **11 focused + selector449 = 460** gate at **443/460 PASS**. Candidate `11257522199 / 40842caa...` is rejected/unpromoted. Reviewed runtime authority remains `10879581622 / 82b86a285292379cfd92cdc4e10d74181b38f1e8`, selector449 **449/449**. Stable accounting is **59 / 16 / 43**, debt **1**.
+`M6-CP1-TB7-A6-REV` is **COMPLETE**, including its review-agent addendum of 2026-10-03.
+- Authoritative TB7 run/job `37090507571 / 111109661723` executed the frozen **11 focused + selector449 = 460** gate: **443/460 PASS**.
+- Candidate `11257522199 / 40842caa...` is rejected and unpromoted. Reviewed runtime authority remains `10879581622 / 82b86a285292379cfd92cdc4e10d74181b38f1e8`, selector449 **449/449**.
+- Stable accounting is **60 / 16 / 44**, debt **1**.
 
-Review freezes RA-14 (HardRail carrier route is distinct from cut-domain placement transport) and RA-15 (individual route authority precedes pair reciprocity). Selector446 is a non-stable test-authority migration after periodic production recovery. Full authority: `Architecture_M6_CP1_TB7_A6_Review_Record.md`; runtime evidence: `Architecture_M6_CP1_TB7_A6_Artifact_Only_Test_Benchmark_Report.md`; folded predecessor evidence: `M6_Consolidated_Record.md` §§23-28.
+The normative authority is **RA-16** in `Architecture_M6_Frozen_Definitions.md`:
+- coordinate-rigid HardRail placement transport, derived from occurrence placements with no branch comparison;
+- a lineage relation value (`canonicalRelationValue`) decoupled from the A6 placement transport (`canonicalTransport`);
+- A5-owned route validity.
+
+RA-16 supersedes RA-14 items 2-5. RA-13 item 1's branch-matching mandate is withdrawn.
+
+Full rationale: `Architecture_M6_CP1_TB7_A6_Review_Record.md`, addendum §G1-§G7. Runtime evidence: `Architecture_M6_CP1_TB7_A6_Artifact_Only_Test_Benchmark_Report.md`. Folded predecessor evidence: `M6_Consolidated_Record.md` §§23-29.
 
 ## Exact next turn
 
-**`M6-CP1-CB8-A6` — Code + Build, compile/package only.** Follow `Architecture_M6_CP1_CB8_A6_HardRail_Placement_Transport_Recovery_Code_Build_Plan.md`. Implement only RA-14, RA-15 and selector446's independently gauge-aware test-body migration. Keep selector449/routing449/fixtures, focused count 11, A6 strict cycle rule, A7/R4/G4 and relation identity/equality frozen. Compile-green -> `M6-CP1-TB8-A6-EXEC` over the same **11+449=460** fresh exact-filter shape -> mandatory `M6-CP1-TB8-A6-REV`.
+**`M6-CP1-CB8-A6` — Code + Build, compile/package only.** Follow `Architecture_M6_CP1_CB8_A6_HardRail_Placement_Transport_Recovery_Code_Build_Plan.md`; its **review-agent amendment block overrides the body**.
+
+Implement:
+- Goal A: coordinate-rigid HardRail `canonicalTransport`;
+- Goal A2: `canonicalRelationValue` for the lineage step and the A6 step checks;
+- Goal B: A5-owned route validity;
+- focused 3 strengthened; new focused 12.
+
+Do **not** edit selector446, `PureQuadCompletion.cpp`, `equivalence.action`/`route`, selector449/routing449, fixtures, A6 strict cycle semantics, or A7/R4/G4 surfaces.
+
+Compile-green → `M6-CP1-TB8-A6-EXEC`: **12 focused + selector449 = 461** fresh exact-filter processes → mandatory `M6-CP1-TB8-A6-REV`.
 
 ## Completed predecessor turns (reference only)
 
-- `M6-CP1-TB7-A6-REV` — current Review authority.
-- `M6-CP1-TB7-A6-EXEC` — current retained runtime report, mechanically valid 443/460 RED.
-- `M6-CP1-CB7-A6` / TB6 / TB5 and earlier M6 turns — folded/resolved by `M6_Consolidated_Record.md` index; full text remains in git history.
+- `M6-CP1-TB7-A6-REV`, with its review-agent addendum — current Review authority.
+- `M6-CP1-TB7-A6-EXEC` — current retained runtime report: mechanically valid 443/460 RED.
+- `M6-CP1-CB7-A6`, TB6, TB5 and earlier M6 turns — folded into and resolved by the `M6_Consolidated_Record.md` index. Full text remains in git history.
 
 ## Current files
 
+- `.agents/Directional/Architecture_M6_CP1_CB8_A6_HardRail_Placement_Transport_Recovery_Code_Build_Plan.md` — exact next implementation plan; the amendment block governs.
+- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — normative definitions; RA-16 at the end.
+- `.agents/Directional/Architecture_M6_CP1_TB7_A6_Review_Record.md` — current Review authority, with addendum §G.
 - `.agents/Directional/Architecture_M6_CP1_TB7_A6_Artifact_Only_Test_Benchmark_Report.md` — current runtime report.
-- `.agents/Directional/Architecture_M6_CP1_TB7_A6_Review_Record.md` — current Review authority.
-- `.agents/Directional/Architecture_M6_CP1_CB8_A6_HardRail_Placement_Transport_Recovery_Code_Build_Plan.md` — exact next implementation plan.
-- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — normative definitions including RA-13/RA-14/RA-15.
 - `.agents/Directional/M6_Consolidated_Record.md` — folded M6 history and filename resolver.
-- `.agents/Directional/Regression_Root_Cause_Tracker.md` — 59/16/43 current accounting.
-- `.agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt`, `Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv` — frozen selector/routing authority.
+- `.agents/Directional/Regression_Root_Cause_Tracker.md` — current accounting, 60/16/44.
+- `.agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt` and `Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv` — frozen selector and routing authority.
 
 ## Context Load Plan
 

@@ -192,3 +192,172 @@ Compile/package green -> fresh `M6-CP1-TB8-A6-EXEC` over **11 focused + selector
 | Turn boundary | Runtime-free Review; no generated Directional executable executed. |
 | Consolidation | Superseded CP1 per-turn docs are folded into `M6_Consolidated_Record.md`; current TB7 report, this Review, one CB8 plan, frozen definitions and selectors remain. |
 | Tool-call ledger | **unknown/partial** after context compaction; not reconstructed by extra tool calls, per conservation policy. |
+
+---
+
+## Review-agent addendum (2026-10-03, resumed `M6-CP1-TB7-A6-REV`)
+
+**This addendum overrides §§3.3, 5, 7 and 8 above where they conflict.**
+
+| Item | Result |
+|---|---|
+| Evidence re-derivation | Confirmed |
+| Finding A diagnosis | Confirmed |
+| Finding B diagnosis | Confirmed |
+| RA-14 derivation | **Corrected** (RA-16) |
+| RA-15 location | **Pinned to A5** |
+| Finding C | **Overturned:** production regression, +1 stable |
+| CB8 plan | **Amended:** the selector446 migration and the completion-consumer edit are revoked; focused identity 12 is added; TB8 becomes **12 + 449 = 461** |
+
+- Stable accounting: **60 / 16 / 44**, debt **1**.
+- Candidate `11257522199 / 40842caa...` stays rejected. Reviewed runtime authority stays TB5 `10879581622 / 82b86a28...`.
+- Successor is unchanged: `M6-CP1-CB8-A6`, as amended.
+
+### G1. Independent re-derivation (confirmed)
+
+**Artifact.**
+- I downloaded result artifact `11262587435` again. The ZIP SHA-256 equals the provider digest `87cfcda2...44575`.
+- `SHA256SUMS` verifies **953/953**; the manifest is `5a5abda8...`.
+- The execution, focused and selector ledgers are `fd41e71a...`, `f2a8cd85...` and `ac7883b7...`.
+
+**Selector ledger.**
+- Its identities equal selector449 (`d4a0d1b7...d6414`) in exact file order.
+- Outcome is **432 PASS / 17 RED**, at exactly 115, 116, 122, 130, 132, 134, 137, 141, 143, 150, 176, 201, 217, 227, 230, 231 and 446.
+- Every row has selected=1 and skipped=0. Focused is 11/11 PASS.
+- The boundary file records 460 executed, no orchestration failure, and every repair/mutation/retry flag false.
+
+**Raw first failures.**
+- 115/116/141/143/217/231: `materialized.success` is false with `InvalidHardRailTransport`.
+- 150: `NotProductionReady:tracing:InvalidHardRailTransport`.
+- 227/230: expected `InvalidHardRailAuthority`, actual `InvalidHardRailTransport`.
+- 446: materialization succeeds, then only `EXPECT_TRUE(selected)` fails (tests `:4213`).
+- All 460 raw logs contain zero `QuotientHolonomyConflict`.
+
+**Downstream grouping, verified in code (the logs alone cannot show it).** Rows 122/130/132/134/137 assert reachability before printing any root code. The grouping holds because:
+- component stage products, including `authoritativeRails`, are published only on the success path (`RemeshPipeline.cpp:11912`);
+- `captureFinalValidationAuthority` returns early when `!run.result.is_produced()` (`:14302`).
+
+So once a HardRail component fails to materialize:
+- row 122's hook still sees `Produced` from the phase-front producer, but finds no HardFeature rail to tamper;
+- rows 130/132/134/137 never observe feature authority;
+- rows 176/201 stop `NotProductionReady` at `tracing` (row 201's log shows stage `tracing`).
+
+**Source identity.** HEAD `src/`, `include/` and `tests/` are byte-identical to `40842caa` (`git diff 40842caa..HEAD` is empty), so every citation below is the exact runtime candidate.
+
+### G2. Finding A is confirmed, but RA-14's remedy depends on the face gauge
+
+**Diagnosis confirmed.** Retained HardRail carrier steps are published as `TransitionStep::interior(topology, transitionId, GridAutomorphism::identity(), runOrientation)` (`SurfaceCellTracing.cpp:11670-11672`). `route.composed_transport()` is therefore always identity for HardRail. It records which source edges the rail runs along, not the map across the rail.
+
+**Defect in the remedy.** RA-14 derives `R = branch(b) ∘ branch(a)⁻¹`. But `LocalLatticeState.branchRotation` is face-gauged, not a pure lattice frame:
+
+- Cell corner states take `branchRotation = faceBranchRotation[selected source face]`, plus the region's `chartUBranch` (`SurfaceCellTracing.cpp:12094-12095`, `:16324-16326`).
+- `faceBranchRotation` is propagated **per topology region**, starting from that region's own root (value 0), across dual edges by FieldTransportAtlas transport (`:14920-14985`; `resolve_branch_transition` uses `atlas->transport`, `:6409+`).
+- A3 strips this face gauge before it compares periodic endpoints (`make_periodic_relation_endpoint_state`, `:7926-7931`).
+- A4 certifies exact-A3 periodic correspondence only in that face-free relation-endpoint gauge (`:8262-8291`). A4 certifies no lattice relation across a HardRail at all.
+
+Consequence: take endpoint states `a` (region A, selected face `f_a`) and `b` (region B, face `f_b`). Then
+
+  `branch(b) − branch(a) = R_true + τ(f_a → f_b)`,
+
+where `τ` is the field matching across the rail between the two selected faces. RA-14's `R` is the true lattice rotation only when `τ = 0`.
+
+**Why the gate cannot see it.**
+- Every HardRail fixture in the 460 gate uses a constant field: `constant_xy_field` / `constant_xy_raw_field` (e.g. `hard_rail_fixture`, the rectangular builder in `SurfaceCellsPhase10Tests.cpp`). So `τ = 0` everywhere and RA-14 would pass TB8.
+- Nonzero matching across hard carriers is real. The repo's own nonzero-Z4 witness has to search for hard carriers whose matching is nonzero (`SurfaceCellTransitionQuotientTests.cpp:1351-1363`).
+- On a separating rail with `τ ≠ 0`, RA-14 yields `T0 ≠ T1` for a valid pair, because the edge vector does not rotate by `τ`. It fails closed with `InvalidHardRailTransport`.
+
+That is a production regression selector449 cannot detect.
+
+**The "non-circular" claim.** RA-14 §3.3 says its derivation is not circular. Re-checking a state-derived `T` with `action_matches` is tautological for that same pair. The only real content is `T0 == T1`, i.e. rigidity of the edge correspondence. RA-16 keeps exactly that rigidity check without the face gauge.
+
+**Second defect: wrong source states.** A5 derives transports from the `SurfaceFrontEdge` lattice copies (`first.fromLattice`, ...). The adapter only checks those copies against the cell corners afterwards (`lattice_equal`, `RemeshPipeline.cpp:5798-5806`).
+- So tampering an edge lattice on a HardRail or Periodic edge now fails as a transport error instead of `InvalidAuthoritativePhaseFrontSideAuthority`.
+- Only the OrdinaryInterior variant is pinned (tests `:3251-3263`).
+- RA-16 therefore derives from the endpoint occurrences' `placement.lattice`, which are the objects the relation actually unites.
+
+### G3. Finding C is overturned: selector446 falsifies a production lineage regression (+1 stable)
+
+**Mechanism (three steps).**
+1. A5 builds the lineage selected step with `step.appliedTransport = evidence.canonicalTransport` (`RemeshPipeline.cpp:4357`).
+2. A6 requires `selectedRelationStep->appliedTransport == canonicalTransport` for HardRail and Periodic certificates (`:4723-4724`, `:4749-4750`).
+3. RA-13 changed `canonicalTransport` to the placement gauge for the A6 certificate. Through steps 1-2, CB7 therefore also changed the representation of the M5 lineage `SelectedRelationStep.appliedTransport`. RA-13 never authorized that.
+
+**Production consumer.**
+- `close_completion_lineage_source_authority` validates every selected step against its lineage equivalence:
+  - HardRail: orientation-adjusted `equivalence.route.composed_transport()` (`PureQuadCompletion.cpp:1086-1092`);
+  - Periodic: orientation-adjusted `equivalence.action` (`:1105-1128`);
+  - otherwise it fails `CompletionOwnershipSelectedRelationValueMismatch` (`:1132`).
+- The authoritative pipeline runs this check immediately after materialization (`RemeshPipeline.cpp:10705-10719`) and fails `NotProductionReady` at `completion`.
+- Periodic `equivalence.action` is `storedRelation.action()`, i.e. `g` (`:4234`). For any exact-A3 relation with `Q ≠ 0`, the placement map is neither `g` nor `g⁻¹`, so production completion rejects it.
+- The gate is blind to this: the nonzero-Z4 witness is materialized only, never completed.
+
+**Selector446 mirrors that check.** Its predicate (`SurfaceCellTransitionQuotientTests.cpp:4204-4213`) is the same comparison production completion makes. It is not stale; it is the gate's only falsifier of this defect.
+
+**What the TB7-REV CB8 plan would have done.**
+- (a) Migrated selector446, which deletes that falsifier.
+- (b) Changed only the HardRail half of the completion check (plan §2.3). The periodic half would still compare against `g`, so the defect ships.
+- (c) Written the placement map into HardRail `equivalence.action` (RA-14 item 4). That field is hashed (`RemeshPipeline.cpp:2718`), checked during component aggregation (`:15533-15537`) and benchmark-hashed (`BenchmarkQuality.cpp:1131`). This contradicts lesson 185, which TB7-REV itself recorded.
+
+**Correction (RA-16 §3): decouple the two values.**
+- A5 publishes two A5-owned values per relation, both in canonical direction:
+  - `canonicalTransport`: placement gauge; feeds the A6 certificate and the strict cycle rule;
+  - `canonicalRelationValue`: the M5 lineage relation value. That is identity for OrdinaryFront, `route.composed_transport()` for HardRail, `g` oriented for exact-A3 Periodic, and the existing selected action for non-A3 Periodic.
+- The selected step carries `canonicalRelationValue`.
+- A6 already keeps `pathCertificate.composedTransport` (placement) separate from `legacyProjection` (`:4912-4924`; validator `:5339-5346`).
+- Result: the lineage projection is byte-identical to the pre-RA-13 projection on every accepted row. Completion and selector446 stay unchanged.
+
+**Accounting.** One event and one recurrence of `RP-01 / AUTHORITY_DOMAIN_CONFLATION`: the A6 quotient-certificate transport and the M5 lineage relation value were conflated through one field.
+- Root cause: RA-13 (review agent) did not list the consumers of `canonicalTransport`, and CB7 inherited the field coupling.
+- Stable accounting becomes **60 / 16 / 44**, debt 1.
+
+### G4. Finding B is confirmed; RA-15 moves into A5
+
+**Diagnosis confirmed.**
+- Row 227 duplicates a route step (tests `:5233-5250`); row 230 replaces a step's interior transition id (`:5190-5230`).
+- Both routes are individually invalid under the adapter's `exact_interior_route_valid` (`RemeshPipeline.cpp:5752-5773`). That check only runs after A5: A5 runs at `:5711`, the check at `:5884-5888`.
+
+**Controls survive the reorder.**
+- Row 139 swaps in another real edge's route, and row 142 copies `first.route`. Both routes are individually valid (`SurfaceCellsPhase10Tests.cpp:6804-6843`), so they still reach the reciprocity check.
+- Row 140 is an owner mismatch and is unaffected.
+
+**Location correction.**
+- A5 already receives the needed inputs: `produce(sourceVertices, sourceFaces, phaseFront)` (`:3284`).
+- Extract the predicate once as a free function. A5 applies it to both HardRail sides before any pair predicate, with a distinct A5 code `HardRailRouteAuthorityInvalid` that maps to `InvalidHardRailAuthority`.
+- The adapter keeps calling the same function for unpaired and exterior edges.
+- Do not build an adapter-wide preflight. It would change precedence against every other per-edge adapter check, and it keeps semantic validation in the adapter, against the CP1 thin-adapter exit criterion.
+- Periodic is already covered upstream: A4 rejects non-reciprocal and renumbered exact-A3 periodic routes during product construction (`SurfaceCellTracing.cpp:8218-8225`).
+
+### G5. Exact-A3 Periodic: a latent issue, carried to R4
+
+CB7's `periodic_endpoint_gauge` (`RemeshPipeline.cpp:4034-4060`) builds Γ state-to-state, so Γ includes a rotation by `[Q]−F` about the endpoint. Its final `action_matches` (`:4293-4299`) then compares face-gauged branches.
+
+- A4 constructs relation endpoints with `Q = g.rotation`. Under that convention, `T = Γ_to⁻¹ ∘ g ∘ Γ_from` has linear part `rot(F_rt − F_ff)`.
+- `T` equals the coordinate map `rot(Q)⁻¹ ∘ g` exactly when the face gauges at corresponding corners agree (`F_rt = F_ff`).
+- Otherwise `T_from ≠ T_to`, and an A4-valid product is rejected with `PeriodicTransportMismatch`.
+- The non-constant-field witness has equal gauges (focused6 and 446 materialize), so no gate row reaches the other case.
+
+Disposition: no change in CB8, since the output is provably identical whenever CB7 accepts. `M6-DEFN-R4` carries an obligation to supply a witness with unequal corner gauges and to replace the face-gauged final check with coordinate and relation-gauge checks. Focused 12(c) pins the coordinate rule meanwhile.
+
+### G6. Review-agent accountability (RA-13)
+
+- **Item 1** mandated `action_matches` on face-gauged placement states for every relation. That is unsound across faces: applied to OrdinaryFront, it would reject valid relations whose two sides select faces with nonzero matching. CB7 happened not to apply it there.
+- **Item 4** predicted selector446 would PASS. I did not audit the assertions over `appliedTransport`, nor the consumers of `canonicalTransport` (lesson 180 again).
+- **The HardRail clause** handed a statically answerable question to a stop rule that a runtime-free CB could not fire reliably. `SurfaceCellTracing.cpp:11670-11672` already answered it.
+
+Lessons 186 and 187 record these.
+
+### G7. Closeout
+
+| Duty | Result |
+|---|---|
+| Primary evidence | Result ZIP digest, 953/953 manifest, three ledgers, 460 raw logs and selector order independently verified. |
+| Source authority | HEAD source is byte-identical to `40842caa`; every citation is to the runtime candidate. |
+| Finding A | Diagnosis confirmed. Remedy replaced by RA-16 §2: coordinate-rigid derivation from occurrence placements; no cross-region branch comparison. |
+| Finding B | Confirmed. RA-15 location pinned to A5 (RA-16 §5). |
+| Finding C | **Overturned.** Production lineage-contract regression (`PureQuadCompletion.cpp:1086-1132`, `RemeshPipeline.cpp:10705-10719`). Selector446 retained as falsifier. +1 stable RP-01. |
+| Accounting | **60 / 16 / 44**, debt 1. |
+| Definitions | RA-16 frozen. RA-14 items 2-5 superseded; RA-13 item 1 withdrawn; RA-15 item 1 located. |
+| CB8 plan | Amended: decoupling, coordinate-rigid HardRail, A5-owned route validity, selector446 unchanged, `PureQuadCompletion.cpp` untouched, focused 12 added. |
+| TB8 gate | **12 focused + selector449 = 461** fresh exact-filter processes; recovery-green **461/461**. |
+| Carried | R4: periodic coordinate-rule replacement with a face-gauge witness, cross-region branch certification, OrdinaryFront coordinate identity across isolation seams. |
+| Turn boundary | Runtime-free; no generated Directional executable run. |

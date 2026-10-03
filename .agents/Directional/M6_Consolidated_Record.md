@@ -1,6 +1,6 @@
 # M6 consolidated record
 
-**Current authority after `M6-CP1-CB7-A6` (2026-10-02):** compile-only candidate `11257522199 / 40842caa88f8d7a08a38c91273ace77ebd7c0676` is compile/package green and unpromoted. CB7 restores HardRail reciprocal region/reversed-route/placement validation, implements RA-13 placement-gauge Periodic transport, keeps strict cycle equality with residual diagnostics only, and revalidates A6 certificates against immutable A5 authority. Reviewed runtime remains `10879581622 / 82b86a28...`, selector449 449/449. Stable accounting is **57 / 16 / 41**, debt 1. Exact next is immutable `M6-CP1-TB7-A6-EXEC` (11+449=460) then mandatory Review; R4/A7/`G4-B002` remain held.
+**Current authority after the `M6-CP1-TB7-A6-REV` review-agent addendum (2026-10-03):** the TB7 candidate `11257522199 / 40842caa...` is rejected; reviewed runtime remains TB5 `10879581622 / 82b86a28...` (selector449 449/449). RA-16 is normative (§29). Stable accounting is **60 / 16 / 44**, debt 1. Exact next: `M6-CP1-CB8-A6` as amended → `M6-CP1-TB8-A6-EXEC` (12+449=461) → mandatory Review.
 
 ## 0. `M6-DEFN-R3-REV` — R3 accepted with four binding A6 precision amendments
 
@@ -195,6 +195,31 @@ CAND-02 is one `VALIDATION_ORDER_SHADOWING` recurrence: rows227/230 still fail c
 CAND-03 (selector446) is closed non-stable test authority. Production now materializes, focused6 and periodic controls pass, and raw holonomy conflicts are zero; the only stale assertion compares placement-gauge selected transport with relation-endpoint `SurfacePeriodicHolonomy::action()`. CB8 may migrate only that assertion body to an independent direct-placement plus gauge-conjugation oracle.
 
 Stable accounting becomes **59 / 16 / 43**, debt 1. Exact successor is bounded runtime-free `M6-CP1-CB8-A6`; compile/package green -> fresh `M6-CP1-TB8-A6-EXEC` **11+449=460** -> mandatory Review. R4/A7/G4 remain held. Full current authority is `Architecture_M6_CP1_TB7_A6_Review_Record.md`; normative amendments are RA-14/RA-15 at the end of `Architecture_M6_Frozen_Definitions.md`.
+
+## 29. `M6-CP1-TB7-A6-REV` review-agent addendum — RA-16; Finding C overturned; CB8 amended
+
+The review agent re-derives the TB7 evidence: digest, 953/953 manifest, ledgers, selector order and raw logs. It verifies the downstream-row grouping in code, since component products are published only on success (`RemeshPipeline.cpp:11912`, `:14302`).
+
+**Finding A.** The diagnosis is confirmed: HardRail route steps carry identity transport (`SurfaceCellTracing.cpp:11670-11672`). The remedy is corrected.
+- `LocalLatticeState.branchRotation` is face-gauged: `faceBranchRotation` is propagated per region (`:12094`, `:16324`, `:14920-14985`).
+- So RA-14's `R = branch(b) ∘ branch(a)⁻¹` is off by the field matching across the rail.
+- Every gate HardRail fixture has a constant field, so the gate cannot see this. Real fields fail closed.
+- RA-16 §2 replaces it with a coordinate-rigid derivation from occurrence placements, with no branch comparison.
+
+**Finding B.** Confirmed. Route validity is pinned to A5 (RA-16 §5).
+
+**Finding C, overturned.**
+- CB7's A5 sets the M5 lineage `SelectedRelationStep.appliedTransport` from `canonicalTransport` (`:4357`), and A6 enforces that equality (`:4723`, `:4749`).
+- RA-13 moved that field to the placement gauge.
+- Production completion (`PureQuadCompletion.cpp:1086-1132`, run at `RemeshPipeline.cpp:10705-10719`) and selector446 both validate the step against the relation value.
+- CAND-03 is therefore a stable `RP-01` recurrence.
+- RA-16 §3 decouples the two values: `canonicalRelationValue` feeds the lineage, `canonicalTransport` feeds A6. Selector446 and completion stay unchanged.
+
+**Latent periodic issue.** CB7's exact-A3 Γ is face-gauged. It is provably correct whenever it accepts, so it is carried to `M6-DEFN-R4` with a witness obligation.
+
+**Gate.** The CB8 plan gains an amendment block: decoupling, coordinate-rigid HardRail, A5 route validity, focused 3 strengthened, and new focused 12 (`M6CP1.RelationPlacementTransportIsCoordinateRigidAndFaceGaugeInvariant`). TB8 = **12+449 = 461**.
+
+**Accounting.** **60 / 16 / 44**, debt 1. Lessons 186-187. Full text: `Architecture_M6_CP1_TB7_A6_Review_Record.md`, addendum §G1-§G7.
 
 ## Folded document index
 

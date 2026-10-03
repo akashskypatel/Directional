@@ -1,3 +1,18 @@
+## Currency — `M6-CP1-TB7-A6-REV` review-agent addendum: RA-16 frozen; CB8 plan amended; TB8 = 12+449=461 (2026-10-03 UTC)
+
+The addendum confirms TB7's evidence and the diagnoses of Findings A and B, then makes three corrections.
+
+- **Finding C overturned.** Selector446 restates the production completion check (`PureQuadCompletion.cpp:1086-1132`, run at `RemeshPipeline.cpp:10705`). CB7 had coupled the M5 lineage step transport to the A6 placement transport.
+  - CAND-03 becomes a stable RP-01 recurrence → **60 / 16 / 44**, debt 1.
+- **RA-16 replaces RA-14 items 2-5.**
+  - HardRail placement transport is coordinate-rigid: derived from occurrence placements with no branch comparison. `branchRotation` is face-gauged, so the RA-14 branch formula is off by the field matching across a rail.
+  - A5 publishes `canonicalRelationValue` (lineage) separately from `canonicalTransport` (A6).
+  - Route validity becomes A5-owned.
+- **CB8 plan amended.** Do not edit selector446 or `PureQuadCompletion.cpp`; add focused 12. TB8 = **12+449 = 461**.
+
+Exact next: `M6-CP1-CB8-A6` as amended.
+
+### Superseded currency note
 ## Currency — `M6-CP1-TB7-A6-REV` COMPLETE / TB7 candidate rejected / RA-14+RA-15 frozen / exact next `M6-CP1-CB8-A6` (2026-10-03 UTC)
 
 TB7-A6 is mechanically valid at **443/460 PASS** (11/11 focused + 432/449 selector). Review proves one stable `RP-01` HardRail carrier-vs-placement recurrence and one stable `VALIDATION_ORDER_SHADOWING` route-order recurrence; selector446 is a non-stable stale test assertion after production recovery. Stable accounting is **59 / 16 / 43**, debt 1. Candidate `11257522199 / 40842caa...` is rejected/unpromoted; reviewed runtime remains TB5 `10879581622 / 82b86a28...`, selector449 449/449. RA-14 separates HardRail carrier route from placement transport; RA-15 restores individual route authority before pair reciprocity. Exact next is bounded `M6-CP1-CB8-A6` -> immutable TB8-A6 **11+449=460** -> mandatory Review. R4/A7/G4 remain held.
@@ -121,9 +136,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
- > **Current milestone authority (2026-09-25, after `M6-CP1-CB5`):** M4 and M5 remain CLOSED / ACCEPTED. Accepted runtime authority is M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 449/449. M6 CP1 remains ACTIVE; CB5 candidate artifact `10879581622` / source `82b86a285292379cfd92cdc4e10d74181b38f1e8` is compile-green and unpromoted. Stable accounting is **55/16/39**, debt 1. Exact next is immutable `M6-CP1-TB5-EXEC` 456 → mandatory Review.
+ > **Current milestone authority (2026-10-03, after the `M6-CP1-TB7-A6-REV` review-agent addendum):** M4 and M5 remain CLOSED / ACCEPTED. M6 CP1 remains ACTIVE. Reviewed runtime authority is TB5 package/source `10879581622 / 82b86a285292379cfd92cdc4e10d74181b38f1e8` under selector449 449/449; the TB6 and TB7 candidates are rejected. Stable accounting is **60/16/44**, debt 1. RA-16 is normative. Exact next is `M6-CP1-CB8-A6` as amended → `M6-CP1-TB8-A6-EXEC` (461) → mandatory Review.
 
-**Currency.** `M6-CP1-CB5` (Code + Build), 2026-09-25 UTC
+**Currency.** `M6-CP1-TB7-A6-REV` review-agent addendum (Review), 2026-10-03 UTC
 
 **Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` §16.3 is the active same-region nonzero-Z4 contract. `PeriodicRelationId` remains carrier-content identity; relation rotation is the gauge-adjusted quotient `Q`, action/transport is relation value, and canonical storage may invert representation only after semantic Forward -> Reverse authority is fixed. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 
@@ -171,11 +186,21 @@ A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on t
 
 **M3, M4 and M5 are CLOSED / ACCEPTED. M6 is ACTIVE at CP1.** `M6-CP1-TB7-A6-REV` rejects CB7-A6 candidate `11257522199 / 40842caa...` after authoritative TB7 run `37090507571` returns focused **11/11** + selector **432/449** = **443/460 PASS**. Current reviewed runtime authority remains CB5/TB5 package/source `10879581622 / 82b86a285292379cfd92cdc4e10d74181b38f1e8` under selector449 **449/449**, selector SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`, routing `9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707`, owners **32 / 301 / 75 / 41**.
 
-TB7 Review prices two stable existing-pattern recurrences. HardRail direct/downstream losses are `RP-01 / AUTHORITY_DOMAIN_CONFLATION`: the carrier route was misused as a cut-domain placement map. Rows227/230 are one `VALIDATION_ORDER_SHADOWING` recurrence: pair reciprocity pre-empts accepted individual route authority. Selector446 is closed as non-stable test authority because production now materializes and its only assertion compares RA-13 placement transport against relation-endpoint `g`. Stable accounting is **59 events / 16 categories / 43 recurrences**; produced-witness debt remains **1**, M6-owned.
+TB7 Review, with its review-agent addendum, prices three stable existing-pattern recurrences:
+- HardRail direct and downstream losses: `RP-01 / AUTHORITY_DOMAIN_CONFLATION`. The carrier route was misused as a cut-domain placement map.
+- Rows 227/230: one `VALIDATION_ORDER_SHADOWING` recurrence. Pair reciprocity pre-empts accepted individual route authority.
+- Selector446: `RP-01`, per the addendum. CB7 rewrote the M5 lineage selected-step transport, which production completion validates.
 
-`M6-CP1` remains open. RA-14 now separates HardRail carrier route and placement transport; RA-15 restores route-validation ordering. Exact next `M6-CP1-CB8-A6` is bounded to those corrections plus selector446's independent gauge-aware assertion migration. Compile-green advances to fresh **11+449=460** `M6-CP1-TB8-A6-EXEC`, then mandatory Review. R4/A7/`G4-B002` stay held.
+Stable accounting is **60 events / 16 categories / 44 recurrences**. Produced-witness debt remains **1**, M6-owned.
 
-**Historical accounting note:** M5 closed at **51 / 14 / 37**; TB5 stood at **55 / 16 / 39**; TB6 Review stood at **57 / 16 / 41**. Current project accounting is **59 / 16 / 43**.
+`M6-CP1` remains open. RA-16 governs the recovery:
+- coordinate-rigid HardRail placement transport;
+- `canonicalRelationValue` decoupled from `canonicalTransport`;
+- A5-owned route validity.
+
+Exact next is `M6-CP1-CB8-A6` as amended. Compile-green advances to a fresh **12+449 = 461** `M6-CP1-TB8-A6-EXEC`, then mandatory Review. R4/A7/`G4-B002` stay held.
+
+**Historical accounting note:** M5 closed at **51 / 14 / 37**; TB5 stood at **55 / 16 / 39**; TB6 Review stood at **57 / 16 / 41**; TB7 Review stood at **59 / 16 / 43**. Current project accounting is **60 / 16 / 44**.
 
 ## 4. The witnesses — the fastest way to understand the problem
 
@@ -294,7 +319,15 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M6-CP1-CB8-A6` — EXACT NEXT / bounded HardRail placement+ordering recovery.** Implement RA-14 by deriving HardRail placement transport independently from both endpoint `LocalLatticeState` pairs while retaining route as carrier/topology evidence; make completion selected-step validation consume `equivalence.action`. Implement RA-15 by moving/extracting exact individual route authority before A5 pair reciprocity. Migrate only selector446's stale assertion body to an independent direct-placement + gauge-conjugation oracle. Selector449/routing449/fixtures and focused count 11 stay frozen. Compile only; then fresh `M6-CP1-TB8-A6-EXEC` 11+449=460 and mandatory Review. **HELD:** R4/A7/`G4-B002` until that recovery Review.
+1. **`M6-CP1-CB8-A6` — EXACT NEXT / bounded HardRail placement, lineage-decoupling and ordering recovery (RA-16; the plan's amendment block governs).**
+   - HardRail `canonicalTransport` = the unique rigid coordinate map from the occurrence placements (no branch comparison).
+   - `canonicalRelationValue` (the M5 value) feeds the lineage selected step and the A6 step checks.
+   - Route validity is one extracted predicate, applied in A5 before the HardRail pair predicates.
+   - Focused 3 is strengthened; focused 12 is new.
+   - Selector446, `PureQuadCompletion.cpp`, `equivalence.action`/`route`, selector449/routing449 and fixtures stay frozen.
+   - Compile only; then a fresh `M6-CP1-TB8-A6-EXEC` (12+449 = 461) and mandatory Review.
+   - **HELD:** R4/A7/`G4-B002` until that recovery Review.
+   - **R4 carries:** an exact-A3 periodic face-gauge witness with the coordinate-rule replacement; cross-region branch certification; OrdinaryFront coordinate identity across isolation seams.
 
 2. **`G4-B002` produced closed-complex debt — OPEN / M6.** M6-DEFN freezes CP1 mechanism/stage separation and CP3 direct-production proof. Preserve the independent eligibility oracle, hard-feature tamper and fail-closed/no-recovery contract; mechanism evidence cannot close production debt.
 
@@ -319,7 +352,14 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 8. Recurring defect patterns
 
-**A selected spanning forest is not a zero-holonomy theorem — `M6-CP1-TB6-A6-REV` / existing `RP-07 CYCLIC_TOPOLOGY_LINEARIZATION`.** The accepted nonzero-Z4 torus relation fails only because A6 requires its direct periodic action to equal one selected-forest path action. The selected forest is a deterministic representation cut, not authority that the closed cycle residual is identity. Preserve exact `D`, `P`, and `H=compose(P.inverse(),D)`; reject only inconsistent evidence or an explicitly frozen zero-residual obligation.
+**A gauge is only a gauge if every component transforms together — `M6-CP1-TB7-A6-REV` review-agent addendum, lesson 186.** `LocalLatticeState.branchRotation` is face-gauged: it carries `faceBranchRotation`, propagated per region. The lattice coordinate is not face-gauged.
+- Deriving or checking a lattice rotation from branch differences across faces or regions silently adds the field matching between them.
+- The gate cannot see this (every gate HardRail fixture has a constant field), and it fails closed on real fields.
+- Derive rigid maps from coordinates. Compare branches only in a gauge the producer certifies.
+
+**A field reused for two authorities changes both when one changes — `M6-CP1-TB7-A6-REV` addendum, lessons 185 and 187.** `canonicalTransport` fed both the A6 certificate and the M5 lineage selected step. Moving it to the placement gauge broke the lineage contract that production completion enforces. A test restating a production comparator is a falsifier, not a stale test.
+
+**[Superseded diagnosis — see RA-13 / lesson 184. The TB6 failure was gauge mixing (RP-01), not legitimate holonomy.]** **A selected spanning forest is not a zero-holonomy theorem — `M6-CP1-TB6-A6-REV` / existing `RP-07 CYCLIC_TOPOLOGY_LINEARIZATION`.** The accepted nonzero-Z4 torus relation fails only because A6 requires its direct periodic action to equal one selected-forest path action. The selected forest is a deterministic representation cut, not authority that the closed cycle residual is identity. Preserve exact `D`, `P`, and `H=compose(P.inverse(),D)`; reject only inconsistent evidence or an explicitly frozen zero-residual obligation.
 
 **Validation-order shadowing can recur at an authority publication boundary — `M6-CP1-TB6-A6-REV` / existing `VALIDATION_ORDER_SHADOWING`.** Moving HardRail relation authority into A5 preserved owner-ID validation but dropped the accepted different-region + reversed-route predicate. A6 could only validate the self-consistent bad evidence A5 had already frozen. Validate a semantic relation completely before publishing it as immutable authority; downstream self-consistency is not a substitute. `LESSONS.md` 22f applies.
 

@@ -1,4 +1,27 @@
-## Current — `M6-CP1-TB7-A6-REV` COMPLETE / candidate rejected / exact next `M6-CP1-CB8-A6` (2026-10-03)
+## Current — `M6-CP1-TB7-A6-REV` review-agent addendum: RA-16 / CB8 amended / TB8 = 461 (2026-10-03)
+
+- [x] Re-derive the TB7 evidence: digest, 953/953 manifest, three ledgers, selector order, 460 raw logs. Verify the downstream-row grouping in code (`RemeshPipeline.cpp:11912`, `:14302`).
+- [x] Confirm Finding A's diagnosis: HardRail route steps carry identity transport (`SurfaceCellTracing.cpp:11670-11672`). Correct the remedy: RA-14's branch-derived `R` is off by the field matching across the rail, because `branchRotation` is face-gauged.
+- [x] Overturn Finding C. Selector446 restates the production completion check (`PureQuadCompletion.cpp:1086-1132`, run at `RemeshPipeline.cpp:10705`); CB7 rewrote the M5 lineage step transport. CAND-03 becomes a stable RP-01 recurrence → **60 / 16 / 44**, debt 1.
+- [x] Freeze RA-16:
+  - coordinate-rigid HardRail placement transport from occurrence placements;
+  - `canonicalRelationValue` decoupled from `canonicalTransport`;
+  - A5-owned route validity;
+  - RA-14 items 2-5 superseded; RA-13 item 1 withdrawn.
+- [x] Amend the CB8 plan:
+  - revoke the selector446 migration and the `PureQuadCompletion.cpp` edit;
+  - add the A2 decoupling;
+  - strengthen focused 3; add focused 12 (face-gauge relabel invariance plus the witness coordinate rule);
+  - TB8 = 12+449 = 461.
+- [x] Record lessons 186-187.
+- [ ] **Exact next `M6-CP1-CB8-A6` as amended:** compile/package only; runtime forbidden.
+- [ ] CB8 green -> `M6-CP1-TB8-A6-EXEC`: exactly **12+449 = 461** fresh processes -> mandatory `M6-CP1-TB8-A6-REV`.
+- [ ] Carried to `M6-DEFN-R4`:
+  - an exact-A3 periodic face-gauge witness (unequal corresponding-corner `faceBranchRotation`) with the coordinate-rule replacement;
+  - cross-region branch certification for HardRail;
+  - OrdinaryFront coordinate identity across isolation seams.
+
+## Superseded — `M6-CP1-TB7-A6-REV` pre-addendum checklist (its CB8 scope is replaced by RA-16)
 
 - [x] Independently re-open TB7 result `11262587435`, raw RED logs, 953/953 self-manifest and exact source; confirm mechanically valid **443/460** semantic RED.
 - [x] Adjudicate CAND-01 as one stable `RP-01` recurrence: HardRail carrier route is not cut-domain placement transport; direct + downstream losses share one first mechanism.

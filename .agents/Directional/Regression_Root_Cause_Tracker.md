@@ -1,3 +1,27 @@
+## 2026-10-03 — `M6-CP1-TB7-A6-REV` review-agent addendum — **+1 STABLE EVENT (CAND-03 reclassified) / 60/16/44 / debt 1**
+
+The review-agent addendum confirms CAND-01's diagnosis and grouping, and CAND-02's diagnosis. It overturns CAND-03's non-stable disposition. Full text: `Architecture_M6_CP1_TB7_A6_Review_Record.md`, addendum §G1-§G7.
+
+### `M6-CP1-TB7-A6-REV-CAND-03` — **RECLASSIFIED: STABLE / `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence** (supersedes "CLOSED / NON-STABLE TEST-AUTHORITY DEFECT" below)
+
+- **Population:** selector446.
+- **Root cause.** A5 sets the M5 lineage `SelectedRelationStep.appliedTransport` from `canonicalTransport` (`RemeshPipeline.cpp:4357`), and A6 enforces that equality (`:4723-4724`, `:4749-4750`). When RA-13 moved `canonicalTransport` to the placement gauge for the A6 certificate, the lineage relation value changed with it.
+- **Production impact.**
+  - Production completion validates periodic steps against `equivalence.action = g` (`PureQuadCompletion.cpp:1105-1132`).
+  - The authoritative pipeline runs that check immediately after materialization (`RemeshPipeline.cpp:10705-10719`).
+  - So every exact-A3 relation with Q≠0 would fail `CompletionOwnershipSelectedRelationValueMismatch` → `NotProductionReady`.
+  - Selector446's predicate is that same comparator. It is not stale.
+- **Attribution.** RA-13 (review agent) did not enumerate the consumers of `canonicalTransport`; CB7 inherited the field coupling.
+- **Recovery owner.** `M6-CP1-CB8-A6` under RA-16 §3: A5 publishes `canonicalRelationValue` separately from `canonicalTransport`; selector446 and `PureQuadCompletion.cpp` stay unchanged.
+- **Accounting:** +1 event, +1 recurrence, +0 categories.
+
+### Remedy corrections (no repricing)
+
+- **CAND-01.** RA-14's branch-derived HardRail transform is face-gauge dependent: it is off by the field matching across the rail between the endpoint faces. RA-16 §2 replaces it with a coordinate-rigid derivation from occurrence placements.
+- **CAND-02.** Route validity is A5-owned (RA-16 §5), not an adapter preflight.
+
+**Stable accounting: `60 events / 16 categories / 44 recurrences`, debt 1.** Candidate `11257522199 / 40842caa...` stays rejected. Reviewed runtime authority remains TB5 `10879581622 / 82b86a28...`. Exact successor: `M6-CP1-CB8-A6` as amended → TB8 **12+449=461** → mandatory TB8 Review.
+
 ## 2026-10-03 — `M6-CP1-TB7-A6-REV` adjudication — **+2 STABLE EVENTS / 59/16/43 / debt 1 / CANDIDATE REJECTED**
 
 Review independently re-opens TB7 result `11262587435` (953/953 self-manifest) and exact candidate/current semantic source. The decisive source/test files are byte-identical between packaged semantic source `40842caa...` and runtime-free review snapshot `ea826744...`.

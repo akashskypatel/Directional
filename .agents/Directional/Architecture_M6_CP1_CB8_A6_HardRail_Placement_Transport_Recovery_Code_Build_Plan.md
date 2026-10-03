@@ -6,6 +6,74 @@
 **Runtime:** forbidden
 **Successor if compile/package green:** `M6-CP1-TB8-A6-EXEC` -> mandatory `M6-CP1-TB8-A6-REV`
 
+> **Review-agent amendment (2026-10-03, `M6-CP1-TB7-A6-REV` addendum §G2-§G7; normative RA-16). This block OVERRIDES §§1-7 below wherever they conflict.**
+>
+> **Revoked.**
+> - §2.1's branch-derived helper.
+> - §2.2's publication of the placement map in `equivalence.action` and in the selected step.
+> - §2.3 entirely: `PureQuadCompletion.cpp` is **not** edited.
+> - §4 entirely: selector446's body is **not** edited; it must PASS unchanged as the falsifier of the lineage regression.
+> - §3's adapter-wide preflight.
+> - §5's "focused count 11" and §7's "460".
+>
+> **Goal A — coordinate-rigid HardRail placement transport (RA-16 §1-2).** In the A5 HardRail branch, after the RA-15 route-validity check and the existing owner, region and reversed-route predicates:
+> 1. Look up the endpoint occurrences' `placement.lattice` for the two pairs `first.from → second.to` and `first.to → second.from`. Use the `endpointPairs` occurrence ids, not `SurfaceFrontEdge::fromLattice`/`toLattice`.
+> 2. Require all four `scaleLevel`s equal.
+> 3. Compute `e = c(first.to) − c(first.from)` (must be nonzero) and `e' = c(second.from) − c(second.to)`.
+> 4. Let `R` be the unique `QuarterTurn` with `rotate(R, e) == e'`. If none exists, fail `HardRailTransportMismatch`.
+> 5. Set `t = c(second.to) − rotate(R, c(first.from))` and `T = {R, t}`. Assert that `T` maps both coordinate pairs.
+> 6. Set `storageTransport = T`. The existing canonical inversion then produces `canonicalTransport`.
+>
+> Never compare `branchRotation` across the rail. Delete CB7's HardRail `action_matches` pair (`RemeshPipeline.cpp:4218-4225`). Keep `sharedEquivalence.action = first.route.composed_transport()` and `sharedEquivalence.route = first.route` unchanged.
+>
+> **Goal A2 — decouple the lineage relation value (RA-16 §3).**
+> - Add `std::optional<authority::GridAutomorphism> canonicalRelationValue` to `SurfaceOccurrenceRelationEvidence`, in canonical direction, with the same `storageIsCanonical` inversion as `canonicalTransport`:
+>   - OrdinaryFront: identity;
+>   - HardRail: `first.route.composed_transport()`;
+>   - exact-A3 Periodic: `firstIsForward ? g : g⁻¹`, i.e. the pre-CB7 `a532f803` expression;
+>   - non-A3 Periodic: the existing selected action.
+> - Set `step.appliedTransport = canonicalRelationValue` (replacing `:4357`).
+> - In `SurfaceQuotientProducer::produce`, the HardRail and Periodic certificate checks (`:4723-4724`, `:4749-4750`) compare `appliedTransport` against `relation->evidence.canonicalRelationValue`. `certificate.relationTransport = canonicalTransport` is unchanged.
+> - The `publish_records_for_validation` checks stay as they are.
+> - Static proof obligation for the CB8 report: for every relation kind, cite the `a532f803` storage-transport line that `canonicalRelationValue` reproduces.
+>
+> **Goal B — A5-owned route validity (RA-15 as located by RA-16 §5).**
+> - Extract the adapter's `exact_interior_route_valid` (`:5752-5773`) into one free function taking the route plus the incidence and transition maps.
+> - A5 builds the maps from `sourceFaces`, exactly as the adapter does at `:5529-5546`.
+> - At the top of the A5 HardRail branch, before owner, region and reversed-route checks, validate `first.route` and `second.route`. Failure code: new `SurfaceOccurrenceComplexErrorCode::HardRailRouteAuthorityInvalid`, legacy name `InvalidHardRailAuthority`, diagnostic name `OccurrenceHardRailRouteAuthorityInvalid`.
+> - The adapter's HardRail and Periodic checks (`:5884-5899`) call the same function; no second copy.
+>
+> **Tests (TB8 gate = 12 focused + selector449 = 461).**
+> - **Focused 3** (`M6CP1.SurfaceOccurrenceComplexRejectsMalformedMissingAndDuplicateRelationEndpoints`), strengthened at the A5 API level:
+>   - a row-230-style HardRail route transition swap returns `HardRailRouteAuthorityInvalid`;
+>   - a row-142-style same-orientation route returns `HardRailRouteMismatch`.
+> - **New focused 12**, `M6CP1.RelationPlacementTransportIsCoordinateRigidAndFaceGaugeInvariant`, appended after focused 11:
+>   - **(a) Baseline.** On `hard_rail_fixture()`, A5 succeeds. Every HardRail relation's `canonicalTransport` maps both endpoint-placement coordinate pairs at equal scale. `equivalence.action == equivalence.route.composed_transport()`. `canonicalSelectedStep->appliedTransport == canonicalRelationValue ==` canonical-direction `route.composed_transport()`.
+>   - **(b) Relabelled draft.** Let `R` be the `sourceTopologyRegion` of the first HardRail edge's `oppositeEdge`. Add 1 (mod 4) to `branchRotation` of every `LocalLatticeState` of every cell and edge in region `R`; change nothing else, and assert there are no periodic endpoint states. `construct_phase_front_product` must produce. A5 then succeeds with identical HardRail relation ids and identical `canonicalTransport` per relation, and A6 succeeds with identical class member sets. The RA-14 branch-derived rule fails this clause.
+>   - **(c) Nonzero-Z4 witness.** The periodic relation's A5 `canonicalTransport` is in `{T, T⁻¹}` with `T = compose({g.rotation.inverse(), 0}, g)`, and it maps `placement(first).coord → placement(second).coord` for both endpoint pairs. `canonicalSelectedStep->appliedTransport` is in `{g, g⁻¹}` and equals `canonicalRelationValue`.
+> - No other test is edited.
+>
+> **File scope.**
+> - `src/pipeline/RemeshPipeline.cpp`;
+> - `include/directional/pipeline/RemeshPipeline.h` (new error code and evidence field);
+> - `tests/SurfaceCellTransitionQuotientTests.cpp` (focused 3 and new focused 12 only);
+> - `cmake/DirectionalTests.cmake` only if registration requires it.
+>
+> **Static checks.** Add to §5:
+> - `git diff` must not touch `src/geometry/PureQuadCompletion.cpp` or the `M5CP3.ProducedTorusNonzeroZ4RotationTranslationMaterializes` body;
+> - selector449, selector448 prefix and routing449 bytes unchanged;
+> - `git diff --check` passes;
+> - no A7, R4 or G4 code.
+>
+> **Stop rules.** RA-16 §7, plus: stop for Review if the coordinate-rigid derivation would change the acceptance or transport of any constant-field fixture pair relative to RA-14. Statically that should be impossible.
+>
+> **TB8 (`M6-CP1-TB8-A6-EXEC`).** Focused 1-12 in order, then selector449 in file order with routing449 — 461 fresh exact-filter processes, benchmark 0. Recovery-green is **461/461**, and the report must state explicitly:
+> - the TB7 RED set `115,116,122,130,132,134,137,141,143,150,176,201,217,227,230,231,446`;
+> - 446 PASS with an unchanged body;
+> - controls 139/140/142 (`InvalidHardRailTransport`), 227/230 (`InvalidHardRailAuthority`), 232/444/448/449, focused 6/10/11/12.
+>
+> Pre-registered classification for TB8-REV: a `QuotientHolonomyConflict:residual=...` on a HardRail fixture means the rigid cross-rail maps disagree at a rail vertex (consecutive pairs or a rail junction). Classify it by the residual; never relax the strict rule for it.
+
 ## 1. Goal and frozen boundary
 
 Recover TB7's two stable regressions and one stale selector446 assertion without changing the reviewed RA-13 periodic/cycle result:

@@ -2478,3 +2478,22 @@ When a temporary workflow caller is assembled with low-level Git objects, creati
     - *Why the type shape misled us.* One evidence object carried both `route` and `action`, which made it tempting to derive the latter from the former. They answer different questions: “which certified carrier transitions connect these charts?” versus “what exact lattice automorphism maps these occurrence placements?” Exact provenance in one domain does not imply a transform in another.
     - *Rule.* When an equivalence stores both a carrier/path and a semantic map, define each authority domain explicitly. Derive the semantic map from the states it is required to map and use the path independently to validate carrier/topology membership. Require a non-vacuous coherence check between independent endpoints; never promote a path-composed transform across gauges by naming convention alone. Recorded at `M6-CP1-TB7-A6-REV` (RA-14).
 
+186. **A value is only a gauge if everything in it transforms together. Never read a lattice rotation off branch indices that are expressed in different faces' labelings.**
+    - *What happened.* RA-13 asked A5 to check `action_matches` (coordinate **and** branch) on `LocalLatticeState` placements, and RA-14 derived HardRail `R = branch(b) ∘ branch(a)⁻¹`.
+    - *Why that is wrong.* `branchRotation` is `faceBranchRotation[selected face]` plus the region chart branch. `faceBranchRotation` is propagated per region from that region's own root. The lattice coordinate carries no face gauge.
+      - Across a rail, the branch difference equals the true lattice rotation **plus** the field matching between the two selected faces.
+      - A3 strips this face gauge before it compares periodic endpoints. A4 certifies no lattice relation across a HardRail at all.
+    - *Why the gate missed it.* Every gate HardRail fixture uses a constant field (matching 0), so the error was invisible. On real fields with nonzero matching across a separating rail, it fails closed.
+    - **Rule.**
+      - Derive a rigid map from coordinates; a nonzero edge vector fixes `R` uniquely.
+      - Compare branches only in a gauge the producer certifies.
+      - Before freezing any state-equality check across faces or regions, find where the producer builds each component of the state and ask whether each component is defined per face, per region or globally.
+    - Recorded at the `M6-CP1-TB7-A6-REV` review-agent addendum (RA-16 §1-2).
+187. **A failing test that restates a production comparator is a falsifier, not a stale test. Before changing a published field's representation, list every reader of that field, not only readers of the concept.**
+    - *What happened.* RA-13 meant to change only the A6 certificate transport. But A5 reused `canonicalTransport` as the M5 lineage `SelectedRelationStep.appliedTransport`, and A6 enforced that equality.
+      - Production completion (`PureQuadCompletion.cpp:1086-1132`, run at `RemeshPipeline.cpp:10705`) and selector446 both compare that step with the relation value (`g`, or the route value for HardRail).
+      - TB7-REV classified 446 as stale and planned to migrate it, while also editing only the HardRail half of the production comparator.
+    - **Rule.**
+      - When a test fails after a representation change, search production code for the same comparison. If it exists, the test is evidence, not a stale assertion.
+      - Keep authorities in separate fields (lesson 185) instead of migrating consumers to follow a value that changed domain.
+    - Recorded at the `M6-CP1-TB7-A6-REV` review-agent addendum (RA-16 §3).
