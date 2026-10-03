@@ -1,5 +1,7 @@
 #include <directional/geometry/SurfaceMeshOptimizer.h>
 
+#include <stdexcept>
+
 namespace directional::geometry::surface_optimizer_detail {
 
 bool contains(const std::vector<int> &values, const int value) {
@@ -100,36 +102,6 @@ Eigen::RowVector3d project_to_interval(const Eigen::RowVector3d &p,
 
 namespace directional::geometry::surface_optimizer_detail {
 
-Eigen::RowVector3d project_to_source(const Eigen::RowVector3d &p,
-                                            const Eigen::MatrixXd &source,
-                                            int *component,
-                                            const Eigen::VectorXi &components) {
-  if (source.rows() == 0) {
-    return p;
-  }
-  double best = std::numeric_limits<double>::infinity();
-  int bestRow = 0;
-  for (int i = 0; i < source.rows(); ++i) {
-    if (component != nullptr && *component >= 0 && components.size() == source.rows() &&
-        components(i) != *component) {
-      continue;
-    }
-    const double d = (p - source.row(i)).squaredNorm();
-    if (d < best) {
-      best = d;
-      bestRow = i;
-    }
-  }
-  if (component != nullptr && components.size() == source.rows()) {
-    *component = components(bestRow);
-  }
-  return source.row(bestRow);
-}
-
-} // namespace directional::geometry::surface_optimizer_detail
-
-namespace directional::geometry::surface_optimizer_detail {
-
 Eigen::RowVector3d source_point_position(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const SurfacePoint &point) {
@@ -153,35 +125,17 @@ namespace directional::geometry::surface_optimizer_detail {
 
 SurfacePoint nearest_source_point(
     const Eigen::RowVector3d &p, const SurfaceOptimizationConstraints &constraints,
-    const int requiredComponent, const int requiredSheet,
+    const std::optional<SourceProjectionScope> &requiredScope,
     SourceProjectionCache *projectionCache) {
-  SurfacePoint projected;
-  if (constraints.sourceVertices.rows() > 0 &&
-      constraints.sourceFaces.rows() > 0 &&
-      constraints.sourceFaces.cols() == 3) {
-    SourceProjectionCache localCache(constraints);
-    SourceProjectionCache *cache =
-        projectionCache != nullptr ? projectionCache : &localCache;
-    projected = cache->project(p, requiredComponent, requiredSheet);
-    if (projected.valid()) {
-      return projected;
-    }
-    // A triangle source is authoritative. Do not fall back to an unconstrained
-    // point cloud when the requested component or sheet has no valid face.
-    return projected;
+  if (!source_optimization_has_complete_authority(constraints) ||
+      constraints.sourceVertices.rows() <= 0 ||
+      constraints.sourceFaces.rows() <= 0 || constraints.sourceFaces.cols() != 3) {
+    return {};
   }
-
-  int component = requiredComponent;
-  projected.position =
-      project_to_source(p, constraints.sourcePositions, &component,
-                        constraints.sourceComponent)
-          .transpose();
-  projected.face = constraints.sourcePositions.rows() > 0 ? 0 : -1;
-  projected.component = component;
-  projected.sheet = requiredSheet;
-  projected.barycentric << 1.0, 0.0, 0.0;
-  projected.squaredDistance = (projected.position - p.transpose()).squaredNorm();
-  return projected;
+  SourceProjectionCache localCache(constraints);
+  SourceProjectionCache *cache =
+      projectionCache != nullptr ? projectionCache : &localCache;
+  return cache->project(p, requiredScope);
 }
 
 } // namespace directional::geometry::surface_optimizer_detail
@@ -201,14 +155,14 @@ int feature_curve_for_vertex(const SurfaceOptimizationConstraints &constraints,
 
 namespace directional::geometry::surface_optimizer_detail {
 
-int feature_sequence_for_vertex(
+SurfaceFeatureSequenceKey feature_sequence_for_vertex(
     const SurfaceOptimizationConstraints &constraints, const int vertex) {
-  if (constraints.featureRailIds.size() > 0 && vertex >= 0 &&
-      vertex < constraints.featureRailIds.size() &&
-      constraints.featureRailIds(vertex) >= 0) {
-    return constraints.featureRailIds(vertex);
+  if (vertex >= 0 &&
+      static_cast<std::size_t>(vertex) < constraints.featureRailIds.size() &&
+      constraints.featureRailIds[static_cast<std::size_t>(vertex)].has_value()) {
+    return {constraints.featureRailIds[static_cast<std::size_t>(vertex)], -1};
   }
-  return feature_curve_for_vertex(constraints, vertex);
+  return {std::nullopt, feature_curve_for_vertex(constraints, vertex)};
 }
 
 } // namespace directional::geometry::surface_optimizer_detail
@@ -272,28 +226,6 @@ SurfaceFeatureProjection project_to_feature_curve(
     return best;
   }
 
-  const int legacyIndex =
-      vertex >= 0 && vertex < static_cast<int>(constraints.featureIntervals.size())
-          ? vertex
-          : -1;
-  if (legacyIndex >= 0) {
-    double parameter = 0.0;
-    best.valid = true;
-    best.curveId = curveId;
-    best.intervalId = legacyIndex;
-    best.intervalOrder = legacyIndex;
-    best.position = project_to_interval(
-        point, constraints.featureIntervals[static_cast<std::size_t>(legacyIndex)].first,
-        constraints.featureIntervals[static_cast<std::size_t>(legacyIndex)].second,
-        &parameter);
-    best.localParameter = parameter;
-    best.orderCoordinate = parameter;
-    best.parameter = parameter;
-    best.squaredDistance = (point - best.position).squaredNorm();
-    best.tangent =
-        constraints.featureIntervals[static_cast<std::size_t>(legacyIndex)].second -
-        constraints.featureIntervals[static_cast<std::size_t>(legacyIndex)].first;
-  }
   return best;
 }
 
@@ -318,20 +250,6 @@ bool find_feature_interval(
       }
       return true;
     }
-  }
-  const int legacyIndex = vertex >= 0 &&
-                                  vertex < static_cast<int>(
-                                               constraints.featureIntervals.size())
-                              ? vertex
-                              : -1;
-  if (legacyIndex >= 0) {
-    if (start != nullptr) {
-      *start = constraints.featureIntervals[legacyIndex].first;
-    }
-    if (end != nullptr) {
-      *end = constraints.featureIntervals[legacyIndex].second;
-    }
-    return true;
   }
   return false;
 }
@@ -702,9 +620,11 @@ bool immutable_rail_edge(
       constraints.featureRailIds.size() <= secondVertex) {
     return false;
   }
-  const int firstRail = constraints.featureRailIds(firstVertex);
-  const int secondRail = constraints.featureRailIds(secondVertex);
-  return firstRail >= 0 && firstRail == secondRail;
+  const auto &firstRail =
+      constraints.featureRailIds[static_cast<std::size_t>(firstVertex)];
+  const auto &secondRail =
+      constraints.featureRailIds[static_cast<std::size_t>(secondVertex)];
+  return firstRail.has_value() && firstRail == secondRail;
 }
 
 } // namespace directional::geometry::surface_optimizer_detail
@@ -754,16 +674,14 @@ bool provenance_is_complete(
       point.barycentric.maxCoeff() > 1.0 + 1.0e-10) {
     return false;
   }
-  const bool componentsAuthoritative =
+  const bool sourceAuthorityComplete =
       constraints.sourceFaces.rows() > 0 &&
-      constraints.sourceFaceComponent.size() ==
-          static_cast<std::size_t>(constraints.sourceFaces.rows());
-  const bool sheetsAuthoritative =
-      constraints.sourceFaces.rows() > 0 &&
-      constraints.sourceFaceSheet.size() ==
-          static_cast<std::size_t>(constraints.sourceFaces.rows());
-  return (!componentsAuthoritative || point.component >= 0) &&
-         (!sheetsAuthoritative || point.sheet >= 0);
+      constraints.sourceAuthority != nullptr &&
+      constraints.sourceAuthority->matches_source_faces(
+          constraints.sourceFaces,
+          static_cast<std::size_t>(constraints.sourceVertices.rows()));
+  if (!sourceAuthorityComplete) return false;
+  return source_face_scope(constraints, point.face).has_value();
 }
 
 } // namespace directional::geometry::surface_optimizer_detail
@@ -831,16 +749,6 @@ SurfacePoint project_to_provenance_entity(
   }
   projected.squaredDistance =
       (candidate.transpose() - projected.position).squaredNorm();
-  if (constraints.sourceFaceComponent.size() ==
-      static_cast<std::size_t>(constraints.sourceFaces.rows())) {
-    projected.component = constraints.sourceFaceComponent[
-        static_cast<std::size_t>(seed.face)];
-  }
-  if (constraints.sourceFaceSheet.size() ==
-      static_cast<std::size_t>(constraints.sourceFaces.rows())) {
-    projected.sheet =
-        constraints.sourceFaceSheet[static_cast<std::size_t>(seed.face)];
-  }
   return projected;
 }
 
@@ -875,16 +783,7 @@ Eigen::MatrixXd project_vertices(
         i < static_cast<int>(constraints.vertexProvenance.size())
             ? constraints.vertexProvenance[static_cast<std::size_t>(i)]
             : SurfacePoint{};
-    const int requiredComponent =
-        i < static_cast<int>(constraints.vertexProvenance.size())
-            ? constraints.vertexProvenance[static_cast<std::size_t>(i)].component
-            : (constraints.sourceComponent.size() == vertices.rows()
-                   ? constraints.sourceComponent(i)
-                   : -1);
-    const int requiredSheet =
-        i < static_cast<int>(constraints.vertexProvenance.size())
-            ? constraints.vertexProvenance[static_cast<std::size_t>(i)].sheet
-            : -1;
+    const auto requiredScope = source_face_scope(constraints, seed.face);
     const bool fixed = contains(constraints.fixedVertices, i);
     const bool feature = contains(constraints.featureVertices, i);
     const auto project_candidate = [&](const Eigen::RowVector3d &candidate) {
@@ -895,8 +794,7 @@ Eigen::MatrixXd project_vertices(
           return entityProjection;
         }
       }
-      return nearest_source_point(candidate, constraints, requiredComponent,
-                                  requiredSheet, cache);
+      return nearest_source_point(candidate, constraints, requiredScope, cache);
     };
     if (fixed) {
       Eigen::RowVector3d constrainedPoint = vertices.row(i);
@@ -918,13 +816,16 @@ Eigen::MatrixXd project_vertices(
       projectedProvenance[static_cast<std::size_t>(i)] = source;
       provenanceComplete =
           provenanceComplete && provenance_is_complete(source, constraints);
-      if (requiredComponent >= 0 &&
-          (!source.valid() || source.component != requiredComponent)) {
-        componentOk = false;
-      }
-      if (requiredSheet >= 0 &&
-          (!source.valid() || source.sheet != requiredSheet)) {
-        sheetOk = false;
+      if (requiredScope.has_value()) {
+        const auto sourceScope = source_face_scope(constraints, source.face);
+        if (!sourceScope.has_value() ||
+            sourceScope->component != requiredScope->component) {
+          componentOk = false;
+        }
+        if (!sourceScope.has_value() ||
+            sourceScope->sheet != requiredScope->sheet) {
+          sheetOk = false;
+        }
       }
       continue;
     }
@@ -944,13 +845,16 @@ Eigen::MatrixXd project_vertices(
           projectedProvenance[static_cast<std::size_t>(i)];
       provenanceComplete =
           provenanceComplete && provenance_is_complete(source, constraints);
-      if (requiredComponent >= 0 &&
-          (!source.valid() || source.component != requiredComponent)) {
-        componentOk = false;
-      }
-      if (requiredSheet >= 0 &&
-          (!source.valid() || source.sheet != requiredSheet)) {
-        sheetOk = false;
+      if (requiredScope.has_value()) {
+        const auto sourceScope = source_face_scope(constraints, source.face);
+        if (!sourceScope.has_value() ||
+            sourceScope->component != requiredScope->component) {
+          componentOk = false;
+        }
+        if (!sourceScope.has_value() ||
+            sourceScope->sheet != requiredScope->sheet) {
+          sheetOk = false;
+        }
       }
     } else {
       SurfacePoint source = project_candidate(vertices.row(i));
@@ -960,13 +864,16 @@ Eigen::MatrixXd project_vertices(
       projectedProvenance[static_cast<std::size_t>(i)] = source;
       provenanceComplete =
           provenanceComplete && provenance_is_complete(source, constraints);
-      if (requiredComponent >= 0 &&
-          (!source.valid() || source.component != requiredComponent)) {
-        componentOk = false;
-      }
-      if (requiredSheet >= 0 &&
-          (!source.valid() || source.sheet != requiredSheet)) {
-        sheetOk = false;
+      if (requiredScope.has_value()) {
+        const auto sourceScope = source_face_scope(constraints, source.face);
+        if (!sourceScope.has_value() ||
+            sourceScope->component != requiredScope->component) {
+          componentOk = false;
+        }
+        if (!sourceScope.has_value() ||
+            sourceScope->sheet != requiredScope->sheet) {
+          sheetOk = false;
+        }
       }
     }
   }
@@ -974,12 +881,13 @@ Eigen::MatrixXd project_vertices(
   if (features.empty()) {
     features = constraints.featureVertices;
   }
-  int previousSequence = std::numeric_limits<int>::min();
+  std::optional<SurfaceFeatureSequenceKey> previousSequence;
   double previous = -std::numeric_limits<double>::infinity();
   for (const int v : features) {
     if (v >= 0 && v < params.size()) {
-      const int sequenceId = feature_sequence_for_vertex(constraints, v);
-      if (sequenceId != previousSequence) {
+      const SurfaceFeatureSequenceKey sequenceId =
+          feature_sequence_for_vertex(constraints, v);
+      if (!previousSequence.has_value() || sequenceId != previousSequence.value()) {
         previousSequence = sequenceId;
         previous = -std::numeric_limits<double>::infinity();
       }
@@ -1075,86 +983,101 @@ double angle_degrees(const Eigen::RowVector3d &a,
 
 namespace directional::geometry::surface_optimizer_detail {
 
-std::pair<int, int> consistent_component_sheet(
+FaceChartAuthorityView quad_chart_authority(
+    const Eigen::MatrixXi &quads, const int face,
+    const SurfaceOptimizationConstraints &constraints,
+    const std::size_t provenanceCount) {
+  FaceChartAuthorityView result;
+  if (constraints.vertexChartAuthority.empty()) {
+    return result;
+  }
+  if (constraints.vertexChartAuthority.size() != provenanceCount ||
+      face < 0 || face >= quads.rows()) {
+    result.valid = false;
+    return result;
+  }
+  result.vertices.reserve(static_cast<std::size_t>(quads.cols()));
+  for (int corner = 0; corner < quads.cols(); ++corner) {
+    const int vertex = quads(face, corner);
+    if (vertex < 0 ||
+        vertex >= static_cast<int>(constraints.vertexChartAuthority.size())) {
+      result.valid = false;
+      result.vertices.clear();
+      return result;
+    }
+    result.vertices.push_back(
+        &constraints.vertexChartAuthority[static_cast<std::size_t>(vertex)]);
+  }
+  return result;
+}
+
+} // namespace directional::geometry::surface_optimizer_detail
+
+namespace directional::geometry::surface_optimizer_detail {
+
+std::optional<SourceProjectionScope> consistent_source_scope(
     const Eigen::MatrixXi &quads, const int face,
     const std::vector<SurfacePoint> &provenance,
     const SurfaceOptimizationConstraints *constraints) {
-  if (constraints != nullptr) {
-    const validation::source_authoritative_detail::SourcePointLabelSupport
-        labelSupport(&constraints->sourceFaces,
-                     &constraints->sourceFaceComponent,
-                     &constraints->sourceFaceSheet);
-    if (labelSupport.available()) {
-      std::vector<const SurfacePoint *> points;
-      points.reserve(4);
-      for (int corner = 0; corner < 4; ++corner) {
-        const int vertex = quads(face, corner);
-        if (vertex < 0 || vertex >= static_cast<int>(provenance.size())) {
-          points.clear();
-          break;
-        }
-        const SurfacePoint &point =
-            provenance[static_cast<std::size_t>(vertex)];
-        const std::set<std::pair<int, int>> labels =
-            labelSupport.supported_labels(point);
-        if (labels.empty() ||
-            (point.component >= 0 && point.sheet >= 0 &&
-             labels.count({point.component, point.sheet}) == 0U)) {
-          points.clear();
-          break;
-        }
-        points.push_back(&point);
-      }
-      const std::set<std::pair<int, int>> labels = labelSupport.chart_labels(
-          labelSupport.compatible_chart_faces(points));
-      if (labels.size() == 1U) {
-        return *labels.begin();
-      }
-      if (!labels.empty()) {
-        const int component = labels.begin()->first;
-        const bool oneComponent = std::all_of(
-            labels.begin(), labels.end(), [&](const auto &label) {
-              return label.first == component;
-            });
-        if (oneComponent) {
-          return {component, -1};
-        }
-      }
-    }
+  if (constraints == nullptr) {
+    return std::nullopt;
+  }
+  const validation::source_authoritative_detail::SourcePointLabelSupport
+      labelSupport(&constraints->sourceFaces, constraints->sourceAuthority,
+                   &constraints->sourceHardFeatureEdges);
+  if (!labelSupport.available()) {
+    return std::nullopt;
   }
 
-  constexpr int incompatibleLabel = std::numeric_limits<int>::max();
-  int component = -1;
-  int sheet = -1;
-  bool componentAssigned = false;
-  bool sheetAssigned = false;
+  std::vector<const SurfacePoint *> points;
+  points.reserve(4);
   for (int corner = 0; corner < 4; ++corner) {
     const int vertex = quads(face, corner);
     if (vertex < 0 || vertex >= static_cast<int>(provenance.size())) {
-      continue;
+      return std::nullopt;
     }
     const SurfacePoint &point = provenance[static_cast<std::size_t>(vertex)];
-    if (!point.valid()) {
-      continue;
+    if (labelSupport.supported_faces(point).empty()) {
+      return std::nullopt;
     }
-    if (point.component >= 0 && component != incompatibleLabel) {
-      if (!componentAssigned) {
-        component = point.component;
-        componentAssigned = true;
-      } else if (point.component != component) {
-        component = incompatibleLabel;
-      }
-    }
-    if (point.sheet >= 0 && sheet != incompatibleLabel) {
-      if (!sheetAssigned) {
-        sheet = point.sheet;
-        sheetAssigned = true;
-      } else if (point.sheet != sheet) {
-        sheet = incompatibleLabel;
-      }
-    }
+    points.push_back(&point);
   }
-  return {component, sheet};
+
+  const FaceChartAuthorityView authority =
+      quad_chart_authority(quads, face, *constraints, provenance.size());
+  if (!authority.valid) {
+    return std::nullopt;
+  }
+  const auto resolution = labelSupport.resolve_compatible_chart(
+      points, authority.vertices, &provenance,
+      &constraints->vertexChartAuthority);
+  if (!resolution.valid()) {
+    return std::nullopt;
+  }
+
+  std::set<SourceProjectionScope> scopes;
+  for (const int sourceFace : resolution.chartFaces) {
+    const auto scope = source_face_scope(*constraints, sourceFace);
+    if (!scope.has_value()) {
+      return std::nullopt;
+    }
+    scopes.insert(*scope);
+  }
+  if (scopes.size() == 1U) {
+    return *scopes.begin();
+  }
+  if (scopes.empty()) {
+    return std::nullopt;
+  }
+  const auto component = scopes.begin()->component;
+  const bool oneComponent = std::all_of(
+      scopes.begin(), scopes.end(), [&](const SourceProjectionScope &scope) {
+        return scope.component == component;
+      });
+  if (!oneComponent) {
+    return std::nullopt;
+  }
+  return SourceProjectionScope{component, std::nullopt};
 }
 
 } // namespace directional::geometry::surface_optimizer_detail
@@ -1171,9 +1094,8 @@ SurfacePoint quad_reference_surface_point(
     centroid += 0.25 * vertices.row(quads(face, corner));
   }
   const validation::source_authoritative_detail::SourcePointLabelSupport
-      labelSupport(&constraints.sourceFaces,
-                   &constraints.sourceFaceComponent,
-                   &constraints.sourceFaceSheet);
+      labelSupport(&constraints.sourceFaces, constraints.sourceAuthority,
+                   &constraints.sourceHardFeatureEdges);
   std::vector<const SurfacePoint *> points;
   points.reserve(4);
   for (int corner = 0; corner < 4; ++corner) {
@@ -1184,8 +1106,15 @@ SurfacePoint quad_reference_surface_point(
     }
     points.push_back(&provenance[static_cast<std::size_t>(vertex)]);
   }
-  const std::vector<int> chartFaces =
-      labelSupport.compatible_chart_faces(points);
+  const FaceChartAuthorityView authority = quad_chart_authority(
+      quads, face, constraints, provenance.size());
+  const auto resolution =
+      authority.valid
+          ? labelSupport.resolve_compatible_chart(
+                points, authority.vertices, &provenance,
+                &constraints.vertexChartAuthority)
+          : validation::source_authoritative_detail::SourceChartCompatibility{};
+  const std::vector<int> &chartFaces = resolution.chartFaces;
   SourceProjectionCache localCache(constraints);
   SourceProjectionCache *cache =
       projectionCache != nullptr ? projectionCache : &localCache;
@@ -1195,7 +1124,11 @@ SurfacePoint quad_reference_surface_point(
     const int authoritativeFace =
         constraints.outputQuadSourceFaces[static_cast<std::size_t>(face)];
     if (authoritativeFace >= 0 &&
-        authoritativeFace < constraints.sourceFaces.rows()) {
+        authoritativeFace < constraints.sourceFaces.rows() &&
+        (!labelSupport.available() ||
+         (resolution.valid() &&
+          std::binary_search(chartFaces.begin(), chartFaces.end(),
+                             authoritativeFace)))) {
       point = cache->project(centroid, std::vector<int>{authoritativeFace});
       if (point.valid()) {
         return point;
@@ -1205,9 +1138,7 @@ SurfacePoint quad_reference_surface_point(
   if (!chartFaces.empty()) {
     point = cache->project(centroid, chartFaces);
   } else {
-    const auto [component, sheet] =
-        consistent_component_sheet(quads, face, provenance, &constraints);
-    point = cache->project(centroid, component, sheet);
+    return {};
   }
   if (point.valid()) {
     return point;
@@ -1379,7 +1310,7 @@ double feature_order_energy(
     const Eigen::MatrixXd &vertices,
     const SurfaceOptimizationConstraints &constraints) {
   const std::vector<int> features = ordered_feature_vertices(constraints);
-  int previousSequence = std::numeric_limits<int>::min();
+  std::optional<SurfaceFeatureSequenceKey> previousSequence;
   int previousVertex = -1;
   SurfaceFeatureProjection previousProjection;
   double energy = 0.0;
@@ -1387,16 +1318,18 @@ double feature_order_energy(
     if (vertex < 0 || vertex >= vertices.rows()) {
       continue;
     }
-    const int sequence = feature_sequence_for_vertex(constraints, vertex);
+    const SurfaceFeatureSequenceKey sequence =
+        feature_sequence_for_vertex(constraints, vertex);
     const SurfaceFeatureProjection projection =
         project_to_feature_curve(vertices.row(vertex), constraints, vertex);
     if (!projection.valid) {
-      previousSequence = std::numeric_limits<int>::min();
+      previousSequence.reset();
       previousVertex = -1;
       previousProjection = {};
       continue;
     }
-    if (sequence == previousSequence && previousVertex >= 0) {
+    if (previousSequence.has_value() && sequence == previousSequence.value() &&
+        previousVertex >= 0) {
       const double violation =
           previousProjection.orderCoordinate - projection.orderCoordinate;
       if (violation > 0.0) {
@@ -1507,6 +1440,10 @@ SurfaceOptimizationEnergy evaluate_surface_optimization_energy_cached(
     const SurfaceOptimizationOptions &options,
     surface_optimizer_detail::SourceProjectionCache &projectionCache) {
   using namespace surface_optimizer_detail;
+  if (!source_optimization_has_complete_authority(constraints)) {
+    throw std::invalid_argument(
+        "Surface optimization requires complete source authority.");
+  }
   SurfaceOptimizationEnergy energy;
   std::vector<SurfacePoint> provenance;
   project_vertices(vertices, constraints, nullptr, nullptr, nullptr, nullptr,
@@ -1514,12 +1451,12 @@ SurfaceOptimizationEnergy evaluate_surface_optimization_energy_cached(
   for (int i = 0; i < vertices.rows(); ++i) {
     const Eigen::RowVector3d p = vertices.row(i);
     const SurfacePoint &sourcePoint = provenance[static_cast<std::size_t>(i)];
-    const Eigen::RowVector3d source =
-        sourcePoint.valid() ? sourcePoint.position.transpose()
-                            : project_to_source(p, constraints.sourcePositions,
-                                                nullptr,
-                                                constraints.sourceComponent);
-    energy.surface += (p - source).squaredNorm();
+    if (!provenance_is_complete(sourcePoint, constraints)) {
+      throw std::runtime_error(
+          "Source-authoritative surface optimization projection failed.");
+    }
+    energy.surface +=
+        (p - sourcePoint.position.transpose()).squaredNorm();
     if (contains(constraints.featureVertices, i)) {
       const SurfaceFeatureProjection feature =
           project_to_feature_curve(p, constraints, i);
@@ -1842,11 +1779,16 @@ make_source_authoritative_validator_options(
   validation::SourceAuthoritativeMeshValidatorOptions validatorOptions;
   validatorOptions.sourceVertices = &constraints.sourceVertices;
   validatorOptions.sourceFaces = &constraints.sourceFaces;
-  validatorOptions.sourceFaceComponents = &constraints.sourceFaceComponent;
-  validatorOptions.sourceFaceSheets = &constraints.sourceFaceSheet;
+  validatorOptions.sourceAuthority = constraints.sourceAuthority;
   validatorOptions.vertexProvenance = &provenance;
+  validatorOptions.vertexChartAuthority =
+      constraints.vertexChartAuthority.empty()
+          ? nullptr
+          : &constraints.vertexChartAuthority;
   validatorOptions.outputQuadSourceFaces =
       &constraints.outputQuadSourceFaces;
+  validatorOptions.sourceHardFeatureEdges =
+      constraints.sourceHardFeatureEdges;
   validatorOptions.authoritativeBoundaryEdges =
       constraints.authoritativeBoundaryEdges;
   validatorOptions.authoritativeBoundaryLoops =
@@ -1871,14 +1813,37 @@ make_source_authoritative_validator_options(
 
 namespace directional::geometry {
 
+bool source_optimization_has_complete_authority(
+    const SurfaceOptimizationConstraints &constraints) {
+  if (constraints.sourceAuthority == nullptr ||
+      constraints.sourceVertices.rows() <= 0 ||
+      constraints.sourceVertices.cols() != 3 ||
+      constraints.sourceFaces.rows() <= 0 || constraints.sourceFaces.cols() != 3 ||
+      !constraints.sourceAuthority->matches_source_faces(
+          constraints.sourceFaces,
+          static_cast<std::size_t>(constraints.sourceVertices.rows()))) {
+    return false;
+  }
+  for (int face = 0; face < constraints.sourceFaces.rows(); ++face) {
+    for (int corner = 0; corner < 3; ++corner) {
+      const int vertex = constraints.sourceFaces(face, corner);
+      if (vertex < 0 || vertex >= constraints.sourceVertices.rows()) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+} // namespace directional::geometry
+
+namespace directional::geometry {
+
 bool source_authoritative_hard_invariants_valid(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
     const SurfaceOptimizationConstraints &constraints,
     const std::vector<SurfacePoint> &provenance,
     std::vector<validation::MeshValidationIssue> *issues) {
-  if (!constraints.requireSourceAuthoritativeValidation) {
-    return true;
-  }
   const auto validation = validation::validate_source_authoritative_surface_mesh(
       vertices, quads,
       make_source_authoritative_validator_options(constraints, provenance));
@@ -1898,6 +1863,10 @@ SurfaceOptimizationGradient evaluate_surface_optimization_gradient_cached(
     const SurfaceOptimizationOptions &options,
     surface_optimizer_detail::SourceProjectionCache &projectionCache) {
   using namespace surface_optimizer_detail;
+  if (!source_optimization_has_complete_authority(constraints)) {
+    throw std::invalid_argument(
+        "Surface optimization requires complete source authority.");
+  }
   SurfaceOptimizationGradient gradient =
       zero_surface_optimization_gradient(vertices.rows(), vertices.cols());
 
@@ -1911,12 +1880,12 @@ SurfaceOptimizationGradient evaluate_surface_optimization_gradient_cached(
     const Eigen::RowVector3d point = vertices.row(vertex);
     const SurfacePoint &sourcePoint =
         provenance[static_cast<std::size_t>(vertex)];
-    const Eigen::RowVector3d source =
-        sourcePoint.valid()
-            ? sourcePoint.position.transpose()
-            : project_to_source(point, constraints.sourcePositions, nullptr,
-                                constraints.sourceComponent);
-    gradient.surface.row(vertex) += 2.0 * (point - source);
+    if (!provenance_is_complete(sourcePoint, constraints)) {
+      throw std::runtime_error(
+          "Source-authoritative surface optimization projection failed.");
+    }
+    gradient.surface.row(vertex) +=
+        2.0 * (point - sourcePoint.position.transpose());
 
     if (!contains(constraints.featureVertices, vertex)) {
       continue;
@@ -1932,14 +1901,15 @@ SurfaceOptimizationGradient evaluate_surface_optimization_gradient_cached(
 
   const std::vector<int> orderedFeatures =
       ordered_feature_vertices(constraints);
-  int previousSequence = std::numeric_limits<int>::min();
+  std::optional<SurfaceFeatureSequenceKey> previousSequence;
   int previousVertex = -1;
   SurfaceFeatureProjection previousProjection;
   for (const int vertex : orderedFeatures) {
     if (vertex < 0 || vertex >= vertices.rows()) {
       continue;
     }
-    const int sequence = feature_sequence_for_vertex(constraints, vertex);
+    const SurfaceFeatureSequenceKey sequence =
+        feature_sequence_for_vertex(constraints, vertex);
     SurfaceFeatureProjection projection =
         featureProjections[static_cast<std::size_t>(vertex)];
     if (!projection.valid) {
@@ -1948,12 +1918,13 @@ SurfaceOptimizationGradient evaluate_surface_optimization_gradient_cached(
       featureProjections[static_cast<std::size_t>(vertex)] = projection;
     }
     if (!projection.valid) {
-      previousSequence = std::numeric_limits<int>::min();
+      previousSequence.reset();
       previousVertex = -1;
       previousProjection = {};
       continue;
     }
-    if (sequence == previousSequence && previousVertex >= 0) {
+    if (previousSequence.has_value() && sequence == previousSequence.value() &&
+        previousVertex >= 0) {
       const double violation =
           previousProjection.orderCoordinate - projection.orderCoordinate;
       if (violation > 0.0) {
@@ -2027,19 +1998,16 @@ SurfaceOptimizationGradient evaluate_surface_optimization_gradient_cached(
     if (faceSourceVertex >= 0 && rawNormalLength > 1.0e-20) {
       const Eigen::RowVector3d faceNormal = rawNormal / rawNormalLength;
       const double eps = std::max(1.0e-8, options.finiteDifferenceStep);
-      const int requiredComponent = faceSource.component;
-      const int requiredSheet = faceSource.sheet;
+      const auto requiredScope = source_face_scope(constraints, faceSource.face);
       for (int coordinate = 0; coordinate < 3; ++coordinate) {
         Eigen::RowVector3d plusPoint = vertices.row(faceSourceVertex);
         Eigen::RowVector3d minusPoint = vertices.row(faceSourceVertex);
         plusPoint(coordinate) += eps;
         minusPoint(coordinate) -= eps;
         const SurfacePoint plusSource = nearest_source_point(
-            plusPoint, constraints, requiredComponent, requiredSheet,
-            &projectionCache);
+            plusPoint, constraints, requiredScope, &projectionCache);
         const SurfacePoint minusSource = nearest_source_point(
-            minusPoint, constraints, requiredComponent, requiredSheet,
-            &projectionCache);
+            minusPoint, constraints, requiredScope, &projectionCache);
         const Eigen::RowVector3d plusNormal = normalized_or_zero(
             local_source_normal(constraints, plusSource, face));
         const Eigen::RowVector3d minusNormal = normalized_or_zero(
@@ -2153,8 +2121,7 @@ SurfaceOptimizationGradient evaluate_surface_optimization_gradient_cached(
 
     if (faceSourceVertex >= 0) {
       const double eps = std::max(1.0e-8, options.finiteDifferenceStep);
-      const int requiredComponent = faceSource.component;
-      const int requiredSheet = faceSource.sheet;
+      const auto requiredScope = source_face_scope(constraints, faceSource.face);
       const auto fieldEnergyForSource = [&](const SurfacePoint &source) {
         const LocalSourceCross cross =
             local_source_cross(constraints, source, face);
@@ -2182,11 +2149,9 @@ SurfaceOptimizationGradient evaluate_surface_optimization_gradient_cached(
         plusPoint(coordinate) += eps;
         minusPoint(coordinate) -= eps;
         const SurfacePoint plusSource = nearest_source_point(
-            plusPoint, constraints, requiredComponent, requiredSheet,
-            &projectionCache);
+            plusPoint, constraints, requiredScope, &projectionCache);
         const SurfacePoint minusSource = nearest_source_point(
-            minusPoint, constraints, requiredComponent, requiredSheet,
-            &projectionCache);
+            minusPoint, constraints, requiredScope, &projectionCache);
         const double plusEnergy = fieldEnergyForSource(plusSource);
         const double minusEnergy = fieldEnergyForSource(minusSource);
         gradient.field(faceSourceVertex, coordinate) +=
@@ -2320,6 +2285,16 @@ SurfaceOptimizationResult optimize_projected_surface_mesh(
   result.vertices = initialVertices;
   result.quads = quads;
   result.topologyHash = topology_hash(quads);
+  if (!source_optimization_has_complete_authority(constraints)) {
+    result.vertexProvenance = constraints.vertexProvenance;
+    result.projectionStayedOnComponents = false;
+    result.projectionStayedOnSheets = false;
+    result.projectionHasCompleteProvenance = false;
+    result.rolledBackToInput = true;
+    result.lastHardInvariantIssues.push_back(
+        {validation::MeshValidationFailureCode::MissingSourceAuthority});
+    return result;
+  }
   SourceProjectionCache projectionCache(constraints);
   Eigen::VectorXd featureParameters;
   result.vertices = project_vertices(result.vertices, constraints, &featureParameters,
@@ -2334,6 +2309,15 @@ SurfaceOptimizationResult optimize_projected_surface_mesh(
                   [](const SurfacePoint &point) {
                     return point.valid() && point.face >= 0;
                   });
+  if (!result.projectionStayedOnComponents || !result.projectionStayedOnSheets ||
+      !result.projectionHasCompleteProvenance ||
+      !result.sourceTriangleProjectionUsed) {
+    result.vertices = initialVertices;
+    result.rolledBackToInput = true;
+    result.lastHardInvariantIssues.push_back(
+        {validation::MeshValidationFailureCode::InvalidProvenance});
+    return result;
+  }
   SurfaceOptimizationEnergy current =
       evaluate_surface_optimization_energy_cached(
           result.vertices, quads, constraints, options, projectionCache);
@@ -2457,6 +2441,33 @@ SurfaceOptimizationResult optimize_projected_surface_mesh(
 
 namespace directional::geometry {
 
+SurfaceOptimizationResult optimize_source_authoritative_surface_mesh(
+    const Eigen::MatrixXd &initialVertices, const Eigen::MatrixXi &quads,
+    const SurfaceOptimizationConstraints &constraints,
+    const SurfaceOptimizationOptions &options) {
+  if (!source_optimization_has_complete_authority(constraints)) {
+    SurfaceOptimizationResult rejected;
+    rejected.vertices = initialVertices;
+    rejected.quads = quads;
+    rejected.vertexProvenance = constraints.vertexProvenance;
+    rejected.projectionStayedOnComponents = false;
+    rejected.projectionStayedOnSheets = false;
+    rejected.projectionHasCompleteProvenance = false;
+    rejected.rolledBackToInput = true;
+    rejected.lastHardInvariantIssues.push_back(
+        {validation::MeshValidationFailureCode::MissingSourceAuthority});
+    return rejected;
+  }
+  SurfaceOptimizationOptions strictOptions = options;
+  strictOptions.enforceSourceAuthoritativeHardInvariants = true;
+  return optimize_projected_surface_mesh(initialVertices, quads, constraints,
+                                         strictOptions);
+}
+
+} // namespace directional::geometry
+
+namespace directional::geometry {
+
 SurfaceFinalValidationReport validate_final_surface_mesh(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
     const SurfaceOptimizationConstraints &constraints,
@@ -2465,6 +2476,17 @@ SurfaceFinalValidationReport validate_final_surface_mesh(
     const double optimizerSeconds, const double endToEndSeconds) {
   using namespace surface_optimizer_detail;
   SurfaceFinalValidationReport report;
+  if (!source_optimization_has_complete_authority(constraints)) {
+    report.strictValidationUsed = true;
+    report.provenanceValidationUsed = true;
+    report.sourceAuthoritativeValidationUsed = false;
+    report.localSheetCompatibilityPassed = false;
+    report.provenanceFailureCount = 1;
+    report.strictValidationIssues.push_back(
+        {validation::MeshValidationFailureCode::MissingSourceAuthority});
+    report.accepted = false;
+    return report;
+  }
   std::vector<double> quadToSourceErrors;
   std::vector<double> sourceToOutputErrors;
   std::vector<double> normalErrors;
@@ -2479,9 +2501,8 @@ SurfaceFinalValidationReport validate_final_surface_mesh(
   const std::vector<SurfacePoint> &provenance = optimization.vertexProvenance;
   SourceProjectionCache sourceProjection(constraints);
   const validation::source_authoritative_detail::SourcePointLabelSupport
-      sourceLabelSupport(&constraints.sourceFaces,
-                         &constraints.sourceFaceComponent,
-                         &constraints.sourceFaceSheet);
+      sourceLabelSupport(&constraints.sourceFaces, constraints.sourceAuthority,
+                         &constraints.sourceHardFeatureEdges);
 
   // Sample the complete output faces, not only their vertices. Bilinear 3x3
   // sampling observes bowed edges and warped interiors while remaining
@@ -2500,10 +2521,17 @@ SurfaceFinalValidationReport validate_final_surface_mesh(
       }
       facePoints.push_back(&provenance[static_cast<std::size_t>(vertex)]);
     }
+    const FaceChartAuthorityView authority = quad_chart_authority(
+        quads, face, constraints, provenance.size());
     const std::vector<int> chartFaces =
-        sourceLabelSupport.compatible_chart_faces(facePoints);
-    const auto [component, sheet] =
-        consistent_component_sheet(quads, face, provenance, &constraints);
+        authority.valid
+            ? sourceLabelSupport.compatible_chart_faces(facePoints,
+                                                        authority.vertices,
+                                                        &provenance,
+                                                        &constraints.vertexChartAuthority)
+            : std::vector<int>{};
+    const auto sourceScope =
+        consistent_source_scope(quads, face, provenance, &constraints);
     for (const double u : quadSamples) {
       for (const double v : quadSamples) {
         const Eigen::RowVector3d sample =
@@ -2511,7 +2539,7 @@ SurfaceFinalValidationReport validate_final_surface_mesh(
         const SurfacePoint sourcePoint =
             !chartFaces.empty()
                 ? sourceProjection.project(sample, chartFaces)
-                : nearest_source_point(sample, constraints, component, sheet,
+                : nearest_source_point(sample, constraints, sourceScope,
                                        &sourceProjection);
         if (!sourcePoint.valid()) {
           quadToSourceErrors.push_back(
@@ -2528,23 +2556,8 @@ SurfaceFinalValidationReport validate_final_surface_mesh(
   }
   }
 
-  // Retain a point-cloud fallback for legacy standalone optimizer fixtures.
   if (quadToSourceErrors.empty()) {
-    for (int vertex = 0; vertex < vertices.rows(); ++vertex) {
-      const SurfacePoint sourcePoint =
-          vertex < static_cast<int>(provenance.size())
-              ? provenance[static_cast<std::size_t>(vertex)]
-              : nearest_source_point(vertices.row(vertex), constraints);
-      const Eigen::RowVector3d source =
-          sourcePoint.valid()
-              ? sourcePoint.position.transpose()
-              : project_to_source(vertices.row(vertex),
-                                  constraints.sourcePositions, nullptr,
-                                  constraints.sourceComponent);
-      quadToSourceErrors.push_back(
-          (vertices.row(vertex) - source).norm() /
-          std::max(1.0e-12, options.targetSize));
-    }
+    quadToSourceErrors.push_back(std::numeric_limits<double>::infinity());
   }
 
   // Sample every source triangle in the reverse direction. Output triangles
@@ -2557,19 +2570,10 @@ SurfaceFinalValidationReport validate_final_surface_mesh(
     const std::vector<Eigen::Vector3d> barycentrics =
         triangle_sample_barycentrics();
     for (int face = 0; face < constraints.sourceFaces.rows(); ++face) {
-      const int component =
-          face < static_cast<int>(constraints.sourceFaceComponent.size())
-              ? constraints.sourceFaceComponent[static_cast<std::size_t>(face)]
-              : -1;
-      const int sheet =
-          face < static_cast<int>(constraints.sourceFaceSheet.size())
-              ? constraints.sourceFaceSheet[static_cast<std::size_t>(face)]
-              : -1;
+      const auto sourceScope = source_face_scope(constraints, face);
       for (const Eigen::Vector3d &barycentric : barycentrics) {
         SurfacePoint sourcePoint;
         sourcePoint.face = face;
-        sourcePoint.component = component;
-        sourcePoint.sheet = sheet;
         sourcePoint.barycentric = barycentric;
         sourcePoint.position = source_point_position(
                                    constraints.sourceVertices,
@@ -2577,7 +2581,7 @@ SurfaceFinalValidationReport validate_final_surface_mesh(
                                    .transpose();
         sourcePoint.squaredDistance = 0.0;
         const SurfacePoint outputPoint = outputProjection.project(
-            sourcePoint.position.transpose(), component, sheet);
+            sourcePoint.position.transpose(), sourceScope);
         if (!outputPoint.valid()) {
           sourceToOutputErrors.push_back(
               std::numeric_limits<double>::infinity());
@@ -2593,17 +2597,6 @@ SurfaceFinalValidationReport validate_final_surface_mesh(
   } else if (constraints.sourceVertices.rows() > 0 &&
              constraints.sourceFaces.rows() > 0 && quads.rows() == 0) {
     sourceToOutputErrors.push_back(std::numeric_limits<double>::infinity());
-  } else if (constraints.sourcePositions.rows() > 0 && vertices.rows() > 0) {
-    for (int source = 0; source < constraints.sourcePositions.rows(); ++source) {
-      double best = std::numeric_limits<double>::infinity();
-      for (int vertex = 0; vertex < vertices.rows(); ++vertex) {
-        best = std::min(best, (constraints.sourcePositions.row(source) -
-                              vertices.row(vertex))
-                                 .norm());
-      }
-      sourceToOutputErrors.push_back(
-          best / std::max(1.0e-12, options.targetSize));
-    }
   }
 
   for (const int vertex : constraints.featureVertices) {
@@ -2679,11 +2672,9 @@ SurfaceFinalValidationReport validate_final_surface_mesh(
           constraints, firstPoint, secondPoint, firstVertex, secondVertex,
           edge.norm(), options.targetSize);
       sizeRatios.push_back(edge.norm() / std::max(1.0e-12, target));
-      const int component = firstPoint.valid() ? firstPoint.component : -1;
-      const int sheet = firstPoint.valid() ? firstPoint.sheet : -1;
+      const auto sourceScope = source_face_scope(constraints, firstPoint.face);
       const SurfacePoint edgeSource = nearest_source_point(
-          0.5 * (first + second), constraints, component, sheet,
-          &sourceProjection);
+          0.5 * (first + second), constraints, sourceScope, &sourceProjection);
       const double alignment = best_source_field_alignment(
           edge, constraints, edgeSource.valid() ? edgeSource : faceSource,
           face, &firstPoint, &secondPoint);
@@ -2774,51 +2765,19 @@ SurfaceFinalValidationReport validate_final_surface_mesh(
   report.authoritativeFeatureRailsUsed =
       constraints.featureRailAuthorityProvided;
   std::vector<validation::MeshValidationIssue> validationIssues;
-  bool strictValidationAccepted = false;
-  if (constraints.requireSourceAuthoritativeValidation) {
-    const auto sourceValidation =
-        validation::validate_source_authoritative_surface_mesh(
-            vertices, quads,
-            make_source_authoritative_validator_options(constraints,
-                                                        provenance));
-    strictValidationAccepted = sourceValidation.accepted;
-    validationIssues = sourceValidation.issues;
-    report.sourceAuthoritativeValidationUsed =
-        sourceValidation.sourceAuthorityUsed;
-    report.spatialAccelerationUsed =
-        sourceValidation.spatialAccelerationUsed;
-    report.orderedBoundaryCyclesPassed =
-        sourceValidation.orderedBoundaryCyclesPassed;
-    report.authoritativeFeatureRailsPassed =
-        sourceValidation.featureRailsPassed;
-    report.localSheetCompatibilityPassed =
-        sourceValidation.localSheetCompatibilityPassed;
-  } else {
-    validation::MeshValidatorOptions validatorOptions;
-    validatorOptions.requireConsistentOrientation = true;
-    validatorOptions.requireVertexProvenanceForGeometry = true;
-    validatorOptions.vertexProvenance = provenance;
-    validatorOptions.authoritativeBoundaryEdges =
-        constraints.authoritativeBoundaryEdges;
-    validatorOptions.authoritativeBoundaryLoop =
-        constraints.authoritativeBoundaryLoop;
-    validatorOptions.requireAuthoritativeBoundary =
-        !constraints.authoritativeBoundaryEdges.empty() ||
-        !constraints.authoritativeBoundaryLoop.empty();
-    const auto basicValidation =
-        validation::MeshValidator::validate_surface_mesh(
-            vertices, quads, validatorOptions);
-    strictValidationAccepted = basicValidation.accepted;
-    validationIssues = basicValidation.issues;
-    report.orderedBoundaryCyclesPassed =
-        basicValidation.accepted ||
-        (!validatorOptions.requireAuthoritativeBoundary &&
-         constraints.authoritativeBoundaryLoops.empty());
-    report.authoritativeFeatureRailsPassed =
-        constraints.requiredFeatureRailCount == 0U;
-    report.localSheetCompatibilityPassed =
-        optimization.projectionStayedOnSheets;
-  }
+  const auto sourceValidation =
+      validation::validate_source_authoritative_surface_mesh(
+          vertices, quads,
+          make_source_authoritative_validator_options(constraints, provenance));
+  const bool strictValidationAccepted = sourceValidation.accepted;
+  validationIssues = sourceValidation.issues;
+  report.sourceAuthoritativeValidationUsed = sourceValidation.sourceAuthorityUsed;
+  report.spatialAccelerationUsed = sourceValidation.spatialAccelerationUsed;
+  report.orderedBoundaryCyclesPassed =
+      sourceValidation.orderedBoundaryCyclesPassed;
+  report.authoritativeFeatureRailsPassed = sourceValidation.featureRailsPassed;
+  report.localSheetCompatibilityPassed =
+      sourceValidation.localSheetCompatibilityPassed;
   for (const auto &issue : validationIssues) {
     if (issue.code ==
         validation::MeshValidationFailureCode::GeometricVertexOnUnsplitEdge) {
@@ -2911,11 +2870,42 @@ SurfaceFinalValidationReport validate_final_surface_mesh(
 
 namespace directional::geometry {
 
+SurfaceFinalValidationReport validate_source_authoritative_final_surface_mesh(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
+    const SurfaceOptimizationConstraints &constraints,
+    const SurfaceOptimizationResult &optimization,
+    const SurfaceOptimizationOptions &options,
+    const double optimizerSeconds, const double endToEndSeconds) {
+  if (!source_optimization_has_complete_authority(constraints)) {
+    SurfaceFinalValidationReport rejected;
+    rejected.strictValidationUsed = true;
+    rejected.provenanceValidationUsed = true;
+    rejected.sourceAuthoritativeValidationUsed = false;
+    rejected.localSheetCompatibilityPassed = false;
+    rejected.provenanceFailureCount = 1;
+    rejected.strictValidationIssues.push_back(
+        {validation::MeshValidationFailureCode::MissingSourceAuthority});
+    rejected.accepted = false;
+    return rejected;
+  }
+  return validate_final_surface_mesh(vertices, quads, constraints, optimization,
+                                     options, optimizerSeconds,
+                                     endToEndSeconds);
+}
+
+} // namespace directional::geometry
+
+namespace directional::geometry {
+
 SurfaceOptimizationOverlay make_surface_optimization_overlay(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
     const SurfaceOptimizationConstraints &constraints,
     const SurfaceOptimizationOptions &options) {
   using namespace surface_optimizer_detail;
+  if (!source_optimization_has_complete_authority(constraints)) {
+    throw std::invalid_argument(
+        "Surface optimization overlay requires complete source authority.");
+  }
   SurfaceOptimizationOverlay overlay;
   overlay.wireframeStarts.resize(4 * quads.rows(), 3);
   overlay.wireframeEnds.resize(4 * quads.rows(), 3);
@@ -2974,11 +2964,9 @@ SurfaceOptimizationOverlay make_surface_optimization_overlay(
       overlay.sizeRatio(row) =
           (second - first).norm() / std::max(1.0e-12, target);
 
-      const int component = firstPoint.valid() ? firstPoint.component : -1;
-      const int sheet = firstPoint.valid() ? firstPoint.sheet : -1;
+      const auto sourceScope = source_face_scope(constraints, firstPoint.face);
       const SurfacePoint edgeSource = nearest_source_point(
-          0.5 * (first + second), constraints, component, sheet,
-          &sourceProjection);
+          0.5 * (first + second), constraints, sourceScope, &sourceProjection);
       const double alignment = best_source_field_alignment(
           second - first, constraints,
           edgeSource.valid() ? edgeSource : faceSource, face, &firstPoint,
@@ -3013,21 +3001,14 @@ SurfaceOptimizationOverlay make_surface_optimization_overlay(
   }
   overlay.valenceError = overlay.poleValence - overlay.targetValence;
 
-  const int sourceSampleCount =
-      constraints.sourceVertices.rows() > 0
-          ? constraints.sourceVertices.rows()
-          : constraints.sourcePositions.rows();
+  const int sourceSampleCount = constraints.sourceVertices.rows();
   overlay.sourceToOutputError = Eigen::VectorXd::Zero(sourceSampleCount);
   if (sourceSampleCount > 0 && quads.rows() > 0) {
     OutputProjectionCache outputProjection(vertices, quads, provenance,
                                            &constraints);
     for (int source = 0; source < sourceSampleCount; ++source) {
-      const Eigen::RowVector3d position =
-          constraints.sourceVertices.rows() > 0
-              ? constraints.sourceVertices.row(source)
-              : constraints.sourcePositions.row(source);
-      int component = -1;
-      int sheet = -1;
+      const Eigen::RowVector3d position = constraints.sourceVertices.row(source);
+      std::optional<SourceProjectionScope> sourceScope;
       SurfacePoint sourcePoint;
       if (constraints.sourceVertices.rows() > 0 &&
           constraints.sourceFaces.rows() > 0) {
@@ -3040,16 +3021,7 @@ SurfaceOptimizationOverlay make_surface_optimization_overlay(
             sourcePoint.barycentric.setZero();
             sourcePoint.barycentric(corner) = 1.0;
             sourcePoint.position = position.transpose();
-            sourcePoint.component =
-                face < static_cast<int>(constraints.sourceFaceComponent.size())
-                    ? constraints.sourceFaceComponent[static_cast<std::size_t>(face)]
-                    : -1;
-            sourcePoint.sheet =
-                face < static_cast<int>(constraints.sourceFaceSheet.size())
-                    ? constraints.sourceFaceSheet[static_cast<std::size_t>(face)]
-                    : -1;
-            component = sourcePoint.component;
-            sheet = sourcePoint.sheet;
+            sourceScope = source_face_scope(constraints, face);
             break;
           }
           if (sourcePoint.valid()) {
@@ -3058,7 +3030,7 @@ SurfaceOptimizationOverlay make_surface_optimization_overlay(
         }
       }
       const SurfacePoint projected =
-          outputProjection.project(position, component, sheet);
+          outputProjection.project(position, sourceScope);
       if (projected.valid()) {
         const double target = sourcePoint.valid()
                                   ? local_target_size(constraints, sourcePoint,

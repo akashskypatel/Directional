@@ -1,0 +1,178 @@
+name: Agent Reusable GitHub Workflow Schema Validator
+
+on:
+  workflow_call:
+    inputs:
+      workflow_path:
+        description: Repository-relative path to the workflow YAML draft to validate.
+        required: true
+        type: string
+      source_ref:
+        description: Optional ref to check out. Empty uses the caller event SHA.
+        required: false
+        type: string
+        default: ""
+      schema_url:
+        description: GitHub Actions workflow JSON schema URL.
+        required: false
+        type: string
+        default: https://raw.githubusercontent.com/SchemaStore/schemastore/refs/heads/master/src/schemas/json/github-workflow.json
+      retention_days:
+        description: Validation artifact retention period in days.
+        required: false
+        type: number
+        default: 7
+    outputs:
+      valid:
+        description: String boolean indicating whether schema validation passed.
+        value: ${{ jobs.validate.outputs.valid }}
+      artifact_name:
+        description: Name of the uploaded validation-report artifact.
+        value: ${{ jobs.validate.outputs.artifact_name }}
+    secrets:
+      GH_TOKEN:
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    outputs:
+      valid: ${{ steps.result.outputs.valid }}
+      artifact_name: ${{ steps.result.outputs.artifact_name }}
+    steps:
+      - name: Initialize diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/agent-workflow-schema-validator.log"
+          : > "$log"
+          {
+            echo "workflow=${GITHUB_WORKFLOW}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "event=${GITHUB_EVENT_NAME}"
+            echo "event_sha=${GITHUB_SHA}"
+            echo "repository=${GITHUB_REPOSITORY}"
+            echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Checkout validation source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_ref != '' && inputs.source_ref || github.sha }}
+          fetch-depth: 1
+          token: ${{ secrets.GH_TOKEN || github.token }}
+
+      - name: Verify validation target
+        env:
+          WORKFLOW_PATH: ${{ inputs.workflow_path }}
+          SCHEMA_URL: ${{ inputs.schema_url }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/agent-workflow-schema-validator.log"
+          workspace="$(realpath "${GITHUB_WORKSPACE}")"
+          if [[ "${WORKFLOW_PATH}" = /* ]]; then
+            echo "workflow_path must be repository-relative: ${WORKFLOW_PATH}" | tee -a "$log"
+            exit 2
+          fi
+          target="$(realpath -m "${GITHUB_WORKSPACE}/${WORKFLOW_PATH}")"
+          case "$target" in
+            "${workspace}"/*) ;;
+            *)
+              echo "workflow_path escapes repository workspace: ${WORKFLOW_PATH}" | tee -a "$log"
+              exit 2
+              ;;
+          esac
+          case "${WORKFLOW_PATH}" in
+            *.yml|*.yaml) ;;
+            *)
+              echo "workflow_path must end in .yml or .yaml: ${WORKFLOW_PATH}" | tee -a "$log"
+              exit 2
+              ;;
+          esac
+          test -f "$target"
+          echo "workflow_path=${WORKFLOW_PATH}" | tee -a "$log"
+          echo "source_ref=$(git rev-parse HEAD)" | tee -a "$log"
+          echo "schema_url=${SCHEMA_URL}" | tee -a "$log"
+          git status --short | tee -a "$log"
+
+      - name: Validate workflow against SchemaStore GitHub Actions schema
+        id: schema
+        continue-on-error: true
+        uses: cardinalby/schema-validator-action@95ce895b6846cc7d931785fcaa46c84816753612
+        with:
+          file: ${{ inputs.workflow_path }}
+          schema: ${{ inputs.schema_url }}
+          fileParser: yaml
+          mode: lax
+
+      - name: Write validation report
+        id: result
+        if: always()
+        env:
+          WORKFLOW_PATH: ${{ inputs.workflow_path }}
+          SCHEMA_URL: ${{ inputs.schema_url }}
+          SCHEMA_OUTCOME: ${{ steps.schema.outcome }}
+          ERROR_TYPE: ${{ steps.schema.outputs.errorType }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/agent-workflow-schema-validator.log"
+          out="${RUNNER_TEMP}/agent-workflow-schema-validation"
+          mkdir -p "$out"
+          valid=false
+          if [[ "${SCHEMA_OUTCOME}" == "success" ]]; then
+            valid=true
+          fi
+          artifact_name="agent-workflow-schema-validation-${GITHUB_RUN_ID}"
+          cat > "${out}/validation-report.json" <<JSON
+          {
+            "repository": "${GITHUB_REPOSITORY}",
+            "event_sha": "${GITHUB_SHA}",
+            "checked_out_sha": "$(git rev-parse HEAD)",
+            "workflow_path": $(jq -Rn --arg v "${WORKFLOW_PATH}" '$v'),
+            "schema_url": $(jq -Rn --arg v "${SCHEMA_URL}" '$v'),
+            "validation_outcome": $(jq -Rn --arg v "${SCHEMA_OUTCOME}" '$v'),
+            "error_type": $(jq -Rn --arg v "${ERROR_TYPE}" '$v'),
+            "valid": ${valid},
+            "generated_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          }
+          JSON
+          {
+            echo "workflow_path=${WORKFLOW_PATH}"
+            echo "schema_url=${SCHEMA_URL}"
+            echo "validation_outcome=${SCHEMA_OUTCOME}"
+            echo "error_type=${ERROR_TYPE}"
+            echo "valid=${valid}"
+          } | tee -a "$log"
+          git status --short | tee -a "$log"
+          echo "valid=${valid}" >> "$GITHUB_OUTPUT"
+          echo "artifact_name=${artifact_name}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload validation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.result.outputs.artifact_name }}
+          path: ${{ runner.temp }}/agent-workflow-schema-validation
+          if-no-files-found: error
+          retention-days: ${{ inputs.retention_days }}
+
+      - name: Upload diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-workflow-schema-validator-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/agent-workflow-schema-validator.log
+          if-no-files-found: error
+          retention-days: ${{ inputs.retention_days }}
+
+      - name: Fail when schema validation failed
+        if: always() && steps.result.outputs.valid != 'true'
+        shell: bash
+        run: |
+          echo "GitHub workflow schema validation failed for ${{ inputs.workflow_path }}" >&2
+          exit 1

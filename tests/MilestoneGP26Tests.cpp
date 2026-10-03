@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <filesystem>
 #include <fstream>
+#include <iostream>
 #include <numeric>
 #include <regex>
 #include <set>
@@ -13,13 +14,15 @@
 #include <gtest/gtest.h>
 
 #include "BenchmarkCases.h"
+#include "TestFixturePaths.h"
 #include <directional/geometry/GeneralGraphMatching.h>
+#include "TestAuthorityIds.h"
 
 namespace {
 
 namespace fs = std::filesystem;
 
-fs::path source_root() { return fs::path(DIRECTIONAL_TEST_SOURCE_DIR); }
+fs::path source_root() { return directional::tests::test_data_root(); }
 
 fs::path fixture_manifest() {
   return source_root() / "benchmarks" / "fixtures" /
@@ -46,6 +49,41 @@ recovery_field(const directional::bench::BenchmarkField &field) {
   result.rawField = field.raw;
   directional::pipeline::normalize_surface_cell_cross_field_directions(result);
   return result;
+}
+
+
+const std::set<directional::authority::SourceEdgeTopologyKey> &
+no_recovery_excluded_edges() {
+  static const std::set<directional::authority::SourceEdgeTopologyKey> edges;
+  return edges;
+}
+
+directional::geometry::SourceTopologyRegions recovery_source_authority(
+    const Eigen::MatrixXi &faces,
+    const std::vector<int> &components = {},
+    const std::vector<int> &sheets = {}) {
+  directional::geometry::SurfaceCellTracingOptions tracing;
+  tracing.sourceFaceComponents = components;
+  tracing.sourceFaceSheets = sheets;
+  auto authority = directional::geometry::surface_cell_tracing_detail::
+      build_source_topology_regions(faces, tracing);
+  if (!authority.has_value()) {
+    throw std::runtime_error(
+        "Failed to construct source-grid recovery test authority.");
+  }
+  return std::move(authority.value());
+}
+
+directional::pipeline::RemeshResult run_surface_cell_case(
+    const directional::bench::BenchmarkMesh &mesh,
+    const directional::bench::BenchmarkField &field,
+    const directional::pipeline::RemeshOptions &options) {
+  if (field.available) {
+    return directional::pipeline::remesh_from_raw_cross_field(
+        mesh.vertices, mesh.faces, field.raw, options);
+  }
+  return directional::pipeline::remesh_from_mesh(mesh.vertices, mesh.faces,
+                                                  options);
 }
 
 std::vector<int> json_integer_array(const fs::path &path,
@@ -124,117 +162,125 @@ void expect_completed_surface_cells(
   options.maxComponentThreads = 2;
 
   const directional::pipeline::RemeshResult result =
-      directional::pipeline::remesh_from_raw_cross_field(
-          mesh.vertices, mesh.faces, field.raw, options);
+      run_surface_cell_case(mesh, field, options);
 
-  ASSERT_TRUE(result.success)
+  ASSERT_TRUE(result.is_produced())
       << benchmarkCase.name << ": " << result.diagnostics.terminalFailureCode
       << "/" << result.diagnostics.terminalFailureStage
       << " component=" << result.diagnostics.failedComponentIndex
       << " validationFailures="
       << result.diagnostics.surfaceCellValidationFailures << " topology="
-      << result.surfaceCellContext.validationResult
+      << result.surfaceCellContext.productSnapshots.validationResult
              .connectedComponentMismatchCount
       << "/"
-      << result.surfaceCellContext.validationResult
+      << result.surfaceCellContext.productSnapshots.validationResult
              .eulerCharacteristicMismatchCount
       << "/"
-      << result.surfaceCellContext.validationResult.boundaryCycleMismatchCount
+      << result.surfaceCellContext.productSnapshots.validationResult.boundaryCycleMismatchCount
       << " rails="
-      << result.surfaceCellContext.validationResult.featureRailMismatchCount
+      << result.surfaceCellContext.productSnapshots.validationResult.featureRailMismatchCount
       << " provenance="
-      << result.surfaceCellContext.validationResult.provenanceFailureCount
+      << result.surfaceCellContext.productSnapshots.validationResult.provenanceFailureCount
       << " sheets="
-      << result.surfaceCellContext.validationResult.localSheetMismatchCount
-      << " geometry=" << result.surfaceCellContext.validationResult.degenerate
-      << "/" << result.surfaceCellContext.validationResult.inverted << "/"
-      << result.surfaceCellContext.validationResult.selfIntersecting
+      << result.surfaceCellContext.productSnapshots.validationResult.localSheetMismatchCount
+      << " geometry=" << result.surfaceCellContext.productSnapshots.validationResult.degenerate
+      << "/" << result.surfaceCellContext.productSnapshots.validationResult.inverted << "/"
+      << result.surfaceCellContext.productSnapshots.validationResult.selfIntersecting
       << " manifold(t/nonmanifold/nonconvex)="
-      << result.surfaceCellContext.validationResult.tJunctions << "/"
-      << result.surfaceCellContext.validationResult.nonManifold << "/"
-      << result.surfaceCellContext.validationResult.nonConvex
+      << result.surfaceCellContext.productSnapshots.validationResult.tJunctions << "/"
+      << result.surfaceCellContext.productSnapshots.validationResult.nonManifold << "/"
+      << result.surfaceCellContext.productSnapshots.validationResult.nonConvex
       << " valence(boundary/singularity)="
-      << result.surfaceCellContext.validationResult.boundaryValenceMismatchCount
+      << result.surfaceCellContext.productSnapshots.validationResult.boundaryValenceMismatchCount
       << "/"
-      << result.surfaceCellContext.validationResult
+      << result.surfaceCellContext.productSnapshots.validationResult
              .requiredSingularityValenceMismatchCount
       << " surface/normal="
-      << result.surfaceCellContext.validationResult.quadToSourceP95 << ","
-      << result.surfaceCellContext.validationResult.quadToSourceMax << "/"
-      << result.surfaceCellContext.validationResult.sourceToOutputP95 << ","
-      << result.surfaceCellContext.validationResult.sourceToOutputMax << "/"
-      << result.surfaceCellContext.validationResult.normalP95Degrees
+      << result.surfaceCellContext.productSnapshots.validationResult.quadToSourceP95 << ","
+      << result.surfaceCellContext.productSnapshots.validationResult.quadToSourceMax << "/"
+      << result.surfaceCellContext.productSnapshots.validationResult.sourceToOutputP95 << ","
+      << result.surfaceCellContext.productSnapshots.validationResult.sourceToOutputMax << "/"
+      << result.surfaceCellContext.productSnapshots.validationResult.normalP95Degrees
       << " quality(size/field/jacobian)="
-      << result.surfaceCellContext.validationResult.sizeP5 << ","
-      << result.surfaceCellContext.validationResult.sizeP95 << "/"
-      << result.surfaceCellContext.validationResult.fieldMedianDegrees << ","
-      << result.surfaceCellContext.validationResult.fieldP95Degrees << "/"
-      << result.surfaceCellContext.validationResult.scaledJacobianMin << ","
-      << result.surfaceCellContext.validationResult.scaledJacobianP5
+      << result.surfaceCellContext.productSnapshots.validationResult.sizeP5 << ","
+      << result.surfaceCellContext.productSnapshots.validationResult.sizeP95 << "/"
+      << result.surfaceCellContext.productSnapshots.validationResult.fieldMedianDegrees << ","
+      << result.surfaceCellContext.productSnapshots.validationResult.fieldP95Degrees << "/"
+      << result.surfaceCellContext.productSnapshots.validationResult.scaledJacobianMin << ","
+      << result.surfaceCellContext.productSnapshots.validationResult.scaledJacobianP5
       << " optimizer(iterations/rollback/line-search/"
          "hard/orientation)="
-      << result.surfaceCellContext.optimizationResult.iterations.size() << "/"
-      << result.surfaceCellContext.optimizationResult.rolledBackToInput << "/"
-      << result.surfaceCellContext.optimizationResult.lineSearchRejectionCount
+      << result.surfaceCellContext.productSnapshots.optimizationResult.iterations.size() << "/"
+      << result.surfaceCellContext.productSnapshots.optimizationResult.rolledBackToInput << "/"
+      << result.surfaceCellContext.productSnapshots.optimizationResult.lineSearchRejectionCount
       << "/"
-      << result.surfaceCellContext.optimizationResult
+      << result.surfaceCellContext.productSnapshots.optimizationResult
              .hardInvariantRejectionCount
       << "/"
-      << result.surfaceCellContext.optimizationResult.orientationRejectionCount
+      << result.surfaceCellContext.productSnapshots.optimizationResult.orientationRejectionCount
       << " energy(size/field)="
-      << result.surfaceCellContext.optimizationResult.initialEnergy.size << ","
-      << result.surfaceCellContext.optimizationResult.finalEnergy.size << "/"
-      << result.surfaceCellContext.optimizationResult.initialEnergy.field << ","
-      << result.surfaceCellContext.optimizationResult.finalEnergy.field;
+      << result.surfaceCellContext.productSnapshots.optimizationResult.initialEnergy.size << ","
+      << result.surfaceCellContext.productSnapshots.optimizationResult.finalEnergy.size << "/"
+      << result.surfaceCellContext.productSnapshots.optimizationResult.initialEnergy.field << ","
+      << result.surfaceCellContext.productSnapshots.optimizationResult.finalEnergy.field;
   EXPECT_TRUE(result.diagnostics.surfaceCellRemeshOccurred);
   if (expectSourceGridRecovery) {
     EXPECT_TRUE(result.diagnostics.surfaceCellSourceGridRecoveryUsed);
-    EXPECT_TRUE(result.surfaceCellContext.sourceGridRecoveryUsed);
-    EXPECT_TRUE(result.surfaceCellContext.hasSourceGridRecoveryTargetSize);
-    EXPECT_GT(result.surfaceCellContext.sourceGridRecoveryTargetSize.size(), 0);
+    EXPECT_TRUE(result.surfaceCellContext.productSnapshots.sourceGridRecoveryUsed);
+    EXPECT_TRUE(result.surfaceCellContext.productSnapshots.hasSourceGridRecoveryTargetSize);
+    EXPECT_GT(result.surfaceCellContext.productSnapshots.sourceGridRecoveryTargetSize.size(), 0);
     EXPECT_LE(result.diagnostics
                   .surfaceCellSourceGridRecoveryTargetSizeMaxRelaxationRatio,
               options.surfaceCells.maxSourceGridRecoveryTargetRelaxation);
     EXPECT_EQ(2 * mesh.faces.rows(),
-              static_cast<Eigen::Index>(result.faces.rows()));
-    EXPECT_GT(result.vertices.rows(), mesh.vertices.rows());
+              static_cast<Eigen::Index>(result.product().faces.rows()));
+    EXPECT_GT(result.product().vertices.rows(), mesh.vertices.rows());
   } else {
-    EXPECT_GT(result.faces.rows(), 0);
+    EXPECT_GT(result.product().faces.rows(), 0);
   }
-  EXPECT_EQ(directional::SurfaceCellOutputOrigin::CompletedSurfaceCells,
+  EXPECT_EQ(expectSourceGridRecovery
+                ? directional::SurfaceCellOutputOrigin::SourceGridRecovery
+                : directional::SurfaceCellOutputOrigin::CompletedSurfaceCells,
             result.diagnostics.surfaceCellOutputOrigin);
   EXPECT_EQ("SurfaceCells", result.diagnostics.executedBackend);
-  ASSERT_EQ(result.faces.rows(), result.degrees.size());
-  for (Eigen::Index face = 0; face < result.degrees.size(); ++face) {
-    EXPECT_EQ(4, result.degrees(face));
+  ASSERT_EQ(result.product().faces.rows(), result.product().degrees.size());
+  for (Eigen::Index face = 0; face < result.product().degrees.size(); ++face) {
+    EXPECT_EQ(4, result.product().degrees(face));
   }
-  EXPECT_EQ(static_cast<std::size_t>(result.vertices.rows()),
-            result.outputVertexProvenance.size());
-  EXPECT_EQ(static_cast<std::size_t>(result.faces.rows()),
-            result.outputQuadLineage.size());
-  EXPECT_TRUE(result.surfaceCellContext.hasValidationResult);
-  EXPECT_TRUE(result.surfaceCellContext.validationResult.accepted);
+  EXPECT_EQ(static_cast<std::size_t>(result.product().vertices.rows()),
+            result.product().outputVertexProvenance.size());
+  EXPECT_EQ(static_cast<std::size_t>(result.product().faces.rows()),
+            result.product().outputQuadLineage.size());
+  EXPECT_TRUE(result.surfaceCellContext.productSnapshots.hasValidationResult);
+  EXPECT_TRUE(result.surfaceCellContext.productSnapshots.validationResult.accepted);
 }
 
 void expect_truthful_surface_cells_outcome(
     const directional::bench::BenchmarkCase &benchmarkCase) {
-  const directional::bench::BenchmarkMesh mesh =
-      directional::bench::load_benchmark_mesh(benchmarkCase);
-  const directional::bench::BenchmarkField field =
-      directional::bench::load_benchmark_field(benchmarkCase,
-                                               mesh.faces.rows());
-  directional::pipeline::RemeshOptions options =
-      directional::bench::make_remesh_options(benchmarkCase);
-  options.surfaceCells.fallbackPolicy =
-      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
-  options.surfaceCells.allowSourceGridRecovery = true;
-  options.surfaceCells.enforceOptimizerTimeGate = false;
-  options.parallelizeComponents = true;
-  options.maxComponentThreads = 2;
+  directional::pipeline::RemeshResult result;
+  {
+    const directional::bench::BenchmarkMesh mesh =
+        directional::bench::load_benchmark_mesh(benchmarkCase);
+    const directional::bench::BenchmarkField field =
+        directional::bench::load_benchmark_field(benchmarkCase,
+                                                 mesh.faces.rows());
+    directional::pipeline::RemeshOptions options =
+        directional::bench::make_remesh_options(benchmarkCase);
+    options.surfaceCells.fallbackPolicy =
+        directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+    options.surfaceCells.allowSourceGridRecovery = true;
+    options.surfaceCells.enforceOptimizerTimeGate = false;
+    options.parallelizeComponents = true;
+    options.maxComponentThreads = 2;
 
-  const directional::pipeline::RemeshResult result =
-      directional::pipeline::remesh_from_raw_cross_field(
-          mesh.vertices, mesh.faces, field.raw, options);
+    std::cerr << "[P5_P26_BEFORE_PIPELINE] " << benchmarkCase.name
+              << std::endl;
+    result = run_surface_cell_case(mesh, field, options);
+    std::cerr << "[P5_P26_AFTER_PIPELINE] " << benchmarkCase.name
+              << " success=" << result.is_produced() << std::endl;
+  }
+  std::cerr << "[P5_P26_AFTER_INPUT_DESTRUCTION] " << benchmarkCase.name
+            << std::endl;
 
   EXPECT_EQ("SurfaceCells", result.diagnostics.requestedBackend)
       << benchmarkCase.name;
@@ -247,21 +293,23 @@ void expect_truthful_surface_cells_outcome(
   EXPECT_FALSE(result.diagnostics.surfaceCellReturnedInputMeshFallback)
       << benchmarkCase.name;
 
-  if (result.success) {
+  if (result.is_produced()) {
     EXPECT_TRUE(result.diagnostics.surfaceCellRemeshOccurred)
         << benchmarkCase.name;
-    EXPECT_EQ(directional::SurfaceCellOutputOrigin::CompletedSurfaceCells,
+    EXPECT_EQ(result.surfaceCellContext.productSnapshots.sourceGridRecoveryUsed
+                  ? directional::SurfaceCellOutputOrigin::SourceGridRecovery
+                  : directional::SurfaceCellOutputOrigin::CompletedSurfaceCells,
               result.diagnostics.surfaceCellOutputOrigin)
         << benchmarkCase.name;
     EXPECT_EQ("None", result.diagnostics.terminalFailureCode)
         << benchmarkCase.name;
     EXPECT_TRUE(result.diagnostics.terminalFailureStage.empty())
         << benchmarkCase.name;
-    ASSERT_EQ(result.faces.rows(), result.degrees.size()) << benchmarkCase.name;
-    EXPECT_TRUE((result.degrees.array() == 4).all()) << benchmarkCase.name;
-    EXPECT_TRUE(result.surfaceCellContext.hasValidationResult)
+    ASSERT_EQ(result.product().faces.rows(), result.product().degrees.size()) << benchmarkCase.name;
+    EXPECT_TRUE((result.product().degrees.array() == 4).all()) << benchmarkCase.name;
+    EXPECT_TRUE(result.surfaceCellContext.productSnapshots.hasValidationResult)
         << benchmarkCase.name;
-    EXPECT_TRUE(result.surfaceCellContext.validationResult.accepted)
+    EXPECT_TRUE(result.surfaceCellContext.productSnapshots.validationResult.accepted)
         << benchmarkCase.name;
   } else {
     EXPECT_FALSE(result.diagnostics.surfaceCellRemeshOccurred)
@@ -279,9 +327,13 @@ void expect_truthful_surface_cells_outcome(
     EXPECT_EQ(result.diagnostics.terminalFailureStage,
               result.diagnostics.originalSurfaceCellFailureStage)
         << benchmarkCase.name;
-    EXPECT_EQ(0, result.vertices.rows()) << benchmarkCase.name;
-    EXPECT_EQ(0, result.faces.rows()) << benchmarkCase.name;
+    EXPECT_EQ(0, result.product().vertices.rows()) << benchmarkCase.name;
+    EXPECT_EQ(0, result.product().faces.rows()) << benchmarkCase.name;
   }
+  std::cerr << "[P5_P26_AFTER_DIAGNOSTIC_READS] " << benchmarkCase.name
+            << std::endl;
+  std::cerr << "[P5_P26_BEFORE_RESULT_DESTRUCTION] " << benchmarkCase.name
+            << std::endl;
 }
 
 TEST(MilestoneGP26, RecoveryTargetProjectionIsBoundedAndDeterministic) {
@@ -293,9 +345,11 @@ TEST(MilestoneGP26, RecoveryTargetProjectionIsBoundedAndDeterministic) {
       benchmarkCase, meshData.faces.rows());
   directional::TriMesh mesh;
   mesh.set_mesh(meshData.vertices, meshData.faces);
+  const auto sourceAuthority = recovery_source_authority(mesh.F);
   const auto recovery =
       directional::pipeline::recover_unique_field_aligned_source_quads(
-          mesh, recovery_field(fieldData));
+          mesh, recovery_field(fieldData), &sourceAuthority,
+          &no_recovery_excluded_edges());
   ASSERT_TRUE(recovery.success) << recovery.failure;
 
   Eigen::MatrixXi quads(static_cast<int>(recovery.mesh.quads.size()), 4);
@@ -346,9 +400,11 @@ TEST(MilestoneGP26, RequiredProductionRecoveryTargetsAreFeasible) {
         benchmarkCase, meshData.faces.rows());
     directional::TriMesh mesh;
     mesh.set_mesh(meshData.vertices, meshData.faces);
+    const auto sourceAuthority = recovery_source_authority(mesh.F);
     const auto recovery =
         directional::pipeline::recover_unique_field_aligned_source_quads(
-            mesh, recovery_field(fieldData));
+            mesh, recovery_field(fieldData), &sourceAuthority,
+            &no_recovery_excluded_edges());
     ASSERT_TRUE(recovery.success) << caseName << ": " << recovery.failure;
 
     Eigen::MatrixXi quads(static_cast<int>(recovery.mesh.quads.size()), 4);
@@ -456,8 +512,7 @@ TEST(MilestoneGP26, FeatureRailAssemblyAcceptsIncidentSheetCharts) {
   provenance[4].sheet = 0;
   provenance[4].barycentric << 0.0, 0.0, 1.0;
 
-  directional::geometry::SurfaceCellRail rail;
-  rail.id = 9;
+  directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(9));
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
   rail.curveId = 7;
   rail.component = 0;
@@ -498,12 +553,13 @@ TEST(MilestoneGP26, FeatureRailAssemblyAcceptsIncidentSheetCharts) {
 TEST(MilestoneGP26, ManifestContainsCompletePairedProductionMatrix) {
   const auto cases =
       directional::bench::load_benchmark_manifest(fixture_manifest());
-  ASSERT_EQ(18U, cases.size());
+  ASSERT_EQ(20U, cases.size());
 
   const std::vector<std::string> fixtures = {
       "plane",           "cylinder",     "torus",
       "thin_bent_tube",  "close_sheets", "sphere_prescribed",
-      "multi_face_seam", "bunny1k",      "mechanical_feature"};
+      "multi_face_seam", "bunny_1k_random", "vase",
+      "mechanical_feature"};
   for (const std::string &fixture : fixtures) {
     const auto &surface = find_case(cases, fixture + "__surface_cells");
     const auto &legacy = find_case(cases, fixture + "__legacy_integer");
@@ -513,14 +569,21 @@ TEST(MilestoneGP26, ManifestContainsCompletePairedProductionMatrix) {
               legacy.backend);
     EXPECT_EQ(surface.meshPath, legacy.meshPath);
     EXPECT_EQ(surface.fieldPath, legacy.fieldPath);
+    EXPECT_EQ(surface.generatedField, legacy.generatedField);
     EXPECT_TRUE(fs::is_regular_file(surface.meshPath));
-    EXPECT_TRUE(fs::is_regular_file(surface.fieldPath));
+    if (surface.fieldPath.empty()) {
+      EXPECT_EQ("smooth", surface.generatedField) << fixture;
+    } else {
+      EXPECT_TRUE(fs::is_regular_file(surface.fieldPath)) << fixture;
+    }
   }
 }
 
-TEST(MilestoneGP26, ProductionAssetsAndFieldsLoadWithMatchingFaceCounts) {
+TEST(MilestoneGP26, ProductionAssetsAndFieldSourcesAreValid) {
   const auto cases =
       directional::bench::load_benchmark_manifest(fixture_manifest());
+  int prescribedFieldCases = 0;
+  int calculatedFieldCases = 0;
   for (const auto &benchmarkCase : cases) {
     if (benchmarkCase.backend !=
         directional::pipeline::RemeshBackend::SurfaceCells) {
@@ -532,24 +595,37 @@ TEST(MilestoneGP26, ProductionAssetsAndFieldsLoadWithMatchingFaceCounts) {
     EXPECT_GT(mesh.vertices.rows(), 0) << benchmarkCase.name;
     EXPECT_GT(mesh.faces.rows(), 0) << benchmarkCase.name;
     EXPECT_EQ(0, mesh.faces.rows() % 2) << benchmarkCase.name;
-    EXPECT_TRUE(field.available) << benchmarkCase.name;
-    EXPECT_EQ(mesh.faces.rows(), field.raw.rows()) << benchmarkCase.name;
-    EXPECT_EQ(12, field.raw.cols()) << benchmarkCase.name;
+    if (benchmarkCase.fieldPath.empty()) {
+      ++calculatedFieldCases;
+      EXPECT_FALSE(field.available) << benchmarkCase.name;
+      EXPECT_EQ("smooth", benchmarkCase.generatedField) << benchmarkCase.name;
+    } else {
+      ++prescribedFieldCases;
+      EXPECT_TRUE(field.available) << benchmarkCase.name;
+      EXPECT_EQ(mesh.faces.rows(), field.raw.rows()) << benchmarkCase.name;
+      EXPECT_EQ(12, field.raw.cols()) << benchmarkCase.name;
+    }
   }
+  EXPECT_EQ(8, prescribedFieldCases);
+  EXPECT_EQ(2, calculatedFieldCases);
 }
 
 TEST(MilestoneGP26, ProductionFieldFilesFinalizeAuthoritatively) {
   const auto cases =
       directional::bench::load_benchmark_manifest(fixture_manifest());
+  int finalizedCases = 0;
   for (const auto &benchmarkCase : cases) {
     if (benchmarkCase.backend !=
-        directional::pipeline::RemeshBackend::SurfaceCells) {
+            directional::pipeline::RemeshBackend::SurfaceCells ||
+        benchmarkCase.fieldPath.empty()) {
       continue;
     }
+    ++finalizedCases;
     const auto meshData =
         directional::bench::load_benchmark_mesh(benchmarkCase);
     const auto fieldData = directional::bench::load_benchmark_field(
         benchmarkCase, meshData.faces.rows());
+    ASSERT_TRUE(fieldData.available) << benchmarkCase.name;
     directional::TriMesh mesh;
     mesh.set_mesh(meshData.vertices, meshData.faces);
 
@@ -564,29 +640,38 @@ TEST(MilestoneGP26, ProductionFieldFilesFinalizeAuthoritatively) {
               field.edgeTransitions.size())
         << benchmarkCase.name;
   }
+  EXPECT_EQ(8, finalizedCases);
 }
 
-TEST(MilestoneGP26, UniqueFieldAlignedRecoveryAcceptsEveryProductionFixture) {
+TEST(MilestoneGP26,
+     UniqueFieldAlignedRecoveryAcceptsEveryPrescribedFieldFixture) {
   const auto cases =
       directional::bench::load_benchmark_manifest(fixture_manifest());
+  int recoveredCases = 0;
   for (const auto &benchmarkCase : cases) {
     if (benchmarkCase.backend !=
-        directional::pipeline::RemeshBackend::SurfaceCells) {
+            directional::pipeline::RemeshBackend::SurfaceCells ||
+        benchmarkCase.fieldPath.empty()) {
       continue;
     }
+    ++recoveredCases;
     const auto meshData =
         directional::bench::load_benchmark_mesh(benchmarkCase);
     const auto fieldData = directional::bench::load_benchmark_field(
         benchmarkCase, meshData.faces.rows());
+    ASSERT_TRUE(fieldData.available) << benchmarkCase.name;
     directional::TriMesh mesh;
     mesh.set_mesh(meshData.vertices, meshData.faces);
 
+    const auto sourceAuthority = recovery_source_authority(mesh.F);
     const auto first =
         directional::pipeline::recover_unique_field_aligned_source_quads(
-            mesh, recovery_field(fieldData));
+            mesh, recovery_field(fieldData), &sourceAuthority,
+            &no_recovery_excluded_edges());
     const auto second =
         directional::pipeline::recover_unique_field_aligned_source_quads(
-            mesh, recovery_field(fieldData));
+            mesh, recovery_field(fieldData), &sourceAuthority,
+            &no_recovery_excluded_edges());
     ASSERT_TRUE(first.success) << benchmarkCase.name << ": " << first.failure;
     ASSERT_TRUE(second.success) << benchmarkCase.name << ": " << second.failure;
     EXPECT_GT(first.mesh.quads.size(),
@@ -617,6 +702,7 @@ TEST(MilestoneGP26, UniqueFieldAlignedRecoveryAcceptsEveryProductionFixture) {
         first.mesh.quadLineage.begin(), first.mesh.quadLineage.end(),
         [](const auto &lineage) { return lineage.valid(); }));
   }
+  EXPECT_EQ(8, recoveredCases);
 }
 
 TEST(MilestoneGP26, SourceCellRecoveryFailsClosedForIncompleteField) {
@@ -641,9 +727,10 @@ TEST(MilestoneGP26, SourceCellRecoveryFailsClosedForIncompleteField) {
   }
   directional::pipeline::normalize_surface_cell_cross_field_directions(field);
 
+  const auto sourceAuthority = recovery_source_authority(mesh.F);
   const auto recovery =
-      directional::pipeline::recover_unique_field_aligned_source_quads(mesh,
-                                                                       field);
+      directional::pipeline::recover_unique_field_aligned_source_quads(
+          mesh, field, &sourceAuthority, &no_recovery_excluded_edges());
   EXPECT_FALSE(recovery.success);
   EXPECT_EQ("InvalidSourceGridInput", recovery.failure);
   EXPECT_TRUE(recovery.mesh.quads.empty());
@@ -747,9 +834,12 @@ TEST(MilestoneGP26, RecoveryPreservesComponentAndSheetProvenance) {
   const std::vector<int> sheets(static_cast<std::size_t>(meshData.faces.rows()),
                                 11);
 
+  const auto sourceAuthority =
+      recovery_source_authority(mesh.F, components, sheets);
   const auto recovery =
       directional::pipeline::recover_unique_field_aligned_source_quads(
-          mesh, recovery_field(fieldData), &components, &sheets);
+          mesh, recovery_field(fieldData), &sourceAuthority,
+          &no_recovery_excluded_edges());
   ASSERT_TRUE(recovery.success) << recovery.failure;
   ASSERT_FALSE(recovery.mesh.vertexProvenance.empty());
   for (const auto &point : recovery.mesh.vertexProvenance) {
@@ -768,9 +858,11 @@ TEST(MilestoneGP26, PrescribedSphereSingularitiesMatchRecoveredValence) {
       benchmarkCase, meshData.faces.rows());
   directional::TriMesh mesh;
   mesh.set_mesh(meshData.vertices, meshData.faces);
+  const auto sourceAuthority = recovery_source_authority(mesh.F);
   const auto recovery =
       directional::pipeline::recover_unique_field_aligned_source_quads(
-          mesh, recovery_field(fieldData));
+          mesh, recovery_field(fieldData), &sourceAuthority,
+          &no_recovery_excluded_edges());
   ASSERT_TRUE(recovery.success) << recovery.failure;
 
   const fs::path metadata = source_root() / "benchmarks" / "fixtures" /
@@ -805,7 +897,13 @@ TEST(MilestoneGP26, ProductionMatrixTerminatesWithoutHiddenFallback) {
   for (const auto &benchmarkCase : cases) {
     if (benchmarkCase.backend ==
         directional::pipeline::RemeshBackend::SurfaceCells) {
+      SCOPED_TRACE(::testing::Message()
+                   << "P26 surface-cell matrix case=" << benchmarkCase.name);
+      std::cerr << "[P5_P26_CASE_BEGIN] " << benchmarkCase.name
+                << std::endl;
       expect_truthful_surface_cells_outcome(benchmarkCase);
+      std::cerr << "[P5_P26_CASE_END] " << benchmarkCase.name
+                << std::endl;
     }
   }
 }

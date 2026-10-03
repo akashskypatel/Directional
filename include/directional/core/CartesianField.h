@@ -76,6 +76,11 @@ public:
   /// Singularity numerators; the fractional index is singIndices / N.
   Eigen::VectorXi singIndices;
 
+  /// Integer numerator for every complete dual cycle in @ref TangentBundle::cycles.
+  /// Populated by the same effort-to-index computation that derives
+  /// @ref singIndices; consumers must not recompute these values independently.
+  Eigen::VectorXi cycleIndices;
+
   /// Constructs an empty field. Call @ref init before assigning field data.
   CartesianField() = default;
 
