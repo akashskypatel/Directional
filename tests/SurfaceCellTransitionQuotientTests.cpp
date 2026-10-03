@@ -2223,6 +2223,15 @@ TEST(M6CP1, SeamEndpointOccurrencesPublishCompleteCornerWedgeSheetAuthority) {
 
 TEST(M6CP1,
      SurfaceOccurrenceComplexRejectsMalformedMissingAndDuplicateRelationEndpoints) {
+  const auto firstDraftEdgeOfKind =
+      [](const PhaseFrontDraft &draft, const SurfaceFrontBoundaryKind kind) {
+        for (std::size_t index = 0; index < draft.edges.size(); ++index) {
+          if (draft.edges[index].boundaryKind == kind) {
+            return static_cast<int>(index);
+          }
+        }
+        return -1;
+      };
   const auto &fixture = square_fixture();
   auto construction =
       directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
@@ -2304,7 +2313,7 @@ TEST(M6CP1,
   PhaseFrontDraft invalidRoute =
       phase_front_draft(hardRailFixture.network.phaseFront);
   const int hardRail =
-      first_edge_of_kind(invalidRoute, SurfaceFrontBoundaryKind::HardRail);
+      firstDraftEdgeOfKind(invalidRoute, SurfaceFrontBoundaryKind::HardRail);
   ASSERT_GE(hardRail, 0);
   auto &invalidRouteEdge =
       invalidRoute.edges[static_cast<std::size_t>(hardRail)];
@@ -2352,7 +2361,7 @@ TEST(M6CP1,
   PhaseFrontDraft sameOrientation =
       phase_front_draft(hardRailFixture.network.phaseFront);
   const int sameOrientationRail =
-      first_edge_of_kind(sameOrientation, SurfaceFrontBoundaryKind::HardRail);
+      firstDraftEdgeOfKind(sameOrientation, SurfaceFrontBoundaryKind::HardRail);
   ASSERT_GE(sameOrientationRail, 0);
   const int opposite = sameOrientation.edges[static_cast<std::size_t>(
       sameOrientationRail)].oppositeEdge;
@@ -2743,6 +2752,15 @@ TEST(M6CP1, CycleClosingRelationTransportConflictRejected) {
 }
 
 TEST(M6CP1, RelationPlacementTransportIsCoordinateRigidAndFaceGaugeInvariant) {
+  const auto firstDraftEdgeOfKind =
+      [](const PhaseFrontDraft &draft, const SurfaceFrontBoundaryKind kind) {
+        for (std::size_t index = 0; index < draft.edges.size(); ++index) {
+          if (draft.edges[index].boundaryKind == kind) {
+            return static_cast<int>(index);
+          }
+        }
+        return -1;
+      };
   const auto produceA5 = [](const PhaseFrontFixture &fixture,
                             const directional::geometry::SurfacePhaseFrontProduct &front) {
     return directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
@@ -2873,7 +2891,7 @@ TEST(M6CP1, RelationPlacementTransportIsCoordinateRigidAndFaceGaugeInvariant) {
   PhaseFrontDraft relabelled =
       phase_front_draft(hardRailFixture.network.phaseFront);
   const int firstHardRail =
-      first_edge_of_kind(relabelled, SurfaceFrontBoundaryKind::HardRail);
+      firstDraftEdgeOfKind(relabelled, SurfaceFrontBoundaryKind::HardRail);
   ASSERT_GE(firstHardRail, 0);
   const int opposite =
       relabelled.edges[static_cast<std::size_t>(firstHardRail)].oppositeEdge;
