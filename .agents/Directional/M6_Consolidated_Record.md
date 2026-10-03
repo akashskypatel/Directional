@@ -174,6 +174,16 @@ Exact semantic source `40842caa88f8d7a08a38c91273ace77ebd7c0676` compiled all ei
 
 Candidate `11257522199 / 40842caa...` remains unpromoted. Reviewed runtime remains `10879581622 / 82b86a28...`; stable accounting stays **57/16/41**, debt 1. Exact next is `M6-CP1-TB7-A6-EXEC`, exact **11+449=460** fresh artifact-only processes using the packaged-fixture execution view, then mandatory `M6-CP1-TB7-A6-REV`. R4/A7/G4 remain held.
 
+## 27. `M6-CP1-TB7-A6-EXEC` — complete 460-process gate is mechanically valid and semantic RED
+
+TB7-A6 consumes CB7 package/source `11257522199 / 40842caa88f8d7a08a38c91273ace77ebd7c0676` immutably. Run/job `37090507571 / 111109661723` executes exactly 11 focused identities followed by selector449 as **460 fresh exact-filter processes**. Result/log artifacts are `11262587435 / 11262387973`; result self-manifest verifies **953/953**. Exact-one selection and zero skips hold; benchmark/configure/compile/relink/discovery/repair/mutation/retry are all absent; package/source/execution-view postflight is unchanged.
+
+Outcome is focused **11/11 PASS**, selector **432/449 PASS**, aggregate **443/460 PASS / 17 RED**. Exact RED selector ordinals are `115,116,122,130,132,134,137,141,143,150,176,201,217,227,230,231,446`. Relative to TB6, focused6 and rows139/142 recover. Row446 remains RED under a new post-materialization assertion, and 16 accepted-green selector rows newly turn RED. No raw log contains `QuotientHolonomyConflict` or `OccurrenceInvalidCornerAuthority`; selectors140/232/444/448/449 and focused10/11 remain green.
+
+EXEC records three non-stable Review-owned candidates: (1) HardRail canonical route transport is carrier/transition authority, not a cross-region placement-gauge map, so CB7's new `action_matches` gate falsely rejects established valid HardRail paths and makes downstream feature-chain seams unreachable (`RP-01` candidate); (2) rows227/230 are still rejected but the restored early reciprocal-route check shadows their accepted `InvalidHardRailAuthority` typed route-topology failure (`VALIDATION_ORDER_SHADOWING` candidate); (3) row446 now materializes and has no holonomy conflict, but its selector assertion still compares RA-13 placement-gauge `appliedTransport` with the relation-endpoint/stored action (`RP-05` test-authority candidate).
+
+Stable accounting remains **57 / 16 / 41**, debt 1. Candidate remains unpromoted and reviewed runtime remains TB5 `10879581622 / 82b86a28...`, selector449 449/449. Exact next is mandatory runtime-free `M6-CP1-TB7-A6-REV`; R4/A7/G4 remain held.
+
 ## Folded document index
 
 | Retired filename | Disposition |

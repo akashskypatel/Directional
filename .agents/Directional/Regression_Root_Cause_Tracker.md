@@ -1,3 +1,30 @@
+## 2026-10-03 — `M6-CP1-TB7-A6-EXEC` mechanically valid 443/460 RED — **+0 STABLE EVENTS IN EXEC / 57/16/41 / debt 1**
+
+Immutable candidate `11257522199 / 40842caa...` executes the exact 11 focused + selector449 = **460** fresh exact-filter processes in run/job `37090507571 / 111109661723`. Result/log authority is `11262587435 / 11262387973`; exact-one selection and zero skips hold, benchmark/configure/compile/relink/repair are zero, and package/source/execution-view postflight is byte/mode identical. Outcome is focused **11/11 PASS**, selector **432/449 PASS**, aggregate **443/460 PASS / 17 RED**. EXEC performs no stable repricing.
+
+### `M6-CP1-TB7-A6-EXEC-CAND-01` — candidate/non-stable `RP-01 / AUTHORITY_DOMAIN_CONFLATION`
+
+- **Direct accepted-green losses:** 115, 116, 141, 143, 150, 217, 231 return `InvalidHardRailTransport` on otherwise established HardRail paths.
+- **Downstream same-path losses:** 122, 130, 132, 134, 137, 176, 201 no longer reach their accepted aggregation/final-oracle/injected-stage seams.
+- **Root-cause evidence:** CB7 validates `HardRail` placement by applying `first.route.composed_transport()` to endpoint `LocalLatticeState`. Exact source constructs retained HardRail route steps with `GridAutomorphism::identity()` in `assign_open_front_boundary_authority`; the route therefore carries canonical topology/transition identity, not a cross-region placement-gauge transform. Row141 proves owner/reversed-route reciprocity before the new action check rejects. This fires the CB7 stop rule that HardRail transport may not be in placement gauge.
+- **Review obligation:** derive/identify the authoritative placement-gauge HardRail transport without weakening recovered rows139/142 or row140; independently confirm the seven downstream rows share this root before stable grouping/pricing.
+
+### `M6-CP1-TB7-A6-EXEC-CAND-02` — candidate/non-stable `VALIDATION_ORDER_SHADOWING`
+
+- **Accepted-green losses:** rows 227 and 230.
+- **Observed:** both malformed-route tests still reject, but expected `InvalidHardRailAuthority` is pre-empted by CB7 A5's earlier reciprocal-route rejection `InvalidHardRailTransport`.
+- **Root cause:** restored relation reciprocity is checked before the existing typed route-topology authority validator. This is a failure-code/validation-precedence regression, not fail-open behavior.
+- **Review obligation:** preserve fail-closed reciprocity while restoring the accepted typed failure ordering or explicitly adjudicating test authority; TB makes no expectation change.
+
+### `M6-CP1-TB7-A6-EXEC-CAND-03` — candidate/non-stable `RP-05 / REPRESENTATION_DEPENDENT_IDENTITY` / test-authority
+
+- **Accepted-green loss:** row446 `M5CP3.ProducedTorusNonzeroZ4RotationTranslationMaterializes`.
+- **Observed recovery:** materialization succeeds; focused6 PASSes; selectors232/444/448/449 PASS; raw `QuotientHolonomyConflict` count is zero. Row446 now fails only the post-materialization `selected` predicate.
+- **Root cause evidence:** the predicate requires selected-step `appliedTransport == SurfacePeriodicHolonomy::action()` or inverse. RA-13 changed exact-A3 A5/A6 relation transport to placement gauge `Γ_to^-1 ∘ g ∘ Γ_from`, while `SurfacePeriodicHolonomy::action()` remains the relation-endpoint/stored action. The assertion therefore pins the pre-RA-13 representation across a known gauge boundary.
+- **Review obligation:** decide whether selector446 requires a test-only migration to the reviewed placement-gauge authority or exposes a remaining production contract defect. No selector test is edited in EXEC.
+
+**Stable accounting remains `57 events / 16 categories / 41 recurrences`, debt 1.** The prior TB6 rows139/142 and focused6 recover; selector446 remains RED under a new first failure; sixteen additional selector rows are newly RED. Exact next is mandatory `M6-CP1-TB7-A6-REV`.
+
 ## 2026-10-02 — `M6-CP1-TB6-A6-REV` review-agent addendum — **+0 EVENTS / 57/16/41 / debt 1 / Finding B re-attributed RP-07 → RP-01**
 
 - **`M6-CP1-TB6-A6-REV-CAND-01` (selector 446 + focused 6), corrected root cause.** A6 cycle composition mixes OrdinaryFront identity in the cut-domain placement gauge (`RemeshPipeline.cpp:4117`) with exact-A3 Periodic semantic action `g` in the PeriodicCut relation-endpoint gauge (`:4165`; `SurfaceCellTracing.h:1438-1442`; `make_periodic_relation_endpoint_state` at `SurfaceCellTracing.cpp:7915` rotates the Reverse side by Q).

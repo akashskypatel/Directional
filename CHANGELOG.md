@@ -1,3 +1,10 @@
+## 2026-10-03 — M6 TB7-A6 exposes HardRail gauge/ordering regressions; mandatory Review next
+
+- Artifact-only run `37090507571 / 111109661723` executes all 460 frozen processes from candidate `11257522199 / 40842caa...`: focused **11/11**, selector **432/449**, total **443/460** with exact-one selection, zero skips and immutable postflight.
+- CB7 fixes its original TB6 targets: focused6 and selector139/142 recover, selector140/232/444/448/449 stay green, and `QuotientHolonomyConflict` disappears entirely.
+- Sixteen accepted selector identities newly turn RED. Evidence points to HardRail route-carrier transport being incorrectly treated as a placement-gauge transform, plus two typed-error precedence losses. Selector446 materializes successfully but its old selected-certificate assertion still compares different RA-13 gauges.
+- EXEC records three non-stable Review-owned candidates; accounting remains **57/16/41**, debt 1. Candidate remains unpromoted. Exact next is `M6-CP1-TB7-A6-REV`; no TB repair/rerun is authorized.
+
 ## 2026-10-02 — M6 test review corrected: the "holonomy" failures are a units mix-up, not a geometry exception
 
 - The last review read two torus test failures as a legitimate geometric twist and loosened the check. Re-examination shows the code compared two transforms expressed in different coordinate conventions. It fails only on the one torus variant where those conventions differ.

@@ -1,15 +1,14 @@
-## Current — `M6-CP1-CB7-A6` COMPLETE / exact next `M6-CP1-TB7-A6-EXEC` (2026-10-02)
+## Current — `M6-CP1-TB7-A6-EXEC` COMPLETE / mechanically valid 443/460 RED / exact next `M6-CP1-TB7-A6-REV` (2026-10-03)
 
-- [x] Restore A5 HardRail owner/region/reversed-route/placement-transport validation with typed failures and legacy `InvalidHardRailTransport` mapping.
-- [x] Implement RA-13 exact-A3 Periodic placement-gauge transport `Γ_to⁻¹ ∘ g ∘ Γ_from`, verify published endpoint placement authority, and retain strict cycle equality with diagnostic residual only.
-- [x] Revalidate every A6 relation certificate against immutable A5 authority before product acceptance; strengthen focused identity 10 while keeping focused identity 11 unchanged.
-- [x] Preserve selector449/routing449 exactly (`d4a0d1b7...d6414` / `9c88a5ed...c5707`, owners 32/301/75/41); no fixture or benchmark edits.
-- [x] Compile/package exact semantic source `40842caa88f8d7a08a38c91273ace77ebd7c0676`: run/job `37078118843 / 111072482082`, result/log `11257522199 / 11257522202`, root manifest 28/28, eight GMP/GMPXX targets, clean receipts, `runtimeExecution=false`.
-- [ ] **Exact next `M6-CP1-TB7-A6-EXEC`:** consume `11257522199` immutably and execute exact **11+449=460** fresh processes with the packaged-fixture execution view.
-- [ ] `M6-CP1-TB7-A6-REV` — mandatory Review before promotion or any R4/A7/G4 work.
+- [x] Consume candidate `11257522199 / 40842caa...` immutably; verify package/source/selector/routing/modes and construct the separate packaged-fixture execution view without repair.
+- [x] Execute exact **11 focused + 449 selector = 460** fresh exact-filter processes: focused **11/11 PASS**, selector **432/449 PASS**, aggregate **443/460 PASS / 17 RED**; exact-one selection and zero skips hold.
+- [x] Confirm CB7 target recoveries: focused6 PASS; rows139/142 reject correctly; row140 and 232/444/448/449 PASS; zero raw `QuotientHolonomyConflict` and zero `OccurrenceInvalidCornerAuthority`.
+- [x] Record the 17 REDs in the regression tracker as three non-stable Review-owned candidate envelopes; keep stable accounting **57 / 16 / 41**, debt 1.
+- [x] Preserve semantic RED without repair/rerun; no configure/compile/relink/discovery/benchmark/package/test/fixture/selector mutation occurred.
+- [ ] **Exact next `M6-CP1-TB7-A6-REV`:** independently re-open result `11262587435`, adjudicate CAND-01 HardRail gauge authority, CAND-02 typed validation precedence, CAND-03 row446 RA-13 test authority, stable accounting and candidate promotion/rejection.
 - [ ] Keep `M6-DEFN-R4`, A7, `G4-B002`, `G4-B004` representative half and direct-torus debt held until TB7 Review.
 
-Accounting remains **57 / 16 / 41**, debt 1. Candidate `11257522199 / 40842caa...` is compile-only and unpromoted; reviewed runtime authority remains `10879581622 / 82b86a28...`, selector449 449/449.
+Candidate `11257522199 / 40842caa...` remains unpromoted. Reviewed runtime authority remains `10879581622 / 82b86a28...`, selector449 449/449.
 
 ## Review-agent addendum — `M6-CP1-TB6-A6-REV` (2026-10-02)
 
