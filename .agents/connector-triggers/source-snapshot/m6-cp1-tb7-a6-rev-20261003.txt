@@ -1,0 +1,3 @@
+Purpose: snapshot exact authority for M6-CP1-TB7-A6-REV static review.
+Expected boundary: repository head after this marker commit; runtime execution is prohibited.
+Retry: 0
