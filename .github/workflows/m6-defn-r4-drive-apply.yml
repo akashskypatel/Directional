@@ -40,7 +40,7 @@ jobs:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
       file_id: 1LfMESWXC_DjbwFbBkLsU53CwPHSxtXQQ
-      patch_sha256: 1e7aa8f80b3827f2fa4724fa93f41adf7f4bd6aea131b176ad7e12a794ef4ef2
+      patch_sha256: d5b06628115aa97d60781f4cc208fc6865b404dbcd2ed1ddf65f2f41c19f147f
       base_sha: c7deb092e86f0912a304397e364d47dc94587a5a
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: "docs: freeze M6-DEFN-R4 boundaries"
