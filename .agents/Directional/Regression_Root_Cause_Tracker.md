@@ -1,3 +1,31 @@
+## 2026-10-03 — `M6-CP1-TB7-A6-REV` adjudication — **+2 STABLE EVENTS / 59/16/43 / debt 1 / CANDIDATE REJECTED**
+
+Review independently re-opens TB7 result `11262587435` (953/953 self-manifest) and exact candidate/current semantic source. The decisive source/test files are byte-identical between packaged semantic source `40842caa...` and runtime-free review snapshot `ea826744...`.
+
+### `M6-CP1-TB7-A6-REV-CAND-01` — STABLE / `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence
+
+- **Population:** direct accepted-green HardRail losses 115/116/141/143/150/217/231 plus downstream same-path reachability losses 122/130/132/134/137/176/201.
+- **Root cause:** CB7 publishes `first.route.composed_transport()` as HardRail placement authority and then applies it to paired `LocalLatticeState`s. Exact retained HardRail route steps are carrier/topology transitions and, for the failing path, are published with identity `GridAutomorphism`; the route is not a derived cross-region placement map. This is the CB7/RA-13 stop-rule condition.
+- **Downstream grouping:** the seven downstream tests first fail because the valid HardRail-producing path is rejected before their aggregation/final-oracle/injected-stage seams; no independent later semantic regression is exposed.
+- **Recovery owner:** `M6-CP1-CB8-A6` under RA-14. Keep route as carrier evidence; derive one exact placement transform independently from both endpoint pairs and publish it in HardRail action/canonical transport; completion selected-step transport consumes `equivalence.action`, not route composition.
+- **Accounting:** +1 event, +1 recurrence, +0 categories.
+
+### `M6-CP1-TB7-A6-REV-CAND-02` — STABLE / `VALIDATION_ORDER_SHADOWING` recurrence
+
+- **Population:** rows227/230.
+- **Root cause:** individually malformed HardRail route topology reaches A5 pair reciprocity before the existing exact source-route validator, so accepted `InvalidHardRailAuthority` is shadowed by earlier `InvalidHardRailTransport`. Fail-closed behavior remains; typed validation precedence regressed.
+- **Recovery owner:** `M6-CP1-CB8-A6` under RA-15. Move/extract/reuse the exact individual route validator before A5 pair publication, preserve row227/230 `InvalidHardRailAuthority`, and keep valid-route pair failures 139/142 as `InvalidHardRailTransport`.
+- **Accounting:** +1 event, +1 recurrence, +0 categories.
+
+### `M6-CP1-TB7-A6-REV-CAND-03` — CLOSED / NON-STABLE TEST-AUTHORITY DEFECT
+
+- **Population:** selector446 only.
+- **Evidence:** production materialization succeeds; focused6 and selectors232/444/448/449 pass; raw `QuotientHolonomyConflict` count is zero. The only failure is the post-materialization assertion comparing selected-step placement transport to `SurfacePeriodicHolonomy::action()`/inverse.
+- **Cause:** RA-13 intentionally makes exact-A3 selected-step transport `Γ_to^-1 ∘ g ∘ Γ_from` in cut-domain placement gauge while `action()` remains semantic `g` in relation-endpoint gauge. The assertion pins a superseded representation.
+- **Disposition:** selector446 identity and selector449 bytes stay frozen; CB8 may migrate only the test body to an independent direct-placement plus gauge-conjugation oracle. No stable event is priced.
+
+**Stable accounting: `59 events / 16 categories / 43 recurrences`, debt 1.** Candidate `11257522199 / 40842caa...` is rejected/unpromoted; reviewed runtime remains TB5 `10879581622 / 82b86a28...`, selector449 449/449. Exact successor `M6-CP1-CB8-A6` -> TB8-A6 460 -> mandatory Review.
+
 ## 2026-10-03 — `M6-CP1-TB7-A6-EXEC` mechanically valid 443/460 RED — **+0 STABLE EVENTS IN EXEC / 57/16/41 / debt 1**
 
 Immutable candidate `11257522199 / 40842caa...` executes the exact 11 focused + selector449 = **460** fresh exact-filter processes in run/job `37090507571 / 111109661723`. Result/log authority is `11262587435 / 11262387973`; exact-one selection and zero skips hold, benchmark/configure/compile/relink/repair are zero, and package/source/execution-view postflight is byte/mode identical. Outcome is focused **11/11 PASS**, selector **432/449 PASS**, aggregate **443/460 PASS / 17 RED**. EXEC performs no stable repricing.
@@ -242,7 +270,7 @@ Exact successor: mandatory runtime-free `M6-DEFN-R1-REV`; re-scoped CB4 stays he
   - 3feb24ef is mis-described as global-inventory augmentation. It was a keyed `(region, shared SourceEdgeSupport)` lookup with an exact sheet-pair match, which is the only typed derivation the relation model has.
 - **New code finding (no event):** at `660015f2` each occurrence record is built from two faces. Sheet, support and point come from the outgoing face; `lattice.sourceChart`, `branchRotation` and phase come from the node face. `projectionChart` pairs the node face's field chart with the outgoing face's topology (`:3380`), and these are consumed together in quotient domain state (`:4427-4432`) and the representative key (`:4503-4516`).
 - **Row140 notes (no events):** the A5 name function returns the M5 string (`:3057`); that mapping belongs in the adapter (`:3749-3753`). A5 also makes three M5 checks unreachable: `MissingHardRailRelationOwner` (`:4211`), `InvalidPeriodicRelationOwner` owner mismatch (`:4219-4223`), and the kind half of `IncompatibleAuthoritativeFrontPair` (`:4115-4120`).
-- **Owner:** `M6-DEFN-R1` → `M6-DEFN-R1-REV` → re-scoped `M6-CP1-CB4` → TB4 → TB4-REV. Recommended definition: per-occurrence corner-wedge sheet set, with wedge certificates keyed by the seam edges the wedge fan crosses; `OrdinaryFront` relations stay owner-less; A6 checks that the side sheet belongs to both endpoint wedge sets. Full historical scope is folded into `M6_Consolidated_Record.md` §§10-16; current disposition is in `Architecture_M6_CP1_TB4_Review_Record.md`.
+- **Owner:** `M6-DEFN-R1` → `M6-DEFN-R1-REV` → re-scoped `M6-CP1-CB4` → TB4 → TB4-REV. Recommended definition: per-occurrence corner-wedge sheet set, with wedge certificates keyed by the seam edges the wedge fan crosses; `OrdinaryFront` relations stay owner-less; A6 checks that the side sheet belongs to both endpoint wedge sets. Full historical scope is folded into `M6_Consolidated_Record.md` §§10-20; the retired TB4 Review is resolved by that record's folded-document index.
 
 ## 2026-09-25 — `M6-CP1-TB3-REV`: six accepted losses expose missing A5 relation-owned isolation certificate authority — **ONE NEW STABLE EVENT / EXISTING `RP-01` RECURRENCE / CB4 FROZEN**
 

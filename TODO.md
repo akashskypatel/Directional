@@ -1,3 +1,15 @@
+## Current — `M6-CP1-TB7-A6-REV` COMPLETE / candidate rejected / exact next `M6-CP1-CB8-A6` (2026-10-03)
+
+- [x] Independently re-open TB7 result `11262587435`, raw RED logs, 953/953 self-manifest and exact source; confirm mechanically valid **443/460** semantic RED.
+- [x] Adjudicate CAND-01 as one stable `RP-01` recurrence: HardRail carrier route is not cut-domain placement transport; direct + downstream losses share one first mechanism.
+- [x] Adjudicate CAND-02 as one stable `VALIDATION_ORDER_SHADOWING` recurrence: rows227/230 route-authority typing is pre-empted by earlier pair reciprocity.
+- [x] Close CAND-03 as non-stable test authority: selector446 production recovers; stale assertion compares RA-13 placement transport to relation-endpoint semantic action.
+- [x] Freeze RA-14 HardRail carrier/placement separation and RA-15 individual-route-before-pair validation; stable accounting **59 / 16 / 43**, debt 1.
+- [x] Reject/unpromote `11257522199 / 40842caa...`; retain reviewed runtime `10879581622 / 82b86a28...`, selector449 449/449.
+- [ ] **Exact next `M6-CP1-CB8-A6`:** implement RA-14/RA-15 and selector446 gauge-aware assertion migration, compile/package only, runtime forbidden.
+- [ ] CB8 green -> `M6-CP1-TB8-A6-EXEC` exact **11+449=460** fresh processes -> mandatory `M6-CP1-TB8-A6-REV`.
+- [ ] Keep `M6-DEFN-R4`, A7, `G4-B002`, `G4-B004` representative half and direct-torus debt held until TB8 Review.
+
 ## Current — `M6-CP1-TB7-A6-EXEC` COMPLETE / mechanically valid 443/460 RED / exact next `M6-CP1-TB7-A6-REV` (2026-10-03)
 
 - [x] Consume candidate `11257522199 / 40842caa...` immutably; verify package/source/selector/routing/modes and construct the separate packaged-fixture execution view without repair.
@@ -75,7 +87,7 @@ Accounting remains **55 / 16 / 39**, debt 1. Reviewed runtime authority remains 
 
 ## Review-agent addendum — `M6-CP1-TB5-REV` (2026-09-25)
 
-**TB5 recovery and promotion upheld; CP1 scope corrected; exact next `M6-DEFN-R3`.** See `Architecture_M6_CP1_TB5_Review_Record.md` (addendum) and `Architecture_M6_DEFN_R3_CP1_Product_Separation_Plan.md`.
+**TB5 recovery and promotion upheld; CP1 scope corrected; exact next `M6-DEFN-R3`.** See `M6_Consolidated_Record.md` §22 (TB5 Review/addendum) and `Architecture_M6_DEFN_R3_CP1_Product_Separation_Plan.md`.
 
 - [x] `M6-DEFN-R3`: bounded A6 definition complete. A7 representation and exact `G4-B002` boundary intentionally deferred to `M6-DEFN-R4`.
 - [x] `M6-DEFN-R3-REV` — accepted; bounded R3 record and A6 plan reviewed.
@@ -123,7 +135,7 @@ Accounting remains **55 / 16 / 39**, debt 1. Reviewed runtime authority remains 
 
 ## Review-agent addendum — `M6-CP1-TB4-REV` (2026-09-25)
 
-**Upheld 55/16/39; exact next `M6-CP1-CB5` as amended.** See `Architecture_M6_CP1_TB4_Review_Record.md`, addendum.
+**Upheld 55/16/39; exact next `M6-CP1-CB5` as amended.** See `M6_Consolidated_Record.md` §§19-20 (TB4 Review/addendum).
 
 - [x] CB5: A6 collinear span with no certificate → non-seam P2 rule; certificate present → seam branch unchanged.
 - [x] CB5: RA-12 site suffixes on every `Missing/InvalidIsolationSeamEquivalenceAuthority` emission (A5 adapter and the four A6 sites).

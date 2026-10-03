@@ -519,7 +519,7 @@ This amends RA-7. The legacy M5 names `MissingIsolationSeamEquivalenceAuthority`
 - `:a6-seam-span-transition` — seam branch missing the reciprocal span transition;
 - `:a6-seam-faces` — certificate faces or sheets mismatch.
 
-Diagnostic only: predicates, ordering and outcomes are unchanged. No test or production code compares these strings exactly (verified at `M6-CP1-TB4-REV`). Rationale: `Architecture_M6_CP1_TB4_Review_Record.md`, review-agent addendum §B3-§B4.
+Diagnostic only: predicates, ordering and outcomes are unchanged. No test or production code compares these strings exactly (verified at `M6-CP1-TB4-REV`). Rationale: `M6_Consolidated_Record.md` §§19-20; full retired Review text is resolved by that record's folded-document index.
 
 **RA-12 annotation (`M6-CP1-TB5-REV` review-agent addendum):** after CB5, an uncertified collinear span runs the non-seam P2 rule and fails as `QuotientReciprocalSideAuthorityMismatch`. The `:a6-collinear-span` suffix is therefore never emitted. The other suffixes are live.
 
@@ -572,13 +572,36 @@ The same gate exposes a separate accepted HardRail regression: selector139/142 u
 
 ## RA-13 — single-gauge relation transport; strict cycle rule restored (normative, 2026-10-02, `M6-CP1-TB6-A6-REV` review-agent addendum)
 
-This supersedes the TB6-A6-REV residual-holonomy fallback. Rationale: `Architecture_M6_CP1_TB6_A6_Review_Record.md`, review-agent addendum §E3-§E5.
+This supersedes the TB6-A6-REV residual-holonomy fallback. Rationale is preserved in `M6_Consolidated_Record.md` §§25/28 and lesson 184; the full retired Review text is resolved by the folded-document index.
 
 1. Every `QuotientRelationCertificate.relationTransport` is the transport between the endpoint occurrences' **placement (cut-domain `LocalLatticeState`) states**, in canonical `relation.id.first → second` direction. A5 publishes it in that gauge and verifies `action_matches(placement(first), placement(second), T)` (coordinate, branch, scale) before freezing the evidence. A mismatch fails closed with `InvalidPeriodicFrontTransport` or `InvalidHardRailTransport`.
 2. **OrdinaryFront:** identity (RA-2).
    **Periodic, exact-A3:** `T = Γ_to⁻¹ ∘ g ∘ Γ_from`, with Γ derived from `make_periodic_relation_endpoint_state` as the single authority (Forward: identity in coordinates; Reverse: relation turn Q; branch normalization by `localFaceBranchRotation`). The semantic action `g` is in the PeriodicCut relation-endpoint gauge (`SurfaceCellTracing.h`, the note on `SurfacePeriodicRelationEndpointState`), which is a different authority domain from cut-domain placement (lesson 175).
    **Periodic, non-A3:** the existing cut-gauge action.
-   **HardRail:** the route composed transport, under the same placement check. Stop for Review if it is not in the placement gauge.
+   **HardRail:** **[SUPERSEDED by RA-14 below]** the route composed transport, under the same placement check. The TB7 stop condition fired: the carrier route is not the placement-gauge authority.
 3. **Strict cycle rule (RA-4):** a cycle-closing relation requires `relationTransport == pathTransport`, else `QuotientHolonomyConflict`. The failure string may carry the residual for diagnosis (`QuotientHolonomyConflict:residual=Q<k>,t=(x,y)`). Non-identity residuals are never accepted as evidence in CP1. A vertex-class cycle is a contractible vertex link, and the legitimate exception (cone singularity at a lattice node) is excluded because A5 fails closed on SingularityPort corners.
 4. **Falsifiers (TB7):** selector 446 and focused 6 (nonzero-Z4 witness) PASS under the strict rule; rows 232/444/448/449 stay green. A remaining conflict is classified from its residual suffix by Review. The fallback may return only with a proof of genuine vertex cone holonomy.
 
+
+
+## RA-14 — HardRail carrier route and placement transport are separate authorities (normative, 2026-10-03, `M6-CP1-TB7-A6-REV`)
+
+This supersedes only RA-13 item 2's HardRail transport sentence. OrdinaryFront, exact-A3/non-A3 Periodic transport and RA-13 strict cycle equality remain unchanged. Rationale: `Architecture_M6_CP1_TB7_A6_Review_Record.md` §§3-3.3.
+
+1. `PureQuadEquivalenceProvenance.route` is HardRail carrier/topology/transition provenance. Its structural validity, hard-feature ownership and exact reciprocal reversal remain required, but `route.composed_transport()` is not quotient placement authority merely because the route owns the carrier.
+2. HardRail `canonicalTransport` is the unique cut-domain `LocalLatticeState` transform in canonical relation direction. For placement states `a -> b`, require equal scale, derive `R = branch(b) ∘ branch(a)^-1`, `t = b.coord - rotate(R,a.coord)`, construct `T={R,t}`, and verify the existing exact `action_matches(a,b,T)`.
+3. A HardRail relation independently derives this transform for both cross-endpoint pairs (`first.from -> second.to` and `first.to -> second.from`) and requires the two exact transforms to be equal. Any missing/unequal value rejects `InvalidHardRailTransport`.
+4. A5 publishes that placement transform in `equivalence.action`, `canonicalTransport` and the canonical selected step while retaining `equivalence.route` separately. A6 consumes that A5 placement transform unchanged.
+5. Completion/lineage validates HardRail selected-step transport against orientation-adjusted `equivalence.action`; it continues to validate the retained route independently for source hard-feature topology/components. A consumer may not substitute route-composed carrier transport for placement transport.
+6. **Stop rule:** if the two endpoint pairs do not define one unique placement transform, or another current consumer requires route-composed transport to remain quotient placement authority, stop for Review rather than relaxing the endpoint check.
+
+## RA-15 — individual route authority precedes relation-pair reciprocity (normative, 2026-10-03, `M6-CP1-TB7-A6-REV`)
+
+Rows227/230 prove that a malformed individual HardRail route must retain its accepted `InvalidHardRailAuthority` diagnostic instead of being pre-empted by pair-level `InvalidHardRailTransport`.
+
+1. The existing exact individual interior-route/source-transition validator is a single shared predicate and runs before A5 relation-pair publication.
+2. Malformed HardRail route authority preserves `InvalidHardRailAuthority`; malformed Periodic route/cut authority preserves its existing `InvalidPeriodicCutAuthority` path.
+3. Only individually valid routes reach A5 pair-level owner/region/reversed-route checks. Those pair-level failures remain `InvalidHardRailTransport` (including selector139/142).
+4. Do not duplicate divergent route-validity semantics downstream; move/extract/reuse the existing predicate and remove or mechanically reuse the later copy.
+
+Stable accounting after TB7 Review is **59 / 16 / 43**, debt **1**. Candidate `11257522199 / 40842caa...` is rejected/unpromoted. Exact successor is `M6-CP1-CB8-A6`, then immutable `M6-CP1-TB8-A6-EXEC` **11+449=460** and mandatory Review.

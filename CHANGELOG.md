@@ -1,3 +1,13 @@
+## 2026-10-03 — `M6-CP1-TB7-A6-REV` — TB7 RED adjudicated; RA-14/RA-15 frozen
+
+- Independently verified TB7 run/job `37090507571 / 111109661723`, result/log `11262587435 / 11262387973`, result self-manifest 953/953 and aggregate **443/460 PASS** with exact RED ordinals 115/116/122/130/132/134/137/141/143/150/176/201/217/227/230/231/446.
+- Re-opened exact candidate/current source: decisive implementation/test files in packaged semantic source `40842caa...` are byte-identical to runtime-free snapshot `ea826744...`.
+- Classified HardRail route-carrier vs placement-map conflation as one stable `RP-01` recurrence and rows227/230 typed route-order loss as one stable `VALIDATION_ORDER_SHADOWING` recurrence. Stable accounting **59 / 16 / 43**, debt 1.
+- Closed selector446 as non-stable test authority: production materializes, focused6/periodic controls pass, holonomy conflicts are zero; only the stale relation-endpoint-vs-placement assertion remains.
+- Added RA-14 (HardRail route and placement transport separate authorities) and RA-15 (individual route validity precedes pair reciprocity).
+- Rejected/unpromoted CB7 candidate `11257522199 / 40842caa...`; reviewed runtime remains TB5 `10879581622 / 82b86a28...`, selector449 449/449.
+- Froze exact successor `M6-CP1-CB8-A6`; compile/package green advances to TB8-A6 **11+449=460** then mandatory Review. R4/A7/G4 remain held.
+
 ## 2026-10-03 — M6 TB7-A6 exposes HardRail gauge/ordering regressions; mandatory Review next
 
 - Artifact-only run `37090507571 / 111109661723` executes all 460 frozen processes from candidate `11257522199 / 40842caa...`: focused **11/11**, selector **432/449**, total **443/460** with exact-one selection, zero skips and immutable postflight.

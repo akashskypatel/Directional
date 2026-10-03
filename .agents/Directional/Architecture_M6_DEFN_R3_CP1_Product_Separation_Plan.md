@@ -4,7 +4,7 @@
 
 **Turn:** `M6-DEFN-R3`
 **Type:** Definition amendment and CP1 sequencing, runtime-free
-**Predecessor:** `M6-CP1-TB5-REV`, review-agent addendum (`Architecture_M6_CP1_TB5_Review_Record.md` §C3-§C4)
+**Predecessor:** `M6-CP1-TB5-REV`, review-agent addendum (folded into `M6_Consolidated_Record.md` §22; full retired text resolved by the folded-document index)
 **Review:** `M6-DEFN-R3-REV` COMPLETE / ACCEPTED WITH RA-1 – RA-4
 **Exact next:** `M6-CP1-CB6-A6`
 **Disposition:** BOUNDED DEFINITION COMPLETE; implementation authorized only under the R3-REV amendments

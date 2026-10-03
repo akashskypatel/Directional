@@ -1,3 +1,12 @@
+## Resume-critical update — `M6-CP1-TB7-A6-REV` COMPLETE / candidate rejected / exact next `M6-CP1-CB8-A6` (2026-10-03)
+
+TB7 runtime is authoritative semantic RED at **443/460** (11/11 focused + 432/449 selector). Review prices two stable recurrences: HardRail route-carrier vs placement transport (`RP-01`) and route-validation precedence (`VALIDATION_ORDER_SHADOWING`). Selector446 is closed non-stable test authority. Stable accounting is **59 / 16 / 43**, debt 1. Candidate `11257522199 / 40842caa...` is rejected/unpromoted; reviewed runtime stays TB5 `10879581622 / 82b86a28...`, selector449 449/449.
+
+RA-14 freezes HardRail carrier/placement separation and RA-15 freezes individual-route-before-pair validation. Exact next is `M6-CP1-CB8-A6`, bounded to those two repairs plus selector446's gauge-aware assertion migration. Compile/package green -> `M6-CP1-TB8-A6-EXEC` exact **11+449=460** -> mandatory `M6-CP1-TB8-A6-REV`. R4/A7/G4 remain held.
+
+Load `Architecture_M6_CP1_TB7_A6_Review_Record.md`, `Architecture_M6_CP1_CB8_A6_HardRail_Placement_Transport_Recovery_Code_Build_Plan.md`, `Architecture_M6_Frozen_Definitions.md` (RA-14/RA-15), TB7 report, tracker, `CODE_BUILD.md`, workflow policy and tool-use conservation policy.
+
+### Superseded resume note
 ## Resume-critical update — `M6-CP1-TB7-A6-EXEC` COMPLETE / mechanically valid 443/460 RED; exact next `M6-CP1-TB7-A6-REV` (2026-10-03)
 
 **Start `M6-CP1-TB7-A6-REV` as a new runtime-free Review turn.** Do not rerun or repair TB7-A6 and do not begin `M6-DEFN-R4`, A7, `G4-B002`, `G4-B004` representative-consumption, or direct-torus work.
@@ -13,7 +22,7 @@ Three non-stable Review-owned candidates are recorded in the TB7 report/tracker:
 
 EXEC performs no stable repricing: accounting remains **57 / 16 / 41**, debt 1. Candidate stays unpromoted; reviewed runtime authority remains `10879581622 / 82b86a28...`, selector449 **449/449**.
 
-Load before Review: `Architecture_M6_CP1_TB7_A6_Artifact_Only_Test_Benchmark_Report.md`, `Architecture_M6_CP1_TB7_A6_Artifact_Only_Test_Benchmark_Plan.md`, `Architecture_M6_CP1_CB7_A6_Code_Build_Report.md`, `Architecture_M6_CP1_TB6_A6_Review_Record.md` (review-agent RA-13 addendum), `Architecture_M6_Frozen_Definitions.md`, `Regression_Root_Cause_Tracker.md`, `Turn_Cadence.md`, `GitHub_Workflow_Policy.md`, `CLEAN_UP_POLICY.md`, and `TOOL_USE_CONSERVATION_POLICY.md`.
+Historical TB7-EXEC resume set is now resolved by the retained TB7 report plus `M6_Consolidated_Record.md` §§25-27/folded index and `Architecture_M6_Frozen_Definitions.md` RA-13.
 
 ### Superseded by the 2026-10-02 review-agent addendum — `M6-CP1-TB6-A6-REV` COMPLETE / candidate rejected; exact next `M6-CP1-CB7-A6` (2026-09-29 UTC)
 
@@ -27,9 +36,9 @@ Load before Review: `Architecture_M6_CP1_TB7_A6_Artifact_Only_Test_Benchmark_Rep
 - Stable accounting is now **57 / 16 / 41**, debt 1. Selector446 is one existing `RP-07 / CYCLIC_TOPOLOGY_LINEARIZATION` recurrence; rows139+142 share one existing `VALIDATION_ORDER_SHADOWING` recurrence.
 - Candidate `10896307843` is rejected/unpromoted. Current reviewed runtime authority remains `10879581622 / 82b86a28...`, selector449 **449/449**.
 
-**Exact next: `M6-CP1-CB7-A6` — Code + Build, compile/package only.** Follow `Architecture_M6_CP1_CB7_A6_Relation_Validation_Recovery_Code_Build_Plan.md`. Make only the bounded A5 HardRail validation + A6 cycle-residual/certificate-authority changes and the two existing focused A6 test adjustments. Keep focused count 11; selector449/routing449 and fixtures are frozen. Compile-green -> fresh `M6-CP1-TB7-A6-EXEC` **11+449=460** -> mandatory `M6-CP1-TB7-A6-REV`.
+**Historical exact next was `M6-CP1-CB7-A6`.** Its consumed plan is folded into `M6_Consolidated_Record.md` §§25-26 and the folded-document index; CB7/TB7 are now superseded by the current Review authority below.
 
-Load before implementation: `Architecture_M6_Frozen_Definitions.md` (TB6-A6-REV amendment at end), `Architecture_M6_CP1_TB6_A6_Review_Record.md`, the CB7-A6 plan, `CODE_BUILD.md`, `GitHub_Workflow_Policy.md`, and `TOOL_USE_CONSERVATION_POLICY.md`.
+Historical CB7 implementation authority is preserved in `Architecture_M6_Frozen_Definitions.md` RA-13 and `M6_Consolidated_Record.md` §§25-26/folded index.
 
 ## Superseded EXEC-only handoff — `M6-CP1-TB6-A6-EXEC` report was incomplete; Review found an authoritative second run
 
@@ -39,7 +48,7 @@ Load before implementation: `Architecture_M6_Frozen_Definitions.md` (TB6-A6-REV 
 - The local EXEC attempt failed at the **execution-view orchestration layer**. It ran package binaries directly instead of constructing the standard separate view with packaged-source `benchmarks/fixtures` at adjacent `test-data/benchmarks/fixtures`. Focused row6 and selector ordinals 41/42/43/44/46 all threw the same missing-test-data exception.
 - The invalid attempt was stopped after **149 completed processes**: focused 11 and selector ordinals1-138, with 143 process PASS exits and 6 fixture-root failures. Selector139 was in flight. Row140 and holonomy falsifiers 232/444/446/448/449 were not reached. No partial result receives semantic credit.
 - Package and packaged-source byte/mode censuses remained unchanged; post-abort root manifest is still 28/28. No configure, compile, relink, fixture/package repair, permission repair, benchmark, or retry occurred.
-- Frozen plan says no retry after runtime starts. The turn therefore closes invalid rather than silently re-executing. This superseded EXEC-only interpretation is folded into `M6_Consolidated_Record.md` §§24-25 and corrected by `Architecture_M6_CP1_TB6_A6_Review_Record.md`.
+- Frozen plan says no retry after runtime starts. The turn therefore closes invalid rather than silently re-executing. This superseded EXEC-only interpretation and its correcting TB6 Review are folded into `M6_Consolidated_Record.md` §§24-25 and its folded-document index.
 - Stable accounting remains **55 / 16 / 39**, debt 1. Candidate `10896307843` stays unpromoted; reviewed runtime authority remains `10879581622 / 82b86a28...`, selector449 449/449.
 
 **Exact next:** mandatory runtime-free `M6-CP1-TB6-A6-REV`. Review must adjudicate zero semantic credit and explicitly authorize/name any distinct fresh retry turn. Do not begin `M6-DEFN-R4`, A7, or `G4-B002` first.
@@ -144,7 +153,7 @@ It **corrected the CP1 scope.** TB5-REV said CP1 was held "only" by three legacy
 - the §4.3 member-set `QuotientClassId` is deferred (RA-10);
 - candidate extraction still consumes `SurfaceCellComplex`.
 
-CB6 (field retirement) is folded into the first A6 extraction CB. See `Architecture_M6_CP1_TB5_Review_Record.md` (review-agent addendum) and `Architecture_M6_DEFN_R3_CP1_Product_Separation_Plan.md`.
+CB6 (field retirement) is folded into the first A6 extraction CB. See `M6_Consolidated_Record.md` §§22-23 and `Architecture_M6_DEFN_R3_CP1_Product_Separation_Plan.md`.
 
 ### `M6-CP1-TB5-REV` COMPLETE / runtime recovery accepted / CP1 held only by legacy A5 fields / exact next `M6-CP1-CB6` (2026-09-25)
 
@@ -156,7 +165,7 @@ Review formally marks the TB1 `CROSS_TEMPORARY_ITERATOR_RANGE` event and the TB3
 
 CB5/TB5 artifact/source `10879581622 / 82b86a28...` is promoted as the **current reviewed runtime authority under unchanged selector449 449/449**. `M6-CP1` nevertheless remains **OPEN** because the public A5 `SurfaceOccurrence` still exposes unread representative fields `chart`, `lattice`, and `isolationSheet`, contrary to frozen §3.2/RA-11. Exact source has zero C++ readers for all three; `point` is live and `chartComponent` is legitimate. The old TB4-REV “unsorted aggregated equivalences” debt is withdrawn: exact candidate source already sorts and de-duplicates `lineage.equivalences` after tuple remap.
 
-`M6-CP1-CB6` removes only those three dead members plus their constructor/call-site arguments, changes no tests/fixtures/selectors/semantic relation authority, and compile/packages the standard eight GMP/GMPXX targets with no runtime. Compile-green advances to immutable `M6-CP1-TB6-EXEC`, unchanged **7 + 449 = 456**, then mandatory `M6-CP1-TB6-REV`. Full Review authority: `Architecture_M6_CP1_TB5_Review_Record.md`; the consumed standalone successor plan is folded into `M6_Consolidated_Record.md` §§22-23.
+`M6-CP1-CB6` removes only those three dead members plus their constructor/call-site arguments, changes no tests/fixtures/selectors/semantic relation authority, and compile/packages the standard eight GMP/GMPXX targets with no runtime. Compile-green advances to immutable `M6-CP1-TB6-EXEC`, unchanged **7 + 449 = 456**, then mandatory `M6-CP1-TB6-REV`. Full TB5 Review authority is folded into `M6_Consolidated_Record.md` §§22-23; the retired per-turn text is resolved by its folded-document index.
 
 ### `M6-CP1-TB5-EXEC` COMPLETE / 456/456 mechanically green / exact next `M6-CP1-TB5-REV` (2026-09-25)
 
@@ -175,7 +184,7 @@ Result/log authority is `10880392759 / 10880502706`; provider/download SHA-256 v
 
 EXEC records **no new regression candidate** and performs no stable repricing. Stable accounting remains **55 / 16 / 39**, debt **1**. Candidate `10879581622` remains unpromoted and accepted runtime authority remains M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 449/449 until Review. Formal closure/recovery of TB1/TB3/TB4 events, candidate promotion, CP1 acceptance, and any debt/accounting effect belong to Review.
 
-The CP1-acceptance precondition for unread legacy `SurfaceOccurrence.isolationSheet/chart/lattice` remains open; minor aggregated `equivalences` sorting also remains open. Full execution evidence: `Architecture_M6_CP1_TB5_Artifact_Only_Test_Benchmark_Report.md` and `M6_Consolidated_Record.md §21`.
+The historical TB5 execution and then-open CP1 acceptance preconditions are preserved in `M6_Consolidated_Record.md` §§21-23; retired report text is resolved by the folded-document index.
 
 ### Superseded live note — `M6-CP1-CB5` COMPLETE / compile-green candidate / exact next `M6-CP1-TB5-EXEC` (2026-09-25)
 
@@ -196,7 +205,7 @@ CB5 grants **no runtime credit or promotion**. Stable accounting remains **55 / 
 
 TB5 recovery remains a falsifiable prediction, not a CB5 claim: the 21 TB4 newly-lost accepted rows should recover; the multi-sheet torus rows (focused 6, selectors 444/446/448) may expose another RA-12-qualified site. Any RED is Review-owned and must not be repaired inside TB5. The CP1-acceptance debt for legacy `SurfaceOccurrence.isolationSheet/chart/lattice` remains open.
 
-Full implementation record: `M6_Consolidated_Record.md §20`. Governing plan: `Architecture_M6_CP1_CB5_Ordinary_Front_Seam_Classification_Recovery_Code_Build_Plan.md`.
+Full implementation and consumed CB5 plan authority are folded into `M6_Consolidated_Record.md` §§20-21 and its folded-document index.
 
 
 ### `M6-CP1-TB4-REV` COMPLETE; exact next `M6-CP1-CB5` (2026-09-25)
@@ -211,7 +220,7 @@ Stable accounting is now **55 events / 16 categories / 39 recurrences**, debt **
 
 Compile-green TB5 reruns the same **7 focused + selector449 = 456** processes. Recovery-green is 7/7 + 449/449 with all 21 new TB4 losses and carried pair-swap/444/446/448 recovered, row140/rows5/7 still PASS, no `OccurrenceInvalidCornerAuthority`, exact-one/zero-skip and immutable postflight. Any RED is Review-owned.
 
-Full current adjudication: `Architecture_M6_CP1_TB4_Review_Record.md`. Exact plan: `Architecture_M6_CP1_CB5_Ordinary_Front_Seam_Classification_Recovery_Code_Build_Plan.md`.
+Historical TB4 adjudication and consumed CB5 plan are folded into `M6_Consolidated_Record.md` §§19-20 and its folded-document index.
 
 ### `M6-CP1-TB4-EXEC` COMPLETE; exact next `M6-CP1-TB4-REV` (2026-09-25)
 
@@ -225,7 +234,7 @@ TB4 consumed CB4 candidate artifact/source `10871935178 / 20f60bb1412424a6f1093f
 - result SHA-256 `32dca965d68d060c32e1e8f79ac146cf6381eb6cf5762c0854c5d792ae693e24`, evidence manifest **932/932**; log SHA-256 `9d50f4e6adb6e17a20bc13071107b41ea8113b55854a7b8dd1f2cafe8d9b4757`;
 - EXEC records non-stable `M6-CP1-TB4-EXEC-CAND-01` and makes **no stable repricing**. Stable accounting remains **54 / 16 / 38**, debt **1**. Candidate remains unpromoted; accepted runtime authority remains M5 package/source `10814505512 / e284fea7c101eb86650d1c87c92d0fefa66050e7` under selector449 449/449.
 
-Review must independently reopen the candidate and TB4 result/log artifacts, compare all 24 selector REDs to accepted M5 authority, adjudicate candidate grouping/root cause/recovery, and only then authorize any successor beyond Review. Full execution record: `Architecture_M6_CP1_TB4_Artifact_Only_Test_Benchmark_Report.md`.
+Historical TB4 execution/review requirements and result authority are folded into `M6_Consolidated_Record.md` §§18-20 and its folded-document index.
 
 ### `M6-CP1-CB4` COMPLETE; exact next `M6-CP1-TB4-EXEC` (2026-09-25)
 
@@ -337,28 +346,28 @@ Review must independently re-open source/evidence and re-derive: split-square v0
 
 ## Current authority
 
-`M6-CP1-TB6-A6-REV` is **COMPLETE**. Candidate `10896307843 / a532f803...` is rejected/unpromoted after authoritative TB6-A6 run/job `36362570974 / 108742561290` executed the frozen **11 focused + selector449 = 460** gate at **456 PASS / 4 RED**. Reviewed runtime authority therefore remains `10879581622 / 82b86a28...`, selector449 **449/449**. Stable accounting is **57 / 16 / 41**, debt **1**.
+`M6-CP1-TB7-A6-REV` is **COMPLETE**. Authoritative TB7 run/job `37090507571 / 111109661723` executed the frozen **11 focused + selector449 = 460** gate at **443/460 PASS**. Candidate `11257522199 / 40842caa...` is rejected/unpromoted. Reviewed runtime authority remains `10879581622 / 82b86a285292379cfd92cdc4e10d74181b38f1e8`, selector449 **449/449**. Stable accounting is **59 / 16 / 43**, debt **1**.
 
-The Review invokes the frozen residual-holonomy fallback and freezes exact residual `H=compose(P.inverse(),D)` for cycle-closing A6 evidence; nonidentity residual is not automatic rejection absent an explicit zero-holonomy obligation. Separately, A5 must restore the accepted reciprocal HardRail different-region + reversed-route predicate before publishing immutable relation evidence. Full authority is `Architecture_M6_CP1_TB6_A6_Review_Record.md`; folded predecessor evidence is `M6_Consolidated_Record.md` §§23-25.
+Review freezes RA-14 (HardRail carrier route is distinct from cut-domain placement transport) and RA-15 (individual route authority precedes pair reciprocity). Selector446 is a non-stable test-authority migration after periodic production recovery. Full authority: `Architecture_M6_CP1_TB7_A6_Review_Record.md`; runtime evidence: `Architecture_M6_CP1_TB7_A6_Artifact_Only_Test_Benchmark_Report.md`; folded predecessor evidence: `M6_Consolidated_Record.md` §§23-28.
 
 ## Exact next turn
 
-**`M6-CP1-CB7-A6` — Code + Build, compile/package only.** Follow `Architecture_M6_CP1_CB7_A6_Relation_Validation_Recovery_Code_Build_Plan.md` **as amended by its review-agent block (RA-13: single-gauge transport, strict cycle rule kept; §4.2 revoked)**. Restore only the A5 HardRail reciprocal validation and A6 exact residual/certificate-authority seam, adjust the two existing focused A6 identities without increasing the focused count, and leave selector449/routing449/fixtures/A7/R4/G4 unchanged. Compile-green -> `M6-CP1-TB7-A6-EXEC` over the same **11+449=460** fresh exact-filter shape -> mandatory `M6-CP1-TB7-A6-REV`.
+**`M6-CP1-CB8-A6` — Code + Build, compile/package only.** Follow `Architecture_M6_CP1_CB8_A6_HardRail_Placement_Transport_Recovery_Code_Build_Plan.md`. Implement only RA-14, RA-15 and selector446's independently gauge-aware test-body migration. Keep selector449/routing449/fixtures, focused count 11, A6 strict cycle rule, A7/R4/G4 and relation identity/equality frozen. Compile-green -> `M6-CP1-TB8-A6-EXEC` over the same **11+449=460** fresh exact-filter shape -> mandatory `M6-CP1-TB8-A6-REV`.
 
 ## Completed predecessor turns (reference only)
 
-- `M6-CP1-TB6-A6-REV` — `Architecture_M6_CP1_TB6_A6_Review_Record.md`; predecessor plan/report material folded into `M6_Consolidated_Record.md` §§23-25.
-- `M6-DEFN-R3-REV` — accepted R3 with RA-1 – RA-4 (`Architecture_M6_DEFN_R3_Review_Record.md`).
-- `M6-CP1-TB5-REV` (+ review-agent addendum) — `Architecture_M6_CP1_TB5_Review_Record.md`.
-- Earlier M6 turns — `M6_Consolidated_Record.md`.
+- `M6-CP1-TB7-A6-REV` — current Review authority.
+- `M6-CP1-TB7-A6-EXEC` — current retained runtime report, mechanically valid 443/460 RED.
+- `M6-CP1-CB7-A6` / TB6 / TB5 and earlier M6 turns — folded/resolved by `M6_Consolidated_Record.md` index; full text remains in git history.
 
 ## Current files
 
-- `.agents/Directional/Architecture_M6_CP1_TB6_A6_Review_Record.md` — current Review authority.
-- `.agents/Directional/Architecture_M6_CP1_CB7_A6_Relation_Validation_Recovery_Code_Build_Plan.md` — exact next implementation plan.
-- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — normative definitions including the TB6-A6-REV residual-holonomy amendment.
-- `.agents/Directional/Architecture_M6_CP1_TB5_Review_Record.md`, `Architecture_M6_CP1_TB5_Artifact_Only_Test_Benchmark_Report.md` — current accepted runtime authority evidence.
-- `.agents/Directional/M6_Consolidated_Record.md` — folded CB6-A6/TB6-A6 predecessor authority.
+- `.agents/Directional/Architecture_M6_CP1_TB7_A6_Artifact_Only_Test_Benchmark_Report.md` — current runtime report.
+- `.agents/Directional/Architecture_M6_CP1_TB7_A6_Review_Record.md` — current Review authority.
+- `.agents/Directional/Architecture_M6_CP1_CB8_A6_HardRail_Placement_Transport_Recovery_Code_Build_Plan.md` — exact next implementation plan.
+- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — normative definitions including RA-13/RA-14/RA-15.
+- `.agents/Directional/M6_Consolidated_Record.md` — folded M6 history and filename resolver.
+- `.agents/Directional/Regression_Root_Cause_Tracker.md` — 59/16/43 current accounting.
 - `.agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt`, `Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv` — frozen selector/routing authority.
 
 ## Context Load Plan
@@ -366,8 +375,8 @@ The Review invokes the frozen residual-holonomy fallback and freezes exact resid
 ```yaml
 load_next:
   - turn-based-coding-agent/references/turns/CB.md
-  - .agents/Directional/Architecture_M6_CP1_TB6_A6_Review_Record.md
-  - .agents/Directional/Architecture_M6_CP1_CB7_A6_Relation_Validation_Recovery_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M6_CP1_TB7_A6_Review_Record.md
+  - .agents/Directional/Architecture_M6_CP1_CB8_A6_HardRail_Placement_Transport_Recovery_Code_Build_Plan.md
   - .agents/Directional/Architecture_M6_Frozen_Definitions.md
   - .agents/Directional/Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt
   - .agents/Directional/Architecture_M5_CP4_CB2_Selector_449_Static_Routing_Receipt.tsv
@@ -375,8 +384,9 @@ conditional_modules:
   - trigger: github_connector / GitHub Actions / compile
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
+  - .agents/Directional/Architecture_M6_CP1_TB7_A6_Artifact_Only_Test_Benchmark_Report.md
   - .agents/Directional/M6_Consolidated_Record.md
-  - .agents/Directional/Architecture_M6_CP1_TB5_Review_Record.md
+  - .agents/Directional/Regression_Root_Cause_Tracker.md
   - .agents/Directional/GitHub_Workflow_Policy.md
   - .agents/Directional/TOOL_USE_CONSERVATION_POLICY.md
 do_not_preload:

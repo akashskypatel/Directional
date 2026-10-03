@@ -184,10 +184,31 @@ EXEC records three non-stable Review-owned candidates: (1) HardRail canonical ro
 
 Stable accounting remains **57 / 16 / 41**, debt 1. Candidate remains unpromoted and reviewed runtime remains TB5 `10879581622 / 82b86a28...`, selector449 449/449. Exact next is mandatory runtime-free `M6-CP1-TB7-A6-REV`; R4/A7/G4 remain held.
 
+## 28. `M6-CP1-TB7-A6-REV` — HardRail authority-domain split proved; CB8-A6 frozen
+
+Runtime-free Review independently verifies TB7 result `11262587435` (953/953 self-manifest) and exact semantic source, rejects candidate `11257522199 / 40842caa...`, and retains TB5 `10879581622 / 82b86a28...` as reviewed runtime authority. TB7's **443/460** RED is adjudicated into two stable existing-pattern recurrences plus one non-stable test-authority defect.
+
+CAND-01 is one `RP-01 / AUTHORITY_DOMAIN_CONFLATION` recurrence: HardRail `CanonicalRoute` is carrier/topology/transition evidence and cannot be used as the quotient placement map. RA-14 derives one exact placement `GridAutomorphism` independently from both paired endpoint `LocalLatticeState`s, stores it in HardRail `equivalence.action`/canonical transport, preserves route separately, and requires completion selected-step transport validation to consume action rather than route composition. The direct failures 115/116/141/143/150/217/231 and downstream reachability losses 122/130/132/134/137/176/201 share this first mechanism.
+
+CAND-02 is one `VALIDATION_ORDER_SHADOWING` recurrence: rows227/230 still fail closed, but pair reciprocity pre-empts their accepted `InvalidHardRailAuthority`. RA-15 moves/extracts the existing individual route validator before A5 pair publication while preserving valid-route pair mismatches 139/142 as `InvalidHardRailTransport`.
+
+CAND-03 (selector446) is closed non-stable test authority. Production now materializes, focused6 and periodic controls pass, and raw holonomy conflicts are zero; the only stale assertion compares placement-gauge selected transport with relation-endpoint `SurfacePeriodicHolonomy::action()`. CB8 may migrate only that assertion body to an independent direct-placement plus gauge-conjugation oracle.
+
+Stable accounting becomes **59 / 16 / 43**, debt 1. Exact successor is bounded runtime-free `M6-CP1-CB8-A6`; compile/package green -> fresh `M6-CP1-TB8-A6-EXEC` **11+449=460** -> mandatory Review. R4/A7/G4 remain held. Full current authority is `Architecture_M6_CP1_TB7_A6_Review_Record.md`; normative amendments are RA-14/RA-15 at the end of `Architecture_M6_Frozen_Definitions.md`.
+
 ## Folded document index
 
 | Retired filename | Disposition |
 |---|---|
+| `Architecture_M6_CP1_CB5_Ordinary_Front_Seam_Classification_Recovery_Code_Build_Plan.md` (94 lines) | **CONSUMED CB5 PLAN / FOLDED BY TB7-A6-REV.** Ordinary-front recovery scope and accepted TB5 outcome are preserved in §§20-22, tracker, frozen definitions and git history. |
+| `Architecture_M6_CP1_CB7_A6_Code_Build_Report.md` (107 lines) | **SUPERSEDED CB7 COMPILE REPORT / FOLDED BY TB7-A6-REV.** Source `40842caa...`, compile run/job `37078118843 / 111072482082`, candidate artifact `11257522199`, 28/28 package and runtime-free evidence are preserved in §§26-28, TB7 report/current Review and changelog. |
+| `Architecture_M6_CP1_CB7_A6_Relation_Validation_Recovery_Code_Build_Plan.md` (138 lines) | **CONSUMED CB7 PLAN / FOLDED BY TB7-A6-REV.** RA-13 periodic recovery, HardRail stop rule and 460-process successor are preserved in §§25-28, frozen definitions and current Review. |
+| `Architecture_M6_CP1_TB4_Artifact_Only_Test_Benchmark_Report.md` (60 lines) | **SUPERSEDED TB4 REPORT / FOLDED BY TB7-A6-REV.** Runtime mechanics/findings are preserved in §§18-20, tracker and git history. |
+| `Architecture_M6_CP1_TB4_Review_Record.md` (224 lines) | **SUPERSEDED TB4 REVIEW / FOLDED BY TB7-A6-REV.** RP-01 adjudication, RA-12 and recovery scope are preserved in §§19-20, frozen definitions, tracker, lessons and git history. |
+| `Architecture_M6_CP1_TB5_Artifact_Only_Test_Benchmark_Report.md` (62 lines) | **SUPERSEDED PER-TURN TB5 REPORT / FOLDED BY TB7-A6-REV.** Accepted 456/456 runtime authority `10879581622 / 82b86a28...` remains explicitly preserved in §§21-22, current Review, tracker/changelog and git history. |
+| `Architecture_M6_CP1_TB5_Review_Record.md` (158 lines) | **SUPERSEDED TB5 REVIEW / FOLDED BY TB7-A6-REV.** Runtime promotion, CP1 scope correction and carried A6/A7 obligations are preserved in §§22-23, frozen definitions, orientation/roadmap and git history. |
+| `Architecture_M6_CP1_TB6_A6_Review_Record.md` (263 lines) | **SUPERSEDED TB6 REVIEW / FOLDED BY TB7-A6-REV.** Authoritative second TB6 run, HardRail reciprocity recovery and corrected RA-13 gauge analysis are preserved in §§24-28, frozen definitions, tracker/lesson184 and git history. |
+| `Architecture_M6_CP1_TB7_A6_Artifact_Only_Test_Benchmark_Plan.md` (90 lines) | **CONSUMED TB7 PLAN / FOLDED BY TB7-A6-REV.** Immutable candidate, 11+449 process contract, recovery falsifiers and no-retry boundary are preserved in §§26-28, current TB7 report/Review and git history. |
 | `Architecture_M6_CP1_CB6_A6_Quotient_Product_Extraction_Code_Build_Plan.md` | **CONSUMED CB6-A6 PLAN / FOLDED BY TB6-A6-REV.** Scope, RA-1-RA-4 implementation obligations, four focused identities, compile boundary and 460-process successor are preserved in §§23-25, frozen definitions, current Review/CB7 plan and git history. |
 | `Architecture_M6_CP1_CB6_A6_Code_Build_Report.md` | **SUPERSEDED CB6-A6 COMPILE REPORT / FOLDED BY TB6-A6-REV.** Exact source, compile run/job/artifacts, 28/28 GMP package and runtime-free authority are preserved in §23, changelog, handoff and git history. |
 | `Architecture_M6_CP1_TB6_A6_Artifact_Only_Test_Benchmark_Plan.md` | **CONSUMED TB6-A6 PLAN / FOLDED BY TB6-A6-REV.** Candidate, exact 11+449 order, immutable process boundary and pre-registered holonomy falsifier are preserved in §§24-25, current Review and git history. |
