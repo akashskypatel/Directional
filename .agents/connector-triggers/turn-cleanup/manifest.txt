@@ -1,0 +1,4 @@
+# M6-CP1-TB12-CLOSE-EXEC cleanup
+.agents/connector-triggers/m6-cp1-tb12-close-exec.txt
+.agents/connector-triggers/m6-cp1-tb12-close-exec-doc-apply.txt
+.agents/connector-triggers/source-snapshot/m6-cp1-tb12-close-exec-20261005.txt
