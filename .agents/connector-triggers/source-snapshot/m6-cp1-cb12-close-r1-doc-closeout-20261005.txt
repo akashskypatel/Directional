@@ -1,0 +1,3 @@
+Purpose: exact repository snapshot for M6-CP1-CB12-CLOSE-R1 durable closeout
+Authority before trigger: a24db640eb02283a59bed001e54731738cb296ea
+Retry: 0
