@@ -1,5 +1,0 @@
-Purpose: apply verified M6-CP1-CB12-CLOSE-R1 durable closeout patch
-Patch base: 7b53b833bcca1306bb54c91bcfc3d9888dbdcf7a
-Drive file: 1M3t33eYIn-uiiccEu8pouD7CHMWCGJ1Q
-Patch SHA-256: e79221b6655db021696ea508d953e23da06069eb1eed0453ac6a245e138cf440
-Retry: 0
