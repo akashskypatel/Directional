@@ -1,3 +1,3 @@
 Purpose: apply M6-CP2-CB1-VERIFIER RA-28a section 7 stop documentation.
 Patch base: 8bc1f52b22c1c429e8b5afdd8e3eb1fee67fc886
-Retry: 0
+Retry: 1 — corrected package includes new report file.
