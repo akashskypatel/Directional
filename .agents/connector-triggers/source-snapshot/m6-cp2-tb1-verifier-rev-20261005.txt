@@ -1,0 +1,3 @@
+Purpose: authoritative repository snapshot for M6-CP2-TB1-VERIFIER-REV
+Review turn start head: 511b3dae5a58b60d2682772fd087f6119accdd64
+Runtime evidence: run 37368784487 / result 11370598981 / log 11370413984
