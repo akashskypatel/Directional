@@ -1,0 +1,5 @@
+Purpose: apply M6-CP2-CB1-VERIFIER-R1 durable closeout documentation patch
+Caller install commit: b45ad770ba0c0b871ae50d318da3468aef593e83
+Patch base: f5900a1dc24fcad5efca83de42b6e0a2b5f545dc
+Patch SHA-256: 4694251b9f7ea1b0642a26428e0a9034a7b7a8efb1b19e4b6c9da34f87c8c38e
+Retry: 0
