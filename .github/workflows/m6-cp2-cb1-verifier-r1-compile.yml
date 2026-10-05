@@ -28,7 +28,7 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-compile-reusable.yml
     with:
-      source_sha: 3cc00697eecc8e20570298653ea7cf8a3887f045
+      source_sha: 265c8fbb19a66c5c3344a525fdbd43932c3ef829
       targets: directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks
       artifact_prefix: m6-cp2-cb1-verifier-r1-compile
     secrets: inherit
@@ -42,7 +42,7 @@ jobs:
     uses: ./.github/workflows/workflow-mailbox-publisher.yml
     with:
       workflow_key: m6-cp2-cb1-verifier-r1-compile
-      source_sha: 3cc00697eecc8e20570298653ea7cf8a3887f045
+      source_sha: 265c8fbb19a66c5c3344a525fdbd43932c3ef829
       source_ref: refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing
       result: ${{ needs.compile.result }}
       summary: M6-CP2-CB1-VERIFIER-R1 eight-target GMP/GMPXX compile/package.
