@@ -1,3 +1,9 @@
+## 2026-10-05 — `M6-CP1-TB12-CLOSE-R1-REV` — **R1 PROMOTED / CAND-01 RECOVERY PROVED / +0 / 60/16/44 / debt 1**
+
+Independent Review re-derives the immutable R1 gate at **479/479 PASS** and accepts RA-27a. `M6-CP1-TB12-CLOSE-EXEC-CAND-01` is **CLOSED / RECOVERY PROVED / NON-STABLE**: focused ordinal29 now reaches a real multi-sheet bridge occurrence, keeps its wedge-transition vector non-empty while disconnecting the transition sheet endpoints, republishes A5, re-produces A6 successfully, and reaches the exact A7 `UncertifiedCrossSheetBinding / cross-sheet:wedge` rejection. The previous false rejection never represented accepted-green loss, so stable totals do not change.
+
+C1's reachable wedge proxy and the C4 diagnostic-name correction are discharged. Existing obligations remain carried without repricing: RA-27a §6 edge-rule falsifier -> `M6-DEFN-R5`/`M6-CP3`; `M6-CP1-TB12-REV-OBS-01` -> `M6-CP2` via DEFN-R5; OBS-02 -> DEFN-R5; RA-26 §5 -> DEFN-R5/CP3. Promoted reviewed runtime authority is `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05`. Exact next: runtime-free `M6-CP1-CLOSE-REV`.
+
 ## 2026-10-05 — `M6-CP1-TB12-CLOSE-REV` review-agent addendum — RA-27 withdrawn → RA-27a — **+0 / 60/16/44 / debt 1**
 
 - **CAND-01** stays FALSE REJECTION / NON-STABLE, but its cause is corrected. `split_isolation_fixture()` has no relation with disjoint endpoint wedge sheets: the diagonal seam crosses cell interiors, so crossings happen inside bridge corners. Forest selection is irrelevant.

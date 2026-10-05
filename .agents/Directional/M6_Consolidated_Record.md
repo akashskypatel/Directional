@@ -441,10 +441,24 @@ TB12 is re-derived at 478/479 and stays unpromoted. C2 and C3 are accepted. C4 f
 
 The edge-rule falsifier is deferred to the first produced seam-collinear fixture. OBS-01 (A6 → A5 binding) and OBS-02 (relation-kind-agnostic edge rule) are recorded. Lesson 199. Accounting 60 / 16 / 44.
 
+## 48. `M6-CP1-TB12-CLOSE-R1-REV` — RA-27a recovery accepted; 479/479 runtime promoted
+
+Independent Review re-derives R1 runtime `37280517630 / 111667316992` from result/log `11333591947 / 11333547162`: self-manifest **497/497**, focused30 **30/30**, selector449 **449/449**, aggregate **479/479 PASS**, exact-one, zero skips, benchmark 0 and immutable postflight. Focused28 remains the exact prefix of focused30; selector449/routing449 remain byte-identical.
+
+RA-27a is accepted. A7's member-local wedge graph exactly matches the frozen region/sheet connectivity rule; C4's diagnostic carries the required `Quotient` prefix; focused ordinal29 non-vacuously keeps the wedge-transition vector non-empty, republishes A5, re-produces A6 successfully and reaches the exact A7 `cross-sheet:wedge` rejection. The old non-empty proxy would accept that tamper, so the test discriminates. `M6-CP1-TB12-CLOSE-EXEC-CAND-01` is **CLOSED / RECOVERY PROVED / NON-STABLE** and does not affect stable totals.
+
+Package/source `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05` is promoted as current reviewed M6 runtime authority. Accounting stays **60 / 16 / 44**, debt 1. C1 wedge completion and C4 name are discharged. RA-27a §6 edge-rule falsifier, OBS-01/02 and RA-26 §5 remain with their later frozen owners. CP1 remains ACTIVE; exact next is runtime-free `M6-CP1-CLOSE-REV` under `Architecture_M6_CP1_Close_Review_Plan.md`.
+
 ## Folded document index
 
 | Retired filename | Disposition |
 |---|---|
+| `Architecture_M6_CP1_CB12_Close_R2_Oracle_Recovery_Code_Build_Plan.md` (56 lines) | **CONSUMED R2 PLAN / FOLDED BY TB12-CLOSE-R1-REV.** RA-27a implementation scope, stop rules and 479-process recovery gate are preserved in §47-§48, frozen definitions, current Review and git history. |
+| `Architecture_M6_CP1_CB12_Close_R2_Code_Build_Report.md` (51 lines) | **SUPERSEDED R2 COMPILE REPORT / FOLDED BY TB12-CLOSE-R1-REV.** Exact source `3f40f04a...`, compile run/job/artifacts, 28/28 GMP package and runtime-free evidence are preserved in §48, changelogs and current runtime report. |
+| `Architecture_M6_CP1_TB12_Close_Artifact_Only_Test_Benchmark_Plan.md` (39 lines) | **CONSUMED ORIGINAL TB12 PLAN / FOLDED BY TB12-CLOSE-R1-REV.** The original 479-process immutable gate and preflight are preserved in §§45-47 and git history. |
+| `Architecture_M6_CP1_TB12_Close_Artifact_Only_Test_Benchmark_Report.md` (45 lines) | **SUPERSEDED ORIGINAL TB12 REPORT / FOLDED BY TB12-CLOSE-R1-REV.** The 478/479 mechanics and ordinal29 false-rejection evidence are preserved in §§46-47, tracker and git history. |
+| `Architecture_M6_CP1_TB12_Close_Review_Record.md` (181 lines) | **SUPERSEDED TB12 REVIEW + RA-27a ADDENDUM / FOLDED BY TB12-CLOSE-R1-REV.** CAND-01 adjudication, RA-27a, observations and routing are preserved in §§46-48, frozen definitions, tracker and git history. |
+| `Architecture_M6_CP1_TB12_Close_R1_Artifact_Only_Test_Benchmark_Plan.md` (39 lines) | **CONSUMED R1 EXEC PLAN / FOLDED BY TB12-CLOSE-R1-REV.** Exact artifact/source/digests, 30+449 execution contract and immutable postflight are preserved in current R1 runtime report, §48 and git history. |
 | `Architecture_M6_CP1_CB5_Ordinary_Front_Seam_Classification_Recovery_Code_Build_Plan.md` (94 lines) | **CONSUMED CB5 PLAN / FOLDED BY TB7-A6-REV.** Ordinary-front recovery scope and accepted TB5 outcome are preserved in §§20-22, tracker, frozen definitions and git history. |
 | `Architecture_M6_CP1_CB7_A6_Code_Build_Report.md` (107 lines) | **SUPERSEDED CB7 COMPILE REPORT / FOLDED BY TB7-A6-REV.** Source `40842caa...`, compile run/job `37078118843 / 111072482082`, candidate artifact `11257522199`, 28/28 package and runtime-free evidence are preserved in §§26-28, TB7 report/current Review and changelog. |
 | `Architecture_M6_CP1_CB7_A6_Relation_Validation_Recovery_Code_Build_Plan.md` (138 lines) | **CONSUMED CB7 PLAN / FOLDED BY TB7-A6-REV.** RA-13 periodic recovery, HardRail stop rule and 460-process successor are preserved in §§25-28, frozen definitions and current Review. |

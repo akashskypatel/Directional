@@ -1,3 +1,12 @@
+## Current — `M6-CP1-TB12-CLOSE-R1-REV` ACCEPTED / 479/479 promoted / exact next CP1 close Review (2026-10-05)
+
+- [x] Independently re-derived R1 result manifest **497/497**, focused30 **30/30**, selector449 **449/449**, exact-one, zero skips, benchmark 0 and immutable postflight.
+- [x] Accepted RA-27a exact wedge graph and consistent-chain identity29 falsifier; C4 name correction verified.
+- [x] Closed `M6-CP1-TB12-CLOSE-EXEC-CAND-01` recovery-proved/non-stable; stable accounting remains **60 / 16 / 44**, debt 1.
+- [x] Promoted `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05` as current reviewed M6 runtime authority.
+- [ ] **Exact next:** runtime-free `M6-CP1-CLOSE-REV` under `Architecture_M6_CP1_Close_Review_Plan.md`; CP1 remains ACTIVE until all six exit items and RA-26 current-HEAD audit pass.
+- [ ] Later-owner obligations remain carried: RA-27a §6 / OBS-01 / OBS-02 / RA-26 §5 to M6-CP2 / DEFN-R5 / CP3 as frozen.
+
 ## Current — `M6-CP1-TB12-CLOSE-R1-EXEC` COMPLETE / 479/479 GREEN / mandatory R1 Review next (2026-10-05)
 
 - [x] Immutable candidate `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05`; exact **30 + 449 = 479** process gate.

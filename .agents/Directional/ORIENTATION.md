@@ -1,4 +1,4 @@
-## Currency — `M6-CP1-CB12-CLOSE-R2` COMPLETE / compile-package GREEN / exact next `M6-CP1-TB12-CLOSE-R1-EXEC` (2026-10-05 UTC)
+## Currency — `M6-CP1-TB12-CLOSE-R1-REV` ACCEPTED / 479/479 promoted / exact next `M6-CP1-CLOSE-REV` (2026-10-05 UTC)
 
 - RA-27a is implemented at exact source `3f40f04a...`: per-occurrence wedge sheet-graph connectivity, C4 `Quotient...` name, and identity29's A5→A6 re-production falsifier.
 - Compile/package run/job `37278068286 / 111659540374` is GREEN on the standard eight GMP/GMPXX targets; result `11330703256`, 28/28 manifest, `runtimeExecution=false`.
@@ -343,9 +343,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
- > **Current milestone authority (2026-10-05, after the `M6-CP1-TB12-CLOSE-REV` addendum):** M4 and M5 remain CLOSED / ACCEPTED. M6 CP1 remains ACTIVE. Reviewed runtime authority is `11316716869 / 8dd95821...` (477/477). TB12 candidate `02149f15` is unpromoted at 478/479. RA-27a re-scopes R2. Stable accounting **60/16/44**, debt 1. Exact next is `M6-CP1-CB12-CLOSE-R2` (gate 479), then `M6-CP1-CLOSE-REV`.
+ > **Current milestone authority (2026-10-05, after `M6-CP1-TB12-CLOSE-R1-REV`):** M4 and M5 remain CLOSED / ACCEPTED. M6 CP1 remains ACTIVE pending its dedicated close Review. Reviewed runtime authority is `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05` at focused30 + selector449 = **479/479**. RA-27a is recovery-proved; stable accounting **60/16/44**, debt 1. Exact next is runtime-free `M6-CP1-CLOSE-REV`.
 
-**Currency.** `M6-CP1-TB12-CLOSE-REV` review-agent addendum (Review), 2026-10-05 UTC
+**Currency.** `M6-CP1-TB12-CLOSE-R1-REV` (Review), 2026-10-05 UTC
 
 **Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` §16.3 is the active same-region nonzero-Z4 contract. `PeriodicRelationId` remains carrier-content identity; relation rotation is the gauge-adjusted quotient `Q`, action/transport is relation value, and canonical storage may invert representation only after semantic Forward -> Reverse authority is fixed. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 
@@ -391,11 +391,11 @@ A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on t
 
 ## 3. Where we are
 
-**M3, M4 and M5 are CLOSED / ACCEPTED. M6 is ACTIVE at CP1.**
+**M3, M4 and M5 are CLOSED / ACCEPTED. M6 is ACTIVE at CP1, with only the dedicated close Review remaining before a CP1 closure claim.**
 
-`M6-CP1-TB10-A5V-REV` independently verifies the TB10 mechanics at **473/473** but rejects candidate `11295692493 / 7c56845d...` for two non-stable contract defects: RA-19 validation-order inversion and incomplete identity24 pure-projection coverage. Current reviewed runtime therefore remains TB9-R1 `11292072930 / 584f80fe...`; selector449 remains accepted at 449/449. Shared `tau` and RA-22b are discharged. Stable accounting stays **60 / 16 / 44**, debt 1.
+`M6-CP1-TB12-CLOSE-R1-REV` independently accepts the RA-27a recovery and promotes package/source `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05` as current reviewed M6 runtime authority. The reviewed gate is focused30 **30/30** + selector449 **449/449** = **479/479 PASS**, exact-one, zero skips, benchmark 0 and immutable postflight. `M6-CP1-TB12-CLOSE-EXEC-CAND-01` is recovery-proved/non-stable. Stable accounting remains **60 / 16 / 44**, debt 1.
 
-CP1 still needs a conformant thin-adapter/A5-validation migration before CB11. Exact sequence is `M6-CP1-CB10-A5V-R1` -> TB10-R1 **24+449=473** -> mandatory Review -> CB11 (`G4-B002`, 477) -> `M6-CP1-CLOSE-REV`. The A7 cross-sheet proxy and provenance-face audit remain CP1-close obligations; `M6-DEFN-R5` remains CP3-entry.
+Exact next is runtime-free `M6-CP1-CLOSE-REV`. It must prove all six frozen CP1 exit items plus RA-19a/RA-22a/RA-22b/RA-25, RA-26 §3 at current HEAD, and the A5-sourced isolation counter. Later-owner obligations (RA-27a §6, OBS-01/02, RA-26 §5) remain outside CP1 closure.
 
 ### Superseded §3 state
 ## 3. Where we are
@@ -414,7 +414,7 @@ CP1 exit items 1-3 are now met: conformant A5, complete A6, and reviewed A7 sour
 
 ## 4. The witnesses — the fastest way to understand the problem
 
-**Current M6 split-square witness.** Two source triangles `(0,1,2)` / `(0,2,3)` occupy sheets 0/1 and share the internal isolation seam `(v0,v2)`. Under R2, v0 and v2 are each single-occurrence quotient classes whose **lineage** still spans `{0,1}`; that is legal because their corner wedges cross the checked seam and publish evidence-only `CornerWedgeIsolation` transitions (`v0: 1->0`, `v2: 0->1`). The center's four occurrence members also materialize `{0,1}` with the same checked seam authority. No new quotient relation is invented for v0/v2. This is the fastest falsifier for B1/B2 and the strengthened CB4 seventh identity.
+**Current M6 split-square witness.** Two source triangles `(0,1,2)` / `(0,2,3)` occupy sheets 0/1 and share the internal isolation seam `(v0,v2)`. Under R2, v0 and v2 are each single-occurrence quotient classes whose **lineage** still spans `{0,1}`; that is legal because their corner wedges cross the checked seam and publish evidence-only `CornerWedgeIsolation` transitions (`v0: 1->0`, `v2: 0->1`). The center's four occurrence members also materialize `{0,1}` with the same checked seam authority. No new quotient relation is invented for v0/v2. This is the fastest falsifier for B1/B2 and the strengthened CB4 seventh identity. R1 now also runtime-proves the RA-27a wedge falsifier: a multi-sheet bridge occurrence stays A5/A6-valid after its non-empty transition endpoints are moved off the member sheet set, and A7 alone rejects it at `cross-sheet:wedge`.
 
 | witness | source | A2a result | current state |
 |---|---|---|---|
@@ -529,12 +529,11 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M6-CP1-CB12-CLOSE-R2` — EXACT NEXT (RA-27a).**
-   - Exact wedge-level cross-sheet rule at `RemeshPipeline.cpp:6884-6895` (site `cross-sheet:wedge`).
-   - C4 name string with the `Quotient` prefix.
-   - Identity 29: bridge-member wedge tamper with A6 re-produced (consistent chain).
-   - Gate 479 → TB12-R1 → Review → `M6-CP1-CLOSE-REV`.
-   - C2/C3/C4 are reviewed in candidate `02149f15`; RA-26 bars optimizer changes.
+1. **`M6-CP1-CLOSE-REV` — EXACT NEXT / runtime-free CP1 closure review.**
+   - Re-derive all six frozen CP1 exit items against current source and reviewed runtime `11330703256 / 3f40f04a...` at 479/479.
+   - Re-check RA-19a/RA-22a/RA-22b/RA-25, RA-26 §3 current-HEAD provenance-face classification, and the A5-sourced isolation counter.
+   - No source repair in Review. Any failed conjunct routes to its smallest Definition or Code + Build owner.
+   - RA-27a wedge recovery is discharged; its edge-rule falsifier remains a later DEFN-R5/CP3 obligation, not a CP1 blocker.
 1a. **`M6-DEFN-R5` — CP3-entry gate (not CP1).**
    - Periodic unequal-face-gauge witness, plus the coordinate / relation-gauge rule.
    - HardRail cross-region branch certification.

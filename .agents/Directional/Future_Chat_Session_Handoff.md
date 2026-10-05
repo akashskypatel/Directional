@@ -1,4 +1,12 @@
-## Resume-critical update — `M6-CP1-CB12-CLOSE-R2` COMPLETE / compile-package GREEN / exact next `M6-CP1-TB12-CLOSE-R1-EXEC` (2026-10-05)
+## Resume-critical update — `M6-CP1-TB12-CLOSE-R1-REV` ACCEPTED / runtime promoted / exact next `M6-CP1-CLOSE-REV` (2026-10-05)
+
+**Start runtime-free `M6-CP1-CLOSE-REV`; do not rerun R1, rebuild/repair the candidate, or start CP2/CP3 work first.** Follow `Architecture_M6_CP1_Close_Review_Plan.md`.
+
+Independent R1 Review promotes package/source `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05`. Runtime `37280517630 / 111667316992` is re-derived at focused30 **30/30** + selector449 **449/449** = **479/479 PASS**, exact-one, zero skips, benchmark 0, result manifest **497/497**, immutable postflight. RA-27a is accepted: the member-local wedge graph is exact and ordinal29 non-vacuously proves the consistent-chain tamper; C4's `QuotientClosedComplexStripContinuationMismatch` name is exact. CAND-01 is closed recovery-proved/non-stable. Stable accounting remains **60 / 16 / 44**, debt 1.
+
+CP1 is **not yet closed**. The close Review must independently prove all six frozen CP1 exit items, RA-19a/RA-22a/RA-22b/RA-25 close obligations, RA-26 §3 at current HEAD, and the A5-sourced isolation counter. It is runtime-free and may not repair source. Later-owner obligations remain later-owned: RA-27a §6 edge-rule falsifier, OBS-01/02, and RA-26 §5.
+
+## Superseded resume-critical update — `M6-CP1-CB12-CLOSE-R2` COMPLETE / compile-package GREEN / R1 EXEC now reviewed
 
 **Start immutable artifact-only `M6-CP1-TB12-CLOSE-R1-EXEC`; do not rebuild or repair the candidate.** Consume compile package `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05` and execute the unchanged focused30 + selector449 gate as exactly **479 fresh exact-filter processes**, then mandatory `M6-CP1-TB12-CLOSE-R1-REV`.
 

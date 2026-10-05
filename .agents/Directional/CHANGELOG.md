@@ -1,3 +1,11 @@
+## 2026-10-05 — `M6-CP1-TB12-CLOSE-R1-REV` accepted R1 recovery and promoted 479/479 runtime
+
+- Independently re-derived runtime `37280517630 / 111667316992`, result/log `11333591947 / 11333547162`, result manifest **497/497**, focused30 **30/30** + selector449 **449/449** = **479/479 PASS**, exact-one, zero skips, benchmark 0 and immutable postflight.
+- Accepted RA-27a: exact member-local wedge connectivity and the consistent-chain identity29 falsifier are both runtime-proved; C4 diagnostic name is exact.
+- Closed `M6-CP1-TB12-CLOSE-EXEC-CAND-01` as recovery-proved/non-stable; no stable repricing. Accounting stays **60 / 16 / 44**, debt 1.
+- Promoted package/source `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05` as current reviewed M6 runtime authority.
+- Exact next: runtime-free `M6-CP1-CLOSE-REV`; CP1 remains active until its six exit items and current-HEAD close obligations are independently discharged.
+
 ## 2026-10-05 — `M6-CP1-TB12-CLOSE-R1-EXEC` COMPLETE — 479/479 GREEN
 
 - Candidate `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05`; runtime run/job `37280517630 / 111667316992`.
