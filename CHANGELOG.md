@@ -1,3 +1,10 @@
+## 2026-10-05 — M6 CP1 closed; independent verifier definition next
+
+- Product separation is now closed after a final review of the six frozen exit conditions and the current source.
+- The accepted mechanism keeps the reviewed **479/479** runtime. No product code changed in closure.
+- The closed-complex production-evidence debt remains open; debt stays 1.
+- Next is `M6-CP2-DEFN`, which defines the independent product verifier and its negative evidence before implementation.
+
 ## 2026-10-05 — `M6-CP1-TB12-CLOSE-R1-REV` review-agent addendum — close-out recovery confirmed
 
 - The recovered close-out build (479/479) is confirmed and promoted.

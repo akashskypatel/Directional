@@ -1,3 +1,16 @@
+## Current — `M6-CP1-CLOSE-REV` ACCEPTED / CP1 CLOSED / exact next `M6-CP2-DEFN` (2026-10-05)
+
+- [x] Re-confirm no semantic-source advance from promoted `3f40f04a`.
+- [x] Complete RA-26 current-HEAD provenance-consumer census: zero authority-deciding consumers.
+- [x] Adjudicate all six frozen CP1 exit items PASS with focused-30 ordinals and source citations.
+- [x] Classify C2/C4/RA-27a static-only branches with later owners; keep `G4-B002` open.
+- [x] Close M6 CP1 mechanism-only; stable accounting remains **60 / 16 / 44**, debt 1.
+- [x] Freeze `Architecture_M6_CP2_Definition_Plan.md`.
+- [ ] **Exact next `M6-CP2-DEFN`** (runtime-free): freeze `SurfaceProductVerifier`, certificate-chain binding, RA-26 §5(iii), C4 witness, and appended wedge-rule tampers.
+- [ ] `M6-DEFN-R5` follows CP2 and retains CP3-entry obligations.
+
+## Superseded historical snapshots
+
 ## Current — `M6-CP1-TB12-CLOSE-R1-REV` + review-agent addendum / RA-27b / exact next `M6-CP1-CLOSE-REV` (2026-10-05)
 
 - [x] Re-derive R1: 497/497, frozen-order ledgers, 479/479; all 479 raw-log hashes match; candidate `3f40f04a` == HEAD.

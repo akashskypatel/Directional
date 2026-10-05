@@ -1,3 +1,14 @@
+## Currency — `M6-CP1-CLOSE-REV` ACCEPTED / CP1 CLOSED / exact next `M6-CP2-DEFN` (2026-10-05 UTC)
+
+- All six frozen CP1 exit items pass on current semantic source; no semantic source drift from promoted `3f40f04a`.
+- RA-26 current-HEAD census finds **zero authority-deciding provenance-face consumers**. Reference/reconstruction uses remain later-owned.
+- CP1 closes **mechanism-only**. `G4-B002` stays open; debt remains 1.
+- Reviewed runtime stays `11330703256 / 3f40f04a...`, focused30 + selector449 = **479/479**.
+- Exact next is runtime-free **`M6-CP2-DEFN`**. `M6-DEFN-R5` follows CP2.
+
+Stable accounting **60 / 16 / 44**, debt 1.
+
+### Superseded currency note
 ## Currency — `M6-CP1-TB12-CLOSE-R1-REV` + review-agent addendum: promotion confirmed; RA-27b (2026-10-05 UTC)
 
 - `3f40f04a` (479/479) is confirmed as reviewed runtime.

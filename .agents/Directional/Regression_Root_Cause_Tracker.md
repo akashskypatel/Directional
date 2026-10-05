@@ -1,3 +1,7 @@
+## 2026-10-05 — `M6-CP1-CLOSE-REV` — CP1 CLOSED / ACCEPTED, mechanism-only — **+0 / 60/16/44 / debt 1**
+
+Final CP1 Review finds no new regression event or candidate. All six frozen product-separation exit items pass on unchanged semantic source, and the promoted focused30 + selector449 authority remains **479/479**. RA-26 current-HEAD re-audit finds zero authority-deciding provenance-face consumers; known reference-selecting permutation obligations remain later-owned. C2/C4 and RA-27a static-only branches have explicit owners. `G4-B002` remains open, so project debt remains **1**. Exact successor is `M6-CP2-DEFN`.
+
 ## 2026-10-05 — `M6-CP1-TB12-CLOSE-R1-REV` review-agent addendum — promotion confirmed; RA-27b — **+0 / 60/16/44 / debt 1**
 
 - Promotion of `3f40f04a` (479/479) is confirmed by independent re-derivation, including all 479 raw-log hashes.

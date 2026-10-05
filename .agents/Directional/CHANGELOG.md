@@ -1,3 +1,11 @@
+## 2026-10-05 — `M6-CP1-CLOSE-REV` accepted; CP1 closed mechanism-only
+
+- Checked the six frozen CP1 exit items verbatim on current semantic source and the promoted 479/479 runtime; all pass.
+- Re-ran the RA-26 provenance-consumer census: no authority-deciding consumer exists; reference-selection/permutation obligations remain later-owned.
+- Kept `G4-B002` open and debt at 1; stable accounting remains **60 / 16 / 44**.
+- Added `Architecture_M6_CP1_Close_Review_Record.md`, `M6_CP1_Closure_Record.md`, and the bounded `Architecture_M6_CP2_Definition_Plan.md`.
+- Exact next: `M6-CP2-DEFN`; `M6-DEFN-R5` follows CP2.
+
 ## 2026-10-05 — `M6-CP1-TB12-CLOSE-R1-REV` review-agent addendum: promotion confirmed; RA-27b; close plan amended
 
 - **Re-derived independently:** result `11333591947` (`ef5dba11`) and log `11333547162` (`dd782961`); 497/497; focused-30 and selector449 ledgers in frozen order; 479/479; all 479 raw-log hashes match their ledgers. Candidate `3f40f04a` == HEAD.

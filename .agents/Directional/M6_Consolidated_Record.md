@@ -1,3 +1,5 @@
+**Current authority after `M6-CP1-CLOSE-REV` (2026-10-05):** **M6 CP1 CLOSED / ACCEPTED, mechanism-only**. Reviewed runtime remains `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05`, focused30 + selector449 = **479/479**. All six frozen CP1 exit items pass; RA-26 current-HEAD census finds no authority-deciding provenance-face consumer. `G4-B002` remains open; accounting **60 / 16 / 44**, debt 1. Exact next: **`M6-CP2-DEFN`**; `M6-DEFN-R5` follows CP2.
+
 **Current authority after `M6-CP1-TB12-CLOSE-REV` (2026-10-05):** TB12 candidate `11324028392 / 02149f15...` remains unpromoted after 478/479. CAND-01 is adjudicated **FALSE REJECTION / TEST-FIXTURE WITNESS DEFECT / RECOVERY REQUIRED / NON-STABLE**; RA-27 authorizes test-only `M6-CP1-CB12-CLOSE-R2`, then a fresh 479-process R1 gate and mandatory Review. Reviewed runtime remains `11316716869 / 8dd95821...`; accounting **60 / 16 / 44**, debt 1.
 
 **Current authority after the `M6-CP1-TB12-CLOSE-R1-REV` addendum (2026-10-05):** reviewed runtime `11330703256 / 3f40f04a...` (focused-30 + selector449 = 479/479). RA-27b applies (§49). Accounting **60 / 16 / 44**, debt 1. Exact next: `M6-CP1-CLOSE-REV`; if CP1 closes → `M6-CP2-DEFN`.
@@ -696,3 +698,12 @@ Exact next is immutable `M6-CP1-TB12-CLOSE-EXEC`: focused30 + selector449 = **47
 Independent Review re-derives TB12 at 478/479 and confirms ordinal29 fails at witness non-vacuity before any transition tamper. CB12 C1 is specifically about selected-forest edges with disjoint endpoint wedge-sheet sets. A6 constructs a deterministic spanning forest and does not owe a cross-sheet selected edge for every split-isolation fixture. The split-square assumption in identity29 is therefore invalid; no production-selection defect is established.
 
 CAND-01 is **FALSE REJECTION / TEST-FIXTURE WITNESS DEFECT / RECOVERY REQUIRED / NON-STABLE**. Production C1 is statically consistent with the exact endpoint-sheet transition rule, but the negative falsifier remains runtime-unproved, so candidate `11324028392 / 02149f15...` is not promoted. RA-27 freezes test-only recovery in `M6-CP1-CB12-CLOSE-R2`, then a fresh 479-process `M6-CP1-TB12-CLOSE-R1-EXEC` and mandatory R1 Review. Stable accounting remains 60/16/44, debt 1.
+
+
+## 50. `M6-CP1-CLOSE-REV` — CP1 CLOSED / ACCEPTED, mechanism-only
+
+The final runtime-free closure Review re-opened current semantic source and found no drift from promoted `3f40f04a`. It checked the frozen six-item CP1 exit list verbatim, with focused-30 evidence mapped as: item 1 → 1,2,3,7,21,22,23,30; item 2 → 8–12; item 3 → 13–20,29; item 4 → 24; item 5 → 25–28; item 6 → 4,15,5. All pass.
+
+RA-26 was re-audited at current HEAD: A7 representative-face uses are common-support reconstruction/reference, the adapter is projection-only, class-wide chart authority drives semantic sheet/chart validation, and optimizer/final-validation anchor dependence remains reference-selecting only. No authority-deciding provenance-face consumer exists. RA-26 §5(iii) moves to CP2; §5(i)(ii)(iv) remain DEFN-R5/CP3.
+
+RA-27b branch routing is explicit: C2 empty-front accepted defensive; C4 → CP2 Definition; region/touches/three-sheet wedge tampers → first CP2 CB; seam-collinear edge falsifier → DEFN-R5/CP3; adapter cross-sheet site-loss → M8-CP2. `G4-B002` stays open, so debt remains 1. Stable accounting is unchanged at **60 / 16 / 44**. Exact successor: **`M6-CP2-DEFN`**.

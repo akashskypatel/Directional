@@ -1,3 +1,16 @@
+## Live M6 routing — after `M6-CP1-CLOSE-REV`
+
+| Checkpoint | State | Exact next / gate |
+|---|---|---|
+| M6 CP1 product separation | **CLOSED / ACCEPTED, mechanism-only** | reviewed runtime `11330703256 / 3f40f04a...`, **479/479** |
+| `G4-B002` | **OPEN debt** | CP3 direct-produced-witness re-proof; debt stays 1 |
+| CP2 entry | **EXACT NEXT** | `M6-CP2-DEFN`: `SurfaceProductVerifier`, certificate-chain binding, RA-26 §5(iii), C4 witness, appended wedge-rule tampers |
+| `M6-DEFN-R5` | After CP2 / CP3-entry gate | gauge obligations, A5 barrier-set census, RA-26 §5(i)(ii)(iv), RA-27a §6, OBS-02 |
+
+Stable accounting: **60 / 16 / 44**, debt 1.
+
+### Superseded routing
+
 ## Live M6 routing — after the `M6-CP1-TB12-CLOSE-R1-REV` review-agent addendum (RA-27b)
 
 | Checkpoint | State | Exact next / gate |

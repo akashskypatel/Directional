@@ -1,3 +1,15 @@
+## Resume-critical update — `M6-CP1-CLOSE-REV` ACCEPTED / CP1 CLOSED / exact next `M6-CP2-DEFN` (2026-10-05)
+
+**Start `M6-CP2-DEFN` as a new runtime-free Definition turn. Do not resume CP1, rerun 479, repair A5/A6/A7, or start CP3 first.**
+
+- CP1 is **CLOSED / ACCEPTED, mechanism-only** by `Architecture_M6_CP1_Close_Review_Record.md`; compact authority is `M6_CP1_Closure_Record.md`.
+- Reviewed runtime remains `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05`, focused30 + selector449 = **479/479 PASS**.
+- All six frozen CP1 exit items pass. RA-26 current-HEAD census found **zero authority-deciding provenance-face consumers**.
+- `G4-B002` remains open; stable accounting **60 / 16 / 44**, debt **1**.
+- Defensive/static-only routing is frozen: C2 accepted defensive; C4 → CP2 Definition; RA-27a region/touches/three-sheet tampers → first CP2 CB; RA-27a §6 + RA-26 §5(i)(ii)(iv) → `M6-DEFN-R5`; adapter site-loss OBS-02 → M8-CP2.
+- Follow `Architecture_M6_CP2_Definition_Plan.md`. Its bounded scope is the independent `SurfaceProductVerifier` contract, exact certificate-chain binding, RA-26 §5(iii), C4 malformed-authority witness, and the three appended RA-27a wedge tampers.
+- `M6-DEFN-R5` follows CP2; do not jump to it from CP1 closure.
+
 ## Resume-critical update — `M6-CP1-CLOSE-REV` IN_PROGRESS (yielded on response timer); RESUME it, do not restart (2026-10-05)
 
 **Resume `M6-CP1-CLOSE-REV`. It is the same turn, so do not advance.**

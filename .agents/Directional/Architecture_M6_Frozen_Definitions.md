@@ -1,6 +1,6 @@
 # M6 Frozen Definitions — Occurrence, Quotient, Embedding, Independent Verification
 
-**Status:** FROZEN / `M6-CP1-TB12-CLOSE-R1-REV` + review-agent addendum: R1 ACCEPTED, `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05` PROMOTED at focused30 + selector449 = 479/479; **RA-27b** (owners for unfalsified branches; close-plan amendments; post-closure successor `M6-CP2-DEFN`) / EXACT NEXT = `M6-CP1-CLOSE-REV`; RA-1 – RA-27a normative as annotated.
+**Status:** FROZEN / **M6-CP1 CLOSED / ACCEPTED, mechanism-only** by `M6-CP1-CLOSE-REV`; reviewed runtime `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05`, focused30 + selector449 = **479/479**; `G4-B002` debt remains open (debt 1); **EXACT NEXT = `M6-CP2-DEFN`**; RA-1 – RA-27b normative as annotated.
 **Date:** 2026-09-25
 **Definition authority:** this record is the normative M6 contract for A5 occurrence creation, A6 quotient construction/materialization, A7 source-attached geometry embedding, and the M6 structural portion of A8 independent verification. It refines `DESIGN.md` §14 M6 without changing accepted M5 producer semantics or pulling M7 disposition/degradation work forward.
 
