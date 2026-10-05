@@ -1,3 +1,34 @@
+## Resume-critical update — `M6-CP1-CLOSE-REV` IN_PROGRESS (yielded on response timer); RESUME it, do not restart (2026-10-05)
+
+**Resume `M6-CP1-CLOSE-REV`. It is the same turn, so do not advance.**
+- Preserve `Started at: 2026-10-05T09:46:52Z`, set `Resumed at` to now, and keep `Successor: UNKNOWN` until COMPLETE.
+- The WIP record is `Architecture_M6_CP1_Close_Review_WIP_Continuation.md`.
+- HEAD source has not drifted: `src/`, `include/`, `tests/`, `benchmarks/` and CMake are byte-identical to promoted `3f40f04a`.
+- **Provisional verdict:** all six frozen exit items PASS statically → **CP1 CLOSED / ACCEPTED, mechanism-only**. `G4-B002` debt stays open (debt 1). Successor **`M6-CP2-DEFN`**.
+
+**Remaining work, in order (WIP §"Remaining work"):**
+1. Re-confirm no semantic-source advance.
+2. Finish the current-HEAD RA-26 provenance-consumer census, separating authority-deciding uses from reference/reconstruction uses.
+3. Write `Architecture_M6_CP1_Close_Review_Record.md`. Per RA-27b §3 it must quote the frozen "CP1 exit scope — restated" items **verbatim**, and give each item **file:line** source citations plus its **focused-30 evidence ordinals**:
+   - item 1 (A5): ordinals 1, 2, 3, 7, 21, 22, 23, 30;
+   - item 2 (A6): 8, 9, 10, 11, 12;
+   - item 3 (A7): 13–20, 29;
+   - item 4 (thin adapter): 24;
+   - item 5 (`G4-B002` boundary): 25–28;
+   - item 6 (no weld, multi-isolation): 4 (coincident unrelated occurrences stay distinct), 15 (same-simplex point guard), 5 (multi-isolation materialization).
+4. Classify the defensive and static-only branches with **full IDs** (the WIP's bare "OBS-01" is ambiguous):
+   - C2 empty-front → accepted defensive;
+   - C4 → `M6-CP2-DEFN` weld witness;
+   - RA-27a static conjuncts (`M6-CP1-TB12-R1-REV-OBS-01`) → first M6-CP2 Code + Build;
+   - A6 → A5 binding (`M6-CP1-TB12-REV-OBS-01`) and RA-26 §5(iii) → `M6-CP2-DEFN`;
+   - RA-27a §6 and `M6-CP1-TB12-REV-OBS-02` → `M6-DEFN-R5`;
+   - `M6-CP1-TB12-R1-REV-OBS-02` → M8-CP2.
+5. Write `M6_CP1_Closure_Record.md`. Mark CP1 CLOSED in ORIENTATION, ROADMAP, TODO and the frozen-definitions status line, and remove the stale "CP1 ACTIVE / exact next CLOSE-REV" live bullets. Update the tracker (+0), consolidated record and both changelogs.
+6. Write the `M6-CP2-DEFN` plan, scoped by RA-27b §4.
+7. Run `review_check.py boundary --expect-selector 449=d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`, push and verify, then write STATUS COMPLETE with `Successor: M6-CP2-DEFN` as the final write.
+
+**If any conjunct fails:** CP1 stays ACTIVE; route to the smallest owner. No source repair, runtime, or selector/focused-list change in Review. Reviewed runtime `11330703256 / 3f40f04a...` (479/479). Accounting **60 / 16 / 44**, debt 1.
+
 ## Resume-critical update — `M6-CP1-TB12-CLOSE-R1-REV` + review-agent addendum: promotion confirmed; RA-27b; exact next `M6-CP1-CLOSE-REV` (2026-10-05)
 
 **Start `M6-CP1-CLOSE-REV`** (runtime-free) under `Architecture_M6_CP1_Close_Review_Plan.md`. **Its top review-agent block (RA-27b §3) is binding:**
@@ -898,11 +929,8 @@ Review must independently re-open source/evidence and re-derive: split-square v0
 
 ## Exact next turn
 
-**`M6-CP1-CLOSE-REV` — runtime-free CP1 closure Review.** Follow `Architecture_M6_CP1_Close_Review_Plan.md`; its RA-27b block is binding.
-- Check the six frozen exit items verbatim on HEAD source and the 479/479 evidence.
-- Re-check RA-19a, RA-22a, RA-22b, RA-25, RA-26 §3 and RA-27a, plus the C3 counter source.
-- Classify the defensive and static-only branches with owners.
-- `G4-B002` stays open.
+**RESUME `M6-CP1-CLOSE-REV`** (IN_PROGRESS, runtime-free). Follow `Architecture_M6_CP1_Close_Review_Plan.md` (its RA-27b block is binding) and `Architecture_M6_CP1_Close_Review_WIP_Continuation.md`. The remaining steps 1–7 are listed in the resume-critical note at the top of this file.
+- Provisional disposition: CP1 CLOSED / ACCEPTED, mechanism-only. `G4-B002` stays open (debt 1).
 - If CP1 closes → **`M6-CP2-DEFN`** (RA-27b §4). If not → the smallest owner. No source repair in Review.
 
 ## Completed predecessor turns (reference only)
@@ -914,16 +942,19 @@ Review must independently re-open source/evidence and re-derive: split-square v0
 
 ## Current files
 
-- `.agents/Directional/Architecture_M6_CP1_Close_Review_Plan.md` — exact next plan, with the RA-27b block.
-- `.agents/Directional/Architecture_M6_CP1_TB12_Close_R1_Review_Record.md` — Review authority, with addendum §Q.
+- `.agents/Directional/Architecture_M6_CP1_Close_Review_WIP_Continuation.md` — in-progress CLOSE-REV state: exit items 1–6 provisionally PASS; remaining steps.
+- `.agents/Directional/Architecture_M6_CP1_Close_Review_Plan.md` — governing plan, with the binding RA-27b block.
+- `.agents/Directional/Architecture_M6_CP1_TB12_Close_R1_Review_Record.md` — promotion authority, with addendum §Q.
 - `.agents/Directional/Architecture_M6_CP1_TB12_Close_R1_Artifact_Only_Test_Benchmark_Report.md` — 479/479 evidence.
-- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — normative; "CP1 exit scope — restated", RA-26, RA-27a, RA-27b.
+- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — "CP1 exit scope — restated", RA-26, RA-27a, RA-27b.
 - `.agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt` + selector449 / routing449 — frozen gate.
+- `.workflow-mailbox/repo-source-snapshot/latest.json` — snapshot `37292472159` / source `78cfc7bd...` (semantic source == `3f40f04a`).
 
 ## Context Load Plan
 
 ```yaml
 load_next:
+  - .agents/Directional/Architecture_M6_CP1_Close_Review_WIP_Continuation.md
   - .agents/Directional/Architecture_M6_CP1_Close_Review_Plan.md
   - .agents/Directional/Architecture_M6_CP1_TB12_Close_R1_Review_Record.md
   - .agents/Directional/Architecture_M6_Frozen_Definitions.md
