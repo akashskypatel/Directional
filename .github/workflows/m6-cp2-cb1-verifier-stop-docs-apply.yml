@@ -24,8 +24,8 @@ jobs:
     needs: validate
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1jjVWbJFn4TlGY8w6FoZMljNlXzLN-mWH
-      patch_sha256: 56ce5e95facc96d096b5e4d7da977340ae3580ffea9d8ee8af7c0577d37de20f
+      file_id: 1VfiNp6dx1xULv0Dt6DmaVM6No4w-vsPF
+      patch_sha256: 4868e3bb2c795d8fdfb481f1957e525a7a894e286aaa821a7bbae0f7f6d83707
       base_sha: 8bc1f52b22c1c429e8b5afdd8e3eb1fee67fc886
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: "docs: record M6 CP2 verifier RA-28a stop"
