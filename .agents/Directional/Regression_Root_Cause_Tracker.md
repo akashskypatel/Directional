@@ -1,3 +1,13 @@
+## 2026-10-05 — `M6-CP1-TB12-CLOSE-REV` review-agent addendum — RA-27 withdrawn → RA-27a — **+0 / 60/16/44 / debt 1**
+
+- **CAND-01** stays FALSE REJECTION / NON-STABLE, but its cause is corrected. `split_isolation_fixture()` has no relation with disjoint endpoint wedge sheets: the diagonal seam crosses cell interiors, so crossings happen inside bridge corners. Forest selection is irrelevant.
+- **Incomplete C1 (no event; not a regression of an accepted row).** The per-occurrence multi-sheet check (`RemeshPipeline.cpp:6884-6895`) still accepts any non-empty `cornerWedgeIsolation`. A5 publication and A6 do not check it either, so it fails open on a consistent chain. R2 fixes it under RA-27a §2.
+- **`M6-CP1-TB12-REV-OBS-01`** (owner M6-CP2 via DEFN-R5): the A6 certificate has no binding to its source A5, and A7 matches by ID only. Identity 29's stale-A6 negative relied on this.
+- **`M6-CP1-TB12-REV-OBS-02`** (owner DEFN-R5): the A7 edge rule ignores relation kind while sheet IDs are global. Non-default `traverseUnmarkedSharpBends = false` could falsely reject a HardRail across a crease.
+- Review-agent error, owned: the CB12 plan's C1 named only the edge proxy (lesson 199).
+
+**Stable accounting: `60 events / 16 categories / 44 recurrences`, debt 1.**
+
 ## 2026-10-05 — `M6-CP1-TB12-CLOSE-EXEC` — **478/479 / one non-stable Review-owned candidate / +0 / 60/16/44 / debt 1**
 
 Immutable candidate `11324028392 / 02149f1518fc6a753acf3235f7dcdc6fcdf59f24` completed the 479-process gate: focused **29/30**, selector449 **449/449**, aggregate **478/479**, exact-one, zero skips, benchmark 0, immutable postflight, self-manifest **979/979**.

@@ -1,3 +1,17 @@
+## 2026-10-05 — `M6-CP1-TB12-CLOSE-REV` review-agent addendum: RA-27 withdrawn → RA-27a; R2 re-scoped
+
+- **Re-derived independently:** result `11326949864` (`da42bf2a`) and log `11328055226` (`70880747`); 979/979; focused-30 and selector449 ledgers in frozen order; 478/479; ordinal 29 fails before its tamper. Candidate `02149f15` source == HEAD.
+- **Code review:** C2 and C3 accepted. C4 fails closed, but its name lacks the `Quotient` prefix and the branch has no executed falsifier.
+- **CAND-01 cause corrected:** the split-isolation fixture has no disjoint-sheet relation (the diagonal seam crosses cells; crossings happen inside bridge corners), so forest selection is irrelevant. RA-27 §2–§3 are withdrawn.
+- **High:** C1 left the reachable per-occurrence wedge proxy (`RemeshPipeline.cpp:6884-6895`) in place, and neither A5 publication nor A6 checks it. **RA-27a** requires:
+  - an exact wedge rule (site `cross-sheet:wedge`);
+  - the C4 name fix;
+  - identity 29 on a bridge-member tamper with A6 re-produced (consistent chain).
+
+  The edge-rule falsifier is deferred.
+- **Observations:** OBS-01 (A6 has no binding to its A5) and OBS-02 (relation-kind-agnostic edge rule).
+- **Docs:** R2 plan review-agent block; lesson 199; handoff (top + live) / ORIENTATION / TODO / ROADMAP / tracker (+0) / consolidated §47. Accounting 60 / 16 / 44.
+
 ## 2026-10-05 — `M6-CP1-TB12-CLOSE-REV`: identity29 is a fixture-witness false rejection; RA-27 recovery
 
 - Independently re-derived TB12 478/479 and exact ordinal29 failure before the C1 tamper.

@@ -1,6 +1,6 @@
 **Current authority after `M6-CP1-TB12-CLOSE-REV` (2026-10-05):** TB12 candidate `11324028392 / 02149f15...` remains unpromoted after 478/479. CAND-01 is adjudicated **FALSE REJECTION / TEST-FIXTURE WITNESS DEFECT / RECOVERY REQUIRED / NON-STABLE**; RA-27 authorizes test-only `M6-CP1-CB12-CLOSE-R2`, then a fresh 479-process R1 gate and mandatory Review. Reviewed runtime remains `11316716869 / 8dd95821...`; accounting **60 / 16 / 44**, debt 1.
 
-**Current authority after `M6-CP1-TB12-CLOSE-EXEC` (2026-10-05):** candidate `11324028392 / 02149f15...` completed focused30 **29/30** + selector449 **449/449** = **478/479** in run/job `37266239234 / 111623615471`, exact-one, zero skips, benchmark 0, 979/979 evidence and immutable postflight. Sole RED identity29 fails witness non-vacuity because the split-isolation fixture has no selected forest edge with disjoint endpoint sheet sets; its C1 tamper is never reached. CAND-01 is non-stable / Review-owned, accounting **60 / 16 / 44**, debt 1. Candidate unpromoted; reviewed runtime `11316716869 / 8dd95821...`. Exact next: `M6-CP1-TB12-CLOSE-REV`; CP1 close held.
+**Current authority after the `M6-CP1-TB12-CLOSE-REV` addendum (2026-10-05):** reviewed runtime `11316716869 / 8dd95821...` (477/477). TB12 candidate `02149f15` is unpromoted at 478/479; RA-27a applies (§47). Accounting **60 / 16 / 44**, debt 1. Exact next: `M6-CP1-CB12-CLOSE-R2` → TB12-R1 (479) → Review → `M6-CP1-CLOSE-REV`.
 
 **Current authority after `M6-CP1-CB11-G4` (2026-10-04):** CB11 is COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE at semantic source `582da20a925ba920c923bf5aacb9e0e56ef0723d`. Candidate result artifact `11308472138` is unpromoted. Reviewed runtime remains `11299078582 / 96b456f9...` at 473/473. Stable accounting remains **60 / 16 / 44**, debt 1. Exact next: immutable `M6-CP1-TB11-G4-EXEC`, focused28+selector449 = **477**, then mandatory Review; CP1 close remains held.
 
@@ -425,6 +425,21 @@ Review findings:
 Owned review-agent errors: wrong C5 line anchors, and the RA-22b §5 class conflation (lesson 198).
 
 Exact next: `M6-CP1-CB12-CLOSE-R1` (C1–C4, identities 29/30, gate 479). Accounting 60 / 16 / 44.
+
+## 47. `M6-CP1-TB12-CLOSE-REV` review-agent addendum — RA-27 withdrawn; RA-27a
+
+TB12 is re-derived at 478/479 and stays unpromoted. C2 and C3 are accepted. C4 fails closed, but its name string lacks the `Quotient` prefix and the branch has no executed falsifier.
+
+**CAND-01.** The real cause is that the fixture has no disjoint-sheet relation: its diagonal seam crosses cell interiors, so crossings happen inside bridge corners. Disjoint-sheet relations require front edges collinear with a seam, which A6 already certifies exactly.
+
+**C1 is incomplete.** The reachable per-occurrence wedge check is still the "any transition" proxy, and it fails open on a consistent chain.
+
+**RA-27a** re-scopes R2:
+- an exact wedge rule (site `cross-sheet:wedge`);
+- the C4 name fix;
+- identity 29 on a bridge-member tamper with A6 re-produced (the consistent-chain rule).
+
+The edge-rule falsifier is deferred to the first produced seam-collinear fixture. OBS-01 (A6 → A5 binding) and OBS-02 (relation-kind-agnostic edge rule) are recorded. Lesson 199. Accounting 60 / 16 / 44.
 
 ## Folded document index
 

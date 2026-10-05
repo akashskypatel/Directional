@@ -1,3 +1,13 @@
+## Currency — `M6-CP1-TB12-CLOSE-REV` + review-agent addendum: RA-27 withdrawn → RA-27a; R2 re-scoped (2026-10-05 UTC)
+
+- TB12 re-derived: 478/479, candidate unpromoted, CAND-01 non-stable.
+- The fixture has no disjoint-sheet relation; crossings happen inside bridge corners.
+- C1 left the reachable per-occurrence wedge proxy in place, which fails open on a consistent chain.
+- R2 makes the wedge rule exact, fixes the C4 name, and recovers identity 29 with A6 re-produced from the tampered A5. Gate 479.
+
+Accounting **60 / 16 / 44**, debt 1.
+
+### Superseded currency note
 ## Currency — `M6-CP1-TB12-CLOSE-REV` COMPLETE / identity29 false rejection / R2 recovery next (2026-10-05 UTC)
 
 - TB12 remains mechanically valid at **478/479**; candidate `11324028392 / 02149f15...` is unpromoted.
@@ -323,9 +333,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
- > **Current milestone authority (2026-10-05, after `M6-CP1-CB12-CLOSE-REV`):** M4 and M5 remain CLOSED / ACCEPTED. M6 CP1 remains ACTIVE. Reviewed runtime authority is `11316716869 / 8dd95821...` (focused-28 + selector449 = 477/477). The CB12 C5 stop is discharged (RA-26). Stable accounting **60/16/44**, debt 1. Exact next is `M6-CP1-CB12-CLOSE-R1` (gate 479), then `M6-CP1-CLOSE-REV`.
+ > **Current milestone authority (2026-10-05, after the `M6-CP1-TB12-CLOSE-REV` addendum):** M4 and M5 remain CLOSED / ACCEPTED. M6 CP1 remains ACTIVE. Reviewed runtime authority is `11316716869 / 8dd95821...` (477/477). TB12 candidate `02149f15` is unpromoted at 478/479. RA-27a re-scopes R2. Stable accounting **60/16/44**, debt 1. Exact next is `M6-CP1-CB12-CLOSE-R2` (gate 479), then `M6-CP1-CLOSE-REV`.
 
-**Currency.** `M6-CP1-CB12-CLOSE-REV` (Review of the CB12 stop), 2026-10-05 UTC
+**Currency.** `M6-CP1-TB12-CLOSE-REV` review-agent addendum (Review), 2026-10-05 UTC
 
 **Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` §16.3 is the active same-region nonzero-Z4 contract. `PeriodicRelationId` remains carrier-content identity; relation rotation is the gauge-adjusted quotient `Q`, action/transport is relation value, and canonical storage may invert representation only after semantic Forward -> Reverse authority is fixed. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 
@@ -509,19 +519,18 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M6-CP1-CB12-CLOSE-R1` — EXACT NEXT (RA-25 close-out under RA-26).**
-   - C1: exact A7 cross-sheet certification.
-   - C2: distinct A5 phase-front source diagnostics.
-   - C3: A5-sourced `consumedInternalIsolationSeams`.
-   - C4: fail-closed strip continuation.
-   - C5: discharged by RA-26 §3. No `SurfaceMeshOptimizer` or final-validation change.
-   - Identities 29/30; gate 479 → TB12 → Review.
-   - Then `M6-CP1-CLOSE-REV`: the six exit items, the carried obligations, and an RA-26 §3 re-check, on the fresh gate.
+1. **`M6-CP1-CB12-CLOSE-R2` — EXACT NEXT (RA-27a).**
+   - Exact wedge-level cross-sheet rule at `RemeshPipeline.cpp:6884-6895` (site `cross-sheet:wedge`).
+   - C4 name string with the `Quotient` prefix.
+   - Identity 29: bridge-member wedge tamper with A6 re-produced (consistent chain).
+   - Gate 479 → TB12-R1 → Review → `M6-CP1-CLOSE-REV`.
+   - C2/C3/C4 are reviewed in candidate `02149f15`; RA-26 bars optimizer changes.
 1a. **`M6-DEFN-R5` — CP3-entry gate (not CP1).**
    - Periodic unequal-face-gauge witness, plus the coordinate / relation-gauge rule.
    - HardRail cross-region branch certification.
    - OrdinaryFront coordinate identity across isolation seams.
    - RA-26 §5: a class-wide reference for optimizer energy/gradient and for the final-validation field-metric fallback; a real replacement for the vacuous `project_vertices` sheet check; a representative-permutation falsifier.
+   - RA-27a §6–§7: an executed edge-rule falsifier on the first produced seam-collinear fixture; A6 → A5 certificate binding (OBS-01, with M6-CP2); relation-kind-aware cross-sheet rule (OBS-02).
 
    These must close before any CP3 direct-production TB. RA-17's transport guard keeps them away from geometry until then.
 
@@ -551,6 +560,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 **A green behavioral test is not a contract proof when the oracle compares only a subset of the promised serialization — `M6-CP1-TB10-A5V-REV`, lesson 193.** Identity24 ran three real stage-valid fixtures but omitted multiple mesh/lineage/result fields, so those fields could drift without turning the test red. Enumerate the output type and prove every contract field is covered; a strong test name does not widen its assertions.
 
 **Moving validation into an earlier stage can still invert that stage's own pre-existing failure precedence — `M6-CP1-TB10-A5V-REV`, existing `VALIDATION_ORDER_SHADOWING`.** RA-19 explicitly required the moved helper after every old A5 check; placing it before `publish_records_for_validation` violates that boundary even when the full gate stays green.
+
+**Harden the branch production reaches, and test it on a consistent chain — `M6-CP1-TB12-CLOSE-REV` addendum, lesson 199.** C1 made the selected-edge cross-sheet rule exact. But produced crossings happen inside bridge occurrences, which a separate per-occurrence proxy still certified. Identity 29 then looked for a witness the producers cannot emit, and its negative passed a stale A6. Before hardening or testing a fail-closed rule, derive from the producer which branch real data reaches, and re-produce downstream stages from tampered upstream records.
 
 **Define an audit by a searchable predicate, and separate authority from reference — `M6-CP1-CB12-CLOSE-REV`, lesson 198.** The RA-22b §5 audit was a closed list of line anchors. One anchor was wrong and pointed at test-only overlay code, so the real production consumers fell outside the list. The audit's rule also conflated "the anchor decides authority" with "the anchor selects a numeric reference". State the predicate, for example every read of a representative `.face`, and classify by effect.
 

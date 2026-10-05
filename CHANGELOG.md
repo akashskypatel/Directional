@@ -1,3 +1,9 @@
+## 2026-10-05 — `M6-CP1-TB12-CLOSE-REV` review-agent addendum — close-out test fixed at its root
+
+- The close-out test failed because it looked for a kind of cross-sheet join that the test geometry cannot produce. In that geometry, sheets meet inside single cell corners, not along shared edges.
+- That is also where the remaining weak check lives: a corner spanning two sheets was accepted with any transition at all. The next code turn makes that check exact, and re-tests it end to end.
+- Next: `M6-CP1-CB12-CLOSE-R2` (gate 479).
+
 ## 2026-10-05 — `M6-CP1-CB12-CLOSE-REV` — close-out unblocked
 
 - The close-out turn stopped on a code site it judged unsafe. Review found that the site is test-only diagnostic code and does not read the value in question, so the stop is lifted.

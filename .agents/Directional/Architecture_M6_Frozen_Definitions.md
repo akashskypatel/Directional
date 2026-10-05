@@ -1,6 +1,6 @@
 # M6 Frozen Definitions — Occurrence, Quotient, Embedding, Independent Verification
 
-**Status:** FROZEN / `M6-CP1-TB12-CLOSE-REV`: RA-27 test-fixture witness recovery / TB12 candidate unpromoted at 478/479 / reviewed runtime `11316716869 / 8dd95821` retained / EXACT NEXT = `M6-CP1-CB12-CLOSE-R2` -> `M6-CP1-TB12-CLOSE-R1-EXEC` 479 -> mandatory R1 Review -> CP1 close if accepted; RA-1 – RA-27 normative as annotated.
+**Status:** FROZEN / `M6-CP1-TB12-CLOSE-REV` + review-agent addendum: TB12 478/479 unpromoted; **RA-27a** (RA-27 §2–§3 withdrawn; exact wedge-level cross-sheet rule; consistent-chain identity-29 witness) / reviewed runtime `11316716869 / 8dd95821` (477/477) / EXACT NEXT = `M6-CP1-CB12-CLOSE-R2` → TB12-R1 30+449=479 → mandatory Review → `M6-CP1-CLOSE-REV`; RA-1 – RA-27 normative as annotated.
 **Date:** 2026-09-25
 **Definition authority:** this record is the normative M6 contract for A5 occurrence creation, A6 quotient construction/materialization, A7 source-attached geometry embedding, and the M6 structural portion of A8 independent verification. It refines `DESIGN.md` §14 M6 without changing accepted M5 producer semantics or pulling M7 disposition/degradation work forward.
 
@@ -957,3 +957,33 @@ Rationale: `Architecture_M6_CP1_TB12_Close_Review_Record.md`.
 5. **Stop rule.** Any required production semantic change, C1 weakening, selected-forest algorithm change, selector/routing change, or inability to construct a valid production-derived witness stops for Review.
 
 Accounting remains **60 / 16 / 44**, debt 1.
+
+## RA-27a — the reachable cross-sheet path is wedge-level; RA-27 §2–§3 withdrawn (normative, 2026-10-05, `M6-CP1-TB12-CLOSE-REV` review-agent addendum)
+
+Rationale: `Architecture_M6_CP1_TB12_Close_Review_Record.md`, addendum §P3–§P7.
+
+1. **CAND-01 cause (replaces RA-27 §1's reason).** `split_isolation_fixture()` has **no** relation with disjoint endpoint wedge-sheet sets. Its diagonal seam crosses cell interiors, so every sheet crossing happens inside a bridge occurrence (`|cornerWedgeSheets| = 2`). A disjoint-sheet relation can arise only from a front edge collinear with an isolation seam, and A6 already certifies that case exactly (`RemeshPipeline.cpp:5292-5310`). CAND-01 stays non-stable (+0).
+2. **Exact wedge rule (production; completes RA-22a §3 / C1).** A7 certifies a class member with `|cornerWedgeSheets| > 1` only if this graph is connected:
+   - vertices: the member's `cornerWedgeSheets`;
+   - edges: `{fromSheet, toSheet}` from its own `cornerWedgeIsolation`, keeping only transitions with `region == topologyRegion` and both sheets in the set.
+
+   Otherwise it fails `UncertifiedCrossSheetBinding` at site `cross-sheet:wedge`. This replaces the non-empty proxy (`:6884-6895`). The edge rule (site `cross-sheet`) is unchanged.
+3. **C4 name.** `surface_quotient_product_error_name(ClosedComplexStripContinuationMismatch)` returns `"QuotientClosedComplexStripContinuationMismatch"`.
+4. **Identity 29** (name and focused-30 position unchanged). On `split_isolation_fixture()`:
+   1. assert a class member with ≥ 2 wedge sheets exists;
+   2. baseline A7 accepts;
+   3. rewrite only that member's `cornerWedgeIsolation` sheets to a pair that does not connect its set (keep the transitions non-empty);
+   4. republish through `publish_records_for_validation`, then **re-produce A6 from the tampered A5** with `SurfaceQuotientProducer::produce` and assert success;
+   5. assert that A7 on (tampered A5, re-produced A6) returns `UncertifiedCrossSheetBinding` at `cross-sheet:wedge`.
+5. **Consistent-chain rule.** Every stage-level negative feeds downstream stages products re-produced from the tampered upstream records. A stale downstream product is forbidden.
+6. **Deferred.** The edge rule's executed falsifier waits for the first produced seam-collinear fixture (owner `M6-DEFN-R5` → `M6-CP3`). Hand-built relation records are forbidden.
+7. **Observations.**
+   - `M6-CP1-TB12-REV-OBS-01`: A6 → A5 certificate binding is missing; owner `M6-CP2` via `M6-DEFN-R5`.
+   - `M6-CP1-TB12-REV-OBS-02`: the edge rule ignores relation kind while sheet IDs are global labels; owner `M6-DEFN-R5`.
+8. **Stop rules.** Stop for Review if:
+   - any previously accepted row fails;
+   - A6 rejects the item 4 tamper;
+   - item 2 needs any change beyond its text;
+   - any selector449 / routing449 / focused-list byte changes.
+
+Gate: focused-30 + selector449 = **479** → `M6-CP1-TB12-CLOSE-R1-EXEC` → `M6-CP1-TB12-CLOSE-R1-REV` → `M6-CP1-CLOSE-REV`. Accounting **60 / 16 / 44**, debt 1.

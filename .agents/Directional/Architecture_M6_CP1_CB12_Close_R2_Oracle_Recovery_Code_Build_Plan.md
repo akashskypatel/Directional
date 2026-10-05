@@ -1,5 +1,22 @@
 # `M6-CP1-CB12-CLOSE-R2` — Identity29 Witness Recovery Code + Build Plan
 
+> **Review-agent block — `M6-CP1-TB12-CLOSE-REV` addendum (RA-27a), 2026-10-05. This block governs; the body below is superseded where it conflicts.**
+> - **Body items 1–3 and 5 are withdrawn.** No produced fixture has a selected disjoint-sheet edge (addendum §P3), and building one from the publication seam is forgery.
+> - **Production is now in scope, bounded to:**
+>   1. The exact wedge rule (RA-27a §2). It replaces the `has_isolation_transition` proxy at `RemeshPipeline.cpp:6884-6895` with sheet-graph connectivity over the member's own region-matching `cornerWedgeIsolation`. Failure site: `cross-sheet:wedge`.
+>   2. The C4 name string `"QuotientClosedComplexStripContinuationMismatch"` (RA-27a §3).
+>
+>   Nothing else in production changes.
+> - **Identity 29** follows RA-27a §4 on `split_isolation_fixture()`:
+>   - non-vacuity, then baseline acceptance;
+>   - tamper only the bridge member's wedge transitions;
+>   - republish A5, **re-produce A6** and assert it succeeds;
+>   - A7 must fail at `cross-sheet:wedge`.
+>
+>   Do not pass the stale A6 (RA-27a §5).
+> - The edge-rule falsifier is deferred (RA-27a §6).
+> - Stop rules: RA-27a §8. The gate, successor and forbidden scope (selector/routing/focused bytes, tolerances, selected-forest algorithm) are unchanged.
+
 **Owner:** `M6-CP1-CB12-CLOSE-R2`
 **Type:** Code + Build only; compile/package; runtime forbidden.
 **Authority:** `Architecture_M6_CP1_TB12_Close_Review_Record.md` and RA-27.

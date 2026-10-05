@@ -1,3 +1,12 @@
+## Current — `M6-CP1-TB12-CLOSE-REV` + review-agent addendum / RA-27a / exact next `M6-CP1-CB12-CLOSE-R2` (2026-10-05)
+
+- [x] Re-derive TB12: digests `da42bf2a`/`70880747`, 979/979, ledgers in frozen order, 478/479, ordinal 29 pre-tamper RED; candidate source == HEAD.
+- [x] Review C2–C4. C2/C3 accepted; C4 fail-closed accepted but its name lacks the `Quotient` prefix and it has no executed falsifier.
+- [x] Correct the CAND-01 cause: the fixture has no disjoint-sheet relation. Withdraw RA-27 §2–§3.
+- [x] Find the reachable wedge proxy (`:6884-6895`) → RA-27a §2; the stale-A6 negative → RA-27a §5; OBS-01/02; lesson 199.
+- [ ] **Exact next `M6-CP1-CB12-CLOSE-R2`**: wedge rule, C4 name, identity 29 consistent-chain witness; compile/package only.
+- [ ] TB12-R1 **479**, then mandatory Review, then `M6-CP1-CLOSE-REV`.
+
 ## Current — `M6-CP1-TB12-CLOSE-REV` COMPLETE / exact next `M6-CP1-CB12-CLOSE-R2` (2026-10-05)
 
 - [x] Re-derived TB12 mechanical evidence: 478/479; identity29 sole RED; no tamper reached.

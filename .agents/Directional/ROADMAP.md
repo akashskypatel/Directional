@@ -1,3 +1,17 @@
+## Live M6 routing — after the `M6-CP1-TB12-CLOSE-REV` review-agent addendum (RA-27a)
+
+| Checkpoint | State | Exact next / gate |
+|---|---|---|
+| M6 CP1 reviewed runtime | **PROMOTED** | `11316716869 / 8dd95821...`, 477/477 |
+| TB12 candidate | **UNPROMOTED** | `11324028392 / 02149f15...`, 478/479 (identity 29 witness RED) |
+| CP1 close-out recovery | **EXACT NEXT** | `M6-CP1-CB12-CLOSE-R2` (exact wedge rule + C4 name + consistent-chain identity 29) -> TB12-R1 **479** -> Review |
+| CP1 closure | Held | `M6-CP1-CLOSE-REV` |
+| `M6-DEFN-R5` | CP3-entry gate | + RA-27a §6–§7 (edge-rule produced falsifier, A6→A5 binding, relation-kind-aware cross-sheet rule) |
+
+Stable accounting: **60 / 16 / 44**, debt 1.
+
+### Superseded routing
+
 ## Live M6 routing — after `M6-CP1-TB12-CLOSE-REV`
 
 | Checkpoint | State | Exact next / gate |

@@ -1,3 +1,18 @@
+## Resume-critical update — `M6-CP1-TB12-CLOSE-REV` + review-agent addendum: RA-27 withdrawn → RA-27a; R2 re-scoped (2026-10-05)
+
+**Start `M6-CP1-CB12-CLOSE-R2` under RA-27a.** The review-agent block at the top of `Architecture_M6_CP1_CB12_Close_R2_Oracle_Recovery_Code_Build_Plan.md` governs. **Do not search for or build a selected disjoint-sheet A6 edge.**
+
+Why RA-27 was withdrawn:
+- The split-isolation fixture has **no** relation with disjoint endpoint sheets. Its diagonal seam crosses cell interiors, so sheet crossings happen inside bridge corners (`|cornerWedgeSheets| = 2`).
+- Disjoint-sheet relations need a front edge collinear with a seam, which A6 already certifies exactly.
+- The reachable path is A7's **per-occurrence wedge check** (`RemeshPipeline.cpp:6884-6895`), and it is still the "any transition" proxy that C1 removed from the edge branch. A5 publication and A6 do not check it either, so it fails open on a consistent chain.
+
+R2 does:
+1. Production: the exact wedge rule (sheet-graph connectivity over the member's own region-matching `cornerWedgeIsolation`, site `cross-sheet:wedge`) and the C4 name string `QuotientClosedComplexStripContinuationMismatch`.
+2. Identity 29 on the existing fixture: tamper the bridge member's wedge transitions, republish A5, **re-produce A6** (it must succeed), and require A7 to fail at `cross-sheet:wedge`.
+
+Gate unchanged at 479 → `M6-CP1-TB12-CLOSE-R1-EXEC` → `-R1-REV` → `M6-CP1-CLOSE-REV`. Accounting **60 / 16 / 44**, debt 1.
+
 ## Resume-critical update — `M6-CP1-TB12-CLOSE-REV` COMPLETE / CAND-01 false rejection / exact next `M6-CP1-CB12-CLOSE-R2` (2026-10-05)
 
 **Start runtime-free `M6-CP1-CB12-CLOSE-R2`; do not rerun TB12, promote `02149f15...`, change production C1, or begin CP1 close.**
@@ -840,61 +855,58 @@ Review must independently re-open source/evidence and re-derive: split-square v0
 
 ## Current authority
 
-`M6-CP1-CB12-CLOSE-REV` is **COMPLETE**: the CB12 C5 stop is discharged and RA-26 is normative.
-- Reviewed runtime authority: `11316716869 / 8dd958217d8cbda2d403f7a5c4c7dce242dde1c0`.
-- Gate: `Architecture_M6_CP1_Required_Green_Focused_28.txt` (`9154a986...`) + selector449 = **477/477**.
-- Normative: RA-18 – RA-26.
+`M6-CP1-TB12-CLOSE-REV` is **COMPLETE**, including its review-agent addendum: TB12 candidate `11324028392 / 02149f15` is **unpromoted** at 478/479, and RA-27a is normative.
+- Reviewed runtime authority: `11316716869 / 8dd958217d8cbda2d403f7a5c4c7dce242dde1c0` (focused-28 + selector449 = **477/477**).
+- Current gate: `Architecture_M6_CP1_Required_Green_Focused_30.txt` (`1e815443...`) + selector449 = **479**.
+- Normative: RA-18 – RA-27a.
 - Accounting **60 / 16 / 44**, debt **1**.
 
-The six CP1 exit items appear implemented: A5, A6 with the closed-complex view, A7, the thin adapter, the `G4-B002` mechanism, and no weld / multi-isolation. Close-out C1–C4 remains before `M6-CP1-CLOSE-REV`.
+C2, C3 and C4 (fail-closed) are in the candidate and reviewed. C1 is incomplete: the edge rule is exact, but the reachable wedge rule is still a proxy, so R2 completes it.
 
 ## Exact next turn
 
-**`M6-CP1-CB12-CLOSE-R1` — new turn; Code + Build, compile/package only.** Follow `Architecture_M6_CP1_CB12_Close_Out_Code_Build_Plan.md`, which now carries the RA-26 header block.
+**`M6-CP1-CB12-CLOSE-R2` — Code + Build, compile/package only, under RA-27a.**
 
-- **C1.** Exact A7 cross-sheet certification: a transition's `fromSheet/toSheet` must connect the endpoints' sheet sets.
-- **C2.** Distinct A5 diagnostics, restoring the legacy names `MissingAuthoritativePhaseFront` (including the empty-edges predicate), `InvalidAuthoritativePhaseFrontSource` and `InvalidAuthoritativeSourceChartTransitions`.
-- **C3.** `consumedInternalIsolationSeams` comes from the A5 validated count; update identity 24's expectation.
-- **C4.** RA-25: fail closed with `ClosedComplexStripContinuationMismatch`.
-- **C5.** Discharged by RA-26 §3; cite it. No optimizer or final-validation edits.
-- **Tests.** Identities 29 (`M6CP1.A7CrossSheetBindingRequiresConnectingIsolationTransition`) and 30 (`M6CP1.A5PhaseFrontSourceFailuresKeepDistinctDiagnostics`); create the focused-30 file with focused-28 as its exact prefix.
+- **Production 1.** Exact wedge rule (RA-27a §2) at `RemeshPipeline.cpp:6884-6895`, site `cross-sheet:wedge`.
+- **Production 2.** C4 name string `"QuotientClosedComplexStripContinuationMismatch"`.
+- **Identity 29** (name and order unchanged): bridge-member wedge tamper on `split_isolation_fixture()`, with A6 re-produced from the tampered A5 (RA-27a §4–§5).
+- No other production, test, selector, routing or focused-list change.
 
-Compile-green → `M6-CP1-TB12-CLOSE-EXEC`: **479** → mandatory `M6-CP1-TB12-CLOSE-REV` → `M6-CP1-CLOSE-REV`, which also re-verifies RA-26 §3.
+Compile-green → `M6-CP1-TB12-CLOSE-R1-EXEC` (**479**) → mandatory `M6-CP1-TB12-CLOSE-R1-REV` → `M6-CP1-CLOSE-REV`.
 
 ## Completed predecessor turns (reference only)
 
-- `M6-CP1-CB12-CLOSE-REV` — current Review authority. C5 stop discharged; RA-26.
-- `M6-CP1-CB12-CLOSE` — BLOCKED stop report (`Architecture_M6_CP1_CB12_Close_Out_Code_Build_Report.md`); no source change.
-- `M6-CP1-TB11-G4-R1-REV` (+ addendum §N, RA-25) — promotion of `8dd95821`.
-- `M6-CP1-TB11-G4-R1-EXEC` (477/477), `M6-CP1-CB11-G4-R1`, and earlier.
+- `M6-CP1-TB12-CLOSE-REV` (+ addendum §P, RA-27a) — current Review authority.
+- `M6-CP1-TB12-CLOSE-EXEC` — 478/479; CAND-01 non-stable.
+- `M6-CP1-CB12-CLOSE-R1` — C1–C4 compile/package for `02149f15`.
+- `M6-CP1-CB12-CLOSE-REV` (RA-26) and earlier.
 
 ## Current files
 
-- `.agents/Directional/Architecture_M6_CP1_CB12_Close_Out_Code_Build_Plan.md` — exact next plan (with the RA-26 header).
-- `.agents/Directional/Architecture_M6_CP1_CB12_Close_Stop_Review_Record.md` — Review authority; §3 is the binding C5 record.
-- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — normative; RA-19a §3, RA-22a §3, RA-24, RA-25, RA-26.
-- `.agents/Directional/Architecture_M6_CP1_Required_Green_Focused_28.txt`, earlier focused lists, and selector449 / routing449 — frozen gate.
-- `.workflow-mailbox/<workflow-key>/latest.json` — authoritative completed-run rendezvous (see the operational policy note at the top).
+- `.agents/Directional/Architecture_M6_CP1_CB12_Close_R2_Oracle_Recovery_Code_Build_Plan.md` — exact next plan; its review-agent block governs.
+- `.agents/Directional/Architecture_M6_CP1_TB12_Close_Review_Record.md` — Review authority, with addendum §P.
+- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — normative; RA-25, RA-26, RA-27a.
+- `.agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt` + selector449 / routing449 — frozen gate.
+- `.workflow-mailbox/<workflow-key>/latest.json` — authoritative completed-run rendezvous.
 
 ## Context Load Plan
 
 ```yaml
 load_next:
   - turn-based-coding-agent/references/turns/CB.md
-  - .agents/Directional/Architecture_M6_CP1_CB12_Close_Out_Code_Build_Plan.md
-  - .agents/Directional/Architecture_M6_CP1_CB12_Close_Stop_Review_Record.md
+  - .agents/Directional/Architecture_M6_CP1_CB12_Close_R2_Oracle_Recovery_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M6_CP1_TB12_Close_Review_Record.md
   - .agents/Directional/Architecture_M6_Frozen_Definitions.md
-  - .agents/Directional/Architecture_M6_CP1_Required_Green_Focused_28.txt
+  - .agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt
 conditional_modules:
   - trigger: github_connector / GitHub Actions / compile
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
-  - src/pipeline/RemeshPipeline.cpp (A5 produce ~3760-3820; A7 cross-sheet ~6850-6872; view strip ~6278-6311; adapter counter ~7544)
-  - include/directional/geometry/PureQuadCompletion.h (CornerWedgeIsolationTransition 193-199)
-  - tests/SurfaceCellTransitionQuotientTests.cpp (identities 24-28)
+  - src/pipeline/RemeshPipeline.cpp (A5 wedge construction 4395-4470; A6 isolation checks 5257-5310, wedge copy 5449-5455; A7 cross-sheet 6884-6940; A6 name table ~5022)
+  - tests/SurfaceCellTransitionQuotientTests.cpp (make_square_fixture 377-417; identity 29 ~7346-7440)
   - .agents/Directional/GitHub_Workflow_Policy.md
 do_not_preload:
   - folded superseded M6 per-turn records
-  - src/geometry/SurfaceMeshOptimizer.cpp (RA-26: no R1 edits)
+  - src/geometry/SurfaceMeshOptimizer.cpp (RA-26)
   - research/provenance/examples
 ```

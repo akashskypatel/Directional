@@ -2611,3 +2611,14 @@ When a temporary workflow caller is assembled with low-level Git objects, creati
       - State the audit predicate in a form that can be searched, for example every read of `vertexProvenance[...]`, `provenance[...]` or `sourcePoint`, followed by `.face`. Require the auditor to report the search and its full hit list.
       - Classify each hit by effect: authority-deciding, reference-selecting, representation-only, or not a consumer. Block only on the class that threatens the checkpoint's semantics, and give the rest an owner and a falsifier.
     - Recorded at `M6-CP1-CB12-CLOSE-REV` (RA-26).
+199. **Harden the branch production reaches, and test it on a consistent product chain.**
+    - *What happened.*
+      - CB12 C1 made A7's selected-edge cross-sheet rule exact. But in produced data, sheet crossings happen inside bridge occurrences (corner wedges spanning a seam), and those are certified by a separate per-occurrence check that stayed an "any transition" proxy.
+      - Identity 29 then asserted a selected disjoint-sheet edge the producers cannot emit, so it went RED before its tamper.
+      - Its negative also paired a tampered A5 with a stale A6 built from the untampered A5, an input A7 cannot tell apart and the pipeline never produces.
+      - The first Review attributed the RED to forest selection and asked for a hand-built A5 witness.
+    - **Rule.**
+      - Before hardening or testing a fail-closed rule, derive from the producer's construction which branch real data reaches, and harden that branch first.
+      - Run every stage-level negative on a consistent chain: re-produce each downstream stage from the tampered upstream records.
+      - When a witness is unreachable from producers, defer the falsifier to a produced fixture; do not build records by hand.
+    - Recorded at the `M6-CP1-TB12-CLOSE-REV` review-agent addendum (RA-27a).
