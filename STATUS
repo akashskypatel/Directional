@@ -1,8 +1,8 @@
 ---TURN_STATUS---
 Turn: M6-CP2-DEFN
-Status: IN_PROGRESS
-Successor: M6-CP2-DEFN
+Status: COMPLETE
+Successor: M6-CP2-DEFN-REV
 Started at: 2026-10-05T12:53:20Z
 Resumed at: 2026-10-05T14:06:14Z
-Ended at: 
+Ended at: 2026-10-05T14:14:36Z
 ---END_TURN_STATUS---
