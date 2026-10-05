@@ -1,3 +1,14 @@
+## 2026-10-05 — `M6-CP2-CB1-VERIFIER-REV`: RA-28a §7 stop discharged; RA-28b; successor `M6-CP2-CB1-VERIFIER-R1`
+
+- **Stop report verified.** A5 picks `selectedFace` from the canonical corner face; edge/vertex wedge bindings are built independently; A7 `sourceCharts` come only from bindings.
+- **Root cause:** RA-28a §7 over-tightened RA-26 §5(iii) (sheet → face membership) and required an unpublished precondition. Review-agent error, owned.
+- **RA-28b:**
+  - no A5 invariant (the representative face stays representation-only);
+  - no optimizer change: authoritative `project_vertices` is confined to the seed scope, and that static property is certified by the completion RA-22b guard and verifier RA-28a §3 before movement, and by final validation after;
+  - identity 12 re-specified as a confinement falsifier (gate 491 unchanged);
+  - a note for DEFN-R5 that the class-wide reference must not assume `selectedFace` ∈ class chart faces.
+- **Docs:** new `Architecture_M6_CP2_CB1_Stop_Review_Record.md`; CB1 plan RA-28b block; lesson 202; handoff (top + live) / ORIENTATION / TODO / ROADMAP / tracker (+0) / consolidated §52. Accounting 60 / 16 / 44.
+
 ## 2026-10-05 — `M6-CP2-CB1-VERIFIER` stopped for Review on RA-28a §7
 
 - Re-derived the representative-face precondition on exact semantic source `8bc1f52b...` and found it is not certified by current A5/A7 semantics.

@@ -2640,3 +2640,12 @@ When a temporary workflow caller is assembled with low-level Git objects, creati
       - Write every verifier binding as a bijection or a set equality in both directions, with an explicit field table.
       - For each exact rule a producer applies to its own declared evidence, add a verifier check that derives that evidence's consistency from the upstream source authority.
     - Recorded at `M6-CP2-DEFN-REV` (RA-28a).
+202. **Before tightening a reviewed predicate, check the new precondition against published contracts, and check that the guarded operation can violate it.**
+    - *What happened.*
+      - RA-26 §5(iii) asked for class-wide **sheet** membership in place of the optimizer's vacuous anchor self-check.
+      - RA-28a §7 (review agent) tightened that to **face** membership, with a proof obligation (`selectedFace ∈ cornerWedgeBindings`) that A5/A7 never publish. CB1 correctly stopped.
+      - On review, the authoritative projection turned out to be confined to the seed's own face or scope. So *any* optimizer-side scope check only re-tests a static lineage property that the completion guard, the verifier and final validation already certify.
+    - **Rule.**
+      - When amending a predicate, cite where each precondition is published.
+      - Before adding a safety check, show that the operation it guards can actually produce the violation. If it cannot, pin the confinement with a falsifier rather than adding a check that can never fire.
+    - Recorded at `M6-CP2-CB1-VERIFIER-REV` (RA-28b).

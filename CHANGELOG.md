@@ -1,3 +1,10 @@
+## 2026-10-05 — `M6-CP2-CB1-VERIFIER-REV` — verifier build unblocked
+
+- The verifier build stopped on a rule it could not satisfy: it was asked to prove a fact about which source triangle a vertex is anchored to, and nothing in the pipeline guarantees that fact.
+- Review found the rule itself was wrong. It is withdrawn, and the optimizer is left unchanged.
+- A new test pins the property that makes this safe: the optimizer never moves a vertex off its own anchor.
+- Next: `M6-CP2-CB1-VERIFIER-R1` (gate 491).
+
 ## 2026-10-05 — `M6-CP2-DEFN-REV` — independent verifier design approved with fixes
 
 - The plan for the independent product verifier (CP2) is approved.

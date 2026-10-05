@@ -1,6 +1,6 @@
 # M6 Frozen Definitions — Occurrence, Quotient, Embedding, Independent Verification
 
-**Status:** FROZEN / **M6-CP1 CLOSED / ACCEPTED, mechanism-only**; `M6-CP2-DEFN` **ACCEPTED by `M6-CP2-DEFN-REV` with RA-28a**; reviewed runtime `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05`, focused30 + selector449 = **479/479**; `G4-B002` debt remains open (debt 1); **EXACT NEXT = `M6-CP2-CB1-VERIFIER`** (gate 30+12+449 = 491); RA-1 – RA-28a normative as annotated.
+**Status:** FROZEN / **M6-CP1 CLOSED / ACCEPTED, mechanism-only**; `M6-CP2-DEFN` ACCEPTED with RA-28a; **RA-28b** (`M6-CP2-CB1-VERIFIER-REV`: RA-28a §7 withdrawn; RA-26 §5(iii) resolved by non-authoritative retention; identity 12 re-specified); reviewed runtime `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05` (479/479); `G4-B002` debt open (debt 1); **EXACT NEXT = `M6-CP2-CB1-VERIFIER-R1`** (gate 491); RA-1 – RA-28b normative as annotated.
 **Date:** 2026-09-25
 **Definition authority:** this record is the normative M6 contract for A5 occurrence creation, A6 quotient construction/materialization, A7 source-attached geometry embedding, and the M6 structural portion of A8 independent verification. It refines `DESIGN.md` §14 M6 without changing accepted M5 producer semantics or pulling M7 disposition/degradation work forward.
 
@@ -1096,3 +1096,26 @@ Rationale: `Architecture_M6_CP2_DEFN_Review_Record.md` §2. RA-28 is accepted as
    - The adapter maps a verifier rejection to `VerificationFailed:<code>:<site>` from the first finding in semantic order, preserving the site.
 
 Successor: `M6-CP2-CB1-VERIFIER` (Code + Build; compile/package only) → `M6-CP2-TB1-VERIFIER-EXEC` (**491**) → `M6-CP2-TB1-VERIFIER-REV`. `M6-DEFN-R5` follows CP2. `G4-B002` stays open (debt 1). Accounting **60 / 16 / 44**.
+
+## RA-28b — RA-28a §7 withdrawn; optimizer check retained as non-authoritative; identity 12 re-specified (normative, 2026-10-05, `M6-CP2-CB1-VERIFIER-REV`)
+
+Rationale: `Architecture_M6_CP2_CB1_Stop_Review_Record.md` §2–§4.
+
+1. **Withdrawal.** RA-28a §7 is withdrawn: its face-membership predicate and its `selectedFace ∈ cornerWedgeBindings` precondition. A5/A7 do not publish that precondition, and RA-22b §2 keeps the representative face representation-only. **No A5 invariant is added.**
+2. **RA-26 §5(iii) resolution.** The existing optimizer component/sheet self-check stays **unchanged**, classified as non-authoritative. On the authoritative path, `project_vertices` confines every projected provenance to its seed's own face (vertex/edge/face-interior supports) or scope (degenerate fallback), at `SurfaceMeshOptimizer.cpp:706-750` and `:786-797`. So an optimizer-side check can only re-test a static lineage property, and that property is certified elsewhere:
+   - **before movement:** the frozen completion guard (`PureQuadCompletion.cpp:895-941`) and the CP2 verifier (RA-28a §3);
+   - **after movement:** final validation (`SourceAuthoritativeMeshValidator.cpp:1232-1262`).
+
+   **No `SurfaceMeshOptimizer` source change in CP2.**
+3. **Identity 12.** `M6CP2.AuthoritativeOptimizerProjectionStaysOnRepresentativeScope` replaces `M6CP2.OptimizerProjectionUsesClassWideChartAuthority` at position 12.
+   - **Setup:** authoritative-path constraints from a produced fixture. Non-vacuity requires at least one vertex-support and one edge-support seed. Those are the only kinds whose representative face can lie outside the wedge bindings. Face-interior seeds are asserted if present but not required.
+   - **Action:** call `surface_optimizer_detail::project_vertices` with perturbed candidates.
+   - **Assertions:**
+     1. the projected `face` equals the seed `face` for every valid seed;
+     2. `componentsOk` and `sheetsOk` are true;
+     3. `sheet_for_row(seed.face)` ∈ the sheets of the `vertexChartAuthority[v].sourceCharts` faces for every retained `v`.
+   - The identity count, order and gate (**491**) are unchanged.
+4. **Later-owner note.** Representative faces can lie outside the wedge bindings for edge and vertex supports. `M6-DEFN-R5`'s RA-26 §5(i)/(ii) class-wide reference must not assume `selectedFace` ∈ the class's chart faces.
+5. **Void.** The exploratory CB1 WIP's optimizer membership change is void. All other RA-28a sections are unchanged.
+
+Successor: `M6-CP2-CB1-VERIFIER-R1` (new turn; Code + Build) → `M6-CP2-TB1-VERIFIER-EXEC` (491) → `M6-CP2-TB1-VERIFIER-REV`. Accounting **60 / 16 / 44**, debt 1.

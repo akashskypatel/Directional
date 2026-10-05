@@ -1,3 +1,12 @@
+## Currency — `M6-CP2-CB1-VERIFIER-REV`: RA-28a §7 stop discharged (RA-28b); exact next `M6-CP2-CB1-VERIFIER-R1` (2026-10-05 UTC)
+
+- RA-28a §7 is withdrawn (it over-tightened RA-26 §5(iii); review-agent error). No A5 invariant is added.
+- RA-26 §5(iii) is resolved by non-authoritative retention, because authoritative projection is confined to the seed's own scope. Class-wide authority is the completion guard and the verifier before movement, and final validation after it. No optimizer change.
+- Identity 12 is re-specified as a confinement falsifier. Gate 491.
+
+Accounting **60 / 16 / 44**, debt 1.
+
+### Superseded currency note
 ## Currency — `M6-CP2-CB1-VERIFIER` STOP FOR REVIEW on RA-28a §7 (2026-10-05 UTC)
 
 - RA-28a §7 required proof that the representative `sourcePoint.face` is one of the class `sourceCharts` faces via `CornerPlacementProvenance.selectedFace ∈ cornerWedgeBindings`.
@@ -403,9 +412,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
- > **Current milestone authority (2026-10-05, after `M6-CP2-DEFN-REV`):** M4 and M5 remain CLOSED / ACCEPTED. **M6 CP1 is CLOSED / ACCEPTED, mechanism-only.** M6 CP2 is ACTIVE: the verifier Definition is accepted with RA-28a. Reviewed runtime authority is `11330703256 / 3f40f04a...` (focused30 + selector449 = 479/479). Stable accounting **60/16/44**, debt 1 (`G4-B002`, CP3). Exact next is `M6-CP2-CB1-VERIFIER` (gate 491).
+ > **Current milestone authority (2026-10-05, after `M6-CP2-CB1-VERIFIER-REV`):** M4 and M5 remain CLOSED / ACCEPTED. M6 CP1 is CLOSED / ACCEPTED, mechanism-only. M6 CP2 is ACTIVE: the Definition is accepted with RA-28a, amended by RA-28b. Reviewed runtime `11330703256 / 3f40f04a...` (479/479). Stable accounting **60/16/44**, debt 1. Exact next is `M6-CP2-CB1-VERIFIER-R1` (gate 491).
 
-**Currency.** `M6-CP2-DEFN-REV` (Review), 2026-10-05 UTC
+**Currency.** `M6-CP2-CB1-VERIFIER-REV` (Review), 2026-10-05 UTC
 
 **Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` §16.3 is the active same-region nonzero-Z4 contract. `PeriodicRelationId` remains carrier-content identity; relation rotation is the gauge-adjusted quotient `Q`, action/transport is relation value, and canonical storage may invert representation only after semantic Forward -> Reverse authority is fixed. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 
@@ -589,24 +598,18 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M6-CP2-CB1-VERIFIER` — EXACT NEXT (Code + Build; RA-28 + RA-28a).**
-   - Add record-view exports, `SurfaceProductVerifier` and the `VerifiedSurfaceProducts` stage function.
-   - Implement the §6.2 recomputes plus RA-28a §1–§3 (exact-once/forest/spanning/cycle, the field table, A5 wedge vs A0).
-   - Dependency gating; the reduced code set; the adapter string `VerificationFailed:<code>:<site>`.
-   - Optimizer check gated on `retained`.
-   - The 12 frozen identities in `Architecture_M6_CP2_Required_Green_Focused_12.txt`.
+1. **`M6-CP2-CB1-VERIFIER-R1` — EXACT NEXT (Code + Build; RA-28 + RA-28a [§7 withdrawn] + RA-28b).**
+   - Add record views, `SurfaceProductVerifier` and the `VerifiedSurfaceProducts` stage function.
+   - RA-28a §1–§6 and §8–§9.
+   - Identity 12 is the confinement falsifier (RA-28b §3).
+   - **No `SurfaceMeshOptimizer` change.**
    - Compile/package only → TB1 **491** → Review.
-   - Stops:
-     - a producer transforms a field in the table;
-     - the representative-face precondition is unprovable;
-     - any selector449 optimizer row changes;
-     - the verifier rejects an accepted row.
-   - CP1 is CLOSED / ACCEPTED, mechanism-only (`M6_CP1_Closure_Record.md`).
+   - CP1 is CLOSED / ACCEPTED, mechanism-only.
 1a. **`M6-DEFN-R5` — CP3-entry gate (not CP1).**
    - Periodic unequal-face-gauge witness, plus the coordinate / relation-gauge rule.
    - HardRail cross-region branch certification.
    - OrdinaryFront coordinate identity across isolation seams.
-   - RA-26 §5(i)(ii)(iv): a class-wide reference for optimizer energy/gradient and for the final-validation field-metric fallback; a representative-permutation falsifier. (§5(iii) moved to CP2 under RA-28/28a.)
+   - RA-26 §5(i)(ii)(iv): a class-wide reference for optimizer energy/gradient and for the final-validation field-metric fallback; a representative-permutation falsifier. (§5(iii) is resolved by RA-28b.) **The reference must not assume `selectedFace` ∈ the class's chart faces** (RA-28b §4).
    - RA-27a §6: an executed edge-rule falsifier on the first produced seam-collinear fixture. OBS-02: a relation-kind-aware cross-sheet rule. (OBS-01 moved to `M6-CP2-DEFN` by RA-27b §4.)
    - Runs after CP2.
 
@@ -638,6 +641,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 **A green behavioral test is not a contract proof when the oracle compares only a subset of the promised serialization — `M6-CP1-TB10-A5V-REV`, lesson 193.** Identity24 ran three real stage-valid fixtures but omitted multiple mesh/lineage/result fields, so those fields could drift without turning the test red. Enumerate the output type and prove every contract field is covered; a strong test name does not widen its assertions.
 
 **Moving validation into an earlier stage can still invert that stage's own pre-existing failure precedence — `M6-CP1-TB10-A5V-REV`, existing `VALIDATION_ORDER_SHADOWING`.** RA-19 explicitly required the moved helper after every old A5 check; placing it before `publish_records_for_validation` violates that boundary even when the full gate stays green.
+
+**Before tightening a reviewed predicate, check the new precondition against published contracts — and check that the guarded operation can violate it — `M6-CP2-CB1-VERIFIER-REV`, lesson 202.** RA-28a §7 turned RA-26 §5(iii)'s sheet membership into face membership, which required a representative-face fact A5/A7 never publish. Optimizer projection is also confined to the seed's own scope, so the check could never detect movement at all.
 
 **A verifier binding must be bidirectional, and exact rules over self-declared evidence need a source cross-check — `M6-CP2-DEFN-REV`, lesson 201.** The CP2 Definition bound each A6 record to some A5 relation, but not each A5 relation to exactly one A6 record, so a dropped relation or an unsupported union would verify. It also left A5's self-declared wedge sheets and transitions unchecked against A0. That makes RA-27a's exact rule only as strong as its own inputs.
 

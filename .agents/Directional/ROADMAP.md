@@ -1,3 +1,16 @@
+## Live M6 routing — after `M6-CP2-CB1-VERIFIER-REV` (RA-28b)
+
+| Checkpoint | State | Exact next / gate |
+|---|---|---|
+| M6 CP1 | **CLOSED / ACCEPTED, mechanism-only** | runtime `11330703256 / 3f40f04a...`, 479/479 |
+| M6 CP2 Definition | ACCEPTED (RA-28a, amended by RA-28b) | RA-28a §7 withdrawn; RA-26 §5(iii) resolved by non-authoritative retention |
+| M6 CP2 implementation | **EXACT NEXT** | `M6-CP2-CB1-VERIFIER-R1` -> TB1 **30+12+449 = 491** -> Review |
+| `M6-DEFN-R5` | CP3-entry gate, after CP2 | + RA-28b §4 note (reference must not assume `selectedFace` ∈ class chart faces) |
+
+Stable accounting: **60 / 16 / 44**, debt 1.
+
+### Superseded routing
+
 ## Live M6 routing — after `M6-CP2-DEFN-REV` (RA-28a)
 
 | Checkpoint | State | Exact next / gate |

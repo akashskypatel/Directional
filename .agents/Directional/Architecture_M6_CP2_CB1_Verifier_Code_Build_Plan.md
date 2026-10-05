@@ -1,5 +1,15 @@
 # `M6-CP2-CB1-VERIFIER` — Independent Verifier Code + Build Plan
 
+> **Review-agent block — `M6-CP2-CB1-VERIFIER-REV` (RA-28b), 2026-10-05. This block governs over the RA-28a summary and the body below.**
+> - This plan is now executed by the new turn **`M6-CP2-CB1-VERIFIER-R1`**.
+> - **RA-28a §7 is withdrawn.**
+>   - Goal 5 ("replace optimizer component/sheet self-check …") is **void**.
+>   - **No `SurfaceMeshOptimizer` source change.**
+>   - Do not apply the exploratory WIP's optimizer hunk.
+> - **Identity 12 is renamed and re-specified:** `M6CP2.AuthoritativeOptimizerProjectionStaysOnRepresentativeScope`, the confinement falsifier in RA-28b §3, at the same position.
+> - Everything else is unchanged: RA-28a §1–§6 and §8–§9, identities 1–11, and the gate **491**.
+> - The exploratory WIP (`…superseding-wip.patch`, SHA-256 `2162f2b8…`) may be reused **only** for the non-optimizer parts, and only after re-checking it against RA-28a §1–§6 and §8–§9.
+
 > **RELEASED by `M6-CP2-DEFN-REV` (2026-10-05) under RA-28 + RA-28a.** RA-28a is binding and governs this plan wherever they conflict (`Architecture_M6_Frozen_Definitions.md` RA-28a; rationale `Architecture_M6_CP2_DEFN_Review_Record.md`). Summary:
 > - §1: exact-once bijection, forest = Joining, published-forest spanning per class, strict cycle closure.
 > - §2: the exact A6 → A5 field table and the A7 → A6/A5 binding. Stop if a producer transforms instead of copying.

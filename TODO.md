@@ -1,4 +1,13 @@
-## Current — `M6-CP2-CB1-VERIFIER` STOP FOR REVIEW on RA-28a §7 (2026-10-05)
+## Current — `M6-CP2-CB1-VERIFIER-REV` / RA-28b / exact next `M6-CP2-CB1-VERIFIER-R1` (2026-10-05)
+
+- [x] Verify the stop report (all five points accurate); HEAD source == `3f40f04a`.
+- [x] Root cause: RA-28a §7 over-tightened RA-26 §5(iii) (review-agent error).
+- [x] Reject an A5 `selectedFace ∈ bindings` invariant and a class-wide optimizer check. Authoritative projection is confined to the seed scope, and that static property is certified by the completion guard, the verifier and final validation.
+- [x] RA-28b: retain the optimizer self-check as non-authoritative; re-specify identity 12 as a confinement falsifier; note for DEFN-R5; lesson 202.
+- [ ] **Exact next `M6-CP2-CB1-VERIFIER-R1`** (compile/package; no optimizer change).
+- [ ] TB1 **491** → mandatory Review.
+
+## Superseded stop — `M6-CP2-CB1-VERIFIER` RA-28a §7 (adjudicated by `M6-CP2-CB1-VERIFIER-REV`)
 
 - [x] Re-audit the RA-28a §7 representative-face precondition on exact semantic source `8bc1f52b...`.
 - [x] Establish that A5 selects `placement.selectedFace` independently of edge/vertex `cornerWedgeBindings`, phase-front closure does not require source-face identity, and A7 `sourceCharts` are binding-derived only.

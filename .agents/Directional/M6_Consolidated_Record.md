@@ -1,6 +1,6 @@
 **Current candidate authority after `M6-CP2-DEFN` (2026-10-05):** CP2 verifier Definition is complete and pending mandatory `M6-CP2-DEFN-REV`. It freezes record-view negative witnesses, typed semantic finding identity/order, exact A5→A6→A7 certificate binding, accepted-defensive C4 plus independent verifier manifoldness, three appended wedge tampers, production A8 after A7/before adapter projection, RA-26 §5(iii) class-wide optimizer chart membership, and a first gate of **30 + 12 + 449 = 491**. No implementation/runtime changed. Reviewed runtime remains `11330703256 / 3f40f04a...`; accounting **60 / 16 / 44**, debt 1.
 
-**Current authority after `M6-CP2-DEFN-REV` (2026-10-05):** M6 CP1 CLOSED / ACCEPTED, mechanism-only; CP2 Definition accepted with RA-28a (§51); reviewed runtime `11330703256 / 3f40f04a...` (479/479). Accounting **60 / 16 / 44**, debt 1. Exact next: `M6-CP2-CB1-VERIFIER` → TB1 (491) → Review.
+**Current authority after `M6-CP2-CB1-VERIFIER-REV` (2026-10-05):** M6 CP1 CLOSED / ACCEPTED, mechanism-only; CP2 Definition accepted with RA-28a, amended by RA-28b (§52); reviewed runtime `11330703256 / 3f40f04a...` (479/479). Accounting **60 / 16 / 44**, debt 1. Exact next: `M6-CP2-CB1-VERIFIER-R1` → TB1 (491) → Review.
 
 **Current authority after `M6-CP1-TB12-CLOSE-REV` (2026-10-05):** TB12 candidate `11324028392 / 02149f15...` remains unpromoted after 478/479. CAND-01 is adjudicated **FALSE REJECTION / TEST-FIXTURE WITNESS DEFECT / RECOVERY REQUIRED / NON-STABLE**; RA-27 authorizes test-only `M6-CP1-CB12-CLOSE-R2`, then a fresh 479-process R1 gate and mandatory Review. Reviewed runtime remains `11316716869 / 8dd95821...`; accounting **60 / 16 / 44**, debt 1.
 
@@ -493,6 +493,19 @@ Lesson 200. Accounting 60 / 16 / 44.
 - §9: the A0 tuple and `VerificationFailed:<code>:<site>`.
 
 No new identities. Lesson 201. Exact next `M6-CP2-CB1-VERIFIER`.
+
+## 52. `M6-CP2-CB1-VERIFIER-REV` — RA-28a §7 stop discharged; RA-28b
+
+CB1 stopped because RA-28a §7 required a fact that A5/A7 do not publish: that `selectedFace` belongs to `cornerWedgeBindings`. Review confirms that, and traces the cause to RA-28a §7 itself. It had over-tightened RA-26 §5(iii) from sheet membership to face membership (review-agent error).
+
+**Adjudication:**
+- No A5 invariant: the representative face stays representation-only (RA-22b §2).
+- No optimizer check. Authoritative `project_vertices` confines projections to the seed's own face or scope, so any optimizer check re-tests a static property that is certified by the completion guard and the verifier before movement, and by final validation after.
+- The self-check is retained as non-authoritative.
+- Identity 12 is re-specified as a confinement falsifier. Gate 491.
+- Note for `M6-DEFN-R5`'s reference work.
+
+Lesson 202. Exact next `M6-CP2-CB1-VERIFIER-R1`.
 
 ## Folded document index
 

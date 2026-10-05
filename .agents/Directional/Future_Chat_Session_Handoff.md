@@ -1,4 +1,22 @@
-## Resume-critical update — `M6-CP2-CB1-VERIFIER` STOP FOR REVIEW on RA-28a §7 (2026-10-05)
+## Resume-critical update — `M6-CP2-CB1-VERIFIER-REV`: RA-28a §7 stop DISCHARGED (RA-28b); exact next `M6-CP2-CB1-VERIFIER-R1` (2026-10-05)
+
+**Start `M6-CP2-CB1-VERIFIER-R1` as a new Code + Build turn (compile/package only).** Follow `Architecture_M6_CP2_CB1_Verifier_Code_Build_Plan.md`; **its top RA-28b block governs.**
+
+Why the stop is discharged:
+- The stop was correct. The fault was RA-28a §7 (a review-agent error): it tightened RA-26 §5(iii)'s sheet membership into face membership, which needs `selectedFace ∈ cornerWedgeBindings`, and A5/A7 do not publish that.
+- **No A5 invariant is added**; the representative face stays representation-only (RA-22b §2).
+- **No optimizer change.** Authoritative `project_vertices` keeps every projection on the seed's own face or scope (`SurfaceMeshOptimizer.cpp:706-750`, `:786-797`), so an optimizer check only re-tests a static property that is certified elsewhere:
+  - by the completion guard (`PureQuadCompletion.cpp:895-941`) and verifier RA-28a §3 before movement;
+  - by final validation (`SourceAuthoritativeMeshValidator.cpp:1232-1262`) after movement.
+
+What changes for R1:
+- **Identity 12** is renamed to `M6CP2.AuthoritativeOptimizerProjectionStaysOnRepresentativeScope`. It is a confinement falsifier: projected face == seed face, `componentsOk`/`sheetsOk` hold, and the seed sheet ∈ class chart sheets, with at least one vertex-support and one edge-support seed (face-interior optional).
+- Everything else in RA-28a is unchanged. Gate **491**.
+- Do not apply the WIP's optimizer hunk.
+
+Reviewed runtime `11330703256 / 3f40f04a...` (479/479). Accounting **60 / 16 / 44**, debt 1.
+
+## Superseded by `M6-CP2-CB1-VERIFIER-REV` — `M6-CP2-CB1-VERIFIER` STOP FOR REVIEW on RA-28a §7 (2026-10-05)
 
 **Do not apply the exploratory CP2 verifier WIP, compile it, or start TB1.** CB1 hit RA-28a §7's explicit conditional stop: the required derivation `CornerPlacementProvenance.selectedFace ∈ cornerWedgeBindings` is not present in the accepted A5/A7 contracts.
 
@@ -978,40 +996,40 @@ Review must independently re-open source/evidence and re-derive: split-square v0
 
 ## Current authority
 
-- **M6 CP1:** CLOSED / ACCEPTED, mechanism-only (`M6_CP1_Closure_Record.md`).
-- **M6 CP2 Definition:** ACCEPTED by `M6-CP2-DEFN-REV` with RA-28a (`Architecture_M6_CP2_DEFN_Review_Record.md`).
+- **M6 CP1:** CLOSED / ACCEPTED, mechanism-only.
+- **M6 CP2 Definition:** accepted with RA-28a, amended by **RA-28b** (`M6-CP2-CB1-VERIFIER-REV`, `Architecture_M6_CP2_CB1_Stop_Review_Record.md`).
 - Reviewed runtime authority: `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05` (focused-30 + selector449 = **479/479**).
-- Normative: RA-1 – RA-28a.
-- Accounting **60 / 16 / 44**, debt **1** (`G4-B002`, CP3).
+- Normative: RA-1 – RA-28b.
+- Accounting **60 / 16 / 44**, debt **1**.
 
 ## Exact next turn
 
-**`M6-CP2-CB1-VERIFIER` — new turn; Code + Build, compile/package only.** Follow `Architecture_M6_CP2_CB1_Verifier_Code_Build_Plan.md` (released) under RA-28 + RA-28a.
-- Create `Architecture_M6_CP2_Required_Green_Focused_12.txt` with the 12 Definition identities in order.
-- Mandatory reusable GMP/GMPXX workflow; standard eight targets; `runtimeExecution=false`.
+**`M6-CP2-CB1-VERIFIER-R1` — new turn; Code + Build, compile/package only.** Follow `Architecture_M6_CP2_CB1_Verifier_Code_Build_Plan.md` (RA-28b block governs) under RA-28 + RA-28a (§7 withdrawn) + RA-28b.
+- Create `Architecture_M6_CP2_Required_Green_Focused_12.txt`. Identity 12 is `M6CP2.AuthoritativeOptimizerProjectionStaysOnRepresentativeScope`.
+- **No `SurfaceMeshOptimizer` change.**
 - Compile-green → `M6-CP2-TB1-VERIFIER-EXEC` (**491**) → mandatory `M6-CP2-TB1-VERIFIER-REV`.
 
 ## Completed predecessor turns (reference only)
 
-- `M6-CP2-DEFN-REV` — Definition accepted with RA-28a; CB1 released.
-- `M6-CP2-DEFN` — CP2 candidate contract (RA-28).
-- `M6-CP1-CLOSE-REV` — CP1 CLOSED / ACCEPTED, mechanism-only.
-- Earlier CP1 turns are folded in `M6_Consolidated_Record.md`.
+- `M6-CP2-CB1-VERIFIER-REV` — RA-28a §7 stop discharged; RA-28b.
+- `M6-CP2-CB1-VERIFIER` — BLOCKED stop report; no source applied.
+- `M6-CP2-DEFN-REV` (RA-28a), `M6-CP2-DEFN` (RA-28), `M6-CP1-CLOSE-REV` (CP1 closed).
 
 ## Current files
 
-- `.agents/Directional/Architecture_M6_CP2_CB1_Verifier_Code_Build_Plan.md` — exact next plan (released; RA-28a block).
-- `.agents/Directional/Architecture_M6_CP2_Definition_Record.md` — the CP2 Definition (D1–D6).
-- `.agents/Directional/Architecture_M6_CP2_DEFN_Review_Record.md` — Review authority; findings F1–F9.
-- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — normative; §6, §10, RA-17, RA-26, RA-27a, RA-28, RA-28a.
-- `.agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt` + selector449 / routing449 — frozen gate prefixes.
-- `.agents/Directional/M6_CP1_Closure_Record.md` — CP1 closure authority.
+- `.agents/Directional/Architecture_M6_CP2_CB1_Verifier_Code_Build_Plan.md` — exact next plan (RA-28b block governs).
+- `.agents/Directional/Architecture_M6_CP2_CB1_Stop_Review_Record.md` — Review authority for RA-28b.
+- `.agents/Directional/Architecture_M6_CP2_CB1_Verifier_Code_Build_Report.md` — CB1 stop report.
+- `.agents/Directional/Architecture_M6_CP2_Definition_Record.md` and `Architecture_M6_CP2_DEFN_Review_Record.md` — the Definition and RA-28a authority.
+- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — RA-28, RA-28a, RA-28b.
+- `.agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt` + selector449 / routing449 — frozen prefixes.
 
 ## Context Load Plan
 
 ```yaml
 load_next:
   - .agents/Directional/Architecture_M6_CP2_CB1_Verifier_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M6_CP2_CB1_Stop_Review_Record.md
   - .agents/Directional/Architecture_M6_CP2_Definition_Record.md
   - .agents/Directional/Architecture_M6_CP2_DEFN_Review_Record.md
   - .agents/Directional/Architecture_M6_Frozen_Definitions.md
@@ -1022,7 +1040,7 @@ deep_references:
   - include/directional/pipeline/RemeshPipeline.h (A5 SurfaceOccurrence 814-841, relation evidence 860-890; A6 certificate/consumption/forest/path 1029-1097, records 1249-1256; A7 1339-1462)
   - src/pipeline/RemeshPipeline.cpp (A5 wedge construction 4395-4470; A6 certificate copy 5219-5224/5338/5365 and publication check 5770-5795; partition 5810-5890; A7 6512-7000; adapter 7293-7622; optimizer chart authority 12868-12872)
   - include/directional/validation/SourceAuthoritativeMeshValidator.h (SourceVertexChartAuthority 63-67)
-  - src/geometry/SurfaceMeshOptimizer.cpp (project_vertices 759-880)
+  - src/geometry/SurfaceMeshOptimizer.cpp (project_to_provenance_entity 690-755, project_vertices 759-880; READ-ONLY for identity 12, no edits)
   - tests/SurfaceCellTransitionQuotientTests.cpp (split_isolation_fixture; identity 29)
   - .agents/Directional/GitHub_Workflow_Policy.md
 do_not_preload:

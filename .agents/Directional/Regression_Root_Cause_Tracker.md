@@ -1,3 +1,16 @@
+## 2026-10-05 — `M6-CP2-CB1-VERIFIER-REV` — RA-28a §7 stop discharged; RA-28b — **+0 / 60/16/44 / debt 1**
+
+- No product change and no regression.
+- The CB1 stop was correct: A5/A7 do not publish `selectedFace ∈ cornerWedgeBindings` for edge/vertex supports.
+- Root cause: RA-28a §7 over-tightened RA-26 §5(iii) from sheet membership to face membership (review-agent error, owned; lesson 202).
+- Resolution:
+  - no A5 invariant;
+  - the optimizer self-check is retained as non-authoritative, because authoritative projection is confined to the seed scope;
+  - identity 12 is re-specified as a confinement falsifier.
+- **Note for `M6-DEFN-R5`:** RA-26 §5(i)/(ii) must not assume the representative face is a class chart face.
+
+**Stable accounting: `60 events / 16 categories / 44 recurrences`, debt 1.**
+
 ## 2026-10-05 — `M6-CP2-DEFN-REV` — CP2 Definition accepted with RA-28a — **+0 / 60/16/44 / debt 1**
 
 - Runtime-free Review; no product change and no regression candidate.
