@@ -23,26 +23,75 @@ jobs:
       source_ref: ${{ github.sha }}
     secrets: inherit
 
-  compile:
+  fix:
     needs: validate
     if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    outputs:
+      fixed_sha: ${{ steps.fix.outputs.fixed_sha }}
+    steps:
+      - name: Checkout correction authority
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Apply diagnosed compile correction
+        id: fix
+        shell: bash
+        run: |
+          set -euo pipefail
+          base=1b3944e87001fb915cdedcd708bdab6b50dd20b8
+          path=src/pipeline/RemeshPipeline.cpp
+          git cat-file -e "${base}^{commit}"
+          if ! git diff --quiet "$base" "$GITHUB_SHA" -- "$path"; then
+            echo "target path changed since failed compile source" >&2
+            git diff --name-only "$base" "$GITHUB_SHA" -- "$path"
+            exit 2
+          fi
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("src/pipeline/RemeshPipeline.cpp")
+          s = p.read_text()
+          old = "occurrenceComplex.certificate().validatedIsolationCertificateCount"
+          new = "occurrenceComplex->certificate().validatedIsolationCertificateCount"
+          if s.count(old) != 1:
+              raise SystemExit(f"expected exactly one diagnosed expression, found {s.count(old)}")
+          p.write_text(s.replace(old, new, 1))
+          PY
+          git diff --check
+          test "$(git diff --name-only)" = "$path"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- "$path"
+          git diff --cached --check
+          git commit -m "M6-CP1-CB12-CLOSE-R1: fix occurrence certificate access"
+          fixed_sha="$(git rev-parse HEAD)"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          echo "fixed_sha=$fixed_sha" >> "$GITHUB_OUTPUT"
+          echo "fixed_sha=$fixed_sha"
+          echo "runtimeExecution=false"
+
+  compile:
+    needs: [validate, fix]
+    if: ${{ needs.validate.outputs.valid == 'true' && needs.fix.result == 'success' }}
     uses: ./.github/workflows/agent-compile-reusable.yml
     with:
-      source_sha: 1b3944e87001fb915cdedcd708bdab6b50dd20b8
+      source_sha: ${{ needs.fix.outputs.fixed_sha }}
       targets: directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks
       artifact_prefix: m6-cp1-cb12-close-r1-compile
     secrets: inherit
 
   mailbox:
     if: ${{ always() }}
-    needs: [compile]
+    needs: [fix, compile]
     permissions:
       actions: read
       contents: write
     uses: ./.github/workflows/workflow-mailbox-publisher.yml
     with:
       workflow_key: m6-cp1-cb12-close-r1-compile
-      source_sha: 1b3944e87001fb915cdedcd708bdab6b50dd20b8
+      source_sha: ${{ needs.fix.outputs.fixed_sha || github.sha }}
       source_ref: refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing
       result: ${{ needs.compile.result }}
-      summary: Compile and package M6-CP1-CB12-CLOSE-R1 exact source; runtime execution forbidden.
+      summary: Compile and package M6-CP1-CB12-CLOSE-R1 exact source after bounded diagnosed compile correction; runtime execution forbidden.
