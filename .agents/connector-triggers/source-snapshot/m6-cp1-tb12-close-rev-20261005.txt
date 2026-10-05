@@ -1,3 +1,0 @@
-Purpose: exact repository snapshot for M6-CP1-TB12-CLOSE-REV
-Expected source authority: 91eea0e61288f0adbeeda08cb4285c17c3aa8a68
-Retry: 0
