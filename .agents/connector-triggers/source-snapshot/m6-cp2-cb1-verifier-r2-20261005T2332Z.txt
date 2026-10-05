@@ -1,0 +1,2 @@
+turn=M6-CP2-CB1-VERIFIER-R2
+requested_base=e4f17c25cd33f798ca00b7c0c443a52d54b0ab73
