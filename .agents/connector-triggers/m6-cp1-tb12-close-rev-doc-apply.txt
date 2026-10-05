@@ -1,0 +1,5 @@
+Purpose: apply verified M6-CP1-TB12-CLOSE-REV durable Review patch
+Patch base: 08f53f78fd1039f16c026322622516c626ccfe70
+Drive file: 1wRmCIthHRMiAOyPSwd5p9tc8WV3c76Z2
+Patch SHA-256: 1e84784b93833d49d7e1bbe5358420194d037625050e31ef59dc0868b1c28f7f
+Retry: 0
