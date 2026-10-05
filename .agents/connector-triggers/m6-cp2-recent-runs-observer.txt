@@ -1,0 +1,3 @@
+Purpose: diagnose M6-CP2-CB1-VERIFIER-R1 workflow discovery
+Caller install commit: eea4419349271d40891d7df203ac05f5779635db
+Retry: 0
