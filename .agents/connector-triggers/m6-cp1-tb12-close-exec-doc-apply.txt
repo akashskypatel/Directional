@@ -1,5 +1,0 @@
-Purpose: apply verified M6-CP1-TB12-CLOSE-EXEC durable report/routing patch
-Patch base: 11c38f190a50a78ab874261443215c0ba9a44ba4
-Drive file: 1mShfBBXmXcW3Tn5BsIj76ELcqvMbEAJ-
-Patch SHA-256: 23cb9444a67d8e5e4a701d363b23dbd298970e87817e788c2c9859d5505d2b1a
-Retry: 0
