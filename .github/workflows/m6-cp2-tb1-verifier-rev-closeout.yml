@@ -1,0 +1,51 @@
+name: M6 CP2 TB1 Verifier Review Closeout
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m6-cp2-tb1-verifier-rev-closeout.txt
+
+permissions:
+  actions: read
+  contents: write
+  id-token: write
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m6-cp2-tb1-verifier-rev-closeout.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    permissions:
+      contents: write
+      id-token: write
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1NRRu9xTWEGCdkUGX8GrWTYRjwZ2QbB8W
+      patch_sha256: 6dff2e905c71aad139d5afc11e8d8c12dcee2f84f194e36b0d8bae3720621735
+      base_sha: 245d59ec9540e2c96d079013c6b7bc10afe61952
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close M6 CP2 TB1 verifier review"
+      retention_days: 14
+    secrets: inherit
+
+  mailbox:
+    if: ${{ always() }}
+    needs: [validate, apply]
+    permissions:
+      actions: read
+      contents: write
+    uses: ./.github/workflows/workflow-mailbox-publisher.yml
+    with:
+      workflow_key: m6-cp2-tb1-verifier-rev-closeout
+      source_sha: 245d59ec9540e2c96d079013c6b7bc10afe61952
+      source_ref: refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing
+      result: ${{ needs.apply.result }}
+      summary: M6-CP2-TB1-VERIFIER-REV durable review closeout documentation.
