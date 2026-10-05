@@ -1,0 +1,23 @@
+name: M6 CP2 CB1 Verifier R2 Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m6-cp2-cb1-verifier-r2-drive-apply/**
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1cfQZZ6-wwGrhSxpbBzbLrj69l4YpS4vZ
+      patch_sha256: 2c4f723af19b68410f90ef2b4dd39470784374e256444af5e5ab120b1e1c0299
+      base_sha: 05c9cad3262ad8cf6201536cd7adf37de598a40b
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "M6-CP2-CB1-VERIFIER-R2: verifier recovery"
+    secrets: inherit
