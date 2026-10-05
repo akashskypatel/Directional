@@ -1,3 +1,20 @@
+## M6-CP2-CB1-VERIFIER-R2 — WIP closeout (2026-10-05)
+
+This code/build turn remains **IN_PROGRESS**. The authoritative source snapshot was workflow run `37388961700`, source SHA `05c9cad3262ad8cf6201536cd7adf37de598a40b`, artifact `11380620376`, digest `sha256:063be6711745f93b6de84a55ea17e95ae4839a1efde540e2743bba8f44374847`, with `runtimeExecution=false`.
+
+A bounded WIP patch was prepared for exactly:
+- `include/directional/pipeline/RemeshPipeline.h`
+- `src/pipeline/RemeshPipeline.cpp`
+- `tests/SurfaceCellTransitionQuotientTests.cpp`
+
+Patch SHA-256: `2c4f723af19b68410f90ef2b4dd39470784374e256444af5e5ab120b1e1c0299`. Preserved Google Drive file ID: `1cfQZZ6-wwGrhSxpbBzbLrj69l4YpS4vZ` (`m6cp2-r2-directional-WIP-preserved.patch`). The attempted temporary Drive-apply caller produced no source commit before closeout and was cleaned up; the original apply file was permanently deleted so a delayed run cannot consume it. No compile/package workflow was started and no Directional executable was run.
+
+The WIP patch implements the RA-29/RA-29a production-side direction and strengthens the existing focused identities: A0 component-adjacency recomputation; shared `SurfacePointSourceSupportResolver` checks at A5/A7; `a6:relation-class`; exact selected-forest path validation before transport composition; single-pass edge-owner / vertex-edge topology maps; exact A7 step binding through A6 selected paths; content-owning `VerifiedSurfaceProducts`; carried `VerificationReport`; and post-projection counters read through the verified token. Tests were updated for canonical source-face mismatch, support mismatch, relation-class split, non-vacuous A6 transport tamper, >=2-step selected-path structure tamper, disjoint-component weld, and carried-report assertions. These edits are **not yet compiled**.
+
+**Resume this same turn.** Re-fetch HEAD, apply the preserved patch through the established Google Drive patch workflow against the unchanged intended paths (or regenerate it against current HEAD if needed), then run the mandated compile/package-only workflow for all eight standard GMP/GMPXX targets. Do not execute tests or Directional binaries. If compile/package is green, close this turn COMPLETE with successor `M6-CP2-TB1-VERIFIER-R1-EXEC`; otherwise preserve the corrected patch and remain on this turn.
+
+---
+
 ## Resume-critical update — `M6-CP2-TB1-VERIFIER-REV` review-agent addendum: RA-29a extends R2 (2026-10-05)
 
 **Start `M6-CP2-CB1-VERIFIER-R2`** under RA-29 **+ RA-29a**. The top block of `Architecture_M6_CP2_CB1_Verifier_R2_Recovery_Code_Build_Plan.md` is binding.
