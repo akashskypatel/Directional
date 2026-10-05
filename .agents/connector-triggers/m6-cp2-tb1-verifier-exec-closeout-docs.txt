@@ -1,0 +1,5 @@
+Purpose: apply durable closeout documentation for M6-CP2-TB1-VERIFIER-EXEC
+Patch file ID: 1NpSDi74SOzlo38GpecuY2vlnB3PRYQRg
+Patch SHA-256: b88ea93dc85bb6fe5a9604c15fb63062079169c44e5acbe83b86f7775be5d133
+Base source: 57c21ac18bfbe4f1d759a04cc504b833b5ec4a8a
+Retry: 0
