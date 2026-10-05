@@ -1,0 +1,2 @@
+Purpose: obtain exact source snapshot for M6-CP2-CB1-VERIFIER.
+Pre-trigger authority: d85676dd0a6c146177ef9361c7bfe385cdab18bb
