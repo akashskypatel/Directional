@@ -2,12 +2,13 @@
 
 Immutable candidate `11324028392 / 02149f1518fc6a753acf3235f7dcdc6fcdf59f24` completed the 479-process gate: focused **29/30**, selector449 **449/449**, aggregate **478/479**, exact-one, zero skips, benchmark 0, immutable postflight, self-manifest **979/979**.
 
-### `M6-CP1-TB12-CLOSE-EXEC-CAND-01` — ACTIVE / NON-STABLE / REVIEW-OWNED / witness non-vacuity not established
+### `M6-CP1-TB12-CLOSE-EXEC-CAND-01` — ADJUDICATED / FALSE REJECTION / TEST-FIXTURE WITNESS DEFECT / RECOVERY REQUIRED / NON-STABLE
 
 - Population: focused ordinal29 only; focused1-28, identity30 and selector449 PASS.
 - First failure: `crossSheetEdge` is null; no selected relation has disjoint endpoint `cornerWedgeSheets`.
 - Baseline A7 succeeds, but the test exits before any isolation transition is rewritten, so the intended C1 falsifier is not exercised.
-- EXEC cannot distinguish fixture/oracle authority from production-selection behavior; mandatory Review owns adjudication.
+- Review proves the fixture assumption is invalid: A6 owes a deterministic spanning forest, not a selected cross-sheet edge in this specific split-isolation fixture. The RED is therefore a test-fixture witness defect, not an established production-selection defect.
+- Production C1 statically matches the endpoint-sheet transition rule, but the negative falsifier remains runtime-unproved. RA-27 routes test-only witness recovery through `M6-CP1-CB12-CLOSE-R2` and a fresh 479-process R1 gate.
 - Identity29 is new gate authority and no accepted-green row became RED: **+0 events / +0 categories / +0 recurrences**, debt unchanged. Candidate remains unpromoted.
 
 Earlier run `37264751953` was startup-invalid with zero jobs and is orchestration-only.

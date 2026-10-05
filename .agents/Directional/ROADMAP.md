@@ -1,3 +1,18 @@
+## Live M6 routing — after `M6-CP1-TB12-CLOSE-REV`
+
+| Checkpoint | State | Exact next / gate |
+|---|---|---|
+| M6 CP1 reviewed runtime | **RETAINED** | `11316716869 / 8dd95821...`, 477/477 |
+| TB12 candidate | **UNPROMOTED** | `11324028392 / 02149f15...`; 478/479 |
+| CAND-01 | **FALSE REJECTION / RECOVERY REQUIRED** | identity29 fixture lacks selected cross-sheet witness |
+| Recovery CB | **EXACT NEXT** | `M6-CP1-CB12-CLOSE-R2`, test-only + compile/package |
+| Recovery TB | Held | `M6-CP1-TB12-CLOSE-R1-EXEC`, 479 -> mandatory R1 Review |
+| CP1 closure | Held | only after recovered TB Review |
+
+Stable accounting: **60 / 16 / 44**, debt 1.
+
+### Superseded routing
+
 ## Live M6 routing — after `M6-CP1-TB12-CLOSE-EXEC`
 
 | Checkpoint | State | Exact next / gate |

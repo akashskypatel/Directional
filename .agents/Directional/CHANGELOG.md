@@ -1,3 +1,10 @@
+## 2026-10-05 — `M6-CP1-TB12-CLOSE-REV`: identity29 is a fixture-witness false rejection; RA-27 recovery
+
+- Independently re-derived TB12 478/479 and exact ordinal29 failure before the C1 tamper.
+- The split-isolation fixture is not contractually required to put a cross-sheet relation in A6's selected spanning forest; absence of that selected edge is not a production-selection defect.
+- CAND-01 -> **FALSE REJECTION / TEST-FIXTURE WITNESS DEFECT / RECOVERY REQUIRED / NON-STABLE**. Candidate remains unpromoted; C1 negative runtime proof remains outstanding.
+- RA-27 authorizes test-only `M6-CP1-CB12-CLOSE-R2`; no production change. Recovery gate remains focused30 + selector449 = 479, then mandatory R1 Review. Accounting 60 / 16 / 44, debt 1.
+
 ## 2026-10-05 — `M6-CP1-TB12-CLOSE-EXEC`: mechanically valid 478/479; identity29 witness non-vacuity RED
 
 - Runtime `37266239234 / 111623615471`: focused30 **29/30**, selector449 **449/449**, aggregate **478/479**, exact-one, zero skips, benchmark 0, 979/979 evidence and immutable postflight.

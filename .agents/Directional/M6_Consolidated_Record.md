@@ -1,3 +1,5 @@
+**Current authority after `M6-CP1-TB12-CLOSE-REV` (2026-10-05):** TB12 candidate `11324028392 / 02149f15...` remains unpromoted after 478/479. CAND-01 is adjudicated **FALSE REJECTION / TEST-FIXTURE WITNESS DEFECT / RECOVERY REQUIRED / NON-STABLE**; RA-27 authorizes test-only `M6-CP1-CB12-CLOSE-R2`, then a fresh 479-process R1 gate and mandatory Review. Reviewed runtime remains `11316716869 / 8dd95821...`; accounting **60 / 16 / 44**, debt 1.
+
 **Current authority after `M6-CP1-TB12-CLOSE-EXEC` (2026-10-05):** candidate `11324028392 / 02149f15...` completed focused30 **29/30** + selector449 **449/449** = **478/479** in run/job `37266239234 / 111623615471`, exact-one, zero skips, benchmark 0, 979/979 evidence and immutable postflight. Sole RED identity29 fails witness non-vacuity because the split-isolation fixture has no selected forest edge with disjoint endpoint sheet sets; its C1 tamper is never reached. CAND-01 is non-stable / Review-owned, accounting **60 / 16 / 44**, debt 1. Candidate unpromoted; reviewed runtime `11316716869 / 8dd95821...`. Exact next: `M6-CP1-TB12-CLOSE-REV`; CP1 close held.
 
 **Current authority after `M6-CP1-CB11-G4` (2026-10-04):** CB11 is COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE at semantic source `582da20a925ba920c923bf5aacb9e0e56ef0723d`. Candidate result artifact `11308472138` is unpromoted. Reviewed runtime remains `11299078582 / 96b456f9...` at 473/473. Stable accounting remains **60 / 16 / 44**, debt 1. Exact next: immutable `M6-CP1-TB11-G4-EXEC`, focused28+selector449 = **477**, then mandatory Review; CP1 close remains held.
@@ -639,3 +641,10 @@ RA-26 discharged C5 before R1. R1 therefore implemented only C1–C4: exact A7 s
 The first compile-only run `37259162318` found one pointer member-access typo; a one-line bounded correction produced exact source `02149f1518fc6a753acf3235f7dcdc6fcdf59f24`. Retry run/job `37259524323 / 111603703243` compiled and linked all eight standard GMP/GMPXX targets. Result/log artifacts `11324028392 / 11323679468`; outer digests `4e6b208a...afba1 / 82adb1a6...c7766`; packaged manifest 28/28, clean source, `runtimeExecution=false`. No runtime acceptance is claimed.
 
 Exact next is immutable `M6-CP1-TB12-CLOSE-EXEC`: focused30 + selector449 = **479**, then mandatory Review and CP1 close Review. Stable accounting remains **60 / 16 / 44**, debt 1.
+
+
+## 46. `M6-CP1-TB12-CLOSE-REV` — identity29 false rejection; RA-27 recovery
+
+Independent Review re-derives TB12 at 478/479 and confirms ordinal29 fails at witness non-vacuity before any transition tamper. CB12 C1 is specifically about selected-forest edges with disjoint endpoint wedge-sheet sets. A6 constructs a deterministic spanning forest and does not owe a cross-sheet selected edge for every split-isolation fixture. The split-square assumption in identity29 is therefore invalid; no production-selection defect is established.
+
+CAND-01 is **FALSE REJECTION / TEST-FIXTURE WITNESS DEFECT / RECOVERY REQUIRED / NON-STABLE**. Production C1 is statically consistent with the exact endpoint-sheet transition rule, but the negative falsifier remains runtime-unproved, so candidate `11324028392 / 02149f15...` is not promoted. RA-27 freezes test-only recovery in `M6-CP1-CB12-CLOSE-R2`, then a fresh 479-process `M6-CP1-TB12-CLOSE-R1-EXEC` and mandatory R1 Review. Stable accounting remains 60/16/44, debt 1.

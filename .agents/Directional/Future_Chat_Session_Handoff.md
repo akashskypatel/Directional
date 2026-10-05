@@ -1,3 +1,11 @@
+## Resume-critical update — `M6-CP1-TB12-CLOSE-REV` COMPLETE / CAND-01 false rejection / exact next `M6-CP1-CB12-CLOSE-R2` (2026-10-05)
+
+**Start runtime-free `M6-CP1-CB12-CLOSE-R2`; do not rerun TB12, promote `02149f15...`, change production C1, or begin CP1 close.**
+
+Independent Review confirms TB12 mechanical integrity (478/479; sole RED identity29) and adjudicates CAND-01 as **FALSE REJECTION / TEST-FIXTURE WITNESS DEFECT / RECOVERY REQUIRED / NON-STABLE**. Identity29 assumes `split_isolation_fixture()` must contain a selected-forest edge with disjoint endpoint sheet sets; TB12 proves it does not, so the test exits before its transition tamper. A6 is only required to publish a deterministic spanning forest, not to select a cross-sheet relation in that fixture. Production C1 statically matches the exact endpoint-sheet transition rule and is not disproved, but its negative falsifier remains runtime-unproved. Candidate stays unpromoted.
+
+RA-27 freezes test-only recovery: construct a valid production-derived A6 witness with a non-vacuous selected cross-sheet join, prove baseline A7 acceptance, then disconnect the relevant transition sheet IDs and require `UncertifiedCrossSheetBinding/:cross-sheet`. No production change. Compile-green R2 -> `M6-CP1-TB12-CLOSE-R1-EXEC` (479) -> mandatory R1 Review -> only then CP1 close. Accounting remains **60 / 16 / 44**, debt 1.
+
 ## Resume-critical update — `M6-CP1-TB12-CLOSE-EXEC` COMPLETE / 478/479 / exact next `M6-CP1-TB12-CLOSE-REV` (2026-10-05)
 
 **Start mandatory runtime-free `M6-CP1-TB12-CLOSE-REV`; do not rerun TB12, rebuild/repair the candidate, promote in EXEC, or begin `M6-CP1-CLOSE-REV` first.**

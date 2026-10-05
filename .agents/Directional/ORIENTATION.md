@@ -1,3 +1,13 @@
+## Currency — `M6-CP1-TB12-CLOSE-REV` COMPLETE / identity29 false rejection / R2 recovery next (2026-10-05 UTC)
+
+- TB12 remains mechanically valid at **478/479**; candidate `11324028392 / 02149f15...` is unpromoted.
+- Review proves identity29's RED is a test-fixture witness defect: its split-isolation fixture has no selected cross-sheet forest edge, so the C1 tamper is never reached.
+- Production C1 statically matches the frozen exact sheet-connecting predicate; runtime falsifier still requires recovery.
+- RA-27: exact next `M6-CP1-CB12-CLOSE-R2`, test-only witness recovery; then immutable R1 gate 479 and mandatory Review.
+- Stable accounting **60 / 16 / 44**, debt 1.
+
+### Superseded currency note
+
 ## Currency — `M6-CP1-TB12-CLOSE-EXEC` COMPLETE / 478/479 / mandatory Review next (2026-10-05 UTC)
 
 - Candidate `11324028392 / 02149f15...`: focused30 **29/30** + selector449 **449/449** = **478/479**, exact-one, zero skips, benchmark 0, 979/979 evidence.

@@ -1,3 +1,12 @@
+## Current — `M6-CP1-TB12-CLOSE-REV` COMPLETE / exact next `M6-CP1-CB12-CLOSE-R2` (2026-10-05)
+
+- [x] Re-derived TB12 mechanical evidence: 478/479; identity29 sole RED; no tamper reached.
+- [x] Adjudicated CAND-01 as false rejection / test-fixture witness defect / non-stable. Production-selection defect not established.
+- [x] RA-27 freezes test-only witness recovery; production C1 remains unchanged and candidate unpromoted.
+- [ ] **Exact next:** `M6-CP1-CB12-CLOSE-R2` test-authority recovery + compile/package only.
+- [ ] Then `M6-CP1-TB12-CLOSE-R1-EXEC` at unchanged **479**, mandatory R1 Review, then CP1 close if accepted.
+- [ ] Stable accounting remains **60 / 16 / 44**, debt 1.
+
 ## Current — `M6-CP1-TB12-CLOSE-EXEC` COMPLETE / 478/479 / mandatory Review next (2026-10-05)
 
 - [x] Immutable candidate `11324028392 / 02149f1518fc6a753acf3235f7dcdc6fcdf59f24`; exact 479-process gate.

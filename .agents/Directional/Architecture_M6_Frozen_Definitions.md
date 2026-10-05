@@ -1,6 +1,6 @@
 # M6 Frozen Definitions — Occurrence, Quotient, Embedding, Independent Verification
 
-**Status:** FROZEN / `M6-CP1-CB12-CLOSE-REV`: CB12 C5 stop DISCHARGED; **RA-26** (provenance-face consumer classes; anchor-dependent references re-homed to `M6-DEFN-R5`/`M6-CP3`) / reviewed runtime `11316716869 / 8dd95821` (477/477) / EXACT NEXT = `M6-CP1-CB12-CLOSE-R1` → TB12 30+449=479 → mandatory Review → `M6-CP1-CLOSE-REV`; RA-1 – RA-25 normative as annotated.
+**Status:** FROZEN / `M6-CP1-TB12-CLOSE-REV`: RA-27 test-fixture witness recovery / TB12 candidate unpromoted at 478/479 / reviewed runtime `11316716869 / 8dd95821` retained / EXACT NEXT = `M6-CP1-CB12-CLOSE-R2` -> `M6-CP1-TB12-CLOSE-R1-EXEC` 479 -> mandatory R1 Review -> CP1 close if accepted; RA-1 – RA-27 normative as annotated.
 **Date:** 2026-09-25
 **Definition authority:** this record is the normative M6 contract for A5 occurrence creation, A6 quotient construction/materialization, A7 source-attached geometry embedding, and the M6 structural portion of A8 independent verification. It refines `DESIGN.md` §14 M6 without changing accepted M5 producer semantics or pulling M7 disposition/degradation work forward.
 
@@ -945,3 +945,15 @@ Rationale: `Architecture_M6_CP1_CB12_Close_Stop_Review_Record.md` §2–§4.
    4. falsifier: one produced fixture under a source-face row permutation **and** an output quad corner rotation that changes at least one multi-sheet class's representative face and at least one quad's corner 0. Optimized positions, all validation metrics and acceptance must be invariant, under the equality DEFN-R5 freezes.
 
 Accounting **60 / 16 / 44**, debt 1. Exact next: `M6-CP1-CB12-CLOSE-R1`.
+
+## RA-27 — selected-cross-sheet witness recovery (normative, 2026-10-05, `M6-CP1-TB12-CLOSE-REV`)
+
+Rationale: `Architecture_M6_CP1_TB12_Close_Review_Record.md`.
+
+1. **CAND-01 classification.** Identity29's TB12 RED is a false rejection caused by a fixture-witness assumption. `split_isolation_fixture()` is not required to place a cross-sheet relation in A6's selected spanning forest. The absence of such an edge is not a production-selection defect.
+2. **C1 remains exact.** For every selected-forest edge whose endpoint wedge-sheet sets are disjoint, A7 requires a relation/endpoint `CornerWedgeIsolationTransition` whose `fromSheet/toSheet` connects the two endpoint sets. Otherwise it fails `UncertifiedCrossSheetBinding` at `cross-sheet`. No production amendment is authorized.
+3. **Recovery witness.** Identity29 must use a valid production-derived A6 product with a non-vacuous selected cross-sheet edge, prove baseline A7 acceptance, then disconnect all relevant transition sheet endpoints and prove the exact C1 rejection. A fabricated invalid quotient product or a test that never reaches the tamper is forbidden.
+4. **Routing.** Exact next `M6-CP1-CB12-CLOSE-R2`, test-authority recovery only. Compile-green -> immutable `M6-CP1-TB12-CLOSE-R1-EXEC`, focused30 + selector449 = 479 -> mandatory `M6-CP1-TB12-CLOSE-R1-REV`. Only that Review may promote and release `M6-CP1-CLOSE-REV`.
+5. **Stop rule.** Any required production semantic change, C1 weakening, selected-forest algorithm change, selector/routing change, or inability to construct a valid production-derived witness stops for Review.
+
+Accounting remains **60 / 16 / 44**, debt 1.
