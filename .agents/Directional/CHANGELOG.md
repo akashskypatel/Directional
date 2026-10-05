@@ -1,3 +1,13 @@
+## 2026-10-05 — `M6-CP2-TB1-VERIFIER-EXEC` COMPLETE: 488/491, three non-stable Review-owned candidates
+
+- Artifact-only retry `37368784487 / 111962223674` consumed immutable `11365308211 / 265c8fbb...`.
+- Gate result: focused30 **30/30**, CP2 focused12 **9/12**, selector449 **449/449** = **488/491**; exact-one, zero skips, benchmark 0, immutable postflight PASS.
+- RED ordinal 2 is a source-face permutation no-op because `SourceFaceTopologyKey::make` sorts vertices.
+- RED ordinal 6 resets a certificate field already reset for `OrdinaryFront`; no payload mismatch is created.
+- RED ordinal 7 fails fixture non-vacuity before verifier execution because the square fixture has no disjoint classed-cell pair.
+- All three are active non-stable Review-owned candidates; no accepted-green row regressed. Stable accounting remains **60 / 16 / 44**, debt 1.
+- Candidate remains unpromoted. Exact next: mandatory `M6-CP2-TB1-VERIFIER-REV`.
+
 ## 2026-10-05 — `M6-CP2-CB1-VERIFIER-R1` COMPLETE: independent verifier compile/package GREEN
 
 - Implemented copy-by-value A5/A6/A7 verification records, independent A0/A5/A6/A7 recomputation, deterministic dependency-gated findings, exact relation/certificate-chain binding, `VerifiedSurfaceProducts`, and verifier placement after A7 / before adapter projection.

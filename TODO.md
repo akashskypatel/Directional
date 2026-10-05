@@ -1,3 +1,12 @@
+## Current — `M6-CP2-TB1-VERIFIER-EXEC` COMPLETE / 488/491 / mandatory Review next (2026-10-05)
+
+- [x] Consume immutable `11365308211 / 265c8fbb...` without rebuild/repair.
+- [x] Execute exactly **491** fresh exact-filter processes: focused30 **30/30**, CP2 focused12 **9/12**, selector449 **449/449**.
+- [x] Verify exact-one selection, zero skips, benchmark 0, immutable package/source/execution-view postflight, and no configure/compile/relink/discovery/repair/mutation.
+- [x] Record three active non-stable Review-owned RED candidates: ordinal 2 source-face permutation no-op; ordinal 6 `selectedRelationStep` no-op; ordinal 7 non-vacuity failure before verifier.
+- [x] Keep stable accounting **60 / 16 / 44**, debt 1; candidate remains unpromoted.
+- [ ] **Exact next `M6-CP2-TB1-VERIFIER-REV`:** independently adjudicate CAND-01..03 and freeze the smallest valid recovery; no repair/rerun before Review.
+
 ## Current — `M6-CP2-CB1-VERIFIER-R1` COMPLETE / compile-package GREEN / exact next `M6-CP2-TB1-VERIFIER-EXEC` (2026-10-05)
 
 - [x] Implement independent A0/A5/A6/A7 verifier record views, semantic findings, dependency gating, and exact certificate-chain binding.

@@ -1,3 +1,16 @@
+## Resume-critical update — `M6-CP2-TB1-VERIFIER-EXEC` COMPLETE / 488/491 / three Review-owned non-stable candidates / exact next `M6-CP2-TB1-VERIFIER-REV` (2026-10-05)
+
+**Start mandatory independent `M6-CP2-TB1-VERIFIER-REV` next. Do not repair tests/source, rebuild, rerun 491, or promote the CP2 candidate before Review.**
+
+Artifact-only retry `37368784487 / 111962223674` consumed immutable package/source `11365308211 / 265c8fbb19a66c5c3344a525fdbd43932c3ef829`. Mechanical gate: focused30 **30/30**, CP2 focused12 **9/12**, selector449 **449/449**, aggregate **488/491**; exact-one for all 491, zero skips, benchmark 0, immutable package/source/execution-view postflight PASS, and no configure/compile/relink/discovery/repair/mutation. Result/log artifacts `11370598981 / 11370413984`. The workflow mailbox job was cancelled after successful runtime evidence upload during the Actions runner incident; exact run/jobs/artifacts are the fallback authority.
+
+Three focused12 REDs are active non-stable Review-owned candidates:
+- `...CAND-01`, ordinal 2: source-face tamper only permutes triangle corners; `SourceFaceTopologyKey::make` sorts them, so the tamper is a semantic no-op.
+- `...CAND-02`, ordinal 6: resetting `selectedRelationStep` on the first `OrdinaryFront` certificate is a no-op because production already resets it.
+- `...CAND-03`, ordinal 7: the square fixture has no two disjoint classed cells, so the intended weld-pinched record view is never constructed and the verifier is not reached.
+
+No accepted-green row regressed. Stable accounting remains **60 / 16 / 44**, debt 1. Candidate stays unpromoted. Full evidence: `Architecture_M6_CP2_TB1_Verifier_Artifact_Only_Test_Benchmark_Report.md`.
+
 ## Resume-critical update — `M6-CP2-CB1-VERIFIER-R1` COMPLETE / compile-package GREEN / exact next `M6-CP2-TB1-VERIFIER-EXEC` (2026-10-05)
 
 **Start `M6-CP2-TB1-VERIFIER-EXEC` next as immutable artifact-only Test + Benchmark. Do not rebuild, relink, configure, repair package permissions/content, or modify source.**

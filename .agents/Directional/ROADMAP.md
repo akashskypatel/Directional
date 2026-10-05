@@ -1,3 +1,17 @@
+## Live M6 routing — after `M6-CP2-TB1-VERIFIER-EXEC`
+
+| Checkpoint | State | Exact next / gate |
+|---|---|---|
+| M6 CP1 | **CLOSED / ACCEPTED, mechanism-only** | reviewed runtime `11330703256 / 3f40f04a...`, 479/479 |
+| M6 CP2 Definition | ACCEPTED (RA-28a, amended by RA-28b) | verifier candidate compiled at `265c8fbb...` |
+| M6 CP2 TB1 EXEC | **COMPLETE / 488/491 / UNPROMOTED** | focused30 30/30; focused12 9/12; selector449 449/449; 3 non-stable Review-owned candidates |
+| M6 CP2 TB1 Review | **EXACT NEXT** | `M6-CP2-TB1-VERIFIER-REV`; adjudicate CAND-01..03 before any repair/rerun |
+| `M6-DEFN-R5` | CP3-entry gate, after CP2 | unchanged later-owned obligations |
+
+Stable accounting: **60 / 16 / 44**, debt 1.
+
+### Superseded routing
+
 ## Live M6 routing — after `M6-CP2-CB1-VERIFIER-R1`
 
 | Checkpoint | State | Exact next / gate |

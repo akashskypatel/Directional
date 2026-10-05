@@ -1,3 +1,18 @@
+## 2026-10-05 — `M6-CP2-TB1-VERIFIER-EXEC` — **488/491 / three non-stable Review-owned candidates / +0 / 60/16/44 / debt 1**
+
+Immutable artifact-only runtime `37368784487 / 111962223674` consumed `11365308211 / 265c8fbb...`: focused30 **30/30**, CP2 focused12 **9/12**, selector449 **449/449**, aggregate **488/491**, exact-one, zero skips, benchmark 0, immutable postflight PASS. Runtime/result evidence is authoritative despite the mailbox job being cancelled after evidence upload during the GitHub Actions runner incident.
+
+### `M6-CP2-TB1-VERIFIER-EXEC-CAND-01` — ACTIVE / NON-STABLE / TEST-WITNESS AUTHORITY DEFECT / REVIEW-OWNED
+Focused12 ordinal 2 permutes source-triangle corners, but `SourceFaceTopologyKey::make` sorts source vertex IDs. The intended `a0:source-faces` mismatch is never created.
+
+### `M6-CP2-TB1-VERIFIER-EXEC-CAND-02` — ACTIVE / NON-STABLE / TEST-WITNESS AUTHORITY DEFECT / REVIEW-OWNED
+Focused12 ordinal 6 resets `selectedRelationStep` on the first `OrdinaryFront` certificate, whose producer value is already reset. The intended A6→A5 payload mismatch is never created.
+
+### `M6-CP2-TB1-VERIFIER-EXEC-CAND-03` — ACTIVE / NON-STABLE / TEST-FIXTURE NON-VACUITY DEFECT / REVIEW-OWNED
+Focused12 ordinal 7 cannot find two disjoint classed cells in the square fixture, so `tampered` remains false and the verifier's manifoldness predicate is never exercised.
+
+No accepted focused30 or selector449 identity regressed. **Stable accounting remains `60 events / 16 categories / 44 recurrences`, debt 1.** Exact next: mandatory `M6-CP2-TB1-VERIFIER-REV`.
+
 ## 2026-10-05 — `M6-CP2-CB1-VERIFIER-R1` compile-valid verifier candidate — **+0 / 60/16/44 / debt 1**
 
 - Runtime-free Code + Build; no accepted runtime row became RED and no new regression candidate/event is priced.

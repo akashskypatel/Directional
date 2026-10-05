@@ -1,3 +1,11 @@
+## Currency — `M6-CP2-TB1-VERIFIER-EXEC` COMPLETE / 488/491 / mandatory Review next (2026-10-05 UTC)
+
+- Immutable artifact-only runtime: `37368784487 / 111962223674` on `11365308211 / 265c8fbb...`.
+- Gate: focused30 **30/30**, CP2 focused12 **9/12**, selector449 **449/449** = **488/491**; exact-one, zero skips, benchmark 0, immutable postflight PASS.
+- REDs are three active non-stable Review-owned witness/fixture candidates; none establishes accepted-green regression.
+- Candidate remains unpromoted. Exact next: **`M6-CP2-TB1-VERIFIER-REV`**; no repair or rerun before Review.
+- Stable accounting **60 / 16 / 44**, debt 1.
+
 ## Currency — `M6-CP2-CB1-VERIFIER-R1` COMPLETE / compile-package GREEN / exact next TB1 (2026-10-05 UTC)
 
 - CP2 independent verifier is compile-valid at exact source `265c8fbb19a66c5c3344a525fdbd43932c3ef829`.
