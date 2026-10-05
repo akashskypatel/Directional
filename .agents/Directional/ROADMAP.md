@@ -1,3 +1,17 @@
+## Live M6 routing — after `M6-CP1-CB12-CLOSE-R1`
+
+| Checkpoint | State | Exact next / gate |
+|---|---|---|
+| M6 CP1 reviewed runtime | **PROMOTED** | `11316716869 / 8dd95821...`, focused-28 + selector449 = 477/477 |
+| CB12-R1 candidate | **COMPILED / UNPROMOTED** | `11324028392 / 02149f15...`, focused-30 frozen, `runtimeExecution=false` |
+| TB12 close gate | **EXACT NEXT** | `M6-CP1-TB12-CLOSE-EXEC`: focused30 + selector449 = **479** → mandatory Review |
+| CP1 closure | Held | `M6-CP1-CLOSE-REV` only after TB12 Review; includes RA-26 §3 re-check |
+| `M6-DEFN-R5` | CP3-entry gate | gauge obligations + A5 barrier-set census + RA-26 §5 permutation falsifier |
+
+Stable accounting: **60 / 16 / 44**, debt 1.
+
+### Superseded routing
+
 ## Live M6 routing — after `M6-CP1-CB12-CLOSE-REV` (RA-26)
 
 | Checkpoint | State | Exact next / gate |

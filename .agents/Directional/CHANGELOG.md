@@ -1,3 +1,11 @@
+## 2026-10-05 — `M6-CP1-CB12-CLOSE-R1`: C1–C4 compile/package GREEN; TB12 next
+
+- Implemented exact A7 cross-sheet isolation-transition connectivity, distinct A5 source diagnostics, A5-owned validated isolation-certificate accounting, and RA-25 fail-closed strip-continuation ambiguity.
+- Added identities 29/30 and focused-30 (`1e815443...a1d6`) with exact focused-28 prefix. C5 remains discharged by RA-26; optimizer/final validation unchanged.
+- First compile-only run `37259162318` exposed one pointer member-access typo; bounded one-line correction produced final source `02149f1518fc6a753acf3235f7dcdc6fcdf59f24`.
+- Compile/package run/job `37259524323 / 111603703243` GREEN for all eight GMP/GMPXX targets; result/log `11324028392 / 11323679468`, 28/28 manifest, clean source, `runtimeExecution=false`.
+- Exact next: immutable artifact-only `M6-CP1-TB12-CLOSE-EXEC`, gate **479**, then mandatory Review.
+
 ## 2026-10-05 — `M6-CP1-CB12-CLOSE-REV`: CB12 C5 stop discharged; RA-26; successor `M6-CP1-CB12-CLOSE-R1`
 
 - **Source authority:** HEAD source is byte-identical to the reviewed runtime `8dd95821` (both fetched by SHA after the history squash).

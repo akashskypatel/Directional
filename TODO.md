@@ -1,3 +1,14 @@
+## Current — `M6-CP1-CB12-CLOSE-R1` COMPLETE / exact next `M6-CP1-TB12-CLOSE-EXEC` (2026-10-05)
+
+- [x] C1 exact A7 cross-sheet transition endpoint-sheet certification.
+- [x] C2 distinct A5 missing-front / invalid-source / unavailable-chart diagnostics, including empty edges.
+- [x] C3 `consumedInternalIsolationSeams` projected from A5 `validatedIsolationCertificateCount`; identity24 updated.
+- [x] C4 RA-25 ambiguity now fails closed with `ClosedComplexStripContinuationMismatch`.
+- [x] Identities 29/30 and focused-30 (`1e815443...a1d6`), exact focused-28 prefix.
+- [x] C5 discharged by RA-26 §3; no optimizer/final-validator change.
+- [x] Compile/package GREEN: `11324028392 / 02149f1518fc6a753acf3235f7dcdc6fcdf59f24`, run/job `37259524323 / 111603703243`, 28/28, GMP/GMPXX, `runtimeExecution=false`.
+- [ ] **Exact next:** `M6-CP1-TB12-CLOSE-EXEC`, focused30 + selector449 = **479**, then mandatory Review and `M6-CP1-CLOSE-REV`.
+
 ## Current — `M6-CP1-CB12-CLOSE-REV` / RA-26 / exact next `M6-CP1-CB12-CLOSE-R1` (2026-10-05)
 
 - [x] Confirm HEAD source == `8dd95821` (fetched by SHA after the squash); CB12 made no source change.

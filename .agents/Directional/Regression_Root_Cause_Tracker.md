@@ -1,3 +1,12 @@
+## 2026-10-05 — `M6-CP1-CB12-CLOSE-R1` compile-valid close-out — **+0 / 60/16/44 / debt 1**
+
+- C1–C4 and focused identities 29/30 are compile-valid at exact source `02149f1518fc6a753acf3235f7dcdc6fcdf59f24`; C5 remains discharged by RA-26.
+- First compile-only attempt `37259162318` exposed a local pointer member-access typo (`.` vs `->`). It was corrected by one line in the same Code + Build turn; no Directional runtime had executed, so this is not a stable runtime regression event.
+- Retry `37259524323 / 111603703243` is compile/package GREEN, 28/28 manifest, GMP/GMPXX, `runtimeExecution=false`.
+- No new event/category/recurrence/debt is priced. Runtime acceptance remains TB12-owned.
+
+**Stable accounting: `60 events / 16 categories / 44 recurrences`, debt 1.**
+
 ## 2026-10-05 — `M6-CP1-CB12-CLOSE-REV` — C5 stop discharged; RA-26 — **+0 / 60/16/44 / debt 1**
 
 - No source change since `8dd95821`. No product regression.

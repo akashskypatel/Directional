@@ -1,6 +1,6 @@
 **Current authority after `M6-CP1-CB11-G4` (2026-10-04):** CB11 is COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE at semantic source `582da20a925ba920c923bf5aacb9e0e56ef0723d`. Candidate result artifact `11308472138` is unpromoted. Reviewed runtime remains `11299078582 / 96b456f9...` at 473/473. Stable accounting remains **60 / 16 / 44**, debt 1. Exact next: immutable `M6-CP1-TB11-G4-EXEC`, focused28+selector449 = **477**, then mandatory Review; CP1 close remains held.
 
-**Current authority after `M6-CP1-CB12-CLOSE-REV` (2026-10-05):** reviewed runtime `11316716869 / 8dd95821...` (477/477). The CB12 C5 stop is discharged by RA-26 (§44). Accounting **60 / 16 / 44**, debt 1. Exact next: `M6-CP1-CB12-CLOSE-R1` → TB12 (479) → Review → `M6-CP1-CLOSE-REV`.
+**Current authority after `M6-CP1-CB12-CLOSE-R1` (2026-10-05):** reviewed runtime remains `11316716869 / 8dd95821...` (477/477); unpromoted compile candidate is `11324028392 / 02149f15...`. C1–C4 and focused-30 are compile-valid; C5 remains discharged by RA-26 (§44). Accounting **60 / 16 / 44**, debt 1. Exact next: `M6-CP1-TB12-CLOSE-EXEC` (479) → Review → `M6-CP1-CLOSE-REV`.
 
 CB11 implements the accepted R4 D3 / RA-20 / RA-21 / RA-21b boundary: A6-owned closed-complex vertices/quads/side-incidence edges, independent relation-kind and typed-source hard-feature protection, strip ordinals from opposite-edge closure, and A6-view candidate extraction without arrangement authority. Focused identities 25-28 extend focused24 exactly; focused28 SHA-256 is `9154a986ce005c53f99faad3551989b05516abe9e4fd02dce585a645d70a011d`.
 
@@ -628,3 +628,12 @@ Finding B was mis-diagnosed as legitimate noncontractible residual holonomy:
 
 The residual fallback is revoked. RA-13 (single-gauge transport, strict rule restored, diagnostic residual suffix) is frozen, and the CB7-A6 plan is amended. Category RP-07 → RP-01; totals 57/16/41 unchanged. Lesson 184.
 
+
+
+## 45. `M6-CP1-CB12-CLOSE-R1` — close-out implementation compile-valid
+
+RA-26 discharged C5 before R1. R1 therefore implemented only C1–C4: exact A7 sheet-connecting isolation certification; distinct A5 source diagnostics; A5-owned `validatedIsolationCertificateCount` projected through the thin adapter; and RA-25 fail-closed strip-continuation ambiguity. Identities 29/30 extend focused-28 to focused-30 (`1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6`). Optimizer and final-validator code were unchanged.
+
+The first compile-only run `37259162318` found one pointer member-access typo; a one-line bounded correction produced exact source `02149f1518fc6a753acf3235f7dcdc6fcdf59f24`. Retry run/job `37259524323 / 111603703243` compiled and linked all eight standard GMP/GMPXX targets. Result/log artifacts `11324028392 / 11323679468`; outer digests `4e6b208a...afba1 / 82adb1a6...c7766`; packaged manifest 28/28, clean source, `runtimeExecution=false`. No runtime acceptance is claimed.
+
+Exact next is immutable `M6-CP1-TB12-CLOSE-EXEC`: focused30 + selector449 = **479**, then mandatory Review and CP1 close Review. Stable accounting remains **60 / 16 / 44**, debt 1.

@@ -1,3 +1,14 @@
+## Currency — `M6-CP1-CB12-CLOSE-R1` COMPLETE / compile-package GREEN / exact next TB12 (2026-10-05 UTC)
+
+- Candidate authority: `11324028392 / 02149f1518fc6a753acf3235f7dcdc6fcdf59f24`; all eight GMP/GMPXX targets compile/link; package manifest 28/28; `runtimeExecution=false`.
+- C1–C4 are implemented; identities 29/30 are frozen in focused-30 (`1e815443...a1d6`), exact focused-28 prefix.
+- C5 is discharged by RA-26 §3; no optimizer/final-validator change occurred.
+- Exact next: `M6-CP1-TB12-CLOSE-EXEC`, focused30 + selector449 = **479**, then mandatory `M6-CP1-TB12-CLOSE-REV` and `M6-CP1-CLOSE-REV`.
+
+Accounting **60 / 16 / 44**, debt 1.
+
+### Superseded currency note
+
 ## Currency — `M6-CP1-CB12-CLOSE-REV`: C5 stop discharged (RA-26); exact next `M6-CP1-CB12-CLOSE-R1` (2026-10-05 UTC)
 
 - The flagged optimizer site (`SurfaceMeshOptimizer.cpp:3015-3031`) reads source-mesh incidence, not a provenance face. It is test-only overlay code, now OBS-01 owned by M8-CP2.

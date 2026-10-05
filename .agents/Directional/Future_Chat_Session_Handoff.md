@@ -1,3 +1,13 @@
+## Resume-critical update — `M6-CP1-CB12-CLOSE-R1` COMPLETE / compile-package GREEN / exact next `M6-CP1-TB12-CLOSE-EXEC` (2026-10-05)
+
+**Start immutable artifact-only `M6-CP1-TB12-CLOSE-EXEC`; do not rebuild or repair the candidate.** Consume `11324028392 / 02149f1518fc6a753acf3235f7dcdc6fcdf59f24` and follow `Architecture_M6_CP1_TB12_Close_Artifact_Only_Test_Benchmark_Plan.md`.
+
+CB12-R1 implements C1–C4 exactly: exact A7 sheet-connecting isolation transitions; distinct A5 missing-front/source-shape/chart-transition diagnostics; A5-owned validated isolation-certificate accounting; and RA-25 fail-closed ambiguous strip continuation. Identities 29/30 were appended to focused-30 (`1e815443...a1d6`) with focused-28 as exact prefix. C5 remains discharged by RA-26 §3; no optimizer/final-validator change was made.
+
+Compile run `37259524323 / 111603703243` is GREEN on all eight standard GMP/GMPXX targets. Result/log artifacts are `11324028392 / 11323679468`; package manifest is 28/28; `runtimeExecution=false`. The preceding compile-only attempt found one `.` versus `->` member-access error and the same turn corrected only that line before the green retry. No Directional runtime has executed.
+
+TB12 gate: focused30 **30** + selector449 **449** = **479** fresh exact-filter processes → mandatory `M6-CP1-TB12-CLOSE-REV` → `M6-CP1-CLOSE-REV`. Stable accounting remains **60 / 16 / 44**, debt 1.
+
 ## Operational policy update — authoritative workflow mailbox (2026-10-05)
 
 For all subsequent ChatGPT Web GitHub Actions work, use `.workflow-mailbox/<workflow-key>/latest.json` as the authoritative completed-run rendezvous and its `source_sha` as source authority. Keep immutable run-attempt records under `.workflow-mailbox/<workflow-key>/runs/`. PR run-observer comments are fallback-only; use recent-runs or the legacy branch-file observer only when mailbox publication is unavailable/failed. Do not delete mailbox history as temporary state.
