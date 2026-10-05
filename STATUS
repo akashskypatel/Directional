@@ -1,8 +1,8 @@
 ---TURN_STATUS---
-Turn: M6-CP1-TB12-CLOSE-REV
-Status: COMPLETE
+Turn: M6-CP1-CB12-CLOSE-R2
+Status: IN_PROGRESS
 Successor: M6-CP1-CB12-CLOSE-R2
-Started at: 2026-10-05T06:12:28Z
-Resumed at: 2026-10-05T06:41:29Z
-Ended at: 2026-10-05T06:43:58Z
+Started at: 2026-10-05T06:59:10Z
+Resumed at: 
+Ended at: 
 ---END_TURN_STATUS---
