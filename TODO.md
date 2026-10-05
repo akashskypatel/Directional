@@ -1,3 +1,12 @@
+## Current — `M6-CP1-TB12-CLOSE-R1-EXEC` COMPLETE / 479/479 GREEN / mandatory R1 Review next (2026-10-05)
+
+- [x] Immutable candidate `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05`; exact **30 + 449 = 479** process gate.
+- [x] Focused **30/30** + selector449 **449/449** = **479/479 PASS**; exact-one selection, zero skips, benchmark 0.
+- [x] Identity29 recovery is GREEN; identity30 remains GREEN; selector449 remains fully GREEN.
+- [x] Result self-manifest **497/497**, immutable package/execution-view postflight, no retry/repair/rebuild/mutation.
+- [x] +0 new regression events/candidates; stable accounting remains **60 / 16 / 44**, debt 1.
+- [ ] **Exact next:** mandatory runtime-free `M6-CP1-TB12-CLOSE-R1-REV`. Candidate remains unpromoted until Review; `M6-CP1-CLOSE-REV` remains held.
+
 ## Current — `M6-CP1-CB12-CLOSE-R2` COMPLETE / compile-package GREEN / exact next R1 EXEC (2026-10-05)
 
 - [x] RA-27a exact A7 wedge sheet-graph connectivity; site `cross-sheet:wedge`.

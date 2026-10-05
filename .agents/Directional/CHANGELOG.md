@@ -1,3 +1,11 @@
+## 2026-10-05 — `M6-CP1-TB12-CLOSE-R1-EXEC` COMPLETE — 479/479 GREEN
+
+- Candidate `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05`; runtime run/job `37280517630 / 111667316992`.
+- Result/log artifacts `11333591947 / 11333547162`, provider SHA-256 `ef5dba1131f25025bc536ba160475191629cc8bffed0465a087dd72fc4d1474b / dd78296134b6e71d2080ab2b1b6623841f75725e6a43deffe6ec2ad50dd46e53`.
+- Focused30 **30/30** and selector449 **449/449** = **479/479 PASS**; exact-one, zero skips, benchmark 0. Result self-manifest **497/497** (`9d7f244f...a4bd67`); immutable postflight PASS.
+- Identity29 RA-27a recovery and identity30 both GREEN. Zero RED rows; no new regression candidate/event; stable accounting remains **60 / 16 / 44**, debt 1.
+- EXEC grants no promotion. Exact next is mandatory runtime-free `M6-CP1-TB12-CLOSE-R1-REV`; CP1 close Review remains held.
+
 ## 2026-10-05 — `M6-CP1-CB12-CLOSE-R2` COMPLETE: RA-27a recovery compiled and packaged
 
 - Replaced A7's per-occurrence `has any isolation transition` wedge proxy with exact member-local sheet-graph connectivity over region-matching `cornerWedgeIsolation`; rejection site is `cross-sheet:wedge`.

@@ -1,3 +1,10 @@
+## 2026-10-05 — `M6-CP1-TB12-CLOSE-R1-EXEC` — close-out recovery gate 479/479 GREEN
+
+- Immutable candidate `11330703256 / 3f40f04a...` passes focused30 **30/30** plus selector449 **449/449** = **479/479**, exact-one, zero skips, benchmark 0.
+- Identity29 now exercises the corrected wedge-connectivity falsifier and passes; identity30 remains green.
+- Immutable postflight and 497/497 result manifest pass. No new regression event/candidate; accounting remains 60 / 16 / 44, debt 1.
+- Candidate remains unpromoted pending mandatory `M6-CP1-TB12-CLOSE-R1-REV`.
+
 ## 2026-10-05 — `M6-CP1-TB12-CLOSE-REV` review-agent addendum — close-out test fixed at its root
 
 - The close-out test failed because it looked for a kind of cross-sheet join that the test geometry cannot produce. In that geometry, sheets meet inside single cell corners, not along shared edges.

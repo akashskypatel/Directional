@@ -863,58 +863,52 @@ Review must independently re-open source/evidence and re-derive: split-square v0
 
 ## Current authority
 
-`M6-CP1-TB12-CLOSE-REV` is **COMPLETE**, including its review-agent addendum: TB12 candidate `11324028392 / 02149f15` is **unpromoted** at 478/479, and RA-27a is normative.
-- Reviewed runtime authority: `11316716869 / 8dd958217d8cbda2d403f7a5c4c7dce242dde1c0` (focused-28 + selector449 = **477/477**).
-- Current gate: `Architecture_M6_CP1_Required_Green_Focused_30.txt` (`1e815443...`) + selector449 = **479**.
-- Normative: RA-18 – RA-27a.
-- Accounting **60 / 16 / 44**, debt **1**.
+`M6-CP1-TB12-CLOSE-R1-EXEC` is **COMPLETE / 479/479 GREEN** on immutable candidate `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05`.
 
-C2, C3 and C4 (fail-closed) are in the candidate and reviewed. C1 is incomplete: the edge rule is exact, but the reachable wedge rule is still a proxy, so R2 completes it.
+- Runtime run/job: `37280517630 / 111667316992`.
+- Result/log artifacts: `11333591947 / 11333547162`, provider SHA-256 `ef5dba1131f25025bc536ba160475191629cc8bffed0465a087dd72fc4d1474b / dd78296134b6e71d2080ab2b1b6623841f75725e6a43deffe6ec2ad50dd46e53`.
+- Result self-manifest: **497/497**; focused **30/30** + selector449 **449/449** = **479/479 PASS**; exact-one, zero skips, benchmark 0.
+- Immutable postflight is GREEN; no configure/compile/relink/discovery/repair/mutation/retry occurred in TB.
+- Identity29 and identity30 are GREEN. No R1 regression candidate/event exists.
+- Stable accounting remains **60 / 16 / 44**, debt **1**.
+- Candidate remains unpromoted because EXEC has no promotion authority.
+- Previously reviewed runtime authority remains `11316716869 / 8dd958217d8cbda2d403f7a5c4c7dce242dde1c0` until Review.
 
 ## Exact next turn
 
-**`M6-CP1-CB12-CLOSE-R2` — Code + Build, compile/package only, under RA-27a.**
+**`M6-CP1-TB12-CLOSE-R1-REV` — mandatory runtime-free Review.**
 
-- **Production 1.** Exact wedge rule (RA-27a §2) at `RemeshPipeline.cpp:6884-6895`, site `cross-sheet:wedge`.
-- **Production 2.** C4 name string `"QuotientClosedComplexStripContinuationMismatch"`.
-- **Identity 29** (name and order unchanged): bridge-member wedge tamper on `split_isolation_fixture()`, with A6 re-produced from the tampered A5 (RA-27a §4–§5).
-- No other production, test, selector, routing or focused-list change.
+Review must independently verify candidate/package identity, the 497/497 result manifest, complete frozen-order 30/30 + 449/449 ledgers, exact-one/zero-skip integrity, identity29 RA-27a recovery, identity30 retention, immutable postflight, and +0 regression disposition. Only Review may promote `11330703256 / 3f40f04a...` and route onward to `M6-CP1-CLOSE-REV`.
 
-Compile-green → `M6-CP1-TB12-CLOSE-R1-EXEC` (**479**) → mandatory `M6-CP1-TB12-CLOSE-R1-REV` → `M6-CP1-CLOSE-REV`.
-
-## Completed predecessor turns (reference only)
-
-- `M6-CP1-TB12-CLOSE-REV` (+ addendum §P, RA-27a) — current Review authority.
-- `M6-CP1-TB12-CLOSE-EXEC` — 478/479; CAND-01 non-stable.
-- `M6-CP1-CB12-CLOSE-R1` — C1–C4 compile/package for `02149f15`.
-- `M6-CP1-CB12-CLOSE-REV` (RA-26) and earlier.
+Do not rerun R1, rebuild the candidate, or begin CP1 close Review before R1 Review completes.
 
 ## Current files
 
-- `.agents/Directional/Architecture_M6_CP1_CB12_Close_R2_Oracle_Recovery_Code_Build_Plan.md` — exact next plan; its review-agent block governs.
-- `.agents/Directional/Architecture_M6_CP1_TB12_Close_Review_Record.md` — Review authority, with addendum §P.
-- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — normative; RA-25, RA-26, RA-27a.
-- `.agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt` + selector449 / routing449 — frozen gate.
-- `.workflow-mailbox/<workflow-key>/latest.json` — authoritative completed-run rendezvous.
+- `.agents/Directional/Architecture_M6_CP1_TB12_Close_R1_Artifact_Only_Test_Benchmark_Report.md` — R1 EXEC evidence.
+- `.agents/Directional/Architecture_M6_CP1_TB12_Close_R1_Artifact_Only_Test_Benchmark_Plan.md` — consumed immutable R1 plan.
+- `.agents/Directional/Architecture_M6_CP1_CB12_Close_R2_Code_Build_Report.md` — candidate compile authority.
+- `.agents/Directional/Architecture_M6_CP1_TB12_Close_Review_Record.md` — predecessor Review authority + RA-27a.
+- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — normative RA-18 – RA-27a.
+- `.agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt` + selector449/routing449 — frozen gate.
+- `.workflow-mailbox/m6-cp1-tb12-close-r1-exec/latest.json` — completed-run rendezvous.
 
 ## Context Load Plan
 
 ```yaml
 load_next:
-  - turn-based-coding-agent/references/turns/CB.md
-  - .agents/Directional/Architecture_M6_CP1_CB12_Close_R2_Oracle_Recovery_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M6_CP1_TB12_Close_R1_Artifact_Only_Test_Benchmark_Report.md
   - .agents/Directional/Architecture_M6_CP1_TB12_Close_Review_Record.md
   - .agents/Directional/Architecture_M6_Frozen_Definitions.md
   - .agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt
 conditional_modules:
-  - trigger: github_connector / GitHub Actions / compile
+  - trigger: github_connector / GitHub Actions / artifact verification
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
-  - src/pipeline/RemeshPipeline.cpp (A5 wedge construction 4395-4470; A6 isolation checks 5257-5310, wedge copy 5449-5455; A7 cross-sheet 6884-6940; A6 name table ~5022)
-  - tests/SurfaceCellTransitionQuotientTests.cpp (make_square_fixture 377-417; identity 29 ~7346-7440)
-  - .agents/Directional/GitHub_Workflow_Policy.md
+  - result artifact 11333591947 (focused/selector/red ledgers, immutable postflight)
+  - compile package 11330703256 / source 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05
+  - tests/SurfaceCellTransitionQuotientTests.cpp (identities 29/30)
 do_not_preload:
-  - folded superseded M6 per-turn records
-  - src/geometry/SurfaceMeshOptimizer.cpp (RA-26)
+  - superseded TB12 pre-R1 runtime evidence except when comparing identity29 recovery
+  - src/geometry/SurfaceMeshOptimizer.cpp (RA-26 deferred)
   - research/provenance/examples
 ```
