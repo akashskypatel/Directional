@@ -1,3 +1,7 @@
+## Currency — `M6-CP2-TB1-VERIFIER-REV` REJECTED FOR BOUNDED RECOVERY / RA-29 / exact next R2 (2026-10-05 UTC)
+
+**Start `M6-CP2-CB1-VERIFIER-R2` next. Do not promote `11365308211 / 265c8fbb...`, rerun the old package, or begin `M6-DEFN-R5`.** Independent Review confirms the EXEC mechanics but adjudicates focused12 ordinals 2/6/7 as non-stable false-rejection witnesses and finds four additional RA-28a implementation gaps: missing carried verified report on the full pipeline result, invalid/unproved alternate-region witness in identity 8, bypass of the shared source-support resolver, and selected-path verification that does not prove the named path equals the published forest path. RA-29 freezes the bounded recovery. Gate remains 491. Stable accounting stays **60 / 16 / 44**, debt 1. R2 → `M6-CP2-TB1-VERIFIER-R1-EXEC` → mandatory R1 Review.
+
 ## Currency — `M6-CP2-TB1-VERIFIER-EXEC` COMPLETE / 488/491 / mandatory Review next (2026-10-05 UTC)
 
 - Immutable artifact-only runtime: `37368784487 / 111962223674` on `11365308211 / 265c8fbb...`.
@@ -477,11 +481,11 @@ A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on t
 
 ## 3. Where we are
 
-**M3, M4 and M5 are CLOSED / ACCEPTED. M6 is ACTIVE at CP1, with only the dedicated close Review remaining before a CP1 closure claim.**
+**M3, M4 and M5 are CLOSED / ACCEPTED. M6 CP1 is CLOSED / ACCEPTED mechanism-only; M6 CP2 is ACTIVE in bounded verifier recovery after mandatory TB1 Review.**
 
-`M6-CP1-TB12-CLOSE-R1-REV` independently accepts the RA-27a recovery and promotes package/source `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05` as current reviewed M6 runtime authority. The reviewed gate is focused30 **30/30** + selector449 **449/449** = **479/479 PASS**, exact-one, zero skips, benchmark 0 and immutable postflight. `M6-CP1-TB12-CLOSE-EXEC-CAND-01` is recovery-proved/non-stable. Stable accounting remains **60 / 16 / 44**, debt 1.
+`M6-CP2-TB1-VERIFIER-REV` rejects first candidate `11365308211 / 265c8fbb...` without promotion. The artifact-only gate is mechanically valid at focused30 **30/30** + CP2-focused12 **9/12** + selector449 **449/449** = **488/491**, exact-one, zero skips, benchmark 0 and immutable postflight. Focused12 REDs 2/6/7 are non-stable false-rejection witnesses; Review also freezes REV-OBS-01..04 under RA-29. Stable accounting remains **60 / 16 / 44**, debt 1.
 
-Exact next is runtime-free `M6-CP1-CLOSE-REV`. It must prove all six frozen CP1 exit items plus RA-19a/RA-22a/RA-22b/RA-25, RA-26 §3 at current HEAD, and the A5-sourced isolation counter. Later-owner obligations (RA-27a §6, OBS-01/02, RA-26 §5) remain outside CP1 closure.
+Exact next is compile/package-only `M6-CP2-CB1-VERIFIER-R2`, then fresh immutable `M6-CP2-TB1-VERIFIER-R1-EXEC` (**491**) and mandatory R1 Review. `M6-DEFN-R5` remains after CP2.
 
 ### Superseded §3 state
 ## 3. Where we are
@@ -615,13 +619,14 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M6-CP2-CB1-VERIFIER-R1` — EXACT NEXT (Code + Build; RA-28 + RA-28a [§7 withdrawn] + RA-28b).**
-   - Add record views, `SurfaceProductVerifier` and the `VerifiedSurfaceProducts` stage function.
-   - RA-28a §1–§6 and §8–§9.
-   - Identity 12 is the confinement falsifier (RA-28b §3).
-   - **No `SurfaceMeshOptimizer` change.**
-   - Compile/package only → TB1 **491** → Review.
-   - CP1 is CLOSED / ACCEPTED, mechanism-only.
+1. **`M6-CP2-CB1-VERIFIER-R2` — EXACT NEXT (Code + Build; RA-29 bounded recovery).**
+   - Repair CAND-01/02/03 with pre-verifier non-vacuity assertions; no test-only shortcut.
+   - Carry the exact A8 report on the successful full pipeline result (REV-OBS-01).
+   - Use an actual A0 alternate region for identity 8 (REV-OBS-02).
+   - Cross-check occurrence point/support with the shared `SurfacePointSourceSupportResolver` (REV-OBS-03).
+   - Prove every published selected path equals the unique traversal of the published selected forest before composition (REV-OBS-04).
+   - **No `SurfaceMeshOptimizer` change; no A5 semantic expansion; no focused/selector/routing change.**
+   - Compile/package only → fresh R1 TB **491** → mandatory R1 Review.
 1a. **`M6-DEFN-R5` — CP3-entry gate (not CP1).**
    - Periodic unequal-face-gauge witness, plus the coordinate / relation-gauge rule.
    - HardRail cross-region branch certification.
@@ -654,6 +659,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 
 ## 8. Recurring defect patterns
+
+**A negative witness must change canonical authority, not merely representation bytes — `M6-CP2-TB1-VERIFIER-REV`, existing lesson 10.** Two CP2 negatives mutated values that canonicalized back to the baseline authority, and the pinched-topology test never satisfied its own disjoint-component precondition. Require an explicit pre-verifier assertion that the semantic predicate actually changed; a red before the intended checker is a witness defect, not evidence against the checker.
 
 **A green behavioral test is not a contract proof when the oracle compares only a subset of the promised serialization — `M6-CP1-TB10-A5V-REV`, lesson 193.** Identity24 ran three real stage-valid fixtures but omitted multiple mesh/lineage/result fields, so those fields could drift without turning the test red. Enumerate the output type and prove every contract field is covered; a strong test name does not widen its assertions.
 

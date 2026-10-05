@@ -1,3 +1,5 @@
+**Current authority after `M6-CP2-TB1-VERIFIER-REV` (2026-10-05):** first CP2 verifier candidate `11365308211 / 265c8fbb...` is **REJECTED FOR BOUNDED RECOVERY / UNPROMOTED**. Runtime mechanics are 488/491 (focused30 30/30, focused12 9/12, selector449 449/449). CAND-01/02/03 are non-stable false-rejection witnesses; REV-OBS-01..04 freeze the missing carried pipeline report, A0-valid wrong-region witness, shared support-resolver check and exact selected-forest path identity. RA-29 governs. Exact next: `M6-CP2-CB1-VERIFIER-R2` → fresh `M6-CP2-TB1-VERIFIER-R1-EXEC` (491) → mandatory R1 Review. Accounting **60 / 16 / 44**, debt 1.
+
 **Current candidate authority after `M6-CP2-DEFN` (2026-10-05):** CP2 verifier Definition is complete and pending mandatory `M6-CP2-DEFN-REV`. It freezes record-view negative witnesses, typed semantic finding identity/order, exact A5→A6→A7 certificate binding, accepted-defensive C4 plus independent verifier manifoldness, three appended wedge tampers, production A8 after A7/before adapter projection, RA-26 §5(iii) class-wide optimizer chart membership, and a first gate of **30 + 12 + 449 = 491**. No implementation/runtime changed. Reviewed runtime remains `11330703256 / 3f40f04a...`; accounting **60 / 16 / 44**, debt 1.
 
 **Current authority after `M6-CP2-CB1-VERIFIER-REV` (2026-10-05):** M6 CP1 CLOSED / ACCEPTED, mechanism-only; CP2 Definition accepted with RA-28a, amended by RA-28b (§52); reviewed runtime `11330703256 / 3f40f04a...` (479/479). Accounting **60 / 16 / 44**, debt 1. Exact next: `M6-CP2-CB1-VERIFIER-R1` → TB1 (491) → Review.
@@ -507,10 +509,24 @@ CB1 stopped because RA-28a §7 required a fact that A5/A7 do not publish: that `
 
 Lesson 202. Exact next `M6-CP2-CB1-VERIFIER-R1`.
 
+## 53. `M6-CP2-TB1-VERIFIER-REV` — first verifier candidate rejected; RA-29 recovery
+
+Independent Review re-derived the 491-process evidence at **488/491** and confirms that focused12 ordinals 2/6/7 are false-rejection witnesses rather than accepted-green regressions: the source-face permutation canonicalizes to the same topology key, the `OrdinaryFront` selected-step reset is already empty, and the square fixture cannot construct the intended disjoint-cell pinch.
+
+Static review additionally finds four RA-28a gaps: the successful full pipeline result does not carry its A8 `VerificationReport`; identity 8's alternate region is not proved to be an A0 region; verifier support incidence duplicates local logic rather than cross-checking the published point with `SurfacePointSourceSupportResolver`; and selected-path verification composes the self-declared path without first proving it is the unique traversal of the published selected forest.
+
+RA-29 limits recovery to those seven surfaces. No optimizer source change, A5 semantic expansion, selector/focused reordering, or gate reduction is authorized. Candidate `11365308211 / 265c8fbb...` stays unpromoted. Stable accounting remains **60 / 16 / 44**, debt 1. Exact successor is `M6-CP2-CB1-VERIFIER-R2`, then a fresh 491-process R1 EXEC and mandatory R1 Review.
+
 ## Folded document index
 
 | Retired filename | Disposition |
 |---|---|
+| `Architecture_M6_CP2_Definition_Plan.md` (86 lines) | **CONSUMED CP2 DEFINITION PLAN / FOLDED BY M6-CP2-TB1-VERIFIER-REV.** D1-D6 scope, runtime-free boundary and successor chain are preserved in §51, frozen definitions, current Review and git history. |
+| `Architecture_M6_CP2_Definition_Record.md` (195 lines) | **SUPERSEDED CP2 DEFINITION RECORD / FOLDED BY M6-CP2-TB1-VERIFIER-REV.** Accepted definition substance and focused-12 architecture are preserved in §51, RA-28/RA-28a, current Review and git history. |
+| `Architecture_M6_CP2_DEFN_Review_Record.md` (141 lines) | **SUPERSEDED CP2 DEFINITION REVIEW / FOLDED BY M6-CP2-TB1-VERIFIER-REV.** RA-28a adjudication and obligations are preserved in §51, frozen definitions, tracker and git history. |
+| `Architecture_M6_CP2_CB1_Verifier_Code_Build_Plan.md` (59 lines) | **CONSUMED/SUPERSEDED CB1 VERIFIER PLAN / FOLDED BY M6-CP2-TB1-VERIFIER-REV.** RA-28a/RA-28b implementation boundary and gate are preserved in §§51-53, frozen definitions, current Review/R2 plan and git history. |
+| `Architecture_M6_CP2_CB1_Stop_Review_Record.md` (100 lines) | **SUPERSEDED CB1 STOP REVIEW / FOLDED BY M6-CP2-TB1-VERIFIER-REV.** RA-28b correction and no-optimizer ruling are preserved in §52, frozen definitions, current Review and git history. |
+| `Architecture_M6_CP2_CB1_Verifier_Code_Build_Report.md` (74 lines) | **SUPERSEDED CB1/R1 COMPILE REPORT / FOLDED BY M6-CP2-TB1-VERIFIER-REV.** Candidate source/package/compile authority is retained in the current TB report, §53, changelog and git history. |
 | `Architecture_M6_CP1_CB12_Close_R2_Oracle_Recovery_Code_Build_Plan.md` (56 lines) | **CONSUMED R2 PLAN / FOLDED BY TB12-CLOSE-R1-REV.** RA-27a implementation scope, stop rules and 479-process recovery gate are preserved in §47-§48, frozen definitions, current Review and git history. |
 | `Architecture_M6_CP1_CB12_Close_R2_Code_Build_Report.md` (51 lines) | **SUPERSEDED R2 COMPILE REPORT / FOLDED BY TB12-CLOSE-R1-REV.** Exact source `3f40f04a...`, compile run/job/artifacts, 28/28 GMP package and runtime-free evidence are preserved in §48, changelogs and current runtime report. |
 | `Architecture_M6_CP1_TB12_Close_Artifact_Only_Test_Benchmark_Plan.md` (39 lines) | **CONSUMED ORIGINAL TB12 PLAN / FOLDED BY TB12-CLOSE-R1-REV.** The original 479-process immutable gate and preflight are preserved in §§45-47 and git history. |

@@ -1,3 +1,7 @@
+## 2026-10-05 — M6-CP2 TB1 verifier Review rejects first candidate; RA-29
+
+Independent Review validates the 488/491 execution mechanics but rejects promotion. The three REDs are non-stable invalid witnesses; four static RA-28a gaps are also recovery-owned: no carried pipeline verification report, unproved wrong-region authority, duplicated support-incidence logic instead of the shared resolver, and selected-path composition without independent forest-path identity. Exact recovery is `M6-CP2-CB1-VERIFIER-R2`; gate remains 491; accounting remains 60/16/44, debt 1.
+
 ## 2026-10-05 — `M6-CP2-TB1-VERIFIER-EXEC` COMPLETE: 488/491, three non-stable Review-owned candidates
 
 - Artifact-only retry `37368784487 / 111962223674` consumed immutable `11365308211 / 265c8fbb...`.

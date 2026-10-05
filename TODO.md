@@ -1,11 +1,18 @@
-## Current — `M6-CP2-TB1-VERIFIER-EXEC` COMPLETE / 488/491 / mandatory Review next (2026-10-05)
+## CURRENT — M6-CP2 verifier R2 recovery
+
+- [ ] Execute `M6-CP2-CB1-VERIFIER-R2` under RA-29.
+- [ ] Repair the three non-vacuous CP2 witnesses plus identity8 valid-region authority, carried full-pipeline verification report, shared support-kernel check, and independent selected-forest path verification.
+- [ ] Compile/package only; no Directional runtime. If green, run fresh 491-process `M6-CP2-TB1-VERIFIER-R1-EXEC`, then mandatory Review.
+- [ ] Do not promote `11365308211 / 265c8fbb...`; stable accounting remains 60/16/44, debt 1.
+
+## Superseded by Review — `M6-CP2-TB1-VERIFIER-EXEC` COMPLETE / 488/491 (2026-10-05)
 
 - [x] Consume immutable `11365308211 / 265c8fbb...` without rebuild/repair.
 - [x] Execute exactly **491** fresh exact-filter processes: focused30 **30/30**, CP2 focused12 **9/12**, selector449 **449/449**.
 - [x] Verify exact-one selection, zero skips, benchmark 0, immutable package/source/execution-view postflight, and no configure/compile/relink/discovery/repair/mutation.
 - [x] Record three active non-stable Review-owned RED candidates: ordinal 2 source-face permutation no-op; ordinal 6 `selectedRelationStep` no-op; ordinal 7 non-vacuity failure before verifier.
 - [x] Keep stable accounting **60 / 16 / 44**, debt 1; candidate remains unpromoted.
-- [ ] **Exact next `M6-CP2-TB1-VERIFIER-REV`:** independently adjudicate CAND-01..03 and freeze the smallest valid recovery; no repair/rerun before Review.
+- [x] `M6-CP2-TB1-VERIFIER-REV` independently adjudicated CAND-01..03 and froze RA-29 bounded recovery; exact next is R2.
 
 ## Current — `M6-CP2-CB1-VERIFIER-R1` COMPLETE / compile-package GREEN / exact next `M6-CP2-TB1-VERIFIER-EXEC` (2026-10-05)
 

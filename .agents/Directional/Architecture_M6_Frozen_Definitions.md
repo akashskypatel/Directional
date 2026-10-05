@@ -1017,7 +1017,7 @@ Accounting **60 / 16 / 44**, debt 1. Exact next: `M6-CP1-CLOSE-REV`.
 
 ## RA-28 — `M6-CP2-DEFN` independent verifier candidate freeze (2026-10-05; pending mandatory Review)
 
-`Architecture_M6_CP2_Definition_Record.md` freezes the CP2 candidate contract subject to `M6-CP2-DEFN-REV`:
+`M6_Consolidated_Record.md` §51 preserves the reviewed CP2 Definition contract (historical source filenames resolve through its folded-document index):
 
 1. malformed verifier witnesses use copy-by-value A5/A6/A7 **verification record views**; no unchecked product factory exists;
 2. findings are typed and ordered by semantic stage/locus, never discovery/vector/output order;
@@ -1034,7 +1034,7 @@ Until `M6-CP2-DEFN-REV` accepts this candidate, RA-28 authorizes **no implementa
 
 ## RA-28a — CP2 verifier Definition accepted with binding amendments (normative, 2026-10-05, `M6-CP2-DEFN-REV`)
 
-Rationale: `Architecture_M6_CP2_DEFN_Review_Record.md` §2. RA-28 is accepted as amended here; where they conflict, RA-28a governs. No new identities are added: each item is carried by the named identity from the CP2 focused-12 list, and the gate stays **491**.
+Rationale: `M6_Consolidated_Record.md` §51 (historical `Architecture_M6_CP2_DEFN_Review_Record.md` is indexed there). RA-28 is accepted as amended here; where they conflict, RA-28a governs. No new identities are added: each item is carried by the named identity from the CP2 focused-12 list, and the gate stays **491**.
 
 1. **Exact-once, forest, spanning and cycle checks** (identities 3 and 6). Over published record views only, with no search:
    1. the A5-owned relation IDs, the A6 certificate relation IDs and the A6 consumption relation IDs are equal sets, each ID occurring **exactly once** in each;
@@ -1099,7 +1099,7 @@ Successor: `M6-CP2-CB1-VERIFIER` (Code + Build; compile/package only) → `M6-CP
 
 ## RA-28b — RA-28a §7 withdrawn; optimizer check retained as non-authoritative; identity 12 re-specified (normative, 2026-10-05, `M6-CP2-CB1-VERIFIER-REV`)
 
-Rationale: `Architecture_M6_CP2_CB1_Stop_Review_Record.md` §2–§4.
+Rationale: `M6_Consolidated_Record.md` §52 (historical `Architecture_M6_CP2_CB1_Stop_Review_Record.md` is indexed there).
 
 1. **Withdrawal.** RA-28a §7 is withdrawn: its face-membership predicate and its `selectedFace ∈ cornerWedgeBindings` precondition. A5/A7 do not publish that precondition, and RA-22b §2 keeps the representative face representation-only. **No A5 invariant is added.**
 2. **RA-26 §5(iii) resolution.** The existing optimizer component/sheet self-check stays **unchanged**, classified as non-authoritative. On the authoritative path, `project_vertices` confines every projected provenance to its seed's own face (vertex/edge/face-interior supports) or scope (degenerate fallback), at `SurfaceMeshOptimizer.cpp:706-750` and `:786-797`. So an optimizer-side check can only re-test a static lineage property, and that property is certified elsewhere:
@@ -1119,3 +1119,19 @@ Rationale: `Architecture_M6_CP2_CB1_Stop_Review_Record.md` §2–§4.
 5. **Void.** The exploratory CB1 WIP's optimizer membership change is void. All other RA-28a sections are unchanged.
 
 Successor: `M6-CP2-CB1-VERIFIER-R1` (new turn; Code + Build) → `M6-CP2-TB1-VERIFIER-EXEC` (491) → `M6-CP2-TB1-VERIFIER-REV`. Accounting **60 / 16 / 44**, debt 1.
+
+
+## RA-29 — CP2 TB1 verifier recovery after independent Review (normative, 2026-10-05, `M6-CP2-TB1-VERIFIER-REV`)
+
+`M6-CP2-TB1-VERIFIER-REV` rejects the `265c8fbb...` candidate for bounded recovery. The three runtime REDs are non-stable witness defects, but Review also finds four static RA-28a implementation gaps. Recovery is limited to the following:
+
+1. identity 2 must create a real canonical source-face mismatch and must verify published occurrence support against A0 with the shared `SurfacePointSourceSupportResolver`;
+2. identity 6 must use a non-vacuous always-bound A6→A5 payload tamper and the verifier must independently require every published selected path to equal the unique traversal of the published selected forest before transport composition;
+3. identity 7 must construct a real weld-pinched record view from disjoint produced quotient-cell components and reach `NonManifoldTopology / a6:vertex-link`;
+4. identity 8's wrong-region replacement must be an actual A0 region distinct from the occurrence region;
+5. identity 11/full pipeline must carry the exact verified A8 report in the successful `AuthoritativePhaseFrontMeshResult`; projection remains gated by `VerifiedSurfaceProducts`;
+6. no optimizer source change, no A5 semantic expansion, no selector/focused order change, and no reduction of the 491-process gate.
+
+The three EXEC candidates are **FALSE REJECTION / NON-STABLE** and remain +0 to stable accounting. REV-OBS-01/03/04 are production/API verifier contract omissions; REV-OBS-02 is a latent test-witness authority defect. Candidate `11365308211 / 265c8fbb...` is not promoted.
+
+Successor chain is frozen: `M6-CP2-CB1-VERIFIER-R2` → `M6-CP2-TB1-VERIFIER-R1-EXEC` (**491**) → `M6-CP2-TB1-VERIFIER-R1-REV`. `M6-DEFN-R5` remains after CP2. Stable accounting remains **60 / 16 / 44**, debt 1.
