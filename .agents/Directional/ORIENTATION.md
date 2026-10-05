@@ -1,3 +1,12 @@
+## Currency — `M6-CP1-TB12-CLOSE-EXEC` COMPLETE / 478/479 / mandatory Review next (2026-10-05 UTC)
+
+- Candidate `11324028392 / 02149f15...`: focused30 **29/30** + selector449 **449/449** = **478/479**, exact-one, zero skips, benchmark 0, 979/979 evidence.
+- Sole RED identity29 fails witness non-vacuity before transition tamper. CAND-01 is non-stable / Review-owned.
+- Stable accounting **60 / 16 / 44**, debt 1; reviewed runtime `11316716869 / 8dd95821...` retained.
+- Exact next: `M6-CP1-TB12-CLOSE-REV`; CP1 close held.
+
+### Superseded currency note
+
 ## Currency — `M6-CP1-CB12-CLOSE-R1` COMPLETE / compile-package GREEN / exact next TB12 (2026-10-05 UTC)
 
 - Candidate authority: `11324028392 / 02149f1518fc6a753acf3235f7dcdc6fcdf59f24`; all eight GMP/GMPXX targets compile/link; package manifest 28/28; `runtimeExecution=false`.

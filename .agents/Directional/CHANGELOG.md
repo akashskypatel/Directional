@@ -1,3 +1,10 @@
+## 2026-10-05 — `M6-CP1-TB12-CLOSE-EXEC`: mechanically valid 478/479; identity29 witness non-vacuity RED
+
+- Runtime `37266239234 / 111623615471`: focused30 **29/30**, selector449 **449/449**, aggregate **478/479**, exact-one, zero skips, benchmark 0, 979/979 evidence and immutable postflight.
+- Sole RED identity29 has no selected cross-sheet forest edge; its C1 tamper is never reached.
+- Recorded non-stable Review-owned CAND-01; stable accounting **60 / 16 / 44**, debt 1. Candidate unpromoted; exact next `M6-CP1-TB12-CLOSE-REV`.
+- Earlier run `37264751953` was startup-invalid with zero jobs due unquoted YAML colon; corrected and schema-validated before runtime.
+
 ## 2026-10-05 — `M6-CP1-CB12-CLOSE-R1`: C1–C4 compile/package GREEN; TB12 next
 
 - Implemented exact A7 cross-sheet isolation-transition connectivity, distinct A5 source diagnostics, A5-owned validated isolation-certificate accounting, and RA-25 fail-closed strip-continuation ambiguity.

@@ -1,3 +1,10 @@
+## Current — `M6-CP1-TB12-CLOSE-EXEC` COMPLETE / 478/479 / mandatory Review next (2026-10-05)
+
+- [x] Immutable candidate `11324028392 / 02149f1518fc6a753acf3235f7dcdc6fcdf59f24`; exact 479-process gate.
+- [x] Focused **29/30** + selector449 **449/449** = **478/479**, exact-one, zero skips, benchmark 0, immutable postflight, 979/979 result manifest.
+- [x] CAND-01: non-stable / Review-owned; identity29 lacks a selected cross-sheet witness and fails before its C1 tamper. Stable accounting **60 / 16 / 44**, debt 1.
+- [ ] **Exact next:** runtime-free `M6-CP1-TB12-CLOSE-REV`; `M6-CP1-CLOSE-REV` remains held.
+
 ## Current — `M6-CP1-CB12-CLOSE-R1` COMPLETE / exact next `M6-CP1-TB12-CLOSE-EXEC` (2026-10-05)
 
 - [x] C1 exact A7 cross-sheet transition endpoint-sheet certification.

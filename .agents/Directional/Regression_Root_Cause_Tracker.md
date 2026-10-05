@@ -1,3 +1,19 @@
+## 2026-10-05 — `M6-CP1-TB12-CLOSE-EXEC` — **478/479 / one non-stable Review-owned candidate / +0 / 60/16/44 / debt 1**
+
+Immutable candidate `11324028392 / 02149f1518fc6a753acf3235f7dcdc6fcdf59f24` completed the 479-process gate: focused **29/30**, selector449 **449/449**, aggregate **478/479**, exact-one, zero skips, benchmark 0, immutable postflight, self-manifest **979/979**.
+
+### `M6-CP1-TB12-CLOSE-EXEC-CAND-01` — ACTIVE / NON-STABLE / REVIEW-OWNED / witness non-vacuity not established
+
+- Population: focused ordinal29 only; focused1-28, identity30 and selector449 PASS.
+- First failure: `crossSheetEdge` is null; no selected relation has disjoint endpoint `cornerWedgeSheets`.
+- Baseline A7 succeeds, but the test exits before any isolation transition is rewritten, so the intended C1 falsifier is not exercised.
+- EXEC cannot distinguish fixture/oracle authority from production-selection behavior; mandatory Review owns adjudication.
+- Identity29 is new gate authority and no accepted-green row became RED: **+0 events / +0 categories / +0 recurrences**, debt unchanged. Candidate remains unpromoted.
+
+Earlier run `37264751953` was startup-invalid with zero jobs and is orchestration-only.
+
+**Stable accounting: `60 events / 16 categories / 44 recurrences`, debt 1.**
+
 ## 2026-10-05 — `M6-CP1-CB12-CLOSE-R1` compile-valid close-out — **+0 / 60/16/44 / debt 1**
 
 - C1–C4 and focused identities 29/30 are compile-valid at exact source `02149f1518fc6a753acf3235f7dcdc6fcdf59f24`; C5 remains discharged by RA-26.

@@ -1,3 +1,13 @@
+## Resume-critical update — `M6-CP1-TB12-CLOSE-EXEC` COMPLETE / 478/479 / exact next `M6-CP1-TB12-CLOSE-REV` (2026-10-05)
+
+**Start mandatory runtime-free `M6-CP1-TB12-CLOSE-REV`; do not rerun TB12, rebuild/repair the candidate, promote in EXEC, or begin `M6-CP1-CLOSE-REV` first.**
+
+TB12 consumed immutable candidate `11324028392 / 02149f1518fc6a753acf3235f7dcdc6fcdf59f24`. Runtime `37266239234 / 111623615471` is terminal SUCCESS. Result/log `11326949864 / 11328055226`; self-manifest **979/979**. Gate: focused30 **29/30**, selector449 **449/449**, aggregate **478/479**, exact-one, zero skips, benchmark 0, immutable postflight.
+
+Sole RED identity29 fails because the split-isolation witness contains no selected forest edge with disjoint endpoint sheet sets, so it exits before the C1 tamper. CAND-01 is **ACTIVE / NON-STABLE / REVIEW-OWNED / witness non-vacuity not established**. Stable accounting remains **60 / 16 / 44**, debt 1. Reviewed runtime remains `11316716869 / 8dd95821...`; TB12 candidate remains unpromoted.
+
+Review must independently adjudicate fixture/oracle authority versus production-selection defect before recovery or promotion.
+
 ## Resume-critical update — `M6-CP1-CB12-CLOSE-R1` COMPLETE / compile-package GREEN / exact next `M6-CP1-TB12-CLOSE-EXEC` (2026-10-05)
 
 **Start immutable artifact-only `M6-CP1-TB12-CLOSE-EXEC`; do not rebuild or repair the candidate.** Consume `11324028392 / 02149f1518fc6a753acf3235f7dcdc6fcdf59f24` and follow `Architecture_M6_CP1_TB12_Close_Artifact_Only_Test_Benchmark_Plan.md`.

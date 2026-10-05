@@ -1,3 +1,16 @@
+## Live M6 routing — after `M6-CP1-TB12-CLOSE-EXEC`
+
+| Checkpoint | State | Exact next / gate |
+|---|---|---|
+| M6 CP1 reviewed runtime | **RETAINED** | `11316716869 / 8dd95821...`, 477/477 |
+| TB12 candidate | **UNPROMOTED / 478/479** | `11324028392 / 02149f15...`; identity29 witness non-vacuity RED |
+| TB12 Review | **EXACT NEXT** | runtime-free `M6-CP1-TB12-CLOSE-REV`; adjudicate CAND-01 |
+| CP1 closure | Held | `M6-CP1-CLOSE-REV` only after TB12 Review |
+
+Stable accounting: **60 / 16 / 44**, debt 1.
+
+### Superseded routing
+
 ## Live M6 routing — after `M6-CP1-CB12-CLOSE-R1`
 
 | Checkpoint | State | Exact next / gate |
