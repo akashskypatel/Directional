@@ -1,0 +1,2 @@
+# M6-CP2-TB1-VERIFIER-REV temporary-state cleanup
+.agents/connector-triggers/m6-cp2-tb1-verifier-rev-closeout.txt
