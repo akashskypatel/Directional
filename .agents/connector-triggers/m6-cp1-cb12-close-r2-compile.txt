@@ -1,4 +1,0 @@
-Purpose: compile/package M6-CP1-CB12-CLOSE-R2 exact semantic source
-Source: 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05
-Caller install: 9d777d6cbc6a6edf430665028d5cf5227c895a44
-Retry: 0
