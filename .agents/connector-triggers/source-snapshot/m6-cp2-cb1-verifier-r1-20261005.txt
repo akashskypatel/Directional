@@ -1,3 +1,0 @@
-Purpose: snapshot authority for M6-CP2-CB1-VERIFIER-R1
-Expected prior head: 696f9d504969a1e843ac30d881ac5185301d52ff
-Retry: 0
