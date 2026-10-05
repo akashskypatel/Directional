@@ -1,3 +1,13 @@
+## Currency — `M6-CP1-CB12-CLOSE-R2` COMPLETE / compile-package GREEN / exact next `M6-CP1-TB12-CLOSE-R1-EXEC` (2026-10-05 UTC)
+
+- RA-27a is implemented at exact source `3f40f04a...`: per-occurrence wedge sheet-graph connectivity, C4 `Quotient...` name, and identity29's A5→A6 re-production falsifier.
+- Compile/package run/job `37278068286 / 111659540374` is GREEN on the standard eight GMP/GMPXX targets; result `11330703256`, 28/28 manifest, `runtimeExecution=false`.
+- Frozen gate authorities are unchanged. No runtime recovery is claimed yet; reviewed runtime remains `11316716869 / 8dd95821...`.
+- Exact next is immutable `M6-CP1-TB12-CLOSE-R1-EXEC` at **479**, then mandatory R1 Review; CP1 close remains held.
+
+Accounting **60 / 16 / 44**, debt 1.
+
+### Superseded currency note
 ## Currency — `M6-CP1-TB12-CLOSE-REV` + review-agent addendum: RA-27 withdrawn → RA-27a; R2 re-scoped (2026-10-05 UTC)
 
 - TB12 re-derived: 478/479, candidate unpromoted, CAND-01 non-stable.

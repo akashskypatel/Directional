@@ -1,3 +1,13 @@
+## Current — `M6-CP1-CB12-CLOSE-R2` COMPLETE / compile-package GREEN / exact next R1 EXEC (2026-10-05)
+
+- [x] RA-27a exact A7 wedge sheet-graph connectivity; site `cross-sheet:wedge`.
+- [x] C4 diagnostic name corrected to `QuotientClosedComplexStripContinuationMismatch`.
+- [x] Identity29 recovered without stale A6 reuse: baseline accepts; wedge-only tamper; A5 republish; A6 re-produce/succeed; A7 rejects at wedge site.
+- [x] Focused30 / selector449 / routing449 frozen bytes unchanged.
+- [x] Compile/package GREEN: `11330703256 / 3f40f04a...`, run/job `37278068286 / 111659540374`, eight GMP/GMPXX targets, manifest 28/28, `runtimeExecution=false`.
+- [ ] **Exact next:** `M6-CP1-TB12-CLOSE-R1-EXEC`, immutable **479** process gate, then mandatory `M6-CP1-TB12-CLOSE-R1-REV`.
+- [ ] Stable accounting remains **60 / 16 / 44**, debt 1; candidate remains unpromoted until Review.
+
 ## Current — `M6-CP1-TB12-CLOSE-REV` + review-agent addendum / RA-27a / exact next `M6-CP1-CB12-CLOSE-R2` (2026-10-05)
 
 - [x] Re-derive TB12: digests `da42bf2a`/`70880747`, 979/979, ledgers in frozen order, 478/479, ordinal 29 pre-tamper RED; candidate source == HEAD.

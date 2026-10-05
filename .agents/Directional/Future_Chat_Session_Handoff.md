@@ -1,3 +1,11 @@
+## Resume-critical update — `M6-CP1-CB12-CLOSE-R2` COMPLETE / compile-package GREEN / exact next `M6-CP1-TB12-CLOSE-R1-EXEC` (2026-10-05)
+
+**Start immutable artifact-only `M6-CP1-TB12-CLOSE-R1-EXEC`; do not rebuild or repair the candidate.** Consume compile package `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05` and execute the unchanged focused30 + selector449 gate as exactly **479 fresh exact-filter processes**, then mandatory `M6-CP1-TB12-CLOSE-R1-REV`.
+
+R2 implements RA-27a only: exact per-occurrence wedge sheet-graph connectivity at A7 (`cross-sheet:wedge`), C4 name `QuotientClosedComplexStripContinuationMismatch`, and identity29's consistent-chain falsifier with A6 re-produced after A5 tamper. The selected-forest edge rule is unchanged. Focused30 / selector449 / routing449 hashes remain exact.
+
+Compile run/job `37278068286 / 111659540374` is GREEN on all eight standard GMP/GMPXX targets. Result/log artifacts `11330703256 / 11330837905`; package manifest **28/28**; exact source `3f40f04a...`; `runtimeExecution=false`. No generated Directional runtime executed. Reviewed runtime remains `11316716869 / 8dd95821...`; accounting remains **60 / 16 / 44**, debt 1. Full evidence: `Architecture_M6_CP1_CB12_Close_R2_Code_Build_Report.md`.
+
 ## Resume-critical update — `M6-CP1-TB12-CLOSE-REV` + review-agent addendum: RA-27 withdrawn → RA-27a; R2 re-scoped (2026-10-05)
 
 **Start `M6-CP1-CB12-CLOSE-R2` under RA-27a.** The review-agent block at the top of `Architecture_M6_CP1_CB12_Close_R2_Oracle_Recovery_Code_Build_Plan.md` governs. **Do not search for or build a selected disjoint-sheet A6 edge.**

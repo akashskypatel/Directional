@@ -1,3 +1,13 @@
+## 2026-10-05 — `M6-CP1-CB12-CLOSE-R2` COMPLETE: RA-27a recovery compiled and packaged
+
+- Replaced A7's per-occurrence `has any isolation transition` wedge proxy with exact member-local sheet-graph connectivity over region-matching `cornerWedgeIsolation`; rejection site is `cross-sheet:wedge`.
+- Corrected C4 diagnostic name to `QuotientClosedComplexStripContinuationMismatch`; selected-forest cross-sheet edge semantics remain unchanged.
+- Recovered identity29 with baseline A5→A6→A7 acceptance, bridge-wedge-only tamper, A5 republish, fresh A6 production/success, then exact A7 wedge rejection. No stale A6 is reused.
+- Verified frozen focused30 / selector449 / routing449 hashes unchanged.
+- Drive patch apply run/job `37277892065 / 111658980414` produced semantic source `3f40f04a0e9d382b2ec82cf37a03c18ad405eb05`; owner-authorized Drive deletion completed.
+- Compile run/job `37278068286 / 111659540374` passed all eight standard GMP/GMPXX targets. Result/log `11330703256 / 11330837905`; package 28/28; clean source receipts; `runtimeExecution=false`.
+- Candidate remains unpromoted. Exact next: immutable `M6-CP1-TB12-CLOSE-R1-EXEC` at 479 processes, then mandatory R1 Review. Accounting remains **60 / 16 / 44**, debt 1.
+
 ## 2026-10-05 — `M6-CP1-TB12-CLOSE-REV` review-agent addendum: RA-27 withdrawn → RA-27a; R2 re-scoped
 
 - **Re-derived independently:** result `11326949864` (`da42bf2a`) and log `11328055226` (`70880747`); 979/979; focused-30 and selector449 ledgers in frozen order; 478/479; ordinal 29 fails before its tamper. Candidate `02149f15` source == HEAD.
