@@ -25,11 +25,11 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1Zyk_jYMdU3Q1_0meqw_IKT6XH9o78c_a
-      patch_sha256: 694f89a68c4a0610d9061764d920db09554748d32d6b32c551a61d9de4133840
-      base_sha: 272efc96a9d9e0fb809bf8547955846587ac00a3
+      file_id: 1r4tealeL_C2woLsPM47-i9MkHklVqBiD
+      patch_sha256: 10c92a36802eee214369638f6ec5e9de7a0aadc92ac4019f166ac17b05263fc1
+      base_sha: 7ca534c223d603e117c7eeba322f88609c04cbb6
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "M6-CP1-CB12-CLOSE-R2: recover A7 wedge oracle"
+      commit_message: "docs: close M6-CP1-CB12-CLOSE-R2"
     secrets: inherit
 
   mailbox:
@@ -44,4 +44,4 @@ jobs:
       source_sha: ${{ github.sha }}
       source_ref: ${{ github.ref }}
       result: ${{ needs.apply.result }}
-      summary: M6-CP1-CB12-CLOSE-R2 Google Drive patch application.
+      summary: M6-CP1-CB12-CLOSE-R2 closeout documentation patch application.
