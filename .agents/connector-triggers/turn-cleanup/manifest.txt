@@ -1,2 +1,0 @@
-.agents/connector-triggers/m6-cp1-close-rev-apply.txt
-.agents/connector-triggers/source-snapshot/M6-CP1-CLOSE-REV-20261005T1053Z.txt
