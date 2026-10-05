@@ -1,3 +1,0 @@
-Purpose: exact source snapshot for M6-CP1-TB12-CLOSE-R1-REV
-Authority before trigger: ff5c72a6ce175a6d8115b71d9453edb677548d0f
-Requested mode: push-event exact source snapshot
