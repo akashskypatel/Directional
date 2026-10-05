@@ -1,4 +1,0 @@
-Purpose: apply verified M6-CP1-CB12-CLOSE-R1 C1-C4 patch
-Expected patch base: 24f8db391284d5731ec7a2c67a26c56e9cfc0294
-Drive file: 1Ny81rUagEl0Uz9jlVq084RbA-HXxw7t3
-Retry: 0
