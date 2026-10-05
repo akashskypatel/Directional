@@ -970,6 +970,13 @@ struct SurfaceOccurrenceComplexError {
   std::optional<int> frontEdge;
 };
 
+struct SurfaceOccurrenceVerificationRecords {
+  std::vector<SurfaceOccurrenceCell> cells;
+  std::vector<SurfaceOccurrence> occurrences;
+  std::vector<SurfaceOccurrenceRelation> ownedRelations;
+  OccurrenceComplexCertificate certificate;
+};
+
 class SurfaceOccurrenceComplex {
 public:
   [[nodiscard]] const std::vector<SurfaceOccurrenceCell> &cells() const noexcept {
@@ -984,6 +991,9 @@ public:
   }
   [[nodiscard]] const OccurrenceComplexCertificate &certificate() const noexcept {
     return certificate_;
+  }
+  [[nodiscard]] SurfaceOccurrenceVerificationRecords verification_records() const {
+    return {cells_, occurrences_, ownedRelations_, certificate_};
   }
 
 private:
@@ -1255,6 +1265,13 @@ struct SurfaceQuotientValidationRecords {
   std::vector<SurfaceQuotientCell> classedCells;
 };
 
+struct SurfaceQuotientVerificationRecords {
+  SurfaceQuotientValidationRecords records;
+  QuotientCertificate quotientCertificate;
+  MaterializationCertificate materializationCertificate;
+  std::optional<SurfaceQuotientClosedComplexView> closedComplexView;
+};
+
 class SurfaceQuotientProduct {
 public:
   [[nodiscard]] const std::vector<QuotientRelationCertificate> &
@@ -1295,6 +1312,10 @@ public:
   [[nodiscard]] const std::optional<SurfaceQuotientClosedComplexView> &
   closed_complex_view() const noexcept {
     return closedComplexView_;
+  }
+  [[nodiscard]] SurfaceQuotientVerificationRecords verification_records() const {
+    return {records_, quotientCertificate_, materializationCertificate_,
+            closedComplexView_};
   }
 
 private:
@@ -1406,6 +1427,14 @@ struct GeometryEmbeddingFailure {
   std::string site;
 };
 
+struct SourceAttachedGeometryVerificationRecords {
+  std::vector<SourceAttachedGeometryVertex> vertices;
+  std::vector<SurfaceQuotientCell> topology;
+  std::vector<SourceSupportCertificate> sourceSupportCertificates;
+  std::vector<std::vector<SurfaceQuotientClassId>> boundaryLoops;
+  GeometryEmbeddingCertificate certificate;
+};
+
 class SourceAttachedGeometryProduct {
 public:
   [[nodiscard]] const std::vector<SourceAttachedGeometryVertex> &vertices()
@@ -1427,6 +1456,11 @@ public:
   [[nodiscard]] const GeometryEmbeddingCertificate &certificate()
       const noexcept {
     return certificate_;
+  }
+  [[nodiscard]] SourceAttachedGeometryVerificationRecords verification_records()
+      const {
+    return {vertices_, topology_, sourceSupportCertificates_, boundaryLoops_,
+            certificate_};
   }
 
 private:
@@ -1460,6 +1494,125 @@ public:
       const SurfaceOccurrenceComplex &occurrences,
       const SurfaceQuotientProduct &quotient);
 };
+
+enum class VerificationStage : std::uint8_t {
+  A0 = 0,
+  A5 = 1,
+  A6 = 2,
+  A7 = 3,
+  CrossStage = 4,
+};
+
+enum class VerificationFailureCode : std::uint8_t {
+  SourceIncidenceMismatch = 0,
+  OccurrenceOwnershipMismatch = 1,
+  DirectedSideCycleMismatch = 2,
+  SemanticIdentityMismatch = 3,
+  QuotientMembershipMismatch = 4,
+  QuadIncidenceMismatch = 5,
+  NonManifoldTopology = 6,
+  BoundaryOrEulerMismatch = 7,
+  NamedTransportMismatch = 8,
+  SourceSupportIncidenceMismatch = 9,
+  CertificatePayloadMismatch = 10,
+  MissingPublishedAuthority = 11,
+  UncertifiedAuthoritySubstitution = 12,
+};
+
+const char *verification_failure_code_name(VerificationFailureCode code);
+
+struct VerificationLocus {
+  VerificationStage stage = VerificationStage::A0;
+  std::optional<authority::CellId> cell;
+  std::optional<authority::OccurrenceId> occurrence;
+  std::optional<SurfaceOccurrenceRelationId> relation;
+  std::optional<SurfaceQuotientClassId> quotientClass;
+  std::string site;
+
+  auto operator<=>(const VerificationLocus &) const = default;
+};
+
+struct VerificationFailure {
+  VerificationFailureCode code = VerificationFailureCode::SourceIncidenceMismatch;
+  VerificationLocus locus;
+
+  auto operator<=>(const VerificationFailure &) const = default;
+};
+
+struct VerificationReport {
+  std::vector<VerificationFailure> findings;
+
+  [[nodiscard]] bool verified() const noexcept { return findings.empty(); }
+};
+
+std::string verification_failure_message(const VerificationReport &report);
+
+class SurfaceProductVerifier;
+
+class VerifiedSurfaceProducts {
+public:
+  [[nodiscard]] const SurfaceOccurrenceComplex &occurrences() const noexcept {
+    return *occurrences_;
+  }
+  [[nodiscard]] const SurfaceQuotientProduct &quotient() const noexcept {
+    return *quotient_;
+  }
+  [[nodiscard]] const SourceAttachedGeometryProduct &geometry() const noexcept {
+    return *geometry_;
+  }
+  [[nodiscard]] const VerificationReport &report() const noexcept {
+    return report_;
+  }
+
+private:
+  friend class SurfaceProductVerifier;
+  VerifiedSurfaceProducts(const SurfaceOccurrenceComplex &occurrences,
+                          const SurfaceQuotientProduct &quotient,
+                          const SourceAttachedGeometryProduct &geometry,
+                          VerificationReport report)
+      : occurrences_(&occurrences), quotient_(&quotient), geometry_(&geometry),
+        report_(std::move(report)) {}
+
+  const SurfaceOccurrenceComplex *occurrences_ = nullptr;
+  const SurfaceQuotientProduct *quotient_ = nullptr;
+  const SourceAttachedGeometryProduct *geometry_ = nullptr;
+  VerificationReport report_;
+};
+
+class SurfaceProductVerifier {
+public:
+  using Result = std::variant<VerifiedSurfaceProducts, VerificationReport>;
+
+  static Result verify(
+      const Eigen::MatrixXd &sourceVertices,
+      const Eigen::MatrixXi &sourceFaces,
+      const geometry::SourceTopologyRegions &sourceAuthority,
+      const std::set<authority::SourceEdgeTopologyKey> &hardFeatureEdges,
+      const SurfaceOccurrenceComplex &occurrences,
+      const SurfaceQuotientProduct &quotient,
+      const SourceAttachedGeometryProduct &geometry);
+
+  static VerificationReport verify_records(
+      const Eigen::MatrixXd &sourceVertices,
+      const Eigen::MatrixXi &sourceFaces,
+      const geometry::SourceTopologyRegions &sourceAuthority,
+      const std::set<authority::SourceEdgeTopologyKey> &hardFeatureEdges,
+      const SurfaceOccurrenceVerificationRecords &occurrences,
+      const SurfaceQuotientVerificationRecords &quotient,
+      const SourceAttachedGeometryVerificationRecords &geometry);
+};
+
+SurfaceProductVerifier::Result produce_verified_surface_products(
+    const Eigen::MatrixXd &sourceVertices,
+    const Eigen::MatrixXi &sourceFaces,
+    const geometry::SourceTopologyRegions &sourceAuthority,
+    const std::set<authority::SourceEdgeTopologyKey> &hardFeatureEdges,
+    const SurfaceOccurrenceComplex &occurrences,
+    const SurfaceQuotientProduct &quotient,
+    const SourceAttachedGeometryProduct &geometry);
+
+AuthoritativePhaseFrontMeshResult project_verified_surface_products(
+    const VerifiedSurfaceProducts &verifiedProducts);
 
 AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     const Eigen::MatrixXd &sourceVertices,
