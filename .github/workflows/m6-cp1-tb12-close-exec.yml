@@ -1,0 +1,146 @@
+name: M6 CP1 TB12 Close Artifact-Only Execute
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m6-cp1-tb12-close-exec.txt
+
+permissions:
+  actions: read
+  contents: write
+  id-token: write
+
+concurrency:
+  group: m6-cp1-tb12-close-exec-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m6-cp1-tb12-close-exec.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  runtime:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN || github.token }}
+      TURN_ID: M6-CP1-TB12-CLOSE-EXEC
+      HARNESS_FILE_ID: 1P3pV7sxN_MLB9MpWGo83hdgIJQBSg9K5
+      EXPECTED_HARNESS_SHA256: '611b874379f02be99b27e28cc5beb8522d2b73bee55a2cc1cd9960304d811723'
+    steps:
+      - name: Initialize diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m6-cp1-tb12-close-exec-workflow.log"
+          : > "$log"
+          printf '%s\n' "workflow=$GITHUB_WORKFLOW" "run_id=$GITHUB_RUN_ID" \
+            "event=$GITHUB_EVENT_NAME" "event_sha=$GITHUB_SHA" "ref=$GITHUB_REF" \
+            "repository=$GITHUB_REPOSITORY" "candidate_artifact_id=11324028392" \
+            "candidate_source=02149f1518fc6a753acf3235f7dcdc6fcdf59f24" \
+            "runtimeExecution=artifact-only" "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$log"
+
+      - name: Checkout exact control source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          token: ${{ secrets.GH_TOKEN || github.token }}
+
+      - name: Authenticate to Google Drive
+        id: auth
+        uses: google-github-actions/auth@v3
+        with:
+          project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
+          workload_identity_provider: ${{ secrets.GOOGLE_PROVIDER }}
+          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
+          token_format: access_token
+          access_token_scopes: https://www.googleapis.com/auth/drive
+          create_credentials_file: false
+
+      - name: Download and verify frozen harness
+        env:
+          ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m6-cp1-tb12-close-exec-workflow.log"
+          exec > >(tee -a "$log") 2>&1
+          harness="${RUNNER_TEMP}/m6-cp1-tb12-close-exec-harness.sh"
+          curl --fail-with-body --silent --show-error --location --max-time 120 \
+            -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+            "https://www.googleapis.com/drive/v3/files/${HARNESS_FILE_ID}?alt=media&supportsAllDrives=true" \
+            -o "$harness"
+          actual="$(sha256sum "$harness" | awk '{print $1}')"
+          test "$actual" = "$EXPECTED_HARNESS_SHA256"
+          bash -n "$harness"
+          echo "harness_path=$harness" >> "$GITHUB_ENV"
+          echo "harness_sha256=$actual"
+
+      - name: Execute immutable artifact-only gate
+        id: gate
+        shell: bash
+        run: |
+          set +e
+          bash "$harness_path"
+          status=$?
+          set -e
+          echo "harness_exit=${status}" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Upload result evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: directional-m6-cp1-tb12-close-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/M6-CP1-TB12-CLOSE-EXEC-result
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload diagnostic logs
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          bundle="${RUNNER_TEMP}/m6-cp1-tb12-close-exec-logs"
+          mkdir -p "$bundle"
+          cp "${RUNNER_TEMP}/m6-cp1-tb12-close-exec-workflow.log" "$bundle/workflow.log"
+          if [[ -f "${RUNNER_TEMP}/M6-CP1-TB12-CLOSE-EXEC.log" ]]; then
+            cp "${RUNNER_TEMP}/M6-CP1-TB12-CLOSE-EXEC.log" "$bundle/harness.log"
+          fi
+          printf '%s\n' "harness_exit=${{ steps.gate.outputs.harness_exit }}" \
+            "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$bundle/workflow.log"
+
+      - name: Upload diagnostic log artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: directional-m6-cp1-tb12-close-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/m6-cp1-tb12-close-exec-logs
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Fail closed on orchestration failure
+        if: always()
+        shell: bash
+        run: test "${{ steps.gate.outputs.harness_exit }}" = "0"
+
+  mailbox:
+    if: ${{ always() }}
+    needs: [runtime]
+    permissions:
+      actions: read
+      contents: write
+    uses: ./.github/workflows/workflow-mailbox-publisher.yml
+    with:
+      workflow_key: m6-cp1-tb12-close-exec
+      source_sha: 02149f1518fc6a753acf3235f7dcdc6fcdf59f24
+      source_ref: refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing
+      result: ${{ needs.runtime.result }}
+      summary: Execute immutable M6-CP1 TB12 close gate: focused30 plus selector449, 479 fresh exact-filter processes.
