@@ -1,3 +1,11 @@
+## Resume-critical update — `M6-CP2-CB1-VERIFIER` STOP FOR REVIEW on RA-28a §7 (2026-10-05)
+
+**Do not apply the exploratory CP2 verifier WIP, compile it, or start TB1.** CB1 hit RA-28a §7's explicit conditional stop: the required derivation `CornerPlacementProvenance.selectedFace ∈ cornerWedgeBindings` is not present in the accepted A5/A7 contracts.
+
+Source proof: A5 derives `selectedFace` from the canonical corner face (`RemeshPipeline.cpp:4265-4280`) but derives wedge bindings independently from incoming/outgoing side-span bindings and vertex-wedge traversal (`:4282-4423`); edge/vertex support has no selected-face membership check. Phase-front boundary closure compares endpoint positions, not source-face identity (`SurfaceCellTracing.cpp:7152-7171`). A7 then builds class `sourceCharts` only from those wedge bindings (`RemeshPipeline.cpp:6800-6873`) while retaining the representative occurrence point. Therefore the optimizer membership predicate would depend on an unproved relation.
+
+Per RA-28a, changing A5 semantics or inventing a new predicate is forbidden inside CB1. Full record: `Architecture_M6_CP2_CB1_Verifier_Code_Build_Report.md`. No implementation was applied, no build/runtime ran, reviewed runtime stays `11330703256 / 3f40f04a...` (479/479), accounting **60 / 16 / 44**, debt 1. **No exact successor ID is frozen; require Review and keep successor UNKNOWN until it freezes bounded routing.**
+
 ## Resume-critical update — `M6-CP2-DEFN-REV` ACCEPTED with RA-28a; exact next `M6-CP2-CB1-VERIFIER` (2026-10-05)
 
 **Start `M6-CP2-CB1-VERIFIER`** (Code + Build; compile/package only). Follow `Architecture_M6_CP2_CB1_Verifier_Code_Build_Plan.md`, now **released**. **RA-28a governs where it conflicts:**

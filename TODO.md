@@ -1,3 +1,11 @@
+## Current — `M6-CP2-CB1-VERIFIER` STOP FOR REVIEW on RA-28a §7 (2026-10-05)
+
+- [x] Re-audit the RA-28a §7 representative-face precondition on exact semantic source `8bc1f52b...`.
+- [x] Establish that A5 selects `placement.selectedFace` independently of edge/vertex `cornerWedgeBindings`, phase-front closure does not require source-face identity, and A7 `sourceCharts` are binding-derived only.
+- [x] Stop before applying the exploratory verifier WIP, compiling, or starting TB1, as RA-28a requires.
+- [ ] Runtime-free Review must adjudicate the missing invariant and freeze a bounded correction/contract amendment.
+- [ ] Successor is `UNKNOWN` until Review authority freezes it; 491-process TB1 remains held.
+
 ## Current — `M6-CP2-DEFN-REV` ACCEPTED with RA-28a / exact next `M6-CP2-CB1-VERIFIER` (2026-10-05)
 
 - [x] Review the CP2 Definition (D1–D6, RA-26 §5(iii)) against frozen §6/§10 and exact source.

@@ -1,3 +1,10 @@
+## 2026-10-05 — `M6-CP2-CB1-VERIFIER` stopped for Review on RA-28a §7
+
+- Re-derived the representative-face precondition on exact semantic source `8bc1f52b...` and found it is not certified by current A5/A7 semantics.
+- A5 derives `placement.selectedFace` from the canonical corner face but edge/vertex wedge bindings from side-span/wedge traversal; no membership invariant connects them. Phase-front closure is positional, not source-face-identical. A7 `sourceCharts` are the union of wedge-binding charts.
+- RA-28a's conditional stop therefore fired before repository implementation or compile/package. The exploratory verifier WIP remains unapplied and is evidence only.
+- Added `Architecture_M6_CP2_CB1_Verifier_Code_Build_Report.md`; TB1 is held; runtime authority and accounting are unchanged. Successor remains UNKNOWN pending Review.
+
 ## 2026-10-05 — `M6-CP2-DEFN-REV`: CP2 verifier Definition accepted with RA-28a; CB1 released
 
 - **Accepted:** the record-view negative seam; C4 accepted-defensive with a verifier-manifoldness falsifier; three wedge tampers; A8 after A7 and before projection; gate 491.

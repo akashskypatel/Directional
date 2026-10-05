@@ -1,3 +1,12 @@
+## Currency — `M6-CP2-CB1-VERIFIER` STOP FOR REVIEW on RA-28a §7 (2026-10-05 UTC)
+
+- RA-28a §7 required proof that the representative `sourcePoint.face` is one of the class `sourceCharts` faces via `CornerPlacementProvenance.selectedFace ∈ cornerWedgeBindings`.
+- Exact-source audit cannot derive that invariant: selected face and edge/vertex wedge bindings are produced independently; phase-front closure is positional, and A7 charts are binding-derived.
+- Per the frozen stop rule, CB1 made no repository implementation, started no compile, and cannot advance to TB1.
+- Require runtime-free Review to amend/freeze the contract or bounded correction. Exact successor ID is not yet frozen.
+
+Accounting **60 / 16 / 44**, debt 1. Reviewed runtime remains `11330703256 / 3f40f04a...` (479/479).
+
 ## Currency — `M6-CP2-DEFN-REV`: CP2 verifier Definition ACCEPTED with RA-28a; exact next `M6-CP2-CB1-VERIFIER` (2026-10-05 UTC)
 
 - The architecture is accepted: record-view seam, C4 defensive, three wedge tampers, A8 after A7, gate **491**.
