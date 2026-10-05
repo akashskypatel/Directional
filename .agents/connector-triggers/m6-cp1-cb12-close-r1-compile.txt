@@ -1,4 +1,5 @@
-Purpose: compile/package M6-CP1-CB12-CLOSE-R1 exact source
-Source SHA: 1b3944e87001fb915cdedcd708bdab6b50dd20b8
+Purpose: compile/package M6-CP1-CB12-CLOSE-R1 after diagnosed compile correction
+Failed source SHA: 1b3944e87001fb915cdedcd708bdab6b50dd20b8
+Correction: occurrenceComplex pointer member access only
 Runtime execution: forbidden
-Retry: 0
+Retry: 1
