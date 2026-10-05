@@ -1,0 +1,3 @@
+Purpose: authoritative repository snapshot for M6-CP2-TB1-VERIFIER-EXEC
+Expected control head: 0889c8a1783178d7743288888c5f9095216c1f36
+Immutable test artifact source: 265c8fbb19a66c5c3344a525fdbd43932c3ef829
