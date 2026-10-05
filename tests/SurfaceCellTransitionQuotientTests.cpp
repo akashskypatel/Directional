@@ -7768,13 +7768,13 @@ TEST(M6CP2, AuthoritativeOptimizerProjectionStaysOnRepresentativeScope) {
     const auto seedRow = directional::authority::SourceFaceId::from_index(
         seed.face, static_cast<std::size_t>(fixture.mesh.F.rows()));
     ASSERT_TRUE(seedRow.has_value());
-    const auto seedSheet = constraints.sourceAuthority->sheet_for_row(*seedRow);
+    const auto seedSheet = constraints.sourceAuthority->sheet_for_row(seedRow.value());
     bool foundSheet = false;
     for (const auto &chart : chartAuthority.sourceCharts) {
       const auto row = constraints.sourceAuthority->row_for_topology(chart.face);
       ASSERT_TRUE(row.has_value());
       foundSheet = foundSheet ||
-                   constraints.sourceAuthority->sheet_for_row(*row) == seedSheet;
+                   constraints.sourceAuthority->sheet_for_row(row.value()) == seedSheet;
     }
     EXPECT_TRUE(foundSheet);
   }
