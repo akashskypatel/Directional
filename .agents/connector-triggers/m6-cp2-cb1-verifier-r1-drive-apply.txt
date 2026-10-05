@@ -1,5 +1,0 @@
-Purpose: retry staged M6-CP2-CB1-VERIFIER-R1 verifier implementation patch after diagnosed non-fast-forward race
-Caller install commit: b9cbf11031ecbaac25ec54c87d18cdda3ae7e446
-Patch base: 09ab05dfb34fc4a1f6ae052ef78f2a3ceaae0739
-Prior failed run: 37354014826
-Retry: 1
