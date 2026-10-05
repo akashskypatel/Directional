@@ -1,3 +1,3 @@
 Purpose: observe active M6-CP1-TB12-CLOSE-EXEC run without retriggering it
 Expected runtime trigger: 183ae0a52bb754b5bb70280b2d5fcd5549837d55
-Retry: 0
+Retry: 1
