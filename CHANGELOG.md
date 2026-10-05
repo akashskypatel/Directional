@@ -1,3 +1,10 @@
+## 2026-10-05 — `M6-CP1-CB12-CLOSE-REV` — close-out unblocked
+
+- The close-out turn stopped on a code site it judged unsafe. Review found that the site is test-only diagnostic code and does not read the value in question, so the stop is lifted.
+- A full audit of the optimizer and final validation found nothing that makes a product decision from the arbitrary representative point.
+- Two places use that point as a numeric reference: the optimizer's normal/field reference and one validation-metric fallback. Both predate this checkpoint. They are now scheduled for the M6-CP3 permutation-invariance work, with a test that must prove the fix.
+- Next: `M6-CP1-CB12-CLOSE-R1` (close-out code, gate 479).
+
 ## 2026-10-05 — `M6-CP1-TB11-G4-R1-REV` review-agent addendum — boundary recovery confirmed; CP1 close-out turn added
 
 - The edge-loop boundary recovery (477/477) and its promotion are confirmed.

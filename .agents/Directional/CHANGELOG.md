@@ -1,3 +1,13 @@
+## 2026-10-05 — `M6-CP1-CB12-CLOSE-REV`: CB12 C5 stop discharged; RA-26; successor `M6-CP1-CB12-CLOSE-R1`
+
+- **Source authority:** HEAD source is byte-identical to the reviewed runtime `8dd95821` (both fetched by SHA after the history squash).
+- **Flagged site reclassified:** `SurfaceMeshOptimizer.cpp:3015-3031` reads source-mesh incidence, not a provenance face, and is test-only (`make_surface_optimization_overlay` has no production caller). OBS-01 → M8-CP2.
+- **Full audit** of 12 optimizer and final-validation sites: no authority-deciding consumer.
+  - Optimizer energy/gradient (corner 0's representative face for normal and field) and the field-metric fallback are reference-selecting.
+  - **RA-26** re-homes them to `M6-DEFN-R5` / `M6-CP3`, with a representative-permutation falsifier.
+- **CB12 plan:** gains an RA-26 header block. C5 is discharged; R1 runs C1–C4 and identities 29/30 with no optimizer change.
+- **Docs:** new Review record `Architecture_M6_CP1_CB12_Close_Stop_Review_Record.md`; lesson 198; handoff (top + live) / ORIENTATION / TODO / ROADMAP / tracker (+0, OBS-01/02) / consolidated §44. Accounting 60 / 16 / 44.
+
 ## 2026-10-05 — Workflow mailbox becomes authoritative run-discovery process
 
 - Added durable `.github/workflows/workflow-mailbox-publisher.yml` from the approved GitHub connector workflow-mailbox protocol.

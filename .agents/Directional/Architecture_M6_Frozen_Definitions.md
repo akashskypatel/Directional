@@ -1,6 +1,6 @@
 # M6 Frozen Definitions — Occurrence, Quotient, Embedding, Independent Verification
 
-**Status:** FROZEN / `M6-CP1-TB11-G4-R1-REV` + review-agent addendum: CB11-R1 accepted 477/477, `11316716869 / 8dd95821` PROMOTED; **RA-25** (fail-closed strip continuation; CP1 close-out routing) / EXACT NEXT = `M6-CP1-CB12-CLOSE` → TB12 30+449=479 → mandatory Review → `M6-CP1-CLOSE-REV`; RA-1 – RA-24 normative as annotated.
+**Status:** FROZEN / `M6-CP1-CB12-CLOSE-REV`: CB12 C5 stop DISCHARGED; **RA-26** (provenance-face consumer classes; anchor-dependent references re-homed to `M6-DEFN-R5`/`M6-CP3`) / reviewed runtime `11316716869 / 8dd95821` (477/477) / EXACT NEXT = `M6-CP1-CB12-CLOSE-R1` → TB12 30+449=479 → mandatory Review → `M6-CP1-CLOSE-REV`; RA-1 – RA-25 normative as annotated.
 **Date:** 2026-09-25
 **Definition authority:** this record is the normative M6 contract for A5 occurrence creation, A6 quotient construction/materialization, A7 source-attached geometry embedding, and the M6 structural portion of A8 independent verification. It refines `DESIGN.md` §14 M6 without changing accepted M5 producer semantics or pulling M7 disposition/degradation work forward.
 
@@ -920,3 +920,28 @@ Rationale: `Architecture_M6_CP1_TB11_G4_R1_Review_Record.md`, addendum §N2–§
 4. **Stop rule.** Any anchor-assuming consumer found by the audit, or any C1 rejection of a previously accepted row, is a stop for Review.
 
 Accounting **60 / 16 / 44**, debt 1. Exact next: `M6-CP1-CB12-CLOSE`.
+
+## RA-26 — provenance-face consumer classes; CB12 C5 stop discharged (normative, 2026-10-05, `M6-CP1-CB12-CLOSE-REV`; amends RA-22b §5 and RA-25 §2)
+
+Rationale: `Architecture_M6_CP1_CB12_Close_Stop_Review_Record.md` §2–§4.
+
+1. **Subject.** A provenance-face consumer reads the face of an A7 representative point: `PureQuadVertexLineage::sourcePoint.face`, `vertexProvenance[v].face`, or optimizer `provenance[v].face` derived from them. A site that reads only source-mesh incidence is not one.
+   - So `make_surface_optimization_overlay` (`SurfaceMeshOptimizer.cpp:3015-3031`, test-only) is outside RA-22b §5. Its source-row-order scope choice is `M6-CP1-CB12-REV-OBS-01`, owner M8-CP2.
+2. **Classes** (replaces "anchor-assuming" in RA-22b §5):
+   - **Authority-deciding:** the anchor face decides destination, component, sheet or chart membership, lineage, topology, certificate content, or a membership/consistency verdict. **This class blocks CP1 closure.**
+   - **Reference-selecting:** the anchor face selects a continuous reference (normal, field, projection scope) for an energy or a quality metric. Positions stay on the class-common support and no certificate changes. **This class does not block CP1.** It is owned by item 5.
+3. **Binding C5 record.** Review record §3, 12 sites. No authority-deciding consumer exists. The reference-selecting sites are:
+   - optimizer energy (`:1470-1485`, `:1505`) and gradient (`:1957-1965`, `:2001`, `:2124`), which take their normal/field reference from quad corner 0's representative face;
+   - the final-validation field metric's empty-common-chart fallback (`:2675`), which projects within the first endpoint's anchor scope.
+4. **CB12 routing.** C5 is discharged by item 3.
+   - `M6-CP1-CB12-CLOSE-R1` (a new turn) executes CB12 plan C1–C4 and identities 29/30 unchanged.
+   - It makes **no optimizer or final-validation change**.
+   - Gate: focused-30 + selector449 = 479.
+   - `M6-CP1-CLOSE-REV` re-verifies at its HEAD that no authority-deciding provenance-face consumer exists.
+5. **Re-homed obligations** (owner `M6-DEFN-R5` to define; `M6-CP3` to discharge under its permutation-invariance exit):
+   1. a class-wide quad reference for optimizer energy/gradient normal and field, for example the `resolve_compatible_chart` chart used by `quad_reference_surface_point`, with a cost bound under finite differences and line search;
+   2. a class-wide fallback for the final-validation field metric (the quad's resolved chart faces instead of the first endpoint's anchor scope);
+   3. replace the vacuous `project_vertices` component/sheet checks (`:820-:880`, which compare the anchor with itself on the authoritative path) with membership in the class's `vertexChartAuthority` sheets, or retire them to the M6-CP2 verifier;
+   4. falsifier: one produced fixture under a source-face row permutation **and** an output quad corner rotation that changes at least one multi-sheet class's representative face and at least one quad's corner 0. Optimized positions, all validation metrics and acceptance must be invariant, under the equality DEFN-R5 freezes.
+
+Accounting **60 / 16 / 44**, debt 1. Exact next: `M6-CP1-CB12-CLOSE-R1`.

@@ -4,7 +4,21 @@ For all subsequent ChatGPT Web GitHub Actions work, use `.workflow-mailbox/<work
 
 The migration was smoke-tested by source-snapshot run `37251013709`: schema validation, snapshot, and mailbox publication succeeded and the fallback observer was skipped. This operating-policy change does **not** resolve or supersede the existing `M6-CP1-CB12-CLOSE` C5 architectural blocker recorded below.
 
-## Resume-critical update — `M6-CP1-CB12-CLOSE` STOP FOR REVIEW on C5 anchor-assuming optimizer consumer (2026-10-05)
+## Resume-critical update — `M6-CP1-CB12-CLOSE-REV`: C5 stop DISCHARGED (RA-26); exact next `M6-CP1-CB12-CLOSE-R1` (2026-10-05)
+
+**Start `M6-CP1-CB12-CLOSE-R1` as a new runtime-free Code + Build turn.** Implement CB12 plan **C1–C4** and identities **29/30** exactly as planned. Create focused-30, then compile/package; the successor gate is **479**.
+
+**C5 is done.** Cite `Architecture_M6_CP1_CB12_Close_Stop_Review_Record.md` §3 in the R1 report. **Do not change `SurfaceMeshOptimizer` or final validation.**
+
+Why the stop is discharged:
+- The flagged `SurfaceMeshOptimizer.cpp:3015-3031` reads only source-mesh incidence, never a provenance face.
+- It sits in `make_surface_optimization_overlay`, which has no production caller (tests Phase19/21 only). It becomes OBS-01, owner M8-CP2.
+- Review audited all 12 optimizer and validation sites. **No authority-deciding consumer exists.**
+- The production optimizer energy/gradient (normal and field taken from corner 0's representative face) and the final-validation field-metric fallback are *reference-selecting*. They predate CP1 and are unchanged by it. RA-26 §5 re-homes them, with a falsifier, to `M6-DEFN-R5` / `M6-CP3` (permutation invariance).
+
+The plan's C5 line anchors were wrong; that is a review-agent error, owned (lesson 198). Source at HEAD == `8dd95821`. Accounting **60 / 16 / 44**, debt 1.
+
+## Superseded by `M6-CP1-CB12-CLOSE-REV` — `M6-CP1-CB12-CLOSE` STOP FOR REVIEW on C5 (2026-10-05)
 
 **Do not continue C1-C4, add identities 29/30, compile, or start TB12.** CB12 hit its explicit C5 stop rule before implementation. `SurfaceMeshOptimizer.cpp:3015-3031` chooses the first source face incident to a source vertex, derives one component/sheet with `source_face_scope`, then breaks. This is **anchor-assuming** for vertices spanning multiple valid chart/sheet classes. RA-22b says any anchor-assuming consumer blocks CP1 closure; the CB12 plan says stop for Review and do not fix it inside CB12.
 
@@ -798,40 +812,41 @@ Review must independently re-open source/evidence and re-derive: split-square v0
 
 ## Current authority
 
-`M6-CP1-TB11-G4-R1-REV` is **COMPLETE**, including its review-agent addendum.
+`M6-CP1-CB12-CLOSE-REV` is **COMPLETE**: the CB12 C5 stop is discharged and RA-26 is normative.
 - Reviewed runtime authority: `11316716869 / 8dd958217d8cbda2d403f7a5c4c7dce242dde1c0`.
 - Gate: `Architecture_M6_CP1_Required_Green_Focused_28.txt` (`9154a986...`) + selector449 = **477/477**.
-- Normative: RA-18 – RA-25.
+- Normative: RA-18 – RA-26.
 - Accounting **60 / 16 / 44**, debt **1**.
 
-The six CP1 exit items appear implemented: A5, A6 with the closed-complex view, A7, the thin adapter, the `G4-B002` mechanism, and no weld / multi-isolation. The carried obligations need the close-out CB before `M6-CP1-CLOSE-REV`.
+The six CP1 exit items appear implemented: A5, A6 with the closed-complex view, A7, the thin adapter, the `G4-B002` mechanism, and no weld / multi-isolation. Close-out C1–C4 remains before `M6-CP1-CLOSE-REV`.
 
 ## Exact next turn
 
-**`M6-CP1-CB12-CLOSE` — Code + Build, compile/package only.** Follow `Architecture_M6_CP1_CB12_Close_Out_Code_Build_Plan.md`.
+**`M6-CP1-CB12-CLOSE-R1` — new turn; Code + Build, compile/package only.** Follow `Architecture_M6_CP1_CB12_Close_Out_Code_Build_Plan.md`, which now carries the RA-26 header block.
 
 - **C1.** Exact A7 cross-sheet certification: a transition's `fromSheet/toSheet` must connect the endpoints' sheet sets.
 - **C2.** Distinct A5 diagnostics, restoring the legacy names `MissingAuthoritativePhaseFront` (including the empty-edges predicate), `InvalidAuthoritativePhaseFrontSource` and `InvalidAuthoritativeSourceChartTransitions`.
 - **C3.** `consumedInternalIsolationSeams` comes from the A5 validated count; update identity 24's expectation.
 - **C4.** RA-25: fail closed with `ClosedComplexStripContinuationMismatch`.
-- **C5.** Static provenance-face consumer audit in the CB report. Stop if any consumer is anchor-assuming.
+- **C5.** Discharged by RA-26 §3; cite it. No optimizer or final-validation edits.
 - **Tests.** Identities 29 (`M6CP1.A7CrossSheetBindingRequiresConnectingIsolationTransition`) and 30 (`M6CP1.A5PhaseFrontSourceFailuresKeepDistinctDiagnostics`); create the focused-30 file with focused-28 as its exact prefix.
 
-Compile-green → `M6-CP1-TB12-CLOSE-EXEC`: **479** → mandatory `M6-CP1-TB12-CLOSE-REV` → `M6-CP1-CLOSE-REV`.
+Compile-green → `M6-CP1-TB12-CLOSE-EXEC`: **479** → mandatory `M6-CP1-TB12-CLOSE-REV` → `M6-CP1-CLOSE-REV`, which also re-verifies RA-26 §3.
 
 ## Completed predecessor turns (reference only)
 
-- `M6-CP1-TB11-G4-R1-REV`, with its addendum — current Review authority. Promotion, RA-25.
-- `M6-CP1-TB11-G4-R1-EXEC` — 477/477.
-- `M6-CP1-CB11-G4-R1` — compile report for `8dd95821`.
-- `M6-CP1-TB11-G4-REV` (+ addendum, RA-24 and RA-21d) and earlier.
+- `M6-CP1-CB12-CLOSE-REV` — current Review authority. C5 stop discharged; RA-26.
+- `M6-CP1-CB12-CLOSE` — BLOCKED stop report (`Architecture_M6_CP1_CB12_Close_Out_Code_Build_Report.md`); no source change.
+- `M6-CP1-TB11-G4-R1-REV` (+ addendum §N, RA-25) — promotion of `8dd95821`.
+- `M6-CP1-TB11-G4-R1-EXEC` (477/477), `M6-CP1-CB11-G4-R1`, and earlier.
 
 ## Current files
 
-- `.agents/Directional/Architecture_M6_CP1_CB12_Close_Out_Code_Build_Plan.md` — exact next plan.
-- `.agents/Directional/Architecture_M6_CP1_TB11_G4_R1_Review_Record.md` — Review authority, with addendum §N.
-- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — normative; RA-19a §3, RA-22a §3, RA-22b §5, RA-24, RA-25.
+- `.agents/Directional/Architecture_M6_CP1_CB12_Close_Out_Code_Build_Plan.md` — exact next plan (with the RA-26 header).
+- `.agents/Directional/Architecture_M6_CP1_CB12_Close_Stop_Review_Record.md` — Review authority; §3 is the binding C5 record.
+- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — normative; RA-19a §3, RA-22a §3, RA-24, RA-25, RA-26.
 - `.agents/Directional/Architecture_M6_CP1_Required_Green_Focused_28.txt`, earlier focused lists, and selector449 / routing449 — frozen gate.
+- `.workflow-mailbox/<workflow-key>/latest.json` — authoritative completed-run rendezvous (see the operational policy note at the top).
 
 ## Context Load Plan
 
@@ -839,20 +854,19 @@ Compile-green → `M6-CP1-TB12-CLOSE-EXEC`: **479** → mandatory `M6-CP1-TB12-C
 load_next:
   - turn-based-coding-agent/references/turns/CB.md
   - .agents/Directional/Architecture_M6_CP1_CB12_Close_Out_Code_Build_Plan.md
-  - .agents/Directional/Architecture_M6_CP1_TB11_G4_R1_Review_Record.md
+  - .agents/Directional/Architecture_M6_CP1_CB12_Close_Stop_Review_Record.md
   - .agents/Directional/Architecture_M6_Frozen_Definitions.md
   - .agents/Directional/Architecture_M6_CP1_Required_Green_Focused_28.txt
 conditional_modules:
   - trigger: github_connector / GitHub Actions / compile
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
-  - src/pipeline/RemeshPipeline.cpp (A5 produce ~3760-3820; A7 cross-sheet ~6850-6872; view strip ~6278-6311; adapter counter ~7544; chart authority projection 8061-8127)
+  - src/pipeline/RemeshPipeline.cpp (A5 produce ~3760-3820; A7 cross-sheet ~6850-6872; view strip ~6278-6311; adapter counter ~7544)
   - include/directional/geometry/PureQuadCompletion.h (CornerWedgeIsolationTransition 193-199)
-  - src/validation/SourceAuthoritativeMeshValidator.cpp (1190-1262)
-  - src/geometry/SurfaceMeshOptimizer.cpp (2576, 3020)
-  - src/bench/BenchmarkQuality.cpp (1490-1503)
+  - tests/SurfaceCellTransitionQuotientTests.cpp (identities 24-28)
   - .agents/Directional/GitHub_Workflow_Policy.md
 do_not_preload:
   - folded superseded M6 per-turn records
+  - src/geometry/SurfaceMeshOptimizer.cpp (RA-26: no R1 edits)
   - research/provenance/examples
 ```

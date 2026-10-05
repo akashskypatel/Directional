@@ -1,3 +1,13 @@
+## Currency — `M6-CP1-CB12-CLOSE-REV`: C5 stop discharged (RA-26); exact next `M6-CP1-CB12-CLOSE-R1` (2026-10-05 UTC)
+
+- The flagged optimizer site (`SurfaceMeshOptimizer.cpp:3015-3031`) reads source-mesh incidence, not a provenance face. It is test-only overlay code, now OBS-01 owned by M8-CP2.
+- Review audited all 12 optimizer and validation sites. No authority-deciding consumer exists.
+- The optimizer energy/gradient reference and the final-validation field-metric fallback are reference-selecting. They are re-homed to `M6-DEFN-R5` / `M6-CP3` with a permutation falsifier.
+- CB12-R1 runs C1–C4 and identities 29/30, with no optimizer change; gate 479.
+
+Accounting **60 / 16 / 44**, debt 1.
+
+### Superseded currency note
 ## Currency — `M6-CP1-TB11-G4-R1-REV` + review-agent addendum: R1 promoted (477/477); RA-25; exact next `M6-CP1-CB12-CLOSE` (2026-10-05 UTC)
 
 - CB11-R1 is accepted: edge-loop strips, plus the RA-21c/d oracles. `8dd95821` is the reviewed runtime.
@@ -283,9 +293,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
- > **Current milestone authority (2026-10-05, after the `M6-CP1-TB11-G4-R1-REV` addendum):** M4 and M5 remain CLOSED / ACCEPTED. M6 CP1 remains ACTIVE. Reviewed runtime authority is `11316716869 / 8dd95821...` (focused-28 + selector449 = 477/477). RA-25 close-out is next. Stable accounting **60/16/44**, debt 1. Exact next is `M6-CP1-CB12-CLOSE` (gate 479), then `M6-CP1-CLOSE-REV`.
+ > **Current milestone authority (2026-10-05, after `M6-CP1-CB12-CLOSE-REV`):** M4 and M5 remain CLOSED / ACCEPTED. M6 CP1 remains ACTIVE. Reviewed runtime authority is `11316716869 / 8dd95821...` (focused-28 + selector449 = 477/477). The CB12 C5 stop is discharged (RA-26). Stable accounting **60/16/44**, debt 1. Exact next is `M6-CP1-CB12-CLOSE-R1` (gate 479), then `M6-CP1-CLOSE-REV`.
 
-**Currency.** `M6-CP1-TB11-G4-R1-REV` review-agent addendum (Review), 2026-10-05 UTC
+**Currency.** `M6-CP1-CB12-CLOSE-REV` (Review of the CB12 stop), 2026-10-05 UTC
 
 **Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` §16.3 is the active same-region nonzero-Z4 contract. `PeriodicRelationId` remains carrier-content identity; relation rotation is the gauge-adjusted quotient `Q`, action/transport is relation value, and canonical storage may invert representation only after semantic Forward -> Reverse authority is fixed. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 
@@ -469,18 +479,19 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M6-CP1-CB12-CLOSE` — EXACT NEXT (RA-25 close-out).**
+1. **`M6-CP1-CB12-CLOSE-R1` — EXACT NEXT (RA-25 close-out under RA-26).**
    - C1: exact A7 cross-sheet certification.
    - C2: distinct A5 phase-front source diagnostics.
    - C3: A5-sourced `consumedInternalIsolationSeams`.
    - C4: fail-closed strip continuation.
-   - C5: provenance-face consumer audit; stop if any consumer is anchor-assuming.
+   - C5: discharged by RA-26 §3. No `SurfaceMeshOptimizer` or final-validation change.
    - Identities 29/30; gate 479 → TB12 → Review.
-   - Then `M6-CP1-CLOSE-REV`: the six exit items plus all carried obligations, on the fresh gate.
+   - Then `M6-CP1-CLOSE-REV`: the six exit items, the carried obligations, and an RA-26 §3 re-check, on the fresh gate.
 1a. **`M6-DEFN-R5` — CP3-entry gate (not CP1).**
    - Periodic unequal-face-gauge witness, plus the coordinate / relation-gauge rule.
    - HardRail cross-region branch certification.
    - OrdinaryFront coordinate identity across isolation seams.
+   - RA-26 §5: a class-wide reference for optimizer energy/gradient and for the final-validation field-metric fallback; a real replacement for the vacuous `project_vertices` sheet check; a representative-permutation falsifier.
 
    These must close before any CP3 direct-production TB. RA-17's transport guard keeps them away from geometry until then.
 
@@ -510,6 +521,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 **A green behavioral test is not a contract proof when the oracle compares only a subset of the promised serialization — `M6-CP1-TB10-A5V-REV`, lesson 193.** Identity24 ran three real stage-valid fixtures but omitted multiple mesh/lineage/result fields, so those fields could drift without turning the test red. Enumerate the output type and prove every contract field is covered; a strong test name does not widen its assertions.
 
 **Moving validation into an earlier stage can still invert that stage's own pre-existing failure precedence — `M6-CP1-TB10-A5V-REV`, existing `VALIDATION_ORDER_SHADOWING`.** RA-19 explicitly required the moved helper after every old A5 check; placing it before `publish_records_for_validation` violates that boundary even when the full gate stays green.
+
+**Define an audit by a searchable predicate, and separate authority from reference — `M6-CP1-CB12-CLOSE-REV`, lesson 198.** The RA-22b §5 audit was a closed list of line anchors. One anchor was wrong and pointed at test-only overlay code, so the real production consumers fell outside the list. The audit's rule also conflated "the anchor decides authority" with "the anchor selects a numeric reference". State the predicate, for example every read of a representative `.face`, and classify by effect.
 
 **Route a successor to the turn type its obligations need — `M6-CP1-TB11-G4-R1-REV` addendum, lesson 197.** CP1's carried obligations need code, but they were assigned to a runtime-free close Review. That would have spent a turn just authorizing a CB. Bundle code-requiring obligations into a close-out CB, and keep the close Review as pure verification.
 

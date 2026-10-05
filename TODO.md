@@ -1,4 +1,14 @@
-## Current stop — M6-CP1-CB12-CLOSE
+## Current — `M6-CP1-CB12-CLOSE-REV` / RA-26 / exact next `M6-CP1-CB12-CLOSE-R1` (2026-10-05)
+
+- [x] Confirm HEAD source == `8dd95821` (fetched by SHA after the squash); CB12 made no source change.
+- [x] Adjudicate C5. `SurfaceMeshOptimizer.cpp:3015-3031` is not a provenance consumer and is test-only → OBS-01 (M8-CP2). Its "anchor-assuming" label is withdrawn.
+- [x] Audit all 12 optimizer and validation provenance-face sites. No authority-deciding consumer exists. The optimizer energy/gradient and the final-validation field-metric fallback are reference-selecting → RA-26 §5 → `M6-DEFN-R5` / `M6-CP3`.
+- [x] RA-26; CB12 plan header block; lesson 198.
+- [ ] **Exact next `M6-CP1-CB12-CLOSE-R1`**: C1–C4; identities 29/30; focused-30; compile/package only; no optimizer change.
+- [ ] TB12 **479**, then mandatory Review, then `M6-CP1-CLOSE-REV`, which also re-checks RA-26 §3.
+- [ ] `M6-DEFN-R5`: add RA-26 §5 items (i)–(iv).
+
+## Superseded stop — M6-CP1-CB12-CLOSE (adjudicated by `M6-CP1-CB12-CLOSE-REV`)
 
 - C5 audit found **BLOCKER**: `SurfaceMeshOptimizer.cpp:3015-3031` picks the first incident source face, derives one component/sheet scope, and breaks; this is anchor-assuming.
 - RA-22b / RA-25 / CB12 require Review; do not repair it inside CB12.

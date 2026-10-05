@@ -1,5 +1,13 @@
 # `M6-CP1-CB12-CLOSE` — CP1 Close-Out Code + Build Plan
 
+> **Review-agent block — `M6-CP1-CB12-CLOSE-REV` (RA-26), 2026-10-05.**
+> - The CB12 C5 stop is **discharged**. This plan is now executed by the new turn **`M6-CP1-CB12-CLOSE-R1`**.
+> - **C1–C4, identities 29/30, focused-30, compile/package and the 479 successor are unchanged.**
+> - **C5 is complete.** The binding classification is `Architecture_M6_CP1_CB12_Close_Stop_Review_Record.md` §3 (RA-26 §3). The R1 report cites it and does no further C5 work.
+> - The C5 table below had wrong optimizer anchors. `:3020` is the test-only overlay; the real source-point rebinding is `project_vertices` (`SurfaceMeshOptimizer.cpp:759-:880`).
+> - **Forbidden in R1:** any change to `SurfaceMeshOptimizer` or final validation. Anchor-dependent references are re-homed to `M6-DEFN-R5` / `M6-CP3` (RA-26 §5).
+> - The C5 stop rule is replaced by RA-26 §2: only an *authority-deciding* consumer stops a turn.
+
 **Owner:** `M6-CP1-CB12-CLOSE`
 **Type:** Code + Build only; compile/package; runtime forbidden.
 **Authority:**

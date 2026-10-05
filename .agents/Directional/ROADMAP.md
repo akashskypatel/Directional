@@ -1,3 +1,16 @@
+## Live M6 routing — after `M6-CP1-CB12-CLOSE-REV` (RA-26)
+
+| Checkpoint | State | Exact next / gate |
+|---|---|---|
+| M6 CP1 reviewed runtime | **PROMOTED** | `11316716869 / 8dd95821...`, focused-28 + selector449 = 477/477 |
+| CP1 close-out | **EXACT NEXT** | `M6-CP1-CB12-CLOSE-R1` (C1-C4; C5 discharged by RA-26) -> TB12 **30+449 = 479** -> Review |
+| CP1 closure | Held | `M6-CP1-CLOSE-REV`: six exit items + carried obligations + RA-26 §3 re-check |
+| `M6-DEFN-R5` | CP3-entry gate | gauge obligations + A5 barrier-set census + RA-26 §5 (class-wide optimizer/validation references, permutation falsifier) |
+
+Stable accounting: **60 / 16 / 44**, debt 1.
+
+### Superseded routing
+
 ## Live M6 routing — after the `M6-CP1-TB11-G4-R1-REV` review-agent addendum (RA-25)
 
 | Checkpoint | State | Exact next / gate |

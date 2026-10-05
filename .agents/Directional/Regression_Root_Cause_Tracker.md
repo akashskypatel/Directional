@@ -1,3 +1,17 @@
+## 2026-10-05 — `M6-CP1-CB12-CLOSE-REV` — C5 stop discharged; RA-26 — **+0 / 60/16/44 / debt 1**
+
+- No source change since `8dd95821`. No product regression.
+- **`M6-CP1-CB12-REV-OBS-01`** (non-stable, owner M8-CP2): the test-only `make_surface_optimization_overlay` (`SurfaceMeshOptimizer.cpp:3015-3031`) scopes each source vertex by its lowest-row incident face, so the diagnostic `sourceToOutputError` depends on source-row order.
+- **`M6-CP1-CB12-REV-OBS-02`** (non-stable, owner `M6-DEFN-R5` → `M6-CP3`): these production consumers are reference-selecting, anchored on the representative face:
+  - optimizer energy/gradient normal and field reference from quad corner 0 (`:1470-1485`, `:1505`, `:1957-1965`, `:2001`, `:2124`);
+  - the final-validation field-metric empty-common-chart fallback (`:2675`);
+  - the vacuous `project_vertices` sheet check (`:820-:880`).
+
+  This is pre-existing and unchanged by CP1. It is a permutation-invariance defect, with a falsifier pre-registered in RA-26 §5.
+- Review-agent errors, owned: the C5 line anchors were wrong, and RA-22b §5 did not separate authority from reference (lesson 198).
+
+**Stable accounting: `60 events / 16 categories / 44 recurrences`, debt 1.**
+
 ## 2026-10-05 — `M6-CP1-TB11-G4-R1-REV` review-agent addendum — **+0 / 60/16/44 / debt 1**
 
 - TB11-R1 (477/477) and the promotion of `8dd95821` are confirmed by independent re-derivation. CAND-01 and CAND-02 are recovery-proved, non-stable.

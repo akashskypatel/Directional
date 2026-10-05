@@ -2601,3 +2601,13 @@ When a temporary workflow caller is assembled with low-level Git objects, creati
       - Bundle code-requiring obligations into a bounded close-out Code + Build with its own falsifiers.
       - Keep the closure Review as pure verification of the frozen exit checklist on a fresh gate.
     - Recorded at the `M6-CP1-TB11-G4-R1-REV` review-agent addendum (RA-25).
+198. **Define an audit by a searchable predicate, and classify consumers by effect.**
+    - *What happened.*
+      - RA-22b §5 / the CB12 plan listed consumers by line anchor. One anchor (`SurfaceMeshOptimizer.cpp:3020`) was wrong: it pointed into the test-only overlay's source-vertex loop.
+      - The real production consumers (`project_vertices`, the energy/gradient reference, a validation-metric fallback) fell outside the list.
+      - The blocking rule ("any anchor-assuming consumer") did not separate a consumer whose anchor *decides* authority from one whose anchor only *selects a numeric reference*.
+      - CB12 then stopped on a site that reads no provenance at all.
+    - **Rule.**
+      - State the audit predicate in a form that can be searched, for example every read of `vertexProvenance[...]`, `provenance[...]` or `sourcePoint`, followed by `.face`. Require the auditor to report the search and its full hit list.
+      - Classify each hit by effect: authority-deciding, reference-selecting, representation-only, or not a consumer. Block only on the class that threatens the checkpoint's semantics, and give the rest an owner and a falsifier.
+    - Recorded at `M6-CP1-CB12-CLOSE-REV` (RA-26).

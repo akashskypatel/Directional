@@ -1,6 +1,6 @@
 **Current authority after `M6-CP1-CB11-G4` (2026-10-04):** CB11 is COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE at semantic source `582da20a925ba920c923bf5aacb9e0e56ef0723d`. Candidate result artifact `11308472138` is unpromoted. Reviewed runtime remains `11299078582 / 96b456f9...` at 473/473. Stable accounting remains **60 / 16 / 44**, debt 1. Exact next: immutable `M6-CP1-TB11-G4-EXEC`, focused28+selector449 = **477**, then mandatory Review; CP1 close remains held.
 
-**Current authority after the `M6-CP1-TB11-G4-R1-REV` addendum (2026-10-05):** reviewed runtime `11316716869 / 8dd95821...` (477/477). RA-25 close-out comes next (§43). Accounting **60 / 16 / 44**, debt 1. Exact next: `M6-CP1-CB12-CLOSE` → TB12 (479) → Review → `M6-CP1-CLOSE-REV`.
+**Current authority after `M6-CP1-CB12-CLOSE-REV` (2026-10-05):** reviewed runtime `11316716869 / 8dd95821...` (477/477). The CB12 C5 stop is discharged by RA-26 (§44). Accounting **60 / 16 / 44**, debt 1. Exact next: `M6-CP1-CB12-CLOSE-R1` → TB12 (479) → Review → `M6-CP1-CLOSE-REV`.
 
 CB11 implements the accepted R4 D3 / RA-20 / RA-21 / RA-21b boundary: A6-owned closed-complex vertices/quads/side-incidence edges, independent relation-kind and typed-source hard-feature protection, strip ordinals from opposite-edge closure, and A6-view candidate extraction without arrangement authority. Focused identities 25-28 extend focused24 exactly; focused28 SHA-256 is `9154a986ce005c53f99faad3551989b05516abe9e4fd02dce585a645d70a011d`.
 
@@ -408,6 +408,19 @@ The review agent re-derives TB11-R1 (477/477) and confirms the bounded RA-24 pro
 Gate 30+449 = 479 → TB12 → Review → `M6-CP1-CLOSE-REV`.
 
 Lesson 197. Accounting 60 / 16 / 44.
+
+## 44. `M6-CP1-CB12-CLOSE-REV` — C5 stop discharged; RA-26
+
+CB12 stopped on C5 because it judged the optimizer site `:3015-3031` anchor-assuming.
+
+Review findings:
+- The site reads only source-mesh incidence, inside `make_surface_optimization_overlay`, which has no production caller. This becomes OBS-01, owner M8-CP2.
+- A full audit of 12 optimizer and validation sites found **no authority-deciding** consumer.
+- The production optimizer energy/gradient (normal and field from corner 0's representative face) and the final-validation field-metric fallback are **reference-selecting**. They predate CP1. RA-26 §5 re-homes them to `M6-DEFN-R5` / `M6-CP3`, with a representative-permutation falsifier.
+
+Owned review-agent errors: wrong C5 line anchors, and the RA-22b §5 class conflation (lesson 198).
+
+Exact next: `M6-CP1-CB12-CLOSE-R1` (C1–C4, identities 29/30, gate 479). Accounting 60 / 16 / 44.
 
 ## Folded document index
 
