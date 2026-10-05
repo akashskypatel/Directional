@@ -1,0 +1,4 @@
+M6-CP2-DEFN Google Drive patch apply trigger
+Patch base: d06b615b496766687cd4bba0412fbee3f18e176d
+Patch SHA-256: da33aea74bcd02476b9f04c40e40a1faec4189ad042f6d650a5519e4f5857bf1
+Retry: 1
