@@ -895,6 +895,7 @@ struct OccurrenceComplexCertificate {
   std::size_t occurrenceCount = 0U;
   std::size_t directedSideCount = 0U;
   std::size_t ownedRelationCount = 0U;
+  std::size_t validatedIsolationCertificateCount = 0U;
   bool exactCellOwnership = false;
   bool exactCornerOwnership = false;
   bool exactDirectedSideCycles = false;
@@ -952,6 +953,9 @@ enum class SurfaceOccurrenceComplexErrorCode : std::uint8_t {
   UnsupportedEmbeddedReliefCut = 46,
   InvalidPeriodicCutAuthority = 47,
   IncompleteAuthoritativePhaseFrontSides = 48,
+  MissingAuthoritativePhaseFront = 49,
+  InvalidAuthoritativePhaseFrontSource = 50,
+  InvalidAuthoritativeSourceChartTransitions = 51,
 };
 
 const char *surface_occurrence_complex_error_name(
@@ -1227,6 +1231,7 @@ enum class SurfaceQuotientProductErrorCode : std::uint8_t {
   ClosedComplexSideIncidenceMismatch = 21,
   ClosedComplexRelationLabelMismatch = 22,
   ClosedComplexHardFeatureAuthorityMismatch = 23,
+  ClosedComplexStripContinuationMismatch = 24,
 };
 
 const char *surface_quotient_product_error_name(

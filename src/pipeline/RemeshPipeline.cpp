@@ -3138,6 +3138,12 @@ const char *surface_occurrence_complex_error_name(
     return "InvalidPeriodicCutAuthority";
   case SurfaceOccurrenceComplexErrorCode::IncompleteAuthoritativePhaseFrontSides:
     return "IncompleteAuthoritativePhaseFrontSides";
+  case SurfaceOccurrenceComplexErrorCode::MissingAuthoritativePhaseFront:
+    return "MissingAuthoritativePhaseFront";
+  case SurfaceOccurrenceComplexErrorCode::InvalidAuthoritativePhaseFrontSource:
+    return "InvalidAuthoritativePhaseFrontSource";
+  case SurfaceOccurrenceComplexErrorCode::InvalidAuthoritativeSourceChartTransitions:
+    return "InvalidAuthoritativeSourceChartTransitions";
   }
   return "OccurrenceUnknownFailure";
 }
@@ -3212,7 +3218,8 @@ std::optional<SurfaceOccurrenceComplexError>
 validate_phase_front_authority_after_a5(
     const Eigen::MatrixXd &sourceVertices, const Eigen::MatrixXi &sourceFaces,
     const geometry::SurfacePhaseFrontProduct &phaseFront,
-    const SurfaceOccurrenceComplex &complex) {
+    const SurfaceOccurrenceComplex &complex,
+    std::size_t &validatedIsolationCertificateCount) {
   const auto fail = [](const SurfaceOccurrenceComplexErrorCode code,
                        const std::optional<authority::CellId> cell = std::nullopt,
                        const std::optional<int> frontEdge = std::nullopt) {
@@ -3424,6 +3431,7 @@ validate_phase_front_authority_after_a5(
       }
     }
   }
+  validatedIsolationCertificateCount = isolationCertificateBySeam.size();
   const auto isolation_sheets_connected = [&](const auto regionId,
                                                const auto &sheets) {
     const auto graph = isolationSheetGraphByRegion.find(regionId);
@@ -3762,11 +3770,15 @@ SurfaceOccurrenceComplexProducer::produce(
     const Eigen::MatrixXd &sourceVertices, const Eigen::MatrixXi &sourceFaces,
     const geometry::SurfacePhaseFrontProduct &phaseFront) {
   SurfaceOccurrenceComplexError error;
+  if (phaseFront.cells().empty() || phaseFront.edges().empty()) {
+    error.code = SurfaceOccurrenceComplexErrorCode::MissingAuthoritativePhaseFront;
+    return error;
+  }
   if (sourceVertices.cols() != 3 || sourceFaces.cols() != 3 ||
-      phaseFront.cells().empty() ||
       phaseFront.sourceTopologyRegions().face_count() !=
           static_cast<std::size_t>(sourceFaces.rows())) {
-    error.code = SurfaceOccurrenceComplexErrorCode::SourceAuthorityMismatch;
+    error.code =
+        SurfaceOccurrenceComplexErrorCode::InvalidAuthoritativePhaseFrontSource;
     return error;
   }
 
@@ -3782,7 +3794,8 @@ SurfaceOccurrenceComplexProducer::produce(
   const geometry::SourceChartTransitionGraph chartTransitions(
       sourceFaces, phaseFront.sourceTopologyRegions(), hardFeatureEdges);
   if (!chartTransitions.available()) {
-    error.code = SurfaceOccurrenceComplexErrorCode::InvalidChartAuthority;
+    error.code = SurfaceOccurrenceComplexErrorCode::
+        InvalidAuthoritativeSourceChartTransitions;
     return error;
   }
   const geometry::SurfacePointSourceSupportResolver supportResolver(
@@ -4937,16 +4950,20 @@ SurfaceOccurrenceComplexProducer::produce(
   auto published = publish_records_for_validation(std::move(cells),
                                                   std::move(occurrences),
                                                   std::move(relations));
-  const auto *complex = std::get_if<SurfaceOccurrenceComplex>(&published);
+  auto *complex = std::get_if<SurfaceOccurrenceComplex>(&published);
   if (complex == nullptr) {
     return published;
   }
 
+  std::size_t validatedIsolationCertificateCount = 0U;
   if (const auto validation = validate_phase_front_authority_after_a5(
-          sourceVertices, sourceFaces, phaseFront, *complex);
+          sourceVertices, sourceFaces, phaseFront, *complex,
+          validatedIsolationCertificateCount);
       validation.has_value()) {
     return validation.value();
   }
+  complex->certificate_.validatedIsolationCertificateCount =
+      validatedIsolationCertificateCount;
 
   return published;
 }
@@ -5002,6 +5019,8 @@ const char *surface_quotient_product_error_name(
     return "QuotientClosedComplexRelationLabelMismatch";
   case SurfaceQuotientProductErrorCode::ClosedComplexHardFeatureAuthorityMismatch:
     return "QuotientClosedComplexHardFeatureAuthorityMismatch";
+  case SurfaceQuotientProductErrorCode::ClosedComplexStripContinuationMismatch:
+    return "ClosedComplexStripContinuationMismatch";
   }
   return "QuotientUnknownFailure";
 }
@@ -6291,6 +6310,7 @@ build_surface_quotient_closed_complex_view(
     for (const std::size_t first : edges) {
       const auto &firstSides = view.edges[first].id.incidentSides;
       std::optional<std::size_t> opposite;
+      std::size_t oppositeCount = 0U;
       for (const std::size_t second : edges) {
         if (second == first) continue;
         const auto &secondSides = view.edges[second].id.incidentSides;
@@ -6301,13 +6321,15 @@ build_surface_quotient_closed_complex_view(
                   [&](const SurfaceQuotientSideId &b) { return a.cell == b.cell; });
             });
         if (sharesQuad) continue;
-        if (opposite.has_value()) {
-          opposite.reset();
-          break;
-        }
-        opposite = second;
+        ++oppositeCount;
+        if (!opposite.has_value()) opposite = second;
       }
-      if (opposite.has_value()) stripUnite(first, *opposite);
+      if (oppositeCount != 1U || !opposite.has_value()) {
+        error.code = SurfaceQuotientProductErrorCode::
+            ClosedComplexStripContinuationMismatch;
+        return error;
+      }
+      stripUnite(first, *opposite);
     }
   }
 
@@ -6886,11 +6908,32 @@ SourceAttachedGeometryProducer::produce(
                             std::back_inserter(sharedSheets));
       if (!sharedSheets.empty()) continue;
       const SurfaceOccurrenceRelation &relation = *relationById.at(edge.relation);
+      const auto transition_connects_endpoints =
+          [&](const geometry::CornerWedgeIsolationTransition &transition) {
+            const auto has_sheet = [](const SurfaceOccurrence &occurrence,
+                                      const authority::IsolationSheetId sheet) {
+              return std::find(occurrence.cornerWedgeSheets.begin(),
+                               occurrence.cornerWedgeSheets.end(), sheet) !=
+                     occurrence.cornerWedgeSheets.end();
+            };
+            return (has_sheet(first, transition.fromSheet) &&
+                    has_sheet(second, transition.toSheet)) ||
+                   (has_sheet(first, transition.toSheet) &&
+                    has_sheet(second, transition.fromSheet));
+          };
+      const auto any_connecting_transition = [&](const auto &transitions) {
+        return std::any_of(transitions.begin(), transitions.end(),
+                           transition_connects_endpoints);
+      };
       const bool certified =
-          !relation.evidence.firstSideIsolationEvidence.empty() ||
-          !relation.evidence.secondSideIsolationEvidence.empty() ||
-          !relation.evidence.equivalence.isolationTransitions.empty() ||
-          has_isolation_transition(first) || has_isolation_transition(second);
+          any_connecting_transition(
+              relation.evidence.firstSideIsolationEvidence) ||
+          any_connecting_transition(
+              relation.evidence.secondSideIsolationEvidence) ||
+          any_connecting_transition(
+              relation.evidence.equivalence.isolationTransitions) ||
+          any_connecting_transition(first.cornerWedgeIsolation) ||
+          any_connecting_transition(second.cornerWedgeIsolation);
       if (!certified) {
         return fail(GeometryEmbeddingFailureCode::UncertifiedCrossSheetBinding,
                     quotient.id, edge.first, {}, "cross-sheet");
@@ -7542,7 +7585,7 @@ build_authoritative_phase_front_mesh_with_hard_features(
   }
   result.consumedTopologyRegions = consumedTopologyRegions.size();
   result.consumedInternalIsolationSeams =
-      phaseFront.isolationSeamTransportCertificates().size();
+      occurrenceComplex.certificate().validatedIsolationCertificateCount;
   result.consumedPeriodicHolonomies = consumedPeriodicRelations.size();
   result.invalidCell = -1;
   result.invalidEdge = -1;

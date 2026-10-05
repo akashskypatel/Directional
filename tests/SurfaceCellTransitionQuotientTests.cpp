@@ -3872,7 +3872,7 @@ TEST(M6CP1, ThinAdapterOutputIsPureProjectionOfStageProducts) {
     }
     EXPECT_EQ(adapter.consumedTopologyRegions, expectedRegions.size());
     EXPECT_EQ(adapter.consumedInternalIsolationSeams,
-              front.isolationSeamTransportCertificates().size());
+              a5->certificate().validatedIsolationCertificateCount);
     std::set<directional::authority::PeriodicRelationId> expectedPeriodic;
     for (const auto &certificate : a6->relation_certificates()) {
       if (certificate.relation.periodicRelation.has_value()) {
@@ -7340,6 +7340,166 @@ PhaseFrontDraft direct_full_periodic_materializer_draft() {
     throw std::runtime_error("Direct materializer authority factory rejected.");
   }
   return phase_front_draft(*product);
+}
+
+
+TEST(M6CP1, A7CrossSheetBindingRequiresConnectingIsolationTransition) {
+  const auto &fixture = split_isolation_fixture();
+  auto a5Construction =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+          fixture.mesh.V, fixture.mesh.F,
+          fixture.network.phaseFront.product());
+  const auto *a5 =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+          &a5Construction);
+  ASSERT_NE(a5, nullptr);
+  auto a6Construction =
+      directional::pipeline::SurfaceQuotientProducer::produce(*a5);
+  const auto *a6 =
+      std::get_if<directional::pipeline::SurfaceQuotientProduct>(
+          &a6Construction);
+  ASSERT_NE(a6, nullptr);
+
+  auto baseline =
+      directional::pipeline::SourceAttachedGeometryProducer::produce(
+          fixture.mesh.V, fixture.mesh.F, *a5, *a6);
+  ASSERT_NE(std::get_if<directional::pipeline::SourceAttachedGeometryProduct>(
+                &baseline),
+            nullptr);
+
+  const auto occurrence_for = [](auto &occurrences, const auto id) {
+    return std::find_if(occurrences.begin(), occurrences.end(),
+                        [&](const auto &occurrence) {
+                          return occurrence.id == id;
+                        });
+  };
+  auto cells = a5->cells();
+  auto occurrences = a5->occurrences();
+  auto relations = a5->owned_relations();
+
+  const directional::pipeline::QuotientForestEdge *crossSheetEdge = nullptr;
+  for (const auto &edge : a6->selected_forest()) {
+    const auto first = occurrence_for(occurrences, edge.first);
+    const auto second = occurrence_for(occurrences, edge.second);
+    ASSERT_NE(first, occurrences.end());
+    ASSERT_NE(second, occurrences.end());
+    std::vector<directional::authority::IsolationSheetId> sharedSheets;
+    std::set_intersection(first->cornerWedgeSheets.begin(),
+                          first->cornerWedgeSheets.end(),
+                          second->cornerWedgeSheets.begin(),
+                          second->cornerWedgeSheets.end(),
+                          std::back_inserter(sharedSheets));
+    if (sharedSheets.empty()) {
+      crossSheetEdge = &edge;
+      break;
+    }
+  }
+  ASSERT_NE(crossSheetEdge, nullptr)
+      << "split-isolation witness must exercise a selected cross-sheet join";
+
+  const auto unrelatedSheet =
+      directional::authority::IsolationSheetId::from_index(99, 100);
+  ASSERT_TRUE(unrelatedSheet.has_value());
+  const auto disconnect = [&](auto &transitions) {
+    for (auto &transition : transitions) {
+      transition.fromSheet = unrelatedSheet.value();
+      transition.toSheet = unrelatedSheet.value();
+    }
+  };
+  for (auto &relation : relations) {
+    if (relation.id != crossSheetEdge->relation) continue;
+    disconnect(relation.evidence.firstSideIsolationEvidence);
+    disconnect(relation.evidence.secondSideIsolationEvidence);
+    disconnect(relation.evidence.equivalence.isolationTransitions);
+  }
+  for (auto &occurrence : occurrences) {
+    if (occurrence.id == crossSheetEdge->first ||
+        occurrence.id == crossSheetEdge->second) {
+      disconnect(occurrence.cornerWedgeIsolation);
+    }
+  }
+
+  auto tampered = directional::pipeline::SurfaceOccurrenceComplexProducer::
+      publish_records_for_validation(std::move(cells), std::move(occurrences),
+                                     std::move(relations));
+  const auto *tamperedA5 =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(&tampered);
+  ASSERT_NE(tamperedA5, nullptr);
+  auto rejected =
+      directional::pipeline::SourceAttachedGeometryProducer::produce(
+          fixture.mesh.V, fixture.mesh.F, *tamperedA5, *a6);
+  const auto *failure =
+      std::get_if<directional::pipeline::GeometryEmbeddingFailure>(&rejected);
+  ASSERT_NE(failure, nullptr);
+  EXPECT_EQ(failure->code,
+            directional::pipeline::GeometryEmbeddingFailureCode::
+                UncertifiedCrossSheetBinding);
+  EXPECT_EQ(failure->site, "cross-sheet");
+}
+
+TEST(M6CP1, A5PhaseFrontSourceFailuresKeepDistinctDiagnostics) {
+  const auto &fixture = square_fixture();
+  const auto &front = fixture.network.phaseFront.product();
+
+  // SurfacePhaseFrontProduct itself rejects an empty edge set, so the A5
+  // defensive empty-front branch is not constructible through public product
+  // authority. Pin both the upstream fact and the preserved A5 diagnostic.
+  PhaseFrontDraft emptyEdges = phase_front_draft(front);
+  emptyEdges.edges.clear();
+  const auto emptyConstruction =
+      construct_phase_front_product(std::move(emptyEdges));
+  const auto *emptyError =
+      std::get_if<directional::geometry::SurfacePhaseFrontProductError>(
+          &emptyConstruction);
+  ASSERT_NE(emptyError, nullptr);
+  EXPECT_EQ(emptyError->code,
+            directional::geometry::SurfacePhaseFrontProductErrorCode::
+                EmptyEdges);
+  EXPECT_STREQ(
+      directional::pipeline::surface_occurrence_complex_error_name(
+          directional::pipeline::SurfaceOccurrenceComplexErrorCode::
+              MissingAuthoritativePhaseFront),
+      "MissingAuthoritativePhaseFront");
+
+  Eigen::MatrixXi wrongFaceCount =
+      fixture.mesh.F.topRows(fixture.mesh.F.rows() - 1);
+  auto sourceRejected =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+          fixture.mesh.V, wrongFaceCount, front);
+  const auto *sourceError =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(
+          &sourceRejected);
+  ASSERT_NE(sourceError, nullptr);
+  EXPECT_EQ(sourceError->code,
+            directional::pipeline::SurfaceOccurrenceComplexErrorCode::
+                InvalidAuthoritativePhaseFrontSource);
+  const auto sourceAdapter =
+      directional::pipeline::build_authoritative_phase_front_mesh(
+          fixture.mesh.V, wrongFaceCount, front);
+  EXPECT_FALSE(sourceAdapter.success);
+  EXPECT_EQ(sourceAdapter.failure, "InvalidAuthoritativePhaseFrontSource");
+
+  Eigen::MatrixXi reorderedFaces = fixture.mesh.F;
+  ASSERT_GE(reorderedFaces.rows(), 2);
+  const Eigen::RowVectorXi firstFace = reorderedFaces.row(0);
+  reorderedFaces.row(0) = reorderedFaces.row(1);
+  reorderedFaces.row(1) = firstFace;
+  auto chartRejected =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+          fixture.mesh.V, reorderedFaces, front);
+  const auto *chartError =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(
+          &chartRejected);
+  ASSERT_NE(chartError, nullptr);
+  EXPECT_EQ(chartError->code,
+            directional::pipeline::SurfaceOccurrenceComplexErrorCode::
+                InvalidAuthoritativeSourceChartTransitions);
+  const auto chartAdapter =
+      directional::pipeline::build_authoritative_phase_front_mesh(
+          fixture.mesh.V, reorderedFaces, front);
+  EXPECT_FALSE(chartAdapter.success);
+  EXPECT_EQ(chartAdapter.failure,
+            "InvalidAuthoritativeSourceChartTransitions");
 }
 
 } // namespace
