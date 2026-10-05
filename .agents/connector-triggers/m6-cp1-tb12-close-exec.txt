@@ -1,0 +1,5 @@
+Purpose: execute immutable M6-CP1-TB12-CLOSE-EXEC gate
+Candidate: artifact 11324028392 / source 02149f1518fc6a753acf3235f7dcdc6fcdf59f24
+Gate: focused30 + selector449 = 479 fresh exact-filter processes
+Harness SHA-256: 611b874379f02be99b27e28cc5beb8522d2b73bee55a2cc1cd9960304d811723
+Retry: 0
