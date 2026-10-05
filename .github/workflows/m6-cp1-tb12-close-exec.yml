@@ -143,4 +143,4 @@ jobs:
       source_sha: 02149f1518fc6a753acf3235f7dcdc6fcdf59f24
       source_ref: refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing
       result: ${{ needs.runtime.result }}
-      summary: Execute immutable M6-CP1 TB12 close gate: focused30 plus selector449, 479 fresh exact-filter processes.
+      summary: "Execute immutable M6-CP1 TB12 close gate: focused30 plus selector449, 479 fresh exact-filter processes."
