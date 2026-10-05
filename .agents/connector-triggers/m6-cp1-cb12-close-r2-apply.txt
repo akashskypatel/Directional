@@ -1,0 +1,3 @@
+Purpose: apply verified M6-CP1-CB12-CLOSE-R2 work-preservation patch
+Caller install: 23ff16433435df79ce2791662817f3ca1c000b89
+Retry: 0
