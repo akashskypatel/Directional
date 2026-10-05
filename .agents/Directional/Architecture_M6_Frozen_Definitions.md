@@ -1,6 +1,6 @@
 # M6 Frozen Definitions — Occurrence, Quotient, Embedding, Independent Verification
 
-**Status:** FROZEN / `M6-CP1-TB12-CLOSE-R1-REV` ACCEPTED: RA-27a runtime-proved at focused30 + selector449 = 479/479; reviewed runtime `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05`; `M6-CP1-TB12-CLOSE-EXEC-CAND-01` recovery-proved/non-stable; EXACT NEXT = runtime-free `M6-CP1-CLOSE-REV`; RA-1 – RA-27a normative as annotated.
+**Status:** FROZEN / `M6-CP1-TB12-CLOSE-R1-REV` + review-agent addendum: R1 ACCEPTED, `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05` PROMOTED at focused30 + selector449 = 479/479; **RA-27b** (owners for unfalsified branches; close-plan amendments; post-closure successor `M6-CP2-DEFN`) / EXACT NEXT = `M6-CP1-CLOSE-REV`; RA-1 – RA-27a normative as annotated.
 **Date:** 2026-09-25
 **Definition authority:** this record is the normative M6 contract for A5 occurrence creation, A6 quotient construction/materialization, A7 source-attached geometry embedding, and the M6 structural portion of A8 independent verification. It refines `DESIGN.md` §14 M6 without changing accepted M5 producer semantics or pulling M7 disposition/degradation work forward.
 
@@ -987,3 +987,30 @@ Rationale: `Architecture_M6_CP1_TB12_Close_Review_Record.md`, addendum §P3–§
    - any selector449 / routing449 / focused-list byte changes.
 
 Gate: focused-30 + selector449 = **479** → `M6-CP1-TB12-CLOSE-R1-EXEC` → `M6-CP1-TB12-CLOSE-R1-REV` → `M6-CP1-CLOSE-REV`. Accounting **60 / 16 / 44**, debt 1.
+
+## RA-27b — runtime-proof scope, defensive-branch owners, CP1 close-plan amendments (normative, 2026-10-05, `M6-CP1-TB12-CLOSE-R1-REV` review-agent addendum)
+
+Rationale: `Architecture_M6_CP1_TB12_Close_R1_Review_Record.md`, addendum §Q2–§Q6.
+
+1. **Runtime-proof scope.** Identity 29 runtime-proves one dimension of the RA-27a wedge rule: transitions entirely outside the sheet set are rejected while the list stays non-empty. These conjuncts are **static-only**: the region filter, connectivity versus "touches the set", and multi-sheet partial connectivity. Records must not claim them as runtime-proved.
+   - Owner of the missing tampers: the first `M6-CP2` Code + Build, as new appended identities. Identity 29 stays unchanged. Tracked as `M6-CP1-TB12-R1-REV-OBS-01`.
+2. **Defensive branches.**
+   - C4 `ClosedComplexStripContinuationMismatch` is reachable only through a weld-pinched vertex. Its executed falsifier is owned by `M6-CP2-DEFN`: a weld-constructed malformed-authority witness, with the verifier's manifoldness recompute.
+   - C2's empty-front A5 branch is accepted as defensive and unreachable (A4 rejects empty fronts first).
+
+   Neither blocks CP1, because both fail closed.
+3. **CP1 close-plan amendments** (binding on `M6-CP1-CLOSE-REV`):
+   1. Check the six exit items against the frozen text verbatim ("CP1 exit scope — restated", this document §CP1 exit scope), on exact HEAD source and the promoted 479/479 evidence.
+   2. Classify every defensive or static-only branch introduced in CP1 (C2 empty-front, C4, RA-27a static conjuncts, RA-27a §6 edge rule) as accepted-defensive with a named later owner, or as CP1-blocking.
+   3. `G4-B002` debt stays **open**. CP1 closure is mechanism-only, and debt stays 1.
+   4. If CP1 closes, the exact successor is **`M6-CP2-DEFN`**. If it does not, route to the smallest Definition or Code + Build owner.
+4. **`M6-CP2-DEFN` scope** (bounded, runtime-free; CP2 entry):
+   - the `SurfaceProductVerifier` contract (frozen §6, §10): its typed failure matrix for the §6.3 malformed-authority classes, its §6.2 recompute set, and its identity/gate plan;
+   - **OBS-01** (`M6-CP1-TB12-REV-OBS-01`): a certificate chain binding A6 → A5 and A7 → A6/A5, verified by payload equality;
+   - **RA-26 §5(iii)**: retire or replace the vacuous `project_vertices` sheet check;
+   - item 2's C4 witness and item 1's appended tampers.
+
+   **`M6-DEFN-R5` stays the CP3-entry gate** and follows CP2. It keeps: the gauge obligations, the A5 barrier-set census, RA-26 §5(i)(ii)(iv), RA-27a §6 and `M6-CP1-TB12-REV-OBS-02`.
+5. **Observation.** `M6-CP1-TB12-R1-REV-OBS-02`: the adapter drops A7's cross-sheet site (`RemeshPipeline.cpp:7462`); owner M8-CP2.
+
+Accounting **60 / 16 / 44**, debt 1. Exact next: `M6-CP1-CLOSE-REV`.

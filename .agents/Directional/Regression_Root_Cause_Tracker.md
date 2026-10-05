@@ -1,3 +1,13 @@
+## 2026-10-05 — `M6-CP1-TB12-CLOSE-R1-REV` review-agent addendum — promotion confirmed; RA-27b — **+0 / 60/16/44 / debt 1**
+
+- Promotion of `3f40f04a` (479/479) is confirmed by independent re-derivation, including all 479 raw-log hashes.
+- **`M6-CP1-TB12-R1-REV-OBS-01`** (non-stable; owner: first M6-CP2 CB): identity 29 runtime-proves only the "transitions entirely outside the set" dimension. The region filter, connectivity versus "touches", and three-sheet partial connectivity are static-only.
+- **`M6-CP1-TB12-R1-REV-OBS-02`** (non-stable; owner M8-CP2): the adapter drops A7's cross-sheet site (`RemeshPipeline.cpp:7462`).
+- **Defensive branches:** C4 has no executed falsifier → `M6-CP2-DEFN` weld witness. C2's empty-front branch is accepted as defensive.
+- **Re-homed:** `M6-CP1-TB12-REV-OBS-01` (A6 → A5 binding) moves to `M6-CP2-DEFN`.
+
+**Stable accounting: `60 events / 16 categories / 44 recurrences`, debt 1.**
+
 ## 2026-10-05 — `M6-CP1-TB12-CLOSE-R1-REV` — **R1 PROMOTED / CAND-01 RECOVERY PROVED / +0 / 60/16/44 / debt 1**
 
 Independent Review re-derives the immutable R1 gate at **479/479 PASS** and accepts RA-27a. `M6-CP1-TB12-CLOSE-EXEC-CAND-01` is **CLOSED / RECOVERY PROVED / NON-STABLE**: focused ordinal29 now reaches a real multi-sheet bridge occurrence, keeps its wedge-transition vector non-empty while disconnecting the transition sheet endpoints, republishes A5, re-produces A6 successfully, and reaches the exact A7 `UncertifiedCrossSheetBinding / cross-sheet:wedge` rejection. The previous false rejection never represented accepted-green loss, so stable totals do not change.

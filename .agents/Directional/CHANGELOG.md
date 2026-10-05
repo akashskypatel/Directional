@@ -1,3 +1,15 @@
+## 2026-10-05 — `M6-CP1-TB12-CLOSE-R1-REV` review-agent addendum: promotion confirmed; RA-27b; close plan amended
+
+- **Re-derived independently:** result `11333591947` (`ef5dba11`) and log `11333547162` (`dd782961`); 497/497; focused-30 and selector449 ledgers in frozen order; 479/479; all 479 raw-log hashes match their ledgers. Candidate `3f40f04a` == HEAD.
+- **Confirmed:** the RA-27a wedge rule (fixed-point reachability; region and in-set filters; fails closed on unsorted or duplicated input), the C4 `Quotient` name (required by DEFN-R3), and identity 29 on a consistent chain.
+- **Corrected:**
+  - the runtime proof covers one dimension of the wedge rule; the region filter and connectivity versus "touches" are static (OBS-01 → first CP2 CB);
+  - C4 has no executed falsifier (→ `M6-CP2-DEFN`);
+  - the C2 empty-front branch is accepted as defensive;
+  - the adapter drops A7's cross-sheet site (OBS-02 → M8-CP2).
+- **RA-27b:** the close plan now requires verbatim exit items, defensive-branch classification, and `G4-B002` staying open, with post-closure successor `M6-CP2-DEFN`. `M6-CP2-DEFN` absorbs the A6 → A5 binding and RA-26 §5(iii). `M6-DEFN-R5` follows CP2.
+- **Docs:** close-plan review-agent block; lesson 200; handoff (top + live) / ORIENTATION / TODO / ROADMAP / tracker (+0) / consolidated §49. Accounting 60 / 16 / 44.
+
 ## 2026-10-05 — `M6-CP1-TB12-CLOSE-R1-REV` accepted R1 recovery and promoted 479/479 runtime
 
 - Independently re-derived runtime `37280517630 / 111667316992`, result/log `11333591947 / 11333547162`, result manifest **497/497**, focused30 **30/30** + selector449 **449/449** = **479/479 PASS**, exact-one, zero skips, benchmark 0 and immutable postflight.

@@ -71,3 +71,88 @@ Package/source `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05` becomes 
 | review_check.py boundary | PASS — review-turn boundary check reports no product/test/fixture/build or selector mutation; all durable-marker checks pass. |
 | `STATUS` lifecycle maintained | Entry beacon published; final COMPLETE beacon is the final repository action. |
 | Pushed to origin, branch in sync | Connector-applied documentation patch and cleanup are verified on the configured working branch before final beacon. |
+
+---
+
+## Review-agent addendum (2026-10-05, resumed `M6-CP1-TB12-CLOSE-R1-REV`)
+
+**Disposition:**
+- **Acceptance and promotion of `11330703256 / 3f40f04a...` (479/479): CONFIRMED.**
+- **Two claims overstate the runtime proof** (Q3).
+- **Two defensive branches have no executed falsifier and no owner** (Q4).
+- The close plan does not freeze CP1's successor (Q5).
+- **RA-27b** records owners and amends the close plan. The successor stays **`M6-CP1-CLOSE-REV`**.
+- Accounting **60 / 16 / 44**, debt 1.
+
+### Q1. Independent re-derivation (confirmed)
+
+- Result `11333591947`: ZIP `ef5dba11...`. Log `11333547162`: ZIP `dd782961...`.
+- `SHA256SUMS` (`9d7f244f...`) verifies **497/497**: 479 raw logs plus metadata. This harness writes no per-process resource files.
+- Focused ledger `296bc32f...` and selector ledger `d5298b2a...` are in exact focused-30 and selector449 order.
+- Every row has selected=1, skipped=0, passed=1, PASS. **All 479 raw-log SHA-256 values match their ledger rows.** The RED ledger has a header only (`dc5496d3...`).
+- Ordinals 29 and 30 are `[ OK ]`.
+- Candidate `3f40f04a` source == HEAD source. Its diff from `02149f15` touches 2 files: `RemeshPipeline.cpp` (+26/−6) and the test file.
+
+### Q2. RA-27a code review (confirmed)
+
+- **Wedge rule** (`RemeshPipeline.cpp:6884-6915`):
+  - fixed-point reachability from `cornerWedgeSheets.front()`, over transitions with `region == topologyRegion` and both sheets in the set;
+  - accepts only if the reachable set equals the sheet set;
+  - single-sheet members pass trivially;
+  - site `cross-sheet:wedge`.
+
+  It matches RA-27a §2 exactly. The edge rule is unchanged.
+- **Membership.** `wedge_contains_sheet` uses `binary_search`. The A5 *producer* sorts and dedupes (`:4446-4453`); `publish_records_for_validation` does not. Unsorted or duplicated input can only cause **false rejection**, never false acceptance, so this is fail-closed.
+- **C4 name.** Now `QuotientClosedComplexStripContinuationMismatch`. This was required, not cosmetic: DEFN-R3 freezes "external A6 diagnostics use the `Quotient` prefix".
+- **Identity 29.** It runs on a consistent chain:
+  - bridge non-vacuity, then baseline acceptance;
+  - every bridge transition rewritten to sheets 99→100, still non-empty;
+  - republish A5, re-produce A6 and assert success;
+  - A7 fails at `cross-sheet:wedge`.
+
+  The old proxy accepts this tamper, so the test discriminates.
+
+### Q3. Overclaims (Low–Medium)
+
+1. **"RA-27a §2 discharged by the exact graph plus the ordinal-29 runtime falsifier."** The tamper moves **both** endpoints of every transition outside the set, so it falsifies only the "no transition inside the set" case. These conjuncts are verified **statically only**:
+   - the **region filter**: a mutant that ignores region passes identity 29;
+   - **connectivity versus "touches the set"**: a mutant accepting any transition with one endpoint in the set also passes;
+   - **three-sheet partial connectivity**.
+
+   The production code is correct by inspection, but the record should say "static plus one runtime dimension". Owner for the missing tampers: Q6.
+2. **"Produced `cornerWedgeSheets` are sorted/unique before publication."** True of the producer, not of the publication seam (Q2). Harmless, but imprecise.
+
+### Q4. Defensive branches with no executed falsifier and no owner (Medium; not CP1-blocking)
+
+| Branch | Why it is unfalsified | Why it is not CP1-blocking | Owner (RA-27b) |
+|---|---|---|---|
+| C4 `ClosedComplexStripContinuationMismatch` (`:6310-6333`) | A non-unique opposite needs a pinched interior vertex: two 2-quad fans sharing one vertex. Only a weld produces that, and CP1 item 6 rules welds out. | It fails closed; identity 28 proves it does not fire falsely on the produced torus. | `M6-CP2-DEFN`: a weld-constructed malformed-authority witness, together with the verifier's manifoldness recompute (frozen §6.2). |
+| C2 empty-front `MissingAuthoritativePhaseFront` | A4 rejects empty edges and cells first (identity 30 says so honestly). | Unreachable through product authority. | Accepted as defensive; no owner needed. |
+
+TB12-R1-REV §3 lists neither branch. CLOSE-REV must classify each explicitly; RA-27b §3 amends the close plan to require this.
+
+### Q5. The close plan leaves CP1's successor open (Medium, routing)
+
+`Architecture_M6_CP1_Close_Review_Plan.md` ends with "freeze exactly one next turn under the roadmap". The carried obligations, however, are split across two owners that the roadmap orders CP2 → CP3:
+- **CP2 entry:** the verifier contract (frozen §6, §10). OBS-01, the missing A6 → A5 certificate binding, belongs here, because §6.2 lets the verifier check "deterministic equality of immutable certificate payloads". So does RA-26 §5(iii) (retire or replace the vacuous `project_vertices` sheet check), and the Q4 C4 witness.
+- **CP3 entry (`M6-DEFN-R5`):** the gauge obligations, the A5 barrier-set census, RA-26 §5(i)(ii)(iv), RA-27a §6 (edge-rule falsifier) and OBS-02.
+
+Letting CLOSE-REV choose freely invites jumping to DEFN-R5, which would skip CP2 and overload one Definition turn (lesson 188). **RA-27b freezes the post-closure successor as `M6-CP2-DEFN`**: a bounded, runtime-free definition of `SurfaceProductVerifier` with the CP2-entry items. `M6-DEFN-R5` follows CP2.
+
+### Q6. Observations
+
+- **`M6-CP1-TB12-R1-REV-OBS-01`.** Identity 29 lacks region, one-endpoint and three-sheet tampers (Q3.1). Owner: the first `M6-CP2` Code + Build, as **new appended identities**; identity 29 stays unchanged.
+- **`M6-CP1-TB12-R1-REV-OBS-02`.** The adapter maps `UncertifiedCrossSheetBinding` without A7's site (`RemeshPipeline.cpp:7462`), so edge and wedge failures share one adapter string. A7 keeps the site, so diagnosability is lost only at the adapter boundary. Owner: M8-CP2 (diagnostics).
+
+### Q7. Closeout
+
+| Duty | Result |
+|---|---|
+| Evidence | Re-derived: 497/497, frozen order, 479/479, all raw hashes match. |
+| RA-27a code | Confirmed; fail-closed under malformed membership input. |
+| Overclaims | Q3 recorded; runtime proof covers one dimension of the wedge rule. |
+| Defensive branches | C4 → `M6-CP2-DEFN`; C2 empty-front accepted as defensive. |
+| Close plan | RA-27b block: exit items verbatim from frozen §526; defensive-branch classification; `G4-B002` debt stays open; successor `M6-CP2-DEFN`. |
+| Accounting | +0 → 60 / 16 / 44, debt 1. |
+| Lesson | 200. |
+| Successor | `M6-CP1-CLOSE-REV`, unchanged. |

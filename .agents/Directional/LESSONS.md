@@ -2622,3 +2622,12 @@ When a temporary workflow caller is assembled with low-level Git objects, creati
       - Run every stage-level negative on a consistent chain: re-produce each downstream stage from the tampered upstream records.
       - When a witness is unreachable from producers, defer the falsifier to a produced fixture; do not build records by hand.
     - Recorded at the `M6-CP1-TB12-CLOSE-REV` review-agent addendum (RA-27a).
+200. **A runtime falsifier proves only the dimension it tampers.**
+    - *What happened.*
+      - RA-27a's wedge rule has three conjuncts: region match, both sheets in the set, and connectivity over the set.
+      - Identity 29 rewrote every transition to sheets entirely outside the set. That falsifies the old non-empty proxy, but it passes against a mutant that ignores region and against one that accepts any transition with a single endpoint in the set.
+      - The Review recorded the whole rule as "discharged by the runtime falsifier".
+    - **Rule.**
+      - For each fail-closed rule, list its conjuncts and mark each one runtime-proved (a tamper that only that conjunct rejects) or static-only.
+      - Claim runtime proof only for the tampered conjuncts, and give the static-only ones an owner for an appended falsifier.
+    - Recorded at the `M6-CP1-TB12-CLOSE-R1-REV` review-agent addendum (RA-27b).

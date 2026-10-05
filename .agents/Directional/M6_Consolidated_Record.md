@@ -1,6 +1,6 @@
 **Current authority after `M6-CP1-TB12-CLOSE-REV` (2026-10-05):** TB12 candidate `11324028392 / 02149f15...` remains unpromoted after 478/479. CAND-01 is adjudicated **FALSE REJECTION / TEST-FIXTURE WITNESS DEFECT / RECOVERY REQUIRED / NON-STABLE**; RA-27 authorizes test-only `M6-CP1-CB12-CLOSE-R2`, then a fresh 479-process R1 gate and mandatory Review. Reviewed runtime remains `11316716869 / 8dd95821...`; accounting **60 / 16 / 44**, debt 1.
 
-**Current authority after the `M6-CP1-TB12-CLOSE-REV` addendum (2026-10-05):** reviewed runtime `11316716869 / 8dd95821...` (477/477). TB12 candidate `02149f15` is unpromoted at 478/479; RA-27a applies (§47). Accounting **60 / 16 / 44**, debt 1. Exact next: `M6-CP1-CB12-CLOSE-R2` → TB12-R1 (479) → Review → `M6-CP1-CLOSE-REV`.
+**Current authority after the `M6-CP1-TB12-CLOSE-R1-REV` addendum (2026-10-05):** reviewed runtime `11330703256 / 3f40f04a...` (focused-30 + selector449 = 479/479). RA-27b applies (§49). Accounting **60 / 16 / 44**, debt 1. Exact next: `M6-CP1-CLOSE-REV`; if CP1 closes → `M6-CP2-DEFN`.
 
 **Current authority after `M6-CP1-CB11-G4` (2026-10-04):** CB11 is COMPLETE / COMPILE+PACKAGE GREEN / RUNTIME-FREE at semantic source `582da20a925ba920c923bf5aacb9e0e56ef0723d`. Candidate result artifact `11308472138` is unpromoted. Reviewed runtime remains `11299078582 / 96b456f9...` at 473/473. Stable accounting remains **60 / 16 / 44**, debt 1. Exact next: immutable `M6-CP1-TB11-G4-EXEC`, focused28+selector449 = **477**, then mandatory Review; CP1 close remains held.
 
@@ -448,6 +448,25 @@ Independent Review re-derives R1 runtime `37280517630 / 111667316992` from resul
 RA-27a is accepted. A7's member-local wedge graph exactly matches the frozen region/sheet connectivity rule; C4's diagnostic carries the required `Quotient` prefix; focused ordinal29 non-vacuously keeps the wedge-transition vector non-empty, republishes A5, re-produces A6 successfully and reaches the exact A7 `cross-sheet:wedge` rejection. The old non-empty proxy would accept that tamper, so the test discriminates. `M6-CP1-TB12-CLOSE-EXEC-CAND-01` is **CLOSED / RECOVERY PROVED / NON-STABLE** and does not affect stable totals.
 
 Package/source `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05` is promoted as current reviewed M6 runtime authority. Accounting stays **60 / 16 / 44**, debt 1. C1 wedge completion and C4 name are discharged. RA-27a §6 edge-rule falsifier, OBS-01/02 and RA-26 §5 remain with their later frozen owners. CP1 remains ACTIVE; exact next is runtime-free `M6-CP1-CLOSE-REV` under `Architecture_M6_CP1_Close_Review_Plan.md`.
+
+## 49. `M6-CP1-TB12-CLOSE-R1-REV` review-agent addendum — promotion confirmed; RA-27b
+
+The review agent re-derives R1 at 479/479, with all raw-log hashes matching, and confirms:
+- the RA-27a wedge rule (exact, and fail-closed on malformed membership input);
+- the C4 name fix, which DEFN-R3's `Quotient` prefix rule required;
+- identity 29 on a consistent chain.
+
+**Corrections:**
+- Identity 29 runtime-proves one dimension of the rule. The region filter and connectivity versus "touches" are static (OBS-01, first CP2 CB).
+- C4 has no executed falsifier (→ `M6-CP2-DEFN` weld witness). C2's empty-front branch is accepted as defensive.
+
+**RA-27b** amends the close plan:
+- verbatim exit items;
+- defensive-branch classification;
+- `G4-B002` stays open;
+- post-closure successor `M6-CP2-DEFN`, which absorbs the A6 → A5 / A7 → A6 certificate binding and RA-26 §5(iii). `M6-DEFN-R5` follows CP2.
+
+Lesson 200. Accounting 60 / 16 / 44.
 
 ## Folded document index
 

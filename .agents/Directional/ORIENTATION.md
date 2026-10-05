@@ -1,3 +1,13 @@
+## Currency — `M6-CP1-TB12-CLOSE-R1-REV` + review-agent addendum: promotion confirmed; RA-27b (2026-10-05 UTC)
+
+- `3f40f04a` (479/479) is confirmed as reviewed runtime.
+- The runtime proof covers one dimension of the RA-27a wedge rule; the rest is static.
+- C4 has no executed falsifier.
+- RA-27b amends the close plan: verbatim exit items, defensive-branch classification, `G4-B002` stays open, and post-closure successor `M6-CP2-DEFN` (with `M6-DEFN-R5` after CP2).
+
+Exact next `M6-CP1-CLOSE-REV`. Accounting **60 / 16 / 44**, debt 1.
+
+### Superseded currency note
 ## Currency — `M6-CP1-TB12-CLOSE-R1-REV` ACCEPTED / 479/479 promoted / exact next `M6-CP1-CLOSE-REV` (2026-10-05 UTC)
 
 - RA-27a is implemented at exact source `3f40f04a...`: per-occurrence wedge sheet-graph connectivity, C4 `Quotient...` name, and identity29's A5→A6 re-production falsifier.
@@ -343,9 +353,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
- > **Current milestone authority (2026-10-05, after `M6-CP1-TB12-CLOSE-R1-REV`):** M4 and M5 remain CLOSED / ACCEPTED. M6 CP1 remains ACTIVE pending its dedicated close Review. Reviewed runtime authority is `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05` at focused30 + selector449 = **479/479**. RA-27a is recovery-proved; stable accounting **60/16/44**, debt 1. Exact next is runtime-free `M6-CP1-CLOSE-REV`.
+ > **Current milestone authority (2026-10-05, after the `M6-CP1-TB12-CLOSE-R1-REV` addendum):** M4 and M5 remain CLOSED / ACCEPTED. M6 CP1 remains ACTIVE pending its close Review. Reviewed runtime authority is `11330703256 / 3f40f04a...` at focused30 + selector449 = **479/479**. RA-27b amends the close plan. Stable accounting **60/16/44**, debt 1. Exact next is `M6-CP1-CLOSE-REV`; if CP1 closes, then `M6-CP2-DEFN`.
 
-**Currency.** `M6-CP1-TB12-CLOSE-R1-REV` (Review), 2026-10-05 UTC
+**Currency.** `M6-CP1-TB12-CLOSE-R1-REV` review-agent addendum (Review), 2026-10-05 UTC
 
 **Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` §16.3 is the active same-region nonzero-Z4 contract. `PeriodicRelationId` remains carrier-content identity; relation rotation is the gauge-adjusted quotient `Q`, action/transport is relation value, and canonical storage may invert representation only after semantic Forward -> Reverse authority is fixed. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 
@@ -529,17 +539,25 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M6-CP1-CLOSE-REV` — EXACT NEXT / runtime-free CP1 closure review.**
-   - Re-derive all six frozen CP1 exit items against current source and reviewed runtime `11330703256 / 3f40f04a...` at 479/479.
-   - Re-check RA-19a/RA-22a/RA-22b/RA-25, RA-26 §3 current-HEAD provenance-face classification, and the A5-sourced isolation counter.
-   - No source repair in Review. Any failed conjunct routes to its smallest Definition or Code + Build owner.
-   - RA-27a wedge recovery is discharged; its edge-rule falsifier remains a later DEFN-R5/CP3 obligation, not a CP1 blocker.
+1. **`M6-CP1-CLOSE-REV` — EXACT NEXT / runtime-free CP1 closure review (RA-27b §3 binding).**
+   - Re-derive the six frozen exit items verbatim against HEAD source and reviewed runtime `11330703256 / 3f40f04a...` at 479/479.
+   - Re-check RA-19a, RA-22a, RA-22b, RA-25, RA-26 §3, RA-27a and the A5-sourced isolation counter.
+   - Classify the defensive and static-only branches with owners: C2 empty-front, C4, the RA-27a static conjuncts, and the RA-27a §6 edge rule.
+   - `G4-B002` stays open (debt 1). No source repair in Review.
+   - If CP1 closes → **`M6-CP2-DEFN`** (RA-27b §4).
+1b. **`M6-CP2-DEFN` — post-CP1 (bounded, runtime-free).**
+   - `SurfaceProductVerifier` contract (frozen §6, §10).
+   - A6 → A5 and A7 → A6/A5 certificate chain binding (`M6-CP1-TB12-REV-OBS-01`).
+   - RA-26 §5(iii): the vacuous `project_vertices` sheet check.
+   - C4 weld witness.
+   - Appended identity-29 tampers: region, one-endpoint, three-sheet.
 1a. **`M6-DEFN-R5` — CP3-entry gate (not CP1).**
    - Periodic unequal-face-gauge witness, plus the coordinate / relation-gauge rule.
    - HardRail cross-region branch certification.
    - OrdinaryFront coordinate identity across isolation seams.
    - RA-26 §5: a class-wide reference for optimizer energy/gradient and for the final-validation field-metric fallback; a real replacement for the vacuous `project_vertices` sheet check; a representative-permutation falsifier.
-   - RA-27a §6–§7: an executed edge-rule falsifier on the first produced seam-collinear fixture; A6 → A5 certificate binding (OBS-01, with M6-CP2); relation-kind-aware cross-sheet rule (OBS-02).
+   - RA-27a §6: an executed edge-rule falsifier on the first produced seam-collinear fixture. OBS-02: a relation-kind-aware cross-sheet rule. (OBS-01 moved to `M6-CP2-DEFN` by RA-27b §4.)
+   - Runs after CP2.
 
    These must close before any CP3 direct-production TB. RA-17's transport guard keeps them away from geometry until then.
 
@@ -569,6 +587,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 **A green behavioral test is not a contract proof when the oracle compares only a subset of the promised serialization — `M6-CP1-TB10-A5V-REV`, lesson 193.** Identity24 ran three real stage-valid fixtures but omitted multiple mesh/lineage/result fields, so those fields could drift without turning the test red. Enumerate the output type and prove every contract field is covered; a strong test name does not widen its assertions.
 
 **Moving validation into an earlier stage can still invert that stage's own pre-existing failure precedence — `M6-CP1-TB10-A5V-REV`, existing `VALIDATION_ORDER_SHADOWING`.** RA-19 explicitly required the moved helper after every old A5 check; placing it before `publish_records_for_validation` violates that boundary even when the full gate stays green.
+
+**A runtime falsifier proves only the dimension it tampers — `M6-CP1-TB12-CLOSE-R1-REV` addendum, lesson 200.** Identity 29 moved every transition fully outside the sheet set. That proves rejection of "no in-set transition", but not the region filter or connectivity versus "touches the set". A mutant for each of those passes the test. List a rule's conjuncts, and mark each one runtime-proved or static-only.
 
 **Harden the branch production reaches, and test it on a consistent chain — `M6-CP1-TB12-CLOSE-REV` addendum, lesson 199.** C1 made the selected-edge cross-sheet rule exact. But produced crossings happen inside bridge occurrences, which a separate per-occurrence proxy still certified. Identity 29 then looked for a witness the producers cannot emit, and its negative passed a stale A6. Before hardening or testing a fail-closed rule, derive from the producer which branch real data reaches, and re-produce downstream stages from tampered upstream records.
 

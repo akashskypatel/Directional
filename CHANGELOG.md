@@ -1,3 +1,13 @@
+## 2026-10-05 — `M6-CP1-TB12-CLOSE-R1-REV` review-agent addendum — close-out recovery confirmed
+
+- The recovered close-out build (479/479) is confirmed and promoted.
+- Two gaps are now recorded with owners:
+  - the new cross-sheet test proves only part of the new rule;
+  - one fail-closed branch has never been triggered by a test.
+
+  Both are scheduled for the CP2 verifier work.
+- The CP1 closure review now has a fixed checklist. If CP1 closes, the next step is the CP2 verifier definition (`M6-CP2-DEFN`).
+
 ## 2026-10-05 — `M6-CP1-TB12-CLOSE-R1-REV` accepted R1 recovery and promoted 479/479 runtime
 
 - Independently re-derived runtime `37280517630 / 111667316992`, result/log `11333591947 / 11333547162`, result manifest **497/497**, focused30 **30/30** + selector449 **449/449** = **479/479 PASS**, exact-one, zero skips, benchmark 0 and immutable postflight.

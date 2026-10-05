@@ -1,3 +1,22 @@
+## Resume-critical update — `M6-CP1-TB12-CLOSE-R1-REV` + review-agent addendum: promotion confirmed; RA-27b; exact next `M6-CP1-CLOSE-REV` (2026-10-05)
+
+**Start `M6-CP1-CLOSE-REV`** (runtime-free) under `Architecture_M6_CP1_Close_Review_Plan.md`. **Its top review-agent block (RA-27b §3) is binding:**
+- check the six exit items against the frozen "CP1 exit scope — restated" text verbatim;
+- classify each defensive or static-only branch with a named owner: C2 empty-front, C4 (→ `M6-CP2-DEFN`), the RA-27a static conjuncts (→ first M6-CP2 CB), and the RA-27a §6 edge rule (→ `M6-DEFN-R5`);
+- keep `G4-B002` debt open (debt 1);
+- **if CP1 closes, the successor is `M6-CP2-DEFN`.** `M6-DEFN-R5` follows CP2.
+
+The review agent independently confirmed:
+- 497/497, frozen-order ledgers, 479/479, and all 479 raw-log hashes;
+- the RA-27a wedge rule is exact and fails closed;
+- identity 29 runs on a consistent chain.
+
+What the review agent corrected:
+- The runtime proof covers one dimension of the wedge rule only. The region filter and connectivity-versus-touch are static (OBS-01, first CP2 CB).
+- C4 has no executed falsifier (→ `M6-CP2-DEFN`).
+
+Reviewed runtime: `11330703256 / 3f40f04a...`. Accounting **60 / 16 / 44**, debt 1.
+
 ## Resume-critical update — `M6-CP1-TB12-CLOSE-R1-REV` ACCEPTED / runtime promoted / exact next `M6-CP1-CLOSE-REV` (2026-10-05)
 
 **Start runtime-free `M6-CP1-CLOSE-REV`; do not rerun R1, rebuild/repair the candidate, or start CP2/CP3 work first.** Follow `Architecture_M6_CP1_Close_Review_Plan.md`.
@@ -871,52 +890,53 @@ Review must independently re-open source/evidence and re-derive: split-square v0
 
 ## Current authority
 
-`M6-CP1-TB12-CLOSE-R1-EXEC` is **COMPLETE / 479/479 GREEN** on immutable candidate `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05`.
-
-- Runtime run/job: `37280517630 / 111667316992`.
-- Result/log artifacts: `11333591947 / 11333547162`, provider SHA-256 `ef5dba1131f25025bc536ba160475191629cc8bffed0465a087dd72fc4d1474b / dd78296134b6e71d2080ab2b1b6623841f75725e6a43deffe6ec2ad50dd46e53`.
-- Result self-manifest: **497/497**; focused **30/30** + selector449 **449/449** = **479/479 PASS**; exact-one, zero skips, benchmark 0.
-- Immutable postflight is GREEN; no configure/compile/relink/discovery/repair/mutation/retry occurred in TB.
-- Identity29 and identity30 are GREEN. No R1 regression candidate/event exists.
-- Stable accounting remains **60 / 16 / 44**, debt **1**.
-- Candidate remains unpromoted because EXEC has no promotion authority.
-- Previously reviewed runtime authority remains `11316716869 / 8dd958217d8cbda2d403f7a5c4c7dce242dde1c0` until Review.
+`M6-CP1-TB12-CLOSE-R1-REV` is **COMPLETE**, including its review-agent addendum §Q.
+- Reviewed runtime authority: `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05`.
+- Gate: focused-30 (`1e815443...`) + selector449 = **479/479**.
+- Normative: RA-18 – RA-27b.
+- Accounting **60 / 16 / 44**, debt **1** (`G4-B002`, M6-CP3).
 
 ## Exact next turn
 
-**`M6-CP1-TB12-CLOSE-R1-REV` — mandatory runtime-free Review.**
+**`M6-CP1-CLOSE-REV` — runtime-free CP1 closure Review.** Follow `Architecture_M6_CP1_Close_Review_Plan.md`; its RA-27b block is binding.
+- Check the six frozen exit items verbatim on HEAD source and the 479/479 evidence.
+- Re-check RA-19a, RA-22a, RA-22b, RA-25, RA-26 §3 and RA-27a, plus the C3 counter source.
+- Classify the defensive and static-only branches with owners.
+- `G4-B002` stays open.
+- If CP1 closes → **`M6-CP2-DEFN`** (RA-27b §4). If not → the smallest owner. No source repair in Review.
 
-Review must independently verify candidate/package identity, the 497/497 result manifest, complete frozen-order 30/30 + 449/449 ledgers, exact-one/zero-skip integrity, identity29 RA-27a recovery, identity30 retention, immutable postflight, and +0 regression disposition. Only Review may promote `11330703256 / 3f40f04a...` and route onward to `M6-CP1-CLOSE-REV`.
+## Completed predecessor turns (reference only)
 
-Do not rerun R1, rebuild the candidate, or begin CP1 close Review before R1 Review completes.
+- `M6-CP1-TB12-CLOSE-R1-REV` (+ addendum §Q, RA-27b) — promotion of `3f40f04a`.
+- `M6-CP1-TB12-CLOSE-R1-EXEC` — 479/479.
+- `M6-CP1-CB12-CLOSE-R2` — RA-27a wedge rule, C4 name, identity 29 recovery.
+- `M6-CP1-TB12-CLOSE-REV` (+ addendum §P, RA-27a) and earlier.
 
 ## Current files
 
-- `.agents/Directional/Architecture_M6_CP1_TB12_Close_R1_Artifact_Only_Test_Benchmark_Report.md` — R1 EXEC evidence.
-- `.agents/Directional/Architecture_M6_CP1_TB12_Close_R1_Artifact_Only_Test_Benchmark_Plan.md` — consumed immutable R1 plan.
-- `.agents/Directional/Architecture_M6_CP1_CB12_Close_R2_Code_Build_Report.md` — candidate compile authority.
-- `.agents/Directional/Architecture_M6_CP1_TB12_Close_Review_Record.md` — predecessor Review authority + RA-27a.
-- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — normative RA-18 – RA-27a.
-- `.agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt` + selector449/routing449 — frozen gate.
-- `.workflow-mailbox/m6-cp1-tb12-close-r1-exec/latest.json` — completed-run rendezvous.
+- `.agents/Directional/Architecture_M6_CP1_Close_Review_Plan.md` — exact next plan, with the RA-27b block.
+- `.agents/Directional/Architecture_M6_CP1_TB12_Close_R1_Review_Record.md` — Review authority, with addendum §Q.
+- `.agents/Directional/Architecture_M6_CP1_TB12_Close_R1_Artifact_Only_Test_Benchmark_Report.md` — 479/479 evidence.
+- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — normative; "CP1 exit scope — restated", RA-26, RA-27a, RA-27b.
+- `.agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt` + selector449 / routing449 — frozen gate.
 
 ## Context Load Plan
 
 ```yaml
 load_next:
-  - .agents/Directional/Architecture_M6_CP1_TB12_Close_R1_Artifact_Only_Test_Benchmark_Report.md
-  - .agents/Directional/Architecture_M6_CP1_TB12_Close_Review_Record.md
+  - .agents/Directional/Architecture_M6_CP1_Close_Review_Plan.md
+  - .agents/Directional/Architecture_M6_CP1_TB12_Close_R1_Review_Record.md
   - .agents/Directional/Architecture_M6_Frozen_Definitions.md
   - .agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt
 conditional_modules:
   - trigger: github_connector / GitHub Actions / artifact verification
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
-  - result artifact 11333591947 (focused/selector/red ledgers, immutable postflight)
-  - compile package 11330703256 / source 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05
-  - tests/SurfaceCellTransitionQuotientTests.cpp (identities 29/30)
+  - src/pipeline/RemeshPipeline.cpp (A5 produce ~3770-4970; A6 ~5000-5600 and closed-complex view ~6260-6340; A7 ~6512-7000; adapter ~7293-7560)
+  - tests/SurfaceCellTransitionQuotientTests.cpp (focused identities 1-30)
+  - result artifact 11333591947 (479/479 ledgers)
 do_not_preload:
-  - superseded TB12 pre-R1 runtime evidence except when comparing identity29 recovery
-  - src/geometry/SurfaceMeshOptimizer.cpp (RA-26 deferred)
+  - folded superseded M6 per-turn records
+  - src/geometry/SurfaceMeshOptimizer.cpp (RA-26)
   - research/provenance/examples
 ```

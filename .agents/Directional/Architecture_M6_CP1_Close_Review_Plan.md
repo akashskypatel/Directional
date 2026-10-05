@@ -1,5 +1,15 @@
 # `M6-CP1-CLOSE-REV` — CP1 Closure Review Plan
 
+> **Review-agent block — `M6-CP1-TB12-CLOSE-R1-REV` addendum (RA-27b §3), 2026-10-05. It amends this plan and is binding:**
+> 1. Check the six exit items against the frozen "CP1 exit scope — restated" text in `Architecture_M6_Frozen_Definitions.md` **verbatim**, not the paraphrase below.
+> 2. Classify each defensive or static-only branch as accepted-defensive with a named later owner, or as CP1-blocking:
+>    - C2 empty-front;
+>    - C4 strip continuation (owner `M6-CP2-DEFN`);
+>    - the RA-27a static conjuncts: region filter, connectivity versus "touches", multi-sheet partial (owner: first M6-CP2 CB);
+>    - the RA-27a §6 edge rule (owner `M6-DEFN-R5`).
+> 3. `G4-B002` debt stays **open** (debt 1). CP1 closure is mechanism-only.
+> 4. **Successor if CP1 closes: `M6-CP2-DEFN`** (scope: RA-27b §4). `M6-DEFN-R5` follows CP2. If CP1 does not close, route to the smallest owner. Never repair source in Review.
+
 **Type:** runtime-free Review. **No product/test/fixture/selector/build mutation and no generated Directional runtime.**
 
 ## Entering authority

@@ -1,3 +1,12 @@
+## Current — `M6-CP1-TB12-CLOSE-R1-REV` + review-agent addendum / RA-27b / exact next `M6-CP1-CLOSE-REV` (2026-10-05)
+
+- [x] Re-derive R1: 497/497, frozen-order ledgers, 479/479; all 479 raw-log hashes match; candidate `3f40f04a` == HEAD.
+- [x] Confirm the RA-27a wedge rule (exact; fail-closed on malformed membership input), the C4 name and identity 29 on a consistent chain.
+- [x] Record overclaims (runtime proves one wedge-rule dimension) and unowned defensive branches (C4, C2 empty-front) → RA-27b; lesson 200.
+- [x] Amend the close plan: verbatim exit items, defensive-branch classification, `G4-B002` stays open, successor `M6-CP2-DEFN`.
+- [ ] **Exact next `M6-CP1-CLOSE-REV`** (runtime-free).
+- [ ] If CP1 closes → `M6-CP2-DEFN` (RA-27b §4), then CP2 CBs, then `M6-DEFN-R5` → CP3.
+
 ## Current — `M6-CP1-TB12-CLOSE-R1-REV` ACCEPTED / 479/479 promoted / exact next CP1 close Review (2026-10-05)
 
 - [x] Independently re-derived R1 result manifest **497/497**, focused30 **30/30**, selector449 **449/449**, exact-one, zero skips, benchmark 0 and immutable postflight.
