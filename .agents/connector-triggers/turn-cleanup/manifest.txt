@@ -1,0 +1,3 @@
+# M6-CP1-TB12-CLOSE-REV temporary-state cleanup
+.agents/connector-triggers/m6-cp1-tb12-close-rev-doc-apply.txt
+.agents/connector-triggers/source-snapshot/m6-cp1-tb12-close-rev-20261005.txt
