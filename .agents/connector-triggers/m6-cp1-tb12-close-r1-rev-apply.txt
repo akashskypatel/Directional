@@ -1,5 +1,0 @@
-Purpose: apply M6-CP1-TB12-CLOSE-R1-REV documentation and consolidation patch
-Base: f6ffca2a1b6492e0685d0d93f82db996576cb7cc
-Patch SHA-256: fae2495d472c201c4edb2d438f5320f16d4607ed21a0bfac5884712077638daa
-Caller install: 449dcf6d722e5ac56301d91e130e7212fa004ba6
-Retry: 0
