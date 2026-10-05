@@ -1,3 +1,10 @@
+## 2026-10-05 — M6 CP2 verifier contract frozen for review
+
+- The verifier gets malformed test evidence through copied record views, not unchecked products.
+- It independently recomputes only frozen elementary facts and cannot repair/search/substitute producer authority.
+- Production verification is placed immediately after A7; the first planned CP2 gate is 491 exact-filter processes.
+- Next is mandatory `M6-CP2-DEFN-REV`; implementation remains held.
+
 ## 2026-10-05 — M6 CP1 closed; independent verifier definition next
 
 - Product separation is now closed after a final review of the six frozen exit conditions and the current source.

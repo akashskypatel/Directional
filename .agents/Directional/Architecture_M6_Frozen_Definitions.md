@@ -1,6 +1,6 @@
 # M6 Frozen Definitions — Occurrence, Quotient, Embedding, Independent Verification
 
-**Status:** FROZEN / **M6-CP1 CLOSED / ACCEPTED, mechanism-only** by `M6-CP1-CLOSE-REV`; reviewed runtime `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05`, focused30 + selector449 = **479/479**; `G4-B002` debt remains open (debt 1); **EXACT NEXT = `M6-CP2-DEFN`**; RA-1 – RA-27b normative as annotated.
+**Status:** FROZEN / **M6-CP1 CLOSED / ACCEPTED, mechanism-only**; `M6-CP2-DEFN` candidate contract frozen under RA-28 and **PENDING `M6-CP2-DEFN-REV`**; reviewed runtime `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05`, focused30 + selector449 = **479/479**; `G4-B002` debt remains open (debt 1); RA-1 – RA-28 as annotated.
 **Date:** 2026-09-25
 **Definition authority:** this record is the normative M6 contract for A5 occurrence creation, A6 quotient construction/materialization, A7 source-attached geometry embedding, and the M6 structural portion of A8 independent verification. It refines `DESIGN.md` §14 M6 without changing accepted M5 producer semantics or pulling M7 disposition/degradation work forward.
 
@@ -1014,3 +1014,20 @@ Rationale: `Architecture_M6_CP1_TB12_Close_R1_Review_Record.md`, addendum §Q2�
 5. **Observation.** `M6-CP1-TB12-R1-REV-OBS-02`: the adapter drops A7's cross-sheet site (`RemeshPipeline.cpp:7462`); owner M8-CP2.
 
 Accounting **60 / 16 / 44**, debt 1. Exact next: `M6-CP1-CLOSE-REV`.
+
+## RA-28 — `M6-CP2-DEFN` independent verifier candidate freeze (2026-10-05; pending mandatory Review)
+
+`Architecture_M6_CP2_Definition_Record.md` freezes the CP2 candidate contract subject to `M6-CP2-DEFN-REV`:
+
+1. malformed verifier witnesses use copy-by-value A5/A6/A7 **verification record views**; no unchecked product factory exists;
+2. findings are typed and ordered by semantic stage/locus, never discovery/vector/output order;
+3. the recompute surface is exactly §6.2; every §6.3 forbidden class rejects or is API-shape defensive, with no repair/search/substitution/mutation;
+4. A6 certificates/consumptions bind byte-semantically to their exact A5-owned relation/evidence and A7 binds to exact A6 class/topology plus cited A5 evidence; equivalent unreferenced authority is not a substitute;
+5. C4 remains accepted-defensive because no permitted production-derived A5 witness reaches it without forging relation authority; the executed pinched-topology falsifier is the verifier's independent manifoldness recompute over a tampered A6 record view;
+6. the three RA-27a static-only tampers are wrong-region, one-endpoint-touches-without-connectivity, and three-sheet partial connectivity, with identity29 unchanged;
+7. production A8 runs immediately after A7 and before adapter projection; any accepted focused30/selector449 rejection is a mandatory Review stop;
+8. RA-26 §5(iii) remains an optimizer reject-only reference-safety obligation and switches to class-wide `vertexChartAuthority` membership; it is not semantic product authority;
+9. CP2 gate architecture is focused30 + new CP2-focused12 + selector449 = **491** fresh exact-filter processes. Existing focused30, selector449 and routing449 bytes stay unchanged;
+10. successor chain is `M6-CP2-DEFN-REV` → `M6-CP2-CB1-VERIFIER` → TB1 → Review. `M6-DEFN-R5` remains after CP2; `G4-B002` debt remains 1; M7 semantics remain forbidden.
+
+Until `M6-CP2-DEFN-REV` accepts this candidate, RA-28 authorizes **no implementation**.

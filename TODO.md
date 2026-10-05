@@ -1,3 +1,15 @@
+## Current — `M6-CP2-DEFN` COMPLETE / mandatory Definition Review next (2026-10-05)
+
+- [x] Freeze D1 record-view negative seam and typed semantic finding identity.
+- [x] Classify C4 accepted-defensive; verifier manifoldness owns the executed pinched-topology falsifier.
+- [x] Freeze three mutant-killing wedge tampers without changing identity29.
+- [x] Integrate A8 after A7 / before adapter projection; resolve RA-26 §5(iii) to class-wide optimizer chart membership.
+- [x] Freeze CP2 focused-12 and gate **30 + 12 + 449 = 491**; standard eight GMP targets.
+- [ ] **Exact next `M6-CP2-DEFN-REV`**. `M6-CP2-CB1-VERIFIER` remains held until Review.
+- [ ] `M6-DEFN-R5` follows CP2; `G4-B002` debt remains 1.
+
+## Superseded historical snapshots
+
 ## Current — `M6-CP1-CLOSE-REV` ACCEPTED / CP1 CLOSED / exact next `M6-CP2-DEFN` (2026-10-05)
 
 - [x] Re-confirm no semantic-source advance from promoted `3f40f04a`.

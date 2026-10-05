@@ -1,3 +1,15 @@
+## Currency — `M6-CP2-DEFN` COMPLETE / pending mandatory `M6-CP2-DEFN-REV` (2026-10-05 UTC)
+
+- CP2 candidate contract is frozen in `Architecture_M6_CP2_Definition_Record.md`; implementation remains unauthorized until Review.
+- Negative verifier evidence uses tamperable record views, never unchecked products.
+- C4 is accepted-defensive; independent verifier manifoldness is the executable pinched-topology falsifier.
+- Production A8 is placed after A7 and before adapter projection. RA-26 §5(iii) becomes class-wide optimizer chart-membership rejection.
+- First planned runtime gate is **30 + 12 + 449 = 491**; focused30/selector449/routing449 stay unchanged.
+- Exact next: `M6-CP2-DEFN-REV`; first CB `M6-CP2-CB1-VERIFIER` is held.
+
+Accounting **60 / 16 / 44**, debt 1.
+
+### Superseded currency note
 ## Currency — `M6-CP1-CLOSE-REV` ACCEPTED / CP1 CLOSED / exact next `M6-CP2-DEFN` (2026-10-05 UTC)
 
 - All six frozen CP1 exit items pass on current semantic source; no semantic source drift from promoted `3f40f04a`.

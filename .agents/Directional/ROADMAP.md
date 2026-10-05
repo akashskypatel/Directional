@@ -1,3 +1,17 @@
+## Live M6 routing — after `M6-CP2-DEFN` candidate freeze
+
+| Checkpoint | State | Exact next / gate |
+|---|---|---|
+| M6 CP1 | **CLOSED / ACCEPTED, mechanism-only** | reviewed runtime `11330703256 / 3f40f04a...`, 479/479 |
+| CP2 Definition | **COMPLETE / PENDING REVIEW** | exact next `M6-CP2-DEFN-REV`; no implementation authorized yet |
+| first CP2 CB | Held | `M6-CP2-CB1-VERIFIER`; planned TB = focused30 + CP2-focused12 + selector449 = **491** |
+| `G4-B002` | **OPEN debt** | CP3 direct-produced-witness re-proof; debt 1 |
+| `M6-DEFN-R5` | After CP2 | CP3-entry obligations unchanged |
+
+Stable accounting: **60 / 16 / 44**, debt 1.
+
+### Superseded routing
+
 ## Live M6 routing — after `M6-CP1-CLOSE-REV`
 
 | Checkpoint | State | Exact next / gate |

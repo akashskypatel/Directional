@@ -1,3 +1,11 @@
+## 2026-10-05 — `M6-CP2-DEFN` froze the independent verifier candidate contract
+
+- Defined tamperable verification record views instead of unchecked products and froze typed semantic finding identity/order.
+- Froze exact A5→A6→A7 certificate-chain binding and the §6.2/§6.3 recompute/reject matrix.
+- Classified C4 accepted-defensive; verifier manifoldness owns the pinched-topology falsifier.
+- Added three planned wedge-rule negatives, production A8 placement, and class-wide optimizer chart-membership ownership.
+- Planned CP2 focused-12; first TB gate **491**. Exact next `M6-CP2-DEFN-REV`; no implementation/runtime changed.
+
 ## 2026-10-05 — `M6-CP1-CLOSE-REV` accepted; CP1 closed mechanism-only
 
 - Checked the six frozen CP1 exit items verbatim on current semantic source and the promoted 479/479 runtime; all pass.

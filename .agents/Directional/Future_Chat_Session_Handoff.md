@@ -1,3 +1,11 @@
+## Resume-critical update — `M6-CP2-DEFN` candidate complete; mandatory Review next (2026-10-05)
+
+**Start `M6-CP2-DEFN-REV` next. Do not implement CP2 before Review.** Review `Architecture_M6_CP2_Definition_Record.md`, the held `Architecture_M6_CP2_CB1_Verifier_Code_Build_Plan.md`, and RA-28 at the end of `Architecture_M6_Frozen_Definitions.md`.
+
+Definition decisions: record-view negative seam (no unchecked products); C4 accepted-defensive with independent verifier manifoldness witness; wrong-region/touches/three-sheet wedge tampers; production verifier after A7 and before adapter projection; optimizer class-wide `vertexChartAuthority` membership; separate CP2 focused-12; planned gate **30 + 12 + 449 = 491**. First implementation turn is `M6-CP2-CB1-VERIFIER` only if Review accepts/amends it.
+
+Reviewed runtime stays `11330703256 / 3f40f04a...` (479/479). `G4-B002` remains open, debt 1. `M6-DEFN-R5` follows CP2.
+
 ## Resume-critical update — routing review after CP1 closure: next steps for `M6-CP2-DEFN` (2026-10-05)
 
 **Start `M6-CP2-DEFN` as a new runtime-free Definition turn.** Follow `Architecture_M6_CP2_Definition_Plan.md`; **its new review-agent block (D1–D6) is binding**. CP1 closure was checked: `Architecture_M6_CP1_Close_Review_Record.md` quotes the six exit items verbatim, with `file:line` evidence and focused-30 ordinals, as RA-27b requires.
