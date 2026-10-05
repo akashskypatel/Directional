@@ -1,0 +1,5 @@
+Purpose: apply final M6-CP2-TB1-VERIFIER-REV durable review closeout patch
+Base: 245d59ec9540e2c96d079013c6b7bc10afe61952
+Drive file: 1NRRu9xTWEGCdkUGX8GrWTYRjwZ2QbB8W
+Patch SHA-256: 6dff2e905c71aad139d5afc11e8d8c12dcee2f84f194e36b0d8bae3720621735
+Retry: 0
