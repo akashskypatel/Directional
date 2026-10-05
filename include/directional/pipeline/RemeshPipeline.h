@@ -739,21 +739,6 @@ private:
   Outcome outcome_;
 };
 
-/** Compile-visible result of explicit constructive-front quotient assembly. */
-struct AuthoritativePhaseFrontMeshResult {
-  bool success = false;
-  int invalidCell = -1;
-  int invalidEdge = -1;
-  int connectedComponents = 0;
-  int boundaryLoopCount = 0;
-  int eulerCharacteristic = 0;
-  std::size_t consumedTopologyRegions = 0U;
-  std::size_t consumedInternalIsolationSeams = 0U;
-  std::size_t consumedPeriodicHolonomies = 0U;
-  std::string failure;
-  geometry::PureQuadMesh mesh;
-};
-
 enum class SurfaceOccurrenceRelationKind : std::uint8_t {
   OrdinaryFront = 0,
   HardRail = 1,
@@ -1545,20 +1530,38 @@ struct VerificationReport {
   [[nodiscard]] bool verified() const noexcept { return findings.empty(); }
 };
 
+/** Compile-visible result of explicit constructive-front quotient assembly. */
+struct AuthoritativePhaseFrontMeshResult {
+  bool success = false;
+  int invalidCell = -1;
+  int invalidEdge = -1;
+  int connectedComponents = 0;
+  int boundaryLoopCount = 0;
+  int eulerCharacteristic = 0;
+  std::size_t consumedTopologyRegions = 0U;
+  std::size_t consumedInternalIsolationSeams = 0U;
+  std::size_t consumedPeriodicHolonomies = 0U;
+  std::string failure;
+  geometry::PureQuadMesh mesh;
+  std::optional<VerificationReport> verificationReport;
+};
+
 std::string verification_failure_message(const VerificationReport &report);
 
 class SurfaceProductVerifier;
 
 class VerifiedSurfaceProducts {
 public:
+  static constexpr bool owns_products = true;
+
   [[nodiscard]] const SurfaceOccurrenceComplex &occurrences() const noexcept {
-    return *occurrences_;
+    return occurrences_;
   }
   [[nodiscard]] const SurfaceQuotientProduct &quotient() const noexcept {
-    return *quotient_;
+    return quotient_;
   }
   [[nodiscard]] const SourceAttachedGeometryProduct &geometry() const noexcept {
-    return *geometry_;
+    return geometry_;
   }
   [[nodiscard]] const VerificationReport &report() const noexcept {
     return report_;
@@ -1570,12 +1573,12 @@ private:
                           const SurfaceQuotientProduct &quotient,
                           const SourceAttachedGeometryProduct &geometry,
                           VerificationReport report)
-      : occurrences_(&occurrences), quotient_(&quotient), geometry_(&geometry),
+      : occurrences_(occurrences), quotient_(quotient), geometry_(geometry),
         report_(std::move(report)) {}
 
-  const SurfaceOccurrenceComplex *occurrences_ = nullptr;
-  const SurfaceQuotientProduct *quotient_ = nullptr;
-  const SourceAttachedGeometryProduct *geometry_ = nullptr;
+  SurfaceOccurrenceComplex occurrences_;
+  SurfaceQuotientProduct quotient_;
+  SourceAttachedGeometryProduct geometry_;
   VerificationReport report_;
 };
 

@@ -7486,6 +7486,7 @@ concept M6CP2ProjectionAccepts = requires(const Product &product) {
 
 static_assert(M6CP2ProjectionAccepts<
               directional::pipeline::VerifiedSurfaceProducts>);
+static_assert(directional::pipeline::VerifiedSurfaceProducts::owns_products);
 static_assert(!M6CP2ProjectionAccepts<
               directional::pipeline::SurfaceOccurrenceComplex>);
 static_assert(!M6CP2ProjectionAccepts<
@@ -7542,9 +7543,27 @@ TEST(M6CP2, VerifierRecomputesA0AndA5ElementaryIncidenceIndependently) {
       report, directional::pipeline::VerificationFailureCode::SourceIncidenceMismatch,
       "a5:wedge-bindings"));
 
+  auto supportMismatch = make_m6cp2_verification_fixture(square_fixture());
+  ASSERT_GE(supportMismatch.a5.occurrences.size(), 2U);
+  auto firstSupport = supportMismatch.a5.occurrences.begin();
+  auto secondSupport = std::find_if(
+      std::next(firstSupport), supportMismatch.a5.occurrences.end(),
+      [&](const auto &candidate) { return candidate.support != firstSupport->support; });
+  ASSERT_NE(secondSupport, supportMismatch.a5.occurrences.end());
+  firstSupport->support = secondSupport->support;
+  EXPECT_TRUE(has_m6cp2_finding(
+      verify_m6cp2_records(supportMismatch),
+      directional::pipeline::VerificationFailureCode::SourceSupportIncidenceMismatch,
+      "a5:support-resolver"));
+
   auto sourceMismatch = make_m6cp2_verification_fixture(square_fixture());
   Eigen::MatrixXi faces = sourceMismatch.fixture->mesh.F;
-  std::swap(faces(0, 1), faces(0, 2));
+  faces(0, 2) = 3;
+  ASSERT_FALSE(sourceMismatch.fixture->network.phaseFront.product()
+                   .sourceTopologyRegions()
+                   .matches_source_faces(
+                       faces,
+                       static_cast<std::size_t>(sourceMismatch.fixture->mesh.V.rows())));
   static const std::set<directional::authority::SourceEdgeTopologyKey> noHardFeatures;
   const auto a0Report = directional::pipeline::SurfaceProductVerifier::verify_records(
       sourceMismatch.fixture->mesh.V, faces,
@@ -7554,6 +7573,47 @@ TEST(M6CP2, VerifierRecomputesA0AndA5ElementaryIncidenceIndependently) {
       a0Report,
       directional::pipeline::VerificationFailureCode::SourceIncidenceMismatch,
       "a0:source-faces"));
+
+  auto componentRecords = make_m6cp2_verification_fixture(overlap_fixture());
+  const auto &originalAuthority =
+      componentRecords.fixture->network.phaseFront.product().sourceTopologyRegions();
+  ASSERT_GE(originalAuthority.regions().size(), 2U);
+  const auto mergedComponent = originalAuthority.regions().front().component();
+  std::vector<directional::geometry::SurfaceTopologyRegion> mergedRegions;
+  for (const auto &region : originalAuthority.regions()) {
+    auto rebuilt = directional::geometry::SurfaceTopologyRegion::make(
+        region.id(), mergedComponent, region.faces(), region.boundary_edges(),
+        region.isolation_seams(), region.euler_characteristic(),
+        region.boundary_loop_count());
+    ASSERT_TRUE(rebuilt.has_value());
+    mergedRegions.push_back(std::move(rebuilt.value()));
+  }
+  std::vector<directional::authority::SourceFaceTopologyKey> rowTopology;
+  std::vector<directional::authority::SourceComponentId> rowComponents;
+  std::vector<directional::authority::IsolationSheetId> rowSheets;
+  for (int face = 0; face < componentRecords.fixture->mesh.F.rows(); ++face) {
+    const auto row = directional::authority::SourceFaceId::from_index(
+        face, static_cast<std::size_t>(componentRecords.fixture->mesh.F.rows()));
+    ASSERT_TRUE(row.has_value());
+    rowTopology.push_back(originalAuthority.topology_for_row(row.value()));
+    rowComponents.push_back(mergedComponent);
+    rowSheets.push_back(originalAuthority.sheet_for_row(row.value()));
+  }
+  auto mergedAuthority = directional::geometry::SourceTopologyRegions::make(
+      std::move(rowTopology), rowComponents, rowSheets, std::move(mergedRegions));
+  ASSERT_TRUE(mergedAuthority.has_value());
+  ASSERT_TRUE(mergedAuthority->matches_source_faces(
+      componentRecords.fixture->mesh.F,
+      static_cast<std::size_t>(componentRecords.fixture->mesh.V.rows())));
+  const auto componentReport =
+      directional::pipeline::SurfaceProductVerifier::verify_records(
+          componentRecords.fixture->mesh.V, componentRecords.fixture->mesh.F,
+          mergedAuthority.value(), noHardFeatures, componentRecords.a5,
+          componentRecords.a6, componentRecords.a7);
+  EXPECT_TRUE(has_m6cp2_finding(
+      componentReport,
+      directional::pipeline::VerificationFailureCode::SourceIncidenceMismatch,
+      "a0:component-adjacency"));
 }
 
 TEST(M6CP2, VerifierRecomputesA6TopologyAndMembershipIndependently) {
@@ -7569,6 +7629,43 @@ TEST(M6CP2, VerifierRecomputesA6TopologyAndMembershipIndependently) {
   EXPECT_TRUE(has_m6cp2_finding(
       report,
       directional::pipeline::VerificationFailureCode::QuotientMembershipMismatch));
+
+  auto splitRecords = make_m6cp2_verification_fixture(overlap_fixture());
+  ASSERT_TRUE(verify_m6cp2_records(splitRecords).verified());
+  auto joining = std::find_if(
+      splitRecords.a6.records.relationConsumptions.begin(),
+      splitRecords.a6.records.relationConsumptions.end(), [](const auto &row) {
+        return row.disposition ==
+               directional::pipeline::QuotientRelationDisposition::Joining;
+      });
+  ASSERT_NE(joining, splitRecords.a6.records.relationConsumptions.end());
+  auto firstClass = std::find_if(
+      splitRecords.a6.records.classes.begin(), splitRecords.a6.records.classes.end(),
+      [&](const auto &row) {
+        return std::find(row.members.begin(), row.members.end(),
+                         joining->relation.second) != row.members.end();
+      });
+  ASSERT_NE(firstClass, splitRecords.a6.records.classes.end());
+  auto otherClass = std::find_if(
+      splitRecords.a6.records.classes.begin(), splitRecords.a6.records.classes.end(),
+      [&](const auto &row) {
+        return &row != &*firstClass && !row.members.empty() &&
+               std::find(row.members.begin(), row.members.end(), joining->relation.first) ==
+                   row.members.end();
+      });
+  ASSERT_NE(otherClass, splitRecords.a6.records.classes.end());
+  auto secondMember = std::find(firstClass->members.begin(), firstClass->members.end(),
+                                joining->relation.second);
+  ASSERT_NE(secondMember, firstClass->members.end());
+  std::swap(*secondMember, otherClass->members.front());
+  std::sort(firstClass->members.begin(), firstClass->members.end());
+  std::sort(otherClass->members.begin(), otherClass->members.end());
+  firstClass->id.members = firstClass->members;
+  otherClass->id.members = otherClass->members;
+  EXPECT_TRUE(has_m6cp2_finding(
+      verify_m6cp2_records(splitRecords),
+      directional::pipeline::VerificationFailureCode::QuotientMembershipMismatch,
+      "a6:relation-class"));
 }
 
 TEST(M6CP2, VerifierRecomputesA7SupportAndCertificatePayloadsIndependently) {
@@ -7610,12 +7707,38 @@ TEST(M6CP2, CertificateChainRequiresExactA5A6A7PayloadBinding) {
   auto records = make_m6cp2_verification_fixture(square_fixture());
   ASSERT_TRUE(verify_m6cp2_records(records).verified());
   ASSERT_FALSE(records.a6.records.relationCertificates.empty());
-  records.a6.records.relationCertificates.front().selectedRelationStep.reset();
+  auto &certificate = records.a6.records.relationCertificates.front();
+  const auto relation = std::find_if(
+      records.a5.ownedRelations.begin(), records.a5.ownedRelations.end(),
+      [&](const auto &candidate) { return candidate.id == certificate.relation; });
+  ASSERT_NE(relation, records.a5.ownedRelations.end());
+  ASSERT_TRUE(relation->evidence.canonicalTransport.has_value());
+  ASSERT_EQ(certificate.relationTransport,
+            relation->evidence.canonicalTransport.value());
+  certificate.relationTransport.shift.x += 1;
+  ASSERT_NE(certificate.relationTransport,
+            relation->evidence.canonicalTransport.value());
   const auto bindingReport = verify_m6cp2_records(records);
   EXPECT_TRUE(has_m6cp2_finding(
       bindingReport,
       directional::pipeline::VerificationFailureCode::CertificatePayloadMismatch,
       "a6:a5-binding"));
+
+  auto pathRecords = make_m6cp2_verification_fixture(hard_rail_fixture());
+  ASSERT_TRUE(verify_m6cp2_records(pathRecords).verified());
+  auto multiStepPath = std::find_if(
+      pathRecords.a6.records.selectedPaths.begin(),
+      pathRecords.a6.records.selectedPaths.end(), [](const auto &path) {
+        return path.orderedRelations.size() >= 2U;
+      });
+  ASSERT_NE(multiStepPath, pathRecords.a6.records.selectedPaths.end());
+  ASSERT_EQ(multiStepPath->orderedRelations.size(),
+            multiStepPath->traversalOrientations.size());
+  std::swap(multiStepPath->orderedRelations[0], multiStepPath->orderedRelations[1]);
+  EXPECT_TRUE(has_m6cp2_finding(
+      verify_m6cp2_records(pathRecords),
+      directional::pipeline::VerificationFailureCode::NamedTransportMismatch,
+      "a6:selected-path-structure"));
 
   auto cycleRecords = make_m6cp2_verification_fixture(square_fixture());
   auto cycle = std::find_if(
@@ -7633,8 +7756,11 @@ TEST(M6CP2, CertificateChainRequiresExactA5A6A7PayloadBinding) {
 }
 
 TEST(M6CP2, WeldPinchedRecordViewFailsIndependentManifoldness) {
-  auto records = make_m6cp2_verification_fixture(square_fixture());
+  auto records = make_m6cp2_verification_fixture(overlap_fixture());
   ASSERT_TRUE(verify_m6cp2_records(records).verified());
+  const auto classesBefore = records.a6.records.classes;
+  const auto forestBefore = records.a6.records.selectedForest;
+  const auto consumptionsBefore = records.a6.records.relationConsumptions;
   auto &cells = records.a6.records.classedCells;
   ASSERT_GE(cells.size(), 2U);
   bool tampered = false;
@@ -7652,6 +7778,9 @@ TEST(M6CP2, WeldPinchedRecordViewFailsIndependentManifoldness) {
     }
   }
   ASSERT_TRUE(tampered);
+  EXPECT_EQ(records.a6.records.classes, classesBefore);
+  EXPECT_EQ(records.a6.records.selectedForest, forestBefore);
+  EXPECT_EQ(records.a6.records.relationConsumptions, consumptionsBefore);
   EXPECT_TRUE(has_m6cp2_finding(
       verify_m6cp2_records(records),
       directional::pipeline::VerificationFailureCode::NonManifoldTopology,
@@ -7685,7 +7814,19 @@ TEST(M6CP2, PipelineRunsVerifierAfterA7BeforeAdapterProjection) {
           &verifiedConstruction);
   ASSERT_NE(verified, nullptr);
   EXPECT_TRUE(verified->report().verified());
-  EXPECT_TRUE(directional::pipeline::project_verified_surface_products(*verified).success);
+  const auto projected =
+      directional::pipeline::project_verified_surface_products(*verified);
+  EXPECT_TRUE(projected.success);
+  ASSERT_TRUE(projected.verificationReport.has_value());
+  EXPECT_TRUE(projected.verificationReport->verified());
+  EXPECT_EQ(projected.verificationReport->findings, verified->report().findings);
+
+  const auto pipelineResult =
+      directional::pipeline::build_authoritative_phase_front_mesh(
+          fixture.mesh.V, fixture.mesh.F, fixture.network.phaseFront.product());
+  ASSERT_TRUE(pipelineResult.success) << pipelineResult.failure;
+  ASSERT_TRUE(pipelineResult.verificationReport.has_value());
+  EXPECT_TRUE(pipelineResult.verificationReport->verified());
 
   auto records = a5->verification_records();
   records.cells.front().directedSides[0] =
