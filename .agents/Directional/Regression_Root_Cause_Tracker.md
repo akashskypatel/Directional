@@ -1,3 +1,13 @@
+## 2026-10-05 — `M6-CP2-CB1-VERIFIER-R1` compile-valid verifier candidate — **+0 / 60/16/44 / debt 1**
+
+- Runtime-free Code + Build; no accepted runtime row became RED and no new regression candidate/event is priced.
+- Verifier implementation commit `3cc00697...`; final compile source `265c8fbb...` after correcting only a new-test `DomainResult` access from `operator*` to `.value()`.
+- First compile attempt `37357362493` therefore represents a bounded compile-only test-source error, not a runtime regression.
+- Retry `37358279504 / 111926243775` is eight-target GMP/GMPXX compile/package GREEN; result `11365308211`, package 28/28, `runtimeExecution=false`.
+- Candidate remains unpromoted until the 491-process TB1 and mandatory Review. `G4-B002` remains open; debt stays 1.
+
+**Stable accounting: `60 events / 16 categories / 44 recurrences`, debt 1.**
+
 ## 2026-10-05 — `M6-CP2-CB1-VERIFIER-REV` — RA-28a §7 stop discharged; RA-28b — **+0 / 60/16/44 / debt 1**
 
 - No product change and no regression.

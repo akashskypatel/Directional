@@ -1,4 +1,15 @@
-## Current — `M6-CP2-CB1-VERIFIER-REV` / RA-28b / exact next `M6-CP2-CB1-VERIFIER-R1` (2026-10-05)
+## Current — `M6-CP2-CB1-VERIFIER-R1` COMPLETE / compile-package GREEN / exact next `M6-CP2-TB1-VERIFIER-EXEC` (2026-10-05)
+
+- [x] Implement independent A0/A5/A6/A7 verifier record views, semantic findings, dependency gating, and exact certificate-chain binding.
+- [x] Integrate `VerifiedSurfaceProducts` after A7 / before adapter projection; exact failure string `VerificationFailed:<code>:<site>`.
+- [x] Add focused-12 exactly as frozen, including three wedge tampers, weld-pinched manifoldness witness, and RA-28b representative-scope identity 12.
+- [x] Preserve selector449 (`d4a0d1b...`) and focused-30; no `SurfaceMeshOptimizer` production change.
+- [x] Compile/package exact source `265c8fbb19a66c5c3344a525fdbd43932c3ef829`: run/job `37358279504 / 111926243775`, result `11365308211`, eight GMP/GMPXX targets, manifest 28/28, `runtimeExecution=false`.
+- [x] Classify first compile-only `DomainResult` test typo as bounded/non-runtime; no stable repricing.
+- [ ] **Exact next `M6-CP2-TB1-VERIFIER-EXEC`:** immutable `11365308211 / 265c8fbb...`, exactly **491** fresh processes (30 + 12 + 449), no rebuild/repair.
+- [ ] Mandatory `M6-CP2-TB1-VERIFIER-REV`; candidate remains unpromoted until Review. Stable accounting **60 / 16 / 44**, debt 1.
+
+## Superseded — `M6-CP2-CB1-VERIFIER-REV` / RA-28b / exact next `M6-CP2-CB1-VERIFIER-R1` (2026-10-05)
 
 - [x] Verify the stop report (all five points accurate); HEAD source == `3f40f04a`.
 - [x] Root cause: RA-28a §7 over-tightened RA-26 §5(iii) (review-agent error).

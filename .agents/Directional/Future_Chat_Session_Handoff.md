@@ -1,4 +1,21 @@
-## Resume-critical update — `M6-CP2-CB1-VERIFIER-REV`: RA-28a §7 stop DISCHARGED (RA-28b); exact next `M6-CP2-CB1-VERIFIER-R1` (2026-10-05)
+## Resume-critical update — `M6-CP2-CB1-VERIFIER-R1` COMPLETE / compile-package GREEN / exact next `M6-CP2-TB1-VERIFIER-EXEC` (2026-10-05)
+
+**Start `M6-CP2-TB1-VERIFIER-EXEC` next as immutable artifact-only Test + Benchmark. Do not rebuild, relink, configure, repair package permissions/content, or modify source.**
+
+Candidate authority:
+- final source `265c8fbb19a66c5c3344a525fdbd43932c3ef829`;
+- compile run/job `37358279504 / 111926243775`;
+- result artifact `11365308211` (`sha256:3065e58741b1354e1f94ca04cc6169f0458aa11247443e77fb2914e55fa7b35e`);
+- log artifact `11365537617` (`sha256:9c0336eea0cb29436249edaa419723ba1145750b736766287cb13aae8086ad6b`);
+- package manifest **28/28**, mandatory GMP/GMPXX evidence, `runtimeExecution=false`.
+
+R1 implemented the RA-28/RA-28a verifier under RA-28b: copy-by-value record views, independent A0/A5/A6/A7 recomputation, exact certificate-chain binding, dependency-gated findings, `VerifiedSurfaceProducts` stage barrier, three wedge tampers, pinched-manifoldness falsifier, adapter failure formatting, and focused-12. **No `SurfaceMeshOptimizer` production change.** Identity 12 is `M6CP2.AuthoritativeOptimizerProjectionStaysOnRepresentativeScope`.
+
+The first compile attempt (`37357362493`) found only a test-source `DomainResult` dereference typo; commit `265c8fbb...` changed those accesses to `.value()` and the full eight-target compile/package retry passed. No Directional runtime has executed in CB1-R1.
+
+TB1 gate is exactly **30 + 12 + 449 = 491 fresh exact-filter processes**, then mandatory `M6-CP2-TB1-VERIFIER-REV`. Stable accounting remains **60 / 16 / 44**, debt 1; candidate is unpromoted until Review.
+
+## Superseded resume-critical update — `M6-CP2-CB1-VERIFIER-REV`: RA-28a §7 stop DISCHARGED (RA-28b); exact next `M6-CP2-CB1-VERIFIER-R1` (2026-10-05)
 
 **Start `M6-CP2-CB1-VERIFIER-R1` as a new Code + Build turn (compile/package only).** Follow `Architecture_M6_CP2_CB1_Verifier_Code_Build_Plan.md`; **its top RA-28b block governs.**
 
@@ -998,31 +1015,34 @@ Review must independently re-open source/evidence and re-derive: split-square v0
 
 - **M6 CP1:** CLOSED / ACCEPTED, mechanism-only.
 - **M6 CP2 Definition:** accepted with RA-28a, amended by **RA-28b** (`M6-CP2-CB1-VERIFIER-REV`, `Architecture_M6_CP2_CB1_Stop_Review_Record.md`).
-- Reviewed runtime authority: `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05` (focused-30 + selector449 = **479/479**).
+- **M6 CP2 verifier candidate:** Code + Build COMPLETE / compile-package GREEN at `11365308211 / 265c8fbb19a66c5c3344a525fdbd43932c3ef829`; unpromoted pending TB1 + Review.
+- Reviewed runtime authority remains `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05` (focused-30 + selector449 = **479/479**).
 - Normative: RA-1 – RA-28b.
 - Accounting **60 / 16 / 44**, debt **1**.
 
 ## Exact next turn
 
-**`M6-CP2-CB1-VERIFIER-R1` — new turn; Code + Build, compile/package only.** Follow `Architecture_M6_CP2_CB1_Verifier_Code_Build_Plan.md` (RA-28b block governs) under RA-28 + RA-28a (§7 withdrawn) + RA-28b.
-- Create `Architecture_M6_CP2_Required_Green_Focused_12.txt`. Identity 12 is `M6CP2.AuthoritativeOptimizerProjectionStaysOnRepresentativeScope`.
-- **No `SurfaceMeshOptimizer` change.**
-- Compile-green → `M6-CP2-TB1-VERIFIER-EXEC` (**491**) → mandatory `M6-CP2-TB1-VERIFIER-REV`.
+**`M6-CP2-TB1-VERIFIER-EXEC` — immutable artifact-only Test + Benchmark over `11365308211 / 265c8fbb19a66c5c3344a525fdbd43932c3ef829`.**
+- Preserve archived executable modes during extraction; do not repair or modify the package.
+- Execute exactly focused-30 + CP2-focused12 + selector449 = **491 fresh exact-filter processes**; zero-selected filters are orchestration failure.
+- No configure/compile/relink/regeneration is authorized.
+- Then mandatory `M6-CP2-TB1-VERIFIER-REV`; no promotion before Review.
 
 ## Completed predecessor turns (reference only)
 
+- `M6-CP2-CB1-VERIFIER-R1` — verifier implementation compile/package GREEN; candidate `11365308211 / 265c8fbb...`; runtime-free.
 - `M6-CP2-CB1-VERIFIER-REV` — RA-28a §7 stop discharged; RA-28b.
 - `M6-CP2-CB1-VERIFIER` — BLOCKED stop report; no source applied.
 - `M6-CP2-DEFN-REV` (RA-28a), `M6-CP2-DEFN` (RA-28), `M6-CP1-CLOSE-REV` (CP1 closed).
 
 ## Current files
 
-- `.agents/Directional/Architecture_M6_CP2_CB1_Verifier_Code_Build_Plan.md` — exact next plan (RA-28b block governs).
+- `.agents/Directional/Architecture_M6_CP2_CB1_Verifier_Code_Build_Report.md` — completed R1 implementation/compile evidence and candidate authority.
+- `.agents/Directional/Architecture_M6_CP2_CB1_Verifier_Code_Build_Plan.md` — executed plan; RA-28b block governs historical interpretation.
 - `.agents/Directional/Architecture_M6_CP2_CB1_Stop_Review_Record.md` — Review authority for RA-28b.
-- `.agents/Directional/Architecture_M6_CP2_CB1_Verifier_Code_Build_Report.md` — CB1 stop report.
 - `.agents/Directional/Architecture_M6_CP2_Definition_Record.md` and `Architecture_M6_CP2_DEFN_Review_Record.md` — the Definition and RA-28a authority.
 - `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — RA-28, RA-28a, RA-28b.
-- `.agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt` + selector449 / routing449 — frozen prefixes.
+- `.agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt`, focused-30, selector449 / routing449 — frozen gate authorities.
 
 ## Context Load Plan
 

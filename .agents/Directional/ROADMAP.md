@@ -1,4 +1,18 @@
-## Live M6 routing — after `M6-CP2-CB1-VERIFIER-REV` (RA-28b)
+## Live M6 routing — after `M6-CP2-CB1-VERIFIER-R1`
+
+| Checkpoint | State | Exact next / gate |
+|---|---|---|
+| M6 CP1 | **CLOSED / ACCEPTED, mechanism-only** | reviewed runtime `11330703256 / 3f40f04a...`, 479/479 |
+| M6 CP2 Definition | ACCEPTED (RA-28a, amended by RA-28b) | RA-28a §7 withdrawn; no optimizer production change |
+| M6 CP2 verifier CB | **COMPLETE / COMPILE GREEN / UNPROMOTED** | `11365308211 / 265c8fbb...`, GMP/GMPXX, `runtimeExecution=false` |
+| M6 CP2 TB1 | **EXACT NEXT** | `M6-CP2-TB1-VERIFIER-EXEC`: **30+12+449 = 491** fresh processes -> mandatory Review |
+| `M6-DEFN-R5` | CP3-entry gate, after CP2 | + RA-28b §4 note (reference must not assume `selectedFace` ∈ class chart faces) |
+
+Stable accounting: **60 / 16 / 44**, debt 1.
+
+### Superseded routing
+
+## Superseded live M6 routing — after `M6-CP2-CB1-VERIFIER-REV` (RA-28b)
 
 | Checkpoint | State | Exact next / gate |
 |---|---|---|

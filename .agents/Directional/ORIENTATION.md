@@ -1,4 +1,13 @@
-## Currency — `M6-CP2-CB1-VERIFIER-REV`: RA-28a §7 stop discharged (RA-28b); exact next `M6-CP2-CB1-VERIFIER-R1` (2026-10-05 UTC)
+## Currency — `M6-CP2-CB1-VERIFIER-R1` COMPLETE / compile-package GREEN / exact next TB1 (2026-10-05 UTC)
+
+- CP2 independent verifier is compile-valid at exact source `265c8fbb19a66c5c3344a525fdbd43932c3ef829`.
+- Compile/package authority: run/job `37358279504 / 111926243775`; result `11365308211`; eight standard GMP/GMPXX targets; package 28/28; `runtimeExecution=false`.
+- RA-28b remains binding: no `SurfaceMeshOptimizer` production change; identity 12 is the representative-scope confinement falsifier.
+- Candidate is unpromoted. Exact next is immutable artifact-only `M6-CP2-TB1-VERIFIER-EXEC`: focused30 + focused12 + selector449 = **491** fresh processes, then mandatory Review.
+
+Accounting **60 / 16 / 44**, debt 1. Reviewed runtime remains `11330703256 / 3f40f04a...` (479/479) until CP2 Review promotes a successor authority.
+
+## Superseded currency — `M6-CP2-CB1-VERIFIER-REV`: RA-28a §7 stop discharged (RA-28b); exact next `M6-CP2-CB1-VERIFIER-R1` (2026-10-05 UTC)
 
 - RA-28a §7 is withdrawn (it over-tightened RA-26 §5(iii); review-agent error). No A5 invariant is added.
 - RA-26 §5(iii) is resolved by non-authoritative retention, because authoritative projection is confined to the seed's own scope. Class-wide authority is the completion guard and the verifier before movement, and final validation after it. No optimizer change.

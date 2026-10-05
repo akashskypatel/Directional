@@ -1,3 +1,12 @@
+## 2026-10-05 — `M6-CP2-CB1-VERIFIER-R1` COMPLETE: independent verifier compile/package GREEN
+
+- Implemented copy-by-value A5/A6/A7 verification records, independent A0/A5/A6/A7 recomputation, deterministic dependency-gated findings, exact relation/certificate-chain binding, `VerifiedSurfaceProducts`, and verifier placement after A7 / before adapter projection.
+- Added frozen CP2 focused-12: semantic-order/permutation, independent A0/A5/A6/A7 checks, forbidden-repair rejection, chain binding, weld-pinched manifoldness, three wedge tampers, pipeline placement, and RA-28b representative-scope confinement. No `SurfaceMeshOptimizer` production change.
+- Drive patch apply retry `37355062298 / 111915359845` produced semantic commit `3cc00697...`; the first apply attempt lost an agent-caused control-plane branch race and was not force-pushed.
+- First compile run `37357362493` exposed only a new-test `DomainResult` dereference typo; bounded correction `265c8fbb...` changed `.value()` access only.
+- Compile/package retry `37358279504 / 111926243775` passed all eight standard GMP/GMPXX targets. Result/log `11365308211 / 11365537617`; package **28/28**; `exactArithmeticBackend=GMP`; `runtimeExecution=false`.
+- Candidate remains unpromoted. Exact next: immutable `M6-CP2-TB1-VERIFIER-EXEC`, **491** fresh processes, then mandatory Review. Accounting remains **60 / 16 / 44**, debt 1.
+
 ## 2026-10-05 — `M6-CP2-CB1-VERIFIER-REV`: RA-28a §7 stop discharged; RA-28b; successor `M6-CP2-CB1-VERIFIER-R1`
 
 - **Stop report verified.** A5 picks `selectedFace` from the canonical corner face; edge/vertex wedge bindings are built independently; A7 `sourceCharts` come only from bindings.
