@@ -1,0 +1,124 @@
+## 2026-10-05 — Workflow mailbox becomes authoritative run-discovery process
+
+- Added durable `.github/workflows/workflow-mailbox-publisher.yml` from the approved GitHub connector workflow-mailbox protocol.
+- Updated ChatGPT Web workflow, tool-conservation, cleanup, retention, start/end, handoff, agent and compile policies so `.workflow-mailbox/<workflow-key>/latest.json` is the authoritative completed-run rendezvous; immutable per-attempt records remain under `runs/`.
+- PR run-observer comments are now fallback-only. Repository-wide recent-run discovery and the legacy branch-file observer remain secondary/tertiary fallback paths when mailbox publication is absent or fails.
+- Updated source-snapshot and turn-cleanup workflows to publish mailbox records after their artifacts; observer fallback executes only when mailbox publication fails.
+- Smoke validation: source-snapshot run `37251013709` published `repo-source-snapshot/latest.json` for exact source/event SHA `3d3ddcef4b7cb60d72dc5aee6a2c774dce8b04f2`; validate, snapshot and mailbox jobs all succeeded; fallback observer was skipped.
+
+## 2026-10-05 — `M6-CP1-CB12-CLOSE` stopped at C5 audit
+
+- Found an anchor-assuming optimizer consumer at `SurfaceMeshOptimizer.cpp:3015-3031`: first incident source face -> one component/sheet scope -> break.
+- RA-22b / RA-25 and the CB12 plan require Stop for Review and forbid fixing it inside CB12.
+- No C1-C4 code/test edits, identities 29/30, compile/package, or runtime started. Reviewed runtime stays 477/477; accounting 60 / 16 / 44, debt 1.
+
+## 2026-10-05 — `M6-CP1-TB11-G4-R1-REV` review-agent addendum: promotion confirmed; RA-25; successor `M6-CP1-CB12-CLOSE`
+
+- **TB11-R1 re-derived independently:** result `11316968568` digest `1082edce...`, 973/973 manifest, focused-28 and selector449 ledgers in frozen order (477/477), ordinals 25/28 OK; HEAD == `8dd95821`.
+- **Confirmed:** the RA-24 production change (vertex-incident edge-loop continuation; nothing else changed) and the identity 25/28 oracles.
+- **M1:** the continuation drops non-unique opposites silently (`RemeshPipeline.cpp:6305`). **RA-25** makes it fail closed.
+- **Successor re-routed** to close-out CB12, because the CP1 carried obligations need code:
+  - exact A7 cross-sheet certification through `fromSheet/toSheet`;
+  - distinct A5 diagnostics;
+  - A5-sourced isolation counter;
+  - RA-25;
+  - provenance-face consumer audit.
+
+  New plan `Architecture_M6_CP1_CB12_Close_Out_Code_Build_Plan.md`; gate 479.
+- **Docs:** lesson 197; handoff (top + live) / ORIENTATION / TODO / ROADMAP / tracker (+0) / consolidated §43. Accounting 60 / 16 / 44.
+
+## 2026-10-04 — `M6-CP1-TB11-G4-R1-REV` accepted recovery and promoted R1 runtime
+
+- Independently re-derived candidate `11316716869 / 8dd958217d8cbda2d403f7a5c4c7dce242dde1c0` and runtime `37240414090 / 111547976292`: package 28/28, result 973/973, focused28 28/28 + selector449 449/449 = **477/477**, exact-one, zero skips, benchmark 0, immutable postflight.
+- RA-24 is discharged: production strip closure is edge-loop continuation at interior valence-4 quotient vertices; identity28 independently reconstructs the partition, validates emitted candidates, requires a produced eligible closed loop and reaches tamper rejection.
+- RA-21c/RA-21d is discharged: identity25 uses per-occurrence arrangement witnesses, exact reciprocal phase-front/relation authority and barrier-only relaxation; Ordinary non-isolation chain/node equality remains exact.
+- Closed CAND-01 as recovery-proved false-rejection/non-stable and CAND-02 as recovery-proved production-definition defect/non-stable; no stable repricing. Accounting remains **60 / 16 / 44**, debt 1.
+- Promoted `11316716869 / 8dd958...` as current reviewed M6 runtime authority. Authorized exact successor `M6-CP1-CLOSE-REV`; CP1 is not yet closed.
+
+## 2026-10-04 — `M6-CP1-TB11-G4-R1-EXEC`: 477/477 artifact-only recovery gate GREEN
+
+- Executed immutable candidate `11316716869 / 8dd958217d8cbda2d403f7a5c4c7dce242dde1c0` at run/job `37240414090 / 111547976292`.
+- Focused28 **28/28**, selector449 **449/449**, aggregate **477/477 PASS**; exact-one selection, zero skips, benchmark 0, header-only RED ledger.
+- Ordinals 25 and 28 both PASS under the strengthened R1 identities.
+- Result/log artifacts `11316968568 / 11317493022`; result self-manifest **973/973**; package/source/execution-view and frozen gate authorities unchanged.
+- No configure/compile/relink/discovery/repair/mutation/retry occurred in EXEC. +0 new regression events/candidates; stable accounting remains **60 / 16 / 44**, debt 1.
+- Candidate remains unpromoted. Exact next after cleanup is mandatory `M6-CP1-TB11-G4-R1-REV`.
+
+## 2026-10-04 — `M6-CP1-CB11-G4-R1` COMPLETE: RA-24 / RA-21d recovery compiled and packaged
+
+- Replaced quad-opposite rung-set strip closure with RA-24 edge-loop continuation at interior valence-4 quotient vertices; no other production behavior changed.
+- Identity25 now uses per-occurrence arrangement witnesses and retains exact shared chain/node equality only for Ordinary non-isolation edges; HardRail, Periodic and isolation seams are validated per-side.
+- Identity28 independently reconstructs the produced-torus edge-loop partition, validates every emitted candidate, requires an eligible `ClosedLoop`, and keeps hard-feature tamper rejection.
+- Pre-apply static review caught a missing `<numeric>` include and corrected it before repository application.
+- Patch apply run/job `37238821980 / 111543246587` produced semantic source `8dd958217d8cbda2d403f7a5c4c7dce242dde1c0`; owner-side Drive cleanup succeeded.
+- Mandatory compile run/job `37238936105 / 111543578349` passed all eight standard GMP/GMPXX targets. Result/log artifacts `11316716869 / 11316583672`; package manifest 28/28; clean receipts; `runtimeExecution=false`.
+- Candidate remains unpromoted. Exact next is `M6-CP1-TB11-G4-R1-EXEC`, focused28 + selector449 = **477**, then mandatory Review. Accounting remains **60 / 16 / 44**, debt 1.
+
+## 2026-10-04 — `M6-CP1-TB11-G4-REV` review-agent addendum: F2 overturned (RA-24 edge-loop strips); RA-21d; R1 re-scoped
+
+- **TB11 re-derived independently:** result `11312313559` digest `7de4a320...`, 973/973 manifest; RED at focused 25 and 28; selector449 449/449.
+- **F2 overturned.** Ordinal 28's `extracted.candidates` is empty, not "no eligible emitted candidate".
+  - R4 D3 §4.3 rule 7's quad-opposite closure (`RemeshPipeline.cpp:6289-6291`) yields rung sets.
+  - The path-degree classifier (`:6343-6436`) skips them, so there are zero candidates on any closed quad complex.
+  - RA-23's synthetic 4×4 torus would fail identically, and the test-only R1 was doomed.
+  - **RA-24:** edge-loop (strand) closure, the topology analogue of the retired `(family, strand)` connected curves. The produced torus is expected to yield eligible loops parallel to its hard cycles.
+- **F1 confirmed.** RA-21d keeps arrangement chain and node equality across Ordinary non-isolation edges; relaxation applies only across barrier seams.
+- **R1 plan re-scoped:** R1-0 changes the production strip relation only; identity 25 per RA-21c/d; identity 28 uses the produced torus.
+- **Accountability:** R4 D3 rule 7 was accepted by R4-REV (review agent). Lesson 196.
+- **Docs:** handoff (top + live) / ORIENTATION / TODO / ROADMAP / tracker (+0) / consolidated §41. Accounting 60 / 16 / 44.
+
+## 2026-10-04 — `M6-CP1-TB11-G4-REV` rejects CB11 candidate; RA-21c / RA-23 recovery frozen
+
+- Independently re-derived TB11: candidate 28/28, result 973/973, focused **26/28**, selector449 **449/449**, aggregate **475/477**, exact-one, zero skips, benchmark 0 and immutable postflight.
+- Ordinal25 is a false rejection: RA-21b conflated quotient identity across distinct relation-cut occurrences with physical arrangement-node/chain identity. RA-21c replaces the oracle with per-occurrence/per-side degree-2 arrangement witnesses plus reciprocal A4 and A5/A6 relation authority.
+- Ordinal28 is a definition/fixture-witness gap, not a demonstrated extractor defect. The old arrangement `(family,strand)` candidate does not prove non-vacuity under quotient opposite-edge strip closure. RA-23 separates produced-torus universal checks from CP1 mechanism-only non-vacuity/tamper on a canonical closed 4x4 toroidal A6 test view.
+- `M6-CP1-TB11-G4-EXEC-CAND-01` closed false-rejection/non-stable; CAND-02 reclassified non-stable definition-witness recovery. Stable accounting remains **60 / 16 / 44**, debt 1.
+- Candidate `11308472138 / 582da20a...` remains unpromoted; reviewed runtime remains `11299078582 / 96b456f9...`. Exact next is `M6-CP1-CB11-G4-R1` (test-authority recovery only), then unchanged 477 TB gate and mandatory R1 Review.
+
+## 2026-10-04 — `M6-CP1-CB11-G4` COMPLETE: A6 closed-complex boundary compiled and packaged
+
+- Implemented the RA-20/RA-21/RA-21b A6 `SurfaceQuotientClosedComplexView`, including canonical side-incidence edges, certificate-derived relation labels, explicit typed-source hard-feature protection, quotient lineage and opposite-edge strip closure.
+- Candidate extraction now consumes the A6 closed-complex view directly and does not require retained arrangement authority.
+- Added focused identities 25-28. Focused28 SHA-256 `9154a986ce005c53f99faad3551989b05516abe9e4fd02dce585a645d70a011d`; focused24 is its exact prefix.
+- First compile exposed only test/API compile-contract defects. A bounded runtime-free correction produced semantic source `582da20a925ba920c923bf5aacb9e0e56ef0723d`.
+- Final compile run/job `37216400150 / 111477707423` passed all eight standard GMP/GMPXX targets. Result/log artifacts `11308472138 / 11308317584`; 28/28 manifest; clean source receipts; `runtimeExecution=false`.
+- Candidate remains unpromoted. Exact next is `M6-CP1-TB11-G4-EXEC`, focused28 + selector449 = **477**, then mandatory Review. Accounting remains **60 / 16 / 44**, debt 1.
+
+## 2026-10-04 — `M6-CP1-TB10-A5V-R1-REV` review-agent addendum: promotion confirmed; RA-21b readies CB11
+
+- **TB10-R1 re-derived independently:** result `11300407906` digest `b9f2daed...`, 965/965 manifest, focused-24 and selector449 ledgers in frozen order (473/473), focused 20/24 OK; HEAD == `96b456f9`.
+- **R1 confirmed:** publish first, then the moved checks on the published complex (`RemeshPipeline.cpp:4937-4951`, `:3467`, `:3603`).
+- **Identity 24 confirmed** to assert every field of the result, mesh and both lineage structs.
+- **CB11 pre-analysis:**
+  - proposals map positionally to `phaseFront.cells()` with no `CellId` (`SurfaceCellTracing.cpp:17901-17916`);
+  - `halfedge.proposalId` is the primary entry only (`SurfaceArrangement.cpp:2426`; the provenance groups are at `:2701-2709`);
+  - cell sides are per-face polylines.
+- **RA-21b:** positional preconditions, provenance side chains, degree-2-contraction equivalence, chain `hardFeature` labels; RA-21's stop rule kept for every other kind of subdivision. CB11 plan amended.
+- **Docs:** lesson 195; handoff live section (it still said CB10-R1) / ORIENTATION / TODO / ROADMAP / tracker (+0) / consolidated §39. Accounting 60 / 16 / 44.
+
+## 2026-10-04 — `M6-CP1-TB10-A5V-R1-REV` accepted recovery and promoted R1 runtime
+
+- Independently re-derived candidate `11299078582 / 96b456f925be00e00bad6645e6eb905a804c14ea` and runtime `37194004252 / 111411987330`: package 28/28, result 965/965, focused24 24/24 + selector449 449/449 = **473/473**, exact-one, zero skips, benchmark 0, immutable postflight.
+- F1/RA-19 is discharged: A5 publication precedes moved validation and the helper consumes the published complex certificate/cells/occurrences.
+- F2 is discharged: identity24 independently covers every adapter-written result/mesh/vertex-lineage/face-lineage field.
+- Closed TB10 Review CAND-01/CAND-02 as recovery-proved/non-stable; no stable repricing. Accounting remains **60 / 16 / 44**, debt 1.
+- Promoted `11299078582 / 96b456...` as current reviewed M6 runtime authority. Authorized exact successor `M6-CP1-CB11-G4`; TB11 is 28+449=477 then mandatory Review.
+
+## 2026-10-04 — `M6-CP1-TB10-A5V-R1-EXEC`: 473/473 artifact-only gate GREEN
+
+- Executed immutable R1 candidate `11299078582 / 96b456f925be00e00bad6645e6eb905a804c14ea` at run/job `37194004252 / 111411987330`.
+- Focused24 **24/24**, selector449 **449/449**, aggregate **473/473 PASS**; exact-one selection, zero skips, benchmark 0, header-only RED ledger.
+- Result/log artifacts `11300407906 / 11300542138`; result self-manifest **965/965**; package/source/execution-view and frozen gate authorities unchanged; package manifest remains **28/28**.
+- No configure/compile/relink/discovery/repair/mutation/retry occurred in EXEC.
+- +0 new regression events/candidates; stable accounting remains **60 / 16 / 44**, debt 1. Existing TB10 Review CAND-01/CAND-02 remain open for mandatory R1 Review.
+- Candidate remains unpromoted. Exact next after EXEC cleanup is `M6-CP1-TB10-A5V-R1-REV`; CB11 held.
+
+## 2026-10-04 — `M6-CP1-CB10-A5V-R1` COMPLETE: RA-19a ordering / full projection oracle; compile-package GREEN
+
+- Restored RA-19a validation precedence: `publish_records_for_validation` now precedes moved phase-front checks, and the helper consumes the published `SurfaceOccurrenceComplex`, including certificate-directed side count and published cells.
+- Strengthened `M6CP1.ThinAdapterOutputIsPureProjectionOfStageProducts` to the TB10 Review §J3 exact field-table oracle using independent A5/A6/A7/A4-derived expectations and fixed/default compatibility values.
+- Preserved focused24/focused20/selector449/routing449 hashes exactly: `6bcc8a...067bf / 15d04a...827d2 / d4a0d1...d6414 / 9c88a5...6c5707`.
+- Drive patch `d1880a55...faeb` applied in run/job `37192632740 / 111407894004`, producing semantic commit `96b456f925be00e00bad6645e6eb905a804c14ea`; owner-side Drive deletion succeeded.
+- Mandatory compile run/job `37192727051 / 111408174395` passed all eight standard GMP/GMPXX targets. Candidate artifact `11299078582` (`sha256:142bac1b...5afd`), log `11299068422` (`sha256:1ede0d09...b6c50`), manifest 28/28, clean source receipts, `runtimeExecution=false`.
+- Candidate remains unpromoted. Exact next is `M6-CP1-TB10-A5V-R1-EXEC`, focused24 + selector449 = **473**, then mandatory Review; CB11 held.
+

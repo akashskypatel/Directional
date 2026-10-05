@@ -326,6 +326,8 @@ void dual_cycles(const TriMesh &mesh,
   colSliceMat.setFromTriplets(colSliceTriplets.begin(), colSliceTriplets.end());
 
   basisCycles = rowSliceMat * basisCycles * colSliceMat;
+  basisCycles.prune([](const Eigen::Index, const Eigen::Index,
+                       const double value) { return value != 0.0; });
 
   innerEdges.conservativeResize(innerEdgesList.size());
   for (int i = 0; i < innerEdgesList.size(); i++)

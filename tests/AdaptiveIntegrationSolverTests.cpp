@@ -102,8 +102,8 @@ Eigen::MatrixXd make_axis_raw_field(const int faceCount) {
 std::map<int, int>
 face_degree_histogram(const directional::pipeline::RemeshResult &result) {
   std::map<int, int> histogram;
-  for (int face = 0; face < result.degrees.size(); ++face) {
-    ++histogram[result.degrees(face)];
+  for (int face = 0; face < result.product().degrees.size(); ++face) {
+    ++histogram[result.product().degrees(face)];
   }
   return histogram;
 }
@@ -118,11 +118,11 @@ TopologySignature topology_signature(
   TopologySignature signature;
   std::map<std::pair<int, int>, int> edgeUse;
   std::vector<std::vector<int>> adjacency(
-      static_cast<std::size_t>(result.vertices.rows()));
-  for (int face = 0; face < result.faces.rows(); ++face) {
-    for (int corner = 0; corner < result.degrees(face); ++corner) {
-      const int a = result.faces(face, corner);
-      const int b = result.faces(face, (corner + 1) % result.degrees(face));
+      static_cast<std::size_t>(result.product().vertices.rows()));
+  for (int face = 0; face < result.product().faces.rows(); ++face) {
+    for (int corner = 0; corner < result.product().degrees(face); ++corner) {
+      const int a = result.product().faces(face, corner);
+      const int b = result.product().faces(face, (corner + 1) % result.product().degrees(face));
       const auto edge = std::minmax(a, b);
       ++edgeUse[edge];
       adjacency[static_cast<std::size_t>(a)].push_back(b);
@@ -137,8 +137,8 @@ TopologySignature topology_signature(
   }
 
   std::vector<unsigned char> visited(
-      static_cast<std::size_t>(result.vertices.rows()), 0);
-  for (int vertex = 0; vertex < result.vertices.rows(); ++vertex) {
+      static_cast<std::size_t>(result.product().vertices.rows()), 0);
+  for (int vertex = 0; vertex < result.product().vertices.rows(); ++vertex) {
     if (visited[static_cast<std::size_t>(vertex)] ||
         adjacency[static_cast<std::size_t>(vertex)].empty()) {
       continue;
@@ -252,8 +252,8 @@ TEST(AdaptiveIntegrationSolverPhase01,
       directional::pipeline::remesh_from_raw_cross_field(
           mesh.vertices, mesh.faces, rawField, adaptiveOptions);
 
-  ASSERT_TRUE(direct.success);
-  ASSERT_TRUE(adaptive.success);
+  ASSERT_TRUE(direct.is_produced());
+  ASSERT_TRUE(adaptive.is_produced());
   EXPECT_LE(adaptive.diagnostics.integration.finalConstraintResidualNorm,
             direct.diagnostics.integration.finalConstraintResidualNorm +
                 1.0e-8);
@@ -286,8 +286,8 @@ TEST(AdaptiveIntegrationSolverPhase01,
       directional::pipeline::remesh_from_raw_cross_field(
           mesh.vertices, mesh.faces, rawField, adaptiveOptions);
 
-  ASSERT_TRUE(direct.success);
-  ASSERT_TRUE(adaptive.success);
+  ASSERT_TRUE(direct.is_produced());
+  ASSERT_TRUE(adaptive.is_produced());
   EXPECT_EQ(face_degree_histogram(adaptive), face_degree_histogram(direct));
 
   const TopologySignature directTopology = topology_signature(direct);

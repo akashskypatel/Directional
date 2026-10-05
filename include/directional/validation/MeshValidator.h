@@ -447,7 +447,7 @@ private:
     }
   }
 
-  [[nodiscard]] static bool same_source_sheet(
+  [[nodiscard]] static bool same_source_face(
       const int vertex, const int a, const int b,
       const MeshValidatorOptions &options) {
     if (options.vertexProvenance.empty()) {
@@ -467,15 +467,10 @@ private:
     if (!p.valid() || !pa.valid() || !pb.valid()) {
       return false;
     }
-    if (p.face == pa.face && p.face == pb.face) {
-      return true;
-    }
-    if (p.component >= 0 && pa.component >= 0 && pb.component >= 0 &&
-        p.sheet >= 0 && pa.sheet >= 0 && pb.sheet >= 0) {
-      return p.component == pa.component && p.component == pb.component &&
-             p.sheet == pa.sheet && p.sheet == pb.sheet;
-    }
-    return false;
+    // Generic validation has no typed cross-chart authority. Raw projection
+    // mirrors may be exported for diagnostics, but they never prove that
+    // different source faces belong to one semantic sheet.
+    return p.face == pa.face && p.face == pb.face;
   }
 
   static void validate_geometric_t_junctions(
@@ -524,7 +519,7 @@ private:
         if (vertex == aIndex || vertex == bIndex) {
           continue;
         }
-        if (!same_source_sheet(vertex, aIndex, bIndex, options)) {
+        if (!same_source_face(vertex, aIndex, bIndex, options)) {
           continue;
         }
         const Eigen::Vector3d p = vertices.row(vertex).transpose();

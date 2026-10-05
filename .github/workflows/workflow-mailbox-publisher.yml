@@ -1,0 +1,278 @@
+# Reusable same-repository workflow mailbox publisher.
+# Copy to .github/workflows/workflow-mailbox-publisher.yml before calling it.
+#
+# Mailbox layout on mailbox_branch:
+#   .workflow-mailbox/<workflow_key>/latest.json
+#   .workflow-mailbox/<workflow_key>/runs/<run_id>-attempt-<run_attempt>.json
+#
+# Concurrency model:
+# - Every run attempt writes an immutable, uniquely named run record.
+# - latest.json is selected by numeric (run_id, run_attempt), not finish order.
+# - Push races are handled by rebuilding the mailbox commit on the newest remote head.
+# - A slower older run therefore cannot replace a newer run as latest.
+name: Reusable Workflow Mailbox Publisher
+
+on:
+  workflow_call:
+    inputs:
+      workflow_key:
+        description: "Stable mailbox key. Allowed characters: A-Z a-z 0-9 . _ -"
+        required: true
+        type: string
+      mailbox_branch:
+        description: Branch that stores .workflow-mailbox. Empty uses the caller head branch/ref name.
+        required: false
+        type: string
+        default: ""
+      source_sha:
+        description: Exact source commit the caller operated on. Empty uses github.sha.
+        required: false
+        type: string
+        default: ""
+      source_ref:
+        description: Source branch/tag/ref the caller operated on. Empty uses github.ref.
+        required: false
+        type: string
+        default: ""
+      result:
+        description: Caller result such as success, failure, cancelled, or skipped.
+        required: false
+        type: string
+        default: "unknown"
+      summary:
+        description: Optional short machine-readable/human-readable summary.
+        required: false
+        type: string
+        default: ""
+    outputs:
+      mailbox_path:
+        description: Stable latest mailbox path.
+        value: ${{ jobs.publish.outputs.mailbox_path }}
+      run_record_path:
+        description: Immutable record path for this run attempt.
+        value: ${{ jobs.publish.outputs.run_record_path }}
+      mailbox_commit:
+        description: Commit that published the mailbox record.
+        value: ${{ jobs.publish.outputs.mailbox_commit }}
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    outputs:
+      mailbox_path: ${{ steps.publish.outputs.mailbox_path }}
+      run_record_path: ${{ steps.publish.outputs.run_record_path }}
+      mailbox_commit: ${{ steps.publish.outputs.mailbox_commit }}
+
+    steps:
+      - name: Initialize mailbox diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/workflow-mailbox-publisher.log"
+          : > "$log"
+          {
+            echo "workflow=${GITHUB_WORKFLOW}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
+            echo "event=${GITHUB_EVENT_NAME}"
+            echo "event_sha=${GITHUB_SHA}"
+            echo "ref=${GITHUB_REF}"
+            echo "repository=${GITHUB_REPOSITORY}"
+            echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Checkout mailbox target repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Upload pre-publication mailbox diagnostics
+        if: always()
+        id: mailbox_log_upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: workflow-mailbox-publisher-log-${{ github.run_id }}-attempt-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/workflow-mailbox-publisher.log
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Publish same-repository mailbox record
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          WORKFLOW_KEY: ${{ inputs.workflow_key }}
+          MAILBOX_BRANCH_INPUT: ${{ inputs.mailbox_branch }}
+          SOURCE_SHA_INPUT: ${{ inputs.source_sha }}
+          SOURCE_REF_INPUT: ${{ inputs.source_ref }}
+          CALLER_RESULT: ${{ inputs.result }}
+          CALLER_SUMMARY: ${{ inputs.summary }}
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          log="${RUNNER_TEMP}/workflow-mailbox-publisher.log"
+          exec > >(tee -a "$log") 2>&1
+
+          if [[ ! "$WORKFLOW_KEY" =~ ^[A-Za-z0-9._-]+$ ]]; then
+            echo "workflow_key contains unsupported characters: $WORKFLOW_KEY" >&2
+            exit 2
+          fi
+
+          mailbox_branch="$MAILBOX_BRANCH_INPUT"
+          if [[ -z "$mailbox_branch" ]]; then
+            if [[ -n "${GITHUB_HEAD_REF:-}" ]]; then
+              mailbox_branch="$GITHUB_HEAD_REF"
+            else
+              mailbox_branch="$GITHUB_REF_NAME"
+            fi
+          fi
+
+          if [[ -z "$mailbox_branch" || "$mailbox_branch" == *"/merge" ]]; then
+            echo "Unable to determine a writable mailbox branch. Pass mailbox_branch explicitly." >&2
+            exit 3
+          fi
+
+          source_sha="${SOURCE_SHA_INPUT:-$GITHUB_SHA}"
+          source_ref="${SOURCE_REF_INPUT:-$GITHUB_REF}"
+          mailbox_path=".workflow-mailbox/${WORKFLOW_KEY}/latest.json"
+          run_record_path=".workflow-mailbox/${WORKFLOW_KEY}/runs/${GITHUB_RUN_ID}-attempt-${GITHUB_RUN_ATTEMPT}.json"
+          run_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          record_tmp="${RUNNER_TEMP}/workflow-mailbox-record.json"
+          artifacts_tmp="${RUNNER_TEMP}/workflow-mailbox-artifacts.json"
+
+          echo "mailbox_branch=${mailbox_branch}"
+          echo "mailbox_path=${mailbox_path}"
+          echo "run_record_path=${run_record_path}"
+          echo "source_sha=${source_sha}"
+          echo "source_ref=${source_ref}"
+
+          # Artifact API URLs are authenticated endpoints. artifact_url is the standard
+          # GitHub web URL and remains valid while the artifact exists.
+          gh api --paginate \
+            -H "Accept: application/vnd.github+json" \
+            "/repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/artifacts?per_page=100" \
+            --jq '.artifacts[]' \
+            | jq -s \
+                --arg server "$GITHUB_SERVER_URL" \
+                --arg repo "$GITHUB_REPOSITORY" \
+                --arg run_id "$GITHUB_RUN_ID" \
+                'map({
+                  id: .id,
+                  name: .name,
+                  size_in_bytes: .size_in_bytes,
+                  digest: .digest,
+                  expired: .expired,
+                  created_at: .created_at,
+                  expires_at: .expires_at,
+                  artifact_url: ($server + "/" + $repo + "/actions/runs/" + $run_id + "/artifacts/" + (.id|tostring)),
+                  archive_download_url: .archive_download_url
+                })' > "$artifacts_tmp"
+
+          jq -n \
+            --arg schema_version "1" \
+            --arg workflow_key "$WORKFLOW_KEY" \
+            --arg workflow "$GITHUB_WORKFLOW" \
+            --arg workflow_ref "$GITHUB_WORKFLOW_REF" \
+            --arg repository "$GITHUB_REPOSITORY" \
+            --arg event "$GITHUB_EVENT_NAME" \
+            --arg event_sha "$GITHUB_SHA" \
+            --arg source_sha "$source_sha" \
+            --arg source_ref "$source_ref" \
+            --arg ref "$GITHUB_REF" \
+            --arg ref_name "$GITHUB_REF_NAME" \
+            --arg run_id "$GITHUB_RUN_ID" \
+            --arg run_attempt "$GITHUB_RUN_ATTEMPT" \
+            --arg run_number "$GITHUB_RUN_NUMBER" \
+            --arg run_url "$run_url" \
+            --arg result "$CALLER_RESULT" \
+            --arg summary "$CALLER_SUMMARY" \
+            --arg reported_at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --arg mailbox_branch "$mailbox_branch" \
+            --slurpfile artifacts "$artifacts_tmp" \
+            '{
+              schema_version: ($schema_version|tonumber),
+              workflow_key: $workflow_key,
+              workflow: $workflow,
+              workflow_ref: $workflow_ref,
+              repository: $repository,
+              event: $event,
+              event_sha: $event_sha,
+              source_sha: $source_sha,
+              source_ref: $source_ref,
+              ref: $ref,
+              ref_name: $ref_name,
+              run_id: ($run_id|tonumber),
+              run_attempt: ($run_attempt|tonumber),
+              run_number: ($run_number|tonumber),
+              run_url: $run_url,
+              result: $result,
+              summary: $summary,
+              reported_at: $reported_at,
+              mailbox_branch: $mailbox_branch,
+              artifacts: $artifacts[0]
+            }' > "$record_tmp"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          published_commit=""
+          for retry in 1 2 3 4 5 6 7 8; do
+            echo "publish_attempt=${retry}"
+
+            git fetch --no-tags origin "+refs/heads/${mailbox_branch}:refs/remotes/origin/${mailbox_branch}"
+            git reset --hard "origin/${mailbox_branch}"
+            git clean -fd
+
+            mkdir -p "$(dirname "$run_record_path")"
+            cp "$record_tmp" "$run_record_path"
+
+            update_latest=true
+            if [[ -f "$mailbox_path" ]]; then
+              current_run_id="$(jq -r '(.run_id // 0) | tonumber? // 0' "$mailbox_path" 2>/dev/null || echo 0)"
+              current_attempt="$(jq -r '(.run_attempt // 0) | tonumber? // 0' "$mailbox_path" 2>/dev/null || echo 0)"
+
+              if (( current_run_id > GITHUB_RUN_ID )) || \
+                 (( current_run_id == GITHUB_RUN_ID && current_attempt >= GITHUB_RUN_ATTEMPT )); then
+                update_latest=false
+              fi
+            fi
+
+            if [[ "$update_latest" == "true" ]]; then
+              mkdir -p "$(dirname "$mailbox_path")"
+              cp "$record_tmp" "$mailbox_path"
+            fi
+
+            git add -- "$run_record_path" "$mailbox_path" 2>/dev/null || git add -- "$run_record_path"
+
+            if git diff --cached --quiet; then
+              echo "Mailbox record already published; treating as idempotent success."
+              published_commit="$(git rev-parse HEAD)"
+              break
+            fi
+
+            git commit -m "chore(mailbox): report ${WORKFLOW_KEY} run ${GITHUB_RUN_ID} attempt ${GITHUB_RUN_ATTEMPT}"
+
+            if git push origin "HEAD:refs/heads/${mailbox_branch}"; then
+              published_commit="$(git rev-parse HEAD)"
+              break
+            fi
+
+            echo "Mailbox branch moved during publication; rebuilding on latest remote head."
+            sleep $((retry * 2))
+          done
+
+          if [[ -z "$published_commit" ]]; then
+            echo "Failed to publish workflow mailbox after retry budget." >&2
+            exit 4
+          fi
+
+          echo "mailbox_path=${mailbox_path}" >> "$GITHUB_OUTPUT"
+          echo "run_record_path=${run_record_path}" >> "$GITHUB_OUTPUT"
+          echo "mailbox_commit=${published_commit}" >> "$GITHUB_OUTPUT"
+          echo "mailbox_commit=${published_commit}"

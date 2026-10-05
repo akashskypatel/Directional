@@ -10,22 +10,29 @@
 #ifndef DIRECTIONAL_VALIDATION_SOURCE_AUTHORITATIVE_MESH_VALIDATOR_H
 #define DIRECTIONAL_VALIDATION_SOURCE_AUTHORITATIVE_MESH_VALIDATOR_H
 
+#include <optional>
 #include <algorithm>
 #include <array>
 #include <cmath>
 #include <cstddef>
+#include <cstdint>
 #include <limits>
 #include <iterator>
 #include <map>
 #include <numeric>
 #include <set>
+#include <tuple>
 #include <utility>
 #include <vector>
 
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 
+#include <directional/authority/CanonicalRoute.h>
+
+#include <directional/geometry/SourceChartTransitions.h>
 #include <directional/geometry/SurfacePoint.h>
+#include <directional/geometry/SurfacePointSupport.h>
 #include <directional/validation/MeshValidator.h>
 
 namespace directional::validation {
@@ -40,14 +47,35 @@ struct MeshTopologySummary {
   bool boundaryCyclesClosed = true;
 };
 
+/** One exact hard-rail edge in an output vertex's retained source-chart
+ * reachability graph. */
+struct SourceHardRailChartEquivalence {
+  int firstFrontEdge = -1;
+  int secondFrontEdge = -1;
+  std::optional<authority::HardRailId> rail;
+  authority::CanonicalRoute route;
+
+  auto operator<=>(const SourceHardRailChartEquivalence &) const = default;
+};
+
+/** Validation-only projection of the complete quotient lineage retained for
+ * one output vertex. Scalar SurfacePoint authority remains separate. */
+struct SourceVertexChartAuthority {
+  bool retained = false;
+  std::vector<geometry::SourceProjectionChart> sourceCharts;
+  std::vector<SourceHardRailChartEquivalence> hardRailEquivalences;
+};
+
 struct SourceAuthoritativeMeshValidatorOptions {
   double geometricTolerance = 1.0e-9;
   const Eigen::MatrixXd *sourceVertices = nullptr;
   const Eigen::MatrixXi *sourceFaces = nullptr;
-  const std::vector<int> *sourceFaceComponents = nullptr;
-  const std::vector<int> *sourceFaceSheets = nullptr;
+  const geometry::SourceTopologyRegions *sourceAuthority = nullptr;
   const std::vector<geometry::SurfacePoint> *vertexProvenance = nullptr;
+  const std::vector<SourceVertexChartAuthority> *vertexChartAuthority =
+      nullptr;
   const std::vector<int> *outputQuadSourceFaces = nullptr;
+  std::set<authority::SourceEdgeTopologyKey> sourceHardFeatureEdges;
   std::set<std::pair<int, int>> authoritativeBoundaryEdges;
   std::vector<std::vector<int>> authoritativeBoundaryLoops;
   std::vector<std::vector<int>> authoritativeFeatureRails;
@@ -61,6 +89,10 @@ struct SourceAuthoritativeMeshValidationResult : MeshValidationResult {
   MeshTopologySummary sourceTopology;
   MeshTopologySummary outputTopology;
   bool sourceAuthorityUsed = false;
+  bool strictValidationUsed = false;
+  bool provenanceValidationUsed = false;
+  bool boundaryAuthorityUsed = false;
+  bool featureRailAuthorityUsed = false;
   bool provenanceCoverageComplete = false;
   bool localSheetCompatibilityPassed = false;
   bool orderedBoundaryCyclesPassed = false;
@@ -262,109 +294,127 @@ std::vector<std::vector<int>> extract_boundary_loops(
 
 std::vector<int> canonical_loop(const std::vector<int> &input);
 
+struct SourceChartCompatibility {
+  int chartComponent = -1;
+  geometry::SourceChartComponentIdentity semanticSide;
+  std::vector<int> chartFaces;
+  std::vector<std::vector<int>> pointFaces;
+
+  [[nodiscard]] bool valid() const {
+    return chartComponent >= 0 && semanticSide.valid && !chartFaces.empty() &&
+           !pointFaces.empty();
+  }
+};
+
+/** Typed source ownership label used only for semantic comparison. */
+struct SourceScopeLabel {
+  authority::SourceComponentId component;
+  authority::IsolationSheetId sheet;
+
+  auto operator<=>(const SourceScopeLabel &) const = default;
+};
+
 struct SourcePointLabelSupport {
   const Eigen::MatrixXi *sourceFaces = nullptr;
-  const std::vector<int> *components = nullptr;
-  const std::vector<int> *sheets = nullptr;
-  std::vector<std::vector<int>> vertexFaces;
-  std::map<std::pair<int, int>, std::vector<int>> edgeFaces;
+  const geometry::SourceTopologyRegions *authority = nullptr;
+  geometry::SurfacePointSourceSupportResolver sourceSupport;
+  geometry::SourceChartTransitionGraph transitionGraph;
 
   SourcePointLabelSupport(
       const Eigen::MatrixXi *faces,
-      const std::vector<int> *sourceComponents,
-      const std::vector<int> *sourceSheets)
-      : sourceFaces(faces), components(sourceComponents), sheets(sourceSheets) {
-    if (sourceFaces == nullptr || sourceFaces->cols() != 3) {
+      const geometry::SourceTopologyRegions *sourceAuthority,
+      const std::set<authority::SourceEdgeTopologyKey> *hardFeatureEdges)
+      : sourceFaces(faces), authority(sourceAuthority), sourceSupport(faces),
+        transitionGraph(
+            faces, sourceAuthority,
+            hardFeatureEdges != nullptr ? *hardFeatureEdges
+                                        : geometry::empty_hard_feature_edges()) {
+    if (faces == nullptr || faces->cols() != 3 || faces->rows() <= 0) {
       return;
     }
+
     int maximumVertex = -1;
-    for (int face = 0; face < sourceFaces->rows(); ++face) {
+    for (int face = 0; face < faces->rows(); ++face) {
       for (int corner = 0; corner < 3; ++corner) {
-        maximumVertex = std::max(maximumVertex, (*sourceFaces)(face, corner));
+        const int vertex = (*faces)(face, corner);
+        if (vertex < 0) {
+          return;
+        }
+        maximumVertex = std::max(maximumVertex, vertex);
       }
     }
-    vertexFaces.resize(static_cast<std::size_t>(std::max(0, maximumVertex + 1)));
-    for (int face = 0; face < sourceFaces->rows(); ++face) {
+    if (maximumVertex < 0) {
+      return;
+    }
+
+    const std::size_t vertexExtent =
+        static_cast<std::size_t>(maximumVertex) + 1U;
+    const std::size_t faceExtent = static_cast<std::size_t>(faces->rows());
+    for (int face = 0; face < faces->rows(); ++face) {
+      const auto faceId = authority::SourceFaceId::from_index(face, faceExtent);
+      if (!faceId) {
+        return;
+      }
+      sourceFaceRows.emplace(faceId.value(), face);
       for (int corner = 0; corner < 3; ++corner) {
-        const int vertex = (*sourceFaces)(face, corner);
-        if (vertex >= 0 && vertex < static_cast<int>(vertexFaces.size())) {
-          vertexFaces[static_cast<std::size_t>(vertex)].push_back(face);
+        const int first = (*faces)(face, corner);
+        const int second = (*faces)(face, (corner + 1) % 3);
+        if (first == second) {
+          return;
         }
-        const int next = (*sourceFaces)(face, (corner + 1) % 3);
-        if (vertex >= 0 && next >= 0 && vertex != next) {
-          edgeFaces[canonical_edge(vertex, next)].push_back(face);
+        const auto firstId =
+            authority::SourceVertexId::from_index(first, vertexExtent);
+        const auto secondId =
+            authority::SourceVertexId::from_index(second, vertexExtent);
+        if (!firstId || !secondId) {
+          return;
+        }
+        const auto topology = authority::SourceEdgeTopologyKey::make(
+            firstId.value(), secondId.value());
+        if (!topology) {
+          return;
+        }
+        sourceEdgeFaces[topology.value()].push_back(face);
+
+        if (hardFeatureEdges != nullptr &&
+            hardFeatureEdges->count(topology.value()) != 0U) {
+          hardFeatureTopologies.insert(topology.value());
         }
       }
     }
-    for (auto &facesAtVertex : vertexFaces) {
-      std::sort(facesAtVertex.begin(), facesAtVertex.end());
-      facesAtVertex.erase(
-          std::unique(facesAtVertex.begin(), facesAtVertex.end()),
-          facesAtVertex.end());
-    }
-    for (auto &[edge, facesAtEdge] : edgeFaces) {
+    for (auto &[edge, incidentFaces] : sourceEdgeFaces) {
       (void)edge;
-      std::sort(facesAtEdge.begin(), facesAtEdge.end());
-      facesAtEdge.erase(std::unique(facesAtEdge.begin(), facesAtEdge.end()),
-                        facesAtEdge.end());
+      std::sort(incidentFaces.begin(), incidentFaces.end());
+      incidentFaces.erase(
+          std::unique(incidentFaces.begin(), incidentFaces.end()),
+          incidentFaces.end());
     }
   }
 
   [[nodiscard]] bool available() const {
-    return sourceFaces != nullptr && components != nullptr && sheets != nullptr &&
-           components->size() == static_cast<std::size_t>(sourceFaces->rows()) &&
-           sheets->size() == static_cast<std::size_t>(sourceFaces->rows());
+    return sourceSupport.available() && transitionGraph.available() &&
+           authority != nullptr && sourceFaces != nullptr &&
+           authority->matches_source_faces(*sourceFaces);
   }
 
-  [[nodiscard]] std::vector<int>
+  [[nodiscard]] std::vector<authority::SourceFaceId>
   supported_faces(const geometry::SurfacePoint &point) const {
-    std::vector<int> candidateFaces;
-    if (!available() || !point.valid() || point.face < 0 ||
-        point.face >= sourceFaces->rows() || !point.barycentric.allFinite()) {
-      return candidateFaces;
+    if (!available()) {
+      return {};
     }
-    std::vector<int> supportCorners;
-    for (int corner = 0; corner < 3; ++corner) {
-      if (point.barycentric(corner) > 1.0e-8) {
-        supportCorners.push_back(corner);
-      }
-    }
-
-    if (supportCorners.size() == 1U) {
-      const int vertex = (*sourceFaces)(point.face, supportCorners.front());
-      if (vertex >= 0 && vertex < static_cast<int>(vertexFaces.size())) {
-        candidateFaces = vertexFaces[static_cast<std::size_t>(vertex)];
-      }
-    } else if (supportCorners.size() == 2U) {
-      const int first = (*sourceFaces)(point.face, supportCorners[0]);
-      const int second = (*sourceFaces)(point.face, supportCorners[1]);
-      const auto found = edgeFaces.find(canonical_edge(first, second));
-      if (found != edgeFaces.end()) {
-        candidateFaces = found->second;
-      }
-    }
-    if (candidateFaces.empty()) {
-      candidateFaces.push_back(point.face);
-    } else if (std::find(candidateFaces.begin(), candidateFaces.end(),
-                         point.face) == candidateFaces.end()) {
-      candidateFaces.push_back(point.face);
-    }
-    std::sort(candidateFaces.begin(), candidateFaces.end());
-    candidateFaces.erase(
-        std::unique(candidateFaces.begin(), candidateFaces.end()),
-        candidateFaces.end());
-    return candidateFaces;
+    return sourceSupport.resolve(point).incidentFaces;
   }
 
-  [[nodiscard]] std::set<std::pair<int, int>>
+  [[nodiscard]] std::set<SourceScopeLabel>
   supported_labels(const geometry::SurfacePoint &point) const {
-    std::set<std::pair<int, int>> labels;
-    for (const int face : supported_faces(point)) {
-      if (face < 0 || face >= sourceFaces->rows()) {
+    std::set<SourceScopeLabel> labels;
+    for (const authority::SourceFaceId sourceFace : supported_faces(point)) {
+      const std::size_t face = sourceFace.index();
+      if (face >= static_cast<std::size_t>(sourceFaces->rows())) {
         continue;
       }
-      labels.insert({(*components)[static_cast<std::size_t>(face)],
-                     (*sheets)[static_cast<std::size_t>(face)]});
+      labels.insert({authority->component_for_row(sourceFace),
+                     authority->sheet_for_row(sourceFace)});
     }
     return labels;
   }
@@ -389,94 +439,56 @@ struct SourcePointLabelSupport {
     return sharedVertices == 2;
   }
 
-  // A completed output face may live on one source triangle or cross exactly
-  // one genuine source edge between two adjacent projection charts.  This is
-  // intentionally stricter than component-only compatibility: non-adjacent
-  // close/opposing sheets can never satisfy the contract.
+  // A completed output face may live on one source chart component or reach
+  // one through exact quotient-retained hard-rail relations. Complete output
+  // authority establishes reciprocity; proximity, row order, and a global
+  // hard-feature union never establish compatibility.
+  [[nodiscard]] SourceChartCompatibility resolve_compatible_chart(
+      const std::vector<const geometry::SurfacePoint *> &points,
+      const std::vector<const SourceVertexChartAuthority *> &authorities = {},
+      const std::vector<geometry::SurfacePoint> *completePoints = nullptr,
+      const std::vector<SourceVertexChartAuthority> *completeAuthorities =
+          nullptr) const;
+
   [[nodiscard]] std::vector<int> compatible_chart_faces(
-      const std::vector<const geometry::SurfacePoint *> &points) const {
-    if (!available() || points.empty()) {
-      return {};
-    }
-    std::vector<std::vector<int>> support;
-    support.reserve(points.size());
-    std::set<int> unionFaces;
-    for (const geometry::SurfacePoint *point : points) {
-      if (point == nullptr) {
-        return {};
-      }
-      const std::set<std::pair<int, int>> labels = supported_labels(*point);
-      const bool declaredLabelSupported = std::any_of(
-          labels.begin(), labels.end(), [&](const std::pair<int, int> &label) {
-            const bool componentMatches =
-                point->component < 0 || label.first == point->component;
-            const bool sheetMatches =
-                point->sheet < 0 || label.second == point->sheet;
-            return componentMatches && sheetMatches;
-          });
-      if (!declaredLabelSupported) {
-        return {};
-      }
-      std::vector<int> faces = supported_faces(*point);
-      if (faces.empty()) {
-        return {};
-      }
-      unionFaces.insert(faces.begin(), faces.end());
-      support.push_back(std::move(faces));
-    }
-
-    for (const int face : unionFaces) {
-      const bool coversAll = std::all_of(
-          support.begin(), support.end(), [&](const std::vector<int> &faces) {
-            return std::binary_search(faces.begin(), faces.end(), face);
-          });
-      if (coversAll) {
-        return {face};
-      }
-    }
-
-    const std::vector<int> orderedFaces(unionFaces.begin(), unionFaces.end());
-    for (std::size_t first = 0; first < orderedFaces.size(); ++first) {
-      for (std::size_t second = first + 1U; second < orderedFaces.size();
-           ++second) {
-        const int firstFace = orderedFaces[first];
-        const int secondFace = orderedFaces[second];
-        if ((*components)[static_cast<std::size_t>(firstFace)] !=
-                (*components)[static_cast<std::size_t>(secondFace)] ||
-            !faces_share_source_edge(firstFace, secondFace)) {
-          continue;
-        }
-        const bool coversAll = std::all_of(
-            support.begin(), support.end(), [&](const std::vector<int> &faces) {
-              return std::binary_search(faces.begin(), faces.end(), firstFace) ||
-                     std::binary_search(faces.begin(), faces.end(), secondFace);
-            });
-        if (coversAll) {
-          return {firstFace, secondFace};
-        }
-      }
-    }
-    return {};
+      const std::vector<const geometry::SurfacePoint *> &points,
+      const std::vector<const SourceVertexChartAuthority *> &authorities = {},
+      const std::vector<geometry::SurfacePoint> *completePoints = nullptr,
+      const std::vector<SourceVertexChartAuthority> *completeAuthorities =
+          nullptr) const {
+    return resolve_compatible_chart(points, authorities, completePoints,
+                                    completeAuthorities)
+        .chartFaces;
   }
 
-  [[nodiscard]] std::set<std::pair<int, int>> chart_labels(
+  [[nodiscard]] std::set<SourceScopeLabel> chart_labels(
       const std::vector<int> &chartFaces) const {
-    std::set<std::pair<int, int>> labels;
+    std::set<SourceScopeLabel> labels;
     if (!available()) {
       return labels;
     }
     for (const int face : chartFaces) {
       if (face >= 0 && face < sourceFaces->rows()) {
-        labels.insert({(*components)[static_cast<std::size_t>(face)],
-                       (*sheets)[static_cast<std::size_t>(face)]});
+        const auto sourceFaceId = authority::SourceFaceId::from_index(
+            face, authority->face_count());
+        if (sourceFaceId) {
+          labels.insert({authority->component_for_row(sourceFaceId.value()),
+                         authority->sheet_for_row(sourceFaceId.value())});
+        }
       }
     }
     return labels;
   }
 
   [[nodiscard]] bool have_compatible_chart(
-      const std::vector<const geometry::SurfacePoint *> &points) const {
-    return !compatible_chart_faces(points).empty();
+      const std::vector<const geometry::SurfacePoint *> &points,
+      const std::vector<const SourceVertexChartAuthority *> &authorities = {},
+      const std::vector<geometry::SurfacePoint> *completePoints = nullptr,
+      const std::vector<SourceVertexChartAuthority> *completeAuthorities =
+          nullptr) const {
+    return resolve_compatible_chart(points, authorities, completePoints,
+                                    completeAuthorities)
+        .valid();
   }
 
   [[nodiscard]] bool have_common_label(
@@ -484,13 +496,13 @@ struct SourcePointLabelSupport {
     if (!available() || points.empty()) {
       return false;
     }
-    std::set<std::pair<int, int>> common;
+    std::set<SourceScopeLabel> common;
     bool first = true;
     for (const geometry::SurfacePoint *point : points) {
       if (point == nullptr) {
         return false;
       }
-      const std::set<std::pair<int, int>> labels = supported_labels(*point);
+      const std::set<SourceScopeLabel> labels = supported_labels(*point);
       if (labels.empty()) {
         return false;
       }
@@ -498,7 +510,7 @@ struct SourcePointLabelSupport {
         common = labels;
         first = false;
       } else {
-        std::set<std::pair<int, int>> intersection;
+        std::set<SourceScopeLabel> intersection;
         std::set_intersection(common.begin(), common.end(), labels.begin(),
                               labels.end(),
                               std::inserter(intersection, intersection.end()));
@@ -510,6 +522,12 @@ struct SourcePointLabelSupport {
     }
     return !common.empty();
   }
+
+  // Semantic validator queries stay typed after the raw source-matrix ingress.
+  std::set<authority::SourceEdgeTopologyKey> hardFeatureTopologies;
+  std::map<authority::SourceEdgeTopologyKey, std::vector<int>> sourceEdgeFaces;
+  // Representation-only locator: typed face identity to the checked source row.
+  std::map<authority::SourceFaceId, int> sourceFaceRows;
 };
 
 Eigen::Vector3d polygon_normal(const Eigen::MatrixXd &vertices,

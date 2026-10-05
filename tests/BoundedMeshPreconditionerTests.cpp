@@ -89,8 +89,8 @@ Eigen::MatrixXd constant_raw_field(const int faceCount) {
 
 int non_quad_face_count(const directional::pipeline::RemeshResult &result) {
   int count = 0;
-  for (int face = 0; face < result.degrees.size(); ++face) {
-    if (result.degrees(face) != 4) {
+  for (int face = 0; face < result.product().degrees.size(); ++face) {
+    if (result.product().degrees(face) != 4) {
       ++count;
     }
   }
@@ -202,11 +202,11 @@ TEST(BoundedMeshPreconditionerPhase07,
       directional::pipeline::remesh_from_mesh(mesh.vertices, mesh.faces,
                                               options);
 
-  ASSERT_TRUE(first.success);
-  ASSERT_TRUE(second.success);
-  EXPECT_EQ(first.vertices.rows(), second.vertices.rows());
-  EXPECT_EQ(first.faces.rows(), second.faces.rows());
-  EXPECT_EQ(first.degrees.sum(), second.degrees.sum());
+  ASSERT_TRUE(first.is_produced());
+  ASSERT_TRUE(second.is_produced());
+  EXPECT_EQ(first.product().vertices.rows(), second.product().vertices.rows());
+  EXPECT_EQ(first.product().faces.rows(), second.product().faces.rows());
+  EXPECT_EQ(first.product().degrees.sum(), second.product().degrees.sum());
 }
 
 TEST(BoundedMeshPreconditionerPhase07,
@@ -222,9 +222,9 @@ TEST(BoundedMeshPreconditionerPhase07,
       directional::pipeline::remesh_from_mesh(mesh.vertices, mesh.faces,
                                               options);
 
-  ASSERT_TRUE(result.success);
+  ASSERT_TRUE(result.is_produced());
   EXPECT_EQ(connected_component_count(mesh.faces),
-            connected_component_count(result.cutFaces));
+            connected_component_count(result.product().cutFaces));
 }
 
 TEST(BoundedMeshPreconditionerPhase07, UploadedFieldRemeshStillSucceeds) {
@@ -239,9 +239,9 @@ TEST(BoundedMeshPreconditionerPhase07, UploadedFieldRemeshStillSucceeds) {
       mesh.vertices, mesh.faces, constant_raw_field(mesh.faces.rows()),
       options);
 
-  ASSERT_TRUE(result.success);
-  EXPECT_GT(result.vertices.rows(), 0);
-  EXPECT_GT(result.faces.rows(), 0);
+  ASSERT_TRUE(result.is_produced());
+  EXPECT_GT(result.product().vertices.rows(), 0);
+  EXPECT_GT(result.product().faces.rows(), 0);
 }
 
 TEST(BoundedMeshPreconditionerPhase07,
@@ -262,10 +262,10 @@ TEST(BoundedMeshPreconditionerPhase07,
       directional::pipeline::remesh_from_mesh(mesh.vertices, mesh.faces,
                                               options);
 
-  ASSERT_TRUE(disabled.success);
-  ASSERT_TRUE(enabled.success);
-  EXPECT_EQ(connected_component_count(disabled.cutFaces),
-            connected_component_count(enabled.cutFaces));
+  ASSERT_TRUE(disabled.is_produced());
+  ASSERT_TRUE(enabled.is_produced());
+  EXPECT_EQ(connected_component_count(disabled.product().cutFaces),
+            connected_component_count(enabled.product().cutFaces));
   EXPECT_LE(non_quad_face_count(enabled), non_quad_face_count(disabled));
 }
 
