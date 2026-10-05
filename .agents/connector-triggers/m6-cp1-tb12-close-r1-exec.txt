@@ -1,5 +1,0 @@
-Purpose: execute immutable M6-CP1-TB12-CLOSE-R1 479-process gate
-Candidate artifact: 11330703256
-Semantic source: 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05
-Caller install: 59ee7943432da382dfff406602562a279c356fd4
-Retry: 0
