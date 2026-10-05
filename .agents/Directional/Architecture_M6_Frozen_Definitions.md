@@ -1,6 +1,6 @@
 # M6 Frozen Definitions — Occurrence, Quotient, Embedding, Independent Verification
 
-**Status:** FROZEN / **M6-CP1 CLOSED / ACCEPTED, mechanism-only**; `M6-CP2-DEFN` ACCEPTED with RA-28a; **RA-28b** (`M6-CP2-CB1-VERIFIER-REV`: RA-28a §7 withdrawn; RA-26 §5(iii) resolved by non-authoritative retention; identity 12 re-specified); reviewed runtime `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05` (479/479); `G4-B002` debt open (debt 1); **EXACT NEXT = `M6-CP2-CB1-VERIFIER-R1`** (gate 491); RA-1 – RA-28b normative as annotated.
+**Status:** FROZEN / **M6-CP1 CLOSED / ACCEPTED, mechanism-only**; CP2 Definition accepted (RA-28/28a/28b); first verifier candidate `11365308211 / 265c8fbb...` REJECTED (RA-29) and **RA-29a** added by the `M6-CP2-TB1-VERIFIER-REV` review-agent addendum; reviewed runtime `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05` (479/479); `G4-B002` debt open (debt 1); **EXACT NEXT = `M6-CP2-CB1-VERIFIER-R2`** (gate 491); RA-1 – RA-29a normative as annotated.
 **Date:** 2026-09-25
 **Definition authority:** this record is the normative M6 contract for A5 occurrence creation, A6 quotient construction/materialization, A7 source-attached geometry embedding, and the M6 structural portion of A8 independent verification. It refines `DESIGN.md` §14 M6 without changing accepted M5 producer semantics or pulling M7 disposition/degradation work forward.
 
@@ -1135,3 +1135,23 @@ Successor: `M6-CP2-CB1-VERIFIER-R1` (new turn; Code + Build) → `M6-CP2-TB1-VER
 The three EXEC candidates are **FALSE REJECTION / NON-STABLE** and remain +0 to stable accounting. REV-OBS-01/03/04 are production/API verifier contract omissions; REV-OBS-02 is a latent test-witness authority defect. Candidate `11365308211 / 265c8fbb...` is not promoted.
 
 Successor chain is frozen: `M6-CP2-CB1-VERIFIER-R2` → `M6-CP2-TB1-VERIFIER-R1-EXEC` (**491**) → `M6-CP2-TB1-VERIFIER-R1-REV`. `M6-DEFN-R5` remains after CP2. Stable accounting remains **60 / 16 / 44**, debt 1.
+
+## RA-29a — verifier recovery amendments (normative, 2026-10-05, `M6-CP2-TB1-VERIFIER-REV` review-agent addendum; amends RA-29 and RA-28a §1.3/§8)
+
+Rationale: `Architecture_M6_CP2_TB1_Verifier_Review_Record.md`, addendum §S1–§S3. RA-29 items 1–3, 5 and 6 stand. RA-29 item 4 is replaced by item 6 below. The following are added to `M6-CP2-CB1-VERIFIER-R2`. The identities, their order and the gate (**491**) are unchanged.
+
+1. **Every relation is intra-class** (identity 3; amends RA-28a §1.3). Every A5-owned relation, whatever its disposition, must have both endpoints in one published class (`QuotientMembershipMismatch`, `a6:relation-class`). Also |`selectedForest`| = Σ over classes of (|members| − 1).
+   - Identity 3 adds this witness: split a produced class at one forest edge into two classes, each still spanned by its own edges, and require `a6:relation-class`.
+2. **Linear-time topology** (static; no identity). Edge → owning-cells and vertex → incident-edge maps are built in one pass. No per-edge cell scan, no per-vertex edge scan. The verifier's A6 topology partition must be O(n log n) in cells + edges. The R2 report states the complexity, with `file:line` evidence.
+3. **Exact A7 step citation** (identity 6). Each A7 HardRail/Periodic selected step binds to the relation ID at the same position of the HardRail/Periodic subsequence of the class's A6 `QuotientSelectedPathCertificate.orderedRelations`. Its applied value must equal that exact relation's `canonicalRelationValue`, inverted for `Reverse`.
+   - If R2 cannot establish that positional correspondence from the published records, it must instead require that every A5 relation sharing the step's rail or periodic ID carries an identical `canonicalRelationValue`, and record why the positional binding is unavailable.
+   - First-match lookup is forbidden.
+4. **A0 component adjacency** (identity 2; frozen §6.2). Recompute the connected components of A0 face edge-adjacency, and require `component_for_row` to induce exactly that partition (labels up to renaming). Failure: `SourceIncidenceMismatch`, site `a0:component-adjacency`.
+5. **The token binds contents** (identity 11). `VerifiedSurfaceProducts` either **owns** the verified A5/A6/A7 products (moved in, or `shared_ptr<const>`) or is non-copyable and confined to the stage function's scope. Post-projection adapter counters read through the token, never through raw product pointers. Identity 11 adds a compile-time trait that pins the chosen property.
+6. **Wrong-region witness** (identity 8; replaces RA-29 item 4; amends RA-28a §8). The replacement `TopologyRegionId` need only differ from `occurrence.topologyRegion`; A0 validity is **not** required, because the asserted site `cross-sheet:wedge` pins the region filter and nothing upstream checks region validity. Identity 8 adds an explicit inequality assertion. **No new fixture is required.**
+7. **Precision.**
+   - **Shared kernel coverage** (RA-29 item 1 / REV-OBS-03): the shared-kernel point ↔ support equality also applies to A7's class binding (`a7:class-binding`).
+   - **Identity 7** changes **only** `classedCells` corner class IDs. It must assert pre-tamper disjointness and that the A6 ledger partition produces no findings; a class merge would trip gating before `a6:vertex-link`.
+   - **Identity 6's path-structure tamper** uses a produced class with a ≥2-step selected path, with non-commuting transports where available.
+
+Successor: `M6-CP2-CB1-VERIFIER-R2` → `M6-CP2-TB1-VERIFIER-R1-EXEC` (**491**) → `M6-CP2-TB1-VERIFIER-R1-REV`. Accounting **60 / 16 / 44**, debt 1.

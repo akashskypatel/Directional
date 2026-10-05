@@ -1,6 +1,6 @@
 **Current authority after `M6-CP2-TB1-VERIFIER-REV` (2026-10-05):** first CP2 verifier candidate `11365308211 / 265c8fbb...` is **REJECTED FOR BOUNDED RECOVERY / UNPROMOTED**. Runtime mechanics are 488/491 (focused30 30/30, focused12 9/12, selector449 449/449). CAND-01/02/03 are non-stable false-rejection witnesses; REV-OBS-01..04 freeze the missing carried pipeline report, A0-valid wrong-region witness, shared support-resolver check and exact selected-forest path identity. RA-29 governs. Exact next: `M6-CP2-CB1-VERIFIER-R2` → fresh `M6-CP2-TB1-VERIFIER-R1-EXEC` (491) → mandatory R1 Review. Accounting **60 / 16 / 44**, debt 1.
 
-**Current candidate authority after `M6-CP2-DEFN` (2026-10-05):** CP2 verifier Definition is complete and pending mandatory `M6-CP2-DEFN-REV`. It freezes record-view negative witnesses, typed semantic finding identity/order, exact A5→A6→A7 certificate binding, accepted-defensive C4 plus independent verifier manifoldness, three appended wedge tampers, production A8 after A7/before adapter projection, RA-26 §5(iii) class-wide optimizer chart membership, and a first gate of **30 + 12 + 449 = 491**. No implementation/runtime changed. Reviewed runtime remains `11330703256 / 3f40f04a...`; accounting **60 / 16 / 44**, debt 1.
+**Current authority after the `M6-CP2-TB1-VERIFIER-REV` addendum (2026-10-05):** M6 CP1 CLOSED / ACCEPTED, mechanism-only; the first CP2 verifier candidate is rejected (RA-29) and amended by RA-29a (§54); reviewed runtime `11330703256 / 3f40f04a...` (479/479). Accounting **60 / 16 / 44**, debt 1. Exact next: `M6-CP2-CB1-VERIFIER-R2` → TB1-R1 (491) → Review.
 
 **Current authority after `M6-CP2-CB1-VERIFIER-REV` (2026-10-05):** M6 CP1 CLOSED / ACCEPTED, mechanism-only; CP2 Definition accepted with RA-28a, amended by RA-28b (§52); reviewed runtime `11330703256 / 3f40f04a...` (479/479). Accounting **60 / 16 / 44**, debt 1. Exact next: `M6-CP2-CB1-VERIFIER-R1` → TB1 (491) → Review.
 
@@ -516,6 +516,19 @@ Independent Review re-derived the 491-process evidence at **488/491** and confir
 Static review additionally finds four RA-28a gaps: the successful full pipeline result does not carry its A8 `VerificationReport`; identity 8's alternate region is not proved to be an A0 region; verifier support incidence duplicates local logic rather than cross-checking the published point with `SurfacePointSourceSupportResolver`; and selected-path verification composes the self-declared path without first proving it is the unique traversal of the published selected forest.
 
 RA-29 limits recovery to those seven surfaces. No optimizer source change, A5 semantic expansion, selector/focused reordering, or gate reduction is authorized. Candidate `11365308211 / 265c8fbb...` stays unpromoted. Stable accounting remains **60 / 16 / 44**, debt 1. Exact successor is `M6-CP2-CB1-VERIFIER-R2`, then a fresh 491-process R1 EXEC and mandatory R1 Review.
+
+## 54. `M6-CP2-TB1-VERIFIER-REV` review-agent addendum — RA-29a
+
+The review agent re-derives TB1 at 488/491, with all raw hashes matching. It confirms CAND-01..03 and REV-OBS-01/03/04, extends REV-OBS-03 to A7, and withdraws REV-OBS-02: identity 8's site assertion already pins the region filter, so an A0-valid region adds only fixture risk.
+
+**New defects, all fixed in R2 under RA-29a:**
+- a class split along a `Joining` forest edge passes (→ `a6:relation-class`, plus |forest| = Σ(|members| − 1));
+- quadratic topology loops in a production stage;
+- first-match A7 step binding (→ exact citation via the A6 path `orderedRelations`);
+- no A0 component-adjacency recompute;
+- an address-bound `VerifiedSurfaceProducts`.
+
+Plus precision for identities 6 and 7. Gate 491. Lesson 203.
 
 ## Folded document index
 

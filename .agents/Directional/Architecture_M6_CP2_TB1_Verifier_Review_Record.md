@@ -88,3 +88,80 @@ The only authorized successor is `M6-CP2-CB1-VERIFIER-R2` under `Architecture_M6
 | review_check.py boundary | PASS; selector449 declared hash matched and no product/test/fixture/build/selector mutation was detected. |
 | `STATUS` lifecycle maintained | Entry and resume beacons maintained; COMPLETE beacon is the final repository mutation after documentation/cleanup. |
 | Pushed to origin, branch in sync | Repository patch application and cleanup are verified at remote branch authority before the final COMPLETE beacon; no ahead/behind local branch is used as authority in ChatGPT Web. |
+
+---
+
+## Review-agent addendum (2026-10-05, resumed `M6-CP2-TB1-VERIFIER-REV`)
+
+**Disposition:**
+- **Rejection, non-stable classification and R2 routing: CONFIRMED.**
+- CAND-01/02/03 and REV-OBS-01/03/04: **confirmed**.
+- **REV-OBS-02: WITHDRAWN as over-strict** (it adds fixture risk and no discriminating power).
+- **Five verifier defects TB1-REV missed** (S1–S5), plus two precision items. RA-29a adds them to R2.
+- Gate unchanged at **491**: every item folds into an existing identity or is a static requirement.
+- Accounting **60 / 16 / 44**, debt 1.
+
+### S0. Independent re-derivation (confirmed)
+
+- Result `11370598981`: ZIP `e9260e35...`. Log `11370413984`: ZIP `a455e284...`.
+- `SHA256SUMS` (`2d7d7984...`) verifies **1005/1005**.
+- focused-30, focused-12 (`2aa57aac...`, 12 rows; identity 12 already carries the RA-28b name) and selector449 are each in exact frozen order. Every row has exactly one selection and zero skips. **All 491 raw-log hashes match their ledger rows.**
+- REDs are exactly focused-12 ordinals **2** (`:7553`), **6** (`:7615`) and **7** (`:7654`, `tampered == false`). Result **488/491**.
+- Candidate `265c8fbb` source == HEAD source. Diff from `3f40f04a`: header +153, `RemeshPipeline.cpp` ±1236, tests +552.
+
+### S1. Confirmed TB1-REV findings
+
+- **CAND-01.** `matches_source_faces` compares canonical (sorted) face keys, so a corner permutation is a no-op (`:7486-7491`).
+- **CAND-02.** The field table is implemented exactly (`:7690-7702`). `OrdinaryFront` certificates carry `selectedRelationStep == nullopt`, which equals A5, so resetting it is a no-op.
+- **CAND-03.** In a 2×2 grid every cell shares the centre vertex, so there is no disjoint pair.
+- **REV-OBS-01** (result carries no report) and **REV-OBS-04** (paths are composed but never checked against the published forest traversal) are accurate.
+- **REV-OBS-03 is accurate and gate-neutral.** The local helper `verification_support_incident_to_face` (`:7390-7408`) only checks that the support touches the point's face; a face-interior point published with a vertex support passes. The frozen §6.2 "shared source-support kernel" is `SurfacePointSourceSupportResolver`, which §6.2 permits as a shared primitive. A5 publishes `resolve(canonicalPoint)` verbatim (`:4265-4268`), so the equality check costs nothing on valid data. **It must also cover A7's class binding**, which uses the same local helper (`:8031-8044`).
+
+### S2. New findings
+
+**S2.1 (High) — a class split along a `Joining` relation passes the verifier.**
+- The per-class spanning check counts only forest edges with both endpoints in the class (`:7842-7877`). `forestRelations == joiningRelations` and the endpoint-equality check do not require a forest edge to be intra-class. Nothing compares |forest| with Σ(|members| − 1).
+- **Witness:** split a class C at forest edge `e` into C₁ and C₂. Each half is still spanned by its own edges, and `e` becomes a cross-class `Joining` edge. Every check passes, so a relation is "consumed" as joining while its endpoints are not identified. That is a fail-open on exact-once semantics.
+- `CycleClosing` relations are class-checked (`a6:cycle-class`); `Joining` relations are not.
+- My RA-28a §1.3 wording ("its published forest edges") was ambiguous here (owned).
+- **Fix:** every owned relation, whatever its disposition, must have both endpoints in one class (`a6:relation-class`), and |forest| = Σ(|members| − 1).
+
+**S2.2 (Medium–High) — quadratic topology passes in a verifier that now runs in production.**
+- Boundary and cell adjacency rescan every cell for every edge (`:7929-7948`): O(E·C).
+- The vertex-link check rescans every edge for every vertex (`:7987-8023`): O(V·E).
+- The verifier runs on every authoritative pipeline run (`:8491`), so this adds superlinear cost to production; M4 CP-SCALE made boundedness an explicit requirement. TB1 rows are small, so it passed.
+- **Fix:** build a single edge → owning-cells map and per-vertex incident-edge lists in one pass, giving O(n log n). This is a static requirement in R2, with no gate change.
+
+**S2.3 (Medium) — the A7 selected-step binding is not the exact cited relation.**
+- `:8101` matches the first A5 relation with the same `railId` or `periodicRelation`. Several A5 relations can share a rail or periodic ID, so this is first-match and not the "cited A5 relation" of RA-28a §2.
+- A7 steps carry no relation ID. The exact citation runs through the A6 `QuotientSelectedPathCertificate.orderedRelations` that the A7 path projects.
+- **Fix:** bind each A7 HardRail/Periodic step to the relation ID at the same position of the class's A6 path certificate (the HardRail/Periodic subsequence), and compare `canonicalRelationValue` with that exact relation. If the projection correspondence cannot be shown, require every A5 relation sharing that rail or periodic ID to carry an identical `canonicalRelationValue`, and record why.
+
+**S2.4 (Medium) — the A0 partition omits component adjacency.**
+- Frozen §6.2 lists "source face/edge/vertex incidence and component adjacency from A0". The A0 partition only checks `matches_source_faces` and that hard-feature edges exist (`:7484-7513`).
+- **Fix:** recompute the connected components of A0 face edge-adjacency and require `component_for_row` to induce the same partition (labels up to renaming).
+
+**S2.5 (Medium–Low) — `VerifiedSurfaceProducts` is bound to addresses, not contents.**
+- It stores non-owning raw pointers to A5/A6/A7 (`RemeshPipeline.h`, `VerifiedSurfaceProducts`) and is copyable, so a copied or escaped token can outlive or re-point at different storage.
+- After projection, the adapter keeps reading the raw `occurrenceComplex` for its counters (`:8508+`).
+- **Fix:** the token **owns** the products (moved or `shared_ptr<const>`), **or** it is non-copyable and confined to the stage function's scope. Post-projection counters read through the token.
+
+### S3. REV-OBS-02 withdrawn; precision items
+
+- **REV-OBS-02 (and my RA-28a §8 word "valid") is withdrawn.** Identity 8 already asserts the exact rejection site `cross-sheet:wedge`, and nothing before the wedge rule checks region validity. So a synthetic region ≠ `topologyRegion` already kills the region-omitting mutant (identity 8 is green).
+  - Requiring an A0-valid alternate region needs a produced fixture with two regions **and** a bridge occurrence. None exists, so that would invite another CAND-01-style RED for no extra discrimination.
+  - Identity 8 stays as is, plus one added assertion: the replacement region ID ≠ the occurrence's region.
+- **CAND-03 precision.** The weld must change **only** `classedCells` corner class IDs, never `classes` or the forest. A class merge trips the A6 ledger partition first, and gating (RA-28a §4) then skips the topology partition, so `a6:vertex-link` would never run. Assert the pre-tamper disjointness and that the ledger partition stays clean.
+- **REV-OBS-04 tamper.** Use a produced class with at least a 2-step selected path. Where available, use non-commuting transports so that composition order is also pinned.
+
+### S4. Closeout
+
+| Duty | Result |
+|---|---|
+| Evidence | Re-derived: 1005/1005; frozen order; 488/491; all raw hashes match; REDs 2/6/7. |
+| TB1-REV findings | CAND-01/02/03 and REV-OBS-01/03/04 confirmed; REV-OBS-03 extended to A7; REV-OBS-02 withdrawn. |
+| New | S2.1 (High), S2.2, S2.3, S2.4, S2.5 → RA-29a. |
+| Gate | Unchanged at 491. S2.1 → identity 3; S2.3 → identity 6; S2.4 → identity 2; S2.5 → identity 11; S2.2 is static. |
+| Accounting | +0 → 60 / 16 / 44, debt 1. |
+| Lesson | 203. |
+| Successor | `M6-CP2-CB1-VERIFIER-R2` under RA-29 + RA-29a. |

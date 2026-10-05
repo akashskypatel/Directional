@@ -1,3 +1,16 @@
+## 2026-10-05 — `M6-CP2-TB1-VERIFIER-REV` review-agent addendum — RA-29a — **+0 / 60/16/44 / debt 1**
+
+- The candidate rejection and CAND-01..03 (non-stable) are confirmed. REV-OBS-01/03/04 are confirmed, and REV-OBS-03 is extended to A7. REV-OBS-02 is withdrawn (over-strict).
+- New, owned by R2:
+  - **`M6-CP2-TB1-REV-OBS-05`** (High): a class split along a `Joining` forest edge passes the verifier, because the spanning check counts only intra-class edges.
+  - **`-OBS-06`**: quadratic topology loops in a production-integrated verifier.
+  - **`-OBS-07`**: first-match A7 step binding by rail/periodic ID.
+  - **`-OBS-08`**: missing A0 component-adjacency recompute.
+  - **`-OBS-09`**: `VerifiedSurfaceProducts` is bound to addresses, not contents.
+- No accepted-green row regressed.
+
+**Stable accounting: `60 events / 16 categories / 44 recurrences`, debt 1.**
+
 ## 2026-10-05 — `M6-CP2-TB1-VERIFIER-REV` — **REJECTED FOR BOUNDED RECOVERY / +0 / 60/16/44 / debt 1**
 
 Independent Review confirms the 491-process execution is mechanically valid but rejects candidate `11365308211 / 265c8fbb...`. CAND-01/02/03 are **FALSE REJECTION / NON-STABLE**: the source-face permutation canonicalizes to the same key; the `OrdinaryFront` selected-step reset is a no-op; and the square fixture cannot construct the intended disjoint-cell pinch. Review additionally records four recovery-owned observations: **REV-OBS-01** successful pipeline result lacks the RA-28a §6 carried verified report; **REV-OBS-02** identity 8 does not prove its replacement topology region belongs to A0; **REV-OBS-03** verifier support incidence bypasses the shared source-support resolver required by RA-28a §3; **REV-OBS-04** verifier composes published selected-path fields without proving they are the unique path in the published forest required by RA-28a §1.4. No accepted focused30/selector449 row regressed. Exact successor: `M6-CP2-CB1-VERIFIER-R2` under RA-29, then fresh 491-process `M6-CP2-TB1-VERIFIER-R1-EXEC` and Review.

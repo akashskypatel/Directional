@@ -1,3 +1,15 @@
+## 2026-10-05 — `M6-CP2-TB1-VERIFIER-REV` review-agent addendum — verifier fix list extended
+
+- The first verifier build is still rejected. Three of its new tests checked nothing (their tampers changed nothing), and that diagnosis is confirmed.
+- Review found five more problems in the verifier:
+  - a wrongly split vertex class was accepted;
+  - two checks slow down quadratically on large meshes, inside the production pipeline;
+  - one cross-check matched the first similar record rather than the exact one;
+  - the source-mesh component check was missing;
+  - the "verified" handle pointed at product addresses instead of holding the products.
+- One earlier requirement was relaxed because it added risk without catching anything new.
+- Next: `M6-CP2-CB1-VERIFIER-R2` (gate 491).
+
 ## 2026-10-05 — `M6-CP2-CB1-VERIFIER-REV` — verifier build unblocked
 
 - The verifier build stopped on a rule it could not satisfy: it was asked to prove a fact about which source triangle a vertex is anchored to, and nothing in the pipeline guarantees that fact.

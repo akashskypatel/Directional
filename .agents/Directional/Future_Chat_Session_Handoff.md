@@ -1,3 +1,22 @@
+## Resume-critical update — `M6-CP2-TB1-VERIFIER-REV` review-agent addendum: RA-29a extends R2 (2026-10-05)
+
+**Start `M6-CP2-CB1-VERIFIER-R2`** under RA-29 **+ RA-29a**. The top block of `Architecture_M6_CP2_CB1_Verifier_R2_Recovery_Code_Build_Plan.md` is binding.
+
+Confirmed by the review agent: rejection; CAND-01/02/03; REV-OBS-01/03/04; 488/491 with all 491 raw hashes matching.
+
+**Withdrawn:** REV-OBS-02's A0-valid region. The current identity 8 already pins the region filter by its site, so add only an inequality assertion.
+
+**Added to R2:**
+1. `a6:relation-class` (identity 3): a class split along a `Joining` edge currently passes the verifier.
+2. Linear-time topology: the current loops are O(E·C) and O(V·E), and they run in production.
+3. Exact A7 step citation through the A6 path `orderedRelations`, replacing the first-match rail/periodic lookup (identity 6).
+4. A0 component-adjacency recompute (identity 2).
+5. `VerifiedSurfaceProducts` binds contents (owning, or non-copyable and scoped); counters read through the token (identity 11).
+6. The shared-kernel check also covers A7 class binding.
+7. Precision for identity 7 (change only `classedCells` corners) and identity 6 (a ≥2-step path).
+
+Gate **491**. No optimizer change. Reviewed runtime `11330703256 / 3f40f04a...` (479/479). Accounting **60 / 16 / 44**, debt 1.
+
 ## Resume-critical update — `M6-CP2-TB1-VERIFIER-REV` rejects candidate; RA-29; exact next `M6-CP2-CB1-VERIFIER-R2` (2026-10-05)
 
 **Start `M6-CP2-CB1-VERIFIER-R2` next. Do not promote `11365308211 / 265c8fbb...`, rerun the old package, or begin `M6-DEFN-R5`.** Independent Review confirms the EXEC mechanics but adjudicates focused12 ordinals 2/6/7 as non-stable false-rejection witnesses and finds four additional RA-28a implementation gaps: missing carried verified report on the full pipeline result, invalid/unproved alternate-region witness in identity 8, bypass of the shared source-support resolver, and selected-path verification that does not prove the named path equals the published forest path. RA-29 freezes the bounded recovery. Gate remains 491. Stable accounting stays **60 / 16 / 44**, debt 1. R2 → `M6-CP2-TB1-VERIFIER-R1-EXEC` → mandatory R1 Review.
@@ -1035,15 +1054,15 @@ Review must independently re-open source/evidence and re-derive: split-square v0
 - **TB1 mechanics:** focused30 30/30 + focused12 9/12 + selector449 449/449 = **488/491**; CAND-01..03 are false-rejection/non-stable.
 - **RA-29:** REV-OBS-01..04 plus the three witness repairs are the only authorized R2 scope.
 - Accepted reviewed runtime authority remains `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05` (479/479) until a replacement passes mandatory R1 Review.
-- Normative: RA-1 – RA-29. Accounting **60 / 16 / 44**, debt **1**.
+- Normative: RA-1 – RA-29a (RA-29a: `M6-CP2-TB1-VERIFIER-REV` review-agent addendum). Accounting **60 / 16 / 44**, debt **1**.
 
 ## Exact next turn
 
-**`M6-CP2-CB1-VERIFIER-R2` — Code + Build only under RA-29.**
-- Repair identities 2/6/7/8/11 plus shared support-kernel and selected-forest path verification exactly as frozen in the retained R2 plan.
+**`M6-CP2-CB1-VERIFIER-R2` — Code + Build only under RA-29 + RA-29a.**
+- Repair identities 2, 6, 7 and 11 per RA-29. Identity 8 needs only the inequality assertion (RA-29a §6).
+- Add RA-29a §1–§5 and §7: `a6:relation-class`, linear-time topology, exact A7 step citation, A0 component adjacency, a content-bound token, shared-kernel coverage of A7.
 - No optimizer source change, A5 semantic expansion, selector/focused/routing change, or Directional runtime.
 - Compile/package green → fresh immutable `M6-CP2-TB1-VERIFIER-R1-EXEC` (**491**) → mandatory `M6-CP2-TB1-VERIFIER-R1-REV`.
-- Do not rerun or promote the old package.
 
 ## Completed predecessor turns (reference only)
 
@@ -1057,7 +1076,7 @@ Review must independently re-open source/evidence and re-derive: split-square v0
 - `.agents/Directional/Architecture_M6_CP2_TB1_Verifier_Artifact_Only_Test_Benchmark_Report.md` — current runtime-authority report for the rejected first candidate.
 - `.agents/Directional/Architecture_M6_CP2_TB1_Verifier_Review_Record.md` — current Review/adjudication authority.
 - `.agents/Directional/Architecture_M6_CP2_CB1_Verifier_R2_Recovery_Code_Build_Plan.md` — exactly one next-turn plan.
-- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — RA-28/RA-28a/RA-28b/RA-29.
+- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — RA-28/RA-28a/RA-28b/RA-29/RA-29a.
 - `.agents/Directional/M6_Consolidated_Record.md` — folded CP2 historical record and filename resolver.
 - `.agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt`, focused30, selector449 / routing449 — frozen gate authorities.
 

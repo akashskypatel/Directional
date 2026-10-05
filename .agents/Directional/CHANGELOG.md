@@ -1,3 +1,16 @@
+## 2026-10-05 — `M6-CP2-TB1-VERIFIER-REV` review-agent addendum: RA-29a extends verifier recovery
+
+- **Re-derived independently:** result `11370598981` (`e9260e35`) and log `11370413984` (`a455e284`); 1005/1005; all three ledgers in frozen order; 488/491; all 491 raw hashes match; REDs at focused-12 ordinals 2, 6 and 7.
+- **Confirmed:** CAND-01/02/03 (no-op or vacuous witnesses) and REV-OBS-01/03/04; REV-OBS-03 extended to A7. **Withdrawn:** REV-OBS-02.
+- **New:**
+  - split-class fail-open (`a6:relation-class`);
+  - quadratic topology loops in production (linear-time required);
+  - first-match A7 step binding (exact citation via the A6 path `orderedRelations`);
+  - no A0 component-adjacency recompute;
+  - an address-bound verified token.
+- **Precision:** identities 6 and 7.
+- **Docs:** RA-29a in frozen definitions; R2 plan block; lesson 203; handoff / ORIENTATION / TODO / ROADMAP / tracker (+0, OBS-05..09) / consolidated §54. Gate 491; accounting 60 / 16 / 44.
+
 ## 2026-10-05 — M6-CP2 TB1 verifier Review rejects first candidate; RA-29
 
 Independent Review validates the 488/491 execution mechanics but rejects promotion. The three REDs are non-stable invalid witnesses; four static RA-28a gaps are also recovery-owned: no carried pipeline verification report, unproved wrong-region authority, duplicated support-incidence logic instead of the shared resolver, and selected-path composition without independent forest-path identity. Exact recovery is `M6-CP2-CB1-VERIFIER-R2`; gate remains 491; accounting remains 60/16/44, debt 1.

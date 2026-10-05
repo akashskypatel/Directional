@@ -1,3 +1,16 @@
+## Live M6 routing — after the `M6-CP2-TB1-VERIFIER-REV` review-agent addendum (RA-29a)
+
+| Checkpoint | State | Exact next / gate |
+|---|---|---|
+| M6 CP1 | **CLOSED / ACCEPTED, mechanism-only** | runtime `11330703256 / 3f40f04a...`, 479/479 |
+| CP2 first verifier candidate | **REJECTED / UNPROMOTED** | `11365308211 / 265c8fbb...`, 488/491 |
+| CP2 recovery | **EXACT NEXT** | `M6-CP2-CB1-VERIFIER-R2` (RA-29 + RA-29a) -> TB1-R1 **491** -> Review |
+| `M6-DEFN-R5` | CP3-entry gate, after CP2 | unchanged |
+
+Stable accounting: **60 / 16 / 44**, debt 1.
+
+### Superseded routing
+
 ## 2026-10-05 — M6 CP2 verifier recovery active
 
 `M6-CP2-TB1-VERIFIER-REV` rejects the first verifier candidate without promotion. Exact next: `M6-CP2-CB1-VERIFIER-R2` under RA-29, then fresh 491-process `M6-CP2-TB1-VERIFIER-R1-EXEC` and mandatory Review. Stable accounting 60/16/44, debt 1.

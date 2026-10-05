@@ -1,5 +1,18 @@
 # Architecture M6 CP2 CB1 Verifier R2 Recovery Code + Build Plan
 
+> **Review-agent block — `M6-CP2-TB1-VERIFIER-REV` addendum (RA-29a), 2026-10-05. Binding; governs this plan where they conflict.**
+> - **Required item 4 (A0-valid alternate region) is WITHDRAWN.** A region ID ≠ the occurrence region plus the asserted `cross-sheet:wedge` site suffices. Add the inequality assertion only; no new fixture.
+> - **Added:**
+>   1. **`a6:relation-class`** (identity 3). Every owned relation has both endpoints in one class, and |forest| = Σ(|members| − 1). Add a class-split witness.
+>   2. **Linear-time topology** (static). Single-pass edge→cells and vertex→edges maps; no per-edge cell scans (`RemeshPipeline.cpp:7929-7948`) and no per-vertex edge scans (`:7987-8023`). State the complexity in the report.
+>   3. **Exact A7 step citation** (identity 6). Bind via the A6 path certificate's `orderedRelations` (HardRail/Periodic subsequence). If that is not establishable, require agreement across all same-ID relations. No first-match `find_if` (`:8101`).
+>   4. **A0 component adjacency** (identity 2). Recompute components and require the same partition; site `a0:component-adjacency`.
+>   5. **Token binds contents** (identity 11). `VerifiedSurfaceProducts` owns the products, or is non-copyable and scope-confined. Post-projection counters read through the token (`:8508+`). Add a compile-time trait.
+>   6. **Shared-kernel equality extends to A7 `a7:class-binding`.**
+>   7. **Identity 7** changes only `classedCells` corners; assert disjointness and a clean ledger partition.
+>   8. **Identity 6's path tamper** uses a produced ≥2-step path, with non-commuting transports where available.
+> - All other required items, frozen stop rules and the **491** gate are unchanged.
+
 **Turn:** `M6-CP2-CB1-VERIFIER-R2`
 **Owner:** RA-29 recovery from `M6-CP2-TB1-VERIFIER-REV`
 **Boundary:** Code + Build only. Compile/package; **no Directional runtime**.

@@ -1,3 +1,20 @@
+## Currency — `M6-CP2-TB1-VERIFIER-REV` review-agent addendum: RA-29a (2026-10-05 UTC)
+
+- The rejection is confirmed (488/491; all raw hashes match).
+- REV-OBS-02's A0-valid region is withdrawn: identity 8's site assertion already pins the region filter.
+- RA-29a adds to R2:
+  - `a6:relation-class` (class split along a `Joining` edge passes today);
+  - linear-time topology (O(E·C) and O(V·E) loops in production);
+  - exact A7 step citation;
+  - A0 component adjacency;
+  - a content-bound `VerifiedSurfaceProducts`;
+  - shared-kernel coverage of A7;
+  - precision for identities 6 and 7.
+- Gate 491.
+
+Accounting **60 / 16 / 44**, debt 1.
+
+### Superseded currency note
 ## Currency — `M6-CP2-TB1-VERIFIER-REV` REJECTED FOR BOUNDED RECOVERY / RA-29 / exact next R2 (2026-10-05 UTC)
 
 **Start `M6-CP2-CB1-VERIFIER-R2` next. Do not promote `11365308211 / 265c8fbb...`, rerun the old package, or begin `M6-DEFN-R5`.** Independent Review confirms the EXEC mechanics but adjudicates focused12 ordinals 2/6/7 as non-stable false-rejection witnesses and finds four additional RA-28a implementation gaps: missing carried verified report on the full pipeline result, invalid/unproved alternate-region witness in identity 8, bypass of the shared source-support resolver, and selected-path verification that does not prove the named path equals the published forest path. RA-29 freezes the bounded recovery. Gate remains 491. Stable accounting stays **60 / 16 / 44**, debt 1. R2 → `M6-CP2-TB1-VERIFIER-R1-EXEC` → mandatory R1 Review.
@@ -435,7 +452,7 @@ the content beneath it.
 
  > **Current milestone authority (2026-10-05, after `M6-CP2-CB1-VERIFIER-REV`):** M4 and M5 remain CLOSED / ACCEPTED. M6 CP1 is CLOSED / ACCEPTED, mechanism-only. M6 CP2 is ACTIVE: the Definition is accepted with RA-28a, amended by RA-28b. Reviewed runtime `11330703256 / 3f40f04a...` (479/479). Stable accounting **60/16/44**, debt 1. Exact next is `M6-CP2-CB1-VERIFIER-R1` (gate 491).
 
-**Currency.** `M6-CP2-CB1-VERIFIER-REV` (Review), 2026-10-05 UTC
+**Currency.** `M6-CP2-TB1-VERIFIER-REV` review-agent addendum (Review), 2026-10-05 UTC
 
 **Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` §16.3 is the active same-region nonzero-Z4 contract. `PeriodicRelationId` remains carrier-content identity; relation rotation is the gauge-adjusted quotient `Q`, action/transport is relation value, and canonical storage may invert representation only after semantic Forward -> Reverse authority is fixed. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 
@@ -619,12 +636,13 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M6-CP2-CB1-VERIFIER-R2` — EXACT NEXT (Code + Build; RA-29 bounded recovery).**
-   - Repair CAND-01/02/03 with pre-verifier non-vacuity assertions; no test-only shortcut.
-   - Carry the exact A8 report on the successful full pipeline result (REV-OBS-01).
-   - Use an actual A0 alternate region for identity 8 (REV-OBS-02).
-   - Cross-check occurrence point/support with the shared `SurfacePointSourceSupportResolver` (REV-OBS-03).
-   - Prove every published selected path equals the unique traversal of the published selected forest before composition (REV-OBS-04).
+1. **`M6-CP2-CB1-VERIFIER-R2` — EXACT NEXT (Code + Build; RA-29 + RA-29a).**
+   - Repair CAND-01/02/03 with pre-verifier non-vacuity assertions. Identity 7 changes only `classedCells` corners.
+   - Carry the exact A8 report on the successful pipeline result (REV-OBS-01).
+   - Identity 8: inequality assertion only (REV-OBS-02 withdrawn).
+   - Shared `SurfacePointSourceSupportResolver` point ↔ support equality for A5 **and A7** (REV-OBS-03).
+   - Forest-traversal path structure before composition (REV-OBS-04), with a ≥2-step witness.
+   - RA-29a: `a6:relation-class`; linear-time topology; exact A7 step citation; A0 component adjacency; content-bound token with counters read through it.
    - **No `SurfaceMeshOptimizer` change; no A5 semantic expansion; no focused/selector/routing change.**
    - Compile/package only → fresh R1 TB **491** → mandatory R1 Review.
 1a. **`M6-DEFN-R5` — CP3-entry gate (not CP1).**
@@ -665,6 +683,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 **A green behavioral test is not a contract proof when the oracle compares only a subset of the promised serialization — `M6-CP1-TB10-A5V-REV`, lesson 193.** Identity24 ran three real stage-valid fixtures but omitted multiple mesh/lineage/result fields, so those fields could drift without turning the test red. Enumerate the output type and prove every contract field is covered; a strong test name does not widen its assertions.
 
 **Moving validation into an earlier stage can still invert that stage's own pre-existing failure precedence — `M6-CP1-TB10-A5V-REV`, existing `VALIDATION_ORDER_SHADOWING`.** RA-19 explicitly required the moved helper after every old A5 check; placing it before `publish_records_for_validation` violates that boundary even when the full gate stays green.
+
+**Check that every relation respects the partition, and keep verifier cost linear — `M6-CP2-TB1-VERIFIER-REV` addendum, lesson 203.** The verifier checked that each class is spanned by its own forest edges, but not that every forest edge is intra-class, so a split class passed. Its topology passes were also quadratic, inside a production stage.
 
 **Before tightening a reviewed predicate, check the new precondition against published contracts — and check that the guarded operation can violate it — `M6-CP2-CB1-VERIFIER-REV`, lesson 202.** RA-28a §7 turned RA-26 §5(iii)'s sheet membership into face membership, which required a representative-face fact A5/A7 never publish. Optimizer projection is also confined to the seed's own scope, so the check could never detect movement at all.
 

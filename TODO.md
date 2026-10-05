@@ -1,3 +1,11 @@
+## Current — `M6-CP2-TB1-VERIFIER-REV` review-agent addendum / RA-29a / exact next `M6-CP2-CB1-VERIFIER-R2` (2026-10-05)
+
+- [x] Re-derive TB1: 1005/1005, frozen order, 488/491, all raw hashes match, REDs 2/6/7; candidate `265c8fbb` == HEAD.
+- [x] Confirm CAND-01/02/03 and REV-OBS-01/03/04 (extend REV-OBS-03 to A7); withdraw REV-OBS-02.
+- [x] New: S2.1 split-class fail-open; S2.2 quadratic topology; S2.3 first-match A7 step binding; S2.4 missing A0 component adjacency; S2.5 address-bound token → RA-29a; lesson 203.
+- [ ] **Exact next `M6-CP2-CB1-VERIFIER-R2`** (RA-29 + RA-29a; compile/package only).
+- [ ] TB1-R1 **491** → mandatory R1 Review.
+
 ## CURRENT — M6-CP2 verifier R2 recovery
 
 - [ ] Execute `M6-CP2-CB1-VERIFIER-R2` under RA-29.

@@ -2649,3 +2649,11 @@ When a temporary workflow caller is assembled with low-level Git objects, creati
       - When amending a predicate, cite where each precondition is published.
       - Before adding a safety check, show that the operation it guards can actually produce the violation. If it cannot, pin the confinement with a falsifier rather than adding a check that can never fire.
     - Recorded at `M6-CP2-CB1-VERIFIER-REV` (RA-28b).
+203. **Check that every relation respects the partition, and keep a production verifier's cost linear.**
+    - *What happened.*
+      - The CP2 verifier proved that each class is spanned by its own forest edges. It never checked that every forest (`Joining`) edge is intra-class, or that |forest| = Σ(|members| − 1). A class split along one forest edge therefore verified.
+      - Its topology checks rescanned all cells per edge and all edges per vertex, which is quadratic, and the verifier runs on every authoritative pipeline call.
+    - **Rule.**
+      - When verifying a partition built from relations, check both directions: every class is spanned by its relations, and every relation lies inside one class.
+      - Any verifier on a production path must state its complexity and build its incidence maps in one pass.
+    - Recorded at the `M6-CP2-TB1-VERIFIER-REV` review-agent addendum (RA-29a).
