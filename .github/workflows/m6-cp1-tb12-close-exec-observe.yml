@@ -23,9 +23,16 @@ jobs:
       source_ref: ${{ github.sha }}
     secrets: inherit
 
+  validate_runtime:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m6-cp1-tb12-close-exec.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
   observe:
-    needs: validate
-    if: ${{ needs.validate.outputs.valid == 'true' }}
+    needs: [validate, validate_runtime]
+    if: ${{ needs.validate.outputs.valid == 'true' && needs.validate_runtime.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-recent-workflow-runs-reusable.yml
     with:
       per_page: 100
