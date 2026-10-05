@@ -7367,56 +7367,23 @@ TEST(M6CP1, A7CrossSheetBindingRequiresConnectingIsolationTransition) {
                 &baseline),
             nullptr);
 
-  const auto occurrence_for = [](auto &occurrences, const auto id) {
-    return std::find_if(occurrences.begin(), occurrences.end(),
-                        [&](const auto &occurrence) {
-                          return occurrence.id == id;
-                        });
-  };
   auto cells = a5->cells();
   auto occurrences = a5->occurrences();
   auto relations = a5->owned_relations();
+  const auto bridge = std::find_if(
+      occurrences.begin(), occurrences.end(), [](const auto &occurrence) {
+        return occurrence.cornerWedgeSheets.size() > 1U;
+      });
+  ASSERT_NE(bridge, occurrences.end())
+      << "split-isolation witness must contain a bridge occurrence";
+  ASSERT_FALSE(bridge->cornerWedgeIsolation.empty());
 
-  const directional::pipeline::QuotientForestEdge *crossSheetEdge = nullptr;
-  for (const auto &edge : a6->selected_forest()) {
-    const auto first = occurrence_for(occurrences, edge.first);
-    const auto second = occurrence_for(occurrences, edge.second);
-    ASSERT_NE(first, occurrences.end());
-    ASSERT_NE(second, occurrences.end());
-    std::vector<directional::authority::IsolationSheetId> sharedSheets;
-    std::set_intersection(first->cornerWedgeSheets.begin(),
-                          first->cornerWedgeSheets.end(),
-                          second->cornerWedgeSheets.begin(),
-                          second->cornerWedgeSheets.end(),
-                          std::back_inserter(sharedSheets));
-    if (sharedSheets.empty()) {
-      crossSheetEdge = &edge;
-      break;
-    }
-  }
-  ASSERT_NE(crossSheetEdge, nullptr)
-      << "split-isolation witness must exercise a selected cross-sheet join";
-
-  const auto unrelatedSheet =
-      directional::authority::IsolationSheetId::from_index(99, 100);
-  ASSERT_TRUE(unrelatedSheet.has_value());
-  const auto disconnect = [&](auto &transitions) {
-    for (auto &transition : transitions) {
-      transition.fromSheet = unrelatedSheet.value();
-      transition.toSheet = unrelatedSheet.value();
-    }
-  };
-  for (auto &relation : relations) {
-    if (relation.id != crossSheetEdge->relation) continue;
-    disconnect(relation.evidence.firstSideIsolationEvidence);
-    disconnect(relation.evidence.secondSideIsolationEvidence);
-    disconnect(relation.evidence.equivalence.isolationTransitions);
-  }
-  for (auto &occurrence : occurrences) {
-    if (occurrence.id == crossSheetEdge->first ||
-        occurrence.id == crossSheetEdge->second) {
-      disconnect(occurrence.cornerWedgeIsolation);
-    }
+  const auto unrelatedFirst = test_isolation_sheet_id(99);
+  const auto unrelatedSecond = test_isolation_sheet_id(100);
+  ASSERT_NE(unrelatedFirst, unrelatedSecond);
+  for (auto &transition : bridge->cornerWedgeIsolation) {
+    transition.fromSheet = unrelatedFirst;
+    transition.toSheet = unrelatedSecond;
   }
 
   auto tampered = directional::pipeline::SurfaceOccurrenceComplexProducer::
@@ -7425,16 +7392,23 @@ TEST(M6CP1, A7CrossSheetBindingRequiresConnectingIsolationTransition) {
   const auto *tamperedA5 =
       std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(&tampered);
   ASSERT_NE(tamperedA5, nullptr);
+  auto tamperedA6Construction =
+      directional::pipeline::SurfaceQuotientProducer::produce(*tamperedA5);
+  const auto *tamperedA6 =
+      std::get_if<directional::pipeline::SurfaceQuotientProduct>(
+          &tamperedA6Construction);
+  ASSERT_NE(tamperedA6, nullptr);
+
   auto rejected =
       directional::pipeline::SourceAttachedGeometryProducer::produce(
-          fixture.mesh.V, fixture.mesh.F, *tamperedA5, *a6);
+          fixture.mesh.V, fixture.mesh.F, *tamperedA5, *tamperedA6);
   const auto *failure =
       std::get_if<directional::pipeline::GeometryEmbeddingFailure>(&rejected);
   ASSERT_NE(failure, nullptr);
   EXPECT_EQ(failure->code,
             directional::pipeline::GeometryEmbeddingFailureCode::
                 UncertifiedCrossSheetBinding);
-  EXPECT_EQ(failure->site, "cross-sheet");
+  EXPECT_EQ(failure->site, "cross-sheet:wedge");
 }
 
 TEST(M6CP1, A5PhaseFrontSourceFailuresKeepDistinctDiagnostics) {

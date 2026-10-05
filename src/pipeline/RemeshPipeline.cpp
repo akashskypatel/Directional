@@ -5020,7 +5020,7 @@ const char *surface_quotient_product_error_name(
   case SurfaceQuotientProductErrorCode::ClosedComplexHardFeatureAuthorityMismatch:
     return "QuotientClosedComplexHardFeatureAuthorityMismatch";
   case SurfaceQuotientProductErrorCode::ClosedComplexStripContinuationMismatch:
-    return "ClosedComplexStripContinuationMismatch";
+    return "QuotientClosedComplexStripContinuationMismatch";
   }
   return "QuotientUnknownFailure";
 }
@@ -6881,16 +6881,36 @@ SourceAttachedGeometryProducer::produce(
                   quotient.id, representative, {}, "cross-component");
     }
 
-    const auto has_isolation_transition = [](
+    const auto wedge_isolation_connected = [](
         const SurfaceOccurrence &occurrence) {
-      return !occurrence.cornerWedgeIsolation.empty();
+      if (occurrence.cornerWedgeSheets.size() <= 1U) return true;
+
+      std::set<authority::IsolationSheetId> reachable{
+          occurrence.cornerWedgeSheets.front()};
+      bool changed = true;
+      while (changed) {
+        changed = false;
+        for (const auto &transition : occurrence.cornerWedgeIsolation) {
+          if (transition.region != occurrence.topologyRegion ||
+              !wedge_contains_sheet(occurrence, transition.fromSheet) ||
+              !wedge_contains_sheet(occurrence, transition.toSheet)) {
+            continue;
+          }
+          if (reachable.contains(transition.fromSheet)) {
+            changed |= reachable.insert(transition.toSheet).second;
+          }
+          if (reachable.contains(transition.toSheet)) {
+            changed |= reachable.insert(transition.fromSheet).second;
+          }
+        }
+      }
+      return reachable.size() == occurrence.cornerWedgeSheets.size();
     };
     for (const authority::OccurrenceId member : quotient.members) {
       const SurfaceOccurrence &occurrence = *occurrenceById.at(member);
-      if (occurrence.cornerWedgeSheets.size() > 1U &&
-          !has_isolation_transition(occurrence)) {
+      if (!wedge_isolation_connected(occurrence)) {
         return fail(GeometryEmbeddingFailureCode::UncertifiedCrossSheetBinding,
-                    quotient.id, member, {}, "cross-sheet");
+                    quotient.id, member, {}, "cross-sheet:wedge");
       }
     }
     for (const QuotientForestEdge &edge : quotientProduct.selected_forest()) {
