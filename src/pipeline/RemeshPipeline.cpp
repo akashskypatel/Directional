@@ -7585,7 +7585,7 @@ build_authoritative_phase_front_mesh_with_hard_features(
   }
   result.consumedTopologyRegions = consumedTopologyRegions.size();
   result.consumedInternalIsolationSeams =
-      occurrenceComplex.certificate().validatedIsolationCertificateCount;
+      occurrenceComplex->certificate().validatedIsolationCertificateCount;
   result.consumedPeriodicHolonomies = consumedPeriodicRelations.size();
   result.invalidCell = -1;
   result.invalidEdge = -1;
