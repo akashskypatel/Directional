@@ -1,6 +1,17 @@
 # `M6-CP2-CB1-VERIFIER` — Independent Verifier Code + Build Plan
 
-> **HELD until `M6-CP2-DEFN-REV` accepts or amends the Definition.** This plan is not implementation authority before that Review.
+> **RELEASED by `M6-CP2-DEFN-REV` (2026-10-05) under RA-28 + RA-28a.** RA-28a is binding and governs this plan wherever they conflict (`Architecture_M6_Frozen_Definitions.md` RA-28a; rationale `Architecture_M6_CP2_DEFN_Review_Record.md`). Summary:
+> - §1: exact-once bijection, forest = Joining, published-forest spanning per class, strict cycle closure.
+> - §2: the exact A6 → A5 field table and the A7 → A6/A5 binding. Stop if a producer transforms instead of copying.
+> - §3: A5 wedge, binding, sheet, seam and support checks against A0.
+> - §4: dependency gating.
+> - §5: drop `ForbiddenGeometricWeld` / `UpstreamFailureSubstitution` from runtime codes.
+> - §6: `VerifiedSurfaceProducts` type invariant and a stage function, not inlined in the adapter.
+> - §7: optimizer check only when `vertexChartAuthority[v].retained`; prove the representative-face precondition; stop on any selector449 optimizer-row change.
+> - §8: tamper precision.
+> - §9: the A0 tuple and the adapter failure string `VerificationFailed:<code>:<site>`.
+>
+> The identity list, order and gate (**491**) are unchanged.
 
 **Type:** Code + Build only; runtime forbidden.
 **Definition authority:** `Architecture_M6_CP2_Definition_Record.md` plus the accepted Review amendment, if any.

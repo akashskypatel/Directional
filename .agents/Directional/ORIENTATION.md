@@ -1,3 +1,21 @@
+## Currency — `M6-CP2-DEFN-REV`: CP2 verifier Definition ACCEPTED with RA-28a; exact next `M6-CP2-CB1-VERIFIER` (2026-10-05 UTC)
+
+- The architecture is accepted: record-view seam, C4 defensive, three wedge tampers, A8 after A7, gate **491**.
+- RA-28a adds:
+  - exact-once / forest / spanning / cycle checks;
+  - an exact A6 → A5 field table;
+  - A5 wedge and support checks against A0;
+  - dependency gating;
+  - removal of two predicate-less codes;
+  - a `VerifiedSurfaceProducts` type invariant;
+  - `retained`-gated optimizer check;
+  - tamper precision;
+  - the A0 tuple and failure string.
+- No new identities.
+
+Accounting **60 / 16 / 44**, debt 1.
+
+### Superseded currency note
 ## Currency — `M6-CP2-DEFN` COMPLETE / pending mandatory `M6-CP2-DEFN-REV` (2026-10-05 UTC)
 
 - CP2 candidate contract is frozen in `Architecture_M6_CP2_Definition_Record.md`; implementation remains unauthorized until Review.
@@ -376,9 +394,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
- > **Current milestone authority (2026-10-05, after the `M6-CP1-TB12-CLOSE-R1-REV` addendum):** M4 and M5 remain CLOSED / ACCEPTED. M6 CP1 remains ACTIVE pending its close Review. Reviewed runtime authority is `11330703256 / 3f40f04a...` at focused30 + selector449 = **479/479**. RA-27b amends the close plan. Stable accounting **60/16/44**, debt 1. Exact next is `M6-CP1-CLOSE-REV`; if CP1 closes, then `M6-CP2-DEFN`.
+ > **Current milestone authority (2026-10-05, after `M6-CP2-DEFN-REV`):** M4 and M5 remain CLOSED / ACCEPTED. **M6 CP1 is CLOSED / ACCEPTED, mechanism-only.** M6 CP2 is ACTIVE: the verifier Definition is accepted with RA-28a. Reviewed runtime authority is `11330703256 / 3f40f04a...` (focused30 + selector449 = 479/479). Stable accounting **60/16/44**, debt 1 (`G4-B002`, CP3). Exact next is `M6-CP2-CB1-VERIFIER` (gate 491).
 
-**Currency.** `M6-CP1-TB12-CLOSE-R1-REV` review-agent addendum (Review), 2026-10-05 UTC
+**Currency.** `M6-CP2-DEFN-REV` (Review), 2026-10-05 UTC
 
 **Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` §16.3 is the active same-region nonzero-Z4 contract. `PeriodicRelationId` remains carrier-content identity; relation rotation is the gauge-adjusted quotient `Q`, action/transport is relation value, and canonical storage may invert representation only after semantic Forward -> Reverse authority is fixed. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 
@@ -562,23 +580,24 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M6-CP1-CLOSE-REV` — EXACT NEXT / runtime-free CP1 closure review (RA-27b §3 binding).**
-   - Re-derive the six frozen exit items verbatim against HEAD source and reviewed runtime `11330703256 / 3f40f04a...` at 479/479.
-   - Re-check RA-19a, RA-22a, RA-22b, RA-25, RA-26 §3, RA-27a and the A5-sourced isolation counter.
-   - Classify the defensive and static-only branches with owners: C2 empty-front, C4, the RA-27a static conjuncts, and the RA-27a §6 edge rule.
-   - `G4-B002` stays open (debt 1). No source repair in Review.
-   - If CP1 closes → **`M6-CP2-DEFN`** (RA-27b §4).
-1b. **`M6-CP2-DEFN` — post-CP1 (bounded, runtime-free).**
-   - `SurfaceProductVerifier` contract (frozen §6, §10).
-   - A6 → A5 and A7 → A6/A5 certificate chain binding (`M6-CP1-TB12-REV-OBS-01`).
-   - RA-26 §5(iii): the vacuous `project_vertices` sheet check.
-   - C4 weld witness.
-   - Appended identity-29 tampers: region, one-endpoint, three-sheet.
+1. **`M6-CP2-CB1-VERIFIER` — EXACT NEXT (Code + Build; RA-28 + RA-28a).**
+   - Add record-view exports, `SurfaceProductVerifier` and the `VerifiedSurfaceProducts` stage function.
+   - Implement the §6.2 recomputes plus RA-28a §1–§3 (exact-once/forest/spanning/cycle, the field table, A5 wedge vs A0).
+   - Dependency gating; the reduced code set; the adapter string `VerificationFailed:<code>:<site>`.
+   - Optimizer check gated on `retained`.
+   - The 12 frozen identities in `Architecture_M6_CP2_Required_Green_Focused_12.txt`.
+   - Compile/package only → TB1 **491** → Review.
+   - Stops:
+     - a producer transforms a field in the table;
+     - the representative-face precondition is unprovable;
+     - any selector449 optimizer row changes;
+     - the verifier rejects an accepted row.
+   - CP1 is CLOSED / ACCEPTED, mechanism-only (`M6_CP1_Closure_Record.md`).
 1a. **`M6-DEFN-R5` — CP3-entry gate (not CP1).**
    - Periodic unequal-face-gauge witness, plus the coordinate / relation-gauge rule.
    - HardRail cross-region branch certification.
    - OrdinaryFront coordinate identity across isolation seams.
-   - RA-26 §5: a class-wide reference for optimizer energy/gradient and for the final-validation field-metric fallback; a real replacement for the vacuous `project_vertices` sheet check; a representative-permutation falsifier.
+   - RA-26 §5(i)(ii)(iv): a class-wide reference for optimizer energy/gradient and for the final-validation field-metric fallback; a representative-permutation falsifier. (§5(iii) moved to CP2 under RA-28/28a.)
    - RA-27a §6: an executed edge-rule falsifier on the first produced seam-collinear fixture. OBS-02: a relation-kind-aware cross-sheet rule. (OBS-01 moved to `M6-CP2-DEFN` by RA-27b §4.)
    - Runs after CP2.
 
@@ -610,6 +629,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 **A green behavioral test is not a contract proof when the oracle compares only a subset of the promised serialization — `M6-CP1-TB10-A5V-REV`, lesson 193.** Identity24 ran three real stage-valid fixtures but omitted multiple mesh/lineage/result fields, so those fields could drift without turning the test red. Enumerate the output type and prove every contract field is covered; a strong test name does not widen its assertions.
 
 **Moving validation into an earlier stage can still invert that stage's own pre-existing failure precedence — `M6-CP1-TB10-A5V-REV`, existing `VALIDATION_ORDER_SHADOWING`.** RA-19 explicitly required the moved helper after every old A5 check; placing it before `publish_records_for_validation` violates that boundary even when the full gate stays green.
+
+**A verifier binding must be bidirectional, and exact rules over self-declared evidence need a source cross-check — `M6-CP2-DEFN-REV`, lesson 201.** The CP2 Definition bound each A6 record to some A5 relation, but not each A5 relation to exactly one A6 record, so a dropped relation or an unsupported union would verify. It also left A5's self-declared wedge sheets and transitions unchecked against A0. That makes RA-27a's exact rule only as strong as its own inputs.
 
 **A runtime falsifier proves only the dimension it tampers — `M6-CP1-TB12-CLOSE-R1-REV` addendum, lesson 200.** Identity 29 moved every transition fully outside the sheet set. That proves rejection of "no in-set transition", but not the region filter or connectivity versus "touches the set". A mutant for each of those passes the test. List a rule's conjuncts, and mark each one runtime-proved or static-only.
 

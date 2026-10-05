@@ -1,3 +1,18 @@
+## Resume-critical update — `M6-CP2-DEFN-REV` ACCEPTED with RA-28a; exact next `M6-CP2-CB1-VERIFIER` (2026-10-05)
+
+**Start `M6-CP2-CB1-VERIFIER`** (Code + Build; compile/package only). Follow `Architecture_M6_CP2_CB1_Verifier_Code_Build_Plan.md`, now **released**. **RA-28a governs where it conflicts:**
+- **§1:** A5 relations ↔ A6 certificates ↔ A6 consumptions are exactly-once bijective; forest = `Joining`; each class is spanned by its published forest (|members| − 1 edges, connected); `CycleClosing` transport equals the published path composition.
+- **§2:** an exact A6 → A5 field table (`relation`, `first`/`second`, `relationTransport` ← `canonicalTransport`, `evidence` ← `equivalence`, `selectedRelationStep` ← `canonicalSelectedStep`), plus the A7 → A6/A5 binding. **Stop if a producer transforms instead of copying.**
+- **§3:** A5 wedge bindings, sheets, isolation seams and support incidence checked against A0.
+- **§4:** dependency gating.
+- **§5:** no `ForbiddenGeometricWeld` / `UpstreamFailureSubstitution` runtime codes.
+- **§6:** `VerifiedSurfaceProducts` type invariant plus a stage function. The adapter projects only verified products.
+- **§7:** the optimizer class-wide check only when `vertexChartAuthority[v].retained`. Prove the representative-face precondition. **Stop if any selector449 optimizer row changes.**
+- **§8:** tamper precision.
+- **§9:** A0 tuple; `VerificationFailed:<code>:<site>`.
+
+The 12 identities, their order and the gate (**30 + 12 + 449 = 491**) are unchanged. Reviewed runtime `11330703256 / 3f40f04a...` (479/479). Accounting **60 / 16 / 44**, debt 1.
+
 ## Resume-critical update — `M6-CP2-DEFN` candidate complete; mandatory Review next (2026-10-05)
 
 **Start `M6-CP2-DEFN-REV` next. Do not implement CP2 before Review.** Review `Architecture_M6_CP2_Definition_Record.md`, the held `Architecture_M6_CP2_CB1_Verifier_Code_Build_Plan.md`, and RA-28 at the end of `Architecture_M6_Frozen_Definitions.md`.
@@ -955,53 +970,53 @@ Review must independently re-open source/evidence and re-derive: split-square v0
 
 ## Current authority
 
-**M6 CP1 is CLOSED / ACCEPTED, mechanism-only**, by `M6-CP1-CLOSE-REV` (`Architecture_M6_CP1_Close_Review_Record.md`; compact authority `M6_CP1_Closure_Record.md`).
-- Reviewed runtime authority: `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05`.
-- Gate: focused-30 (`1e815443...`) + selector449 (`d4a0d1b7...`) = **479/479**.
-- Normative: RA-1 – RA-27b.
-- Accounting **60 / 16 / 44**, debt **1** (`G4-B002`, owned by M6-CP3).
+- **M6 CP1:** CLOSED / ACCEPTED, mechanism-only (`M6_CP1_Closure_Record.md`).
+- **M6 CP2 Definition:** ACCEPTED by `M6-CP2-DEFN-REV` with RA-28a (`Architecture_M6_CP2_DEFN_Review_Record.md`).
+- Reviewed runtime authority: `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05` (focused-30 + selector449 = **479/479**).
+- Normative: RA-1 – RA-28a.
+- Accounting **60 / 16 / 44**, debt **1** (`G4-B002`, CP3).
 
 ## Exact next turn
 
-**`M6-CP2-DEFN` — new turn; bounded, runtime-free Definition.** Follow `Architecture_M6_CP2_Definition_Plan.md`, which includes the binding review-agent block D1–D6.
-- Freeze the `SurfaceProductVerifier` contract: report and failure types, the §6.2 recompute matrix, and the §6.3 typed failure matrix.
-- Freeze the certificate-chain binding (`M6-CP1-TB12-REV-OBS-01`).
-- Resolve RA-26 §5(iii).
-- Settle the C4 reachability classification and the appended RA-27a tamper designs (`M6-CP1-TB12-R1-REV-OBS-01`).
-- Decide A8 pipeline integration and the gate architecture.
-- Successor: mandatory **`M6-CP2-DEFN-REV`**. No source, test, selector or runtime change in this turn.
+**`M6-CP2-CB1-VERIFIER` — new turn; Code + Build, compile/package only.** Follow `Architecture_M6_CP2_CB1_Verifier_Code_Build_Plan.md` (released) under RA-28 + RA-28a.
+- Create `Architecture_M6_CP2_Required_Green_Focused_12.txt` with the 12 Definition identities in order.
+- Mandatory reusable GMP/GMPXX workflow; standard eight targets; `runtimeExecution=false`.
+- Compile-green → `M6-CP2-TB1-VERIFIER-EXEC` (**491**) → mandatory `M6-CP2-TB1-VERIFIER-REV`.
 
 ## Completed predecessor turns (reference only)
 
-- `M6-CP1-CLOSE-REV` — CP1 CLOSED / ACCEPTED, mechanism-only; successor `M6-CP2-DEFN`.
-- `M6-CP1-TB12-CLOSE-R1-REV` (+ addendum §Q, RA-27b) — promotion of `3f40f04a`.
-- `M6-CP1-TB12-CLOSE-R1-EXEC` — 479/479.
-- `M6-CP1-CB12-CLOSE-R2` and earlier CP1 turns are folded in `M6_Consolidated_Record.md`.
+- `M6-CP2-DEFN-REV` — Definition accepted with RA-28a; CB1 released.
+- `M6-CP2-DEFN` — CP2 candidate contract (RA-28).
+- `M6-CP1-CLOSE-REV` — CP1 CLOSED / ACCEPTED, mechanism-only.
+- Earlier CP1 turns are folded in `M6_Consolidated_Record.md`.
 
 ## Current files
 
-- `.agents/Directional/Architecture_M6_CP2_Definition_Plan.md` — exact next plan, with the binding D1–D6 block.
-- `.agents/Directional/Architecture_M6_CP1_Close_Review_Record.md` — CP1 closure Review authority.
-- `.agents/Directional/M6_CP1_Closure_Record.md` — compact CP1 closure authority.
-- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — normative; §6 (A8-M6 verifier), §10 (M6 checkpoint split), RA-17, RA-26, RA-27a, RA-27b.
-- `.agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt` + selector449 / routing449 — frozen gate.
+- `.agents/Directional/Architecture_M6_CP2_CB1_Verifier_Code_Build_Plan.md` — exact next plan (released; RA-28a block).
+- `.agents/Directional/Architecture_M6_CP2_Definition_Record.md` — the CP2 Definition (D1–D6).
+- `.agents/Directional/Architecture_M6_CP2_DEFN_Review_Record.md` — Review authority; findings F1–F9.
+- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — normative; §6, §10, RA-17, RA-26, RA-27a, RA-28, RA-28a.
+- `.agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt` + selector449 / routing449 — frozen gate prefixes.
+- `.agents/Directional/M6_CP1_Closure_Record.md` — CP1 closure authority.
 
 ## Context Load Plan
 
 ```yaml
 load_next:
-  - .agents/Directional/Architecture_M6_CP2_Definition_Plan.md
+  - .agents/Directional/Architecture_M6_CP2_CB1_Verifier_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M6_CP2_Definition_Record.md
+  - .agents/Directional/Architecture_M6_CP2_DEFN_Review_Record.md
   - .agents/Directional/Architecture_M6_Frozen_Definitions.md
-  - .agents/Directional/Architecture_M6_CP1_Close_Review_Record.md
-  - .agents/Directional/M6_CP1_Closure_Record.md
 conditional_modules:
-  - trigger: github_connector / GitHub Actions / source snapshot
+  - trigger: github_connector / GitHub Actions / compile
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
-  - include/directional/pipeline/RemeshPipeline.h (A5 SurfaceOccurrence 814-841; A6 records 1249-1256 and certificates 1187-1207; A7 1339-1455)
-  - src/pipeline/RemeshPipeline.cpp (A5 publication 3628-3766; A6 publication 5572+, partition 5814-5890, materialization 5960-6031, closed-complex view 6074-6379; A7 6512-7000)
-  - src/geometry/SurfaceMeshOptimizer.cpp (project_vertices 759-880; RA-26 §5(iii) only)
-  - tests/SurfaceCellTransitionQuotientTests.cpp (make_square_fixture 377-417; identity 29)
+  - include/directional/pipeline/RemeshPipeline.h (A5 SurfaceOccurrence 814-841, relation evidence 860-890; A6 certificate/consumption/forest/path 1029-1097, records 1249-1256; A7 1339-1462)
+  - src/pipeline/RemeshPipeline.cpp (A5 wedge construction 4395-4470; A6 certificate copy 5219-5224/5338/5365 and publication check 5770-5795; partition 5810-5890; A7 6512-7000; adapter 7293-7622; optimizer chart authority 12868-12872)
+  - include/directional/validation/SourceAuthoritativeMeshValidator.h (SourceVertexChartAuthority 63-67)
+  - src/geometry/SurfaceMeshOptimizer.cpp (project_vertices 759-880)
+  - tests/SurfaceCellTransitionQuotientTests.cpp (split_isolation_fixture; identity 29)
+  - .agents/Directional/GitHub_Workflow_Policy.md
 do_not_preload:
   - folded superseded M6 per-turn records
   - research/provenance/examples

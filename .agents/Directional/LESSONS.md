@@ -2631,3 +2631,12 @@ When a temporary workflow caller is assembled with low-level Git objects, creati
       - For each fail-closed rule, list its conjuncts and mark each one runtime-proved (a tamper that only that conjunct rejects) or static-only.
       - Claim runtime proof only for the tampered conjuncts, and give the static-only ones an owner for an appended falsifier.
     - Recorded at the `M6-CP1-TB12-CLOSE-R1-REV` review-agent addendum (RA-27b).
+201. **A verifier's binding must be bidirectional, and an exact rule over self-declared evidence needs a cross-check against source authority.**
+    - *What happened.*
+      - The CP2 Definition required each A6 certificate and consumption to cite an A5-owned relation. It did not require each A5 relation to have exactly one of each, or each class to be spanned by its published forest. A dropped relation, or a union with no relation behind it, would therefore verify.
+      - Its "payload equality" also named no field correspondence.
+      - It left A5's self-declared wedge sheets and transitions unchecked against A0. RA-27a's exact connectivity rule is only as strong as those inputs.
+    - **Rule.**
+      - Write every verifier binding as a bijection or a set equality in both directions, with an explicit field table.
+      - For each exact rule a producer applies to its own declared evidence, add a verifier check that derives that evidence's consistency from the upstream source authority.
+    - Recorded at `M6-CP2-DEFN-REV` (RA-28a).

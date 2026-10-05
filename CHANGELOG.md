@@ -1,3 +1,13 @@
+## 2026-10-05 — `M6-CP2-DEFN-REV` — independent verifier design approved with fixes
+
+- The plan for the independent product verifier (CP2) is approved.
+- Before any code is written, it must also check that:
+  - every relation is consumed exactly once;
+  - merged classes are backed by recorded relations;
+  - the per-corner sheet data matches the source mesh.
+- The order "verify, then use" becomes something the type system enforces.
+- Next: `M6-CP2-CB1-VERIFIER` (gate 491).
+
 ## 2026-10-05 — M6 CP2 verifier contract frozen for review
 
 - The verifier gets malformed test evidence through copied record views, not unchecked products.

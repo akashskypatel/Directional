@@ -1,6 +1,6 @@
 # M6 Frozen Definitions — Occurrence, Quotient, Embedding, Independent Verification
 
-**Status:** FROZEN / **M6-CP1 CLOSED / ACCEPTED, mechanism-only**; `M6-CP2-DEFN` candidate contract frozen under RA-28 and **PENDING `M6-CP2-DEFN-REV`**; reviewed runtime `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05`, focused30 + selector449 = **479/479**; `G4-B002` debt remains open (debt 1); RA-1 – RA-28 as annotated.
+**Status:** FROZEN / **M6-CP1 CLOSED / ACCEPTED, mechanism-only**; `M6-CP2-DEFN` **ACCEPTED by `M6-CP2-DEFN-REV` with RA-28a**; reviewed runtime `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05`, focused30 + selector449 = **479/479**; `G4-B002` debt remains open (debt 1); **EXACT NEXT = `M6-CP2-CB1-VERIFIER`** (gate 30+12+449 = 491); RA-1 – RA-28a normative as annotated.
 **Date:** 2026-09-25
 **Definition authority:** this record is the normative M6 contract for A5 occurrence creation, A6 quotient construction/materialization, A7 source-attached geometry embedding, and the M6 structural portion of A8 independent verification. It refines `DESIGN.md` §14 M6 without changing accepted M5 producer semantics or pulling M7 disposition/degradation work forward.
 
@@ -1031,3 +1031,68 @@ Accounting **60 / 16 / 44**, debt 1. Exact next: `M6-CP1-CLOSE-REV`.
 10. successor chain is `M6-CP2-DEFN-REV` → `M6-CP2-CB1-VERIFIER` → TB1 → Review. `M6-DEFN-R5` remains after CP2; `G4-B002` debt remains 1; M7 semantics remain forbidden.
 
 Until `M6-CP2-DEFN-REV` accepts this candidate, RA-28 authorizes **no implementation**.
+
+## RA-28a — CP2 verifier Definition accepted with binding amendments (normative, 2026-10-05, `M6-CP2-DEFN-REV`)
+
+Rationale: `Architecture_M6_CP2_DEFN_Review_Record.md` §2. RA-28 is accepted as amended here; where they conflict, RA-28a governs. No new identities are added: each item is carried by the named identity from the CP2 focused-12 list, and the gate stays **491**.
+
+1. **Exact-once, forest, spanning and cycle checks** (identities 3 and 6). Over published record views only, with no search:
+   1. the A5-owned relation IDs, the A6 certificate relation IDs and the A6 consumption relation IDs are equal sets, each ID occurring **exactly once** in each;
+   2. the `selectedForest` relation IDs equal the IDs of the `Joining` consumptions, and each forest edge's endpoints equal its certificate's `first`/`second`;
+   3. for every class, its published forest edges have both endpoints in the class, number exactly `|members| − 1`, and connect all members (traversal over the *published* edges is a check, not producer union-find);
+   4. every `CycleClosing` consumption has both endpoints in one class, and its certificate `relationTransport` equals the exact composition, along the class's published selected path, of the named certificates' transports with their orientations (RA-13 strict rule).
+
+   Failures: `QuotientMembershipMismatch` for 1–3, `NamedTransportMismatch` for 4.
+2. **Field-correspondence table for A6 → A5 binding** (identity 6). For certificate `c` citing A5 relation `r`:
+
+   | A6 field | must equal |
+   |---|---|
+   | `c.relation` | `r.id` |
+   | `c.first` / `c.second` | `r.id.first` / `r.id.second` |
+   | `c.relationTransport` | `r.evidence.canonicalTransport.value()` (`MissingPublishedAuthority` if absent) |
+   | `c.evidence` | `r.evidence.equivalence` |
+   | `c.selectedRelationStep` | `r.evidence.canonicalSelectedStep` |
+
+   - `r.firstFrontEdge` / `r.secondFrontEdge` are representation-only and are not compared.
+   - **A7 → A6/A5:**
+     - each A7 vertex's class equals one published A6 class (ID and member set);
+     - its support equals the common A5 member support (RA-18);
+     - A7 topology equals the A6 classed cells by IDs;
+     - every A7 selected step's applied value equals the cited A5 relation's `canonicalRelationValue` (RA-16 §3).
+   - No A6/A7 producer routine is called to derive an expected value.
+   - **Stop for Review** if any A6/A7 field differs from its table entry on any accepted row, i.e. if a producer transforms rather than copies. Do not encode a transformation.
+3. **A5 wedge and support evidence against A0** (identity 2). For every occurrence:
+   - every `cornerWedgeBinding` face is incident to the occurrence's support;
+   - `binding.sheet` equals A0's sheet for `binding.face`;
+   - `cornerWedgeSheets` equals the sorted, unique set of binding sheets;
+   - every `cornerWedgeIsolation` transition has `region == topologyRegion`, its `seam` is an A0 isolation seam of that region incident to the support, and its `{fromSheet, toSheet}` are A0's sheets of the seam's two faces;
+   - the A5 occurrence support has exact A0 incidence through the shared source-support kernel (frozen §6.2).
+
+   Failures: `SourceIncidenceMismatch` / `SourceSupportIncidenceMismatch`.
+4. **Dependency gating** (identities 1 and 5). Checks are partitioned in the order A0 → A5 identity/indexing → A5 incidence → A6 identity/indexing → A6 ledger/forest/topology → A7 → cross-stage. A check runs only if every prerequisite partition produced no findings; skipped checks emit nothing. The finding set is therefore a function of the input records alone, and identity 1 asserts its invariance under record-order permutation.
+5. **Code set** (identity 5). Remove `ForbiddenGeometricWeld` and `UpstreamFailureSubstitution` from the runtime `VerificationFailureCode`:
+   - welds are detected combinatorially (item 1.3 → `QuotientMembershipMismatch`, or `NonManifoldTopology`);
+   - upstream-failure substitution is excluded by API shape and pinned by a compile-time trait (no verifier overload accepts a producer error variant).
+
+   No runtime code may be emitted without a frozen predicate.
+6. **Order as a type invariant** (identity 11).
+   - `SurfaceProductVerifier` returns `VerifiedSurfaceProducts`, which only the verifier can construct and only when there are no findings.
+   - The adapter's projection entry accepts only `const VerifiedSurfaceProducts&`.
+   - A8 runs in a stage function (`produce_verified_surface_products`, name frozen by CB1) called by the adapter, not inlined in the adapter body.
+   - Identity 11 asserts:
+     - a compile-time trait that projection is not invocable with raw A5/A6/A7 products;
+     - behaviorally, that a pipeline result carries a verified report;
+     - that a record-view failure maps to the frozen adapter failure string (item 9).
+7. **Optimizer reference-safety gating** (identity 12). The class-wide membership check, "projected face ∈ faces of `vertexChartAuthority[v].sourceCharts`", applies **only when `vertexChartAuthority[v].retained`** (authoritative path, `RemeshPipeline.cpp:12868-12872`). Otherwise current behavior is unchanged. It only rejects.
+   - **Precondition to prove in the CB1 report:** the representative `sourcePoint.face` belongs to the class's `sourceCharts` faces. Cite the `CornerPlacementProvenance.selectedFace` ∈ wedge-bindings derivation; if unprovable, stop for Review.
+   - Identity 12 covers: accept for an in-class face; reject for an out-of-class face; non-authoritative path unchanged.
+   - **Stop for Review** if any selector449 optimizer row changes outcome.
+8. **Tamper precision** (identities 8–10). Each tamper republishes A5, re-produces A6 (asserting success), then runs A7, and asserts `UncertifiedCrossSheetBinding` at `cross-sheet:wedge`.
+   - **Wrong-region:** a valid `TopologyRegionId` ≠ `topologyRegion`, with both sheets kept in the set.
+   - **Touches:** **every** bridge transition becomes (in-set, out-of-set).
+   - **Three-sheet:** insert a phantom sheet ID, not otherwise used, **in sorted position** in `cornerWedgeSheets`; the transitions still connect only the original two.
+9. **A0 and the failure string** (identities 2 and 11).
+   - A0 is the tuple (source vertices, source faces, `SourceTopologyRegions` (regions, components, sheets, isolation seams), source hard-feature edges).
+   - The adapter maps a verifier rejection to `VerificationFailed:<code>:<site>` from the first finding in semantic order, preserving the site.
+
+Successor: `M6-CP2-CB1-VERIFIER` (Code + Build; compile/package only) → `M6-CP2-TB1-VERIFIER-EXEC` (**491**) → `M6-CP2-TB1-VERIFIER-REV`. `M6-DEFN-R5` follows CP2. `G4-B002` stays open (debt 1). Accounting **60 / 16 / 44**.

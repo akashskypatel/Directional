@@ -1,3 +1,18 @@
+## 2026-10-05 — `M6-CP2-DEFN-REV`: CP2 verifier Definition accepted with RA-28a; CB1 released
+
+- **Accepted:** the record-view negative seam; C4 accepted-defensive with a verifier-manifoldness falsifier; three wedge tampers; A8 after A7 and before projection; gate 491.
+- **RA-28a, design fixes** before implementation:
+  - exact-once / forest / spanning / cycle checks (the binding was one-directional);
+  - an exact A6 → A5 field table (A6 copies verbatim; stop if a producer transforms);
+  - A5 wedge, binding, sheet, seam and support checks against A0 (the evidence was self-declared);
+  - dependency gating;
+  - two predicate-less codes removed;
+  - a `VerifiedSurfaceProducts` type invariant (the placement test was unobservable);
+  - the optimizer check gated on `retained` (non-authoritative callers would regress);
+  - tamper precision;
+  - the A0 tuple and failure string.
+- **Docs:** new `Architecture_M6_CP2_DEFN_Review_Record.md`; CB1 plan released; lesson 201; handoff / ORIENTATION / TODO / ROADMAP / tracker (+0) / consolidated §51. Accounting 60 / 16 / 44.
+
 ## 2026-10-05 — `M6-CP2-DEFN` froze the independent verifier candidate contract
 
 - Defined tamperable verification record views instead of unchecked products and froze typed semantic finding identity/order.

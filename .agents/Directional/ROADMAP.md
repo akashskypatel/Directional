@@ -1,3 +1,16 @@
+## Live M6 routing — after `M6-CP2-DEFN-REV` (RA-28a)
+
+| Checkpoint | State | Exact next / gate |
+|---|---|---|
+| M6 CP1 | **CLOSED / ACCEPTED, mechanism-only** | `M6_CP1_Closure_Record.md`; runtime `11330703256 / 3f40f04a...`, 479/479 |
+| M6 CP2 Definition | **ACCEPTED with RA-28a** | `Architecture_M6_CP2_Definition_Record.md` + RA-28a |
+| M6 CP2 implementation | **EXACT NEXT** | `M6-CP2-CB1-VERIFIER` -> TB1 **30+12+449 = 491** -> Review |
+| `M6-DEFN-R5` | CP3-entry gate, after CP2 | gauge obligations, barrier census, RA-26 §5(i)(ii)(iv), RA-27a §6, OBS-02 |
+
+Stable accounting: **60 / 16 / 44**, debt 1.
+
+### Superseded routing
+
 ## Live M6 routing — after `M6-CP2-DEFN` candidate freeze
 
 | Checkpoint | State | Exact next / gate |

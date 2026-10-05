@@ -1,6 +1,6 @@
 **Current candidate authority after `M6-CP2-DEFN` (2026-10-05):** CP2 verifier Definition is complete and pending mandatory `M6-CP2-DEFN-REV`. It freezes record-view negative witnesses, typed semantic finding identity/order, exact A5→A6→A7 certificate binding, accepted-defensive C4 plus independent verifier manifoldness, three appended wedge tampers, production A8 after A7/before adapter projection, RA-26 §5(iii) class-wide optimizer chart membership, and a first gate of **30 + 12 + 449 = 491**. No implementation/runtime changed. Reviewed runtime remains `11330703256 / 3f40f04a...`; accounting **60 / 16 / 44**, debt 1.
 
-**Current authority after `M6-CP1-CLOSE-REV` (2026-10-05):** **M6 CP1 CLOSED / ACCEPTED, mechanism-only**. Reviewed runtime remains `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05`, focused30 + selector449 = **479/479**. All six frozen CP1 exit items pass; RA-26 current-HEAD census finds no authority-deciding provenance-face consumer. `G4-B002` remains open; accounting **60 / 16 / 44**, debt 1. Exact next: **`M6-CP2-DEFN`**; `M6-DEFN-R5` follows CP2.
+**Current authority after `M6-CP2-DEFN-REV` (2026-10-05):** M6 CP1 CLOSED / ACCEPTED, mechanism-only; CP2 Definition accepted with RA-28a (§51); reviewed runtime `11330703256 / 3f40f04a...` (479/479). Accounting **60 / 16 / 44**, debt 1. Exact next: `M6-CP2-CB1-VERIFIER` → TB1 (491) → Review.
 
 **Current authority after `M6-CP1-TB12-CLOSE-REV` (2026-10-05):** TB12 candidate `11324028392 / 02149f15...` remains unpromoted after 478/479. CAND-01 is adjudicated **FALSE REJECTION / TEST-FIXTURE WITNESS DEFECT / RECOVERY REQUIRED / NON-STABLE**; RA-27 authorizes test-only `M6-CP1-CB12-CLOSE-R2`, then a fresh 479-process R1 gate and mandatory Review. Reviewed runtime remains `11316716869 / 8dd95821...`; accounting **60 / 16 / 44**, debt 1.
 
@@ -471,6 +471,28 @@ The review agent re-derives R1 at 479/479, with all raw-log hashes matching, and
 - post-closure successor `M6-CP2-DEFN`, which absorbs the A6 → A5 / A7 → A6 certificate binding and RA-26 §5(iii). `M6-DEFN-R5` follows CP2.
 
 Lesson 200. Accounting 60 / 16 / 44.
+
+## 51. `M6-CP2-DEFN-REV` — CP2 verifier Definition accepted with RA-28a
+
+**Accepted architecture:**
+- copy-by-value record views as the negative seam, with no unchecked factory;
+- C4 accepted-defensive, with verifier manifoldness as its falsifier;
+- three wedge tampers;
+- A8 after A7 and before projection;
+- gate 30 + 12 + 449 = 491.
+
+**RA-28a amends:**
+- §1: exact-once bijection, forest = Joining, published-forest spanning, strict cycle closure;
+- §2: an exact field table (A6 copies A5 `id`, endpoints, `equivalence`, `canonicalSelectedStep` and `canonicalTransport` verbatim), with a stop rule if a producer transforms;
+- §3: A5 wedge, binding, sheet, seam and support checks against A0;
+- §4: dependency gating;
+- §5: drop `ForbiddenGeometricWeld` / `UpstreamFailureSubstitution`;
+- §6: a `VerifiedSurfaceProducts` type invariant and a stage function;
+- §7: the optimizer check gated on `retained`, plus the representative-face precondition;
+- §8: tamper precision;
+- §9: the A0 tuple and `VerificationFailed:<code>:<site>`.
+
+No new identities. Lesson 201. Exact next `M6-CP2-CB1-VERIFIER`.
 
 ## Folded document index
 

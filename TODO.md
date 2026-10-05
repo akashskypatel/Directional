@@ -1,3 +1,14 @@
+## Current — `M6-CP2-DEFN-REV` ACCEPTED with RA-28a / exact next `M6-CP2-CB1-VERIFIER` (2026-10-05)
+
+- [x] Review the CP2 Definition (D1–D6, RA-26 §5(iii)) against frozen §6/§10 and exact source.
+- [x] RA-28a:
+  - exact-once/forest/spanning/cycle checks; A6 → A5 field table; A5 wedge/support vs A0;
+  - dependency gating; drop two predicate-less codes; `VerifiedSurfaceProducts`;
+  - `retained`-gated optimizer check; tamper precision; A0 tuple and failure string.
+- [x] Release the CB1 plan; lesson 201.
+- [ ] **Exact next `M6-CP2-CB1-VERIFIER`** (compile/package only; 12 identities; RA-28a stops).
+- [ ] TB1 **491** → mandatory Review → (later) `M6-DEFN-R5` → CP3.
+
 ## Current — `M6-CP2-DEFN` COMPLETE / mandatory Definition Review next (2026-10-05)
 
 - [x] Freeze D1 record-view negative seam and typed semantic finding identity.
