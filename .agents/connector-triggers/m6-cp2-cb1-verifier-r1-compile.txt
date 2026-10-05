@@ -1,5 +1,6 @@
-Purpose: compile/package M6-CP2-CB1-VERIFIER-R1 exact semantic source
-Semantic source: 3cc00697eecc8e20570298653ea7cf8a3887f045
-Caller install commit: cfa474a90b700c90343c2a709d386460cdda9c4f
+Purpose: retry M6-CP2-CB1-VERIFIER-R1 compile after diagnosed DomainResult test compile fix
+Semantic source: 265c8fbb19a66c5c3344a525fdbd43932c3ef829
+Caller correction commit: 17a6b109dfac18c94082c9947258d4e1adb3b2ae
+Prior failed run: 37357362493
 Runtime execution: forbidden
-Retry: 0
+Retry: 1
