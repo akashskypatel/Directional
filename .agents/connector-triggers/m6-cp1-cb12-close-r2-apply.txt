@@ -1,4 +1,0 @@
-Purpose: apply M6-CP1-CB12-CLOSE-R2 closeout documentation patch
-Base: 7ca534c223d603e117c7eeba322f88609c04cbb6
-Caller retarget: d88edb97817cf1cb6224530aae11b470dcf37b60
-Retry: 1
