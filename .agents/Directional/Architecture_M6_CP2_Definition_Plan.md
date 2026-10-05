@@ -1,5 +1,36 @@
 # `M6-CP2-DEFN` — Independent Surface Product Verifier Definition Plan
 
+> **Review-agent block — routing review after `M6-CP1-CLOSE-REV` (2026-10-05). Binding additions to "Binding scope". Each must be decided with `file:line` reasons before any CP2 Code + Build.**
+>
+> **D1. Negative-witness seam (decide first; everything else depends on it).** Products are built only through validating factories (`SurfaceOccurrenceComplexProducer::publish_records_for_validation`, `SurfaceQuotientProducer::publish_records_for_validation` at `RemeshPipeline.cpp:5572`, and the A7 producer). A verifier that only ever sees validated products has no reachable negative, so every §6.3 failure would be vacuous.
+> - Define how malformed authority reaches the verifier. One option: the verifier consumes immutable **record views** exported from products (for example `SurfaceQuotientValidationRecords`, `RemeshPipeline.h:1249-1256`), and tests tamper those records.
+> - **A production unchecked factory is forbidden.**
+> - For each §6.3 class, state whether its witness is reachable through the seam (lesson 199). Classify any unreachable class as defensive, with a reason.
+>
+> **D2. C4 reachability before designing its witness (plan item 6).** A6 recomputes the class partition and rejects merges that relations don't support (`InvalidClassPartition`, `RemeshPipeline.cpp:5814-5890`). It also validates relation evidence before the closed-complex view is built (`:6074`, `:6374`). So a weld-pinched topology is probably **shadowed** before C4 runs.
+> - Prove statically whether any A6 input reaches C4.
+> - If none does, classify C4 as accepted-defensive (like C2) and let the verifier's §6.2 manifoldness recompute, fed through D1, be the executed falsifier for pinched topology.
+> - Do not forge relations to reach C4.
+>
+> **D3. Three-sheet tamper source (plan item 7).** `split_isolation_fixture()` has only 2-sheet bridge occurrences. Choose and justify one of:
+> - an in-chain tamper that adds a third sheet to a bridge's `cornerWedgeSheets` while its transitions connect only two (republish A5, re-produce A6, then A7; RA-27a §5);
+> - a new **produced** fixture with a genuine 3-sheet corner wedge.
+>
+> In both cases, show that the region and touch tampers each defeat a specific mutant that identity 29 does not defeat (lesson 200).
+>
+> **D4. Production integration of A8.** Decide whether the production pipeline runs `SurfaceProductVerifier` and fails closed on a `VerificationFailure`, and if so where (after A7, after completion, or after final validation).
+> - Running it on all 449 selector rows adds runtime and new failure modes. Pre-register a stop rule: **any accepted selector449 or focused-30 row that the verifier rejects stops for Review**, and is not to be weakened.
+> - If the verifier stays test/benchmark-only in CP2, say so and assign pipeline integration to CP3.
+>
+> **D5. Gate architecture (plan item 8).** Decide whether CP1's focused-30 is folded into a cumulative published selector before CP2 appends, or CP2 runs focused-30 + CP2 focused + selector449. Either way:
+> - selector449 and focused-30 stay byte-exact prefixes;
+> - routing449 is unchanged;
+> - the gate count is computed from the enumerated identities, not guessed.
+>
+> **D6. Successor chain.** `M6-CP2-DEFN` → mandatory **`M6-CP2-DEFN-REV`** → the first CP2 Code + Build (name frozen by the Definition) → TB → Review. No implementation is authorized by the Definition itself.
+>
+> Unchanged: `G4-B002` stays open (debt 1); `M6-DEFN-R5` follows CP2; RA-17's transport guard holds; M7 semantics are forbidden.
+
 **Type:** bounded runtime-free Definition.
 **Entry authority:** M6-CP1 CLOSED / ACCEPTED by `Architecture_M6_CP1_Close_Review_Record.md`.
 **Reviewed runtime authority:** `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05`, 479/479.
