@@ -1,3 +1,0 @@
-turn=M6-DEFN-R5
-requested_base=78b447423c1167c347d095c24440393f16bc6c4c
-purpose=resume definition turn authoritative snapshot
