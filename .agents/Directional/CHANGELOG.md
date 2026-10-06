@@ -1,3 +1,11 @@
+## 2026-10-06 — `M6-CP3-CB1-ENTRY` COMPLETE / compile-package GREEN
+
+- Implemented RA-30 + RA-30a CP3 entry authority at semantic source `912760f1ffc785676f5d50717177b1cd8be69234`: Periodic exact-A3 gauge separation, HardRail branch certification, OrdinaryFront isolation-seam identity, typed A4→A5 hard-feature barriers, and relation-kind-aware A7 sheet semantics.
+- Added exactly six frozen CP3-entry identities; focused30/focused12/selector449/routing449 authority was not edited.
+- First Drive apply `37455665769 / 112242600282` failed before commit because the earlier local base directory had been modified; the patch was regenerated from a fresh immutable source extraction. Corrected apply `37458022713 / 112250373902` pushed `912760f1...`; owner-side Drive deletion completed.
+- Mandatory compile `37458495402 / 112251921276` passed all eight standard GMP/GMPXX targets. Result/log artifacts `11411137781 / 11410478676`; result provider SHA-256 `704b1b70...7234`; manifest **28/28**; clean source; `runtimeExecution=false`.
+- Full evidence: `Architecture_M6_CP3_CB1_Entry_Authority_Code_Build_Report.md`. No runtime acceptance is claimed. Exact next: immutable `M6-CP3-TB1-ENTRY-EXEC`, **497** fresh processes, then mandatory `M6-CP3-TB1-ENTRY-REV`; CB2 held. Accounting remains **60 / 16 / 44**, debt 1.
+
 ## 2026-10-06 — `M6-DEFN-R5-REV`: CP3-entry Definition accepted with RA-30a; CB1 released
 
 - **Verified:** D1, D7 and D8 against source; D4's diagnosis; the 497/507 gate arithmetic (the G4-B001 rows are not in selector449).

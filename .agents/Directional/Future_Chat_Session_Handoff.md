@@ -1,3 +1,15 @@
+## Resume-critical update — `M6-CP3-CB1-ENTRY` COMPLETE / compile-package GREEN / exact next `M6-CP3-TB1-ENTRY-EXEC` (2026-10-06)
+
+**Start immutable artifact-only `M6-CP3-TB1-ENTRY-EXEC` next. Do not rebuild, repair, relink, run generated discovery, or begin CB2 before the 497-process entry gate and mandatory Review.**
+
+RA-30 + RA-30a entry authority is implemented at semantic source `912760f1ffc785676f5d50717177b1cd8be69234`: exact-A3 Periodic gauge separation, HardRail endpoint face-gauge branch certification, OrdinaryFront isolation-seam identity, A4-published typed hard-feature barriers consumed by A5, and relation-kind-aware A7 sheet semantics. Exactly six frozen `M6CP3.*` entry identities were added. Frozen focused30/focused12/selector449/routing449 authority was not edited. Full evidence: `Architecture_M6_CP3_CB1_Entry_Authority_Code_Build_Report.md`.
+
+Corrected Drive apply `37458022713 / 112250373902` pushed the semantic commit; the staged Drive patch was permanently retired through the owner connector. Mandatory compile run/job `37458495402 / 112251921276` is GREEN on all eight standard GMP/GMPXX targets. Immutable result/log artifacts are `11411137781 / 11410478676`; result provider digest `704b1b70...7234`, recursive manifest **28/28**, clean source, `runtimeExecution=false`. No Directional runtime, test, benchmark or generated binary execution occurred.
+
+Exact TB1 gate is **497** fresh exact-filter processes = focused30 **30** + focused12 **12** + selector449 **449** + six CP3-entry identities **6**, with exact-one selection, zero skips and immutable postflight. Then mandatory `M6-CP3-TB1-ENTRY-REV`; CB2 remains held. Stable accounting remains **60 / 16 / 44**, debt 1.
+
+---
+
 ## Resume-critical update — `M6-DEFN-R5-REV` ACCEPTED with RA-30a; exact next `M6-CP3-CB1-ENTRY` (2026-10-06)
 
 **Start `M6-CP3-CB1-ENTRY`** (Code + Build; compile/package only). Follow `Architecture_M6_CP3_CB1_Entry_Authority_Code_Build_Plan.md`, which is now **released**. **RA-30a governs:**
