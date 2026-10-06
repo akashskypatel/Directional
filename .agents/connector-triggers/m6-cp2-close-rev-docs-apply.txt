@@ -1,5 +1,0 @@
-Purpose: apply M6-CP2-CLOSE-REV durable documentation patch
-Patch base: 303f9c54c160c38a9b1e288c88bd79a17c329d56
-Caller correction: e0183d3f200de3cfedf73dad5f7def46aeab89b4
-Patch SHA-256: 541e23b4e9a45d6e4fc634b9b4aef6e289e619410c40efa37b4bda2d996f1b63
-Retry: 1
