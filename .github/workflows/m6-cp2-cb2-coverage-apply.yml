@@ -1,0 +1,44 @@
+name: M6 CP2 CB2 Coverage Patch Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m6-cp2-cb2-coverage-apply.txt
+
+permissions:
+  actions: read
+  contents: write
+  id-token: write
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m6-cp2-cb2-coverage-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1Hy0NG7UuppCQU_q7zXWtXvzp647L1lpq
+      patch_sha256: 959ab4f3d2f502324369f80eda5b8392402fed9fdbdf15edd99e3367d44e605b
+      base_sha: 23a4663f840d05a5143515dd368a5562d70be234
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "M6 CP2 CB2 verifier coverage"
+    secrets: inherit
+
+  mailbox:
+    if: ${{ always() }}
+    needs: [validate, apply]
+    uses: ./.github/workflows/workflow-mailbox-publisher.yml
+    with:
+      workflow_key: m6-cp2-cb2-coverage-apply
+      source_sha: ${{ github.sha }}
+      source_ref: ${{ github.ref }}
+      result: ${{ needs.apply.result }}
+      summary: M6 CP2 CB2 coverage patch apply.
