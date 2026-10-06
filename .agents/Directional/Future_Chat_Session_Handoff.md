@@ -1,3 +1,24 @@
+## Resume-critical update — `M6-CP2-CB1-VERIFIER-R2` COMPLETE / compile-package GREEN / exact next R1 EXEC (2026-10-06)
+
+**Start `M6-CP2-TB1-VERIFIER-R1-EXEC` next. Do not rebuild, relink, configure, repair the package, or change source/tests before immutable execution.**
+
+R2 recovered the RA-29/RA-29a verifier contract and compiled/package successfully:
+- semantic source `9c8478aec40bf07144ca7372c2aa58293cd42f5e`;
+- compile run/job `37391389044 / 112037085233`;
+- immutable result `11382000465` / SHA-256 `e02e393375de3004beaf725cb859c7ad32e04456df56eb0c2c2239ad5deed4c1`;
+- log `11381555970` / SHA-256 `3b2fd466c7d55695c31095239021b19696031e4bf263bbf72ccb8ec2b8743888`;
+- eight standard GMP/GMPXX targets green, self-manifest **28/28**, all captured source-status files empty, `runtimeExecution=false`.
+
+The semantic patch changed exactly `RemeshPipeline.h`, `RemeshPipeline.cpp`, and `SurfaceCellTransitionQuotientTests.cpp` (+491/-160). It implements A0 component adjacency, shared source-support resolution, `a6:relation-class`, linear-time topology maps, exact selected-forest path/A7 relation binding, content-owning `VerifiedSurfaceProducts`, carried verification report, verified-token counter reads, and strengthened identities 2/6/7/8/11. No optimizer source changed.
+
+Frozen hashes remain focused30 `1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6`, CP2-focused12 `2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed`, selector449 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`, routing449 `9c88a5ed3de0419c313aa0a36c0e2cf63e7edcdc17c06d9b74311f371c6c5707`. Stable accounting remains **60 / 16 / 44**, debt 1.
+
+The first resumed Drive-apply attempt failed pre-source with a 404 because the preservation copy was outside the service-account-visible `Directional-CI` folder; corrected run/job `37391271795 / 112036654053` applied the exact patch. Both consumed/stale Drive patch copies were permanently retired. Temporary R2 callers/triggers were removed. Full record: `Architecture_M6_CP2_CB1_Verifier_R2_Recovery_Code_Build_Report.md`.
+
+The next immutable gate is exactly **30 + 12 + 449 = 491 fresh exact-filter processes** from package `11382000465`, followed by mandatory `M6-CP2-TB1-VERIFIER-R1-REV`. Candidate remains unpromoted until Review.
+
+---
+
 ## M6-CP2-CB1-VERIFIER-R2 — WIP closeout (2026-10-05)
 
 This code/build turn remains **IN_PROGRESS**. The authoritative source snapshot was workflow run `37388961700`, source SHA `05c9cad3262ad8cf6201536cd7adf37de598a40b`, artifact `11380620376`, digest `sha256:063be6711745f93b6de84a55ea17e95ae4839a1efde540e2743bba8f44374847`, with `runtimeExecution=false`.
