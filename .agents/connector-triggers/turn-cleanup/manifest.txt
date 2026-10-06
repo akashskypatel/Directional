@@ -1,4 +1,0 @@
-# M6-CP2-TB2-COVERAGE-EXEC cleanup
-.agents/connector-triggers/m6-cp2-tb2-coverage-exec.txt
-.agents/connector-triggers/m6-cp2-tb2-coverage-docs-apply.txt
-.agents/Directional/turn-payloads/m6-cp2-tb2-coverage-exec-artifact-only-harness.sh
