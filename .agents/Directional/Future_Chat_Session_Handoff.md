@@ -1,3 +1,19 @@
+## Resume-critical update — `M6-DEFN-R5-REV` ACCEPTED with RA-30a; exact next `M6-CP3-CB1-ENTRY` (2026-10-06)
+
+**Start `M6-CP3-CB1-ENTRY`** (Code + Build; compile/package only). Follow `Architecture_M6_CP3_CB1_Entry_Authority_Code_Build_Plan.md`, which is now **released**. **RA-30a governs:**
+- **§1 (D4):** A4 `SurfacePhaseFrontProduct` publishes the typed hard-feature set its tracer consumed (`SurfaceCellTracingOptions::hardFeatureEdges`). A5 reads it from the product, with **no signature change** (38 direct test callers). The adapter asserts equality with the pipeline set. Stop if an accepted test body must change.
+- **§2 (D2):** a **produced** two-region, non-constant raw-field HardRail fixture; assert first that some endpoint pair has `F_a ≠ F_b` by 90° or 270°. Constant-field fixtures only suffice for the negatives.
+- **§3 (D3):** non-seam OrdinaryFront keeps full equality, including the phase check. Across a certified seam, the stripped branch difference must equal the A5-validated seam quarter-turn (`SurfaceIsolationSeamTransportCertificate::forward()/reverse()`). Add the 90° branch tamper.
+- **§7 (D1):** the produced nonzero-Z4 torus, with an exact-A3 pair whose face gauges differ by 90° or 270°.
+- **§8:** site `:branch-certificate`.
+
+CB2-time amendments, recorded now:
+- **§4:** GP26/GP27 compile only in `directional_surface_cell_historical_tests`, so CB2 adds that target, and stops if it doesn't build.
+- **§5:** canonical semantic accumulation order, or a relaxed equality, for D6.
+- **§6:** scheduler permutation = A4 container order + A5 relation order.
+
+Gates: **497** entry, **507** final. Reviewed runtime `11391685901 / 5ce3132e...` (491/491). Accounting **60 / 16 / 44**, debt 1.
+
 ## Resume-critical update — `M6-DEFN-R5` COMPLETE / mandatory `M6-DEFN-R5-REV` next (2026-10-06)
 
 **Start mandatory independent `M6-DEFN-R5-REV` next. Do not begin CP3 implementation.** D1-D9 are complete in `Architecture_M6_DEFN_R5_CP3_Entry_Definition_Record.md`; candidate normative authority is RA-30 in `Architecture_M6_Frozen_Definitions.md`. The first implementation plan, `Architecture_M6_CP3_CB1_Entry_Authority_Code_Build_Plan.md`, is **HELD** until Review accepts the Definition.
@@ -1245,51 +1261,50 @@ Review must independently re-open source/evidence and re-derive: split-square v0
 
 ## Current authority
 
-- **M6 CP1:** CLOSED / ACCEPTED, mechanism-only (`M6_CP1_Closure_Record.md`).
-- **M6 CP2:** CLOSED / ACCEPTED (`M6_CP2_Closure_Record.md`, `Architecture_M6_CP2_Close_Review_Record.md`).
+- **M6 CP1 and CP2:** CLOSED / ACCEPTED.
+- **CP3 entry Definition:** `M6-DEFN-R5` accepted by `M6-DEFN-R5-REV` with **RA-30a** (`Architecture_M6_DEFN_R5_Review_Record.md`).
 - Reviewed runtime authority: `11391685901 / 5ce3132ec01748eff5b15f82be07a1abe2bd1af6` (focused-30 + focused-12 + selector449 = **491/491**).
-- Normative: RA-1 – RA-29d.
-- Accounting **60 / 16 / 44**, debt **1** (`G4-B002`, owned by M6-CP3).
+- Normative: RA-1 – RA-30a.
+- Accounting **60 / 16 / 44**, debt **1** (`G4-B002`).
 
 ## Exact next turn
 
-**`M6-DEFN-R5` — new turn; bounded, runtime-free Definition (CP3 entry gate).** Follow `Architecture_M6_DEFN_R5_CP3_Entry_Definition_Plan.md`.
-- Decide D1–D9 with `file:line` evidence, per-conjunct falsifier designs and reachability arguments.
-- Write `Architecture_M6_DEFN_R5_CP3_Entry_Definition_Record.md` and RA-30. Draft the first CP3 CB plan(s) as **HELD**.
-- No source, test, fixture, selector or runtime change.
-- Successor: mandatory **`M6-DEFN-R5-REV`**.
+**`M6-CP3-CB1-ENTRY` — new turn; Code + Build, compile/package only.** Follow `Architecture_M6_CP3_CB1_Entry_Authority_Code_Build_Plan.md` (released; RA-30a governs).
+- Implement RA-30 §1–§4 and §7 with RA-30a §1–§3 and §7–§8.
+- Six entry identities, as frozen.
+- Compile-green → `M6-CP3-TB1-ENTRY-EXEC` (**497**) → mandatory `M6-CP3-TB1-ENTRY-REV`.
+- No CP3 direct-production TB before that Review.
 
 ## Completed predecessor turns (reference only)
 
-- `M6-CP2-CLOSE-REV` — CP2 CLOSED / ACCEPTED; `5ce3132e` promoted.
-- `M6-CP2-TB2-COVERAGE-EXEC` — 491/491.
-- `M6-CP2-CB2-COVERAGE` — RA-29d coverage completion.
-- Earlier CP1/CP2 turns are folded in `M6_Consolidated_Record.md`.
+- `M6-DEFN-R5-REV` — Definition accepted with RA-30a; CB1 released.
+- `M6-DEFN-R5` — CP3-entry Definition (D1–D9, RA-30).
+- `M6-CP2-CLOSE-REV` — CP2 CLOSED / ACCEPTED. Earlier turns are folded in `M6_Consolidated_Record.md`.
 
 ## Current files
 
-- `.agents/Directional/Architecture_M6_DEFN_R5_CP3_Entry_Definition_Plan.md` — exact next plan.
-- `.agents/Directional/M6_CP2_Closure_Record.md` and `.agents/Directional/Architecture_M6_CP2_Close_Review_Record.md` — CP2 closure authority.
-- `.agents/Directional/M6_CP1_Closure_Record.md` — CP1 closure authority.
-- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — §10 (M6-CP3 exit), RA-16 §4, RA-17 §4, RA-20 §4, RA-26 §5, RA-27a §6–§7, RA-28b §4.
+- `.agents/Directional/Architecture_M6_CP3_CB1_Entry_Authority_Code_Build_Plan.md` — exact next plan.
+- `.agents/Directional/Architecture_M6_DEFN_R5_CP3_Entry_Definition_Record.md` — the Definition (D1–D9).
+- `.agents/Directional/Architecture_M6_DEFN_R5_Review_Record.md` — Review authority (V1–V8).
+- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — RA-30, RA-30a.
 - `.agents/Directional/Architecture_M6_CP1_Required_Green_Focused_30.txt`, `Architecture_M6_CP2_Required_Green_Focused_12.txt`, selector449 / routing449 — frozen gate.
 
 ## Context Load Plan
 
 ```yaml
 load_next:
-  - .agents/Directional/Architecture_M6_DEFN_R5_CP3_Entry_Definition_Plan.md
+  - .agents/Directional/Architecture_M6_CP3_CB1_Entry_Authority_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M6_DEFN_R5_Review_Record.md
+  - .agents/Directional/Architecture_M6_DEFN_R5_CP3_Entry_Definition_Record.md
   - .agents/Directional/Architecture_M6_Frozen_Definitions.md
-  - .agents/Directional/M6_CP2_Closure_Record.md
-  - .agents/Directional/M6_CP1_Closure_Record.md
 conditional_modules:
-  - trigger: github_connector / GitHub Actions / source snapshot
+  - trigger: github_connector / GitHub Actions / compile
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
-  - src/pipeline/RemeshPipeline.cpp (A5 produce 3769+, chart-barrier set 3785-3795, canonical-value inversion 4917-4921; A6 collinear span check ~5292-5310; A7 produce 6512+ cross-sheet block)
-  - src/geometry/SurfaceMeshOptimizer.cpp (energy reference 1482; gradient reference 1958; validation field fallback 2675)
-  - src/geometry/PureQuadCompletion.cpp (completion guard 895-941)
-  - tests/SurfaceCellTransitionQuotientTests.cpp (produced fixtures: torus, split-isolation, hard-rail)
+  - include/directional/geometry/SurfaceCellTracing.h (SurfacePhaseFrontProduct 1749+; SurfaceIsolationSeamTransportCertificate 1341-1365; SurfaceCellTracingOptions::hardFeatureEdges 2089; periodic endpoint state 1437-1453)
+  - src/geometry/SurfaceCellTracing.cpp (make_periodic_relation_endpoint_state 7925-7965)
+  - src/pipeline/RemeshPipeline.cpp (A5 chart barriers 3785-3795; periodic conjugation 4543-4614 and final check 4869-4874; HardRail 4657-4799; A6 OrdinaryFront 5229-5236 and seam spans 5266-5313; A7 cross-sheet ~6861-6960)
+  - tests/SurfaceCellTransitionQuotientTests.cpp (nonzero-Z4 torus carrier search 1351-1363)
 do_not_preload:
   - folded superseded M6 per-turn records
   - research/provenance/examples

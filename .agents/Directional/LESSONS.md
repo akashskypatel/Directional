@@ -2679,3 +2679,13 @@ When a temporary workflow caller is assembled with low-level Git objects, creati
       - A test's name is not coverage.
       - Close in a dedicated closure Review, with a closure record.
     - Recorded at the `M6-CP2-TB1-VERIFIER-R2-REV` review-agent addendum (RA-29d).
+206. **A reachability claim must name the fixture that has the property, and a gate list must be checked against the built targets.**
+    - *What happened.*
+      - DEFN-R5's D2 claimed a produced HardRail with a nonzero face gauge was reachable, citing evidence about the torus's *periodic* carriers (one region). Every known HardRail fixture uses a constant field (F = 0), where any stripping formula passes.
+      - D9 froze two G4-B001 rows (`MilestoneGP26`/`GP27`) that only `directional_surface_cell_historical_tests` compiles; that target is outside the standard eight.
+      - D4 required A5 to consume an authority that no product published, which would have broken 38 direct A5 callers.
+    - **Rule.**
+      - For every data-property witness, name the producer fixture and the asserted non-vacuity condition. For algebraic falsifiers, require a value that kills the wrong-direction mutant (90° or 270°, not 180°).
+      - For every frozen gate row, cite the build target that compiles it.
+      - For every new input authority, name the product that publishes it and the caller impact.
+    - Recorded at `M6-DEFN-R5-REV` (RA-30a).

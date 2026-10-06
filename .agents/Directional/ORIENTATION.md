@@ -1,3 +1,17 @@
+## Currency — `M6-DEFN-R5-REV`: CP3-entry Definition accepted with RA-30a (2026-10-06 UTC)
+
+- D1–D9 are accepted with binding amendments:
+  - D4's authority source becomes an A4-published typed hard-feature set (no A5 signature change);
+  - D2 needs a produced non-constant-field HardRail fixture (the cited evidence was periodic);
+  - D3 must certify the branch across a seam with the validated seam quarter-turn instead of dropping it;
+  - D9's GP26/GP27 rows live only in the historical test target;
+  - D6 equality needs canonical accumulation order;
+  - the scheduler permutation is now defined.
+- CB1 is released. Gates: 497 entry, 507 final.
+
+Accounting **60 / 16 / 44**, debt 1.
+
+### Superseded currency note
 ## 2026-10-06 — M6-DEFN-R5 COMPLETE / mandatory Definition Review next
 
 - D1-D9 CP3-entry decisions are complete; candidate normative amendment is **RA-30**.
@@ -515,9 +529,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
- > **Current milestone authority (2026-10-06, after the `M6-CP2-TB1-VERIFIER-R2-REV` addendum):** M4 and M5 remain CLOSED / ACCEPTED. M6 CP1 is CLOSED / ACCEPTED, mechanism-only. **M6 CP2 is ACTIVE.** Reviewed runtime is the promoted R3 verifier `11385836615 / c64baacd...` (491/491), but closure is revoked by RA-29d. Stable accounting **60/16/44**, debt 1. Exact next is `M6-CP2-CB2-COVERAGE`.
+ > **Current milestone authority (2026-10-06, after `M6-DEFN-R5-REV`):** M4 and M5 remain CLOSED / ACCEPTED. **M6 CP1 and CP2 are CLOSED / ACCEPTED.** The CP3 entry Definition is accepted with RA-30a. Reviewed runtime `11391685901 / 5ce3132e...` (491/491). Stable accounting **60/16/44**, debt 1 (`G4-B002`). Exact next is `M6-CP3-CB1-ENTRY` (entry gate 497; final 507).
 
-**Currency.** `M6-CP2-TB1-VERIFIER-R2-REV` review-agent addendum (Review), 2026-10-06 UTC
+**Currency.** `M6-DEFN-R5-REV` (Review), 2026-10-06 UTC
 
 **Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` §16.3 is the active same-region nonzero-Z4 contract. `PeriodicRelationId` remains carrier-content identity; relation rotation is the gauge-adjusted quotient `Q`, action/transport is relation value, and canonical storage may invert representation only after semantic Forward -> Reverse authority is fixed. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 
@@ -701,10 +715,11 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M6-DEFN-R5` — EXACT NEXT (bounded CP3-entry Definition; plan `Architecture_M6_DEFN_R5_CP3_Entry_Definition_Plan.md`).**
-   - CP1 and CP2 are CLOSED / ACCEPTED. Reviewed runtime `11391685901 / 5ce3132e...` (491/491).
-   - Decide D1–D9: gauge items; A5 barrier census; class-wide optimizer/validation references; permutation falsifier; seam-collinear fixture and relation-kind-aware cross-sheet rule; CP3 exit evidence plan; CB sequencing and gate.
-   - Successor: mandatory `M6-DEFN-R5-REV`.
+1. **`M6-CP3-CB1-ENTRY` — EXACT NEXT (Code + Build; RA-30 + RA-30a).**
+   - D1–D4 and D7 entry authorities with RA-30a §1–§3 and §7–§8; six entry identities.
+   - Compile/package only → TB1-ENTRY **497** → mandatory entry Review.
+   - Then CB2: D5/D6/D8 plus RA-30a §4–§6; final gate 507.
+   - CP1 and CP2 are CLOSED / ACCEPTED.
 1a. **`M6-DEFN-R5` — CP3-entry gate (not CP1).**
    - Periodic unequal-face-gauge witness, plus the coordinate / relation-gauge rule.
    - HardRail cross-region branch certification.
@@ -743,6 +758,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 **A green behavioral test is not a contract proof when the oracle compares only a subset of the promised serialization — `M6-CP1-TB10-A5V-REV`, lesson 193.** Identity24 ran three real stage-valid fixtures but omitted multiple mesh/lineage/result fields, so those fields could drift without turning the test red. Enumerate the output type and prove every contract field is covered; a strong test name does not widen its assertions.
 
 **Moving validation into an earlier stage can still invert that stage's own pre-existing failure precedence — `M6-CP1-TB10-A5V-REV`, existing `VALIDATION_ORDER_SHADOWING`.** RA-19 explicitly required the moved helper after every old A5 check; placing it before `publish_records_for_validation` violates that boundary even when the full gate stays green.
+
+**A reachability claim must name the fixture, and a gate list must be checked against the built targets — `M6-DEFN-R5-REV`, lesson 206.** D2 cited periodic-carrier evidence for a HardRail property. D9 froze two rows that only a non-built historical target compiles. D4 required an authority that no product published.
 
 **A green gate proves a verifier does not falsely reject; closing it also needs proof that it detects — `M6-CP2-TB1-VERIFIER-R2-REV` addendum, lesson 205.** CP2 was closed at 491/491 while most of the verifier's predicates had never rejected anything in a test, and one frozen binding was not implemented at all.
 

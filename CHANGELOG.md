@@ -1,3 +1,12 @@
+## 2026-10-06 — `M6-DEFN-R5-REV` — CP3 entry plan approved with fixes
+
+- The definition for M6's last checkpoint (CP3) is approved with corrections:
+  - one input the new rules need has to be published by the producer that already owns it;
+  - two tests need real data that actually exercises the property they check;
+  - one rule would have quietly loosened an existing check;
+  - two tests in the final gate are not in the standard build, so the later build must add them.
+- Next: `M6-CP3-CB1-ENTRY` (entry gate 497).
+
 ## 2026-10-06 — `M6-CP2-CLOSE-REV` — CP2 CLOSED / ACCEPTED
 
 - Independently re-derived TB2 at **491/491** with exact-one selection, zero skips/RED/benchmarks, result manifest 1005/1005 and immutable postflight.

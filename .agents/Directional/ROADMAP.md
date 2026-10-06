@@ -1,3 +1,14 @@
+## Live M6 routing — after `M6-DEFN-R5-REV` (RA-30a)
+
+| Checkpoint | State | Exact next / gate |
+|---|---|---|
+| M6 CP1 / CP2 | **CLOSED / ACCEPTED** | reviewed runtime `11391685901 / 5ce3132e...`, 491/491 |
+| CP3 entry Definition | **ACCEPTED with RA-30a** | `Architecture_M6_DEFN_R5_Review_Record.md` |
+| CP3 entry implementation | **EXACT NEXT** | `M6-CP3-CB1-ENTRY` -> TB1-ENTRY **497** -> Review |
+| CP3 exit | Held | CB2 (D5/D6/D8 + RA-30a §4–§6) -> final gate **507** -> CP3 close Review |
+
+Stable accounting: **60 / 16 / 44**, debt 1 (`G4-B002`).
+
 ## 2026-10-06 — M6 CP3 entry Definition complete; Review gate active
 
 `M6-DEFN-R5` completes D1-D9 and publishes candidate RA-30. CP3 sequencing is frozen provisionally pending independent Review: `M6-DEFN-R5-REV` → held `M6-CP3-CB1-ENTRY` (D1-D4+D7; compile/package only) → artifact-only **497** entry gate → mandatory Review; only then may D5/D6/direct-exit work proceed. Intended final CP3 gate is **507**. Current-source G4-B001 strict 3/3 is Phase10 exact committed torus, P26 torus end-to-end and P27 production matrix. Stable accounting remains **60 / 16 / 44**, debt 1; no implementation is authorized by Definition.

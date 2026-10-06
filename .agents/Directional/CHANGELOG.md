@@ -1,3 +1,17 @@
+## 2026-10-06 — `M6-DEFN-R5-REV`: CP3-entry Definition accepted with RA-30a; CB1 released
+
+- **Verified:** D1, D7 and D8 against source; D4's diagnosis; the 497/507 gate arithmetic (the G4-B001 rows are not in selector449).
+- **RA-30a fixes:**
+  - **V1:** D4's authority comes from A4, with no A5 signature change;
+  - **V2:** D2 needs a produced non-constant-field HardRail witness (the cited evidence was periodic);
+  - **V3:** D3 certifies the seam branch with the validated seam quarter-turn (it had dropped the branch check);
+  - **V4:** GP26/GP27 need the historical target;
+  - **V5:** D6 needs canonical accumulation order;
+  - **V6:** the scheduler permutation is defined;
+  - **V7:** the D1 witness needs a non-involutive gauge difference;
+  - **V8:** D2 site suffix.
+- **Docs:** new `Architecture_M6_DEFN_R5_Review_Record.md`; CB1 plan released; lesson 206; handoff (top + live) / ORIENTATION / TODO / ROADMAP / tracker (+0) / consolidated. Accounting 60 / 16 / 44.
+
 ## 2026-10-06 — M6-DEFN-R5 CP3-entry Definition complete
 
 - Completed D1-D9 and published candidate **RA-30**.

@@ -1,3 +1,18 @@
+## 2026-10-06 — `M6-DEFN-R5-REV` — CP3-entry Definition accepted with RA-30a — **+0 / 60/16/44 / debt 1**
+
+- Runtime-free Review; no product change.
+- Definition defects fixed before implementation (RA-30a):
+  - **V1:** D4 had no authority source, and its fail-closed rule would break 38 direct A5 callers;
+  - **V2:** D2's reachability cited periodic evidence for a HardRail property;
+  - **V3:** D3 dropped the branch check across seams although a certified seam quarter-turn exists;
+  - **V4:** two G4-B001 rows are built only by the non-standard historical target;
+  - **V5:** D6's exact equality ignored floating-point accumulation order;
+  - **V6:** scheduler permutation was undefined;
+  - **V7:** D1 named no fixture, and a 180° gauge difference cannot kill the wrong-direction mutant;
+  - **V8:** D2 site suffix.
+
+**Stable accounting: `60 events / 16 categories / 44 recurrences`, debt 1.**
+
 ## 2026-10-06 — `M6-CP2-CLOSE-REV` — **CP2 CLOSED / +0 / 60/16/44 / debt 1**
 
 Independent Close Review re-derived TB2 at **491/491** and accepts RA-29d recovery. `M6-CP2-R2-REV-OBS-01` (A7 vertex binding), `-OBS-02` (negative coverage) and `-OBS-03` (dead diagnostics) are **CLOSED / RECOVERY PROVED / NON-STABLE**. `-OBS-04` is closed by the dedicated `M6_CP2_Closure_Record.md`. No new stable event/category/recurrence or debt item is created. Reviewed CP2 authority is `11391685901 / 5ce3132e...`. Exact next: `M6-DEFN-R5`.

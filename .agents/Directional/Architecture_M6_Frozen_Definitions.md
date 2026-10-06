@@ -1,6 +1,6 @@
 # M6 Frozen Definitions — Occurrence, Quotient, Embedding, Independent Verification
 
-**Status:** FROZEN / **M6-CP1 CLOSED / ACCEPTED, mechanism-only**; **M6-CP2 CLOSED / ACCEPTED** by `M6-CP2-CLOSE-REV`. Reviewed CP2 verifier/runtime authority is `11391685901 / 5ce3132ec01748eff5b15f82be07a1abe2bd1af6`, fresh gate **491/491**. RA-29d OBS-01/02/03 are recovery-proved and the required `M6_CP2_Closure_Record.md` is present. `G4-B002` debt remains open (debt 1). **EXACT NEXT = `M6-DEFN-R5`**. RA-1 – RA-29d remain normative as annotated.
+**Status:** FROZEN / **M6-CP1 and M6-CP2 CLOSED / ACCEPTED**; `M6-DEFN-R5` **ACCEPTED by `M6-DEFN-R5-REV` with RA-30a**; reviewed runtime `11391685901 / 5ce3132ec01748eff5b15f82be07a1abe2bd1af6` (491/491); `G4-B002` debt open (debt 1); **EXACT NEXT = `M6-CP3-CB1-ENTRY`** (entry gate 497; final CP3 gate 507); RA-1 – RA-30a normative as annotated.
 **Date:** 2026-09-25
 **Definition authority:** this record is the normative M6 contract for A5 occurrence creation, A6 quotient construction/materialization, A7 source-attached geometry embedding, and the M6 structural portion of A8 independent verification. It refines `DESIGN.md` §14 M6 without changing accepted M5 producer semantics or pulling M7 disposition/degradation work forward.
 
@@ -1246,3 +1246,49 @@ Rationale: `Architecture_M6_DEFN_R5_CP3_Entry_Definition_Record.md`. This amendm
 12. **Debt/accounting.** Stable accounting stays **60 / 16 / 44**, debt 1. `G4-B002` closes only on accepted CP3 direct-production evidence; mechanism evidence remains prerequisite only. M8-owned adapter/copy/hardening obligations and all M7 disposition semantics are outside RA-30.
 
 Mandatory chain after acceptance: `M6-DEFN-R5-REV` → `M6-CP3-CB1-ENTRY` (compile/package only) → artifact-only 497-process entry TB → mandatory Review. The CB1 plan is held until Definition Review.
+
+## RA-30a — CP3-entry Definition accepted with binding amendments (normative, 2026-10-06, `M6-DEFN-R5-REV`)
+
+Rationale: `Architecture_M6_DEFN_R5_Review_Record.md` §2. RA-30 is accepted as amended; where they conflict, RA-30a governs. Gate counts are unchanged (497 entry, 507 final).
+
+1. **D4 authority source** (amends RA-30 §4; CB1).
+   - `SurfacePhaseFrontProduct` publishes the immutable typed source hard-feature edge set its tracer consumed (`SurfaceCellTracingOptions::hardFeatureEdges`, `SurfaceCellTracing.h:2089`), validated as source edges at A4 construction.
+   - A5 builds its chart-barrier set **from that product field**. A5's `produce(V, F, phaseFront)` signature is **unchanged**.
+   - The authoritative adapter fails closed if the pipeline's `hardFeatureRailEdges` differ from the A4-published set.
+   - **Stop for Review** if any accepted focused-30 or selector449 test body would have to change.
+2. **D2 non-trivial gauge witness** (CB1).
+   - Identity `HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge` must use a **produced** fixture built through `remesh_from_raw_cross_field` (SurfaceCells backend, fallback `Fail`, no source-grid recovery). The fixture has two topology regions separated by user hard edges, a **non-constant raw cross field**, and at least one cross-region HardRail relation.
+   - **Non-vacuity, asserted first:** at least one endpoint pair has `F_a ≠ F_b`, and the difference is 90° or 270°, so that a wrong-direction stripping (`F ∘ B` instead of `F⁻¹ ∘ B`) is rejected.
+   - The negative tampers may additionally run on the existing constant-field HardRail fixture.
+   - If the produced fixture lacks the property at TB time, that is a test-authority RED for Review, not a production defect. Never hand-build records.
+3. **D3 seam branch certification** (amends RA-30 §3; CB1).
+   - **Non-seam OrdinaryFront:** keep the current full equality (`sourceChart`, `branchRotation`, coordinate, scale, and the `1e-10` phase check, kept reject-only) at `RemeshPipeline.cpp:5229-5236`.
+   - **Across a certified collinear isolation seam:** require all of
+     - coordinate and scale equality;
+     - the exact reciprocal `CornerWedgeIsolationTransition` pair;
+     - **face-gauge-stripped branch difference == the A5-validated `SurfaceIsolationSeamTransportCertificate` quarter-turn** (`forward()` or `reverse()` by direction; `SurfaceCellTracing.h:1341-1365`);
+     - the phase check, kept reject-only.
+
+     `sourceChart` may differ only in this case.
+   - The quarter-turn is chart evidence, never quotient transport (RA-2).
+   - Identity 3 adds a tamper on the stripped branch: rotate one endpoint branch by 90° while the seam evidence stays valid → reject.
+4. **G4-B001 rows' build target** (amends RA-30 §9–§10; CB2).
+   - CB2 adds `directional_surface_cell_historical_tests` (with `DIRECTIONAL_BUILD_HISTORICAL_TESTS=ON`) to its compile and package set. The TB executes only the two named filters from that target.
+   - If the historical target fails to compile, or either filter is not discoverable, **stop for Review**. Do not edit historical tests to make them build, and do not substitute other rows without Review.
+   - CB1 and the 497 entry gate are unaffected.
+5. **D6 feasible equality** (amends RA-30 §6; CB2).
+   - D5's implementation must accumulate optimizer energy, gradient and line-search sums in **canonical semantic order** (by quotient-class and cell identity, not row index). Exact discrete-decision invariance then holds by construction, and the `1e-12 · max(1, bbox)` positional tolerance is achievable.
+   - If canonical ordering is not adopted, the equality must be relaxed: accept/reject and discrete validator outcomes stay exact; the continuous tolerance must be justified; iteration and line-search sequences are not required to be exact. **Stop for Review rather than choose silently.**
+   - The output-row permutation seam is a test that calls `optimize_source_authoritative_surface_mesh` directly with permuted `(vertices, quads, provenance, vertexChartAuthority)` taken from a produced run. No production hook.
+6. **Scheduler permutation defined** (CB2). `DirectProductionSchedulerPermutationIsSemanticNoOp` permutes:
+   1. the A4 phase-front cell, edge and event container order, reconstructed through the validating A4 factory;
+   2. the A5 owned-relation container order fed to A6.
+
+   A5/A6/A7/A8 semantic products, certificates and decisions must be **exact** after semantic remapping.
+7. **D1 witness** (CB1).
+   - Candidate fixture: the produced nonzero-Z4 torus (carrier search at `SurfaceCellTransitionQuotientTests.cpp:1351-1363`).
+   - **Non-vacuity:** a reciprocal exact-A3 pair whose `localFaceBranchRotation` differs by 90° or 270°, so a mutant using `Γ` instead of `Γ⁻¹` is rejected. A pair differing by 180° does not count.
+   - A missing pair is a test-authority RED for Review.
+8. **D2 site.** The branch-certificate failure keeps the external `InvalidHardRailTransport` with site suffix `:branch-certificate`.
+
+Successor: `M6-CP3-CB1-ENTRY` (released; compile/package only) → `M6-CP3-TB1-ENTRY-EXEC` (**497**) → mandatory `M6-CP3-TB1-ENTRY-REV`. Accounting **60 / 16 / 44**, debt 1.

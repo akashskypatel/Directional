@@ -1,3 +1,7 @@
+## 2026-10-06 — Current authority after `M6-DEFN-R5-REV`
+
+The CP3 entry Definition is accepted with RA-30a (§57). Exact next: `M6-CP3-CB1-ENTRY` → TB1-ENTRY (497) → Review. Reviewed runtime `11391685901 / 5ce3132e` (491/491). Accounting **60 / 16 / 44**, debt 1.
+
 ## 2026-10-06 — Current authority after `M6-CP2-CLOSE-REV`
 
 M6 CP2 is **CLOSED / ACCEPTED**. Independent Close Review promotes `11391685901 / 5ce3132ec01748eff5b15f82be07a1abe2bd1af6`; TB2 is independently re-derived at **491/491**, exact-one 491/491, zero skips/RED/benchmarks, result manifest 1005/1005 and immutable postflight. RA-29d OBS-01/02/03 are recovery-proved and OBS-04 is closed by `M6_CP2_Closure_Record.md`. Accounting remains **60 / 16 / 44**, debt 1. Exact next: `M6-DEFN-R5`.
@@ -601,6 +605,22 @@ The review agent re-derives R2 TB at 491/491, with all raw hashes matching, and 
 - G4 coverage table.
 
 Gate 491. Then TB → `M6-CP2-CLOSE-REV` → `M6-DEFN-R5`. Lesson 205.
+
+## 57. `M6-DEFN-R5-REV` — CP3-entry Definition accepted with RA-30a
+
+D1–D9 are reviewed against source and gates, and the 497 entry / 507 final arithmetic is verified.
+
+**RA-30a:**
+- A4 publishes the typed hard-feature set for A5 (no A5 signature change);
+- D2 needs a produced two-region, non-constant-field HardRail fixture with a 90° or 270° gauge difference;
+- D3 certifies the branch across a seam with the validated seam quarter-turn, and keeps full equality including phase off seams;
+- CB2 builds the historical target for GP26/GP27, and stops if it fails;
+- D6 needs canonical accumulation order or a Review-approved relaxed equality;
+- the scheduler permutation is defined (A4 containers + A5 relation order);
+- the D1 witness is the produced nonzero-Z4 torus with a non-involutive gauge difference;
+- D2 site `:branch-certificate`.
+
+CB1 is released. Lesson 206.
 
 ## Folded document index
 

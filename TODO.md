@@ -1,3 +1,19 @@
+## Current — `M6-DEFN-R5-REV` ACCEPTED with RA-30a / exact next `M6-CP3-CB1-ENTRY` (2026-10-06)
+
+- [x] Review D1–D9 against source and gates; verify the 497/507 arithmetic.
+- [x] V1–V8 → RA-30a:
+  - D4 authority from A4;
+  - D2 produced non-constant HardRail fixture;
+  - D3 seam branch certification;
+  - D9 historical target;
+  - D6 accumulation order;
+  - scheduler definition;
+  - D1 witness;
+  - D2 site.
+- [x] Release the CB1 plan; lesson 206.
+- [ ] **Exact next `M6-CP3-CB1-ENTRY`** (compile/package only).
+- [ ] TB1-ENTRY **497** → mandatory entry Review → CB2 (D5/D6/D8; final gate 507) → CP3 close.
+
 ## Current — `M6-DEFN-R5` COMPLETE / mandatory `M6-DEFN-R5-REV` next (2026-10-06)
 
 - [x] Decide D1-D9 with producer reachability, per-conjunct falsifiers, bounds and stop rules.
