@@ -1,4 +1,0 @@
-Purpose: apply M6-CP2-CB2-COVERAGE durable documentation closeout
-Caller install: 5bc98bda0180ebdcc4f6d6ede1bec4cf0400d6c5
-Patch base: 5ce3132ec01748eff5b15f82be07a1abe2bd1af6
-Retry: 0
