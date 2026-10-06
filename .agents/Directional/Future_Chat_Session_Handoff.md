@@ -1,3 +1,20 @@
+## Resume-critical update — `M6-CP2-TB1-VERIFIER-R1-EXEC` COMPLETE / 462/491 / mandatory R1 Review next (2026-10-06)
+
+**Start mandatory independent `M6-CP2-TB1-VERIFIER-R1-REV` next. Do not repair source/tests, rebuild, or rerun the 491-process gate before Review.**
+
+Immutable package/source `11382000465 / 9c8478aec40bf07144ca7372c2aa58293cd42f5e` was consumed by run/job `37393554373 / 112044082007`. The harness completed all **491** fresh exact-filter processes and exited 0 with immutable postflight, but the caller's two upload steps retained the predecessor turn's output paths and therefore failed after runtime. No R1 runtime result/log artifact exists; the full GitHub job log plus mailbox `.workflow-mailbox/m6-cp2-tb1-verifier-r1-exec/latest.json` are the durable evidence. **Do not rerun runtime solely to recover artifacts.**
+
+Mechanical result re-derived from the job log: focused30 **26/30**, CP2-focused12 **11/12**, selector449 **425/449**, aggregate **462/491**, exact-one **491/491**, zero skips, benchmark 0. REDs:
+- focused30: 6, 20, 24, 25;
+- focused12: 6;
+- selector449: 115, 116, 122, 130, 132, 134, 137, 141, 143, 144, 150, 176, 201, 217, 218, 231, 232, 246, 436, 437, 438, 444, 446, 448.
+
+Review-owned clusters: **CAND-01** broad `MissingPublishedAuthority:a7:a5-relation-step` over-rejection; **CAND-02** focused12 ordinal6's new >=2-step baseline does not verify; **CAND-03** selector144 rejects at `SourceIncidenceMismatch:a0:component-adjacency`; **EXEC-OBS-01** post-runtime stale upload paths. Several additional REDs are likely downstream reachability failures and must be clustered by Review rather than priced independently.
+
+Candidate remains unpromoted. Stable accounting remains **60 / 16 / 44**, debt 1. Reviewed runtime authority stays `11330703256 / 3f40f04a...` (479/479). Full record: `Architecture_M6_CP2_TB1_Verifier_R1_Artifact_Only_Test_Benchmark_Report.md`.
+
+---
+
 ## Resume-critical update — `M6-CP2-CB1-VERIFIER-R2` COMPLETE / compile-package GREEN / exact next R1 EXEC (2026-10-06)
 
 **Start `M6-CP2-TB1-VERIFIER-R1-EXEC` next. Do not rebuild, relink, configure, repair the package, or change source/tests before immutable execution.**
