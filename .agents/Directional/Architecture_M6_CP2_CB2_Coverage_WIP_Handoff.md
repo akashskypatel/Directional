@@ -58,3 +58,26 @@ The exact patch was generated from the verified snapshot, passed `git diff --che
 - No `SurfaceMeshOptimizer` change was made.
 - No test identity was added or renamed.
 - No local build/test/runtime command was executed.
+
+
+## Resume attempt 2026-10-06T04:43:18Z
+
+This section supersedes the stale operational statements above while preserving the earlier checkpoint history.
+
+- Exact resumed inspection snapshot: source/event `23a4663f840d05a5143515dd368a5562d70be234`, run `37415091265`, artifact `11391011990`, provider digest `sha256:0ae7835e3738491d21696faa92522317c877fbb2d506d1ca269d878234d90aca`.
+- G3 was completed locally without adding or renaming identities:
+  - identity 3 now contains a constructible `a6:edge-manifoldness` witness;
+  - identity 5 is a ten-row table matching the frozen §6.3 forbidden classes to an exact runtime witness or compile-time API-shape proof.
+- Static pre-apply verification passed: `git diff --check`, exact-base `git apply --check`, and all four frozen selector/routing hashes remained byte-identical.
+- Final patch authority:
+  - base `23a4663f840d05a5143515dd368a5562d70be234`
+  - full SHA-256 `959ab4f3d2f502324369f80eda5b8392402fed9fdbdf15edd99e3367d44e605b`
+  - diff-body SHA-256 `5b2d46f026f63ecc3daa7bc29f9e95990e777cfbf32a1f1619714ca881d5d0b9`
+  - intended paths remain the same three production/test files listed above.
+- Patch apply workflow `37415698207` passed schema validation and exact Drive/base/path/hash verification, pushed semantic commit `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`, and recorded `runtimeExecution=false`.
+- Both the final applied Drive patch and the superseded WIP Drive patch were permanently retired through the owner-authorized Drive control plane after the successful push.
+- The temporary patch-apply caller/marker and resumed source-snapshot marker were retired in workflow-first order.
+- Mandatory compile/package is now active through temporary caller `.github/workflows/m6-cp2-cb2-coverage-compile.yml`, marker `.agents/connector-triggers/m6-cp2-cb2-coverage-compile.txt`, exact semantic source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`, and the standard eight GMP/GMPXX targets.
+- At this checkpoint the compile mailbox `.workflow-mailbox/m6-cp2-cb2-coverage-compile/latest.json` has not yet published. Do not retrigger. Resume by reading that mailbox first; if terminal, collect jobs/artifacts/log evidence once.
+
+Remaining completion work is therefore bounded to: verify the compile/package evidence; write the G4 Code + Build report with the frozen §6.2/§6.3 predicate/witness table; update durable handoff/TODO/change records as required; clean the temporary compile caller before its marker; then either close to `M6-CP2-TB2-COVERAGE-EXEC` on compile-green evidence or keep this turn `IN_PROGRESS`.
