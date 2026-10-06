@@ -1,0 +1,3 @@
+Purpose: exact source snapshot for M6-CP2-CLOSE-REV
+Pre-trigger authority: cb37f4606e697a9a5581e864980ba2d2a37f8e4b
+Retry: 0
