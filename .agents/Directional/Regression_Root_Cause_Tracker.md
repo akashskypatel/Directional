@@ -1,3 +1,15 @@
+## 2026-10-06 — `M6-CP2-TB1-VERIFIER-R1-REV` — **REJECTED / RA-29b / +0 / 60/16/44 / debt 1**
+
+- R1 runtime is mechanically valid at **462/491**; candidate `11382000465 / 9c8478ae...` remains unpromoted.
+- **R1-REV-01 (High, non-stable):** R2 treats A7's deduplicated legacy path as if it uniquely identifies one A6 root→target path. It does not: A7 drops A6 target/path identity and OrdinaryFront steps. Multiple valid A6 paths can collapse to one legacy projection, so the verifier emits `MissingPublishedAuthority:a7:a5-relation-step` on accepted rows. RA-29a already required a same-ID value fallback when positional binding is unavailable; R2 omitted it.
+- **R1-REV-02 (review-agent error, non-stable):** RA-29a §4 incorrectly required `SourceComponentId` to equal raw mesh connected components. Component labels are ingress authority; accepted selector449 ordinal144 intentionally publishes one component label across two disconnected squares. The exact-partition rule and its identity-2 sub-witness are withdrawn.
+- Focused12 ordinal6's new baseline failure is absorbed into R1-REV-01; R3 must prove a produced duplicate-legacy-projection witness and then exercise the fallback non-vacuously.
+- **EXEC-OBS-01:** result/log upload paths used the predecessor turn literal after all 491 processes completed. Orchestration-only; no duplicate runtime.
+- All 29 RED rows cluster under R1-REV-01 except selector144, which is R1-REV-02. No stable repricing.
+- Exact recovery: `M6-CP2-CB1-VERIFIER-R3` → 491-process `M6-CP2-TB1-VERIFIER-R2-EXEC` → mandatory Review.
+
+**Stable accounting: `60 events / 16 categories / 44 recurrences`, debt 1.**
+
 ## 2026-10-05 — `M6-CP2-TB1-VERIFIER-REV` review-agent addendum — RA-29a — **+0 / 60/16/44 / debt 1**
 
 - The candidate rejection and CAND-01..03 (non-stable) are confirmed. REV-OBS-01/03/04 are confirmed, and REV-OBS-03 is extended to A7. REV-OBS-02 is withdrawn (over-strict).
