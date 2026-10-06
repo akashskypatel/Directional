@@ -1,0 +1,3 @@
+# M6-CP2-TB1-VERIFIER-R2-REV temporary cleanup
+.agents/connector-triggers/m6-cp2-tb1-verifier-r2-rev-drive-apply.txt
+.agents/connector-triggers/source-snapshot/m6-cp2-tb1-verifier-r2-rev-20261006T032806Z.txt
