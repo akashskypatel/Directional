@@ -148,3 +148,113 @@ D1-D4 are decided above. **D5-D9 are not yet decided** and are intentionally not
 No RA-30 amendment is published from this partial record. RA-30 must be written only after D5-D9 are decided so the normative amendment is internally complete and reviewable as one CP3-entry definition.
 
 Resume `M6-DEFN-R5` at **D5** using this exact snapshot authority unless branch/source semantics have changed; if they have, acquire a new authoritative snapshot before accepting further static conclusions.
+
+
+---
+
+## Resume addendum — D5-D9 decided (2026-10-06)
+
+This addendum supersedes only the bounded-turn statement above that D5-D9 were undecided. D1-D4 remain as frozen above. The turn itself remains WIP until RA-30, the held CB plan, exact G4-B001 3/3 test-name resolution, durable navigation updates, and final self-audit are complete.
+
+## D5 — class-wide optimizer and validation references — DECIDED
+
+RA-26's two representative-sensitive consumers are confirmed in current source: optimizer energy selects `facePoints.front()` (`SurfaceMeshOptimizer.cpp:1470-1509`), gradient selects the first valid face provenance (`1943-1970`) and finite differences narrow to `source_face_scope(faceSource.face)` (`2001,2124`); final edge-field validation begins from the first endpoint scope (`2675-2680`). Existing helpers already expose the correct class/quad-wide ingredients at `986-1153`: all four corner authorities, compatible-chart resolution, and quad reference projection. RA-28b forbids assuming the selected representative face belongs to every chart carried by the quotient class.
+
+Freeze one authoritative reference rule:
+1. resolve a compatible chart from all four quad-corner provenance points plus all four `vertexChartAuthority` sets;
+2. project the quad centroid in that resolved chart and use the resolved chart-face set for normal/field energy and gradient;
+3. freeze that face set across each finite-difference gradient evaluation and each line-search candidate evaluation; no corner/representative face may narrow the scope;
+4. final edge-field metrics project the edge midpoint in the same quad-wide compatible chart rather than first-endpoint scope;
+5. if no compatible authoritative chart can be resolved, or projection within it fails, fail typed. The current first-valid-provenance fallback in `quad_reference_surface_point` is forbidden on this authoritative path.
+
+Cost bound: four-corner chart resolution is linear in the total published chart memberships of those four corners. Gradient and line-search use a fixed number of projections per quad. No class-pair scan, global search, or asymptotic regression is authorized.
+
+## D6 — produced permutation falsifier — DECIDED
+
+Use a direct-produced torus with recovery disabled and fail-closed fallback. Compare baseline with a perturbation that simultaneously:
+- permutes source-face rows while consistently remapping every source-face-indexed field/provenance input;
+- permutes output vertex and face rows before optimizer entry with lineage/indices remapped consistently;
+- rotates every quad corner cycle by a deterministic nonzero offset.
+
+Non-vacuity requires at least one quotient-class representative source-face row to change and at least one quad corner-0 vertex to change.
+
+Freeze equality as follows:
+- A5/A6/A7/A8 semantic identities, relation values, certificates, failure/accept decisions and canonical structural digests: exact after semantic remapping;
+- optimizer accept/reject and iteration/line-search decision sequence: exact;
+- optimized positions and continuous validation metrics: componentwise absolute difference <= `1e-12 * max(1, source_bbox_diagonal)` after lineage-based remapping;
+- discrete validator outcomes, codes and topological counts: exact.
+
+Reserve `M6CP3.ClassWideOptimizerReferencesAreSourceOutputAndCornerPermutationInvariant`.
+
+## D7 — relation-kind-aware selected-edge cross-sheet rule — DECIDED
+
+The current A7 selected-edge rule (`RemeshPipeline.cpp:6861-6960`) compares endpoint wedge sheet sets globally and, if disjoint, demands connecting isolation-transition evidence without dispatching on relation kind. RA-27a already establishes that sheet IDs are not semantically comparable across unrelated topology-region partitions.
+
+Freeze:
+- **HardRail:** do not compare global sheet IDs across its different topology-region partitions. Require the HardRail relation/route, D2 endpoint gauge+branch certificate, and each endpoint's own wedge-sheet validity. A cross-region isolation transition is neither required nor sufficient.
+- **OrdinaryFront:** require one topology region. Shared sheet passes. Disjoint sheets require one exact connecting isolation transition certified both by the source transition graph and the relation evidence.
+- **Periodic:** same rule within one topology region. A produced cross-region Periodic witness is a Review stop; do not silently exempt it.
+- unsupported relation kinds fail closed.
+
+Produced seam-collinear witness: use the real tracer on split-isolation geometry with an isolation seam deliberately collinear with a traced front side; no hand-built relation records. It must actually produce an OrdinaryFront selected relation whose endpoint sheet sets are disjoint. Baseline A7 accepts only because the exact connecting transition exists. Tampering only that transition's sheet endpoints must trigger the selected-edge cross-sheet rejection.
+
+Reserve:
+- `M6CP3.ProducedSeamCollinearOrdinaryFrontRequiresExactCrossSheetTransition`
+- `M6CP3.HardRailCrossRegionBindingDoesNotCompareGlobalSheetLabels`.
+
+## D8 — CP3 exit evidence — DECIDED
+
+Mechanism-only CP1/CP2 rows remain prerequisites but cannot replace fresh direct-produced CP3 evidence. Freeze these direct owners:
+
+| Frozen exit obligation | CP3 evidence owner |
+|---|---|
+| equal coordinates/positions without certified relation remain distinct | `M6CP3.DirectProductionKeepsCoincidentUnrelatedClassesDistinct` |
+| every A5 relation consumed exactly once | `M6CP3.DirectProductionConsumesEveryA5RelationExactlyOnce` |
+| exact/shared source support independently bound | `M6CP3.DirectProductionPublishesExactSharedSupportAndA8BindsIt` |
+| source/output/corner and scheduler permutations | D6 identity + `M6CP3.DirectProductionSchedulerPermutationIsSemanticNoOp` |
+| G4-B002 direct candidate eligibility + hard-feature tamper | `M6CP3.DirectProducedTorusCandidateEligibilityAndHardFeatureTamper` |
+| G4-B001 strict torus 3/3 | the three historical strict direct-torus product rows; first fresh M6 measurement; no validator weakening |
+| G4-B004 representative A5→A6→A7→A8 chain | `M6CP3.DirectProducedTorusBindsA5A6A7A8RepresentativeChain` |
+
+The G4-B004 identity must bind one actual direct-produced representative continuously from source authority through A5 explicit occurrence/relation, A6 exact-once selected relation, A7 materialized class/vertex, and A8 independent verification. Separate per-stage checks are insufficient.
+
+G4-B002 uses the same direct-produced torus authority for baseline and hard-feature tamper. CP1 candidate-eligibility evidence remains prerequisite mechanism evidence, not debt closure.
+
+G4-B001 keeps hard features out of isolation-sheet authority. Any returned `LocalSheetMismatch` is diagnosed against A7/source-support authority; validator weakening is forbidden.
+
+## D9 — CB sequencing and gate arithmetic — DECIDED, with one exact-name item still open
+
+### CP3-CB1 entry-authority implementation
+Implement only D1-D4 and D7 plus these six entry identities:
+1. `M6CP3.PeriodicExactA3UnequalFaceGaugeUsesRelationAndOccurrenceAuthority`
+2. `M6CP3.HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge`
+3. `M6CP3.OrdinaryFrontIsolationSeamUsesCoordinateIdentityAndCertifiedSheetTransition`
+4. `M6CP3.A5ChartBarriersConsumeTypedHardFeatureAuthorityAcrossRelationKinds`
+5. `M6CP3.ProducedSeamCollinearOrdinaryFrontRequiresExactCrossSheetTransition`
+6. `M6CP3.HardRailCrossRegionBindingDoesNotCompareGlobalSheetLabels`
+
+Compile/package only. No CP3 direct-production acceptance TB is allowed until these execute green in the following artifact-only entry TB and independent Review accepts the entry gate.
+
+Entry arithmetic: inherited `30 + 12 + 449 = 491` plus six entry identities = **497** fresh exact-filter processes. Preserve all inherited list/selector bytes. A later cumulative list may concatenate the accepted 30 then 12 in frozen order; it must not rewrite either authority.
+
+### CP3-CB2 class-wide references and direct-exit evidence
+Only after entry Review, implement D5-D6 and seven remaining new identities:
+7. `M6CP3.ClassWideOptimizerReferencesAreSourceOutputAndCornerPermutationInvariant`
+8. `M6CP3.DirectProductionKeepsCoincidentUnrelatedClassesDistinct`
+9. `M6CP3.DirectProductionConsumesEveryA5RelationExactlyOnce`
+10. `M6CP3.DirectProductionPublishesExactSharedSupportAndA8BindsIt`
+11. `M6CP3.DirectProductionSchedulerPermutationIsSemanticNoOp`
+12. `M6CP3.DirectProducedTorusCandidateEligibilityAndHardFeatureTamper`
+13. `M6CP3.DirectProducedTorusBindsA5A6A7A8RepresentativeChain`
+
+Intended final arithmetic is inherited 491 + all 13 new CP3 identities + the frozen historical G4-B001 strict-torus 3 rows = **507** processes. This final number is not selector-freeze authority until this Definition turn records the exact three historical G4-B001 test names.
+
+**Selector449 optimizer stop rule:** if D5 changes the outcome of any inherited selector449 optimizer/validator row, do not rewrite an expectation, delete a row, or substitute a replacement. Stop before direct-production TB and return to independent Review with the exact changed ordinals and source-level cause.
+
+## Remaining work before COMPLETE
+
+1. Resolve the exact three historical G4-B001 strict-torus test names and replace the provisional 3-row reference above with exact names.
+2. Append normative RA-30 to `Architecture_M6_Frozen_Definitions.md`.
+3. Write the first CP3 Code+Build plan, HELD pending `M6-DEFN-R5-REV`.
+4. Update ORIENTATION, TODO, ROADMAP and handoff coherently.
+5. Self-audit D1-D9 against the R5 plan's lessons 199-205 before final Definition closeout.
