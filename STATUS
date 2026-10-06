@@ -1,8 +1,8 @@
 ---TURN_STATUS---
 Turn: M6-CP2-TB1-VERIFIER-R2-REV
-Status: IN_PROGRESS
-Successor: UNKNOWN
+Status: COMPLETE
+Successor: M6-CP2-CB2-COVERAGE
 Started at: 2026-10-06T03:28:06Z
 Resumed at: 2026-10-06T03:55:54Z
-Ended at: 
+Ended at: 2026-10-06T03:58:23Z
 ---END_TURN_STATUS---
