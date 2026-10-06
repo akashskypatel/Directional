@@ -1,0 +1,3 @@
+turn=M6-DEFN-R5
+requested_base=7601dc04d6c039baafac67e2c123c45240a36187
+purpose=authoritative source snapshot for runtime-free definition turn
