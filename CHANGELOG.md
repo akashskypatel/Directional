@@ -1,3 +1,10 @@
+## 2026-10-06 — `M6-CP2-TB1-VERIFIER-R1-EXEC` — 462/491; mandatory Review
+
+- Immutable R2 package `11382000465 / 9c8478ae...` completed all 491 fresh exact-filter processes: focused30 **26/30**, focused12 **11/12**, selector449 **425/449**.
+- Most new failures converge on `VerificationFailed:MissingPublishedAuthority:a7:a5-relation-step`; selector144 separately rejects at `a0:component-adjacency`; focused12 ordinal6 also fails its strengthened >=2-step baseline.
+- The runtime harness completed and immutable postflight passed, but stale predecessor output paths in the caller caused both evidence uploads to fail after execution. No duplicate runtime retry is authorized; the GitHub job log is preserved for Review.
+- Candidate remains unpromoted; accounting stays **60 / 16 / 44**, debt 1. Next: mandatory `M6-CP2-TB1-VERIFIER-R1-REV`.
+
 ## 2026-10-06 — `M6-CP2-CB1-VERIFIER-R2` — verifier recovery compile/package GREEN
 
 - Applied the RA-29/RA-29a verifier recovery at source `9c8478aec40bf07144ca7372c2aa58293cd42f5e`, including exact class/path/support checks, linear-time topology maps, an owning verified-product barrier, and repaired focused witnesses.
