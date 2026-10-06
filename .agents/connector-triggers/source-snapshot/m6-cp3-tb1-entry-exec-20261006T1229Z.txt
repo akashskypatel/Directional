@@ -1,0 +1,3 @@
+Trigger exact source snapshot for M6-CP3-TB1-ENTRY-EXEC.
+Authority before trigger: 20d9da8e755ceb74c1308fbb82b4f6199d5adf0b
+Runtime execution: false
