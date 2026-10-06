@@ -1,3 +1,15 @@
+## Resume-critical update — `M6-CP2-TB2-COVERAGE-EXEC` COMPLETE / 491/491 / exact next `M6-CP2-CLOSE-REV` (2026-10-06)
+
+**Start mandatory independent `M6-CP2-CLOSE-REV` next. Do not rebuild, rerun the 491-process gate, repair source/tests, or begin `M6-DEFN-R5` before Close Review.**
+
+Immutable package/source `11391685901 / 5ce3132ec01748eff5b15f82be07a1abe2bd1af6` completed the frozen gate in run/job `37419256039 / 112124748161`: focused30 **30/30**, CP2-focused12 **12/12**, selector449 **449/449**, aggregate **491/491**, exact-one 491/491, zero skips, benchmark 0. Result/log artifacts `11393198123 / 11393312986`; result self-manifest **1005/1005**. Package/source/execution-view censuses are unchanged and candidate manifest is 28/28 before/after. No configure, compile, relink, generated discovery, package/mode repair, source/test/fixture/selector mutation, or runtime retry occurred.
+
+No RED or orchestration defect was observed. Regression accounting remains **60 / 16 / 44**, debt 1. Full evidence: `Architecture_M6_CP2_TB2_Coverage_Artifact_Only_Test_Benchmark_Report.md`.
+
+Exact next is `M6-CP2-CLOSE-REV`: independently re-derive TB2, adjudicate RA-29d OBS-01/02/03 plus the closure-record obligation, and write `M6_CP2_Closure_Record.md` only if CP2 exit is satisfied. The EXEC turn does not itself promote the candidate or close CP2. `M6-DEFN-R5` remains held until Review accepts closure.
+
+---
+
 ## Resume-critical update — `M6-CP2-CB2-COVERAGE` COMPLETE / compile-package GREEN / exact next `M6-CP2-TB2-COVERAGE-EXEC` (2026-10-06)
 
 **Start immutable `M6-CP2-TB2-COVERAGE-EXEC` next. Do not rebuild, repair, or begin `M6-CP2-CLOSE-REV` before the 491-process execution completes.**

@@ -1,3 +1,7 @@
+## 2026-10-06 — M6 CP2 coverage execution mechanically green
+
+`M6-CP2-TB2-COVERAGE-EXEC` completed the frozen **491**-process gate at **491/491** on `11391685901 / 5ce3132e...`, with exact-one selection, zero skips, benchmark 0 and immutable postflight. No regression repricing: **60 / 16 / 44**, debt 1. **Exact next: `M6-CP2-CLOSE-REV`**; only accepted closure may route to `M6-DEFN-R5`.
+
 ## Live M6 routing — after `M6-CP2-CB2-COVERAGE`
 
 | Checkpoint | State | Exact next / gate |

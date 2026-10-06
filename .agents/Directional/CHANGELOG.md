@@ -1,3 +1,11 @@
+## 2026-10-06 — `M6-CP2-TB2-COVERAGE-EXEC` COMPLETE / 491/491 mechanically green
+
+- Immutable runtime `37419256039 / 112124748161` consumed `11391685901 / 5ce3132e...`: focused30 **30/30**, CP2-focused12 **12/12**, selector449 **449/449**, aggregate **491/491**, exact-one 491/491, zero skips, benchmark 0.
+- Result/log artifacts are `11393198123 / 11393312986`; result self-manifest verifies **1005/1005**. Candidate package manifest is **28/28** before and after runtime.
+- Package/source/execution-view censuses are unchanged; focused30/focused12/selector449/routing449 hashes remain frozen. No configure/compile/relink/discovery/repair/mutation/retry occurred.
+- No RED or regression candidate: accounting remains **60 / 16 / 44**, debt 1.
+- Candidate is mechanically green but EXEC does not close/promote CP2. Exact next: mandatory `M6-CP2-CLOSE-REV`; `M6-DEFN-R5` remains held.
+
 ## 2026-10-06 — `M6-CP2-CB2-COVERAGE` COMPLETE / compile-package GREEN
 
 - Implemented RA-29d G1-G3 at semantic source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`: exact A7 vertex binding, dead-code cleanup / `BoundaryOrEulerMismatch` predicates, expanded identities 2-4, and the ten-row §6.3 identity-5 map.

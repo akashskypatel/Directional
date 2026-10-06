@@ -1,3 +1,13 @@
+## Current — `M6-CP2-TB2-COVERAGE-EXEC` COMPLETE / 491/491 / mandatory `M6-CP2-CLOSE-REV` next (2026-10-06)
+
+- [x] Consume immutable `11391685901 / 5ce3132e...` without rebuild, repair, configure, relink, generated discovery, or selector/test/fixture mutation.
+- [x] Execute exactly **491** fresh exact-filter processes: focused30 **30/30**, CP2-focused12 **12/12**, selector449 **449/449**.
+- [x] Verify exact-one 491/491, zero skips, benchmark 0, immutable package/source/execution-view postflight, and no runtime retry.
+- [x] Persist result/log artifacts `11393198123 / 11393312986`; result self-manifest **1005/1005**.
+- [x] Record +0 regressions; stable accounting remains **60 / 16 / 44**, debt 1.
+- [ ] **Exact next: mandatory `M6-CP2-CLOSE-REV`** — independently re-derive TB2, adjudicate RA-29d recovery, and write `M6_CP2_Closure_Record.md` only if CP2 exit is satisfied.
+- [ ] `M6-DEFN-R5` remains held until Close Review accepts CP2 closure.
+
 ## Current — `M6-CP2-CB2-COVERAGE` COMPLETE / exact next `M6-CP2-TB2-COVERAGE-EXEC` (2026-10-06)
 
 - [x] G1 exact `a7:vertex-binding`.

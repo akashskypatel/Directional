@@ -1,3 +1,10 @@
+## 2026-10-06 — M6 CP2 coverage runtime GREEN / mandatory Close Review next
+
+- `M6-CP2-TB2-COVERAGE-EXEC` is COMPLETE: immutable `11391685901 / 5ce3132e...` produced **491/491** (30 + 12 + 449), exact-one 491/491, zero skips, benchmark 0, clean immutable postflight.
+- Result/log: `11393198123 / 11393312986`; result self-manifest **1005/1005**.
+- No new regression candidate; accounting remains **60 / 16 / 44**, debt 1.
+- **Exact next:** mandatory `M6-CP2-CLOSE-REV`. `M6-DEFN-R5` is held until CP2 closure is independently accepted.
+
 ## Currency — `M6-CP2-CB2-COVERAGE` COMPLETE / compile-package GREEN (2026-10-06 UTC)
 
 - RA-29d G1-G4 are implemented at `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`; frozen gate bytes remain unchanged.

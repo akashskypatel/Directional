@@ -1,3 +1,7 @@
+## 2026-10-06 — Current authority after `M6-CP2-TB2-COVERAGE-EXEC`
+
+M6 CP2 remains **ACTIVE pending mandatory Close Review**. Coverage candidate `11391685901 / 5ce3132ec01748eff5b15f82be07a1abe2bd1af6` is mechanically GREEN at **491/491** in run/job `37419256039 / 112124748161` (30 + 12 + 449, exact-one 491/491, zero skips, benchmark 0, immutable postflight). Result/log are `11393198123 / 11393312986`; no regression candidate, accounting **60 / 16 / 44**, debt 1. Exact next: `M6-CP2-CLOSE-REV`; `M6-DEFN-R5` remains held until accepted closure.
+
 ## 2026-10-06 — Current authority after the `M6-CP2-TB1-VERIFIER-R2-REV` review-agent addendum (RA-29d)
 
 **M6 CP2 is ACTIVE; its closure is revoked** (§56). The R3 verifier `11385836615 / c64baacd` (491/491) stays promoted as reviewed runtime authority. Exact next: `M6-CP2-CB2-COVERAGE` → TB (491) → `M6-CP2-CLOSE-REV` → `M6-DEFN-R5`. Accounting **60 / 16 / 44**, debt 1.

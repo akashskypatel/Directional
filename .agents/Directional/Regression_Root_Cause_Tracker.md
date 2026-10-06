@@ -1,3 +1,9 @@
+## 2026-10-06 — `M6-CP2-TB2-COVERAGE-EXEC` — **491/491 GREEN / +0 / 60/16/44 / debt 1**
+
+Immutable artifact-only runtime `37419256039 / 112124748161` consumed `11391685901 / 5ce3132e...`: focused30 **30/30**, CP2-focused12 **12/12**, selector449 **449/449**, aggregate **491/491**, exact-one 491/491, zero skips, benchmark 0, and immutable postflight PASS. Result/log evidence is `11393198123 / 11393312986`; result self-manifest is **1005/1005**.
+
+No RED row, orchestration defect, or new regression candidate occurred. RA-29d recovery is mechanically exercised but semantic closure remains Review-owned; no stable repricing is justified in EXEC. **Stable accounting remains `60 events / 16 categories / 44 recurrences`, debt 1.** Exact next: `M6-CP2-CLOSE-REV`.
+
 ## 2026-10-06 — `M6-CP2-CB2-COVERAGE` — **COMPILE-GREEN / +0 / 60/16/44 / debt 1**
 
 - RA-29d OBS-01/02/03 now have implementation/test-authority recovery at semantic source `5ce3132e...`: exact A7 vertex binding, expanded verifier negative coverage, ten-row §6.3 map, and dead-code/predicate cleanup.
