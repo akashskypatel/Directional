@@ -1,3 +1,0 @@
-Purpose: compile/package M6-CP2-CB1-VERIFIER-R3 exact source c64baacd6c767c4ba053b6963651c0aa6eceed20.
-Eight standard GMP/GMPXX targets; no Directional runtime.
-Retry: 0
