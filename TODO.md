@@ -1,3 +1,13 @@
+## Current — `M6-CP2-TB1-VERIFIER-R1-REV` / RA-29b / exact next R3 (2026-10-06)
+
+- [x] Independently accept R1 mechanics: **462/491**, exact-one 491/491, zero skips, benchmark 0.
+- [x] Cluster 28 RED rows under A7 legacy-projection reverse-binding false rejection; R2 wrongly requires uniqueness instead of RA-29a's ambiguity fallback.
+- [x] Withdraw RA-29a component connected-partition rule: ingress component labels are not independently reconstructable from raw mesh connectivity; selector144 is accepted counterexample.
+- [x] Classify stale R1 upload paths as post-runtime orchestration-only; no duplicate runtime.
+- [x] Freeze RA-29b and the bounded R3 Code + Build plan; stable accounting remains **60 / 16 / 44**, debt 1.
+- [ ] **Exact next: `M6-CP2-CB1-VERIFIER-R3`** — verifier + existing focused identities 2/6 only; compile/package, no Directional runtime.
+- [ ] If green: immutable `M6-CP2-TB1-VERIFIER-R2-EXEC` at unchanged **491**, then mandatory R2 Review.
+
 ## Current — `M6-CP2-TB1-VERIFIER-R1-EXEC` COMPLETE / mandatory Review next (2026-10-06)
 
 - [x] Consume immutable `11382000465 / 9c8478ae...` without rebuild/repair and execute exactly **491** fresh exact-filter processes.
