@@ -1,0 +1,4 @@
+Trigger M6-CP3-CB1-ENTRY Google Drive patch application.
+Expected base: 836d8acf3565faa010d0161614d854ece6f8d1f3
+Patch SHA-256: 23b52fc56808618e226feaf27508cf4059ba7fe2cbc36aff21b826fa19b139c1
+Retry: 0
