@@ -1,0 +1,4 @@
+Trigger M6-CP3-CB1-ENTRY compile/package only.
+Exact source SHA: 912760f1ffc785676f5d50717177b1cd8be69234
+Targets: all eight standard Code + Build targets.
+Runtime execution forbidden.
