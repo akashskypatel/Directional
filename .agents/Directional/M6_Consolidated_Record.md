@@ -1,3 +1,9 @@
+## 2026-10-06 — M6 CP2 verifier R1 Review: RA-29b
+
+Independent Review rejects candidate `11382000465 / 9c8478aec40bf07144ca7372c2aa58293cd42f5e` after the R1 **462/491** gate. Exact source snapshot `37395710753 / 11383307041` shows two bounded causes: (1) R2 reverses A7's intentionally lossy/deduplicated legacy path projection by demanding a unique A6 target, omitting RA-29a's same-owner-value ambiguity fallback; (2) RA-29a's raw-connectivity component partition rule contradicts accepted ingress `SourceComponentId` semantics and is withdrawn. The first explains the direct `a7:a5-relation-step` and downstream RED cluster; the second explains selector449 ordinal144's `a0:component-adjacency` RED.
+
+RA-29b freezes `M6-CP2-CB1-VERIFIER-R3`: implement all-candidate A7 binding/fallback, remove only the invalid component rule/sub-witness, keep focused12 names/order and the 491 gate bytes frozen, and do not change optimizer or A5/A6/A7 producer semantics. Then run immutable `M6-CP2-TB1-VERIFIER-R2-EXEC` at 491 and mandatory R2 Review. Stable accounting remains **60 / 16 / 44**, debt 1.
+
 ## 2026-10-06 — M6 CP2 verifier R1 runtime: 462/491, Review required
 
 Immutable R2 candidate `11382000465 / 9c8478aec40bf07144ca7372c2aa58293cd42f5e` completed the full **491**-process artifact-only gate in run/job `37393554373 / 112044082007`: focused30 **26/30**, CP2-focused12 **11/12**, selector449 **425/449**, aggregate **462/491**, exact-one 491/491, zero skips, benchmark 0. The dominant visible rejection is `MissingPublishedAuthority:a7:a5-relation-step`; selector144 separately reports `SourceIncidenceMismatch:a0:component-adjacency`; focused12 ordinal6's strengthened baseline does not verify.
