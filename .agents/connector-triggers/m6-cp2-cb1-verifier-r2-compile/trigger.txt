@@ -1,3 +1,0 @@
-turn=M6-CP2-CB1-VERIFIER-R2
-source_sha=9c8478aec40bf07144ca7372c2aa58293cd42f5e
-runtimeExecution=false
