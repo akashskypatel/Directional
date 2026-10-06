@@ -1,3 +1,13 @@
+## Resume-critical update — `M6-CP3-TB1-ENTRY-EXEC` COMPLETE / 373 PASS + 124 RED / mandatory `M6-CP3-TB1-ENTRY-REV` next (2026-10-06)
+
+**Start mandatory Review `M6-CP3-TB1-ENTRY-REV` next. Do not begin CB2 or repair production/test authority before Review adjudicates the 124 RED rows.**
+
+Immutable artifact-only run/job `37464309062 / 112271440079` consumed `11411137781 / 912760f1...` and completed exactly **497** fresh exact-filter processes: focused30 **4/30 PASS**, focused12 **0/12**, selector449 **369/449**, CP3-entry **0/6**, aggregate **373 PASS / 124 RED**; exact-one 497/497, zero skips, benchmark 0. Result/log artifacts are `11413899043 / 11413964659`; result self-manifest is **1019/1019**, candidate package remains 28/28, and package/source/execution-view censuses are unchanged.
+
+All 124 RED rows are mapped in `Architecture_M6_CP3_TB1_Entry_Red_Classification.tsv` and analyzed in `Architecture_M6_CP3_TB1_Entry_Artifact_Only_Test_Benchmark_Report.md`. Six non-stable candidate groups are carried: A4 face-gauge publication gap (`InvalidFrontBoundaryAuthority`), A6/D7 isolation-side evidence overreach, unlocalized downstream reachability/variant failures, D1 witness non-vacuity, D2 HardRail A5 baseline rejection, and D4 typed-barrier semantic/witness mismatch. Stable accounting remains **60 / 16 / 44**, debt 1 pending Review.
+
+---
+
 ## Resume-critical update — `M6-CP3-CB1-ENTRY` COMPLETE / compile-package GREEN / exact next `M6-CP3-TB1-ENTRY-EXEC` (2026-10-06)
 
 **Start immutable artifact-only `M6-CP3-TB1-ENTRY-EXEC` next. Do not rebuild, repair, relink, run generated discovery, or begin CB2 before the 497-process entry gate and mandatory Review.**

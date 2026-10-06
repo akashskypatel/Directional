@@ -1,3 +1,16 @@
+## 2026-10-06 — `M6-CP3-TB1-ENTRY-EXEC` — 124 REDs classified / mandatory Review — **+0 / 60/16/44 / debt 1**
+
+Artifact-only run `37464309062 / 112271440079` completed the frozen 497-process entry gate with **373 PASS / 124 RED**, exact-one selection 497/497, zero skips, benchmark 0 and immutable postflight. Every RED row is assigned exactly once in `Architecture_M6_CP3_TB1_Entry_Red_Classification.tsv`. These are **candidate/non-stable** classifications; EXEC does not promote or merge stable events.
+
+- **CAND-01 — A4 face-gauge publication gap (73 rows):** explicit `InvalidFrontBoundaryAuthority`. Static comparison shows the new top-level regional merge requires full `faceBranchRotation` authority from every successful regional producer, but planar-uniform and periodic-annulus producers do not publish it. Production-defect candidate; Review must confirm full recurrence membership.
+- **CAND-02 — A6/D7 isolation-side evidence overreach (5 rows):** produced-torus rows explicitly reject with `MissingIsolationSeamEquivalenceAuthority:a6-side-evidence` after CB1 tightened cross-sheet evidence. Review must decide producer omission versus validator overreach.
+- **CAND-03 — downstream reachability / variant mismatch (42 rows):** six `std::get: wrong index for variant` rows plus later-stage expected-product/non-vacuity failures lack enough EXEC evidence for stable attribution. Review must trace them and split/merge only with source proof.
+- **CAND-04 — D1 witness non-vacuity (1 row):** the exact-A3 entry identity does not find the required 90°/270° endpoint face-gauge delta. RA-30a explicitly routes this missing TB property to test-authority Review.
+- **CAND-05 — D2 HardRail baseline A5 rejection (2 rows):** both new HardRail identities receive a non-product A5 result before intended certificate/global-sheet assertions. Exact error family is not exposed by the test; Review owns localization.
+- **CAND-06 — D4 typed-barrier semantic/witness mismatch (1 row):** the periodic-carried typed hard feature does not split the asserted chart components and removing it does not alter the component signature; a later square subcase also hits CAND-01. First-failure semantics keep this row separate pending Review.
+
+**Stable accounting remains `60 events / 16 categories / 44 recurrences`, debt 1.** Exact next is mandatory `M6-CP3-TB1-ENTRY-REV`; no CB2 work is authorized before adjudication.
+
 ## 2026-10-06 — `M6-DEFN-R5-REV` — CP3-entry Definition accepted with RA-30a — **+0 / 60/16/44 / debt 1**
 
 - Runtime-free Review; no product change.

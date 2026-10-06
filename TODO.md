@@ -1,3 +1,10 @@
+## Current — `M6-CP3-TB1-ENTRY-EXEC` COMPLETE / semantic RED / mandatory Review next (2026-10-06)
+
+- [x] Execute immutable `11411137781 / 912760f1...` as exactly **497** fresh exact-filter processes with exact-one selection, zero skips and immutable postflight.
+- [x] Record **373 PASS / 124 RED**: focused30 4/30, focused12 0/12, selector449 369/449, CP3-entry 0/6; benchmark 0.
+- [x] Categorize all 124 RED rows into six non-stable candidate groups with row-level mapping and root-cause analysis; keep stable accounting **60 / 16 / 44**, debt 1.
+- [ ] **Exact next `M6-CP3-TB1-ENTRY-REV`:** independently adjudicate every candidate group and row mapping. CB2 remains held until Review.
+
 ## Current — `M6-CP3-CB1-ENTRY` COMPLETE / exact next `M6-CP3-TB1-ENTRY-EXEC` (2026-10-06)
 
 - [x] Implement RA-30 + RA-30a entry authority at semantic source `912760f1ffc785676f5d50717177b1cd8be69234`.

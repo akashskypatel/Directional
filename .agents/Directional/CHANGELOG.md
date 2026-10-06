@@ -1,3 +1,10 @@
+## 2026-10-06 — `M6-CP3-TB1-ENTRY-EXEC` COMPLETE / 373 PASS + 124 RED
+
+- Immutable artifact-only run/job `37464309062 / 112271440079` consumed `11411137781 / 912760f1...` and completed all **497** exact-filter processes: focused30 4/30, focused12 0/12, selector449 369/449, CP3-entry 0/6. Exact-one selection and zero skips held; benchmark count 0.
+- Result/log artifacts `11413899043 / 11413964659`; result manifest **1019/1019**; candidate package manifest **28/28** pre/post; package/source/execution-view censuses and all frozen gate hashes unchanged.
+- All 124 RED rows are classified in `Architecture_M6_CP3_TB1_Entry_Red_Classification.tsv`. Six Review-owned non-stable candidates are recorded; no stable repricing in EXEC. Accounting remains **60 / 16 / 44**, debt 1.
+- Exact successor is mandatory `M6-CP3-TB1-ENTRY-REV`; CB2 held.
+
 ## 2026-10-06 — `M6-CP3-CB1-ENTRY` COMPLETE / compile-package GREEN
 
 - Implemented RA-30 + RA-30a CP3 entry authority at semantic source `912760f1ffc785676f5d50717177b1cd8be69234`: Periodic exact-A3 gauge separation, HardRail branch certification, OrdinaryFront isolation-seam identity, typed A4→A5 hard-feature barriers, and relation-kind-aware A7 sheet semantics.
