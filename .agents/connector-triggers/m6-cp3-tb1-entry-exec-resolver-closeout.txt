@@ -1,4 +1,0 @@
-Trigger M6-CP3-TB1-ENTRY-EXEC retired-document resolver closeout.
-Base: e9b6a128ca5b42ae286194362474ab8ec905abe2
-Patch SHA-256: 1ea13f50254bcecd49b97a5c27231365eb8663b07d88e4ec1fe036588c3a3e4d
-Retry: 0
