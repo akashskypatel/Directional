@@ -1,0 +1,5 @@
+Purpose: apply M6-CP2-TB2-COVERAGE-EXEC durable closeout documentation
+Patch base: 2599f3f8230c140d8d3c73865cdfff06624c5dfa
+Patch SHA-256: 85105038e231ffa65028bb88e857920a74589c253cabcf7deba27e9f05f06249
+Caller install: 5c92537563757be2c21bf530583d952e300b5366
+Retry: 0
