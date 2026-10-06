@@ -1,3 +1,10 @@
+## 2026-10-06 — `M6-CP2-CB1-VERIFIER-R2` — verifier recovery compile/package GREEN
+
+- Applied the RA-29/RA-29a verifier recovery at source `9c8478aec40bf07144ca7372c2aa58293cd42f5e`, including exact class/path/support checks, linear-time topology maps, an owning verified-product barrier, and repaired focused witnesses.
+- All eight standard GMP/GMPXX targets compiled and linked in run/job `37391389044 / 112037085233`; package `11382000465` self-verifies **28/28** and records `runtimeExecution=false`.
+- Frozen 30/12/449 gate bytes are unchanged. No runtime acceptance or promotion is claimed; stable accounting remains **60 / 16 / 44**, debt 1.
+- Next: immutable `M6-CP2-TB1-VERIFIER-R1-EXEC` at **491** fresh processes, then mandatory Review.
+
 ## 2026-10-05 — `M6-CP2-TB1-VERIFIER-REV` review-agent addendum — verifier fix list extended
 
 - The first verifier build is still rejected. Three of its new tests checked nothing (their tampers changed nothing), and that diagnosis is confirmed.
