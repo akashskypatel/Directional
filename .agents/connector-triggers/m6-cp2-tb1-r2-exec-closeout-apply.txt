@@ -1,4 +1,0 @@
-Purpose: apply durable M6-CP2-TB1-VERIFIER-R2-EXEC closeout documentation patch.
-Patch SHA-256: a321c2105941c7437eca44dd2374e31e454349c8647aaf1e2b7c377731fb067c
-Base SHA: 70ffc92809d9545870b05ac983d3e2f9c280a61d
-Retry: 0

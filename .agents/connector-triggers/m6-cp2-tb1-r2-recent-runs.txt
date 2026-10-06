@@ -1,2 +1,0 @@
-Purpose: one-shot fallback inventory for active M6-CP2-TB1-VERIFIER-R2-EXEC.
-Retry: 0

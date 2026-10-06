@@ -1,6 +1,0 @@
-# M6-CP2-TB1-VERIFIER-R2-EXEC temporary-state cleanup
-.agents/connector-triggers/m6-cp2-tb1-verifier-r2-exec.txt
-.agents/connector-triggers/m6-cp2-tb1-r2-recent-runs.txt
-.agents/connector-triggers/m6-cp2-tb1-r2-exec-closeout-apply.txt
-.agents/connector-triggers/source-snapshot/m6-cp2-tb1-verifier-r2-20261006T021612Z.txt
-.agents/Directional/turn-payloads/m6-cp2-tb1-verifier-r2-exec-artifact-only-harness.sh
