@@ -1,0 +1,5 @@
+# M6-CP3-TB1-ENTRY-EXEC temporary-state cleanup
+.agents/connector-triggers/m6-cp3-tb1-entry-exec.txt
+.agents/connector-triggers/m6-cp3-tb1-entry-exec-closeout-docs.txt
+.agents/connector-triggers/source-snapshot/m6-cp3-tb1-entry-exec-20261006T1229Z.txt
+.agents/Directional/turn-payloads/m6-cp3-tb1-entry-exec-artifact-only-harness.sh
