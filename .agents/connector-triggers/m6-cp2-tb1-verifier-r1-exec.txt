@@ -1,0 +1,4 @@
+turn=M6-CP2-TB1-VERIFIER-R1-EXEC
+candidate_artifact=11382000465
+source_sha=9c8478aec40bf07144ca7372c2aa58293cd42f5e
+expected_processes=491
