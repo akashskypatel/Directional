@@ -1,4 +1,0 @@
-Trigger corrected M6-CP3-CB1-ENTRY Google Drive patch application.
-Expected semantic base: 836d8acf3565faa010d0161614d854ece6f8d1f3
-Patch SHA-256: c164988940469d0a1a0c778be65ecf214ab126f690bf8098ccce7097524bd343
-Retry: 1
