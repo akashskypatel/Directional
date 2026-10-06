@@ -1,3 +1,0 @@
-Purpose: exact source snapshot for M6-CP2-TB1-VERIFIER-R2-REV.
-Expected source authority: this marker-trigger commit.
-Retry: 0
