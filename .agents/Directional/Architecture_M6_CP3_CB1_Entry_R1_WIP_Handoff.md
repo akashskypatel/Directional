@@ -78,3 +78,17 @@ This continuation did not mutate source/test bytes and did not run a build or ge
 - Do not bypass the standard Drive transport by direct-writing the four source/test files.
 
 Continuation therefore remains procedural: preserve the exact staged patch and wait for an authorized way to invoke a caller/dispatch. Once such a trigger exists, use the existing Drive File ID/hash/base from this handoff, apply through `agent-google-drive-reusable.yml`, then compile all eight targets through `agent-compile-reusable.yml` before claiming Code + Build completion.
+
+
+## 2026-10-06T18:22Z prepared alternate caller handoff
+
+The already-drafted combined caller was corrected locally before exposure: the applied-head resolver now places `id: resolve` on the shell step that writes `source_sha` to `$GITHUB_OUTPUT`, rather than on the checkout step. Without that correction, `needs.resolve-source.outputs.source_sha` would be empty and the compile stage would not receive the applied source SHA.
+
+Prepared caller:
+- required repository path: `.github/workflows/m6-cp3-cb1-entry-r1-apply-compile.yml`
+- local/chat artifact name: `m6-cp3-cb1-entry-r1-apply-compile.yml`
+- SHA-256: `6e8daf9b4cbc29491368361e61863e3ba49dc739c903e2e8b17eef35080e9a9e`
+- behavior: self-schema-validation -> exact Drive patch apply -> resolve pushed branch head -> mandatory eight-target compile/package -> mailbox.
+- marker path is fixed as `.agents/connector-triggers/m6-cp3-cb1-entry-r1-apply-compile.txt`.
+
+Because the current connector cannot create a new file under `.github/workflows/**`, the only policy-compatible intervention available from this session is for the repository owner to install the attached caller at the exact path above on the working branch, as its own commit, **without creating the marker**. Once that caller exists, the next continuation can create the marker through the GitHub connector as a separate commit, observe the run, and continue normal evidence/cleanup handling. Do not edit the caller's embedded Drive File ID, patch hash, base SHA, target branch, target list, or runtime-free compile boundary.
