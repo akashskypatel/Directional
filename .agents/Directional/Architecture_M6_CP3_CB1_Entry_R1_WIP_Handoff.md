@@ -63,3 +63,18 @@ The older `M6-CP3-CB1-ENTRY-R1-WIP-20261006T1626Z.patch` and `...1715Z.patch` ar
 3. Apply the complete patch through the durable Drive reusable.
 4. Compile/package all eight mandated GMP/GMPXX targets through `agent-compile-reusable.yml` only; execute no generated Directional runtime.
 5. If compile/package is green, record Code + Build evidence, retire staged Drive patch/control state, remove temporary caller before its marker, clean the old source-snapshot marker, and close with successor `M6-CP3-TB1-ENTRY-R1-EXEC`.
+
+
+## 2026-10-06T18:00Z control-plane capability diagnosis
+
+This continuation did not mutate source/test bytes and did not run a build or generated runtime.
+
+- The current GitHub connector action inventory has no workflow-dispatch/create-dispatch action. It can re-run an existing run/job but cannot supply new `workflow_dispatch` inputs.
+- The generic GitHub fetch surface can list Actions runs read-only. A repository-wide run read at this attempt confirmed there has been no newer workflow run after source snapshot run `37493944389`; no hidden apply/compile run exists to adopt.
+- `agent-google-drive-reusable.yml` itself already supports `workflow_dispatch`, but there is no authenticated dispatch mutation exposed by the current connector.
+- The installed GitHub plugin is the only relevant plugin surfaced by plugin discovery; no separate GitHub-Actions trigger integration is available in this session.
+- Historical workflow re-run is not a safe substitute because previous callers freeze different Drive File IDs, patch hashes, base SHAs, and compile source SHAs.
+- Do not retry connector writes under `.github/workflows/**` unless the connector capability changes; the previous attempt already proved direct workflow creation and Git-tree insertion are rejected by the connector safety layer.
+- Do not bypass the standard Drive transport by direct-writing the four source/test files.
+
+Continuation therefore remains procedural: preserve the exact staged patch and wait for an authorized way to invoke a caller/dispatch. Once such a trigger exists, use the existing Drive File ID/hash/base from this handoff, apply through `agent-google-drive-reusable.yml`, then compile all eight targets through `agent-compile-reusable.yml` before claiming Code + Build completion.
