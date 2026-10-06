@@ -1,3 +1,9 @@
+## M6-CP2-TB1-VERIFIER-R2-REV — CP2 accepted and promoted (2026-10-06)
+
+Independent Review promotes `11385836615 / c64baacd6c767c4ba053b6963651c0aa6eceed20` after re-deriving the immutable R2 gate at **491/491** with exact-one selection, zero skips, zero benchmarks and clean immutable postflight. Static review confirms RA-29c three-hop binding, removal of the invalid component rule and rejected reverse lookup/fallback, O(P log P) grouping, and behavioral token ownership. R1 recovery findings are closed; no new regression candidate. Accounting remains 60/16/44, debt 1. M6-CP2 is closed; exact next is `M6-DEFN-R5`.
+
+---
+
 ## M6-CP2-TB1-VERIFIER-R2-EXEC — 491/491 artifact-only gate GREEN (2026-10-06)
 
 Immutable package `11385836615 / c64baacd6c767c4ba053b6963651c0aa6eceed20` completed the frozen 491-process gate in run/job `37403703032 / 112076464024`: focused30 30/30, CP2-focused12 12/12, selector449 449/449, exact-one 491/491, zero skips and zero benchmarks. Result/log artifacts `11387562709 / 11387233341` were uploaded successfully; the result self-manifest verifies 1005/1005 and immutable package/source/execution-view postflight is clean. No rebuild, relink, configure, generated discovery, repair, mutation, timeout, partition, or retry occurred.

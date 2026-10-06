@@ -1,3 +1,10 @@
+## Current gate — M6-CP2 CLOSED / R3 verifier promoted / next `M6-DEFN-R5` (2026-10-06)
+
+- R2 Review accepted `11385836615 / c64baacd...` after a **491/491** immutable gate.
+- RA-29c recovery is accepted; R1 recovery findings are closed/non-stable.
+- Current reviewed M6 authority is the CP2 package/runtime; accounting remains **60 / 16 / 44**, debt 1.
+- **Exact next: `M6-DEFN-R5`**; CP3 implementation remains held until that definition gate is completed/reviewed.
+
 ## Live M6 routing — after `M6-CP2-TB1-VERIFIER-R2-EXEC`
 
 | Checkpoint | State | Exact next / gate |

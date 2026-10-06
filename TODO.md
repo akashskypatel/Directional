@@ -1,3 +1,11 @@
+## Current — `M6-CP2-TB1-VERIFIER-R2-REV` ACCEPTED / CP2 CLOSED / exact next `M6-DEFN-R5` (2026-10-06)
+
+- [x] Independently re-derive **491/491**, exact-one 491/491, zero skips, benchmark 0, immutable postflight.
+- [x] Confirm RA-29c exact three-hop binding and removal of reverse lookup/fallback, raw component rule, O(V·P) scan and self-declared ownership trait.
+- [x] Close R1-REV-01/02/03, EXEC-OBS-01 and RA-29c T3/T5 as recovery-proved/non-stable.
+- [x] Promote `11385836615 / c64baacd...`; accounting remains **60 / 16 / 44**, debt 1.
+- [ ] **Exact next: `M6-DEFN-R5`** — carried CP3 definition/permutation gate.
+
 ## Current — `M6-CP2-TB1-VERIFIER-R2-EXEC` COMPLETE / 491/491 / mandatory Review next (2026-10-06)
 
 - [x] Consume immutable `11385836615 / c64baacd...` without rebuild/repair.

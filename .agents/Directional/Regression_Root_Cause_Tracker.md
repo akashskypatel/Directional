@@ -1,3 +1,7 @@
+## 2026-10-06 — `M6-CP2-TB1-VERIFIER-R2-REV` — **ACCEPTED / RECOVERY PROVED / +0 / 60/16/44 / debt 1**
+
+Independent Review promotes `11385836615 / c64baacd...` after re-deriving **491/491** with exact-one 491/491, zero skips, zero benchmarks and clean immutable postflight. RA-29c is faithful; the invalid component rule, reverse lookup/fallback, O(V·P) scan and self-declared ownership trait are gone. `R1-REV-01`, `R1-REV-02`, `R1-REV-03`, `EXEC-OBS-01`, and RA-29c T3/T5 are **CLOSED / RECOVERY PROVED / NON-STABLE**. No new regression event/candidate or debt item. Accounting remains **60 events / 16 categories / 44 recurrences**, debt 1. Exact next: `M6-DEFN-R5`.
+
 ## 2026-10-06 — `M6-CP2-TB1-VERIFIER-R2-EXEC` — **491/491 GREEN / +0 / 60/16/44 / debt 1**
 
 Immutable artifact-only runtime `37403703032 / 112076464024` consumed `11385836615 / c64baacd...`: focused30 **30/30**, CP2-focused12 **12/12**, selector449 **449/449**, aggregate **491/491**, exact-one 491/491, zero skips, benchmark 0, immutable postflight PASS. Result/log evidence is `11387562709 / 11387233341`; result self-manifest is 1005/1005.

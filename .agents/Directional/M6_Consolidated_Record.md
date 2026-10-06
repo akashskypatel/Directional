@@ -1,3 +1,7 @@
+## 2026-10-06 — M6-CP2 final verifier Review: ACCEPTED / PROMOTED
+
+`M6-CP2-TB1-VERIFIER-R2-REV` promotes `11385836615 / c64baacd6c767c4ba053b6963651c0aa6eceed20`. Runtime `37403703032 / 112076464024` re-derives **491/491** (30 + 12 + 449), exact-one 491/491, zero skips, benchmark 0, immutable postflight. Static review accepts RA-29c's exact relation→path→vertex binding, removal of invalid component/reverse-lookup rules, bounded grouping complexity, and behavioral token ownership. R1 recovery findings close non-stably; accounting remains **60 / 16 / 44**, debt 1. M6-CP2 is closed. Exact next: `M6-DEFN-R5`. See `Architecture_M6_CP2_TB1_Verifier_R2_Review_Record.md`.
+
 ## 2026-10-06 — M6 CP2 verifier R3 compile/package closure
 
 **Current authority after `M6-CP2-CB1-VERIFIER-R3`:** M6 CP1 remains CLOSED / ACCEPTED, mechanism-only; CP2 verifier candidates R1/R2 remain rejected; RA-29c is implemented at exact semantic source `c64baacd6c767c4ba053b6963651c0aa6eceed20`. Candidate package `11385836615` is compile/package GREEN and **unpromoted**. Reviewed runtime remains `11330703256 / 3f40f04a...` (479/479). Accounting **60 / 16 / 44**, debt 1. Exact next: immutable `M6-CP2-TB1-VERIFIER-R2-EXEC` (**491**) → mandatory Review.

@@ -1,3 +1,11 @@
+## Resume-critical update — `M6-CP2-TB1-VERIFIER-R2-REV` ACCEPTED / CP2 CLOSED / exact next `M6-DEFN-R5` (2026-10-06)
+
+**Start `M6-DEFN-R5` next. Do not reopen CP2 or rerun the 491-process verifier gate absent new authority.**
+
+Independent Review promotes `11385836615 / c64baacd6c767c4ba053b6963651c0aa6eceed20`. Runtime `37403703032 / 112076464024` independently re-derives **491/491**: focused30 30/30, CP2-focused12 12/12, selector449 449/449, exact-one 491/491, zero skips, benchmark 0, immutable postflight. Static review finds RA-29c faithful: exact A5→A6→A7 three-hop binding, no reverse lookup/fallback, no invalid raw component-partition rule, O(P log P) selected-path grouping, and behavioral verified-product ownership. R1-REV-01/02/03, EXEC-OBS-01 and RA-29c T3/T5 are recovery-proved/closed. No new finding or regression candidate. Accounting remains **60 / 16 / 44**, debt 1. Full record: `Architecture_M6_CP2_TB1_Verifier_R2_Review_Record.md`. Exact successor: `M6-DEFN-R5`.
+
+---
+
 ## Resume-critical update — `M6-CP2-TB1-VERIFIER-R2-EXEC` COMPLETE / 491/491 / mandatory R2 Review next (2026-10-06)
 
 **Start mandatory independent `M6-CP2-TB1-VERIFIER-R2-REV` next. Do not repair source/tests, rebuild, rerun the 491-process gate, promote the candidate, or begin `M6-DEFN-R5` before Review.**

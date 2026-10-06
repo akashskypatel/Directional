@@ -1,3 +1,7 @@
+## Current orientation — M6-CP2 CLOSED / exact next `M6-DEFN-R5` (2026-10-06)
+
+Independent `M6-CP2-TB1-VERIFIER-R2-REV` promotes `11385836615 / c64baacd6c767c4ba053b6963651c0aa6eceed20`; immutable runtime `37403703032 / 112076464024` is **491/491**. RA-29c is accepted and R1 recovery findings are closed. Accounting is **60 events / 16 categories / 44 recurrences**, debt 1. **Next:** `M6-DEFN-R5`, the carried CP3 definition/permutation gate.
+
 ## Currency — `M6-CP2-TB1-VERIFIER-R2-EXEC` COMPLETE / 491/491 / mandatory Review next (2026-10-06 UTC)
 
 - Immutable R3 candidate `11385836615 / c64baacd...` is mechanically GREEN at focused30 **30/30** + CP2-focused12 **12/12** + selector449 **449/449** = **491/491**.
