@@ -110,3 +110,13 @@ Because the current connector cannot create a new file under `.github/workflows/
 - Staged Drive patch file `18a7y5tTEBhVgzFfYBumQ5KgGZSxWz7SC` still exists with exact name `Directional__M6-CP3-CB1-ENTRY-R1__base-637eb6f217a8__work-preservation.patch` and size 29220 bytes.
 - No source/test mutation, patch consumption, compile/package run, test, benchmark, or generated Directional runtime occurred.
 - Continue this same turn only after the prepared caller is installed at the exact workflow path as a standalone commit without its trigger marker; then create the marker separately through the connector and observe the authorized workflow.
+
+
+## 2026-10-06T22:02Z orchestration-template correction
+
+- Re-read the current workflow policy and corrected the prepared caller to satisfy its SHA-256 authoring rule: the draft template now contains the quoted placeholder `@@SHA256:patch@@`, and the exact caller is materialized through `.agents/Directional/tools/write_orchestration_payload.py --sha256 patch=<digest>`.
+- Template artifact: `m6-cp3-cb1-entry-r1-apply-compile.template.yml`, SHA-256 `af5005d484351f24a24816adb87b1d34c294382f9392e77a6f398bc3c37da8d8`.
+- Materialized caller artifact: `m6-cp3-cb1-entry-r1-apply-compile.yml`, SHA-256 `e60a7baed7a0eaf7dcbd4933befc104b205cff85943063f4d7b88f9051015725`. This supersedes the earlier caller SHA `6e8daf9b4cbc29491368361e61863e3ba49dc739c903e2e8b17eef35080e9a9e` only because the rendered digest is now explicitly quoted; runtime semantics are unchanged.
+- Local YAML parsing of the materialized caller passed and the `resolve-source` output still references `steps.resolve.outputs.source_sha`. This local parse is not a substitute for the mandatory durable SchemaStore validator.
+- The caller remains absent from `.github/workflows/`; no marker was created and no workflow run was triggered. Connector capability remains unchanged, so the prior prohibition on retrying blocked workflow-file writes still applies.
+- Exact next action: install the new materialized caller at `.github/workflows/m6-cp3-cb1-entry-r1-apply-compile.yml` as a standalone commit with no marker. The caller itself fail-closes on the durable schema validator before Drive apply, but current policy still records strict prepublication validator execution as unavailable through this connector surface.
