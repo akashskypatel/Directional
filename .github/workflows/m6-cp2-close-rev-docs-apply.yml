@@ -1,0 +1,44 @@
+name: M6 CP2 Close Review Docs Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m6-cp2-close-rev-docs-apply.txt
+
+permissions:
+  actions: read
+  contents: write
+  id-token: write
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m6-cp2-close-rev-docs-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1PRE23Gh6ZXPomIJw93QYlSzedDqYVPq_
+      patch_sha256: 8fd385dd2f4aab3eb3a9d328ca382c075033b16f5a48cde922d65d091b55ab58
+      base_sha: 303f9c54c160c38a9b1e288c88bd79a17c329d56
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close M6 CP2 after independent review"
+    secrets: inherit
+
+  mailbox:
+    if: ${{ always() }}
+    needs: [validate, apply]
+    uses: ./.github/workflows/workflow-mailbox-publisher.yml
+    with:
+      workflow_key: m6-cp2-close-rev-docs-apply
+      source_sha: ${{ github.sha }}
+      source_ref: ${{ github.ref }}
+      result: ${{ needs.apply.result }}
+      summary: Apply M6 CP2 close-review durable documentation.
