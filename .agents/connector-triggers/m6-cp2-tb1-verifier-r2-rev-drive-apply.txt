@@ -1,0 +1,3 @@
+Purpose: apply independent M6-CP2-TB1-VERIFIER-R2-REV durable closeout records.
+Patch base: b26f19d934dd67e6eae26166200b923a86879e14
+Retry: 0
