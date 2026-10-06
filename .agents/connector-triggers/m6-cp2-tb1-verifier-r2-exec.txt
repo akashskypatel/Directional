@@ -1,0 +1,4 @@
+Purpose: execute immutable M6-CP2-TB1-VERIFIER-R2-EXEC gate.
+Candidate package: 11385836615 / c64baacd6c767c4ba053b6963651c0aa6eceed20.
+Expected processes: 491 fresh exact-filter executions; zero benchmarks; no rebuild/repair.
+Retry: 0
