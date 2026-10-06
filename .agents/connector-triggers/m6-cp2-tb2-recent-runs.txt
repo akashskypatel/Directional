@@ -1,0 +1,3 @@
+Purpose: fallback repository-wide Actions inventory for M6-CP2-TB2-COVERAGE-EXEC
+Expected TB2 trigger: 5c136917d09c731515b94cd867a4aecec2f46c43
+Retry: 0
