@@ -5,6 +5,12 @@
 **Semantic result:** RED — mandatory Review required
 **Successor:** `M6-CP3-TB1-ENTRY-REV`
 
+## Closeout and retired-document resolver
+
+Durable RED evidence was committed as `145f7af552483ead00a6605e0ec793cb9f4af595`. Turn cleanup run `37470228257` committed cleanup SHA `4eae760859ed48a7898d9383e583681111fe9023`, removed the runtime/closeout markers, source-snapshot marker, and artifact-only harness, and preserved workflow mailbox history and Actions artifacts. The staged Drive closeout patch required owner retirement and was permanently deleted through the user-authorized Drive connector.
+
+The superseded predecessor files `Architecture_M6_CP3_CB1_Entry_Authority_Code_Build_Plan.md`, `Architecture_M6_CP3_CB1_Entry_Authority_Code_Build_Report.md`, and `Architecture_M6_CP3_TB1_Entry_Exec_WIP_Handoff.md` were retired only after their durable facts were preserved here, in the handoff/TODO/CHANGELOG, and in the regression tracker. Historical references to those filenames in retained records resolve to git commit `4eae760859ed48a7898d9383e583681111fe9023`, where all three remain recoverable. Mandatory `M6-CP3-TB1-ENTRY-REV` must add their names to the appropriate folded-document index per `CLEAN_UP_POLICY.md`.
+
 ## Immutable authority
 
 - Candidate compile artifact: `11411137781`

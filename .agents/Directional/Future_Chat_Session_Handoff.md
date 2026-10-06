@@ -6,13 +6,15 @@ Immutable artifact-only run/job `37464309062 / 112271440079` consumed `114111377
 
 All 124 RED rows are mapped in `Architecture_M6_CP3_TB1_Entry_Red_Classification.tsv` and analyzed in `Architecture_M6_CP3_TB1_Entry_Artifact_Only_Test_Benchmark_Report.md`. Six non-stable candidate groups are carried: A4 face-gauge publication gap (`InvalidFrontBoundaryAuthority`), A6/D7 isolation-side evidence overreach, unlocalized downstream reachability/variant failures, D1 witness non-vacuity, D2 HardRail A5 baseline rejection, and D4 typed-barrier semantic/witness mismatch. Stable accounting remains **60 / 16 / 44**, debt 1 pending Review.
 
+Closeout is durable: RED-evidence commit `145f7af552483ead00a6605e0ec793cb9f4af595`; cleanup run `37470228257` / cleanup SHA `4eae760859ed48a7898d9383e583681111fe9023`; staged Drive patch owner-deleted; temporary callers/markers/harness/source-snapshot marker removed. Superseded CB1 plan/report and the TB1 WIP handoff were retired after preservation and remain recoverable at git commit `4eae760859ed48a7898d9383e583681111fe9023`; the mandatory Review must index those retired filenames before its own closeout.
+
 ---
 
 ## Resume-critical update — `M6-CP3-CB1-ENTRY` COMPLETE / compile-package GREEN / exact next `M6-CP3-TB1-ENTRY-EXEC` (2026-10-06)
 
 **Start immutable artifact-only `M6-CP3-TB1-ENTRY-EXEC` next. Do not rebuild, repair, relink, run generated discovery, or begin CB2 before the 497-process entry gate and mandatory Review.**
 
-RA-30 + RA-30a entry authority is implemented at semantic source `912760f1ffc785676f5d50717177b1cd8be69234`: exact-A3 Periodic gauge separation, HardRail endpoint face-gauge branch certification, OrdinaryFront isolation-seam identity, A4-published typed hard-feature barriers consumed by A5, and relation-kind-aware A7 sheet semantics. Exactly six frozen `M6CP3.*` entry identities were added. Frozen focused30/focused12/selector449/routing449 authority was not edited. Full evidence: `Architecture_M6_CP3_CB1_Entry_Authority_Code_Build_Report.md`.
+RA-30 + RA-30a entry authority is implemented at semantic source `912760f1ffc785676f5d50717177b1cd8be69234`: exact-A3 Periodic gauge separation, HardRail endpoint face-gauge branch certification, OrdinaryFront isolation-seam identity, A4-published typed hard-feature barriers consumed by A5, and relation-kind-aware A7 sheet semantics. Exactly six frozen `M6CP3.*` entry identities were added. Frozen focused30/focused12/selector449/routing449 authority was not edited. Historical full evidence was recorded in the now-retired `Architecture_M6_CP3_CB1_Entry_Authority_Code_Build_Report.md` (resolver above; recoverable at `4eae760859ed48a7898d9383e583681111fe9023`).
 
 Corrected Drive apply `37458022713 / 112250373902` pushed the semantic commit; the staged Drive patch was permanently retired through the owner connector. Mandatory compile run/job `37458495402 / 112251921276` is GREEN on all eight standard GMP/GMPXX targets. Immutable result/log artifacts are `11411137781 / 11410478676`; result provider digest `704b1b70...7234`, recursive manifest **28/28**, clean source, `runtimeExecution=false`. No Directional runtime, test, benchmark or generated binary execution occurred.
 

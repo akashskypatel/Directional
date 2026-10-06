@@ -3,6 +3,7 @@
 - [x] Execute immutable `11411137781 / 912760f1...` as exactly **497** fresh exact-filter processes with exact-one selection, zero skips and immutable postflight.
 - [x] Record **373 PASS / 124 RED**: focused30 4/30, focused12 0/12, selector449 369/449, CP3-entry 0/6; benchmark 0.
 - [x] Categorize all 124 RED rows into six non-stable candidate groups with row-level mapping and root-cause analysis; keep stable accounting **60 / 16 / 44**, debt 1.
+- [x] Complete durable cleanup: RED-evidence commit `145f7af552483ead00a6605e0ec793cb9f4af595`, cleanup run `37470228257` / SHA `4eae760859ed48a7898d9383e583681111fe9023`, staged Drive patch owner-deleted, temporary workflow/marker/harness state removed. Retired predecessor CB1 plan/report and TB1 WIP handoff are recoverable at git commit `4eae760859ed48a7898d9383e583681111fe9023` and must be indexed by Review.
 - [ ] **Exact next `M6-CP3-TB1-ENTRY-REV`:** independently adjudicate every candidate group and row mapping. CB2 remains held until Review.
 
 ## Current — `M6-CP3-CB1-ENTRY` COMPLETE / exact next `M6-CP3-TB1-ENTRY-EXEC` (2026-10-06)
@@ -10,7 +11,7 @@
 - [x] Implement RA-30 + RA-30a entry authority at semantic source `912760f1ffc785676f5d50717177b1cd8be69234`.
 - [x] Add exactly the six frozen CP3-entry identities; do not edit focused30/focused12/selector449/routing449 authority.
 - [x] Compile/package all eight standard GMP/GMPXX targets: `37458495402 / 112251921276`, immutable result `11411137781`, manifest **28/28**, clean source, `runtimeExecution=false`.
-- [x] Preserve full Code + Build evidence in `Architecture_M6_CP3_CB1_Entry_Authority_Code_Build_Report.md`; retire the consumed Drive patch and temporary apply/compile control state while retaining mailbox history.
+- [x] Preserve the historical CB1 evidence report (retired at TB1 cleanup; recoverable at `4eae760859ed48a7898d9383e583681111fe9023`); retire the consumed Drive patch and temporary apply/compile control state while retaining mailbox history.
 - [ ] **Exact next `M6-CP3-TB1-ENTRY-EXEC`:** consume immutable `11411137781 / 912760f1...` with no rebuild/repair and execute exactly **497** fresh exact-filter processes = focused30 30 + focused12 12 + selector449 449 + six CP3-entry identities 6.
 - [ ] Mandatory `M6-CP3-TB1-ENTRY-REV`; CB2 (D5/D6/D8, final intended gate 507) remains held until Review.
 
