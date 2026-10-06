@@ -1,6 +1,0 @@
-Trigger M6-CP3-TB1-ENTRY-EXEC immutable artifact-only gate.
-Candidate artifact: 11411137781
-Semantic source: 912760f1ffc785676f5d50717177b1cd8be69234
-Processes: 497 = focused30 30 + focused12 12 + selector449 449 + CP3-entry 6
-Benchmark execution: forbidden
-Retry: 0
