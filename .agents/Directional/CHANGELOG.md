@@ -1,3 +1,7 @@
+## 2026-10-06 — `M6-CP3-TB1-ENTRY-REV` — candidate rejected; RA-31
+
+Independent Review re-partitioned the immutable 124 REDs exactly: CAND-01 110, CAND-02 9, CAND-07 1, CAND-04 1, CAND-05 2, CAND-06 1. CAND-01 is stable new singleton `INCOMPLETE_AUTHORITY_PUBLICATION`; CAND-02 is stable `RP-01`; CAND-07 is stable `RP-02`; the three new-entry witness/oracle defects are non-stable. Stable totals become **63/17/46**, debt 1. Candidate `11411137781 / 912760f1...` rejected; RA-31 releases only `M6-CP3-CB1-ENTRY-R1` → TB 497 → mandatory Review.
+
 ## 2026-10-06 — `M6-CP3-TB1-ENTRY-EXEC` COMPLETE / 373 PASS + 124 RED
 
 - Immutable artifact-only run/job `37464309062 / 112271440079` consumed `11411137781 / 912760f1...` and completed all **497** exact-filter processes: focused30 4/30, focused12 0/12, selector449 369/449, CP3-entry 0/6. Exact-one selection and zero skips held; benchmark count 0.

@@ -1,3 +1,11 @@
+# Current handoff — `M6-CP3-TB1-ENTRY-REV` complete authority
+
+**Exact next turn:** `M6-CP3-CB1-ENTRY-R1`. Do not start CP3 exit work.
+
+Entry candidate `11411137781 / 912760f1ffc785676f5d50717177b1cd8be69234` is rejected after immutable **373/497**. Review partition is CAND-01 110 (production incomplete face-gauge publication), CAND-02 9 (production OrdinaryFront evidence-domain overreach), CAND-07 1 (stable focused30 test-authority migration), CAND-04 1 / CAND-05 2 / CAND-06 1 (non-stable entry witness/oracle defects). Stable accounting **63 / 17 / 46**, debt 1; reviewed runtime remains `11391685901 / 5ce3132e...`.
+
+Binding authority: `Architecture_M6_CP3_TB1_Entry_Review_Record.md` and `Architecture_M6_CP3_CB1_Entry_R1_Recovery_Code_Build_Plan.md` (RA-31). Recovery compile is runtime-free, all eight GMP/GMPXX targets. A green package must go through exactly 497 fresh artifact-only processes and mandatory R1 Review.
+
 ## Resume-critical update — `M6-CP3-TB1-ENTRY-EXEC` COMPLETE / 373 PASS + 124 RED / mandatory `M6-CP3-TB1-ENTRY-REV` next (2026-10-06)
 
 **Start mandatory Review `M6-CP3-TB1-ENTRY-REV` next. Do not begin CB2 or repair production/test authority before Review adjudicates the 124 RED rows.**

@@ -1,3 +1,7 @@
+# M6-CP3-TB1-ENTRY-EXEC — Artifact-Only Test + Benchmark Report
+
+> **Mandatory Review adjudication (`M6-CP3-TB1-ENTRY-REV`, 2026-10-06).** The mechanical runtime remains 497 exact-filter processes, **373 PASS / 124 RED**, exact-one 497/497, zero skips, benchmark 0, immutable postflight. Review replaces the provisional EXEC clustering with the exact partition recorded in the adjacent TSV: **CAND-01 110 / CAND-02 9 / CAND-04 1 / CAND-05 2 / CAND-06 1 / CAND-07 1**. CAND-01 and CAND-02 are production regressions; CAND-07 is an accepted-prefix test-authority migration regression; CAND-04/05/06 are non-stable CP3-entry test-authority defects. Stable accounting after Review is **63 events / 17 categories / 46 recurrences**, debt 1. Candidate `11411137781 / 912760f1...` is rejected/unpromoted. Exact recovery is `M6-CP3-CB1-ENTRY-R1` → `M6-CP3-TB1-ENTRY-R1-EXEC` (**497**) → mandatory `M6-CP3-TB1-ENTRY-R1-REV`.
+
 # Architecture M6 CP3 TB1 Entry Artifact-Only Test + Benchmark Report
 
 **Turn:** `M6-CP3-TB1-ENTRY-EXEC`

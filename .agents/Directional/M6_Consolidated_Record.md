@@ -1,3 +1,7 @@
+## 2026-10-06 — Current authority after `M6-CP3-TB1-ENTRY-REV`
+
+Entry candidate `11411137781 / 912760f1...` is **REJECTED / UNPROMOTED** after immutable 497-process TB returns 373 PASS / 124 RED. Review resolves every row: production CAND-01 110 and CAND-02 9; stable focused30 test-authority CAND-07 1; non-stable entry CAND-04 1 / CAND-05 2 / CAND-06 1. Stable totals are **63 / 17 / 46**, debt 1. RA-31 freezes one bounded recovery: `M6-CP3-CB1-ENTRY-R1` → R1 TB **497** → mandatory R1 Review. CP3 exit remains held. Full authority: `Architecture_M6_CP3_TB1_Entry_Review_Record.md`; next plan: `Architecture_M6_CP3_CB1_Entry_R1_Recovery_Code_Build_Plan.md`.
+
 ## 2026-10-06 — Current authority after `M6-DEFN-R5-REV`
 
 The CP3 entry Definition is accepted with RA-30a (§57). Exact next: `M6-CP3-CB1-ENTRY` → TB1-ENTRY (497) → Review. Reviewed runtime `11391685901 / 5ce3132e` (491/491). Accounting **60 / 16 / 44**, debt 1.
@@ -623,6 +627,9 @@ D1–D9 are reviewed against source and gates, and the 497 entry / 507 final ari
 CB1 is released. Lesson 206.
 
 ## Folded document index
+| `Architecture_M6_CP3_CB1_Entry_Authority_Code_Build_Plan.md` | **CONSUMED CP3 ENTRY CB PLAN / RETIRED BETWEEN REVIEWS.** RA-30/RA-30a entry scope, stop rules and 497-process successor are preserved in §57, the current Review/RA-31 plan and git history. Historical resolver commit: `4eae760859ed48a7898d9383e583681111fe9023`. |
+| `Architecture_M6_CP3_CB1_Entry_Authority_Code_Build_Report.md` | **SUPERSEDED CP3 ENTRY COMPILE REPORT / RETIRED BETWEEN REVIEWS.** Exact source/package/compile evidence is preserved in the retained TB report, current Review, changelog and git history. Historical resolver commit: `4eae760859ed48a7898d9383e583681111fe9023`. |
+| `Architecture_M6_CP3_TB1_Entry_Exec_WIP_Handoff.md` | **SUPERSEDED EXEC WIP HANDOFF / RETIRED BETWEEN REVIEWS.** Active-run identifiers and resume facts are superseded by the retained TB report and current Review. Historical resolver commit: `4eae760859ed48a7898d9383e583681111fe9023`. |
 
 | Retired filename | Disposition |
 |---|---|

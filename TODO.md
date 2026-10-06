@@ -1,3 +1,11 @@
+## CURRENT — M6-CP3 entry recovery
+
+- **Exact next:** `M6-CP3-CB1-ENTRY-R1` under RA-31.
+- Fix only: complete A4 face-gauge publication in uniform/periodic regional producers; scope A6 OrdinaryFront isolation evidence to certified cross-sheet seams; repair focused30 ordinal12 relabel; repair D1/D2 produced witnesses; rewrite D4 barrier oracle.
+- Compile/package all eight standard GMP/GMPXX targets; no generated runtime.
+- Then immutable `M6-CP3-TB1-ENTRY-R1-EXEC`: exactly **497** fresh processes, benchmark 0, followed by mandatory `M6-CP3-TB1-ENTRY-R1-REV`.
+- CP3 exit remains held. Stable accounting **63 / 17 / 46**, debt 1.
+
 ## Current — `M6-CP3-TB1-ENTRY-EXEC` COMPLETE / semantic RED / mandatory Review next (2026-10-06)
 
 - [x] Execute immutable `11411137781 / 912760f1...` as exactly **497** fresh exact-filter processes with exact-one selection, zero skips and immutable postflight.

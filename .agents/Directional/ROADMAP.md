@@ -1,3 +1,14 @@
+## Live M6 routing — after `M6-CP3-TB1-ENTRY-REV` (RA-31)
+
+| Checkpoint | State | Exact next / gate |
+|---|---|---|
+| M6 CP1 / CP2 | **CLOSED / ACCEPTED** | reviewed runtime `11391685901 / 5ce3132e...` |
+| CP3 entry candidate | **REJECTED / UNPROMOTED** | TB1 entry 373/497; exact partition in Review |
+| CP3 entry recovery | **EXACT NEXT** | `M6-CP3-CB1-ENTRY-R1` → R1 TB **497** → mandatory R1 Review |
+| CP3 exit | **HELD** | D5/D6/direct-exit work remains unauthorized until entry recovery Review |
+
+Stable accounting: **63 / 17 / 46**, debt 1.
+
 ## Live M6 routing — after `M6-DEFN-R5-REV` (RA-30a)
 
 | Checkpoint | State | Exact next / gate |

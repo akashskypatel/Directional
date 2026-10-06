@@ -1,3 +1,11 @@
+## Currency — `M6-CP3-TB1-ENTRY-REV`: entry candidate rejected; RA-31 recovery (2026-10-06 UTC)
+
+- Immutable entry gate `11411137781 / 912760f1...` executed 497 processes at **373 PASS / 124 RED**.
+- Review proves two production regressions: incomplete A4 face-gauge publication across uniform/periodic producers, and OrdinaryFront isolation-seam evidence applied outside the seam domain.
+- One accepted focused30 test has an authority-migration defect; three new CP3-entry identities have witness/oracle defects. Exact partition: **110 + 9 + 1 + 1 + 2 + 1 = 124**.
+- Stable accounting: **63 / 17 / 46**, debt 1. Candidate rejected/unpromoted; reviewed runtime remains CP2 `11391685901 / 5ce3132e...`.
+- **Exact next:** `M6-CP3-CB1-ENTRY-R1` under RA-31 → immutable TB **497** → mandatory R1 Review. CP3 exit remains held.
+
 ## Currency — `M6-DEFN-R5-REV`: CP3-entry Definition accepted with RA-30a (2026-10-06 UTC)
 
 - D1–D9 are accepted with binding amendments:

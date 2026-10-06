@@ -1,3 +1,14 @@
+## 2026-10-06 — `M6-CP3-TB1-ENTRY-REV` — **REJECTED / RA-31 / +3 EVENTS / 63/17/46 / debt 1**
+
+Independent Review re-derives artifact-only `37464309062 / 112271440079` at **373/497**, exact-one 497/497, zero skips, benchmark 0 and immutable postflight. The provisional 124 RED rows are repartitioned exactly once: CAND-01 **110**, CAND-02 **9**, CAND-07 **1**, CAND-04 **1**, CAND-05 **2**, CAND-06 **1**. `Architecture_M6_CP3_TB1_Entry_Red_Classification.tsv` is authoritative.
+
+- **CAND-01 — STABLE / new singleton `INCOMPLETE_AUTHORITY_PUBLICATION`:** CB1 made per-face gauge authority mandatory at the source-wide merge, but uniform and periodic-annulus regional producers omit the field. 73 rows reject directly at `InvalidFrontBoundaryAuthority`; 37 more accepted rows fail downstream. New category is deliberate: historical `INCOMPLETE_ORBIT_PUBLICATION` is orbit-specific and is not silently broadened. **+1 event / +1 category / +0 recurrence.**
+- **CAND-02 — STABLE / `RP-01 AUTHORITY_DOMAIN_CONFLATION` recurrence:** A6 applies isolation-seam reciprocal side evidence to all OrdinaryFront relations before identifying the seam case. Five direct torus rows plus focused30 ordinals 25–28 share this root. **+1 event / +0 categories / +1 recurrence.**
+- **CAND-07 — STABLE / `RP-02 TEST_AUTHORITY_COVERAGE_GAP` recurrence:** accepted focused30 ordinal12 relabels old branch representations but not the newly authoritative source face gauges, so its reconstructed A5 baseline is correctly inconsistent. **+1 event / +0 categories / +1 recurrence.**
+- **CAND-04 / CAND-05 / CAND-06 — NON-STABLE test authority:** D1 lacks the frozen 90°/270° witness; D2 does not prove the required A4 gauge non-vacuity before A5; D4 tests global chart-component inequality instead of the typed barrier graph semantics.
+
+Stable accounting advances to **63 events / 17 categories / 46 recurrences**, debt **1**. Candidate `11411137781 / 912760f1...` is rejected/unpromoted; reviewed runtime remains `11391685901 / 5ce3132e...`. RA-31 authorizes only `M6-CP3-CB1-ENTRY-R1` → immutable 497-process R1 TB → mandatory R1 Review.
+
 ## 2026-10-06 — `M6-CP3-TB1-ENTRY-EXEC` — 124 REDs classified / mandatory Review — **+0 / 60/16/44 / debt 1**
 
 Artifact-only run `37464309062 / 112271440079` completed the frozen 497-process entry gate with **373 PASS / 124 RED**, exact-one selection 497/497, zero skips, benchmark 0 and immutable postflight. Every RED row is assigned exactly once in `Architecture_M6_CP3_TB1_Entry_Red_Classification.tsv`. These are **candidate/non-stable** classifications; EXEC does not promote or merge stable events.
