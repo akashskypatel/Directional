@@ -101,3 +101,12 @@ Because the current connector cannot create a new file under `.github/workflows/
 - The verified snapshot contains only the eight durable workflows; no existing generic push-triggered workflow can accept the staged Drive File ID/hash/base and then compile the resulting source. The Drive reusable remains dispatch/call-only, so no policy-compatible trigger can be synthesized from a non-workflow marker alone.
 - No source/test mutation, compile/package run, generated runtime, or patch-consumption action occurred in this continuation.
 - Exact next action remains owner installation of the prepared caller at its recorded path as a standalone commit, without the trigger marker. After that, resume this same turn and create only the marker through the connector.
+
+
+## 2026-10-06T21:31Z continuation verification
+
+- Required temporary caller `.github/workflows/m6-cp3-cb1-entry-r1-apply-compile.yml` remains absent on the working branch.
+- Repository Actions history still shows source-snapshot run `37493944389` as the newest run; no hidden apply or compile run exists to adopt.
+- Staged Drive patch file `18a7y5tTEBhVgzFfYBumQ5KgGZSxWz7SC` still exists with exact name `Directional__M6-CP3-CB1-ENTRY-R1__base-637eb6f217a8__work-preservation.patch` and size 29220 bytes.
+- No source/test mutation, patch consumption, compile/package run, test, benchmark, or generated Directional runtime occurred.
+- Continue this same turn only after the prepared caller is installed at the exact workflow path as a standalone commit without its trigger marker; then create the marker separately through the connector and observe the authorized workflow.
