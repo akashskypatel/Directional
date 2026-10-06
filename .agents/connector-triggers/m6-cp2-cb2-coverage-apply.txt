@@ -1,4 +1,0 @@
-Purpose: apply final M6-CP2-CB2-COVERAGE patch from Google Drive
-Caller install: da9eb58a84bcd379f405c574118e7a9bbd5450fe
-Patch base: 23a4663f840d05a5143515dd368a5562d70be234
-Retry: 0
