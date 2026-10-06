@@ -1,3 +1,23 @@
+## Resume-critical update — `M6-CP3-TB1-ENTRY-REV` review-agent addendum: RA-31a withdraws the HardRail branch certificate (2026-10-06)
+
+**Start `M6-CP3-CB1-ENTRY-R1`** under RA-31 **+ RA-31a**. The top block of `Architecture_M6_CP3_CB1_Entry_R1_Recovery_Code_Build_Plan.md` is binding.
+
+Confirmed by the review agent: 373/497 (1019/1019, all raw hashes match); the 124-row partition; CAND-01, CAND-02, CAND-04, CAND-06 and CAND-07; accounting **63 / 17 / 46**.
+
+**CAND-05 re-adjudicated.** It is not a test-ordering defect.
+- The RA-30 §2 certificate strips each endpoint's region-relative face gauge: the planar frame axis (`SurfaceCellTracing.cpp:10723-10760`) or the curved region root (`:14933`).
+- TB7's derivation requires stripping the **cross-rail field matching τ**. The rule is valid only if `F_b − F_a = τ`, which is unproven.
+- A5 rejects the only nonzero-gauge HardRail fixture, and the error code was never localized.
+
+**R1 does:**
+- P1, P2, T1 and T4 as planned;
+- T2 with a stop rule;
+- **removes the branch-certificate rejection**, keeping coordinate-rigid transport and the published endpoint gauges;
+- identity 2 pre-registered RED (non-vacuity and A5 production must pass; on any A5 rejection, print the code, site and relation);
+- identity 6 must pass.
+
+**TB1-R1 acceptance:** 496 PASS plus identity 2 RED confined to its certificate assertions. Then R1 Review → `M6-DEFN-R5-R1`, which redefines D2 via τ with a discriminating produced witness where `F_b − F_a ≠ τ`.
+
 # Current handoff — `M6-CP3-TB1-ENTRY-REV` complete authority
 
 **Exact next turn:** `M6-CP3-CB1-ENTRY-R1`. Do not start CP3 exit work.
@@ -1293,19 +1313,17 @@ Review must independently re-open source/evidence and re-derive: split-square v0
 
 ## Current authority
 
-- **M6 CP1 and CP2:** CLOSED / ACCEPTED.
-- **CP3 entry Definition:** `M6-DEFN-R5` accepted by `M6-DEFN-R5-REV` with **RA-30a** (`Architecture_M6_DEFN_R5_Review_Record.md`).
-- Reviewed runtime authority: `11391685901 / 5ce3132ec01748eff5b15f82be07a1abe2bd1af6` (focused-30 + focused-12 + selector449 = **491/491**).
-- Normative: RA-1 – RA-30a.
-- Accounting **60 / 16 / 44**, debt **1** (`G4-B002`).
+- **M6 CP1 and CP2:** CLOSED / ACCEPTED. Reviewed runtime authority is `11391685901 / 5ce3132ec01748eff5b15f82be07a1abe2bd1af6` (491/491).
+- **CP3 entry candidate:** `11411137781 / 912760f1` is **REJECTED** (373/497; RA-31). RA-31a withdraws the RA-30 §2 HardRail branch certificate.
+- Normative: RA-1 – RA-31a.
+- Stable accounting **63 / 17 / 46**, debt **1**.
 
 ## Exact next turn
 
-**`M6-CP3-CB1-ENTRY` — new turn; Code + Build, compile/package only.** Follow `Architecture_M6_CP3_CB1_Entry_Authority_Code_Build_Plan.md` (released; RA-30a governs).
-- Implement RA-30 §1–§4 and §7 with RA-30a §1–§3 and §7–§8.
-- Six entry identities, as frozen.
-- Compile-green → `M6-CP3-TB1-ENTRY-EXEC` (**497**) → mandatory `M6-CP3-TB1-ENTRY-REV`.
-- No CP3 direct-production TB before that Review.
+**`M6-CP3-CB1-ENTRY-R1` — Code + Build, compile/package only (RA-31 + RA-31a).**
+- P1 publish face gauges from all regional producers; P2 scope seam side-evidence; T1 focused-30 ordinal 12 relabel; T4 the D4 oracle; T2 the D1 witness (stop if none).
+- Remove the HardRail branch-certificate rejection and its code/site. Identity 2 is pre-registered RED with A5-error printing; identity 6 must pass.
+- Compile-green → `M6-CP3-TB1-ENTRY-R1-EXEC` (**497**; acceptance 496 + identity 2 RED as pre-registered) → mandatory `M6-CP3-TB1-ENTRY-R1-REV` → `M6-DEFN-R5-R1`.
 
 ## Completed predecessor turns (reference only)
 

@@ -1,3 +1,11 @@
+## 2026-10-06 — `M6-CP3-TB1-ENTRY-REV` review-agent addendum: RA-31 published; RA-31a withdraws the HardRail branch certificate
+
+- **Re-derived independently:** result `11413899043` (`61dab4f6`) and log `11413964659` (`d26bb318`); 1019/1019; ledgers in frozen order; 373/497; the classification TSV covers every RED exactly once with matching hashes.
+- **Confirmed:** CAND-01 (A4 face-gauge publication gap; the uniform producer computes but does not publish), CAND-02, CAND-04, CAND-06, CAND-07; accounting 63 / 17 / 46.
+- **CAND-05 re-adjudicated:** the D2 certificate strips region-relative gauges, but the cross-rail matching τ is required. The rule holds only if `F_b − F_a = τ`. A5 rejects the only nonzero-gauge HardRail fixture.
+- **RA-31a:** withdraw the certificate rejection; identity 2 pre-registered RED; identity 6 must pass; T2 stop rule; `M6-DEFN-R5-R1` redefines D2.
+- **Docs:** RA-31 published (it was missing from the frozen definitions); R1 plan block; lesson 207; handoff / ORIENTATION / TODO / ROADMAP / tracker / consolidated.
+
 ## 2026-10-06 — `M6-CP3-TB1-ENTRY-REV` — candidate rejected; RA-31
 
 Independent Review re-partitioned the immutable 124 REDs exactly: CAND-01 110, CAND-02 9, CAND-07 1, CAND-04 1, CAND-05 2, CAND-06 1. CAND-01 is stable new singleton `INCOMPLETE_AUTHORITY_PUBLICATION`; CAND-02 is stable `RP-01`; CAND-07 is stable `RP-02`; the three new-entry witness/oracle defects are non-stable. Stable totals become **63/17/46**, debt 1. Candidate `11411137781 / 912760f1...` rejected; RA-31 releases only `M6-CP3-CB1-ENTRY-R1` → TB 497 → mandatory Review.

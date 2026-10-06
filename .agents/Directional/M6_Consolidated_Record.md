@@ -1,3 +1,7 @@
+## 2026-10-06 — Current authority after the `M6-CP3-TB1-ENTRY-REV` addendum
+
+The CP3 entry candidate is rejected (373/497). RA-31 and RA-31a apply (§58). Exact next: `M6-CP3-CB1-ENTRY-R1` → TB1-R1 (497) → Review → `M6-DEFN-R5-R1`. Accounting **63 / 17 / 46**, debt 1.
+
 ## 2026-10-06 — Current authority after `M6-CP3-TB1-ENTRY-REV`
 
 Entry candidate `11411137781 / 912760f1...` is **REJECTED / UNPROMOTED** after immutable 497-process TB returns 373 PASS / 124 RED. Review resolves every row: production CAND-01 110 and CAND-02 9; stable focused30 test-authority CAND-07 1; non-stable entry CAND-04 1 / CAND-05 2 / CAND-06 1. Stable totals are **63 / 17 / 46**, debt 1. RA-31 freezes one bounded recovery: `M6-CP3-CB1-ENTRY-R1` → R1 TB **497** → mandatory R1 Review. CP3 exit remains held. Full authority: `Architecture_M6_CP3_TB1_Entry_Review_Record.md`; next plan: `Architecture_M6_CP3_CB1_Entry_R1_Recovery_Code_Build_Plan.md`.
@@ -625,6 +629,21 @@ D1–D9 are reviewed against source and gates, and the 497 entry / 507 final ari
 - D2 site `:branch-certificate`.
 
 CB1 is released. Lesson 206.
+
+## 58. `M6-CP3-TB1-ENTRY-REV` review-agent addendum — RA-31 published; RA-31a
+
+The review agent re-derives 373/497 and confirms the exact 124-row partition, CAND-01/02/04/06/07 and accounting 63 / 17 / 46.
+
+**CAND-05 is re-adjudicated.** The RA-30 §2 HardRail certificate strips each endpoint's region-relative face gauge, while TB7 §G2's derivation requires stripping the cross-rail field matching τ. The rule holds only if `F_b − F_a = τ`, which is unproven, and A5 rejects the only nonzero-gauge HardRail fixture.
+
+**RA-31a:**
+- withdraw the certificate rejection, keeping coordinate-rigid transport and the gauge evidence;
+- identity 2 pre-registered RED, with A5 error printing;
+- identity 6 must pass;
+- a T2 stop rule;
+- `M6-DEFN-R5-R1` redefines D2 via τ with a discriminating produced witness.
+
+Lesson 207.
 
 ## Folded document index
 | `Architecture_M6_CP3_CB1_Entry_Authority_Code_Build_Plan.md` | **CONSUMED CP3 ENTRY CB PLAN / RETIRED BETWEEN REVIEWS.** RA-30/RA-30a entry scope, stop rules and 497-process successor are preserved in §57, the current Review/RA-31 plan and git history. Historical resolver commit: `4eae760859ed48a7898d9383e583681111fe9023`. |

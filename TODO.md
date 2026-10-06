@@ -1,3 +1,11 @@
+## Current — `M6-CP3-TB1-ENTRY-REV` review-agent addendum / RA-31a / exact next `M6-CP3-CB1-ENTRY-R1` (2026-10-06)
+
+- [x] Re-derive TB1: 1019/1019; frozen order; 373/497; the TSV covers every RED once with matching hashes.
+- [x] Confirm CAND-01/02/04/06/07 and accounting 63 / 17 / 46.
+- [x] Re-adjudicate CAND-05: the D2 certificate's gauge model is unproven (region-relative F vs cross-rail τ) → RA-31a withdraws it. Publish RA-31. Lesson 207.
+- [ ] **Exact next `M6-CP3-CB1-ENTRY-R1`**: P1, P2, T1, T2 (with stop), T4; remove the certificate rejection; identity 2 pre-registered RED; identity 6 must pass.
+- [ ] TB1-R1 497 → R1 Review → `M6-DEFN-R5-R1` (D2 redefinition) → D2 CB → CB2 (D5/D6/D8) → CP3 close.
+
 ## CURRENT — M6-CP3 entry recovery
 
 - **Exact next:** `M6-CP3-CB1-ENTRY-R1` under RA-31.

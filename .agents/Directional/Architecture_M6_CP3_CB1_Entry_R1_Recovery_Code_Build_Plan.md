@@ -1,5 +1,15 @@
 # Architecture M6 CP3 CB1 Entry R1 Recovery Code + Build Plan
 
+> **Review-agent block — `M6-CP3-TB1-ENTRY-REV` addendum (RA-31a), 2026-10-06. Binding; governs this plan where they conflict.**
+> - **T3 is REPLACED.** The RA-30 §2 HardRail branch certificate is **withdrawn**: it strips each endpoint's region-relative gauge, but the derivation requires the cross-rail field matching τ.
+>   - **Production:** remove the `HardRailBranchCertificateMismatch` rejection and its `:branch-certificate` mapping (`RemeshPipeline.cpp` A5 HardRail block). Keep coordinate-rigid transport and the published endpoint face-gauge evidence.
+>   - **Identity 2** stays, pre-registered RED in TB1-R1. Its non-vacuity premise (cross-rail endpoint gauge difference of 90° or 270°) and A5 production must pass. On any A5 rejection the test prints the exact code, site and relation. Do not chase the certificate here.
+>   - **Identity 6** must pass once A5 produces. Any remaining A5 rejection, printed, is a **stop for Review**.
+> - **T2:** add a stop rule. If no produced nonzero-Z4 periodic pair has a 90° or 270° gauge difference, stop for Review.
+> - P1, P2, T1 and T4 are unchanged.
+> - **TB1-R1 acceptance:** 496 PASS plus identity 2 RED, with failures confined to its certificate assertions.
+> - The D2 certificate is redefined in `M6-DEFN-R5-R1` after the R1 Review.
+
 **Turn:** `M6-CP3-CB1-ENTRY-R1`
 **Authority:** `M6-CP3-TB1-ENTRY-REV` / RA-31
 **Boundary:** Code + Build only; compile/package all required targets, no generated Directional runtime.

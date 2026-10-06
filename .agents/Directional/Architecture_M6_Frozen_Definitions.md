@@ -1,6 +1,6 @@
 # M6 Frozen Definitions — Occurrence, Quotient, Embedding, Independent Verification
 
-**Status:** FROZEN / **M6-CP1 and M6-CP2 CLOSED / ACCEPTED**; `M6-DEFN-R5` **ACCEPTED by `M6-DEFN-R5-REV` with RA-30a**; reviewed runtime `11391685901 / 5ce3132ec01748eff5b15f82be07a1abe2bd1af6` (491/491); `G4-B002` debt open (debt 1); **EXACT NEXT = `M6-CP3-CB1-ENTRY`** (entry gate 497; final CP3 gate 507); RA-1 – RA-30a normative as annotated.
+**Status:** FROZEN / **M6-CP1 and M6-CP2 CLOSED / ACCEPTED**; CP3-entry Definition accepted (RA-30, RA-30a). CP3 entry candidate `11411137781 / 912760f1` **REJECTED** (373/497; RA-31). **RA-31a** withdraws the RA-30 §2 HardRail branch certificate pending `M6-DEFN-R5-R1`. Reviewed runtime `11391685901 / 5ce3132ec01748eff5b15f82be07a1abe2bd1af6` (491/491). Stable accounting **63 / 17 / 46**, debt 1. **EXACT NEXT = `M6-CP3-CB1-ENTRY-R1`** (497). RA-1 – RA-31a normative as annotated.
 **Date:** 2026-09-25
 **Definition authority:** this record is the normative M6 contract for A5 occurrence creation, A6 quotient construction/materialization, A7 source-attached geometry embedding, and the M6 structural portion of A8 independent verification. It refines `DESIGN.md` §14 M6 without changing accepted M5 producer semantics or pulling M7 disposition/degradation work forward.
 
@@ -1292,3 +1292,40 @@ Rationale: `Architecture_M6_DEFN_R5_Review_Record.md` §2. RA-30 is accepted as 
 8. **D2 site.** The branch-certificate failure keeps the external `InvalidHardRailTransport` with site suffix `:branch-certificate`.
 
 Successor: `M6-CP3-CB1-ENTRY` (released; compile/package only) → `M6-CP3-TB1-ENTRY-EXEC` (**497**) → mandatory `M6-CP3-TB1-ENTRY-REV`. Accounting **60 / 16 / 44**, debt 1.
+
+## RA-31 — CP3 entry recovery (normative, 2026-10-06, `M6-CP3-TB1-ENTRY-REV`; published by its review-agent addendum)
+
+Rationale: `Architecture_M6_CP3_TB1_Entry_Review_Record.md`. Candidate `11411137781 / 912760f1` is rejected at 373/497. The partition is exact: CAND-01 110, CAND-02 9, CAND-07 1 (stable), and CAND-04 1, CAND-05 2, CAND-06 1 (non-stable). Accounting becomes **63 / 17 / 46**, debt 1.
+
+Recovery `M6-CP3-CB1-ENTRY-R1` covers:
+- **P1:** every successful A4 regional producer publishes the face gauge it already computes; no default, fallback or weakened merge check.
+- **P2:** reciprocal isolation-side evidence applies only on the certified cross-sheet collinear OrdinaryFront seam path. Non-seam relations keep full equality.
+- **T1:** focused-30 ordinal 12 relabels the explicit face gauges consistently.
+- **T2:** the D1 produced witness.
+- **T3:** the D2 produced witness.
+- **T4:** the D4 oracle against typed barrier semantics.
+
+No optimizer, validator, selector, routing or frozen-name change. TB **497**, then mandatory Review.
+
+## RA-31a — HardRail branch certificate withdrawn pending definition; R1 scope amended (normative, 2026-10-06, `M6-CP3-TB1-ENTRY-REV` review-agent addendum; amends RA-30 §2, RA-30a §2 and §8, and RA-31 T2/T3)
+
+Rationale: `Architecture_M6_CP3_TB1_Entry_Review_Record.md`, addendum §X2–§X3.
+
+1. **Withdrawn.** RA-30 §2's certificate (`C = F⁻¹ ∘ B` with each endpoint's own region-relative F, requiring `C_b ∘ C_a⁻¹ = R_coord`) is **withdrawn as unproven**. The published F is region-relative: the planar frame axis (`SurfaceCellTracing.cpp:10723-10760`) or the curved region root (`:14933-14934`). TB7 §G2's derivation gives `C_b − C_a = R_true + τ − (F_b − F_a)`, with τ the cross-rail field matching. The certificate is therefore valid only if `F_b − F_a = τ`, which is not established.
+2. **R1 production.**
+   - Remove the `HardRailBranchCertificateMismatch` rejection from A5. Coordinate-rigid `canonicalTransport` stays the sole HardRail placement authority, as before CB1.
+   - **Keep** publishing per-endpoint face-gauge evidence (`firstEndpointFaceGauge` / `secondEndpointFaceGauge`).
+   - Remove the now-unemitted error code and its `:branch-certificate` name mapping (no dead codes).
+3. **`M6-DEFN-R5-R1`** (bounded Definition; it follows the R1 Review) must:
+   - derive the HardRail branch certificate in terms of the **cross-rail field matching τ(f_a→f_b) between the two selected faces**, with conventions and a path-independence argument at rail vertices (fail closed at field singularities);
+   - name the producer that publishes τ (A4 holds the matchings; A5's inputs do not);
+   - name a **discriminating produced witness** where `F_b − F_a ≠ τ`, so the withdrawn per-region rule would falsely reject and the τ rule accepts.
+4. **Identity 2** (`HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge`).
+   - In TB1-R1 it is **pre-registered RED**. Its non-vacuity premise (a produced cross-region HardRail with an endpoint gauge difference of 90° or 270°) and A5 production must pass. Its certificate-rejection assertions are expected to fail.
+   - The test must **print the exact A5 error code, site and relation** on any A5 rejection.
+   - Do not rename or retire it. It is completed under `M6-DEFN-R5-R1`.
+5. **Identity 6** (`HardRailCrossRegionBindingDoesNotCompareGlobalSheetLabels`) must pass on the same produced fixture once the certificate rejection is removed. Any remaining A5 rejection, printed with its code, is a **stop for Review**: for example the RA-30a §1 carrier-membership rule, if the fixture's typed hard-feature set omits its rail.
+6. **D1 stop rule (T2).** If no produced nonzero-Z4 torus pair has an endpoint gauge difference of 90° or 270°, **stop for Review**. Never hand-build records.
+7. **TB1-R1 acceptance pattern.** 496 PASS, plus identity 2 RED with failures confined to the certificate-rejection assertions after its non-vacuity and A5-production assertions pass. Any other RED goes to Review as usual.
+
+Successor: `M6-CP3-CB1-ENTRY-R1` → `M6-CP3-TB1-ENTRY-R1-EXEC` (**497**) → `M6-CP3-TB1-ENTRY-R1-REV` → `M6-DEFN-R5-R1` (D2) → the D2 CB. CB2 (D5/D6/D8) stays held until the CP3 entry is fully green. Accounting **63 / 17 / 46**, debt 1.

@@ -97,3 +97,68 @@ Fresh TB must rerun exactly **497** fresh exact-filter processes with exact-one 
 | Candidate | REJECTED / UNPROMOTED. |
 | Recovery | RA-31; one bounded CB turn, then immutable 497-process TB and mandatory Review. |
 | Boundary | Review changes are documentation/evidence only; no product/test/fixture/selector source mutation. |
+
+---
+
+## Review-agent addendum (2026-10-06, resumed `M6-CP3-TB1-ENTRY-REV`)
+
+**Disposition:**
+- **Confirmed:** rejection; the 124-row partition; CAND-01, CAND-02, CAND-04, CAND-06 and CAND-07; accounting **63 / 17 / 46**, debt 1.
+- **CAND-05 is mis-adjudicated.** It is not a test-ordering defect. The HardRail branch certificate frozen by RA-30 §2 (D2) has an **unproven, and by the record's own cited derivation contradicted,** gauge model. The only nonzero-gauge HardRail fixture is rejected by A5, which is consistent with a false rejection.
+- **RA-31 is missing from the frozen definitions.** This addendum publishes RA-31 and **RA-31a**.
+- Successor unchanged: `M6-CP3-CB1-ENTRY-R1`, with amended scope.
+
+### X1. Independent re-derivation (confirmed)
+
+- Result `11413899043`: ZIP `61dab4f6...`. Log `11413964659`: ZIP `d26bb318...`.
+- `SHA256SUMS` verifies **1019/1019**.
+- focused-30, focused-12 and selector449 ledgers are in exact frozen order. Exact-one selection 497/497; zero skips; **all raw-log hashes match**.
+- 373 PASS / 124 RED:
+  - focused-30: 4 PASS / 26 RED;
+  - focused-12: 0 / 12;
+  - selector449: 369 / 80;
+  - CP3 entry: 0 / 6.
+- The classification TSV covers every RED row **exactly once**, with matching raw hashes, partitioned 110 / 9 / 2 / 1 / 1 / 1.
+- Raw-log signatures: 74 `InvalidFrontBoundaryAuthority`, 5 `a6-side-evidence`, 6 variant-index throws, 39 downstream assertions. The CAND-01/02 clustering is plausible.
+- **P1's premise.** The uniform producer does compute a per-face gauge (`frame.faceBranchRotation`, `SurfaceCellTracing.cpp:10723-10760`); it just does not publish it.
+
+### X2 (High) — CAND-05 and the D2 certificate's gauge model
+
+**What the certificate does.** It strips each endpoint's **own** published face gauge (`C = F⁻¹ ∘ B`) and requires `C_b ∘ C_a⁻¹ == R_coord` (`RemeshPipeline.cpp:5060-5089`).
+
+**Why that is unsound across regions.** The two Fs are **region-relative**:
+- the planar uniform producer sets F as the field branch aligned to **that region's own frame axis** (`SurfaceCellTracing.cpp:10723-10760`);
+- the curved producer propagates F from **that region's own root**, set to 0 (`:14933-14934`).
+
+TB7 §G2, which D2 itself cites, derives `branch(b) − branch(a) = R_true + τ(f_a→f_b)`, where τ is the **field matching across the rail between the two selected faces**. Then:
+
+`C_b − C_a = R_true + τ − (F_b − F_a)`
+
+So the certificate equals `R_true` only if `F_b − F_a = τ`, i.e. only if the two regions' gauge references happen to be field-matched across the rail. Nothing establishes that.
+
+- On constant-field HardRail fixtures (F = 0, τ = 0) the certificate is trivially consistent. That is why no accepted row exposed it.
+- The only HardRail fixture with a nonzero gauge (`nonconstant_hard_rail_fixture`) is rejected by **A5** in both entry identities 2 and 6 (`a5 != nullptr` fails, `tests/SurfaceCellTransitionQuotientTests.cpp:2217`, `:2536`). That is consistent with a false rejection.
+
+**Why R1-REV's adjudication is insufficient.**
+- It called this "witness/test ordering" and said the formula "matches RA-30a". Matching the specification does not make the specification correct.
+- The A5 error code was never localized; the tests do not print it. The new hard-feature carrier-membership rule (RA-30a §1) is an alternative cause that was not ruled out.
+- Reordering the assertions would only move the failure.
+
+**Ownership.** I accepted D2's formula at DEFN-R5-REV and added only the 90°/270° requirement, without checking which gauge domain each stripped term lives in. **Review-agent error, owned** (lesson 207).
+
+**Consequence.** Shipping the certificate risks false-rejecting HardRail welds on real non-constant fields, which is what CP3 direct production is about. Fixing the witness (R1 plan T3) would either keep failing or pass on a fixture where `F_b − F_a = τ` by coincidence, and so bake in the wrong rule.
+
+### X3 (Medium) — the R1 plan's D1 witness has no stop rule
+
+T2 requires a produced periodic pair whose gauges differ by 90° or 270°, but, unlike T3, gives no stop if none exists. CAND-04 already showed that the current witness lacks it.
+
+### X4. Closeout
+
+| Duty | Result |
+|---|---|
+| Evidence | Re-derived: 1019/1019; frozen order; 373/497; TSV exact cover with matching hashes. |
+| Confirmed | CAND-01/02/04/06/07; accounting 63 / 17 / 46. |
+| Re-adjudicated | CAND-05 → D2 certificate gauge-model defect candidate (non-stable; unlocalized A5 failure). |
+| Normative | RA-31 published; RA-31a amends R1. |
+| Lesson | 207. |
+| Successor | `M6-CP3-CB1-ENTRY-R1` under RA-31 + RA-31a. |

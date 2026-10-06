@@ -2689,3 +2689,12 @@ When a temporary workflow caller is assembled with low-level Git objects, creati
       - For every frozen gate row, cite the build target that compiles it.
       - For every new input authority, name the product that publishes it and the caller impact.
     - Recorded at `M6-DEFN-R5-REV` (RA-30a).
+207. **Strip a gauge only against a common reference, and don't call an unexplained producer rejection a test-ordering defect until its error code is localized.**
+    - *What happened.*
+      - RA-30 §2's HardRail branch certificate computed `C = F⁻¹ ∘ B` for each endpoint with that endpoint's own face gauge F. But F is region-relative (planar frame axis, or the curved region's root set to 0), and the two endpoints lie in different regions.
+      - TB7's derivation says the contaminating term is the cross-rail field matching τ. So the certificate is valid only if `F_b − F_a = τ`.
+      - The only nonzero-gauge HardRail fixture was rejected by A5, and the first Review attributed it to test ordering without printing the A5 error. The review agent had accepted the formula at DEFN-R5-REV.
+    - **Rule.**
+      - For every certificate that removes a gauge, state the reference frame of each stripped term and prove that the remaining quantity is reference-independent.
+      - When a new produced witness is rejected by a producer, localize the exact error code before classifying the rejection.
+    - Recorded at the `M6-CP3-TB1-ENTRY-REV` review-agent addendum (RA-31a).

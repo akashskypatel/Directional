@@ -1,3 +1,10 @@
+## 2026-10-06 — `M6-CP3-TB1-ENTRY-REV` review-agent addendum — one new rule withdrawn
+
+- The CP3 entry build broke 124 tests. Most come from one missing published value, which the next build fixes.
+- Review also found that a new check across hard edges compared angles measured against two unrelated references, so it could reject valid meshes whose field varies across the edge.
+- That check is withdrawn until it is redefined against the field's actual matching across the edge.
+- Next: `M6-CP3-CB1-ENTRY-R1`.
+
 ## 2026-10-06 — `M6-DEFN-R5-REV` — CP3 entry plan approved with fixes
 
 - The definition for M6's last checkpoint (CP3) is approved with corrections:

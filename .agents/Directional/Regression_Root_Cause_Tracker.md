@@ -1,3 +1,12 @@
+## 2026-10-06 — `M6-CP3-TB1-ENTRY-REV` review-agent addendum — RA-31a — **+0 (totals 63/17/46) / debt 1**
+
+- The 373/497 re-derivation is confirmed, and the partition and stable events (CAND-01/02/07) are confirmed.
+- **CAND-05 re-adjudicated** (non-stable): a D2 certificate gauge-model defect candidate. The certificate strips region-relative endpoint gauges (`SurfaceCellTracing.cpp:10723-10760`, `:14933`), while TB7 §G2 requires removing the cross-rail matching τ. A5 rejects the only nonzero-gauge HardRail fixture, with the code unlocalized.
+- RA-31a withdraws the certificate from production. Identity 2 is pre-registered RED, and `M6-DEFN-R5-R1` redefines D2.
+- Review-agent error owned: D2's formula was accepted at DEFN-R5-REV (lesson 207).
+
+**Stable accounting: `63 events / 17 categories / 46 recurrences`, debt 1.**
+
 ## 2026-10-06 — `M6-CP3-TB1-ENTRY-REV` — **REJECTED / RA-31 / +3 EVENTS / 63/17/46 / debt 1**
 
 Independent Review re-derives artifact-only `37464309062 / 112271440079` at **373/497**, exact-one 497/497, zero skips, benchmark 0 and immutable postflight. The provisional 124 RED rows are repartitioned exactly once: CAND-01 **110**, CAND-02 **9**, CAND-07 **1**, CAND-04 **1**, CAND-05 **2**, CAND-06 **1**. `Architecture_M6_CP3_TB1_Entry_Red_Classification.tsv` is authoritative.

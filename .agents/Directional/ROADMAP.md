@@ -1,3 +1,15 @@
+## Live M6 routing — after the `M6-CP3-TB1-ENTRY-REV` review-agent addendum (RA-31a)
+
+| Checkpoint | State | Exact next / gate |
+|---|---|---|
+| M6 CP1 / CP2 | **CLOSED / ACCEPTED** | runtime `11391685901 / 5ce3132e...`, 491/491 |
+| CP3 entry candidate | **REJECTED** | `11411137781 / 912760f1`, 373/497 |
+| CP3 entry recovery | **EXACT NEXT** | `M6-CP3-CB1-ENTRY-R1` (RA-31 + RA-31a) -> TB1-R1 **497** (496 + identity 2 pre-registered RED) -> Review |
+| D2 HardRail certificate | Withdrawn | `M6-DEFN-R5-R1` (cross-rail matching τ) -> D2 CB |
+| CP3 exit | Held | CB2 (D5/D6/D8) -> final gate 507 -> CP3 close |
+
+Stable accounting: **63 / 17 / 46**, debt 1.
+
 ## Live M6 routing — after `M6-CP3-TB1-ENTRY-REV` (RA-31)
 
 | Checkpoint | State | Exact next / gate |
