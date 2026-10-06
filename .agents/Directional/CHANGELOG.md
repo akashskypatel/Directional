@@ -1,3 +1,11 @@
+## 2026-10-06 — M6-DEFN-R5 CP3-entry Definition complete
+
+- Completed D1-D9 and published candidate **RA-30**.
+- Froze six-entry **497** gate, intended final **507** gate, relation/gauge/barrier/sheet semantics, class-wide optimizer reference, permutation falsifier and direct-exit evidence owners.
+- Froze current-source G4-B001 strict 3/3 as Phase10 exact committed torus, P26 torus end-to-end and P27 production matrix; explicitly did not invent historical exact names absent from durable evidence.
+- Added held `Architecture_M6_CP3_CB1_Entry_Authority_Code_Build_Plan.md`; mandatory next is `M6-DEFN-R5-REV`.
+- Runtime-free verified snapshot `37441143188 / 612d914d... / 11400583983`, 5518/5518; no source/test/fixture/selector/build/runtime change. Accounting remains 60 / 16 / 44, debt 1.
+
 ## 2026-10-06 — `M6-CP2-TB2-COVERAGE-EXEC` COMPLETE / 491/491 mechanically green
 
 - Immutable runtime `37419256039 / 112124748161` consumed `11391685901 / 5ce3132e...`: focused30 **30/30**, CP2-focused12 **12/12**, selector449 **449/449**, aggregate **491/491**, exact-one 491/491, zero skips, benchmark 0.

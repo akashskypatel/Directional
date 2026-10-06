@@ -1,3 +1,7 @@
+## 2026-10-06 — M6 CP3 entry Definition complete; Review gate active
+
+`M6-DEFN-R5` completes D1-D9 and publishes candidate RA-30. CP3 sequencing is frozen provisionally pending independent Review: `M6-DEFN-R5-REV` → held `M6-CP3-CB1-ENTRY` (D1-D4+D7; compile/package only) → artifact-only **497** entry gate → mandatory Review; only then may D5/D6/direct-exit work proceed. Intended final CP3 gate is **507**. Current-source G4-B001 strict 3/3 is Phase10 exact committed torus, P26 torus end-to-end and P27 production matrix. Stable accounting remains **60 / 16 / 44**, debt 1; no implementation is authorized by Definition.
+
 ## 2026-10-06 — M6 CP2 CLOSED / `M6-DEFN-R5` next
 
 `M6-CP2-CLOSE-REV` independently re-derived the fresh 491/491 gate, accepted RA-29d recovery, promoted `11391685901 / 5ce3132e...`, and wrote `M6_CP2_Closure_Record.md`. M6 CP2 is **CLOSED / ACCEPTED**. Stable accounting remains **60 / 16 / 44**, debt 1. **Exact next: `M6-DEFN-R5`**.

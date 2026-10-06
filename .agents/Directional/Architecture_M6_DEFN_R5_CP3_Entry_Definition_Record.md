@@ -1,9 +1,9 @@
 # M6-DEFN-R5 — CP3 Entry Definition Record (WIP)
 
-**Turn:** `M6-DEFN-R5`  
-**State:** IN PROGRESS — bounded turn; D1-D4 decided below, D5-D9 intentionally not compressed into this session.  
-**Turn type:** runtime-free Definition. No Directional executable was run and no source/test/fixture/selector/build byte was changed.  
-**Mandatory successor while WIP:** `M6-DEFN-R5` (resume). After D1-D9 are complete, mandatory successor becomes `M6-DEFN-R5-REV`.
+**Turn:** `M6-DEFN-R5`
+**State:** DEFINITION COMPLETE — D1-D9 decided; pending mandatory independent `M6-DEFN-R5-REV`.
+**Turn type:** runtime-free Definition. No Directional executable was run and no source/test/fixture/selector/build byte was changed.
+**Mandatory successor:** `M6-DEFN-R5-REV`. No implementation is authorized until that Review accepts RA-30 and the held CB1 plan.
 
 ## 0. Frozen source authority
 
@@ -258,3 +258,44 @@ Intended final arithmetic is inherited 491 + all 13 new CP3 identities + the fro
 3. Write the first CP3 Code+Build plan, HELD pending `M6-DEFN-R5-REV`.
 4. Update ORIENTATION, TODO, ROADMAP and handoff coherently.
 5. Self-audit D1-D9 against the R5 plan's lessons 199-205 before final Definition closeout.
+
+
+---
+
+## Completion addendum — exact G4-B001 gate, method audit, and Definition closeout
+
+A second verified runtime-free source snapshot was taken after the bounded D5-D9 addendum: workflow `37441143188`, source/event SHA `612d914d37112cbbc32b974ec30e922805c47062`, artifact `11400583983`, provider/download SHA-256 `f4b5211254ba91f6ea022e4f6072a7f3feec54aa7dc16081cd49f8ac75fa2fd0`, inner `source.tar.gz` SHA-256 `6930ae109d49c91c6e09ffe8e6c20a730ce5f0449e133c19e07d54d67c463edf`, manifest **5518/5518**, `runtimeExecution=false`. It contains the D1-D9 WIP record and confirms no production source/test/fixture/selector byte changed during Definition.
+
+### Exact current G4-B001 strict-direct-torus gate
+
+The durable historical record preserves the old result only as **direct torus 0/3** at artifact `9031804178`; it does not preserve the three old exact-filter names. Do not invent historical names. Current source does expose exactly three strict production identities that independently require the committed torus path to produce rather than merely own diagnostics, and these are frozen as the CP3 G4-B001 3/3 re-proof:
+
+1. `SurfaceCellsPhase10.ExactCommittedTorusDoesNotTreatIsolationSeamAsBoundedDiskBoundary` (`tests/SurfaceCellsPhase10Tests.cpp:4436`; `ASSERT_TRUE(result.is_produced())` and strict final product/source-authority assertions).
+2. `MilestoneGP26.TorusCompletesEndToEnd` (`tests/MilestoneGP26Tests.cpp:934`; calls `expect_completed_surface_cells(..., false)`, whose helper asserts `result.is_produced()`, `CompletedSurfaceCells`, pure quads, provenance and accepted validation at `:147-225`).
+3. `MilestoneGP27.ProductionSurfaceCellMatrixMatchesSupportedDisposition` (`tests/MilestoneGP27Tests.cpp:519`; the canonical manifest matrix includes `torus__surface_cells` and requires `EXPECT_TRUE(result.is_produced())` for every SurfaceCells case).
+
+`ProductionManifestCases/MilestoneGP27SurfaceCellCase.RunsIndependentlyAndOwnsReturnedDiagnostics/2` is **not** part of the strict 3/3 because that parameterized ownership test deliberately does not require production success; it only checks payload ownership if a result is produced (`MilestoneGP27Tests.cpp:569-631`). This distinction is why it receives no G4-B001 credit.
+
+Accordingly D9 final arithmetic is now frozen as **507 fresh processes**: inherited 491 + 13 named CP3 identities + the three strict G4-B001 identities above. The P27 matrix identity is one process even though it visits every SurfaceCells manifest case. No duplicate invocation of the parameterized ownership row is added.
+
+### D1-D9 method self-audit
+
+| Item | Reachable producer established | Per-conjunct falsifier | Accepted-gate edge cases checked | Bound / stop rule |
+|---|---|---|---|---|
+| D1 | exact-A3 periodic endpoint-state producer + A5 conjugation path | coordinate, face-gauge/branch, relation-value and orientation controls | nonzero-Z4/current storage-canonical periodic coverage | existing exact operations only; no search |
+| D2 | real cross-region HardRail relation producer | endpoint gauge, placement branch, coordinate transport, reversal | nonzero matching/hard-carrier reachability required | two endpoint pairs, constant work |
+| D3 | real OrdinaryFront relation + A6 collinear seam evidence | coordinate, scale, seam-transition removal/reversal, representation-only change | RA-2 seam quarter-turn semantics retained | no quotient-transport widening |
+| D4 | A5 chart graph + typed source hard-feature authority | remove/add typed hard edge; inconsistent HardRail carrier | produced torus already carries PeriodicCut hard features | one immutable barrier set; no route reconstruction |
+| D5 | optimizer/validator class-wide chart helpers and all representative-sensitive sites | incompatible representative/corner scope and missing common chart | RA-28b forbids selected-face membership assumption | O(total four-corner chart memberships) per quad; fixed projections under finite differences/line search |
+| D6 | direct torus through real pipeline/optimizer/validator | source-row, output-row and corner-cycle permutation with non-vacuity | exact discrete equality + scaled continuous tolerance frozen | Review stop on any unexplained discrete difference |
+| D7 | real A7 selected edge plus real-tracer seam-collinear witness | transition removal/tamper; HardRail cross-region labels | relation-kind dispatch prevents global sheet-ID comparison | one exact transition query; cross-region Periodic is Review stop |
+| D8 | direct produced torus and direct CP3 products | named negative/tamper owner for each new rule | historical G4-B001 strict gate distinguished from diagnostic-only ownership row | no mechanism-only evidence may close direct debt |
+| D9 | accepted 491 gate plus enumerated CP3 identities | exact-one selection and inherited-byte preservation | 497 entry gate; 507 final gate | selector449 optimizer outcome change is mandatory Review stop |
+
+Lessons 199-205 are therefore satisfied without adding a hand-built substitute where a producer witness exists. Accounting remains **60 / 16 / 44**, debt **1**; `G4-B002` stays open until CP3 direct-production evidence is accepted.
+
+## Definition disposition
+
+`M6-DEFN-R5` is complete as a runtime-free Definition. RA-30 is published in `Architecture_M6_Frozen_Definitions.md`, and the first implementation plan is `Architecture_M6_CP3_CB1_Entry_Authority_Code_Build_Plan.md`, explicitly **HELD** pending independent Review. No source, test, fixture, selector, build, package, benchmark or Directional runtime is changed or executed by this Definition.
+
+**Mandatory successor: `M6-DEFN-R5-REV`.** Review must independently re-derive D1-D9, the 497/507 arithmetic, the three strict G4-B001 identities, and the held CB1 boundary before implementation is released.

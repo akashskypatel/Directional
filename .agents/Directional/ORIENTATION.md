@@ -1,3 +1,12 @@
+## 2026-10-06 — M6-DEFN-R5 COMPLETE / mandatory Definition Review next
+
+- D1-D9 CP3-entry decisions are complete; candidate normative amendment is **RA-30**.
+- CP3 entry is split: held `M6-CP3-CB1-ENTRY` owns D1-D4+D7 and six identities; its later artifact-only gate is **497**. D5/D6 plus seven direct-exit identities remain after entry Review; intended final CP3 gate is **507**.
+- G4-B001 current strict 3/3 is Phase10 exact committed torus + P26 torus end-to-end + P27 production matrix. The historical 0/3 record does not preserve old names; do not invent them.
+- Verified Definition snapshot: `37441143188 / 612d914d... / 11400583983`, manifest 5518/5518, runtimeExecution=false.
+- No source/test/fixture/selector/runtime change. Accounting remains **60 / 16 / 44**, debt 1.
+- **Exact next:** mandatory `M6-DEFN-R5-REV`; CP3 implementation remains HELD.
+
 ## 2026-10-06 — M6 CP2 CLOSED / exact next `M6-DEFN-R5`
 
 - Independent `M6-CP2-CLOSE-REV` accepts and promotes `11391685901 / 5ce3132e...`; fresh immutable gate **491/491**.

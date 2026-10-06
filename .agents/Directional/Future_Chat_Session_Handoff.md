@@ -1,3 +1,13 @@
+## Resume-critical update — `M6-DEFN-R5` COMPLETE / mandatory `M6-DEFN-R5-REV` next (2026-10-06)
+
+**Start mandatory independent `M6-DEFN-R5-REV` next. Do not begin CP3 implementation.** D1-D9 are complete in `Architecture_M6_DEFN_R5_CP3_Entry_Definition_Record.md`; candidate normative authority is RA-30 in `Architecture_M6_Frozen_Definitions.md`. The first implementation plan, `Architecture_M6_CP3_CB1_Entry_Authority_Code_Build_Plan.md`, is **HELD** until Review accepts the Definition.
+
+RA-30 freezes the five CP3 entry semantics (exact-A3 periodic gauge separation, HardRail branch certificate, OrdinaryFront isolation-seam identity, complete typed A5 hard-feature barriers, relation-kind-aware A7 sheet binding), the class-wide optimizer/validator reference, produced permutation falsifier, direct CP3 exit evidence, and sequencing. Entry TB arithmetic is **497** = 491 inherited + 6 entry identities. Final intended CP3 gate is **507** = 491 + 13 CP3 identities + three strict direct-torus identities. Current-source G4-B001 strict 3/3 is `SurfaceCellsPhase10.ExactCommittedTorusDoesNotTreatIsolationSeamAsBoundedDiskBoundary`, `MilestoneGP26.TorusCompletesEndToEnd`, and `MilestoneGP27.ProductionSurfaceCellMatrixMatchesSupportedDisposition`; the historical record preserves only aggregate 0/3, so no historical-name claim is invented.
+
+Definition used verified runtime-free snapshot `37441143188 / 612d914d... / 11400583983` (5518/5518 manifest). No source/test/fixture/selector/build/runtime change occurred. Stable accounting remains **60 / 16 / 44**, debt 1. Review must independently re-derive D1-D9, the 497/507 arithmetic, exact G4-B001 current gate and held CB1 boundary.
+
+---
+
 ## Resume-critical update — routing after `M6-CP2-CLOSE-REV`: start `M6-DEFN-R5` under its new bounded plan (2026-10-06)
 
 **Start `M6-DEFN-R5` as a new runtime-free Definition turn.** Follow **`Architecture_M6_DEFN_R5_CP3_Entry_Definition_Plan.md`**, written by this routing review. Before it there was no plan for this turn, and its carried obligations come from about a dozen amendments.

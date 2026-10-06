@@ -1,3 +1,12 @@
+## Current — `M6-DEFN-R5` COMPLETE / mandatory `M6-DEFN-R5-REV` next (2026-10-06)
+
+- [x] Decide D1-D9 with producer reachability, per-conjunct falsifiers, bounds and stop rules.
+- [x] Freeze current G4-B001 strict 3/3 identities without fabricating historical exact names.
+- [x] Publish candidate RA-30 and held `Architecture_M6_CP3_CB1_Entry_Authority_Code_Build_Plan.md`.
+- [x] Freeze CP3 entry **497** and intended final **507** process arithmetic; preserve inherited 491 authorities unchanged.
+- [x] Self-audit lessons 199-205; no source/test/fixture/selector/build/runtime change; accounting **60 / 16 / 44**, debt 1.
+- [ ] **Exact next: mandatory `M6-DEFN-R5-REV`.** Independently re-derive RA-30 and release or reject the held CB1 plan. Do not begin CP3 implementation before Review.
+
 ## Current — `M6-CP2-CLOSE-REV` ACCEPTED / CP2 CLOSED / exact next `M6-DEFN-R5` (2026-10-06)
 
 - [x] Independently re-derive TB2: 491/491, exact-one 491/491, zero skips/RED/benchmarks, 1005/1005 result manifest, immutable postflight.
