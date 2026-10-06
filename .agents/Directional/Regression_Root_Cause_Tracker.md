@@ -1,3 +1,10 @@
+## 2026-10-06 — `M6-CP2-CB2-COVERAGE` — **COMPILE-GREEN / +0 / 60/16/44 / debt 1**
+
+- RA-29d OBS-01/02/03 now have implementation/test-authority recovery at semantic source `5ce3132e...`: exact A7 vertex binding, expanded verifier negative coverage, ten-row §6.3 map, and dead-code/predicate cleanup.
+- This Code + Build turn executes no verifier runtime, so those observations are not runtime-closed here; `M6-CP2-TB2-COVERAGE-EXEC` and mandatory `M6-CP2-CLOSE-REV` own runtime/closure adjudication.
+- Compile/package `37415985763 / 112114628756` is GREEN on the standard eight GMP/GMPXX targets with `runtimeExecution=false`.
+- No new regression event/candidate and no stable repricing. Accounting remains **60 events / 16 categories / 44 recurrences**, debt 1.
+
 ## 2026-10-06 — `M6-CP2-TB1-VERIFIER-R2-REV` review-agent addendum — CP2 closure revoked (RA-29d) — **+0 / 60/16/44 / debt 1**
 
 - The promotion of `11385836615 / c64baacd` (491/491) is confirmed. No regression.

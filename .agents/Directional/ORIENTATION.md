@@ -1,3 +1,10 @@
+## Currency — `M6-CP2-CB2-COVERAGE` COMPLETE / compile-package GREEN (2026-10-06 UTC)
+
+- RA-29d G1-G4 are implemented at `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`; frozen gate bytes remain unchanged.
+- Compile run/job `37415985763 / 112114628756` is GREEN on all eight standard GMP/GMPXX targets; package `11391685901`, manifest 28/28, clean source, `runtimeExecution=false`.
+- **Exact next:** immutable `M6-CP2-TB2-COVERAGE-EXEC`, exactly **491** fresh exact-filter processes, then mandatory `M6-CP2-CLOSE-REV`.
+- CP2 remains ACTIVE until that execution and Review. Accounting **60 / 16 / 44**, debt 1.
+
 ## Currency — `M6-CP2-TB1-VERIFIER-R2-REV` review-agent addendum: CP2 closure REVOKED (RA-29d) (2026-10-06 UTC)
 
 - The R3 verifier `c64baacd` (491/491) is promoted as reviewed runtime authority, but **CP2 stays ACTIVE**:

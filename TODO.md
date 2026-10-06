@@ -1,3 +1,13 @@
+## Current — `M6-CP2-CB2-COVERAGE` COMPLETE / exact next `M6-CP2-TB2-COVERAGE-EXEC` (2026-10-06)
+
+- [x] G1 exact `a7:vertex-binding`.
+- [x] G2 remove `UncertifiedAuthoritySubstitution`; assign `BoundaryOrEulerMismatch` to component/boundary/Euler predicates.
+- [x] G3 strengthen identities 2-4 and make identity 5 the ten-row §6.3 table without changing names/order or gate bytes.
+- [x] G4 publish the §6.2 / §6.3 predicate-to-witness/API-shape coverage table.
+- [x] Compile/package all eight GMP/GMPXX targets: `37415985763 / 112114628756`, package `11391685901`, manifest 28/28, clean source, `runtimeExecution=false`.
+- [ ] **Exact next `M6-CP2-TB2-COVERAGE-EXEC`** — immutable `11391685901 / 5ce3132e...`, exactly 491 fresh exact-filter processes.
+- [ ] Mandatory `M6-CP2-CLOSE-REV` → closure record → `M6-DEFN-R5` if accepted.
+
 ## Current — `M6-CP2-TB1-VERIFIER-R2-REV` review-agent addendum / CP2 closure REVOKED / exact next `M6-CP2-CB2-COVERAGE` (2026-10-06)
 
 - [x] Re-derive R2 TB: 1005/1005, frozen order, 491/491, all raw hashes match; `c64baacd` == HEAD; RA-29c implemented.

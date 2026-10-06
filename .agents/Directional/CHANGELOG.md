@@ -1,3 +1,11 @@
+## 2026-10-06 — `M6-CP2-CB2-COVERAGE` COMPLETE / compile-package GREEN
+
+- Implemented RA-29d G1-G3 at semantic source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`: exact A7 vertex binding, dead-code cleanup / `BoundaryOrEulerMismatch` predicates, expanded identities 2-4, and the ten-row §6.3 identity-5 map.
+- Added the G4 §6.2/§6.3 coverage table in `Architecture_M6_CP2_CB2_Coverage_Code_Build_Report.md`.
+- Frozen focused30 / focused12 / selector449 / routing449 hashes remain unchanged; gate stays 491.
+- Compile run/job `37415985763 / 112114628756` GREEN on all eight standard GMP/GMPXX targets; result/log `11391685901 / 11390994385`, manifest 28/28, clean source, `runtimeExecution=false`.
+- No runtime acceptance or CP2 closure is claimed. Accounting remains **60 / 16 / 44**, debt 1. Exact next: `M6-CP2-TB2-COVERAGE-EXEC` → mandatory `M6-CP2-CLOSE-REV`.
+
 ## 2026-10-06 — `M6-CP2-TB1-VERIFIER-R2-REV` review-agent addendum: CP2 closure revoked (RA-29d)
 
 - **Re-derived independently:** result `11387562709` (`dada6a75`) and log `11387233341` (`5a695053`); 1005/1005; all three ledgers in frozen order; 491/491; all raw hashes match. Candidate `c64baacd` == HEAD. RA-29c is implemented as specified. **The promotion is confirmed.**

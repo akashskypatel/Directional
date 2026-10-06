@@ -1,3 +1,15 @@
+## Resume-critical update — `M6-CP2-CB2-COVERAGE` COMPLETE / compile-package GREEN / exact next `M6-CP2-TB2-COVERAGE-EXEC` (2026-10-06)
+
+**Start immutable `M6-CP2-TB2-COVERAGE-EXEC` next. Do not rebuild, repair, or begin `M6-CP2-CLOSE-REV` before the 491-process execution completes.**
+
+RA-29d G1-G4 are implemented at semantic source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. The verifier now has exact `a7:vertex-binding`; `UncertifiedAuthoritySubstitution` is removed; `BoundaryOrEulerMismatch` owns independent component/boundary/Euler predicates; identities 2-4 carry the added negative witnesses; identity 5 is the frozen ten-row §6.3 map with two API-shape rows. Frozen focused30/focused12/selector449/routing449 hashes are unchanged.
+
+Compile run/job `37415985763 / 112114628756` is GREEN on all eight standard GMP/GMPXX targets. Result/log artifacts are `11391685901 / 11390994385`; result provider digest is `d2a3ef4f...39980`, package self-manifest **28/28**, clean source, `exactArithmeticBackend=GMP`, `runtimeExecution=false`. Full G4 coverage table and evidence: `Architecture_M6_CP2_CB2_Coverage_Code_Build_Report.md`.
+
+Exact next: `M6-CP2-TB2-COVERAGE-EXEC` over immutable package/source `11391685901 / 5ce3132e...`, exactly focused30 + focused12 + selector449 = **491 fresh exact-filter processes**, `TURN_ID`-derived upload paths, then mandatory `M6-CP2-CLOSE-REV`. Accounting remains **60 / 16 / 44**, debt 1.
+
+---
+
 ## Resume-critical update — `M6-CP2-TB1-VERIFIER-R2-REV` review-agent addendum: CP2 closure REVOKED; exact next `M6-CP2-CB2-COVERAGE` (2026-10-06)
 
 **Do not start `M6-DEFN-R5`.** Start **`M6-CP2-CB2-COVERAGE`** (Code + Build; compile/package only) under RA-29d. Follow `Architecture_M6_CP2_CB2_Coverage_Code_Build_Plan.md`.
