@@ -81,3 +81,16 @@ This section supersedes the stale operational statements above while preserving 
 - At this checkpoint the compile mailbox `.workflow-mailbox/m6-cp2-cb2-coverage-compile/latest.json` has not yet published. Do not retrigger. Resume by reading that mailbox first; if terminal, collect jobs/artifacts/log evidence once.
 
 Remaining completion work is therefore bounded to: verify the compile/package evidence; write the G4 Code + Build report with the frozen §6.2/§6.3 predicate/witness table; update durable handoff/TODO/change records as required; clean the temporary compile caller before its marker; then either close to `M6-CP2-TB2-COVERAGE-EXEC` on compile-green evidence or keep this turn `IN_PROGRESS`.
+
+
+## Final disposition — 2026-10-06
+
+This WIP checkpoint is superseded by the completed Code + Build record.
+
+- Exact semantic source: `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`.
+- Compile run/job: `37415985763 / 112114628756`.
+- Immutable result/log artifacts: `11391685901 / 11390994385`.
+- All eight standard GMP/GMPXX targets compiled and linked; package self-manifest 28/28; clean source; `runtimeExecution=false`.
+- G4 coverage table and final evidence: `Architecture_M6_CP2_CB2_Coverage_Code_Build_Report.md`.
+- Temporary compile/docs callers and markers are retired; consumed Drive patch files are permanently deleted.
+- Exact successor is `M6-CP2-TB2-COVERAGE-EXEC`; this file is historical checkpoint evidence only.
