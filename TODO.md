@@ -1,3 +1,13 @@
+## Current — `M6-CP2-TB1-VERIFIER-R1-EXEC` COMPLETE / mandatory Review next (2026-10-06)
+
+- [x] Consume immutable `11382000465 / 9c8478ae...` without rebuild/repair and execute exactly **491** fresh exact-filter processes.
+- [x] Re-derive job-log gate: focused30 **26/30**, focused12 **11/12**, selector449 **425/449** = **462/491**; exact-one 491/491; zero skips; benchmark 0.
+- [x] Record Review-owned CAND-01 A7/A5 relation-step cluster, CAND-02 focused12 ordinal6 baseline, CAND-03 A0 component-adjacency rejection.
+- [x] Record EXEC-OBS-01: post-runtime caller upload paths were stale, so runtime result/log artifacts were not created; no runtime retry authorized.
+- [x] Clean temporary R1 EXEC workflow, harness and trigger; mailbox remains durable.
+- [ ] **Exact next: `M6-CP2-TB1-VERIFIER-R1-REV`** — independently adjudicate 29 REDs and evidence-upload defect, cluster causal/downstream failures, freeze smallest recovery.
+- [ ] Candidate remains unpromoted; stable accounting remains **60 / 16 / 44**, debt 1.
+
 ## Current — `M6-CP2-CB1-VERIFIER-R2` COMPLETE / exact next `M6-CP2-TB1-VERIFIER-R1-EXEC` (2026-10-06)
 
 - [x] Apply RA-29 + RA-29a verifier recovery at semantic source `9c8478aec40bf07144ca7372c2aa58293cd42f5e`.
