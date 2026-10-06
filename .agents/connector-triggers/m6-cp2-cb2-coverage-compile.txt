@@ -1,4 +1,0 @@
-Purpose: compile/package M6-CP2-CB2-COVERAGE exact semantic source
-Source: 5ce3132ec01748eff5b15f82be07a1abe2bd1af6
-Caller install: 10fe31954a9ad491f8f40472b824950d764b766c
-Retry: 0
