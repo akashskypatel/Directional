@@ -1,6 +1,6 @@
 # M6 Frozen Definitions — Occurrence, Quotient, Embedding, Independent Verification
 
-**Status:** FROZEN / **M6-CP1 CLOSED / ACCEPTED, mechanism-only**; CP2 Definition accepted (RA-28/28a/28b); verifier candidates R1 (`265c8fbb`) and R2 (`9c8478ae`) REJECTED (RA-29, RA-29a, RA-29b); **RA-29c** (exact three-hop A7 relation-step binding replaces the RA-29b §1 fallback and §3 ambiguity witness); reviewed runtime `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05` (479/479); `G4-B002` debt open (debt 1); **EXACT NEXT = `M6-CP2-CB1-VERIFIER-R3`** (gate 491); RA-1 – RA-29c normative as annotated.
+**Status:** FROZEN / **M6-CP1 CLOSED / ACCEPTED, mechanism-only**; **M6-CP2 ACTIVE**. R3 verifier `11385836615 / c64baacd6c767c4ba053b6963651c0aa6eceed20` (491/491) is **promoted** as reviewed runtime authority, but CP2 closure is **revoked** by RA-29d (A7 vertex binding unimplemented; negative coverage of the §6.2/§6.3 exit missing; dead codes). `G4-B002` debt open (debt 1). **EXACT NEXT = `M6-CP2-CB2-COVERAGE`** → TB (491) → `M6-CP2-CLOSE-REV`. RA-1 – RA-29d normative as annotated.
 **Date:** 2026-09-25
 **Definition authority:** this record is the normative M6 contract for A5 occurrence creation, A6 quotient construction/materialization, A7 source-attached geometry embedding, and the M6 structural portion of A8 independent verification. It refines `DESIGN.md` §14 M6 without changing accepted M5 producer semantics or pulling M7 disposition/degradation work forward.
 
@@ -1194,3 +1194,35 @@ Rationale: `Architecture_M6_CP2_TB1_Verifier_R1_Review_Record.md`, addendum §T3
    - Hop 2 needs any transformation other than §6.2 inversion and composition → stop for Review.
 
 Successor: `M6-CP2-CB1-VERIFIER-R3` → `M6-CP2-TB1-VERIFIER-R2-EXEC` (**491**; upload paths derived from the harness `TURN_ID`) → mandatory `M6-CP2-TB1-VERIFIER-R2-REV`. Accounting **60 / 16 / 44**, debt 1.
+
+## RA-29d — CP2 closure revoked; verifier binding and negative-coverage completion (normative, 2026-10-06, `M6-CP2-TB1-VERIFIER-R2-REV` review-agent addendum)
+
+Rationale: `Architecture_M6_CP2_TB1_Verifier_R2_Review_Record.md`, addendum §U1–§U4.
+
+1. **Status.** `11385836615 / c64baacd` remains **promoted** as reviewed runtime authority (491/491). "M6-CP2 CLOSED" is **revoked**: CP2 stays ACTIVE until `M6-CP2-CLOSE-REV`.
+2. **A7 vertex binding** (implements RA-28a §2). For every A7 vertex `v` of class `C` with support certificate `s`, require:
+   - `v.representative` ∈ `C.members`;
+   - `v.sourcePoint` == the representative occurrence's published `point` (exactly);
+   - `v.position` == `v.sourcePoint.position`;
+   - `v.support == s.publishedSupport`.
+
+   Failure: `SourceSupportIncidenceMismatch`, site `a7:vertex-binding`. A7 copies these fields verbatim (`RemeshPipeline.cpp:6985-6993`), so the check is gate-neutral.
+3. **Dead codes.**
+   - Remove `UncertifiedAuthoritySubstitution`.
+   - `BoundaryOrEulerMismatch` is emitted for the recomputed components, boundary-loop count and Euler characteristic at `a6:components`, `a6:boundary-loops` and `a6:euler`, split out of `certificate:a7`.
+4. **Negative coverage** (identities 2–5; names, order and gate **491** unchanged). Execute exact code+site witnesses for:
+   - the RA-28a §1 ledger and forest predicates;
+   - A5 ownership and directed sides;
+   - A0 hard-feature edges;
+   - A7 vertex binding, cover and topology copy;
+   - the A5/A6 certificates;
+   - `BoundaryOrEulerMismatch`.
+
+   Identity 5 becomes a table-driven map with one row per frozen §6.3 class. Each row is either an executed record-view witness or an API-shape compile-time trait. Details: `Architecture_M6_CP2_CB2_Coverage_Code_Build_Plan.md` G3.
+5. **Coverage table.** The CB report maps every §6.2 recompute category and every §6.3 class to its predicate (`file:line`) and its executed witness or API-shape classification. A missing row is a stop for Review.
+6. **CP2 closure** happens only at `M6-CP2-CLOSE-REV`. It adjudicates frozen §10 M6-CP2 against that table and a fresh 491 gate, and writes `M6_CP2_Closure_Record.md`.
+7. **Observations.**
+   - `reverse_selected_relation_step` is a shared exact-algebra helper; acceptable under §6.2, recorded.
+   - The by-value token copies the products on every run (owner M8-CP2).
+
+Successor: `M6-CP2-CB2-COVERAGE` → `M6-CP2-TB2-COVERAGE-EXEC` (**491**) → `M6-CP2-CLOSE-REV` → `M6-DEFN-R5`. Accounting **60 / 16 / 44**, debt 1.

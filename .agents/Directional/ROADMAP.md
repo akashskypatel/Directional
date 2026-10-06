@@ -1,4 +1,15 @@
-## Current gate — M6-CP2 CLOSED / R3 verifier promoted / next `M6-DEFN-R5` (2026-10-06)
+## Live M6 routing — after the `M6-CP2-TB1-VERIFIER-R2-REV` review-agent addendum (RA-29d)
+
+| Checkpoint | State | Exact next / gate |
+|---|---|---|
+| M6 CP1 | **CLOSED / ACCEPTED, mechanism-only** | `M6_CP1_Closure_Record.md` |
+| M6 CP2 | **ACTIVE** (closure revoked) | reviewed runtime `11385836615 / c64baacd...`, 491/491 |
+| CP2 completion | **EXACT NEXT** | `M6-CP2-CB2-COVERAGE` (A7 vertex binding, dead codes, negative coverage) -> TB **491** -> `M6-CP2-CLOSE-REV` |
+| `M6-DEFN-R5` | CP3-entry gate, after CP2 closure | held |
+
+Stable accounting: **60 / 16 / 44**, debt 1.
+
+### Superseded (CP2 closure revoked by RA-29d) — M6-CP2 CLOSED / R3 verifier promoted (2026-10-06)
 
 - R2 Review accepted `11385836615 / c64baacd...` after a **491/491** immutable gate.
 - RA-29c recovery is accepted; R1 recovery findings are closed/non-stable.

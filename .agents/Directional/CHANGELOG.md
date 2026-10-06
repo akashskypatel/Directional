@@ -1,3 +1,14 @@
+## 2026-10-06 — `M6-CP2-TB1-VERIFIER-R2-REV` review-agent addendum: CP2 closure revoked (RA-29d)
+
+- **Re-derived independently:** result `11387562709` (`dada6a75`) and log `11387233341` (`5a695053`); 1005/1005; all three ledgers in frozen order; 491/491; all raw hashes match. Candidate `c64baacd` == HEAD. RA-29c is implemented as specified. **The promotion is confirmed.**
+- **CP2 closure revoked:**
+  - **U1:** the RA-28a §2 A7 vertex binding is unimplemented;
+  - **U2:** about 14 of 56 verifier sites are tested; the exact-once ledger, forest = Joining, A5 ownership and `MissingPublishedAuthority` have no executed negative; identity 5 covers one §6.3 class;
+  - **U3:** dead codes;
+  - **U4:** no closure record.
+- **RA-29d:** `M6-CP2-CB2-COVERAGE` (G1–G4), then TB (491), then `M6-CP2-CLOSE-REV`.
+- **Docs:** new CB2 plan; lesson 205; handoff / ORIENTATION / TODO / ROADMAP / tracker (+0) / consolidated. Accounting 60 / 16 / 44.
+
 ## 2026-10-06 — `M6-CP2-TB1-VERIFIER-R1-REV` review-agent addendum: RA-29c replaces the A7 fallback
 
 - **Re-derived independently from job log `112044082007`:** 491 RUN in frozen order; 462/491; 29 REDs (19 `a7:a5-relation-step`, 1 `a0:component-adjacency`, 9 downstream). R1-REV's clustering and R1-REV-02 are confirmed.

@@ -1,3 +1,15 @@
+## 2026-10-06 — `M6-CP2-TB1-VERIFIER-R2-REV` review-agent addendum — CP2 closure revoked (RA-29d) — **+0 / 60/16/44 / debt 1**
+
+- The promotion of `11385836615 / c64baacd` (491/491) is confirmed. No regression.
+- Findings, all owned by `M6-CP2-CB2-COVERAGE` (non-stable):
+  - **`M6-CP2-R2-REV-OBS-01`** (High): the RA-28a §2 A7 vertex binding (support = class support, representative membership, point and position) is unimplemented.
+  - **`-OBS-02`** (High): no executed negative witness for most verifier predicates (about 14 of 56 sites tested; exact-once ledger, forest = Joining, A5 ownership and `MissingPublishedAuthority` untested); identity 5 covers one §6.3 class.
+  - **`-OBS-03`**: dead codes `UncertifiedAuthoritySubstitution` and `BoundaryOrEulerMismatch`.
+  - **`-OBS-04`**: CP2 closed without a closure record.
+- Missed by three successive verifier Reviews and by review-agent addenda (owned; lesson 205).
+
+**Stable accounting: `60 events / 16 categories / 44 recurrences`, debt 1.**
+
 ## 2026-10-06 — `M6-CP2-TB1-VERIFIER-R2-REV` — **ACCEPTED / RECOVERY PROVED / +0 / 60/16/44 / debt 1**
 
 Independent Review promotes `11385836615 / c64baacd...` after re-deriving **491/491** with exact-one 491/491, zero skips, zero benchmarks and clean immutable postflight. RA-29c is faithful; the invalid component rule, reverse lookup/fallback, O(V·P) scan and self-declared ownership trait are gone. `R1-REV-01`, `R1-REV-02`, `R1-REV-03`, `EXEC-OBS-01`, and RA-29c T3/T5 are **CLOSED / RECOVERY PROVED / NON-STABLE**. No new regression event/candidate or debt item. Accounting remains **60 events / 16 categories / 44 recurrences**, debt 1. Exact next: `M6-DEFN-R5`.

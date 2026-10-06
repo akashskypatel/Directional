@@ -1,4 +1,15 @@
-## Current orientation — M6-CP2 CLOSED / exact next `M6-DEFN-R5` (2026-10-06)
+## Currency — `M6-CP2-TB1-VERIFIER-R2-REV` review-agent addendum: CP2 closure REVOKED (RA-29d) (2026-10-06 UTC)
+
+- The R3 verifier `c64baacd` (491/491) is promoted as reviewed runtime authority, but **CP2 stays ACTIVE**:
+  - the RA-28a §2 A7 vertex binding is unimplemented (a moved, self-consistent vertex verifies);
+  - most verifier predicates have no executed negative witness, and identity 5 covers one of ten §6.3 classes;
+  - two failure codes are dead.
+- Exact next: `M6-CP2-CB2-COVERAGE` → TB (491) → `M6-CP2-CLOSE-REV` (closure record) → `M6-DEFN-R5`.
+
+Accounting **60 / 16 / 44**, debt 1.
+
+### Superseded currency note
+### Superseded (CP2 closure revoked by RA-29d) — M6-CP2 CLOSED / exact next `M6-DEFN-R5` (2026-10-06)
 
 Independent `M6-CP2-TB1-VERIFIER-R2-REV` promotes `11385836615 / c64baacd6c767c4ba053b6963651c0aa6eceed20`; immutable runtime `37403703032 / 112076464024` is **491/491**. RA-29c is accepted and R1 recovery findings are closed. Accounting is **60 events / 16 categories / 44 recurrences**, debt 1. **Next:** `M6-DEFN-R5`, the carried CP3 definition/permutation gate.
 
@@ -474,9 +485,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
- > **Current milestone authority (2026-10-06, after the `M6-CP2-TB1-VERIFIER-R1-REV` addendum):** M4 and M5 remain CLOSED / ACCEPTED. M6 CP1 is CLOSED / ACCEPTED, mechanism-only. M6 CP2 is ACTIVE: the Definition is accepted, and two verifier candidates are rejected (488/491 and 462/491). Reviewed runtime `11330703256 / 3f40f04a...` (479/479). Stable accounting **60/16/44**, debt 1. Exact next is `M6-CP2-CB1-VERIFIER-R3` (gate 491).
+ > **Current milestone authority (2026-10-06, after the `M6-CP2-TB1-VERIFIER-R2-REV` addendum):** M4 and M5 remain CLOSED / ACCEPTED. M6 CP1 is CLOSED / ACCEPTED, mechanism-only. **M6 CP2 is ACTIVE.** Reviewed runtime is the promoted R3 verifier `11385836615 / c64baacd...` (491/491), but closure is revoked by RA-29d. Stable accounting **60/16/44**, debt 1. Exact next is `M6-CP2-CB2-COVERAGE`.
 
-**Currency.** `M6-CP2-TB1-VERIFIER-R1-REV` review-agent addendum (Review), 2026-10-06 UTC
+**Currency.** `M6-CP2-TB1-VERIFIER-R2-REV` review-agent addendum (Review), 2026-10-06 UTC
 
 **Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` §16.3 is the active same-region nonzero-Z4 contract. `PeriodicRelationId` remains carrier-content identity; relation rotation is the gauge-adjusted quotient `Q`, action/transport is relation value, and canonical storage may invert representation only after semantic Forward -> Reverse authority is fixed. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 
@@ -660,13 +671,12 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M6-CP2-CB1-VERIFIER-R3` — EXACT NEXT (Code + Build; RA-29b §2/§4/§5 + RA-29c).**
-   - Exact three-hop A7 relation-step binding: `a5:selected-step-value`, `a6:legacy-projection`, `a7:selected-paths`.
-   - Remove R2's reverse lookup and its O(V·P) scan.
-   - Remove the `a0:component-adjacency` rule and its identity-2 witness.
-   - Identity 6: three tampers, no ambiguity witness. Identity 11: behavioral ownership check.
-   - **No optimizer or producer change; no focused/selector/routing change.**
-   - Compile/package only → TB1-R2 **491** (upload paths from `TURN_ID`) → mandatory R2 Review.
+1. **`M6-CP2-CB2-COVERAGE` — EXACT NEXT (Code + Build; RA-29d).**
+   - G1 `a7:vertex-binding`: representative ∈ members; `sourcePoint` = the representative's point; `position` = `sourcePoint.position`; `support` = `publishedSupport`.
+   - G2: remove `UncertifiedAuthoritySubstitution`; `BoundaryOrEulerMismatch` at `a6:components` / `a6:boundary-loops` / `a6:euler`.
+   - G3: exact code+site negative witnesses in identities 2–5; identity 5 a table-driven §6.3 map.
+   - G4: coverage table in the CB report.
+   - Gate 491, no new identities → TB → `M6-CP2-CLOSE-REV` → `M6-DEFN-R5`.
 1a. **`M6-DEFN-R5` — CP3-entry gate (not CP1).**
    - Periodic unequal-face-gauge witness, plus the coordinate / relation-gauge rule.
    - HardRail cross-region branch certification.
@@ -705,6 +715,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 **A green behavioral test is not a contract proof when the oracle compares only a subset of the promised serialization — `M6-CP1-TB10-A5V-REV`, lesson 193.** Identity24 ran three real stage-valid fixtures but omitted multiple mesh/lineage/result fields, so those fields could drift without turning the test red. Enumerate the output type and prove every contract field is covered; a strong test name does not widen its assertions.
 
 **Moving validation into an earlier stage can still invert that stage's own pre-existing failure precedence — `M6-CP1-TB10-A5V-REV`, existing `VALIDATION_ORDER_SHADOWING`.** RA-19 explicitly required the moved helper after every old A5 check; placing it before `publish_records_for_validation` violates that boundary even when the full gate stays green.
+
+**A green gate proves a verifier does not falsely reject; closing it also needs proof that it detects — `M6-CP2-TB1-VERIFIER-R2-REV` addendum, lesson 205.** CP2 was closed at 491/491 while most of the verifier's predicates had never rejected anything in a test, and one frozen binding was not implemented at all.
 
 **Test a new verifier predicate against the gate's deliberate edge cases and the producer's own encoding — `M6-CP2-TB1-VERIFIER-R1-REV` addendum, lesson 204.** RA-29a §4 assumed component labels equal connectivity, but selector 144 deliberately violates that. RA-29a §3 and RA-29b §1 assumed a value is uniform per rail or periodic ID, but A5 inverts values on non-canonical storage. Bind through the producer's actual construction chain instead.
 

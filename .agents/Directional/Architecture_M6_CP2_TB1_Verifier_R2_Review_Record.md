@@ -50,3 +50,95 @@ These were non-stable recovery/specification defects. No new regression candidat
 ## Promotion and routing
 
 Candidate `11385836615 / c64baacd6c767c4ba053b6963651c0aa6eceed20` is **PROMOTED** as reviewed M6-CP2 authority. M6-CP2 is closed. The exact successor is **`M6-DEFN-R5`**; that turn is not begun inside this Review.
+
+---
+
+## Review-agent addendum (2026-10-06, resumed `M6-CP2-TB1-VERIFIER-R2-REV`)
+
+**Disposition:**
+- **Promotion of `11385836615 / c64baacd` as reviewed runtime authority: CONFIRMED.** 491/491, every R1 recovery item is closed, and no false rejection remains.
+- **"M6-CP2 CLOSED": REVOKED. CP2 stays ACTIVE.** The frozen CP2 exit (§10: "independently recomputes … §6.2 elementary facts and fails typed on **every** §6.3 malformed-authority class") is not met:
+  - one RA-28a §2 A7 binding is unimplemented (U1);
+  - most verifier predicates have no executed negative witness, and identity 5 tests one of ten §6.3 classes (U2);
+  - two runtime codes are dead (U3).
+- **RA-29d** routes a bounded completion: `M6-CP2-CB2-COVERAGE` → TB (491) → `M6-CP2-CLOSE-REV`, with a closure record.
+- Accounting **60 / 16 / 44**, debt 1.
+
+### U0. Independent re-derivation (confirmed)
+
+- Result `11387562709`: ZIP `dada6a75...`. Log `11387233341`: ZIP `5a695053...`.
+- `SHA256SUMS` (`82943861...`) verifies **1005/1005**.
+- focused-30 (`1e815443`), focused-12 (`2aa57aac`) and selector449 (`d4a0d1b7`) ledgers are each in exact frozen order. Every row has exactly one selection, zero skips and PASS. **All 491 raw-log hashes match.**
+- Candidate `c64baacd` source == HEAD. The R3 diff from `9c8478ae` touches the verifier and tests only (−2 header lines).
+- **RA-29c is implemented as specified:**
+  - `a5:selected-step-value`;
+  - `a6:legacy-projection`, reconstructed along each path's own relations;
+  - `a7:selected-paths`, grouped by class and sorted-unique.
+
+  The reverse lookup, fallback and O(V·P) scan are gone, and identity 11's ownership check is behavioral.
+
+### U1 (High) — RA-28a §2's A7 vertex binding is not implemented
+
+RA-28a §2 requires that "each A7 vertex's class equals one published A6 class (ID and member set); **its support equals the common A5 member support (RA-18)**". The A7 partition (`RemeshPipeline.cpp:8157-8222`) checks:
+- `sourceOccurrences == members`;
+- `vertex.support == resolve(vertex.sourcePoint)` (shared kernel);
+- that every member's support equals the **support certificate's** `publishedSupport` (`:8204`).
+
+It **never** checks:
+- `vertex.support == publishedSupport` (or == the members' common support);
+- `vertex.representative ∈ members`;
+- `vertex.sourcePoint ==` the representative occurrence's published `point`;
+- `vertex.position == vertex.sourcePoint.position`.
+
+**Witness:** move one class's A7 vertex to an unrelated but self-consistent source point (any other face, with its kernel-resolved support). Every A7 check passes. This is the geometric weld that A7 and CP1 item 6 rule out. The verifier, the only independent certifier, cannot see it.
+
+This is an implementation omission against frozen text. TB1-REV, R1-REV, R2-REV and my own addenda all missed it.
+
+### U2 (High) — CP2's exit criterion has no executed negative coverage
+
+**Counts.** Of about 56 verifier failure sites, about 14 are referenced by any test. By failure code:
+
+| Production sites | Codes | Test references |
+|---|---|---|
+| 4 | `OccurrenceOwnershipMismatch` (§6.2 occurrence ownership counts) | **0** |
+| 5 | `MissingPublishedAuthority` (the §6.3 "infer missing endpoint/owner/…/relation" class) | **0** |
+| 19 | `QuotientMembershipMismatch` | 2 |
+
+**Untested negatives** (sites with no test anywhere):
+- the RA-28a §1 core: `a6:exact-once-ledger`, `a6:forest-joining-set`, `a6:forest-cardinality`, `a6:forest-endpoints`, `a6:duplicate-certificate` / `-consumption`;
+- A5: `a5:corner-owner`, `a5:exact-corner-ownership`, `a5:directed-side-cycle`;
+- A7: `a7:support-cover`, `a7:class-cover`, `a7:topology-copy`;
+- certificates: `certificate:a5`, `certificate:a6`.
+
+**Identity 5** (`VerifierRejectsEveryForbiddenRepairClassWithoutMutation`, `tests/…:7647-7663`) applies **one** tamper: a duplicated class member → `SemanticIdentityMismatch`, plus a non-mutation check. The Definition (§1.4) claimed every §6.3 class "has a reachable record-view witness or is classified defensive". That was never demonstrated, and my DEFN-REV accepted the identity on its name (owned).
+
+**Why 491/491 doesn't settle this.** It proves the verifier does not falsely reject valid products. It does **not** prove detection. A wrongly compared set in, for example, the exact-once ledger would still be green on valid data.
+
+### U3 (Medium) — two runtime codes are dead
+
+`UncertifiedAuthoritySubstitution` (`RemeshPipeline.h:1504`) and `BoundaryOrEulerMismatch` (`:1499`) are **never emitted**. The recomputed boundary loops, components and Euler characteristic (`:8306`) are reported only as `CertificatePayloadMismatch:certificate:a7` (`:8314`), while the Definition matrix (§1.3) maps them to `BoundaryOrEulerMismatch`. RA-28a §5's rule ("no runtime code without a frozen predicate") applies in reverse: a code with no emitting predicate is a dead diagnostic.
+
+### U4 (Medium) — CP2 was closed without a closure record or exit adjudication
+
+CP1 closed through a dedicated Review against a frozen checklist, with `M6_CP1_Closure_Record.md`, and every M4/M5 checkpoint has a closure record. This Review declared CP2 closed inside a TB Review, with no per-criterion mapping and no closure record. That is how U1–U3 went unnoticed.
+
+### U5 (Low; no change required) — inversion is shared with the producer
+
+Hop 2 calls the producer helper `reverse_selected_relation_step` (`:7904`). It is pure exact algebra on a value type (flip direction, swap charts and components, invert the transform), which §6.2 permits. But the verifier and A6 share one definition, so an error there is invisible to both. Recorded. An independent five-line inversion is optional.
+
+### U6 (Low; owner M8-CP2) — the token copies all three products on every run
+
+`VerifiedSurfaceProducts` copies A5/A6/A7 per pipeline run. Moving them in would avoid the copy. Recorded for resource accounting.
+
+### U7. Closeout
+
+| Duty | Result |
+|---|---|
+| Evidence | Re-derived: 1005/1005; frozen order; 491/491; all raw hashes match. |
+| RA-29c | Implemented as specified; R1 findings closed. |
+| Promotion | **Confirmed** (runtime authority `c64baacd`). |
+| CP2 closure | **Revoked**: U1 (High), U2 (High), U3, U4 → RA-29d. |
+| Gate | 491. Identity names and order unchanged; bodies of identities 2–5 strengthened; no new identity. |
+| Accounting | +0 → 60 / 16 / 44, debt 1. |
+| Lesson | 205. |
+| Successor | `M6-CP2-CB2-COVERAGE` → `M6-CP2-TB2-COVERAGE-EXEC` (491) → `M6-CP2-CLOSE-REV`. `M6-DEFN-R5` follows CP2 closure. |

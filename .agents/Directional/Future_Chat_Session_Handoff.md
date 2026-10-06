@@ -1,4 +1,21 @@
-## Resume-critical update — `M6-CP2-TB1-VERIFIER-R2-REV` ACCEPTED / CP2 CLOSED / exact next `M6-DEFN-R5` (2026-10-06)
+## Resume-critical update — `M6-CP2-TB1-VERIFIER-R2-REV` review-agent addendum: CP2 closure REVOKED; exact next `M6-CP2-CB2-COVERAGE` (2026-10-06)
+
+**Do not start `M6-DEFN-R5`.** Start **`M6-CP2-CB2-COVERAGE`** (Code + Build; compile/package only) under RA-29d. Follow `Architecture_M6_CP2_CB2_Coverage_Code_Build_Plan.md`.
+
+The promotion of `11385836615 / c64baacd` (491/491) stands. **CP2 is not closed**, because:
+- **U1:** RA-28a §2's A7 vertex binding is unimplemented. Nothing checks that the vertex support equals the class support, that the representative is a member, that `sourcePoint` is the representative's point, or that `position` matches. A vertex moved to an unrelated, self-consistent source point verifies.
+- **U2:** most verifier predicates have no executed negative witness. Of about 56 sites, about 14 are tested; the exact-once ledger, forest = Joining, A5 ownership and `MissingPublishedAuthority` are untested, and identity 5 covers one of ten §6.3 classes.
+- **U3:** `UncertifiedAuthoritySubstitution` and `BoundaryOrEulerMismatch` are never emitted.
+
+**CB2:**
+- G1 `a7:vertex-binding`;
+- G2 dead codes (remove one; give `BoundaryOrEulerMismatch` its predicate);
+- G3 negative witnesses folded into identities 2–5, with identity 5 a table-driven §6.3 map;
+- G4 a coverage table in the CB report.
+
+Gate **491**, no new identities. Then TB → **`M6-CP2-CLOSE-REV`** (closure record) → `M6-DEFN-R5`. Accounting **60 / 16 / 44**, debt 1.
+
+## Superseded by the review-agent addendum (CP2 closure REVOKED) — `M6-CP2-TB1-VERIFIER-R2-REV` ACCEPTED / CP2 CLOSED / exact next `M6-DEFN-R5` (2026-10-06)
 
 **Start `M6-DEFN-R5` next. Do not reopen CP2 or rerun the 491-process verifier gate absent new authority.**
 
@@ -1168,57 +1185,55 @@ Review must independently re-open source/evidence and re-derive: split-square v0
 ## Current authority
 
 - **M6 CP1:** CLOSED / ACCEPTED, mechanism-only.
-- **M6 CP2:** Definition accepted (RA-28/28a/28b). R1/R2 verifier candidates remain **REJECTED / UNPROMOTED**.
-- **R3 recovery candidate:** exact semantic source/package `c64baacd6c767c4ba053b6963651c0aa6eceed20 / 11385836615`, **COMPILE-PACKAGE GREEN / UNPROMOTED**; run/job `37401647591 / 112069997705`; manifest 28/28; `runtimeExecution=false`.
-- Reviewed runtime authority remains `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05` (focused-30 + selector449 = **479/479**).
-- Normative: RA-1 – RA-29c.
-- Accounting **60 / 16 / 44**, debt **1**.
+- **M6 CP2: ACTIVE.** Reviewed runtime authority is the promoted R3 verifier `11385836615 / c64baacd6c767c4ba053b6963651c0aa6eceed20` (focused-30 + focused-12 + selector449 = **491/491**). CP2 closure is revoked by RA-29d.
+- Normative: RA-1 – RA-29d.
+- Accounting **60 / 16 / 44**, debt **1** (`G4-B002`, CP3).
 
 ## Exact next turn
 
-**`M6-CP2-TB1-VERIFIER-R2-EXEC` — immutable artifact-only Test + Benchmark, exactly 491 fresh exact-filter processes.**
-- Consume only package `11385836615 / c64baacd6c767c4ba053b6963651c0aa6eceed20`; no rebuild, repair, relink, fixture mutation, or permission repair.
-- Execute focused30 + CP2-focused12 + selector449 = **30 + 12 + 449 = 491** fresh exact-filter processes, exact-one selection and zero skips; zero benchmarks.
-- Derive workflow upload paths from the same harness `TURN_ID`; do not reuse a predecessor literal.
-- Perform immutable package/source/execution-view pre/postflight and preserve all process evidence.
-- Route to mandatory `M6-CP2-TB1-VERIFIER-R2-REV` regardless of semantic green/red outcome.
-- R3 is only compile-valid; it has no runtime acceptance or CP2 promotion.
+**`M6-CP2-CB2-COVERAGE` — Code + Build only, under RA-29d.** Follow `Architecture_M6_CP2_CB2_Coverage_Code_Build_Plan.md`:
+- G1 A7 vertex binding;
+- G2 dead codes;
+- G3 negative coverage folded into identities 2–5;
+- G4 coverage table.
+
+No producer, optimizer or focused/selector/routing change; gate 491.
+
+Compile-green → `M6-CP2-TB2-COVERAGE-EXEC` (**491**; `TURN_ID`-derived upload paths) → mandatory `M6-CP2-CLOSE-REV` (writes `M6_CP2_Closure_Record.md`) → `M6-DEFN-R5`.
 
 ## Completed predecessor turns (reference only)
 
-- `M6-CP2-CB1-VERIFIER-R3` — RA-29c recovery compiled/package GREEN at `11385836615 / c64baacd...`; no runtime.
-- `M6-CP2-TB1-VERIFIER-R1-REV` (+ addendum §T, RA-29c) — R2 candidate rejected; RA-29b, RA-29c.
-- `M6-CP2-TB1-VERIFIER-R1-EXEC` — 462/491; result/log artifacts missing (upload-path defect); job log is the evidence.
-- `M6-CP2-CB1-VERIFIER-R2` — candidate `11382000465 / 9c8478ae`.
-- `M6-CP2-TB1-VERIFIER-REV` (+ addendum §S, RA-29a), `M6-CP2-CB1-VERIFIER-R1`, and earlier CP2 turns.
+- `M6-CP2-TB1-VERIFIER-R2-REV` (+ addendum §U, RA-29d) — R3 promoted; CP2 closure revoked.
+- `M6-CP2-TB1-VERIFIER-R2-EXEC` — 491/491.
+- `M6-CP2-CB1-VERIFIER-R3` — RA-29c implementation.
+- Earlier CP2 turns are folded in `M6_Consolidated_Record.md`.
 
 ## Current files
 
-- `.agents/Directional/Architecture_M6_CP2_CB1_Verifier_R3_Recovery_Code_Build_Report.md` — authoritative R3 compile/package evidence.
-- `.agents/Directional/Architecture_M6_CP2_CB1_Verifier_R3_Recovery_Code_Build_Plan.md` — completed R3 plan; RA-29c block governs its implementation.
-- `.agents/Directional/Architecture_M6_CP2_TB1_Verifier_R1_Review_Record.md` — Review authority, with addendum §T.
-- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — RA-28 – RA-29c.
-- `.agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt`, focused-30, selector449 / routing449 — frozen 491 gate authority.
+- `.agents/Directional/Architecture_M6_CP2_CB2_Coverage_Code_Build_Plan.md` — exact next plan.
+- `.agents/Directional/Architecture_M6_CP2_TB1_Verifier_R2_Review_Record.md` — Review authority, with addendum §U.
+- `.agents/Directional/Architecture_M6_CP2_TB1_Verifier_R2_Artifact_Only_Test_Benchmark_Report.md` — 491/491 evidence.
+- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — §6.2, §6.3, §10, RA-28a, RA-29c, RA-29d.
+- `.agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt`, focused-30, selector449 / routing449 — frozen gate.
 
 ## Context Load Plan
 
 ```yaml
 load_next:
-  - .agents/Directional/Architecture_M6_CP2_TB1_Verifier_Review_Record.md
-  - .agents/Directional/Architecture_M6_CP2_CB1_Verifier_R2_Recovery_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M6_CP2_CB2_Coverage_Code_Build_Plan.md
+  - .agents/Directional/Architecture_M6_CP2_TB1_Verifier_R2_Review_Record.md
   - .agents/Directional/Architecture_M6_Frozen_Definitions.md
-  - .agents/Directional/M6_Consolidated_Record.md
+  - .agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt
 conditional_modules:
   - trigger: github_connector / GitHub Actions / compile
     path: turn-based-coding-agent/modules/github-connector/MODULE.md
 deep_references:
-  - include/directional/pipeline/RemeshPipeline.h (A5 SurfaceOccurrence 814-841, relation evidence 860-890; A6 certificate/consumption/forest/path 1029-1097, records 1249-1256; A7 1339-1462)
-  - src/pipeline/RemeshPipeline.cpp (A5 wedge construction 4395-4470; A6 certificate copy 5219-5224/5338/5365 and publication check 5770-5795; partition 5810-5890; A7 6512-7000; adapter 7293-7622; optimizer chart authority 12868-12872)
-  - include/directional/validation/SourceAuthoritativeMeshValidator.h (SourceVertexChartAuthority 63-67)
-  - src/geometry/SurfaceMeshOptimizer.cpp (project_to_provenance_entity 690-755, project_vertices 759-880; READ-ONLY for identity 12, no edits)
-  - tests/SurfaceCellTransitionQuotientTests.cpp (split_isolation_fixture; identity 29)
+  - src/pipeline/RemeshPipeline.cpp (verifier ~7480-8330; A7 partition 8157-8222; certificate checks ~8270-8320; A7 vertex construction 6985-6993)
+  - include/directional/pipeline/RemeshPipeline.h (VerificationFailureCode ~1490-1505)
+  - tests/SurfaceCellTransitionQuotientTests.cpp (CP2 identities ~7480-7900; identity 5 at 7647)
   - .agents/Directional/GitHub_Workflow_Policy.md
 do_not_preload:
   - folded superseded M6 per-turn records
+  - src/geometry/SurfaceMeshOptimizer.cpp (RA-28b)
   - research/provenance/examples
 ```

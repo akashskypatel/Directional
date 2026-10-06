@@ -1,4 +1,16 @@
-## Current — `M6-CP2-TB1-VERIFIER-R2-REV` ACCEPTED / CP2 CLOSED / exact next `M6-DEFN-R5` (2026-10-06)
+## Current — `M6-CP2-TB1-VERIFIER-R2-REV` review-agent addendum / CP2 closure REVOKED / exact next `M6-CP2-CB2-COVERAGE` (2026-10-06)
+
+- [x] Re-derive R2 TB: 1005/1005, frozen order, 491/491, all raw hashes match; `c64baacd` == HEAD; RA-29c implemented.
+- [x] Confirm the promotion of `c64baacd`; revoke CP2 closure:
+  - U1: A7 vertex binding unimplemented;
+  - U2: negative coverage missing;
+  - U3: dead codes;
+  - U4: no closure record.
+- [x] RA-29d; CB2 coverage plan; lesson 205.
+- [ ] **Exact next `M6-CP2-CB2-COVERAGE`** (compile/package only; gate 491).
+- [ ] TB (491) → `M6-CP2-CLOSE-REV` (`M6_CP2_Closure_Record.md`) → `M6-DEFN-R5`.
+
+## Superseded (CP2 closure revoked by RA-29d) — `M6-CP2-TB1-VERIFIER-R2-REV` ACCEPTED / CP2 CLOSED (2026-10-06)
 
 - [x] Independently re-derive **491/491**, exact-one 491/491, zero skips, benchmark 0, immutable postflight.
 - [x] Confirm RA-29c exact three-hop binding and removal of reverse lookup/fallback, raw component rule, O(V·P) scan and self-declared ownership trait.

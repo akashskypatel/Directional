@@ -1,3 +1,11 @@
+## 2026-10-06 — `M6-CP2-TB1-VERIFIER-R2-REV` review-agent addendum — CP2 reopened
+
+- The verifier build that passed all 491 tests stays approved. But checkpoint CP2 is reopened, because two things are missing:
+  - **one required check was never written:** that each output vertex sits at its group's agreed source location;
+  - **most of the verifier's rejection rules have never been shown to reject anything in a test.**
+- A bounded code turn adds the missing check and the missing failure tests. Then a dedicated closure review decides.
+- Next: `M6-CP2-CB2-COVERAGE`.
+
 ## M6-CP2-TB1-VERIFIER-R2-REV — CP2 accepted and promoted (2026-10-06)
 
 Independent Review promotes `11385836615 / c64baacd6c767c4ba053b6963651c0aa6eceed20` after re-deriving the immutable R2 gate at **491/491** with exact-one selection, zero skips, zero benchmarks and clean immutable postflight. Static review confirms RA-29c three-hop binding, removal of the invalid component rule and rejected reverse lookup/fallback, O(P log P) grouping, and behavioral token ownership. R1 recovery findings are closed; no new regression candidate. Accounting remains 60/16/44, debt 1. M6-CP2 is closed; exact next is `M6-DEFN-R5`.

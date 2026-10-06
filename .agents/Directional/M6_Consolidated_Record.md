@@ -1,4 +1,8 @@
-## 2026-10-06 — M6-CP2 final verifier Review: ACCEPTED / PROMOTED
+## 2026-10-06 — Current authority after the `M6-CP2-TB1-VERIFIER-R2-REV` review-agent addendum (RA-29d)
+
+**M6 CP2 is ACTIVE; its closure is revoked** (§56). The R3 verifier `11385836615 / c64baacd` (491/491) stays promoted as reviewed runtime authority. Exact next: `M6-CP2-CB2-COVERAGE` → TB (491) → `M6-CP2-CLOSE-REV` → `M6-DEFN-R5`. Accounting **60 / 16 / 44**, debt 1.
+
+## 2026-10-06 — M6-CP2 final verifier Review: ACCEPTED / PROMOTED (closure claim revoked by RA-29d; see §56)
 
 `M6-CP2-TB1-VERIFIER-R2-REV` promotes `11385836615 / c64baacd6c767c4ba053b6963651c0aa6eceed20`. Runtime `37403703032 / 112076464024` re-derives **491/491** (30 + 12 + 449), exact-one 491/491, zero skips, benchmark 0, immutable postflight. Static review accepts RA-29c's exact relation→path→vertex binding, removal of invalid component/reverse-lookup rules, bounded grouping complexity, and behavioral token ownership. R1 recovery findings close non-stably; accounting remains **60 / 16 / 44**, debt 1. M6-CP2 is closed. Exact next: `M6-DEFN-R5`. See `Architecture_M6_CP2_TB1_Verifier_R2_Review_Record.md`.
 
@@ -571,6 +575,24 @@ RA-29b's same-owner-ID fallback would falsely reject. A5 inverts `canonicalRelat
 - A7 `selectedRelationPaths` equals the sorted-unique set of the class's A6 projections.
 
 This needs no ambiguity witness and is O(P log P). Identity 11's ownership check becomes behavioral. Lesson 204.
+
+## 56. `M6-CP2-TB1-VERIFIER-R2-REV` review-agent addendum — CP2 closure revoked; RA-29d
+
+The review agent re-derives R2 TB at 491/491, with all raw hashes matching, and confirms RA-29c and the promotion of `c64baacd`.
+
+**CP2 closure is revoked:**
+- U1: the RA-28a §2 A7 vertex binding is unimplemented (a moved, self-consistent vertex verifies);
+- U2: most verifier predicates have no executed negative witness, and identity 5 covers one of ten §6.3 classes;
+- U3: two dead failure codes;
+- U4: no closure record.
+
+**RA-29d** routes `M6-CP2-CB2-COVERAGE`:
+- G1 `a7:vertex-binding`;
+- G2 dead codes;
+- G3 coverage folded into identities 2–5;
+- G4 coverage table.
+
+Gate 491. Then TB → `M6-CP2-CLOSE-REV` → `M6-DEFN-R5`. Lesson 205.
 
 ## Folded document index
 

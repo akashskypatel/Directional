@@ -2667,3 +2667,15 @@ When a temporary workflow caller is assembled with low-level Git objects, creati
       - Before freezing a verifier predicate, (a) grep the accepted gate for rows that deliberately exercise the property, and (b) trace the producer's actual construction chain.
       - Bind through that chain (here: relation → path certificate → projection), never through a reverse lookup or a value-uniformity assumption.
     - Recorded at the `M6-CP2-TB1-VERIFIER-R1-REV` review-agent addendum (RA-29c).
+205. **A green gate proves a verifier does not falsely reject; closure also needs proof that it detects.**
+    - *What happened.*
+      - CP2 was declared closed at 491/491. But about 42 of the verifier's 56 failure sites had never been triggered by a test, including the exact-once ledger and forest = Joining.
+      - Identity 5, named "rejects every forbidden repair class", tested one of the ten §6.3 classes.
+      - Two failure codes were never emitted.
+      - One frozen binding (RA-28a §2: A7 vertex support = class support) was not implemented at all, so a vertex moved to an unrelated, self-consistent location verified.
+      - Three successive Reviews and review-agent addenda missed it, because the gate was green.
+    - **Rule.**
+      - Close a verifier checkpoint only against a coverage table that maps each frozen predicate class to its implementation (`file:line`) and an executed negative witness, or to an API-shape classification.
+      - A test's name is not coverage.
+      - Close in a dedicated closure Review, with a closure record.
+    - Recorded at the `M6-CP2-TB1-VERIFIER-R2-REV` review-agent addendum (RA-29d).
