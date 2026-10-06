@@ -1,3 +1,19 @@
+## Resume-critical update — `M6-CP2-TB1-VERIFIER-R1-REV` REJECTS R2 / RA-29b / exact next R3 (2026-10-06)
+
+**Start `M6-CP2-CB1-VERIFIER-R3` next. Do not rerun R1 package, promote `11382000465 / 9c8478ae...`, or begin `M6-DEFN-R5`.**
+
+Independent Review accepts the 462/491 mechanics and clusters all 29 RED rows into two bounded verifier causes:
+- R2 requires a unique A6 reverse match for each A7 legacy path even though A7 intentionally drops A6 target/path identity and deduplicates equal legacy projections. This omitted RA-29a's ambiguity fallback and causes the broad `MissingPublishedAuthority:a7:a5-relation-step` cluster plus downstream reachability failures, including focused12 ordinal 6.
+- RA-29a's new exact raw-connectivity component-partition requirement is withdrawn as a Review-specification error. `SourceComponentId` is ingress authority and may label disconnected topology regions identically; accepted selector449 ordinal 144 proves this semantics. R3 must remove `a0:component-adjacency` and the identity-2 disconnected-component merge sub-witness, without inventing a replacement component rule.
+
+RA-29b freezes R3: implement the A7 all-candidate/same-owner-value fallback, retain exact single-path checking where observable, remove only the invalid component rule, keep focused12 names/order and all 491 gate authority bytes unchanged, and make identity6 prove projection ambiguity non-vacuously. No optimizer or A5/A6/A7 producer semantic change.
+
+The R1 runtime upload failure is post-runtime orchestration only: the caller used predecessor output paths after the 491-process harness completed. Next TB caller must derive upload paths from its own `TURN_ID`; do not rerun R1 merely to recreate artifacts.
+
+Exact chain: `M6-CP2-CB1-VERIFIER-R3` → `M6-CP2-TB1-VERIFIER-R2-EXEC` (**491**) → mandatory `M6-CP2-TB1-VERIFIER-R2-REV`. Stable accounting remains **60 / 16 / 44**, debt 1. Full records: `Architecture_M6_CP2_TB1_Verifier_R1_Review_Record.md` and `Architecture_M6_CP2_CB1_Verifier_R3_Recovery_Code_Build_Plan.md`.
+
+---
+
 ## Resume-critical update — `M6-CP2-TB1-VERIFIER-R1-EXEC` COMPLETE / 462/491 / mandatory R1 Review next (2026-10-06)
 
 **Start mandatory independent `M6-CP2-TB1-VERIFIER-R1-REV` next. Do not repair source/tests, rebuild, or rerun the 491-process gate before Review.**
