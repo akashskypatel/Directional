@@ -1,3 +1,7 @@
+## 2026-10-06 — Current authority after `M6-CP2-CLOSE-REV`
+
+M6 CP2 is **CLOSED / ACCEPTED**. Independent Close Review promotes `11391685901 / 5ce3132ec01748eff5b15f82be07a1abe2bd1af6`; TB2 is independently re-derived at **491/491**, exact-one 491/491, zero skips/RED/benchmarks, result manifest 1005/1005 and immutable postflight. RA-29d OBS-01/02/03 are recovery-proved and OBS-04 is closed by `M6_CP2_Closure_Record.md`. Accounting remains **60 / 16 / 44**, debt 1. Exact next: `M6-DEFN-R5`.
+
 ## 2026-10-06 — Current authority after `M6-CP2-TB2-COVERAGE-EXEC`
 
 M6 CP2 remains **ACTIVE pending mandatory Close Review**. Coverage candidate `11391685901 / 5ce3132ec01748eff5b15f82be07a1abe2bd1af6` is mechanically GREEN at **491/491** in run/job `37419256039 / 112124748161` (30 + 12 + 449, exact-one 491/491, zero skips, benchmark 0, immutable postflight). Result/log are `11393198123 / 11393312986`; no regression candidate, accounting **60 / 16 / 44**, debt 1. Exact next: `M6-CP2-CLOSE-REV`; `M6-DEFN-R5` remains held until accepted closure.

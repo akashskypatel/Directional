@@ -1,3 +1,10 @@
+## 2026-10-06 — M6 CP2 CLOSED / exact next `M6-DEFN-R5`
+
+- Independent `M6-CP2-CLOSE-REV` accepts and promotes `11391685901 / 5ce3132e...`; fresh immutable gate **491/491**.
+- RA-29d OBS-01/02/03 are recovery-proved; the dedicated `M6_CP2_Closure_Record.md` closes OBS-04.
+- No regression repricing: **60 / 16 / 44**, debt 1.
+- **Exact next:** `M6-DEFN-R5`; CP3-entry/direct-production obligations remain later-owned.
+
 ## 2026-10-06 — M6 CP2 coverage runtime GREEN / mandatory Close Review next
 
 - `M6-CP2-TB2-COVERAGE-EXEC` is COMPLETE: immutable `11391685901 / 5ce3132e...` produced **491/491** (30 + 12 + 449), exact-one 491/491, zero skips, benchmark 0, clean immutable postflight.

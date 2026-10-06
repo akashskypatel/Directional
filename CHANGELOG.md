@@ -1,3 +1,11 @@
+## 2026-10-06 — `M6-CP2-CLOSE-REV` — CP2 CLOSED / ACCEPTED
+
+- Independently re-derived TB2 at **491/491** with exact-one selection, zero skips/RED/benchmarks, result manifest 1005/1005 and immutable postflight.
+- Accepted RA-29d recovery: exact A7 vertex binding, required negative coverage, ten-row §6.3 map, and dead-code/predicate cleanup.
+- Added `M6_CP2_Closure_Record.md`; RA-29d OBS-01..04 are closed/recovery-proved.
+- Promoted `11391685901 / 5ce3132e...` as reviewed CP2 authority. Accounting remains **60 / 16 / 44**, debt 1.
+- Exact next: `M6-DEFN-R5`.
+
 ## 2026-10-06 — `M6-CP2-TB1-VERIFIER-R2-REV` review-agent addendum — CP2 reopened
 
 - The verifier build that passed all 491 tests stays approved. But checkpoint CP2 is reopened, because two things are missing:

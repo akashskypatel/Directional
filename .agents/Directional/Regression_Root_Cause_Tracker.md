@@ -1,3 +1,7 @@
+## 2026-10-06 — `M6-CP2-CLOSE-REV` — **CP2 CLOSED / +0 / 60/16/44 / debt 1**
+
+Independent Close Review re-derived TB2 at **491/491** and accepts RA-29d recovery. `M6-CP2-R2-REV-OBS-01` (A7 vertex binding), `-OBS-02` (negative coverage) and `-OBS-03` (dead diagnostics) are **CLOSED / RECOVERY PROVED / NON-STABLE**. `-OBS-04` is closed by the dedicated `M6_CP2_Closure_Record.md`. No new stable event/category/recurrence or debt item is created. Reviewed CP2 authority is `11391685901 / 5ce3132e...`. Exact next: `M6-DEFN-R5`.
+
 ## 2026-10-06 — `M6-CP2-TB2-COVERAGE-EXEC` — **491/491 GREEN / +0 / 60/16/44 / debt 1**
 
 Immutable artifact-only runtime `37419256039 / 112124748161` consumed `11391685901 / 5ce3132e...`: focused30 **30/30**, CP2-focused12 **12/12**, selector449 **449/449**, aggregate **491/491**, exact-one 491/491, zero skips, benchmark 0, and immutable postflight PASS. Result/log evidence is `11393198123 / 11393312986`; result self-manifest is **1005/1005**.

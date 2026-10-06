@@ -1,3 +1,13 @@
+## Resume-critical update — `M6-CP2-CLOSE-REV` ACCEPTED / CP2 CLOSED / exact next `M6-DEFN-R5` (2026-10-06)
+
+**Start `M6-DEFN-R5` next. Do not reopen or rerun CP2 absent new authority.**
+
+Independent Close Review promotes `11391685901 / 5ce3132e...` as reviewed CP2 authority and closes M6-CP2. TB2 was independently re-derived at **491/491** with exact-one 491/491, zero skips/RED/benchmarks, 1005/1005 result manifest and immutable package/source/execution-view postflight. RA-29d OBS-01/02/03 are recovery-proved; OBS-04 closes through the new `M6_CP2_Closure_Record.md`. Stable accounting remains **60 / 16 / 44**, debt 1. Full review: `Architecture_M6_CP2_Close_Review_Record.md`.
+
+Exact successor is `M6-DEFN-R5`, which owns the carried CP3 definition/permutation/direct-production entry obligations.
+
+---
+
 ## Resume-critical update — `M6-CP2-TB2-COVERAGE-EXEC` COMPLETE / 491/491 / exact next `M6-CP2-CLOSE-REV` (2026-10-06)
 
 **Start mandatory independent `M6-CP2-CLOSE-REV` next. Do not rebuild, rerun the 491-process gate, repair source/tests, or begin `M6-DEFN-R5` before Close Review.**

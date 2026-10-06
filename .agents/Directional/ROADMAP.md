@@ -1,3 +1,13 @@
+## 2026-10-06 — M6 CP2 CLOSED / `M6-DEFN-R5` next
+
+`M6-CP2-CLOSE-REV` independently re-derived the fresh 491/491 gate, accepted RA-29d recovery, promoted `11391685901 / 5ce3132e...`, and wrote `M6_CP2_Closure_Record.md`. M6 CP2 is **CLOSED / ACCEPTED**. Stable accounting remains **60 / 16 / 44**, debt 1. **Exact next: `M6-DEFN-R5`**.
+
+| Checkpoint | State | Exact next / gate |
+|---|---|---|
+| M6 CP1 | **CLOSED / ACCEPTED, mechanism-only** | `M6_CP1_Closure_Record.md` |
+| M6 CP2 | **CLOSED / ACCEPTED** | `M6_CP2_Closure_Record.md`; reviewed `11391685901 / 5ce3132e...`, 491/491 |
+| `M6-DEFN-R5` | **EXACT NEXT** | CP3-entry definition/permutation gate |
+
 ## 2026-10-06 — M6 CP2 coverage execution mechanically green
 
 `M6-CP2-TB2-COVERAGE-EXEC` completed the frozen **491**-process gate at **491/491** on `11391685901 / 5ce3132e...`, with exact-one selection, zero skips, benchmark 0 and immutable postflight. No regression repricing: **60 / 16 / 44**, debt 1. **Exact next: `M6-CP2-CLOSE-REV`**; only accepted closure may route to `M6-DEFN-R5`.

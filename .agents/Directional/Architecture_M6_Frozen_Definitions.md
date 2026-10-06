@@ -1,6 +1,6 @@
 # M6 Frozen Definitions — Occurrence, Quotient, Embedding, Independent Verification
 
-**Status:** FROZEN / **M6-CP1 CLOSED / ACCEPTED, mechanism-only**; **M6-CP2 ACTIVE**. R3 verifier `11385836615 / c64baacd6c767c4ba053b6963651c0aa6eceed20` (491/491) is **promoted** as reviewed runtime authority, but CP2 closure is **revoked** by RA-29d (A7 vertex binding unimplemented; negative coverage of the §6.2/§6.3 exit missing; dead codes). `G4-B002` debt open (debt 1). **EXACT NEXT = `M6-CP2-CB2-COVERAGE`** → TB (491) → `M6-CP2-CLOSE-REV`. RA-1 – RA-29d normative as annotated.
+**Status:** FROZEN / **M6-CP1 CLOSED / ACCEPTED, mechanism-only**; **M6-CP2 CLOSED / ACCEPTED** by `M6-CP2-CLOSE-REV`. Reviewed CP2 verifier/runtime authority is `11391685901 / 5ce3132ec01748eff5b15f82be07a1abe2bd1af6`, fresh gate **491/491**. RA-29d OBS-01/02/03 are recovery-proved and the required `M6_CP2_Closure_Record.md` is present. `G4-B002` debt remains open (debt 1). **EXACT NEXT = `M6-DEFN-R5`**. RA-1 – RA-29d remain normative as annotated.
 **Date:** 2026-09-25
 **Definition authority:** this record is the normative M6 contract for A5 occurrence creation, A6 quotient construction/materialization, A7 source-attached geometry embedding, and the M6 structural portion of A8 independent verification. It refines `DESIGN.md` §14 M6 without changing accepted M5 producer semantics or pulling M7 disposition/degradation work forward.
 

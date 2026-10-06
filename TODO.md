@@ -1,3 +1,11 @@
+## Current — `M6-CP2-CLOSE-REV` ACCEPTED / CP2 CLOSED / exact next `M6-DEFN-R5` (2026-10-06)
+
+- [x] Independently re-derive TB2: 491/491, exact-one 491/491, zero skips/RED/benchmarks, 1005/1005 result manifest, immutable postflight.
+- [x] Close RA-29d OBS-01/02/03 as recovery-proved.
+- [x] Write `Architecture_M6_CP2_Close_Review_Record.md` and `M6_CP2_Closure_Record.md`; OBS-04 closed.
+- [x] Promote `11391685901 / 5ce3132e...` as reviewed CP2 verifier/runtime authority; accounting remains **60 / 16 / 44**, debt 1.
+- [ ] **Exact next: `M6-DEFN-R5`** — carried CP3 definition/permutation/direct-production entry obligations.
+
 ## Current — `M6-CP2-TB2-COVERAGE-EXEC` COMPLETE / 491/491 / mandatory `M6-CP2-CLOSE-REV` next (2026-10-06)
 
 - [x] Consume immutable `11391685901 / 5ce3132e...` without rebuild, repair, configure, relink, generated discovery, or selector/test/fixture mutation.
