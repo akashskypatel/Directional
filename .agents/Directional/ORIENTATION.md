@@ -692,12 +692,10 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M6-CP2-CB2-COVERAGE` — EXACT NEXT (Code + Build; RA-29d).**
-   - G1 `a7:vertex-binding`: representative ∈ members; `sourcePoint` = the representative's point; `position` = `sourcePoint.position`; `support` = `publishedSupport`.
-   - G2: remove `UncertifiedAuthoritySubstitution`; `BoundaryOrEulerMismatch` at `a6:components` / `a6:boundary-loops` / `a6:euler`.
-   - G3: exact code+site negative witnesses in identities 2–5; identity 5 a table-driven §6.3 map.
-   - G4: coverage table in the CB report.
-   - Gate 491, no new identities → TB → `M6-CP2-CLOSE-REV` → `M6-DEFN-R5`.
+1. **`M6-DEFN-R5` — EXACT NEXT (bounded CP3-entry Definition; plan `Architecture_M6_DEFN_R5_CP3_Entry_Definition_Plan.md`).**
+   - CP1 and CP2 are CLOSED / ACCEPTED. Reviewed runtime `11391685901 / 5ce3132e...` (491/491).
+   - Decide D1–D9: gauge items; A5 barrier census; class-wide optimizer/validation references; permutation falsifier; seam-collinear fixture and relation-kind-aware cross-sheet rule; CP3 exit evidence plan; CB sequencing and gate.
+   - Successor: mandatory `M6-DEFN-R5-REV`.
 1a. **`M6-DEFN-R5` — CP3-entry gate (not CP1).**
    - Periodic unequal-face-gauge witness, plus the coordinate / relation-gauge rule.
    - HardRail cross-region branch certification.
