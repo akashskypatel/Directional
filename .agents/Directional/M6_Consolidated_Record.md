@@ -1,3 +1,9 @@
+## 2026-10-06 — M6 CP2 verifier R1 runtime: 462/491, Review required
+
+Immutable R2 candidate `11382000465 / 9c8478aec40bf07144ca7372c2aa58293cd42f5e` completed the full **491**-process artifact-only gate in run/job `37393554373 / 112044082007`: focused30 **26/30**, CP2-focused12 **11/12**, selector449 **425/449**, aggregate **462/491**, exact-one 491/491, zero skips, benchmark 0. The dominant visible rejection is `MissingPublishedAuthority:a7:a5-relation-step`; selector144 separately reports `SourceIncidenceMismatch:a0:component-adjacency`; focused12 ordinal6's strengthened baseline does not verify.
+
+The harness exited 0 after immutable postflight. The caller then failed its two upload steps because they still referenced the predecessor turn's output paths, so no R1 runtime result/log artifact exists. Runtime must not be repeated merely to recreate evidence. Mailbox and GitHub job log remain authoritative for the executed gate. Candidate is unpromoted; stable accounting remains **60 / 16 / 44**, debt 1. Exact next is mandatory `M6-CP2-TB1-VERIFIER-R1-REV`.
+
 ## 2026-10-06 — M6 CP2 verifier R2 compile/package closure
 
 `M6-CP2-CB1-VERIFIER-R2` is COMPLETE at semantic source `9c8478aec40bf07144ca7372c2aa58293cd42f5e`. RA-29/RA-29a recovery added the missing A0 component-adjacency check, shared source-support recomputation, relation-class and exact selected-forest/path binding, linear-time topology inventories, content-owning verified products, carried verification report, verified-token counter reads, and non-vacuous repairs for the existing CP2 focused identities without changing optimizer source or gate ordering.
