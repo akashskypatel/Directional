@@ -1,0 +1,6 @@
+Purpose: execute immutable M6-CP2-TB2-COVERAGE-EXEC gate
+Candidate artifact: 11391685901
+Semantic source: 5ce3132ec01748eff5b15f82be07a1abe2bd1af6
+Caller install: a3651eff0a60ada062ec8336e1c089f4a89d955b
+Processes: focused30 + focused12 + selector449 = 491
+Retry: 0
