@@ -1,3 +1,5 @@
+> **SUPERSEDED / TURN COMPLETE (2026-10-06):** The immutable gate finished 491/491 in run/job `37419256039 / 112124748161`. Durable closeout authority is `Architecture_M6_CP2_TB2_Coverage_Artifact_Only_Test_Benchmark_Report.md` plus `Future_Chat_Session_Handoff.md`. Exact next: `M6-CP2-CLOSE-REV`. The operational IN_PROGRESS details below are retained only as historical checkpoint evidence.
+
 # M6-CP2-TB2-COVERAGE-EXEC WIP handoff
 
 Turn remains **IN_PROGRESS** because the immutable artifact-only runtime is still executing.
