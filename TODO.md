@@ -1,3 +1,12 @@
+## Current — `M6-CP2-CB1-VERIFIER-R2` COMPLETE / exact next `M6-CP2-TB1-VERIFIER-R1-EXEC` (2026-10-06)
+
+- [x] Apply RA-29 + RA-29a verifier recovery at semantic source `9c8478aec40bf07144ca7372c2aa58293cd42f5e`.
+- [x] Compile/package all eight standard GMP/GMPXX targets: run/job `37391389044 / 112037085233`, result `11382000465`, manifest **28/28**, `runtimeExecution=false`.
+- [x] Preserve focused30 / CP2-focused12 / selector449 / routing449 bytes; no optimizer source change; stable accounting **60 / 16 / 44**, debt 1.
+- [x] Retire consumed Drive patches and temporary R2 callers/triggers.
+- [ ] **Exact next: `M6-CP2-TB1-VERIFIER-R1-EXEC`** — immutable package `11382000465 / 9c8478ae...`, exactly **491** fresh exact-filter processes, no rebuild/repair.
+- [ ] Mandatory `M6-CP2-TB1-VERIFIER-R1-REV`; candidate stays unpromoted until Review.
+
 ## Current — `M6-CP2-TB1-VERIFIER-REV` review-agent addendum / RA-29a / exact next `M6-CP2-CB1-VERIFIER-R2` (2026-10-05)
 
 - [x] Re-derive TB1: 1005/1005, frozen order, 488/491, all raw hashes match, REDs 2/6/7; candidate `265c8fbb` == HEAD.
