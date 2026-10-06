@@ -1,3 +1,0 @@
-Purpose: exact source snapshot for M6-CP2-CB2-COVERAGE
-Retry: 0
-Semantic source before trigger: 3732cb734363da6d2fe2d9dd4778bd23d6bcb82a
