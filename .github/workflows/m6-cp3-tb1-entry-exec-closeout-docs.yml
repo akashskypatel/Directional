@@ -22,7 +22,7 @@ jobs:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
       file_id: 13D1U8cZcYZwIeeheP6smFcmU7jjpq_NF
-      patch_sha256: '564e2db9c839540d9b69fa53175b2ef181fd8fd903eac80f01e47dd5d5713744'
+      patch_sha256: '7f28bf8f513f50f95dd7fee95683db2bf7d9f7b1a565d417fec5d2e7db2eda93'
       base_sha: d4afd48a97d3f686ccec34e92d6cde940d95fd50
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: 'M6-CP3-TB1-ENTRY-EXEC: record artifact-only RED evidence'
