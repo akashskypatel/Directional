@@ -1,3 +1,11 @@
+## Current — `M6-CP2-TB1-VERIFIER-R1-REV` review-agent addendum / RA-29c / exact next `M6-CP2-CB1-VERIFIER-R3` (2026-10-06)
+
+- [x] Re-derive R1 from job log `112044082007`: 491 RUN in frozen order; 462/491; 29 REDs; signatures 19/1/9; clustering confirmed.
+- [x] Confirm R1-REV-01's diagnosis and R1-REV-02 (my RA-29a §4 error).
+- [x] Replace the RA-29b §1 fallback and §3 ambiguity witness with the exact three-hop binding (RA-29c); behavioral ownership check; lesson 204.
+- [ ] **Exact next `M6-CP2-CB1-VERIFIER-R3`** (compile/package only).
+- [ ] TB1-R2 **491** (`TURN_ID`-derived upload paths) → mandatory R2 Review.
+
 ## Current — `M6-CP2-TB1-VERIFIER-R1-REV` / RA-29b / exact next R3 (2026-10-06)
 
 - [x] Independently accept R1 mechanics: **462/491**, exact-one 491/491, zero skips, benchmark 0.

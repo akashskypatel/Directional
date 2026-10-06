@@ -1,3 +1,15 @@
+## 2026-10-06 — `M6-CP2-TB1-VERIFIER-R1-REV` review-agent addendum — RA-29c — **+0 / 60/16/44 / debt 1**
+
+- R1's 462/491 is re-derived independently from job log `112044082007`. The 29 REDs split into 19 `a7:a5-relation-step`, 1 `a0:component-adjacency` and 9 downstream reachability failures. All are CP2 verifier false rejections, so they are non-stable: no producer regression, and the reviewed runtime is unchanged.
+- **Root causes are owned review-agent specification errors:**
+  - RA-29a §4: component labels assumed equal to connectivity (selector 144);
+  - RA-29a §3: a positional reverse lookup that R2 implemented as a uniqueness requirement.
+- **`M6-CP2-TB1-R1-REV-OBS-01`:** RA-29b §1's prescribed fallback would itself falsely reject inverse canonical values. It is replaced by the exact three-hop binding (RA-29c).
+- **`-OBS-02`:** R2's O(V·P) path scan.
+- **`-OBS-03`:** the self-declared ownership trait.
+
+**Stable accounting: `60 events / 16 categories / 44 recurrences`, debt 1.**
+
 ## 2026-10-06 — `M6-CP2-TB1-VERIFIER-R1-REV` — **REJECTED / RA-29b / +0 / 60/16/44 / debt 1**
 
 - R1 runtime is mechanically valid at **462/491**; candidate `11382000465 / 9c8478ae...` remains unpromoted.

@@ -1,6 +1,6 @@
 ## 2026-10-06 — M6 CP2 verifier R1 Review: RA-29b
 
-Independent Review rejects candidate `11382000465 / 9c8478aec40bf07144ca7372c2aa58293cd42f5e` after the R1 **462/491** gate. Exact source snapshot `37395710753 / 11383307041` shows two bounded causes: (1) R2 reverses A7's intentionally lossy/deduplicated legacy path projection by demanding a unique A6 target, omitting RA-29a's same-owner-value ambiguity fallback; (2) RA-29a's raw-connectivity component partition rule contradicts accepted ingress `SourceComponentId` semantics and is withdrawn. The first explains the direct `a7:a5-relation-step` and downstream RED cluster; the second explains selector449 ordinal144's `a0:component-adjacency` RED.
+**Current authority after the `M6-CP2-TB1-VERIFIER-R1-REV` addendum (2026-10-06):** M6 CP1 CLOSED / ACCEPTED, mechanism-only; CP2 verifier candidates R1/R2 rejected; RA-29c (§55); reviewed runtime `11330703256 / 3f40f04a...` (479/479). Accounting **60 / 16 / 44**, debt 1. Exact next: `M6-CP2-CB1-VERIFIER-R3` → TB1-R2 (491) → Review.
 
 RA-29b freezes `M6-CP2-CB1-VERIFIER-R3`: implement all-candidate A7 binding/fallback, remove only the invalid component rule/sub-witness, keep focused12 names/order and the 491 gate bytes frozen, and do not change optimizer or A5/A6/A7 producer semantics. Then run immutable `M6-CP2-TB1-VERIFIER-R2-EXEC` at 491 and mandatory R2 Review. Stable accounting remains **60 / 16 / 44**, debt 1.
 
@@ -549,6 +549,22 @@ The review agent re-derives TB1 at 488/491, with all raw hashes matching. It con
 - an address-bound `VerifiedSurfaceProducts`.
 
 Plus precision for identities 6 and 7. Gate 491. Lesson 203.
+
+## 55. `M6-CP2-TB1-VERIFIER-R1-REV` review-agent addendum — RA-29c
+
+R1 (462/491) is re-derived from the job log, and the clustering is confirmed:
+- 19 failures at `a7:a5-relation-step`;
+- 1 at `a0:component-adjacency` (selector 144);
+- 9 downstream reachability failures.
+
+Both causes trace to RA-29a §3/§4 (review-agent errors, owned).
+
+RA-29b's same-owner-ID fallback would falsely reject. A5 inverts `canonicalRelationValue` on non-canonical storage, so same-ID relations can carry inverse values (nonzero-Z4 torus). **RA-29c** binds exactly in three hops, mirroring the producer construction chain:
+- A5 `canonicalSelectedStep.appliedTransport == canonicalRelationValue`;
+- each A6 path's `legacyProjection` equals the oriented step subsequence along its own `orderedRelations`;
+- A7 `selectedRelationPaths` equals the sorted-unique set of the class's A6 projections.
+
+This needs no ambiguity witness and is O(P log P). Identity 11's ownership check becomes behavioral. Lesson 204.
 
 ## Folded document index
 

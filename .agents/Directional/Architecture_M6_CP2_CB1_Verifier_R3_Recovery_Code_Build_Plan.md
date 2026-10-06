@@ -1,5 +1,17 @@
 # Architecture M6 CP2 CB1 Verifier R3 Recovery Code + Build Plan
 
+> **Review-agent block — `M6-CP2-TB1-VERIFIER-R1-REV` addendum (RA-29c), 2026-10-06. Binding; governs this plan where they conflict.**
+> - **R3.1 is REPLACED.** Do not implement the candidate enumeration, the single/multiple-candidate branches, or the same-owner-ID fallback (item 4 is void). That fallback falsely rejects relations whose `canonicalRelationValue`s are legitimately inverse (A5 inverts on non-canonical storage, `RemeshPipeline.cpp:4917-4921`), for example on the nonzero-Z4 torus rows.
+> - **Implement the exact three-hop binding instead** (RA-29c §2–§4):
+>   1. `a5:selected-step-value` — `canonicalSelectedStep.appliedTransport == canonicalRelationValue`, with direction `Forward`;
+>   2. `a6:legacy-projection` — each A6 path's `legacyProjection` equals the oriented `selectedRelationStep` subsequence along its own `orderedRelations`, plus `composedTransport` and the start/end fields;
+>   3. `a7:selected-paths` — each class's A7 `selectedRelationPaths` == the sorted-unique set of its A6 `legacyProjection`s.
+>
+>   Group by class; O(P log P). Remove R2's `a7:a5-relation-step` reverse lookup and its per-A7-path scan of all A6 paths.
+> - **Identity 6:** **no ambiguity witness** (that requirement is void). Use tampers (a) A7 step → `a7:selected-paths`, (b) A6 legacy step → `a6:legacy-projection` and (c) A5 `canonicalRelationValue`-only → `a5:selected-step-value`, plus the existing baseline, transport and path-structure tampers.
+> - **Identity 11:** replace the self-declared `owns_products` static_assert with a behavioral address-inequality plus record-equality check, and delete the constant.
+> - R3.2 (component labels), the static checks, the stop rules, the 491 gate and the TB `TURN_ID`-derived upload paths are unchanged. **Add stops:** Hop 1 or 2 rejects an accepted row; Hop 2 needs more than §6.2 inversion and composition.
+
 **Turn:** `M6-CP2-CB1-VERIFIER-R3`
 **Authority:** `M6-CP2-TB1-VERIFIER-R1-REV` / RA-29b
 **Boundary:** Code + Build only; compile/package, no Directional runtime.

@@ -1,3 +1,14 @@
+## Currency — `M6-CP2-TB1-VERIFIER-R1-REV` review-agent addendum: RA-29c (2026-10-06 UTC)
+
+- R2 is rejected at 462/491 (re-derived from the job log).
+- Both failure classes came from my RA-29a §3/§4.
+- RA-29b's same-owner-ID fallback is replaced by an exact three-hop binding (A5 step value → A6 legacy projection → A7 path set). The fallback falsely rejects inverse canonical values.
+- The ambiguity witness is dropped. The ownership trait becomes behavioral.
+- Gate 491.
+
+Accounting **60 / 16 / 44**, debt 1.
+
+### Superseded currency note
 ## Currency — `M6-CP2-TB1-VERIFIER-REV` review-agent addendum: RA-29a (2026-10-05 UTC)
 
 - The rejection is confirmed (488/491; all raw hashes match).
@@ -450,9 +461,9 @@ every review record must answer. This rule was itself deleted by a consolidation
 2026-09-11; the `review_check.py` durable gate did not catch it because that check counts the marker word, not
 the content beneath it.
 
- > **Current milestone authority (2026-10-05, after `M6-CP2-CB1-VERIFIER-REV`):** M4 and M5 remain CLOSED / ACCEPTED. M6 CP1 is CLOSED / ACCEPTED, mechanism-only. M6 CP2 is ACTIVE: the Definition is accepted with RA-28a, amended by RA-28b. Reviewed runtime `11330703256 / 3f40f04a...` (479/479). Stable accounting **60/16/44**, debt 1. Exact next is `M6-CP2-CB1-VERIFIER-R1` (gate 491).
+ > **Current milestone authority (2026-10-06, after the `M6-CP2-TB1-VERIFIER-R1-REV` addendum):** M4 and M5 remain CLOSED / ACCEPTED. M6 CP1 is CLOSED / ACCEPTED, mechanism-only. M6 CP2 is ACTIVE: the Definition is accepted, and two verifier candidates are rejected (488/491 and 462/491). Reviewed runtime `11330703256 / 3f40f04a...` (479/479). Stable accounting **60/16/44**, debt 1. Exact next is `M6-CP2-CB1-VERIFIER-R3` (gate 491).
 
-**Currency.** `M6-CP2-TB1-VERIFIER-REV` review-agent addendum (Review), 2026-10-05 UTC
+**Currency.** `M6-CP2-TB1-VERIFIER-R1-REV` review-agent addendum (Review), 2026-10-06 UTC
 
 **Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` §16.3 is the active same-region nonzero-Z4 contract. `PeriodicRelationId` remains carrier-content identity; relation rotation is the gauge-adjusted quotient `Q`, action/transport is relation value, and canonical storage may invert representation only after semantic Forward -> Reverse authority is fixed. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 
@@ -636,15 +647,13 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M6-CP2-CB1-VERIFIER-R2` — EXACT NEXT (Code + Build; RA-29 + RA-29a).**
-   - Repair CAND-01/02/03 with pre-verifier non-vacuity assertions. Identity 7 changes only `classedCells` corners.
-   - Carry the exact A8 report on the successful pipeline result (REV-OBS-01).
-   - Identity 8: inequality assertion only (REV-OBS-02 withdrawn).
-   - Shared `SurfacePointSourceSupportResolver` point ↔ support equality for A5 **and A7** (REV-OBS-03).
-   - Forest-traversal path structure before composition (REV-OBS-04), with a ≥2-step witness.
-   - RA-29a: `a6:relation-class`; linear-time topology; exact A7 step citation; A0 component adjacency; content-bound token with counters read through it.
-   - **No `SurfaceMeshOptimizer` change; no A5 semantic expansion; no focused/selector/routing change.**
-   - Compile/package only → fresh R1 TB **491** → mandatory R1 Review.
+1. **`M6-CP2-CB1-VERIFIER-R3` — EXACT NEXT (Code + Build; RA-29b §2/§4/§5 + RA-29c).**
+   - Exact three-hop A7 relation-step binding: `a5:selected-step-value`, `a6:legacy-projection`, `a7:selected-paths`.
+   - Remove R2's reverse lookup and its O(V·P) scan.
+   - Remove the `a0:component-adjacency` rule and its identity-2 witness.
+   - Identity 6: three tampers, no ambiguity witness. Identity 11: behavioral ownership check.
+   - **No optimizer or producer change; no focused/selector/routing change.**
+   - Compile/package only → TB1-R2 **491** (upload paths from `TURN_ID`) → mandatory R2 Review.
 1a. **`M6-DEFN-R5` — CP3-entry gate (not CP1).**
    - Periodic unequal-face-gauge witness, plus the coordinate / relation-gauge rule.
    - HardRail cross-region branch certification.
@@ -683,6 +692,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 **A green behavioral test is not a contract proof when the oracle compares only a subset of the promised serialization — `M6-CP1-TB10-A5V-REV`, lesson 193.** Identity24 ran three real stage-valid fixtures but omitted multiple mesh/lineage/result fields, so those fields could drift without turning the test red. Enumerate the output type and prove every contract field is covered; a strong test name does not widen its assertions.
 
 **Moving validation into an earlier stage can still invert that stage's own pre-existing failure precedence — `M6-CP1-TB10-A5V-REV`, existing `VALIDATION_ORDER_SHADOWING`.** RA-19 explicitly required the moved helper after every old A5 check; placing it before `publish_records_for_validation` violates that boundary even when the full gate stays green.
+
+**Test a new verifier predicate against the gate's deliberate edge cases and the producer's own encoding — `M6-CP2-TB1-VERIFIER-R1-REV` addendum, lesson 204.** RA-29a §4 assumed component labels equal connectivity, but selector 144 deliberately violates that. RA-29a §3 and RA-29b §1 assumed a value is uniform per rail or periodic ID, but A5 inverts values on non-canonical storage. Bind through the producer's actual construction chain instead.
 
 **Check that every relation respects the partition, and keep verifier cost linear — `M6-CP2-TB1-VERIFIER-REV` addendum, lesson 203.** The verifier checked that each class is spanned by its own forest edges, but not that every forest edge is intra-class, so a split class passed. Its topology passes were also quadratic, inside a production stage.
 

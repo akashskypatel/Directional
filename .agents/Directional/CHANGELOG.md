@@ -1,3 +1,11 @@
+## 2026-10-06 — `M6-CP2-TB1-VERIFIER-R1-REV` review-agent addendum: RA-29c replaces the A7 fallback
+
+- **Re-derived independently from job log `112044082007`:** 491 RUN in frozen order; 462/491; 29 REDs (19 `a7:a5-relation-step`, 1 `a0:component-adjacency`, 9 downstream). R1-REV's clustering and R1-REV-02 are confirmed.
+- **Owned review-agent errors:** RA-29a §3 and §4 caused both failure classes.
+- **New:** RA-29b §1's same-owner-ID fallback would falsely reject inverse `canonicalRelationValue`s (A5 inverts on non-canonical storage).
+- **RA-29c:** an exact three-hop binding (`a5:selected-step-value`, `a6:legacy-projection`, `a7:selected-paths`); no ambiguity witness; O(P log P), which also removes R2's O(V·P) scan; behavioral ownership check in identity 11.
+- **Docs:** R3 plan block; lesson 204; handoff (top + live) / ORIENTATION / TODO / ROADMAP / tracker (+0) / consolidated §55. Gate 491; accounting 60 / 16 / 44.
+
 ## 2026-10-05 — `M6-CP2-TB1-VERIFIER-REV` review-agent addendum: RA-29a extends verifier recovery
 
 - **Re-derived independently:** result `11370598981` (`e9260e35`) and log `11370413984` (`a455e284`); 1005/1005; all three ledgers in frozen order; 488/491; all 491 raw hashes match; REDs at focused-12 ordinals 2, 6 and 7.

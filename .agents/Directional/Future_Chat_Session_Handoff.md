@@ -1,3 +1,28 @@
+## Resume-critical update — `M6-CP2-TB1-VERIFIER-R1-REV` review-agent addendum: RA-29c replaces the A7 fallback (2026-10-06)
+
+**Start `M6-CP2-CB1-VERIFIER-R3`** under RA-29b (§2, §4, §5) **+ RA-29c**. The top block of `Architecture_M6_CP2_CB1_Verifier_R3_Recovery_Code_Build_Plan.md` is binding.
+
+Confirmed by the review agent, independently from job log `112044082007`:
+- 491 RUN in frozen order; 462/491; 29 REDs (19 `a7:a5-relation-step`, 1 `a0:component-adjacency`, 9 downstream reachability);
+- R1-REV-01's diagnosis;
+- R1-REV-02 (my RA-29a §4 component rule was wrong).
+
+**Replaced:**
+- RA-29b's same-owner-ID fallback. It would falsely reject relations whose canonical values are legitimately inverse, since A5 inverts on non-canonical storage (`RemeshPipeline.cpp:4917-4921`): for example the nonzero-Z4 torus rows.
+- Its ambiguity-witness requirement.
+
+**Implement the exact three-hop binding:**
+1. `a5:selected-step-value`
+2. `a6:legacy-projection` (oriented `selectedRelationStep` subsequence along each A6 path's own `orderedRelations`)
+3. `a7:selected-paths` (A7 paths == the sorted-unique set of the class's A6 `legacyProjection`s)
+
+Also:
+- Identity 6 gets three tampers (A7 step / A6 legacy step / A5 `canonicalRelationValue`) and no ambiguity witness.
+- Identity 11 replaces the self-declared `owns_products` assert with an address-inequality check.
+- R3.2 (remove the component-adjacency rule and its witness) is unchanged.
+
+Gate **491**. Reviewed runtime `11330703256 / 3f40f04a...` (479/479). Accounting **60 / 16 / 44**, debt 1.
+
 ## Resume-critical update — `M6-CP2-TB1-VERIFIER-R1-REV` REJECTS R2 / RA-29b / exact next R3 (2026-10-06)
 
 **Start `M6-CP2-CB1-VERIFIER-R3` next. Do not rerun R1 package, promote `11382000465 / 9c8478ae...`, or begin `M6-DEFN-R5`.**
@@ -1121,35 +1146,34 @@ Review must independently re-open source/evidence and re-derive: split-square v0
 ## Current authority
 
 - **M6 CP1:** CLOSED / ACCEPTED, mechanism-only.
-- **M6 CP2 verifier first candidate:** `11365308211 / 265c8fbb...` is **REJECTED FOR BOUNDED RECOVERY / UNPROMOTED** by `M6-CP2-TB1-VERIFIER-REV`.
-- **TB1 mechanics:** focused30 30/30 + focused12 9/12 + selector449 449/449 = **488/491**; CAND-01..03 are false-rejection/non-stable.
-- **RA-29:** REV-OBS-01..04 plus the three witness repairs are the only authorized R2 scope.
-- Accepted reviewed runtime authority remains `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05` (479/479) until a replacement passes mandatory R1 Review.
-- Normative: RA-1 – RA-29a (RA-29a: `M6-CP2-TB1-VERIFIER-REV` review-agent addendum). Accounting **60 / 16 / 44**, debt **1**.
+- **M6 CP2:** Definition accepted (RA-28/28a/28b). Verifier candidates `11365308211 / 265c8fbb` (488/491) and `11382000465 / 9c8478ae` (462/491) are **REJECTED / UNPROMOTED**.
+- Reviewed runtime authority: `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05` (focused-30 + selector449 = **479/479**).
+- Normative: RA-1 – RA-29c.
+- Accounting **60 / 16 / 44**, debt **1**.
 
 ## Exact next turn
 
-**`M6-CP2-CB1-VERIFIER-R2` — Code + Build only under RA-29 + RA-29a.**
-- Repair identities 2, 6, 7 and 11 per RA-29. Identity 8 needs only the inequality assertion (RA-29a §6).
-- Add RA-29a §1–§5 and §7: `a6:relation-class`, linear-time topology, exact A7 step citation, A0 component adjacency, a content-bound token, shared-kernel coverage of A7.
-- No optimizer source change, A5 semantic expansion, selector/focused/routing change, or Directional runtime.
-- Compile/package green → fresh immutable `M6-CP2-TB1-VERIFIER-R1-EXEC` (**491**) → mandatory `M6-CP2-TB1-VERIFIER-R1-REV`.
+**`M6-CP2-CB1-VERIFIER-R3` — Code + Build only, under RA-29b (§2, §4, §5) + RA-29c.**
+- Exact three-hop A7 relation-step binding (`a5:selected-step-value`, `a6:legacy-projection`, `a7:selected-paths`); remove R2's reverse lookup and its O(V·P) scan.
+- Remove the `a0:component-adjacency` raw-connectivity rule and the identity-2 component-merge witness.
+- Identity 6: three tampers and no ambiguity witness. Identity 11: behavioral ownership check.
+- No optimizer, producer, focused/selector/routing change; no runtime.
+- Compile/package green → `M6-CP2-TB1-VERIFIER-R2-EXEC` (**491**; upload paths derived from the harness `TURN_ID`) → mandatory `M6-CP2-TB1-VERIFIER-R2-REV`.
 
 ## Completed predecessor turns (reference only)
 
-- `M6-CP2-CB1-VERIFIER-R1` — verifier implementation compile/package GREEN; candidate `11365308211 / 265c8fbb...`; runtime-free.
-- `M6-CP2-CB1-VERIFIER-REV` — RA-28a §7 stop discharged; RA-28b.
-- `M6-CP2-CB1-VERIFIER` — BLOCKED stop report; no source applied.
-- `M6-CP2-DEFN-REV` (RA-28a), `M6-CP2-DEFN` (RA-28), `M6-CP1-CLOSE-REV` (CP1 closed).
+- `M6-CP2-TB1-VERIFIER-R1-REV` (+ addendum §T, RA-29c) — R2 candidate rejected; RA-29b, RA-29c.
+- `M6-CP2-TB1-VERIFIER-R1-EXEC` — 462/491; result/log artifacts missing (upload-path defect); the job log is the evidence.
+- `M6-CP2-CB1-VERIFIER-R2` — candidate `11382000465 / 9c8478ae`.
+- `M6-CP2-TB1-VERIFIER-REV` (+ addendum §S, RA-29a), `M6-CP2-CB1-VERIFIER-R1`, and earlier CP2 turns.
 
 ## Current files
 
-- `.agents/Directional/Architecture_M6_CP2_TB1_Verifier_Artifact_Only_Test_Benchmark_Report.md` — current runtime-authority report for the rejected first candidate.
-- `.agents/Directional/Architecture_M6_CP2_TB1_Verifier_Review_Record.md` — current Review/adjudication authority.
-- `.agents/Directional/Architecture_M6_CP2_CB1_Verifier_R2_Recovery_Code_Build_Plan.md` — exactly one next-turn plan.
-- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — RA-28/RA-28a/RA-28b/RA-29/RA-29a.
-- `.agents/Directional/M6_Consolidated_Record.md` — folded CP2 historical record and filename resolver.
-- `.agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt`, focused30, selector449 / routing449 — frozen gate authorities.
+- `.agents/Directional/Architecture_M6_CP2_CB1_Verifier_R3_Recovery_Code_Build_Plan.md` — exact next plan (RA-29c block governs).
+- `.agents/Directional/Architecture_M6_CP2_TB1_Verifier_R1_Review_Record.md` — Review authority, with addendum §T.
+- `.agents/Directional/Architecture_M6_CP2_TB1_Verifier_R1_Artifact_Only_Test_Benchmark_Report.md` — R1 runtime evidence (job log).
+- `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — RA-28 – RA-29c.
+- `.agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt`, focused-30, selector449 / routing449 — frozen gate.
 
 ## Context Load Plan
 

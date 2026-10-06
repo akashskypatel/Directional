@@ -1,6 +1,6 @@
 # M6 Frozen Definitions — Occurrence, Quotient, Embedding, Independent Verification
 
-**Status:** FROZEN / **M6-CP1 CLOSED / ACCEPTED, mechanism-only**; CP2 Definition accepted (RA-28/28a/28b); first verifier candidate `11365308211 / 265c8fbb...` REJECTED (RA-29) and **RA-29a** added by the `M6-CP2-TB1-VERIFIER-REV` review-agent addendum; reviewed runtime `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05` (479/479); `G4-B002` debt open (debt 1); **EXACT NEXT = `M6-CP2-CB1-VERIFIER-R2`** (gate 491); RA-1 – RA-29a normative as annotated.
+**Status:** FROZEN / **M6-CP1 CLOSED / ACCEPTED, mechanism-only**; CP2 Definition accepted (RA-28/28a/28b); verifier candidates R1 (`265c8fbb`) and R2 (`9c8478ae`) REJECTED (RA-29, RA-29a, RA-29b); **RA-29c** (exact three-hop A7 relation-step binding replaces the RA-29b §1 fallback and §3 ambiguity witness); reviewed runtime `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05` (479/479); `G4-B002` debt open (debt 1); **EXACT NEXT = `M6-CP2-CB1-VERIFIER-R3`** (gate 491); RA-1 – RA-29c normative as annotated.
 **Date:** 2026-09-25
 **Definition authority:** this record is the normative M6 contract for A5 occurrence creation, A6 quotient construction/materialization, A7 source-attached geometry embedding, and the M6 structural portion of A8 independent verification. It refines `DESIGN.md` §14 M6 without changing accepted M5 producer semantics or pulling M7 disposition/degradation work forward.
 
@@ -1167,3 +1167,30 @@ R1 runtime (`37393554373 / 112044082007`) rejects the R2 candidate at **462/491*
 5. No optimizer change, no A5/A6/A7 producer semantic change, no focused30/focused12/selector/routing order change, and no gate reduction.
 
 Successor chain: `M6-CP2-CB1-VERIFIER-R3` → `M6-CP2-TB1-VERIFIER-R2-EXEC` (**491**) → mandatory `M6-CP2-TB1-VERIFIER-R2-REV`. Stable accounting remains **60 / 16 / 44**, debt 1.
+
+## RA-29c — exact three-hop A7 relation-step binding (normative, 2026-10-06, `M6-CP2-TB1-VERIFIER-R1-REV` review-agent addendum; replaces RA-29b §1 and §3 and RA-29a §3)
+
+Rationale: `Architecture_M6_CP2_TB1_Verifier_R1_Review_Record.md`, addendum §T3–§T5. RA-29b §2, §4 and §5 stand.
+
+1. **Withdrawn.**
+   - RA-29a §3's positional reverse lookup;
+   - RA-29b §1's same-owner-ID fallback. It falsely rejects whenever relations sharing a rail or periodic ID carry inverse `canonicalRelationValue`s, which A5 produces whenever storage order is not canonical (`RemeshPipeline.cpp:4917-4921`);
+   - RA-29b §3's produced ambiguity witness.
+
+   R2's `a7:a5-relation-step` reverse lookup, including its per-A7-path scan of all A6 paths, is removed.
+2. **Hop 1, A5 internal** (identity 6). For every A5 relation with `canonicalSelectedStep`: `canonicalRelationValue` is present, `step.appliedTransport == canonicalRelationValue`, and `step.direction == Forward` (A5 constructs exactly this, `:4936-4941`). Failure: `CertificatePayloadMismatch`, site `a5:selected-step-value`. This check runs in the A5 partition.
+3. **Hop 2, A6 legacy projection** (identity 6). For every A6 `QuotientSelectedPathCertificate`, using only its own `orderedRelations` / `traversalOrientations` and the named certificates' `selectedRelationStep`:
+   - `legacyProjection.has_value()` ⇔ the oriented step subsequence is non-empty;
+   - `orderedSteps` equals that subsequence. A `Reverse` traversal inverts a step: invert `appliedTransport`, swap from/to chart and chart component, flip `direction`;
+   - `composedTransport` is the composition of the steps' `appliedTransport`;
+   - start/end chart and chart component come from the first/last step.
+
+   Failure: `CertificatePayloadMismatch`, site `a6:legacy-projection`. A6's own publication construction is matched (`:5500-5548`, `:5935-5960`) using only §6.2 named-certificate inversion and composition.
+4. **Hop 3, A7 projection** (identity 6). For every class: `vertex.selectedRelationPaths` equals the sorted, deduplicated list of the class's present `legacyProjection`s (A7 construction, `:6962-6970`). Failure: `CertificatePayloadMismatch`, site `a7:selected-paths`. Paths are grouped by class once, so the binding is O(P log P).
+5. **Identity 6 witnesses** (same fixture as the ≥2-step path tamper). Keep the clean baseline, the `relationTransport` tamper and the path-structure tamper. Add (a) an A7 step `appliedTransport` tamper → `a7:selected-paths`, (b) an A6 `legacyProjection` step tamper → `a6:legacy-projection`, and (c) a `canonicalRelationValue`-only A5 tamper → `a5:selected-step-value`. Each asserts that its tamper changed the record before the verifier is called. **No ambiguity witness.**
+6. **Identity 11.** Replace `static_assert(VerifiedSurfaceProducts::owns_products)`, which is self-declared and vacuous, with a behavioral check: the token's product addresses differ from the originals, and the token's record views equal the originals'. Remove the `owns_products` constant.
+7. **Stop rules.**
+   - Hop 1 or Hop 2 rejects any accepted focused-30 or selector449 row → stop for Review. Do not weaken the check.
+   - Hop 2 needs any transformation other than §6.2 inversion and composition → stop for Review.
+
+Successor: `M6-CP2-CB1-VERIFIER-R3` → `M6-CP2-TB1-VERIFIER-R2-EXEC` (**491**; upload paths derived from the harness `TURN_ID`) → mandatory `M6-CP2-TB1-VERIFIER-R2-REV`. Accounting **60 / 16 / 44**, debt 1.

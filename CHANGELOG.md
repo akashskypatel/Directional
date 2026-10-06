@@ -1,3 +1,10 @@
+## 2026-10-06 — `M6-CP2-TB1-VERIFIER-R1-REV` review-agent addendum — verifier fix redesigned
+
+- The second verifier build wrongly rejected 29 previously passing tests. Both causes were mistakes in rules the review agent had added.
+- The fix the last review prescribed would have caused new false rejections, because the same rail can legitimately carry inverse values.
+- It is replaced by an exact check that follows how the products are actually built: relation → path → vertex.
+- Next: `M6-CP2-CB1-VERIFIER-R3` (gate 491).
+
 ## 2026-10-06 — `M6-CP2-TB1-VERIFIER-R1-REV` — R2 rejected; RA-29b freezes bounded recovery
 
 - Review traced the broad R1 regression cluster to the verifier, not the optimizer: A7 intentionally loses/deduplicates A6 target identity, but R2 incorrectly demanded one unique reverse match instead of the frozen same-owner-value fallback.

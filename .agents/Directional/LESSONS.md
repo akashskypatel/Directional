@@ -2657,3 +2657,13 @@ When a temporary workflow caller is assembled with low-level Git objects, creati
       - When verifying a partition built from relations, check both directions: every class is spanned by its relations, and every relation lies inside one class.
       - Any verifier on a production path must state its complexity and build its incidence maps in one pass.
     - Recorded at the `M6-CP2-TB1-VERIFIER-REV` review-agent addendum (RA-29a).
+204. **Test a new verifier predicate against the gate's deliberate edge cases and against the producer's own encoding.**
+    - *What happened.*
+      - RA-29a §4 (review agent) required A0 component labels to equal raw connectivity components. Accepted selector 144 deliberately publishes one label over two disconnected squares.
+      - RA-29a §3 asked for a positional reverse lookup from A7's deduplicated projection; R2 implemented it as a uniqueness requirement.
+      - The next Review prescribed a "same rail/periodic ID ⇒ same value" fallback, but A5 inverts `canonicalRelationValue` on non-canonical storage, so same-ID relations can carry inverse values.
+      - 29 rows went RED, and the fallback would have caused another cycle.
+    - **Rule.**
+      - Before freezing a verifier predicate, (a) grep the accepted gate for rows that deliberately exercise the property, and (b) trace the producer's actual construction chain.
+      - Bind through that chain (here: relation → path certificate → projection), never through a reverse lookup or a value-uniformity assumption.
+    - Recorded at the `M6-CP2-TB1-VERIFIER-R1-REV` review-agent addendum (RA-29c).

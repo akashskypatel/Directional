@@ -83,3 +83,93 @@ RA-29b freezes one bounded recovery:
 `M6-CP2-CB1-VERIFIER-R3` → `M6-CP2-TB1-VERIFIER-R2-EXEC` (**491**) → mandatory `M6-CP2-TB1-VERIFIER-R2-REV`.
 
 R3 is Code + Build only. It may change the verifier and existing focused identities 2/6 as specified, but may not change optimizer source, A5/A6/A7 producer semantics, focused30 names/order, CP2 focused12 names/order, selector449/routing449 bytes, or gate size. Any accepted gate authority that still rejects after those two corrections returns to Review.
+
+---
+
+## Review-agent addendum (2026-10-06, resumed `M6-CP2-TB1-VERIFIER-R1-REV`)
+
+**Disposition:**
+- **Rejection, causal clustering and R1-REV-02: CONFIRMED.**
+- **R1-REV-01's diagnosis: CONFIRMED. Its prescribed correction (RA-29b §1 and §3): REPLACED by RA-29c.** The ambiguity fallback can itself falsely reject accepted rows. An exact, fallback-free binding is available from published records and needs no ambiguity witness.
+- **Owned:** both R1 failure classes trace to my RA-29a §3 (positional binding plus a fragile fallback) and §4 (component partition).
+- Gate unchanged at **491**. Accounting **60 / 16 / 44**, debt 1.
+
+### T1. Independent re-derivation
+
+No result artifact exists (EXEC-OBS-01), so I re-derived the result from the GitHub job log `112044082007` (1,469,035 bytes after stripping escape sequences):
+- **491** `[ RUN ]` lines in exact focused-30 + focused-12 + selector449 order; 462 `[ OK ]`; 29 failed.
+- REDs:
+  - focused-30 ordinals **6, 20, 24, 25**;
+  - focused-12 ordinal **6**;
+  - selector449 ordinals **115, 116, 122, 130, 132, 134, 137, 141, 143, 144, 150, 176, 201, 217, 218, 231, 232, 246, 436, 437, 438, 444, 446, 448**.
+- Signatures:
+  - **19** × `VerificationFailed:MissingPublishedAuthority:a7:a5-relation-step`;
+  - **1** × `a0:component-adjacency` (selector 144);
+  - **9** reachability failures with no verifier string: `NotProductionReady` instead of the injected stage, an unreached final-oracle or mutation seam, and `hasArrangement == false`. All nine are on hard-rail, feature or torus fixtures, consistent with the pipeline stopping at the A7 rejection.
+- **R1-REV's clustering is confirmed.**
+
+**R2 RA-29a items checked in source (`9c8478ae`):**
+- `a6:relation-class` is present (`:7822`, `:7856`).
+- Topology uses single-pass `edgeOwners` / `incidentEdges` (O(n log n)).
+- `AuthoritativePhaseFrontMeshResult::verificationReport` is present.
+- `VerifiedSurfaceProducts` holds its products by value.
+
+### T2. R1-REV-02 confirmed; review-agent error owned
+
+`SourceComponentId` is ingress authority. Selector 144 deliberately publishes one component label over two disconnected squares. My RA-29a §4 assumed component labels equal raw edge-connectivity components, without checking that accepted row. Withdrawn (lesson 204).
+
+### T3. RA-29b's ambiguity fallback can falsely reject — replace it with an exact two-hop binding (High)
+
+**Why the fallback fails.** A5 sets `canonicalSelectedStep.appliedTransport = canonicalRelationValue` per relation (`RemeshPipeline.cpp:4940`). It also **inverts** `canonicalRelationValue` whenever that relation's storage order is not canonical (`:4917-4921`). Canonical order is by `OccurrenceId`, which along a rail or periodic cut depends on cell IDs and varies from pair to pair. So relations sharing a rail or periodic ID can legitimately carry **inverse** values.
+
+RA-29b §1 requires "every A5 relation in the class sharing that step's rail/periodic owner ID must publish the same `canonicalRelationValue`". Whenever the value is not an involution, that **falsely rejects**. The nonzero-Z4 periodic torus rows (focused-30 ordinals 6 and 20; selector 444/446/448) are exactly that case: a 90° rotation's inverse is 270°. RA-29b §3 also adds a feasibility risk: it requires a produced ambiguity witness, and stops if none exists.
+
+**What exactly is published.**
+- **A6 → A5, per certificate.** `certificate.selectedRelationStep == r.evidence.canonicalSelectedStep`. This is already verified by the RA-28a §2 table.
+- **A6 projection, positional within one certificate.** The A6 producer builds `legacyProjection.orderedSteps` as the oriented `selectedRelationStep` of each certificate along the path's own `orderedRelations` / `traversalOrientations` (`:5500-5548`). It sets `composedTransport` to the composition of those steps' `appliedTransport`, and takes start/end chart and component from the first/last step. A6 publication re-checks this (`:5935-5960`).
+- **A7 → A6, by projection equality.** `vertex.selectedRelationPaths` is exactly the sorted, deduplicated multiset of the class's present `legacyProjection`s (`:6962-6970`).
+
+**So the binding is exact in three hops, with no reverse lookup, no uniqueness assumption and no fallback:**
+
+| Hop | Rule | Site |
+|---|---|---|
+| A5 internal, per relation | If `canonicalSelectedStep` is present: `canonicalRelationValue` is present, `step.appliedTransport == canonicalRelationValue`, and `step.direction == Forward`. | `a5:selected-step-value` |
+| A6, per path certificate | `legacyProjection.has_value()` ⇔ the oriented step subsequence is non-empty. `legacyProjection.orderedSteps` equals that subsequence, where inverting a step means: invert `appliedTransport`, swap from/to chart and component, flip `direction`. `composedTransport` is the composition of the steps' `appliedTransport`; the start/end fields come from the first/last steps. | `a6:legacy-projection` |
+| A7, per class | `vertex.selectedRelationPaths` == sorted-unique { p.`legacyProjection` : p a class path with a projection }. | `a7:selected-paths` |
+
+- Hop 2 uses only named-certificate inversion and composition (frozen §6.2).
+- Group paths by class once; the whole binding is O(P log P). This also **removes R2's O(V·P) all-paths scan per A7 path**, which reintroduced quadratic cost in the production verifier (RA-29a §2's intent).
+- By transitivity, every A7 step value equals the exactly cited A5 relation's `canonicalRelationValue` (RA-28a §2), oriented as published.
+
+### T4. Identity 6 consequences
+
+- **Remove RA-29b §3's ambiguity-witness requirement.** Ambiguity is irrelevant under T3.
+- Keep:
+  - the clean baseline;
+  - the `relationTransport` tamper (`a6:a5-binding`);
+  - the ≥2-step forest-path-structure tamper.
+- Add three non-vacuous tampers on the same produced fixture:
+  - **(a)** change one A7 path step's `appliedTransport` → `a7:selected-paths`;
+  - **(b)** change one A6 `legacyProjection` step → `a6:legacy-projection`;
+  - **(c)** change one A5 relation's `canonicalRelationValue` only, leaving the step unchanged → `a5:selected-step-value`, which fires in the A5 partition before any A6 check.
+
+  Each must assert that the tamper changed the record before the verifier is called.
+
+### T5. Low — the ownership "trait" is self-declared
+
+`static_assert(VerifiedSurfaceProducts::owns_products)` (`tests/…:7489`) tests a constant that the class declares about itself. Reverting to pointers while keeping the flag would still pass.
+
+**Replace it with a behavioral check:** after `verify`, `&token.occurrences() != &originalA5` (and likewise for A6/A7), plus record-view equality. A pointer-holding token returns the original addresses, so it fails. Remove the self-declared constant.
+
+### T6. Closeout
+
+| Duty | Result |
+|---|---|
+| Evidence | Re-derived from the job log: 491 RUN in frozen order; 462/491; 29 REDs and signatures as listed; clustering confirmed. |
+| R1-REV-01 | Diagnosis confirmed; correction **replaced** (RA-29c): exact three-hop binding; ambiguity witness removed. |
+| R1-REV-02 | Confirmed; my RA-29a §4 error, owned. |
+| New | T3 (the fallback can falsely reject, on inverted canonical values); R2 O(V·P) scan; T5 vacuous trait. |
+| Gate | 491, unchanged; identities unchanged (identity 6 body changes). |
+| Accounting | +0 → 60 / 16 / 44, debt 1. |
+| Lesson | 204. |
+| Successor | `M6-CP2-CB1-VERIFIER-R3` under RA-29b (§2, §4, §5) + RA-29c. |
