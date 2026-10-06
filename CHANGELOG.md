@@ -1,3 +1,10 @@
+## 2026-10-06 — `M6-CP2-TB1-VERIFIER-R1-REV` — R2 rejected; RA-29b freezes bounded recovery
+
+- Review traced the broad R1 regression cluster to the verifier, not the optimizer: A7 intentionally loses/deduplicates A6 target identity, but R2 incorrectly demanded one unique reverse match instead of the frozen same-owner-value fallback.
+- Review also withdraws the new raw-connectivity component equality rule. Component IDs are ingress authority and accepted tests allow one component label across disconnected topology regions.
+- R3 is limited to those two corrections plus focused identities 2/6; no A5/A6/A7 producer or optimizer semantic change and the 491-name gate remains frozen.
+- The R1 result/log upload miss is post-runtime workflow plumbing only; runtime is not repeated. Next: `M6-CP2-CB1-VERIFIER-R3` → 491-process R2 EXEC → mandatory Review.
+
 ## 2026-10-06 — `M6-CP2-TB1-VERIFIER-R1-EXEC` — 462/491; mandatory Review
 
 - Immutable R2 package `11382000465 / 9c8478ae...` completed all 491 fresh exact-filter processes: focused30 **26/30**, focused12 **11/12**, selector449 **425/449**.
