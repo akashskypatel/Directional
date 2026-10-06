@@ -1552,8 +1552,6 @@ class SurfaceProductVerifier;
 
 class VerifiedSurfaceProducts {
 public:
-  static constexpr bool owns_products = true;
-
   [[nodiscard]] const SurfaceOccurrenceComplex &occurrences() const noexcept {
     return occurrences_;
   }

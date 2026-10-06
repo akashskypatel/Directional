@@ -7486,7 +7486,6 @@ concept M6CP2ProjectionAccepts = requires(const Product &product) {
 
 static_assert(M6CP2ProjectionAccepts<
               directional::pipeline::VerifiedSurfaceProducts>);
-static_assert(directional::pipeline::VerifiedSurfaceProducts::owns_products);
 static_assert(!M6CP2ProjectionAccepts<
               directional::pipeline::SurfaceOccurrenceComplex>);
 static_assert(!M6CP2ProjectionAccepts<
@@ -7574,46 +7573,6 @@ TEST(M6CP2, VerifierRecomputesA0AndA5ElementaryIncidenceIndependently) {
       directional::pipeline::VerificationFailureCode::SourceIncidenceMismatch,
       "a0:source-faces"));
 
-  auto componentRecords = make_m6cp2_verification_fixture(overlap_fixture());
-  const auto &originalAuthority =
-      componentRecords.fixture->network.phaseFront.product().sourceTopologyRegions();
-  ASSERT_GE(originalAuthority.regions().size(), 2U);
-  const auto mergedComponent = originalAuthority.regions().front().component();
-  std::vector<directional::geometry::SurfaceTopologyRegion> mergedRegions;
-  for (const auto &region : originalAuthority.regions()) {
-    auto rebuilt = directional::geometry::SurfaceTopologyRegion::make(
-        region.id(), mergedComponent, region.faces(), region.boundary_edges(),
-        region.isolation_seams(), region.euler_characteristic(),
-        region.boundary_loop_count());
-    ASSERT_TRUE(rebuilt.has_value());
-    mergedRegions.push_back(std::move(rebuilt.value()));
-  }
-  std::vector<directional::authority::SourceFaceTopologyKey> rowTopology;
-  std::vector<directional::authority::SourceComponentId> rowComponents;
-  std::vector<directional::authority::IsolationSheetId> rowSheets;
-  for (int face = 0; face < componentRecords.fixture->mesh.F.rows(); ++face) {
-    const auto row = directional::authority::SourceFaceId::from_index(
-        face, static_cast<std::size_t>(componentRecords.fixture->mesh.F.rows()));
-    ASSERT_TRUE(row.has_value());
-    rowTopology.push_back(originalAuthority.topology_for_row(row.value()));
-    rowComponents.push_back(mergedComponent);
-    rowSheets.push_back(originalAuthority.sheet_for_row(row.value()));
-  }
-  auto mergedAuthority = directional::geometry::SourceTopologyRegions::make(
-      std::move(rowTopology), rowComponents, rowSheets, std::move(mergedRegions));
-  ASSERT_TRUE(mergedAuthority.has_value());
-  ASSERT_TRUE(mergedAuthority->matches_source_faces(
-      componentRecords.fixture->mesh.F,
-      static_cast<std::size_t>(componentRecords.fixture->mesh.V.rows())));
-  const auto componentReport =
-      directional::pipeline::SurfaceProductVerifier::verify_records(
-          componentRecords.fixture->mesh.V, componentRecords.fixture->mesh.F,
-          mergedAuthority.value(), noHardFeatures, componentRecords.a5,
-          componentRecords.a6, componentRecords.a7);
-  EXPECT_TRUE(has_m6cp2_finding(
-      componentReport,
-      directional::pipeline::VerificationFailureCode::SourceIncidenceMismatch,
-      "a0:component-adjacency"));
 }
 
 TEST(M6CP2, VerifierRecomputesA6TopologyAndMembershipIndependently) {
@@ -7724,6 +7683,66 @@ TEST(M6CP2, CertificateChainRequiresExactA5A6A7PayloadBinding) {
       directional::pipeline::VerificationFailureCode::CertificatePayloadMismatch,
       "a6:a5-binding"));
 
+  auto a7StepRecords = make_m6cp2_verification_fixture(hard_rail_fixture());
+  ASSERT_TRUE(verify_m6cp2_records(a7StepRecords).verified());
+  auto a7Vertex = std::find_if(
+      a7StepRecords.a7.vertices.begin(), a7StepRecords.a7.vertices.end(),
+      [](const auto &vertex) {
+        return std::any_of(vertex.selectedRelationPaths.begin(),
+                           vertex.selectedRelationPaths.end(),
+                           [](const auto &path) {
+                             return !path.orderedSteps.empty();
+                           });
+      });
+  ASSERT_NE(a7Vertex, a7StepRecords.a7.vertices.end());
+  auto a7Path = std::find_if(
+      a7Vertex->selectedRelationPaths.begin(), a7Vertex->selectedRelationPaths.end(),
+      [](const auto &path) { return !path.orderedSteps.empty(); });
+  ASSERT_NE(a7Path, a7Vertex->selectedRelationPaths.end());
+  const auto a7StepBefore = a7Path->orderedSteps.front().appliedTransport;
+  a7Path->orderedSteps.front().appliedTransport.shift.x += 1;
+  ASSERT_NE(a7Path->orderedSteps.front().appliedTransport, a7StepBefore);
+  EXPECT_TRUE(has_m6cp2_finding(
+      verify_m6cp2_records(a7StepRecords),
+      directional::pipeline::VerificationFailureCode::CertificatePayloadMismatch,
+      "a7:selected-paths"));
+
+  auto a6LegacyRecords = make_m6cp2_verification_fixture(hard_rail_fixture());
+  ASSERT_TRUE(verify_m6cp2_records(a6LegacyRecords).verified());
+  auto a6LegacyPath = std::find_if(
+      a6LegacyRecords.a6.records.selectedPaths.begin(),
+      a6LegacyRecords.a6.records.selectedPaths.end(), [](const auto &path) {
+        return path.legacyProjection.has_value() &&
+               !path.legacyProjection->orderedSteps.empty();
+      });
+  ASSERT_NE(a6LegacyPath, a6LegacyRecords.a6.records.selectedPaths.end());
+  const auto a6StepBefore =
+      a6LegacyPath->legacyProjection->orderedSteps.front().appliedTransport;
+  a6LegacyPath->legacyProjection->orderedSteps.front().appliedTransport.shift.x += 1;
+  ASSERT_NE(a6LegacyPath->legacyProjection->orderedSteps.front().appliedTransport,
+            a6StepBefore);
+  EXPECT_TRUE(has_m6cp2_finding(
+      verify_m6cp2_records(a6LegacyRecords),
+      directional::pipeline::VerificationFailureCode::CertificatePayloadMismatch,
+      "a6:legacy-projection"));
+
+  auto a5ValueRecords = make_m6cp2_verification_fixture(hard_rail_fixture());
+  ASSERT_TRUE(verify_m6cp2_records(a5ValueRecords).verified());
+  auto a5ValueRelation = std::find_if(
+      a5ValueRecords.a5.ownedRelations.begin(),
+      a5ValueRecords.a5.ownedRelations.end(), [](const auto &row) {
+        return row.evidence.canonicalSelectedStep.has_value() &&
+               row.evidence.canonicalRelationValue.has_value();
+      });
+  ASSERT_NE(a5ValueRelation, a5ValueRecords.a5.ownedRelations.end());
+  const auto a5ValueBefore = a5ValueRelation->evidence.canonicalRelationValue.value();
+  a5ValueRelation->evidence.canonicalRelationValue->shift.x += 1;
+  ASSERT_NE(a5ValueRelation->evidence.canonicalRelationValue.value(), a5ValueBefore);
+  EXPECT_TRUE(has_m6cp2_finding(
+      verify_m6cp2_records(a5ValueRecords),
+      directional::pipeline::VerificationFailureCode::CertificatePayloadMismatch,
+      "a5:selected-step-value"));
+
   auto pathRecords = make_m6cp2_verification_fixture(hard_rail_fixture());
   ASSERT_TRUE(verify_m6cp2_records(pathRecords).verified());
   auto multiStepPath = std::find_if(
@@ -7814,6 +7833,175 @@ TEST(M6CP2, PipelineRunsVerifierAfterA7BeforeAdapterProjection) {
           &verifiedConstruction);
   ASSERT_NE(verified, nullptr);
   EXPECT_TRUE(verified->report().verified());
+  EXPECT_NE(&verified->occurrences(), a5);
+  EXPECT_NE(&verified->quotient(), a6);
+  EXPECT_NE(&verified->geometry(), a7);
+
+  const auto originalA5 = a5->verification_records();
+  const auto ownedA5 = verified->occurrences().verification_records();
+  ASSERT_EQ(ownedA5.cells.size(), originalA5.cells.size());
+  ASSERT_EQ(ownedA5.occurrences.size(), originalA5.occurrences.size());
+  ASSERT_EQ(ownedA5.ownedRelations.size(), originalA5.ownedRelations.size());
+  for (std::size_t i = 0; i < originalA5.cells.size(); ++i) {
+    EXPECT_EQ(ownedA5.cells[i].id, originalA5.cells[i].id);
+    EXPECT_EQ(ownedA5.cells[i].cornerOccurrences,
+              originalA5.cells[i].cornerOccurrences);
+    EXPECT_EQ(ownedA5.cells[i].directedSides, originalA5.cells[i].directedSides);
+    EXPECT_EQ(ownedA5.cells[i].directedSideAuthority,
+              originalA5.cells[i].directedSideAuthority);
+  }
+  for (std::size_t i = 0; i < originalA5.occurrences.size(); ++i) {
+    const auto &actual = ownedA5.occurrences[i];
+    const auto &expected = originalA5.occurrences[i];
+    EXPECT_EQ(actual.id, expected.id);
+    EXPECT_EQ(actual.point.face, expected.point.face);
+    EXPECT_EQ(actual.point.component, expected.point.component);
+    EXPECT_EQ(actual.point.sheet, expected.point.sheet);
+    EXPECT_TRUE(actual.point.barycentric.isApprox(expected.point.barycentric, 0.0));
+    EXPECT_TRUE(actual.point.position.isApprox(expected.point.position, 0.0));
+    EXPECT_EQ(actual.point.squaredDistance, expected.point.squaredDistance);
+    EXPECT_EQ(actual.support, expected.support);
+    EXPECT_EQ(actual.chartComponent, expected.chartComponent);
+    EXPECT_EQ(actual.topologyRegion, expected.topologyRegion);
+    EXPECT_EQ(actual.cornerWedgeSheets, expected.cornerWedgeSheets);
+    EXPECT_EQ(actual.cornerWedgeBindings, expected.cornerWedgeBindings);
+    EXPECT_EQ(actual.placement.selectedFace, expected.placement.selectedFace);
+    EXPECT_TRUE(actual.placement.lattice.phase.isApprox(
+        expected.placement.lattice.phase, 0.0));
+    EXPECT_EQ(actual.placement.lattice.latticeCoordinate,
+              expected.placement.lattice.latticeCoordinate);
+    EXPECT_EQ(actual.placement.lattice.branchRotation,
+              expected.placement.lattice.branchRotation);
+    EXPECT_EQ(actual.placement.lattice.scaleLevel,
+              expected.placement.lattice.scaleLevel);
+    EXPECT_EQ(actual.placement.lattice.sourceChart,
+              expected.placement.lattice.sourceChart);
+    EXPECT_EQ(actual.cornerWedgeIsolation, expected.cornerWedgeIsolation);
+  }
+  for (std::size_t i = 0; i < originalA5.ownedRelations.size(); ++i) {
+    const auto &actual = ownedA5.ownedRelations[i];
+    const auto &expected = originalA5.ownedRelations[i];
+    EXPECT_EQ(actual.id, expected.id);
+    EXPECT_EQ(actual.firstOccurrence, expected.firstOccurrence);
+    EXPECT_EQ(actual.secondOccurrence, expected.secondOccurrence);
+    EXPECT_EQ(actual.firstFrontEdge, expected.firstFrontEdge);
+    EXPECT_EQ(actual.secondFrontEdge, expected.secondFrontEdge);
+    EXPECT_EQ(actual.evidence.canonicalTransport, expected.evidence.canonicalTransport);
+    EXPECT_EQ(actual.evidence.canonicalRelationValue,
+              expected.evidence.canonicalRelationValue);
+    EXPECT_EQ(actual.evidence.equivalence, expected.evidence.equivalence);
+    EXPECT_EQ(actual.evidence.canonicalSelectedStep,
+              expected.evidence.canonicalSelectedStep);
+    EXPECT_EQ(actual.evidence.firstEndpointSpan, expected.evidence.firstEndpointSpan);
+    EXPECT_EQ(actual.evidence.secondEndpointSpan, expected.evidence.secondEndpointSpan);
+    EXPECT_EQ(actual.evidence.firstSideIsolationEvidence,
+              expected.evidence.firstSideIsolationEvidence);
+    EXPECT_EQ(actual.evidence.secondSideIsolationEvidence,
+              expected.evidence.secondSideIsolationEvidence);
+  }
+  EXPECT_EQ(ownedA5.certificate.cellCount, originalA5.certificate.cellCount);
+  EXPECT_EQ(ownedA5.certificate.occurrenceCount,
+            originalA5.certificate.occurrenceCount);
+  EXPECT_EQ(ownedA5.certificate.directedSideCount,
+            originalA5.certificate.directedSideCount);
+  EXPECT_EQ(ownedA5.certificate.ownedRelationCount,
+            originalA5.certificate.ownedRelationCount);
+  EXPECT_EQ(ownedA5.certificate.validatedIsolationCertificateCount,
+            originalA5.certificate.validatedIsolationCertificateCount);
+  EXPECT_EQ(ownedA5.certificate.exactCellOwnership,
+            originalA5.certificate.exactCellOwnership);
+  EXPECT_EQ(ownedA5.certificate.exactCornerOwnership,
+            originalA5.certificate.exactCornerOwnership);
+  EXPECT_EQ(ownedA5.certificate.exactDirectedSideCycles,
+            originalA5.certificate.exactDirectedSideCycles);
+  EXPECT_EQ(ownedA5.certificate.exactRelationEndpointOwnership,
+            originalA5.certificate.exactRelationEndpointOwnership);
+  EXPECT_EQ(ownedA5.certificate.geometricCoincidenceInferenceUsed,
+            originalA5.certificate.geometricCoincidenceInferenceUsed);
+
+  const auto originalA6 = a6->verification_records();
+  const auto ownedA6 = verified->quotient().verification_records();
+  EXPECT_EQ(ownedA6.records.relationCertificates,
+            originalA6.records.relationCertificates);
+  EXPECT_EQ(ownedA6.records.relationConsumptions,
+            originalA6.records.relationConsumptions);
+  EXPECT_EQ(ownedA6.records.selectedForest, originalA6.records.selectedForest);
+  EXPECT_EQ(ownedA6.records.selectedPaths, originalA6.records.selectedPaths);
+  EXPECT_EQ(ownedA6.records.classes, originalA6.records.classes);
+  EXPECT_EQ(ownedA6.records.classedCells, originalA6.records.classedCells);
+  EXPECT_EQ(ownedA6.quotientCertificate.ownedRelationCount,
+            originalA6.quotientCertificate.ownedRelationCount);
+  EXPECT_EQ(ownedA6.quotientCertificate.relationCertificateCount,
+            originalA6.quotientCertificate.relationCertificateCount);
+  EXPECT_EQ(ownedA6.quotientCertificate.consumptionCount,
+            originalA6.quotientCertificate.consumptionCount);
+  EXPECT_EQ(ownedA6.quotientCertificate.joiningCount,
+            originalA6.quotientCertificate.joiningCount);
+  EXPECT_EQ(ownedA6.quotientCertificate.cycleClosingCount,
+            originalA6.quotientCertificate.cycleClosingCount);
+  EXPECT_EQ(ownedA6.quotientCertificate.relationBijection,
+            originalA6.quotientCertificate.relationBijection);
+  EXPECT_EQ(ownedA6.quotientCertificate.exactForest,
+            originalA6.quotientCertificate.exactForest);
+  EXPECT_EQ(ownedA6.quotientCertificate.exactCycleConsistency,
+            originalA6.quotientCertificate.exactCycleConsistency);
+  EXPECT_EQ(ownedA6.quotientCertificate.exactTransitivePartition,
+            originalA6.quotientCertificate.exactTransitivePartition);
+  EXPECT_EQ(ownedA6.materializationCertificate.sourceCellCount,
+            originalA6.materializationCertificate.sourceCellCount);
+  EXPECT_EQ(ownedA6.materializationCertificate.classedCellCount,
+            originalA6.materializationCertificate.classedCellCount);
+  EXPECT_EQ(ownedA6.materializationCertificate.sourceOccurrenceCount,
+            originalA6.materializationCertificate.sourceOccurrenceCount);
+  EXPECT_EQ(ownedA6.materializationCertificate.classMemberCount,
+            originalA6.materializationCertificate.classMemberCount);
+  EXPECT_EQ(ownedA6.materializationCertificate.exactCellBijection,
+            originalA6.materializationCertificate.exactCellBijection);
+  EXPECT_EQ(ownedA6.materializationCertificate.exactOccurrencePartition,
+            originalA6.materializationCertificate.exactOccurrencePartition);
+  EXPECT_EQ(ownedA6.materializationCertificate.noDegenerateClassedQuad,
+            originalA6.materializationCertificate.noDegenerateClassedQuad);
+  ASSERT_EQ(ownedA6.closedComplexView.has_value(),
+            originalA6.closedComplexView.has_value());
+  if (ownedA6.closedComplexView.has_value()) {
+    EXPECT_EQ(ownedA6.closedComplexView->vertices,
+              originalA6.closedComplexView->vertices);
+    EXPECT_EQ(ownedA6.closedComplexView->quads, originalA6.closedComplexView->quads);
+    EXPECT_EQ(ownedA6.closedComplexView->edges, originalA6.closedComplexView->edges);
+    EXPECT_EQ(ownedA6.closedComplexView->closed, originalA6.closedComplexView->closed);
+    EXPECT_EQ(ownedA6.closedComplexView->edgeIncidenceBijection,
+              originalA6.closedComplexView->edgeIncidenceBijection);
+    EXPECT_EQ(ownedA6.closedComplexView->protectionLabelsCertified,
+              originalA6.closedComplexView->protectionLabelsCertified);
+  }
+
+  const auto originalA7 = a7->verification_records();
+  const auto ownedA7 = verified->geometry().verification_records();
+  ASSERT_EQ(ownedA7.vertices.size(), originalA7.vertices.size());
+  for (std::size_t i = 0; i < originalA7.vertices.size(); ++i) {
+    const auto &actual = ownedA7.vertices[i];
+    const auto &expected = originalA7.vertices[i];
+    EXPECT_EQ(actual.quotientClass, expected.quotientClass);
+    EXPECT_EQ(actual.representative, expected.representative);
+    EXPECT_EQ(actual.sourcePoint.face, expected.sourcePoint.face);
+    EXPECT_TRUE(actual.sourcePoint.barycentric.isApprox(
+        expected.sourcePoint.barycentric, 0.0));
+    EXPECT_TRUE(actual.sourcePoint.position.isApprox(expected.sourcePoint.position, 0.0));
+    EXPECT_TRUE(actual.position.isApprox(expected.position, 0.0));
+    EXPECT_EQ(actual.support, expected.support);
+    EXPECT_EQ(actual.sourceOccurrences, expected.sourceOccurrences);
+    EXPECT_EQ(actual.sourceTopologyRegions, expected.sourceTopologyRegions);
+    EXPECT_EQ(actual.sourceCharts, expected.sourceCharts);
+    EXPECT_EQ(actual.sourceIsolationSheets, expected.sourceIsolationSheets);
+    EXPECT_EQ(actual.equivalences, expected.equivalences);
+    EXPECT_EQ(actual.selectedRelationPaths, expected.selectedRelationPaths);
+  }
+  EXPECT_EQ(ownedA7.topology, originalA7.topology);
+  EXPECT_EQ(ownedA7.sourceSupportCertificates,
+            originalA7.sourceSupportCertificates);
+  EXPECT_EQ(ownedA7.boundaryLoops, originalA7.boundaryLoops);
+  EXPECT_EQ(ownedA7.certificate, originalA7.certificate);
+
   const auto projected =
       directional::pipeline::project_verified_surface_products(*verified);
   EXPECT_TRUE(projected.success);

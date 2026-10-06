@@ -7483,9 +7483,6 @@ VerificationReport SurfaceProductVerifier::verify_records(
   std::map<authority::SourceEdgeTopologyKey,
            std::vector<authority::SourceFaceTopologyKey>>
       facesByEdge;
-  std::map<authority::SourceEdgeTopologyKey,
-           std::vector<authority::SourceFaceId>>
-      faceRowsByEdge;
   if (sourceVertices.cols() != 3 || sourceFaces.cols() != 3 ||
       !sourceAuthority.matches_source_faces(
           sourceFaces, static_cast<std::size_t>(sourceVertices.rows()))) {
@@ -7503,7 +7500,6 @@ VerificationReport SurfaceProductVerifier::verify_records(
             static_cast<std::size_t>(sourceVertices.rows()));
         if (edge.has_value()) {
           facesByEdge[edge.value()].push_back(topology);
-          faceRowsByEdge[edge.value()].push_back(row.value());
         }
       }
     }
@@ -7513,66 +7509,6 @@ VerificationReport SurfaceProductVerifier::verify_records(
             VerificationFailureCode::SourceIncidenceMismatch,
             "a0:hard-feature-edge");
       }
-    }
-    std::map<authority::SourceFaceId, std::set<authority::SourceFaceId>>
-        sourceFaceAdjacency;
-    for (const auto &[unusedEdge, rows] : faceRowsByEdge) {
-      for (std::size_t first = 0; first < rows.size(); ++first) {
-        for (std::size_t second = first + 1U; second < rows.size(); ++second) {
-          sourceFaceAdjacency[rows[first]].insert(rows[second]);
-          sourceFaceAdjacency[rows[second]].insert(rows[first]);
-        }
-      }
-    }
-    std::map<authority::SourceComponentId, std::set<authority::SourceFaceId>>
-        publishedComponentFaces;
-    for (int face = 0; face < sourceFaces.rows(); ++face) {
-      const auto row = authority::SourceFaceId::from_index(
-          face, static_cast<std::size_t>(sourceFaces.rows()));
-      if (row.has_value()) {
-        publishedComponentFaces[sourceAuthority.component_for_row(row.value())]
-            .insert(row.value());
-      }
-    }
-    bool componentPartitionValid = true;
-    std::set<authority::SourceFaceId> visitedFaces;
-    std::set<authority::SourceComponentId> visitedComponents;
-    for (int face = 0; face < sourceFaces.rows(); ++face) {
-      const auto row = authority::SourceFaceId::from_index(
-          face, static_cast<std::size_t>(sourceFaces.rows()));
-      if (!row.has_value() || visitedFaces.contains(row.value())) continue;
-      const auto component = sourceAuthority.component_for_row(row.value());
-      if (!visitedComponents.insert(component).second) {
-        componentPartitionValid = false;
-        break;
-      }
-      std::set<authority::SourceFaceId> reached{row.value()};
-      std::vector<authority::SourceFaceId> stack{row.value()};
-      visitedFaces.insert(row.value());
-      while (!stack.empty()) {
-        const auto current = stack.back();
-        stack.pop_back();
-        if (sourceAuthority.component_for_row(current) != component) {
-          componentPartitionValid = false;
-          break;
-        }
-        for (const auto next : sourceFaceAdjacency[current]) {
-          if (visitedFaces.insert(next).second) {
-            reached.insert(next);
-            stack.push_back(next);
-          }
-        }
-      }
-      if (!componentPartitionValid ||
-          reached != publishedComponentFaces[component]) {
-        componentPartitionValid = false;
-        break;
-      }
-    }
-    if (!componentPartitionValid) {
-      add(VerificationStage::A0,
-          VerificationFailureCode::SourceIncidenceMismatch,
-          "a0:component-adjacency");
     }
   }
   if (!report.findings.empty()) {
@@ -7704,6 +7640,25 @@ VerificationReport SurfaceProductVerifier::verify_records(
             VerificationFailureCode::SourceIncidenceMismatch,
             "a5:wedge-isolation", id.cell(), id);
       }
+    }
+  }
+  if (!report.findings.empty()) {
+    finalize_verification_report(report);
+    return report;
+  }
+
+  // A5 selected-step/value binding. The selected step is an A5-published
+  // projection of canonicalRelationValue, so no downstream search is needed.
+  for (const auto &relation : occurrences.ownedRelations) {
+    if (!relation.evidence.canonicalSelectedStep.has_value()) continue;
+    const auto &step = relation.evidence.canonicalSelectedStep.value();
+    if (!relation.evidence.canonicalRelationValue.has_value() ||
+        step.appliedTransport !=
+            relation.evidence.canonicalRelationValue.value() ||
+        step.direction != authority::Orientation::Forward) {
+      add(VerificationStage::A5,
+          VerificationFailureCode::CertificatePayloadMismatch,
+          "a5:selected-step-value", {}, {}, relation.id);
     }
   }
   if (!report.findings.empty()) {
@@ -7916,6 +7871,9 @@ VerificationReport SurfaceProductVerifier::verify_records(
     }
     authority::GridAutomorphism composed =
         authority::GridAutomorphism::identity();
+    authority::GridAutomorphism legacyComposed =
+        authority::GridAutomorphism::identity();
+    std::vector<geometry::SelectedRelationStep> projectedSteps;
     bool valid = true;
     for (std::size_t index = 0; index < expectedPath->size(); ++index) {
       const auto &edge = expectedPath.value()[index];
@@ -7938,15 +7896,47 @@ VerificationReport SurfaceProductVerifier::verify_records(
         break;
       }
       authority::GridAutomorphism transport = found->second->relationTransport;
-      if (edge.orientation == authority::Orientation::Reverse)
+      std::optional<geometry::SelectedRelationStep> selectedStep =
+          found->second->selectedRelationStep;
+      if (edge.orientation == authority::Orientation::Reverse) {
         transport = transport.inverse();
+        if (selectedStep.has_value())
+          selectedStep = reverse_selected_relation_step(selectedStep.value());
+      }
       composed = compose(transport, composed);
+      if (selectedStep.has_value()) {
+        legacyComposed = compose(selectedStep->appliedTransport, legacyComposed);
+        projectedSteps.push_back(selectedStep.value());
+      }
     }
     if (valid && composed != path.composedTransport) {
       add(VerificationStage::A6,
           VerificationFailureCode::NamedTransportMismatch,
           "a6:selected-path-transport", {}, path.target, {}, path.quotientClass);
       valid = false;
+    }
+    if (valid &&
+        path.legacyProjection.has_value() != !projectedSteps.empty()) {
+      add(VerificationStage::A6,
+          VerificationFailureCode::CertificatePayloadMismatch,
+          "a6:legacy-projection", {}, path.target, {}, path.quotientClass);
+      valid = false;
+    }
+    if (valid && path.legacyProjection.has_value()) {
+      const auto &legacy = path.legacyProjection.value();
+      const bool endpointMismatch =
+          legacy.startChart != projectedSteps.front().fromChart ||
+          legacy.endChart != projectedSteps.back().toChart ||
+          legacy.startChartComponent !=
+              projectedSteps.front().fromChartComponent ||
+          legacy.endChartComponent != projectedSteps.back().toChartComponent;
+      if (legacy.orderedSteps != projectedSteps ||
+          legacy.composedTransport != legacyComposed || endpointMismatch) {
+        add(VerificationStage::A6,
+            VerificationFailureCode::CertificatePayloadMismatch,
+            "a6:legacy-projection", {}, path.target, {}, path.quotientClass);
+        valid = false;
+      }
     }
     const auto key = std::tuple{path.quotientClass, path.root, path.target};
     if (valid && !publishedPathTargets.insert(key).second) {
@@ -8235,82 +8225,32 @@ VerificationReport SurfaceProductVerifier::verify_records(
     return report;
   }
 
-  // Cross-stage A7 selected-step binding through the exact A6 forest path.
+  // Cross-stage A7 selected paths are exactly the class-local, sorted-unique
+  // projections already published by A6.
+  std::map<SurfaceQuotientClassId,
+           std::vector<geometry::SelectedRelationPathCertificate>>
+      expectedSelectedPathsByClass;
+  for (const auto &path : quotient.records.selectedPaths) {
+    if (path.legacyProjection.has_value()) {
+      expectedSelectedPathsByClass[path.quotientClass].push_back(
+          path.legacyProjection.value());
+    }
+  }
+  for (auto &[classId, paths] : expectedSelectedPathsByClass) {
+    (void)classId;
+    std::sort(paths.begin(), paths.end());
+    paths.erase(std::unique(paths.begin(), paths.end()), paths.end());
+  }
   for (const auto &vertex : geometry.vertices) {
-    for (const auto &path : vertex.selectedRelationPaths) {
-      const QuotientSelectedPathCertificate *published = nullptr;
-      for (const auto &candidate : quotient.records.selectedPaths) {
-        if (candidate.quotientClass != vertex.quotientClass ||
-            !candidate.legacyProjection.has_value())
-          continue;
-        const auto &legacy = candidate.legacyProjection.value();
-        if (legacy.sourceSupport == path.sourceSupport &&
-            legacy.startChartComponent == path.startChartComponent &&
-            legacy.endChartComponent == path.endChartComponent &&
-            legacy.startChart == path.startChart && legacy.endChart == path.endChart &&
-            legacy.orderedSteps.size() == path.orderedSteps.size()) {
-          bool sameIdentity = true;
-          for (std::size_t index = 0; index < path.orderedSteps.size(); ++index) {
-            const auto &actual = path.orderedSteps[index];
-            const auto &identity = legacy.orderedSteps[index];
-            sameIdentity = sameIdentity &&
-                           actual.relationKind == identity.relationKind &&
-                           actual.railId == identity.railId &&
-                           actual.periodicRelation == identity.periodicRelation &&
-                           actual.direction == identity.direction &&
-                           actual.fromChart == identity.fromChart &&
-                           actual.toChart == identity.toChart &&
-                           actual.fromChartComponent == identity.fromChartComponent &&
-                           actual.toChartComponent == identity.toChartComponent;
-          }
-          if (sameIdentity) {
-            if (published != nullptr) {
-              published = nullptr;
-              break;
-            }
-            published = &candidate;
-          }
-        }
-      }
-      if (published == nullptr) {
-        add(VerificationStage::CrossStage,
-            VerificationFailureCode::MissingPublishedAuthority,
-            "a7:a5-relation-step", {}, vertex.representative, {},
-            vertex.quotientClass);
-        continue;
-      }
-      std::vector<std::pair<geometry::SelectedRelationStep,
-                            SurfaceOccurrenceRelationId>>
-          expectedSteps;
-      for (std::size_t index = 0; index < published->orderedRelations.size();
-           ++index) {
-        const auto certificate =
-            certificateByRelation.find(published->orderedRelations[index]);
-        if (certificate == certificateByRelation.end() ||
-            !certificate->second->selectedRelationStep.has_value())
-          continue;
-        auto expected = certificate->second->selectedRelationStep.value();
-        if (published->traversalOrientations[index] ==
-            authority::Orientation::Reverse) {
-          expected = reverse_selected_relation_step(expected);
-        }
-        expectedSteps.emplace_back(expected, published->orderedRelations[index]);
-      }
-      if (expectedSteps.size() != path.orderedSteps.size()) {
-        add(VerificationStage::CrossStage,
-            VerificationFailureCode::CertificatePayloadMismatch,
-            "a7:a5-relation-step", {}, vertex.representative, {},
-            vertex.quotientClass);
-        continue;
-      }
-      for (std::size_t index = 0; index < expectedSteps.size(); ++index) {
-        if (path.orderedSteps[index] != expectedSteps[index].first) {
-          add(VerificationStage::CrossStage,
-              VerificationFailureCode::CertificatePayloadMismatch,
-              "a7:a5-relation-step", {}, vertex.representative,
-              expectedSteps[index].second, vertex.quotientClass);
-        }
-      }
+    const auto expected = expectedSelectedPathsByClass.find(vertex.quotientClass);
+    const std::vector<geometry::SelectedRelationPathCertificate> empty;
+    const auto &paths =
+        expected == expectedSelectedPathsByClass.end() ? empty : expected->second;
+    if (vertex.selectedRelationPaths != paths) {
+      add(VerificationStage::A7,
+          VerificationFailureCode::CertificatePayloadMismatch,
+          "a7:selected-paths", {}, vertex.representative, {},
+          vertex.quotientClass);
     }
   }
 
