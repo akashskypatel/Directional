@@ -25,8 +25,8 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1PRE23Gh6ZXPomIJw93QYlSzedDqYVPq_
-      patch_sha256: 8fd385dd2f4aab3eb3a9d328ca382c075033b16f5a48cde922d65d091b55ab58
+      file_id: 1gJu25_6rt9-J2JX-LZ9D_mxtLbeGHybn
+      patch_sha256: 541e23b4e9a45d6e4fc634b9b4aef6e289e619410c40efa37b4bda2d996f1b63
       base_sha: 303f9c54c160c38a9b1e288c88bd79a17c329d56
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: "docs: close M6 CP2 after independent review"
