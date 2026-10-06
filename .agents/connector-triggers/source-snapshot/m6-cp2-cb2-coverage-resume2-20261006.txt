@@ -1,3 +1,0 @@
-Purpose: exact source snapshot for resumed M6-CP2-CB2-COVERAGE
-Retry: 0
-Pre-trigger authority: a021180c247009573b2f6ad9bcb0e2c68c11fb97
