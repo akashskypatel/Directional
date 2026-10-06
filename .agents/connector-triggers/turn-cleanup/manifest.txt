@@ -1,0 +1,4 @@
+.agents/connector-triggers/source-snapshot/m6-cp2-cb1-verifier-r3-20261006T012910Z.txt
+.agents/connector-triggers/m6-cp2-cb1-verifier-r3-drive-apply.txt
+.agents/connector-triggers/m6-cp2-cb1-verifier-r3-compile.txt
+.agents/connector-triggers/m6-cp2-cb1-verifier-r3-closeout-apply.txt
