@@ -1,10 +1,10 @@
-## Live M6 routing — after the `M6-CP2-TB1-VERIFIER-R1-REV` review-agent addendum (RA-29c)
+## Live M6 routing — after `M6-CP2-CB1-VERIFIER-R3`
 
 | Checkpoint | State | Exact next / gate |
 |---|---|---|
 | M6 CP1 | **CLOSED / ACCEPTED, mechanism-only** | runtime `11330703256 / 3f40f04a...`, 479/479 |
-| CP2 verifier candidates | **REJECTED** | `265c8fbb` 488/491; `9c8478ae` 462/491 |
-| CP2 recovery | **EXACT NEXT** | `M6-CP2-CB1-VERIFIER-R3` (RA-29b §2/§4/§5 + RA-29c) -> TB1-R2 **491** -> Review |
+| CP2 rejected verifier candidates | **REJECTED / UNPROMOTED** | `265c8fbb` 488/491; `9c8478ae` 462/491 |
+| CP2 R3 recovery candidate | **COMPILE/PACKAGE GREEN / UNPROMOTED** | `11385836615 / c64baacd...`; exact next TB1-R2 **491** -> Review |
 | `M6-DEFN-R5` | CP3-entry gate, after CP2 | unchanged |
 
 Stable accounting: **60 / 16 / 44**, debt 1.

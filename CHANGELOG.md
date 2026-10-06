@@ -1,3 +1,10 @@
+## 2026-10-06 — `M6-CP2-CB1-VERIFIER-R3` — RA-29c verifier recovery compile/package GREEN
+
+- Applied the exact RA-29c three-hop relation → path → vertex verifier binding at source `c64baacd6c767c4ba053b6963651c0aa6eceed20`; removed R2's reverse lookup, the invalid raw-connectivity component rule, and the vacuous `owns_products` constant.
+- All eight standard GMP/GMPXX targets compiled and linked in run/job `37401647591 / 112069997705`; package `11385836615` self-verifies **28/28**, source receipts are clean, and `runtimeExecution=false`.
+- Frozen focused30 / CP2-focused12 / selector449 / routing449 bytes remain unchanged. Candidate is compile-valid but unpromoted; accounting remains **60 / 16 / 44**, debt 1.
+- Next: immutable `M6-CP2-TB1-VERIFIER-R2-EXEC` at **491** fresh processes with `TURN_ID`-derived upload paths, then mandatory Review.
+
 ## 2026-10-06 — `M6-CP2-TB1-VERIFIER-R1-REV` review-agent addendum — verifier fix redesigned
 
 - The second verifier build wrongly rejected 29 previously passing tests. Both causes were mistakes in rules the review agent had added.

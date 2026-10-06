@@ -1146,34 +1146,37 @@ Review must independently re-open source/evidence and re-derive: split-square v0
 ## Current authority
 
 - **M6 CP1:** CLOSED / ACCEPTED, mechanism-only.
-- **M6 CP2:** Definition accepted (RA-28/28a/28b). Verifier candidates `11365308211 / 265c8fbb` (488/491) and `11382000465 / 9c8478ae` (462/491) are **REJECTED / UNPROMOTED**.
-- Reviewed runtime authority: `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05` (focused-30 + selector449 = **479/479**).
+- **M6 CP2:** Definition accepted (RA-28/28a/28b). R1/R2 verifier candidates remain **REJECTED / UNPROMOTED**.
+- **R3 recovery candidate:** exact semantic source/package `c64baacd6c767c4ba053b6963651c0aa6eceed20 / 11385836615`, **COMPILE-PACKAGE GREEN / UNPROMOTED**; run/job `37401647591 / 112069997705`; manifest 28/28; `runtimeExecution=false`.
+- Reviewed runtime authority remains `11330703256 / 3f40f04a0e9d382b2ec82cf37a03c18ad405eb05` (focused-30 + selector449 = **479/479**).
 - Normative: RA-1 – RA-29c.
 - Accounting **60 / 16 / 44**, debt **1**.
 
 ## Exact next turn
 
-**`M6-CP2-CB1-VERIFIER-R3` — Code + Build only, under RA-29b (§2, §4, §5) + RA-29c.**
-- Exact three-hop A7 relation-step binding (`a5:selected-step-value`, `a6:legacy-projection`, `a7:selected-paths`); remove R2's reverse lookup and its O(V·P) scan.
-- Remove the `a0:component-adjacency` raw-connectivity rule and the identity-2 component-merge witness.
-- Identity 6: three tampers and no ambiguity witness. Identity 11: behavioral ownership check.
-- No optimizer, producer, focused/selector/routing change; no runtime.
-- Compile/package green → `M6-CP2-TB1-VERIFIER-R2-EXEC` (**491**; upload paths derived from the harness `TURN_ID`) → mandatory `M6-CP2-TB1-VERIFIER-R2-REV`.
+**`M6-CP2-TB1-VERIFIER-R2-EXEC` — immutable artifact-only Test + Benchmark, exactly 491 fresh exact-filter processes.**
+- Consume only package `11385836615 / c64baacd6c767c4ba053b6963651c0aa6eceed20`; no rebuild, repair, relink, fixture mutation, or permission repair.
+- Execute focused30 + CP2-focused12 + selector449 = **30 + 12 + 449 = 491** fresh exact-filter processes, exact-one selection and zero skips; zero benchmarks.
+- Derive workflow upload paths from the same harness `TURN_ID`; do not reuse a predecessor literal.
+- Perform immutable package/source/execution-view pre/postflight and preserve all process evidence.
+- Route to mandatory `M6-CP2-TB1-VERIFIER-R2-REV` regardless of semantic green/red outcome.
+- R3 is only compile-valid; it has no runtime acceptance or CP2 promotion.
 
 ## Completed predecessor turns (reference only)
 
+- `M6-CP2-CB1-VERIFIER-R3` — RA-29c recovery compiled/package GREEN at `11385836615 / c64baacd...`; no runtime.
 - `M6-CP2-TB1-VERIFIER-R1-REV` (+ addendum §T, RA-29c) — R2 candidate rejected; RA-29b, RA-29c.
-- `M6-CP2-TB1-VERIFIER-R1-EXEC` — 462/491; result/log artifacts missing (upload-path defect); the job log is the evidence.
+- `M6-CP2-TB1-VERIFIER-R1-EXEC` — 462/491; result/log artifacts missing (upload-path defect); job log is the evidence.
 - `M6-CP2-CB1-VERIFIER-R2` — candidate `11382000465 / 9c8478ae`.
 - `M6-CP2-TB1-VERIFIER-REV` (+ addendum §S, RA-29a), `M6-CP2-CB1-VERIFIER-R1`, and earlier CP2 turns.
 
 ## Current files
 
-- `.agents/Directional/Architecture_M6_CP2_CB1_Verifier_R3_Recovery_Code_Build_Plan.md` — exact next plan (RA-29c block governs).
+- `.agents/Directional/Architecture_M6_CP2_CB1_Verifier_R3_Recovery_Code_Build_Report.md` — authoritative R3 compile/package evidence.
+- `.agents/Directional/Architecture_M6_CP2_CB1_Verifier_R3_Recovery_Code_Build_Plan.md` — completed R3 plan; RA-29c block governs its implementation.
 - `.agents/Directional/Architecture_M6_CP2_TB1_Verifier_R1_Review_Record.md` — Review authority, with addendum §T.
-- `.agents/Directional/Architecture_M6_CP2_TB1_Verifier_R1_Artifact_Only_Test_Benchmark_Report.md` — R1 runtime evidence (job log).
 - `.agents/Directional/Architecture_M6_Frozen_Definitions.md` — RA-28 – RA-29c.
-- `.agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt`, focused-30, selector449 / routing449 — frozen gate.
+- `.agents/Directional/Architecture_M6_CP2_Required_Green_Focused_12.txt`, focused-30, selector449 / routing449 — frozen 491 gate authority.
 
 ## Context Load Plan
 

@@ -1,9 +1,18 @@
+## Current — `M6-CP2-CB1-VERIFIER-R3` COMPLETE / exact next `M6-CP2-TB1-VERIFIER-R2-EXEC` (2026-10-06)
+
+- [x] Implement RA-29c exact three-hop A5/A6/A7 binding and remove R2's reverse lookup / O(V·P) scan.
+- [x] Remove only `a0:component-adjacency` and its identity-2 sub-witness; replace identity-11 `owns_products` self-assertion with behavioral ownership evidence.
+- [x] Compile/package all eight standard GMP/GMPXX targets: run/job `37401647591 / 112069997705`, package `11385836615`, manifest **28/28**, clean source, `runtimeExecution=false`.
+- [x] Preserve focused30 / CP2-focused12 / selector449 / routing449 bytes; stable accounting **60 / 16 / 44**, debt 1.
+- [ ] **Exact next: `M6-CP2-TB1-VERIFIER-R2-EXEC`** — immutable package `11385836615 / c64baacd...`, exactly **491** fresh exact-filter processes, `TURN_ID`-derived upload paths, no rebuild/repair.
+- [ ] Mandatory `M6-CP2-TB1-VERIFIER-R2-REV`; candidate stays unpromoted until Review.
+
 ## Current — `M6-CP2-TB1-VERIFIER-R1-REV` review-agent addendum / RA-29c / exact next `M6-CP2-CB1-VERIFIER-R3` (2026-10-06)
 
 - [x] Re-derive R1 from job log `112044082007`: 491 RUN in frozen order; 462/491; 29 REDs; signatures 19/1/9; clustering confirmed.
 - [x] Confirm R1-REV-01's diagnosis and R1-REV-02 (my RA-29a §4 error).
 - [x] Replace the RA-29b §1 fallback and §3 ambiguity witness with the exact three-hop binding (RA-29c); behavioral ownership check; lesson 204.
-- [ ] **Exact next `M6-CP2-CB1-VERIFIER-R3`** (compile/package only).
+- [x] `M6-CP2-CB1-VERIFIER-R3` compile/package completed at `c64baacd...` / package `11385836615`.
 - [ ] TB1-R2 **491** (`TURN_ID`-derived upload paths) → mandatory R2 Review.
 
 ## Current — `M6-CP2-TB1-VERIFIER-R1-REV` / RA-29b / exact next R3 (2026-10-06)
@@ -13,7 +22,7 @@
 - [x] Withdraw RA-29a component connected-partition rule: ingress component labels are not independently reconstructable from raw mesh connectivity; selector144 is accepted counterexample.
 - [x] Classify stale R1 upload paths as post-runtime orchestration-only; no duplicate runtime.
 - [x] Freeze RA-29b and the bounded R3 Code + Build plan; stable accounting remains **60 / 16 / 44**, debt 1.
-- [ ] **Exact next: `M6-CP2-CB1-VERIFIER-R3`** — verifier + existing focused identities 2/6 only; compile/package, no Directional runtime.
+- [x] `M6-CP2-CB1-VERIFIER-R3` completed compile/package GREEN without Directional runtime.
 - [ ] If green: immutable `M6-CP2-TB1-VERIFIER-R2-EXEC` at unchanged **491**, then mandatory R2 Review.
 
 ## Current — `M6-CP2-TB1-VERIFIER-R1-EXEC` COMPLETE / mandatory Review next (2026-10-06)

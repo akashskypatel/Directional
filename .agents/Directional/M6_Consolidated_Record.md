@@ -1,8 +1,10 @@
+## 2026-10-06 — M6 CP2 verifier R3 compile/package closure
+
+**Current authority after `M6-CP2-CB1-VERIFIER-R3`:** M6 CP1 remains CLOSED / ACCEPTED, mechanism-only; CP2 verifier candidates R1/R2 remain rejected; RA-29c is implemented at exact semantic source `c64baacd6c767c4ba053b6963651c0aa6eceed20`. Candidate package `11385836615` is compile/package GREEN and **unpromoted**. Reviewed runtime remains `11330703256 / 3f40f04a...` (479/479). Accounting **60 / 16 / 44**, debt 1. Exact next: immutable `M6-CP2-TB1-VERIFIER-R2-EXEC` (**491**) → mandatory Review.
+
+R3 replaces the rejected reverse-lookup logic with RA-29c's exact A5 selected-step/value, A6 legacy-projection reconstruction, and A7 class-local sorted-unique projection checks; removes only the invalid A0 raw-connectivity component rule/sub-witness; and replaces the vacuous `owns_products` declaration with behavioral ownership evidence. Compile run/job `37401647591 / 112069997705` is GREEN on all eight standard GMP/GMPXX targets. Result/log artifacts `11385836615 / 11385671776` hash `40ea2966011865090ce49382300885ee132e82655fba4f98575f326b53ca2ea4 / 97a7aee4888c938d356894c6f661ad8a0a00f526eb87e9d8f88c7fa132a3f675`; manifest **28/28**, clean source receipts, `exactArithmeticBackend=GMP`, `runtimeExecution=false`. Frozen focused30 / focused12 / selector449 / routing449 hashes remain `1e815443... / 2aa57aac... / d4a0d1b7... / 9c88a5ed...`. Full evidence: `Architecture_M6_CP2_CB1_Verifier_R3_Recovery_Code_Build_Report.md`.
+
 ## 2026-10-06 — M6 CP2 verifier R1 Review: RA-29b
-
-**Current authority after the `M6-CP2-TB1-VERIFIER-R1-REV` addendum (2026-10-06):** M6 CP1 CLOSED / ACCEPTED, mechanism-only; CP2 verifier candidates R1/R2 rejected; RA-29c (§55); reviewed runtime `11330703256 / 3f40f04a...` (479/479). Accounting **60 / 16 / 44**, debt 1. Exact next: `M6-CP2-CB1-VERIFIER-R3` → TB1-R2 (491) → Review.
-
-RA-29b freezes `M6-CP2-CB1-VERIFIER-R3`: implement all-candidate A7 binding/fallback, remove only the invalid component rule/sub-witness, keep focused12 names/order and the 491 gate bytes frozen, and do not change optimizer or A5/A6/A7 producer semantics. Then run immutable `M6-CP2-TB1-VERIFIER-R2-EXEC` at 491 and mandatory R2 Review. Stable accounting remains **60 / 16 / 44**, debt 1.
 
 ## 2026-10-06 — M6 CP2 verifier R1 runtime: 462/491, Review required
 
