@@ -1,0 +1,2 @@
+# M6-CP2-CB2-COVERAGE bounded closeout
+.agents/connector-triggers/source-snapshot/m6-cp2-cb2-coverage-20261006.txt
