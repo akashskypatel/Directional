@@ -1,0 +1,3 @@
+Purpose: apply durable M6-CP2-CB1-VERIFIER-R3 closeout documentation.
+Patch base: c64baacd6c767c4ba053b6963651c0aa6eceed20
+Retry: 0
