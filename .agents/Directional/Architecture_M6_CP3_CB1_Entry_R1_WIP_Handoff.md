@@ -92,3 +92,12 @@ Prepared caller:
 - marker path is fixed as `.agents/connector-triggers/m6-cp3-cb1-entry-r1-apply-compile.txt`.
 
 Because the current connector cannot create a new file under `.github/workflows/**`, the only policy-compatible intervention available from this session is for the repository owner to install the attached caller at the exact path above on the working branch, as its own commit, **without creating the marker**. Once that caller exists, the next continuation can create the marker through the GitHub connector as a separate commit, observe the run, and continue normal evidence/cleanup handling. Do not edit the caller's embedded Drive File ID, patch hash, base SHA, target branch, target list, or runtime-free compile boundary.
+
+
+## 2026-10-06T18:47Z continuation check
+
+- Rechecked the required caller path on the working branch after this attempt's entry beacon: `.github/workflows/m6-cp3-cb1-entry-r1-apply-compile.yml` is still absent.
+- Revalidated the prepared caller locally from the preserved snapshot/container: SHA-256 remains `6e8daf9b4cbc29491368361e61863e3ba49dc739c903e2e8b17eef35080e9a9e`; YAML parses and the resolved-source output is attached to the step that writes `source_sha`.
+- The verified snapshot contains only the eight durable workflows; no existing generic push-triggered workflow can accept the staged Drive File ID/hash/base and then compile the resulting source. The Drive reusable remains dispatch/call-only, so no policy-compatible trigger can be synthesized from a non-workflow marker alone.
+- No source/test mutation, compile/package run, generated runtime, or patch-consumption action occurred in this continuation.
+- Exact next action remains owner installation of the prepared caller at its recorded path as a standalone commit, without the trigger marker. After that, resume this same turn and create only the marker through the connector.
