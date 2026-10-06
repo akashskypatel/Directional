@@ -1,3 +1,0 @@
-Trigger authoritative source snapshot for M6-CP3-CB1-ENTRY.
-Expected source authority: branch head after this marker commit.
-Retry: 0
