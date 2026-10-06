@@ -1,3 +1,0 @@
-Trigger exact source snapshot for M6-CP3-TB1-ENTRY-REV.
-Authority: de15a8f672a7b371fcf38aa197170409f64dacbf
-Runtime execution: false
