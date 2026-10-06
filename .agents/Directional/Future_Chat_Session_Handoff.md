@@ -1,3 +1,17 @@
+## Resume-critical update — `M6-CP2-TB1-VERIFIER-R2-EXEC` COMPLETE / 491/491 / mandatory R2 Review next (2026-10-06)
+
+**Start mandatory independent `M6-CP2-TB1-VERIFIER-R2-REV` next. Do not repair source/tests, rebuild, rerun the 491-process gate, promote the candidate, or begin `M6-DEFN-R5` before Review.**
+
+Immutable package/source `11385836615 / c64baacd6c767c4ba053b6963651c0aa6eceed20` was consumed by run/job `37403703032 / 112076464024`. Result/log artifacts are `11387562709 / 11387233341`; provider/download ZIP hashes are `dada6a755d4ec6d695ab2b11b13c6d92452d4b1599e9ebda0e6bee751b23fdcf` and `5a6950535ec39f20e776759b0c0f1d241ee5228c346ea4d2afc3fe9fcf0b3c39`. Result self-manifest is **1005/1005**, hash `82943861e169fcdc8589bf13f0e068a663b837997792c454d7a6efb6b5788d7f`.
+
+Mechanical gate is fully green: focused30 **30/30**, CP2-focused12 **12/12**, selector449 **449/449** = **491/491**; exact-one 491/491, zero skips, benchmark 0. Immutable package/source/execution-view postflight passes; configure/compile/relink/discovery/repair/mutation/retry flags are all false. No runtime timeout or partitioning occurred.
+
+No regression candidate is created: stable accounting remains **60 / 16 / 44**, debt 1. Mechanically this recovers all R1 RED surfaces, but promotion remains Review-owned. Candidate stays unpromoted; reviewed runtime remains `11330703256 / 3f40f04a...` (479/479). Full evidence: `Architecture_M6_CP2_TB1_Verifier_R2_Artifact_Only_Test_Benchmark_Report.md`.
+
+Exact successor: `M6-CP2-TB1-VERIFIER-R2-REV`.
+
+---
+
 ## Resume-critical update — `M6-CP2-TB1-VERIFIER-R1-REV` review-agent addendum: RA-29c replaces the A7 fallback (2026-10-06)
 
 **Start `M6-CP2-CB1-VERIFIER-R3`** under RA-29b (§2, §4, §5) **+ RA-29c**. The top block of `Architecture_M6_CP2_CB1_Verifier_R3_Recovery_Code_Build_Plan.md` is binding.

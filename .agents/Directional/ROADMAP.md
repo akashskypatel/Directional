@@ -1,3 +1,16 @@
+## Live M6 routing — after `M6-CP2-TB1-VERIFIER-R2-EXEC`
+
+| Checkpoint | State | Exact next / gate |
+|---|---|---|
+| M6 CP1 | **CLOSED / ACCEPTED, mechanism-only** | reviewed runtime `11330703256 / 3f40f04a...`, 479/479 |
+| CP2 prior verifier candidates | **REJECTED / UNPROMOTED** | `265c8fbb` 488/491; `9c8478ae` 462/491 |
+| CP2 R3 recovery candidate | **TB1-R2 491/491 GREEN / UNPROMOTED** | `11385836615 / c64baacd...`; mandatory `M6-CP2-TB1-VERIFIER-R2-REV` next |
+| `M6-DEFN-R5` | CP3-entry gate, after CP2 Review | held |
+
+Stable accounting: **60 / 16 / 44**, debt 1.
+
+### Superseded routing
+
 ## Live M6 routing — after `M6-CP2-CB1-VERIFIER-R3`
 
 | Checkpoint | State | Exact next / gate |

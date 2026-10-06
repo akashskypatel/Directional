@@ -1,3 +1,13 @@
+## Current — `M6-CP2-TB1-VERIFIER-R2-EXEC` COMPLETE / 491/491 / mandatory Review next (2026-10-06)
+
+- [x] Consume immutable `11385836615 / c64baacd...` without rebuild/repair.
+- [x] Execute exactly **491** fresh exact-filter processes: focused30 **30/30**, CP2-focused12 **12/12**, selector449 **449/449**.
+- [x] Verify exact-one 491/491, zero skips, benchmark 0, immutable package/source/execution-view postflight, and no configure/compile/relink/discovery/repair/mutation/retry.
+- [x] Persist result/log artifacts `11387562709 / 11387233341`; result manifest **1005/1005**.
+- [x] Record +0 regression candidates; stable accounting remains **60 / 16 / 44**, debt 1.
+- [ ] **Exact next: mandatory `M6-CP2-TB1-VERIFIER-R2-REV`** — independently adjudicate the 491/491 recovery and candidate promotion/rejection.
+- [ ] Candidate remains unpromoted; `M6-DEFN-R5` stays held until Review.
+
 ## Current — `M6-CP2-CB1-VERIFIER-R3` COMPLETE / exact next `M6-CP2-TB1-VERIFIER-R2-EXEC` (2026-10-06)
 
 - [x] Implement RA-29c exact three-hop A5/A6/A7 binding and remove R2's reverse lookup / O(V·P) scan.

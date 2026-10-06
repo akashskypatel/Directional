@@ -1,3 +1,9 @@
+## 2026-10-06 — `M6-CP2-TB1-VERIFIER-R2-EXEC` — **491/491 GREEN / +0 / 60/16/44 / debt 1**
+
+Immutable artifact-only runtime `37403703032 / 112076464024` consumed `11385836615 / c64baacd...`: focused30 **30/30**, CP2-focused12 **12/12**, selector449 **449/449**, aggregate **491/491**, exact-one 491/491, zero skips, benchmark 0, immutable postflight PASS. Result/log evidence is `11387562709 / 11387233341`; result self-manifest is 1005/1005.
+
+No RED row, orchestration defect, or new regression candidate occurred. Mechanically the R3/RA-29c recovery restores every prior R1 RED surface, but semantic closure/promotion remains mandatory Review-owned. **Stable accounting remains `60 events / 16 categories / 44 recurrences`, debt 1.** Exact next: `M6-CP2-TB1-VERIFIER-R2-REV`.
+
 ## 2026-10-06 — `M6-CP2-TB1-VERIFIER-R1-REV` review-agent addendum — RA-29c — **+0 / 60/16/44 / debt 1**
 
 - R1's 462/491 is re-derived independently from job log `112044082007`. The 29 REDs split into 19 `a7:a5-relation-step`, 1 `a0:component-adjacency` and 9 downstream reachability failures. All are CP2 verifier false rejections, so they are non-stable: no producer regression, and the reviewed runtime is unchanged.

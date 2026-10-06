@@ -1,3 +1,11 @@
+## M6-CP2-TB1-VERIFIER-R2-EXEC — 491/491 artifact-only gate GREEN (2026-10-06)
+
+Immutable package `11385836615 / c64baacd6c767c4ba053b6963651c0aa6eceed20` completed the frozen 491-process gate in run/job `37403703032 / 112076464024`: focused30 30/30, CP2-focused12 12/12, selector449 449/449, exact-one 491/491, zero skips and zero benchmarks. Result/log artifacts `11387562709 / 11387233341` were uploaded successfully; the result self-manifest verifies 1005/1005 and immutable package/source/execution-view postflight is clean. No rebuild, relink, configure, generated discovery, repair, mutation, timeout, partition, or retry occurred.
+
+No new regression candidate is recorded; stable accounting remains 60/16/44, debt 1. The candidate remains unpromoted pending mandatory `M6-CP2-TB1-VERIFIER-R2-REV`.
+
+---
+
 ## 2026-10-06 — `M6-CP2-CB1-VERIFIER-R3` — RA-29c verifier recovery compile/package GREEN
 
 - Applied the exact RA-29c three-hop relation → path → vertex verifier binding at source `c64baacd6c767c4ba053b6963651c0aa6eceed20`; removed R2's reverse lookup, the invalid raw-connectivity component rule, and the vacuous `owns_products` constant.

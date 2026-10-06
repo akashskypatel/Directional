@@ -1,3 +1,12 @@
+## Currency — `M6-CP2-TB1-VERIFIER-R2-EXEC` COMPLETE / 491/491 / mandatory Review next (2026-10-06 UTC)
+
+- Immutable R3 candidate `11385836615 / c64baacd...` is mechanically GREEN at focused30 **30/30** + CP2-focused12 **12/12** + selector449 **449/449** = **491/491**.
+- Exact-one 491/491; zero skips; benchmark 0; immutable package/source/execution-view postflight PASS; no configure/compile/relink/discovery/repair/retry.
+- Runtime authority `37403703032 / 112076464024`; result/log artifacts `11387562709 / 11387233341`; result manifest 1005/1005.
+- No new regression candidate: accounting **60 / 16 / 44**, debt 1.
+- Candidate remains unpromoted. Exact next: mandatory `M6-CP2-TB1-VERIFIER-R2-REV`; do not begin `M6-DEFN-R5` before Review.
+
+### Superseded currency note
 ## Currency — `M6-CP2-TB1-VERIFIER-R1-REV` review-agent addendum: RA-29c (2026-10-06 UTC)
 
 - R2 is rejected at 462/491 (re-derived from the job log).
