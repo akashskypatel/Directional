@@ -681,6 +681,79 @@ const PhaseFrontFixture &hard_rail_fixture() {
   return fixture;
 }
 
+PhaseFrontFixture make_nonconstant_hard_rail_fixture() {
+  PhaseFrontFixture fixture;
+  Eigen::MatrixXd vertices(9, 3);
+  int vertex = 0;
+  for (int y = 0; y < 3; ++y) {
+    for (int x = 0; x < 3; ++x) {
+      vertices.row(vertex++) << static_cast<double>(x),
+          static_cast<double>(y), 0.0;
+    }
+  }
+  Eigen::MatrixXi faces(8, 3);
+  int face = 0;
+  for (int y = 0; y < 2; ++y) {
+    for (int x = 0; x < 2; ++x) {
+      const int lowerLeft = y * 3 + x;
+      const int lowerRight = lowerLeft + 1;
+      const int upperLeft = lowerLeft + 3;
+      const int upperRight = upperLeft + 1;
+      faces.row(face++) << lowerLeft, lowerRight, upperRight;
+      faces.row(face++) << lowerLeft, upperRight, upperLeft;
+    }
+  }
+  fixture.mesh.set_mesh(vertices, faces);
+
+  Eigen::MatrixXd raw = constant_xy_field(faces.rows());
+  for (int row = 0; row < faces.rows(); ++row) {
+    double centerX = 0.0;
+    for (int corner = 0; corner < 3; ++corner) {
+      centerX += vertices(faces(row, corner), 0);
+    }
+    centerX /= 3.0;
+    if (centerX > 1.0) {
+      raw.row(row) << 0.0, 1.0, 0.0, -1.0, 0.0, 0.0,
+          0.0, -1.0, 0.0, 1.0, 0.0, 0.0;
+    }
+  }
+
+  directional::pipeline::RemeshOptions options;
+  options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+  options.surfaceCells.enabled = true;
+  options.surfaceCells.fallbackPolicy =
+      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+  options.surfaceCells.allowSourceGridRecovery = false;
+  options.surfaceCells.retainIntermediateGeometry = true;
+  options.lengthRatio = 0.2;
+  options.surfaceCells.featureMap.userHardEdges.insert({1, 4});
+  options.surfaceCells.featureMap.userHardEdges.insert({4, 7});
+
+  const auto result = directional::pipeline::remesh_from_raw_cross_field(
+      fixture.mesh.V, fixture.mesh.F, raw, options);
+  const auto &snapshots = result.surfaceCellContext.productSnapshots;
+  if (!snapshots.hasSourceSurfaceLabels ||
+      !snapshots.sourceTopologyRegions.has_value() ||
+      !snapshots.fieldAlignedCurveNetwork.has_value() ||
+      !snapshots.globalTopologyPlan.has_value() ||
+      !snapshots.globalConformityBaseline.has_value() ||
+      !snapshots.hasAuthoritativeRails ||
+      !result.surfaceCellContext.hasTraceNetwork) {
+    throw std::runtime_error(
+        "Non-constant hard-rail fixture did not retain A2b/A3 authority.");
+  }
+  fixture.components = snapshots.sourceSurfaceLabels.componentByFace;
+  fixture.sheets = snapshots.sourceSurfaceLabels.localSheetByFace;
+  fixture.network = snapshots.traceNetwork;
+  require_produced(fixture, "non-constant internal-midline hard-rail rectangle");
+  return fixture;
+}
+
+const PhaseFrontFixture &nonconstant_hard_rail_fixture() {
+  static const PhaseFrontFixture fixture = make_nonconstant_hard_rail_fixture();
+  return fixture;
+}
+
 const PhaseFrontFixture &cylinder_fixture() {
   static const PhaseFrontFixture fixture =
       make_committed_fixture("cylinder", false);
@@ -1505,6 +1578,8 @@ struct PhaseFrontDraft {
   std::vector<directional::geometry::SurfaceFrontEdge> edges;
   std::vector<directional::geometry::SurfaceFrontEvent> events;
   std::vector<directional::geometry::SurfacePhaseFrontCell> cells;
+  std::set<directional::authority::SourceEdgeTopologyKey> hardFeatureEdges;
+  std::vector<int> sourceFaceBranchRotations;
 };
 PhaseFrontDraft direct_full_periodic_materializer_draft(); bool action_has_nonzero_turn(const directional::authority::GridAutomorphism &action);
 PhaseFrontDraft phase_front_draft(
@@ -1517,7 +1592,9 @@ PhaseFrontDraft phase_front_draft(
           product.boundedDiskBoundaryPhases(),
           product.edges(),
           product.events(),
-          product.cells()};
+          product.cells(),
+          product.hardFeatureEdges(),
+          product.sourceFaceBranchRotations()};
 }
 
 PhaseFrontDraft phase_front_draft(const SurfacePhaseFrontResult &phaseFront) {
@@ -1530,7 +1607,9 @@ construct_phase_front_product(PhaseFrontDraft draft) {
       draft.gridU, draft.gridV, std::move(draft.sourceAuthority),
       std::move(draft.certificates), std::move(draft.periodicHolonomies),
       std::move(draft.boundedDiskBoundaryPhases), std::move(draft.edges),
-      std::move(draft.events), std::move(draft.cells));
+      std::move(draft.events), std::move(draft.cells), std::nullopt,
+      std::move(draft.hardFeatureEdges),
+      std::move(draft.sourceFaceBranchRotations));
 }
 
 void expect_phase_front_product_error(
@@ -2005,6 +2084,513 @@ TEST(SurfaceCellTransitionQuotient,
   };
 
   EXPECT_EQ(authoritySignature(baseline), authoritySignature(reordered));
+}
+
+namespace {
+
+const directional::pipeline::SurfaceOccurrence *m6cp3_occurrence_by_id(
+    const directional::pipeline::SurfaceOccurrenceComplex &product,
+    const directional::authority::OccurrenceId id) {
+  const auto found = std::find_if(
+      product.occurrences().begin(), product.occurrences().end(),
+      [&](const auto &candidate) { return candidate.id == id; });
+  return found == product.occurrences().end() ? nullptr : &*found;
+}
+
+const directional::pipeline::SurfaceOccurrenceRelation *m6cp3_seam_ordinary(
+    const directional::pipeline::SurfaceOccurrenceComplex &product) {
+  const auto found = std::find_if(
+      product.owned_relations().begin(), product.owned_relations().end(),
+      [](const auto &relation) {
+        return relation.id.kind ==
+                   directional::pipeline::SurfaceOccurrenceRelationKind::OrdinaryFront &&
+               relation.evidence.firstEndpointSpan.has_value() &&
+               relation.evidence.secondEndpointSpan.has_value() &&
+               relation.evidence.firstEndpointSpan->collinearEdge.has_value() &&
+               relation.evidence.firstEndpointSpan->collinearEdge ==
+                   relation.evidence.secondEndpointSpan->collinearEdge &&
+               relation.evidence.firstEndpointSpan->interiorBinding.sheet !=
+                   relation.evidence.secondEndpointSpan->interiorBinding.sheet &&
+               relation.evidence.isolationSeamTransportCertificate.has_value();
+      });
+  return found == product.owned_relations().end() ? nullptr : &*found;
+}
+
+} // namespace
+
+TEST(M6CP3, PeriodicExactA3UnequalFaceGaugeUsesRelationAndOccurrenceAuthority) {
+  const auto &fixture = nonzero_z4_torus_witness_fixture();
+  const auto semantic = produced_semantic_relation_for_witness(fixture);
+  ASSERT_TRUE(semantic.has_value());
+  ASSERT_NE(semantic->forwardEdge, nullptr);
+  ASSERT_NE(semantic->reverseEdge, nullptr);
+  const auto &front = fixture.fixture.network.phaseFront.product();
+  ASSERT_EQ(front.sourceFaceBranchRotations().size(),
+            static_cast<std::size_t>(fixture.fixture.mesh.F.rows()));
+  const int fromGauge = front.sourceFaceBranchRotations().at(
+      static_cast<std::size_t>(fixture.witness.fromFace.index()));
+  const int toGauge = front.sourceFaceBranchRotations().at(
+      static_cast<std::size_t>(fixture.witness.toFace.index()));
+  const int gaugeDelta = (toGauge - fromGauge + 4) % 4;
+  ASSERT_TRUE(gaugeDelta == 1 || gaugeDelta == 3)
+      << "D1 requires unequal non-self-inverse face gauge authority";
+
+  const auto endpointGauge = [](const auto &placement, const auto &interval,
+                                const auto relationRotation,
+                                const auto &published)
+      -> std::optional<directional::authority::GridAutomorphism> {
+    const auto relationState =
+        directional::geometry::make_periodic_relation_endpoint_state(
+            placement, interval, relationRotation, published.branchAuthority);
+    if (!relationState.has_value() || relationState.value() != published) {
+      return std::nullopt;
+    }
+    const auto placementBranch =
+        directional::authority::QuarterTurn::from_integer(
+            placement.branchRotation);
+    const auto rotation =
+        compose(relationState->branchRotation, placementBranch.inverse());
+    return directional::authority::GridAutomorphism{
+        rotation,
+        relationState->latticeCoordinate -
+            directional::authority::rotate(rotation,
+                                           placement.latticeCoordinate)};
+  };
+  const auto *forward = semantic->forwardEdge;
+  const auto *reverse = semantic->reverseEdge;
+  ASSERT_TRUE(forward->sharedBoundaryInterval.has_value());
+  ASSERT_TRUE(reverse->sharedBoundaryInterval.has_value());
+  ASSERT_TRUE(forward->periodicFromLattice.has_value());
+  ASSERT_TRUE(forward->periodicToLattice.has_value());
+  ASSERT_TRUE(reverse->periodicFromLattice.has_value());
+  ASSERT_TRUE(reverse->periodicToLattice.has_value());
+  const auto gammaFrom = endpointGauge(
+      forward->fromLattice, *forward->sharedBoundaryInterval,
+      semantic->semanticAction.rotation, *forward->periodicFromLattice);
+  const auto gammaTo = endpointGauge(
+      reverse->toLattice, *reverse->sharedBoundaryInterval,
+      semantic->semanticAction.rotation, *reverse->periodicToLattice);
+  const auto gammaFromOther = endpointGauge(
+      forward->toLattice, *forward->sharedBoundaryInterval,
+      semantic->semanticAction.rotation, *forward->periodicToLattice);
+  const auto gammaToOther = endpointGauge(
+      reverse->fromLattice, *reverse->sharedBoundaryInterval,
+      semantic->semanticAction.rotation, *reverse->periodicFromLattice);
+  ASSERT_TRUE(gammaFrom.has_value());
+  ASSERT_TRUE(gammaTo.has_value());
+  ASSERT_TRUE(gammaFromOther.has_value());
+  ASSERT_TRUE(gammaToOther.has_value());
+  const auto expected = compose(
+      gammaTo->inverse(), compose(semantic->semanticAction, *gammaFrom));
+  EXPECT_EQ(expected, compose(gammaToOther->inverse(),
+                              compose(semantic->semanticAction,
+                                      *gammaFromOther)));
+  const auto wrongDirection =
+      compose(*gammaTo, compose(semantic->semanticAction,
+                                gammaFrom->inverse()));
+  EXPECT_NE(expected, wrongDirection)
+      << "non-self-inverse gauges must kill the wrong Gamma direction";
+
+  auto a5Result = directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+      fixture.fixture.mesh.V, fixture.fixture.mesh.F, front);
+  const auto *a5 = std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+      &a5Result);
+  ASSERT_NE(a5, nullptr);
+  const auto relation = std::find_if(
+      a5->owned_relations().begin(), a5->owned_relations().end(),
+      [&](const auto &candidate) {
+        return candidate.id.kind ==
+                   directional::pipeline::SurfaceOccurrenceRelationKind::Periodic &&
+               candidate.id.periodicRelation == semantic->storedRelation->id();
+      });
+  ASSERT_NE(relation, a5->owned_relations().end());
+  ASSERT_TRUE(relation->evidence.canonicalTransport.has_value());
+  EXPECT_TRUE(relation->evidence.canonicalTransport.value() == expected ||
+              relation->evidence.canonicalTransport.value() == expected.inverse());
+}
+
+TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
+  const auto &fixture = nonconstant_hard_rail_fixture();
+  const auto &front = fixture.network.phaseFront.product();
+  auto a5Result = directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+      fixture.mesh.V, fixture.mesh.F, front);
+  const auto *a5 = std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+      &a5Result);
+  ASSERT_NE(a5, nullptr);
+
+  const directional::pipeline::SurfaceOccurrenceRelation *witness = nullptr;
+  for (const auto &relation : a5->owned_relations()) {
+    if (relation.id.kind !=
+            directional::pipeline::SurfaceOccurrenceRelationKind::HardRail ||
+        !relation.evidence.firstEndpointFaceGauge.has_value() ||
+        !relation.evidence.secondEndpointFaceGauge.has_value() ||
+        !relation.evidence.canonicalTransport.has_value()) {
+      continue;
+    }
+    const auto delta = compose(
+        relation.evidence.secondEndpointFaceGauge->localFaceBranchRotation,
+        relation.evidence.firstEndpointFaceGauge->localFaceBranchRotation.inverse());
+    if (delta == directional::authority::QuarterTurn::from_integer(1) ||
+        delta == directional::authority::QuarterTurn::from_integer(3)) {
+      witness = &relation;
+      break;
+    }
+  }
+  ASSERT_NE(witness, nullptr)
+      << "D2 requires a produced HardRail with a 90/270-degree endpoint gauge difference";
+  const auto *first = m6cp3_occurrence_by_id(*a5, witness->id.first);
+  const auto *second = m6cp3_occurrence_by_id(*a5, witness->id.second);
+  ASSERT_NE(first, nullptr);
+  ASSERT_NE(second, nullptr);
+  EXPECT_NE(first->topologyRegion, second->topologyRegion);
+  const auto firstRegional = compose(
+      witness->evidence.firstEndpointFaceGauge->localFaceBranchRotation.inverse(),
+      directional::authority::QuarterTurn::from_integer(
+          first->placement.lattice.branchRotation));
+  const auto secondRegional = compose(
+      witness->evidence.secondEndpointFaceGauge->localFaceBranchRotation.inverse(),
+      directional::authority::QuarterTurn::from_integer(
+          second->placement.lattice.branchRotation));
+  EXPECT_EQ(compose(secondRegional, firstRegional.inverse()),
+            witness->evidence.canonicalTransport->rotation);
+
+  PhaseFrontDraft tampered = phase_front_draft(fixture.network.phaseFront);
+  const auto row = front.sourceTopologyRegions().row_for_topology(
+      witness->evidence.firstEndpointFaceGauge->face);
+  ASSERT_TRUE(row.has_value());
+  auto &gauge = tampered.sourceFaceBranchRotations.at(
+      static_cast<std::size_t>(row->index()));
+  gauge = (gauge + 1) % 4;
+  auto rebuilt = construct_phase_front_product(std::move(tampered));
+  const auto *tamperedFront =
+      std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&rebuilt);
+  ASSERT_NE(tamperedFront, nullptr);
+  auto rejected = directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+      fixture.mesh.V, fixture.mesh.F, *tamperedFront);
+  const auto *error =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(&rejected);
+  ASSERT_NE(error, nullptr);
+  EXPECT_EQ(error->code,
+            directional::pipeline::SurfaceOccurrenceComplexErrorCode::
+                HardRailBranchCertificateMismatch);
+  const auto adapter = directional::pipeline::build_authoritative_phase_front_mesh(
+      fixture.mesh.V, fixture.mesh.F, *tamperedFront);
+  EXPECT_FALSE(adapter.success);
+  EXPECT_EQ(adapter.failure, "InvalidHardRailTransport:branch-certificate");
+}
+
+TEST(M6CP3, OrdinaryFrontIsolationSeamUsesCoordinateIdentityAndCertifiedSheetTransition) {
+  const auto &fixture = split_isolation_fixture();
+  auto a5Result = directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+      fixture.mesh.V, fixture.mesh.F, fixture.network.phaseFront.product());
+  const auto *a5 = std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+      &a5Result);
+  ASSERT_NE(a5, nullptr);
+  const auto *relation = m6cp3_seam_ordinary(*a5);
+  ASSERT_NE(relation, nullptr)
+      << "D3 requires a real-tracer seam-collinear OrdinaryFront";
+  const auto *first = m6cp3_occurrence_by_id(*a5, relation->id.first);
+  const auto *second = m6cp3_occurrence_by_id(*a5, relation->id.second);
+  ASSERT_NE(first, nullptr);
+  ASSERT_NE(second, nullptr);
+  EXPECT_EQ(first->placement.lattice.latticeCoordinate,
+            second->placement.lattice.latticeCoordinate);
+  EXPECT_EQ(first->placement.lattice.scaleLevel,
+            second->placement.lattice.scaleLevel);
+  auto a6Result = directional::pipeline::SurfaceQuotientProducer::produce(*a5);
+  const auto *a6 = std::get_if<directional::pipeline::SurfaceQuotientProduct>(
+      &a6Result);
+  ASSERT_NE(a6, nullptr);
+
+  auto records = a5->verification_records();
+  auto altered = std::find_if(
+      records.ownedRelations.begin(), records.ownedRelations.end(),
+      [&](const auto &candidate) { return candidate.id == relation->id; });
+  ASSERT_NE(altered, records.ownedRelations.end());
+  ASSERT_TRUE(altered->evidence.secondEndpointFaceGauge.has_value());
+  altered->evidence.secondEndpointFaceGauge->localFaceBranchRotation = compose(
+      directional::authority::QuarterTurn::from_integer(1),
+      altered->evidence.secondEndpointFaceGauge->localFaceBranchRotation);
+  auto tamperedA5Result =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::
+          publish_records_for_validation(std::move(records.cells),
+                                         std::move(records.occurrences),
+                                         std::move(records.ownedRelations));
+  const auto *tamperedA5 =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+          &tamperedA5Result);
+  ASSERT_NE(tamperedA5, nullptr);
+  auto rejected = directional::pipeline::SurfaceQuotientProducer::produce(
+      *tamperedA5);
+  const auto *error =
+      std::get_if<directional::pipeline::SurfaceQuotientProductError>(&rejected);
+  ASSERT_NE(error, nullptr);
+  EXPECT_EQ(error->code,
+            directional::pipeline::SurfaceQuotientProductErrorCode::
+                RelationCertificateConflict);
+}
+
+TEST(M6CP3, A5ChartBarriersConsumeTypedHardFeatureAuthorityAcrossRelationKinds) {
+  const auto &torus = torus_fixture();
+  const auto expectedHard = torus_row408_hard_edges(torus.mesh);
+  const auto &front = torus.network.phaseFront.product();
+  EXPECT_EQ(front.hardFeatureEdges(), expectedHard);
+  auto baselineResult =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+          torus.mesh.V, torus.mesh.F, front);
+  const auto *baseline =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+          &baselineResult);
+  ASSERT_NE(baseline, nullptr);
+  ASSERT_EQ(expectedHard.size(), 18U);
+
+  const directional::pipeline::SurfaceOccurrenceRelation *periodicBarrier = nullptr;
+  std::optional<directional::authority::SourceEdgeTopologyKey> removedCarrier;
+  for (const auto &relation : baseline->owned_relations()) {
+    if (relation.id.kind !=
+            directional::pipeline::SurfaceOccurrenceRelationKind::Periodic ||
+        !relation.evidence.firstEndpointSpan.has_value() ||
+        !relation.evidence.firstEndpointSpan->collinearEdge.has_value()) {
+      continue;
+    }
+    const auto carrier = relation.evidence.firstEndpointSpan->collinearEdge.value();
+    if (expectedHard.contains(carrier)) {
+      periodicBarrier = &relation;
+      removedCarrier = carrier;
+      break;
+    }
+  }
+  ASSERT_NE(periodicBarrier, nullptr)
+      << "D4 requires a produced PeriodicCut carrier that is also a typed hard feature";
+  ASSERT_TRUE(removedCarrier.has_value());
+  const auto *barrierFirst = m6cp3_occurrence_by_id(*baseline, periodicBarrier->id.first);
+  const auto *barrierSecond = m6cp3_occurrence_by_id(*baseline, periodicBarrier->id.second);
+  ASSERT_NE(barrierFirst, nullptr);
+  ASSERT_NE(barrierSecond, nullptr);
+  EXPECT_NE(barrierFirst->chartComponent, barrierSecond->chartComponent);
+
+  PhaseFrontDraft removed = phase_front_draft(torus.network.phaseFront);
+  ASSERT_TRUE(removed.hardFeatureEdges.contains(*removedCarrier));
+  removed.hardFeatureEdges.erase(*removedCarrier);
+  auto removedFrontResult = construct_phase_front_product(std::move(removed));
+  const auto *removedFront =
+      std::get_if<directional::geometry::SurfacePhaseFrontProduct>(
+          &removedFrontResult);
+  ASSERT_NE(removedFront, nullptr);
+  auto removedA5Result =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+          torus.mesh.V, torus.mesh.F, *removedFront);
+  const auto *removedA5 =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+          &removedA5Result);
+  ASSERT_NE(removedA5, nullptr)
+      << "removing a Periodic-carried typed hard feature must not be reconstructed from relation kind";
+  const auto removedRelation = std::find_if(
+      removedA5->owned_relations().begin(), removedA5->owned_relations().end(),
+      [&](const auto &candidate) { return candidate.id == periodicBarrier->id; });
+  ASSERT_NE(removedRelation, removedA5->owned_relations().end());
+  const auto *removedFirst =
+      m6cp3_occurrence_by_id(*removedA5, removedRelation->id.first);
+  const auto *removedSecond =
+      m6cp3_occurrence_by_id(*removedA5, removedRelation->id.second);
+  ASSERT_NE(removedFirst, nullptr);
+  ASSERT_NE(removedSecond, nullptr);
+  EXPECT_EQ(removedFirst->chartComponent, removedSecond->chartComponent);
+  const auto componentSignature = [](const auto &product) {
+    std::vector<std::pair<directional::authority::OccurrenceId,
+                          directional::geometry::SourceChartComponentIdentity>> value;
+    for (const auto &occurrence : product.occurrences()) {
+      value.emplace_back(occurrence.id, occurrence.chartComponent);
+    }
+    return value;
+  };
+  EXPECT_NE(componentSignature(*baseline), componentSignature(*removedA5));
+
+  const auto &rail = hard_rail_fixture();
+  PhaseFrontDraft missingRailAuthority = phase_front_draft(rail.network.phaseFront);
+  missingRailAuthority.hardFeatureEdges.clear();
+  auto missingRailFrontResult =
+      construct_phase_front_product(std::move(missingRailAuthority));
+  const auto *missingRailFront =
+      std::get_if<directional::geometry::SurfacePhaseFrontProduct>(
+          &missingRailFrontResult);
+  ASSERT_NE(missingRailFront, nullptr);
+  auto missingRailA5 =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+          rail.mesh.V, rail.mesh.F, *missingRailFront);
+  const auto *missingRailError =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(
+          &missingRailA5);
+  ASSERT_NE(missingRailError, nullptr);
+  EXPECT_EQ(missingRailError->code,
+            directional::pipeline::SurfaceOccurrenceComplexErrorCode::
+                InvalidHardRailAuthority);
+
+  const auto &square = square_fixture();
+  PhaseFrontDraft marked = phase_front_draft(square.network.phaseFront);
+  int ordinary = -1;
+  for (int i = 0; i < static_cast<int>(marked.edges.size()); ++i) {
+    if (marked.edges[static_cast<std::size_t>(i)].boundaryKind ==
+        SurfaceFrontBoundaryKind::OrdinaryInterior) {
+      ordinary = i;
+      break;
+    }
+  }
+  ASSERT_GE(ordinary, 0);
+  ASSERT_FALSE(marked.edges[static_cast<std::size_t>(ordinary)].route.empty());
+  const auto ordinaryCarrier =
+      marked.edges[static_cast<std::size_t>(ordinary)].route.steps().front().topology();
+  marked.hardFeatureEdges.insert(ordinaryCarrier);
+  auto markedFrontResult = construct_phase_front_product(std::move(marked));
+  const auto *markedFront =
+      std::get_if<directional::geometry::SurfacePhaseFrontProduct>(
+          &markedFrontResult);
+  ASSERT_NE(markedFront, nullptr);
+  auto markedA5Result =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+          square.mesh.V, square.mesh.F, *markedFront);
+  const auto *markedA5 =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+          &markedA5Result);
+  ASSERT_NE(markedA5, nullptr);
+  auto squareBaselineResult =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+          square.mesh.V, square.mesh.F, square.network.phaseFront.product());
+  const auto *squareBaseline =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+          &squareBaselineResult);
+  ASSERT_NE(squareBaseline, nullptr);
+  EXPECT_NE(componentSignature(*squareBaseline), componentSignature(*markedA5));
+}
+
+TEST(M6CP3, ProducedSeamCollinearOrdinaryFrontRequiresExactCrossSheetTransition) {
+  const auto &fixture = split_isolation_fixture();
+  auto a5Result = directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+      fixture.mesh.V, fixture.mesh.F, fixture.network.phaseFront.product());
+  const auto *a5 = std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+      &a5Result);
+  ASSERT_NE(a5, nullptr);
+  const auto *relation = m6cp3_seam_ordinary(*a5);
+  ASSERT_NE(relation, nullptr);
+  const auto *first = m6cp3_occurrence_by_id(*a5, relation->id.first);
+  const auto *second = m6cp3_occurrence_by_id(*a5, relation->id.second);
+  ASSERT_NE(first, nullptr);
+  ASSERT_NE(second, nullptr);
+  std::vector<directional::authority::IsolationSheetId> shared;
+  std::set_intersection(first->cornerWedgeSheets.begin(),
+                        first->cornerWedgeSheets.end(),
+                        second->cornerWedgeSheets.begin(),
+                        second->cornerWedgeSheets.end(),
+                        std::back_inserter(shared));
+  ASSERT_TRUE(shared.empty())
+      << "D7 witness must have disjoint endpoint sheet sets";
+
+  auto a6Result = directional::pipeline::SurfaceQuotientProducer::produce(*a5);
+  const auto *a6 = std::get_if<directional::pipeline::SurfaceQuotientProduct>(
+      &a6Result);
+  ASSERT_NE(a6, nullptr);
+  const bool selected = std::any_of(
+      a6->selected_forest().begin(), a6->selected_forest().end(),
+      [&](const auto &edge) { return edge.relation == relation->id; });
+  ASSERT_TRUE(selected);
+  auto a7Result = directional::pipeline::SourceAttachedGeometryProducer::produce(
+      fixture.mesh.V, fixture.mesh.F, *a5, *a6);
+  ASSERT_NE(std::get_if<directional::pipeline::SourceAttachedGeometryProduct>(
+                &a7Result),
+            nullptr);
+
+  auto records = a5->verification_records();
+  auto altered = std::find_if(
+      records.ownedRelations.begin(), records.ownedRelations.end(),
+      [&](const auto &candidate) { return candidate.id == relation->id; });
+  ASSERT_NE(altered, records.ownedRelations.end());
+  altered->evidence.firstSideIsolationEvidence.clear();
+  altered->evidence.secondSideIsolationEvidence.clear();
+  altered->evidence.equivalence.isolationTransitions.clear();
+  auto tamperedA5Result =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::
+          publish_records_for_validation(std::move(records.cells),
+                                         std::move(records.occurrences),
+                                         std::move(records.ownedRelations));
+  const auto *tamperedA5 =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+          &tamperedA5Result);
+  ASSERT_NE(tamperedA5, nullptr);
+  auto rejected = directional::pipeline::SourceAttachedGeometryProducer::produce(
+      fixture.mesh.V, fixture.mesh.F, *tamperedA5, *a6);
+  const auto *failure =
+      std::get_if<directional::pipeline::GeometryEmbeddingFailure>(&rejected);
+  ASSERT_NE(failure, nullptr);
+  EXPECT_EQ(failure->code,
+            directional::pipeline::GeometryEmbeddingFailureCode::
+                UncertifiedCrossSheetBinding);
+  EXPECT_EQ(failure->site, "cross-sheet");
+}
+
+TEST(M6CP3, HardRailCrossRegionBindingDoesNotCompareGlobalSheetLabels) {
+  const auto &fixture = nonconstant_hard_rail_fixture();
+  auto a5Result = directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+      fixture.mesh.V, fixture.mesh.F, fixture.network.phaseFront.product());
+  const auto *a5 = std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+      &a5Result);
+  ASSERT_NE(a5, nullptr);
+  auto a6Result = directional::pipeline::SurfaceQuotientProducer::produce(*a5);
+  const auto *a6 = std::get_if<directional::pipeline::SurfaceQuotientProduct>(
+      &a6Result);
+  ASSERT_NE(a6, nullptr);
+
+  const directional::pipeline::QuotientForestEdge *hardRailEdge = nullptr;
+  const directional::pipeline::SurfaceOccurrenceRelation *hardRailRelation = nullptr;
+  for (const auto &edge : a6->selected_forest()) {
+    const auto relation = std::find_if(
+        a5->owned_relations().begin(), a5->owned_relations().end(),
+        [&](const auto &candidate) { return candidate.id == edge.relation; });
+    if (relation == a5->owned_relations().end() ||
+        relation->id.kind !=
+            directional::pipeline::SurfaceOccurrenceRelationKind::HardRail) {
+      continue;
+    }
+    const auto *first = m6cp3_occurrence_by_id(*a5, edge.first);
+    const auto *second = m6cp3_occurrence_by_id(*a5, edge.second);
+    if (first != nullptr && second != nullptr &&
+        first->topologyRegion != second->topologyRegion) {
+      hardRailEdge = &edge;
+      hardRailRelation = &*relation;
+      break;
+    }
+  }
+  ASSERT_NE(hardRailEdge, nullptr);
+  ASSERT_NE(hardRailRelation, nullptr);
+  auto baselineA7 = directional::pipeline::SourceAttachedGeometryProducer::produce(
+      fixture.mesh.V, fixture.mesh.F, *a5, *a6);
+  ASSERT_NE(std::get_if<directional::pipeline::SourceAttachedGeometryProduct>(
+                &baselineA7),
+            nullptr);
+
+  auto records = a5->verification_records();
+  auto altered = std::find_if(
+      records.ownedRelations.begin(), records.ownedRelations.end(),
+      [&](const auto &candidate) { return candidate.id == hardRailRelation->id; });
+  ASSERT_NE(altered, records.ownedRelations.end());
+  altered->evidence.firstEndpointFaceGauge.reset();
+  auto tamperedA5Result =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::
+          publish_records_for_validation(std::move(records.cells),
+                                         std::move(records.occurrences),
+                                         std::move(records.ownedRelations));
+  const auto *tamperedA5 =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+          &tamperedA5Result);
+  ASSERT_NE(tamperedA5, nullptr);
+  auto rejected = directional::pipeline::SourceAttachedGeometryProducer::produce(
+      fixture.mesh.V, fixture.mesh.F, *tamperedA5, *a6);
+  const auto *failure =
+      std::get_if<directional::pipeline::GeometryEmbeddingFailure>(&rejected);
+  ASSERT_NE(failure, nullptr);
+  EXPECT_EQ(failure->code,
+            directional::pipeline::GeometryEmbeddingFailureCode::
+                UncertifiedCrossSheetBinding);
+  EXPECT_EQ(failure->site, "cross-sheet:hard-rail");
 }
 
 TEST(M6CP1, SurfaceOccurrenceComplexPublishesFourSemanticCornersPerCell) {

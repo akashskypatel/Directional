@@ -1107,6 +1107,8 @@ std::uint64_t trace_network_owned_bytes(
              vector_owned_bytes(phaseFront->events()) +
              vector_owned_bytes(phaseFront->cells()) +
              vector_owned_bytes(phaseFront->isolationSeamTransportCertificates()) +
+             set_payload_owned_bytes(phaseFront->hardFeatureEdges()) +
+             vector_owned_bytes(phaseFront->sourceFaceBranchRotations()) +
              static_cast<std::uint64_t>(phaseFront->sourceTopologyRegions().face_count()) *
                  (sizeof(authority::TopologyRegionId) + sizeof(std::size_t) +
                   sizeof(authority::SourceFaceTopologyKey) +
@@ -1161,6 +1163,8 @@ std::uint64_t trace_network_logical_bytes(
              vector_logical_bytes(phaseFront->events()) +
              vector_logical_bytes(phaseFront->cells()) +
              vector_logical_bytes(phaseFront->isolationSeamTransportCertificates()) +
+             set_payload_logical_bytes(phaseFront->hardFeatureEdges()) +
+             vector_logical_bytes(phaseFront->sourceFaceBranchRotations()) +
              static_cast<std::uint64_t>(phaseFront->sourceTopologyRegions().face_count()) *
                  (sizeof(authority::TopologyRegionId) + sizeof(std::size_t) +
                   sizeof(authority::SourceFaceTopologyKey) +
@@ -2086,6 +2090,27 @@ std::uint64_t hash_trace_network(
       hash_combine_u64(seed, receipt.topologyPlanDigest);
       hash_combine_u64(seed, receipt.baselinePlanDigest);
       hash_combine_u64(seed, receipt.scheduleEntryCount);
+    }
+    hash_combine_u64(seed, phaseFront->hardFeatureEdges().size());
+    for (const authority::SourceEdgeTopologyKey &edge :
+         phaseFront->hardFeatureEdges()) {
+      hash_source_edge_topology_key(seed, edge);
+    }
+    hash_combine_u64(seed, phaseFront->sourceFaceBranchRotations().size());
+    if (!phaseFront->sourceFaceBranchRotations().empty()) {
+      for (const auto &region : phaseFront->sourceTopologyRegions().regions()) {
+        for (const geometry::SourceRegionFaceAuthority &face : region.faces()) {
+          const auto row =
+              phaseFront->sourceTopologyRegions().row_for_topology(face.topology);
+          if (row.has_value() &&
+              row->index() < phaseFront->sourceFaceBranchRotations().size()) {
+            hash_source_face_topology_key(seed, face.topology);
+            hash_combine_i64(
+                seed, phaseFront->sourceFaceBranchRotations()[static_cast<std::size_t>(
+                          row->index())]);
+          }
+        }
+      }
     }
     hash_combine_u64(
         seed, phaseFront->isolationSeamTransportCertificates().size());
@@ -3144,6 +3169,8 @@ const char *surface_occurrence_complex_error_name(
     return "InvalidAuthoritativePhaseFrontSource";
   case SurfaceOccurrenceComplexErrorCode::InvalidAuthoritativeSourceChartTransitions:
     return "InvalidAuthoritativeSourceChartTransitions";
+  case SurfaceOccurrenceComplexErrorCode::HardRailBranchCertificateMismatch:
+    return "OccurrenceHardRailBranchCertificateMismatch";
   }
   return "OccurrenceUnknownFailure";
 }
@@ -3160,6 +3187,8 @@ static const char *surface_occurrence_complex_legacy_failure_name(
   case SurfaceOccurrenceComplexErrorCode::HardRailRouteMismatch:
   case SurfaceOccurrenceComplexErrorCode::HardRailTransportMismatch:
     return "InvalidHardRailTransport";
+  case SurfaceOccurrenceComplexErrorCode::HardRailBranchCertificateMismatch:
+    return "InvalidHardRailTransport:branch-certificate";
   case SurfaceOccurrenceComplexErrorCode::PeriodicTransportMismatch:
     return "InvalidPeriodicFrontTransport";
   case SurfaceOccurrenceComplexErrorCode::PeriodicOwnerMismatch:
@@ -3782,15 +3811,8 @@ SurfaceOccurrenceComplexProducer::produce(
     return error;
   }
 
-  std::set<authority::SourceEdgeTopologyKey> hardFeatureEdges;
-  for (const geometry::SurfaceFrontEdge &edge : phaseFront.edges()) {
-    if (edge.boundaryKind != geometry::SurfaceFrontBoundaryKind::HardRail) {
-      continue;
-    }
-    for (const authority::TransitionStep &step : edge.route.steps()) {
-      hardFeatureEdges.insert(step.topology());
-    }
-  }
+  const std::set<authority::SourceEdgeTopologyKey> &hardFeatureEdges =
+      phaseFront.hardFeatureEdges();
   const geometry::SourceChartTransitionGraph chartTransitions(
       sourceFaces, phaseFront.sourceTopologyRegions(), hardFeatureEdges);
   if (!chartTransitions.available()) {
@@ -4481,6 +4503,56 @@ SurfaceOccurrenceComplexProducer::produce(
   for (const SurfaceOccurrence &occurrence : occurrences) {
     publishedOccurrenceById.emplace(occurrence.id, &occurrence);
   }
+  const auto endpoint_face_gauge =
+      [&](const authority::OccurrenceId occurrence)
+      -> std::optional<SurfaceOccurrenceEndpointFaceGaugeAuthority> {
+    const auto found = publishedOccurrenceById.find(occurrence);
+    if (found == publishedOccurrenceById.end()) return std::nullopt;
+    const auto &gauges = phaseFront.sourceFaceBranchRotations();
+    if (gauges.size() != static_cast<std::size_t>(sourceFaces.rows())) {
+      return std::nullopt;
+    }
+    const auto row = phaseFront.sourceTopologyRegions().row_for_topology(
+        found->second->placement.selectedFace);
+    if (!row.has_value() || row->index() >= gauges.size()) return std::nullopt;
+    const int gauge = gauges[static_cast<std::size_t>(row->index())];
+    if (gauge < 0 || gauge >= 4) return std::nullopt;
+    return SurfaceOccurrenceEndpointFaceGaugeAuthority{
+        found->second->placement.selectedFace,
+        authority::QuarterTurn::from_integer(gauge)};
+  };
+  const auto seam_transport_certificate =
+      [&](const SurfaceOccurrence &firstOccurrence,
+          const SurfaceOccurrence &secondOccurrence,
+          const SurfaceOccurrenceSideSpan &firstSpan,
+          const SurfaceOccurrenceSideSpan &secondSpan)
+      -> std::optional<geometry::SurfaceIsolationSeamTransportCertificate> {
+    if (!firstSpan.collinearEdge.has_value() ||
+        firstSpan.collinearEdge != secondSpan.collinearEdge ||
+        firstSpan.interiorBinding.sheet == secondSpan.interiorBinding.sheet ||
+        firstOccurrence.topologyRegion != secondOccurrence.topologyRegion) {
+      return std::nullopt;
+    }
+    for (const auto &certificate :
+         phaseFront.isolationSeamTransportCertificates()) {
+      if (certificate.region() != firstOccurrence.topologyRegion ||
+          certificate.seam() != firstSpan.collinearEdge.value()) {
+        continue;
+      }
+      const bool forward =
+          certificate.firstFace() == firstOccurrence.placement.selectedFace &&
+          certificate.secondFace() == secondOccurrence.placement.selectedFace &&
+          certificate.firstSheet() == firstSpan.interiorBinding.sheet &&
+          certificate.secondSheet() == secondSpan.interiorBinding.sheet;
+      const bool reverse =
+          certificate.secondFace() == firstOccurrence.placement.selectedFace &&
+          certificate.firstFace() == secondOccurrence.placement.selectedFace &&
+          certificate.secondSheet() == firstSpan.interiorBinding.sheet &&
+          certificate.firstSheet() == secondSpan.interiorBinding.sheet;
+      if (forward || reverse) return certificate;
+    }
+    return std::nullopt;
+  };
   const auto side_authority_for_front_edge =
       [&](const int frontEdge)
       -> const SurfaceOccurrenceDirectedSideAuthority * {
@@ -4540,6 +4612,22 @@ SurfaceOccurrenceComplexProducer::produce(
                authority::QuarterTurn::from_integer(second.branchRotation) &&
            first.scaleLevel == second.scaleLevel;
   };
+  const auto coordinate_scale_action_matches =
+      [&](const geometry::LocalLatticeState &first,
+          const geometry::LocalLatticeState &second,
+          const authority::GridAutomorphism &action) {
+        return action.apply(first.latticeCoordinate) == second.latticeCoordinate &&
+               first.scaleLevel == second.scaleLevel;
+      };
+  const auto relation_state_action_matches =
+      [&](const geometry::SurfacePeriodicRelationEndpointState &first,
+          const geometry::SurfacePeriodicRelationEndpointState &second,
+          const authority::GridAutomorphism &action) {
+        return action.apply(first.latticeCoordinate) == second.latticeCoordinate &&
+               compose(action.rotation, first.branchRotation) ==
+                   second.branchRotation &&
+               first.scaleLevel == second.scaleLevel;
+      };
   const auto periodic_endpoint_gauge = [&](
       const geometry::LocalLatticeState &placement,
       const geometry::SurfaceSharedBoundaryInterval &interval,
@@ -4604,11 +4692,7 @@ SurfaceOccurrenceComplexProducer::produce(
     const authority::GridAutomorphism toTransport = compose(
         reverseFromGauge->inverse(),
         compose(semanticAction, *forwardToGauge));
-    if (fromTransport != toTransport ||
-        !action_matches(forward.fromLattice, reverse.toLattice,
-                        fromTransport) ||
-        !action_matches(forward.toLattice, reverse.fromLattice,
-                        fromTransport)) {
+    if (fromTransport != toTransport) {
       return std::nullopt;
     }
     return fromTransport;
@@ -4679,6 +4763,13 @@ SurfaceOccurrenceComplexProducer::produce(
         error.code = SurfaceOccurrenceComplexErrorCode::HardRailRouteMismatch;
         return error;
       }
+      if (std::any_of(first.route.steps().begin(), first.route.steps().end(),
+                      [&](const authority::TransitionStep &step) {
+                        return !hardFeatureEdges.contains(step.topology());
+                      })) {
+        error.code = SurfaceOccurrenceComplexErrorCode::InvalidHardRailAuthority;
+        return error;
+      }
       hardRail = first.railId;
       relationKind = SurfaceOccurrenceRelationKind::HardRail;
     } else if (first.boundaryKind ==
@@ -4711,6 +4802,7 @@ SurfaceOccurrenceComplexProducer::produce(
     std::optional<authority::GridAutomorphism> storageTransport;
     std::optional<authority::GridAutomorphism> storageRelationValue;
     std::optional<geometry::SelectedRelationKind> selectedKind;
+    bool exactA3PeriodicAuthority = false;
     if (relationKind == SurfaceOccurrenceRelationKind::OrdinaryFront) {
       sharedEquivalence.kind = geometry::PureQuadEquivalenceKind::OrdinaryFront;
       const auto *firstSide = side_authority_for_front_edge(edgeIndex);
@@ -4835,15 +4927,46 @@ SurfaceOccurrenceComplexProducer::produce(
             const auto semanticAction =
                 geometry::resolve_periodic_relation_semantic_action(
                     storedRelation, *forwardEdge, *reverseEdge);
-            if (semanticAction.has_value()) {
+            if (semanticAction.has_value() &&
+                forwardEdge->periodicFromLattice.has_value() &&
+                forwardEdge->periodicToLattice.has_value() &&
+                reverseEdge->periodicFromLattice.has_value() &&
+                reverseEdge->periodicToLattice.has_value() &&
+                relation_state_action_matches(
+                    *forwardEdge->periodicFromLattice,
+                    *reverseEdge->periodicToLattice, *semanticAction) &&
+                relation_state_action_matches(
+                    *forwardEdge->periodicToLattice,
+                    *reverseEdge->periodicFromLattice, *semanticAction)) {
               storageRelationValue =
                   firstIsForward ? *semanticAction : semanticAction->inverse();
               const auto placementTransport = periodic_placement_transport(
                   *forwardEdge, *reverseEdge, *semanticAction);
               if (placementTransport.has_value()) {
-                storageTransport = firstIsForward
-                                       ? *placementTransport
-                                       : placementTransport->inverse();
+                const authority::GridAutomorphism candidate =
+                    firstIsForward ? *placementTransport
+                                   : placementTransport->inverse();
+                const auto firstPairFrom =
+                    publishedOccurrenceById.find(endpointPairs[0].first);
+                const auto firstPairTo =
+                    publishedOccurrenceById.find(endpointPairs[0].second);
+                const auto secondPairFrom =
+                    publishedOccurrenceById.find(endpointPairs[1].first);
+                const auto secondPairTo =
+                    publishedOccurrenceById.find(endpointPairs[1].second);
+                if (firstPairFrom != publishedOccurrenceById.end() &&
+                    firstPairTo != publishedOccurrenceById.end() &&
+                    secondPairFrom != publishedOccurrenceById.end() &&
+                    secondPairTo != publishedOccurrenceById.end() &&
+                    coordinate_scale_action_matches(
+                        firstPairFrom->second->placement.lattice,
+                        firstPairTo->second->placement.lattice, candidate) &&
+                    coordinate_scale_action_matches(
+                        secondPairFrom->second->placement.lattice,
+                        secondPairTo->second->placement.lattice, candidate)) {
+                  storageTransport = candidate;
+                  exactA3PeriodicAuthority = true;
+                }
               }
             }
           }
@@ -4867,10 +4990,11 @@ SurfaceOccurrenceComplexProducer::produce(
         }
       }
       if (!storageTransport.has_value() ||
-          !action_matches(first.fromLattice, second.toLattice,
-                          *storageTransport) ||
-          !action_matches(first.toLattice, second.fromLattice,
-                          *storageTransport)) {
+          (!exactA3PeriodicAuthority &&
+           (!action_matches(first.fromLattice, second.toLattice,
+                            *storageTransport) ||
+            !action_matches(first.toLattice, second.fromLattice,
+                            *storageTransport)))) {
         error.code = SurfaceOccurrenceComplexErrorCode::PeriodicTransportMismatch;
         return error;
       }
@@ -4920,12 +5044,55 @@ SurfaceOccurrenceComplexProducer::produce(
                                : std::optional<authority::GridAutomorphism>(
                                      storageRelationValue->inverse());
       }
+
+      evidence.firstEndpointFaceGauge = endpoint_face_gauge(relationId.first);
+      evidence.secondEndpointFaceGauge = endpoint_face_gauge(relationId.second);
+      const auto firstRecord = publishedOccurrenceById.find(relationId.first);
+      const auto secondRecord = publishedOccurrenceById.find(relationId.second);
+      if (firstRecord != publishedOccurrenceById.end() &&
+          secondRecord != publishedOccurrenceById.end() &&
+          evidence.firstEndpointSpan.has_value() &&
+          evidence.secondEndpointSpan.has_value()) {
+        evidence.isolationSeamTransportCertificate = seam_transport_certificate(
+            *firstRecord->second, *secondRecord->second,
+            *evidence.firstEndpointSpan, *evidence.secondEndpointSpan);
+      }
+
+      if (relationKind == SurfaceOccurrenceRelationKind::HardRail) {
+        if (!evidence.canonicalTransport.has_value() ||
+            !evidence.firstEndpointFaceGauge.has_value() ||
+            !evidence.secondEndpointFaceGauge.has_value() ||
+            firstRecord == publishedOccurrenceById.end() ||
+            secondRecord == publishedOccurrenceById.end()) {
+          error.code =
+              SurfaceOccurrenceComplexErrorCode::HardRailBranchCertificateMismatch;
+          error.relation = relationId;
+          return error;
+        }
+        const auto firstBranch = authority::QuarterTurn::from_integer(
+            firstRecord->second->placement.lattice.branchRotation);
+        const auto secondBranch = authority::QuarterTurn::from_integer(
+            secondRecord->second->placement.lattice.branchRotation);
+        const auto firstRegional = compose(
+            evidence.firstEndpointFaceGauge->localFaceBranchRotation.inverse(),
+            firstBranch);
+        const auto secondRegional = compose(
+            evidence.secondEndpointFaceGauge->localFaceBranchRotation.inverse(),
+            secondBranch);
+        const auto certifiedRotation =
+            compose(secondRegional, firstRegional.inverse());
+        if (certifiedRotation != evidence.canonicalTransport->rotation) {
+          error.code =
+              SurfaceOccurrenceComplexErrorCode::HardRailBranchCertificateMismatch;
+          error.relation = relationId;
+          return error;
+        }
+      }
+
       if (selectedKind.has_value() && evidence.canonicalTransport.has_value() &&
           evidence.canonicalRelationValue.has_value() &&
           evidence.firstEndpointSpan.has_value() &&
           evidence.secondEndpointSpan.has_value()) {
-        const auto firstRecord = publishedOccurrenceById.find(relationId.first);
-        const auto secondRecord = publishedOccurrenceById.find(relationId.second);
         if (firstRecord != publishedOccurrenceById.end() &&
             secondRecord != publishedOccurrenceById.end()) {
           geometry::SelectedRelationStep step;
@@ -5226,21 +5393,18 @@ SurfaceQuotientProducer::ConstructionResult SurfaceQuotientProducer::produce(
     case SurfaceOccurrenceRelationKind::OrdinaryFront: {
       const auto &firstLattice = firstOccurrence->second->placement.lattice;
       const auto &secondLattice = secondOccurrence->second->placement.lattice;
-      const bool latticeEqual =
-          firstLattice.sourceChart.has_value() &&
-          secondLattice.sourceChart.has_value() &&
-          firstLattice.latticeCoordinate == secondLattice.latticeCoordinate &&
-          firstLattice.branchRotation == secondLattice.branchRotation &&
-          firstLattice.scaleLevel == secondLattice.scaleLevel &&
-          firstLattice.sourceChart.value() == secondLattice.sourceChart.value() &&
-          (firstLattice.phase - secondLattice.phase).norm() <= 1.0e-10;
       if (relation->id.hardRail.has_value() ||
           relation->id.periodicRelation.has_value() ||
           !relation->evidence.canonicalTransport.has_value() ||
           relation->evidence.canonicalTransport.value() !=
-              authority::GridAutomorphism::identity() || !latticeEqual ||
+              authority::GridAutomorphism::identity() ||
           certificate.evidence.kind !=
-              geometry::PureQuadEquivalenceKind::OrdinaryFront) {
+              geometry::PureQuadEquivalenceKind::OrdinaryFront ||
+          !firstLattice.sourceChart.has_value() ||
+          !secondLattice.sourceChart.has_value() ||
+          firstLattice.latticeCoordinate != secondLattice.latticeCoordinate ||
+          firstLattice.scaleLevel != secondLattice.scaleLevel ||
+          (firstLattice.phase - secondLattice.phase).norm() > 1.0e-10) {
         SurfaceQuotientProductError error;
         error.code = SurfaceQuotientProductErrorCode::RelationCertificateConflict;
         error.relation = relation->id;
@@ -5275,25 +5439,43 @@ SurfaceQuotientProducer::ConstructionResult SurfaceQuotientProducer::produce(
         error.relation = relation->id;
         return error;
       }
-      if (!firstSpan.collinearEdge.has_value()) {
-        const auto sheet = firstSpan.interiorBinding.sheet;
-        if (sheet != secondSpan.interiorBinding.sheet ||
-            !wedge_contains_sheet(*firstOccurrence->second, sheet) ||
-            !wedge_contains_sheet(*secondOccurrence->second, sheet)) {
+
+      const bool crossSheetSeam =
+          firstSpan.collinearEdge.has_value() &&
+          firstSpan.collinearEdge == secondSpan.collinearEdge &&
+          firstSpan.interiorBinding.sheet != secondSpan.interiorBinding.sheet;
+      if (!crossSheetSeam) {
+        const bool fullRepresentationEqual =
+            firstLattice.sourceChart.value() == secondLattice.sourceChart.value() &&
+            firstLattice.branchRotation == secondLattice.branchRotation;
+        if (!fullRepresentationEqual) {
+          SurfaceQuotientProductError error;
+          error.code =
+              SurfaceQuotientProductErrorCode::RelationCertificateConflict;
+          error.relation = relation->id;
+          return error;
+        }
+        if (!firstSpan.collinearEdge.has_value()) {
+          const auto sheet = firstSpan.interiorBinding.sheet;
+          if (sheet != secondSpan.interiorBinding.sheet ||
+              !wedge_contains_sheet(*firstOccurrence->second, sheet) ||
+              !wedge_contains_sheet(*secondOccurrence->second, sheet)) {
+            SurfaceQuotientProductError error;
+            error.code = SurfaceQuotientProductErrorCode::
+                ReciprocalSideAuthorityMismatch;
+            error.relation = relation->id;
+            return error;
+          }
+        } else if (firstSpan.collinearEdge != secondSpan.collinearEdge ||
+                   firstSpan.interiorBinding.sheet !=
+                       secondSpan.interiorBinding.sheet) {
           SurfaceQuotientProductError error;
           error.code =
               SurfaceQuotientProductErrorCode::ReciprocalSideAuthorityMismatch;
           error.relation = relation->id;
           return error;
         }
-      } else if (firstSpan.collinearEdge != secondSpan.collinearEdge) {
-        SurfaceQuotientProductError error;
-        error.code =
-            SurfaceQuotientProductErrorCode::ReciprocalSideAuthorityMismatch;
-        error.relation = relation->id;
-        return error;
-      } else if (firstSpan.interiorBinding.sheet !=
-                 secondSpan.interiorBinding.sheet) {
+      } else {
         const geometry::CornerWedgeIsolationTransition forward{
             firstOccurrence->second->topologyRegion,
             firstSpan.collinearEdge.value(), firstSpan.interiorBinding.sheet,
@@ -5303,9 +5485,58 @@ SurfaceQuotientProducer::ConstructionResult SurfaceQuotientProducer::produce(
             firstSpan.collinearEdge.value(), secondSpan.interiorBinding.sheet,
             firstSpan.interiorBinding.sheet};
         if (!span_has_transition(firstSpan, forward) ||
-            !span_has_transition(secondSpan, reverse)) {
+            !span_has_transition(secondSpan, reverse) ||
+            !relation->evidence.isolationSeamTransportCertificate.has_value() ||
+            !relation->evidence.firstEndpointFaceGauge.has_value() ||
+            !relation->evidence.secondEndpointFaceGauge.has_value()) {
           SurfaceQuotientProductError error;
           error.code = SurfaceQuotientProductErrorCode::MissingIsolationEvidence;
+          error.relation = relation->id;
+          return error;
+        }
+
+        const auto &seam =
+            relation->evidence.isolationSeamTransportCertificate.value();
+        const auto &firstGauge = relation->evidence.firstEndpointFaceGauge.value();
+        const auto &secondGauge =
+            relation->evidence.secondEndpointFaceGauge.value();
+        if (seam.region() != firstOccurrence->second->topologyRegion ||
+            firstOccurrence->second->topologyRegion !=
+                secondOccurrence->second->topologyRegion ||
+            seam.seam() != firstSpan.collinearEdge.value() ||
+            firstGauge.face != firstOccurrence->second->placement.selectedFace ||
+            secondGauge.face != secondOccurrence->second->placement.selectedFace) {
+          SurfaceQuotientProductError error;
+          error.code =
+              SurfaceQuotientProductErrorCode::ReciprocalSideAuthorityMismatch;
+          error.relation = relation->id;
+          return error;
+        }
+
+        std::optional<authority::QuarterTurn> expectedTurn;
+        if (seam.firstFace() == firstGauge.face &&
+            seam.secondFace() == secondGauge.face &&
+            seam.firstSheet() == firstSpan.interiorBinding.sheet &&
+            seam.secondSheet() == secondSpan.interiorBinding.sheet) {
+          expectedTurn = seam.forward();
+        } else if (seam.secondFace() == firstGauge.face &&
+                   seam.firstFace() == secondGauge.face &&
+                   seam.secondSheet() == firstSpan.interiorBinding.sheet &&
+                   seam.firstSheet() == secondSpan.interiorBinding.sheet) {
+          expectedTurn = seam.reverse();
+        }
+        const auto firstRegional = compose(
+            firstGauge.localFaceBranchRotation.inverse(),
+            authority::QuarterTurn::from_integer(firstLattice.branchRotation));
+        const auto secondRegional = compose(
+            secondGauge.localFaceBranchRotation.inverse(),
+            authority::QuarterTurn::from_integer(secondLattice.branchRotation));
+        const auto strippedTurn =
+            compose(secondRegional, firstRegional.inverse());
+        if (!expectedTurn.has_value() || strippedTurn != expectedTurn.value()) {
+          SurfaceQuotientProductError error;
+          error.code =
+              SurfaceQuotientProductErrorCode::RelationCertificateConflict;
           error.relation = relation->id;
           return error;
         }
@@ -6920,6 +7151,28 @@ SourceAttachedGeometryProducer::produce(
       }
       const SurfaceOccurrence &first = *occurrenceById.at(edge.first);
       const SurfaceOccurrence &second = *occurrenceById.at(edge.second);
+      const SurfaceOccurrenceRelation &relation = *relationById.at(edge.relation);
+      switch (relation.id.kind) {
+      case SurfaceOccurrenceRelationKind::HardRail:
+        if (first.topologyRegion == second.topologyRegion ||
+            !relation.evidence.firstEndpointFaceGauge.has_value() ||
+            !relation.evidence.secondEndpointFaceGauge.has_value()) {
+          return fail(GeometryEmbeddingFailureCode::UncertifiedCrossSheetBinding,
+                      quotient.id, edge.first, {}, "cross-sheet:hard-rail");
+        }
+        continue;
+      case SurfaceOccurrenceRelationKind::OrdinaryFront:
+      case SurfaceOccurrenceRelationKind::Periodic:
+        if (first.topologyRegion != second.topologyRegion) {
+          return fail(GeometryEmbeddingFailureCode::UncertifiedCrossSheetBinding,
+                      quotient.id, edge.first, {}, "cross-sheet:region");
+        }
+        break;
+      case SurfaceOccurrenceRelationKind::SingularityPort:
+        return fail(GeometryEmbeddingFailureCode::UncertifiedCrossSheetBinding,
+                    quotient.id, edge.first, {}, "cross-sheet:relation-kind");
+      }
+
       std::vector<authority::IsolationSheetId> sharedSheets;
       std::set_intersection(first.cornerWedgeSheets.begin(),
                             first.cornerWedgeSheets.end(),
@@ -6927,7 +7180,6 @@ SourceAttachedGeometryProducer::produce(
                             second.cornerWedgeSheets.end(),
                             std::back_inserter(sharedSheets));
       if (!sharedSheets.empty()) continue;
-      const SurfaceOccurrenceRelation &relation = *relationById.at(edge.relation);
       const auto transition_connects_endpoints =
           [&](const geometry::CornerWedgeIsolationTransition &transition) {
             const auto has_sheet = [](const SurfaceOccurrence &occurrence,
@@ -6945,16 +7197,17 @@ SourceAttachedGeometryProducer::produce(
         return std::any_of(transitions.begin(), transitions.end(),
                            transition_connects_endpoints);
       };
-      const bool certified =
+      const bool relationCertified =
           any_connecting_transition(
               relation.evidence.firstSideIsolationEvidence) ||
           any_connecting_transition(
               relation.evidence.secondSideIsolationEvidence) ||
           any_connecting_transition(
-              relation.evidence.equivalence.isolationTransitions) ||
+              relation.evidence.equivalence.isolationTransitions);
+      const bool occurrenceCertified =
           any_connecting_transition(first.cornerWedgeIsolation) ||
           any_connecting_transition(second.cornerWedgeIsolation);
-      if (!certified) {
+      if (!relationCertified || !occurrenceCertified) {
         return fail(GeometryEmbeddingFailureCode::UncertifiedCrossSheetBinding,
                     quotient.id, edge.first, {}, "cross-sheet");
       }
@@ -8535,6 +8788,12 @@ build_authoritative_phase_front_mesh_with_hard_features(
   result.mesh.sourcePatch = 0;
   result.mesh.backend = geometry::PureQuadCompletionBackend::ClosedForm;
   result.mesh.usesCenterFan = false;
+
+  if (hardFeatureRailEdges != nullptr &&
+      *hardFeatureRailEdges != phaseFront.hardFeatureEdges()) {
+    result.failure = "InvalidHardFeatureAuthority:a4-a5-adapter";
+    return result;
+  }
 
   auto occurrenceConstruction = SurfaceOccurrenceComplexProducer::produce(
       sourceVertices, sourceFaces, phaseFront);

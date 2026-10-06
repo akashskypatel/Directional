@@ -7974,10 +7974,20 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
     std::vector<SurfaceFrontEdge> edges,
     std::vector<SurfaceFrontEvent> events,
     std::vector<SurfacePhaseFrontCell> cells,
-    std::optional<SurfaceConformityPlanReceipt> conformityPlanReceipt) {
+    std::optional<SurfaceConformityPlanReceipt> conformityPlanReceipt,
+    std::set<authority::SourceEdgeTopologyKey> hardFeatureEdges,
+    std::vector<int> sourceFaceBranchRotations) {
   SurfacePhaseFrontProductError error;
   if (sourceTopologyRegions.regions().empty() ||
       sourceTopologyRegions.face_count() == 0U) {
+    error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+    return error;
+  }
+  if (!sourceFaceBranchRotations.empty() &&
+      (sourceFaceBranchRotations.size() != sourceTopologyRegions.face_count() ||
+       std::any_of(sourceFaceBranchRotations.begin(),
+                   sourceFaceBranchRotations.end(),
+                   [](const int value) { return value < 0 || value >= 4; }))) {
     error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
     return error;
   }
@@ -8381,7 +8391,8 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
       std::move(isolationSeamTransportCertificates),
       std::move(periodicHolonomies), std::move(boundedDiskBoundaryPhases),
       std::move(edges), std::move(events), std::move(cells),
-      std::move(conformityPlanReceipt));
+      std::move(conformityPlanReceipt), std::move(hardFeatureEdges),
+      std::move(sourceFaceBranchRotations));
 }
 
 } // namespace directional::geometry
@@ -11879,6 +11890,7 @@ struct SurfacePhaseFrontBuildState {
   std::vector<SurfacePeriodicHolonomy> periodicHolonomies;
   std::vector<SurfaceBoundedDiskBoundaryPhase> boundedDiskBoundaryPhases;
   std::optional<SurfaceConformityPlanReceipt> conformityPlanReceipt;
+  std::set<authority::SourceEdgeTopologyKey> hardFeatureEdges;
   std::map<AcceptedCutBoundaryFaceAuthorityKey, authority::SourceFaceId>
       acceptedCutBoundaryFaceAuthority;
   // Exact per-face +U branch gauge retained by bounded-disk producers until
@@ -11920,7 +11932,8 @@ SurfacePhaseFrontResult publish_phase_front_result(
       std::move(state.periodicHolonomies),
       std::move(state.boundedDiskBoundaryPhases), std::move(state.edges),
       std::move(state.events), std::move(state.cells),
-      std::move(state.conformityPlanReceipt));
+      std::move(state.conformityPlanReceipt), std::move(state.hardFeatureEdges),
+      std::move(state.faceBranchRotation));
   if (auto *value = std::get_if<SurfacePhaseFrontProduct>(&product)) {
     return SurfacePhaseFrontResult::produced(std::move(*value));
   }
@@ -16843,6 +16856,7 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
     return result;
   }
   result.sourceTopologyRegions = sourceAuthority;
+  result.faceBranchRotation.assign(static_cast<std::size_t>(faces.rows()), -1);
 
   struct RegionWork {
     const SurfaceTopologyRegion *region = nullptr;
@@ -16977,6 +16991,28 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
       anyProduced = true;
       result.gridU = std::max(result.gridU, local.gridU);
       result.gridV = std::max(result.gridV, local.gridV);
+      if (local.faceBranchRotation.size() !=
+          static_cast<std::size_t>(faces.rows())) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+        return result;
+      }
+      for (const authority::SourceFaceId sourceFace : work.sourceRows) {
+        const std::size_t row = static_cast<std::size_t>(sourceFace.index());
+        const int localGauge = local.faceBranchRotation[row];
+        if (localGauge < 0 || localGauge >= 4 ||
+            (result.faceBranchRotation[row] >= 0 &&
+             result.faceBranchRotation[row] != localGauge)) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+          return result;
+        }
+        result.faceBranchRotation[row] = localGauge;
+      }
       for (const auto &[key, sourceFace] :
            local.acceptedCutBoundaryFaceAuthority) {
         const auto [faceAuthority, insertedFaceAuthority] =
@@ -17894,11 +17930,25 @@ SurfaceCellNetwork build_surface_cell_network(
   authoritativeOptions.sourceFaceComponents.clear();
   authoritativeOptions.sourceFaceSheets.clear();
   authoritativeOptions.sourceAuthority = &*network.sourceTopologyRegions;
-  network.phaseFront = surface_cell_tracing_detail::publish_phase_front_result(
+  auto phaseFrontState =
       surface_cell_tracing_detail::build_uniform_phase_front_state(
           vertices, faces, faceAxisX, faceAxisY, targetSize,
-          *network.sourceTopologyRegions, authoritativeOptions,
-          edgeMatching, edgeEffort, edgeTransitions));
+          *network.sourceTopologyRegions, authoritativeOptions, edgeMatching,
+          edgeEffort, edgeTransitions);
+  const auto sourceEdges = surface_cell_tracing_detail::edge_faces(faces);
+  for (const authority::SourceEdgeTopologyKey &edge :
+       authoritativeOptions.hardFeatureEdges) {
+    if (sourceEdges.count(edge) == 0U) {
+      SurfacePhaseFrontFailure failure;
+      failure.reason =
+          SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+      network.phaseFront = SurfacePhaseFrontResult::rejected(std::move(failure));
+      return network;
+    }
+  }
+  phaseFrontState.hardFeatureEdges = authoritativeOptions.hardFeatureEdges;
+  network.phaseFront = surface_cell_tracing_detail::publish_phase_front_result(
+      std::move(phaseFrontState));
   if (network.phaseFront.is_produced()) {
     const SurfacePhaseFrontProduct &phaseFront = network.phaseFront.product();
     network.proposals.reserve(phaseFront.cells().size());

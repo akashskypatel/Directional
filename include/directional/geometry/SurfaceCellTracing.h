@@ -1795,7 +1795,9 @@ public:
        std::vector<SurfaceFrontEvent> events,
        std::vector<SurfacePhaseFrontCell> cells,
        std::optional<SurfaceConformityPlanReceipt> conformityPlanReceipt =
-           std::nullopt);
+           std::nullopt,
+       std::set<authority::SourceEdgeTopologyKey> hardFeatureEdges = {},
+       std::vector<int> sourceFaceBranchRotations = {});
 
   [[nodiscard]] int gridU() const noexcept { return gridU_; }
   [[nodiscard]] int gridV() const noexcept { return gridV_; }
@@ -1827,6 +1829,13 @@ public:
   conformityPlanReceipt() const noexcept {
     return conformityPlanReceipt_;
   }
+  [[nodiscard]] const std::set<authority::SourceEdgeTopologyKey> &
+  hardFeatureEdges() const noexcept {
+    return hardFeatureEdges_;
+  }
+  [[nodiscard]] const std::vector<int> &sourceFaceBranchRotations() const noexcept {
+    return sourceFaceBranchRotations_;
+  }
 
 private:
   SurfacePhaseFrontProduct(
@@ -1838,7 +1847,9 @@ private:
       std::vector<SurfaceFrontEdge> edges,
       std::vector<SurfaceFrontEvent> events,
       std::vector<SurfacePhaseFrontCell> cells,
-      std::optional<SurfaceConformityPlanReceipt> conformityPlanReceipt)
+      std::optional<SurfaceConformityPlanReceipt> conformityPlanReceipt,
+      std::set<authority::SourceEdgeTopologyKey> hardFeatureEdges,
+      std::vector<int> sourceFaceBranchRotations)
       : gridU_(gridU), gridV_(gridV),
         sourceTopologyRegions_(std::move(sourceTopologyRegions)),
         isolationSeamTransportCertificates_(
@@ -1847,7 +1858,9 @@ private:
         boundedDiskBoundaryPhases_(std::move(boundedDiskBoundaryPhases)),
         edges_(std::move(edges)), events_(std::move(events)),
         cells_(std::move(cells)),
-        conformityPlanReceipt_(std::move(conformityPlanReceipt)) {}
+        conformityPlanReceipt_(std::move(conformityPlanReceipt)),
+        hardFeatureEdges_(std::move(hardFeatureEdges)),
+        sourceFaceBranchRotations_(std::move(sourceFaceBranchRotations)) {}
 
   int gridU_ = 0;
   int gridV_ = 0;
@@ -1860,6 +1873,8 @@ private:
   std::vector<SurfaceFrontEvent> events_;
   std::vector<SurfacePhaseFrontCell> cells_;
   std::optional<SurfaceConformityPlanReceipt> conformityPlanReceipt_;
+  std::set<authority::SourceEdgeTopologyKey> hardFeatureEdges_;
+  std::vector<int> sourceFaceBranchRotations_;
 };
 
 struct NotApplicable {};

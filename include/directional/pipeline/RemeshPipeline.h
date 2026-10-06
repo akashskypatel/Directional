@@ -844,6 +844,14 @@ struct SurfaceOccurrenceCell {
   std::array<SurfaceOccurrenceDirectedSideAuthority, 4> directedSideAuthority;
 };
 
+struct SurfaceOccurrenceEndpointFaceGaugeAuthority {
+  authority::SourceFaceTopologyKey face;
+  authority::QuarterTurn localFaceBranchRotation;
+
+  auto operator<=>(const SurfaceOccurrenceEndpointFaceGaugeAuthority &) const =
+      default;
+};
+
 struct SurfaceOccurrenceRelationEvidence {
   std::optional<authority::GridAutomorphism> canonicalTransport;
   std::optional<authority::GridAutomorphism> canonicalRelationValue;
@@ -855,6 +863,12 @@ struct SurfaceOccurrenceRelationEvidence {
       firstSideIsolationEvidence;
   std::vector<geometry::CornerWedgeIsolationTransition>
       secondSideIsolationEvidence;
+  std::optional<SurfaceOccurrenceEndpointFaceGaugeAuthority>
+      firstEndpointFaceGauge;
+  std::optional<SurfaceOccurrenceEndpointFaceGaugeAuthority>
+      secondEndpointFaceGauge;
+  std::optional<geometry::SurfaceIsolationSeamTransportCertificate>
+      isolationSeamTransportCertificate;
 };
 
 struct SurfaceOccurrenceRelation {
@@ -941,6 +955,7 @@ enum class SurfaceOccurrenceComplexErrorCode : std::uint8_t {
   MissingAuthoritativePhaseFront = 49,
   InvalidAuthoritativePhaseFrontSource = 50,
   InvalidAuthoritativeSourceChartTransitions = 51,
+  HardRailBranchCertificateMismatch = 52,
 };
 
 const char *surface_occurrence_complex_error_name(

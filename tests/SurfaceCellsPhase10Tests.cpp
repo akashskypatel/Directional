@@ -6048,7 +6048,8 @@ rebuild_phase_front_with_edges(
       product.gridU(), product.gridV(), product.sourceTopologyRegions(),
       product.isolationSeamTransportCertificates(), product.periodicHolonomies(),
       product.boundedDiskBoundaryPhases(), std::move(edges), product.events(),
-      product.cells(), product.conformityPlanReceipt());
+      product.cells(), product.conformityPlanReceipt(),
+      product.hardFeatureEdges(), product.sourceFaceBranchRotations());
   auto *value =
       std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&rebuilt);
   if (value == nullptr) {
