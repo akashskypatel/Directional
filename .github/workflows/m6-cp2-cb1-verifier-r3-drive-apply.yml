@@ -5,7 +5,7 @@ on:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/connector-triggers/m6-cp2-cb1-verifier-r3-drive-apply.txt
+      - .agents/connector-triggers/m6-cp2-cb1-verifier-r3-closeout-apply.txt
 
 permissions:
   actions: read
@@ -29,11 +29,11 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1u1VZZVK_yXXhoTGMUc9BUvefl3fUjzyR
-      patch_sha256: ff363f0ea6daa9cfe12c90cbc03f901e9084164d336aae9be01bf4bc932c7c97
-      base_sha: 8cb9903dc4491351e79891aace27e838cce7844e
+      file_id: 1TbGXNHNIty1voWnMbgCGlKNHxWV-SMu6
+      patch_sha256: e458c016ecea5a6d73893c501af73753a7ef0c005b43fdaca3ad600673a98b4c
+      base_sha: c64baacd6c767c4ba053b6963651c0aa6eceed20
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "M6 CP2 verifier R3 exact three-hop binding"
+      commit_message: "docs(agent): close M6 CP2 verifier R3"
     secrets: inherit
 
   mailbox:
@@ -45,4 +45,4 @@ jobs:
       source_sha: ${{ github.sha }}
       source_ref: ${{ github.ref }}
       result: ${{ needs.apply.result }}
-      summary: Apply the verified M6 CP2 verifier R3 preservation patch from Google Drive.
+      summary: Apply durable M6 CP2 verifier R3 closeout documentation from Google Drive.
