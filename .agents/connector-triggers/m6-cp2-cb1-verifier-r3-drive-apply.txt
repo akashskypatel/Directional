@@ -1,0 +1,3 @@
+Purpose: apply the verified M6-CP2-CB1-VERIFIER-R3 preservation patch.
+Expected caller install: ebf590af6204ec5b41202152cac82024f4f66bb9
+Retry: 0
