@@ -1,2 +1,0 @@
-M6-DEFN-R5 source snapshot trigger.
-Freeze the exact marker commit as the runtime-free definition-turn source authority.
