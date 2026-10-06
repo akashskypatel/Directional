@@ -7379,8 +7379,6 @@ const char *verification_failure_code_name(const VerificationFailureCode code) {
     return "CertificatePayloadMismatch";
   case VerificationFailureCode::MissingPublishedAuthority:
     return "MissingPublishedAuthority";
-  case VerificationFailureCode::UncertifiedAuthoritySubstitution:
-    return "UncertifiedAuthoritySubstitution";
   }
   return "Unknown";
 }
@@ -8210,6 +8208,45 @@ VerificationReport SurfaceProductVerifier::verify_records(
         VerificationFailureCode::SourceSupportIncidenceMismatch,
         "a7:support-cover");
   }
+  // A7 vertices must bind exactly to their published A6 representative and
+  // A7 source-support certificate. This is an independent verifier check: the
+  // embedded point may not be moved, welded, or rebound even when the resulting
+  // support identity would still be geometrically plausible.
+  const auto exactVector3 = [](const Eigen::Vector3d &first,
+                               const Eigen::Vector3d &second) {
+    return (first.array() == second.array()).all();
+  };
+  for (const auto &vertex : geometry.vertices) {
+    const auto quotientClass = classById.find(vertex.quotientClass);
+    const auto representative = occurrenceById.find(vertex.representative);
+    const auto support = supportByClass.find(vertex.quotientClass);
+    const bool representativeIsMember =
+        quotientClass != classById.end() &&
+        std::find(quotientClass->second->members.begin(),
+                  quotientClass->second->members.end(), vertex.representative) !=
+            quotientClass->second->members.end();
+    const bool sourcePointMatchesRepresentative =
+        representative != occurrenceById.end() &&
+        vertex.sourcePoint.face == representative->second->point.face &&
+        exactVector3(vertex.sourcePoint.barycentric,
+                     representative->second->point.barycentric) &&
+        exactVector3(vertex.sourcePoint.position,
+                     representative->second->point.position);
+    const bool embeddedPositionMatchesSourcePoint =
+        (vertex.position.array() ==
+         vertex.sourcePoint.position.transpose().array())
+            .all();
+    const bool supportMatchesCertificate =
+        support != supportByClass.end() &&
+        vertex.support == support->second->publishedSupport;
+    if (!representativeIsMember || !sourcePointMatchesRepresentative ||
+        !embeddedPositionMatchesSourcePoint || !supportMatchesCertificate) {
+      add(VerificationStage::A7,
+          VerificationFailureCode::SourceSupportIncidenceMismatch,
+          "a7:vertex-binding", {}, vertex.representative, {},
+          vertex.quotientClass);
+    }
+  }
   std::vector<SurfaceQuotientCell> a6Topology = quotient.records.classedCells;
   std::vector<SurfaceQuotientCell> a7Topology = geometry.topology;
   std::sort(a6Topology.begin(), a6Topology.end(),
@@ -8295,15 +8332,27 @@ VerificationReport SurfaceProductVerifier::verify_records(
         VerificationFailureCode::CertificatePayloadMismatch,
         "certificate:a6");
   }
+  if (geometry.certificate.connectedComponents != connectedComponents) {
+    add(VerificationStage::CrossStage,
+        VerificationFailureCode::BoundaryOrEulerMismatch,
+        "a6:components");
+  }
+  if (geometry.certificate.boundaryLoopCount !=
+      static_cast<std::size_t>(boundaryLoops)) {
+    add(VerificationStage::CrossStage,
+        VerificationFailureCode::BoundaryOrEulerMismatch,
+        "a6:boundary-loops");
+  }
+  if (geometry.certificate.eulerCharacteristic != eulerCharacteristic) {
+    add(VerificationStage::CrossStage,
+        VerificationFailureCode::BoundaryOrEulerMismatch,
+        "a6:euler");
+  }
   if (!supportCertificatePayloadValid ||
       geometry.certificate.quotientClassCount != quotient.records.classes.size() ||
       geometry.certificate.embeddedVertexCount != geometry.vertices.size() ||
       geometry.certificate.classedCellCount != geometry.topology.size() ||
       geometry.certificate.boundaryLoopCount != geometry.boundaryLoops.size() ||
-      geometry.certificate.boundaryLoopCount !=
-          static_cast<std::size_t>(boundaryLoops) ||
-      geometry.certificate.connectedComponents != connectedComponents ||
-      geometry.certificate.eulerCharacteristic != eulerCharacteristic ||
       !geometry.certificate.exactClassBijection ||
       !geometry.certificate.exactCellTopologyCopy ||
       !geometry.certificate.completeSourceSupport ||

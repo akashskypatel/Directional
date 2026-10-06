@@ -1501,7 +1501,6 @@ enum class VerificationFailureCode : std::uint8_t {
   SourceSupportIncidenceMismatch = 9,
   CertificatePayloadMismatch = 10,
   MissingPublishedAuthority = 11,
-  UncertifiedAuthoritySubstitution = 12,
 };
 
 const char *verification_failure_code_name(VerificationFailureCode code);
