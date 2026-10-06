@@ -120,3 +120,11 @@ Because the current connector cannot create a new file under `.github/workflows/
 - Local YAML parsing of the materialized caller passed and the `resolve-source` output still references `steps.resolve.outputs.source_sha`. This local parse is not a substitute for the mandatory durable SchemaStore validator.
 - The caller remains absent from `.github/workflows/`; no marker was created and no workflow run was triggered. Connector capability remains unchanged, so the prior prohibition on retrying blocked workflow-file writes still applies.
 - Exact next action: install the new materialized caller at `.github/workflows/m6-cp3-cb1-entry-r1-apply-compile.yml` as a standalone commit with no marker. The caller itself fail-closes on the durable schema validator before Drive apply, but current policy still records strict prepublication validator execution as unavailable through this connector surface.
+
+
+## 2026-10-06T22:44Z current-head patch CAS verification
+
+- Fresh compare-and-swap preflight from patch base `637eb6f217a839ec1f9a6d9871a45b67089736e7` to this attempt's control head `d099d0b2a8501fe8f5558d5fdffd2e516a946d2d` reports 39 commits ahead, 0 behind, with the base as merge base.
+- The only paths changed across that range are `.agents/Directional/Architecture_M6_CP3_CB1_Entry_R1_WIP_Handoff.md`, `.workflow-mailbox/repo-source-snapshot/latest.json`, `.workflow-mailbox/repo-source-snapshot/runs/37493944389-attempt-1.json`, and `STATUS`.
+- Therefore all four intended patch paths remain byte-authority-compatible with the frozen base: `include/directional/pipeline/RemeshPipeline.h`, `src/geometry/SurfaceCellTracing.cpp`, `src/pipeline/RemeshPipeline.cpp`, and `tests/SurfaceCellTransitionQuotientTests.cpp` have not changed since the patch base.
+- This narrows the remaining obstacle to workflow validation/publication/trigger capability; no semantic-source rebase or patch regeneration is currently required.
