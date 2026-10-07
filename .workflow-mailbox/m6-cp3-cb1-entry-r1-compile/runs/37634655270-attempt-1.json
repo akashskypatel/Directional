@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "workflow_key": "m6-cp3-cb1-entry-r1-compile",
+  "workflow": "M6 CP3 CB1 Entry R1 Compile",
+  "workflow_ref": "akashskypatel/Directional/.github/workflows/m6-cp3-cb1-entry-r1-compile.yml@refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "repository": "akashskypatel/Directional",
+  "event": "push",
+  "event_sha": "c0b34666abe4cc1fe8d2d7c8d9c019260eb8f19b",
+  "source_sha": "68000a95a94b1d95f22694dc093dc6a538e1b7b4",
+  "source_ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref_name": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "run_id": 37634655270,
+  "run_attempt": 1,
+  "run_number": 1,
+  "run_url": "https://github.com/akashskypatel/Directional/actions/runs/37634655270",
+  "result": "success",
+  "summary": "M6 CP3 CB1 entry R1 compile/package of exact eight GMP/GMPXX targets; semantic source_sha=68000a95a94b1d95f22694dc093dc6a538e1b7b4; runtimeExecution=false.",
+  "reported_at": "2026-10-07T14:19:29Z",
+  "mailbox_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "artifacts": [
+    {
+      "id": 11489551020,
+      "name": "workflow-mailbox-publisher-log-37634655270-attempt-1",
+      "size_in_bytes": 389,
+      "digest": "sha256:6ad7071f940e5a150a5ed390e1748c9db141e51dac030da36fcb558698d778f8",
+      "expired": false,
+      "created_at": "2026-10-07T14:19:26Z",
+      "expires_at": "2026-10-21T14:19:25Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/37634655270/artifacts/11489551020",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11489551020/zip"
+    },
+    {
+      "id": 11489275063,
+      "name": "m6-cp3-cb1-entry-r1-log-37634655270",
+      "size_in_bytes": 4027,
+      "digest": "sha256:1c155334a70a73ace047e721ca8dec3c3db75d5f130aff0f609327870d618f5e",
+      "expired": false,
+      "created_at": "2026-10-07T14:18:46Z",
+      "expires_at": "2026-10-14T14:18:45Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/37634655270/artifacts/11489275063",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11489275063/zip"
+    },
+    {
+      "id": 11488700954,
+      "name": "m6-cp3-cb1-entry-r1-result-37634655270",
+      "size_in_bytes": 37195283,
+      "digest": "sha256:a26311563d92e9fce6932f034fc870bc285ca63482457bf8b39c359569f1496b",
+      "expired": false,
+      "created_at": "2026-10-07T14:18:45Z",
+      "expires_at": "2026-10-14T14:18:42Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/37634655270/artifacts/11488700954",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11488700954/zip"
+    },
+    {
+      "id": 11486974507,
+      "name": "agent-workflow-schema-validator-log-37634655270",
+      "size_in_bytes": 499,
+      "digest": "sha256:f315ee41828cdd86678995383676606dafe943280097f7e686bd575897cdb9db",
+      "expired": false,
+      "created_at": "2026-10-07T14:11:49Z",
+      "expires_at": "2026-10-14T14:11:48Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/37634655270/artifacts/11486974507",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11486974507/zip"
+    },
+    {
+      "id": 11486909631,
+      "name": "agent-workflow-schema-validation-37634655270",
+      "size_in_bytes": 446,
+      "digest": "sha256:3627a7b4e0d6751eb15463c225f94e573fbdb84308d832de504a211ece4bc152",
+      "expired": false,
+      "created_at": "2026-10-07T14:11:48Z",
+      "expires_at": "2026-10-14T14:11:47Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/37634655270/artifacts/11486909631",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11486909631/zip"
+    }
+  ]
+}
