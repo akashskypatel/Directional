@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "request_id": "dispatcher-bootstrap-20261007",
+  "operation": "noop",
+  "mailbox_key": "agent-operation-dispatcher-bootstrap",
+  "note": "Durable dispatcher installation validation request."
+}
