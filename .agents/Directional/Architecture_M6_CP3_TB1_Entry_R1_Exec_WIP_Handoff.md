@@ -1,6 +1,6 @@
 # M6-CP3-TB1-ENTRY-R1-EXEC WIP handoff
 
-Turn remains **IN_PROGRESS** because the immutable artifact-only runtime is still executing.
+Historical WIP/recovery record. `M6-CP3-TB1-ENTRY-R1-EXEC` is **COMPLETE**; authoritative semantic evidence is in `Architecture_M6_CP3_TB1_Entry_R1_Artifact_Only_Test_Benchmark_Report.md`, and the mandatory successor is `M6-CP3-TB1-ENTRY-R1-REV`.
 
 ## Fixed authority
 
@@ -73,3 +73,14 @@ No local Directional runtime was executed.
 - Preservation crossed both required durable boundaries: File Library ID `libfile_7e894c6cb5988191a8f3cbdac9f7a001`, and Google Drive `Directional-CI` File ID `1WwvHHQ5SwZDVUYIVSuKSHglOaMLq-mbs`. This Drive file is preservation-only and must not be dispatched through `drive_apply` because the patch touches `.github/workflows/**`.
 - No cleanup manifest was created, no source-snapshot trigger was deleted, and no cleanup workflow was triggered. The remaining temporary trigger files therefore remain `.agents/connector-triggers/source-snapshot/m6-cp3-cb1-entry-r1.txt` and `.agents/connector-triggers/source-snapshot/tb1-20261007-1532.txt` (the latter was refreshed for this exact snapshot).
 - Resume this SAME EXEC turn only after the GitHub content-mutation plane works: install the exact preserved cleanup-workflow bytes, require SchemaStore self-validation GREEN before the cleanup job, then create one cleanup manifest for both source-snapshot triggers, execute cleanup once, verify durable ten-workflow/request/mailbox hygiene, retire the preservation Drive file after the workflow bytes are durably committed, and complete EXEC to `M6-CP3-TB1-ENTRY-R1-REV`. Do not begin Review in the blocked EXEC turn.
+
+
+## 2026-10-07T20:55Z final cleanup and blocker resolution
+
+- The previously blocked cleanup-workflow mutation later succeeded exactly: `.github/workflows/agent-turn-cleanup.yml` commit `a95f1ac423928722ca171d914ef51c9c582f8abb`, blob `fcc4e333b44c1dc749fd0ebbedec52aa58ee2c33`. The corrected workflow contains the ten-file durable workflow inventory and a mandatory self-SchemaStore validation job that gates destructive cleanup.
+- Fresh resume snapshot event `d9c3600c004dcae5352efb7d76a3c9535c50e2cd`, run `37684774111`, artifact `11510134482`, outer digest `sha256:ae56d8a769e030d29d1d7407a243a9fb7c2a98b47bd39275585a08d8ae2f35b3`, archive SHA-256 `f84253fff1894f5fd5733734de2829e4a5ea15763d077b5e28038752ad71d2e2`, file count 5574, `runtimeExecution=false`; local archive and 5574-entry manifest verification passed. The run's snapshot and validator jobs were GREEN; mailbox publication was not required for authority because the exact run/artifact were already known and verified.
+- Manifest commit `36dccd8944a46542ed13b708d2cc3d526db17018` triggered cleanup run `37685543454`. Self-SchemaStore validation job `113012287199` and cleanup job `113012350640` are SUCCESS; mailbox publication is SUCCESS.
+- Cleanup result artifact `11510569341`, digest `sha256:45a74761e28246228328456c8a8a7cafd6cbd4b2567bf27a77584405961f175b`, records cleanup SHA `5b6fd0f47c54171ffe039eaeb56e00a2981529db`, `runtimeExecution=false`, and exactly two removed paths: `.agents/connector-triggers/source-snapshot/m6-cp3-cb1-entry-r1.txt` and `.agents/connector-triggers/source-snapshot/tb1-20261007-1532.txt`.
+- Final hygiene verification at branch head found exactly the ten durable workflows, retained `.agents/Directional/agent-dispatch-request.json`, retained cleanup mailbox history, and no `.agents/connector-triggers`, `.agents/workflow-observation`, or `.agents/Directional/turn-payloads` directory.
+- Semantic closeout remains unchanged: 497 fresh exact-filter processes, 482 PASS / 15 RED, exact-one 497/497, zero skips, benchmark 0, stable accounting 63 / 17 / 46, debt 1. No source/test repair or retry occurred. Review owns adjudication of the six non-stable candidate groups.
+- Exact successor: `M6-CP3-TB1-ENTRY-R1-REV`. Do not perform Review work inside this EXEC turn.
