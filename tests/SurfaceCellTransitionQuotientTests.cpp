@@ -2214,6 +2214,44 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
   const auto &front = fixture.network.phaseFront.product();
   auto a5Result = directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
       fixture.mesh.V, fixture.mesh.F, front);
+  if (const auto *a5Error =
+          std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(
+              &a5Result)) {
+    ADD_FAILURE()
+        << "unexpected A5 rejection before withdrawn-certificate assertions: "
+        << "code="
+        << directional::pipeline::surface_occurrence_complex_error_name(
+               a5Error->code)
+        << " site=SurfaceOccurrenceComplexProducer::produce"
+        << " relationKind="
+        << (a5Error->relation.has_value()
+                ? static_cast<int>(a5Error->relation->kind)
+                : -1)
+        << " relationFirstCell="
+        << (a5Error->relation.has_value()
+                ? static_cast<long long>(a5Error->relation->first.cell().index())
+                : -1LL)
+        << " relationFirstCorner="
+        << (a5Error->relation.has_value()
+                ? static_cast<int>(
+                      a5Error->relation->first.canonical_corner_role())
+                : -1)
+        << " relationSecondCell="
+        << (a5Error->relation.has_value()
+                ? static_cast<long long>(a5Error->relation->second.cell().index())
+                : -1LL)
+        << " relationSecondCorner="
+        << (a5Error->relation.has_value()
+                ? static_cast<int>(
+                      a5Error->relation->second.canonical_corner_role())
+                : -1)
+        << " hardRail="
+        << (a5Error->relation.has_value() &&
+                    a5Error->relation->hardRail.has_value()
+                ? static_cast<long long>(
+                      a5Error->relation->hardRail->index())
+                : -1LL);
+  }
   const auto *a5 = std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
       &a5Result);
   ASSERT_NE(a5, nullptr);
@@ -2265,18 +2303,53 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
   const auto *tamperedFront =
       std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&rebuilt);
   ASSERT_NE(tamperedFront, nullptr);
-  auto rejected = directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
-      fixture.mesh.V, fixture.mesh.F, *tamperedFront);
-  const auto *error =
-      std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(&rejected);
-  ASSERT_NE(error, nullptr);
-  EXPECT_EQ(error->code,
-            directional::pipeline::SurfaceOccurrenceComplexErrorCode::
-                HardRailBranchCertificateMismatch);
-  const auto adapter = directional::pipeline::build_authoritative_phase_front_mesh(
-      fixture.mesh.V, fixture.mesh.F, *tamperedFront);
-  EXPECT_FALSE(adapter.success);
-  EXPECT_EQ(adapter.failure, "InvalidHardRailTransport:branch-certificate");
+  auto tamperedA5 =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+          fixture.mesh.V, fixture.mesh.F, *tamperedFront);
+  const auto *tamperedError =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(
+          &tamperedA5);
+  EXPECT_NE(tamperedError, nullptr)
+      << "pre-registered RED: the withdrawn HardRail branch certificate no "
+         "longer rejects a face-gauge-only tamper";
+  if (tamperedError != nullptr) {
+    ADD_FAILURE()
+        << "unexpected A5 rejection after the branch-certificate check was "
+           "withdrawn: code="
+        << directional::pipeline::surface_occurrence_complex_error_name(
+               tamperedError->code)
+        << " site=SurfaceOccurrenceComplexProducer::produce"
+        << " relationKind="
+        << (tamperedError->relation.has_value()
+                ? static_cast<int>(tamperedError->relation->kind)
+                : -1)
+        << " relationFirstCell="
+        << (tamperedError->relation.has_value()
+                ? static_cast<long long>(
+                      tamperedError->relation->first.cell().index())
+                : -1LL)
+        << " relationFirstCorner="
+        << (tamperedError->relation.has_value()
+                ? static_cast<int>(
+                      tamperedError->relation->first.canonical_corner_role())
+                : -1)
+        << " relationSecondCell="
+        << (tamperedError->relation.has_value()
+                ? static_cast<long long>(
+                      tamperedError->relation->second.cell().index())
+                : -1LL)
+        << " relationSecondCorner="
+        << (tamperedError->relation.has_value()
+                ? static_cast<int>(
+                      tamperedError->relation->second.canonical_corner_role())
+                : -1)
+        << " hardRail="
+        << (tamperedError->relation.has_value() &&
+                    tamperedError->relation->hardRail.has_value()
+                ? static_cast<long long>(
+                      tamperedError->relation->hardRail->index())
+                : -1LL);
+  }
 }
 
 TEST(M6CP3, OrdinaryFrontIsolationSeamUsesCoordinateIdentityAndCertifiedSheetTransition) {
@@ -2331,10 +2404,28 @@ TEST(M6CP3, OrdinaryFrontIsolationSeamUsesCoordinateIdentityAndCertifiedSheetTra
 }
 
 TEST(M6CP3, A5ChartBarriersConsumeTypedHardFeatureAuthorityAcrossRelationKinds) {
+  const auto hasTransitionAcross = [](const auto &graph, const auto &edge) {
+    return std::any_of(graph.transitions().begin(), graph.transitions().end(),
+                       [&](const auto &transition) {
+                         return transition.sharedEntity.edge == edge;
+                       });
+  };
+  const auto verifyBlocked = [&](const auto &graph, const auto &edge) {
+    EXPECT_TRUE(graph.is_hard_edge(static_cast<int>(edge.first().index()),
+                                   static_cast<int>(edge.second().index())));
+    EXPECT_FALSE(hasTransitionAcross(graph, edge));
+  };
+
   const auto &torus = torus_fixture();
   const auto expectedHard = torus_row408_hard_edges(torus.mesh);
   const auto &front = torus.network.phaseFront.product();
   EXPECT_EQ(front.hardFeatureEdges(), expectedHard);
+  directional::geometry::SourceChartTransitionGraph torusGraph(
+      torus.mesh.F, front.sourceTopologyRegions(), front.hardFeatureEdges());
+  ASSERT_TRUE(torusGraph.available());
+  ASSERT_EQ(expectedHard.size(), 18U);
+  for (const auto &edge : expectedHard) verifyBlocked(torusGraph, edge);
+
   auto baselineResult =
       directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
           torus.mesh.V, torus.mesh.F, front);
@@ -2342,7 +2433,6 @@ TEST(M6CP3, A5ChartBarriersConsumeTypedHardFeatureAuthorityAcrossRelationKinds) 
       std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
           &baselineResult);
   ASSERT_NE(baseline, nullptr);
-  ASSERT_EQ(expectedHard.size(), 18U);
 
   const directional::pipeline::SurfaceOccurrenceRelation *periodicBarrier = nullptr;
   std::optional<directional::authority::SourceEdgeTopologyKey> removedCarrier;
@@ -2363,51 +2453,53 @@ TEST(M6CP3, A5ChartBarriersConsumeTypedHardFeatureAuthorityAcrossRelationKinds) 
   ASSERT_NE(periodicBarrier, nullptr)
       << "D4 requires a produced PeriodicCut carrier that is also a typed hard feature";
   ASSERT_TRUE(removedCarrier.has_value());
-  const auto *barrierFirst = m6cp3_occurrence_by_id(*baseline, periodicBarrier->id.first);
-  const auto *barrierSecond = m6cp3_occurrence_by_id(*baseline, periodicBarrier->id.second);
-  ASSERT_NE(barrierFirst, nullptr);
-  ASSERT_NE(barrierSecond, nullptr);
-  EXPECT_NE(barrierFirst->chartComponent, barrierSecond->chartComponent);
+  verifyBlocked(torusGraph, *removedCarrier);
 
-  PhaseFrontDraft removed = phase_front_draft(torus.network.phaseFront);
-  ASSERT_TRUE(removed.hardFeatureEdges.contains(*removedCarrier));
-  removed.hardFeatureEdges.erase(*removedCarrier);
-  auto removedFrontResult = construct_phase_front_product(std::move(removed));
-  const auto *removedFront =
-      std::get_if<directional::geometry::SurfacePhaseFrontProduct>(
-          &removedFrontResult);
-  ASSERT_NE(removedFront, nullptr);
-  auto removedA5Result =
-      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
-          torus.mesh.V, torus.mesh.F, *removedFront);
-  const auto *removedA5 =
-      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
-          &removedA5Result);
-  ASSERT_NE(removedA5, nullptr)
-      << "removing a Periodic-carried typed hard feature must not be reconstructed from relation kind";
-  const auto removedRelation = std::find_if(
-      removedA5->owned_relations().begin(), removedA5->owned_relations().end(),
-      [&](const auto &candidate) { return candidate.id == periodicBarrier->id; });
-  ASSERT_NE(removedRelation, removedA5->owned_relations().end());
-  const auto *removedFirst =
-      m6cp3_occurrence_by_id(*removedA5, removedRelation->id.first);
-  const auto *removedSecond =
-      m6cp3_occurrence_by_id(*removedA5, removedRelation->id.second);
-  ASSERT_NE(removedFirst, nullptr);
-  ASSERT_NE(removedSecond, nullptr);
-  EXPECT_EQ(removedFirst->chartComponent, removedSecond->chartComponent);
-  const auto componentSignature = [](const auto &product) {
-    std::vector<std::pair<directional::authority::OccurrenceId,
-                          directional::geometry::SourceChartComponentIdentity>> value;
-    for (const auto &occurrence : product.occurrences()) {
-      value.emplace_back(occurrence.id, occurrence.chartComponent);
-    }
-    return value;
-  };
-  EXPECT_NE(componentSignature(*baseline), componentSignature(*removedA5));
+  auto withoutPeriodicBarrier = front.hardFeatureEdges();
+  ASSERT_EQ(withoutPeriodicBarrier.erase(*removedCarrier), 1U);
+  directional::geometry::SourceChartTransitionGraph torusWithoutBarrier(
+      torus.mesh.F, front.sourceTopologyRegions(), withoutPeriodicBarrier);
+  ASSERT_TRUE(torusWithoutBarrier.available());
+  EXPECT_FALSE(torusWithoutBarrier.is_hard_edge(
+      static_cast<int>(removedCarrier->first().index()),
+      static_cast<int>(removedCarrier->second().index())));
+  EXPECT_TRUE(hasTransitionAcross(torusWithoutBarrier, *removedCarrier))
+      << "removing the typed Periodic-carried barrier must restore the exact "
+         "source-face transition across that carrier";
 
   const auto &rail = hard_rail_fixture();
-  PhaseFrontDraft missingRailAuthority = phase_front_draft(rail.network.phaseFront);
+  const auto &railFront = rail.network.phaseFront.product();
+  directional::geometry::SourceChartTransitionGraph railGraph(
+      rail.mesh.F, railFront.sourceTopologyRegions(), railFront.hardFeatureEdges());
+  ASSERT_TRUE(railGraph.available());
+  auto railA5Result =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+          rail.mesh.V, rail.mesh.F, railFront);
+  const auto *railA5 =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(&railA5Result);
+  ASSERT_NE(railA5, nullptr);
+  std::size_t hardRailCarrierCount = 0U;
+  for (const auto &relation : railA5->owned_relations()) {
+    if (relation.id.kind !=
+        directional::pipeline::SurfaceOccurrenceRelationKind::HardRail) {
+      continue;
+    }
+    for (const auto *span : {relation.evidence.firstEndpointSpan.has_value()
+                                 ? &relation.evidence.firstEndpointSpan.value()
+                                 : nullptr,
+                             relation.evidence.secondEndpointSpan.has_value()
+                                 ? &relation.evidence.secondEndpointSpan.value()
+                                 : nullptr}) {
+      if (span == nullptr || !span->collinearEdge.has_value()) continue;
+      ++hardRailCarrierCount;
+      EXPECT_TRUE(railFront.hardFeatureEdges().contains(*span->collinearEdge));
+      verifyBlocked(railGraph, *span->collinearEdge);
+    }
+  }
+  ASSERT_GT(hardRailCarrierCount, 0U)
+      << "every produced HardRail carrier must be represented by typed hard-feature authority";
+
+  PhaseFrontDraft missingRailAuthority = phase_front_draft(railFront);
   missingRailAuthority.hardFeatureEdges.clear();
   auto missingRailFrontResult =
       construct_phase_front_product(std::move(missingRailAuthority));
@@ -2427,7 +2519,12 @@ TEST(M6CP3, A5ChartBarriersConsumeTypedHardFeatureAuthorityAcrossRelationKinds) 
                 InvalidHardRailAuthority);
 
   const auto &square = square_fixture();
-  PhaseFrontDraft marked = phase_front_draft(square.network.phaseFront);
+  const auto &squareFront = square.network.phaseFront.product();
+  directional::geometry::SourceChartTransitionGraph squareGraph(
+      square.mesh.F, squareFront.sourceTopologyRegions(),
+      squareFront.hardFeatureEdges());
+  ASSERT_TRUE(squareGraph.available());
+  PhaseFrontDraft marked = phase_front_draft(squareFront);
   int ordinary = -1;
   for (int i = 0; i < static_cast<int>(marked.edges.size()); ++i) {
     if (marked.edges[static_cast<std::size_t>(i)].boundaryKind ==
@@ -2440,27 +2537,13 @@ TEST(M6CP3, A5ChartBarriersConsumeTypedHardFeatureAuthorityAcrossRelationKinds) 
   ASSERT_FALSE(marked.edges[static_cast<std::size_t>(ordinary)].route.empty());
   const auto ordinaryCarrier =
       marked.edges[static_cast<std::size_t>(ordinary)].route.steps().front().topology();
+  ASSERT_FALSE(marked.hardFeatureEdges.contains(ordinaryCarrier));
+  ASSERT_TRUE(hasTransitionAcross(squareGraph, ordinaryCarrier));
   marked.hardFeatureEdges.insert(ordinaryCarrier);
-  auto markedFrontResult = construct_phase_front_product(std::move(marked));
-  const auto *markedFront =
-      std::get_if<directional::geometry::SurfacePhaseFrontProduct>(
-          &markedFrontResult);
-  ASSERT_NE(markedFront, nullptr);
-  auto markedA5Result =
-      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
-          square.mesh.V, square.mesh.F, *markedFront);
-  const auto *markedA5 =
-      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
-          &markedA5Result);
-  ASSERT_NE(markedA5, nullptr);
-  auto squareBaselineResult =
-      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
-          square.mesh.V, square.mesh.F, square.network.phaseFront.product());
-  const auto *squareBaseline =
-      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
-          &squareBaselineResult);
-  ASSERT_NE(squareBaseline, nullptr);
-  EXPECT_NE(componentSignature(*squareBaseline), componentSignature(*markedA5));
+  directional::geometry::SourceChartTransitionGraph squareMarkedGraph(
+      square.mesh.F, marked.sourceAuthority, marked.hardFeatureEdges);
+  ASSERT_TRUE(squareMarkedGraph.available());
+  verifyBlocked(squareMarkedGraph, ordinaryCarrier);
 }
 
 TEST(M6CP3, ProducedSeamCollinearOrdinaryFrontRequiresExactCrossSheetTransition) {
@@ -2531,6 +2614,44 @@ TEST(M6CP3, HardRailCrossRegionBindingDoesNotCompareGlobalSheetLabels) {
   const auto &fixture = nonconstant_hard_rail_fixture();
   auto a5Result = directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
       fixture.mesh.V, fixture.mesh.F, fixture.network.phaseFront.product());
+  if (const auto *a5Error =
+          std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(
+              &a5Result)) {
+    ADD_FAILURE() << "identity 6 A5 rejection: code="
+                  << directional::pipeline::surface_occurrence_complex_error_name(
+                         a5Error->code)
+                  << " site=SurfaceOccurrenceComplexProducer::produce"
+                  << " relationKind="
+                  << (a5Error->relation.has_value()
+                          ? static_cast<int>(a5Error->relation->kind)
+                          : -1)
+                  << " relationFirstCell="
+                  << (a5Error->relation.has_value()
+                          ? static_cast<long long>(
+                                a5Error->relation->first.cell().index())
+                          : -1LL)
+                  << " relationFirstCorner="
+                  << (a5Error->relation.has_value()
+                          ? static_cast<int>(a5Error->relation->first
+                                                 .canonical_corner_role())
+                          : -1)
+                  << " relationSecondCell="
+                  << (a5Error->relation.has_value()
+                          ? static_cast<long long>(
+                                a5Error->relation->second.cell().index())
+                          : -1LL)
+                  << " relationSecondCorner="
+                  << (a5Error->relation.has_value()
+                          ? static_cast<int>(a5Error->relation->second
+                                                 .canonical_corner_role())
+                          : -1)
+                  << " hardRail="
+                  << (a5Error->relation.has_value() &&
+                              a5Error->relation->hardRail.has_value()
+                          ? static_cast<long long>(
+                                a5Error->relation->hardRail->index())
+                          : -1LL);
+  }
   const auto *a5 = std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
       &a5Result);
   ASSERT_NE(a5, nullptr);
@@ -3554,6 +3675,18 @@ TEST(M6CP1, RelationPlacementTransportIsCoordinateRigidAndFaceGaugeInvariant) {
     edge.fromLattice.branchRotation = (edge.fromLattice.branchRotation + 1) % 4;
     edge.toLattice.branchRotation = (edge.toLattice.branchRotation + 1) % 4;
   }
+  ASSERT_EQ(relabelled.sourceFaceBranchRotations.size(),
+            static_cast<std::size_t>(hardRailFixture.mesh.F.rows()));
+  std::size_t relabelledFaceGauges = 0U;
+  for (const auto row : relabelled.sourceAuthority.rows_for_region(relabelRegion)) {
+    auto &gauge =
+        relabelled.sourceFaceBranchRotations.at(static_cast<std::size_t>(row.index()));
+    ASSERT_GE(gauge, 0);
+    ASSERT_LE(gauge, 3);
+    gauge = (gauge + 1) % 4;
+    ++relabelledFaceGauges;
+  }
+  ASSERT_GT(relabelledFaceGauges, 0U);
   ASSERT_GT(relabelledCells, 0U);
   ASSERT_GT(relabelledEdges, 0U);
   auto relabelledFrontConstruction =

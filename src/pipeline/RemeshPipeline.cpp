@@ -3169,8 +3169,6 @@ const char *surface_occurrence_complex_error_name(
     return "InvalidAuthoritativePhaseFrontSource";
   case SurfaceOccurrenceComplexErrorCode::InvalidAuthoritativeSourceChartTransitions:
     return "InvalidAuthoritativeSourceChartTransitions";
-  case SurfaceOccurrenceComplexErrorCode::HardRailBranchCertificateMismatch:
-    return "OccurrenceHardRailBranchCertificateMismatch";
   }
   return "OccurrenceUnknownFailure";
 }
@@ -3187,8 +3185,6 @@ static const char *surface_occurrence_complex_legacy_failure_name(
   case SurfaceOccurrenceComplexErrorCode::HardRailRouteMismatch:
   case SurfaceOccurrenceComplexErrorCode::HardRailTransportMismatch:
     return "InvalidHardRailTransport";
-  case SurfaceOccurrenceComplexErrorCode::HardRailBranchCertificateMismatch:
-    return "InvalidHardRailTransport:branch-certificate";
   case SurfaceOccurrenceComplexErrorCode::PeriodicTransportMismatch:
     return "InvalidPeriodicFrontTransport";
   case SurfaceOccurrenceComplexErrorCode::PeriodicOwnerMismatch:
@@ -5058,36 +5054,6 @@ SurfaceOccurrenceComplexProducer::produce(
             *evidence.firstEndpointSpan, *evidence.secondEndpointSpan);
       }
 
-      if (relationKind == SurfaceOccurrenceRelationKind::HardRail) {
-        if (!evidence.canonicalTransport.has_value() ||
-            !evidence.firstEndpointFaceGauge.has_value() ||
-            !evidence.secondEndpointFaceGauge.has_value() ||
-            firstRecord == publishedOccurrenceById.end() ||
-            secondRecord == publishedOccurrenceById.end()) {
-          error.code =
-              SurfaceOccurrenceComplexErrorCode::HardRailBranchCertificateMismatch;
-          error.relation = relationId;
-          return error;
-        }
-        const auto firstBranch = authority::QuarterTurn::from_integer(
-            firstRecord->second->placement.lattice.branchRotation);
-        const auto secondBranch = authority::QuarterTurn::from_integer(
-            secondRecord->second->placement.lattice.branchRotation);
-        const auto firstRegional = compose(
-            evidence.firstEndpointFaceGauge->localFaceBranchRotation.inverse(),
-            firstBranch);
-        const auto secondRegional = compose(
-            evidence.secondEndpointFaceGauge->localFaceBranchRotation.inverse(),
-            secondBranch);
-        const auto certifiedRotation =
-            compose(secondRegional, firstRegional.inverse());
-        if (certifiedRotation != evidence.canonicalTransport->rotation) {
-          error.code =
-              SurfaceOccurrenceComplexErrorCode::HardRailBranchCertificateMismatch;
-          error.relation = relationId;
-          return error;
-        }
-      }
 
       if (selectedKind.has_value() && evidence.canonicalTransport.has_value() &&
           evidence.canonicalRelationValue.has_value() &&
@@ -5418,15 +5384,6 @@ SurfaceQuotientProducer::ConstructionResult SurfaceQuotientProducer::produce(
         error.relation = relation->id;
         return error;
       }
-      if (!reciprocal_isolation_evidence(
-              relation->evidence.firstSideIsolationEvidence,
-              relation->evidence.secondSideIsolationEvidence)) {
-        SurfaceQuotientProductError error;
-        error.code =
-            SurfaceQuotientProductErrorCode::ReciprocalSideAuthorityMismatch;
-        error.relation = relation->id;
-        return error;
-      }
       const SurfaceOccurrenceSideSpan &firstSpan =
           relation->evidence.firstEndpointSpan.value();
       const SurfaceOccurrenceSideSpan &secondSpan =
@@ -5476,6 +5433,15 @@ SurfaceQuotientProducer::ConstructionResult SurfaceQuotientProducer::produce(
           return error;
         }
       } else {
+        if (!reciprocal_isolation_evidence(
+                relation->evidence.firstSideIsolationEvidence,
+                relation->evidence.secondSideIsolationEvidence)) {
+          SurfaceQuotientProductError error;
+          error.code =
+              SurfaceQuotientProductErrorCode::ReciprocalSideAuthorityMismatch;
+          error.relation = relation->id;
+          return error;
+        }
         const geometry::CornerWedgeIsolationTransition forward{
             firstOccurrence->second->topologyRegion,
             firstSpan.collinearEdge.value(), firstSpan.interiorBinding.sheet,

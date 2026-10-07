@@ -955,7 +955,6 @@ enum class SurfaceOccurrenceComplexErrorCode : std::uint8_t {
   MissingAuthoritativePhaseFront = 49,
   InvalidAuthoritativePhaseFrontSource = 50,
   InvalidAuthoritativeSourceChartTransitions = 51,
-  HardRailBranchCertificateMismatch = 52,
 };
 
 const char *surface_occurrence_complex_error_name(

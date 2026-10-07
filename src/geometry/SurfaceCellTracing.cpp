@@ -12264,6 +12264,7 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_for_faces(
       return result;
     }
   }
+  result.faceBranchRotation = frame.faceBranchRotation;
   result.succeeded =
       !result.cells.empty() &&
       result.cells.size() ==
@@ -12907,6 +12908,7 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
 
   std::vector<std::vector<int>> rings(static_cast<std::size_t>(maxDistance + 1));
   rings.front() = firstBoundary;
+  result.faceBranchRotation.assign(static_cast<std::size_t>(faces.rows()), -1);
   for (int layer = 1; layer <= maxDistance; ++layer) {
     std::map<int, std::vector<int>> ringAdjacency;
     for (const auto &[vertex, value] : distance) {
@@ -12964,6 +12966,7 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
   struct RingCandidateAuthority {
     std::vector<int> vertices;
     std::set<authority::SourceFaceId> stripFaces;
+    std::map<authority::SourceFaceId, int> faceBranchRotation;
     double score = std::numeric_limits<double>::infinity();
     int seedBranch = -1;
     bool branchAmbiguous = false;
@@ -13027,6 +13030,7 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
         std::numeric_limits<double>::infinity(),
         std::numeric_limits<double>::infinity(),
         std::numeric_limits<double>::infinity()};
+    std::array<std::map<authority::SourceFaceId, int>, 4> branchBySeed;
     for (int seedBranch = 0; seedBranch < 4; ++seedBranch) {
       std::map<authority::SourceFaceId, int> branchByFace;
       std::queue<authority::SourceFaceId> pending;
@@ -13162,6 +13166,8 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
       if (!validBranch || observations <= 0) continue;
       branchScores[static_cast<std::size_t>(seedBranch)] =
           score / static_cast<double>(observations);
+      branchBySeed[static_cast<std::size_t>(seedBranch)] =
+          std::move(branchByFace);
     }
 
     double bestScore = std::numeric_limits<double>::infinity();
@@ -13181,6 +13187,8 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
     if (bestBranch < 0 || !std::isfinite(bestScore)) return false;
     candidate.score = bestScore;
     candidate.seedBranch = bestBranch;
+    candidate.faceBranchRotation =
+        std::move(branchBySeed[static_cast<std::size_t>(bestBranch)]);
     candidate.branchAmbiguous = ambiguousBranch;
     return true;
   };
@@ -13274,8 +13282,41 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
           SurfacePhaseFrontFailureReason::AmbiguousPeriodicRingCorrespondence);
       return result;
     }
-    rings[static_cast<std::size_t>(layer)] =
-        authoritativeCandidates[static_cast<std::size_t>(bestCandidate)].vertices;
+    const RingCandidateAuthority &selectedCandidate =
+        authoritativeCandidates[static_cast<std::size_t>(bestCandidate)];
+    for (const auto &[sourceFace, branch] : selectedCandidate.faceBranchRotation) {
+      const auto faceRow = source_face_row(sourceFace, faces.rows());
+      if (!faceRow.has_value() || branch < 0 || branch > 3) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::IncompatibleFaceBranch);
+        return result;
+      }
+      int &published =
+          result.faceBranchRotation[static_cast<std::size_t>(*faceRow)];
+      if (published >= 0 && published != branch) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::IncompatibleFaceBranch,
+            -1, -1, *faceRow);
+        return result;
+      }
+      published = branch;
+    }
+    rings[static_cast<std::size_t>(layer)] = selectedCandidate.vertices;
+  }
+
+  for (const authority::SourceFaceId sourceFace : activeFaces) {
+    const auto faceRow = source_face_row(sourceFace, faces.rows());
+    if (!faceRow.has_value() ||
+        result.faceBranchRotation[static_cast<std::size_t>(*faceRow)] < 0 ||
+        result.faceBranchRotation[static_cast<std::size_t>(*faceRow)] > 3) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::IncompatibleFaceBranch,
+          -1, -1, faceRow.value_or(-1));
+      return result;
+    }
   }
 
   std::vector<double> s(static_cast<std::size_t>(ringSize + 1), 0.0);
