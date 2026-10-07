@@ -1,3 +1,10 @@
+## 2026-10-07 — `M6-CP3-TB1-ENTRY-R1-REV` rejected R1 and routes RA-32 Definition repair
+
+- Independent Review accepts R1 mechanics (**482/497**) but rejects/unpromotes the candidate.
+- The ten A6/D7 rows are failed recovery of the existing `RP-01` authority-domain event; no new stable event.
+- Other REDs are non-stable witness/oracle/definition gaps; stable accounting stays **63 / 17 / 46**, debt 1.
+- Exact next is runtime-free `M6-DEFN-R5-R1`, then mandatory Definition Review.
+
 ## 2026-10-07 — `M6-CP3-TB1-ENTRY-R1-EXEC` — 482/497; mandatory Review
 
 - Durable dispatcher runtime `37645974118 / 112876903729` completed all 497 fresh artifact-only processes against `11488700954 / 68000a95...` with exact-one selection, zero skips, benchmark 0 and immutable postflight.

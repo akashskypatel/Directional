@@ -1,3 +1,11 @@
+## 2026-10-07 — `M6-CP3-TB1-ENTRY-R1-REV` — R1 rejected / RA-32 — **+0 / 63/17/46 / debt 1**
+
+Independent Review confirms the 497-process R1 mechanics at **482 PASS / 15 RED**. R1-CAND-01's ten A6/D7 rows are **not a new stable event**: they are failed recovery/continuation of predecessor CAND-02, the already-counted `RP-01 / AUTHORITY_DOMAIN_CONFLATION` event. A6 still uses differing global sheet IDs as part of the branch discriminator before certified seam evidence establishes the special domain. That event remains **OPEN**.
+
+Predecessor CAND-01 (`INCOMPLETE_AUTHORITY_PUBLICATION`) and CAND-07 (`RP-02 / TEST_AUTHORITY_COVERAGE_GAP`) are **RECOVERY-PROVED** by R1. R1-CAND-02 (D1), CAND-04 (D3), CAND-05 (D4) and CAND-06 (D7) are non-stable witness/oracle reachability defects. R1-CAND-03 (D2) is non-stable and returns to RA-31a's `M6-DEFN-R5-R1` owner because its required organic 90/270 premise is absent before certificate assertions. No candidate is promoted.
+
+**Stable accounting remains 63 events / 17 categories / 46 recurrences; debt 1.**
+
 ## 2026-10-07 — `M6-CP3-TB1-ENTRY-R1-EXEC` — 15 REDs classified / mandatory Review — **+0 / 63/17/46 / debt 1**
 
 Immutable durable-dispatch run `37645974118 / 112876903729` consumed `11488700954 / 68000a95...` and completed exactly **497** fresh processes at **482 PASS / 15 RED**, exact-one, zero skips, benchmark 0, immutable postflight and self-manifest 1019/1019. The six provisional groups are: R1-CAND-01 A6/D7 isolation-side recovery incomplete (10 rows: focused30 6,20,24-28 + selector 444,446,448); R1-CAND-02 D1 90/270 produced-witness non-vacuity (1); R1-CAND-03 D2 produced HardRail non-vacuity (1; failure occurs before the pre-registered withdrawn-certificate assertion); R1-CAND-04 D3 produced seam relation reachability (1); R1-CAND-05 D4 typed barrier route/oracle reachability (1); R1-CAND-06 D7 produced seam relation reachability (1).

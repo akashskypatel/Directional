@@ -1,6 +1,6 @@
 # M6 Frozen Definitions — Occurrence, Quotient, Embedding, Independent Verification
 
-**Status:** FROZEN / **M6-CP1 and M6-CP2 CLOSED / ACCEPTED**; CP3-entry Definition accepted (RA-30, RA-30a). CP3 entry candidate `11411137781 / 912760f1` **REJECTED** (373/497; RA-31). **RA-31a** withdraws the RA-30 §2 HardRail branch certificate pending `M6-DEFN-R5-R1`. Reviewed runtime `11391685901 / 5ce3132ec01748eff5b15f82be07a1abe2bd1af6` (491/491). Stable accounting **63 / 17 / 46**, debt 1. **EXACT NEXT = `M6-CP3-CB1-ENTRY-R1`** (497). RA-1 – RA-31a normative as annotated.
+**Status:** FROZEN / M6-CP1 and M6-CP2 CLOSED / ACCEPTED. CP3 entry R1 candidate `11488700954 / 68000a95` **REJECTED** at 482/497 by RA-32; predecessor P1/T1 regressions recovered, prior `RP-01` seam-domain event remains open. Stable accounting **63 / 17 / 46**, debt 1. **EXACT NEXT = `M6-DEFN-R5-R1`**; R2 implementation and CB2 held. RA-1 – RA-32 normative as annotated.
 **Date:** 2026-09-25
 **Definition authority:** this record is the normative M6 contract for A5 occurrence creation, A6 quotient construction/materialization, A7 source-attached geometry embedding, and the M6 structural portion of A8 independent verification. It refines `DESIGN.md` §14 M6 without changing accepted M5 producer semantics or pulling M7 disposition/degradation work forward.
 
@@ -1329,3 +1329,15 @@ Rationale: `Architecture_M6_CP3_TB1_Entry_Review_Record.md`, addendum §X2–§X
 7. **TB1-R1 acceptance pattern.** 496 PASS, plus identity 2 RED with failures confined to the certificate-rejection assertions after its non-vacuity and A5-production assertions pass. Any other RED goes to Review as usual.
 
 Successor: `M6-CP3-CB1-ENTRY-R1` → `M6-CP3-TB1-ENTRY-R1-EXEC` (**497**) → `M6-CP3-TB1-ENTRY-R1-REV` → `M6-DEFN-R5-R1` (D2) → the D2 CB. CB2 (D5/D6/D8) stays held until the CP3 entry is fully green. Accounting **63 / 17 / 46**, debt 1.
+
+## RA-32 — CP3 entry R1 Review: failed seam-domain recovery and bounded Definition repair (normative, 2026-10-07, `M6-CP3-TB1-ENTRY-R1-REV`)
+
+Rationale: `Architecture_M6_CP3_TB1_Entry_R1_Review_Record.md`. R1 candidate `11488700954 / 68000a95...` is mechanically valid at **482/497** but rejected/unpromoted. Stable accounting remains **63 / 17 / 46**, debt 1.
+
+1. **P2 remains open.** The ten R1 A6/D7 REDs are continuation of the already-counted predecessor `RP-01 / AUTHORITY_DOMAIN_CONFLATION` event. The special OrdinaryFront seam path must be selected by relation/certificate-owned isolation-seam evidence; differing global sheet labels are not authority. Non-seam full representation equality and all certified-seam exact checks remain mandatory.
+2. **D1 Definition repair.** Freeze an organic producer/search for a reciprocal exact-A3 90°/270° endpoint-gauge pair and a stop rule if none exists. Never hand-build the production record.
+3. **D2 Definition repair.** RA-31a remains governing: derive the HardRail branch rule in the cross-rail field-matching `τ(f_a→f_b)` domain, name its publisher, prove rail-vertex path independence/fail-closed singularity behavior, and name a discriminating produced witness. Identity 2 keeps its name.
+4. **D3/D7 witness authority.** The next Definition must specify a real-tracer fixture that actually produces a seam-collinear OrdinaryFront carrying the exact seam certificate; merely containing an isolation seam is insufficient. D3 and D7 keep distinct falsifiers.
+5. **D4 witness authority.** The ordinary hard-feature falsifier must select/derive a route-bearing ordinary source carrier; `OrdinaryInterior` kind alone does not prove a non-empty route. Periodic/HardRail typed-source checks remain.
+6. **Recovery status.** Predecessor `INCOMPLETE_AUTHORITY_PUBLICATION` and focused-relabel `RP-02` events are recovery-proved. The predecessor `RP-01` event remains open. No new event/category/recurrence is counted for R1.
+7. **Routing.** Exact next is runtime-free `M6-DEFN-R5-R1`, followed by mandatory `M6-DEFN-R5-R1-REV`. Only accepted Definition Review may release one bounded R2 Code + Build. CB2 (D5/D6/D8) remains held until CP3 entry is fully green.

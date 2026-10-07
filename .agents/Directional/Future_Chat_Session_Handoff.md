@@ -1,3 +1,11 @@
+## Resume-critical update — `M6-CP3-TB1-ENTRY-R1-REV` COMPLETE / RA-32 / exact next `M6-DEFN-R5-R1` (2026-10-07)
+
+**Start runtime-free `M6-DEFN-R5-R1` next. Do not begin R2 Code + Build or CB2 before mandatory Definition Review.**
+
+R1 evidence is mechanically valid: `37645974118 / 112876903729`, result `11495166428`, **482/497**, exact-one 497/497, zero skips, benchmark 0, manifest 1019/1019 and immutable postflight. Review rejects/unpromotes the candidate. The ten A6/D7 rows are continuation of predecessor CAND-02 (`RP-01 / AUTHORITY_DOMAIN_CONFLATION`): A6 still enters its special path from same-collinear-edge + differing global sheet ID before proving certified isolation-seam authority. D1 is an organic 90/270 witness gap; D3/D7 lack a real-produced seam-collinear OrdinaryFront; D4 selects an ordinary edge without proving a route; D2 remains owned by the RA-31a `τ`-based Definition.
+
+Prior incomplete-publication and focused-relabel stable events are recovery-proved; prior `RP-01` event remains open. Stable accounting stays **63 / 17 / 46**, debt 1. RA-32 and the exact five-item Definition scope are in `Architecture_M6_Frozen_Definitions.md`; execute `Architecture_M6_DEFN_R5_R1_CP3_Entry_Recovery_Definition_Plan.md`.
+
 ## Resume-critical update — `M6-CP3-TB1-ENTRY-R1-EXEC` COMPLETE / 482 PASS + 15 RED / mandatory R1 Review next (2026-10-07)
 
 **Start mandatory `M6-CP3-TB1-ENTRY-R1-REV` next. Do not repair source/tests or begin CP3 exit before Review.**

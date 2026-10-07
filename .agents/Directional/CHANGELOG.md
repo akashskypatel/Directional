@@ -1,3 +1,10 @@
+## 2026-10-07 — `M6-CP3-TB1-ENTRY-R1-REV` — R1 rejected; RA-32 routes Definition repair
+
+- Re-derived the valid R1 gate at **482/497** and rejected/unpromoted the candidate.
+- Ten A6/D7 REDs remain the same open `RP-01 / AUTHORITY_DOMAIN_CONFLATION` event; P1 and T1 stable regressions are recovery-proved.
+- D1/D3/D4/D7 are non-stable witness/oracle defects; D2 returns to its RA-31a `τ`-based Definition owner.
+- Stable accounting remains **63 / 17 / 46**, debt 1. Exact next: `M6-DEFN-R5-R1` -> mandatory Definition Review.
+
 ## 2026-10-06 — `M6-CP3-TB1-ENTRY-REV` review-agent addendum: RA-31 published; RA-31a withdraws the HardRail branch certificate
 
 - **Re-derived independently:** result `11413899043` (`61dab4f6`) and log `11413964659` (`d26bb318`); 1019/1019; ledgers in frozen order; 373/497; the classification TSV covers every RED exactly once with matching hashes.

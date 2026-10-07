@@ -1,3 +1,11 @@
+## Currency — `M6-CP3-TB1-ENTRY-R1-REV`: R1 rejected; Definition repair next (2026-10-07 UTC)
+
+- R1 gate is mechanically valid at **482/497**; candidate remains unpromoted.
+- Ten A6/D7 rows are the same open predecessor `RP-01 / AUTHORITY_DOMAIN_CONFLATION` event: the recovery still uses global sheet inequality to enter the certified-seam path. No new stable event.
+- D1, D3, D4 and D7 failures are non-stable produced-witness/oracle defects. D2 reaches its RA-31a Definition owner before certificate completion.
+- Prior incomplete-publication and focused-relabel stable events are recovery-proved; totals remain **63 / 17 / 46**, debt 1.
+- **Exact next:** runtime-free `M6-DEFN-R5-R1` under RA-32; mandatory Definition Review follows. CB2 remains held.
+
 ## Currency — `M6-CP3-TB1-ENTRY-REV` review-agent addendum: RA-31a (2026-10-06 UTC)
 
 - CP3 entry candidate rejected at 373/497. Stable accounting **63 / 17 / 46** (two production regressions and one accepted test-authority regression).

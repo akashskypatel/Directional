@@ -1,3 +1,11 @@
+## Current — `M6-CP3-TB1-ENTRY-R1-REV` COMPLETE / RA-32 / exact next `M6-DEFN-R5-R1` (2026-10-07)
+
+- [x] Re-derive R1 mechanics: **482/497**, exact-one, zero skips, benchmark 0, immutable postflight.
+- [x] Adjudicate all six groups: prior `RP-01` event remains open through ten failed-recovery rows; D1/D3/D4/D7 are non-stable witness/oracle gaps; D2 remains Definition-owned.
+- [x] Mark predecessor incomplete-publication and focused-relabel events recovery-proved; stable totals unchanged **63 / 17 / 46**, debt 1.
+- [x] Freeze RA-32 and consolidate superseded R1/prior-entry documents.
+- [ ] **Exact next: `M6-DEFN-R5-R1`** (runtime-free) using `Architecture_M6_DEFN_R5_R1_CP3_Entry_Recovery_Definition_Plan.md`; mandatory `M6-DEFN-R5-R1-REV` follows. R2 implementation and CB2 remain held.
+
 ## Current — `M6-CP3-TB1-ENTRY-R1-EXEC` COMPLETE / 482 PASS + 15 RED / mandatory R1 Review next (2026-10-07)
 
 - [x] Execute immutable `11488700954 / 68000a95...` through durable dispatcher run `37645974118` as exactly 497 fresh exact-filter processes.

@@ -645,7 +645,20 @@ The review agent re-derives 373/497 and confirms the exact 124-row partition, CA
 
 Lesson 207.
 
+## 59. `M6-CP3-TB1-ENTRY-R1-REV` — R1 rejected; RA-32 Definition repair
+
+R1 execution `37645974118 / 112876903729` on `11488700954 / 68000a95...` is mechanically valid at **482/497**, exact-one 497/497, zero skips, benchmark 0 and immutable postflight. Review rejects/unpromotes it. Ten A6/D7 REDs are failed recovery of predecessor CAND-02 (`RP-01 / AUTHORITY_DOMAIN_CONFLATION`): the special seam branch still depends on raw global sheet inequality before certificate-owned seam authority is established. Predecessor incomplete-publication and focused-relabel stable regressions are recovery-proved; the `RP-01` event remains open.
+
+D1 lacks an organic exact-A3 90°/270° witness; D3/D7 lack a real-produced seam-collinear OrdinaryFront; D4 selects an ordinary edge without proving a route; D2 returns to RA-31a's `τ`-based definition owner. These are non-stable. Stable totals remain **63 / 17 / 46**, debt 1. RA-32 routes exact next to runtime-free `M6-DEFN-R5-R1`, then mandatory Definition Review. R2 implementation and CB2 remain held.
+
 ## Folded document index
+| `Architecture_M6_CP3_TB1_Entry_Review_Record.md` | **SUPERSEDED PREDECESSOR ENTRY REVIEW / FOLDED BY R1 REVIEW.** RA-31/RA-31a, predecessor 373/497 partition and stable accounting are preserved in §58, frozen definitions, tracker and git history. |
+| `Architecture_M6_CP3_CB1_Entry_R1_Recovery_Code_Build_Plan.md` | **CONSUMED R1 RECOVERY PLAN / FOLDED BY R1 REVIEW.** P1/P2/T1/T2/T4 scope and RA-31a amendments are preserved in §§58-59, RA-31/31a/32 and git history. |
+| `Architecture_M6_CP3_CB1_Entry_R1_WIP_Handoff.md` | **SUPERSEDED R1 CB WIP / FOLDED BY R1 REVIEW.** Compile/package identity and recovery execution facts survive in the retained R1 TB report, changelog and git history. |
+| `Architecture_M6_CP3_TB1_Entry_R1_Exec_WIP_Handoff.md` | **SUPERSEDED R1 EXEC WIP / FOLDED BY R1 REVIEW.** Dispatcher/run/artifact and cleanup recovery facts are preserved in the retained R1 TB report, §59 and git history. |
+| `Architecture_M6_CP3_TB1_Entry_Artifact_Only_Test_Benchmark_Report.md` | **SUPERSEDED PREDECESSOR TB REPORT / FOLDED BY R1 REVIEW.** 373/497 mechanics and candidate evidence are preserved in §58, tracker and git history; the R1 runtime report is current. |
+| `Architecture_M6_CP3_TB1_Entry_Red_Classification.tsv` | **SUPERSEDED PREDECESSOR ROW CLASSIFICATION / FOLDED BY R1 REVIEW.** Exact predecessor partition is preserved in §58, prior review facts, tracker and git history. |
+
 | `Architecture_M6_CP3_CB1_Entry_Authority_Code_Build_Plan.md` | **CONSUMED CP3 ENTRY CB PLAN / RETIRED BETWEEN REVIEWS.** RA-30/RA-30a entry scope, stop rules and 497-process successor are preserved in §57, the current Review/RA-31 plan and git history. Historical resolver commit: `4eae760859ed48a7898d9383e583681111fe9023`. |
 | `Architecture_M6_CP3_CB1_Entry_Authority_Code_Build_Report.md` | **SUPERSEDED CP3 ENTRY COMPILE REPORT / RETIRED BETWEEN REVIEWS.** Exact source/package/compile evidence is preserved in the retained TB report, current Review, changelog and git history. Historical resolver commit: `4eae760859ed48a7898d9383e583681111fe9023`. |
 | `Architecture_M6_CP3_TB1_Entry_Exec_WIP_Handoff.md` | **SUPERSEDED EXEC WIP HANDOFF / RETIRED BETWEEN REVIEWS.** Active-run identifiers and resume facts are superseded by the retained TB report and current Review. Historical resolver commit: `4eae760859ed48a7898d9383e583681111fe9023`. |
