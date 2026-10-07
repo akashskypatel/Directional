@@ -172,3 +172,12 @@ Because the current connector cannot create a new file under `.github/workflows/
 - Final template artifact now has SHA-256 `16d4686439ee07d3f23b0870345cbc437b35ececb549031db8e03f5586b8500d`, 5315 bytes.
 - Final materialized caller now has SHA-256 `37dd5aaa83c081273cda7c3c689078ec1124da9ef5e65c86669e1acdf0e8455d`, 5363 bytes. It was re-materialized through the repository writer from the SHA-placeholder template and passed the local YAML/guard census. This supersedes `1e42325d56af9d5ce335b6213ac38a1b7a0436cf2e12bada1578b12f8315534e`.
 - Exact owner intervention is therefore installation of caller SHA-256 `37dd5aaa83c081273cda7c3c689078ec1124da9ef5e65c86669e1acdf0e8455d` at `.github/workflows/m6-cp3-cb1-entry-r1-apply-compile.yml` as a standalone commit with the trigger marker absent. On continuation, verify exact branch bytes, create only the marker, and do not advance the branch until the Drive patch commit is visible. After the patch push, an unavoidable final STATUS beacon is resolver-safe; other branch mutations remain forbidden until `resolve-source` succeeds.
+
+
+## 2026-10-07T00:08Z least-privilege caller finalization
+
+- Tightened each caller job to the least privilege required by its durable reusable contract while preserving the required top-level permission union: validator and resolver use `contents: read`; Drive apply uses `contents: write` + `id-token: write`; compile uses `actions: write` + `contents: read`; mailbox uses `actions: read` + `contents: write`.
+- Re-materialized from the SHA-placeholder template through the repository writer and reran the local YAML/guard census successfully.
+- Current final template artifact: SHA-256 `c7ddca2356e756a67d3ae6a778a63fbd1b174ab1affd80a88e33bb9060f21c41`, 5532 bytes.
+- Current final materialized caller: SHA-256 `dd18f7fb0a7bdba8f3ee795bfeade099bbe02b5f8fffac66fe822925e3c66355`, 5580 bytes. This supersedes `37dd5aaa83c081273cda7c3c689078ec1124da9ef5e65c86669e1acdf0e8455d`.
+- Owner installation must use these current final caller bytes at `.github/workflows/m6-cp3-cb1-entry-r1-apply-compile.yml`, standalone and without the marker. Do not install any superseded caller SHA recorded earlier in this handoff.
