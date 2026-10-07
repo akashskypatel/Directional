@@ -1,4 +1,0 @@
-turn=M6-CP3-CB1-ENTRY-R1
-purpose=exact source snapshot for code/build recovery
-parent_authority=41a4f08b748162d7a38eef8843073e7b263b5ddc
-retry=0
