@@ -35,6 +35,8 @@ The following records are durable project authority and must be retained unless 
 - `TODO.md`
 - `tests/TESTING_STRATEGY.md`
 - `.workflow-mailbox/**` workflow run-attempt records and `latest.json` rendezvous records, subject only to explicit future mailbox-retention policy changes
+- `.github/workflows/agent-operation-dispatcher.yml` and `.github/workflows/agent-test-benchmark-reusable.yml` durable ChatGPT Web execution infrastructure
+- `.agents/Directional/agent-dispatch-request.json` durable mutable dispatcher request slot; its current contents are control-plane transport, not semantic/build/test authority
 
 `.agents/Directional/TOOL_USE_CONSERVATION_POLICY.md` is the durable operating authority for reducing connector/workflow/artifact/tool calls without weakening source identity, evidence, turn boundaries, or cleanup safety. It is a mandatory full read at the start of every turn.
 
@@ -110,7 +112,7 @@ After the user-visible backup exists and a non-minor patch is ready for remote a
 1. Upload the **same verified patch bytes** with the Google Drive connector to `My Drive/Directional-CI`; do not re-encode, fragment, or stage the patch in the GitHub repository.
 2. Retain the returned Google Drive File ID and complete patch SHA-256 in turn-local execution evidence until the patch is either successfully applied and deleted or deliberately abandoned.
 3. Google Drive staging is transient transport, not durable project authority and not a replacement for the chat/File-Library work-preservation artifact.
-4. Invoke `.github/workflows/agent-google-drive-reusable.yml` by File ID. The workflow must verify the patch, base SHA, intended path set, `git apply --check`, and `git diff --check` before commit/push.
+4. Invoke the durable `drive_apply` operation through `.github/workflows/agent-operation-dispatcher.yml`, which calls `.github/workflows/agent-google-drive-reusable.yml` by File ID. The reusable must verify the patch, base SHA, intended path set, `git apply --check`, and `git diff --check` before commit/push.
 5. After a successful push, that same workflow must delete the Drive patch and report `drive_file_deleted=true`. If download, verification, apply, commit, or push fails, the Drive file remains available for bounded diagnosis/retry.
 6. Never put credentials, OAuth tokens, authenticated Drive URLs, or service-account material in the patch or repository. The File ID itself is a transport handle and may be recorded in turn evidence.
 

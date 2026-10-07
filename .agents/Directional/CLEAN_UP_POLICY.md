@@ -12,7 +12,7 @@ Retention and destructive-mutation rules are defined in `RETENTION_POLICY.md`.
 
 ## `[ChatGPT Web]` Temporary File Ledger
 
-Each turn must maintain a record of every temporary files created during the turn or files to be deleted at the end of the turn in `.agents/connector-triggers/turn-cleanup/manifest.txt`. \
+Each turn must maintain a record of every temporary files created during the turn or files to be deleted at the end of the turn in `.agents/connector-triggers/turn-cleanup/manifest.txt`. The durable `.agents/Directional/agent-dispatch-request.json` request slot and durable dispatcher/reusable workflows are never temporary-ledger entries. \
 
 Each turn must end with executing `.github/workflows/agent-turn-cleanup.yml` to clean up temporary files using the temporary file ledger. `.workflow-mailbox/**` is durable workflow-discovery state and must never be listed in that ledger or deleted as temporary state.
 
@@ -103,7 +103,7 @@ After cleanup:
 - After the successful patch commit and required result/log evidence are verified, the ChatGPT control plane performs final staging cleanup with the **user-authorized Google Drive connector**. If the patch is still addressable, call the connector's permanent `delete_file` action for that exact Drive File ID/URL and require a successful deletion result. This is the standard owner-side retirement path for `drive_file_retirement_required=true` and for any staged patch that remains visible after workflow-side cleanup.
 - If workflow-side trash already made the file inaccessible to the user connector, `drive_file_trashed=true` is sufficient cleanup evidence; do not add search/retry calls solely to rediscover an inaccessible trashed object.
 - If patch download, verification, apply, commit, or push fails, preserve the Drive file and its File ID for the bounded retry/diagnostic decision. Do not perform connector deletion until the failed attempt is adjudicated and the file is no longer needed.
-- Repository cleanup still removes the temporary caller first and then the marker/other temporary control state. No patch Base64 payload or fragment files should exist to clean up under normal operation.
+- Standard dispatcher operation creates no temporary workflow caller or marker. Retain `.github/workflows/agent-operation-dispatcher.yml`, `.github/workflows/agent-test-benchmark-reusable.yml`, and `.agents/Directional/agent-dispatch-request.json`. If the documented legacy fallback created a temporary caller/marker, cleanup still removes that caller first and then its marker/other temporary control state. No patch Base64 payload or fragment files should exist under normal operation.
 
 ## Scope boundary
 

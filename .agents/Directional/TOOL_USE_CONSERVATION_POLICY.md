@@ -136,9 +136,9 @@ For coherent code/documentation changes that are not a genuinely isolated minor 
 2. Materialize all final edits locally and generate one complete Git binary patch with exact base SHA, diff-body SHA-256, and intended-path metadata.
 3. Verify `git apply --check` against the exact base and `git diff --check`; emit the same patch as the mandatory user-visible work-preservation backup.
 4. Upload that patch once to `My Drive/Directional-CI` through the Google Drive connector and retain its File ID plus complete patch SHA-256.
-5. Use one minimal temporary caller/marker to invoke durable `agent-google-drive-reusable.yml`, which downloads by File ID, verifies/applies/commits/pushes, then may move the Drive file to trash after a successful push when its authenticated Drive identity has `capabilities.canTrash`; otherwise it reports that owner-authorized Drive retirement is required without issuing a known-failing mutation.
+5. Overwrite the durable `.agents/Directional/agent-dispatch-request.json` once with a validated `drive_apply` request. The request commit is the trigger and `agent-operation-dispatcher.yml` invokes `agent-google-drive-reusable.yml`; do not create a temporary caller or marker.
 6. After the successful push and required evidence are verified, use the **user-authorized Google Drive connector** as the owner-side cleanup plane. If the staged patch remains addressable, permanently delete that exact File ID/URL with one `delete_file` call. Do not spend workflow retries on a service-account `DELETE` that lacks ownership permission. If workflow-side trash already made the file inaccessible to the connector, accept the recorded `drive_file_trashed=true` result rather than adding search/retry calls solely to locate a trashed object.
-7. Retire the temporary caller first and batch-clean the remaining marker/control state. Patch bytes/fragments do not belong in the repository.
+7. Retain the durable dispatcher/request slot and batch-clean only unrelated or legacy temporary control state. Patch bytes/fragments do not belong in the repository.
 
 Use individual `update_file`/`create_file` operations for a genuinely isolated small file when every individual content write is within the handoff's direct-write ceiling. Workflow YAML changes follow `GitHub_Workflow_Policy.md` and are not applied by the Drive patch workflow.
 
@@ -150,11 +150,11 @@ Do not interleave discovery and mutation when it can be avoided. Finish the loca
 
 Workflow safety requirements remain unchanged, but validation can be batched.
 
-1. Draft all workflows needed for the same orchestration phase before publishing them.
-2. When several workflow files require SchemaStore validation, use one matrix/batch validation caller rather than one schema-validation workflow run per file.
-3. Reuse durable reusable workflows (`agent-compile-reusable.yml`, `agent-google-drive-reusable.yml`, `workflow-mailbox-publisher.yml`, `agent-workflow-schema-validator-reusable.yml`, and source-snapshot/cleanup utilities). Treat `agent-run-observer-reusable.yml` and `agent-recent-workflow-runs-reusable.yml` as fallback discovery utilities, not the primary run-marker path.
-4. Keep temporary caller installation and trigger-marker creation as separate commits where `GitHub_Workflow_Policy.md` requires it. Tool conservation never overrides this safety boundary.
-5. A diagnosed workflow correction should update the caller once, then use one new trigger. Do not perform marker-only retries for an unchanged deterministic failure.
+1. For ordinary Drive apply, compile/package, and artifact-only Test + Benchmark work, do **not** draft a workflow. Materialize one strict dispatcher request and overwrite `.agents/Directional/agent-dispatch-request.json` once.
+2. Reuse durable `agent-operation-dispatcher.yml`, `agent-test-benchmark-reusable.yml`, `agent-compile-reusable.yml`, `agent-google-drive-reusable.yml`, `workflow-mailbox-publisher.yml`, `agent-workflow-schema-validator-reusable.yml`, and source-snapshot/cleanup utilities. Treat `agent-run-observer-reusable.yml` and `agent-recent-workflow-runs-reusable.yml` as fallback discovery utilities, not the primary run-marker path.
+3. The durable dispatcher validates its own workflow and the TB reusable before parsing each request; do not launch separate per-request schema-validation runs.
+4. If the dispatcher cannot represent required event semantics or is broken, record the blocker before using the legacy temporary-caller fallback in `GitHub_Workflow_Policy.md`. Only that fallback retains the separate caller-install/marker-trigger boundary.
+5. A diagnosed dispatcher-request correction overwrites the complete request once with a new request/retry identity. Do not replay unchanged deterministic failures.
 
 ## 7. Workflow observation without polling waste
 
@@ -193,16 +193,16 @@ Do not discover and delete temporary repository files one at a time at turn clos
 ### During the turn
 
 1. Maintain one authoritative temporary-file inventory for the turn.
-2. Add every temporary repository marker, caller, legacy observation file, or generated control file when it is created. `.workflow-mailbox/**` records are durable workflow-discovery history and must **not** be added to the temporary-file ledger. Standard patch bytes live in Google Drive, not the repository; record their File ID separately until owner-side connector deletion or workflow-side trash is verified.
-3. Classify temporary workflow callers separately because workflow-first deletion rules apply.
+2. Add every temporary repository marker, legacy caller, legacy observation file, or generated control file when it is created. `.workflow-mailbox/**` records, durable dispatcher workflows, and `.agents/Directional/agent-dispatch-request.json` must **not** be added to the temporary-file ledger. Standard patch bytes live in Google Drive, not the repository; record their File ID separately until owner-side connector deletion or workflow-side trash is verified.
+3. Classify legacy temporary workflow callers separately because workflow-first deletion rules still apply to fallback use.
 4. Prefer a simple manifest under the approved cleanup trigger namespace when the durable cleanup workflow will consume it.
 
 ### At cleanup
 
 1. Verify all required evidence has been captured first.
 2. Retire the staged Google Drive patch according to `GitHub_Workflow_Policy.md`: use the user-authorized Google Drive connector `delete_file` when the file remains addressable after a successful push; otherwise retain verified workflow-side `drive_file_trashed=true` evidence.
-3. Delete/disable temporary workflow callers **first**, as required by `GitHub_Workflow_Policy.md`.
-4. Then invoke the durable `.github/workflows/agent-turn-cleanup.yml` once with the manifest of remaining temporary non-workflow files.
+3. If a legacy temporary caller fallback was used, delete/disable that caller **first** as required by `GitHub_Workflow_Policy.md`. The standard dispatcher/request slot is retained and never enters cleanup.
+4. Then invoke the durable `.github/workflows/agent-turn-cleanup.yml` once with the manifest of remaining temporary non-workflow files when applicable.
 5. The cleanup workflow should validate every manifest path, reject protected/durable/workflow paths, remove all authorized temporary files in one commit, and report what it removed.
 6. Verify the temporary directories once after cleanup instead of issuing one existence check per deleted path.
 7. Preserve remote immutable Actions artifacts unless retention policy authorizes deletion.
@@ -241,9 +241,9 @@ Before final closeout:
 1. Confirm all source/static analysis that could be done from the local snapshot has been completed locally.
 2. Confirm workflow evidence was collected using run-level/job-level batch reads rather than repeated polling.
 3. Confirm required artifacts were downloaded at most once unless a retry was justified.
-4. Remove temporary workflow callers first.
+4. Remove legacy temporary workflow callers first if the fallback path was used; never remove the durable dispatcher/reusables.
 5. Run one manifest-driven cleanup for remaining temporary files when applicable.
-6. Inspect `.github/workflows`, `.agents/connector-triggers`, `.agents/workflow-observation`, `.agents/Directional/turn-payloads`, and the relevant `.workflow-mailbox/<workflow-key>/` record once to verify final hygiene. Preserve mailbox history; it is not temporary cleanup state.
+6. Inspect `.github/workflows`, `.agents/Directional/agent-dispatch-request.json`, `.agents/connector-triggers`, `.agents/workflow-observation`, `.agents/Directional/turn-payloads`, and the relevant `.workflow-mailbox/<workflow-key>/` record once to verify final hygiene. Preserve the durable request slot and mailbox history.
 7. Verify the branch head once after cleanup.
 8. Update coherent durable documentation in one batch where practical.
 9. Do not touch the PR title, body or metadata. They are frozen — see §10.
@@ -261,8 +261,10 @@ Before final closeout:
 | Several files / large source / iterative review | **Mandatory `READ_MODE=snapshot` before first source/document read**; one exact source snapshot, then local inspection |
 | Repo-wide symbol/search analysis | Snapshot + local `rg`/grep |
 | Compare two source authorities | One commit comparison; snapshot locally if deeper inspection is needed |
-| Change several related code/docs files | Snapshot -> local verified backup patch -> Google Drive File ID -> `agent-google-drive-reusable.yml` apply/push/delete -> retire temp caller/marker |
-| Validate several workflow YAML files | One matrix schema-validation run |
+| Change several related code/docs files | Snapshot -> local verified backup patch -> Google Drive File ID -> one `drive_apply` dispatcher request -> verify semantic commit -> Drive owner cleanup |
+| Compile/package an exact source | One `compile` dispatcher request pinned to literal source SHA and approved targets |
+| Execute artifact-only Test + Benchmark | One `test_benchmark` dispatcher request pinned to exact executor/harness/source authority; durable TB reusable only |
+| Validate durable dispatcher workflows | Dispatcher self-validation jobs; separate validation only when modifying durable workflow YAML |
 | Observe a push workflow | Read `.workflow-mailbox/<workflow-key>/latest.json` as authoritative completed-run discovery; use PR observer/recent-runs only as fallback; then query the exact run/jobs |
 | Diagnose successful workflow | Job summary + required evidence only; no blanket log downloads |
 | Diagnose failed workflow | One job inventory, then logs for failed/relevant job(s) |
@@ -288,6 +290,8 @@ Before final closeout:
 - Deleting or adding `.workflow-mailbox/**` records to the temporary cleanup manifest.
 - Re-fetching an artifact's remote contents after it has been downloaded and verified locally.
 - Staging patch bytes/Base64/fragments in the repository instead of using the Google Drive File-ID transport for non-minor code/docs changes.
+- Creating a temporary workflow YAML or trigger marker for Drive apply, compile/package, or artifact-only Test + Benchmark work that fits the durable dispatcher contract.
+- Deleting or adding `.agents/Directional/agent-dispatch-request.json` to temporary cleanup; it is a retained mutable control slot.
 - Deleting temporary files with one connector call per path when a safe manifest-driven cleanup is available.
 - Posting PR comments at all as a turn-closing or evidence-recording mechanism; durable documents own that.
 - Creating one schema-validation run per workflow when the files can be validated in one matrix run.

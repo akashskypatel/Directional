@@ -38,14 +38,16 @@ Retain these durable workflows on the working branch:
 - `.github/workflows/agent-run-observer-reusable.yml` — fallback run-ID observer for PR-comment reporting and the legacy optional temporary branch-file channel. It is not the authoritative discovery path when a workflow mailbox record is available.
 - `.github/workflows/agent-recent-workflow-runs-reusable.yml` — fallback authenticated Actions-run inventory for a missing/stale mailbox or a workflow that never reached mailbox publication. It queries `repos/${GITHUB_REPOSITORY}/actions/runs` and uploads bounded discovery artifacts.
 - `.github/workflows/agent-workflow-schema-validator-reusable.yml` — mandatory reusable pre-publication GitHub-workflow schema validator. It validates YAML against SchemaStore's `github-workflow.json`, uploads a validation report and diagnostic log, and fails closed on schema or document validation errors.
+- `.github/workflows/agent-operation-dispatcher.yml` — **durable standard ChatGPT Web execution entry point** for Drive patch apply, compile/package, and artifact-only Test + Benchmark operations. It is triggered only by changes to `.agents/Directional/agent-dispatch-request.json`, validates a strict allowlisted request schema, calls only durable reusable workflows, and publishes the requested mailbox key.
+- `.github/workflows/agent-test-benchmark-reusable.yml` — mandatory reusable artifact-only Test + Benchmark executor. It verifies an exact executor commit, exact harness path/hash, bounded non-secret environment, immutable-artifact execution boundary, result/log uploads, and propagates the harness status without configuring, compiling, relinking, repairing, or generating discovery.
 
-Any workflow that compiles Directional must call `agent-compile-reusable.yml`. Do not duplicate its checkout, configure, compile, ccache, cache-pruning, packaging, or compile-evidence logic in a turn-specific workflow. A temporary caller may provide the exact source SHA, approved targets, artifact prefix, and narrowly scoped trigger. It must publish a final mailbox record through `workflow-mailbox-publisher.yml`; `agent-run-observer-reusable.yml` is fallback-only when mailbox publication is absent or fails. **A caller must not provide or invent a cache epoch, cache namespace, cache compatibility key, or per-turn cache lineage.** The reusable compile workflow alone owns cache compatibility/versioning.
+Any workflow that compiles Directional must call `agent-compile-reusable.yml`. Do not duplicate its checkout, configure, compile, ccache, cache-pruning, packaging, or compile-evidence logic. The standard ChatGPT Web path is a `compile` request through `agent-operation-dispatcher.yml`; the request may provide only the exact source SHA, approved target list, artifact prefix, mailbox key, and request identity. **Neither the dispatcher request nor any legacy caller may provide or invent a cache epoch, cache namespace, cache compatibility key, or per-turn cache lineage.** The reusable compile workflow alone owns cache compatibility/versioning.
 
 ## Mandatory GMP compile backend
 
 `.agents/Directional/GMP_COMPILE_POLICY.md` is binding on every compile. For ChatGPT Web, `agent-compile-reusable.yml` is the mandatory implementation authority: it must provision GMP, configure `DIRECTIONAL_ENABLE_GMP=ON`, verify CMake discovery, verify both `gmpxx` and `gmp` on an authoritative generated link command, and package `exactArithmeticBackend=GMP` evidence. A missing GMP dependency, a disabled GMP option, failed link verification, or fallback `BigInteger`/`ExactNumber` selection is a **compile failure**, not a supported fallback. Turn-specific callers may not expose or supply an option that weakens this requirement.
 
-Turn-specific callers, trigger markers, patch/payload files, generated workflow-observation files, and generated repository artifacts are temporary and must be removed after their result/log artifacts and exact source authority are verified.
+The durable dispatcher workflows and `.agents/Directional/agent-dispatch-request.json` are retained control-plane infrastructure. Standard dispatcher requests overwrite that one durable request slot and do not create temporary workflow YAML or trigger-marker files. Legacy turn-specific callers/markers, generated workflow-observation files, and generated repository artifacts remain temporary and must be removed after their evidence and exact source authority are verified.
 
 ## Mandatory workflow contract
 
@@ -62,7 +64,7 @@ Every agent workflow must:
 9. never modify `.github/workflows/**` from inside a workflow;
 10. use indentation-safe YAML/shell construction;
 11. validate every new or modified GitHub workflow YAML against `.github/workflows/agent-workflow-schema-validator-reusable.yml` before it is treated as publishable workflow authority. Draft new workflows outside `.github/workflows/**` when practical, validate the draft first, then publish it. For an existing workflow that must be edited in place, validate the exact resulting file before triggering it. Schema validation complements but does not replace reusable-input and permission-ceiling checks.
-12. when an orchestration draft contains an expected SHA-256 literal, author the draft with `@@SHA256:<name>@@` placeholders and materialize it through `.agents/Directional/tools/write_orchestration_payload.py --sha256 <name>=<digest>`. The writer rejects any value that is not exactly 64 lowercase hexadecimal characters **before the output file is written**; do not bypass it by transcribing an expected digest directly into a temporary caller or payload.
+12. when an orchestration request/template contains an expected SHA-256 literal, author the template with `@@SHA256:<name>@@` placeholders and materialize it through `.agents/Directional/tools/write_orchestration_payload.py --sha256 <name>=<digest>`. The writer works for JSON request templates as well as YAML drafts and rejects any value that is not exactly 64 lowercase hexadecimal characters **before the output file is written**; do not bypass it by manually transcribing expected digests into dispatcher requests or legacy callers.
 13. for every connector-driven workflow whose run must be recovered by ChatGPT Web, publish a final same-repository mailbox record through `.github/workflows/workflow-mailbox-publisher.yml`;
 14. upload task result/log artifacts before mailbox publication so the mailbox can report their artifact IDs, authenticated artifact URLs, REST download URLs, digests, sizes, and expiry metadata;
 15. preserve the exact task/source commit separately from the mailbox commit. `source_sha` in the mailbox record is source authority; the branch head after mailbox publication is not;
@@ -76,13 +78,42 @@ For coherent source/code or documentation edits that are not a genuinely minor d
 2. Edit only the local snapshot-derived tree. Generate one complete `git diff --binary --full-index --no-ext-diff` patch, including new/deleted/binary files as needed, with the retention-policy metadata header. Verify `git apply --check` against the exact base and `git diff --check`.
 3. Emit the exact patch as a user-visible downloadable chat/File-Library backup **before** remote orchestration.
 4. Upload those exact patch bytes with the Google Drive connector to `My Drive/Directional-CI`; retain the returned File ID and complete patch SHA-256. Do not create repository patch payloads, compressed Base64, or fragments.
-5. Install a minimal temporary caller whose workload uses `./.github/workflows/agent-google-drive-reusable.yml` and passes `file_id`, `patch_sha256`, `base_sha`, target branch, and commit message with `secrets: inherit`. Keep caller installation and its push marker in separate commits.
+5. Overwrite the durable `.agents/Directional/agent-dispatch-request.json` with one validated `drive_apply` request containing the exact `file_id`, `patch_sha256`, `base_sha`, target branch, commit message, mailbox key, and request ID. That single request commit is the trigger; do not create a temporary workflow YAML or marker.
 6. The reusable must download by File ID, verify full patch SHA-256 and embedded `base_sha`/`diff_body_sha256`/`intended_paths`, prove no intended path changed between patch base and caller event SHA, run `git apply --check`, apply, run `git diff --check`, prove the actual changed-path set equals the intended set, commit, and push without force.
 7. Patch transport is forbidden from changing `.github/workflows/**` because workflows may not modify workflow files from inside Actions. Workflow-file edits remain direct GitHub connector writes within the safe content ceiling and must be schema-validated before execution.
 8. **Only after the patch commit pushes successfully** and required result/log evidence are verified, perform final staging cleanup from the ChatGPT control plane with the **user-authorized Google Drive connector**. If the staged patch is still addressable, call the connector's permanent `delete_file` action on that exact Drive File ID/URL and require a successful deletion result.
-9. After Drive cleanup evidence is verified, delete the temporary caller first, then remove the marker and remaining temporary repository control state. The repository not Google Drive should contain no patch-transfer payload/fragments.
+9. After Drive cleanup evidence is verified, retain the durable dispatcher and request slot. No workflow/marker cleanup is required for the standard dispatcher path; only legacy fallback control files, if any, are cleaned. The repository must contain no patch-transfer payload/fragments.
 
 The chat/File-Library backup is durability/recovery material; Google Drive is transient remote transport; the pushed Git commit becomes repository authority.
+
+
+## `[ChatGPT Web]` Durable operation dispatcher — standard path
+
+The standard ChatGPT Web execution path for operations that previously required per-turn workflow callers is `.github/workflows/agent-operation-dispatcher.yml`. **Do not create a turn-specific workflow YAML or push-marker when the requested operation fits the durable dispatcher contract.** The dispatcher is the permanent bootstrap fix for connector restrictions on `.github/workflows/**`.
+
+The sole mutable trigger slot is `.agents/Directional/agent-dispatch-request.json`. It is durable control-plane infrastructure, not semantic/build/test authority and not temporary cleanup state. Each request overwrites the complete file in one commit. The push event SHA freezes the exact request bytes consumed by that run, so later request commits do not alter an in-flight run. Dispatcher concurrency is serialized per ref with `cancel-in-progress: false`.
+
+Allowed operations are strictly enumerated:
+
+- `drive_apply` — invokes only `agent-google-drive-reusable.yml`; requires exact Drive File ID, lowercase patch SHA-256, exact base SHA, current target branch, bounded commit message, mailbox key, and request ID. The dispatcher mailbox records the base/source authority; the semantic applied commit is recovered from the Drive reusable result artifact and independently verified before any compile request.
+- `compile` — invokes only `agent-compile-reusable.yml`; requires a literal exact source SHA, a bounded tokenized target list, artifact prefix, mailbox key, and request ID. The dispatcher exposes no cache-key/cache-epoch input.
+- `test_benchmark` — invokes only `agent-test-benchmark-reusable.yml`; requires exact executor SHA, semantic package source SHA, turn ID, repository harness path under `.agents/Directional/tools/`, exact harness SHA-256, bounded non-secret scalar environment JSON, artifact prefix, mailbox key, and request ID. The reusable executes only the verified artifact-only harness with `--execute`; it never configures, compiles, relinks, repairs package bytes/modes, or generates discovery.
+- `noop` — control-plane validation only. It performs no source/build/runtime workload and is used for dispatcher bootstrap or bounded orchestration verification.
+
+Binding dispatcher rules:
+
+1. The request is a strict JSON object with `schema_version: 1`; unknown fields and unknown operations fail closed.
+2. Request IDs, mailbox keys, artifact prefixes, target names, SHAs, hashes, branch names, harness paths, retention ranges, and environment keys are syntactically validated before any workload job can start.
+3. Test/benchmark environment injection is data-only: reserved runner/GitHub/shell-loader variables are rejected by the reusable executor, values are passed directly through a subprocess environment rather than appended to `GITHUB_ENV`, and no secret may appear in request JSON.
+4. The dispatcher validates both its own workflow YAML and the durable Test + Benchmark reusable workflow with `agent-workflow-schema-validator-reusable.yml` on every request before parsing/execution.
+5. Every successful parsed request publishes the caller-selected stable mailbox key through `workflow-mailbox-publisher.yml`; result/log artifacts are produced before mailbox publication.
+6. A request commit is the execution trigger. Do not make a second marker commit, do not install/delete a caller, and do not delete the request slot at cleanup.
+7. A deterministic request failure is corrected by overwriting the full request once with a new request ID/retry identity; do not replay unchanged malformed input.
+8. The standard dispatcher does not modify `.github/workflows/**` at runtime. Durable dispatcher/reusable workflow edits are direct control-plane GitHub changes and require schema validation.
+9. Bootstrap exception: when installing the dispatcher itself for the first time and no durable dispatcher exists yet, user-authorized control-plane installation may use exact Git blob/tree/commit/ref operations after local YAML/structural validation, followed immediately by a `noop` request whose run must show both reusable SchemaStore validation jobs GREEN before the dispatcher is accepted as durable authority. This one-time bootstrap exception does not authorize future temporary callers.
+10. A temporary caller is permitted only as an explicitly diagnosed **legacy fallback** when the durable dispatcher cannot represent the required event semantics or the dispatcher itself is broken/unavailable. Record the blocker before using that fallback and repair the durable control plane rather than normalizing the exception.
+
+Canonical request shapes are intentionally data-only; request templates containing SHA-256 values use `@@SHA256:<name>@@` and `.agents/Directional/tools/write_orchestration_payload.py`.
 
 ## Workflow mailbox observability
 
@@ -126,9 +157,9 @@ Fallback order:
 
 Do not repeatedly poll PR comments. Do not re-trigger a workflow merely because the mailbox has not yet appeared; final mailbox publication normally occurs after artifact-producing workload jobs complete.
 
-## Exact procedure for drafting, executing, observing, and deleting a temporary workflow
+## Legacy fallback — drafting, executing, observing, and deleting a temporary workflow
 
-Use this procedure for every agent-created GitHub Actions workflow whose run must be observed from the connector. The purpose is to make workflow execution deterministic and to prevent malformed callers, missed push runs, trigger races, permission failures, and cleanup debris. Do not improvise a different lifecycle unless the active task requires event semantics that cannot be represented by the standard push-marker pattern.
+This section is **exception-only**. Use it only after recording why `.github/workflows/agent-operation-dispatcher.yml` cannot safely represent the required operation/event semantics or is itself unavailable/broken. Standard Drive apply, compile/package, and artifact-only Test + Benchmark work must use the durable dispatcher and must not create temporary workflow YAML. When this fallback is genuinely required, the procedure below prevents malformed callers, trigger races, permission failures, and cleanup debris.
 
 ### Phase 0 — preflight and fixed decisions
 
@@ -337,7 +368,9 @@ Focused reproduction or diagnostic commands that are not themselves the complete
 
 ## Trigger and temporary control lifecycle
 
-When connector dispatch is unavailable:
+For standard ChatGPT Web execution, connector dispatch is the durable request-slot commit to `.agents/Directional/agent-dispatch-request.json`; no temporary caller/marker lifecycle exists. The rules below apply only to the documented legacy fallback when the durable dispatcher cannot be used.
+
+When that legacy fallback is required:
 
 1. commit the temporary caller first, with one exact unique push-marker path and with that marker absent or unchanged in the caller-install commit;
 2. only after the caller commit is branch authority, create or modify the exact temporary text marker under `.agents/connector-triggers/` in a **separate later commit**. This is the proven P1 pattern: first installed `.github/workflows/m2-cp1-tb-r1-closeout.yml`, then created `.agents/connector-triggers/m2-cp1-tb-r1-closeout-20260817.txt` and triggered the workflow;
@@ -371,4 +404,4 @@ Record run/job IDs, result/log artifact IDs and digests, exact compiled source, 
 
 ## End-of-turn hygiene
 
-At start and end of every turn inspect `.github/workflows`, `.agents/connector-triggers`, `.agents/workflow-observation`, `.agents/Directional/turn-payloads`, and the relevant `.workflow-mailbox/<workflow-key>/` records. Preserve durable workflows and mailbox history, remove only temporary caller/trigger/legacy-observation state in workflow-first order, and apply `CLEAN_UP_POLICY.md`. PR comments are fallback observations only and are never the final repository write; durable handoff/`STATUS` authority closes the turn.
+At start and end of every turn inspect `.github/workflows`, the durable `.agents/Directional/agent-dispatch-request.json`, `.agents/connector-triggers`, `.agents/workflow-observation`, `.agents/Directional/turn-payloads`, and the relevant `.workflow-mailbox/<workflow-key>/` records. Preserve durable workflows, the dispatcher request slot, and mailbox history; remove only legacy temporary caller/trigger/observation state and apply `CLEAN_UP_POLICY.md`. PR comments are fallback observations only and are never the final repository write; durable handoff/`STATUS` authority closes the turn.
