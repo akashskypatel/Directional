@@ -1,3 +1,10 @@
+## 2026-10-07 — `M6-CP3-TB1-ENTRY-R1-EXEC` — 482/497; mandatory Review
+
+- Durable dispatcher runtime `37645974118 / 112876903729` completed all 497 fresh artifact-only processes against `11488700954 / 68000a95...` with exact-one selection, zero skips, benchmark 0 and immutable postflight.
+- Result is **482 PASS / 15 RED**: focused30 23/30, focused12 12/12, selector449 446/449, CP3-entry 1/6.
+- The expected RA-31a shape (496 PASS plus only identity 2 RED after its non-vacuity/A5 prerequisites) was not met. Six non-stable candidate groups are recorded for mandatory R1 Review; stable accounting remains **63 / 17 / 46**, debt 1.
+- Next: `M6-CP3-TB1-ENTRY-R1-REV`.
+
 ## 2026-10-06 — `M6-CP3-TB1-ENTRY-REV` review-agent addendum — one new rule withdrawn
 
 - The CP3 entry build broke 124 tests. Most come from one missing published value, which the next build fixes.

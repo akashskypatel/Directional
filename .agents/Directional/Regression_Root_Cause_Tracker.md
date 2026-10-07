@@ -1,3 +1,9 @@
+## 2026-10-07 — `M6-CP3-TB1-ENTRY-R1-EXEC` — 15 REDs classified / mandatory Review — **+0 / 63/17/46 / debt 1**
+
+Immutable durable-dispatch run `37645974118 / 112876903729` consumed `11488700954 / 68000a95...` and completed exactly **497** fresh processes at **482 PASS / 15 RED**, exact-one, zero skips, benchmark 0, immutable postflight and self-manifest 1019/1019. The six provisional groups are: R1-CAND-01 A6/D7 isolation-side recovery incomplete (10 rows: focused30 6,20,24-28 + selector 444,446,448); R1-CAND-02 D1 90/270 produced-witness non-vacuity (1); R1-CAND-03 D2 produced HardRail non-vacuity (1; failure occurs before the pre-registered withdrawn-certificate assertion); R1-CAND-04 D3 produced seam relation reachability (1); R1-CAND-05 D4 typed barrier route/oracle reachability (1); R1-CAND-06 D7 produced seam relation reachability (1).
+
+EXEC does not promote or merge events. **Stable accounting remains 63 / 17 / 46, debt 1.** Mandatory `M6-CP3-TB1-ENTRY-R1-REV` owns stable attribution and recovery disposition.
+
 ## 2026-10-06 — `M6-CP3-TB1-ENTRY-REV` review-agent addendum — RA-31a — **+0 (totals 63/17/46) / debt 1**
 
 - The 373/497 re-derivation is confirmed, and the partition and stable events (CAND-01/02/07) are confirmed.

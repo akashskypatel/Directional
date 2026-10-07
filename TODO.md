@@ -1,3 +1,11 @@
+## Current — `M6-CP3-TB1-ENTRY-R1-EXEC` COMPLETE / 482 PASS + 15 RED / mandatory R1 Review next (2026-10-07)
+
+- [x] Execute immutable `11488700954 / 68000a95...` through durable dispatcher run `37645974118` as exactly 497 fresh exact-filter processes.
+- [x] Verify exact-one, zero skips, benchmark 0, result manifest 1019/1019, package manifest 28/28 and immutable package/source/execution-view postflight.
+- [x] Record **482 PASS / 15 RED**: focused30 23/30, focused12 12/12, selector449 446/449, CP3-entry 1/6.
+- [x] Classify every RED once into six non-stable R1 candidate groups; stable accounting remains **63 / 17 / 46**, debt 1.
+- [ ] **Exact next: mandatory `M6-CP3-TB1-ENTRY-R1-REV`.** The RA-31a 496+identity2 acceptance shape was not met; no source/test repair or retry before Review.
+
 ## Current — `M6-CP3-TB1-ENTRY-REV` review-agent addendum / RA-31a / exact next `M6-CP3-CB1-ENTRY-R1` (2026-10-06)
 
 - [x] Re-derive TB1: 1019/1019; frozen order; 373/497; the TSV covers every RED once with matching hashes.

@@ -1,3 +1,11 @@
+## Resume-critical update — `M6-CP3-TB1-ENTRY-R1-EXEC` COMPLETE / 482 PASS + 15 RED / mandatory R1 Review next (2026-10-07)
+
+**Start mandatory `M6-CP3-TB1-ENTRY-R1-REV` next. Do not repair source/tests or begin CP3 exit before Review.**
+
+Durable-dispatch run/job `37645974118 / 112876903729` consumed compile artifact `11488700954` at semantic source `68000a95a94b1d95f22694dc093dc6a538e1b7b4` and completed exactly **497** fresh exact-filter processes: focused30 **23/30**, focused12 **12/12**, selector449 **446/449**, CP3-entry **1/6**, aggregate **482 PASS / 15 RED**. Exact-one selection, zero skips, benchmark 0, immutable postflight and result manifest **1019/1019** all pass. Result/log artifacts are `11495166428 / 11495391140`.
+
+RA-31a's acceptance shape was 496 PASS plus only identity 2 RED after its non-vacuity/A5 prerequisites. Current identity 2 fails earlier at produced HardRail witness non-vacuity, so acceptance is not met. EXEC classifies all 15 rows into six non-stable groups: carried A6/D7 isolation-side recovery incomplete (10), D1 produced witness (1), D2 produced HardRail witness (1), D3 seam-relation reachability (1), D4 typed-barrier route/oracle reachability (1), and D7 seam-relation reachability (1). Stable accounting remains **63 / 17 / 46**, debt 1 pending Review.
+
 ## Resume-critical update — `M6-CP3-TB1-ENTRY-REV` review-agent addendum: RA-31a withdraws the HardRail branch certificate (2026-10-06)
 
 **Start `M6-CP3-CB1-ENTRY-R1`** under RA-31 **+ RA-31a**. The top block of `Architecture_M6_CP3_CB1_Entry_R1_Recovery_Code_Build_Plan.md` is binding.
