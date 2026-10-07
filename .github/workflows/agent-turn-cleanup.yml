@@ -19,7 +19,17 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  validate:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-turn-cleanup.yml
+      source_ref: ${{ github.sha }}
+
   cleanup:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
     runs-on: ubuntu-24.04
     outputs:
       cleanup_sha: ${{ steps.cleanup.outputs.cleanup_sha }}
@@ -64,9 +74,11 @@ jobs:
           cat > "$expected" <<'EOF'
           agent-compile-reusable.yml
           agent-google-drive-reusable.yml
+          agent-operation-dispatcher.yml
           agent-recent-workflow-runs-reusable.yml
           agent-run-observer-reusable.yml
           agent-source-snapshot.yml
+          agent-test-benchmark-reusable.yml
           agent-turn-cleanup.yml
           agent-workflow-schema-validator-reusable.yml
           workflow-mailbox-publisher.yml
