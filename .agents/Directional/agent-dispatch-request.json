@@ -1,20 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb1-entry-r1-exec-1",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb1-entry-r1-exec",
-  "executor_sha": "0a402104d7d82166fbf451ae8df44301f46f31b3",
-  "semantic_source_sha": "68000a95a94b1d95f22694dc093dc6a538e1b7b4",
-  "turn_id": "M6-CP3-TB1-ENTRY-R1-EXEC",
-  "harness_path": ".agents/Directional/tools/m6_cp3_entry_497_artifact_only_harness.sh",
-  "harness_sha256": "947a95ee4f684143a0f8d7c768a39253ab893d921da488802b45fb6ed58879dd",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": 11488700954,
-    "EXPECTED_SOURCE_SHA": "68000a95a94b1d95f22694dc093dc6a538e1b7b4",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "a26311563d92e9fce6932f034fc870bc285ca63482457bf8b39c359569f1496b",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "b08171e974b3acb1871becf63cb554acfab505a7c1753014a7dd5bffc211d9f7",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "54b46890f24a45f663c0180b2667349e68d6df22765a3883e8cc7f8dd386ce42"
-  },
-  "artifact_prefix": "m6-cp3-tb1-entry-r1",
+  "request_id": "m6-cp3-tb1-entry-r1-exec-docs-1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb1-entry-r1-exec-docs",
+  "file_id": "12RK-oi5jQNwZqFOJFGCLtOOI3TcuSv3Z",
+  "patch_sha256": "605cc2f953788ed42bd7b7ef479552c378f077f2c865734f4bd889fc14aef748",
+  "base_sha": "13c926152ee0a5fdaf18ef8ccdf49859fe257099",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: record M6 CP3 TB1 R1 execution evidence",
   "retention_days": 14
 }
