@@ -1,3 +1,0 @@
-M6-CP3-CB1-ENTRY-R1 Drive apply trigger
-purpose=apply verified four-path recovery patch from Google Drive
-retry=1
