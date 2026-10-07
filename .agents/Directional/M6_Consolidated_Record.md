@@ -656,6 +656,8 @@ D1 lacks an organic exact-A3 90°/270° witness; D3/D7 lack a real-produced seam
 | `Architecture_M6_CP3_CB1_Entry_R1_Recovery_Code_Build_Plan.md` | **CONSUMED R1 RECOVERY PLAN / FOLDED BY R1 REVIEW.** P1/P2/T1/T2/T4 scope and RA-31a amendments are preserved in §§58-59, RA-31/31a/32 and git history. |
 | `Architecture_M6_CP3_CB1_Entry_R1_WIP_Handoff.md` | **SUPERSEDED R1 CB WIP / FOLDED BY R1 REVIEW.** Compile/package identity and recovery execution facts survive in the retained R1 TB report, changelog and git history. |
 | `Architecture_M6_CP3_TB1_Entry_R1_Exec_WIP_Handoff.md` | **SUPERSEDED R1 EXEC WIP / FOLDED BY R1 REVIEW.** Dispatcher/run/artifact and cleanup recovery facts are preserved in the retained R1 TB report, §59 and git history. |
+| `Architecture_M6_CP3_TB1_Entry_R1_Review_WIP.md` | **SUPERSEDED R1 REVIEW ANALYSIS WIP / FOLDED BY R1 REVIEW CLOSEOUT.** Independent candidate adjudication is preserved in the retained R1 Review record, RA-32, tracker and §59; full text remains in git history. |
+| `Architecture_M6_CP3_TB1_Entry_R1_Review_WIP_Handoff.md` | **SUPERSEDED R1 REVIEW CLOSEOUT WIP / FOLDED BY R1 REVIEW CLOSEOUT.** Patch/run/resume facts are superseded by the retained R1 Review record, current handoff/changelog, workflow mailbox and git history. |
 | `Architecture_M6_CP3_TB1_Entry_Artifact_Only_Test_Benchmark_Report.md` | **SUPERSEDED PREDECESSOR TB REPORT / FOLDED BY R1 REVIEW.** 373/497 mechanics and candidate evidence are preserved in §58, tracker and git history; the R1 runtime report is current. |
 | `Architecture_M6_CP3_TB1_Entry_Red_Classification.tsv` | **SUPERSEDED PREDECESSOR ROW CLASSIFICATION / FOLDED BY R1 REVIEW.** Exact predecessor partition is preserved in §58, prior review facts, tracker and git history. |
 
