@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb1-entry-r1-exec-docs-3",
+  "request_id": "m6-cp3-tb1-entry-r1-rev-closeout-1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb1-entry-r1-exec-docs",
-  "file_id": "12RK-oi5jQNwZqFOJFGCLtOOI3TcuSv3Z",
-  "patch_sha256": "605cc2f953788ed42bd7b7ef479552c378f077f2c865734f4bd889fc14aef748",
-  "base_sha": "13c926152ee0a5fdaf18ef8ccdf49859fe257099",
+  "mailbox_key": "m6-cp3-tb1-entry-r1-rev-closeout",
+  "file_id": "1MZgk_5kiSy3rqTWKq-yCINjPg9gs4lcL",
+  "patch_sha256": "10da434c1c203bd7c75200dae4355d23d7d6d77636523bb457c06f38e33b3e41",
+  "base_sha": "e08872dbe3235e2c4a35dd71ad76088b7e0423e5",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: record M6 CP3 TB1 R1 execution evidence",
+  "commit_message": "docs: close M6 CP3 TB1 R1 review",
   "retention_days": 14
 }
