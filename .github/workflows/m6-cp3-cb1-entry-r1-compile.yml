@@ -1,0 +1,54 @@
+name: M6 CP3 CB1 Entry R1 Compile
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m6-cp3-cb1-entry-r1-compile.txt
+
+permissions:
+  actions: write
+  contents: write
+
+concurrency:
+  group: m6-cp3-cb1-entry-r1-compile
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m6-cp3-cb1-entry-r1-compile.yml
+      source_ref: ${{ github.sha }}
+
+  compile:
+    needs: validate
+    if: needs.validate.outputs.valid == 'true'
+    permissions:
+      actions: write
+      contents: read
+    uses: ./.github/workflows/agent-compile-reusable.yml
+    with:
+      source_sha: 68000a95a94b1d95f22694dc093dc6a538e1b7b4
+      targets: directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks
+      artifact_prefix: m6-cp3-cb1-entry-r1
+
+  mailbox:
+    if: ${{ always() }}
+    needs: [validate, compile]
+    permissions:
+      actions: read
+      contents: write
+    uses: ./.github/workflows/workflow-mailbox-publisher.yml
+    with:
+      workflow_key: m6-cp3-cb1-entry-r1-compile
+      source_sha: 68000a95a94b1d95f22694dc093dc6a538e1b7b4
+      source_ref: refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing
+      result: ${{ needs.compile.result != 'skipped' && needs.compile.result || needs.validate.result }}
+      summary: >-
+        M6 CP3 CB1 entry R1 compile/package of exact eight GMP/GMPXX targets;
+        semantic source_sha=68000a95a94b1d95f22694dc093dc6a538e1b7b4;
+        runtimeExecution=false.
