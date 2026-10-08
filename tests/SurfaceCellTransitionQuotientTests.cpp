@@ -328,6 +328,9 @@ struct PhaseFrontFixture {
   std::vector<int> components;
   std::vector<int> sheets;
   SurfaceCellNetwork network;
+  // Observation-only independent A3 source for produced-witness assertions.
+  // Not passed to A4/A5/A6 or used to construct an authoritative product.
+  std::optional<directional::authority::FieldTransportAtlas> fieldTransportAtlas;
 };
 
 Eigen::MatrixXd constant_xy_field(const int faceCount) {
@@ -782,6 +785,7 @@ PhaseFrontFixture make_nonconstant_hard_rail_fixture(
   fixture.components = snapshots.sourceSurfaceLabels.componentByFace;
   fixture.sheets = snapshots.sourceSurfaceLabels.localSheetByFace;
   fixture.network = snapshots.traceNetwork;
+  fixture.fieldTransportAtlas = snapshots.fieldTransportAtlas;
   require_produced(fixture, "non-constant internal-midline hard-rail rectangle");
   return fixture;
 }
@@ -2550,6 +2554,47 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
   ASSERT_EQ(permutedMidline->junctions.size(), 1U);
   EXPECT_EQ(permutedMidline->junctions.front().junction,
             midlineJunction.junction);
+
+  // An internally commuting square is insufficient proof of A3 provenance:
+  // shifting one step on each side by the same Z4 turn preserves that square.
+  // Compare BOTH produced certificates with the original pipeline-owned A3
+  // atlas snapshots, not a second copy of the mutable certificate fields.
+  const auto require_atlas_attested_junction = [](const PhaseFrontFixture &source,
+                                                 const auto &route) {
+    ASSERT_TRUE(source.fieldTransportAtlas.has_value())
+        << "D2 requires an independently retained production A3 atlas";
+    const auto &front = source.network.phaseFront.product();
+    const auto &sourceFaces = front.sourceTopologyRegions();
+    const auto &atlas = *source.fieldTransportAtlas;
+    ASSERT_TRUE(atlas.matches_source_faces(
+        source.mesh.F, sourceFaces,
+        static_cast<std::size_t>(source.mesh.V.rows())))
+        << "A3 atlas must bind to the same typed source-face topology";
+    for (const auto &junction : route.junctions) {
+      for (const auto &side : junction.sectorPaths) {
+        for (const auto &step : side) {
+          const auto firstRow = sourceFaces.row_for_topology(step.firstFace);
+          const auto secondRow = sourceFaces.row_for_topology(step.secondFace);
+          ASSERT_TRUE(firstRow.has_value());
+          ASSERT_TRUE(secondRow.has_value());
+          const auto forward = atlas.transition_value(
+              step.edge, firstRow.value(), secondRow.value());
+          const auto reverse = atlas.transition_value(
+              step.edge, secondRow.value(), firstRow.value());
+          ASSERT_TRUE(forward.has_value())
+              << "Missing independently attested A3 nonrail step";
+          ASSERT_TRUE(reverse.has_value())
+              << "Missing reverse A3 nonrail step";
+          EXPECT_EQ(forward->transport, step.firstToSecond)
+              << "A4 nonrail certificate differs from independent A3 atlas";
+          EXPECT_EQ(reverse->transport, forward->transport.inverse())
+              << "A3 source-edge transport must be reciprocal";
+        }
+      }
+    }
+  };
+  require_atlas_attested_junction(fixture, *producedMidline);
+  require_atlas_attested_junction(permutedFixture, *permutedMidline);
   // Compare immutable SOURCE-FACE TOPOLOGY, not the rows used to index it.
   // The canonical pair may exchange sector orientation; normalize the two
   // unordered sector face sets before comparing.
