@@ -1,3 +1,9 @@
+## 2026-10-08 — `M6-DEFN-R5-R3` — Definition candidate RA-37 (NO ledger increment)
+
+Source-only Definition proposes independently reviewable A2b-topology-owned vertex-fan side chains and exact A3 commute to correct the frozen RA-36.1 wrong common-face premise. It **does not prove an A4-produced multi-carrier route, re-execute failed tests or establish an accepted fix**. Existing R2 Review remains authoritative: 444/497 rejected, 53 RED, 47 former CP2 accepted-green cases lost, 38 additional R1→R2 failures, one new already-counted `RP-01/AUTHORITY_DOMAIN_CONFLATION` A4 event. The earlier A6 RP-01 remains open; 25 direct A4, 12 Phase10 provisional and two RE-package provisional require independently localized first causes. No new stable event/category/recurrence: **64 events / 17 categories / 47 recurrences**, produced-witness debt **1**. Mandatory independent `M6-DEFN-R5-R3-REV` must adjudicate RA-37 before any Code+Build is released. See `Architecture_M6_DEFN_R5_R3_CP3_Entry_Recovery_Definition_Record.md`.
+
+---
+
 ## 2026-10-08 — `M6-CP3-TB1-ENTRY-R2-REV` — Independent R2 rejection, +1 RP-01 / 64/17/47, debt 1
 
 Review `Architecture_M6_CP3_TB1_Entry_R2_Review_Record.md` independently compares accepted CP2 491/491 (run 37419256039), rejected R1 482/497 (run 37645974118) and R2 444/497 (run 37767144537). **47 formerly accepted CP2 identities are RED in R2**; 38 identities newly RED versus R1, none recovered. The seven candidate groups and all 53 raw first diagnostics are classified in `Architecture_M6_CP3_TB1_Entry_R2_Red_Classification.tsv`.
