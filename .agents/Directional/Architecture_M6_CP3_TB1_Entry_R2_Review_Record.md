@@ -33,3 +33,103 @@ Frozen RA-36.1 states **consecutive feature carriers share exactly one typed inc
 ## Accounting and exact next gate
 
 **New stable event +1 in existing `RP-01/AUTHORITY_DOMAIN_CONFLATION`** for A4 rejecting accepted-green HardRail features using an inapplicable face-adjacency surrogate. Its pattern/category recurs: `63 events / 17 categories / 46 recurrences → 64 / 17 / 47`, debt 1. This newly counted source-transport event is **distinct** from old open A6 seam-domain RP-01 (CAND-04); dependent CAND-02/CAND-07 and non-stable organic gaps do not spawn extra event IDs. R2 is REJECTED and UNPROMOTED. Only authorized successor **`M6-DEFN-R5-R3`** (runtime-free Definition, candidate RA-37 with typed source-face-star side transport, full odd/wedge/seam/ordinary organic requirements) may proceed after formal STATUS completion; mandatory independent **`M6-DEFN-R5-R3-REV`** before Code+Build. No test execution or source mutation occurred in this Review. Full prescriptive plan: `Architecture_M6_DEFN_R5_R3_CP3_Entry_Recovery_Definition_Plan.md` and its expanded durable Library version.
+
+---
+
+## Independent verification addendum (reviewing agent)
+
+Runtime-free. **Upheld in full. The RA-36.1 falsifier is correct, and the unsound clause is mine.** Accounting
+**64 / 17 / 47**, debt **1**, is right. I decline to amend RA-36 here; reasoning in V5.
+
+### V1 — the counterexample is exact, and it generalizes beyond the fixture
+
+Verified independently from `tests/SurfaceCellTransitionQuotientTests.cpp:694-740`. The 3×3 grid triangulates
+per quad as `(lowerLeft, lowerRight, upperRight)` then `(lowerLeft, upperRight, upperLeft)`, giving
+`0=(0,1,4), 1=(0,4,3), 2=(1,2,5), 3=(1,5,4), 4=(3,4,7), 5=(3,7,6), 6=(4,5,8), 7=(4,8,7)`. Hence:
+
+- edge `(1,4)` → faces **{0, 3}**
+- edge `(4,7)` → faces **{4, 7}**
+- intersection **∅** — exactly as reported.
+
+This is not a fixture accident. Two **collinear** edges meeting at a vertex can never share a face, because a
+triangle containing `1, 4, 7` would be degenerate. So RA-36.1's clause *"consecutive steps share exactly one
+typed source face"* is false for **every** polyline carrier pair in a proper triangle mesh, not merely this one.
+
+### V2 — the clause was self-defeating
+
+RA-36 rejected the singleton-only contract **on the grounds that polyline hard features are legitimate** — citing
+these very edges `(1,4)`/`(4,7)` as a real producer input — and then froze a connectivity clause that polylines
+structurally cannot satisfy. The falsifier therefore *strengthens* the singleton-only rejection (polylines are
+real and must work) while destroying the premise I attached to it. That is my error, not the producer's, and the
+25 `InvalidHardRailRouteCertificate` rejects on previously accepted-green evidence are its direct consequence.
+Recording it as **+1 event / +1 recurrence in existing `RP-01/AUTHORITY_DOMAIN_CONFLATION`** is the correct
+classification: a rule asserted authority over a domain it had not established.
+
+### V3 — the error is a primal/dual category mistake, and the fold is wrong in kind
+
+Connectivity "share exactly one face" is the **dual** notion: a face-to-face transition path, where consecutive
+steps cross different edges *of the same triangle* and so do share a face. But a HardRail route's steps are
+**primal** rail carriers — collinear feature edges — which meet at a **vertex**. The connecting structure is
+therefore the **vertex fan**, never a shared face.
+
+The Review is also right that the composition is wrong in kind, not just the connectivity: *"the two crossing
+maps need not compose as if they were a path along one side."* My "typed fold" wording implied walking one side
+and accumulating χ. The correct form alternates cross-rail and along-side transport,
+
+```text
+τ_ab = χ_n ∘ φ_{n-1} ∘ … ∘ φ_1 ∘ χ_1
+```
+
+with RA-36.3's square `χ_(i+1) ∘ φ_a = φ_b ∘ χ_i` as the consistency condition and path-independence required
+across admissible fan paths. RA-36.3 half-anticipated this; RA-36.1/.2 contradicted it.
+
+### V4 — the authority already exists in A4, and my clause made already-written code unreachable
+
+This is the part worth adding to the Review's evidence. A4 **already computes** per-vertex fan potentials:
+`railFanPotentials` is declared at `src/geometry/SurfaceCellTracing.cpp:18120`, populated at `:18206`, and
+**already consumed by junction logic** at `:18337-18342`, which resolves `a0, a1, b0, b1` potentials at a
+`junction` vertex. So the φ authority and the junction handling both exist.
+
+Two defects follow, neither of which needs new invention:
+
+1. `railFanPotentials` has **zero header references** — it is a local, unpublished value, so A5 cannot consume it
+   even though RA-36.2 requires A5 to validate published evidence only.
+2. My face-identity gate at `:18312-18321` threads a single `current` face and rejects when a carrier's incident
+   pair contains neither — which, per V1, is the generic polyline case. It therefore rejects **before** the
+   junction logic at `:18337` can run.
+
+So the clause did not merely over-constrain: it rendered correct, already-written fan handling **unreachable** —
+the same pattern diagnosed at `M5-CP3-TB1-R3-REV`, where CB4's valid seam re-validation never executed because
+its guard was deterministically false. And the cure is the one RA-34.3 and RA-35 already established twice in
+this milestone: **publish the authority the producer already holds**, rather than add new computation or let a
+consumer infer it.
+
+### V5 — I decline to amend RA-36 myself, and the Review was right to flag rather than relax
+
+Precedent exists for a Review withdrawing a false frozen clause — RA-31a withdrew `C = F⁻¹∘B` on exactly this
+basis. I am not taking it here, for two reasons. The only authorized successor is a **runtime-free Definition
+turn** (`M6-DEFN-R5-R3`) chartered to reconcile RA-36 into RA-37, so there is no window in which a Code + Build
+turn implements against the unsound clause. And amending my own frozen rule outside the turn chartered to
+reconcile it would fragment authority in precisely the way this project has repeatedly been bitten by.
+
+What must not happen is a reader treating RA-36.1 as sound in the interim, so I annotate its **status** —
+unsound, counterexample recorded, owner R3 — without relaxing its content. That matches the Review's
+instruction to *"preserve RA-36 until revised Definition independently reviewed; do not silently relax it."*
+
+### V6 — what this Review got right, and it is not small
+
+It recorded a **new stable event against a reviewer's own frozen premise** rather than softening the number to
+protect it — 64 / 17 / 47 with the false-rejection attributed to RA-36.1 by name. It kept the singleton case
+accepted, preserved every RA-34.3 stop gate, left the R2 candidate unpromoted with CP2 still accepted, and
+declined to infer the replacement contract from a static counterexample. It also noted that the runtime logs do
+**not** reveal which predicate inside `invalid_route()` fired first, and required diagnostic-first-locus before
+any corrective change — the instrumentation-before-guessing discipline that ended fifteen turns of static
+guessing in M5-CP3. Routing to R3 for RA-37 with typed vertex-fan-side transports is the right successor.
+
+### V7 — verification limits
+
+Re-derived from repository bytes: the fixture triangulation and both edges' incident face sets; the degeneracy
+argument for collinear carriers; the single-`current`-face threading at `:18300-18321`; `railFanPotentials`'
+declaration, population, junction consumption and absence from any header. Accepted as reported: the 444/497
+tally, the seven evidence groups, the 38 R1→R2 transitions and the per-group RED classification, which are
+runtime facts of the reviewed artifact.

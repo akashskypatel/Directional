@@ -11689,3 +11689,46 @@ none the multi-edge path is unexercised and must not be cited as validated — t
 degenerate nonzero-Z4 witness at `[[M5-CP3-DEFN-R1]]`. All RA-34.3 R2-P3 stop gates stand: odd `τ ∈ {1,3}`,
 `F_b − F_a ≠ τ`, sign-inversion negative, reciprocal/face-permutation invariance; an empty search stops for
 Review.
+
+## `M6-CP3-TB1-ENTRY-R2-REV-OBS-01` — RA-36.1's connectivity clause is unsound; the error is the reviewing agent's
+
+**Status.** PROVEN UNSOUND / RA-36.1 retained unrelaxed / owner `M6-DEFN-R5-R3` → RA-37 / accounting
+**64 / 17 / 47**, debt 1.
+
+`M6-CP3-TB1-ENTRY-R2-REV` disproved RA-36.1's path-connectivity premise and the finding is upheld on independent
+re-derivation. **The unsound clause was authored by the reviewing agent at
+`M6-CP3-R2P3-ARCH-REV`, not by the producer.**
+
+**The counterexample is exact and general.** From `tests/SurfaceCellTransitionQuotientTests.cpp:694-740`, the
+3×3 grid triangulates per quad as `(lowerLeft, lowerRight, upperRight)` then `(lowerLeft, upperRight, upperLeft)`,
+giving `0=(0,1,4), 3=(1,5,4), 4=(3,4,7), 7=(4,8,7)`. Edge `(1,4)` → faces `{0,3}`; edge `(4,7)` → faces `{4,7}`;
+intersection **∅**. It generalizes: two **collinear** edges meeting at a vertex can never share a face, because a
+triangle spanning them would be degenerate. RA-36.1's *"consecutive steps share exactly one typed source face"*
+is therefore false for **every** polyline carrier pair.
+
+**It was self-defeating.** RA-36 rejected the singleton-only contract *because* polyline hard features are
+legitimate — citing these very edges — then froze a clause polylines cannot satisfy. The falsifier strengthens
+the singleton-only rejection while destroying the attached premise.
+
+**Category mistake.** "Share exactly one face" is **dual** connectivity (face-to-face transitions crossing edges
+of one triangle). A HardRail route's steps are **primal** rail carriers meeting at a **vertex**, so the
+connecting structure is the vertex fan. The composition is also wrong in kind: crossing maps do not compose as a
+walk along one side. Correct form alternates cross-rail and along-side transport,
+`τ_ab = χ_n ∘ φ_{n-1} ∘ … ∘ φ_1 ∘ χ_1`, with RA-36.3's square `χ_(i+1) ∘ φ_a = φ_b ∘ χ_i` as the consistency
+condition — which RA-36.3 half-anticipated and RA-36.1/.2 contradicted.
+
+**The authority already exists; the clause made correct code unreachable.** A4 declares `railFanPotentials` at
+`src/geometry/SurfaceCellTracing.cpp:18120`, populates it at `:18206`, and **already consumes it** in junction
+logic at `:18337-18342` (`a0/a1/b0/b1` potentials at a `junction` vertex). But it has **zero header references**,
+so A5 cannot consume it as RA-36.2 requires; and the face-identity gate at `:18312-18321` threads a single
+`current` face and rejects the generic polyline case **before** `:18337` runs. Same pattern as
+`[[M5-CP3-TB1-R3-REV]]` (correct validation unreachable behind a deterministically false guard), same cure as
+`[[RA-34.3]]`/`[[RA-35]]`: **publish the authority the producer already holds.**
+
+**How to apply.** `M6-DEFN-R5-R3` reconciles RA-36 into **RA-37**: replace face-identity connectivity with typed
+vertex-fan-side A3 transports; publish the fan authority A4 already computes rather than inventing new
+computation; specify the alternating composition and the commuting square with path-independence across
+admissible fan paths; keep singleton as the degenerate accepted case; and require diagnostic-first-locus inside
+`invalid_route()` before any corrective implementation, since current logs do not reveal which predicate fired
+first. RA-36.1 is **retained unrelaxed** in the interim — annotated unsound, not softened — and RA-36.4/.5/.6 and
+every RA-34.3 stop gate stand.

@@ -1387,6 +1387,19 @@ by construction and returns `HardRailTransportMismatch` — asserting a transpor
 rule conflates **endpoint attachment** with **transport agreement** and applies both per step; τ along a path
 composes, it does not repeat.
 
+> **RA-36.1 STATUS — PROVEN UNSOUND at `M6-CP3-TB1-ENTRY-R2-REV` (2026-10-08); owner `M6-DEFN-R5-R3`.**
+> The path-connectivity clause below (*"consecutive steps share exactly one typed source face"*) is **false for
+> every polyline carrier pair**: two collinear feature edges meet at a **vertex**, not a face, since a triangle
+> spanning them would be degenerate. Verified counterexample on the supported 3×3 fixture — edge `(1,4)` faces
+> `{0,3}`, edge `(4,7)` faces `{4,7}`, intersection empty. Implemented at
+> `src/geometry/SurfaceCellTracing.cpp:18312-18321` by threading a single `current` face, it caused **25**
+> `InvalidHardRailRouteCertificate` false rejections of previously accepted-green evidence (+1 `RP-01` event,
+> accounting now **64 / 17 / 47**) and made A4's already-written vertex-fan junction logic at `:18337-18342`
+> **unreachable**. The clause is **retained unrelaxed** pending reconciliation into **RA-37** by
+> `M6-DEFN-R5-R3`; it must not be read as sound authority, and must not be partially relaxed in the interim.
+> RA-36's *rejection of the singleton-only contract* is **unaffected and strengthened** — polyline carriers are
+> real supported input. RA-36.4/.5/.6 stand.
+
 - **RA-36.1:** A4 publishes, per paired cross-region HardRail route, an ordered oriented certificate: the
   canonical-orientation step sequence; per step both typed incident `SourceFaceTopologyKey` values and the exact
   oriented A3 `firstToSecond` validated against `FieldTransportAtlas::transition_value`; the **endpoint

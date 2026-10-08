@@ -1,3 +1,47 @@
+## 2026-10-08 — `M6-CP3-TB1-ENTRY-R2-REV` review: upheld in full; RA-36.1 proven unsound (reviewer's own error)
+
+Runtime-free review. **Upheld in full.** Accounting **64 / 17 / 47**, debt **1**, is correct; R2 candidate
+UNPROMOTED; CP2 remains accepted at 491/491.
+
+**The RA-36.1 falsifier is correct, and the unsound clause is the reviewing agent's own**, authored at
+`M6-CP3-R2P3-ARCH-REV`. Verified independently from `tests/SurfaceCellTransitionQuotientTests.cpp:694-740`: the
+3×3 quad triangulation gives edge `(1,4)` → faces `{0,3}` and edge `(4,7)` → faces `{4,7}`, intersection empty.
+It generalizes — two **collinear** edges meeting at a vertex can never share a face, since a triangle spanning
+them would be degenerate — so *"consecutive steps share exactly one typed source face"* is false for **every**
+polyline carrier pair. The clause was self-defeating: RA-36 rejected singleton-only *because* polyline hard
+features are legitimate, citing these very edges, then froze a premise polylines cannot satisfy. The 25
+`InvalidHardRailRouteCertificate` false rejections of accepted-green evidence are its direct consequence, and
+`+1 RP-01` event / `+1` recurrence is the right classification.
+
+**Diagnosis: a primal/dual category mistake.** "Share one face" is dual connectivity (face-to-face transitions
+across edges of one triangle); a HardRail route's steps are **primal** carriers meeting at a **vertex**, so the
+connecting structure is the vertex fan. The composition is wrong in kind too — crossing maps do not compose as a
+walk along one side. Correct form alternates cross-rail and along-side transport,
+`τ_ab = χ_n ∘ φ_{n-1} ∘ … ∘ φ_1 ∘ χ_1`, with RA-36.3's square as consistency; RA-36.3 half-anticipated this and
+RA-36.1/.2 contradicted it.
+
+**New evidence added by this review.** A4 **already** computes the fan authority and **already** has junction
+logic: `railFanPotentials` is declared at `src/geometry/SurfaceCellTracing.cpp:18120`, populated at `:18206`, and
+consumed at `:18337-18342`. But it has **zero header references**, so A5 cannot consume it as RA-36.2 demands —
+and the face-identity gate at `:18312-18321` threads a single `current` face and rejects the generic polyline
+case **before** `:18337` runs. The clause therefore made already-written correct code **unreachable**, the same
+pattern as `M5-CP3-TB1-R3-REV`, with the same cure as RA-34.3/RA-35: publish the authority the producer already
+holds.
+
+**RA-36.1 is annotated PROVEN UNSOUND but retained unrelaxed**, owner `M6-DEFN-R5-R3`. The reviewing agent
+declined to amend its own frozen rule here: the only authorized successor is a runtime-free Definition turn
+chartered to reconcile RA-36 into RA-37, so no Code + Build can implement against the unsound clause in the
+interim, and amending outside that turn would fragment authority. RA-36's rejection of singleton-only is
+**unaffected and strengthened**; RA-36.4/.5/.6 and every RA-34.3 stop gate stand.
+
+Credit where due: the Review recorded a new stable event **against a reviewer's own frozen premise** rather than
+softening the number, kept singleton accepted, declined to infer a replacement contract from a static
+counterexample, and required diagnostic-first-locus inside `invalid_route()` before corrective change — the
+instrumentation-before-guessing discipline that ended fifteen turns of static guessing in M5-CP3.
+
+Exact successor: `M6-DEFN-R5-R3` — runtime-free Definition proposing RA-37 with typed vertex-fan-side A3
+transports; mandatory `M6-DEFN-R5-R3-REV` before any new Code + Build.
+
 ## 2026-10-08 — R2 independent Review REJECTED (444/497), R3 Definition next
 
 **M6-CP3-TB1-ENTRY-R2-REV COMPLETE: R2 REJECTED 444/497; 53 RED; 47 previously accepted CP2 identities now RED.** Independent cross-run comparison: CP2 491/491, rejected R1 482/497, rejected R2 444/497; R1→R2 38 new RED, zero recoveries. Stable **+1 new RP-01 product event**, current ledger **64 events / 17 categories / 47 recurrences**, produced-witness debt **1**; prior A6 RP-01 remains OPEN. Exact source `80fc1688f13e5ed52699177a845f25cc4dbda38b`; mechanical R2 run/job `37767144537 / 113277596566`, result artifact `11545716507`, ZIP sha256 `d6469bea1b4ef6fb3b142d05a97d01dbab98331cfc91d930c7bc30da555ec0ca`, internal 1019/1019. Direct new A4 `InvalidHardRailRouteCertificate` producer regression on accepted HardRail fixtures; accepted RA-36.1 adjacent-carrier shared-face assumption is unsound for legal rail polyline (1,4) faces {0,3}, (4,7) faces {4,7}; input counterexample is NOT a demonstrated produced multi-step route. Organic D1/D2/D3/D5 positives unproved. Candidate UNPROMOTED; CB2/CP3 exit HELD. **Exact authorized successor (only after final STATUS closure): `M6-DEFN-R5-R3` runtime-free Definition, then mandatory independent `M6-DEFN-R5-R3-REV`; no implementation until acceptance.** Canonical review `Architecture_M6_CP3_TB1_Entry_R2_Review_Record.md`, row classification `Architecture_M6_CP3_TB1_Entry_R2_Red_Classification.tsv`, held plan `Architecture_M6_DEFN_R5_R3_CP3_Entry_Recovery_Definition_Plan.md`; complete full reviews mirrored in ChatGPT Library `/Directional/Evidence/`.
