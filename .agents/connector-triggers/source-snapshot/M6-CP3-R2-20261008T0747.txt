@@ -1,0 +1,4 @@
+turn=M6-CP3-CB1-ENTRY-R2
+read_mode=snapshot
+purpose=resume-RA34-R2-typed-acceptance
+semantic_source_sha=34a19ac515ac959c306698c8c2137e048d75d707
