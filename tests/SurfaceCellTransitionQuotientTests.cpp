@@ -1737,6 +1737,90 @@ void expect_phase_front_product_error(
 }
 
 TEST(SurfacePhaseFrontProductFactoryAuthority,
+     HardRailTransitionNeedsExactlyTwoSourceFaceIncidences) {
+  using namespace directional::authority;
+  using namespace directional::geometry;
+  const auto component = SourceComponentId::from_index(0, 1);
+  const auto sheet = IsolationSheetId::from_index(0, 1);
+  const auto regionId = TopologyRegionId::from_index(0, 1);
+  ASSERT_TRUE(component.has_value());
+  ASSERT_TRUE(sheet.has_value());
+  ASSERT_TRUE(regionId.has_value());
+  const auto hardEdge = test_source_edge_topology(0, 1, 5U);
+
+  // The checked authority factory accepts a complete row/member bijection
+  // independently of a manifoldness check. Three distinct source triangles
+  // may therefore share the same edge even when two published faces agree.
+  const auto attempt = [&](const std::size_t count,
+                           const bool reverseRows,
+                           const bool publishTransition) {
+    std::vector<SourceFaceTopologyKey> rowFaces;
+    std::vector<SourceRegionFaceAuthority> regionFaces;
+    for (std::size_t index = 0U; index < count; ++index) {
+      const auto a = SourceVertexId::from_index(0, 5U);
+      const auto b = SourceVertexId::from_index(1, 5U);
+      const auto c = SourceVertexId::from_index(
+          static_cast<int>(index + 2U), 5U);
+      EXPECT_TRUE(a.has_value());
+      EXPECT_TRUE(b.has_value());
+      EXPECT_TRUE(c.has_value());
+      const auto face = SourceFaceTopologyKey::make(
+          {a.value(), b.value(), c.value()});
+      EXPECT_TRUE(face.has_value());
+      rowFaces.push_back(face.value());
+      regionFaces.push_back({face.value(), sheet.value()});
+    }
+    std::sort(regionFaces.begin(), regionFaces.end(),
+              [](const auto &left, const auto &right) {
+                return left.topology < right.topology;
+              });
+    const auto region = SurfaceTopologyRegion::make(
+        regionId.value(), component.value(), std::move(regionFaces),
+        {}, {}, 0, 0);
+    EXPECT_TRUE(region.has_value());
+    if (reverseRows) std::reverse(rowFaces.begin(), rowFaces.end());
+    const auto firstFace = rowFaces.front();
+    const auto secondFace = count > 1U
+        ? std::optional<SourceFaceTopologyKey>{rowFaces.at(1U)}
+        : std::nullopt;
+    auto source = SourceTopologyRegions::make(
+        std::move(rowFaces),
+        std::vector<SourceComponentId>(count, component.value()),
+        std::vector<IsolationSheetId>(count, sheet.value()),
+        {region.value()});
+    EXPECT_TRUE(source.has_value());
+    std::vector<SurfaceHardRailFieldTransition> transitions;
+    if (publishTransition) {
+      EXPECT_TRUE(secondFace.has_value());
+      transitions.push_back({hardEdge, firstFace, secondFace.value(),
+                             QuarterTurn::from_integer(0)});
+    }
+    const auto construction = SurfacePhaseFrontProduct::make(
+        0, 0, std::move(source.value()), {}, {}, {}, {}, {}, {},
+        std::nullopt, {hardEdge}, {}, std::move(transitions), {});
+    const auto *error = std::get_if<SurfacePhaseFrontProductError>(
+        &construction);
+    EXPECT_NE(error, nullptr);
+    return error == nullptr ? SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority
+                            : error->code;
+  };
+
+  for (const bool reverseRows : {false, true}) {
+    // A two-face rail passes the rail-authority preflight, reaching the
+    // deliberately empty cell-list gate. This is NOT a produced front.
+    EXPECT_EQ(attempt(1U, reverseRows, false),
+              SurfacePhaseFrontProductErrorCode::EmptyCells)
+        << "A boundary HardRail with no published cross-edge transition remains valid";
+    EXPECT_EQ(attempt(2U, reverseRows, true),
+              SurfacePhaseFrontProductErrorCode::EmptyCells);
+    // A third incident face must fail earlier at the rail authority gate,
+    // regardless of the two faces named by the supplied transition.
+    EXPECT_EQ(attempt(3U, reverseRows, true),
+              SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority);
+  }
+}
+
+TEST(SurfacePhaseFrontProductFactoryAuthority,
      EmptyCellsRejectAtCheckedFactory) {
   PhaseFrontDraft tampered = phase_front_draft(square_fixture().network.phaseFront);
   ASSERT_FALSE(tampered.cells.empty());

@@ -8003,9 +8003,35 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
            std::find(vertices.begin(), vertices.end(), edge.second()) !=
                vertices.end();
   };
+  // A checked product must independently reject truncated source-edge
+  // topology. A4 publishes a rail transition only for exactly two incident
+  // source triangles, but the two named faces alone cannot attest this:
+  // a third face could share that same carrier. Count the complete source
+  // authority once without consulting a lossy two-face adjacency cache.
+  std::map<authority::SourceEdgeTopologyKey, std::size_t> railIncidenceCounts;
+  for (const auto &transition : hardRailFieldTransitions)
+    railIncidenceCounts.try_emplace(transition.edge, 0U);
+  if (!railIncidenceCounts.empty()) {
+    for (const auto &region : sourceTopologyRegions.regions()) {
+      for (const auto &member : region.faces()) {
+        const auto &vertices = member.topology.vertices();
+        for (std::size_t corner = 0U; corner < vertices.size(); ++corner) {
+          const auto edge = authority::SourceEdgeTopologyKey::make(
+              vertices[corner], vertices[(corner + 1U) % vertices.size()]);
+          if (!edge) {
+            error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+            return error;
+          }
+          const auto found = railIncidenceCounts.find(edge.value());
+          if (found != railIncidenceCounts.end()) ++found->second;
+        }
+      }
+    }
+  }
   std::set<authority::SourceEdgeTopologyKey> publishedRailTransitions;
   for (const auto &transition : hardRailFieldTransitions) {
     if (!hardFeatureEdges.contains(transition.edge) ||
+        railIncidenceCounts.at(transition.edge) != 2U ||
         transition.firstFace == transition.secondFace ||
         !rail_face_incident(transition.firstFace, transition.edge) ||
         !rail_face_incident(transition.secondFace, transition.edge) ||
