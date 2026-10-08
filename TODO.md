@@ -1,3 +1,11 @@
+## LIVE — R2 immutable TB executed: 444/497, 53 RED; mandatory independent Review next (2026-10-08)
+
+- [x] `M6-CP3-TB1-ENTRY-R2-EXEC`: exact compiled artifact `11542824274`, source `80fc1688f13e5ed52699177a845f25cc4dbda38b`, 497=30+12+449+6 fresh processes. Dispatcher `37767144537`; job `113277596566`, terminal mechanical success. **444 PASS / 53 RED**, six CP3 entry identities **0/6**; exact-one 497/497, zero skip, zero benchmark, immutable pre/postflight, no local/runtime replays. Result artifact `11545716507`, ZIP SHA256 `d6469bea1b4ef6fb3b142d05a97d01dbab98331cfc91d930c7bc30da555ec0ca`, internal SHA256SUMS 1019/1019.
+- [ ] **Exact successor after final STATUS: `M6-CP3-TB1-ENTRY-R2-REV`** independent Review. Verify 53 raw REDs, distinguish `InvalidHardRailRouteCertificate` (25 observed logs) and propagated phaseFront rejections, empty D1/D3/D7 witness searches, D5 baseline missing and downstream A6/A7 failures. Read `.agents/Directional/Architecture_M6_CP3_TB1_Entry_R2_Execution_Record.md`, [artifact](https://github.com/akashskypatel/Directional/actions/runs/37767144537/artifacts/11545716507). Do not classify stable events, fabricate organic positives, or change tests/fixtures/selectors in Review.
+- [ ] R2 candidate stays **unpromoted**; CB2 / optimizer / CP3 exit held until Review authorizes a bounded successor. Accepted CP2 baseline 491/491; stable 63/17/46, debt 1 pending Review.
+
+---
+
 ## LIVE — M6 CP3 R2 Code + Build compile-green; immutable 497-process TB next (2026-10-08)
 
 - [x] Implement/push five-file RA-36 R2 correction at source `80fc1688f13e5ed52699177a845f25cc4dbda38b`; authoritative Drive apply `37762551926` GREEN.
