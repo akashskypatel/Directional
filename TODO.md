@@ -1,4 +1,12 @@
-# LIVE — M6-CP3-CB1-ENTRY-R3 Code + Build (2026-10-08T21:39Z)
+# LIVE — M6-CP3-CB1-ENTRY-R3 bounded Code + Build (2026-10-08T22:02Z)
+
+- [x] Source audit of RA-39 endpoint-local terminal-carrier contract against compiled semantic source `d56f57adc184d6180fc2c69087a5340b8e97bcc7`: **already reviewed and implemented at certificate shape level**, not an unimplemented fan detour. GMP/GMPXX compile `37849106999`, artifact `11581102206`, internal **28/28** hashes, `runtimeExecution=false`.
+- [x] Historical R2 497-run source evidence independently rechecked **1019/1019** hashes; 53 RED records classify 25+12+2 A4/Phase10/RE and 14 other REDs; all R3 current-runtime first predicates remain **UNVERIFIED**.
+- [ ] Same R3 IN_PROGRESS, NO successor. Independently resolve public factory A3-trust contract; do not change certificate schema without authority. Genuine D1/D2/D3/D5, A6/A7, odd-τ, 39 first-locus REDs, 47 CP2 accepted→RED recoveries and separate frozen 497 TB remain open. Evidence `Architecture_M6_CP3_CB1_Entry_R3_WIP_Continuation.md`; Library `Directional__M6-CP3-CB1-ENTRY-R3__RA39-A3-static-audit-and-review-gate-20261008T2202Z.md`.
+
+---
+
+# HISTORICAL — M6-CP3-CB1-ENTRY-R3 Code + Build (2026-10-08T21:39Z)
 
 - [x] A4 first-invalid source-spoke/topology diagnostics compiled GREEN on `d56f57adc184d6180fc2c69087a5340b8e97bcc7`, 8 GMP/GMPXX targets, run `37849106999`, artifact `11581102206`, 28/28 hashes, `runtimeExecution=false`.
 - [ ] SAME R3 IN_PROGRESS: factory A3 attestation independent Review; real produced D1/D2/D3/D5 and A6/A7 witnesses; 25+12+2 first-failure investigations and 47 CP2 accepted-green recoveries; future separate immutable frozen 497-case TB. No runtime proofs from compile.
