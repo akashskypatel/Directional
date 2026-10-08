@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r3-checked-factory-rail-incidence-apply-r1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r3-checked-factory-rail-incidence-apply-r1",
-  "file_id": "1IGrWWs8Au1DUlNYNyBjDFJt-W8UkiRip",
-  "patch_sha256": "769daf073c966930d2cea37ba9e8c65fe82d6ee14a21450e3f211907dfe7e613",
-  "base_sha": "7666939d9ee1a53148d2c85d7b6d40c509d8df10",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surfacecells): verify exact rail source-face incidence at checked factory",
-  "retention_days": 14
+  "request_id": "m6-cp3-r3-checked-factory-rail-incidence-compile-r1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r3-checked-factory-rail-incidence-compile-r1",
+  "source_sha": "2ae6f5d1ba4e7657a5089fb52c09812a495dfe47",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r3-checked-factory-rail-incidence-r1"
 }
