@@ -1,2 +1,0 @@
-M6-CP3-CB1-ENTRY-R2
-Snapshot exact event commit for source analysis. No runtime execution.
