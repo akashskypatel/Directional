@@ -2595,6 +2595,47 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
   };
   require_atlas_attested_junction(fixture, *producedMidline);
   require_atlas_attested_junction(permutedFixture, *permutedMidline);
+
+  // Falsify a self-consistency-only oracle without requesting a public
+  // factory trust-contract decision: equal +1 Z4 mutations on the two
+  // nonrail side paths preserve the commuting square, but both must differ
+  // from the independently retained A3 atlas. This copied candidate is
+  // diagnostic-only; it must never be published as A4 owner authority.
+  auto balancedMutation = *producedMidline;
+  ASSERT_EQ(balancedMutation.junctions.size(), 1U);
+  for (auto &side : balancedMutation.junctions.front().sectorPaths) {
+    ASSERT_FALSE(side.empty());
+    side.front().firstToSecond = compose(
+        directional::authority::QuarterTurn::from_integer(1),
+        side.front().firstToSecond);
+  }
+  const auto compose_radial = [](const auto &path) {
+    auto total = directional::authority::QuarterTurn::from_integer(0);
+    for (const auto &step : path)
+      total = compose(step.firstToSecond, total);
+    return total;
+  };
+  const auto &mutantPaths = balancedMutation.junctions.front().sectorPaths;
+  EXPECT_EQ(compose(balancedMutation.endpoints[1].terminalCarrier.firstToSecond,
+                    compose_radial(mutantPaths[0])),
+            compose(compose_radial(mutantPaths[1]),
+                    balancedMutation.endpoints[0].terminalCarrier.firstToSecond))
+      << "Equal changes on both sides must leave the square commuting";
+  ASSERT_TRUE(fixture.fieldTransportAtlas.has_value());
+  const auto &independentAtlas = *fixture.fieldTransportAtlas;
+  for (const auto &side : mutantPaths) {
+    const auto &firstStep = side.front();
+    const auto from = sourceFaces.row_for_topology(firstStep.firstFace);
+    const auto to = sourceFaces.row_for_topology(firstStep.secondFace);
+    ASSERT_TRUE(from.has_value());
+    ASSERT_TRUE(to.has_value());
+    const auto sourceTransition = independentAtlas.transition_value(
+        firstStep.edge, from.value(), to.value());
+    ASSERT_TRUE(sourceTransition.has_value());
+    EXPECT_NE(firstStep.firstToSecond, sourceTransition->transport)
+        << "Balanced certificate tamper must be detected by independent A3";
+  }
+
   // Compare immutable SOURCE-FACE TOPOLOGY, not the rows used to index it.
   // The canonical pair may exchange sector orientation; normalize the two
   // unordered sector face sets before comparing.
