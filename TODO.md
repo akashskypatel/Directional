@@ -1,4 +1,12 @@
-# LIVE — M6-CP3-CB1-ENTRY-R3 compile checkpoint (2026-10-08T22:52Z)
+# LIVE — R3 independent review gate (2026-10-08T23:16Z)
+
+- [x] Audited exact compiled source `7666939d9ee1a53148d2c85d7b6d40c509d8df10`; eight-target GMP/GMPXX compile already GREEN run `37856816696`, package `11584990429`, 28/28 hashes, `runtimeExecution=false`. Published `Architecture_M6_CP3_R3_A3_Trust_CB_TB_Gate_Review_Request.md`.
+- [ ] Independent Review: choose A4-trusted versus factory-independent A3; adjudicate CB closure versus 497-process TB witness proof. No independent verdict or successor.
+- [ ] SAME `M6-CP3-CB1-ENTRY-R3` IN_PROGRESS, true D1/D2/D3/D5/A6/A7, 39 R2 historical roots, 47 CP2-green restorations still unverified; frozen selectors unchanged.
+
+---
+
+# HISTORICAL — M6-CP3-CB1-ENTRY-R3 compile checkpoint (2026-10-08T22:52Z)
 
 - [x] Guard overfull hard-feature source edge on singleton and paired HardRail before A4 publishes owner carrier: commit `7666939d9ee1a53148d2c85d7b6d40c509d8df10`. One-face boundary behavior unchanged; no public certificate change. Applied via Drive `37856665013`, staging owner-deleted; exact patch archived in Library.
 - [x] GMP/GMPXX eight-target compile/package run `37856816696` GREEN; immutable artifact `11584990429`, 28/28 SHA256SUMS, GMPXX+GMP direct link, clean sources, `runtimeExecution=false`. No tests/benchmarks run.
