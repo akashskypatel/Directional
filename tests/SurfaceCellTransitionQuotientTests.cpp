@@ -1642,6 +1642,8 @@ struct PhaseFrontDraft {
   std::vector<directional::geometry::SurfacePhaseFrontCell> cells;
   std::set<directional::authority::SourceEdgeTopologyKey> hardFeatureEdges;
   std::vector<int> sourceFaceBranchRotations;
+  std::vector<directional::geometry::SurfaceHardRailFieldTransition>
+      hardRailFieldTransitions;
 };
 PhaseFrontDraft direct_full_periodic_materializer_draft(); bool action_has_nonzero_turn(const directional::authority::GridAutomorphism &action);
 PhaseFrontDraft phase_front_draft(
@@ -1656,7 +1658,8 @@ PhaseFrontDraft phase_front_draft(
           product.events(),
           product.cells(),
           product.hardFeatureEdges(),
-          product.sourceFaceBranchRotations()};
+          product.sourceFaceBranchRotations(),
+          product.hardRailFieldTransitions()};
 }
 
 PhaseFrontDraft phase_front_draft(const SurfacePhaseFrontResult &phaseFront) {
@@ -1671,7 +1674,8 @@ construct_phase_front_product(PhaseFrontDraft draft) {
       std::move(draft.boundedDiskBoundaryPhases), std::move(draft.edges),
       std::move(draft.events), std::move(draft.cells), std::nullopt,
       std::move(draft.hardFeatureEdges),
-      std::move(draft.sourceFaceBranchRotations));
+      std::move(draft.sourceFaceBranchRotations),
+      std::move(draft.hardRailFieldTransitions));
 }
 
 void expect_phase_front_product_error(
@@ -2398,99 +2402,81 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
   ASSERT_NE(a5, nullptr);
 
   const directional::pipeline::SurfaceOccurrenceRelation *witness = nullptr;
+  std::optional<directional::authority::QuarterTurn> witnessTau;
   for (const auto &relation : a5->owned_relations()) {
     if (relation.id.kind !=
             directional::pipeline::SurfaceOccurrenceRelationKind::HardRail ||
         !relation.evidence.firstEndpointFaceGauge.has_value() ||
         !relation.evidence.secondEndpointFaceGauge.has_value() ||
-        !relation.evidence.canonicalTransport.has_value()) {
+        !relation.evidence.canonicalTransport.has_value() ||
+        relation.evidence.equivalence.route.steps().empty()) {
       continue;
     }
+    const auto carrier = relation.evidence.equivalence.route.steps().front().topology();
+    const auto entry = std::find_if(
+        front.hardRailFieldTransitions().begin(),
+        front.hardRailFieldTransitions().end(),
+        [&](const directional::geometry::SurfaceHardRailFieldTransition &value) {
+          return value.edge == carrier;
+        });
+    if (entry == front.hardRailFieldTransitions().end()) continue;
+    const auto fromFace = relation.evidence.firstEndpointFaceGauge->face;
+    const auto toFace = relation.evidence.secondEndpointFaceGauge->face;
+    std::optional<directional::authority::QuarterTurn> tau;
+    if (entry->firstFace == fromFace && entry->secondFace == toFace)
+      tau = entry->firstToSecond;
+    else if (entry->secondFace == fromFace && entry->firstFace == toFace)
+      tau = entry->firstToSecond.inverse();
+    if (!tau.has_value() ||
+        (*tau != directional::authority::QuarterTurn::from_integer(1) &&
+         *tau != directional::authority::QuarterTurn::from_integer(3)))
+      continue;
     const auto delta = compose(
         relation.evidence.secondEndpointFaceGauge->localFaceBranchRotation,
         relation.evidence.firstEndpointFaceGauge->localFaceBranchRotation.inverse());
-    if (delta == directional::authority::QuarterTurn::from_integer(1) ||
-        delta == directional::authority::QuarterTurn::from_integer(3)) {
+    if (delta != *tau) {
       witness = &relation;
+      witnessTau = *tau;
       break;
     }
   }
   ASSERT_NE(witness, nullptr)
-      << "D2 requires a produced HardRail with a 90/270-degree endpoint gauge difference";
+      << "D2 requires real-produced HardRail with odd oriented A3 tau != regional F difference";
   const auto *first = m6cp3_occurrence_by_id(*a5, witness->id.first);
   const auto *second = m6cp3_occurrence_by_id(*a5, witness->id.second);
   ASSERT_NE(first, nullptr);
   ASSERT_NE(second, nullptr);
   EXPECT_NE(first->topologyRegion, second->topologyRegion);
-  const auto firstRegional = compose(
-      witness->evidence.firstEndpointFaceGauge->localFaceBranchRotation.inverse(),
-      directional::authority::QuarterTurn::from_integer(
-          first->placement.lattice.branchRotation));
-  const auto secondRegional = compose(
-      witness->evidence.secondEndpointFaceGauge->localFaceBranchRotation.inverse(),
-      directional::authority::QuarterTurn::from_integer(
-          second->placement.lattice.branchRotation));
-  EXPECT_EQ(compose(secondRegional, firstRegional.inverse()),
-            witness->evidence.canonicalTransport->rotation);
+  EXPECT_EQ(directional::authority::QuarterTurn::from_integer(
+                second->placement.lattice.branchRotation -
+                first->placement.lattice.branchRotation),
+            compose(witness->evidence.canonicalTransport->rotation,
+                    *witnessTau));
 
   PhaseFrontDraft tampered = phase_front_draft(fixture.network.phaseFront);
-  const auto row = front.sourceTopologyRegions().row_for_topology(
-      witness->evidence.firstEndpointFaceGauge->face);
-  ASSERT_TRUE(row.has_value());
-  auto &gauge = tampered.sourceFaceBranchRotations.at(
-      static_cast<std::size_t>(row->index()));
-  gauge = (gauge + 1) % 4;
+  const auto sourceEdge =
+      witness->evidence.equivalence.route.steps().front().topology();
+  auto entry = std::find_if(
+      tampered.hardRailFieldTransitions.begin(),
+      tampered.hardRailFieldTransitions.end(),
+      [&](const directional::geometry::SurfaceHardRailFieldTransition &value) {
+        return value.edge == sourceEdge;
+      });
+  ASSERT_NE(entry, tampered.hardRailFieldTransitions.end());
+  entry->firstToSecond = entry->firstToSecond.inverse();
   auto rebuilt = construct_phase_front_product(std::move(tampered));
   const auto *tamperedFront =
       std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&rebuilt);
   ASSERT_NE(tamperedFront, nullptr);
-  auto tamperedA5 =
-      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
-          fixture.mesh.V, fixture.mesh.F, *tamperedFront);
+  const auto tamperedA5 = directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+      fixture.mesh.V, fixture.mesh.F, *tamperedFront);
   const auto *tamperedError =
-      std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(
-          &tamperedA5);
-  EXPECT_NE(tamperedError, nullptr)
-      << "pre-registered RED: the withdrawn HardRail branch certificate no "
-         "longer rejects a face-gauge-only tamper";
-  if (tamperedError != nullptr) {
-    ADD_FAILURE()
-        << "unexpected A5 rejection after the branch-certificate check was "
-           "withdrawn: code="
-        << directional::pipeline::surface_occurrence_complex_error_name(
-               tamperedError->code)
-        << " site=SurfaceOccurrenceComplexProducer::produce"
-        << " relationKind="
-        << (tamperedError->relation.has_value()
-                ? static_cast<int>(tamperedError->relation->kind)
-                : -1)
-        << " relationFirstCell="
-        << (tamperedError->relation.has_value()
-                ? static_cast<long long>(
-                      tamperedError->relation->first.cell().index())
-                : -1LL)
-        << " relationFirstCorner="
-        << (tamperedError->relation.has_value()
-                ? static_cast<int>(
-                      tamperedError->relation->first.canonical_corner_role())
-                : -1)
-        << " relationSecondCell="
-        << (tamperedError->relation.has_value()
-                ? static_cast<long long>(
-                      tamperedError->relation->second.cell().index())
-                : -1LL)
-        << " relationSecondCorner="
-        << (tamperedError->relation.has_value()
-                ? static_cast<int>(
-                      tamperedError->relation->second.canonical_corner_role())
-                : -1)
-        << " hardRail="
-        << (tamperedError->relation.has_value() &&
-                    tamperedError->relation->hardRail.has_value()
-                ? static_cast<long long>(
-                      tamperedError->relation->hardRail->index())
-                : -1LL);
-  }
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(&tamperedA5);
+  ASSERT_NE(tamperedError, nullptr)
+      << "Reversing odd A4-owned cross-rail tau must reject a produced HardRail";
+  EXPECT_EQ(tamperedError->code,
+            directional::pipeline::SurfaceOccurrenceComplexErrorCode::HardRailTransportMismatch);
+
 }
 
 TEST(M6CP3, OrdinaryFrontIsolationSeamUsesCoordinateIdentityAndCertifiedSheetTransition) {

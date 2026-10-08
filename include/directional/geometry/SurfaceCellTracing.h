@@ -1474,6 +1474,16 @@ struct SurfaceConformityPlanReceipt {
   auto operator<=>(const SurfaceConformityPlanReceipt &) const = default;
 };
 
+/** A4-published oriented A3 transport across a nontraversable hard rail. */
+struct SurfaceHardRailFieldTransition {
+  authority::SourceEdgeTopologyKey edge;
+  authority::SourceFaceTopologyKey firstFace;
+  authority::SourceFaceTopologyKey secondFace;
+  authority::QuarterTurn firstToSecond;
+
+  auto operator<=>(const SurfaceHardRailFieldTransition &) const = default;
+};
+
 struct SurfaceFrontEdge {
   SurfaceFrontEdge(authority::TopologyRegionId region, authority::CellId owner)
       : filledCell(owner), sourceTopologyRegion(region) {}
@@ -1797,7 +1807,8 @@ public:
        std::optional<SurfaceConformityPlanReceipt> conformityPlanReceipt =
            std::nullopt,
        std::set<authority::SourceEdgeTopologyKey> hardFeatureEdges = {},
-       std::vector<int> sourceFaceBranchRotations = {});
+       std::vector<int> sourceFaceBranchRotations = {},
+       std::vector<SurfaceHardRailFieldTransition> hardRailFieldTransitions = {});
 
   [[nodiscard]] int gridU() const noexcept { return gridU_; }
   [[nodiscard]] int gridV() const noexcept { return gridV_; }
@@ -1836,6 +1847,10 @@ public:
   [[nodiscard]] const std::vector<int> &sourceFaceBranchRotations() const noexcept {
     return sourceFaceBranchRotations_;
   }
+  [[nodiscard]] const std::vector<SurfaceHardRailFieldTransition> &
+  hardRailFieldTransitions() const noexcept {
+    return hardRailFieldTransitions_;
+  }
 
 private:
   SurfacePhaseFrontProduct(
@@ -1849,7 +1864,8 @@ private:
       std::vector<SurfacePhaseFrontCell> cells,
       std::optional<SurfaceConformityPlanReceipt> conformityPlanReceipt,
       std::set<authority::SourceEdgeTopologyKey> hardFeatureEdges,
-      std::vector<int> sourceFaceBranchRotations)
+      std::vector<int> sourceFaceBranchRotations,
+      std::vector<SurfaceHardRailFieldTransition> hardRailFieldTransitions)
       : gridU_(gridU), gridV_(gridV),
         sourceTopologyRegions_(std::move(sourceTopologyRegions)),
         isolationSeamTransportCertificates_(
@@ -1860,7 +1876,8 @@ private:
         cells_(std::move(cells)),
         conformityPlanReceipt_(std::move(conformityPlanReceipt)),
         hardFeatureEdges_(std::move(hardFeatureEdges)),
-        sourceFaceBranchRotations_(std::move(sourceFaceBranchRotations)) {}
+        sourceFaceBranchRotations_(std::move(sourceFaceBranchRotations)),
+        hardRailFieldTransitions_(std::move(hardRailFieldTransitions)) {}
 
   int gridU_ = 0;
   int gridV_ = 0;
@@ -1875,6 +1892,7 @@ private:
   std::optional<SurfaceConformityPlanReceipt> conformityPlanReceipt_;
   std::set<authority::SourceEdgeTopologyKey> hardFeatureEdges_;
   std::vector<int> sourceFaceBranchRotations_;
+  std::vector<SurfaceHardRailFieldTransition> hardRailFieldTransitions_;
 };
 
 struct NotApplicable {};

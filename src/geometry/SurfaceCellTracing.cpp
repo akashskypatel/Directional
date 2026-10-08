@@ -7976,7 +7976,8 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
     std::vector<SurfacePhaseFrontCell> cells,
     std::optional<SurfaceConformityPlanReceipt> conformityPlanReceipt,
     std::set<authority::SourceEdgeTopologyKey> hardFeatureEdges,
-    std::vector<int> sourceFaceBranchRotations) {
+    std::vector<int> sourceFaceBranchRotations,
+    std::vector<SurfaceHardRailFieldTransition> hardRailFieldTransitions) {
   SurfacePhaseFrontProductError error;
   if (sourceTopologyRegions.regions().empty() ||
       sourceTopologyRegions.face_count() == 0U) {
@@ -7990,6 +7991,17 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
                    [](const int value) { return value < 0 || value >= 4; }))) {
     error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
     return error;
+  }
+  std::set<authority::SourceEdgeTopologyKey> publishedRailTransitions;
+  for (const auto &transition : hardRailFieldTransitions) {
+    if (!hardFeatureEdges.contains(transition.edge) ||
+        transition.firstFace == transition.secondFace ||
+        !sourceTopologyRegions.row_for_topology(transition.firstFace).has_value() ||
+        !sourceTopologyRegions.row_for_topology(transition.secondFace).has_value() ||
+        !publishedRailTransitions.insert(transition.edge).second) {
+      error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+      return error;
+    }
   }
   if (cells.empty()) {
     error.code = SurfacePhaseFrontProductErrorCode::EmptyCells;
@@ -8392,7 +8404,8 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
       std::move(periodicHolonomies), std::move(boundedDiskBoundaryPhases),
       std::move(edges), std::move(events), std::move(cells),
       std::move(conformityPlanReceipt), std::move(hardFeatureEdges),
-      std::move(sourceFaceBranchRotations));
+      std::move(sourceFaceBranchRotations),
+      std::move(hardRailFieldTransitions));
 }
 
 } // namespace directional::geometry
@@ -11898,6 +11911,7 @@ struct SurfacePhaseFrontBuildState {
   // authority only; published relation endpoints carry the two consumed face
   // values explicitly in branchAuthority.
   std::vector<int> faceBranchRotation;
+  std::vector<SurfaceHardRailFieldTransition> hardRailFieldTransitions;
   SurfacePhaseFrontFailure failure;
   std::vector<SurfaceFrontEdge> edges;
   std::vector<SurfaceFrontEvent> events;
@@ -11933,7 +11947,8 @@ SurfacePhaseFrontResult publish_phase_front_result(
       std::move(state.boundedDiskBoundaryPhases), std::move(state.edges),
       std::move(state.events), std::move(state.cells),
       std::move(state.conformityPlanReceipt), std::move(state.hardFeatureEdges),
-      std::move(state.faceBranchRotation));
+      std::move(state.faceBranchRotation),
+      std::move(state.hardRailFieldTransitions));
   if (auto *value = std::get_if<SurfacePhaseFrontProduct>(&product)) {
     return SurfacePhaseFrontResult::produced(std::move(*value));
   }
@@ -17986,6 +18001,41 @@ SurfaceCellNetwork build_surface_cell_network(
       network.phaseFront = SurfacePhaseFrontResult::rejected(std::move(failure));
       return network;
     }
+    const auto incident = sourceEdges.find(edge);
+    if (authoritativeOptions.fieldTransportAtlas == nullptr ||
+        incident->second[1] < 0) continue;
+    const bool singularRailVertex = std::any_of(
+        authoritativeOptions.fieldTransportAtlas->singularities().begin(),
+        authoritativeOptions.fieldTransportAtlas->singularities().end(),
+        [&](const authority::FieldSingularityFact &singularity) {
+          return singularity.indexNumerator != 0 &&
+                 (singularity.sourceVertex == edge.first() ||
+                  singularity.sourceVertex == edge.second());
+        });
+    if (singularRailVertex) continue; // A5 rejects unlicensed crossing.
+    const auto firstFace = surface_cell_tracing_detail::source_face_id(
+        incident->second[0], faces.rows());
+    const auto secondFace = surface_cell_tracing_detail::source_face_id(
+        incident->second[1], faces.rows());
+    if (!firstFace.has_value() || !secondFace.has_value()) continue;
+    const auto forward = authoritativeOptions.fieldTransportAtlas->transition_value(
+        edge, *firstFace, *secondFace);
+    const auto reverse = authoritativeOptions.fieldTransportAtlas->transition_value(
+        edge, *secondFace, *firstFace);
+    if (!forward.has_value() || !reverse.has_value() ||
+        reverse->transport != forward->transport.inverse()) {
+      SurfacePhaseFrontFailure failure;
+      failure.reason = SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+      network.phaseFront = SurfacePhaseFrontResult::rejected(std::move(failure));
+      return network;
+    }
+    auto from = network.sourceTopologyRegions->topology_for_row(*firstFace);
+    auto to = network.sourceTopologyRegions->topology_for_row(*secondFace);
+    const bool reverseCanonical = to < from;
+    phaseFrontState.hardRailFieldTransitions.push_back(
+        {edge, reverseCanonical ? to : from,
+         reverseCanonical ? from : to,
+         reverseCanonical ? reverse->transport : forward->transport});
   }
   phaseFrontState.hardFeatureEdges = authoritativeOptions.hardFeatureEdges;
   network.phaseFront = surface_cell_tracing_detail::publish_phase_front_result(
