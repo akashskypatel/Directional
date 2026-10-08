@@ -1,0 +1,4 @@
+turn=M6-CP3-CB1-ENTRY-R2
+read_mode=snapshot
+purpose=Review RA-34.3 HardRail transport and source audit
+frozen_source_sha=b7944b32f57de94686295cd05261a6f7e5a66169
