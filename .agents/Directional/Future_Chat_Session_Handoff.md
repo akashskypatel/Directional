@@ -1,3 +1,55 @@
+## Resume-critical update — R2-P1 BLOCK RESOLVED; `M6-CP3-CB1-ENTRY-R2` resumes compile-only (2026-10-08)
+
+**Exact next turn: `M6-CP3-CB1-ENTRY-R2` (resume) — Code + Build, compile/package only,
+`runtimeExecution=false`.** The `R2-P1` architectural stop is resolved by producer-owned review:
+`Architecture_M6_CP3_R2P1_Wedge_Certificate_Binding_Resolution_Record.md`. Accounting **63 / 17 / 46**, debt
+**1**; frozen gate **497 = 30 + 12 + 449 + 6**.
+
+### The reported premise was false — no new A4 publication is required
+
+`M6-CP3-CB1-ENTRY-R2` stopped on "A4 lacks an independently published oriented wedge-to-isolation-certificate
+sheet/side binding." The stop gate behaved correctly, but the authority is already published on both sides, in
+the **same key space**:
+
+- **A4** — the certificate carries `firstFace`/`secondFace` as `authority::SourceFaceTopologyKey` plus
+  `firstSheet`/`secondSheet` (`include/directional/geometry/SurfaceCellTracing.h:1316-1324`), and its builder
+  enforces **distinctness** (`if (firstTopology == secondTopology || firstSheet == secondSheet) return false;`,
+  `src/geometry/SurfaceCellTracing.cpp:16743-16745`) and a **canonical orientation** via the
+  `secondTopology < firstTopology` swap (`:16746-16750`).
+- **A5** — `SurfaceOccurrence::cornerWedgeBindings` stores populated per-wedge
+  `CornerWedgeFaceBinding{ face, sheet, chart }` (`include/directional/pipeline/RemeshPipeline.h:769-775`), built
+  at `src/pipeline/RemeshPipeline.cpp:4313-4440` and passed at `:4487`.
+
+**The binding:** `b.face == C.firstFace()` → side **First**; `b.face == C.secondFace()` → side **Second**;
+otherwise the wedge is off that certified seam. Unambiguous because the certificate's two faces lie in distinct
+topologies, so no binding can match both. **Orientation is A4-owned** — the certificate's canonical ordering — not
+an A5 inference and not a global label comparison. Sheets are **verified after** the face join (mismatch → typed
+fail-closed), so sheet labels neither grant nor deny certificate lookup, satisfying frozen **RA-34.1**.
+
+**Why it looked missing:** the producer also flattens the bindings at `:4464-4471`
+(`push_back(binding.sheet)` + `sort` + `unique`), discarding `face` and the per-wedge association. Both products
+are stored, but consumers read the lossy one — **15** `cornerWedgeSheets` references against **3** for
+`cornerWedgeBindings`, the decisive ones being `:5180-5181` (`binary_search` membership over global labels) and
+`:7083-7086` (`size() <= 1U`). The binding was unreachable through the accessor everyone uses, not absent.
+
+This is `RA-34.3`'s τ disease a second time — a lossy downstream projection standing in for retained producer
+authority — and the same cure applies: consume the retained typed bindings, never re-derive from the proxy.
+
+### `R2-P1` reduces to a bounded typed change
+
+1. Add a typed accessor for the join above, returning `{First, Second, NotOnSeam}`, with sheet agreement
+   verified **after** the face match and a typed fail-closed error on mismatch.
+2. Migrate the seam-relevant consumers at `:5180-5181` and `:7083-7086` onto it. `cornerWedgeSheets` may remain
+   for non-seam uses but must not decide certified-seam questions.
+3. Add **no** new A4 publication; do not alter the certificate builder's distinctness or canonical-ordering
+   rules, and do not change `CornerWedgeFaceBinding`.
+
+**Live stops, unchanged.** A wedge on a certified seam matching neither certificate face, or a matched side whose
+`b.sheet` disagrees with the certificate sheet, is a genuine producer defect — stop for Review rather than widen
+the join or fall back to sheet-set membership. `R2-P2`/`R2-P4`/`R2-P5` and every organic-witness stop gate
+(D2/D3/D4/D5) are untouched, and precondition 2 keeps its narrow reading: author the approved searches and verify
+them **statically**; existence is proved at `M6-CP3-TB1-ENTRY-R2-EXEC`, not here.
+
 ## Resume-critical update — RA-34 ACCEPTED; exact next `M6-CP3-CB1-ENTRY-R2` compile-only (2026-10-08)
 
 **Exact next turn: `M6-CP3-CB1-ENTRY-R2` — Code + Build, compile/package only, `runtimeExecution=false`.**

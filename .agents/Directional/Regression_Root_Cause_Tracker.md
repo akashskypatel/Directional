@@ -11594,3 +11594,50 @@ result on a τ=0 witness proves the substitution and `R_coord`'s sign, and nothi
 and use `R_coord ∘ τ_ab`" is numerically inert — `(B_b − B_a − τ_ab − R_coord) mod 4 = 0` is symmetric in those
 two terms. No `Z4` fixture can falsify the composition **order**; only the **signs** are testable. The order rests
 on domain semantics, and no passing witness may be cited as confirming it.
+
+## `M6-CP3-R2P1-RESOLUTION` — oriented wedge-to-certificate binding exists; the block premise was false
+
+**Status.** RESOLVED BY PRODUCER-OWNED ARCHITECTURE REVIEW / design-class / unblocks `M6-CP3-CB1-ENTRY-R2`.
+
+`M6-CP3-CB1-ENTRY-R2` stopped on `R2-P1` reporting that "A4 lacks an independently published oriented
+wedge-to-isolation-certificate sheet/side binding." The stop gate behaved correctly, but the premise does not
+survive source inspection. Full analysis in
+`Architecture_M6_CP3_R2P1_Wedge_Certificate_Binding_Resolution_Record.md`.
+
+**The authority is published on both sides, in the same key space.** The A4 certificate
+(`include/directional/geometry/SurfaceCellTracing.h:1316-1324`) carries `firstFace`/`secondFace` as
+`authority::SourceFaceTopologyKey` plus `firstSheet`/`secondSheet`, and its builder enforces **distinctness** —
+`if (firstTopology == secondTopology || firstSheet == secondSheet) return false;`
+(`src/geometry/SurfaceCellTracing.cpp:16743-16745`) — and a **canonical orientation** via the
+`secondTopology < firstTopology` swap (`:16746-16750`). A5's `SurfaceOccurrence::cornerWedgeBindings` stores
+populated per-wedge `CornerWedgeFaceBinding{ face, sheet, chart }`
+(`include/directional/pipeline/RemeshPipeline.h:769-775`), constructed at
+`src/pipeline/RemeshPipeline.cpp:4313-4440` and passed at `:4487`. Both `face` fields are
+`authority::SourceFaceTopologyKey` — direct typed join, no conversion.
+
+**The binding (RA-35 candidate).** `b.face == C.firstFace()` → side First; `b.face == C.secondFace()` → side
+Second; otherwise the wedge is off that certified seam. Unambiguous because the certificate's two faces lie in
+distinct topologies, so no binding matches both. Orientation is **A4-owned** (the certificate's canonical
+ordering), not an A5 inference and not a global label comparison. Sheets are **verified** after the face join —
+mismatch is typed fail-closed — so sheet labels neither grant nor deny certificate lookup, satisfying frozen
+**RA-34.1**.
+
+**Why it looked missing.** The producer flattens the bindings at `:4464-4471`
+(`push_back(binding.sheet)` + `sort` + `unique`), discarding `face` and per-wedge association. Both products are
+stored, but consumers read the lossy one: **15** `cornerWedgeSheets` references against **3** for
+`cornerWedgeBindings`. The decisive consumers are `:5180-5181` (`binary_search` membership over global labels)
+and `:7083-7086` (`size() <= 1U` cardinality) — exactly the sheet-label reasoning RA-32/RA-34.1 removed
+elsewhere. The binding was unreachable through the accessor everyone uses, not absent.
+
+**Precedent.** Structurally identical to `RA-34.3`'s τ cure: a quantity is computed and then a lossy downstream
+step stands in for the retained authority (`FieldTransportAtlas.cpp:2020-2047` computes the oriented value, then
+marks the carrier nontraversable). Same ownership principle applies — the producer publishes; the consumer never
+re-derives from a lossy proxy.
+
+**How to apply.** `R2-P1` reduces to: add the typed join accessor returning `{First, Second, NotOnSeam}` with
+sheet agreement verified after the face join; migrate `:5180-5181` and `:7083-7086` onto it; add **no** new A4
+publication and do not alter the certificate builder's distinctness/ordering rules or
+`CornerWedgeFaceBinding`. **Live stops:** a wedge on a certified seam matching neither certificate face, or a
+matched side whose `b.sheet` disagrees with the certificate sheet, is a genuine producer defect — stop for
+Review rather than widen the join or fall back to sheet-set membership. The organic-witness stop gates
+(D2/D3/D4/D5) are untouched.

@@ -1,3 +1,43 @@
+## 2026-10-08 — `M6-CP3-R2P1-ARCH-REV`: wedge-to-certificate binding block RESOLVED; CB1-ENTRY-R2 resumes
+
+Runtime-free producer-owned architecture review. **The reported block's premise is false and no new A4
+publication is required.** `M6-CP3-CB1-ENTRY-R2` resumes compile-only. Accounting **63 / 17 / 46**, debt **1**;
+frozen gate **497 = 30 + 12 + 449 + 6**; no product, test, fixture or selector change in this turn.
+
+`M6-CP3-CB1-ENTRY-R2` stopped on `R2-P1` reporting that A4 lacks an independently published oriented
+wedge-to-isolation-certificate sheet/side binding. The stop gate behaved correctly, but the authority is already
+published on both sides in the **same key space**. The A4 certificate carries `firstFace`/`secondFace` as
+`authority::SourceFaceTopologyKey` plus `firstSheet`/`secondSheet`
+(`SurfaceCellTracing.h:1316-1324`), and its builder enforces **distinctness**
+(`if (firstTopology == secondTopology || firstSheet == secondSheet) return false;`,
+`SurfaceCellTracing.cpp:16743-16745`) and a **canonical orientation** via the `secondTopology < firstTopology`
+swap (`:16746-16750`). A5's `SurfaceOccurrence::cornerWedgeBindings` stores populated per-wedge
+`CornerWedgeFaceBinding{ face, sheet, chart }` (`RemeshPipeline.h:769-775`), built at
+`RemeshPipeline.cpp:4313-4440` and passed at `:4487`.
+
+**Binding (RA-35 candidate):** `b.face == C.firstFace()` → First; `b.face == C.secondFace()` → Second; otherwise
+off-seam. Unambiguous because the certificate's two faces lie in distinct topologies, so no binding matches both.
+Orientation is **A4-owned** — the certificate's canonical ordering — not an A5 inference and not a global label
+comparison. Sheets are **verified after** the face join, mismatch typed fail-closed, so sheet labels neither
+grant nor deny certificate lookup: frozen **RA-34.1** satisfied.
+
+**Why it looked missing:** the producer also flattens the bindings at `:4464-4471`
+(`push_back(binding.sheet)` + `sort` + `unique`), discarding `face` and per-wedge association. Both products are
+stored, but consumers read the lossy one — **15** `cornerWedgeSheets` references against **3** for
+`cornerWedgeBindings`, decisively `:5180-5181` (`binary_search` membership over global labels) and `:7083-7086`
+(`size() <= 1U`). The binding was unreachable through the accessor everyone uses, not absent. This is
+`RA-34.3`'s τ disease a second time — a lossy downstream projection standing in for retained producer authority —
+with the same cure.
+
+`R2-P1` reduces to: add a typed accessor returning `{First, Second, NotOnSeam}` with sheet agreement verified
+after the face match; migrate `:5180-5181` and `:7083-7086` onto it; add no new A4 publication and leave the
+certificate builder and `CornerWedgeFaceBinding` unchanged. Live stops retained: a wedge on a certified seam
+matching neither certificate face, or a matched side whose sheet disagrees, is a genuine producer defect — stop
+for Review rather than widen the join. `R2-P2`/`R2-P4`/`R2-P5` and the D2/D3/D4/D5 organic-witness stop gates are
+untouched, and precondition 2 keeps its narrow reading.
+
+Full analysis: `Architecture_M6_CP3_R2P1_Wedge_Certificate_Binding_Resolution_Record.md`.
+
 ## 2026-10-08 — next-step determination: RA-34 accepted; `M6-CP3-CB1-ENTRY-R2` next, with precondition 2 disambiguated
 
 Runtime-free. `M6-DEFN-R5-R2-REV` accepted RA-34 "for bounded implementation, not runtime acceptance", froze it
