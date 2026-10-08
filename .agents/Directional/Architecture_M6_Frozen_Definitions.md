@@ -1409,8 +1409,12 @@ composes, it does not repeat.
 > `src/geometry/SurfaceCellTracing.cpp:18312-18321` by threading a single `current` face, it caused **25**
 > `InvalidHardRailRouteCertificate` false rejections of previously accepted-green evidence (+1 `RP-01` event,
 > accounting now **64 / 17 / 47**) and made A4's already-written vertex-fan junction logic at `:18337-18342`
-> **unreachable**. The clause is **retained unrelaxed** pending reconciliation into **RA-37** by
-> `M6-DEFN-R5-R3`; it must not be read as sound authority, and must not be partially relaxed in the interim.
+> **unreachable**.
+>
+> **SUPERSEDED (2026-10-08, status updated by the reviewing agent):** the reconciliation this annotation awaited
+> has completed. **`RA-37a`, accepted by `M6-DEFN-R5-R3-REV`, is the binding contract** and replaces RA-36.1's
+> path-connectivity and composition clauses. RA-36.1's text below is retained as **history only** and must not
+> be implemented. RA-36.4/.5/.6 remain in force, as RA-37a itself states.
 > RA-36's *rejection of the singleton-only contract* is **unaffected and strengthened** — polyline carriers are
 > real supported input. RA-36.4/.5/.6 stand.
 

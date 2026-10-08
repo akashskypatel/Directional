@@ -1,3 +1,60 @@
+## Resume-critical update — RA-37a ACCEPTED; exact next `M6-CP3-CB1-ENTRY-R3` compile-only (2026-10-08)
+
+**Exact next turn: `M6-CP3-CB1-ENTRY-R3` — Code + Build only, with mandatory STOP-FIRST gates.**
+`M6-DEFN-R5-R3-REV` accepted **RA-37a** as a bounded fail-closed source-topology contract (no runtime
+promotion). CP2 remains accepted 491/491; R2 rejected 444/497 with 47 accepted-green losses; accounting
+**64 / 17 / 47**, debt **1**; frozen gate **497 = 30 + 12 + 449 + 6**. No organic D1/D2/D3/D5 positive and no A6
+recovery is accepted.
+
+### Review-agent determination (2026-10-08)
+
+RA-37a addresses all four requirements the R2 Review placed on R3, and **improves on one of them
+substantively**:
+
+- **Vertex-fan connectivity replaces face identity, *with its domain stated*.** Correction (1) holds that
+  oriented A2b topology and the A4 hard-feature owner determine the two unique source-vertex fan sectors **only
+  for connected orientable two-manifold links without foreign barriers**, and otherwise fail closed. That domain
+  condition was missing from the reviewing agent's own formulation.
+- **Reciprocity and a typed commuting square** are required of source-keyed nonrail radial A3 side paths and
+  owner-rail crossings — correction (2).
+- **Correction (3) is sharper than the reviewing agent's proposed fix.** The R2 Review prescribed a single
+  alternating chain `τ_ab = χ_n ∘ φ_(n-1) ∘ … ∘ φ_1 ∘ χ_1`. RA-37a instead requires A4 to publish, **for each of
+  the two distinct spatial endpoint pairs, its own locally anchored cross-rail path and `τ_j`** from
+  trace-selected source faces, with the along-rail square **only comparing** the two endpoint mappings after
+  explicit transport — and forbids blindly composing χ across distinct carriers or treating a path that reaches
+  the opposite spatial endpoint as a local attachment. That is correct: a single end-to-end chain still carries
+  the residual "walk along one side" shape that caused the original defect, because the two relation endpoints
+  sit at spatially distinct rail locations and each needs its own local anchoring.
+- **Publish-don't-invent is honoured.** The plan works in `src/geometry/SurfaceCellTracing.cpp:18116-18372` — the
+  region containing both the unsound face-identity gate (`:18312-18321`) and A4's already-written but
+  unreachable vertex-fan junction logic (`:18337-18342`, over `railFanPotentials` declared `:18120`, populated
+  `:18206`). The ordering defect is therefore in scope.
+
+**Status correction applied.** The `RA-36.1` annotation still read "retained unrelaxed **pending** reconciliation
+into RA-37 by `M6-DEFN-R5-R3`" after that turn had completed, leaving its status ambiguous. It now records
+**SUPERSEDED by RA-37a**, with RA-36.1's text retained as history only and RA-36.4/.5/.6 still in force. Only the
+status pointer was updated; no rule was changed.
+
+### Binding constraints on `M6-CP3-CB1-ENTRY-R3`
+
+- **STOP FIRST** — A4 must certify two unique oriented source-vertex sectors on an admissible manifold link **and**
+  the `P0`/`P1` independent local spatial endpoint paths. If either cannot be established, stop; do not widen the
+  domain, synthesize a sector, or fall back to face identity.
+- Do **not** blindly compose χ across distinct carriers, and do **not** treat a path reaching the opposite
+  spatial endpoint as a local attachment.
+- A5 consumes **only** the immutable published certificate — no inference from regional `F` gauges, sheet labels,
+  proximity, arbitrary traversal or first-step selection.
+- **RA-36.4/.5/.6 remain:** singleton must not regress (path length 1, attachment = that edge's two incident
+  faces, composed τ = its `firstToSecond`); an uncertifiable or unsupported route rejects with a typed code
+  naming *that* cause, never a reused `HardRailTransportMismatch`; and no runtime credit accrues.
+- **All RA-34.3 R2-P3 stop gates stand:** odd `τ ∈ {1,3}`, `F_b − F_a ≠ τ`, a sign-inversion negative, and
+  reciprocal/face-permutation invariance. An empty bounded search **stops for Review**.
+- Add **diagnostic-first-locus** reporting inside `invalid_route()` without changing production semantics — the
+  R2 logs still do not reveal which predicate fired first, and no corrective semantic edit may be chosen from
+  static plausibility alone.
+- Keep frozen selector and routing untouched; `497 = 30 + 12 + 449 + 6` and the currently green identities are
+  the regression guard. The separate TB runs only after compile/package closes.
+
 # CURRENT — R3 Definition Review ACCEPTS with RA-37a / bounded R3 CB next (2026-10-08)
 
 **`M6-DEFN-R5-R3-REV` ACCEPTS RA-37a as a *bounded, fail-closed source-topology contract*; this is not any new runtime promotion. Exact successor after final beacon: `M6-CP3-CB1-ENTRY-R3` Code + Build only, with mandatory source A4 two-sector and both endpoint-local path STOPs.** CP2 491/491 remains accepted; R2 rejected 444/497; 47 accepted-green losses; 64/17/47, debt 1. See `Architecture_M6_DEFN_R5_R3_Review_Record.md`. No organic D1/D2/D3/D5 positives or A6 recovery accepted.
