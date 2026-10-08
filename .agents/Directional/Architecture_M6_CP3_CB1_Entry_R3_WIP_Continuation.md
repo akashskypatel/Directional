@@ -1,3 +1,15 @@
+## LATEST R3 continuation, 2026-10-08T21:26Z
+
+Same M6-CP3-CB1-ENTRY-R3 Code+Build turn IN_PROGRESS. Latest semantic test-only source e49431df81a3e23dc7870a4e409128dea618d378 adds 41 lines to existing D2: mutate one nonrail A3 sector step on BOTH sides by +1 mod4, prove the chi/phi square remains consistent while each altered value disagrees with the independently retained original A3 FieldTransportAtlas. This diagnostic copy is never published as A4 authority and does not alter production or the public factory.
+
+Verified patch Directional__M6-CP3-CB1-ENTRY-R3__base-cd1b46a4f0c8__balanced-A3-atlas-negative.patch; full SHA256 163a93e0337dba2f91806a31b6610be1ab2a9cbd97db0129d9250362c9bc81c1; body SHA256 ea3ecdd53939ed3fab83bdb982c6e363f434fc9b356b977f932911e875aecd2f; static diff/apply checks PASS. Drive apply run 37846050904 success, result artifact 11579622610 sha256 45028a85c399e6efc22bc51f0c2526365b3c5a33fabf04d8ec1592e1a9aaf34e; consumed Drive ID 1_PSmQBTsCtoq08fobd65vi2liDSkiyrh owner-deleted. Library /Directional/Evidence/ patch backup.
+
+GMP/GMPXX compile/package GREEN: event 7725820263ee8f81288723c6b9c4b539439c4aa1; mailbox .workflow-mailbox/m6-cp3-r3-balanced-atlas-negative-compile-r1/latest.json; run 37846303377, compile job 113548066989 SUCCESS, TB skipped. Result artifact 11580420381 SHA256 091c0e58f75ca72194f072a2c59a33a710de16733e5b1ef767576b5daf8d3b80; log 11579009672 SHA256 f3b7d7617c14d68d65b4369a28ad9e3978457618ff3d936a93a8d58f0c784576. Internal SHA256SUMS 28/28, eight standard targets, both exits 0, GMPXX+GMP authoritative link, five clean source receipts, exactArithmeticBackend=GMP, runtimeExecution=false. No Directional binary/test/benchmark run.
+
+Final handoff Directional__M6-CP3-CB1-ENTRY-R3__continuation-20261008T2117Z-final.md SHA256 4b5e05f8eeb27def7f2ee5fc607cacb4b86b76bcadd088f17c0d89730eb9474a, Library /Directional/Evidence/. Unresolved: independent factory A3 trust decision and Code+Build-to-TB witness gate sequencing; genuine D1/D2/D3/D5, A6/A7, odd tau != regional F, historical R2 39 first causes and 47 CP2-green recoveries. Frozen 497 identity and RA-39 unchanged, no runtime acceptance or successor.
+
+---
+
 ## CURRENT R3 bounded Code + Build continuation — 2026-10-08T20:54Z, A3 independent atlas D2 witness
 
 **Continue SAME `M6-CP3-CB1-ENTRY-R3` IN_PROGRESS; no runtime/TB or successor.** Latest semantic source **`cd1b46a4f0c82442f94d6e6a7c678cee90dfe85e`**, one test-only 45-line insertion in `tests/SurfaceCellTransitionQuotientTests.cpp` from exact compiled base `2b7997b80114be1ff270c3e9fada71aa075b0e95`. `READ_MODE=snapshot`: exact prior source tar `c73b0f75b9f6872df49946a77162610c4954ca17b31215b3cedf39f61708523c` verified via original eight-target compile package 28/28, no piecemeal source reads or local builds. Historic R2 497-case result artifact `11545716507` independently rechecked outer SHA256 `d6469bea1b4ef6fb3b142d05a97d01dbab98331cfc91d930c7bc30da555ec0ca`; no new R3 runtime root assigned.
