@@ -1,3 +1,9 @@
+## Resume-critical update — `M6-DEFN-R5-R1` RA-33 candidate prepared; independent Definition Review mandatory (2026-10-07)
+
+**Next when this Definition is formally closed:** `M6-DEFN-R5-R1-REV`. R2 Code+Build and CB2 remain **HELD**. The source snapshot `46717738454a96ab9a379a995eb903939e7a9413` (workflow `37711596951`, artifact `11521898273`) was statically inspected, no source/test/fixture/selector/build/runtime was changed. `Architecture_M6_DEFN_R5_R1_CP3_Entry_Recovery_Definition_Record.md` defines five RA-32 corrections, the normative **candidate-only** RA-33 block is appended to `Architecture_M6_Frozen_Definitions.md`, and `Architecture_M6_CP3_CB1_Entry_R2_Recovery_Code_Build_Plan.md` is the one HELD implementation plan.
+
+**Unresolved producer proofs cannot be represented as passed:** D1 organic exact-A3 odd-gauge periodic pair, D2 HardRail true τ discriminant with `F_b−F_a != τ`, D3/D7 genuinely traced seam-collinear OrdinaryFront with disjoint endpoint wedge sheets, and D4 ordinary edge with real nonempty source route. Review must independently accept the bounded proof/search conditions or return without releasing R2. Rejected R1 candidate remains **482/497**, stable accounting **63 / 17 / 46**, produced-witness debt **1**; frozen 497 gate =30+12+449+6. No success claim for a witness without immutable real-producer evidence.
+
 ## Resume-critical update — `M6-CP3-TB1-ENTRY-R1-REV` COMPLETE / RA-32 / exact next `M6-DEFN-R5-R1` (2026-10-07)
 
 **Start runtime-free `M6-DEFN-R5-R1` next. Do not begin R2 Code + Build or CB2 before mandatory Definition Review.**

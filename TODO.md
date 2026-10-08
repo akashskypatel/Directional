@@ -1,3 +1,10 @@
+## Current — `M6-DEFN-R5-R1` candidate RA-33 prepared / mandatory independent Definition Review pending (2026-10-07)
+
+- [x] Inspect exact snapshot `46717738454a96ab9a379a995eb903939e7a9413` for five RA-32 authority gaps. No product edits or runtime.
+- [x] Draft source-evidenced `Architecture_M6_DEFN_R5_R1_CP3_Entry_Recovery_Definition_Record.md`, RA-33 candidate and exactly one HELD R2 plan.
+- [ ] Mandatory `M6-DEFN-R5-R1-REV`: independently adjudicate candidate rules and the unresolved **organic produced-witness proofs** (periodic odd gauge pair, HardRail `F_b−F_a != τ`, seam-collinear OrdinaryFront, route-bearing ordinary). No R2 release before approval.
+- [ ] R2 Code+Build and CB2 held; frozen entry gate 497, stable **63 / 17 / 46**, debt **1**.
+
 ## Current — `M6-CP3-TB1-ENTRY-R1-REV` COMPLETE / RA-32 / exact next `M6-DEFN-R5-R1` (2026-10-07)
 
 - [x] Re-derive R1 mechanics: **482/497**, exact-one, zero skips, benchmark 0, immutable postflight.
