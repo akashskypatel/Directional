@@ -1,3 +1,12 @@
+## LIVE — M6 CP3 R2 Code + Build compile-green; immutable 497-process TB next (2026-10-08)
+
+- [x] Implement/push five-file RA-36 R2 correction at source `80fc1688f13e5ed52699177a845f25cc4dbda38b`; authoritative Drive apply `37762551926` GREEN.
+- [x] Eight standard GMP/GMPXX targets compiled/linked; dispatcher `37762724429`, job `113262943750` GREEN; immutable artifact `11542824274` ZIP SHA-256 `8aa756b1085a75109648b4da7f07a2ffebcdf975ea04981ec88b2d2e61c89114` and manifest **29/29**. Clean source and `runtimeExecution=false`. See `.agents/Directional/Architecture_M6_CP3_CB1_Entry_R2_Code_Build_Closeout_Report.md`.
+- [ ] **Exact successor after STATUS closure: `M6-CP3-TB1-ENTRY-R2-EXEC`** using artifact `11542824274` only, exactly **497=30+12+449+6** fresh exact-filter processes; immutable pre/postflight, exact-one, zero skips, benchmark zero. No recompile/repair/discovery. Witness nonvacuity and RA-36 multi-edge produced-route existence remain unproved; stop for Review on absent evidence.
+- [ ] Mandatory `M6-CP3-TB1-ENTRY-R2-REV`; only its independent decision may promote/reject or authorize CB2/CP3 exit. Stable accounting **63/17/46**, debt 1.
+
+---
+
 ## Current — R2 Definition Review ACCEPTED RA-34; bounded R2 Code + Build next (2026-10-08)
 
 - [x] Independent source-only review accepts D1 one-orientation A4 certificate and D3 odd oriented τ Definition; R1 OBS-01/02 discharged Definition-only.
