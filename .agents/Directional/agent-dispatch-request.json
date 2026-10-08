@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb1-r2-railfan-compile-2",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb1-r2-railfan-compile-fixed",
-  "source_sha": "bc87c4ef209f054d76062d9822cab69f2344017d",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb1-r2-railfan-compile-fixed"
+  "request_id": "m6-cp3-cb1-r2-p5-reciprocal-ordinary-apply-1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb1-r2-p5-reciprocal-ordinary-apply",
+  "file_id": "1t4oTWjDvSeH3ordNZls_xsz-RyPimCYg",
+  "patch_sha256": "3187eef0d1f59e14bbca766d4735d7ba5348916789802747a51ee75a0a66ff54",
+  "base_sha": "ade85dd44c970fffe0c8662957a0757d2c50cda3",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "test(m6): bind D5 ordinary carrier to real reciprocal A5 relation",
+  "retention_days": 14
 }
