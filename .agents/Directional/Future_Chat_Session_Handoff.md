@@ -1,3 +1,9 @@
+## Live handoff — M6-CP3-TB1-ENTRY-R2-EXEC dispatched, immutable 497 gate pending (2026-10-08T11:00Z)
+
+**Exact live turn `M6-CP3-TB1-ENTRY-R2-EXEC`**, no successor work until final STATUS is closed. `Architecture_M6_CP3_TB1_Entry_R2_Execution_Record.md` is the standalone receipt. Trigger commit `7d219b15519bc7eb003286677c0c122650cf48ab`; dispatcher request `m6-cp3-tb1-entry-r2-exec-artifact11542824274-1` and mailbox key `m6-cp3-tb1-entry-r2-exec`; expected result path `.workflow-mailbox/m6-cp3-tb1-entry-r2-exec/latest.json`. **No result/run ID yet; don't invent them.** Exact executor `d07689344ef448f963c28c95d7f4a8dfe11375a2`, harness SHA-256 `947a95ee4f684143a0f8d7c768a39253ab893d921da488802b45fb6ed58879dd`; immutable compile artifact `11542824274`, source `80fc1688f13e5ed52699177a845f25cc4dbda38b`, archive SHA256 `8aa756b1085a75109648b4da7f07a2ffebcdf975ea04981ec88b2d2e61c89114`. One frozen **497=30+12+449+6** artifact-only gate; no rebuilding/repair/retry. If work-window ends before terminal evidence, preserve in-progress turn and resume mailbox polling; if terminal, verify artifact/ledger/postflight, then close to mandatory `M6-CP3-TB1-ENTRY-R2-REV` (not start Review). Organic nonvacuity is unproved until runtime. Stable **63/17/46**, debt **1**; CB2/CP3 exit held.
+
+---
+
 ## Live handoff — M6-CP3-CB1-ENTRY-R2 compile/package GREEN; separate immutable TB next (2026-10-08)
 
 **R2 Code + Build is compile-green and may close after final STATUS beacon. Exact authorized successor: `M6-CP3-TB1-ENTRY-R2-EXEC`; do not start it in the same response.** Dedicated evidence: `Architecture_M6_CP3_CB1_Entry_R2_Code_Build_Closeout_Report.md`.
