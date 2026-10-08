@@ -5101,7 +5101,7 @@ SurfaceOccurrenceComplexProducer::produce(
                                  certificate.seam() ==
                                      *evidence.firstEndpointSpan->collinearEdge;
                         })) {
-          error.code = SurfaceOccurrenceComplexErrorCode::InvalidIsolationEvidence;
+          error.code = SurfaceOccurrenceComplexErrorCode::MismatchedIsolationEvidence;
           error.relation = relationId;
           return error;
         }
