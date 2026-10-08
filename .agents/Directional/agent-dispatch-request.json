@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb1-entry-r3-producer-first-predicate-output-apply-r1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb1-entry-r3-producer-first-predicate-output-apply-r1",
-  "file_id": "1eiQI3_ohbV22EEFsK4oSlMngO7FTUvf8",
-  "patch_sha256": "ac6a98d617bbf6349b45c9511f3f6f9748ed393ed030766c923c90d7afb902d6",
-  "base_sha": "c09fb8273113c844a4d7ef7fbe868aebe26034b7",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(surfacecells): preserve A4 first-predicate locus in producer fixture failures",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb1-entry-r3-d2-permute-firstpred-r1-compile",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb1-entry-r3-d2-permute-firstpred-r1-compile",
+  "source_sha": "f3e6caa39c17e91c478a3591a080e32259145c84",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb1-entry-r3-d2-permute-firstpred-r1"
 }
