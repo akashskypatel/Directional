@@ -6,6 +6,43 @@ Current candidate Definition is `Architecture_M6_DEFN_R5_R2_CP3_Entry_Recovery_D
 
 Verified snapshot source `f3ae67ade2ac37f00d2317d0de007aaf959f8969`, run `37717936915`, artifact `11524367318`, SHA256 `ea7668b79705f0fa489b7b6f21a05d09b02a43b9b0545bfc900544396de7901d`; no code/test/fixture/selector/build/runtime changes or executions. Rejected entry **482/497**, frozen future entry **497=30+12+449+6**, stable **63 / 17 / 46**, produced debt **1**. CB2 and CP3 exit remain held.
 
+### Review-agent determination — RA-34 addresses both R1 findings; Review agenda below (2026-10-08)
+
+`M6-DEFN-R5-R2` addressed both findings from the R1 Review substantively, verified against the amended record:
+
+- **`M6-DEFN-R5-R1-REV-OBS-01` (D1 orientation + label proxy).** RA-34.1 returns one *oriented* matched object
+  `(certificate, Forward|Reverse)` and requires **that same orientation** across source-face transitions,
+  endpoint/corner wedge sheets, coordinate transition, phase, scale, branch quarter-turn and both reciprocal
+  isolation sides; only a fully certified same-orientation relation may waive ordinary full
+  representation-equality. It names the helper's global-label rejection as the observed source contradiction and
+  requires the certificate's own `firstSheet()/secondSheet()` to be distinct typed authorities rather than
+  relying on span labels. It goes **beyond** the finding by adding a mixed-orientation negative — certificate
+  forward 1 / reverse 3, faces and sheets matching only Reverse, branch strip forward 1 — which must reject.
+  That is a falsifier for exactly the hole that was found.
+- **`M6-DEFN-R5-R1-REV-OBS-02` (τ orientation untestable).** The replacement counterexample is
+  `F_a=0, F_b=3, τ_ab=1, τ_ba=3, R_coord=1, B_a=0, B_b=2`, strictly better on all three axes — arithmetic
+  re-checked: the rule accepts (`(2−0−1−1) mod 4 = 0`), it still discriminates τ from regional `F`
+  (`F_b−F_a = 3 ≠ 1 = τ_ab`), and **τ is now odd**, so `−τ_ab = 3 ≠ τ_ab` makes the τ orientation falsifiable.
+  The `Z4`-abelian note — composition *order* is numerically inert, only signs are testable — is recorded.
+
+**What `M6-DEFN-R5-R2-REV` must still establish**, none of which the amendment settles:
+
+1. the bound orientation is carried through *every* listed check with no residual disjunction, and the
+   mixed-orientation negative is genuinely reachable rather than a stated intent;
+2. no global sheet-ID comparison can **grant or deny** the special case anywhere in the path — the helper's
+   `interiorBinding.sheet` equality precondition at `src/pipeline/RemeshPipeline.cpp:4520-4551` is the site;
+3. D2, D4 and D5 carried forward **unchanged** from R1, which the R1 Review accepted;
+4. every stop gate survives — D2, D3 and D4 each rest on an *unproven* search and must stop for Review rather
+   than weaken a premise, synthesize a pair, or adjust a frozen identity count.
+
+Accepting RA-34 releases the held CB1 plan; rejecting it returns to a further bounded Definition turn. The
+Review authorizes no runtime, compile, product, test, fixture or selector change.
+
+**Note on this document's routing.** Live routing is the newest `Resume-critical update` block at the top. The
+`# Current handoff — M6-CP3-TB1-ENTRY-REV complete authority` heading further down, and its `## Exact next turn`
+section naming `M6-CP3-CB1-ENTRY-R1`, are **historical** and several turns stale; they are left intact as
+history and must not be read as current routing.
+
 ## Resume-critical update — `M6-CP3-TB1-ENTRY-R1-REV` COMPLETE / RA-32 / exact next `M6-DEFN-R5-R1` (2026-10-07)
 
 **Start runtime-free `M6-DEFN-R5-R1` next. Do not begin R2 Code + Build or CB2 before mandatory Definition Review.**

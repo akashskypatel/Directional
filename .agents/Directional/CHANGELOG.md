@@ -1,3 +1,30 @@
+## 2026-10-08 — next-step determination: `M6-DEFN-R5-R2-REV` is next; RA-34 addresses both R1 findings
+
+Runtime-free. `M6-DEFN-R5-R2` is COMPLETE and the exact next turn is the mandatory independent Definition Review
+**`M6-DEFN-R5-R2-REV`**. `Architecture_M6_CP3_CB1_Entry_R2_Recovery_Code_Build_Plan.md` remains correctly
+**HELD** — RA-34 is a candidate, not implementation authority — and its hold was properly re-pointed from the
+superseded `M6-DEFN-R5-R1-REV` to `M6-DEFN-R5-R2-REV` rather than left stale. `STATUS` was already correct and
+is unchanged; no resume timestamp was fabricated.
+
+Both R1 Review findings are addressed substantively. **OBS-01:** RA-34.1 returns one oriented matched object
+`(certificate, Forward|Reverse)` and binds that same orientation across every downstream check, names the
+helper's global-label rejection as the source contradiction, and requires the certificate's own
+`firstSheet()/secondSheet()` to be distinct typed authorities — then goes beyond the finding with a
+mixed-orientation **negative** (forward 1 / reverse 3, faces matching only Reverse, branch strip forward 1) that
+must reject. **OBS-02:** the replacement counterexample `F_a=0, F_b=3, τ_ab=1, τ_ba=3, R_coord=1, B_a=0, B_b=2`
+is strictly better on all three axes, re-checked arithmetically: the rule accepts (`(2−0−1−1) mod 4 = 0`), it
+still discriminates τ from regional `F` (`3 ≠ 1`), and τ is now odd so `−τ_ab = 3 ≠ τ_ab` makes the τ
+orientation falsifiable. The `Z4`-abelian note is recorded.
+
+The handoff now carries the Review agenda: confirm the bound orientation reaches every check with no residual
+disjunction and that the mixed-orientation negative is reachable; confirm no global sheet-ID comparison can
+grant **or deny** the special case at `RemeshPipeline.cpp:4520-4551`; confirm D2/D4/D5 carried forward unchanged;
+and confirm every stop gate survives, since D2, D3 and D4 each still rest on an unproven search.
+
+Also recorded in the handoff: live routing is the newest top block, while the `# Current handoff —
+M6-CP3-TB1-ENTRY-REV` heading and its `## Exact next turn` naming `M6-CP3-CB1-ENTRY-R1` are historical and
+several turns stale — left intact as history, flagged so they are not read as current routing.
+
 ## 2026-10-08 — M6-DEFN-R5-R2 candidate RA-34; implementation held
 
 Verified snapshot `f3ae67ade2ac37f00d2317d0de007aaf959f8969` / run `37717936915` / artifact `11524367318`. Independent R1 Review rejected RA-33. Corrected D1: bind one typed certificate orientation for every seam conjunct and disallow global sheet equality or inequality as either admission or lookup rejection; A4-owned typed incidence is required, otherwise stop. Corrected D3: demand baseline-green produced HardRail with `(F_b-F_a) mod4 != τ_ab` and **odd** `τ_ab`, test sign reversal, never claim a τ=0 or algebraic example proves direction; Z4 order not numerically falsifiable. D2/D4/D5 carried unchanged with organic witness stop gates. Rejected entry remains 482/497, stable 63/17/46, debt 1. No source/test/fixture/selector/build/runtime changed or executed. Mandatory successor `M6-DEFN-R5-R2-REV`; R2 Code+Build/CB2 HELD.
