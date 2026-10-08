@@ -1,4 +1,12 @@
-# LIVE — M6-CP3-CB1-ENTRY-R3 bounded Code + Build (2026-10-08T22:02Z)
+# LIVE — R3 A4 nonmanifold source-spoke guard compiled (2026-10-08T22:26Z)
+
+- [x] Source `91fafdc6e2a3f46c77444b2a0cf1038f09f85e6b`, sole A4 `src/geometry/SurfaceCellTracing.cpp` edit: reject junction spoke unless **all** source triangles give exactly two edge incidences; preserve first-failure count and typed edge. Drive apply `37853932935` GREEN; staged patch owner-deleted.
+- [x] Eight GMP/GMPXX targets compiled/package GREEN run `37854111387`, result `11582993643`, 28/28 internal SHA256SUMS, clean source, `runtimeExecution=false`; **no tests or benchmarks executed**.
+- [ ] SAME `M6-CP3-CB1-ENTRY-R3` IN_PROGRESS. Five suggested future runtime test cases in Library continuation `Directional__M6-CP3-CB1-ENTRY-R3__continuation-20261008T2226Z.md` (no selector edits). Retain independent A3 factory trust Review, true D1/D2/D3/D5 A6/A7 witnesses, 39 R2 first causes, 47 CP2-green recoveries; frozen 497-case TB separate and not begun. No new stable regression evidence.
+
+---
+
+# HISTORICAL — M6-CP3-CB1-ENTRY-R3 bounded Code + Build (2026-10-08T22:02Z)
 
 - [x] Source audit of RA-39 endpoint-local terminal-carrier contract against compiled semantic source `d56f57adc184d6180fc2c69087a5340b8e97bcc7`: **already reviewed and implemented at certificate shape level**, not an unimplemented fan detour. GMP/GMPXX compile `37849106999`, artifact `11581102206`, internal **28/28** hashes, `runtimeExecution=false`.
 - [x] Historical R2 497-run source evidence independently rechecked **1019/1019** hashes; 53 RED records classify 25+12+2 A4/Phase10/RE and 14 other REDs; all R3 current-runtime first predicates remain **UNVERIFIED**.
