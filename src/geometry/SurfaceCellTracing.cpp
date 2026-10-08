@@ -18209,6 +18209,20 @@ SurfaceCellNetwork build_surface_cell_network(
           *network.sourceTopologyRegions, authoritativeOptions, edgeMatching,
           edgeEffort, edgeTransitions);
   const auto sourceEdges = surface_cell_tracing_detail::edge_faces(faces);
+  // edge_faces retains at most two incident face rows. Do not let that
+  // lossy representation certify a nonmanifold junction spoke: A4's
+  // two-sector contract requires exactly two actual source triangles.
+  std::map<authority::SourceEdgeTopologyKey, std::size_t> sourceEdgeFaceCounts;
+  const auto sourceVertexExtent =
+      surface_cell_tracing_detail::source_vertex_extent(faces);
+  for (int row = 0; row < faces.rows(); ++row) {
+    for (int corner = 0; corner < 3; ++corner) {
+      const auto edge = surface_cell_tracing_detail::edge_key(
+          faces(row, corner), faces(row, (corner + 1) % 3),
+          sourceVertexExtent);
+      ++sourceEdgeFaceCounts[edge];
+    }
+  }
   // Route-local RA-38 sectors own fan transport after paired HardRail
   // selection. A whole-star potential is not a valid pre-ownership gate:
   // the cross-rail discontinuity need not admit a single global gauge.
@@ -18336,7 +18350,8 @@ SurfaceCellNetwork build_surface_cell_network(
       }
       if (failingSpoke.has_value()) {
         detail << ";firstFailSpoke=" << failingSpoke->first().index()
-               << ',' << failingSpoke->second().index();
+               << ',' << failingSpoke->second().index()
+               << ";spokeIncidentFaces=" << sourceEdgeFaceCounts.at(*failingSpoke);
         const auto source = sourceEdges.find(*failingSpoke);
         if (source != sourceEdges.end()) {
           detail << ";firstFailSpokeFaces=";
@@ -18459,9 +18474,12 @@ SurfaceCellNetwork build_surface_cell_network(
       for (const auto &[edge, incident] : sourceEdges) {
         if (edge.first() != *junction && edge.second() != *junction)
           continue;
-        if (incident[0] < 0 || incident[1] < 0) {
+        const auto actualIncidentCount = sourceEdgeFaceCounts.at(edge);
+        if (incident[0] < 0 || incident[1] < 0 ||
+            actualIncidentCount != 2U) {
           firstInvalidSpoke = edge;
-          invalidStarPredicate = "boundary-or-nonmanifold-spoke";
+          invalidStarPredicate = actualIncidentCount > 2U
+              ? "overfull-nonmanifold-spoke" : "boundary-source-spoke";
           invalidStar = true;
           break;
         }
