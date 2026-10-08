@@ -1,3 +1,10 @@
+## Current — `M6-DEFN-R5-R2` RA-34 candidate; mandatory independent Review next (2026-10-08)
+
+- [x] Inspected exact-source snapshot `f3ae67ade2ac37f00d2317d0de007aaf959f8969`, no runtime or build.
+- [x] D1 single typed seam certificate orientation, with raw sheet labels neither granting nor denying lookup and A4 producer-owned sheet-incidence stop; D3 real-produced odd τ and independent F/τ discriminant.
+- [ ] `M6-DEFN-R5-R2-REV` to independently adjudicate RA-34; D2/D4/D5 organic positives remain unproven.
+- [ ] R2 Code+Build and CB2 HELD. Frozen gate 497, rejected 482/497, stable 63/17/46, debt 1.
+
 ## Current — `M6-DEFN-R5-R1` candidate RA-33 prepared / mandatory independent Definition Review pending (2026-10-07)
 
 - [x] Inspect exact snapshot `46717738454a96ab9a379a995eb903939e7a9413` for five RA-32 authority gaps. No product edits or runtime.

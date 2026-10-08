@@ -2,6 +2,8 @@
 
 **Owner:** future implementation agent. **Do not execute until mandatory `M6-DEFN-R5-R1-REV` explicitly accepts RA-33 and releases this exact plan.** This is the *only* proposed R2 Code+Build plan. Entry reviewed R1 candidate was **482/497** and rejected. Current reviewed runtime baseline remains CP2 `11391685901 / 5ce3132e...`. Stable **63 / 17 / 46**, debt **1**.
 
+> **M6-DEFN-R5-R2 review hold — RA-34 candidate:** R1 Review rejected RA-33. The plan stays **HELD** pending independent `M6-DEFN-R5-R2-REV`. Before any Code+Build, Review must accept one typed Forward/Reverse certificate match used by every seam conjunct; raw/global sheet labels may neither grant nor deny lookup and A4 must independently publish usable wedge-to-certificate sheet incidence. It must also require a real-produced baseline-green HardRail with both `F_b-F_a != τ_ab` and odd `τ_ab∈{1,3}` plus τ sign tamper. Unproven periodic, tracer-produced seam-collinear, and route-bearing ordinary positives retain stop rules. See `Architecture_M6_DEFN_R5_R2_CP3_Entry_Recovery_Definition_Record.md`. No CB2 or other implementation source/test/build/runtime edit is released.
+
 ## Preconditions (stop without source changes if false)
 
 1. Read the Review acceptance decision and frozen amended RA-33 from `Architecture_M6_Frozen_Definitions.md`, then this plan and `Architecture_M6_DEFN_R5_R1_CP3_Entry_Recovery_Definition_Record.md`. A Definition candidate alone is *not* release authority.

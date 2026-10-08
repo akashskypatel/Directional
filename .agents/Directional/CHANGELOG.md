@@ -1,3 +1,7 @@
+## 2026-10-08 — M6-DEFN-R5-R2 candidate RA-34; implementation held
+
+Verified snapshot `f3ae67ade2ac37f00d2317d0de007aaf959f8969` / run `37717936915` / artifact `11524367318`. Independent R1 Review rejected RA-33. Corrected D1: bind one typed certificate orientation for every seam conjunct and disallow global sheet equality or inequality as either admission or lookup rejection; A4-owned typed incidence is required, otherwise stop. Corrected D3: demand baseline-green produced HardRail with `(F_b-F_a) mod4 != τ_ab` and **odd** `τ_ab`, test sign reversal, never claim a τ=0 or algebraic example proves direction; Z4 order not numerically falsifiable. D2/D4/D5 carried unchanged with organic witness stop gates. Rejected entry remains 482/497, stable 63/17/46, debt 1. No source/test/fixture/selector/build/runtime changed or executed. Mandatory successor `M6-DEFN-R5-R2-REV`; R2 Code+Build/CB2 HELD.
+
 ## 2026-10-08 — `M6-DEFN-R5-R1` review: D2/D4/D5 sound; D1 holed; D3 right with an untestable witness
 
 Runtime-free architecture review of the CP3 entry recovery definition candidate. **Not accepted as written.**
