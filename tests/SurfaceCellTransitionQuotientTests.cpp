@@ -370,10 +370,18 @@ void require_produced(const PhaseFrontFixture &fixture,
   if (fixture.network.phaseFront.disposition() !=
           SurfaceCellProducerDisposition::Produced ||
       !fixture.network.phaseFront.is_produced()) {
-    throw std::runtime_error(
+    std::string message =
         fixtureName + " producer failed: " +
         directional::geometry::surface_phase_front_failure_reason_name(
-            fixture.network.phaseFront.rejection_reason()));
+            fixture.network.phaseFront.rejection_reason());
+    // This is test reporting only. Preserve A4's bounded first-rejected
+    // source-topology predicate in the immutable test log rather than showing
+    // only the generic InvalidHardRailRouteCertificate enum.
+    if (const auto *failure = fixture.network.phaseFront.rejection();
+        failure != nullptr && !failure->hardRailRouteDiagnostic.empty()) {
+      message += " firstPredicate=" + failure->hardRailRouteDiagnostic;
+    }
+    throw std::runtime_error(message);
   }
 }
 
