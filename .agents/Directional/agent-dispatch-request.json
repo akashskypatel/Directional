@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb1-entry-r3-d2-face-row-permute-apply-r1",
+  "request_id": "m6-cp3-cb1-entry-r3-producer-first-predicate-output-apply-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb1-entry-r3-d2-face-row-permute-apply-r1",
-  "file_id": "1aIFcCeGWc18UcVW7tSfUMV36X33_yNSN",
-  "patch_sha256": "e38b93aabd6680c220ae7db31bea2cbbec52c784741e63b41b5f3da448848990",
-  "base_sha": "4dfde0bd5cd70b92bdae73deaf448c8bf8d14adf",
+  "mailbox_key": "m6-cp3-cb1-entry-r3-producer-first-predicate-output-apply-r1",
+  "file_id": "1eiQI3_ohbV22EEFsK4oSlMngO7FTUvf8",
+  "patch_sha256": "ac6a98d617bbf6349b45c9511f3f6f9748ed393ed030766c923c90d7afb902d6",
+  "base_sha": "c09fb8273113c844a4d7ef7fbe868aebe26034b7",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(surfacecells): require D2 source-face-row invariance in A4-produced midline",
+  "commit_message": "test(surfacecells): preserve A4 first-predicate locus in producer fixture failures",
   "retention_days": 14
 }
