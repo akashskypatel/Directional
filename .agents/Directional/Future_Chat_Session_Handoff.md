@@ -1,3 +1,58 @@
+## Resume-critical update — RA-34 ACCEPTED; exact next `M6-CP3-CB1-ENTRY-R2` compile-only (2026-10-08)
+
+**Exact next turn: `M6-CP3-CB1-ENTRY-R2` — Code + Build, compile/package only, `runtimeExecution=false`.**
+`M6-DEFN-R5-R2-REV` accepted RA-34 "for bounded implementation, not runtime acceptance" and released
+`Architecture_M6_CP3_CB1_Entry_R2_Recovery_Code_Build_Plan.md` with mandatory stop gates. RA-34 is frozen in
+`Architecture_M6_Frozen_Definitions.md` (§RA-34, line ~1358), so it is now real authority rather than a
+candidate. Carry stable accounting **63 / 17 / 46**, debt **1**; frozen gate **497 = 30 + 12 + 449 + 6**.
+
+### Review-agent determination (2026-10-08)
+
+The acceptance is sound and properly bounded. Both R1 findings are discharged **as Definition only**, with the
+production side explicitly left open — `OBS-01` "Definition discharged, production recovery open", `OBS-02`
+"Definition discharged, produced τ witness open". The frozen RA-34.1 carries the exact wording the R1 Review
+required, that an A4-certified isolation seam be found "without raw/global sheet-label equality **granting or
+denying** certificate lookup", and the R2 Review independently recalculated the τ discriminator
+(`(2−0−1−1) mod 4 = 0`; `F_b−F_a = 3 ≠ 1 = τ_ab`; wrong-inverse rejected) rather than accepting it on report.
+The closeout states plainly that real-produced D2/D3/D4/D5 positives are **NOT proved and stop-gated**.
+
+**One ambiguity must be resolved before CB1 starts, because the plan is self-conflicting as written.**
+Precondition 2 requires the agent to "**independently prove** the required organic periodic, HardRail and
+seam-collinear front witnesses, plus a route-bearing ordinary carrier, under Review-approved finite real-producer
+constructions." The implementation boundary in the same plan forbids it: "preflight tests may be *read/compiled*,
+**not executed**", `runtimeExecution=false`, "no test, benchmark, generated discovery or local binary
+invocation". The existence of a produced witness is a **runtime fact**; no compile-only turn can establish it.
+
+The R2 Review resolves this in favour of the narrow reading — it released the plan while recording the positives
+as unproved and carrying those witnesses *to* CB1 — so precondition 2 must be read as:
+
+> author the Review-approved bounded searches and verify **statically** that each is well-formed, correctly
+> ordered (preconditions before selection), and not provably empty; **stop for Review** if a search was never
+> Review-approved or static inspection shows it cannot qualify. Existence is proved later, at
+> `M6-CP3-TB1-ENTRY-R2-EXEC`, by the frozen 497-process gate.
+
+**Both misreadings are live hazards and must be refused explicitly.** Executing runtime inside the turn to
+satisfy precondition 2 invalidates the compile-only boundary and forfeits the turn. Declaring a witness "proved"
+from static reasoning alone repeats the M5-CP3 CB9 failure, where a nonzero-Z4 witness was authored on static
+plausibility and found inadmissible only at runtime — missing bounded-disk closure by nine orders of magnitude.
+Authorship is not proof; reachability and existence are runtime facts.
+
+### What CB1-ENTRY-R2 must do
+
+- **R2-P1** A6 authority-domain fix; **stop before any special seam behavior** if an independent A4-owned
+  wedge-to-certificate sheet/side mapping is missing or ambiguous. The mandatory A4 preflight is
+  `SurfaceCellTracing.cpp:16670-16820`.
+- **R2-P2** organic periodic D1 witness over the real nonzero-Z4 torus A1→A4 pipeline, enumerating canonical
+  exact A3 candidates — not selecting the first.
+- **R2-P4** real seam-aligned tracer fixture on the bounded axis-aligned geometry; rework **only** the focused
+  CP3 identity3/5 fixtures, never frozen selector or routing.
+- **R2-P5** ordinary carrier oracle selecting an actual **route-bearing** ordinary front, *not merely*
+  `OrdinaryInterior` — this is the selection-before-precondition defect D5 exists to fix.
+- Compile/package the eight standard GMP/GMPXX targets, then hand an immutable exact-source artifact and
+  checksum to one artifact-only `M6-CP3-TB1-ENTRY-R2-EXEC`, then mandatory `M6-CP3-TB1-ENTRY-R2-REV`.
+- No CB2, optimizer/final-validator or production exit matrix until that Review accepts. No silent identity
+  rename, reordering or selector update.
+
 ## Resume-critical update — independent `M6-DEFN-R5-R2-REV` ACCEPTS RA-34; exact next `M6-CP3-CB1-ENTRY-R2` (2026-10-08)
 
 **Exact next: `M6-CP3-CB1-ENTRY-R2`, Code + Build, compile/package only.** Read `Architecture_M6_DEFN_R5_R2_Review_Record.md`, the accepted RA-34 block in `Architecture_M6_Frozen_Definitions.md`, and the released single `Architecture_M6_CP3_CB1_Entry_R2_Recovery_Code_Build_Plan.md`. The Review discharges prior OBS-01/02 Definition defects only, not actual production recovery.

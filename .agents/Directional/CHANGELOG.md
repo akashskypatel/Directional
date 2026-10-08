@@ -1,3 +1,34 @@
+## 2026-10-08 — next-step determination: RA-34 accepted; `M6-CP3-CB1-ENTRY-R2` next, with precondition 2 disambiguated
+
+Runtime-free. `M6-DEFN-R5-R2-REV` accepted RA-34 "for bounded implementation, not runtime acceptance", froze it
+in `Architecture_M6_Frozen_Definitions.md` (§RA-34), and released
+`Architecture_M6_CP3_CB1_Entry_R2_Recovery_Code_Build_Plan.md` with mandatory stop gates. Exact next turn is
+**`M6-CP3-CB1-ENTRY-R2`**, compile/package only, `runtimeExecution=false`. Accounting **63 / 17 / 46**, debt
+**1**; frozen gate **497 = 30 + 12 + 449 + 6**. `STATUS` was already correct and is unchanged.
+
+The acceptance is sound and properly bounded. Both R1 findings are discharged **as Definition only** with the
+production side left open — `OBS-01` "Definition discharged, production recovery open", `OBS-02` "Definition
+discharged, produced τ witness open". Frozen RA-34.1 carries the R1 Review's exact requirement that the seam be
+found "without raw/global sheet-label equality **granting or denying** certificate lookup", and the R2 Review
+independently recalculated the τ discriminator rather than accepting it on report. The closeout states that
+real-produced D2/D3/D4/D5 positives are **NOT proved and stop-gated**.
+
+**Determination: the CB plan is self-conflicting and was disambiguated in the handoff.** Precondition 2 requires
+the agent to "independently prove" the organic periodic, HardRail and seam-collinear witnesses "under
+Review-approved finite real-producer constructions", while the same plan's boundary forbids execution —
+"preflight tests may be read/compiled, **not executed**", `runtimeExecution=false`, no test or binary
+invocation. Existence of a produced witness is a runtime fact that no compile-only turn can establish. The R2
+Review resolves it in favour of the narrow reading, having released the plan while recording the positives as
+unproved and carrying those witnesses *to* CB1: precondition 2 means author the approved searches and verify
+**statically** that each is well-formed, correctly ordered (preconditions before selection) and not provably
+empty, stopping for Review otherwise — with existence proved later at `M6-CP3-TB1-ENTRY-R2-EXEC` by the 497-process
+gate.
+
+Both misreadings are recorded as live hazards: executing runtime inside the turn forfeits the compile-only
+boundary, and declaring a witness "proved" from static reasoning alone repeats the M5-CP3 CB9 failure, where a
+nonzero-Z4 witness authored on static plausibility missed bounded-disk closure by nine orders of magnitude.
+Authorship is not proof.
+
 ## 2026-10-08 — Independent M6-DEFN-R5-R2-REV accepts RA-34 (Definition-only)
 
 Verified source snapshot `48370d9913b40b3e42299082188ea404af4c7ca1` (run 37723060299 / artifact 11526935503); source-only review. RA-34.1 corrects one typed certificate orientation and removes raw/global sheet-label equality/inequality as grant/deny authority. RA-34.3 requires real-produced odd-oriented HardRail τ and independent F/τ inequality; algebra is not producer evidence. R1 OBS-01/02 discharged as *Definition* issues only. RP-01 and D2/D3/D4/D5 organic positives open. Exactly one successor `M6-CP3-CB1-ENTRY-R2` compile-only, then immutable 497 TB and mandatory Review. CB2 held; selector unchanged, CP2 491/491, R1 entry 482/497 rejected, stable 63/17/46 and debt 1. No code/build/test/runtime mutation or execution.
