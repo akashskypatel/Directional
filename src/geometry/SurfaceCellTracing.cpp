@@ -17,6 +17,7 @@
 #include <limits>
 #include <optional>
 #include <queue>
+#include <sstream>
 
 namespace directional::geometry::surface_cell_tracing_detail {
 
@@ -18271,7 +18272,10 @@ SurfaceCellNetwork build_surface_cell_network(
     if (first.sourceTopologyRegion == second.sourceTopologyRegion) continue;
     const auto invalid_route = [&](SurfaceHardRailRouteFailureLocus locus,
                                    int stepIndex = -1,
-                                   int vertexIndex = -1) {
+                                   int vertexIndex = -1,
+                                   const char *predicate = "first-invalid",
+                                   int fromFaceRow = -1,
+                                   int toFaceRow = -1) {
       SurfacePhaseFrontFailure failure;
       failure.reason = SurfacePhaseFrontFailureReason::InvalidHardRailRouteCertificate;
       failure.hardRailRouteLocus = locus;
@@ -18281,11 +18285,59 @@ SurfaceCellNetwork build_surface_cell_network(
       failure.secondFrontEdge = first.oppositeEdge;
       failure.routeStepIndex = stepIndex;
       failure.sourceVertex = vertexIndex;
+      failure.face = fromFaceRow < 0 ? first.from.face : fromFaceRow;
+      failure.targetFace = toFaceRow < 0 ? second.to.face : toFaceRow;
+      // Record the exact source-face endpoint pairs and a bounded subset of
+      // carrier topology, not arbitrary face-row order or regional gauges.
+      // This branch executes ONLY after rejection has been decided.
+      std::ostringstream detail;
+      detail << "predicate=" << predicate << ";locus=" << static_cast<int>(locus)
+             << ";rail=" << (first.railId ? static_cast<int>(first.railId->index()) : -1)
+             << ";front=" << firstIndex << ',' << first.oppositeEdge
+             << ";faceEnds=" << first.from.face << ',' << second.to.face
+             << '|' << first.to.face << ',' << second.from.face
+             << ";vertex=" << vertexIndex << ";step=" << stepIndex
+             << ";currentFace=" << failure.face
+             << ";expectedFace=" << failure.targetFace;
+      const auto route = first.route.oriented_steps();
+      detail << ";routeLength=" << route.size();
+      std::set<std::size_t> inspected;
+      if (!route.empty()) {
+        inspected.insert(0U);
+        inspected.insert(route.size() - 1U);
+        if (stepIndex >= 0 && static_cast<std::size_t>(stepIndex) < route.size()) {
+          const std::size_t at = static_cast<std::size_t>(stepIndex);
+          inspected.insert(at);
+          if (at > 0U) inspected.insert(at - 1U);
+          if (at + 1U < route.size()) inspected.insert(at + 1U);
+        }
+      }
+      for (const std::size_t at : inspected) {
+        const auto edge = route[at].topology();
+        detail << ";edge[" << at << "]="
+               << edge.first().index() << ',' << edge.second().index();
+        const auto owner = std::find_if(
+            phaseFrontState.hardRailFieldTransitions.begin(),
+            phaseFrontState.hardRailFieldTransitions.end(),
+            [&](const auto &entry) { return entry.edge == edge; });
+        if (owner == phaseFrontState.hardRailFieldTransitions.end()) {
+          detail << ":owner=missing";
+          continue;
+        }
+        const auto firstRow =
+            network.sourceTopologyRegions->row_for_topology(owner->firstFace);
+        const auto secondRow =
+            network.sourceTopologyRegions->row_for_topology(owner->secondFace);
+        detail << ":faces=" << (firstRow ? static_cast<int>(firstRow->index()) : -1)
+               << ',' << (secondRow ? static_cast<int>(secondRow->index()) : -1)
+               << ":chi=" << static_cast<int>(owner->firstToSecond.value());
+      }
+      failure.hardRailRouteDiagnostic = detail.str();
       network.phaseFront = SurfacePhaseFrontResult::rejected(std::move(failure));
     };
     if (!first.railId.has_value() || first.railId != second.railId ||
         first.route.empty() || first.route != second.route.reversed()) {
-      invalid_route(SurfaceHardRailRouteFailureLocus::Pairing);
+      invalid_route(SurfaceHardRailRouteFailureLocus::Pairing, -1, -1, "nonreciprocal-pair");
       return network;
     }
     const auto routeSteps = first.route.oriented_steps();
@@ -18328,7 +18380,7 @@ SurfaceCellNetwork build_surface_cell_network(
           firstAttachment, secondAttachment, *oriented};
     };
     if (routeSteps.empty()) {
-      invalid_route(SurfaceHardRailRouteFailureLocus::EmptyRoute);
+      invalid_route(SurfaceHardRailRouteFailureLocus::EmptyRoute, -1, -1, "empty-route");
       return network;
     }
     const auto firstEndpoint = endpoint_certificate(
@@ -18336,7 +18388,9 @@ SurfaceCellNetwork build_surface_cell_network(
     const auto secondEndpoint = endpoint_certificate(
         first.to.face, second.from.face, routeSteps.back().topology());
     if (!firstEndpoint || !secondEndpoint) {
-      invalid_route(SurfaceHardRailRouteFailureLocus::EndpointAttachment);
+      invalid_route(SurfaceHardRailRouteFailureLocus::EndpointAttachment,
+                    !firstEndpoint ? 0 : static_cast<int>(routeSteps.size() - 1U),
+                    -1, !firstEndpoint ? "endpoint-0" : "endpoint-1");
       return network;
     }
     std::vector<SurfaceHardRailRouteJunctionCertificate> junctions;
@@ -18346,7 +18400,7 @@ SurfaceCellNetwork build_surface_cell_network(
       const auto *carrier = find_carrier(routeSteps[index].topology());
       if (carrier == nullptr || carrier->edge == previous.edge) {
         invalid_route(SurfaceHardRailRouteFailureLocus::MissingCarrier,
-                      static_cast<int>(index));
+                      static_cast<int>(index), -1, "carrier-missing-or-repeated");
         return network;
       }
       std::optional<authority::SourceVertexId> junction;
@@ -18355,14 +18409,14 @@ SurfaceCellNetwork build_surface_cell_network(
           continue;
         if (junction) {
           invalid_route(SurfaceHardRailRouteFailureLocus::InvalidJunction,
-                        static_cast<int>(index));
+                        static_cast<int>(index), -1, "multiple-junction-vertices");
           return network;
         }
         junction = vertex;
       }
       if (!junction || authoritativeOptions.fieldTransportAtlas == nullptr) {
         invalid_route(SurfaceHardRailRouteFailureLocus::InvalidJunction,
-                      static_cast<int>(index));
+                      static_cast<int>(index), -1, "junction-or-A3-absent");
         return network;
       }
 
@@ -18374,10 +18428,12 @@ SurfaceCellNetwork build_surface_cell_network(
       std::map<Face, std::vector<Transition>> sectorAdjacency;
       int hardSpokes = 0;
       bool invalidStar = false;
+      const char *invalidStarPredicate = "invalid-source-star";
       for (const auto &[edge, incident] : sourceEdges) {
         if (edge.first() != *junction && edge.second() != *junction)
           continue;
         if (incident[0] < 0 || incident[1] < 0) {
+          invalidStarPredicate = "boundary-or-nonmanifold-spoke";
           invalidStar = true;
           break;
         }
@@ -18386,6 +18442,7 @@ SurfaceCellNetwork build_surface_cell_network(
         const auto f1 = surface_cell_tracing_detail::source_face_id(
             incident[1], faces.rows());
         if (!f0 || !f1) {
+          invalidStarPredicate = "invalid-source-face-id";
           invalidStar = true;
           break;
         }
@@ -18395,6 +18452,7 @@ SurfaceCellNetwork build_surface_cell_network(
         ++fullDegrees[b];
         if (authoritativeOptions.hardFeatureEdges.contains(edge)) {
           if (edge != previous.edge && edge != carrier->edge) {
+            invalidStarPredicate = "foreign-hard-carrier";
             invalidStar = true; // Foreign barrier inside a sector.
             break;
           }
@@ -18407,6 +18465,7 @@ SurfaceCellNetwork build_surface_cell_network(
             authoritativeOptions.fieldTransportAtlas->transition_value(edge, *f1, *f0);
         if (!forward || !reverse ||
             reverse->transport != forward->transport.inverse()) {
+          invalidStarPredicate = "missing-or-nonreciprocal-A3";
           invalidStar = true;
           break;
         }
@@ -18417,7 +18476,11 @@ SurfaceCellNetwork build_surface_cell_network(
           std::any_of(fullDegrees.begin(), fullDegrees.end(),
                       [](const auto &entry) { return entry.second != 2; })) {
         invalid_route(SurfaceHardRailRouteFailureLocus::InvalidStar,
-                      static_cast<int>(index), static_cast<int>(junction->index()));
+                      static_cast<int>(index), static_cast<int>(junction->index()),
+                      invalidStar ? invalidStarPredicate
+                      : hardSpokes != 2 ? "not-two-hard-spokes"
+                      : fullDegrees.size() < 3U ? "degenerate-vertex-star"
+                                                : "nonmanifold-vertex-link");
         return network;
       }
       // Cutting a single interior-manifold star cycle at exactly two
@@ -18452,8 +18515,16 @@ SurfaceCellNetwork build_surface_cell_network(
         pathB = side_path(previous.secondFace, next.secondFace);
       }
       if (!pathA || !pathB) {
+        const bool firstSideFailed = !pathA;
+        const auto current = network.sourceTopologyRegions->row_for_topology(
+            firstSideFailed ? previous.firstFace : previous.secondFace);
+        const auto target = network.sourceTopologyRegions->row_for_topology(
+            firstSideFailed ? next.firstFace : next.secondFace);
         invalid_route(SurfaceHardRailRouteFailureLocus::SectorPath,
-                      static_cast<int>(index), static_cast<int>(junction->index()));
+                      static_cast<int>(index), static_cast<int>(junction->index()),
+                      firstSideFailed ? "sector-A-nonrail-path" : "sector-B-nonrail-path",
+                      current ? static_cast<int>(current->index()) : -1,
+                      target ? static_cast<int>(target->index()) : -1);
         return network;
       }
       auto phiA = authority::QuarterTurn::from_integer(0);
@@ -18468,20 +18539,28 @@ SurfaceCellNetwork build_surface_cell_network(
         phiB = compose(step.firstToSecond, phiB);
         sectorB.insert(step.secondFace);
       }
-      if (sectorA.size() + sectorB.size() != fullDegrees.size() ||
-          std::any_of(sectorA.begin(), sectorA.end(),
-                      [&](const Face &face) { return sectorB.contains(face); }) ||
+      const bool incompleteCover =
+          sectorA.size() + sectorB.size() != fullDegrees.size();
+      const bool sectorOverlap = std::any_of(
+          sectorA.begin(), sectorA.end(),
+          [&](const Face &face) { return sectorB.contains(face); });
+      const bool squareMismatch =
           compose(next.firstToSecond, phiA) !=
-              compose(phiB, previous.firstToSecond)) {
+          compose(phiB, previous.firstToSecond);
+      if (incompleteCover || sectorOverlap || squareMismatch) {
         invalid_route(SurfaceHardRailRouteFailureLocus::SectorTransport,
-                      static_cast<int>(index), static_cast<int>(junction->index()));
+                      static_cast<int>(index), static_cast<int>(junction->index()),
+                      incompleteCover ? "sector-cover-deficit"
+                      : sectorOverlap ? "sector-overlap" : "A3-commuting-square");
         return network;
       }
       junctions.push_back({*junction, {*pathA, *pathB}});
       previous = next;
     }
     if (previous != secondEndpoint->terminalCarrier) {
-      invalid_route(SurfaceHardRailRouteFailureLocus::TerminalCarrier);
+      invalid_route(SurfaceHardRailRouteFailureLocus::TerminalCarrier,
+                    static_cast<int>(routeSteps.size() - 1U), -1,
+                    "endpoint-1-terminal-carrier");
       return network;
     }
     phaseFrontState.hardRailRouteCertificates.push_back({

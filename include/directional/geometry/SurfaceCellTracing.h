@@ -1784,6 +1784,9 @@ struct SurfacePhaseFrontFailure {
   int sourceVertex = -1;
   int sourceEdge = -1;
   int secondarySourceEdge = -1;
+  // Bounded, byte-stable source-topology first-predicate evidence; never used
+  // to authorize production or change an A4 disposition.
+  std::string hardRailRouteDiagnostic;
 };
 
 const char *surface_phase_front_failure_reason_name(

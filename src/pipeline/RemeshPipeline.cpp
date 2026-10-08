@@ -12795,6 +12795,10 @@ remesh_from_raw_cross_field_impl_with_stage_products(
             ":front=" + std::to_string(failure->firstFrontEdge) +
             ":opposite=" + std::to_string(failure->secondFrontEdge) +
             ":routeStep=" + std::to_string(failure->routeStepIndex);
+        if (!failure->hardRailRouteDiagnostic.empty()) {
+          result.diagnostics.surfaceCellFirstInvalidProducerReason +=
+              ":" + failure->hardRailRouteDiagnostic;
+        }
       }
       result.diagnostics.surfaceCellFirstInvalidProducerCell = failure->cell;
       result.diagnostics.surfaceCellFirstInvalidProducerHalfedge = failure->side;
