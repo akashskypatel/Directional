@@ -1,12 +1,12 @@
 {
-  "schema_version": 1,
-  "request_id": "m6-defn-r5-r1-ra33-docs-apply-1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-defn-r5-r1-ra33-docs",
-  "file_id": "1Ep4Yxe9uwbYldaUlLCBQNiyxlwPjL0ZR",
-  "patch_sha256": "f45eb3fb1ddef3fcd024d8c2d58f06c625b5803019c121b18463d3ffc317e7d8",
-  "base_sha": "46717738454a96ab9a379a995eb903939e7a9413",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: prepare M6 DEFN R5 R1 RA-33 candidate and held R2 plan",
-  "retention_days": 14
+ "schema_version": 1,
+ "request_id": "m6-cp3-cb1-r2-wip-apply-1",
+ "operation": "drive_apply",
+ "mailbox_key": "m6-cp3-cb1-r2-wip-apply",
+ "file_id": "1gyqnmtow3ZqD5L6JnGKLIGezjbBfgwRa",
+ "patch_sha256": "d4cfb168193a9acd4a18661c8919655fe9a77866e58c95e79343d54f00811e38",
+ "base_sha": "0930f1edd9759402d620cc829bd9f1a671d14c0c",
+ "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+ "commit_message": "wip: preserve M6 CP3 R2 typed seam, periodic and ordinary corrections",
+ "retention_days": 14
 }
