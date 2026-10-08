@@ -1,3 +1,9 @@
+## LIVE M6 routing — R2 entry TB 444/497 (53 RED), Review is next (2026-10-08)
+
+Mechanically valid immutable R2 artifact-only gate `M6-CP3-TB1-ENTRY-R2-EXEC`: dispatcher `37767144537`, job `113277596566`, semantic source `80fc1688f13e5ed52699177a845f25cc4dbda38b`, compiled package `11542824274`; result **`11545716507`** ([link](https://github.com/akashskypatel/Directional/actions/runs/37767144537/artifacts/11545716507)), ZIP SHA-256 `d6469bea1b4ef6fb3b142d05a97d01dbab98331cfc91d930c7bc30da555ec0ca`. Full **497=30+12+449+6** distinct exact-one fresh processes, zero skips/benchmarks, immutable checks; **444 PASS / 53 RED**: 15/30 + 10/12 + 419/449 + 0/6. Mechanically complete but not semantically green; R2 UNPROMOTED. **Exact next after STATUS closure: mandatory independent `M6-CP3-TB1-ENTRY-R2-REV`.** All R2 witness obligations still unproved; no automatic repair/retry/CB2/CP3 exit. Stable **63/17/46**, debt 1 pending Review. Detailed evidence `Architecture_M6_CP3_TB1_Entry_R2_Execution_Record.md`.
+
+---
+
 ## LIVE M6 routing — R2 Code+Build compile-green, immutable 497 TB next (2026-10-08)
 
 R2 source `80fc1688f13e5ed52699177a845f25cc4dbda38b` compiled and linked all eight GMP/GMPXX targets in run/job `37762724429 / 113262943750`; immutable artifact `11542824274`, archive SHA-256 `8aa756b1085a75109648b4da7f07a2ffebcdf975ea04981ec88b2d2e61c89114`, self-manifest 29/29, no runtime. **Exact next after STATUS closure: `M6-CP3-TB1-ENTRY-R2-EXEC`** (artifact-only 497=30+12+449+6), then mandatory independent `M6-CP3-TB1-ENTRY-R2-REV`. Compiled ≠ accepted; D1/D2/D3/D4/D5 organic positives and RA-36 multi-edge route are not runtime-proven. CP2 491/491 still reviewed baseline; R1 482/497 rejected. Stable **63/17/46**, debt 1. CB2 / CP3 exit held. Detailed evidence: `Architecture_M6_CP3_CB1_Entry_R2_Code_Build_Closeout_Report.md`.
