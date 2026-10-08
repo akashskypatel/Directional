@@ -6,14 +6,16 @@ Verified source snapshot: `0930f1edd9759402d620cc829bd9f1a671d14c0c`, run `37734
 
 **WIP semantic commit:** `88aa8eae043cee9b53e45c0a43317e5a0ec5eca8`; exact patch apply run `37734942243`, result artifact `11531082986`, two and only two paths changed: `src/pipeline/RemeshPipeline.cpp`, `tests/SurfaceCellTransitionQuotientTests.cpp`. Source patch SHA-256 `d4cfb168193a9acd4a18661c8919655fe9a77866e58c95e79343d54f00811e38`; user-visible downloaded work-preservation patch is authoritative backup. Drive staging files were permanently retired after successful apply.
 
-**Work prepared, uncompiled at the time of this record:**
+**Work prepared; runtime untested:**
 - R2-P1: typed A4 certificate face-to-A5 corner-wedge binding and partial A6 certified-seam selection; audit mixed/partial evidence and typed fail-closed conditions.
 - R2-P2: enumerate real A3 torus generator candidates before selecting a reciprocal produced periodic front with odd face-gauge delta. Check matching interval/generator route and uniqueness; no positive witness established.
 - R2-P5: D5 chooses an actual route-bearing OrdinaryInterior source carrier with a live source transition; unrelated transition remains after marking a hard feature. No runtime proof.
 
 **Not yet implemented:** R2-P3 publication/consumption of A3-oriented HardRail tau (odd, non-self-inverse real-produced discriminator) and R2-P4 real tracer-produced seam-aligned OrdinaryFront A6/A7 independently tampered positives. Stop gates from `Architecture_M6_DEFN_R5_R2_Review_Record.md` remain mandatory.
 
-A compile-only request was dispatched in commit `7f005180fad6415e8cb6e4e96f173a19a4d11775` for exact WIP source `88aa8eae...`, eight GMP/GMPXX targets, mailbox `.workflow-mailbox/m6-cp3-cb1-r2-wip-compile/latest.json`. **Verify its result and exact source evidence before any compile claim.** Never execute tests/benchmarks in this CB turn.
+**Compile-only workflow:** Initial dispatcher request `7f005180fad6415e8cb6e4e96f173a19a4d11775` incorrectly encoded `targets` as a string and is not a valid build invocation. A corrected full eight-target-array request was committed at `3d4d7c5a11c46d3d28f3f6a541cdf257289f008a` with `request_id=m6-cp3-cb1-r2-wip-compile-2`, exact WIP source `88aa8eae043cee9b53e45c0a43317e5a0ec5eca8`, mailbox `.workflow-mailbox/m6-cp3-cb1-r2-wip-compile/latest.json`. **Compilation is unverified until the corrected run result and source evidence are inspected.** No tests/benchmarks in CB.
+
+The temporary source-snapshot trigger has been retired with `[skip ci]`; retained durable dispatcher/request/mailbox infrastructure is not cleanup material.
 
 Frozen required-green selector449: 449 lines, SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. Stable accounting: 63 events / 17 categories / 46 recurrences; one M6 debt.
 
