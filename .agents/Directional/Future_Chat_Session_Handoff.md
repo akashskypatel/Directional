@@ -1,3 +1,13 @@
+## Live handoff — M6-CP3-CB1-ENTRY-R2 compile/package GREEN; separate immutable TB next (2026-10-08)
+
+**R2 Code + Build is compile-green and may close after final STATUS beacon. Exact authorized successor: `M6-CP3-TB1-ENTRY-R2-EXEC`; do not start it in the same response.** Dedicated evidence: `Architecture_M6_CP3_CB1_Entry_R2_Code_Build_Closeout_Report.md`.
+
+Exact semantic source `80fc1688f13e5ed52699177a845f25cc4dbda38b`, applied in workflow `37762551926`; eight-target GMP/GMPXX compile run/job `37762724429 / 113262943750` GREEN, test_benchmark skipped. Artifact `11542824274`, ZIP SHA-256 `8aa756b1085a75109648b4da7f07a2ffebcdf975ea04981ec88b2d2e61c89114`; internal SHA256SUMS 29/29. Embedded source tar SHA-256 `2c4a3c8eb9616482a86263a77a2ce07185be4492c685ad090b98f10b55c91e74`. Clean source, runtimeExecution=false. Mailbox `.workflow-mailbox/m6-cp3-cb1-r2-ra36-v3-compile/latest.json` confirms terminal success and source identity. No runtime tests or benchmarks were executed. Source-code patch is committed; previous “candidate unapplied” sections below are historical, not live.
+
+**Next:** consume the *same* unmodified artifact, exactly **497=30+12+449+6** fresh processes as authorized, with exact-one/zero-skip/zero-benchmark and immutable verification. Organic D1/D2/D3/D4/D5 positives are authored but not proven. RA-36 multi-edge producer existence is unproven, cannot be credited by compilation; empty bounded searches stop for Review. Do not recompile or repair in TB. Mandatory next Review `M6-CP3-TB1-ENTRY-R2-REV` decides acceptance/recovery. CP3 exit, CB2, optimizer/final-validator remain held. Stable **63 / 17 / 46**, debt **1**. The compile artifact expires 2026-10-15; never substitute another artifact silently.
+
+---
+
 ## IN PROGRESS — M6-CP3-CB1-ENTRY-R2 candidate source patch preserved (2026-10-08)
 
 **Status: IN_PROGRESS, not compile-validated or accepted.** Current next turn remains `M6-CP3-CB1-ENTRY-R2`, Code + Build only. Authoritative source snapshot: `f456baafade19ce549055306730e4d1684c6794b`, workflow `37758939866`, artifact `11541392230` (5,643/5,643 exact checksums).
