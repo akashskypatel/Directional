@@ -1,3 +1,9 @@
+## Current independent Review HOLD — RA-36 face-sharing premise disputed (2026-10-08)
+
+R2 runtime Review `M6-CP3-TB1-ENTRY-R2-REV` **REJECTS R2 444/497** and records an accepted-green A4 HardRail producer false rejection. Existing frozen RA-36.1 says consecutive rail edge carriers share a typed source face; legal fixture edges `(1,4)` and `(4,7)` meet at vertex 4 but have disjoint incident source-face sets `{0,3}` and `{4,7}`. This is a static topology counterexample to an assumed universal invariant, **not evidence that a two-edge route was produced in the R2 runtime**. RA-36 text below is preserved unchanged as historical frozen authority; **do not implement a silent weakening or regard the disputed premise as sufficient for a new CB**. Exact next: `M6-DEFN-R5-R3` proposes candidate RA-37 typed A3-side fan transport contract, then mandatory independent `M6-DEFN-R5-R3-REV` to freeze/reject an amendment. R2 candidate unpromoted. Full review `Architecture_M6_CP3_TB1_Entry_R2_Review_Record.md`.
+
+---
+
 # M6 Frozen Definitions — Occurrence, Quotient, Embedding, Independent Verification
 
 **Status:** FROZEN / M6-CP1 and M6-CP2 CLOSED / ACCEPTED. CP3 entry R1 candidate `11488700954 / 68000a95` **REJECTED** at 482/497 by RA-32; predecessor P1/T1 regressions recovered, prior `RP-01` seam-domain event remains open. Stable accounting **63 / 17 / 46**, debt 1. **EXACT NEXT = `M6-CP3-CB1-ENTRY-R2`** after independent `M6-DEFN-R5-R2-REV` accepted RA-34 as bounded Definition. R2 compile-only is released with strict A4 typed incidence and organic-witness stop gates; CB2/CP3 exit held. RA-1 – RA-32 normative as annotated, RA-34 accepted amendment supersedes RA-33.1/.3 only.
