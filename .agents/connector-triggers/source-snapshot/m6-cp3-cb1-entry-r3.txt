@@ -1,3 +1,0 @@
-M6-CP3-CB1-ENTRY-R3 source snapshot request
-Parent authority: 328d071b4b3bbb596401d5fb65f9204597f462dc
-Scope: static Code+Build R3 inspection; no runtime execution.
