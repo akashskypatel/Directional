@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb1-entry-r3-v2-compile",
+  "request_id": "m6-cp3-cb1-entry-r3-v2-compile-r2",
   "operation": "compile",
-  "mailbox_key": "m6-cp3-cb1-entry-r3-v2-compile",
+  "mailbox_key": "m6-cp3-cb1-entry-r3-v2-compile-r2",
   "source_sha": "948d75259e10ff23b66e6d21f610d9a862c9702b",
   "targets": [
     "directional_core",
@@ -14,6 +14,5 @@
     "directional_compiled_api_tests",
     "directional_benchmarks"
   ],
-  "artifact_prefix": "m6-cp3-cb1-entry-r3-v2",
-  "retention_days": 14
+  "artifact_prefix": "m6-cp3-cb1-entry-r3-v2"
 }
