@@ -1,3 +1,0 @@
-Purpose: frozen source snapshot for M6-CP3-CB1-ENTRY-R3
-Entry beacon commit: e2499b0178d5d84357c3eed6efcfbbf4bd0ec24b
-Runtime: none
