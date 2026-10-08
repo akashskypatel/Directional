@@ -1,0 +1,3 @@
+Turn: M6-DEFN-R5-R3
+Purpose: frozen repository source snapshot for runtime-free definition work
+Pre-trigger head: ea09ee1254b268bdc077521099fb6f65f93c20fb
