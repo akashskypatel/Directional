@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb1-entry-r3-a3-atlas-independent-provenance-apply-r2",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb1-entry-r3-a3-atlas-provenance-apply-r2",
-  "file_id": "1QeKuXwiD9jSZeLbmYowf4XviElezAAT3",
-  "patch_sha256": "5c9d871344af95c02059d95a2dab5ec0f8638fcec545e5f5522462068ace17fe",
-  "base_sha": "2b7997b80114be1ff270c3e9fada71aa075b0e95",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(surfacecells): attest D2 nonrail A3 witnesses against independent production atlas",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb1-entry-r3-a3-atlas-provenance-r1-compile",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb1-entry-r3-a3-atlas-provenance-r1-compile",
+  "source_sha": "cd1b46a4f0c82442f94d6e6a7c678cee90dfe85e",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb1-entry-r3-a3-atlas-provenance-r1"
 }
