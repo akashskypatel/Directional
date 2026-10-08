@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb1-r2-p5-reciprocal-ordinary-apply-1",
+  "request_id": "m6-cp3-cb1-r2-p4-typedseam-witness-apply-1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb1-r2-p5-reciprocal-ordinary-apply",
-  "file_id": "1t4oTWjDvSeH3ordNZls_xsz-RyPimCYg",
-  "patch_sha256": "3187eef0d1f59e14bbca766d4735d7ba5348916789802747a51ee75a0a66ff54",
-  "base_sha": "ade85dd44c970fffe0c8662957a0757d2c50cda3",
+  "mailbox_key": "m6-cp3-cb1-r2-p4-typedseam-witness-apply",
+  "file_id": "1cdbyax2N7gYqEZwgA4K70tnQpiz5u_gb",
+  "patch_sha256": "ebadab141883801007d366dd91371a165db49d4ff5d56ce96e957b94ed1dfa46",
+  "base_sha": "1a3383104d074a556d3fdb58699360eb60ca8840",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(m6): bind D5 ordinary carrier to real reciprocal A5 relation",
+  "commit_message": "test(m6): select certified seam witness independent of raw labels",
   "retention_days": 14
 }
