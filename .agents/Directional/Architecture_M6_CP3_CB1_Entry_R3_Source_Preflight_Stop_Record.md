@@ -1,5 +1,53 @@
 # M6-CP3-CB1-ENTRY-R3 — mandatory source-producer preflight STOP (2026-10-08)
 
+## Post-RA-38 source preflight recheck (2026-10-08)
+
+**Disposition: the RA-38 sector-construction STOP is resolved; the independent
+spatial-endpoint ownership STOP is not.** On exact source
+`e5ecfc91af02462016029732120df6cb36853509` (snapshot workflow
+`37802439839`, artifact `11560713142`, 5,672 verified source files),
+the implemented A4 producer still cannot provide a witnessed local `P0`
+and `P1` path for a genuine produced paired HardRail front.
+
+RA-38 proves how to derive the two source-side sectors: cut the orientable
+vertex-star cycle at its two incident hard-carrier spokes, creating two
+separate radial arcs of nonrail A3 transitions. This removes the earlier
+*sector-existence* ambiguity only; it does not attach either observed A4
+front endpoint to its owning rail-side wedge or locate the single owner-rail
+crossing at that endpoint. A source-input 3×3 fan is not a produced front.
+
+The bounded source inspection found no endpoint-local witness in
+`SurfaceHardRailRouteEndpointCertificate` (two face attachments, a
+carrier-only `orientedSteps` list, one composed turn). In
+`SurfaceCellTracing.cpp:18271-18371`, both `endpoint_certificate`
+instances independently receive trace-selected face rows, but each
+traverses **all** route carriers from its starting face, rather than
+restricting to its own spatial endpoint, admissible within-sector radial
+path, and one local crossing. A later `railFanPotentials` comparison
+cannot create the missing owner wedge. In `:8019-8118`, the independent
+cardinality error (`endpoint.orientedSteps.size() == route.steps().size()`)
+and carrier-to-carrier face equality remain. Both must be removed together
+only after producer-owned endpoint source attachment is established.
+
+**Mandatory next independent producer Design Review:** demonstrate from
+real paired-front `first/second` product data the exact source endpoint,
+incident owner-rail carrier and side wedge for each of `P0=(first.from,
+second.to)` and `P1=(first.to, second.from)`; show the disjoint,
+orientation-correct nonrail A3 paths and exactly one local crossing per
+endpoint, plus their typed transported commuting square. If no real
+multi-carrier product is produced in bounded search, record it as
+unexercised; do not claim positive witness coverage. Keep RA-36.4/.5/.6,
+RA-34.3 and all six nonvacuity gates. **Do not implement a guessed
+replacement, modify selectors, run a compile, or start TB/CB2.**
+
+The prior preflight's original evidence remains retained below. This
+recheck made no source, test, selector or build mutations. Accepted CP2
+491/491, rejected R2 444/497, 47 accepted-green losses, stable 64/17/47
+and debt 1 remain unchanged. Turn `M6-CP3-CB1-ENTRY-R3` remains held at
+its mandatory preflight; no new successor is invented.
+
+---
+
 ## Disposition
 
 **Conditional/architectural STOP under independently accepted RA-37a.** The source-only preflight does not establish the two independently source-attached endpoint-local cross-rail paths required for an A4 HardRail paired-front product. Do not replace the existing unsound fold with a guessed sector, a global face-star potential, a first-by-row face choice, or a new τ definition. **No production-source/test/build/selector files were changed; no compile or runtime verification was attempted.** The R3 Code + Build turn cannot be formally completed. Return the missing A4 ownership proof to an independent producer Design Review before making semantic edits.
