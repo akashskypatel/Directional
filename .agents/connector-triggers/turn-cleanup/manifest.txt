@@ -1,2 +1,0 @@
-# M6-DEFN-R5-R3-REV verified source snapshot trigger. No other turn's markers are in scope.
-.agents/connector-triggers/source-snapshot/m6-defn-r5-r3-rev-2026-10-08T13-19-57-305Z.txt

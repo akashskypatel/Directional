@@ -1,3 +1,0 @@
-Purpose: M6-DEFN-R5-R3-REV immutable exact-source review snapshot.
-Source base: 59a5aa4956fdef64de0042bac59bb9c704e0aa79
-No runtime/build or product mutation authorized.
