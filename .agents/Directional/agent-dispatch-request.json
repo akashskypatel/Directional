@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb1-r2-railfan-apply-1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb1-r2-railfan-apply",
-  "file_id": "1JE2wa_UubDuCzihNb2dhTFfafpwPYdZA",
-  "patch_sha256": "803ee07c6d22f8b6544729dd10b23abf7b67da22922d66618e2561b22ddc7e13",
-  "base_sha": "6899cf7fa15dd38f8b27a4172a75c37d0de02eb5",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "wip: verify HardRail tau path independence and face-edge incidence",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb1-r2-railfan-compile-1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb1-r2-railfan-compile",
+  "source_sha": "89081443b4f366dea6e9e01497271f5e9f4c6d34",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb1-r2-railfan-compile"
 }
