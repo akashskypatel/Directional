@@ -2360,7 +2360,7 @@ TEST(M6CP3, HardRailPublishedTauRequiresIncidentSourceFaces) {
   ASSERT_FALSE(draft.hardRailFieldTransitions.empty());
   auto &record = draft.hardRailFieldTransitions.front();
   std::optional<directional::authority::SourceFaceTopologyKey> unrelated;
-  for (const auto &region : draft.sourceTopologyRegions.regions()) {
+  for (const auto &region : fixture.network.phaseFront.product().sourceTopologyRegions().regions()) {
     for (const auto &face : region.faces()) {
       const auto &vertices = face.topology.vertices();
       if (face.topology == record.secondFace ||
