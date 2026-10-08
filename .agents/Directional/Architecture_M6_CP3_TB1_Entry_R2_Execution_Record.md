@@ -1,3 +1,9 @@
+## Post-execution independent Review verdict (2026-10-08)
+
+Mandatory `M6-CP3-TB1-ENTRY-R2-REV` **REJECTS / UNPROMOTES** the R2 candidate after comparing the immutable 444/497 result to accepted CP2 491/491 and rejected R1 482/497. Of accepted CP2 identities, 47 are RED in R2. New stable A4 producer regression is one RP-01 recurrence: totals **64/17/47**, debt 1; older R1 A6 RP-01 and organic witness gaps remain. Exactly 53 RED classified in `Architecture_M6_CP3_TB1_Entry_R2_Red_Classification.tsv`; full Review in `Architecture_M6_CP3_TB1_Entry_R2_Review_Record.md`. Exact successor only after STATUS closure: runtime-free `M6-DEFN-R5-R3` then mandatory independent `M6-DEFN-R5-R3-REV`. This is later-owned adjudication; execution evidence below remains immutable and has not been re-run.
+
+---
+
 # M6-CP3-TB1-ENTRY-R2-EXEC — Immutable artifact-only gate execution record
 
 **Final state (2026-10-08): mechanically COMPLETE, semantic 444/497 PASS, 53 RED; candidate unpromoted.** This was one bounded immutable Test + Benchmark execution turn, not authorization to implement, repair, retry, recompile, or promote. Source and compiled package remained frozen. Exact successor after final STATUS closure: mandatory independent `M6-CP3-TB1-ENTRY-R2-REV`.
