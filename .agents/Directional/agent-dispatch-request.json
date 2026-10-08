@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb1-r2-ra36-v4-apply-2",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb1-r2-ra36-v4-apply",
-  "file_id": "1nJ5atIdajnozs5ER-D82gxMXCtgWxyo1",
-  "patch_sha256": "c80bfbee526b0346bdac57fa1ff393297f6267523f3c88a9a15e3e35b547073d",
-  "base_sha": "f456baafade19ce549055306730e4d1684c6794b",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "feat(Directional): certify compositional HardRail route tau for R2"
+  "request_id": "m6-cp3-cb1-r2-ra36-v3-compile-1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb1-r2-ra36-v3-compile",
+  "source_sha": "80fc1688f13e5ed52699177a845f25cc4dbda38b",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb1-r2-ra36-v3-compile"
 }
