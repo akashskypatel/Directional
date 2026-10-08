@@ -1334,7 +1334,7 @@ source_face_for_boundary_occurrence(
   return owner;
 }
 
-std::optional<ProducedTorusSourceWitness> select_torus_source_witness(
+std::vector<ProducedTorusSourceWitness> enumerate_torus_source_witnesses(
     const directional::TriMesh &mesh,
     const directional::fields::CrossFieldResult &sourceCrossField,
     const directional::authority::FieldTransportAtlas &atlas,
@@ -1347,6 +1347,7 @@ std::optional<ProducedTorusSourceWitness> select_torus_source_witness(
   const auto sourceMatchingIndices = directional::geometry::
       surface_cell_tracing_detail::edge_matching_indices(sourceIncidence);
 
+  std::vector<ProducedTorusSourceWitness> candidates;
   for (const auto carrier : nonzeroHardCarriers) {
     for (const auto &region : plan.regions()) {
       std::map<directional::authority::NetworkArcId,
@@ -1445,7 +1446,7 @@ std::optional<ProducedTorusSourceWitness> select_torus_source_witness(
             generatorRoute.composed_transport().rotation != *sourceRotation) {
           continue;
         }
-        return ProducedTorusSourceWitness{
+        candidates.push_back(ProducedTorusSourceWitness{
             carrier,
             span,
             region.id,
@@ -1456,11 +1457,11 @@ std::optional<ProducedTorusSourceWitness> select_torus_source_witness(
             *sourceRotation,
             atlasValue->transport,
             sourcePathOrientation,
-            std::move(generatorRoute)};
+            std::move(generatorRoute)});
       }
     }
   }
-  return std::nullopt;
+  return candidates;
 }
 
 ProducedTorusWitnessFixture make_nonzero_z4_torus_witness_fixture() {
@@ -1530,13 +1531,73 @@ ProducedTorusWitnessFixture make_nonzero_z4_torus_witness_fixture() {
   fixture.network = snapshots.traceNetwork;
   require_produced(fixture, "torus nonzero-Z4 source witness");
 
-  const auto witness = select_torus_source_witness(
+  // D1: enumerate real source/A3 generators before selecting a reciprocal
+  // tracer-produced Periodic relation. Source matching alone is insufficient.
+  const auto candidates = enumerate_torus_source_witnesses(
       fixture.mesh, sourceCrossField, *snapshots.fieldTransportAtlas,
       *snapshots.sourceTopologyRegions, *snapshots.globalTopologyPlan,
       nonzeroHardCarriers);
+  const auto &front = fixture.network.phaseFront.product();
+  std::optional<ProducedTorusSourceWitness> witness;
+  for (const auto &candidate : candidates) {
+    const auto &rotations = front.sourceFaceBranchRotations();
+    if (candidate.fromFace.index() >= rotations.size() ||
+        candidate.toFace.index() >= rotations.size()) {
+      continue;
+    }
+    const int delta =
+        (rotations[candidate.toFace.index()] -
+         rotations[candidate.fromFace.index()] + 4) % 4;
+    if (delta != 1 && delta != 3) continue;
+
+    const directional::geometry::SurfaceFrontEdge *forward = nullptr;
+    const directional::geometry::SurfaceFrontEdge *reverse = nullptr;
+    for (const auto &edge : front.edges()) {
+      if (edge.boundaryKind != SurfaceFrontBoundaryKind::PeriodicCut ||
+          !edge.periodicRelation.has_value() ||
+          !edge.sharedBoundaryInterval.has_value() ||
+          !edge.sharedBoundaryInterval->boundaryOccurrence.has_value() ||
+          edge.sharedBoundaryInterval->span != candidate.span) {
+        continue;
+      }
+      if (*edge.sharedBoundaryInterval->boundaryOccurrence ==
+              candidate.fromOccurrence &&
+          edge.sharedBoundaryInterval->orientation ==
+              directional::authority::Orientation::Forward) {
+        if (forward != nullptr) { forward = nullptr; break; }
+        forward = &edge;
+      } else if (*edge.sharedBoundaryInterval->boundaryOccurrence ==
+                     candidate.toOccurrence &&
+                 edge.sharedBoundaryInterval->orientation ==
+                     directional::authority::Orientation::Reverse) {
+        if (reverse != nullptr) { reverse = nullptr; break; }
+        reverse = &edge;
+      }
+    }
+    if (forward == nullptr || reverse == nullptr ||
+        forward->periodicRelation != reverse->periodicRelation ||
+        reverse->route != forward->route.reversed()) {
+      continue;
+    }
+    const auto stored = std::find_if(
+        front.periodicHolonomies().begin(), front.periodicHolonomies().end(),
+        [&](const auto &relation) {
+          return relation.id() == *forward->periodicRelation;
+        });
+    if (stored == front.periodicHolonomies().end() ||
+        !directional::geometry::resolve_periodic_relation_semantic_action(
+             *stored, *forward, *reverse).has_value() ||
+        !(stored->cutRoute() == forward->route ||
+          stored->cutRoute().reversed() == forward->route)) {
+      continue;
+    }
+    witness = candidate;
+    break;
+  }
   if (!witness.has_value()) {
     throw std::runtime_error(
-        "Missing source/A3-selected nonzero-Z4 row408 generator witness.");
+        "No tracer-produced reciprocal periodic torus witness with "
+        "an exact source/A3 generator and odd selected-face gauge delta.");
   }
 
   const auto *pipelineTransition =
@@ -2525,25 +2586,38 @@ TEST(M6CP3, A5ChartBarriersConsumeTypedHardFeatureAuthorityAcrossRelationKinds) 
       squareFront.hardFeatureEdges());
   ASSERT_TRUE(squareGraph.available());
   PhaseFrontDraft marked = phase_front_draft(squareFront);
-  int ordinary = -1;
-  for (int i = 0; i < static_cast<int>(marked.edges.size()); ++i) {
-    if (marked.edges[static_cast<std::size_t>(i)].boundaryKind ==
-        SurfaceFrontBoundaryKind::OrdinaryInterior) {
-      ordinary = i;
-      break;
+  std::optional<directional::authority::SourceEdgeTopologyKey> ordinaryCarrier;
+  std::optional<directional::authority::SourceEdgeTopologyKey> unaffectedCarrier;
+  for (const auto &edge : marked.edges) {
+    if (edge.boundaryKind != SurfaceFrontBoundaryKind::OrdinaryInterior ||
+        edge.route.empty()) {
+      continue;
     }
+    const auto carrier = edge.route.steps().front().topology();
+    if (marked.hardFeatureEdges.contains(carrier) ||
+        !hasTransitionAcross(squareGraph, carrier)) {
+      continue;
+    }
+    for (const auto &transition : squareGraph.transitions()) {
+      if (transition.sharedEntity.edge != carrier &&
+          !marked.hardFeatureEdges.contains(transition.sharedEntity.edge)) {
+        ordinaryCarrier = carrier;
+        unaffectedCarrier = transition.sharedEntity.edge;
+        break;
+      }
+    }
+    if (ordinaryCarrier.has_value()) break;
   }
-  ASSERT_GE(ordinary, 0);
-  ASSERT_FALSE(marked.edges[static_cast<std::size_t>(ordinary)].route.empty());
-  const auto ordinaryCarrier =
-      marked.edges[static_cast<std::size_t>(ordinary)].route.steps().front().topology();
-  ASSERT_FALSE(marked.hardFeatureEdges.contains(ordinaryCarrier));
-  ASSERT_TRUE(hasTransitionAcross(squareGraph, ordinaryCarrier));
-  marked.hardFeatureEdges.insert(ordinaryCarrier);
+  ASSERT_TRUE(ordinaryCarrier.has_value())
+      << "D5 requires a real route-bearing ordinary edge with an eligible "
+         "interior source transition and an unrelated live carrier";
+  ASSERT_TRUE(unaffectedCarrier.has_value());
+  marked.hardFeatureEdges.insert(*ordinaryCarrier);
   directional::geometry::SourceChartTransitionGraph squareMarkedGraph(
       square.mesh.F, marked.sourceAuthority, marked.hardFeatureEdges);
   ASSERT_TRUE(squareMarkedGraph.available());
-  verifyBlocked(squareMarkedGraph, ordinaryCarrier);
+  verifyBlocked(squareMarkedGraph, *ordinaryCarrier);
+  EXPECT_TRUE(hasTransitionAcross(squareMarkedGraph, *unaffectedCarrier));
 }
 
 TEST(M6CP3, ProducedSeamCollinearOrdinaryFrontRequiresExactCrossSheetTransition) {

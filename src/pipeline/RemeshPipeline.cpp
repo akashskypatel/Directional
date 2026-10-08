@@ -3790,6 +3790,37 @@ SurfaceOccurrenceComplexProducer::publish_records_for_validation(
                                   std::move(relations), certificate);
 }
 
+namespace {
+
+enum class CertifiedSeamSide { First, Second, NotOnSeam };
+
+// A4 fixes the seam orientation by its source-face topology keys. A5 only
+// supplies the wedge's typed source-face/sheet binding; sheet labels never
+// select a side or decide whether a certificate can be looked up.
+std::optional<CertifiedSeamSide> certified_seam_wedge_side(
+    const SurfaceOccurrence &occurrence,
+    const CornerWedgeFaceBinding &binding,
+    const geometry::SurfaceIsolationSeamTransportCertificate &certificate) {
+  const auto side = binding.face == certificate.firstFace()
+                        ? CertifiedSeamSide::First
+                    : binding.face == certificate.secondFace()
+                        ? CertifiedSeamSide::Second
+                        : CertifiedSeamSide::NotOnSeam;
+  if (side == CertifiedSeamSide::NotOnSeam) return side;
+  const auto expectedSheet = side == CertifiedSeamSide::First
+                                 ? certificate.firstSheet()
+                                 : certificate.secondSheet();
+  if (binding.sheet != expectedSheet ||
+      std::find(occurrence.cornerWedgeBindings.begin(),
+                occurrence.cornerWedgeBindings.end(), binding) ==
+          occurrence.cornerWedgeBindings.end()) {
+    return std::nullopt;
+  }
+  return side;
+}
+
+} // namespace
+
 SurfaceOccurrenceComplexProducer::ConstructionResult
 SurfaceOccurrenceComplexProducer::produce(
     const Eigen::MatrixXd &sourceVertices, const Eigen::MatrixXi &sourceFaces,
@@ -4525,7 +4556,6 @@ SurfaceOccurrenceComplexProducer::produce(
       -> std::optional<geometry::SurfaceIsolationSeamTransportCertificate> {
     if (!firstSpan.collinearEdge.has_value() ||
         firstSpan.collinearEdge != secondSpan.collinearEdge ||
-        firstSpan.interiorBinding.sheet == secondSpan.interiorBinding.sheet ||
         firstOccurrence.topologyRegion != secondOccurrence.topologyRegion) {
       return std::nullopt;
     }
@@ -4535,16 +4565,19 @@ SurfaceOccurrenceComplexProducer::produce(
           certificate.seam() != firstSpan.collinearEdge.value()) {
         continue;
       }
-      const bool forward =
-          certificate.firstFace() == firstOccurrence.placement.selectedFace &&
-          certificate.secondFace() == secondOccurrence.placement.selectedFace &&
-          certificate.firstSheet() == firstSpan.interiorBinding.sheet &&
-          certificate.secondSheet() == secondSpan.interiorBinding.sheet;
-      const bool reverse =
-          certificate.secondFace() == firstOccurrence.placement.selectedFace &&
-          certificate.firstFace() == secondOccurrence.placement.selectedFace &&
-          certificate.secondSheet() == firstSpan.interiorBinding.sheet &&
-          certificate.firstSheet() == secondSpan.interiorBinding.sheet;
+      const auto firstSide = certified_seam_wedge_side(
+          firstOccurrence, firstSpan.interiorBinding, certificate);
+      const auto secondSide = certified_seam_wedge_side(
+          secondOccurrence, secondSpan.interiorBinding, certificate);
+      if (!firstSide.has_value() || !secondSide.has_value() ||
+          firstSpan.interiorBinding.face != firstOccurrence.placement.selectedFace ||
+          secondSpan.interiorBinding.face != secondOccurrence.placement.selectedFace) {
+        continue;
+      }
+      const bool forward = *firstSide == CertifiedSeamSide::First &&
+                           *secondSide == CertifiedSeamSide::Second;
+      const bool reverse = *firstSide == CertifiedSeamSide::Second &&
+                           *secondSide == CertifiedSeamSide::First;
       if (forward || reverse) return certificate;
     }
     return std::nullopt;
@@ -5177,8 +5210,11 @@ bool reciprocal_isolation_evidence(
 
 bool wedge_contains_sheet(const SurfaceOccurrence &occurrence,
                           const authority::IsolationSheetId sheet) {
-  return std::binary_search(occurrence.cornerWedgeSheets.begin(),
-                            occurrence.cornerWedgeSheets.end(), sheet);
+  return std::any_of(occurrence.cornerWedgeBindings.begin(),
+                     occurrence.cornerWedgeBindings.end(),
+                     [&](const CornerWedgeFaceBinding &binding) {
+                       return binding.sheet == sheet;
+                     });
 }
 
 bool span_has_transition(
@@ -5397,11 +5433,18 @@ SurfaceQuotientProducer::ConstructionResult SurfaceQuotientProducer::produce(
         return error;
       }
 
-      const bool crossSheetSeam =
+      const bool sameSeamCarrier =
           firstSpan.collinearEdge.has_value() &&
-          firstSpan.collinearEdge == secondSpan.collinearEdge &&
-          firstSpan.interiorBinding.sheet != secondSpan.interiorBinding.sheet;
-      if (!crossSheetSeam) {
+          firstSpan.collinearEdge == secondSpan.collinearEdge;
+      const bool hasSeamCertificate =
+          relation->evidence.isolationSeamTransportCertificate.has_value();
+      if (hasSeamCertificate && !sameSeamCarrier) {
+        SurfaceQuotientProductError error;
+        error.code = SurfaceQuotientProductErrorCode::InvalidIsolationEvidence;
+        error.relation = relation->id;
+        return error;
+      }
+      if (!hasSeamCertificate) {
         const bool fullRepresentationEqual =
             firstLattice.sourceChart.value() == secondLattice.sourceChart.value() &&
             firstLattice.branchRotation == secondLattice.branchRotation;
@@ -5479,16 +5522,26 @@ SurfaceQuotientProducer::ConstructionResult SurfaceQuotientProducer::produce(
           return error;
         }
 
+        const auto firstSide = certified_seam_wedge_side(
+            *firstOccurrence->second, firstSpan.interiorBinding, seam);
+        const auto secondSide = certified_seam_wedge_side(
+            *secondOccurrence->second, secondSpan.interiorBinding, seam);
         std::optional<authority::QuarterTurn> expectedTurn;
-        if (seam.firstFace() == firstGauge.face &&
-            seam.secondFace() == secondGauge.face &&
-            seam.firstSheet() == firstSpan.interiorBinding.sheet &&
-            seam.secondSheet() == secondSpan.interiorBinding.sheet) {
+        if (!firstSide.has_value() || !secondSide.has_value()) {
+          SurfaceQuotientProductError error;
+          error.code = SurfaceQuotientProductErrorCode::InvalidIsolationEvidence;
+          error.relation = relation->id;
+          return error;
+        }
+        if (*firstSide == CertifiedSeamSide::First &&
+            *secondSide == CertifiedSeamSide::Second &&
+            firstGauge.face == seam.firstFace() &&
+            secondGauge.face == seam.secondFace()) {
           expectedTurn = seam.forward();
-        } else if (seam.secondFace() == firstGauge.face &&
-                   seam.firstFace() == secondGauge.face &&
-                   seam.secondSheet() == firstSpan.interiorBinding.sheet &&
-                   seam.firstSheet() == secondSpan.interiorBinding.sheet) {
+        } else if (*firstSide == CertifiedSeamSide::Second &&
+                   *secondSide == CertifiedSeamSide::First &&
+                   firstGauge.face == seam.secondFace() &&
+                   secondGauge.face == seam.firstFace()) {
           expectedTurn = seam.reverse();
         }
         const auto firstRegional = compose(
