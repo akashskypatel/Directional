@@ -8109,7 +8109,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
         const auto faceId = authority::SourceFaceId::from_index(
             static_cast<int>(row), sourceTopologyRegions.face_count());
         if (!faceId) continue;
-        const auto face = sourceTopologyRegions.topology_for_row(*faceId);
+        const auto face = sourceTopologyRegions.topology_for_row(faceId.value());
         if (face_contains_vertex(face)) allStarFaces.insert(face);
       }
       int hardSpokes = 0;
