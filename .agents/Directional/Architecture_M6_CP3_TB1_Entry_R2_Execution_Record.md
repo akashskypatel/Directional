@@ -64,3 +64,7 @@ All six CP3entry witnesses are **RED**, thus odd τ, route composition, reciproc
 
 **Exact next turn after terminal STATUS closure: `M6-CP3-TB1-ENTRY-R2-REV`.** That turn must independently verify the artifact/report and classify all 53 RED as product/fixture/test-authority regression, identify true first causes versus cascades, and decide whether R2 is rejected/unpromoted and what bounded Definition/Code+Build recovery is permitted. This execution record does **not** independently accept/reject a stable event or reprice the stable ledger. Reviewed CP2 491/491 remains the last accepted source baseline; prior R1 482/497 is rejected. Stable counts **63 events / 17 categories / 46 recurrences**, debt **1**, subject only to independent Review.
 
+
+## Durable Library evidence (2026-10-08)
+
+Exact result ZIP and an extracted 53-RED diagnostic index are also preserved beyond GitHub's 14-day artifact retention in personal ChatGPT Library: `/Directional/Evidence/M6-CP3-TB1-ENTRY-R2-EXEC-result-37767144537.zip` (library file `libfile_0af341d64cd48191973b19c4f970eafd`) and `/Directional/Evidence/M6-CP3-TB1-ENTRY-R2-53-RED-evidence-index.md` (library file `libfile_e5f4cf58d7288191b34b80ea237e5e5b`). The index preserves all 53 identities, raw log paths, extracted first diagnostic excerpts and evidence grouping but is not Review adjudication.
