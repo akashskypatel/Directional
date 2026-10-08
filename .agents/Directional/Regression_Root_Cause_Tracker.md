@@ -11538,7 +11538,7 @@ Ordinal25 independently proves a closed-complex side-incidence discrepancy in th
 
 ## `M6-DEFN-R5-R1-REV-OBS-01` — RA-33.1 must bind one certificate orientation and must not let global sheet labels deny the special case
 
-**Status.** OPEN / BLOCKS ACCEPTANCE OF D1 (RA-33.1) / design-class.
+**Status.** R2 Review RA-34 **DEFINITION-LEVEL DISCHARGED**, but typed A4 producer sheet mapping, organic seam-positive and RP-01 recovery still OPEN (non-stable). One oriented certificate across all checks; raw/global sheet labels cannot grant **or deny** lookup. No runtime proof or count change.
 
 Two defects in the D1 candidate rule, both re-derived from source.
 
@@ -11573,7 +11573,7 @@ rather than of the spans' global labels.
 
 ## `M6-DEFN-R5-R1-REV-OBS-02` — RA-33.3's discriminating witness cannot falsify τ's orientation
 
-**Status.** OPEN / CONDITION ON D3 (RA-33.3) ACCEPTANCE / design-class.
+**Status.** R2 Review RA-34 **DEFINITION-LEVEL DISCHARGED**; real baseline-green HardRail odd τ and `(F_b-F_a) != τ` with sign tamper still OPEN/non-stable. Algebra is not produced evidence. No RP-01 closure or count change.
 
 D3's architectural call is correct: A5 must not infer τ from regional gauges, and A4 becomes the publication
 owner for oriented `(sourceEdge, fromFace, toFace, matching)` validated against exact A3 `transition_value`. The

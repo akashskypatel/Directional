@@ -1,12 +1,12 @@
-## Live M6 routing — RA-34 candidate pending M6-DEFN-R5-R2-REV
+## Live M6 routing — R2 Review ACCEPTS RA-34, bounded R2 compile-only next
 
 | Checkpoint | State | Exact next / gate |
 |---|---|---|
 | M6 CP1 / CP2 | **CLOSED / ACCEPTED** | reviewed runtime `11391685901 / 5ce3132e...`, 491/491 |
 | CP3 entry R1 | **REJECTED / UNPROMOTED** | `11488700954 / 68000a95...`, 482/497 |
 | Open entry production event | **FAILED RECOVERY** | prior `RP-01` seam-domain event; no new stable count |
-| Definition repair | **EXACT NEXT** | `M6-DEFN-R5-R2` -> mandatory `M6-DEFN-R5-R2-REV` |
-| R2 implementation / CP3 exit | **HELD** | one bounded R2 only after R2 Definition Review accepts RA-34; CB2 remains held |
+| Definition repair | **ACCEPTED, Definition-only** | `M6-DEFN-R5-R2-REV` accepts RA-34; organic witnesses and typed A4 preflight remain open |
+| R2 implementation / CP3 exit | **EXACT NEXT / CB2 HELD** | `M6-CP3-CB1-ENTRY-R2` compile-only -> immutable 497 TB -> mandatory Review; CP3 exit held |
 
 Stable accounting: **63 / 17 / 46**, debt 1.
 

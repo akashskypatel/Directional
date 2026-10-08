@@ -1,3 +1,9 @@
+## Current — R2 Definition Review ACCEPTED RA-34; bounded R2 Code + Build next (2026-10-08)
+
+- [x] Independent source-only review accepts D1 one-orientation A4 certificate and D3 odd oriented τ Definition; R1 OBS-01/02 discharged Definition-only.
+- [ ] Exact next `M6-CP3-CB1-ENTRY-R2` with independent typed A4 sheet mapping and real organic D2/D3/D4/D5 positives as mandatory stop gates; eight GMP/GMPXX compile targets ONLY.
+- [ ] If compile GREEN, immutable 497-process TB then mandatory R2 Review. CB2/CP3 exit held; rejected R1 entry 482/497, accepted CP2 491/491, stable 63/17/46, debt 1.
+
 ## Current — `M6-DEFN-R5-R2` RA-34 candidate; mandatory independent Review next (2026-10-08)
 
 - [x] Inspected exact-source snapshot `f3ae67ade2ac37f00d2317d0de007aaf959f8969`, no runtime or build.

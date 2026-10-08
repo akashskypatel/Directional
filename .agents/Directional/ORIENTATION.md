@@ -1,3 +1,7 @@
+## Currency — `M6-DEFN-R5-R2-REV` RA-34 ACCEPTED; bounded `M6-CP3-CB1-ENTRY-R2` NEXT (2026-10-08 UTC)
+
+Independent runtime-free Definition Review. A4 typed wedge-to-certificate sheet mapping and organic positive witnesses must pass producer-owned preflight; no acceptance of their runtime existence. R2 compiles only eight GMP/GMPXX targets, then separate immutable 497 TB and mandatory Review. M6 CP1/CP2 closed, CP2 reviewed 491/491, R1 entry rejected 482/497, stable 63/17/46 debt 1. CB2 and CP3 exit held. See `Architecture_M6_DEFN_R5_R2_Review_Record.md`.
+
 ## Currency — `M6-CP3-TB1-ENTRY-R1-REV`: R1 rejected; Definition repair next (2026-10-07 UTC)
 
 - R1 gate is mechanically valid at **482/497**; candidate remains unpromoted.
@@ -603,11 +607,11 @@ A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on t
 
 ## 3. Where we are
 
-**M3, M4 and M5 are CLOSED / ACCEPTED. M6 CP1 is CLOSED / ACCEPTED mechanism-only; M6 CP2 is ACTIVE in bounded verifier recovery after mandatory TB1 Review.**
+**M3, M4, M5 and M6 CP1/CP2 are CLOSED / ACCEPTED.** CP2 reviewed 491/491; CP3 R1 entry rejected 482/497; RA-34 Definition accepted for bounded R2 only, RP-01 open. Stable **63 / 17 / 46**, debt 1.
 
-`M6-CP2-TB1-VERIFIER-REV` rejects first candidate `11365308211 / 265c8fbb...` without promotion. The artifact-only gate is mechanically valid at focused30 **30/30** + CP2-focused12 **9/12** + selector449 **449/449** = **488/491**, exact-one, zero skips, benchmark 0 and immutable postflight. Focused12 REDs 2/6/7 are non-stable false-rejection witnesses; Review also freezes REV-OBS-01..04 under RA-29. Stable accounting remains **60 / 16 / 44**, debt 1.
+**Historical CP2 detail, superseded by current section:** `M6-CP2-TB1-VERIFIER-REV` rejects first candidate `11365308211 / 265c8fbb...` without promotion. The artifact-only gate is mechanically valid at focused30 **30/30** + CP2-focused12 **9/12** + selector449 **449/449** = **488/491**, exact-one, zero skips, benchmark 0 and immutable postflight. Focused12 REDs 2/6/7 are non-stable false-rejection witnesses; Review also freezes REV-OBS-01..04 under RA-29. Stable accounting remains **60 / 16 / 44**, debt 1.
 
-Exact next is compile/package-only `M6-CP2-CB1-VERIFIER-R2`, then fresh immutable `M6-CP2-TB1-VERIFIER-R1-EXEC` (**491**) and mandatory R1 Review. `M6-DEFN-R5` remains after CP2.
+**Superseded historical CP2 next:** compile/package-only `M6-CP2-CB1-VERIFIER-R2`, then fresh immutable `M6-CP2-TB1-VERIFIER-R1-EXEC` (**491**) and mandatory R1 Review. `M6-DEFN-R5` remains after CP2.
 
 ### Superseded §3 state
 ## 3. Where we are
@@ -625,6 +629,8 @@ CP1 exit items 1-3 are now met: conformant A5, complete A6, and reviewed A7 sour
 **Historical accounting note:** M5 closed at **51 / 14 / 37**; TB5 stood at **55 / 16 / 39**; TB6 Review stood at **57 / 16 / 41**; TB7 Review stood at **59 / 16 / 43**, then **60 / 16 / 44** after its addendum. TB8 recovered those events without repricing. Current project accounting is **60 / 16 / 44**.
 
 ## 4. The witnesses — the fastest way to understand the problem
+
+**R2 Review witness disposition:** no CP3 organic positive was newly produced or promoted; D2 periodic odd gauge, D3 odd cross-rail τ and F inequality, D4/D7 true A4 seam-collinear OrdinaryFront/A7 sheet check, D5 source route-bearing ordinary edge remain UNPROVEN with mandatory stops. The table below describes prior authority, not these positives.
 
 **Current M6 split-square witness.** Two source triangles `(0,1,2)` / `(0,2,3)` occupy sheets 0/1 and share the internal isolation seam `(v0,v2)`. Under R2, v0 and v2 are each single-occurrence quotient classes whose **lineage** still spans `{0,1}`; that is legal because their corner wedges cross the checked seam and publish evidence-only `CornerWedgeIsolation` transitions (`v0: 1->0`, `v2: 0->1`). The center's four occurrence members also materialize `{0,1}` with the same checked seam authority. No new quotient relation is invented for v0/v2. This is the fastest falsifier for B1/B2 and the strengthened CB4 seventh identity. R1 now also runtime-proves the RA-27a wedge falsifier: a multi-sheet bridge occurrence stays A5/A6-valid after its non-empty transition endpoints are moved off the member sheet set, and A7 alone rejects it at `cross-sheet:wedge`.
 
@@ -741,7 +747,9 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M6-CP3-CB1-ENTRY-R1` — EXACT NEXT (Code + Build; RA-31 + RA-31a).**
+1. **`M6-CP3-CB1-ENTRY-R2` — EXACT NEXT (compile-only Code + Build; RA-34).** Preflight: independently demonstrate A4 typed wedge-to-certificate sheet/side incidence; use one matched certificate orientation; publish and consume source-oriented HardRail τ with odd produced discriminant; enforce D2/D4/D5 organic positives. Eight standard GMP/GMPXX compile targets; then fresh immutable 497 TB, mandatory Review. CB2 held.
+
+**Historical superseded item:** `M6-CP3-CB1-ENTRY-R1` (RA-31 + RA-31a).
    - P1/P2 production recovery (face-gauge publication; seam-scoped side evidence).
    - T1/T4 test authority; T2 with a stop rule.
    - **Remove the HardRail branch-certificate rejection** (RA-31a). Identity 2 is pre-registered RED with A5 error printing; identity 6 must pass.
@@ -779,6 +787,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 
 ## 8. Recurring defect patterns
+
+**A sound Definition/falsifier is not an organic produced-positive (`M6-DEFN-R5-R2-REV`; existing lessons 199/200/206/207).** A single orientation and odd τ algebra are necessary but cannot substitute for A4-owned typed wedge mapping and real A1/A3→A4→A5 receipts. Global sheet labels are never source-certified cross-sheet authority. No new lesson ID.
 
 **A negative witness must change canonical authority, not merely representation bytes — `M6-CP2-TB1-VERIFIER-REV`, existing lesson 10.** Two CP2 negatives mutated values that canonicalized back to the baseline authority, and the pinched-topology test never satisfied its own disjoint-component precondition. Require an explicit pre-verifier assertion that the semantic predicate actually changed; a red before the intended checker is a witness defect, not evidence against the checker.
 

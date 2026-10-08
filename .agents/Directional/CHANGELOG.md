@@ -1,3 +1,7 @@
+## 2026-10-08 — Independent M6-DEFN-R5-R2-REV accepts RA-34 (Definition-only)
+
+Verified source snapshot `48370d9913b40b3e42299082188ea404af4c7ca1` (run 37723060299 / artifact 11526935503); source-only review. RA-34.1 corrects one typed certificate orientation and removes raw/global sheet-label equality/inequality as grant/deny authority. RA-34.3 requires real-produced odd-oriented HardRail τ and independent F/τ inequality; algebra is not producer evidence. R1 OBS-01/02 discharged as *Definition* issues only. RP-01 and D2/D3/D4/D5 organic positives open. Exactly one successor `M6-CP3-CB1-ENTRY-R2` compile-only, then immutable 497 TB and mandatory Review. CB2 held; selector unchanged, CP2 491/491, R1 entry 482/497 rejected, stable 63/17/46 and debt 1. No code/build/test/runtime mutation or execution.
+
 ## 2026-10-08 — next-step determination: `M6-DEFN-R5-R2-REV` is next; RA-34 addresses both R1 findings
 
 Runtime-free. `M6-DEFN-R5-R2` is COMPLETE and the exact next turn is the mandatory independent Definition Review

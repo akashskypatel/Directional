@@ -906,3 +906,8 @@ The final runtime-free closure Review re-opened current semantic source and foun
 RA-26 was re-audited at current HEAD: A7 representative-face uses are common-support reconstruction/reference, the adapter is projection-only, class-wide chart authority drives semantic sheet/chart validation, and optimizer/final-validation anchor dependence remains reference-selecting only. No authority-deciding provenance-face consumer exists. RA-26 §5(iii) moves to CP2; §5(i)(ii)(iv) remain DEFN-R5/CP3.
 
 RA-27b branch routing is explicit: C2 empty-front accepted defensive; C4 → CP2 Definition; region/touches/three-sheet wedge tampers → first CP2 CB; seam-collinear edge falsifier → DEFN-R5/CP3; adapter cross-sheet site-loss → M8-CP2. `G4-B002` stays open, so debt remains 1. Stable accounting is unchanged at **60 / 16 / 44**. Exact successor: **`M6-CP2-DEFN`**.
+
+
+## M6-DEFN-R5-R2-REV — RA-34 accepted Definition-only (2026-10-08)
+
+Independent source-only Review accepts RA-34.1 bound oriented seam certificate / no raw-global label grant or denial and RA-34.3 exact A3-oriented cross-rail τ with odd-produced discriminator and F/τ inequality. A4 typed wedge/certificate sheet proof is a hard preflight, D2/D3/D4/D5 organic positives still unproven. R1 OBS-01/02 discharged at Definition only, RP-01 open; stable 63/17/46, debt 1. Rejected R1 482/497, accepted CP2 491/491; selector449 unchanged. Exact successor M6-CP3-CB1-ENTRY-R2 compile-only, then immutable 497 TB and mandatory Review. CB2 held. Full record `Architecture_M6_DEFN_R5_R2_Review_Record.md`.
