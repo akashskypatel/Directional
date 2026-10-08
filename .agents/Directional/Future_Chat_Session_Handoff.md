@@ -1,3 +1,71 @@
+## Resume-critical update — P0/P1 endpoint STOP RESOLVED as RA-39; CB1-ENTRY-R3 resumes (2026-10-08)
+
+**Exact next turn: `M6-CP3-CB1-ENTRY-R3` (resume) — Code + Build, compile/package only.** RA-37a's remaining
+P0/P1 endpoint-local attachment and transport obligation is resolved by independent producer Design Review and
+frozen as **RA-39**; basis `Architecture_M6_CP3_R3_Endpoint_Attachment_Review_Decision.md`. RA-37a and RA-38 are
+**not** replaced — RA-38 gave the sectors, RA-39 completes the endpoints. Accounting **64 / 17 / 47**, debt **1**;
+gate **497 = 30 + 12 + 449 + 6**; no runtime credit.
+
+### The decisive fact the implementation does not use
+
+`src/geometry/SurfaceCellTracing.cpp:18271-18285` requires `first.route == second.route.reversed()`. Therefore
+`first.from`/`second.to` lie at the **same spatial end** of the rail and `first.to`/`second.from` at the other.
+Each `endpoint_certificate` call is a **cross-rail pair at one spatial end** — one face on each side — **not** a
+traversal of the polyline.
+
+The implementation instead sets `current = firstAttachment` and walks **every** carrier accumulating τ
+(`:18297-18330`), trying to travel from one side's face at one end, across the whole polyline, to the other
+side's face. That is the superseded RA-36.1 end-to-end shape reappearing at endpoint level, and it is neither a
+local crossing nor a well-defined path.
+
+### Attachment needs no new authority — and the fix *removes* state
+
+For endpoint pair `j`, the **terminal carrier** `C_j` is the route's first (`j=0`) or last (`j=1`) oriented step:
+
+```text
+valid(j) ⟺ { from_j , to_j } == { C_j.firstFace , C_j.secondFace }   (unordered)
+χ_j      =  C_j.firstToSecond, oriented by which face is from_j
+```
+
+All of it is already published in `SurfaceHardRailFieldTransition`. **No path walk at an endpoint.** Any other
+pair fails closed as *no local attachment* — RA-37a's prohibition on treating a path reaching the opposite
+endpoint as local. Consistent with RA-38 on the reviewed fixture: terminal carriers `(1,4)` faces `{0,3}` and
+`(4,7)` faces `{4,7}`, while the sector cut places `0,4 ∈ A` and `3,7 ∈ B` — so each pair holds exactly **one
+face per sector**, as a cross-rail pair must.
+
+### Transport belongs to the square, not the crossing
+
+Radial chains are unnecessary for an endpoint crossing — that is one carrier. They exist only to serve
+
+```text
+χ_1 ∘ φ_A = φ_B ∘ χ_0
+```
+
+a **comparison after explicit transport**, with `φ_A : 0 → 1 → 4` and `φ_B : 3 → 6 → 7` on the fixture.
+Path-independence within a sector and holonomy rejection carry over from RA-38 unchanged.
+
+### The schema gap is real
+
+`SurfaceHardRailRouteEndpointCertificate` (`include/directional/geometry/SurfaceCellTracing.h:1488-1493`) carries
+`orientedSteps` over **all** carriers plus an end-to-end `composedTurn` — both the wrong shape for a one-carrier
+concern — and has **no field** for per-junction, per-sector ordered **non-rail** radial witnesses. The STOP
+record was right that this is "not fixed by renaming the existing fields." Replace the first two with the single
+terminal carrier and its oriented `χ_j`, and add the radial witnesses.
+
+### Singleton degenerates correctly, and must not change
+
+For a one-carrier route both endpoint pairs share that carrier, there is no junction, `φ_A`/`φ_B` are identity,
+and the square reduces to the reciprocity already required.
+
+### Limits that remain live
+
+Existence of a real A4-produced **multi-carrier** paired HardRail front is still **not** established — a
+hand-authored input fixture is not a produced certificate. If the bounded search finds none, the multi-carrier
+path is **unexercised and must not be cited as validated**. All RA-34.3 R2-P3 stop gates stand (odd `τ ∈ {1,3}`,
+`F_b − F_a ≠ τ`, sign-inversion negative, reciprocal/face-permutation invariance), RA-36.4/.5/.6 stand, an empty
+bounded search **stops for Review**, and diagnostic-first-locus inside `invalid_route()` is still required before
+any corrective semantic edit.
+
 ## Resume-critical update — R3 preflight STOP RESOLVED as RA-38; CB1-ENTRY-R3 resumes (2026-10-08)
 
 **Exact next turn: `M6-CP3-CB1-ENTRY-R3` (resume) — Code + Build, compile/package only.** The RA-37a

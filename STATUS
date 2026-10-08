@@ -1,8 +1,8 @@
 ---TURN_STATUS---
-Turn: M6-CP3-CB1-ENTRY-R3
-Status: BLOCKED
+Turn: M6-CP3-R3-ENDPOINT-ARCH-REV
+Status: COMPLETE
 Successor: M6-CP3-CB1-ENTRY-R3
-Started at: 2026-10-08T15:37:52Z
+Started at: 2026-10-08T16:12:40Z
 Resumed at:
-Ended at:
+Ended at: 2026-10-08T16:44:18Z
 ---END_TURN_STATUS---

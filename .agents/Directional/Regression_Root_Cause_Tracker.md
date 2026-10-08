@@ -11794,3 +11794,42 @@ hand-authored input fixture is not a produced certificate. If the bounded search
 path is unexercised and must not be cited as validated. All RA-34.3 stop gates (odd `τ ∈ {1,3}`,
 `F_b − F_a ≠ τ`, sign-inversion negative, reciprocal/face-permutation invariance) and RA-36.4/.5/.6 stand; an
 empty search stops for Review.
+
+## `M6-CP3-R3-ENDPOINT-RESOLUTION` — endpoint pairs are cross-rail pairs at one spatial end; frozen as RA-39
+
+**Status.** RESOLVED BY INDEPENDENT PRODUCER DESIGN REVIEW / frozen as **RA-39** / unblocks
+`M6-CP3-CB1-ENTRY-R3` / no runtime credit. Basis:
+`Architecture_M6_CP3_R3_Endpoint_Attachment_Review_Decision.md`.
+
+RA-38 resolved sector construction only; RA-37a's P0/P1 endpoint-local attachment and transport obligation
+remained, and `M6-CP3-CB1-ENTRY-R3` correctly stopped again rather than guess it.
+
+**Decisive fact.** `src/geometry/SurfaceCellTracing.cpp:18271-18285` requires
+`first.route == second.route.reversed()`, so `first.from`/`second.to` lie at the **same spatial end** and
+`first.to`/`second.from` at the other. Each `endpoint_certificate` call is therefore a **cross-rail pair at one
+spatial end** — one face per side — not a traversal of the polyline. The implementation instead sets
+`current = firstAttachment` and walks **every** carrier accumulating τ (`:18297-18330`): the superseded RA-36.1
+end-to-end shape reappearing at endpoint level, and neither a local crossing nor a well-defined path.
+
+**Attachment needs no new authority (RA-39.1).** The terminal carrier `C_j` is the route's first/last oriented
+step; the pair is valid iff `{from_j, to_j} == {C_j.firstFace, C_j.secondFace}` unordered, with
+`χ_j = C_j.firstToSecond` oriented by which face is `from_j` — all already published in
+`SurfaceHardRailFieldTransition`. Otherwise fail closed as **no local attachment**, which is RA-37a's
+prohibition on treating a path reaching the opposite endpoint as local. Consistent with RA-38 on the reviewed
+fixture: terminal carriers `(1,4)` faces `{0,3}` and `(4,7)` faces `{4,7}`, and the sector cut places `0,4 ∈ A`
+and `3,7 ∈ B`, so each pair holds exactly one face per sector.
+
+**Transport belongs to the square, not the crossing (RA-39.3/.4).** Radial chains are unnecessary for an endpoint
+crossing — that is one carrier. They serve only `χ_1 ∘ φ_A = φ_B ∘ χ_0`, a **comparison after explicit
+transport**, with `φ_A : 0→1→4` and `φ_B : 3→6→7` on the fixture.
+
+**The schema gap is real and the fix shrinks the certificate (RA-39.5).**
+`SurfaceHardRailRouteEndpointCertificate` (`SurfaceCellTracing.h:1488-1493`) carries `orientedSteps` over **all**
+carriers plus an end-to-end `composedTurn` — both the wrong shape for a one-carrier concern — and has **no field**
+for per-junction, per-sector ordered non-rail radial witnesses. The STOP record was right that this is "not fixed
+by renaming the existing fields."
+
+**Limits.** Existence of a produced multi-carrier paired front is **not** established; if the bounded search
+finds none the multi-carrier path is unexercised and must not be cited as validated. All RA-34.3 stop gates and
+RA-36.4/.5/.6 stand; diagnostic-first-locus inside `invalid_route()` is still required before any corrective
+semantic edit.

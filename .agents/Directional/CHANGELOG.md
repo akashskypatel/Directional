@@ -1,3 +1,37 @@
+## 2026-10-08 — `M6-CP3-R3-ENDPOINT-ARCH-REV`: P0/P1 endpoint attachment resolved as RA-39; CB1-ENTRY-R3 resumes
+
+Runtime-free independent producer Design Review. **Block resolved and frozen as RA-39**, completing RA-37a's
+P0/P1 obligation; RA-37a and RA-38 are not replaced. No runtime credit; accounting **64 / 17 / 47**, debt **1**.
+
+**The decisive fact.** `src/geometry/SurfaceCellTracing.cpp:18271-18285` requires
+`first.route == second.route.reversed()`, so `first.from`/`second.to` lie at the **same spatial end** and
+`first.to`/`second.from` at the other. Each `endpoint_certificate` call is therefore a **cross-rail pair at one
+spatial end** — one face per side — not a traversal of the polyline. The implementation instead sets
+`current = firstAttachment` and walks **every** carrier accumulating τ (`:18297-18330`): the superseded RA-36.1
+end-to-end shape reappearing at endpoint level, and neither a local crossing nor a well-defined path.
+
+**Attachment needs no new authority, and the fix removes state.** The terminal carrier `C_j` is the route's
+first/last oriented step; the pair is valid iff `{from_j, to_j} == {C_j.firstFace, C_j.secondFace}` unordered,
+with `χ_j = C_j.firstToSecond` oriented by which face is `from_j` — all already published in
+`SurfaceHardRailFieldTransition`. No path walk at an endpoint; any other pair fails closed as *no local
+attachment*. Consistent with RA-38 on the reviewed fixture: terminal carriers `(1,4)` faces `{0,3}` and `(4,7)`
+faces `{4,7}`, with the sector cut placing `0,4 ∈ A` and `3,7 ∈ B`, so each pair holds exactly one face per
+sector.
+
+**Transport belongs to the square, not the crossing.** Radial chains are unnecessary for an endpoint crossing —
+that is one carrier. They serve only `χ_1 ∘ φ_A = φ_B ∘ χ_0`, a comparison after explicit transport, with
+`φ_A : 0→1→4` and `φ_B : 3→6→7` on the fixture.
+
+**The schema gap is real.** `SurfaceHardRailRouteEndpointCertificate` (`SurfaceCellTracing.h:1488-1493`) carries
+`orientedSteps` over all carriers plus an end-to-end `composedTurn` — both wrong-shaped for a one-carrier
+concern — and has **no field** for per-junction, per-sector ordered non-rail radial witnesses. The STOP record
+was right that this is not fixed by renaming. Singleton degenerates correctly: one carrier, no junction,
+`φ` identity, square reduces to existing reciprocity.
+
+**Limits.** Existence of a produced multi-carrier paired front is still not established; if the bounded search
+finds none, that path is unexercised and must not be cited as validated. All RA-34.3 stop gates and
+RA-36.4/.5/.6 stand.
+
 ## 2026-10-08 — `M6-CP3-R3-SECTOR-ARCH-REV`: sector derivation resolved as RA-38; CB1-ENTRY-R3 resumes
 
 Runtime-free independent producer Design Review. **Block resolved: the two oriented sectors are well-defined and

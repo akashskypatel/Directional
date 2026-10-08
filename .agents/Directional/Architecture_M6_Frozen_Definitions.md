@@ -1,3 +1,42 @@
+## RA-39 — P0/P1 endpoint-local attachment and transport **ACCEPTED at independent R3 producer Design Review** (2026-10-08)
+
+Resolves the remaining `M6-CP3-CB1-ENTRY-R3` STOP. Completes RA-37a's P0/P1 obligation; **RA-37a and RA-38 are
+not replaced.** Basis: `Architecture_M6_CP3_R3_Endpoint_Attachment_Review_Decision.md`. No runtime credit.
+
+**Key fact.** `src/geometry/SurfaceCellTracing.cpp:18271-18285` requires `first.route == second.route.reversed()`,
+so `first.from`/`second.to` lie at the **same spatial end** and `first.to`/`second.from` at the other. Each
+endpoint certificate is therefore a **cross-rail pair at one spatial end**, one face per side — not a traversal
+of the polyline. The current walk-all-carriers accumulation at `:18297-18330` is the superseded RA-36.1
+end-to-end shape reappearing at endpoint level.
+
+- **RA-39.1 — attachment, no new authority.** For endpoint pair `j` the terminal carrier `C_j` is the route's
+  first (`j=0`) or last (`j=1`) oriented step. The certificate is valid only if `{from_j, to_j}` equals
+  `{C_j.firstFace, C_j.secondFace}` as an **unordered pair**, with `χ_j = C_j.firstToSecond` oriented by which
+  face is `from_j`, read from the already-published `SurfaceHardRailFieldTransition`. Any other pair → typed
+  fail-closed **no local attachment**. **No path walk at an endpoint.**
+- **RA-39.2 — sector agreement.** Each endpoint pair must hold exactly **one face per RA-38 sector**. Both faces
+  in one sector, or a face outside the junction star where a junction exists, fails closed.
+- **RA-39.3 — transport belongs to the square.** A4 publishes, per junction and per sector, the **ordered
+  non-rail A2b source-edge witnesses** of the within-sector radial chain joining consecutive carriers' same-side
+  faces. They serve the square only and are never an endpoint crossing. On the reviewed fixture
+  `φ_A : 0 → 1 → 4`, `φ_B : 3 → 6 → 7`. Path-independence and holonomy rejection carry over from RA-38.
+- **RA-39.4 — the square compares, it does not compose.** Validation applies `χ_1 ∘ φ_A = φ_B ∘ χ_0` as a
+  comparison **after explicit transport**. Blind composition of χ across carriers and any end-to-end
+  `composedTurn` remain prohibited.
+- **RA-39.5 — schema.** Replace `SurfaceHardRailRouteEndpointCertificate`'s `orientedSteps`/`composedTurn`
+  (`include/directional/geometry/SurfaceCellTracing.h:1488-1493`) with the single terminal carrier and its
+  oriented `χ_j` — the correction **removes** state — and add the RA-39.3 radial witnesses, for which the struct
+  currently has no field. A5 consumes only this published immutable certificate: no path search, no sheet/region
+  label inference, no first-step selection.
+- **RA-39.6 — singleton degenerates correctly.** For a one-carrier route both endpoint pairs share that carrier,
+  there is no junction, `φ_A`/`φ_B` are identity, and the square reduces to the reciprocity already required.
+  Existing singleton behaviour must not change.
+- **RA-39.7 — no runtime credit.** Existence of a produced multi-carrier paired front is **not** established; a
+  hand-authored input fixture is not a produced certificate. All RA-34.3 R2-P3 stop gates and RA-36.4/.5/.6
+  stand, and an empty bounded search stops for Review.
+
+---
+
 ## RA-38 — constructive sector derivation **ACCEPTED at independent R3 producer Design Review** (2026-10-08)
 
 Resolves the `M6-CP3-CB1-ENTRY-R3` preflight STOP. **Implements RA-37a correction (1); RA-37a is not replaced.**
