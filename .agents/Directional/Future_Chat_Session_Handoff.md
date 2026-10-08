@@ -1,3 +1,9 @@
+# CURRENT — R3 Definition Review ACCEPTS with RA-37a / bounded R3 CB next (2026-10-08)
+
+**`M6-DEFN-R5-R3-REV` ACCEPTS RA-37a as a *bounded, fail-closed source-topology contract*; this is not any new runtime promotion. Exact successor after final beacon: `M6-CP3-CB1-ENTRY-R3` Code + Build only, with mandatory source A4 two-sector and both endpoint-local path STOPs.** CP2 491/491 remains accepted; R2 rejected 444/497; 47 accepted-green losses; 64/17/47, debt 1. See `Architecture_M6_DEFN_R5_R3_Review_Record.md`. No organic D1/D2/D3/D5 positives or A6 recovery accepted.
+
+---
+
 ## CURRENT — M6-DEFN-R5-R3 RA-37 candidate prepared; independent Definition Review next (2026-10-08)
 
 **Work completed for this Definition:** source-only RA-37 candidate `Architecture_M6_DEFN_R5_R3_CP3_Entry_Recovery_Definition_Record.md` and one **HELD** `Architecture_M6_CP3_CB1_Entry_R3_Recovery_Code_Build_Plan.md`. Exact source snapshot `fade2a964355adeb4c94d5fc28f322343e60abae` from run `37775140381`, artifact `11549232451`, 5658/5658 source checks. Immutable R2 artifact `11545716507` independently verified 1019/1019; no Directional runtime or build. RA-36's adjacent-carrier common-face assumption is false for legal 3x3 input, but no genuine A4-produced two-step route has been proven. RA-37 proposes topology-owned left/right vertex-fan side paths followed by A3-exact transport and commuting square; source topology's ability to certify unique side sectors remains a **mandatory independent Review decision**. The frozen RA-36 text is not silently amended. Organic periodic D1, HardRail D2, seam D3/D7 and ordinary-carrier D5 positives remain unproven, as does A6 recovery.

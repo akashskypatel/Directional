@@ -1,3 +1,12 @@
+# CURRENT — R3 Definition Review RA-37a / exactly one bounded CB (2026-10-08)
+
+- [x] `M6-DEFN-R5-R3-REV` — independently reconstruct 3×3 typed vertex-star arcs; accept candidate with binding RA-37a local-endpoint vs along-route distinction; freeze A4/A5/A6/organic STOPs.
+- [ ] `M6-CP3-CB1-ENTRY-R3` **EXACT NEXT AFTER BEACON** — implement only when A4 owns uniquely typed two sectors and independently valid endpoint-local paths; otherwise stop for producer Design Review. Remote GMP/GMPXX compile-only eight targets, followed by separate immutable 497 TB and independent Review. Do not begin CB2 or CP3 exit.
+
+**`M6-DEFN-R5-R3-REV` ACCEPTS RA-37a as a *bounded, fail-closed source-topology contract*; this is not any new runtime promotion. Exact successor after final beacon: `M6-CP3-CB1-ENTRY-R3` Code + Build only, with mandatory source A4 two-sector and both endpoint-local path STOPs.** CP2 491/491 remains accepted; R2 rejected 444/497; 47 accepted-green losses; 64/17/47, debt 1. See `Architecture_M6_DEFN_R5_R3_Review_Record.md`. No organic D1/D2/D3/D5 positives or A6 recovery accepted.
+
+---
+
 ## CURRENT — M6-DEFN-R5-R3 candidate RA-37 ready for independent Review (2026-10-08)
 
 - [x] Read exact source snapshot `fade2a964355adeb4c94d5fc28f322343e60abae`; independently verify R2 ZIP checksums and 497/53 ledger. Write topology-owned A4 two-sided face-star transport definition and zero/single/multi-route falsifiers in `Architecture_M6_DEFN_R5_R3_CP3_Entry_Recovery_Definition_Record.md`; no product/fixture/test/selector/build/runtime mutation.

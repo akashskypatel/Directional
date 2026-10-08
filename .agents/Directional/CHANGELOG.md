@@ -1,3 +1,11 @@
+## 2026-10-08 — `M6-DEFN-R5-R3-REV` — independent source-only RA-37a amendment
+
+**`M6-DEFN-R5-R3-REV` ACCEPTS RA-37a as a *bounded, fail-closed source-topology contract*; this is not any new runtime promotion. Exact successor after final beacon: `M6-CP3-CB1-ENTRY-R3` Code + Build only, with mandatory source A4 two-sector and both endpoint-local path STOPs.** CP2 491/491 remains accepted; R2 rejected 444/497; 47 accepted-green losses; 64/17/47, debt 1. See `Architecture_M6_DEFN_R5_R3_Review_Record.md`. No organic D1/D2/D3/D5 positives or A6 recovery accepted.
+
+Reviewed exact 5,663-file source snapshot (run `37783521287`) and independently reconstructed two distinct source-fan transport chains on 3×3 fixture. RA-37a requires A4-owned local cross-rail paths for the two spatial endpoint pairs, while along-rail side transports provide commuting-square consistency; neither may be inferred from region F or raw sheet labels. R3 CB released conditionally with mandatory preflight STOP; no runtime/compile. No ledger increment.
+
+---
+
 ## 2026-10-08 — `M6-CP3-TB1-ENTRY-R2-REV` review: upheld in full; RA-36.1 proven unsound (reviewer's own error)
 
 Runtime-free review. **Upheld in full.** Accounting **64 / 17 / 47**, debt **1**, is correct; R2 candidate

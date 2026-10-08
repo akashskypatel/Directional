@@ -1,3 +1,15 @@
+## 2026-10-08 — `M6-DEFN-R5-R3-REV` — RA-37a and carried obligations
+
+**`M6-DEFN-R5-R3-REV` ACCEPTS RA-37a as a *bounded, fail-closed source-topology contract*; this is not any new runtime promotion. Exact successor after final beacon: `M6-CP3-CB1-ENTRY-R3` Code + Build only, with mandatory source A4 two-sector and both endpoint-local path STOPs.** CP2 491/491 remains accepted; R2 rejected 444/497; 47 accepted-green losses; 64/17/47, debt 1. See `Architecture_M6_DEFN_R5_R3_Review_Record.md`. No organic D1/D2/D3/D5 positives or A6 recovery accepted.
+
+- `R3-REV-01`: **NEW DEFINITION AMENDMENT / no new stable event** — RA-36/37 conflated endpoint attachment with along-rail transport. Falsifier: two independent spatial endpoint pairs cannot be reached by A4-certified local owner-rail crossing and same-side fan arcs, or their typed side-route commute fails. Owner `M6-CP3-CB1-ENTRY-R3`, with A4 producer-owned STOP. Prohibit arbitrary χ folding or A5 face-path search.
+- `R3-REV-02`: carry A4 25 first-predicate direct/12 Phase10/2 RE-package diagnostic classifications; root owner A4; do not call cascades new stable events.
+- `R3-REV-03`: carry A6 seam lookup RP-01, owner A4 typed wedge binding→A6; raw global sheet IDs may not decide certificate discovery.
+- `R3-REV-04`: carry organic D1/D2/D3/D5 positive and negative witness proofs, producer-owned and bounded; no source-only synthetic credit.
+- `R3-REV-05`: preserve 47 accepted-green losses and full 497 frozen independent TB; no new selector.
+
+---
+
 ## 2026-10-08 — `M6-DEFN-R5-R3` — Definition candidate RA-37 (NO ledger increment)
 
 Source-only Definition proposes independently reviewable A2b-topology-owned vertex-fan side chains and exact A3 commute to correct the frozen RA-36.1 wrong common-face premise. It **does not prove an A4-produced multi-carrier route, re-execute failed tests or establish an accepted fix**. Existing R2 Review remains authoritative: 444/497 rejected, 53 RED, 47 former CP2 accepted-green cases lost, 38 additional R1→R2 failures, one new already-counted `RP-01/AUTHORITY_DOMAIN_CONFLATION` A4 event. The earlier A6 RP-01 remains open; 25 direct A4, 12 Phase10 provisional and two RE-package provisional require independently localized first causes. No new stable event/category/recurrence: **64 events / 17 categories / 47 recurrences**, produced-witness debt **1**. Mandatory independent `M6-DEFN-R5-R3-REV` must adjudicate RA-37 before any Code+Build is released. See `Architecture_M6_DEFN_R5_R3_CP3_Entry_Recovery_Definition_Record.md`.

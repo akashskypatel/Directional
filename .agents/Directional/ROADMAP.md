@@ -1,3 +1,9 @@
+# CURRENT — 2026-10-08 R3 Definition Review accepted with RA-37a; CP3 entry remains OPEN
+
+**`M6-DEFN-R5-R3-REV` ACCEPTS RA-37a as a *bounded, fail-closed source-topology contract*; this is not any new runtime promotion. Exact successor after final beacon: `M6-CP3-CB1-ENTRY-R3` Code + Build only, with mandatory source A4 two-sector and both endpoint-local path STOPs.** CP2 491/491 remains accepted; R2 rejected 444/497; 47 accepted-green losses; 64/17/47, debt 1. See `Architecture_M6_DEFN_R5_R3_Review_Record.md`. No organic D1/D2/D3/D5 positives or A6 recovery accepted.
+
+---
+
 ## CURRENT — M6 Definition RA-37 candidate / independent R3 Definition Review gate (2026-10-08)
 
 `M6-DEFN-R5-R3` is a runtime-free source/contract Definition; `Architecture_M6_DEFN_R5_R3_CP3_Entry_Recovery_Definition_Record.md` proposes typed owner-directed vertex-fan sectors and A3 along-side paths to correct the false common-face RA-36 premise, but **does not freeze RA-37 or demonstrate a produced multi-carrier route**. One conditional R3 Code+Build plan (`Architecture_M6_CP3_CB1_Entry_R3_Recovery_Code_Build_Plan.md`) is HELD for independent `M6-DEFN-R5-R3-REV` review. Only then: conditional compile-only all-eight GMP/GMPXX CB → independent immutable 497=30+12+449+6 TB → TB Review. CB2 and CP3 exit remain held; CP2 491/491 remains accepted, R2 444/497 rejected. Preserve all 47 previously green regressions and stable 64/17/47, debt 1.

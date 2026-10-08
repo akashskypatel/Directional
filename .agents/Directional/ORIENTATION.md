@@ -1,3 +1,11 @@
+# CURRENT orientation — `M6-DEFN-R5-R3-REV` RA-37a accepted, R3 CB next (2026-10-08)
+
+**`M6-DEFN-R5-R3-REV` ACCEPTS RA-37a as a *bounded, fail-closed source-topology contract*; this is not any new runtime promotion. Exact successor after final beacon: `M6-CP3-CB1-ENTRY-R3` Code + Build only, with mandatory source A4 two-sector and both endpoint-local path STOPs.** CP2 491/491 remains accepted; R2 rejected 444/497; 47 accepted-green losses; 64/17/47, debt 1. See `Architecture_M6_DEFN_R5_R3_Review_Record.md`. No organic D1/D2/D3/D5 positives or A6 recovery accepted.
+
+The two spatial endpoint transport paths are independent A4 products; along-rail squares validate their compatibility, not arbitrary cross-rail step folding. Existing 3×3 source-only left/right arcs are proven, no produced route. All historical live/next headings below are superseded by this currency note.
+
+---
+
 ## CURRENT orientation — RA-37 Definition candidate, no implementation approval (2026-10-08)
 
 Next mandatory turn after final beacon is independent `M6-DEFN-R5-R3-REV`, not R3 Code+Build. Consult `Architecture_M6_DEFN_R5_R3_CP3_Entry_Recovery_Definition_Record.md` for the rejected RA-36 face-equality premise, proposed A2b-topology-owned left/right side-sector paths and A3 commuting square, both A4→A5 endpoint certificates, static 3x3 counterexample, and explicit producer/witness STOP gates. Consult `Architecture_M6_CP3_CB1_Entry_R3_Recovery_Code_Build_Plan.md` only as a **HELD** plan. No runtime/build/product change happened in the Definition. CP2 491/491 remains last accepted runtime, R2 rejected 444/497; 47 accepted-green losses, 64/17/47 stable events/categories/recurrences and debt 1. Other older headings below are historical.
@@ -585,7 +593,7 @@ the content beneath it.
 
  > **Current milestone authority (2026-10-06, after the `M6-CP3-TB1-ENTRY-REV` addendum):** M4 and M5 remain CLOSED / ACCEPTED. M6 CP1 and CP2 are CLOSED / ACCEPTED. The CP3 entry candidate is rejected (373/497). RA-31a withdraws the HardRail branch certificate pending `M6-DEFN-R5-R1`. Reviewed runtime `11391685901 / 5ce3132e...` (491/491). Stable accounting **63/17/46**, debt 1. Exact next is `M6-CP3-CB1-ENTRY-R1`.
 
-**Currency.** `M6-CP3-TB1-ENTRY-REV` review-agent addendum (Review), 2026-10-06 UTC
+**Currency.** `M6-DEFN-R5-R3-REV` independent Definition Review, 2026-10-08 UTC
 
 **Current definition resolution.** `Architecture_M5_Frozen_Definitions.md` §16.3 is the active same-region nonzero-Z4 contract. `PeriodicRelationId` remains carrier-content identity; relation rotation is the gauge-adjusted quotient `Q`, action/transport is relation value, and canonical storage may invert representation only after semantic Forward -> Reverse authority is fixed. M4 A3 authority remains closed and unchanged under `Architecture_M4_DEFN_Frozen_Definitions.md` §17.
 
@@ -631,7 +639,7 @@ A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on t
 
 ## 3. Where we are
 
-**M3, M4, M5 and M6 CP1/CP2 are CLOSED / ACCEPTED.** CP2 reviewed 491/491; CP3 R1 entry rejected 482/497; RA-34 Definition accepted for bounded R2 only, RP-01 open. Stable **63 / 17 / 46**, debt 1.
+**M3, M4, M5 and M6 CP1/CP2 are CLOSED / ACCEPTED.** CP2 reviewed 491/491; CP3 R1 rejected 482/497, R2 rejected 444/497 (47 previously-green losses). RA-37a accepted as Definition only, with conditional R3 CB next; RP-01 A4 and A6 remain open. Stable **64 / 17 / 47**, debt 1.
 
 **Historical CP2 detail, superseded by current section:** `M6-CP2-TB1-VERIFIER-REV` rejects first candidate `11365308211 / 265c8fbb...` without promotion. The artifact-only gate is mechanically valid at focused30 **30/30** + CP2-focused12 **9/12** + selector449 **449/449** = **488/491**, exact-one, zero skips, benchmark 0 and immutable postflight. Focused12 REDs 2/6/7 are non-stable false-rejection witnesses; Review also freezes REV-OBS-01..04 under RA-29. Stable accounting remains **60 / 16 / 44**, debt 1.
 
@@ -771,7 +779,10 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M6-CP3-CB1-ENTRY-R2` — EXACT NEXT (compile-only Code + Build; RA-34).** Preflight: independently demonstrate A4 typed wedge-to-certificate sheet/side incidence; use one matched certificate orientation; publish and consume source-oriented HardRail τ with odd produced discriminant; enforce D2/D4/D5 organic positives. Eight standard GMP/GMPXX compile targets; then fresh immutable 497 TB, mandatory Review. CB2 held.
+**Current priority 0 — exactly `M6-CP3-CB1-ENTRY-R3` under RA-37a.** A4 unique two-sided fan and both local endpoint certificates must be established first or STOP. Then A3 typed commute, A5 strict consumption, separately carried A6 and organic witness STOPs. Eight-target GMP compile only; separate 497 TB/Review. No other CP3 task permitted. All older numbered items below are historical carryovers unless explicitly marked active.
+
+
+1. **Historical superseded R2 plan, NOT CURRENT — `M6-CP3-CB1-ENTRY-R2` (RA-34).** Preflight: independently demonstrate A4 typed wedge-to-certificate sheet/side incidence; use one matched certificate orientation; publish and consume source-oriented HardRail τ with odd produced discriminant; enforce D2/D4/D5 organic positives. Eight standard GMP/GMPXX compile targets; then fresh immutable 497 TB, mandatory Review. CB2 held.
 
 **Historical superseded item:** `M6-CP3-CB1-ENTRY-R1` (RA-31 + RA-31a).
    - P1/P2 production recovery (face-gauge publication; seam-scoped side evidence).
@@ -811,6 +822,9 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 
 ## 8. Recurring defect patterns
+
+**Do not conflate local cross-rail attachment with transport along a separate spatial rail (`M6-DEFN-R5-R3-REV`, RA-37a; existing `AUTHORITY_DOMAIN_CONFLATION`).** A valid source-vertex fan gives two sector paths and a typed commuting square, but each paired front endpoint is a distinct spatial point. Its A4-local cross path must be separately proven; summing the χ rotations of successive carrier edges mixes domains. This Review added no new stable event or lesson.
+
 
 **A sound Definition/falsifier is not an organic produced-positive (`M6-DEFN-R5-R2-REV`; existing lessons 199/200/206/207).** A single orientation and odd τ algebra are necessary but cannot substitute for A4-owned typed wedge mapping and real A1/A3→A4→A5 receipts. Global sheet labels are never source-certified cross-sheet authority. No new lesson ID.
 
