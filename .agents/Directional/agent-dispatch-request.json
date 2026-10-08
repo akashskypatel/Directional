@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb1-entry-r3-early-firstfail-output-apply-r1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb1-entry-r3-early-firstfail-output-apply-r1",
-  "file_id": "1lBmA2siy1LoSh5M19lYR9kW-xvOZoQoy",
-  "patch_sha256": "506be45c95b9512d91a672e7b6a58f4eab06a40a03e182670bdd4c02a8dbc8d7",
-  "base_sha": "593f401db4e316f0add0664a89dc634f0c1f9076",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(surfacecells): propagate first A4 rejection through retained-fixture preflight",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb1-entry-r3-early-firstfail-output-compile-r1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb1-entry-r3-early-firstfail-output-compile-r1",
+  "source_sha": "2b7997b80114be1ff270c3e9fada71aa075b0e95",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb1-entry-r3-early-firstfail-output-r1"
 }
