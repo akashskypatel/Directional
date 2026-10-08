@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r3-balanced-atlas-negative-compile-r1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r3-balanced-atlas-negative-compile-r1",
-  "source_sha": "e49431df81a3e23dc7870a4e409128dea618d378",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r3-balanced-atlas-negative-r1"
+  "request_id": "m6-cp3-cb1-entry-r3-first-a3-spoke-apply-r1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb1-entry-r3-first-a3-spoke-apply-r1",
+  "file_id": "1Shkhepn3tjT8VM2Fn0gKYuwsyBh2T04v",
+  "patch_sha256": "e0e42a57c342e4d9d5a6fd2e040ab946fb7a8b891f6f1d3671055edb6af0b267",
+  "base_sha": "e49431df81a3e23dc7870a4e409128dea618d378",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "fix(surfacecells): emit typed first-invalid A3 spoke topology in A4 diagnostics",
+  "retention_days": 14
 }
