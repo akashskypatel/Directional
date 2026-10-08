@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb1-entry-r3-d2-d3-transport-stage-apply-r1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb1-entry-r3-d2-d3-transport-stage-apply-r1",
-  "file_id": "1uGR0LfoE4Xc_XQR4hk5rgbDfh-N3BCQl",
-  "patch_sha256": "874cea4025986f37bd75ab0b98dc8e576606dff345c2df00103d364a84a5daa6",
-  "base_sha": "f3e6caa39c17e91c478a3591a080e32259145c84",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(surfacecells): certify D2 row-invariant A3 transport and report D3 missing producer stages",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb1-entry-r3-d2-d3-transport-stage-compile-r1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb1-entry-r3-d2-d3-transport-stage-compile-r1",
+  "source_sha": "593f401db4e316f0add0664a89dc634f0c1f9076",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb1-entry-r3-d2-d3-transport-stage-r1"
 }
