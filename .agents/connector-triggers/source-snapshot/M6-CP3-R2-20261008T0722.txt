@@ -1,3 +1,0 @@
-turn=M6-CP3-CB1-ENTRY-R2
-purpose=resume-R2-P1-P5-typed-acceptance-static-review
-previous_semantic_source=bc87c4ef209f054d76062d9822cab69f2344017d
