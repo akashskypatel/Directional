@@ -18235,6 +18235,24 @@ SurfaceCellNetwork build_surface_cell_network(
       network.phaseFront = SurfacePhaseFrontResult::rejected(std::move(failure));
       return network;
     }
+    // A single-carrier rail has no junction for the later A4 spoke guard to
+    // inspect. Never publish its two cached face rows as complete authority
+    // when this source edge actually belongs to three or more triangles.
+    // One-face boundary features retain their existing boundary semantics.
+    const std::size_t sourceIncidences = sourceEdgeFaceCounts.at(edge);
+    if (sourceIncidences > 2U) {
+      SurfacePhaseFrontFailure failure;
+      failure.reason =
+          SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+      std::ostringstream detail;
+      detail << "firstPredicate=overfull-hard-feature-edge"
+             << ";edge=" << edge.first().index() << ','
+             << edge.second().index()
+             << ";incidentFaces=" << sourceIncidences;
+      failure.hardRailRouteDiagnostic = detail.str();
+      network.phaseFront = SurfacePhaseFrontResult::rejected(std::move(failure));
+      return network;
+    }
     const auto incident = sourceEdges.find(edge);
     if (authoritativeOptions.fieldTransportAtlas == nullptr ||
         incident->second[1] < 0) continue;
