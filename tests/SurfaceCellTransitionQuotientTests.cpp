@@ -2391,17 +2391,25 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
       << "D2 requires at least one A4-produced, paired route certificate";
   for (const auto &route : front.hardRailRouteCertificates()) {
     ASSERT_FALSE(route.route.empty());
+    ASSERT_EQ(route.junctions.size() + 1U, route.route.steps().size());
+    ASSERT_EQ(route.endpoints[0].terminalCarrier.edge,
+              route.route.oriented_steps().front().topology());
+    ASSERT_EQ(route.endpoints[1].terminalCarrier.edge,
+              route.route.oriented_steps().back().topology());
     for (const auto &endpoint : route.endpoints) {
-      ASSERT_EQ(endpoint.orientedSteps.size(), route.route.steps().size());
-      auto current = endpoint.firstAttachment;
-      auto composedTurn = directional::authority::QuarterTurn::from_integer(0);
-      for (const auto &step : endpoint.orientedSteps) {
-        ASSERT_EQ(step.firstFace, current);
-        current = step.secondFace;
-        composedTurn = compose(step.firstToSecond, composedTurn);
+      EXPECT_EQ(endpoint.terminalCarrier.firstFace, endpoint.firstAttachment);
+      EXPECT_EQ(endpoint.terminalCarrier.secondFace, endpoint.secondAttachment);
+    }
+    for (const auto &junction : route.junctions) {
+      // Both sectors carry only non-rail A3 transitions and never
+      // compose distinct HardRail crossings end to end.
+      for (const auto &path : junction.sectorPaths) {
+        for (const auto &step : path) {
+          EXPECT_FALSE(front.hardFeatureEdges().contains(step.edge));
+          EXPECT_TRUE(step.edge.first() == junction.junction ||
+                      step.edge.second() == junction.junction);
+        }
       }
-      EXPECT_EQ(current, endpoint.secondAttachment);
-      EXPECT_EQ(composedTurn, endpoint.composedTurn);
     }
   }
   auto a5Result = directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
@@ -2473,8 +2481,9 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
         const bool reverse = endpoint.secondAttachment == fromFace &&
                              endpoint.firstAttachment == toFace;
         if (!forward && !reverse) continue;
-        const auto tau = reverse ? endpoint.composedTurn.inverse()
-                                 : endpoint.composedTurn;
+        const auto tau = reverse
+            ? endpoint.terminalCarrier.firstToSecond.inverse()
+            : endpoint.terminalCarrier.firstToSecond;
         if (tau != directional::authority::QuarterTurn::from_integer(1) &&
             tau != directional::authority::QuarterTurn::from_integer(3))
           continue;
@@ -2515,18 +2524,14 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
                     *witnessTau));
 
   ASSERT_NE(witnessRoute, nullptr);
-  const auto &certifiedSteps = witnessRoute->endpoints[witnessEndpoint].orientedSteps;
-  const auto oddCarrier = std::find_if(
-      certifiedSteps.begin(), certifiedSteps.end(),
-      [](const directional::geometry::SurfaceHardRailFieldTransition &step) {
-        return step.firstToSecond ==
-                   directional::authority::QuarterTurn::from_integer(1) ||
-               step.firstToSecond ==
-                   directional::authority::QuarterTurn::from_integer(3);
-      });
-  ASSERT_NE(oddCarrier, certifiedSteps.end());
+  const auto &oddCarrier =
+      witnessRoute->endpoints[witnessEndpoint].terminalCarrier;
+  ASSERT_TRUE(oddCarrier.firstToSecond ==
+                  directional::authority::QuarterTurn::from_integer(1) ||
+              oddCarrier.firstToSecond ==
+                  directional::authority::QuarterTurn::from_integer(3));
   PhaseFrontDraft tampered = phase_front_draft(fixture.network.phaseFront);
-  const auto sourceEdge = oddCarrier->edge;
+  const auto sourceEdge = oddCarrier.edge;
   auto entry = std::find_if(
       tampered.hardRailFieldTransitions.begin(),
       tampered.hardRailFieldTransitions.end(),
@@ -2539,27 +2544,35 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
   // A4-owned odd tau. This is an A5 discriminant, not malformed product input.
   for (auto &certificate : tampered.hardRailRouteCertificates) {
     for (auto &endpoint : certificate.endpoints) {
-      auto accumulated = directional::authority::QuarterTurn::from_integer(0);
-      for (auto &step : endpoint.orientedSteps) {
-        if (step.edge == sourceEdge)
-          step.firstToSecond = step.firstToSecond.inverse();
-        accumulated = compose(step.firstToSecond, accumulated);
-      }
-      endpoint.composedTurn = accumulated;
+      auto &carrier = endpoint.terminalCarrier;
+      if (carrier.edge == sourceEdge)
+        carrier.firstToSecond = carrier.firstToSecond.inverse();
     }
   }
   auto rebuilt = construct_phase_front_product(std::move(tampered));
-  const auto *tamperedFront =
-      std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&rebuilt);
-  ASSERT_NE(tamperedFront, nullptr);
-  const auto tamperedA5 = directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
-      fixture.mesh.V, fixture.mesh.F, *tamperedFront);
-  const auto *tamperedError =
-      std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(&tamperedA5);
-  ASSERT_NE(tamperedError, nullptr)
-      << "Reversing odd A4-owned cross-rail tau must reject a produced HardRail";
-  EXPECT_EQ(tamperedError->code,
-            directional::pipeline::SurfaceOccurrenceComplexErrorCode::HardRailTransportMismatch);
+  // A singleton has no radial commuting square, so this negative must reach
+  // A5. Multi-carrier certificates may reject a broken square at A4 validation.
+  if (witnessRoute->route.steps().size() == 1U) {
+    ASSERT_NE(std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&rebuilt),
+              nullptr) << "A singleton odd-tau mutant must reach the A5 discriminant";
+  }
+  if (const auto *productError =
+          std::get_if<directional::geometry::SurfacePhaseFrontProductError>(&rebuilt)) {
+    // A multi-carrier square may reject the mutant before A5.
+    EXPECT_EQ(productError->code,
+              directional::geometry::SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority);
+  } else {
+    const auto &tamperedFront =
+        std::get<directional::geometry::SurfacePhaseFrontProduct>(rebuilt);
+    const auto tamperedA5 = directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+        fixture.mesh.V, fixture.mesh.F, tamperedFront);
+    const auto *tamperedError =
+        std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(&tamperedA5);
+    ASSERT_NE(tamperedError, nullptr)
+        << "Reversing odd A4-owned cross-rail tau must reject a produced HardRail";
+    EXPECT_EQ(tamperedError->code,
+              directional::pipeline::SurfaceOccurrenceComplexErrorCode::HardRailTransportMismatch);
+  }
 
 }
 

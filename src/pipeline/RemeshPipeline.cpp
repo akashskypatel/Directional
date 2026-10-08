@@ -2111,12 +2111,23 @@ std::uint64_t hash_trace_network(
       for (const auto &endpoint : certificate.endpoints) {
         hash_source_face_topology_key(seed, endpoint.firstAttachment);
         hash_source_face_topology_key(seed, endpoint.secondAttachment);
-        hash_combine_i64(seed, endpoint.composedTurn.value());
-        for (const auto &step : endpoint.orientedSteps) {
-          hash_source_edge_topology_key(seed, step.edge);
-          hash_source_face_topology_key(seed, step.firstFace);
-          hash_source_face_topology_key(seed, step.secondFace);
-          hash_combine_i64(seed, step.firstToSecond.value());
+        const auto &carrier = endpoint.terminalCarrier;
+        hash_source_edge_topology_key(seed, carrier.edge);
+        hash_source_face_topology_key(seed, carrier.firstFace);
+        hash_source_face_topology_key(seed, carrier.secondFace);
+        hash_combine_i64(seed, carrier.firstToSecond.value());
+      }
+      hash_combine_u64(seed, certificate.junctions.size());
+      for (const auto &junction : certificate.junctions) {
+        hash_semantic_id(seed, junction.junction);
+        for (const auto &path : junction.sectorPaths) {
+          hash_combine_u64(seed, path.size());
+          for (const auto &step : path) {
+            hash_source_edge_topology_key(seed, step.edge);
+            hash_source_face_topology_key(seed, step.firstFace);
+            hash_source_face_topology_key(seed, step.secondFace);
+            hash_combine_i64(seed, step.firstToSecond.value());
+          }
         }
       }
     }
@@ -4961,7 +4972,7 @@ SurfaceOccurrenceComplexProducer::produce(
         const auto &toLattice = to->second->placement.lattice;
         if (authority::QuarterTurn::from_integer(
                 toLattice.branchRotation - fromLattice.branchRotation) !=
-            compose(*rigidRotation, published.composedTurn)) {
+            compose(*rigidRotation, published.terminalCarrier.firstToSecond)) {
           error.code = SurfaceOccurrenceComplexErrorCode::HardRailTransportMismatch;
           return error;
         }
@@ -12764,6 +12775,15 @@ remesh_from_raw_cross_field_impl_with_stage_products(
           "tracing/phase-front";
       result.diagnostics.surfaceCellFirstInvalidProducerReason =
           geometry::surface_phase_front_failure_reason_name(failure->reason);
+      if (failure->reason == geometry::SurfacePhaseFrontFailureReason::
+                                 InvalidHardRailRouteCertificate) {
+        // Persist the first failed A4 predicate without changing rejection semantics.
+        result.diagnostics.surfaceCellFirstInvalidProducerReason +=
+            ":locus=" + std::to_string(static_cast<int>(failure->hardRailRouteLocus)) +
+            ":front=" + std::to_string(failure->firstFrontEdge) +
+            ":opposite=" + std::to_string(failure->secondFrontEdge) +
+            ":routeStep=" + std::to_string(failure->routeStepIndex);
+      }
       result.diagnostics.surfaceCellFirstInvalidProducerCell = failure->cell;
       result.diagnostics.surfaceCellFirstInvalidProducerHalfedge = failure->side;
       result.diagnostics.surfaceCellFirstInvalidProducerFace = failure->face;

@@ -1484,12 +1484,17 @@ struct SurfaceHardRailFieldTransition {
   auto operator<=>(const SurfaceHardRailFieldTransition &) const = default;
 };
 
-/** A4-certified source-face traversal across one HardRail route endpoint. */
+/** A4-certified cross-rail mapping at one spatial endpoint. */
 struct SurfaceHardRailRouteEndpointCertificate {
   authority::SourceFaceTopologyKey firstAttachment;
   authority::SourceFaceTopologyKey secondAttachment;
-  std::vector<SurfaceHardRailFieldTransition> orientedSteps;
-  authority::QuarterTurn composedTurn;
+  SurfaceHardRailFieldTransition terminalCarrier;
+};
+
+/** Two disjoint, non-rail A3 paths through one cut source-vertex star. */
+struct SurfaceHardRailRouteJunctionCertificate {
+  authority::SourceVertexId junction;
+  std::array<std::vector<SurfaceHardRailFieldTransition>, 2> sectorPaths;
 };
 
 /** One paired A4 HardRail route with two independently certified endpoints. */
@@ -1499,6 +1504,7 @@ struct SurfaceHardRailRouteCertificate {
   authority::HardRailId rail;
   authority::CanonicalRoute route;
   std::array<SurfaceHardRailRouteEndpointCertificate, 2> endpoints;
+  std::vector<SurfaceHardRailRouteJunctionCertificate> junctions;
 };
 
 struct SurfaceFrontEdge {
@@ -1751,8 +1757,26 @@ enum class SurfacePhaseFrontFailureReason : int {
   InvalidHardRailRouteCertificate = 67,
 };
 
+/** First failed producer predicate for an A4 hard-rail route; diagnostic only. */
+enum class SurfaceHardRailRouteFailureLocus : int {
+  None = 0,
+  Pairing = 1,
+  EmptyRoute = 2,
+  EndpointAttachment = 3,
+  MissingCarrier = 4,
+  InvalidJunction = 5,
+  InvalidStar = 6,
+  SectorPath = 7,
+  SectorTransport = 8,
+  TerminalCarrier = 9,
+};
+
 struct SurfacePhaseFrontFailure {
   SurfacePhaseFrontFailureReason reason = SurfacePhaseFrontFailureReason::None;
+  SurfaceHardRailRouteFailureLocus hardRailRouteLocus = SurfaceHardRailRouteFailureLocus::None;
+  int firstFrontEdge = -1;
+  int secondFrontEdge = -1;
+  int routeStepIndex = -1;
   int cell = -1;
   int side = -1;
   int face = -1;

@@ -8057,56 +8057,150 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
       error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
       return error;
     }
+    const auto &steps = certificate.route.oriented_steps();
+    if (steps.empty() || certificate.junctions.size() + 1U != steps.size()) {
+      error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+      return error;
+    }
+    const auto published_carrier = [&](const SurfaceHardRailFieldTransition &transition) {
+      const auto record = std::find_if(
+          hardRailFieldTransitions.begin(), hardRailFieldTransitions.end(),
+          [&](const auto &item) { return item.edge == transition.edge; });
+      return record != hardRailFieldTransitions.end() &&
+          ((record->firstFace == transition.firstFace &&
+            record->secondFace == transition.secondFace &&
+            record->firstToSecond == transition.firstToSecond) ||
+           (record->firstFace == transition.secondFace &&
+            record->secondFace == transition.firstFace &&
+            record->firstToSecond.inverse() == transition.firstToSecond));
+    };
     for (std::size_t endpointIndex = 0; endpointIndex < 2U; ++endpointIndex) {
       const auto &endpoint = certificate.endpoints[endpointIndex];
-      const auto &expectedSteps = certificate.route.oriented_steps();
-      if (endpoint.orientedSteps.size() != expectedSteps.size() ||
-          endpoint.orientedSteps.empty() ||
+      const auto &carrier = endpoint.terminalCarrier;
+      if (carrier.edge != steps[endpointIndex == 0U ? 0U : steps.size() - 1U].topology() ||
+          carrier.firstFace != endpoint.firstAttachment ||
+          carrier.secondFace != endpoint.secondAttachment ||
+          !published_carrier(carrier) ||
           !sourceTopologyRegions.row_for_topology(endpoint.firstAttachment).has_value() ||
           !sourceTopologyRegions.row_for_topology(endpoint.secondAttachment).has_value()) {
         error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
         return error;
       }
-      auto current = endpoint.firstAttachment;
-      auto accumulated = authority::QuarterTurn::from_integer(0);
-      for (std::size_t index = 0; index < expectedSteps.size(); ++index) {
-        const auto &transition = endpoint.orientedSteps[index];
-        if (index > 0U) {
-          const auto &previous = endpoint.orientedSteps[index - 1U];
-          // Consecutive distinct carriers must share exactly one face.
-          if (previous.edge == transition.edge ||
-              previous.secondFace != transition.firstFace ||
-              previous.firstFace == transition.secondFace) {
-            error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
-            return error;
-          }
-        }
-        if (transition.edge != expectedSteps[index].topology() ||
-            transition.firstFace != current) {
-          error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
-          return error;
-        }
-        const auto underlying = std::find_if(
-            hardRailFieldTransitions.begin(), hardRailFieldTransitions.end(),
-            [&](const auto &record) { return record.edge == transition.edge; });
-        if (underlying == hardRailFieldTransitions.end() ||
-            !((underlying->firstFace == transition.firstFace &&
-               underlying->secondFace == transition.secondFace &&
-               underlying->firstToSecond == transition.firstToSecond) ||
-              (underlying->firstFace == transition.secondFace &&
-               underlying->secondFace == transition.firstFace &&
-               underlying->firstToSecond.inverse() == transition.firstToSecond))) {
-          error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
-          return error;
-        }
-        accumulated = compose(transition.firstToSecond, accumulated);
-        current = transition.secondFace;
-      }
-      if (current != endpoint.secondAttachment ||
-          accumulated != endpoint.composedTurn) {
+    }
+    auto previous = certificate.endpoints[0].terminalCarrier;
+    for (std::size_t junctionIndex = 0; junctionIndex < certificate.junctions.size();
+         ++junctionIndex) {
+      const auto &junction = certificate.junctions[junctionIndex];
+      const auto &nextEdge = steps[junctionIndex + 1U].topology();
+      const auto previousTouches = previous.edge.first() == junction.junction ||
+                                   previous.edge.second() == junction.junction;
+      const auto nextTouches = nextEdge.first() == junction.junction ||
+                               nextEdge.second() == junction.junction;
+      if (!previousTouches || !nextTouches || nextEdge == previous.edge) {
         error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
         return error;
       }
+      std::set<authority::SourceFaceTopologyKey> allStarFaces;
+      const auto face_contains_vertex = [&](const authority::SourceFaceTopologyKey &face) {
+        const auto &vertices = face.vertices();
+        return std::find(vertices.begin(), vertices.end(), junction.junction) != vertices.end();
+      };
+      for (std::size_t row = 0U; row < sourceTopologyRegions.face_count(); ++row) {
+        const auto faceId = authority::SourceFaceId::from_index(
+            static_cast<int>(row), sourceTopologyRegions.face_count());
+        if (!faceId) continue;
+        const auto face = sourceTopologyRegions.topology_for_row(*faceId);
+        if (face_contains_vertex(face)) allStarFaces.insert(face);
+      }
+      int hardSpokes = 0;
+      for (const auto &edge : hardFeatureEdges) {
+        if (edge.first() != junction.junction && edge.second() != junction.junction)
+          continue;
+        if (edge != previous.edge && edge != nextEdge) {
+          error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+          return error;
+        }
+        ++hardSpokes;
+      }
+      if (hardSpokes != 2 || allStarFaces.size() < 3U) {
+        error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+        return error;
+      }
+      // This must be one interior two-manifold vertex link, not a
+      // disconnected fan or a boundary/branch star.
+      for (const auto &face : allStarFaces) {
+        int neighbors = 0;
+        for (const auto &other : allStarFaces) {
+          if (face == other) continue;
+          bool commonSpoke = false;
+          for (const auto vertex : face.vertices()) {
+            if (vertex == junction.junction) continue;
+            const auto &vertices = other.vertices();
+            if (std::find(vertices.begin(), vertices.end(), vertex) != vertices.end()) {
+              commonSpoke = true;
+              break;
+            }
+          }
+          if (commonSpoke) ++neighbors;
+        }
+        if (neighbors != 2) {
+          error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+          return error;
+        }
+      }
+      std::array<std::set<authority::SourceFaceTopologyKey>, 2> sectorFaces;
+      std::array<authority::SourceFaceTopologyKey, 2> ends{
+          previous.firstFace, previous.secondFace};
+      std::array<authority::QuarterTurn, 2> transport{
+          authority::QuarterTurn::from_integer(0),
+          authority::QuarterTurn::from_integer(0)};
+      for (std::size_t side = 0; side < 2U; ++side) {
+        sectorFaces[side].insert(ends[side]);
+        for (const auto &witness : junction.sectorPaths[side]) {
+          if (hardFeatureEdges.contains(witness.edge) ||
+              (witness.edge.first() != junction.junction &&
+               witness.edge.second() != junction.junction) ||
+              witness.firstFace != ends[side] ||
+              !rail_face_incident(witness.firstFace, witness.edge) ||
+              !rail_face_incident(witness.secondFace, witness.edge) ||
+              witness.firstFace == witness.secondFace ||
+              !allStarFaces.contains(witness.secondFace) ||
+              !sectorFaces[side].insert(witness.secondFace).second) {
+            error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+            return error;
+          }
+          transport[side] = compose(witness.firstToSecond, transport[side]);
+          ends[side] = witness.secondFace;
+        }
+      }
+      if (sectorFaces[0].size() + sectorFaces[1].size() != allStarFaces.size() ||
+          std::any_of(sectorFaces[0].begin(), sectorFaces[0].end(),
+                      [&](const auto &face) { return sectorFaces[1].contains(face); })) {
+        error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+        return error;
+      }
+      const auto underlying = std::find_if(
+          hardRailFieldTransitions.begin(), hardRailFieldTransitions.end(),
+          [&](const auto &item) { return item.edge == nextEdge; });
+      if (underlying == hardRailFieldTransitions.end()) {
+        error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+        return error;
+      }
+      auto next = *underlying;
+      if (next.firstFace != ends[0] || next.secondFace != ends[1])
+        next = {underlying->edge, underlying->secondFace, underlying->firstFace,
+                underlying->firstToSecond.inverse()};
+      if (next.firstFace != ends[0] || next.secondFace != ends[1] ||
+          compose(next.firstToSecond, transport[0]) !=
+              compose(transport[1], previous.firstToSecond)) {
+        error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+        return error;
+      }
+      previous = next;
+    }
+    if (previous != certificate.endpoints[1].terminalCarrier) {
+      error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+      return error;
     }
   }
   for (std::size_t index = 0; index < edges.size(); ++index) {
@@ -18114,105 +18208,9 @@ SurfaceCellNetwork build_surface_cell_network(
           *network.sourceTopologyRegions, authoritativeOptions, edgeMatching,
           edgeEffort, edgeTransitions);
   const auto sourceEdges = surface_cell_tracing_detail::edge_faces(faces);
-  // A3-derived face-star potentials certify the cross-rail commuting square
-  // at every regular vertex traversed by a multi-carrier HardRail route.
-  std::map<authority::SourceVertexId,
-           std::map<int, authority::QuarterTurn>> railFanPotentials;
-  // A3's source-face transition values are retained on nontraversable edges.
-  // Before publishing any rail tau, verify that its regular-vertex face fan
-  // admits a unique transport to every face, independent of the chosen path.
-  // This also rejects disconnected/ambiguous nonmanifold fan paths.
-  if (authoritativeOptions.fieldTransportAtlas != nullptr &&
-      !authoritativeOptions.hardFeatureEdges.empty()) {
-    using Vertex = authority::SourceVertexId;
-    using Tau = authority::QuarterTurn;
-    using Neighbor = std::pair<int, Tau>;
-    std::set<Vertex> railVertices;
-    for (const auto &edge : authoritativeOptions.hardFeatureEdges) {
-      railVertices.insert(edge.first());
-      railVertices.insert(edge.second());
-    }
-    std::map<Vertex, std::set<int>> incidentFaces;
-    std::map<Vertex, std::map<int, std::vector<Neighbor>>> adjacency;
-    bool invalidRailFan = false;
-    for (const auto &[edge, incident] : sourceEdges) {
-      for (const auto vertex : {edge.first(), edge.second()}) {
-        if (!railVertices.contains(vertex)) continue;
-        if (incident[0] >= 0) incidentFaces[vertex].insert(incident[0]);
-        if (incident[1] >= 0) incidentFaces[vertex].insert(incident[1]);
-      }
-      if (incident[0] < 0 || incident[1] < 0 ||
-          (!railVertices.contains(edge.first()) &&
-           !railVertices.contains(edge.second()))) continue;
-      const auto first = surface_cell_tracing_detail::source_face_id(
-          incident[0], faces.rows());
-      const auto second = surface_cell_tracing_detail::source_face_id(
-          incident[1], faces.rows());
-      if (!first.has_value() || !second.has_value()) {
-        invalidRailFan = true;
-        break;
-      }
-      const auto forward = authoritativeOptions.fieldTransportAtlas->transition_value(
-          edge, *first, *second);
-      const auto reverse = authoritativeOptions.fieldTransportAtlas->transition_value(
-          edge, *second, *first);
-      if (!forward.has_value() || !reverse.has_value() ||
-          reverse->transport != forward->transport.inverse()) {
-        invalidRailFan = true;
-        break;
-      }
-      for (const auto vertex : {edge.first(), edge.second()}) {
-        if (!railVertices.contains(vertex)) continue;
-        adjacency[vertex][incident[0]].emplace_back(incident[1], forward->transport);
-        adjacency[vertex][incident[1]].emplace_back(incident[0], reverse->transport);
-      }
-    }
-    if (!invalidRailFan) {
-      for (const auto vertex : railVertices) {
-        const bool singular = std::any_of(
-            authoritativeOptions.fieldTransportAtlas->singularities().begin(),
-            authoritativeOptions.fieldTransportAtlas->singularities().end(),
-            [&](const authority::FieldSingularityFact &fact) {
-              return fact.sourceVertex == vertex && fact.indexNumerator != 0;
-            });
-        if (singular) continue; // A5 rejects crossing at singular rail vertices.
-        const auto &facesAtVertex = incidentFaces[vertex];
-        if (facesAtVertex.empty()) {
-          invalidRailFan = true;
-          break;
-        }
-        std::map<int, Tau> potential;
-        std::vector<int> pending{*facesAtVertex.begin()};
-        potential.emplace(pending.front(), Tau::from_integer(0));
-        for (std::size_t index = 0; index < pending.size(); ++index) {
-          const int from = pending[index];
-          const auto graph = adjacency[vertex].find(from);
-          if (graph == adjacency[vertex].end()) continue;
-          for (const auto &[to, transport] : graph->second) {
-            const Tau candidate = compose(transport, potential.at(from));
-            const auto [position, inserted] = potential.emplace(to, candidate);
-            if (!inserted && position->second != candidate) {
-              invalidRailFan = true;
-              break;
-            }
-            if (inserted) pending.push_back(to);
-          }
-          if (invalidRailFan) break;
-        }
-        if (invalidRailFan || potential.size() != facesAtVertex.size()) {
-          invalidRailFan = true;
-          break;
-        }
-        railFanPotentials.emplace(vertex, std::move(potential));
-      }
-    }
-    if (invalidRailFan) {
-      SurfacePhaseFrontFailure failure;
-      failure.reason = SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
-      network.phaseFront = SurfacePhaseFrontResult::rejected(std::move(failure));
-      return network;
-    }
-  }
+  // Route-local RA-38 sectors own fan transport after paired HardRail
+  // selection. A whole-star potential is not a valid pre-ownership gate:
+  // the cross-rail discontinuity need not admit a single global gauge.
   for (const authority::SourceEdgeTopologyKey &edge :
        authoritativeOptions.hardFeatureEdges) {
     if (sourceEdges.count(edge) == 0U) {
@@ -18259,7 +18257,7 @@ SurfaceCellNetwork build_surface_cell_network(
          reverseCanonical ? reverse->transport : forward->transport});
   }
   // A4 owns the paired-route topology, endpoint attachment and A3 transport.
-  // Publish one checked face path for each endpoint; A5 must not search for one.
+  // Publish one terminal crossing per spatial endpoint; A5 must not search.
   for (int firstIndex = 0;
        firstIndex < static_cast<int>(phaseFrontState.edges.size()); ++firstIndex) {
     const auto &first = phaseFrontState.edges[static_cast<std::size_t>(firstIndex)];
@@ -18271,104 +18269,224 @@ SurfaceCellNetwork build_surface_cell_network(
     const auto &second = phaseFrontState.edges[
         static_cast<std::size_t>(first.oppositeEdge)];
     if (first.sourceTopologyRegion == second.sourceTopologyRegion) continue;
-    const auto invalid_route = [&]() {
+    const auto invalid_route = [&](SurfaceHardRailRouteFailureLocus locus,
+                                   int stepIndex = -1,
+                                   int vertexIndex = -1) {
       SurfacePhaseFrontFailure failure;
       failure.reason = SurfacePhaseFrontFailureReason::InvalidHardRailRouteCertificate;
+      failure.hardRailRouteLocus = locus;
       failure.cell = static_cast<int>(first.filledCell.index());
       failure.side = first.filledSide;
+      failure.firstFrontEdge = firstIndex;
+      failure.secondFrontEdge = first.oppositeEdge;
+      failure.routeStepIndex = stepIndex;
+      failure.sourceVertex = vertexIndex;
       network.phaseFront = SurfacePhaseFrontResult::rejected(std::move(failure));
     };
     if (!first.railId.has_value() || first.railId != second.railId ||
         first.route.empty() || first.route != second.route.reversed()) {
-      invalid_route();
+      invalid_route(SurfaceHardRailRouteFailureLocus::Pairing);
       return network;
     }
-    const auto endpoint_certificate = [&](int fromRow, int toRow)
+    const auto routeSteps = first.route.oriented_steps();
+    const auto find_carrier = [&](const authority::SourceEdgeTopologyKey &edge)
+        -> const SurfaceHardRailFieldTransition * {
+      const auto record = std::find_if(
+          phaseFrontState.hardRailFieldTransitions.begin(),
+          phaseFrontState.hardRailFieldTransitions.end(),
+          [&](const auto &item) { return item.edge == edge; });
+      return record == phaseFrontState.hardRailFieldTransitions.end()
+                 ? nullptr : &*record;
+    };
+    const auto oriented_carrier = [&](const SurfaceHardRailFieldTransition &record,
+                                      const authority::SourceFaceTopologyKey &from,
+                                      const authority::SourceFaceTopologyKey &to)
+        -> std::optional<SurfaceHardRailFieldTransition> {
+      if (record.firstFace == from && record.secondFace == to) return record;
+      if (record.firstFace == to && record.secondFace == from)
+        return SurfaceHardRailFieldTransition{
+            record.edge, from, to, record.firstToSecond.inverse()};
+      return std::nullopt;
+    };
+    const auto endpoint_certificate = [&](int fromRow, int toRow,
+                                          const authority::SourceEdgeTopologyKey &edge)
         -> std::optional<SurfaceHardRailRouteEndpointCertificate> {
       const auto from = surface_cell_tracing_detail::source_face_id(
           fromRow, faces.rows());
       const auto to = surface_cell_tracing_detail::source_face_id(
           toRow, faces.rows());
-      if (!from.has_value() || !to.has_value()) return std::nullopt;
+      if (!from || !to) return std::nullopt;
       const auto firstAttachment =
           network.sourceTopologyRegions->topology_for_row(*from);
       const auto secondAttachment =
           network.sourceTopologyRegions->topology_for_row(*to);
-      auto current = firstAttachment;
-      auto tau = authority::QuarterTurn::from_integer(0);
-      std::vector<SurfaceHardRailFieldTransition> oriented;
-      const auto routeSteps = first.route.oriented_steps();
-      if (routeSteps.empty()) return std::nullopt;
-      oriented.reserve(routeSteps.size());
-      for (const auto &step : routeSteps) {
-        if (!oriented.empty() && oriented.back().edge == step.topology())
-          return std::nullopt;
-        const auto record = std::find_if(
-            phaseFrontState.hardRailFieldTransitions.begin(),
-            phaseFrontState.hardRailFieldTransitions.end(),
-            [&](const auto &item) { return item.edge == step.topology(); });
-        if (record == phaseFrontState.hardRailFieldTransitions.end())
-          return std::nullopt;
-        if (record->firstFace == current) {
-          oriented.push_back(*record);
-          current = record->secondFace;
-          tau = compose(record->firstToSecond, tau);
-        } else if (record->secondFace == current) {
-          oriented.push_back({record->edge, record->secondFace,
-                              record->firstFace, record->firstToSecond.inverse()});
-          current = record->firstFace;
-          tau = compose(record->firstToSecond.inverse(), tau);
-        } else {
-          return std::nullopt;
-        }
-      }
-      if (current != secondAttachment) return std::nullopt;
-      for (std::size_t index = 1; index < oriented.size(); ++index) {
-        const auto &previous = oriented[index - 1U];
-        const auto &next = oriented[index];
-        std::optional<authority::SourceVertexId> junction;
-        for (const auto vertex : {previous.edge.first(), previous.edge.second()}) {
-          if (vertex != next.edge.first() && vertex != next.edge.second())
-            continue;
-          if (junction.has_value()) return std::nullopt;
-          junction = vertex;
-        }
-        if (!junction.has_value()) return std::nullopt;
-        const auto star = railFanPotentials.find(*junction);
-        const auto a0 = network.sourceTopologyRegions->row_for_topology(previous.firstFace);
-        const auto a1 = network.sourceTopologyRegions->row_for_topology(next.firstFace);
-        const auto b0 = network.sourceTopologyRegions->row_for_topology(previous.secondFace);
-        const auto b1 = network.sourceTopologyRegions->row_for_topology(next.secondFace);
-        if (star == railFanPotentials.end() || !a0 || !a1 || !b0 || !b1)
-          return std::nullopt;
-        const auto faceTurn = [&](authority::SourceFaceId from,
-                                  authority::SourceFaceId to)
-            -> std::optional<authority::QuarterTurn> {
-          const auto firstPotential = star->second.find(static_cast<int>(from.index()));
-          const auto secondPotential = star->second.find(static_cast<int>(to.index()));
-          if (firstPotential == star->second.end() ||
-              secondPotential == star->second.end()) return std::nullopt;
-          return compose(secondPotential->second, firstPotential->second.inverse());
-        };
-        const auto phiA = faceTurn(*a0, *a1);
-        const auto phiB = faceTurn(*b0, *b1);
-        if (!phiA || !phiB ||
-            compose(next.firstToSecond, *phiA) !=
-                compose(*phiB, previous.firstToSecond))
-          return std::nullopt;
-      }
+      const auto *carrier = find_carrier(edge);
+      if (carrier == nullptr) return std::nullopt;
+      auto oriented = oriented_carrier(*carrier, firstAttachment, secondAttachment);
+      if (!oriented) return std::nullopt;
       return SurfaceHardRailRouteEndpointCertificate{
-          firstAttachment, secondAttachment, std::move(oriented), tau};
+          firstAttachment, secondAttachment, *oriented};
     };
-    const auto firstEndpoint = endpoint_certificate(first.from.face, second.to.face);
-    const auto secondEndpoint = endpoint_certificate(first.to.face, second.from.face);
-    if (!firstEndpoint.has_value() || !secondEndpoint.has_value()) {
-      invalid_route();
+    if (routeSteps.empty()) {
+      invalid_route(SurfaceHardRailRouteFailureLocus::EmptyRoute);
+      return network;
+    }
+    const auto firstEndpoint = endpoint_certificate(
+        first.from.face, second.to.face, routeSteps.front().topology());
+    const auto secondEndpoint = endpoint_certificate(
+        first.to.face, second.from.face, routeSteps.back().topology());
+    if (!firstEndpoint || !secondEndpoint) {
+      invalid_route(SurfaceHardRailRouteFailureLocus::EndpointAttachment);
+      return network;
+    }
+    std::vector<SurfaceHardRailRouteJunctionCertificate> junctions;
+    junctions.reserve(routeSteps.size() - 1U);
+    auto previous = firstEndpoint->terminalCarrier;
+    for (std::size_t index = 1U; index < routeSteps.size(); ++index) {
+      const auto *carrier = find_carrier(routeSteps[index].topology());
+      if (carrier == nullptr || carrier->edge == previous.edge) {
+        invalid_route(SurfaceHardRailRouteFailureLocus::MissingCarrier,
+                      static_cast<int>(index));
+        return network;
+      }
+      std::optional<authority::SourceVertexId> junction;
+      for (const auto vertex : {previous.edge.first(), previous.edge.second()}) {
+        if (vertex != carrier->edge.first() && vertex != carrier->edge.second())
+          continue;
+        if (junction) {
+          invalid_route(SurfaceHardRailRouteFailureLocus::InvalidJunction,
+                        static_cast<int>(index));
+          return network;
+        }
+        junction = vertex;
+      }
+      if (!junction || authoritativeOptions.fieldTransportAtlas == nullptr) {
+        invalid_route(SurfaceHardRailRouteFailureLocus::InvalidJunction,
+                      static_cast<int>(index));
+        return network;
+      }
+
+      // A2b owns the complete manifold star. Its two hard-carrier cuts,
+      // not global A3 potentials, determine the two intrinsic sectors.
+      using Face = authority::SourceFaceTopologyKey;
+      using Transition = SurfaceHardRailFieldTransition;
+      std::map<Face, int> fullDegrees;
+      std::map<Face, std::vector<Transition>> sectorAdjacency;
+      int hardSpokes = 0;
+      bool invalidStar = false;
+      for (const auto &[edge, incident] : sourceEdges) {
+        if (edge.first() != *junction && edge.second() != *junction)
+          continue;
+        if (incident[0] < 0 || incident[1] < 0) {
+          invalidStar = true;
+          break;
+        }
+        const auto f0 = surface_cell_tracing_detail::source_face_id(
+            incident[0], faces.rows());
+        const auto f1 = surface_cell_tracing_detail::source_face_id(
+            incident[1], faces.rows());
+        if (!f0 || !f1) {
+          invalidStar = true;
+          break;
+        }
+        const auto a = network.sourceTopologyRegions->topology_for_row(*f0);
+        const auto b = network.sourceTopologyRegions->topology_for_row(*f1);
+        ++fullDegrees[a];
+        ++fullDegrees[b];
+        if (authoritativeOptions.hardFeatureEdges.contains(edge)) {
+          if (edge != previous.edge && edge != carrier->edge) {
+            invalidStar = true; // Foreign barrier inside a sector.
+            break;
+          }
+          ++hardSpokes;
+          continue;
+        }
+        const auto forward =
+            authoritativeOptions.fieldTransportAtlas->transition_value(edge, *f0, *f1);
+        const auto reverse =
+            authoritativeOptions.fieldTransportAtlas->transition_value(edge, *f1, *f0);
+        if (!forward || !reverse ||
+            reverse->transport != forward->transport.inverse()) {
+          invalidStar = true;
+          break;
+        }
+        sectorAdjacency[a].push_back({edge, a, b, forward->transport});
+        sectorAdjacency[b].push_back({edge, b, a, reverse->transport});
+      }
+      if (invalidStar || hardSpokes != 2 || fullDegrees.size() < 3U ||
+          std::any_of(fullDegrees.begin(), fullDegrees.end(),
+                      [](const auto &entry) { return entry.second != 2; })) {
+        invalid_route(SurfaceHardRailRouteFailureLocus::InvalidStar,
+                      static_cast<int>(index), static_cast<int>(junction->index()));
+        return network;
+      }
+      // Cutting a single interior-manifold star cycle at exactly two
+      // carriers must leave two disjoint non-rail paths (possibly empty).
+      const auto side_path = [&](const Face &from, const Face &to)
+          -> std::optional<std::vector<Transition>> {
+        std::vector<Transition> path;
+        std::set<Face> visited{from};
+        auto current = from;
+        while (current != to) {
+          const auto &outgoing = sectorAdjacency[current];
+          const Transition *next = nullptr;
+          for (const auto &candidate : outgoing) {
+            if (visited.contains(candidate.secondFace)) continue;
+            if (next != nullptr) return std::nullopt;
+            next = &candidate;
+          }
+          if (next == nullptr) return std::nullopt;
+          path.push_back(*next);
+          current = next->secondFace;
+          visited.insert(current);
+        }
+        return path;
+      };
+      auto next = *carrier;
+      auto pathA = side_path(previous.firstFace, next.firstFace);
+      auto pathB = side_path(previous.secondFace, next.secondFace);
+      if (!pathA || !pathB) {
+        next = {carrier->edge, carrier->secondFace, carrier->firstFace,
+                carrier->firstToSecond.inverse()};
+        pathA = side_path(previous.firstFace, next.firstFace);
+        pathB = side_path(previous.secondFace, next.secondFace);
+      }
+      if (!pathA || !pathB) {
+        invalid_route(SurfaceHardRailRouteFailureLocus::SectorPath,
+                      static_cast<int>(index), static_cast<int>(junction->index()));
+        return network;
+      }
+      auto phiA = authority::QuarterTurn::from_integer(0);
+      auto phiB = authority::QuarterTurn::from_integer(0);
+      std::set<Face> sectorA{previous.firstFace};
+      std::set<Face> sectorB{previous.secondFace};
+      for (const auto &step : *pathA) {
+        phiA = compose(step.firstToSecond, phiA);
+        sectorA.insert(step.secondFace);
+      }
+      for (const auto &step : *pathB) {
+        phiB = compose(step.firstToSecond, phiB);
+        sectorB.insert(step.secondFace);
+      }
+      if (sectorA.size() + sectorB.size() != fullDegrees.size() ||
+          std::any_of(sectorA.begin(), sectorA.end(),
+                      [&](const Face &face) { return sectorB.contains(face); }) ||
+          compose(next.firstToSecond, phiA) !=
+              compose(phiB, previous.firstToSecond)) {
+        invalid_route(SurfaceHardRailRouteFailureLocus::SectorTransport,
+                      static_cast<int>(index), static_cast<int>(junction->index()));
+        return network;
+      }
+      junctions.push_back({*junction, {*pathA, *pathB}});
+      previous = next;
+    }
+    if (previous != secondEndpoint->terminalCarrier) {
+      invalid_route(SurfaceHardRailRouteFailureLocus::TerminalCarrier);
       return network;
     }
     phaseFrontState.hardRailRouteCertificates.push_back({
         firstIndex, first.oppositeEdge, *first.railId, first.route,
-        {*firstEndpoint, *secondEndpoint}});
+        {*firstEndpoint, *secondEndpoint}, std::move(junctions)});
   }
   phaseFrontState.hardFeatureEdges = authoritativeOptions.hardFeatureEdges;
   network.phaseFront = surface_cell_tracing_detail::publish_phase_front_result(
