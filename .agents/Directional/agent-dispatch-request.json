@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb1-entry-r3-a3-atlas-provenance-r1-compile",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb1-entry-r3-a3-atlas-provenance-r1-compile",
-  "source_sha": "cd1b46a4f0c82442f94d6e6a7c678cee90dfe85e",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb1-entry-r3-a3-atlas-provenance-r1"
+  "request_id": "m6-cp3-r3-balanced-atlas-negative-apply-r1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r3-balanced-atlas-negative-apply-r1",
+  "file_id": "1_PSmQBTsCtoq08fobd65vi2liDSkiyrh",
+  "patch_sha256": "163a93e0337dba2f91806a31b6610be1ab2a9cbd97db0129d9250362c9bc81c1",
+  "base_sha": "cd1b46a4f0c82442f94d6e6a7c678cee90dfe85e",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "test(surfacecells): assert balanced nonrail A3 mutation defeats self-only transport check",
+  "retention_days": 14
 }
