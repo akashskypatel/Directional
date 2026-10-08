@@ -1,4 +1,12 @@
-# LIVE — R3 independent review gate (2026-10-08T23:16Z)
+# LIVE — M6-CP3-CB1-ENTRY-R3 checked factory compile checkpoint (2026-10-08T23:39Z)
+
+- [x] `SurfacePhaseFrontProduct::make` now requires **exactly two** full source triangle incidences for every published HardRail transport (source `2ae6f5d1ba4e7657a5089fb52c09812a495dfe47`); typed 1/2/3-face, two source-row-order factory negative/control test compiled (not executed, not added to frozen selectors). Does **not** settle A3 phi provenance.
+- [x] Drive apply run `37861219049` SUCCESS, consumed patch retired. Eight GMP/GMPXX targets compiled GREEN run `37861343725`, immutable artifact `11586413529`, package manifest 28/28, GMPXX/GMP, clean source, `runtimeExecution=false`; no runtime executed.
+- [ ] SAME R3 IN_PROGRESS. Independent A3 factory-attestation and CB/TB sequencing review, organic D1/D2/D3/D5 A6/A7 witnesses, 39 historic R2 first-locus failures and 47 accepted CP2→RED restoration remain unverified; future separate 497 immutable TB, no successor. Full WIP/Library handoff `Directional__M6-CP3-CB1-ENTRY-R3__continuation-20261008T2339Z.md`.
+
+---
+
+# HISTORICAL — R3 independent review gate (2026-10-08T23:16Z)
 
 - [x] Audited exact compiled source `7666939d9ee1a53148d2c85d7b6d40c509d8df10`; eight-target GMP/GMPXX compile already GREEN run `37856816696`, package `11584990429`, 28/28 hashes, `runtimeExecution=false`. Published `Architecture_M6_CP3_R3_A3_Trust_CB_TB_Gate_Review_Request.md`.
 - [ ] Independent Review: choose A4-trusted versus factory-independent A3; adjudicate CB closure versus 497-process TB witness proof. No independent verdict or successor.
