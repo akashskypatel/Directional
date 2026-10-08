@@ -1,4 +1,12 @@
-# LIVE — R3 A4 nonmanifold source-spoke guard compiled (2026-10-08T22:26Z)
+# LIVE — M6-CP3-CB1-ENTRY-R3 compile checkpoint (2026-10-08T22:52Z)
+
+- [x] Guard overfull hard-feature source edge on singleton and paired HardRail before A4 publishes owner carrier: commit `7666939d9ee1a53148d2c85d7b6d40c509d8df10`. One-face boundary behavior unchanged; no public certificate change. Applied via Drive `37856665013`, staging owner-deleted; exact patch archived in Library.
+- [x] GMP/GMPXX eight-target compile/package run `37856816696` GREEN; immutable artifact `11584990429`, 28/28 SHA256SUMS, GMPXX+GMP direct link, clean sources, `runtimeExecution=false`. No tests/benchmarks run.
+- [ ] SAME R3 IN_PROGRESS. Proposed 3+ face overfull guard negative and 1/2 face controls are FUTURE TESTS, not executed. Independent A3 factory attestation Review and D1/D2/D3/D5 A6/A7 producer witnesses; 39 R2 first failures and 47 accepted-green losses; frozen 497-case TB deferred to separate successor. Full handoff `Architecture_M6_CP3_CB1_Entry_R3_WIP_Continuation.md` + Library `Directional__M6-CP3-CB1-ENTRY-R3__continuation-20261008T2252Z.md`.
+
+---
+
+# HISTORICAL — R3 A4 nonmanifold source-spoke guard compiled (2026-10-08T22:26Z)
 
 - [x] Source `91fafdc6e2a3f46c77444b2a0cf1038f09f85e6b`, sole A4 `src/geometry/SurfaceCellTracing.cpp` edit: reject junction spoke unless **all** source triangles give exactly two edge incidences; preserve first-failure count and typed edge. Drive apply `37853932935` GREEN; staged patch owner-deleted.
 - [x] Eight GMP/GMPXX targets compiled/package GREEN run `37854111387`, result `11582993643`, 28/28 internal SHA256SUMS, clean source, `runtimeExecution=false`; **no tests or benchmarks executed**.
