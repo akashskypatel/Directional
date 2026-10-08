@@ -1,0 +1,3 @@
+turn=M6-CP3-CB1-ENTRY-R2
+requested_prior_head=9045e3470b63afff83d150aae7b06e7dcce4771a
+purpose=resumed-authoritative-source-inspection
