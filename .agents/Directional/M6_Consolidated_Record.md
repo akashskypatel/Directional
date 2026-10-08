@@ -1,3 +1,9 @@
+## 2026-10-08 — R2 independent Review rejects immutable 444/497 candidate; R3 Definition next
+
+R2 (`M6-CP3-TB1-ENTRY-R2-REV`) mechanically verifies 497 fresh processes, 444 PASS/53 RED on source `80fc1688...`, artifact `11545716507`; 47 previously accepted CP2 identities RED; R1→R2 38 new RED and zero recoveries. One new stable RP-01 A4 HardRail route-certificate false rejection on accepted fixtures: accounting **64/17/47**, debt 1; old A6 RP-01 remains open. Static face-star counterexample: consecutive supported hard edges (1,4),(4,7) have disjoint incident-face sets. RA-36.1 face-sharing premise under Review HOLD; do not infer actual produced two-edge route. Exact next `M6-DEFN-R5-R3` runtime-free Definition then `M6-DEFN-R5-R3-REV`; CB2, CP3 exit, optimizer held. Full independent verdict `Architecture_M6_CP3_TB1_Entry_R2_Review_Record.md`, 53-row file `Architecture_M6_CP3_TB1_Entry_R2_Red_Classification.tsv`, prescriptive plan `Architecture_M6_DEFN_R5_R3_CP3_Entry_Recovery_Definition_Plan.md`.
+
+---
+
 ## 2026-10-06 — Current authority after the `M6-CP3-TB1-ENTRY-REV` addendum
 
 The CP3 entry candidate is rejected (373/497). RA-31 and RA-31a apply (§58). Exact next: `M6-CP3-CB1-ENTRY-R1` → TB1-R1 (497) → Review → `M6-DEFN-R5-R1`. Accounting **63 / 17 / 46**, debt 1.
