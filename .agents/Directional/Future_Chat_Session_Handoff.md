@@ -1,3 +1,7 @@
+## CURRENT bounded R3 Code+Build continuation (2026-10-08 18:30Z)
+
+**Resume same `M6-CP3-CB1-ENTRY-R3` turn; do not advance successor.** A6 certified seam Forward/Reverse resolver with two new typed negative tests committed at **`34ff188fa48b086652c89619c302a21c80925f69`**, eight-target GMP/GMPXX compile/package **GREEN** (run `37825544677`, 28/28 checksum, no Directional runtime). A4 first-failed-predicate topology diagnostics committed at **`6a16d21142de8f83b37df4dd5e207f66b877ef6e`**; its separate eight-target compile request was triggered at `e6f72167c89ef02950daa74127137f5c00656ae9` and MUST be verified via `.workflow-mailbox/m6-cp3-cb1-entry-r3-a4-first-predicate-r1-compile/latest.json` (do not duplicate). Full latest details in `Architecture_M6_CP3_CB1_Entry_R3_WIP_Continuation.md` and preserved Library handoff `Directional__M6-CP3-CB1-ENTRY-R3__continuation-20261008T1830Z.md`; 39-row first-predicate watchlist Library TSV records 25 direct A4 + 12 Phase10 dependent + 2 RE terminal red identities, with **no new R3 runtime first-cause claims**. Required organic A4 multi-carrier HardRail, D1/D3/D5, odd tau, 47 accepted→RED regression recovery remain unproven. Preserve selector/routing and future 497 TB boundary. No compiled binary executed in this CB.
+
 ## Resume-critical update — P0/P1 endpoint STOP RESOLVED as RA-39; CB1-ENTRY-R3 resumes (2026-10-08)
 
 **Exact next turn: `M6-CP3-CB1-ENTRY-R3` (resume) — Code + Build, compile/package only.** RA-37a's remaining
