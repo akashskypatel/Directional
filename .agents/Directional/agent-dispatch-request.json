@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb1-entry-r3-d2-produced-midline-r1-compile",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb1-entry-r3-d2-produced-midline-r1-compile",
-  "source_sha": "4dfde0bd5cd70b92bdae73deaf448c8bf8d14adf",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb1-entry-r3-d2-produced-midline-r1"
+  "request_id": "m6-cp3-cb1-entry-r3-d2-face-row-permute-apply-r1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb1-entry-r3-d2-face-row-permute-apply-r1",
+  "file_id": "1aIFcCeGWc18UcVW7tSfUMV36X33_yNSN",
+  "patch_sha256": "e38b93aabd6680c220ae7db31bea2cbbec52c784741e63b41b5f3da448848990",
+  "base_sha": "4dfde0bd5cd70b92bdae73deaf448c8bf8d14adf",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "test(surfacecells): require D2 source-face-row invariance in A4-produced midline",
+  "retention_days": 14
 }
