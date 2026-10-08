@@ -1,3 +1,9 @@
+## Current — M6 R2 artifact-only TB executed 444/497; independent Review next (2026-10-08)
+
+Frozen `M6-CP3-TB1-ENTRY-R2-EXEC` ran 497 processes on source `80fc1688f13e5ed52699177a845f25cc4dbda38b`/compile artifact `11542824274`; workflow `37767144537`, result artifact `11545716507`, SHA256 `d6469bea1b4ef6fb3b142d05a97d01dbab98331cfc91d930c7bc30da555ec0ca`, internal checks 1019/1019; **444 PASS / 53 RED**, CP3entry 0/6; exact-one 497/497, zero skips/benchmarks, immutable. **Next after STATUS closure `M6-CP3-TB1-ENTRY-R2-REV` independent Review**, not implementation. R2 candidate unpromoted, CB2/CP3 exit held. Stable 63/17/46, debt 1 pending Review. Detailed `Architecture_M6_CP3_TB1_Entry_R2_Execution_Record.md`.
+
+---
+
 ## Currency — M6 R2 Code + Build compiled; artifact-only TB next (2026-10-08)
 
 R2 semantic source `80fc1688f13e5ed52699177a845f25cc4dbda38b`, run/job `37762724429 / 113262943750`, artifact `11542824274`, ZIP SHA-256 `8aa756b1085a75109648b4da7f07a2ffebcdf975ea04981ec88b2d2e61c89114`, manifest 29/29, GMP/GMPXX compile eight targets, clean source, runtimeExecution=false. **Only after final STATUS closure:** exact successor `M6-CP3-TB1-ENTRY-R2-EXEC` for immutable frozen 497 processes; then `M6-CP3-TB1-ENTRY-R2-REV`. No runtime-positive witness credit, including RA-36 multi-edge HardRail. Stable 63/17/46 debt 1; CB2/CP3 exit held. See `Architecture_M6_CP3_CB1_Entry_R2_Code_Build_Closeout_Report.md`.
