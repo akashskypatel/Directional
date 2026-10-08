@@ -9642,6 +9642,70 @@ TEST(M6CP2, A7ThreeSheetPartialConnectivityRejects) {
   EXPECT_EQ(failure->site, "cross-sheet:wedge");
 }
 
+TEST(M6CP3, A7TypedWedgeSheetMismatchRejectsCachedMembership) {
+  const auto &fixture = split_isolation_fixture();
+  auto a5Construction =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+          fixture.mesh.V, fixture.mesh.F,
+          fixture.network.phaseFront.product());
+  const auto *a5 =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+          &a5Construction);
+  ASSERT_NE(a5, nullptr);
+  auto a6Construction =
+      directional::pipeline::SurfaceQuotientProducer::produce(*a5);
+  const auto *a6 =
+      std::get_if<directional::pipeline::SurfaceQuotientProduct>(
+          &a6Construction);
+  ASSERT_NE(a6, nullptr);
+  auto baseline =
+      directional::pipeline::SourceAttachedGeometryProducer::produce(
+          fixture.mesh.V, fixture.mesh.F, *a5, *a6);
+  ASSERT_NE(std::get_if<directional::pipeline::SourceAttachedGeometryProduct>(
+                &baseline),
+            nullptr);
+
+  auto cells = a5->cells();
+  auto occurrences = a5->occurrences();
+  auto relations = a5->owned_relations();
+  auto bridge = std::find_if(
+      occurrences.begin(), occurrences.end(), [](const auto &occurrence) {
+        return occurrence.cornerWedgeSheets.size() > 1U &&
+               !occurrence.cornerWedgeBindings.empty();
+      });
+  ASSERT_NE(bridge, occurrences.end());
+  const auto phantom = test_isolation_sheet_id(1000);
+  ASSERT_EQ(std::find(bridge->cornerWedgeSheets.begin(),
+                      bridge->cornerWedgeSheets.end(), phantom),
+            bridge->cornerWedgeSheets.end());
+  // The flattened cache is left unchanged. A7 must use the A5-owned face
+  // binding and reject this disagreement rather than accept the cache.
+  bridge->cornerWedgeBindings.front().sheet = phantom;
+
+  auto tampered = directional::pipeline::SurfaceOccurrenceComplexProducer::
+      publish_records_for_validation(std::move(cells), std::move(occurrences),
+                                     std::move(relations));
+  const auto *tamperedA5 =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(&tampered);
+  ASSERT_NE(tamperedA5, nullptr);
+  auto tamperedA6Construction =
+      directional::pipeline::SurfaceQuotientProducer::produce(*tamperedA5);
+  const auto *tamperedA6 =
+      std::get_if<directional::pipeline::SurfaceQuotientProduct>(
+          &tamperedA6Construction);
+  ASSERT_NE(tamperedA6, nullptr);
+  const auto rejected =
+      directional::pipeline::SourceAttachedGeometryProducer::produce(
+          fixture.mesh.V, fixture.mesh.F, *tamperedA5, *tamperedA6);
+  const auto *failure =
+      std::get_if<directional::pipeline::GeometryEmbeddingFailure>(&rejected);
+  ASSERT_NE(failure, nullptr);
+  EXPECT_EQ(failure->code,
+            directional::pipeline::GeometryEmbeddingFailureCode::
+                UncertifiedCrossSheetBinding);
+  EXPECT_EQ(failure->site, "cross-sheet:wedge");
+}
+
 TEST(M6CP1, A5PhaseFrontSourceFailuresKeepDistinctDiagnostics) {
   const auto &fixture = square_fixture();
   const auto &front = fixture.network.phaseFront.product();

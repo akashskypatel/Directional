@@ -7120,6 +7120,17 @@ SourceAttachedGeometryProducer::produce(
       }
     }
 
+    // A7 sheet membership is owned by the retained face-to-wedge bindings.
+    // The flattened A5 list is only a consistency cache, not a source of
+    // cross-sheet authority.
+    const auto typed_wedge_sheets = [](const SurfaceOccurrence &occurrence) {
+      std::set<authority::IsolationSheetId> sheets;
+      for (const CornerWedgeFaceBinding &binding :
+           occurrence.cornerWedgeBindings) {
+        sheets.insert(binding.sheet);
+      }
+      return sheets;
+    };
     std::set<geometry::SourceProjectionChart> charts;
     std::set<authority::SourceComponentId> sourceComponents;
     std::set<authority::TopologyRegionId> topologyRegions;
@@ -7195,8 +7206,15 @@ SourceAttachedGeometryProducer::produce(
         charts.insert(binding.chart);
       }
       topologyRegions.insert(occurrence.topologyRegion);
-      isolationSheets.insert(occurrence.cornerWedgeSheets.begin(),
-                             occurrence.cornerWedgeSheets.end());
+      const auto boundSheets = typed_wedge_sheets(occurrence);
+      const std::set<authority::IsolationSheetId> flattenedSheets(
+          occurrence.cornerWedgeSheets.begin(),
+          occurrence.cornerWedgeSheets.end());
+      if (boundSheets.empty() || boundSheets != flattenedSheets) {
+        return fail(GeometryEmbeddingFailureCode::UncertifiedCrossSheetBinding,
+                    quotient.id, member, {}, "cross-sheet:wedge");
+      }
+      isolationSheets.insert(boundSheets.begin(), boundSheets.end());
     }
 
     if (sourceComponents.size() != 1U) {
@@ -7204,19 +7222,20 @@ SourceAttachedGeometryProducer::produce(
                   quotient.id, representative, {}, "cross-component");
     }
 
-    const auto wedge_isolation_connected = [](
+    const auto wedge_isolation_connected = [&typed_wedge_sheets](
         const SurfaceOccurrence &occurrence) {
-      if (occurrence.cornerWedgeSheets.size() <= 1U) return true;
+      const auto sheets = typed_wedge_sheets(occurrence);
+      if (sheets.empty()) return false;
+      if (sheets.size() == 1U) return true;
 
-      std::set<authority::IsolationSheetId> reachable{
-          occurrence.cornerWedgeSheets.front()};
+      std::set<authority::IsolationSheetId> reachable{*sheets.begin()};
       bool changed = true;
       while (changed) {
         changed = false;
         for (const auto &transition : occurrence.cornerWedgeIsolation) {
           if (transition.region != occurrence.topologyRegion ||
-              !wedge_contains_sheet(occurrence, transition.fromSheet) ||
-              !wedge_contains_sheet(occurrence, transition.toSheet)) {
+              !sheets.contains(transition.fromSheet) ||
+              !sheets.contains(transition.toSheet)) {
             continue;
           }
           if (reachable.contains(transition.fromSheet)) {
@@ -7227,7 +7246,7 @@ SourceAttachedGeometryProducer::produce(
           }
         }
       }
-      return reachable.size() == occurrence.cornerWedgeSheets.size();
+      return reachable == sheets;
     };
     for (const authority::OccurrenceId member : quotient.members) {
       const SurfaceOccurrence &occurrence = *occurrenceById.at(member);
@@ -7265,25 +7284,19 @@ SourceAttachedGeometryProducer::produce(
                     quotient.id, edge.first, {}, "cross-sheet:relation-kind");
       }
 
+      const auto firstSheets = typed_wedge_sheets(first);
+      const auto secondSheets = typed_wedge_sheets(second);
       std::vector<authority::IsolationSheetId> sharedSheets;
-      std::set_intersection(first.cornerWedgeSheets.begin(),
-                            first.cornerWedgeSheets.end(),
-                            second.cornerWedgeSheets.begin(),
-                            second.cornerWedgeSheets.end(),
+      std::set_intersection(firstSheets.begin(), firstSheets.end(),
+                            secondSheets.begin(), secondSheets.end(),
                             std::back_inserter(sharedSheets));
       if (!sharedSheets.empty()) continue;
       const auto transition_connects_endpoints =
           [&](const geometry::CornerWedgeIsolationTransition &transition) {
-            const auto has_sheet = [](const SurfaceOccurrence &occurrence,
-                                      const authority::IsolationSheetId sheet) {
-              return std::find(occurrence.cornerWedgeSheets.begin(),
-                               occurrence.cornerWedgeSheets.end(), sheet) !=
-                     occurrence.cornerWedgeSheets.end();
-            };
-            return (has_sheet(first, transition.fromSheet) &&
-                    has_sheet(second, transition.toSheet)) ||
-                   (has_sheet(first, transition.toSheet) &&
-                    has_sheet(second, transition.fromSheet));
+            return (firstSheets.contains(transition.fromSheet) &&
+                    secondSheets.contains(transition.toSheet)) ||
+                   (firstSheets.contains(transition.toSheet) &&
+                    secondSheets.contains(transition.fromSheet));
           };
       const auto any_connecting_transition = [&](const auto &transitions) {
         return std::any_of(transitions.begin(), transitions.end(),
