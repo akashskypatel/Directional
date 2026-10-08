@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb1-entry-r3-v2-compile-fix-r3",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb1-entry-r3-v2-compile-fix-r3",
-  "source_sha": "03a064d63d7214313ec0f54d5ea0a025ddd0bcc8",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb1-entry-r3-v2-compile-fix-r3"
+  "request_id": "m6-cp3-cb1-entry-r3-a6-produced-negative-r1-apply",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb1-entry-r3-a6-produced-negative-r1-apply",
+  "file_id": "1mnYbS7M9VZ_jaKi-PelwccWmHx0soVVZ",
+  "patch_sha256": "735321f82d2fb6d8546ecaec3e30a79a266bf66e8454b9bba813c9683f881983",
+  "base_sha": "03a064d63d7214313ec0f54d5ea0a025ddd0bcc8",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "fix(surfacecells): unify A6 certified seam direction with typed rejection tests",
+  "retention_days": 14
 }
