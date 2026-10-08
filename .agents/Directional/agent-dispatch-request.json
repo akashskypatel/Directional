@@ -1,12 +1,9 @@
 {
- "schema_version": 1,
- "request_id": "m6-cp3-cb1-r2-wip-apply-1",
- "operation": "drive_apply",
- "mailbox_key": "m6-cp3-cb1-r2-wip-apply",
- "file_id": "1gyqnmtow3ZqD5L6JnGKLIGezjbBfgwRa",
- "patch_sha256": "d4cfb168193a9acd4a18661c8919655fe9a77866e58c95e79343d54f00811e38",
- "base_sha": "0930f1edd9759402d620cc829bd9f1a671d14c0c",
- "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
- "commit_message": "wip: preserve M6 CP3 R2 typed seam, periodic and ordinary corrections",
- "retention_days": 14
+  "schema_version": 1,
+  "request_id": "m6-cp3-cb1-r2-wip-compile-1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb1-r2-wip-compile",
+  "source_sha": "88aa8eae043cee9b53e45c0a43317e5a0ec5eca8",
+  "targets": "directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks",
+  "artifact_prefix": "m6-cp3-cb1-r2-wip-compile"
 }
