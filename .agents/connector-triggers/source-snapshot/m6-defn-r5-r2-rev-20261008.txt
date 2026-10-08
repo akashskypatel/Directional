@@ -1,3 +1,0 @@
-turn=M6-DEFN-R5-R2-REV
-base=f56d12baae88bc23d7fc47b7129c3155058bb1a6
-intent=review-only exact-source snapshot
