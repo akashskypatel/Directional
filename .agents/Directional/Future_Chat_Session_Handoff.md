@@ -1,3 +1,58 @@
+## Resume-critical update — R2-P3 RESOLVED as RA-36; `M6-CP3-CB1-ENTRY-R2` resumes compile-only (2026-10-08)
+
+**Exact next turn: `M6-CP3-CB1-ENTRY-R2` (resume) — Code + Build, compile/package only, `runtimeExecution=false`.**
+The RA-34.3 HardRail transport stop is resolved by independent Review and frozen as **RA-36**
+(`Architecture_M6_Frozen_Definitions.md`); basis in
+`Architecture_M6_CP3_R2P3_HardRail_Route_Transport_Review_Decision.md`. Accounting **63 / 17 / 46**, debt **1**;
+frozen gate **497 = 30 + 12 + 449 + 6**. No runtime credit was granted.
+
+### Decision: multi-edge certificate APPROVED; singleton-only REJECTED
+
+**The diagnosed error is a miscoded structural impossibility.** A5's `rail_tau`
+(`src/pipeline/RemeshPipeline.cpp:4916-4957`) requires *every* route step's `SurfaceHardRailFieldTransition`
+record to carry the same incident-face pair as the relation's two `placement.selectedFace` values. Two distinct
+triangles share at most one edge, so any route with ≥2 distinct edges is unsatisfiable by construction and
+returns `HardRailTransportMismatch` — asserting a transport disagreement that was never evaluated. The predicate
+conflates **endpoint attachment** with **transport agreement** and applies both per step, when τ along a path
+**composes** rather than repeating.
+
+**Singleton-only was rejected on three grounds:** the invariant does not exist (A4 appends one step per distinct
+retained source edge with **no cap**, `src/geometry/SurfaceCellTracing.cpp:11712`); the domain it would narrow is
+legitimate (consecutive hard edges `(1,4)`/`(4,7)` are a real producer input, and polyline hard features are
+ordinary CAD geometry); and it would not avoid the work, since a multi-edge route must still reject with a typed
+unsupported-route code rather than a false transport mismatch — and once that distinction is mandatory,
+publishing the route is strictly more informative than refusing to.
+
+**Correct decomposition: attachment at the two ends, composition through the interior.** Singleton then becomes
+the degenerate fold of length 1 — one contract, not two.
+
+### What CB1-ENTRY-R2 implements for R2-P3 (frozen RA-36)
+
+- **A4** publishes per paired cross-region HardRail route: the canonical-orientation step sequence; per step both
+  typed incident `SourceFaceTopologyKey` values and the exact oriented A3 `firstToSecond` validated against
+  `FieldTransportAtlas::transition_value`; the **endpoint attachment** faces for the `a` and `b` ends; and
+  **path connectivity** (consecutive steps share exactly one typed face).
+- **A5** consumes only that certificate — composes `τ_ab` as a typed fold (`Z4` addition, reversed steps
+  negate), verifies both `placement.selectedFace` values equal the published attachment faces, and applies the
+  frozen `(B_b − B_a − R_coord − τ_ab) mod 4 = 0` at **both** endpoint pairs, with the reverse relation inverting
+  coordinate, branch and τ orientations **together**.
+- **Consistency:** consecutive side transports from A3 authority must satisfy `χ_(i+1) ∘ φ_a = φ_b ∘ χ_i`. Never
+  average, never demand equal τ per carrier, never select the first step. A4 rejects typed fail-closed on
+  absent/ambiguous path, disconnected face star, nontrivial singular holonomy, nonreciprocal A3 transitions or a
+  mismatching hard-feature owner.
+- **Regression guard:** singleton behaviour must not change — path length 1, attachment = that edge's two
+  incident faces, composed τ = its `firstToSecond`. All currently green identities and the 497 gate are the
+  guard.
+- **Honest codes:** an uncertifiable or unsupported route rejects with a typed code naming *that* cause.
+  Reusing `HardRailTransportMismatch` is prohibited.
+
+**Limits that remain live.** Existence of a produced multi-edge route is **not** established — the two-hard-edge
+fixture declares inputs, it does not prove A4 emits a spanning reciprocal route. If the bounded search finds
+none, the multi-edge path is **unexercised and must not be cited as validated**. Every RA-34.3 R2-P3 stop gate
+stands: odd `τ ∈ {1,3}`, `F_b − F_a ≠ τ`, sign-inversion negative, reciprocal/face-permutation invariance; an
+empty search **stops for Review**. `R2-P1` (resolved earlier, typed wedge→certificate face join), `R2-P2`,
+`R2-P4`, `R2-P5` and precondition 2's narrow static reading are all unchanged.
+
 ## Resume-critical update — R2-P1 BLOCK RESOLVED; `M6-CP3-CB1-ENTRY-R2` resumes compile-only (2026-10-08)
 
 **Exact next turn: `M6-CP3-CB1-ENTRY-R2` (resume) — Code + Build, compile/package only,

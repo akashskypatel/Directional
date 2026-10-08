@@ -1363,3 +1363,45 @@ Independent `M6-DEFN-R5-R2-REV` accepts these two narrow Definition corrections 
 - **RA-34.3:** A4 owns and publishes exact A3-oriented cross-rail `τ_ab`; A5 consumes it and uses `(B_b-B_a-R_coord-τ_ab) mod4=0` with reciprocal inverse and path independence. A real-produced baseline-green HardRail witness must have **both** `(F_b-F_a) mod4 != τ_ab` **and** `τ_ab ∈ {1,3}` and reject τ sign inversion. Algebraic example `F_a=0,F_b=3,τ_ab=1,R_coord=1,B_a=0,B_b=2` is not a produced witness. Z4 commutativity prevents numerical testing of composition order; maintain typed domain semantics.
 
 RA-33.2 periodic odd-gauge, RA-33.4 tracer-produced seam-collinear and RA-33.5 route-bearing organic positives remain unchanged and **unproven**. Entry gate is **497=30+12+449+6**; reviewed rejected run **482/497**, stable accounting **63/17/46**, debt 1. R2 Review releases ONLY bounded compile-only `M6-CP3-CB1-ENTRY-R2`. Independent A4-owned typed wedge-to-certificate sheet incidence is mandatory; if insufficient, STOP for producer-owned A4 contract Review, never manufacture an A6 map. Real-produced D2/D3/D4/D5 positives remain unproven and stop-gated. CB2 and CP3 exit remain HELD. See `Architecture_M6_DEFN_R5_R2_Review_Record.md`.
+
+## RA-36 — HardRail route transport certificate **ACCEPTED at independent R2-P3 Review** (2026-10-08)
+
+Resolves the `M6-CP3-CB1-ENTRY-R2` RA-34.3 stop. Full basis:
+`Architecture_M6_CP3_R2P3_HardRail_Route_Transport_Review_Decision.md`.
+
+**Singleton-only route contract is REJECTED.** A4 has no step cap
+(`src/geometry/SurfaceCellTracing.cpp:11712`), so no singleton invariant exists to document; adopting one would
+narrow a legitimate domain (consecutive hard edges `(1,4)`/`(4,7)` are a real producer input), and it would not
+avoid fixing the miscoded failure below.
+
+**Diagnosed error.** A5's `rail_tau` (`src/pipeline/RemeshPipeline.cpp:4916-4957`) requires *every* route step's
+`SurfaceHardRailFieldTransition` record to carry the same incident-face pair as the relation's two selected
+faces. Because two distinct triangles share at most one edge, any route with ≥2 distinct edges is unsatisfiable
+by construction and returns `HardRailTransportMismatch` — asserting a transport disagreement never evaluated. The
+rule conflates **endpoint attachment** with **transport agreement** and applies both per step; τ along a path
+composes, it does not repeat.
+
+- **RA-36.1:** A4 publishes, per paired cross-region HardRail route, an ordered oriented certificate: the
+  canonical-orientation step sequence; per step both typed incident `SourceFaceTopologyKey` values and the exact
+  oriented A3 `firstToSecond` validated against `FieldTransportAtlas::transition_value`; the **endpoint
+  attachment** faces for the `a` and `b` ends; and **path connectivity** — consecutive steps share exactly one
+  typed source face.
+- **RA-36.2:** A5 consumes only that certificate. It composes `τ_ab` as a typed fold along the published path
+  (`Z4` addition, reversed steps negate), verifies both `placement.selectedFace` values equal the published
+  endpoint attachment faces, and applies the frozen `(B_b − B_a − R_coord − τ_ab) mod 4 = 0` at **both** endpoint
+  pairs. The reverse relation inverts coordinate, branch and τ orientations together; orientations may not be
+  mixed. A5 may not infer path, attachment or τ from regional `F` gauges, sheet labels, proximity, arbitrary
+  traversal, first-step selection, fabricated records or a new unreviewed switch.
+- **RA-36.3:** Consecutive side transports come from A3 source-face transition authority and must satisfy the
+  cross-rail square `χ_(i+1) ∘ φ_a = φ_b ∘ χ_i`. Compose as a typed path — never average, never demand equal τ
+  per carrier. A4 rejects typed fail-closed on absent/ambiguous path, disconnected face star, nontrivial singular
+  holonomy, nonreciprocal A3 transitions, or a mismatching hard-feature owner.
+- **RA-36.4:** Singleton is the **degenerate case** — path length 1, attachment faces are that edge's two
+  incident faces, composed τ is its `firstToSecond` — and existing singleton behaviour must not regress. The
+  frozen `497 = 30 + 12 + 449 + 6` gate and all currently green identities are the guard.
+- **RA-36.5:** A route A4 cannot certify rejects with a typed code naming *that* cause. Reusing
+  `HardRailTransportMismatch` for an uncertifiable or unsupported route is prohibited.
+- **RA-36.6:** This decision grants **no runtime credit**. Existence of a produced multi-edge route is not
+  established; if the bounded search finds none, the multi-edge path is unexercised and must not be cited as
+  validated. All RA-34.3 R2-P3 stop gates stand — odd `τ ∈ {1,3}`, `F_b − F_a ≠ τ`, sign-inversion negative,
+  reciprocal/face-permutation invariance — and an empty search **stops for Review**.

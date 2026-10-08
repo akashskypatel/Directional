@@ -11641,3 +11641,43 @@ publication and do not alter the certificate builder's distinctness/ordering rul
 matched side whose `b.sheet` disagrees with the certificate sheet, is a genuine producer defect — stop for
 Review rather than widen the join or fall back to sheet-set membership. The organic-witness stop gates
 (D2/D3/D4/D5) are untouched.
+
+## `M6-CP3-R2P3-RESOLUTION` — HardRail route transport: multi-edge certificate approved, singleton-only rejected
+
+**Status.** RESOLVED BY INDEPENDENT REVIEW / frozen as **RA-36** / design-class / unblocks
+`M6-CP3-CB1-ENTRY-R2`. No runtime credit granted.
+
+`M6-CP3-CB1-ENTRY-R2` stopped on RA-34.3 because A4 publishes no source-face path or composed τ for A5 HardRail
+validation, and asked Review to choose a singleton-only contract or approve an A4-owned multi-edge certificate.
+Decision and basis: `Architecture_M6_CP3_R2P3_HardRail_Route_Transport_Review_Decision.md`; frozen RA-36.
+
+**Diagnosed error — a miscoded structural impossibility.** A5's `rail_tau`
+(`src/pipeline/RemeshPipeline.cpp:4916-4957`) loops every step of `first.route.steps()` and requires that step's
+`SurfaceHardRailFieldTransition` record carry the *same* incident-face pair as the relation's two
+`placement.selectedFace` values. Two distinct triangles share at most one edge, so a route with ≥2 distinct edges
+cannot satisfy it for more than one step and deterministically returns `HardRailTransportMismatch` — asserting a
+transport disagreement that was never evaluated. The predicate conflates **endpoint attachment** with
+**transport agreement** and applies both per step, when τ along a path **composes** rather than repeating.
+
+**Singleton-only rejected on three grounds.** (i) The invariant does not exist — A4 appends one step per distinct
+retained source-edge topology with no cap (`src/geometry/SurfaceCellTracing.cpp:11712`), so the option would add
+a producer restriction, not document an invariant. (ii) The narrowed domain is legitimate — consecutive hard
+edges `(1,4)`/`(4,7)` are a real bounded producer input
+(`tests/SurfaceCellTransitionQuotientTests.cpp:694-759`), and polyline hard features are ordinary CAD geometry.
+(iii) It does not avoid the work — a multi-edge route must still reject with a typed *unsupported-route* code
+instead of a false transport mismatch, and once that distinction is mandatory, publishing the route is strictly
+more informative than refusing to.
+
+**Approved contract (RA-36).** A4 publishes per route the ordered canonical-orientation step sequence, per-step
+typed incident faces plus exact oriented A3 `firstToSecond`, the endpoint attachment faces, and path
+connectivity (consecutive steps share exactly one typed face). A5 composes τ as a typed fold, verifies selected
+faces equal the published attachment faces, and applies `(B_b − B_a − R_coord − τ_ab) mod 4 = 0` at both endpoint
+pairs with reverse inverting all orientations together. Consecutive transports must satisfy
+`χ_(i+1) ∘ φ_a = φ_b ∘ χ_i`; no averaging, no equal-τ-per-carrier, no first-step selection. **Singleton is the
+degenerate fold of length 1 and must not regress** — the frozen `497 = 30 + 12 + 449 + 6` gate is the guard.
+
+**Limits carried.** Existence of a produced multi-edge route is **not** established; if the bounded search finds
+none the multi-edge path is unexercised and must not be cited as validated — the same discipline applied to the
+degenerate nonzero-Z4 witness at `[[M5-CP3-DEFN-R1]]`. All RA-34.3 R2-P3 stop gates stand: odd `τ ∈ {1,3}`,
+`F_b − F_a ≠ τ`, sign-inversion negative, reciprocal/face-permutation invariance; an empty search stops for
+Review.
