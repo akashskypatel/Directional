@@ -2389,6 +2389,85 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
   const auto &front = fixture.network.phaseFront.product();
   ASSERT_FALSE(front.hardRailRouteCertificates().empty())
       << "D2 requires at least one A4-produced, paired route certificate";
+  // The 3x3 hard-rail input alone is not evidence of a two-carrier
+  // certificate. Only the immutable A4-produced route qualifies, and the
+  // future TB must fail (not silently skip) when none is produced.
+  const auto carrier_vertices = [](const auto &edge) {
+    const int a = static_cast<int>(edge.first().index());
+    const int b = static_cast<int>(edge.second().index());
+    return std::pair<int, int>{std::min(a, b), std::max(a, b)};
+  };
+  const auto is_midline_pair = [&](const auto &certificate) {
+    const auto steps = certificate.route.oriented_steps();
+    if (steps.size() != 2U) return false;
+    const std::set<std::pair<int, int>> observed{
+        carrier_vertices(steps[0].topology()),
+        carrier_vertices(steps[1].topology())};
+    return observed ==
+           std::set<std::pair<int, int>>{{1, 4}, {4, 7}};
+  };
+  const auto producedMidline = std::find_if(
+      front.hardRailRouteCertificates().begin(),
+      front.hardRailRouteCertificates().end(), is_midline_pair);
+  ASSERT_NE(producedMidline, front.hardRailRouteCertificates().end())
+      << "D2/RA-38 requires an ACTUAL A4-produced paired two-carrier "
+         "HardRail (1,4)->(4,7); input-only polyline is not proof";
+  ASSERT_EQ(producedMidline->junctions.size(), 1U);
+  const auto &midlineJunction = producedMidline->junctions.front();
+  ASSERT_EQ(static_cast<int>(midlineJunction.junction.index()), 4);
+  std::array<std::vector<int>, 2> radialRows;
+  std::array<directional::authority::QuarterTurn, 2> sideTransport{
+      directional::authority::QuarterTurn::from_integer(0),
+      directional::authority::QuarterTurn::from_integer(0)};
+  const auto &sourceFaces = front.sourceTopologyRegions();
+  for (std::size_t side = 0U; side < 2U; ++side) {
+    auto face = side == 0U ? producedMidline->endpoints[0].firstAttachment
+                           : producedMidline->endpoints[0].secondAttachment;
+    const auto start = sourceFaces.row_for_topology(face);
+    ASSERT_TRUE(start.has_value());
+    radialRows[side].push_back(static_cast<int>(start->index()));
+    for (const auto &step : midlineJunction.sectorPaths[side]) {
+      EXPECT_EQ(step.firstFace, face);
+      EXPECT_FALSE(front.hardFeatureEdges().contains(step.edge));
+      EXPECT_TRUE(step.edge.first() == midlineJunction.junction ||
+                  step.edge.second() == midlineJunction.junction);
+      sideTransport[side] = compose(step.firstToSecond, sideTransport[side]);
+      face = step.secondFace;
+      const auto row = sourceFaces.row_for_topology(face);
+      ASSERT_TRUE(row.has_value());
+      radialRows[side].push_back(static_cast<int>(row->index()));
+    }
+    EXPECT_EQ(face, side == 0U
+                        ? producedMidline->endpoints[1].firstAttachment
+                        : producedMidline->endpoints[1].secondAttachment);
+    if (radialRows[side].front() > radialRows[side].back()) {
+      std::reverse(radialRows[side].begin(), radialRows[side].end());
+    }
+  }
+  std::sort(radialRows.begin(), radialRows.end());
+  EXPECT_EQ(radialRows[0], (std::vector<int>{0, 1, 4}));
+  EXPECT_EQ(radialRows[1], (std::vector<int>{3, 6, 7}));
+  EXPECT_EQ(compose(producedMidline->endpoints[1].terminalCarrier.firstToSecond,
+                    sideTransport[0]),
+            compose(sideTransport[1],
+                    producedMidline->endpoints[0].terminalCarrier.firstToSecond))
+      << "A3 sector paths must commute with both LOCAL rail crossings";
+
+  // A certificate with one tampered nonrail A3 step must fail at the
+  // independent product validator; it must not obtain a fresh A5 gauge.
+  PhaseFrontDraft wrongRadial = phase_front_draft(fixture.network.phaseFront);
+  const auto wrong = std::find_if(wrongRadial.hardRailRouteCertificates.begin(),
+                                  wrongRadial.hardRailRouteCertificates.end(),
+                                  is_midline_pair);
+  ASSERT_NE(wrong, wrongRadial.hardRailRouteCertificates.end());
+  ASSERT_FALSE(wrong->junctions.front().sectorPaths[0].empty());
+  auto &badStep = wrong->junctions.front().sectorPaths[0].front();
+  badStep.firstToSecond = compose(
+      directional::authority::QuarterTurn::from_integer(1),
+      badStep.firstToSecond);
+  expect_phase_front_product_error(
+      construct_phase_front_product(std::move(wrongRadial)),
+      directional::geometry::SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority);
   for (const auto &route : front.hardRailRouteCertificates()) {
     ASSERT_FALSE(route.route.empty());
     ASSERT_EQ(route.junctions.size() + 1U, route.route.steps().size());
