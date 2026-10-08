@@ -11535,3 +11535,62 @@ Focused ordinal28, `M6CP1.A6BoundaryCandidateExtractionHasIndependentEligibility
 Ordinal25 independently proves a closed-complex side-incidence discrepancy in the same produced torus. Current EXEC evidence is insufficient to prove whether ordinal28 is a downstream consequence of that discrepancy or a distinct strip/candidate extraction defect; Review must keep the findings separate until that relation is established.
 
 **Review disposition:** the old M4CP4 witness groups the retained arrangement by `(family,strand)`, while R4 explicitly replaced that non-authoritative partition with quotient opposite-edge closure. The earlier green test therefore never proved the produced torus would remain non-vacuous under the new strip model. R1 keeps production extraction semantics frozen, independently checks produced strip closure/candidates, and moves mechanism-only non-vacuity/tamper to a canonical closed toroidal A6 test view. Stable accounting stays **60 / 16 / 44**, debt **1**.
+
+## `M6-DEFN-R5-R1-REV-OBS-01` — RA-33.1 must bind one certificate orientation and must not let global sheet labels deny the special case
+
+**Status.** OPEN / BLOCKS ACCEPTANCE OF D1 (RA-33.1) / design-class.
+
+Two defects in the D1 candidate rule, both re-derived from source.
+
+**(a) Orientation is discarded, so the rule's two disjunctions are independently satisfiable.**
+`seam_transport_certificate(...)` (`src/pipeline/RemeshPipeline.cpp:4520-4551`) computes `forward` and `reverse`
+as separate boolean matches and then `if (forward || reverse) return certificate;` — returning the certificate
+**without the orientation that matched**. D1 requires the certificate to match "in either forward or reverse
+orientation" *and*, separately, that "branch stripping must equal the oriented certificate's `forward()` or
+`reverse()`". With orientation discarded, a relation whose faces/sheets match **reversed** while its transport
+matches **forward** satisfies both clauses and is granted the certified special path — which waives full
+`sourceChart`/`branchRotation` equality on an inconsistent orientation pairing. This is the direction/gauge
+conflation class that cost M5-CP3 fifteen turns, and D3 already states the guard ("do not mix orientations")
+while D1 omits it.
+
+*Required:* return the matched orientation with the certificate (or expose two typed accessors) and evaluate the
+branch-strip, quarter-turn, coordinate, scale and phase checks against **that orientation only**. A certificate
+matching one orientation whose transport matches the other is missing/invalid authority and fails closed under
+D1's own clause.
+
+**(b) The forbidden proxy still gates discovery.** At the decision site (`:5400-5403`) `crossSheetSeam` is
+computed from `collinearEdge` equality plus `firstSpan.interiorBinding.sheet != secondSpan.interiorBinding.sheet`
+with **no certificate consulted**, and only `!crossSheetSeam` requires full representation equality — RA-32
+exactly, correctly diagnosed. But the same proxy appears again inside the helper D1 relies on:
+`firstSpan.interiorBinding.sheet == secondSpan.interiorBinding.sheet → return std::nullopt`. D1 forbids global
+sheet comparison from *granting* the special case and is silent on it *denying* one. If global labels are not a
+sound proxy for cross-sheet status — RA-32's premise — a genuinely certified seam whose spans carry equal labels
+is never discovered and silently takes the ordinary path: a false negative built on the same error.
+
+*Required:* state that no global sheet-ID comparison may **grant or deny** the special case, and make explicit
+that condition (iii)'s "distinct endpoint sheets" is a property of the certificate's `firstSheet()/secondSheet()`
+rather than of the spans' global labels.
+
+## `M6-DEFN-R5-R1-REV-OBS-02` — RA-33.3's discriminating witness cannot falsify τ's orientation
+
+**Status.** OPEN / CONDITION ON D3 (RA-33.3) ACCEPTANCE / design-class.
+
+D3's architectural call is correct: A5 must not infer τ from regional gauges, and A4 becomes the publication
+owner for oriented `(sourceEdge, fromFace, toFace, matching)` validated against exact A3 `transition_value`. The
+data provably exists before exclusion (`src/authority/FieldTransportAtlas.cpp:2020-2047` adds the transition
+value *before* marking the carrier nontraversable), the same retain-then-exclude structure established at
+M5-CP3 §15. The rail-vertex holonomy requirement is well specified and closes both tempting shortcuts
+("do not choose the shortest path or take a mean").
+
+**The gap is the witness.** The sole proposed discriminating structure is `F_a=0, F_b=1; τ_ab=0; R_coord=1;
+B_a=0, B_b=1`. It discriminates τ-versus-regional-`F` (`F_b−F_a = 1 != 0 = τ`) and makes `R_coord`'s **sign**
+falsifiable (odd). But **`τ_ab = 0` is self-inverse**, so it cannot distinguish `τ_ab` from `τ_ba = −τ_ab` — while
+the same paragraph requires that "reverse relation must invert all three relevant transports."
+
+*Required:* the bounded fixture family must include at least one qualifying witness with `τ_ab ∈ {1,3}`. A green
+result on a τ=0 witness proves the substitution and `R_coord`'s sign, and nothing about τ's direction.
+
+**Related, record so it is not later miscited:** `Z4` is abelian, so D3's stated convention "compose right-to-left
+and use `R_coord ∘ τ_ab`" is numerically inert — `(B_b − B_a − τ_ab − R_coord) mod 4 = 0` is symmetric in those
+two terms. No `Z4` fixture can falsify the composition **order**; only the **signs** are testable. The order rests
+on domain semantics, and no passing witness may be cited as confirming it.

@@ -1,3 +1,44 @@
+## 2026-10-08 — `M6-DEFN-R5-R1` review: D2/D4/D5 sound; D1 holed; D3 right with an untestable witness
+
+Runtime-free architecture review of the CP3 entry recovery definition candidate. **Not accepted as written.**
+No runtime, no product/test/fixture change; accepted authority untouched.
+
+**D1 (RA-33.1) — two defects, both from source.** `seam_transport_certificate(...)`
+(`src/pipeline/RemeshPipeline.cpp:4520-4551`) computes `forward` and `reverse` separately and returns
+`if (forward || reverse) return certificate;` — **discarding which orientation matched**. D1 then requires the
+certificate to match "in either forward or reverse orientation" *and*, separately, that branch stripping equal
+"the oriented certificate's `forward()` or `reverse()`". Those disjunctions are independently satisfiable, so a
+relation matching faces/sheets **reversed** while its transport matches **forward** is granted the certified
+special path and waives full `sourceChart`/`branchRotation` equality on a mixed orientation. D3 already states
+the guard ("do not mix orientations"); D1 omits it. Separately, D1 forbids global sheet labels from *granting*
+the special case but leaves them *gating discovery*: the same helper opens with
+`firstSpan.interiorBinding.sheet == secondSpan.interiorBinding.sheet → nullopt`, so under RA-32's own premise a
+genuinely certified seam with equal labels is never found — a false negative built on the error being removed.
+Recorded as `M6-DEFN-R5-R1-REV-OBS-01`.
+
+The diagnosis itself is confirmed: at `:5400-5403` `crossSheetSeam` is computed from `collinearEdge` equality plus
+label inequality with no certificate consulted, and only `!crossSheetSeam` requires full representation equality.
+
+**D3 (RA-33.3) — architecturally right, witness insufficient.** Making A4 the publication owner for oriented
+`(sourceEdge, fromFace, toFace, matching)` rather than letting A5 re-derive τ from regional gauges is the correct
+reading of RA-31a, and the data provably exists before exclusion (`FieldTransportAtlas.cpp:2020-2047` adds the
+transition value *before* marking the carrier nontraversable — the retain-then-exclude structure from M5-CP3
+§15). The rail-vertex holonomy rule is well specified and closes both shortcuts. But the sole discriminating
+structure has **`τ_ab = 0`**, which is self-inverse and so cannot falsify `τ_ab` versus `τ_ba = −τ_ab` — while the
+same paragraph requires the reverse relation to invert all three transports. At least one qualifying witness with
+`τ_ab ∈ {1,3}` is required. Also recorded: `Z4` is abelian, so "compose right-to-left" is numerically inert and
+no fixture can falsify the composition **order** — only the signs. `M6-DEFN-R5-R1-REV-OBS-02`.
+
+**D2, D4, D5 sound, with derived rather than asserted premises.** D2's `{1,3}` gauge-difference premise follows
+from 180° being self-inverse and therefore unable to discriminate direction; enumerating all relations, picking
+the smallest key *after* preconditions, and enforcing non-vacuity before the equality assertion remove the
+select-then-assert defect. D4's fixture geometry was checked rather than assumed — seam carrier `(1,4)` is a
+genuine interior edge shared by exactly `(0,1,4)` and `(1,5,4)`, one face per sheet, and all four triangles are
+CCW. D5 correctly inverts a selection-before-precondition defect and rejects component-label coincidence. All
+five obligations carry honest "outstanding proof" admissions and stop gates rather than synthesis.
+
+Exact successor: `M6-DEFN-R5-R2` — amend D1 and D3 as above; D2/D4/D5 carry forward unchanged.
+
 ## 2026-10-07 — `M6-CP3-TB1-ENTRY-R1-REV` — R1 rejected; RA-32 routes Definition repair
 
 - Re-derived the valid R1 gate at **482/497** and rejected/unpromoted the candidate.
