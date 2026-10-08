@@ -45,4 +45,4 @@ Release **only** `M6-CP3-CB1-ENTRY-R2`, with prescriptive preflight above and re
 | Turn boundary held | Documentation only; no source/test/build/fixture/selector/runtime mutation or execution. |
 | review_check.py boundary | PASS on snapshot-derived uncommitted documentation diff; source/test/selector guards all green. |
 | STATUS lifecycle maintained | Entry IN_PROGRESS beacon written; final COMPLETE beacon after all review documentation/cleanup. |
-| Pushed to origin, branch in sync | Atomic Git-tree update with expected parent and final GitHub head read required before COMPLETE; review document cannot self-certify its future commit. |
+| Pushed to origin, branch in sync | Atomic Git-tree CAS publication completed, independently compared changed paths against the frozen snapshot; post-publication GitHub branch authority is checked before final STATUS. No embedded future commit SHA is asserted. |
