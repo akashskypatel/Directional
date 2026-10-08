@@ -1,0 +1,43 @@
+# Directional M6-CP3-CB1-ENTRY-R3 — independent A3 trust and CB/TB gate decision request
+
+**Decision requested, not an approval.** Prepared 2026-10-08 during the *same* active `M6-CP3-CB1-ENTRY-R3` Code + Build turn. Do not treat this note as an independent review verdict, a new authorized turn, a runtime test, or completion of R3.
+
+## Authority and exact frozen evidence
+
+- Working branch: `agent/surface_cell_quad/p5-recover-bridge-healing` (PR #8); semantic source `7666939d9ee1a53148d2c85d7b6d40c509d8df10`.
+- Source recovered from the immutable eight-GMP/GMPXX-target compile package (dispatcher run `37856816696`, result artifact `11584990429`, outer SHA256 `84ce6a4abce121f0a5121ab7ebf0b296f4423161e523bdeb27b4d98446b1a507`). Package `SHA256SUMS` independently verified **28/28**; `metadata/source-commit.txt` agrees; configure preflight and build exit 0; all eight requested targets listed; `libgmpxx.so`, `libgmp.so` in generated link evidence; source receipts clean; command boundary `runtimeExecution=false`. **Compiled source evidence only**.
+- Frozen source/spec reviewed: `.agents/Directional/Architecture_M6_Frozen_Definitions.md` RA-39; `.agents/Directional/Architecture_M6_CP3_R3_Endpoint_Attachment_Review_Decision.md`; `.agents/Directional/Architecture_M6_CP3_CB1_Entry_R3_Recovery_Code_Build_Plan.md`; prior independent request `.agents/Directional/Architecture_M6_CP3_R3_A3_Balanced_Attestation_Review_Request.md`.
+- Historical R2 context: `Architecture_M6_CP3_TB1_Entry_R2_Red_Classification.tsv` records 53 RED of 497, including 25 direct A4, 12 Phase10 downstream, two RE terminal-ordering and 14 other. Those are **not** fresh R3 outcomes; the 47 previously accepted-to-RED identities and D1/D2/D3/D5/A6/A7 producer witnesses still require actual future execution.
+
+## Decision A — who attests A3 nonrail step values?
+
+**Observed current behavior, source-grounded:**
+
+1. A4's junction authoring (`src/geometry/SurfaceCellTracing.cpp`, approximately 18480–18570) obtains each nonrail step's forward and reverse turn through `authoritativeOptions.fieldTransportAtlas->transition_value`, checks reciprocity, constructs typed side paths, and compares `χ_next ∘ φ_A == φ_B ∘ χ_previous` before publishing a route.
+2. Public `SurfacePhaseFrontProduct::make` (`src/geometry/SurfaceCellTracing.cpp:7969+`, especially its junction validation around 8080–8220) receives `SourceTopologyRegions`, hard rail carrier transitions, and *mutable supplied* HardRail route certificates, **not** an independently supplied `FieldTransportAtlas` or nonrail edge-value table. It checks source-face incidence, the star/sector partition, and the χ/φ square using the step values from those very certificates. Thus commuting-square validity does **not** independently prove A3 provenance.
+3. A balanced +1 mod4 change to the first A3 step on **both** paths preserves the square algebraically. The existing D2 test (`tests/SurfaceCellTransitionQuotientTests.cpp:2472+`) compiles a copied-mutant comparison to a separately retained production A3 atlas. It has **not** been run and does **not** submit that balanced mutant to `make` with a required rejection expectation.
+4. Factory/rebuild call sites verified in source: `src/geometry/SurfaceCellTracing.cpp:12158`, `tests/SurfaceCellTransitionQuotientTests.cpp:315,1715`, `tests/SurfaceCellsPhase10Tests.cpp:3182,3209,6047,6183,6203,7725,7765`, `tests/FlowRepStrandsPhase15Tests.cpp:84`. A changed `make` signature requires an *exhaustive* audited migration of these uses.
+
+**Independent reviewer must choose one of two explicit contracts:**
+
+- **A4-trusted issuance:** A4 is the required source-owned, atlas-bound A3 attester; `make` checks structure, side paths, published rail carrier authority and consistency only. Then state publicly that `make` cannot authenticate arbitrary copied/rebuilt route-certificate nonrail φ values. Tests must not claim factory-independent A3 attestation. Keep the existing production A4 atlas equality, reverse reciprocity and missing-edge fail-closed behavior mandatory.
+- **Factory-independent A3 attestation:** `make` must reject balanced paired tampering. Design an explicit *independent* and source-bound nonrail A3 attestation input or immutable receipt, with complete source-face topology and row-permutation binding and all call sites updated. Do not pretend that a second copy of mutable certificate fields is independent. Do not replace the true A3 values with global per-face branch-gauge differences across cuts/holonomy. The reviewer must specify how reverse orientation, source rows, missing A3 and all test factories work. This would be a separately authorized code/schema step followed by the mandatory GMP compilation and later TB.
+
+**Do not silently take either option merely to make compiled tests pass.** RA-39 is already accepted for endpoint-local single-terminal-carrier χ; it is not a license to reintroduce RA-37a fan detours.
+
+## Decision B — CB versus TB evidence sequencing
+
+The binding R3 Code + Build plan (`Architecture_M6_CP3_CB1_Entry_R3_Recovery_Code_Build_Plan.md`, checklist 7 and 9, next separate TB) explicitly says tests may be *authored and compiled only* in CB, forbids running Directional binaries, and places **497=30+12+449+6** exact-process execution in a distinct TB turn. The current WIP/acceptance text also requires *actually produced, nonvacuous* D1/D2/D3/D5 and A6/A7 witness outcomes and recovery of 47 prior accepted regressions, evidence no compiler can supply. This is an evidence-sequencing ambiguity, not license to fake proof or start TB early.
+
+**Review must decide:**
+
+1. Is R3 CB allowed to close on complete source/test authoring, exact eight-target GMP/GMPXX compile/package evidence, and nonvacuity enforced in compiled assertions, with all runtime-positive claims expressly pending the separately authorized frozen TB? If yes, amend/reconcile the exact handoff/plan closeout gates and name the authorized TB successor **before** changing root `STATUS` to `COMPLETE`. TB must independently establish 497 exact filters, all actual A4-produced witnesses, and the 47 accepted→RED recoveries. RED cases must be investigated individually and returned to a *new* authorized repair turn if needed.
+2. Or must a separate independent Review resolve the producer/witness prerequisites **before** CB closure because the existing compiled witness search may be empty at runtime? If yes, define the permitted source-level evidence or review gates; do not run tests in this CB, loosen filters, forge route certificates, or call tool/time exhaustion `BLOCKED`.
+
+Until independently resolved, retain `M6-CP3-CB1-ENTRY-R3` as `IN_PROGRESS`, successor `UNKNOWN`. Neither reviewer conclusion can substitute for runtime producer results.
+
+## Non-claims and required next action
+
+- Most recent source adds an A4 `overfull-hard-feature-edge` prepublication guard for 3+-face hard-feature source edges and preserves the earlier `overfull-nonmanifold-spoke` junction guard. Those are compile-verified defensive checks, **not** evidence that upstream A2b permits malformed source to reach A4. The one-/two-/three-face scenarios from the prior handoff remain **future tests**.
+- Do not alter selector449 hash `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`, the frozen 497 routing, regression ledger 64/17/47 or debt 1, public schema, or durable workflow permissions in the absence of a reviewed decision.
+- Request a targeted independent source/architecture review of **both** decisions, then apply only the authorized change. If the producer-owned two-carrier search yields no real witness when independently executed in a permitted TB turn, stop for producer Review rather than manufacturing a passing artifact.
