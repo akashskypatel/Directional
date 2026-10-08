@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb1-entry-r1-rev-closeout-1",
+  "request_id": "m6-defn-r5-r1-ra33-docs-apply-1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb1-entry-r1-rev-closeout",
-  "file_id": "1MZgk_5kiSy3rqTWKq-yCINjPg9gs4lcL",
-  "patch_sha256": "10da434c1c203bd7c75200dae4355d23d7d6d77636523bb457c06f38e33b3e41",
-  "base_sha": "e08872dbe3235e2c4a35dd71ad76088b7e0423e5",
+  "mailbox_key": "m6-defn-r5-r1-ra33-docs",
+  "file_id": "1Ep4Yxe9uwbYldaUlLCBQNiyxlwPjL0ZR",
+  "patch_sha256": "f45eb3fb1ddef3fcd024d8c2d58f06c625b5803019c121b18463d3ffc317e7d8",
+  "base_sha": "46717738454a96ab9a379a995eb903939e7a9413",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close M6 CP3 TB1 R1 review",
+  "commit_message": "docs: prepare M6 DEFN R5 R1 RA-33 candidate and held R2 plan",
   "retention_days": 14
 }
