@@ -3854,6 +3854,43 @@ std::optional<CertifiedSeamSide> certified_seam_wedge_side(
   return side;
 }
 
+// The A4 certificate owns the source-face directions. Determine a single
+// typed direction before any ordinary-front sheet/branch/phase comparison;
+// labels outside the certificate never select the seam path.
+std::optional<authority::Orientation> certified_seam_direction(
+    const SurfaceOccurrence &firstOccurrence,
+    const SurfaceOccurrence &secondOccurrence,
+    const SurfaceOccurrenceSideSpan &firstSpan,
+    const SurfaceOccurrenceSideSpan &secondSpan,
+    const geometry::SurfaceIsolationSeamTransportCertificate &certificate) {
+  if (!firstSpan.collinearEdge.has_value() ||
+      firstSpan.collinearEdge != secondSpan.collinearEdge ||
+      firstSpan.collinearEdge != certificate.seam() ||
+      firstOccurrence.topologyRegion != certificate.region() ||
+      secondOccurrence.topologyRegion != certificate.region() ||
+      firstSpan.interiorBinding.face != firstOccurrence.placement.selectedFace ||
+      secondSpan.interiorBinding.face != secondOccurrence.placement.selectedFace ||
+      certificate.firstSheet() == certificate.secondSheet()) {
+    return std::nullopt;
+  }
+  const auto firstSide = certified_seam_wedge_side(
+      firstOccurrence, firstSpan.interiorBinding, certificate);
+  const auto secondSide = certified_seam_wedge_side(
+      secondOccurrence, secondSpan.interiorBinding, certificate);
+  if (!firstSide.has_value() || !secondSide.has_value()) {
+    return std::nullopt;
+  }
+  if (*firstSide == CertifiedSeamSide::First &&
+      *secondSide == CertifiedSeamSide::Second) {
+    return authority::Orientation::Forward;
+  }
+  if (*firstSide == CertifiedSeamSide::Second &&
+      *secondSide == CertifiedSeamSide::First) {
+    return authority::Orientation::Reverse;
+  }
+  return std::nullopt;
+}
+
 } // namespace
 
 SurfaceOccurrenceComplexProducer::ConstructionResult
@@ -4589,33 +4626,18 @@ SurfaceOccurrenceComplexProducer::produce(
           const SurfaceOccurrenceSideSpan &firstSpan,
           const SurfaceOccurrenceSideSpan &secondSpan)
       -> std::optional<geometry::SurfaceIsolationSeamTransportCertificate> {
-    if (!firstSpan.collinearEdge.has_value() ||
-        firstSpan.collinearEdge != secondSpan.collinearEdge ||
-        firstOccurrence.topologyRegion != secondOccurrence.topologyRegion) {
-      return std::nullopt;
-    }
+    std::optional<geometry::SurfaceIsolationSeamTransportCertificate> selected;
     for (const auto &certificate :
          phaseFront.isolationSeamTransportCertificates()) {
-      if (certificate.region() != firstOccurrence.topologyRegion ||
-          certificate.seam() != firstSpan.collinearEdge.value()) {
+      if (!certified_seam_direction(firstOccurrence, secondOccurrence,
+                                    firstSpan, secondSpan, certificate)
+               .has_value()) {
         continue;
       }
-      const auto firstSide = certified_seam_wedge_side(
-          firstOccurrence, firstSpan.interiorBinding, certificate);
-      const auto secondSide = certified_seam_wedge_side(
-          secondOccurrence, secondSpan.interiorBinding, certificate);
-      if (!firstSide.has_value() || !secondSide.has_value() ||
-          firstSpan.interiorBinding.face != firstOccurrence.placement.selectedFace ||
-          secondSpan.interiorBinding.face != secondOccurrence.placement.selectedFace) {
-        continue;
-      }
-      const bool forward = *firstSide == CertifiedSeamSide::First &&
-                           *secondSide == CertifiedSeamSide::Second;
-      const bool reverse = *firstSide == CertifiedSeamSide::Second &&
-                           *secondSide == CertifiedSeamSide::First;
-      if (forward || reverse) return certificate;
+      if (selected.has_value()) return std::nullopt; // Ambiguous owner.
+      selected = certificate;
     }
-    return std::nullopt;
+    return selected;
   };
   const auto side_authority_for_front_edge =
       [&](const int frontEdge)
@@ -5614,28 +5636,18 @@ SurfaceQuotientProducer::ConstructionResult SurfaceQuotientProducer::produce(
           return error;
         }
 
-        const auto firstSide = certified_seam_wedge_side(
-            *firstOccurrence->second, firstSpan.interiorBinding, seam);
-        const auto secondSide = certified_seam_wedge_side(
-            *secondOccurrence->second, secondSpan.interiorBinding, seam);
-        std::optional<authority::QuarterTurn> expectedTurn;
-        if (!firstSide.has_value() || !secondSide.has_value()) {
+        const auto direction = certified_seam_direction(
+            *firstOccurrence->second, *secondOccurrence->second,
+            firstSpan, secondSpan, seam);
+        if (!direction.has_value()) {
           SurfaceQuotientProductError error;
           error.code = SurfaceQuotientProductErrorCode::InvalidIsolationEvidence;
           error.relation = relation->id;
           return error;
         }
-        if (*firstSide == CertifiedSeamSide::First &&
-            *secondSide == CertifiedSeamSide::Second &&
-            firstGauge.face == seam.firstFace() &&
-            secondGauge.face == seam.secondFace()) {
-          expectedTurn = seam.forward();
-        } else if (*firstSide == CertifiedSeamSide::Second &&
-                   *secondSide == CertifiedSeamSide::First &&
-                   firstGauge.face == seam.secondFace() &&
-                   secondGauge.face == seam.firstFace()) {
-          expectedTurn = seam.reverse();
-        }
+        const auto expectedTurn =
+            *direction == authority::Orientation::Forward
+                ? seam.forward() : seam.reverse();
         const auto firstRegional = compose(
             firstGauge.localFaceBranchRotation.inverse(),
             authority::QuarterTurn::from_integer(firstLattice.branchRotation));
@@ -5644,7 +5656,7 @@ SurfaceQuotientProducer::ConstructionResult SurfaceQuotientProducer::produce(
             authority::QuarterTurn::from_integer(secondLattice.branchRotation));
         const auto strippedTurn =
             compose(secondRegional, firstRegional.inverse());
-        if (!expectedTurn.has_value() || strippedTurn != expectedTurn.value()) {
+        if (strippedTurn != expectedTurn) {
           SurfaceQuotientProductError error;
           error.code =
               SurfaceQuotientProductErrorCode::RelationCertificateConflict;

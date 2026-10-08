@@ -2631,6 +2631,99 @@ TEST(M6CP3, OrdinaryFrontIsolationSeamUsesCoordinateIdentityAndCertifiedSheetTra
                 RelationCertificateConflict);
 }
 
+// A6 must consume the same source-face/wedge certificate direction as A5.
+// These mutations preserve the produced seam's topology and transport; only
+// the typed endpoint evidence is altered. No global sheet label can repair it.
+TEST(M6CP3, A6SeamDirectionRejectsForeignFaceAndWedgeBindings) {
+  const auto fixture = m6cp3_produced_seam_fixture();
+  ASSERT_NE(fixture, nullptr)
+      << "D3/D7 requires a real A4->A5->A6->A7 produced reciprocal seam";
+  auto a5Construction =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+          fixture->mesh.V, fixture->mesh.F,
+          fixture->network.phaseFront.product());
+  const auto *a5 =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+          &a5Construction);
+  ASSERT_NE(a5, nullptr);
+  const auto *relation = m6cp3_seam_ordinary(*a5);
+  ASSERT_NE(relation, nullptr);
+  ASSERT_TRUE(relation->evidence.isolationSeamTransportCertificate.has_value());
+  const auto &seam =
+      relation->evidence.isolationSeamTransportCertificate.value();
+  const auto baseline =
+      directional::pipeline::SurfaceQuotientProducer::produce(*a5);
+  ASSERT_NE(std::get_if<directional::pipeline::SurfaceQuotientProduct>(
+                &baseline), nullptr);
+
+  // A copied A5 relation must not gain a seam direction by passing a source
+  // face from the other side, even if the sheet label remains unchanged.
+  auto swappedRecords = a5->verification_records();
+  auto swapped = std::find_if(
+      swappedRecords.ownedRelations.begin(),
+      swappedRecords.ownedRelations.end(),
+      [&](const auto &candidate) { return candidate.id == relation->id; });
+  ASSERT_NE(swapped, swappedRecords.ownedRelations.end());
+  ASSERT_TRUE(swapped->evidence.firstEndpointSpan.has_value());
+  auto &swappedFace =
+      swapped->evidence.firstEndpointSpan->interiorBinding.face;
+  ASSERT_TRUE(swappedFace == seam.firstFace() ||
+              swappedFace == seam.secondFace());
+  swappedFace = swappedFace == seam.firstFace() ? seam.secondFace()
+                                                 : seam.firstFace();
+  auto malformedFace = directional::pipeline::SurfaceOccurrenceComplexProducer::
+      publish_records_for_validation(std::move(swappedRecords.cells),
+                                     std::move(swappedRecords.occurrences),
+                                     std::move(swappedRecords.ownedRelations));
+  const auto *faceA5 =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+          &malformedFace);
+  ASSERT_NE(faceA5, nullptr);
+  auto faceResult =
+      directional::pipeline::SurfaceQuotientProducer::produce(*faceA5);
+  const auto *faceError =
+      std::get_if<directional::pipeline::SurfaceQuotientProductError>(
+          &faceResult);
+  ASSERT_NE(faceError, nullptr);
+  EXPECT_EQ(faceError->code,
+            directional::pipeline::SurfaceQuotientProductErrorCode::
+                InvalidIsolationEvidence);
+
+  // A selected face that is absent from its own certified corner-wedge
+  // bindings cannot be reinterpreted from a global/other-side sheet.
+  auto missingWedgeRecords = a5->verification_records();
+  const auto firstId = relation->id.first;
+  const auto firstSpan = relation->evidence.firstEndpointSpan;
+  ASSERT_TRUE(firstSpan.has_value());
+  auto occurrence = std::find_if(
+      missingWedgeRecords.occurrences.begin(),
+      missingWedgeRecords.occurrences.end(),
+      [&](const auto &candidate) { return candidate.id == firstId; });
+  ASSERT_NE(occurrence, missingWedgeRecords.occurrences.end());
+  const auto binding = firstSpan->interiorBinding;
+  const auto entry = std::find(occurrence->cornerWedgeBindings.begin(),
+                               occurrence->cornerWedgeBindings.end(), binding);
+  ASSERT_NE(entry, occurrence->cornerWedgeBindings.end());
+  occurrence->cornerWedgeBindings.erase(entry);
+  auto missingWedge = directional::pipeline::SurfaceOccurrenceComplexProducer::
+      publish_records_for_validation(std::move(missingWedgeRecords.cells),
+                                     std::move(missingWedgeRecords.occurrences),
+                                     std::move(missingWedgeRecords.ownedRelations));
+  const auto *wedgeA5 =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+          &missingWedge);
+  ASSERT_NE(wedgeA5, nullptr);
+  auto wedgeResult =
+      directional::pipeline::SurfaceQuotientProducer::produce(*wedgeA5);
+  const auto *wedgeError =
+      std::get_if<directional::pipeline::SurfaceQuotientProductError>(
+          &wedgeResult);
+  ASSERT_NE(wedgeError, nullptr);
+  EXPECT_EQ(wedgeError->code,
+            directional::pipeline::SurfaceQuotientProductErrorCode::
+                InvalidIsolationEvidence);
+}
+
 TEST(M6CP3, A5ChartBarriersConsumeTypedHardFeatureAuthorityAcrossRelationKinds) {
   const auto hasTransitionAcross = [](const auto &graph, const auto &edge) {
     return std::any_of(graph.transitions().begin(), graph.transitions().end(),
