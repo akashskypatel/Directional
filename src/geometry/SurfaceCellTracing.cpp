@@ -18275,7 +18275,9 @@ SurfaceCellNetwork build_surface_cell_network(
                                    int vertexIndex = -1,
                                    const char *predicate = "first-invalid",
                                    int fromFaceRow = -1,
-                                   int toFaceRow = -1) {
+                                   int toFaceRow = -1,
+                                   std::optional<authority::SourceEdgeTopologyKey>
+                                       failingSpoke = std::nullopt) {
       SurfacePhaseFrontFailure failure;
       failure.reason = SurfacePhaseFrontFailureReason::InvalidHardRailRouteCertificate;
       failure.hardRailRouteLocus = locus;
@@ -18331,6 +18333,30 @@ SurfaceCellNetwork build_surface_cell_network(
         detail << ":faces=" << (firstRow ? static_cast<int>(firstRow->index()) : -1)
                << ',' << (secondRow ? static_cast<int>(secondRow->index()) : -1)
                << ":chi=" << static_cast<int>(owner->firstToSecond.value());
+      }
+      if (failingSpoke.has_value()) {
+        detail << ";firstFailSpoke=" << failingSpoke->first().index()
+               << ',' << failingSpoke->second().index();
+        const auto source = sourceEdges.find(*failingSpoke);
+        if (source != sourceEdges.end()) {
+          detail << ";firstFailSpokeFaces=";
+          for (std::size_t side = 0U; side < 2U; ++side) {
+            if (side != 0U) detail << '|';
+            const auto face = surface_cell_tracing_detail::source_face_id(
+                source->second[side], faces.rows());
+            if (!face.has_value()) {
+              detail << "missing";
+              continue;
+            }
+            const auto topology =
+                network.sourceTopologyRegions->topology_for_row(*face);
+            const auto &vertices = topology.vertices();
+            for (std::size_t vertex = 0U; vertex < vertices.size(); ++vertex) {
+              if (vertex != 0U) detail << ',';
+              detail << vertices[vertex].index();
+            }
+          }
+        }
       }
       failure.hardRailRouteDiagnostic = detail.str();
       network.phaseFront = SurfacePhaseFrontResult::rejected(std::move(failure));
@@ -18429,10 +18455,12 @@ SurfaceCellNetwork build_surface_cell_network(
       int hardSpokes = 0;
       bool invalidStar = false;
       const char *invalidStarPredicate = "invalid-source-star";
+      std::optional<authority::SourceEdgeTopologyKey> firstInvalidSpoke;
       for (const auto &[edge, incident] : sourceEdges) {
         if (edge.first() != *junction && edge.second() != *junction)
           continue;
         if (incident[0] < 0 || incident[1] < 0) {
+          firstInvalidSpoke = edge;
           invalidStarPredicate = "boundary-or-nonmanifold-spoke";
           invalidStar = true;
           break;
@@ -18442,6 +18470,7 @@ SurfaceCellNetwork build_surface_cell_network(
         const auto f1 = surface_cell_tracing_detail::source_face_id(
             incident[1], faces.rows());
         if (!f0 || !f1) {
+          firstInvalidSpoke = edge;
           invalidStarPredicate = "invalid-source-face-id";
           invalidStar = true;
           break;
@@ -18452,6 +18481,7 @@ SurfaceCellNetwork build_surface_cell_network(
         ++fullDegrees[b];
         if (authoritativeOptions.hardFeatureEdges.contains(edge)) {
           if (edge != previous.edge && edge != carrier->edge) {
+            firstInvalidSpoke = edge;
             invalidStarPredicate = "foreign-hard-carrier";
             invalidStar = true; // Foreign barrier inside a sector.
             break;
@@ -18465,6 +18495,7 @@ SurfaceCellNetwork build_surface_cell_network(
             authoritativeOptions.fieldTransportAtlas->transition_value(edge, *f1, *f0);
         if (!forward || !reverse ||
             reverse->transport != forward->transport.inverse()) {
+          firstInvalidSpoke = edge;
           invalidStarPredicate = "missing-or-nonreciprocal-A3";
           invalidStar = true;
           break;
@@ -18480,7 +18511,8 @@ SurfaceCellNetwork build_surface_cell_network(
                       invalidStar ? invalidStarPredicate
                       : hardSpokes != 2 ? "not-two-hard-spokes"
                       : fullDegrees.size() < 3U ? "degenerate-vertex-star"
-                                                : "nonmanifold-vertex-link");
+                                                : "nonmanifold-vertex-link",
+                      -1, -1, firstInvalidSpoke);
         return network;
       }
       // Cutting a single interior-manifold star cycle at exactly two
