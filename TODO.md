@@ -1,3 +1,10 @@
+# LIVE — M6-CP3-CB1-ENTRY-R3 Code + Build (2026-10-08T21:39Z)
+
+- [x] A4 first-invalid source-spoke/topology diagnostics compiled GREEN on `d56f57adc184d6180fc2c69087a5340b8e97bcc7`, 8 GMP/GMPXX targets, run `37849106999`, artifact `11581102206`, 28/28 hashes, `runtimeExecution=false`.
+- [ ] SAME R3 IN_PROGRESS: factory A3 attestation independent Review; real produced D1/D2/D3/D5 and A6/A7 witnesses; 25+12+2 first-failure investigations and 47 CP2 accepted-green recoveries; future separate immutable frozen 497-case TB. No runtime proofs from compile.
+
+---
+
 # LIVE — M6-CP3-CB1-ENTRY-R3 Code + Build (2026-10-08T21:26Z)
 
 - [x] Test-only D2 balanced A3 falsifier e49431df81a3e23dc7870a4e409128dea618d378, eight GMP/GMPXX targets GREEN run 37846303377, result 11580420381, 28/28 manifest, runtimeExecution=false.
