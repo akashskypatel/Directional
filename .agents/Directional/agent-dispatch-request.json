@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb1-r2-p4p5-compile-1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb1-r2-p4p5-compile",
-  "source_sha": "34a19ac515ac959c306698c8c2137e048d75d707",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb1-r2-p4p5-compile"
+  "request_id": "m6-cp3-cb1-r2-a7-typed-wedge-apply-1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb1-r2-a7-typed-wedge-apply",
+  "file_id": "1FXpCbCS_u7h_mzQqdqAxdz-WuSDnd-hI",
+  "patch_sha256": "dabbfa25bce665e1a6f787509840af6537a106437a4169f6eaf237577d193f00",
+  "base_sha": "fbcc24e12530827c26f22a4bf1ccc27c13b5e4bd",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "fix(m6): bind A7 wedge connectivity to typed face-sheet memberships",
+  "retention_days": 14
 }
