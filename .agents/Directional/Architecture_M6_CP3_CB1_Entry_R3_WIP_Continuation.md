@@ -1,0 +1,26 @@
+# M6-CP3-CB1-ENTRY-R3 — bounded Code+Build WIP checkpoint (2026-10-08)
+
+**IN_PROGRESS, compile-only candidate; no runtime/TB acceptance.** Working branch `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft. Preserve and resume this same turn; do not enter successor until all mandatory gates are met.
+
+## Source and remote work
+
+- Frozen source snapshot SHA `10c8ae0b7f3ab199c9e4b1df36e49cb81e383569`; snapshot run/artifact `37812514198 / 11566335144` with verified manifest.
+- Four-file exact-base work-preservation patch: `Directional__M6-CP3-CB1-ENTRY-R3__base-10c8ae0b7f3a__work-preservation-v2.patch`, complete SHA-256 `cdfe8bbc836bcac1b25ade19c818fef7862154ba38d98688bad91573b7335129`, diff SHA-256 `598063624dc10a26de46af5a7578a848c49a529906436c147175a12fbf2bccfa`. Reusable static `git apply --check` and `git diff --check` PASS. Backup in ChatGPT Library `/Directional/Evidence/`.
+- **Applied semantic commit `948d75259e10ff23b66e6d21f610d9a862c9702b`**. Drive apply run `37816497596` success. Verified apply result artifact `11567606269`, digest `a1085104c985172f9f62727a6fc1c455eace4d8c5ffd0a4fd360bf86d9e8cb6d`. It reports exact patch SHA/source and `runtimeExecution=false`. Both consumed Drive staging files v1 and v2 owner-deleted after successful application; backups remain in Library.
+- Semantic source changes: terminal-carrier endpoint-local HardRail χ at each spatial end; RA-38 two-cut source-vertex sectors; per-junction nonrail exact A3 radial paths; comparison-only commuting square; product validation and A5 consumption of immutable typed evidence; removed the erroneous global whole-star gauge precondition; added bounded first-route-predicate locus diagnostics; adapted D2 focused tests and singleton odd-τ requirement.
+
+## Compile-only execution
+
+- First compile dispatcher request commit `f285c7852dc07f1b2302d9eda789e9b623e6f47f` included a non-allowlisted `retention_days` field. It is **invalid as a compile request**, not a build result. Diagnose its schema rejection rather than inferring compilation.
+- Corrected compile request commit `d577d871b737e6de4743059af90530ff81e399e7` removes that unknown field, preserves exact compiled source `948d75259e10ff23b66e6d21f610d9a862c9702b`, eight approved target names, and pins mailbox **`.workflow-mailbox/m6-cp3-cb1-entry-r3-v2-compile-r2/latest.json`**.
+- Compile job/result is **not yet verified** at WIP checkpoint; read matching mailbox once terminal, reconcile job/log/result artifacts, verify GMP/GMPXX links, all eight targets, `exactArithmeticBackend=GMP`, clean source, `runtimeExecution=false` and package manifest. Never execute generated test binaries inside CB.
+
+## Remaining obligations
+
+1. Complete plan item 6: independent A6 typed certified seam direction/domain recovery. No A5/A6 identity inference from sheet labels.
+2. Improve first-failure evidence beyond coarse cause/index to full A4 source/target topology, junction, carrier, missing A3 φ, and owner; review 25 direct R2 A4 REDs, 12 dependent Phase10 REDs, and two RE terminal-ordering REDs.
+3. Add compiled focused positive/negative fixtures, especially a **real A4-produced** multi-carrier paired HardRail certificate with route length >1, reciprocal and source-face permutation, odd τ with `F_b−F_a != τ` and inversion negative. Hand-authored inputs are not positive production. If bounded search finds none, record unexercised and STOP for independent Review.
+4. Recheck all `SurfacePhaseFrontProduct::make` factory copies and A5/A6 typed evidence; freeze selectors and routing, `497 = 30+12+449+6`, accepted CP2 `491/491`, R2 rejected `444/497` with 47 accepted-green losses. Historical counts 64/17/47, debt 1.
+5. Only after all Code+Build obligations, compile/package GREEN, durable report/tracker/handoff closeout, publish final root `STATUS` COMPLETE with authorized TB successor. No successor in same response.
+
+This WIP is a record of implemented source and outstanding gates, not semantic promotion.
