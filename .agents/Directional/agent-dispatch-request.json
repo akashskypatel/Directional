@@ -1,20 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb1-entry-r2-exec-artifact11542824274-1",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb1-entry-r2-exec",
-  "executor_sha": "d07689344ef448f963c28c95d7f4a8dfe11375a2",
-  "semantic_source_sha": "80fc1688f13e5ed52699177a845f25cc4dbda38b",
-  "turn_id": "M6-CP3-TB1-ENTRY-R2-EXEC",
-  "harness_path": ".agents/Directional/tools/m6_cp3_entry_497_artifact_only_harness.sh",
-  "harness_sha256": "947a95ee4f684143a0f8d7c768a39253ab893d921da488802b45fb6ed58879dd",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": 11542824274,
-    "EXPECTED_SOURCE_SHA": "80fc1688f13e5ed52699177a845f25cc4dbda38b",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "8aa756b1085a75109648b4da7f07a2ffebcdf975ea04981ec88b2d2e61c89114",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "1fe5d60440fc1ec2f874fbbad3ecb9da260d25839e786cf384e73adb1aa4cd57",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "2c4a3c8eb9616482a86263a77a2ce07185be4492c685ad090b98f10b55c91e74"
-  },
-  "artifact_prefix": "m6-cp3-tb1-entry-r2-exec",
+  "request_id": "m6-defn-r5-r3-drive-apply-v1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-defn-r5-r3-drive-apply",
+  "file_id": "1Fxt25L0SFzBAwewXahZXg55sGLvD1kR6",
+  "patch_sha256": "fc6d87201bffd7568bed743455a51b0df86a73b6678be24f03704addc12280d0",
+  "base_sha": "fade2a964355adeb4c94d5fc28f322343e60abae",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): define RA-37 CP3 HardRail transport candidate",
   "retention_days": 14
 }
