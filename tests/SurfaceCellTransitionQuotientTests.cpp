@@ -2175,8 +2175,8 @@ const directional::pipeline::SurfaceOccurrenceRelation *m6cp3_seam_ordinary(
                relation.evidence.firstEndpointSpan->collinearEdge.has_value() &&
                relation.evidence.firstEndpointSpan->collinearEdge ==
                    relation.evidence.secondEndpointSpan->collinearEdge &&
-               relation.evidence.firstEndpointSpan->interiorBinding.sheet !=
-                   relation.evidence.secondEndpointSpan->interiorBinding.sheet &&
+               // Raw/global span sheet-label IDs are not A4's typed wedge
+               // incidence proof; neither equality nor inequality selects it.
                relation.evidence.isolationSeamTransportCertificate.has_value();
       });
   return found == product.owned_relations().end() ? nullptr : &*found;
