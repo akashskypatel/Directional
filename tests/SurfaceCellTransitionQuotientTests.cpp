@@ -682,7 +682,8 @@ const PhaseFrontFixture &hard_rail_fixture() {
   return fixture;
 }
 
-PhaseFrontFixture make_nonconstant_hard_rail_fixture() {
+PhaseFrontFixture make_nonconstant_hard_rail_fixture(
+    const bool reverseSourceFaceRows = false) {
   PhaseFrontFixture fixture;
   Eigen::MatrixXd vertices(9, 3);
   int vertex = 0;
@@ -703,6 +704,14 @@ PhaseFrontFixture make_nonconstant_hard_rail_fixture() {
       faces.row(face++) << lowerLeft, lowerRight, upperRight;
       faces.row(face++) << lowerLeft, upperRight, upperLeft;
     }
+  }
+  // Keep source vertices and hard-feature edge topology fixed while changing
+  // only the input face-row order. Recompute the raw field from geometric
+  // face positions below so the A3 field remains the same physical field.
+  if (reverseSourceFaceRows) {
+    const Eigen::MatrixXi originalFaces = faces;
+    for (int row = 0; row < faces.rows(); ++row)
+      faces.row(row) = originalFaces.row(faces.rows() - 1 - row);
   }
   fixture.mesh.set_mesh(vertices, faces);
 
@@ -2452,6 +2461,48 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
             compose(sideTransport[1],
                     producedMidline->endpoints[0].terminalCarrier.firstToSecond))
       << "A3 sector paths must commute with both LOCAL rail crossings";
+
+  // RA-38: face-row order is not a source-topology identity. Produce a
+  // second A4 product from the same 3x3 hard rail with the eight input face
+  // rows reversed. Do not compare numeric row IDs or synthesize a route:
+  // the selected certificate must independently be A4-published.
+  const auto permutedFixture = make_nonconstant_hard_rail_fixture(true);
+  const auto &permutedFront = permutedFixture.network.phaseFront.product();
+  const auto permutedMidline = std::find_if(
+      permutedFront.hardRailRouteCertificates().begin(),
+      permutedFront.hardRailRouteCertificates().end(), is_midline_pair);
+  ASSERT_NE(permutedMidline,
+            permutedFront.hardRailRouteCertificates().end())
+      << "D2 source-face-row permutation must preserve an A4-produced "
+         "two-carrier HardRail, not merely input hard edges";
+  ASSERT_EQ(permutedMidline->junctions.size(), 1U);
+  EXPECT_EQ(permutedMidline->junctions.front().junction,
+            midlineJunction.junction);
+  // Compare immutable SOURCE-FACE TOPOLOGY, not the rows used to index it.
+  // The canonical pair may exchange sector orientation; normalize the two
+  // unordered sector face sets before comparing.
+  const auto sector_topology = [](const auto &certificate) {
+    using Face = directional::authority::SourceFaceTopologyKey;
+    std::array<std::set<Face>, 2> sectors;
+    for (std::size_t side = 0; side < 2U; ++side) {
+      sectors[side].insert(side == 0U
+          ? certificate.endpoints[0].firstAttachment
+          : certificate.endpoints[0].secondAttachment);
+      sectors[side].insert(side == 0U
+          ? certificate.endpoints[1].firstAttachment
+          : certificate.endpoints[1].secondAttachment);
+      for (const auto &junction : certificate.junctions) {
+        for (const auto &step : junction.sectorPaths[side]) {
+          sectors[side].insert(step.firstFace);
+          sectors[side].insert(step.secondFace);
+        }
+      }
+    }
+    if (sectors[1] < sectors[0]) std::swap(sectors[0], sectors[1]);
+    return sectors;
+  };
+  EXPECT_EQ(sector_topology(*permutedMidline),
+            sector_topology(*producedMidline));
 
   // A certificate with one tampered nonrail A3 step must fail at the
   // independent product validator; it must not obtain a fresh A5 gauge.
