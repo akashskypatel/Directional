@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb1-entry-r3-d2-produced-midline-r1-apply",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb1-entry-r3-d2-produced-midline-r1-apply",
-  "file_id": "1vEY5yG9I-tuI7LNZppzOLsnCtZXD3E1Y",
-  "patch_sha256": "6a1a0d65d730acb7ba76da283be50fd4cea06bf94e8b17d39843a4bad24a8a51",
-  "base_sha": "6a16d21142de8f83b37df4dd5e207f66b877ef6e",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(surfacecells): require A4-produced two-carrier D2 sector witnesses",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb1-entry-r3-d2-produced-midline-r1-compile",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb1-entry-r3-d2-produced-midline-r1-compile",
+  "source_sha": "4dfde0bd5cd70b92bdae73deaf448c8bf8d14adf",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb1-entry-r3-d2-produced-midline-r1"
 }
