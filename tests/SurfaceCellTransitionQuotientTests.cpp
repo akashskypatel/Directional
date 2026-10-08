@@ -14,6 +14,7 @@
 #include <iterator>
 #include <limits>
 #include <map>
+#include <memory>
 #include <variant>
 #include <numbers>
 #include <numeric>
@@ -2177,6 +2178,85 @@ const directional::pipeline::SurfaceOccurrenceRelation *m6cp3_seam_ordinary(
   return found == product.owned_relations().end() ? nullptr : &*found;
 }
 
+// This is a source-produced, axis-aligned seam family, not an A5 record
+// constructor. A real reciprocal seam relation must exist before a test can
+// select one; no hand-authored relation is accepted as positive evidence.
+PhaseFrontFixture make_axis_aligned_isolation_seam_fixture(
+    const double targetSize) {
+  PhaseFrontFixture fixture;
+  Eigen::MatrixXd vertices(6, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 2.0, 0.0, 0.0,
+      0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 2.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(4, 3);
+  faces << 0, 1, 4, 0, 4, 3, 1, 2, 5, 1, 5, 4;
+  fixture.mesh.set_mesh(vertices, faces);
+  fixture.components = {0, 0, 0, 0};
+  fixture.sheets = {0, 0, 1, 1};
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          fixture.mesh, constant_xy_field(faces.rows()));
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.defaultTargetSize = targetSize;
+  options.sourceFaceComponents = fixture.components;
+  options.sourceFaceSheets = fixture.sheets;
+  fixture.network = directional::geometry::build_surface_cell_network(
+      fixture.mesh.V, fixture.mesh.F, crossField,
+      Eigen::VectorXd::Constant(vertices.rows(), targetSize), options);
+  return fixture;
+}
+
+std::unique_ptr<PhaseFrontFixture> m6cp3_produced_seam_fixture() {
+  for (const double size : {0.25, 0.5, 1.0}) {
+    auto fixture = std::make_unique<PhaseFrontFixture>(
+        make_axis_aligned_isolation_seam_fixture(size));
+    if (!fixture->network.phaseFront.is_produced()) continue;
+    const auto &front = fixture->network.phaseFront.product();
+    const auto a5Construction =
+        directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+            fixture->mesh.V, fixture->mesh.F, front);
+    const auto *a5 =
+        std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+            &a5Construction);
+    if (a5 == nullptr) continue;
+    const auto *relation = m6cp3_seam_ordinary(*a5);
+    if (relation == nullptr) continue;
+    const auto *first = m6cp3_occurrence_by_id(*a5, relation->id.first);
+    const auto *second = m6cp3_occurrence_by_id(*a5, relation->id.second);
+    if (first == nullptr || second == nullptr ||
+        !relation->evidence.isolationSeamTransportCertificate.has_value()) {
+      continue;
+    }
+    std::vector<directional::authority::IsolationSheetId> shared;
+    std::set_intersection(first->cornerWedgeSheets.begin(),
+                          first->cornerWedgeSheets.end(),
+                          second->cornerWedgeSheets.begin(),
+                          second->cornerWedgeSheets.end(),
+                          std::back_inserter(shared));
+    if (!shared.empty()) continue;
+    const auto a6Construction =
+        directional::pipeline::SurfaceQuotientProducer::produce(*a5);
+    const auto *a6 =
+        std::get_if<directional::pipeline::SurfaceQuotientProduct>(
+            &a6Construction);
+    if (a6 == nullptr ||
+        !std::any_of(a6->selected_forest().begin(),
+                     a6->selected_forest().end(),
+                     [&](const auto &edge) {
+                       return edge.relation == relation->id;
+                     })) {
+      continue;
+    }
+    const auto a7Construction =
+        directional::pipeline::SourceAttachedGeometryProducer::produce(
+            fixture->mesh.V, fixture->mesh.F, *a5, *a6);
+    if (std::get_if<directional::pipeline::SourceAttachedGeometryProduct>(
+            &a7Construction) != nullptr) {
+      return fixture;
+    }
+  }
+  return nullptr;
+}
+
 } // namespace
 
 TEST(M6CP3, PeriodicExactA3UnequalFaceGaugeUsesRelationAndOccurrenceAuthority) {
@@ -2414,7 +2494,11 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
 }
 
 TEST(M6CP3, OrdinaryFrontIsolationSeamUsesCoordinateIdentityAndCertifiedSheetTransition) {
-  const auto &fixture = split_isolation_fixture();
+  const auto candidate = m6cp3_produced_seam_fixture();
+  ASSERT_NE(candidate, nullptr)
+      << "D3/D7: bounded axis-aligned real-tracer family produced no "
+         "fully certified reciprocal cross-sheet OrdinaryFront";
+  const auto &fixture = *candidate;
   auto a5Result = directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
       fixture.mesh.V, fixture.mesh.F, fixture.network.phaseFront.product());
   const auto *a5 = std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
@@ -2621,7 +2705,11 @@ TEST(M6CP3, A5ChartBarriersConsumeTypedHardFeatureAuthorityAcrossRelationKinds) 
 }
 
 TEST(M6CP3, ProducedSeamCollinearOrdinaryFrontRequiresExactCrossSheetTransition) {
-  const auto &fixture = split_isolation_fixture();
+  const auto candidate = m6cp3_produced_seam_fixture();
+  ASSERT_NE(candidate, nullptr)
+      << "D3/D7: bounded axis-aligned real-tracer family produced no "
+         "fully certified reciprocal cross-sheet OrdinaryFront";
+  const auto &fixture = *candidate;
   auto a5Result = directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
       fixture.mesh.V, fixture.mesh.F, fixture.network.phaseFront.product());
   const auto *a5 = std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(

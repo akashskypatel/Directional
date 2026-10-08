@@ -5085,8 +5085,27 @@ SurfaceOccurrenceComplexProducer::produce(
         evidence.isolationSeamTransportCertificate = seam_transport_certificate(
             *firstRecord->second, *secondRecord->second,
             *evidence.firstEndpointSpan, *evidence.secondEndpointSpan);
+        // A certified seam with an invalid typed face/wedge join is not an
+        // ordinary same-sheet relation. Reject instead of silently falling
+        // back when the A4 certificate was present but unusable at this pair.
+        if (relationKind == SurfaceOccurrenceRelationKind::OrdinaryFront &&
+            evidence.firstEndpointSpan->collinearEdge.has_value() &&
+            evidence.firstEndpointSpan->collinearEdge ==
+                evidence.secondEndpointSpan->collinearEdge &&
+            !evidence.isolationSeamTransportCertificate.has_value() &&
+            std::any_of(phaseFront.isolationSeamTransportCertificates().begin(),
+                        phaseFront.isolationSeamTransportCertificates().end(),
+                        [&](const auto &certificate) {
+                          return certificate.region() ==
+                                     firstRecord->second->topologyRegion &&
+                                 certificate.seam() ==
+                                     *evidence.firstEndpointSpan->collinearEdge;
+                        })) {
+          error.code = SurfaceOccurrenceComplexErrorCode::InvalidIsolationEvidence;
+          error.relation = relationId;
+          return error;
+        }
       }
-
 
       if (selectedKind.has_value() && evidence.canonicalTransport.has_value() &&
           evidence.canonicalRelationValue.has_value() &&
