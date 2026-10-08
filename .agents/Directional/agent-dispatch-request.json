@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-defn-r5-r3-rev-drive-apply-v1",
+  "request_id": "m6-cp3-cb1-entry-r3-drive-v2",
   "operation": "drive_apply",
-  "mailbox_key": "m6-defn-r5-r3-rev-drive-apply",
-  "file_id": "1h0TP-LMdxIbOYjCBbnKiG4NSRxt_pTfq",
-  "patch_sha256": "056c4f4fb4c8233fa92fd273b57b6875328974624279010ccbd0aaa6e932ee2c",
-  "base_sha": "6b2a167341101c686d5d839aa1e2e4cc3a67aff2",
+  "mailbox_key": "m6-cp3-cb1-entry-r3-drive-v2",
+  "file_id": "1mJg4Eoq3qifL-H98qqOXGT5hfrBZ6QGl",
+  "patch_sha256": "cdfe8bbc836bcac1b25ade19c818fef7862154ba38d98688bad91573b7335129",
+  "base_sha": "10c8ae0b7f3ab199c9e4b1df36e49cb81e383569",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): independent RA-37a review and bounded CB release",
+  "commit_message": "fix(surfacecells): R3 hard-rail endpoint and radial-sector certificate",
   "retention_days": 14
 }
