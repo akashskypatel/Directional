@@ -1484,6 +1484,23 @@ struct SurfaceHardRailFieldTransition {
   auto operator<=>(const SurfaceHardRailFieldTransition &) const = default;
 };
 
+/** A4-certified source-face traversal across one HardRail route endpoint. */
+struct SurfaceHardRailRouteEndpointCertificate {
+  authority::SourceFaceTopologyKey firstAttachment;
+  authority::SourceFaceTopologyKey secondAttachment;
+  std::vector<SurfaceHardRailFieldTransition> orientedSteps;
+  authority::QuarterTurn composedTurn;
+};
+
+/** One paired A4 HardRail route with two independently certified endpoints. */
+struct SurfaceHardRailRouteCertificate {
+  int firstFrontEdge = -1;
+  int secondFrontEdge = -1;
+  authority::HardRailId rail;
+  authority::CanonicalRoute route;
+  std::array<SurfaceHardRailRouteEndpointCertificate, 2> endpoints;
+};
+
 struct SurfaceFrontEdge {
   SurfaceFrontEdge(authority::TopologyRegionId region, authority::CellId owner)
       : filledCell(owner), sourceTopologyRegion(region) {}
@@ -1731,6 +1748,7 @@ enum class SurfacePhaseFrontFailureReason : int {
   PeriodicActionTransportedDeltaMismatch = 64,
   PeriodicActionFirstEndpointMismatch = 65,
   PeriodicActionSecondEndpointMismatch = 66,
+  InvalidHardRailRouteCertificate = 67,
 };
 
 struct SurfacePhaseFrontFailure {
@@ -1808,7 +1826,8 @@ public:
            std::nullopt,
        std::set<authority::SourceEdgeTopologyKey> hardFeatureEdges = {},
        std::vector<int> sourceFaceBranchRotations = {},
-       std::vector<SurfaceHardRailFieldTransition> hardRailFieldTransitions = {});
+       std::vector<SurfaceHardRailFieldTransition> hardRailFieldTransitions = {},
+       std::vector<SurfaceHardRailRouteCertificate> hardRailRouteCertificates = {});
 
   [[nodiscard]] int gridU() const noexcept { return gridU_; }
   [[nodiscard]] int gridV() const noexcept { return gridV_; }
@@ -1851,6 +1870,10 @@ public:
   hardRailFieldTransitions() const noexcept {
     return hardRailFieldTransitions_;
   }
+  [[nodiscard]] const std::vector<SurfaceHardRailRouteCertificate> &
+  hardRailRouteCertificates() const noexcept {
+    return hardRailRouteCertificates_;
+  }
 
 private:
   SurfacePhaseFrontProduct(
@@ -1865,7 +1888,8 @@ private:
       std::optional<SurfaceConformityPlanReceipt> conformityPlanReceipt,
       std::set<authority::SourceEdgeTopologyKey> hardFeatureEdges,
       std::vector<int> sourceFaceBranchRotations,
-      std::vector<SurfaceHardRailFieldTransition> hardRailFieldTransitions)
+      std::vector<SurfaceHardRailFieldTransition> hardRailFieldTransitions,
+      std::vector<SurfaceHardRailRouteCertificate> hardRailRouteCertificates)
       : gridU_(gridU), gridV_(gridV),
         sourceTopologyRegions_(std::move(sourceTopologyRegions)),
         isolationSeamTransportCertificates_(
@@ -1877,7 +1901,8 @@ private:
         conformityPlanReceipt_(std::move(conformityPlanReceipt)),
         hardFeatureEdges_(std::move(hardFeatureEdges)),
         sourceFaceBranchRotations_(std::move(sourceFaceBranchRotations)),
-        hardRailFieldTransitions_(std::move(hardRailFieldTransitions)) {}
+        hardRailFieldTransitions_(std::move(hardRailFieldTransitions)),
+        hardRailRouteCertificates_(std::move(hardRailRouteCertificates)) {}
 
   int gridU_ = 0;
   int gridV_ = 0;
@@ -1893,6 +1918,7 @@ private:
   std::set<authority::SourceEdgeTopologyKey> hardFeatureEdges_;
   std::vector<int> sourceFaceBranchRotations_;
   std::vector<SurfaceHardRailFieldTransition> hardRailFieldTransitions_;
+  std::vector<SurfaceHardRailRouteCertificate> hardRailRouteCertificates_;
 };
 
 struct NotApplicable {};

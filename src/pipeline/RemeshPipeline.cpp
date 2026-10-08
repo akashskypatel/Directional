@@ -2103,6 +2103,23 @@ std::uint64_t hash_trace_network(
       hash_source_face_topology_key(seed, transition.secondFace);
       hash_combine_i64(seed, transition.firstToSecond.value());
     }
+    hash_combine_u64(seed, phaseFront->hardRailRouteCertificates().size());
+    for (const auto &certificate : phaseFront->hardRailRouteCertificates()) {
+      hash_combine_i64(seed, certificate.firstFrontEdge);
+      hash_combine_i64(seed, certificate.secondFrontEdge);
+      hash_semantic_id(seed, certificate.rail);
+      for (const auto &endpoint : certificate.endpoints) {
+        hash_source_face_topology_key(seed, endpoint.firstAttachment);
+        hash_source_face_topology_key(seed, endpoint.secondAttachment);
+        hash_combine_i64(seed, endpoint.composedTurn.value());
+        for (const auto &step : endpoint.orientedSteps) {
+          hash_source_edge_topology_key(seed, step.edge);
+          hash_source_face_topology_key(seed, step.firstFace);
+          hash_source_face_topology_key(seed, step.secondFace);
+          hash_combine_i64(seed, step.firstToSecond.value());
+        }
+      }
+    }
     hash_combine_u64(seed, phaseFront->sourceFaceBranchRotations().size());
     if (!phaseFront->sourceFaceBranchRotations().empty()) {
       for (const auto &region : phaseFront->sourceTopologyRegions().regions()) {
@@ -4911,34 +4928,22 @@ SurfaceOccurrenceComplexProducer::produce(
             SurfaceOccurrenceComplexErrorCode::HardRailTransportMismatch;
         return error;
       }
-      // Crossing a hard rail uses the independently published A3 matching,
-      // never the difference of its two regional face gauges.
-      const auto rail_tau = [&](const authority::SourceFaceTopologyKey &fromFace,
-                                const authority::SourceFaceTopologyKey &toFace)
-          -> std::optional<authority::QuarterTurn> {
-        std::optional<authority::QuarterTurn> value;
-        for (const auto &step : first.route.steps()) {
-          const auto record = std::find_if(
-              phaseFront.hardRailFieldTransitions().begin(),
-              phaseFront.hardRailFieldTransitions().end(),
-              [&](const geometry::SurfaceHardRailFieldTransition &entry) {
-                return entry.edge == step.topology();
-              });
-          if (record == phaseFront.hardRailFieldTransitions().end())
-            return std::nullopt;
-          std::optional<authority::QuarterTurn> directed;
-          if (record->firstFace == fromFace && record->secondFace == toFace)
-            directed = record->firstToSecond;
-          else if (record->secondFace == fromFace && record->firstFace == toFace)
-            directed = record->firstToSecond.inverse();
-          if (!directed.has_value() ||
-              (value.has_value() && *value != *directed))
-            return std::nullopt;
-          value = *directed;
-        }
-        return value;
-      };
-      for (const auto &[fromOccurrence, toOccurrence] : endpointPairs) {
+      // A4, not A5, owns route traversal, endpoint attachment and A3 tau.
+      const auto routeCertificate = std::find_if(
+          phaseFront.hardRailRouteCertificates().begin(),
+          phaseFront.hardRailRouteCertificates().end(),
+          [&](const geometry::SurfaceHardRailRouteCertificate &record) {
+            return record.firstFrontEdge == edgeIndex &&
+                   record.secondFrontEdge == first.oppositeEdge &&
+                   record.rail == *first.railId && record.route == first.route;
+          });
+      if (routeCertificate == phaseFront.hardRailRouteCertificates().end()) {
+        error.code = SurfaceOccurrenceComplexErrorCode::HardRailRouteAuthorityInvalid;
+        return error;
+      }
+      for (std::size_t endpointIndex = 0; endpointIndex < endpointPairs.size();
+           ++endpointIndex) {
+        const auto &[fromOccurrence, toOccurrence] = endpointPairs[endpointIndex];
         const auto from = publishedOccurrenceById.find(fromOccurrence);
         const auto to = publishedOccurrenceById.find(toOccurrence);
         if (from == publishedOccurrenceById.end() ||
@@ -4946,14 +4951,17 @@ SurfaceOccurrenceComplexProducer::produce(
           error.code = SurfaceOccurrenceComplexErrorCode::RelationEndpointMissing;
           return error;
         }
-        const auto tau = rail_tau(from->second->placement.selectedFace,
-                                  to->second->placement.selectedFace);
+        const auto &published = routeCertificate->endpoints[endpointIndex];
+        if (from->second->placement.selectedFace != published.firstAttachment ||
+            to->second->placement.selectedFace != published.secondAttachment) {
+          error.code = SurfaceOccurrenceComplexErrorCode::HardRailRouteAuthorityInvalid;
+          return error;
+        }
         const auto &fromLattice = from->second->placement.lattice;
         const auto &toLattice = to->second->placement.lattice;
-        if (!tau.has_value() ||
-            authority::QuarterTurn::from_integer(
+        if (authority::QuarterTurn::from_integer(
                 toLattice.branchRotation - fromLattice.branchRotation) !=
-                compose(*rigidRotation, *tau)) {
+            compose(*rigidRotation, published.composedTurn)) {
           error.code = SurfaceOccurrenceComplexErrorCode::HardRailTransportMismatch;
           return error;
         }

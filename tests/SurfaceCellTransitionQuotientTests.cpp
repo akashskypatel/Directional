@@ -1644,6 +1644,8 @@ struct PhaseFrontDraft {
   std::vector<int> sourceFaceBranchRotations;
   std::vector<directional::geometry::SurfaceHardRailFieldTransition>
       hardRailFieldTransitions;
+  std::vector<directional::geometry::SurfaceHardRailRouteCertificate>
+      hardRailRouteCertificates;
 };
 PhaseFrontDraft direct_full_periodic_materializer_draft(); bool action_has_nonzero_turn(const directional::authority::GridAutomorphism &action);
 PhaseFrontDraft phase_front_draft(
@@ -1659,7 +1661,8 @@ PhaseFrontDraft phase_front_draft(
           product.cells(),
           product.hardFeatureEdges(),
           product.sourceFaceBranchRotations(),
-          product.hardRailFieldTransitions()};
+          product.hardRailFieldTransitions(),
+          product.hardRailRouteCertificates()};
 }
 
 PhaseFrontDraft phase_front_draft(const SurfacePhaseFrontResult &phaseFront) {
@@ -1675,7 +1678,8 @@ construct_phase_front_product(PhaseFrontDraft draft) {
       std::move(draft.events), std::move(draft.cells), std::nullopt,
       std::move(draft.hardFeatureEdges),
       std::move(draft.sourceFaceBranchRotations),
-      std::move(draft.hardRailFieldTransitions));
+      std::move(draft.hardRailFieldTransitions),
+      std::move(draft.hardRailRouteCertificates));
 }
 
 void expect_phase_front_product_error(
@@ -2383,6 +2387,23 @@ TEST(M6CP3, HardRailPublishedTauRequiresIncidentSourceFaces) {
 TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
   const auto &fixture = nonconstant_hard_rail_fixture();
   const auto &front = fixture.network.phaseFront.product();
+  ASSERT_FALSE(front.hardRailRouteCertificates().empty())
+      << "D2 requires at least one A4-produced, paired route certificate";
+  for (const auto &route : front.hardRailRouteCertificates()) {
+    ASSERT_FALSE(route.route.empty());
+    for (const auto &endpoint : route.endpoints) {
+      ASSERT_EQ(endpoint.orientedSteps.size(), route.route.steps().size());
+      auto current = endpoint.firstAttachment;
+      auto composedTurn = directional::authority::QuarterTurn::from_integer(0);
+      for (const auto &step : endpoint.orientedSteps) {
+        ASSERT_EQ(step.firstFace, current);
+        current = step.secondFace;
+        composedTurn = compose(step.firstToSecond, composedTurn);
+      }
+      EXPECT_EQ(current, endpoint.secondAttachment);
+      EXPECT_EQ(composedTurn, endpoint.composedTurn);
+    }
+  }
   auto a5Result = directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
       fixture.mesh.V, fixture.mesh.F, front);
   if (const auto *a5Error =
@@ -2428,43 +2449,48 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
   ASSERT_NE(a5, nullptr);
 
   const directional::pipeline::SurfaceOccurrenceRelation *witness = nullptr;
+  const directional::geometry::SurfaceHardRailRouteCertificate *witnessRoute = nullptr;
+  std::size_t witnessEndpoint = 0U;
   std::optional<directional::authority::QuarterTurn> witnessTau;
   for (const auto &relation : a5->owned_relations()) {
     if (relation.id.kind !=
             directional::pipeline::SurfaceOccurrenceRelationKind::HardRail ||
+        !relation.id.hardRail.has_value() ||
         !relation.evidence.firstEndpointFaceGauge.has_value() ||
         !relation.evidence.secondEndpointFaceGauge.has_value() ||
-        !relation.evidence.canonicalTransport.has_value() ||
-        relation.evidence.equivalence.route.steps().empty()) {
-      continue;
-    }
-    const auto carrier = relation.evidence.equivalence.route.steps().front().topology();
-    const auto entry = std::find_if(
-        front.hardRailFieldTransitions().begin(),
-        front.hardRailFieldTransitions().end(),
-        [&](const directional::geometry::SurfaceHardRailFieldTransition &value) {
-          return value.edge == carrier;
-        });
-    if (entry == front.hardRailFieldTransitions().end()) continue;
+        !relation.evidence.canonicalTransport.has_value()) continue;
     const auto fromFace = relation.evidence.firstEndpointFaceGauge->face;
     const auto toFace = relation.evidence.secondEndpointFaceGauge->face;
-    std::optional<directional::authority::QuarterTurn> tau;
-    if (entry->firstFace == fromFace && entry->secondFace == toFace)
-      tau = entry->firstToSecond;
-    else if (entry->secondFace == fromFace && entry->firstFace == toFace)
-      tau = entry->firstToSecond.inverse();
-    if (!tau.has_value() ||
-        (*tau != directional::authority::QuarterTurn::from_integer(1) &&
-         *tau != directional::authority::QuarterTurn::from_integer(3)))
-      continue;
-    const auto delta = compose(
-        relation.evidence.secondEndpointFaceGauge->localFaceBranchRotation,
-        relation.evidence.firstEndpointFaceGauge->localFaceBranchRotation.inverse());
-    if (delta != *tau) {
-      witness = &relation;
-      witnessTau = *tau;
-      break;
+    for (const auto &certificate : front.hardRailRouteCertificates()) {
+      if (certificate.rail != *relation.id.hardRail ||
+          (relation.evidence.equivalence.route != certificate.route &&
+           relation.evidence.equivalence.route != certificate.route.reversed()))
+        continue;
+      for (std::size_t endpointIndex = 0; endpointIndex < 2U; ++endpointIndex) {
+        const auto &endpoint = certificate.endpoints[endpointIndex];
+        const bool forward = endpoint.firstAttachment == fromFace &&
+                             endpoint.secondAttachment == toFace;
+        const bool reverse = endpoint.secondAttachment == fromFace &&
+                             endpoint.firstAttachment == toFace;
+        if (!forward && !reverse) continue;
+        const auto tau = reverse ? endpoint.composedTurn.inverse()
+                                 : endpoint.composedTurn;
+        if (tau != directional::authority::QuarterTurn::from_integer(1) &&
+            tau != directional::authority::QuarterTurn::from_integer(3))
+          continue;
+        const auto delta = compose(
+            relation.evidence.secondEndpointFaceGauge->localFaceBranchRotation,
+            relation.evidence.firstEndpointFaceGauge->localFaceBranchRotation.inverse());
+        if (delta == tau) continue;
+        witness = &relation;
+        witnessRoute = &certificate;
+        witnessEndpoint = endpointIndex;
+        witnessTau = tau;
+        break;
+      }
+      if (witness != nullptr) break;
     }
+    if (witness != nullptr) break;
   }
   ASSERT_NE(witness, nullptr)
       << "D2 requires real-produced HardRail with odd oriented A3 tau != regional F difference";
@@ -2473,15 +2499,34 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
   ASSERT_NE(first, nullptr);
   ASSERT_NE(second, nullptr);
   EXPECT_NE(first->topologyRegion, second->topologyRegion);
+  SCOPED_TRACE("produced HardRail: F_a=" +
+               std::to_string(witness->evidence.firstEndpointFaceGauge->localFaceBranchRotation.value()) +
+               " F_b=" +
+               std::to_string(witness->evidence.secondEndpointFaceGauge->localFaceBranchRotation.value()) +
+               " tau=" + std::to_string(witnessTau->value()) +
+               " R_coord=" +
+               std::to_string(witness->evidence.canonicalTransport->rotation.value()) +
+               " B_a=" + std::to_string(first->placement.lattice.branchRotation) +
+               " B_b=" + std::to_string(second->placement.lattice.branchRotation));
   EXPECT_EQ(directional::authority::QuarterTurn::from_integer(
                 second->placement.lattice.branchRotation -
                 first->placement.lattice.branchRotation),
             compose(witness->evidence.canonicalTransport->rotation,
                     *witnessTau));
 
+  ASSERT_NE(witnessRoute, nullptr);
+  const auto &certifiedSteps = witnessRoute->endpoints[witnessEndpoint].orientedSteps;
+  const auto oddCarrier = std::find_if(
+      certifiedSteps.begin(), certifiedSteps.end(),
+      [](const directional::geometry::SurfaceHardRailFieldTransition &step) {
+        return step.firstToSecond ==
+                   directional::authority::QuarterTurn::from_integer(1) ||
+               step.firstToSecond ==
+                   directional::authority::QuarterTurn::from_integer(3);
+      });
+  ASSERT_NE(oddCarrier, certifiedSteps.end());
   PhaseFrontDraft tampered = phase_front_draft(fixture.network.phaseFront);
-  const auto sourceEdge =
-      witness->evidence.equivalence.route.steps().front().topology();
+  const auto sourceEdge = oddCarrier->edge;
   auto entry = std::find_if(
       tampered.hardRailFieldTransitions.begin(),
       tampered.hardRailFieldTransitions.end(),
@@ -2490,6 +2535,19 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
       });
   ASSERT_NE(entry, tampered.hardRailFieldTransitions.end());
   entry->firstToSecond = entry->firstToSecond.inverse();
+  // Preserve the declared route/edge consistency while changing only the
+  // A4-owned odd tau. This is an A5 discriminant, not malformed product input.
+  for (auto &certificate : tampered.hardRailRouteCertificates) {
+    for (auto &endpoint : certificate.endpoints) {
+      auto accumulated = directional::authority::QuarterTurn::from_integer(0);
+      for (auto &step : endpoint.orientedSteps) {
+        if (step.edge == sourceEdge)
+          step.firstToSecond = step.firstToSecond.inverse();
+        accumulated = compose(step.firstToSecond, accumulated);
+      }
+      endpoint.composedTurn = accumulated;
+    }
+  }
   auto rebuilt = construct_phase_front_product(std::move(tampered));
   const auto *tamperedFront =
       std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&rebuilt);

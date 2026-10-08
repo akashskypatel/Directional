@@ -6050,7 +6050,7 @@ rebuild_phase_front_with_edges(
       product.boundedDiskBoundaryPhases(), std::move(edges), product.events(),
       product.cells(), product.conformityPlanReceipt(),
       product.hardFeatureEdges(), product.sourceFaceBranchRotations(),
-      product.hardRailFieldTransitions());
+      product.hardRailFieldTransitions(), product.hardRailRouteCertificates());
   auto *value =
       std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&rebuilt);
   if (value == nullptr) {
