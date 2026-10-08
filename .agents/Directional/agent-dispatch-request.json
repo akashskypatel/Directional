@@ -1,9 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb1-r2-wip-compile-1",
+  "request_id": "m6-cp3-cb1-r2-wip-compile-2",
   "operation": "compile",
   "mailbox_key": "m6-cp3-cb1-r2-wip-compile",
   "source_sha": "88aa8eae043cee9b53e45c0a43317e5a0ec5eca8",
-  "targets": "directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
   "artifact_prefix": "m6-cp3-cb1-r2-wip-compile"
 }
