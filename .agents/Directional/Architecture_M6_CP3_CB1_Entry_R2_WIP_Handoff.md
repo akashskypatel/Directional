@@ -1,0 +1,20 @@
+# M6-CP3-CB1-ENTRY-R2 — WIP continuation (2026-10-08 UTC)
+
+**Formal state: IN_PROGRESS, no successor authorized.** This is a partial Code + Build checkpoint, not an accepted implementation, build or runtime result.
+
+Verified source snapshot: `0930f1edd9759402d620cc829bd9f1a671d14c0c`, run `37734092418`, artifact `11529844985`; all 5,594 internal file hashes verified.
+
+**WIP semantic commit:** `88aa8eae043cee9b53e45c0a43317e5a0ec5eca8`; exact patch apply run `37734942243`, result artifact `11531082986`, two and only two paths changed: `src/pipeline/RemeshPipeline.cpp`, `tests/SurfaceCellTransitionQuotientTests.cpp`. Source patch SHA-256 `d4cfb168193a9acd4a18661c8919655fe9a77866e58c95e79343d54f00811e38`; user-visible downloaded work-preservation patch is authoritative backup. Drive staging files were permanently retired after successful apply.
+
+**Work prepared, uncompiled at the time of this record:**
+- R2-P1: typed A4 certificate face-to-A5 corner-wedge binding and partial A6 certified-seam selection; audit mixed/partial evidence and typed fail-closed conditions.
+- R2-P2: enumerate real A3 torus generator candidates before selecting a reciprocal produced periodic front with odd face-gauge delta. Check matching interval/generator route and uniqueness; no positive witness established.
+- R2-P5: D5 chooses an actual route-bearing OrdinaryInterior source carrier with a live source transition; unrelated transition remains after marking a hard feature. No runtime proof.
+
+**Not yet implemented:** R2-P3 publication/consumption of A3-oriented HardRail tau (odd, non-self-inverse real-produced discriminator) and R2-P4 real tracer-produced seam-aligned OrdinaryFront A6/A7 independently tampered positives. Stop gates from `Architecture_M6_DEFN_R5_R2_Review_Record.md` remain mandatory.
+
+A compile-only request was dispatched in commit `7f005180fad6415e8cb6e4e96f173a19a4d11775` for exact WIP source `88aa8eae...`, eight GMP/GMPXX targets, mailbox `.workflow-mailbox/m6-cp3-cb1-r2-wip-compile/latest.json`. **Verify its result and exact source evidence before any compile claim.** Never execute tests/benchmarks in this CB turn.
+
+Frozen required-green selector449: 449 lines, SHA-256 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`. Stable accounting: 63 events / 17 categories / 46 recurrences; one M6 debt.
+
+Resume this same formal turn, verify compilation, correct any typed/preflight defects, finish P1–P5 and all allowed code/build evidence before any COMPLETE beacon. The separate successor, only after formal complete: `M6-CP3-TB1-ENTRY-R2-EXEC`, frozen 497 processes; no TB here.
