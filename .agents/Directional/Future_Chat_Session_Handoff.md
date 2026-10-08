@@ -1,3 +1,13 @@
+## IN PROGRESS — M6-CP3-CB1-ENTRY-R2 candidate source patch preserved (2026-10-08)
+
+**Status: IN_PROGRESS, not compile-validated or accepted.** Current next turn remains `M6-CP3-CB1-ENTRY-R2`, Code + Build only. Authoritative source snapshot: `f456baafade19ce549055306730e4d1684c6794b`, workflow `37758939866`, artifact `11541392230` (5,643/5,643 exact checksums).
+
+**Recoverable candidate (unapplied):** Personal Library `/Directional/Work-Preservation/Directional__M6-CP3-CB1-ENTRY-R2__base-f456baafade1__work-preservation-v2.patch`; Google Drive `Directional-CI` file ID `1lS3QiFFaYsTF8R0rqI9I7Oh7BoGEtbKL`. Complete patch SHA-256 `1c9c87b707dd9fc557f77198118c5fd1571a26cb5aa1428a643409c67b8e593b`; diff-body SHA-256 `363c5e2d32a438137ca9fd43a6356813e5cd45f294ac43713cfcc7b7b5de6d76`. It modifies five files: `include/directional/geometry/SurfaceCellTracing.h`, `src/geometry/SurfaceCellTracing.cpp`, `src/pipeline/RemeshPipeline.cpp`, `tests/SurfaceCellTransitionQuotientTests.cpp`, `tests/SurfaceCellsPhase10Tests.cpp`. Full-index binary Git patch; `git diff --check`, clean-base `git apply --check`, and five-file replay passed locally. **No source patch applied to GitHub; no compilation, binary execution, or TB performed.**
+
+**Candidate scope:** A4-owned paired HardRail source-face route certificates, oriented exact A3 transitions, endpoint attachments, typed source-face chain and Z4 fold; A5 consumption and product integrity checking; adaptations to existing D2 identity and product-rebuild tests. **Not completed/verified:** RA-36.3 cross-rail commuting square using independently owned side transports; true multi-step producer witness, reversal and face-permutation invariance; real-produced odd `τ∈{1,3}` with `F_b−F_a ≠ τ`, plus sign tamper; the nonvacuity and validity of R2-P1/P2/P4/P5. The patch may incorrectly reject previously valid multi-edge HardRail routes until these constraints are proven. Keep the existing stop gates; do **not** apply or claim acceptance solely from static patch integrity. Recheck touched base blobs after fetching current head, review/finish the patch, then use the approved Drive `drive_apply` workflow and run only the mandatory 8-target GMP/GMPXX compile/package, `runtimeExecution=false`. Subsequent 497-case tests remain a separate Test + Benchmark turn after compile acceptance. Stable accounting stays `63 / 17 / 46`, debt `1`, until independently reviewed evidence changes it. No CB2, optimizer or final-validator work.
+
+---
+
 ## Resume-critical update — R2-P3 RESOLVED as RA-36; `M6-CP3-CB1-ENTRY-R2` resumes compile-only (2026-10-08)
 
 **Exact next turn: `M6-CP3-CB1-ENTRY-R2` (resume) — Code + Build, compile/package only, `runtimeExecution=false`.**
