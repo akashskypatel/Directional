@@ -1,6 +1,6 @@
 # M6-CP3-TB1-ENTRY-R2-EXEC — Immutable artifact-only gate execution record
 
-**Live state (2026-10-08T11:00Z): dispatched; runtime result pending.** This is one bounded Test + Benchmark execution turn, not a permission to implement, repair, retry, recompile, or promote. Source and compiled package are frozen. The mandatory independent successor is `M6-CP3-TB1-ENTRY-R2-REV` only after mechanically complete execution evidence.
+**Final state (2026-10-08): mechanically COMPLETE, semantic 444/497 PASS, 53 RED; candidate unpromoted.** This was one bounded immutable Test + Benchmark execution turn, not authorization to implement, repair, retry, recompile, or promote. Source and compiled package remained frozen. Exact successor after final STATUS closure: mandatory independent `M6-CP3-TB1-ENTRY-R2-REV`.
 
 ## Exact immutable inputs and dispatch
 
