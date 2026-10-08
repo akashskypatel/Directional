@@ -1,3 +1,11 @@
+## Current R3 Code + Build continuation — 2026-10-08T19:16Z
+
+Still the SAME incomplete R3 turn; no runtime tests or successor. Two one-file test changes were applied to the existing D2 fixture. Source-face row-reversal and topology-sector equality: source commit `c09fb8273113c844a4d7ef7fbe868aebe26034b7`, patch sha256 `e38b93aabd6680c220ae7db31bea2cbbec52c784741e63b41b5f3da448848990`, apply run `37831279259` success. A4 first-reject diagnostic propagation into `require_produced`: source commit `f3e6caa39c17e91c478a3591a080e32259145c84`, patch sha256 `ac6a98d617bbf6349b45c9511f3f6f9748ed393ed030766c923c90d7afb902d6`, apply run `37831643157` success. Both changes have static apply checks, Library backups, and consumed Drive files owner-deleted. Both changed ONLY `tests/SurfaceCellTransitionQuotientTests.cpp` and preserve frozen selectors, routing, and test names. The D2 assertions require real A4 production but are NOT yet runtime-validated.
+
+Eight-target GMP/GMPXX compile-only request: event `6ecaaae52fd2c25612a614a2c14a61118cf38545`, exact source `f3e6caa39c17e91c478a3591a080e32259145c84`, mailbox `.workflow-mailbox/m6-cp3-cb1-entry-r3-d2-permute-firstpred-r1-compile/latest.json`. Result pending; do not duplicate or infer green. Full handoff downloadable: `Directional__M6-CP3-CB1-ENTRY-R3__continuation-20261008T1916Z.md`. 39 RED first-predicate identities, 47 CP2-green regressions, D1/D2/D3/D5 organic positives, and future frozen 497-process TB remain open; no runtime credit. If a genuine bounded multi-carrier search is empty, stop for independent Review.
+
+---
+
 # M6-CP3-CB1-ENTRY-R3 — bounded Code+Build WIP checkpoint (2026-10-08)
 
 ## CURRENT R3 continuation — 2026-10-08 18:53Z
