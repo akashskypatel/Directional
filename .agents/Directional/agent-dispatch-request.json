@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb1-entry-r3-first-failure-diagnostics-apply-r1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb1-entry-r3-first-failure-diagnostics-apply-r1",
-  "file_id": "1tnjk9I-Fc3N-e_u6t0dEjFQTZqd_kXh5",
-  "patch_sha256": "bb695a82b28ce4eab2ff56ed81c1192ca51c6d7be44966488e5ec2072584f6b8",
-  "base_sha": "34ff188fa48b086652c89619c302a21c80925f69",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surfacecells): emit bounded deterministic A4 HardRail first-failure diagnostics",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb1-entry-r3-a4-first-predicate-r1-compile",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb1-entry-r3-a4-first-predicate-r1-compile",
+  "source_sha": "6a16d21142de8f83b37df4dd5e207f66b877ef6e",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb1-entry-r3-a4-first-predicate-r1"
 }
