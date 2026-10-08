@@ -7992,10 +7992,21 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
     error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
     return error;
   }
+  const auto rail_face_incident = [](
+      const authority::SourceFaceTopologyKey &face,
+      const authority::SourceEdgeTopologyKey &edge) {
+    const auto &vertices = face.vertices();
+    return std::find(vertices.begin(), vertices.end(), edge.first()) !=
+               vertices.end() &&
+           std::find(vertices.begin(), vertices.end(), edge.second()) !=
+               vertices.end();
+  };
   std::set<authority::SourceEdgeTopologyKey> publishedRailTransitions;
   for (const auto &transition : hardRailFieldTransitions) {
     if (!hardFeatureEdges.contains(transition.edge) ||
         transition.firstFace == transition.secondFace ||
+        !rail_face_incident(transition.firstFace, transition.edge) ||
+        !rail_face_incident(transition.secondFace, transition.edge) ||
         !sourceTopologyRegions.row_for_topology(transition.firstFace).has_value() ||
         !sourceTopologyRegions.row_for_topology(transition.secondFace).has_value() ||
         !publishedRailTransitions.insert(transition.edge).second) {
@@ -17992,6 +18003,100 @@ SurfaceCellNetwork build_surface_cell_network(
           *network.sourceTopologyRegions, authoritativeOptions, edgeMatching,
           edgeEffort, edgeTransitions);
   const auto sourceEdges = surface_cell_tracing_detail::edge_faces(faces);
+  // A3's source-face transition values are retained on nontraversable edges.
+  // Before publishing any rail tau, verify that its regular-vertex face fan
+  // admits a unique transport to every face, independent of the chosen path.
+  // This also rejects disconnected/ambiguous nonmanifold fan paths.
+  if (authoritativeOptions.fieldTransportAtlas != nullptr &&
+      !authoritativeOptions.hardFeatureEdges.empty()) {
+    using Vertex = authority::SourceVertexId;
+    using Tau = authority::QuarterTurn;
+    using Neighbor = std::pair<int, Tau>;
+    std::set<Vertex> railVertices;
+    for (const auto &edge : authoritativeOptions.hardFeatureEdges) {
+      railVertices.insert(edge.first());
+      railVertices.insert(edge.second());
+    }
+    std::map<Vertex, std::set<int>> incidentFaces;
+    std::map<Vertex, std::map<int, std::vector<Neighbor>>> adjacency;
+    bool invalidRailFan = false;
+    for (const auto &[edge, incident] : sourceEdges) {
+      for (const auto vertex : {edge.first(), edge.second()}) {
+        if (!railVertices.contains(vertex)) continue;
+        if (incident[0] >= 0) incidentFaces[vertex].insert(incident[0]);
+        if (incident[1] >= 0) incidentFaces[vertex].insert(incident[1]);
+      }
+      if (incident[0] < 0 || incident[1] < 0 ||
+          (!railVertices.contains(edge.first()) &&
+           !railVertices.contains(edge.second()))) continue;
+      const auto first = surface_cell_tracing_detail::source_face_id(
+          incident[0], faces.rows());
+      const auto second = surface_cell_tracing_detail::source_face_id(
+          incident[1], faces.rows());
+      if (!first.has_value() || !second.has_value()) {
+        invalidRailFan = true;
+        break;
+      }
+      const auto forward = authoritativeOptions.fieldTransportAtlas->transition_value(
+          edge, *first, *second);
+      const auto reverse = authoritativeOptions.fieldTransportAtlas->transition_value(
+          edge, *second, *first);
+      if (!forward.has_value() || !reverse.has_value() ||
+          reverse->transport != forward->transport.inverse()) {
+        invalidRailFan = true;
+        break;
+      }
+      for (const auto vertex : {edge.first(), edge.second()}) {
+        if (!railVertices.contains(vertex)) continue;
+        adjacency[vertex][incident[0]].emplace_back(incident[1], forward->transport);
+        adjacency[vertex][incident[1]].emplace_back(incident[0], reverse->transport);
+      }
+    }
+    if (!invalidRailFan) {
+      for (const auto vertex : railVertices) {
+        const bool singular = std::any_of(
+            authoritativeOptions.fieldTransportAtlas->singularities().begin(),
+            authoritativeOptions.fieldTransportAtlas->singularities().end(),
+            [&](const authority::FieldSingularityFact &fact) {
+              return fact.sourceVertex == vertex && fact.indexNumerator != 0;
+            });
+        if (singular) continue; // A5 rejects crossing at singular rail vertices.
+        const auto &facesAtVertex = incidentFaces[vertex];
+        if (facesAtVertex.empty()) {
+          invalidRailFan = true;
+          break;
+        }
+        std::map<int, Tau> potential;
+        std::vector<int> pending{*facesAtVertex.begin()};
+        potential.emplace(pending.front(), Tau::from_integer(0));
+        for (std::size_t index = 0; index < pending.size(); ++index) {
+          const int from = pending[index];
+          const auto graph = adjacency[vertex].find(from);
+          if (graph == adjacency[vertex].end()) continue;
+          for (const auto &[to, transport] : graph->second) {
+            const Tau candidate = compose(transport, potential.at(from));
+            const auto [position, inserted] = potential.emplace(to, candidate);
+            if (!inserted && position->second != candidate) {
+              invalidRailFan = true;
+              break;
+            }
+            if (inserted) pending.push_back(to);
+          }
+          if (invalidRailFan) break;
+        }
+        if (invalidRailFan || potential.size() != facesAtVertex.size()) {
+          invalidRailFan = true;
+          break;
+        }
+      }
+    }
+    if (invalidRailFan) {
+      SurfacePhaseFrontFailure failure;
+      failure.reason = SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+      network.phaseFront = SurfacePhaseFrontResult::rejected(std::move(failure));
+      return network;
+    }
+  }
   for (const authority::SourceEdgeTopologyKey &edge :
        authoritativeOptions.hardFeatureEdges) {
     if (sourceEdges.count(edge) == 0U) {

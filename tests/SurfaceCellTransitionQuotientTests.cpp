@@ -2354,6 +2354,32 @@ TEST(M6CP3, PeriodicExactA3UnequalFaceGaugeUsesRelationAndOccurrenceAuthority) {
               relation->evidence.canonicalTransport.value() == expected.inverse());
 }
 
+TEST(M6CP3, HardRailPublishedTauRequiresIncidentSourceFaces) {
+  const auto &fixture = nonconstant_hard_rail_fixture();
+  PhaseFrontDraft draft = phase_front_draft(fixture.network.phaseFront);
+  ASSERT_FALSE(draft.hardRailFieldTransitions.empty());
+  auto &record = draft.hardRailFieldTransitions.front();
+  std::optional<directional::authority::SourceFaceTopologyKey> unrelated;
+  for (const auto &region : draft.sourceTopologyRegions.regions()) {
+    for (const auto &face : region.faces()) {
+      const auto &vertices = face.topology.vertices();
+      if (face.topology == record.secondFace ||
+          std::find(vertices.begin(), vertices.end(), record.edge.first()) !=
+              vertices.end() ||
+          std::find(vertices.begin(), vertices.end(), record.edge.second()) !=
+              vertices.end()) continue;
+      unrelated = face.topology;
+      break;
+    }
+    if (unrelated.has_value()) break;
+  }
+  ASSERT_TRUE(unrelated.has_value());
+  record.firstFace = *unrelated;
+  expect_phase_front_product_error(
+      construct_phase_front_product(std::move(draft)),
+      directional::geometry::SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority);
+}
+
 TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
   const auto &fixture = nonconstant_hard_rail_fixture();
   const auto &front = fixture.network.phaseFront.product();
