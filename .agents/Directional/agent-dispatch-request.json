@@ -1,12 +1,19 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb1-entry-r3-drive-v2",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb1-entry-r3-drive-v2",
-  "file_id": "1mJg4Eoq3qifL-H98qqOXGT5hfrBZ6QGl",
-  "patch_sha256": "cdfe8bbc836bcac1b25ade19c818fef7862154ba38d98688bad91573b7335129",
-  "base_sha": "10c8ae0b7f3ab199c9e4b1df36e49cb81e383569",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surfacecells): R3 hard-rail endpoint and radial-sector certificate",
+  "request_id": "m6-cp3-cb1-entry-r3-v2-compile",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb1-entry-r3-v2-compile",
+  "source_sha": "948d75259e10ff23b66e6d21f610d9a862c9702b",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb1-entry-r3-v2",
   "retention_days": 14
 }
