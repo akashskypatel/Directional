@@ -6,6 +6,9 @@ GitHub dispatcher run/job `37767144537 / 113277596566` GREEN mechanically, mailb
 
 Observed signatures (NOT causal adjudication): 25 raw logs explicitly mention `InvalidHardRailRouteCertificate`; 12 additional Phase10 tests reject when `Produced` expected; 5 periodic organic odd selected-face gauge searches empty; 2 D3/D7 real-tracer seam-collinear OrdinaryFront searches empty; D5 ordinary A5 baseline absent; 8 further A5/A6/arrangement and downstream errors. **All six CP3-entry identities fail**; RA-36 multi-edge/odd tau real production remains unproved. Review must independently determine primary cause vs cascade, classify accepted→RED and failed organic-witness gates, and authorize any new Definition/Code+Build recovery. Stable ledger unchanged **63/17/46**, debt **1**; accepted CP2 491/491 remains separate. The earlier “dispatched/pending” block below is superseded.
 
+
+**Durable Library mirror (post-GitHub expiry):** `/Directional/Evidence/M6-CP3-TB1-ENTRY-R2-EXEC-result-37767144537.zip` and `/Directional/Evidence/M6-CP3-TB1-ENTRY-R2-53-RED-evidence-index.md`; library refs `libfile_0af341d64cd48191973b19c4f970eafd` / `libfile_e5f4cf58d7288191b34b80ea237e5e5b`.
+
 ---
 
 ## Live handoff — M6-CP3-TB1-ENTRY-R2-EXEC dispatched, immutable 497 gate pending (2026-10-08T11:00Z)
