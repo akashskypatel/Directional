@@ -1,3 +1,0 @@
-turn=M6-CP3-CB1-ENTRY-R2
-prior_source_sha=15d2ab8d7cf64752d7916bb0b3ebca1c634388c8
-purpose=verified-source-snapshot
