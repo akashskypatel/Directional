@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb1-r2-p4-wip-apply-1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb1-r2-p4-wip-apply",
-  "file_id": "1Zazi-sxHrKskENuinJuykIgpfox3pXH7",
-  "patch_sha256": "4ae6034cdd06733cb3333dc6b22ff473a3bd9eaeb4f7c887831544875f3f8694",
-  "base_sha": "428af14a83ab2a0cb87af934b6b38945f2ac2e31",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "wip: strengthen typed certified seam and real-produced D3 D7 witness search",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb1-r2-p4-wip-compile-1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb1-r2-p4-wip-compile",
+  "source_sha": "8be01326d70538476c8c3327292a7be5153b1680",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb1-r2-p4-wip-compile"
 }
