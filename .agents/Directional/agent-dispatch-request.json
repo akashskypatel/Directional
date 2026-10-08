@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb1-r2-p4-typedseam-witness-apply-3",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb1-r2-p4-typedseam-witness-apply-r3",
-  "file_id": "1cdbyax2N7gYqEZwgA4K70tnQpiz5u_gb",
-  "patch_sha256": "ebadab141883801007d366dd91371a165db49d4ff5d56ce96e957b94ed1dfa46",
-  "base_sha": "1a3383104d074a556d3fdb58699360eb60ca8840",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(m6): select certified seam witness independent of raw labels",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb1-r2-p4p5-compile-1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb1-r2-p4p5-compile",
+  "source_sha": "34a19ac515ac959c306698c8c2137e048d75d707",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb1-r2-p4p5-compile"
 }
