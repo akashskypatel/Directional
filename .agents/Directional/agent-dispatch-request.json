@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb1-entry-r3-compilefix-apply-r2",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb1-entry-r3-compilefix-apply-r2",
-  "file_id": "13JneWUnbrL7yROCp1fL9PsKNgnF7x6-P",
-  "patch_sha256": "60b05c690f1c468c8866251f38a30da7d5760c1c76309a03135d4fe1aa8772c1",
-  "base_sha": "948d75259e10ff23b66e6d21f610d9a862c9702b",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surfacecells): unwrap typed face ID during radial-star validation",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb1-entry-r3-v2-compile-fix-r3",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb1-entry-r3-v2-compile-fix-r3",
+  "source_sha": "03a064d63d7214313ec0f54d5ea0a025ddd0bcc8",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb1-entry-r3-v2-compile-fix-r3"
 }
