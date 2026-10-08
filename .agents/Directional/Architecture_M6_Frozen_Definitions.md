@@ -1,3 +1,41 @@
+## RA-38 — constructive sector derivation **ACCEPTED at independent R3 producer Design Review** (2026-10-08)
+
+Resolves the `M6-CP3-CB1-ENTRY-R3` preflight STOP. **Implements RA-37a correction (1); RA-37a is not replaced.**
+Basis: `Architecture_M6_CP3_R3_Sector_Derivation_Review_Decision.md`. No runtime credit.
+
+- **RA-38.1 — the sectors are the cut star arcs.** At a rail junction vertex `v` on an interior orientable
+  manifold link, the faces of `v`'s star form a cycle under "share a spoke edge at `v`". **Cutting that cycle at
+  the two incident hard carriers yields exactly two arcs — the two unique oriented sectors — and each incident
+  carrier contributes exactly one face to each arc.** Mechanically verified on the reviewed 3×3 fixture: star
+  cycle `0 → 1 → 4 → 7 → 6 → 3 → 0`; carriers `(1,4)`,`(4,7)`; sectors `{0,1,4}` and `{3,6,7}`; carrier `(1,4)`
+  faces `{0,3}` split `0∈A / 3∈B`; carrier `(4,7)` faces `{4,7}` split `4∈A / 7∈B`.
+- **RA-38.2 — φ is within-sector radial transport.** The endpoint-local path from one carrier's face to the next
+  runs **inside one sector** along **non-rail** A3 transitions. A4 publishes, per endpoint pair and per junction,
+  the ordered non-rail A2b source-edge witnesses of that chain. Carrier-to-carrier face identity is neither
+  required nor permitted.
+- **RA-38.3 — fail closed, matching RA-37a's domain.** STOP on: boundary vertex (star is a path; cutting yields
+  three arcs); more than two incident hard carriers (branch junction; no unique pair); exactly one incident
+  carrier (rail terminates — no through-transport); non-manifold or singular star; foreign barrier inside an arc.
+- **RA-38.4 — two distinct validators must be corrected together.** In
+  `src/geometry/SurfaceCellTracing.cpp:8019-8118`: (i) `previous.secondFace != transition.firstFace` is the
+  superseded RA-36.1 category error at a second site and must become within-sector radial chaining; (ii)
+  `endpoint.orientedSteps.size() != expectedSteps.size()` unsoundly ties endpoint-path length to carrier count,
+  when the real length is set by **fan valence per junction**. The reviewed 3×3 fixture satisfies (ii) only by
+  coincidence (two carriers, chain length two), so a correction that fixes only (i) and validates on 3×3 will
+  pass while (ii) stays wrong. Additionally the A4-side gate at `:18312-18330` must not precede the
+  sector/junction logic, or the corrected path stays unreachable.
+- **RA-38.5 — publish, do not invent.** `railFanPotentials` already traverses the whole star (`:18120-18206`) and
+  A4 already knows the hard carriers (it builds `hardRailFieldTransitions`); only the carrier **cut** is missing,
+  and it is a local derivation over data A4 already owns. Forbidden: guessed sectors; a global face-star
+  potential used as ownership rather than post-ownership cross-check; first-by-row face selection; a new τ
+  definition; any A5-side path search or inference from sheet/region labels.
+- **RA-38.6 — no runtime credit.** Existence of a real A4-produced multi-carrier paired HardRail front is **not**
+  established; a hand-authored input fixture is not a produced certificate. If the bounded search finds none, the
+  multi-carrier path is unexercised and must not be cited as validated. All RA-34.3 R2-P3 stop gates and
+  RA-36.4/.5/.6 stand.
+
+---
+
 ## RA-37a — ACCEPTED by `M6-DEFN-R5-R3-REV` with binding amendment (2026-10-08)
 
 **`M6-DEFN-R5-R3-REV` ACCEPTS RA-37a as a *bounded, fail-closed source-topology contract*; this is not any new runtime promotion. Exact successor after final beacon: `M6-CP3-CB1-ENTRY-R3` Code + Build only, with mandatory source A4 two-sector and both endpoint-local path STOPs.** CP2 491/491 remains accepted; R2 rejected 444/497; 47 accepted-green losses; 64/17/47, debt 1. See `Architecture_M6_DEFN_R5_R3_Review_Record.md`. No organic D1/D2/D3/D5 positives or A6 recovery accepted.

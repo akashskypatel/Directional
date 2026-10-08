@@ -11750,3 +11750,47 @@ admissible fan paths; keep singleton as the degenerate accepted case; and requir
 `invalid_route()` before any corrective implementation, since current logs do not reveal which predicate fired
 first. RA-36.1 is **retained unrelaxed** in the interim — annotated unsound, not softened — and RA-36.4/.5/.6 and
 every RA-34.3 stop gate stand.
+
+## `M6-CP3-R3-SECTOR-RESOLUTION` — sectors are the cut star arcs; two distinct validators unsound
+
+**Status.** RESOLVED BY INDEPENDENT PRODUCER DESIGN REVIEW / frozen as **RA-38** / unblocks
+`M6-CP3-CB1-ENTRY-R3` / no runtime credit. Basis:
+`Architecture_M6_CP3_R3_Sector_Derivation_Review_Decision.md`.
+
+`M6-CP3-CB1-ENTRY-R3` stopped at RA-37a's mandatory source-topology and endpoint-local preflight. The STOP was
+correct — RA-37a asserts two unique oriented sectors **exist** without giving the construction, and an
+implementation turn must not invent one. This Review supplies it.
+
+**Construction (RA-38.1).** At a rail junction vertex `v` on an interior orientable manifold link, the faces of
+`v`'s star form a cycle under "share a spoke edge at `v`". Cutting that cycle at the two incident hard carriers
+yields exactly two arcs — the two sectors — with each carrier contributing exactly one face to each arc.
+Mechanically derived on the reviewed 3×3 fixture: star cycle `0→1→4→7→6→3→0`; carriers `(1,4)`,`(4,7)`; sectors
+`{0,1,4}` and `{3,6,7}`; `(1,4)` faces `{0,3}` split `0∈A/3∈B`; `(4,7)` faces `{4,7}` split `4∈A/7∈B`. This
+reproduces the STOP record's observed radial chains `0→1→4` and `3→6→7` and shows they are the cut arcs, not a
+fixture artefact. Within one sector consecutive carriers' faces are joined by a chain of **non-rail** A3
+transitions — which is why the superseded RA-36.1 carrier-to-carrier face identity premise failed.
+
+**Fail-closed cases coincide with RA-37a's frozen domain**: boundary vertex (star is a path; three arcs), more
+than two incident carriers (branch; no unique pair), exactly one carrier (rail terminates), non-manifold/singular
+star, foreign barrier inside an arc. RA-37a therefore needs no amendment.
+
+**Two distinct validator defects (RA-38.4), in `src/geometry/SurfaceCellTracing.cpp:8019-8118`.**
+(i) `previous.secondFace != transition.firstFace` — the superseded RA-36.1 category error at a **second site**;
+always fires on the reviewed rails since `{0,3} ∩ {4,7} = ∅`; must become within-sector radial chaining.
+(ii) `endpoint.orientedSteps.size() != expectedSteps.size()` — ties endpoint-path length to **carrier count**,
+when the real length is set by **fan valence per junction**. **The 3×3 fixture satisfies (ii) only by
+coincidence** (two carriers, chain length two), so fixing only (i) and validating on 3×3 would pass while (ii)
+stays wrong and fails on the first differing-valence fixture. Both must be corrected together. The A4-side gate
+at `:18312-18330` must also not precede the sector/junction logic, or the corrected path stays unreachable —
+the `[[M5-CP3-TB1-R3-REV]]` reachability trap.
+
+**Third instance of one pattern.** `[[RA-34.3]]` retained τ before the nontraversable marking destroyed access;
+`[[RA-35]]` retained per-wedge bindings before the sort/unique collapse; RA-38 needs only the carrier **cut** of
+a star A4 already traverses (`:18120-18206`), using carriers A4 already knows. In every case the cure is to
+publish or reach authority the producer already computes — never new input, never consumer inference.
+
+**Limits.** Existence of a real A4-produced multi-carrier paired HardRail front is **not** established; a
+hand-authored input fixture is not a produced certificate. If the bounded search finds none, the multi-carrier
+path is unexercised and must not be cited as validated. All RA-34.3 stop gates (odd `τ ∈ {1,3}`,
+`F_b − F_a ≠ τ`, sign-inversion negative, reciprocal/face-permutation invariance) and RA-36.4/.5/.6 stand; an
+empty search stops for Review.

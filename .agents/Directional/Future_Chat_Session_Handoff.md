@@ -1,3 +1,69 @@
+## Resume-critical update — R3 preflight STOP RESOLVED as RA-38; CB1-ENTRY-R3 resumes (2026-10-08)
+
+**Exact next turn: `M6-CP3-CB1-ENTRY-R3` (resume) — Code + Build, compile/package only.** The RA-37a
+source-topology and endpoint-local preflight STOP is resolved by independent producer Design Review and frozen as
+**RA-38**; basis `Architecture_M6_CP3_R3_Sector_Derivation_Review_Decision.md`. RA-37a is **not** replaced —
+RA-38 implements its correction (1). Accounting **64 / 17 / 47**, debt **1**; gate **497 = 30 + 12 + 449 + 6**;
+no runtime credit granted.
+
+### The STOP was right, and the construction it lacked now exists
+
+RA-37a asserts two unique oriented sectors **exist** without saying how to build them, so the turn was correct to
+refuse rather than guess a sector, a global potential, a first-by-row face, or a new τ.
+
+**The sectors are the two arcs of the vertex-star cycle cut by the incident hard carriers.** At a rail junction
+vertex `v` on an interior orientable manifold link, `v`'s star faces form a cycle under "share a spoke edge at
+`v`"; cutting at the two incident hard carriers gives exactly two arcs, and **each carrier contributes exactly one
+face to each arc**. Derived mechanically on the reviewed 3×3 fixture:
+
+```text
+star cycle (v=4) : 0 → 1 → 4 → 7 → 6 → 3 → 0
+cut (1,4),(4,7)  : sector A {0,1,4}   sector B {3,6,7}
+(1,4) faces {0,3}: 0 ∈ A, 3 ∈ B
+(4,7) faces {4,7}: 4 ∈ A, 7 ∈ B
+```
+
+This reproduces the STOP record's radial chains `0→1→4` and `3→6→7` and shows they are the cut arcs rather than a
+fixture artefact. Each sector is a well-defined **side** of the rail; within a sector, consecutive carriers'
+faces are joined by **non-rail** A3 transitions — which is exactly why superseded RA-36.1's carrier-to-carrier
+face identity failed.
+
+Fail-closed cases coincide with RA-37a's frozen domain: boundary vertex (star is a path → three arcs), more than
+two incident carriers (branch → no unique pair), exactly one carrier (rail terminates), non-manifold/singular
+star, foreign barrier inside an arc.
+
+### Two distinct validator defects — correct them together
+
+In `src/geometry/SurfaceCellTracing.cpp:8019-8118`:
+
+1. `previous.secondFace != transition.firstFace` — the superseded RA-36.1 category error at a **second site**. It
+   always fires on the reviewed rails, since `{0,3} ∩ {4,7} = ∅`. Replace with **within-sector radial chaining**.
+2. `endpoint.orientedSteps.size() != expectedSteps.size()` — unsoundly ties endpoint-path length to **carrier
+   count**; the real length is set by **fan valence per junction**. **The 3×3 fixture satisfies this only by
+   coincidence** (two carriers, chain length two), so fixing only (1) and validating on 3×3 will pass while (2)
+   stays wrong and breaks on the first differing-valence fixture.
+
+Also: the A4-side gate at `:18312-18330` must **not** precede the sector/junction logic, or the corrected path
+stays unreachable — the same reachability trap as `M5-CP3-TB1-R3-REV`.
+
+### Publish, do not invent — third instance of this pattern
+
+`railFanPotentials` already traverses the **whole** star (`:18120-18206`) and A4 already knows the hard carriers
+(it builds `hardRailFieldTransitions`). Only the **cut** is missing, and it is a local derivation over data A4
+already owns. Same shape as RA-34.3 (τ retained before the nontraversable marking) and RA-35 (per-wedge bindings
+retained before the sort/unique collapse). Forbidden: guessed sectors; a global face-star potential as ownership
+rather than post-ownership cross-check; first-by-row face selection; a new τ definition; any A5-side path search
+or inference from sheet/region labels. A5 consumes only the published immutable certificate.
+
+### Limits that remain live
+
+Existence of a real A4-produced multi-carrier paired HardRail front is **not** established — a hand-authored
+input fixture is not a produced certificate. If the bounded search finds none, the multi-carrier path is
+**unexercised and must not be cited as validated**. All RA-34.3 R2-P3 stop gates stand (odd `τ ∈ {1,3}`,
+`F_b − F_a ≠ τ`, sign-inversion negative, reciprocal/face-permutation invariance), RA-36.4/.5/.6 stand, an empty
+bounded search **stops for Review**, and diagnostic-first-locus inside `invalid_route()` is still required before
+any corrective semantic edit.
+
 ## Resume-critical update — RA-37a ACCEPTED; exact next `M6-CP3-CB1-ENTRY-R3` compile-only (2026-10-08)
 
 **Exact next turn: `M6-CP3-CB1-ENTRY-R3` — Code + Build only, with mandatory STOP-FIRST gates.**
