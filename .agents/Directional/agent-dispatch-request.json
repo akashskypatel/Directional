@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb1-r2-p4-wip-compile-1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb1-r2-p4-wip-compile",
-  "source_sha": "8be01326d70538476c8c3327292a7be5153b1680",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb1-r2-p4-wip-compile"
+  "request_id": "m6-cp3-cb1-r2-p4-fix-apply-1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb1-r2-p4-fix-apply",
+  "file_id": "1IzrkqJ0o7UpbdGG6pRXeO-45g7QtAQH8",
+  "patch_sha256": "e374b5fed5fa4527a01163b9b66adbf84a56f3dd32f887842b81748afce890a4",
+  "base_sha": "8be01326d70538476c8c3327292a7be5153b1680",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "fix: use defined typed occurrence isolation evidence mismatch",
+  "retention_days": 14
 }
