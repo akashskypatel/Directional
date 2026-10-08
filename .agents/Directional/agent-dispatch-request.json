@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb1-r2-railfan-fix-apply-1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb1-r2-railfan-fix-apply",
-  "file_id": "1UHWz6eKuk_bGeBsjeXfhWcE9oZgbh74o",
-  "patch_sha256": "f96cfea1ec5a00c408584fef4910f607e9f54f1ccf7c5ce77033adb0fb30f9da",
-  "base_sha": "89081443b4f366dea6e9e01497271f5e9f4c6d34",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix: use produced phase-front source authority in railface test",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb1-r2-railfan-compile-2",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb1-r2-railfan-compile-fixed",
+  "source_sha": "bc87c4ef209f054d76062d9822cab69f2344017d",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb1-r2-railfan-compile-fixed"
 }
