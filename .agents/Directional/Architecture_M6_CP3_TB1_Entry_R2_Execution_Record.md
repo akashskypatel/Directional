@@ -26,6 +26,41 @@
 
 **Execution alone is not acceptance.** A complete 497-process run with any RED requires independent `M6-CP3-TB1-ENTRY-R2-REV` adjudication, not a TB implementation or silent retry. Any missing organic D1/D2/D3/D4/D5 positive, RA-36 multi-edge produced route, reciprocal/sign/face-permutation invariant or authority proof is to be reported as unproven. Review receives full raw logs, red ledger, immutable package checks and exact source. No CB2/CP3 exit. Stable **63/17/46**, produced-witness debt **1**.
 
-## Runtime evidence (fill only from verified terminal workflow artifacts)
+## Runtime evidence — terminal, independently verified (2026-10-08T11:04Z)
 
-PENDING. Do not manufacture a run ID, outcome, elapsed time, organic witness, semantic totals or artifact checksum. On terminal verified evidence append exact workflow/run/job/artifact IDs, checksums, 497 ledgers and final source/package postflight, and route to the mandatory Review turn.
+**Disposition: mechanically complete, SEMANTIC RED (444 PASS / 53 RED). R2 candidate UNPROMOTED pending mandatory independent Review.** Workflow completion is not semantic acceptance; do not release CB2/CP3 exit.
+
+- Dispatcher workflow run **`37767144537`**, [GitHub Actions](https://github.com/akashskypatel/Directional/actions/runs/37767144537); runtime job **`113277596566`** result `success` (mechanical), compile, drive_apply and noop jobs all skipped; mailbox published success at `2026-10-08T11:04:12Z`.
+- Mailbox `.workflow-mailbox/m6-cp3-tb1-entry-r2-exec/latest.json`: `event_sha=7d219b15519bc7eb003286677c0c122650cf48ab`, `source_sha=80fc1688f13e5ed52699177a845f25cc4dbda38b`, `run_id=37767144537`, `result=success`.
+- **Result artifact ID `11545716507`**, `m6-cp3-tb1-entry-r2-exec-result-37767144537`, [GitHub download](https://github.com/akashskypatel/Directional/actions/runs/37767144537/artifacts/11545716507), expires `2026-10-22T11:03:52Z`; provider/download outer ZIP SHA-256 **`d6469bea1b4ef6fb3b142d05a97d01dbab98331cfc91d930c7bc30da555ec0ca`**.
+- Full extracted result `SHA256SUMS` verifies **1019/1019** content files (1,020 ZIP entries including checksum manifest). Independently replayed `csv.DictReader` integrity: **497/497** ledger rows, each ordinal unique/in order, **497/497 exact-one selection**, **0 skips**, all per-row raw SHA-256 digests match, **53 RED rows exactly matched red-ledger.tsv**, PASS entries carry exit=0 and one `[ OK ]`. No rerun, retry, discovery, fixture mutation, compile, linking, configuration, or package repair.
+- `execution-boundary.txt`: `runtime_started=true`, `runtime_completed=true`, `preflight_completed=true`, `orchestration_failure=false`, `selection_integrity=true`, totals `30+12+449+6=497`, `benchmark_execution=false`, other mutation/retry flags false, `script_exit=0`. `candidate-artifact-authority.txt` verifies compiled artifact ID `11542824274` and provider+download digest `8aa756b1085a75109648b4da7f07a2ffebcdf975ea04981ec88b2d2e61c89114`.
+- `immutability.txt`: source/package/execution-view byte+mode censuses all equal before/after, four selector/routing digests unchanged, candidate root manifest `28/28` after. Independently compared all three census before/after files byte-for-byte.
+
+### Exact phase accounting
+
+| Group | Processes | PASS | RED | RED ordinals |
+|---|---:|---:|---:|---|
+| focused30 | 30 | 15 | 15 | 3,6,12,14,15,17,18,20,22,23,24,25,26,27,28 |
+| focused12 | 12 | 10 | 2 | 5,6 |
+| selector449 | 449 | 419 | 30 | 115,116,117,122,130,132,134,137,139,140,141,142,143,150,176,201,211,217,219,227,230,231,404,405,406,407,444,446,447,448 |
+| CP3entry | 6 | **0** | **6** | 1,2,3,4,5,6 |
+| **total** | **497** | **444** | **53** | all in `red-ledger.tsv` |
+
+### Evidence-localized observations for mandatory Review (NOT independent adjudication)
+
+The following buckets are an **exclusive rough grouping by raw first failure signature**, not proven root-cause classification. Parent-child cascading and accepted→RED repricing are owned by Review:
+
+1. **25 REDs** have explicit `InvalidHardRailRouteCertificate` in the raw process log, including formerly green focused30/focused12 tests, selector cases and D2/D6 CP3 identities. Representative `raw/focused30/ordinal-003.log`, `raw/selector/ordinal-217.log`, `raw/cp3entry/ordinal-002.log`, `raw/cp3entry/ordinal-006.log`. Internal-midline rectangle producer fails before many asserted A5/A6/A7 behaviors are reached. Determine whether A4 RA-36 certificate construction or a legitimately unrepresentable route is responsible; do not relax typed fail-closed rules without Review.
+2. **12 REDs** in `SurfaceCellsPhase10Tests.cpp` have an initial `SurfaceCellProducerDisposition::Produced` vs actual rejected disposition (4-byte 01 vs 02), usually shared rectangle phaseFront family; sampled `raw/selector/ordinal-116.log` and `ordinal-139.log`. Some other selector logs explicitly include the HardRail code and are counted in bucket 1. Treat these as observed downstream products, not twelve independently established root causes.
+3. **5 REDs** explicitly report *“No tracer-produced reciprocal periodic torus witness with an exact source/A3 generator and odd selected-face gauge delta.”* See focused30 ordinals 6,20; selector ordinals 446,447; CP3entry ordinal 1. Does not establish that a legitimate odd witness exists or that product is wrong; pre-registered nonvacuity gate is RED.
+4. **2 REDs** fail D3/D7 bounded real-tracer seam-collinear OrdinaryFront search: `raw/cp3entry/ordinal-003.log`, `005.log`; case 3 explicitly says *“bounded axis-aligned real-tracer family produced no fully certified reciprocal cross-sheet OrdinaryFront.”*
+5. **1 RED** fails the D5 actual A5 route-bearing ordinary carrier baseline before tamper: `raw/cp3entry/ordinal-004.log`, `baseline == nullptr`.
+6. **8 remaining REDs** include torus A5/A6/arrangement absent (focused30 25–28, selector 444/448), and two RE-package downstream terminal-code mismatches (selector 176,201): expected `InjectedStageFailure` but got `NotProductionReady`. These require trace-back through the earliest typed producer failure in Review, without treating dependent assertions as new independent defects.
+
+All six CP3entry witnesses are **RED**, thus odd τ, route composition, reciprocal/face-permutation and real seam-collinear positives are not mechanically validated by this candidate. A true multi-edge HardRail route producer witness is **not** demonstrated by this run; do not cite RA-36 multi-edge coverage. Do not relabel, synthesize, adjust the frozen selector/fixture/routing, relax equality checks, retry, or silently change the eight-target artifact.
+
+### Next mandatory turn and stable ledger
+
+**Exact next turn after terminal STATUS closure: `M6-CP3-TB1-ENTRY-R2-REV`.** That turn must independently verify the artifact/report and classify all 53 RED as product/fixture/test-authority regression, identify true first causes versus cascades, and decide whether R2 is rejected/unpromoted and what bounded Definition/Code+Build recovery is permitted. This execution record does **not** independently accept/reject a stable event or reprice the stable ledger. Reviewed CP2 491/491 remains the last accepted source baseline; prior R1 482/497 is rejected. Stable counts **63 events / 17 categories / 46 recurrences**, debt **1**, subject only to independent Review.
+
