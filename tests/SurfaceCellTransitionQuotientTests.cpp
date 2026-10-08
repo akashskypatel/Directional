@@ -385,6 +385,24 @@ void require_produced(const PhaseFrontFixture &fixture,
   }
 }
 
+// Report the immutable pipeline first-failure authority if a retained A2b/A3
+// snapshot is unavailable. Otherwise that preflight throws before
+// require_produced() can display A4's first-invalid HardRail predicate.
+// Reporting only: this must not turn a rejected producer into a fixture.
+std::string retained_pipeline_first_failure(
+    const directional::pipeline::RemeshResult &result) {
+  const auto &diagnostics = result.diagnostics;
+  const auto present = [](const std::string &value) {
+    return value.empty() ? std::string("unreported") : value;
+  };
+  return ";firstStage=" +
+             present(diagnostics.surfaceCellFirstInvalidProducerStage) +
+         ";firstReason=" +
+             present(diagnostics.surfaceCellFirstInvalidProducerReason) +
+         ";terminalStage=" + present(diagnostics.terminalFailureStage) +
+         ";terminalCode=" + present(diagnostics.terminalFailureCode);
+}
+
 PhaseFrontFixture make_square_fixture(const bool splitIsolation,
                                       const bool overlappingComponents) {
   PhaseFrontFixture fixture;
@@ -548,7 +566,8 @@ PhaseFrontFixture make_hard_rail_fixture() {
       !snapshots.hasAuthoritativeRails ||
       !result.surfaceCellContext.hasTraceNetwork) {
     throw std::runtime_error(
-        "Production hard-rail fixture did not retain A2b/A3 tracing authority.");
+        "Production hard-rail fixture did not retain A2b/A3 tracing authority" +
+        retained_pipeline_first_failure(result));
   }
 
   fixture.components = snapshots.sourceSurfaceLabels.componentByFace;
@@ -656,9 +675,8 @@ PhaseFrontFixture make_torus_pipeline_fixture() {
   const auto result = directional::pipeline::remesh_from_raw_cross_field(
       fixture.mesh.V, fixture.mesh.F, raw, options);
   if (!result.surfaceCellContext.hasTraceNetwork) {
-    throw std::runtime_error("Torus pipeline did not retain trace authority: " +
-                             result.diagnostics.terminalFailureCode + "/" +
-                             result.diagnostics.terminalFailureStage);
+    throw std::runtime_error("Torus pipeline did not retain trace authority" +
+                             retained_pipeline_first_failure(result));
   }
   fixture.network = result.surfaceCellContext.productSnapshots.traceNetwork;
   require_produced(fixture, "torus pipeline");
@@ -758,7 +776,8 @@ PhaseFrontFixture make_nonconstant_hard_rail_fixture(
       !snapshots.hasAuthoritativeRails ||
       !result.surfaceCellContext.hasTraceNetwork) {
     throw std::runtime_error(
-        "Non-constant hard-rail fixture did not retain A2b/A3 authority.");
+        "Non-constant hard-rail fixture did not retain A2b/A3 authority" +
+        retained_pipeline_first_failure(result));
   }
   fixture.components = snapshots.sourceSurfaceLabels.componentByFace;
   fixture.sheets = snapshots.sourceSurfaceLabels.localSheetByFace;
@@ -1542,7 +1561,8 @@ ProducedTorusWitnessFixture make_nonzero_z4_torus_witness_fixture() {
       !snapshots.sourceTopologyRegions.has_value() ||
       !result.surfaceCellContext.hasTraceNetwork) {
     throw std::runtime_error(
-        "Nonzero-Z4 torus pipeline did not retain source/A3 witness authority.");
+        "Nonzero-Z4 torus pipeline did not retain source/A3 witness authority" +
+        retained_pipeline_first_failure(result));
   }
   fixture.components = snapshots.sourceSurfaceLabels.componentByFace;
   fixture.sheets = snapshots.sourceSurfaceLabels.localSheetByFace;
