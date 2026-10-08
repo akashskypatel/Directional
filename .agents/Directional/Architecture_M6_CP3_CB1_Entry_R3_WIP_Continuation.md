@@ -1,3 +1,11 @@
+## R3 2026-10-08T20:16Z — early-rejection fixture reporting, GMP compile GREEN
+
+Supersedes the pending compile verdict in the preceding R3 20:04Z checkpoint. Latest semantic source **`2b7997b80114be1ff270c3e9fada71aa075b0e95`**; immutable compile request event `eb2368bfb8f5d96c8dd02421fcecbc347d8e3add`; source/event matched authoritative mailbox `.workflow-mailbox/m6-cp3-cb1-entry-r3-early-firstfail-output-compile-r1/latest.json`. **Run `37837678896` SUCCESS**, compile job `113518953294`, TB skipped. Result/package artifact `11575903942`, SHA256 `5ab7d05b4ac58561e883fc73948396c0848f2d02adf365e4361857792aa6cad4`; log `11575604162`, SHA256 `8b72a6864986e5c6b9e6b40d6ff68285095915c58510843fd65083db284421a5`. Independently verified **28/28 package SHA256SUMS**, 0/0 preflight and build exits, eight standard GMP/GMPXX targets packaged, libgmpxx/libgmp link evidence, five clean source receipts, `runtimeExecution=false`. No Directional executables/tests/benchmarks invoked.
+
+Detailed final continuation stored in Library `/Directional/Evidence/Directional__M6-CP3-CB1-ENTRY-R3__continuation-20261008T2004Z-final.md`, SHA256 `8ff623396b37eb9237e936274a8fdbc10057b16fa6a8df671a6d743787e0466c`; original exact patch backup also retained in Library. **Same R3 turn IN_PROGRESS**; source compile success is not proof of organic D1/D2/D3/D5 positives, 39 reviewed R2 first causes, or 47 recovered accepted-green regressions. Future TB remains separate and no successor is authorized yet. CB vs TB proof-gate ordering interpretation requires independent authority if closure is considered; do not infer runtime success from a compile-only artifact.
+
+---
+
 ## CURRENT bounded R3 Code + Build continuation — 2026-10-08T20:04Z
 
 **Continue SAME `M6-CP3-CB1-ENTRY-R3` IN_PROGRESS.** Prior source `593f401db4e316f0add0664a89dc634f0c1f9076` had eight GMP/GMPXX compile-green targets in run `37834338897` (28/28 package hashes; `runtimeExecution=false`). Its exact test-file source bytes were verified against the local baseline from that immutable compile package.
