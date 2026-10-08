@@ -2681,32 +2681,57 @@ TEST(M6CP3, A5ChartBarriersConsumeTypedHardFeatureAuthorityAcrossRelationKinds) 
       square.mesh.F, squareFront.sourceTopologyRegions(),
       squareFront.hardFeatureEdges());
   ASSERT_TRUE(squareGraph.available());
+  // D5 must select an A5-published reciprocal OrdinaryFront relation, not
+  // merely an unpaired A4 side whose boundaryKind happens to be ordinary.
+  const auto squareA5Result =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+          square.mesh.V, square.mesh.F, squareFront);
+  const auto *squareA5 =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+          &squareA5Result);
+  ASSERT_NE(squareA5, nullptr);
   PhaseFrontDraft marked = phase_front_draft(squareFront);
   std::optional<directional::authority::SourceEdgeTopologyKey> ordinaryCarrier;
   std::optional<directional::authority::SourceEdgeTopologyKey> unaffectedCarrier;
-  for (const auto &edge : marked.edges) {
+  for (const auto &relation : squareA5->owned_relations()) {
+    if (relation.id.kind !=
+            directional::pipeline::SurfaceOccurrenceRelationKind::OrdinaryFront ||
+        relation.firstFrontEdge < 0 || relation.secondFrontEdge < 0 ||
+        relation.firstFrontEdge >= static_cast<int>(marked.edges.size()) ||
+        relation.secondFrontEdge >= static_cast<int>(marked.edges.size())) {
+      continue;
+    }
+    const auto &edge = marked.edges[static_cast<std::size_t>(relation.firstFrontEdge)];
+    const auto &reciprocal =
+        marked.edges[static_cast<std::size_t>(relation.secondFrontEdge)];
     if (edge.boundaryKind != SurfaceFrontBoundaryKind::OrdinaryInterior ||
-        edge.route.empty()) {
+        reciprocal.boundaryKind != SurfaceFrontBoundaryKind::OrdinaryInterior ||
+        edge.oppositeEdge != relation.secondFrontEdge ||
+        reciprocal.oppositeEdge != relation.firstFrontEdge ||
+        edge.route.empty() || reciprocal.route != edge.route.reversed()) {
       continue;
     }
-    const auto carrier = edge.route.steps().front().topology();
-    if (marked.hardFeatureEdges.contains(carrier) ||
-        !hasTransitionAcross(squareGraph, carrier)) {
-      continue;
-    }
-    for (const auto &transition : squareGraph.transitions()) {
-      if (transition.sharedEntity.edge != carrier &&
-          !marked.hardFeatureEdges.contains(transition.sharedEntity.edge)) {
-        ordinaryCarrier = carrier;
-        unaffectedCarrier = transition.sharedEntity.edge;
-        break;
+    for (const auto &step : edge.route.steps()) {
+      const auto carrier = step.topology();
+      if (marked.hardFeatureEdges.contains(carrier) ||
+          !hasTransitionAcross(squareGraph, carrier)) {
+        continue;
       }
+      for (const auto &transition : squareGraph.transitions()) {
+        if (transition.sharedEntity.edge != carrier &&
+            !marked.hardFeatureEdges.contains(transition.sharedEntity.edge)) {
+          ordinaryCarrier = carrier;
+          unaffectedCarrier = transition.sharedEntity.edge;
+          break;
+        }
+      }
+      if (ordinaryCarrier.has_value()) break;
     }
     if (ordinaryCarrier.has_value()) break;
   }
   ASSERT_TRUE(ordinaryCarrier.has_value())
-      << "D5 requires a real route-bearing ordinary edge with an eligible "
-         "interior source transition and an unrelated live carrier";
+      << "D5 requires a real reciprocal A5 OrdinaryFront with an A4 route, "
+         "eligible interior source transition and unrelated live carrier";
   ASSERT_TRUE(unaffectedCarrier.has_value());
   marked.hardFeatureEdges.insert(*ordinaryCarrier);
   directional::geometry::SourceChartTransitionGraph squareMarkedGraph(
