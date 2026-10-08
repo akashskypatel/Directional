@@ -1,0 +1,2 @@
+# M6-DEFN-R5-R1 exact temporary-state cleanup
+.agents/connector-triggers/source-snapshot/M6-DEFN-R5-R1-20261008T0111Z.json
