@@ -2230,11 +2230,30 @@ PhaseFrontFixture make_axis_aligned_isolation_seam_fixture(
   return fixture;
 }
 
-std::unique_ptr<PhaseFrontFixture> m6cp3_produced_seam_fixture() {
+std::unique_ptr<PhaseFrontFixture> m6cp3_produced_seam_fixture(
+    std::string *searchDiagnostic = nullptr) {
+  if (searchDiagnostic != nullptr) searchDiagnostic->clear();
+  // Diagnostic only: retain the first missing producer stage for every
+  // bounded candidate, instead of losing it in successive `continue`s.
+  const auto record = [&](double size, const std::string &cause) {
+    if (searchDiagnostic == nullptr) return;
+    if (!searchDiagnostic->empty()) *searchDiagnostic += "; ";
+    *searchDiagnostic += "size=" + std::to_string(size) + ":" + cause;
+  };
   for (const double size : {0.25, 0.5, 1.0}) {
     auto fixture = std::make_unique<PhaseFrontFixture>(
         make_axis_aligned_isolation_seam_fixture(size));
-    if (!fixture->network.phaseFront.is_produced()) continue;
+    if (!fixture->network.phaseFront.is_produced()) {
+      std::string cause = "A4:" + std::string(
+          directional::geometry::surface_phase_front_failure_reason_name(
+              fixture->network.phaseFront.rejection_reason()));
+      if (const auto *failure = fixture->network.phaseFront.rejection();
+          failure != nullptr && !failure->hardRailRouteDiagnostic.empty()) {
+        cause += ":" + failure->hardRailRouteDiagnostic;
+      }
+      record(size, cause);
+      continue;
+    }
     const auto &front = fixture->network.phaseFront.product();
     const auto a5Construction =
         directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
@@ -2242,13 +2261,25 @@ std::unique_ptr<PhaseFrontFixture> m6cp3_produced_seam_fixture() {
     const auto *a5 =
         std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
             &a5Construction);
-    if (a5 == nullptr) continue;
+    if (a5 == nullptr) {
+      const auto *error = std::get_if<
+          directional::pipeline::SurfaceOccurrenceComplexError>(&a5Construction);
+      record(size, error == nullptr ? "A5:unexpected-disposition"
+          : "A5:" + std::string(
+                directional::pipeline::surface_occurrence_complex_error_name(
+                    error->code)));
+      continue;
+    }
     const auto *relation = m6cp3_seam_ordinary(*a5);
-    if (relation == nullptr) continue;
+    if (relation == nullptr) {
+      record(size, "A5:no-produced-certified-ordinary-seam");
+      continue;
+    }
     const auto *first = m6cp3_occurrence_by_id(*a5, relation->id.first);
     const auto *second = m6cp3_occurrence_by_id(*a5, relation->id.second);
     if (first == nullptr || second == nullptr ||
         !relation->evidence.isolationSeamTransportCertificate.has_value()) {
+      record(size, "A5:missing-endpoint-or-typed-seam-certificate");
       continue;
     }
     std::vector<directional::authority::IsolationSheetId> shared;
@@ -2257,18 +2288,30 @@ std::unique_ptr<PhaseFrontFixture> m6cp3_produced_seam_fixture() {
                           second->cornerWedgeSheets.begin(),
                           second->cornerWedgeSheets.end(),
                           std::back_inserter(shared));
-    if (!shared.empty()) continue;
+    if (!shared.empty()) {
+      record(size, "A5:seam-endpoint-wedge-sheets-overlap");
+      continue;
+    }
     const auto a6Construction =
         directional::pipeline::SurfaceQuotientProducer::produce(*a5);
     const auto *a6 =
         std::get_if<directional::pipeline::SurfaceQuotientProduct>(
             &a6Construction);
-    if (a6 == nullptr ||
-        !std::any_of(a6->selected_forest().begin(),
+    if (a6 == nullptr) {
+      const auto *error = std::get_if<
+          directional::pipeline::SurfaceQuotientProductError>(&a6Construction);
+      record(size, error == nullptr ? "A6:unexpected-disposition"
+          : "A6:" + std::string(
+                directional::pipeline::surface_quotient_product_error_name(
+                    error->code)));
+      continue;
+    }
+    if (!std::any_of(a6->selected_forest().begin(),
                      a6->selected_forest().end(),
                      [&](const auto &edge) {
                        return edge.relation == relation->id;
                      })) {
+      record(size, "A6:certified-seam-not-selected");
       continue;
     }
     const auto a7Construction =
@@ -2278,6 +2321,7 @@ std::unique_ptr<PhaseFrontFixture> m6cp3_produced_seam_fixture() {
             &a7Construction) != nullptr) {
       return fixture;
     }
+    record(size, "A7:rejected-certified-seam");
   }
   return nullptr;
 }
@@ -2511,6 +2555,46 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
   };
   EXPECT_EQ(sector_topology(*permutedMidline),
             sector_topology(*producedMidline));
+  // The same physical source topology must retain exact A3 radial transport
+  // and owner HardRail chi, not merely the two sector face sets. Canonicalize
+  // each directed transition by its typed source-face topology to avoid a
+  // spurious discrepancy when the opposite route orientation is published.
+  const auto typed_transport = [](const auto &transition) {
+    const bool reversed = transition.secondFace < transition.firstFace;
+    return std::make_tuple(
+        reversed ? transition.secondFace : transition.firstFace,
+        reversed ? transition.firstFace : transition.secondFace,
+        reversed ? transition.firstToSecond.inverse()
+                 : transition.firstToSecond);
+  };
+  const auto rail_transport = [&](const auto &published) {
+    using Edge = directional::authority::SourceEdgeTopologyKey;
+    using Face = directional::authority::SourceFaceTopologyKey;
+    using Turn = directional::authority::QuarterTurn;
+    std::map<Edge, std::tuple<Face, Face, Turn>> result;
+    for (const auto &transition : published.hardRailFieldTransitions())
+      result.emplace(transition.edge, typed_transport(transition));
+    return result;
+  };
+  const auto radial_transport = [&](const auto &certificate) {
+    using Edge = directional::authority::SourceEdgeTopologyKey;
+    using Face = directional::authority::SourceFaceTopologyKey;
+    using Turn = directional::authority::QuarterTurn;
+    std::map<Edge, std::tuple<Face, Face, Turn>> result;
+    for (const auto &junction : certificate.junctions) {
+      for (const auto &side : junction.sectorPaths) {
+        for (const auto &transition : side) {
+          result.emplace(transition.edge, typed_transport(transition));
+        }
+      }
+    }
+    return result;
+  };
+  EXPECT_EQ(rail_transport(permutedFront), rail_transport(front))
+      << "source-face-row permutation must not alter typed owner-rail chi";
+  EXPECT_EQ(radial_transport(*permutedMidline),
+            radial_transport(*producedMidline))
+      << "source-face-row permutation must not alter nonrail A3 phi";
 
   // A certificate with one tampered nonrail A3 step must fail at the
   // independent product validator; it must not obtain a fresh A5 gauge.
@@ -2715,10 +2799,12 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
 }
 
 TEST(M6CP3, OrdinaryFrontIsolationSeamUsesCoordinateIdentityAndCertifiedSheetTransition) {
-  const auto candidate = m6cp3_produced_seam_fixture();
+  std::string searchDiagnostic;
+  const auto candidate = m6cp3_produced_seam_fixture(&searchDiagnostic);
   ASSERT_NE(candidate, nullptr)
       << "D3/D7: bounded axis-aligned real-tracer family produced no "
-         "fully certified reciprocal cross-sheet OrdinaryFront";
+         "fully certified reciprocal cross-sheet OrdinaryFront: "
+      << searchDiagnostic;
   const auto &fixture = *candidate;
   auto a5Result = directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
       fixture.mesh.V, fixture.mesh.F, fixture.network.phaseFront.product());
@@ -2773,9 +2859,11 @@ TEST(M6CP3, OrdinaryFrontIsolationSeamUsesCoordinateIdentityAndCertifiedSheetTra
 // These mutations preserve the produced seam's topology and transport; only
 // the typed endpoint evidence is altered. No global sheet label can repair it.
 TEST(M6CP3, A6SeamDirectionRejectsForeignFaceAndWedgeBindings) {
-  const auto fixture = m6cp3_produced_seam_fixture();
+  std::string searchDiagnostic;
+  const auto fixture = m6cp3_produced_seam_fixture(&searchDiagnostic);
   ASSERT_NE(fixture, nullptr)
-      << "D3/D7 requires a real A4->A5->A6->A7 produced reciprocal seam";
+      << "D3/D7 requires a real A4->A5->A6->A7 produced reciprocal seam: "
+      << searchDiagnostic;
   auto a5Construction =
       directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
           fixture->mesh.V, fixture->mesh.F,
@@ -3044,10 +3132,12 @@ TEST(M6CP3, A5ChartBarriersConsumeTypedHardFeatureAuthorityAcrossRelationKinds) 
 }
 
 TEST(M6CP3, ProducedSeamCollinearOrdinaryFrontRequiresExactCrossSheetTransition) {
-  const auto candidate = m6cp3_produced_seam_fixture();
+  std::string searchDiagnostic;
+  const auto candidate = m6cp3_produced_seam_fixture(&searchDiagnostic);
   ASSERT_NE(candidate, nullptr)
       << "D3/D7: bounded axis-aligned real-tracer family produced no "
-         "fully certified reciprocal cross-sheet OrdinaryFront";
+         "fully certified reciprocal cross-sheet OrdinaryFront: "
+      << searchDiagnostic;
   const auto &fixture = *candidate;
   auto a5Result = directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
       fixture.mesh.V, fixture.mesh.F, fixture.network.phaseFront.product());
