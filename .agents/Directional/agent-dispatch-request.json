@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r3-overfull-single-carrier-apply-r1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r3-overfull-single-carrier-apply-r1",
-  "file_id": "1kR4Ij0LE5SlLa8j0_qafyubK8dDVt8er",
-  "patch_sha256": "a5e75856081aa95d1044dadc0a4c36986aa0d172abe62d9f7ca92a35911e9ceb",
-  "base_sha": "91fafdc6e2a3f46c77444b2a0cf1038f09f85e6b",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surfacecells): reject overfull hard rail carriers before A4 publication",
-  "retention_days": 14
+  "request_id": "m6-cp3-r3-overfull-single-carrier-compile-r1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r3-overfull-single-carrier-compile-r1",
+  "source_sha": "7666939d9ee1a53148d2c85d7b6d40c509d8df10",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r3-overfull-single-carrier-r1"
 }
