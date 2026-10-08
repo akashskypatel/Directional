@@ -1,4 +1,12 @@
-# CURRENT — R3 Definition Review RA-37a / exactly one bounded CB (2026-10-08)
+# LIVE — M6-CP3-CB1-ENTRY-R3 Code + Build (2026-10-08T21:26Z)
+
+- [x] Test-only D2 balanced A3 falsifier e49431df81a3e23dc7870a4e409128dea618d378, eight GMP/GMPXX targets GREEN run 37846303377, result 11580420381, 28/28 manifest, runtimeExecution=false.
+
+- [ ] SAME R3 IN_PROGRESS. Factory A3 independent attestation and CB/TB produced-witness sequencing need independent Review. No D1/D2/D3/D5 organic positives, 39 R2 first causes, 47 CP2-green recoveries, or future frozen 497-process TB accepted. See Architecture_M6_CP3_CB1_Entry_R3_WIP_Continuation.md.
+
+---
+
+# HISTORICAL — R3 Definition Review RA-37a / exactly one bounded CB (2026-10-08)
 
 - [x] `M6-DEFN-R5-R3-REV` — independently reconstruct 3×3 typed vertex-star arcs; accept candidate with binding RA-37a local-endpoint vs along-route distinction; freeze A4/A5/A6/organic STOPs.
 - [ ] `M6-CP3-CB1-ENTRY-R3` **EXACT NEXT AFTER BEACON** — implement only when A4 owns uniquely typed two sectors and independently valid endpoint-local paths; otherwise stop for producer Design Review. Remote GMP/GMPXX compile-only eight targets, followed by separate immutable 497 TB and independent Review. Do not begin CB2 or CP3 exit.
