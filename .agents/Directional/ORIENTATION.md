@@ -1,3 +1,9 @@
+## Currency — M6 R2 Code + Build compiled; artifact-only TB next (2026-10-08)
+
+R2 semantic source `80fc1688f13e5ed52699177a845f25cc4dbda38b`, run/job `37762724429 / 113262943750`, artifact `11542824274`, ZIP SHA-256 `8aa756b1085a75109648b4da7f07a2ffebcdf975ea04981ec88b2d2e61c89114`, manifest 29/29, GMP/GMPXX compile eight targets, clean source, runtimeExecution=false. **Only after final STATUS closure:** exact successor `M6-CP3-TB1-ENTRY-R2-EXEC` for immutable frozen 497 processes; then `M6-CP3-TB1-ENTRY-R2-REV`. No runtime-positive witness credit, including RA-36 multi-edge HardRail. Stable 63/17/46 debt 1; CB2/CP3 exit held. See `Architecture_M6_CP3_CB1_Entry_R2_Code_Build_Closeout_Report.md`.
+
+---
+
 ## Currency — `M6-DEFN-R5-R2-REV` RA-34 ACCEPTED; bounded `M6-CP3-CB1-ENTRY-R2` NEXT (2026-10-08 UTC)
 
 Independent runtime-free Definition Review. A4 typed wedge-to-certificate sheet mapping and organic positive witnesses must pass producer-owned preflight; no acceptance of their runtime existence. R2 compiles only eight GMP/GMPXX targets, then separate immutable 497 TB and mandatory Review. M6 CP1/CP2 closed, CP2 reviewed 491/491, R1 entry rejected 482/497, stable 63/17/46 debt 1. CB2 and CP3 exit held. See `Architecture_M6_DEFN_R5_R2_Review_Record.md`.
