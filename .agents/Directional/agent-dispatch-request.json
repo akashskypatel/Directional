@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r3-z4-square-diagnostic-compile-r1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r3-z4-square-diagnostic-compile-r1",
-  "source_sha": "cec8255f6c4e0d7745da2788447ae4d65d47fbfa",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r3-z4-square-diagnostic-r1"
+  "request_id": "m6-cp3-r3-phase10-first-locus-apply-r1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r3-phase10-first-locus-apply-r1",
+  "file_id": "1gtISK36o6Dxl1Fgj-7nQC03kGCI3e-wT",
+  "patch_sha256": "21f242f82a7e0fe8ebb988d040fefc4a65618e77364f2ed0747a71c87a87bd72",
+  "base_sha": "cec8255f6c4e0d7745da2788447ae4d65d47fbfa",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "test(surfacecells): expose A4 rejection predicate at Phase10 first stop",
+  "retention_days": 14
 }
