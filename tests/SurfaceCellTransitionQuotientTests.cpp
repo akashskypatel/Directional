@@ -1580,6 +1580,11 @@ ProducedTorusWitnessFixture make_nonzero_z4_torus_witness_fixture() {
       *snapshots.sourceTopologyRegions, *snapshots.globalTopologyPlan,
       nonzeroHardCarriers);
   const auto &front = fixture.network.phaseFront.product();
+  // Fail-only diagnostic counters. Never substitute a generated or
+  // source-only candidate for a genuinely tracer-produced Periodic relation.
+  std::size_t gaugeFacePairs = 0U;
+  std::size_t oddGaugePairs = 0U;
+  std::size_t reciprocalTracerPairs = 0U;
   std::optional<ProducedTorusSourceWitness> witness;
   for (const auto &candidate : candidates) {
     const auto &rotations = front.sourceFaceBranchRotations();
@@ -1587,10 +1592,12 @@ ProducedTorusWitnessFixture make_nonzero_z4_torus_witness_fixture() {
         candidate.toFace.index() >= rotations.size()) {
       continue;
     }
+    ++gaugeFacePairs;
     const int delta =
         (rotations[candidate.toFace.index()] -
          rotations[candidate.fromFace.index()] + 4) % 4;
     if (delta != 1 && delta != 3) continue;
+    ++oddGaugePairs;
 
     const directional::geometry::SurfaceFrontEdge *forward = nullptr;
     const directional::geometry::SurfaceFrontEdge *reverse = nullptr;
@@ -1621,6 +1628,7 @@ ProducedTorusWitnessFixture make_nonzero_z4_torus_witness_fixture() {
         reverse->route != forward->route.reversed()) {
       continue;
     }
+    ++reciprocalTracerPairs;
     const auto stored = std::find_if(
         front.periodicHolonomies().begin(), front.periodicHolonomies().end(),
         [&](const auto &relation) {
@@ -1639,7 +1647,15 @@ ProducedTorusWitnessFixture make_nonzero_z4_torus_witness_fixture() {
   if (!witness.has_value()) {
     throw std::runtime_error(
         "No tracer-produced reciprocal periodic torus witness with "
-        "an exact source/A3 generator and odd selected-face gauge delta.");
+        "an exact source/A3 generator and odd selected-face gauge delta."
+        " firstPredicate=periodic-organic-witness-not-found"
+        ";sourceA3Candidates=" + std::to_string(candidates.size()) +
+        ";sourceFaceGaugePairs=" + std::to_string(gaugeFacePairs) +
+        ";oddFaceGaugePairs=" + std::to_string(oddGaugePairs) +
+        ";reciprocalTracerPairs=" + std::to_string(reciprocalTracerPairs) +
+        ";publishedPeriodicHolonomies=" +
+        std::to_string(front.periodicHolonomies().size()) +
+        ";nonzeroHardCarriers=" + std::to_string(nonzeroHardCarriers.size()));
   }
 
   const auto *pipelineTransition =
@@ -3184,7 +3200,18 @@ TEST(M6CP3, A5ChartBarriersConsumeTypedHardFeatureAuthorityAcrossRelationKinds) 
   const auto *baseline =
       std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
           &baselineResult);
-  ASSERT_NE(baseline, nullptr);
+  const auto *baselineError =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(
+          &baselineResult);
+  ASSERT_NE(baseline, nullptr)
+      << "D5 torus A5 first rejection="
+      << (baselineError != nullptr
+              ? std::string(directional::pipeline::
+                                surface_occurrence_complex_error_name(
+                                    baselineError->code))
+              : std::string("no-typed-A5-error"))
+      << ";hardFeatureEdges=" << front.hardFeatureEdges().size()
+      << ";periodicHolonomies=" << front.periodicHolonomies().size();
 
   const directional::pipeline::SurfaceOccurrenceRelation *periodicBarrier = nullptr;
   std::optional<directional::authority::SourceEdgeTopologyKey> removedCarrier;
