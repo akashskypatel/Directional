@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r3-z4-square-diagnostic-apply-r1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r3-z4-square-diagnostic-apply-r1",
-  "file_id": "1tymuwzBnyikDbZPwGUejngKiv6akz2Dw",
-  "patch_sha256": "98d2db507b3d9145b615e41fe223f45e47426dbfa34a8204d86c8689103c8101",
-  "base_sha": "32994a92dcc6492230ee768c476e65d31a38f59e",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surfacecells): include typed Z4 commuting-square failure evidence",
-  "retention_days": 14
+  "request_id": "m6-cp3-r3-z4-square-diagnostic-compile-r1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r3-z4-square-diagnostic-compile-r1",
+  "source_sha": "cec8255f6c4e0d7745da2788447ae4d65d47fbfa",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r3-z4-square-diagnostic-r1"
 }
