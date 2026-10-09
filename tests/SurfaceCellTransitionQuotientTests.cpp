@@ -1813,10 +1813,16 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
         << "A boundary HardRail with no published cross-edge transition remains valid";
     EXPECT_EQ(attempt(2U, reverseRows, true),
               SurfacePhaseFrontProductErrorCode::EmptyCells);
+    EXPECT_EQ(attempt(2U, reverseRows, false),
+              SurfacePhaseFrontProductErrorCode::EmptyCells)
+        << "An unissued interior HardRail has no transport to validate";
     // A third incident face must fail earlier at the rail authority gate,
     // regardless of the two faces named by the supplied transition.
     EXPECT_EQ(attempt(3U, reverseRows, true),
               SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority);
+    EXPECT_EQ(attempt(3U, reverseRows, false),
+              SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority)
+        << "An overfull HardRail without a carrier must also fail closed";
   }
 }
 

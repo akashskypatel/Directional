@@ -8009,8 +8009,10 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
   // a third face could share that same carrier. Count the complete source
   // authority once without consulting a lossy two-face adjacency cache.
   std::map<authority::SourceEdgeTopologyKey, std::size_t> railIncidenceCounts;
-  for (const auto &transition : hardRailFieldTransitions)
-    railIncidenceCounts.try_emplace(transition.edge, 0U);
+  // Even a hard-feature edge with no published transition must not hide a
+  // third incident source triangle from the checked factory.
+  for (const auto &edge : hardFeatureEdges)
+    railIncidenceCounts.try_emplace(edge, 0U);
   if (!railIncidenceCounts.empty()) {
     for (const auto &region : sourceTopologyRegions.regions()) {
       for (const auto &member : region.faces()) {
@@ -8026,6 +8028,12 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
           if (found != railIncidenceCounts.end()) ++found->second;
         }
       }
+    }
+  }
+  for (const auto &[edge, count] : railIncidenceCounts) {
+    if (count > 2U) {
+      error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+      return error;
     }
   }
   std::set<authority::SourceEdgeTopologyKey> publishedRailTransitions;
