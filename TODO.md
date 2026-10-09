@@ -1,3 +1,11 @@
+# LIVE — R3 verified input-star/static source checkpoint (2026-10-09T12:40Z)
+
+- [x] Current semantic `32994a92dcc6492230ee768c476e65d31a38f59e` verified: snapshot `37921960048`, **5760/5760** hashes; GMP/GMPXX compile `37878691159`, result `11593975930`, **28/28** package hashes, `runtimeExecution=false`. No newer source edits versus current branch head.
+- [x] Statically enumerated D2 3×3 *input* vertex-4 face-star into exactly two 3-face sectors around hard spokes `(1,4)` and `(4,7)`. This is **not** runtime proof of an A4-produced route; full evidence in `Architecture_M6_CP3_R3_Verified_Compile_and_CP3_Evidence_Reconciliation_20261009.md` and Library source-star note.
+- [ ] SAME `M6-CP3-CB1-ENTRY-R3` IN_PROGRESS. A3 factory trust, CB/TB sequencing, supplemental 4 unselected tests await independent Review. Real D1/D2/D3/D5/A6/A7, R2 39 first loci and 47 lost CP2 greens remain unverified; frozen 497 separate future turn. No source/selector edits.
+
+---
+
 # LIVE — R3 exact-source race resolution (2026-10-09T11:01Z)
 
 - [x] Older `2ae6f5d1` GMP/GMPXX compile `37861343725` passed 28/28 but is superseded. Stale patch apply run `37921603342` failed both hunks after 73 intervening commits; no semantic source pushed; staged Drive file permanently owner-deleted, patch retained Library as OBSOLETE/DO NOT RETRY.
