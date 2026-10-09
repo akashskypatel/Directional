@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r3-d3-d5-a5-a6-fail-context-apply-r1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r3-d3-d5-a5-a6-fail-context-apply-r1",
-  "file_id": "1T3GZs3ArUw-ie45Y-0ScHUvStVqW08C7",
-  "patch_sha256": "6f460a2fe8194a0bb8bf6588ff9f74df3d26bd265a24c18acbe99a3ec5c49b93",
-  "base_sha": "f135946f1007c35960624a368df5f58318fd98e7",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(surfacecells): surface typed D3 D5 A5 A6 first-failure diagnostics",
-  "retention_days": 14
+  "request_id": "m6-cp3-r3-d3-d5-a5-a6-fail-context-compile-r1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r3-d3-d5-a5-a6-fail-context-compile-r1",
+  "source_sha": "089779c15eae27a2bb3b798ef9c8085950e92def",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r3-d3-d5-a5-a6-fail-context-r1"
 }
