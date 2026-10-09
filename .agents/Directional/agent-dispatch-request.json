@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r3-factory-all-feature-incidence-apply-r1",
+  "request_id": "m6-cp3-r3-all-hard-feature-incidence-apply-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r3-factory-all-feature-incidence-apply-r1",
-  "file_id": "1fuNupaMB7M9tR3-nRKl235Fk5afhvzIF",
-  "patch_sha256": "a88f12e172e77ae95b7b91be2f7270385b93c7df09ccef6c5f54eb8df9b4768b",
+  "mailbox_key": "m6-cp3-r3-all-hard-feature-incidence-apply-r1",
+  "file_id": "1M1uD4lZcWiyLNAwfA-xSV3322Vy0eUdC",
+  "patch_sha256": "be72ae40c5263308a07bb6f2b34304eaa96842791e98efd0507f91a5d80abb12",
   "base_sha": "2ae6f5d1ba4e7657a5089fb52c09812a495dfe47",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surfacecells): validate all hard-feature source incidences at checked factory",
+  "commit_message": "fix(surfacecells): reject overfull HardRail edges without rail transport at factory",
   "retention_days": 14
 }
