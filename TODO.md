@@ -1,4 +1,12 @@
-# LIVE — M6-CP3-CB1-ENTRY-R3 source/coverage checkpoint 2026-10-09T09:24Z
+# LIVE — R3 exact-source race resolution (2026-10-09T11:01Z)
+
+- [x] Older `2ae6f5d1` GMP/GMPXX compile `37861343725` passed 28/28 but is superseded. Stale patch apply run `37921603342` failed both hunks after 73 intervening commits; no semantic source pushed; staged Drive file permanently owner-deleted, patch retained Library as OBSOLETE/DO NOT RETRY.
+- [x] Current source `32994a92dcc6492230ee768c476e65d31a38f59e` independently verified against fresh snapshot `37921960048`, **5760/5760** hashes; already checks all HardRail feature incidences (zero/>2 fail) and compiles eight GMP/GMPXX targets GREEN in run `37878691159`, package `11593975930` **28/28**, `runtimeExecution=false`. Temporary snapshot marker cleaned.
+- [ ] Same R3 IN_PROGRESS, successor UNKNOWN. Independent A3 trust, CB/TB proof sequencing and supplemental four-case testing decisions still pending; frozen 497 selectors unchanged; organic witnesses, 39 R2 first failures and 47 regression recoveries unverified. Library continuation `Directional__M6-CP3-CB1-ENTRY-R3__continuation-20261009T1101Z.md`.
+
+---
+
+# HISTORICAL — M6-CP3-CB1-ENTRY-R3 source/coverage checkpoint 2026-10-09T09:24Z
 
 - [x] Latest semantic `32994a92dcc6492230ee768c476e65d31a38f59e` compile evidence independently verified: GMP/GMPXX run `37878691159` package `11593975930`, 28/28 hashes, eight targets, clean source, `runtimeExecution=false`; older run `37861343725` superseded.
 - [x] Static selection audit `.agents/Directional/Architecture_M6_CP3_R3_Frozen_497_Supplemental_Test_Coverage_Audit.md` (commit `a646e3a6`) documents four source-defined test identities outside immutable 497 (30+12+449+6) gate. No selector source changes or runtime.
