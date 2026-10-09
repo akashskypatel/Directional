@@ -1,4 +1,12 @@
-# LIVE — M6-CP3-CB1-ENTRY-R3 checked factory compile checkpoint (2026-10-08T23:39Z)
+# LIVE — R3 checked-factory all-HardRail preflight compiled (2026-10-09T02:06Z)
+
+- [x] Source `648c84f1d5b3bb532c684bf0444658f864687760`: count actual face incidence for **all** declared hard-feature edges even without published transition, reject >2; expand existing checked-factory negative/control test for unissued 2/3 faces and face-row permutation. Drive apply `37873233397` SUCCESS, staging owner-deleted.
+- [x] Eight GMP/GMPXX targets compile/package `37873391621` GREEN, artifact `11591586072` SHA256 `0af7235a6aa66f40415a7f7866644164bf4500d94cf20ae316e8b0e063fef18f`, **28/28** hashes, both exits 0, `runtimeExecution=false`; tests/benchmarks not executed.
+- [ ] SAME `M6-CP3-CB1-ENTRY-R3` IN_PROGRESS, successor UNKNOWN. Independent A3/CB-to-TB Review pending, genuine D1/D2/D3/D5/A6/A7 witnesses, 39 historical R2 first causes, 47 CP2 accepted-green restorations and future frozen 497 TB unverified. Detailed WIP and Library `Directional__M6-CP3-CB1-ENTRY-R3__continuation-20261009T0206Z.md`.
+
+---
+
+# HISTORICAL — prior R3 checked factory compile checkpoint
 
 - [x] `SurfacePhaseFrontProduct::make` now requires **exactly two** full source triangle incidences for every published HardRail transport (source `2ae6f5d1ba4e7657a5089fb52c09812a495dfe47`); typed 1/2/3-face, two source-row-order factory negative/control test compiled (not executed, not added to frozen selectors). Does **not** settle A3 phi provenance.
 - [x] Drive apply run `37861219049` SUCCESS, consumed patch retired. Eight GMP/GMPXX targets compiled GREEN run `37861343725`, immutable artifact `11586413529`, package manifest 28/28, GMPXX/GMP, clean source, `runtimeExecution=false`; no runtime executed.
