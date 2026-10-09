@@ -1,4 +1,18 @@
-## CURRENT — R3 D1/D5 organic-witness first-failure diagnostic compile (2026-10-09T20:17Z)
+## CURRENT R3 checkpoint 2026-10-09T21:00Z — torus A5/A6 diagnostic reporters
+
+Same unfinished M6-CP3-CB1-ENTRY-R3 Code+Build. Latest semantic source `f135946f1007c35960624a368df5f58318fd98e7` (parent `9380c1a5a6ecb8ed50cc3290e9a7ff3808d24f20`). Test-only change to `tests/SurfaceCellTransitionQuotientTests.cpp`: four historical torus downstream failure sites retain typed A5/A6 error names and closed-complex absence; original assertions, 125 local TEST identities, producer invocation count, fixtures, selectors, public contracts and workflows unchanged. No Directional binary/test/benchmark executed.
+
+Patch `Directional__M6-CP3-CB1-ENTRY-R3__base-9380c1a5__torus-A5-A6-first-error-reporters.patch`, full SHA256 `fe88ad408a8d30ee4f63d08e7584e968381fba02c52a56e676d053ad0b7c25fb`, body SHA256 `f40d42557f7b4f5fd1389cd902d10fb08dab31b660e587024b1c0c71ec1e36d7`, exact-base apply/diff/reconstruction PASS, backed up Library `/Directional/Evidence/`. Drive apply run `37991764540` SUCCESS, artifact `11644968823` outer SHA256 `29cfc551b012900eed56f61cb28a01c589ad10b8883733d7b4c780eb99169940`. Consumed Drive ID `1fzyz01xjszGJdKbCOYP-44jPlmZFbJEi` owner-deleted.
+
+Mandatory eight-target GMP/GMPXX compile run **`37991952457` GREEN**, compile job `114028253699`, package artifact **`11644984310`** SHA256 `e73793ed37a8663408d8615e4bd1b258ed598180aa6ea3d5fe05815584ef28e6`, log `11644989416` SHA256 `f597b0724ded2240ea1ed12cb93d6f8841b5e290f8bbd151de37625646096cc2`; 28/28 internal hashes, all eight targets, 0 preflight/build exits, GMPXX+GMP, five clean source-status receipts, `runtimeExecution=false`. Test+Benchmark skipped.
+
+New exact-source audit `Architecture_M6_CP3_R3_14_Organic_Downstream_R2_Static_Provenance_20261009.md` covers 14 historical R2 organic/downstream REDs (5 periodic, 6 torus A5/A6, 2 D3/D7, 1 D5); previous 39 compiled reporters for A4/Phase10/RE. **39+14=53 historical failures mapped, none now runtime-proven recovered**; 47 formerly accepted CP2 greens not proven restored. Downloadable Library audit `Directional__M6-CP3-CB1-ENTRY-R3__14-organic-RED-static-provenance-audit-20261009T2100Z.md` SHA256 `c5b28740bbecbc96d48cf2bf919922d264956a3adc59de909e168bd3fdb043cb`, 14-row CSV SHA256 `10338ebff75541b8eeb0334748bd5075bc27e8dba20daceb1112cd1ea293206c`. Final portable handoff `Directional__M6-CP3-CB1-ENTRY-R3__continuation-20261009T2100Z.md` SHA256 `0d961c52e3e77da3f56b60560a356bbb1839747cf0af63536996dc0fd4cab34d`, Library `/Directional/Evidence/`.
+
+**Still open:** independent decisions A/B/C (A3 factory trust, CB closure versus later TB witness evidence, four supplemental unselected tests); genuine D1/D2/D3/D5/A6/A7 producer positives, R2 39 first causes and 47 accepted-to-RED restorations, separately authorized frozen 497=30+12+449+6 TB; stable 64/17/47, debt 1. Same R3 IN_PROGRESS, successor UNKNOWN; no runtime acceptance claims.
+
+---
+
+## HISTORICAL — R3 D1/D5 organic-witness first-failure diagnostic compile (2026-10-09T20:17Z)
 
 **Continue SAME unfinished `M6-CP3-CB1-ENTRY-R3` Code+Build**; successor UNKNOWN and **no Directional runtime**. Latest semantic commit **`9380c1a5a6ecb8ed50cc3290e9a7ff3808d24f20`** changes only `tests/SurfaceCellTransitionQuotientTests.cpp`. The D1 torus witness builder's existing fail-only exception now reports real source/A3 candidates, source-face gauge valid pairs, odd-Z4 candidates, reciprocal tracer relation pairs, published periodic holonomies and hard carriers. The D5 barrier test's existing A5 failure now reports the original typed A5 error code and source feature/holonomy counts. No changed test identities, selectors, producer, certificates, schema, acceptance criteria or CMake; no manufactured witness.
 
