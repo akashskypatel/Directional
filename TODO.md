@@ -1,4 +1,12 @@
-# LIVE — R3 Phase10 A4 first-locus diagnostic compile (2026-10-09T15:36Z)
+# LIVE — R3 Phase10 dependent first-failure diagnostics compile checkpoint (2026-10-09T17:07Z)
+
+- [x] Latest semantic commit `49d0c5077bd1ab4334f5affc45e7a3b3c2ed5f53`: fail-only source-attested diagnostics across 12 historically dependent Phase10 tests, original 148 test identities unchanged. Drive apply run `37965215474` GREEN; consumed patch owner-deleted; exact patch retained ChatGPT Library.
+- [x] Eight mandatory GMP/GMPXX compile targets GREEN run `37965409601`, artifact `11633695568`, 28/28 internal hashes, clean source, GMPXX/GMP, `runtimeExecution=false`; no Directional tests or benchmarks executed.
+- [ ] SAME `M6-CP3-CB1-ENTRY-R3` IN_PROGRESS, successor UNKNOWN. Independent A/B/C decisions; frozen 497 acceptance and four supplemental unselected tests, true D1/D2/D3/D5/A6/A7 witnesses, 39 R2 first loci and 47 CP2-green restorations remain unverified. Detail `Architecture_M6_CP3_CB1_Entry_R3_WIP_Continuation.md` and Library `Directional__M6-CP3-CB1-ENTRY-R3__continuation-20261009T1707Z.md`.
+
+---
+
+# HISTORICAL — R3 Phase10 A4 first-locus diagnostic compile (2026-10-09T15:36Z)
 
 - [x] Test-only `SurfaceCellsPhase10Tests.cpp` first-predicate reporting on five historical direct-A4 Phase10 tests, six assertion sites; applied source **`f15bb63569ac4621349eebf78584b8743001705d`**, run `37953798528`; Drive stage deleted, patch Library backup.
 - [x] Eight GMP/GMPXX targets compiled GREEN run `37954003990`, immutable package `11627142384`, 28/28 checksum, 0 exit codes, GMPXX+GMP, clean source, **`runtimeExecution=false`**. No Directional tests/benchmarks executed.
