@@ -75,3 +75,7 @@ All fourteen identities are source-defined in `tests/SurfaceCellTransitionQuotie
 - A later TB must preserve exact processes/receipts and inspect the 39+14 historical identities individually plus 47 CP2 accepted-green losses. A genuine empty two-carrier/organic search remains a STOP to independent producer Review, not a reason to relax assertion or synthesize evidence.
 
 **Outcome:** fourteen historical R2 identities mapped to compiled source owners, with a bounded source-level observability gap in torus A5/A6 error reporting. No runtime results, semantic code changes, or successor authorization.
+
+## 2026-10-09T21:00Z implementation addendum — compile-only, no runtime verdict
+
+Test-only typed A5/A6 error reporters were applied after this exact-source static census, semantic commit `f135946f1007c35960624a368df5f58318fd98e7`, Drive run `37991764540`, eight-target GMP/GMPXX compile `37991952457` GREEN. Package `11644984310` SHA256 `e73793ed37a8663408d8615e4bd1b258ed598180aa6ea3d5fe05815584ef28e6`, 28/28 checks, `runtimeExecution=false`. The test helper and four historical torus assertions now report stage A5/A6 typed errors without changing original pass/fail conditions; two selector-based materialization tests already preserve result failure strings. **No R2 failures were rerun or resolved** and A/B/C reviews remain pending.
