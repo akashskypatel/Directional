@@ -1747,13 +1747,15 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
   ASSERT_TRUE(sheet.has_value());
   ASSERT_TRUE(regionId.has_value());
   const auto hardEdge = test_source_edge_topology(0, 1, 5U);
+  const auto absentEdge = test_source_edge_topology(3, 4, 5U);
 
   // The checked authority factory accepts a complete row/member bijection
   // independently of a manifoldness check. Three distinct source triangles
   // may therefore share the same edge even when two published faces agree.
   const auto attempt = [&](const std::size_t count,
                            const bool reverseRows,
-                           const bool publishTransition) {
+                           const bool publishTransition,
+                           const bool absentRail) {
     std::vector<SourceFaceTopologyKey> rowFaces;
     std::vector<SourceRegionFaceAuthority> regionFaces;
     for (std::size_t index = 0U; index < count; ++index) {
@@ -1797,7 +1799,8 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
     }
     const auto construction = SurfacePhaseFrontProduct::make(
         0, 0, std::move(source.value()), {}, {}, {}, {}, {}, {},
-        std::nullopt, {hardEdge}, {}, std::move(transitions), {});
+        std::nullopt, {absentRail ? absentEdge : hardEdge}, {},
+        std::move(transitions), {});
     const auto *error = std::get_if<SurfacePhaseFrontProductError>(
         &construction);
     EXPECT_NE(error, nullptr);
@@ -1808,21 +1811,27 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
   for (const bool reverseRows : {false, true}) {
     // A two-face rail passes the rail-authority preflight, reaching the
     // deliberately empty cell-list gate. This is NOT a produced front.
-    EXPECT_EQ(attempt(1U, reverseRows, false),
+    EXPECT_EQ(attempt(1U, reverseRows, false, false),
               SurfacePhaseFrontProductErrorCode::EmptyCells)
         << "A boundary HardRail with no published cross-edge transition remains valid";
-    EXPECT_EQ(attempt(2U, reverseRows, true),
+    EXPECT_EQ(attempt(2U, reverseRows, true, false),
               SurfacePhaseFrontProductErrorCode::EmptyCells);
-    EXPECT_EQ(attempt(2U, reverseRows, false),
+    EXPECT_EQ(attempt(2U, reverseRows, false, false),
               SurfacePhaseFrontProductErrorCode::EmptyCells)
         << "An unissued interior HardRail has no transport to validate";
     // A third incident face must fail earlier at the rail authority gate,
     // regardless of the two faces named by the supplied transition.
-    EXPECT_EQ(attempt(3U, reverseRows, true),
+    EXPECT_EQ(attempt(3U, reverseRows, true, false),
               SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority);
-    EXPECT_EQ(attempt(3U, reverseRows, false),
+    EXPECT_EQ(attempt(3U, reverseRows, false, false),
               SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority)
         << "An overfull HardRail without a carrier must also fail closed";
+    EXPECT_EQ(attempt(1U, reverseRows, false, true),
+              SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority)
+        << "A declared but absent HardRail is not a source-owned boundary";
+    EXPECT_EQ(attempt(2U, reverseRows, false, true),
+              SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority)
+        << "An unissued nonexistent HardRail must not reach EmptyCells";
   }
 }
 

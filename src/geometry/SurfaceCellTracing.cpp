@@ -8030,8 +8030,11 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
       }
     }
   }
+  // A4 rejects absent hard-feature edges before publication. Keep the checked
+  // product equally fail-closed even when no rail transition was published:
+  // a zero-incidence key is not an owned source-mesh barrier.
   for (const auto &[edge, count] : railIncidenceCounts) {
-    if (count > 2U) {
+    if (count == 0U || count > 2U) {
       error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
       return error;
     }
