@@ -1,3 +1,11 @@
+# LIVE — R3 Phase10 A4 first-locus diagnostic compile (2026-10-09T15:36Z)
+
+- [x] Test-only `SurfaceCellsPhase10Tests.cpp` first-predicate reporting on five historical direct-A4 Phase10 tests, six assertion sites; applied source **`f15bb63569ac4621349eebf78584b8743001705d`**, run `37953798528`; Drive stage deleted, patch Library backup.
+- [x] Eight GMP/GMPXX targets compiled GREEN run `37954003990`, immutable package `11627142384`, 28/28 checksum, 0 exit codes, GMPXX+GMP, clean source, **`runtimeExecution=false`**. No Directional tests/benchmarks executed.
+- [ ] SAME R3 IN_PROGRESS; independent A/B/C decisions OPEN. Actual D1/D2/D3/D5/A6/A7 positives, 39 historical R2 first loci, 47 accepted-green recoveries and separately authorized frozen 497 + four supplemental tests remain unverified. No successor.
+
+---
+
 # LIVE — M6-CP3-CB1-ENTRY-R3 diagnostic compile checkpoint (2026-10-09T14:57Z)
 
 - [x] A4 fail-only Z4 square evidence `cec8255f6c4e0d7745da2788447ae4d65d47fbfa` applied via `37949576370` and exact GMP/GMPXX eight-target compile `37949800110` GREEN; result `11625746635`, 28/28 hashes, `runtimeExecution=false`; no tests run.
