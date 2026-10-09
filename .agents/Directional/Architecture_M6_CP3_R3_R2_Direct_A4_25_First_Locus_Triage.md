@@ -48,3 +48,7 @@
 4. Do not synthesize fake multi-carrier certificates or relax RA-39 endpoint-local crossing, frozen selectors, A3 provenance, `A5/A6/A7` typed semantics, or failure precedence. If bounded organic A4 producer search remains empty, STOP for independent producer review.
 
 **Checksum accounting:** 1019/1019 R2 manifest entries PASS; 25 direct A4 historical classified rows; shared source stop grouping 17 + 2 + 6 = 25. No R3 test has been run in this response.
+
+## 2026-10-09T15:36Z compile-only diagnostic coverage addendum
+
+The five Phase10 historical R2 selector identities `selector:404,405,117,115,141` now preserve `hardRailRouteDiagnostic` at six initial A4-produced expectations (including separate fine/coarse) through a fail-only test helper. Selector `selector:150` already prints the pipeline first-invalid producer reason. No change to test case names, fixtures, success criteria, test selection, or production code. Exact semantic commit `f15bb63569ac4621349eebf78584b8743001705d` compiled eight GMP/GMPXX targets GREEN in run `37954003990`, package `11627142384` SHA256 `7208b1179a91e30d05fad5417edc6ebf692a76f423a07a7c593a8d4d054649e6`, 28/28 hashes and `runtimeExecution=false`. **This is not an R3 test run or a root-cause verdict.** Future TB must observe each exact selected identity and associate first failure with actual R3 run results.
