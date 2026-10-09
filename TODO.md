@@ -1,3 +1,11 @@
+# LIVE — R3 2026-10-09T04:44Z verified source and CP3 historic failures
+
+- [x] Existing latest source `32994a92dcc6492230ee768c476e65d31a38f59e` still latest; eight GMP/GMPXX targets compile GREEN `37878691159`, package `11593975930`, 28/28, `runtimeExecution=false`. No reapplication of already-superseded factory all-edge patch rejected in `37882090618`.
+- [x] Reconciled all six historical CP3 RED raw logs from immutable R2 archive `11545716507` (1019/1019 hashes) in `.agents/Directional/Architecture_M6_CP3_R3_Verified_Compile_and_CP3_Evidence_Reconciliation_20261009.md`. Historical only; no R3 runtime credit.
+- [ ] SAME R3 IN_PROGRESS. Independent A3 factory attestation + Code+Build/TB sequencing verdict still required; genuine D1/D2/D3/D5/A6/A7, 39 R2 first causes, 47 lost accepted-green recoveries and frozen 497-case TB all unverified. No successor.
+
+---
+
 # LIVE — R3 stale-base conflict resolved without source edit (2026-10-09T03:59Z)
 
 - [x] Prior checked-factory commit `2ae6f5d1...` compiled GREEN `37861343725`, package `11586413529`, 28/28 checksum.
