@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r3-all-hardrail-incidence-apply-r1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r3-all-hardrail-incidence-apply-r1",
-  "file_id": "1G5yk81t7tXUWIivkh5cjYNn-pSAeTIJi",
-  "patch_sha256": "a93c81a5e67a8711b310e39575f14fd574812007512d93eef08938e16ba68df6",
-  "base_sha": "2ae6f5d1ba4e7657a5089fb52c09812a495dfe47",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surfacecells): reject unissued overfull HardRail source edges at checked factory",
-  "retention_days": 14
+  "request_id": "m6-cp3-r3-all-hardrail-incidence-compile-r1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r3-all-hardrail-incidence-compile-r1",
+  "source_sha": "648c84f1d5b3bb532c684bf0444658f864687760",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r3-all-hardrail-incidence-r1"
 }
