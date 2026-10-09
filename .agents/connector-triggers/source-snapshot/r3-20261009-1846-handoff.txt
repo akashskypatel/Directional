@@ -1,1 +1,0 @@
-R3 Code+Build exact-current-head documentation patch preflight. Use snapshot to preserve latest 2026-10-09 17:59Z handoff and 89b17c90 source. No execution of Directional binaries.
