@@ -6007,6 +6007,15 @@ RectangularHardRailPhaseFrontFixture build_rectangular_hard_rail_phase_front(
   return fixture;
 }
 
+// Report the source-attested A4 first-rejected predicate only after a
+// producer failure. This changes test logs, never route acceptance or fixtures.
+std::string hard_rail_first_failure_detail(
+    const directional::geometry::SurfaceCellNetwork &network) {
+  const auto *failure = network.phaseFront.rejection();
+  if (failure == nullptr || failure->hardRailRouteDiagnostic.empty()) return {};
+  return " firstPredicate=" + failure->hardRailRouteDiagnostic;
+}
+
 std::vector<std::pair<int, int>> hard_rail_phase_front_pairs(
     const directional::geometry::SurfacePhaseFrontProduct &product) {
   std::vector<std::pair<int, int>> pairs;
@@ -6121,7 +6130,8 @@ TEST(SurfaceCellAuthorityContractCutover,
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             fixture.network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             fixture.network.phaseFront.rejection_reason());
+             fixture.network.phaseFront.rejection_reason())
+      << hard_rail_first_failure_detail(fixture.network);
   const auto &product = fixture.network.phaseFront.product();
   ASSERT_TRUE(product.conformityPlanReceipt().has_value());
   const auto &receipt = *product.conformityPlanReceipt();
@@ -6150,11 +6160,13 @@ TEST(SurfaceCellAuthorityContractCutover,
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             fine.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             fine.phaseFront.rejection_reason());
+             fine.phaseFront.rejection_reason())
+      << hard_rail_first_failure_detail(fine);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             coarse.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             coarse.phaseFront.rejection_reason());
+             coarse.phaseFront.rejection_reason())
+      << hard_rail_first_failure_detail(coarse);
   ASSERT_TRUE(fine.phaseFront.product().conformityPlanReceipt().has_value());
   ASSERT_TRUE(coarse.phaseFront.product().conformityPlanReceipt().has_value());
   EXPECT_EQ(fine.phaseFront.product().conformityPlanReceipt(),
@@ -6248,7 +6260,8 @@ TEST(SurfaceCellAuthorityContractCutover,
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             fixture.network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             fixture.network.phaseFront.rejection_reason());
+             fixture.network.phaseFront.rejection_reason())
+      << hard_rail_first_failure_detail(fixture.network);
   const auto &product = fixture.network.phaseFront.product();
   directional::geometry::SourceChartTransitionGraph chartGraph(
       &fixture.mesh.F, &product.sourceTopologyRegions(),
@@ -6303,7 +6316,8 @@ TEST(SurfaceCellAuthorityContractCutover,
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             fixture.network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             fixture.network.phaseFront.rejection_reason());
+             fixture.network.phaseFront.rejection_reason())
+      << hard_rail_first_failure_detail(fixture.network);
   const auto &product = fixture.network.phaseFront.product();
   auto materialized = directional::pipeline::build_authoritative_phase_front_mesh(
       fixture.mesh.V, fixture.mesh.F, product);
@@ -6766,7 +6780,8 @@ TEST(SurfaceCellAuthorityContractCutover,
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             fixture.network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             fixture.network.phaseFront.rejection_reason());
+             fixture.network.phaseFront.rejection_reason())
+      << hard_rail_first_failure_detail(fixture.network);
   const auto &product = fixture.network.phaseFront.product();
   const auto pairs = hard_rail_phase_front_pairs(product);
   ASSERT_FALSE(pairs.empty());
