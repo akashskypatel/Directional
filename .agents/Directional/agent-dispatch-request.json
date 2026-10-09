@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r3-reject-absent-hardrail-apply-r2",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r3-reject-absent-hardrail-apply-r2",
-  "file_id": "1wFcUIaKG5pwOQd4Q5rlBAfhYTp7Io5WM",
-  "patch_sha256": "6f687fa9cfbf86ea636962aad0d7ca0eff11797482855a1541d82ef558e9ddf5",
-  "base_sha": "648c84f1d5b3bb532c684bf0444658f864687760",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surfacecells): reject absent hard rail source keys at checked factory",
-  "retention_days": 14
+  "request_id": "m6-cp3-r3-reject-absent-hardrail-compile-r1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r3-reject-absent-hardrail-compile-r1",
+  "source_sha": "32994a92dcc6492230ee768c476e65d31a38f59e",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r3-reject-absent-hardrail-r1"
 }
