@@ -18346,7 +18346,8 @@ SurfaceCellNetwork build_surface_cell_network(
                                    int fromFaceRow = -1,
                                    int toFaceRow = -1,
                                    std::optional<authority::SourceEdgeTopologyKey>
-                                       failingSpoke = std::nullopt) {
+                                       failingSpoke = std::nullopt,
+                                   const std::string &transportEvidence = {}) {
       SurfacePhaseFrontFailure failure;
       failure.reason = SurfacePhaseFrontFailureReason::InvalidHardRailRouteCertificate;
       failure.hardRailRouteLocus = locus;
@@ -18428,6 +18429,9 @@ SurfaceCellNetwork build_surface_cell_network(
           }
         }
       }
+      // Attach Z4 evidence only after a definite rejection; never influence
+      // ownership, branch selection, or the square acceptance condition.
+      detail << transportEvidence;
       failure.hardRailRouteDiagnostic = detail.str();
       network.phaseFront = SurfacePhaseFrontResult::rejected(std::move(failure));
     };
@@ -18653,10 +18657,27 @@ SurfaceCellNetwork build_surface_cell_network(
           compose(next.firstToSecond, phiA) !=
           compose(phiB, previous.firstToSecond);
       if (incompleteCover || sectorOverlap || squareMismatch) {
+        std::ostringstream transportEvidence;
+        transportEvidence << ";sectorACount=" << sectorA.size()
+                          << ";sectorBCount=" << sectorB.size()
+                          << ";starFaceCount=" << fullDegrees.size();
+        if (squareMismatch) {
+          const auto lhs = compose(next.firstToSecond, phiA);
+          const auto rhs = compose(phiB, previous.firstToSecond);
+          transportEvidence << ";chiPrevious="
+                            << static_cast<int>(previous.firstToSecond.value())
+                            << ";phiA=" << static_cast<int>(phiA.value())
+                            << ";chiNext="
+                            << static_cast<int>(next.firstToSecond.value())
+                            << ";phiB=" << static_cast<int>(phiB.value())
+                            << ";squareLhs=" << static_cast<int>(lhs.value())
+                            << ";squareRhs=" << static_cast<int>(rhs.value());
+        }
         invalid_route(SurfaceHardRailRouteFailureLocus::SectorTransport,
                       static_cast<int>(index), static_cast<int>(junction->index()),
                       incompleteCover ? "sector-cover-deficit"
-                      : sectorOverlap ? "sector-overlap" : "A3-commuting-square");
+                      : sectorOverlap ? "sector-overlap" : "A3-commuting-square",
+                      -1, -1, std::nullopt, transportEvidence.str());
         return network;
       }
       junctions.push_back({*junction, {*pathA, *pathB}});
