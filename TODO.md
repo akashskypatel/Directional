@@ -1,4 +1,12 @@
-# LIVE — R3 exact-source static 497 checkpoint (2026-10-09T21:48Z)
+# LIVE — R3 D3/D5 fail-context GMP compile (2026-10-09T23:21Z)
+
+- [x] Added six typed first-failure message contexts to unchanged D3/D7 and D5 selected `ASSERT_NE` assertions, semantic commit `089779c15eae27a2bb3b798ef9c8085950e92def`, exact patch retained in Library `/Directional/Evidence/`. Apply run `38004878130` succeeded, consumed Drive patch deleted.
+- [x] Eight mandatory GMP/GMPXX targets compiled GREEN run `38005003624`, artifact `11650409049`, 28/28 internal hashes, clean source, `runtimeExecution=false` (no binary executed).
+- [ ] SAME `M6-CP3-CB1-ENTRY-R3` IN_PROGRESS. A/B/C independent decisions still pending, actual D1/D2/D3/D5/A6/A7 produced witnesses, 39 historic R2 first-loci and 47 accepted-green recoveries unverified; four supplemental tests outside frozen 497 pending authorization. Later immutable 497-case TB only after review. Details in current WIP and `Directional__M6-CP3-CB1-ENTRY-R3__continuation-20261009T2321Z.md`.
+
+---
+
+# HISTORICAL — R3 exact-source static 497 checkpoint (2026-10-09T21:48Z)
 
 - [x] Verified current semantic source `f135946f1007c35960624a368df5f58318fd98e7` in eight-target GMP/GMPXX package `11644984310`, run `37991952457`, 28/28 internal hashes, `runtimeExecution=false`. Nine later doc/control commits, zero semantic source changes at check time. No new compile or runtime test.
 - [x] Recomputed frozen 30+12+449+6: **497 distinct selected test identities**, all 497 statically owned once by default packaged sources; historical R2 53 REDs/47 CP2 accepted selected, four supplemental tests unselected. Library report `Directional__M6-CP3-CB1-ENTRY-R3__latest-source-frozen-497-census-20261009.md` and continuation `Directional__M6-CP3-CB1-ENTRY-R3__continuation-20261009T2148Z.md`. Refreshed A/B/C independent decision requests.
