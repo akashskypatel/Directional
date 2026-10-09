@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r3-39-first-failure-handoff-apply-r1",
+  "request_id": "m6-cp3-r3-organic-first-failure-reporters-apply-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r3-39-first-failure-handoff-apply-r1",
-  "file_id": "1p7ggTpCYBUWQCNv7lf3UNu10HpADHd86",
-  "patch_sha256": "2878340eaaafc5197c93180a95bb32ad70e315fedebd7dd0ed37ff60e7710e54",
-  "base_sha": "9417bf44e4a8dd7c85d6452c759eee65154fe2c7",
+  "mailbox_key": "m6-cp3-r3-organic-first-failure-reporters-apply-r1",
+  "file_id": "1uV-wi8vEYyxcneOlAVpnVfo_stmSXMzL",
+  "patch_sha256": "47d0ca34b0fc4d7f125ac395d25949dba9ff5557d58673270f875c33249cb402",
+  "base_sha": "89b17c90a3941f080d47f47d10fea9f23cf2b818",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): checkpoint compiled R3 39 first-failure diagnostic coverage",
+  "commit_message": "test(surfacecells): report first organic D1 D5 witness rejection filters",
   "retention_days": 14
 }
