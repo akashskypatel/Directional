@@ -1,4 +1,12 @@
-# LIVE — R3 frozen 497 static packaged-route census (2026-10-09T19:31Z)
+# LIVE — R3 D1/D5 fail-only diagnostic compile (2026-10-09T20:17Z)
+
+- [x] Source `9380c1a5a6ecb8ed50cc3290e9a7ff3808d24f20` adds fail-only D1 candidate-stage counts and D5 A5 first-error code; original tests, producer and frozen selectors unchanged. Patch full SHA256 `47d0ca34b0fc4d7f125ac395d25949dba9ff5557d58673270f875c33249cb402`, Drive apply run `37986806459` GREEN, staged file owner-deleted; patch backed up Library.
+- [x] Mandatory GMP/GMPXX eight-target compile/package GREEN, run `37986977367`, result `11643991054`, 28/28 hashes, source clean, `runtimeExecution=false`; no tests/benchmarks run. Latest handoff `Directional__M6-CP3-CB1-ENTRY-R3__continuation-20261009T2017Z-final.md` in Library `/Directional/Evidence/`.
+- [ ] SAME `M6-CP3-CB1-ENTRY-R3` IN_PROGRESS; A/B/C independent review unresolved, true D1/D2/D3/D5/A6/A7 organic witnesses, 39 R2 first-locus results, 47 CP2-green restorations and separate frozen 497-case TB still NOT EXECUTED. Frozen 497 static census from 19:31Z remains unchanged; 4 supplemental cases excluded.
+
+---
+
+# HISTORICAL — R3 frozen 497 static packaged-route census (2026-10-09T19:31Z)
 
 - [x] Source-only static census on semantic `89b17c90a3941f080d47f47d10fea9f23cf2b818`: **497/497** unique identities, one packaged target each, receipt ordinal/target matches; all 53 R2 REDs and 47 formerly CP2-green identities are frozen-selected; 7 extra raw definitions historical-only; 4 supplemental cases outside frozen selector. Report and CSV in ChatGPT Library `/Directional/Evidence/`. No binaries executed.
 - [x] Latest GMP/GMPXX eight-target run `37970925842` package `11634853973` 28/28 manifest `runtimeExecution=false`; exact-head snapshot `37976299041` artifact `11639141520` 5779/5779 hashes; latest source/test/CMake unchanged.
