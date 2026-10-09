@@ -1,2 +1,0 @@
-R3 bounded exact-source snapshot after stale patch context
-At 2026-10-09T11:09Z preserve current branch authority. No binary/runtime tests. For source diff and source-attested rebase only.
