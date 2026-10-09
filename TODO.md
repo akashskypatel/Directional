@@ -1,3 +1,11 @@
+# LIVE — M6-CP3-CB1-ENTRY-R3 diagnostic compile checkpoint (2026-10-09T14:57Z)
+
+- [x] A4 fail-only Z4 square evidence `cec8255f6c4e0d7745da2788447ae4d65d47fbfa` applied via `37949576370` and exact GMP/GMPXX eight-target compile `37949800110` GREEN; result `11625746635`, 28/28 hashes, `runtimeExecution=false`; no tests run.
+- [x] Historical R2 **25 direct A4** first-observable stop triage `Architecture_M6_CP3_R3_R2_Direct_A4_25_First_Locus_Triage.md` (17 shared constant fixture, 2 nonconstant fixture, 6 Phase10 entry). Not a resolved root cause or R3 run.
+- [ ] SAME R3 IN_PROGRESS. Three independent A/B/C decisions still OPEN. Organic D1/D2/D3/D5/A6/A7, 39 historical R2 first loci, 47 CP2 previously accepted-green recoveries, supplemental four test decision and separate frozen 497 TB all remain unverified. No successor.
+
+---
+
 # LIVE — R3 verified input-star/static source checkpoint (2026-10-09T12:40Z)
 
 - [x] Current semantic `32994a92dcc6492230ee768c476e65d31a38f59e` verified: snapshot `37921960048`, **5760/5760** hashes; GMP/GMPXX compile `37878691159`, result `11593975930`, **28/28** package hashes, `runtimeExecution=false`. No newer source edits versus current branch head.
