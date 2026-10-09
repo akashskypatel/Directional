@@ -1,3 +1,11 @@
+# LIVE — R3 stale-base conflict resolved without source edit (2026-10-09T03:59Z)
+
+- [x] Prior checked-factory commit `2ae6f5d1...` compiled GREEN `37861343725`, package `11586413529`, 28/28 checksum.
+- [x] Local proposed all-feature incidence patch on old base safely rejected by Drive `37882090618` at changed-path CAS before apply, not a compiler failure. Superseded code already applied in `648c84f1...` and `32994a92...`, newer GMP compile **GREEN** `37878691159`, package `11593975930`, 28/28 hashes, `runtimeExecution=false`. Abandoned staging file deleted by Drive owner; historical patch retained in Library.
+- [ ] SAME `M6-CP3-CB1-ENTRY-R3` IN_PROGRESS, successor UNKNOWN. Do NOT reimplement already present all-feature 0/>2 incidence checks or treat compiled tests as runtime passes. Independent factory nonrail A3 trust / CB-to-TB gate decision and D1/D2/D3/D5 A6/A7 organic positives, R2 39 first causes and 47 CP2 accepted→RED restorations remain open; frozen 497-process TB separate. Detailed Library handoff `/Directional/Evidence/Directional__M6-CP3-CB1-ENTRY-R3__continuation-20261009T0359Z.md`.
+
+---
+
 # LIVE — R3 checked-factory zero-incidence guard compiled (2026-10-09T03:10Z)
 
 - [x] Fixed checked `SurfacePhaseFrontProduct::make` to reject declared hard-feature edges absent from all source faces, matching A4 fail-closed topology; focused source-row-order negative tests compiled only. Semantic commit `32994a92dcc6492230ee768c476e65d31a38f59e`.
