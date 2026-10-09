@@ -1,4 +1,12 @@
-# LIVE — M6-CP3-CB1-ENTRY-R3 checkpoint (2026-10-09T21:00Z)
+# LIVE — R3 exact-source static 497 checkpoint (2026-10-09T21:48Z)
+
+- [x] Verified current semantic source `f135946f1007c35960624a368df5f58318fd98e7` in eight-target GMP/GMPXX package `11644984310`, run `37991952457`, 28/28 internal hashes, `runtimeExecution=false`. Nine later doc/control commits, zero semantic source changes at check time. No new compile or runtime test.
+- [x] Recomputed frozen 30+12+449+6: **497 distinct selected test identities**, all 497 statically owned once by default packaged sources; historical R2 53 REDs/47 CP2 accepted selected, four supplemental tests unselected. Library report `Directional__M6-CP3-CB1-ENTRY-R3__latest-source-frozen-497-census-20261009.md` and continuation `Directional__M6-CP3-CB1-ENTRY-R3__continuation-20261009T2148Z.md`. Refreshed A/B/C independent decision requests.
+- [ ] SAME `M6-CP3-CB1-ENTRY-R3` IN_PROGRESS, successor UNKNOWN. Independent A3 factory trust (A), CB-vs-TB closure (B), supplemental four execution (C) unresolved; actual organic D1/D2/D3/D5/A6/A7, 39 historical first causes, 47 lost CP2 accepts, later frozen 497 TB **not run**. No stable ledger change.
+
+---
+
+# HISTORICAL — M6-CP3-CB1-ENTRY-R3 checkpoint (2026-10-09T21:00Z)
 
 - [x] Typed A5/A6 torus downstream reporter change `f135946f1007c35960624a368df5f58318fd98e7`, applied `37991764540`; original test names and assertions preserved, Drive staging owner-deleted.
 - [x] Eight-target GMP/GMPXX compile GREEN `37991952457`, package `11644984310`, 28/28 checksum, clean source, `runtimeExecution=false`; zero runtime tests. Historical 14 R2 organic/downstream cases inventoried alongside existing 39 report.
