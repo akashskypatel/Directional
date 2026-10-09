@@ -1,4 +1,12 @@
-# LIVE — R3 D1/D5 fail-only diagnostic compile (2026-10-09T20:17Z)
+# LIVE — M6-CP3-CB1-ENTRY-R3 checkpoint (2026-10-09T21:00Z)
+
+- [x] Typed A5/A6 torus downstream reporter change `f135946f1007c35960624a368df5f58318fd98e7`, applied `37991764540`; original test names and assertions preserved, Drive staging owner-deleted.
+- [x] Eight-target GMP/GMPXX compile GREEN `37991952457`, package `11644984310`, 28/28 checksum, clean source, `runtimeExecution=false`; zero runtime tests. Historical 14 R2 organic/downstream cases inventoried alongside existing 39 report.
+- [ ] SAME R3 IN_PROGRESS: A/B/C independent reviews, true produced D1/D2/D3/D5/A6/A7, 39 R2 first causes, 47 accepted-green restorations and separate frozen 497 TB remain unverified. See WIP and Library `Directional__M6-CP3-CB1-ENTRY-R3__continuation-20261009T2100Z.md`.
+
+---
+
+# HISTORICAL — R3 D1/D5 fail-only diagnostic compile (2026-10-09T20:17Z)
 
 - [x] Source `9380c1a5a6ecb8ed50cc3290e9a7ff3808d24f20` adds fail-only D1 candidate-stage counts and D5 A5 first-error code; original tests, producer and frozen selectors unchanged. Patch full SHA256 `47d0ca34b0fc4d7f125ac395d25949dba9ff5557d58673270f875c33249cb402`, Drive apply run `37986806459` GREEN, staged file owner-deleted; patch backed up Library.
 - [x] Mandatory GMP/GMPXX eight-target compile/package GREEN, run `37986977367`, result `11643991054`, 28/28 hashes, source clean, `runtimeExecution=false`; no tests/benchmarks run. Latest handoff `Directional__M6-CP3-CB1-ENTRY-R3__continuation-20261009T2017Z-final.md` in Library `/Directional/Evidence/`.
