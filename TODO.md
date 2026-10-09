@@ -1,4 +1,12 @@
-# LIVE — R3 Phase10 dependent first-failure diagnostics compile checkpoint (2026-10-09T17:07Z)
+# LIVE — R3 RE terminal first-failure diagnostics compile checkpoint (2026-10-09T17:59Z)
+
+- [x] Source `89b17c90a3941f080d47f47d10fea9f23cf2b818` adds **only** fail-only diagnostic `SCOPED_TRACE` to the two historical RE terminal-code ordering assertions, ordinals 176/201, with unchanged assertions, cases and selectors. Drive apply `37970722412` succeeded; consumed patch owner-deleted; patch backed up Library.
+- [x] Mandatory eight-target GMP/GMPXX compile/package **GREEN** run `37970925842`, artifact `11634853973`, 28/28 checksums, zero preflight/build exits, clean source, `runtimeExecution=false`. No tests or benchmarks executed.
+- [ ] SAME R3 IN_PROGRESS. All R2 39 first-locus cases have compiled reporters (25 direct A4, 12 Phase10, 2 RE), but **zero new runtime proof**; independent decisions A/B/C, organic D1/D2/D3/D5/A6/A7, 47 accepted→RED recovery and future separately authorized frozen 497 process TB remain OPEN. Latest handoff `Directional__M6-CP3-CB1-ENTRY-R3__continuation-20261009T1759Z.md` in Library `/Directional/Evidence/`.
+
+---
+
+# HISTORICAL — R3 Phase10 dependent first-failure diagnostics compile checkpoint (2026-10-09T17:07Z)
 
 - [x] Latest semantic commit `49d0c5077bd1ab4334f5affc45e7a3b3c2ed5f53`: fail-only source-attested diagnostics across 12 historically dependent Phase10 tests, original 148 test identities unchanged. Drive apply run `37965215474` GREEN; consumed patch owner-deleted; exact patch retained ChatGPT Library.
 - [x] Eight mandatory GMP/GMPXX compile targets GREEN run `37965409601`, artifact `11633695568`, 28/28 internal hashes, clean source, GMPXX/GMP, `runtimeExecution=false`; no Directional tests or benchmarks executed.
