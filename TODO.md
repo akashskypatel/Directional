@@ -1,4 +1,12 @@
-# LIVE — R3 checked-factory all-HardRail preflight compiled (2026-10-09T02:06Z)
+# LIVE — R3 checked-factory zero-incidence guard compiled (2026-10-09T03:10Z)
+
+- [x] Fixed checked `SurfacePhaseFrontProduct::make` to reject declared hard-feature edges absent from all source faces, matching A4 fail-closed topology; focused source-row-order negative tests compiled only. Semantic commit `32994a92dcc6492230ee768c476e65d31a38f59e`.
+- [x] Corrected Drive apply run `37878562176` GREEN after first delimiter-only transport failure `37878348948`; both staging files retired, exact corrected patch in Library. Eight-target GMP/GMPXX compile run `37878691159` GREEN, package `11593975930`, 28/28 hashes, clean source, `runtimeExecution=false`.
+- [ ] SAME `M6-CP3-CB1-ENTRY-R3` remains IN_PROGRESS: no runtime tests, no independent A3 factory trust decision, no CB/TB sequencing verdict, no organic D1/D2/D3/D5/A6/A7 witness results, no 39 R2 root corrections or 47 CP2-green restorations proven. Frozen 497-case separate TB and successor still unauthorised. WIP and Library handoff `Directional__M6-CP3-CB1-ENTRY-R3__continuation-20261009T0310Z.md` have exact evidence.
+
+---
+
+# HISTORICAL — R3 checked-factory all-HardRail preflight compiled (2026-10-09T02:06Z)
 
 - [x] Source `648c84f1d5b3bb532c684bf0444658f864687760`: count actual face incidence for **all** declared hard-feature edges even without published transition, reject >2; expand existing checked-factory negative/control test for unissued 2/3 faces and face-row permutation. Drive apply `37873233397` SUCCESS, staging owner-deleted.
 - [x] Eight GMP/GMPXX targets compile/package `37873391621` GREEN, artifact `11591586072` SHA256 `0af7235a6aa66f40415a7f7866644164bf4500d94cf20ae316e8b0e063fef18f`, **28/28** hashes, both exits 0, `runtimeExecution=false`; tests/benchmarks not executed.
