@@ -887,17 +887,42 @@ std::optional<directional::pipeline::SurfaceQuotientClosedComplexView>
 build_torus_closed_complex_view(
     const directional::TriMesh &mesh,
     const directional::geometry::SurfacePhaseFrontProduct &phaseFront,
-    const std::set<directional::authority::SourceEdgeTopologyKey> &hardEdges) {
+    const std::set<directional::authority::SourceEdgeTopologyKey> &hardEdges,
+    std::string *firstFailure = nullptr) {
+  if (firstFailure != nullptr) firstFailure->clear();
   auto a5 = directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
       mesh.V, mesh.F, phaseFront);
   const auto *occurrences =
       std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(&a5);
-  if (occurrences == nullptr) return std::nullopt;
+  if (occurrences == nullptr) {
+    if (firstFailure != nullptr) {
+      const auto *error =
+          std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(&a5);
+      *firstFailure = error == nullptr ? "A5:unexpected-disposition"
+          : "A5:" + std::string(
+                directional::pipeline::surface_occurrence_complex_error_name(
+                    error->code));
+    }
+    return std::nullopt;
+  }
   auto a6 = directional::pipeline::SurfaceQuotientProducer::produce(
       *occurrences, hardEdges);
   const auto *quotient =
       std::get_if<directional::pipeline::SurfaceQuotientProduct>(&a6);
-  if (quotient == nullptr || !quotient->closed_complex_view().has_value()) {
+  if (quotient == nullptr) {
+    if (firstFailure != nullptr) {
+      const auto *error =
+          std::get_if<directional::pipeline::SurfaceQuotientProductError>(&a6);
+      *firstFailure = error == nullptr ? "A6:unexpected-disposition"
+          : "A6:" + std::string(
+                directional::pipeline::surface_quotient_product_error_name(
+                    error->code));
+    }
+    return std::nullopt;
+  }
+  if (!quotient->closed_complex_view().has_value()) {
+    if (firstFailure != nullptr)
+      *firstFailure = "A6:closed-complex-view-unavailable";
     return std::nullopt;
   }
   return quotient->closed_complex_view().value();
@@ -5608,9 +5633,10 @@ TEST(M6CP1, A6ClosedComplexBoundaryIsCombinatoriallyEquivalentOnProducedTorus) {
     }
   }
 
-  const auto view =
-      build_torus_closed_complex_view(fixture.mesh, phaseFront, hardEdges);
-  ASSERT_TRUE(view.has_value());
+  std::string firstTorusClosedComplexFailure;
+  const auto view = build_torus_closed_complex_view(
+      fixture.mesh, phaseFront, hardEdges, &firstTorusClosedComplexFailure);
+  ASSERT_TRUE(view.has_value()) << firstTorusClosedComplexFailure;
   ASSERT_TRUE(view->closed);
   ASSERT_TRUE(view->edgeIncidenceBijection);
   ASSERT_TRUE(view->protectionLabelsCertified);
@@ -5848,13 +5874,30 @@ TEST(M6CP1, A6ClosedComplexBoundaryPreservesHardRailAndPeriodicLabels) {
       fixture.mesh.V, fixture.mesh.F, fixture.network.phaseFront.product());
   const auto *a5 = std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
       &a5Construction);
-  ASSERT_NE(a5, nullptr);
+  const auto *a5Error =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(
+          &a5Construction);
+  ASSERT_NE(a5, nullptr)
+      << "torus downstream first rejection=A5:"
+      << (a5Error == nullptr ? "unexpected-disposition"
+                             : directional::pipeline::
+                                   surface_occurrence_complex_error_name(
+                                       a5Error->code));
   auto a6Construction = directional::pipeline::SurfaceQuotientProducer::produce(
       *a5, hardEdges);
   const auto *a6 = std::get_if<directional::pipeline::SurfaceQuotientProduct>(
       &a6Construction);
-  ASSERT_NE(a6, nullptr);
-  ASSERT_TRUE(a6->closed_complex_view().has_value());
+  const auto *a6Error =
+      std::get_if<directional::pipeline::SurfaceQuotientProductError>(
+          &a6Construction);
+  ASSERT_NE(a6, nullptr)
+      << "torus downstream first rejection=A6:"
+      << (a6Error == nullptr ? "unexpected-disposition"
+                             : directional::pipeline::
+                                   surface_quotient_product_error_name(
+                                       a6Error->code));
+  ASSERT_TRUE(a6->closed_complex_view().has_value())
+      << "torus downstream first rejection=A6:closed-complex-view-unavailable";
   const auto &view = a6->closed_complex_view().value();
 
   std::map<directional::authority::CellId,
@@ -5903,13 +5946,30 @@ TEST(M6CP1, A6ClosedComplexBoundaryPreservesQuotientVertexLineage) {
       fixture.mesh.V, fixture.mesh.F, fixture.network.phaseFront.product());
   const auto *a5 = std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
       &a5Construction);
-  ASSERT_NE(a5, nullptr);
+  const auto *a5Error =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(
+          &a5Construction);
+  ASSERT_NE(a5, nullptr)
+      << "torus downstream first rejection=A5:"
+      << (a5Error == nullptr ? "unexpected-disposition"
+                             : directional::pipeline::
+                                   surface_occurrence_complex_error_name(
+                                       a5Error->code));
   auto a6Construction = directional::pipeline::SurfaceQuotientProducer::produce(
       *a5, torus_row408_hard_edges(fixture.mesh));
   const auto *a6 = std::get_if<directional::pipeline::SurfaceQuotientProduct>(
       &a6Construction);
-  ASSERT_NE(a6, nullptr);
-  ASSERT_TRUE(a6->closed_complex_view().has_value());
+  const auto *a6Error =
+      std::get_if<directional::pipeline::SurfaceQuotientProductError>(
+          &a6Construction);
+  ASSERT_NE(a6, nullptr)
+      << "torus downstream first rejection=A6:"
+      << (a6Error == nullptr ? "unexpected-disposition"
+                             : directional::pipeline::
+                                   surface_quotient_product_error_name(
+                                       a6Error->code));
+  ASSERT_TRUE(a6->closed_complex_view().has_value())
+      << "torus downstream first rejection=A6:closed-complex-view-unavailable";
   const auto &view = a6->closed_complex_view().value();
   ASSERT_EQ(view.vertices.size(), a6->classes().size());
   for (std::size_t row = 0; row < view.vertices.size(); ++row) {
@@ -5921,10 +5981,12 @@ TEST(M6CP1, A6ClosedComplexBoundaryPreservesQuotientVertexLineage) {
 
 TEST(M6CP1, A6BoundaryCandidateExtractionHasIndependentEligibilityOracle) {
   const auto &fixture = torus_fixture();
+  std::string firstTorusClosedComplexFailure;
   const auto view = build_torus_closed_complex_view(
       fixture.mesh, fixture.network.phaseFront.product(),
-      torus_row408_hard_edges(fixture.mesh));
-  ASSERT_TRUE(view.has_value());
+      torus_row408_hard_edges(fixture.mesh),
+      &firstTorusClosedComplexFailure);
+  ASSERT_TRUE(view.has_value()) << firstTorusClosedComplexFailure;
 
   std::map<directional::pipeline::SurfaceQuotientClassId,
            std::vector<std::size_t>> incidentEdges;
