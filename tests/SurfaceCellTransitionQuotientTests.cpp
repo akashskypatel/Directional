@@ -3056,7 +3056,12 @@ TEST(M6CP3, OrdinaryFrontIsolationSeamUsesCoordinateIdentityAndCertifiedSheetTra
       fixture.mesh.V, fixture.mesh.F, fixture.network.phaseFront.product());
   const auto *a5 = std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
       &a5Result);
-  ASSERT_NE(a5, nullptr);
+  const auto *a5Error = std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(
+      &a5Result);
+  ASSERT_NE(a5, nullptr)
+      << "a5 first producer rejection=A5:"
+      << (a5Error == nullptr ? "unexpected-disposition"
+          : directional::pipeline::surface_occurrence_complex_error_name(a5Error->code));
   const auto *relation = m6cp3_seam_ordinary(*a5);
   ASSERT_NE(relation, nullptr)
       << "D3 requires a real-tracer seam-collinear OrdinaryFront";
@@ -3071,7 +3076,12 @@ TEST(M6CP3, OrdinaryFrontIsolationSeamUsesCoordinateIdentityAndCertifiedSheetTra
   auto a6Result = directional::pipeline::SurfaceQuotientProducer::produce(*a5);
   const auto *a6 = std::get_if<directional::pipeline::SurfaceQuotientProduct>(
       &a6Result);
-  ASSERT_NE(a6, nullptr);
+  const auto *a6Error = std::get_if<directional::pipeline::SurfaceQuotientProductError>(
+      &a6Result);
+  ASSERT_NE(a6, nullptr)
+      << "a6 first producer rejection=A6:"
+      << (a6Error == nullptr ? "unexpected-disposition"
+          : directional::pipeline::surface_quotient_product_error_name(a6Error->code));
 
   auto records = a5->verification_records();
   auto altered = std::find_if(
@@ -3281,7 +3291,12 @@ TEST(M6CP3, A5ChartBarriersConsumeTypedHardFeatureAuthorityAcrossRelationKinds) 
           rail.mesh.V, rail.mesh.F, railFront);
   const auto *railA5 =
       std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(&railA5Result);
-  ASSERT_NE(railA5, nullptr);
+  const auto *railA5Error = std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(
+      &railA5Result);
+  ASSERT_NE(railA5, nullptr)
+      << "railA5 first producer rejection=A5:"
+      << (railA5Error == nullptr ? "unexpected-disposition"
+          : directional::pipeline::surface_occurrence_complex_error_name(railA5Error->code));
   std::size_t hardRailCarrierCount = 0U;
   for (const auto &relation : railA5->owned_relations()) {
     if (relation.id.kind !=
@@ -3336,7 +3351,12 @@ TEST(M6CP3, A5ChartBarriersConsumeTypedHardFeatureAuthorityAcrossRelationKinds) 
   const auto *squareA5 =
       std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
           &squareA5Result);
-  ASSERT_NE(squareA5, nullptr);
+  const auto *squareA5Error = std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(
+      &squareA5Result);
+  ASSERT_NE(squareA5, nullptr)
+      << "squareA5 first producer rejection=A5:"
+      << (squareA5Error == nullptr ? "unexpected-disposition"
+          : directional::pipeline::surface_occurrence_complex_error_name(squareA5Error->code));
   PhaseFrontDraft marked = phase_front_draft(squareFront);
   std::optional<directional::authority::SourceEdgeTopologyKey> ordinaryCarrier;
   std::optional<directional::authority::SourceEdgeTopologyKey> unaffectedCarrier;
@@ -3400,7 +3420,12 @@ TEST(M6CP3, ProducedSeamCollinearOrdinaryFrontRequiresExactCrossSheetTransition)
       fixture.mesh.V, fixture.mesh.F, fixture.network.phaseFront.product());
   const auto *a5 = std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
       &a5Result);
-  ASSERT_NE(a5, nullptr);
+  const auto *a5Error = std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(
+      &a5Result);
+  ASSERT_NE(a5, nullptr)
+      << "a5 first producer rejection=A5:"
+      << (a5Error == nullptr ? "unexpected-disposition"
+          : directional::pipeline::surface_occurrence_complex_error_name(a5Error->code));
   const auto *relation = m6cp3_seam_ordinary(*a5);
   ASSERT_NE(relation, nullptr);
   const auto *first = m6cp3_occurrence_by_id(*a5, relation->id.first);
@@ -3419,7 +3444,12 @@ TEST(M6CP3, ProducedSeamCollinearOrdinaryFrontRequiresExactCrossSheetTransition)
   auto a6Result = directional::pipeline::SurfaceQuotientProducer::produce(*a5);
   const auto *a6 = std::get_if<directional::pipeline::SurfaceQuotientProduct>(
       &a6Result);
-  ASSERT_NE(a6, nullptr);
+  const auto *a6Error = std::get_if<directional::pipeline::SurfaceQuotientProductError>(
+      &a6Result);
+  ASSERT_NE(a6, nullptr)
+      << "a6 first producer rejection=A6:"
+      << (a6Error == nullptr ? "unexpected-disposition"
+          : directional::pipeline::surface_quotient_product_error_name(a6Error->code));
   const bool selected = std::any_of(
       a6->selected_forest().begin(), a6->selected_forest().end(),
       [&](const auto &edge) { return edge.relation == relation->id; });
