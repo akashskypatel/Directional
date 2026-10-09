@@ -1,3 +1,9 @@
+## Latest source static recheck — 2026-10-09T21:48Z (C still needs Review)
+
+Exact semantic commit **`f135946f1007c35960624a368df5f58318fd98e7`**, GMP/GMPXX compile **`37991952457`**, immutable package `11644984310` SHA256 `e73793ed37a8663408d8615e4bd1b258ed598180aa6ea3d5fe05815584ef28e6`, internally verified **28/28**, `runtimeExecution=false`. Fresh static parser of the **latest** packaged CMake target source sets, GoogleTest `TEST`/`TEST_F` declarations, the exact focused30/focused12/selector449 lists and the six frozen harness CP3 identities confirms **497 selected, 497 unique, 497 single-source-owned, zero missing or multiply-owned** (349 producer/75 completion/41 validation/32 authority-kernel). All **53** historical R2 REDs remain selected, including **47** previously CP2 accepted. The source defines 10 M6CP3/HardRail-factory target identities, of which **four** below remain unselected. No selector/filter changed or test executed. Reproducibility report backed up in ChatGPT Library `/Directional/Evidence/Directional__M6-CP3-CB1-ENTRY-R3__latest-source-frozen-497-census-20261009.md`, SHA256 `fc84d5e021b8584ec47d34b97fb712ab00c43139f8801caaacc5c6129f44d5d8`. **Independent decision C still open**. Any extra tests must be separately authorized and counted; do not mutate the frozen 497 gate or infer runtime registration/passes from static declarations.
+
+---
+
 # M6-CP3-CB1-ENTRY-R3 — frozen 497 versus compiled supplemental tests
 
 **Scope:** Source/static inspection in the same unfinished R3 Code + Build turn. **Not** an independent design verdict, runtime execution, or a successor authorization.
