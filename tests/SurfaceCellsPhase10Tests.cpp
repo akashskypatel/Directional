@@ -6183,7 +6183,10 @@ TEST(SurfaceCellAuthorityContractCutover,
      ExactSharedBoundaryIntervalRejectsMissingOrTamperedIdentityWithoutFallback) {
   const auto fixture = build_rectangular_hard_rail_phase_front();
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            fixture.network.phaseFront.disposition());
+            fixture.network.phaseFront.disposition())
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             fixture.network.phaseFront.rejection_reason())
+      << hard_rail_first_failure_detail(fixture.network);
   const auto &product = fixture.network.phaseFront.product();
   const auto pairs = hard_rail_phase_front_pairs(product);
   ASSERT_GE(pairs.size(), 2U);
@@ -6231,7 +6234,10 @@ TEST(SurfaceCellAuthorityContractCutover,
      A3SharedBoundaryCutoverPreservesA4LocalFamilyAndAdvanceSign) {
   const auto fixture = build_rectangular_hard_rail_phase_front();
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            fixture.network.phaseFront.disposition());
+            fixture.network.phaseFront.disposition())
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             fixture.network.phaseFront.rejection_reason())
+      << hard_rail_first_failure_detail(fixture.network);
   const auto &product = fixture.network.phaseFront.product();
   ASSERT_TRUE(product.conformityPlanReceipt().has_value());
   const auto pairs = hard_rail_phase_front_pairs(product);
@@ -6404,7 +6410,10 @@ TEST(SurfaceCellAuthorityContractCutover,
      AuthoritativePhaseFrontClosureRejectsIncompleteOrForeignAuthority) {
   const auto fixture = build_rectangular_hard_rail_phase_front();
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            fixture.network.phaseFront.disposition());
+            fixture.network.phaseFront.disposition())
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             fixture.network.phaseFront.rejection_reason())
+      << hard_rail_first_failure_detail(fixture.network);
   const auto &product = fixture.network.phaseFront.product();
   auto materialized = directional::pipeline::build_authoritative_phase_front_mesh(
       fixture.mesh.V, fixture.mesh.F, product);
@@ -6760,7 +6769,9 @@ TEST(SurfaceCellAuthorityContractCutover,
             });
 
     ASSERT_TRUE(reachedFinalValidationCallback)
-        << "base fixture must reach final validation; otherwise this negative is vacuous";
+        << "base fixture must reach final validation; otherwise this negative is vacuous"
+      << " firstProducerReason="
+      << rejected.diagnostics.surfaceCellFirstInvalidProducerReason;
     ASSERT_TRUE(mutated)
         << "fixture must expose certified HardRail chart authority for mutation "
         << mutationCase << "; mutated=false is non-evidence";
@@ -6821,7 +6832,10 @@ TEST(SurfaceCellAuthorityContractCutover,
      HardRailPairSameOrientationRejectsStrictTransport) {
   const auto fixture = build_rectangular_hard_rail_phase_front();
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            fixture.network.phaseFront.disposition());
+            fixture.network.phaseFront.disposition())
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             fixture.network.phaseFront.rejection_reason())
+      << hard_rail_first_failure_detail(fixture.network);
   const auto &product = fixture.network.phaseFront.product();
   const auto pairs = hard_rail_phase_front_pairs(product);
   ASSERT_FALSE(pairs.empty());
@@ -6842,7 +6856,10 @@ TEST(SurfaceCellAuthorityContractCutover,
      HardRailPairChangedRouteContentRejectsStrictTransport) {
   const auto fixture = build_rectangular_hard_rail_phase_front();
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            fixture.network.phaseFront.disposition());
+            fixture.network.phaseFront.disposition())
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             fixture.network.phaseFront.rejection_reason())
+      << hard_rail_first_failure_detail(fixture.network);
   const auto &product = fixture.network.phaseFront.product();
   const auto pairs = hard_rail_phase_front_pairs(product);
   ASSERT_GE(pairs.size(), 2U);
@@ -6862,7 +6879,10 @@ TEST(SurfaceCellAuthorityContractCutover,
      HardRailPairExplicitRailIdMismatchRejectsStrictTransport) {
   const auto fixture = build_rectangular_hard_rail_phase_front();
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            fixture.network.phaseFront.disposition());
+            fixture.network.phaseFront.disposition())
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             fixture.network.phaseFront.rejection_reason())
+      << hard_rail_first_failure_detail(fixture.network);
   const auto &product = fixture.network.phaseFront.product();
   const auto pairs = hard_rail_phase_front_pairs(product);
   ASSERT_FALSE(pairs.empty());
@@ -6887,9 +6907,15 @@ TEST(SurfaceCellAuthorityContractCutover,
   const auto forward = build_rectangular_hard_rail_phase_front(false);
   const auto reversed = build_rectangular_hard_rail_phase_front(true);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            forward.network.phaseFront.disposition());
+            forward.network.phaseFront.disposition())
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             forward.network.phaseFront.rejection_reason())
+      << hard_rail_first_failure_detail(forward.network);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            reversed.network.phaseFront.disposition());
+            reversed.network.phaseFront.disposition())
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             reversed.network.phaseFront.rejection_reason())
+      << hard_rail_first_failure_detail(reversed.network);
   const auto &forwardProduct = forward.network.phaseFront.product();
   const auto &reversedProduct = reversed.network.phaseFront.product();
   ASSERT_FALSE(hard_rail_phase_front_pairs(forwardProduct).empty());
@@ -6950,7 +6976,9 @@ TEST(SurfaceCellAuthorityContractCutover,
           });
 
   ASSERT_TRUE(producedBeforeTamper)
-      << "fixture must enter the authoritative phase-front producer before tamper";
+      << "fixture must enter the authoritative phase-front producer before tamper"
+      << " firstProducerReason="
+      << rejected.diagnostics.surfaceCellFirstInvalidProducerReason;
   ASSERT_TRUE(mutated) << "fixture must expose hard-feature authority to tamper";
   EXPECT_FALSE(rejected.is_produced());
   EXPECT_EQ("component-merge-authority",
@@ -7171,7 +7199,9 @@ TEST(SurfaceCellAuthorityContractCutover,
           });
 
   ASSERT_TRUE(reachedFinalOracleSeam)
-      << "fixture must carry remapped hard-feature authority to the final oracle";
+      << "fixture must carry remapped hard-feature authority to the final oracle"
+      << " firstProducerReason="
+      << rejected.diagnostics.surfaceCellFirstInvalidProducerReason;
   EXPECT_FALSE(rejected.is_produced());
   EXPECT_EQ("component-merge-authority",
             rejected.diagnostics.terminalFailureStage);
@@ -7308,7 +7338,9 @@ TEST(SurfaceCellAuthorityContractCutover,
           });
 
   ASSERT_TRUE(reachedFinalOracleSeam)
-      << "fixture must carry non-empty remapped feature authority";
+      << "fixture must carry non-empty remapped feature authority"
+      << " firstProducerReason="
+      << rejected.diagnostics.surfaceCellFirstInvalidProducerReason;
   ASSERT_TRUE(mutatedFeatureContent)
       << "fixture must expose two disconnected boundary loops";
   EXPECT_FALSE(rejected.is_produced());
@@ -7366,7 +7398,9 @@ TEST(SurfaceCellAuthorityContractCutover,
           });
 
   ASSERT_TRUE(observedNonEmptyFeatureAuthority)
-      << "fixture must reach the final oracle with non-empty feature authority";
+      << "fixture must reach the final oracle with non-empty feature authority"
+      << " firstProducerReason="
+      << result.diagnostics.surfaceCellFirstInvalidProducerReason;
   ASSERT_TRUE(result.is_produced())
       << result.diagnostics.terminalFailureCode << ':'
       << result.diagnostics.terminalFailureStage;
