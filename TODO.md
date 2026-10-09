@@ -1,3 +1,11 @@
+# LIVE — M6-CP3-CB1-ENTRY-R3 source/coverage checkpoint 2026-10-09T09:24Z
+
+- [x] Latest semantic `32994a92dcc6492230ee768c476e65d31a38f59e` compile evidence independently verified: GMP/GMPXX run `37878691159` package `11593975930`, 28/28 hashes, eight targets, clean source, `runtimeExecution=false`; older run `37861343725` superseded.
+- [x] Static selection audit `.agents/Directional/Architecture_M6_CP3_R3_Frozen_497_Supplemental_Test_Coverage_Audit.md` (commit `a646e3a6`) documents four source-defined test identities outside immutable 497 (30+12+449+6) gate. No selector source changes or runtime.
+- [ ] SAME R3 IN_PROGRESS: independent A3 factory trust and CB/TB sequencing decisions, plus whether a separately authorized supplemental test pass is required. Actual 39 historical R2 first-cause investigations, 47 accepted-green restorations and D1/D2/D3/D5/A6/A7 real-produced witnesses remain unverified; no successor.
+
+---
+
 # LIVE — R3 2026-10-09T04:44Z verified source and CP3 historic failures
 
 - [x] Existing latest source `32994a92dcc6492230ee768c476e65d31a38f59e` still latest; eight GMP/GMPXX targets compile GREEN `37878691159`, package `11593975930`, 28/28, `runtimeExecution=false`. No reapplication of already-superseded factory all-edge patch rejected in `37882090618`.
