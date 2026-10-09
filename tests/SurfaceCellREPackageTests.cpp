@@ -222,6 +222,17 @@ TEST(SurfaceCellPipelinePhase20,
           mesh.vertices, mesh.faces, raw, options);
 
   EXPECT_FALSE(result.is_produced());
+  SCOPED_TRACE(::testing::Message()
+               << "originalFailure="
+               << result.diagnostics.originalSurfaceCellFailureCode
+               << ";originalStage="
+               << result.diagnostics.originalSurfaceCellFailureStage
+               << ";originalDetail="
+               << result.diagnostics.originalSurfaceCellFailureDetailCode
+               << ";firstProducerStage="
+               << result.diagnostics.surfaceCellFirstInvalidProducerStage
+               << ";firstProducerReason="
+               << result.diagnostics.surfaceCellFirstInvalidProducerReason);
   EXPECT_EQ("InjectedStageFailure", result.diagnostics.terminalFailureCode);
   EXPECT_EQ("arrangement", result.diagnostics.terminalFailureStage);
   const directional::pipeline::SurfaceCellPipelineContext &context =
@@ -365,6 +376,17 @@ TEST(SurfaceCellFieldAlignedNetworkAuthority,
           mesh.vertices, mesh.faces, raw, options);
 
   EXPECT_TRUE(result.is_rejected());
+  SCOPED_TRACE(::testing::Message()
+               << "originalFailure="
+               << result.diagnostics.originalSurfaceCellFailureCode
+               << ";originalStage="
+               << result.diagnostics.originalSurfaceCellFailureStage
+               << ";originalDetail="
+               << result.diagnostics.originalSurfaceCellFailureDetailCode
+               << ";firstProducerStage="
+               << result.diagnostics.surfaceCellFirstInvalidProducerStage
+               << ";firstProducerReason="
+               << result.diagnostics.surfaceCellFirstInvalidProducerReason);
   EXPECT_EQ("InjectedStageFailure", result.diagnostics.terminalFailureCode);
   EXPECT_EQ("tracing", result.diagnostics.terminalFailureStage);
   const auto &context = result.surfaceCellContext;
