@@ -1,3 +1,9 @@
+## CURRENT R3 static input-fan verification — 2026-10-09T12:40Z
+
+Continue **same** unfinished `M6-CP3-CB1-ENTRY-R3` Code+Build. Latest source **`32994a92dcc6492230ee768c476e65d31a38f59e`** unchanged; current 8-target GMP/GMPXX compile `37878691159` / package `11593975930` independently verified 28/28, `runtimeExecution=false`. Current source snapshot `37921960048` / `11611738713` verified 5760/5760. Reconstructed input 3×3 D2 star at vertex 4 has 6 face rows, 2 rail cuts `(1,4)`/`(4,7)`, and 2 nonrail sectors of 3 faces each: `[0,1,4]`, `[3,6,7]`; this proves only the fixture's *input* topology, not produced A4/A3 transport. Exact source and test-selection audit appended to `Architecture_M6_CP3_R3_Verified_Compile_and_CP3_Evidence_Reconciliation_20261009.md`, full standalone evidence in Library `/Directional/Evidence/Directional__M6-CP3-CB1-ENTRY-R3__source-star-static-proof-20261009T1240Z.md`. Stale `2ae6f5d1` patch **must not** be replayed. Pending A/B/C independent Review, genuine D1/D2/D3/D5/A6/A7, R2 39 first loci, 47 CP2-green regressions, separate frozen 497 TB. No new code, tests, runtime, or successor.
+
+---
+
 ## CURRENT R3 exact-source race reconciliation — 2026-10-09T11:01Z
 
 Continue SAME unfinished `M6-CP3-CB1-ENTRY-R3` Code+Build; no successor. The old `2ae6f5d1ba4e7657a5089fb52c09812a495dfe47` eight-target GMP compile `37861343725` package `11586413529` passed 28/28, but is **superseded**. One two-file patch on that obsolete base, `Directional__M6-CP3-CB1-ENTRY-R3__base-2ae6f5d1__all-hard-feature-incidence.patch`, full SHA256 `be72ae40c5263308a07bb6f2b34304eaa96842791e98efd0507f91a5d80abb12`, failed at apply run `37921603342` **without any source commit**: download/hash correct; both hunks mismatched. GitHub compare confirms 73 intervening commits modified both intended source/test paths. The failed patch is **obsolete, DO NOT RETRY**, Library backup retained. Owner-deleted Drive staging `1M1uD4lZcWiyLNAwfA-xSV3322Vy0eUdC`.
