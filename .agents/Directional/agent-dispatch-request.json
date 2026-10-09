@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r3-re-terminal-first-locus-apply-r1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r3-re-terminal-first-locus-apply-r1",
-  "file_id": "1Z6ZYy_1ltJ3AvRMdvcx9Dx94qEz-2yGo",
-  "patch_sha256": "008266a8b47fc4177b7913927819be03950b83dedf8f3a07eeefdc2d86851a1b",
-  "base_sha": "49d0c5077bd1ab4334f5affc45e7a3b3c2ed5f53",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(surfacecells): report original RE terminal failure provenance",
-  "retention_days": 14
+  "request_id": "m6-cp3-r3-re-terminal-first-locus-compile-r1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r3-re-terminal-first-locus-compile-r1",
+  "source_sha": "89b17c90a3941f080d47f47d10fea9f23cf2b818",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r3-re-terminal-first-locus-r1"
 }
