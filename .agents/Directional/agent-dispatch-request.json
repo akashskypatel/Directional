@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r3-torus-A5-A6-first-errors-apply-r1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r3-torus-A5-A6-first-errors-apply-r1",
-  "file_id": "1fzyz01xjszGJdKbCOYP-44jPlmZFbJEi",
-  "patch_sha256": "fe88ad408a8d30ee4f63d08e7584e968381fba02c52a56e676d053ad0b7c25fb",
-  "base_sha": "9380c1a5a6ecb8ed50cc3290e9a7ff3808d24f20",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(surfacecells): show typed A5 A6 torus downstream rejection causes",
-  "retention_days": 14
+  "request_id": "m6-cp3-r3-torus-A5-A6-first-errors-compile-r1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r3-torus-A5-A6-first-errors-compile-r1",
+  "source_sha": "f135946f1007c35960624a368df5f58318fd98e7",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r3-torus-A5-A6-first-errors-r1"
 }
