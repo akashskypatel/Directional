@@ -2987,8 +2987,11 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
         << "Balanced certificate tamper must be detected by independent A3";
   }
 
-  // RA-40 factory attestation is independent of the copied A4 certificate:
-  // the balanced mutation commutes, but no longer matches genuine A3.
+  // Reconstruct with the complete A4 terminal-contact / closed-chain
+  // authority. Omitting these optional arguments would silently exercise the
+  // legacy attachment==carrier validation instead of the produced A2b germs.
+  // The balanced mutation commutes, but no longer matches genuine A3.
+  ASSERT_FALSE(front.hardRailTerminalContacts().empty());
   const auto checkedFactory = [&](const auto &transitions,
                                   const auto &certificates,
                                   const directional::authority::FieldTransportAtlas *atlas) {
@@ -2998,7 +3001,8 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
         front.isolationSeamTransportCertificates(), front.periodicHolonomies(),
         front.boundedDiskBoundaryPhases(), front.edges(), front.events(),
         front.cells(), front.conformityPlanReceipt(), front.hardFeatureEdges(),
-        front.sourceFaceBranchRotations(), transitions, certificates);
+        front.sourceFaceBranchRotations(), transitions, certificates,
+        front.hardRailTerminalContacts(), front.hardRailClosedChains());
   };
   const auto &sourceAtlas = *fixture.fieldTransportAtlas;
   auto accepted = checkedFactory(front.hardRailFieldTransitions(),
@@ -3116,6 +3120,7 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
   expect_phase_front_product_error(
       construct_phase_front_product(std::move(wrongRadial)),
       directional::geometry::SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority);
+  std::size_t attestedTerminalSteps = 0U;
   for (const auto &route : front.hardRailRouteCertificates()) {
     ASSERT_FALSE(route.route.empty());
     ASSERT_EQ(route.junctions.size() + 1U, route.route.steps().size());
@@ -3124,8 +3129,25 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
     ASSERT_EQ(route.endpoints[1].terminalCarrier.edge,
               route.route.oriented_steps().back().topology());
     for (const auto &endpoint : route.endpoints) {
-      EXPECT_EQ(endpoint.terminalCarrier.firstFace, endpoint.firstAttachment);
-      EXPECT_EQ(endpoint.terminalCarrier.secondFace, endpoint.secondAttachment);
+      // Source-attached endpoints need not lie on the immediate rail carrier
+      // face: A2b authenticates the path from the source corner to each side
+      // of that carrier. Verify the entire produced chain rather than
+      // re-imposing the withdrawn direct-face coincidence assumption.
+      for (std::size_t side = 0U; side < 2U; ++side) {
+        auto at = side == 0U ? endpoint.firstAttachment
+                             : endpoint.secondAttachment;
+        for (const auto &step : endpoint.contactPaths[side]) {
+          ++attestedTerminalSteps;
+          EXPECT_EQ(at, step.firstFace);
+          EXPECT_FALSE(front.hardFeatureEdges().contains(step.edge));
+          ASSERT_TRUE(endpoint.terminalVertex.has_value());
+          EXPECT_TRUE(step.edge.first() == *endpoint.terminalVertex ||
+                      step.edge.second() == *endpoint.terminalVertex);
+          at = step.secondFace;
+        }
+        EXPECT_EQ(at, side == 0U ? endpoint.terminalCarrier.firstFace
+                                : endpoint.terminalCarrier.secondFace);
+      }
     }
     for (const auto &junction : route.junctions) {
       // Both sectors carry only non-rail A3 transitions and never
@@ -3139,6 +3161,8 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
       }
     }
   }
+  EXPECT_GT(attestedTerminalSteps, 0U)
+      << "D2 must certify a produced non-direct A2b terminal attachment";
   auto a5Result = directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
       fixture.mesh.V, fixture.mesh.F, front);
   if (const auto *a5Error =
