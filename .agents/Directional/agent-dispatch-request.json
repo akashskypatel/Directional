@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-r4-diag-docs-20261010-r1",
+  "request_id": "m6-defn-r5-r4-rev-docs-20261010-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-r4-diag-docs-apply-r1",
-  "file_id": "1TLBp4RalVMCL8-mjKmAp3yDFGZMYjtKL",
-  "patch_sha256": "5d726bcdb4f669457caa6a230252afba384361eb6d036e05917a10682de6a582",
-  "base_sha": "f1a893fae1a9a551c74046f60ec3f4fbbba4ee3f",
+  "mailbox_key": "m6-defn-r5-r4-rev-docs-apply-r1",
+  "file_id": "1rji0BsbKX2TvYgYGYMDy0NklSTy43zOu",
+  "patch_sha256": "73716c40922b08101ca3aa4fd3fed34e0f2930a57d0c7e164d0015fe8112d98d",
+  "base_sha": "91cd585f2cfd5457bb9fddae8357554a32c898ad",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): resolve R4 diagnostic carrier namespace fidelity",
+  "commit_message": "docs(directional): record R4 independent architecture review blockers",
   "retention_days": 14
 }
