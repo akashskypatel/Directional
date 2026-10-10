@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-exact-corner-docs-20261010-a",
+  "request_id": "m6-cp3-r4-terminal-germ-apply-20261010-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-exact-corner-docs",
-  "file_id": "18cN8iR14WncGk9dRZMMr6YXmQ7oExVsu",
-  "patch_sha256": "96c5867f188ba80c8d36d9e590afbab2ca6a2998b37c29836644eef58d2e9aff",
-  "base_sha": "68533fd7faf80efa8b7388f8af83f0bfd269bca4",
+  "mailbox_key": "m6-cp3-r4-terminal-germ-apply",
+  "file_id": "1iPVLVepkDxIG_xgt4Dld0KSE_P3msJG6",
+  "patch_sha256": "eff99246d0f56b1a220f9ee45db43b80388e761f64f6831f4eacf2ff6a313d1b",
+  "base_sha": "60b1dd439380a464159d98afdd7b32ddaf19e2c7",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: preserve R4 exact rail corner compile and continuation",
+  "commit_message": "fix: author A2b terminal source-star paths and consume A3 transport",
   "retention_days": 14
 }
