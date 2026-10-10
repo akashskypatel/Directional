@@ -1,3 +1,18 @@
+## 2026-10-10 — `M6-CP3-CB1-ENTRY-R4` binding STOP resolved; RA-44 frozen
+
+Accepted both source-authority STOP findings at HEAD `de0f9d4c1`. Withdrew RA-43.5 as vacuous:
+`FieldFaceBranchFrame` publishes all four branches (`FieldTransportAtlas.h:728-734`) so `find_frame(face)`
+cannot discriminate a +U gauge, and `make` holds no axes to re-derive with. Replaced by a two-part witness —
+absolute geometric pin on A4's own `1 - 1e-8` alignment gate (`SurfaceCellTracing.cpp:11034-11054`) with the
+axes travelling alongside the gauge, plus a relational A3 pin over `transition_value`; the relation alone is
+gauge-invariant under a balanced `+1 mod 4`. Resolved the contact binding as a widening of the existing
+`hard_feature_edge_keys_from_rails` reduction (`RemeshPipeline.cpp:9576-9599`, typed conversion `:3064`, rails
+already stored `:12173-12179`), rejecting both options the STOP offered as heavier than the facts require.
+Closed the absent-gauge hole at `:8015-8020`; ruled rail-less hard-feature fixtures fail closed; kept the
+archived rail WIP patch unapplied. Accepted the typed factory rejection propagation at `:12240-12250`.
+Runtime-free: no code, test, fixture, selector, benchmark or build change in this turn; CP2 491/491 accepted;
+R3 403/497 rejected; stable 66/17/49 debt 1. R4 Code + Build released to continue.
+
 ## 2026-10-10 — `M6-DEFN-R5-R4-REV` producer locus resolved; RA-43 frozen
 
 Accepted R4-REV-01A/01B/02A in full against my own prior review, then discharged their producer-proof

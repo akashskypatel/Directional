@@ -1,3 +1,25 @@
+## CURRENT — R4 binding STOP resolved; RA-44 frozen, R4 Code + Build released (2026-10-10)
+
+**`M6-CP3-CB1-ENTRY-R4` is UNBLOCKED and continues with RA-44 as its specification.** Both STOP findings
+accepted. **RA-43.5 is WITHDRAWN as vacuous** — `find_frame(face)` publishes all four branches and cannot
+discriminate a +U gauge. RA-44: `.1` the contact binding is a **widening of an existing reduction** —
+`hard_feature_edge_keys_from_rails` (`RemeshPipeline.cpp:9576-9599`) already consumes `rail.sourceVertices`
+through the existing typed conversion and already feeds A4's `hardFeatureEdges`, with the rails already stored
+at `:12173-12179`; add the sibling `hard_rail_terminal_contacts_from_rails` keyed by `HardRailId`, threaded at
+`:12176`, `:17031`, `:17721` (options A and B rejected as heavier than the facts require); `.2` the gauge
+witness is **two-part** — absolute geometric pin on A4's own `1 - 1e-8` alignment gate with the axes
+travelling alongside, plus a relational A3 pin, **both mandatory** because the relation alone is
+gauge-invariant; `.3` presence mandatory whenever consumed, absent-gauge hole at `:8015-8020` closed; `.4`
+fixtures asserting hard features with no rail fail closed and the archived rail WIP patch stays unapplied;
+`.5` A4's float gauge predicate is a tracked residual, not remedied in R4; `.6` the typed factory rejection
+code at `:12240-12250` is accepted and discharges RA-42.3 here, while the seven two-face DCEL repairs compiled
+but were **not executed**; `.7` no credit. Frozen 497 unchanged: CP2 accepted 491/491, R3 rejected 403/497, 94
+RED, 88 CP2 losses, stable **66/17/49** debt **1**. Basis:
+`Architecture_M6_CP3_R4_Contact_Binding_And_Gauge_Witness_Review_Decision.md`. RA-41's junction/sector clauses
+stay frozen UNEXERCISED; the multi-carrier STOP and the 88 CP2 restorations remain undischarged.
+
+---
+
 ## CURRENT — R5/R4 producer locus resolved; RA-43 frozen, RA-41 frozen scoped (2026-10-10)
 
 **`M6-DEFN-R5-R4-REV` is UNBLOCKED; successor is `M6-CP3-CB1-ENTRY-R4`.** The three re-review findings

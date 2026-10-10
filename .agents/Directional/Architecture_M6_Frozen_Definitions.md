@@ -1,3 +1,62 @@
+## RA-44 — terminal rail-contact binding and the +U gauge witness **FROZEN at M6-CP3-CB1-ENTRY-R4** (2026-10-10)
+
+Resolves the R4 source-authority binding STOP. Basis:
+`Architecture_M6_CP3_R4_Contact_Binding_And_Gauge_Witness_Review_Decision.md`. No runtime credit.
+**RA-43.5 is WITHDRAWN by RA-44.2** as vacuous; RA-43.1/.2/.3/.4/.6/.7, RA-42 (as corrected), RA-40, RA-39,
+RA-38 and the RA-34.3 stop gates stand.
+
+- **RA-44.1 — the contact binding is a widening, not a new channel (option C).** The rails already reach this
+  boundary: `hard_feature_edge_keys_from_rails` (`src/pipeline/RemeshPipeline.cpp:9576-9599`) consumes
+  `rail.sourceVertices` and converts consecutive pairs to typed `SourceEdgeTopologyKey` via
+  `surface_cell_source_edge_key` (`:3064`); its result becomes A4's `hardFeatureEdges`, and `:12173-12179`
+  already stores `productSnapshots.authoritativeRails`. The terminal contact is the datum that reduction
+  **discards**: which vertex is terminal, and the `HardRailId -> endpoint vertex` association. Required:
+  a sibling reduction `hard_rail_terminal_contacts_from_rails(rails, vertexExtent)` publishing, per
+  `HardRailId`, the typed terminal `SourceVertexId` pair from `rail.sourceVertices.front()`/`.back()`,
+  skipping `closed` rails, carrying `rail.component`, using the existing typed conversion, threaded to `make`
+  at the same three call sites (`:12176`, `:17031`, `:17721`). Keyed by `HardRailId` and component — never by
+  raw-int equality and never by geometric closeness. Options (A) "pass the chain" and (B) "author a new A4
+  certificate" are **rejected as heavier than the facts require**. Seventh occurrence of publish/reach.
+- **RA-44.2 — the +U gauge witness has two parts and neither suffices alone.** RA-43.5's oracle is withdrawn:
+  `FieldFaceBranchFrame` (`include/directional/authority/FieldTransportAtlas.h:728-734`) publishes **all four**
+  branches, so `find_frame(face)` cannot discriminate, and `make` (`SurfaceCellTracing.cpp:7969-7984`) holds
+  no vertices or axes with which to re-derive. Required instead: **(a) an absolute geometric pin** — per face,
+  the asserted branch's family/sign axis projected to the face normal aligns with the certificate's own
+  `axisU` under the **identical** `1.0 - 1e-8` gate A4 uses at `:11034-11043`, with the `axisV` cross-check at
+  `:11050-11054`; the frame axes and `faceAxisX`/`faceAxisY` therefore **travel with the gauge**, so the
+  certificate carries its own derivation inputs; and **(b) a relational A3 pin** —
+  `rotation[to] == rotation[from].rotated(transition_value(edge, from, to)->transport)` across every interior
+  edge, reusing the accessor at `:7996-8009`. **Both are mandatory:** (b) alone is gauge-invariant and a
+  balanced `+1 mod 4` on every face passes it, while (a) alone ignores the field entirely.
+- **RA-44.3 — gauge presence and scope.** Keyed by `SourceFaceTopologyKey`, so row permutations cannot
+  launder it. Presence is **mandatory whenever A6 seam logic consumes the gauge**; the only legal absence is
+  **total** — no gauge and no consumer. The `!sourceFaceBranchRotations.empty() &&` guard at
+  `src/geometry/SurfaceCellTracing.cpp:8015-8020`, which accepts an absent gauge, is closed. This does not
+  reopen the RA-40 conditional hole, which concerned the atlas.
+- **RA-44.4 — fixtures that assert hard features without a producer fail closed.** Under RA-44.1 a fixture
+  supplying hard features through rails gets contacts for free; one hand-authoring `hardFeatureEdges` with no
+  rail is asserting hard features with no producer and is **rejected**, on the same ruling RA-40 made for
+  tests manufacturing route certificates without a source-bound atlas. The archived
+  `Directional_M6_R4_source-owned-rail-WIP.patch` stays **unapplied**; RA-44.1 supersedes it.
+- **RA-44.5 — recorded residual, not a block.** A4 selects an exact Z4 gauge with a `double` alignment
+  predicate (`:11034-11043`). The factory must use the identical predicate or it would reject what A4
+  accepted, so this is **not** tightened inside R4; the hard `>= 1 - 1e-8` gate is fail-closed, which is the
+  correct structure. Tracked, not remedied here. Changing A4's selection rule would alter accepted CP2
+  behaviour and is out of scope.
+- **RA-44.6 — code accepted at this locus.** `publish_phase_front_result`
+  (`src/geometry/SurfaceCellTracing.cpp:12240-12250`) now reports `PublishedProductRejected` and carries
+  `publishedProductError`, ending the collapse of factory rejections into `InvalidFinalCellState`; this
+  discharges RA-42.3 here. The opaque `enum class SurfacePhaseFrontProductErrorCode : int;` (header `:1689`)
+  has a fixed underlying type, so it is complete and the `std::optional` member is well-formed; the
+  `std::get` at `:12247` cannot throw given two alternatives (`:1846`) and the early return at `:12240`. The
+  seven two-face DCEL fixture repairs compiled but **were not executed** — no restoration is claimed.
+- **RA-44.7 — no credit.** A vacuous check frozen in a review document is a review defect, not a runtime
+  regression. Ledger **66 events / 17 categories / 49 recurrences**, M6 debt **1**, unchanged. Selector 497
+  untouched; CP2 491/491 accepted; R3 403/497 rejected. RA-41's junction/sector clauses remain frozen
+  **UNEXERCISED** and the multi-carrier STOP stands undischarged.
+
+---
+
 ## RA-43 — producer locus for terminal contact, germ and face gauge **FROZEN at M6-DEFN-R5-R4-REV** (2026-10-10)
 
 Discharges `R4-REV-01A`, `R4-REV-01B`, `R4-REV-02A`. Basis:
@@ -34,7 +93,10 @@ RA-34.3, RA-36.4/.5/.6, RA-38, RA-39, RA-40 and RA-42 (as corrected) stand.
   `std::abs(value - 1.0) <= 1.0e-8` on barycentric coordinates and is live at `:5868` and `:5937-5938`.
   Under RA-42.2 this is prohibited. It is **replaced** by the exact chain of RA-43.2, never wrapped,
   tightened or re-toleranced. Scheduled for Code + Build; not implemented in a review turn.
-- **RA-43.5 — face-gauge authentication, constructible inside the RA-40.1 boundary.** `make` at
+- **RA-43.5 — WITHDRAWN by RA-44.2: the named oracle is vacuous.** `find_frame(face)` publishes all four
+  branches and cannot discriminate; `make` holds no axes with which to re-derive. Superseded by RA-44.2's
+  two-part witness. Retained below for the record only; the absent-gauge hole it identified is real and is
+  closed by RA-44.3. Original text: _face-gauge authentication, constructible inside the RA-40.1 boundary._ `make` at
   `src/geometry/SurfaceCellTracing.cpp:8015-8020` checks only cardinality against `face_count()` and values
   in `[0,4)`; its leading `!sourceFaceBranchRotations.empty() &&` lets an **absent** gauge pass unchecked -
   the same optionality RA-40.1 removed for the atlas. Required: presence is **mandatory** whenever A6 seam

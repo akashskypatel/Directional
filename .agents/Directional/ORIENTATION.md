@@ -1,3 +1,18 @@
+## CURRENT — 2026-10-10 `M6-CP3-CB1-ENTRY-R4` binding STOP resolved (RA-44)
+
+**No current stop.** Both STOP findings accepted. RA-43.5 **withdrawn as vacuous** — `find_frame(face)`
+publishes all four branches and cannot discriminate a +U gauge. RA-44 replaces it with a two-part witness
+(absolute geometric pin on A4's own `1 - 1e-8` gate with axes travelling alongside the gauge, plus a
+relational A3 pin; the relation alone is gauge-invariant) and resolves the terminal contact as a **widening of
+the existing rail reduction** at `RemeshPipeline.cpp:9576-9599`, whose output already feeds A4's
+`hardFeatureEdges` and whose rails are already stored at `:12173-12179`. R4 Code + Build continues; successor
+`M6-CP3-TB1-ENTRY-R4`. No runtime: CP2 491/491 accepted; R3 403/497 rejected, 94 RED, 88 CP2 accepted losses;
+66/17/49 debt 1. §8 recurring failure is extended: freezing a **relation or a container** as an authenticator
+without checking it can separate the accepted value from its alternatives is the vacuity class of LESSONS 171,
+and the Review Agent committed it in a frozen amendment.
+
+---
+
 ## CURRENT — 2026-10-10 `M6-DEFN-R5-R4-REV` producer locus resolved (RA-43)
 
 **No current stop.** R4-REV-01A/01B/02A accepted and discharged in the same turn: the vertex-star producer

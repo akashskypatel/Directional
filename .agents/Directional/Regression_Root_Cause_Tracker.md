@@ -1,3 +1,31 @@
+## CURRENT — R4 binding STOP resolved as RA-44; RA-43.5 withdrawn as vacuous (2026-10-10)
+
+**Both STOP findings ACCEPTED; R4 Code + Build released with RA-44 as its specification.** Finding 2 is a
+correct refutation of my own RA-43.5: `FieldFaceBranchFrame`
+(`include/directional/authority/FieldTransportAtlas.h:728-734`) publishes **all four** branches, so
+`find_frame(face)` cannot discriminate a +U gauge, and `make` (`SurfaceCellTracing.cpp:7969-7984`) carries no
+vertices or axes with which to re-derive. **Root class:** a relation or a container was frozen as an
+authenticator without checking that it can separate the accepted value from its three alternatives — the
+vacuity class of LESSONS 171, committed by the Review Agent in a frozen amendment. Replaced by RA-44.2's
+two-part witness: an **absolute geometric pin** reusing A4's own `1 - 1e-8` alignment gate
+(`:11034-11043`, `axisV` cross-check `:11050-11054`) with the axes travelling alongside the gauge, plus a
+**relational A3 pin** over `transition_value`; (b) alone is gauge-invariant and a balanced `+1 mod 4` passes
+it, (a) alone ignores the field. **Finding 1 resolved more cheaply than either option it offered:** the rails
+already reach this boundary — `hard_feature_edge_keys_from_rails` (`RemeshPipeline.cpp:9576-9599`) consumes
+`rail.sourceVertices` through the existing typed conversion `surface_cell_source_edge_key` (`:3064`), its
+result becomes A4's `hardFeatureEdges`, and `:12173-12179` already stores `productSnapshots.authoritativeRails`.
+The terminal contact is only the datum that reduction **discards**, so the fix is a sibling reduction keyed by
+`HardRailId` (RA-44.1, seventh publish/reach). **Owner/falsifier:** `M6-CP3-CB1-ENTRY-R4` must reject a
+balanced `+1 mod 4` tamper on every face and must reject a fixture asserting `hardFeatureEdges` with no rail.
+**Prohibited:** `find_frame` equality as a gauge check, relational-only authentication, barycentric incidence,
+applying the archived rail WIP patch, tightening A4's float selection predicate inside R4 (RA-44.5, tracked
+residual). Accepted at this locus: typed factory rejection propagation (`:12240-12250`, RA-42.3 discharged);
+the seven two-face DCEL repairs compiled but **were not executed**, so no restoration is claimed. No runtime:
+stable ledger **66 events / 17 categories / 49 recurrences, M6 debt 1**, unchanged; 88 accepted CP2 losses
+carried.
+
+---
+
 ## CURRENT — R4-REV-01A/01B/02A DISCHARGED; producer locus frozen as RA-43 (2026-10-10)
 
 **All three independent findings ACCEPTED, and the producer-proof remedy they demanded is DISCHARGED from
