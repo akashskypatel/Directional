@@ -1,1 +1,0 @@
-Verify exact current R4 source and durable patch control after non-fast-forward docs push failure.
