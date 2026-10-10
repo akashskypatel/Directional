@@ -1,2 +1,0 @@
-# M6-CP3-CB1-ENTRY-R4 temporary artifact cleanup
-.agents/connector-triggers/source-snapshot/m6-cp3-cb1-entry-r4-20261010.txt
