@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-factory-unique-docs-rebased-20261010-b",
+  "request_id": "m6-cp3-r4-a2b-forgery-negative-20261010-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-factory-unique-docs-rebased",
-  "file_id": "1XgH-GMmsMBLgKE2CReCRPW-XFeEzt7sY",
-  "patch_sha256": "b31fd4ef7c1b8353fcd05a10b2e0638b079d9a3aef1f46a6a72cabf54ade35ef",
-  "base_sha": "57ef79d29d313ca3c3f5ac08a38739614eda15c4",
+  "mailbox_key": "m6-cp3-r4-a2b-forgery-negative-apply",
+  "file_id": "1RF1hWghYWrndXqwqo5DH3TCK9r4WwuHl",
+  "patch_sha256": "8cdf5671d2f72b0eb3b2cfcb66524ac09692826663170207b4305ed30b28656a",
+  "base_sha": "562788f52ae689abba835bf5ce13bbe6ee117d71",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: preserve R4 independent factory star uniqueness evidence",
+  "commit_message": "test: add nonvacuous A2b terminal-germ forged path negatives",
   "retention_days": 14
 }
