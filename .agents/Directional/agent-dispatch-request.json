@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-absolute-gauge-review-stop-apply-20261010-1705",
+  "request_id": "m6-cp3-r4-ra45-a6-apply-20261010-1817",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-absolute-gauge-stop-apply",
-  "file_id": "1EoZiX7kTWwVsZ9sr72Lt8RoWW44rSR8J",
-  "patch_sha256": "b5b0264deb252b75f8e63b14907aa5993734e7e2df5561f243597f6a73da7353",
-  "base_sha": "d0e604a2c38e690e431f8a25d2ad6a59a2f67d73",
+  "mailbox_key": "m6-cp3-r4-ra45-a6-apply",
+  "file_id": "1jpGfR6JxH34apjsec0d4HgkNo2RCGuSt",
+  "patch_sha256": "5e1da300a24c2ff6fe81113c7c7bf91728f7cfd9d9e3ad754bd4d766bc5cb133",
+  "base_sha": "0dcd853761e869584f92de8eaa676b6afd39058a",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): preserve source-exact RA44 absolute-gauge compatibility stop"
+  "commit_message": "test(directional): pin RA45 relational gauge invariance in A6"
 }
