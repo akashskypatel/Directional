@@ -84,4 +84,4 @@ Examined active R4 Definition plan, candidate record, DIAG audit/39-row inventor
 | Turn boundary held | Runtime-free Review; no product, test, fixture, selector, benchmark or build source mutation |
 | review_check.py boundary | PASS: no product/test/selector/build changes, all checked selector SHA digests and durable marker counts preserved |
 | `STATUS` lifecycle maintained | Entry `M6-DEFN-R5-R4-REV`, 2026-10-10T10:58:35Z; final BLOCKED, successor UNKNOWN, no terminal timestamp |
-| Pushed to origin, branch in sync | Exact Drive-apply push evidence to be verified; no local tracking branch (snapshot inspection only) |
+| Pushed to origin, branch in sync | Durable Drive apply 38047581786 GREEN; pushed exact nine-document correction and verified changed paths via GitHub commit. No local `git status -sb` equivalence: Web snapshot is deliberately not a tracking clone; PR #8 remains draft/unmerged |
