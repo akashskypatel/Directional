@@ -1,3 +1,11 @@
+## CURRENT — 2026-10-10 independent Review `M6-CP3-TB1-ENTRY-R3-REV`: R3 REJECTED
+
+**Review verdict: R3 candidate is REJECTED / UNPROMOTED, but artifact-only execution is mechanically valid.** Frozen 497 fresh processes: **403 PASS / 94 RED** (30:15/15, 12:10/2, 449:378/71, 6:0/6); 1019/1019 result checksums and 497/497 individual log hashes independently verified; no test skipped or rebuilt. Exact source `d82e34427adc6fe09ad216a4363fea23dd0ae0b8`; runtime `38030196207`, artifact `11661044443`, SHA256 `555b973a69810f95a2f170fdea30aac11c0805ba7e25bc9914577bdd1bb26ac5`. **53/53 historical R2 RED remain RED, zero recovered; 41 additional accepted CP2 tests turn RED, making 88/491 accepted CP2 identities RED in R3** (47 R2-carried + 41 new). The prior 94-row EXEC report incorrectly tagged these 41 as `CP2_ACCEPTED=false`; its historical file is preserved, with a distinct independent 94-row corrected overlay. New accepted-loss families: 34 A4 publication/authority ingress failures (`R3-REV-NEW-01`) and seven synthetic mesh DCEL fixture exceptions (`R3-REV-NEW-02`); first rejected predicates observed, exact algorithmic roots not yet proven. Stable events now **66 / 17 / 49** (two grouped new recurrences), debt **1**. CP2 **491/491** remains latest reviewed accepted candidate; R3 may not be promoted. The 39 carried R2 rail endpoint errors are not counted a second time. Four RA-40(C) supplemental tests remain unexecuted and excluded from 497.
+
+**Review authority:** `.agents/Directional/Architecture_M6_CP3_TB1_Entry_R3_Independent_Review_Record.md` and `.agents/Directional/Architecture_M6_CP3_TB1_Entry_R3_Independent_94_Review_Overlay.tsv`. **Authorized successor only after final COMPLETE beacon:** `M6-DEFN-R5-R4` Definition, plan `.agents/Directional/Architecture_M6_DEFN_R5_R4_Recovery_Definition_Plan.md`; independent R4 Definition Review required before any Code + Build. No new implementation, runtime, benchmark, promotion, selector alteration or fake A3 atlas is authorized in this Review.
+
+---
+
 ## CURRENT authoritative RA-40 Code + Build result — 2026-10-10 06:02Z
 
 **COMPLETE / compile GREEN / runtime unexecuted** for `M6-CP3-CB1-ENTRY-R3`, pending durable docs push and final root STATUS beacon. RA-40 A/B/C Review completed; exact source `d82e34427adc6fe09ad216a4363fea23dd0ae0b8` includes five-file source-attested A3 factory/11-caller migration patch `7de636c88fe6ad8c4f09c1956161f56f88995785` and one-file fixed-size Eigen test-helper correction. Initial eight-target compile `38028700056` failed on dynamic `.cross()` Eigen static assertion; corrected compile **run `38029281891` succeeds** (`compile / compile` job `114146685417`), immutable result artifact **`11661566000`** outer ZIP SHA-256 **`18591009acf98b4c6ea996bc4bb1445959bbd49b1f96cc78327caacfb302ac95`**, internal **28/28 SHA256SUMS**, metadata `source-commit.txt` exact match, `preflight-exit-code=0`, `build-exit-code=0`, eight approved targets, `DIRECTIONAL_ENABLE_GMP:BOOL=ON`, actual generated linker command contains both `/usr/lib/x86_64-linux-gnu/libgmpxx.so` and `/usr/lib/x86_64-linux-gnu/libgmp.so`, `exactArithmeticBackend=GMP`, `runtimeExecution=false`, `turnBoundary=Code+Build-only`. No tests, benchmarks, Directional binaries, or TB harness executed.
@@ -656,6 +664,8 @@ A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on t
 
 ## 3. Where we are
 
+**Current (2026-10-10 R3 independent Review):** CP2 remains accepted 491/491. R3 runtime has 403/497 PASS, 94 RED; **88** previously accepted CP2 cases RED (47 carried from R2 plus 41 new); all 53 R2 RED remain. Two distinct new accepted-source loss groups are 34 A3 publication/ingress and seven synthetic DCEL construction failures. Next authorized Definition: `M6-DEFN-R5-R4`; no promotion or implementation in this review. The older “Current priority R3 Code + Build” text below is historical.
+
 **M3, M4, M5 and M6 CP1/CP2 are CLOSED / ACCEPTED.** CP2 reviewed 491/491; CP3 R1 rejected 482/497, R2 rejected 444/497 (47 previously-green losses). RA-37a accepted as Definition only, with conditional R3 CB next; RP-01 A4 and A6 remain open. Stable **64 / 17 / 47**, debt 1.
 
 **Historical CP2 detail, superseded by current section:** `M6-CP2-TB1-VERIFIER-REV` rejects first candidate `11365308211 / 265c8fbb...` without promotion. The artifact-only gate is mechanically valid at focused30 **30/30** + CP2-focused12 **9/12** + selector449 **449/449** = **488/491**, exact-one, zero skips, benchmark 0 and immutable postflight. Focused12 REDs 2/6/7 are non-stable false-rejection witnesses; Review also freezes REV-OBS-01..04 under RA-29. Stable accounting remains **60 / 16 / 44**, debt 1.
@@ -678,6 +688,8 @@ CP1 exit items 1-3 are now met: conformant A5, complete A6, and reviewed A7 sour
 **Historical accounting note:** M5 closed at **51 / 14 / 37**; TB5 stood at **55 / 16 / 39**; TB6 Review stood at **57 / 16 / 41**; TB7 Review stood at **59 / 16 / 43**, then **60 / 16 / 44** after its addendum. TB8 recovered those events without repricing. Current project accounting is **60 / 16 / 44**.
 
 ## 4. The witnesses — the fastest way to understand the problem
+
+**R3 runtime review (2026-10-10):** none of six CP3-entry positives passed; five bounded periodic odd-τ enumerations found no odd gauge pair; 39 carried HardRail A4 certificate failures continue with first endpoint-0 rail edge incidences `(1,4): faces {0,3}` against requested `{0,2}`. These are observed first failures, not witness establishment. The 34 new publisher and seven DCEL source-construction failures do not establish produced front geometry. Do not credit synthetic source-star construction as an actual A4/A5 result.
 
 **R2 Review witness disposition:** no CP3 organic positive was newly produced or promoted; D2 periodic odd gauge, D3 odd cross-rail τ and F inequality, D4/D7 true A4 seam-collinear OrdinaryFront/A7 sheet check, D5 source route-bearing ordinary edge remain UNPROVEN with mandatory stops. The table below describes prior authority, not these positives.
 
@@ -796,6 +808,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
+**Current priority 0 (R3 independent Review):** first reconcile all 94 immutable REDs, then execute Definition `M6-DEFN-R5-R4` and mandatory independent Definition Review to authorize corrective implementation. In Definition, separate 34 new RA-40 A3 atlas publication failures from seven invalid DCEL synthetic fixtures and 39 carried endpoint-0 hard-rail incidences; no A3 bypass or fan-route detour, and no 497 selector edits. The historical “current priority 0” paragraph below predates the R3 runtime review and is superseded.
+
 **Current priority 0 — exactly `M6-CP3-CB1-ENTRY-R3` under RA-37a.** A4 unique two-sided fan and both local endpoint certificates must be established first or STOP. Then A3 typed commute, A5 strict consumption, separately carried A6 and organic witness STOPs. Eight-target GMP compile only; separate 497 TB/Review. No other CP3 task permitted. All older numbered items below are historical carryovers unless explicitly marked active.
 
 
@@ -839,6 +853,8 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 
 ## 8. Recurring defect patterns
+
+**R3 Review finding:** source-authenticated publication can become non-vacuously *too restrictive* if old production/test ingress supplies no independent A3 (`34` accepted-prefix losses), while source-bound test fixtures can fail earlier on invalid mesh DCEL (`7` losses) and never reach their intended adversarial oracle. Treat these as **two grouped new accepted-green loss events** with recurrence under existing authority/publication and fixture categories, not 41 events; the existing endpoint-0 HardRail misattachment remains carried. Stable ledger **66/17/49**, debt 1. A design review must resolve domain-correct source-bound A3 bridging, typed first errors and DCEL-valid fixtures before implementation.
 
 **Do not conflate local cross-rail attachment with transport along a separate spatial rail (`M6-DEFN-R5-R3-REV`, RA-37a; existing `AUTHORITY_DOMAIN_CONFLATION`).** A valid source-vertex fan gives two sector paths and a typed commuting square, but each paired front endpoint is a distinct spatial point. Its A4-local cross path must be separately proven; summing the χ rotations of successive carrier edges mixes domains. This Review added no new stable event or lesson.
 
