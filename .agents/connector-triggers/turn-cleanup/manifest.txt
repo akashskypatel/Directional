@@ -1,0 +1,2 @@
+# M6-DEFN-R5-R4-REV temporary state
+.agents/connector-triggers/source-snapshot/M6-DEFN-R5-R4-REV-20261010-0948.txt
