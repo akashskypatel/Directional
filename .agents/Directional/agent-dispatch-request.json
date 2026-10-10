@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-exact-legacy-corner-20261010-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-exact-corner-apply",
-  "file_id": "1uvUx2PlQhuXDcM7m9FtXjUZo0BJf343q",
-  "patch_sha256": "d0f8d776c03a6339cd51abee83b097813d955633f0dd92b18c835818013fd0cc",
-  "base_sha": "8b1e7b3b44dcea90622764265f294afb35bbcb6f",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix: reject tolerance-derived legacy rail endpoint identity",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-legacy-corner-compile-20261010-a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-exact-corner-compile",
+  "source_sha": "68533fd7faf80efa8b7388f8af83f0bfd269bca4",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-exact-corner-compile"
 }
