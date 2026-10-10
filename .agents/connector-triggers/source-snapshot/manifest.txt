@@ -1,3 +1,4 @@
-Purpose: ChatGPT Web M6-CP3-CB1-ENTRY-R4 exact source snapshot.
-Semantic base: bf44a39fd0e39c26bb4951c0fbcca0d8e8de0800
-Trigger: one-time source snapshot; no production runtime.
+Purpose: ChatGPT Web continuation of M6-CP3-CB1-ENTRY-R4 source snapshot.
+Authoritative source before trigger: 8763efb64c93d3b44c555ac9e4b0e55a378dbaa6
+Trigger recorded: 2026-10-10T12:31:41Z
+No runtime execution.
