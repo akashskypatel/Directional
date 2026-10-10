@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-legacy-corner-compile-20261010-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-exact-corner-compile",
-  "source_sha": "68533fd7faf80efa8b7388f8af83f0bfd269bca4",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-exact-corner-compile"
+  "request_id": "m6-cp3-r4-exact-corner-docs-20261010-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-exact-corner-docs",
+  "file_id": "18cN8iR14WncGk9dRZMMr6YXmQ7oExVsu",
+  "patch_sha256": "96c5867f188ba80c8d36d9e590afbab2ca6a2998b37c29836644eef58d2e9aff",
+  "base_sha": "68533fd7faf80efa8b7388f8af83f0bfd269bca4",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: preserve R4 exact rail corner compile and continuation",
+  "retention_days": 14
 }
