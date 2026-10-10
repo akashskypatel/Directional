@@ -1,3 +1,11 @@
+# LIVE — R3 independent A/B/C decisions remain pending (2026-10-10T01:46Z)
+
+- [x] Latest source `089779c15eae27a2bb3b798ef9c8085950e92def`, eight GMP/GMPXX targets GREEN run `38005003624`, package `11650409049`, SHA256SUMS 28/28, `runtimeExecution=false`. Static audit exact source, **12 factory callers** (1 production, 11 tests). Migration report `.agents/Directional/Architecture_M6_CP3_R3_A3_Factory_Callsite_Migration_Impact_20261010.md`; no source changes or tests run.
+- [ ] Independent A: factory nonrail A3 trust boundary; independent B: compile-only Code+Build acceptance vs later real-witness TB; independent C: four supplemental compiled tests outside frozen 497. **No verdict or successor authorized.**
+- [ ] Organic D1/D2/D3/D5 A6/A7, all 39 R2 historical first loci, 47 CP2 accepted-green recovery cases and future separate frozen 497-process TB **not runtime verified**. Do not alter frozen selectors or invent results.
+
+---
+
 # LIVE — R3 latest-source static acceptance boundary (2026-10-10T00:09Z)
 
 - [x] Source `089779c15eae27a2bb3b798ef9c8085950e92def`: eight GMP/GMPXX targets compiled GREEN in run `38005003624`, package `11650409049`, 28/28 internal hashes, `runtimeExecution=false`. Verified last patch adds six diagnostics but changes no positive predicates.
