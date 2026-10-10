@@ -8743,6 +8743,60 @@ TEST(M6CP3, CheckedFactoryReconstructsProducedTerminalA2bStarUniqueness) {
                          &checked));
 }
 
+TEST(M6CP3, CheckedFactoryRejectsForgedTerminalA2bSideGerm) {
+  const auto &fixture = nonconstant_hard_rail_fixture();
+  const auto &front = fixture.network.phaseFront.product();
+  ASSERT_TRUE(fixture.fieldTransportAtlas.has_value());
+  ASSERT_FALSE(front.hardRailTerminalContacts().empty());
+
+  const auto checked_with_routes = [&](const auto &routes) {
+    return directional::geometry::SurfacePhaseFrontProduct::make(
+        front.gridU(), front.gridV(), front.sourceTopologyRegions(),
+        fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
+        &*fixture.fieldTransportAtlas,
+        front.isolationSeamTransportCertificates(), front.periodicHolonomies(),
+        front.boundedDiskBoundaryPhases(), front.edges(), front.events(),
+        front.cells(), front.conformityPlanReceipt(), front.hardFeatureEdges(),
+        front.sourceFaceBranchRotations(), front.hardRailFieldTransitions(),
+        routes, front.hardRailTerminalContacts(), front.hardRailClosedChains());
+  };
+  auto original = front.hardRailRouteCertificates();
+  const auto baseline = checked_with_routes(original);
+  ASSERT_NE(nullptr, std::get_if<directional::geometry::SurfacePhaseFrontProduct>(
+                         &baseline))
+      << "independent checked factory must accept original A4 production";
+
+  // Select a genuinely produced nonempty A2b side germ; never let this
+  // regression pass vacuously on a direct attachment/carrier coincidence.
+  std::optional<std::tuple<std::size_t, std::size_t, std::size_t>> selected;
+  for (std::size_t route = 0U; route < original.size() && !selected; ++route)
+    for (std::size_t endpoint = 0U; endpoint < 2U && !selected; ++endpoint)
+      for (std::size_t side = 0U; side < 2U; ++side)
+        if (!original[route].endpoints[endpoint].contactPaths[side].empty()) {
+          selected = std::make_tuple(route, endpoint, side);
+          break;
+        }
+  ASSERT_TRUE(selected.has_value())
+      << "the source-star tamper oracle requires a real nonrail A2b step";
+  const auto [route, endpoint, side] = *selected;
+  const auto expected =
+      directional::geometry::SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+
+  // A false 'direct' germ omits an independently required source-star step.
+  auto omitted = original;
+  omitted[route].endpoints[endpoint].contactPaths[side].clear();
+  expect_phase_front_product_error(checked_with_routes(omitted), expected);
+
+  // A forged transported germ must fail independent A3 authentication even
+  // when the typed source-edge path and all other factory inputs are intact.
+  auto forged = original;
+  auto &step = forged[route].endpoints[endpoint].contactPaths[side].front();
+  step.firstToSecond = compose(
+      directional::authority::QuarterTurn::from_integer(1),
+      step.firstToSecond);
+  expect_phase_front_product_error(checked_with_routes(forged), expected);
+}
+
 TEST(SurfaceCellTypedTransportAuthority,
      ValidPeriodicCutRouteUsesTypedIdentity) {
   const auto &fixture = cylinder_fixture();
