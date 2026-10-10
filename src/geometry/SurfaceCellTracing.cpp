@@ -5819,21 +5819,22 @@ namespace directional::geometry::surface_cell_tracing_detail {
 
 int rail_sample_source_vertex(const Eigen::MatrixXi &faces,
                                      const SurfaceCellRailSample &sample) {
-  constexpr double tolerance = 1.0e-8;
   if (sample.sourceFace < 0 || sample.sourceFace >= faces.rows() ||
       sample.sourceEdge < 0 || sample.sourceEdge >= 3 ||
       !sample.barycentric.allFinite()) {
     return -1;
   }
+  // A nearby edge sample is not a source vertex. Use exact corner incidence
+  // even for legacy rails that have not published typed sourceVertices.
   int vertexCorner = -1;
   for (int corner = 0; corner < 3; ++corner) {
     const double value = sample.barycentric[corner];
-    if (std::abs(value - 1.0) <= tolerance) {
+    if (value == 1.0) {
       if (vertexCorner >= 0) {
         return -1;
       }
       vertexCorner = corner;
-    } else if (std::abs(value) > tolerance) {
+    } else if (value != 0.0) {
       return -1;
     }
   }

@@ -1773,6 +1773,14 @@ TEST(SurfaceCellTracingPhase14,
   rail.samples[0].barycentric = Eigen::RowVector3d(1.0 - 1.0e-9, 1.0e-9, 0.0);
   EXPECT_EQ(validate().status,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::InvalidSampleGeometry);
+
+  // The untyped legacy fixture path must not infer a vertex within epsilon.
+  rail.sourceVertices.clear();
+  EXPECT_EQ(validate().status,
+            directional::geometry::surface_cell_tracing_detail::RailBuildStatus::InvalidSampleGeometry);
+  rail.samples[0].barycentric = Eigen::RowVector3d(1.0, 0.0, 0.0);
+  EXPECT_EQ(validate().status,
+            directional::geometry::surface_cell_tracing_detail::RailBuildStatus::Valid);
 }
 
 TEST(SurfaceCellTracingPhase14,
