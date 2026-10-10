@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-terminal-germ-apply-20261010-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-terminal-germ-apply",
-  "file_id": "1iPVLVepkDxIG_xgt4Dld0KSE_P3msJG6",
-  "patch_sha256": "eff99246d0f56b1a220f9ee45db43b80388e761f64f6831f4eacf2ff6a313d1b",
-  "base_sha": "60b1dd439380a464159d98afdd7b32ddaf19e2c7",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix: author A2b terminal source-star paths and consume A3 transport",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-terminal-germ-compile-20261010-a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-terminal-germ-compile",
+  "source_sha": "991f655199017375d0ad7ae3fc0b235ffa3de4f0",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-terminal-germ"
 }
