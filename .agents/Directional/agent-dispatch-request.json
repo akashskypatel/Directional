@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-a5-lattice-forgery-compile-20261010-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-a5-lattice-forgery-compile",
-  "source_sha": "7ac899b2d91e9d8c0925bbb4cc1ccd367872dcc4",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-a5-lattice-forgery"
+  "request_id": "m6-cp3-r4-a5-lattice-negative-docs-20261010-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-a5-lattice-negative-docs",
+  "file_id": "1ouUav2MEmxZDu6nt0ZA75B5plcawEG6W",
+  "patch_sha256": "62cf2f721f132f4f8237be1136788971f9442431113ddb6cb24c87c83514315f",
+  "base_sha": "3fb376186dbf2199a4cc591d12e0b5a13b005048",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: preserve R4 A5 lattice negative GMP compile receipt and handoff",
+  "retention_days": 14
 }
