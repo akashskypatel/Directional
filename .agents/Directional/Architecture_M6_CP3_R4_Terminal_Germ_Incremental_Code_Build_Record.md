@@ -76,3 +76,42 @@ remained recoverable at Drive file `1GLXAi-O4EsUqtd4qmvFjBkGim5rFiefH`
 until an authenticated replacement is committed. The correction must rebase on
 current branch authority, avoid replaying the stale-base request, and only
 retire the old staged Drive patch after the replacement is verified.
+
+## Incremental checked-factory A2b uniqueness follow-up (2026-10-10 19:55Z)
+
+A later source-exact patch extends `SurfacePhaseFrontProduct::make` to independently
+reconstruct each typed terminal vertex's complete finite nonhard source star once
+from `SourceTopologyRegions`, reject nonmanifold third-edge incidences and missing
+reciprocal A3 transport, and count simple nonhard paths separately for both
+attachment-to-carrier sides. Exactly one path is required on each side, so a
+forged certificate cannot hide a second admissible A2b path. The previously
+checked carried paths must still be contiguous, source-attested and disjoint.
+One compile-only, nonempty-positive product reconstruction regression is added:
+`M6CP3.CheckedFactoryReconstructsProducedTerminalA2bStarUniqueness`. This test
+was not executed. No negative forged-multi-path witness has yet been produced.
+
+Verified source snapshot `04935f582324a8eeb05aa930a0d1ed2acab2b1e8`,
+workflow `38081108785`, artifact `11680452926`, ZIP SHA256
+`d1eda256422ae9ad7b9959ec7910b153382694163ce41c9f3e819fa438b1a68c`,
+all **5943/5943** source hashes valid. Exact two-path source patch
+`Directional_M6_CP3_R4_A2b_Factory_Unique_Star_Incremental_WIP.patch`,
+SHA256 `610b041dfbc07df3c2bf10c1c208928f10e7f9eea0574d787065bd6d6d295e02`,
+base `4ba9ce0733f25662ad9b8bcb7c57666c882625fe`, body digest
+`836d1e1a911bd4dbd51c9484d32ec1091ffcd6ee6260f6e1b885b2334d61c9c7`,
+verified by `git apply --cached --check` and `git diff --check`; Drive apply
+workflow `38081631821` / job `114299624739` success, exact semantic commit
+`c28f1d241e6d84503e4ab38ce02b7200b8c9cfe5`; apply result artifact
+`11681000083` (ZIP digest
+`f674c23b02ac77398b03d0f874d92004da1396721c240d7072db3a2bc27e5ea0`).
+Staging Drive File ID `1GXr_PjlcogHzjiQAlZX9FqwzGtraxBpY` owner-deleted.
+Exact eight-target GMP/GMPXX compile **DISPATCHED**, request commit
+`3f136c63c0e79b82ca7159938cff54a3c6f0d372`, request ID
+`m6-cp3-r4-factory-unique-star-compile-20261010-a`, mailbox
+`.workflow-mailbox/m6-cp3-r4-factory-unique-star-compile/latest.json`:
+**PENDING**. Do not claim this incremental source compiles until verified.
+
+R4 remains IN_PROGRESS. No runtime tests or benchmarks have been executed, and
+no 497-case selector or Test + Benchmark successor is authorized. Remaining
+obligations include actual 39 endpoint cases, synthetic ambiguous A2b negative,
+RA-41 multi-carrier/odd-τ, seven DCEL negatives, 34 Phase10 positives, 88 CP2
+restorations and independent Test + Benchmark gate.

@@ -1,3 +1,18 @@
+## CURRENT — R4 A2b checked-factory uniqueness increment (2026-10-10)
+
+- [x] Exact source patch `c28f1d241e6d84503e4ab38ce02b7200b8c9cfe5`
+  independently re-derives unique nonhard A2b source-star paths at factory,
+  rejecting hidden alternative paths, with one compile-only positive regression;
+  Drive apply workflow `38081631821` success and owner staging cleanup complete.
+- [ ] Observe **PENDING** eight-target GMP/GMPXX compile mailbox
+  `.workflow-mailbox/m6-cp3-r4-factory-unique-star-compile/latest.json`,
+  exact source `c28f1d2...`; request commit `3f136c63...`. No tests executed.
+- [ ] R4 production work remains: causal 39 endpoint, multi-carrier/odd-τ,
+  34 Phase10 positives, seven negative fixtures, 88 CP2 restorations,
+  full compile and separate immutable 497-case TB permission.
+
+---
+
 ## CURRENT — R4 typed terminal source-star germ (2026-10-10)
 
 - [x] Bounded A4 terminal source-star paths with typed endpoint vertex and

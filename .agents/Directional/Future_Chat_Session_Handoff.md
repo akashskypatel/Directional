@@ -1,3 +1,31 @@
+## CURRENT — R4 checked-factory terminal A2b path uniqueness, compile DISPATCHED (2026-10-10)
+
+`M6-CP3-CB1-ENTRY-R4` remains **IN_PROGRESS**, no successor/TB497 permission.
+Previous terminal producer source `991f655199017375d0ad7ae3fc0b235ffa3de4f0`
+passed the exact eight-target GMP/GMPXX compile workflow `38080007254`, artifact
+`11680003032`, 28/28 manifest, no runtime. Previous docs publication failure
+`38080352681` (non-fast-forward) was resolved by rebased docs patch workflow
+`38081341442`, published `65c7a23a251d03b91b32582cc56a60ede0af76bb`.
+Both failed and successful docs staging patches owner-deleted.
+
+Incremental source `c28f1d241e6d84503e4ab38ce02b7200b8c9cfe5`
+adds independent A2b source-star path uniqueness verification at checked factory
+plus a nonvacuous compiled-only product-construction regression. Drive apply
+run `38081631821` successful, result artifact `11681000083`, source backup
+`Directional_M6_CP3_R4_A2b_Factory_Unique_Star_Incremental_WIP.patch` in
+`/Directional/Evidence/`, staging ID deleted. **Eight-target compile PENDING:**
+request commit `3f136c63c0e79b82ca7159938cff54a3c6f0d372`, exact source
+`c28f1d241e6d84503e4ab38ce02b7200b8c9cfe5`, mailbox
+`.workflow-mailbox/m6-cp3-r4-factory-unique-star-compile/latest.json`.
+Observe once terminal; confirm eight targets, GMP/GMPXX, 28/28, clean source,
+`runtimeExecution=false`. If failed, use exact logs to correct within R4.
+No generated Directional binary, test, benchmark or frozen selector executed.
+R4 remaining: genuine 39 endpoint effects, multi-carrier/odd-τ source-star
+sectors, seven negative fixture oracles, 34 Phase10 positives and all 88 CP2
+restorations. See `Architecture_M6_CP3_R4_Terminal_Germ_Incremental_Code_Build_Record.md`.
+
+---
+
 ## CURRENT — R4 producer-owned terminal A2b source-star germ, compile GREEN (2026-10-10)
 
 **Same `M6-CP3-CB1-ENTRY-R4` IN_PROGRESS; TB497 remains forbidden.** Exact source

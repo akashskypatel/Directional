@@ -1,3 +1,14 @@
+## 2026-10-10 — R4 A2b factory independently verifies source-star uniqueness
+
+Committed semantic `c28f1d241e6d84503e4ab38ce02b7200b8c9cfe5`: checked
+factory reconstructs typed terminal source-vertex one-ring topology and counts
+non-hard A3-admissible paths, rejecting ambiguous germs even when a provided
+path is individually attested. Added compiled-only positive factory regression.
+Source patch workflow `38081631821` GREEN; eight-target compile DISPATCHED
+under request `3f136c63...` and not yet accepted. Frozen selector and runtime
+untouched; R4 remains IN_PROGRESS. Previous A2b producer source
+`991f6551...` compiled GREEN in `38080007254`.
+
 ## 2026-10-10 — `M6-CP3-CB1-ENTRY-R4` terminal source-star A2b path increment
 
 Published source `991f655199017375d0ad7ae3fc0b235ffa3de4f0`: producer
