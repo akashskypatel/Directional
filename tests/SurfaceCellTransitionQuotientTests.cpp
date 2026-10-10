@@ -255,32 +255,43 @@ direct_periodic_owner_fixture() {
       vertices[0], vertices[1]);
   const auto edge12 = directional::authority::SourceEdgeTopologyKey::make(
       vertices[1], vertices[2]);
-  const auto edge20 = directional::authority::SourceEdgeTopologyKey::make(
-      vertices[2], vertices[0]);
-  if (!edge01 || !edge12 || !edge20) {
+  const auto fourth = directional::authority::SourceVertexId::from_index(3, 4);
+  if (!fourth) throw std::runtime_error("Invalid direct periodic-owner vertex.");
+  const auto secondFace = directional::authority::SourceFaceTopologyKey::make(
+      {vertices[0], vertices[2], fourth.value()});
+  const auto edge23 = directional::authority::SourceEdgeTopologyKey::make(
+      vertices[2], fourth.value());
+  const auto edge30 = directional::authority::SourceEdgeTopologyKey::make(
+      fourth.value(), vertices[0]);
+  if (!edge01 || !edge12 || !edge23 || !edge30 || !secondFace) {
     throw std::runtime_error("Invalid direct periodic-owner boundary topology.");
   }
 
+  // Two consistently oriented triangles share the internal diagonal (0,2).
+  // The region boundary contains only the four exterior edges.
   std::vector<directional::authority::SourceEdgeTopologyKey>
-      boundaryTopology = {edge01.value(), edge12.value(), edge20.value()};
+      boundaryTopology = {edge01.value(), edge12.value(),
+                          edge23.value(), edge30.value()};
   std::sort(boundaryTopology.begin(), boundaryTopology.end());
   boundaryTopology.erase(
       std::unique(boundaryTopology.begin(), boundaryTopology.end()),
       boundaryTopology.end());
-  if (boundaryTopology.size() != 3U) {
+  if (boundaryTopology.size() != 4U) {
     throw std::runtime_error(
         "Direct periodic-owner boundary topology is not three distinct edges.");
   }
 
   auto region = directional::geometry::SurfaceTopologyRegion::make(
       regionId.value(), component.value(),
-      {{projection.face, sheet.value()}}, boundaryTopology, {}, 1, 1);
+      {{projection.face, sheet.value()}, {secondFace.value(), sheet.value()}},
+      boundaryTopology, {}, 1, 1);
   if (!region.has_value()) {
     throw std::runtime_error("Failed to construct direct periodic-owner region.");
   }
   auto authority = directional::geometry::SourceTopologyRegions::make(
-      {projection.face}, {component.value()}, {sheet.value()},
-      {std::move(region.value())});
+      {projection.face, secondFace.value()},
+      {component.value(), component.value()},
+      {sheet.value(), sheet.value()}, {std::move(region.value())});
   if (!authority.has_value()) {
     throw std::runtime_error("Failed to construct direct periodic-owner authority.");
   }
@@ -322,13 +333,17 @@ direct_periodic_owner_fixture() {
     edges.push_back(std::move(edge));
   }
   directional::TriMesh sourceMesh;
-  Eigen::MatrixXd sourceVertices(3, 3);
-  sourceVertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
-  Eigen::MatrixXi sourceFaces(1, 3);
-  sourceFaces << 0, 1, 2;
+  Eigen::MatrixXd sourceVertices(4, 3);
+  sourceVertices << 0.0, 0.0, 0.0,
+                    1.0, 0.0, 0.0,
+                    1.0, 1.0, 0.0,
+                    0.0, 1.0, 0.0;
+  Eigen::MatrixXi sourceFaces(2, 3);
+  sourceFaces << 0, 1, 2,
+                 0, 2, 3;
   sourceMesh.set_mesh(sourceVertices, sourceFaces);
   const auto sourceField = directional::pipeline::finalize_surface_cell_raw_cross_field(
-      sourceMesh, constant_xy_field(1));
+      sourceMesh, constant_xy_field(2));
   auto sourceAtlas = directional::authority::FieldTransportAtlas::make(
       sourceMesh, authority.value(), {}, sourceField);
   if (!sourceAtlas) throw std::runtime_error("Direct periodic source A3 unavailable.");

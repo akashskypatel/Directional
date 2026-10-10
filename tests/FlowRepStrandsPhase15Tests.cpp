@@ -1446,13 +1446,18 @@ TEST(FlowRepStrandsPhase15,
 
 TEST(FlowRepStrandsPhase15,
      RailTruncatedGenericSupportDoesNotInheritLaterTerminalAnchor) {
-  Eigen::MatrixXd vertices(3, 3);
-  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
-  Eigen::MatrixXi faces(1, 3);
-  faces << 0, 1, 2;
+  // Preserve face 0 and its support geometry on a DCEL-valid two-face disk.
+  Eigen::MatrixXd vertices(4, 3);
+  vertices << 0.0, 0.0, 0.0,
+              1.0, 0.0, 0.0,
+              0.0, 1.0, 0.0,
+             -1.0, 0.0, 0.0;
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 1, 2,
+           0, 2, 3;
 
   directional::geometry::SurfaceCellNetwork network;
-  attach_source_authority(network, vertices, faces, {3}, {5});
+  attach_source_authority(network, vertices, faces, {3, 3}, {5, 5});
 
   directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(7));
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
