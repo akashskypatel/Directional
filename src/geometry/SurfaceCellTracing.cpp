@@ -8214,28 +8214,70 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
       return error;
     }
     const auto &steps = certificate.route.oriented_steps();
-    const auto contact = hardRailTerminalContacts.find(certificate.rail);
-    if (contact == hardRailTerminalContacts.end() ||
-        !((certificate.endpoints[0].terminalCarrier.edge.first() ==
-                contact->second.endpoints[0] ||
-            certificate.endpoints[0].terminalCarrier.edge.second() ==
-                contact->second.endpoints[0]) &&
-           (certificate.endpoints[1].terminalCarrier.edge.first() ==
-                contact->second.endpoints[1] ||
-            certificate.endpoints[1].terminalCarrier.edge.second() ==
-                contact->second.endpoints[1])) &&
-        !((certificate.endpoints[0].terminalCarrier.edge.first() ==
-                contact->second.endpoints[1] ||
-            certificate.endpoints[0].terminalCarrier.edge.second() ==
-                contact->second.endpoints[1]) &&
-           (certificate.endpoints[1].terminalCarrier.edge.first() ==
-                contact->second.endpoints[0] ||
-            certificate.endpoints[1].terminalCarrier.edge.second() ==
-                contact->second.endpoints[0]))) {
+    if (steps.empty() || certificate.junctions.size() + 1U != steps.size()) {
       error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
       return error;
     }
-    if (steps.empty() || certificate.junctions.size() + 1U != steps.size()) {
+    const auto contact = hardRailTerminalContacts.find(certificate.rail);
+    const auto closed = hardRailClosedChains.find(certificate.rail);
+    if (contact != hardRailTerminalContacts.end()) {
+      const auto touches = [](const authority::SourceEdgeTopologyKey &edge,
+                              const authority::SourceVertexId vertex) {
+        return edge.first() == vertex || edge.second() == vertex;
+      };
+      const bool forward =
+          touches(certificate.endpoints[0].terminalCarrier.edge,
+                  contact->second.endpoints[0]) &&
+          touches(certificate.endpoints[1].terminalCarrier.edge,
+                  contact->second.endpoints[1]);
+      const bool reverse =
+          touches(certificate.endpoints[0].terminalCarrier.edge,
+                  contact->second.endpoints[1]) &&
+          touches(certificate.endpoints[1].terminalCarrier.edge,
+                  contact->second.endpoints[0]);
+      if (!forward && !reverse) {
+        error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+        return error;
+      }
+    } else if (closed != hardRailClosedChains.end()) {
+      // A closed rail has no global terminal contact. A local paired route is
+      // authorized only when its entire ordered edge sequence is a contiguous
+      // cyclic interval of the independently published exact closed chain.
+      const auto &vertices = closed->second.vertices;
+      std::vector<authority::SourceEdgeTopologyKey> cycle;
+      cycle.reserve(vertices.size());
+      for (std::size_t i = 0U; i < vertices.size(); ++i) {
+        const auto edge = authority::SourceEdgeTopologyKey::make(
+            vertices[i], vertices[(i + 1U) % vertices.size()]);
+        if (!edge) {
+          error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+          return error;
+        }
+        cycle.push_back(edge.value());
+      }
+      bool cyclicInterval = false;
+      if (steps.size() <= cycle.size()) {
+        for (std::size_t start = 0U; start < cycle.size(); ++start) {
+          for (const int direction : {1, -1}) {
+            bool matches = true;
+            for (std::size_t k = 0U; k < steps.size(); ++k) {
+              const auto index = direction > 0
+                  ? (start + k) % cycle.size()
+                  : (start + cycle.size() - k) % cycle.size();
+              if (steps[k].topology() != cycle[index]) {
+                matches = false;
+                break;
+              }
+            }
+            cyclicInterval = cyclicInterval || matches;
+          }
+        }
+      }
+      if (!cyclicInterval) {
+        error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+        return error;
+      }
+    } else {
       error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
       return error;
     }
