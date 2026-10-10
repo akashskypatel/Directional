@@ -1,3 +1,19 @@
+## CURRENT — 2026-10-10 `M6-DEFN-R5-R4-REV` producer locus resolved (RA-43)
+
+**No current stop.** R4-REV-01A/01B/02A accepted and discharged in the same turn: the vertex-star producer
+is `resolve_field_vertex_transit` (`SurfaceCellTracing.cpp:1257`, loop `:1452-1476`), `railFanPotentials`
+never existed and is struck, and the terminal-contact owner is the pipeline curve-network producer
+(`RemeshPipeline.cpp:9328-9356`) — exact but unreachable from A4, hence an A4 factory-boundary binding on the
+RA-40 precedent. Face gauge authenticates per face via `atlas->branch_topology().find_frame(face)`. RA-41 is
+frozen **scoped to the singleton**; junction/sector clauses frozen **unexercised** and the multi-carrier STOP
+stands. Successor `M6-CP3-CB1-ENTRY-R4`. No runtime: CP2 491/491 accepted; R3 403/497 rejected, 94 RED, 88
+CP2 accepted losses; 66/17/49 debt 1. The §3/§7 priorities and the earlier re-review stop below are
+historical. §8 recurring failure is extended: authority located in the **wrong pipeline stage** and then
+described as locally available is a stage-locus variant of RP-01, distinct from citing a symbol that does
+not exist.
+
+---
+
 ## CURRENT — 2026-10-10 `M6-DEFN-R5-R4-REV` RA-42 source-fidelity re-review
 
 **Current stop:** RA-42 stays a normative *future* producer requirement, but independent source inspection has not verified producer-authenticated contact or gauge. Raw rail face/edge values are not typed contact evidence; `SurfaceCellTracing.cpp:18120-18206` is isolation handling, not star-cut construction; the HELD R4 plan's conditional null-atlas permission was removed to match RA-40.1/RA-42.5. **Blocked on R4-REV-01A, 01B and 02A**. No RA-41 promotion, Code+Build release, next turn or runtime credit. CP2 491/491 accepted; R3 403/497 rejected, 94 RED, 88 CP2 accepted losses; 66/17/49 debt1. §3 and §7 older R3 priorities below are historical/superseded. §4 witness table unchanged: no runtime took place. §8 recurring failure is treating raw trace/rail source row metadata or barycentric epsilon reconstruction as typed source-authenticated topology.

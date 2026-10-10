@@ -1,3 +1,60 @@
+## RA-43 — producer locus for terminal contact, germ and face gauge **FROZEN at M6-DEFN-R5-R4-REV** (2026-10-10)
+
+Discharges `R4-REV-01A`, `R4-REV-01B`, `R4-REV-02A`. Basis:
+`Architecture_M6_CP3_R4_Producer_Locus_Review_Decision.md`. All three independent findings are ACCEPTED;
+the producer-proof remedy they demand is discharged by exact symbol and line below. No runtime credit.
+RA-34.3, RA-36.4/.5/.6, RA-38, RA-39, RA-40 and RA-42 (as corrected) stand.
+
+- **RA-43.1 — the vertex-star producer, named.** `resolve_field_vertex_transit`
+  (`src/geometry/SurfaceCellTracing.cpp:1257`). Its star loop at `:1452-1476` iterates
+  `topology.transports()` filtered to adjacencies **incident to `sourceVertex`** (`:1453-1454`), steps
+  face->face across `adjacency.sourceEdge` (`:1456-1462`), and accumulates a typed `transportPath` of
+  `SourceEdgeTopologyKey` plus `composedSignedLift` = tau mod 4 (`:1473-1476`); frontier at `:1376`,
+  `:1382`, `:1516`. Per-face sectors come from `vertex_star_sector` (`:1053`) returning `VertexStarSector`
+  (`:1042-1051`) with typed `sourceFace`, `nextRadialVertex`, `previousRadialVertex`. **`railFanPotentials`
+  is STRUCK: it never existed in `src/` or `include/`.** RA-38.5's and RA-42.4's substance is restored
+  against this citation — only the carrier **cut** is missing, and it is a `continue` on carrier membership
+  inside the `:1452` loop: no new state, no new tau definition, no A5-side search.
+- **RA-43.2 — the terminal contact owner is the pipeline curve-network producer, not A4.**
+  `SurfaceCellRail::sourceVertices` is authored at `src/pipeline/RemeshPipeline.cpp:9328-9356` from
+  `OrderedCurveEdge::startVertex`/`endVertex` (`:9306`, assigned `:9401`), with continuity enforced at
+  `:9335` and closure at `:9353`; single-edge rails at `:9491`. The chain is therefore **exact, not
+  epsilon-derived**. Because it is authored in the pipeline stage, A4 **cannot reach it**: RA-42.1 is
+  **relocated** — the typed terminal contact is a **required input bound at the A4 factory boundary** on the
+  RA-40 precedent, fail-closed when absent or ambiguous. A4 may not derive it, and the endpoint certificate
+  still stops reading `from.face`/`to.face` for contact purposes.
+- **RA-43.3 — four namespaces, none interchangeable.** `SurfaceTracePoint::face` is a raw source-face row
+  (header `:90-93`); `SurfaceCellRailSample::sourceEdge` is a **local corner index in [0,3)** (proved by its
+  own guards at `src/geometry/SurfaceCellTracing.cpp:5824` and `:5841`); `SurfaceCellRail::sourceEdges`
+  holds **feature-edge indices into `featureMap.edges`** (`RemeshPipeline.cpp:9348`); component meshes carry
+  component-local renumbering (`MeshComponents.cpp:72-116`). Every binding states and converts its
+  namespace explicitly. A raw `int` equality across two of these is **not** a topological claim.
+- **RA-43.4 — `rail_sample_source_vertex` is an existing defect.**
+  `src/geometry/SurfaceCellTracing.cpp:5820-5844` attributes a source vertex by
+  `std::abs(value - 1.0) <= 1.0e-8` on barycentric coordinates and is live at `:5868` and `:5937-5938`.
+  Under RA-42.2 this is prohibited. It is **replaced** by the exact chain of RA-43.2, never wrapped,
+  tightened or re-toleranced. Scheduled for Code + Build; not implemented in a review turn.
+- **RA-43.5 — face-gauge authentication, constructible inside the RA-40.1 boundary.** `make` at
+  `src/geometry/SurfaceCellTracing.cpp:8015-8020` checks only cardinality against `face_count()` and values
+  in `[0,4)`; its leading `!sourceFaceBranchRotations.empty() &&` lets an **absent** gauge pass unchecked -
+  the same optionality RA-40.1 removed for the atlas. Required: presence is **mandatory** whenever A6 seam
+  logic consumes it, and each value is authenticated **per face** against
+  `fieldTransportAtlas->branch_topology().find_frame(face)`
+  (`include/directional/authority/FieldTransportAtlas.h:874`, `:800`, semantics `:52`) using the
+  `matchesA3` shape already written at `:7996-8009`. **A caller's own gauge is never its own oracle.**
+  Sixth occurrence of publish/reach after RA-34.3, RA-35, RA-38, RA-40 and RA-42.
+- **RA-43.6 — RA-41 freezes, restricted.** The RA-41 review gate asked Review to accept a source-exact
+  implementable authority path or return the candidate as an architectural blocker. RA-41.1 is satisfied by
+  RA-43.5 and RA-41.2 by RA-43.1/.2, so **RA-41 is FROZEN scoped to the singleton terminal contact**. Its
+  junction and sector clauses are frozen as **UNEXERCISED**: 38 printed rows are one physical singleton
+  carrier and the 39th is receiptless, so they may not be cited as validated and R4's multi-carrier STOP
+  stands undischarged.
+- **RA-43.7 — no credit.** Review-evidence defects in architecture documents are not runtime regressions.
+  Ledger **66 events / 17 categories / 49 recurrences**, M6 debt **1**, unchanged. Selector 497 untouched;
+  CP2 491/491 accepted; R3 403/497 rejected with 94 RED and 88 accepted CP2 losses. No promotion.
+
+---
+
 ## RA-42 — terminal contact ownership and the A3/gauge trust boundary **ACCEPTED at independent R4-REV Design Review** (2026-10-10)
 
 Resolves `R4-REV-01` and `R4-REV-02`. Basis:
@@ -13,7 +70,9 @@ RA-35, RA-38 and RA-40.
 
 - **RA-42.1 — terminal contact ownership.** The terminal rail contact witness is authored by the **rail/front
   producer** from `SurfaceCellRail::sourceVertices` and the rail samples' raw `sourceFace`/`sourceEdge` after independently checked conversion to typed source entities and a unique front-contact association, and
-  published as typed authority on the endpoint certificate. The endpoint certificate **stops reading**
+  published as typed authority on the endpoint certificate. **Owner relocated by RA-43.2:** that chain is
+  authored in the pipeline stage (`RemeshPipeline.cpp:9328-9356`), so A4 receives the contact as a required
+  factory-boundary input rather than reaching for the rail. The endpoint certificate **stops reading**
   `from.face`/`to.face` for contact purposes.
 - **RA-42.2 — no incidence from geometry.** Deriving source-vertex or source-edge incidence from
   `SurfaceTracePoint::barycentric`, or any floating-point predicate, is **prohibited** — it is RP-01
@@ -22,10 +81,11 @@ RA-35, RA-38 and RA-40.
 - **RA-42.3 — typed diagnostics.** Carrier, face and endpoint diagnostics are emitted as typed
   `SourceFaceTopologyKey`, never bare row indices. A raw-row record is not evidence of a topological claim.
 - **RA-42.4 — germ derivation.** The germ is the arc of the A2b vertex star at the terminal vertex after cutting
-  the incident hard rails, from independently validated source-vertex-star traversal and rail-cut construction. The formerly cited
+  the incident hard rails, from the traversal named in **RA-43.1** with the incident carriers cut. The formerly cited
   `src/geometry/SurfaceCellTracing.cpp:18120-18206` does **not** implement that construction: it contains
-  isolation-seam certificate handling/diagnostics. Do not claim an existing producer without an exact symbol,
-  source-entity linkage and unique-germ proof. Equality with the carrier's incident pair holds **at the
+  isolation-seam certificate handling/diagnostics. The symbol `railFanPotentials` never existed in `src/` or
+  `include/`; **RA-43.1** supplies the exact symbol, line range and typed source-entity linkage this clause
+  required, so the obligation is discharged rather than outstanding. Equality with the carrier's incident pair holds **at the
   contacts**, never at the trace endpoints — the exact locus of RA-39.1's error.
 - **RA-42.5 — RA-40.1 is unconditional.** The atlas mandate is **not** scoped. The earlier conditional
   pre-commitment is **withdrawn**: its premise that a rail-free product carries nothing A3-derived is refuted by
@@ -159,7 +219,7 @@ Basis: `Architecture_M6_CP3_R3_Sector_Derivation_Review_Decision.md`. No runtime
   sector/junction logic, or the corrected path stays unreachable.
 - **RA-38.5 — publish, do not invent.** The original assertion that `railFanPotentials` traverses the whole star at
   `SurfaceCellTracing.cpp:18120-18206` is unsupported (that range handles isolation-seam certificates and
-  diagnostics). A valid vertex-star producer must be identified and demonstrated; A4 already knows the hard carriers (it builds `hardRailFieldTransitions`); only the carrier **cut** is missing,
+  diagnostics). The real producer is named by **RA-43.1** (`resolve_field_vertex_transit`, `SurfaceCellTracing.cpp:1257`, star loop `:1452-1476`), which restores this clause's substance; A4 already knows the hard carriers (it builds `hardRailFieldTransitions`); only the carrier **cut** is missing,
   and it is a local derivation over data A4 already owns. Forbidden: guessed sectors; a global face-star
   potential used as ownership rather than post-ownership cross-check; first-by-row face selection; a new τ
   definition; any A5-side path search or inference from sheet/region labels.

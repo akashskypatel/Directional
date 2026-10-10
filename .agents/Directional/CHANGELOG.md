@@ -1,3 +1,17 @@
+## 2026-10-10 — `M6-DEFN-R5-R4-REV` producer locus resolved; RA-43 frozen
+
+Accepted R4-REV-01A/01B/02A in full against my own prior review, then discharged their producer-proof
+remedy from bytes at HEAD `fe372dded`: vertex-star producer `resolve_field_vertex_transit`
+(`SurfaceCellTracing.cpp:1257`, star loop `:1452-1476`); `railFanPotentials` struck as never having existed;
+terminal-contact owner located in the pipeline stage (`RemeshPipeline.cpp:9328-9356`, exact and
+continuity-checked) and therefore relocated to an A4 factory-boundary binding; `sourceEdge` proved a local
+corner index (`:5824`, `:5841`); `rail_sample_source_vertex` (`:5820-5844`) recorded as an existing
+epsilon-incidence defect; face gauge authenticated per face against
+`atlas->branch_topology().find_frame(face)` with the absent-gauge hole at `:8015-8020` closed. RA-41 frozen
+scoped to the singleton, junction/sector clauses frozen unexercised. Runtime-free: no code, test, fixture,
+selector, benchmark or build change; CP2 491/491 accepted; R3 403/497 rejected; stable 66/17/49 debt 1.
+Successor `M6-CP3-CB1-ENTRY-R4`.
+
 ## 2026-10-10 — `M6-DEFN-R5-R4-REV` independent RA-42 re-review STOP
 
 Source exact `0bc8080366757a2285a8265599255475ef8525b2`; source snapshot `38046815459`, artifact `11666644778`, 5851/5851 hashes. Found raw, not typed, rail source incidence; false star-traversal source-range citation; HELD R4 plan contradicting unconditional RA-40.1 and still-unproven branch gauge equality. Corrected binding normative descriptions and held plan, documented independent R4-REV-01A/01B/02A STOP. No runtime, code/build/test/selector changes, successor or new stable regression; CP2 491/491 accepted; R3 403/497 rejected, stable 66/17/49 debt 1. RA-42 design remains prospective; R4 Code+Build remains HELD.

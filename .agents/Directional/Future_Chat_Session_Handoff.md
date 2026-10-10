@@ -1,3 +1,23 @@
+## CURRENT — R5/R4 producer locus resolved; RA-43 frozen, RA-41 frozen scoped (2026-10-10)
+
+**`M6-DEFN-R5-R4-REV` is UNBLOCKED; successor is `M6-CP3-CB1-ENTRY-R4`.** The three re-review findings
+(R4-REV-01A/01B/02A) are accepted in full and their producer-proof remedy is discharged by exact symbol and
+line. Frozen as **RA-43**: `.1` the vertex-star producer is `resolve_field_vertex_transit`
+(`src/geometry/SurfaceCellTracing.cpp:1257`, star loop `:1452-1476`) and `railFanPotentials` is struck as a
+symbol that never existed; `.2` the terminal-contact owner is the pipeline curve-network producer
+(`src/pipeline/RemeshPipeline.cpp:9328-9356`), exact and continuity-checked but unreachable from A4, so the
+contact binds at the **A4 factory boundary** on the RA-40 precedent; `.3` four distinct namespaces, raw-int
+equality across them proves nothing; `.4` `rail_sample_source_vertex` (`:5820-5844`) is an existing
+epsilon-incidence **defect** to replace; `.5` the face gauge authenticates per face against
+`atlas->branch_topology().find_frame(face)` and presence becomes mandatory; `.6` **RA-41 FROZEN scoped to the
+singleton** with junction/sector clauses frozen **UNEXERCISED**; `.7` no runtime credit. Frozen 497
+unchanged: CP2 accepted 491/491, R3 rejected 403/497, 94 RED, 88 CP2 losses, stable **66/17/49** debt **1**.
+Basis: `Architecture_M6_CP3_R4_Producer_Locus_Review_Decision.md`. The statement above that both source-proof
+blockers were only prospective is superseded for R4-REV-01A/01B/02A specifically; the multi-carrier STOP and
+the 88 CP2 restorations remain undischarged.
+
+---
+
 ## CURRENT — independent R5/R4 source-authority re-review (2026-10-10 11:07Z)
 
 **RA-42 design preserved, source-authentication evidence NOT accepted; `M6-DEFN-R5-R4-REV` remains REVIEW_BLOCKED.** R4-REV-01A: rail sample `sourceFace`/`sourceEdge` are raw ints and do not bind a unique front terminal occurrence; R4-REV-01B: claimed existing star traversal at `SurfaceCellTracing.cpp:18120-18206` is actually isolation-seam handling; R4-REV-02A: the held CB plan's null-atlas exception contradicts RA-40.1/RA-42.5 and has been corrected, while face gauge still lacks independent re-derivation. No successor Code + Build, RA-41 freeze or runtime credit. Frozen 497 unchanged: CP2 accepted 491/491, R3 rejected 403/497, 94 RED, 88 CP2 losses, stable 66/17/49 debt 1. See `Architecture_M6_DEFN_R5_R4_Independent_Review_Record.md`. The older statement below that both source-proof blockers were fully discharged is superseded; RA-42 remains a **prospective** obligation, not completed producer proof.

@@ -1,3 +1,31 @@
+## CURRENT — R4-REV-01A/01B/02A DISCHARGED; producer locus frozen as RA-43 (2026-10-10)
+
+**All three independent findings ACCEPTED, and the producer-proof remedy they demanded is DISCHARGED from
+bytes in the same Review turn.** (1) `SurfaceCellRailSample::{sourceFace,sourceEdge}` are raw ints and
+`sourceEdge` is a **local corner index in [0,3)** — proved by its own guards at
+`src/geometry/SurfaceCellTracing.cpp:5824` and `:5841`; my word "typed" withdrawn. (2) `railFanPotentials`
+**never existed in `src/` or `include/`** — only in my own documents; struck. The real vertex-star producer
+is `resolve_field_vertex_transit` (`:1257`), star loop `:1452-1476`, typed `transportPath` and
+`composedSignedLift` = tau mod 4, with `vertex_star_sector` (`:1053`) supplying typed radial neighbours;
+RA-38.5's substance ("only the carrier cut is missing") therefore stands against the corrected citation — a
+false citation is not a false claim. (3) `sourceFaceBranchRotations` is range-checked only (`:8015-8020`),
+and its `!empty() &&` guard lets an **absent** gauge pass unchecked. **New decisive finding:**
+`SurfaceCellRail::sourceVertices` is authored in the **pipeline** stage at
+`src/pipeline/RemeshPipeline.cpp:9328-9356` from `OrderedCurveEdge::startVertex`/`endVertex` with continuity
+(`:9335`) and closure (`:9353`) enforced — exact, not epsilon-derived, but unreachable from A4, so RA-42.1's
+owner is **relocated** to a factory-boundary binding on the RA-40 precedent. **Root class:** authority
+located in the wrong pipeline stage, then described as locally available — a stage-locus variant of RP-01,
+distinct from the citation defect. **Owner/falsifier:** `M6-CP3-CB1-ENTRY-R4` must emit the germ witness
+`star(1)` cut (1,4) -> `{0} | {2,3}`; `star(4)` cut (1,4),(4,7) -> `{0,1,4} | {3,6,7}`; contact walk 2->3
+across non-rail (1,5); post-walk contacts `{3,0}`. **Prohibited:** barycentric/epsilon incidence
+(`rail_sample_source_vertex` `:5820-5844` is an existing defect to replace, not wrap), raw-int equality
+across the four namespaces, empty-A3 exceptions, invented multi-carrier witnesses. RA-41 now **FROZEN scoped
+to the singleton**; junction/sector clauses frozen **UNEXERCISED**, multi-carrier STOP undischarged. No
+runtime: stable ledger **66 events / 17 categories / 49 recurrences, M6 debt 1**, unchanged; 88 accepted CP2
+losses carried.
+
+---
+
 ## CURRENT — R4-REV-01A/01B/02A authority-evidence follow-up (2026-10-10)
 
 **Review obligations, not new stable regressions:** The RA-42 design Review called raw `SurfaceCellRailSample::{sourceFace,sourceEdge}` typed incidence (R4-REV-01A); cited `SurfaceCellTracing.cpp:18120-18206` as an existing vertex-star rail-cut contact producer, but it is isolation-seam handling (R4-REV-01B); and left a held plan with conditional null-atlas permission contrary to unconditional RA-40.1/RA-42.5 (R4-REV-02A; plan now corrected). **Root class:** falsely promoted unvalidated producer lineage/documentary design statement to available source authority. **Falsifier/owner:** next independently reviewed producer proof must show canonical source-entity mapping, unique rail-front oriented contact and nonrail A2b/A3 route in actual source, plus independently bound face gauge and unconditional atlas check. **Prohibited:** barycentric/epsilon-derived incidence, unverified producer citations, empty-A3 exceptions, invented multi-carrier witnesses. 38 carrier-printed historical rows remain one singleton; 39th receiptless, no new runtime. Stable ledger **66 events / 17 categories / 49 recurrences, M6 debt 1**, unchanged; 88 accepted CP2 losses carried. `M6-DEFN-R5-R4-REV` REVIEW_BLOCKED, no successor.
