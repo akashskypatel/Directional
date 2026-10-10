@@ -1,12 +1,12 @@
 {
- "schema_version": 1,
- "request_id": "m6-cp3-r4-typed-rail-handoff-20261010-1850",
- "operation": "drive_apply",
- "mailbox_key": "m6-cp3-r4-typed-rail-doc-apply",
- "file_id": "1F4ZybahL0IdadDLUspE0lXpiA8YwJDno",
- "patch_sha256": "19eeaaafc963f0005839ee4f10b12b7d131913e1bf75fc1d240bb996f907e93e",
- "base_sha": "aab8e22c1a997ffcca72cc42a13df51bf0e4d29b",
- "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
- "commit_message": "docs: preserve R4 typed-rail Code+Build evidence and continuation",
- "retention_days": 14
+  "schema_version": 1,
+  "request_id": "m6-cp3-r4-exact-legacy-corner-20261010-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-exact-corner-apply",
+  "file_id": "1uvUx2PlQhuXDcM7m9FtXjUZo0BJf343q",
+  "patch_sha256": "d0f8d776c03a6339cd51abee83b097813d955633f0dd92b18c835818013fd0cc",
+  "base_sha": "8b1e7b3b44dcea90622764265f294afb35bbcb6f",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "fix: reject tolerance-derived legacy rail endpoint identity",
+  "retention_days": 14
 }
