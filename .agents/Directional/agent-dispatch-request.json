@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r3-ra40-eigen-repair-gmp-compile-20261010-r2",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r3-ra40-eigen-repair-gmp-compile-r2",
-  "source_sha": "d82e34427adc6fe09ad216a4363fea23dd0ae0b8",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r3-ra40-eigen-repair-gmp-r2"
+  "request_id": "m6-cp3-ra40-compile-green-doc-closeout-20261010-r1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r3-ra40-green-doc-closeout-r1",
+  "file_id": "1Z4PfDfCYEfulMZEK6TUsyX1Ku6lYffrO",
+  "patch_sha256": "b57cf3b8436c826a34df75128aa7bc4ebaf29d4dd6b05295e7f0563ad48c7ca1",
+  "base_sha": "d82e34427adc6fe09ad216a4363fea23dd0ae0b8",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: close RA40 factory Code+Build on verified eight-target GMP package",
+  "retention_days": 14
 }
