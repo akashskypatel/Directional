@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-typed-factory-subset-compile-20261010",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-factory-typed-compile",
-  "source_sha": "6ad5cc6829c1fb328fb27bd5f18e0cc7d0fa8353",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-factory-typed"
+  "request_id": "m6-cp3-r4-two-face-fixture-apply-20261010",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-two-face-fixture-apply",
+  "file_id": "1nsODQQ6ISupqmfx8ErNnqQbNCiLC7-aj",
+  "patch_sha256": "ccd0a5a6071602222edf5d9c46ea058ce6ffc749a0e6b481c51304a5797018d2",
+  "base_sha": "ba4755a34adecff2fb54382de197829cef9ad4ec",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "test(directional): repair R4 DCEL synthetic fixture source"
 }
