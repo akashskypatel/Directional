@@ -2728,6 +2728,72 @@ TEST(M6CP3, PeriodicExactA3UnequalFaceGaugeUsesRelationAndOccurrenceAuthority) {
               relation->evidence.canonicalTransport.value() == expected.inverse());
 }
 
+// RA-45: the per-face +U choice is a relational gauge, not an absolute
+// geometric observable. A uniform Z4 rotation must leave A6's exact
+// relation decisions unchanged even though A4 preserves the input values.
+TEST(M6CP3, A6UniformFaceGaugeRotationPreservesRelationOutcome) {
+  const auto &fixture = torus_fixture();
+  const auto &front = fixture.network.phaseFront.product();
+  ASSERT_TRUE(fixture.fieldTransportAtlas.has_value());
+  ASSERT_EQ(front.sourceFaceBranchRotations().size(),
+            static_cast<std::size_t>(fixture.mesh.F.rows()));
+  ASSERT_FALSE(front.sourceFaceBranchRotations().empty());
+
+  auto rotatedGauge = front.sourceFaceBranchRotations();
+  for (int &value : rotatedGauge) value = (value + 1) % 4;
+  auto rebuilt = directional::geometry::SurfacePhaseFrontProduct::make(
+      front.gridU(), front.gridV(), front.sourceTopologyRegions(),
+      fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
+      &*fixture.fieldTransportAtlas,
+      front.isolationSeamTransportCertificates(), front.periodicHolonomies(),
+      front.boundedDiskBoundaryPhases(), front.edges(), front.events(),
+      front.cells(), front.conformityPlanReceipt(), front.hardFeatureEdges(),
+      std::move(rotatedGauge), front.hardRailFieldTransitions(),
+      front.hardRailRouteCertificates(), front.hardRailTerminalContacts(),
+      front.hardRailClosedChains());
+  const auto *rotated =
+      std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&rebuilt);
+  ASSERT_NE(rotated, nullptr) << "uniform Z4 gauge rotation must be accepted";
+
+  const auto originalA5 =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+          fixture.mesh.V, fixture.mesh.F, front);
+  const auto rotatedA5 =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+          fixture.mesh.V, fixture.mesh.F, *rotated);
+  const auto *originalOccurrences =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(&originalA5);
+  const auto *rotatedOccurrences =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(&rotatedA5);
+  ASSERT_NE(originalOccurrences, nullptr);
+  ASSERT_NE(rotatedOccurrences, nullptr);
+
+  const auto hardEdges = torus_row408_hard_edges(fixture.mesh);
+  const auto originalA6 =
+      directional::pipeline::SurfaceQuotientProducer::produce(*originalOccurrences,
+                                                              hardEdges);
+  const auto rotatedA6 =
+      directional::pipeline::SurfaceQuotientProducer::produce(*rotatedOccurrences,
+                                                              hardEdges);
+  const auto *originalQuotient =
+      std::get_if<directional::pipeline::SurfaceQuotientProduct>(&originalA6);
+  const auto *rotatedQuotient =
+      std::get_if<directional::pipeline::SurfaceQuotientProduct>(&rotatedA6);
+  ASSERT_NE(originalQuotient, nullptr);
+  ASSERT_NE(rotatedQuotient, nullptr);
+  ASSERT_FALSE(originalQuotient->relation_certificates().empty());
+  EXPECT_EQ(originalQuotient->relation_certificates(),
+            rotatedQuotient->relation_certificates());
+  EXPECT_EQ(originalQuotient->relation_consumptions(),
+            rotatedQuotient->relation_consumptions());
+  EXPECT_EQ(originalQuotient->selected_forest(),
+            rotatedQuotient->selected_forest());
+  EXPECT_EQ(originalQuotient->selected_paths(),
+            rotatedQuotient->selected_paths());
+  EXPECT_EQ(originalQuotient->classed_cells(),
+            rotatedQuotient->classed_cells());
+}
+
 TEST(M6CP3, HardRailPublishedTauRequiresIncidentSourceFaces) {
   const auto &fixture = nonconstant_hard_rail_fixture();
   PhaseFrontDraft draft = phase_front_draft(fixture);

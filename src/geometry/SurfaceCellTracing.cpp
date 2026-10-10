@@ -8029,10 +8029,9 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
     error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
     return error;
   }
-  // RA-44 relational pin: a producer-supplied +U face gauge must be
-  // consistent with *independent* source-bound A3 transitions.  The atlas
-  // authenticates transitions but not the absolute global quarter-turn;
-  // the separate geometric witness must still pin that absolute choice.
+  // RA-45 relational pin: the +U face gauge is consumed only through
+  // differences. Source-bound A3 transitions authenticate those differences;
+  // a uniform Z4 rotation is valid and must not be normalised away.
   // Build incidence from typed source topology, not numeric adjacency order,
   // so permuting source rows cannot suppress a field discontinuity.
   if (!sourceFaceBranchRotations.empty()) {
