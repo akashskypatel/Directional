@@ -5202,6 +5202,32 @@ TEST(SurfaceCellPhaseFrontFieldChartAuthorityMigration,
 }
 
 
+// Reconstruct independent A2/A3 authority from the source mesh and the
+// original cross field before exercising an ordinary Phase10 A4 publication.
+// A checked A4 factory must not be made to accept a null atlas merely to
+// preserve an older synthetic test ingress.
+directional::geometry::SurfaceCellNetwork
+build_phase10_with_source_atlas(
+    const directional::TriMesh &mesh,
+    const directional::fields::CrossFieldResult &crossField,
+    const Eigen::VectorXd &targetSize,
+    directional::geometry::SurfaceCellTracingOptions options) {
+  const auto sourceAuthority =
+      directional::geometry::surface_cell_tracing_detail::
+          build_source_topology_regions(mesh.F, options);
+  if (!sourceAuthority) {
+    throw std::runtime_error("Phase10 test source A2 authority unavailable");
+  }
+  auto sourceAtlas = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, options.hardFeatureEdges, crossField);
+  if (!sourceAtlas) {
+    throw std::runtime_error("Phase10 test independent A3 atlas unavailable");
+  }
+  options.fieldTransportAtlas = &sourceAtlas.value();
+  return directional::geometry::build_surface_cell_network(
+      mesh.V, mesh.F, crossField, targetSize, options);
+}
+
 TEST(SurfaceCellAuthorityContractCutover,
      PlanarCellsReferenceRegionThatOwnsComponentAndSheet) {
   const directional::TriMesh mesh = make_vertex_fan_plane_mesh();
@@ -5212,8 +5238,8 @@ TEST(SurfaceCellAuthorityContractCutover,
       Eigen::VectorXd::Constant(mesh.V.rows(), 0.125);
   directional::geometry::SurfaceCellTracingOptions options;
 
-  const auto network = directional::geometry::build_surface_cell_network(
-      mesh.V, mesh.F, crossField, targetSize, options);
+  const auto network = build_phase10_with_source_atlas(
+      mesh, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
@@ -5245,8 +5271,8 @@ TEST(SurfaceCellAuthorityContractCutover,
   options.sourceFaceComponents.assign(static_cast<std::size_t>(mesh.F.rows()), 2);
   options.sourceFaceSheets.assign(static_cast<std::size_t>(mesh.F.rows()), 5);
 
-  const auto network = directional::geometry::build_surface_cell_network(
-      mesh.V, mesh.F, crossField, targetSize, options);
+  const auto network = build_phase10_with_source_atlas(
+      mesh, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             network.phaseFront.disposition());
   ASSERT_EQ(1U, network.phaseFront.product().sourceTopologyRegions().regions().size());
