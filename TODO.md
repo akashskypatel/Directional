@@ -1,3 +1,11 @@
+## CURRENT — R4 Phase10 source-owned A2/A3 fixture ingress (2026-10-10)
+
+- [x] Source-only candidate migration of frozen ordinals `128` and `146`, previously accepted CP2 but R3 RED: original TriMesh/CrossFieldResult produces independent A2/A3 atlas; unchanged A4 factory validates the source; semantic commit `f9db8c009835435aa1b64f07058244e58518b50b` via Drive apply `38092755831`. No selector edits or acceptance claim.
+- [x] Exact GMP/GMPXX compile GREEN: run `38092868020` / job `114332779081`; source `f9db8c009835435aa1b64f07058244e58518b50b`; 8/8 GMP/GMPXX, preflight/build exit 0/0, self-manifest 28/28, clean source, `runtimeExecution=false`; result `11685040908` SHA256 `bc2648aa9a679dc344398d8abd83a90c11c55a42a0bd36b478fb8214199e0197`; log `11684876187` SHA256 `d5c8d86b89d86f3f1be81c4ec54e561629dc14e9571b2cbf8d0ab5292195175a`.
+- [ ] Runtime evidence remains restricted to separately authorized immutable Test + Benchmark. All 34 Phase10, 39 endpoint, seven DCEL, 88 CP2, multi-carrier/odd-tau and dual-path review obligations remain open; compiler-green is not a recovered selector.
+
+---
+
 ## CURRENT — R4 A5-reachable hard-rail lattice branch negative (2026-10-10)
 
 - [x] Source `7ac899b2d91e9d8c0925bbb4cc1ccd367872dcc4` adds a produced-baseline, complete-A4-accepted, A5-expected `HardRailTransportMismatch` regression. Apply workflow `38091134482`; Drive staging retired; no tests run.
