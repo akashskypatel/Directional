@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-factory-unique-star-20261010-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-factory-unique-star-apply",
-  "file_id": "1GXr_PjlcogHzjiQAlZX9FqwzGtraxBpY",
-  "patch_sha256": "610b041dfbc07df3c2bf10c1c208928f10e7f9eea0574d787065bd6d6d295e02",
-  "base_sha": "4ba9ce0733f25662ad9b8bcb7c57666c882625fe",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix: independently authenticate unique terminal A2b source-star paths",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-factory-unique-star-compile-20261010-a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-factory-unique-star-compile",
+  "source_sha": "c28f1d241e6d84503e4ab38ce02b7200b8c9cfe5",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-factory-unique-star"
 }
