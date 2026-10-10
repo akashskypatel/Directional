@@ -1842,6 +1842,8 @@ public:
 
   [[nodiscard]] static ConstructionResult
   make(int gridU, int gridV, SourceTopologyRegions sourceTopologyRegions,
+       const Eigen::MatrixXi &sourceFaces, std::size_t sourceVertexCount,
+       const authority::FieldTransportAtlas *fieldTransportAtlas,
        std::vector<SurfaceIsolationSeamTransportCertificate>
            isolationSeamTransportCertificates,
        std::vector<SurfacePeriodicHolonomy> periodicHolonomies,

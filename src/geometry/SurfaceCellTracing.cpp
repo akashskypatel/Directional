@@ -7968,6 +7968,8 @@ resolve_periodic_relation_semantic_action(
 
 SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
     int gridU, int gridV, SourceTopologyRegions sourceTopologyRegions,
+    const Eigen::MatrixXi &sourceFaces, std::size_t sourceVertexCount,
+    const authority::FieldTransportAtlas *fieldTransportAtlas,
     std::vector<SurfaceIsolationSeamTransportCertificate>
         isolationSeamTransportCertificates,
     std::vector<SurfacePeriodicHolonomy> periodicHolonomies,
@@ -7981,6 +7983,30 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
     std::vector<SurfaceHardRailFieldTransition> hardRailFieldTransitions,
     std::vector<SurfaceHardRailRouteCertificate> hardRailRouteCertificates) {
   SurfacePhaseFrontProductError error;
+  // RA-40: a commuting square is gauge-invariant; it cannot authenticate
+  // either nonrail phi or hard-carrier chi. Bind a genuinely produced A3 atlas
+  // to the exact source before trusting any caller-supplied certificate.
+  if (fieldTransportAtlas == nullptr ||
+      !sourceTopologyRegions.matches_source_faces(sourceFaces, sourceVertexCount) ||
+      !fieldTransportAtlas->matches_source_faces(
+          sourceFaces, sourceTopologyRegions, sourceVertexCount)) {
+    error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+    return error;
+  }
+  const auto matchesA3 = [&](const authority::SourceEdgeTopologyKey &edge,
+                             const authority::SourceFaceTopologyKey &from,
+                             const authority::SourceFaceTopologyKey &to,
+                             const authority::QuarterTurn expected) {
+    const auto fromRow = sourceTopologyRegions.row_for_topology(from);
+    const auto toRow = sourceTopologyRegions.row_for_topology(to);
+    if (!fromRow || !toRow || *fromRow == *toRow) return false;
+    const auto forward = fieldTransportAtlas->transition_value(
+        edge, *fromRow, *toRow);
+    const auto reverse = fieldTransportAtlas->transition_value(
+        edge, *toRow, *fromRow);
+    return forward && reverse && forward->transport == expected &&
+           reverse->transport == expected.inverse();
+  };
   if (sourceTopologyRegions.regions().empty() ||
       sourceTopologyRegions.face_count() == 0U) {
     error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
@@ -8048,7 +8074,9 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
         !rail_face_incident(transition.secondFace, transition.edge) ||
         !sourceTopologyRegions.row_for_topology(transition.firstFace).has_value() ||
         !sourceTopologyRegions.row_for_topology(transition.secondFace).has_value() ||
-        !publishedRailTransitions.insert(transition.edge).second) {
+        !publishedRailTransitions.insert(transition.edge).second ||
+        !matchesA3(transition.edge, transition.firstFace,
+                   transition.secondFace, transition.firstToSecond)) {
       error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
       return error;
     }
@@ -8119,6 +8147,8 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
           carrier.firstFace != endpoint.firstAttachment ||
           carrier.secondFace != endpoint.secondAttachment ||
           !published_carrier(carrier) ||
+          !matchesA3(carrier.edge, carrier.firstFace, carrier.secondFace,
+                     carrier.firstToSecond) ||
           !sourceTopologyRegions.row_for_topology(endpoint.firstAttachment).has_value() ||
           !sourceTopologyRegions.row_for_topology(endpoint.secondAttachment).has_value()) {
         error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
@@ -8202,6 +8232,8 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
               !rail_face_incident(witness.firstFace, witness.edge) ||
               !rail_face_incident(witness.secondFace, witness.edge) ||
               witness.firstFace == witness.secondFace ||
+              !matchesA3(witness.edge, witness.firstFace, witness.secondFace,
+                         witness.firstToSecond) ||
               !allStarFaces.contains(witness.secondFace) ||
               !sectorFaces[side].insert(witness.secondFace).second) {
             error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
@@ -12171,7 +12203,9 @@ struct SurfacePhaseFrontBuildState {
 };
 
 SurfacePhaseFrontResult publish_phase_front_result(
-    SurfacePhaseFrontBuildState state) {
+    SurfacePhaseFrontBuildState state, const Eigen::MatrixXi &sourceFaces,
+    std::size_t sourceVertexCount,
+    const authority::FieldTransportAtlas *fieldTransportAtlas) {
   if (state.disposition == SurfaceCellProducerDisposition::NotApplicable) {
     return SurfacePhaseFrontResult::not_applicable();
   }
@@ -12194,6 +12228,7 @@ SurfacePhaseFrontResult publish_phase_front_result(
   }
   auto product = SurfacePhaseFrontProduct::make(
       state.gridU, state.gridV, std::move(*state.sourceTopologyRegions),
+      sourceFaces, sourceVertexCount, fieldTransportAtlas,
       std::move(state.isolationSeamTransportCertificates),
       std::move(state.periodicHolonomies),
       std::move(state.boundedDiskBoundaryPhases), std::move(state.edges),
@@ -18695,7 +18730,9 @@ SurfaceCellNetwork build_surface_cell_network(
   }
   phaseFrontState.hardFeatureEdges = authoritativeOptions.hardFeatureEdges;
   network.phaseFront = surface_cell_tracing_detail::publish_phase_front_result(
-      std::move(phaseFrontState));
+      std::move(phaseFrontState), faces,
+      static_cast<std::size_t>(vertices.rows()),
+      authoritativeOptions.fieldTransportAtlas);
   if (network.phaseFront.is_produced()) {
     const SurfacePhaseFrontProduct &phaseFront = network.phaseFront.product();
     network.proposals.reserve(phaseFront.cells().size());

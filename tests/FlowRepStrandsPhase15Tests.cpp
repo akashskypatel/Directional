@@ -1,5 +1,6 @@
 #include <directional/geometry/FlowRepStrands.h>
 #include <directional/geometry/SurfaceArrangement.h>
+#include <directional/pipeline/RemeshPipeline.h>
 
 #include <algorithm>
 #include <cstdint>
@@ -63,9 +64,28 @@ directional::geometry::SourceTopologyRegions test_source_authority(
 
 void attach_source_authority(
     directional::geometry::SurfaceCellNetwork &network,
-    const Eigen::MatrixXi &faces, const std::vector<int> &components,
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const std::vector<int> &components,
     const std::vector<int> &sheets) {
   auto sourceAuthority = test_source_authority(faces, components, sheets);
+  directional::TriMesh sourceMesh;
+  sourceMesh.set_mesh(vertices, faces);
+  Eigen::MatrixXd raw(faces.rows(), 12);
+  for (int face = 0; face < faces.rows(); ++face) {
+    const Eigen::RowVector3d a = vertices.row(faces(face, 0));
+    const Eigen::RowVector3d x =
+        (vertices.row(faces(face, 1)) - a).normalized();
+    const Eigen::RowVector3d normal =
+        (vertices.row(faces(face, 1)) - a).cross(
+            vertices.row(faces(face, 2)) - a).normalized();
+    const Eigen::RowVector3d y = normal.cross(x);
+    raw.row(face) << x, y, -x, -y;
+  }
+  const auto field = directional::pipeline::finalize_surface_cell_raw_cross_field(
+      sourceMesh, raw);
+  auto sourceAtlas = directional::authority::FieldTransportAtlas::make(
+      sourceMesh, sourceAuthority, {}, field);
+  if (!sourceAtlas) throw std::runtime_error("FlowRep test A3 atlas unavailable");
   if (sourceAuthority.regions().empty()) {
     throw std::runtime_error("Typed test source authority has no regions.");
   }
@@ -82,7 +102,9 @@ void attach_source_authority(
   edges.back().filledSide = 0;
   edges.back().exterior = true;
   auto product = directional::geometry::SurfacePhaseFrontProduct::make(
-      0, 0, std::move(sourceAuthority), {}, {}, {}, std::move(edges), {},
+      0, 0, std::move(sourceAuthority), faces,
+      static_cast<std::size_t>(vertices.rows()), &sourceAtlas.value(),
+      {}, {}, {}, std::move(edges), {},
       std::move(cells));
   auto *value =
       std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&product);
@@ -211,7 +233,7 @@ TetrahedralSingularityFixture tetrahedral_singularity_fixture() {
   fixture.faces.resize(4, 3);
   fixture.faces << 0, 1, 2, 0, 2, 3, 0, 3, 1, 1, 3, 2;
   fixture.targetSize = Eigen::VectorXd::Constant(4, 0.5);
-  attach_source_authority(fixture.network, fixture.faces, {0, 0, 0, 0},
+  attach_source_authority(fixture.network, fixture.vertices, fixture.faces, {0, 0, 0, 0},
                           {0, 0, 0, 0});
   for (int branch = 0; branch < 3; ++branch) {
     directional::geometry::SurfaceSingularitySeparatrix separatrix;
@@ -1431,7 +1453,7 @@ TEST(FlowRepStrandsPhase15,
   faces << 0, 1, 2;
 
   directional::geometry::SurfaceCellNetwork network;
-  attach_source_authority(network, faces, {3}, {5});
+  attach_source_authority(network, vertices, faces, {3}, {5});
 
   directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(7));
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
@@ -1505,7 +1527,7 @@ TEST(FlowRepStrandsPhase15,
   faces << 0, 1, 2;
 
   directional::geometry::SurfaceCellNetwork network;
-  attach_source_authority(network, faces, {3}, {5});
+  attach_source_authority(network, vertices, faces, {3}, {5});
 
   directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(7));
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
@@ -1811,7 +1833,7 @@ TEST(FlowRepStrandsPhase15,
   Eigen::MatrixXi faces(1, 3);
   faces << 0, 1, 2;
   directional::geometry::SurfaceCellNetwork network;
-  attach_source_authority(network, faces, {3}, {5});
+  attach_source_authority(network, vertices, faces, {3}, {5});
   directional::geometry::SurfaceTraceSeed seed;
   seed.id = 0;
   seed.sourceId = 0;
@@ -1866,7 +1888,7 @@ TEST(FlowRepStrandsPhase15,
   faces << 0, 1, 2;
 
   directional::geometry::SurfaceCellNetwork network;
-  attach_source_authority(network, faces, {3}, {5});
+  attach_source_authority(network, vertices, faces, {3}, {5});
 
   directional::geometry::SurfaceSingularitySeparatrix separatrix;
   separatrix.sourceVertex = 0;
@@ -1938,7 +1960,7 @@ TEST(FlowRepStrandsPhase15,
        {directional::geometry::TraceTerminationReason::FieldMetadata,
         directional::geometry::TraceTerminationReason::SourceSheet}) {
     directional::geometry::SurfaceCellNetwork network;
-    attach_source_authority(network, faces, {3}, {5});
+    attach_source_authority(network, vertices, faces, {3}, {5});
     separatrix.trace.termination = termination;
     network.singularSeparatrices = {separatrix};
 
@@ -2311,7 +2333,7 @@ TEST(FlowRepStrandsPhase15, NetworkConversionUsesOnlyAcceptedClosedBoundaries) {
   vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
   Eigen::MatrixXi faces(1, 3);
   faces << 0, 1, 2;
-  attach_source_authority(network, faces, {3}, {5});
+  attach_source_authority(network, vertices, faces, {3}, {5});
 
   const auto arcs =
       directional::geometry::build_flow_rep_arcs_from_network(vertices, faces,
@@ -2407,7 +2429,7 @@ TEST(FlowRepStrandsPhase15,
   vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
   Eigen::MatrixXi faces(1, 3);
   faces << 0, 1, 2;
-  attach_source_authority(network, faces, {3}, {5});
+  attach_source_authority(network, vertices, faces, {3}, {5});
   const auto arcs = directional::geometry::build_flow_rep_arcs_from_network(
       vertices, faces, network);
 
@@ -2472,7 +2494,7 @@ TEST(FlowRepStrandsPhase15,
   vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
   Eigen::MatrixXi faces(1, 3);
   faces << 0, 1, 2;
-  attach_source_authority(network, faces, {3}, {5});
+  attach_source_authority(network, vertices, faces, {3}, {5});
   Eigen::VectorXd targetSize(3);
   targetSize << 0.25, 0.5, 1.0;
 
@@ -2537,7 +2559,7 @@ TEST(FlowRepStrandsPhase15,
   vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
   Eigen::MatrixXi faces(1, 3);
   faces << 0, 1, 2;
-  attach_source_authority(network, faces, {3}, {5});
+  attach_source_authority(network, vertices, faces, {3}, {5});
   const Eigen::VectorXd targetSize = Eigen::VectorXd::Ones(3);
 
   const auto input = directional::geometry::build_flow_rep_selection_input(

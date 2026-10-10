@@ -14,6 +14,7 @@
 #include <cstdint>
 #include <filesystem>
 #include <fstream>
+#include <memory>
 #include <stdexcept>
 #include <sstream>
 #include <set>
@@ -2376,7 +2377,11 @@ struct CurvedDiskFixture {
   Eigen::MatrixXd faceAxisY;
   Eigen::VectorXd targetSize;
   directional::geometry::SurfaceCellTracingOptions options;
+  std::shared_ptr<const directional::authority::FieldTransportAtlas> atlas;
 };
+
+Eigen::MatrixXd curved_disk_raw_field(const CurvedDiskFixture &fixture);
+void bind_curved_disk_atlas(CurvedDiskFixture &fixture);
 
 CurvedDiskFixture make_curved_disk_fixture(const bool reverseFaceRows = false) {
   CurvedDiskFixture fixture;
@@ -2442,6 +2447,7 @@ CurvedDiskFixture make_curved_disk_fixture(const bool reverseFaceRows = false) {
     add_boundary(y * 3, (y + 1) * 3);
     add_boundary(y * 3 + 2, (y + 1) * 3 + 2);
   }
+  bind_curved_disk_atlas(fixture);
   return fixture;
 }
 
@@ -2453,6 +2459,24 @@ Eigen::MatrixXd curved_disk_raw_field(const CurvedDiskFixture &fixture) {
     raw.row(face) << x, y, -x, -y;
   }
   return raw;
+}
+
+// Produce A3 from the original fixture mesh and field, independently of
+// all copied or tampered A4 product certificates.
+void bind_curved_disk_atlas(CurvedDiskFixture &fixture) {
+  directional::TriMesh mesh;
+  mesh.set_mesh(fixture.vertices, fixture.faces);
+  const auto authority = directional::geometry::surface_cell_tracing_detail::
+      build_source_topology_regions(fixture.faces, fixture.options);
+  if (!authority) throw std::runtime_error("Curved-disk source authority unavailable");
+  const auto field = directional::pipeline::finalize_surface_cell_raw_cross_field(
+      mesh, curved_disk_raw_field(fixture));
+  auto atlas = directional::authority::FieldTransportAtlas::make(
+      mesh, *authority, fixture.options.hardFeatureEdges, field);
+  if (!atlas) throw std::runtime_error("Curved-disk A3 atlas unavailable");
+  fixture.atlas = std::make_shared<const directional::authority::FieldTransportAtlas>(
+      std::move(atlas.value()));
+  fixture.options.fieldTransportAtlas = fixture.atlas.get();
 }
 
 struct PhaseFrontGeometrySignature {
@@ -2545,6 +2569,7 @@ CurvedDiskFixture make_curved_disk_with_adjacent_source_sheet(
     fixture.options.sourceFaceSheets[static_cast<std::size_t>(face)] =
         adjacentSheet;
   }
+  bind_curved_disk_atlas(fixture);
   return fixture;
 }
 
@@ -2622,6 +2647,7 @@ CurvedDiskFixture make_polygonal_curved_disk_fixture(
     fixture.options.hardFeatureEdges.insert(
         test_source_edge_topology(edge[0], edge[1]));
   }
+  bind_curved_disk_atlas(fixture);
   return fixture;
 }
 
@@ -3181,6 +3207,8 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
 
   const auto rejected = directional::geometry::SurfacePhaseFrontProduct::make(
       product.gridU(), product.gridV(), product.sourceTopologyRegions(),
+      fixture.faces, static_cast<std::size_t>(fixture.vertices.rows()),
+      fixture.options.fieldTransportAtlas,
       product.isolationSeamTransportCertificates(), product.periodicHolonomies(),
       std::move(phases), product.edges(), product.events(), product.cells());
   const auto *error =
@@ -3208,6 +3236,8 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
 
   const auto rejected = directional::geometry::SurfacePhaseFrontProduct::make(
       product.gridU(), product.gridV(), product.sourceTopologyRegions(),
+      fixture.faces, static_cast<std::size_t>(fixture.vertices.rows()),
+      fixture.options.fieldTransportAtlas,
       product.isolationSeamTransportCertificates(), product.periodicHolonomies(),
       std::move(phases), product.edges(), product.events(), product.cells());
   const auto *error =
@@ -6052,9 +6082,12 @@ Eigen::MatrixXi pure_quad_mesh_quads_matrix(
 directional::geometry::SurfacePhaseFrontProduct
 rebuild_phase_front_with_edges(
     const directional::geometry::SurfacePhaseFrontProduct &product,
-    std::vector<directional::geometry::SurfaceFrontEdge> edges) {
+    std::vector<directional::geometry::SurfaceFrontEdge> edges,
+    const RectangularHardRailPhaseFrontFixture &fixture) {
   auto rebuilt = directional::geometry::SurfacePhaseFrontProduct::make(
       product.gridU(), product.gridV(), product.sourceTopologyRegions(),
+      fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
+      fixture.atlas ? &*fixture.atlas : nullptr,
       product.isolationSeamTransportCertificates(), product.periodicHolonomies(),
       product.boundedDiskBoundaryPhases(), std::move(edges), product.events(),
       product.cells(), product.conformityPlanReceipt(),
@@ -6197,6 +6230,8 @@ TEST(SurfaceCellAuthorityContractCutover,
       .sharedBoundaryInterval.reset();
   auto missing = directional::geometry::SurfacePhaseFrontProduct::make(
       product.gridU(), product.gridV(), product.sourceTopologyRegions(),
+      fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
+      fixture.atlas ? &*fixture.atlas : nullptr,
       product.isolationSeamTransportCertificates(), product.periodicHolonomies(),
       product.boundedDiskBoundaryPhases(), std::move(missingEdges),
       product.events(), product.cells(), product.conformityPlanReceipt());
@@ -6217,6 +6252,8 @@ TEST(SurfaceCellAuthorityContractCutover,
   tampered.sharedBoundaryInterval->span = foreign.sharedBoundaryInterval->span;
   auto tamperedProduct = directional::geometry::SurfacePhaseFrontProduct::make(
       product.gridU(), product.gridV(), product.sourceTopologyRegions(),
+      fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
+      fixture.atlas ? &*fixture.atlas : nullptr,
       product.isolationSeamTransportCertificates(), product.periodicHolonomies(),
       product.boundedDiskBoundaryPhases(), std::move(tamperedEdges),
       product.events(), product.cells(), product.conformityPlanReceipt());
@@ -6845,7 +6882,7 @@ TEST(SurfaceCellAuthorityContractCutover,
   ASSERT_EQ(first.route, second.route.reversed());
   second.route = first.route;
   ASSERT_NE(first.route, second.route.reversed());
-  const auto tampered = rebuild_phase_front_with_edges(product, std::move(edges));
+  const auto tampered = rebuild_phase_front_with_edges(product, std::move(edges), fixture);
   const auto rejected = directional::pipeline::build_authoritative_phase_front_mesh(
       fixture.mesh.V, fixture.mesh.F, tampered);
   EXPECT_FALSE(rejected.success);
@@ -6868,7 +6905,7 @@ TEST(SurfaceCellAuthorityContractCutover,
   auto &second = edges[static_cast<std::size_t>(pairs.front().second)];
   second.route = edges[static_cast<std::size_t>(pairs.back().first)].route;
   ASSERT_NE(first.route, second.route.reversed());
-  const auto tampered = rebuild_phase_front_with_edges(product, std::move(edges));
+  const auto tampered = rebuild_phase_front_with_edges(product, std::move(edges), fixture);
   const auto rejected = directional::pipeline::build_authoritative_phase_front_mesh(
       fixture.mesh.V, fixture.mesh.F, tampered);
   EXPECT_FALSE(rejected.success);
@@ -6895,7 +6932,7 @@ TEST(SurfaceCellAuthorityContractCutover,
   ASSERT_TRUE(secondRail);
   first.railId = firstRail.value();
   second.railId = secondRail.value();
-  const auto tampered = rebuild_phase_front_with_edges(product, std::move(edges));
+  const auto tampered = rebuild_phase_front_with_edges(product, std::move(edges), fixture);
   const auto rejected = directional::pipeline::build_authoritative_phase_front_mesh(
       fixture.mesh.V, fixture.mesh.F, tampered);
   EXPECT_FALSE(rejected.success);
@@ -7761,6 +7798,9 @@ TEST(SurfaceCellAuthorityContractCutover,
   ASSERT_FALSE(network.phaseFront.product().cells().empty());
 
   const auto &product = network.phaseFront.product();
+  auto atlas = directional::authority::FieldTransportAtlas::make(
+      mesh, product.sourceTopologyRegions(), {}, crossField);
+  ASSERT_TRUE(atlas.has_value());
   auto cells = product.cells();
   const auto regionCount = product.sourceTopologyRegions().regions().size();
   const auto missingRegion = directional::authority::TopologyRegionId::from_index(
@@ -7773,6 +7813,7 @@ TEST(SurfaceCellAuthorityContractCutover,
   cells.front().sourceTopologyRegion = missingRegion.value();
   const auto rejected = directional::geometry::SurfacePhaseFrontProduct::make(
       product.gridU(), product.gridV(), product.sourceTopologyRegions(),
+      mesh.F, static_cast<std::size_t>(mesh.V.rows()), &atlas.value(),
       product.isolationSeamTransportCertificates(), product.periodicHolonomies(),
       product.boundedDiskBoundaryPhases(), product.edges(), product.events(),
       std::move(cells));
@@ -7803,6 +7844,9 @@ TEST(SurfaceCellAuthorityContractCutover,
   ASSERT_FALSE(network.phaseFront.product().edges().empty());
 
   const auto &product = network.phaseFront.product();
+  auto atlas = directional::authority::FieldTransportAtlas::make(
+      mesh, product.sourceTopologyRegions(), {}, crossField);
+  ASSERT_TRUE(atlas.has_value());
   auto edges = product.edges();
   const auto current = edges.front().sourceTopologyRegion;
   const auto replacement = std::find_if(
@@ -7813,6 +7857,7 @@ TEST(SurfaceCellAuthorityContractCutover,
   edges.front().sourceTopologyRegion = replacement->id();
   const auto rejected = directional::geometry::SurfacePhaseFrontProduct::make(
       product.gridU(), product.gridV(), product.sourceTopologyRegions(),
+      mesh.F, static_cast<std::size_t>(mesh.V.rows()), &atlas.value(),
       product.isolationSeamTransportCertificates(), product.periodicHolonomies(),
       product.boundedDiskBoundaryPhases(), std::move(edges), product.events(),
       product.cells());

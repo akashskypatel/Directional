@@ -231,8 +231,17 @@ tamper_route_transport_preserving_carrier(
       std::move(steps));
 }
 
-directional::geometry::SurfacePhaseFrontProduct
-direct_periodic_owner_product() {
+Eigen::MatrixXd constant_xy_field(int faceCount);
+
+struct DirectPeriodicOwnerFixture {
+  directional::geometry::SurfacePhaseFrontProduct product;
+  Eigen::MatrixXi sourceFaces;
+  std::size_t sourceVertexCount;
+  directional::authority::FieldTransportAtlas sourceAtlas;
+};
+
+DirectPeriodicOwnerFixture
+direct_periodic_owner_fixture() {
   const auto projection = test_projection_chart(0, 0);
   const auto component = directional::authority::SourceComponentId::from_index(0, 1);
   const auto sheet = directional::authority::IsolationSheetId::from_index(0, 1);
@@ -312,15 +321,30 @@ direct_periodic_owner_product() {
     edge.periodicRelation = relationId;
     edges.push_back(std::move(edge));
   }
+  directional::TriMesh sourceMesh;
+  Eigen::MatrixXd sourceVertices(3, 3);
+  sourceVertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
+  Eigen::MatrixXi sourceFaces(1, 3);
+  sourceFaces << 0, 1, 2;
+  sourceMesh.set_mesh(sourceVertices, sourceFaces);
+  const auto sourceField = directional::pipeline::finalize_surface_cell_raw_cross_field(
+      sourceMesh, constant_xy_field(1));
+  auto sourceAtlas = directional::authority::FieldTransportAtlas::make(
+      sourceMesh, authority.value(), {}, sourceField);
+  if (!sourceAtlas) throw std::runtime_error("Direct periodic source A3 unavailable.");
   auto product = directional::geometry::SurfacePhaseFrontProduct::make(
-      0, 0, std::move(authority.value()), {}, std::move(relations), {},
+      0, 0, std::move(authority.value()), sourceFaces,
+      static_cast<std::size_t>(sourceVertices.rows()), &sourceAtlas.value(),
+      {}, std::move(relations), {},
       std::move(edges), {}, std::move(cells));
   auto *value =
       std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&product);
   if (value == nullptr) {
     throw std::runtime_error("Failed to construct direct periodic-owner product.");
   }
-  return std::move(*value);
+  return {std::move(*value), std::move(sourceFaces),
+          static_cast<std::size_t>(sourceVertices.rows()),
+          std::move(sourceAtlas.value())};
 }
 
 struct PhaseFrontFixture {
@@ -332,6 +356,22 @@ struct PhaseFrontFixture {
   // Not passed to A4/A5/A6 or used to construct an authoritative product.
   std::optional<directional::authority::FieldTransportAtlas> fieldTransportAtlas;
 };
+
+// Tests obtain A3 from their original mesh and source field, never from an
+// A4 certificate under test. Preserve this independent copy for republication.
+void bind_phase_front_fixture_atlas(
+    PhaseFrontFixture &fixture,
+    const directional::fields::CrossFieldResult &field,
+    directional::geometry::SurfaceCellTracingOptions &options) {
+  const auto authority = directional::geometry::surface_cell_tracing_detail::
+      build_source_topology_regions(fixture.mesh.F, options);
+  if (!authority) throw std::runtime_error("Test A2b source authority unavailable");
+  auto atlas = directional::authority::FieldTransportAtlas::make(
+      fixture.mesh, *authority, options.hardFeatureEdges, field);
+  if (!atlas) throw std::runtime_error("Test A3 atlas unavailable");
+  fixture.fieldTransportAtlas = std::move(atlas.value());
+  options.fieldTransportAtlas = &*fixture.fieldTransportAtlas;
+}
 
 Eigen::MatrixXd constant_xy_field(const int faceCount) {
   Eigen::MatrixXd raw(faceCount, 12);
@@ -439,6 +479,7 @@ PhaseFrontFixture make_square_fixture(const bool splitIsolation,
   options.sourceFaceSheets = fixture.sheets;
   const Eigen::VectorXd targetSize =
       Eigen::VectorXd::Constant(fixture.mesh.V.rows(), 0.5);
+  bind_phase_front_fixture_atlas(fixture, crossField, options);
   fixture.network = directional::geometry::build_surface_cell_network(
       fixture.mesh.V, fixture.mesh.F, crossField, targetSize, options);
   require_produced(fixture, overlappingComponents
@@ -466,6 +507,7 @@ PhaseFrontFixture make_square_fixture_with_reversed_source_face_rows() {
   options.defaultTargetSize = 0.5;
   options.sourceFaceComponents = fixture.components;
   options.sourceFaceSheets = fixture.sheets;
+  bind_phase_front_fixture_atlas(fixture, crossField, options);
   fixture.network = directional::geometry::build_surface_cell_network(
       fixture.mesh.V, fixture.mesh.F, crossField,
       Eigen::VectorXd::Constant(fixture.mesh.V.rows(), 0.5), options);
@@ -491,6 +533,7 @@ PhaseFrontFixture make_split_isolation_fixture_with_reversed_source_face_rows() 
   options.defaultTargetSize = 0.5;
   options.sourceFaceComponents = fixture.components;
   options.sourceFaceSheets = fixture.sheets;
+  bind_phase_front_fixture_atlas(fixture, crossField, options);
   fixture.network = directional::geometry::build_surface_cell_network(
       fixture.mesh.V, fixture.mesh.F, crossField,
       Eigen::VectorXd::Constant(fixture.mesh.V.rows(), 0.5), options);
@@ -516,6 +559,7 @@ PhaseFrontFixture make_transition_domain_fixture() {
   options.defaultTargetSize = 0.5;
   options.sourceFaceComponents = fixture.components;
   options.sourceFaceSheets = fixture.sheets;
+  bind_phase_front_fixture_atlas(fixture, crossField, options);
   fixture.network = directional::geometry::build_surface_cell_network(
       fixture.mesh.V, fixture.mesh.F, crossField,
       Eigen::VectorXd::Constant(vertices.rows(), 0.5), options);
@@ -576,6 +620,7 @@ PhaseFrontFixture make_hard_rail_fixture() {
   fixture.components = snapshots.sourceSurfaceLabels.componentByFace;
   fixture.sheets = snapshots.sourceSurfaceLabels.localSheetByFace;
   fixture.network = snapshots.traceNetwork;
+  fixture.fieldTransportAtlas = snapshots.fieldTransportAtlas;
   require_produced(fixture, "internal-midline hard-rail rectangle");
   return fixture;
 }
@@ -626,6 +671,7 @@ PhaseFrontFixture make_committed_fixture(const std::string &name,
   options.defaultTargetSize = 0.25;
   options.sourceFaceComponents = fixture.components;
   options.sourceFaceSheets = fixture.sheets;
+  bind_phase_front_fixture_atlas(fixture, crossField, options);
   fixture.network = directional::geometry::build_surface_cell_network(
       fixture.mesh.V, fixture.mesh.F, crossField,
       Eigen::VectorXd::Constant(fixture.mesh.V.rows(), 0.25), options);
@@ -682,6 +728,7 @@ PhaseFrontFixture make_torus_pipeline_fixture() {
                              retained_pipeline_first_failure(result));
   }
   fixture.network = result.surfaceCellContext.productSnapshots.traceNetwork;
+  fixture.fieldTransportAtlas = result.surfaceCellContext.productSnapshots.fieldTransportAtlas;
   require_produced(fixture, "torus pipeline");
   return fixture;
 }
@@ -1714,6 +1761,9 @@ struct PhaseFrontDraft {
   int gridU = 0;
   int gridV = 0;
   directional::geometry::SourceTopologyRegions sourceAuthority;
+  Eigen::MatrixXi sourceFaces;
+  std::size_t sourceVertexCount = 0U;
+  std::optional<directional::authority::FieldTransportAtlas> sourceAtlas;
   std::vector<directional::geometry::SurfaceIsolationSeamTransportCertificate>
       certificates;
   std::vector<directional::geometry::SurfacePeriodicHolonomy> periodicHolonomies;
@@ -1735,6 +1785,7 @@ PhaseFrontDraft phase_front_draft(
   return {product.gridU(),
           product.gridV(),
           product.sourceTopologyRegions(),
+          {}, 0U, std::nullopt,
           product.isolationSeamTransportCertificates(),
           product.periodicHolonomies(),
           product.boundedDiskBoundaryPhases(),
@@ -1751,10 +1802,28 @@ PhaseFrontDraft phase_front_draft(const SurfacePhaseFrontResult &phaseFront) {
   return phase_front_draft(phaseFront.product());
 }
 
+PhaseFrontDraft phase_front_draft(const PhaseFrontFixture &fixture) {
+  PhaseFrontDraft draft = phase_front_draft(fixture.network.phaseFront);
+  draft.sourceFaces = fixture.mesh.F;
+  draft.sourceVertexCount = static_cast<std::size_t>(fixture.mesh.V.rows());
+  draft.sourceAtlas = fixture.fieldTransportAtlas;
+  return draft;
+}
+
+PhaseFrontDraft phase_front_draft(const DirectPeriodicOwnerFixture &fixture) {
+  PhaseFrontDraft draft = phase_front_draft(fixture.product);
+  draft.sourceFaces = fixture.sourceFaces;
+  draft.sourceVertexCount = fixture.sourceVertexCount;
+  draft.sourceAtlas = fixture.sourceAtlas;
+  return draft;
+}
+
 directional::geometry::SurfacePhaseFrontProduct::ConstructionResult
 construct_phase_front_product(PhaseFrontDraft draft) {
   return directional::geometry::SurfacePhaseFrontProduct::make(
       draft.gridU, draft.gridV, std::move(draft.sourceAuthority),
+      draft.sourceFaces, draft.sourceVertexCount,
+      draft.sourceAtlas ? &*draft.sourceAtlas : nullptr,
       std::move(draft.certificates), std::move(draft.periodicHolonomies),
       std::move(draft.boundedDiskBoundaryPhases), std::move(draft.edges),
       std::move(draft.events), std::move(draft.cells), std::nullopt,
@@ -1826,20 +1895,53 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
     const auto secondFace = count > 1U
         ? std::optional<SourceFaceTopologyKey>{rowFaces.at(1U)}
         : std::nullopt;
+    // Independent synthetic input mesh: the A3 atlas is produced from
+    // source triangles and their cross field, never from a route certificate.
+    Eigen::MatrixXi sourceFaces(static_cast<int>(count), 3);
+    for (std::size_t row = 0U; row < count; ++row) {
+      const auto &faceVertices = rowFaces[row].vertices();
+      for (int corner = 0; corner < 3; ++corner)
+        sourceFaces(static_cast<int>(row), corner) =
+            static_cast<int>(faceVertices[static_cast<std::size_t>(corner)].index());
+    }
+    if (count > 1U) std::swap(sourceFaces(1, 0), sourceFaces(1, 1));
+    Eigen::MatrixXd sourceVertices(5, 3);
+    sourceVertices << 0.0, 0.0, 0.0,
+                      1.0, 0.0, 0.0,
+                      0.0, 1.0, 0.0,
+                      0.0, -1.0, 0.0,
+                      1.0, -1.0, 0.0;
+    directional::TriMesh sourceMesh;
+    sourceMesh.set_mesh(sourceVertices, sourceFaces);
+    const auto sourceField = directional::pipeline::finalize_surface_cell_raw_cross_field(
+        sourceMesh, constant_xy_field(static_cast<int>(count)));
     auto source = SourceTopologyRegions::make(
         std::move(rowFaces),
         std::vector<SourceComponentId>(count, component.value()),
         std::vector<IsolationSheetId>(count, sheet.value()),
         {region.value()});
     EXPECT_TRUE(source.has_value());
+    auto sourceAtlas = directional::authority::FieldTransportAtlas::make(
+        sourceMesh, source.value(), {hardEdge}, sourceField);
     std::vector<SurfaceHardRailFieldTransition> transitions;
     if (publishTransition) {
       EXPECT_TRUE(secondFace.has_value());
-      transitions.push_back({hardEdge, firstFace, secondFace.value(),
-                             QuarterTurn::from_integer(0)});
+      if (sourceAtlas && secondFace) {
+        const auto from = source.value().row_for_topology(firstFace);
+        const auto to = source.value().row_for_topology(secondFace.value());
+        if (from && to) {
+          const auto transition = sourceAtlas.value().transition_value(
+              hardEdge, *from, *to);
+          if (transition) transitions.push_back(
+              {hardEdge, firstFace, secondFace.value(), transition->transport});
+        }
+      }
     }
     const auto construction = SurfacePhaseFrontProduct::make(
-        0, 0, std::move(source.value()), {}, {}, {}, {}, {}, {},
+        0, 0, std::move(source.value()), sourceFaces,
+        static_cast<std::size_t>(sourceVertices.rows()),
+        sourceAtlas ? &sourceAtlas.value() : nullptr,
+        {}, {}, {}, {}, {}, {},
         std::nullopt, {absentRail ? absentEdge : hardEdge}, {},
         std::move(transitions), {});
     const auto *error = std::get_if<SurfacePhaseFrontProductError>(
@@ -1878,7 +1980,7 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
 
 TEST(SurfacePhaseFrontProductFactoryAuthority,
      EmptyCellsRejectAtCheckedFactory) {
-  PhaseFrontDraft tampered = phase_front_draft(square_fixture().network.phaseFront);
+  PhaseFrontDraft tampered = phase_front_draft(square_fixture());
   ASSERT_FALSE(tampered.cells.empty());
   tampered.cells.clear();
   const auto construction = construct_phase_front_product(std::move(tampered));
@@ -1889,7 +1991,7 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
 
 TEST(SurfacePhaseFrontProductFactoryAuthority,
      EmptyEdgesRejectAtCheckedFactory) {
-  PhaseFrontDraft tampered = phase_front_draft(square_fixture().network.phaseFront);
+  PhaseFrontDraft tampered = phase_front_draft(square_fixture());
   ASSERT_FALSE(tampered.cells.empty());
   ASSERT_FALSE(tampered.edges.empty());
   tampered.edges.clear();
@@ -1901,7 +2003,7 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
 
 TEST(SurfacePhaseFrontProductFactoryAuthority,
      DuplicateCellIdentityRejectsAtCheckedFactory) {
-  PhaseFrontDraft tampered = phase_front_draft(square_fixture().network.phaseFront);
+  PhaseFrontDraft tampered = phase_front_draft(square_fixture());
   ASSERT_FALSE(tampered.cells.empty());
   tampered.cells.push_back(tampered.cells.front());
   const auto construction = construct_phase_front_product(std::move(tampered));
@@ -1912,7 +2014,7 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
 
 TEST(SurfacePhaseFrontProductFactoryAuthority,
      ReorderedCellStoragePreservesTypedEdgeOwnershipAtCheckedFactory) {
-  PhaseFrontDraft reordered = phase_front_draft(square_fixture().network.phaseFront);
+  PhaseFrontDraft reordered = phase_front_draft(square_fixture());
   ASSERT_GT(reordered.cells.size(), 1U);
   std::reverse(reordered.cells.begin(), reordered.cells.end());
   const auto construction = construct_phase_front_product(std::move(reordered));
@@ -1931,7 +2033,7 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
 
 TEST(SurfacePhaseFrontProductFactoryAuthority,
      ForeignEdgeCellRejectsAtCheckedFactory) {
-  PhaseFrontDraft tampered = phase_front_draft(square_fixture().network.phaseFront);
+  PhaseFrontDraft tampered = phase_front_draft(square_fixture());
   ASSERT_FALSE(tampered.cells.empty());
   ASSERT_FALSE(tampered.edges.empty());
   const auto foreign = directional::authority::CellId::from_index(
@@ -1947,7 +2049,7 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
 
 TEST(SurfacePhaseFrontProductFactoryAuthority,
      ForeignEventEdgeRejectsAtCheckedFactory) {
-  PhaseFrontDraft tampered = phase_front_draft(square_fixture().network.phaseFront);
+  PhaseFrontDraft tampered = phase_front_draft(square_fixture());
   ASSERT_FALSE(tampered.edges.empty());
   directional::geometry::SurfaceFrontEvent malformed;
   malformed.kind = directional::geometry::SurfaceFrontEventKind::BoundaryTermination;
@@ -1962,7 +2064,7 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
 
 TEST(SurfacePhaseFrontProductFactoryAuthority,
      DuplicatePeriodicRelationIdentityRejectsAtCheckedFactory) {
-  PhaseFrontDraft tampered = phase_front_draft(direct_periodic_owner_product());
+  PhaseFrontDraft tampered = phase_front_draft(direct_periodic_owner_fixture());
   ASSERT_GE(tampered.periodicHolonomies.size(), 2U);
   const auto duplicate = tampered.periodicHolonomies.front();
   const auto expectedCarrier = independent_periodic_carrier_identity(
@@ -1986,7 +2088,7 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
 
 TEST(SurfacePhaseFrontProductFactoryAuthority,
      ConflictingPeriodicRelationValueRejectsAtCheckedFactory) {
-  PhaseFrontDraft tampered = phase_front_draft(direct_periodic_owner_product());
+  PhaseFrontDraft tampered = phase_front_draft(direct_periodic_owner_fixture());
   ASSERT_FALSE(tampered.periodicHolonomies.empty());
   const auto &original = tampered.periodicHolonomies.front();
   const auto expectedCarrier = independent_periodic_carrier_identity(
@@ -2021,7 +2123,7 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
 
 TEST(SurfacePhaseFrontProductFactoryAuthority,
      ForeignPeriodicRelationRegionRejectsAtCheckedFactory) {
-  PhaseFrontDraft tampered = phase_front_draft(direct_periodic_owner_product());
+  PhaseFrontDraft tampered = phase_front_draft(direct_periodic_owner_fixture());
   ASSERT_FALSE(tampered.periodicHolonomies.empty());
   const auto regionCount = tampered.sourceAuthority.regions().size();
   const auto foreignRegion = directional::authority::TopologyRegionId::from_index(
@@ -2044,7 +2146,7 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
 
 TEST(SurfacePhaseFrontProductFactoryAuthority,
      UnknownPeriodicRelationOwnerRejectsAtCheckedFactory) {
-  PhaseFrontDraft tampered = phase_front_draft(direct_periodic_owner_product());
+  PhaseFrontDraft tampered = phase_front_draft(direct_periodic_owner_fixture());
   ASSERT_FALSE(tampered.periodicHolonomies.empty());
   ASSERT_FALSE(tampered.edges.empty());
   ASSERT_EQ(SurfaceFrontBoundaryKind::PeriodicCut,
@@ -2311,8 +2413,8 @@ bool certificate_references_periodic_relation(
 TEST(SurfaceCellTransitionQuotient,
      CellStoragePermutationPreservesOccurrenceAndQuotientAuthority) {
   const auto &fixture = square_fixture();
-  PhaseFrontDraft baselineDraft = phase_front_draft(fixture.network.phaseFront);
-  PhaseFrontDraft reorderedDraft = phase_front_draft(fixture.network.phaseFront);
+  PhaseFrontDraft baselineDraft = phase_front_draft(fixture);
+  PhaseFrontDraft reorderedDraft = phase_front_draft(fixture);
   ASSERT_GT(reorderedDraft.cells.size(), 1U);
   std::reverse(reorderedDraft.cells.begin(), reorderedDraft.cells.end());
 
@@ -2585,7 +2687,7 @@ TEST(M6CP3, PeriodicExactA3UnequalFaceGaugeUsesRelationAndOccurrenceAuthority) {
 
 TEST(M6CP3, HardRailPublishedTauRequiresIncidentSourceFaces) {
   const auto &fixture = nonconstant_hard_rail_fixture();
-  PhaseFrontDraft draft = phase_front_draft(fixture.network.phaseFront);
+  PhaseFrontDraft draft = phase_front_draft(fixture);
   ASSERT_FALSE(draft.hardRailFieldTransitions.empty());
   auto &record = draft.hardRailFieldTransitions.front();
   std::optional<directional::authority::SourceFaceTopologyKey> unrelated;
@@ -2776,6 +2878,54 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
         << "Balanced certificate tamper must be detected by independent A3";
   }
 
+  // RA-40 factory attestation is independent of the copied A4 certificate:
+  // the balanced mutation commutes, but no longer matches genuine A3.
+  const auto checkedFactory = [&](const auto &transitions,
+                                  const auto &certificates,
+                                  const directional::authority::FieldTransportAtlas *atlas) {
+    return directional::geometry::SurfacePhaseFrontProduct::make(
+        front.gridU(), front.gridV(), front.sourceTopologyRegions(),
+        fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()), atlas,
+        front.isolationSeamTransportCertificates(), front.periodicHolonomies(),
+        front.boundedDiskBoundaryPhases(), front.edges(), front.events(),
+        front.cells(), front.conformityPlanReceipt(), front.hardFeatureEdges(),
+        front.sourceFaceBranchRotations(), transitions, certificates);
+  };
+  const auto &sourceAtlas = *fixture.fieldTransportAtlas;
+  auto accepted = checkedFactory(front.hardRailFieldTransitions(),
+                                front.hardRailRouteCertificates(), &sourceAtlas);
+  EXPECT_NE(nullptr, std::get_if<directional::geometry::SurfacePhaseFrontProduct>(
+                         &accepted))
+      << "A4 genuinely produced certificate must survive checked A3 factory";
+  auto tamperedCertificates = front.hardRailRouteCertificates();
+  const auto tamperedMidline = std::find_if(
+      tamperedCertificates.begin(), tamperedCertificates.end(), is_midline_pair);
+  ASSERT_NE(tamperedCertificates.end(), tamperedMidline);
+  *tamperedMidline = balancedMutation;
+  expect_phase_front_product_error(
+      checkedFactory(front.hardRailFieldTransitions(), tamperedCertificates,
+                     &sourceAtlas),
+      directional::geometry::SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority);
+  expect_phase_front_product_error(
+      checkedFactory(front.hardRailFieldTransitions(),
+                     front.hardRailRouteCertificates(), nullptr),
+      directional::geometry::SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority);
+  ASSERT_TRUE(permutedFixture.fieldTransportAtlas.has_value());
+  expect_phase_front_product_error(
+      checkedFactory(front.hardRailFieldTransitions(),
+                     front.hardRailRouteCertificates(),
+                     &*permutedFixture.fieldTransportAtlas),
+      directional::geometry::SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority);
+  auto tamperedCarriers = front.hardRailFieldTransitions();
+  ASSERT_FALSE(tamperedCarriers.empty());
+  tamperedCarriers.front().firstToSecond = compose(
+      directional::authority::QuarterTurn::from_integer(1),
+      tamperedCarriers.front().firstToSecond);
+  expect_phase_front_product_error(
+      checkedFactory(tamperedCarriers, front.hardRailRouteCertificates(),
+                     &sourceAtlas),
+      directional::geometry::SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority);
+
   // Compare immutable SOURCE-FACE TOPOLOGY, not the rows used to index it.
   // The canonical pair may exchange sector orientation; normalize the two
   // unordered sector face sets before comparing.
@@ -2844,7 +2994,7 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
 
   // A certificate with one tampered nonrail A3 step must fail at the
   // independent product validator; it must not obtain a fresh A5 gauge.
-  PhaseFrontDraft wrongRadial = phase_front_draft(fixture.network.phaseFront);
+  PhaseFrontDraft wrongRadial = phase_front_draft(fixture);
   const auto wrong = std::find_if(wrongRadial.hardRailRouteCertificates.begin(),
                                   wrongRadial.hardRailRouteCertificates.end(),
                                   is_midline_pair);
@@ -2998,7 +3148,7 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
                   directional::authority::QuarterTurn::from_integer(1) ||
               oddCarrier.firstToSecond ==
                   directional::authority::QuarterTurn::from_integer(3));
-  PhaseFrontDraft tampered = phase_front_draft(fixture.network.phaseFront);
+  PhaseFrontDraft tampered = phase_front_draft(fixture);
   const auto sourceEdge = oddCarrier.edge;
   auto entry = std::find_if(
       tampered.hardRailFieldTransitions.begin(),
@@ -3318,7 +3468,7 @@ TEST(M6CP3, A5ChartBarriersConsumeTypedHardFeatureAuthorityAcrossRelationKinds) 
   ASSERT_GT(hardRailCarrierCount, 0U)
       << "every produced HardRail carrier must be represented by typed hard-feature authority";
 
-  PhaseFrontDraft missingRailAuthority = phase_front_draft(railFront);
+  PhaseFrontDraft missingRailAuthority = phase_front_draft(rail);
   missingRailAuthority.hardFeatureEdges.clear();
   auto missingRailFrontResult =
       construct_phase_front_product(std::move(missingRailAuthority));
@@ -3357,7 +3507,7 @@ TEST(M6CP3, A5ChartBarriersConsumeTypedHardFeatureAuthorityAcrossRelationKinds) 
       << "squareA5 first producer rejection=A5:"
       << (squareA5Error == nullptr ? "unexpected-disposition"
           : directional::pipeline::surface_occurrence_complex_error_name(squareA5Error->code));
-  PhaseFrontDraft marked = phase_front_draft(squareFront);
+  PhaseFrontDraft marked = phase_front_draft(square);
   std::optional<directional::authority::SourceEdgeTopologyKey> ordinaryCarrier;
   std::optional<directional::authority::SourceEdgeTopologyKey> unaffectedCarrier;
   for (const auto &relation : squareA5->owned_relations()) {
@@ -3949,7 +4099,7 @@ TEST(M6CP1,
   };
 
   PhaseFrontDraft invalidRoute =
-      phase_front_draft(hardRailFixture.network.phaseFront);
+      phase_front_draft(hardRailFixture);
   const int hardRail =
       firstDraftEdgeOfKind(invalidRoute, SurfaceFrontBoundaryKind::HardRail);
   ASSERT_GE(hardRail, 0);
@@ -3997,7 +4147,7 @@ TEST(M6CP1,
                 HardRailRouteAuthorityInvalid);
 
   PhaseFrontDraft sameOrientation =
-      phase_front_draft(hardRailFixture.network.phaseFront);
+      phase_front_draft(hardRailFixture);
   const int sameOrientationRail =
       firstDraftEdgeOfKind(sameOrientation, SurfaceFrontBoundaryKind::HardRail);
   ASSERT_GE(sameOrientationRail, 0);
@@ -4115,7 +4265,7 @@ TEST(M6CP1, QuotientClassIdIsSortedMemberSetAndStorageInvariant) {
   EXPECT_EQ(certificateSignature(*baseline), certificateSignature(*reordered));
 
   PhaseFrontDraft swapped =
-      phase_front_draft(baselineFixture.network.phaseFront);
+      phase_front_draft(baselineFixture);
   int firstEdge = -1;
   int secondEdge = -1;
   for (int edge = 0; edge < static_cast<int>(swapped.edges.size()); ++edge) {
@@ -4527,7 +4677,7 @@ TEST(M6CP1, RelationPlacementTransportIsCoordinateRigidAndFaceGaugeInvariant) {
   ASSERT_NE(baselineQuotient, nullptr);
 
   PhaseFrontDraft relabelled =
-      phase_front_draft(hardRailFixture.network.phaseFront);
+      phase_front_draft(hardRailFixture);
   const int firstHardRail =
       firstDraftEdgeOfKind(relabelled, SurfaceFrontBoundaryKind::HardRail);
   ASSERT_GE(firstHardRail, 0);
@@ -5311,7 +5461,7 @@ int first_edge_of_kind(const PhaseFrontDraft &phaseFront,
 
 TEST(M6CP1, A5OwnsPhaseFrontRegionAndBoundaryValidationBeforeA6) {
   const auto &fixture = square_fixture();
-  PhaseFrontDraft tampered = phase_front_draft(fixture.network.phaseFront);
+  PhaseFrontDraft tampered = phase_front_draft(fixture);
   const int ordinary =
       first_edge_of_kind(tampered, SurfaceFrontBoundaryKind::OrdinaryInterior);
   ASSERT_GE(ordinary, 0);
@@ -5346,7 +5496,7 @@ TEST(M6CP1, A5OwnsPhaseFrontRegionAndBoundaryValidationBeforeA6) {
 
 TEST(M6CP1, A5OwnsIsolationAndHardRailRouteValidationWithFrozenNames) {
   const auto &fixture = hard_rail_fixture();
-  PhaseFrontDraft tampered = phase_front_draft(fixture.network.phaseFront);
+  PhaseFrontDraft tampered = phase_front_draft(fixture);
   const int hardRail =
       first_edge_of_kind(tampered, SurfaceFrontBoundaryKind::HardRail);
   ASSERT_GE(hardRail, 0);
@@ -5387,7 +5537,7 @@ TEST(M6CP1, A5OwnsIsolationAndHardRailRouteValidationWithFrozenNames) {
 
 TEST(M6CP1, A5ValidationPrecedencePreservesHardRailAuthorityBeforeTransport) {
   const auto &fixture = hard_rail_fixture();
-  PhaseFrontDraft tampered = phase_front_draft(fixture.network.phaseFront);
+  PhaseFrontDraft tampered = phase_front_draft(fixture);
   const int hardRail =
       first_edge_of_kind(tampered, SurfaceFrontBoundaryKind::HardRail);
   ASSERT_GE(hardRail, 0);
@@ -6540,7 +6690,7 @@ TEST(SurfaceCellTransitionQuotient,
      FullEfTransitionRowCannotReplaceSourceWideCompactIndex) {
   const auto &fixture = transition_domain_fixture();
   const auto witness = transition_index_domain_witness();
-  PhaseFrontDraft tampered = phase_front_draft(fixture.network.phaseFront);
+  PhaseFrontDraft tampered = phase_front_draft(fixture);
   ASSERT_TRUE(replace_transition_index(tampered, witness, witness.fullEfRow));
   const auto result = materialize(fixture, tampered);
   EXPECT_FALSE(result.success);
@@ -6551,7 +6701,7 @@ TEST(SurfaceCellTransitionQuotient,
      RegionLocalCompactTransitionIndexCannotReplaceSourceWideIndex) {
   const auto &fixture = transition_domain_fixture();
   const auto witness = transition_index_domain_witness();
-  PhaseFrontDraft tampered = phase_front_draft(fixture.network.phaseFront);
+  PhaseFrontDraft tampered = phase_front_draft(fixture);
   ASSERT_TRUE(
       replace_transition_index(tampered, witness, witness.regionLocalCompact));
   const auto result = materialize(fixture, tampered);
@@ -6583,7 +6733,7 @@ TEST(SurfaceCellTransitionQuotient,
 TEST(SurfaceCellTransitionQuotient,
      GenuineBoundaryWithInventedInteriorIndexIsRejected) {
   const auto &fixture = square_fixture();
-  PhaseFrontDraft tampered = phase_front_draft(fixture.network.phaseFront);
+  PhaseFrontDraft tampered = phase_front_draft(fixture);
   const int boundary = first_edge_of_kind(
       tampered, SurfaceFrontBoundaryKind::GenuineSourceBoundary);
   ASSERT_GE(boundary, 0);
@@ -6625,7 +6775,7 @@ TEST(SurfaceCellIsolationSeamCertificateAuthority,
 TEST(SurfaceCellIsolationSeamCertificateAuthority,
      MissingIsolationSeamCertificateIsRejected) {
   const auto &fixture = split_isolation_fixture();
-  PhaseFrontDraft tampered = phase_front_draft(fixture.network.phaseFront);
+  PhaseFrontDraft tampered = phase_front_draft(fixture);
   ASSERT_FALSE(tampered.certificates.empty());
   tampered.certificates.clear();
   const auto construction = construct_phase_front_product(std::move(tampered));
@@ -6641,7 +6791,7 @@ TEST(SurfaceCellIsolationSeamCertificateAuthority,
 TEST(SurfaceCellIsolationSeamCertificateAuthority,
      DuplicateIsolationSeamCertificateIsRejected) {
   const auto &fixture = split_isolation_fixture();
-  PhaseFrontDraft tampered = phase_front_draft(fixture.network.phaseFront);
+  PhaseFrontDraft tampered = phase_front_draft(fixture);
   ASSERT_FALSE(tampered.certificates.empty());
   tampered.certificates.push_back(tampered.certificates.front());
   const auto construction = construct_phase_front_product(std::move(tampered));
@@ -6808,7 +6958,7 @@ TEST(SurfaceCellTransitionQuotient,
 TEST(SurfaceCellTransitionQuotient,
      OrdinaryReciprocalWrongEndpointStateIsRejected) {
   const auto &fixture = square_fixture();
-  PhaseFrontDraft tampered = phase_front_draft(fixture.network.phaseFront);
+  PhaseFrontDraft tampered = phase_front_draft(fixture);
   const int ordinary =
       first_edge_of_kind(tampered, SurfaceFrontBoundaryKind::OrdinaryInterior);
   ASSERT_GE(ordinary, 0);
@@ -6977,7 +7127,8 @@ TEST(SurfaceCellTransitionQuotient,
 
 TEST(SurfaceCellTransitionQuotient,
      PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization) {
-  const auto original = direct_periodic_owner_product();
+  const auto source = direct_periodic_owner_fixture();
+  const auto &original = source.product;
   ASSERT_EQ(2U, original.periodicHolonomies().size());
   ASSERT_EQ(2U, original.edges().size());
 
@@ -6996,7 +7147,7 @@ TEST(SurfaceCellTransitionQuotient,
             std::next(ownerSnapshots.begin())->second.route())
       << "relation owners must be semantically discriminating before reorder";
 
-  PhaseFrontDraft reorderedDraft = phase_front_draft(original);
+  PhaseFrontDraft reorderedDraft = phase_front_draft(source);
   std::reverse(reorderedDraft.periodicHolonomies.begin(),
                reorderedDraft.periodicHolonomies.end());
   auto construction = construct_phase_front_product(std::move(reorderedDraft));
@@ -7059,7 +7210,7 @@ TEST(M4CP4, ProducedTorusPeriodicRelationOwnersSurviveContainerReordering) {
               firstOwner.route() != secondOwner.route() ||
               firstOwner.cutRoute() != secondOwner.cutRoute());
 
-  PhaseFrontDraft reorderedDraft = phase_front_draft(original);
+  PhaseFrontDraft reorderedDraft = phase_front_draft(fixture);
   std::reverse(reorderedDraft.periodicHolonomies.begin(),
                reorderedDraft.periodicHolonomies.end());
   auto construction = construct_phase_front_product(std::move(reorderedDraft));
@@ -7082,7 +7233,7 @@ TEST(M4CP4, ProducedTorusPeriodicRelationOwnersSurviveContainerReordering) {
     EXPECT_EQ(before->second.cutRoute(), after->cutRoute());
   }
 
-  PhaseFrontDraft tampered = phase_front_draft(original);
+  PhaseFrontDraft tampered = phase_front_draft(fixture);
   std::swap(tampered.edges[periodicEdges.front()].periodicRelation,
             tampered.edges[periodicEdges[second]].periodicRelation);
   expect_phase_front_product_error(
@@ -7109,7 +7260,7 @@ TEST(M4CP4, ProducedTorusMissingPeriodicRelationOwnerIsRejected) {
   }
   ASSERT_GE(periodicEdgeCount, 2U);
 
-  PhaseFrontDraft tampered = phase_front_draft(original);
+  PhaseFrontDraft tampered = phase_front_draft(fixture);
   const int periodic = first_edge_of_kind(
       tampered, SurfaceFrontBoundaryKind::PeriodicCut);
   ASSERT_GE(periodic, 0);
@@ -7368,7 +7519,7 @@ TEST(M5CP3,
   const auto &product = fixture.network.phaseFront.product();
   ASSERT_GE(product.periodicHolonomies().size(), 2U);
 
-  PhaseFrontDraft baselineDraft = phase_front_draft(product);
+  PhaseFrontDraft baselineDraft = phase_front_draft(fixture);
   PhaseFrontDraft reorderedDraft = baselineDraft;
   const auto firstStored = reorderedDraft.periodicHolonomies.front().id();
   const auto lastStored = reorderedDraft.periodicHolonomies.back().id();
@@ -7395,7 +7546,7 @@ TEST(M5CP3,
 
 TEST(M5CP3, ProducedTorusMissingPeriodicRelationOwnerRejectsTyped) {
   const auto &fixture = torus_fixture();
-  PhaseFrontDraft tampered = phase_front_draft(fixture.network.phaseFront);
+  PhaseFrontDraft tampered = phase_front_draft(fixture);
   const int periodic =
       first_edge_of_kind(tampered, SurfaceFrontBoundaryKind::PeriodicCut);
   ASSERT_GE(periodic, 0);
@@ -7636,7 +7787,7 @@ TEST(M5CP3, StorageCanonicalPeriodicRelationResolvesSemanticForwardReverse) {
           *storedRelation, *reverseEdge, *forwardEdge)
           .has_value());
 
-  PhaseFrontDraft tampered = phase_front_draft(product);
+  PhaseFrontDraft tampered = phase_front_draft(fixture);
   const auto relation = std::find_if(
       tampered.periodicHolonomies.begin(), tampered.periodicHolonomies.end(),
       [&](const auto &candidate) { return candidate.id() == storedRelation->id(); });
@@ -7778,7 +7929,7 @@ TEST(M5CP3,
   ASSERT_NE(nullptr, relation);
 
   PhaseFrontDraft baseline =
-      phase_front_draft(witnessFixture.fixture.network.phaseFront);
+      phase_front_draft(witnessFixture.fixture);
   PhaseFrontDraft reordered = baseline;
   int firstIndex = -1;
   int secondIndex = -1;
@@ -7861,7 +8012,7 @@ TEST(M5CP3, ProducedTorusTamperedNonzeroZ4TransformRejectsTyped) {
   EXPECT_EQ(published->id(), *semanticId);
 
   PhaseFrontDraft tampered =
-      phase_front_draft(witnessFixture.fixture.network.phaseFront);
+      phase_front_draft(witnessFixture.fixture);
   const auto relation = std::find_if(
       tampered.periodicHolonomies.begin(), tampered.periodicHolonomies.end(),
       [&](const auto &candidate) { return candidate.id() == published->id(); });
@@ -7890,7 +8041,7 @@ TEST(M5CP3, ProducedTorusTamperedNonzeroZ4TransformRejectsTyped) {
 TEST(M5CP3, ProducedTorusUnusedValidRelationDoesNotAlterSelectedCertificate) {
   const auto &fixture = torus_fixture();
   const auto &product = fixture.network.phaseFront.product();
-  PhaseFrontDraft baselineDraft = phase_front_draft(product);
+  PhaseFrontDraft baselineDraft = phase_front_draft(fixture);
   const auto baseline = materialize(fixture, baselineDraft);
   ASSERT_TRUE(baseline.success) << baseline.failure;
   const auto baselineCertificates =
@@ -8018,7 +8169,7 @@ TEST(M5CP3, ProducedTorusUnusedValidRelationDoesNotAlterSelectedCertificate) {
 TEST(SurfaceCellTransitionQuotient,
      MultiplePeriodicRelationsSurviveRelationReorderingByExplicitOwner) {
   const auto &fixture = torus_fixture();
-  PhaseFrontDraft reordered = phase_front_draft(fixture.network.phaseFront);
+  PhaseFrontDraft reordered = phase_front_draft(fixture);
   ASSERT_GT(reordered.periodicHolonomies.size(), 1U);
   std::reverse(reordered.periodicHolonomies.begin(),
                reordered.periodicHolonomies.end());
@@ -8031,7 +8182,7 @@ TEST(SurfaceCellTransitionQuotient,
 TEST(SurfaceCellTransitionQuotient,
      SwappedPeriodicRelationOwnersAreRejected) {
   const auto &fixture = torus_fixture();
-  PhaseFrontDraft tampered = phase_front_draft(fixture.network.phaseFront);
+  PhaseFrontDraft tampered = phase_front_draft(fixture);
   ASSERT_GT(tampered.periodicHolonomies.size(), 1U);
   std::vector<std::size_t> periodicEdges;
   for (std::size_t edgeIndex = 0; edgeIndex < tampered.edges.size(); ++edgeIndex) {
@@ -8057,7 +8208,7 @@ TEST(SurfaceCellTransitionQuotient,
 
 TEST(SurfaceCellTransitionQuotient,
      MissingPeriodicRelationOwnerIsRejected) {
-  PhaseFrontDraft tampered = phase_front_draft(direct_periodic_owner_product());
+  PhaseFrontDraft tampered = phase_front_draft(direct_periodic_owner_fixture());
   const int periodic =
       first_edge_of_kind(tampered, SurfaceFrontBoundaryKind::PeriodicCut);
   ASSERT_GE(periodic, 0);
@@ -8101,7 +8252,7 @@ TEST(SurfaceCellTransitionQuotient,
 TEST(SurfaceCellTransitionQuotient,
      MissingHardRailCounterpartIsRejected) {
   const auto &fixture = hard_rail_fixture();
-  PhaseFrontDraft tampered = phase_front_draft(fixture.network.phaseFront);
+  PhaseFrontDraft tampered = phase_front_draft(fixture);
   const int hardRail =
       first_edge_of_kind(tampered, SurfaceFrontBoundaryKind::HardRail);
   ASSERT_GE(hardRail, 0);
@@ -8119,7 +8270,7 @@ TEST(SurfaceCellTransitionQuotient,
 TEST(SurfaceCellTransitionQuotient,
      AmbiguousHardRailCounterpartIsRejected) {
   const auto &fixture = hard_rail_fixture();
-  PhaseFrontDraft tampered = phase_front_draft(fixture.network.phaseFront);
+  PhaseFrontDraft tampered = phase_front_draft(fixture);
   const int hardRail =
       first_edge_of_kind(tampered, SurfaceFrontBoundaryKind::HardRail);
   ASSERT_GE(hardRail, 0);
@@ -8172,7 +8323,7 @@ TEST(SurfaceCellTransitionQuotient,
 TEST(SurfaceCellTransitionQuotient,
      RepeatedAuthoritativeCellCornerIsRejected) {
   const auto &fixture = square_fixture();
-  PhaseFrontDraft tampered = phase_front_draft(fixture.network.phaseFront);
+  PhaseFrontDraft tampered = phase_front_draft(fixture);
   ASSERT_FALSE(tampered.cells.empty());
   tampered.cells.front().corners[1] = tampered.cells.front().corners[0];
   const auto result = materialize(fixture, tampered);
@@ -8208,7 +8359,7 @@ TEST(SurfaceCellTransitionQuotient,
 TEST(SurfaceCellTransitionQuotient,
      ArtificialInteriorBoundaryIsRejected) {
   const auto &fixture = square_fixture();
-  PhaseFrontDraft tampered = phase_front_draft(fixture.network.phaseFront);
+  PhaseFrontDraft tampered = phase_front_draft(fixture);
   const int ordinary =
       first_edge_of_kind(tampered, SurfaceFrontBoundaryKind::OrdinaryInterior);
   ASSERT_GE(ordinary, 0);
@@ -8746,7 +8897,7 @@ TEST(SurfaceCellTypedTransportAuthority,
 TEST(SurfaceCellTypedTransportAuthority,
      RouteTopologyTransitionMismatchFailsClosed) {
   const auto &fixture = hard_rail_fixture();
-  PhaseFrontDraft tampered = phase_front_draft(fixture.network.phaseFront);
+  PhaseFrontDraft tampered = phase_front_draft(fixture);
   const int hardRail =
       first_edge_of_kind(tampered, SurfaceFrontBoundaryKind::HardRail);
   ASSERT_GE(hardRail, 0);
@@ -8789,7 +8940,7 @@ TEST(SurfaceCellTypedTransportAuthority,
 TEST(SurfaceCellTypedTransportAuthority,
      DuplicateSemanticRouteTopologyFailsClosed) {
   const auto &fixture = hard_rail_fixture();
-  PhaseFrontDraft tampered = phase_front_draft(fixture.network.phaseFront);
+  PhaseFrontDraft tampered = phase_front_draft(fixture);
   const int hardRail =
       first_edge_of_kind(tampered, SurfaceFrontBoundaryKind::HardRail);
   ASSERT_GE(hardRail, 0);
@@ -8895,7 +9046,7 @@ int apply_materializer_replacements(
 
 PhaseFrontDraft direct_full_periodic_materializer_draft() {
   PhaseFrontDraft draft =
-      phase_front_draft(direct_materializer_base_fixture().network.phaseFront);
+      phase_front_draft(direct_materializer_base_fixture());
   std::vector<MaterializerStateReplacement> replacements;
   bool transformed = false;
 
@@ -8975,7 +9126,12 @@ PhaseFrontDraft direct_full_periodic_materializer_draft() {
   if (product == nullptr) {
     throw std::runtime_error("Direct materializer authority factory rejected.");
   }
-  return phase_front_draft(*product);
+  PhaseFrontDraft result = phase_front_draft(*product);
+  const auto &fixture = direct_materializer_base_fixture();
+  result.sourceFaces = fixture.mesh.F;
+  result.sourceVertexCount = static_cast<std::size_t>(fixture.mesh.V.rows());
+  result.sourceAtlas = fixture.fieldTransportAtlas;
+  return result;
 }
 
 
@@ -10429,7 +10585,7 @@ TEST(M6CP1, A5PhaseFrontSourceFailuresKeepDistinctDiagnostics) {
   // SurfacePhaseFrontProduct itself rejects an empty edge set, so the A5
   // defensive empty-front branch is not constructible through public product
   // authority. Pin both the upstream fact and the preserved A5 diagnostic.
-  PhaseFrontDraft emptyEdges = phase_front_draft(front);
+  PhaseFrontDraft emptyEdges = phase_front_draft(fixture);
   emptyEdges.edges.clear();
   const auto emptyConstruction =
       construct_phase_front_product(std::move(emptyEdges));
