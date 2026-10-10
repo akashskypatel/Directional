@@ -1,3 +1,24 @@
+## CURRENT — RA-44.2 withdrawn; RA-45 frozen; R4 Code + Build released (2026-10-10)
+
+**`M6-CP3-CB1-ENTRY-R4` is UNBLOCKED and continues.** The producer-compatibility STOP was correct and is
+resolved by **withdrawing RA-44.2's absolute geometric pin**, not by building one. Decisive fact: the gauge has
+**no absolute consumer** — `RemeshPipeline.cpp:7300-7301` reads presence only, `:5613-5630` reads presence and
+face identity, and the only value use is the difference `compose(second, first.inverse())`
+(`tests/SurfaceCellTransitionQuotientTests.cpp:3152-3153`); Z4 is abelian so a uniform `+1 mod 4` cancels.
+RA-45: `.1` relational consumption proved; `.2` the pin is a category error and all three producers (planar
+`:11143-11260`, annular `:13510-13704`, curved `:15488-15556`) are admissible without pins; `.3` the relational
+A3 pin at `:8038-8080` plus presence at `:8020` is the whole authentication and is non-vacuous; `.4` a uniform
+rotation is **ACCEPTED** and must yield a bit-identical A6 outcome — the old "reject balanced tamper" negative
+is withdrawn; `.5` **validate, never normalise** — the gauge feeds a provenance digest at `:2134-2144`; `.6`
+A4's float predicate stays untouched and is no longer load-bearing; `.7` RA-44.1's
+`SurfaceHardRailTerminalContacts` landed and is accepted in shape, with RA-43.1 germ, RA-43.2 endpoint
+consumption and RA-43.4 replacement still open; `.8` no credit. Frozen 497 unchanged: CP2 accepted 491/491, R3
+rejected 403/497, 94 RED, 88 CP2 losses, stable **66/17/49** debt **1**. Basis:
+`Architecture_M6_CP3_R4_Gauge_Consumption_Review_Decision.md`. RA-41's junction/sector clauses stay frozen
+UNEXERCISED; the multi-carrier STOP and the 88 CP2 restorations remain undischarged.
+
+---
+
 ## CURRENT — R4 RA-44.2 geometric-gauge producer-compatibility STOP; independent Review required (2026-10-10)
 
 **`M6-CP3-CB1-ENTRY-R4` is REVIEW_BLOCKED** on the independent absolute-gauge design at `Architecture_M6_CP3_R4_Absolute_Gauge_Producer_Compatibility_Stop_Record.md`. This is a source-exact new incompatibility/undischarged proof, **not a withdrawal or revision of frozen RA-44**. The current factory carries no face axes/chart U/V or normals; planar `build_planar_phase_frame` already has an absolute `>= 1 - 1e-8` gate, but annular scoring selects a minimum squared-angular-error branch without that hard gate, and the curved producer seeds a geometric root at branch 0 and propagates via field transport without a planar reference U/V. The frozen review does not specify independent chart axes that satisfy its identical hard gate across those latter paths. Inventing axes from the asserted branch is tautological, and using the A3 relation alone misses balanced-all-face tamper. Independent Review must freeze a non-self-attesting per-producer axis construction and show equivalence to RA-44.2/.5 or formally amend the requirement. **No Code + Build workaround is authorized.**

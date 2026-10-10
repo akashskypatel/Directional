@@ -1,3 +1,18 @@
+## 2026-10-10 — `M6-CP3-CB1-ENTRY-R4` gauge STOP resolved; RA-45 frozen, RA-44.2 withdrawn
+
+Upheld the producer-compatibility STOP on its facts at HEAD `7f4a643d2` and resolved it by withdrawing the
+requirement. Established that `sourceFaceBranchRotations` has no absolute consumer: presence-only at
+`RemeshPipeline.cpp:7300-7301`, presence plus face identity at `:5613-5630`, and a single difference use
+`compose(second, first.inverse())` at `tests/SurfaceCellTransitionQuotientTests.cpp:3152-3153`; Z4 being
+abelian, a uniform `+1 mod 4` cancels. RA-44.2's absolute geometric pin is therefore a category error and is
+withdrawn, which admits the annular best-fit producer (`SurfaceCellTracing.cpp:13510-13704`) and the curved
+root-0 producer (`:15488-15556`) without producer-specific pins. The relational A3 pin already implemented at
+`:8038-8080` plus the presence gate at `:8020` is the whole authentication. Reclassified balanced uniform
+tamper as a gauge transformation: accept it and require a bit-identical A6 outcome. Added the no-normalisation
+constraint because the gauge feeds a provenance digest at `:2134-2144`. Accepted RA-44.1's landed
+`SurfaceHardRailTerminalContacts` in shape. Runtime-free: no code, test, fixture, selector, benchmark or build
+change in this turn; CP2 491/491 accepted; R3 403/497 rejected; stable 66/17/49 debt 1.
+
 ## 2026-10-10 — `M6-CP3-CB1-ENTRY-R4` binding STOP resolved; RA-44 frozen
 
 Accepted both source-authority STOP findings at HEAD `de0f9d4c1`. Withdrew RA-43.5 as vacuous:

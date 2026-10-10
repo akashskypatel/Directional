@@ -1,3 +1,19 @@
+## CURRENT — 2026-10-10 `M6-CP3-CB1-ENTRY-R4` gauge STOP resolved (RA-45)
+
+**No current stop.** The STOP was correct; RA-44.2's absolute geometric pin is **withdrawn as a category
+error**, because the gauge has **no absolute consumer** — presence only at `RemeshPipeline.cpp:7300-7301`,
+presence plus face identity at `:5613-5630`, and one difference use `compose(second, first.inverse())`; Z4 is
+abelian so a uniform `+1 mod 4` cancels. All three producers (planar, annular best-fit, curved root-0) are
+admissible without pins. The relational A3 pin at `SurfaceCellTracing.cpp:8038-8080` plus presence at `:8020`
+is the whole authentication. A uniform rotation is **accepted** and must yield a bit-identical A6 outcome; the
+factory must **validate, never normalise**, because the gauge feeds a provenance digest at `:2134-2144`. R4
+Code + Build continues; successor `M6-CP3-TB1-ENTRY-R4`. No runtime: CP2 491/491 accepted; R3 403/497
+rejected, 94 RED, 88 CP2 accepted losses; 66/17/49 debt 1. §8 recurring failure is extended in the opposite
+direction from the RA-43.5 defect: freezing one producer's **convention-selection rule** as a universal
+authentication requirement demands absolute authentication of a relationally-consumed quantity.
+
+---
+
 ## CURRENT — 2026-10-10 `M6-CP3-CB1-ENTRY-R4` binding STOP resolved (RA-44)
 
 **No current stop.** Both STOP findings accepted. RA-43.5 **withdrawn as vacuous** — `find_frame(face)`

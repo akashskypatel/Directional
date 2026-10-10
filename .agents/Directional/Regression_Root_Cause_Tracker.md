@@ -1,3 +1,31 @@
+## CURRENT — RA-44.2 absolute gauge pin withdrawn as a category error; RA-45 frozen (2026-10-10)
+
+**The STOP is upheld on its facts and resolved by withdrawing the requirement.** Three gauge producers reach
+one checked factory and only the planar one has the structure RA-44.2 assumed: annular `score_ring_candidate`
+(`src/geometry/SurfaceCellTracing.cpp:13510-13704`) is a best-fit minimisation with no global `axisU`, and the
+curved bounded-disk producer (`:15488-15556`) sets a root face to branch **0** by convention and propagates by
+transport BFS. The reason no construction exists is that **nothing consumes the gauge absolutely**:
+`RemeshPipeline.cpp:4605-4622` wraps it per occurrence face, it is stored only as a pair
+(`RemeshPipeline.h:865-869`, assigned `:5172-5173`), `:7300-7301` reads presence only, `:5613-5630` reads
+presence and face identity, and the single use of the value is the difference `compose(second,
+first.inverse())` (`tests/SurfaceCellTransitionQuotientTests.cpp:3152-3153`). Z4 is abelian, so a uniform
+`+1 mod 4` cancels in every difference. **Root class:** a Review Agent froze one producer's
+convention-selection rule as a universal authentication requirement, demanding absolute authentication of a
+relationally-consumed quantity — the same over-strong-requirement class as the RA-43.5 vacuity defect, now in
+the opposite direction. **Reclassification:** the pre-committed negative "reject a balanced +1 on every face"
+is **WITHDRAWN**; a uniform rotation must be **ACCEPTED** and yield a bit-identical A6 outcome. The relational
+A3 pin already implemented at `:8038-8080` plus the presence gate at `:8020` is the whole authentication and
+is non-vacuous: it rejects one-face, subset, permutation, A3-mismatch and absent-while-consumed. **New
+constraint:** `RemeshPipeline.cpp:2134-2144` folds the gauge into a provenance digest, so the factory must
+**validate and never normalise** — canonicalising to a root-0 convention would change accepted CP2 digests.
+**Owner/falsifier:** `M6-CP3-CB1-ENTRY-R4` must accept a uniform rotation with identical A6 outcome and reject
+a single-face change. **Prohibited:** constructing `axisU` from the asserted branch (tautological), any
+producer-specific absolute pin, altering A4's float selection predicate, normalising the gauge. RA-44.1's
+terminal-contact binding landed and is accepted in shape; RA-43.1/.2/.4 remain open. No runtime: stable ledger
+**66 events / 17 categories / 49 recurrences, M6 debt 1**, unchanged; 88 accepted CP2 losses carried.
+
+---
+
 ## CURRENT — R4 binding STOP resolved as RA-44; RA-43.5 withdrawn as vacuous (2026-10-10)
 
 **Both STOP findings ACCEPTED; R4 Code + Build released with RA-44 as its specification.** Finding 2 is a

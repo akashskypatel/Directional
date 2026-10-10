@@ -1,3 +1,56 @@
+## RA-45 — the +U gauge has no absolute consumer **FROZEN at M6-CP3-CB1-ENTRY-R4** (2026-10-10)
+
+Resolves the RA-44.2 producer-compatibility STOP by **withdrawing the requirement**, not by constructing a
+pin. Basis: `Architecture_M6_CP3_R4_Gauge_Consumption_Review_Decision.md`. No runtime credit.
+**RA-44.2's absolute geometric pin is WITHDRAWN.** RA-44.1/.3/.4/.6/.7, RA-43 (less .5), RA-42 as corrected,
+RA-41 frozen scoped, RA-40, RA-39, RA-38 and the RA-34.3 stop gates stand.
+
+- **RA-45.1 — the gauge is consumed only relationally.** `RemeshPipeline.cpp:4605-4622` reads the gauge at an
+  occurrence's `placement.selectedFace` and wraps it as `SurfaceOccurrenceEndpointFaceGaugeAuthority`; it is
+  stored only as a **pair** on `SurfaceOccurrenceRelationEvidence`
+  (`include/directional/pipeline/RemeshPipeline.h:865-869`, assigned `RemeshPipeline.cpp:5172-5173`);
+  `:7300-7301` reads **presence only**; `:5613-5630` reads presence and the **face identity**; the single use
+  of the value is the difference `compose(second, first.inverse())`
+  (`tests/SurfaceCellTransitionQuotientTests.cpp:3152-3153`). `QuarterTurn` is Z4 and Z4 is abelian, so a
+  uniform `+1 mod 4` cancels: `(g+1) o (g'+1)^-1 = g o g'^-1`. **No consumer's decision changes.**
+- **RA-45.2 — RA-44.2's absolute pin is WITHDRAWN as a category error.** It demanded absolute authentication
+  of a relationally-consumed quantity, which is why no construction exists for the annular producer
+  (`score_ring_candidate`, `src/geometry/SurfaceCellTracing.cpp:13510-13704`, a best-fit minimisation) or the
+  curved bounded-disk producer (`:15488-15556`, root value **0** by convention then transport BFS). The planar
+  producer's `axisU` gate (`build_planar_phase_frame`, `:11143-11260`) is **that producer's own
+  convention-selection rule**, not a property the gauge must have; freezing it as a universal requirement was
+  a Review Agent error. All three producers are admissible without producer-specific pins.
+- **RA-45.3 — the authentication is the relational A3 pin, already implemented.**
+  `src/geometry/SurfaceCellTracing.cpp:8038-8080` builds typed `SourceEdgeTopologyKey` incidence from
+  `topology_for_row`, skips single-incidence open boundary, and rejects unless
+  `reverse->transport == forward->transport.inverse()` and `compose(forward->transport, first) == second`.
+  With mandatory presence (`:8020`) and topology-derived keying this is **non-vacuous**: it rejects a
+  one-face change, any subset change, a permuted gauge vector, an A3 mismatch, and an absent gauge while
+  consumed.
+- **RA-45.4 — balanced uniform tamper is RECLASSIFIED as a gauge transformation.** The earlier pre-committed
+  negative "a balanced `+1 mod 4` on every face must be REJECTED" is **WITHDRAWN**: rejecting it would reject
+  a legitimate convention and is unimplementable without a pin that does not exist. Its replacement is a
+  **positive** obligation — a uniform rotation is **ACCEPTED** and must yield a **bit-identical A6 relation
+  outcome**, testing gauge-invariance as a property rather than asserting a value no consumer reads.
+- **RA-45.5 — validate, never rewrite.** `RemeshPipeline.cpp:2134-2144` folds the gauge into a provenance
+  digest, so a uniform rotation is semantically inert but **not digest-inert**. The factory must not
+  canonicalise or normalise the gauge — in particular it may not rotate it so a root face reads 0 — because
+  that would change accepted CP2 provenance digests. Accept as produced.
+- **RA-45.6 — RA-44.5's residual is dissolved for authentication.** A4's floating-point alignment predicate is
+  no longer load-bearing for any check. It remains the planar producer's own selection rule and stays
+  **untouched**; RA-44.5's prohibition on altering it continues to apply.
+- **RA-45.7 — RA-44.1 accepted in shape.** `SurfaceHardRailTerminalContacts` =
+  `std::map<authority::HardRailId, SurfaceHardRailTerminalContact>`
+  (`include/directional/geometry/SurfaceCellTracing.h:1512-1517`), threaded into `make` (`:1882`) and readable
+  at `:1930-1931`. The germ construction (RA-43.1), the endpoint-certificate consumption (RA-43.2) and the
+  `rail_sample_source_vertex` replacement (RA-43.4) remain **open**.
+- **RA-45.8 — no credit.** An over-strong requirement frozen in a review document is a review defect, not a
+  runtime regression. Ledger **66 events / 17 categories / 49 recurrences**, M6 debt **1**, unchanged.
+  Selector 497 untouched; CP2 491/491 accepted; R3 403/497 rejected. RA-41's junction/sector clauses remain
+  frozen **UNEXERCISED**; the multi-carrier STOP stands undischarged.
+
+---
+
 ## RA-44 — terminal rail-contact binding and the +U gauge witness **FROZEN at M6-CP3-CB1-ENTRY-R4** (2026-10-10)
 
 Resolves the R4 source-authority binding STOP. Basis:
@@ -17,7 +70,10 @@ RA-38 and the RA-34.3 stop gates stand.
   at the same three call sites (`:12176`, `:17031`, `:17721`). Keyed by `HardRailId` and component — never by
   raw-int equality and never by geometric closeness. Options (A) "pass the chain" and (B) "author a new A4
   certificate" are **rejected as heavier than the facts require**. Seventh occurrence of publish/reach.
-- **RA-44.2 — the +U gauge witness has two parts and neither suffices alone.** RA-43.5's oracle is withdrawn:
+- **RA-44.2 — WITHDRAWN by RA-45.2: the absolute geometric pin is a category error.** The gauge has no
+  absolute consumer (RA-45.1), so there is nothing absolute to authenticate; the annular and curved producers
+  have no `axisU` gate and need none. The relational A3 pin of RA-45.3 is the whole authentication. Retained
+  below for the record only. Original text: _the +U gauge witness has two parts and neither suffices alone._ RA-43.5's oracle is withdrawn:
   `FieldFaceBranchFrame` (`include/directional/authority/FieldTransportAtlas.h:728-734`) publishes **all four**
   branches, so `find_frame(face)` cannot discriminate, and `make` (`SurfaceCellTracing.cpp:7969-7984`) holds
   no vertices or axes with which to re-derive. Required instead: **(a) an absolute geometric pin** — per face,
