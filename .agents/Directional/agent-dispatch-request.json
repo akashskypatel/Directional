@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb1-r4-terminal-contacts-compile-20261010",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb1-r4-terminal-contacts-compile",
-  "source_sha": "c7cb5d68b72097f1db0bf1ce54e5379894d77c93",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb1-r4-terminal-contacts"
+  "request_id": "m6-cp3-r4-closed-rail-provenance-apply-20261010",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-closed-rail-apply",
+  "file_id": "16FnwaS4ew1X2r0V3GHGAbE7fNpU5hSTk",
+  "patch_sha256": "68fa789578b8ced43cab5b4378f4fdc87b48f4b421fd854a1a6a204e3e243c78",
+  "base_sha": "ef1b48fee2c10ee6b737f3202abb512300905b8d",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "fix(surface-cells): preserve and validate closed hard-rail source provenance"
 }
