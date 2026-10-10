@@ -1,3 +1,11 @@
+## CURRENT — R4 D2 terminal A2b/A3 row-permutation attestation (2026-10-10)
+
+**Canonical turn `M6-CP3-CB1-ENTRY-R4` remains IN_PROGRESS; no successor or frozen TB497.** Exact source `5a8f79f62a671345da9bb1c2ded320e2d8daccdc` extends existing `M6CP3.HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge` (not a new selector) with independent terminal-contact A2b source-star step attestation against the A3 atlas in both directions. Normalized typed vertex/edge/face/quarter-turn multisets must agree across independent original and source-row-permuted A4 productions. The case requires a genuinely nonempty produced terminal step; source row numeric identities cannot launder transport differences.
+
+Verified source snapshot run `38085943471` / event `1f1154a793200eed79bc1c404f975b009dcc1666` / artifact `11682432017` (5979/5979 manifest); apply run `38086310642` published the exact single-test-file source commit and owner deleted its Drive patch. **Exact GMP/GMPXX compile GREEN:** workflow `38086431310`, job `114313866942`, source `5a8f79f62a671345da9bb1c2ded320e2d8daccdc`, 8/8 requested targets, preflight/build exits 0/0, clean source, 28/28 manifest, `runtimeExecution=false`, result artifact `11682567721` ZIP SHA256 `37d9c9f0f163c3d8fccca4072494744d22233d44d48c808a04a8d24b4275eb2f`, log artifact `11682517856` ZIP SHA256 `992bc2ad7000ca12fedc94c0ce6deff8e0e74f4cc1803eb90c98f0c2faa839dc`.** No generated Directional runtime, test, benchmark, frozen selector, or CLI was executed in this Code + Build increment. Source-valid dual-path ambiguity requires independent specification scrutiny (do not fabricate nonmanifold witnesses), while multi-carrier/odd-τ, 39 endpoint, 34 Phase10, 7 DCEL, 88 CP2 and frozen 497 remain unaccepted. Refer to `.agents/Directional/Architecture_M6_CP3_R4_D2_Terminal_A3_Attestation_Code_Build_Record.md`.
+
+---
+
 ## CURRENT — R4 D2 multi-carrier terminal A2b ingress migration (2026-10-10)
 
 **Canonical `M6-CP3-CB1-ENTRY-R4` remains IN_PROGRESS; no TB497 or successor.**

@@ -1,3 +1,7 @@
+## 2026-10-10 — R4 multi-carrier terminal A2b/A3 source-row attestation
+
+Existing D2 producer regression now verifies bidirectional A3 transport for every produced terminal A2b side-germ step and source-face-row invariant typed vertex/edge/face/transport identity. It rejects vacuity by demanding a real nonempty terminal path. Exact source `5a8f79f62a671345da9bb1c2ded320e2d8daccdc`, source apply run `38086310642`. **Exact GMP/GMPXX compile GREEN:** workflow `38086431310`, job `114313866942`, source `5a8f79f62a671345da9bb1c2ded320e2d8daccdc`, 8/8 requested targets, preflight/build exits 0/0, clean source, 28/28 manifest, `runtimeExecution=false`, result artifact `11682567721` ZIP SHA256 `37d9c9f0f163c3d8fccca4072494744d22233d44d48c808a04a8d24b4275eb2f`, log artifact `11682517856` ZIP SHA256 `992bc2ad7000ca12fedc94c0ce6deff8e0e74f4cc1803eb90c98f0c2faa839dc`.** No test/benchmark/runtime run or frozen selector edits.
+
 ## 2026-10-10 — R4 D2 source-star endpoint checked-factory regression migration
 
 `M6CP3.HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge` now supplies
