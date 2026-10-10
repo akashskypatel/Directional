@@ -1,0 +1,2 @@
+# M6-DEFN-R5-R4 completed Definition patch; remove exact temporary source-snapshot trigger only.
+.agents/connector-triggers/source-snapshot/M6-DEFN-R5-R4-20261010T0724Z.txt
