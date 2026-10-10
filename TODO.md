@@ -1,4 +1,12 @@
-# LIVE — R3 D3/D5 fail-context GMP compile (2026-10-09T23:21Z)
+# LIVE — R3 latest-source static acceptance boundary (2026-10-10T00:09Z)
+
+- [x] Source `089779c15eae27a2bb3b798ef9c8085950e92def`: eight GMP/GMPXX targets compiled GREEN in run `38005003624`, package `11650409049`, 28/28 internal hashes, `runtimeExecution=false`. Verified last patch adds six diagnostics but changes no positive predicates.
+- [x] Fresh frozen **497=30+12+449+6** static owner census: 497 unique single-packaged definitions; 53 historic R2 REDs including 47 former CP2 greens selected; 4 supplemental tests unselected. Report `.agents/Directional/Architecture_M6_CP3_R3_089_Exact_Source_Static_Census_20261010.md`, reproducible CSV/script in Library `/Directional/Evidence/`.
+- [ ] SAME R3 IN_PROGRESS, no successor. Independent A3 factory trust (A), CB closure vs separate runtime 497 TB (B), and 4 supplemental cases (C) remain unadjudicated. Organic D1/D2/D3/D5/A6/A7, 39 R2 first-failure loci and 47 accepted-green restorations **not executed/proven**; no schema/selector/runtime mutation authorized.
+
+---
+
+# HISTORICAL — R3 D3/D5 fail-context GMP compile (2026-10-09T23:21Z)
 
 - [x] Added six typed first-failure message contexts to unchanged D3/D7 and D5 selected `ASSERT_NE` assertions, semantic commit `089779c15eae27a2bb3b798ef9c8085950e92def`, exact patch retained in Library `/Directional/Evidence/`. Apply run `38004878130` succeeded, consumed Drive patch deleted.
 - [x] Eight mandatory GMP/GMPXX targets compiled GREEN run `38005003624`, artifact `11650409049`, 28/28 internal hashes, clean source, `runtimeExecution=false` (no binary executed).
