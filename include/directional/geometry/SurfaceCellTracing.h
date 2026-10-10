@@ -1686,6 +1686,8 @@ struct SurfacePhaseFrontCell {
   std::array<std::vector<SurfaceTraceSegment>, 4> boundaryPaths;
 };
 
+enum class SurfacePhaseFrontProductErrorCode : int;
+
 enum class SurfacePhaseFrontFailureReason : int {
   None = 0,
   InvalidInput = 1,
@@ -1755,6 +1757,7 @@ enum class SurfacePhaseFrontFailureReason : int {
   PeriodicActionFirstEndpointMismatch = 65,
   PeriodicActionSecondEndpointMismatch = 66,
   InvalidHardRailRouteCertificate = 67,
+  PublishedProductRejected = 68,
 };
 
 /** First failed producer predicate for an A4 hard-rail route; diagnostic only. */
@@ -1774,6 +1777,8 @@ enum class SurfaceHardRailRouteFailureLocus : int {
 struct SurfacePhaseFrontFailure {
   SurfacePhaseFrontFailureReason reason = SurfacePhaseFrontFailureReason::None;
   SurfaceHardRailRouteFailureLocus hardRailRouteLocus = SurfaceHardRailRouteFailureLocus::None;
+  // Factory rejection is distinct from a pre-publication producer failure.
+  std::optional<SurfacePhaseFrontProductErrorCode> publishedProductError;
   int firstFrontEdge = -1;
   int secondFrontEdge = -1;
   int routeStepIndex = -1;

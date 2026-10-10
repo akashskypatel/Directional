@@ -12240,7 +12240,11 @@ SurfacePhaseFrontResult publish_phase_front_result(
   if (auto *value = std::get_if<SurfacePhaseFrontProduct>(&product)) {
     return SurfacePhaseFrontResult::produced(std::move(*value));
   }
-  state.failure.reason = SurfacePhaseFrontFailureReason::InvalidFinalCellState;
+  // Preserve the checked factory's exact rejection instead of relabeling
+  // unrelated source/transport failures as invalid completed geometry.
+  state.failure.reason = SurfacePhaseFrontFailureReason::PublishedProductRejected;
+  state.failure.publishedProductError =
+      std::get<SurfacePhaseFrontProductError>(product).code;
   return SurfacePhaseFrontResult::rejected(std::move(state.failure));
 }
 
@@ -18188,6 +18192,7 @@ const char *surface_phase_front_failure_reason_name(
   case SurfacePhaseFrontFailureReason::InvalidLatticeEdge: return "InvalidLatticeEdge";
   case SurfacePhaseFrontFailureReason::FrontOwnershipConflict: return "FrontOwnershipConflict";
   case SurfacePhaseFrontFailureReason::InvalidFinalCellState: return "InvalidFinalCellState";
+  case SurfacePhaseFrontFailureReason::PublishedProductRejected: return "PublishedProductRejected";
   case SurfacePhaseFrontFailureReason::InvalidFinalEdgeState: return "InvalidFinalEdgeState";
   case SurfacePhaseFrontFailureReason::InvalidPeriodicTopology: return "InvalidPeriodicTopology";
   case SurfacePhaseFrontFailureReason::InvalidPeriodicChart: return "InvalidPeriodicChart";
