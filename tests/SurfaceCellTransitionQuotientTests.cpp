@@ -8857,6 +8857,57 @@ TEST(M6CP3, CheckedFactoryReconstructsProducedTerminalA2bStarUniqueness) {
                          &checked));
 }
 
+// A4 authenticates source-star route and carrier A3, whereas A5 owns the
+// relational lattice branch at each hard-rail endpoint occurrence. Mutate
+// only a produced cell's endpoint gauge; keep every A2b/A3 input unchanged.
+TEST(M6CP3, A5RejectsA4AcceptedHardRailEndpointBranchForgery) {
+  const auto &fixture = hard_rail_fixture();
+  const auto &front = fixture.network.phaseFront.product();
+  const auto baseline =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+          fixture.mesh.V, fixture.mesh.F, front);
+  ASSERT_NE(nullptr,
+            std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+                &baseline))
+      << "a real hard-rail A4 product must first reach A5 successfully";
+
+  PhaseFrontDraft draft = phase_front_draft(fixture);
+  const auto rail = std::find_if(
+      draft.edges.begin(), draft.edges.end(), [](const auto &edge) {
+        return edge.boundaryKind == SurfaceFrontBoundaryKind::HardRail &&
+               edge.oppositeEdge >= 0 && edge.filledSide >= 0 &&
+               edge.filledSide < 4;
+      });
+  ASSERT_NE(rail, draft.edges.end())
+      << "A5 regression requires a genuinely produced hard-rail relation";
+  const auto cell = std::find_if(
+      draft.cells.begin(), draft.cells.end(),
+      [&](const auto &candidate) { return candidate.id == rail->filledCell; });
+  ASSERT_NE(cell, draft.cells.end());
+  const std::size_t corner = static_cast<std::size_t>(rail->filledSide);
+  ASSERT_GE(cell->lattice[corner].branchRotation, 0);
+  ASSERT_LT(cell->lattice[corner].branchRotation, 4);
+  cell->lattice[corner].branchRotation =
+      (cell->lattice[corner].branchRotation + 1) % 4;
+
+  const auto rebuilt = construct_phase_front_product(std::move(draft));
+  const auto *acceptedA4 =
+      std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&rebuilt);
+  ASSERT_NE(acceptedA4, nullptr)
+      << "cell-only lattice mutation must preserve checked A4 source/A3";
+  const auto result =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+          fixture.mesh.V, fixture.mesh.F, *acceptedA4);
+  const auto *error =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(
+          &result);
+  ASSERT_NE(error, nullptr)
+      << "A5 must reject a forged endpoint lattice branch";
+  EXPECT_EQ(error->code,
+            directional::pipeline::SurfaceOccurrenceComplexErrorCode::
+                HardRailTransportMismatch);
+}
+
 TEST(M6CP3, CheckedFactoryRejectsForgedTerminalA2bSideGerm) {
   const auto &fixture = nonconstant_hard_rail_fixture();
   const auto &front = fixture.network.phaseFront.product();
