@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r3-ra40-eigen-fixed-cross-drive-apply-r1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r3-ra40-eigen-cross-drive-apply-r1",
-  "file_id": "1NoI2ETKm-TeU9tYnpWBz7wpxNYDsPTvk",
-  "patch_sha256": "1cdb28c1c4ac8a1752f8201de3602053a4c10b1a2abcd8a9a2f01f37adb4cb26",
-  "base_sha": "7de636c88fe6ad8c4f09c1956161f56f88995785",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(tests): materialize fixed-size Eigen vectors for cross product",
-  "retention_days": 14
+  "request_id": "m6-cp3-r3-ra40-eigen-repair-gmp-compile-20261010-r2",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r3-ra40-eigen-repair-gmp-compile-r2",
+  "source_sha": "d82e34427adc6fe09ad216a4363fea23dd0ae0b8",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r3-ra40-eigen-repair-gmp-r2"
 }
