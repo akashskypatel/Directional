@@ -1,3 +1,25 @@
+## 2026-10-10 — `M6-DEFN-R5-R4-NEXT`: RA-41's cited carrier incidence is impossible in the reference fixture
+
+Next-steps determination. R4 accepted as strong — it resolved all three remitted findings, and its **boundary
+germ** construction is sharper than Review's reading (b): cutting one incident rail at a vertex yields two
+boundary germs even when the one-ring minus that edge stays connected, which is why unrestricted non-rail BFS is
+insufficient for a singleton. RA-41.1/.2 correctly held as candidates, not frozen.
+
+**But a load-bearing input is provably wrong.** D2 cites "`front=13,131`, carrier `(1,2)` with rows `{0,3}`".
+Re-derived from `tests/SurfaceCellTransitionQuotientTests.cpp:578-591`: edge `(1,4)` -> `{0,3}`, edge `(4,7)` ->
+`{4,7}`, edge **`(1,2)` -> `{2}`** — a boundary edge with one incident face. `{0,3}` is edge (1,4)'s incidence,
+and edge (1,2)'s sole face is **2**, precisely the anomalous face in `faceEnds=0,2|0,3`. Either that record
+belongs to a different fixture (so the incidence is uncorroborated), or the diagnostic mis-reports by pairing one
+carrier with another's incidence — which would explain `faceEnds=0,2|0,3` with no semantics change and make
+RA-41.2's contact-witness machinery the wrong cure for part of the 39-row family.
+
+The RA-40(C) supplemental `HardRailTransitionNeedsExactlyTwoSourceFaceIncidences` was written to catch exactly
+this and remains unexecuted; it is now a candidate first-locus discriminator.
+
+**Determination:** next turn is `M6-DEFN-R5-R4-DIAG`, a bounded runtime-free diagnostic-fidelity audit, then
+`M6-DEFN-R5-R4-REV` to freeze RA-41 on a verified observation, then the CB. RA-41 stays unfrozen; ledger
+66 / 17 / 49, debt 1.
+
 ## 2026-10-10 — `M6-CP3-TB1-ENTRY-R3-REV-ADJ`: R3-REV adjudicated ACCEPTED; three findings remitted to R4
 
 Runtime-free independent adjudication of `M6-CP3-TB1-ENTRY-R3-REV`. **Review ACCEPTED** as complete and

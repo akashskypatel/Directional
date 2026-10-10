@@ -6,6 +6,37 @@
 
 ---
 
+## `M6-DEFN-R5-R4-NEXT` — RA-41's cited carrier incidence is impossible in the reference fixture
+
+**Status.** Next-steps determination / RA-41 **remains unfrozen** / successor `M6-DEFN-R5-R4-DIAG` bounded
+diagnostic-fidelity audit, then `M6-DEFN-R5-R4-REV`. Ledger **66 / 17 / 49**, debt 1, unchanged; no runtime
+result. Basis: `Future_Chat_Session_Handoff.md` top block.
+
+**R4 accepted as strong.** It resolved all three remitted findings and its **boundary germ** construction is
+sharper than Review's reading (b): cutting one incident rail at a vertex yields two boundary germs even when the
+one-ring minus that edge stays connected, which is why unrestricted non-rail BFS is insufficient for a singleton.
+RA-41.1/.2 correctly held as candidates.
+
+**Defect in a load-bearing input.** D2 cites "`front=13,131`, carrier `(1,2)` with rows `{0,3}`". Re-derived from
+`tests/SurfaceCellTransitionQuotientTests.cpp:578-591`: edge `(1,4)` -> faces `{0,3}`; edge `(4,7)` -> `{4,7}`;
+edge **`(1,2)` -> `{2}`**, a **boundary edge with one incident face**. `{0,3}` is edge (1,4)'s incidence, and
+edge (1,2)'s sole face is **2** — exactly the anomalous face in `faceEnds=0,2|0,3`.
+
+Either `front=13,131` is a different fixture (then the incidence is **uncorroborated**), or the diagnostic
+**mis-reports** by pairing edge (1,2) with edge (1,4)'s incidence — carrier/record cross-contamination that
+would explain `faceEnds=0,2|0,3` with **no semantics change**, making RA-41.2's contact-witness machinery the
+wrong cure for part of the 39-row family. A one-incident-face edge cannot be a valid carrier, and `make` already
+enforces that via `rail_face_incident`, so the likelier variant is a wrong-index or pre-validation **diagnostic**
+defect rather than an invalid carrier in flight.
+
+**Convergence.** The RA-40(C) supplemental
+`SurfacePhaseFrontProductFactoryAuthority.HardRailTransitionNeedsExactlyTwoSourceFaceIncidences` was written to
+catch exactly this and is still **unexecuted**. It is now a candidate first-locus discriminator; `[[RA-40.3]]`'s
+deferral should be revisited on that basis.
+
+**Do not** author the RA-41.2 contact witness, change production semantics or patch front construction until the
+diagnostic's fidelity is established.
+
 ## `M6-CP3-TB1-ENTRY-R3-REV-ADJ` — independent adjudication: review ACCEPTED, three findings remitted to R4
 
 **Status.** Review **ACCEPTED** as complete and accurate. `REJECT R3 / UNPROMOTED` stands; ledger

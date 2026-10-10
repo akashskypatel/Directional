@@ -1,3 +1,78 @@
+## Next steps determination — verify the diagnostic BEFORE freezing RA-41 (2026-10-10)
+
+**R4 is complete and strong.** It credited and resolved all three remitted findings, and its **boundary germ**
+construction is sharper than the Review's reading (b): cutting one incident rail at a vertex creates **two
+boundary germs even when the one-ring minus that edge stays connected**, which is exactly why unrestricted
+non-rail BFS is insufficient for a singleton. RA-41.1/.2 are correctly held as **candidates, not frozen** —
+`Architecture_M6_Frozen_Definitions.md` contains no RA-41, as it should until Review.
+
+**But a load-bearing input to RA-41.2 is provably wrong, and it must be checked before any freeze.**
+
+### The cited carrier incidence is impossible in the reference fixture
+
+D2 cites "`front=13,131`, carrier `(1,2)` with rows `{0,3}`". Re-derived from the fixture construction at
+`tests/SurfaceCellTransitionQuotientTests.cpp:578-591` (8 triangles, per-quad
+`(lowerLeft,lowerRight,upperRight)` + `(lowerLeft,upperRight,upperLeft)`):
+
+```text
+face 0 (0,1,4)   face 1 (0,4,3)   face 2 (1,2,5)   face 3 (1,5,4)
+face 4 (3,4,7)   face 5 (3,7,6)   face 6 (4,5,8)   face 7 (4,8,7)
+
+edge (1,4) -> faces {0,3}      <- matches the record
+edge (4,7) -> faces {4,7}
+edge (1,2) -> faces {2}        <- ONE incident face: a BOUNDARY edge
+```
+
+So `{0,3}` is edge **(1,4)**'s incidence, not edge (1,2)'s. Edge (1,2) has exactly **one** incident face, and
+that face is **2** — precisely the anomalous face in `faceEnds=0,2|0,3`.
+
+### Why this matters more than it looks
+
+Two readings, and they lead to very different work:
+
+- **(i) `front=13,131` belongs to a different fixture.** The 497 gate spans focused30, focused12, selector449 and
+  six CP3 entry rows, so this is possible — but then the claim is simply **unverified against the right mesh**,
+  and D2's reasoning rests on an uncorroborated incidence.
+- **(ii) It is this fixture.** Then the diagnostic **mis-reports**: it pairs edge (1,2) with edge (1,4)'s
+  incidence. That is carrier/record cross-contamination, and it explains `faceEnds=0,2|0,3` with **no semantics
+  change at all** — face 2 leaks in from the wrong carrier record.
+
+Under (ii), RA-41.2's contact-witness machinery would be solving the wrong problem for at least part of the
+39-row family. A one-incident-face edge **cannot be a valid hard-rail carrier** under any frozen rule, and
+`make` already enforces that via `rail_face_incident` on both faces — so the more likely variant of (ii) is that
+the **newly added diagnostic** prints pre-validation or wrong-index data, not that an invalid carrier flows
+through. Either way, **the observation RA-41.2 is built on is not yet trustworthy.**
+
+### The convergence nobody has acted on
+
+One of the four RA-40(C) supplemental tests is
+`SurfacePhaseFrontProductFactoryAuthority.HardRailTransitionNeedsExactlyTwoSourceFaceIncidences` — written
+precisely to catch a carrier without two incident source faces. It is still **unexecuted**, outside 497,
+diagnostic-only. It is now a candidate **first-locus discriminator**, not a nice-to-have, and Decision C's
+deferral should be revisited on that basis.
+
+### Determination
+
+**Next implementation-agent turn: `M6-DEFN-R5-R4-DIAG` — a bounded, runtime-free diagnostic-fidelity audit.**
+Cheap, decisive, and it must precede the freeze:
+
+1. Identify, per cited record, **which fixture and mesh** `front=17,203` and `front=13,131` belong to, by exact
+   source correlation — not by assuming the 3x3 fixture.
+2. For every purported carrier in those records, re-derive the **true** incident source-face set from that
+   mesh's own faces, and state whether the reported value matches.
+3. Determine whether any purported carrier has fewer than two incident source faces anywhere in the 39-row
+   family, and whether the diagnostic prints pre- or post-validation data.
+4. Report the diagnostic's own fidelity explicitly. Do **not** author the RA-41.2 contact witness, change
+   production semantics, or patch front construction in this turn.
+
+**Then `M6-DEFN-R5-R4-REV`** (Review Agent) freezes or amends RA-41 on a verified observation, and only then the
+CB at `Architecture_M6_CP3_CB1_Entry_R4_Recovery_Code_Build_Plan.md`.
+
+RA-41 stays **unfrozen**. Ledger **66 / 17 / 49**, debt 1. No runtime result is added. R4's own STOP conditions
+stand: reject at **front construction** rather than downstream if no producer-owned local contact path exists;
+reject on germ ambiguity; return to A2b/A3 architecture Review if no source-attached path is representable; a
+handcrafted two-edge route or an empty search never counts as production proof.
+
 ## CURRENT — M6-DEFN-R5-R4 RA-41 candidate Definition (runtime-free)
 
 **Exact next after Definition closeout: independent `M6-DEFN-R5-R4-REV`.** R4's source-exact RA-41 candidate is `Architecture_M6_DEFN_R5_R4_CP3_Entry_Recovery_Definition_Record.md`; one **HELD** contingent Code+Build plan is `Architecture_M6_CP3_CB1_Entry_R4_Recovery_Code_Build_Plan.md`. Do not implement, compile, test or promote before Review. The contract rejects the old trace-endpoint-face=carrier-face assumption and defines producer-owned local terminal contact on source-vertex side germs with A2b/A3 witness; A3 is conditionally required for independently authenticated transport, with explicit nonempty face-gauge provenance, never a fake null-atlas exemption. All 34 new Phase10 first assertions are inventoried with raw R3 hashes (but none falsely attributed to factory); seven synthetic single-triangle DCEL throws need real source faces and original oracles. Critical Review question: source-exact producer contact/gauge lineage must be independently demonstrable; otherwise STOP/return to Definition rather than releasing implementation. Frozen R3 **403/497, 94 RED**, latest accepted CP2 **491/491**, 88 CP2 positives lost, ledger **66/17/49**, debt 1. No runtime occurred in Definition. Snapshot run `38034385455`, artifact `11662879391`, source `5b5e7aa063caf2e68385f037c6f165adc38ca0c3`.
