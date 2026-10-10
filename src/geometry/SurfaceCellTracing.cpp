@@ -5906,6 +5906,18 @@ rail_interval_refs(
       return result;
     }
     const int intervalCount = static_cast<int>(rail.samples.size()) / 2;
+    // Produced rails publish ordered source-vertex incidence independently of
+    // floating-point sample coordinates. Never let a geometric tolerance
+    // change the identity of an explicitly owned rail endpoint.
+    const bool typedVertices = !rail.sourceVertices.empty();
+    const std::size_t expectedVertexCount =
+        static_cast<std::size_t>(intervalCount) + (rail.closed ? 0U : 1U);
+    if ((typedVertices && rail.sourceVertices.size() != expectedVertexCount) ||
+        (fieldAlignedNetwork != nullptr && !typedVertices)) {
+      result.status = RailBuildStatus::TypedAuthorityMismatch;
+      result.railId = rail.id;
+      return result;
+    }
     const std::size_t railStart = result.intervals.size();
     int firstStartVertex = -1;
     int previousEndVertex = -1;
@@ -5934,8 +5946,56 @@ rail_interval_refs(
         result.intervalIndex = interval;
         return result;
       }
-      const int startVertex = rail_sample_source_vertex(faces, a);
-      const int endVertex = rail_sample_source_vertex(faces, b);
+      int startVertex = rail_sample_source_vertex(faces, a);
+      int endVertex = rail_sample_source_vertex(faces, b);
+      if (typedVertices) {
+        const auto first = authority::SourceVertexId::from_index(
+            rail.sourceVertices[static_cast<std::size_t>(interval)],
+            static_cast<std::size_t>(vertices.rows()));
+        const auto second = authority::SourceVertexId::from_index(
+            rail.sourceVertices[(static_cast<std::size_t>(interval) + 1U) %
+                                rail.sourceVertices.size()],
+            static_cast<std::size_t>(vertices.rows()));
+        if (!first || !second) {
+          result.status = RailBuildStatus::TypedAuthorityMismatch;
+          result.railId = rail.id;
+          result.intervalIndex = interval;
+          return result;
+        }
+        const auto publishedEdge =
+            authority::SourceEdgeTopologyKey::make(first.value(),
+                                                   second.value());
+        if (!publishedEdge ||
+            publishedEdge.value() !=
+                local_edge_key(faces, a.sourceFace, a.sourceEdge)) {
+          result.status = RailBuildStatus::TypedAuthorityMismatch;
+          result.railId = rail.id;
+          result.intervalIndex = interval;
+          return result;
+        }
+        const auto is_exact_corner = [&](const SurfaceCellRailSample &sample,
+                                         const int vertex) {
+          int corner = -1;
+          for (int i = 0; i < 3; ++i) {
+            if (faces(sample.sourceFace, i) == vertex) corner = i;
+          }
+          if (corner < 0 || corner == sample.sourceEdge) return false;
+          for (int i = 0; i < 3; ++i) {
+            if (sample.barycentric[i] != (i == corner ? 1.0 : 0.0))
+              return false;
+          }
+          return true;
+        };
+        startVertex = static_cast<int>(first->index());
+        endVertex = static_cast<int>(second->index());
+        if (!is_exact_corner(a, startVertex) ||
+            !is_exact_corner(b, endVertex)) {
+          result.status = RailBuildStatus::InvalidSampleGeometry;
+          result.railId = rail.id;
+          result.intervalIndex = interval;
+          return result;
+        }
+      }
       const bool localParametersValid =
           (std::abs(a.parameter) <= 1.0e-8 &&
            std::abs(b.parameter - 1.0) <= 1.0e-8) ||

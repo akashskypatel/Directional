@@ -1745,6 +1745,37 @@ TEST(SurfaceCellTracingPhase14,
 }
 
 TEST(SurfaceCellTracingPhase14,
+     ProducedRailEndpointsRequireExactSourceVertexIncidence) {
+  const MeshFixture mesh = make_grid(2);
+  const auto edgeFaces =
+      directional::geometry::surface_cell_tracing_detail::edge_faces(mesh.faces);
+  directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(94));
+  rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
+  rail.sourceVertices = {0, 4};
+  rail.samples = {
+      rail_sample(mesh, 0, 1, 0.0, 0.0,
+                  Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
+      rail_sample(mesh, 0, 1, 1.0, 1.0,
+                  Eigen::RowVector3d(0.0, 0.0, 1.0), 4)};
+  const auto validate = [&] {
+    return directional::geometry::surface_cell_tracing_detail::rail_interval_refs(
+        {rail}, mesh.vertices, mesh.faces, edgeFaces);
+  };
+  EXPECT_EQ(validate().status,
+            directional::geometry::surface_cell_tracing_detail::RailBuildStatus::Valid);
+
+  rail.sourceVertices[0] = 1;
+  EXPECT_EQ(validate().status,
+            directional::geometry::surface_cell_tracing_detail::RailBuildStatus::TypedAuthorityMismatch);
+  rail.sourceVertices[0] = 0;
+
+  // A point inside a tolerance ball must not acquire source-vertex identity.
+  rail.samples[0].barycentric = Eigen::RowVector3d(1.0 - 1.0e-9, 1.0e-9, 0.0);
+  EXPECT_EQ(validate().status,
+            directional::geometry::surface_cell_tracing_detail::RailBuildStatus::InvalidSampleGeometry);
+}
+
+TEST(SurfaceCellTracingPhase14,
      RailPreprocessingRejectsMalformedIntervalsAndReportsEndpointForValidRail) {
   const MeshFixture mesh = make_grid(2);
   const auto edgeFaces =
