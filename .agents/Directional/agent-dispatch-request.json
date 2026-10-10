@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-defn-r5-r4-rev-docs-20261010-r2",
+  "request_id": "m6-defn-r5-r4-rev-source-review-r3-20261010",
   "operation": "drive_apply",
-  "mailbox_key": "m6-defn-r5-r4-rev-docs-apply-r2",
-  "file_id": "1BOwxUm9_caWpFCNZ7ydVJcZ-Xcl9_T0Q",
-  "patch_sha256": "cf8d2955542b2c965368f5715aaeeb52cad1ad4c05f5efb89cf808bec7794673",
-  "base_sha": "91cd585f2cfd5457bb9fddae8357554a32c898ad",
+  "mailbox_key": "m6-defn-r5-r4-rev-source-review-apply-r3",
+  "file_id": "15cq0xa2nGdWN3jmTDgTToqQA4UvBZdlw",
+  "patch_sha256": "e3426a6b7c46bd92ab4a1a1c0894d18ff36e452cdfdec65470d873a3e9e9ce6b",
+  "base_sha": "0bc8080366757a2285a8265599255475ef8525b2",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record R4 independent architecture review blockers",
+  "commit_message": "docs(directional): correct RA-42 source authority review and hold R4",
   "retention_days": 14
 }
