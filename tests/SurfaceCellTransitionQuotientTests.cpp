@@ -1793,6 +1793,14 @@ struct PhaseFrontDraft {
       hardRailFieldTransitions;
   std::vector<directional::geometry::SurfaceHardRailRouteCertificate>
       hardRailRouteCertificates;
+  // Preserve the complete checked-factory source contract when cloning a
+  // produced front. Dropping these A2b/closed-rail inputs turns otherwise
+  // meaningful mutation tests into unrelated early provenance failures.
+  std::optional<directional::geometry::SurfaceConformityPlanReceipt>
+      conformityPlanReceipt;
+  directional::geometry::SurfaceHardRailTerminalContacts
+      hardRailTerminalContacts;
+  directional::geometry::SurfaceHardRailClosedChains hardRailClosedChains;
 };
 PhaseFrontDraft direct_full_periodic_materializer_draft(); bool action_has_nonzero_turn(const directional::authority::GridAutomorphism &action);
 PhaseFrontDraft phase_front_draft(
@@ -1810,7 +1818,10 @@ PhaseFrontDraft phase_front_draft(
           product.hardFeatureEdges(),
           product.sourceFaceBranchRotations(),
           product.hardRailFieldTransitions(),
-          product.hardRailRouteCertificates()};
+          product.hardRailRouteCertificates(),
+          product.conformityPlanReceipt(),
+          product.hardRailTerminalContacts(),
+          product.hardRailClosedChains()};
 }
 
 PhaseFrontDraft phase_front_draft(const SurfacePhaseFrontResult &phaseFront) {
@@ -1841,11 +1852,14 @@ construct_phase_front_product(PhaseFrontDraft draft) {
       draft.sourceAtlas ? &*draft.sourceAtlas : nullptr,
       std::move(draft.certificates), std::move(draft.periodicHolonomies),
       std::move(draft.boundedDiskBoundaryPhases), std::move(draft.edges),
-      std::move(draft.events), std::move(draft.cells), std::nullopt,
+      std::move(draft.events), std::move(draft.cells),
+      std::move(draft.conformityPlanReceipt),
       std::move(draft.hardFeatureEdges),
       std::move(draft.sourceFaceBranchRotations),
       std::move(draft.hardRailFieldTransitions),
-      std::move(draft.hardRailRouteCertificates));
+      std::move(draft.hardRailRouteCertificates),
+      std::move(draft.hardRailTerminalContacts),
+      std::move(draft.hardRailClosedChains));
 }
 
 void expect_phase_front_product_error(
@@ -3361,6 +3375,15 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
                   directional::authority::QuarterTurn::from_integer(3));
   EXPECT_TRUE(witnessCarrierTau.value() == oddCarrier.firstToSecond ||
               witnessCarrierTau.value() == oddCarrier.firstToSecond.inverse());
+  // This D2 mutation must start from a valid reconstruction with all A4
+  // provenance retained; otherwise an unrelated missing-contact rejection
+  // could make the negative appear to pass.
+  const auto baselineRebuilt =
+      construct_phase_front_product(phase_front_draft(fixture));
+  ASSERT_NE(nullptr,
+            std::get_if<directional::geometry::SurfacePhaseFrontProduct>(
+                &baselineRebuilt))
+      << "D2 must reconstruct the genuine producer-owned A2b product";
   PhaseFrontDraft tampered = phase_front_draft(fixture);
   const auto sourceEdge = oddCarrier.edge;
   auto entry = std::find_if(
@@ -3380,30 +3403,17 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
         carrier.firstToSecond = carrier.firstToSecond.inverse();
     }
   }
-  auto rebuilt = construct_phase_front_product(std::move(tampered));
-  // A singleton has no radial commuting square, so this negative must reach
-  // A5. Multi-carrier certificates may reject a broken square at A4 validation.
-  if (witnessRoute->route.steps().size() == 1U) {
-    ASSERT_NE(std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&rebuilt),
-              nullptr) << "A singleton odd-tau mutant must reach the A5 discriminant";
-  }
-  if (const auto *productError =
-          std::get_if<directional::geometry::SurfacePhaseFrontProductError>(&rebuilt)) {
-    // A multi-carrier square may reject the mutant before A5.
-    EXPECT_EQ(productError->code,
-              directional::geometry::SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority);
-  } else {
-    const auto &tamperedFront =
-        std::get<directional::geometry::SurfacePhaseFrontProduct>(rebuilt);
-    const auto tamperedA5 = directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
-        fixture.mesh.V, fixture.mesh.F, tamperedFront);
-    const auto *tamperedError =
-        std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(&tamperedA5);
-    ASSERT_NE(tamperedError, nullptr)
-        << "Reversing odd A4-owned cross-rail tau must reject a produced HardRail";
-    EXPECT_EQ(tamperedError->code,
-              directional::pipeline::SurfaceOccurrenceComplexErrorCode::HardRailTransportMismatch);
-  }
+  // The checked factory independently authenticates EVERY published rail
+  // transition against the unchanged producer A3 atlas (including singleton
+  // rails). Reversing an odd carrier is therefore a source-authority forgery
+  // and MUST fail at A4, before A5 sees a product. The earlier singleton
+  // expectation of an A5 rejection could never be reached under RA-40.
+  // A5's positive branch equation is checked against the authentic product
+  // above; a separate A5-reachable negative still needs a source-valid
+  // witness instead of bypassing this factory gate.
+  expect_phase_front_product_error(
+      construct_phase_front_product(std::move(tampered)),
+      directional::geometry::SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority);
 
 }
 
