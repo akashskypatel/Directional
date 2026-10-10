@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-terminal-germ-compile-20261010-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-terminal-germ-compile",
-  "source_sha": "991f655199017375d0ad7ae3fc0b235ffa3de4f0",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-terminal-germ"
+  "request_id": "m6-cp3-r4-terminal-germ-docs-20261010-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-terminal-germ-docs",
+  "file_id": "1GLXAi-O4EsUqtd4qmvFjBkGim5rFiefH",
+  "patch_sha256": "82d621c0d01f2f2ddc010ee4fd60d0dc14da57be100f18e2eb14c1028ddfe37d",
+  "base_sha": "991f655199017375d0ad7ae3fc0b235ffa3de4f0",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: preserve R4 A2b terminal germ work and compile handoff",
+  "retention_days": 14
 }
