@@ -1,3 +1,11 @@
+## 2026-10-10 — R4 D2 source-star endpoint checked-factory regression migration
+
+`M6CP3.HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge` now supplies
+actual A4 terminal contacts/closed chains to its factory, follows authentic A2b
+source-star paths instead of obsolete direct-face equality, and asserts at
+least one transported terminal step. Exact semantic `e1e2821a4b3e28aec9a18c871eb259bdb9fb1925`;
+compile: GREEN — 8/8 GMP/GMPXX targets, preflight/build exit 0, 28/28 ZIP manifest, clean source, runtimeExecution=false; workflow 38084965438 (job 114309529227), result artifact 11681609714 (SHA256 31562ad01a696a8c39dbe946c9ece0026eaf1963aa5cb13b932de7f35de5197f), log artifact 11681871272 (SHA256 071f6ebc48068114bda8156227e202a5af9bf07bd8ecf3ab7dfebb3bb9ce7591), exact semantic source e1e2821a4b3e28aec9a18c871eb259bdb9fb1925. Source/test semantics only, no runtime or TB497.
+
 ## 2026-10-10 — `M6-CP3-CB1-ENTRY-R4` terminal A2b negative factory witness (incremental)
 
 Added the nonvacuous compile-only regression `M6CP3.CheckedFactoryRejectsForgedTerminalA2bSideGerm` at exact source `1da010b6b607aca3f5a2e3078b32f5fb94d4d34b` (Drive apply `38083050527`). It rebuilds the original A4 production at the checked factory, selects an actually nonempty typed A2b terminal side path, and mutates either path omission or one independently A3-certified quarter-turn. Both cases must yield `InvalidSourceAuthority`. Exact eight-target GMP/GMPXX compile: **GREEN: eight targets, GMP/GMPXX, 28/28 archive checksums, clean source, exits 0, runtimeExecution=false**, run `38083162432 (job 114304131242)`, artifact `11680664166, ZIP SHA256 ebbf236e3a389fcff744ca2ae47acf2014dea2f487cb759d9ee0795651d3f33e`, no runtime. R4 remains IN_PROGRESS; no proof of a second admissible path, multi-carrier restoration, all 88 CP2 losses or frozen 497 acceptance.

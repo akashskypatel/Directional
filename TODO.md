@@ -1,3 +1,11 @@
+## CURRENT — R4 D2 multi-carrier endpoint A2b checked-factory test correction (2026-10-10)
+
+- [x] Source `e1e2821a4b3e28aec9a18c871eb259bdb9fb1925` restores real terminal-contact and closed-chain authority in the existing D2 factory tamper/regression test; validates nonrail A2b path endpoint composition instead of deprecated direct-face equality. Applied run `38084818029`; Drive staging retired.
+- [x] Eight-target compile: GREEN — 8/8 GMP/GMPXX targets, preflight/build exit 0, 28/28 ZIP manifest, clean source, runtimeExecution=false; workflow 38084965438 (job 114309529227), result artifact 11681609714 (SHA256 31562ad01a696a8c39dbe946c9ece0026eaf1963aa5cb13b932de7f35de5197f), log artifact 11681871272 (SHA256 071f6ebc48068114bda8156227e202a5af9bf07bd8ecf3ab7dfebb3bb9ce7591), exact semantic source e1e2821a4b3e28aec9a18c871eb259bdb9fb1925.
+- [ ] Complete source-valid multi-carrier/odd-τ proof, 39 endpoint/34 Phase10/seven DCEL/88 CP2 regression repairs; independent review of potentially unrealizable dual-admissible-path witness; no TB497 in R4.
+
+---
+
 ## CURRENT — R4 forged terminal-germ negative oracle (2026-10-10)
 
 - [x] Source `1da010b6b607aca3f5a2e3078b32f5fb94d4d34b` adds a producer-nonvacuous checked-factory negative for an omitted A2b terminal path and a forged A3 side-germ step. Drive-apply `38083050527` succeeded; source patch owner deleted. Compile-only; tests not executed.

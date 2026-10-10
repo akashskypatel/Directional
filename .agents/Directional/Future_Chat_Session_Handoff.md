@@ -1,3 +1,19 @@
+## CURRENT — R4 D2 multi-carrier terminal A2b ingress migration (2026-10-10)
+
+**Canonical `M6-CP3-CB1-ENTRY-R4` remains IN_PROGRESS; no TB497 or successor.**
+The existing `M6CP3.HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge`
+regression was still constructing a checked factory with empty default terminal
+contact authority and asserted obsolete direct attachment/carrier face equality.
+Exact source `e1e2821a4b3e28aec9a18c871eb259bdb9fb1925` (Drive apply `38084818029`)
+rebuilds the checked product with actual terminal contact/closed-chain evidence,
+verifies per-side A2b paths and requires nonempty transported source-star steps.
+Eight-target mandatory GMP/GMPXX compile: GREEN — 8/8 GMP/GMPXX targets, preflight/build exit 0, 28/28 ZIP manifest, clean source, runtimeExecution=false; workflow 38084965438 (job 114309529227), result artifact 11681609714 (SHA256 31562ad01a696a8c39dbe946c9ece0026eaf1963aa5cb13b932de7f35de5197f), log artifact 11681871272 (SHA256 071f6ebc48068114bda8156227e202a5af9bf07bd8ecf3ab7dfebb3bb9ce7591), exact semantic source e1e2821a4b3e28aec9a18c871eb259bdb9fb1925.
+No runtime or benchmark. Preserve every existing frozen identity and selector.
+See `.agents/Directional/Architecture_M6_CP3_R4_D2_A2b_Endpoint_Regression_Code_Build_Record.md`. Multi-carrier, 39 endpoint, 34 Phase10,
+seven DCEL, 88 CP2 and six CP3 organic gates remain OPEN.
+
+---
+
 ## CURRENT — R4 A2b terminal side-germ forgery negatives (2026-10-10)
 
 **Canonical `M6-CP3-CB1-ENTRY-R4` IN_PROGRESS; do not advance to TB497.**
