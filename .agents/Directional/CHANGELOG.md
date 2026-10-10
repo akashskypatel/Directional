@@ -1,3 +1,7 @@
+## 2026-10-10 — `M6-CP3-CB1-ENTRY-R4` typed rail source-incidence incremental Code + Build
+
+Continued R4 under frozen RA-45 without runtime execution. The `rail_interval_refs` producer path now verifies ordered source-vertex incidence, exact source-edge topology and exact sample-corner support for published typed rails. A negative compile-visible test was added. First compiler attempt `38076875551` failed solely on two `DomainResult` arrow expressions; corrected with `.value().index()` and applied as semantic commit `aab8e22c1a997ffcca72cc42a13df51bf0e4d29b`. The corrected eight-target compile `38077156162` / artifact `11679541934` is GREEN, 28/28 manifest valid, GMP/GMPXX linked and `runtimeExecution=false`. This is NOT RA-43.4 completion: legacy direct rails still rely on epsilon, source-star terminal germ and multi-carrier sectors remain unproven. R4 remains IN_PROGRESS; frozen CP2/R3 and regression totals unchanged.
+
 ## 2026-10-10 — `M6-CP3-CB1-ENTRY-R4` gauge STOP resolved; RA-45 frozen, RA-44.2 withdrawn
 
 Upheld the producer-compatibility STOP on its facts at HEAD `7f4a643d2` and resolved it by withdrawing the

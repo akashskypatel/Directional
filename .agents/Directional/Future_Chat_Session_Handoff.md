@@ -1,3 +1,15 @@
+## CURRENT — R4 typed rail source-incidence incremental correction (2026-10-10)
+
+**`M6-CP3-CB1-ENTRY-R4` remains IN_PROGRESS; no successor or TB497 is authorized.**
+RA-45's earlier uniform-gauge regression and eight-target GMP/GMPXX compile remain accepted as an *incremental* compile-only receipt.
+A second incremental source patch now binds produced rail endpoints to typed `sourceVertices` and exact source-face corner and edge incidence; the historical epsilon-only direct-rail path is still present for fixtures without typed vertices, so **RA-43.4 is not discharged**.
+The new test `SurfaceCellTracingPhase14.ProducedRailEndpointsRequireExactSourceVertexIncidence` is compiled-only, not executed.
+The first compile failed from two incorrect `DomainResult` arrow accesses; a two-line `.value()` correction landed at semantic source `aab8e22c1a997ffcca72cc42a13df51bf0e4d29b` and the mandatory eight-target GMP/GMPXX recompile **passed** at run `38077156162`, artifact `11679541934` (28/28 manifest, runtime-free).
+See `.agents/Directional/Architecture_M6_CP3_R4_Typed_Rail_Incremental_Code_Build_Record.md` for exact source, artifact and patch evidence.
+A2b singleton terminal source-star germ, unique contact/A3 path, multi-carrier nonrail φ, seven fixture oracles and 88 accepted CP2 restorations remain OPEN. Frozen 497: CP2 491/491 accepted; R3 403/497 rejected, 94 RED, 88 CP2 losses, ledger **66/17/49**, debt 1 unchanged. No runtime/benchmark/selector or PR metadata changes.
+
+---
+
 ## CURRENT — RA-44.2 withdrawn; RA-45 frozen; R4 Code + Build released (2026-10-10)
 
 **`M6-CP3-CB1-ENTRY-R4` is UNBLOCKED and continues.** The producer-compatibility STOP was correct and is

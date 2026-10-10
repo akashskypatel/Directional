@@ -1,3 +1,12 @@
+## CURRENT — `M6-CP3-CB1-ENTRY-R4` resumed (RA-45, 2026-10-10)
+
+- [ ] **Continue same Code + Build turn.** The earlier `M6-DEFN-R5-R4-REV` HOLD at the top of the historical TODO sections below is superseded by independent RA-43/RA-45 decisions. `M6-CP3-CB1-ENTRY-R4` is released and IN_PROGRESS, not complete.
+- [x] **Incremental typed-rail contract landed:** produced ordered `sourceVertices` now attest exact source edge/corner incidence and malformed/mismatched topology is typed rejected; a compile-visible negative regression was added. Initial compile failure was corrected at semantic source `aab8e22c1a997ffcca72cc42a13df51bf0e4d29b`; eight-target compile `38077156162`/artifact `11679541934` passed 28/28 manifest; see `.agents/Directional/Architecture_M6_CP3_R4_Typed_Rail_Incremental_Code_Build_Record.md` for exact verification.
+- [ ] **RA-43.4 remains OPEN:** migrate direct-rail legacy fixtures with absent sourceVertices, retire epsilon fallback completely, authenticate producer-owned source-star terminal-contact/A2b germ and A3 φ, preserve all seven DCEL fixture negatives, restore 88 CP2 accepted-green cases, and prove non-vacuous odd-τ/multi-carrier witnesses.
+- [ ] **Frozen 497 gate remains deferred** until R4's complete eight-target GMP/GMPXX compile-only closure. No TB/benchmarks/selector mutation. CP2 491/491 accepted, R3 403/497 rejected, 94 RED / 88 CP2 regressions, stable 66/17/49, debt 1.
+
+---
+
 ## CURRENT — R5/R4 source-exact Review STOP (2026-10-10)
 
 - [ ] **R4-REV-01A:** independently attest source-entity conversion of raw rail face/edge IDs and uniquely associate an oriented front endpoint with one rail vertex/interval and side germ; reject missing or ambiguous producer contact, no barycentric-epsilon authority.
