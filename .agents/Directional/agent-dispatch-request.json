@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-terminal-a3-d2-docs-20261010-a",
+  "request_id": "m6-cp3-r4-todo-compile-checkbox-20261010-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-terminal-a3-d2-docs",
-  "file_id": "1jFo77OeT_Cb-WNpifBjYMeXkunLgB6Uh",
-  "patch_sha256": "69bcebf863ea10ec9bfd1174e41caa4a35bcb645144100ebfd7a934ed1043dcd",
-  "base_sha": "176f023e16be74ec74badbc8065ae37d06dd38cb",
+  "mailbox_key": "m6-cp3-r4-todo-compile-checkbox",
+  "file_id": "1_kMxbEkbBR3g-vUpI8QY_ckTBvAU2Rwl",
+  "patch_sha256": "4bf3fee576441ed33a41ec0b51d00209a68c0d81fc319e0e3b0c3f76f14ebde7",
+  "base_sha": "2b93f0ce78f6e69d1d25a0f7de3d537c2eb05149",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: preserve verified R4 D2 terminal A2b A3 compile and continuation",
+  "commit_message": "docs: mark verified R4 terminal A3 compile checkbox completed",
   "retention_days": 14
 }
