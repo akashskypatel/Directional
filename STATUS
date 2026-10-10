@@ -1,8 +1,8 @@
 ---TURN_STATUS---
 Turn: M6-CP3-TB1-ENTRY-R3-EXEC
-Status: IN_PROGRESS
-Successor: UNKNOWN
+Status: COMPLETE
+Successor: M6-CP3-TB1-ENTRY-R3-REV
 Started at: 2026-10-10T06:10:47Z
 Resumed at:
-Ended at:
+Ended at: 2026-10-10T06:23:43Z
 ---END_TURN_STATUS---
