@@ -5986,8 +5986,8 @@ rail_interval_refs(
           }
           return true;
         };
-        startVertex = static_cast<int>(first->index());
-        endVertex = static_cast<int>(second->index());
+        startVertex = static_cast<int>(first.value().index());
+        endVertex = static_cast<int>(second.value().index());
         if (!is_exact_corner(a, startVertex) ||
             !is_exact_corner(b, endVertex)) {
           result.status = RailBuildStatus::InvalidSampleGeometry;
