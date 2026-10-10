@@ -8715,6 +8715,34 @@ TEST(M6CP3, TerminalRailContactPathsUseTypedSourceStarA3) {
   EXPECT_GT(nonemptySidePaths, 0) << "A2b must actually transport a nonrail terminal germ";
 }
 
+TEST(M6CP3, CheckedFactoryReconstructsProducedTerminalA2bStarUniqueness) {
+  const auto &fixture = nonconstant_hard_rail_fixture();
+  const auto &front = fixture.network.phaseFront.product();
+  ASSERT_TRUE(fixture.fieldTransportAtlas.has_value());
+  ASSERT_FALSE(front.hardRailTerminalContacts().empty());
+  std::size_t realTerminalPaths = 0U;
+  for (const auto &route : front.hardRailRouteCertificates())
+    for (const auto &endpoint : route.endpoints)
+      for (const auto &path : endpoint.contactPaths)
+        realTerminalPaths += !path.empty();
+  ASSERT_GT(realTerminalPaths, 0U) << "must exercise a real source-star path";
+
+  // The checked factory independently enumerates every nonhard source-star
+  // route and rejects ambiguity; not merely the chosen A4 path receipt.
+  const auto checked = directional::geometry::SurfacePhaseFrontProduct::make(
+      front.gridU(), front.gridV(), front.sourceTopologyRegions(),
+      fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
+      &*fixture.fieldTransportAtlas,
+      front.isolationSeamTransportCertificates(), front.periodicHolonomies(),
+      front.boundedDiskBoundaryPhases(), front.edges(), front.events(),
+      front.cells(), front.conformityPlanReceipt(), front.hardFeatureEdges(),
+      front.sourceFaceBranchRotations(), front.hardRailFieldTransitions(),
+      front.hardRailRouteCertificates(), front.hardRailTerminalContacts(),
+      front.hardRailClosedChains());
+  EXPECT_NE(nullptr, std::get_if<directional::geometry::SurfacePhaseFrontProduct>(
+                         &checked));
+}
+
 TEST(SurfaceCellTypedTransportAuthority,
      ValidPeriodicCutRouteUsesTypedIdentity) {
   const auto &fixture = cylinder_fixture();
