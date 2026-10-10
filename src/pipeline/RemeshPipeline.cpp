@@ -2116,6 +2116,17 @@ std::uint64_t hash_trace_network(
         hash_source_face_topology_key(seed, carrier.firstFace);
         hash_source_face_topology_key(seed, carrier.secondFace);
         hash_combine_i64(seed, carrier.firstToSecond.value());
+        hash_combine_i64(seed, endpoint.terminalVertex.has_value() ?
+            static_cast<std::int64_t>(endpoint.terminalVertex->index()) : -1);
+        for (const auto &path : endpoint.contactPaths) {
+          hash_combine_u64(seed, path.size());
+          for (const auto &step : path) {
+            hash_source_edge_topology_key(seed, step.edge);
+            hash_source_face_topology_key(seed, step.firstFace);
+            hash_source_face_topology_key(seed, step.secondFace);
+            hash_combine_i64(seed, step.firstToSecond.value());
+          }
+        }
       }
       hash_combine_u64(seed, certificate.junctions.size());
       for (const auto &junction : certificate.junctions) {
@@ -4994,7 +5005,7 @@ SurfaceOccurrenceComplexProducer::produce(
         const auto &toLattice = to->second->placement.lattice;
         if (authority::QuarterTurn::from_integer(
                 toLattice.branchRotation - fromLattice.branchRotation) !=
-            compose(*rigidRotation, published.terminalCarrier.firstToSecond)) {
+            compose(*rigidRotation, published.attachmentTransport())) {
           error.code = SurfaceOccurrenceComplexErrorCode::HardRailTransportMismatch;
           return error;
         }

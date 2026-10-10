@@ -8345,7 +8345,13 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
                   contact->second.endpoints[1]) &&
           touches(certificate.endpoints[1].terminalCarrier.edge,
                   contact->second.endpoints[0]);
-      if (!forward && !reverse) {
+      const auto firstVertex = certificate.endpoints[0].terminalVertex;
+      const auto lastVertex = certificate.endpoints[1].terminalVertex;
+      if ((!forward && !reverse) || !firstVertex || !lastVertex ||
+          !((firstVertex == contact->second.endpoints[0] &&
+             lastVertex == contact->second.endpoints[1]) ||
+            (firstVertex == contact->second.endpoints[1] &&
+             lastVertex == contact->second.endpoints[0]))) {
         error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
         return error;
       }
@@ -8407,13 +8413,73 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
       const auto &endpoint = certificate.endpoints[endpointIndex];
       const auto &carrier = endpoint.terminalCarrier;
       if (carrier.edge != steps[endpointIndex == 0U ? 0U : steps.size() - 1U].topology() ||
-          carrier.firstFace != endpoint.firstAttachment ||
-          carrier.secondFace != endpoint.secondAttachment ||
           !published_carrier(carrier) ||
           !matchesA3(carrier.edge, carrier.firstFace, carrier.secondFace,
                      carrier.firstToSecond) ||
           !sourceTopologyRegions.row_for_topology(endpoint.firstAttachment).has_value() ||
           !sourceTopologyRegions.row_for_topology(endpoint.secondAttachment).has_value()) {
+        error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+        return error;
+      }
+      if (contact != hardRailTerminalContacts.end()) {
+        const auto vertex = endpoint.terminalVertex;
+        const auto firstPoint = endpointIndex == 0U ? first.from : first.to;
+        const auto secondPoint = endpointIndex == 0U ? second.to : second.from;
+        const auto exact_vertex_attachment = [&](const SurfaceTracePoint &point) {
+          if (!vertex || point.face < 0 || point.face >= sourceFaces.rows())
+            return false;
+          int corner = -1;
+          for (int i = 0; i < 3; ++i)
+            if (sourceFaces(point.face, i) == static_cast<int>(vertex->index()))
+              corner = i;
+          if (corner < 0) return false;
+          for (int i = 0; i < 3; ++i)
+            if (point.barycentric[i] != (i == corner ? 1.0 : 0.0))
+              return false;
+          return true;
+        };
+        if (!vertex ||
+            (vertex != contact->second.endpoints[0] &&
+             vertex != contact->second.endpoints[1]) ||
+            (carrier.edge.first() != *vertex &&
+             carrier.edge.second() != *vertex) ||
+            !exact_vertex_attachment(firstPoint) ||
+            !exact_vertex_attachment(secondPoint)) {
+          error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+          return error;
+        }
+        std::array<std::set<authority::SourceFaceTopologyKey>, 2> used;
+        for (std::size_t side = 0U; side < 2U; ++side) {
+          auto at = side == 0U ? endpoint.firstAttachment : endpoint.secondAttachment;
+          used[side].insert(at);
+          for (const auto &step : endpoint.contactPaths[side]) {
+            if (hardFeatureEdges.contains(step.edge) ||
+                (step.edge.first() != *vertex && step.edge.second() != *vertex) ||
+                step.firstFace != at || step.firstFace == step.secondFace ||
+                !rail_face_incident(step.firstFace, step.edge) ||
+                !rail_face_incident(step.secondFace, step.edge) ||
+                !matchesA3(step.edge, step.firstFace, step.secondFace,
+                           step.firstToSecond) ||
+                !used[side].insert(step.secondFace).second) {
+              error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+              return error;
+            }
+            at = step.secondFace;
+          }
+          if (at != (side == 0U ? carrier.firstFace : carrier.secondFace)) {
+            error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+            return error;
+          }
+        }
+        if (std::any_of(used[0].begin(), used[0].end(),
+                        [&](const auto &face) { return used[1].contains(face); })) {
+          error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+          return error;
+        }
+      } else if (endpoint.terminalVertex || !endpoint.contactPaths[0].empty() ||
+                 !endpoint.contactPaths[1].empty() ||
+                 carrier.firstFace != endpoint.firstAttachment ||
+                 carrier.secondFace != endpoint.secondAttachment) {
         error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
         return error;
       }
@@ -18767,13 +18833,16 @@ SurfaceCellNetwork build_surface_cell_network(
             record.edge, from, to, record.firstToSecond.inverse()};
       return std::nullopt;
     };
-    const auto endpoint_certificate = [&](int fromRow, int toRow,
+    const auto contact = authoritativeOptions.hardRailTerminalContacts.find(
+        *first.railId);
+    const auto endpoint_certificate = [&](const SurfaceTracePoint &fromPoint,
+                                          const SurfaceTracePoint &toPoint,
                                           const authority::SourceEdgeTopologyKey &edge)
         -> std::optional<SurfaceHardRailRouteEndpointCertificate> {
       const auto from = surface_cell_tracing_detail::source_face_id(
-          fromRow, faces.rows());
+          fromPoint.face, faces.rows());
       const auto to = surface_cell_tracing_detail::source_face_id(
-          toRow, faces.rows());
+          toPoint.face, faces.rows());
       if (!from || !to) return std::nullopt;
       const auto firstAttachment =
           network.sourceTopologyRegions->topology_for_row(*from);
@@ -18781,19 +18850,124 @@ SurfaceCellNetwork build_surface_cell_network(
           network.sourceTopologyRegions->topology_for_row(*to);
       const auto *carrier = find_carrier(edge);
       if (carrier == nullptr) return std::nullopt;
-      auto oriented = oriented_carrier(*carrier, firstAttachment, secondAttachment);
-      if (!oriented) return std::nullopt;
-      return SurfaceHardRailRouteEndpointCertificate{
-          firstAttachment, secondAttachment, *oriented};
+      if (contact == authoritativeOptions.hardRailTerminalContacts.end()) {
+        // Closed rails have no terminal source vertex and retain their cyclic
+        // route certificate; no fictitious terminal contact is introduced.
+        const auto oriented = oriented_carrier(*carrier, firstAttachment,
+                                               secondAttachment);
+        if (!oriented) return std::nullopt;
+        return SurfaceHardRailRouteEndpointCertificate{
+            firstAttachment, secondAttachment, *oriented, std::nullopt, {}};
+      }
+      const auto exact_corner = [&](const SurfaceTracePoint &point,
+                                    const authority::SourceVertexId vertex) {
+        if (point.face < 0 || point.face >= faces.rows()) return false;
+        int corner = -1;
+        for (int i = 0; i < 3; ++i)
+          if (faces(point.face, i) == static_cast<int>(vertex.index()))
+            corner = i;
+        if (corner < 0) return false;
+        for (int i = 0; i < 3; ++i)
+          if (point.barycentric[i] != (i == corner ? 1.0 : 0.0))
+            return false;
+        return true;
+      };
+      std::optional<authority::SourceVertexId> terminalVertex;
+      for (const auto vertex : contact->second.endpoints) {
+        if ((edge.first() != vertex && edge.second() != vertex) ||
+            !exact_corner(fromPoint, vertex) ||
+            !exact_corner(toPoint, vertex)) continue;
+        if (terminalVertex) return std::nullopt; // Ambiguous typed contact.
+        terminalVertex = vertex;
+      }
+      if (!terminalVertex || authoritativeOptions.fieldTransportAtlas == nullptr)
+        return std::nullopt;
+
+      using Face = authority::SourceFaceTopologyKey;
+      using Transition = SurfaceHardRailFieldTransition;
+      std::map<Face, std::vector<Transition>> localStar;
+      for (const auto &[spoke, incident] : sourceEdges) {
+        if (spoke.first() != *terminalVertex &&
+            spoke.second() != *terminalVertex) continue;
+        if (sourceEdgeFaceCounts.at(spoke) > 2U) return std::nullopt;
+        if (authoritativeOptions.hardFeatureEdges.contains(spoke)) continue;
+        if (incident[0] < 0 || incident[1] < 0) continue;
+        const auto faceA = surface_cell_tracing_detail::source_face_id(
+            incident[0], faces.rows());
+        const auto faceB = surface_cell_tracing_detail::source_face_id(
+            incident[1], faces.rows());
+        if (!faceA || !faceB) return std::nullopt;
+        const auto forward = authoritativeOptions.fieldTransportAtlas->
+            transition_value(spoke, *faceA, *faceB);
+        const auto reverse = authoritativeOptions.fieldTransportAtlas->
+            transition_value(spoke, *faceB, *faceA);
+        if (!forward || !reverse ||
+            reverse->transport != forward->transport.inverse())
+          return std::nullopt;
+        const auto a = network.sourceTopologyRegions->topology_for_row(*faceA);
+        const auto b = network.sourceTopologyRegions->topology_for_row(*faceB);
+        localStar[a].push_back({spoke, a, b, forward->transport});
+        localStar[b].push_back({spoke, b, a, reverse->transport});
+      }
+      // Enumerate only the finite non-rail links of this one source-vertex
+      // star. A second admissible path is ambiguity, not a fallback route.
+      const auto path_to = [&](const Face &fromFace, const Face &toFace)
+          -> std::optional<std::vector<Transition>> {
+        std::vector<Transition> current, accepted;
+        std::set<Face> visited{fromFace};
+        int count = 0;
+        const auto visit = [&](const auto &self, const Face &at) -> void {
+          if (count > 1) return;
+          if (at == toFace) {
+            if (++count == 1) accepted = current;
+            return;
+          }
+          const auto found = localStar.find(at);
+          if (found == localStar.end()) return;
+          for (const auto &link : found->second) {
+            if (!visited.insert(link.secondFace).second) continue;
+            current.push_back(link);
+            self(self, link.secondFace);
+            current.pop_back();
+            visited.erase(link.secondFace);
+          }
+        };
+        visit(visit, fromFace);
+        if (count != 1) return std::nullopt;
+        return accepted;
+      };
+      std::optional<SurfaceHardRailRouteEndpointCertificate> selected;
+      for (const bool reverse : {false, true}) {
+        const auto oriented = reverse
+            ? SurfaceHardRailFieldTransition{
+                  carrier->edge, carrier->secondFace, carrier->firstFace,
+                  carrier->firstToSecond.inverse()}
+            : *carrier;
+        auto firstPath = path_to(firstAttachment, oriented.firstFace);
+        auto secondPath = path_to(secondAttachment, oriented.secondFace);
+        if (!firstPath || !secondPath) continue;
+        std::set<Face> firstSector{firstAttachment};
+        std::set<Face> secondSector{secondAttachment};
+        for (const auto &step : *firstPath) firstSector.insert(step.secondFace);
+        for (const auto &step : *secondPath) secondSector.insert(step.secondFace);
+        if (std::any_of(firstSector.begin(), firstSector.end(),
+                        [&](const Face &face) { return secondSector.contains(face); }))
+          continue;
+        if (selected) return std::nullopt;
+        selected = SurfaceHardRailRouteEndpointCertificate{
+            firstAttachment, secondAttachment, oriented, terminalVertex,
+            {std::move(*firstPath), std::move(*secondPath)}};
+      }
+      return selected;
     };
     if (routeSteps.empty()) {
       invalid_route(SurfaceHardRailRouteFailureLocus::EmptyRoute, -1, -1, "empty-route");
       return network;
     }
     const auto firstEndpoint = endpoint_certificate(
-        first.from.face, second.to.face, routeSteps.front().topology());
+        first.from, second.to, routeSteps.front().topology());
     const auto secondEndpoint = endpoint_certificate(
-        first.to.face, second.from.face, routeSteps.back().topology());
+        first.to, second.from, routeSteps.back().topology());
     if (!firstEndpoint || !secondEndpoint) {
       invalid_route(SurfaceHardRailRouteFailureLocus::EndpointAttachment,
                     !firstEndpoint ? 0 : static_cast<int>(routeSteps.size() - 1U),

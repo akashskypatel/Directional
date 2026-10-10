@@ -1489,6 +1489,20 @@ struct SurfaceHardRailRouteEndpointCertificate {
   authority::SourceFaceTopologyKey firstAttachment;
   authority::SourceFaceTopologyKey secondAttachment;
   SurfaceHardRailFieldTransition terminalCarrier;
+  // Producer-authored A2b terminal star contact. The trace attachments need
+  // not be the source faces immediately incident to the hard-rail carrier.
+  std::optional<authority::SourceVertexId> terminalVertex;
+  std::array<std::vector<SurfaceHardRailFieldTransition>, 2> contactPaths;
+
+  [[nodiscard]] authority::QuarterTurn attachmentTransport() const noexcept {
+    auto phi = std::array{authority::QuarterTurn::from_integer(0),
+                          authority::QuarterTurn::from_integer(0)};
+    for (std::size_t side = 0U; side < contactPaths.size(); ++side)
+      for (const auto &step : contactPaths[side])
+        phi[side] = compose(step.firstToSecond, phi[side]);
+    return compose(phi[1].inverse(),
+                   compose(terminalCarrier.firstToSecond, phi[0]));
+  }
 };
 
 /** Two disjoint, non-rail A3 paths through one cut source-vertex star. */

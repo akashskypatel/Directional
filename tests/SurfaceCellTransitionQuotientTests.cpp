@@ -8670,6 +8670,51 @@ TEST(SurfaceCellTypedTransportAuthority,
   EXPECT_EQ(1, result.connectedComponents);
 }
 
+TEST(M6CP3, TerminalRailContactPathsUseTypedSourceStarA3) {
+  const auto &fixture = nonconstant_hard_rail_fixture();
+  const auto &front = fixture.network.phaseFront.product();
+  ASSERT_TRUE(fixture.fieldTransportAtlas.has_value());
+  const auto &atlas = *fixture.fieldTransportAtlas;
+  const auto &topology = front.sourceTopologyRegions();
+  int attestedContacts = 0;
+  int nonemptySidePaths = 0;
+  for (const auto &route : front.hardRailRouteCertificates()) {
+    const auto found = front.hardRailTerminalContacts().find(route.rail);
+    if (found == front.hardRailTerminalContacts().end()) continue;
+    ASSERT_EQ(route.junctions.size() + 1U, route.route.oriented_steps().size());
+    for (const auto &endpoint : route.endpoints) {
+      ASSERT_TRUE(endpoint.terminalVertex.has_value());
+      const auto vertex = *endpoint.terminalVertex;
+      EXPECT_TRUE(vertex == found->second.endpoints[0] ||
+                  vertex == found->second.endpoints[1]);
+      for (std::size_t side = 0U; side < 2U; ++side) {
+        auto at = side == 0U ? endpoint.firstAttachment : endpoint.secondAttachment;
+        const auto &steps = endpoint.contactPaths[side];
+        if (!steps.empty()) ++nonemptySidePaths;
+        for (const auto &step : steps) {
+          EXPECT_EQ(at, step.firstFace);
+          EXPECT_TRUE(step.edge.first() == vertex || step.edge.second() == vertex);
+          EXPECT_FALSE(front.hardFeatureEdges().contains(step.edge));
+          const auto from = topology.row_for_topology(step.firstFace);
+          const auto to = topology.row_for_topology(step.secondFace);
+          ASSERT_TRUE(from.has_value());
+          ASSERT_TRUE(to.has_value());
+          const auto transport = atlas.transition_value(
+              step.edge, from.value(), to.value());
+          ASSERT_TRUE(transport.has_value());
+          EXPECT_EQ(step.firstToSecond, transport->transport);
+          at = step.secondFace;
+        }
+        EXPECT_EQ(at, side == 0U ? endpoint.terminalCarrier.firstFace
+                                  : endpoint.terminalCarrier.secondFace);
+      }
+      ++attestedContacts;
+    }
+  }
+  EXPECT_GT(attestedContacts, 0) << "A2b terminal ownership must be produced";
+  EXPECT_GT(nonemptySidePaths, 0) << "A2b must actually transport a nonrail terminal germ";
+}
+
 TEST(SurfaceCellTypedTransportAuthority,
      ValidPeriodicCutRouteUsesTypedIdentity) {
   const auto &fixture = cylinder_fixture();
