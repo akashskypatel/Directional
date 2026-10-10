@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-phase10-two-atlas-docs-20261010-a",
+  "request_id": "m6-cp3-r4-phase10-interval-fullauthority-20261010-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-phase10-two-atlas-docs",
-  "file_id": "1EskNoAI2U4-VRXw-EY2LOxOupAMgEgGA",
-  "patch_sha256": "86fd1e301f35ed534bdb792f1bc6869feabe93770dd042b7d7a6a4cdd1a3bb5a",
-  "base_sha": "a4a2f57ef0d3bcf089d665fe066555a8d95761e8",
+  "mailbox_key": "m6-cp3-r4-phase10-interval-fullauthority-apply",
+  "file_id": "1hwGyJ4o_nJVbvq4Po894ZF_96vCA5iY7",
+  "patch_sha256": "5b8582f505266cdd8a772a621a08a99a18bbf773993434b9b35efbba472d39bc",
+  "base_sha": "01c5458d9dd77e1829ed6d9f0115d483ae36232b",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: preserve Phase10 A2 A3 fixture migration compile evidence and handoff",
+  "commit_message": "test: retain complete hard-rail A4 authority in shared-boundary negative fixtures",
   "retention_days": 14
 }
