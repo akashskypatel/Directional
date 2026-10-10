@@ -1,3 +1,23 @@
+## CURRENT authoritative RA-40 Code + Build result — 2026-10-10 06:02Z
+
+**COMPLETE / compile GREEN / runtime unexecuted** for `M6-CP3-CB1-ENTRY-R3`, pending durable docs push and final root STATUS beacon. RA-40 A/B/C Review completed; exact source `d82e34427adc6fe09ad216a4363fea23dd0ae0b8` includes five-file source-attested A3 factory/11-caller migration patch `7de636c88fe6ad8c4f09c1956161f56f88995785` and one-file fixed-size Eigen test-helper correction. Initial eight-target compile `38028700056` failed on dynamic `.cross()` Eigen static assertion; corrected compile **run `38029281891` succeeds** (`compile / compile` job `114146685417`), immutable result artifact **`11661566000`** outer ZIP SHA-256 **`18591009acf98b4c6ea996bc4bb1445959bbd49b1f96cc78327caacfb302ac95`**, internal **28/28 SHA256SUMS**, metadata `source-commit.txt` exact match, `preflight-exit-code=0`, `build-exit-code=0`, eight approved targets, `DIRECTIONAL_ENABLE_GMP:BOOL=ON`, actual generated linker command contains both `/usr/lib/x86_64-linux-gnu/libgmpxx.so` and `/usr/lib/x86_64-linux-gnu/libgmp.so`, `exactArithmeticBackend=GMP`, `runtimeExecution=false`, `turnBoundary=Code+Build-only`. No tests, benchmarks, Directional binaries, or TB harness executed.
+
+**Authorized successor:** `M6-CP3-TB1-ENTRY-R3-EXEC` — distinct artifact-only frozen 497-process TB; four supplementary RA-40(C) tests must be separately scheduled and counted with diagnostic-only weight; do not merge into 497. Organic produced witnesses, historical R2 first failures, and 47 accepted→RED restorations remain entirely unverified until TB; no promotion or test pass claim. Any prior local entries below describing the second compile as pending are historical and superseded by this record.
+
+---
+
+# LIVE — RA-40 A3 factory patch applied; R3 GMP compile pending (2026-10-10)
+
+ **Update (2026-10-10 05:58Z):** Initial GMP run `38028700056` failed only on Eigen compile-time vector-size assertion in test `FlowRepStrandsPhase15Tests.cpp:79` (`preflight_exit=0`, `build_exit=1`, `runtimeExecution=false`); one-file typed `Eigen::RowVector3d` correction applied successfully by workflow `38029206658` and semantic commit `d82e34427adc6fe09ad216a4363fea23dd0ae0b8`. Repair patch SHA256 `1cdb28c1c4ac8a1752f8201de3602053a4c10b1a2abcd8a9a2f01f37adb4cb26`; staging retired. Second immutable eight-target compile request event `b94820aaf64ee4c68f670e7c69b49b0f5f50b81a` pinned to `d82e344...`, mailbox `m6-cp3-r3-ra40-eigen-repair-gmp-compile-r2`, terminal result pending. No runtime work.
+
+
+- [x] RA-40 A/B/C independent Review: factory source-bound A3 validation; CB compile-only acceptance; four supplementals separately counted diagnostic-only.
+- [x] Verified 65,361-byte source/test patch (`6c88a8fb...`) applied to exact five intended paths at `7de636c88fe6ad8c4f09c1956161f56f88995785` via `38028610928`; Drive staging deleted.
+- [ ] Await mandatory eight-target GMP/GMPXX compile/package on pinned source `7de636c...`, dispatcher event `8ff01b62485d79eaccb610e3f515e54dffa52672`, `runtimeExecution=false`; verify jobs, GMP linkage and immutable manifests. Current R3 not yet complete; do not run TB.
+- [ ] After compile evidence, finish Code+Build records and exact authorized TB successor. Future frozen 497 and four separate supplemental cases require artifact-only execution and independent Review. D1/D2/D3/D5/A6/A7, 39 historical first loci, odd τ and 47 restorations unverified; stable 64/17/47 debt 1.
+
+---
+
 # LIVE — R3 independent A/B/C decisions remain pending (2026-10-10T01:46Z)
 
 - [x] Latest source `089779c15eae27a2bb3b798ef9c8085950e92def`, eight GMP/GMPXX targets GREEN run `38005003624`, package `11650409049`, SHA256SUMS 28/28, `runtimeExecution=false`. Static audit exact source, **12 factory callers** (1 production, 11 tests). Migration report `.agents/Directional/Architecture_M6_CP3_R3_A3_Factory_Callsite_Migration_Impact_20261010.md`; no source changes or tests run.
