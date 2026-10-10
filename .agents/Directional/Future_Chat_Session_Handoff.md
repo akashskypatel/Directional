@@ -1,3 +1,68 @@
+## Resume-critical update — A/B/C RESOLVED as RA-40; CB1-ENTRY-R3 resumes (2026-10-10)
+
+**Exact next turn: `M6-CP3-CB1-ENTRY-R3` (resume) — Code + Build, authoring + compile/package only.** Decisions
+A, B and C are resolved by independent producer Design Review and frozen as **RA-40**; basis
+`Architecture_M6_CP3_R3_ABC_Review_Decision.md`. Ledger **64 / 17 / 47**, debt **1**; frozen gate
+**497 = 30 + 12 + 449 + 6**; no runtime credit.
+
+### A — factory-bound atlas re-derivation (A2 minimal). A1 rejected.
+
+`make` (`src/geometry/SurfaceCellTracing.cpp:7969-7982`) accepts `hardRailFieldTransitions` and
+`hardRailRouteCertificates` as **unauthenticated data**. A balanced `+1 mod 4` on both paths still satisfies
+`χ_next ∘ φ_A == φ_B ∘ χ_prev`, because a consistency relation is **gauge-invariant** — so consistency can never
+substitute for authenticating values. A1 would leave any test or consumer able to manufacture a passing A4
+product, which is the self-authorizing-oracle family this project has repeatedly been bitten by.
+
+**A2 requires no new attestation schema.** The atlas is already `const FieldTransportAtlas *` in options
+(`include/directional/geometry/SurfaceCellTracing.h:2186`), A4 already derives through `transition_value`, and
+`matches_source_faces` (`include/directional/authority/FieldTransportAtlas.h:893`) already binds an atlas to an
+exact source. Only the factory boundary lacks the binding — the **fourth** instance of the publish/reach pattern
+after RA-34.3, RA-35 and RA-38.
+
+**The hole is wider than Decision A asked.** It named *nonrail* φ, but carrier χ in
+`hardRailFieldTransitions` is equally unauthenticated. One atlas binding closes both; scoping the fix to φ would
+leave the same defect one field over.
+
+Implement: `make` takes an atlas bound by `matches_source_faces` to the same source matrix/authority/vertex
+count, and **re-derives every A3-sourced value it is handed — each nonrail φ and each carrier χ — via
+`transition_value`, requiring exact equality including reverse orientation and reciprocity.** Absent atlas →
+**typed fail-closed**; no unauthenticated-but-accepted mode. No per-face branch-gauge substitute (RA-31a). All
+**twelve** public factory call sites migrate explicitly — one production at `:12195`, eleven tests — with **no**
+default-null convenience overload. A test that cannot supply a source-bound atlas should not be manufacturing
+route certificates for `make`; that pressure is intended. RA-39 endpoint-local single-terminal-carrier χ is
+unchanged and this is **not** a licence to reintroduce RA-37a fan detours.
+
+### B — CB may close on authoring plus compile
+
+The plan forbids running Directional binaries in CB and places **497** in a distinct TB, so a CB closure gate
+demanding produced runtime witnesses or the 47 accepted→RED recoveries is **unsatisfiable** — the identical
+self-conflicting precondition resolved at `M6-CP3-CB1-ENTRY-R2` precondition 2.
+
+Conditions: claim **no** produced positive; enforce nonvacuity **in compiled assertions**, not prose; **name the
+authorized TB successor before** root `STATUS` becomes `COMPLETE`; 497, all organic D1/D2/D3/D5 and A6/A7
+witnesses, the odd-τ witness and the 47 accepted→RED recoveries remain **TB** obligations; each TB RED is
+investigated individually and returned to a **new** authorized repair turn. **Tool or time exhaustion is not
+`BLOCKED`.**
+
+### C — four excluded tests: separate, separately counted, diagnostic only
+
+`SurfacePhaseFrontProductFactoryAuthority.HardRailTransitionNeedsExactlyTwoSourceFaceIncidences`,
+`M6CP3.HardRailPublishedTauRequiresIncidentSourceFaces`,
+`M6CP3.A6SeamDirectionRejectsForeignFaceAndWedgeBindings`,
+`M6CP3.A7TypedWedgeSheetMismatchRejectsCachedMembership`.
+
+Do **not** fold them into 497 — that mutates a frozen single-owned gate and implies they ran. Do **not** leave
+them unrun — four authored contract tests would be zero-evidence (`LESSONS.md` 171). Run them in a **separate**
+artifact-only focused diagnostic turn, **counted separately**, with **diagnostic weight only and no acceptance
+credit**, until a Review folds them into a successor gate under the pre-commitment discipline.
+
+### Limits
+
+No runtime result is established by RA-40. The produced multi-carrier paired HardRail front, organic
+D1/D2/D3/D5, A6/A7, the odd-τ witness and the 47 recoveries all remain **unproven and stop-gated**. RA-34.3,
+RA-36.4/.5/.6, RA-38 and RA-39 stand unchanged, and diagnostic-first-locus inside `invalid_route()` is still
+required before any corrective semantic edit.
+
 ## CURRENT R3 checkpoint — 2026-10-10T01:46Z exact-source A3 factory call-site audit
 
 Continue SAME unfinished `M6-CP3-CB1-ENTRY-R3`; no successor/TB. Exact compiled semantic source `089779c15eae27a2bb3b798ef9c8085950e92def`; run `38005003624`, package `11650409049`, SHA256 `f64575fcdfe94d371a4b0055e22339f42172f8effc90f1cc8b032a3c0a01e364`, 28/28 internal SHA256SUMS, GMPXX+GMP, `runtimeExecution=false`. No code/tests/selectors/workflows changed or binaries executed. New **read-only, source-exact migration-impact census**: `Architecture_M6_CP3_R3_A3_Factory_Callsite_Migration_Impact_20261010.md`, backed up in Library `/Directional/Evidence/Directional_R3_A3_Factory_Callsite_Trust_Impact_20261010.md`; 1 production + 11 test factory callers; atlas pointer is available to producer options but absent from build-state→public factory signature; source-mesh binding requires explicit design if Decision A chooses independent factory A3. A/B/C are **unresolved**. Frozen 497 static ownership remains verified, while organic D1/D2/D3/D5/A6/A7, 39 R2 first-loci, 47 CP2 restorations and future artifact-only TB are **unverified**. Retain same turn IN_PROGRESS / UNKNOWN. No guessed schema or selector changes.

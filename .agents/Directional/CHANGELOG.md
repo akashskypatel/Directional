@@ -1,3 +1,36 @@
+## 2026-10-10 — `M6-CP3-R3-ABC-ARCH-REV`: Decisions A, B, C resolved as RA-40; CB1-ENTRY-R3 resumes
+
+Runtime-free independent producer Design Review. **A → factory-bound atlas re-derivation (A2 minimal), A1
+rejected. B → CB may close on authoring plus compile, with conditions. C → separately authorized, separately
+counted, diagnostic weight only.** Frozen as RA-40. No runtime credit; ledger **64 / 17 / 47**, debt **1**.
+
+**A.** `make` (`SurfaceCellTracing.cpp:7969-7982`) accepts `hardRailFieldTransitions` and
+`hardRailRouteCertificates` as unauthenticated data. A balanced `+1 mod 4` on both paths still satisfies
+`χ_next ∘ φ_A == φ_B ∘ χ_prev`, because a consistency relation is **gauge-invariant** — consistency can never
+substitute for value authentication, the same structural fact recorded for `Z4` at `M5-CP3-DEFN-R1`. A1 would
+leave any test or consumer able to manufacture a passing A4 product. A2 needs **no new schema**: the atlas is
+already a pointer in options (`SurfaceCellTracing.h:2186`), A4 already derives through `transition_value`, and
+`matches_source_faces` (`FieldTransportAtlas.h:893`) already binds it to an exact source — only the factory
+boundary lacks it, the fourth instance of the publish/reach pattern after RA-34.3, RA-35 and RA-38. **The hole is
+wider than the question asked**: carrier χ is equally unauthenticated, so one binding must cover both φ and χ or
+the defect survives one field over. The twelve-call-site migration is a feature — eleven are tests, and a test
+that cannot supply a source-bound atlas should not be manufacturing route certificates.
+
+**B.** The plan forbids running binaries in CB and places 497 in a distinct TB, so demanding produced runtime
+witnesses or the 47 accepted→RED recoveries at CB closure is unsatisfiable — the identical self-conflicting
+precondition resolved at `M6-CP3-CB1-ENTRY-R2` precondition 2. CB closes on authoring plus exact eight-target
+compile/package evidence with nonvacuity in **compiled assertions**, claiming no produced positive, naming the
+TB successor before `STATUS` goes `COMPLETE`. Tool or time exhaustion is **not** `BLOCKED`.
+
+**C.** Folding the four excluded tests into 497 would mutate a frozen single-owned gate and imply they ran;
+leaving them unrun makes four authored contract tests zero-evidence (`LESSONS.md` 171). They run separately,
+counted separately, with diagnostic weight only and no acceptance credit until a Review folds them into a
+successor gate under the pre-commitment discipline.
+
+**Limits.** No runtime result established. The produced multi-carrier paired front, organic D1/D2/D3/D5, A6/A7,
+the odd-τ witness and the 47 recoveries remain unproven and stop-gated; RA-34.3, RA-36.4/.5/.6, RA-38 and RA-39
+stand unchanged.
+
 ## 2026-10-08 — `M6-CP3-R3-ENDPOINT-ARCH-REV`: P0/P1 endpoint attachment resolved as RA-39; CB1-ENTRY-R3 resumes
 
 Runtime-free independent producer Design Review. **Block resolved and frozen as RA-39**, completing RA-37a's

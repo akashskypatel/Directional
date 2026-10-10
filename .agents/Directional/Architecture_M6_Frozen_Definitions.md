@@ -1,3 +1,45 @@
+## RA-40 — A3 trust, CB/TB sequencing and excluded-test status **ACCEPTED at independent R3 A/B/C Review** (2026-10-10)
+
+Resolves the `M6-CP3-CB1-ENTRY-R3` A/B/C block. Basis:
+`Architecture_M6_CP3_R3_ABC_Review_Decision.md`. No runtime credit; RA-34.3, RA-36.4/.5/.6, RA-38 and RA-39
+stand unchanged.
+
+- **RA-40.1 — Decision A: factory-bound atlas re-derivation (A2 minimal). A1 rejected.** `make`
+  (`src/geometry/SurfaceCellTracing.cpp:7969-7982`) currently accepts `hardRailFieldTransitions` and
+  `hardRailRouteCertificates` as unauthenticated **data**. A balanced `+1 mod 4` on both paths leaves
+  `χ_next ∘ φ_A == φ_B ∘ χ_prev` satisfied, because a consistency relation is gauge-invariant — so consistency
+  can never substitute for authenticating values. `make` must therefore take an atlas bound by
+  `FieldTransportAtlas::matches_source_faces` (`include/directional/authority/FieldTransportAtlas.h:893`) to the
+  same source matrix, authority and vertex count, and **re-derive every A3-sourced value it is handed — each
+  nonrail φ and each carrier χ — via `transition_value`, requiring exact equality including reverse orientation
+  and reciprocity.** No new attestation schema is authorized or needed: the atlas is already
+  `const authority::FieldTransportAtlas *` in options (`include/directional/geometry/SurfaceCellTracing.h:2186`)
+  and A4 already derives through it; only the factory boundary lacks the binding. **Absent atlas → typed
+  fail-closed**; there is no unauthenticated-but-accepted mode. A global per-face branch-gauge difference may not
+  substitute for true A3 values (RA-31a). All twelve public factory call sites migrate explicitly — one
+  production at `:12195`, eleven tests — with **no** default-null convenience overload. RA-39 endpoint-local
+  single-terminal-carrier χ is unchanged and this is not a licence to reintroduce RA-37a fan detours.
+- **RA-40.2 — Decision B: CB may close on authoring plus compile.** The binding plan forbids running Directional
+  binaries in CB and places the **497** execution in a distinct TB, so a CB gate demanding produced runtime
+  witnesses or the 47 accepted→RED recoveries is **unsatisfiable**. CB closes on complete source/test authoring
+  and exact eight-target GMP/GMPXX compile/package evidence, with **nonvacuity enforced in compiled assertions**,
+  claiming **no** produced positive. The authorized TB successor is named **before** root `STATUS` becomes
+  `COMPLETE`. The 497 gate, all organic D1/D2/D3/D5 and A6/A7 witnesses, the odd-τ witness and the 47
+  accepted→RED recoveries remain **TB** obligations; each TB RED is investigated individually and returned to a
+  **new** authorized repair turn. Tool or time exhaustion is **not** `BLOCKED`.
+- **RA-40.3 — Decision C: separately authorized, separately counted, diagnostic weight only.** The four excluded
+  source-defined tests
+  (`SurfacePhaseFrontProductFactoryAuthority.HardRailTransitionNeedsExactlyTwoSourceFaceIncidences`,
+  `M6CP3.HardRailPublishedTauRequiresIncidentSourceFaces`,
+  `M6CP3.A6SeamDirectionRejectsForeignFaceAndWedgeBindings`,
+  `M6CP3.A7TypedWedgeSheetMismatchRejectsCachedMembership`) must **not** be folded into the frozen 497, which
+  would mutate a single-owned gate and imply they had run; nor left unrun, which makes four authored contract
+  tests zero-evidence (`LESSONS.md` 171). They run in a **separate** artifact-only focused diagnostic turn,
+  **counted separately**, with results carrying **diagnostic weight only and no acceptance credit**, until a
+  Review folds them into a successor gate under the pre-commitment discipline.
+
+---
+
 ## RA-39 — P0/P1 endpoint-local attachment and transport **ACCEPTED at independent R3 producer Design Review** (2026-10-08)
 
 Resolves the remaining `M6-CP3-CB1-ENTRY-R3` STOP. Completes RA-37a's P0/P1 obligation; **RA-37a and RA-38 are

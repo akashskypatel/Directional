@@ -11833,3 +11833,42 @@ by renaming the existing fields."
 finds none the multi-carrier path is unexercised and must not be cited as validated. All RA-34.3 stop gates and
 RA-36.4/.5/.6 stand; diagnostic-first-locus inside `invalid_route()` is still required before any corrective
 semantic edit.
+
+## `M6-CP3-R3-ABC-RESOLUTION` — A3 trust, CB/TB sequencing, excluded tests; frozen as RA-40
+
+**Status.** RESOLVED BY INDEPENDENT PRODUCER DESIGN REVIEW / frozen as **RA-40** / unblocks
+`M6-CP3-CB1-ENTRY-R3` / no runtime credit / ledger **64 / 17 / 47**, debt 1. Basis:
+`Architecture_M6_CP3_R3_ABC_Review_Decision.md`.
+
+**A → factory-bound atlas re-derivation (A2 minimal); A1 rejected.** `make`
+(`src/geometry/SurfaceCellTracing.cpp:7969-7982`) takes `hardRailFieldTransitions` and
+`hardRailRouteCertificates` as unauthenticated data. A balanced `+1 mod 4` on both paths satisfies
+`χ_next ∘ φ_A == φ_B ∘ χ_prev`, because a consistency relation is **gauge-invariant** — consistency can never
+substitute for value authentication. A1 would leave any test or consumer able to manufacture a passing A4
+product: the self-authorizing-oracle family of M5 §8.1 and `[[M5-CP3-TB1-R15-R1-REV]]`.
+
+A2 needs **no new schema**: the atlas is already `const FieldTransportAtlas *` in options
+(`SurfaceCellTracing.h:2186`), A4 already derives through `transition_value`, and `matches_source_faces`
+(`FieldTransportAtlas.h:893`) already binds it to an exact source. Only the factory boundary lacks it. Fourth
+instance of the publish/reach pattern after `[[RA-34.3]]`, `[[RA-35]]` and `[[RA-38]]`.
+
+**The hole is wider than the question asked:** Decision A named *nonrail* φ, but `hardRailFieldTransitions`
+(carrier χ) is equally unauthenticated. One atlas binding closes both; scoping to φ would leave the same defect
+one field over. The twelve-call-site migration is a feature — eleven are tests, and a test that cannot supply a
+source-bound atlas should not be manufacturing route certificates for `make`.
+
+**B → CB may close on authoring plus compile.** The plan forbids running binaries in CB and places 497 in a
+distinct TB, so demanding produced runtime witnesses at CB closure is unsatisfiable — the identical
+self-conflicting precondition resolved at `M6-CP3-CB1-ENTRY-R2` precondition 2. Conditions: no produced-positive
+claim; nonvacuity enforced in **compiled assertions**; TB successor named before `STATUS` goes `COMPLETE`; 497,
+organic witnesses, odd-τ and the 47 accepted→RED recoveries remain TB obligations; each RED individually
+investigated into a **new** repair turn; tool/time exhaustion is **not** `BLOCKED`.
+
+**C → separately authorized, separately counted, diagnostic weight only.** Folding the four excluded tests into
+497 would mutate a frozen single-owned gate and imply they had run; leaving them unrun makes four authored
+contract tests zero-evidence (`LESSONS.md` 171). Run them in a separate artifact-only focused diagnostic turn,
+counted separately, with **no acceptance credit** until a Review folds them into a successor gate under the
+pre-commitment discipline.
+
+**Limits.** No runtime result is established. The produced multi-carrier paired front, organic D1/D2/D3/D5,
+A6/A7, the odd-τ witness and the 47 recoveries all remain unproven and stop-gated.
