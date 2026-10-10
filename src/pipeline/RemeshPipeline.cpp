@@ -9598,30 +9598,47 @@ std::set<authority::SourceEdgeTopologyKey> hard_feature_edge_keys_from_rails(
   return keys;
 }
 
-std::optional<geometry::SurfaceHardRailTerminalContacts> hard_rail_terminal_contacts_from_rails(
+struct HardRailSourceProvenance {
+  geometry::SurfaceHardRailTerminalContacts terminalContacts;
+  geometry::SurfaceHardRailClosedChains closedChains;
+};
+
+std::optional<HardRailSourceProvenance> hard_rail_source_provenance_from_rails(
     const std::vector<geometry::SurfaceCellRail> &rails,
     const std::size_t vertexExtent) {
-  geometry::SurfaceHardRailTerminalContacts contacts;
+  HardRailSourceProvenance result;
   for (const geometry::SurfaceCellRail &rail : rails) {
-    if (rail.kind != geometry::SurfaceCellRailKind::HardFeature || rail.closed) {
-      continue;
-    }
+    if (rail.kind != geometry::SurfaceCellRailKind::HardFeature) continue;
     if (rail.sourceVertices.size() < 2U || rail.component < 0) {
       return std::nullopt;
+    }
+    if (rail.closed) {
+      geometry::SurfaceHardRailClosedChain chain;
+      chain.component = rail.component;
+      for (const int vertex : rail.sourceVertices) {
+        const auto id = authority::SourceVertexId::from_index(vertex, vertexExtent);
+        if (!id) return std::nullopt;
+        chain.vertices.push_back(id.value());
+      }
+      // Some producers explicitly repeat the first vertex to close the loop.
+      if (chain.vertices.size() > 1U &&
+          chain.vertices.front() == chain.vertices.back()) chain.vertices.pop_back();
+      if (!result.closedChains.emplace(rail.id, std::move(chain)).second)
+        return std::nullopt;
+      continue;
     }
     const auto first = authority::SourceVertexId::from_index(
         rail.sourceVertices.front(), vertexExtent);
     const auto last = authority::SourceVertexId::from_index(
         rail.sourceVertices.back(), vertexExtent);
     if (!first || !last || first.value() == last.value() ||
-        !contacts.emplace(rail.id,
-                          geometry::SurfaceHardRailTerminalContact{
-                              rail.component, {first.value(), last.value()}})
-             .second) {
+        !result.terminalContacts.emplace(
+            rail.id, geometry::SurfaceHardRailTerminalContact{
+                         rail.component, {first.value(), last.value()}}).second) {
       return std::nullopt;
     }
   }
-  return contacts;
+  return result;
 }
 
 bool project_surface_cell_vertex_chart_authority(
@@ -12327,13 +12344,14 @@ remesh_from_raw_cross_field_impl_with_stage_products(
         crossFieldProduct.secondaryDirections;
     geometry::SurfaceCellTracingOptions tracingOptions;
     tracingOptions.authoritativeRails = authoritativeRails;
-    const auto railTerminalContacts = hard_rail_terminal_contacts_from_rails(
+    const auto railProvenance = hard_rail_source_provenance_from_rails(
         authoritativeRails, static_cast<std::size_t>(meshWhole.V.rows()));
-    if (!railTerminalContacts.has_value()) {
+    if (!railProvenance.has_value()) {
       return fail_surface_cells(SurfaceCellFailureCode::InvalidRailTopology,
                                 "feature");
     }
-    tracingOptions.hardRailTerminalContacts = *railTerminalContacts;
+    tracingOptions.hardRailTerminalContacts = railProvenance->terminalContacts;
+    tracingOptions.hardRailClosedChains = railProvenance->closedChains;
     tracingOptions.hardFeatureEdges = hardFeatureRailEdges;
     tracingOptions.reliefRootVertices = reliefRootSelection.roots;
     tracingOptions.reliefRegionLabels = reliefRootSelection.labels;

@@ -7982,7 +7982,8 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
     std::vector<int> sourceFaceBranchRotations,
     std::vector<SurfaceHardRailFieldTransition> hardRailFieldTransitions,
     std::vector<SurfaceHardRailRouteCertificate> hardRailRouteCertificates,
-    SurfaceHardRailTerminalContacts hardRailTerminalContacts) {
+    SurfaceHardRailTerminalContacts hardRailTerminalContacts,
+    SurfaceHardRailClosedChains hardRailClosedChains) {
   SurfacePhaseFrontProductError error;
   // RA-40: a commuting square is gauge-invariant; it cannot authenticate
   // either nonrail phi or hard-carrier chi. Bind a genuinely produced A3 atlas
@@ -8073,8 +8074,54 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
       return error;
     }
   }
-  // Hard features without producer-owned rails are not source authority.
-  if (!hardFeatureEdges.empty() && hardRailTerminalContacts.empty()) {
+  // Open and closed rails have distinct source-owned provenance: a closed
+  // chain has no terminal vertices, but every consecutive source edge must
+  // belong to the exact published hard-feature edge set.
+  if (!hardFeatureEdges.empty() && hardRailTerminalContacts.empty() &&
+      hardRailClosedChains.empty()) {
+    error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+    return error;
+  }
+  std::set<authority::SourceEdgeTopologyKey> coveredClosedEdges;
+  for (const auto &[rail, chain] : hardRailClosedChains) {
+    if (hardRailTerminalContacts.contains(rail) || chain.component < 0 ||
+        chain.vertices.size() < 3U) {
+      error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+      return error;
+    }
+    std::set<authority::SourceVertexId> distinct(chain.vertices.begin(),
+                                                  chain.vertices.end());
+    if (distinct.size() != chain.vertices.size()) {
+      error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+      return error;
+    }
+    for (std::size_t i = 0U; i < chain.vertices.size(); ++i) {
+      const auto edge = authority::SourceEdgeTopologyKey::make(
+          chain.vertices[i], chain.vertices[(i + 1U) % chain.vertices.size()]);
+      if (!edge || !hardFeatureEdges.contains(edge.value()) ||
+          !coveredClosedEdges.insert(edge.value()).second ||
+          !std::any_of(sourceTopologyRegions.regions().begin(),
+                       sourceTopologyRegions.regions().end(),
+                       [&](const auto &region) {
+                         if (region.component().index() !=
+                             static_cast<std::size_t>(chain.component)) return false;
+                         return std::any_of(region.faces().begin(), region.faces().end(),
+                                            [&](const auto &member) {
+                           const auto &corners = member.topology.vertices();
+                           return std::find(corners.begin(), corners.end(),
+                                            edge.value().first()) != corners.end() &&
+                                  std::find(corners.begin(), corners.end(),
+                                            edge.value().second()) != corners.end();
+                         });
+                       })) {
+        error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+        return error;
+      }
+    }
+  }
+  // A closed-only rail set must cover every hard-feature edge, not merely
+  // supply a convenient nonempty closed-chain token.
+  if (hardRailTerminalContacts.empty() && coveredClosedEdges != hardFeatureEdges) {
     error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
     return error;
   }
@@ -8752,7 +8799,8 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
       std::move(conformityPlanReceipt), std::move(hardFeatureEdges),
       std::move(sourceFaceBranchRotations),
       std::move(hardRailFieldTransitions),
-      std::move(hardRailRouteCertificates));
+      std::move(hardRailRouteCertificates), std::move(hardRailTerminalContacts),
+      std::move(hardRailClosedChains));
 }
 
 } // namespace directional::geometry
@@ -12270,7 +12318,8 @@ SurfacePhaseFrontResult publish_phase_front_result(
     SurfacePhaseFrontBuildState state, const Eigen::MatrixXi &sourceFaces,
     std::size_t sourceVertexCount,
     const authority::FieldTransportAtlas *fieldTransportAtlas,
-    const SurfaceHardRailTerminalContacts &hardRailTerminalContacts) {
+    const SurfaceHardRailTerminalContacts &hardRailTerminalContacts,
+    const SurfaceHardRailClosedChains &hardRailClosedChains) {
   if (state.disposition == SurfaceCellProducerDisposition::NotApplicable) {
     return SurfacePhaseFrontResult::not_applicable();
   }
@@ -12301,7 +12350,8 @@ SurfacePhaseFrontResult publish_phase_front_result(
       std::move(state.conformityPlanReceipt), std::move(state.hardFeatureEdges),
       std::move(state.faceBranchRotation),
       std::move(state.hardRailFieldTransitions),
-      std::move(state.hardRailRouteCertificates), hardRailTerminalContacts);
+      std::move(state.hardRailRouteCertificates), hardRailTerminalContacts,
+      hardRailClosedChains);
   if (auto *value = std::get_if<SurfacePhaseFrontProduct>(&product)) {
     return SurfacePhaseFrontResult::produced(std::move(*value));
   }
@@ -18803,7 +18853,8 @@ SurfaceCellNetwork build_surface_cell_network(
       std::move(phaseFrontState), faces,
       static_cast<std::size_t>(vertices.rows()),
       authoritativeOptions.fieldTransportAtlas,
-      authoritativeOptions.hardRailTerminalContacts);
+      authoritativeOptions.hardRailTerminalContacts,
+      authoritativeOptions.hardRailClosedChains);
   if (network.phaseFront.is_produced()) {
     const SurfacePhaseFrontProduct &phaseFront = network.phaseFront.product();
     network.proposals.reserve(phaseFront.cells().size());

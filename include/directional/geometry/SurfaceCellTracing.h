@@ -1516,6 +1516,14 @@ struct SurfaceHardRailTerminalContact {
 using SurfaceHardRailTerminalContacts =
     std::map<authority::HardRailId, SurfaceHardRailTerminalContact>;
 
+// Exact ordered closed-rail source chain; closed rails have no terminal contact.
+struct SurfaceHardRailClosedChain {
+  int component = -1;
+  std::vector<authority::SourceVertexId> vertices;
+};
+using SurfaceHardRailClosedChains =
+    std::map<authority::HardRailId, SurfaceHardRailClosedChain>;
+
 struct SurfaceFrontEdge {
   SurfaceFrontEdge(authority::TopologyRegionId region, authority::CellId owner)
       : filledCell(owner), sourceTopologyRegion(region) {}
@@ -1871,7 +1879,8 @@ public:
        std::vector<int> sourceFaceBranchRotations = {},
        std::vector<SurfaceHardRailFieldTransition> hardRailFieldTransitions = {},
        std::vector<SurfaceHardRailRouteCertificate> hardRailRouteCertificates = {},
-       SurfaceHardRailTerminalContacts hardRailTerminalContacts = {});
+       SurfaceHardRailTerminalContacts hardRailTerminalContacts = {},
+       SurfaceHardRailClosedChains hardRailClosedChains = {});
 
   [[nodiscard]] int gridU() const noexcept { return gridU_; }
   [[nodiscard]] int gridV() const noexcept { return gridV_; }
@@ -1918,6 +1927,10 @@ public:
   hardRailRouteCertificates() const noexcept {
     return hardRailRouteCertificates_;
   }
+  [[nodiscard]] const SurfaceHardRailTerminalContacts &
+  hardRailTerminalContacts() const noexcept { return hardRailTerminalContacts_; }
+  [[nodiscard]] const SurfaceHardRailClosedChains &
+  hardRailClosedChains() const noexcept { return hardRailClosedChains_; }
 
 private:
   SurfacePhaseFrontProduct(
@@ -1933,7 +1946,9 @@ private:
       std::set<authority::SourceEdgeTopologyKey> hardFeatureEdges,
       std::vector<int> sourceFaceBranchRotations,
       std::vector<SurfaceHardRailFieldTransition> hardRailFieldTransitions,
-      std::vector<SurfaceHardRailRouteCertificate> hardRailRouteCertificates)
+      std::vector<SurfaceHardRailRouteCertificate> hardRailRouteCertificates,
+      SurfaceHardRailTerminalContacts hardRailTerminalContacts,
+      SurfaceHardRailClosedChains hardRailClosedChains)
       : gridU_(gridU), gridV_(gridV),
         sourceTopologyRegions_(std::move(sourceTopologyRegions)),
         isolationSeamTransportCertificates_(
@@ -1946,7 +1961,9 @@ private:
         hardFeatureEdges_(std::move(hardFeatureEdges)),
         sourceFaceBranchRotations_(std::move(sourceFaceBranchRotations)),
         hardRailFieldTransitions_(std::move(hardRailFieldTransitions)),
-        hardRailRouteCertificates_(std::move(hardRailRouteCertificates)) {}
+        hardRailRouteCertificates_(std::move(hardRailRouteCertificates)),
+        hardRailTerminalContacts_(std::move(hardRailTerminalContacts)),
+        hardRailClosedChains_(std::move(hardRailClosedChains)) {}
 
   int gridU_ = 0;
   int gridV_ = 0;
@@ -1963,6 +1980,8 @@ private:
   std::vector<int> sourceFaceBranchRotations_;
   std::vector<SurfaceHardRailFieldTransition> hardRailFieldTransitions_;
   std::vector<SurfaceHardRailRouteCertificate> hardRailRouteCertificates_;
+  SurfaceHardRailTerminalContacts hardRailTerminalContacts_;
+  SurfaceHardRailClosedChains hardRailClosedChains_;
 };
 
 struct NotApplicable {};
@@ -2192,6 +2211,7 @@ struct SurfaceCellTracingOptions {
   std::set<authority::SourceEdgeTopologyKey> hardFeatureEdges;
   std::vector<SurfaceCellRail> authoritativeRails;
   SurfaceHardRailTerminalContacts hardRailTerminalContacts;
+  SurfaceHardRailClosedChains hardRailClosedChains;
   bool followCompatibleHardFeatureRails = true;
   // Raw classifier labels are ingress-only. Once SourceTopologyRegions is
   // constructed, downstream semantic consumers use sourceAuthority instead.
