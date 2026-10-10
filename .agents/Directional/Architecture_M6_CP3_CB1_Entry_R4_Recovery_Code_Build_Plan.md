@@ -1,4 +1,4 @@
-# M6-CP3-CB1-ENTRY-R4 — HELD source-authoritative recovery Code + Build plan
+# M6-CP3-CB1-ENTRY-R4 — source-authoritative recovery Code + Build plan
 
 **State: AUTHORIZED / IN PROGRESS after `M6-DEFN-R5-R4-REV` (RA-43).** The source-exact Review `Architecture_M6_CP3_R4_Producer_Locus_Review_Decision.md` discharges R4-REV-01A/01B/02A, authorizes this R4 Code + Build turn, and freezes RA-41 only for the singleton terminal contact. Multi-carrier junction/sector clauses remain unexercised and cannot claim runtime proof. All other gates and Code + Build restrictions below remain binding.
 
