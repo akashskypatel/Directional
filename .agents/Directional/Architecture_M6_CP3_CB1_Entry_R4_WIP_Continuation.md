@@ -1,5 +1,22 @@
 # M6-CP3-CB1-ENTRY-R4 — Code + Build WIP continuation
 
+## 2026-10-10 continuation — exact source and compile evidence verified, R4 remains open
+
+**No new semantic source, test, or benchmark modification in this attempt.** Source snapshot run `38063239022`, artifact `11673439015`, source/event SHA `6b7b1b44732db7328af5965272f8969a110a3c8a`, outer ZIP SHA-256 `c8cfcf8a9a59a577c120bbd91766cc4f0a4b3b22dcdfc447825feace78972c57`, inner archive SHA-256 `0ede06a7e355f043524ed76afc671a4447bf403f9f736cdf19f25248b2eaee99`. The archive source SHA matched and tar digest passed. Comparison from compiled semantic SHA `c7cb5d68b72097f1db0bf1ce54e5379894d77c93` to snapshot SHA showed **no source/test/header changes** (only work-in-progress documentation, dispatcher/STATUS, trigger and mailbox records).
+
+**Pending compile from the previous attempt is GREEN and verified, not redispatched.** Run `38059253905`, result artifact `11672687621`, outer SHA-256 `fc90fd8db496139559746e72f3b17a97da429d241bda666bf01caa11f4ba0e54`. Its internal manifest matches **28/28** entries; packaged `metadata/source-commit.txt` matches `c7cb5d68...`; preflight/build exits are `0/0`; all eight standard targets packaged; GMPXX and GMP are on the real generated link line; final source status is clean; `runtimeExecution=false`. No packaged binary or TB harness was executed.
+
+**Source-exact RA-44 limits (remain unfinished):**
+- `SurfacePhaseFrontProduct::make` checks source-matched A3, basic gauge range/presence, carrier reciprocal transport, and typed terminal-edge incidence. The factory still has **no per-face cross-field axes, frame axes or normal** with which to execute RA-44's independent absolute `1 - 1e-8` +U/+V gauge pin; neither a gauge-only relative check nor `find_frame` membership can substitute. Keep the absolute geometric and relational A3 tests paired, with balanced-gauge tamper negatives.
+- The source-owned sibling reduction `hard_rail_terminal_contacts_from_rails` is implemented and threaded at the primary tracing ingress; the checked-factory endpoint match is still a **terminal-carrier edge incident to an endpoint vertex**, not an independently authored, unique non-rail A2b source-star side-germ/sector route with its A3 transport. Do not manufacture this witness by a factory-side traversal and call it producer-authenticated.
+- The reduction deliberately skips `rail.closed`; a nonempty closed-only `hardFeatureEdges` set paired with an empty terminal-contact map is rejected by the checked factory. The valid closed-rail provenance case needs an explicit typed source-owned distinction, not a broad exemption for missing rail contact or hand-authored hard features.
+- The three `hard_feature_edge_keys_from_rails` uses include primary tracing, component validation and aggregation; distinguish those from the single primary `hard_rail_terminal_contacts_from_rails` call rather than assuming three checked-factory ingresses. Preserve all existing producer/consumer entry points and review scope before threading further.
+
+**Next same-turn work:** implement RA-44's non-vacuous geometric **and** A3 gauge certificate, independently produced A2b source-star terminal side germ, closed-rail provenance distinction, causal positives/negatives and required 88 CP2 restorations; perform final eight-target compile/package only. RA-41 multi-carrier junction/sector clauses remain **UNEXERCISED**. Frozen 497 is unchanged; no R4 completion, test passes, TB dispatch or successor promotion claimed.
+
+---
+
+
 ## 2026-10-10 RA-44 partial terminal-contact checkpoint (current)
 
 **IN PROGRESS — no R4 acceptance or runtime credit.** Exact source-snapshot workflow run `38058583542`, source/event `8aa41ba916cf7e0be79fd208b9ec34a743d0a2eb`, source artifact `11672171341`, verified SHA-256 ZIP `62be63fcd5d25730fe75c5949238a60cfd505f9ac70b5bc9819ebc22262ac6e3`. Exact 3-path patch (header base `8aa41ba...`, SHA-256 `9849260ca5c5d8343901e70744bc2140718e19c7762b0728f62eb6f34c4635aa`, body SHA-256 `ae733278599c46087cfb2ba512b307d3433e9af7d9477c57d1c37e0e035af067`) was checked with `git apply --check` and `git diff --check`, retained as downloadable chat work-preservation file `Directional__M6-CP3-CB1-ENTRY-R4__base-8aa41ba916cf__work-preservation.patch`.
