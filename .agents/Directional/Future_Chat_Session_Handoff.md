@@ -1,4 +1,25 @@
-## CURRENT — R4 checked-factory terminal A2b path uniqueness, compile DISPATCHED (2026-10-10)
+## CURRENT — R4 A2b terminal side-germ forgery negatives (2026-10-10)
+
+**Canonical `M6-CP3-CB1-ENTRY-R4` IN_PROGRESS; do not advance to TB497.**
+New semantic source `1da010b6b607aca3f5a2e3078b32f5fb94d4d34b` adds compile-only test
+`M6CP3.CheckedFactoryRejectsForgedTerminalA2bSideGerm`: it requires
+one genuinely produced nonempty endpoint side path, then independently
+reconstructs the checked product and rejects (a) omission of its non-rail
+attachment path and (b) a +1 Z4 mutation of a single A3 path step.
+This is a causally targeted negative oracle, **not** a synthetic
+second-admissible-route witness and not evidence that the test has executed.
+Drive apply run `38083050527` succeeded (one test path), staging patch
+owner deleted. Exact eight-target GMP/GMPXX compile:
+**GREEN: eight targets, GMP/GMPXX, 28/28 archive checksums, clean source, exits 0, runtimeExecution=false**; run `38083162432 (job 114304131242)`; artifact `11680664166, ZIP SHA256 ebbf236e3a389fcff744ca2ae47acf2014dea2f487cb759d9ee0795651d3f33e`.
+R4 remains open: genuine multi-carrier source-star sectors, 39 carried
+endpoint effects, 34 Phase10 positives, seven DCEL fixture negatives,
+88 CP2 accepted restorations, and other frozen 497 evidence. Do not
+alter a selector or execute tests/benchmarks inside Code + Build.
+See `Architecture_M6_CP3_R4_Terminal_Germ_Forgery_Negatives_Code_Build_Record.md`.
+
+---
+
+## CURRENT — R4 checked-factory terminal A2b path uniqueness, compile VERIFIED (2026-10-10)
 
 `M6-CP3-CB1-ENTRY-R4` remains **IN_PROGRESS**, no successor/TB497 permission.
 Previous terminal producer source `991f655199017375d0ad7ae3fc0b235ffa3de4f0`
@@ -13,7 +34,7 @@ adds independent A2b source-star path uniqueness verification at checked factory
 plus a nonvacuous compiled-only product-construction regression. Drive apply
 run `38081631821` successful, result artifact `11681000083`, source backup
 `Directional_M6_CP3_R4_A2b_Factory_Unique_Star_Incremental_WIP.patch` in
-`/Directional/Evidence/`, staging ID deleted. **Eight-target compile PENDING:**
+`/Directional/Evidence/`, staging ID deleted. **Eight-target compile GREEN:** run `38081759082`, job `114300020996`, artifact `11680344767`, 28/28, GMP/GMPXX, runtimeExecution=false;
 request commit `3f136c63c0e79b82ca7159938cff54a3c6f0d372`, exact source
 `c28f1d241e6d84503e4ab38ce02b7200b8c9cfe5`, mailbox
 `.workflow-mailbox/m6-cp3-r4-factory-unique-star-compile/latest.json`.

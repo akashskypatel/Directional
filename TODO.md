@@ -1,10 +1,18 @@
+## CURRENT — R4 forged terminal-germ negative oracle (2026-10-10)
+
+- [x] Source `1da010b6b607aca3f5a2e3078b32f5fb94d4d34b` adds a producer-nonvacuous checked-factory negative for an omitted A2b terminal path and a forged A3 side-germ step. Drive-apply `38083050527` succeeded; source patch owner deleted. Compile-only; tests not executed.
+- [ ] Exact eight-target GMP/GMPXX compile `GREEN: eight targets, GMP/GMPXX, 28/28 archive checksums, clean source, exits 0, runtimeExecution=false` (run `38083162432 (job 114304131242)`, artifact `11680664166, ZIP SHA256 ebbf236e3a389fcff744ca2ae47acf2014dea2f487cb759d9ee0795651d3f33e`). Do not start TB497.
+- [ ] Build a source-valid dual-admissible-path negative to exercise *independent* uniqueness, plus multi-carrier/odd-τ positive carriers; close seven DCEL negatives, 34 Phase10 positive recoveries, 39 endpoint and 88 accepted CP2 regressions. These are not discharged by an extra compiled test.
+
+---
+
 ## CURRENT — R4 A2b checked-factory uniqueness increment (2026-10-10)
 
 - [x] Exact source patch `c28f1d241e6d84503e4ab38ce02b7200b8c9cfe5`
   independently re-derives unique nonhard A2b source-star paths at factory,
   rejecting hidden alternative paths, with one compile-only positive regression;
   Drive apply workflow `38081631821` success and owner staging cleanup complete.
-- [ ] Observe **PENDING** eight-target GMP/GMPXX compile mailbox
+- [x] Eight-target GMP/GMPXX compile GREEN at run `38081759082` (job `114300020996`, artifact `11680344767`, 28/28, runtimeExecution=false), mailbox
   `.workflow-mailbox/m6-cp3-r4-factory-unique-star-compile/latest.json`,
   exact source `c28f1d2...`; request commit `3f136c63...`. No tests executed.
 - [ ] R4 production work remains: causal 39 endpoint, multi-carrier/odd-τ,

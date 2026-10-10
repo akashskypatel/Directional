@@ -1,3 +1,7 @@
+## 2026-10-10 — `M6-CP3-CB1-ENTRY-R4` terminal A2b negative factory witness (incremental)
+
+Added the nonvacuous compile-only regression `M6CP3.CheckedFactoryRejectsForgedTerminalA2bSideGerm` at exact source `1da010b6b607aca3f5a2e3078b32f5fb94d4d34b` (Drive apply `38083050527`). It rebuilds the original A4 production at the checked factory, selects an actually nonempty typed A2b terminal side path, and mutates either path omission or one independently A3-certified quarter-turn. Both cases must yield `InvalidSourceAuthority`. Exact eight-target GMP/GMPXX compile: **GREEN: eight targets, GMP/GMPXX, 28/28 archive checksums, clean source, exits 0, runtimeExecution=false**, run `38083162432 (job 114304131242)`, artifact `11680664166, ZIP SHA256 ebbf236e3a389fcff744ca2ae47acf2014dea2f487cb759d9ee0795651d3f33e`, no runtime. R4 remains IN_PROGRESS; no proof of a second admissible path, multi-carrier restoration, all 88 CP2 losses or frozen 497 acceptance.
+
 ## 2026-10-10 — R4 A2b factory independently verifies source-star uniqueness
 
 Committed semantic `c28f1d241e6d84503e4ab38ce02b7200b8c9cfe5`: checked
