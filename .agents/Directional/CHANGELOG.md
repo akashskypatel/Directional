@@ -1,3 +1,7 @@
+## 2026-10-10 — `M6-DEFN-R5-R4-REV` independent RA-42 re-review STOP
+
+Source exact `0bc8080366757a2285a8265599255475ef8525b2`; source snapshot `38046815459`, artifact `11666644778`, 5851/5851 hashes. Found raw, not typed, rail source incidence; false star-traversal source-range citation; HELD R4 plan contradicting unconditional RA-40.1 and still-unproven branch gauge equality. Corrected binding normative descriptions and held plan, documented independent R4-REV-01A/01B/02A STOP. No runtime, code/build/test/selector changes, successor or new stable regression; CP2 491/491 accepted; R3 403/497 rejected, stable 66/17/49 debt 1. RA-42 design remains prospective; R4 Code+Build remains HELD.
+
 ## 2026-10-10 — `M6-CP3-R4-TERMINAL-CONTACT-ARCH-REV`: R4-REV-01/-02 resolved as RA-42
 
 Runtime-free independent producer Design Review. **Both blocking findings resolved; frozen as RA-42.** The

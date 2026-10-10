@@ -1,5 +1,13 @@
 # M6-DEFN-R5-R4-REV — terminal contact ownership and A3/source-gauge trust boundary: Review decision
 
+**Independent source-exact correction (M6-DEFN-R5-R4-REV):** The design choice in RA-42 is retained,
+but two supporting factual claims below are superseded: `SurfaceCellRailSample::sourceFace/sourceEdge`
+are raw integers, not typed source-topology credentials, and `SurfaceCellTracing.cpp:18120-18206` is
+not the claimed vertex-star/rail-cut contact traversal. This Design Review does **not** by itself
+prove an authenticated producer-to-front contact mapping or release R4 implementation. RA-40.1's
+unconditional atlas decision remains binding; refer to the independent review record for stop gates.
+
+
 **Type:** runtime-free independent producer Design Review resolving `R4-REV-01` and `R4-REV-02`.
 **Verdicts:** **R4-REV-01 → the rail/front producer owns the terminal contact; `SurfaceTracePoint` cannot and
 must not be used for it. R4-REV-02 → option (A): RA-40.1 stays unconditional and the legacy callers migrate.**

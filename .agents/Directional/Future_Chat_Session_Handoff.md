@@ -1,3 +1,9 @@
+## CURRENT — independent R5/R4 source-authority re-review (2026-10-10 11:07Z)
+
+**RA-42 design preserved, source-authentication evidence NOT accepted; `M6-DEFN-R5-R4-REV` remains REVIEW_BLOCKED.** R4-REV-01A: rail sample `sourceFace`/`sourceEdge` are raw ints and do not bind a unique front terminal occurrence; R4-REV-01B: claimed existing star traversal at `SurfaceCellTracing.cpp:18120-18206` is actually isolation-seam handling; R4-REV-02A: the held CB plan's null-atlas exception contradicts RA-40.1/RA-42.5 and has been corrected, while face gauge still lacks independent re-derivation. No successor Code + Build, RA-41 freeze or runtime credit. Frozen 497 unchanged: CP2 accepted 491/491, R3 rejected 403/497, 94 RED, 88 CP2 losses, stable 66/17/49 debt 1. See `Architecture_M6_DEFN_R5_R4_Independent_Review_Record.md`. The older statement below that both source-proof blockers were fully discharged is superseded; RA-42 remains a **prospective** obligation, not completed producer proof.
+
+---
+
 ## Resume-critical update — R4-REV-01 and -02 RESOLVED as RA-42; RA-41 adjudication can proceed (2026-10-10)
 
 **Both blocking findings resolved and frozen as RA-42.** Basis:

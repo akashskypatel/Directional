@@ -1,3 +1,12 @@
+## CURRENT — R5/R4 source-exact Review STOP (2026-10-10)
+
+- [ ] **R4-REV-01A:** independently attest source-entity conversion of raw rail face/edge IDs and uniquely associate an oriented front endpoint with one rail vertex/interval and side germ; reject missing or ambiguous producer contact, no barycentric-epsilon authority.
+- [ ] **R4-REV-01B:** identify actual existing source-star/rail-cut producer (the previously cited `SurfaceCellTracing.cpp:18120-18206` is isolation-seam processing), or explicitly design the missing producer without claiming it exists.
+- [ ] **R4-REV-02A:** retain unconditional RA-40/RA-42 matched-atlas obligation (HELD plan corrected); independently attest `sourceFaceBranchRotations` and indirect periodic/isolation gauge dependencies.
+- [ ] Remain in `M6-DEFN-R5-R4-REV` REVIEW_BLOCKED with successor UNKNOWN; zero produced multi-carrier witness, R4 Code + Build HELD; no frozen selector or runtime change. Historical items below are carried evidence, not permission to implement.
+
+---
+
 ## CURRENT — mandatory M6 R4 independent Review blockers (2026-10-10)
 
 - [ ] `R4-REV-01`: authenticate the **producer-owned** terminal source-vertex side germ, actual trace endpoint occurrence, unique ordered nonrail A2b path and bidirectional A3 φ. Face `2 -> 3` via `(1,5)` is **only** a geometrically valid candidate, not a published producer certificate. Keep RA-38.3 multi-carrier boundary through-junction prohibition; distinguish terminal boundary germs.

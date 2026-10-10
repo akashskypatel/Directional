@@ -7,12 +7,12 @@ RA-36.4/.5/.6, RA-38, RA-39 and RA-40 stand.
 **Decisive fact.** `SurfaceTracePoint` is `{int face; Eigen::RowVector3d barycentric;}` — **no source vertex, no
 source edge**, and `face` is a **raw row index**, not a `SourceFaceTopologyKey`. The witness RA-41.2 requires
 therefore cannot be authored from a trace point. Meanwhile `SurfaceCellRail` publishes ordered `sourceVertices`
-and `SurfaceCellRailSample` publishes `sourceFace`/`sourceEdge`: the typed incidence already exists one structure
-away from the consumer that cannot see it — the **fifth** occurrence of the publish/reach pattern after RA-34.3,
+and `SurfaceCellRailSample` publishes `sourceFace`/`sourceEdge`: the raw source-index provenance exists one structure
+away, but its typed mapping to an oriented front terminal contact remains unproven — the **fifth** occurrence of the publish/reach pattern after RA-34.3,
 RA-35, RA-38 and RA-40.
 
 - **RA-42.1 — terminal contact ownership.** The terminal rail contact witness is authored by the **rail/front
-  producer** from `SurfaceCellRail::sourceVertices` and the rail samples' typed `sourceFace`/`sourceEdge`, and
+  producer** from `SurfaceCellRail::sourceVertices` and the rail samples' raw `sourceFace`/`sourceEdge` after independently checked conversion to typed source entities and a unique front-contact association, and
   published as typed authority on the endpoint certificate. The endpoint certificate **stops reading**
   `from.face`/`to.face` for contact purposes.
 - **RA-42.2 — no incidence from geometry.** Deriving source-vertex or source-edge incidence from
@@ -22,8 +22,10 @@ RA-35, RA-38 and RA-40.
 - **RA-42.3 — typed diagnostics.** Carrier, face and endpoint diagnostics are emitted as typed
   `SourceFaceTopologyKey`, never bare row indices. A raw-row record is not evidence of a topological claim.
 - **RA-42.4 — germ derivation.** The germ is the arc of the A2b vertex star at the terminal vertex after cutting
-  the incident hard rails, from the star traversal that already exists at
-  `src/geometry/SurfaceCellTracing.cpp:18120-18206`. Equality with the carrier's incident pair holds **at the
+  the incident hard rails, from independently validated source-vertex-star traversal and rail-cut construction. The formerly cited
+  `src/geometry/SurfaceCellTracing.cpp:18120-18206` does **not** implement that construction: it contains
+  isolation-seam certificate handling/diagnostics. Do not claim an existing producer without an exact symbol,
+  source-entity linkage and unique-germ proof. Equality with the carrier's incident pair holds **at the
   contacts**, never at the trace endpoints — the exact locus of RA-39.1's error.
 - **RA-42.5 — RA-40.1 is unconditional.** The atlas mandate is **not** scoped. The earlier conditional
   pre-commitment is **withdrawn**: its premise that a rail-free product carries nothing A3-derived is refuted by
@@ -38,6 +40,13 @@ RA-35, RA-38 and RA-40.
 - **RA-42.8 — no runtime credit.** The 39-row family remains one carrier configuration with **zero**
   multi-carrier instances; RA-41.2's junction clauses stay unexercised and R4's multi-carrier STOP is
   undischarged.
+
+**RA-42 independent re-review correction (M6-DEFN-R5-R4-REV):** RA-42 describes required future producer behavior,
+not proof that this behavior already exists. `SurfaceCellRailSample::{sourceFace,sourceEdge}` are raw `int` values
+(`sourceEdge` is local); the current front has no published typed terminal contact. Reject missing or ambiguous
+producer-owned incidence rather than deriving it from barycentric epsilon predicates. The held R4 Code+Build plan
+must retain the unconditional RA-40.1 atlas mandate. No runtime credit or implementation release; see
+`Architecture_M6_DEFN_R5_R4_Independent_Review_Record.md`.
 
 ---
 
@@ -148,8 +157,9 @@ Basis: `Architecture_M6_CP3_R3_Sector_Derivation_Review_Decision.md`. No runtime
   coincidence (two carriers, chain length two), so a correction that fixes only (i) and validates on 3×3 will
   pass while (ii) stays wrong. Additionally the A4-side gate at `:18312-18330` must not precede the
   sector/junction logic, or the corrected path stays unreachable.
-- **RA-38.5 — publish, do not invent.** `railFanPotentials` already traverses the whole star (`:18120-18206`) and
-  A4 already knows the hard carriers (it builds `hardRailFieldTransitions`); only the carrier **cut** is missing,
+- **RA-38.5 — publish, do not invent.** The original assertion that `railFanPotentials` traverses the whole star at
+  `SurfaceCellTracing.cpp:18120-18206` is unsupported (that range handles isolation-seam certificates and
+  diagnostics). A valid vertex-star producer must be identified and demonstrated; A4 already knows the hard carriers (it builds `hardRailFieldTransitions`); only the carrier **cut** is missing,
   and it is a local derivation over data A4 already owns. Forbidden: guessed sectors; a global face-star
   potential used as ownership rather than post-ownership cross-check; first-by-row face selection; a new τ
   definition; any A5-side path search or inference from sheet/region labels.
