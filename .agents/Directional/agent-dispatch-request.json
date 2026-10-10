@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-cyclic-route-compile-20261010",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-cyclic-route-compile",
-  "source_sha": "b7be5b9c8a3f2cc611f487711de938c60a854e78",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-cyclic-route"
+  "request_id": "m6-cp3-r4-relational-gauge-apply-20261010-1634",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-relational-gauge-apply",
+  "file_id": "1ymSAI_sA5MB903wS854VJemryJZW6SMF",
+  "patch_sha256": "12901bbe7309307a3814cde7a5c760c0cf40a6dbd362490888b5f2583eb850e6",
+  "base_sha": "b95de5440fb1c199eec102a7209c7156ff766c6a",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "fix(surface-cells): authenticate relative +U gauge against source A3"
 }
