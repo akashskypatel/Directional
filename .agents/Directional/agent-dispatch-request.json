@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-closed-rail-provenance-compile-20261010",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-closed-rail-compile",
-  "source_sha": "715fe2d664a72596b82312ea418066bb571617bb",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-closed-rail"
+  "request_id": "m6-cp3-r4-closed-route-interval-apply-20261010",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-closed-route-interval-apply",
+  "file_id": "1SbJdmi1h3L_bEG-wAnKX4BPGt9eTSEg2",
+  "patch_sha256": "638729b5020fe9e512dc6715c08496e67b0678267bac54518a7814735547dcdf",
+  "base_sha": "715fe2d664a72596b82312ea418066bb571617bb",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "fix(surface-cells): verify closed hard-rail route intervals by source chain"
 }
