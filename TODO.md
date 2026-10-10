@@ -1,3 +1,11 @@
+## CURRENT — R4 complete draft authority and A3-correct D2 mutation oracle (2026-10-10)
+
+- [x] Exact source `a6b803fb08ccbc99d87a4fa9e1635c451e902c60`: `PhaseFrontDraft` now carries produced `conformityPlanReceipt`, terminal contacts, and closed-rail chains through factory reconstruction; D2 asserts a real reconstructed product and checks that forged odd rail chi fails the immutable A3 check at A4, rather than claiming impossible A5 rejection. Drive apply `38089504108` succeeded. Compile-only; tests not executed.
+- [x] Exact compile GREEN: workflow `38089604435`, job `114323207863`, source `a6b803fb08ccbc99d87a4fa9e1635c451e902c60`, 8/8 GMP/GMPXX targets, 0/0 exits, 28/28 package checksums, clean source, `runtimeExecution=false`, result artifact `11682953835` (ZIP SHA256 `9e3c258011e6b0ca8d010a66f50110dde3f824591fa3e594ee267fcd060eef7c`), log artifact `11683118643` (ZIP SHA256 `ca9813122d080e9d2da946776334f19c49e3e6955ecacff184091c965fc1ca3d`).
+- [ ] R4 remains open: A5-reachable causal negative, 39 endpoint effects, 34 Phase10 positive recoveries, seven dual-triangle DCEL negatives, 88 CP2 accepted losses, genuine source-valid multi-carrier/odd-tau, independent adjudication of impossible-looking dual-path witness, and separately authorized frozen 497 TB. Never count compile as runtime acceptance.
+
+---
+
 ## CURRENT — R4 D2 attached-tau relational witness correction (2026-10-10)
 
 - [x] Source `e3d2a1bcdb6965ec48f11af5add0113c4eae2785` corrects D2 odd-carrier witness to use full A2b source-star attachment transport in the A5 endpoint equation while keeping odd carrier chi as a separate mutation guard. Source patch applied in run `38088012591`; Drive staging retired; tests not executed.
