@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra45-a6-apply-20261010-1817",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra45-a6-apply",
-  "file_id": "1jpGfR6JxH34apjsec0d4HgkNo2RCGuSt",
-  "patch_sha256": "5e1da300a24c2ff6fe81113c7c7bf91728f7cfd9d9e3ad754bd4d766bc5cb133",
-  "base_sha": "0dcd853761e869584f92de8eaa676b6afd39058a",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): pin RA45 relational gauge invariance in A6"
+  "request_id": "m6-cp3-r4-ra45-a6-compile-20261010-1819",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-ra45-a6-compile",
+  "source_sha": "49c81c5e697f4b5a256dc6d3c928954434e5ae03",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-ra45-a6"
 }
