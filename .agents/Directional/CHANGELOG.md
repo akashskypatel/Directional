@@ -1,3 +1,12 @@
+## 2026-10-10 — `M6-CP3-CB1-ENTRY-R4` terminal source-star A2b path increment
+
+Published source `991f655199017375d0ad7ae3fc0b235ffa3de4f0`: producer
+publishes typed terminal vertex and unique bounded A2b nonrail A3 paths;
+checked product attests them and A5 consumes the composed attachment transfer.
+Eight-target GMP/GMPXX compile GREEN at run 38080007254, job 114294869088, artifact 11680003032, verified 28/28, `runtimeExecution=false`. No runtime tests, benchmark, selector,
+fallback, PR metadata, or acceptance change. R4 remains IN_PROGRESS, frozen
+R3 403/497 rejected and 88 CP2 losses unresolved.
+
 ## 2026-10-10 — `M6-CP3-CB1-ENTRY-R4` exact legacy rail-corner identity (incremental)
 
 Removed `1e-8` endpoint-to-source-vertex identity inference from `rail_sample_source_vertex` and added a

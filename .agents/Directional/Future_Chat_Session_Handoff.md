@@ -1,3 +1,21 @@
+## CURRENT — R4 producer-owned terminal A2b source-star germ, compile GREEN (2026-10-10)
+
+**Same `M6-CP3-CB1-ENTRY-R4` IN_PROGRESS; TB497 remains forbidden.** Exact source
+`991f655199017375d0ad7ae3fc0b235ffa3de4f0` adds typed endpoint contact vertex,
+nonrail A2b source-star attachment paths with independent A3 transitions, checked
+factory path verification and A5 attachment-transport consumption. Applied GREEN
+in `38079857890` with 4 changed paths; staged Drive File ID owner deleted.
+Eight-target GMP/GMPXX compile **GREEN**: 38080007254, job 114294869088, package 11680003032, SHA256 993e5d602f399a19dbefa81f26e26dd260121a0a5b4e9659b86df20edd618906, 28/28 manifest, clean source, zero exits, `runtimeExecution=false`. No runtime
+or benchmark. This is incremental: RA-41 multi-carrier proof/odd τ,
+source producer/factory ingress restoration, all 88 CP2 losses, seven DCEL
+fixture oracles and 497 frozen acceptance remain OPEN. See
+`Architecture_M6_CP3_R4_Terminal_Germ_Incremental_Code_Build_Record.md`.
+Frozen CP2 491/491, R3 403/497, 94 RED, stable 66/17/49 debt 1 unchanged.
+
+---
+
+**Docs publication correction:** first old-base dispatcher run `38080352681` failed non-fast-forward; no documentation patch published. This rebased four-path record supersedes that failed dispatch. Current turn remains R4, no TB; do not repeat the old request.
+
 ## CURRENT — R4 legacy rail-corner epsilon removal, compile GREEN (2026-10-10)
 
 **Same `M6-CP3-CB1-ENTRY-R4` IN_PROGRESS; no successor/TB497 authorization.** At verified source snapshot

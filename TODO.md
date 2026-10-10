@@ -1,3 +1,16 @@
+## CURRENT — R4 typed terminal source-star germ (2026-10-10)
+
+- [x] Bounded A4 terminal source-star paths with typed endpoint vertex and
+  A3-authenticated non-rail transitions landed at semantic source `991f6551...`;
+  A5 consumes attached transport rather than bare carrier χ.
+- [x] Eight-target GMP/GMPXX compile **GREEN**, run 38080007254, job 114294869088, result artifact 11680003032, 28/28 checksums, `runtimeExecution=false`; exact source 991f6551... .
+- [ ] Verify actual direct-plane / 39-carried endpoint behavior only in separately
+  authorized artifact-only TB. Do not infer runtime success from compile.
+- [ ] R4 remains open: 88 accepted CP2 restorations, seven fixture oracles,
+  multi-carrier positive source witnesses, full code/compile and immutable TB gate.
+
+---
+
 ## CURRENT — `M6-CP3-CB1-ENTRY-R4` resumed (RA-45, 2026-10-10)
 
 - [ ] **Continue same Code + Build turn.** The earlier `M6-DEFN-R5-R4-REV` HOLD at the top of the historical TODO sections below is superseded by independent RA-43/RA-45 decisions. `M6-CP3-CB1-ENTRY-R4` is released and IN_PROGRESS, not complete.
