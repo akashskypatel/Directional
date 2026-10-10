@@ -1,3 +1,26 @@
+## CURRENT — R4 legacy rail-corner epsilon removal, compile GREEN (2026-10-10)
+
+**Same `M6-CP3-CB1-ENTRY-R4` IN_PROGRESS; no successor/TB497 authorization.** At verified source snapshot
+`8b1e7b3b44dcea90622764265f294afb35bbcb6f` (run `38077841892`, artifact `11678873765`,
+**5927/5927** source SHA256 entries verified), the remaining tolerance-based
+`rail_sample_source_vertex` branch was corrected to accept only exact barycentric source corners.
+The existing `SurfaceCellTracingPhase14.ProducedRailEndpointsRequireExactSourceVertexIncidence` adds
+an untyped legacy near-corner negative and exact-corner positive. Exact two-path patch SHA256
+`d0f8d776c03a6339cd51abee83b097813d955633f0dd92b18c835818013fd0cc` applied via
+`38078125447`, resulting semantic commit `68533fd7faf80efa8b7388f8af83f0bfd269bca4`;
+Drive staging was owner-deleted. Eight-target GMP/GMPXX compile **GREEN** at run `38078250813`
+(job `114289708464`, artifact `11678578265`, ZIP SHA256
+`e4d0f75e4ce42106df585eb05bf6f001f5a8093e2e5493bdbc5297324294355d`,
+**28/28** manifest, source clean, exits 0, `runtimeExecution=false`). No tests or benchmarks executed.
+This removes an epsilon-based endpoint identity path, **not** all untyped legacy incidence:
+fixtures without typed `sourceVertices` still rely on exact floating-point corner coordinates;
+producer-owned A2b terminal side germ, A3 sector φ and genuine multi-carrier proofs remain OPEN.
+RA-43.4 as a complete source-authority contract remains OPEN; no R4 or RA-41 acceptance claim.
+Frozen CP2 491/491, rejected R3 403/497, 94 RED/88 CP2 losses, stable 66/17/49 debt 1 unchanged.
+See `Architecture_M6_CP3_R4_Typed_Rail_Incremental_Code_Build_Record.md` appended section.
+
+---
+
 ## CURRENT — R4 typed rail source-incidence incremental correction (2026-10-10)
 
 **`M6-CP3-CB1-ENTRY-R4` remains IN_PROGRESS; no successor or TB497 is authorized.**

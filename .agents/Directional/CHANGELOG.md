@@ -1,3 +1,12 @@
+## 2026-10-10 — `M6-CP3-CB1-ENTRY-R4` exact legacy rail-corner identity (incremental)
+
+Removed `1e-8` endpoint-to-source-vertex identity inference from `rail_sample_source_vertex` and added a
+legacy-untyped near-corner negative/exact-corner positive to `SurfaceCellTracingPhase14` without changing
+test identity or selector. Applied semantic commit `68533fd7faf80efa8b7388f8af83f0bfd269bca4`, compile
+workflow `38078250813` GREEN: eight GMP/GMPXX targets, 28/28 manifest, `runtimeExecution=false`.
+No binaries/tests/benchmarks ran. Untyped legacy rails still need authoritative fixture migration; A2b,
+A3 φ, multi-carrier and frozen CP2 losses remain open. Same R4 turn, no successor promotion.
+
 ## 2026-10-10 — `M6-CP3-CB1-ENTRY-R4` typed rail source-incidence incremental Code + Build
 
 Continued R4 under frozen RA-45 without runtime execution. The `rail_interval_refs` producer path now verifies ordered source-vertex incidence, exact source-edge topology and exact sample-corner support for published typed rails. A negative compile-visible test was added. First compiler attempt `38076875551` failed solely on two `DomainResult` arrow expressions; corrected with `.value().index()` and applied as semantic commit `aab8e22c1a997ffcca72cc42a13df51bf0e4d29b`. The corrected eight-target compile `38077156162` / artifact `11679541934` is GREEN, 28/28 manifest valid, GMP/GMPXX linked and `runtimeExecution=false`. This is NOT RA-43.4 completion: legacy direct rails still rely on epsilon, source-star terminal germ and multi-carrier sectors remain unproven. R4 remains IN_PROGRESS; frozen CP2/R3 and regression totals unchanged.

@@ -1,5 +1,11 @@
 # M6-CP3-CB1-ENTRY-R4 — source-authoritative recovery Code + Build plan
 
+**Latest operative state (2026-10-10): RA-45 independent Review released this R4 Code + Build turn.**
+The earlier `REVIEW_BLOCKED` heading below is preserved as historical STOP evidence and is superseded
+by `Architecture_M6_CP3_R4_Gauge_Consumption_Review_Decision.md` and the latest handoff.
+Current incremental typed rail and exact legacy-corner fixes are compiled, not executed; the remaining
+source-star/multi-carrier/fixture/CP2 duties below remain binding. Do not start TB497.
+
 **Current state: AUTHORIZED / IN PROGRESS (2026-10-10, RA-45).** The independent `Architecture_M6_CP3_R4_Gauge_Consumption_Review_Decision.md` resolves the later RA-44.2 compatibility STOP: the absolute geometric gauge pin is **withdrawn**, because consumers require only A3-authenticated relational differences. The checked factory must validate without normalising the gauge, accept a uniform Z4 rotation, and preserve identical A6 relation outcomes. RA-44.1's producer-owned terminal contact is already threaded but endpoint germ/transport validation remains unfinished. Maintain the frozen 497 gate and do not promote to TB until all R4 producer and compile obligations are discharged. Earlier REVIEW_BLOCKED and absolute-gauge instructions below are historical wherever they conflict with RA-45.
 
 **State: AUTHORIZED / IN PROGRESS after `M6-DEFN-R5-R4-REV` (RA-43).** The source-exact Review `Architecture_M6_CP3_R4_Producer_Locus_Review_Decision.md` discharges R4-REV-01A/01B/02A, authorizes this R4 Code + Build turn, and freezes RA-41 only for the singleton terminal contact. Multi-carrier junction/sector clauses remain unexercised and cannot claim runtime proof. All other gates and Code + Build restrictions below remain binding.
