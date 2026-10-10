@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "workflow_key": "m6-cp3-r4-relational-gauge-retry",
+  "workflow": "Agent Durable Operation Dispatcher",
+  "workflow_ref": "akashskypatel/Directional/.github/workflows/agent-operation-dispatcher.yml@refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "repository": "akashskypatel/Directional",
+  "event": "push",
+  "event_sha": "797ef6ac80046bf849a8ed0fa5ca7aeab1545468",
+  "source_sha": "b95de5440fb1c199eec102a7209c7156ff766c6a",
+  "source_ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref_name": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "run_id": 38068748544,
+  "run_attempt": 1,
+  "run_number": 115,
+  "run_url": "https://github.com/akashskypatel/Directional/actions/runs/38068748544",
+  "result": "success",
+  "summary": "durable-dispatch request_id=m6-cp3-r4-relational-gauge-retry-20261010-1642 operation=drive_apply request_sha256=b0aa1d5d41ef308b771c5f7281fe197581f146540722d00e35886a7678a35903",
+  "reported_at": "2026-10-10T16:43:13Z",
+  "mailbox_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "artifacts": [
+    {
+      "id": 11676276268,
+      "name": "agent-workflow-schema-validator-log-38068748544",
+      "size_in_bytes": 489,
+      "digest": "sha256:c08d2852dbab2b1021ec916873623d61520505f56e38291dd9f3fc3ae7f13bb5",
+      "expired": false,
+      "created_at": "2026-10-10T16:42:33Z",
+      "expires_at": "2026-10-17T16:42:32Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/38068748544/artifacts/11676276268",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11676276268/zip"
+    },
+    {
+      "id": 11676217403,
+      "name": "agent-workflow-schema-validation-38068748544",
+      "size_in_bytes": 445,
+      "digest": "sha256:d93251d7d9562179bfadd150b32239c2acafd63ee27ec6c75d6cc7dde871796c",
+      "expired": false,
+      "created_at": "2026-10-10T16:42:31Z",
+      "expires_at": "2026-10-17T16:42:31Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/38068748544/artifacts/11676217403",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11676217403/zip"
+    },
+    {
+      "id": 11675917705,
+      "name": "agent-google-drive-patch-log-38068748544",
+      "size_in_bytes": 947,
+      "digest": "sha256:dce3684605dfe98b3c38b4c823e13c19edb59f070bb6173d424638413ed09d00",
+      "expired": false,
+      "created_at": "2026-10-10T16:42:58Z",
+      "expires_at": "2026-10-24T16:42:57Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/38068748544/artifacts/11675917705",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11675917705/zip"
+    },
+    {
+      "id": 11675906690,
+      "name": "agent-workflow-schema-validation-38068748544",
+      "size_in_bytes": 442,
+      "digest": "sha256:94f97b88b4c89130dc2d44ae126dfa54c56d84dc85e2f5fc018b93b862af8053",
+      "expired": false,
+      "created_at": "2026-10-10T16:42:32Z",
+      "expires_at": "2026-10-17T16:42:32Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/38068748544/artifacts/11675906690",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11675906690/zip"
+    },
+    {
+      "id": 11675887699,
+      "name": "agent-google-drive-patch-result-38068748544",
+      "size_in_bytes": 450,
+      "digest": "sha256:674bbdf4c6a3e0eea4d337e6afadd50406c45c1e04fd3c190e634b23052a9b4a",
+      "expired": false,
+      "created_at": "2026-10-10T16:42:57Z",
+      "expires_at": "2026-10-24T16:42:57Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/38068748544/artifacts/11675887699",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11675887699/zip"
+    },
+    {
+      "id": 11675578100,
+      "name": "agent-operation-dispatcher-log-38068748544",
+      "size_in_bytes": 515,
+      "digest": "sha256:a6e6ff73278bc8ba18573056eeb8ccf8c20dd32bd3f90848c074573b8f40dfbe",
+      "expired": false,
+      "created_at": "2026-10-10T16:42:40Z",
+      "expires_at": "2026-10-24T16:42:39Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/38068748544/artifacts/11675578100",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11675578100/zip"
+    },
+    {
+      "id": 11675443343,
+      "name": "agent-workflow-schema-validator-log-38068748544",
+      "size_in_bytes": 498,
+      "digest": "sha256:da64b7cfc13686c218dab7f08417e0ed9f5ce0312ec04b1e68fca94601dc667d",
+      "expired": false,
+      "created_at": "2026-10-10T16:42:32Z",
+      "expires_at": "2026-10-17T16:42:31Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/38068748544/artifacts/11675443343",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11675443343/zip"
+    },
+    {
+      "id": 11675353665,
+      "name": "workflow-mailbox-publisher-log-38068748544-attempt-1",
+      "size_in_bytes": 388,
+      "digest": "sha256:adce7b4452173f52d2dbf729782adc18319b43c59c8bfe241b167cdfbe062f70",
+      "expired": false,
+      "created_at": "2026-10-10T16:43:13Z",
+      "expires_at": "2026-10-24T16:43:12Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/38068748544/artifacts/11675353665",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11675353665/zip"
+    }
+  ]
+}
