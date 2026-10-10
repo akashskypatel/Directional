@@ -1,3 +1,58 @@
+## Resume-critical update — R4-REV-01 and -02 RESOLVED as RA-42; RA-41 adjudication can proceed (2026-10-10)
+
+**Both blocking findings resolved and frozen as RA-42.** Basis:
+`Architecture_M6_CP3_R4_Terminal_Contact_And_Gauge_Review_Decision.md`. The STOP was correct: RA-41.2 named a
+witness without establishing a producer that could author it, and my Finding 3 proposed an exception to a frozen
+trust boundary. Ledger **66 / 17 / 49**, debt 1; no runtime credit.
+
+**The review's RA-38.3 ruling is ACCEPTED**: that boundary-vertex and singleton STOP governs *multi-carrier
+through-junction sector transport*, so it does **not** fire at a terminal contact vertex. The hazard raised at
+`M6-DEFN-R5-R4-DIAG-NEXT` is disposed of without amending RA-38.
+
+### R4-REV-01 — the trace point carries no incidence at all
+
+```cpp
+struct SurfaceTracePoint {
+  int face = -1;                                        // RAW ROW INDEX, not SourceFaceTopologyKey
+  Eigen::RowVector3d barycentric = Eigen::RowVector3d::Zero();
+};
+```
+
+No source vertex. No source edge. So RA-41.2's witness **cannot** be authored from a trace point, and recovering
+incidence from `barycentric` would mean testing a `double` for exact zero — **RP-01** authority-domain
+conflation in a pipeline that exactifies binary64 bit-for-bit. Prohibited, not merely fragile. It also explains
+why `faceEnds=0,2|0,3` was ambiguous at all: the record is in an **untyped namespace**, which is exactly what
+made a contamination reading plausible before `MeshComponents.cpp:72-116` settled it.
+
+**The authority already exists, on the rail producer:** `SurfaceCellRail::sourceVertices` (ordered) and
+`SurfaceCellRailSample::{sourceFace, sourceEdge, parameter, railParameter}`. Fifth instance of publish/reach
+after RA-34.3, RA-35, RA-38 and RA-40. The germ needs no new input either — it is the A2b star arc after cutting
+the incident rails, from the traversal already at `src/geometry/SurfaceCellTracing.cpp:18120-18206`.
+
+### R4-REV-02 — option (A). My conditional exception is WITHDRAWN.
+
+My premise was that a rail-free product has "nothing A3-derived to authenticate." It is **refuted**:
+`sourceFaceBranchRotations` is a plain `std::vector<int>` — raw, unauthenticated gauge, consumed by A6 seam
+logic. `SurfaceIsolationSeamTransportCertificate` and `SurfacePeriodicHolonomy` are factory-validated classes,
+which buys internal consistency but **not** A3 provenance.
+
+Decisively, the exception would apply exactly where the 34 failures arise — the **production**
+`CrossFieldResult` legacy/raw null-atlas ingress, with `SurfaceCellTracingOptions::fieldTransportAtlas`
+defaulting `nullptr`. It would therefore preserve **in production** the hole RA-40 exists to close, in order to
+accommodate legacy callers. Accommodating the defect is not a trust boundary.
+
+So: **RA-40.1 stays unconditional, callers migrate**, the **seven DCEL failures are fixture defects to fix, not
+cases to exempt** (a fixture that is not a valid mesh is not a valid source authority — RA-40's whole point), and
+`sourceFaceBranchRotations` comes **inside** the boundary.
+
+### What remains undischarged
+
+The 39-row family is **one** carrier configuration — original `(1,4)`, `routeLength=1` — with **zero**
+multi-carrier instances. RA-41.2's junction/sector clauses stay **unexercised** and must not be cited as
+validated; R4's multi-carrier STOP stands. The receiptless row is not covered by any witness designed from the
+other 38. D1/D2/D3/D5, A6/A7, odd τ and the 88 CP2 restorations remain unproven, and the four RA-40(C)
+supplementals remain outside 497 and unexecuted.
+
 ## CURRENT review gate — M6-DEFN-R5-R4-REV blocked (2026-10-10)
 
 Independent R4 review does **not** freeze RA-41 or release the held R4 Code + Build. The DIAG's component-local carrier records are accurate and the observed 3×3 source-star has an admissible **candidate** terminal germ path face `2 -> 3` across nonrail `(1,5)`, but no producer-owned front-side occurrence/contact witness and independently checked A3 φ have been demonstrated (`R4-REV-01`). The RA-41.1 null-atlas branch directly conflicts with binding RA-40.1; neither a complete A3-dependency census nor independent source/cross-field/gauge verification at the checked factory is established (`R4-REV-02`). The earlier claim below that D2's *producer* evidentiary burden is discharged is **superseded**: only geometric existence is verified. RA-38.3 forbids boundary **through-junction** sector transport, not necessarily a boundary **terminal** germ; explicit amendment still required. Review record: `Architecture_M6_DEFN_R5_R4_Independent_Review_Record.md`. No source, test, selector, compile or runtime mutation; CP2 491/491 accepted, R3 403/497 rejected, 66/17/49 debt 1 unchanged. Retain the exact 39-row DIAG inventory and held CB plan. This turn remains blocked on source-domain Review decisions; do not fabricate a successor or implement R4 CB.

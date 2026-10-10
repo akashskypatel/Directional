@@ -1,3 +1,26 @@
+## 2026-10-10 — `M6-CP3-R4-TERMINAL-CONTACT-ARCH-REV`: R4-REV-01/-02 resolved as RA-42
+
+Runtime-free independent producer Design Review. **Both blocking findings resolved; frozen as RA-42.** The
+review's RA-38.3 boundary-scope ruling is accepted (that STOP governs multi-carrier through-junction sector
+transport and does not fire at a terminal contact vertex). No runtime credit; ledger **66 / 17 / 49**, debt 1.
+
+**R4-REV-01.** `SurfaceTracePoint` is `{int face; Eigen::RowVector3d barycentric;}` — no source vertex, no source
+edge, and `face` is a raw row index rather than a `SourceFaceTopologyKey`. RA-41.2's witness therefore cannot be
+authored from a trace point, and recovering incidence from `barycentric` would mean testing a `double` for exact
+zero: RP-01 authority-domain conflation in a pipeline that exactifies binary64 bit-for-bit. It also explains why
+`faceEnds=0,2|0,3` was ambiguous — the record is untyped. The authority exists on the rail producer instead
+(`SurfaceCellRail::sourceVertices`, `SurfaceCellRailSample::{sourceFace,sourceEdge}`), the fifth occurrence of
+the publish/reach pattern after RA-34.3, RA-35, RA-38 and RA-40.
+
+**R4-REV-02 → option (A); the conditional exception is withdrawn.** Its premise that a rail-free product carries
+nothing A3-derived is refuted by `sourceFaceBranchRotations`, a raw gauge vector; and the exception would apply
+precisely at the production `CrossFieldResult` null-atlas ingress where the 34 failures arise, preserving in
+production the hole RA-40 exists to close. RA-40.1 stays unconditional, callers migrate, the seven DCEL failures
+are fixture defects to fix rather than exempt, and `sourceFaceBranchRotations` comes inside the boundary.
+
+**Undischarged.** The 39-row family is one carrier configuration with zero multi-carrier instances, so RA-41.2's
+junction clauses remain unexercised and R4's multi-carrier STOP stands.
+
 ## 2026-10-10 — `M6-DEFN-R5-R4-DIAG-NEXT`: hypothesis disproven; reading (b) verified with exact germs
 
 Next-steps determination. The DIAG audit is correct and my cross-contamination hypothesis is **withdrawn**,

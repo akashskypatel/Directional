@@ -6,6 +6,37 @@
 
 ---
 
+## `M6-CP3-R4-TERMINAL-CONTACT-RESOLUTION` — trace points carry no incidence; frozen as RA-42
+
+**Status.** RESOLVED BY INDEPENDENT PRODUCER DESIGN REVIEW / frozen as **RA-42** / unblocks
+`M6-DEFN-R5-R4-REV` / no runtime credit / ledger **66 / 17 / 49**, debt 1. Basis:
+`Architecture_M6_CP3_R4_Terminal_Contact_And_Gauge_Review_Decision.md`.
+
+Both blocking findings were correct, and the review's **RA-38.3 boundary-scope ruling is accepted** — that STOP
+governs multi-carrier through-junction sector transport, so it does not fire at a terminal contact vertex,
+disposing of the hazard raised at `[[M6-DEFN-R5-R4-DIAG-NEXT]]` without amending RA-38.
+
+**R4-REV-01.** `SurfaceTracePoint` is `{int face; Eigen::RowVector3d barycentric;}` — **no source vertex, no
+source edge**, and `face` is a **raw row index**, not a `SourceFaceTopologyKey`. So RA-41.2's witness cannot be
+authored from a trace point, and recovering incidence from `barycentric` would mean testing a `double` for exact
+zero: `[[RP-01]]` authority-domain conflation in a pipeline that exactifies binary64 bit-for-bit. It also
+explains why `faceEnds=0,2|0,3` was ambiguous at all — the record is in an **untyped namespace**, which is what
+made a contamination reading plausible before `MeshComponents.cpp:72-116` settled it.
+
+The authority exists on the **rail producer**: `SurfaceCellRail::sourceVertices` (ordered) and
+`SurfaceCellRailSample::{sourceFace, sourceEdge}`. Fifth instance of publish/reach after `[[RA-34.3]]`,
+`[[RA-35]]`, `[[RA-38]]`, `[[RA-40]]`. The germ needs no new input either — it is the A2b star arc after cutting
+incident rails, from the traversal already at `:18120-18206`.
+
+**R4-REV-02 → option (A); my conditional exception is WITHDRAWN.** The premise that a rail-free product has
+nothing A3-derived is **refuted** by `sourceFaceBranchRotations`, a plain `std::vector<int>` gauge consumed by A6
+seam logic. `SurfaceIsolationSeamTransportCertificate` and `SurfacePeriodicHolonomy` are factory-validated
+classes, which gives internal consistency but **not** A3 provenance. Decisively, the exception would apply
+exactly where the 34 failures arise — the **production** `CrossFieldResult` legacy/raw null-atlas ingress — so it
+would preserve in production the hole RA-40 exists to close, to accommodate legacy callers. RA-40.1 therefore
+stays unconditional; callers migrate; the seven DCEL failures are fixture defects to fix, not exempt; and
+`sourceFaceBranchRotations` comes inside the boundary.
+
 ## `M6-DEFN-R5-R4-DIAG-NEXT` — contamination hypothesis DISPROVEN; reading (b) verified with exact germs
 
 **Status.** Next-steps determination / RA-41 **remains unfrozen** / successor `M6-DEFN-R5-R4-REV`, then the CB.

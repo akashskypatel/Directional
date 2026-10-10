@@ -1,8 +1,8 @@
 ---TURN_STATUS---
-Turn: M6-DEFN-R5-R4-REV
-Status: BLOCKED
-Successor: UNKNOWN
-Started at: 2026-10-10T09:48:04Z
+Turn: M6-CP3-R4-TERMINAL-CONTACT-ARCH-REV
+Status: COMPLETE
+Successor: M6-DEFN-R5-R4-REV
+Started at: 2026-10-10T10:21:48Z
 Resumed at:
-Ended at:
+Ended at: 2026-10-10T10:58:33Z
 ---END_TURN_STATUS---

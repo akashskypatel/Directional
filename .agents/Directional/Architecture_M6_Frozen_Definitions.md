@@ -1,3 +1,46 @@
+## RA-42 — terminal contact ownership and the A3/gauge trust boundary **ACCEPTED at independent R4-REV Design Review** (2026-10-10)
+
+Resolves `R4-REV-01` and `R4-REV-02`. Basis:
+`Architecture_M6_CP3_R4_Terminal_Contact_And_Gauge_Review_Decision.md`. No runtime credit; RA-34.3,
+RA-36.4/.5/.6, RA-38, RA-39 and RA-40 stand.
+
+**Decisive fact.** `SurfaceTracePoint` is `{int face; Eigen::RowVector3d barycentric;}` — **no source vertex, no
+source edge**, and `face` is a **raw row index**, not a `SourceFaceTopologyKey`. The witness RA-41.2 requires
+therefore cannot be authored from a trace point. Meanwhile `SurfaceCellRail` publishes ordered `sourceVertices`
+and `SurfaceCellRailSample` publishes `sourceFace`/`sourceEdge`: the typed incidence already exists one structure
+away from the consumer that cannot see it — the **fifth** occurrence of the publish/reach pattern after RA-34.3,
+RA-35, RA-38 and RA-40.
+
+- **RA-42.1 — terminal contact ownership.** The terminal rail contact witness is authored by the **rail/front
+  producer** from `SurfaceCellRail::sourceVertices` and the rail samples' typed `sourceFace`/`sourceEdge`, and
+  published as typed authority on the endpoint certificate. The endpoint certificate **stops reading**
+  `from.face`/`to.face` for contact purposes.
+- **RA-42.2 — no incidence from geometry.** Deriving source-vertex or source-edge incidence from
+  `SurfaceTracePoint::barycentric`, or any floating-point predicate, is **prohibited** — it is RP-01
+  authority-domain conflation, typed authority from a non-authoritative representation, in a pipeline that
+  exactifies binary64 bit-for-bit. Absent typed incidence, fail closed with a code naming that absence.
+- **RA-42.3 — typed diagnostics.** Carrier, face and endpoint diagnostics are emitted as typed
+  `SourceFaceTopologyKey`, never bare row indices. A raw-row record is not evidence of a topological claim.
+- **RA-42.4 — germ derivation.** The germ is the arc of the A2b vertex star at the terminal vertex after cutting
+  the incident hard rails, from the star traversal that already exists at
+  `src/geometry/SurfaceCellTracing.cpp:18120-18206`. Equality with the carrier's incident pair holds **at the
+  contacts**, never at the trace endpoints — the exact locus of RA-39.1's error.
+- **RA-42.5 — RA-40.1 is unconditional.** The atlas mandate is **not** scoped. The earlier conditional
+  pre-commitment is **withdrawn**: its premise that a rail-free product carries nothing A3-derived is refuted by
+  `sourceFaceBranchRotations`, a raw unauthenticated gauge vector, and a conditional exception would preserve the
+  production `CrossFieldResult` null-atlas ingress that RA-40 exists to close. Legacy callers **migrate**; the
+  seven DCEL failures are **fixture defects to fix, not cases to exempt**.
+- **RA-42.6 — gauge inside the boundary.** `sourceFaceBranchRotations` must be validated against published
+  source authority — at minimum cardinality equal to the source face count and values matching what the
+  authority publishes — and may not remain unchecked.
+- **RA-42.7 — RA-38.3 scope.** RA-38.3's boundary-vertex and singleton STOP governs **multi-carrier
+  through-junction sector transport** only and does **not** fire at a terminal contact vertex.
+- **RA-42.8 — no runtime credit.** The 39-row family remains one carrier configuration with **zero**
+  multi-carrier instances; RA-41.2's junction clauses stay unexercised and R4's multi-carrier STOP is
+  undischarged.
+
+---
+
 ## RA-40 — A3 trust, CB/TB sequencing and excluded-test status **ACCEPTED at independent R3 A/B/C Review** (2026-10-10)
 
 Resolves the `M6-CP3-CB1-ENTRY-R3` A/B/C block. Basis:
