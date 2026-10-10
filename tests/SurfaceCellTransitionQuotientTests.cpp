@@ -2947,6 +2947,74 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
   require_atlas_attested_junction(fixture, *producedMidline);
   require_atlas_attested_junction(permutedFixture, *permutedMidline);
 
+  // Terminal A2b paths are independently A3-authenticated source-star
+  // transports, just like the interior radial paths. Canonicalize their
+  // oriented typed edges before comparing the original and permuted A4
+  // productions: row indices and endpoint route direction are not authority.
+  using TerminalStep = std::tuple<
+      directional::authority::SourceVertexId,
+      directional::authority::SourceEdgeTopologyKey,
+      directional::authority::SourceFaceTopologyKey,
+      directional::authority::SourceFaceTopologyKey,
+      directional::authority::QuarterTurn>;
+  const auto collect_attested_terminal_steps = [](
+      const PhaseFrontFixture &source, std::multiset<TerminalStep> &steps) {
+    ASSERT_TRUE(source.fieldTransportAtlas.has_value());
+    const auto &front = source.network.phaseFront.product();
+    const auto &sourceFaces = front.sourceTopologyRegions();
+    const auto &atlas = *source.fieldTransportAtlas;
+    ASSERT_TRUE(atlas.matches_source_faces(
+        source.mesh.F, sourceFaces,
+        static_cast<std::size_t>(source.mesh.V.rows())));
+    for (const auto &route : front.hardRailRouteCertificates()) {
+      for (const auto &endpoint : route.endpoints) {
+        ASSERT_TRUE(endpoint.terminalVertex.has_value())
+            << "A2b path must retain its producer-owned source vertex";
+        for (std::size_t side = 0U; side < 2U; ++side) {
+          auto face = side == 0U ? endpoint.firstAttachment
+                                 : endpoint.secondAttachment;
+          for (const auto &step : endpoint.contactPaths[side]) {
+            ASSERT_EQ(step.firstFace, face);
+            ASSERT_FALSE(front.hardFeatureEdges().contains(step.edge));
+            ASSERT_TRUE(step.edge.first() == *endpoint.terminalVertex ||
+                        step.edge.second() == *endpoint.terminalVertex);
+            const auto first = sourceFaces.row_for_topology(step.firstFace);
+            const auto second = sourceFaces.row_for_topology(step.secondFace);
+            ASSERT_TRUE(first.has_value());
+            ASSERT_TRUE(second.has_value());
+            const auto forward = atlas.transition_value(
+                step.edge, first.value(), second.value());
+            const auto reverse = atlas.transition_value(
+                step.edge, second.value(), first.value());
+            ASSERT_TRUE(forward.has_value())
+                << "A2b nonrail path step is absent from the source A3 atlas";
+            ASSERT_TRUE(reverse.has_value())
+                << "A2b nonrail path has no reciprocal source A3 step";
+            EXPECT_EQ(forward->transport, step.firstToSecond);
+            EXPECT_EQ(reverse->transport, forward->transport.inverse());
+            const bool inverted = step.secondFace < step.firstFace;
+            steps.emplace(*endpoint.terminalVertex, step.edge,
+                          inverted ? step.secondFace : step.firstFace,
+                          inverted ? step.firstFace : step.secondFace,
+                          inverted ? step.firstToSecond.inverse()
+                                   : step.firstToSecond);
+            face = step.secondFace;
+          }
+          EXPECT_EQ(face, side == 0U ? endpoint.terminalCarrier.firstFace
+                                    : endpoint.terminalCarrier.secondFace);
+        }
+      }
+    }
+  };
+  std::multiset<TerminalStep> terminalSteps;
+  std::multiset<TerminalStep> permutedTerminalSteps;
+  collect_attested_terminal_steps(fixture, terminalSteps);
+  collect_attested_terminal_steps(permutedFixture, permutedTerminalSteps);
+  ASSERT_FALSE(terminalSteps.empty())
+      << "D2 requires a produced non-direct terminal A2b source-star step";
+  EXPECT_EQ(terminalSteps, permutedTerminalSteps)
+      << "source-row permutations must preserve typed A2b/A3 terminal steps";
+
   // Falsify a self-consistency-only oracle without requesting a public
   // factory trust-contract decision: equal +1 Z4 mutations on the two
   // nonrail side paths preserve the commuting square, but both must differ
