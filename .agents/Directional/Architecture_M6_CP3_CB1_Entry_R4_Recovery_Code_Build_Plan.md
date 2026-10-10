@@ -1,6 +1,6 @@
 # M6-CP3-CB1-ENTRY-R4 — HELD source-authoritative recovery Code + Build plan
 
-**State: HELD / candidate only; RA-42 independent source-authority re-review STOP.** This is a contingent plan, not an authorized turn. It may become the single R4 Code + Build successor only after mandatory independent `M6-DEFN-R5-R4-REV` accepts the RA-41 candidate and explicitly resolves both producer-side authority prerequisites. Refer to `Architecture_M6_DEFN_R5_R4_CP3_Entry_Recovery_Definition_Record.md`; do not implement this plan merely because it exists.
+**State: AUTHORIZED / IN PROGRESS after `M6-DEFN-R5-R4-REV` (RA-43).** The source-exact Review `Architecture_M6_CP3_R4_Producer_Locus_Review_Decision.md` discharges R4-REV-01A/01B/02A, authorizes this R4 Code + Build turn, and freezes RA-41 only for the singleton terminal contact. Multi-carrier junction/sector clauses remain unexercised and cannot claim runtime proof. All other gates and Code + Build restrictions below remain binding.
 
 ## Gate 0 — source/authority proof (block without it)
 
