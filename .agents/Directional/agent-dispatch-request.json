@@ -1,18 +1,12 @@
 {
-  "schema_version": 1,
-  "request_id": "m6-cp3-r4-typed-rail-recompile-20261010-1847",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-typed-rail-recompile",
-  "source_sha": "aab8e22c1a997ffcca72cc42a13df51bf0e4d29b",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-typed-rail-fixed"
+ "schema_version": 1,
+ "request_id": "m6-cp3-r4-typed-rail-handoff-20261010-1850",
+ "operation": "drive_apply",
+ "mailbox_key": "m6-cp3-r4-typed-rail-doc-apply",
+ "file_id": "1F4ZybahL0IdadDLUspE0lXpiA8YwJDno",
+ "patch_sha256": "19eeaaafc963f0005839ee4f10b12b7d131913e1bf75fc1d240bb996f907e93e",
+ "base_sha": "aab8e22c1a997ffcca72cc42a13df51bf0e4d29b",
+ "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+ "commit_message": "docs: preserve R4 typed-rail Code+Build evidence and continuation",
+ "retention_days": 14
 }
