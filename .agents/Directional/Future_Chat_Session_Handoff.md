@@ -1,3 +1,81 @@
+## Next steps determination — my contamination hypothesis is DISPROVEN; reading (b) is now VERIFIED on the observed instance (2026-10-10)
+
+**The DIAG audit is correct and my hypothesis is withdrawn.** I re-derived its load-bearing claim independently
+rather than accept it: `src/geometry/MeshComponents.cpp:72-116` assigns component-local vertex IDs by
+first-encounter walk over sorted face rows, giving
+
+```text
+orig -> local : {0:0, 1:1, 2:4, 3:3, 4:2, 5:5, 6:7, 7:6, 8:8}
+original (1,4) -> local (1,2) ; local edge (1,2) incident faces = {0,3}
+```
+
+So `front=13,131; edge[0]=1,2:faces=0,3` is **faithful** in component-local numbering. There is no
+carrier/record cross-contamination. The inventory is also internally consistent: **33** rows carrier `(1,4)` in
+`original_3x3`, **5** rows local `(1,2)` in `compacted_component_3x3`, both re-derived `{0,3}` MATCH, plus **1**
+row with no carrier receipt — 39 total.
+
+### The whole 39-row family is ONE carrier configuration
+
+All 38 diagnosed rows resolve to the **same** underlying carrier: original edge `(1,4)`, faces `{0,3}`,
+`routeLength=1`. Consequences the CB must not miss:
+
+- The family supplies **zero** multi-carrier instances. RA-41.2's junction/sector machinery and RA-37a/RA-38's
+  square have **no observed failing instance at all** here. R4's multi-carrier STOP remains entirely
+  undischarged, and a handcrafted two-edge route never counts.
+- The 39 rows are 38 manifestations of **one** configuration plus one receiptless row, confirming the review's
+  "dependent downstream failures, not 39 independently proven causes."
+- The receiptless row is a genuine evidence gap and must **not** be counted as covered by any witness designed
+  from the other 38.
+
+### Reading (b) is verified on the observed data, with the exact germ assignment
+
+Derived programmatically from the fixture, cutting hard rails `(1,4)` and `(4,7)`:
+
+```text
+star(1) = {0,2,3}        cut (1,4)        -> germs {0} and {2,3}      [0-3 via (1,4) RAIL; 2-3 via (1,5) nonrail]
+star(4) = {0,1,3,4,6,7}  cut (1,4),(4,7)  -> germs {0,1,4} and {3,6,7}
+```
+
+Face `2` is **not** incident to vertex 4, so the first front's face-2 endpoint must be its **vertex-1** end,
+forcing its vertex-4 end to face `0`; reciprocity then puts the second front's vertex-1 end in germ `{0}` and
+its vertex-4 end in face `3`. Checking both ends:
+
+```text
+vertex-1 end : first = 2 in germ {2,3}   second = 0 in germ {0}       OPPOSITE
+vertex-4 end : first = 0 in germ {0,1,4} second = 3 in germ {3,6,7}   OPPOSITE
+```
+
+**`faceEnds=0,2|0,3` is fully consistent with a correct reciprocal pair under germ semantics**, and inconsistent
+only with RA-39.1's row-equality *at the trace endpoint*. The required contact walk is tiny and determined:
+face `2` transports to the carrier contact face `3` within germ `{2,3}` by **one** non-rail A2b step across
+source edge `(1,5)` (verified not hard); the other front's endpoint face `0` is already its contact, zero steps.
+
+**After the walk the contacts are `{3,0}` — exactly the carrier's incident pair.** So RA-39.1's equality was
+right about the **contacts** and wrong only in applying it to **trace endpoints**. That is the precise
+characterization of the error and the precise cure.
+
+### Blocking hazard — RA-38.3's boundary-vertex fail-closed will re-reject all 38
+
+Vertex 1 is a **boundary vertex**: edges `(0,1)` and `(1,2)` each have one incident face. RA-38.3 lists
+"boundary vertex" in the fail-closed domain. Applied at a **terminal contact** vertex that rule rejects the very
+instance just shown to be correct — the germ split at vertex 1 is clean and two-sided regardless. Correcting
+RA-39.1 to germ semantics while leaving RA-38.3 to fire at terminal vertices changes the rejection code and
+nothing else. **Both must land together**, exactly as with the two `:8019-8118` validators.
+
+### Determination
+
+**Next turn remains `M6-DEFN-R5-R4-REV`** (Review Agent) — RA-41 is still **unfrozen** and `make`'s contract must
+not change before it is. The verification above discharges D2's evidentiary burden, so that Review is a
+confirmation of reading (b) plus a ruling on the RA-38.3 terminal-vertex conflict, not fresh investigation.
+
+**The implementation agent's next turn is `M6-CP3-CB1-ENTRY-R4`**, gated on that freeze, per
+`Architecture_M6_CP3_CB1_Entry_R4_Recovery_Code_Build_Plan.md`. Its pre-committed expected witness for the
+observed instance is given above; if the producer cannot emit exactly that, the defect is at **front
+construction**, not downstream.
+
+Ledger **66 / 17 / 49**, debt 1, unchanged. No runtime result added. CP2 `491/491` accepted; R3 `403/497`
+rejected.
+
 ## CURRENT — M6-DEFN-R5-R4-DIAG exact diagnostic-fidelity resolution (runtime-free; 2026-10-10)
 
 **The preceding "carrier incidence impossible" hypothesis is superseded.** The 39-row R3 carried A4 family has 38 carrier-bearing diagnostics: **21** `front=17,203;edge[0]=1,4:faces=0,3` (original 3×3 source), **12** `front=13,131;edge[0]=1,4:faces=0,3` (uncompacted 3×3), **5** `front=13,131;edge[0]=1,2:faces=0,3` (**component-local** numbering). The latter local `(1,2)` is the first-encounter `MeshComponents.cpp` remap of original `(1,4)`, not original boundary `(1,2)`. All 38 observed carrier records have two actual incident faces; the 39th (selector 150) prints no carrier, so it has no asserted observed incidence. A one-face boundary hard feature without published cross-rail transition remains legal; an emitted two-face rail transition requires exactly two incident faces. Diagnostic `edge[i]` and `faces` are derived from a matching source-topology carrier, after source-edge/A3 checks, before route-certificate acceptance; no carrier/record cross-contamination was established. Trace-endpoint `faceEnds=0,2|0,3` still violates the current strict carrier-face requirement; the real producer contact/wedge proof remains outstanding.

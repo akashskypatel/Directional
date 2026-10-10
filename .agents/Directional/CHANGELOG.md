@@ -1,3 +1,25 @@
+## 2026-10-10 — `M6-DEFN-R5-R4-DIAG-NEXT`: hypothesis disproven; reading (b) verified with exact germs
+
+Next-steps determination. The DIAG audit is correct and my cross-contamination hypothesis is **withdrawn**,
+disproven by independently re-deriving `MeshComponents.cpp:72-116` first-encounter local numbering
+(`orig->local {...,4:2,...}`), which makes original `(1,4)` into local `(1,2)` with incident faces `{0,3}`. The
+diagnostic is faithful; the inventory is internally consistent (33 + 5 MATCH, 1 receiptless).
+
+**All 38 diagnosed rows are one carrier configuration** — original `(1,4)`, `routeLength=1` — so the family
+supplies zero multi-carrier instances and R4's multi-carrier STOP is entirely undischarged.
+
+**Reading (b) is now verified on the observed data.** Germs: `star(1)={0,2,3}` cuts to `{0}`/`{2,3}`;
+`star(4)` cuts to `{0,1,4}`/`{3,6,7}`. Face 2 is not incident to vertex 4, which forces the end assignment;
+both spatial ends then land in opposite germs. So `faceEnds=0,2|0,3` is a correct reciprocal pair under germ
+semantics and contradicts only RA-39.1's row-equality at the trace endpoint. The contact walk is one non-rail
+step `2 -> 3` across `(1,5)`, after which the contacts are `{3,0}` — the carrier's incident pair. RA-39.1 was
+right about the contacts and wrong only in applying equality to trace endpoints.
+
+**Blocking hazard:** vertex 1 is a boundary vertex and RA-38.3 fail-closes on boundary vertices, so correcting
+RA-39.1 alone would re-reject all 38 under a different code. Both must land together.
+
+RA-41 stays unfrozen; next turn `M6-DEFN-R5-R4-REV`, then `M6-CP3-CB1-ENTRY-R4`. Ledger 66 / 17 / 49, debt 1.
+
 ## 2026-10-10 — M6-DEFN-R5-R4-DIAG: static carrier diagnostic audit
 
 Corrected the R4-next hypothesis that `front=13,131;edge[0]=1,2:faces=0,3` necessarily mixes carrier identity and face incidence. In five component-aggregation cases `(1,2)` is **local** identity for original hard rail `(1,4)`. 38 explicit R3 carried-family carrier records independently match two source-face incidences (21 original `front=17,203`, 12 original `front=13,131`, five compacted `front=13,131`); the 39th has no printed carrier. Actual `faceEnds=0,2|0,3` failure remains unresolved. Audit and 39-row TSV under `Architecture_M6_DEFN_R5_R4_DIAG_*`. RA-41 unfrozen; Review next; no runtime, compilation, production semantics or test changes. CP2/R3 frozen evidence and ledger unchanged.

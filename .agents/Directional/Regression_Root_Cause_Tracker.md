@@ -6,6 +6,36 @@
 
 ---
 
+## `M6-DEFN-R5-R4-DIAG-NEXT` — contamination hypothesis DISPROVEN; reading (b) verified with exact germs
+
+**Status.** Next-steps determination / RA-41 **remains unfrozen** / successor `M6-DEFN-R5-R4-REV`, then the CB.
+Ledger **66 / 17 / 49**, debt 1, unchanged; no runtime result.
+
+**My hypothesis is withdrawn.** Independently re-derived `src/geometry/MeshComponents.cpp:72-116`
+first-encounter local numbering: `orig->local {0:0,1:1,2:4,3:3,4:2,5:5,6:7,7:6,8:8}`, so original `(1,4)` is
+local `(1,2)` with incident faces `{0,3}`. `front=13,131; edge[0]=1,2:faces=0,3` is **faithful**; there is no
+carrier/record cross-contamination. Inventory consistent: 33 `original_3x3` + 5 `compacted_component_3x3` MATCH,
+plus 1 receiptless row.
+
+**One configuration, not 39 causes.** All 38 diagnosed rows are the same carrier — original `(1,4)`, faces
+`{0,3}`, `routeLength=1`. The family supplies **zero** multi-carrier instances, so RA-41.2's junction/sector
+machinery and the RA-37a/RA-38 square have no observed failing instance; R4's multi-carrier STOP is entirely
+undischarged. The receiptless row must not be counted as covered.
+
+**Reading (b) verified on the observed data.** Cutting hard rails `(1,4)`,`(4,7)`: `star(1)={0,2,3}` splits into
+germs `{0}` and `{2,3}`; `star(4)={0,1,3,4,6,7}` splits into `{0,1,4}` and `{3,6,7}`. Face `2` is not incident to
+vertex 4, forcing it to the vertex-1 end; reciprocity then gives vertex-1 ends `2 | 0` (opposite germs) and
+vertex-4 ends `0 | 3` (opposite germs). So `faceEnds=0,2|0,3` **is** a correct reciprocal pair under germ
+semantics and contradicts only RA-39.1's row-equality at the trace endpoint. Required walk: face `2` to contact
+face `3` within germ `{2,3}` by **one** non-rail step across `(1,5)`; the other endpoint face `0` is already its
+contact. **After the walk the contacts are `{3,0}` — the carrier's incident pair** — so `[[RA-39.1]]`'s equality
+was right about the **contacts** and wrong only in applying it to **trace endpoints**.
+
+**Blocking hazard.** Vertex 1 is a **boundary vertex** (edges `(0,1)`,`(1,2)` each single-incident), and
+`[[RA-38.3]]` fail-closes on boundary vertices. Applied at a terminal contact vertex it re-rejects the instance
+just proven correct, merely changing the code. RA-39.1's correction and RA-38.3's terminal-vertex scope **must
+land together**, as with the two `:8019-8118` validators.
+
 ## `M6-DEFN-R5-R4-NEXT` — RA-41's cited carrier incidence is impossible in the reference fixture
 
 **Status.** Next-steps determination / RA-41 **remains unfrozen** / successor `M6-DEFN-R5-R4-DIAG` bounded
