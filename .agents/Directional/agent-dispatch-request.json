@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-defn-r5-r4-ra41-docs-20261010-r1",
+  "request_id": "m6-r4-diag-docs-20261010-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-defn-r5-r4-ra41-docs-apply-r1",
-  "file_id": "1pXu8WVAgH9fFBLyOq3HPlbU9EbOyY4nu",
-  "patch_sha256": "52ebf92a142ebfbe2762bd9c92308db1a693a101a182b32a3938108b4eb39d34",
-  "base_sha": "5b5e7aa063caf2e68385f037c6f165adc38ca0c3",
+  "mailbox_key": "m6-r4-diag-docs-apply-r1",
+  "file_id": "1TLBp4RalVMCL8-mjKmAp3yDFGZMYjtKL",
+  "patch_sha256": "5d726bcdb4f669457caa6a230252afba384361eb6d036e05917a10682de6a582",
+  "base_sha": "f1a893fae1a9a551c74046f60ec3f4fbbba4ee3f",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): R4 RA-41 definition candidate and review handoff",
+  "commit_message": "docs(directional): resolve R4 diagnostic carrier namespace fidelity",
   "retention_days": 14
 }
