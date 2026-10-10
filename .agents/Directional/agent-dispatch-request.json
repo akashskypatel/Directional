@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-phase10-interval-fullauthority-20261010-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-phase10-interval-fullauthority-apply",
-  "file_id": "1hwGyJ4o_nJVbvq4Po894ZF_96vCA5iY7",
-  "patch_sha256": "5b8582f505266cdd8a772a621a08a99a18bbf773993434b9b35efbba472d39bc",
-  "base_sha": "01c5458d9dd77e1829ed6d9f0115d483ae36232b",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test: retain complete hard-rail A4 authority in shared-boundary negative fixtures",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-phase10-interval-fullauthority-compile-20261010-a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-phase10-interval-fullauthority-compile",
+  "source_sha": "f7be55e01c525ef4ae7c8db0039956246d8f04cc",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-phase10-interval-fullauthority"
 }
