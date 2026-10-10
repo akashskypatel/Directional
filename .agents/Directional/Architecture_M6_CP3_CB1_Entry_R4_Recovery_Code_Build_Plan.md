@@ -1,5 +1,7 @@
 # M6-CP3-CB1-ENTRY-R4 — source-authoritative recovery Code + Build plan
 
+**Current state: REVIEW_BLOCKED (2026-10-10).** The previously accepted RA-43 source *locations* remain valid, but its claimed checked-factory bindings for exact rail terminal contacts and independently attested per-face +U gauges are not established by current factory inputs. Review the source-exact findings and alternative producer/factory dataflow in `.agents/Directional/Architecture_M6_CP3_R4_Source_Authority_Binding_Stop_Record.md` before changing those contracts. Preserve the current R4 turn; no TB497 or successor promotion until independent re-review resolves this gate. The earlier authorization paragraph below is historical and **does not override this stop**. No runtime evidence is claimed.
+
 **State: AUTHORIZED / IN PROGRESS after `M6-DEFN-R5-R4-REV` (RA-43).** The source-exact Review `Architecture_M6_CP3_R4_Producer_Locus_Review_Decision.md` discharges R4-REV-01A/01B/02A, authorizes this R4 Code + Build turn, and freezes RA-41 only for the singleton terminal contact. Multi-carrier junction/sector clauses remain unexercised and cannot claim runtime proof. All other gates and Code + Build restrictions below remain binding.
 
 ## Gate 0 — source/authority proof (block without it)
