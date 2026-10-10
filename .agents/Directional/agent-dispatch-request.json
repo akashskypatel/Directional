@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-factory-unique-star-compile-20261010-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-factory-unique-star-compile",
-  "source_sha": "c28f1d241e6d84503e4ab38ce02b7200b8c9cfe5",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-factory-unique-star"
+  "request_id": "m6-cp3-r4-factory-unique-docs-20261010-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-factory-unique-docs",
+  "file_id": "17jbytmj5mtdnY7PAAbnW1qt2z5o-f8iP",
+  "patch_sha256": "1765dcada83fd4f7d1aa32ffb9ec4fd9bb19944c29a73a92d9dc8d572b4a67f5",
+  "base_sha": "3f136c63c0e79b82ca7159938cff54a3c6f0d372",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: preserve R4 factory uniqueness source and pending compile",
+  "retention_days": 14
 }
