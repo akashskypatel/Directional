@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-todo-compile-checkbox-20261010-a",
+  "request_id": "m6-cp3-r4-d2-attached-tau-witness-20261010-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-todo-compile-checkbox",
-  "file_id": "1_kMxbEkbBR3g-vUpI8QY_ckTBvAU2Rwl",
-  "patch_sha256": "4bf3fee576441ed33a41ec0b51d00209a68c0d81fc319e0e3b0c3f76f14ebde7",
-  "base_sha": "2b93f0ce78f6e69d1d25a0f7de3d537c2eb05149",
+  "mailbox_key": "m6-cp3-r4-d2-attached-tau-apply",
+  "file_id": "1IT09V9Sx0-4ZddFLY0wDusVZ6En0DI9j",
+  "patch_sha256": "057d4586554d1b16c6de130c2e857ef0b2fc007c3b78cdf0a06413af8842c3ed",
+  "base_sha": "8d6dd1fd1242d494af448a70769260e7ff9d093a",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: mark verified R4 terminal A3 compile checkbox completed",
+  "commit_message": "test: attest complete A2b terminal tau in D2 odd-carrier witness",
   "retention_days": 14
 }
