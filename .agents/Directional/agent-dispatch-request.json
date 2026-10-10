@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb1-r4-partial-rail-contact-apply-20261010",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb1-r4-rail-contact-apply",
-  "file_id": "1yrGSSHIHNbtTF_FZ1Bc5UbCaErFtLCmT",
-  "patch_sha256": "9849260ca5c5d8343901e70744bc2140718e19c7762b0728f62eb6f34c4635aa",
-  "base_sha": "8aa41ba916cf7e0be79fd208b9ec34a743d0a2eb",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "wip(surfacecells): bind typed hard-rail terminal contacts at A4 factory",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb1-r4-terminal-contacts-compile-20261010",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb1-r4-terminal-contacts-compile",
+  "source_sha": "c7cb5d68b72097f1db0bf1ce54e5379894d77c93",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb1-r4-terminal-contacts"
 }
