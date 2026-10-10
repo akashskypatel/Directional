@@ -1,0 +1,32 @@
+# M6-CP3-CB1-ENTRY-R4 — source-authoritative recovery Code + Build plan
+
+**Latest operative state (2026-10-10): RA-45 independent Review released this R4 Code + Build turn.**
+The earlier `REVIEW_BLOCKED` heading below is preserved as historical STOP evidence and is superseded
+by `Architecture_M6_CP3_R4_Gauge_Consumption_Review_Decision.md` and the latest handoff.
+Current incremental typed rail and exact legacy-corner fixes are compiled, not executed; the remaining
+source-star/multi-carrier/fixture/CP2 duties below remain binding. Do not start TB497.
+
+**Current state: AUTHORIZED / IN PROGRESS (2026-10-10, RA-45).** The independent `Architecture_M6_CP3_R4_Gauge_Consumption_Review_Decision.md` resolves the later RA-44.2 compatibility STOP: the absolute geometric gauge pin is **withdrawn**, because consumers require only A3-authenticated relational differences. The checked factory must validate without normalising the gauge, accept a uniform Z4 rotation, and preserve identical A6 relation outcomes. RA-44.1's producer-owned terminal contact is already threaded but endpoint germ/transport validation remains unfinished. Maintain the frozen 497 gate and do not promote to TB until all R4 producer and compile obligations are discharged. Earlier REVIEW_BLOCKED and absolute-gauge instructions below are historical wherever they conflict with RA-45.
+
+**State: AUTHORIZED / IN PROGRESS after `M6-DEFN-R5-R4-REV` (RA-43).** The source-exact Review `Architecture_M6_CP3_R4_Producer_Locus_Review_Decision.md` discharges R4-REV-01A/01B/02A, authorizes this R4 Code + Build turn, and freezes RA-41 only for the singleton terminal contact. Multi-carrier junction/sector clauses remain unexercised and cannot claim runtime proof. All other gates and Code + Build restrictions below remain binding.
+
+## Gate 0 — source/authority proof (block without it)
+
+**Do not start until R4-REV-01A/01B/02A are resolved in a source-exact independent review.** Raw rail samples have no authenticated endpoint-to-contact association; the previously cited `SurfaceCellTracing.cpp:18120-18206` is not a star-cut producer. Prove the actual producer, typed map, unique contact and A3 route without epsilon-derived topology. RA-42 is a design requirement, not producer evidence.
+
+- Freeze exact reviewed R3 failure overlay (94 distinct raw identities; 39/34/7/14); CP2 491/491 accepted, R3 403/497 rejected, 88 accepted-prefix RED, debt 1. Freeze future 497 selector and separate 4 supplemental RA-40(C) tests.
+- Independently produce the A2b terminal-contact source-star wedge/germ witness for the singleton (1,4), `front=17,203`, and dependent (1,2), `front=13,131`. If face 2's local contact is absent/ambiguous, repair the pairing at its **source** or STOP; do not rename or substitute face rows.
+- Independently bind A4 face-gauge authority and check A3 dependencies for every published transport, including `sourceFaceBranchRotations`, periodic and isolation records. If genuine independent binding unavailable, STOP for source-domain Review.
+
+## Implementation (only after Gate 0 is reviewed)
+
+1. **Typed first-failure tracing**: propagate producer pre-factory / factory source authority errors with exact first predicate and payload dependency, never collapse all checked-factory failures to `InvalidFinalCellState`. No change to rejection precedence.
+2. **A3-domain correction**: preserve the RA-40.1/RA-42.5 **unconditional source-matched atlas** at the checked factory, including products without rail payloads; migrate legacy and `CrossFieldResult` callers, never exempt them. Range checking caller-supplied gauge is not authentication. Independently source-attest nonempty gauges; keep χ and φ `transition_value` forward/inverse and balanced-tamper tests. A null atlas fails typed in all checked-factory cases; no empty-A3 exception is permitted. Independently check face-gauge values against source authority, not just range/cardinality.
+3. **Front producer correction**: replace trace endpoint face-as-carrier-face identity with producer-owned terminal rail contact on an oriented source-star side germ, A2b path and A3 transition witnesses. Detect ambiguous contact and reject typed. Keep one terminal χ, reciprocal pairing, zero-junction singleton, two explicit non-rail sector φ paths per multi-carrier junction and commuting square. Never create fabricated detours or global-sector BFS.
+4. **Seven isolated synthetic fixture repairs**: replace one-triangle source in direct periodic owner fixture and one FlowRep support fixture with DCEL-valid two-face provenance, genuine A3 field/topology; preserve every original test identity, target oracle and negative mutation, including row permutations. Do not change `DCEL::check_consistency`.
+5. **Causal regression tests (compile only this CB)**: source/permutation and balanced χ/φ tamper, null-atlas negative including empty-rail products, untrusted nonempty gauge negative, typed pre-factory vs factory, singleton/no contact/two contacts negative, multi-carrier nonzero τ and commuting square, dual-triangle DCEL, all seven original negative oracles, all 34 Phase10 restored positives, all 39 carried endpoint cases and other 14 without blanket skip/relaxation. Pre-register real produced odd-τ torus, multi-carrier, collinear ordinary, sheet, and D5 route positive witnesses; zero-count is a hard STOP, not a PASS.
+6. **Compile boundary**: one minimal exact-base patch through approved Drive dispatcher; eight standard GMP/GMPXX targets via `agent-compile-reusable.yml`, clean source, immutable package receipts, `runtimeExecution=false`. No local builds, no Directional binary/test/benchmark execution, no workflow-permission edits, no selector changes, no fallback or recovery.
+
+## Mandatory successor only after clean compile
+
+`M6-CP3-TB1-ENTRY-R4-EXEC`: immutable packaged exact-source artifact; run exactly 497 fresh exact-one tests, 0 skipped, 0 benchmarks, no compile/relink, preserve accepted CP2 491 identities, demand all 88 formerly accepted RED restore and all six CP3-entry obligations non-vacuous; independent `M6-CP3-TB1-ENTRY-R4-REV` decides acceptance. Four RA-40(C) extra cases separately counted diagnostic-only. Never promote on a mechanically green build alone.

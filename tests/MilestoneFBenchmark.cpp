@@ -129,7 +129,6 @@ Fixture make_grid_fixture(const int cells = 16) {
   auto &constraints = fixture.constraints;
   constraints.sourceVertices = fixture.sourceVertices;
   constraints.sourceFaces = fixture.sourceFaces;
-  constraints.sourcePositions = fixture.sourceVertices;
   constraints.sourceNormals =
       Eigen::MatrixXd::Zero(fixture.sourceFaces.rows(), 3);
   constraints.sourceFieldX =
@@ -182,7 +181,6 @@ Fixture make_grid_fixture(const int cells = 16) {
   }
   constraints.featureRailAuthorityProvided = true;
   constraints.requiredFeatureRailCount = 0;
-  constraints.requireSourceAuthoritativeValidation = true;
 
   directional::geometry::SurfaceProjectionBvh bvh(fixture.sourceVertices,
                                                     fixture.sourceFaces);

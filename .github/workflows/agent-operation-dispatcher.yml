@@ -1,0 +1,345 @@
+name: Agent Durable Operation Dispatcher
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/Directional/agent-dispatch-request.json
+
+permissions:
+  actions: write
+  contents: write
+  id-token: write
+
+concurrency:
+  group: agent-operation-dispatcher-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate-dispatcher:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-operation-dispatcher.yml
+      source_ref: ${{ github.sha }}
+
+  validate-test-benchmark-reusable:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-test-benchmark-reusable.yml
+      source_ref: ${{ github.sha }}
+
+  parse:
+    needs: [validate-dispatcher, validate-test-benchmark-reusable]
+    if: ${{ needs.validate-dispatcher.outputs.valid == 'true' && needs.validate-test-benchmark-reusable.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    outputs:
+      request_id: ${{ steps.parse.outputs.request_id }}
+      operation: ${{ steps.parse.outputs.operation }}
+      mailbox_key: ${{ steps.parse.outputs.mailbox_key }}
+      request_sha256: ${{ steps.parse.outputs.request_sha256 }}
+      source_sha: ${{ steps.parse.outputs.source_sha }}
+      source_ref: ${{ steps.parse.outputs.source_ref }}
+      file_id: ${{ steps.parse.outputs.file_id }}
+      patch_sha256: ${{ steps.parse.outputs.patch_sha256 }}
+      base_sha: ${{ steps.parse.outputs.base_sha }}
+      target_branch: ${{ steps.parse.outputs.target_branch }}
+      commit_message: ${{ steps.parse.outputs.commit_message }}
+      retention_days: ${{ steps.parse.outputs.retention_days }}
+      targets: ${{ steps.parse.outputs.targets }}
+      artifact_prefix: ${{ steps.parse.outputs.artifact_prefix }}
+      executor_sha: ${{ steps.parse.outputs.executor_sha }}
+      turn_id: ${{ steps.parse.outputs.turn_id }}
+      harness_path: ${{ steps.parse.outputs.harness_path }}
+      harness_sha256: ${{ steps.parse.outputs.harness_sha256 }}
+      environment_json: ${{ steps.parse.outputs.environment_json }}
+    steps:
+      - name: Initialize dispatcher diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/agent-operation-dispatcher.log"
+          : > "$log"
+          {
+            echo "workflow=${GITHUB_WORKFLOW}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "event=${GITHUB_EVENT_NAME}"
+            echo "event_sha=${GITHUB_SHA}"
+            echo "ref=${GITHUB_REF}"
+            echo "request_path=.agents/Directional/agent-dispatch-request.json"
+            echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Checkout exact request authority
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Validate and parse request
+        id: parse
+        env:
+          REQUEST_PATH: .agents/Directional/agent-dispatch-request.json
+          EVENT_SHA: ${{ github.sha }}
+          REF_NAME: ${{ github.ref_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/agent-operation-dispatcher.log"
+          exec > >(tee -a "$log") 2>&1
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, re
+
+          request_path = pathlib.Path(os.environ["REQUEST_PATH"])
+          event_sha = os.environ["EVENT_SHA"]
+          ref_name = os.environ["REF_NAME"]
+          sha40 = re.compile(r"[0-9a-f]{40}\Z")
+          sha256 = re.compile(r"[0-9a-f]{64}\Z")
+          safe_id = re.compile(r"[A-Za-z0-9._-]{1,160}\Z")
+          safe_target = re.compile(r"[A-Za-z0-9_][A-Za-z0-9_.:+-]{0,159}\Z")
+          safe_file_id = re.compile(r"[A-Za-z0-9_-]{8,256}\Z")
+          safe_env = re.compile(r"[A-Z][A-Z0-9_]{0,79}\Z")
+
+          raw = request_path.read_bytes()
+          request_sha256 = hashlib.sha256(raw).hexdigest()
+          data = json.loads(raw)
+          if not isinstance(data, dict):
+              raise SystemExit("dispatcher request must be a JSON object")
+          if data.get("schema_version") != 1:
+              raise SystemExit("schema_version must equal 1")
+          request_id = data.get("request_id")
+          operation = data.get("operation")
+          mailbox_key = data.get("mailbox_key")
+          if not isinstance(request_id, str) or not safe_id.fullmatch(request_id):
+              raise SystemExit("request_id contains unsupported characters")
+          if operation not in {"noop", "drive_apply", "compile", "test_benchmark"}:
+              raise SystemExit(f"unsupported operation: {operation!r}")
+          if not isinstance(mailbox_key, str) or not safe_id.fullmatch(mailbox_key):
+              raise SystemExit("mailbox_key contains unsupported characters")
+
+          common = {"schema_version", "request_id", "operation", "mailbox_key"}
+          allowed = {
+              "noop": common | {"note"},
+              "drive_apply": common | {"file_id", "patch_sha256", "base_sha", "target_branch", "commit_message", "retention_days"},
+              "compile": common | {"source_sha", "targets", "artifact_prefix"},
+              "test_benchmark": common | {"executor_sha", "semantic_source_sha", "turn_id", "harness_path", "harness_sha256", "environment", "artifact_prefix", "retention_days"},
+          }[operation]
+          unknown = sorted(set(data) - allowed)
+          missing = sorted(common - set(data))
+          if unknown:
+              raise SystemExit("unknown request fields: " + ", ".join(unknown))
+          if missing:
+              raise SystemExit("missing request fields: " + ", ".join(missing))
+
+          outputs = {
+              "request_id": request_id,
+              "operation": operation,
+              "mailbox_key": mailbox_key,
+              "request_sha256": request_sha256,
+              "source_sha": event_sha,
+              "source_ref": f"refs/heads/{ref_name}",
+              "file_id": "",
+              "patch_sha256": "",
+              "base_sha": "",
+              "target_branch": "",
+              "commit_message": "",
+              "retention_days": "7",
+              "targets": "",
+              "artifact_prefix": "",
+              "executor_sha": "",
+              "turn_id": "",
+              "harness_path": "",
+              "harness_sha256": "",
+              "environment_json": "{}",
+          }
+
+          if operation == "noop":
+              note = data.get("note", "")
+              if not isinstance(note, str) or len(note) > 500 or "\n" in note or "\r" in note:
+                  raise SystemExit("noop note must be a single-line string <= 500 characters")
+
+          elif operation == "drive_apply":
+              file_id = data.get("file_id")
+              patch_sha = data.get("patch_sha256")
+              base_sha = data.get("base_sha")
+              target_branch = data.get("target_branch")
+              commit_message = data.get("commit_message")
+              retention = data.get("retention_days", 14)
+              if not isinstance(file_id, str) or not safe_file_id.fullmatch(file_id):
+                  raise SystemExit("file_id contains unsupported characters")
+              if not isinstance(patch_sha, str) or not sha256.fullmatch(patch_sha):
+                  raise SystemExit("patch_sha256 must be exactly 64 lowercase hex characters")
+              if not isinstance(base_sha, str) or not sha40.fullmatch(base_sha):
+                  raise SystemExit("base_sha must be exactly 40 lowercase hex characters")
+              if target_branch != ref_name:
+                  raise SystemExit("drive_apply target_branch must equal the dispatcher branch")
+              if not isinstance(commit_message, str) or not (1 <= len(commit_message) <= 160) or "\n" in commit_message or "\r" in commit_message:
+                  raise SystemExit("commit_message must be one line of 1..160 characters")
+              if not isinstance(retention, int) or not (1 <= retention <= 30):
+                  raise SystemExit("retention_days must be an integer in 1..30")
+              outputs.update(file_id=file_id, patch_sha256=patch_sha, base_sha=base_sha,
+                             target_branch=target_branch, commit_message=commit_message,
+                             retention_days=str(retention), source_sha=base_sha)
+
+          elif operation == "compile":
+              source_sha = data.get("source_sha")
+              targets = data.get("targets")
+              artifact_prefix = data.get("artifact_prefix")
+              if not isinstance(source_sha, str) or not sha40.fullmatch(source_sha):
+                  raise SystemExit("source_sha must be exactly 40 lowercase hex characters")
+              if not isinstance(targets, list) or not (1 <= len(targets) <= 32):
+                  raise SystemExit("targets must be an array of 1..32 target names")
+              if len(targets) != len(set(targets)):
+                  raise SystemExit("targets must be unique")
+              if any(not isinstance(v, str) or not safe_target.fullmatch(v) for v in targets):
+                  raise SystemExit("targets contain unsupported characters")
+              if not isinstance(artifact_prefix, str) or not safe_id.fullmatch(artifact_prefix):
+                  raise SystemExit("artifact_prefix contains unsupported characters")
+              outputs.update(source_sha=source_sha, targets=" ".join(targets), artifact_prefix=artifact_prefix)
+
+          elif operation == "test_benchmark":
+              executor_sha = data.get("executor_sha")
+              semantic_source_sha = data.get("semantic_source_sha")
+              turn_id = data.get("turn_id")
+              harness_path = data.get("harness_path")
+              harness_sha = data.get("harness_sha256")
+              env_obj = data.get("environment", {})
+              artifact_prefix = data.get("artifact_prefix")
+              retention = data.get("retention_days", 7)
+              if not isinstance(executor_sha, str) or not sha40.fullmatch(executor_sha):
+                  raise SystemExit("executor_sha must be exactly 40 lowercase hex characters")
+              if not isinstance(semantic_source_sha, str) or not sha40.fullmatch(semantic_source_sha):
+                  raise SystemExit("semantic_source_sha must be exactly 40 lowercase hex characters")
+              if not isinstance(turn_id, str) or not safe_id.fullmatch(turn_id):
+                  raise SystemExit("turn_id contains unsupported characters")
+              if not isinstance(harness_path, str) or not re.fullmatch(r"\.agents/Directional/tools/[A-Za-z0-9._-]+\.sh", harness_path):
+                  raise SystemExit("harness_path must be a simple .agents/Directional/tools/*.sh path")
+              if not isinstance(harness_sha, str) or not sha256.fullmatch(harness_sha):
+                  raise SystemExit("harness_sha256 must be exactly 64 lowercase hex characters")
+              if not isinstance(artifact_prefix, str) or not safe_id.fullmatch(artifact_prefix):
+                  raise SystemExit("artifact_prefix contains unsupported characters")
+              if not isinstance(retention, int) or not (1 <= retention <= 30):
+                  raise SystemExit("retention_days must be an integer in 1..30")
+              if not isinstance(env_obj, dict) or len(env_obj) > 64:
+                  raise SystemExit("environment must be a JSON object with at most 64 keys")
+              blocked_exact = {
+                  "BASH_ENV", "ENV", "GITHUB_ENV", "GITHUB_OUTPUT", "GITHUB_PATH",
+                  "GH_TOKEN", "HOME", "IFS", "NODE_OPTIONS", "PATH", "PROMPT_COMMAND",
+                  "RUNNER_TEMP", "SHELL", "TURN_ID",
+              }
+              blocked_prefixes = ("ACTIONS_", "DYLD_", "GIT_", "GITHUB_", "LD_", "RUNNER_")
+              for key, value in env_obj.items():
+                  if not isinstance(key, str) or not safe_env.fullmatch(key):
+                      raise SystemExit(f"unsupported environment key: {key!r}")
+                  if key in blocked_exact or key.startswith(blocked_prefixes):
+                      raise SystemExit(f"reserved environment key is forbidden: {key}")
+                  upper = key.upper()
+                  if any(word in upper for word in ("TOKEN", "SECRET", "PASSWORD", "CREDENTIAL", "PRIVATE_KEY")):
+                      raise SystemExit(f"secret-bearing environment key is forbidden: {key}")
+                  if not isinstance(value, (str, int, float, bool)):
+                      raise SystemExit(f"environment value for {key} must be scalar")
+              outputs.update(executor_sha=executor_sha, source_sha=semantic_source_sha,
+                             turn_id=turn_id, harness_path=harness_path, harness_sha256=harness_sha,
+                             environment_json=json.dumps(env_obj, sort_keys=True, separators=(",", ":")),
+                             artifact_prefix=artifact_prefix, retention_days=str(retention))
+
+          output_path = pathlib.Path(os.environ["GITHUB_OUTPUT"])
+          with output_path.open("a", encoding="utf-8") as handle:
+              for key, value in outputs.items():
+                  if "\n" in value or "\r" in value:
+                      raise SystemExit(f"output {key} unexpectedly contains a newline")
+                  handle.write(f"{key}={value}\n")
+
+          print(f"request_id={request_id}")
+          print(f"operation={operation}")
+          print(f"request_sha256={request_sha256}")
+          print(f"source_sha={outputs['source_sha']}")
+          PY
+
+      - name: Upload dispatcher diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-operation-dispatcher-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/agent-operation-dispatcher.log
+          if-no-files-found: error
+          retention-days: 14
+
+  noop:
+    needs: parse
+    if: ${{ needs.parse.outputs.operation == 'noop' }}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - run: echo "Validated durable dispatcher request ${{ needs.parse.outputs.request_id }}"
+
+  drive_apply:
+    needs: parse
+    if: ${{ needs.parse.outputs.operation == 'drive_apply' }}
+    permissions:
+      contents: write
+      id-token: write
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: ${{ needs.parse.outputs.file_id }}
+      patch_sha256: ${{ needs.parse.outputs.patch_sha256 }}
+      base_sha: ${{ needs.parse.outputs.base_sha }}
+      target_branch: ${{ needs.parse.outputs.target_branch }}
+      commit_message: ${{ needs.parse.outputs.commit_message }}
+      retention_days: ${{ fromJSON(needs.parse.outputs.retention_days) }}
+    secrets: inherit
+
+  compile:
+    needs: parse
+    if: ${{ needs.parse.outputs.operation == 'compile' }}
+    permissions:
+      actions: write
+      contents: read
+    uses: ./.github/workflows/agent-compile-reusable.yml
+    with:
+      source_sha: ${{ needs.parse.outputs.source_sha }}
+      targets: ${{ needs.parse.outputs.targets }}
+      artifact_prefix: ${{ needs.parse.outputs.artifact_prefix }}
+
+  test_benchmark:
+    needs: parse
+    if: ${{ needs.parse.outputs.operation == 'test_benchmark' }}
+    permissions:
+      actions: read
+      contents: read
+    uses: ./.github/workflows/agent-test-benchmark-reusable.yml
+    with:
+      executor_sha: ${{ needs.parse.outputs.executor_sha }}
+      semantic_source_sha: ${{ needs.parse.outputs.source_sha }}
+      turn_id: ${{ needs.parse.outputs.turn_id }}
+      harness_path: ${{ needs.parse.outputs.harness_path }}
+      harness_sha256: ${{ needs.parse.outputs.harness_sha256 }}
+      environment_json: ${{ needs.parse.outputs.environment_json }}
+      artifact_prefix: ${{ needs.parse.outputs.artifact_prefix }}
+      retention_days: ${{ fromJSON(needs.parse.outputs.retention_days) }}
+    secrets: inherit
+
+  mailbox:
+    if: ${{ always() && needs.parse.result == 'success' }}
+    needs: [parse, noop, drive_apply, compile, test_benchmark]
+    permissions:
+      actions: read
+      contents: write
+    uses: ./.github/workflows/workflow-mailbox-publisher.yml
+    with:
+      workflow_key: ${{ needs.parse.outputs.mailbox_key }}
+      source_sha: ${{ needs.parse.outputs.source_sha }}
+      source_ref: ${{ needs.parse.outputs.source_ref }}
+      result: ${{ needs.drive_apply.result != 'skipped' && needs.drive_apply.result || needs.compile.result != 'skipped' && needs.compile.result || needs.test_benchmark.result != 'skipped' && needs.test_benchmark.result || needs.noop.result != 'skipped' && needs.noop.result || needs.parse.result }}
+      summary: >-
+        durable-dispatch request_id=${{ needs.parse.outputs.request_id }}
+        operation=${{ needs.parse.outputs.operation }}
+        request_sha256=${{ needs.parse.outputs.request_sha256 }}

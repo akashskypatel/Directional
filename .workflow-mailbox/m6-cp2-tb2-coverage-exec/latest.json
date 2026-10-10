@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "workflow_key": "m6-cp2-tb2-coverage-exec",
+  "workflow": "M6 CP2 TB2 Coverage Artifact-Only Test Benchmark",
+  "workflow_ref": "akashskypatel/Directional/.github/workflows/m6-cp2-tb2-coverage-exec.yml@refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "repository": "akashskypatel/Directional",
+  "event": "push",
+  "event_sha": "5c136917d09c731515b94cd867a4aecec2f46c43",
+  "source_sha": "5ce3132ec01748eff5b15f82be07a1abe2bd1af6",
+  "source_ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref_name": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "run_id": 37419256039,
+  "run_attempt": 1,
+  "run_number": 1,
+  "run_url": "https://github.com/akashskypatel/Directional/actions/runs/37419256039",
+  "result": "success",
+  "summary": "M6-CP2-TB2-COVERAGE-EXEC immutable 491-process coverage artifact-only gate.",
+  "reported_at": "2026-10-06T06:10:59Z",
+  "mailbox_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "artifacts": [
+    {
+      "id": 11393312986,
+      "name": "m6-cp2-tb2-coverage-exec-log-37419256039",
+      "size_in_bytes": 47877,
+      "digest": "sha256:fd2a578380dd071967b46b5461d6a7434a14c787a8b3d8a2438a6a9abdde7cf7",
+      "expired": false,
+      "created_at": "2026-10-06T06:10:43Z",
+      "expires_at": "2026-10-13T06:10:42Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/37419256039/artifacts/11393312986",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11393312986/zip"
+    },
+    {
+      "id": 11393298024,
+      "name": "workflow-mailbox-publisher-log-37419256039-attempt-1",
+      "size_in_bytes": 404,
+      "digest": "sha256:91fddc9c00943d0574fee58b820348dbb9b5851f6030e08184212417ea18534e",
+      "expired": false,
+      "created_at": "2026-10-06T06:10:58Z",
+      "expires_at": "2026-10-20T06:10:57Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/37419256039/artifacts/11393298024",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11393298024/zip"
+    },
+    {
+      "id": 11393198123,
+      "name": "m6-cp2-tb2-coverage-exec-result-37419256039",
+      "size_in_bytes": 809007,
+      "digest": "sha256:0e4e550a09e4fb38b58bfcef2e57db6dcea865a1c46b384b5a288d5c491606bb",
+      "expired": false,
+      "created_at": "2026-10-06T06:10:42Z",
+      "expires_at": "2026-10-13T06:10:41Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/37419256039/artifacts/11393198123",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11393198123/zip"
+    },
+    {
+      "id": 11391804061,
+      "name": "agent-workflow-schema-validator-log-37419256039",
+      "size_in_bytes": 511,
+      "digest": "sha256:88563cf334f0001b798a8d840613d8de7d08fa8dda82ae500821b98151b720dd",
+      "expired": false,
+      "created_at": "2026-10-06T05:35:09Z",
+      "expires_at": "2026-10-13T05:35:08Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/37419256039/artifacts/11391804061",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11391804061/zip"
+    },
+    {
+      "id": 11391124362,
+      "name": "agent-workflow-schema-validation-37419256039",
+      "size_in_bytes": 444,
+      "digest": "sha256:ace8c9aa7a56e8ad22d257bdff391edff61ca5ec142a8a3dfda5ea35e29b200e",
+      "expired": false,
+      "created_at": "2026-10-06T05:35:08Z",
+      "expires_at": "2026-10-13T05:35:07Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/37419256039/artifacts/11391124362",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11391124362/zip"
+    }
+  ]
+}

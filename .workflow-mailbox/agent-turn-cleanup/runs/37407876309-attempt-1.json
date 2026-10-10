@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "workflow_key": "agent-turn-cleanup",
+  "workflow": "Agent Turn Temporary-State Cleanup",
+  "workflow_ref": "akashskypatel/Directional/.github/workflows/agent-turn-cleanup.yml@refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "repository": "akashskypatel/Directional",
+  "event": "push",
+  "event_sha": "eca1a77ba28f11d0a26730be25a1284af6d4c288",
+  "source_sha": "fbd23da7d7f67599d574772a53d8f4597804f603",
+  "source_ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref_name": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "run_id": 37407876309,
+  "run_attempt": 1,
+  "run_number": 605,
+  "run_url": "https://github.com/akashskypatel/Directional/actions/runs/37407876309",
+  "result": "success",
+  "summary": "Turn temporary-state cleanup.",
+  "reported_at": "2026-10-06T03:12:49Z",
+  "mailbox_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "artifacts": [
+    {
+      "id": 11388125562,
+      "name": "workflow-mailbox-publisher-log-37407876309-attempt-1",
+      "size_in_bytes": 390,
+      "digest": "sha256:b1951dbe2fdea2cfdcd0df319b5c0e8a178c68169568cd6b5fd28d3ca38e2593",
+      "expired": false,
+      "created_at": "2026-10-06T03:12:49Z",
+      "expires_at": "2026-10-20T03:12:48Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/37407876309/artifacts/11388125562",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11388125562/zip"
+    },
+    {
+      "id": 11387950741,
+      "name": "agent-turn-cleanup-result-37407876309",
+      "size_in_bytes": 575,
+      "digest": "sha256:61ab96e9e14786e9d9d2ca6931bbfdf2807f8d8205e559543665700522dc2a24",
+      "expired": false,
+      "created_at": "2026-10-06T03:12:34Z",
+      "expires_at": "2026-10-13T03:12:33Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/37407876309/artifacts/11387950741",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11387950741/zip"
+    },
+    {
+      "id": 11387940897,
+      "name": "agent-turn-cleanup-log-37407876309",
+      "size_in_bytes": 1054,
+      "digest": "sha256:6789a00858853252ae33dbf59b3351a3640bf1a41930ee33c2136c5566f0c8c7",
+      "expired": false,
+      "created_at": "2026-10-06T03:12:36Z",
+      "expires_at": "2026-10-13T03:12:35Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/37407876309/artifacts/11387940897",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11387940897/zip"
+    }
+  ]
+}
