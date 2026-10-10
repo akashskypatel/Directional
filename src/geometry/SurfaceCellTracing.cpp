@@ -7981,7 +7981,8 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
     std::set<authority::SourceEdgeTopologyKey> hardFeatureEdges,
     std::vector<int> sourceFaceBranchRotations,
     std::vector<SurfaceHardRailFieldTransition> hardRailFieldTransitions,
-    std::vector<SurfaceHardRailRouteCertificate> hardRailRouteCertificates) {
+    std::vector<SurfaceHardRailRouteCertificate> hardRailRouteCertificates,
+    SurfaceHardRailTerminalContacts hardRailTerminalContacts) {
   SurfacePhaseFrontProductError error;
   // RA-40: a commuting square is gauge-invariant; it cannot authenticate
   // either nonrail phi or hard-carrier chi. Bind a genuinely produced A3 atlas
@@ -8009,6 +8010,13 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
   };
   if (sourceTopologyRegions.regions().empty() ||
       sourceTopologyRegions.face_count() == 0U) {
+    error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+    return error;
+  }
+  // A6 requires a published face gauge whenever seam/periodic relations
+  // can consume it; absence is legal only when no such consumer exists.
+  if ((!isolationSeamTransportCertificates.empty() ||
+       !periodicHolonomies.empty()) && sourceFaceBranchRotations.empty()) {
     error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
     return error;
   }
@@ -8063,6 +8071,41 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
     if (count == 0U || count > 2U) {
       error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
       return error;
+    }
+  }
+  // Hard features without producer-owned rails are not source authority.
+  if (!hardFeatureEdges.empty() && hardRailTerminalContacts.empty()) {
+    error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+    return error;
+  }
+  for (const auto &[rail, contact] : hardRailTerminalContacts) {
+    (void)rail;
+    if (contact.component < 0 ||
+        contact.endpoints[0] == contact.endpoints[1]) {
+      error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+      return error;
+    }
+    for (const auto &vertex : contact.endpoints) {
+      const bool matchesComponent = std::any_of(
+          sourceTopologyRegions.regions().begin(),
+          sourceTopologyRegions.regions().end(), [&](const auto &region) {
+            if (region.component().index() !=
+                static_cast<std::size_t>(contact.component)) return false;
+            return std::any_of(region.faces().begin(), region.faces().end(),
+                               [&](const auto &member) {
+                                 const auto &vertices = member.topology.vertices();
+                                 return std::find(vertices.begin(), vertices.end(),
+                                                  vertex) != vertices.end();
+                               });
+          });
+      if (!matchesComponent ||
+          std::none_of(hardFeatureEdges.begin(), hardFeatureEdges.end(),
+                       [&](const auto &edge) {
+                         return edge.first() == vertex || edge.second() == vertex;
+                       })) {
+        error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+        return error;
+      }
     }
   }
   std::set<authority::SourceEdgeTopologyKey> publishedRailTransitions;
@@ -8124,6 +8167,27 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
       return error;
     }
     const auto &steps = certificate.route.oriented_steps();
+    const auto contact = hardRailTerminalContacts.find(certificate.rail);
+    if (contact == hardRailTerminalContacts.end() ||
+        !((certificate.endpoints[0].terminalCarrier.edge.first() ==
+                contact->second.endpoints[0] ||
+            certificate.endpoints[0].terminalCarrier.edge.second() ==
+                contact->second.endpoints[0]) &&
+           (certificate.endpoints[1].terminalCarrier.edge.first() ==
+                contact->second.endpoints[1] ||
+            certificate.endpoints[1].terminalCarrier.edge.second() ==
+                contact->second.endpoints[1])) &&
+        !((certificate.endpoints[0].terminalCarrier.edge.first() ==
+                contact->second.endpoints[1] ||
+            certificate.endpoints[0].terminalCarrier.edge.second() ==
+                contact->second.endpoints[1]) &&
+           (certificate.endpoints[1].terminalCarrier.edge.first() ==
+                contact->second.endpoints[0] ||
+            certificate.endpoints[1].terminalCarrier.edge.second() ==
+                contact->second.endpoints[0]))) {
+      error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+      return error;
+    }
     if (steps.empty() || certificate.junctions.size() + 1U != steps.size()) {
       error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
       return error;
@@ -12205,7 +12269,8 @@ struct SurfacePhaseFrontBuildState {
 SurfacePhaseFrontResult publish_phase_front_result(
     SurfacePhaseFrontBuildState state, const Eigen::MatrixXi &sourceFaces,
     std::size_t sourceVertexCount,
-    const authority::FieldTransportAtlas *fieldTransportAtlas) {
+    const authority::FieldTransportAtlas *fieldTransportAtlas,
+    const SurfaceHardRailTerminalContacts &hardRailTerminalContacts) {
   if (state.disposition == SurfaceCellProducerDisposition::NotApplicable) {
     return SurfacePhaseFrontResult::not_applicable();
   }
@@ -12236,7 +12301,7 @@ SurfacePhaseFrontResult publish_phase_front_result(
       std::move(state.conformityPlanReceipt), std::move(state.hardFeatureEdges),
       std::move(state.faceBranchRotation),
       std::move(state.hardRailFieldTransitions),
-      std::move(state.hardRailRouteCertificates));
+      std::move(state.hardRailRouteCertificates), hardRailTerminalContacts);
   if (auto *value = std::get_if<SurfacePhaseFrontProduct>(&product)) {
     return SurfacePhaseFrontResult::produced(std::move(*value));
   }
@@ -18737,7 +18802,8 @@ SurfaceCellNetwork build_surface_cell_network(
   network.phaseFront = surface_cell_tracing_detail::publish_phase_front_result(
       std::move(phaseFrontState), faces,
       static_cast<std::size_t>(vertices.rows()),
-      authoritativeOptions.fieldTransportAtlas);
+      authoritativeOptions.fieldTransportAtlas,
+      authoritativeOptions.hardRailTerminalContacts);
   if (network.phaseFront.is_produced()) {
     const SurfacePhaseFrontProduct &phaseFront = network.phaseFront.product();
     network.proposals.reserve(phaseFront.cells().size());

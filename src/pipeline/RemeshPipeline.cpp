@@ -9598,6 +9598,32 @@ std::set<authority::SourceEdgeTopologyKey> hard_feature_edge_keys_from_rails(
   return keys;
 }
 
+std::optional<geometry::SurfaceHardRailTerminalContacts> hard_rail_terminal_contacts_from_rails(
+    const std::vector<geometry::SurfaceCellRail> &rails,
+    const std::size_t vertexExtent) {
+  geometry::SurfaceHardRailTerminalContacts contacts;
+  for (const geometry::SurfaceCellRail &rail : rails) {
+    if (rail.kind != geometry::SurfaceCellRailKind::HardFeature || rail.closed) {
+      continue;
+    }
+    if (rail.sourceVertices.size() < 2U || rail.component < 0) {
+      return std::nullopt;
+    }
+    const auto first = authority::SourceVertexId::from_index(
+        rail.sourceVertices.front(), vertexExtent);
+    const auto last = authority::SourceVertexId::from_index(
+        rail.sourceVertices.back(), vertexExtent);
+    if (!first || !last || first.value() == last.value() ||
+        !contacts.emplace(rail.id,
+                          geometry::SurfaceHardRailTerminalContact{
+                              rail.component, {first.value(), last.value()}})
+             .second) {
+      return std::nullopt;
+    }
+  }
+  return contacts;
+}
+
 bool project_surface_cell_vertex_chart_authority(
     const std::vector<geometry::PureQuadVertexLineage> &lineages,
     const int outputVertexCount, const std::size_t railCount,
@@ -12301,6 +12327,13 @@ remesh_from_raw_cross_field_impl_with_stage_products(
         crossFieldProduct.secondaryDirections;
     geometry::SurfaceCellTracingOptions tracingOptions;
     tracingOptions.authoritativeRails = authoritativeRails;
+    const auto railTerminalContacts = hard_rail_terminal_contacts_from_rails(
+        authoritativeRails, static_cast<std::size_t>(meshWhole.V.rows()));
+    if (!railTerminalContacts.has_value()) {
+      return fail_surface_cells(SurfaceCellFailureCode::InvalidRailTopology,
+                                "feature");
+    }
+    tracingOptions.hardRailTerminalContacts = *railTerminalContacts;
     tracingOptions.hardFeatureEdges = hardFeatureRailEdges;
     tracingOptions.reliefRootVertices = reliefRootSelection.roots;
     tracingOptions.reliefRegionLabels = reliefRootSelection.labels;

@@ -1507,6 +1507,15 @@ struct SurfaceHardRailRouteCertificate {
   std::vector<SurfaceHardRailRouteJunctionCertificate> junctions;
 };
 
+// Producer-owned terminal source identities. These are not inferred from
+// trace-point barycentric coordinates or raw source-face row indices.
+struct SurfaceHardRailTerminalContact {
+  int component = -1;
+  std::array<authority::SourceVertexId, 2> endpoints;
+};
+using SurfaceHardRailTerminalContacts =
+    std::map<authority::HardRailId, SurfaceHardRailTerminalContact>;
+
 struct SurfaceFrontEdge {
   SurfaceFrontEdge(authority::TopologyRegionId region, authority::CellId owner)
       : filledCell(owner), sourceTopologyRegion(region) {}
@@ -1861,7 +1870,8 @@ public:
        std::set<authority::SourceEdgeTopologyKey> hardFeatureEdges = {},
        std::vector<int> sourceFaceBranchRotations = {},
        std::vector<SurfaceHardRailFieldTransition> hardRailFieldTransitions = {},
-       std::vector<SurfaceHardRailRouteCertificate> hardRailRouteCertificates = {});
+       std::vector<SurfaceHardRailRouteCertificate> hardRailRouteCertificates = {},
+       SurfaceHardRailTerminalContacts hardRailTerminalContacts = {});
 
   [[nodiscard]] int gridU() const noexcept { return gridU_; }
   [[nodiscard]] int gridV() const noexcept { return gridV_; }
@@ -2181,6 +2191,7 @@ struct SurfaceCellTracingOptions {
   std::vector<SurfaceTracePoint> capturePoints;
   std::set<authority::SourceEdgeTopologyKey> hardFeatureEdges;
   std::vector<SurfaceCellRail> authoritativeRails;
+  SurfaceHardRailTerminalContacts hardRailTerminalContacts;
   bool followCompatibleHardFeatureRails = true;
   // Raw classifier labels are ingress-only. Once SourceTopologyRegions is
   // constructed, downstream semantic consumers use sourceAuthority instead.
