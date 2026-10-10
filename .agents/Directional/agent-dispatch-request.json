@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-full-draft-a3-oracle-compile-20261010-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-full-draft-a3-oracle-compile",
-  "source_sha": "a6b803fb08ccbc99d87a4fa9e1635c451e902c60",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-full-draft-a3-oracle"
+  "request_id": "m6-cp3-r4-full-draft-a3-docs-20261010-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-full-draft-a3-docs",
+  "file_id": "1-XpfErA_muAWBU43rVsdxPa_6ROQWFyL",
+  "patch_sha256": "a4a51243b5dd3128afa8e455e23b93866678da9fa5068154b77ad0a9b0785f09",
+  "base_sha": "2edd74c209e2972575a5f9797245264430006144",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: preserve R4 full draft A3 oracle and exact GMP compile receipt",
+  "retention_days": 14
 }
