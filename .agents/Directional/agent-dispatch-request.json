@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-d2-attached-tau-docs-20261010-a",
+  "request_id": "m6-cp3-r4-full-draft-a3-oracle-20261010-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-d2-attached-tau-docs",
-  "file_id": "1BcSs-9G3eR5b0CYiNGfnRWV8Tht49fZ4",
-  "patch_sha256": "051b8ae749eb18b8993d4ff6c04891a00b705ab4fdb1bac3853b2a828ba1ef14",
-  "base_sha": "610ee5fc5295ffb2869df149d3ad8b7174716847",
+  "mailbox_key": "m6-cp3-r4-full-draft-a3-oracle-apply",
+  "file_id": "1nNrNBjBWN6fqDvx1o3nbQeB63mV6Aalo",
+  "patch_sha256": "259410c7ba5ec34b888bac906af3805953bc844d9e764aa6a25bff924a5b784f",
+  "base_sha": "9f7c3bd58011ff692c2a0db847c30a143bbfa3ec",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: preserve R4 D2 complete attached tau compile evidence and handoff",
+  "commit_message": "test: preserve full A4 product authority and fail forged odd rail at A3 factory",
   "retention_days": 14
 }
