@@ -1,5 +1,12 @@
 # M6-CP3-CB1-ENTRY-R4 — Code + Build WIP continuation
 
+## 2026-10-10 16:57Z — Source-exact absolute gauge producer compatibility STOP
+
+Current authoritative source snapshot `d0e604a2c38e690e431f8a25d2ad6a59a2f67d73`, run `38069786753`, artifact `11676665072`, verified 5,901/5,901 checksums (archive ZIP `90174b5ca926f25c8cbcbdbff245562fd02329c52323e99e078d5f055013c048`, tar `133626d5460c4d8739733ddb64805d209949821a014c49873973e41cdc7afb59`). No source changes from the previous compiled relational-A3 commit, and no Directional build or runtime this attempt. Review note: `Architecture_M6_CP3_R4_Absolute_Gauge_Producer_Compatibility_Stop_Record.md`. RA-44.2/.5's identical hard U/V geometric gate is visible in planar producer but **not** in annular best-fit angular scoring or curved root-0 transported gauge; checked factory has no chart axes/normal. Independent Review must specify a non-tautological per-producer chart axis origin and prove acceptance compatibility (or explicitly amend frozen RA-44) before a checked-factory absolute gauge witness is implemented. Do not generate self-justifying axes from the chosen gauge or claim relational A3 is enough. Keep same R4 turn BLOCKED (`REVIEW_BLOCKER`), preserve 497 freeze, other R4 source-star and causal regression obligations, and prior immutable green compile `38068838434`. No new compile justified by a documentation-only stop.
+
+---
+
+
 ## 2026-10-10 16:34Z resume — RA-44 relational A3 gauge pin compiled, R4 not complete
 
 **Canonical R4 remains IN_PROGRESS.** Exact current source-snapshot workflow `38068273130`, SHA `b95de5440fb1c199eec102a7209c7156ff766c6a`, artifact `11675367577`, ZIP SHA-256 `3b09030471ea7f7459a520b5131ba556c0452d5d78b6e689109a6564827398fa`, inner tar SHA-256 `b702d55d33dbe1c85893a875a92d1f8a63d3d09e5d29f482ac32134c7ad86a07`, verified 5,893/5,893 source file hashes; `runtimeExecution=false`.

@@ -1,3 +1,11 @@
+## CURRENT — R4 RA-44.2 geometric-gauge producer-compatibility STOP; independent Review required (2026-10-10)
+
+**`M6-CP3-CB1-ENTRY-R4` is REVIEW_BLOCKED** on the independent absolute-gauge design at `Architecture_M6_CP3_R4_Absolute_Gauge_Producer_Compatibility_Stop_Record.md`. This is a source-exact new incompatibility/undischarged proof, **not a withdrawal or revision of frozen RA-44**. The current factory carries no face axes/chart U/V or normals; planar `build_planar_phase_frame` already has an absolute `>= 1 - 1e-8` gate, but annular scoring selects a minimum squared-angular-error branch without that hard gate, and the curved producer seeds a geometric root at branch 0 and propagates via field transport without a planar reference U/V. The frozen review does not specify independent chart axes that satisfy its identical hard gate across those latter paths. Inventing axes from the asserted branch is tautological, and using the A3 relation alone misses balanced-all-face tamper. Independent Review must freeze a non-self-attesting per-producer axis construction and show equivalence to RA-44.2/.5 or formally amend the requirement. **No Code + Build workaround is authorized.**
+
+Last exact source snapshot `d0e604a2c38e690e431f8a25d2ad6a59a2f67d73`, run `38069786753`, artifact `11676665072`, verified `5901/5901` SHA256; `runtimeExecution=false`. The last committed semantic source remains `1eaea310ffe2f15a9c96ea92d1cdddb99486f232` (RA-44 relational A3 check, eight-target GMP/GMPXX compile GREEN `38068838434`), not RA-44 complete. Terminal A2b source-star germ, multi-carrier sector proofs, 88 CP2 restorations and all other pending Code + Build duties remain untouched. Frozen TB497 is not authorized. Preserve same-turn identity, no successor promotion. After independent Review explicitly resolves this STOP, resume R4 as authorized.
+
+---
+
 ## CURRENT — R4 binding STOP resolved; RA-44 frozen, R4 Code + Build released (2026-10-10)
 
 **`M6-CP3-CB1-ENTRY-R4` is UNBLOCKED and continues with RA-44 as its specification.** Both STOP findings
