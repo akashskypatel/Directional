@@ -73,11 +73,10 @@ void attach_source_authority(
   Eigen::MatrixXd raw(faces.rows(), 12);
   for (int face = 0; face < faces.rows(); ++face) {
     const Eigen::RowVector3d a = vertices.row(faces(face, 0));
-    const Eigen::RowVector3d x =
-        (vertices.row(faces(face, 1)) - a).normalized();
-    const Eigen::RowVector3d normal =
-        (vertices.row(faces(face, 1)) - a).cross(
-            vertices.row(faces(face, 2)) - a).normalized();
+    const Eigen::RowVector3d edge1 = vertices.row(faces(face, 1)) - a;
+    const Eigen::RowVector3d edge2 = vertices.row(faces(face, 2)) - a;
+    const Eigen::RowVector3d x = edge1.normalized();
+    const Eigen::RowVector3d normal = edge1.cross(edge2).normalized();
     const Eigen::RowVector3d y = normal.cross(x);
     raw.row(face) << x, y, -x, -y;
   }
