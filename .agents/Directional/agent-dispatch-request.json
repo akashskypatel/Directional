@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb1-r3-independent-review-closeout-20261010-r1",
+  "request_id": "m6-defn-r5-r4-ra41-docs-20261010-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb1-r3-independent-review-apply-r1",
-  "file_id": "1oIpIH3Trr36AB9OTN-V2zBhxa3pSjuSL",
-  "patch_sha256": "973f50f676ad294afab70329997cc76eb94ec46f7016b5c346c77abdba1d4cda",
-  "base_sha": "bbba8b54b01be6256d507b7d9527a687e8b2c5b3",
+  "mailbox_key": "m6-defn-r5-r4-ra41-docs-apply-r1",
+  "file_id": "1pXu8WVAgH9fFBLyOq3HPlbU9EbOyY4nu",
+  "patch_sha256": "52ebf92a142ebfbe2762bd9c92308db1a693a101a182b32a3938108b4eb39d34",
+  "base_sha": "5b5e7aa063caf2e68385f037c6f165adc38ca0c3",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: independent R3 94-RED review, accepted-prefix correction and R4 definition",
+  "commit_message": "docs(directional): R4 RA-41 definition candidate and review handoff",
   "retention_days": 14
 }
