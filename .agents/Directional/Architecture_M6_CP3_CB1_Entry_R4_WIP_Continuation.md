@@ -1,5 +1,15 @@
 # M6-CP3-CB1-ENTRY-R4 — Code + Build WIP continuation
 
+## 2026-10-10 16:10Z — R4 closed-rail cyclic-route recovery complete; Code + Build still open
+
+- **Recovered prior workflow race:** `38065774180` failed on a non-fast-forward push after its exact patch had verified. No application was claimed. Between patch source `715fe2d664a72596b82312ea418066bb571617bb` and then-current `3d068d28f9012afaef9b1eb5f19539530dc67ac5`, no source/test files changed; the same verified patch was safely retried through dispatcher commit `131d628c2b74a2b4ffce366ce5bdc527922aba9f`, `38066647213` SUCCESS, apply result `11674664786` (ZIP SHA-256 `abd2d5387cbe25875d3a0851528f82b8ad21a581d9b25d989f5c6ca0286a86de`). **Semantic commit: `b7be5b9c8a3f2cc611f487711de938c60a854e78`.** Consumed staged Drive ID `1SbJdmi1h3L_bEG-wAnKX4BPGt9eTSEg2` owner-permanently deleted after verified push. Independent patch copy remains preserved in ChatGPT Library `/Directional/Evidence/Directional_M6_CP3_CB1_R4_closed-route-followup.patch`.
+- **Previous exact compile green:** `38065496600`, semantic source `715fe2d...`, artifact `11674273557`, 28/28 SHA256SUMS, eight GMP/GMPXX targets, exits 0/0, clean source, `runtimeExecution=false`.
+- **Recovered source compile green:** `38066758353`, semantic source `b7be5b9c8a3f2cc611f487711de938c60a854e78`, result artifact `11675350342`, ZIP SHA-256 `fe21b3a0540b16ffae3a2059be94e3a06b25a60c105c6016ec7106f590d3b2f3`. Independently verified 28/28 packaged checksums, preflight/build exits 0/0, all eight targets, real `libgmpxx.so` + `libgmp.so` link command, clean final source state, `runtimeExecution=false`. **No Directional runtime/tests/benchmarks executed.**
+- **Remaining same-turn RA-44 obligations:** the checked factory still cannot independently prove the absolute +U/+V geometric face-gauge pin alongside its A3 relation, and `endpoint_certificate` still accepts only carrier-face equality rather than an independently produced source-star nonrail terminal germ. See the downloadable `R4_CONTINUATION_1610Z.md` source map (SHA-256 `8a3ff713da516769800fb326b2edb83089851bf30531043ba5f9db4d560dfe77`). The 88 accepted CP2 losses, seven DCEL restorations, typed negative/positive and multi-carrier nonrail/odd-τ witnesses remain unfinished. RA-41 multi-carrier STOP remains unexercised. Keep frozen 497 untouched. **R4 remains IN_PROGRESS; no TB dispatch, no successor promotion.**
+
+---
+
+
 ## 2026-10-10 15:45Z continuation — exact closed-rail evidence and queued builds
 
 **R4 remains IN_PROGRESS; source mutation is real but not full RA-44 acceptance.** One verified exact-source snapshot at `ef1b48fee2c10ee6b737f3202abb512300905b8d` (run `38063866697`, artifact `11674059263`, ZIP SHA-256 `277ae269465249610b42e40f203e3ebe52693b290b117d1e23b6f6c859768c37`) passed 5,881/5,881 source hashes. Its semantic source was unchanged by intervening mailbox and STATUS commits.
