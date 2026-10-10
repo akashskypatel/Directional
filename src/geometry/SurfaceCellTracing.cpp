@@ -8029,6 +8029,56 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
     error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
     return error;
   }
+  // RA-44 relational pin: a producer-supplied +U face gauge must be
+  // consistent with *independent* source-bound A3 transitions.  The atlas
+  // authenticates transitions but not the absolute global quarter-turn;
+  // the separate geometric witness must still pin that absolute choice.
+  // Build incidence from typed source topology, not numeric adjacency order,
+  // so permuting source rows cannot suppress a field discontinuity.
+  if (!sourceFaceBranchRotations.empty()) {
+    std::map<authority::SourceEdgeTopologyKey,
+             std::vector<authority::SourceFaceId>> sourceEdgeIncidence;
+    for (std::size_t row = 0U; row < sourceFaceBranchRotations.size(); ++row) {
+      const auto faceId = authority::SourceFaceId::from_index(
+          row, sourceFaceBranchRotations.size());
+      if (!faceId) {
+        error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+        return error;
+      }
+      const auto &corners =
+          sourceTopologyRegions.topology_for_row(faceId.value()).vertices();
+      for (std::size_t corner = 0U; corner < corners.size(); ++corner) {
+        const auto edge = authority::SourceEdgeTopologyKey::make(
+            corners[corner], corners[(corner + 1U) % corners.size()]);
+        if (!edge) {
+          error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+          return error;
+        }
+        sourceEdgeIncidence[edge.value()].push_back(faceId.value());
+      }
+    }
+    for (const auto &[edge, incident] : sourceEdgeIncidence) {
+      if (incident.size() == 1U) continue; // Open source boundary.
+      if (incident.size() != 2U) {
+        error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+        return error;
+      }
+      const auto forward = fieldTransportAtlas->transition_value(
+          edge, incident[0], incident[1]);
+      const auto reverse = fieldTransportAtlas->transition_value(
+          edge, incident[1], incident[0]);
+      const auto first = authority::QuarterTurn::from_integer(
+          sourceFaceBranchRotations[incident[0].index()]);
+      const auto second = authority::QuarterTurn::from_integer(
+          sourceFaceBranchRotations[incident[1].index()]);
+      if (!forward || !reverse ||
+          reverse->transport != forward->transport.inverse() ||
+          compose(forward->transport, first) != second) {
+        error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+        return error;
+      }
+    }
+  }
   const auto rail_face_incident = [](
       const authority::SourceFaceTopologyKey &face,
       const authority::SourceEdgeTopologyKey &edge) {

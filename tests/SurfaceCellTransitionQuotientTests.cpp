@@ -2626,6 +2626,34 @@ TEST(M6CP3, PeriodicExactA3UnequalFaceGaugeUsesRelationAndOccurrenceAuthority) {
   ASSERT_TRUE(gaugeDelta == 1 || gaugeDelta == 3)
       << "D1 requires unequal non-self-inverse face gauge authority";
 
+  // RA-44 relational-pin negative on the *same* accepted torus product:
+  // mutate one source face's chart gauge while preserving the source atlas,
+  // transitions, periodic relation and all geometric/front authority.
+  ASSERT_TRUE(fixture.fixture.fieldTransportAtlas.has_value());
+  const auto checkedGauge = [&](std::vector<int> rotations) {
+    return directional::geometry::SurfacePhaseFrontProduct::make(
+        front.gridU(), front.gridV(), front.sourceTopologyRegions(),
+        fixture.fixture.mesh.F,
+        static_cast<std::size_t>(fixture.fixture.mesh.V.rows()),
+        &*fixture.fixture.fieldTransportAtlas,
+        front.isolationSeamTransportCertificates(), front.periodicHolonomies(),
+        front.boundedDiskBoundaryPhases(), front.edges(), front.events(),
+        front.cells(), front.conformityPlanReceipt(),
+        front.hardFeatureEdges(), std::move(rotations),
+        front.hardRailFieldTransitions(), front.hardRailRouteCertificates(),
+        front.hardRailTerminalContacts(), front.hardRailClosedChains());
+  };
+  const auto originalGaugeProduct = checkedGauge(front.sourceFaceBranchRotations());
+  ASSERT_NE(nullptr,
+      std::get_if<directional::geometry::SurfacePhaseFrontProduct>(
+          &originalGaugeProduct));
+  std::vector<int> gaugeTamper = front.sourceFaceBranchRotations();
+  const std::size_t tamperedFace = fixture.witness.fromFace.index();
+  gaugeTamper[tamperedFace] = (gaugeTamper[tamperedFace] + 1) % 4;
+  expect_phase_front_product_error(
+      checkedGauge(std::move(gaugeTamper)),
+      directional::geometry::SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority);
+
   const auto endpointGauge = [](const auto &placement, const auto &interval,
                                 const auto relationRotation,
                                 const auto &published)
