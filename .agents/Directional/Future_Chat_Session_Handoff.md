@@ -1,3 +1,9 @@
+## CURRENT review gate — M6-DEFN-R5-R4-REV blocked (2026-10-10)
+
+Independent R4 review does **not** freeze RA-41 or release the held R4 Code + Build. The DIAG's component-local carrier records are accurate and the observed 3×3 source-star has an admissible **candidate** terminal germ path face `2 -> 3` across nonrail `(1,5)`, but no producer-owned front-side occurrence/contact witness and independently checked A3 φ have been demonstrated (`R4-REV-01`). The RA-41.1 null-atlas branch directly conflicts with binding RA-40.1; neither a complete A3-dependency census nor independent source/cross-field/gauge verification at the checked factory is established (`R4-REV-02`). The earlier claim below that D2's *producer* evidentiary burden is discharged is **superseded**: only geometric existence is verified. RA-38.3 forbids boundary **through-junction** sector transport, not necessarily a boundary **terminal** germ; explicit amendment still required. Review record: `Architecture_M6_DEFN_R5_R4_Independent_Review_Record.md`. No source, test, selector, compile or runtime mutation; CP2 491/491 accepted, R3 403/497 rejected, 66/17/49 debt 1 unchanged. Retain the exact 39-row DIAG inventory and held CB plan. This turn remains blocked on source-domain Review decisions; do not fabricate a successor or implement R4 CB.
+
+---
+
 ## Next steps determination — my contamination hypothesis is DISPROVEN; reading (b) is now VERIFIED on the observed instance (2026-10-10)
 
 **The DIAG audit is correct and my hypothesis is withdrawn.** I re-derived its load-bearing claim independently

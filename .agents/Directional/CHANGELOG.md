@@ -878,3 +878,7 @@ Independent Review validates the 488/491 execution mechanics but rejects promoti
 - Mandatory compile run/job `37192727051 / 111408174395` passed all eight standard GMP/GMPXX targets. Candidate artifact `11299078582` (`sha256:142bac1b...5afd`), log `11299068422` (`sha256:1ede0d09...b6c50`), manifest 28/28, clean source receipts, `runtimeExecution=false`.
 - Candidate remains unpromoted. Exact next is `M6-CP1-TB10-A5V-R1-EXEC`, focused24 + selector449 = **473**, then mandatory Review; CB11 held.
 
+
+## 2026-10-10 — M6-DEFN-R5-R4-REV source-only architecture review
+
+Independent source-star proof confirms the face-2 to face-3 terminal-germ candidate, rejects any claim of an already producer-authenticated contact, and identifies conflict between RA-40.1 and conditional-null-atlas RA-41.1. Review returns `REVIEW_BLOCKER` R4-REV-01/02; RA-41 remains unfrozen and R4 CB is held. See `Architecture_M6_DEFN_R5_R4_Independent_Review_Record.md`. No binaries, compile, tests, selectors, source producer or normative definitions changed.

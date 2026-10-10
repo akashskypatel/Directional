@@ -1,3 +1,11 @@
+## CURRENT — mandatory M6 R4 independent Review blockers (2026-10-10)
+
+- [ ] `R4-REV-01`: authenticate the **producer-owned** terminal source-vertex side germ, actual trace endpoint occurrence, unique ordered nonrail A2b path and bidirectional A3 φ. Face `2 -> 3` via `(1,5)` is **only** a geometrically valid candidate, not a published producer certificate. Keep RA-38.3 multi-carrier boundary through-junction prohibition; distinguish terminal boundary germs.
+- [ ] `R4-REV-02`: explicitly adjudicate conflict between RA-40.1's mandatory matched A3 at `make` and RA-41.1's proposed null-atlas exemption. Prove complete gauge/periodic/isolation source dependency or retain RA-40 and migrate legacy inputs. Typed first-failure instrumentation for all 34 Phase10 observations remains required.
+- [ ] `M6-DEFN-R5-R4-REV` remains review-blocked; RA-41 unfrozen, `M6-CP3-CB1-ENTRY-R4` HELD. No successor is authorized pending both independent architecture decisions. Last accepted CP2 491/491, rejected R3 403/497; 66/17/49 debt 1 unchanged. Review record `Architecture_M6_DEFN_R5_R4_Independent_Review_Record.md`.
+
+---
+
 ## CURRENT — R4 Definition candidate for independent Review
 
 - [x] `M6-DEFN-R5-R4`: draft source-exact RA-41 authority-domain, local-endpoint-contact and DCEL-valid fixture **Definition proposal**; no code, build or runtime; current candidate is not independently accepted.

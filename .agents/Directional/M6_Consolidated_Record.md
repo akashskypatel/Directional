@@ -917,3 +917,7 @@ RA-27b branch routing is explicit: C2 empty-front accepted defensive; C4 → CP2
 ## M6-DEFN-R5-R2-REV — RA-34 accepted Definition-only (2026-10-08)
 
 Independent source-only Review accepts RA-34.1 bound oriented seam certificate / no raw-global label grant or denial and RA-34.3 exact A3-oriented cross-rail τ with odd-produced discriminator and F/τ inequality. A4 typed wedge/certificate sheet proof is a hard preflight, D2/D3/D4/D5 organic positives still unproven. R1 OBS-01/02 discharged at Definition only, RP-01 open; stable 63/17/46, debt 1. Rejected R1 482/497, accepted CP2 491/491; selector449 unchanged. Exact successor M6-CP3-CB1-ENTRY-R2 compile-only, then immutable 497 TB and mandatory Review. CB2 held. Full record `Architecture_M6_DEFN_R5_R2_Review_Record.md`.
+
+## M6-DEFN-R5-R4-REV independent review disposition (2026-10-10)
+
+RA-41 was **not frozen**. Static 3×3 source-star re-derivation proves one nonrail candidate face `2 -> 3` at terminal rail vertex 1 and two opposite source germs, but does not prove producer-owned contact/gauge; source-matched A3 is still unconditionally required by frozen RA-40.1. R4-REV-01/02 are architecture STOPs; held Code + Build remains HELD. Exact review record: `Architecture_M6_DEFN_R5_R4_Independent_Review_Record.md`. DIAG's exact 39-row inventory and the active candidate record/plan are retained, **not** folded due current unresolved authority. No additional runtime evidence; CP2 491/491, rejected R3 403/497, ledger 66/17/49 and debt 1 unchanged.
