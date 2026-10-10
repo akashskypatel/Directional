@@ -1,8 +1,8 @@
 ---TURN_STATUS---
-Turn: M6-CP3-R3-ABC-ARCH-REV
-Status: COMPLETE
-Successor: M6-CP3-CB1-ENTRY-R3
-Started at: 2026-10-10T02:41:17Z
-Resumed at:
-Ended at: 2026-10-10T03:18:44Z
+Turn: M6-CP3-CB1-ENTRY-R3
+Status: IN_PROGRESS
+Successor: UNKNOWN
+Started at: 2026-10-08T16:54:08Z
+Resumed at: 2026-10-10T03:55:54Z
+Ended at:
 ---END_TURN_STATUS---
