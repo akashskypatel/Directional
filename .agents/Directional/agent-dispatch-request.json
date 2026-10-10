@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-full-draft-a3-oracle-20261010-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-full-draft-a3-oracle-apply",
-  "file_id": "1nNrNBjBWN6fqDvx1o3nbQeB63mV6Aalo",
-  "patch_sha256": "259410c7ba5ec34b888bac906af3805953bc844d9e764aa6a25bff924a5b784f",
-  "base_sha": "9f7c3bd58011ff692c2a0db847c30a143bbfa3ec",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test: preserve full A4 product authority and fail forged odd rail at A3 factory",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-full-draft-a3-oracle-compile-20261010-a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-full-draft-a3-oracle-compile",
+  "source_sha": "a6b803fb08ccbc99d87a4fa9e1635c451e902c60",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-full-draft-a3-oracle"
 }
