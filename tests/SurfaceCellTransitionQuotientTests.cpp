@@ -3279,6 +3279,7 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
   const directional::geometry::SurfaceHardRailRouteCertificate *witnessRoute = nullptr;
   std::size_t witnessEndpoint = 0U;
   std::optional<directional::authority::QuarterTurn> witnessTau;
+  std::optional<directional::authority::QuarterTurn> witnessCarrierTau;
   for (const auto &relation : a5->owned_relations()) {
     if (relation.id.kind !=
             directional::pipeline::SurfaceOccurrenceRelationKind::HardRail ||
@@ -3300,12 +3301,17 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
         const bool reverse = endpoint.secondAttachment == fromFace &&
                              endpoint.firstAttachment == toFace;
         if (!forward && !reverse) continue;
-        const auto tau = reverse
+        // The carrier chi is A4's independently mutable odd-rail witness,
+        // whereas the A5 endpoint equation consumes the entire A2b germ:
+        // phi(second)^-1 * chi * phi(first).  They need not be equal.
+        const auto carrierTau = reverse
             ? endpoint.terminalCarrier.firstToSecond.inverse()
             : endpoint.terminalCarrier.firstToSecond;
-        if (tau != directional::authority::QuarterTurn::from_integer(1) &&
-            tau != directional::authority::QuarterTurn::from_integer(3))
+        if (carrierTau != directional::authority::QuarterTurn::from_integer(1) &&
+            carrierTau != directional::authority::QuarterTurn::from_integer(3))
           continue;
+        const auto tau = reverse ? endpoint.attachmentTransport().inverse()
+                                 : endpoint.attachmentTransport();
         const auto delta = compose(
             relation.evidence.secondEndpointFaceGauge->localFaceBranchRotation,
             relation.evidence.firstEndpointFaceGauge->localFaceBranchRotation.inverse());
@@ -3314,6 +3320,7 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
         witnessRoute = &certificate;
         witnessEndpoint = endpointIndex;
         witnessTau = tau;
+        witnessCarrierTau = carrierTau;
         break;
       }
       if (witness != nullptr) break;
@@ -3321,7 +3328,8 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
     if (witness != nullptr) break;
   }
   ASSERT_NE(witness, nullptr)
-      << "D2 requires real-produced HardRail with odd oriented A3 tau != regional F difference";
+      << "D2 requires a produced odd carrier whose complete attached A2b "
+         "transport differs from the regional F gauge difference";
   const auto *first = m6cp3_occurrence_by_id(*a5, witness->id.first);
   const auto *second = m6cp3_occurrence_by_id(*a5, witness->id.second);
   ASSERT_NE(first, nullptr);
@@ -3331,7 +3339,8 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
                std::to_string(witness->evidence.firstEndpointFaceGauge->localFaceBranchRotation.value()) +
                " F_b=" +
                std::to_string(witness->evidence.secondEndpointFaceGauge->localFaceBranchRotation.value()) +
-               " tau=" + std::to_string(witnessTau->value()) +
+               " attachedTau=" + std::to_string(witnessTau->value()) +
+               " carrierTau=" + std::to_string(witnessCarrierTau->value()) +
                " R_coord=" +
                std::to_string(witness->evidence.canonicalTransport->rotation.value()) +
                " B_a=" + std::to_string(first->placement.lattice.branchRotation) +
@@ -3345,10 +3354,13 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
   ASSERT_NE(witnessRoute, nullptr);
   const auto &oddCarrier =
       witnessRoute->endpoints[witnessEndpoint].terminalCarrier;
+  ASSERT_TRUE(witnessCarrierTau.has_value());
   ASSERT_TRUE(oddCarrier.firstToSecond ==
                   directional::authority::QuarterTurn::from_integer(1) ||
               oddCarrier.firstToSecond ==
                   directional::authority::QuarterTurn::from_integer(3));
+  EXPECT_TRUE(witnessCarrierTau.value() == oddCarrier.firstToSecond ||
+              witnessCarrierTau.value() == oddCarrier.firstToSecond.inverse());
   PhaseFrontDraft tampered = phase_front_draft(fixture);
   const auto sourceEdge = oddCarrier.edge;
   auto entry = std::find_if(
