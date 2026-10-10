@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-relational-gauge-retry-20261010-1642",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-relational-gauge-retry",
-  "file_id": "1oV6Fzkf3H7hqrb2dfur1vucKQ-SXFgv0",
-  "patch_sha256": "9cd8043f15ab450ed09a6307be6428f439832e957d055236a5d547fb26ba4ca3",
-  "base_sha": "b95de5440fb1c199eec102a7209c7156ff766c6a",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surface-cells): authenticate relative +U gauge against source A3"
+  "request_id": "m6-cp3-r4-a3-relative-gauge-compile-20261010-1634",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-a3-gauge-compile",
+  "source_sha": "1eaea310ffe2f15a9c96ea92d1cdddb99486f232",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-a3-gauge"
 }
