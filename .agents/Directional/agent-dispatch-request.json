@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-d2-a2b-compile-docs-20261010-a",
+  "request_id": "m6-cp3-r4-d2-a2b-compile-docs-corrected-20261010-b",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-d2-a2b-compile-docs",
-  "file_id": "1RgW3aSQJ1HZMej8lrNHUl28T0nu7Y4Lr",
-  "patch_sha256": "28f79ebffbe91615f3c810338368e9f8df9a1a41cee5bf6a5b5a1969a3c4317d",
-  "base_sha": "67423ca714c901c9967f941199227b98604ff988",
+  "mailbox_key": "m6-cp3-r4-d2-a2b-compile-docs-corrected",
+  "file_id": "1jNXLgkSV7H_qNJJqGOVftKayx2t9YZ-D",
+  "patch_sha256": "0fb8d2d3c7828ac10b4f55eb3a86694975281b4ce7986dcf5bffe51c9fbd27db",
+  "base_sha": "213bf96717df185541f2c4ad68b09a18b1fc32fa",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: preserve verified R4 D2 A2b multi-carrier compile and handoff",
+  "commit_message": "docs: preserve R4 D2 A2b compile and corrected handoff",
   "retention_days": 14
 }
