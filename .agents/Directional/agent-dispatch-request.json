@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-a2b-forgery-negative-compile-20261010-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-a2b-forgery-negative-compile",
-  "source_sha": "1da010b6b607aca3f5a2e3078b32f5fb94d4d34b",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-a2b-forgery-negative"
+  "request_id": "m6-cp3-r4-a2b-forgery-negative-docs-20261010-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-a2b-forgery-negative-docs",
+  "file_id": "1jw54tAkS_T8qsLVytk3nmukaUy5NNj3P",
+  "patch_sha256": "119e616c678302acdcee142c285bd5d04c56a2fec9e453e97f2d26d3822e3587",
+  "base_sha": "dbe84adde7125c2e1c1415fd03332e38f6d77b4c",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: preserve verified A2b terminal forgery negative compile receipt",
+  "retention_days": 14
 }
