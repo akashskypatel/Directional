@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-d2-attached-tau-compile-20261010-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-d2-attached-tau-compile",
-  "source_sha": "e3d2a1bcdb6965ec48f11af5add0113c4eae2785",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-d2-attached-tau"
+  "request_id": "m6-cp3-r4-d2-attached-tau-docs-20261010-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-d2-attached-tau-docs",
+  "file_id": "1BcSs-9G3eR5b0CYiNGfnRWV8Tht49fZ4",
+  "patch_sha256": "051b8ae749eb18b8993d4ff6c04891a00b705ab4fdb1bac3853b2a828ba1ef14",
+  "base_sha": "610ee5fc5295ffb2869df149d3ad8b7174716847",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: preserve R4 D2 complete attached tau compile evidence and handoff",
+  "retention_days": 14
 }
