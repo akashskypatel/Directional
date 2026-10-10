@@ -1,5 +1,18 @@
 # M6-CP3-CB1-ENTRY-R4 — Code + Build WIP continuation
 
+## 2026-10-10 15:45Z continuation — exact closed-rail evidence and queued builds
+
+**R4 remains IN_PROGRESS; source mutation is real but not full RA-44 acceptance.** One verified exact-source snapshot at `ef1b48fee2c10ee6b737f3202abb512300905b8d` (run `38063866697`, artifact `11674059263`, ZIP SHA-256 `277ae269465249610b42e40f203e3ebe52693b290b117d1e23b6f6c859768c37`) passed 5,881/5,881 source hashes. Its semantic source was unchanged by intervening mailbox and STATUS commits.
+
+Four-file closed hard-rail provenance patch `68fa789578b8ced43cab5b4378f4fdc87b48f4b421fd854a1a6a204e3e243c78` (base `ef1b48...`, body `0557fcaf1c9f3074d622c6a101b179d61850793ce4555ce5c3b013381725cd01`) passed exact-source `git apply --check` and `git diff --check`, then Drive apply run `38065367593` SUCCESS (artifact `11674827427`, digest `2de3d33c4d33276ed7411695dca3de07a1bedd38db5bf37dae90ab1e99917915`) at source commit `715fe2d664a72596b82312ea418066bb571617bb`. Staged Drive file `16FnwaS4ew1X2r0V3GHGAbE7fNpU5hSTk` owner-permanently deleted. Closed loops now carry an exact source-vertex chain (no fictional global terminals); checked factory verifies source-edge loop, component, edge coverage; positive product reconstruction forwards preserved contact/chain source evidence.
+
+The eight-target GMP/GMPXX compile-only run `38065496600`, exact source `715fe2d...`, started and passed schema/parse/configure, then remained in target compilation as of 16:02Z. The exact-source follow-up patch `638729b5020fe9e512dc6715c08496e67b0678267bac54518a7814735547dcdf` (body `b97b98097ef75b752dc88b032925949b8cbc63998263bdf143969411ce5693c9`, base `715fe2d...`) adds contiguous cyclic closed-route proof to distinguish valid closed routes from missing open endpoints. It is **queued**, not yet accepted/pushed: dispatcher run `38065774180`, request commit `2488cb3889dc0a3c23eb5922e067036367cea5d4`. Drive staging ID `1SbJdmi1h3L_bEG-wAnKX4BPGt9eTSEg2` must stay until a successful verified push, then be owner-deleted. Preserve both downloadable chat patches and Library evidence `/Directional/Evidence/Directional_M6_CP3_CB1_R4_Continuation_20261010_1545Z.md`.
+
+After queued apply: verify exact semantic commit and dispatch *another* eight-target compile-only build. Source A3 absolute+relational gauge authentication, independently produced A2b terminal source-star germ, remaining nonrail sector paths and causal 88 CP2 restoration tests are **unfinished**. No runtime, 497-case TB, selector change, successor promotion, or completion claim is permitted. RA-41 multi-carrier STOP remains unexercised.
+
+---
+
+
 ## 2026-10-10 continuation — exact source and compile evidence verified, R4 remains open
 
 **No new semantic source, test, or benchmark modification in this attempt.** Source snapshot run `38063239022`, artifact `11673439015`, source/event SHA `6b7b1b44732db7328af5965272f8969a110a3c8a`, outer ZIP SHA-256 `c8cfcf8a9a59a577c120bbd91766cc4f0a4b3b22dcdfc447825feace78972c57`, inner archive SHA-256 `0ede06a7e355f043524ed76afc671a4447bf403f9f736cdf19f25248b2eaee99`. The archive source SHA matched and tar digest passed. Comparison from compiled semantic SHA `c7cb5d68b72097f1db0bf1ce54e5379894d77c93` to snapshot SHA showed **no source/test/header changes** (only work-in-progress documentation, dispatcher/STATUS, trigger and mailbox records).
