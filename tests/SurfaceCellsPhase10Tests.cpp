@@ -6251,6 +6251,12 @@ TEST(SurfaceCellAuthorityContractCutover,
   const auto pairs = hard_rail_phase_front_pairs(product);
   ASSERT_GE(pairs.size(), 2U);
   ASSERT_TRUE(product.conformityPlanReceipt().has_value());
+  // First prove that the checked A4 factory accepts the complete, unmodified
+  // produced authority; otherwise the negative can fail for missing A2b/A3
+  // provenance before reaching shared-boundary interval validation.
+  const auto reconstructed =
+      rebuild_phase_front_with_edges(product, product.edges(), fixture);
+  ASSERT_EQ(product.edges().size(), reconstructed.edges().size());
 
   auto missingEdges = product.edges();
   missingEdges[static_cast<std::size_t>(pairs.front().first)]
@@ -6261,7 +6267,10 @@ TEST(SurfaceCellAuthorityContractCutover,
       fixture.atlas ? &*fixture.atlas : nullptr,
       product.isolationSeamTransportCertificates(), product.periodicHolonomies(),
       product.boundedDiskBoundaryPhases(), std::move(missingEdges),
-      product.events(), product.cells(), product.conformityPlanReceipt());
+      product.events(), product.cells(), product.conformityPlanReceipt(),
+      product.hardFeatureEdges(), product.sourceFaceBranchRotations(),
+      product.hardRailFieldTransitions(), product.hardRailRouteCertificates(),
+      product.hardRailTerminalContacts(), product.hardRailClosedChains());
   const auto *missingError =
       std::get_if<directional::geometry::SurfacePhaseFrontProductError>(&missing);
   ASSERT_NE(nullptr, missingError);
@@ -6283,7 +6292,10 @@ TEST(SurfaceCellAuthorityContractCutover,
       fixture.atlas ? &*fixture.atlas : nullptr,
       product.isolationSeamTransportCertificates(), product.periodicHolonomies(),
       product.boundedDiskBoundaryPhases(), std::move(tamperedEdges),
-      product.events(), product.cells(), product.conformityPlanReceipt());
+      product.events(), product.cells(), product.conformityPlanReceipt(),
+      product.hardFeatureEdges(), product.sourceFaceBranchRotations(),
+      product.hardRailFieldTransitions(), product.hardRailRouteCertificates(),
+      product.hardRailTerminalContacts(), product.hardRailClosedChains());
   const auto *tamperedError =
       std::get_if<directional::geometry::SurfacePhaseFrontProductError>(
           &tamperedProduct);
