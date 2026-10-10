@@ -1,0 +1,3 @@
+M6-CP3-CB1-ENTRY-R4 continuation source-snapshot request
+Base authority: 22281aa1fde1235eb3a34d2242858873b8f9973d
+Requested at: 2026-10-10T15:20:00Z
