@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-terminal-a3-d2-compile-20261010-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-terminal-a3-d2-compile",
-  "source_sha": "5a8f79f62a671345da9bb1c2ded320e2d8daccdc",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-terminal-a3-d2"
+  "request_id": "m6-cp3-r4-terminal-a3-d2-docs-20261010-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-terminal-a3-d2-docs",
+  "file_id": "1jFo77OeT_Cb-WNpifBjYMeXkunLgB6Uh",
+  "patch_sha256": "69bcebf863ea10ec9bfd1174e41caa4a35bcb645144100ebfd7a934ed1043dcd",
+  "base_sha": "176f023e16be74ec74badbc8065ae37d06dd38cb",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: preserve verified R4 D2 terminal A2b A3 compile and continuation",
+  "retention_days": 14
 }
