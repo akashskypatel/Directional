@@ -1,3 +1,11 @@
+## CURRENT — R4 A5-reachable hard-rail lattice branch negative (2026-10-10)
+
+- [x] Source `7ac899b2d91e9d8c0925bbb4cc1ccd367872dcc4` adds a produced-baseline, complete-A4-accepted, A5-expected `HardRailTransportMismatch` regression. Apply workflow `38091134482`; Drive staging retired; no tests run.
+- [x] Exact GMP/GMPXX compile GREEN: run `38091230910` (job `114327961939`), semantic source `7ac899b2d91e9d8c0925bbb4cc1ccd367872dcc4`, eight requested targets built, preflight/build exits `0/0`, `DIRECTIONAL_ENABLE_GMP=ON`, both `libgmpxx` and `libgmp` linked, clean source, 28/28 checksums, `runtimeExecution=false`; result artifact `11684470998` (ZIP SHA-256 `98434eea000957664acee32c57cba233642142da0ef40afcc4fb9d663f9e9fc2`) and log artifact `11684296178` (ZIP SHA-256 `5b6abc8f86fd852a002ee48709089a4d0628fe710f487c07ac17395fe9554d89`).
+- [ ] Runtime-verify actual first A5 rejection in a **separately authorized** immutable Test + Benchmark turn; current Code + Build cannot run any executable. R4 remaining 39 endpoint, 34 Phase10, seven DCEL, 88 CP2, multi-carrier/odd-τ and dual-path review unchanged.
+
+---
+
 ## CURRENT — R4 complete draft authority and A3-correct D2 mutation oracle (2026-10-10)
 
 - [x] Exact source `a6b803fb08ccbc99d87a4fa9e1635c451e902c60`: `PhaseFrontDraft` now carries produced `conformityPlanReceipt`, terminal contacts, and closed-rail chains through factory reconstruction; D2 asserts a real reconstructed product and checks that forged odd rail chi fails the immutable A3 check at A4, rather than claiming impossible A5 rejection. Drive apply `38089504108` succeeded. Compile-only; tests not executed.
