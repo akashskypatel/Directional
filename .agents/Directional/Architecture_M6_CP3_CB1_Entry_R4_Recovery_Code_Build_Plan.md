@@ -1,0 +1,22 @@
+# M6-CP3-CB1-ENTRY-R4 — HELD source-authoritative recovery Code + Build plan
+
+**State: HELD / candidate only.** This is a contingent plan, not an authorized turn. It may become the single R4 Code + Build successor only after mandatory independent `M6-DEFN-R5-R4-REV` accepts the RA-41 candidate and explicitly resolves both producer-side authority prerequisites. Refer to `Architecture_M6_DEFN_R5_R4_CP3_Entry_Recovery_Definition_Record.md`; do not implement this plan merely because it exists.
+
+## Gate 0 — source/authority proof (block without it)
+
+- Freeze exact reviewed R3 failure overlay (94 distinct raw identities; 39/34/7/14); CP2 491/491 accepted, R3 403/497 rejected, 88 accepted-prefix RED, debt 1. Freeze future 497 selector and separate 4 supplemental RA-40(C) tests.
+- Independently produce the A2b terminal-contact source-star wedge/germ witness for the singleton (1,4), `front=17,203`, and dependent (1,2), `front=13,131`. If face 2's local contact is absent/ambiguous, repair the pairing at its **source** or STOP; do not rename or substitute face rows.
+- Independently bind A4 face-gauge authority and check A3 dependencies for every published transport, including `sourceFaceBranchRotations`, periodic and isolation records. If genuine independent binding unavailable, STOP for source-domain Review.
+
+## Implementation (only after Gate 0 is reviewed)
+
+1. **Typed first-failure tracing**: propagate producer pre-factory / factory source authority errors with exact first predicate and payload dependency, never collapse all checked-factory failures to `InvalidFinalCellState`. No change to rejection precedence.
+2. **A3-domain correction**: scope mandatory atlas to published, genuinely A3-dependent contents; preserve exact source topology checks unconditionally. Range checking caller-supplied gauge is not authentication. Independently source-attest nonempty gauges; keep χ and φ `transition_value` forward/inverse and balanced-tamper tests. Zero A3-dependent values with certified independent ordinary producer data may use no atlas.
+3. **Front producer correction**: replace trace endpoint face-as-carrier-face identity with producer-owned terminal rail contact on an oriented source-star side germ, A2b path and A3 transition witnesses. Detect ambiguous contact and reject typed. Keep one terminal χ, reciprocal pairing, zero-junction singleton, two explicit non-rail sector φ paths per multi-carrier junction and commuting square. Never create fabricated detours or global-sector BFS.
+4. **Seven isolated synthetic fixture repairs**: replace one-triangle source in direct periodic owner fixture and one FlowRep support fixture with DCEL-valid two-face provenance, genuine A3 field/topology; preserve every original test identity, target oracle and negative mutation, including row permutations. Do not change `DCEL::check_consistency`.
+5. **Causal regression tests (compile only this CB)**: source/permutation and balanced χ/φ tamper, empty-A3 conditional positive, untrusted nonempty gauge negative, typed pre-factory vs factory, singleton/no contact/two contacts negative, multi-carrier nonzero τ and commuting square, dual-triangle DCEL, all seven original negative oracles, all 34 Phase10 restored positives, all 39 carried endpoint cases and other 14 without blanket skip/relaxation. Pre-register real produced odd-τ torus, multi-carrier, collinear ordinary, sheet, and D5 route positive witnesses; zero-count is a hard STOP, not a PASS.
+6. **Compile boundary**: one minimal exact-base patch through approved Drive dispatcher; eight standard GMP/GMPXX targets via `agent-compile-reusable.yml`, clean source, immutable package receipts, `runtimeExecution=false`. No local builds, no Directional binary/test/benchmark execution, no workflow-permission edits, no selector changes, no fallback or recovery.
+
+## Mandatory successor only after clean compile
+
+`M6-CP3-TB1-ENTRY-R4-EXEC`: immutable packaged exact-source artifact; run exactly 497 fresh exact-one tests, 0 skipped, 0 benchmarks, no compile/relink, preserve accepted CP2 491 identities, demand all 88 formerly accepted RED restore and all six CP3-entry obligations non-vacuous; independent `M6-CP3-TB1-ENTRY-R4-REV` decides acceptance. Four RA-40(C) extra cases separately counted diagnostic-only. Never promote on a mechanically green build alone.

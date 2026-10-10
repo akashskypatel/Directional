@@ -1,3 +1,9 @@
+## CURRENT — M6-DEFN-R5-R4 RA-41 candidate Definition (runtime-free)
+
+**Exact next after Definition closeout: independent `M6-DEFN-R5-R4-REV`.** R4's source-exact RA-41 candidate is `Architecture_M6_DEFN_R5_R4_CP3_Entry_Recovery_Definition_Record.md`; one **HELD** contingent Code+Build plan is `Architecture_M6_CP3_CB1_Entry_R4_Recovery_Code_Build_Plan.md`. Do not implement, compile, test or promote before Review. The contract rejects the old trace-endpoint-face=carrier-face assumption and defines producer-owned local terminal contact on source-vertex side germs with A2b/A3 witness; A3 is conditionally required for independently authenticated transport, with explicit nonempty face-gauge provenance, never a fake null-atlas exemption. All 34 new Phase10 first assertions are inventoried with raw R3 hashes (but none falsely attributed to factory); seven synthetic single-triangle DCEL throws need real source faces and original oracles. Critical Review question: source-exact producer contact/gauge lineage must be independently demonstrable; otherwise STOP/return to Definition rather than releasing implementation. Frozen R3 **403/497, 94 RED**, latest accepted CP2 **491/491**, 88 CP2 positives lost, ledger **66/17/49**, debt 1. No runtime occurred in Definition. Snapshot run `38034385455`, artifact `11662879391`, source `5b5e7aa063caf2e68385f037c6f165adc38ca0c3`.
+
+---
+
 ## Resume-critical update — R3-REV ADJUDICATED (accepted); three findings added for R4 (2026-10-10)
 
 **Exact next turn: `M6-DEFN-R5-R4` — runtime-free Definition**, as the reviewed turn authorized. The independent
