@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-a2b-forgery-negative-20261010-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-a2b-forgery-negative-apply",
-  "file_id": "1RF1hWghYWrndXqwqo5DH3TCK9r4WwuHl",
-  "patch_sha256": "8cdf5671d2f72b0eb3b2cfcb66524ac09692826663170207b4305ed30b28656a",
-  "base_sha": "562788f52ae689abba835bf5ce13bbe6ee117d71",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test: add nonvacuous A2b terminal-germ forged path negatives",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-a2b-forgery-negative-compile-20261010-a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-a2b-forgery-negative-compile",
+  "source_sha": "1da010b6b607aca3f5a2e3078b32f5fb94d4d34b",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-a2b-forgery-negative"
 }
