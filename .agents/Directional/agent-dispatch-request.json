@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-d2-attached-tau-witness-20261010-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-d2-attached-tau-apply",
-  "file_id": "1IT09V9Sx0-4ZddFLY0wDusVZ6En0DI9j",
-  "patch_sha256": "057d4586554d1b16c6de130c2e857ef0b2fc007c3b78cdf0a06413af8842c3ed",
-  "base_sha": "8d6dd1fd1242d494af448a70769260e7ff9d093a",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test: attest complete A2b terminal tau in D2 odd-carrier witness",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-d2-attached-tau-compile-20261010-a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-d2-attached-tau-compile",
+  "source_sha": "e3d2a1bcdb6965ec48f11af5add0113c4eae2785",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-d2-attached-tau"
 }
