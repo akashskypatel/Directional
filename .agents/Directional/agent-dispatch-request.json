@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-terminal-germ-docs-rebased-20261010-b",
+  "request_id": "m6-cp3-r4-factory-unique-star-20261010-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-terminal-germ-docs-rebased",
-  "file_id": "1fnznENL3GvPPESgy6usJLEDj52hm3QOF",
-  "patch_sha256": "0b71df5bc62eef9f44a9750f1d6156a41382af5ba5c0d1a927cc6a2a19f4744e",
-  "base_sha": "ebc10b25fd5cdabefb4399a16187583ff0172ab2",
+  "mailbox_key": "m6-cp3-r4-factory-unique-star-apply",
+  "file_id": "1GXr_PjlcogHzjiQAlZX9FqwzGtraxBpY",
+  "patch_sha256": "610b041dfbc07df3c2bf10c1c208928f10e7f9eea0574d787065bd6d6d295e02",
+  "base_sha": "4ba9ce0733f25662ad9b8bcb7c57666c882625fe",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: preserve verified R4 terminal-germ compile evidence",
+  "commit_message": "fix: independently authenticate unique terminal A2b source-star paths",
   "retention_days": 14
 }
