@@ -1,3 +1,36 @@
+## 2026-10-10 — `M6-CP3-TB1-ENTRY-R3-REV-ADJ`: R3-REV adjudicated ACCEPTED; three findings remitted to R4
+
+Runtime-free independent adjudication of `M6-CP3-TB1-ENTRY-R3-REV`. **Review ACCEPTED** as complete and
+accurate; `REJECT R3 / UNPROMOTED` stands; ledger **66 / 17 / 49**, debt 1, stands. No correction to the
+reviewed turn.
+
+**Re-derived rather than accepted.** The 41-rows-to-2-events grouping was challenged and the challenge
+**withdrawn** — the tracker's precedent fixes the unit as **root cause**, not ordinal ("do not call cascades new
+stable events"; "ten A6/D7 rows are not a new stable event"). Ledger arithmetic is coherent: two causes in
+existing categories → events +2, categories +0, recurrences +2. The 47-versus-41 correction is right and
+material (47 was the R2 loss, not the R3 accepted-CP2 RED count; recovery scope widens to **88**). RA-40.1 is
+sound: `make` binds the atlas and fails closed, and `matchesA3` re-derives via `transition_value` at `:8074`,
+`:8147` and `:8232` checking forward and `reverse->transport == expected.inverse()`. The carrier-edge suspicion
+**failed**: `transitionValues.push_back` precedes the `hardFeatureEdges` `continue`
+(`FieldTransportAtlas.cpp:2041-2048`), so RA-34.3 is correctly implemented. R4's D2 **does** cover the carried
+39; the charter is not under-scoped.
+
+**Finding 1.** The singleton case is falsifiable now: by RA-39.6 both endpoint pairs share the one carrier, so
+with `(1,4)` owning `{0,3}` the expected record is `faceEnds=0,0|3,3`; observed is `0,2|0,3`, where face `2` is
+not a carrier face and both fronts touch face `0`. No correct reciprocal singleton pair can produce it, so D2
+becomes a test rather than an investigation.
+
+**Finding 2.** RA-39.1 presumes a front's `from`/`to` faces **are** the rail's side faces, but they are
+`SurfaceTracePoint` curve endpoints (`SurfaceCellTracing.h:1514-1515`) and no frozen definition relates them to
+rail sides — the same class of error as superseded RA-36.1, identity frozen where only connectivity is
+warranted. Remitted, not amended, consistent with RA-36.1's handling; R4 must resolve whether RA-39.1 is right
+(front construction at fault) or too strict (attachment is side membership) and freeze the contract.
+
+**Finding 3.** RA-40's blanket atlas mandate is RP-01 authority-domain conflation where a product carries no
+A3-derived value; scoping preserves the whole anti-tamper property and creates no unauthenticated-but-accepted
+mode. Conditional pre-commitment only, after typed stage/error propagation; null-atlas acceptance for products
+carrying rails or route certificates stays prohibited; `sourceFaceBranchRotations` must not be silently exempted.
+
 ## CURRENT — 2026-10-10 independent Review `M6-CP3-TB1-ENTRY-R3-REV`: R3 REJECTED
 
 **Review verdict: R3 candidate is REJECTED / UNPROMOTED, but artifact-only execution is mechanically valid.** Frozen 497 fresh processes: **403 PASS / 94 RED** (30:15/15, 12:10/2, 449:378/71, 6:0/6); 1019/1019 result checksums and 497/497 individual log hashes independently verified; no test skipped or rebuilt. Exact source `d82e34427adc6fe09ad216a4363fea23dd0ae0b8`; runtime `38030196207`, artifact `11661044443`, SHA256 `555b973a69810f95a2f170fdea30aac11c0805ba7e25bc9914577bdd1bb26ac5`. **53/53 historical R2 RED remain RED, zero recovered; 41 additional accepted CP2 tests turn RED, making 88/491 accepted CP2 identities RED in R3** (47 R2-carried + 41 new). The prior 94-row EXEC report incorrectly tagged these 41 as `CP2_ACCEPTED=false`; its historical file is preserved, with a distinct independent 94-row corrected overlay. New accepted-loss families: 34 A4 publication/authority ingress failures (`R3-REV-NEW-01`) and seven synthetic mesh DCEL fixture exceptions (`R3-REV-NEW-02`); first rejected predicates observed, exact algorithmic roots not yet proven. Stable events now **66 / 17 / 49** (two grouped new recurrences), debt **1**. CP2 **491/491** remains latest reviewed accepted candidate; R3 may not be promoted. The 39 carried R2 rail endpoint errors are not counted a second time. Four RA-40(C) supplemental tests remain unexecuted and excluded from 497.

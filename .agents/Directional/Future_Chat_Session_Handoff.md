@@ -1,3 +1,76 @@
+## Resume-critical update — R3-REV ADJUDICATED (accepted); three findings added for R4 (2026-10-10)
+
+**Exact next turn: `M6-DEFN-R5-R4` — runtime-free Definition**, as the reviewed turn authorized. The independent
+review `M6-CP3-TB1-ENTRY-R3-REV` is **ACCEPTED**: complete and accurate, verdict `REJECT R3 / UNPROMOTED`
+stands, ledger **66 / 17 / 49**, debt 1, stands. No correction to it. Basis:
+`Architecture_M6_CP3_TB1_Entry_R3_REV_Adjudication.md`.
+
+### Confirmed by re-derivation (do not re-litigate)
+
+- **41 rows → 2 stable events is correct.** This tracker's precedent fixes the unit as **root cause**, not
+  ordinal: "do not call cascades new stable events"; "ten A6/D7 rows are not a new stable event".
+- **66 / 17 / 49 is coherent** — two causes in existing categories: events +2, categories +0, recurrences +2.
+- **47 ≠ 41.** 47 was the R2 loss, not the R3 accepted-CP2 RED count. Recovery scope is **88** CP2 cases.
+- **RA-40.1 is sound.** `make` binds the atlas and fails closed; `matchesA3` re-derives via `transition_value`
+  at `:8074`, `:8147` and `:8232`, checking forward and `reverse->transport == expected.inverse()`.
+- **Carriers do carry τ.** `transitionValues.push_back` precedes the `hardFeatureEdges` `continue`
+  (`src/authority/FieldTransportAtlas.cpp:2041-2048`). RA-34.3 is correctly implemented; this suspicion is
+  closed.
+- **R4's D2 already covers the carried 39.** The charter is not under-scoped.
+
+### Finding 1 — D2 has a falsifier available *now*
+
+By **RA-39.6** a one-carrier route puts both endpoint pairs on the same carrier, so with `(1,4)` owning `{0,3}`
+**both** must equal `{0,3}`; each front lies on one side, so the expected record is:
+
+```text
+expected (routeLength=1, carrier (1,4)) : faceEnds = 0,0 | 3,3
+observed                                : faceEnds = 0,2 | 0,3
+```
+
+Face `2` is not a carrier face, and both fronts touch face `0`, so they are not separated onto opposite sides.
+**No correct reciprocal singleton pair can produce `0,2|0,3`.** If the front pairing is sound it must explain
+this record; if it cannot, the defect is in front construction or side assignment, **upstream of RA-39**.
+
+### Finding 2 — RA-39.1 rests on a premise Review never verified
+
+RA-39.1 requires `{from_j, to_j} == {C_j.firstFace, C_j.secondFace}`, presuming a front's `from`/`to` faces
+**are** the rail's side faces. They are `SurfaceTracePoint` **curve endpoints**
+(`include/directional/geometry/SurfaceCellTracing.h:1514-1515`), and **no frozen definition — RA-37a, RA-38,
+RA-39 or RA-40 — relates them to rail sides.** Two readings are live and the evidence does not separate them:
+
+- **(a)** RA-39.1 right; a front paired across a rail should be clipped to its side-local face, and endpoints
+  wandering to face `2` are the defect.
+- **(b)** RA-39.1 too strict; endpoints may lie in any face on the correct **side**, so local attachment must be
+  **side membership** (connectivity without crossing the rail), not face identity.
+
+Same class as superseded **RA-36.1**: an identity frozen where only connectivity is warranted. (For a singleton
+the sides are not globally well-defined — one interior edge cannot separate a surface — which is why identity
+was chosen; that reasoning is not wrong, but it was never checked against `SurfaceTracePoint` semantics.)
+**Remitted, not amended:** as with RA-36.1, a frozen rule is not amended outside a chartered Definition turn.
+**R4 must resolve (a) versus (b) explicitly and freeze the front-endpoint-to-side contract** — not merely trace
+the instance.
+
+### Finding 3 — RA-40's blanket mandate is RP-01 conflation (conditional pre-commitment)
+
+The review correctly observed that `make` rejects a null atlas "even if no actual nonrail/carrier witness needs
+checking," and correctly declined to downgrade RA-40. A product with **zero** `hardRailFieldTransitions` and
+**zero** `hardRailRouteCertificates` has nothing A3-derived to authenticate; demanding a full source-bound atlas
+couples an unrelated stage to A3 and is what forced seven tests to fabricate real `TriMesh` A3 fixtures.
+
+Scoping the mandate to products carrying A3-derived values preserves the **entire** anti-tamper property and
+creates **no** unauthenticated-but-accepted mode. **Apply only after** typed stage/error propagation identifies
+which of the 34 actually reach the factory check — the review's own precondition. Null-atlas acceptance for a
+product that **does** carry rails or route certificates stays prohibited. `sourceFaceBranchRotations` is
+caller-supplied and unauthenticated and must **not** be silently exempted by any scoping rule.
+
+### Standing
+
+No runtime result is added by this adjudication. D1/D2/D3/D5, A6/A7, odd τ, the two-carrier positive and the 88
+CP2 restorations remain unproven; all six CP3 entry rows RED; the four RA-40(C) supplementals remain outside 497,
+unexecuted, diagnostic-only. Do not silence DCEL checks, skip tests, substitute `face2→face3` by fiat, add
+fabricated fan detours, or claim contract correctness on a RED exception.
+
 ## CURRENT — 2026-10-10 independent Review `M6-CP3-TB1-ENTRY-R3-REV`: R3 REJECTED
 
 **Review verdict: R3 candidate is REJECTED / UNPROMOTED, but artifact-only execution is mechanically valid.** Frozen 497 fresh processes: **403 PASS / 94 RED** (30:15/15, 12:10/2, 449:378/71, 6:0/6); 1019/1019 result checksums and 497/497 individual log hashes independently verified; no test skipped or rebuilt. Exact source `d82e34427adc6fe09ad216a4363fea23dd0ae0b8`; runtime `38030196207`, artifact `11661044443`, SHA256 `555b973a69810f95a2f170fdea30aac11c0805ba7e25bc9914577bdd1bb26ac5`. **53/53 historical R2 RED remain RED, zero recovered; 41 additional accepted CP2 tests turn RED, making 88/491 accepted CP2 identities RED in R3** (47 R2-carried + 41 new). The prior 94-row EXEC report incorrectly tagged these 41 as `CP2_ACCEPTED=false`; its historical file is preserved, with a distinct independent 94-row corrected overlay. New accepted-loss families: 34 A4 publication/authority ingress failures (`R3-REV-NEW-01`) and seven synthetic mesh DCEL fixture exceptions (`R3-REV-NEW-02`); first rejected predicates observed, exact algorithmic roots not yet proven. Stable events now **66 / 17 / 49** (two grouped new recurrences), debt **1**. CP2 **491/491** remains latest reviewed accepted candidate; R3 may not be promoted. The 39 carried R2 rail endpoint errors are not counted a second time. Four RA-40(C) supplemental tests remain unexecuted and excluded from 497.

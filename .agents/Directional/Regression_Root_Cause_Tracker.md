@@ -6,6 +6,54 @@
 
 ---
 
+## `M6-CP3-TB1-ENTRY-R3-REV-ADJ` — independent adjudication: review ACCEPTED, three findings remitted to R4
+
+**Status.** Review **ACCEPTED** as complete and accurate. `REJECT R3 / UNPROMOTED` stands; ledger
+**66 / 17 / 49**, debt 1, stands. No correction to the reviewed turn. Basis:
+`Architecture_M6_CP3_TB1_Entry_R3_REV_Adjudication.md`.
+
+**Re-derived, not accepted.** The 41-rows-to-2-events grouping was challenged and the challenge **withdrawn**:
+this tracker's own precedent fixes the unit as the **root cause**, not the ordinal — "do not call cascades new
+stable events" (line 20), "ten A6/D7 rows are not a new stable event" (line 43). Ledger arithmetic is coherent
+(two causes in existing categories → events +2, categories +0, recurrences +2, matching
+`[[M5-CP3-TB1-R1-REV]]`). The 47-versus-41 correction is right and material: 47 was the R2 loss, not the R3
+accepted-CP2 RED count, and recovery scope correctly widens to **88**.
+
+**RA-40.1 verified sound.** `make` binds the atlas, fails closed, and `matchesA3` re-derives via
+`transition_value` at all three sites (`:8074` rail transitions, `:8147` terminal carrier, `:8232` radial
+witnesses), checking forward and `reverse->transport == expected.inverse()`. The carrier-edge suspicion was
+checked and **failed**: `transitionValues.push_back` precedes the `hardFeatureEdges` `continue`
+(`src/authority/FieldTransportAtlas.cpp:2041-2048`), so `[[RA-34.3]]` is correctly implemented and carriers
+carry retained τ.
+
+**Finding 1 — the singleton signature is a falsifier available now.** By RA-39.6 a one-carrier route puts both
+endpoint pairs on the same carrier, so with `(1,4)` owning `{0,3}` **both** pairs must equal `{0,3}`; each front
+lies on one side, so the expected record is `faceEnds=0,0|3,3`. Observed is `0,2|0,3` — face `2` is not a carrier
+face and both fronts touch face `0`. **No correct reciprocal singleton pair can produce this.** D2 becomes a
+test, not an investigation.
+
+**Finding 2 — RA-39.1 rests on an unverified premise (Review's own error).** RA-39.1 requires
+`{from_j,to_j} == {C_j.firstFace,C_j.secondFace}`, presuming a front's `from`/`to` faces **are** the rail's side
+faces. They are `SurfaceTracePoint` curve endpoints
+(`include/directional/geometry/SurfaceCellTracing.h:1514-1515`), and **no frozen definition relates them to rail
+sides.** Two readings remain live: (a) RA-39.1 right, front construction at fault; (b) RA-39.1 too strict, and
+local attachment must be **side membership** rather than face identity. Same class as superseded
+`[[RA-36.1]]` — identity frozen where only connectivity is warranted. **Remitted, not amended**: consistent with
+RA-36.1's handling, a frozen rule is not amended outside a chartered Definition turn. `M6-DEFN-R5-R4` must
+resolve (a) versus (b) and freeze the front-endpoint-to-side contract.
+
+**Finding 3 — RA-40's blanket mandate is `[[RP-01]]` conflation.** The review correctly observed `make` rejects a
+null atlas "even if no actual nonrail/carrier witness needs checking," and correctly declined to downgrade.
+A product with zero `hardRailFieldTransitions` and zero `hardRailRouteCertificates` has nothing A3-derived to
+authenticate; requiring a full atlas couples an unrelated stage to A3 and is what forced seven tests to fabricate
+real `TriMesh` A3 fixtures. Scoping preserves the whole anti-tamper property and creates no
+unauthenticated-but-accepted mode. **Conditional pre-commitment only** — applicable after typed stage/error
+propagation shows which of the 34 reach the factory check. Null-atlas acceptance for a product that *does* carry
+rails or route certificates stays prohibited. `sourceFaceBranchRotations` is caller-supplied and unauthenticated
+and must not be silently exempted.
+
+**Checked and dismissed.** The R4 plan's D2 **does** cover the carried 39; the charter is not under-scoped.
+
 ## CURRENT — `M6-CP3-TB1-ENTRY-R3-EXEC` frozen TB evidence (2026-10-10 06:20Z)
 
 **EXEC mechanically COMPLETE; candidate REJECTED / UNPROMOTED.** Immutable run `38030196207`, result artifact `11661044443` provider ZIP SHA-256 `555b973a69810f95a2f170fdea30aac11c0805ba7e25bc9914577bdd1bb26ac5`, self-manifest **1019/1019**, exact source `d82e34427adc6fe09ad216a4363fea23dd0ae0b8`, 497 fresh exact-one processes, zero skips/configure/compile/relink/benchmarks/mutations. **403 PASS / 94 RED** = focused30 15/15, focused12 10/2, selector449 378/71, CP3entry6 0/6. All **53** historical R2 REDs remain RED, all **47** formerly CP2-accepted remain RED; **41 newly RED** identity-exact vs R2. Review-only provisional groups (39 A4 route cert, 22 A4 not-produced, 14 InvalidFinalCellState, 7 DCEL exceptions, 5 odd-τ witness absent, 4 A5 occurrence-mismatch, 2 A5 seam equivalent, 1 other). Complete 94-row raw-hashed first-failure inventory in `.agents/Directional/Architecture_M6_CP3_TB1_Entry_R3_Red_Classification.tsv`; historical 53 comparison in `.agents/Directional/Architecture_M6_CP3_TB1_Entry_R3_R2_Identity_Comparison.tsv`. Full report `.agents/Directional/Architecture_M6_CP3_TB1_Entry_R3_Execution_Record.md`. **Mandatory independent successor `M6-CP3-TB1-ENTRY-R3-REV`; no unreviewed fix, no promotion, no replay.** Four RA-40 supplemental tests remain separate/unrun. Stable ledger 64 events /17 categories /47 recurrences, debt 1, unchanged pending Review.
