@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-phase10-two-atlas-compile-20261010-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-phase10-two-atlas-compile",
-  "source_sha": "f9db8c009835435aa1b64f07058244e58518b50b",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-phase10-two-atlas"
+  "request_id": "m6-cp3-r4-phase10-two-atlas-docs-20261010-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-phase10-two-atlas-docs",
+  "file_id": "1EskNoAI2U4-VRXw-EY2LOxOupAMgEgGA",
+  "patch_sha256": "86fd1e301f35ed534bdb792f1bc6869feabe93770dd042b7d7a6a4cdd1a3bb5a",
+  "base_sha": "a4a2f57ef0d3bcf089d665fe066555a8d95761e8",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: preserve Phase10 A2 A3 fixture migration compile evidence and handoff",
+  "retention_days": 14
 }
