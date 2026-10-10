@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-phase10-two-atlas-apply-20261010-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-phase10-two-atlas-apply",
-  "file_id": "1Tl2zNm4p3qT4X7YJK-WpyBKTdkLjkRCN",
-  "patch_sha256": "c637fdd2793aa864969cdaa09b658480072157466dfe978a2d5fb87246c446d1",
-  "base_sha": "71dadfe0ddb7cd7bcaf5fd5bc2da3f5c0a7350a0",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test: migrate two accepted Phase10 fixtures to original A2/A3 atlas",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-phase10-two-atlas-compile-20261010-a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-phase10-two-atlas-compile",
+  "source_sha": "f9db8c009835435aa1b64f07058244e58518b50b",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-phase10-two-atlas"
 }
