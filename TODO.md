@@ -1,3 +1,11 @@
+## CURRENT — R4 D2 attached-tau relational witness correction (2026-10-10)
+
+- [x] Source `e3d2a1bcdb6965ec48f11af5add0113c4eae2785` corrects D2 odd-carrier witness to use full A2b source-star attachment transport in the A5 endpoint equation while keeping odd carrier chi as a separate mutation guard. Source patch applied in run `38088012591`; Drive staging retired; tests not executed.
+- [x] Compile-only GREEN: `38088126976` job `114318883131`, exact `e3d2a1bcdb6965ec48f11af5add0113c4eae2785`, 8/8 GMP/GMPXX, exits 0, 28/28 manifest, clean source, `runtimeExecution=false`, result artifact `11683325306` ZIP SHA256 `0486bc6e5780ccced5d5dd30a74d83248fbf465ecf2ee34157bf2def0c93a2b8`, log `11683815002` ZIP SHA256 `cbdbf250a2539f473d310c6e5ab0940e7b330d8c8f35c5ca5e7fe2b7352301e4`.
+- [ ] R4 remains open: prove genuine odd-tau/multi-carrier transport in runtime and restore 39 endpoint, 34 Phase10, seven DCEL, 88 CP2 regressions; obtain independent design decision on allegedly dual-admissible paths in a cut two-manifold vertex link. Do not run frozen 497 in Code + Build.
+
+---
+
 ## CURRENT — R4 D2 terminal A2b/A3 typed row-permutation attestation (2026-10-10)
 
 - [x] Compile-only D2 regression extension applied at source `5a8f79f62a671345da9bb1c2ded320e2d8daccdc`, Drive apply run `38086310642`. Checks non-hard source-vertex A2b path steps bidirectionally against the independent A3 atlas and compares normalized typed step multisets across face-row permutations. Requires a produced nonempty step. No runtime tests.
