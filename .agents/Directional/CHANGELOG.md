@@ -1,3 +1,7 @@
+## 2026-10-10 — M6-DEFN-R5-R4-DIAG: static carrier diagnostic audit
+
+Corrected the R4-next hypothesis that `front=13,131;edge[0]=1,2:faces=0,3` necessarily mixes carrier identity and face incidence. In five component-aggregation cases `(1,2)` is **local** identity for original hard rail `(1,4)`. 38 explicit R3 carried-family carrier records independently match two source-face incidences (21 original `front=17,203`, 12 original `front=13,131`, five compacted `front=13,131`); the 39th has no printed carrier. Actual `faceEnds=0,2|0,3` failure remains unresolved. Audit and 39-row TSV under `Architecture_M6_DEFN_R5_R4_DIAG_*`. RA-41 unfrozen; Review next; no runtime, compilation, production semantics or test changes. CP2/R3 frozen evidence and ledger unchanged.
+
 ## 2026-10-10 — `M6-DEFN-R5-R4-NEXT`: RA-41's cited carrier incidence is impossible in the reference fixture
 
 Next-steps determination. R4 accepted as strong — it resolved all three remitted findings, and its **boundary

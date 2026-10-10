@@ -1,3 +1,11 @@
+## CURRENT — M6-DEFN-R5-R4-DIAG exact diagnostic-fidelity resolution (runtime-free; 2026-10-10)
+
+**The preceding "carrier incidence impossible" hypothesis is superseded.** The 39-row R3 carried A4 family has 38 carrier-bearing diagnostics: **21** `front=17,203;edge[0]=1,4:faces=0,3` (original 3×3 source), **12** `front=13,131;edge[0]=1,4:faces=0,3` (uncompacted 3×3), **5** `front=13,131;edge[0]=1,2:faces=0,3` (**component-local** numbering). The latter local `(1,2)` is the first-encounter `MeshComponents.cpp` remap of original `(1,4)`, not original boundary `(1,2)`. All 38 observed carrier records have two actual incident faces; the 39th (selector 150) prints no carrier, so it has no asserted observed incidence. A one-face boundary hard feature without published cross-rail transition remains legal; an emitted two-face rail transition requires exactly two incident faces. Diagnostic `edge[i]` and `faces` are derived from a matching source-topology carrier, after source-edge/A3 checks, before route-certificate acceptance; no carrier/record cross-contamination was established. Trace-endpoint `faceEnds=0,2|0,3` still violates the current strict carrier-face requirement; the real producer contact/wedge proof remains outstanding.
+
+**Audit authority:** `Architecture_M6_DEFN_R5_R4_DIAG_Diagnostic_Fidelity_Audit.md`, exact 39-row `Architecture_M6_DEFN_R5_R4_DIAG_Failure_Carrier_Inventory.tsv`, frozen source `f1a893fae1a9a551c74046f60ec3f4fbbba4ee3f` from source snapshot run `38038737771` artifact `11663934711`; checksums verified. Runtime, compile, tests and producer mutations: none. **RA-41.1/.2 remain unfrozen; held R4 Code+Build remains HELD. Next only independent `M6-DEFN-R5-R4-REV`.** Accepted CP2 491/491, rejected R3 403/497, ledger 66/17/49 debt 1 unchanged. Prior next-step hypothesis below is retained as historical context, not as current instruction.
+
+---
+
 ## Next steps determination — verify the diagnostic BEFORE freezing RA-41 (2026-10-10)
 
 **R4 is complete and strong.** It credited and resolved all three remitted findings, and its **boundary germ**
