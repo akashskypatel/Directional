@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-relational-gauge-apply-20261010-1634",
+  "request_id": "m6-cp3-r4-relational-gauge-retry-20261010-1642",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-relational-gauge-apply",
-  "file_id": "1ymSAI_sA5MB903wS854VJemryJZW6SMF",
-  "patch_sha256": "12901bbe7309307a3814cde7a5c760c0cf40a6dbd362490888b5f2583eb850e6",
+  "mailbox_key": "m6-cp3-r4-relational-gauge-retry",
+  "file_id": "1oV6Fzkf3H7hqrb2dfur1vucKQ-SXFgv0",
+  "patch_sha256": "9cd8043f15ab450ed09a6307be6428f439832e957d055236a5d547fb26ba4ca3",
   "base_sha": "b95de5440fb1c199eec102a7209c7156ff766c6a",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
   "commit_message": "fix(surface-cells): authenticate relative +U gauge against source A3"
