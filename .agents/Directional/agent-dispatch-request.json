@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-a2b-compile-todo-checkbox-20261010-a",
+  "request_id": "m6-cp3-r4-multicarrier-a2b-d2-test-20261010-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-a2b-compile-todo-checkbox",
-  "file_id": "16FcfiB1rEII4mvHQaUpTFYX8iT3cIixx",
-  "patch_sha256": "146f37fb52d05e7e8bb714f2d4d95e283dfc39f10edfe7af866e5ae09cbc784e",
-  "base_sha": "5b890562319ec2d05edd72b557e7b7daf5c07285",
+  "mailbox_key": "m6-cp3-r4-multicarrier-a2b-d2-apply",
+  "file_id": "1Q8-6hU9wgLDW8Dp1FVrykAmoHdJMB_mN",
+  "patch_sha256": "fd87e92473d10558524950fb7372d2bc1f44ac28d3bc4a361a9d7a18bb755f5c",
+  "base_sha": "bda24d28565639add1b80fac81269756f030b5e9",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: mark verified R4 eight-target compile checklist completed",
+  "commit_message": "test: retain A2b endpoint germ and complete source authority in D2 multi-carrier oracle",
   "retention_days": 14
 }
