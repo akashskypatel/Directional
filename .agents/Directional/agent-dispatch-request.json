@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-typed-rail-20261010-1841",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-typed-rail-apply",
-  "file_id": "1JMPW_TnvlDCioI3V9_GQXeIIkutyKR9G",
-  "patch_sha256": "ad811b02bf55daa031cd91fc22534b99b48c96a04dc8f4e264698f770b3a1e4b",
-  "base_sha": "7230d9fb486a6f2b6a6e651bfba8ae35e294661c",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "M6 CP3 R4: check typed rail source incidence before front tracing",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-typed-rail-compile-20261010-1843",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-typed-rail-compile",
+  "source_sha": "27a324c4f25c2f75d63b1f96d988cb3e4ad3474c",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-typed-rail"
 }
