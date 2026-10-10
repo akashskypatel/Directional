@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-a5-lattice-negative-docs-20261010-a",
+  "request_id": "m6-cp3-r4-phase10-two-atlas-apply-20261010-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-a5-lattice-negative-docs",
-  "file_id": "1ouUav2MEmxZDu6nt0ZA75B5plcawEG6W",
-  "patch_sha256": "62cf2f721f132f4f8237be1136788971f9442431113ddb6cb24c87c83514315f",
-  "base_sha": "3fb376186dbf2199a4cc591d12e0b5a13b005048",
+  "mailbox_key": "m6-cp3-r4-phase10-two-atlas-apply",
+  "file_id": "1Tl2zNm4p3qT4X7YJK-WpyBKTdkLjkRCN",
+  "patch_sha256": "c637fdd2793aa864969cdaa09b658480072157466dfe978a2d5fb87246c446d1",
+  "base_sha": "71dadfe0ddb7cd7bcaf5fd5bc2da3f5c0a7350a0",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: preserve R4 A5 lattice negative GMP compile receipt and handoff",
+  "commit_message": "test: migrate two accepted Phase10 fixtures to original A2/A3 atlas",
   "retention_days": 14
 }
