@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-defn-r5-r4-rev-source-review-r4-20261010",
+  "request_id": "m6-cp3-cb1-entry-r4-factory-error-wip-20261010",
   "operation": "drive_apply",
-  "mailbox_key": "m6-defn-r5-r4-rev-source-review-apply-r4",
-  "file_id": "1FkRDb2QpfgYqaBGRzJCFo5T0gZyFtcfg",
-  "patch_sha256": "553225daec8138d749b1bb044893842014de3cc464d3755c8cd6a13aa766bbee",
-  "base_sha": "0bc8080366757a2285a8265599255475ef8525b2",
+  "mailbox_key": "m6-cp3-r4-factory-error-wip-apply",
+  "file_id": "16MbxHWpjMz0KaIHj9iFN36ToHu-TiPBZ",
+  "patch_sha256": "dabefa4f4fd009dc7ca74fe9e6c4018709f116ddd809a33ab8d384d65c50b38e",
+  "base_sha": "cfe453afa90993ffba7c7f6ca79946073f1cc9b4",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): correct RA-42 source authority review and hold R4",
+  "commit_message": "fix(surface-cells): retain typed factory rejection provenance",
   "retention_days": 14
 }
