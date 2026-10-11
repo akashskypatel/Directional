@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-closed-provenance-apply-20261011-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-closed-provenance-apply",
-  "file_id": "13uf8VhM84Zmb8UIg159E5uExDXee3_AV",
-  "patch_sha256": "5812823abb2e99772773cc7ea8392efa738f6d013814be5f467d96fd2574bdc3",
-  "base_sha": "3c4136f79de5c986a210a91de0bc359a74779879",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix: fail closed on open rail absent terminal provenance",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-closed-provenance-compile-20261011-a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-closed-provenance-compile",
+  "source_sha": "d8698996f3c3206830bc2aedeae06d7019d523a3",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-closed-provenance"
 }
