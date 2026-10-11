@@ -1,3 +1,10 @@
+## CURRENT — R4 carried 39 endpoint static grouping (2026-10-11)
+
+- [x] Crosswalked all 39 frozen A4 route-certificate RED rows: 31 share the internal-midline hard-carrier endpoint predicate (17 constant fixture, 12 fixed-plan variants, two odd χ); eight have distinct observed first failures. Independently mapped the 3×3 source-star spokes; no extrapolated runtime evidence. Exact record: `.agents/Directional/Architecture_M6_CP3_R4_Carried_39_Endpoint_Fingerprint_Source_Star_Triage_20261011.md`.
+- [ ] Determine authentic traced terminal corner/contact vs source-star paths and resolve real first predicate without weakening A2b/A3. No 39 endpoint, 34 Phase10, seven DCEL, 88 CP2, six CP3 or multi-carrier/odd-τ PASS claimed. Dual-path Review pending; no TB497.
+
+---
+
 ## CURRENT — R4 terminal dual-path source-topology Review gate (2026-10-11)
 
 - [x] Verified exact source snapshot `5a7288c254f2b6d96320a5f645d3dcfb4bc4254b`, workflow `38139725760`, source archive SHA/6,164 manifest entries. Static graph argument: an accepted two-manifold terminal face-star is a link path/cycle, and removing the incident hard-carrier spoke leaves at most one simple non-hard A3 path to its carrier face. Full bounded proof and precise independent Review question: `.agents/Directional/Architecture_M6_CP3_R4_Terminal_A3_Uniqueness_Design_Review_Request_20261011.md`. **Not** a revised normative definition or runtime evidence.

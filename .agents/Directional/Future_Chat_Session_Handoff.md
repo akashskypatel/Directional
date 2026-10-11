@@ -1,3 +1,7 @@
+**R4 carried endpoint triage (static, 2026-10-11):** Frozen 39 route-certificate REDs split into 31 common hard-rail terminal fingerprints (17+12+2) and eight distinct first symptoms. The accepted 3×3 source-star topology supports genuine non-hard A3 terminal paths, but traced endpoint exact corners remain unverified. No runtime PASS credited; see `.agents/Directional/Architecture_M6_CP3_R4_Carried_39_Endpoint_Fingerprint_Source_Star_Triage_20261011.md`. R4 remains `IN_PROGRESS`, successor `UNKNOWN`; no TB497.
+
+---
+
 ## CURRENT — R4 exact source-star dual-path independent Review question (2026-10-11)
 
 Verified source snapshot `38139725760` (`5a7288c254f2b6d96320a5f645d3dcfb4bc4254b`, 6,164/6,164 checks). Static source/RA-37a topology argument shows two distinct simple non-hard A3 terminal paths to a genuine hard-carrier face cannot coexist on an accepted two-manifold source vertex link after its carrier spoke is removed. Review request `.agents/Directional/Architecture_M6_CP3_R4_Terminal_A3_Uniqueness_Design_Review_Request_20261011.md` seeks an independent admissible counterexample or a **formal** narrowing of only that impossible negative witness. This does not weaken the `pathCount != 1` fail-closed guard, alter production/test source or runtime evidence, resolve all other R4 work, or authorize a frozen 497 Test + Benchmark. R4 `IN_PROGRESS`, successor `UNKNOWN`.
