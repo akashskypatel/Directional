@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-two-region-negatives-apply-20261011-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-two-region-negatives-apply",
-  "file_id": "1iq18qkHEN_EdXkrlRLKmeqEvxkaHLoV2",
-  "patch_sha256": "79a6c5e63e45cc952685dd8ea89d26456e3159f0ec5cb510ae3404b0d55af86c",
-  "base_sha": "a405877cb8baf290df7828535bd7da19bca626bb",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test: preserve complete A4 authority in cell and edge region negatives",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-two-region-negatives-compile-20261011-a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-two-region-negatives-compile",
+  "source_sha": "e200af8b0e2984ae6a452df9fd8520016043cc7d",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-two-region-negatives"
 }
