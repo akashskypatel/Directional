@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-periodic-crossing-a3-compile-20261011-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-periodic-crossing-a3-compile",
-  "source_sha": "e0cc0415b447c045443e3d498c6d6f50769b29e8",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-periodic-a3"
+  "request_id": "m6-cp3-r4-periodic-crossing-a3-docs-20261011-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-periodic-crossing-a3-docs",
+  "file_id": "1xx4pZ-yHz-Esa84IRobkE_E1mfmGt26t",
+  "patch_sha256": "39db63fe70bb095983236cd9b35b15beb1bfb2c366158a3066b878bea8a6e9af",
+  "base_sha": "5c5f6ca3ee454074a74c4b7ebed814dcb2dc2852",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: preserve periodic A3 negative compile evidence and R4 handoff",
+  "retention_days": 14
 }
