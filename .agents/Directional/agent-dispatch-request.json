@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-phase10-interval-fullauthority-compile-20261010-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-phase10-interval-fullauthority-compile",
-  "source_sha": "f7be55e01c525ef4ae7c8db0039956246d8f04cc",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-phase10-interval-fullauthority"
+  "request_id": "m6-cp3-r4-phase10-interval-fullauthority-docs-20261011-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-phase10-interval-fullauthority-docs",
+  "file_id": "10boni5f-w9a0S2ZuKf_pHQ8KJvSWdr6r",
+  "patch_sha256": "8a02c2f517574f66a0b1bb4d3c954cff1d5749432be794a84e59042142a0f0b7",
+  "base_sha": "68be0908d14506b62ad62d6a9ab0c651006428f0",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: preserve R4 shared-boundary A4 negative and exact GMP compile receipt",
+  "retention_days": 14
 }
