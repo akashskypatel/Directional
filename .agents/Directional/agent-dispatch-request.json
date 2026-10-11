@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-terminal-contacts-neg-20261011-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-terminal-contacts-neg-apply",
-  "file_id": "1XHVDe3GWGppTRn3Sn6rDG5JrPcsdSNhl",
-  "patch_sha256": "69186008aa7bd071ee415dc2e40faf660fe058d17b3915f8b84c72ac820287e2",
-  "base_sha": "278b900e30849d1c59b02ad170880a6d3bdf7c6c",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test: reject missing or foreign A2b terminal contact in checked A4 factory",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-contact-absence-compile-20261011-a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-contact-absence-compile",
+  "source_sha": "48dacf19fecbc36b1f8d58a90ca9763e7dd9cbfe",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-contact-absence"
 }
