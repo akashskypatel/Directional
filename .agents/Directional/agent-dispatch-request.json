@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-contact-absence-compile-20261011-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-contact-absence-compile",
-  "source_sha": "48dacf19fecbc36b1f8d58a90ca9763e7dd9cbfe",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-contact-absence"
+  "request_id": "m6-cp3-r4-contact-type-fix-20261011-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-contact-type-fix-apply",
+  "file_id": "1icDcvq8gP52ZjJmyEMtzEayZ9znWzBeU",
+  "patch_sha256": "cd86f975cc4061976c6fbbbcbc84ab30c48f3c4e01d3bf0d336e48c40788d8ec",
+  "base_sha": "48dacf19fecbc36b1f8d58a90ca9763e7dd9cbfe",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "test: use DomainResult.value for source-vertex contact negatives",
+  "retention_days": 14
 }
