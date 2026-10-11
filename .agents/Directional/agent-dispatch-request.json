@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-hardrail-incidence-contacts-20261011-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-hardrail-incidence-contacts-apply",
-  "file_id": "1jytxbIM5YBICM3NltoipZT7GzZrJGOKQ",
-  "patch_sha256": "b52025d291736583ba3ae33098815ae56adf493605c3bc0ef46fcb872db877aa",
-  "base_sha": "7acb3a244a41346859cab8a0c3905448815030c0",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test: supply source-owned open-rail contacts for incidence preflight regression",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-hardrail-incidence-contacts-compile-20261011-a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-hardrail-incidence-contacts-compile",
+  "source_sha": "3a5b1d852fb2c91464969612a312679271043ad2",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-hardrail-incidence-contacts"
 }
