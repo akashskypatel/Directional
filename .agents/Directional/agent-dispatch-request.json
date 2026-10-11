@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-segment-route-a3-compile-20261011-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-segment-route-a3-compile",
-  "source_sha": "4ee15ada1493e14ed49ab542025040ce6e9dd91a",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-segment-route-a3"
+  "request_id": "m6-cp3-r4-segment-route-a3-docs-20261011-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-segment-route-a3-docs",
+  "file_id": "1d70U709vvlbIW88Sct5PU1HXf8gL4lmB",
+  "patch_sha256": "a2a032748df417dfd613533a62c0779f8310d35d138cbe8bcdfdfa878e5ab3ee",
+  "base_sha": "d9a2ed12cf3843e3184db2db4a1cf73d153e72bb",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: preserve segment-route source A3 GMP compile and R4 handoff",
+  "retention_days": 14
 }
