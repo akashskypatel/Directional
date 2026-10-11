@@ -1,3 +1,11 @@
+## CURRENT — R4 supplemental hard-rail source A3 positive-control non-vacuity (2026-10-11)
+
+- [x] Source `e7871efaf56a1ee717cea5b66115e5c50a125d46` strengthens the original *supplemental* `HardRailTransitionNeedsExactlyTwoSourceFaceIncidences` with independent A3 non-null positive control and an actually published two-face A3 carrier. One test file, 12 lines; Drive apply `38158972074` succeeded and stage retired.
+- [x] Exact GMP/GMPXX eight-target compile GREEN: workflow `38159098983`, job `114528148302`, semantic source `e7871efaf56a1ee717cea5b66115e5c50a125d46`, preflight/build exits `0/0`, real `libgmpxx.so` and `libgmp.so` linked, `DIRECTIONAL_ENABLE_GMP=ON`, source clean, manifest `28/28`, `exactArithmeticBackend=GMP`, `runtimeExecution=false`; result artifact `11708843472` ZIP SHA-256 `39fc4fdb3020d6c3f8902264c2297818a9b840d9b1330fc86b7a08dec509786c`, log artifact `11708998433` ZIP SHA-256 `072db2fe296a1d336e572ccfbdc619a79bf30747523c428b8c4d084defd9e670`.
+- [ ] Independent overfull three-face source/A3 feasibility Review still required; no runtime PASS for this supplemental test. Other R4 39 endpoint/34 Phase10/7 DCEL/88 CP2/six CP3/real multi-carrier odd-τ and independent dual-path obligations remain. Frozen TB497 not authorized.
+
+---
+
 ## CURRENT — R4 factory-incidence negative oracle and frozen DCEL static audit (2026-10-11)
 
 - [x] Exact snapshot `38154965590`, 6207/6207 verifies. Identified potential overfull-rail negative vacuity: for three shared-edge triangles, missing/nonconstructible A3 can yield `InvalidSourceAuthority` **before** the intended checked incidence guard; no runtime evidence. Seven frozen R3 DCEL fixtures currently share source-valid-looking two-face disk topology; none is verified PASS.
