@@ -1,12 +1,12 @@
 {
-  "schema_version": 1,
-  "request_id": "m6-cp3-r4-openrail-incidence-docs-20261011-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-openrail-incidence-docs",
-  "file_id": "1s1ahF9dm-DTon-CuZ6tdvxerz0mb47tQ",
-  "patch_sha256": "2055d3b342c4ef7657d35162745fb8fa57a5d5f64676869f73f2bf76d1541bf6",
-  "base_sha": "256b6133e2ad9437b06e42b4808f8ec4fd932384",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: preserve R4 open-rail incidence GMP compile and recovery record",
-  "retention_days": 14
+ "schema_version": 1,
+ "request_id": "m6-cp3-r4-openrail-todo-checkbox-20261011-a",
+ "operation": "drive_apply",
+ "mailbox_key": "m6-cp3-r4-openrail-todo-checkbox",
+ "file_id": "1frVwCcOFGjhBU38svbKXg98HOhJoPtof",
+ "patch_sha256": "93b576421d891cfb537f2f7d67c476f20db463b5ad3913e458cf2811c6c117d5",
+ "base_sha": "148e428403102f25d4035a85d4f8cb26bd446447",
+ "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+ "commit_message": "docs: correct verified open-rail GMP compile checklist marker",
+ "retention_days": 14
 }
