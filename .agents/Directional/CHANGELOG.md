@@ -1,3 +1,20 @@
+## 2026-10-11 — `M6-CP3-CB1-ENTRY-R4` terminal A3 uniqueness confirmed; RA-46 frozen
+
+Adjudicated the terminal A3 dual-path request at HEAD `d8b565c9e`. Confirmed the lemma and strengthened it to
+hold without RA-37a's manifold premise: adjacency in both counters (`SurfaceCellTracing.cpp:18979-19031` and
+`:8318-8352`) exists only via spokes at the terminal vertex, so maximum degree is 2 and every component is a
+path or cycle; the carrier is an excluded hard-feature spoke so its component is acyclic; every call site
+targets a carrier-incident face (`:8523-8526`, `:19044-19047`), which always lies in that acyclic component.
+Closed the two cases the manifold premise covered — a pinch/bowtie vertex passes the incidence guard but its
+untouched cycle holds no carrier-incident face, and a doubled triangle's parallel spokes must include the
+carrier. Retired the two-admissible-path fixture obligation, retaining the `pathCount != 1` guard fail-closed
+with no obligation on its unreachable branch, coupled to four named guards. Raised R4-A3U-01: the checked
+factory collapses zero-path and ambiguous into a bare `InvalidSourceAuthority` and needs a typed sub-code.
+Clarified that `exact_corner` is a bit-exact confirming predicate over a typed published contact and therefore
+compliant with RA-42.2, and that adding a tolerance would be the violation. Runtime-free: no code, test,
+fixture, selector, benchmark or build change in this turn; CP2 491/491 accepted; R3 403/497 rejected; stable
+66/17/49 debt 1.
+
 ## 2026-10-11 — R4 four legacy producer-positive A3 ingress repairs (compile-only)
 
 One `SurfaceCellsPhase10Tests.cpp` test-source migration, semantic `ee800cce8d3bef34a8f2f891d0482cd8ff7a9f68`, routes four existing produced-positive fixtures through source-owned `FieldTransportAtlas::make` via the existing `build_phase10_with_source_atlas` helper. No production or frozen selector edits. Drive apply `38170296491` verified; stage owner-deleted. Eight-target source-exact GMP/GMPXX compile **GREEN**: workflow `38170442175`, job `114561804678`, source `ee800cce8d3bef34a8f2f891d0482cd8ff7a9f68`; preflight/build exits `0/0`, 8/8 targets, CMake `DIRECTIONAL_ENABLE_GMP=ON`, both `libgmpxx.so` and `libgmp.so` linked, package `SHA256SUMS` 28/28, clean source, `exactArithmeticBackend=GMP`, `runtimeExecution=false`; result artifact `11713818041` outer ZIP SHA-256 `dd506cef5b50423857893f35266404c699ed4dea42ebaff6345187c86c7eb269`, diagnostic artifact `11713098129` ZIP SHA-256 `b3c68ccf3dda22893daf2daaf80a237b618876a54140084e9d0a323a7388228a`. No runtime test/benchmark execution or accepted PASS restoration. Record `.agents/Directional/Architecture_M6_CP3_R4_Four_Positive_A3_Atlas_Ingress_Code_Build_Record_20261011.md`.

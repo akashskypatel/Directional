@@ -1,3 +1,26 @@
+## CURRENT — terminal A3 uniqueness confirmed; RA-46 frozen; R4 continues (2026-10-11)
+
+**`M6-CP3-CB1-ENTRY-R4` is UNBLOCKED and continues.** The dual-path lemma is **confirmed and strengthened**:
+`pathCount >= 2` is unreachable and the proof needs no manifold premise. Max degree in the terminal star graph
+is 2 (a triangle has exactly two edges at a corner, and adjacency exists only via spokes at `v`); the carrier
+is a hard-feature spoke and is excluded, so the carrier's component is acyclic; every call site targets a
+carrier-incident face, which always lies in that acyclic component. A pinch/bowtie vertex and a doubled
+triangle — the two cases the manifold premise was covering — are both closed directly. RA-46: `.4` the literal
+two-admissible-path fixture obligation is **RETIRED**, the `pathCount != 1` guard retained fail-closed with no
+obligation on its `>= 2` branch while its reachable `== 0` branch keeps one; `.3` the retirement is **coupled**
+to four guards (triangular faces, hard-spoke exclusion, carrier hard and at `v`, target carrier-incident) and
+weakening any revives it; `.5` replacement negatives are the existing reachable first-rejection diagnostics;
+`.6` **R4-A3U-01** requires a typed factory sub-code separating zero-path from ambiguous
+(`unique_terminal_star_path` returns bare `bool` into `InvalidSourceAuthority`); `.7` `exact_corner` is a
+confirming bit-exact predicate and compliant — adding a tolerance is prohibited; `.8` sector disjointness
+accepted; `.9` `sourceEdgeFaceCounts.at` hardening. Frozen 497 unchanged: CP2 accepted 491/491, R3 rejected
+403/497, 94 RED, 88 CP2 losses, stable **66/17/49** debt **1**. Basis:
+`Architecture_M6_CP3_R4_Terminal_A3_Uniqueness_Review_Decision.md`. RA-43.1 germ cut, RA-43.2 endpoint
+consumption, RA-43.4 replacement, RA-41's UNEXERCISED junction/sector clauses, the multi-carrier STOP and the
+88 CP2 restorations all remain open.
+
+---
+
 **Current R4 — Eigen checkout recovered; independent Definition/Review STOP remains (2026-10-11):** The original-source A2/A3 ingress correction for Phase10 `UniformPhaseFrontReliefGuidanceOnlyBlocksWhenEmbedded` is preserved in source `572cd8aea6a11717c1dd471025fde69c76acfd1e` (Drive apply `38178284384`). The initial eight-target compile `38178491667` failed *before compiling* when GitLab could not serve the pinned Eigen submodule; this historical failure remains documented in `Architecture_M6_CP3_R4_Relief_Guidance_Atlas_Compile_Blocker_Record_20261011.md`. **Resolved:** `.gitmodules` now uses `https://github.com/eigen-mirror/eigen` with the same gitlink `769c72fd8019e389810d1de1e7c243521a43b594` (source `37c349948758328ac9bfac303a93d431b5b3e8e7`). Exact-source mandatory compile `38183615883` passed all eight targets with GMP/GMPXX, preflight/build exits `0/0`, manifest `28/28`, `runtimeExecution=false`; durable evidence `Architecture_M6_CP3_R4_Eigen_Mirror_Compile_Record_20261011.md`. **Active REVIEW_BLOCKER:** `Architecture_M6_CP3_R4_Terminal_A3_Uniqueness_Design_Review_Request_20261011.md` requires a source-exact, independent Definition/Review ruling on whether two distinct admissible non-hard terminal A3 simple paths are possible under the RA-37a connected oriented two-manifold source-link contract. No qualifying counterexample or normative amendment has been reviewed or accepted. The overfull three-face incidence/A3 feasibility Review also remains open. Do not fabricate a nonmanifold witness, relax the A4 `pathCount != 1` guard, alter frozen identities/selectors, or start TB497. Canonical `M6-CP3-CB1-ENTRY-R4` stays BLOCKED with successor UNKNOWN until its independent Review conditions are resolved; remaining 39 endpoint, 34 Phase10, seven DCEL, 88 CP2 accepted-prefix losses, six CP3 positive gates and genuine multi-carrier odd-τ witnesses are unverified in runtime. Verified continuation source snapshot `38184226362` at `e3b45e67e1e69cee1ee011422af95febe5ef6724` (6,271 verified manifest entries); no production source or runtime code was changed by this documentation correction.
 
 ---

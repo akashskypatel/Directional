@@ -1,3 +1,63 @@
+## RA-46 — terminal A3 path uniqueness is a theorem; the dual-path obligation is retired **FROZEN at M6-CP3-CB1-ENTRY-R4** (2026-10-11)
+
+Adjudicates `Architecture_M6_CP3_R4_Terminal_A3_Uniqueness_Design_Review_Request_20261011.md`. Basis:
+`Architecture_M6_CP3_R4_Terminal_A3_Uniqueness_Review_Decision.md`. No runtime credit. RA-45, RA-44 (less
+.2), RA-43 (less .5), RA-42 as corrected, RA-41 frozen scoped, RA-40, RA-39, RA-38, RA-37a and the RA-34.3
+stop gates stand.
+
+- **RA-46.1 — the lemma is CONFIRMED and holds WITHOUT the manifold premise.** Both counters build the same
+  object: `localStar` (`src/geometry/SurfaceCellTracing.cpp:18979-19031`) and `adjacency`
+  (`:8318-8352`), each from spokes at the terminal vertex only, rejecting incidence `> 2`, skipping
+  hard-feature spokes and non-two-incident spokes, requiring reciprocal A3. **(a)** Adjacency exists only via
+  spokes at `v`, every face in the graph has `v` as a corner, and a triangle has exactly two edges at a
+  corner, so **maximum degree is 2** and every component is a simple path or cycle. **(b)** The carrier is a
+  hard-feature edge containing `v` and hard spokes are excluded (`:8326`, `:18984`), so the component holding
+  the carrier's incident faces lost an edge and is **acyclic**. **(c)** Every call site targets a
+  carrier-incident face (`:8523-8526`, `:19044-19047`). **(d)** An acyclic component admits at most one simple
+  path between an ordered pair, and a foreign component admits zero. Therefore **`pathCount >= 2` is
+  unreachable for every input the preceding guards admit.**
+- **RA-46.2 — the two gaps the manifold premise was covering are closed.** A **pinch/bowtie** vertex has all
+  edge incidences equal to 2, so the `> 2` guard does not catch it and an untouched cycle survives; it still
+  cannot yield two paths, because that cycle holds no carrier-incident face. A **doubled triangle** is the only
+  structure that could give the consumer-side multigraph a 2-cycle; its two faces span the same vertex set, so
+  its only two spokes at `v` are the parallel pair and the carrier is necessarily one of them. A counterexample
+  therefore **does not exist**, rather than merely being absent from the fixtures.
+- **RA-46.3 — the retirement is COUPLED to four conditions.** Unreachability is a theorem relative to its
+  guards, so the retirement is valid only while all four hold, and weakening any one **revives** the
+  obligation: (1) source faces are triangles, giving exactly two edges at a corner; (2) hard-feature spokes are
+  excluded from the star graph; (3) the terminal carrier is a hard-feature edge containing the terminal vertex;
+  (4) the DFS target is a carrier-incident face.
+- **RA-46.4 — the literal two-admissible-path fixture obligation is RETIRED.** The `pathCount != 1` guard is
+  **retained** as a fail-closed defence against malformed input, with **no fixture obligation** on its `>= 2`
+  branch. The guard is **not** dead overall: its `== 0` branch is reachable and keeps its obligation.
+- **RA-46.5 — replacement negatives, each at its actual first rejecting predicate.**
+  `missing-terminal-A3-path`, `overlapping-terminal-sectors`, `no-exact-terminal-corner`,
+  `ambiguous-terminal-contact`, `missing-or-nonreciprocal-terminal-A3`, `nonmanifold-terminal-star-spoke`, plus
+  the typed factory sub-code required by RA-46.6. No frozen test identity changes; no runtime assertion in a
+  Code + Build turn.
+- **RA-46.6 — R4-A3U-01: the checked factory conflates zero with ambiguous.** `unique_terminal_star_path`
+  returns `bool` (`:8352`) and both call sites collapse into a bare `InvalidSourceAuthority` (`:8527-8528`).
+  The factory is the authoritative check, so under RA-42.3 it most needs the distinction: a genuine no-path
+  rejection is today indistinguishable from the unreachable ambiguity branch. A typed sub-code is required.
+  The consumer side is already correct — `:19048-19053` sets the ambiguity flag only on `> 1`, and
+  `:19071-19074` selects among three distinct messages.
+- **RA-46.7 — `exact_corner` is a CONFIRMING predicate and does not violate RA-42.2.** `:18957-18963`
+  compares barycentric components bit-exactly with **no tolerance**; the vertex identity comes from the typed
+  published contact (`:18966`, RA-44.1) and the geometry only confirms it. RA-42.2 forbids **deriving**
+  incidence from geometry, not confirming it, and this predicate can only false-reject. **Introducing a
+  tolerance here would be the violation** and is prohibited.
+- **RA-46.8 — accepted: sector disjointness is enforced where it counts.** `:8552-8556` requires the two
+  sides' used-face sets to be disjoint, and `:19055-19064` enforces the same consumer-side. This is RA-38's
+  boundary-germ separation at A4 and is why the two contact walks cannot collude.
+- **RA-46.9 — hardening, not a block.** `sourceEdgeFaceCounts.at(spoke)` (`:18983`) throws if the two maps are
+  ever built from different sources; prefer a bounds-safe lookup that fails closed.
+- **RA-46.10 — no credit.** Retiring an unrealizable obligation is a definition correction, not a runtime
+  regression. Ledger **66 events / 17 categories / 49 recurrences**, M6 debt **1**, unchanged. Selector 497
+  untouched; CP2 491/491 accepted; R3 403/497 rejected. RA-41's junction/sector clauses remain frozen
+  **UNEXERCISED**; the multi-carrier STOP stands undischarged.
+
+---
+
 ## RA-45 — the +U gauge has no absolute consumer **FROZEN at M6-CP3-CB1-ENTRY-R4** (2026-10-10)
 
 Resolves the RA-44.2 producer-compatibility STOP by **withdrawing the requirement**, not by constructing a

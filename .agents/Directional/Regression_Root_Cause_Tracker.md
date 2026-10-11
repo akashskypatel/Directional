@@ -1,3 +1,32 @@
+## CURRENT — terminal A3 dual-path obligation retired as unrealizable; RA-46 frozen (2026-10-11)
+
+**The lemma is CONFIRMED and strengthened: `pathCount >= 2` is unreachable, and the proof does not need the
+RA-37a manifold premise.** Re-derived from both counters — `localStar`
+(`src/geometry/SurfaceCellTracing.cpp:18979-19031`) and `adjacency` (`:8318-8352`). Adjacency exists only via
+spokes at the terminal vertex, so every face in the graph has `v` as a corner and a triangle has exactly two
+edges at a corner: **max degree 2**, every component a path or cycle. The carrier is a hard-feature edge
+containing `v` and hard spokes are excluded (`:8326`, `:18984`), so the carrier's component lost an edge and is
+**acyclic**; every call site targets a carrier-incident face (`:8523-8526`, `:19044-19047`), which always lies
+in that acyclic component. Hence at most one simple path, or zero from a foreign component. **Root class:** a
+negative-test obligation was carried for a condition that is structurally unrealizable — an unfalsifiable
+obligation, the mirror of a vacuous check. The two gaps the manifold premise covered are closed directly: a
+**pinch/bowtie** vertex passes the `> 2` incidence guard yet its untouched cycle holds no carrier-incident
+face, and a **doubled triangle**'s two parallel spokes at `v` must include the carrier. **Decision:** the
+literal two-admissible-path fixture obligation is retired; the `pathCount != 1` guard is retained fail-closed
+with no obligation on its `>= 2` branch, while its reachable `== 0` branch keeps its obligation. **Coupled to
+four guards** — triangular faces, hard-spoke exclusion, carrier-is-hard-and-at-`v`, target-is-carrier-incident;
+weakening any one revives the obligation. **New finding R4-A3U-01:** the checked factory conflates zero with
+ambiguous — `unique_terminal_star_path` returns `bool` (`:8352`) into a bare `InvalidSourceAuthority`
+(`:8527-8528`), so under RA-42.3 the authoritative side needs a typed sub-code; the consumer side is already
+correct (`:19048-19053`, `:19071-19074`). **Clarified:** `exact_corner` (`:18957-18963`) is bit-exact with no
+tolerance and only confirms a typed published contact, so it does not violate RA-42.2 — **adding a tolerance
+there would be the violation**. **Accepted:** sector disjointness at `:8552-8556` and `:19055-19064` is
+RA-38's germ separation enforced at A4. **Hardening:** `sourceEdgeFaceCounts.at` (`:18983`) should fail closed
+rather than throw. No runtime: stable ledger **66 events / 17 categories / 49 recurrences, M6 debt 1**,
+unchanged; 88 accepted CP2 losses carried.
+
+---
+
 ## CURRENT — RA-44.2 absolute gauge pin withdrawn as a category error; RA-45 frozen (2026-10-10)
 
 **The STOP is upheld on its facts and resolved by withdrawing the requirement.** Three gauge producers reach

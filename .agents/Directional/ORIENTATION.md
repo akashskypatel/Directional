@@ -1,3 +1,19 @@
+## CURRENT — 2026-10-11 `M6-CP3-CB1-ENTRY-R4` terminal A3 uniqueness confirmed (RA-46)
+
+**No current stop.** The dual-path lemma is confirmed and **strengthened to need no manifold premise**: max
+degree 2 in the terminal star graph, the carrier's component acyclic after excluding the hard carrier spoke,
+and every DFS target carrier-incident, so `pathCount >= 2` is unreachable and no counterexample exists. The
+two-admissible-path fixture obligation is **retired**, coupled to four guards whose weakening revives it; the
+`pathCount != 1` guard stays fail-closed, and its reachable `== 0` branch keeps its obligation. Open finding
+**R4-A3U-01**: the checked factory needs a typed sub-code separating zero-path from ambiguous. `exact_corner`
+is a compliant bit-exact confirming predicate — adding a tolerance is prohibited. R4 Code + Build continues;
+successor `M6-CP3-TB1-ENTRY-R4`. No runtime: CP2 491/491 accepted; R3 403/497 rejected, 94 RED, 88 CP2
+accepted losses; 66/17/49 debt 1. §8 recurring failure gains its mirror case: carrying a negative-test
+obligation for a **structurally unrealizable** condition is as defective as freezing a vacuous check, and both
+are detected the same way — by asking what the predicate can actually separate.
+
+---
+
 ## CURRENT — 2026-10-10 `M6-CP3-CB1-ENTRY-R4` gauge STOP resolved (RA-45)
 
 **No current stop.** The STOP was correct; RA-44.2's absolute geometric pin is **withdrawn as a category
