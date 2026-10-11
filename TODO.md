@@ -1,3 +1,11 @@
+## CURRENT — R4 checked A4 terminal-contact absence / foreign-source negatives (2026-10-11)
+
+- [x] Exact source `72615c7a0bf7ca4d3b9d3729c81eb47842278251` adds two negative cases to the original `CheckedFactoryRejectsForgedTerminalA2bSideGerm` selected test: remove one genuine contact; substitute real source vertex 0 (not on the hard rail). Retains original source A3 and producer baseline. Source apply `38164373890`, follow-up typed DomainResult fix `38164686585`; both Drive stages deleted.
+- [x] Exact eight-target mandatory GMP/GMPXX compile **GREEN**: workflow `38164832322`, job `114545168786`, semantic source `72615c7a0bf7ca4d3b9d3729c81eb47842278251`, preflight/build exit `0/0`, both GMP libraries linked, manifest `28/28` clean, `exactArithmeticBackend=GMP`, `runtimeExecution=false`; result artifact `11711333843` ZIP SHA-256 `af09d91d99b3e0e3b0c3bac3161fd6e2d4fa9054cbfb7065f8f8de792c7e35c8`, log `11711413607` ZIP SHA-256 `dce3dc30b92f025fa63bb4c221a78c5e9c742a86fa75d50bf0c68f7309b61f54.
+- [ ] Runtime evidence for actual first A4 rejection remains unverified. No Directional generated binary, test, benchmark, discovery or frozen 497-case selector was executed. This is compile-only candidate evidence, not runtime acceptance or restoration of any R3 RED/CP2 case. The 39 endpoint, 34 Phase10, 7 DCEL, 88 accepted CP2 losses, six CP3 gates, real multi-carrier/odd-tau and independently reviewed dual-terminal-path obligation remain open. Canonical `M6-CP3-CB1-ENTRY-R4` remains `IN_PROGRESS`, successor `UNKNOWN`; no Test + Benchmark successor is authorized. Record `.agents/Directional/Architecture_M6_CP3_R4_A2b_Terminal_Contact_Negative_Code_Build_Record_20261011.md`.
+
+---
+
 ## CURRENT — R4 periodic malformed-crossing independent A3 ingress (2026-10-11)
 
 - [x] Source-only test migration `e0cc0415b447c045443e3d498c6d6f50769b29e8` removes legacy A3-unbound periodic builder and passes original-source A2/A3 to `MalformedAuthoritativeCrossingProvenanceFailsClosed` without changing its malformed metadata or expected `PeriodicHolonomyMismatch`. Apply `38161729069`, verified; staged Drive patch permanently deleted; frozen identities/selectors unchanged.
