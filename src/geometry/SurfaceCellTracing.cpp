@@ -19048,9 +19048,50 @@ SurfaceCellNetwork build_surface_cell_network(
     const auto secondEndpoint = endpoint_certificate(
         first.to, second.from, routeSteps.back().topology());
     if (!firstEndpoint || !secondEndpoint) {
+      // Diagnostic-only: reveal why a source-corner terminal could not be
+      // considered. Keep the rejection decision and both A2b/A3 predicates
+      // strictly inside endpoint_certificate; this probe runs afterward.
+      const bool firstMissing = !firstEndpoint;
+      const auto &fromPoint = firstMissing ? first.from : first.to;
+      const auto &toPoint = firstMissing ? second.to : second.from;
+      const auto &endpointEdge = firstMissing
+          ? routeSteps.front().topology() : routeSteps.back().topology();
+      const auto contact = authoritativeOptions.hardRailTerminalContacts.find(
+          *first.railId);
+      const auto matches_exact_source_corner = [&](
+          const SurfaceTracePoint &point, const authority::SourceVertexId vertex) {
+        if (point.face < 0 || point.face >= faces.rows()) return false;
+        for (int corner = 0; corner < 3; ++corner) {
+          if (faces(point.face, corner) != static_cast<int>(vertex.index()))
+            continue;
+          for (int other = 0; other < 3; ++other)
+            if (point.barycentric[other] != (other == corner ? 1.0 : 0.0))
+              return false;
+          return true;
+        }
+        return false;
+      };
+      std::ostringstream endpointEvidence;
+      endpointEvidence << ";a2bProbeCarrierPresent="
+                       << (find_carrier(endpointEdge) != nullptr)
+                       << ";a2bProbeA3Present="
+                       << (authoritativeOptions.fieldTransportAtlas != nullptr)
+                       << ";a2bProbeContactPresent="
+                       << (contact != authoritativeOptions.hardRailTerminalContacts.end());
+      if (contact != authoritativeOptions.hardRailTerminalContacts.end()) {
+        for (const auto vertex : contact->second.endpoints) {
+          endpointEvidence << ";corner[" << vertex.index() << "]="
+                           << matches_exact_source_corner(fromPoint, vertex)
+                           << ',' << matches_exact_source_corner(toPoint, vertex)
+                           << ";railEnd[" << vertex.index() << "]="
+                           << (endpointEdge.first() == vertex ||
+                               endpointEdge.second() == vertex);
+        }
+      }
       invalid_route(SurfaceHardRailRouteFailureLocus::EndpointAttachment,
-                    !firstEndpoint ? 0 : static_cast<int>(routeSteps.size() - 1U),
-                    -1, !firstEndpoint ? "endpoint-0" : "endpoint-1");
+                    firstMissing ? 0 : static_cast<int>(routeSteps.size() - 1U),
+                    -1, firstMissing ? "endpoint-0" : "endpoint-1",
+                    -1, -1, std::nullopt, endpointEvidence.str());
       return network;
     }
     std::vector<SurfaceHardRailRouteJunctionCertificate> junctions;
