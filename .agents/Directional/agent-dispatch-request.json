@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-phase10-three-row-atlas-compile-20261011-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-phase10-three-row-atlas-compile",
-  "source_sha": "2626a053424cc8ff53c31c13fe5559494835b1af",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-phase10-three-row-atlas"
+  "request_id": "m6-cp3-r4-phase10-three-row-atlas-docs-20261011-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-phase10-three-row-atlas-docs",
+  "file_id": "1EURs5zXoZ7IZw9GJXj2zGuD_m7ecVIJJ",
+  "patch_sha256": "3305a1ed4795c6c0ed1315490c99836f4f2c09c33288a9f79b23e2259ef4d3d6",
+  "base_sha": "82e6454458fa27913bcce9d281cf9f4fd286c267",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: preserve R4 three Phase10 source atlas compile receipt and handoff",
+  "retention_days": 14
 }
