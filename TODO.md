@@ -1,3 +1,11 @@
+## CURRENT — R4 original-source A3 ingress for two region-reference negatives (2026-10-11)
+
+- [x] Frozen CP2-accepted/R3-RED ordinals 123/124: correct missing original-source A2/A3 authority in their initial positive producer, leaving checked A4 region mutation, expected typed reasons, identities and selectors unchanged. Exact source `d3a70402a999b34fe69cacd4905440f7d529e3ab`, apply workflow `38125626216`; one test file; patch backup retained and staging retired.
+- [x] Eight-target mandatory GMP/GMPXX compile GREEN: run `38125718129`, job `114429605388`, source `d3a70402a999b34fe69cacd4905440f7d529e3ab`, all eight required targets, GMP/GMPXX links, configure/preflight/build `0/0`, manifest `28/28`, clean source, `exactArithmeticBackend=GMP`, `runtimeExecution=false`; result artifact `11697351263` ZIP SHA256 `85074becb5acfb2170b406126b67d99e0cf8873252ec63adc54f71b731f27e44`, log artifact `11696729558` ZIP SHA256 `3a180fd2ddf4338104313ad423efc39b3cb42d7d405623bdb25384a5e36c17ea.
+- [ ] Runtime positive production and actual expected `InvalidCellRegion`/`InvalidEdgeRegion` first rejection remain unverified; no prior accepted PASS restored. Remaining R4 39 endpoint, 34 Phase10, seven DCEL, 88 CP2, authentic multi-carrier/odd-τ, six CP3 gates and independent dual-path Review; successor UNKNOWN.
+
+---
+
 ## CURRENT — R4 periodic cylinder malformed-holonomy independent A3 ingress (2026-10-11)
 
 - [x] Frozen CP2-accepted/R3-RED ordinal 247, `SurfaceCellsPhase10.PeriodicPhaseFrontMalformedHolonomyFailsClosedWithTypedReason`: exact test-only source `285a501053fa7a1c80683fb12d98d31052cd7239` adds independent original mesh/cross-field A2/A3 to the positive and deliberately malformed selected inputs without changing existing assertions, name, selector or production code. Apply `38123037201`; Drive stage owner-deleted.
