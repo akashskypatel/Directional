@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-contact-negative-docs-20261011-a",
+  "request_id": "m6-cp3-r4-closed-provenance-apply-20261011-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-contact-negative-docs",
-  "file_id": "1kV_dI1q8Bs0ty3VJje6ughBR2LA4gNyz",
-  "patch_sha256": "1cbd53d8c054a5a092ebd8ee2912343bce31946079d8f45d19f8f371d4295528",
-  "base_sha": "278b900e30849d1c59b02ad170880a6d3bdf7c6c",
+  "mailbox_key": "m6-cp3-r4-closed-provenance-apply",
+  "file_id": "13uf8VhM84Zmb8UIg159E5uExDXee3_AV",
+  "patch_sha256": "5812823abb2e99772773cc7ea8392efa738f6d013814be5f467d96fd2574bdc3",
+  "base_sha": "3c4136f79de5c986a210a91de0bc359a74779879",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: record verified R4 terminal contact negatives and GMP compile",
+  "commit_message": "fix: fail closed on open rail absent terminal provenance",
   "retention_days": 14
 }
