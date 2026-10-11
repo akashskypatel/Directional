@@ -1,3 +1,11 @@
+## CURRENT — R4 periodic malformed-crossing independent A3 ingress (2026-10-11)
+
+- [x] Source-only test migration `e0cc0415b447c045443e3d498c6d6f50769b29e8` removes legacy A3-unbound periodic builder and passes original-source A2/A3 to `MalformedAuthoritativeCrossingProvenanceFailsClosed` without changing its malformed metadata or expected `PeriodicHolonomyMismatch`. Apply `38161729069`, verified; staged Drive patch permanently deleted; frozen identities/selectors unchanged.
+- [x] Exact eight-target GMP/GMPXX compile GREEN: `38161835655` job `114536250404`, preflight/build `0/0`, clean source, `28/28` self-manifest, GMP linked, `exactArithmeticBackend=GMP`, `runtimeExecution=false`, result artifact `11710631873` ZIP SHA256 `8e672d4720e4ff244dc80a540a0c1989a67b43155a01883fced3c8d9c1a9d9c7`, log artifact `11710816692` SHA256 `74210d3d205f49f22f38ded7598514edb772689c750bbef84165efaeaa31276e`.
+- [ ] No runtime PASS attributed. R4 still requires 39 endpoints, 34 Phase10, 7 DCEL negatives, 88 CP2 losses, six CP3 positives, genuine multi-carrier/odd-τ and independent dual-path Review. Frozen 497 Test + Benchmark is not authorized in this Code + Build turn.
+
+---
+
 ## CURRENT — R4 supplemental hard-rail source A3 positive-control non-vacuity (2026-10-11)
 
 - [x] Source `e7871efaf56a1ee717cea5b66115e5c50a125d46` strengthens the original *supplemental* `HardRailTransitionNeedsExactlyTwoSourceFaceIncidences` with independent A3 non-null positive control and an actually published two-face A3 carrier. One test file, 12 lines; Drive apply `38158972074` succeeded and stage retired.
