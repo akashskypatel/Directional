@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-four-phase10-a3-compile-20261011-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-four-phase10-a3-compile",
-  "source_sha": "4467edc69f6c8b2d4530cd902d4de32681aa3671",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-four-phase10-a3"
+  "request_id": "m6-cp3-r4-four-phase10-a3-docs-20261011-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-four-phase10-a3-docs",
+  "file_id": "1RiPx0wC7H6LixjQrFS6ba9pq5YKI1TIG",
+  "patch_sha256": "97ed9292a7cdcfa48da54bfed61abe997e9dd9e43fbbc8e23ddf397cdabff262",
+  "base_sha": "0142b97168e5f4f8bbb3578493d2fc4d89c2bcba",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: preserve R4 four Phase10 A3 ingress compile evidence and handoff",
+  "retention_days": 14
 }
