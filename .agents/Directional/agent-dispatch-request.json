@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-endpoint-rejection-reasons-20261011-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-endpoint-reason-apply",
-  "file_id": "1-Mg3vhraqeuVk3q_nbp_YFk-EUp4dnxh",
-  "patch_sha256": "d5e153f056933fb57f52ae9608e76c45b5e39f4e51aeef0322252b039da25959",
-  "base_sha": "4285f035cede05b48f4272b8e2109e1a73f48f25",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix: distinguish actual A2b endpoint certificate rejection predicates",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-endpoint-reasons-compile-20261011-a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-endpoint-reasons-compile",
+  "source_sha": "13139486e9a4ae4ff9fb1df48860026efc8b7b63",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-endpoint-reasons"
 }
