@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-a3-incidence-nonvacuity-docs-20261011-a",
+  "request_id": "m6-cp3-r4-periodic-crossing-a3-20261011-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-a3-incidence-nonvacuity-docs",
-  "file_id": "1I_u6EO8_klz9o-hxxg0Xv8jlJK3BM65b",
-  "patch_sha256": "fbe9523c34aa74f5ec2f1799f026ecd19e6789f97b1a09ec8726c31b7abc910a",
-  "base_sha": "a406b3bcfa2283078112e5fa116e20653bf657df",
+  "mailbox_key": "m6-cp3-r4-periodic-crossing-a3-apply",
+  "file_id": "1sw2BpJMCYoDWFvClwGkPHJDRUPjs-HFw",
+  "patch_sha256": "bbfdf836981f67cb6149ba25ad78d646748335df0638ab22c3edc72e25b6e0e1",
+  "base_sha": "c43ecb5716776d4ad2c1b00ef074b2911c633352",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: preserve R4 A3 rail positive-control nonvacuity and GMP evidence",
+  "commit_message": "test: retain independent source A3 for malformed periodic provenance",
   "retention_days": 14
 }
