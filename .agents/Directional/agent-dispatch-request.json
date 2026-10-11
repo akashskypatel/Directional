@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-curved-disk-authority-docs-20261011-a",
+  "request_id": "m6-cp3-r4-two-region-negatives-apply-20261011-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-curved-disk-authority-docs",
-  "file_id": "11YhxllJe8VGFmU433VPvOhQyDYza4lZU",
-  "patch_sha256": "4b55cd85249eb60cb610074cc8c1348eef47c5a4bcea64a7d7bf6350a4c39df9",
-  "base_sha": "03a94edb330841da3d19132d523dfd509bf1e007",
+  "mailbox_key": "m6-cp3-r4-two-region-negatives-apply",
+  "file_id": "1iq18qkHEN_EdXkrlRLKmeqEvxkaHLoV2",
+  "patch_sha256": "79a6c5e63e45cc952685dd8ea89d26456e3159f0ec5cb510ae3404b0d55af86c",
+  "base_sha": "a405877cb8baf290df7828535bd7da19bca626bb",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: record R4 curved-disk A4 negative full authority and GMP compile",
+  "commit_message": "test: preserve complete A4 authority in cell and edge region negatives",
   "retention_days": 14
 }
