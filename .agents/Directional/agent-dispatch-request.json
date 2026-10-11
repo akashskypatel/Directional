@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-incidence-dcel-audit-docs-20261011-a",
+  "request_id": "m6-cp3-r4-a3-incidence-nonvacuity-apply-20261011-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-incidence-dcel-audit-docs",
-  "file_id": "1hKziNtQBriARBWnwnp2ifgR8E3KReK0N",
-  "patch_sha256": "d3e803c13dbe918e7b6219569cb4e5b2e5b8e35649dcbc74ea45ad04d2371ac3",
-  "base_sha": "97255f37935806973b0a2501981601d9177b125f",
+  "mailbox_key": "m6-cp3-r4-a3-incidence-nonvacuity-apply",
+  "file_id": "1EWcqE8gXZqHbuYoFeaOX6TJ9JkTtAp0N",
+  "patch_sha256": "eec96a06f4bd2e2d4746dd26e7f74939cd3877c39bac3c615fba5fb0b7901ccc",
+  "base_sha": "b9a1c4e715f4250505ec02a7b4a48896ac6c34a3",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: audit R4 source-valid incidence oracle and seven frozen DCEL fixtures",
+  "commit_message": "test: require source A3 and carrier for positive rail-incidence controls",
   "retention_days": 14
 }
