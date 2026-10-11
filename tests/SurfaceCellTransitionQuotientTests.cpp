@@ -8936,16 +8936,21 @@ TEST(M6CP3, CheckedFactoryRejectsForgedTerminalA2bSideGerm) {
   ASSERT_TRUE(fixture.fieldTransportAtlas.has_value());
   ASSERT_FALSE(front.hardRailTerminalContacts().empty());
 
+  const auto checked_with_routes_and_contacts =
+      [&](const auto &routes, const auto &contacts) {
+        return directional::geometry::SurfacePhaseFrontProduct::make(
+            front.gridU(), front.gridV(), front.sourceTopologyRegions(),
+            fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
+            &*fixture.fieldTransportAtlas,
+            front.isolationSeamTransportCertificates(), front.periodicHolonomies(),
+            front.boundedDiskBoundaryPhases(), front.edges(), front.events(),
+            front.cells(), front.conformityPlanReceipt(), front.hardFeatureEdges(),
+            front.sourceFaceBranchRotations(), front.hardRailFieldTransitions(),
+            routes, contacts, front.hardRailClosedChains());
+      };
   const auto checked_with_routes = [&](const auto &routes) {
-    return directional::geometry::SurfacePhaseFrontProduct::make(
-        front.gridU(), front.gridV(), front.sourceTopologyRegions(),
-        fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
-        &*fixture.fieldTransportAtlas,
-        front.isolationSeamTransportCertificates(), front.periodicHolonomies(),
-        front.boundedDiskBoundaryPhases(), front.edges(), front.events(),
-        front.cells(), front.conformityPlanReceipt(), front.hardFeatureEdges(),
-        front.sourceFaceBranchRotations(), front.hardRailFieldTransitions(),
-        routes, front.hardRailTerminalContacts(), front.hardRailClosedChains());
+    return checked_with_routes_and_contacts(
+        routes, front.hardRailTerminalContacts());
   };
   auto original = front.hardRailRouteCertificates();
   const auto baseline = checked_with_routes(original);
@@ -8968,6 +8973,34 @@ TEST(M6CP3, CheckedFactoryRejectsForgedTerminalA2bSideGerm) {
   const auto [route, endpoint, side] = *selected;
   const auto expected =
       directional::geometry::SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+
+  // A4 must not accept the same source-bound A3 and unmodified germ after
+  // the producer-owned open-rail terminal receipt is removed. The genuine
+  // baseline above makes this a fail-closed contact-authority negative rather
+  // than a test that merely starts with a broken fixture.
+  auto missingContact = front.hardRailTerminalContacts();
+  ASSERT_FALSE(missingContact.empty());
+  missingContact.erase(missingContact.begin());
+  expect_phase_front_product_error(
+      checked_with_routes_and_contacts(original, missingContact), expected);
+
+  // Vertex 0 is an actual vertex in this 3x3 source mesh, but it is not an
+  // endpoint of either hard-feature spoke (1,4) or (4,7). A foreign contact
+  // must be rejected on source ownership, not inferred from a nearby trace
+  // coordinate or accepted merely because its ID is within vertex extent.
+  const auto unrelatedVertex = directional::authority::SourceVertexId::from_index(
+      0, static_cast<std::size_t>(fixture.mesh.V.rows()));
+  ASSERT_TRUE(unrelatedVertex.has_value());
+  const auto hardEdges = front.hardFeatureEdges();
+  ASSERT_TRUE(std::none_of(hardEdges.begin(), hardEdges.end(),
+                           [&](const auto &edge) {
+                             return edge.first() == *unrelatedVertex ||
+                                    edge.second() == *unrelatedVertex;
+                           }));
+  auto foreignContact = front.hardRailTerminalContacts();
+  foreignContact.begin()->second.endpoints[0] = *unrelatedVertex;
+  expect_phase_front_product_error(
+      checked_with_routes_and_contacts(original, foreignContact), expected);
 
   // A false 'direct' germ omits an independently required source-star step.
   auto omitted = original;
