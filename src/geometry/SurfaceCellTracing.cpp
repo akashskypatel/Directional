@@ -19000,7 +19000,8 @@ SurfaceCellNetwork build_surface_cell_network(
       }
       // Enumerate only the finite non-rail links of this one source-vertex
       // star. A second admissible path is ambiguity, not a fallback route.
-      const auto path_to = [&](const Face &fromFace, const Face &toFace)
+      const auto path_to = [&](const Face &fromFace, const Face &toFace,
+                               int *pathCount)
           -> std::optional<std::vector<Transition>> {
         std::vector<Transition> current, accepted;
         std::set<Face> visited{fromFace};
@@ -19022,20 +19023,32 @@ SurfaceCellNetwork build_surface_cell_network(
           }
         };
         visit(visit, fromFace);
+        if (pathCount != nullptr) *pathCount = count;
         if (count != 1) return std::nullopt;
         return accepted;
       };
       std::optional<SurfaceHardRailRouteEndpointCertificate> selected;
       bool overlappingSectors = false;
+      bool ambiguousTerminalPath = false;
       for (const bool reverse : {false, true}) {
         const auto oriented = reverse
             ? SurfaceHardRailFieldTransition{
                   carrier->edge, carrier->secondFace, carrier->firstFace,
                   carrier->firstToSecond.inverse()}
             : *carrier;
-        auto firstPath = path_to(firstAttachment, oriented.firstFace);
-        auto secondPath = path_to(secondAttachment, oriented.secondFace);
-        if (!firstPath || !secondPath) continue;
+        int firstPathCount = 0;
+        int secondPathCount = 0;
+        auto firstPath = path_to(firstAttachment, oriented.firstFace,
+                                 &firstPathCount);
+        auto secondPath = path_to(secondAttachment, oriented.secondFace,
+                                  &secondPathCount);
+        if (!firstPath || !secondPath) {
+          // Distinguish an absent attachment walk from a competing simple
+          // A3-admissible walk only in the already rejected diagnostic.
+          ambiguousTerminalPath = ambiguousTerminalPath ||
+                                  firstPathCount > 1 || secondPathCount > 1;
+          continue;
+        }
         std::set<Face> firstSector{firstAttachment};
         std::set<Face> secondSector{secondAttachment};
         for (const auto &step : *firstPath) firstSector.insert(step.secondFace);
@@ -19053,7 +19066,9 @@ SurfaceCellNetwork build_surface_cell_network(
       }
       if (!selected)
         return reject(overlappingSectors ? "overlapping-terminal-sectors"
-                                         : "missing-or-ambiguous-terminal-A3-path");
+                                         : ambiguousTerminalPath
+                                             ? "ambiguous-terminal-A3-path"
+                                             : "missing-terminal-A3-path");
       return selected;
     };
     if (routeSteps.empty()) {
