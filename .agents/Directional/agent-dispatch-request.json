@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-hardrail-incidence-domainresult-fix-20261011-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-hardrail-incidence-fix-apply",
-  "file_id": "1z90s31fK_b0-ZmLmO_QiEWEiTmFHbJMH",
-  "patch_sha256": "e95bb2e983e0f949a5607df89ada5301200a7cae8d233680cbdf3a075ffce71e",
-  "base_sha": "b4b19e7490cdd17a9e08e6e0c4da97a1b25dc624",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test: correct typed HardRailId DomainResult access in incidence fixture",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-hardrail-incidence-contacts-compile-20261011-b",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-hardrail-incidence-contacts-compile-b",
+  "source_sha": "b2b398591e399f2a8aeeea811c0850c45b128283",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-hardrail-incidence-b"
 }
