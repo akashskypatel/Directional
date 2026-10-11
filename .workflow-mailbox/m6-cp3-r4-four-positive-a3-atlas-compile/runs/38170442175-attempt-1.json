@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "workflow_key": "m6-cp3-r4-four-positive-a3-atlas-compile",
+  "workflow": "Agent Durable Operation Dispatcher",
+  "workflow_ref": "akashskypatel/Directional/.github/workflows/agent-operation-dispatcher.yml@refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "repository": "akashskypatel/Directional",
+  "event": "push",
+  "event_sha": "14940bfcb2aad0af1edc4cde6c1b846028af5dd3",
+  "source_sha": "ee800cce8d3bef34a8f2f891d0482cd8ff7a9f68",
+  "source_ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref_name": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "run_id": 38170442175,
+  "run_attempt": 1,
+  "run_number": 236,
+  "run_url": "https://github.com/akashskypatel/Directional/actions/runs/38170442175",
+  "result": "success",
+  "summary": "durable-dispatch request_id=m6-cp3-r4-four-positive-a3-atlas-compile-20261011-a operation=compile request_sha256=992a982aedd18d911968431325f06819b789ed49682e57006e5d2b9abc785477",
+  "reported_at": "2026-10-11T20:03:49Z",
+  "mailbox_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "artifacts": [
+    {
+      "id": 11714191818,
+      "name": "agent-operation-dispatcher-log-38170442175",
+      "size_in_bytes": 515,
+      "digest": "sha256:764716f4aed1221a30f525ad587282f11c0f616c3b64b99112a9069bbb562aa8",
+      "expired": false,
+      "created_at": "2026-10-11T20:01:31Z",
+      "expires_at": "2026-10-25T20:01:30Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/38170442175/artifacts/11714191818",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11714191818/zip"
+    },
+    {
+      "id": 11713902625,
+      "name": "agent-workflow-schema-validation-38170442175",
+      "size_in_bytes": 441,
+      "digest": "sha256:cf48f2f54df5d253e6043d33959d072d6df883de18c93cf756167c29b8bade68",
+      "expired": false,
+      "created_at": "2026-10-11T20:01:21Z",
+      "expires_at": "2026-10-18T20:01:21Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/38170442175/artifacts/11713902625",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11713902625/zip"
+    },
+    {
+      "id": 11713867980,
+      "name": "workflow-mailbox-publisher-log-38170442175-attempt-1",
+      "size_in_bytes": 387,
+      "digest": "sha256:bd2f23a660244f19271fdb1e737bf80e25bd4888eabc4124a3fc121510b1e7b0",
+      "expired": false,
+      "created_at": "2026-10-11T20:03:49Z",
+      "expires_at": "2026-10-25T20:03:48Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/38170442175/artifacts/11713867980",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11713867980/zip"
+    },
+    {
+      "id": 11713867671,
+      "name": "agent-workflow-schema-validator-log-38170442175",
+      "size_in_bytes": 489,
+      "digest": "sha256:7d6c1a1cdae606c8632d6624872fea1f9237a950b85228e68142f7e7de34af87",
+      "expired": false,
+      "created_at": "2026-10-11T20:01:22Z",
+      "expires_at": "2026-10-18T20:01:21Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/38170442175/artifacts/11713867671",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11713867671/zip"
+    },
+    {
+      "id": 11713818041,
+      "name": "m6-cp3-r4-four-positive-a3-atlas-result-38170442175",
+      "size_in_bytes": 38469182,
+      "digest": "sha256:dd506cef5b50423857893f35266404c699ed4dea42ebaff6345187c86c7eb269",
+      "expired": false,
+      "created_at": "2026-10-11T20:03:31Z",
+      "expires_at": "2026-10-18T20:03:27Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/38170442175/artifacts/11713818041",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11713818041/zip"
+    },
+    {
+      "id": 11713382363,
+      "name": "agent-workflow-schema-validator-log-38170442175",
+      "size_in_bytes": 497,
+      "digest": "sha256:037d7a957f2deba5fa41ee68e1f26796f999f19a1e74498408a18a7278d2de91",
+      "expired": false,
+      "created_at": "2026-10-11T20:01:24Z",
+      "expires_at": "2026-10-18T20:01:23Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/38170442175/artifacts/11713382363",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11713382363/zip"
+    },
+    {
+      "id": 11713162674,
+      "name": "agent-workflow-schema-validation-38170442175",
+      "size_in_bytes": 444,
+      "digest": "sha256:2d228060047965b68815fee665c02af39bfb431245daf6ef3c9d49b82f348e71",
+      "expired": false,
+      "created_at": "2026-10-11T20:01:23Z",
+      "expires_at": "2026-10-18T20:01:22Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/38170442175/artifacts/11713162674",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11713162674/zip"
+    },
+    {
+      "id": 11713098129,
+      "name": "m6-cp3-r4-four-positive-a3-atlas-log-38170442175",
+      "size_in_bytes": 4019,
+      "digest": "sha256:b3c68ccf3dda22893daf2daaf80a237b618876a54140084e9d0a323a7388228a",
+      "expired": false,
+      "created_at": "2026-10-11T20:03:32Z",
+      "expires_at": "2026-10-18T20:03:31Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/38170442175/artifacts/11713098129",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11713098129/zip"
+    }
+  ]
+}
