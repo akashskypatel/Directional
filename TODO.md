@@ -1,3 +1,11 @@
+## CURRENT — Three R4 Phase10 A2/A3 row-order candidate repairs (2026-10-11)
+
+- [x] Source `2626a053424cc8ff53c31c13fe5559494835b1af` migrated frozen ordinals 245/255/257 to independent A2/A3; apply `38104841732`, exact one-file change and Drive stage cleanup.
+- [x] Compile-only eight-target GMP/GMPXX GREEN `38104929249` job `114368349287`, 0/0 exits, 28/28, clean source and `runtimeExecution=false`, artifacts `11689775162` ZIP SHA `841dfae0769f52f71578cc2b75fc8607329304a699c9154a88fa94ffb1771dcd`, log `11688649940` SHA `9a15450a17cb68d98cd6ee65fa9fd69cc74f2616a605fca7da5117314a529d12`.
+- [ ] Runtime regressions NOT yet proved recovered. R4 39 endpoint/34 Phase10/7 DCEL/88 CP2/multi-carrier/odd-tau and dual-path review still open. No frozen 497 TB.
+
+---
+
 ## CURRENT — R4 complete checked-A4 region-reference negative witnesses (2026-10-11)
 
 - [x] `ConflictingCellRegionFailsBeforeMaterialization` and `ConflictingEdgeRegionFailsBeforeMaterialization` preserve source-owned A3 and all produced A2b/conformity evidence, positively reconstruct original A4 before sole region mutation, then assert original typed `InvalidCellRegion` / `InvalidEdgeRegion`. Exact source `e200af8b0e2984ae6a452df9fd8520016043cc7d`, Drive apply `38102136461`; source patch backed up in `/Directional/Evidence/`, staging deleted. No production/selector change.
