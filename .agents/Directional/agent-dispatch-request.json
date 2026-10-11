@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-two-composite-a3-docs-20261011-a",
+  "request_id": "m6-cp3-r4-periodic-five-atlas-apply-20261011-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-two-composite-a3-docs",
-  "file_id": "1MDE1ea3No9cMzPVFL2fCkObMunVoOpF_",
-  "patch_sha256": "ea97bdf62b00f0b273964e2f50a2fc71e83ea7fb93a991429c75c1cbee6c73cd",
-  "base_sha": "605df663b5cd14e169cc914a771091400ec0dca4",
+  "mailbox_key": "m6-cp3-r4-periodic-five-atlas-apply",
+  "file_id": "119MAwbjxx4ElEQ2wFm5-ACB-83_B6Y8d",
+  "patch_sha256": "029bc739c0d8e268290d19a5356631e0e6957171ed7853ab350d87070b8f02ef",
+  "base_sha": "5ced3ff01a99b5de8a37736294bd9c0acf927c13",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: retain R4 two composite Phase10 A3 candidate compile evidence",
+  "commit_message": "test: source-bound A3 for five periodic route positive regressions",
   "retention_days": 14
 }
