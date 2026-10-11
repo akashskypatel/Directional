@@ -1,3 +1,11 @@
+## CURRENT — R4 periodic cylinder malformed-holonomy independent A3 ingress (2026-10-11)
+
+- [x] Frozen CP2-accepted/R3-RED ordinal 247, `SurfaceCellsPhase10.PeriodicPhaseFrontMalformedHolonomyFailsClosedWithTypedReason`: exact test-only source `285a501053fa7a1c80683fb12d98d31052cd7239` adds independent original mesh/cross-field A2/A3 to the positive and deliberately malformed selected inputs without changing existing assertions, name, selector or production code. Apply `38123037201`; Drive stage owner-deleted.
+- [x] Eight-target exact-source GMP/GMPXX compile GREEN `38123145650`, job `114421910761`, source `285a501053fa7a1c80683fb12d98d31052cd7239`, exits 0/0, both GMP libraries, 28/28 checksums, final clean source, `runtimeExecution=false`; result `11696216443` ZIP SHA256 `9fc195ee2fc4c034ff26188e19d381385a75655ff03674e4d337e42890082deb`, diagnostic `11696116646` ZIP SHA256 `135481236e1ea87eaf1c9e2c03e7c3c0276b6e0ab9ab25b942eaef49f9fad8e8`.
+- [ ] Runtime first rejection is **unverified**: prior first observable `A4_NOT_PRODUCED_UNTYPED`; original negative still expects `PeriodicHolonomyMismatch`. No R4 recovery PASS or frozen 497 acceptance credited. Remaining 39 endpoint, 34 Phase10, seven DCEL, 88 CP2 accepted, source-valid multi-carrier/odd-τ, six CP3 gates, and independent dual-path design review; successor UNKNOWN.
+
+---
+
 ## CURRENT — R4 two original-source A3 periodic / chart fixtures (2026-10-11)
 
 - [x] Migrate existing frozen 192/199 A4 positive subject ingress to original-mesh/source-field A2/A3; preserve ordinal 192's separately mutated nonzero tracing input, original negative assertion and both original test identities. Source `2be228d96c5a69ef2da584a221ae2fa6d4b5e720`, apply `38120304731`, one test file, Drive stage owner-deleted.
