@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-phase10-three-row-atlas-apply-20261011-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-phase10-three-row-atlas-apply",
-  "file_id": "11ft4uiB1Sy41n-KeOxY_1qQBRl9L6a9_",
-  "patch_sha256": "616a160461c760dd72b7da18279b0ba05b78d0e15f840ad0fa2b2f6c17bba415",
-  "base_sha": "d32e6abf2e82d694cdd23dce8f6fa5690aa3628a",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test: bind three Phase10 row-order fixtures to independent source A2 A3 atlas",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-phase10-three-row-atlas-compile-20261011-a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-phase10-three-row-atlas-compile",
+  "source_sha": "2626a053424cc8ff53c31c13fe5559494835b1af",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-phase10-three-row-atlas"
 }
