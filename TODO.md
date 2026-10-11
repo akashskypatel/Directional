@@ -1,3 +1,7 @@
+**R4 relief A3 ingress and compile prerequisite (2026-10-11):** Existing Phase10 `UniformPhaseFrontReliefGuidanceOnlyBlocksWhenEmbedded` now receives independently produced original-source A2/A3 in both unchanged guidance/embedded branches. Verified source `572cd8aea6a11717c1dd471025fde69c76acfd1e`, Drive apply `38178284384` succeeded, transient Drive patch deleted; full backup in Library `/Directional/Evidence/`. Mandatory eight-target GMP compile `38178491667` **FAILED BEFORE COMPILATION** because `actions/checkout` attempted `https://gitlab.com/libeigen/eigen` twice and GitLab returned server-load errors; compile target/GMP checks never executed. No tests or frozen 497 selector, no runtime PASS. Exact evidence `.agents/Directional/Architecture_M6_CP3_R4_Relief_Guidance_Atlas_Compile_Blocker_Record_20261011.md`. R4 blocked on source checkout prerequisite, successor UNKNOWN; review/manifold and all original runtime obligations remain open.
+
+---
+
 ## CURRENT — R4 four legacy Phase10 producer positives receive source-owned A2/A3 (2026-10-11)
 
 - [x] Four unchanged `SurfaceCellsPhase10` produced-positive test identities now call existing independently source-built A2/A3 helper, semantic source `ee800cce8d3bef34a8f2f891d0482cd8ff7a9f68`; source apply `38170296491` succeeded; Drive staging retired. Only `tests/SurfaceCellsPhase10Tests.cpp` changed.
