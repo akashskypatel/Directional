@@ -1,0 +1,2 @@
+Purpose: exact source snapshot for M6-CP3-CB1-ENTRY-R4 continuation and independent review gate verification
+Pretrigger head: 72f803525e5449a167204dcaa0ae36ed03e0b66e
