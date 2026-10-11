@@ -3105,8 +3105,8 @@ TEST(SurfaceCellsPhase10,
   options.sourceFaceComponents = {0, 0};
   options.sourceFaceSheets = {0, 1};
   const Eigen::VectorXd targetSize = Eigen::VectorXd::Constant(4, 0.5);
-  const auto network = directional::geometry::build_surface_cell_network(
-      vertices, faces, crossField, targetSize, options);
+  const auto network = build_phase10_with_source_atlas(
+      mesh, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
@@ -3480,8 +3480,8 @@ TEST(SurfaceCellsPhase10, PhaseFrontComposesPlanarPeriodicAndCurvedDiskSheets) {
     addDiskBoundary(y * 3 + 2, (y + 1) * 3 + 2);
   }
   const Eigen::VectorXd targetSize = Eigen::VectorXd::Constant(vertices.rows(), 0.25);
-  const auto network = directional::geometry::build_surface_cell_network(
-      vertices, faces, crossField, targetSize, options);
+  const auto network = build_phase10_with_source_atlas(
+      mesh, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
