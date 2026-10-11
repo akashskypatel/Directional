@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-flowrep-singular-twoface-compile-20261011-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-flowrep-singular-twoface-compile",
-  "source_sha": "245ef12a10dca2f258d53dcf997f43e2a7567de4",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-flowrep-singular-twoface"
+  "request_id": "m6-cp3-r4-flowrep-singular-twoface-docs-20261011-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-flowrep-singular-twoface-docs",
+  "file_id": "1ZqSoNzANucLPfE4CUNDdGIVQys_SCwNf",
+  "patch_sha256": "2524f74cc670618dca929080a651433b22aaee6d2744fef4f46c2f7624333114",
+  "base_sha": "eadaab515f995c3330149925f70e04c0a507eddc",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: preserve R4 FlowRep two-face singularity source and GMP compile receipt",
+  "retention_days": 14
 }
