@@ -1,3 +1,11 @@
+## CURRENT — R4 five periodic route source-A3 ingress candidates (2026-10-11)
+
+- [x] Existing frozen R3-RED 189, 190, 193, 194, 195 use independent original-source A2/A3 in positive fixtures; source `7ccdcd527380f8ab0fb2c19fbc08a7ab4dbd0819`, apply run `38117860858`, no production/selectors/assertions altered.
+- [x] GMP/GMPXX compile-only workflow `38117950975`, job `114406619697`, exact semantic source `7ccdcd527380f8ab0fb2c19fbc08a7ab4dbd0819`, all eight requested targets, preflight/build exits `0/0`, real `gmpxx`/`gmp` linkage, `exactArithmeticBackend=GMP`, 28/28 self-manifest checksums, clean final source, and `runtimeExecution=false`. Result artifact `11693642603` ZIP SHA256 `0fbc36cbdf35567a0dedaa27bc9cd92f8d22b0515e8e1e0767785f1cd4bd2664`; separate log `11694026916` ZIP SHA256 `27c0681a455bfae283a915afbf7e8241ff466032ec632c4e624ffdcca75a07bf`.
+- [ ] Runtime-verify five distinct first rejections in separately authorized TB; no PASS restoration. Remaining 39 endpoint, 34 Phase10, seven DCEL, 88 CP2 losses, odd-τ/multi-carrier, six CP3 gates, dual-path review; R4 stays open.
+
+---
+
 ## CURRENT — R4 two Phase10 composite A3 atlas candidates (2026-10-11)
 
 - [x] Existing R3-RED ordinals 239 and 250 now build original source A2/A3 before checked A4, preserving all prior assertions and hard-feature/sheet metadata; semantic source `9535719a9d0e796ec455b721a199f0d6551530ae`, apply workflow `38115050210`.
