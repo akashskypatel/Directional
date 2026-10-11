@@ -1525,13 +1525,20 @@ TEST(FlowRepStrandsPhase15,
 
 TEST(FlowRepStrandsPhase15,
      RailTruncatedSingularitySupportDoesNotInheritLaterTerminalAnchor) {
-  Eigen::MatrixXd vertices(3, 3);
-  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
-  Eigen::MatrixXi faces(1, 3);
-  faces << 0, 1, 2;
+  // Preserve the original face-0 rail and singularity coordinates on a
+  // consistently oriented two-face disk. The source-authority helper creates
+  // a real TriMesh and A3 atlas, which must have DCEL-valid provenance.
+  Eigen::MatrixXd vertices(4, 3);
+  vertices << 0.0, 0.0, 0.0,
+              1.0, 0.0, 0.0,
+              0.0, 1.0, 0.0,
+             -1.0, 0.0, 0.0;
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 1, 2,
+           0, 2, 3;
 
   directional::geometry::SurfaceCellNetwork network;
-  attach_source_authority(network, vertices, faces, {3}, {5});
+  attach_source_authority(network, vertices, faces, {3, 3}, {5, 5});
 
   directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(7));
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
