@@ -1,3 +1,11 @@
+## CURRENT — R4 seven Phase10 source-A3 ingress candidate repairs (2026-10-11)
+
+- [x] Seven frozen CP2-accepted/R3-RED ordinals 144/145/152/200/246/249/256 migrated to independent source-owned A2/A3; source `d268e7660648ddfaf689f2fd00a5d2e2ada6497a`, apply run `38109848235`; original assertions/selector identities unchanged.
+- [x] Eight-target GMP/GMPXX compile GREEN: Run `38109941607` / job `114383284022`; exact source `d268e7660648ddfaf689f2fd00a5d2e2ada6497a`; eight mandatory targets, GMP/GMPXX linked, preflight/build exits `0/0`, manifest `28/28`, clean source, `exactArithmeticBackend=GMP`, `runtimeExecution=false`; result artifact `11690494421` ZIP SHA256 `b81f408a7367126d50108be60cb1f467cf976a330570aaa1046f84a7989b980c`; diagnostic `11690928607` ZIP SHA256 `9f783d727ba6de013e65452725cd990d0cc9a85de0ac47cfa4bac9643e1159a6`.
+- [ ] Runtime first rejections/PASS of all seven still unverified; 39 endpoint, 34 Phase10, seven DCEL, 88 CP2 regressions, multi-carrier/odd-τ, six CP3 gates and dual-path review remain open. No frozen 497-case TB in Code + Build.
+
+---
+
 ## CURRENT — R4 four Phase10 source-A3 fixture migrations (2026-10-11)
 
 - [x] Four frozen R3-RED Phase10 identities 119/129/196/248 migrated at six A4 ingress sites to existing independent `build_phase10_with_source_atlas` helper. Applied source `4467edc69f6c8b2d4530cd902d4de32681aa3671`, workflow `38107433774` (one test file). Original assertions, selectors and production code unchanged; Drive stage owner-deleted.

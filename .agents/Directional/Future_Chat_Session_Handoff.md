@@ -1,3 +1,11 @@
+## CURRENT — R4 seven Phase10 A2/A3 source-atlas candidate repairs (2026-10-11)
+
+Seven frozen CP2-accepted/R3-RED Phase10 test identities (ordinals 144/145/152/200/246/249/256) now provide an independent A2/A3 atlas built from their original source mesh and cross field. Source `d268e7660648ddfaf689f2fd00a5d2e2ada6497a` applied by workflow `38109848235` (job `114382996578`), one test source file changed (14 insertions/14 deletions); no production code, expected assertions, test names, or selectors changed. All seven remain compile-only recovery candidates: none was executed. Exact GMP/GMPXX compile GREEN: Run `38109941607` / job `114383284022`; exact source `d268e7660648ddfaf689f2fd00a5d2e2ada6497a`; eight mandatory targets, GMP/GMPXX linked, preflight/build exits `0/0`, manifest `28/28`, clean source, `exactArithmeticBackend=GMP`, `runtimeExecution=false`; result artifact `11690494421` ZIP SHA256 `b81f408a7367126d50108be60cb1f467cf976a330570aaa1046f84a7989b980c`; diagnostic `11690928607` ZIP SHA256 `9f783d727ba6de013e65452725cd990d0cc9a85de0ac47cfa4bac9643e1159a6`.
+
+**Remaining:** all seven cases require a separately authorized runtime test; do not advance R4 or treat this compile as acceptance. See `.agents/Directional/Architecture_M6_CP3_R4_Seven_Phase10_Source_Atlas_Ingress_Code_Build_Record.md`.
+
+---
+
 ## CURRENT — R4 four Phase10 source-A3 atlas ingress candidates (2026-10-11)
 
 Four existing R3-RED Phase10 selector identities (119, 129, 196, 248) now use original source-owned A2/A3 authority at six old null-atlas A4 entries, with no production or selector changes. Semantic source `4467edc69f6c8b2d4530cd902d4de32681aa3671`; apply workflow `38107433774`, one test file and patch owner-deleted. Exact GMP/GMPXX eight-target compile GREEN `38107520617` (job `114376101533`), exits 0/0, 28/28 checksums, clean source, `runtimeExecution=false`; result `11689459391` SHA-256 `a6b1a0ab0f91694ba33d730de0a596be8d49cd1d72ef799323ee37a826646506`, log `11689613812` SHA-256 `ac7d3802a0ee67df5391ee12af6ab1df0d0d2f1a4370612f3f5567ec81981434`. **No runtime acceptance**; R4 39 endpoint / 34 Phase10 / seven DCEL / 88 CP2 / odd-τ multi-carrier and dual-path independent adjudication remain open. Record `.agents/Directional/Architecture_M6_CP3_R4_Four_Phase10_A3_Atlas_Ingress_Code_Build_Record.md`.
