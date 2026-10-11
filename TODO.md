@@ -1,3 +1,11 @@
+## CURRENT — R4 A2b closed-chain-vs-absent-contact source producer guard (2026-10-11)
+
+- [x] Source `d8698996f3c3206830bc2aedeae06d7019d523a3` rejects contactless hard-rail endpoint A2b certificates without exact same-ID closed-chain authority, while retaining valid closed-only behavior. One `SurfaceCellTracing.cpp` change, apply `38167011887`; stages owner-deleted.
+- [x] Exact eight-target GMP/GMPXX compile **GREEN**: workflow `38167114181`, job `114551928729`, source `d8698996f3c3206830bc2aedeae06d7019d523a3`, preflight/build `0/0`, eight targets built, CMake linked `libgmpxx.so` and `libgmp.so`, package checksum manifest `28/28`, source tree clean, `exactArithmeticBackend=GMP`, `runtimeExecution=false`; result artifact `11712702267` ZIP SHA-256 `7e285a50395217a3d47c5dafd6a851c695eaebceaf6e64cb7c9e3675d0e6e9a6`, diagnostic artifact `11712622481` ZIP SHA-256 `77fdd8868e9aba9e43df1ccab219cd8592c97274678e806f68c46cc19b835f14`. No runtime tests, benchmarks, or selector discovery executed.
+- [ ] Runtime-check typed first-rejection and authentic open/closed positive controls in independently authorized Test + Benchmark; none run here. Original 39 endpoint, 34 Phase10, 7 DCEL, 88 CP2 losses, six CP3 gates, real multi-carrier/odd-τ and independent dual-path Review remain open. No R4 completion / TB497 promotion.
+
+---
+
 ## CURRENT — R4 checked A4 terminal-contact absence / foreign-source negatives (2026-10-11)
 
 - [x] Exact source `72615c7a0bf7ca4d3b9d3729c81eb47842278251` adds two negative cases to the original `CheckedFactoryRejectsForgedTerminalA2bSideGerm` selected test: remove one genuine contact; substitute real source vertex 0 (not on the hard rail). Retains original source A3 and producer baseline. Source apply `38164373890`, follow-up typed DomainResult fix `38164686585`; both Drive stages deleted.
