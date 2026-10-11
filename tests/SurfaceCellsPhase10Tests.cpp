@@ -2352,8 +2352,8 @@ TEST(SurfaceCellsPhase10,
   directional::geometry::SurfaceCellTracingOptions options;
   options.sourceFaceComponents.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
   options.sourceFaceSheets.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
-  const auto network = directional::geometry::build_surface_cell_network(
-      mesh.V, mesh.F, crossField, targetSize, options);
+  const auto network = build_phase10_with_source_atlas(
+      mesh, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             network.phaseFront.disposition());
 
@@ -5164,10 +5164,10 @@ TEST(SurfaceCellPhaseFrontFieldChartAuthorityMigration,
       static_cast<std::size_t>(forwardMesh.F.rows()), 0);
   directional::geometry::SurfaceCellTracingOptions reverseOptions = forwardOptions;
 
-  const auto forward = directional::geometry::build_surface_cell_network(
-      forwardMesh.V, forwardMesh.F, forwardField, targetSize, forwardOptions);
-  const auto reverse = directional::geometry::build_surface_cell_network(
-      reverseMesh.V, reverseMesh.F, reverseField, targetSize, reverseOptions);
+  const auto forward = build_phase10_with_source_atlas(
+      forwardMesh, forwardField, targetSize, forwardOptions);
+  const auto reverse = build_phase10_with_source_atlas(
+      reverseMesh, reverseField, targetSize, reverseOptions);
 
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             forward.phaseFront.disposition());
@@ -5360,8 +5360,8 @@ TEST(SurfaceCellAuthorityContractCutover,
   options.sourceFaceComponents.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
   options.sourceFaceSheets.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
 
-  const auto network = directional::geometry::build_surface_cell_network(
-      mesh.V, mesh.F, crossField, targetSize, options);
+  const auto network = build_phase10_with_source_atlas(
+      mesh, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             network.phaseFront.disposition());
   ASSERT_EQ(2U, network.phaseFront.product().sourceTopologyRegions().regions().size());
@@ -7811,10 +7811,10 @@ TEST(SurfaceCellAuthorityContractCutover,
   options.sourceFaceSheets.assign(
       static_cast<std::size_t>(forwardMesh.F.rows()), 0);
 
-  const auto forward = directional::geometry::build_surface_cell_network(
-      forwardMesh.V, forwardMesh.F, forwardField, targetSize, options);
-  const auto reverse = directional::geometry::build_surface_cell_network(
-      reverseMesh.V, reverseMesh.F, reverseField, targetSize, options);
+  const auto forward = build_phase10_with_source_atlas(
+      forwardMesh, forwardField, targetSize, options);
+  const auto reverse = build_phase10_with_source_atlas(
+      reverseMesh, reverseField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             forward.phaseFront.disposition());
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
