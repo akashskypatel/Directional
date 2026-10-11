@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-seven-phase10-a3-docs-20261011-a",
+  "request_id": "m6-cp3-r4-segment-route-a3-20261011-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-seven-phase10-a3-docs",
-  "file_id": "1_t2ZKcNoqMdEz5VEfbv-JTcMA7ssRpBa",
-  "patch_sha256": "28b55f971be5d3ee3230a6b196ff6418666fc85615e56484049cdb1d612fd60e",
-  "base_sha": "27c882db2891c48903a9d93632a2f5926808f002",
+  "mailbox_key": "m6-cp3-r4-segment-route-a3-apply",
+  "file_id": "1lQRvBZQNVBIjmAzVtrRSeLfoWPqES0a_",
+  "patch_sha256": "e67ee2a7ab2bcc4c3610355605de7b22f9b6c4594896c044a745859dea358b62",
+  "base_sha": "87f26ee4a7ad5278b88991576293721e35185cfa",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: preserve seven Phase10 A3 migrations and exact GMP compile receipt",
+  "commit_message": "test: restore independent A3 ingress for segment route fixtures",
   "retention_days": 14
 }
