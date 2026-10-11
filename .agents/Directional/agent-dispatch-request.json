@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-segment-route-a3-20261011-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-segment-route-a3-apply",
-  "file_id": "1lQRvBZQNVBIjmAzVtrRSeLfoWPqES0a_",
-  "patch_sha256": "e67ee2a7ab2bcc4c3610355605de7b22f9b6c4594896c044a745859dea358b62",
-  "base_sha": "87f26ee4a7ad5278b88991576293721e35185cfa",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test: restore independent A3 ingress for segment route fixtures",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-segment-route-a3-compile-20261011-a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-segment-route-a3-compile",
+  "source_sha": "4ee15ada1493e14ed49ab542025040ce6e9dd91a",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-segment-route-a3"
 }
