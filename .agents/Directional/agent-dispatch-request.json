@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-a2b-path-count-docs-20261011-a",
+  "request_id": "m6-cp3-r4-terminal-dual-path-review-note-20261011-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-a2b-path-count-docs",
-  "file_id": "13M7FEQHj1yIeudpj0gJS_YH1Yvgtf1UL",
-  "patch_sha256": "3a43ff217f99e3a4994548076a54bf56478549c0e5a9b1b2225544edf4a55c78",
-  "base_sha": "04113c8939a89dbbe53a7b0680991585875abf72",
+  "mailbox_key": "m6-cp3-r4-terminal-dual-path-review-note",
+  "file_id": "1od_0A72A6cRC8o8C18Q6VYSfE3jWUO2X",
+  "patch_sha256": "c81fa01808d5e18661a4fcffd03925d1e419355a04f87522a2d2ee2231348d49",
+  "base_sha": "91f50dbe092dc4cd724ae026cc8ac819d9585d0c",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: preserve R4 A2b path diagnostic compile and exact handoff",
+  "commit_message": "docs: request independent review of R4 source terminal dual path witness",
   "retention_days": 14
 }
