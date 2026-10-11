@@ -1,1 +1,0 @@
-Exact source snapshot of active R4 Code + Build turn as of 2026-10-11T19:06Z; inspection only, no runtime execution.
