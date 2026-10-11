@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-relief-a3-compile-20261011-a",
+  "request_id": "m6-cp3-r4-eigen-mirror-compile-20261011-a",
   "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-relief-a3-compile",
-  "source_sha": "572cd8aea6a11717c1dd471025fde69c76acfd1e",
+  "mailbox_key": "m6-cp3-r4-eigen-mirror-compile",
+  "source_sha": "37c349948758328ac9bfac303a93d431b5b3e8e7",
   "targets": [
     "directional_core",
     "directional_pipeline",
@@ -14,5 +14,5 @@
     "directional_compiled_api_tests",
     "directional_benchmarks"
   ],
-  "artifact_prefix": "m6-cp3-r4-relief-a3-compile"
+  "artifact_prefix": "m6-cp3-r4-eigen-mirror-compile"
 }
