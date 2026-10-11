@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-four-positive-a3-docs-20261011-a",
+  "request_id": "m6-cp3-r4-relief-a3-ingress-20261011-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-four-positive-a3-docs",
-  "file_id": "1m0f3zhtbJ7xxQ4oAgT7h2czcfUCyKVMN",
-  "patch_sha256": "bcb3abbc67a5bf45b62658d7ec891e20186c91feba54829221cc809d4a2318cd",
-  "base_sha": "01fb390a8a54ffb4df0052be6bbef75be20d791e",
+  "mailbox_key": "m6-cp3-r4-relief-a3-ingress",
+  "file_id": "1EwkFLjfBhWJgKDNcXstNm-RdOpcbFOXR",
+  "patch_sha256": "e5b29f892b4c7921d03d286d3200cfa5618722f28955c431d64f5efbe6140bd0",
+  "base_sha": "7dcdd09db450880fc4e969e8afb734c160817576",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: preserve R4 four positive source A3 and GMP compile evidence",
+  "commit_message": "test(surface-cells): bind relief guidance regression to original-source A3",
   "retention_days": 14
 }
