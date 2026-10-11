@@ -4187,6 +4187,38 @@ directional::geometry::SurfaceCellNetwork build_periodic_route_network(
       fixture.mesh.V, fixture.mesh.F, field, targetSize, options);
 }
 
+// Build the source-owned A2/A3 atlas independently from the complete original
+// fixture field. The supplied tracing field remains unchanged: a legacy
+// compact representation or signed +4 relabeling is not used to manufacture
+// or repair checked A4 authority.
+directional::geometry::SurfaceCellNetwork
+build_periodic_route_network_with_source_atlas(
+    const PeriodicHolonomyRouteFixture &fixture,
+    const directional::fields::CrossFieldResult &tracingField,
+    const directional::fields::CrossFieldResult &sourceField) {
+  const Eigen::VectorXd targetSize =
+      Eigen::VectorXd::Constant(fixture.mesh.V.rows(), 0.25);
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents.assign(
+      static_cast<std::size_t>(fixture.mesh.F.rows()), 0);
+  options.sourceFaceSheets.assign(
+      static_cast<std::size_t>(fixture.mesh.F.rows()), 0);
+  const auto sourceAuthority =
+      directional::geometry::surface_cell_tracing_detail::
+          build_source_topology_regions(fixture.mesh.F, options);
+  if (!sourceAuthority) {
+    throw std::runtime_error("periodic-route fixture source A2 unavailable");
+  }
+  auto sourceAtlas = directional::authority::FieldTransportAtlas::make(
+      fixture.mesh, *sourceAuthority, options.hardFeatureEdges, sourceField);
+  if (!sourceAtlas) {
+    throw std::runtime_error("periodic-route fixture source A3 unavailable");
+  }
+  options.fieldTransportAtlas = &sourceAtlas.value();
+  return directional::geometry::build_surface_cell_network(
+      fixture.mesh.V, fixture.mesh.F, tracingField, targetSize, options);
+}
+
 std::vector<directional::authority::SourceEdgeTopologyKey> periodic_route_topology(
     const PeriodicHolonomyRouteFixture &fixture) {
   std::vector<directional::authority::SourceEdgeTopologyKey> topology;
@@ -4283,7 +4315,8 @@ TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
   EXPECT_EQ(-1, directed_matching(*second, fixture.expectedRoute[1].sourceFace,
                                   fixture.expectedRoute[1].targetFace));
 
-  const auto network = build_periodic_route_network(fixture, field);
+  const auto network = build_periodic_route_network_with_source_atlas(
+          fixture, field, field);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
@@ -4380,9 +4413,11 @@ TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
   }
 
   const auto forward =
-      build_periodic_route_network(forwardFixture, forwardField);
+      build_periodic_route_network_with_source_atlas(
+          forwardFixture, forwardField, forwardField);
   const auto reverse =
-      build_periodic_route_network(reverseFixture, reverseField);
+      build_periodic_route_network_with_source_atlas(
+          reverseFixture, reverseField, reverseField);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             forward.phaseFront.disposition());
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
@@ -4413,9 +4448,11 @@ TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
   first->matching += 4;
   second->matching -= 4;
 
-  const auto baseline = build_periodic_route_network(fixture, baselineField);
+  const auto baseline = build_periodic_route_network_with_source_atlas(
+          fixture, baselineField, baselineField);
   const auto equivalent =
-      build_periodic_route_network(fixture, equivalentField);
+      build_periodic_route_network_with_source_atlas(
+          fixture, equivalentField, baselineField);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             baseline.phaseFront.disposition());
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
@@ -4435,9 +4472,11 @@ TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
   const auto field = balanced_periodic_route_field(fixture);
   const auto reorderedField = balanced_periodic_route_field(reordered);
 
-  const auto baseline = build_periodic_route_network(fixture, field);
+  const auto baseline = build_periodic_route_network_with_source_atlas(
+          fixture, field, field);
   const auto permuted =
-      build_periodic_route_network(reordered, reorderedField);
+      build_periodic_route_network_with_source_atlas(
+          reordered, reorderedField, reorderedField);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             baseline.phaseFront.disposition());
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
@@ -4494,8 +4533,10 @@ TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
   ASSERT_TRUE(legacyField.edgeTransitions.empty());
 
   const auto authoritative =
-      build_periodic_route_network(fixture, authoritativeField);
-  const auto legacy = build_periodic_route_network(fixture, legacyField);
+      build_periodic_route_network_with_source_atlas(
+          fixture, authoritativeField, authoritativeField);
+  const auto legacy = build_periodic_route_network_with_source_atlas(
+          fixture, legacyField, authoritativeField);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             authoritative.phaseFront.disposition());
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
