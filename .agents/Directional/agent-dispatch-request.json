@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-a2b-path-count-diag-compile-20261011-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-a2b-path-count-diag-compile",
-  "source_sha": "3bcbb1f28adaa5b1b7dc5de9bc31e8be46ef5a4c",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-a2b-path-count-diag"
+  "request_id": "m6-cp3-r4-a2b-path-count-docs-20261011-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-a2b-path-count-docs",
+  "file_id": "13M7FEQHj1yIeudpj0gJS_YH1Yvgtf1UL",
+  "patch_sha256": "3a43ff217f99e3a4994548076a54bf56478549c0e5a9b1b2225544edf4a55c78",
+  "base_sha": "04113c8939a89dbbe53a7b0680991585875abf72",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: preserve R4 A2b path diagnostic compile and exact handoff",
+  "retention_days": 14
 }
