@@ -1789,8 +1789,8 @@ TEST(SurfaceCellsPhase10,
     options.sourceFaceSheets[static_cast<std::size_t>(face)] = component;
   }
 
-  const auto network = directional::geometry::build_surface_cell_network(
-      mesh.V, mesh.F, crossField, targetSize, options);
+  const auto network = build_phase10_with_source_atlas(
+      mesh, crossField, targetSize, options);
 
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             network.phaseFront.disposition())
@@ -1889,8 +1889,8 @@ TEST(SurfaceCellsPhase10,
   options.sourceFaceComponents.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
   options.sourceFaceSheets.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
 
-  const auto network = directional::geometry::build_surface_cell_network(
-      mesh.V, mesh.F, crossField, targetSize, options);
+  const auto network = build_phase10_with_source_atlas(
+      mesh, crossField, targetSize, options);
 
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             network.phaseFront.disposition())
@@ -3617,8 +3617,8 @@ TEST(SurfaceCellsPhase10,
     options.sourceFaceSheets[static_cast<std::size_t>(face)] = onPlane ? 0 : 1;
   }
 
-  const auto network = directional::geometry::build_surface_cell_network(
-      mesh.V, mesh.F, crossField, targetSize, options);
+  const auto network = build_phase10_with_source_atlas(
+      mesh, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
@@ -5023,8 +5023,8 @@ TEST(SurfaceCellPhaseFrontFieldChartAuthorityMigration,
   options.sourceFaceComponents.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
   options.sourceFaceSheets.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
 
-  const auto network = directional::geometry::build_surface_cell_network(
-      mesh.V, mesh.F, crossField, targetSize, options);
+  const auto network = build_phase10_with_source_atlas(
+      mesh, crossField, targetSize, options);
 
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             network.phaseFront.disposition())
@@ -5328,8 +5328,8 @@ TEST(SurfaceCellAuthorityContractCutover,
   options.sourceFaceSheets = {0, 1};
   const Eigen::VectorXd targetSize = Eigen::VectorXd::Constant(4, 0.5);
 
-  const auto network = directional::geometry::build_surface_cell_network(
-      mesh.V, mesh.F, crossField, targetSize, options);
+  const auto network = build_phase10_with_source_atlas(
+      mesh, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
@@ -7698,8 +7698,8 @@ TEST(SurfaceCellAuthorityContractCutover,
       static_cast<std::size_t>(mesh.F.rows()), 0);
   const Eigen::VectorXd targetSize =
       Eigen::VectorXd::Constant(mesh.V.rows(), 0.5);
-  const auto network = directional::geometry::build_surface_cell_network(
-      mesh.V, mesh.F, crossField, targetSize, options);
+  const auto network = build_phase10_with_source_atlas(
+      mesh, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             network.phaseFront.disposition());
   const auto &authority =
@@ -8016,8 +8016,8 @@ TEST(SurfaceCellAuthorityContractCutover,
   directional::geometry::SurfaceCellTracingOptions options;
   options.sourceFaceComponents.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
   options.sourceFaceSheets.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
-  const auto network = directional::geometry::build_surface_cell_network(
-      mesh.V, mesh.F, crossField, targetSize, options);
+  const auto network = build_phase10_with_source_atlas(
+      mesh, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             network.phaseFront.disposition());
 
