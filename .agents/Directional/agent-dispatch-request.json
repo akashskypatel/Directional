@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-four-positive-a3-atlas-compile-20261011-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-four-positive-a3-atlas-compile",
-  "source_sha": "ee800cce8d3bef34a8f2f891d0482cd8ff7a9f68",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-four-positive-a3-atlas"
+  "request_id": "m6-cp3-r4-four-positive-a3-docs-20261011-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-four-positive-a3-docs",
+  "file_id": "1m0f3zhtbJ7xxQ4oAgT7h2czcfUCyKVMN",
+  "patch_sha256": "bcb3abbc67a5bf45b62658d7ec891e20186c91feba54829221cc809d4a2318cd",
+  "base_sha": "01fb390a8a54ffb4df0052be6bbef75be20d791e",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: preserve R4 four positive source A3 and GMP compile evidence",
+  "retention_days": 14
 }
