@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-two-region-negatives-compile-20261011-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-two-region-negatives-compile",
-  "source_sha": "e200af8b0e2984ae6a452df9fd8520016043cc7d",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-two-region-negatives"
+  "request_id": "m6-cp3-r4-two-region-negatives-docs-20261011-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-two-region-negatives-docs",
+  "file_id": "1nzff8tQwheM1LbzFi5jx9eALLujVvWCi",
+  "patch_sha256": "2b2c7d5d048583aeeeafe0c8f3897ce84a41ec569f783b6352ea3425687fc2a3",
+  "base_sha": "3420289400ef81cdeff13ada9a89383762afeee8",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: record R4 full A4 region negative GMP compile and handoff",
+  "retention_days": 14
 }
