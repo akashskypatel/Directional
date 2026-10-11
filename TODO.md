@@ -1,3 +1,11 @@
+## CURRENT — R4 two original-source A3 periodic / chart fixtures (2026-10-11)
+
+- [x] Migrate existing frozen 192/199 A4 positive subject ingress to original-mesh/source-field A2/A3; preserve ordinal 192's separately mutated nonzero tracing input, original negative assertion and both original test identities. Source `2be228d96c5a69ef2da584a221ae2fa6d4b5e720`, apply `38120304731`, one test file, Drive stage owner-deleted.
+- [x] Mandatory compile-only GMP/GMPXX GREEN `38120408348`, job `114413835117`, source `2be228d96c5a69ef2da584a221ae2fa6d4b5e720`, 8/8 targets, `0/0` exits, 28/28 manifest, clean source, `runtimeExecution=false`; result `11695256383` ZIP SHA256 `8b581fa5b391e22b59fea07035ec69285e495d9536b2066050d19460978339e7`, log `11695226430` ZIP SHA256 `2f0b040357319c40e2084755e2384360a6b39c87d69e6a7bda53f3592d74152c`.
+- [ ] Runtime verification required: both source R3 failures were `A4_INVALID_FINAL_CELL_STATE`. No source acceptance/restored PASS counted. Other R4 39 endpoint / 34 Phase10 / seven DCEL / 88 CP2 / odd-τ multi-carrier / six gates / dual-path review unchanged. No TB in Code + Build.
+
+---
+
 ## CURRENT — R4 five periodic route source-A3 ingress candidates (2026-10-11)
 
 - [x] Existing frozen R3-RED 189, 190, 193, 194, 195 use independent original-source A2/A3 in positive fixtures; source `7ccdcd527380f8ab0fb2c19fbc08a7ab4dbd0819`, apply run `38117860858`, no production/selectors/assertions altered.
