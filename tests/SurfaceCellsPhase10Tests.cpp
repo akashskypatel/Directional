@@ -1735,8 +1735,8 @@ TEST(SurfaceCellsPhase10,
   ASSERT_FALSE(guidanceOptions.reliefBarrierEdges.empty());
   guidanceOptions.reliefBarriersEmbedded = false;
 
-  const auto guidance = directional::geometry::build_surface_cell_network(
-      mesh.V, mesh.F, crossField, targetSize, guidanceOptions);
+  const auto guidance = build_phase10_with_source_atlas(
+      mesh, crossField, targetSize, guidanceOptions);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             guidance.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
@@ -1767,8 +1767,8 @@ TEST(SurfaceCellsPhase10,
 
   auto embeddedOptions = guidanceOptions;
   embeddedOptions.reliefBarriersEmbedded = true;
-  const auto embedded = directional::geometry::build_surface_cell_network(
-      mesh.V, mesh.F, crossField, targetSize, embeddedOptions);
+  const auto embedded = build_phase10_with_source_atlas(
+      mesh, crossField, targetSize, embeddedOptions);
   EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
             embedded.phaseFront.disposition());
   EXPECT_FALSE(embedded.phaseFront.is_produced());
