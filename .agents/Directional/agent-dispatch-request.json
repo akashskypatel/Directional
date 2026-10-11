@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-periodic-five-atlas-apply-20261011-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-periodic-five-atlas-apply",
-  "file_id": "119MAwbjxx4ElEQ2wFm5-ACB-83_B6Y8d",
-  "patch_sha256": "029bc739c0d8e268290d19a5356631e0e6957171ed7853ab350d87070b8f02ef",
-  "base_sha": "5ced3ff01a99b5de8a37736294bd9c0acf927c13",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test: source-bound A3 for five periodic route positive regressions",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-periodic-five-atlas-compile-20261011-a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-periodic-five-atlas-compile",
+  "source_sha": "7ccdcd527380f8ab0fb2c19fbc08a7ab4dbd0819",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-periodic-five-atlas"
 }
