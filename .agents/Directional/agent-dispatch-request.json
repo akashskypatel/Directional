@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-phase10-247-atlas-docs-20261011-a",
+  "request_id": "m6-cp3-r4-region-positive-atlas-20261011-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-phase10-247-atlas-docs",
-  "file_id": "1cq0zDIiQ2U5dWtRTS8SPC38y55K5fKOw",
-  "patch_sha256": "8618159cf38422b6ec7ee43ffc6f1e430c916ddc05388c8ffd11ab0aa09768e3",
-  "base_sha": "c49afcebaf5ce84d427dfd89d4085b6fe96703a8",
+  "mailbox_key": "m6-cp3-r4-region-positive-atlas-apply",
+  "file_id": "1j1Hy50nNq1Y3_vYsteYGwKRSIBoEnIYw",
+  "patch_sha256": "1acbc66febaed827907ecf25bbf2b5304b42834633a08494bdc4cfad269a2f53",
+  "base_sha": "49a3cecb06eb42bd1f57eb4cb0cd6a7c074899a6",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: preserve R4 periodic negative original A3 compile and handoff",
+  "commit_message": "test: restore source A3 to two checked A4 region negatives",
   "retention_days": 14
 }
