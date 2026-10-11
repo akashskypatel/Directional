@@ -1316,6 +1316,22 @@ directional::geometry::SurfaceCellNetwork build_segment_route_network(
       static_cast<std::size_t>(fixture.mesh.F.rows()), 0);
   options.sourceFaceSheets.assign(
       static_cast<std::size_t>(fixture.mesh.F.rows()), 0);
+  // Legacy compact matching omits edge records, but checked A4 still requires
+  // a source-bound atlas. Construct independent A2/A3 from the original full
+  // fixture field; do not repair or fabricate the supplied tracing metadata.
+  const auto sourceAuthority =
+      directional::geometry::surface_cell_tracing_detail::
+          build_source_topology_regions(fixture.mesh.F, options);
+  if (!sourceAuthority) {
+    throw std::runtime_error("segment-route fixture source A2 unavailable");
+  }
+  auto sourceAtlas = directional::authority::FieldTransportAtlas::make(
+      fixture.mesh, *sourceAuthority, options.hardFeatureEdges,
+      fixture.authoritativeField);
+  if (!sourceAtlas) {
+    throw std::runtime_error("segment-route fixture source A3 unavailable");
+  }
+  options.fieldTransportAtlas = &sourceAtlas.value();
   return directional::geometry::build_surface_cell_network(
       fixture.mesh.V, fixture.mesh.F, crossField, targetSize, options);
 }
