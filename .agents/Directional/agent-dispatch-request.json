@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-phase10-interval-fullauthority-docs-20261011-a",
+  "request_id": "m6-cp3-r4-curved-disk-authority-apply-20261011-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-phase10-interval-fullauthority-docs",
-  "file_id": "10boni5f-w9a0S2ZuKf_pHQ8KJvSWdr6r",
-  "patch_sha256": "8a02c2f517574f66a0b1bb4d3c954cff1d5749432be794a84e59042142a0f0b7",
-  "base_sha": "68be0908d14506b62ad62d6a9ab0c651006428f0",
+  "mailbox_key": "m6-cp3-r4-curved-disk-authority-apply",
+  "file_id": "1EdJE2U6XOwHl9gR0UUT_zhfXv0q4C5Gr",
+  "patch_sha256": "02bc925e77219d644fa6cf2ef15c3f489032ec349795c127c29196b62a886f78",
+  "base_sha": "070899fe4889a9a282a8e64916274d73724cfb9c",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: preserve R4 shared-boundary A4 negative and exact GMP compile receipt",
+  "commit_message": "test: carry full source authority through bounded-disk A4 negatives",
   "retention_days": 14
 }
