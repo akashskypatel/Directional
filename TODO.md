@@ -1,3 +1,11 @@
+## CURRENT — R4 Phase10 shared-boundary negative A4 authority correction (2026-10-10)
+
+- [x] Source `f7be55e01c525ef4ae7c8db0039956246d8f04cc` fixes the existing missing/tampered interval negative fixture to preserve full hard-rail A2b/A3 authority and require successful positive checked A4 reconstruction before negative checks. Drive apply `38096715429` verified. No production code, selector changes or runtime execution.
+- [x] Exact GMP/GMPXX compile GREEN: workflow `38096829899`, job `114344387141`, semantic source `f7be55e01c525ef4ae7c8db0039956246d8f04cc`, eight required targets, preflight/build exit `0/0`, CMake GMP discovery and both `libgmpxx` / `libgmp` link verified, 28/28 recursive package checksums, clean source and `runtimeExecution=false`; result artifact `11686391124` ZIP SHA-256 `cbfbe488bda31b5542bb19ceefc80628181d65e1c0bf36ad8f91cec533c3efaa`, log artifact `11686760574` ZIP SHA-256 `7d0ef296ef8d9074c83604fa9ad845e3d38cfffac8f22151d18c385c9e4190d1`.
+- [ ] The expected `InvalidSharedBoundaryInterval` first rejection is **not yet runtime verified**. Separately authorized artifact-only Test + Benchmark is required; R4 39 endpoint / 34 Phase10 / 7 DCEL / 88 CP2 / multi-carrier/odd-τ and independent dual-path review obligations remain open.
+
+---
+
 ## CURRENT — R4 Phase10 source-owned A2/A3 fixture ingress (2026-10-10)
 
 - [x] Source-only candidate migration of frozen ordinals `128` and `146`, previously accepted CP2 but R3 RED: original TriMesh/CrossFieldResult produces independent A2/A3 atlas; unchanged A4 factory validates the source; semantic commit `f9db8c009835435aa1b64f07058244e58518b50b` via Drive apply `38092755831`. No selector edits or acceptance claim.
