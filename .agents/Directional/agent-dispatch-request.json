@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-terminal-dual-path-review-note-20261011-a",
+  "request_id": "m6-cp3-r4-carried39-static-triage-20261011-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-terminal-dual-path-review-note",
-  "file_id": "1od_0A72A6cRC8o8C18Q6VYSfE3jWUO2X",
-  "patch_sha256": "c81fa01808d5e18661a4fcffd03925d1e419355a04f87522a2d2ee2231348d49",
-  "base_sha": "91f50dbe092dc4cd724ae026cc8ac819d9585d0c",
+  "mailbox_key": "m6-cp3-r4-carried39-static-triage",
+  "file_id": "1b4aJrLVlEw-39M3kdOod-kgJCZ0VPkSx",
+  "patch_sha256": "28ed6a180719804f10004b5d37b69e503af3704060c559bb13e91425a8af206f",
+  "base_sha": "020d2373760e02d5044870e6500eccdb4c56ea8d",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: request independent review of R4 source terminal dual path witness",
+  "commit_message": "docs: triage frozen 39 carried A4 endpoint fingerprints and source-star ownership",
   "retention_days": 14
 }
