@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-periodic-192-chart-199-docs-20261011-a",
+  "request_id": "m6-cp3-r4-phase10-247-original-atlas-apply-20261011-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-periodic-192-chart-199-docs",
-  "file_id": "1chjzxGnYKDWZiyTM7bBfFikooEKfwjSw",
-  "patch_sha256": "044ba55b96d4057929ad26676a13ceda5f68d750fb8a3da85cbd58a5c1eba528",
-  "base_sha": "64c186bdcb7f1fc5570569a455790d0ae069fa0b",
+  "mailbox_key": "m6-cp3-r4-phase10-247-atlas-apply",
+  "file_id": "1s9tjINIFG-0bM6tf9WBYJ4Gw_FKQrMY3",
+  "patch_sha256": "434b74f636e52f4ef72b178bf53bcdcbfc00581066f4cc284c7448bb43f729e8",
+  "base_sha": "66908e6ee375625cff24d51da33dd6290bffd703",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: record exact R4 periodic 192 chart 199 GMP compile and continuation",
+  "commit_message": "test: build original-source A3 for malformed periodic holonomy fixture",
   "retention_days": 14
 }
