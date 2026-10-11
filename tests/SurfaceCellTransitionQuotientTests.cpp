@@ -1954,6 +1954,12 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
     EXPECT_TRUE(source.has_value());
     auto sourceAtlas = directional::authority::FieldTransportAtlas::make(
         sourceMesh, source.value(), {hardEdge}, sourceField);
+    // Positive one-/two-face controls must enter A4 with an independently
+    // constructed source-bound A3 atlas, not a null authority pointer.
+    if (count <= 2U) {
+      EXPECT_TRUE(sourceAtlas.has_value())
+          << "One-/two-face rail control requires independent A3";
+    }
     std::vector<SurfaceHardRailFieldTransition> transitions;
     if (publishTransition) {
       EXPECT_TRUE(secondFace.has_value());
@@ -1967,6 +1973,12 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
               {hardEdge, firstFace, secondFace.value(), transition->transport});
         }
       }
+    }
+    // The published two-face case must really contain a source A3 carrier.
+    // Otherwise it silently duplicates the unissued-carrier control.
+    if (count == 2U && publishTransition) {
+      EXPECT_EQ(transitions.size(), 1U)
+          << "Published carrier requires exact source-bound A3 transport";
     }
     // A hard-feature edge must carry producer-owned open-rail terminals
     // even when no cross-edge transition is published. Without this receipt
