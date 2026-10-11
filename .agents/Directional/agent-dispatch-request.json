@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-four-phase10-a3-docs-20261011-a",
+  "request_id": "m6-cp3-r4-seven-phase10-a3-apply-20261011-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-four-phase10-a3-docs",
-  "file_id": "1RiPx0wC7H6LixjQrFS6ba9pq5YKI1TIG",
-  "patch_sha256": "97ed9292a7cdcfa48da54bfed61abe997e9dd9e43fbbc8e23ddf397cdabff262",
-  "base_sha": "0142b97168e5f4f8bbb3578493d2fc4d89c2bcba",
+  "mailbox_key": "m6-cp3-r4-seven-phase10-a3-apply",
+  "file_id": "1RczP8bfs5Mg61YP50trnPsL4aFM_yYSG",
+  "patch_sha256": "ab249d40341036f9563bbb91aee2e450c44a528136d4d499fd7e1f14bc7695e3",
+  "base_sha": "601aefdcc3f5d6c1d5c777e609545eb25b173fac",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: preserve R4 four Phase10 A3 ingress compile evidence and handoff",
+  "commit_message": "test: migrate seven R3 red Phase10 positives to source-owned A3 atlas",
   "retention_days": 14
 }
