@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-periodic-five-atlas-docs-20261011-a",
+  "request_id": "m6-cp3-r4-periodic-192-chart-199-apply-20261011-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-periodic-five-atlas-docs",
-  "file_id": "1X2d6p8Psh1hEbmS5o0mWD4qsx4WBLqZM",
-  "patch_sha256": "78d5b755d78328f3bf3e560820a1f9c165738036dbcb2c90abd6cc1393011af5",
-  "base_sha": "443509c5963ab7ec851462d76bb84227bb49bfed",
+  "mailbox_key": "m6-cp3-r4-periodic-192-chart-199-apply",
+  "file_id": "1K4jPvah9wAtqHtWCS6OQ5oOszFFSL8fG",
+  "patch_sha256": "14e503094062e439daada33cc1a744e629e8919fb7f8ac6e5563f90feb11a9f4",
+  "base_sha": "8d540fa241e05f7e9d6e9def4805b86efb1b209e",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: preserve five periodic A3 fixture compile and R4 handoff",
+  "commit_message": "test: restore independent source A3 in periodic negative and chart-zero fixtures",
   "retention_days": 14
 }
