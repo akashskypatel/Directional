@@ -1974,7 +1974,7 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
     // the empty-cells sentinel, making the positive incidence cases vacuous.
     const auto &declaredEdge = absentRail ? absentEdge : hardEdge;
     SurfaceHardRailTerminalContacts terminalContacts;
-    terminalContacts.emplace(*railId, SurfaceHardRailTerminalContact{
+    terminalContacts.emplace(railId.value(), SurfaceHardRailTerminalContact{
         0, {declaredEdge.first(), declaredEdge.second()}});
     const auto construction = SurfacePhaseFrontProduct::make(
         0, 0, std::move(source.value()), sourceFaces,
