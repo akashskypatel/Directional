@@ -4672,6 +4672,17 @@ TEST(SurfaceCellsPhase10,
   options.sourceFaceComponents.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
   options.sourceFaceSheets.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
 
+  // The checked A4 positive and its deliberately malformed tracing variant
+  // must share A3 reconstructed from the original, unmodified source field.
+  // The selected route mutation must not rewrite independent A3 authority.
+  const auto sourceAuthority = directional::geometry::surface_cell_tracing_detail::
+      build_source_topology_regions(mesh.F, options);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  auto sourceAtlas = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, options.hardFeatureEdges, crossField);
+  ASSERT_TRUE(sourceAtlas.has_value());
+  options.fieldTransportAtlas = &sourceAtlas.value();
+
   const auto valid = directional::geometry::build_surface_cell_network(
       mesh.V, mesh.F, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
