@@ -19107,6 +19107,19 @@ SurfaceCellNetwork build_surface_cell_network(
         return false;
       };
       std::ostringstream endpointEvidence;
+      // Rejection-only evidence: preserve the exact *published* source-face
+      // barycentrics, rather than inferring a terminal from a tolerance-close
+      // world-space position. Hexfloat is lossless for the stored doubles.
+      // In particular, this is not a source-corner snapping or admission rule.
+      const auto append_endpoint_point = [&](const char *label,
+                                             const SurfaceTracePoint &point) {
+        endpointEvidence << ";a2bProbe" << label << "=" << point.face << ':'
+                         << std::hexfloat << point.barycentric[0] << ','
+                         << point.barycentric[1] << ',' << point.barycentric[2]
+                         << std::defaultfloat;
+      };
+      append_endpoint_point("From", fromPoint);
+      append_endpoint_point("To", toPoint);
       endpointEvidence << ";a2bProbeFailure="
                        << (firstMissing ? firstEndpointPredicate
                                         : secondEndpointPredicate)
