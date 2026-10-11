@@ -2479,6 +2479,26 @@ void bind_curved_disk_atlas(CurvedDiskFixture &fixture) {
   fixture.options.fieldTransportAtlas = fixture.atlas.get();
 }
 
+// Reconstruct from the complete immutable source/A3 receipt so a bounded-disk
+// mutation is rejected for its intended reason, not earlier for missing A2b
+// hard-feature, terminal-contact, or conformity authority.
+directional::geometry::SurfacePhaseFrontProduct::ConstructionResult
+rebuild_curved_disk_phase_front(
+    const CurvedDiskFixture &fixture,
+    const directional::geometry::SurfacePhaseFrontProduct &product,
+    std::vector<directional::geometry::SurfaceBoundedDiskBoundaryPhase> phases) {
+  return directional::geometry::SurfacePhaseFrontProduct::make(
+      product.gridU(), product.gridV(), product.sourceTopologyRegions(),
+      fixture.faces, static_cast<std::size_t>(fixture.vertices.rows()),
+      fixture.options.fieldTransportAtlas,
+      product.isolationSeamTransportCertificates(), product.periodicHolonomies(),
+      std::move(phases), product.edges(), product.events(), product.cells(),
+      product.conformityPlanReceipt(), product.hardFeatureEdges(),
+      product.sourceFaceBranchRotations(), product.hardRailFieldTransitions(),
+      product.hardRailRouteCertificates(), product.hardRailTerminalContacts(),
+      product.hardRailClosedChains());
+}
+
 struct PhaseFrontGeometrySignature {
   std::uint64_t geometryHash = 1469598103934665603ULL;
   std::vector<std::pair<directional::authority::SourceComponentId,
@@ -3198,6 +3218,12 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
              network.phaseFront.rejection_reason());
   const auto &product = network.phaseFront.product();
   ASSERT_EQ(1U, product.boundedDiskBoundaryPhases().size());
+  // Positive independent factory round-trip excludes an earlier authority
+  // rejection from satisfying the mutation's expected error by coincidence.
+  const auto accepted = rebuild_curved_disk_phase_front(
+      fixture, product, product.boundedDiskBoundaryPhases());
+  ASSERT_NE(nullptr, std::get_if<directional::geometry::SurfacePhaseFrontProduct>(
+                         &accepted));
   auto phases = product.boundedDiskBoundaryPhases();
   const auto regionCount = product.sourceTopologyRegions().regions().size();
   const auto foreignRegion = directional::authority::TopologyRegionId::from_index(
@@ -3205,12 +3231,8 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
   ASSERT_TRUE(foreignRegion.has_value());
   phases.front().sourceTopologyRegion = foreignRegion.value();
 
-  const auto rejected = directional::geometry::SurfacePhaseFrontProduct::make(
-      product.gridU(), product.gridV(), product.sourceTopologyRegions(),
-      fixture.faces, static_cast<std::size_t>(fixture.vertices.rows()),
-      fixture.options.fieldTransportAtlas,
-      product.isolationSeamTransportCertificates(), product.periodicHolonomies(),
-      std::move(phases), product.edges(), product.events(), product.cells());
+  const auto rejected = rebuild_curved_disk_phase_front(
+      fixture, product, std::move(phases));
   const auto *error =
       std::get_if<directional::geometry::SurfacePhaseFrontProductError>(&rejected);
   ASSERT_NE(nullptr, error);
@@ -3231,15 +3253,17 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
              network.phaseFront.rejection_reason());
   const auto &product = network.phaseFront.product();
   ASSERT_EQ(1U, product.boundedDiskBoundaryPhases().size());
+  // Positive independent factory round-trip excludes an earlier authority
+  // rejection from satisfying the mutation's expected error by coincidence.
+  const auto accepted = rebuild_curved_disk_phase_front(
+      fixture, product, product.boundedDiskBoundaryPhases());
+  ASSERT_NE(nullptr, std::get_if<directional::geometry::SurfacePhaseFrontProduct>(
+                         &accepted));
   auto phases = product.boundedDiskBoundaryPhases();
   phases.push_back(phases.front());
 
-  const auto rejected = directional::geometry::SurfacePhaseFrontProduct::make(
-      product.gridU(), product.gridV(), product.sourceTopologyRegions(),
-      fixture.faces, static_cast<std::size_t>(fixture.vertices.rows()),
-      fixture.options.fieldTransportAtlas,
-      product.isolationSeamTransportCertificates(), product.periodicHolonomies(),
-      std::move(phases), product.edges(), product.events(), product.cells());
+  const auto rejected = rebuild_curved_disk_phase_front(
+      fixture, product, std::move(phases));
   const auto *error =
       std::get_if<directional::geometry::SurfacePhaseFrontProductError>(&rejected);
   ASSERT_NE(nullptr, error);
