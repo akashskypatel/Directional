@@ -18916,25 +18916,33 @@ SurfaceCellNetwork build_surface_cell_network(
         *first.railId);
     const auto endpoint_certificate = [&](const SurfaceTracePoint &fromPoint,
                                           const SurfaceTracePoint &toPoint,
-                                          const authority::SourceEdgeTopologyKey &edge)
+                                          const authority::SourceEdgeTopologyKey &edge,
+                                          std::string *rejectedPredicate)
         -> std::optional<SurfaceHardRailRouteEndpointCertificate> {
+      // Annotate only failed certificates; this never selects a route or
+      // changes any of the A2b/A3 acceptance predicates below.
+      const auto reject = [&](const char *predicate)
+          -> std::optional<SurfaceHardRailRouteEndpointCertificate> {
+        if (rejectedPredicate != nullptr) *rejectedPredicate = predicate;
+        return std::nullopt;
+      };
       const auto from = surface_cell_tracing_detail::source_face_id(
           fromPoint.face, faces.rows());
       const auto to = surface_cell_tracing_detail::source_face_id(
           toPoint.face, faces.rows());
-      if (!from || !to) return std::nullopt;
+      if (!from || !to) return reject("missing-source-face");
       const auto firstAttachment =
           network.sourceTopologyRegions->topology_for_row(*from);
       const auto secondAttachment =
           network.sourceTopologyRegions->topology_for_row(*to);
       const auto *carrier = find_carrier(edge);
-      if (carrier == nullptr) return std::nullopt;
+      if (carrier == nullptr) return reject("missing-carrier");
       if (contact == authoritativeOptions.hardRailTerminalContacts.end()) {
         // Closed rails have no terminal source vertex and retain their cyclic
         // route certificate; no fictitious terminal contact is introduced.
         const auto oriented = oriented_carrier(*carrier, firstAttachment,
                                                secondAttachment);
-        if (!oriented) return std::nullopt;
+        if (!oriented) return reject("closed-rail-carrier-face-mismatch");
         return SurfaceHardRailRouteEndpointCertificate{
             firstAttachment, secondAttachment, *oriented, std::nullopt, {}};
       }
@@ -18956,11 +18964,12 @@ SurfaceCellNetwork build_surface_cell_network(
         if ((edge.first() != vertex && edge.second() != vertex) ||
             !exact_corner(fromPoint, vertex) ||
             !exact_corner(toPoint, vertex)) continue;
-        if (terminalVertex) return std::nullopt; // Ambiguous typed contact.
+        if (terminalVertex) return reject("ambiguous-terminal-contact");
         terminalVertex = vertex;
       }
-      if (!terminalVertex || authoritativeOptions.fieldTransportAtlas == nullptr)
-        return std::nullopt;
+      if (!terminalVertex) return reject("no-exact-terminal-corner");
+      if (authoritativeOptions.fieldTransportAtlas == nullptr)
+        return reject("missing-source-A3");
 
       using Face = authority::SourceFaceTopologyKey;
       using Transition = SurfaceHardRailFieldTransition;
@@ -18968,21 +18977,22 @@ SurfaceCellNetwork build_surface_cell_network(
       for (const auto &[spoke, incident] : sourceEdges) {
         if (spoke.first() != *terminalVertex &&
             spoke.second() != *terminalVertex) continue;
-        if (sourceEdgeFaceCounts.at(spoke) > 2U) return std::nullopt;
+        if (sourceEdgeFaceCounts.at(spoke) > 2U)
+          return reject("nonmanifold-terminal-star-spoke");
         if (authoritativeOptions.hardFeatureEdges.contains(spoke)) continue;
         if (incident[0] < 0 || incident[1] < 0) continue;
         const auto faceA = surface_cell_tracing_detail::source_face_id(
             incident[0], faces.rows());
         const auto faceB = surface_cell_tracing_detail::source_face_id(
             incident[1], faces.rows());
-        if (!faceA || !faceB) return std::nullopt;
+        if (!faceA || !faceB) return reject("invalid-terminal-star-face");
         const auto forward = authoritativeOptions.fieldTransportAtlas->
             transition_value(spoke, *faceA, *faceB);
         const auto reverse = authoritativeOptions.fieldTransportAtlas->
             transition_value(spoke, *faceB, *faceA);
         if (!forward || !reverse ||
             reverse->transport != forward->transport.inverse())
-          return std::nullopt;
+          return reject("missing-or-nonreciprocal-terminal-A3");
         const auto a = network.sourceTopologyRegions->topology_for_row(*faceA);
         const auto b = network.sourceTopologyRegions->topology_for_row(*faceB);
         localStar[a].push_back({spoke, a, b, forward->transport});
@@ -19016,6 +19026,7 @@ SurfaceCellNetwork build_surface_cell_network(
         return accepted;
       };
       std::optional<SurfaceHardRailRouteEndpointCertificate> selected;
+      bool overlappingSectors = false;
       for (const bool reverse : {false, true}) {
         const auto oriented = reverse
             ? SurfaceHardRailFieldTransition{
@@ -19029,24 +19040,33 @@ SurfaceCellNetwork build_surface_cell_network(
         std::set<Face> secondSector{secondAttachment};
         for (const auto &step : *firstPath) firstSector.insert(step.secondFace);
         for (const auto &step : *secondPath) secondSector.insert(step.secondFace);
-        if (std::any_of(firstSector.begin(), firstSector.end(),
-                        [&](const Face &face) { return secondSector.contains(face); }))
+        if (std::any_of(
+                firstSector.begin(), firstSector.end(),
+                [&](const Face &face) { return secondSector.contains(face); })) {
+          overlappingSectors = true;
           continue;
-        if (selected) return std::nullopt;
+        }
+        if (selected) return reject("ambiguous-carrier-orientation");
         selected = SurfaceHardRailRouteEndpointCertificate{
             firstAttachment, secondAttachment, oriented, terminalVertex,
             {std::move(*firstPath), std::move(*secondPath)}};
       }
+      if (!selected)
+        return reject(overlappingSectors ? "overlapping-terminal-sectors"
+                                         : "missing-or-ambiguous-terminal-A3-path");
       return selected;
     };
     if (routeSteps.empty()) {
       invalid_route(SurfaceHardRailRouteFailureLocus::EmptyRoute, -1, -1, "empty-route");
       return network;
     }
+    std::string firstEndpointPredicate, secondEndpointPredicate;
     const auto firstEndpoint = endpoint_certificate(
-        first.from, second.to, routeSteps.front().topology());
+        first.from, second.to, routeSteps.front().topology(),
+        &firstEndpointPredicate);
     const auto secondEndpoint = endpoint_certificate(
-        first.to, second.from, routeSteps.back().topology());
+        first.to, second.from, routeSteps.back().topology(),
+        &secondEndpointPredicate);
     if (!firstEndpoint || !secondEndpoint) {
       // Diagnostic-only: reveal why a source-corner terminal could not be
       // considered. Keep the rejection decision and both A2b/A3 predicates
@@ -19072,7 +19092,10 @@ SurfaceCellNetwork build_surface_cell_network(
         return false;
       };
       std::ostringstream endpointEvidence;
-      endpointEvidence << ";a2bProbeCarrierPresent="
+      endpointEvidence << ";a2bProbeFailure="
+                       << (firstMissing ? firstEndpointPredicate
+                                        : secondEndpointPredicate)
+                       << ";a2bProbeCarrierPresent="
                        << (find_carrier(endpointEdge) != nullptr)
                        << ";a2bProbeA3Present="
                        << (authoritativeOptions.fieldTransportAtlas != nullptr)
