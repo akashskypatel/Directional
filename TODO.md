@@ -1,3 +1,11 @@
+## CURRENT — R4 segment-route independent A3 fixture ingress (2026-10-11)
+
+- [x] Six frozen R3-RED `SurfaceCellSegmentRouteTransportAuthorityMigration` identities at 202–207 share a source-owned A2/A3 fixture constructor, without changing raw/legacy/malformed test inputs, original test names or assertions. Exact source `4ee15ada1493e14ed49ab542025040ce6e9dd91a`, apply run `38112589873`, only one test file modified; Drive staging retired.
+- [x] Mandatory eight-target compile-only GMP/GMPXX: GREEN run `38112672216`, job `114391347393`; preflight/build `0/0`, source `4ee15ada1493e14ed49ab542025040ce6e9dd91a`, 28/28 checksums, clean source, `runtimeExecution=false`, artifact `11691733820` ZIP SHA256 `555573b5d42e78f1f06c69d042e8d809a1f84d0830341bbaa9334a67816854e4`, log `11691718914` ZIP SHA256 `33351ed67361d8ca882851303fbbb04044236433a3222a4eeaa473d25821689c`.
+- [ ] Runtime acceptance of any of the six is unverified; R4 still owes the 39 endpoint, 34 Phase10, seven DCEL, 88 accepted CP2 regressions, genuine multi-carrier/odd-τ, six CP3 gates and independent dual-admissible-path design review. No frozen 497-case Test + Benchmark authorized.
+
+---
+
 ## CURRENT — R4 seven Phase10 source-A3 ingress candidate repairs (2026-10-11)
 
 - [x] Seven frozen CP2-accepted/R3-RED ordinals 144/145/152/200/246/249/256 migrated to independent source-owned A2/A3; source `d268e7660648ddfaf689f2fd00a5d2e2ada6497a`, apply run `38109848235`; original assertions/selector identities unchanged.
