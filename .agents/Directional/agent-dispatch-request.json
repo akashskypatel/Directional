@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-endpoint-probe-docs-20261011-a",
+  "request_id": "m6-cp3-r4-endpoint-rejection-reasons-20261011-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-endpoint-probe-docs",
-  "file_id": "1sLRWvuztAfsoqaK9R5TvI2QZhL3FhXzH",
-  "patch_sha256": "bc73236bb1d00add223acc25d5d473b11c02a41c253f3e7bdec8f477fb62141b",
-  "base_sha": "9ad884d89eff5406ba61ff4b098cbd4c14f0d04b",
+  "mailbox_key": "m6-cp3-r4-endpoint-reason-apply",
+  "file_id": "1-Mg3vhraqeuVk3q_nbp_YFk-EUp4dnxh",
+  "patch_sha256": "d5e153f056933fb57f52ae9608e76c45b5e39f4e51aeef0322252b039da25959",
+  "base_sha": "4285f035cede05b48f4272b8e2109e1a73f48f25",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: preserve R4 A2b endpoint probe exact GMP compile evidence",
+  "commit_message": "fix: distinguish actual A2b endpoint certificate rejection predicates",
   "retention_days": 14
 }
