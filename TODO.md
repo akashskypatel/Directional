@@ -1,3 +1,11 @@
+## CURRENT — R4 endpoint A2b first-rejection localization (2026-10-11)
+
+- [x] Source `13139486e9a4ae4ff9fb1df48860026efc8b7b63`: rejection-only `a2bProbeFailure` records actual first failed A2b terminal predicate (source-face, carrier, contact, A3, sector path or orientation) alongside earlier source-corner presence probes. Existing A4/A2b approval, route-certificate reason and selectors unchanged; Drive apply `38134295353` confirmed; File-Library patch backed up, consumed Drive staging deleted.
+- [x] Mandatory GMP/GMPXX eight-target compile GREEN: workflow `38134409505`, job `114455278370`, semantic source `13139486e9a4ae4ff9fb1df48860026efc8b7b63`, preflight/build 0/0, package 28/28, source clean, `exactArithmeticBackend=GMP`, `runtimeExecution=false`; result `11700646459` ZIP SHA-256 `aee723437263bfe017297cc56ac3923ec8a7b7080e804b0819f3f12226c524ef`, log `11700402184` ZIP SHA-256 `19fbaac9f45ad37c8b427ddf4a125b98cc53b44d6cec8751c8d359b502ec0027`.
+- [ ] Runtime first-rejection evidence remains separately gated. No acceptance or PASS is claimed. R4 still must resolve 39 endpoint, 34 Phase10, seven DCEL, 88 formerly accepted CP2 losses, genuine multi-carrier/odd-τ, six CP3 gates and dual-path independent review. No frozen Test + Benchmark run in Code + Build.
+
+---
+
 ## CURRENT — R4 post-rejection hard-rail A2b endpoint evidence (2026-10-11)
 
 - [x] Source `3f9dd2b390caf03e3e780aab6e58ba26fc4a8d58`: diagnostic-only endpoint rejection probe, verified one-file Drive apply `38131410373`; unchanged A2b/A3 acceptance and frozen selectors. Source patch backed up in `/Directional/Evidence/`; staging owner-deleted.
