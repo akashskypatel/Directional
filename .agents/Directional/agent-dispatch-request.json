@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-phase10-two-composite-a3-20261011-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-phase10-two-composite-a3-apply",
-  "file_id": "1gJEDhIMXucaXLLvGmYl9l8Zs2JtJK9vD",
-  "patch_sha256": "f0975a04934ef595f1f701117543d608b3c097bf2da0fdfdc26c5ad9ee33fa5c",
-  "base_sha": "546637302d1890ea5928324ad7611bd03961c2ce",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test: bind independent A3 for Phase10 isolation and combined sheet fixtures",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-phase10-two-composite-compile-20261011-a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-phase10-two-composite-compile",
+  "source_sha": "9535719a9d0e796ec455b721a199f0d6551530ae",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-phase10-composite-a3"
 }
