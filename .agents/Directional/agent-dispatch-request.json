@@ -1,18 +1,12 @@
 {
-  "schema_version": 1,
-  "request_id": "m6-cp3-r4-closed-provenance-compile-20261011-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-closed-provenance-compile",
-  "source_sha": "d8698996f3c3206830bc2aedeae06d7019d523a3",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-closed-provenance"
+ "schema_version":1,
+ "request_id":"m6-cp3-r4-closed-provenance-docs-20261011-a",
+ "operation":"drive_apply",
+ "mailbox_key":"m6-cp3-r4-closed-provenance-docs",
+ "file_id":"1zMQoIkxNQbS9V1sm69OuRFcB3NXuJxiP",
+ "patch_sha256":"966ce078a3d64e30523b1e11487a1ec4bf568f516d29a6680a5400591fed54ab",
+ "base_sha":"7e65316aad56e1999c89579272841001aa16cd69",
+ "target_branch":"agent/surface_cell_quad/p5-recover-bridge-healing",
+ "commit_message":"docs: preserve R4 open closed rail producer guard GMP evidence",
+ "retention_days":14
 }
