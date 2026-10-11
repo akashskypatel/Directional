@@ -1,3 +1,9 @@
+## CURRENT — R4 four Phase10 source-A3 atlas ingress candidates (2026-10-11)
+
+Four existing R3-RED Phase10 selector identities (119, 129, 196, 248) now use original source-owned A2/A3 authority at six old null-atlas A4 entries, with no production or selector changes. Semantic source `4467edc69f6c8b2d4530cd902d4de32681aa3671`; apply workflow `38107433774`, one test file and patch owner-deleted. Exact GMP/GMPXX eight-target compile GREEN `38107520617` (job `114376101533`), exits 0/0, 28/28 checksums, clean source, `runtimeExecution=false`; result `11689459391` SHA-256 `a6b1a0ab0f91694ba33d730de0a596be8d49cd1d72ef799323ee37a826646506`, log `11689613812` SHA-256 `ac7d3802a0ee67df5391ee12af6ab1df0d0d2f1a4370612f3f5567ec81981434`. **No runtime acceptance**; R4 39 endpoint / 34 Phase10 / seven DCEL / 88 CP2 / odd-τ multi-carrier and dual-path independent adjudication remain open. Record `.agents/Directional/Architecture_M6_CP3_R4_Four_Phase10_A3_Atlas_Ingress_Code_Build_Record.md`.
+
+---
+
 ## CURRENT — 2026-10-11 R4: Three Phase10 CP2-accepted/R3-RED row-order tests (frozen ordinals 245/255/257) now use the existing source-owned A2/A3 atlas helper without changing test identities or production contracts. Exact source `2626a053424cc8ff53c31c13fe5559494835b1af` applied by `38104841732`, one test file, staged Drive patch deleted. GMP/GMPXX eight-target compile GREEN `38104929249` job `114368349287`, 0/0 exits, manifest 28/28, clean source, `runtimeExecution=false`, result `11689775162` SHA256 `841dfae0769f52f71578cc2b75fc8607329304a699c9154a88fa94ffb1771dcd`, log `11688649940` SHA256 `9a15450a17cb68d98cd6ee65fa9fd69cc74f2616a605fca7da5117314a529d12`. **No runtime acceptance claimed.** R4 39 endpoint/34 Phase10/7 DCEL/88 CP2/multi-carrier odd-tau and dual-path review remain open. Record `.agents/Directional/Architecture_M6_CP3_R4_Phase10_Three_RowOrder_Source_Atlas_Code_Build_Record.md`.
 
 ---

@@ -1,3 +1,11 @@
+## CURRENT — R4 four Phase10 source-A3 fixture migrations (2026-10-11)
+
+- [x] Four frozen R3-RED Phase10 identities 119/129/196/248 migrated at six A4 ingress sites to existing independent `build_phase10_with_source_atlas` helper. Applied source `4467edc69f6c8b2d4530cd902d4de32681aa3671`, workflow `38107433774` (one test file). Original assertions, selectors and production code unchanged; Drive stage owner-deleted.
+- [x] Mandatory eight-target GMP/GMPXX compile GREEN `38107520617` job `114376101533`, source `4467edc69f6c8b2d4530cd902d4de32681aa3671`; exit 0/0, clean, 28/28 manifest and `runtimeExecution=false`. Result `11689459391` SHA256 `a6b1a0ab0f91694ba33d730de0a596be8d49cd1d72ef799323ee37a826646506`, log `11689613812` SHA256 `ac7d3802a0ee67df5391ee12af6ab1df0d0d2f1a4370612f3f5567ec81981434`.
+- [ ] Runtime validation remains separate and **unauthorized in Code + Build**. 39 endpoint / 34 Phase10 / 7 DCEL / 88 CP2 R3 regressions, genuine multi-carrier/odd-τ and dual-path independent review remain open. Do not advance to frozen TB497 or count a candidate as PASS.
+
+---
+
 ## CURRENT — Three R4 Phase10 A2/A3 row-order candidate repairs (2026-10-11)
 
 - [x] Source `2626a053424cc8ff53c31c13fe5559494835b1af` migrated frozen ordinals 245/255/257 to independent A2/A3; apply `38104841732`, exact one-file change and Drive stage cleanup.
