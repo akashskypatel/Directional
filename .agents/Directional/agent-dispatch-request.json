@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-a3-incidence-nonvacuity-apply-20261011-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-a3-incidence-nonvacuity-apply",
-  "file_id": "1EWcqE8gXZqHbuYoFeaOX6TJ9JkTtAp0N",
-  "patch_sha256": "eec96a06f4bd2e2d4746dd26e7f74939cd3877c39bac3c615fba5fb0b7901ccc",
-  "base_sha": "b9a1c4e715f4250505ec02a7b4a48896ac6c34a3",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test: require source A3 and carrier for positive rail-incidence controls",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-a3-incidence-nonvacuity-compile-20261011-a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-a3-incidence-nonvacuity-compile",
+  "source_sha": "e7871efaf56a1ee717cea5b66115e5c50a125d46",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-a3-incidence-nonvacuity"
 }
