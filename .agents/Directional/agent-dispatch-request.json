@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-phase10-247-atlas-compile-20261011-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-phase10-247-atlas-compile",
-  "source_sha": "285a501053fa7a1c80683fb12d98d31052cd7239",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-phase10-247-atlas"
+  "request_id": "m6-cp3-r4-phase10-247-atlas-docs-20261011-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-phase10-247-atlas-docs",
+  "file_id": "1cq0zDIiQ2U5dWtRTS8SPC38y55K5fKOw",
+  "patch_sha256": "8618159cf38422b6ec7ee43ffc6f1e430c916ddc05388c8ffd11ab0aa09768e3",
+  "base_sha": "c49afcebaf5ce84d427dfd89d4085b6fe96703a8",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: preserve R4 periodic negative original A3 compile and handoff",
+  "retention_days": 14
 }
