@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-endpoint-reasons-compile-20261011-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-endpoint-reasons-compile",
-  "source_sha": "13139486e9a4ae4ff9fb1df48860026efc8b7b63",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-endpoint-reasons"
+  "request_id": "m6-cp3-r4-endpoint-first-reason-docs-20261011-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-endpoint-first-reason-docs",
+  "file_id": "17irD1UZDAMflxNYy3Z8T3783pKwIBmFB",
+  "patch_sha256": "e93110a1299502b4106458b0e13e3cf0c3ce9bda844cabee0f0d0cb35fd6fd86",
+  "base_sha": "087a225d8ac9d15296afa168ab5c45529a04e9ca",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: preserve exact A2b endpoint first-rejection compile and handoff",
+  "retention_days": 14
 }
