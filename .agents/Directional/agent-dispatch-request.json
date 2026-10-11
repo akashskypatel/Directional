@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-a3-incidence-nonvacuity-compile-20261011-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-a3-incidence-nonvacuity-compile",
-  "source_sha": "e7871efaf56a1ee717cea5b66115e5c50a125d46",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-a3-incidence-nonvacuity"
+  "request_id": "m6-cp3-r4-a3-incidence-nonvacuity-docs-20261011-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-a3-incidence-nonvacuity-docs",
+  "file_id": "1I_u6EO8_klz9o-hxxg0Xv8jlJK3BM65b",
+  "patch_sha256": "fbe9523c34aa74f5ec2f1799f026ecd19e6789f97b1a09ec8726c31b7abc910a",
+  "base_sha": "a406b3bcfa2283078112e5fa116e20653bf657df",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: preserve R4 A3 rail positive-control nonvacuity and GMP evidence",
+  "retention_days": 14
 }
