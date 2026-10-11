@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-a2b-hex-bary-probe-20261011-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-a2b-hex-bary-apply",
-  "file_id": "1x6XReprNU4UGVvuED7E7sTh8nHmY1y70",
-  "patch_sha256": "b81de782cf37e758037c73a2961d20c942d810d559d4d509b5256d7f525e564e",
-  "base_sha": "2a84b23815315fb8b524b4a6be0371f1f2db19de",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "diagnostics: emit raw hex barycentrics at rejected A2b terminal attachment",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-a2b-hex-bary-compile-20261011-a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-a2b-hex-bary-compile",
+  "source_sha": "5650747e75703d644ba7f7b888981fe32fbce542",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-a2b-hex-bary"
 }
