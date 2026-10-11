@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-carried39-static-triage-20261011-a",
+  "request_id": "m6-cp3-r4-a2b-hex-bary-probe-20261011-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-carried39-static-triage",
-  "file_id": "1b4aJrLVlEw-39M3kdOod-kgJCZ0VPkSx",
-  "patch_sha256": "28ed6a180719804f10004b5d37b69e503af3704060c559bb13e91425a8af206f",
-  "base_sha": "020d2373760e02d5044870e6500eccdb4c56ea8d",
+  "mailbox_key": "m6-cp3-r4-a2b-hex-bary-apply",
+  "file_id": "1x6XReprNU4UGVvuED7E7sTh8nHmY1y70",
+  "patch_sha256": "b81de782cf37e758037c73a2961d20c942d810d559d4d509b5256d7f525e564e",
+  "base_sha": "2a84b23815315fb8b524b4a6be0371f1f2db19de",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: triage frozen 39 carried A4 endpoint fingerprints and source-star ownership",
+  "commit_message": "diagnostics: emit raw hex barycentrics at rejected A2b terminal attachment",
   "retention_days": 14
 }
