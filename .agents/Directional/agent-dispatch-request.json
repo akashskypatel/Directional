@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-periodic-crossing-a3-20261011-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-periodic-crossing-a3-apply",
-  "file_id": "1sw2BpJMCYoDWFvClwGkPHJDRUPjs-HFw",
-  "patch_sha256": "bbfdf836981f67cb6149ba25ad78d646748335df0638ab22c3edc72e25b6e0e1",
-  "base_sha": "c43ecb5716776d4ad2c1b00ef074b2911c633352",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test: retain independent source A3 for malformed periodic provenance",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-periodic-crossing-a3-compile-20261011-a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-periodic-crossing-a3-compile",
+  "source_sha": "e0cc0415b447c045443e3d498c6d6f50769b29e8",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-periodic-a3"
 }
