@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-eigen-mirror-compile-20261011-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-eigen-mirror-compile",
-  "source_sha": "37c349948758328ac9bfac303a93d431b5b3e8e7",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-eigen-mirror-compile"
+  "request_id": "m6-cp3-r4-resolved-eigen-review-blocker-handoff-20261011-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-resolved-eigen-review-handoff",
+  "file_id": "16rL_t8gnWrVznIL4tE5BG0yjOIoKV7u6",
+  "patch_sha256": "64231aa30197d11987c9d64147736785081fc21d2a8e196db16ef52b7ec56f46",
+  "base_sha": "e3b45e67e1e69cee1ee011422af95febe5ef6724",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): retire resolved Eigen checkout blocker in R4 handoff",
+  "retention_days": 7
 }
