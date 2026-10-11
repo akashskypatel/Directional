@@ -1,3 +1,11 @@
+## CURRENT — R4 FlowRep singularity-support fixture (2026-10-11)
+
+- [x] Exact source `245ef12a10dca2f258d53dcf997f43e2a7567de4` replaces a one-triangle supplemental singularity-support source fixture with a consistently oriented two-triangle disk while preserving the original rail/trace geometry, test identity and oracle. Apply `38150151923`; Drive staging permanently deleted.
+- [x] Exact mandatory GMP/GMPXX eight-target compile GREEN `38150289951`, job `114502218749`, source `245ef12a10dca2f258d53dcf997f43e2a7567de4`, preflight/build 0/0, both GMP libraries linked, clean tree, 28/28 ZIP manifest, `runtimeExecution=false`; result `11706318595` SHA-256 `7f0db84857a847378b07b998d02cf592cab47f8c2bdae72d8dfab819669e6be2` and log `11706588040` SHA-256 `c9933e7976cdc2062514d1d536c25fc04e8f1122d9d732d6c8d5cc31c2471c9b`.
+- [ ] Runtime execution and all original R4 obligations still pending. This supplemental fixture is not among the frozen seven R3 DCEL regressions and earns no restored PASS. R4 `IN_PROGRESS`; no frozen TB497. See `.agents/Directional/Architecture_M6_CP3_R4_FlowRep_Singularity_TwoFace_Source_Fixture_Code_Build_Record_20261011.md`.
+
+---
+
 ## CURRENT — R4 rejected terminal source-point coordinates (2026-10-11)
 
 - [x] Verified exact snapshot `38146355008`, 6,174/6,174 entries. Applied source-only diagnostic `5650747e75703d644ba7f7b888981fe32fbce542` through `38146992456`; one code file, original A2b/A3 selection unchanged, Drive staging deleted.
