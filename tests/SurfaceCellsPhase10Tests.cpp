@@ -4173,20 +4173,6 @@ std::optional<directional::authority::QuarterTurn> periodic_route_rotation(
   return rotation;
 }
 
-directional::geometry::SurfaceCellNetwork build_periodic_route_network(
-    const PeriodicHolonomyRouteFixture &fixture,
-    const directional::fields::CrossFieldResult &field) {
-  const Eigen::VectorXd targetSize =
-      Eigen::VectorXd::Constant(fixture.mesh.V.rows(), 0.25);
-  directional::geometry::SurfaceCellTracingOptions options;
-  options.sourceFaceComponents.assign(
-      static_cast<std::size_t>(fixture.mesh.F.rows()), 0);
-  options.sourceFaceSheets.assign(
-      static_cast<std::size_t>(fixture.mesh.F.rows()), 0);
-  return directional::geometry::build_surface_cell_network(
-      fixture.mesh.V, fixture.mesh.F, field, targetSize, options);
-}
-
 // Build the source-owned A2/A3 atlas independently from the complete original
 // fixture field. The supplied tracing field remains unchanged: a legacy
 // compact representation or signed +4 relabeling is not used to manufacture
@@ -4513,7 +4499,11 @@ TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
   ASSERT_GE(transition->sourceEdge, 0);
   transition->sourceEdge = -1;
 
-  const auto rejected = build_periodic_route_network(fixture, malformed);
+  // Preserve the original source-owned A2/A3 authority. Only the tracing
+  // transition's source-edge provenance is corrupted for this negative.
+  const auto sourceField = balanced_periodic_route_field(fixture);
+  const auto rejected = build_periodic_route_network_with_source_atlas(
+      fixture, malformed, sourceField);
   EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
             rejected.phaseFront.disposition());
   EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
