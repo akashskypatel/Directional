@@ -1,3 +1,7 @@
+**R4 source-owned rejected endpoint coordinates (compile-only, 2026-10-11):** Verified snapshot `38146355008` (6,174/6,174); source `5650747e75703d644ba7f7b888981fe32fbce542` adds exact-hexfloat *stored* face/barycentric pairs to **already rejected** hard-rail A2b endpoint diagnostics. This is not a producer acceptance repair; `point_on_periodic_chart` may already have canonicalized stored coordinates. Mandatory GMP/GMPXX compile `38147128884` GREEN: 8/8, preflight/build `0/0`, manifest `28/28`, clean source, `runtimeExecution=false` (result `11704508997`). Source/transport gates, selectors and runtime untouched. Detailed record `.agents/Directional/Architecture_M6_CP3_R4_A2b_Raw_Barycentric_Diagnostic_Code_Build_Record_20261011.md`. Canonical R4 IN_PROGRESS, successor UNKNOWN; no frozen TB497.
+
+---
+
 **R4 carried endpoint triage (static, 2026-10-11):** Frozen 39 route-certificate REDs split into 31 common hard-rail terminal fingerprints (17+12+2) and eight distinct first symptoms. The accepted 3×3 source-star topology supports genuine non-hard A3 terminal paths, but traced endpoint exact corners remain unverified. No runtime PASS credited; see `.agents/Directional/Architecture_M6_CP3_R4_Carried_39_Endpoint_Fingerprint_Source_Star_Triage_20261011.md`. R4 remains `IN_PROGRESS`, successor `UNKNOWN`; no TB497.
 
 ---

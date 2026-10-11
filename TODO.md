@@ -1,3 +1,11 @@
+## CURRENT — R4 rejected terminal source-point coordinates (2026-10-11)
+
+- [x] Verified exact snapshot `38146355008`, 6,174/6,174 entries. Applied source-only diagnostic `5650747e75703d644ba7f7b888981fe32fbce542` through `38146992456`; one code file, original A2b/A3 selection unchanged, Drive staging deleted.
+- [x] Mandatory GMP/GMPXX compile `38147128884` GREEN: 8/8, preflight/build `0/0`, manifest `28/28`, clean source, `runtimeExecution=false` (result `11704508997`).
+- [ ] First actual rejected endpoint source barycentrics remain runtime-unverified. The stored point may already be canonicalized by a chart tolerance; no source-valid contact claimed. Outstanding 39 endpoints, 34 Phase10, seven DCEL, 88 CP2 losses, six CP3 gates, genuine multi-carrier/odd-τ, and independent dual-path Review. No TB497 in current Code + Build.
+
+---
+
 ## CURRENT — R4 carried 39 endpoint static grouping (2026-10-11)
 
 - [x] Crosswalked all 39 frozen A4 route-certificate RED rows: 31 share the internal-midline hard-carrier endpoint predicate (17 constant fixture, 12 fixed-plan variants, two odd χ); eight have distinct observed first failures. Independently mapped the 3×3 source-star spokes; no extrapolated runtime evidence. Exact record: `.agents/Directional/Architecture_M6_CP3_R4_Carried_39_Endpoint_Fingerprint_Source_Star_Triage_20261011.md`.
