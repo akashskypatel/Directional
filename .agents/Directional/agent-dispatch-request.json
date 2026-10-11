@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-phase10-two-composite-compile-20261011-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-phase10-two-composite-compile",
-  "source_sha": "9535719a9d0e796ec455b721a199f0d6551530ae",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-phase10-composite-a3"
+  "request_id": "m6-cp3-r4-two-composite-a3-docs-20261011-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-two-composite-a3-docs",
+  "file_id": "1MDE1ea3No9cMzPVFL2fCkObMunVoOpF_",
+  "patch_sha256": "ea97bdf62b00f0b273964e2f50a2fc71e83ea7fb93a991429c75c1cbee6c73cd",
+  "base_sha": "605df663b5cd14e169cc914a771091400ec0dca4",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: retain R4 two composite Phase10 A3 candidate compile evidence",
+  "retention_days": 14
 }
