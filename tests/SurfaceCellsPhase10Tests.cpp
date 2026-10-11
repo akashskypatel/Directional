@@ -7842,6 +7842,27 @@ TEST(SurfaceCellAuthorityContractCutover,
   EXPECT_EQ(snapshot(forward), snapshot(reverse));
 }
 
+// Preserve the complete producer-owned A2b/A3/A4 ingress when altering only
+// a region reference. Otherwise missing optional authority can reject before
+// the intended InvalidCellRegion or InvalidEdgeRegion validator.
+directional::geometry::SurfacePhaseFrontProduct::ConstructionResult
+rebuild_checked_region_reference_product(
+    const directional::TriMesh &mesh,
+    const directional::geometry::SurfacePhaseFrontProduct &product,
+    const directional::authority::FieldTransportAtlas &atlas,
+    std::vector<directional::geometry::SurfaceFrontEdge> edges,
+    std::vector<directional::geometry::SurfacePhaseFrontCell> cells) {
+  return directional::geometry::SurfacePhaseFrontProduct::make(
+      product.gridU(), product.gridV(), product.sourceTopologyRegions(),
+      mesh.F, static_cast<std::size_t>(mesh.V.rows()), &atlas,
+      product.isolationSeamTransportCertificates(), product.periodicHolonomies(),
+      product.boundedDiskBoundaryPhases(), std::move(edges), product.events(),
+      std::move(cells), product.conformityPlanReceipt(), product.hardFeatureEdges(),
+      product.sourceFaceBranchRotations(), product.hardRailFieldTransitions(),
+      product.hardRailRouteCertificates(), product.hardRailTerminalContacts(),
+      product.hardRailClosedChains());
+}
+
 TEST(SurfaceCellAuthorityContractCutover,
      ConflictingCellRegionFailsBeforeMaterialization) {
   const directional::TriMesh mesh = make_disconnected_square_pair_mesh();
@@ -7862,8 +7883,13 @@ TEST(SurfaceCellAuthorityContractCutover,
 
   const auto &product = network.phaseFront.product();
   auto atlas = directional::authority::FieldTransportAtlas::make(
-      mesh, product.sourceTopologyRegions(), {}, crossField);
+      mesh, product.sourceTopologyRegions(), product.hardFeatureEdges(), crossField);
   ASSERT_TRUE(atlas.has_value());
+  const auto unchanged = rebuild_checked_region_reference_product(
+      mesh, product, atlas.value(), product.edges(), product.cells());
+  ASSERT_NE(nullptr, std::get_if<directional::geometry::SurfacePhaseFrontProduct>(
+                         &unchanged))
+      << "Original produced front must pass checked A4 before cell-region mutation";
   auto cells = product.cells();
   const auto regionCount = product.sourceTopologyRegions().regions().size();
   const auto missingRegion = directional::authority::TopologyRegionId::from_index(
@@ -7874,12 +7900,8 @@ TEST(SurfaceCellAuthorityContractCutover,
       product.sourceTopologyRegions().regions().end(),
       [&](const auto &region) { return region.id() == missingRegion.value(); }));
   cells.front().sourceTopologyRegion = missingRegion.value();
-  const auto rejected = directional::geometry::SurfacePhaseFrontProduct::make(
-      product.gridU(), product.gridV(), product.sourceTopologyRegions(),
-      mesh.F, static_cast<std::size_t>(mesh.V.rows()), &atlas.value(),
-      product.isolationSeamTransportCertificates(), product.periodicHolonomies(),
-      product.boundedDiskBoundaryPhases(), product.edges(), product.events(),
-      std::move(cells));
+  const auto rejected = rebuild_checked_region_reference_product(
+      mesh, product, atlas.value(), product.edges(), std::move(cells));
   const auto *error =
       std::get_if<directional::geometry::SurfacePhaseFrontProductError>(&rejected);
   ASSERT_NE(nullptr, error);
@@ -7908,8 +7930,13 @@ TEST(SurfaceCellAuthorityContractCutover,
 
   const auto &product = network.phaseFront.product();
   auto atlas = directional::authority::FieldTransportAtlas::make(
-      mesh, product.sourceTopologyRegions(), {}, crossField);
+      mesh, product.sourceTopologyRegions(), product.hardFeatureEdges(), crossField);
   ASSERT_TRUE(atlas.has_value());
+  const auto unchanged = rebuild_checked_region_reference_product(
+      mesh, product, atlas.value(), product.edges(), product.cells());
+  ASSERT_NE(nullptr, std::get_if<directional::geometry::SurfacePhaseFrontProduct>(
+                         &unchanged))
+      << "Original produced front must pass checked A4 before edge-region mutation";
   auto edges = product.edges();
   const auto current = edges.front().sourceTopologyRegion;
   const auto replacement = std::find_if(
@@ -7918,12 +7945,8 @@ TEST(SurfaceCellAuthorityContractCutover,
       [&](const auto &region) { return region.id() != current; });
   ASSERT_NE(product.sourceTopologyRegions().regions().end(), replacement);
   edges.front().sourceTopologyRegion = replacement->id();
-  const auto rejected = directional::geometry::SurfacePhaseFrontProduct::make(
-      product.gridU(), product.gridV(), product.sourceTopologyRegions(),
-      mesh.F, static_cast<std::size_t>(mesh.V.rows()), &atlas.value(),
-      product.isolationSeamTransportCertificates(), product.periodicHolonomies(),
-      product.boundedDiskBoundaryPhases(), std::move(edges), product.events(),
-      product.cells());
+  const auto rejected = rebuild_checked_region_reference_product(
+      mesh, product, atlas.value(), std::move(edges), product.cells());
   const auto *error =
       std::get_if<directional::geometry::SurfacePhaseFrontProductError>(&rejected);
   ASSERT_NE(nullptr, error);
