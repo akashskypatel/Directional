@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-a2b-hex-bary-docs-20261011-a",
+  "request_id": "m6-cp3-r4-flowrep-singular-twoface-apply-20261011-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-a2b-hex-bary-docs",
-  "file_id": "156QLqaWZl2axE3Tex9vXXaHCjKUk6gd0",
-  "patch_sha256": "78ea735ebb76896066e09f0155cedc09bcd168064b75dd85aea115f8adf15bfc",
-  "base_sha": "dcda10fef9efa9d1fbc4b22900ed6d92994db1c8",
+  "mailbox_key": "m6-cp3-r4-flowrep-singular-twoface-apply",
+  "file_id": "1Qb8WtGhrv2g1ZWU3PIL1y8vl5GEWeCq9",
+  "patch_sha256": "f6284ee3326220bf78cae677cb035d5c9b4ec047f1e0c3c64e6bebdb5afb37d0",
+  "base_sha": "8379b155063efff30a8fa39a8ee4c3a7ceb7ecd8",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: retain R4 A2b raw barycentric compile evidence and continuation",
+  "commit_message": "test: use DCEL-valid two-face A3 fixture for rail-truncated singularity support",
   "retention_days": 14
 }
