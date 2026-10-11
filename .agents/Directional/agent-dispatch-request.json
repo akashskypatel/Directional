@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-endpoint-probe-20261011-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-endpoint-probe-apply",
-  "file_id": "1WYDSm53pTNdJoHcEtpavMWOzoMAAxjSg",
-  "patch_sha256": "2162723c8a38705dd8d433a689e8eb242d02add58f7014485f712f202e2283ac",
-  "base_sha": "9ad884d89eff5406ba61ff4b098cbd4c14f0d04b",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "diag: add rejected hard-rail endpoint source-corner evidence",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-endpoint-probe-compile-20261011-a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-endpoint-probe-compile",
+  "source_sha": "3f9dd2b390caf03e3e780aab6e58ba26fc4a8d58",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-endpoint-probe"
 }
