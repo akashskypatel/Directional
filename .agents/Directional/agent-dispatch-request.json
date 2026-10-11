@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-phase10-r3-ingress-census-20261011-a",
+  "request_id": "m6-cp3-r4-endpoint-probe-20261011-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-phase10-r3-ingress-census",
-  "file_id": "1an3xQiUMOE2Jve_EoyS_1cIoLH12oqDu",
-  "patch_sha256": "cc67aa45f821b288b3848f1d3cc2ff52d60043461498f43ef8e874f7874d7026",
-  "base_sha": "dc4d20010368c2bd05c6ddb1af69c8a33f26d57a",
+  "mailbox_key": "m6-cp3-r4-endpoint-probe-apply",
+  "file_id": "1WYDSm53pTNdJoHcEtpavMWOzoMAAxjSg",
+  "patch_sha256": "2162723c8a38705dd8d433a689e8eb242d02add58f7014485f712f202e2283ac",
+  "base_sha": "9ad884d89eff5406ba61ff4b098cbd4c14f0d04b",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: audit R3 Phase10 RED ingress and avoid repeated atlas-only changes",
+  "commit_message": "diag: add rejected hard-rail endpoint source-corner evidence",
   "retention_days": 14
 }
