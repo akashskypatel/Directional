@@ -1,3 +1,11 @@
+## CURRENT — R4 A2b terminal missing/ambiguous simple-path diagnostic (2026-10-11)
+
+- [x] Diagnostic-only source `3bcbb1f28adaa5b1b7dc5de9bc31e8be46ef5a4c`: report finite A3-admissible simple-path count to distinguish missing/ambiguous terminal path *on already rejected A4 endpoint certificates*, retaining typed first-failure and all checked A2b/A3/sector/orientation gates. Apply `38137073789` verified; patch `cb0702f4382d247dd9b5eec0d202bc1ecbb34ed0e291efd9c00af422bffcf3a2` backed up; transient Drive staging deleted.
+- [x] Mandatory GMP/GMPXX compile GREEN: workflow `38137200763`, job `114463449240`, 8/8 targets, preflight/build 0/0, 28/28 checksums, final tree clean, `runtimeExecution=false`, result `11702155468` SHA-256 `f5cb12568e252e2d2a5280f2bd1daffb4a98fd934a327151b6be437861464d0e`, separate log `11701761274` SHA-256 `c6ca9ea7c62e3f7a31049a0b13550f2592c9ece2395edea96a92b36cbd587f40`.
+- [ ] No runtime evidence, no 39 endpoint or CP2 PASS restoration, no proof of source-valid second admissible path; all 34 Phase10, seven DCEL, 88 CP2 losses, six CP3 positives, genuine multi-carrier/odd-τ and independent dual-path Review remain open. Frozen TB497 cannot start in Code + Build.
+
+---
+
 ## CURRENT — R4 endpoint A2b first-rejection localization (2026-10-11)
 
 - [x] Source `13139486e9a4ae4ff9fb1df48860026efc8b7b63`: rejection-only `a2bProbeFailure` records actual first failed A2b terminal predicate (source-face, carrier, contact, A3, sector path or orientation) alongside earlier source-corner presence probes. Existing A4/A2b approval, route-certificate reason and selectors unchanged; Drive apply `38134295353` confirmed; File-Library patch backed up, consumed Drive staging deleted.
