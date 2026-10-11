@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-curved-disk-authority-compile-20261011-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-curved-disk-authority-compile",
-  "source_sha": "10fe9476be39f71171d6df33bc282089c0461944",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-curved-disk-authority"
+  "request_id": "m6-cp3-r4-curved-disk-authority-docs-20261011-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-curved-disk-authority-docs",
+  "file_id": "11YhxllJe8VGFmU433VPvOhQyDYza4lZU",
+  "patch_sha256": "4b55cd85249eb60cb610074cc8c1348eef47c5a4bcea64a7d7bf6350a4c39df9",
+  "base_sha": "03a94edb330841da3d19132d523dfd509bf1e007",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: record R4 curved-disk A4 negative full authority and GMP compile",
+  "retention_days": 14
 }
