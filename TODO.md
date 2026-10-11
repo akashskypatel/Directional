@@ -1,3 +1,11 @@
+## CURRENT — R4 curved-disk complete A4 checked-factory bounded-disk negatives (2026-10-11)
+
+- [x] Correct both curved-disk A4 negative tests to reconstruct full source authority and assert a successful unmodified positive checked-factory round-trip. Source `10fe9476be39f71171d6df33bc282089c0461944`, apply workflow `38099335208`, original test identities/expected errors preserved; source patch retained in `/Directional/Evidence/` and consumed Drive staging retired.
+- [x] Exact mandatory GMP/GMPXX compile GREEN: workflow `38099415226` / job `114352107025`, exact semantic source `10fe9476be39f71171d6df33bc282089c0461944`, all eight required targets linked, preflight/build exit `0/0`, CMake `DIRECTIONAL_ENABLE_GMP=ON`, authoritative link command includes both `libgmpxx` and `libgmp`, 28/28 package self-manifest checksums verified, final source clean, `exactArithmeticBackend=GMP`, `runtimeExecution=false`. Result artifact `11686914874` ZIP SHA-256 `decfd995e52efa2f6a3f242bbbdbe7d2279d38e6bf18834a3a4e190fd7c01643`; diagnostic log artifact `11687480020` ZIP SHA-256 `ca6806b77e0d33eb55cf91cc12c2880695e0d8cc8778f3856c5dfd16fc096340`.
+- [ ] Runtime prove both negative first rejections only in a separately authorized artifact-only Test + Benchmark turn. Full R4 39 endpoint / 34 Phase10 / 7 DCEL / 88 CP2 regressions and authentic multi-carrier/odd-τ remain open; dual-path independent adjudication remains required.
+
+---
+
 ## CURRENT — R4 Phase10 shared-boundary negative A4 authority correction (2026-10-10)
 
 - [x] Source `f7be55e01c525ef4ae7c8db0039956246d8f04cc` fixes the existing missing/tampered interval negative fixture to preserve full hard-rail A2b/A3 authority and require successful positive checked A4 reconstruction before negative checks. Drive apply `38096715429` verified. No production code, selector changes or runtime execution.
