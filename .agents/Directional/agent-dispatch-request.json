@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-four-phase10-a3-20261011-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-four-phase10-a3-apply",
-  "file_id": "1jFCDvNaIe-zKdYRzuq4xI9nDiGQ3PU4q",
-  "patch_sha256": "2aa9a5daaf2af6240447f1a90140efc4846b051211fb272956324f1d52f6ac65",
-  "base_sha": "37c5c247b518951e31aa41f3bfdab7e423a37aff",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test: migrate four R3-RED Phase10 identities to source-owned A3",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-four-phase10-a3-compile-20261011-a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-four-phase10-a3-compile",
+  "source_sha": "4467edc69f6c8b2d4530cd902d4de32681aa3671",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-four-phase10-a3"
 }
