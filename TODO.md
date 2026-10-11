@@ -1,3 +1,11 @@
+## CURRENT — R4 post-rejection hard-rail A2b endpoint evidence (2026-10-11)
+
+- [x] Source `3f9dd2b390caf03e3e780aab6e58ba26fc4a8d58`: diagnostic-only endpoint rejection probe, verified one-file Drive apply `38131410373`; unchanged A2b/A3 acceptance and frozen selectors. Source patch backed up in `/Directional/Evidence/`; staging owner-deleted.
+- [x] Mandatory eight-target GMP/GMPXX compile verified: workflow `38131508716`, job `114446675580`, semantic source `3f9dd2b390caf03e3e780aab6e58ba26fc4a8d58`, eight requested targets, GMP/GMPXX linked, preflight/build exit 0/0, package 28/28 manifest, clean final source, `exactArithmeticBackend=GMP`, `runtimeExecution=false`; result `11699316241` ZIP SHA256 `bc8d5c35428ebe03b17a6f84f96d0573134c16ab4b1e4ab8c3fa2259c01845ad`, log `11699830258` ZIP SHA256 `0331a56d385125966be78481e0b5fefbd72c0b0b0a58da557c19612935826ffb.
+- [ ] Runtime verify the first rejected endpoint predicate in a separately authorized immutable Test + Benchmark turn. No runtime, PASS or acceptance claim. Continue 39 endpoint, 34 Phase10, seven DCEL, 88 CP2 regressions, 6 CP3 gates, multi-carrier/odd-τ and independent dual-path review. R4 `IN_PROGRESS`, successor `UNKNOWN`.
+
+---
+
 ## CURRENT — R4 R3 Phase10 source-atlas ingress census (2026-10-11)
 
 - [x] Static source/overlay crosswalk at `fa03f13298c1ade7b46ba6bf4ca515c9831409ed`: 52/94 R3 RED identities owned by `SurfaceCellsPhase10Tests.cpp`, all 52 CP2-accepted by independent recomputation; 22 untyped, 18 A4 rail-route certificates, 12 invalid final-cell-state first predicates. Direct-builder ordinals 199/247 already have independently sourced A3; 29 delegated identities require separate analysis. Full evidence: `.agents/Directional/Architecture_M6_CP3_R4_Phase10_R3_RED_Source_Atlas_Static_Census_20261011.md`.
