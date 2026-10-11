@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-periodic-192-chart-199-apply-20261011-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-periodic-192-chart-199-apply",
-  "file_id": "1K4jPvah9wAtqHtWCS6OQ5oOszFFSL8fG",
-  "patch_sha256": "14e503094062e439daada33cc1a744e629e8919fb7f8ac6e5563f90feb11a9f4",
-  "base_sha": "8d540fa241e05f7e9d6e9def4805b86efb1b209e",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test: restore independent source A3 in periodic negative and chart-zero fixtures",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-periodic-192-chart-199-compile-20261011-a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-periodic-192-chart-199-compile",
+  "source_sha": "2be228d96c5a69ef2da584a221ae2fa6d4b5e720",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-periodic-192-chart-199"
 }
