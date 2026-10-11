@@ -1595,6 +1595,14 @@ TEST(SurfaceCellSegmentRouteTransportAuthorityMigration,
   for (const auto &observation : reverse) EXPECT_EQ(3, observation.matching);
 }
 
+// Defined below with the Phase10 source-authority helpers. These row-order
+// regressions must enter A4 with an independently reconstructed A2/A3 atlas.
+directional::geometry::SurfaceCellNetwork build_phase10_with_source_atlas(
+    const directional::TriMesh &mesh,
+    const directional::fields::CrossFieldResult &crossField,
+    const Eigen::VectorXd &targetSize,
+    directional::geometry::SurfaceCellTracingOptions options);
+
 TEST(SurfaceCellsPhase10,
      UniformPhaseFrontTraversesOrderedAuthoritativeSourceVertexFans) {
   const directional::TriMesh mesh = make_vertex_fan_plane_mesh();
@@ -1653,10 +1661,10 @@ TEST(SurfaceCellsPhase10,
   directional::geometry::SurfaceCellTracingOptions reverseOptions =
       forwardOptions;
 
-  const auto forward = directional::geometry::build_surface_cell_network(
-      forwardMesh.V, forwardMesh.F, forwardField, targetSize, forwardOptions);
-  const auto reverse = directional::geometry::build_surface_cell_network(
-      reverseMesh.V, reverseMesh.F, reverseField, targetSize, reverseOptions);
+  const auto forward = build_phase10_with_source_atlas(
+      forwardMesh, forwardField, targetSize, forwardOptions);
+  const auto reverse = build_phase10_with_source_atlas(
+      reverseMesh, reverseField, targetSize, reverseOptions);
 
   ASSERT_TRUE(forward.phaseFront.is_produced());
   ASSERT_TRUE(reverse.phaseFront.is_produced());
@@ -1848,8 +1856,8 @@ TEST(SurfaceCellsPhase10,
       options.sourceFaceComponents[static_cast<std::size_t>(face)] = component;
       options.sourceFaceSheets[static_cast<std::size_t>(face)] = component;
     }
-    return directional::geometry::build_surface_cell_network(
-        mesh.V, mesh.F, crossField, targetSize, options);
+    return build_phase10_with_source_atlas(
+        mesh, crossField, targetSize, options);
   };
 
   const auto forward = build(forwardMesh, forwardRaw);
@@ -1959,8 +1967,8 @@ TEST(SurfaceCellsPhase10,
     directional::geometry::SurfaceCellTracingOptions options;
     options.sourceFaceComponents.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
     options.sourceFaceSheets.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
-    return directional::geometry::build_surface_cell_network(
-        mesh.V, mesh.F, crossField, targetSize, options);
+    return build_phase10_with_source_atlas(
+        mesh, crossField, targetSize, options);
   };
 
   const auto forward = build(forwardMesh, forwardRaw);
