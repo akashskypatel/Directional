@@ -18938,8 +18938,11 @@ SurfaceCellNetwork build_surface_cell_network(
       const auto *carrier = find_carrier(edge);
       if (carrier == nullptr) return reject("missing-carrier");
       if (contact == authoritativeOptions.hardRailTerminalContacts.end()) {
-        // Closed rails have no terminal source vertex and retain their cyclic
-        // route certificate; no fictitious terminal contact is introduced.
+        // Missing open-rail contact is not evidence of a closed rail. Only an
+        // independently published typed closed chain permits the contact-free
+        // cyclic route; otherwise reject at the producer's A2b boundary.
+        if (!authoritativeOptions.hardRailClosedChains.contains(*first.railId))
+          return reject("missing-terminal-or-closed-rail-provenance");
         const auto oriented = oriented_carrier(*carrier, firstAttachment,
                                                secondAttachment);
         if (!oriented) return reject("closed-rail-carrier-face-mismatch");
@@ -19128,7 +19131,9 @@ SurfaceCellNetwork build_surface_cell_network(
                        << ";a2bProbeA3Present="
                        << (authoritativeOptions.fieldTransportAtlas != nullptr)
                        << ";a2bProbeContactPresent="
-                       << (contact != authoritativeOptions.hardRailTerminalContacts.end());
+                       << (contact != authoritativeOptions.hardRailTerminalContacts.end())
+                       << ";a2bProbeClosedChainPresent="
+                       << authoritativeOptions.hardRailClosedChains.contains(*first.railId);
       if (contact != authoritativeOptions.hardRailTerminalContacts.end()) {
         for (const auto vertex : contact->second.endpoints) {
           endpointEvidence << ";corner[" << vertex.index() << "]="
