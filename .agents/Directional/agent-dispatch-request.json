@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-segment-route-a3-docs-20261011-a",
+  "request_id": "m6-cp3-r4-phase10-two-composite-a3-20261011-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-segment-route-a3-docs",
-  "file_id": "1d70U709vvlbIW88Sct5PU1HXf8gL4lmB",
-  "patch_sha256": "a2a032748df417dfd613533a62c0779f8310d35d138cbe8bcdfdfa878e5ab3ee",
-  "base_sha": "d9a2ed12cf3843e3184db2db4a1cf73d153e72bb",
+  "mailbox_key": "m6-cp3-r4-phase10-two-composite-a3-apply",
+  "file_id": "1gJEDhIMXucaXLLvGmYl9l8Zs2JtJK9vD",
+  "patch_sha256": "f0975a04934ef595f1f701117543d608b3c097bf2da0fdfdc26c5ad9ee33fa5c",
+  "base_sha": "546637302d1890ea5928324ad7611bd03961c2ce",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: preserve segment-route source A3 GMP compile and R4 handoff",
+  "commit_message": "test: bind independent A3 for Phase10 isolation and combined sheet fixtures",
   "retention_days": 14
 }
