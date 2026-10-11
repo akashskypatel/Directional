@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-a2b-path-count-diag-20261011-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-a2b-path-count-diag-apply",
-  "file_id": "1ePGc1EU5sAV9UswOMMxL8V8TRLqDO_b8",
-  "patch_sha256": "cb0702f4382d247dd9b5eec0d202bc1ecbb34ed0e291efd9c00af422bffcf3a2",
-  "base_sha": "976360d8bff5f83a9ad74df10c5891957477be43",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "diag: distinguish absent and competing A2b terminal A3 paths",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-a2b-path-count-diag-compile-20261011-a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-a2b-path-count-diag-compile",
+  "source_sha": "3bcbb1f28adaa5b1b7dc5de9bc31e8be46ef5a4c",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-a2b-path-count-diag"
 }
