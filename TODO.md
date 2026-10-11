@@ -1,3 +1,10 @@
+## CURRENT — R4 R3 Phase10 source-atlas ingress census (2026-10-11)
+
+- [x] Static source/overlay crosswalk at `fa03f13298c1ade7b46ba6bf4ca515c9831409ed`: 52/94 R3 RED identities owned by `SurfaceCellsPhase10Tests.cpp`, all 52 CP2-accepted by independent recomputation; 22 untyped, 18 A4 rail-route certificates, 12 invalid final-cell-state first predicates. Direct-builder ordinals 199/247 already have independently sourced A3; 29 delegated identities require separate analysis. Full evidence: `.agents/Directional/Architecture_M6_CP3_R4_Phase10_R3_RED_Source_Atlas_Static_Census_20261011.md`.
+- [ ] No case is runtime-restored by this census. Diagnose route-certificate/39 endpoint and source final-cell-state owners instead of blindly attaching another atlas; preserve 34 Phase10, seven DCEL, 88 CP2 regression obligations, authentic multi-carrier/odd-τ and independent dual-path review. R4 remains Code + Build; no frozen TB497.
+
+---
+
 ## CURRENT — R4 original-source A3 ingress for two region-reference negatives (2026-10-11)
 
 - [x] Frozen CP2-accepted/R3-RED ordinals 123/124: correct missing original-source A2/A3 authority in their initial positive producer, leaving checked A4 region mutation, expected typed reasons, identities and selectors unchanged. Exact source `d3a70402a999b34fe69cacd4905440f7d529e3ab`, apply workflow `38125626216`; one test file; patch backup retained and staging retired.
