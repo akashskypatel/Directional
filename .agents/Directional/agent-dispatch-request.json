@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-endpoint-first-reason-docs-20261011-a",
+  "request_id": "m6-cp3-r4-a2b-path-count-diag-20261011-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-endpoint-first-reason-docs",
-  "file_id": "17irD1UZDAMflxNYy3Z8T3783pKwIBmFB",
-  "patch_sha256": "e93110a1299502b4106458b0e13e3cf0c3ce9bda844cabee0f0d0cb35fd6fd86",
-  "base_sha": "087a225d8ac9d15296afa168ab5c45529a04e9ca",
+  "mailbox_key": "m6-cp3-r4-a2b-path-count-diag-apply",
+  "file_id": "1ePGc1EU5sAV9UswOMMxL8V8TRLqDO_b8",
+  "patch_sha256": "cb0702f4382d247dd9b5eec0d202bc1ecbb34ed0e291efd9c00af422bffcf3a2",
+  "base_sha": "976360d8bff5f83a9ad74df10c5891957477be43",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: preserve exact A2b endpoint first-rejection compile and handoff",
+  "commit_message": "diag: distinguish absent and competing A2b terminal A3 paths",
   "retention_days": 14
 }
