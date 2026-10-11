@@ -1,2 +1,0 @@
-# R4 2026-10-10 23:52 UTC temporary source-snapshot trigger; preserve all workflow mailbox records.
-.agents/connector-triggers/source-snapshot/m6-cp3-r4-20261010T2353Z.txt
