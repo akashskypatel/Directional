@@ -1,3 +1,11 @@
+## CURRENT — R4 complete checked-A4 region-reference negative witnesses (2026-10-11)
+
+- [x] `ConflictingCellRegionFailsBeforeMaterialization` and `ConflictingEdgeRegionFailsBeforeMaterialization` preserve source-owned A3 and all produced A2b/conformity evidence, positively reconstruct original A4 before sole region mutation, then assert original typed `InvalidCellRegion` / `InvalidEdgeRegion`. Exact source `e200af8b0e2984ae6a452df9fd8520016043cc7d`, Drive apply `38102136461`; source patch backed up in `/Directional/Evidence/`, staging deleted. No production/selector change.
+- [x] Exact eight-target GMP/GMPXX compile GREEN: run `38102239838`, job `114360426650`, source `e200af8b0e2984ae6a452df9fd8520016043cc7d`, preflight/build 0/0, 8/8 targets, 28/28 checksum manifest, clean source, both GMP libraries verified, `runtimeExecution=false`. Result `11688525324` SHA256 `509da9e590f598bf262b63e55bd2d10ef59d94e47579d5cbbab3c0cf22aff634`; diagnostic `11687754449` SHA256 `812a2a2fea38cf70d9c60a1b88b1c7dc9b466701e17eec1065567c719d75fa0f`.
+- [ ] Neither expected error is runtime-confirmed. All R4 39 endpoint, 34 Phase10, seven DCEL, 88 CP2 losses, multi-carrier/odd-τ and dual-admissible-path design review obligations remain open; no Test + Benchmark successor is authorized.
+
+---
+
 ## CURRENT — R4 curved-disk complete A4 checked-factory bounded-disk negatives (2026-10-11)
 
 - [x] Correct both curved-disk A4 negative tests to reconstruct full source authority and assert a successful unmodified positive checked-factory round-trip. Source `10fe9476be39f71171d6df33bc282089c0461944`, apply workflow `38099335208`, original test identities/expected errors preserved; source patch retained in `/Directional/Evidence/` and consumed Drive staging retired.
