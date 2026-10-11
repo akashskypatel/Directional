@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-endpoint-probe-compile-20261011-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-endpoint-probe-compile",
-  "source_sha": "3f9dd2b390caf03e3e780aab6e58ba26fc4a8d58",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-endpoint-probe"
+  "request_id": "m6-cp3-r4-endpoint-probe-docs-20261011-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-endpoint-probe-docs",
+  "file_id": "1sLRWvuztAfsoqaK9R5TvI2QZhL3FhXzH",
+  "patch_sha256": "bc73236bb1d00add223acc25d5d473b11c02a41c253f3e7bdec8f477fb62141b",
+  "base_sha": "9ad884d89eff5406ba61ff4b098cbd4c14f0d04b",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: preserve R4 A2b endpoint probe exact GMP compile evidence",
+  "retention_days": 14
 }
