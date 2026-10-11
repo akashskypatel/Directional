@@ -1,3 +1,10 @@
+## CURRENT — R4 factory-incidence negative oracle and frozen DCEL static audit (2026-10-11)
+
+- [x] Exact snapshot `38154965590`, 6207/6207 verifies. Identified potential overfull-rail negative vacuity: for three shared-edge triangles, missing/nonconstructible A3 can yield `InvalidSourceAuthority` **before** the intended checked incidence guard; no runtime evidence. Seven frozen R3 DCEL fixtures currently share source-valid-looking two-face disk topology; none is verified PASS.
+- [ ] Independent A3/manifoldness feasibility decision for the three-face negative; preserve A3 matching, hard-feature incidence guard and all frozen selectors. Runtime-check seven original DCEL negatives only in a future independently authorized artifact-only Test + Benchmark. Full evidence `.agents/Directional/Architecture_M6_CP3_R4_Factory_Incidence_Oracle_Source_Validity_Static_Audit_20261011.md`. All 39 endpoint / 34 Phase10 / 88 CP2 / six CP3 / multi-carrier odd-τ / terminal dual-path obligations remain; R4 IN_PROGRESS, successor UNKNOWN.
+
+---
+
 ## CURRENT — R4 supplemental hard-rail incidence receipt (2026-10-11)
 
 - [x] Diagnose missing open-rail terminal-contact provenance on supposedly valid one/two-face incidence cases; patch original supplemental factory negative with source-owned terminal contact (`3a5b1d852fb2c91464969612a312679271043ad2`), followed by exact `DomainResult::value()` compiler fix (`b2b398591e399f2a8aeeea811c0850c45b128283`). Apply `38152596179` and `38152951894` succeeded and consumed Drive stages were retired. One test file only.
