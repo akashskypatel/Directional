@@ -1,3 +1,11 @@
+## CURRENT — R4 four legacy Phase10 producer positives receive source-owned A2/A3 (2026-10-11)
+
+- [x] Four unchanged `SurfaceCellsPhase10` produced-positive test identities now call existing independently source-built A2/A3 helper, semantic source `ee800cce8d3bef34a8f2f891d0482cd8ff7a9f68`; source apply `38170296491` succeeded; Drive staging retired. Only `tests/SurfaceCellsPhase10Tests.cpp` changed.
+- [x] Eight-target source-exact GMP/GMPXX compile **GREEN**: workflow `38170442175`, job `114561804678`, source `ee800cce8d3bef34a8f2f891d0482cd8ff7a9f68`; preflight/build exits `0/0`, 8/8 targets, CMake `DIRECTIONAL_ENABLE_GMP=ON`, both `libgmpxx.so` and `libgmp.so` linked, package `SHA256SUMS` 28/28, clean source, `exactArithmeticBackend=GMP`, `runtimeExecution=false`; result artifact `11713818041` outer ZIP SHA-256 `dd506cef5b50423857893f35266404c699ed4dea42ebaff6345187c86c7eb269`, diagnostic artifact `11713098129` ZIP SHA-256 `b3c68ccf3dda22893daf2daaf80a237b618876a54140084e9d0a323a7388228a`.
+- [ ] No runtime tests performed. This code-only correction does not itself discharge 39 endpoint, 34 Phase10, seven DCEL, 88 CP2, six CP3, genuine multi-carrier/odd-τ or dual-path independent Review obligations; separate authorized Test + Benchmark needed for real PASS.
+
+---
+
 ## CURRENT — R4 A2b closed-chain-vs-absent-contact source producer guard (2026-10-11)
 
 - [x] Source `d8698996f3c3206830bc2aedeae06d7019d523a3` rejects contactless hard-rail endpoint A2b certificates without exact same-ID closed-chain authority, while retaining valid closed-only behavior. One `SurfaceCellTracing.cpp` change, apply `38167011887`; stages owner-deleted.
