@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-periodic-five-atlas-compile-20261011-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-periodic-five-atlas-compile",
-  "source_sha": "7ccdcd527380f8ab0fb2c19fbc08a7ab4dbd0819",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-periodic-five-atlas"
+  "request_id": "m6-cp3-r4-periodic-five-atlas-docs-20261011-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-periodic-five-atlas-docs",
+  "file_id": "1X2d6p8Psh1hEbmS5o0mWD4qsx4WBLqZM",
+  "patch_sha256": "78d5b755d78328f3bf3e560820a1f9c165738036dbcb2c90abd6cc1393011af5",
+  "base_sha": "443509c5963ab7ec851462d76bb84227bb49bfed",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: preserve five periodic A3 fixture compile and R4 handoff",
+  "retention_days": 14
 }
