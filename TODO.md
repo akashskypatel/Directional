@@ -1,3 +1,11 @@
+## CURRENT — R4 two Phase10 composite A3 atlas candidates (2026-10-11)
+
+- [x] Existing R3-RED ordinals 239 and 250 now build original source A2/A3 before checked A4, preserving all prior assertions and hard-feature/sheet metadata; semantic source `9535719a9d0e796ec455b721a199f0d6551530ae`, apply workflow `38115050210`.
+- [x] Exact eight-target GMP/GMPXX compile-only GREEN workflow `38115159602` job `114398532401`, source `9535719a9d0e796ec455b721a199f0d6551530ae`, exits 0/0, manifest `28/28`, clean source, `runtimeExecution=false`; result `11693471916` ZIP SHA256 `5777133eb4b189023450f9b1a6b2eb02355c177b5c1cf310ea142e025afd9853`, log `11692992849` ZIP SHA256 `96557fd19e09e599106ae8556d4115a9ba1f98d3ed63912a228c13d78c9808b1`.
+- [ ] Both cases had historical `A4_INVALID_FINAL_CELL_STATE` failures and are **not proven recovered**; runtime execution remains unauthorized in Code + Build. R4 39 endpoint/34 Phase10/7 DCEL/88 CP2 and six CP3 gates, odd-τ multi-carrier, and dual-path design review remain open.
+
+---
+
 ## CURRENT — R4 segment-route independent A3 fixture ingress (2026-10-11)
 
 - [x] Six frozen R3-RED `SurfaceCellSegmentRouteTransportAuthorityMigration` identities at 202–207 share a source-owned A2/A3 fixture constructor, without changing raw/legacy/malformed test inputs, original test names or assertions. Exact source `4ee15ada1493e14ed49ab542025040ce6e9dd91a`, apply run `38112589873`, only one test file modified; Drive staging retired.
