@@ -4337,7 +4337,10 @@ TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
   ASSERT_TRUE(balancedRotation.has_value());
   ASSERT_EQ(directional::authority::QuarterTurn{}, balancedRotation.value());
 
-  const auto valid = build_periodic_route_network(fixture, balancedField);
+  // Build the positive checked A4 subject with A2/A3 derived independently
+  // from the original balanced source field.
+  const auto valid = build_periodic_route_network_with_source_atlas(
+      fixture, balancedField, balancedField);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             valid.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
@@ -4352,7 +4355,10 @@ TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
   ASSERT_EQ(directional::authority::QuarterTurn::from_integer(1),
             nonzeroRotation.value());
 
-  const auto rejected = build_periodic_route_network(fixture, nonzeroField);
+  // The deliberate nonzero tracing mutation must not rewrite source A3.
+  // Preserve the periodic-holonomy negative oracle and its first reason.
+  const auto rejected = build_periodic_route_network_with_source_atlas(
+      fixture, nonzeroField, balancedField);
   EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
             rejected.phaseFront.disposition());
   EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
@@ -5275,8 +5281,11 @@ TEST(SurfaceCellPhaseFrontFieldChartAuthorityMigration,
   directional::geometry::SurfaceCellTracingOptions options;
   options.sourceFaceComponents.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
   options.sourceFaceSheets.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
-  const auto periodic = directional::geometry::build_surface_cell_network(
-      mesh.V, mesh.F, crossField, target, options);
+  // The bounded-disk half already carries independent source A3. Give the
+  // original cylinder half the same checked-factory ingress without changing
+  // its field, target, sheet labels or chart-zero assertions.
+  const auto periodic = build_phase10_with_source_atlas(
+      mesh, crossField, target, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             periodic.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
