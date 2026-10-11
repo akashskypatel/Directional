@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-region-positive-atlas-docs-20261011-a",
+  "request_id": "m6-cp3-r4-phase10-r3-ingress-census-20261011-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-region-positive-atlas-docs",
-  "file_id": "1WKQtkBn1HJQWxSovkRlMjblDvkN33tVz",
-  "patch_sha256": "a0e03b6436bd5a846c5bb13e9c07361bb3612583228733e561f3a833c07c785a",
-  "base_sha": "9b7f042fe5d57ac3712536e1d370a46161a22b33",
+  "mailbox_key": "m6-cp3-r4-phase10-r3-ingress-census",
+  "file_id": "1an3xQiUMOE2Jve_EoyS_1cIoLH12oqDu",
+  "patch_sha256": "cc67aa45f821b288b3848f1d3cc2ff52d60043461498f43ef8e874f7874d7026",
+  "base_sha": "dc4d20010368c2bd05c6ddb1af69c8a33f26d57a",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: preserve region A3 positive ingress compile evidence and continuation",
+  "commit_message": "docs: audit R3 Phase10 RED ingress and avoid repeated atlas-only changes",
   "retention_days": 14
 }
