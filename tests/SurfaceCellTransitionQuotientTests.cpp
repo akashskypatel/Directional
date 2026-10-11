@@ -1887,6 +1887,8 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
   ASSERT_TRUE(regionId.has_value());
   const auto hardEdge = test_source_edge_topology(0, 1, 5U);
   const auto absentEdge = test_source_edge_topology(3, 4, 5U);
+  const auto railId = HardRailId::from_index(0, 1);
+  ASSERT_TRUE(railId.has_value());
 
   // The checked authority factory accepts a complete row/member bijection
   // independently of a manifoldness check. Three distinct source triangles
@@ -1966,13 +1968,21 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
         }
       }
     }
+    // A hard-feature edge must carry producer-owned open-rail terminals
+    // even when no cross-edge transition is published. Without this receipt
+    // the checked factory correctly fails at InvalidSourceAuthority before
+    // the empty-cells sentinel, making the positive incidence cases vacuous.
+    const auto &declaredEdge = absentRail ? absentEdge : hardEdge;
+    SurfaceHardRailTerminalContacts terminalContacts;
+    terminalContacts.emplace(*railId, SurfaceHardRailTerminalContact{
+        0, {declaredEdge.first(), declaredEdge.second()}});
     const auto construction = SurfacePhaseFrontProduct::make(
         0, 0, std::move(source.value()), sourceFaces,
         static_cast<std::size_t>(sourceVertices.rows()),
         sourceAtlas ? &sourceAtlas.value() : nullptr,
         {}, {}, {}, {}, {}, {},
-        std::nullopt, {absentRail ? absentEdge : hardEdge}, {},
-        std::move(transitions), {});
+        std::nullopt, {declaredEdge}, {},
+        std::move(transitions), {}, std::move(terminalContacts));
     const auto *error = std::get_if<SurfacePhaseFrontProductError>(
         &construction);
     EXPECT_NE(error, nullptr);
