@@ -1,3 +1,10 @@
+## CURRENT — R4 terminal dual-path source-topology Review gate (2026-10-11)
+
+- [x] Verified exact source snapshot `5a7288c254f2b6d96320a5f645d3dcfb4bc4254b`, workflow `38139725760`, source archive SHA/6,164 manifest entries. Static graph argument: an accepted two-manifold terminal face-star is a link path/cycle, and removing the incident hard-carrier spoke leaves at most one simple non-hard A3 path to its carrier face. Full bounded proof and precise independent Review question: `.agents/Directional/Architecture_M6_CP3_R4_Terminal_A3_Uniqueness_Design_Review_Request_20261011.md`. **Not** a revised normative definition or runtime evidence.
+- [ ] Independent Definition/producer Review must either provide a source-valid two-path counterexample under existing rules or amend only that impossible witness obligation. Maintain all A4 fail-closed checks and frozen selectors. R4 other 39 endpoint / 34 Phase10 / seven DCEL / 88 CP2 / six CP3 / genuine odd-τ multi-carrier gates remain open; do not run TB497 here.
+
+---
+
 ## CURRENT — R4 A2b terminal missing/ambiguous simple-path diagnostic (2026-10-11)
 
 - [x] Diagnostic-only source `3bcbb1f28adaa5b1b7dc5de9bc31e8be46ef5a4c`: report finite A3-admissible simple-path count to distinguish missing/ambiguous terminal path *on already rejected A4 endpoint certificates*, retaining typed first-failure and all checked A2b/A3/sector/orientation gates. Apply `38137073789` verified; patch `cb0702f4382d247dd9b5eec0d202bc1ecbb34ed0e291efd9c00af422bffcf3a2` backed up; transient Drive staging deleted.
