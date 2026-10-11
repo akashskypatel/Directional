@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-flowrep-singular-twoface-docs-20261011-a",
+  "request_id": "m6-cp3-r4-hardrail-incidence-contacts-20261011-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-flowrep-singular-twoface-docs",
-  "file_id": "1ZqSoNzANucLPfE4CUNDdGIVQys_SCwNf",
-  "patch_sha256": "2524f74cc670618dca929080a651433b22aaee6d2744fef4f46c2f7624333114",
-  "base_sha": "eadaab515f995c3330149925f70e04c0a507eddc",
+  "mailbox_key": "m6-cp3-r4-hardrail-incidence-contacts-apply",
+  "file_id": "1jytxbIM5YBICM3NltoipZT7GzZrJGOKQ",
+  "patch_sha256": "b52025d291736583ba3ae33098815ae56adf493605c3bc0ef46fcb872db877aa",
+  "base_sha": "7acb3a244a41346859cab8a0c3905448815030c0",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: preserve R4 FlowRep two-face singularity source and GMP compile receipt",
+  "commit_message": "test: supply source-owned open-rail contacts for incidence preflight regression",
   "retention_days": 14
 }
