@@ -8994,11 +8994,11 @@ TEST(M6CP3, CheckedFactoryRejectsForgedTerminalA2bSideGerm) {
   const auto hardEdges = front.hardFeatureEdges();
   ASSERT_TRUE(std::none_of(hardEdges.begin(), hardEdges.end(),
                            [&](const auto &edge) {
-                             return edge.first() == *unrelatedVertex ||
-                                    edge.second() == *unrelatedVertex;
+                             return edge.first() == unrelatedVertex.value() ||
+                                    edge.second() == unrelatedVertex.value();
                            }));
   auto foreignContact = front.hardRailTerminalContacts();
-  foreignContact.begin()->second.endpoints[0] = *unrelatedVertex;
+  foreignContact.begin()->second.endpoints[0] = unrelatedVertex.value();
   expect_phase_front_product_error(
       checked_with_routes_and_contacts(original, foreignContact), expected);
 
