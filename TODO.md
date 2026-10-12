@@ -1,3 +1,11 @@
+## CURRENT — R4 typed missing-path regression oracle repair (2026-10-12)
+
+- [x] Static first-rejection audit found `74e74e41` fixture would trip certificate/front attachment equality before typed missing-path check. Corrected one test source file without changing frozen identity or production guard; apply `38188448212`, semantic source `3c1f001fa03dde476222bbad48ae46cfebe12c9a`, owner Drive stage deleted.
+- [x] Exact-source eight-target GMP/GMPXX compile **GREEN** for corrected test: request `1b60967136ad863491a2ab15dfb63a491bb07a3e`, workflow `38188542762`, job `114616135782`, source `3c1f001fa03dde476222bbad48ae46cfebe12c9a`, result artifact `11720182846`, ZIP SHA-256 `3ef4c113979d2e861df4d4b30f1c529ba56a408e67c5d250a970bff22823e679`; 28/28 manifest, 8/8 targets, GMP/GMPXX, clean source, preflight/build 0/0, `runtimeExecution=false`. The earlier compile `38187046419` covers only superseded source.
+- [ ] Runtime first-rejection proof for the corrected missing-terminal-path case remains separately gated; no runtime tests performed. Further R4 obligations remain open.
+
+---
+
 ## CURRENT — R4-A3U-01 source-exact correction (2026-10-12)
 
 - [x] Independent terminal path uniqueness review confirmed RA-46; the impossible literal two-path fixture was retired without weakening A4.
