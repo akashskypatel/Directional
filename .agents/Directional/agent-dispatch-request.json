@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-rail-chain-oracle-docs-20261012-c",
+  "request_id": "m6-cp3-r4-three-phase10-a3-ingress-20261012-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-rail-chain-oracle-docs",
-  "file_id": "1DGopBkQtBz60vly0kAoPMvYvHE33Et0A",
-  "patch_sha256": "18fe877cc3896fa0e5b15767ac9ce466a5dd962662d65eb757bebfba58835d67",
-  "base_sha": "e7a39b891a046df46811bc9f792a17e0c33e7da9",
+  "mailbox_key": "m6-cp3-r4-three-phase10-a3-ingress-apply",
+  "file_id": "1XQdybew_O34Xx4_jympHXVXLHYIaanbM",
+  "patch_sha256": "d978555c4c803b2dbae6ec398db640393d2733462ffdd072a25229e34f7b2a38",
+  "base_sha": "e15ff4b547ab3b4a2703f4e2c6cc9bcdb787d2bc",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record R4 produced-rail chain oracle GMP compile"
+  "commit_message": "test(directional): bind three Phase10 regressions to independent source A3"
 }
