@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-phase14-typed-rail-compile-20261012-c",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-phase14-typed-rail-compile-c",
-  "source_sha": "5fbfa5de3f1421dab122ea70ba677efb6dd6f5f1",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-phase14-typed-rail"
+  "request_id": "m6-cp3-r4-phase14-typed-rail-docs-20261012-d",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-phase14-typed-rail-docs",
+  "file_id": "111XwnGiEgSR4XEMZwyp1I_orhaCtvGMy",
+  "patch_sha256": "c6e75f5d2ea3d2205db95cfc3c41f1b1ba0465aecb79f1afcbc91bc27e4c2e37",
+  "base_sha": "5fbfa5de3f1421dab122ea70ba677efb6dd6f5f1",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record R4 typed Phase14 rail source and compile evidence",
+  "retention_days": 14
 }
