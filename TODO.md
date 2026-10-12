@@ -1,3 +1,10 @@
+## CURRENT — R4 RA-43.4 compile GREEN; canonical turn remains open (2026-10-12 19:10Z)
+
+- [x] Exact semantic `9c75f44dab79cd3b5ad014d918f15f808b6ac504` compiled in run `38293645339`, eight targets, 28/28 manifest, GMPXX/GMP, no runtime. Evidence in `Architecture_M6_CP3_R4_RA434_Default_Strict_Source_Vertex_Contract_20261012.md`.
+- [ ] Continue `M6-CP3-CB1-ENTRY-R4`, not its successor: RA-43.2 producer-bound endpoint certificate; RA-43.4 legacy diagnostic opt-out; RA-46.5 actual first-rejection negative witnesses; RA-47.12 liveness; all carried first-rejection, 39/34/7/88/six CP3 and genuine odd-τ/multi-carrier obligations. Freeze selector 497. No tests/benchmarks within Code + Build.
+
+---
+
 ## CURRENT — RA-47 typed rail implementation source staged (2026-10-12)
 
 - [x] Frozen RA-47 review replaces raw rail-edge index with canonical typed `SourceEdgeTopologyKey` keys; source and test changes prepared from verified snapshot `1bcc068c`, including `(0,2)` differing-index regression.
