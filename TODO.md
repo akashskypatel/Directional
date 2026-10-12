@@ -1,3 +1,11 @@
+## CURRENT — R4 two Phase10 negative source-A3 fixture ingresses (2026-10-12)
+
+- [x] Source-only +21/-0 two original Phase10 negatives with independently original-source-bound A3: periodic ring ambiguity and two-triangle disk invalid cyclic turn. Source `2be8da1198f9861efb7231c9468760df787b22f5`, apply run `38203661294`, Drive staging deleted; unchanged test identities and original oracles.
+- [x] Exact eight-target GMP/GMPXX compile `38203770454` GREEN; result `11726506719`, ZIP SHA-256 `a5399cd78e5a38e8f2969c00dc453fa66079f0cf2f31bc8b603658cc5078a972`, 28/28 manifest, preflight/build exits 0/0, source clean, `runtimeExecution=false`.
+- [ ] Runtime PASS/FAIL for these two unchanged negative oracles unverified. R4 original RA-43.4 source migration, independent overfull A3 review, 39 endpoint, 34 Phase10, seven DCEL, 88 accepted CP2 losses, six CP3, genuine odd-τ/multi-carrier all OPEN; no TB497.
+
+---
+
 ## CURRENT — R4 three Phase10 source A3 fixture repairs (2026-10-12)
 
 - [x] One source test file +24/-4, unchanged three selector identities and oracles; semantic source `8df105b560625ea09b3ac136b3ee4b9656a38e2f`. Source apply `38202273478` success, staged patch deleted.

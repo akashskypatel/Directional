@@ -1,3 +1,7 @@
+## 2026-10-12 — `M6-CP3-CB1-ENTRY-R4` two Phase10 negative A3 source ingresses (compile-only)
+
+Existing ambiguous periodic-ring and invalid curved-disk boundary-turn negative fixtures now carry independently source-built A3 without changing their oracle or identity, test-only source `2be8da1198f9861efb7231c9468760df787b22f5`. Compile `38203770454` GREEN with eight GMP/GMPXX targets, 28/28 manifest, no runtime; prior 497 frozen gate and R4 state unchanged. Evidence: `.agents/Directional/Architecture_M6_CP3_R4_Two_Phase10_Negative_A3_Code_Build_Record_20261012.md`.
+
 ## 2026-10-12 — `M6-CP3-CB1-ENTRY-R4` three Phase10 source-A3 ingress corrections (compile-only)
 
 Applied one test-file correction (`8df105b560625ea09b3ac136b3ee4b9656a38e2f`) for three unchanged Phase10 fixtures, separating valid original-source A3 from deliberately malformed inputs. Exact eight-target GMP/GMPXX build `38202384969` GREEN, artifact `11725774026` (28/28 manifest, source clean, `runtimeExecution=false`). Drive stage deleted; no runtime or frozen TB497 acceptance. R4 remains IN_PROGRESS. Evidence: `Architecture_M6_CP3_R4_Three_Phase10_A3_Ingress_Code_Build_Record_20261012.md`.
