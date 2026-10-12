@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-a3u01-docs-verified-20261012-e",
+  "request_id": "m6-cp3-r4-a3u01-regression-repair-20261012-f",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-a3u01-docs-corrected",
-  "file_id": "1aNpPIzYZWGihBp06BapokMh_JWIS6qv3",
-  "patch_sha256": "98073476dfa61cb9d3d85dbac9fdb742c82615a25a85c40f1f550f55e113fd78",
+  "mailbox_key": "m6-cp3-r4-a3u01-regression-repair",
+  "file_id": "1BG4fXCiVfjKqw4c90zS-LZf1sJwKs6Ur",
+  "patch_sha256": "1b1355b28e9102f611b07484939fe4aa0c82f6835310e92e3b793f4a69c2adcd",
   "base_sha": "74e74e41a7f040f34798d998dba36677e7ff07d4",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record R4 A3U01 compile-verified evidence",
+  "commit_message": "test(directional): exercise actual R4 A3U01 terminal missing-path predicate",
   "retention_days": 7
 }
