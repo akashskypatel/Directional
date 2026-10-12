@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra46-ra48-factory-detail-apply-20261012t1626z",
+  "request_id": "m6-cp3-r4-ra46-ra48-factory-detail-apply-retry-20261012t1644z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra46-ra48-factory-detail-apply",
+  "mailbox_key": "m6-cp3-r4-ra46-ra48-factory-detail-retry",
   "file_id": "1aLnlKFHhTdXXwLWVMbYBD9LpJk69lE25",
   "patch_sha256": "0473d1fd1da8be1d70a96d073dd5b9cc03d297d18949c16ed08a1305d9e5592c",
   "base_sha": "7ada9e3b5fe981228fcdd8df8a536d3e66689894",
