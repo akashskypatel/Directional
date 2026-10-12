@@ -1,3 +1,11 @@
+## CURRENT — R4 Phase14 incident-order/barrier source vertices (2026-10-12)
+
+- [x] Authenticated two remaining Phase14 fixtures with exact typed source-vertex chain `{0,4,7}` in source `9709bd8e855e4f6a92165b082ba9b3f4330f8411`, only two insertions in one test file, all original oracles/identities unchanged.
+- [x] Mandatory eight-target GMP/GMPXX compilation GREEN — exact source `9709bd8e855e4f6a92165b082ba9b3f4330f8411`, dispatcher event `c6cf2651f5d5fcfbcbdaa53b79d2fbaed6a29261`, workflow `38196555564`, compile job `114640470513`, result artifact `11723373444` ZIP SHA-256 `a122eb21e00a387d5585d6cf55244a79a15a2091138343051eb98192266d9b7f`; eight required targets, preflight/build 0/0, manifest 28/28, GMP/GMPXX generated linker evidence, clean source before/after, `runtimeExecution=false`.
+- [ ] No runtime acceptance established. RA-43.4 final cutover, independent overfull-A3 Review, 39 endpoints, 34 Phase10, seven DCEL, 88 CP2 losses, six CP3 positives and odd-τ multi-carrier remain OPEN; frozen TB497 not run.
+
+---
+
 ## CURRENT — R4 Phase14 positive rail source-vertex migration (2026-10-12)
 
 - [x] Source-owned exact `sourceVertices` published on 10 previously untyped valid Phase14 rail instances across seven existing tests. Applied in commit `10afde93e4de3202d5bc8d2bbd0304f629a2375e`, workflow `38194680839`, result `11722878840` (patch hash verified; Drive staging deleted). One test file, ten insertions, no deletions, seven unchanged Phase14 test identities and oracles; closed, reversed, multi-interval and side-chart sample topology checked against exact source faces. No runtime Directional tests or frozen 497 execution.
