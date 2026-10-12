@@ -1,3 +1,10 @@
+## CURRENT — R4 typed rail helper source-corner confirmation (2026-10-12)
+
+- [ ] Apply and eight-target GMP/GMPXX compile-check source-exact RA-43.4 shared-helper counterexample patch. Exact snapshot `b178f5628bf9e07a4ede14f4717fbe37c2b6e3ab`, 6556/6556 hashes. Test source extends the existing Phase14 typed rail case with coincident distinct source-vertex ID and near-corner geometry negatives; production/legacy diagnostic contracts remain unchanged. See `Architecture_M6_CP3_R4_RA434_Typed_Rail_Corner_Confirmation_Code_Build_Record_20261012.md`.
+- [ ] Continue same R4 turn afterward. RA-43.2 producer-oriented side binding, global RA-43.4 legacy migration, RA-46.5 first-rejection set, RA-47.12 observed liveness, and carried recovery matrix remain open. TB497 forbidden in this Code + Build turn.
+
+---
+
 ## CURRENT — RA-49 unblocked; R4 duplicate terminal first-rejection regression prepared (2026-10-12)
 
 - [x] Independent RA-49 decides duplicate `{v,v}` `ambiguous-terminal-contact` is reachable at the A4 consumer; the earlier proposed retirement is rejected. `nonmanifold-terminal-star-spoke` negative is retired (guard kept), and `R4-CTC-01` validate-after-use is reserved for a Definition turn.

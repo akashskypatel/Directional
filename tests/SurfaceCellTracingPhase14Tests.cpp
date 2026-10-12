@@ -1784,6 +1784,24 @@ TEST(SurfaceCellTracingPhase14,
   };
   EXPECT_EQ(validateProduction().status,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::Valid);
+  // Equal world coordinates do not turn a different source vertex into this
+  // face's endpoint. Test the shared validation helper independently of the
+  // later interval-level exact-corner guard.
+  Eigen::MatrixXd coincidentVertices = mesh.vertices;
+  coincidentVertices.row(8) = coincidentVertices.row(0);
+  EXPECT_TRUE(directional::geometry::surface_cell_tracing_detail::
+                  rail_sample_geometry_is_valid(
+                      coincidentVertices, mesh.faces, rail.samples[0], 0));
+  EXPECT_FALSE(directional::geometry::surface_cell_tracing_detail::
+                   rail_sample_geometry_is_valid(
+                       coincidentVertices, mesh.faces, rail.samples[0], 8));
+  // A near-corner barycentric remains invalid even when typed identity and
+  // world-space position are otherwise consistent within their tolerance.
+  auto nearCorner = rail.samples[0];
+  nearCorner.barycentric = Eigen::RowVector3d(1.0 - 1.0e-9, 1.0e-9, 0.0);
+  EXPECT_FALSE(directional::geometry::surface_cell_tracing_detail::
+                   rail_sample_geometry_is_valid(
+                       mesh.vertices, mesh.faces, nearCorner, 0));
   // Optional raw source-edge metadata must not contradict the typed number
   // of intervals, even when no field-aligned network is supplied. Its
   // numerical topology binding requires the producer's original mesh.EV.

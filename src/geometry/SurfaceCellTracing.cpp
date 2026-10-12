@@ -5889,9 +5889,18 @@ bool rail_sample_geometry_is_valid(
       return false;
     }
   }
-  // The source vertex comes from the producer's exact sourceVertices chain
-  // when present. Barycentric inference survives only for legacy standalone
-  // diagnostic fixtures until RA-43.4's separate migration is complete.
+  // A typed endpoint must actually be the exact corner of this source face.
+  // Coincident world positions cannot establish source incidence.
+  if (publishedSourceVertex.has_value()) {
+    int corner = -1;
+    for (int i = 0; i < 3; ++i)
+      if (faces(sample.sourceFace, i) == *publishedSourceVertex) corner = i;
+    if (corner < 0 || corner == sample.sourceEdge) return false;
+    for (int i = 0; i < 3; ++i)
+      if (sample.barycentric[i] != (i == corner ? 1.0 : 0.0)) return false;
+  }
+  // Barycentric inference survives only for explicit legacy standalone
+  // diagnostics; production callers supply the exact sourceVertices chain.
   const int sourceVertex = publishedSourceVertex.has_value()
                                ? *publishedSourceVertex
                                : rail_sample_source_vertex(faces, sample);
