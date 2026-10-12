@@ -1,3 +1,0 @@
-M6-CP3-CB1-ENTRY-R4 same-turn snapshot
-Exact source authority: 23fdf19e5b42652de34edab3104c17be69429fec
-No runtime execution.
