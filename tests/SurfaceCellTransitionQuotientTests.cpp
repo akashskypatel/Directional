@@ -8997,8 +8997,8 @@ TEST(M6CP3, CheckedFactoryRejectsForgedTerminalA2bSideGerm) {
       directional::authority::SourceEdgeTopologyKey::make(first.value(), last.value());
   ASSERT_TRUE(absentEdge.has_value());
   auto withAbsentEdge = front.hardFeatureEdges();
-  ASSERT_FALSE(withAbsentEdge.contains(*absentEdge));
-  withAbsentEdge.insert(*absentEdge);
+  ASSERT_FALSE(withAbsentEdge.contains(absentEdge.value()));
+  withAbsentEdge.insert(absentEdge.value());
   const auto missingIncidence = checked_with_routes_and_contacts(
       original, front.hardRailTerminalContacts(), withAbsentEdge);
   const auto *incidenceError = std::get_if<
