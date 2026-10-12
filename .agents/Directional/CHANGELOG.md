@@ -1,3 +1,11 @@
+## 2026-10-12 — `M6-CP3-CB1-ENTRY-R4` strict typed rail and raw-sidecar cardinality (compile-only)
+
+- Production `rail_interval_refs` consumers now require typed source-vertex incidence irrespective of optional field-aligned network presence: source `0cd4391b976141ec6499378a319d933a9f7ec6c2`, Drive apply `38234541145`. Mandatory GMP/GMPXX compile **GREEN** `38234679163`, eight targets, artifact `11740820820` ZIP SHA-256 `13b2f1773e8625255482611e99cf20a3c3b65634912e1161407676757ca6f903`, manifest 28/28, exits 0/0, source clean, runtimeExecution=false.
+- Typed rails publishing a nonempty `sourceEdges` sidecar must now match the exact number of sample intervals, rejecting contradictory metadata at `TypedAuthorityMismatch`. Existing Phase14 test extended without renaming. Two-file semantic source `dcf24e2c881b9ed67ec8f992d94d4b4e364fd4e2`, Drive apply `38236532142` GREEN; patch SHA-256 `8fc560b1bcfe38f50e91371118fe42632fdd6ee3674f5226ebacad00a56212e5`. Exact-source eight-target compile `38236639195` **awaits artifact verification**. This does not authenticate numerical source-edge indices against `mesh.EV`, migrate all legacy helpers, or constitute a runtime PASS.
+- Same R4 Code + Build boundary; independent overfull-A3 Review, RA-43.4 broader cutover, 39 endpoints, 34 Phase10, seven DCEL, 88 CP2 and six CP3 / authentic odd-τ multi-carrier remain open. No TB497 or successor work. See `.agents/Directional/Architecture_M6_CP3_R4_RA434_Strict_Production_Rail_Interval_Compile_Record_20261012.md` and `.agents/Directional/Architecture_M6_CP3_R4_Typed_Raw_Edge_Cardinality_Code_Build_Record_20261012.md`.
+
+---
+
 ## 2026-10-12 — `M6-CP3-CB1-ENTRY-R4` Phase14 foreign local-edge negative (compile-only)
 
 - Existing `ProducedRailEndpointsRequireExactSourceVertexIncidence` now proves exact but **foreign** local-edge geometry cannot replace a typed source-edge chain. Source `34379d974819be5586e7ef5dfaef00912ad4a343` from snapshot `38228270153` 6437/6437; patch `eac5243e1def71a503b193eedd87e5e2400276ca3a63f2639bf47ad6cd3bfc0e` applied in `38228853566`.
