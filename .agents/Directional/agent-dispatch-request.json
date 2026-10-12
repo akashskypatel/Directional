@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-a3u01-compile-20261012-c",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-a3u01-compile",
-  "source_sha": "74e74e41a7f040f34798d998dba36677e7ff07d4",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-a3u01"
+  "request_id": "m6-cp3-r4-a3u01-docs-20261012-d",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-a3u01-docs-apply",
+  "file_id": "17NMrYUIezHnH57gStTstu5xR4uqxUgax",
+  "patch_sha256": "1e865487ebf4144ec8d554f85d307890901037670f3d96e32d8a89ce77c3ce76",
+  "base_sha": "74e74e41a7f040f34798d998dba36677e7ff07d4",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record R4 A3U-01 typed factory check, preserve compile pending",
+  "retention_days": 7
 }
