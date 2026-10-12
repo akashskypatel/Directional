@@ -3615,8 +3615,8 @@ TEST(SurfaceCellsPhase10,
   }
   const Eigen::VectorXd targetSize =
       Eigen::VectorXd::Constant(vertices.rows(), 0.25);
-  const auto network = directional::geometry::build_surface_cell_network(
-      vertices, faces, crossField, targetSize, options);
+  const auto network = build_phase10_with_source_atlas(
+      mesh, crossField, targetSize, options);
 
   EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
             network.phaseFront.disposition());
