@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra47-typed-rail-compile-20261012t1556z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-ra47-typed-rail-compile",
-  "source_sha": "63891bbcce1c6daf5875c19221c3aa5245324f59",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-ra47-compile"
+  "request_id": "m6-cp3-r4-ra48-trimesh-injection-apply-20261012t1602z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-ra48-trimesh-injection-apply",
+  "file_id": "1LPv0nX1jRbLpeu3OmU8tfrtjXFRGwAjh",
+  "patch_sha256": "d7fdae20d22505029ab727c4e297c44b117e2b1e6d4f01b953605e688aa3dbca",
+  "base_sha": "ac42e72db5bc838e32c466ceba3b82731fac9f4f",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "fix(surfacecells): validate TriMesh injected source edge topology"
 }
