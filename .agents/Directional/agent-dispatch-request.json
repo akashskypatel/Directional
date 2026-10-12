@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra465-contact-feasibility-stop-20261012t2048z",
+  "request_id": "m6-cp3-r4-ra49-contact-regression-20261012t2220z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra465-contact-review-stop-apply",
-  "file_id": "1Glt6fihGoN_IkDlYvXLrYLCDqM6K41oI",
-  "patch_sha256": "dc392702f1c115e3bb96e2e0003b2ae3b59620d84fde545e9e7eb84f7bdc7f5b",
-  "base_sha": "69649fda99508310ce93a9e2920da28fa966c578",
+  "mailbox_key": "m6-cp3-r4-ra49-contact-regression-apply",
+  "file_id": "1-B0OETzYrG4oGKMU3ZvbLn33sieCrm_h",
+  "patch_sha256": "65107ace5ae9fcf2219963154354e5cd07cfbe14ff2e8285aedca24c36fb36f0",
+  "base_sha": "7c228ec451ab605e9a1b913ec2dca8a2c14db365",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): freeze RA-46.5 terminal-contact feasibility review stop"
+  "commit_message": "test(directional): cover RA-49 duplicated terminal first rejection"
 }
