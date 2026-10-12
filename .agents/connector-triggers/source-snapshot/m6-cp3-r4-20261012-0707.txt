@@ -1,1 +1,0 @@
-M6-CP3-CB1-ENTRY-R4 same-turn continuation. Exact snapshot for pending handoff reconciliation and producer audit. Code + Build only; no runtime execution.
