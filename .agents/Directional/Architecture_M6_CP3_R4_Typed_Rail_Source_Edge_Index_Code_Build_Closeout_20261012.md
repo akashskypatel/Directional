@@ -20,7 +20,7 @@ Canonical Code + Build R4 **IN_PROGRESS**, successor UNKNOWN. Corrected source n
 - Diagnostic log artifact `11731010539`, ZIP SHA-256 `43e37208dab181918dc13c876eff807eb33248f9dc3c62e44e4c110178874dee`.
 - Exact verified source snapshot run `38214036515`, source `a5440b5a83da6d94ae2f72457bdee5aef00c3b89`, 6,405/6,405 checksums.
 - No Directional binaries/tests, `ctest`, benchmarks, help/discovery commands, or frozen TB497 were executed. No runtime PASS promotion follows from compilation.
-- An additional four-file documentation patch is preserved in ChatGPT Library `/Directional/Evidence/Directional_M6_CP3_R4_Typed_Rail_Corrected_Compile_Durable_Handoff.patch` and downloadable in the conversation; it is **not published**. The Google Drive patch transfer attempt was not used because the available native-Doc export rewrote line endings and would not pass the exact patch hash/application contract. Future continuation may reconcile this backup against current repository source.
+- The previous response published this corrected-compile evidence record but left handoff/TODO/changelog edits pending because its native-Doc patch export could not preserve exact line endings. Those pending three document updates are reconciled against the verified current source in the present four-path documentation patch; the original recovery patch remains preserved for audit. This is documentation-only and does not change semantic source or runtime acceptance.
 
 ## Next same-turn action
 

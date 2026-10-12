@@ -1,7 +1,7 @@
 ## CURRENT — R4 typed rail index consistency compile correction pending (2026-10-12)
 
 - [x] Original-source edge-index/typed chain binding added at semantic `a92ddb5`, corrected after `DomainResult` compile failure at source `b970e1a113fe00b90e225d917597c649f9e1aa1d`; apply workflow `38213040179` succeeded.
-- [ ] **Compile corrected `b970e1a113fe00b90e225d917597c649f9e1aa1d` through mandatory eight-target GMP/GMPXX dispatcher.** Initial `38212754554` failed at preflight; neither GREEN nor runtime PASS is established.
+- [x] Corrected `b970e1a113fe00b90e225d917597c649f9e1aa1d` compiled **GREEN** via workflow `38214261145`, job `114695273536`, artifact `11732105024` SHA-256 `f6f5f73de7626bb29402f61dd79b01091c65b712fd74fa1c03725ac1a428511d`: eight targets, GMP/GMPXX link, 28/28 checksums, source clean, `runtimeExecution=false`. Initial `38212754554` preflight failure preserved as history; no runtime PASS established.
 - [ ] Overfull-A3 independent Review, RA-43.4, frozen 39 endpoints, 34 Phase10, 7 DCEL, 88 CP2, six CP3 and odd-τ multi-carrier remain OPEN; TB497 unauthorized.
 
 ---
