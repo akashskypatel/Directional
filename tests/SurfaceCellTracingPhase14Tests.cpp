@@ -1773,6 +1773,21 @@ TEST(SurfaceCellTracingPhase14,
   EXPECT_EQ(validate().status,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::Valid);
 
+  // Both samples lie exactly on an alternate, in-range face-local source
+  // edge (1,4). The producer-owned typed chain (0,4) must still prevail;
+  // valid geometry alone must not authorize a different edge's incidence.
+  const auto originalSamples = rail.samples;
+  rail.samples = {
+      rail_sample(mesh, 0, 0, 0.0, 0.0,
+                  Eigen::RowVector3d(0.0, 1.0, 0.0), 1),
+      rail_sample(mesh, 0, 0, 1.0, 1.0,
+                  Eigen::RowVector3d(0.0, 0.0, 1.0), 4)};
+  const auto foreignLocalEdge = validate();
+  EXPECT_EQ(foreignLocalEdge.status,
+            directional::geometry::surface_cell_tracing_detail::RailBuildStatus::TypedAuthorityMismatch);
+  EXPECT_EQ(foreignLocalEdge.intervalIndex, 0);
+  rail.samples = originalSamples;
+
   rail.sourceVertices[0] = 1;
   EXPECT_EQ(validate().status,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::TypedAuthorityMismatch);
