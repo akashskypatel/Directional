@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-two-phase10-negative-a3-docs-20261012-a",
+  "request_id": "m6-cp3-r4-composite-negative-a3-20261012-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-two-phase10-negative-a3-docs-apply",
-  "file_id": "1ykUu9WOJUu8bBNVkGnaWQJnPj8G4RZyx",
-  "patch_sha256": "0fa0eb978eb2c6df5ac4d7060088e0f487a37a81d4c3c76f078afe2db400f8a1",
-  "base_sha": "ba6c3ef6becb31531d1a113c04ae89bfe00ea813",
+  "mailbox_key": "m6-cp3-r4-composite-negative-a3-apply",
+  "file_id": "1IYfwRAjB4wAflht7NsodScoRoMcgn38Z",
+  "patch_sha256": "0e4d602428bb373ba12205e2fa4babc7c754c1678ee2e74b94cb3167af572e47",
+  "base_sha": "284bba01c90f100520b8a1b31ce6de897bd291c5",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): preserve R4 Phase10 A3 compile-only checkpoint"
+  "commit_message": "test(directional): bind composite bounded-disk negative to source A3"
 }
