@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-produced-rail-index-docs-r1-20261012",
+  "request_id": "m6-cp3-r4-raw-edge-positive-durable-handoff-corrected-20261012t0822z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-produced-rail-index-docs",
-  "file_id": "19q0yhtmiY89juRDOGNi2fvyS2bXJoqGT",
-  "patch_sha256": "c942efafd0768dc0486e96e8c9ff4622b2d5ad0fc649d39efc1c5f578193d4bc",
+  "mailbox_key": "m6-cp3-r4-raw-edge-positive-docs-r2",
+  "file_id": "1bMXqcs4GESAyUPxaYZNDT6rXc-jN5UH4",
+  "patch_sha256": "a02e5f517e3d4c15fffc58342197eaabfe71e9e7f96cd294af2e4869f9d39cc0",
   "base_sha": "471ec6710df2e18bba66fcf1d735abd4952abca7",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "M6-CP3-R4: record verified positive rail source-edge index oracle",
+  "commit_message": "M6-CP3-R4: record source-edge producer positive oracle exact GMP compile",
   "retention_days": 7
 }
