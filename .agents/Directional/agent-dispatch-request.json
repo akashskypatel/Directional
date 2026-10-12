@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra431-final-corrected-compile-20261012t1720z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-ra431-final-corrected-compile",
-  "source_sha": "b3934a830da04e7f8bb646137c113b24f79cdb0a",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-ra431-final-corrected-compile"
+  "request_id": "m6-cp3-r4-ra434-typed-sample-identity-apply-20261012t1739z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-ra434-typed-sample-identity-apply",
+  "file_id": "1-dpWK9Zu6i0CyawUiERTPMMf49J-cBEq",
+  "patch_sha256": "21830ffaf3bcd5825e06fe1d425286b9a973f7395dd4de77f8885f6c9f0f035c",
+  "base_sha": "68cdae51ff1777b48ed64b94a7f530d24fb37059",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "fix(surfacecells): bind typed rail sample geometry to published source vertices"
 }
