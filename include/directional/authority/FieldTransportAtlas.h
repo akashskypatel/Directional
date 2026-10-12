@@ -828,9 +828,11 @@ class FieldTransportAtlasBuildResult;
 
 /**
  * Immutable A1 authority for cross-field transport and conservative
- * field-quadrangulability.  Construction is the only validation seam; callers
- * receive no mutable access to adjacency, cycle, singularity, or certificate
- * storage.
+ * field-quadrangulability.  Construction validates source authority; input
+ * TriMesh edge tables must come from a checked set_mesh call (which verifies
+ * optional injected tables against face-derived DCEL topology). Callers
+ * receive no mutable access to atlas adjacency, cycle, singularity, or
+ * certificate storage.
  */
 class FieldTransportAtlas {
 public:

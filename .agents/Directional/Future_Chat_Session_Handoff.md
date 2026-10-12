@@ -1,3 +1,9 @@
+## CURRENT — R4 RA-48.3 injected TriMesh edge authority hardening (2026-10-12 continuation)
+
+The current `M6-CP3-CB1-ENTRY-R4` remains IN_PROGRESS. On exact verified source `ac42e72db5bc838e32c466ceba3b82731fac9f4f`, a bounded RA-48.3 fix has been prepared: `TriMesh::set_mesh` always reconstructs and checks DCEL, validates any optional EV/FE/EF against source-derived matrices, and rejects forged or partial tables. A focused existing authority-kernel test adds exact-valid and independent forged-table negatives, including overfull three-face input; the A1 atlas validation comment is corrected. **This follow-up is source-only pending apply and compile, not runtime PASS.** RA-47 eight-target GMP compile dispatched at `bd97502b1c140094fa3ea74586a17ccb992200b1` pinned to semantic `63891bbcce1c6daf5875c19221c3aa5245324f59`; reconcile `m6-cp3-r4-ra47-typed-rail-compile`. See `Architecture_M6_CP3_R4_RA47_Typed_Rail_Code_Build_Record_20261012.md`. RA-46.6 and other R4 gates remain open; do not begin TB497.
+
+---
+
 ## CURRENT — RA-47 typed rail source edges in progress (2026-10-12)
 
 RA-47 implementation is staged with a typed `SourceEdgeTopologyKey` rail sidecar, typed consumer agreement, no component EV namespace conversion, and typed regression updates including lexical-feature/DCEL-order counterexample. Exact source snapshot `1bcc068cb3be7d994caa537307e61c5aabe2e646` verified 6,464 hashes. Compile is pending; no runtime pass claimed. **Continue same `M6-CP3-CB1-ENTRY-R4`; do not start TB497.** See `Architecture_M6_CP3_R4_RA47_Typed_Rail_Code_Build_Record_20261012.md`. RA-48.3, RA-46.6, RA-43 and first-rejection obligations remain open.

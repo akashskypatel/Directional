@@ -114,6 +114,35 @@ TriMesh make_square_mesh(const bool reverseFaceRows = false) {
   return mesh;
 }
 
+TEST(M6CP3, TriMeshRejectsUnverifiedInjectedEdgeTopology) {
+  const TriMesh source = make_square_mesh();
+  TriMesh checked;
+  EXPECT_NO_THROW(checked.set_mesh(source.V, source.F, source.EV,
+                                   source.FE, source.EF));
+
+  Eigen::MatrixXi foreignEdges = source.EV;
+  foreignEdges(0, 1) = foreignEdges(0, 0);
+  EXPECT_THROW(checked.set_mesh(source.V, source.F, foreignEdges,
+                                source.FE, source.EF), std::runtime_error);
+
+  Eigen::MatrixXi foreignFaceEdges = source.FE;
+  foreignFaceEdges(0, 0) = -1;
+  EXPECT_THROW(checked.set_mesh(source.V, source.F, source.EV,
+                                foreignFaceEdges, source.EF), std::runtime_error);
+
+  Eigen::MatrixXi foreignEdgeFaces = source.EF;
+  foreignEdgeFaces(0, 0) = -1;
+  EXPECT_THROW(checked.set_mesh(source.V, source.F, source.EV,
+                                source.FE, foreignEdgeFaces), std::runtime_error);
+
+  Eigen::MatrixXi overfullFaces(3, 3);
+  overfullFaces << 0, 1, 2,
+                   0, 2, 3,
+                   0, 2, 1;
+  EXPECT_THROW(checked.set_mesh(source.V, overfullFaces, source.EV,
+                                source.FE, source.EF), std::runtime_error);
+}
+
 TriMesh make_four_triangle_fan() {
   Eigen::MatrixXd vertices(5, 3);
   vertices << -1.0, -1.0, 0.0,
