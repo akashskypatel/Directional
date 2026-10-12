@@ -8994,7 +8994,7 @@ TEST(M6CP3, CheckedFactoryRejectsForgedTerminalA2bSideGerm) {
   ASSERT_TRUE(first.has_value());
   ASSERT_TRUE(last.has_value());
   const auto absentEdge =
-      directional::authority::SourceEdgeTopologyKey::make(*first, *last);
+      directional::authority::SourceEdgeTopologyKey::make(first.value(), last.value());
   ASSERT_TRUE(absentEdge.has_value());
   auto withAbsentEdge = front.hardFeatureEdges();
   ASSERT_FALSE(withAbsentEdge.contains(*absentEdge));
