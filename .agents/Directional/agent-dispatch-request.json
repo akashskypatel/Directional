@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-phase14-first-rejection-docs-20261012-d",
+  "request_id": "m6-cp3-r4-producer-rail-chain-oracle-20261012-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-phase14-first-rejection-docs-retry",
-  "file_id": "1AMJ9ZsSajI24L8ZXDfaGqnLsVEbMwT6-",
-  "patch_sha256": "91e2bfc8b5804fcf2cc11fa524631ba9c9777d1f7adcfb22909cc2159326db22",
-  "base_sha": "5f8458b48bc63aa32bee3eaf4e95d073609748bf",
+  "mailbox_key": "m6-cp3-r4-producer-rail-chain-oracle",
+  "file_id": "15Aw60-ZW6DvTUUuvw4Z93mGE61V5C-ZR",
+  "patch_sha256": "01e7867c927a56a746c443fc36fa6c119025c50ee29b1ca90b6425b9f86580ea",
+  "base_sha": "2143440c64e328136332117edcd539f1d5856939",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record R4 typed first-rejection fixture compile evidence"
+  "commit_message": "test(directional): bind produced rail source-chain oracle and seed fixture"
 }
