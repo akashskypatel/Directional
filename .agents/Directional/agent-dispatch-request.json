@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra434-strict-default-apply-20261012t1848z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra434-strict-default-apply",
-  "file_id": "1I1e7A5lXHAnpw6wEPrNFBIiT14MnmVjX",
-  "patch_sha256": "61ce25e650f87c6b1093e70e22e9da19fc8ccd009a15fcd032f0ff55f488d9a5",
-  "base_sha": "f942172d1a341e7f0145505952c0ef87f6f66609",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surfacecells): make source-vertex rail identity strict by default"
+  "request_id": "m6-cp3-r4-ra434-strict-default-compile-20261012t1850z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-ra434-strict-default-compile",
+  "source_sha": "9c75f44dab79cd3b5ad014d918f15f808b6ac504",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-r4-ra434-strict-default-compile"
 }
