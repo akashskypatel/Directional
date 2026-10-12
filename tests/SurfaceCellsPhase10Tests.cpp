@@ -1693,8 +1693,9 @@ TEST(SurfaceCellsPhase10,
 TEST(SurfaceCellsPhase10,
      UniformPhaseFrontDuplicateTransitionMetadataFailsClosedWithTypedReason) {
   const directional::TriMesh mesh = make_vertex_fan_plane_mesh();
-  auto crossField = directional::pipeline::finalize_surface_cell_raw_cross_field(
+  const auto sourceField = directional::pipeline::finalize_surface_cell_raw_cross_field(
       mesh, constant_xy_raw_field(mesh.F.rows()));
+  auto crossField = sourceField;
   ASSERT_FALSE(crossField.edgeTransitions.empty());
   crossField.edgeTransitions.push_back(crossField.edgeTransitions.front());
   Eigen::VectorXd targetSize =
@@ -1703,6 +1704,15 @@ TEST(SurfaceCellsPhase10,
   options.sourceFaceComponents.assign(
       static_cast<std::size_t>(mesh.F.rows()), 0);
   options.sourceFaceSheets.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
+
+  const auto sourceAuthority =
+      directional::geometry::surface_cell_tracing_detail::
+          build_source_topology_regions(mesh.F, options);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  auto sourceAtlas = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, options.hardFeatureEdges, sourceField);
+  ASSERT_TRUE(sourceAtlas.has_value());
+  options.fieldTransportAtlas = &sourceAtlas.value();
 
   const auto network = directional::geometry::build_surface_cell_network(
       mesh.V, mesh.F, crossField, targetSize, options);
@@ -3014,8 +3024,8 @@ TEST(SurfaceCellsPhase10,
   const Eigen::VectorXd targetSize =
       Eigen::VectorXd::Constant(vertices.rows(), 0.5);
 
-  const auto network = directional::geometry::build_surface_cell_network(
-      vertices, faces, crossField, targetSize, options);
+  const auto network = build_phase10_with_source_atlas(
+      mesh, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
@@ -3169,8 +3179,9 @@ TEST(SurfaceCellsPhase10,
   }
   directional::TriMesh mesh;
   mesh.set_mesh(vertices, faces);
-  auto crossField = directional::pipeline::finalize_surface_cell_raw_cross_field(
+  const auto sourceField = directional::pipeline::finalize_surface_cell_raw_cross_field(
       mesh, raw);
+  auto crossField = sourceField;
   auto transition = std::find_if(
       crossField.edgeTransitions.begin(), crossField.edgeTransitions.end(),
       [](const auto &candidate) {
@@ -3182,6 +3193,15 @@ TEST(SurfaceCellsPhase10,
   options.sourceFaceComponents = {0, 0};
   options.sourceFaceSheets = {0, 1};
   const Eigen::VectorXd targetSize = Eigen::VectorXd::Constant(4, 0.5);
+  const auto sourceAuthority =
+      directional::geometry::surface_cell_tracing_detail::
+          build_source_topology_regions(mesh.F, options);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  auto sourceAtlas = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, options.hardFeatureEdges, sourceField);
+  ASSERT_TRUE(sourceAtlas.has_value());
+  options.fieldTransportAtlas = &sourceAtlas.value();
+
   const auto network = directional::geometry::build_surface_cell_network(
       vertices, faces, crossField, targetSize, options);
   EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
