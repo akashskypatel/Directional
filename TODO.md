@@ -1,3 +1,11 @@
+## CURRENT — R4 M6 CP3 produced seam witness source-A3 ingress (2026-10-12)
+
+- [x] Correct one original CP3 A5/A6/A7 seam candidate builder's missing original-source A2/A3; semantic `b58314b3c8f024d2e6a3ce6092ad87b85425d40f`, Drive apply `38207015195`, staging retired; 3 source lines, unchanged existing test identities and topology.
+- [x] Exact-source eight-target GMP/GMPXX compile **GREEN**: workflow `38207150160`, job `114673117668`, result artifact `11727628126` ZIP SHA-256 `59145348b1324241ea596fbcce410c75b016881b9abc2d06917be43d21d045b7`, manifest **28/28**, preflight/build exits **0/0**, `DIRECTIONAL_ENABLE_GMP=ON`, generated link includes GMPXX/GMP, `exactArithmeticBackend=GMP`, clean source, `runtimeExecution=false`. Diagnostic artifact `11727807480` ZIP SHA-256 `36decf1318c952fdb6bfcb222acd7336918ab6aa18540f3a82095db6a960e44d`.
+- [ ] R4 runtime acceptance, RA-43.4, overfull-A3 independent Review, 39 endpoint, 34 Phase10, seven DCEL, 88 CP2, six CP3, odd-τ multi-carrier still unresolved; no TB497 and no authorized successor.
+
+---
+
 ## CURRENT — R4 composite bounded/periodic negative source-A3 ingress (2026-10-12)
 
 - [x] Exact source `0ffc7857c544d050a70516dbaeea6092fad1b6d7`, one Phase10 test ingress through original-source A2/A3; original `InvalidBoundedDiskFrontPairing` oracle, fixture and selector unchanged. Drive apply `38205257494`, stage retired; source patch preserved.
