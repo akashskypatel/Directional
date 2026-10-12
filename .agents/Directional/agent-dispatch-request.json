@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra47-typed-rail-20261012t1542z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra47-typed-rail-apply",
-  "file_id": "15o9hxztHH4TIZ_J9dhY4XX83KRFHgYTM",
-  "patch_sha256": "253870ff22192a4a0480427f5edf7746596cb196953f18512ad6fe949f0f15a2",
-  "base_sha": "1bcc068cb3be7d994caa537307e61c5aabe2e646",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surfacecells): use source topology keys for R4 rail ownership"
+  "request_id": "m6-cp3-r4-ra47-typed-rail-compile-20261012t1556z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-ra47-typed-rail-compile",
+  "source_sha": "63891bbcce1c6daf5875c19221c3aa5245324f59",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-r4-ra47-compile"
 }
