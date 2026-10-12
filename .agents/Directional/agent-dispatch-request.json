@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-phase14-typed-positive-20261012-b",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-phase14-typed-positive",
-  "file_id": "1XOXbsjTyBlqiyMtIX3vj-RmsojFGPIyo",
-  "patch_sha256": "53ea70a3d4a62f8afc42ece510e772c87d0b8d343f1d7ec5df55381e53313937",
-  "base_sha": "5fbfa5de3f1421dab122ea70ba677efb6dd6f5f1",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(surface-cells): source-type remaining Phase14 rail positives"
+  "request_id": "m6-cp3-r4-phase14-typed-positives-compile-20261012-c",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-phase14-typed-positives-compile",
+  "source_sha": "10afde93e4de3202d5bc8d2bbd0304f629a2375e",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-phase14-typed-positives"
 }
