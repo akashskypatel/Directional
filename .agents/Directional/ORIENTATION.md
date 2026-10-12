@@ -1,3 +1,44 @@
+## CURRENT — 2026-10-12 `M6-CP3-R4-AMBIGUOUS-TERMINAL-CONTACT-ARCH-REV` COMPLETE; RA-49 frozen
+
+**The RA-46.5 review stop is resolved AGAINST the request and supersedes the stop paragraphs below. There is
+no open REVIEW_BLOCKER.** RA-46.5 is **not amended**; the `ambiguous-terminal-contact` negative **must be
+written**. RA-47 remains **entirely unimplemented** and is the next turn's priority.
+
+**Why it inverted.** The request's deduction held only "for a valid **factory-admissible** producer receipt,"
+and justified that premise by asserting the duplicate pair is rejected *earlier* by the checked factory. The
+factory runs **later**: `endpoint_certificate` is defined at `src/geometry/SurfaceCellTracing.cpp:18999`,
+invoked at `:19167`/`:19170`, reading the contact **unvalidated** at `:18997`; `publish_phase_front_result` —
+the only route to `make` and its distinctness check at `:8295-8299` — is called at `:19446`. **Consumer first,
+factory second**, so `:19052` is the first rejecting predicate. Decision:
+`.agents/Directional/Architecture_M6_CP3_R4_Ambiguous_Terminal_Contact_Feasibility_Review_Decision.md`.
+
+**§7 open problems:** RA-47 implementation in full (.1-.11) and its RA-47.10 fixtures; RA-49.2's duplicated-
+endpoint witness (`{v, v}`, reject at `:19052`, not `:19055`/`:8296`); RA-48.3 `set_mesh` injection seam plus
+the atlas's inaccurate invariant comment; RA-46.6 extended per RA-48.6 (`:8204`, `:8210`); RA-46.9
+`sourceEdgeFaceCounts.at` hardening; RA-43.1 carrier cut, RA-43.2 endpoint consumption, RA-43.4; the RA-47.12
+liveness report and RA-48.1 guard-status report. **R4-CTC-01's architectural repair** — validating contacts
+against factory admissibility before first use, or routing the consumer through the validated product — is
+referred to a later **Definition** turn and is not Code + Build work. `overlapping-terminal-sectors` and
+`missing-or-nonreciprocal-terminal-A3` were **not examined** and remain unadjudicated. Also open: 39 endpoints,
+34 Phase10, seven DCEL (compiled, **not executed**), 88 CP2, six CP3, odd-τ and the multi-carrier witness.
+
+**§8 pattern:** an obligation is settled by what the predicate can separate **on the path it actually sits
+on**, not by what a downstream guard would have prevented. Three consecutive applications: RA-46 to a
+graph-theoretic condition, RA-48 to a source-construction condition, RA-49 to an **ordering** condition — and
+only RA-49 **inverted** the request, because the guard invoked to prove unreachability executes after the
+predicate it was said to protect. A feasibility argument must therefore establish **execution order**, not
+merely the existence of a stricter check elsewhere. Corollary observed twice now: where two checks cover one
+condition, identify which fires **first** before calling either redundant.
+
+**Retired in its place:** `nonmanifold-terminal-star-spoke` (`:19066-19068`) is unrealizable — it needs a
+nonmanifold `faces`, the loop needs a non-null atlas (`:19056-19057`), and the network gate at `:18749-18757`
+ties the atlas to those exact face triples, so the atlas must have been built on that mesh, which throws by the
+RA-48.0 chain. Retired on RA-48's frozen G1-G4; guard kept fail-closed. The request sought to retire the
+reachable predicate while leaving the unreachable one in force.
+
+Witness statuses, baselines and ledger unchanged: CP2 491/491 accepted, R3 403/497 rejected, 94 RED, 88 accepted
+CP2 losses, ledger 66/17/49, debt 1. No binary built, no test executed, no runtime credit.
+
 ## CURRENT — 2026-10-12 R4 RA-46.5 ambiguous-terminal-contact independent REVIEW STOP
 
 **`M6-CP3-CB1-ENTRY-R4` is BLOCKED pending normative Review** of the literal RA-46.5 first-rejection fixture. The factory accepts only unequal typed terminal vertices, but A4 `exact_corner` compares one-hot source barycentrics, so both distinct vertices cannot match the same trace point. The requested `ambiguous-terminal-contact` branch appears unreachable under the accepted production contract. This source-exact feasibility finding is **not** an accepted RA amendment: `.agents/Directional/Architecture_M6_CP3_R4_RA465_Ambiguous_Terminal_Contact_Review_Stop_20261012.md`; inspected frozen `69649fda...` from snapshot run `38301273941` and verified 6535/6535 files. Preserve defensive guard and all accepted validators; request independent Review instead of engineering a false fixture. Previous no-blocker orientation paragraphs are superseded until adjudication. Prior RA-43.4 compile GREEN (eight GMP/GMPXX targets), runtime unexecuted. CP2 491/491 accepted; R3 rejected 403/497, 94 RED, 88 CP2 losses; ledger 66/17/49, debt 1. No successor or TB497.

@@ -1,3 +1,46 @@
+## CURRENT — `ambiguous-terminal-contact` REACHABLE; retirement REJECTED (RA-49); R4 unblocked (2026-10-12)
+
+**The review stop is RESOLVED against the request.** RA-46.5 is **not amended** and the
+`ambiguous-terminal-contact` negative **must be written**.
+
+**Why the request inverted.** Its deduction was correct only "for a valid **factory-admissible** producer
+receipt," and it justified that premise by asserting the duplicate pair is rejected *earlier* by the checked
+factory. The factory runs **later**: `endpoint_certificate` is defined at
+`src/geometry/SurfaceCellTracing.cpp:18999` and invoked at `:19167`/`:19170`; the contact is read
+**unvalidated** at `:18997`; `publish_phase_front_result` — the only route to `make` and its distinctness check
+at `:8295-8299` — is called at `:19446`. **Consumer first, factory second**, so `:19052` is the first rejecting
+predicate. Stage-locus error, the class corrected in RA-43.2.
+
+**The witness, exactly.** `endpoints` is `std::array<authority::SourceVertexId, 2>`
+(`include/directional/geometry/SurfaceCellTracing.h:1532`) with no distinctness invariant. Supply
+`hardRailTerminalContacts[railId] = {component, {v, v}}`, `v` an endpoint of the carrier edge, both `fromPoint`
+and `toPoint` bit-exact one-hot at a corner holding `v`. Iteration 1 sets `terminalVertex`; iteration 2 passes
+the identical conjunction and rejects at `:19052`. Verify it rejects there and **not** at `:19055`, `:8296` or
+earlier. The two-distinct-vertices route is unavailable — `exact_corner(fromPoint, ·)` is functional, admitting
+only `faces(fromPoint.face, c)` — so do not attempt it.
+
+**R4-CTC-01:** `build_surface_cell_network` consumes caller-supplied contacts at `:18997` and validates at
+`:19446`; the duplicate condition is checked twice with different strictness, and the upstream
+weaker-reporting check is the one that fires. The consumer's guards are **load-bearing**. Repair (validate
+before first use, or route the consumer through the validated product) is referred to a later Definition turn —
+**not** authorized in Code + Build. Keep both checks.
+
+**Retired instead: `nonmanifold-terminal-star-spoke`.** `:19066-19068` needs a nonmanifold `faces`; the loop
+needs a non-null atlas (`:19056-19057`); the network gate at `:18749-18757` ties the atlas to those exact face
+triples — so the atlas must have been built on that mesh, which throws by the RA-48.0 chain. Retired on RA-48's
+frozen G1-G4, guard kept fail-closed. `no-exact-terminal-corner` and `missing-terminal-A3-path` are reachable
+and keep their obligations; `overlapping-terminal-sectors` and `missing-or-nonreciprocal-terminal-A3` were
+**not examined** and remain unadjudicated.
+
+**Next turn:** `M6-CP3-CB1-ENTRY-R4` — RA-47 is **still entirely unimplemented** and is the priority, then
+RA-49.2's witness, RA-48.3 (`set_mesh` injection seam), RA-46.6 extended per RA-48.6, RA-46.9, and
+RA-43.1/.2/.4. Report RA-47.12 liveness and RA-48.1 guard status.
+
+No binary built, no test executed, no runtime credit. Ledger **66/17/49**, debt **1**. CP2 **491/491**
+accepted, R3 **403/497** rejected, 94 RED, 88 accepted CP2 losses. RA-41 junction/sector clauses frozen
+**UNEXERCISED**; seven two-face DCEL repairs compiled but **not executed**. Decision:
+`.agents/Directional/Architecture_M6_CP3_R4_Ambiguous_Terminal_Contact_Feasibility_Review_Decision.md`.
+
 ## CURRENT — M6-CP3-CB1-ENTRY-R4 REVIEW STOP RA-46.5 ambiguous terminal (2026-10-12 20:45Z)
 
 **Same canonical R4 Code + Build is BLOCKED (`REVIEW_BLOCKER`) pending an independent normative feasibility decision.** Frozen RA-46.5 demands a first-rejection negative at `ambiguous-terminal-contact`, yet the checked A4 factory rejects duplicate terminal IDs before A4, and `exact_corner` can match only one distinct typed source vertex at each one-hot trace point; two unequal contacts cannot both pass. Verified exact snapshot `69649fda99508310ce93a9e2920da28fa966c578`, workflow `38301273941`, source artifact `11770860615`, **6535/6535** manifest. Detailed proof and requested independent Review: `.agents/Directional/Architecture_M6_CP3_R4_RA465_Ambiguous_Terminal_Contact_Review_Stop_20261012.md`. **Do not silently amend RA-46.5, weaken factory/exact-corner, synthesize a fake witness, or start TB497/successor.** Once independently adjudicated, resume **this same R4 turn**. No new source code, compile, tests or runtime evidence in this finding; prior RA-43.4 eight-target compile remains GREEN only, source `9c75f44`, run `38293645339`. CP2 491/491 accepted, R3 403/497 rejected, 94 RED/88 CP2 losses, ledger 66/17/49 debt1. Earlier handoff currency below is historical where it says no current review stop.

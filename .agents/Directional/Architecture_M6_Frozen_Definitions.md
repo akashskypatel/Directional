@@ -1,3 +1,82 @@
+## RA-49 — `ambiguous-terminal-contact` is REACHABLE; the retirement request is REJECTED **FROZEN at M6-CP3-CB1-ENTRY-R4** (2026-10-12)
+
+Adjudicates `Architecture_M6_CP3_R4_RA465_Ambiguous_Terminal_Contact_Review_Stop_20261012.md`. Basis:
+`Architecture_M6_CP3_R4_Ambiguous_Terminal_Contact_Feasibility_Review_Decision.md`. **RA-46.5 is NOT amended.**
+No runtime credit. RA-48, RA-47, RA-46, RA-45, RA-44 (less .2), RA-43 (less .5 and less the superseded
+`sourceEdges` row of §4), RA-42 as corrected, RA-41 frozen scoped, RA-40, RA-39, RA-38, RA-37a and the RA-34.3
+stop gates stand.
+
+- **RA-49.0 — the request's conditional claim is true; its premise fails on the live path.** The deduction
+  held only "for a valid **factory-admissible** producer receipt," and the sentence carrying it asserted that
+  "a malicious duplicate terminal pair is rejected **earlier** by the checked factory." **The factory runs
+  later.** `endpoint_certificate` is defined at `src/geometry/SurfaceCellTracing.cpp:18999` and **invoked** at
+  `:19167`/`:19170`; the contact is read **unvalidated** at `:18997`; and `publish_phase_front_result` — the
+  only route to `SurfacePhaseFrontProduct::make` and its distinctness check at `:8295-8299` — is called at
+  **`:19446`**, after that loop closes, with the same options object. Ordering is **consumer first, factory
+  second**, so `:19052` is the **first** rejecting predicate for a duplicated endpoint pair. This is a
+  **stage-locus error**, the class corrected in RA-43.2.
+- **RA-49.1 — the obligation STANDS.** The retirement request is **REJECTED**; RA-46.5's requirement for a
+  negative at `ambiguous-terminal-contact` is unamended.
+- **RA-49.2 — the impossibility the request found is real, sharper, and about something else.** Qualification
+  at `:19049-19051` is a **conjunction**, and `exact_corner(fromPoint, ·)` (`:19034-19046`) settles it alone:
+  `corner` is assigned only where `faces(point.face, i) == vertex.index()`, and the bit-exact one-hot test then
+  forces `i` to the single position `c` with `barycentric[c] == 1.0`, so the only admissible vertex is
+  `faces(fromPoint.face, c)` — **exactly one**, independent of `toPoint`, the carrier conjunct,
+  `contact.component` and the factory. Two **distinct** vertices therefore cannot both qualify, and that needs
+  no guard. The branch has exactly **one** reachable route: the same vertex qualifying **twice**.
+- **RA-49.3 — the witness, named exactly.** `endpoints` is `std::array<authority::SourceVertexId, 2>`
+  (`include/directional/geometry/SurfaceCellTracing.h:1532`) with no distinctness invariant, so a duplicate is
+  representable by type. Supply `hardRailTerminalContacts[railId] = {component, {v, v}}` with `v` an endpoint
+  of the carrier `edge` and both `fromPoint` and `toPoint` bit-exact one-hot at a corner holding `v`. Iteration
+  1 sets `terminalVertex = v`; iteration 2 passes the identical conjunction and returns at `:19052`. The
+  fixture must be verified to reject at `:19052` and **not** at `:19055`, `:8296`, or any earlier predicate.
+  Nothing is fabricated or approximated. The request's refutation criterion ("two unequal typed terminal IDs")
+  was too narrow — it excluded by assumption the only route the code admits.
+- **RA-49.4 — prohibited routes to the witness.** Relaxing the one-hot comparison at `:19043` (RA-46.7's
+  prohibition extends here); removing or weakening the factory distinctness check at `:8295-8299`; removing the
+  carrier-membership conjunct at `:19049`; constructing the contact outside `build_surface_cell_network`. The
+  witness requires none of these. A fixture attempting the two-distinct-vertices route is not a defect in the
+  code and will not produce this predicate.
+- **RA-49.5 — R4-CTC-01: validate-after-use.** `build_surface_cell_network` **uses** caller-supplied
+  `hardRailTerminalContacts` for routing and certificate decisions from `:18997`, and validates them only at
+  `:19446`. The duplicate condition is checked twice with different strictness and reporting — string predicate
+  upstream (`:19052`), typed `InvalidSourceAuthority` downstream (`:8297`) — and the **upstream, weaker-reporting**
+  one is the one that fires. The consumer's guards are therefore **load-bearing, not redundant defence**, and
+  retiring this negative would remove coverage from the only check that runs before the data is consumed. The
+  request's proposed substitute, "a reachable factory-first duplicate-contact negative," cannot exist on this
+  path. Architectural repair — validate contacts against factory admissibility before first use, or route the
+  consumer through the factory-validated product — is **not** authorized in Code + Build and is referred to a
+  later Definition turn. Until then **both** checks are kept; neither may be removed as redundant.
+- **RA-49.6 — what IS unrealizable: `nonmanifold-terminal-star-spoke`, RETIRED.** `:19066-19068` needs
+  `sourceEdgeFaceCounts > 2`, i.e. a nonmanifold `faces`; the loop needs a non-null atlas (`:19056-19057`); and
+  the network gate at `:18749-18757` requires
+  `matches_source_faces(faces, *network.sourceTopologyRegions, vertexCount)`, which ties the atlas's
+  `rowTopology_` to those exact face triples (`src/authority/FieldTransportAtlas.cpp:3090-3109`). The atlas must
+  therefore have been built on that nonmanifold mesh, which throws by the RA-48.0 chain. Retired on RA-48's
+  **already frozen** G1-G4 plus the network gate, with the guard **kept fail-closed**; no fixture, and none
+  synthesized by relaxing manifold rules or passing a null atlas (which rejects earlier with
+  `missing-source-A3`, a different predicate). Lapses with RA-48.1 if any guard weakens. **Note the inversion:**
+  the request sought to retire the reachable predicate while leaving the unreachable one in force.
+- **RA-49.7 — status of the remaining four.** `no-exact-terminal-corner` (`:19055`) is **reachable** — any
+  contact whose endpoints are off the carrier, or whose trace points are not bit-exact one-hot, falls through
+  the loop. `missing-terminal-A3-path` is **reachable** and keeps its obligation by RA-46.4, which retained the
+  `pathCount == 0` branch as reachable from a foreign component. `overlapping-terminal-sectors` and
+  `missing-or-nonreciprocal-terminal-A3` were **NOT examined** and keep their obligations **unadjudicated**;
+  their feasibility may not be asserted in either direction on the strength of this decision.
+- **RA-49.8 — the general rule, third application.** An obligation is settled by what the predicate can
+  separate **on the path it actually sits on**, not by what a downstream guard would have prevented. RA-46
+  asked this of a graph-theoretic condition, RA-48 of a source-construction condition, RA-49 of an **ordering**
+  condition — and here the answer **inverted** the request, because the guard invoked to prove unreachability
+  executes after the predicate it was said to protect. A feasibility argument must establish **execution
+  order**, not merely a stricter check elsewhere.
+- **RA-49.9 — no credit.** No binary built, no test executed. R4-CTC-01 is a source-level review finding,
+  **not** a counted stable regression. Ledger stays **66 events / 17 categories / 49 recurrences**, debt **1**.
+  CP2 **491/491** accepted, R3 **403/497** rejected, 94 RED, 88 accepted CP2 losses. RA-41 junction/sector
+  clauses remain frozen **UNEXERCISED**; the seven two-face DCEL repairs remain compiled but **not executed**.
+  **RA-47 remains entirely unimplemented.**
+
+---
+
 ## RA-48 — overfull-A3 is unrealizable under four guards; the seam beneath it is a defect **FROZEN at M6-CP3-CB1-ENTRY-R4** (2026-10-12)
 
 Adjudicates the carried independent overfull-A3 feasibility gate raised in
