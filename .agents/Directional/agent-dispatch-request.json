@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-composite-negative-a3-docs-20261012-a",
+  "request_id": "m6-cp3-r4-seam-source-a3-ingress-20261012-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-composite-negative-a3-docs-apply",
-  "file_id": "1TxCNiFoFIiKKGOysmetuOIPUofLZY7hk",
-  "patch_sha256": "fe21a32cdf18e474436d4673b21040061d2a192816b63f78a79bc09fba989fc2",
-  "base_sha": "284bba01c90f100520b8a1b31ce6de897bd291c5",
+  "mailbox_key": "m6-cp3-r4-seam-a3-apply",
+  "file_id": "1uFWtcnkKM2YyQgeNJisJXXHSkJssEH-L",
+  "patch_sha256": "6dc4754f405fa0fc36e1eeb30193354ca8ae399409f8e73bb9a120d32b2662d7",
+  "base_sha": "27ad5a1fad7b6544fa744f30497a8b1fb77d95a8",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): preserve R4 composite A3 compile-only checkpoint"
+  "commit_message": "test(directional): bind CP3 produced seam witness to source A3"
 }
