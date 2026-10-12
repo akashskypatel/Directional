@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra46-subcodes-compile-repair-20261012t1656z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra46-subcodes-compile-repair-apply",
-  "file_id": "1pI6IWrRc9fgpe0zjwd05ebFq6bj12kwU",
-  "patch_sha256": "daa9f24646fadee4d19562e94a1f5f25471982a34640f641f2f757bae1ff5766",
-  "base_sha": "b70043a805ec6eccec59f76f98e6ebb37391e38a",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surfacecells): unwrap checked source vertex IDs in A4 regression"
+  "request_id": "m6-cp3-r4-ra46-factory-corrected-compile-20261012t1708z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-ra46-factory-corrected-compile",
+  "source_sha": "675b9de3390db0a5b3e72200d29c440540cd5cc1",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-r4-ra46-factory-corrected-compile"
 }
