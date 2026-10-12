@@ -8937,20 +8937,21 @@ TEST(M6CP3, CheckedFactoryRejectsForgedTerminalA2bSideGerm) {
   ASSERT_FALSE(front.hardRailTerminalContacts().empty());
 
   const auto checked_with_routes_and_contacts =
-      [&](const auto &routes, const auto &contacts) {
+      [&](const auto &routes, const auto &contacts,
+          const auto &hardEdges) {
         return directional::geometry::SurfacePhaseFrontProduct::make(
             front.gridU(), front.gridV(), front.sourceTopologyRegions(),
             fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
             &*fixture.fieldTransportAtlas,
             front.isolationSeamTransportCertificates(), front.periodicHolonomies(),
             front.boundedDiskBoundaryPhases(), front.edges(), front.events(),
-            front.cells(), front.conformityPlanReceipt(), front.hardFeatureEdges(),
+            front.cells(), front.conformityPlanReceipt(), hardEdges,
             front.sourceFaceBranchRotations(), front.hardRailFieldTransitions(),
             routes, contacts, front.hardRailClosedChains());
       };
   const auto checked_with_routes = [&](const auto &routes) {
     return checked_with_routes_and_contacts(
-        routes, front.hardRailTerminalContacts());
+        routes, front.hardRailTerminalContacts(), front.hardFeatureEdges());
   };
   auto original = front.hardRailRouteCertificates();
   const auto baseline = checked_with_routes(original);
@@ -8982,7 +8983,7 @@ TEST(M6CP3, CheckedFactoryRejectsForgedTerminalA2bSideGerm) {
   ASSERT_FALSE(missingContact.empty());
   missingContact.erase(missingContact.begin());
   expect_phase_front_product_error(
-      checked_with_routes_and_contacts(original, missingContact), expected);
+      checked_with_routes_and_contacts(original, missingContact, front.hardFeatureEdges()), expected);
 
   // Vertex 0 is an actual vertex in this 3x3 source mesh, but it is not an
   // endpoint of either hard-feature spoke (1,4) or (4,7). A foreign contact
@@ -9000,17 +9001,21 @@ TEST(M6CP3, CheckedFactoryRejectsForgedTerminalA2bSideGerm) {
   auto foreignContact = front.hardRailTerminalContacts();
   foreignContact.begin()->second.endpoints[0] = unrelatedVertex.value();
   expect_phase_front_product_error(
-      checked_with_routes_and_contacts(original, foreignContact), expected);
+      checked_with_routes_and_contacts(original, foreignContact, front.hardFeatureEdges()), expected);
 
-  // This source mesh has a hard rail from boundary vertex 1 through 4
-  // to boundary vertex 7. Removing the carrier spoke separates the two
-  // terminal sectors, whether the selected terminal is at 1, 4 or 7.
-  // Rebind to the other sector to exercise a reachable zero-path rejection.
-  auto unreachable = original;
-  auto &negative = unreachable[route].endpoints[endpoint];
-  ASSERT_NE(negative.firstAttachment, negative.secondAttachment);
-  negative.firstAttachment = negative.secondAttachment;
-  const auto unreachableResult = checked_with_routes(unreachable);
+  // Remove exactly one independently produced non-hard A3 terminal spoke
+  // from admissible star transport by marking it as a barrier. Unlike
+  // modifying the certificate attachment, this preserves the source-owned
+  // front-face equality checks and reaches the actual missing-path guard.
+  // RA-46 establishes uniqueness, so severing a genuine required step
+  // leaves no alternate non-hard A3 route to the hard carrier.
+  const auto blockedSpoke =
+      original[route].endpoints[endpoint].contactPaths[side].front().edge;
+  auto blockedHardEdges = front.hardFeatureEdges();
+  ASSERT_FALSE(blockedHardEdges.contains(blockedSpoke));
+  blockedHardEdges.insert(blockedSpoke);
+  const auto unreachableResult = checked_with_routes_and_contacts(
+      original, front.hardRailTerminalContacts(), blockedHardEdges);
   const auto *unreachableError = std::get_if<
       directional::geometry::SurfacePhaseFrontProductError>(&unreachableResult);
   ASSERT_NE(nullptr, unreachableError);
