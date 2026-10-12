@@ -1,3 +1,11 @@
+## CURRENT — R4 Phase14 positive rail source-vertex migration (2026-10-12)
+
+- [x] Source-owned exact `sourceVertices` published on 10 previously untyped valid Phase14 rail instances across seven existing tests. Applied in commit `10afde93e4de3202d5bc8d2bbd0304f629a2375e`, workflow `38194680839`, result `11722878840` (patch hash verified; Drive staging deleted). One test file, ten insertions, no deletions, seven unchanged Phase14 test identities and oracles; closed, reversed, multi-interval and side-chart sample topology checked against exact source faces. No runtime Directional tests or frozen 497 execution.
+- [x] Exact-source mandatory eight-target GMP/GMPXX compile **GREEN**; workflow `38194789102`, job `114635016916`, result artifact `11723220719`, ZIP SHA-256 `3340a26bc7fc8a543843981d0040a84339ec44490ed26c17b5541f1cc53e6039`. Eight targets verified; CMake `DIRECTIONAL_ENABLE_GMP=ON`, actual generated linker command references both `libgmpxx.so` and `libgmp.so`, package 28/28 checksum manifest, preflight/build exit 0/0, source worktree clean and `runtimeExecution=false`. No Directional test or benchmark executed.
+- [ ] Do not claim runtime PASS, 497-case restoration, completed RA-43.4, or R4 exit. Independent overfull A3 Review, 39 endpoints, 34 Phase10, seven DCEL, 88 CP2 accepted losses, six CP3 and genuine multi-carrier odd-τ remain open.
+
+---
+
 ## CURRENT — R4 Phase14 typed-rail valid positive (2026-10-12)
 
 - [x] One source-owned positive fixture migration in `SurfaceCellTracingPhase14Tests.cpp`: `validRail.sourceVertices={0,4}`, preserving original negative and open-endpoint assertions, commit `5fbfa5de3f1421dab122ea70ba677efb6dd6f5f1`, apply `38193068301`; stage deleted. Exact-source 8/8 GMP/GMPXX compile GREEN workflow `38193556754`, job `114631316138`, artifact `11721982481` SHA-256 `2e665b1a2d7833c979e2bc5975979f36053e218443934de26c2cf208076637b2`, manifest 28/28, exits 0/0, clean source, `runtimeExecution=false`.

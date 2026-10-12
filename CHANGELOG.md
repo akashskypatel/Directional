@@ -1,3 +1,7 @@
+## 2026-10-12 — R4 Phase14 typed positive rail migration (Code + Build only)
+
+- Authenticated 10 rail instances over seven existing Phase14 tests by publishing source-owned exact ordered vertices. Semantic source `10afde93e4de3202d5bc8d2bbd0304f629a2375e` from apply `38194680839`, Drive retired. Exact-source mandatory eight-target GMP/GMPXX compile **GREEN**; workflow `38194789102`, job `114635016916`, result artifact `11723220719`, ZIP SHA-256 `3340a26bc7fc8a543843981d0040a84339ec44490ed26c17b5541f1cc53e6039`. Eight targets verified; CMake `DIRECTIONAL_ENABLE_GMP=ON`, actual generated linker command references both `libgmpxx.so` and `libgmp.so`, package 28/28 checksum manifest, preflight/build exit 0/0, source worktree clean and `runtimeExecution=false`. No Directional test or benchmark executed. No runtime proof, promotion, selector changes or factory/source-semantic modifications.
+
 ## 2026-10-12 — R4 typed Phase14 rail fixture (compile-only)
 
 - Published exact ordered `sourceVertices={0,4}` on a single previously untyped valid-interval rail test, source commit `5fbfa5de3f1421dab122ea70ba677efb6dd6f5f1`; Exact-source 8/8 GMP/GMPXX compile GREEN workflow `38193556754`, job `114631316138`, artifact `11721982481` SHA-256 `2e665b1a2d7833c979e2bc5975979f36053e218443934de26c2cf208076637b2`, manifest 28/28, exits 0/0, clean source, `runtimeExecution=false`. Test execution deferred.
