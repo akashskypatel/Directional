@@ -1,3 +1,7 @@
+## CURRENT — R4 RA-47.12 authored default-path liveness oracle (2026-10-12)
+
+An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative was added to the existing Phase10 fixture. Apply/compile source first; defer execution to authorized TB/Review. RA-47.12 remains observationally open; no runtime PASS. See `Architecture_M6_CP3_R4_RA4712_Default_Producer_Rail_Liveness_Code_Build_Record_20261012.md`. R4 remains IN_PROGRESS and TB497 remains held.
+
 ## CURRENT — R4 typed rail helper source-corner confirmation (2026-10-12)
 
 - [x] Apply and eight-target GMP/GMPXX compile-check source-exact RA-43.4 shared-helper counterexample patch. Exact snapshot `b178f5628bf9e07a4ede14f4717fbe37c2b6e3ab`, 6556/6556 hashes. Test source extends the existing Phase14 typed rail case with coincident distinct source-vertex ID and near-corner geometry negatives; production/legacy diagnostic contracts remain unchanged. Compile GREEN workflow `38320820157`, source `e15e1d18a38308f2c4c83b1a616a85f73af37ac7`, artifact `11778313525`, 28/28, 8/8, runtime disabled. See `Architecture_M6_CP3_R4_RA434_Typed_Rail_Corner_Confirmation_Code_Build_Record_20261012.md`.

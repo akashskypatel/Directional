@@ -6378,6 +6378,52 @@ TEST(SurfaceCellAuthorityContractCutover,
   }
 }
 
+// RA-47.12: production-path reachability must not be inferred from a
+// hand-authored network fixture. This exact pipeline fixture publishes both
+// the rails and the network; a typed mutation must fail in the same consumer.
+// Source-only Code+Build oracle; execution evidence belongs to TB/Review.
+TEST(SurfaceCellAuthorityContractCutover,
+     ProducedRailsReachTypedFieldAlignedConsumerOnDefaultPipelinePath) {
+  const auto fixture = build_rectangular_hard_rail_phase_front();
+  ASSERT_TRUE(fixture.sourceAuthority.has_value());
+  ASSERT_TRUE(fixture.atlas.has_value());
+  ASSERT_TRUE(fixture.fieldNetwork.has_value())
+      << "default producer did not reach field-aligned network publication";
+  ASSERT_FALSE(fixture.rails.empty());
+  ASSERT_FALSE(fixture.hardFeatureEdges.empty());
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            fixture.network.phaseFront.disposition())
+      << hard_rail_first_failure_detail(fixture.network);
+
+  std::size_t ownedIntervals = 0U;
+  for (const auto &rail : fixture.rails) {
+    ASSERT_FALSE(rail.sourceEdges.empty());
+    for (const auto &edge : rail.sourceEdges) {
+      const auto *mandatory = fixture.fieldNetwork->find_mandatory_edge(edge);
+      ASSERT_NE(mandatory, nullptr)
+          << "producer-published typed rail key did not reach A2a";
+      EXPECT_EQ(rail.id, mandatory->rail);
+      EXPECT_EQ(rail.kind, mandatory->kind);
+      ++ownedIntervals;
+    }
+  }
+  EXPECT_GT(ownedIntervals, 0U);
+
+  auto forgedRails = fixture.rails;
+  const auto original = forgedRails.front().sourceEdges.front();
+  const auto foreign = std::find_if(
+      fixture.hardFeatureEdges.begin(), fixture.hardFeatureEdges.end(),
+      [&](const auto &key) { return key != original; });
+  ASSERT_NE(foreign, fixture.hardFeatureEdges.end());
+  forgedRails.front().sourceEdges.front() = *foreign;
+  const auto rejected = directional::geometry::FieldAlignedCurveNetwork::make(
+      fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, forgedRails);
+  ASSERT_FALSE(rejected);
+  EXPECT_EQ(directional::geometry::FieldAlignedCurveNetworkErrorCode::
+                InvalidRailGeometry,
+            rejected.error().code);
+}
+
 TEST(SurfaceCellAuthorityContractCutover,
      FixedConformityPlanTargetPerturbationPreservesSharedBoundaryIntervals) {
   const auto fixture = build_rectangular_hard_rail_phase_front();
