@@ -1,3 +1,7 @@
+## 2026-10-12 — `M6-CP3-CB1-ENTRY-R4` composite bounded/periodic negative A3 ingress (compile-only)
+
+Source `0ffc7857c544d050a70516dbaeea6092fad1b6d7` updates one original Phase10 negative to independently source-build A2/A3 while preserving the `InvalidBoundedDiskFrontPairing` oracle, geometry and name. Exact eight-target GMP/GMPXX compile GREEN: workflow `38205407002`, job `114667758421`, result `11727133144` ZIP SHA-256 `82026586b7286971b8aadb16a6e8031f338ca4ff65b0b2facc9b0a156ef537a6`, 28/28 manifest, preflight/build 0/0, GMPXX/GMP linked, clean source, `runtimeExecution=false`. Runtime unverified, R4 still IN_PROGRESS; no selector/TB497 changes. Evidence: `.agents/Directional/Architecture_M6_CP3_R4_Composite_Bounded_Reject_A3_Code_Build_Record_20261012.md`.
+
 ## 2026-10-12 — `M6-CP3-CB1-ENTRY-R4` two Phase10 negative A3 source ingresses (compile-only)
 
 Existing ambiguous periodic-ring and invalid curved-disk boundary-turn negative fixtures now carry independently source-built A3 without changing their oracle or identity, test-only source `2be8da1198f9861efb7231c9468760df787b22f5`. Compile `38203770454` GREEN with eight GMP/GMPXX targets, 28/28 manifest, no runtime; prior 497 frozen gate and R4 state unchanged. Evidence: `.agents/Directional/Architecture_M6_CP3_R4_Two_Phase10_Negative_A3_Code_Build_Record_20261012.md`.

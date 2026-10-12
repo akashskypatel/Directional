@@ -1,3 +1,11 @@
+## CURRENT — R4 composite bounded/periodic negative source-A3 ingress (2026-10-12)
+
+- [x] Exact source `0ffc7857c544d050a70516dbaeea6092fad1b6d7`, one Phase10 test ingress through original-source A2/A3; original `InvalidBoundedDiskFrontPairing` oracle, fixture and selector unchanged. Drive apply `38205257494`, stage retired; source patch preserved.
+- [x] Exact eight-target GMP/GMPXX compile GREEN: workflow `38205407002`, job `114667758421`, result `11727133144` ZIP SHA-256 `82026586b7286971b8aadb16a6e8031f338ca4ff65b0b2facc9b0a156ef537a6`, 28/28 manifest, preflight/build 0/0, GMPXX/GMP linked, clean source, `runtimeExecution=false`.
+- [ ] Actual first rejection and all frozen regression PASS/FAIL remain untested. Original R4 obligations (RA-43.4, overfull-A3 Review, endpoints, Phase10, DCEL, CP2, CP3, multi-carrier odd-τ) remain open; no TB497 promotion.
+
+---
+
 ## CURRENT — R4 two Phase10 negative source-A3 fixture ingresses (2026-10-12)
 
 - [x] Source-only +21/-0 two original Phase10 negatives with independently original-source-bound A3: periodic ring ambiguity and two-triangle disk invalid cyclic turn. Source `2be8da1198f9861efb7231c9468760df787b22f5`, apply run `38203661294`, Drive staging deleted; unchanged test identities and original oracles.
