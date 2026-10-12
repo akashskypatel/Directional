@@ -1,3 +1,11 @@
+## CURRENT — R4 typed rail rejects foreign valid face-local edge (2026-10-12)
+
+- [x] Source-independent Phase14 typed chain `(0,4)` vs valid but foreign local source edge `(1,4)` rejected by existing preprocessor oracle at interval 0; semantic `34379d974819be5586e7ef5dfaef00912ad4a343`; source patch `eac5243e1def71a503b193eedd87e5e2400276ca3a63f2639bf47ad6cd3bfc0e`, apply workflow `38228853566`.
+- [x] Exact source eight-target GMP/GMPXX compile GREEN, run `38228978981`, job `114743570982`, result `11737497543` ZIP SHA-256 `bf6500a06082adaab384ee76cf7b72106cebebf0ee7c2103013ce966fd33b50a`, 28/28 manifest, preflight/build 0/0, `runtimeExecution=false`.
+- [ ] R4 still ongoing: independent overfull-A3 Review, RA-43.4, 39 carried endpoints, 34 Phase10, 7 DCEL, 88 CP2 accepted losses, six CP3 and authentic odd-tau multi-carrier. No TB497 or successor authorized.
+
+---
+
 ## CURRENT — R4 closed-rail wraparound wrong raw-index rejection (2026-10-12)
 
 - [x] Existing closed-rail rotation/reversal fixture now asserts a distinct in-range incorrect source-edge index on typed closing interval is rejected at `InvalidRailGeometry`; semantic `cc7f6b1010309d3eb82d78c33fbddc66ef6c7e1a`, Drive apply `38226080567`, staging deleted.

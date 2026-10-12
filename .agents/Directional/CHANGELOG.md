@@ -1,3 +1,10 @@
+## 2026-10-12 — `M6-CP3-CB1-ENTRY-R4` Phase14 foreign local-edge negative (compile-only)
+
+- Existing `ProducedRailEndpointsRequireExactSourceVertexIncidence` now proves exact but **foreign** local-edge geometry cannot replace a typed source-edge chain. Source `34379d974819be5586e7ef5dfaef00912ad4a343` from snapshot `38228270153` 6437/6437; patch `eac5243e1def71a503b193eedd87e5e2400276ca3a63f2639bf47ad6cd3bfc0e` applied in `38228853566`.
+- Code + Build only: source `34379d974819be5586e7ef5dfaef00912ad4a343`; exact eight-target GMP/GMPXX compile **GREEN**, workflow `38228978981`, job `114743570982`, artifact `11737497543` ZIP SHA-256 `bf6500a06082adaab384ee76cf7b72106cebebf0ee7c2103013ce966fd33b50a`; preflight/build 0/0, manifest 28/28, actual GMPXX/GMP linker, `runtimeExecution=false`. No Directional tests, benchmarks, or TB497 executed. No frozen selector, production logic or test identity changed. R4 unresolved; see `.agents/Directional/Architecture_M6_CP3_R4_Phase14_Foreign_Local_Edge_Oracle_Code_Build_Record_20261012.md`.
+
+---
+
 ## 2026-10-12 — `M6-CP3-CB1-ENTRY-R4` closed-rail raw edge/index oracle (compile-only)
 
 Added one existing-test negative for a closed typed rail whose rotated closing interval claims a different in-range source-edge index; expects `InvalidRailGeometry`. Source `cc7f6b1010309d3eb82d78c33fbddc66ef6c7e1a`, apply `38226080567` GREEN. GMP/GMPXX eight-target compile GREEN `38226217402`, artifact `11736147455`, ZIP SHA-256 `581cbe9eb2a9f3b3b7e07db2e742328e9c267442234d5a2b6a139b3b95f7aecb`, package 28/28, no runtime. R4 remains open, frozen 497 and existing test identities unchanged. Detailed record `.agents/Directional/Architecture_M6_CP3_R4_Closed_Rail_Wraparound_Index_Oracle_Code_Build_Record_20261012.md`.
