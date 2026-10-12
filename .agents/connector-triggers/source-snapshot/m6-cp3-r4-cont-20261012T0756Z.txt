@@ -1,0 +1,3 @@
+turn=M6-CP3-CB1-ENTRY-R4
+source_ref=50d806464d83c83cf56839a5938cf0d353751b4d
+purpose=exact source inspection for same-turn continuation
