@@ -1,12 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-phase14-typed-rail-docs-20261012-d",
+  "request_id": "m6-cp3-r4-phase14-typed-positive-20261012-b",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-phase14-typed-rail-docs",
-  "file_id": "111XwnGiEgSR4XEMZwyp1I_orhaCtvGMy",
-  "patch_sha256": "c6e75f5d2ea3d2205db95cfc3c41f1b1ba0465aecb79f1afcbc91bc27e4c2e37",
+  "mailbox_key": "m6-cp3-r4-phase14-typed-positive",
+  "file_id": "1XOXbsjTyBlqiyMtIX3vj-RmsojFGPIyo",
+  "patch_sha256": "53ea70a3d4a62f8afc42ece510e772c87d0b8d343f1d7ec5df55381e53313937",
   "base_sha": "5fbfa5de3f1421dab122ea70ba677efb6dd6f5f1",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record R4 typed Phase14 rail source and compile evidence",
-  "retention_days": 14
+  "commit_message": "test(surface-cells): source-type remaining Phase14 rail positives"
 }
