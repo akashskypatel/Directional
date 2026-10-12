@@ -1,3 +1,9 @@
+## CURRENT — 2026-10-12 R4 RA-46.5 ambiguous-terminal-contact independent REVIEW STOP
+
+**`M6-CP3-CB1-ENTRY-R4` is BLOCKED pending normative Review** of the literal RA-46.5 first-rejection fixture. The factory accepts only unequal typed terminal vertices, but A4 `exact_corner` compares one-hot source barycentrics, so both distinct vertices cannot match the same trace point. The requested `ambiguous-terminal-contact` branch appears unreachable under the accepted production contract. This source-exact feasibility finding is **not** an accepted RA amendment: `.agents/Directional/Architecture_M6_CP3_R4_RA465_Ambiguous_Terminal_Contact_Review_Stop_20261012.md`; inspected frozen `69649fda...` from snapshot run `38301273941` and verified 6535/6535 files. Preserve defensive guard and all accepted validators; request independent Review instead of engineering a false fixture. Previous no-blocker orientation paragraphs are superseded until adjudication. Prior RA-43.4 compile GREEN (eight GMP/GMPXX targets), runtime unexecuted. CP2 491/491 accepted; R3 rejected 403/497, 94 RED, 88 CP2 losses; ledger 66/17/49, debt 1. No successor or TB497.
+
+---
+
 ## CURRENT — 2026-10-12 `M6-CP3-R4-OVERFULL-A3-FEASIBILITY-ARCH-REV` COMPLETE; RA-48 frozen
 
 **Both halves of the reported block are discharged and this supersedes the stop paragraphs below.** The

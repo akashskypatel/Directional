@@ -1,3 +1,11 @@
+## CURRENT REVIEW STOP — R4 RA-46.5 ambiguous terminal contact (2026-10-12 20:45Z)
+
+- [x] Verify source snapshot `69649fda99508310ce93a9e2920da28fa966c578` (run `38301273941`, 6535/6535). Independently show RA-46.5's literal `ambiguous-terminal-contact` witness conflicts with the distinct typed terminal IDs enforced at checked A4 and bit-exact one-hot `exact_corner` in A4 route production. Preserve proof in `.agents/Directional/Architecture_M6_CP3_R4_RA465_Ambiguous_Terminal_Contact_Review_Stop_20261012.md`.
+- [ ] **REVIEW_BLOCKER:** independent Definition/Review must confirm or refute the impossibility lemma and amend only the unsatisfiable RA-46.5 negative if confirmed. Keep fail-closed branch; require valid earlier factory-first malformed-contact rejection and the remaining reachable negatives. Do not counterfeit first rejection or rename frozen selector identities.
+- [ ] After independent Review, continue **the same** `M6-CP3-CB1-ENTRY-R4` Code + Build, including RA-43.2 side-attachment, RA-43.4 diagnostic opt-out, RA-47.12 runtime liveness, historical regression and genuine odd-τ/multi-carrier gates. No TB497 or successor now; no compile/runtime PASS new to this stop.
+
+---
+
 ## CURRENT — R4 RA-43.4 compile GREEN; canonical turn remains open (2026-10-12 19:10Z)
 
 - [x] Exact semantic `9c75f44dab79cd3b5ad014d918f15f808b6ac504` compiled in run `38293645339`, eight targets, 28/28 manifest, GMPXX/GMP, no runtime. Evidence in `Architecture_M6_CP3_R4_RA434_Default_Strict_Source_Vertex_Contract_20261012.md`.
