@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-a3u01-fixture-20261012-b",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-a3u01-fixture-apply",
-  "file_id": "1TrzKVMdy4snzRYxppOjlCehic3Mt3saO",
-  "patch_sha256": "be678550a7982a87708969b859bc142e17b97c6919a063dd792d5b2f03faf793",
-  "base_sha": "a384d6bc27f457a7d651aa2574709d7a76c8e7e1",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(surface-cells): use produced terminal for zero-path factory oracle",
-  "retention_days": 7
+  "request_id": "m6-cp3-r4-a3u01-compile-20261012-c",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-a3u01-compile",
+  "source_sha": "74e74e41a7f040f34798d998dba36677e7ff07d4",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-a3u01"
 }
