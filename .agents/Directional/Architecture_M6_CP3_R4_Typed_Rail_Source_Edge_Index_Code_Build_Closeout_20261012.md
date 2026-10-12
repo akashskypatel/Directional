@@ -1,6 +1,6 @@
 # M6-CP3-CB1-ENTRY-R4 — typed producer rail-edge binding / compile-failure continuation (2026-10-12)
 
-Canonical Code + Build R4 **IN_PROGRESS**, successor UNKNOWN. Source patch applied; current corrected source has **not been compiled or runtime-accepted**. Do not promote or run frozen TB497.
+Canonical Code + Build R4 **IN_PROGRESS**, successor UNKNOWN. Corrected source now passes mandatory compile-only verification; runtime acceptance is still unverified. Do not promote or run frozen TB497.
 
 ## Source and immutable patch evidence
 
@@ -11,8 +11,19 @@ Canonical Code + Build R4 **IN_PROGRESS**, successor UNKNOWN. Source patch appli
 - Mandatory eight-target GMP/GMPXX compile attempt `38212754554`, job `114690518562`, **FAILED** at `directional_core` preflight. Log artifact `11730161317` ZIP SHA256 `96603e8af2af1f7956b9ed9cf844ec1c8ddb1fb6f6f90cf080b5ec46ddd4c783`. Compiler proved `SourceEdgeTopologyKey::from_indices` returns `DomainResult<SourceEdgeTopologyKey>`, which cannot be directly compared via `!=` nor passed where `std::optional<SourceEdgeTopologyKey>` is required. `full_target_compile=skipped-preflight-failed`, preflight/build exit `1/1`; **do not report GREEN**. No generated binaries executed (`runtimeExecution=false`).
 - Diagnosed one-file correction patch `f084321cb6c8e4308655a4a12cbccd1e585f75679314a8f0433cbb88448b5fee`, base `a92ddb5da31e3d2fd0d5ea1443e5f04734743b17`, uses domain truth test and `.value()` to compare typed keys after exact raw index-range check. Static apply/whitespace verified. Drive apply run `38213040179`, job `114691404957`, **GREEN**; artifact `11729778327` ZIP SHA256 `ede26eee32c02edbc61f39703cd25ba047dfcffaba22313805c4897234caa7b7`; corrected semantic commit `b970e1a113fe00b90e225d917597c649f9e1aa1d`. Both first source patch stages and the correction stage have been owner-deleted from `My Drive/Directional-CI`.
 
+## Verified corrected-source compile (2026-10-12)
+
+- Exact semantic source: `b970e1a113fe00b90e225d917597c649f9e1aa1d`.
+- Durable compile dispatcher event `f0f45ab37f91d55a0067d8ecc6347e8299ee5589`, workflow [38214261145](https://github.com/akashskypatel/Directional/actions/runs/38214261145), compile job `114695273536`: **GREEN**.
+- Eight targets compiled: `directional_core`, `directional_pipeline`, `directional_surface_cell_authority_kernel_tests`, `directional_surface_cell_producer_tests`, `directional_surface_cell_completion_tests`, `directional_surface_cell_validation_tests`, `directional_compiled_api_tests`, and `directional_benchmarks`.
+- Verified package artifact `11732105024`, outer ZIP SHA-256 `f6f5f73de7626bb29402f61dd79b01091c65b712fd74fa1c03725ac1a428511d`: recursive manifest **28/28**, preflight/build exits **0/0**, `DIRECTIONAL_ENABLE_GMP:BOOL=ON`, generated link contains both `libgmpxx.so` and `libgmp.so`; final source-status files empty; `exactArithmeticBackend=GMP` and `runtimeExecution=false`.
+- Diagnostic log artifact `11731010539`, ZIP SHA-256 `43e37208dab181918dc13c876eff807eb33248f9dc3c62e44e4c110178874dee`.
+- Exact verified source snapshot run `38214036515`, source `a5440b5a83da6d94ae2f72457bdee5aef00c3b89`, 6,405/6,405 checksums.
+- No Directional binaries/tests, `ctest`, benchmarks, help/discovery commands, or frozen TB497 were executed. No runtime PASS promotion follows from compilation.
+- An additional four-file documentation patch is preserved in ChatGPT Library `/Directional/Evidence/Directional_M6_CP3_R4_Typed_Rail_Corrected_Compile_Durable_Handoff.patch` and downloadable in the conversation; it is **not published**. The Google Drive patch transfer attempt was not used because the available native-Doc export rewrote line endings and would not pass the exact patch hash/application contract. Future continuation may reconcile this backup against current repository source.
+
 ## Next same-turn action
 
-A new **exact-source eight-target GMP/GMPXX compile** is required for `b970e1a113fe00b90e225d917597c649f9e1aa1d`, using the durable dispatcher `compile` request; previous failure does **not** certify the correction, and no compile has yet been dispatched for it. Validate `directional_core`, `directional_pipeline`, `directional_surface_cell_authority_kernel_tests`, `directional_surface_cell_producer_tests`, `directional_surface_cell_completion_tests`, `directional_surface_cell_validation_tests`, `directional_compiled_api_tests`, `directional_benchmarks`, the generated `gmpxx`/`gmp` link, all SHA256SUMS and `runtimeExecution=false`.
+The corrected-source eight-target GMP/GMPXX compile has been verified GREEN (see above); do not repeat it. Continue this same R4 turn with remaining producer and regression obligations. Independently resolve overfull-A3 feasibility before altering its unreachable negative; preserve frozen identities and do not begin TB497.
 
 No runtime tests, benchmarks, discovery, CLI or TB497 executed. Independent overfull-A3 feasibility Review, RA-43.4 untyped legacy rail migration, 39 endpoints, 34 Phase10, seven DCEL, 88 accepted CP2 regressions, six CP3 and real odd-τ/multi-carrier remain unresolved. Retain canonical `M6-CP3-CB1-ENTRY-R4` and original start time. Consumed snapshot trigger may be removed during closeout; never delete the mailbox or dispatcher slot.
