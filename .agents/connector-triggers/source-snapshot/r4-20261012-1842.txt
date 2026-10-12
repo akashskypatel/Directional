@@ -1,0 +1,3 @@
+turn=M6-CP3-CB1-ENTRY-R4
+semantic_source=75689d0780c7b62e0bfde320837d03563ba71056
+purpose=source-exact RA43.2 RA43.4 RA46.5 remaining obligations
