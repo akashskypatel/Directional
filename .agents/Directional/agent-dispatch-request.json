@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-two-phase10-negative-a3-apply-20261012-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-two-phase10-negative-a3-apply",
-  "file_id": "1TwxmQibUz1P-o15ohXt3JDZBadr43ZP0",
-  "patch_sha256": "5c7d5fd7c8952899727a182707b66599f627e75a3d592d806ddb3faaacd6d0f3",
-  "base_sha": "ba6c3ef6becb31531d1a113c04ae89bfe00ea813",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): supply source A3 to two Phase10 negatives"
+  "request_id": "m6-cp3-r4-two-phase10-negative-a3-compile-20261012-a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-two-phase10-negative-a3-compile",
+  "source_sha": "2be8da1198f9861efb7231c9468760df787b22f5",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-two-phase10-negative-a3"
 }
