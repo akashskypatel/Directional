@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-phase14-historical-rollback-20261012-r1",
+  "request_id": "m6-cp3-r4-typed-rail-index-consistency-20261012-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-phase14-historical-rollback-apply",
-  "file_id": "1l92ESqlEHIZEF0XwtmxCjukJymKtYUZ_",
-  "patch_sha256": "e8d2f80bdf66bd280346e9c24b5717453c679c904bd8891b9cc70b3254b17f57",
-  "base_sha": "42ffae94ccf822a9f39670709f46ca73b3c94156",
+  "mailbox_key": "m6-cp3-r4-typed-rail-index-consistency-apply",
+  "file_id": "14i3J1luSgp9_PT5cVeK64v1dozywI67d",
+  "patch_sha256": "735c610435144709bf867b488617ada5027ca1333304ea18d36d371f73c65667",
+  "base_sha": "1ca57abd820e42f5c58d427a083dbd6f394cee78",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "revert(directional): retire uncompiled historical-only Phase14 A3 candidate"
+  "commit_message": "fix(directional): validate producer rail edge indices against typed source edge topology"
 }
