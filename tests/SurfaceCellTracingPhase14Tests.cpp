@@ -1895,6 +1895,7 @@ TEST(SurfaceCellTracingPhase14,
 
   directional::geometry::SurfaceCellRail valid = invalid;
   valid.id = directional::tests::test_hard_rail_id(103);
+  valid.sourceVertices = {0, 3};
   valid.samples = {
       rail_sample(mesh, 0, 1, 0.0, 0.0,
                   Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
@@ -1912,6 +1913,7 @@ TEST(SurfaceCellTracingPhase14,
   directional::geometry::SurfaceCellRail ordered = valid;
   ordered.id = directional::tests::test_hard_rail_id(104);
   ordered.closed = false;
+  ordered.sourceVertices = {0, 3, 0};
   ordered.samples = {
       rail_sample(mesh, 0, 1, 0.0, 0.0,
                   Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
@@ -1931,6 +1933,7 @@ TEST(SurfaceCellTracingPhase14,
   ordered.samples[3] =
       rail_sample(mesh, 0, 0, 1.0, 1.0,
                   Eigen::RowVector3d(0.0, 1.0, 0.0), 1);
+  ordered.sourceVertices.back() = 1;
   refs = directional::geometry::surface_cell_tracing_detail::rail_interval_refs(
       {ordered}, mesh.vertices, mesh.faces, edgeFaces);
   ASSERT_EQ(refs.status,
@@ -1960,11 +1963,14 @@ TEST(SurfaceCellTracingPhase14,
 
   directional::geometry::SurfaceCellRail first(directional::tests::test_hard_rail_id(201));
   first.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
+  first.sourceVertices = {0, 4};
   first.samples = {
       rail_sample(mesh, 0, 1, 0.0, 0.0,
                   Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
       rail_sample(mesh, 0, 1, 1.0, 0.5,
                   Eigen::RowVector3d(0.0, 0.0, 1.0), 4)};
+  ASSERT_EQ(validate({first}).status,
+            directional::geometry::surface_cell_tracing_detail::RailBuildStatus::Valid);
 
   directional::geometry::SurfaceCellRail empty(directional::tests::test_hard_rail_id(200));
   EXPECT_EQ(validate({empty}).status,
@@ -1972,6 +1978,8 @@ TEST(SurfaceCellTracingPhase14,
 
   directional::geometry::SurfaceCellRail disconnected = first;
   disconnected.id = directional::tests::test_hard_rail_id(202);
+  // Disconnected edges cannot be encoded as one authoritative vertex chain.
+  disconnected.sourceVertices.clear();
   disconnected.samples.insert(
       disconnected.samples.end(),
       {rail_sample(mesh, 3, 2, 0.0, 0.5,
@@ -1983,6 +1991,7 @@ TEST(SurfaceCellTracingPhase14,
 
   directional::geometry::SurfaceCellRail parameterGap = first;
   parameterGap.id = directional::tests::test_hard_rail_id(203);
+  parameterGap.sourceVertices = {0, 4, 7};
   parameterGap.samples.insert(
       parameterGap.samples.end(),
       {rail_sample(mesh, 7, 1, 0.0, 0.6,
