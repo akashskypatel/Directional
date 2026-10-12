@@ -1,3 +1,7 @@
+## 2026-10-12 — R4 typed Phase14 rail fixture (compile-only)
+
+- Published exact ordered `sourceVertices={0,4}` on a single previously untyped valid-interval rail test, source commit `5fbfa5de3f1421dab122ea70ba677efb6dd6f5f1`; Exact-source 8/8 GMP/GMPXX compile GREEN workflow `38193556754`, job `114631316138`, artifact `11721982481` SHA-256 `2e665b1a2d7833c979e2bc5975979f36053e218443934de26c2cf208076637b2`, manifest 28/28, exits 0/0, clean source, `runtimeExecution=false`. Test execution deferred.
+
 ## 2026-10-12 — `M6-CP3-CB1-ENTRY-R4` checked-factory A3 path rejection detail
 
 - RA-46 independent review retires only the mathematically unreachable dual-path witness obligation; original fail-closed guard preserved.

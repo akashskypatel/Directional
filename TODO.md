@@ -1,3 +1,10 @@
+## CURRENT — R4 Phase14 typed-rail valid positive (2026-10-12)
+
+- [x] One source-owned positive fixture migration in `SurfaceCellTracingPhase14Tests.cpp`: `validRail.sourceVertices={0,4}`, preserving original negative and open-endpoint assertions, commit `5fbfa5de3f1421dab122ea70ba677efb6dd6f5f1`, apply `38193068301`; stage deleted. Exact-source 8/8 GMP/GMPXX compile GREEN workflow `38193556754`, job `114631316138`, artifact `11721982481` SHA-256 `2e665b1a2d7833c979e2bc5975979f36053e218443934de26c2cf208076637b2`, manifest 28/28, exits 0/0, clean source, `runtimeExecution=false`.
+- [ ] No runtime acceptance. Remaining RA-43.4 legacy rail migration, overfull-A3 independent Review, endpoint/Phase10/DCEL/CP2/CP3/multi-carrier R4 obligations and frozen TB497 gate remain open.
+
+---
+
 ## CURRENT — R4 overfull same-edge source/A3 feasibility (2026-10-12)
 
 - [x] Identified source-exact reachability conflict for the supplemental three-face rail-incidence fixture: three triangles incident to the same source edge repeat one directed halfedge and are rejected by `TriMesh` DCEL consistency before A3 construction. The checked A4 factory requires a matching source-bound A3 before its later `railIncidenceCounts > 2` guard. Independent review requested in `.agents/Directional/Architecture_M6_CP3_R4_Overfull_A3_Feasibility_Review_Request_20261012.md` (commit `82d0942d05bbf8c9859d54daea5230f8dff2f323`). This is static proof, not executed evidence.
