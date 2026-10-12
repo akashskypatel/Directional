@@ -1,3 +1,92 @@
+## RA-47 — the raw-int source-edge namespace is abolished, not re-frozen **FROZEN at M6-CP3-CB1-ENTRY-R4** (2026-10-12)
+
+Adjudicates `Architecture_M6_CP3_R4_Edge_Index_Namespace_Conflict_Review_Stop_20261012.md`. Basis:
+`Architecture_M6_CP3_R4_Edge_Index_Namespace_Review_Decision.md`. Finding **R4-IDX-01 CONFIRMED**; both
+proposed repairs **REJECTED**. No runtime credit. RA-46, RA-45, RA-44 (less .2), RA-43 (less .5 and less the
+`sourceEdges` row of §4, superseded here), RA-42 as corrected, RA-41 frozen scoped, RA-40, RA-39, RA-38,
+RA-37a and the RA-34.3 stop gates stand.
+
+- **RA-47.0 — the conflation is real.** The producer indexes `featureMap.edges[entry.edgeIndex]` and stores
+  **that same integer** in `rail.sourceEdges` (`src/pipeline/RemeshPipeline.cpp:9349-9359`; standalone path
+  `:9502-9503`), so no reinterpretation is available. `featureMap.edges` is emitted by iterating a
+  `std::map` keyed on the canonical vertex pair — lexical order (`include/directional/geometry/AdaptiveFeatureMap.h:181-207`).
+  `TriMesh::EV` rows follow DCEL first encounter and are oriented, not canonical
+  (`include/directional/core/TriMesh.h:160-172`). The consumer bounds-checks against `EV.rows()` and
+  dereferences `EV` (`src/geometry/SurfaceCellTracing.cpp:4233-4245`). One face `(0,1,2)` separates the
+  orders: `featureMap.edges` = `(0,1),(0,2),(1,2)`, `EV` = `(0,1),(1,2),(2,0)`; a rail on `(0,2)` is published
+  as `1` and read back as `(1,2)`.
+- **RA-47.1 — the field is retyped.** `SurfaceCellRail::sourceEdges`
+  (`include/directional/geometry/SurfaceCellTracing.h:113`) becomes
+  `std::vector<authority::SourceEdgeTopologyKey>`. RA-43 §4's row for this field is **SUPERSEDED** — it
+  accurately recorded an observed defect, not a contract worth preserving. The other three rows of that
+  inventory stand unchanged, `SurfaceCellRailSample::sourceEdge` included.
+- **RA-47.2 — produced from the chain already validated.** Entries are built from `entry.startVertex`/
+  `entry.endVertex` (`:9356-9360`) and `edge.vertices.first`/`.second` (`:9502-9503`) through the existing
+  `surface_cell_source_edge_key` (`:3064`). No feature-map lookup, no `EV` scan, no new table. The
+  `sourceVertices` continuity check at `:9346` remains the sole authority for chain validity.
+- **RA-47.3 — diagnostic indices stay separate and explicit.** `failedEdgeIndex` and `coveredEdges` remain
+  `featureMap.edges` positions sourced directly from `entry.edgeIndex`. `:9365`'s
+  `fail_edge(rail.sourceEdges.back())` must carry the last feature index explicitly and must **not** be
+  reconstructed from a typed key. Merging a diagnostic index space into a topological one is prohibited.
+- **RA-47.4 — the component remap is DELETED, not converted.** `src/pipeline/RemeshPipeline.cpp:18106-18114`
+  is removed; `:18093-18104` already remaps `rail.sourceVertices` through `component.originalVertices`, and
+  the typed keys are rebuilt from the remapped chain immediately after. Rails' dependence on
+  `globalEdgeByLocal` ends with it. This is what closes R4-IDX-02.
+- **RA-47.5 — the consumer collapses to a typed equality.** `:4233-4245` compares the stored key against the
+  key derived at `:4223-4225`; the `EV.rows()` bound and the `EV` dereference are removed.
+  `InvalidRailGeometry` is retained and must not be weakened — it now fires on a genuine topological
+  disagreement rather than on a namespace artefact.
+- **RA-47.6 — the digest changes, and that is permitted.** `:2043` and `:10005` hash `first().index()` then
+  `second().index()` per key, matching the barriers pattern at `:9576-9580`. No test pins a literal digest and
+  `:9907`/`:10005` compare in-run products against each other, so no frozen identity depends on the old bits.
+  A future comparison against a stored baseline must be re-derived, never back-fitted.
+- **RA-47.7 — R4-IDX-02: the field carried THREE namespaces.** `:17471-17476` maps a typed key to a **global**
+  `EV` row; `:17579-17593` indexes `globalEdgeByLocal` by **component-local** `EV` row; `:18106-18114` rewrites
+  the field through it. The producer's value was a featureMap position. The digest at `:2043` hashed whichever
+  was present, so the rail provenance digest was **path-dependent on component decomposition**. This is why
+  freezing a single contract was rejected: it repairs the instance and preserves the class.
+- **RA-47.8 — R4-IDX-03: the existing structural checks are vacuous.** `:4209-4212` and `:5937-5938` constrain
+  only `sourceEdges.size()` against `sourceVertices.size()`. The RA-47.0 counterexample satisfies both, as
+  does any foreign index vector of the right length. LESSONS-171. They may not be cited as a defence, and they
+  survive the retype unchanged because they are size relations.
+- **RA-47.9 — why no index contract was frozen.** Census of every consumer of the field shows **no genuine
+  index consumer**: one value consumer that re-derives the typed key it already holds (`:4223-4245`), two
+  cardinality checks, two hash terms, one self-equality (`:9907`), two feature-namespace diagnostics, one
+  namespace translation. Every hand-authored fixture *derives* the field from the typed key by scanning `EV`
+  (`source_edge_index` in `tests/GlobalConformityBaselineTests.cpp`, `tests/GlobalConformityPlanTests.cpp`,
+  `tests/FieldAlignedCurveNetworkTests.cpp:492-494`), and `hard_feature_edge_keys_from_rails` (`:9588-9599`)
+  already feeds A4 typed keys built from `sourceVertices` while ignoring `sourceEdges` entirely. The field is a
+  round trip typed -> raw -> typed that adds one failure mode and zero information.
+- **RA-47.10 — required non-vacuous coverage.** A positive fixture on a mesh where lexical feature order and
+  DCEL `EV` order **differ**, carrying a rail on an edge whose two indices are unequal; the single face
+  `(0,1,2)` with a rail on `(0,2)` is named as the minimum. A fixture confined to `(0,1)` is explicitly
+  disallowed as evidence. Negatives, each verified at its **first rejecting predicate**: a foreign typed key
+  with correct cardinality (which R4-IDX-03 proves the current code cannot reject); a key whose endpoints are
+  not an edge of the source mesh; a closed rail whose final key does not close the chain; and a
+  component-decomposed run whose remapped keys must equal the single-component run's keys for identical
+  geometry — the direct R4-IDX-02 falsifier.
+- **RA-47.11 — test migration.** `tests/SurfaceCellREPackageTests.cpp:292-298` becomes a typed equality and
+  thereby non-vacuous for the first time. `tests/MilestoneBClosureTests.cpp:142`'s literal `{0, 1, 2, 3}` is
+  re-derived from the fixture mesh's own vertex pairs; the test **identity** is preserved, the literal is not
+  evidence. `source_edge_index` is deleted as an orphan of this change — the fixtures already hold
+  `barrier.sourceEdge` and pass it directly. Frozen 497 identities are otherwise untouched.
+- **RA-47.12 — liveness is OPEN and must be reported.** Whether `:4233-4245` currently rejects producer-built
+  rails on the default path is **not established**. Two readings remain: the consumer is never reached with
+  producer-built rails, or it is reached and rejects. RA-47 is correct either way, so the adjudication does not
+  wait on it — but the implementing turn must report **which**, because a consumer that has never seen a
+  producer-built rail is an RP-02 `TEST_AUTHORITY_COVERAGE_GAP` and a separate finding.
+- **RA-47.13 — the eighth instance, and the dual.** The publish-don't-invent family (RA-34.3, RA-35, RA-38,
+  RA-40, RA-42, RA-43 as relocated, RA-44.1) says *reach or publish what the producer already holds*. RA-47
+  states its dual: *do not carry a second encoding of what you already publish.* Both reduce to one test — can
+  the added datum separate anything the authoritative datum cannot? Here, demonstrably not.
+- **RA-47.14 — no credit.** Nothing here is a runtime claim; no binary was built and no test executed.
+  R4-IDX-01/02/03 are source-level review candidates, **not** counted stable regressions. Ledger stays
+  **66 events / 17 categories / 49 recurrences**, debt **1**. CP2 **491/491** accepted, R3 **403/497**
+  rejected, 94 RED, 88 accepted CP2 losses carried. RA-41's junction/sector clauses remain frozen
+  **UNEXERCISED**; the seven two-face DCEL repairs remain compiled but **not executed**.
+
+---
+
 ## RA-46 — terminal A3 path uniqueness is a theorem; the dual-path obligation is retired **FROZEN at M6-CP3-CB1-ENTRY-R4** (2026-10-11)
 
 Adjudicates `Architecture_M6_CP3_R4_Terminal_A3_Uniqueness_Design_Review_Request_20261011.md`. Basis:

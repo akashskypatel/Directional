@@ -1,3 +1,14 @@
+## 2026-10-12 — `M6-CP3-R4-EDGE-INDEX-NAMESPACE-ARCH-REV` RA-47 frozen; R4-IDX-01 resolved
+
+- **R4-IDX-01 CONFIRMED** from bytes at `fdeb06b3f`: the producer indexes `featureMap.edges[entry.edgeIndex]` and stores that same integer in `rail.sourceEdges` (`RemeshPipeline.cpp:9349-9359`, `:9502-9503`), while the consumer dereferences it as a `TriMesh::EV` row (`SurfaceCellTracing.cpp:4233-4245`). Lexical canonical-pair order (`AdaptiveFeatureMap.h:181-207`) versus DCEL first-encounter oriented order (`TriMesh.h:160-172`) diverge on one face `(0,1,2)`.
+- **Both proposed repairs REJECTED.** Freezing an `EV` contract or keeping the feature contract each preserves a derived raw-int duplicate whose correctness must be independently maintained in three places.
+- **R4-IDX-02 (new):** the field carries **three** namespaces — `:18106-18114` reads a component-local `EV` row and writes a **global** `EV` row from `globalEdgeByVertices` (`:17471-17476`), and the rail provenance digest (`:2043`, `:10005`) hashed whichever was present, making the digest path-dependent on component decomposition.
+- **R4-IDX-03 (new):** the only structural checks on the field (`:4209-4212`, `:5937-5938`) constrain its length against `sourceVertices`; the counterexample passes both. LESSONS-171 vacuity.
+- **RA-47 FROZEN:** retype `SurfaceCellRail::sourceEdges` to `std::vector<authority::SourceEdgeTopologyKey>` built from the already continuity-checked `sourceVertices`; keep `failedEdgeIndex`/`coveredEdges` on explicit feature indices; **delete** the `:18106-18114` remap rather than convert it; collapse `:4233-4245` to a typed equality. Census shows **no genuine index consumer** — every fixture already derives the field from the typed key, and `hard_feature_edge_keys_from_rails` (`:9588-9599`) already feeds A4 typed keys from `sourceVertices`. Eighth publish-don't-invent instance and its dual: *do not carry a second encoding of what you already publish.*
+- **RA-43 §4's `sourceEdges` row SUPERSEDED**; its other three rows stand.
+- **Durable ledger restored:** `0e1909d31` had replaced `Regression_Root_Cause_Tracker.md` in full (12,147 lines to 11). Content recovered from `497064965`, with the added R4-IDX-01 entry preserved.
+- No binary built, no test executed, no runtime credit. Ledger 66/17/49, debt 1. CP2 491/491 accepted, R3 403/497 rejected, 94 RED, 88 accepted CP2 losses.
+
 ## 2026-10-12 — `M6-CP3-CB1-ENTRY-R4` source-edge namespace review stop
 
 - Independently verified source `dcf24e2c881b9ed67ec8f992d94d4b4e364fd4e2` from immutable compile artifact `11740652527`: feature producer `rail.sourceEdges` indices differ from EV indices required by field-aligned consumer/component remap and later positive test. Frozen RA-43 explicitly names feature-map namespace. A one-triangle ordered-edge counterexample proves the mismatch without running tests.

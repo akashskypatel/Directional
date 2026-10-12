@@ -1,3 +1,34 @@
+## CURRENT — 2026-10-12 `M6-CP3-R4-EDGE-INDEX-NAMESPACE-ARCH-REV` COMPLETE; RA-47 frozen
+
+**The R4-IDX-01 REVIEW_BLOCKER is discharged and supersedes the stop paragraphs below.** The conflation was
+confirmed from bytes — producer stores a `featureMap.edges` position (`RemeshPipeline.cpp:9349-9359`,
+`:9502-9503`), consumer dereferences a `TriMesh::EV` row (`SurfaceCellTracing.cpp:4233-4245`), and the two
+orders diverge on one face. **Both offered repairs were rejected**: each preserves a derived raw-int duplicate
+of `sourceVertices` whose correctness must be maintained in three places. **RA-47** abolishes the raw-int edge
+namespace for this field instead — `std::vector<authority::SourceEdgeTopologyKey>` built from the already
+continuity-checked chain, `:18106-18114` deleted rather than converted, `:4233-4245` collapsed to a typed
+equality, diagnostics kept explicitly on feature indices. RA-43 §4's `sourceEdges` row is **SUPERSEDED**; its
+other three rows stand. Decision:
+`.agents/Directional/Architecture_M6_CP3_R4_Edge_Index_Namespace_Review_Decision.md`.
+
+**§7 open problems:** RA-47 implementation and its RA-47.10 non-vacuous fixtures (a mesh where lexical feature
+order and DCEL `EV` order differ; a `(0,1)`-only fixture is disallowed as evidence); the RA-47.12 liveness
+question — whether `:4233-4245` has ever seen a producer-built rail, a potential RP-02 gap; then RA-43.1 carrier
+cut, RA-43.2 endpoint consumption, RA-43.4, RA-46.5/.6; overfull-A3 independent Review; 39 endpoints, 34
+Phase10, seven DCEL (compiled, **not executed**), 88 CP2, six CP3, odd-τ and the multi-carrier witness.
+
+**§8 pattern:** a derived raw-int duplicate of an authoritative typed datum, carried in a second (here third)
+namespace, validated only by cardinality, and converted back to the typed form at its single point of use. The
+dual of publish-don't-invent, and the eighth M6 instance of that family. The discriminating question is
+unchanged: **can the added datum separate anything the authoritative datum cannot?** Here it cannot — which is
+also why neither of the two namespace contracts on offer could be made non-vacuous.
+
+**Durable-ledger note:** `0e1909d31` replaced `Regression_Root_Cause_Tracker.md` in full (12,147 lines to 11).
+Restored from `497064965` with the R4-IDX-01 entry preserved. That file is append-only.
+
+Witness statuses, baselines and ledger unchanged: CP2 491/491 accepted, R3 403/497 rejected, 94 RED, 88 accepted
+CP2 losses, ledger 66/17/49, debt 1. No binary built, no test executed, no runtime credit.
+
 ## CURRENT — 2026-10-12 `M6-CP3-CB1-ENTRY-R4` REVIEW STOP R4-IDX-01
 
 **New source-exact REVIEW_BLOCKER supersedes the older “No current stop” R4 currency paragraphs below.** The producer publishes `SurfaceCellRail::sourceEdges` as `featureMap.edges` positions, in agreement with frozen RA-43 §4; subsequent field-aligned checking and component remap interpret the same raw positions as `TriMesh::EV` indices, and a later positive regression freezes that interpretation. The two enumerations diverge on even one triangle: feature `(0,2)` idx1; EV `(0,2)` idx2. See `.agents/Directional/Architecture_M6_CP3_R4_Edge_Index_Namespace_Conflict_Review_Stop_20261012.md`. No source change, executable, runtime, or new acceptance. Same R4 Code + Build is **BLOCKED pending independent normative index-domain Review**. Do not amend RA-43 inside blocked CB, run TB497, or invent a successor. Witness statuses unchanged; last accepted CP2 491/491 and rejected R3 403/497 with 94 RED, 88 former accepted RED, ledger 66/17/49 debt1. This is candidate RP-01 domain-conflation recurrence, not a new stable event without reviewed runtime. §7 open problems: this namespace decision now precedes RA-43.4 remainder, overfull-A3 independent Review, 39 endpoints, 34 Phase10, seven DCEL, 88 CP2, six CP3 and odd-τ multi-carrier. §8 pattern: untyped raw integer identity assumed across two independently ordered edge tables; compilation and an unchecked compile-only positive oracle cannot authenticate ownership.

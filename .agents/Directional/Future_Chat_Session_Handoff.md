@@ -1,3 +1,34 @@
+## CURRENT — R4-IDX-01 ADJUDICATED; RA-47 frozen, raw-int edge namespace abolished (2026-10-12)
+
+**The review stop is RESOLVED. `M6-CP3-CB1-ENTRY-R4` may resume under RA-47.** The conflation was confirmed
+from bytes, but **both offered repairs were rejected**. Decisive census: `SurfaceCellRail::sourceEdges` has
+**no genuine index consumer** — one value consumer that re-derives the typed key it already holds
+(`SurfaceCellTracing.cpp:4223-4245`), two cardinality-only checks (`:4209-4212`, `:5937-5938`), two hash terms
+(`RemeshPipeline.cpp:2043`, `:10005`), one self-equality (`:9907`), two feature-namespace diagnostics
+(`:9365`, `:9534-9536`), one namespace translation (`:18106-18114`). Every hand-authored fixture *derives* the
+field from the typed key by scanning `EV` (`source_edge_index`), and `hard_feature_edge_keys_from_rails`
+(`:9588-9599`) already feeds A4 typed keys built from `sourceVertices` while ignoring `sourceEdges` entirely.
+
+**RA-47:** retype to `std::vector<authority::SourceEdgeTopologyKey>` produced from the continuity-checked
+`sourceVertices`; `failedEdgeIndex`/`coveredEdges` stay explicit feature indices; **delete** `:18106-18114`
+rather than convert it; `:4233-4245` becomes a typed equality. RA-43 §4's `sourceEdges` row is **SUPERSEDED**;
+its other three rows stand. Two findings beyond the request: **R4-IDX-02** — the field carried three namespaces
+and the rail provenance digest was path-dependent on component decomposition; **R4-IDX-03** — the only
+structural checks are length relations the counterexample passes.
+
+**OPEN and must be reported by the implementing turn (RA-47.12):** whether `:4233-4245` currently rejects
+producer-built rails on the default path is **not established**. If that consumer has never seen a
+producer-built rail, that is a separate RP-02 `TEST_AUTHORITY_COVERAGE_GAP` finding.
+
+**Durable ledger restored:** `0e1909d31` had replaced `Regression_Root_Cause_Tracker.md` in full (12,147 lines
+to 11 — the entire M5/M6 root-cause history, which every frozen RA decision cites). Recovered from
+`497064965`; the R4-IDX-01 entry it added is preserved. Appends to that file are appends.
+
+No binary built, no test executed, no runtime credit. Ledger **66/17/49**, debt **1**. CP2 **491/491**
+accepted, R3 **403/497** rejected, 94 RED, 88 accepted CP2 losses. RA-41 junction/sector clauses frozen
+**UNEXERCISED**; seven two-face DCEL repairs compiled but **not executed**; RA-43.1/.2/.4 and RA-46.5/.6 still
+open. Decision: `.agents/Directional/Architecture_M6_CP3_R4_Edge_Index_Namespace_Review_Decision.md`.
+
 ## CURRENT — R4 source-edge index DOMAIN CONFLICT: REVIEW STOP (2026-10-12 10:54Z)
 
 **STOP / REVIEW_BLOCKER.** Independent byte-level inspection of source `dcf24e2c881b9ed67ec8f992d94d4b4e364fd4e2` proves `SurfaceCellRail::sourceEdges` producer publishes `featureMap.edges` indices (`RemeshPipeline.cpp:9359,9503`; RA-43 §4 frozen namespace), but `canonical_field_aligned_candidate` checks them as `sourceMesh.EV` indices (`SurfaceCellTracing.cpp:4233-4245`), and component aggregation also remaps them via `componentMesh.EV` (`RemeshPipeline.cpp:17579-17592,18106-18114`). A single triangle (0,1,2) suffices: lexical feature edges [(0,1),(0,2),(1,2)] versus DCEL EV [(0,1),(1,2),(0,2)], so edge (0,2) has feature index 1 but EV index 2. Existing Phase20 positive regression `SurfaceCellREPackageTests.cpp:292-298` assumes the latter, contradicting RA-43. Earlier eight-target GMP compiles were code-generation-only and cannot distinguish this. **Do not silently reassign the reviewed index domain or patch producer/consumer until a source-exact normative Review decides the contract and updates RA-43.** Detailed source/proof/adjudication options: `.agents/Directional/Architecture_M6_CP3_R4_Edge_Index_Namespace_Conflict_Review_Stop_20261012.md`. Candidate `R4-IDX-01` is NOT a counted stable runtime regression. Current R4 canonical Code + Build must remain BLOCKED for this review; do not start any successor or TB497. No product/test/selector changed in this continuation. Baseline CP2 491/491 accepted; R3 403/497 rejected (94 RED, 88 CP2 accepted losses); ledger 66/17/49 debt1.
