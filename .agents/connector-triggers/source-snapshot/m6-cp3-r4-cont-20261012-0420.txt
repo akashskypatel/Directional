@@ -1,0 +1,2 @@
+Same canonical M6-CP3-CB1-ENTRY-R4 continuation
+Freeze exact push SHA as source snapshot authority; compile only if a patch lands.
