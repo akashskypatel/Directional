@@ -21,3 +21,10 @@ The first dispatcher compile request, event `b2dc5297f15988f247f18f48c9e21e6c7d1
 Corrected request `3858971cdc9af54f53152c6664a78050fee83c1b` removes only that unsupported field and retains exact source and the standard eight GMP/GMPXX targets. Authoritative terminal mailbox: `.workflow-mailbox/m6-cp3-r4-phase14-typed-rail-compile-c/latest.json`. **Compile result pending at this document's creation.** Do not treat the prior parse failure or the source apply as compilation success, and do not redispatch unchanged requests.
 
 RA-43.4's remaining legacy fixture migration, independently gated overfull-A3 Review, 39 endpoints, 34 Phase10, seven DCEL, 88 CP2 accepted losses, six CP3 positives and real multi-carrier/odd-τ witnesses remain open. Frozen TB497 selectors, workflows, ABI, PR metadata and acceptance ledgers are unchanged.
+
+## Exact-source compile/package verification (2026-10-12)
+
+- Corrected request `3858971cdc9af54f53152c6664a78050fee83c1b`, workflow [38193556754](https://github.com/akashskypatel/Directional/actions/runs/38193556754), compile job `114631316138`: **SUCCESS**; parse, schema validation and mailbox jobs successful, no Test + Benchmark job run.
+- Immutable packaged source `5fbfa5de3f1421dab122ea70ba677efb6dd6f5f1`; artifact `11721982481`, verified outer ZIP SHA-256 `2e665b1a2d7833c979e2bc5975979f36053e218443934de26c2cf208076637b2`. All **28/28** internal `SHA256SUMS` entries passed.
+- Preflight/build exits `0/0`, all eight required targets listed in package, final source status clean, CMake `DIRECTIONAL_ENABLE_GMP=ON`, real `libgmpxx.so` and `libgmp.so` linker evidence, `exactArithmeticBackend=GMP`, `runtimeExecution=false`.
+- **Compile-only candidate**. This does not establish the test's runtime assertions or restore any accepted CP2/R3 result. The first parse-failed request is retained above as historical diagnosis and was not rerun unchanged.
