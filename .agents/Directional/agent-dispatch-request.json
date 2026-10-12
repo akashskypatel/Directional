@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-phase14-diagnostic-source-a3-20261012-r1",
+  "request_id": "m6-cp3-r4-phase14-historical-rollback-20261012-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-phase14-diagnostic-source-a3-apply",
-  "file_id": "1IfUd5EmXHjmKqQ5e2DeUJt1dKZywa0Mi",
-  "patch_sha256": "7cfa1417c22c7e8cef1a807d1c5a808783d19a852336f5f88b20a7321ebc86f2",
-  "base_sha": "b741d1e6fc49ac5281d80de684497268ca9f2683",
+  "mailbox_key": "m6-cp3-r4-phase14-historical-rollback-apply",
+  "file_id": "1l92ESqlEHIZEF0XwtmxCjukJymKtYUZ_",
+  "patch_sha256": "e8d2f80bdf66bd280346e9c24b5717453c679c904bd8891b9cc70b3254b17f57",
+  "base_sha": "42ffae94ccf822a9f39670709f46ca73b3c94156",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): bind Phase14 diagnostic networks to original-source A3"
+  "commit_message": "revert(directional): retire uncompiled historical-only Phase14 A3 candidate"
 }
