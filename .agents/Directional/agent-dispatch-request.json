@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra4712-producer-liveness-apply-20261012t2334z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra4712-producer-liveness-apply",
-  "file_id": "1E8PO04lZ9aY7sPRPrkPzcZbfdNu7qhTP",
-  "patch_sha256": "8c8f52ade3fb24967ccc9fb754eb85f3bfece097869e140db45f00074b91b18a",
-  "base_sha": "1b096eee34f6c2c81f8cdf087dabcbbd4f38c513",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): verify default pipeline reaches typed rail consumer"
+  "request_id": "m6-cp3-r4-ra4712-liveness-compile-20261012t2335z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-ra4712-liveness-compile",
+  "source_sha": "60d3292018105ffd4e0064dd9b6849ffecefc2e0",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-r4-ra4712-liveness-compile"
 }
