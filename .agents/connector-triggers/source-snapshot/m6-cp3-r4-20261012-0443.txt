@@ -1,0 +1,1 @@
+M6-CP3-CB1-ENTRY-R4 canonical same-turn continuation. Snapshot request. Source authority is the exact triggering commit. No runtime execution.
