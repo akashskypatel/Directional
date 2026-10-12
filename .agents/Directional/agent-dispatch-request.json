@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-produced-rail-index-gmp-r1-20261012",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-produced-rail-index-gmp",
-  "source_sha": "702dfbb89df40f4f2dabddb24400911c4460ca79",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-produced-rail-index-gmp"
+  "request_id": "m6-cp3-r4-produced-rail-index-docs-r1-20261012",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-produced-rail-index-docs",
+  "file_id": "19q0yhtmiY89juRDOGNi2fvyS2bXJoqGT",
+  "patch_sha256": "c942efafd0768dc0486e96e8c9ff4622b2d5ad0fc649d39efc1c5f578193d4bc",
+  "base_sha": "471ec6710df2e18bba66fcf1d735abd4952abca7",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "M6-CP3-R4: record verified positive rail source-edge index oracle",
+  "retention_days": 7
 }
