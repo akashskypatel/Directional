@@ -1,0 +1,3 @@
+M6-CP3-CB1-ENTRY-R4
+requested_prior_head=135b38f3e3c20faac3fee644c4752f471a00d57e
+purpose=read-only exact source snapshot
