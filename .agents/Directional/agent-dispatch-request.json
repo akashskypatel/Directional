@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-phase14-foreign-edge-neg-compile-20261012t0918z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-phase14-foreign-edge-neg-compile",
-  "source_sha": "34379d974819be5586e7ef5dfaef00912ad4a343",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-phase14-foreign-edge-neg-gmp"
+  "request_id": "m6-cp3-r4-phase14-foreign-local-edge-docs-20261012t0922z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-phase14-foreign-edge-docs",
+  "file_id": "1JTuZwfTLoR47jKOUPYXBJwoeB_k_v0ey",
+  "patch_sha256": "132fffb46c42410b793f5beb9e248d78eee39bd1cd19000f4a53ea7034c6950f",
+  "base_sha": "9f341ed03fd4b78e098af9d8f62de284ce9ca1a4",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "M6-CP3-R4: record exact Phase14 typed rail negative GMP compile",
+  "retention_days": 7
 }
