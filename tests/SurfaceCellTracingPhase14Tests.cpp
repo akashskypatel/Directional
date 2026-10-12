@@ -1781,6 +1781,13 @@ TEST(SurfaceCellTracingPhase14,
   };
   EXPECT_EQ(validateProduction().status,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::Valid);
+  // Optional raw source-edge metadata must not contradict the typed number
+  // of intervals, even when no field-aligned network is supplied. Its
+  // numerical topology binding requires the producer's original mesh.EV.
+  rail.sourceEdges = {0, 1};
+  EXPECT_EQ(validateProduction().status,
+            directional::geometry::surface_cell_tracing_detail::RailBuildStatus::TypedAuthorityMismatch);
+  rail.sourceEdges.clear();
 
   // Both samples lie exactly on an alternate, in-range face-local source
   // edge (1,4). The producer-owned typed chain (0,4) must still prevail;

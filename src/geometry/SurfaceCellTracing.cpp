@@ -5933,7 +5933,9 @@ rail_interval_refs(
         static_cast<std::size_t>(intervalCount) + (rail.closed ? 0U : 1U);
     if ((typedVertices && rail.sourceVertices.size() != expectedVertexCount) ||
         ((requireTypedSourceVertices || fieldAlignedNetwork != nullptr) &&
-         !typedVertices)) {
+         !typedVertices) ||
+        (typedVertices && !rail.sourceEdges.empty() &&
+         rail.sourceEdges.size() != static_cast<std::size_t>(intervalCount))) {
       result.status = RailBuildStatus::TypedAuthorityMismatch;
       result.railId = rail.id;
       return result;
