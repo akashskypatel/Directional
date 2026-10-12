@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-unsupported-a3-20261012-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-unsupported-a3-apply",
-  "file_id": "1O1s8545_Qi3LhHBhL8_eyfBN21NjlRx-",
-  "patch_sha256": "9777fa86e1b80d7a76ee4f27db7cd5aec56b85aa9ec2be62195b4a4d967e78cb",
-  "base_sha": "29dbe34f35cc7d8bb2ea4bd1479aa11a242a75f4",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): bind unsupported-sheet regression to source A3"
+  "request_id": "m6-cp3-r4-unsupported-a3-compile-20261012-a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-unsupported-a3-compile",
+  "source_sha": "24fbd353332c1d55ec2612e9a0ccbe748a861d9f",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-unsupported-a3"
 }
