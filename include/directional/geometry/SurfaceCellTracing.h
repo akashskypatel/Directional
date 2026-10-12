@@ -1163,7 +1163,11 @@ inline constexpr std::size_t kFieldExactContinuationMagnitudeBits = 4096U;
     authority::SourceVertexId sourceVertex,
     FieldVertexArrivalMode arrivalMode = FieldVertexArrivalMode::FaceInterior,
     std::optional<authority::TraceId> provenanceTrace = std::nullopt,
-    std::optional<std::size_t> provenanceEvent = std::nullopt);
+    std::optional<std::size_t> provenanceEvent = std::nullopt,
+    // Only diagnostic direct callers may omit this source-owned barrier map.
+    // The canonical production trace must supply its validated A1 map.
+    const std::map<authority::SourceEdgeTopologyKey,
+                   const authority::FieldNonTraversableEdge *> *sourceBarriers = nullptr);
 
 [[nodiscard]] std::size_t field_aligned_trace_step_budget(
     const authority::FieldBranchTopology &topology) noexcept;

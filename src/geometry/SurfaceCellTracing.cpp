@@ -1264,7 +1264,9 @@ FieldVertexTransitResult resolve_field_vertex_transit(
     const authority::SourceVertexId sourceVertex,
     const FieldVertexArrivalMode arrivalMode,
     const std::optional<authority::TraceId> provenanceTrace,
-    const std::optional<std::size_t> provenanceEvent) {
+    const std::optional<std::size_t> provenanceEvent,
+    const std::map<authority::SourceEdgeTopologyKey,
+                   const authority::FieldNonTraversableEdge *> *sourceBarriers) {
   struct TransitState {
     authority::SourceFaceTopologyKey sourceFace;
     authority::FieldBranch branch;
@@ -1452,6 +1454,17 @@ FieldVertexTransitResult resolve_field_vertex_transit(
     for (const auto &adjacency : topology.transports()) {
       if (adjacency.sourceEdge.first() != sourceVertex &&
           adjacency.sourceEdge.second() != sourceVertex) continue;
+      // RA-43.1: the terminal germ is a connected component of the
+      // vertex star after cutting certified incident hard-rail carriers.
+      // SourceBoundary barriers are separate from this hard-carrier cut.
+      if (sourceBarriers != nullptr) {
+        const auto barrier = sourceBarriers->find(adjacency.sourceEdge);
+        if (barrier != sourceBarriers->end() && barrier->second != nullptr &&
+            barrier->second->kind ==
+                authority::FieldTransportBarrierKind::HardFeature) {
+          continue;
+        }
+      }
       std::optional<authority::SourceFaceTopologyKey> nextFace;
       if (adjacency.firstFace == state.sourceFace) {
         nextFace = adjacency.secondFace;
@@ -2351,7 +2364,7 @@ FieldAlignedCandidateTraceResult legacy_canonical_field_aligned_traces(
             sourceMesh, topology, trace.sourceComponent,
             trace.sourceTopologyRegion, currentFace, currentBranch,
             *decision.sourceVertex, FieldVertexArrivalMode::FaceInterior,
-            trace.id, trace.segments.size() - 1U);
+            trace.id, trace.segments.size() - 1U, &mandatoryByEdge);
         if (auto *error = std::get_if<FieldAlignedCurveNetworkError>(&transit)) {
           return traceError(std::move(*error));
         }
@@ -2448,7 +2461,7 @@ FieldAlignedCandidateTraceResult legacy_canonical_field_aligned_traces(
             sourceMesh, topology, trace.sourceComponent,
             trace.sourceTopologyRegion, currentFace, currentBranch,
             *edgeTransit.sourceVertex, FieldVertexArrivalMode::EdgeTransit,
-            trace.id, trace.segments.size() - 1U);
+            trace.id, trace.segments.size() - 1U, &mandatoryByEdge);
         if (auto *error =
                 std::get_if<FieldAlignedCurveNetworkError>(&vertexTransit)) {
           return traceError(std::move(*error));
@@ -3027,7 +3040,8 @@ FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
     auto transit = resolve_field_vertex_transit(
         sourceMesh, topology, trace.sourceComponent, trace.sourceTopologyRegion,
         runtime.currentFace, runtime.currentBranch, *decision.sourceVertex,
-        FieldVertexArrivalMode::FaceInterior, trace.id, trace.segments.size());
+        FieldVertexArrivalMode::FaceInterior, trace.id, trace.segments.size(),
+        &mandatoryByEdge);
     if (auto *error = std::get_if<FieldAlignedCurveNetworkError>(&transit)) {
       return traceError(std::move(*error));
     }
@@ -3145,7 +3159,8 @@ FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
     auto vertexTransit = resolve_field_vertex_transit(
         sourceMesh, topology, trace.sourceComponent, trace.sourceTopologyRegion,
         runtime.currentFace, runtime.currentBranch, *edgeTransit.sourceVertex,
-        FieldVertexArrivalMode::EdgeTransit, trace.id, trace.segments.size());
+        FieldVertexArrivalMode::EdgeTransit, trace.id, trace.segments.size(),
+        &mandatoryByEdge);
     if (auto *error = std::get_if<FieldAlignedCurveNetworkError>(&vertexTransit)) {
       return traceError(std::move(*error));
     }
