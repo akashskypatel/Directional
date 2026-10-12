@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-overfull-review-handoff-20261012-a",
+  "request_id": "m6-cp3-r4-phase14-typed-rail-fixture-20261012-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-overfull-review-handoff",
-  "file_id": "1fdUOpCOvyesnBJ4dqfkzKLfTmCtlUOSP",
-  "patch_sha256": "c958a4cf4d8bcf0b0250f13fe9da7180166987fd4311624fb77d314800902a03",
-  "base_sha": "82d0942d05bbf8c9859d54daea5230f8dff2f323",
+  "mailbox_key": "m6-cp3-r4-phase14-typed-rail-fixture",
+  "file_id": "1wniypxVb3U4SdZxUhjq4CyjJPWl44TmW",
+  "patch_sha256": "0ac08b437cdb76bd36524193822961b217041f639cdc9b2cfc068144af505082",
+  "base_sha": "3c1f001fa03dde476222bbad48ae46cfebe12c9a",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): hand off R4 overfull A3 feasibility review",
+  "commit_message": "test(surface-cells): publish source vertices for valid Phase14 rail fixture",
   "retention_days": 14
 }
