@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra434-durable-handoff-20261012t1917z",
+  "request_id": "m6-cp3-r4-ra465-contact-feasibility-stop-20261012t2048z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra434-durable-handoff-r2-apply",
-  "file_id": "1RQsM-VGhr-v4Kj30Py4VH2-V0778P9Bh",
-  "patch_sha256": "c49c8334c7dacc6d656b0d7d577347c7e80586d739d451a618321c2059ee15ec",
-  "base_sha": "b9fd0a59d8767bcd4017c625529003cba342e294",
+  "mailbox_key": "m6-cp3-r4-ra465-contact-review-stop-apply",
+  "file_id": "1Glt6fihGoN_IkDlYvXLrYLCDqM6K41oI",
+  "patch_sha256": "dc392702f1c115e3bb96e2e0003b2ae3b59620d84fde545e9e7eb84f7bdc7f5b",
+  "base_sha": "69649fda99508310ce93a9e2920da28fa966c578",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): preserve R4 compile evidence and handoff"
+  "commit_message": "docs(directional): freeze RA-46.5 terminal-contact feasibility review stop"
 }
