@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-closed-edge-index-compile-20261012t0852z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-closed-edge-index-compile",
-  "source_sha": "cc7f6b1010309d3eb82d78c33fbddc66ef6c7e1a",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-closed-edge-index-gmp"
+  "request_id": "m6-cp3-r4-closed-edge-durable-docs-apply-20261012t0857z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-closed-edge-durable-docs-apply",
+  "file_id": "17FGm3jVVg3Lc73L__-Jx2DWToh7rG9Sa",
+  "patch_sha256": "ca2689df1d5c6259b6a04327f7f6a67e9d3d2927edd0efb89bf0ccb912a8367e",
+  "base_sha": "ddaae2e35b4f4ec6b95916b4c8194bc3e785ea02",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "M6-CP3-R4: record closed rail index negative exact GMP compile",
+  "retention_days": 7
 }
