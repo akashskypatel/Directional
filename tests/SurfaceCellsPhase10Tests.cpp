@@ -3759,10 +3759,36 @@ TEST(SurfaceCellsPhase10,
     }
     const Eigen::VectorXd targetSize =
         Eigen::VectorXd::Constant(vertices.rows(), 0.25);
-    return std::make_pair(
-        directional::geometry::build_surface_cell_network(
-            vertices, faces, faceAxisX, faceAxisY, targetSize, options),
-        std::move(options));
+    // The unsupported-sheet negative still needs independently original-source
+    // A2/A3 authority; otherwise a missing-atlas gate can mask its first
+    // unsupported-region rejection. Use the same unmodified face axes.
+    directional::TriMesh mesh;
+    mesh.set_mesh(vertices, faces);
+    Eigen::MatrixXd rawField(faces.rows(), 12);
+    for (int face = 0; face < faces.rows(); ++face) {
+      rawField.block(face, 0, 1, 3) = faceAxisX.row(face);
+      rawField.block(face, 3, 1, 3) = faceAxisY.row(face);
+      rawField.block(face, 6, 1, 3) = -faceAxisX.row(face);
+      rawField.block(face, 9, 1, 3) = -faceAxisY.row(face);
+    }
+    const auto originalField =
+        directional::pipeline::finalize_surface_cell_raw_cross_field(mesh, rawField);
+    const auto sourceAuthority =
+        directional::geometry::surface_cell_tracing_detail::
+            build_source_topology_regions(mesh.F, options);
+    if (!sourceAuthority) {
+      throw std::runtime_error("unsupported-sheet source A2 unavailable");
+    }
+    auto sourceAtlas = directional::authority::FieldTransportAtlas::make(
+        mesh, *sourceAuthority, options.hardFeatureEdges, originalField);
+    if (!sourceAtlas) {
+      throw std::runtime_error("unsupported-sheet source A3 unavailable");
+    }
+    auto boundOptions = options;
+    boundOptions.fieldTransportAtlas = &sourceAtlas.value();
+    auto network = directional::geometry::build_surface_cell_network(
+        vertices, faces, faceAxisX, faceAxisY, targetSize, boundOptions);
+    return std::make_pair(std::move(network), std::move(options));
   };
 
   const auto forward = build(false);
