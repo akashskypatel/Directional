@@ -4231,13 +4231,18 @@ FieldAlignedCandidateResult canonical_field_aligned_candidate(
       // topological interval as the independently typed vertex chain. A
       // valid chain cannot authenticate an unrelated raw edge index.
       const int declaredEdge = rail.sourceEdges[interval];
-      if (declaredEdge < 0 || declaredEdge >= sourceMesh.EV.rows() ||
-          authority::SourceEdgeTopologyKey::from_indices(
-              sourceMesh.EV(declaredEdge, 0), sourceMesh.EV(declaredEdge, 1),
-              sourceVertexCount) != key) {
+      if (declaredEdge < 0 || declaredEdge >= sourceMesh.EV.rows()) {
         return field_aligned_error(
             FieldAlignedCurveNetworkErrorCode::InvalidRailGeometry,
-            std::nullopt, key, rail.id);
+            std::nullopt, key.value(), rail.id);
+      }
+      const auto declaredTopology = authority::SourceEdgeTopologyKey::from_indices(
+          sourceMesh.EV(declaredEdge, 0), sourceMesh.EV(declaredEdge, 1),
+          sourceVertexCount);
+      if (!declaredTopology || declaredTopology.value() != key.value()) {
+        return field_aligned_error(
+            FieldAlignedCurveNetworkErrorCode::InvalidRailGeometry,
+            std::nullopt, key.value(), rail.id);
       }
       if (!supportByEdge
                .emplace(key.value(), FieldAlignedRailSupport{rail.id, rail.kind})
