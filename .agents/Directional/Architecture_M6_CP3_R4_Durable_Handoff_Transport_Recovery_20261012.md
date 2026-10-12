@@ -2,6 +2,10 @@
 
 **Same canonical Code + Build turn; do not begin successor or TB497.**
 
+**RESOLVED (2026-10-12 08:21 UTC):** Corrected four-path patch passed Drive dispatcher workflow `38223036387` (apply job `114723786502`), matched SHA-256 `a02e5f517e3d4c15fffc58342197eaabfe71e9e7f96cd294af2e4869f9d39cc0`, source base `471ec6710df2e18bba66fcf1d735abd4952abca7`, and created documentation commit `4ec58a1cb25612cbf6746e423c7a9184476b9d2b`. GitHub job verified the four exact modified paths and reported `job_status=success`, `runtimeExecution=false`. The consumed corrected Drive staging file `1bMXqcs4GESAyUPxaYZNDT6rXc-jN5UH4` was subsequently owner-permanently deleted; immutable patch copies remain in ChatGPT Library `/Directional/Evidence/` and the chat attachment. The retry steps below are preserved **historically only**; do not submit the same patch again. R4 remains incomplete, with no runtime PASS or successor authorization.
+
+
+
 ## Confirmed source and build
 - Verified source snapshot: workflow `38220631107`, source `471ec6710df2e18bba66fcf1d735abd4952abca7`, manifest 6418/6418.
 - Existing Phase20 produced-rail oracle now validates producer-owned raw source-edge indices against independent original-source `TriMesh::EV` and typed source-vertex endpoints. Source-only commit `702dfbb89df40f4f2dabddb24400911c4460ca79`, exactly one test file. No production code or frozen selector changes.
