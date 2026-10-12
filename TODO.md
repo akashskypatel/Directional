@@ -1,3 +1,12 @@
+## CURRENT — R4 typed rail raw-sidecar interval count integrity (2026-10-12)
+
+- [x] Verify previous RA-43.4 strict production interval guard exact eight-target GMP/GMPXX build GREEN at `0cd4391b976141ec6499378a319d933a9f7ec6c2`: run `38234679163`, result `11740820820` SHA-256 `13b2f1773e8625255482611e99cf20a3c3b65634912e1161407676757ca6f903`, 28/28 checksums, preflight/build 0/0, GMPXX/GMP linked, runtimeExecution=false.
+- [x] Source hardening: typed rail with nonempty `sourceEdges` must have exact interval count; existing Phase14 source-incidence test adds mismatch negative without altering identity. Source `dcf24e2c881b9ed67ec8f992d94d4b4e364fd4e2`, Drive apply `38236532142` GREEN, consumed stage deleted, recovery patch in Library. Record `Architecture_M6_CP3_R4_Typed_Raw_Edge_Cardinality_Code_Build_Record_20261012.md`.
+- [ ] Verify dispatched exact eight-target GMP/GMPXX compile `38236639195` at source `dcf24e2c881b9ed67ec8f992d94d4b4e364fd4e2` by result artifact checksums, GMP links and runtimeExecution=false; do not infer outcome from code apply alone.
+- [ ] Global RA-43.4, numerical raw edge `mesh.EV` source binding, overfull-A3 independent Review, 39 endpoints/34 Phase10/seven DCEL/88 CP2 losses/six CP3 plus authentic odd-τ/multi-carrier remain OPEN; no TB497 or successor.
+
+---
+
 ## CURRENT — R4 RA-43.4 production interval-rail typed-source gate (2026-10-12)
 
 - [x] On exact source `5ebddc55...` (snapshot `38231038572`, 6446/6446), add production-enforced `requireTypedSourceVertices` to three actual `rail_interval_refs` call sites, preserving standalone helper legacy negative diagnostics. Four-file source `0cd4391b976141ec6499378a319d933a9f7ec6c2`, Drive apply `38234541145` successful; patch stored in Library and Drive stage deleted.
