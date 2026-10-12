@@ -6297,7 +6297,8 @@ rebuild_phase_front_with_edges(
 directional::geometry::SurfaceCellNetwork
 build_fixed_plan_rectangular_hard_rail_network(
     const RectangularHardRailPhaseFrontFixture &fixture,
-    const double targetScale) {
+    const double targetScale,
+    const directional::geometry::SurfaceHardRailTerminalContacts *contacts = nullptr) {
   if (!fixture.sourceAuthority.has_value() || !fixture.atlas.has_value() ||
       !fixture.fieldNetwork.has_value() || !fixture.topologyPlan.has_value() ||
       !fixture.conformityBaseline.has_value()) {
@@ -6312,6 +6313,7 @@ build_fixed_plan_rectangular_hard_rail_network(
   options.globalConformityBaselinePlan = &*fixture.conformityBaseline;
   options.hardFeatureEdges = fixture.hardFeatureEdges;
   options.authoritativeRails = fixture.rails;
+  if (contacts != nullptr) options.hardRailTerminalContacts = *contacts;
   const Eigen::VectorXd target = fixture.targetSize * targetScale;
   if (target.size() > 0) options.defaultTargetSize = target.mean();
   return directional::geometry::build_surface_cell_network(
@@ -6403,6 +6405,48 @@ TEST(SurfaceCellAuthorityContractCutover,
   ASSERT_FALSE(fineIntervals.empty());
   EXPECT_EQ(fineIntervals, coarseIntervals)
       << "fixed accepted A3 authority must dominate A4 target/grid perturbation";
+}
+
+// RA-49.2: use the actual first certified terminal vertex, not a fabricated
+// second geometric match. Duplicating that typed ID causes the consumer to
+// reject before the downstream checked factory can validate the contact.
+TEST(SurfaceCellAuthorityContractCutover,
+     DuplicateSourceTerminalContactRejectsAtFirstA4ConsumerPredicate) {
+  const auto fixture = build_rectangular_hard_rail_phase_front();
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            fixture.network.phaseFront.disposition())
+      << hard_rail_first_failure_detail(fixture.network);
+  const auto &front = fixture.network.phaseFront.product();
+  ASSERT_FALSE(front.hardRailRouteCertificates().empty());
+  const auto &firstRoute = front.hardRailRouteCertificates().front();
+  ASSERT_TRUE(firstRoute.endpoints[0].terminalVertex.has_value());
+  auto contacts = front.hardRailTerminalContacts();
+  auto contact = contacts.find(firstRoute.rail);
+  ASSERT_NE(contact, contacts.end());
+  const auto vertex = *firstRoute.endpoints[0].terminalVertex;
+  ASSERT_TRUE(contact->second.endpoints[0] == vertex ||
+              contact->second.endpoints[1] == vertex);
+  contact->second.endpoints = {vertex, vertex};
+
+  const auto rejected = build_fixed_plan_rectangular_hard_rail_network(
+      fixture, 1.0, &contacts);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
+            rejected.phaseFront.disposition());
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
+                InvalidHardRailRouteCertificate,
+            rejected.phaseFront.rejection_reason());
+  const auto *failure = rejected.phaseFront.rejection();
+  ASSERT_NE(failure, nullptr);
+  EXPECT_EQ(directional::geometry::SurfaceHardRailRouteFailureLocus::
+                EndpointAttachment,
+            failure->hardRailRouteLocus);
+  EXPECT_NE(std::string::npos,
+            failure->hardRailRouteDiagnostic.find(
+                "a2bProbeFailure=ambiguous-terminal-contact"))
+      << failure->hardRailRouteDiagnostic;
+  EXPECT_EQ(std::string::npos,
+            failure->hardRailRouteDiagnostic.find(
+                "a2bProbeFailure=no-exact-terminal-corner"));
 }
 
 TEST(SurfaceCellAuthorityContractCutover,

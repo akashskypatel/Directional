@@ -1,3 +1,11 @@
+## CURRENT — RA-49 unblocked; R4 duplicate terminal first-rejection regression prepared (2026-10-12)
+
+- [x] Independent RA-49 decides duplicate `{v,v}` `ambiguous-terminal-contact` is reachable at the A4 consumer; the earlier proposed retirement is rejected. `nonmanifold-terminal-star-spoke` negative is retired (guard kept), and `R4-CTC-01` validate-after-use is reserved for a Definition turn.
+- [x] Exact-source snapshot `7c228ec451ab605e9a1b913ec2dca8a2c14db365` verified (workflow `38315391692`, artifact `11775764498`, 6541/6541 files). The RA-49.2 regression in the existing rectangular HardRail tests injects duplicated original typed terminal ID, requiring the consumer's first-rejection diagnostic.
+- [ ] Verify source patch apply and eight-target GMP/GMPXX compile; do **not** run tests/benchmarks in Code + Build or claim runtime PASS. Continue remaining RA-43.2/43.4, RA-46.5, RA-47.12 and carried R4 gates. No TB497 or successor before R4 closeout.
+
+---
+
 ## CURRENT REVIEW STOP — R4 RA-46.5 ambiguous terminal contact (2026-10-12 20:45Z)
 
 - [x] Verify source snapshot `69649fda99508310ce93a9e2920da28fa966c578` (run `38301273941`, 6535/6535). Independently show RA-46.5's literal `ambiguous-terminal-contact` witness conflicts with the distinct typed terminal IDs enforced at checked A4 and bit-exact one-hot `exact_corner` in A4 route production. Preserve proof in `.agents/Directional/Architecture_M6_CP3_R4_RA465_Ambiguous_Terminal_Contact_Review_Stop_20261012.md`.

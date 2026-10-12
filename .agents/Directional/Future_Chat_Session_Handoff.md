@@ -1,3 +1,9 @@
+## CURRENT — R4 RA-49.2 consumer-first regression prepared (2026-10-12)
+
+The independent RA-49 review **unblocked** `M6-CP3-CB1-ENTRY-R4`: duplicated typed `{v,v}` terminal contacts are reachable and must reject at A4 consumer `ambiguous-terminal-contact`; `nonmanifold-terminal-star-spoke` is retired under RA-48 manifold guards, but its fail-closed guard remains. A source-exact regression was prepared against verified snapshot `7c228ec451ab605e9a1b913ec2dca8a2c14db365` (6541/6541 hashes), in `SurfaceCellsPhase10Tests.cpp`. See `Architecture_M6_CP3_R4_RA49_Ambiguous_Terminal_Contact_Code_Build_Record_20261012.md` for exact scope and evidence. No runtime credit or TB497 authorization. R4 remains open; RA-49.5 architecture repair is **not** authorized here. Note older handoff sections describing the resolved RA-46.5 review stop are historical.
+
+---
+
 ## CURRENT — `ambiguous-terminal-contact` REACHABLE; retirement REJECTED (RA-49); R4 unblocked (2026-10-12)
 
 **The review stop is RESOLVED against the request.** RA-46.5 is **not amended** and the
