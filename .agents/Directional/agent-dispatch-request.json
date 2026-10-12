@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-unsupported-a3-docs-20261012-b",
+  "request_id": "m6-cp3-r4-phase14-diagnostic-source-a3-20261012-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-unsupported-a3-docs-apply",
-  "file_id": "1GuYXFTsCB2zT8a9Muru2cZmV4GOO2FDv",
-  "patch_sha256": "fd7ea1600efc523dcc6c8f84d3973f5c5957aa47c1fc00161b3a1a83bf55ee9f",
-  "base_sha": "24fbd353332c1d55ec2612e9a0ccbe748a861d9f",
+  "mailbox_key": "m6-cp3-r4-phase14-diagnostic-source-a3-apply",
+  "file_id": "1IfUd5EmXHjmKqQ5e2DeUJt1dKZywa0Mi",
+  "patch_sha256": "7cfa1417c22c7e8cef1a807d1c5a808783d19a852336f5f88b20a7321ebc86f2",
+  "base_sha": "b741d1e6fc49ac5281d80de684497268ca9f2683",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): preserve R4 unsupported-sheet source A3 compile evidence"
+  "commit_message": "test(directional): bind Phase14 diagnostic networks to original-source A3"
 }
