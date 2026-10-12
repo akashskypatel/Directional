@@ -1,0 +1,3 @@
+turn=M6-CP3-CB1-ENTRY-R4
+semantic_source=b94f23dc12bfb186d053f7b1c42a242064007296
+intent=exact_snapshot_for_RA43.2_RA46.5_review
