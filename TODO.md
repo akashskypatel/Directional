@@ -1,3 +1,10 @@
+## CURRENT — R4 overfull same-edge source/A3 feasibility (2026-10-12)
+
+- [x] Identified source-exact reachability conflict for the supplemental three-face rail-incidence fixture: three triangles incident to the same source edge repeat one directed halfedge and are rejected by `TriMesh` DCEL consistency before A3 construction. The checked A4 factory requires a matching source-bound A3 before its later `railIncidenceCounts > 2` guard. Independent review requested in `.agents/Directional/Architecture_M6_CP3_R4_Overfull_A3_Feasibility_Review_Request_20261012.md` (commit `82d0942d05bbf8c9859d54daea5230f8dff2f323`). This is static proof, not executed evidence.
+- [ ] Obtain independent Definition/Review ruling before modifying the supplemental three-face test expectation, retiring a source-valid A4-overfull witness, or replacing it with a producer-source invalidity negative. Preserve existing A4 guard, A3 gate, frozen selectors, accepted baselines, and all outstanding R4 obligations; no TB497.
+
+---
+
 ## CURRENT — R4 typed missing-path regression oracle repair (2026-10-12)
 
 - [x] Static first-rejection audit found `74e74e41` fixture would trip certificate/front attachment equality before typed missing-path check. Corrected one test source file without changing frozen identity or production guard; apply `38188448212`, semantic source `3c1f001fa03dde476222bbad48ae46cfebe12c9a`, owner Drive stage deleted.
