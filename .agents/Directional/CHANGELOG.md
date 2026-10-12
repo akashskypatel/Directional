@@ -1,3 +1,7 @@
+## 2026-10-12 — `M6-CP3-CB1-ENTRY-R4` closed-rail raw edge/index oracle (compile-only)
+
+Added one existing-test negative for a closed typed rail whose rotated closing interval claims a different in-range source-edge index; expects `InvalidRailGeometry`. Source `cc7f6b1010309d3eb82d78c33fbddc66ef6c7e1a`, apply `38226080567` GREEN. GMP/GMPXX eight-target compile GREEN `38226217402`, artifact `11736147455`, ZIP SHA-256 `581cbe9eb2a9f3b3b7e07db2e742328e9c267442234d5a2b6a139b3b95f7aecb`, package 28/28, no runtime. R4 remains open, frozen 497 and existing test identities unchanged. Detailed record `.agents/Directional/Architecture_M6_CP3_R4_Closed_Rail_Wraparound_Index_Oracle_Code_Build_Record_20261012.md`.
+
 ## 2026-10-12 — M6-CP3-CB1-ENTRY-R4 source-index positive producer oracle
 
 Extends one existing Phase20 produced-rail regression to compare each raw `sourceEdges` ID against original `TriMesh::EV`, independent of typed source endpoint and face-local edge checks. Semantic commit `702dfbb89df40f4f2dabddb24400911c4460ca79`. Source-exact GMP/GMPXX eight-target compile GREEN at workflow `38221325600`, artifact `11734432831`, source `702dfbb89df40f4f2dabddb24400911c4460ca79`, manifest 28/28, preflight/build 0/0, runtimeExecution=false; no runtime. See `Architecture_M6_CP3_R4_Producer_Raw_Edge_Index_Positive_Code_Build_Record_20261012.md`. Same R4 turn, successor UNKNOWN.

@@ -1,3 +1,11 @@
+## CURRENT — R4 closed-rail wraparound wrong raw-index rejection (2026-10-12)
+
+- [x] Existing closed-rail rotation/reversal fixture now asserts a distinct in-range incorrect source-edge index on typed closing interval is rejected at `InvalidRailGeometry`; semantic `cc7f6b1010309d3eb82d78c33fbddc66ef6c7e1a`, Drive apply `38226080567`, staging deleted.
+- [x] Exact-source 8-target GMP/GMPXX compile GREEN, workflow `38226217402`, result `11736147455` SHA-256 `581cbe9eb2a9f3b3b7e07db2e742328e9c267442234d5a2b6a139b3b95f7aecb`, 28/28 manifest, clean source, no runtime.
+- [ ] Runtime confirmation and all 39/34/7/88/six CP3 + odd-τ/multi-carrier obligations, global RA-43.4, independent overfull-A3 Review remain open; do not start TB497 or successor work.
+
+---
+
 ## CURRENT — R4 produced raw rail index positive oracle (2026-10-12)
 
 - [x] One existing Phase20 produced rail test gains original-source `TriMesh::EV` bounds and topology identity checks; semantic `702dfbb89df40f4f2dabddb24400911c4460ca79`, exact snapshot `38220631107` manifest 6418/6418.
