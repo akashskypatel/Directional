@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra46-factory-second-domain-fix-20261012t1716z",
+  "request_id": "m6-cp3-r4-ra431-hard-carrier-cut-rebased-20261012t1718z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra46-factory-second-domain-fix",
-  "file_id": "1AoXmz0tF9YfLV1MfMPq2u_9432FPVwwj",
-  "patch_sha256": "226b2566a7db12b0183e89c4129482e55bc009f9464564d0d55ad8ebf3a6c93e",
+  "mailbox_key": "m6-cp3-r4-ra431-hard-carrier-cut-rebased",
+  "file_id": "1fcrc_lazFnD4C91f6EOaZpcYGT3E0Lg3",
+  "patch_sha256": "6cf21288bf761a206b81c868fae6b01d129b555da12f9076b552f50fc35b12c5",
   "base_sha": "675b9de3390db0a5b3e72200d29c440540cd5cc1",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surfacecells): unwrap second checked edge key in A4 negative"
+  "commit_message": "fix(surfacecells): cut checked hard carriers from vertex-star transport"
 }
