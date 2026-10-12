@@ -1,3 +1,7 @@
+## CURRENT — R4 RA-47.12 compile evidence recorded (2026-10-12)
+
+Production-path rail liveness test source is applied at `60d3292018105ffd4e0064dd9b6849ffecefc2e0` and compiled in workflow `38322933412` (artifact `11779273254`, SHA-256 `75a86ca1c88c2c3c8537f84a25dfe2b7487034a26438482b513adfd95f251849`). 28/28 checksums; 8/8 targets; preflight/build 0/0, GMPXX/GMP linker, clean source, exactArithmeticBackend=GMP, runtimeExecution=false. **Not a runtime PASS;** RA-47.12 executed witness and all other R4 goals remain open. See `Architecture_M6_CP3_R4_RA4712_Default_Producer_Rail_Liveness_Code_Build_Record_20261012.md`.
+
 ## CURRENT — R4 RA-47.12 authored default-path liveness oracle (2026-10-12)
 
 An unexecuted, actual-pipeline typed-rail positive + foreign typed-key negative was added to the existing Phase10 fixture. Apply/compile source first; defer execution to authorized TB/Review. RA-47.12 remains observationally open; no runtime PASS. See `Architecture_M6_CP3_R4_RA4712_Default_Producer_Rail_Liveness_Code_Build_Record_20261012.md`. R4 remains IN_PROGRESS and TB497 remains held.
