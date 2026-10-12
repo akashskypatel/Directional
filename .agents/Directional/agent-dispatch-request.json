@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra434-compile-closeout-20261012t2315z",
+  "request_id": "m6-cp3-r4-ra4712-producer-liveness-apply-20261012t2334z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra434-compile-closeout",
-  "file_id": "1p8v_wFwo0gB4CcQzuy6ncAltwFAoNezM",
-  "patch_sha256": "d5b9f818ac4b4c1f22ddc1f7e8eb77c50850212e8974e39739e0516bd3c080ee",
-  "base_sha": "e15e1d18a38308f2c4c83b1a616a85f73af37ac7",
+  "mailbox_key": "m6-cp3-r4-ra4712-producer-liveness-apply",
+  "file_id": "1E8PO04lZ9aY7sPRPrkPzcZbfdNu7qhTP",
+  "patch_sha256": "8c8f52ade3fb24967ccc9fb754eb85f3bfece097869e140db45f00074b91b18a",
+  "base_sha": "1b096eee34f6c2c81f8cdf087dabcbbd4f38c513",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record verified R4 typed-corner GMP compile"
+  "commit_message": "test(directional): verify default pipeline reaches typed rail consumer"
 }
