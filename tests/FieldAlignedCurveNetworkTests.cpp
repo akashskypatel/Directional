@@ -863,6 +863,14 @@ TEST(FieldAlignedCurveNetwork, RejectsMissingDuplicateOrForeignMandatoryEdges) {
   ASSERT_FALSE(forged);
   EXPECT_EQ(FieldAlignedCurveNetworkErrorCode::InvalidRailGeometry,
             forged.error().code);
+
+  // An out-of-range raw index cannot override a valid typed source edge.
+  mismatchedRails.front().sourceEdges.front() = mesh.EV.rows();
+  const auto outOfRange = FieldAlignedCurveNetwork::make(
+      mesh, *sourceAuthority, atlasBuild.value(), mismatchedRails);
+  ASSERT_FALSE(outOfRange);
+  EXPECT_EQ(FieldAlignedCurveNetworkErrorCode::InvalidRailGeometry,
+            outOfRange.error().code);
 }
 
 TEST(FieldAlignedCurveNetwork,
