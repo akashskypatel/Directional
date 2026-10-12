@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-seam-a3-docs-20261012-a",
+  "request_id": "m6-cp3-r4-seam-a3-docs-20261012-b",
   "operation": "drive_apply",
   "mailbox_key": "m6-cp3-r4-seam-a3-docs-apply",
-  "file_id": "1MUBkfHISAcpBbcKO-k6Npjzz9n-vPWXm",
-  "patch_sha256": "30cfac963efc5cbbcee33ee1c14bd95a2164a7e63c5a503508db9a8e2b9007c7",
+  "file_id": "1c4AqQ8BDpbD8GUC6fFgDJew3rxxmCp0o",
+  "patch_sha256": "0c914b4a5bdd7eb3a95b29820194a0aa73b73514c3ab1ff7c9dcb3cb982ed6bb",
   "base_sha": "b58314b3c8f024d2e6a3ce6092ad87b85425d40f",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
   "commit_message": "docs(directional): record R4 CP3 seam source-A3 compile checkpoint"
