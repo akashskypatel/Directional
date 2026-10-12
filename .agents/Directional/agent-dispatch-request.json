@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-phase14-first-rejection-compile-20261012-b",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-phase14-first-rejection-compile",
-  "source_sha": "4d51805d79994f1d718d71332be06f504d6312cf",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-phase14-first-rejection"
+  "request_id": "m6-cp3-r4-phase14-first-rejection-docs-20261012-c",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-phase14-first-rejection-docs",
+  "file_id": "1Lp5ZzfeIAZ8eHr7y3d8KeG0W1yCyH1qS",
+  "patch_sha256": "facde0778250ec9f05765d841aff5d7c178292d1f6eb821a73e2478af13a3af8",
+  "base_sha": "5f8458b48bc63aa32bee3eaf4e95d073609748bf",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record R4 Phase14 first-rejection typed rail GMP compile"
 }
