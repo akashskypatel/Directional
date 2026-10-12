@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra43-production-typed-rail-apply-20261012t1009z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra43-production-typed-rail-apply",
-  "file_id": "1kz_XUs8pNlViUsOqwrNtaeXwwmjYthpR",
-  "patch_sha256": "9fdbed267a06f41d1fb80ee07cbf71bc644f844c104d24f7d634159a9c212606",
-  "base_sha": "5ebddc55b47167d5062914156c4be66a390df41c",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "M6-CP3-R4: require typed rail incidence at all production interval consumers",
-  "retention_days": 7
+  "request_id": "m6-cp3-r4-ra43-strict-rails-gmp-compile-20261012t1011z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-ra43-strict-rails-gmp-compile",
+  "source_sha": "0cd4391b976141ec6499378a319d933a9f7ec6c2",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-ra43-strict-rails-gmp"
 }
