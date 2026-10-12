@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-a3u01-missing-path-compile-20261012-g",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-a3u01-missing-path-compile",
-  "source_sha": "3c1f001fa03dde476222bbad48ae46cfebe12c9a",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-a3u01-missing-path"
+  "request_id": "m6-cp3-r4-a3u01-compile-docs-20261012-h",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-a3u01-compile-docs-apply",
+  "file_id": "1bguV2AohsYioqTcDrDvl-fOk1PTzucGx",
+  "patch_sha256": "b6413d1360f9497ded6528c8726bd3627dfb4edccf5ddb05a5b1e80ce371d109",
+  "base_sha": "bb371402eaa2f8b09e41cf435f8d6562b3532fee",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record corrected R4 A3U01 exact-source compile",
+  "retention_days": 14
 }
