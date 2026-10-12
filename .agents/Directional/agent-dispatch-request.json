@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-raw-edge-positive-durable-handoff-corrected-20261012t0822z",
+  "request_id": "m6-cp3-r4-closed-raw-index-oracle-apply-20261012t0851z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-raw-edge-positive-docs-r2",
-  "file_id": "1bMXqcs4GESAyUPxaYZNDT6rXc-jN5UH4",
-  "patch_sha256": "a02e5f517e3d4c15fffc58342197eaabfe71e9e7f96cd294af2e4869f9d39cc0",
-  "base_sha": "471ec6710df2e18bba66fcf1d735abd4952abca7",
+  "mailbox_key": "m6-cp3-r4-closed-edge-index-apply",
+  "file_id": "1gBJ2kk1UlyTWPcjV529rVvv3dbEBSm-R",
+  "patch_sha256": "0564b802337f30523a16b5d27657d893d4f5393a609395d91c45c6c98b89fd42",
+  "base_sha": "ddaae2e35b4f4ec6b95916b4c8194bc3e785ea02",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "M6-CP3-R4: record source-edge producer positive oracle exact GMP compile",
+  "commit_message": "M6-CP3-R4: reject closed rail wraparound wrong raw source-edge index",
   "retention_days": 7
 }
