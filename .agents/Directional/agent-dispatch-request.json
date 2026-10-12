@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-three-phase10-a3-ingress-20261012-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-three-phase10-a3-ingress-apply",
-  "file_id": "1XQdybew_O34Xx4_jympHXVXLHYIaanbM",
-  "patch_sha256": "d978555c4c803b2dbae6ec398db640393d2733462ffdd072a25229e34f7b2a38",
-  "base_sha": "e15ff4b547ab3b4a2703f4e2c6cc9bcdb787d2bc",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): bind three Phase10 regressions to independent source A3"
+  "request_id": "m6-cp3-r4-three-phase10-a3-compile-20261012-a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-three-phase10-a3-compile",
+  "source_sha": "8df105b560625ea09b3ac136b3ee4b9656a38e2f",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-three-phase10-a3"
 }
