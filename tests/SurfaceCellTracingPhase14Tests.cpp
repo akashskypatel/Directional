@@ -2021,6 +2021,7 @@ TEST(SurfaceCellTracingPhase14,
   }
   directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(96));
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
+  rail.sourceVertices = {0, 4, 7};
   rail.samples = {
       rail_sample(mesh, 0, 1, 0.0, 0.0,
                   Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
@@ -2137,6 +2138,7 @@ TEST(SurfaceCellTracingPhase14,
   directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(94));
   rail.curveId = 24;
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
+  rail.sourceVertices = {0, 4, 7};
   rail.samples = {
       rail_sample(mesh, 0, 1, 0.0, 0.0,
                   Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
