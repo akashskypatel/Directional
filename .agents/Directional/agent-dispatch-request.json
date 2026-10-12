@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-seam-a3-docs-20261012-c",
+  "request_id": "m6-cp3-r4-unsupported-a3-20261012-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-seam-a3-docs-apply",
-  "file_id": "1RpP3mzHHsRFoeMNNVspf1IvGkReFskbg",
-  "patch_sha256": "8d02306d8fa4c5af6c8bf82ddfa15ebba721f57175ff6b211f72e9141f2045fe",
-  "base_sha": "b58314b3c8f024d2e6a3ce6092ad87b85425d40f",
+  "mailbox_key": "m6-cp3-r4-unsupported-a3-apply",
+  "file_id": "1O1s8545_Qi3LhHBhL8_eyfBN21NjlRx-",
+  "patch_sha256": "9777fa86e1b80d7a76ee4f27db7cd5aec56b85aa9ec2be62195b4a4d967e78cb",
+  "base_sha": "29dbe34f35cc7d8bb2ea4bd1479aa11a242a75f4",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record R4 CP3 seam source-A3 compile checkpoint"
+  "commit_message": "test(directional): bind unsupported-sheet regression to source A3"
 }
