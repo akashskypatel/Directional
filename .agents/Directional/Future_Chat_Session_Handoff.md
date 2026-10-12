@@ -1,3 +1,9 @@
+## CURRENT — R4-A3U-01 typed checked-factory terminal path rejection (2026-10-12)
+
+RA-46 is independently resolved; `M6-CP3-CB1-ENTRY-R4` continues. R4-A3U-01 makes the authoritative checked A4 factory distinguish zero-path from ambiguous-path in a typed optional source-authority detail while retaining the exact fail-closed check. A produced-terminal negative was added to the existing regression; the consumer's terminal spoke incidence lookup now fails closed rather than throwing. Source patches successfully landed at `a384d6bc27f457a7d651aa2574709d7a76c8e7e1` and `74e74e41a7f040f34798d998dba36677e7ff07d4`; Drive stages were deleted. Exact-source mandatory GMP/GMPXX eight-target compile GREEN (`38187046419`, artifact `11719319676`, package 28/28, runtimeExecution=false). No runtime test/benchmark/497-case execution. See `Architecture_M6_CP3_R4_Terminal_A3U01_Typed_Reject_Code_Build_Record_20261012.md`. R4 not complete; successor UNKNOWN.
+
+---
+
 ## CURRENT — terminal A3 uniqueness confirmed; RA-46 frozen; R4 continues (2026-10-11)
 
 **`M6-CP3-CB1-ENTRY-R4` is UNBLOCKED and continues.** The dual-path lemma is **confirmed and strengthened**:

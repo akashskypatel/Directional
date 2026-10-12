@@ -1,3 +1,8 @@
+## 2026-10-12 — `M6-CP3-CB1-ENTRY-R4` checked-factory A3 path rejection detail
+
+- RA-46 independent review retires only the mathematically unreachable dual-path witness obligation; original fail-closed guard preserved.
+- Typed factory zero/ambiguous terminal-star result and safe spoke-incidence lookup added; one produced-terminal negative regression extended. Semantic source `74e74e41a7f040f34798d998dba36677e7ff07d4`. No runtime execution or acceptance promotion; mandatory eight-target GMP/GMPXX compile GREEN (`38187046419`, artifact `11719319676`, 28/28 checksums).
+
 ## 2026-10-07 — `M6-CP3-TB1-ENTRY-R1-REV` rejected R1 and routes RA-32 Definition repair
 
 - Independent Review accepts R1 mechanics (**482/497**) but rejects/unpromotes the candidate.
