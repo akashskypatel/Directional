@@ -1,4 +1,5 @@
 #include <directional/geometry/SurfaceCellTracing.h>
+#include <directional/pipeline/RemeshPipeline.h>
 
 #include <algorithm>
 #include <cmath>
@@ -40,6 +41,34 @@ MeshFixture make_grid(const int n) {
     }
   }
   return mesh;
+}
+
+// A4 network checks must receive A2/A3 built from the original source mesh
+// and unchanged cross-field axes, not from a subsequently produced A4 receipt.
+directional::geometry::SurfaceCellNetwork build_phase14_with_source_atlas(
+    const MeshFixture &source, const Eigen::MatrixXd &axisX,
+    const Eigen::MatrixXd &axisY, const Eigen::VectorXd &targetSize,
+    directional::geometry::SurfaceCellTracingOptions options) {
+  directional::TriMesh mesh;
+  mesh.set_mesh(source.vertices, source.faces);
+  Eigen::MatrixXd raw(source.faces.rows(), 12);
+  for (int face = 0; face < source.faces.rows(); ++face) {
+    raw.block(face, 0, 1, 3) = axisX.row(face);
+    raw.block(face, 3, 1, 3) = axisY.row(face);
+    raw.block(face, 6, 1, 3) = -axisX.row(face);
+    raw.block(face, 9, 1, 3) = -axisY.row(face);
+  }
+  const auto field = directional::pipeline::finalize_surface_cell_raw_cross_field(
+      mesh, raw);
+  const auto sourceAuthority = directional::geometry::surface_cell_tracing_detail::
+      build_source_topology_regions(source.faces, options);
+  if (!sourceAuthority) throw std::runtime_error("Phase14 source A2 unavailable");
+  auto atlas = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, options.hardFeatureEdges, field);
+  if (!atlas) throw std::runtime_error("Phase14 source A3 unavailable");
+  options.fieldTransportAtlas = &atlas.value();
+  return directional::geometry::build_surface_cell_network(
+      source.vertices, source.faces, axisX, axisY, targetSize, options);
 }
 
 MeshFixture make_hinge_pair() {
@@ -2250,8 +2279,7 @@ TEST(SurfaceCellTracingPhase14, ProposalStatsAccountForEveryAttempt) {
       Eigen::VectorXd::Constant(mesh.vertices.rows(), 1.0);
   directional::geometry::SurfaceCellTracingOptions options;
   options.maxTraceLength = 1.0;
-  const auto network = directional::geometry::build_surface_cell_network(
-      mesh.vertices, mesh.faces, x, y, targetSize, options);
+  const auto network = build_phase14_with_source_atlas(mesh, x, y, targetSize, options);
 
   EXPECT_EQ(network.stats.attempted, static_cast<int>(network.proposals.size()));
   EXPECT_EQ(network.stats.attempted,
@@ -2556,8 +2584,7 @@ TEST(SurfaceCellTracingPhase14, SampledSourceAreaWithinLocalTargetSize) {
       Eigen::VectorXd::Constant(mesh.vertices.rows(), 1.0);
   directional::geometry::SurfaceCellTracingOptions options;
   options.maxTraceLength = 1.0;
-  const auto network = directional::geometry::build_surface_cell_network(
-      mesh.vertices, mesh.faces, x, y, targetSize, options);
+  const auto network = build_phase14_with_source_atlas(mesh, x, y, targetSize, options);
 
   int covered = 0;
   int sampled = 0;
@@ -2584,8 +2611,7 @@ TEST(SurfaceCellTracingPhase14, OverlayExposesQualitativeDisplayChannels) {
       Eigen::VectorXd::Constant(mesh.vertices.rows(), 1.0);
   directional::geometry::SurfaceCellTracingOptions options;
   options.maxTraceLength = 1.0;
-  const auto network = directional::geometry::build_surface_cell_network(
-      mesh.vertices, mesh.faces, x, y, targetSize, options);
+  const auto network = build_phase14_with_source_atlas(mesh, x, y, targetSize, options);
 
   const auto overlay = directional::geometry::make_surface_cell_tracing_overlay(
       mesh.vertices, mesh.faces, x, y, targetSize, network);
@@ -2614,12 +2640,10 @@ TEST(SurfaceCellTracingPhase14, TenRunNetworkHashIsIdentical) {
       Eigen::VectorXd::Constant(mesh.vertices.rows(), 1.0);
   directional::geometry::SurfaceCellTracingOptions options;
   options.maxTraceLength = 1.0;
-  const auto first = directional::geometry::build_surface_cell_network(
-      mesh.vertices, mesh.faces, x, y, targetSize, options);
+  const auto first = build_phase14_with_source_atlas(mesh, x, y, targetSize, options);
   const std::uint64_t hash = network_hash(first);
   for (int run = 0; run < 9; ++run) {
-    const auto repeated = directional::geometry::build_surface_cell_network(
-        mesh.vertices, mesh.faces, x, y, targetSize, options);
+    const auto repeated = build_phase14_with_source_atlas(mesh, x, y, targetSize, options);
     EXPECT_EQ(network_hash(repeated), hash);
   }
 }
