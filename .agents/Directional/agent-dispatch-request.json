@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra434-typed-sample-compile-20261012t1741z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-ra434-typed-sample-compile",
-  "source_sha": "6775edb8b4def50c9ceda4b7d547cffd4a778d17",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-ra434-typed-sample-compile"
+  "request_id": "m6-cp3-r4-ra469-incidence-lookup-apply-20261012t1803z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-ra469-incidence-lookup-apply",
+  "file_id": "1IW_Tt8jqKixgh6L-r-3ApHJbq12dCUN1",
+  "patch_sha256": "aba87c9ae7f467e0f1b1bb86d03afe1b6288c9dd68c9ec71f287d7c15e753b2f",
+  "base_sha": "6c582dadb1a2e2b46649b6d28f7941df15b62357",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "fix(surfacecells): fail closed on absent source-incidence counts"
 }
