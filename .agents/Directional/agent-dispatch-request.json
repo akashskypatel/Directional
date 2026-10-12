@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-composite-negative-a3-compile-20261012-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-composite-negative-a3-compile",
-  "source_sha": "0ffc7857c544d050a70516dbaeea6092fad1b6d7",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-composite-negative-a3"
+  "request_id": "m6-cp3-r4-composite-negative-a3-docs-20261012-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-composite-negative-a3-docs-apply",
+  "file_id": "1TxCNiFoFIiKKGOysmetuOIPUofLZY7hk",
+  "patch_sha256": "fe21a32cdf18e474436d4673b21040061d2a192816b63f78a79bc09fba989fc2",
+  "base_sha": "284bba01c90f100520b8a1b31ce6de897bd291c5",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): preserve R4 composite A3 compile-only checkpoint"
 }
