@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-a3u01-20261012-a",
+  "request_id": "m6-cp3-r4-a3u01-fixture-20261012-b",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-a3u01-apply",
-  "file_id": "1MQBld7aaD-5G-W12uueRVuckPJBKk9jW",
-  "patch_sha256": "6abd02200c374b598df18aae5094f6c6f68e50c87f0b1f7e20addbe70721c3a0",
-  "base_sha": "d87d3fc63857b9e1e2e6f041707228c3c2c6021f",
+  "mailbox_key": "m6-cp3-r4-a3u01-fixture-apply",
+  "file_id": "1TrzKVMdy4snzRYxppOjlCehic3Mt3saO",
+  "patch_sha256": "be678550a7982a87708969b859bc142e17b97c6919a063dd792d5b2f03faf793",
+  "base_sha": "a384d6bc27f457a7d651aa2574709d7a76c8e7e1",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surface-cells): type terminal A3 uniqueness rejection and guard incidence",
+  "commit_message": "test(surface-cells): use produced terminal for zero-path factory oracle",
   "retention_days": 7
 }
