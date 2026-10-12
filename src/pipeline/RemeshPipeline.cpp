@@ -9515,7 +9515,8 @@ SurfaceCellRailBuildResult build_authoritative_surface_cell_rails(
   const auto railValidation =
       geometry::surface_cell_tracing_detail::rail_interval_refs(
           product.rails, meshWhole.V, meshWhole.F,
-          geometry::surface_cell_tracing_detail::edge_faces(meshWhole.F));
+          geometry::surface_cell_tracing_detail::edge_faces(meshWhole.F),
+          nullptr, true);
   if (railValidation.status !=
       geometry::surface_cell_tracing_detail::RailBuildStatus::Valid) {
     failure.kind = SurfaceCellRailBuildFailureKind::InvalidRailIntervals;

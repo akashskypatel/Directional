@@ -2475,13 +2475,17 @@ bool rail_sample_geometry_is_valid(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const SurfaceCellRailSample &sample);
 
+// Production callers set requireTypedSourceVertices=true even if no optional
+// field-aligned network is attached. The default legacy mode remains for
+// standalone malformed-rail diagnostic fixtures until their oracles migrate.
 RailIntervalBuildResult
 rail_interval_refs(
     const std::vector<SurfaceCellRail> &rails,
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const std::map<authority::SourceEdgeTopologyKey, std::array<int, 2>>
         &edgeFaces,
-    const FieldAlignedCurveNetwork *fieldAlignedNetwork = nullptr);
+    const FieldAlignedCurveNetwork *fieldAlignedNetwork = nullptr,
+    bool requireTypedSourceVertices = false);
 
 SurfaceCellRailIntervalSelection find_rail_interval(
     const std::vector<SurfaceCellRailIntervalRef> &intervals, const int face,

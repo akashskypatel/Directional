@@ -5901,7 +5901,8 @@ rail_interval_refs(
     const std::vector<SurfaceCellRail> &rails,
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const std::map<authority::SourceEdgeTopologyKey, std::array<int, 2>> &edgeFaces,
-    const FieldAlignedCurveNetwork *fieldAlignedNetwork) {
+    const FieldAlignedCurveNetwork *fieldAlignedNetwork,
+    const bool requireTypedSourceVertices) {
   RailIntervalBuildResult result;
   std::set<authority::HardRailId> railIds;
   std::map<authority::SourceEdgeTopologyKey, authority::HardRailId> edgeOwners;
@@ -5931,7 +5932,8 @@ rail_interval_refs(
     const std::size_t expectedVertexCount =
         static_cast<std::size_t>(intervalCount) + (rail.closed ? 0U : 1U);
     if ((typedVertices && rail.sourceVertices.size() != expectedVertexCount) ||
-        (fieldAlignedNetwork != nullptr && !typedVertices)) {
+        ((requireTypedSourceVertices || fieldAlignedNetwork != nullptr) &&
+         !typedVertices)) {
       result.status = RailBuildStatus::TypedAuthorityMismatch;
       result.railId = rail.id;
       return result;
@@ -10420,7 +10422,7 @@ SurfaceTraceResult trace_surface_field(
   const surface_cell_tracing_detail::RailIntervalBuildResult railBuild =
       surface_cell_tracing_detail::rail_interval_refs(
           options.authoritativeRails, vertices, faces, edgeFaces,
-          options.fieldAlignedNetwork);
+          options.fieldAlignedNetwork, true);
   SurfaceTraceResult result;
   if (railBuild.status != surface_cell_tracing_detail::RailBuildStatus::Valid) {
     result.termination = TraceTerminationReason::FieldMetadata;
@@ -12345,7 +12347,7 @@ SurfacePhaseFrontFailureReason assign_open_front_boundary_authority(
   const auto &sourceEdgeIndices = sourceMatchingIndices;
   const RailIntervalBuildResult railBuild =
       rail_interval_refs(options.authoritativeRails, vertices, faces,
-                         sourceEdgeFaces, options.fieldAlignedNetwork);
+                         sourceEdgeFaces, options.fieldAlignedNetwork, true);
   if (railBuild.status != RailBuildStatus::Valid) {
     return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
   }

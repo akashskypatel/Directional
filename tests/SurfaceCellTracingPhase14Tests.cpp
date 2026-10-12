@@ -1772,6 +1772,15 @@ TEST(SurfaceCellTracingPhase14,
   };
   EXPECT_EQ(validate().status,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::Valid);
+  // A production consumer requires typed incidence even when there is no
+  // optional field-aligned network pointer. The legacy helper's default is
+  // retained only for standalone malformed-rail first-error fixtures.
+  const auto validateProduction = [&] {
+    return directional::geometry::surface_cell_tracing_detail::rail_interval_refs(
+        {rail}, mesh.vertices, mesh.faces, edgeFaces, nullptr, true);
+  };
+  EXPECT_EQ(validateProduction().status,
+            directional::geometry::surface_cell_tracing_detail::RailBuildStatus::Valid);
 
   // Both samples lie exactly on an alternate, in-range face-local source
   // edge (1,4). The producer-owned typed chain (0,4) must still prevail;
@@ -1805,6 +1814,24 @@ TEST(SurfaceCellTracingPhase14,
   rail.samples[0].barycentric = Eigen::RowVector3d(1.0, 0.0, 0.0);
   EXPECT_EQ(validate().status,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::Valid);
+  const auto untypedProduction = validateProduction();
+  EXPECT_EQ(untypedProduction.status,
+            directional::geometry::surface_cell_tracing_detail::RailBuildStatus::TypedAuthorityMismatch);
+  ASSERT_TRUE(untypedProduction.railId.has_value());
+  EXPECT_EQ(*untypedProduction.railId, rail.id);
+  // This must be enforced by the actual production trace entry as well,
+  // without relying on a field-aligned network being present.
+  Eigen::MatrixXd axisX, axisY;
+  constant_axes(mesh, axisX, axisY);
+  directional::geometry::SurfaceTraceSeed seed;
+  seed.point.face = 0;
+  seed.point.barycentric << 0.2, 0.3, 0.5;
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.authoritativeRails = {rail};
+  const auto trace = directional::geometry::trace_surface_field(
+      mesh.vertices, mesh.faces, axisX, axisY, seed, 0, 1, options);
+  EXPECT_EQ(trace.termination,
+            directional::geometry::TraceTerminationReason::FieldMetadata);
 }
 
 TEST(SurfaceCellTracingPhase14,
