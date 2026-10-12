@@ -1,3 +1,12 @@
+## CURRENT STOP — R4 sourceEdges feature-map vs EV index domain (2026-10-12)
+
+- [x] Independently re-open exact source `dcf24e2c881b9ed67ec8f992d94d4b4e364fd4e2` from verified compile artifact `11740652527` (ZIP SHA `7af625c8ca0bcbc5f4f59d3793484280157e388db05a412b9d188d4cba1418a2`), derive explicit single-triangle feature-edge-vs-EV counterexample without running a Directional executable. Record `Architecture_M6_CP3_R4_Edge_Index_Namespace_Conflict_Review_Stop_20261012.md`.
+- [ ] **REVIEW_BLOCKER R4-IDX-01:** accepted RA-43 defines `rail.sourceEdges` as feature-map edge positions; default field-aligned and component aggregation interpret them as EV positions; later Phase20 test assumes EV. Independent source-exact Review must select/freeze **one** authoritative namespace, amend RA-43 and first-rejection tests as warranted, and explicitly address diagnostic `failedEdgeIndex`. Neither blanket conversion nor relaxed validation is authorized within blocked CB.
+- [ ] After reviewed amendment, resume this **same** R4 Code + Build: implement checked, source-proven index conversion or consumer mapping, compile eight mandatory GMP/GMPXX targets, preserve causal regressions for edges where the two enumerations differ. Retain other R4 gates and ban TB497 until Code + Build formally closes.
+- [ ] Existing historical regression counts and runtime acceptance unchanged: CP2 491/491, rejected R3 403/497, 94 RED/88 accepted losses; ledger 66/17/49 debt1; no new stable event credited.
+
+---
+
 ## CURRENT — R4 typed rail raw-sidecar interval count integrity (2026-10-12)
 
 - [x] Verify previous RA-43.4 strict production interval guard exact eight-target GMP/GMPXX build GREEN at `0cd4391b976141ec6499378a319d933a9f7ec6c2`: run `38234679163`, result `11740820820` SHA-256 `13b2f1773e8625255482611e99cf20a3c3b65634912e1161407676757ca6f903`, 28/28 checksums, preflight/build 0/0, GMPXX/GMP linked, runtimeExecution=false.
