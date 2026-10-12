@@ -2487,9 +2487,10 @@ bool rail_sample_geometry_is_valid(
     const SurfaceCellRailSample &sample,
     const std::optional<int> &publishedSourceVertex = std::nullopt);
 
-// Production callers set requireTypedSourceVertices=true even if no optional
-// field-aligned network is attached. The default legacy mode remains for
-// standalone malformed-rail diagnostic fixtures until their oracles migrate.
+// Typed source-vertex incidence is the default boundary even without a
+// field-aligned network. The explicit false argument is reserved for
+// standalone legacy diagnostics whose frozen first rejection would otherwise
+// be preempted; no production caller may opt out.
 RailIntervalBuildResult
 rail_interval_refs(
     const std::vector<SurfaceCellRail> &rails,
@@ -2497,7 +2498,7 @@ rail_interval_refs(
     const std::map<authority::SourceEdgeTopologyKey, std::array<int, 2>>
         &edgeFaces,
     const FieldAlignedCurveNetwork *fieldAlignedNetwork = nullptr,
-    bool requireTypedSourceVertices = false);
+    bool requireTypedSourceVertices = true);
 
 SurfaceCellRailIntervalSelection find_rail_interval(
     const std::vector<SurfaceCellRailIntervalRef> &intervals, const int face,

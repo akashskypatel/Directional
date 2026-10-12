@@ -1772,12 +1772,15 @@ TEST(SurfaceCellTracingPhase14,
   };
   EXPECT_EQ(validate().status,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::Valid);
-  // A production consumer requires typed incidence even when there is no
-  // optional field-aligned network pointer. The legacy helper's default is
-  // retained only for standalone malformed-rail first-error fixtures.
+  // Even the default helper call requires typed source incidence without an
+  // optional network. Legacy malformed-rail diagnostics opt out explicitly.
   const auto validateProduction = [&] {
     return directional::geometry::surface_cell_tracing_detail::rail_interval_refs(
         {rail}, mesh.vertices, mesh.faces, edgeFaces, nullptr, true);
+  };
+  const auto validateStandaloneDiagnostic = [&] {
+    return directional::geometry::surface_cell_tracing_detail::rail_interval_refs(
+        {rail}, mesh.vertices, mesh.faces, edgeFaces, nullptr, false);
   };
   EXPECT_EQ(validateProduction().status,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::Valid);
@@ -1826,13 +1829,19 @@ TEST(SurfaceCellTracingPhase14,
   EXPECT_EQ(validate().status,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::InvalidSampleGeometry);
 
-  // The untyped legacy fixture path must not infer a vertex within epsilon.
+  // The default boundary refuses untyped incidence before geometry.
+  // Retain the legacy diagnostic's independent geometry-first oracle only
+  // through its explicit opt-out; never make this a production fallback.
   rail.sourceVertices.clear();
   EXPECT_EQ(validate().status,
+            directional::geometry::surface_cell_tracing_detail::RailBuildStatus::TypedAuthorityMismatch);
+  EXPECT_EQ(validateStandaloneDiagnostic().status,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::InvalidSampleGeometry);
   rail.samples[0].barycentric = Eigen::RowVector3d(1.0, 0.0, 0.0);
-  EXPECT_EQ(validate().status,
+  EXPECT_EQ(validateStandaloneDiagnostic().status,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::Valid);
+  EXPECT_EQ(validate().status,
+            directional::geometry::surface_cell_tracing_detail::RailBuildStatus::TypedAuthorityMismatch);
   const auto untypedProduction = validateProduction();
   EXPECT_EQ(untypedProduction.status,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::TypedAuthorityMismatch);
@@ -2050,7 +2059,15 @@ TEST(SurfaceCellTracingPhase14,
                    Eigen::RowVector3d(1.0, 0.0, 0.0), 1),
        rail_sample(mesh, 3, 2, 1.0, 1.0,
                    Eigen::RowVector3d(0.0, 1.0, 0.0), 5)});
+  // Production/default validation rejects missing typed incidence first.
   EXPECT_EQ(validate({disconnected}).status,
+            directional::geometry::surface_cell_tracing_detail::RailBuildStatus::TypedAuthorityMismatch);
+  // Preserve this named frozen disconnected-geometry diagnostic as a
+  // standalone explicit opt-out; there is no valid producer vertex chain.
+  const auto diagnosticOnly =
+      directional::geometry::surface_cell_tracing_detail::rail_interval_refs(
+          {disconnected}, mesh.vertices, mesh.faces, edgeFaces, nullptr, false);
+  EXPECT_EQ(diagnosticOnly.status,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::DisconnectedIntervals);
 
   directional::geometry::SurfaceCellRail parameterGap = first;
