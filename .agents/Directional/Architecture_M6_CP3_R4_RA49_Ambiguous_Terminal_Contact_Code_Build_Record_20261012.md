@@ -23,3 +23,9 @@
 On the subsequent verified source snapshot `c8c4cc65bca673754cb74f0ed295ba08cfdaa251` (workflow `38317818824`, artifact `11777287283`, `6548/6548` manifest), a second independent Phase10 negative is added. It starts from the same accepted source-certified hard-rail route, retains the real source mesh and first terminal, and replaces only the contact's matching typed terminal with a different **valid source vertex** not among the rail's original two terminal IDs. The distinct pair is preserved; no trace geometry or A2b/A3 receipt changes. The first consumer must reject with `a2bProbeFailure=no-exact-terminal-corner` and must not select `ambiguous-terminal-contact`.
 
 This is compile-only test source coverage, not runtime proof. No producer/consumer predicate, factory check, tolerances, ABI, frozen identity or reusable workflow was changed. Keep the other unadjudicated RA-46.5 negatives open.
+
+### Applied and compile-verified foreign-terminal fixture
+
+- The four-file patch (`39a6dd19dd5c775924fdc5320e098dbfb2bac60a4fb51b2afc0eb70151e8e502`, body `3b4d7075eea886f7b17dbfd70908691ec9135d07b9ae7132a70a271b9a4d7a85`) applied successfully through Drive workflow `38318409957` at exact semantic `54a58afdc00fae0e58662134ebb68845814b13ab`, with the four intended file paths verified. The consumed Drive stage was owner-deleted.
+- Exact-source eight-target GMP/GMPXX compile **GREEN** in workflow `38318599087`; artifact `11777419642` outer SHA-256 `5d2bdc39adb200797de1e90650fa46f1df284f6e368bebb5f6bec9b7b61e8534`. Verified `28/28` package checksums, all 8 targets, preflight/build `0/0`, `gmpxx` and `gmp` on generated authoritative link, and empty source-status records. `runtimeExecution=false`; **no test or benchmark run**.
+- This closes only the `no-exact-terminal-corner` compile checkpoint. Remaining R4 requirements and the separately authorized TB497 gate are unchanged. No runtime first-rejection PASS claimed.
