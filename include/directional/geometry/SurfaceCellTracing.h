@@ -1861,9 +1861,16 @@ enum class SurfacePhaseFrontProductErrorCode : int {
   RepresentationRenumberedPeriodicRelation = 20,
 };
 
+// Typed detail for a checked factory's source-star route rejection.
+enum class SurfacePhaseFrontSourceAuthorityDetail : int {
+  MissingTerminalA3Path = 0,
+  AmbiguousTerminalA3Path = 1,
+};
+
 struct SurfacePhaseFrontProductError {
   SurfacePhaseFrontProductErrorCode code =
       SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+  std::optional<SurfacePhaseFrontSourceAuthorityDetail> sourceAuthorityDetail;
   int edge = -1;
   int event = -1;
   std::optional<authority::CellId> cell;

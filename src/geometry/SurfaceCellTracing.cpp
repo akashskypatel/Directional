@@ -8315,23 +8315,24 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
       }
     }
   }
+  enum class TerminalStarPathResult { Unique, Missing, Ambiguous, Invalid };
   const auto unique_terminal_star_path = [&](const authority::SourceVertexId vertex,
                                              const StarFace &from,
                                              const StarFace &to) {
     const auto found = terminalStarIncidence.find(vertex);
-    if (found == terminalStarIncidence.end()) return false;
+    if (found == terminalStarIncidence.end()) return TerminalStarPathResult::Invalid;
     std::map<StarFace, std::set<StarFace>> adjacency;
     for (const auto &[spoke, incident] : found->second) {
-      if (incident.size() > 2U) return false;
+      if (incident.size() > 2U) return TerminalStarPathResult::Invalid;
       if (hardFeatureEdges.contains(spoke) || incident.size() != 2U)
         continue;
       const auto firstRow = sourceTopologyRegions.row_for_topology(incident[0]);
       const auto secondRow = sourceTopologyRegions.row_for_topology(incident[1]);
-      if (!firstRow || !secondRow || *firstRow == *secondRow) return false;
+      if (!firstRow || !secondRow || *firstRow == *secondRow) return TerminalStarPathResult::Invalid;
       const auto forward = fieldTransportAtlas->transition_value(
           spoke, *firstRow, *secondRow);
       if (!forward || !matchesA3(spoke, incident[0], incident[1],
-                                 forward->transport)) return false;
+                                 forward->transport)) return TerminalStarPathResult::Invalid;
       adjacency[incident[0]].insert(incident[1]);
       adjacency[incident[1]].insert(incident[0]);
     }
@@ -8349,7 +8350,9 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
       }
     };
     visit(visit, from);
-    return paths == 1U;
+    return paths == 1U ? TerminalStarPathResult::Unique
+           : paths == 0U ? TerminalStarPathResult::Missing
+                         : TerminalStarPathResult::Ambiguous;
   };
   std::set<int> certifiedHardRailPairs;
   for (const auto &certificate : hardRailRouteCertificates) {
@@ -8520,11 +8523,18 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
         }
         // A2b uniqueness is checked from source topology, not asserted by
         // the paths in the certificate being validated.
-        if (!unique_terminal_star_path(*vertex, endpoint.firstAttachment,
-                                       carrier.firstFace) ||
-            !unique_terminal_star_path(*vertex, endpoint.secondAttachment,
-                                       carrier.secondFace)) {
+        for (const auto [from, to] : {
+                 std::pair{endpoint.firstAttachment, carrier.firstFace},
+                 std::pair{endpoint.secondAttachment, carrier.secondFace}}) {
+          const auto path = unique_terminal_star_path(*vertex, from, to);
+          if (path == TerminalStarPathResult::Unique) continue;
           error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+          if (path == TerminalStarPathResult::Missing)
+            error.sourceAuthorityDetail =
+                SurfacePhaseFrontSourceAuthorityDetail::MissingTerminalA3Path;
+          else if (path == TerminalStarPathResult::Ambiguous)
+            error.sourceAuthorityDetail =
+                SurfacePhaseFrontSourceAuthorityDetail::AmbiguousTerminalA3Path;
           return error;
         }
         std::array<std::set<authority::SourceFaceTopologyKey>, 2> used;
@@ -18980,7 +18990,10 @@ SurfaceCellNetwork build_surface_cell_network(
       for (const auto &[spoke, incident] : sourceEdges) {
         if (spoke.first() != *terminalVertex &&
             spoke.second() != *terminalVertex) continue;
-        if (sourceEdgeFaceCounts.at(spoke) > 2U)
+        const auto incidence = sourceEdgeFaceCounts.find(spoke);
+        if (incidence == sourceEdgeFaceCounts.end())
+          return reject("missing-terminal-star-spoke-incidence");
+        if (incidence->second > 2U)
           return reject("nonmanifold-terminal-star-spoke");
         if (authoritativeOptions.hardFeatureEdges.contains(spoke)) continue;
         if (incident[0] < 0 || incident[1] < 0) continue;

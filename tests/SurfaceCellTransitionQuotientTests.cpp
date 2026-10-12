@@ -9002,6 +9002,36 @@ TEST(M6CP3, CheckedFactoryRejectsForgedTerminalA2bSideGerm) {
   expect_phase_front_product_error(
       checked_with_routes_and_contacts(original, foreignContact), expected);
 
+  // The real center terminal has two hard spokes (1,4) and (4,7),
+  // separating its nonhard star into two sectors. Rebinding the first
+  // attachment to the opposite sector has zero admissible A3 paths to its
+  // original carrier-side face; this must report the factory's typed
+  // first-rejection detail, not a generic or ambiguous-path result.
+  std::optional<std::pair<std::size_t, std::size_t>> centerTerminal;
+  for (std::size_t r = 0U; r < original.size() && !centerTerminal; ++r)
+    for (std::size_t e = 0U; e < 2U; ++e) {
+      const auto &candidate = original[r].endpoints[e];
+      if (candidate.terminalVertex && candidate.terminalVertex->index() == 4U &&
+          candidate.firstAttachment != candidate.secondAttachment) {
+        centerTerminal = std::make_pair(r, e);
+        break;
+      }
+    }
+  ASSERT_TRUE(centerTerminal.has_value());
+  auto unreachable = original;
+  auto &negative = unreachable[centerTerminal->first]
+                        .endpoints[centerTerminal->second];
+  negative.firstAttachment = negative.secondAttachment;
+  const auto unreachableResult = checked_with_routes(unreachable);
+  const auto *unreachableError = std::get_if<
+      directional::geometry::SurfacePhaseFrontProductError>(&unreachableResult);
+  ASSERT_NE(nullptr, unreachableError);
+  EXPECT_EQ(expected, unreachableError->code);
+  ASSERT_TRUE(unreachableError->sourceAuthorityDetail.has_value());
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontSourceAuthorityDetail::
+                MissingTerminalA3Path,
+            *unreachableError->sourceAuthorityDetail);
+
   // A false 'direct' germ omits an independently required source-star step.
   auto omitted = original;
   omitted[route].endpoints[endpoint].contactPaths[side].clear();
