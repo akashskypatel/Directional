@@ -846,6 +846,23 @@ TEST(FieldAlignedCurveNetwork, RejectsMissingDuplicateOrForeignMandatoryEdges) {
   ASSERT_FALSE(rejected);
   EXPECT_EQ(FieldAlignedCurveNetworkErrorCode::ForeignMandatoryEdge,
             rejected.error().code);
+
+  // The typed endpoints remain valid, but the advertised raw edge index
+  // points at a different source edge. This must fail before publication.
+  auto mismatchedRails = rails;
+  ASSERT_FALSE(mismatchedRails.empty());
+  ASSERT_EQ(1U, mismatchedRails.front().sourceEdges.size());
+  ASSERT_GT(mesh.EV.rows(), 1);
+  const int originalEdge = mismatchedRails.front().sourceEdges.front();
+  ASSERT_GE(originalEdge, 0);
+  ASSERT_LT(originalEdge, mesh.EV.rows());
+  mismatchedRails.front().sourceEdges.front() =
+      (originalEdge + 1) % mesh.EV.rows();
+  const auto forged = FieldAlignedCurveNetwork::make(
+      mesh, *sourceAuthority, atlasBuild.value(), mismatchedRails);
+  ASSERT_FALSE(forged);
+  EXPECT_EQ(FieldAlignedCurveNetworkErrorCode::InvalidRailGeometry,
+            forged.error().code);
 }
 
 TEST(FieldAlignedCurveNetwork,
