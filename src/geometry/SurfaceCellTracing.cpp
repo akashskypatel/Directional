@@ -5872,7 +5872,8 @@ namespace directional::geometry::surface_cell_tracing_detail {
 
 bool rail_sample_geometry_is_valid(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
-    const SurfaceCellRailSample &sample) {
+    const SurfaceCellRailSample &sample,
+    const std::optional<int> &publishedSourceVertex) {
   constexpr double tolerance = 1.0e-8;
   if (!rail_sample_is_finite(sample) || sample.sourceFace < 0 ||
       sample.sourceFace >= faces.rows() || sample.sourceEdge < 0 ||
@@ -5888,7 +5889,12 @@ bool rail_sample_geometry_is_valid(
       return false;
     }
   }
-  const int sourceVertex = rail_sample_source_vertex(faces, sample);
+  // The source vertex comes from the producer's exact sourceVertices chain
+  // when present. Barycentric inference survives only for legacy standalone
+  // diagnostic fixtures until RA-43.4's separate migration is complete.
+  const int sourceVertex = publishedSourceVertex.has_value()
+                               ? *publishedSourceVertex
+                               : rail_sample_source_vertex(faces, sample);
   if (sourceVertex < 0 || sourceVertex >= vertices.rows()) {
     return false;
   }
@@ -5966,15 +5972,8 @@ rail_interval_refs(
         result.intervalIndex = interval;
         return result;
       }
-      if (!rail_sample_geometry_is_valid(vertices, faces, a) ||
-          !rail_sample_geometry_is_valid(vertices, faces, b)) {
-        result.status = RailBuildStatus::InvalidSampleGeometry;
-        result.railId = rail.id;
-        result.intervalIndex = interval;
-        return result;
-      }
-      int startVertex = rail_sample_source_vertex(faces, a);
-      int endVertex = rail_sample_source_vertex(faces, b);
+      int startVertex = -1;
+      int endVertex = -1;
       if (typedVertices) {
         const auto first = authority::SourceVertexId::from_index(
             rail.sourceVertices[static_cast<std::size_t>(interval)],
@@ -5994,12 +5993,37 @@ rail_interval_refs(
                                                    second.value());
         if (!publishedEdge ||
             publishedEdge.value() !=
-                local_edge_key(faces, a.sourceFace, a.sourceEdge)) {
+                local_edge_key(faces, a.sourceFace, a.sourceEdge) ||
+            (!rail.sourceEdges.empty() &&
+             rail.sourceEdges[static_cast<std::size_t>(interval)] !=
+                 publishedEdge.value())) {
           result.status = RailBuildStatus::TypedAuthorityMismatch;
           result.railId = rail.id;
           result.intervalIndex = interval;
           return result;
         }
+        startVertex = static_cast<int>(first.value().index());
+        endVertex = static_cast<int>(second.value().index());
+      }
+      // Verify positions against the exact producer-owned endpoint IDs,
+      // never by deriving a vertex from floating-point sample coordinates.
+      // The legacy diagnostic path retains its old standalone behavior.
+      if (!rail_sample_geometry_is_valid(
+              vertices, faces, a,
+              typedVertices ? std::optional<int>{startVertex} : std::nullopt) ||
+          !rail_sample_geometry_is_valid(
+              vertices, faces, b,
+              typedVertices ? std::optional<int>{endVertex} : std::nullopt)) {
+        result.status = RailBuildStatus::InvalidSampleGeometry;
+        result.railId = rail.id;
+        result.intervalIndex = interval;
+        return result;
+      }
+      if (!typedVertices) {
+        startVertex = rail_sample_source_vertex(faces, a);
+        endVertex = rail_sample_source_vertex(faces, b);
+      }
+      if (typedVertices) {
         const auto is_exact_corner = [&](const SurfaceCellRailSample &sample,
                                          const int vertex) {
           int corner = -1;
@@ -6013,8 +6037,6 @@ rail_interval_refs(
           }
           return true;
         };
-        startVertex = static_cast<int>(first.value().index());
-        endVertex = static_cast<int>(second.value().index());
         if (!is_exact_corner(a, startVertex) ||
             !is_exact_corner(b, endVertex)) {
           result.status = RailBuildStatus::InvalidSampleGeometry;

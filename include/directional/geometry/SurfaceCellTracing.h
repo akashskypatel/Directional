@@ -2480,9 +2480,12 @@ double rail_parameter_tolerance(const double a, const double b);
 int rail_sample_source_vertex(const Eigen::MatrixXi &faces,
                                      const SurfaceCellRailSample &sample);
 
+// Typed rail callers supply producer-owned source incidence; sample
+// barycentrics can confirm a corner but must not invent source identity.
 bool rail_sample_geometry_is_valid(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
-    const SurfaceCellRailSample &sample);
+    const SurfaceCellRailSample &sample,
+    const std::optional<int> &publishedSourceVertex = std::nullopt);
 
 // Production callers set requireTypedSourceVertices=true even if no optional
 // field-aligned network is attached. The default legacy mode remains for

@@ -1792,6 +1792,14 @@ TEST(SurfaceCellTracingPhase14,
   EXPECT_EQ(validateProduction().status,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::TypedAuthorityMismatch);
   rail.sourceEdges.clear();
+  // A numerically in-range but foreign typed edge key cannot replace the
+  // source-owned endpoint chain even if the sample geometry is unchanged.
+  rail.sourceEdges = {
+      directional::authority::SourceEdgeTopologyKey::from_indices(1, 4,
+          static_cast<std::size_t>(mesh.vertices.rows())).value()};
+  EXPECT_EQ(validateProduction().status,
+            directional::geometry::surface_cell_tracing_detail::RailBuildStatus::TypedAuthorityMismatch);
+  rail.sourceEdges.clear();
 
   // Both samples lie exactly on an alternate, in-range face-local source
   // edge (1,4). The producer-owned typed chain (0,4) must still prevail;
