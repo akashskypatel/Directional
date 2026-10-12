@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-seam-source-a3-ingress-20261012-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-seam-a3-apply",
-  "file_id": "1uFWtcnkKM2YyQgeNJisJXXHSkJssEH-L",
-  "patch_sha256": "6dc4754f405fa0fc36e1eeb30193354ca8ae399409f8e73bb9a120d32b2662d7",
-  "base_sha": "27ad5a1fad7b6544fa744f30497a8b1fb77d95a8",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): bind CP3 produced seam witness to source A3"
+  "request_id": "m6-cp3-r4-seam-a3-compile-20261012-a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-seam-a3-compile",
+  "source_sha": "b58314b3c8f024d2e6a3ce6092ad87b85425d40f",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-seam-a3-compile"
 }
