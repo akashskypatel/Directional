@@ -1,3 +1,11 @@
+## CURRENT — R4 unsupported-sheet first-rejection original-source A3 (2026-10-12)
+
+- [x] Source-bounded negative fixture A2/A3 ingress, source `24fbd353332c1d55ec2612e9a0ccbe748a861d9f`, apply workflow `38208759469`, Drive stage owner-deleted.
+- [x] Eight-target GMP/GMPXX compile GREEN, workflow `38208927096`, result `11728751414`, no runtime.
+- [ ] First-rejection runtime verification; original 39 endpoints / 34 Phase10 / seven DCEL / 88 CP2 / six CP3 / odd-τ multi-carrier, RA-43.4 and independent overfull-A3 Review; TB497 unauthorized.
+
+---
+
 ## CURRENT — R4 M6 CP3 produced seam witness source-A3 ingress (2026-10-12)
 
 - [x] Correct one original CP3 A5/A6/A7 seam candidate builder's missing original-source A2/A3; semantic `b58314b3c8f024d2e6a3ce6092ad87b85425d40f`, Drive apply `38207015195`, staging retired; 3 source lines, unchanged existing test identities and topology.
