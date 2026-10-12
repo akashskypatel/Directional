@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-typed-rail-index-consistency-20261012-r2",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-typed-rail-index-consistency-apply",
-  "file_id": "1FUr9QaslSh1eWfu7Djn-KlmnjT5vvpjq",
-  "patch_sha256": "89944beec156879a5c581c6a5b3426621fcc59007de8dcf9a32e3367bdde8a6e",
-  "base_sha": "1ca57abd820e42f5c58d427a083dbd6f394cee78",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(directional): validate producer rail edge indices against typed source edge topology"
+  "request_id": "m6-cp3-r4-typed-rail-index-consistency-compile-20261012-r1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-typed-rail-index-consistency-compile",
+  "source_sha": "a92ddb5da31e3d2fd0d5ea1443e5f04734743b17",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-typed-rail-index-consistency"
 }
