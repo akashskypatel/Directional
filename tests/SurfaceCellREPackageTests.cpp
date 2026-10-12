@@ -250,6 +250,10 @@ TEST(SurfaceCellPipelinePhase20,
   ASSERT_TRUE(context.productSnapshots.traceNetwork.phaseFront.is_produced());
   EXPECT_FALSE(context.productSnapshots.traceNetwork.phaseFront.product().cells().empty());
 
+  // The tested rail producer must publish raw source-edge IDs for the same
+  // original source topology as its independently carried vertex chain.
+  directional::TriMesh sourceMesh;
+  sourceMesh.set_mesh(mesh.vertices, mesh.faces);
   bool hasBoundaryRail = false;
   bool hasHardRail = false;
   std::set<directional::authority::HardRailId> railIds;
@@ -285,6 +289,13 @@ TEST(SurfaceCellPipelinePhase20,
       const int edgeSecond = mesh.faces(start.sourceFace, (start.sourceEdge + 2) % 3);
       EXPECT_TRUE((first == edgeFirst && second == edgeSecond) ||
                   (first == edgeSecond && second == edgeFirst));
+      const int sourceEdge = rail.sourceEdges[interval];
+      ASSERT_GE(sourceEdge, 0);
+      ASSERT_LT(sourceEdge, sourceMesh.EV.rows());
+      const int rawFirst = sourceMesh.EV(sourceEdge, 0);
+      const int rawSecond = sourceMesh.EV(sourceEdge, 1);
+      EXPECT_TRUE((first == rawFirst && second == rawSecond) ||
+                  (first == rawSecond && second == rawFirst));
     }
     for (const directional::geometry::SurfaceCellRailSample &sample :
          rail.samples) {
