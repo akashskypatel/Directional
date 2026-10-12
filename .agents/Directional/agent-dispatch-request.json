@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra49-contact-compile-20261012t2221z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-ra49-contact-compile",
-  "source_sha": "ae6af23f4a14ad0e3105b185df31478f382229c6",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-ra49-contact-compile"
+  "request_id": "m6-cp3-r4-ra465-no-exact-apply-20261012t2245z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-ra465-no-exact-apply",
+  "file_id": "1y39_rauEE04ZxIu4gQtSMxdQr-RUs8vJ",
+  "patch_sha256": "39a6dd19dd5c775924fdc5320e098dbfb2bac60a4fb51b2afc0eb70151e8e502",
+  "base_sha": "c8c4cc65bca673754cb74f0ed295ba08cfdaa251",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "test(directional): first-reject foreign typed A4 terminal"
 }
