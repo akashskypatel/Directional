@@ -1,3 +1,11 @@
+## CURRENT — R4 Phase14 typed rail first-rejection coverage (2026-10-12)
+
+- [x] Source `4d51805d79994f1d718d71332be06f504d6312cf` migrates two existing Phase14 supplemental tests to authentic typed ordered source-vertex chains, one test file +9/-0, unchanged assertions/identities/frozen selectors. Genuine `Valid` baseline added; disconnected negative remains deliberately untyped so its intended first rejection is not masked. Exact patch `cc819992da00acd005904c69a8203f457aff116d749ab00161ce4156c404fb42`, apply workflow `38198898409` success, Drive patch deleted.
+- [x] Exact-source eight-target GMP/GMPXX compile **GREEN**: workflow `38198996718`, job `114648012662`, source `4d51805d79994f1d718d71332be06f504d6312cf`, result artifact `11723819181`, ZIP SHA-256 `23ee086aaeef3fec3ff9b04dc200e8de2fb54c9350f33f7925458dda9ab63d73`; manifest 28/28, preflight/build 0/0, GMP/GMPXX linker verified, source clean, `runtimeExecution=false`.
+- [ ] No runtime acceptance or TB497 execution. Independent overfull-A3 Review, global RA-43.4 legacy fallback retirement, 39 endpoints, 34 Phase10, seven DCEL, 88 CP2 losses, six CP3 positives and true odd-τ multi-carrier remain OPEN.
+
+---
+
 ## CURRENT — R4 Phase14 incident-order/barrier source vertices (2026-10-12)
 
 - [x] Authenticated two remaining Phase14 fixtures with exact typed source-vertex chain `{0,4,7}` in source `9709bd8e855e4f6a92165b082ba9b3f4330f8411`, only two insertions in one test file, all original oracles/identities unchanged.
