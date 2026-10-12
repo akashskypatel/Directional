@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-phase14-two-typed-compile-20261012-h",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-phase14-two-typed-compile",
-  "source_sha": "9709bd8e855e4f6a92165b082ba9b3f4330f8411",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-phase14-two-typed"
+  "request_id": "m6-cp3-r4-phase14-first-rejection-20261012-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-phase14-first-rejection",
+  "file_id": "1mc0iFVUjZyfMMNMpD9n4T9Nu2CCYRvge",
+  "patch_sha256": "cc819992da00acd005904c69a8203f457aff116d749ab00161ce4156c404fb42",
+  "base_sha": "5f8458b48bc63aa32bee3eaf4e95d073609748bf",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "test(directional): migrate R4 Phase14 typed rail first-rejection fixtures"
 }
