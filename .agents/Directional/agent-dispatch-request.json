@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-three-phase10-a3-compile-20261012-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-three-phase10-a3-compile",
-  "source_sha": "8df105b560625ea09b3ac136b3ee4b9656a38e2f",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-three-phase10-a3"
+  "request_id": "m6-cp3-r4-three-phase10-a3-docs-20261012-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-three-phase10-a3-docs-apply",
+  "file_id": "1QS6Dt6ag8N0lHn1JAOVF5qgT3c1y_Gul",
+  "patch_sha256": "7a7593eb8c149bb42909f5165ba353f1a412a1cd794d706f4cdef14f5dde628e",
+  "base_sha": "e15ff4b547ab3b4a2703f4e2c6cc9bcdb787d2bc",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record R4 three Phase10 A3 compile-only checkpoint"
 }
