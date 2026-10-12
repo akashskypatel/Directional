@@ -1,6 +1,6 @@
 ## CURRENT — R4 typed rail helper source-corner confirmation (2026-10-12)
 
-- [ ] Apply and eight-target GMP/GMPXX compile-check source-exact RA-43.4 shared-helper counterexample patch. Exact snapshot `b178f5628bf9e07a4ede14f4717fbe37c2b6e3ab`, 6556/6556 hashes. Test source extends the existing Phase14 typed rail case with coincident distinct source-vertex ID and near-corner geometry negatives; production/legacy diagnostic contracts remain unchanged. See `Architecture_M6_CP3_R4_RA434_Typed_Rail_Corner_Confirmation_Code_Build_Record_20261012.md`.
+- [x] Apply and eight-target GMP/GMPXX compile-check source-exact RA-43.4 shared-helper counterexample patch. Exact snapshot `b178f5628bf9e07a4ede14f4717fbe37c2b6e3ab`, 6556/6556 hashes. Test source extends the existing Phase14 typed rail case with coincident distinct source-vertex ID and near-corner geometry negatives; production/legacy diagnostic contracts remain unchanged. Compile GREEN workflow `38320820157`, source `e15e1d18a38308f2c4c83b1a616a85f73af37ac7`, artifact `11778313525`, 28/28, 8/8, runtime disabled. See `Architecture_M6_CP3_R4_RA434_Typed_Rail_Corner_Confirmation_Code_Build_Record_20261012.md`.
 - [ ] Continue same R4 turn afterward. RA-43.2 producer-oriented side binding, global RA-43.4 legacy migration, RA-46.5 first-rejection set, RA-47.12 observed liveness, and carried recovery matrix remain open. TB497 forbidden in this Code + Build turn.
 
 ---
