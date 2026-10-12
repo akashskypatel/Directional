@@ -12,7 +12,7 @@
 
 ## Compile receipt
 
-Mandatory exact-source eight-target GMP/GMPXX compile was dispatched at event `c3259d0d29077df0691e5ebefa0b468a82c08ba7`, workflow `38234679163`, compile job `114762421998` (source `0cd4391b976141ec6499378a319d933a9f7ec6c2`). **Final compile evidence pending at initial creation of this document.** Do not treat dispatcher validation or successful apply as a compile PASS.
+Mandatory exact-source eight-target GMP/GMPXX compile was dispatched at event `c3259d0d29077df0691e5ebefa0b468a82c08ba7`, workflow `38234679163`, compile job `114762421998` (source `0cd4391b976141ec6499378a319d933a9f7ec6c2`). **Verified GREEN (2026-10-12):** workflow `38234679163` / compile job `114762421998` completed successfully. Downloaded result artifact `11740820820` outer ZIP SHA-256 `13b2f1773e8625255482611e99cf20a3c3b65634912e1161407676757ca6f903`; independently rehashed all `28/28` `SHA256SUMS` entries. Metadata binds exact source `0cd4391b976141ec6499378a319d933a9f7ec6c2`, 8/8 requested targets, `preflight-exit-code=0`, `build-exit-code=0`, `DIRECTIONAL_ENABLE_GMP:BOOL=ON`, generated linker includes both `libgmpxx.so` and `libgmp.so`, empty `source-status-final.txt`, `runtimeExecution=false`, `turnBoundary=Code+Build-only` and `exactArithmeticBackend=GMP`. Compile is not a runtime test PASS. Diagnostic log artifact `11740511341` outer SHA-256 `0180d6aee599f77e169b4d9313e61f804e772e6432b414527ee638a23244146b`.
 
 ## Remaining duties
 
