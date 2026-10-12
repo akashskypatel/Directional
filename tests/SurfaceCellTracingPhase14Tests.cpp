@@ -1190,6 +1190,7 @@ TEST(SurfaceCellTracingPhase14, CompatibleHardFeatureRailIsFollowed) {
   b.railParameter = 1.0;
   b.barycentric << 0.0, 0.0, 1.0;
   b.position = mesh.vertices.row(3);
+  rail.sourceVertices = {0, 3};
   rail.samples = {a, b};
   options.authoritativeRails.push_back(rail);
 
@@ -1251,6 +1252,7 @@ TEST(SurfaceCellTracingPhase14,
   directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(43));
   rail.curveId = 9;
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
+  rail.sourceVertices = {0, 3};
   rail.samples = {
       rail_sample(mesh, 0, 1, 0.0, 0.0,
                   Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
@@ -1275,6 +1277,7 @@ TEST(SurfaceCellTracingPhase14,
 
   directional::geometry::SurfaceCellRail reverseRail = rail;
   reverseRail.id = directional::tests::test_hard_rail_id(44);
+  reverseRail.sourceVertices = {3, 0};
   reverseRail.samples = {
       rail_sample(mesh, 1, 2, 0.0, 1.0,
                   Eigen::RowVector3d(0.0, 1.0, 0.0), 3),
@@ -1489,6 +1492,7 @@ TEST(SurfaceCellTracingPhase14, CompatibleHardFeatureRailPreservesIntervalMetada
   b.railParameter = 1.0;
   b.barycentric << 0.0, 0.0, 1.0;
   b.position = mesh.vertices.row(3);
+  rail.sourceVertices = {0, 3};
   rail.samples = {a, b};
   options.authoritativeRails.push_back(rail);
 
@@ -1523,6 +1527,7 @@ TEST(SurfaceCellTracingPhase14, CompatibleHardFeatureRailEntersFromEitherSide) {
   directional::geometry::SurfaceCellRail faceZeroRail(directional::tests::test_hard_rail_id(91));
   faceZeroRail.curveId = 21;
   faceZeroRail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
+  faceZeroRail.sourceVertices = {0, 3};
   faceZeroRail.samples = {
       rail_sample(mesh, 0, 1, 0.0, 0.0,
                   Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
@@ -1549,6 +1554,7 @@ TEST(SurfaceCellTracingPhase14, CompatibleHardFeatureRailEntersFromEitherSide) {
   faceOneReversedRail.curveId = 22;
   faceOneReversedRail.kind =
       directional::geometry::SurfaceCellRailKind::HardFeature;
+  faceOneReversedRail.sourceVertices = {3, 0};
   faceOneReversedRail.samples = {
       rail_sample(mesh, 1, 2, 0.0, 1.0,
                   Eigen::RowVector3d(0.0, 1.0, 0.0), 3),
@@ -1624,6 +1630,7 @@ TEST(SurfaceCellTracingPhase14,
   b1.railParameter = 1.0;
   b1.barycentric << 0.0, 0.0, 1.0;
   b1.position = mesh.vertices.row(7);
+  rail.sourceVertices = {0, 4, 7};
   rail.samples = {a0, b0, a1, b1};
   options.authoritativeRails.push_back(rail);
   directional::geometry::SurfaceCellRail spur(directional::tests::test_hard_rail_id(78));
@@ -1642,6 +1649,7 @@ TEST(SurfaceCellTracingPhase14,
   spurB.railParameter = 1.0;
   spurB.barycentric << 0.0, 0.0, 1.0;
   spurB.position = mesh.vertices.row(8);
+  spur.sourceVertices = {4, 8};
   spur.samples = {spurA, spurB};
   options.authoritativeRails.push_back(spur);
 
@@ -1703,6 +1711,7 @@ TEST(SurfaceCellTracingPhase14,
   directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(93));
   rail.curveId = 23;
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
+  rail.sourceVertices = {0, 4, 7};
   rail.samples = {
       rail_sample(mesh, 0, 1, 0.0, 0.0,
                   Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
@@ -2181,6 +2190,7 @@ TEST(SurfaceCellTracingPhase14, ClosedHardFeatureRailWrapsIntervalSequence) {
   rail.curveId = 12;
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
   rail.closed = true;
+  rail.sourceVertices = {0, 1, 2};
   const auto sample = [&](const int sourceEdge, const double parameter,
                           const double railParameter,
                           const Eigen::RowVector3d &barycentric,
