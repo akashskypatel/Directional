@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra434-corner-compile-20261012t2312z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-ra434-corner-compile",
-  "source_sha": "e15e1d18a38308f2c4c83b1a616a85f73af37ac7",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-ra434-corner-compile"
+  "request_id": "m6-cp3-r4-ra434-compile-closeout-20261012t2315z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-ra434-compile-closeout",
+  "file_id": "1p8v_wFwo0gB4CcQzuy6ncAltwFAoNezM",
+  "patch_sha256": "d5b9f818ac4b4c1f22ddc1f7e8eb77c50850212e8974e39739e0516bd3c080ee",
+  "base_sha": "e15e1d18a38308f2c4c83b1a616a85f73af37ac7",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record verified R4 typed-corner GMP compile"
 }
