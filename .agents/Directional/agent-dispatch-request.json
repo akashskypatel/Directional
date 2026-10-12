@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra4712-compile-docs-apply-20261012t2339z",
+  "request_id": "m6-cp3-r4-ra432-missing-open-contact-apply-20261012t2358z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra4712-compile-docs-apply",
-  "file_id": "1SrLha2fVepdrZUTE0QrnGn_08DmHq42t",
-  "patch_sha256": "1b861033319d99f11f0cd7a9e234c457ba2a07b150328d5dea316d5622e6633c",
-  "base_sha": "60d3292018105ffd4e0064dd9b6849ffecefc2e0",
+  "mailbox_key": "m6-cp3-r4-ra432-open-contact-apply",
+  "file_id": "1hU-8ZlLPbWjJSua0s7tsZ5SO2jTX3gaJ",
+  "patch_sha256": "1bd90a779766d833cc12555b4611e9ef638e40a771fb3740ed0bd3914c3d4763",
+  "base_sha": "4a68d108a592126a9443ae8644c2fcab2df6d181",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record RA-47.12 exact compile evidence"
+  "commit_message": "test(directional): reject missing producer-owned open-rail terminal provenance"
 }
