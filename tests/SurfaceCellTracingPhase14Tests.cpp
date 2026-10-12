@@ -1810,6 +1810,7 @@ TEST(SurfaceCellTracingPhase14,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::InvalidSamplePair);
   directional::geometry::SurfaceCellRail validRail = rail;
   validRail.samples.resize(2);
+  validRail.sourceVertices = {0, 4};
   const auto validRefs =
       directional::geometry::surface_cell_tracing_detail::rail_interval_refs(
           {validRail}, mesh.vertices, mesh.faces, edgeFaces);
