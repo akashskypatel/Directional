@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-phase14-first-rejection-docs-20261012-c",
+  "request_id": "m6-cp3-r4-phase14-first-rejection-docs-20261012-d",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-phase14-first-rejection-docs",
-  "file_id": "1Lp5ZzfeIAZ8eHr7y3d8KeG0W1yCyH1qS",
-  "patch_sha256": "facde0778250ec9f05765d841aff5d7c178292d1f6eb821a73e2478af13a3af8",
+  "mailbox_key": "m6-cp3-r4-phase14-first-rejection-docs-retry",
+  "file_id": "1AMJ9ZsSajI24L8ZXDfaGqnLsVEbMwT6-",
+  "patch_sha256": "91e2bfc8b5804fcf2cc11fa524631ba9c9777d1f7adcfb22909cc2159326db22",
   "base_sha": "5f8458b48bc63aa32bee3eaf4e95d073609748bf",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record R4 Phase14 first-rejection typed rail GMP compile"
+  "commit_message": "docs(directional): record R4 typed first-rejection fixture compile evidence"
 }
