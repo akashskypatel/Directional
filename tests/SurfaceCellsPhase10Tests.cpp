@@ -2349,6 +2349,24 @@ TEST(SurfaceCellsPhase10,
   directional::geometry::SurfaceCellTracingOptions options;
   options.sourceFaceComponents.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
   options.sourceFaceSheets.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
+  // Build independent source-matched A2/A3 from the original ambiguous
+  // field; do not let absent atlas authority mask the ring ambiguity.
+  Eigen::MatrixXd sourceRaw(mesh.F.rows(), 12);
+  for (int face = 0; face < mesh.F.rows(); ++face) {
+    const Eigen::RowVector3d x = faceAxisX.row(face);
+    const Eigen::RowVector3d y = faceAxisY.row(face);
+    sourceRaw.row(face) << x, y, -x, -y;
+  }
+  const auto sourceField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(mesh, sourceRaw);
+  const auto sourceAuthority = directional::geometry::surface_cell_tracing_detail::
+      build_source_topology_regions(mesh.F, options);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  auto sourceAtlas = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, options.hardFeatureEdges, sourceField);
+  ASSERT_TRUE(sourceAtlas.has_value());
+  options.fieldTransportAtlas = &sourceAtlas.value();
+
   const auto network = directional::geometry::build_surface_cell_network(
       mesh.V, mesh.F, faceAxisX, faceAxisY, targetSize, options);
   EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
@@ -2741,6 +2759,9 @@ CurvedDiskFixture make_invalid_boundary_turn_disk_fixture() {
     fixture.options.hardFeatureEdges.insert(
         test_source_edge_topology(edge[0], edge[1]));
   }
+  // Give the invalid-turn negative a real source-owned A3 so it cannot
+  // pass from an earlier missing-atlas rejection.
+  bind_curved_disk_atlas(fixture);
   return fixture;
 }
 
