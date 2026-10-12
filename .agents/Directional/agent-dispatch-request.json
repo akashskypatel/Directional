@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-rail-chain-oracle-compile-20261012-b",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-rail-chain-oracle-compile",
-  "source_sha": "e7a39b891a046df46811bc9f792a17e0c33e7da9",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-rail-chain-oracle"
+  "request_id": "m6-cp3-r4-rail-chain-oracle-docs-20261012-c",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-rail-chain-oracle-docs",
+  "file_id": "1DGopBkQtBz60vly0kAoPMvYvHE33Et0A",
+  "patch_sha256": "18fe877cc3896fa0e5b15767ac9ce466a5dd962662d65eb757bebfba58835d67",
+  "base_sha": "e7a39b891a046df46811bc9f792a17e0c33e7da9",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record R4 produced-rail chain oracle GMP compile"
 }
