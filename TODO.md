@@ -1,3 +1,11 @@
+## CURRENT — R4 produced rail source-chain oracle (2026-10-12)
+
+- [x] Compile-visible RA-43.2/RA-43.4 source-chain assertions in the existing producer integration test, plus exact `{0,3}` interior hard-rail seed fixture. Source `e7a39b891a046df46811bc9f792a17e0c33e7da9`, one test path +24/-0, Drive apply `38200534499` success, stage owner-deleted.
+- [x] Exact source eight-target GMP/GMPXX compilation **GREEN**: workflow `38200681852`, job `114653260254`, result artifact `11725410765`, ZIP SHA-256 `ee7472bc18b63bff93c24a1c4cd7a848eb8f30ff113e99e87b25da5f6d0ff44c`, package manifest **28/28**, preflight/build exits **0/0**, **8/8** required targets, CMake GMP enabled and GMPXX/GMP linker verified, clean source, `runtimeExecution=false`.
+- [ ] Runtime verification separately gated. Global untyped-rail fallback removal, overfull-A3 independent review, 39 endpoint, 34 Phase10, seven DCEL, 88 CP2 accepted-loss, six CP3 positive and multi-carrier odd-τ cases remain unresolved. No frozen 497 test execution or selector changes.
+
+---
+
 ## CURRENT — R4 Phase14 typed rail first-rejection coverage (2026-10-12)
 
 - [x] Source `4d51805d79994f1d718d71332be06f504d6312cf` migrates two existing Phase14 supplemental tests to authentic typed ordered source-vertex chains, one test file +9/-0, unchanged assertions/identities/frozen selectors. Genuine `Valid` baseline added; disconnected negative remains deliberately untyped so its intended first rejection is not masked. Exact patch `cc819992da00acd005904c69a8203f457aff116d749ab00161ce4156c404fb42`, apply workflow `38198898409` success, Drive patch deleted.

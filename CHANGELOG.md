@@ -1,3 +1,9 @@
+## 2026-10-12 — R4 produced rail source-chain oracle (compile-only)
+
+- Existing producer integration fixture now checks exact ordered rail source-vertex and face-local source-edge incidence; existing interior hard-rail seed fixture publishes `{0,3}`. One test file +24/-0, source `e7a39b891a046df46811bc9f792a17e0c33e7da9`, apply `38200534499`.
+- Mandatory eight-target GMP/GMPXX compile: workflow `38200681852`, job `114653260254`, result artifact `11725410765`, ZIP SHA-256 `ee7472bc18b63bff93c24a1c4cd7a848eb8f30ff113e99e87b25da5f6d0ff44c`, package manifest **28/28**, preflight/build exits **0/0**, **8/8** required targets, CMake GMP enabled and GMPXX/GMP linker verified, clean source, `runtimeExecution=false`.
+- No runtime credit or TB497. RA-43.4 and independent overfull-A3 feasibility remain open; canonical R4 continues. See `Architecture_M6_CP3_R4_Producer_Rail_Chain_Oracle_Code_Build_Record_20261012.md`.
+
 ## 2026-10-12 — R4 Phase14 typed rail first-rejection source migration (Code + Build only)
 
 - Two unchanged supplemental tests publish exact ordered source-vertex chains while preserving the deliberately disconnected legacy negative, first-rejection checks and added valid control. One test file +9/-0; source `4d51805d79994f1d718d71332be06f504d6312cf`, apply run `38198898409`, Drive retired. Exact-source eight-target GMP/GMPXX compile **GREEN**: workflow `38198996718`, job `114648012662`, source `4d51805d79994f1d718d71332be06f504d6312cf`, result artifact `11723819181`, ZIP SHA-256 `23ee086aaeef3fec3ff9b04dc200e8de2fb54c9350f33f7925458dda9ab63d73`; manifest 28/28, preflight/build 0/0, GMP/GMPXX linker verified, source clean, `runtimeExecution=false`. No runtime/benchmarks/TB497 or acceptance promotion.
