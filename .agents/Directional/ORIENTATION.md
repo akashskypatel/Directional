@@ -1,3 +1,9 @@
+## CURRENT — 2026-10-12 `M6-CP3-CB1-ENTRY-R4` REVIEW STOP R4-IDX-01
+
+**New source-exact REVIEW_BLOCKER supersedes the older “No current stop” R4 currency paragraphs below.** The producer publishes `SurfaceCellRail::sourceEdges` as `featureMap.edges` positions, in agreement with frozen RA-43 §4; subsequent field-aligned checking and component remap interpret the same raw positions as `TriMesh::EV` indices, and a later positive regression freezes that interpretation. The two enumerations diverge on even one triangle: feature `(0,2)` idx1; EV `(0,2)` idx2. See `.agents/Directional/Architecture_M6_CP3_R4_Edge_Index_Namespace_Conflict_Review_Stop_20261012.md`. No source change, executable, runtime, or new acceptance. Same R4 Code + Build is **BLOCKED pending independent normative index-domain Review**. Do not amend RA-43 inside blocked CB, run TB497, or invent a successor. Witness statuses unchanged; last accepted CP2 491/491 and rejected R3 403/497 with 94 RED, 88 former accepted RED, ledger 66/17/49 debt1. This is candidate RP-01 domain-conflation recurrence, not a new stable event without reviewed runtime. §7 open problems: this namespace decision now precedes RA-43.4 remainder, overfull-A3 independent Review, 39 endpoints, 34 Phase10, seven DCEL, 88 CP2, six CP3 and odd-τ multi-carrier. §8 pattern: untyped raw integer identity assumed across two independently ordered edge tables; compilation and an unchecked compile-only positive oracle cannot authenticate ownership.
+
+---
+
 ## CURRENT — 2026-10-11 `M6-CP3-CB1-ENTRY-R4` terminal A3 uniqueness confirmed (RA-46)
 
 **No current stop.** The dual-path lemma is confirmed and **strengthened to need no manifold premise**: max
