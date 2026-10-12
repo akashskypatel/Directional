@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra434-durable-handoff-20261012t1914z",
+  "request_id": "m6-cp3-r4-ra434-durable-handoff-20261012t1917z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra434-durable-handoff-apply",
-  "file_id": "1bGtF3u4wS4M_uWaesQvdbMVXTS0x7bg6",
-  "patch_sha256": "18afb163ec1bb03cfd352ca0433f6ebeb1059514322bb3f7069cb8cd209b07ec",
+  "mailbox_key": "m6-cp3-r4-ra434-durable-handoff-r2-apply",
+  "file_id": "1RQsM-VGhr-v4Kj30Py4VH2-V0778P9Bh",
+  "patch_sha256": "c49c8334c7dacc6d656b0d7d577347c7e80586d739d451a618321c2059ee15ec",
   "base_sha": "b9fd0a59d8767bcd4017c625529003cba342e294",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
   "commit_message": "docs(directional): preserve R4 compile evidence and handoff"
