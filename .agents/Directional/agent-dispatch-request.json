@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-closed-edge-durable-docs-apply-20261012t0857z",
+  "request_id": "m6-cp3-r4-phase14-foreign-edge-neg-apply-20261012t0918z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-closed-edge-durable-docs-apply",
-  "file_id": "17FGm3jVVg3Lc73L__-Jx2DWToh7rG9Sa",
-  "patch_sha256": "ca2689df1d5c6259b6a04327f7f6a67e9d3d2927edd0efb89bf0ccb912a8367e",
-  "base_sha": "ddaae2e35b4f4ec6b95916b4c8194bc3e785ea02",
+  "mailbox_key": "m6-cp3-r4-phase14-foreign-edge-neg-apply",
+  "file_id": "1DoL7L5uXV9xwcyOf_OTQGEAD6u87qHHY",
+  "patch_sha256": "eac5243e1def71a503b193eedd87e5e2400276ca3a63f2639bf47ad6cd3bfc0e",
+  "base_sha": "9f341ed03fd4b78e098af9d8f62de284ce9ca1a4",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "M6-CP3-R4: record closed rail index negative exact GMP compile",
+  "commit_message": "M6-CP3-R4: reject valid foreign face-local rail edge against typed chain",
   "retention_days": 7
 }
