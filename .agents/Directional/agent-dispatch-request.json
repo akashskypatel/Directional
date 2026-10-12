@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-a3u01-regression-repair-20261012-f",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-a3u01-regression-repair",
-  "file_id": "1BG4fXCiVfjKqw4c90zS-LZf1sJwKs6Ur",
-  "patch_sha256": "1b1355b28e9102f611b07484939fe4aa0c82f6835310e92e3b793f4a69c2adcd",
-  "base_sha": "74e74e41a7f040f34798d998dba36677e7ff07d4",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): exercise actual R4 A3U01 terminal missing-path predicate",
-  "retention_days": 7
+  "request_id": "m6-cp3-r4-a3u01-missing-path-compile-20261012-g",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-a3u01-missing-path-compile",
+  "source_sha": "3c1f001fa03dde476222bbad48ae46cfebe12c9a",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-a3u01-missing-path"
 }
