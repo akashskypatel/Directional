@@ -263,6 +263,29 @@ TEST(SurfaceCellPipelinePhase20,
     EXPECT_GE(rail.curveId, 0);
     EXPECT_GE(rail.component, 0);
     EXPECT_GE(rail.samples.size(), 2U);
+    // Producer-issued vertex ordering must describe the same source edges
+    // as each paired interval's face-local edge, not inferred sample positions.
+    ASSERT_EQ(rail.samples.size(), 2U * rail.sourceEdges.size());
+    ASSERT_EQ(rail.sourceVertices.size(),
+              rail.sourceEdges.size() + (rail.closed ? 0U : 1U));
+    ASSERT_FALSE(rail.sourceVertices.empty());
+    for (std::size_t interval = 0; interval < rail.sourceEdges.size(); ++interval) {
+      const auto &start = rail.samples[2U * interval];
+      const auto &end = rail.samples[2U * interval + 1U];
+      ASSERT_GE(start.sourceFace, 0);
+      ASSERT_LT(start.sourceFace, mesh.faces.rows());
+      ASSERT_GE(start.sourceEdge, 0);
+      ASSERT_LT(start.sourceEdge, 3);
+      EXPECT_EQ(start.sourceFace, end.sourceFace);
+      EXPECT_EQ(start.sourceEdge, end.sourceEdge);
+      const int first = rail.sourceVertices[interval];
+      const int second = rail.sourceVertices[(interval + 1U) %
+                                            rail.sourceVertices.size()];
+      const int edgeFirst = mesh.faces(start.sourceFace, (start.sourceEdge + 1) % 3);
+      const int edgeSecond = mesh.faces(start.sourceFace, (start.sourceEdge + 2) % 3);
+      EXPECT_TRUE((first == edgeFirst && second == edgeSecond) ||
+                  (first == edgeSecond && second == edgeFirst));
+    }
     for (const directional::geometry::SurfaceCellRailSample &sample :
          rail.samples) {
       EXPECT_GE(sample.sourceFace, 0);
@@ -423,6 +446,7 @@ TEST(SurfaceCellTracingPhase14,
       directional::tests::test_hard_rail_id(19));
   rail.curveId = 7;
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
+  rail.sourceVertices = {0, 3};
   rail.samples = {
       rail_sample(mesh, 0, 1, 0.0, 0.0,
                   Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
