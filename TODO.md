@@ -1,3 +1,11 @@
+## CURRENT — R4 three Phase10 source A3 fixture repairs (2026-10-12)
+
+- [x] One source test file +24/-4, unchanged three selector identities and oracles; semantic source `8df105b560625ea09b3ac136b3ee4b9656a38e2f`. Source apply `38202273478` success, staged patch deleted.
+- [x] Mandatory eight-target GMP/GMPXX compile `38202384969` GREEN, artifact `11725774026`, manifest 28/28, preflight/build 0/0, clean source, `runtimeExecution=false`.
+- [ ] All runtime semantics and frozen 497 acceptance unverified; R4 global RA-43.4, overfull-A3 independent Review, 39 endpoint, 34 Phase10, 7 DCEL, 88 CP2, six CP3, real odd-τ multi-carrier remain open. Same R4 turn, successor UNKNOWN.
+
+---
+
 ## CURRENT — R4 produced rail source-chain oracle (2026-10-12)
 
 - [x] Compile-visible RA-43.2/RA-43.4 source-chain assertions in the existing producer integration test, plus exact `{0,3}` interior hard-rail seed fixture. Source `e7a39b891a046df46811bc9f792a17e0c33e7da9`, one test path +24/-0, Drive apply `38200534499` success, stage owner-deleted.
