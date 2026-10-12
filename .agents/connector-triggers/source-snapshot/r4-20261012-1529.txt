@@ -1,0 +1,3 @@
+M6-CP3-CB1-ENTRY-R4
+requested_authority=3e43a3cf88821ec610fd3b131ec74455d9b9e42f
+purpose=one_exact_source_snapshot
