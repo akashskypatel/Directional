@@ -1058,6 +1058,17 @@ TEST(FieldAlignedCurveNetwork, IsInvariantToRailAndSourceFaceOrdering) {
   ASSERT_TRUE(rotatedBuilt);
   EXPECT_EQ(closed.semantic_digest(), rotatedBuilt.value().semantic_digest());
 
+  // A closed rail's wraparound raw edge must identify the typed closing
+  // interval, even when the raw index denotes a different valid mesh edge.
+  SurfaceCellRail wrongClosingEdge = rotatedRail;
+  wrongClosingEdge.sourceEdges.back() = rotatedRail.sourceEdges.front();
+  auto wrongClosingBuilt = FieldAlignedCurveNetwork::make(
+      baselineMesh, *baselineAuthority, baselineAtlas.value(),
+      std::vector<SurfaceCellRail>{wrongClosingEdge});
+  ASSERT_FALSE(wrongClosingBuilt);
+  EXPECT_EQ(FieldAlignedCurveNetworkErrorCode::InvalidRailGeometry,
+            wrongClosingBuilt.error().code);
+
   SurfaceCellRail reversedRail = closedRail;
   std::reverse(reversedRail.sourceVertices.begin() + 1,
                reversedRail.sourceVertices.end());
