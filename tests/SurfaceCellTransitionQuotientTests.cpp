@@ -2541,6 +2541,9 @@ PhaseFrontFixture make_axis_aligned_isolation_seam_fixture(
   options.defaultTargetSize = targetSize;
   options.sourceFaceComponents = fixture.components;
   options.sourceFaceSheets = fixture.sheets;
+  // A4 must consume A3 reconstructed from the original complete source field;
+  // otherwise the seam-witness search can reject at the null-atlas gate.
+  bind_phase_front_fixture_atlas(fixture, crossField, options);
   fixture.network = directional::geometry::build_surface_cell_network(
       fixture.mesh.V, fixture.mesh.F, crossField,
       Eigen::VectorXd::Constant(vertices.rows(), targetSize), options);
