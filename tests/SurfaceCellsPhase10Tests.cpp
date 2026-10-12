@@ -6453,6 +6453,45 @@ TEST(SurfaceCellAuthorityContractCutover,
       << "fixed accepted A3 authority must dominate A4 target/grid perturbation";
 }
 
+// RA-43.2 / RA-46.5: missing producer-owned terminal incidence may not be
+// silently treated as a closed rail. Probe the A4 consumer's *first* failure,
+// not just the later checked-factory rejection. Runtime execution is deferred.
+TEST(SurfaceCellAuthorityContractCutover,
+     MissingOpenRailTerminalContactRejectsBeforeClosedRailFallback) {
+  const auto fixture = build_rectangular_hard_rail_phase_front();
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            fixture.network.phaseFront.disposition())
+      << hard_rail_first_failure_detail(fixture.network);
+  const auto &front = fixture.network.phaseFront.product();
+  ASSERT_FALSE(front.hardRailRouteCertificates().empty());
+  const auto &route = front.hardRailRouteCertificates().front();
+  auto contacts = front.hardRailTerminalContacts();
+  ASSERT_TRUE(contacts.contains(route.rail));
+  ASSERT_FALSE(front.hardRailClosedChains().contains(route.rail))
+      << "the selected produced rail must be open";
+  ASSERT_EQ(1U, contacts.erase(route.rail));
+
+  const auto rejected = build_fixed_plan_rectangular_hard_rail_network(
+      fixture, 1.0, &contacts);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
+            rejected.phaseFront.disposition());
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
+                InvalidHardRailRouteCertificate,
+            rejected.phaseFront.rejection_reason());
+  const auto *failure = rejected.phaseFront.rejection();
+  ASSERT_NE(failure, nullptr);
+  EXPECT_EQ(directional::geometry::SurfaceHardRailRouteFailureLocus::
+                EndpointAttachment,
+            failure->hardRailRouteLocus);
+  EXPECT_NE(std::string::npos,
+            failure->hardRailRouteDiagnostic.find(
+                "a2bProbeFailure=missing-terminal-or-closed-rail-provenance"))
+      << failure->hardRailRouteDiagnostic;
+  EXPECT_EQ(std::string::npos,
+            failure->hardRailRouteDiagnostic.find(
+                "a2bProbeFailure=no-exact-terminal-corner"));
+}
+
 // RA-49.2: use the actual first certified terminal vertex, not a fabricated
 // second geometric match. Duplicating that typed ID causes the consumer to
 // reject before the downstream checked factory can validate the contact.

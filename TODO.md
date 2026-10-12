@@ -1,3 +1,7 @@
+## CURRENT — R4 open-rail terminal provenance first rejection (2026-10-12)
+
+- [ ] Verify source-exact RA-43.2/RA-46.5 missing-open-contact first-rejection negative at compile only. No runtime acceptance. Source snapshot `4a68d108a592126a9443ae8644c2fcab2df6d181`, 6574/6574 hashes. New `MissingOpenRailTerminalContactRejectsBeforeClosedRailFallback` uses produced source-authenticated open rail, removes only the selected terminal contact, and requires consumer `missing-terminal-or-closed-rail-provenance`. Evidence: `Architecture_M6_CP3_R4_RA432_Open_Terminal_Contact_First_Rejection_Code_Build_Record_20261012.md`. Oriented producer side-binding RA-43.2, RA-43.4, other RA-46.5 negatives, RA-47.12 runtime and historical R4 gates remain open. No TB497.
+
 ## CURRENT — R4 RA-47.12 compile evidence recorded (2026-10-12)
 
 Production-path rail liveness test source is applied at `60d3292018105ffd4e0064dd9b6849ffecefc2e0` and compiled in workflow `38322933412` (artifact `11779273254`, SHA-256 `75a86ca1c88c2c3c8537f84a25dfe2b7487034a26438482b513adfd95f251849`). 28/28 checksums; 8/8 targets; preflight/build 0/0, GMPXX/GMP linker, clean source, exactArithmeticBackend=GMP, runtimeExecution=false. **Not a runtime PASS;** RA-47.12 executed witness and all other R4 goals remain open. See `Architecture_M6_CP3_R4_RA4712_Default_Producer_Rail_Liveness_Code_Build_Record_20261012.md`.
