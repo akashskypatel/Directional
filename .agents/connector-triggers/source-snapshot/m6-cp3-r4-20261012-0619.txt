@@ -1,1 +1,0 @@
-Canonical M6-CP3-CB1-ENTRY-R4 same-turn continuation. Freeze exact source authority for static audit. Code + Build only; no runtime execution.
