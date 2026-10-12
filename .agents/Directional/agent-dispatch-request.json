@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-producer-rail-chain-oracle-20261012-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-producer-rail-chain-oracle",
-  "file_id": "15Aw60-ZW6DvTUUuvw4Z93mGE61V5C-ZR",
-  "patch_sha256": "01e7867c927a56a746c443fc36fa6c119025c50ee29b1ca90b6425b9f86580ea",
-  "base_sha": "2143440c64e328136332117edcd539f1d5856939",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): bind produced rail source-chain oracle and seed fixture"
+  "request_id": "m6-cp3-r4-rail-chain-oracle-compile-20261012-b",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-rail-chain-oracle-compile",
+  "source_sha": "e7a39b891a046df46811bc9f792a17e0c33e7da9",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-rail-chain-oracle"
 }
