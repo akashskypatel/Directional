@@ -18795,7 +18795,17 @@ SurfaceCellNetwork build_surface_cell_network(
     // inspect. Never publish its two cached face rows as complete authority
     // when this source edge actually belongs to three or more triangles.
     // One-face boundary features retain their existing boundary semantics.
-    const std::size_t sourceIncidences = sourceEdgeFaceCounts.at(edge);
+    const auto sourceCount = sourceEdgeFaceCounts.find(edge);
+    if (sourceCount == sourceEdgeFaceCounts.end()) {
+      SurfacePhaseFrontFailure failure;
+      failure.reason =
+          SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+      failure.hardRailRouteDiagnostic =
+          "firstPredicate=missing-hard-feature-source-incidence";
+      network.phaseFront = SurfacePhaseFrontResult::rejected(std::move(failure));
+      return network;
+    }
+    const std::size_t sourceIncidences = sourceCount->second;
     if (sourceIncidences > 2U) {
       SurfacePhaseFrontFailure failure;
       failure.reason =
@@ -18926,7 +18936,12 @@ SurfaceCellNetwork build_surface_cell_network(
       if (failingSpoke.has_value()) {
         detail << ";firstFailSpoke=" << failingSpoke->first().index()
                << ',' << failingSpoke->second().index()
-               << ";spokeIncidentFaces=" << sourceEdgeFaceCounts.at(*failingSpoke);
+               << ";spokeIncidentFaces=";
+        const auto sourceCount = sourceEdgeFaceCounts.find(*failingSpoke);
+        if (sourceCount != sourceEdgeFaceCounts.end())
+          detail << sourceCount->second;
+        else
+          detail << "missing";
         const auto source = sourceEdges.find(*failingSpoke);
         if (source != sourceEdges.end()) {
           detail << ";firstFailSpokeFaces=";
@@ -19260,7 +19275,14 @@ SurfaceCellNetwork build_surface_cell_network(
       for (const auto &[edge, incident] : sourceEdges) {
         if (edge.first() != *junction && edge.second() != *junction)
           continue;
-        const auto actualIncidentCount = sourceEdgeFaceCounts.at(edge);
+        const auto sourceCount = sourceEdgeFaceCounts.find(edge);
+        if (sourceCount == sourceEdgeFaceCounts.end()) {
+          firstInvalidSpoke = edge;
+          invalidStarPredicate = "missing-source-spoke-incidence";
+          invalidStar = true;
+          break;
+        }
+        const auto actualIncidentCount = sourceCount->second;
         if (incident[0] < 0 || incident[1] < 0 ||
             actualIncidentCount != 2U) {
           firstInvalidSpoke = edge;
