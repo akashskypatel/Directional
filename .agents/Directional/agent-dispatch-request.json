@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-edge-index-bounds-r1-20261012",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-edge-index-bounds-apply",
-  "file_id": "1Hb56ubl464qdiYoSUU6oLcpcpraJNcZK",
-  "patch_sha256": "9d1429ffa014923a93a8349e4699922c507d365d08177ba4d86aa93c46a9704f",
-  "base_sha": "9e723070b5e677cb045e1e3f6502a14e12fbb0a9",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "M6-CP3-R4: reject out-of-range typed rail source edge index",
-  "retention_days": 7
+  "request_id": "m6-cp3-r4-edge-index-bounds-gmp-r1-20261012",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-edge-index-bounds-gmp",
+  "source_sha": "e6797440ff7ac5f312d9c4b2f3ab0c64383f4b63",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-edge-index-bounds-gmp"
 }
