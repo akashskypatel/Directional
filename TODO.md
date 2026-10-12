@@ -1,3 +1,11 @@
+## CURRENT — R4 typed rail index consistency compile correction pending (2026-10-12)
+
+- [x] Original-source edge-index/typed chain binding added at semantic `a92ddb5`, corrected after `DomainResult` compile failure at source `b970e1a113fe00b90e225d917597c649f9e1aa1d`; apply workflow `38213040179` succeeded.
+- [ ] **Compile corrected `b970e1a113fe00b90e225d917597c649f9e1aa1d` through mandatory eight-target GMP/GMPXX dispatcher.** Initial `38212754554` failed at preflight; neither GREEN nor runtime PASS is established.
+- [ ] Overfull-A3 independent Review, RA-43.4, frozen 39 endpoints, 34 Phase10, 7 DCEL, 88 CP2, six CP3 and odd-τ multi-carrier remain OPEN; TB497 unauthorized.
+
+---
+
 ## CURRENT — R4 unsupported-sheet first-rejection original-source A3 (2026-10-12)
 
 - [x] Source-bounded negative fixture A2/A3 ingress, source `24fbd353332c1d55ec2612e9a0ccbe748a861d9f`, apply workflow `38208759469`, Drive stage owner-deleted.
