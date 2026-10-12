@@ -1860,6 +1860,9 @@ TEST(SurfaceCellTracingPhase14,
       directional::geometry::surface_cell_tracing_detail::edge_faces(mesh.faces);
   directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(95));
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
+  // Preserve the malformed sample-pair first rejection with source-owned
+  // vertices; an absent source-vertex chain must not select this oracle.
+  rail.sourceVertices = {0, 4, 4, 7};
   rail.samples = {
       rail_sample(mesh, 0, 1, 0.0, 0.0,
                   Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
@@ -1875,7 +1878,7 @@ TEST(SurfaceCellTracingPhase14,
                   Eigen::RowVector3d(0.0, 0.0, 1.0), 7)};
   const auto refs =
       directional::geometry::surface_cell_tracing_detail::rail_interval_refs(
-          {rail}, mesh.vertices, mesh.faces, edgeFaces);
+          {rail}, mesh.vertices, mesh.faces, edgeFaces, nullptr, true);
   ASSERT_EQ(refs.status,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::InvalidSamplePair);
   directional::geometry::SurfaceCellRail validRail = rail;
@@ -1883,7 +1886,7 @@ TEST(SurfaceCellTracingPhase14,
   validRail.sourceVertices = {0, 4};
   const auto validRefs =
       directional::geometry::surface_cell_tracing_detail::rail_interval_refs(
-          {validRail}, mesh.vertices, mesh.faces, edgeFaces);
+          {validRail}, mesh.vertices, mesh.faces, edgeFaces, nullptr, true);
   ASSERT_EQ(validRefs.status,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::Valid);
   directional::geometry::SurfaceCellTracingOptions options;

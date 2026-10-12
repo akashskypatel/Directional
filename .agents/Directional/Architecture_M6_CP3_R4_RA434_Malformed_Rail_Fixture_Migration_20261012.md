@@ -1,0 +1,9 @@
+# M6-CP3-CB1-ENTRY-R4 — RA-43.4 strict malformed-interval test fixture migration
+
+**Turn:** R4 Code + Build only. **Source authority:** verified snapshot `d08d07e922e31c0f5cc1906aacf04c7c33144347`, workflow `38290057724`, artifact `11765320978` ZIP SHA-256 `e0ccc54d34d3742eb14fc9ed9eb1670d52019cb37e49c1d982fc2ed687cfb915`, source manifest 6514/6514. Previously compiled RA-46.9 source `b94f23dc12bfb186d053f7b1c42a242064007296`, workflow `38288305677`, eight GMP/GMPXX targets green, no runtime execution.
+
+## Exact bounded migration
+
+The existing `RailPreprocessingRejectsMalformedIntervalsAndReportsEndpointForValidRail` Phase14 fixture used a geometry-only untyped rail with three sample pairs and expected `InvalidSamplePair`. Under the accepted RA-43.4 producer contract, an untyped rail is inadmissible to the production strict helper and would be rejected first with `TypedAuthorityMismatch`, making the frozen negative's first predicate vacuous. Add ordered `sourceVertices={0,4,4,7}` to that malformed fixture so its first interval has exact source-owned `(0,4)` and its deliberately bad `sourceEdge=99` pair remains the **first** rejection. Invoke the helper with `nullptr, true` to enforce the same strict production rule. Its positive two-sample truncation continues to use the authentic `{0,4}` source chain and also runs under strict checking. No test name, error expectation, selector, ABI or production implementation changes.
+
+**Limits:** This is a source-only incremental legacy fixture migration, not global RA-43.4 closure. Other legacy helper fixtures remain to be audited, and RA-43.2/RA-46.5/RA-47.12 and original first-rejection/runtime gates are OPEN. No tests, benchmarks, or TB497 were executed; exact-source eight-target GMP/GMPXX compile is still required after patch application. Canonical `M6-CP3-CB1-ENTRY-R4` remains IN_PROGRESS.
