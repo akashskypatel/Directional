@@ -2040,7 +2040,11 @@ std::uint64_t hash_trace_network(
     hash_combine_i64(seed, rail.component);
     hash_combine_i64(seed, rail.closed ? 1 : 0);
     hash_vector(seed, rail.sourceVertices);
-    hash_vector(seed, rail.sourceEdges);
+    hash_combine_u64(seed, rail.sourceEdges.size());
+    for (const authority::SourceEdgeTopologyKey &edge : rail.sourceEdges) {
+      hash_combine_i64(seed, edge.first().index());
+      hash_combine_i64(seed, edge.second().index());
+    }
     hash_combine_u64(seed, rail.samples.size());
     for (const geometry::SurfaceCellRailSample &sample : rail.samples) {
       hash_combine_i64(seed, sample.sourceFace);
@@ -9256,6 +9260,8 @@ SurfaceCellRailBuildResult build_authoritative_surface_cell_rails(
   SurfaceCellRailBuildProduct product;
   SurfaceCellRailBuildFailure failure;
   std::set<int> coveredEdges;
+  // Preserve feature-map ordinals only for diagnostics, never rail identity.
+  std::map<authority::HardRailId, std::vector<int>> railFeatureIndices;
   const auto fail_edge = [&](const int edgeIndex) {
     failure.kind = SurfaceCellRailBuildFailureKind::InvalidFeatureEdge;
     failure.failedEdgeIndex = edgeIndex;
@@ -9356,13 +9362,16 @@ SurfaceCellRailBuildResult build_authoritative_surface_cell_rails(
                                 entry.endVertex, t0, t1)) {
         return false;
       }
-      rail.sourceEdges.push_back(entry.edgeIndex);
+      rail.sourceEdges.push_back(surface_cell_source_edge_key(
+          entry.startVertex, entry.endVertex,
+          static_cast<std::size_t>(meshWhole.V.rows())));
+      railFeatureIndices[rail.id].push_back(entry.edgeIndex);
       rail.sourceVertices.push_back(entry.endVertex);
       coveredEdges.insert(entry.edgeIndex);
     }
     if (closed) {
       if (rail.sourceVertices.front() != rail.sourceVertices.back()) {
-        return fail_edge(rail.sourceEdges.back());
+        return fail_edge(railFeatureIndices.at(rail.id).back());
       }
       rail.sourceVertices.pop_back();
     }
@@ -9500,7 +9509,10 @@ SurfaceCellRailBuildResult build_authoritative_surface_cell_rails(
     rail.component = edge.component;
     rail.closed = false;
     rail.sourceVertices = {edge.vertices.first, edge.vertices.second};
-    rail.sourceEdges = {edgeIndex};
+    rail.sourceEdges = {surface_cell_source_edge_key(
+        edge.vertices.first, edge.vertices.second,
+        static_cast<std::size_t>(meshWhole.V.rows()))};
+    railFeatureIndices[rail.id] = {edgeIndex};
     if (!append_edge_interval(rail, edge, edgeIndex, edge.vertices.first,
                               edge.vertices.second, 0.0, 1.0)) {
       return SurfaceCellRailBuildResult::rejected(std::move(failure));
@@ -9508,10 +9520,6 @@ SurfaceCellRailBuildResult build_authoritative_surface_cell_rails(
     product.rails.push_back(std::move(rail));
   }
 
-  std::map<authority::HardRailId, const geometry::SurfaceCellRail *> railById;
-  for (const geometry::SurfaceCellRail &rail : product.rails) {
-    railById.emplace(rail.id, &rail);
-  }
   const auto railValidation =
       geometry::surface_cell_tracing_detail::rail_interval_refs(
           product.rails, meshWhole.V, meshWhole.F,
@@ -9528,13 +9536,12 @@ SurfaceCellRailBuildResult build_authoritative_surface_cell_rails(
     failure.failedIntervalIndex = railValidation.intervalIndex;
     if (railValidation.railId.has_value() &&
         railValidation.intervalIndex >= 0) {
-      const auto owner = railById.find(*railValidation.railId);
-      if (owner != railById.end() &&
+      const auto owner = railFeatureIndices.find(*railValidation.railId);
+      if (owner != railFeatureIndices.end() &&
           railValidation.intervalIndex <
-              static_cast<int>(owner->second->sourceEdges.size())) {
-        failure.failedEdgeIndex =
-            owner->second->sourceEdges[static_cast<std::size_t>(
-                railValidation.intervalIndex)];
+              static_cast<int>(owner->second.size())) {
+        failure.failedEdgeIndex = owner->second[static_cast<std::size_t>(
+            railValidation.intervalIndex)];
       }
     }
     return SurfaceCellRailBuildResult::rejected(std::move(failure));
@@ -10002,7 +10009,11 @@ std::uint64_t hash_surface_cell_rails(
     hash_combine_i64(seed, rail.component);
     hash_combine_i64(seed, rail.closed ? 1 : 0);
     hash_vector(seed, rail.sourceVertices);
-    hash_vector(seed, rail.sourceEdges);
+    hash_combine_u64(seed, rail.sourceEdges.size());
+    for (const authority::SourceEdgeTopologyKey &edge : rail.sourceEdges) {
+      hash_combine_i64(seed, edge.first().index());
+      hash_combine_i64(seed, edge.second().index());
+    }
     hash_combine_u64(seed, rail.samples.size());
     for (const geometry::SurfaceCellRailSample &sample : rail.samples) {
       hash_combine_i64(seed, sample.sourceFace);
@@ -17468,12 +17479,6 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
     }
     globalTransitionByTopology.emplace(topology, transition.value());
   }
-  std::map<authority::SourceEdgeTopologyKey, int> globalEdgeByVertices;
-  for (int edge = 0; edge < sourceMesh.EV.rows(); ++edge) {
-    globalEdgeByVertices[surface_cell_source_edge_key(
-        sourceMesh.EV(edge, 0), sourceMesh.EV(edge, 1),
-        static_cast<std::size_t>(sourceMesh.V.rows()))] = edge;
-  }
   bool allCompletedSurfaceCells = true;
   bool allComponentsUsedSourceGridRecovery = true;
   bool anyComponentUsedSourceGridRecovery = false;
@@ -17573,24 +17578,6 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
         runs[index].stageProducts;
     const int vertexOffset = static_cast<int>(staged.vertices.rows());
     const int faceOffset = static_cast<int>(staged.faces.rows());
-
-    TriMesh componentMesh;
-    componentMesh.set_mesh(component.vertices, component.faces);
-    std::vector<int> globalEdgeByLocal(
-        static_cast<std::size_t>(componentMesh.EV.rows()), -1);
-    for (int localEdge = 0; localEdge < componentMesh.EV.rows(); ++localEdge) {
-      const int originalVertex0 = component.originalVertices[
-          static_cast<std::size_t>(componentMesh.EV(localEdge, 0))];
-      const int originalVertex1 = component.originalVertices[
-          static_cast<std::size_t>(componentMesh.EV(localEdge, 1))];
-      const auto found = globalEdgeByVertices.find(
-          surface_cell_source_edge_key(
-              originalVertex0, originalVertex1,
-              static_cast<std::size_t>(sourceMesh.V.rows())));
-      if (found != globalEdgeByVertices.end()) {
-        globalEdgeByLocal[static_cast<std::size_t>(localEdge)] = found->second;
-      }
-    }
 
     std::map<authority::SourceVertexId, authority::SourceVertexId>
         globalSourceVertexByLocal;
@@ -18103,15 +18090,21 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
           sourceVertex = -1;
         }
       }
-      for (int &sourceEdge : rail.sourceEdges) {
-        if (sourceEdge >= 0 &&
-            static_cast<std::size_t>(sourceEdge) <
-                globalEdgeByLocal.size()) {
-          sourceEdge =
-              globalEdgeByLocal[static_cast<std::size_t>(sourceEdge)];
-        } else {
-          sourceEdge = -1;
+      rail.sourceEdges.clear();
+      const std::size_t intervalCount =
+          rail.closed ? rail.sourceVertices.size()
+                      : (rail.sourceVertices.empty() ? 0U
+                                                   : rail.sourceVertices.size() - 1U);
+      for (std::size_t interval = 0; interval < intervalCount; ++interval) {
+        const std::size_t next = (interval + 1U) % rail.sourceVertices.size();
+        const auto edge = authority::SourceEdgeTopologyKey::from_indices(
+            rail.sourceVertices[interval], rail.sourceVertices[next],
+            static_cast<std::size_t>(sourceMesh.V.rows()));
+        if (!edge) {
+          reject_merge_authority(index, "InvalidTypedRailSourceEdgeRemap");
+          return finish_aggregate_rejection(merged, "component-aggregation");
         }
+        rail.sourceEdges.push_back(edge.value());
       }
       for (geometry::SurfaceCellRailSample &sample : rail.samples) {
         if (sample.sourceFace >= 0 &&

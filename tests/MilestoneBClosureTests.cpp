@@ -72,8 +72,14 @@ TEST(MilestoneBClosure, MixedFeatureCurveIsSplitIntoContiguousRailRuns) {
 
   ASSERT_TRUE(result.is_produced());
   ASSERT_EQ(result.product().rails.size(), 2U);
-  EXPECT_EQ(result.product().rails[0].sourceEdges, std::vector<int>({0}));
-  EXPECT_EQ(result.product().rails[1].sourceEdges, std::vector<int>({2}));
+  const auto edge01 = directional::authority::SourceEdgeTopologyKey::from_indices(
+      0, 1, static_cast<std::size_t>(source.V.rows())).value();
+  const auto edge45 = directional::authority::SourceEdgeTopologyKey::from_indices(
+      4, 5, static_cast<std::size_t>(source.V.rows())).value();
+  EXPECT_EQ(result.product().rails[0].sourceEdges,
+            std::vector<directional::authority::SourceEdgeTopologyKey>({edge01}));
+  EXPECT_EQ(result.product().rails[1].sourceEdges,
+            std::vector<directional::authority::SourceEdgeTopologyKey>({edge45}));
   EXPECT_EQ(result.product().rails[0].sourceVertices, std::vector<int>({0, 1}));
   EXPECT_EQ(result.product().rails[1].sourceVertices, std::vector<int>({4, 5}));
   EXPECT_FALSE(result.product().rails[0].closed);
@@ -92,7 +98,13 @@ TEST(MilestoneBClosure, ContiguousHardCurveRemainsOneOrderedRail) {
 
   ASSERT_TRUE(result.is_produced());
   ASSERT_EQ(result.product().rails.size(), 1U);
-  EXPECT_EQ(result.product().rails.front().sourceEdges, std::vector<int>({0, 1, 2}));
+  const auto sourceEdge = [&](int a, int b) {
+    return directional::authority::SourceEdgeTopologyKey::from_indices(
+        a, b, static_cast<std::size_t>(source.V.rows())).value();
+  };
+  EXPECT_EQ(result.product().rails.front().sourceEdges,
+            (std::vector<directional::authority::SourceEdgeTopologyKey>{
+                sourceEdge(0, 1), sourceEdge(1, 4), sourceEdge(4, 5)}));
   EXPECT_EQ(result.product().rails.front().sourceVertices,
             std::vector<int>({0, 1, 4, 5}));
   EXPECT_EQ(result.product().rails.front().samples.size(), 6U);
@@ -139,7 +151,15 @@ TEST(MilestoneBClosure, ClosedRailUsesCanonicalCyclicVertexLoop) {
   ASSERT_EQ(result.product().rails.size(), 1U);
   const auto &rail = result.product().rails.front();
   EXPECT_TRUE(rail.closed);
-  EXPECT_EQ(rail.sourceEdges, std::vector<int>({0, 1, 2, 3}));
+  ASSERT_EQ(rail.sourceEdges.size(), 4U);
+  for (std::size_t i = 0; i < rail.sourceEdges.size(); ++i) {
+    const auto expected = directional::authority::SourceEdgeTopologyKey::from_indices(
+        rail.sourceVertices[i],
+        rail.sourceVertices[(i + 1U) % rail.sourceVertices.size()],
+        static_cast<std::size_t>(source.V.rows()));
+    ASSERT_TRUE(expected);
+    EXPECT_EQ(rail.sourceEdges[i], expected.value());
+  }
   EXPECT_EQ(rail.sourceVertices, std::vector<int>({0, 1, 2, 3}));
   EXPECT_EQ(rail.samples.size(), 8U);
 
@@ -178,4 +198,45 @@ TEST(MilestoneBClosure, InvalidCurveOrderingFailsBeforeTracing) {
   EXPECT_EQ(result.rejection()->failedEdgeIndex, 0);
   EXPECT_EQ(result.rejection()->kind,
             directional::pipeline::SurfaceCellRailBuildFailureKind::InvalidFeatureEdge);
+}
+
+TEST(MilestoneBClosure, RailSourceTopologyIgnoresFeatureAndEVIndexOrder) {
+  StripMesh mesh;
+  mesh.vertices.resize(3, 3);
+  mesh.vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
+  mesh.faces.resize(1, 3);
+  mesh.faces << 0, 1, 2;
+  directional::TriMesh source;
+  source.set_mesh(mesh.vertices, mesh.faces);
+  directional::geometry::AdaptiveFeatureMap map;
+  map.edges = {
+      feature_edge(0, 1, {0},
+                   directional::geometry::AdaptiveFeatureClass::Boundary, -1),
+      feature_edge(0, 2, {0},
+                   directional::geometry::AdaptiveFeatureClass::Boundary, -1),
+      feature_edge(1, 2, {0},
+                   directional::geometry::AdaptiveFeatureClass::Boundary, -1)};
+  for (int index = 0; index < static_cast<int>(map.edges.size()); ++index) {
+    map.edgeIndex.emplace(map.edges[static_cast<std::size_t>(index)].vertices,
+                          index);
+  }
+  const auto expected = directional::authority::SourceEdgeTopologyKey::from_indices(
+      0, 2, static_cast<std::size_t>(source.V.rows())).value();
+  // Feature-map position is 1; the same edge is at EV position 2.
+  EXPECT_EQ(source.EV(1, 0), 1);
+  EXPECT_EQ(source.EV(1, 1), 2);
+  EXPECT_EQ(source.EV(2, 0), 2);
+  EXPECT_EQ(source.EV(2, 1), 0);
+  const auto result =
+      directional::pipeline::build_authoritative_surface_cell_rails(source, map);
+  ASSERT_TRUE(result.is_produced());
+  bool found = false;
+  for (const auto &rail : result.product().rails) {
+    if (rail.sourceVertices == std::vector<int>({0, 2})) {
+      ASSERT_EQ(rail.sourceEdges.size(), 1U);
+      EXPECT_EQ(rail.sourceEdges.front(), expected);
+      found = true;
+    }
+  }
+  EXPECT_TRUE(found);
 }

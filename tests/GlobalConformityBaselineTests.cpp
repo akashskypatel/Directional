@@ -88,13 +88,7 @@ SourceEdgeTopologyKey edge_key(const TriMesh &mesh, int edge) {
       .value();
 }
 
-int source_edge_index(const TriMesh &mesh,
-                      const SourceEdgeTopologyKey &sourceEdge) {
-  for (int edge = 0; edge < mesh.EV.rows(); ++edge) {
-    if (edge_key(mesh, edge) == sourceEdge) return edge;
-  }
-  return -1;
-}
+
 
 // Test-authority seed only: zero matching/effort is not an admissibility claim.
 // Downstream semantic-success fixtures must establish atlas/topology authority
@@ -167,7 +161,7 @@ std::vector<SurfaceCellRail> rails_from_atlas(
     rail.sourceVertices = {
         static_cast<int>(barrier.sourceEdge.first().index()),
         static_cast<int>(barrier.sourceEdge.second().index())};
-    rail.sourceEdges = {source_edge_index(mesh, barrier.sourceEdge)};
+    rail.sourceEdges = {barrier.sourceEdge};
     rails.push_back(std::move(rail));
   }
   return rails;

@@ -1,3 +1,9 @@
+## CURRENT — RA-47 typed rail source edges in progress (2026-10-12)
+
+RA-47 implementation is staged with a typed `SourceEdgeTopologyKey` rail sidecar, typed consumer agreement, no component EV namespace conversion, and typed regression updates including lexical-feature/DCEL-order counterexample. Exact source snapshot `1bcc068cb3be7d994caa537307e61c5aabe2e646` verified 6,464 hashes. Compile is pending; no runtime pass claimed. **Continue same `M6-CP3-CB1-ENTRY-R4`; do not start TB497.** See `Architecture_M6_CP3_R4_RA47_Typed_Rail_Code_Build_Record_20261012.md`. RA-48.3, RA-46.6, RA-43 and first-rejection obligations remain open.
+
+---
+
 ## CURRENT — overfull-A3 DISCHARGED (RA-48); RA-47 implementation resumes unblocked (2026-10-12)
 
 **Both halves of the reported block are resolved.** The carried overfull-A3 feasibility gate is adjudicated,

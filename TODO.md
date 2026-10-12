@@ -1,3 +1,11 @@
+## CURRENT — RA-47 typed rail implementation source staged (2026-10-12)
+
+- [x] Frozen RA-47 review replaces raw rail-edge index with canonical typed `SourceEdgeTopologyKey` keys; source and test changes prepared from verified snapshot `1bcc068c`, including `(0,2)` differing-index regression.
+- [ ] Verify exact GMP/GMPXX eight-target compile on applied semantic source. Do not infer runtime PASS from compile.
+- [ ] Continue current R4: RA-47.12 liveness, RA-48.3 `set_mesh` supplied topology injection, RA-46.6/RA-48.5 typed A4 error detail, remaining RA-43 and first-rejection gates. Do not run TB497.
+
+---
+
 ## CURRENT STOP — R4 sourceEdges feature-map vs EV index domain (2026-10-12)
 
 - [x] Independently re-open exact source `dcf24e2c881b9ed67ec8f992d94d4b4e364fd4e2` from verified compile artifact `11740652527` (ZIP SHA `7af625c8ca0bcbc5f4f59d3793484280157e388db05a412b9d188d4cba1418a2`), derive explicit single-triangle feature-edge-vs-EV counterexample without running a Directional executable. Record `Architecture_M6_CP3_R4_Edge_Index_Namespace_Conflict_Review_Stop_20261012.md`.

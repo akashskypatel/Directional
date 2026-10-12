@@ -489,9 +489,7 @@ std::vector<SurfaceCellRail> rails_from_atlas(
     rail.sourceVertices = {
         static_cast<int>(barriers[index]->sourceEdge.first().index()),
         static_cast<int>(barriers[index]->sourceEdge.second().index())};
-    const int sourceEdge = source_edge_index(mesh, barriers[index]->sourceEdge);
-    EXPECT_GE(sourceEdge, 0);
-    rail.sourceEdges = {sourceEdge};
+    rail.sourceEdges = {barriers[index]->sourceEdge};
     rails.push_back(std::move(rail));
   }
   return rails;
@@ -847,30 +845,33 @@ TEST(FieldAlignedCurveNetwork, RejectsMissingDuplicateOrForeignMandatoryEdges) {
   EXPECT_EQ(FieldAlignedCurveNetworkErrorCode::ForeignMandatoryEdge,
             rejected.error().code);
 
-  // The typed endpoints remain valid, but the advertised raw edge index
-  // points at a different source edge. This must fail before publication.
+  // A foreign but valid typed edge must fail at the first identity check.
   auto mismatchedRails = rails;
   ASSERT_FALSE(mismatchedRails.empty());
   ASSERT_EQ(1U, mismatchedRails.front().sourceEdges.size());
-  ASSERT_GT(mesh.EV.rows(), 1);
-  const int originalEdge = mismatchedRails.front().sourceEdges.front();
-  ASSERT_GE(originalEdge, 0);
-  ASSERT_LT(originalEdge, mesh.EV.rows());
-  mismatchedRails.front().sourceEdges.front() =
-      (originalEdge + 1) % mesh.EV.rows();
+  const auto originalEdge = mismatchedRails.front().sourceEdges.front();
+  const auto foreignEdge = edge_key(mesh, 0);
+  const auto foreignTyped =
+      foreignEdge == originalEdge ? edge_key(mesh, 1) : foreignEdge;
+  mismatchedRails.front().sourceEdges.front() = foreignTyped;
   const auto forged = FieldAlignedCurveNetwork::make(
       mesh, *sourceAuthority, atlasBuild.value(), mismatchedRails);
   ASSERT_FALSE(forged);
   EXPECT_EQ(FieldAlignedCurveNetworkErrorCode::InvalidRailGeometry,
             forged.error().code);
 
-  // An out-of-range raw index cannot override a valid typed source edge.
-  mismatchedRails.front().sourceEdges.front() = mesh.EV.rows();
-  const auto outOfRange = FieldAlignedCurveNetwork::make(
+  // A topology key outside the actual rail chain cannot authenticate it.
+  mismatchedRails.front().sourceEdges.front() =
+      SourceEdgeTopologyKey::from_indices(0, static_cast<int>(mesh.V.rows()) - 1,
+          static_cast<std::size_t>(mesh.V.rows())).value();
+  if (mismatchedRails.front().sourceEdges.front() == originalEdge) {
+    mismatchedRails.front().sourceEdges.front() = foreignTyped;
+  }
+  const auto wrongKey = FieldAlignedCurveNetwork::make(
       mesh, *sourceAuthority, atlasBuild.value(), mismatchedRails);
-  ASSERT_FALSE(outOfRange);
+  ASSERT_FALSE(wrongKey);
   EXPECT_EQ(FieldAlignedCurveNetworkErrorCode::InvalidRailGeometry,
-            outOfRange.error().code);
+            wrongKey.error().code);
 }
 
 TEST(FieldAlignedCurveNetwork,
@@ -989,7 +990,7 @@ TEST(FieldAlignedCurveNetwork, IsInvariantToRailAndSourceFaceOrdering) {
               barrier->kind);
 
     closedRail.sourceVertices.push_back(currentVertex);
-    closedRail.sourceEdges.push_back(nextEdge);
+    closedRail.sourceEdges.push_back(sourceEdge);
     consumedEdges.insert(nextEdge);
     previousEdge = nextEdge;
     currentVertex = nextVertex;
@@ -1002,9 +1003,8 @@ TEST(FieldAlignedCurveNetwork, IsInvariantToRailAndSourceFaceOrdering) {
   ASSERT_EQ(closedRail.sourceEdges.size(), closedRail.sourceVertices.size());
   ASSERT_GE(closedRail.sourceEdges.size(), 3U);
   ASSERT_NE(closedRail.sourceVertices.front(), closedRail.sourceVertices.back());
-  for (const int sourceEdge : closedRail.sourceEdges) {
-    ASSERT_GE(sourceEdge, 0);
-    ASSERT_LT(sourceEdge, baselineMesh.EV.rows());
+  for (const auto &sourceEdge : closedRail.sourceEdges) {
+    EXPECT_GE(source_edge_index(baselineMesh, sourceEdge), 0);
   }
 
   auto closedBuilt = FieldAlignedCurveNetwork::make(
@@ -1058,8 +1058,7 @@ TEST(FieldAlignedCurveNetwork, IsInvariantToRailAndSourceFaceOrdering) {
   ASSERT_TRUE(rotatedBuilt);
   EXPECT_EQ(closed.semantic_digest(), rotatedBuilt.value().semantic_digest());
 
-  // A closed rail's wraparound raw edge must identify the typed closing
-  // interval, even when the raw index denotes a different valid mesh edge.
+  // A closed rail's wraparound typed edge must match its last interval.
   SurfaceCellRail wrongClosingEdge = rotatedRail;
   wrongClosingEdge.sourceEdges.back() = rotatedRail.sourceEdges.front();
   auto wrongClosingBuilt = FieldAlignedCurveNetwork::make(

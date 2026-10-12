@@ -4227,19 +4227,9 @@ FieldAlignedCandidateResult canonical_field_aligned_candidate(
             FieldAlignedCurveNetworkErrorCode::InvalidRailGeometry,
             std::nullopt, std::nullopt, rail.id);
       }
-      // A producer-owned source-edge index must identify the same exact
-      // topological interval as the independently typed vertex chain. A
-      // valid chain cannot authenticate an unrelated raw edge index.
-      const int declaredEdge = rail.sourceEdges[interval];
-      if (declaredEdge < 0 || declaredEdge >= sourceMesh.EV.rows()) {
-        return field_aligned_error(
-            FieldAlignedCurveNetworkErrorCode::InvalidRailGeometry,
-            std::nullopt, key.value(), rail.id);
-      }
-      const auto declaredTopology = authority::SourceEdgeTopologyKey::from_indices(
-          sourceMesh.EV(declaredEdge, 0), sourceMesh.EV(declaredEdge, 1),
-          sourceVertexCount);
-      if (!declaredTopology || declaredTopology.value() != key.value()) {
+      // Both identities are source-topology keys; do not reinterpret a
+      // feature-map ordinal as a TriMesh EV index.
+      if (rail.sourceEdges[interval] != key.value()) {
         return field_aligned_error(
             FieldAlignedCurveNetworkErrorCode::InvalidRailGeometry,
             std::nullopt, key.value(), rail.id);

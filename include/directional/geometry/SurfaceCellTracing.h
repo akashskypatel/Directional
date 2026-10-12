@@ -110,7 +110,7 @@ struct SurfaceCellRail {
   int component = -1;
   bool closed = false;
   std::vector<int> sourceVertices;
-  std::vector<int> sourceEdges;
+  std::vector<authority::SourceEdgeTopologyKey> sourceEdges;
   std::vector<SurfaceCellRailSample> samples;
 };
 

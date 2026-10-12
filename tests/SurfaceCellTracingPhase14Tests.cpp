@@ -1784,7 +1784,11 @@ TEST(SurfaceCellTracingPhase14,
   // Optional raw source-edge metadata must not contradict the typed number
   // of intervals, even when no field-aligned network is supplied. Its
   // numerical topology binding requires the producer's original mesh.EV.
-  rail.sourceEdges = {0, 1};
+  rail.sourceEdges = {
+      directional::authority::SourceEdgeTopologyKey::from_indices(0, 4,
+          static_cast<std::size_t>(mesh.vertices.rows())).value(),
+      directional::authority::SourceEdgeTopologyKey::from_indices(1, 4,
+          static_cast<std::size_t>(mesh.vertices.rows())).value()};
   EXPECT_EQ(validateProduction().status,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::TypedAuthorityMismatch);
   rail.sourceEdges.clear();

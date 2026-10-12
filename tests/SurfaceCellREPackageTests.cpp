@@ -289,13 +289,10 @@ TEST(SurfaceCellPipelinePhase20,
       const int edgeSecond = mesh.faces(start.sourceFace, (start.sourceEdge + 2) % 3);
       EXPECT_TRUE((first == edgeFirst && second == edgeSecond) ||
                   (first == edgeSecond && second == edgeFirst));
-      const int sourceEdge = rail.sourceEdges[interval];
-      ASSERT_GE(sourceEdge, 0);
-      ASSERT_LT(sourceEdge, sourceMesh.EV.rows());
-      const int rawFirst = sourceMesh.EV(sourceEdge, 0);
-      const int rawSecond = sourceMesh.EV(sourceEdge, 1);
-      EXPECT_TRUE((first == rawFirst && second == rawSecond) ||
-                  (first == rawSecond && second == rawFirst));
+      const auto expected = directional::authority::SourceEdgeTopologyKey::from_indices(
+          first, second, static_cast<std::size_t>(sourceMesh.V.rows()));
+      ASSERT_TRUE(expected);
+      EXPECT_EQ(rail.sourceEdges[interval], expected.value());
     }
     for (const directional::geometry::SurfaceCellRailSample &sample :
          rail.samples) {
