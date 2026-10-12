@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "workflow_key": "m6-cp3-r4-typed-edge-cardinality-gmp",
+  "workflow": "Agent Durable Operation Dispatcher",
+  "workflow_ref": "akashskypatel/Directional/.github/workflows/agent-operation-dispatcher.yml@refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "repository": "akashskypatel/Directional",
+  "event": "push",
+  "event_sha": "228faec22993eb05f1ac227df778c652c63a9eeb",
+  "source_sha": "dcf24e2c881b9ed67ec8f992d94d4b4e364fd4e2",
+  "source_ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref_name": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "run_id": 38236639195,
+  "run_attempt": 1,
+  "run_number": 307,
+  "run_url": "https://github.com/akashskypatel/Directional/actions/runs/38236639195",
+  "result": "success",
+  "summary": "durable-dispatch request_id=m6-cp3-r4-typed-edge-cardinality-gmp-20261012t1029z operation=compile request_sha256=5483b355bb814cf24e14662656f7f931d7faa8a657296a48d7d4d3b27c035b82",
+  "reported_at": "2026-10-12T10:31:50Z",
+  "mailbox_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "artifacts": [
+    {
+      "id": 11741705349,
+      "name": "agent-workflow-schema-validation-38236639195",
+      "size_in_bytes": 442,
+      "digest": "sha256:1266639b33f166ed9f8ffaf9ae756be69f7ccf9b87bded8ecf30a649a79ffdd2",
+      "expired": false,
+      "created_at": "2026-10-12T10:29:32Z",
+      "expires_at": "2026-10-19T10:29:32Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/38236639195/artifacts/11741705349",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11741705349/zip"
+    },
+    {
+      "id": 11741635616,
+      "name": "agent-workflow-schema-validator-log-38236639195",
+      "size_in_bytes": 497,
+      "digest": "sha256:5dc518b764352039ca536863a99b850c4506cf3c7677a01719fc46abb8a727c6",
+      "expired": false,
+      "created_at": "2026-10-12T10:29:33Z",
+      "expires_at": "2026-10-19T10:29:33Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/38236639195/artifacts/11741635616",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11741635616/zip"
+    },
+    {
+      "id": 11741181139,
+      "name": "agent-workflow-schema-validation-38236639195",
+      "size_in_bytes": 440,
+      "digest": "sha256:81f305f9e0a70c76f3fa19bb2d5f4bb1c49df043795388762716e64ca24792fe",
+      "expired": false,
+      "created_at": "2026-10-12T10:29:33Z",
+      "expires_at": "2026-10-19T10:29:32Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/38236639195/artifacts/11741181139",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11741181139/zip"
+    },
+    {
+      "id": 11741051476,
+      "name": "agent-workflow-schema-validator-log-38236639195",
+      "size_in_bytes": 488,
+      "digest": "sha256:89818047ecd7c79f90445b3c12a809f751a3b48ad22e73cdebf60eb46919adbf",
+      "expired": false,
+      "created_at": "2026-10-12T10:29:34Z",
+      "expires_at": "2026-10-19T10:29:33Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/38236639195/artifacts/11741051476",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11741051476/zip"
+    },
+    {
+      "id": 11740947226,
+      "name": "m6-cp3-r4-typed-edge-cardinality-gmp-log-38236639195",
+      "size_in_bytes": 4014,
+      "digest": "sha256:92bc5d6838a1bffbb81d332048cd31b873bab797bf18292d58d8320ab817b4a4",
+      "expired": false,
+      "created_at": "2026-10-12T10:31:31Z",
+      "expires_at": "2026-10-19T10:31:31Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/38236639195/artifacts/11740947226",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11740947226/zip"
+    },
+    {
+      "id": 11740931897,
+      "name": "agent-operation-dispatcher-log-38236639195",
+      "size_in_bytes": 518,
+      "digest": "sha256:62a2f0087c3b2eb83be8765ecb5abfcab88d6e4791d835f2caa016655d74717f",
+      "expired": false,
+      "created_at": "2026-10-12T10:29:42Z",
+      "expires_at": "2026-10-26T10:29:41Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/38236639195/artifacts/11740931897",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11740931897/zip"
+    },
+    {
+      "id": 11740817264,
+      "name": "workflow-mailbox-publisher-log-38236639195-attempt-1",
+      "size_in_bytes": 387,
+      "digest": "sha256:b626dc085f494e6fe9210481a9779e24229b29bdeac7edba0b67156ff932d302",
+      "expired": false,
+      "created_at": "2026-10-12T10:31:48Z",
+      "expires_at": "2026-10-26T10:31:48Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/38236639195/artifacts/11740817264",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11740817264/zip"
+    },
+    {
+      "id": 11740652527,
+      "name": "m6-cp3-r4-typed-edge-cardinality-gmp-result-38236639195",
+      "size_in_bytes": 38609044,
+      "digest": "sha256:7af625c8ca0bcbc5f4f59d3793484280157e388db05a412b9d188d4cba1418a2",
+      "expired": false,
+      "created_at": "2026-10-12T10:31:30Z",
+      "expires_at": "2026-10-19T10:31:26Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/38236639195/artifacts/11740652527",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/11740652527/zip"
+    }
+  ]
+}
