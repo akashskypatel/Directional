@@ -1,3 +1,9 @@
+## 2026-10-12 — M6-CP3-CB1-ENTRY-R4 source-index positive producer oracle
+
+Extends one existing Phase20 produced-rail regression to compare each raw `sourceEdges` ID against original `TriMesh::EV`, independent of typed source endpoint and face-local edge checks. Semantic commit `702dfbb89df40f4f2dabddb24400911c4460ca79`. Source-exact GMP/GMPXX eight-target compile GREEN at workflow `38221325600`, artifact `11734432831`, source `702dfbb89df40f4f2dabddb24400911c4460ca79`, manifest 28/28, preflight/build 0/0, runtimeExecution=false; no runtime. See `Architecture_M6_CP3_R4_Producer_Raw_Edge_Index_Positive_Code_Build_Record_20261012.md`. Same R4 turn, successor UNKNOWN.
+
+---
+
 ## 2026-10-12 — `M6-CP3-CB1-ENTRY-R4` composite bounded/periodic negative A3 ingress (compile-only)
 
 Source `0ffc7857c544d050a70516dbaeea6092fad1b6d7` updates one original Phase10 negative to independently source-build A2/A3 while preserving the `InvalidBoundedDiskFrontPairing` oracle, geometry and name. Exact eight-target GMP/GMPXX compile GREEN: workflow `38205407002`, job `114667758421`, result `11727133144` ZIP SHA-256 `82026586b7286971b8aadb16a6e8031f338ca4ff65b0b2facc9b0a156ef537a6`, 28/28 manifest, preflight/build 0/0, GMPXX/GMP linked, clean source, `runtimeExecution=false`. Runtime unverified, R4 still IN_PROGRESS; no selector/TB497 changes. Evidence: `.agents/Directional/Architecture_M6_CP3_R4_Composite_Bounded_Reject_A3_Code_Build_Record_20261012.md`.

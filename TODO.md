@@ -1,3 +1,11 @@
+## CURRENT — R4 produced raw rail index positive oracle (2026-10-12)
+
+- [x] One existing Phase20 produced rail test gains original-source `TriMesh::EV` bounds and topology identity checks; semantic `702dfbb89df40f4f2dabddb24400911c4460ca79`, exact snapshot `38220631107` manifest 6418/6418.
+- [x] Exact eight-target GMP/GMPXX compile GREEN at `702dfbb89df40f4f2dabddb24400911c4460ca79`, workflow `38221325600`, job `114718105515`, result `11734432831` ZIP SHA-256 `9c2120f3bcd65dd07a4a1e2ded691557b33333b53b82ca014c77d8da7624b11d`, manifest 28/28, preflight/build 0/0, GMPXX/GMP linked, runtimeExecution=false.
+- [ ] No runtime pass claim; same R4, overfull-A3 Review, RA-43.4, 39 endpoints, 34 Phase10, 7 DCEL, 88 CP2, six CP3 and odd-τ/multi-carrier OPEN. TB497 unauthorized.
+
+---
+
 ## CURRENT — R4 typed rail index consistency compile correction pending (2026-10-12)
 
 - [x] Original-source edge-index/typed chain binding added at semantic `a92ddb5`, corrected after `DomainResult` compile failure at source `b970e1a113fe00b90e225d917597c649f9e1aa1d`; apply workflow `38213040179` succeeded.
