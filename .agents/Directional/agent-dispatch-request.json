@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-unsupported-a3-docs-20261012-a",
+  "request_id": "m6-cp3-r4-unsupported-a3-docs-20261012-b",
   "operation": "drive_apply",
   "mailbox_key": "m6-cp3-r4-unsupported-a3-docs-apply",
-  "file_id": "1jH-QoKDYXbMIb4r41qFSKKRS1PSR7I6K",
-  "patch_sha256": "8fdb9f5af3961ff7f18554a6ee966276f1cdb8194e61dafeeb2d580eb45f0dfc",
+  "file_id": "1GuYXFTsCB2zT8a9Muru2cZmV4GOO2FDv",
+  "patch_sha256": "fd7ea1600efc523dcc6c8f84d3973f5c5957aa47c1fc00161b3a1a83bf55ee9f",
   "base_sha": "24fbd353332c1d55ec2612e9a0ccbe748a861d9f",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
   "commit_message": "docs(directional): preserve R4 unsupported-sheet source A3 compile evidence"
