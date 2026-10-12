@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra434-typed-corner-apply-20261012t2309z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra434-typed-corner-apply",
-  "file_id": "1C0ILULd63nvTw67RvpmhDuydm8TGiI9g",
-  "patch_sha256": "4f06f2dcb5a6ae0375589587ba41374351c9feb4517100a1d7c90077753cfdfb",
-  "base_sha": "b178f5628bf9e07a4ede14f4717fbe37c2b6e3ab",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(directional): confirm typed rail endpoints against exact source-face corners"
+  "request_id": "m6-cp3-r4-ra434-corner-compile-20261012t2312z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-ra434-corner-compile",
+  "source_sha": "e15e1d18a38308f2c4c83b1a616a85f73af37ac7",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-r4-ra434-corner-compile"
 }
