@@ -1,3 +1,0 @@
-M6-CP3-CB1-ENTRY-R4 source snapshot
-Frozen entry beacon commit: 671d60cefc99855b33fd4494679b694ca081eb05
-No test or benchmark execution requested.
