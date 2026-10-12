@@ -1,3 +1,10 @@
+## 2026-10-12 — `M6-CP3-CB1-ENTRY-R4` source-edge namespace review stop
+
+- Independently verified source `dcf24e2c881b9ed67ec8f992d94d4b4e364fd4e2` from immutable compile artifact `11740652527`: feature producer `rail.sourceEdges` indices differ from EV indices required by field-aligned consumer/component remap and later positive test. Frozen RA-43 explicitly names feature-map namespace. A one-triangle ordered-edge counterexample proves the mismatch without running tests.
+- R4 is stopped for independent source-exact normative Review `R4-IDX-01`, documented in `Architecture_M6_CP3_R4_Edge_Index_Namespace_Conflict_Review_Stop_20261012.md`. No reviewed contract amended, product/test source changed, compiled binary executed, stable event counted, TB497 or successor started. Earlier compile GREEN reports remain valid **only** for compile. Preserve original CP2/R3 runtime baseline.
+
+---
+
 ## 2026-10-12 — `M6-CP3-CB1-ENTRY-R4` strict typed rail and raw-sidecar cardinality (compile-only)
 
 - Production `rail_interval_refs` consumers now require typed source-vertex incidence irrespective of optional field-aligned network presence: source `0cd4391b976141ec6499378a319d933a9f7ec6c2`, Drive apply `38234541145`. Mandatory GMP/GMPXX compile **GREEN** `38234679163`, eight targets, artifact `11740820820` ZIP SHA-256 `13b2f1773e8625255482611e99cf20a3c3b65634912e1161407676757ca6f903`, manifest 28/28, exits 0/0, source clean, runtimeExecution=false.
