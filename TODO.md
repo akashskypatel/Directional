@@ -1,3 +1,12 @@
+## CURRENT — R4 seven historical DCEL fixtures: implementation census, NOT runtime PASS (2026-10-12)
+
+- [x] Verify exact independent source snapshot `38231038572` at `5ebddc55b47167d5062914156c4be66a390df41c`: archive SHA verified, all `6446/6446` file hashes valid.
+- [x] Source-prove six historical periodic-owner fixture identities (220, 221, 296, 302, 304, 439) now share a DCEL-valid oriented two-triangle disk and source-owned A3; the seventh (40, FlowRep support) has its own DCEL-valid two-triangle source and independent A3. Record `.agents/Directional/Architecture_M6_CP3_R4_Seven_DCEL_Fixture_Static_Source_Census_20261012.md`.
+- [ ] **Still requires separately authorized runtime evidence:** all seven exact frozen identities must reach and preserve their individual original oracle; the old R3 `DCEL_FIXTURE_CONSISTENCY_EXCEPTION` is not a current-source runtime result. Do not count any restored PASS from static source setup or compile. No source rewrite solely to redo already-landed two-triangle repairs.
+- [ ] R4 other gates remain open: independent overfull-A3 feasibility Review, RA-43.4, 39 endpoints, 34 Phase10, 88 former CP2 accepted losses, six CP3 positives and genuine odd-τ/multi-carrier. Frozen TB497 must not run during this Code + Build turn.
+
+---
+
 ## CURRENT — R4 typed rail rejects foreign valid face-local edge (2026-10-12)
 
 - [x] Source-independent Phase14 typed chain `(0,4)` vs valid but foreign local source edge `(1,4)` rejected by existing preprocessor oracle at interval 0; semantic `34379d974819be5586e7ef5dfaef00912ad4a343`; source patch `eac5243e1def71a503b193eedd87e5e2400276ca3a63f2639bf47ad6cd3bfc0e`, apply workflow `38228853566`.
