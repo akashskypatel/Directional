@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-typed-rail-index-compile-fix-20261012-r1",
+  "request_id": "m6-cp3-r4-typed-rail-compile-failure-closeout-20261012-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-typed-rail-index-compile-fix-apply",
-  "file_id": "1SXUsu7SpUhCfGUTXrkEKWR4Z54XVnlux",
-  "patch_sha256": "f084321cb6c8e4308655a4a12cbccd1e585f75679314a8f0433cbb88448b5fee",
-  "base_sha": "a92ddb5da31e3d2fd0d5ea1443e5f04734743b17",
+  "mailbox_key": "m6-cp3-r4-typed-rail-closeout-docs-apply",
+  "file_id": "1MevazRNI-nJX_1l2LB1RXDZngJBfgagm",
+  "patch_sha256": "b027aa7e45c6580f3516335bbfef1794d304e3d30ab332b1c590dc712f83c53e",
+  "base_sha": "b970e1a113fe00b90e225d917597c649f9e1aa1d",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(directional): compare source-edge DomainResult values in rail candidate binding"
+  "commit_message": "docs(directional): preserve R4 rail-index compile failure and corrected source handoff"
 }
