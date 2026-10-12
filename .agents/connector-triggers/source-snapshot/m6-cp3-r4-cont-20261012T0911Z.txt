@@ -1,3 +1,0 @@
-turn=M6-CP3-CB1-ENTRY-R4
-purpose=source-exact review and bounded R4 Code+Build continuation
-runtimeExecution=false
