@@ -2,7 +2,7 @@
 
 - [x] On exact source `5ebddc55...` (snapshot `38231038572`, 6446/6446), add production-enforced `requireTypedSourceVertices` to three actual `rail_interval_refs` call sites, preserving standalone helper legacy negative diagnostics. Four-file source `0cd4391b976141ec6499378a319d933a9f7ec6c2`, Drive apply `38234541145` successful; patch stored in Library and Drive stage deleted.
 - [x] Extend existing Phase14 rail-source-incidence test to require valid typed production rail and reject otherwise geometrically-valid untyped rail at strict helper and actual production trace-entry. No test names, frozen selector, network ABI, or workflow permissions changed.
-- [ ] Verify exact eight-target GMP/GMPXX **compile-only** workflow `38234679163` source `0cd4391b976141ec6499378a319d933a9f7ec6c2` with package checksums, linker and no runtime before claiming GREEN. Record `Architecture_M6_CP3_R4_RA434_Strict_Production_Rail_Interval_Compile_Record_20261012.md`.
+- [x] Exact-source GMP/GMPXX eight-target compile **GREEN** workflow `38234679163` / job `114762421998`, source `0cd4391b976141ec6499378a319d933a9f7ec6c2`, artifact `11740820820` SHA-256 `13b2f1773e8625255482611e99cf20a3c3b65634912e1161407676757ca6f903`, `28/28` hashes, preflight/build `0/0`, GMPXX/GMP link, source clean, `runtimeExecution=false`. No runtime PASS. Record `Architecture_M6_CP3_R4_RA434_Strict_Production_Rail_Interval_Compile_Record_20261012.md`.
 - [ ] Global RA-43.4 remains open (legacy direct helper and other rail metadata consumers); independent overfull-A3 Review and historical 39/34/7/88/six CP3 plus authentic odd-tau/multi-carrier remain unverified. No TB497 or successor.
 
 ---
