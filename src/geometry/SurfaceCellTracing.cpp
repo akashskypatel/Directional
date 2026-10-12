@@ -8065,6 +8065,8 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
       !fieldTransportAtlas->matches_source_faces(
           sourceFaces, sourceTopologyRegions, sourceVertexCount)) {
     error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+    error.sourceAuthorityDetail =
+        SurfacePhaseFrontSourceAuthorityDetail::AtlasSourceMismatch;
     return error;
   }
   const auto matchesA3 = [&](const authority::SourceEdgeTopologyKey &edge,
@@ -8178,6 +8180,8 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
               vertices[corner], vertices[(corner + 1U) % vertices.size()]);
           if (!edge) {
             error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+            error.sourceAuthorityDetail =
+                SurfacePhaseFrontSourceAuthorityDetail::MalformedSourceEdgeKey;
             return error;
           }
           const auto found = railIncidenceCounts.find(edge.value());
@@ -8192,6 +8196,9 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
   for (const auto &[edge, count] : railIncidenceCounts) {
     if (count == 0U || count > 2U) {
       error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+      error.sourceAuthorityDetail = count == 0U
+          ? SurfacePhaseFrontSourceAuthorityDetail::AbsentHardFeatureIncidence
+          : SurfacePhaseFrontSourceAuthorityDetail::OverfullHardFeatureIncidence;
       return error;
     }
   }
@@ -8201,6 +8208,8 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
   if (!hardFeatureEdges.empty() && hardRailTerminalContacts.empty() &&
       hardRailClosedChains.empty()) {
     error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+    error.sourceAuthorityDetail =
+        SurfacePhaseFrontSourceAuthorityDetail::MissingRailTerminalContact;
     return error;
   }
   std::set<authority::SourceEdgeTopologyKey> coveredClosedEdges;

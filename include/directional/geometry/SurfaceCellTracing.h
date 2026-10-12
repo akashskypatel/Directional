@@ -1865,6 +1865,11 @@ enum class SurfacePhaseFrontProductErrorCode : int {
 enum class SurfacePhaseFrontSourceAuthorityDetail : int {
   MissingTerminalA3Path = 0,
   AmbiguousTerminalA3Path = 1,
+  AtlasSourceMismatch = 2,
+  MalformedSourceEdgeKey = 3,
+  AbsentHardFeatureIncidence = 4,
+  OverfullHardFeatureIncidence = 5,
+  MissingRailTerminalContact = 6,
 };
 
 struct SurfacePhaseFrontProductError {

@@ -8941,11 +8941,11 @@ TEST(M6CP3, CheckedFactoryRejectsForgedTerminalA2bSideGerm) {
 
   const auto checked_with_routes_and_contacts =
       [&](const auto &routes, const auto &contacts,
-          const auto &hardEdges) {
+          const auto &hardEdges, const bool useAtlas = true) {
         return directional::geometry::SurfacePhaseFrontProduct::make(
             front.gridU(), front.gridV(), front.sourceTopologyRegions(),
             fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
-            &*fixture.fieldTransportAtlas,
+            useAtlas ? &*fixture.fieldTransportAtlas : nullptr,
             front.isolationSeamTransportCertificates(), front.periodicHolonomies(),
             front.boundedDiskBoundaryPhases(), front.edges(), front.events(),
             front.cells(), front.conformityPlanReceipt(), hardEdges,
@@ -8977,6 +8977,48 @@ TEST(M6CP3, CheckedFactoryRejectsForgedTerminalA2bSideGerm) {
   const auto [route, endpoint, side] = *selected;
   const auto expected =
       directional::geometry::SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+  using Detail = directional::geometry::SurfacePhaseFrontSourceAuthorityDetail;
+  const auto missingAtlas = checked_with_routes_and_contacts(
+      original, front.hardRailTerminalContacts(), front.hardFeatureEdges(), false);
+  const auto *atlasError = std::get_if<
+      directional::geometry::SurfacePhaseFrontProductError>(&missingAtlas);
+  ASSERT_NE(nullptr, atlasError);
+  EXPECT_EQ(expected, atlasError->code);
+  EXPECT_EQ(Detail::AtlasSourceMismatch, atlasError->sourceAuthorityDetail);
+
+  // The two vertices exist, but their nonadjacent pair is not a source edge.
+  const auto first = directional::authority::SourceVertexId::from_index(
+      0, static_cast<std::size_t>(fixture.mesh.V.rows()));
+  const auto last = directional::authority::SourceVertexId::from_index(
+      8, static_cast<std::size_t>(fixture.mesh.V.rows()));
+  ASSERT_TRUE(first.has_value());
+  ASSERT_TRUE(last.has_value());
+  const auto absentEdge =
+      directional::authority::SourceEdgeTopologyKey::make(*first, *last);
+  ASSERT_TRUE(absentEdge.has_value());
+  auto withAbsentEdge = front.hardFeatureEdges();
+  ASSERT_FALSE(withAbsentEdge.contains(*absentEdge));
+  withAbsentEdge.insert(*absentEdge);
+  const auto missingIncidence = checked_with_routes_and_contacts(
+      original, front.hardRailTerminalContacts(), withAbsentEdge);
+  const auto *incidenceError = std::get_if<
+      directional::geometry::SurfacePhaseFrontProductError>(&missingIncidence);
+  ASSERT_NE(nullptr, incidenceError);
+  EXPECT_EQ(expected, incidenceError->code);
+  EXPECT_EQ(Detail::AbsentHardFeatureIncidence,
+            incidenceError->sourceAuthorityDetail);
+
+  ASSERT_TRUE(front.hardRailClosedChains().empty());
+  auto noContacts = front.hardRailTerminalContacts();
+  noContacts.clear();
+  const auto missingContacts = checked_with_routes_and_contacts(
+      original, noContacts, front.hardFeatureEdges());
+  const auto *contactError = std::get_if<
+      directional::geometry::SurfacePhaseFrontProductError>(&missingContacts);
+  ASSERT_NE(nullptr, contactError);
+  EXPECT_EQ(expected, contactError->code);
+  EXPECT_EQ(Detail::MissingRailTerminalContact,
+            contactError->sourceAuthorityDetail);
 
   // A4 must not accept the same source-bound A3 and unmodified germ after
   // the producer-owned open-rail terminal receipt is removed. The genuine
