@@ -6449,6 +6449,64 @@ TEST(SurfaceCellAuthorityContractCutover,
                 "a2bProbeFailure=no-exact-terminal-corner"));
 }
 
+// RA-46.5: a source-valid but foreign typed terminal must be rejected by
+// the consumer's exact corner predicate, before checked-factory validation.
+TEST(SurfaceCellAuthorityContractCutover,
+     ForeignSourceTerminalContactRejectsAtFirstA4ConsumerPredicate) {
+  const auto fixture = build_rectangular_hard_rail_phase_front();
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            fixture.network.phaseFront.disposition())
+      << hard_rail_first_failure_detail(fixture.network);
+  const auto &front = fixture.network.phaseFront.product();
+  ASSERT_FALSE(front.hardRailRouteCertificates().empty());
+  const auto &firstRoute = front.hardRailRouteCertificates().front();
+  ASSERT_TRUE(firstRoute.endpoints[0].terminalVertex.has_value());
+  auto contacts = front.hardRailTerminalContacts();
+  auto contact = contacts.find(firstRoute.rail);
+  ASSERT_NE(contact, contacts.end());
+  const auto terminal = *firstRoute.endpoints[0].terminalVertex;
+  ASSERT_NE(contact->second.endpoints[0], contact->second.endpoints[1]);
+
+  std::optional<directional::authority::SourceVertexId> foreign;
+  for (int i = 0; i < fixture.mesh.V.rows(); ++i) {
+    const auto candidate = directional::authority::SourceVertexId::from_index(
+        i, static_cast<std::size_t>(fixture.mesh.V.rows()));
+    ASSERT_TRUE(candidate.has_value());
+    if (candidate.value() != contact->second.endpoints[0] &&
+        candidate.value() != contact->second.endpoints[1]) {
+      foreign = candidate.value();
+      break;
+    }
+  }
+  ASSERT_TRUE(foreign.has_value());
+  if (contact->second.endpoints[0] == terminal) {
+    contact->second.endpoints[0] = *foreign;
+  } else {
+    ASSERT_EQ(contact->second.endpoints[1], terminal);
+    contact->second.endpoints[1] = *foreign;
+  }
+
+  const auto rejected = build_fixed_plan_rectangular_hard_rail_network(
+      fixture, 1.0, &contacts);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
+            rejected.phaseFront.disposition());
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
+                InvalidHardRailRouteCertificate,
+            rejected.phaseFront.rejection_reason());
+  const auto *failure = rejected.phaseFront.rejection();
+  ASSERT_NE(failure, nullptr);
+  EXPECT_EQ(directional::geometry::SurfaceHardRailRouteFailureLocus::
+                EndpointAttachment,
+            failure->hardRailRouteLocus);
+  EXPECT_NE(std::string::npos,
+            failure->hardRailRouteDiagnostic.find(
+                "a2bProbeFailure=no-exact-terminal-corner"))
+      << failure->hardRailRouteDiagnostic;
+  EXPECT_EQ(std::string::npos,
+            failure->hardRailRouteDiagnostic.find(
+                "a2bProbeFailure=ambiguous-terminal-contact"));
+}
+
 TEST(SurfaceCellAuthorityContractCutover,
      ExactSharedBoundaryIntervalRejectsMissingOrTamperedIdentityWithoutFallback) {
   const auto fixture = build_rectangular_hard_rail_phase_front();

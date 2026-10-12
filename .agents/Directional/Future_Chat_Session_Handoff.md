@@ -1,3 +1,9 @@
+## CURRENT — R4 RA-46.5 foreign typed terminal first-rejection fixture (2026-10-12)
+
+Same canonical `M6-CP3-CB1-ENTRY-R4` Code + Build turn. The previous RA-49.2 duplicate-contact regression is applied at `ae6af23` and has an exact eight-target GMP/GMPXX compile GREEN (workflow `38316154434`, 28/28 manifest, runtime disabled); no test PASS. A second Phase10 regression now checks the other reachable first-rejection `no-exact-terminal-corner` against an existing accepted producer front using a distinct, foreign-but-in-range typed source vertex. Source snapshot `c8c4cc65bca673754cb74f0ed295ba08cfdaa251`, workflow `38317818824`, artifact `11777287283`, 6548/6548 manifest. See `Architecture_M6_CP3_R4_RA49_Ambiguous_Terminal_Contact_Code_Build_Record_20261012.md`. The additional fixture requires remote patch application and compile; no TB497, test or benchmark execution is authorized within Code + Build. All RA-43.2, RA-43.4, remaining RA-46.5/RA-47.12 and historical R4 gates remain open. RA-49.5 architectural repair is reserved for Definition.
+
+---
+
 ## CURRENT — R4 RA-49.2 consumer-first regression prepared (2026-10-12)
 
 The independent RA-49 review **unblocked** `M6-CP3-CB1-ENTRY-R4`: duplicated typed `{v,v}` terminal contacts are reachable and must reject at A4 consumer `ambiguous-terminal-contact`; `nonmanifold-terminal-star-spoke` is retired under RA-48 manifold guards, but its fail-closed guard remains. A source-exact regression was prepared against verified snapshot `7c228ec451ab605e9a1b913ec2dca8a2c14db365` (6541/6541 hashes), in `SurfaceCellsPhase10Tests.cpp`. See `Architecture_M6_CP3_R4_RA49_Ambiguous_Terminal_Contact_Code_Build_Record_20261012.md` for exact scope and evidence. No runtime credit or TB497 authorization. R4 remains open; RA-49.5 architecture repair is **not** authorized here. Note older handoff sections describing the resolved RA-46.5 review stop are historical.

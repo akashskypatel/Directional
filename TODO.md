@@ -2,7 +2,8 @@
 
 - [x] Independent RA-49 decides duplicate `{v,v}` `ambiguous-terminal-contact` is reachable at the A4 consumer; the earlier proposed retirement is rejected. `nonmanifold-terminal-star-spoke` negative is retired (guard kept), and `R4-CTC-01` validate-after-use is reserved for a Definition turn.
 - [x] Exact-source snapshot `7c228ec451ab605e9a1b913ec2dca8a2c14db365` verified (workflow `38315391692`, artifact `11775764498`, 6541/6541 files). The RA-49.2 regression in the existing rectangular HardRail tests injects duplicated original typed terminal ID, requiring the consumer's first-rejection diagnostic.
-- [ ] Verify source patch apply and eight-target GMP/GMPXX compile; do **not** run tests/benchmarks in Code + Build or claim runtime PASS. Continue remaining RA-43.2/43.4, RA-46.5, RA-47.12 and carried R4 gates. No TB497 or successor before R4 closeout.
+- [x] RA-49.2 duplicate-contact patch applied at `ae6af23` and compiled GREEN in `38316154434` (8/8, 28/28); no test or runtime PASS.
+- [ ] Apply and eight-target GMP/GMPXX compile the separate RA-46.5 foreign typed terminal negative from snapshot `c8c4cc65`; no runtime in this turn. Continue remaining RA-43.2/43.4, RA-46.5, RA-47.12 and carried R4 gates. No TB497 or successor before R4 closeout.
 
 ---
 
