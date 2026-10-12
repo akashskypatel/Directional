@@ -1,3 +1,42 @@
+## CURRENT — overfull-A3 DISCHARGED (RA-48); RA-47 implementation resumes unblocked (2026-10-12)
+
+**Both halves of the reported block are resolved.** The carried overfull-A3 feasibility gate is adjudicated,
+and the beacon/durable contradiction is corrected in favour of the durable documents.
+
+**Overfull-A3: the witness is unconstructible, as a theorem.** To reach the `count > 2` guard
+(`src/geometry/SurfaceCellTracing.cpp:8202-8207`) a fixture must pass the RA-40 atlas binding at `:8072-8079`.
+The atlas has one construction seam, taking a `TriMesh` (`FieldTransportAtlas.h:837-841`); its edge table comes
+from 2-column `EV`/`EF`; `set_mesh` runs `compute_edge_quantities`, which **throws** when
+`dcel.check_consistency` fails (`core/TriMesh.h:339-340`, `:160-163`); and DCEL check 5 rejects repeated
+**directed** halfedges (`core/DCEL.h:1453-1492`), which three triangles on one edge must produce **by
+pigeonhole**. Obligation **RETIRED**, coupled to guards G1-G4; the guard is **KEPT fail-closed** and its
+`count == 0` branch keeps its obligation.
+
+**Two new findings.** **R4-OVF-01** — `set_mesh` skips `compute_edge_quantities` entirely when
+`_EV.rows() != 0` (`core/TriMesh.h:331-345`), accepting caller-supplied `EV`/`FE`/`EF` with no validation
+against `F`; the atlas then consumes it as authoritative A1 topology, and its own
+"Construction is the only validation seam" comment is inaccurate as written. All 116 call sites use the
+2-argument form, so the retirement rests on a guard one argument away from being disabled. **R4-OVF-02** —
+four predicates return the same bare `InvalidSourceAuthority` (`:8077`, `:8190`, `:8204` for both `== 0` and
+`> 2`, `:8210`), so the obligation was never dischargeable non-vacuously; third site of the R4-A3U-01 pattern,
+making **RA-46.6's typed sub-code a prerequisite** with `:8204`/`:8210` added to scope.
+
+**Beacon corrected.** `6692ce457` set `BLOCKED / UNKNOWN` while changing `STATUS` only — no blocker recorded,
+no WIP preserved, no finding cited, no document. The four commits after the RA-47 freeze contain no source
+change and no decision record, and the claimed transport blocker is contradicted by its own receipt (run
+`38249080586`, `"result": "success"`, `2026-10-12T12:27:47Z`). A beacon contradicting durable authority without
+a recorded basis is not authority. **RA-47 is unimplemented and is the next turn's work.**
+
+**Next turn:** `M6-CP3-CB1-ENTRY-R4` implements RA-47.1-.11 (retype `sourceEdges` to typed keys, delete the
+`:18106-18114` remap, collapse `:4233-4245`), reports the RA-47.12 liveness question, and takes RA-48.3
+(close or validate the `set_mesh` injection seam) and RA-46.6 extended per RA-48.6. Still open: RA-43.1/.2/.4,
+RA-46.5, the `sourceEdgeFaceCounts.at` hardening.
+
+No binary built, no test executed, no runtime credit. Ledger **66/17/49**, debt **1**. CP2 **491/491**
+accepted, R3 **403/497** rejected, 94 RED, 88 accepted CP2 losses. RA-41 junction/sector clauses frozen
+**UNEXERCISED**; seven two-face DCEL repairs compiled but **not executed**. Decision:
+`.agents/Directional/Architecture_M6_CP3_R4_Overfull_A3_Feasibility_Review_Decision.md`.
+
 ## CURRENT — R4-IDX-01 ADJUDICATED; RA-47 frozen, raw-int edge namespace abolished (2026-10-12)
 
 **The review stop is RESOLVED. `M6-CP3-CB1-ENTRY-R4` may resume under RA-47.** The conflation was confirmed

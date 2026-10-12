@@ -1,3 +1,82 @@
+## RA-48 — overfull-A3 is unrealizable under four guards; the seam beneath it is a defect **FROZEN at M6-CP3-CB1-ENTRY-R4** (2026-10-12)
+
+Adjudicates the carried independent overfull-A3 feasibility gate raised in
+`Architecture_M6_CP3_R4_Factory_Incidence_Oracle_Source_Validity_Static_Audit_20261011.md`. Basis:
+`Architecture_M6_CP3_R4_Overfull_A3_Feasibility_Review_Decision.md`. No runtime credit. RA-47, RA-46, RA-45,
+RA-44 (less .2), RA-43 (less .5 and less the superseded `sourceEdges` row of §4), RA-42 as corrected, RA-41
+frozen scoped, RA-40, RA-39, RA-38, RA-37a and the RA-34.3 stop gates stand.
+
+- **RA-48.0 — the witness is unconstructible, and this is a theorem, not an unmeasured risk.** The A4 guard
+  counts actual incidences from the A2b product (`src/geometry/SurfaceCellTracing.cpp:8177-8198`) and rejects
+  `count == 0 || count > 2` (`:8202-8207`); to reach it a fixture must first pass the RA-40 atlas binding at
+  `:8072-8079`. Chain: the atlas has exactly one construction seam and it takes a `TriMesh`
+  (`include/directional/authority/FieldTransportAtlas.h:837-841`); it reads its edge table from `EV`/`EF`
+  (`src/authority/FieldTransportAtlas.cpp:1016-1030`) and `EF` is 2-column by construction
+  (`include/directional/core/TriMesh.h:165`), so overfullness has no representation in it; `set_mesh` runs
+  `compute_edge_quantities` (`core/TriMesh.h:339-340`), which runs
+  `dcel.check_consistency(verbose, true, true, true)` and **throws** on failure (`:160-163`); DCEL check 5
+  rejects any repeated **directed** halfedge (`core/DCEL.h:1453-1492`), and three triangles on one undirected
+  edge contribute three halfedges into two directions, so two coincide **by pigeonhole**, independent of
+  orientation. An atlas built elsewhere cannot be swapped in: `matches_source_faces` ties `rowTopology_` to the
+  exact face triples of `sourceFaces` (`FieldTransportAtlas.cpp:3090-3109`).
+- **RA-48.1 — obligation RETIRED, coupled to four guards.** No fixture for the `count > 2` branch, and none
+  synthesized by relaxing manifold or incidence rules. Retirement lapses automatically if any guard weakens:
+  **G1** `set_mesh` runs `compute_edge_quantities` on the 2-argument form (`core/TriMesh.h:339-340`);
+  **G2** that call passes `checkHalfedgeRepetition = true` and throws (`:160-163`);
+  **G3** DCEL check 5 rejects repeated directed halfedges (`core/DCEL.h:1453-1492`);
+  **G4** `FieldTransportAtlas::make` is the only construction seam and takes a `TriMesh`
+  (`FieldTransportAtlas.h:837-841`). A dead negative is dead only relative to its guards.
+- **RA-48.2 — the guard is KEPT, fail-closed.** `:8202-8207` is not dead code. It is the only check that can
+  observe an incidence the atlas's 2-column `EF` cannot represent, and under R4-OVF-01 it is the sole backstop
+  for an injected edge table. Removing or demoting it is prohibited. Its **`count == 0` branch keeps its
+  obligation in full** — reachable, and a different predicate.
+- **RA-48.3 — R4-OVF-01: `set_mesh`'s injection branch is an unvalidated authority seam.**
+  `core/TriMesh.h:331-345` skips `compute_edge_quantities` entirely when `_EV.rows() != 0`, assigning
+  caller-supplied `EV`/`FE`/`EF` with **no validation that they correspond to `F`**.
+  `FieldTransportAtlas::make` then consumes that `TriMesh` as authoritative A1 topology, validating adjacency,
+  cycles and singularities against a possibly fabricated edge table, and `matches_source_faces` cannot detect
+  it because it compares face rows only. The seam must either validate the supplied tables against `F` or be
+  removed; until then the injection form must not be used for any source handed to the atlas. **All 116
+  existing `set_mesh` call sites use the 2-argument form** — which is why this was never noticed, and why
+  RA-48.0's proof rests on a guard one argument away from being disabled. RP-01 at the bottom of the stack.
+- **RA-48.4 — the atlas's own invariant comment is inaccurate and must be corrected.**
+  `FieldTransportAtlas.h:830-834` asserts "Construction is the only validation seam." That holds only for a
+  `TriMesh` whose edge table the atlas also derived. A doc comment asserting an invariant the code does not
+  enforce is itself a defect, because later review relies on it.
+- **RA-48.5 — R4-OVF-02: the oracle cannot separate the predicate.** Four distinct predicates in `make`
+  return the identical bare `InvalidSourceAuthority`: the atlas gate (`:8077`), the malformed-edge-key branch
+  (`:8190`), the incidence guard with **both** `count == 0` and `count > 2` collapsed into one site (`:8204`),
+  and the terminal-contact presence check (`:8210`). Even had the witness been constructible, the obligation
+  could not have been discharged non-vacuously. LESSONS-160, "passed versus did not run."
+- **RA-48.6 — the collapse is now a PATTERN, and RA-46.6 becomes a PREREQUISITE.** Third site after
+  R4-A3U-01's two (`unique_terminal_star_path`'s bare `bool` at `:8352`, collapsed at `:8527-8528`); the
+  consumer side already shows the correct shape with three separated diagnostics at `:19071-19074`. A typed
+  factory sub-code is required to distinguish atlas-gate, bad-key, zero-incidence, overfull-incidence and
+  missing-contact rejections **before** any of them may be claimed as exercised. The `:8204` and `:8210` sites
+  are added to RA-46.6's scope.
+- **RA-48.7 — scope limits on what may be claimed.** Permitted: the overfull condition is unrealizable at the
+  A4 factory under G1-G4, and the guard is retained as a fail-closed backstop. Prohibited: claiming the guard
+  was exercised, that nonmanifold source handling was verified, or that A2b rejects malformed source first —
+  A2b was not examined by this review and remains unestablished. The producer-side
+  `overfull-nonmanifold-spoke` (`:19232`) and `overfull-hard-feature-edge` (`:18768`) paths are **separate**
+  and are not adjudicated here; they keep their existing obligations.
+- **RA-48.8 — beacon versus durable authority.** `STATUS` read `BLOCKED / Successor: UNKNOWN`, set by
+  `6692ce457` ("record R4 transport blocker and preserved WIP"), which changed `STATUS` **only** — one line,
+  recording no blocker, preserving no WIP, citing no finding, with no accompanying document. The four commits
+  after the RA-47 freeze (`74170c022`, `4b5dc2c74`, `06a36e7e6`, `6692ce457`) contain **no source change and
+  no decision record**. The claimed transport blocker is contradicted by its own receipt:
+  `.workflow-mailbox/repo-source-snapshot/latest.json` records run `38249080586` `"result": "success"` at
+  `2026-10-12T12:27:47Z`, before the beacon was set. **A beacon that contradicts durable authority without a
+  recorded basis is not authority.** RA-47 implementation resumes unblocked. A future `BLOCKED` beacon
+  requires a committed record naming the finding, or it may be overridden by Review on this precedent.
+- **RA-48.9 — no credit.** No binary built, no test executed. R4-OVF-01 and R4-OVF-02 are source-level review
+  findings, **not** counted stable regressions. Ledger stays **66 events / 17 categories / 49 recurrences**,
+  debt **1**. CP2 **491/491** accepted, R3 **403/497** rejected, 94 RED, 88 accepted CP2 losses. RA-41
+  junction/sector clauses remain frozen **UNEXERCISED**; the seven two-face DCEL repairs remain compiled but
+  **not executed**.
+
+---
+
 ## RA-47 — the raw-int source-edge namespace is abolished, not re-frozen **FROZEN at M6-CP3-CB1-ENTRY-R4** (2026-10-12)
 
 Adjudicates `Architecture_M6_CP3_R4_Edge_Index_Namespace_Conflict_Review_Stop_20261012.md`. Basis:

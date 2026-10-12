@@ -1,3 +1,54 @@
+## CURRENT — overfull-A3 retired as unrealizable; R4-OVF-01 authority seam and R4-OVF-02 oracle collapse frozen (2026-10-12)
+
+**The carried overfull-A3 feasibility gate is DISCHARGED.** The witness is unconstructible, and that is a
+theorem rather than an unmeasured risk. The A4 guard counts actual incidences from the A2b product
+(`src/geometry/SurfaceCellTracing.cpp:8177-8198`) and rejects `count == 0 || count > 2` (`:8202-8207`), but to
+reach it a fixture must pass the RA-40 atlas binding at `:8072-8079`. The atlas has exactly one construction
+seam and it takes a `TriMesh` (`FieldTransportAtlas.h:837-841`); its edge table comes from `EV`/`EF`
+(`FieldTransportAtlas.cpp:1016-1030`) and `EF` is 2-column by construction (`core/TriMesh.h:165`); `set_mesh`
+runs `compute_edge_quantities` (`:339-340`) which **throws** when `dcel.check_consistency` fails (`:160-163`);
+and DCEL check 5 rejects repeated **directed** halfedges (`core/DCEL.h:1453-1492`), which three triangles on
+one undirected edge must produce **by pigeonhole** — three halfedges into two directions. Obligation RETIRED,
+coupled to those four guards (G1-G4); the guard itself is **KEPT fail-closed**, and its `count == 0` branch
+keeps its obligation in full.
+
+**R4-OVF-01 — `AUTHORITY_DOMAIN_CONFLATION` (RP-01 recurrence; source-level finding; 2026-10-12).**
+`core/TriMesh.h:331-345`: `set_mesh` skips `compute_edge_quantities` **entirely** when `_EV.rows() != 0`,
+assigning caller-supplied `EV`/`FE`/`EF` with no validation that they correspond to `F`.
+`FieldTransportAtlas::make` then consumes that `TriMesh` as authoritative A1 topology and validates adjacency,
+cycles and singularities against a possibly fabricated edge table; `matches_source_faces`
+(`FieldTransportAtlas.cpp:3090-3109`) cannot detect it because it compares face rows only. The atlas's own
+comment, "Construction is the only validation seam" (`FieldTransportAtlas.h:830-834`), is therefore inaccurate
+as written and must be corrected with the fix.
+**Falsifier:** exhibit validation of injected `EV`/`FE`/`EF` against `F` anywhere on that path. None exists at
+`6692ce457`. **Why unnoticed:** all **116** existing `set_mesh` call sites use the 2-argument form — which is
+also why the retirement above rests on a guard one argument away from being disabled.
+
+**R4-OVF-02 — oracle cannot separate the predicate (LESSONS-160; 2026-10-12).** Four distinct predicates in
+`make` return the identical bare `InvalidSourceAuthority`: the atlas gate (`:8077`), the malformed-edge-key
+branch (`:8190`), the incidence guard with **both** `count == 0` and `count > 2` collapsed into one site
+(`:8204`), and the terminal-contact presence check (`:8210`). Even had the witness been constructible the
+obligation could not have been discharged non-vacuously. **Third site of this pattern** after R4-A3U-01's two
+(`:8352`, `:8527-8528`); the consumer side already shows the correct shape at `:19071-19074`. RA-46.6's typed
+factory sub-code is therefore a **prerequisite**, not an independent item.
+
+**Root class (both):** authority accepted from a channel that cannot carry the distinction being relied on — a
+derived edge table trusted without validation against its face table, and four predicates collapsed into one
+code. Same discriminating question as RA-46 and RA-47: **what can this predicate actually separate?**
+
+**Authority reconciliation:** `STATUS` read `BLOCKED / Successor: UNKNOWN`, set by `6692ce457`, which changed
+`STATUS` only — no blocker recorded, no WIP preserved, no finding cited, no document. The four commits after
+the RA-47 freeze carry **no source change and no decision record**. The claimed transport blocker is
+contradicted by its own receipt: run `38249080586` reported `"result": "success"` at `2026-10-12T12:27:47Z`,
+before the beacon was set. A beacon contradicting durable authority without a recorded basis is not authority.
+
+**No credit.** No binary built, no test executed. Source-level review findings only; ledger unchanged at
+66 events / 17 categories / 49 recurrences, debt 1. CP2 491/491 accepted, R3 403/497 rejected, 94 RED,
+88 accepted CP2 losses. Full decision:
+`.agents/Directional/Architecture_M6_CP3_R4_Overfull_A3_Feasibility_Review_Decision.md`.
+
+---
+
 ## CURRENT — source-edge index namespace adjudicated; RA-47 frozen, raw-int edge namespace abolished (2026-10-12)
 
 **R4-IDX-01 is CONFIRMED and both proposed repairs are REJECTED.** The producer publishes a `featureMap.edges`

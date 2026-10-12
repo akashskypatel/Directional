@@ -1,3 +1,44 @@
+## CURRENT — 2026-10-12 `M6-CP3-R4-OVERFULL-A3-FEASIBILITY-ARCH-REV` COMPLETE; RA-48 frozen
+
+**Both halves of the reported block are discharged and this supersedes the stop paragraphs below.** The
+carried overfull-A3 feasibility gate is adjudicated and the beacon/durable contradiction is corrected in
+favour of the durable documents. **There is no open REVIEW_BLOCKER.** RA-47 remains **unimplemented** and is
+the next turn's work.
+
+**Overfull-A3 — unrealizable, as a theorem.** Reaching the `count > 2` guard
+(`src/geometry/SurfaceCellTracing.cpp:8202-8207`) requires passing the RA-40 atlas binding at `:8072-8079`.
+The atlas has one construction seam and it takes a `TriMesh` (`FieldTransportAtlas.h:837-841`); its edge table
+is read from 2-column `EV`/`EF` (`core/TriMesh.h:165`); `set_mesh` runs `compute_edge_quantities`, which
+**throws** when `dcel.check_consistency` fails (`:339-340`, `:160-163`); DCEL check 5 rejects repeated
+**directed** halfedges (`core/DCEL.h:1453-1492`), which three triangles on one undirected edge must produce
+**by pigeonhole**. Obligation **RETIRED** coupled to guards G1-G4; the guard is **KEPT fail-closed** as the only
+check that can see an incidence `EF` cannot represent, and its `count == 0` branch keeps its obligation in full.
+Decision: `.agents/Directional/Architecture_M6_CP3_R4_Overfull_A3_Feasibility_Review_Decision.md`.
+
+**§7 open problems:** RA-47 implementation and its RA-47.10 non-vacuous fixtures; the RA-47.12 liveness report;
+**RA-48.3** — close or validate `set_mesh`'s injection seam, and correct the atlas's inaccurate invariant
+comment; **RA-46.6 extended per RA-48.6** — typed factory sub-codes now a prerequisite, with `:8204` and
+`:8210` added; then RA-43.1 carrier cut, RA-43.2 endpoint consumption, RA-43.4, RA-46.5 negatives, the
+`sourceEdgeFaceCounts.at` hardening; 39 endpoints, 34 Phase10, seven DCEL (compiled, **not executed**), 88 CP2,
+six CP3, odd-τ and the multi-carrier witness. A2b's behaviour on malformed source was **not** examined and
+remains unestablished; the producer-side `overfull-nonmanifold-spoke` (`:19232`) and
+`overfull-hard-feature-edge` (`:18768`) paths are separate and keep their existing obligations.
+
+**§8 pattern:** authority accepted from a channel that cannot carry the distinction being relied on — a derived
+edge table trusted without validation against its face table (R4-OVF-01), and four predicates collapsed into
+one error code (R4-OVF-02, third site after R4-A3U-01's two). Same discriminating question as RA-46 and RA-47:
+**what can this predicate actually separate?** Here the oracle could separate nothing, so the obligation was
+never dischargeable even had the witness existed. Note also that a retirement can rest on a guard that is one
+function argument away from being disabled — hence RA-48.1's explicit G1-G4 coupling.
+
+**Beacon note:** `6692ce457` set `BLOCKED / UNKNOWN` while changing `STATUS` only, recording no blocker and
+preserving no WIP; the four commits after the RA-47 freeze contain no source change and no decision record; and
+the claimed transport blocker is contradicted by its own receipt (run `38249080586`, `"result": "success"`,
+`12:27:47Z`). A beacon contradicting durable authority without a recorded basis is not authority.
+
+Witness statuses, baselines and ledger unchanged: CP2 491/491 accepted, R3 403/497 rejected, 94 RED, 88 accepted
+CP2 losses, ledger 66/17/49, debt 1. No binary built, no test executed, no runtime credit.
+
 ## CURRENT — 2026-10-12 `M6-CP3-R4-EDGE-INDEX-NAMESPACE-ARCH-REV` COMPLETE; RA-47 frozen
 
 **The R4-IDX-01 REVIEW_BLOCKER is discharged and supersedes the stop paragraphs below.** The conflation was
