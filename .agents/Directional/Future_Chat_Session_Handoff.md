@@ -1,3 +1,9 @@
+## CURRENT — R4 RA-43.1 produced hard-carrier barrier source regression COMPILE GREEN (2026-10-13 UTC)
+
+Same unfinished `M6-CP3-CB1-ENTRY-R4` Code + Build. Producer-backed atlas barrier-classification regression `ProducedHardCarriersAreAtlasBarriersNotSourceBoundaryTransit` applied as `cf87a8e10d3a390efbdc748c23388ae0da7965c4` via `38392849958`, staged patch owner-deleted. Eight GMP/GMPXX targets compiled successfully `38393072606`, immutable artifact `11809223261` SHA256 `1b06fe10a15ce5134bd7744436adaab6cc3beb0151812ee330ba8b028082503d`, 28/28 hashes, 0/0 exits, GMPXX/GMP linkage, clean source and runtime disabled. Source-only oracle; no runtime witness, no claim of full RA-43.1 consumer/germ closure. See `Architecture_M6_CP3_R4_RA431_Produced_Hard_Barrier_Authority_Oracle_20261013.md`. RA-43.1/.4, RA-46.5, RA-47.12 executed, historical 39/34/7/88/six and odd-tau multi-carrier remain open. No TB497, successor or selector change.
+
+---
+
 ## CURRENT — R4 RA-43.1 producer hard-carrier barrier source oracle (2026-10-13 UTC)
 
 Same `M6-CP3-CB1-ENTRY-R4` Code + Build, not complete. New test `ProducedHardCarriersAreAtlasBarriersNotSourceBoundaryTransit` requires genuinely A1-produced typed `HardFeature` barriers from the rectangular hard rail fixture to bind to all requested source hard keys, be absent from traversable A3 topology, match A2a mandatory rail ID/kind, and remain distinct from genuine source boundary classification. This complements but does not repeat the earlier caller-labelled `HardCarrierStarCutPreservesBoundaryTransit` unit filter. Source-only; no runtime. See `Architecture_M6_CP3_R4_RA431_Produced_Hard_Barrier_Authority_Oracle_20261013.md`. Apply and eight-target GMP/GMPXX compile are pending. Keep all R4 RA-43.1/.4, RA-46.5, RA-47.12, historical and multi-carrier gates open. No TB497 or successor.

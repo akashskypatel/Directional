@@ -1,3 +1,10 @@
+## CURRENT — R4 RA-43.1 real A1 hard-barrier production compile GREEN (2026-10-13 UTC)
+
+- [x] Applied at `cf87a8e10d3a390efbdc748c23388ae0da7965c4` by `38392849958`, eight-target GMP/GMPXX compile GREEN `38393072606` (artifact `11809223261`, SHA256 `1b06fe10a15ce5134bd7744436adaab6cc3beb0151812ee330ba8b028082503d`, 28/28 hashes, no runtime), source regression `ProducedHardCarriersAreAtlasBarriersNotSourceBoundaryTransit`; source barrier origin is genuine atlas output, not test-labelled. Evidence `Architecture_M6_CP3_R4_RA431_Produced_Hard_Barrier_Authority_Oracle_20261013.md`.
+- [ ] Runtime proof and full A1 consumer/germ, RA-43.1/.4, RA-46.5, RA-47.12, 39/34/7/88/six and genuine odd-tau multi-carrier remain open. No TB497 or successor.
+
+---
+
 ## CURRENT — R4 RA-43.1 producer barrier authority source oracle (2026-10-13 UTC)
 
 - [ ] Apply and compile-only verify `SurfaceCellAuthorityContractCutover.ProducedHardCarriersAreAtlasBarriersNotSourceBoundaryTransit` against verified source `45d09820b25f4330bad825cee1e5a1349d9fc0c1` (5668/5668 hashes). It checks unmodified A1 producer hard/barrier kinds, full typed key set, exclusion of hard A3 traversals, and mandatory A2a rail ID ownership; distinct from test-labelled RA-43.1 star filter. No runtime or TB497 in Code + Build. See `Architecture_M6_CP3_R4_RA431_Produced_Hard_Barrier_Authority_Oracle_20261013.md`.
