@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-domainresult-repair-20261013t1328z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-domainresult-repair-apply",
-  "file_id": "1FoUJ-P0pwwstw49R22yAA2QWuXQAxHvK",
-  "patch_sha256": "038338ea164c098a3d15d1983ee654c531fbaf8b4b5a1003bcf11fae724a938e",
-  "base_sha": "b94f530301135fef5ccedd67b2e26960d67d2410",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(tests): unwrap source face DomainResult after validity check"
+  "request_id": "m6-cp3-r4-domainresult-repair-compile-20261013t1331z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-domainresult-repair-compile",
+  "source_sha": "32eff2943d4c3c8d2183f5a51439d33dc3c84ae1",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-r4-domainresult-repair-compile"
 }
