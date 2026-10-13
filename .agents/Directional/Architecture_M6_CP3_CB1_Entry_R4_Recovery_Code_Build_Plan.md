@@ -1,3 +1,13 @@
+## 2026-10-13 source-exact R4 continuation checkpoint (post RA-51)
+
+This is an **incomplete Code + Build turn**, not a Test + Benchmark or successor. Verified snapshot `945dda9f60cb27729c84ec3b69ef60e66ef7c50e` from [source-snapshot run 38483200646](https://github.com/akashskypatel/Directional/actions/runs/38483200646), archive SHA-256 `4fb2902d0a054c2d4c986450d62bece924ca2b3619e871d124a6502f7fa9100f`, **5780/5780** source hashes. Comparison against last compiled semantic source `2b0e49865f88e378e34233202bc8e85701d458b2` shows only documentation, STATUS, dispatcher, snapshot-trigger and mailbox changes (no production or test edits). Eight-target GMP/GMPXX compile [38481058598](https://github.com/akashskypatel/Directional/actions/runs/38481058598) remains source-current; **no runtime PASS**.
+
+**Do not reimplement already landed source guards:** `resolve_field_vertex_transit` cuts A1-published `HardFeature` spokes and all four production call sites pass `mandatoryByEdge`; `rail_interval_refs` requires typed source-vertex/edge authority by default, with production callers explicit `RequireTypedSource`; the remaining barycentric `rail_sample_source_vertex` fallback is reachable only through explicitly named **no-network standalone diagnostic** mode, not producer or network-backed ingress. The terminal-star consumer uses bounds-safe `sourceEdgeFaceCounts.find` (RA-46.9), not `.at`. Existing Phase10 source tests cover duplicated typed terminal contact (`ambiguous-terminal-contact`), foreign contact (`no-exact-terminal-corner`), and removed real source-star step (`missing-terminal-A3-path`), all **compiled but not executed**. Independent RA-51 retired the two impossible remaining terminal-A3 negatives with their defensive guards retained; do not resurrect or mint unreachable subcodes.
+
+**Open after this static reconciliation:** end-to-end RA-43.1 carrier/germ runtime, global RA-43.4 legacy-diagnostic disposition and test execution, RA-47.12 genuinely executed default-pipeline liveness, the 39 endpoint / 34 Phase10 / seven DCEL / 88 accepted CP2 restorations / six CP3 positives, organic D1/D2/D3/D5 and A6/A7, and a produced nonvacuous odd-τ multi-carrier witness. Frozen selector 497 and prior accepted/rejected baselines are unchanged. None may be marked runtime-green on compile or static inspection. No Directional executable, test, benchmark, TB497 or successor work in this canonical turn.
+
+---
+
 # M6-CP3-CB1-ENTRY-R4 — source-authoritative recovery Code + Build plan
 
 **Latest operative state (2026-10-10): RA-45 independent Review released this R4 Code + Build turn.**
