@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra431-a1-junction-compile-20261013t1858z",
+  "request_id": "m6-cp3-r4-ra434-legacy-near-corner-20261013t1921z",
   "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-ra431-a1-junction-compile",
-  "source_sha": "c881598a55806b1c5dd4aaa466e8a1e2eb347dbb",
+  "mailbox_key": "m6-cp3-r4-ra434-legacy-near-corner",
+  "source_sha": "eb9ce48979b84f32415c31de4f1f2ac2b581c24f",
   "targets": [
     "directional_core",
     "directional_pipeline",
@@ -14,5 +14,5 @@
     "directional_compiled_api_tests",
     "directional_benchmarks"
   ],
-  "artifact_prefix": "directional-m6-cp3-r4-ra431-a1-junction"
+  "artifact_prefix": "directional-m6-cp3-r4-ra434-legacy-near-corner"
 }
