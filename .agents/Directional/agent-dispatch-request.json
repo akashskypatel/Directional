@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra516-table-g1-compile-20261013t1500z",
+  "request_id": "m6-cp3-r4-ra516-face-reorder-20261013t1523z",
   "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-ra516-table-g1-compile",
-  "source_sha": "c1be17130799c42bb7791c16f0fc65a59e24f9fb",
+  "mailbox_key": "m6-cp3-r4-ra516-face-reorder",
+  "source_sha": "2951b20e51b0e0e65ad68f9848cd73c779b5f713",
   "targets": [
     "directional_core",
     "directional_pipeline",
@@ -14,5 +14,5 @@
     "directional_compiled_api_tests",
     "directional_benchmarks"
   ],
-  "artifact_prefix": "directional-m6-cp3-r4-ra516-table-g1"
+  "artifact_prefix": "directional-m6-cp3-r4-ra516-face-reorder"
 }
