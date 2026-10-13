@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra516-face-reorder-20261013t1523z",
+  "request_id": "m6-cp3-r4-ra431-a4-source-transit-20261013t1548z",
   "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-ra516-face-reorder",
-  "source_sha": "2951b20e51b0e0e65ad68f9848cd73c779b5f713",
+  "mailbox_key": "m6-cp3-r4-ra431-a4-source-transit",
+  "source_sha": "d581fa9747c9848c3a37a0bccc6693519dec4bff",
   "targets": [
     "directional_core",
     "directional_pipeline",
@@ -14,5 +14,5 @@
     "directional_compiled_api_tests",
     "directional_benchmarks"
   ],
-  "artifact_prefix": "directional-m6-cp3-r4-ra516-face-reorder"
+  "artifact_prefix": "directional-m6-cp3-r4-ra431-a4-source-transit"
 }
