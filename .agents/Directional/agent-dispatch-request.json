@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-sid01-a5-domainfix-apply-20261013t0326z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-sid01-a5-domainfix-apply",
-  "file_id": "1-RL1_jqAHH6ydM7nnI_9-2jboHSjU-qC",
-  "patch_sha256": "65320b2925a106be415c1135ca1d791546cb4f0da1206913566e1bfbfb43965b",
-  "base_sha": "cc1f17ccb26e269ee698d01c2d7b21300ee49a3a",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(directional): unwrap typed source face result in A5 regression"
+  "request_id": "m6-cp3-r4-a5-corrected-compile-20261013t0454z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-a5-corrected-compile",
+  "source_sha": "b836329e540ddaca5a7e4d233a6c0a99f574fd85",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-r4-a5-corrected-compile"
 }
