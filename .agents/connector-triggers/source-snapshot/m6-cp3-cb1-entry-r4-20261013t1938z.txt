@@ -1,0 +1,3 @@
+Canonical turn: M6-CP3-CB1-ENTRY-R4
+Frozen source SHA: 035dee1cb5cf7b3a880fcd91f91e9dc8f0e898a3
+Purpose: exact-source inspection only; no runtime tests.
