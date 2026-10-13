@@ -1,3 +1,10 @@
+## CURRENT — R4-TA3-01 first-rejection feasibility independent REVIEW STOP (2026-10-13 UTC)
+
+- [ ] Review the source-exact `missing-or-nonreciprocal-terminal-A3` RA-46.5 reachability question before writing another fixture or changing frozen semantics. Under a valid matching A1 atlas, values exist on all interior edges with inverse directed transport; possible public-ingress exceptions remain unproven. Detailed review request: `Architecture_M6_CP3_R4_RA465_Terminal_A3_First_Rejection_Review_Stop_20261013.md`. Keep same R4 Code + Build BLOCKED pending independent decision; no TB497, successor, binary tests or benchmark.
+- [x] Prior R4 RA-43.1 admissible non-hard transport test applied and eight-target GMP compile GREEN at semantic `32eff2943d4c3c8d2183f5a51439d33dc3c84ae1`, run `38405627436`, artifact `11818707033` (28/28 checksums, no runtime). No production runtime acceptance; all prior recovery obligations retained.
+
+---
+
 ## CURRENT — R4 RA-43.1 real A1 hard-barrier production compile GREEN (2026-10-13 UTC)
 
 - [x] Applied at `cf87a8e10d3a390efbdc748c23388ae0da7965c4` by `38392849958`, eight-target GMP/GMPXX compile GREEN `38393072606` (artifact `11809223261`, SHA256 `1b06fe10a15ce5134bd7744436adaab6cc3beb0151812ee330ba8b028082503d`, 28/28 hashes, no runtime), source regression `ProducedHardCarriersAreAtlasBarriersNotSourceBoundaryTransit`; source barrier origin is genuine atlas output, not test-labelled. Evidence `Architecture_M6_CP3_R4_RA431_Produced_Hard_Barrier_Authority_Oracle_20261013.md`.
