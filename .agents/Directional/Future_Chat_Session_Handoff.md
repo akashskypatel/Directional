@@ -1,3 +1,9 @@
+## CURRENT — R4 RA-43.1 producer hard-carrier barrier source oracle (2026-10-13 UTC)
+
+Same `M6-CP3-CB1-ENTRY-R4` Code + Build, not complete. New test `ProducedHardCarriersAreAtlasBarriersNotSourceBoundaryTransit` requires genuinely A1-produced typed `HardFeature` barriers from the rectangular hard rail fixture to bind to all requested source hard keys, be absent from traversable A3 topology, match A2a mandatory rail ID/kind, and remain distinct from genuine source boundary classification. This complements but does not repeat the earlier caller-labelled `HardCarrierStarCutPreservesBoundaryTransit` unit filter. Source-only; no runtime. See `Architecture_M6_CP3_R4_RA431_Produced_Hard_Barrier_Authority_Oracle_20261013.md`. Apply and eight-target GMP/GMPXX compile are pending. Keep all R4 RA-43.1/.4, RA-46.5, RA-47.12, historical and multi-carrier gates open. No TB497 or successor.
+
+---
+
 ## CURRENT — R4 RA-47.12 uninjected producer liveness oracle COMPILE GREEN (2026-10-13 UTC)
 
 Same unfinished `M6-CP3-CB1-ENTRY-R4` Code + Build. A new no-injection REPackage source regression requiring producer-issued hard keys `(1,4)` and `(4,7)` to bind exactly to mandatory field-aligned network edges applied at `3b8b14e31f7546eb59f71fa9c1b3617b83ed59c7` (Drive `38390007877`, staged file deleted) and eight-target GMP/GMPXX compile GREEN run `38390222662`, artifact `11808227197` SHA-256 `a02f07389274950cdcd20ebc7e9d2ae63445956cda9a6d1aabb7807ce4ad1530`, all 28/28 hashes; no runtime. Exact `Architecture_M6_CP3_R4_RA4712_Uninjected_Pipeline_Rail_Liveness_Source_Oracle_20261013.md`. RA-47.12 runtime liveness, RA-43.1/.4, RA-46.5, historical 39/34/7/88/six and genuine odd-tau multi-carrier remain OPEN; RA-50 discharges RA-43.2. No TB497 or successor.

@@ -6624,6 +6624,63 @@ TEST(SurfaceCellAuthorityContractCutover,
             rejected.error().code);
 }
 
+// RA-43.1: distinguish producer-attested hard carrier barriers from
+// caller-labelled star filters. This uses the unmodified A1/A2a producer
+// atlas and genuine typed source keys; it does not execute the later A4 gate.
+TEST(SurfaceCellAuthorityContractCutover,
+     ProducedHardCarriersAreAtlasBarriersNotSourceBoundaryTransit) {
+  using directional::authority::FieldTransportBarrierKind;
+  using directional::geometry::SurfaceCellRailKind;
+  const auto fixture = build_rectangular_hard_rail_phase_front();
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            fixture.network.phaseFront.disposition())
+      << hard_rail_first_failure_detail(fixture.network);
+  ASSERT_TRUE(fixture.atlas.has_value());
+  ASSERT_TRUE(fixture.fieldNetwork.has_value());
+  ASSERT_FALSE(fixture.hardFeatureEdges.empty());
+  ASSERT_FALSE(fixture.rails.empty());
+
+  const auto &transportEdges = fixture.atlas->branch_topology().transports();
+  std::set<directional::authority::SourceEdgeTopologyKey> hardBarriers;
+  std::set<directional::authority::SourceEdgeTopologyKey> boundaryBarriers;
+  for (const auto &barrier : fixture.atlas->nontraversable_edges()) {
+    if (barrier.kind == FieldTransportBarrierKind::HardFeature) {
+      ASSERT_TRUE(fixture.hardFeatureEdges.contains(barrier.sourceEdge))
+          << "a producer hard carrier must be an actual source hard edge";
+      ASSERT_TRUE(barrier.firstFace.has_value());
+      ASSERT_TRUE(barrier.secondFace.has_value())
+          << "this fixture's hard carriers are interior source edges";
+      EXPECT_TRUE(hardBarriers.insert(barrier.sourceEdge).second);
+      EXPECT_EQ(transportEdges.end(),
+                std::find_if(transportEdges.begin(), transportEdges.end(),
+                             [&](const auto &step) {
+                               return step.sourceEdge == barrier.sourceEdge;
+                             }))
+          << "an A1 hard carrier cannot remain an A3 traversable link";
+      const auto *mandatory =
+          fixture.fieldNetwork->find_mandatory_edge(barrier.sourceEdge);
+      ASSERT_NE(mandatory, nullptr);
+      EXPECT_EQ(SurfaceCellRailKind::HardFeature, mandatory->kind);
+      const auto ownedRail = std::find_if(
+          fixture.rails.begin(), fixture.rails.end(), [&](const auto &rail) {
+            return rail.kind == SurfaceCellRailKind::HardFeature &&
+                   std::find(rail.sourceEdges.begin(), rail.sourceEdges.end(),
+                             barrier.sourceEdge) != rail.sourceEdges.end();
+          });
+      ASSERT_NE(fixture.rails.end(), ownedRail);
+      EXPECT_EQ(ownedRail->id, mandatory->rail);
+    } else if (barrier.kind == FieldTransportBarrierKind::SourceBoundary) {
+      EXPECT_FALSE(fixture.hardFeatureEdges.contains(barrier.sourceEdge));
+      EXPECT_FALSE(barrier.secondFace.has_value());
+      EXPECT_TRUE(boundaryBarriers.insert(barrier.sourceEdge).second);
+    }
+  }
+  EXPECT_EQ(fixture.hardFeatureEdges, hardBarriers)
+      << "every requested genuine source hard carrier must be A1 published";
+  EXPECT_FALSE(boundaryBarriers.empty())
+      << "the comparison requires real source boundary classifications";
+}
+
 TEST(SurfaceCellAuthorityContractCutover,
      FixedConformityPlanTargetPerturbationPreservesSharedBoundaryIntervals) {
   const auto fixture = build_rectangular_hard_rail_phase_front();

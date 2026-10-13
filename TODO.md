@@ -1,3 +1,10 @@
+## CURRENT — R4 RA-43.1 producer barrier authority source oracle (2026-10-13 UTC)
+
+- [ ] Apply and compile-only verify `SurfaceCellAuthorityContractCutover.ProducedHardCarriersAreAtlasBarriersNotSourceBoundaryTransit` against verified source `45d09820b25f4330bad825cee1e5a1349d9fc0c1` (5668/5668 hashes). It checks unmodified A1 producer hard/barrier kinds, full typed key set, exclusion of hard A3 traversals, and mandatory A2a rail ID ownership; distinct from test-labelled RA-43.1 star filter. No runtime or TB497 in Code + Build. See `Architecture_M6_CP3_R4_RA431_Produced_Hard_Barrier_Authority_Oracle_20261013.md`.
+- [ ] RA-43.1/.4 broader producer/consumer evidence, RA-46.5, RA-47.12 executed liveness, 39/34/7/88/six historical cases and real odd-tau multi-carrier remain open. RA-50 discharges RA-43.2.
+
+---
+
 ## CURRENT — R4 RA-47.12 no-injection pipeline source oracle compiled (2026-10-13 UTC)
 
 - [x] Applied at `3b8b14e31f7546eb59f71fa9c1b3617b83ed59c7` in `38390007877`; eight-target GMP/GMPXX compile GREEN `38390222662` (artifact `11808227197`, SHA-256 `a02f07389274950cdcd20ebc7e9d2ae63445956cda9a6d1aabb7807ce4ad1530`, 28/28 manifest). Source test only; **no runtime execution**. See `Architecture_M6_CP3_R4_RA4712_Uninjected_Pipeline_Rail_Liveness_Source_Oracle_20261013.md`.
