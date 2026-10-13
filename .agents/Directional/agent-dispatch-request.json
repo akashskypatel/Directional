@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra431-a1-junction-20261013t1856z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra431-a1-junction-apply",
-  "file_id": "1SE1wlsDsc8mis9FpbhuFd2YzuuJkCqb2",
-  "patch_sha256": "127ec4b58b1ef7abf8d071baefc3564d5eecd6041529e9abbd863444ad4da11b",
-  "base_sha": "fb5229743edc72b5922ec43c7733e3f0dc700eed",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test: source-attest produced A4 multi-carrier A1 junction holonomy"
+  "request_id": "m6-cp3-r4-ra431-a1-junction-compile-20261013t1858z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-ra431-a1-junction-compile",
+  "source_sha": "c881598a55806b1c5dd4aaa466e8a1e2eb347dbb",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-r4-ra431-a1-junction"
 }
