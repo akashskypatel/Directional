@@ -1,3 +1,10 @@
+## CURRENT — R4 RA-43.4 strict no-network default tracing ingress (2026-10-13 UTC)
+
+- [ ] Preserve the producer-authenticated typed rail positive and missing-published-key negative in the existing Phase14 test at the real public `trace_surface_field` entry. Exact snapshot `fc22e74ec72570d401a14f7146cda8a8a82ffaec` (run `38356618714`), source-only oracle. Apply and compile eight GMP/GMPXX targets through durable Actions; no runtime test/benchmark, no TB497. Scope and non-vacuity: `Architecture_M6_CP3_R4_RA434_Strict_Trace_Entry_Missing_Edge_Oracle_20261013.md`.
+- [ ] R4 remains IN_PROGRESS: RA-43.1/.4 global, RA-46.5, RA-47.12 runtime liveness, historical 39/34/7/88/six and genuine odd-τ multi-carrier remain open. RA-43.2 discharged under RA-50.
+
+---
+
 ## CURRENT — R4 RA-43.4 strict no-network published-edge key migration (2026-10-13 UTC)
 
 - [x] Applied at `52389f6749e90e9fdc9c9f2b711ea0c339e323ca` and exact eight-target GMP/GMPXX compile GREEN in `38355543522` (28/28 package checksums, 8/8 targets, GMPXX/GMP link, runtime disabled) the `rail_interval_refs` default strict no-network producer edge-list requirement plus Phase14 / REPackage authored typed source-edge fixture migration, preserving first-rejection predicates and named no-network diagnostic mode. Frozen selector unchanged; no executable/test/benchmark run. Inspect `Architecture_M6_CP3_R4_RA434_Strict_NoNetwork_Published_Edge_Keys_Code_Build_Record_20261013.md` for exact snapshot/patch/authority. Update compile evidence only after verifying immutable package.

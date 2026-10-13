@@ -1,3 +1,9 @@
+## CURRENT — R4 RA-43.4 strict trace entry missing-edge oracle (2026-10-13 UTC)
+
+Same canonical `M6-CP3-CB1-ENTRY-R4` Code + Build, no runtime. Verified exact snapshot `fc22e74ec72570d401a14f7146cda8a8a82ffaec` (workflow `38356618714`, 5,603 file hashes). A bounded test-only Phase14 extension independently checks the public `trace_surface_field` strict **no-network** path: an intact typed rail must avoid `FieldMetadata`, and removal of only its published edge-key list must trigger `FieldMetadata`. The prior helper-level missing-key regression and explicitly named standalone diagnostic behavior remain intact. Exact scope: `Architecture_M6_CP3_R4_RA434_Strict_Trace_Entry_Missing_Edge_Oracle_20261013.md`. Apply/compile evidence pending; no runtime PASS or TB497. RA-50 discharged RA-43.2 and forbids fabricated filled-side authority. Remaining RA-43.1/.4, RA-46.5, RA-47.12, historical 39/34/7/88/six, odd-τ/multi-carrier obligations continue.
+
+---
+
 ## CURRENT — RA-43.4 strict no-network source-edge key compile GREEN (2026-10-13 UTC)
 
 Same canonical `M6-CP3-CB1-ENTRY-R4`, Code + Build. Strict no-network published-edge requirement and all migrated Phase14/REPackage fixture keys applied at source `52389f6749e90e9fdc9c9f2b711ea0c339e323ca` (Drive workflow `38355365948`, stage owner deleted). Eight-target mandatory GMP/GMPXX compile **GREEN** in run `38355543522`, artifact `11792443636` ZIP SHA-256 `be9678338ab324cc490d8ed5cfd46757d2427568e97e0caa6ecf5d6e83fc0ec1`; verified 28/28 manifest hashes, eight targets, exits 0/0, GMPXX/GMP link, five clean source-status records, `runtimeExecution=false`. Authored first-rejection negative still **unexecuted**; no TB497 or successor. Detailed `Architecture_M6_CP3_R4_RA434_Strict_NoNetwork_Published_Edge_Keys_Code_Build_Record_20261013.md`. Other RA-43/46/47/historical/odd-τ gates remain open.

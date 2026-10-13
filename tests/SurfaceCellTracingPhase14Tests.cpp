@@ -1817,6 +1817,32 @@ TEST(SurfaceCellTracingPhase14,
   };
   EXPECT_EQ(validateProduction().status,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::Valid);
+  // Exercise the actual strict trace entry, not only its shared helper. The
+  // exact same typed rail and valid seed must enter normal tracing with its
+  // producer-published key, then fail at preprocessing if that key disappears.
+  // This is a source-only oracle; executing it belongs to Test + Benchmark.
+  {
+    Eigen::MatrixXd traceAxisX, traceAxisY;
+    constant_axes(mesh, traceAxisX, traceAxisY);
+    directional::geometry::SurfaceTraceSeed traceSeed;
+    traceSeed.point.face = 0;
+    traceSeed.point.barycentric << 0.2, 0.3, 0.5;
+    directional::geometry::SurfaceCellTracingOptions traceOptions;
+    traceOptions.authoritativeRails = {rail};
+    const auto intactTrace = directional::geometry::trace_surface_field(
+        mesh.vertices, mesh.faces, traceAxisX, traceAxisY, traceSeed, 0, 1,
+        traceOptions);
+    EXPECT_NE(intactTrace.termination,
+              directional::geometry::TraceTerminationReason::FieldMetadata)
+        << "a complete typed rail must not fail the trace ingress";
+    traceOptions.authoritativeRails.front().sourceEdges.clear();
+    const auto missingKeyTrace = directional::geometry::trace_surface_field(
+        mesh.vertices, mesh.faces, traceAxisX, traceAxisY, traceSeed, 0, 1,
+        traceOptions);
+    EXPECT_EQ(missingKeyTrace.termination,
+              directional::geometry::TraceTerminationReason::FieldMetadata)
+        << "default production tracing must not reconstruct absent source keys";
+  }
   // A no-network strict caller must not infer a missing producer edge key
   // from the exact typed vertex endpoints or the geometric sample pair.
   const auto originalPublishedEdges = rail.sourceEdges;
