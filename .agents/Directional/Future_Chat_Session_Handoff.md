@@ -1,3 +1,62 @@
+## CURRENT — RA-43.2 DISCHARGED; oriented-side receipt REFUSED; RA-50 frozen (2026-10-13 UTC)
+
+**This supersedes the RA-43.2 oriented-germ review request below. There is no open REVIEW_BLOCKER.** Turn
+`M6-CP3-R4-ORIENTED-TERMINAL-SIDE-ARCH-REV` COMPLETE; successor `M6-CP3-CB1-ENTRY-R4` resumes as Code + Build.
+
+**What was adjudicated.** The request asked Review to accept "producer-authenticated oriented terminal
+source-face germs and front-filled-side ownership" as RA-43.2's open obligation. RA-43.2 ends with the words
+**"for contact purposes"**; the contact is the typed terminal **vertex pair**, and RA-45.7 names the residue as
+a **consumption**, not a new publisher. That consumption has landed
+(`src/geometry/SurfaceCellTracing.cpp:19013-19014`, `:19064-19069`; fail-closed `:19038-19043` and `:19068`;
+factory re-validation `:8308-8325` and `:8474-8497`). **RA-43.2 is DISCHARGED.** RA-43.1 (carrier cut) and
+RA-43.4 (global legacy disposition) remain open. Root class `R4-SCOPE-01 / FROZEN_CLAUSE_SCOPE_INFLATION` —
+the inverse of RA-49.0's stage-locus error: wrong **extent** rather than wrong **stage**.
+
+**The receipt is REFUSED and may not be designed.** `filledCell` is an `authority::CellId`, `filledSide` a
+quad-cell side index in `[0,4)` (`include/directional/geometry/SurfaceCellTracing.h:1555-1557`). Quad cells are
+minted by A4's tracing; a source-authored receipt naming a filled-side owner must **invent** the right-hand
+side of its own binding. No "minimal new producer output" may be specified.
+
+**The authority is already there, in three stages.** Factory `:8588-8637` re-derives side ownership from source
+topology and A3 only (`unique_terminal_star_path` **Unique** both sides at `:8596-8608`; per-step
+`matchesA3`/incidence/chaining/no-repeat at `:8613-8626`; forced termination at the carrier faces `:8628-8632`;
+disjoint sectors `:8632-8637`). Consumer `:19137-19173` selects the carrier orientation by source sectors,
+rejecting `ambiguous-carrier-orientation` at `:19166`. A5 closes the filled-side binding at
+`src/pipeline/RemeshPipeline.cpp:5003-5004` and `:5008-5012`.
+
+**New finding `R4-SID-01 / SIDE_AUTHORITY_LOCUS`.** The certificate alone is side-symmetric; the symmetry is
+broken only at `make :8458-8466` (front-edge pairing fixed `:8438-8447`) and A5 `:5003-5004`.
+`attachmentTransport()` inverts under a global swap, so `:5008-5012` separates it only when the composed τ is
+not self-inverse; for τ ∈ {0, 2}, `:5003-5004` is the **sole** discriminator and is load-bearing. **A
+regression asserting the certificate by itself determines the filled side is vacuous** (LESSONS 171 class) and
+may not be written or counted.
+
+**Accepted from the request:** the RA-46.5 double-counting warning
+(`tests/SurfaceCellTransitionQuotientTests.cpp:9052-9071` is a **factory** `MissingTerminalA3Path` negative,
+not the **consumer** predicate `missing-terminal-A3-path` at `:19175`); `append_edge_interval`'s first-in-range
+`incidentFaces` row is architecturally inert (`RemeshPipeline.cpp:9289-9307`); RA-49.5 / `R4-CTC-01` stays a
+deferred Definition issue with both checks retained.
+
+**RA-47 verified IMPLEMENTED** (.1–.10): typed `sourceEdges` (`SurfaceCellTracing.h:113`), typed publication
+`:9365`/`:9512`, typed digests `:2043-2047`/`:10013-10017`, remap **deleted and replaced** at `:18094-18108`
+with fail-closed `InvalidTypedRailSourceEdgeRemap`. **RA-47.11 outstanding**: `source_edge_index` survives with
+six uses in `tests/FieldAlignedCurveNetworkTests.cpp` — report legitimate or migrate. RA-47.12 liveness is
+still an open **report**.
+
+**Citation drift:** RA-43.4's patches shifted `SurfaceCellTracing.cpp` ≈ +16 lines. RA-49's `:18999`, `:19052`,
+`:19055`, `:19167`, `:19170`, `:19446` now read `:19015`, `:19068`, `:19071`, `:19183`, `:19186`, `:19462`.
+RA-49.0's ordering is unchanged; re-anchor by symbol, not line.
+
+**Carried undischarged:** RA-49.2's duplicated-endpoint witness, RA-48.3 `set_mesh` injection seam plus the
+inaccurate atlas comment, RA-46.6 typed sub-codes extended per RA-48.6, RA-46.9, RA-43.1, RA-43.4 global
+disposition, the multi-carrier produced witness, organic D1/D2/D3/D5 and A6/A7 witnesses, the odd-τ witness,
+88 accepted CP2 restorations, and the 39 endpoint / 34 Phase10 / seven DCEL (compiled, **not executed**) / six
+CP3 positives. No runtime credit; ledger 66/17/49, debt 1; CP2 491/491 accepted; R3 403/497 rejected. TB497 and
+any successor beyond `M6-CP3-TB1-ENTRY-R4` remain unauthorized. Decision:
+`Architecture_M6_CP3_R4_Oriented_Terminal_Side_Authority_Review_Decision.md`.
+
+---
+
 ## CURRENT — R4 source-authority oriented terminal germ proof unresolved; independent producer boundary decision requested (2026-10-13 UTC)
 
 Same `M6-CP3-CB1-ENTRY-R4`. Fresh immutable source `d02b5d6d6422e8ccb5fd932f65ac19b14808f573` (workflow `38330910540`, artifact `11782477329`, **5541/5541** hashes) confirms that ordered hard-rail edge/vertex identities are producer-authenticated but no independently published `(rail, terminal, filled-side, oriented source-face germ)` relation was found. A winding-derived carrier face pair is a candidate producer receipt, **not** proof linking front-filled-side identity to it. Design falsifiers, required independent-source owner and stop condition are recorded in `Architecture_M6_CP3_R4_RA432_Oriented_Germ_Producer_Boundary_Review_Request_20261013.md`. R4 remains unresolved; do not implement a fabricated side mapping. Separately, checked factory already has a typed `MissingTerminalA3Path` negative, **not** the A4 consumer's first-rejection fixture. No code/test/runtime claims or TB497 authorization.

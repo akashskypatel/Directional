@@ -1,3 +1,57 @@
+## CURRENT — 2026-10-13 `M6-CP3-R4-ORIENTED-TERMINAL-SIDE-ARCH-REV` COMPLETE; RA-50 frozen
+
+**The RA-43.2 oriented-germ review request is resolved and supersedes the stop paragraphs below. There is no
+open REVIEW_BLOCKER.** RA-43.2 is **DISCHARGED**. The requested producer receipt is **REFUSED**. RA-47 is
+**implemented** (.1–.10 verified here); the next turn's priorities are RA-49.2's witness, RA-48.3, RA-46.6 and
+RA-43.1.
+
+**Why the block dissolved.** RA-43.2 ends with the words **"for contact purposes"** — the contact is the typed
+terminal **vertex pair**, and RA-45.7 names the open residue as a **consumption**, not a new publisher. An
+oriented source-face germ pair and a front-filled-side owner appear in no frozen clause. The consumption has
+landed: `src/geometry/SurfaceCellTracing.cpp:19013-19014` finds the contact by `*first.railId`, `:19064-19069`
+selects the terminal vertex from `contact->second.endpoints`, and `from.face`/`to.face` reach no contact
+decision. Reading a frozen clause past its own stated limit and then declaring the inflated version
+unsatisfiable is `R4-SCOPE-01 / FROZEN_CLAUSE_SCOPE_INFLATION` — the inverse of RA-49.0's stage-locus error:
+wrong **extent** rather than wrong **stage**.
+
+**Why the receipt cannot be built.** `filledCell` is an `authority::CellId` and `filledSide` a quad-cell side
+index in `[0,4)` (`include/directional/geometry/SurfaceCellTracing.h:1555-1557`). Quad cells are minted by A4's
+tracing and have no source-domain existence, so a source-authored filled-side owner would have to **invent** the
+right-hand side of its own binding. Fifth namespace beside RA-43.3's four; ninth publish/don't-invent instance
+and its second structural variant — *do not demand an attestation of something that does not yet exist.*
+
+**Where the oriented-side authority actually lives.** The request cited factory `:8450-8467` and concluded from
+the absence of `:8588-8637`, which re-derives side ownership inside the factory from source topology and A3
+only — `unique_terminal_star_path` **Unique** on both attachment→carrier walks (`:8596-8608`), per-step
+`matchesA3`/incidence/chaining/no-repeat re-validation (`:8613-8626`), forced termination at
+`carrier.firstFace`/`carrier.secondFace` (`:8628-8632`), disjoint sectors (`:8632-8637`). The consumer selects
+the carrier **orientation** by source sectors over both candidates and rejects
+`ambiguous-carrier-orientation` when both succeed (`:19137-19173`, `:19166`). A5 closes the filled-side binding
+at `src/pipeline/RemeshPipeline.cpp:5003-5004` and `:5008-5012`.
+
+**`R4-SID-01 / SIDE_AUTHORITY_LOCUS`.** The certificate **alone** is side-symmetric. The symmetry is broken
+only externally, at `make :8458-8466` and A5 `:5003-5004`; `attachmentTransport()` inverts under a global swap,
+so `:5008-5012` separates it only when the composed τ is not self-inverse. For τ ∈ {0, 2}, `:5003-5004` is the
+**sole** discriminator — load-bearing, not redundant. **Any regression asserting the certificate by itself
+determines the filled side is vacuous** and may not be written or counted.
+
+**Accepted from the request:** the RA-46.5 double-counting warning (the `MissingTerminalA3Path` test at
+`tests/SurfaceCellTransitionQuotientTests.cpp:9052-9071` is a **factory** negative, not the **consumer**
+first-rejection predicate at `:19175`); the inert `append_edge_interval` `incidentFaces` observation
+(`RemeshPipeline.cpp:9289-9307`); RA-49.5 / `R4-CTC-01` as a deferred Definition issue.
+
+**Line citations drifted ≈ +16** in `SurfaceCellTracing.cpp` from RA-43.4's patches. RA-49's `:18999`,
+`:19052`, `:19055`, `:19167`, `:19170`, `:19446` now read `:19015`, `:19068`, `:19071`, `:19183`, `:19186`,
+`:19462`; RA-49.0's ordering is unchanged. Re-anchor by symbol, not line.
+
+No runtime credit. Ledger **66/17/49**, M6 debt **1**; selector **497** untouched; CP2 **491/491** accepted;
+R3 **403/497** rejected with 94 RED and 88 accepted CP2 losses. RA-41's junction/sector clauses remain frozen
+**UNEXERCISED**; `overlapping-terminal-sectors` and `missing-or-nonreciprocal-terminal-A3` stay
+**unadjudicated** per RA-49.7. Decision:
+`.agents/Directional/Architecture_M6_CP3_R4_Oriented_Terminal_Side_Authority_Review_Decision.md`.
+
+---
+
 ## CURRENT — 2026-10-12 `M6-CP3-R4-AMBIGUOUS-TERMINAL-CONTACT-ARCH-REV` COMPLETE; RA-49 frozen
 
 **The RA-46.5 review stop is resolved AGAINST the request and supersedes the stop paragraphs below. There is

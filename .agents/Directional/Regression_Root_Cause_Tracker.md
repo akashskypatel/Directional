@@ -1,3 +1,79 @@
+## CURRENT — RA-43.2 DISCHARGED; oriented-side producer receipt REFUSED; R4-SID-01 frozen (2026-10-13)
+
+**The RA-43.2 oriented-terminal-germ REVIEW_BLOCKER is DISSOLVED.** RA-50 frozen. The request asked Review to
+authenticate "producer-authenticated oriented terminal source-face germs and front-filled-side ownership" as
+an RA-43.2 obligation. RA-43.2 ends with the words **"for contact purposes"**, and the *contact* is the typed
+terminal **vertex pair**. An oriented source-face germ pair and a front-filled-side owner appear in no clause
+of RA-43, RA-44, RA-45, RA-46, RA-47, RA-48 or RA-49; RA-45.7 names the residue as a **consumption**, not a
+new publisher. **Root class:** `R4-SCOPE-01 / FROZEN_CLAUSE_SCOPE_INFLATION` — a frozen clause read past its
+own stated limit, then declared unsatisfiable in the inflated form. This is the inverse of the RA-49.0
+stage-locus error: there a guard was cited at the wrong **stage**, here a clause at the wrong **extent**.
+
+**RA-43.2 is discharged by bytes.** `src/geometry/SurfaceCellTracing.cpp:19013-19014` finds the contact by
+`*first.railId`; `:19064-19069` selects the terminal vertex from `contact->second.endpoints`;
+`from.face`/`to.face` reach no contact decision. Fail-closed at `:19038-19043` and `:19068`; factory
+re-validation at `:8308-8325` (component) and `:8474-8497` (endpoints against the carrier's first/last
+vertex). RA-43.1 (carrier cut) and RA-43.4 (global legacy disposition) remain separately open.
+
+**The requested receipt cannot exist.** `filledCell` is an `authority::CellId` and `filledSide` a side index
+in `[0,4)` of an **A4 quad cell** (`include/directional/geometry/SurfaceCellTracing.h:1555-1557`). Quad cells
+are minted by A4's tracing and have no source-domain existence, so a source-authored receipt naming a
+filled-side owner must **invent** the right-hand side of its own binding. Fifth namespace beside RA-43.3's
+four; ninth instance of the publish/don't-invent family and its second structural variant — *do not demand an
+attestation of something that does not yet exist.*
+
+**The authority the request said was missing is implemented, in three stages.** The request cited
+`SurfaceCellTracing.cpp:8450-8467` and concluded from the absence of what follows it. `make` continues at
+`:8588-8637` under the comment "A2b uniqueness is checked from source topology, not asserted by the paths in
+the certificate being validated": `unique_terminal_star_path` required **Unique** for both
+attachment→carrier-side walks (`:8596-8608`); every `contactPaths[side]` step re-validated against
+`hardFeatureEdges`, terminal-vertex incidence, chaining, face incidence, `matchesA3` and no repeated face
+(`:8613-8626`); termination forced at `carrier.firstFace`/`carrier.secondFace` (`:8628-8632`); the two sectors
+required **disjoint** (`:8632-8637`). Upstream, `:19137-19173` tries **both** carrier orientations and keeps
+the one the sectors support, rejecting `ambiguous-carrier-orientation` (`:19166`) when both do — the
+orientation is **selected by source topology and A3**, not copied from the trace. Downstream, A5 closes the
+filled-side binding at `RemeshPipeline.cpp:5003-5004` (attachments against occurrence `placement.selectedFace`)
+and `:5008-5012` (`attachmentTransport()` against the observed branch-rotation difference).
+
+**`R4-SID-01 / SIDE_AUTHORITY_LOCUS` (architectural, no runtime credit).** The certificate **alone** is
+side-symmetric: swapping `firstAttachment`/`secondAttachment` with the carrier reversed is internally
+consistent, because the orientation loop accepts whichever orientation the sectors support. The symmetry is
+broken only externally — `make :8458-8466` against the front-edge pairing fixed at `:8438-8447`, and A5
+`:5003-5004` against occurrence placement. `attachmentTransport()` **inverts** under that swap, so
+`:5008-5012` separates it **only when the composed τ is not self-inverse**; for τ ∈ {0, 2} the inverse equals
+itself and `:5003-5004` is the **sole** discriminator. That check is load-bearing: not to be weakened,
+reordered, or called redundant with `:5008-5012`. **Vacuity consequence (LESSONS 171 class):** a regression
+asserting that the certificate by itself determines the filled side is **vacuous** and may not be written or
+counted; a side negative must tamper at one of the two external pins and name which rejected.
+
+**Three of the request's points are ACCEPTED.** (a) The RA-46.5 double-counting warning stands:
+`tests/SurfaceCellTransitionQuotientTests.cpp:9052-9071` is a genuine non-vacuous **factory**
+`MissingTerminalA3Path` negative and is **not** the A4 **consumer** predicate `missing-terminal-A3-path` at
+`:19175`; it may not be counted toward consumer first-rejection coverage. (b) `append_edge_interval`'s
+first-in-range `edge.incidentFaces` row (`RemeshPipeline.cpp:9289-9295`) is correctly observed and
+**architecturally inert** — it feeds only `make_surface_cell_rail_sample` geometry under the corner-membership
+guard at `:9301-9307` and is never a side credential; no repair owed. (c) RA-49.5 / `R4-CTC-01` is correctly
+preserved as a deferred Definition issue.
+
+**RA-47 is IMPLEMENTED and independently verified here.** `sourceEdges` is
+`std::vector<authority::SourceEdgeTopologyKey>` (`SurfaceCellTracing.h:113`); typed publication at
+`RemeshPipeline.cpp:9365`/`:9512`; typed digests at `:2043-2047`/`:10013-10017`; and the component remap was
+**deleted and replaced**, not converted — `:18094-18108` rebuilds keys from the already-remapped
+`sourceVertices` chain, failing closed with `InvalidTypedRailSourceEdgeRemap`. RA-47.1–.10 discharged.
+**RA-47.11 is not:** `source_edge_index` survives with six uses in `tests/FieldAlignedCurveNetworkTests.cpp`.
+
+**Citation drift.** RA-43.4's two patches shifted `SurfaceCellTracing.cpp` by ≈ +16 lines. RA-49's `:18999`,
+`:19052`, `:19055`, `:19167`, `:19170`, `:19446` now read `:19015`, `:19068`, `:19071`, `:19183`, `:19186`,
+`:19462`. RA-49.0's ordering is unchanged and no RA-49 conclusion moves. Re-anchor by symbol, not by line.
+
+**No runtime credit.** Ledger **66 events / 17 categories / 49 recurrences**, M6 debt **1**, unchanged.
+Selector 497 untouched; CP2 491/491 accepted; R3 403/497 rejected with 94 RED and 88 accepted CP2 losses.
+RA-41's junction/sector clauses remain frozen **UNEXERCISED**; `overlapping-terminal-sectors` and
+`missing-or-nonreciprocal-terminal-A3` remain **unadjudicated** per RA-49.7. Decision:
+`Architecture_M6_CP3_R4_Oriented_Terminal_Side_Authority_Review_Decision.md`.
+
+---
+
 ## CURRENT — `ambiguous-terminal-contact` is REACHABLE; retirement REJECTED; R4-CTC-01 frozen (2026-10-12)
 
 **The RA-46.5 retirement request is REJECTED and the obligation stands unamended.** The request's deduction
