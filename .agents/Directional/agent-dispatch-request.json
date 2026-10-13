@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra51-partial-topology-20261013t1947z",
+  "request_id": "m6-cp3-r4-ra516-winding-20261013t2005z",
   "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-ra51-partial-topology",
-  "source_sha": "130c160afb880aba037492e25b200edbfdb60747",
+  "mailbox_key": "m6-cp3-r4-ra516-winding",
+  "source_sha": "c339f8df712efed051da1469002dede2f46972ee",
   "targets": [
     "directional_core",
     "directional_pipeline",
@@ -14,5 +14,5 @@
     "directional_compiled_api_tests",
     "directional_benchmarks"
   ],
-  "artifact_prefix": "directional-m6-cp3-r4-ra51-partial-topology"
+  "artifact_prefix": "directional-m6-cp3-r4-ra516-winding"
 }
