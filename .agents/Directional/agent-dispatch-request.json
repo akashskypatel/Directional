@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra4710-closeout-20261013t0912z",
+  "request_id": "m6-cp3-r4-ra477-component-recover-20261013t1033z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra4710-compile-closeout-apply",
-  "file_id": "15DOXJDWfC516XdujhxrmRq2O6A90WOre",
-  "patch_sha256": "aa6d02bc5be7afc8063b5e72b00930b90b862f2ae5f5b1beec3a77fad267fe70",
-  "base_sha": "dc54fb819416639a67568e1a994299038a49d92f",
+  "mailbox_key": "m6-cp3-r4-ra477-component-recover-apply",
+  "file_id": "1GY12FkqEG_-gDf4qnteUDvbQCBDgcOYQ",
+  "patch_sha256": "41da7542dd92256be6bbe07342dffc602361697a8acb435f94df61010625a6cb",
+  "base_sha": "08de7bd1cc34c4877f566432f746969463c63a4e",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): reconcile R4 RA-47.10 compile handoff"
+  "commit_message": "test(directional): cross-check decomposed rail source-edge keys"
 }
