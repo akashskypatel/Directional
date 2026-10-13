@@ -156,6 +156,26 @@ TEST(MilestoneGP26, InjectedEdgeTablesMustMatchDerivedSourceFaces) {
     EXPECT_STREQ("set_mesh(): injected edge topology disagrees with faces",
                  error.what());
   }
+
+  // Reversing every face preserves a coherent mesh but invalidates cached
+  // oriented edge tables from the original source winding.
+  auto reversedFaces = reference.F;
+  for (int row = 0; row < reversedFaces.rows(); ++row)
+    std::swap(reversedFaces(row, 1), reversedFaces(row, 2));
+  directional::TriMesh reversed;
+  ASSERT_NO_THROW(reversed.set_mesh(reference.V, reversedFaces));
+  ASSERT_EQ(reference.FE.rows(), reversed.FE.rows());
+  ASSERT_EQ(reference.FE.cols(), reversed.FE.cols());
+  ASSERT_FALSE((reference.FE.array() == reversed.FE.array()).all());
+  directional::TriMesh staleWinding;
+  try {
+    staleWinding.set_mesh(reference.V, reversedFaces, reference.EV,
+                          reference.FE, reference.EF);
+    FAIL() << "stale edge tables accepted after coherent winding reversal";
+  } catch (const std::runtime_error &error) {
+    EXPECT_STREQ("set_mesh(): injected edge topology disagrees with faces",
+                 error.what());
+  }
 }
 
 TEST(MilestoneGP26, RecoveryTargetProjectionIsBoundedAndDeterministic) {
