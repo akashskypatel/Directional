@@ -1,11 +1,9 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra477-component-recover-20261013t1033z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra477-component-recover-apply",
-  "file_id": "1GY12FkqEG_-gDf4qnteUDvbQCBDgcOYQ",
-  "patch_sha256": "41da7542dd92256be6bbe07342dffc602361697a8acb435f94df61010625a6cb",
-  "base_sha": "08de7bd1cc34c4877f566432f746969463c63a4e",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): cross-check decomposed rail source-edge keys"
+  "request_id": "m6-cp3-r4-ra477-component-compile-20261013t1036z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-ra477-component-compile",
+  "source_sha": "007585f8eac57a74e89e62a416a844e21c15fe35",
+  "targets": ["directional_core", "directional_pipeline", "directional_surface_cell_authority_kernel_tests", "directional_surface_cell_producer_tests", "directional_surface_cell_completion_tests", "directional_surface_cell_validation_tests", "directional_compiled_api_tests", "directional_benchmarks"],
+  "artifact_prefix": "m6-cp3-r4-ra477-component-gmp"
 }
