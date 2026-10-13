@@ -1,3 +1,0 @@
-R4 same canonical Code+Build continuation
-Expected source baseline: 1ed1fd07a8a218e688ca42d8b1e57eedc3adbd0d
-Exact source snapshot for multi-file static inspection; runtime prohibited.
