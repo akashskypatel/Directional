@@ -1,6 +1,14 @@
-## CURRENT — R4-TA3-01 first-rejection feasibility independent REVIEW STOP (2026-10-13 UTC)
+## CURRENT — RA-51 terminal-A3 reachability resolved; R4 Code + Build resumes (2026-10-13 UTC)
 
-- [ ] Review the source-exact `missing-or-nonreciprocal-terminal-A3` RA-46.5 reachability question before writing another fixture or changing frozen semantics. Under a valid matching A1 atlas, values exist on all interior edges with inverse directed transport; possible public-ingress exceptions remain unproven. Detailed review request: `Architecture_M6_CP3_R4_RA465_Terminal_A3_First_Rejection_Review_Stop_20261013.md`. Keep same R4 Code + Build BLOCKED pending independent decision; no TB497, successor, binary tests or benchmark.
+- [x] The independent RA-51 Review **discharged** `R4-TA3-01`: `missing-or-nonreciprocal-terminal-A3` is unreachable under H1–H6 and `overlapping-terminal-sectors` is unreachable under K1–K5. Both fixture obligations are **RETIRED**, their runtime fail-closed guards **retained**. RA-48.3 already landed; its unconditional topology derivation keeps R4-OVF-01 **closed**. Authority: `Architecture_M6_CP3_R4_Terminal_A3_First_Rejection_Review_Decision.md` and frozen `Architecture_M6_Frozen_Definitions.md` RA-51. Do not resurrect these negatives without a broken guard premise or mint dead-disjunct typed sub-codes (RA-51.7).
+- [x] The most recent RA-43.1 source-star continuity oracle in `tests/SurfaceCellREPackageTests.cpp` is **compiled only**, exact source `2e27e52e72e6325fa980bbf531a3f0d6b3bafc4a`, pinned eight-target GMP/GMPXX compile workflow `38444070795` (28/28 packaged hashes, 8/8 targets, no runtime). This is not a PASS or completed RA-43.1 proof. See `Architecture_M6_CP3_R4_RA431_Produced_Hard_Barrier_Authority_Oracle_20261013.md`.
+- [ ] Continue canonical `M6-CP3-CB1-ENTRY-R4` **IN_PROGRESS** Code + Build: remaining RA-43.1 live consumer/germ and RA-43.4 global diagnostic disposition, reachable RA-46.5 first rejections (including `ambiguous-terminal-contact`), RA-47.12 executed liveness, 39 endpoint / 34 Phase10 / seven DCEL / 88 accepted CP2 restorations / six CP3 positives, and genuine odd-τ multi-carrier witnesses. Preserve frozen 497 selector and prior baselines; do **not** execute tests/benchmarks or begin TB497/successor in Code + Build.
+
+---
+
+## HISTORICAL — R4-TA3-01 superseded independent REVIEW STOP (2026-10-13 UTC)
+
+- [x] The earlier request to review `missing-or-nonreciprocal-terminal-A3` was **resolved by RA-51**; the provisional assertion that a public-ingress exception might revive this fixture is superseded. Original review-stop request remains at `Architecture_M6_CP3_R4_RA465_Terminal_A3_First_Rejection_Review_Stop_20261013.md` as historical evidence, not an active blocker. Do not reopen without evidence breaking H1–H6 or K1–K5.
 - [x] Prior R4 RA-43.1 admissible non-hard transport test applied and eight-target GMP compile GREEN at semantic `32eff2943d4c3c8d2183f5a51439d33dc3c84ae1`, run `38405627436`, artifact `11818707033` (28/28 checksums, no runtime). No production runtime acceptance; all prior recovery obligations retained.
 
 ---
