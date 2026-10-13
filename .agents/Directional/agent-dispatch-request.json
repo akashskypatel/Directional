@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra432-open-terminal-compile-20261012t2359z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-ra432-open-terminal-compile",
-  "source_sha": "03b712e660d2bfd0dd8114a158158540a7808a4e",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-ra432-open-terminal-compile"
+  "request_id": "m6-cp3-r4-ra432-open-contact-compile-record-apply-20261013t0002z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-ra432-open-contact-compile-docs",
+  "file_id": "1gszxJMj-lTdyjg0nD4kKSRFQg2xVym1u",
+  "patch_sha256": "e5efdb1eff2a09efffaf368893181c3409af9a08d3897cb4219441710e02bf50",
+  "base_sha": "03b712e660d2bfd0dd8114a158158540a7808a4e",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): preserve verified R4 missing terminal compile evidence"
 }
