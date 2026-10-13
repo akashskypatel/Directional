@@ -12863,6 +12863,22 @@ remesh_from_raw_cross_field_impl_with_stage_products(
       result.diagnostics.surfaceCellFirstInvalidProducerReason =
           geometry::surface_phase_front_failure_reason_name(failure->reason);
       if (failure->reason == geometry::SurfacePhaseFrontFailureReason::
+                                 PublishedProductRejected) {
+        // Keep the checked A4 factory's first typed failure visible at the
+        // public pipeline diagnostic boundary; the broad rejection reason
+        // alone conflates distinct source-authority predicates.
+        if (failure->publishedProductError.has_value()) {
+          result.diagnostics.surfaceCellFirstInvalidProducerReason +=
+              ":product=" + std::to_string(
+                  static_cast<int>(*failure->publishedProductError));
+        }
+        if (failure->publishedProductSourceAuthorityDetail.has_value()) {
+          result.diagnostics.surfaceCellFirstInvalidProducerReason +=
+              ":source=" + std::to_string(static_cast<int>(
+                  *failure->publishedProductSourceAuthorityDetail));
+        }
+      }
+      if (failure->reason == geometry::SurfacePhaseFrontFailureReason::
                                  InvalidHardRailRouteCertificate) {
         // Persist the first failed A4 predicate without changing rejection semantics.
         result.diagnostics.surfaceCellFirstInvalidProducerReason +=
