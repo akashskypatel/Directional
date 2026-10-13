@@ -1,6 +1,6 @@
 ## CURRENT — R4 RA-47.7 component aggregation typed-key equality oracle (2026-10-13 UTC)
 
-- [ ] Apply and eight-target GMP/GMPXX compile-only verify the source-exact, new independent-component/aggregated `sourceEdges` equality oracle. Snapshot `08de7bd1cc34c4877f566432f746969463c63a4e`, 5,640/5,640 checksums; record in `Architecture_M6_CP3_R4_RA477_Component_Aggregation_Independent_Rail_Key_Oracle_20261013.md`. This is not a runtime PASS.
+- [x] Applied the source-exact independent-component/aggregated typed `sourceEdges` equality oracle at `007585f8eac57a74e89e62a416a844e21c15fe35` (Drive workflow `38383973192`); mandatory eight-target GMP/GMPXX compile GREEN `38384224673`, immutable artifact `11805220540` SHA-256 `e564eed3ea3636f1b36262dc91c29e9a65af6c229efc74e58d7935da0c07ddca`, 28/28 manifest and no runtime. Prior transport blocker cleared, Drive file retired. Evidence `Architecture_M6_CP3_R4_RA477_Component_Aggregation_Independent_Rail_Key_Oracle_20261013.md`. **Unexecuted source oracle, not runtime PASS.**
 - [ ] Remain within canonical R4; RA-47.12 executed producer liveness, RA-43.1/.4, RA-46.5, 39/34/7/88/six, odd-τ multi-carrier and separate artifact-only TB remain open. Frozen 497 selector unchanged; no successor.
 
 ---
