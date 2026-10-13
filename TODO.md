@@ -1,3 +1,10 @@
+## CURRENT — R4 RA-46.5 A4 missing terminal A3 consumer oracle (2026-10-13 UTC)
+
+- [ ] Compile-only verify the new Phase10 source test `MissingTerminalA3PathRejectsAtFirstA4ConsumerPredicate`: choose a genuinely produced non-hard A3 terminal step, block only that step in replay, require consumer `EndpointAttachment` and `a2bProbeFailure=missing-terminal-A3-path`. Existing checked-factory `MissingTerminalA3Path` is a separate later-stage oracle and cannot satisfy this coverage. No test runtime, TB497, selector change or successor. Evidence: `Architecture_M6_CP3_R4_RA465_A4_Missing_Terminal_A3_Consumer_Oracle_20261013.md`.
+- [ ] R4 RA-43.1/.4, RA-46.5 other consumer negatives, RA-47.12 executed liveness, historical 39/34/7/88/six and odd-τ multi-carrier obligations remain. RA-43.2 discharged under RA-50.
+
+---
+
 ## CURRENT — R4 public strict trace foreign-key compile verified (2026-10-13 UTC)
 
 - [x] Verified and applied published present/in-range foreign `sourceEdges` negative at public `trace_surface_field` entry, exact source `f5c0d0b325ecf7333abbd3573759ed09a011ea3e`, Drive apply `38366995891`. Mandatory compile-only GMP/GMPXX run `38367436364` GREEN, artifact `11796334785`, SHA-256 `1a56a2ee7fee179e9c5c251e5d68560fb3e714364f8b89084b6ec39707b40f19`, internal 28/28, 8/8 compiled, exit 0/0, GMPXX/GMP generated linkage, five clean source status files, runtime disabled. Initial request rejected targets string before compile; corrected array executed successfully. See `Architecture_M6_CP3_R4_Public_Trace_Foreign_Edge_Oracle_Compile_Record_20261013.md`.
