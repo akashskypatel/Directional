@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ta3-review-stop-20261013t1351z",
+  "request_id": "m6-cp3-r4-ta3-review-stop-retry-20261013t1354z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ta3-review-stop-apply",
-  "file_id": "1PSuBVFDhHaxmHHzk_IFTj0lkOFDLBiH_",
-  "patch_sha256": "4d595ca694e53b6149dbace3be968c6a9267903af3f931d4f650a18e889bf39e",
+  "mailbox_key": "m6-cp3-r4-ta3-review-stop-retry-apply",
+  "file_id": "1D5n9go_TtZ5_83czGQK7cUXNoF0kiAEh",
+  "patch_sha256": "eda84910b0c000c9039d2435f67898b6b69c788dc6824bd9773dac775390d249",
   "base_sha": "0240d0f00d6e4f8f9ebaab7684e4c7c7859be21e",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
   "commit_message": "docs(directional): request independent RA-46.5 terminal A3 feasibility review"
