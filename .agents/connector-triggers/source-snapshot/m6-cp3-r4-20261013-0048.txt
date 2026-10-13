@@ -1,1 +1,0 @@
-Freeze canonical M6-CP3-CB1-ENTRY-R4 after RA-43.4 named-mode compile evidence; inspect exact source for remaining code-build scope.
