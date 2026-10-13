@@ -6705,10 +6705,10 @@ TEST(SurfaceCellAuthorityContractCutover,
         incidentRows[1], static_cast<std::size_t>(fixture.mesh.F.rows()));
     ASSERT_TRUE(first.has_value());
     ASSERT_TRUE(second.has_value());
-    if (fixture.sourceAuthority->region_for_row(*first) ==
-            fixture.sourceAuthority->region_for_row(*second) &&
-        fixture.sourceAuthority->component_for_row(*first) ==
-            fixture.sourceAuthority->component_for_row(*second))
+    if (fixture.sourceAuthority->region_for_row(first.value()) ==
+            fixture.sourceAuthority->region_for_row(second.value()) &&
+        fixture.sourceAuthority->component_for_row(first.value()) ==
+            fixture.sourceAuthority->component_for_row(second.value()))
       expectedTransports.insert(sourceEdge);
   }
   std::set<directional::authority::SourceEdgeTopologyKey> actualTransports;
