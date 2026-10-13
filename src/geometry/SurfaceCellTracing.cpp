@@ -5922,7 +5922,11 @@ rail_interval_refs(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const std::map<authority::SourceEdgeTopologyKey, std::array<int, 2>> &edgeFaces,
     const FieldAlignedCurveNetwork *fieldAlignedNetwork,
-    const bool requireTypedSourceVertices) {
+    const RailIntervalAuthorityMode authorityMode) {
+  // Only an explicitly named standalone diagnostic can relax the typed
+  // ingress. The presence of any field-aligned network always overrides it.
+  const bool requireTypedSourceVertices =
+      authorityMode != RailIntervalAuthorityMode::LegacyStandaloneDiagnostic;
   RailIntervalBuildResult result;
   std::set<authority::HardRailId> railIds;
   std::map<authority::SourceEdgeTopologyKey, authority::HardRailId> edgeOwners;
@@ -10469,7 +10473,9 @@ SurfaceTraceResult trace_surface_field(
   const surface_cell_tracing_detail::RailIntervalBuildResult railBuild =
       surface_cell_tracing_detail::rail_interval_refs(
           options.authoritativeRails, vertices, faces, edgeFaces,
-          options.fieldAlignedNetwork, true);
+          options.fieldAlignedNetwork,
+          surface_cell_tracing_detail::
+              RailIntervalAuthorityMode::RequireTypedSource);
   SurfaceTraceResult result;
   if (railBuild.status != surface_cell_tracing_detail::RailBuildStatus::Valid) {
     result.termination = TraceTerminationReason::FieldMetadata;
@@ -12394,7 +12400,8 @@ SurfacePhaseFrontFailureReason assign_open_front_boundary_authority(
   const auto &sourceEdgeIndices = sourceMatchingIndices;
   const RailIntervalBuildResult railBuild =
       rail_interval_refs(options.authoritativeRails, vertices, faces,
-                         sourceEdgeFaces, options.fieldAlignedNetwork, true);
+                         sourceEdgeFaces, options.fieldAlignedNetwork,
+                         RailIntervalAuthorityMode::RequireTypedSource);
   if (railBuild.status != RailBuildStatus::Valid) {
     return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
   }

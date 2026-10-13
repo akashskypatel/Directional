@@ -1,3 +1,8 @@
+## CURRENT — R4 RA-43.4 explicitly named standalone diagnostic exception (2026-10-13)
+
+- [ ] Apply/compile-source-check the exact-base `RailIntervalAuthorityMode` migration in `rail_interval_refs`: strict typed default, explicit standalone diagnostic-only opt-out, network still forbids untyped ingress. No test/benchmark execution; this is not global legacy retirement. See `Architecture_M6_CP3_R4_RA434_Explicit_Standalone_Diagnostic_Optout_Code_Build_Record_20261013.md`.
+- [ ] R4 oriented producer-side binding and remaining RA-43.4/46.5/47.12/historical/odd-τ gates remain open. No TB497.
+
 ## CURRENT — R4 RA-43.2 missing open-rail provenance compile receipt (2026-10-13 UTC)
 
 - [x] Source-only first-consumer missing-contact negative applied `03b712e660d2bfd0dd8114a158158540a7808a4e` and compiled via workflow `38324952482`, artifact `11781035489`, SHA-256 `4251a424b3371eb0ada98c1e43fd2357199cb943ce3637060ba2bf1a0d4e41a9` (28/28 packaged hashes; 8/8 requested targets; preflight/build exits 0/0; GMP/GMPXX linker; five source-status files clean; exactArithmeticBackend=GMP; runtimeExecution=false); no test runtime.

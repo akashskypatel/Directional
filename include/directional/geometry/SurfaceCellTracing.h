@@ -2487,10 +2487,14 @@ bool rail_sample_geometry_is_valid(
     const SurfaceCellRailSample &sample,
     const std::optional<int> &publishedSourceVertex = std::nullopt);
 
-// Typed source-vertex incidence is the default boundary even without a
-// field-aligned network. The explicit false argument is reserved for
-// standalone legacy diagnostics whose frozen first rejection would otherwise
-// be preempted; no production caller may opt out.
+// Exact production source identities are mandatory by default. The named
+// diagnostic-only exception preserves historical first-failure oracles but
+// must never serve as a producer or network authority boundary.
+enum class RailIntervalAuthorityMode : int {
+  RequireTypedSource = 0,
+  LegacyStandaloneDiagnostic = 1,
+};
+
 RailIntervalBuildResult
 rail_interval_refs(
     const std::vector<SurfaceCellRail> &rails,
@@ -2498,7 +2502,8 @@ rail_interval_refs(
     const std::map<authority::SourceEdgeTopologyKey, std::array<int, 2>>
         &edgeFaces,
     const FieldAlignedCurveNetwork *fieldAlignedNetwork = nullptr,
-    bool requireTypedSourceVertices = true);
+    RailIntervalAuthorityMode authorityMode =
+        RailIntervalAuthorityMode::RequireTypedSource);
 
 SurfaceCellRailIntervalSelection find_rail_interval(
     const std::vector<SurfaceCellRailIntervalRef> &intervals, const int face,

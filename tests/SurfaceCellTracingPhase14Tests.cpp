@@ -12,6 +12,9 @@
 
 namespace {
 
+using RailIntervalAuthorityMode =
+    directional::geometry::surface_cell_tracing_detail::RailIntervalAuthorityMode;
+
 struct MeshFixture {
   Eigen::MatrixXd vertices;
   Eigen::MatrixXi faces;
@@ -1776,11 +1779,13 @@ TEST(SurfaceCellTracingPhase14,
   // optional network. Legacy malformed-rail diagnostics opt out explicitly.
   const auto validateProduction = [&] {
     return directional::geometry::surface_cell_tracing_detail::rail_interval_refs(
-        {rail}, mesh.vertices, mesh.faces, edgeFaces, nullptr, true);
+        {rail}, mesh.vertices, mesh.faces, edgeFaces, nullptr,
+          RailIntervalAuthorityMode::RequireTypedSource);
   };
   const auto validateStandaloneDiagnostic = [&] {
     return directional::geometry::surface_cell_tracing_detail::rail_interval_refs(
-        {rail}, mesh.vertices, mesh.faces, edgeFaces, nullptr, false);
+        {rail}, mesh.vertices, mesh.faces, edgeFaces, nullptr,
+          RailIntervalAuthorityMode::LegacyStandaloneDiagnostic);
   };
   EXPECT_EQ(validateProduction().status,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::Valid);
@@ -1905,7 +1910,8 @@ TEST(SurfaceCellTracingPhase14,
                   Eigen::RowVector3d(0.0, 0.0, 1.0), 7)};
   const auto refs =
       directional::geometry::surface_cell_tracing_detail::rail_interval_refs(
-          {rail}, mesh.vertices, mesh.faces, edgeFaces, nullptr, true);
+          {rail}, mesh.vertices, mesh.faces, edgeFaces, nullptr,
+          RailIntervalAuthorityMode::RequireTypedSource);
   ASSERT_EQ(refs.status,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::InvalidSamplePair);
   directional::geometry::SurfaceCellRail validRail = rail;
@@ -1913,7 +1919,8 @@ TEST(SurfaceCellTracingPhase14,
   validRail.sourceVertices = {0, 4};
   const auto validRefs =
       directional::geometry::surface_cell_tracing_detail::rail_interval_refs(
-          {validRail}, mesh.vertices, mesh.faces, edgeFaces, nullptr, true);
+          {validRail}, mesh.vertices, mesh.faces, edgeFaces, nullptr,
+          RailIntervalAuthorityMode::RequireTypedSource);
   ASSERT_EQ(validRefs.status,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::Valid);
   directional::geometry::SurfaceCellTracingOptions options;
@@ -2084,7 +2091,8 @@ TEST(SurfaceCellTracingPhase14,
   // standalone explicit opt-out; there is no valid producer vertex chain.
   const auto diagnosticOnly =
       directional::geometry::surface_cell_tracing_detail::rail_interval_refs(
-          {disconnected}, mesh.vertices, mesh.faces, edgeFaces, nullptr, false);
+          {disconnected}, mesh.vertices, mesh.faces, edgeFaces, nullptr,
+          RailIntervalAuthorityMode::LegacyStandaloneDiagnostic);
   EXPECT_EQ(diagnosticOnly.status,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::DisconnectedIntervals);
 
