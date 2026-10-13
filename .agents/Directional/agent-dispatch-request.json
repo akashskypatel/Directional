@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-closedchain-first-consumer-compile-20261013t2230z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-closedchain-first-consumer-compile",
-  "source_sha": "6fa2da941967ce3f56409a5dde3dffea3ead54a7",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-closedchain-first-consumer"
+  "request_id": "m6-cp3-r4-ra50-closedchain-verified-handoff-20261013t2235z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-ra50-closedchain-verified-handoff",
+  "file_id": "1PUnYK6RVaogdJLvLa7WZIEOC8G1yg9cY",
+  "patch_sha256": "bc9b89032bd8ff1c23a7b044fede987f5cdc881b694de692cc89cece96336aad",
+  "base_sha": "71cbdef2c46066e62f087b9a4811a4a48be49df3",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record R4 closed-chain A4 first-consumer guard and GMP compile",
+  "retention_days": 14
 }
