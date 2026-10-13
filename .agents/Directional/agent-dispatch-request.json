@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-closedchain-first-consumer-20261013t2230z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-closedchain-first-consumer",
-  "file_id": "1BpZ_f3B2KvgsVVRL7WkaFKR32ZJBlPan",
-  "patch_sha256": "f4b0fcac56775c9478d94cf335868a3a2bfb6f84cfd052cda54a943b4c27a89f",
-  "base_sha": "9b8bdb24e25e06245903cccd08dd67ea745bc0fe",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(directional): reject non-owning closed-chain token at first A4 endpoint consumer",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-closedchain-first-consumer-compile-20261013t2230z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-closedchain-first-consumer-compile",
+  "source_sha": "6fa2da941967ce3f56409a5dde3dffea3ead54a7",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-r4-closedchain-first-consumer"
 }
