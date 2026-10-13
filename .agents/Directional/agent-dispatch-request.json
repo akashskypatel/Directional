@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra4710-lexical-key-20261013t0904z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra4710-lexical-key-apply",
-  "file_id": "1HNHfs6xUI-_J574ZZFSoHu_vTVBOuUle",
-  "patch_sha256": "00437f68ea6e64140392ad58e3f4f4c937a471345c85c6461eba98e4aac35ef3",
-  "base_sha": "555f0489ac5a87492222b25a8437417d5f02a531",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): prove RA-47 typed source key differs from EV row"
+  "request_id": "m6-cp3-r4-ra4710-lexical-compile-20261013t0905z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-ra4710-lexical-dcel-compile",
+  "source_sha": "1ee05785c9f35d60d7dc2264f92bccb0fe423b24",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-ra4710-lexical-dcel-gmp"
 }
