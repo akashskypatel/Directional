@@ -1,3 +1,0 @@
-Turn: M6-CP3-CB1-ENTRY-R4
-Purpose: exact source snapshot for ongoing canonical Code + Build turn
-Freeze source SHA: 860c720221d9a58c9c2258fb1bd3f122d437920c
