@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra50-closedchain-verified-handoff-20261013t2235z",
+  "request_id": "m6-cp3-r4-closedchain-cyclic-hard-edges-20261013t2255z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra50-closedchain-verified-handoff",
-  "file_id": "1PUnYK6RVaogdJLvLa7WZIEOC8G1yg9cY",
-  "patch_sha256": "bc9b89032bd8ff1c23a7b044fede987f5cdc881b694de692cc89cece96336aad",
-  "base_sha": "71cbdef2c46066e62f087b9a4811a4a48be49df3",
+  "mailbox_key": "m6-cp3-r4-closedchain-cyclic-hard-edges",
+  "file_id": "16Z7oXb0cHL1kXqumPlxMTbWJC8iqSNLI",
+  "patch_sha256": "418f8b3460ec01fa7f32ceb65ad36ca10ddff77336ceaa8f518a9c77ff33ba96",
+  "base_sha": "be6b3bedd0c136ec94587821d7a6705c91d38664",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record R4 closed-chain A4 first-consumer guard and GMP compile",
+  "commit_message": "fix(directional): reject spoofed cyclic closed-rail edges at first A4 consumer",
   "retention_days": 14
 }
