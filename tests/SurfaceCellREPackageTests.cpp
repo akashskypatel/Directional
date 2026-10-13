@@ -278,8 +278,24 @@ TEST(SurfaceCellPipelinePhase20,
   for (const auto &certificate : certificates) {
     for (const auto &endpoint : certificate.endpoints) {
       ASSERT_TRUE(endpoint.terminalVertex.has_value());
-      for (const auto &path : endpoint.contactPaths) {
+      const auto terminal = *endpoint.terminalVertex;
+      EXPECT_EQ(1U, producerHardEdges.count(endpoint.terminalCarrier.edge))
+          << "A4 terminal carrier must be a genuine A1 hard edge";
+      EXPECT_TRUE(endpoint.terminalCarrier.edge.first() == terminal ||
+                  endpoint.terminalCarrier.edge.second() == terminal);
+      for (std::size_t side = 0U; side < endpoint.contactPaths.size(); ++side) {
+        const auto &path = endpoint.contactPaths[side];
+        auto at = side == 0U ? endpoint.firstAttachment
+                            : endpoint.secondAttachment;
+        std::set<directional::authority::SourceFaceTopologyKey> seen{at};
         for (const auto &step : path) {
+          EXPECT_EQ(at, step.firstFace)
+              << "terminal A4 contact path must remain face-contiguous";
+          EXPECT_TRUE(step.edge.first() == terminal ||
+                      step.edge.second() == terminal)
+              << "terminal star step must touch the certified source vertex";
+          EXPECT_TRUE(seen.insert(step.secondFace).second)
+              << "terminal contact path cannot revisit a source face";
           EXPECT_EQ(0U, producerHardEdges.count(step.edge))
               << "terminal source-star transport crossed an A1 hard carrier";
           const auto first = regions.row_for_topology(step.firstFace);
@@ -289,8 +305,12 @@ TEST(SurfaceCellPipelinePhase20,
           const auto directed = atlas.transition_value(step.edge, *first, *second);
           ASSERT_TRUE(directed.has_value());
           EXPECT_EQ(step.firstToSecond, directed->transport);
+          at = step.secondFace;
           ++authenticatedContactSteps;
         }
+        EXPECT_EQ(at, side == 0U ? endpoint.terminalCarrier.firstFace
+                                : endpoint.terminalCarrier.secondFace)
+            << "A4 contact path must terminate at its certified carrier face";
       }
     }
   }
