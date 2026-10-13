@@ -1,0 +1,3 @@
+M6-CP3-CB1-ENTRY-R4 exact-source snapshot after STATUS resume.
+Base head f60312cb08abec2133809d72c35e04f868bcb33d; freeze this trigger event commit.
+Compile-only turn; do not execute Directional binaries.
