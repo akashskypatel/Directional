@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra434-consumer-foreign-closeout-20261013t0549z",
+  "request_id": "m6-cp3-r4-ra434-nonetwork-edges-apply-20261013t0612z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra434-consumer-foreign-closeout",
-  "file_id": "1pQhvQTYt0k0r--nnYmXlVqZc99_Tvycu",
-  "patch_sha256": "33d81af845b6db6712f6bea0124a1c3466896bd81de7c058f76f4be60d34605f",
-  "base_sha": "91e5c2a498ffc949ec229fd084cf49949ffe3a76",
+  "mailbox_key": "m6-cp3-r4-ra434-nonetwork-edges-apply",
+  "file_id": "1YqMF_iUUqR4g7M15nSUUQSUyFssB9HFe",
+  "patch_sha256": "11dd1dda1ca2b3e610c6ad46378c7ed425cc90e0e4e5797090b1d4bf3106d233",
+  "base_sha": "d14a3fc025e686a6abee13d8a933932d3014bf29",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record independently verified R4 foreign-key compile"
+  "commit_message": "fix(directional): require published rail edge keys at strict no-network ingress"
 }
