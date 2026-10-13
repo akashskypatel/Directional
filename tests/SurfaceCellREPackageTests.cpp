@@ -261,20 +261,27 @@ TEST(SurfaceCellPipelinePhase20,
       context.productSnapshots.traceNetwork.phaseFront.product()
           .hardRailRouteCertificates();
   ASSERT_FALSE(certificates.empty());
+  // Independent A1 authority, not hard-coded fixture edge IDs: every
+  // published A4 hard carrier must be classified by the source atlas.
+  std::set<directional::authority::SourceEdgeTopologyKey> producerHardEdges;
+  for (const auto &barrier : atlas.nontraversable_edges()) {
+    if (barrier.kind ==
+        directional::authority::FieldTransportBarrierKind::HardFeature) {
+      producerHardEdges.insert(barrier.sourceEdge);
+    }
+  }
+  ASSERT_FALSE(producerHardEdges.empty());
+  EXPECT_EQ(producerHardEdges,
+            context.productSnapshots.traceNetwork.phaseFront.product()
+                .hardFeatureEdges());
   std::size_t authenticatedContactSteps = 0U;
-  const auto hardFirst = directional::authority::SourceEdgeTopologyKey::from_indices(
-      1, 4, static_cast<std::size_t>(mesh.vertices.rows()));
-  const auto hardSecond = directional::authority::SourceEdgeTopologyKey::from_indices(
-      4, 7, static_cast<std::size_t>(mesh.vertices.rows()));
-  ASSERT_TRUE(hardFirst.has_value());
-  ASSERT_TRUE(hardSecond.has_value());
   for (const auto &certificate : certificates) {
     for (const auto &endpoint : certificate.endpoints) {
       ASSERT_TRUE(endpoint.terminalVertex.has_value());
       for (const auto &path : endpoint.contactPaths) {
         for (const auto &step : path) {
-          EXPECT_NE(hardFirst.value(), step.edge);
-          EXPECT_NE(hardSecond.value(), step.edge);
+          EXPECT_EQ(0U, producerHardEdges.count(step.edge))
+              << "terminal source-star transport crossed an A1 hard carrier";
           const auto first = regions.row_for_topology(step.firstFace);
           const auto second = regions.row_for_topology(step.secondFace);
           ASSERT_TRUE(first.has_value());
