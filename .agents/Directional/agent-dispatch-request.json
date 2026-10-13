@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra465-a4-missingpath-20261013t0836z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra465-a4-missingpath-apply",
-  "file_id": "1SDizK4UoSMvU3q9Wp9LSMi5gDmdORaj1",
-  "patch_sha256": "b18b63b4dcee80c0499180ab3137f71eac9fd40296174bc3d6e25c8c06a56471",
-  "base_sha": "f09ec24103bd0c1479bcb0b4ccfeb9662f90be59",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): guard R4 A4 missing-terminal-A3-path rejection"
+  "request_id": "m6-cp3-r4-ra465-a4-missingpath-compile-20261013t0838z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-ra465-a4-missingpath-compile",
+  "source_sha": "d6240c9bc2d59899829ec259e9babd2878736e50",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-ra465-a4-missingpath-gmp"
 }
