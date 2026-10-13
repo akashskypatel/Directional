@@ -6679,6 +6679,45 @@ TEST(SurfaceCellAuthorityContractCutover,
       << "every requested genuine source hard carrier must be A1 published";
   EXPECT_FALSE(boundaryBarriers.empty())
       << "the comparison requires real source boundary classifications";
+
+  // Independently derive the admissible face-to-face source-star edges from
+  // the original source triangles. Testing only the absence of hard carriers
+  // would also pass if A1 silently dropped every non-hard interior transport.
+  ASSERT_TRUE(fixture.sourceAuthority.has_value());
+  std::map<directional::authority::SourceEdgeTopologyKey, std::vector<int>>
+      sourceIncidence;
+  for (int row = 0; row < fixture.mesh.F.rows(); ++row) {
+    for (int corner = 0; corner < 3; ++corner) {
+      const auto sourceEdge = test_source_edge_topology(
+          fixture.mesh.F(row, corner), fixture.mesh.F(row, (corner + 1) % 3));
+      sourceIncidence[sourceEdge].push_back(row);
+    }
+  }
+  std::set<directional::authority::SourceEdgeTopologyKey> expectedTransports;
+  for (const auto &[sourceEdge, incidentRows] : sourceIncidence) {
+    ASSERT_TRUE(incidentRows.size() == 1 || incidentRows.size() == 2)
+        << "the actual producer fixture must have manifold source incidence";
+    if (incidentRows.size() != 2 || fixture.hardFeatureEdges.contains(sourceEdge))
+      continue;
+    const auto first = directional::authority::SourceFaceId::from_index(
+        incidentRows[0], static_cast<std::size_t>(fixture.mesh.F.rows()));
+    const auto second = directional::authority::SourceFaceId::from_index(
+        incidentRows[1], static_cast<std::size_t>(fixture.mesh.F.rows()));
+    ASSERT_TRUE(first.has_value());
+    ASSERT_TRUE(second.has_value());
+    if (fixture.sourceAuthority->region_for_row(*first) ==
+            fixture.sourceAuthority->region_for_row(*second) &&
+        fixture.sourceAuthority->component_for_row(*first) ==
+            fixture.sourceAuthority->component_for_row(*second))
+      expectedTransports.insert(sourceEdge);
+  }
+  std::set<directional::authority::SourceEdgeTopologyKey> actualTransports;
+  for (const auto &transport : transportEdges)
+    EXPECT_TRUE(actualTransports.insert(transport.sourceEdge).second);
+  ASSERT_FALSE(expectedTransports.empty());
+  EXPECT_EQ(expectedTransports, actualTransports)
+      << "A1 must retain every within-region non-hard interior transit, "
+         "not merely remove certified hard carriers";
 }
 
 TEST(SurfaceCellAuthorityContractCutover,
