@@ -1,3 +1,10 @@
+## CURRENT — R4-SID-01 corrected A5 GMP compile verified (2026-10-13 UTC)
+
+- [x] Source `b836329e540ddaca5a7e4d233a6c0a99f574fd85` compiled on all eight required GMP/GMPXX targets in workflow `38348617454`, artifact `11790165302`, SHA-256 `8542f0118b4f85cbaa8da3ae94c4b125421da234fdf8e7dc401206bcbbcc1a3b`. Verified 28/28 artifact SHA256SUMS, 8/8 targets, preflight/build 0/0, actual GMPXX/GMP link, clean source and `runtimeExecution=false`. This resolves the previous connector dispatch issue and corrects the earlier A5 test-only compiler error; see `Architecture_M6_CP3_R4_SID01_A5_Selected_Face_Pin_Code_Build_Record_20261013.md`.
+- [ ] Runtime A4 acceptance/A5 `HardRailRouteAuthorityInvalid` rejection has **not** been tested. The A4 side-swap test is likewise compile-only. Continue same R4 Code + Build; preserve RA-50 side-authority scope, the frozen 497-selector/TB boundary, remaining producer/rejection/historical/odd-τ gates. **No TB497 or successor.**
+
+---
+
 ## CURRENT — R4-SID-01 A5 selected-face pin (2026-10-13 UTC)
 
 - [ ] Apply and compile-only verify `M6CP3.A5RejectsSourceEquivalentHardRailSelectedFaceRechart` against exact source `9c126c1a9d814c39742bd63acbf9dbac3261a0da` (snapshot workflow `38340642958`, 5,561/5,561 hashes). It recharts only one produced hard-rail cell corner to a distinct same-region/sheet source face carrying the same intrinsic point, requires checked A4 acceptance and A5 `HardRailRouteAuthorityInvalid` rejection with self-inverse τ. Runtime tests deferred; no TB497.

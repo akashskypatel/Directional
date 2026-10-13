@@ -1,3 +1,9 @@
+## CURRENT — R4 corrected A5 source compiles; runtime gate still closed (2026-10-13 UTC)
+
+Canonical `M6-CP3-CB1-ENTRY-R4` remains unfinished. The prior GitHub connector safety-check platform block cleared: durable dispatcher accepted compile request event `e5f3d8c2352c4edbbd345da89ac5a42f3e22188a`. Exact corrected source `b836329e540ddaca5a7e4d233a6c0a99f574fd85` compiled GREEN in workflow `38348617454`; artifact `11790165302` ZIP SHA-256 `8542f0118b4f85cbaa8da3ae94c4b125421da234fdf8e7dc401206bcbbcc1a3b`, 28/28 hashes, 8/8 targets, preflight/build 0/0, actual GMPXX/GMP link, clean source, `runtimeExecution=false`. The initial A5 compiler RED is superseded for compilation only; **no regression was run**, no TB497 or successor. See `Architecture_M6_CP3_R4_SID01_A5_Selected_Face_Pin_Code_Build_Record_20261013.md`. RA-50 discharges RA-43.2 and forbids fabricated filled-side receipts; remaining R4 RA-43.1/.4, RA-46.5, RA-47.12 executed liveness, 39/34/7/88/six and odd-τ multi-carrier remain open.
+
+---
+
 ## CURRENT — R4-SID-01 A5 selected-face side pin source regression (2026-10-13 UTC)
 
 Same canonical `M6-CP3-CB1-ENTRY-R4` Code + Build. Previous A4 self-inverse side-swap oracle is a compile-only checkpoint, not A5 coverage. The new nonvacuous `M6CP3.A5RejectsSourceEquivalentHardRailSelectedFaceRechart` independently exercises A5's selected-face equality after a source-equivalent, cell-corner-only rechart accepted by the checked A4 factory; its actual execution remains deferred. Exact source snapshot `9c126c1a9d814c39742bd63acbf9dbac3261a0da`, run `38340642958`, artifact `11785758501`, 5,561/5,561 hashes verified. See `Architecture_M6_CP3_R4_SID01_A5_Selected_Face_Pin_Code_Build_Record_20261013.md` for causal scope and verification. RA-43.2 remains DISCHARGED; fabricated producer-filled-side receipt remains REFUSED; no TB497, source runtime or successor. R4 still open.
