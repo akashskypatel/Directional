@@ -1,3 +1,9 @@
+## CURRENT — R4 strict trace public-entry foreign published edge key (2026-10-13 UTC)
+
+- [ ] Test-only, unexecuted extension to `SurfaceCellTracingPhase14.ProducedRailEndpointsRequireExactSourceVertexIncidence`: preserve the valid public trace baseline and missing-key negative; additionally replace only the published key with a distinct in-range source key `(1,4)` and require `FieldMetadata` at `trace_surface_field` strict no-network entry. Lower-level foreign-key check already exists, but is not equivalent to public ingress coverage. Patch authored against verified snapshot `45d210e51a12dd3b8416c5179e6737edbb53e4e3` (snapshot workflow `38359143085`, 5612/5612 checksums). Code + Build source compilation and immutable evidence remain pending; do not claim runtime acceptance, start TB497 or successor. Same canonical `M6-CP3-CB1-ENTRY-R4`.
+
+---
+
 ## CURRENT — R4 RA-43.4 strict no-network default tracing ingress (2026-10-13 UTC)
 
 - [x] Applied and compile-only verified the typed rail positive and missing-published-key negative in existing Phase14 `trace_surface_field` entry (semantic `f1fbf8561d3d6d77f6807d0178263fa0a9ba11ef`, compile GREEN `38357644503`, 28/28 hashes, 8/8 targets, generated GMPXX/GMP, no runtime). Exact snapshot `fc22e74ec72570d401a14f7146cda8a8a82ffaec` (run `38356618714`), source-only oracle. Apply and compile eight GMP/GMPXX targets through durable Actions; no runtime test/benchmark, no TB497. Scope and non-vacuity: `Architecture_M6_CP3_R4_RA434_Strict_Trace_Entry_Missing_Edge_Oracle_20261013.md`.

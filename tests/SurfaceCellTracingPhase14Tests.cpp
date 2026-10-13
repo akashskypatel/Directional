@@ -1842,6 +1842,17 @@ TEST(SurfaceCellTracingPhase14,
     EXPECT_EQ(missingKeyTrace.termination,
               directional::geometry::TraceTerminationReason::FieldMetadata)
         << "default production tracing must not reconstruct absent source keys";
+    // An in-range but foreign published edge key must also fail at the
+    // public trace ingress, not just in the shared interval helper below.
+    traceOptions.authoritativeRails.front().sourceEdges = {
+        directional::authority::SourceEdgeTopologyKey::from_indices(
+            1, 4, static_cast<std::size_t>(mesh.vertices.rows())).value()};
+    const auto foreignKeyTrace = directional::geometry::trace_surface_field(
+        mesh.vertices, mesh.faces, traceAxisX, traceAxisY, traceSeed, 0, 1,
+        traceOptions);
+    EXPECT_EQ(foreignKeyTrace.termination,
+              directional::geometry::TraceTerminationReason::FieldMetadata)
+        << "default production tracing must reject a foreign published edge key";
   }
   // A no-network strict caller must not infer a missing producer edge key
   // from the exact typed vertex endpoints or the geometric sample pair.

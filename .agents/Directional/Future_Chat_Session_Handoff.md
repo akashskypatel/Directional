@@ -1,3 +1,9 @@
+## CURRENT — R4 strict trace public-entry foreign edge-key oracle authored (2026-10-13 UTC)
+
+Same canonical `M6-CP3-CB1-ENTRY-R4` remains IN_PROGRESS. Verified source snapshot `45d210e51a12dd3b8416c5179e6737edbb53e4e3` (workflow `38359143085`, manifest 5612/5612). A small unexecuted Phase14 test-only extension checks a **present, in-range but foreign** published rail source-edge key at the public `trace_surface_field` strict no-network ingress. The intact typed baseline and missing-key public negative remain fixed; this is distinct from existing helper-level foreign-key oracles. Compile-only dispatcher/patch application is pending; no test, benchmark, TB497 or successor. RA-50 continues to discharge RA-43.2; RA-43.1/.4 global, RA-46.5, RA-47.12 executed liveness and carried witness/restoration gates remain open.
+
+---
+
 ## CURRENT — R4 strict trace public entry oracle COMPILE GREEN (2026-10-13 UTC)
 
 Same canonical `M6-CP3-CB1-ENTRY-R4`, Code + Build, still IN_PROGRESS. Test-only Phase14 baseline/missing published source-edge-key oracle at public `trace_surface_field` strict no-network entry applied semantic `f1fbf8561d3d6d77f6807d0178263fa0a9ba11ef`, Drive run `38357410100` GREEN and staged File ID owner-deleted. Pinned eight-target GMP/GMPXX compile GREEN `38357644503`, result artifact `11794145793`, ZIP SHA `fe1504fbfe0e387ee966aefac839e6758481e3cc8d52788286a1b8e6f76acb36`; 28/28 manifest, 8/8 targets, preflight/build 0/0, generated GMPXX/GMP link, five clean source-status files, `runtimeExecution=false`. No runtime test, TB497 or successor. Detail: `Architecture_M6_CP3_R4_RA434_Strict_Trace_Entry_Missing_Edge_Oracle_20261013.md`. RA-50 still discharges RA-43.2; other RA-43/46/47, historical 39/34/7/88/six and odd-τ multi-carrier gates remain open.
