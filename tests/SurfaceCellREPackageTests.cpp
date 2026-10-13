@@ -250,6 +250,46 @@ TEST(SurfaceCellPipelinePhase20,
   ASSERT_TRUE(context.productSnapshots.traceNetwork.phaseFront.is_produced());
   EXPECT_FALSE(context.productSnapshots.traceNetwork.phaseFront.product().cells().empty());
 
+  // RA-43.1: independently confirm that A4's actually produced terminal
+  // contact paths use A1's source-matched transports, not a caller-labelled
+  // star or a hard-rail carrier masquerading as a non-hard path step.
+  ASSERT_TRUE(context.productSnapshots.fieldTransportAtlas.has_value());
+  ASSERT_TRUE(context.productSnapshots.sourceTopologyRegions.has_value());
+  const auto &atlas = *context.productSnapshots.fieldTransportAtlas;
+  const auto &regions = *context.productSnapshots.sourceTopologyRegions;
+  const auto &certificates =
+      context.productSnapshots.traceNetwork.phaseFront.product()
+          .hardRailRouteCertificates();
+  ASSERT_FALSE(certificates.empty());
+  std::size_t authenticatedContactSteps = 0U;
+  const auto hardFirst = directional::authority::SourceEdgeTopologyKey::from_indices(
+      1, 4, static_cast<std::size_t>(mesh.vertices.rows()));
+  const auto hardSecond = directional::authority::SourceEdgeTopologyKey::from_indices(
+      4, 7, static_cast<std::size_t>(mesh.vertices.rows()));
+  ASSERT_TRUE(hardFirst.has_value());
+  ASSERT_TRUE(hardSecond.has_value());
+  for (const auto &certificate : certificates) {
+    for (const auto &endpoint : certificate.endpoints) {
+      ASSERT_TRUE(endpoint.terminalVertex.has_value());
+      for (const auto &path : endpoint.contactPaths) {
+        for (const auto &step : path) {
+          EXPECT_NE(hardFirst.value(), step.edge);
+          EXPECT_NE(hardSecond.value(), step.edge);
+          const auto first = regions.row_for_topology(step.firstFace);
+          const auto second = regions.row_for_topology(step.secondFace);
+          ASSERT_TRUE(first.has_value());
+          ASSERT_TRUE(second.has_value());
+          const auto directed = atlas.transition_value(step.edge, *first, *second);
+          ASSERT_TRUE(directed.has_value());
+          EXPECT_EQ(step.firstToSecond, directed->transport);
+          ++authenticatedContactSteps;
+        }
+      }
+    }
+  }
+  EXPECT_GT(authenticatedContactSteps, 0U)
+      << "the A4 consumer must publish a real non-hard source-star step";
+
   // The tested rail producer must publish raw source-edge IDs for the same
   // original source topology as its independently carried vertex chain.
   directional::TriMesh sourceMesh;
