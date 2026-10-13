@@ -1,0 +1,3 @@
+Turn: M6-CP3-CB1-ENTRY-R4
+Purpose: exact authoritative snapshot for continued R4 Code + Build
+Pre-trigger head: beb28feb3417032c311728b16737f20c706cf686
