@@ -1,4 +1,0 @@
-Canonical turn: M6-CP3-CB1-ENTRY-R4
-Frozen head before trigger: 92d477d91b00a72bdd2fdc2ffd7c5bbab2c7c0f4
-Snapshot source authority: exact marker push commit.
-Inspection only; no runtime execution.
