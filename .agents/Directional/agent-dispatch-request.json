@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-a5-compile-evidence-apply-20261013t0458z",
+  "request_id": "m6-cp3-r4-ra434-network-keys-apply-20261013t0520z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-a5-compile-evidence-apply",
-  "file_id": "1PhMhZjCj2npAUNYWxBzEcRsvZHDZCkbi",
-  "patch_sha256": "45a9fd683cf54eb20f0e826eb66bb3d1665fc45b34f2225b3f01e2bd9bba8064",
-  "base_sha": "0cfa1b3baf3cd6760db4f4389ddbeb9b9862de8b",
+  "mailbox_key": "m6-cp3-r4-ra434-network-keys-apply",
+  "file_id": "1OLm_6uDcyLlnJxIHomgBo6Gd_o1LKU3K",
+  "patch_sha256": "91773aaf7302485c7657d3ee98905dbf6833baf402383741cfeedfd02f437e70",
+  "base_sha": "ea25856980b5ac8b8ddd643151c31affb1ea785b",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record verified R4 A5 corrected compile evidence"
+  "commit_message": "fix(directional): require publisher edge keys at network-bound rail ingress"
 }
