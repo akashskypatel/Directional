@@ -1885,6 +1885,31 @@ TEST(SurfaceCellTracingPhase14,
   EXPECT_FALSE(directional::geometry::surface_cell_tracing_detail::
                    rail_sample_geometry_is_valid(
                        mesh.vertices, mesh.faces, nearCorner, 0));
+  // RA-43.4: the explicitly named no-network diagnostic is permitted to
+  // infer *exact* source corners, never a nearby point that would pass the
+  // old tolerance-based vertex inference. Confirm the positive on the same
+  // genuine source edge before perturbing just one barycentric endpoint.
+  auto legacyDiagnosticRail = rail;
+  legacyDiagnosticRail.sourceVertices.clear();
+  legacyDiagnosticRail.sourceEdges.clear();
+  const auto legacyDiagnostic = [&] {
+    return directional::geometry::surface_cell_tracing_detail::rail_interval_refs(
+        {legacyDiagnosticRail}, mesh.vertices, mesh.faces, edgeFaces, nullptr,
+        RailIntervalAuthorityMode::LegacyStandaloneDiagnostic);
+  };
+  EXPECT_EQ(directional::geometry::surface_cell_tracing_detail::
+                RailBuildStatus::Valid,
+            legacyDiagnostic().status);
+  EXPECT_EQ(-1, directional::geometry::surface_cell_tracing_detail::
+                    rail_sample_source_vertex(mesh.faces, nearCorner));
+  legacyDiagnosticRail.samples.front() = nearCorner;
+  const auto rejectedNearbyCorner = legacyDiagnostic();
+  EXPECT_EQ(directional::geometry::surface_cell_tracing_detail::
+                RailBuildStatus::InvalidSampleGeometry,
+            rejectedNearbyCorner.status)
+      << "diagnostic geometry may not infer a source vertex by tolerance";
+  ASSERT_TRUE(rejectedNearbyCorner.railId.has_value());
+  EXPECT_EQ(legacyDiagnosticRail.id, *rejectedNearbyCorner.railId);
   // Publisher-authored typed source-edge metadata must have exact interval
   // cardinality even with no network. The typed key itself is the source
   // topology identity; it is not a legacy mesh.EV row number.
