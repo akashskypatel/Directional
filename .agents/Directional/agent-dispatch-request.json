@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-closedchain-cyclic-hard-edges-20261013t2255z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-closedchain-cyclic-hard-edges",
-  "file_id": "16Z7oXb0cHL1kXqumPlxMTbWJC8iqSNLI",
-  "patch_sha256": "418f8b3460ec01fa7f32ceb65ad36ca10ddff77336ceaa8f518a9c77ff33ba96",
-  "base_sha": "be6b3bedd0c136ec94587821d7a6705c91d38664",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(directional): reject spoofed cyclic closed-rail edges at first A4 consumer",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-closedchain-cyclic-hard-edges-compile-20261013t2256z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-closedchain-cyclic-hard-edges-compile",
+  "source_sha": "2b0e49865f88e378e34233202bc8e85701d458b2",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-r4-cyclic-hard-edges"
 }
