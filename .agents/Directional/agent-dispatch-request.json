@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra434-trace-entry-closeout-20261013t0641z",
+  "request_id": "m6-cp3-r4-public-foreign-edge-20261013t0805z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra434-trace-entry-closeout",
-  "file_id": "1KGpaBK42TLEMgLoiWuMygWBBPhm41_hb",
-  "patch_sha256": "2dae9f4b56e8ef38f67fe6d91449f3a2ccaab27f35c2942a1c29a95fbd3d345d",
-  "base_sha": "f1fbf8561d3d6d77f6807d0178263fa0a9ba11ef",
+  "mailbox_key": "m6-cp3-r4-public-foreign-edge-apply",
+  "file_id": "1jugp7GPvp8Lysf5ytmDT-jkK2U8JU94k",
+  "patch_sha256": "d62ed1a55e33a0dfc7b13b83e76727cafca39bb93cc4bf471424ca2c247d7287",
+  "base_sha": "45d210e51a12dd3b8416c5179e6737edbb53e4e3",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record verified R4 strict trace-entry compile"
+  "commit_message": "test(directional): reject foreign typed rail source-edge at public trace ingress"
 }
