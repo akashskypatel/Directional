@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra4710-lexical-compile-20261013t0905z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-ra4710-lexical-dcel-compile",
-  "source_sha": "1ee05785c9f35d60d7dc2264f92bccb0fe423b24",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-ra4710-lexical-dcel-gmp"
+  "request_id": "m6-cp3-r4-ra4710-closeout-20261013t0912z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-ra4710-compile-closeout-apply",
+  "file_id": "15DOXJDWfC516XdujhxrmRq2O6A90WOre",
+  "patch_sha256": "aa6d02bc5be7afc8063b5e72b00930b90b862f2ae5f5b1beec3a77fad267fe70",
+  "base_sha": "dc54fb819416639a67568e1a994299038a49d92f",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): reconcile R4 RA-47.10 compile handoff"
 }
