@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra434-network-override-apply-20261013t0050z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra434-network-override-apply",
-  "file_id": "1MTq3FMMGJuC_v1yXyDjkTL_o4gboxyMA",
-  "patch_sha256": "d35a1a248e3d176b199cb0ac4bdf6df320b698b0a4695cb746ce45b935296b7d",
-  "base_sha": "147957ceca10677e73a2ae2234caa6c9427608dc",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): fail closed for diagnostic rail mode with producer A2a network"
+  "request_id": "m6-cp3-r4-ra434-network-override-compile-20261013t0051z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-ra434-network-override-compile",
+  "source_sha": "f08770f004404f46356cc6fac59882aae5508849",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-r4-ra434-network-override-compile"
 }
