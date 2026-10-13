@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra431-producer-barrier-docs-20261013t1156z",
+  "request_id": "m6-cp3-r4-source-transit-20261013t1320z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra431-producer-barrier-docs-apply",
-  "file_id": "1ZhEPgnl2z4g35aHzs9hy48UXqt61kuPD",
-  "patch_sha256": "3b69ebd6f0186743e8502aa55f31b66b5956dc84799eafa4c4fdff8442934d75",
-  "base_sha": "cf87a8e10d3a390efbdc748c23388ae0da7965c4",
+  "mailbox_key": "m6-cp3-r4-source-transit-apply",
+  "file_id": "1iEk5GbAZ8BSWebzW6oSxQd2SonxoaDcy",
+  "patch_sha256": "2276f412c594a3264cd9bd26f0c304dd3792828c0be0764c33fefbaecba41735",
+  "base_sha": "e9c2f250c81193ac7507e130880918829742c155",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record RA-43.1 real producer barrier GMP compile receipt"
+  "commit_message": "test(directional): verify complete non-hard source star transport"
 }
