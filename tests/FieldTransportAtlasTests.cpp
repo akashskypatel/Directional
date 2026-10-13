@@ -2811,6 +2811,34 @@ TEST(FieldTransportAtlas,
       });
   ASSERT_NE(atlas.nontraversable_edges().end(), barrier);
   EXPECT_EQ(FieldTransportBarrierKind::HardFeature, barrier->kind);
+
+  // A quarter-turn gauge change makes inverse transport observable: for
+  // zero or half turns, incorrectly copying forward into reverse would pass.
+  const CrossFieldResult relabeledField =
+      gauge_relabel_field(mesh, field, {1, 0});
+  auto relabeled = FieldTransportAtlas::make(
+      mesh, *sourceAuthority, hardEdges, relabeledField);
+  ASSERT_TRUE(relabeled)
+      << describe_field_atlas_build_error(relabeled.error());
+  const auto relabeledForward =
+      relabeled.value().transition_value(sourceEdge, first, second);
+  const auto relabeledReverse =
+      relabeled.value().transition_value(sourceEdge, second, first);
+  ASSERT_TRUE(relabeledForward.has_value());
+  ASSERT_TRUE(relabeledReverse.has_value());
+  const auto &relabeledRaw = relabeledField.edgeTransitions[interiorEdge];
+  const int relabeledLift =
+      relabeledRaw.firstFace == static_cast<int>(first.index())
+          ? relabeledRaw.matching : -relabeledRaw.matching;
+  EXPECT_EQ(1, std::abs(relabeledLift));
+  EXPECT_EQ(QuarterTurn::from_integer(relabeledLift),
+            relabeledForward->transport);
+  EXPECT_EQ(relabeledForward->transport.inverse(),
+            relabeledReverse->transport);
+  EXPECT_NE(relabeledForward->transport, relabeledReverse->transport);
+  EXPECT_EQ(-relabeledForward->signedLift, relabeledReverse->signedLift);
+  EXPECT_FALSE(relabeled.value().transport(sourceEdge, first, second));
+  EXPECT_FALSE(relabeled.value().transport(sourceEdge, second, first));
 }
 
 TEST(FieldTransportAtlas,
