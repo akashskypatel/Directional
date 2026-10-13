@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra431-terminal-chain-20261013t1636z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-ra431-terminal-chain",
-  "source_sha": "2e27e52e72e6325fa980bbf531a3f0d6b3bafc4a",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-ra431-terminal-chain"
+  "request_id": "m6-cp3-r4-ra51-todo-reconcile-20261013t1833z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-ra51-todo-reconcile",
+  "file_id": "1xHs3L2bE5eoxEurEGg_5pFpLWlNqNm7f",
+  "patch_sha256": "1c712567f0de2951875395f602c1f849a521f24742c04ce8d7a2c1f050f9f16b",
+  "base_sha": "d1d3a60ffc2ac69e895437ba26fcf5ffa9add4a4",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: retire superseded R4-TA3-01 review stop under frozen RA-51"
 }
