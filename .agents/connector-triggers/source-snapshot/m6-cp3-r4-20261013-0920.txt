@@ -1,0 +1,3 @@
+Canonical turn: M6-CP3-CB1-ENTRY-R4
+Reason: verified source snapshot for same-turn Code + Build continuation
+Frozen pre-trigger head: 2a6caac32f01c4761f2edd45ce1c7c6283701c75
