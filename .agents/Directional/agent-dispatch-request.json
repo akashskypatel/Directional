@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra431-a4-source-transit-20261013t1548z",
+  "request_id": "m6-cp3-r4-ra431-all-producer-hard-keys-20261013t1611z",
   "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-ra431-a4-source-transit",
-  "source_sha": "d581fa9747c9848c3a37a0bccc6693519dec4bff",
+  "mailbox_key": "m6-cp3-r4-ra431-all-hard-keys-compile",
+  "source_sha": "9165f3f4d4fc5fae9e7243c0e5cf79403b8bf179",
   "targets": [
     "directional_core",
     "directional_pipeline",
@@ -14,5 +14,5 @@
     "directional_compiled_api_tests",
     "directional_benchmarks"
   ],
-  "artifact_prefix": "directional-m6-cp3-r4-ra431-a4-source-transit"
+  "artifact_prefix": "directional-m6-cp3-r4-ra431-all-hard-keys"
 }
