@@ -1,3 +1,0 @@
-M6-CP3-CB1-ENTRY-R4 exact-source snapshot, continued Code + Build.
-Frozen pre-trigger head: 00a7f8b09b26ab09ea8445ee7c211aec0bdf58fe
-Capture this marker event SHA. No Directional execution requested.
