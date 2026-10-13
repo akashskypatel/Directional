@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-sid01-a4-side-pin-compile-20261013t0254z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-sid01-a4-side-pin-compile",
-  "source_sha": "8fd4fe4211960fdd9b6cb79f8cba0da5dc59c342",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-sid01-a4-side-pin-compile"
+  "request_id": "m6-cp3-r4-sid01-a5-pin-apply-20261013t0321z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-sid01-a5-pin-apply",
+  "file_id": "1FbDOThJFmVfSd1tv0p0TZiOb13fPKmZ4",
+  "patch_sha256": "91262b301be6913cb8ceb0a8395fb64f21014175d3733b961c0992c2b7d68053",
+  "base_sha": "9c126c1a9d814c39742bd63acbf9dbac3261a0da",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "test(directional): guard A5 selected-face hard-rail authority"
 }
