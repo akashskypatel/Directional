@@ -12744,8 +12744,10 @@ SurfacePhaseFrontResult publish_phase_front_result(
   // Preserve the checked factory's exact rejection instead of relabeling
   // unrelated source/transport failures as invalid completed geometry.
   state.failure.reason = SurfacePhaseFrontFailureReason::PublishedProductRejected;
-  state.failure.publishedProductError =
-      std::get<SurfacePhaseFrontProductError>(product).code;
+  const auto &factoryError = std::get<SurfacePhaseFrontProductError>(product);
+  state.failure.publishedProductError = factoryError.code;
+  state.failure.publishedProductSourceAuthorityDetail =
+      factoryError.sourceAuthorityDetail;
   return SurfacePhaseFrontResult::rejected(std::move(state.failure));
 }
 

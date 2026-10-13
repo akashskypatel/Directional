@@ -1722,6 +1722,7 @@ struct SurfacePhaseFrontCell {
 };
 
 enum class SurfacePhaseFrontProductErrorCode : int;
+enum class SurfacePhaseFrontSourceAuthorityDetail : int;
 
 enum class SurfacePhaseFrontFailureReason : int {
   None = 0,
@@ -1814,6 +1815,9 @@ struct SurfacePhaseFrontFailure {
   SurfaceHardRailRouteFailureLocus hardRailRouteLocus = SurfaceHardRailRouteFailureLocus::None;
   // Factory rejection is distinct from a pre-publication producer failure.
   std::optional<SurfacePhaseFrontProductErrorCode> publishedProductError;
+  // Preserve the checked factory's typed first failed source predicate.
+  std::optional<SurfacePhaseFrontSourceAuthorityDetail>
+      publishedProductSourceAuthorityDetail;
   int firstFrontEdge = -1;
   int secondFrontEdge = -1;
   int routeStepIndex = -1;
