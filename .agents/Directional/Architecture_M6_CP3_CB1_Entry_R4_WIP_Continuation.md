@@ -1,5 +1,12 @@
 # M6-CP3-CB1-ENTRY-R4 — Code + Build WIP continuation
 
+## 2026-10-13 22:09Z — 39 historical R3 A4 route-rejection identities mapped to current source (STATIC)
+
+Same canonical R4; **no source/test/selector change or runtime execution**. Exact snapshot `d2381fc3118c953b44d7d8756b291fc1919f6b3c` / workflow `38474829579` / artifact `11853417605` ZIP SHA256 `9f9bfb6ecc38e6f9831e1535f60ed97629ae10e09abce30b6e30a9b825073c6f`, tar SHA256 `cf87bb7d13e099c839241b2004612535c3b33447029235d95cf9c0800ad72066`, source hashes **5756/5756**. Reconciled all **39/39** frozen `A4_ROUTE_CERTIFICATE_REJECTION` identities from independent R3 94-overlay against unique current C++ TEST definitions; **38** had historical literal `predicate=endpoint-0`, one ordinal 150 reports only downstream non-production; **37** were independently recomputed CP2 accepted, the other two are new CP3 ordinals 2/6. Split current owners: 19 TransitionQuotient / 18 Phase10 / 2 REPackage. Precise current source lines, lexical fixture hints, immutable R3 classes and unmixed CP2 column preserved in `.agents/Directional/Architecture_M6_CP3_R4_Historical_R3_A4_39_Current_Source_Inventory_20261013.{md,tsv}`. This **does not prove current first rejection, repair, or 37 restored greens**; use a separately authorized artifact-only runtime gate for verdicts. All RA-43.1/.4, reachable RA-46.5, RA-47.12, 39 endpoint/34 Phase10/seven DCEL/88 CP2 losses/six CP3 and genuine odd-τ multi-carrier remain open. Frozen 497 untouched, no successor or TB497.
+
+---
+
+
 ## 2026-10-13 21:42Z — typed A4 factory error visible at pipeline diagnostic boundary
 
 Same canonical `M6-CP3-CB1-ENTRY-R4`, Code + Build **only**. Previous `publish_phase_front_result` typed source-authority detail fix at semantic source `2dfb4d06c21d9f9a24597e3a91a87838760474a4` has now compiled **GREEN** in [run 38470397472](https://github.com/akashskypatel/Directional/actions/runs/38470397472), compile job `115548028224`, result artifact `11851094634`, verified outer ZIP SHA256 `b3bf42bd77b4d9c6c362c5908ad64dc9c61cf28b65c9253d4cb6ec8eab61aed7`, log artifact `11850959742` SHA256 `abd992280e411bfc347af7f9c4910316b85b028ade1ef15a85e8b00c0e2e1745`; **28/28** immutable package checksums, eight requested targets, preflight/build `0/0`, actual GMPXX/GMP linker evidence, five clean source-status records, `runtimeExecution=false`.
