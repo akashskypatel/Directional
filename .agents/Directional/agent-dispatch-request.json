@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra434-named-diagnostic-apply-20261013t0026z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra434-named-diagnostic-apply",
-  "file_id": "1R3EWxDlb11zpqeL1VatWCrtjTlc3L1Yj",
-  "patch_sha256": "fd996b4b95039b3df8b8613f505ce4e1998ce62ae6fdf6054af3f8f29e999411",
-  "base_sha": "4128a98182c4af7d0944526c98156a91fffa8003",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "refactor(directional): name RA-43.4 diagnostic-only source authority optout"
+  "request_id": "m6-cp3-r4-ra434-named-diag-compile-20261013t0028z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-ra434-named-diag-compile",
+  "source_sha": "40f3e7a8307bd0626e99318e3a295caa3978cd37",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-r4-ra434-named-diag-compile"
 }
