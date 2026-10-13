@@ -1,0 +1,3 @@
+Exact current R4 source snapshot for canonical Code+Build continuation
+Requested preceding authority: 7638bd3af658e3dfbd973a6f6116b6c62ffb2a03
+No runtime execution authorized.
