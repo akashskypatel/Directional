@@ -1,3 +1,10 @@
+## CURRENT — R4 RA-47.12 no-injection pipeline source oracle compiled (2026-10-13 UTC)
+
+- [x] Applied at `3b8b14e31f7546eb59f71fa9c1b3617b83ed59c7` in `38390007877`; eight-target GMP/GMPXX compile GREEN `38390222662` (artifact `11808227197`, SHA-256 `a02f07389274950cdcd20ebc7e9d2ae63445956cda9a6d1aabb7807ce4ad1530`, 28/28 manifest). Source test only; **no runtime execution**. See `Architecture_M6_CP3_R4_RA4712_Uninjected_Pipeline_Rail_Liveness_Source_Oracle_20261013.md`.
+- [ ] RA-47.12 actual uninjected runtime liveness, RA-43.1/.4, RA-46.5, historical 39/34/7/88/six and organic multi-carrier/odd-tau still open. No TB497 or successor.
+
+---
+
 ## CURRENT — RA-47.12 default-path liveness source coverage (2026-10-13 UTC)
 
 - [ ] Apply and compile-only verify `DefaultPipelinePublishesSourceBoundMandatoryRailKeysWithoutInjection` against exact verified source `f1dbd6c6ddeb60c3c74b0a40862fd26340d7b4b5`; positive requires actual uninjected pipeline publishing producer-matched typed hard rail keys `(1,4)` and `(4,7)` through the field-aligned network. This is an **unexecuted** source oracle. No TB497 or runtime tests in Code + Build. Evidence plan `Architecture_M6_CP3_R4_RA4712_Uninjected_Pipeline_Rail_Liveness_Source_Oracle_20261013.md`.

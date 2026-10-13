@@ -1,3 +1,9 @@
+## CURRENT — R4 RA-47.12 uninjected producer liveness oracle COMPILE GREEN (2026-10-13 UTC)
+
+Same unfinished `M6-CP3-CB1-ENTRY-R4` Code + Build. A new no-injection REPackage source regression requiring producer-issued hard keys `(1,4)` and `(4,7)` to bind exactly to mandatory field-aligned network edges applied at `3b8b14e31f7546eb59f71fa9c1b3617b83ed59c7` (Drive `38390007877`, staged file deleted) and eight-target GMP/GMPXX compile GREEN run `38390222662`, artifact `11808227197` SHA-256 `a02f07389274950cdcd20ebc7e9d2ae63445956cda9a6d1aabb7807ce4ad1530`, all 28/28 hashes; no runtime. Exact `Architecture_M6_CP3_R4_RA4712_Uninjected_Pipeline_Rail_Liveness_Source_Oracle_20261013.md`. RA-47.12 runtime liveness, RA-43.1/.4, RA-46.5, historical 39/34/7/88/six and genuine odd-tau multi-carrier remain OPEN; RA-50 discharges RA-43.2. No TB497 or successor.
+
+---
+
 ## CURRENT — R4 RA-47.12 uninjected producer liveness source oracle (2026-10-13 UTC)
 
 Same canonical `M6-CP3-CB1-ENTRY-R4` Code + Build. On snapshot `f1dbd6c6ddeb60c3c74b0a40862fd26340d7b4b5` (run `38389288632`, 5659/5659 hashes), added test `SurfaceCellFieldAlignedNetworkAuthority.DefaultPipelinePublishesSourceBoundMandatoryRailKeysWithoutInjection`. It requires the normal, no-injection rectangular hard-rail pipeline to publish a field-aligned network with the exact source-producer typed hard rail keys `(1,4)` and `(4,7)` and matching mandatory rail IDs/kinds. This extends beyond the existing injected-stage diagnostic; no runtime acceptance is claimed. See `Architecture_M6_CP3_R4_RA4712_Uninjected_Pipeline_Rail_Liveness_Source_Oracle_20261013.md`. Remote apply and mandatory eight-target GMP/GMPXX compile evidence are pending. No TB497, successor or change to frozen selector. Other RA-43/46, historical recovery and real odd-tau multi-carrier gates remain open.
