@@ -1,6 +1,6 @@
 ## CURRENT — R4 RA-43.1 borrowed barrier differential regression (2026-10-13 UTC)
 
-- [ ] Compile-only verify new `ResolvedBranchCorrection.HardCarrierStarCutPreservesBoundaryTransit` on the exact applied source. Test category labels distinguish hard-carrier cut from boundary traversal over identical real A1 topology transports; they are diagnostic, not A1 producer attestations. Runtime/TB497 forbidden within CB. Evidence: `Architecture_M6_CP3_R4_RA431_Borrowed_Barrier_Differential_Oracle_20261013.md`.
+- [x] Applied at `3bb0733267a18e151866a3f25e388a173b56f8b4` (workflow `38387022153`) and eight-target GMP/GMPXX compile GREEN `38387271419` (artifact `11806403200`, 28/28 checksums; no runtime). Compile-only verify new `ResolvedBranchCorrection.HardCarrierStarCutPreservesBoundaryTransit` on the exact applied source. Test category labels distinguish hard-carrier cut from boundary traversal over identical real A1 topology transports; they are diagnostic, not A1 producer attestations. Runtime/TB497 forbidden within CB. Evidence: `Architecture_M6_CP3_R4_RA431_Borrowed_Barrier_Differential_Oracle_20261013.md`.
 - [ ] R4's other source/producer authority, RA-43.4/46.5, RA-47.12 liveness, historical 39/34/7/88/six and genuine odd-tau multi-carrier remain. RA-50 discharges RA-43.2. No successor.
 
 ---

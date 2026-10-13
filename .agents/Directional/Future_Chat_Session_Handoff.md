@@ -1,3 +1,9 @@
+## CURRENT — R4 RA-43.1 differential source oracle COMPILE GREEN (2026-10-13 UTC)
+
+Same `M6-CP3-CB1-ENTRY-R4` remains unfinished. New diagnostic unit test `ResolvedBranchCorrection.HardCarrierStarCutPreservesBoundaryTransit` applied at semantic `3bb0733267a18e151866a3f25e388a173b56f8b4` in workflow `38387022153`; stage retired. Eight-target GMP/GMPXX compile GREEN `38387271419`, artifact `11806403200` SHA-256 `ce7ad76c28e84cdca1b96b9fd751d436e5f631318da3e2b8020d2e4e214db1fe`, 28/28 manifest, 8/8 targets, 0/0 exits, generated gmpxx/gmp linker, clean source, runtime disabled. The test has **NOT run**; the unit test's caller-labelled barrier map is not a production A1 attestation. Exact record `Architecture_M6_CP3_R4_RA431_Borrowed_Barrier_Differential_Oracle_20261013.md`. Retain RA-43.1/.4 global, RA-46.5, RA-47.12 liveness, 39/34/7/88/six and real odd-tau multi-carrier as open; RA-50 discharged RA-43.2. No TB497 or successor.
+
+---
+
 ## CURRENT — R4 RA-43.1 borrowed barrier differential source oracle (2026-10-13 UTC)
 
 Same canonical `M6-CP3-CB1-ENTRY-R4`, Code + Build only. Verified source snapshot `7c58889bf101043f7569779985330d14799505c0` (run `38386302934`, 5650/5650 checksums). Bounded new diagnostic unit test checks that A1 source-star transport keys marked `SourceBoundary` remain traversable while the same keys marked `HardFeature` cut all star transports; this is a category-filter unit fixture, not an A1-produced barrier witness. Apply and compile 8 GMP/GMPXX targets remotely before claiming compile green. See `Architecture_M6_CP3_R4_RA431_Borrowed_Barrier_Differential_Oracle_20261013.md`. No runtime PASS, TB497, successor, frozen selector edit or promotion. RA-43.1/.4 broader proof, RA-46.5/47.12, historical and real odd-tau multi-carrier remain open; RA-50 discharged RA-43.2.
