@@ -1,3 +1,8 @@
+## CURRENT — R4 RA-43.2 missing open-rail provenance compile receipt (2026-10-13 UTC)
+
+- [x] Source-only first-consumer missing-contact negative applied `03b712e660d2bfd0dd8114a158158540a7808a4e` and compiled via workflow `38324952482`, artifact `11781035489`, SHA-256 `4251a424b3371eb0ada98c1e43fd2357199cb943ce3637060ba2bf1a0d4e41a9` (28/28 packaged hashes; 8/8 requested targets; preflight/build exits 0/0; GMP/GMPXX linker; five source-status files clean; exactArithmeticBackend=GMP; runtimeExecution=false); no test runtime.
+- [ ] Producer-authored oriented side occurrence still unimplemented; remaining RA-43.4/46.5/47.12 and frozen R4 historical/multi-carrier gates open; do not start TB497. Owning evidence record: `Architecture_M6_CP3_R4_RA432_Open_Terminal_Contact_First_Rejection_Code_Build_Record_20261012.md`.
+
 ## CURRENT — R4 open-rail terminal provenance first rejection (2026-10-12)
 
 - [ ] Verify source-exact RA-43.2/RA-46.5 missing-open-contact first-rejection negative at compile only. No runtime acceptance. Source snapshot `4a68d108a592126a9443ae8644c2fcab2df6d181`, 6574/6574 hashes. New `MissingOpenRailTerminalContactRejectsBeforeClosedRailFallback` uses produced source-authenticated open rail, removes only the selected terminal contact, and requires consumer `missing-terminal-or-closed-rail-provenance`. Evidence: `Architecture_M6_CP3_R4_RA432_Open_Terminal_Contact_First_Rejection_Code_Build_Record_20261012.md`. Oriented producer side-binding RA-43.2, RA-43.4, other RA-46.5 negatives, RA-47.12 runtime and historical R4 gates remain open. No TB497.
