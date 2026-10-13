@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra434-network-keys-apply-20261013t0520z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra434-network-keys-apply",
-  "file_id": "1OLm_6uDcyLlnJxIHomgBo6Gd_o1LKU3K",
-  "patch_sha256": "91773aaf7302485c7657d3ee98905dbf6833baf402383741cfeedfd02f437e70",
-  "base_sha": "ea25856980b5ac8b8ddd643151c31affb1ea785b",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(directional): require publisher edge keys at network-bound rail ingress"
+  "request_id": "m6-cp3-r4-ra434-network-keys-compile-20261013t0521z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-ra434-network-keys-compile",
+  "source_sha": "c11eb6f4aac75676f864c84aed501dcd38d2aeb6",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-r4-ra434-network-keys-compile"
 }
