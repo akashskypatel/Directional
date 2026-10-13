@@ -122,6 +122,11 @@ TEST(MilestoneGP26, InjectedEdgeTablesMustMatchDerivedSourceFaces) {
     EXPECT_THROW(injected.set_mesh(reference.V, reference.F, ev, fe, ef),
                  std::runtime_error);
   };
+  // Any nonempty injected edge table requires the complete matching triple.
+  rejects(reference.EV, Eigen::MatrixXi{}, Eigen::MatrixXi{});
+  rejects(Eigen::MatrixXi{}, reference.FE, Eigen::MatrixXi{});
+  rejects(Eigen::MatrixXi{}, Eigen::MatrixXi{}, reference.EF);
+
   auto wrongEV = reference.EV;
   wrongEV(0, 0) = -1;
   rejects(wrongEV, reference.FE, reference.EF);
