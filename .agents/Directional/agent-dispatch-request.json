@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-nonetwork-compile-closeout-20261013t0619z",
+  "request_id": "m6-cp3-r4-ra434-trace-entry-apply-20261013t0634z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-nonetwork-compile-closeout",
-  "file_id": "10orV7lODCxhcwj9Q21cOOcSs3YOvfPAq",
-  "patch_sha256": "547f406225d4d1c6363e080ce9eab42e9808adafe30feb8ab420142dff93e1e1",
-  "base_sha": "52389f6749e90e9fdc9c9f2b711ea0c339e323ca",
+  "mailbox_key": "m6-cp3-r4-ra434-trace-entry-apply",
+  "file_id": "1u4VAVTKPcP8NQAnIv1rhPc19md7KNUVD",
+  "patch_sha256": "a60c744045af8580f645444ee75b5820491199ce812d0a6dcd44913f7e3eeda4",
+  "base_sha": "fc22e74ec72570d401a14f7146cda8a8a82ffaec",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record verified R4 strict no-network edge compile"
+  "commit_message": "test(directional): pin strict trace ingress published source edge keys"
 }
