@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra4711-eight-target-compile-20261013t0234z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-ra4711-eight-target-compile",
-  "source_sha": "9c659ae0c9aa260c728d96a13c23ce237d189b06",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-ra4711-compile"
+  "request_id": "m6-cp3-r4-sid01-a4-side-pin-apply-20261013t0252z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-sid01-a4-side-pin-apply",
+  "file_id": "18ywBReyYC9chFjChtr7ND8RmbqGM0iZ5",
+  "patch_sha256": "1cfa50fc9d62b530eddf813e8cc3d70b9a8a523d796b4d3bc1f1a7781bdf07a6",
+  "base_sha": "2ddf6fa143f61335fbfba511943d5e9cdde3dbe6",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "test(directional): guard A4 hard rail side pin under self-inverse transport"
 }
