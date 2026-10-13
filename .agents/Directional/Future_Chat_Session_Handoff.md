@@ -1,3 +1,9 @@
+## CURRENT — RA-47.10 ordinal-discriminating source rail COMPILE GREEN (2026-10-13 UTC)
+
+Same unfinished `M6-CP3-CB1-ENTRY-R4` Code + Build. Snapshot `555f0489ac5a87492222b25a8437417d5f02a531` (workflow `38372583823`, 5631/5631 hashes); existing FieldAlignedCurveNetwork positive amended with a produced `(0,2)` hard carrier whose typed identity must differ from its lexical-edge vs DCEL-row indices. Exact four-path patch applied at semantic `1ee05785c9f35d60d7dc2264f92bccb0fe423b24` in workflow `38373640827`; eight-target GMP/GMPXX compile GREEN run `38373896079`, artifact `11800690476`, ZIP SHA256 `7c6665abc8d3a7c5de26fdb24fc985448d7e14df17bed7bcc66a282277a0305c`, internal 28/28 hashes, preflight/build 0/0, clean source, generated GMPXX/GMP link, `runtimeExecution=false`. Full evidence: `Architecture_M6_CP3_R4_RA4710_Lexical_DCEL_Positive_Code_Build_Record_20261013.md`. Stage owner-deleted, temporary snapshot trigger retired. **No runtime witness**. RA-43.1/.4, RA-46.5, RA-47.10 decomposition, RA-47.12 executed liveness, historical 39/34/7/88/six and odd-τ multi-carrier remain open; RA-50 discharged RA-43.2. No TB497 or successor.
+
+---
+
 ## CURRENT — R4 RA-47.10 discriminating typed rail ordinal positive (2026-10-13 UTC)
 
 Continuing canonical `M6-CP3-CB1-ENTRY-R4` Code + Build only. Exact verified snapshot `555f0489ac5a87492222b25a8437417d5f02a531` (run `38372583823`, 5,631/5,631 checksums). Augmented existing `FieldAlignedCurveNetwork.PreservesBoundaryAndHardFeatureOwnersWithoutNumericAlias` positive: produced hard-feature rail on source diagonal `(0,2)` must retain that typed key, while independently computed lexical key ordinal **differs** from the DCEL EV row. The test identity and other assertions remain unchanged. See `Architecture_M6_CP3_R4_RA4710_Lexical_DCEL_Positive_Code_Build_Record_20261013.md`. Do not count any runtime PASS; all remaining R4 obligations and no TB497/successor rule remain.

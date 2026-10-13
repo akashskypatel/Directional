@@ -1,6 +1,6 @@
 ## CURRENT — R4 RA-47.10 ordinal-discriminating producer positive (2026-10-13 UTC)
 
-- [ ] Apply/compile the one-test augmentation to `FieldAlignedCurveNetwork.PreservesBoundaryAndHardFeatureOwnersWithoutNumericAlias` from source snapshot `555f0489ac5a87492222b25a8437417d5f02a531` (run `38372583823`, 5631/5631); source diagonal `(0,2)` positive requires a different lexical ordinal than DCEL EV row and a correctly published typed mandatory edge. Record `Architecture_M6_CP3_R4_RA4710_Lexical_DCEL_Positive_Code_Build_Record_20261013.md`.
+- [x] Applied the one-test ordinal-discriminating positive at `1ee05785c9f35d60d7dc2264f92bccb0fe423b24` (workflow `38373640827`); mandatory eight-target GMP/GMPXX compile GREEN run `38373896079`, 28/28 artifact hashes and runtime disabled. See `Architecture_M6_CP3_R4_RA4710_Lexical_DCEL_Positive_Code_Build_Record_20261013.md`. This is not a runtime PASS.
 - [ ] R4 remains unfinished: RA-43.1/.4, RA-46.5, RA-47.12 executed liveness, RA-47.10 component-decomposed equality, historical 39/34/7/88/six and odd-τ genuine multi-carrier. No Test + Benchmark, no TB497 or successor; RA-50 discharges RA-43.2.
 
 ---
