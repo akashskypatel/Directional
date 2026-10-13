@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-public-foreign-docs-20261013t0815z",
+  "request_id": "m6-cp3-r4-ra465-a4-missingpath-20261013t0836z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-public-foreign-compile-docs-apply",
-  "file_id": "1_dZuLRowgZLWuCv1MWTAs3ZJHTQmj0Ai",
-  "patch_sha256": "6d13b2ebe8e85196fe38787c6eb7db46659def9a531fa7dd654f2b3a6206f69c",
-  "base_sha": "f5c0d0b325ecf7333abbd3573759ed09a011ea3e",
+  "mailbox_key": "m6-cp3-r4-ra465-a4-missingpath-apply",
+  "file_id": "1SDizK4UoSMvU3q9Wp9LSMi5gDmdORaj1",
+  "patch_sha256": "b18b63b4dcee80c0499180ab3137f71eac9fd40296174bc3d6e25c8c06a56471",
+  "base_sha": "f09ec24103bd0c1479bcb0b4ccfeb9662f90be59",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record R4 public foreign-edge compile evidence"
+  "commit_message": "test(directional): guard R4 A4 missing-terminal-A3-path rejection"
 }
