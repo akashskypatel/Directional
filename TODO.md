@@ -1,3 +1,9 @@
+## CURRENT — R4 RA-43.4 compile-only network override checkpoint (2026-10-13 UTC)
+
+- [x] Apply producer-backed typed-network override regression at semantic `f08770f004404f46356cc6fac59882aae5508849` through Drive workflow `38329088933`; consumed Drive stage deleted, source and test identity preserved.
+- [x] Pinned eight-target GMP/GMPXX compile GREEN workflow `38329228942`, artifact `11781824492`, ZIP SHA-256 `e76c87f5ecd5285192785278e5fdb8a9be3ae79ca7e4317e43f029df9372f486`; 28/28 hashes, 8/8 targets, preflight/build 0/0, GMPXX/GMP linkage, clean source, `runtimeExecution=false`.
+- [ ] Do not claim runtime PASS. Global RA-43.4 legacy exception disposition, RA-43.2 oriented terminal-side authority, remaining RA-46.5 and RA-47.12 executed liveness, historical 39/34/7/88/six and true odd-τ multi-carrier remain open. R4 continues; TB497 forbidden.
+
 ## CURRENT — R4 RA-43.4 verified compile / mandatory typed network override (2026-10-13)
 
 - [x] Exact source `40f3e7a8307bd0626e99318e3a295caa3978cd37` named-mode migration compiled GREEN, workflow `38327322520`, artifact `11781461538`, ZIP SHA-256 `995f98408d7d465b400051cf5626992481aee132d9fdd4dcf93406bb3f7a7e22`, 28/28 hashes, eight targets, GMPXX/GMP, clean source, `runtimeExecution=false`.
