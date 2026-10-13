@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-typed-factory-public-diagnostic-20261013t2140z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-typed-factory-public-diagnostic",
-  "file_id": "1EJRQbCGKX2qsJx0C3sx4pl8ZWmLMW6xs",
-  "patch_sha256": "44d5b20267cfc470bd21d166ad440bbff733834ab04244897f672b03b5c70146",
-  "base_sha": "3dbd149b3422ec3aa0bc9432d1436d5051269040",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(directional): expose typed A4 factory rejection in pipeline diagnostic",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-typed-public-reason-compile-20261013t2141z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-typed-public-reason-compile",
+  "source_sha": "09b185b8d58ef6a664bc2525bc22675d6788bbef",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-r4-typed-public-reason"
 }
