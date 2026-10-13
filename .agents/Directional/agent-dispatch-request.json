@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra432-oriented-review-request-apply-20261013t0119z",
+  "request_id": "m6-cp3-r4-ra4711-census-apply-20261013t0231z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra432-oriented-review-request-apply",
-  "file_id": "1rF9kMnUHzeEfHe9IkFBGo6AOAzYQO4qt",
-  "patch_sha256": "bc19215d8c56c3f16475c1f6553ac9a13e68dcdb9af026efb4d11857debb678f",
-  "base_sha": "d02b5d6d6422e8ccb5fd932f65ac19b14808f573",
+  "mailbox_key": "m6-cp3-r4-ra4711-census-apply",
+  "file_id": "1q5af71DOkh8iCrzS3FA9UtcRpr2dMWNY",
+  "patch_sha256": "c3287190319ecfeb709be632978f0f4a718fa5a7f1b5c31600eed0fe6e9f13e3",
+  "base_sha": "b119a65bc0090f6e0517518bd2b95c66597d5620",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record R4 independent oriented terminal germ producer design gate"
+  "commit_message": "test(directional): clarify RA-47.11 typed edge to DCEL row test adapter"
 }
