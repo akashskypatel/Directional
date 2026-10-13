@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra434-consumer-foreign-apply-20261013t0547z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra434-consumer-foreign-apply",
-  "file_id": "1ldTo5an-fd8caTwrWetTv3d49C6E3akP",
-  "patch_sha256": "97dac10a5d1c18f62c9067bec315d97528f0de2147d7bcf8538905518780bec0",
-  "base_sha": "a2e63a6676c90fdcdc56f1b8922d43e4cf4f670c",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): independently reject foreign source edge at rail consumer"
+  "request_id": "m6-cp3-r4-ra434-consumer-foreign-compile-20261013t0545z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-ra434-consumer-foreign-compile",
+  "source_sha": "91e5c2a498ffc949ec229fd084cf49949ffe3a76",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-r4-ra434-consumer-foreign-compile"
 }
