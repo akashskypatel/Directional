@@ -1,3 +1,10 @@
+## CURRENT — R4 RA-43.4 network-bound foreign published edge key (2026-10-13 UTC)
+
+- [ ] In the **same** `M6-CP3-CB1-ENTRY-R4` Code + Build turn, apply and compile-only verify the test-source oracle extending `StandaloneRailDiagnosticModeCannotBypassProducedNetworkTypedIngress` to reject a present but *wrong* producer source-edge key at the `rail_interval_refs` consumer. This is distinct from the existing network **factory** forged-key oracle; requires producer-backed full-network positive, real alternate feature-edge key, wrong-key `TypedAuthorityMismatch` and correct failing rail ID. Exact snapshot `a2e63a6`, workflow `38352281752`, 5585/5585 file hashes; see `Architecture_M6_CP3_R4_RA434_Consumer_Foreign_Edge_Key_Regression_20261013.md`. No runtime, selectors or TB497.
+- [ ] Separately migrate remaining standalone Phase14 strict no-network typed vertex fixtures before globally requiring published `sourceEdges` at no-network helper ingress. Do not incorrectly claim previous network-bound cardinality guard closed this seam. RA-50 prohibits upstream filled-side receipt; R4 still carries remaining RA-43/46/47 and historical/multi-carrier gates.
+
+---
+
 ## CURRENT — R4 RA-43.4 network-bound missing typed edge-key check (2026-10-13 UTC)
 
 - [x] Applied the source-exact `rail_interval_refs` network-bound published-edge key cardinality guard and Phase10 positive/negative (same test identity) at `c11eb6f4aac75676f864c84aed501dcd38d2aeb6`; eight-target GMP/GMPXX compile **GREEN** workflow `38350909779`, artifact `11790937173` SHA-256 `959cab5897c43900d4ec3986ecb4e6b75a74d06401be6eddd0ab24bf23660b36`, 28/28 hashes, exits 0/0, clean source and runtime disabled. The missing-key rejection must occur even in named legacy diagnostic mode when a real network exists; the source-only no-network diagnostic stays unchanged. Record: `Architecture_M6_CP3_R4_RA434_Network_Bound_Typed_Rail_Edge_Key_Code_Build_Record_20261013.md`; snapshot `ea25856980b5ac8b8ddd643151c31affb1ea785b`, 5576/5576 checksums. No runtime or TB497.

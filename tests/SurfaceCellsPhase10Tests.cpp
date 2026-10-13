@@ -6439,6 +6439,27 @@ TEST(SurfaceCellAuthorityContractCutover,
   ASSERT_TRUE(missingPublishedKeys.railId.has_value());
   EXPECT_EQ(damagedRail, *missingPublishedKeys.railId)
       << "network-bound validation must not infer missing published keys";
+
+  // Distinct consumer-first protection: a present but wrong producer edge
+  // key must also reject before a geometrically valid interval is accepted.
+  // The separate FieldAlignedCurveNetwork::make oracle below checks factory
+  // ingress; it does not establish this rail_interval_refs consumer boundary.
+  auto substitutedKeys = fixture.rails;
+  const auto originalKey = substitutedKeys.front().sourceEdges.front();
+  const auto foreignKey = std::find_if(
+      fixture.hardFeatureEdges.begin(), fixture.hardFeatureEdges.end(),
+      [&](const auto &key) { return key != originalKey; });
+  ASSERT_NE(foreignKey, fixture.hardFeatureEdges.end());
+  substitutedKeys.front().sourceEdges.front() = *foreignKey;
+  const auto substitutedPublishedKey = rail_interval_refs(
+      substitutedKeys, fixture.mesh.V, fixture.mesh.F, edgeFaces,
+      &*fixture.fieldNetwork,
+      RailIntervalAuthorityMode::LegacyStandaloneDiagnostic);
+  EXPECT_EQ(RailBuildStatus::TypedAuthorityMismatch,
+            substitutedPublishedKey.status);
+  ASSERT_TRUE(substitutedPublishedKey.railId.has_value());
+  EXPECT_EQ(damagedRail, *substitutedPublishedKey.railId)
+      << "network-bound ingress must reject a different published edge key";
 }
 
 // RA-47.12: production-path reachability must not be inferred from a
