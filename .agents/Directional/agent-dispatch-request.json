@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-typed-public-reason-compile-20261013t2141z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-typed-public-reason-compile",
-  "source_sha": "09b185b8d58ef6a664bc2525bc22675d6788bbef",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-typed-public-reason"
+  "request_id": "m6-cp3-r4-r3-39-static-inventory-20261013t2210z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-r3-39-static-inventory",
+  "file_id": "12axugq0oNkc9d38HKYHH9q9nQqzkOpkB",
+  "patch_sha256": "adf00c4fedf35666fca8a89b044d2e28a2a745db087ce10a76b51899fab72436",
+  "base_sha": "b191c6588262f46d20980242d9d51f89f3d241eb",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): map 39 historical R3 A4 rejections to exact current source",
+  "retention_days": 14
 }
