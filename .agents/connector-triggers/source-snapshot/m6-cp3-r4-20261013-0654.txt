@@ -1,3 +1,0 @@
-Turn: M6-CP3-CB1-ENTRY-R4
-Purpose: exact source snapshot for same canonical Code + Build turn
-Authority before trigger: 94d7f749042cc88f3717effff2c28f51af7f7ce0
