@@ -9036,20 +9036,20 @@ TEST(M6CP3, A5RejectsSourceEquivalentHardRailSelectedFaceRechart) {
         const auto originalRow = directional::authority::SourceFaceId::from_index(
             point.face, static_cast<std::size_t>(fixture.mesh.F.rows()));
         if (!originalRow ||
-            draft.sourceAuthority.region_for_row(*originalRow) !=
+            draft.sourceAuthority.region_for_row(originalRow.value()) !=
                 cell->sourceTopologyRegion) {
           continue;
         }
         const auto &attachment = certificate.endpoints[endpoint];
         const auto &expectedFace = side == 0 ? attachment.firstAttachment
                                               : attachment.secondAttachment;
-        if (draft.sourceAuthority.topology_for_row(*originalRow) != expectedFace)
+        if (draft.sourceAuthority.topology_for_row(originalRow.value()) != expectedFace)
           continue;
         for (const auto alternative :
              draft.sourceAuthority.rows_for_region(cell->sourceTopologyRegion)) {
-          if (alternative == *originalRow ||
+          if (alternative == originalRow.value() ||
               draft.sourceAuthority.sheet_for_row(alternative) !=
-                  draft.sourceAuthority.sheet_for_row(*originalRow)) {
+                  draft.sourceAuthority.sheet_for_row(originalRow.value())) {
             continue;
           }
           Eigen::RowVector3d rebased = Eigen::RowVector3d::Zero();
