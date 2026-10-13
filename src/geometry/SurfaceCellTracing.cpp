@@ -5958,6 +5958,10 @@ rail_interval_refs(
     if ((typedVertices && rail.sourceVertices.size() != expectedVertexCount) ||
         ((requireTypedSourceVertices || fieldAlignedNetwork != nullptr) &&
          !typedVertices) ||
+        // Network-bound source incidence must retain producer-published
+        // edge keys; sample-derived keys alone cannot replace that authority.
+        (fieldAlignedNetwork != nullptr &&
+         rail.sourceEdges.size() != static_cast<std::size_t>(intervalCount)) ||
         (typedVertices && !rail.sourceEdges.empty() &&
          rail.sourceEdges.size() != static_cast<std::size_t>(intervalCount))) {
       result.status = RailBuildStatus::TypedAuthorityMismatch;

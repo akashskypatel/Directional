@@ -6417,6 +6417,28 @@ TEST(SurfaceCellAuthorityContractCutover,
   EXPECT_EQ(RailBuildStatus::TypedAuthorityMismatch,
             forbiddenNetworkOptout.status)
       << "a real field-aligned network must override any diagnostic-only mode";
+
+  // With the complete producer rails, this same network must accept all
+  // published source edges. Remove only the typed edge-key receipt for one
+  // rail while preserving its typed vertices and geometric sample sequence.
+  const auto allOwned = rail_interval_refs(
+      fixture.rails, fixture.mesh.V, fixture.mesh.F, edgeFaces,
+      &*fixture.fieldNetwork);
+  ASSERT_EQ(RailBuildStatus::Valid, allOwned.status);
+  auto missingKeys = fixture.rails;
+  ASSERT_FALSE(missingKeys.front().sourceEdges.empty());
+  ASSERT_FALSE(missingKeys.front().sourceVertices.empty());
+  const auto damagedRail = missingKeys.front().id;
+  missingKeys.front().sourceEdges.clear();
+  const auto missingPublishedKeys = rail_interval_refs(
+      missingKeys, fixture.mesh.V, fixture.mesh.F, edgeFaces,
+      &*fixture.fieldNetwork,
+      RailIntervalAuthorityMode::LegacyStandaloneDiagnostic);
+  EXPECT_EQ(RailBuildStatus::TypedAuthorityMismatch,
+            missingPublishedKeys.status);
+  ASSERT_TRUE(missingPublishedKeys.railId.has_value());
+  EXPECT_EQ(damagedRail, *missingPublishedKeys.railId)
+      << "network-bound validation must not infer missing published keys";
 }
 
 // RA-47.12: production-path reachability must not be inferred from a

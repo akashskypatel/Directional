@@ -1,3 +1,9 @@
+## CURRENT — R4 RA-43.4 network-bound typed source-edge keys (2026-10-13 UTC)
+
+Same `M6-CP3-CB1-ENTRY-R4` Code + Build. Verified source snapshot `ea25856980b5ac8b8ddd643151c31affb1ea785b` (`38350344837`, 5576/5576). `rail_interval_refs` now requires exact published `sourceEdges` cardinality **only when a field-aligned network exists**, and extends the existing Phase10 test with a full-network accepted positive plus a missing-key negative that must reject even under explicit standalone diagnostic mode. No-network diagnostics and RA-50's prohibition of a fabricated producer-filled-side receipt remain unchanged. Source and scope: `Architecture_M6_CP3_R4_RA434_Network_Bound_Typed_Rail_Edge_Key_Code_Build_Record_20261013.md`. Apply and eight-target GMP/GMPXX compile receipt **PENDING**; no runtime PASS or TB497, R4 still incomplete.
+
+---
+
 ## CURRENT — R4 corrected A5 source compiles; runtime gate still closed (2026-10-13 UTC)
 
 Canonical `M6-CP3-CB1-ENTRY-R4` remains unfinished. The prior GitHub connector safety-check platform block cleared: durable dispatcher accepted compile request event `e5f3d8c2352c4edbbd345da89ac5a42f3e22188a`. Exact corrected source `b836329e540ddaca5a7e4d233a6c0a99f574fd85` compiled GREEN in workflow `38348617454`; artifact `11790165302` ZIP SHA-256 `8542f0118b4f85cbaa8da3ae94c4b125421da234fdf8e7dc401206bcbbcc1a3b`, 28/28 hashes, 8/8 targets, preflight/build 0/0, actual GMPXX/GMP link, clean source, `runtimeExecution=false`. The initial A5 compiler RED is superseded for compilation only; **no regression was run**, no TB497 or successor. See `Architecture_M6_CP3_R4_SID01_A5_Selected_Face_Pin_Code_Build_Record_20261013.md`. RA-50 discharges RA-43.2 and forbids fabricated filled-side receipts; remaining R4 RA-43.1/.4, RA-46.5, RA-47.12 executed liveness, 39/34/7/88/six and odd-τ multi-carrier remain open.

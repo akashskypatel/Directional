@@ -1,3 +1,10 @@
+## CURRENT — R4 RA-43.4 network-bound missing typed edge-key check (2026-10-13 UTC)
+
+- [ ] Apply and eight-target GMP/GMPXX compile-check the source-exact `rail_interval_refs` network-bound published-edge key cardinality guard and Phase10 positive/negative (same test identity). The missing-key rejection must occur even in named legacy diagnostic mode when a real network exists; the source-only no-network diagnostic stays unchanged. Record: `Architecture_M6_CP3_R4_RA434_Network_Bound_Typed_Rail_Edge_Key_Code_Build_Record_20261013.md`; snapshot `ea25856980b5ac8b8ddd643151c31affb1ea785b`, 5576/5576 checksums. No runtime or TB497.
+- [ ] Continue R4 RA-43.1/.4 global, RA-46.5, RA-47.12 executed, historical 39/34/7/88/six and odd-τ multi-carrier gates. RA-50 discharges RA-43.2 and forbids invented filled-side receipts.
+
+---
+
 ## CURRENT — R4-SID-01 corrected A5 GMP compile verified (2026-10-13 UTC)
 
 - [x] Source `b836329e540ddaca5a7e4d233a6c0a99f574fd85` compiled on all eight required GMP/GMPXX targets in workflow `38348617454`, artifact `11790165302`, SHA-256 `8542f0118b4f85cbaa8da3ae94c4b125421da234fdf8e7dc401206bcbbcc1a3b`. Verified 28/28 artifact SHA256SUMS, 8/8 targets, preflight/build 0/0, actual GMPXX/GMP link, clean source and `runtimeExecution=false`. This resolves the previous connector dispatch issue and corrects the earlier A5 test-only compiler error; see `Architecture_M6_CP3_R4_SID01_A5_Selected_Face_Pin_Code_Build_Record_20261013.md`.
