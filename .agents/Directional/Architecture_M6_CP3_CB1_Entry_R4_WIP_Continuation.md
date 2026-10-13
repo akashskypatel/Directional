@@ -1,5 +1,17 @@
 # M6-CP3-CB1-ENTRY-R4 — Code + Build WIP continuation
 
+## 2026-10-13 21:26Z — checked-factory typed source rejection preserved
+
+Same canonical R4, still Code + Build and runtime-free. An exact-source producer audit identified a real typed-diagnostic loss: `publish_phase_front_result` copied the checked factory `SurfacePhaseFrontProductError::code` but **discarded its existing `sourceAuthorityDetail`**. A two-file production correction now forwards that typed predicate through new `SurfacePhaseFrontFailure::publishedProductSourceAuthorityDetail`, without modifying acceptance, rejection ordering, the enum's values, the frozen selector, or test identities.
+
+Verified semantically current snapshot SHA `a8ffc398257dce4cabbd2508fdcc45f849e404e4`, run `38466710259`, snapshot artifact `11848048951` ZIP SHA256 `2e814b78d862a3e55e01e8242e87e962276289a598d749a92485ed376ab5ba5b`, full **5744/5744** file hashes. Source patch base `64e34b589a50ae57a633b5983b54409a55154233`, full patch SHA256 `0f194a19c2a83798d90b836bb28f4f742b7ff127f803d18121692a96ac244cca`, body SHA256 `12faebf30b3e1dc81c19f1b00786491e117825e5b35f31b85002e1cce3b201d9`, `git apply --check` and `git diff --check` passed. Exact source push `2dfb4d06c21d9f9a24597e3a91a87838760474a4` from [Drive apply run 38470124591](https://github.com/akashskypatel/Directional/actions/runs/38470124591), immutable result `11850953036` ZIP SHA256 `3abf4a43d032e0f3269758388f529ff3de79512952166b6f0188f8f9bd7e9aad`, runtime disabled. Drive stage File ID `1KwjtcZJPuGRUCYA2bTUJL30-1m1AURaV` **owner deleted** after successful apply. Exact eight-target GMP/GMPXX compile request `721b99548add6ea3f28b0bc480148f255ae9f3b3`, pinned semantic source `2dfb4d06c21d9f9a24597e3a91a87838760474a4`, mailbox `.workflow-mailbox/m6-cp3-r4-factory-typed-detail-compile/latest.json`. **At this record's publication compile evidence is pending; obtain the matching mailbox, verify jobs/artifact/checksums/runtime-disabled receipt before any compile-green claim.** No Directional tests, benchmarks, TB497 or successor were launched by this turn.
+
+Existing RA-46.6 checked-factory typed Missing/Ambiguous path distinction is unchanged, and RA-51's two retired unreachable terminal negatives remain retired with guards intact. R4 remains open on RA-43.1/.4, reachable RA-46.5, RA-47.12, 39 endpoint/34 Phase10/seven DCEL/88 CP2 previously green losses/six CP3 positives and genuinely produced odd-τ multi-carrier plus D1/D2/D3/D5/A6/A7 witnesses. Accepted CP2 491/491, rejected R3 403/497, ledger 66/17/49 debt1 and frozen 497 selector unchanged.
+
+---
+
+
+
 ## 2026-10-13 20:55Z — RA-51 non-hard component seam odd A3 values, compile GREEN
 
 Same canonical **M6-CP3-CB1-ENTRY-R4**, Code + Build only. Extend existing `FieldTransportAtlas.RetainsDirectedTransitionValueForHardFeatureWithoutTraversalAdjacency` with a distinct **non-hard component seam** case. A two-face square is labelled with different source components but **no hard rail**, and a `{1,0}` field gauge relabel makes a non-self-inverse signed quarter-turn. Require the A1 atlas to classify the shared source edge `NonTraversable`, retain reciprocal odd directed `transition_value` and opposite signed lifts, and exclude both ordinary traversal directions and adjacency. This protects RA-51's intentionally **rail-only** terminal-star cut without treating every A2b component seam as a hard feature. One test file, +37 lines, no new test identity, production/ABI/selector/workflow permissions unchanged.
