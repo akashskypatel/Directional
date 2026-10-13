@@ -19047,8 +19047,27 @@ SurfaceCellNetwork build_surface_cell_network(
         // Missing open-rail contact is not evidence of a closed rail. Only an
         // independently published typed closed chain permits the contact-free
         // cyclic route; otherwise reject at the producer's A2b boundary.
-        if (!authoritativeOptions.hardRailClosedChains.contains(*first.railId))
+        const auto closed = authoritativeOptions.hardRailClosedChains.find(
+            *first.railId);
+        if (closed == authoritativeOptions.hardRailClosedChains.end())
           return reject("missing-terminal-or-closed-rail-provenance");
+        // A closed-chain token is not sufficient to replace an open-rail
+        // terminal contact. Its cyclic source-owned edge list must actually
+        // own this endpoint carrier, before attempting an A3 bypass.
+        bool ownsEndpointEdge = false;
+        const auto &chain = closed->second.vertices;
+        if (chain.size() >= 3U) {
+          for (std::size_t at = 0U; at < chain.size(); ++at) {
+            const auto candidate = authority::SourceEdgeTopologyKey::make(
+                chain[at], chain[(at + 1U) % chain.size()]);
+            if (candidate && candidate.value() == edge) {
+              ownsEndpointEdge = true;
+              break;
+            }
+          }
+        }
+        if (!ownsEndpointEdge)
+          return reject("closed-rail-endpoint-edge-not-owned");
         const auto oriented = oriented_carrier(*carrier, firstAttachment,
                                                secondAttachment);
         if (!oriented) return reject("closed-rail-carrier-face-mismatch");

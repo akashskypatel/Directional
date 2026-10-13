@@ -6414,7 +6414,8 @@ build_fixed_plan_rectangular_hard_rail_network(
     const RectangularHardRailPhaseFrontFixture &fixture,
     const double targetScale,
     const directional::geometry::SurfaceHardRailTerminalContacts *contacts = nullptr,
-    const std::set<directional::authority::SourceEdgeTopologyKey> *hardEdges = nullptr) {
+    const std::set<directional::authority::SourceEdgeTopologyKey> *hardEdges = nullptr,
+    const directional::geometry::SurfaceHardRailClosedChains *closedChains = nullptr) {
   if (!fixture.sourceAuthority.has_value() || !fixture.atlas.has_value() ||
       !fixture.fieldNetwork.has_value() || !fixture.topologyPlan.has_value() ||
       !fixture.conformityBaseline.has_value()) {
@@ -6430,6 +6431,7 @@ build_fixed_plan_rectangular_hard_rail_network(
   options.hardFeatureEdges = hardEdges ? *hardEdges : fixture.hardFeatureEdges;
   options.authoritativeRails = fixture.rails;
   if (contacts != nullptr) options.hardRailTerminalContacts = *contacts;
+  if (closedChains != nullptr) options.hardRailClosedChains = *closedChains;
   const Eigen::VectorXd target = fixture.targetSize * targetScale;
   if (target.size() > 0) options.defaultTargetSize = target.mean();
   return directional::geometry::build_surface_cell_network(
@@ -6786,6 +6788,43 @@ TEST(SurfaceCellAuthorityContractCutover,
   EXPECT_EQ(std::string::npos,
             failure->hardRailRouteDiagnostic.find(
                 "a2bProbeFailure=no-exact-terminal-corner"));
+
+  // A fabricated closed-chain record must not bypass this same first A4
+  // consumer merely because the rail ID is present: it must own the exact
+  // produced endpoint edge. Preserve the other valid producer inputs.
+  std::vector<directional::authority::SourceVertexId> foreignVertices;
+  const auto endpointEdge = route.route.oriented_steps().front().topology();
+  for (int i = 0; i < fixture.mesh.V.rows() && foreignVertices.size() < 3U;
+       ++i) {
+    const auto vertex = directional::authority::SourceVertexId::from_index(
+        i, static_cast<std::size_t>(fixture.mesh.V.rows()));
+    ASSERT_TRUE(vertex.has_value());
+    if (vertex.value() != endpointEdge.first() &&
+        vertex.value() != endpointEdge.second())
+      foreignVertices.push_back(vertex.value());
+  }
+  ASSERT_EQ(3U, foreignVertices.size());
+  directional::geometry::SurfaceHardRailClosedChains unrelatedClosed;
+  unrelatedClosed.emplace(route.rail,
+      directional::geometry::SurfaceHardRailClosedChain{
+          front.hardRailTerminalContacts().at(route.rail).component,
+          foreignVertices});
+  const auto forged = build_fixed_plan_rectangular_hard_rail_network(
+      fixture, 1.0, &contacts, nullptr, &unrelatedClosed);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
+            forged.phaseFront.disposition());
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
+                InvalidHardRailRouteCertificate,
+            forged.phaseFront.rejection_reason());
+  const auto *forgedFailure = forged.phaseFront.rejection();
+  ASSERT_NE(forgedFailure, nullptr);
+  EXPECT_EQ(directional::geometry::SurfaceHardRailRouteFailureLocus::
+                EndpointAttachment,
+            forgedFailure->hardRailRouteLocus);
+  EXPECT_NE(std::string::npos,
+            forgedFailure->hardRailRouteDiagnostic.find(
+                "a2bProbeFailure=closed-rail-endpoint-edge-not-owned"))
+      << forgedFailure->hardRailRouteDiagnostic;
 }
 
 // RA-49.2: use the actual first certified terminal vertex, not a fabricated
