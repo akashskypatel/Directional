@@ -1,3 +1,9 @@
+## CURRENT — R4 RA-43.4 verified compile / mandatory typed network override (2026-10-13)
+
+- [x] Exact source `40f3e7a8307bd0626e99318e3a295caa3978cd37` named-mode migration compiled GREEN, workflow `38327322520`, artifact `11781461538`, ZIP SHA-256 `995f98408d7d465b400051cf5626992481aee132d9fdd4dcf93406bb3f7a7e22`, 28/28 hashes, eight targets, GMPXX/GMP, clean source, `runtimeExecution=false`.
+- [ ] Apply and compile-check the new producer-backed Phase10 trust-boundary regression: explicitly named standalone diagnostic accepts geometrically valid untyped rail only with no network; default strict and actual producer A2a network both reject `TypedAuthorityMismatch`. No test execution or TB497 in current turn. Owning record: `Architecture_M6_CP3_R4_RA434_Explicit_Standalone_Diagnostic_Optout_Code_Build_Record_20261013.md`.
+- [ ] Continue RA-43.2 independently oriented terminal-side producer, global RA-43.4 legacy disposition, remaining RA-46.5 and RA-47.12 runtime, historical 39/34/7/88/six, odd-τ multi-carrier. No successor until formal complete.
+
 ## CURRENT — R4 RA-43.4 explicitly named standalone diagnostic exception (2026-10-13)
 
 - [ ] Apply/compile-source-check the exact-base `RailIntervalAuthorityMode` migration in `rail_interval_refs`: strict typed default, explicit standalone diagnostic-only opt-out, network still forbids untyped ingress. No test/benchmark execution; this is not global legacy retirement. See `Architecture_M6_CP3_R4_RA434_Explicit_Standalone_Diagnostic_Optout_Code_Build_Record_20261013.md`.

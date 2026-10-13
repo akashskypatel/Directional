@@ -6378,6 +6378,47 @@ TEST(SurfaceCellAuthorityContractCutover,
   }
 }
 
+// RA-43.4: an explicitly named standalone geometry diagnostic may not
+// bypass typed source ownership once the real A2a network is supplied.
+// Exercise the same genuinely produced rail in both modes. Runtime is deferred.
+TEST(SurfaceCellAuthorityContractCutover,
+     StandaloneRailDiagnosticModeCannotBypassProducedNetworkTypedIngress) {
+  const auto fixture = build_rectangular_hard_rail_phase_front();
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            fixture.network.phaseFront.disposition())
+      << hard_rail_first_failure_detail(fixture.network);
+  ASSERT_TRUE(fixture.fieldNetwork.has_value());
+  ASSERT_FALSE(fixture.rails.empty());
+  auto untypedRail = fixture.rails.front();
+  ASSERT_FALSE(untypedRail.closed);
+  ASSERT_FALSE(untypedRail.sourceVertices.empty());
+  ASSERT_FALSE(untypedRail.sourceEdges.empty());
+  untypedRail.sourceVertices.clear();
+  untypedRail.sourceEdges.clear();
+
+  using directional::geometry::surface_cell_tracing_detail::RailBuildStatus;
+  using directional::geometry::surface_cell_tracing_detail::RailIntervalAuthorityMode;
+  using directional::geometry::surface_cell_tracing_detail::rail_interval_refs;
+  const auto edgeFaces =
+      directional::geometry::surface_cell_tracing_detail::edge_faces(
+          fixture.mesh.F);
+  const auto diagnostic = rail_interval_refs(
+      {untypedRail}, fixture.mesh.V, fixture.mesh.F, edgeFaces, nullptr,
+      RailIntervalAuthorityMode::LegacyStandaloneDiagnostic);
+  ASSERT_EQ(RailBuildStatus::Valid, diagnostic.status)
+      << "historical untyped rail geometry is available only as a standalone diagnostic";
+  const auto strict = rail_interval_refs(
+      {untypedRail}, fixture.mesh.V, fixture.mesh.F, edgeFaces);
+  EXPECT_EQ(RailBuildStatus::TypedAuthorityMismatch, strict.status);
+  const auto forbiddenNetworkOptout = rail_interval_refs(
+      {untypedRail}, fixture.mesh.V, fixture.mesh.F, edgeFaces,
+      &*fixture.fieldNetwork,
+      RailIntervalAuthorityMode::LegacyStandaloneDiagnostic);
+  EXPECT_EQ(RailBuildStatus::TypedAuthorityMismatch,
+            forbiddenNetworkOptout.status)
+      << "a real field-aligned network must override any diagnostic-only mode";
+}
+
 // RA-47.12: production-path reachability must not be inferred from a
 // hand-authored network fixture. This exact pipeline fixture publishes both
 // the rails and the network; a typed mutation must fail in the same consumer.
