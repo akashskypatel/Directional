@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra434-trace-entry-compile-20261013t0636z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-ra434-trace-entry-compile",
-  "source_sha": "f1fbf8561d3d6d77f6807d0178263fa0a9ba11ef",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-ra434-trace-entry-compile"
+  "request_id": "m6-cp3-r4-ra434-trace-entry-closeout-20261013t0641z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-ra434-trace-entry-closeout",
+  "file_id": "1KGpaBK42TLEMgLoiWuMygWBBPhm41_hb",
+  "patch_sha256": "2dae9f4b56e8ef38f67fe6d91449f3a2ccaab27f35c2942a1c29a95fbd3d345d",
+  "base_sha": "f1fbf8561d3d6d77f6807d0178263fa0a9ba11ef",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record verified R4 strict trace-entry compile"
 }
