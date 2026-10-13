@@ -1,3 +1,10 @@
+## CURRENT — R4 RA-47.10 ordinal-discriminating producer positive (2026-10-13 UTC)
+
+- [ ] Apply/compile the one-test augmentation to `FieldAlignedCurveNetwork.PreservesBoundaryAndHardFeatureOwnersWithoutNumericAlias` from source snapshot `555f0489ac5a87492222b25a8437417d5f02a531` (run `38372583823`, 5631/5631); source diagonal `(0,2)` positive requires a different lexical ordinal than DCEL EV row and a correctly published typed mandatory edge. Record `Architecture_M6_CP3_R4_RA4710_Lexical_DCEL_Positive_Code_Build_Record_20261013.md`.
+- [ ] R4 remains unfinished: RA-43.1/.4, RA-46.5, RA-47.12 executed liveness, RA-47.10 component-decomposed equality, historical 39/34/7/88/six and odd-τ genuine multi-carrier. No Test + Benchmark, no TB497 or successor; RA-50 discharges RA-43.2.
+
+---
+
 ## CURRENT — R4 RA-46.5 A4 missing terminal A3 consumer oracle (2026-10-13 UTC)
 
 - [x] Applied at `d6240c9bc2d59899829ec259e9babd2878736e50` and compile-only verified in `38370592790` (28/28 hashes, all 8 GMP/GMPXX targets, no runtime) the new Phase10 source test `MissingTerminalA3PathRejectsAtFirstA4ConsumerPredicate`: choose a genuinely produced non-hard A3 terminal step, block only that step in replay, require consumer `EndpointAttachment` and `a2bProbeFailure=missing-terminal-A3-path`. Existing checked-factory `MissingTerminalA3Path` is a separate later-stage oracle and cannot satisfy this coverage. No test runtime, TB497, selector change or successor. Evidence: `Architecture_M6_CP3_R4_RA465_A4_Missing_Terminal_A3_Consumer_Oracle_20261013.md`.

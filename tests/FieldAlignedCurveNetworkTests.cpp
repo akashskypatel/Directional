@@ -899,6 +899,29 @@ TEST(FieldAlignedCurveNetwork,
       network.mandatory_edges().begin(), network.mandatory_edges().end(),
       [](const auto &edge) { return edge.kind == SurfaceCellRailKind::HardFeature; });
   ASSERT_NE(network.mandatory_edges().end(), hard);
+  // RA-47.10: the actual produced hard-feature rail uses the source key
+  // (0,2), whose lexical feature-map ordinal is not its DCEL EV row.
+  // A positive restricted to an equal-ordinal key cannot catch regression
+  // to treating the producer's feature index as a mesh-edge row.
+  const auto diagonal = topology_edge(0, 2,
+                                     static_cast<std::size_t>(mesh.V.rows()));
+  ASSERT_EQ(diagonal, hard->sourceEdge);
+  ASSERT_FALSE(rails.empty());
+  ASSERT_EQ(1U, rails.front().sourceEdges.size());
+  EXPECT_EQ(diagonal, rails.front().sourceEdges.front());
+  const int dcelRow = source_edge_index(mesh, diagonal);
+  ASSERT_GE(dcelRow, 0);
+  std::vector<SourceEdgeTopologyKey> lexicalKeys;
+  for (int row = 0; row < mesh.EV.rows(); ++row)
+    lexicalKeys.push_back(edge_key(mesh, row));
+  std::sort(lexicalKeys.begin(), lexicalKeys.end());
+  const auto lexicalEntry = std::find(lexicalKeys.begin(), lexicalKeys.end(),
+                                      diagonal);
+  ASSERT_NE(lexicalKeys.end(), lexicalEntry);
+  const auto lexicalOrdinal =
+      static_cast<int>(std::distance(lexicalKeys.begin(), lexicalEntry));
+  EXPECT_NE(lexicalOrdinal, dcelRow)
+      << "the positive rail must distinguish feature-key and EV-row order";
   EXPECT_EQ(0U, hard->rail.index());
   EXPECT_EQ(0U, hard->sourceComponent.index());
   EXPECT_EQ(2U, hard->sourceTopologyRegions.size());
