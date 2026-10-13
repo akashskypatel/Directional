@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra434-network-override-closeout-docs-20261013t0057z",
+  "request_id": "m6-cp3-r4-ra432-oriented-review-request-apply-20261013t0119z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra434-network-override-closeout-docs",
-  "file_id": "1pEqtGwmhR_gPeAqQki-VAnoDJP4Dji91",
-  "patch_sha256": "3cd39ef5ed3025c95167880f3103c1dfe06a6c66f16678205c1d4b2e66f1150d",
-  "base_sha": "f08770f004404f46356cc6fac59882aae5508849",
+  "mailbox_key": "m6-cp3-r4-ra432-oriented-review-request-apply",
+  "file_id": "1rF9kMnUHzeEfHe9IkFBGo6AOAzYQO4qt",
+  "patch_sha256": "bc19215d8c56c3f16475c1f6553ac9a13e68dcdb9af026efb4d11857debb678f",
+  "base_sha": "d02b5d6d6422e8ccb5fd932f65ac19b14808f573",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): publish verified R4 network override compile closeout"
+  "commit_message": "docs(directional): record R4 independent oriented terminal germ producer design gate"
 }
