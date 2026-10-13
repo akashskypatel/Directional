@@ -1,18 +1,11 @@
 {
-  "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra4712-default-liveness-gmp-20261013t1126z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-ra4712-default-liveness-gmp",
-  "source_sha": "3b8b14e31f7546eb59f71fa9c1b3617b83ed59c7",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-ra4712-default-liveness-gmp"
+ "schema_version":1,
+ "request_id":"m6-cp3-r4-ra4712-compile-docs-20261013t1131z",
+ "operation":"drive_apply",
+ "mailbox_key":"m6-cp3-r4-ra4712-compile-docs-apply",
+ "file_id":"1GOOFkPf8EYRkCDJnHp8Rd03AbsKNSdfv",
+ "patch_sha256":"875fc1548382ee18585386efabb2915a97bb15d49faf12a8684d464616e5cbe6",
+ "base_sha":"3b8b14e31f7546eb59f71fa9c1b3617b83ed59c7",
+ "target_branch":"agent/surface_cell_quad/p5-recover-bridge-healing",
+ "commit_message":"docs(directional): preserve RA-47.12 compile-only liveness evidence"
 }
