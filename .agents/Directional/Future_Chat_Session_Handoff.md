@@ -1,3 +1,9 @@
+## CURRENT — R4 public trace foreign typed edge oracle COMPILE GREEN (2026-10-13 UTC)
+
+Same canonical `M6-CP3-CB1-ENTRY-R4` Code + Build continues. Public `trace_surface_field` strict no-network in-range foreign-edge-key Phase14 negative applied to exact source `f5c0d0b325ecf7333abbd3573759ed09a011ea3e` through Drive workflow `38366995891`; staged Drive patch owner-deleted. Corrected mandatory eight-target GMP/GMPXX compile GREEN workflow `38367436364`, immutable artifact `11796334785`, ZIP SHA-256 `1a56a2ee7fee179e9c5c251e5d68560fb3e714364f8b89084b6ec39707b40f19`, 28/28 checksums, exits 0/0, five clean source status files, generated GMPXX/GMP link, `runtimeExecution=false`. Initial dispatcher request failed before compilation because targets were encoded as a string; corrected array request compiled. Source-only oracle, not runtime PASS or TB497. Full evidence: `.agents/Directional/Architecture_M6_CP3_R4_Public_Trace_Foreign_Edge_Oracle_Compile_Record_20261013.md`. R4 remaining RA-43.1/.4, RA-46.5, RA-47.12 executed, historical 39/34/7/88/six, true odd-τ multi-carrier; RA-50 still discharges RA-43.2. No successor.
+
+---
+
 ## CURRENT — R4 strict trace public-entry foreign edge-key oracle authored (2026-10-13 UTC)
 
 Same canonical `M6-CP3-CB1-ENTRY-R4` remains IN_PROGRESS. Verified source snapshot `45d210e51a12dd3b8416c5179e6737edbb53e4e3` (workflow `38359143085`, manifest 5612/5612). A small unexecuted Phase14 test-only extension checks a **present, in-range but foreign** published rail source-edge key at the public `trace_surface_field` strict no-network ingress. The intact typed baseline and missing-key public negative remain fixed; this is distinct from existing helper-level foreign-key oracles. Compile-only dispatcher/patch application is pending; no test, benchmark, TB497 or successor. RA-50 continues to discharge RA-43.2; RA-43.1/.4 global, RA-46.5, RA-47.12 executed liveness and carried witness/restoration gates remain open.

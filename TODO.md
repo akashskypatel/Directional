@@ -1,3 +1,10 @@
+## CURRENT — R4 public strict trace foreign-key compile verified (2026-10-13 UTC)
+
+- [x] Verified and applied published present/in-range foreign `sourceEdges` negative at public `trace_surface_field` entry, exact source `f5c0d0b325ecf7333abbd3573759ed09a011ea3e`, Drive apply `38366995891`. Mandatory compile-only GMP/GMPXX run `38367436364` GREEN, artifact `11796334785`, SHA-256 `1a56a2ee7fee179e9c5c251e5d68560fb3e714364f8b89084b6ec39707b40f19`, internal 28/28, 8/8 compiled, exit 0/0, GMPXX/GMP generated linkage, five clean source status files, runtime disabled. Initial request rejected targets string before compile; corrected array executed successfully. See `Architecture_M6_CP3_R4_Public_Trace_Foreign_Edge_Oracle_Compile_Record_20261013.md`.
+- [ ] Continue same canonical R4 Code + Build. RA-43.1/.4 global, RA-46.5, RA-47.12 executed liveness, historical 39 endpoint / 34 Phase10 / 7 DCEL / 88 accepted restoration / six CP3 and true odd-τ multi-carrier remain open. RA-43.2 discharged by RA-50; no fabricated filled-side owner. No TB497, no runtime acceptance, no successor.
+
+---
+
 ## CURRENT — R4 strict trace public-entry foreign published edge key (2026-10-13 UTC)
 
 - [ ] Test-only, unexecuted extension to `SurfaceCellTracingPhase14.ProducedRailEndpointsRequireExactSourceVertexIncidence`: preserve the valid public trace baseline and missing-key negative; additionally replace only the published key with a distinct in-range source key `(1,4)` and require `FieldMetadata` at `trace_surface_field` strict no-network entry. Lower-level foreign-key check already exists, but is not equivalent to public ingress coverage. Patch authored against verified snapshot `45d210e51a12dd3b8416c5179e6737edbb53e4e3` (snapshot workflow `38359143085`, 5612/5612 checksums). Code + Build source compilation and immutable evidence remain pending; do not claim runtime acceptance, start TB497 or successor. Same canonical `M6-CP3-CB1-ENTRY-R4`.
