@@ -1,3 +1,62 @@
+## CURRENT — 2026-10-13 `M6-CP3-R4-TERMINAL-A3-REACHABILITY-ARCH-REV` COMPLETE; RA-51 frozen
+
+**The `R4-TA3-01` review stop is resolved and supersedes the stop paragraphs below. There is no open
+REVIEW_BLOCKER.** **RA-49.7 is now fully discharged: no RA-46.5 negative remains unadjudicated.** Both
+remaining negatives are **unreachable** and **RETIRED coupled to guards**, with both guards **kept
+fail-closed**. The next turn's priority is **RA-49.2's duplicated-endpoint witness** — the one reachable
+terminal negative still owed.
+
+**Why it went the request's way (and the request was right to ask).** Unlike the two preceding stops, this one
+stated a *conditional* inference, explicitly declined to claim universal unreachability, named its own
+counterexample class, and asked the single question that decides the matter. Both of its provisional
+inferences are confirmed. Recorded as the reusable shape for a feasibility stop: RA-49.0 failed on **stage**,
+RA-50.0 on **extent**, and this one failed on neither.
+
+**`missing-or-nonreciprocal-terminal-A3` — UNREACHABLE (H1–H6).** Two public A4 ingress variants exist, the
+primary `build_surface_cell_network` (`src/geometry/SurfaceCellTracing.cpp:18743`) and the convenience overload
+(`:20011`) that delegates to it, so the atlas gate at `:18771-18774` dominates every path to the terminal loop.
+`FieldTransportAtlas::make` pins the regions to its own `sourceMesh.F`
+(`src/authority/FieldTransportAtlas.cpp:1909-1910`, `:1926`); the consume gate pins `rowTopology_` row-by-row
+to `faces` (`:3101-3108` with `include/directional/geometry/SourceTopologyRegions.h:151-188`); and a
+non-matching supplied authority is **replaced** by one built from `faces` (`:18756-18764`), so no path carries
+inconsistent regions. **`NonTraversable` is not a missing value:** the transition value is published at
+`:2039-2042`, **before** the `HardFeature` (`:2043-2047`) and region/component (`:2048-2054`) classifications.
+`reverse = forward.inverse()` is **computed** at `:2033-2034` and served from that one record by
+`directed_transition_value` (`:910-922`), so the nonreciprocity disjunct is **unrepresentable**, not merely
+unobserved. `make` is the sole producer, with no public constructor and no mutator.
+
+**`overlapping-terminal-sectors` — ALSO UNREACHABLE (K1–K5), by an unrelated argument.** `:18892` forces the
+paired front edges into different A2b regions and dominates the certificate call; per-region tracing confines a
+front edge's trace faces to its own region (`:12946`/`:14686`/`:17257`; guards
+`:12380`/`:14920`/`:17538-17539`), so the two attachments are **distinct faces**. Every face has degree ≤ 2 in
+`localStar` (`> 2` rejects at `:19091`, boundary spokes `continue`), so **the star graph is a disjoint union of
+paths and cycles**; a cycle yields `ambiguous-terminal-A3-path` because `path_to` requires `count == 1`
+(`:19137`). On a path ordered `F1 … F2`, the un-reversed intervals `[p..F1]`/`[q..F2]` intersect iff `p` is at
+or after `q`, the reversed `[p..F2]`/`[q..F1]` iff `p` is at or before `q`; **both overlap iff `p == q`**,
+which is excluded. Distinct components give `missing-terminal-A3-path`.
+
+**RA-48.1's overfull obligation does NOT revive.** RA-48.3 **landed** at `785dd7398`: `TriMesh::set_mesh`
+(`include/directional/core/TriMesh.h:331-351`) now derives the edge table **unconditionally** and then requires
+any supplied `_EV`/`_FE`/`_EF` to be **bit-identical** or throws. **R4-OVF-01 is closed; guard G1 is
+unconditional** — a strengthening, not the weakening the revival clause contemplated. DCEL throw intact at
+`TriMesh.h:160-163`.
+
+**New finding `R4-TA3-02 / DEAD_DISJUNCT`.** `SurfaceCellTracing.cpp:19103-19104` and
+`FieldTransportAtlas.cpp:2035-2038` are dead by construction. Both stay as fail-closed guards. **Forward
+constraint on RA-46.6: a typed sub-code may not be minted for a disjunct that cannot fire** — splitting this
+predicate would manufacture a fresh unsatisfiable obligation of exactly the kind retired twice here.
+
+**Checked, no defect reported:** the consumer's `localStar` (`:19081-19110`) and the factory's
+`unique_terminal_star_path` (`:8395-8430`) apply the **identical** star rule — no producer/validator
+disagreement over `NonTraversable` region seams. The terminal star is cut by **rails only**, by design.
+
+No runtime credit. Ledger **66/17/49**, M6 debt **1**; selector **497** untouched; CP2 **491/491** accepted;
+R3 **403/497** rejected with 94 RED and 88 accepted CP2 losses. RA-41's junction/sector clauses remain frozen
+**UNEXERCISED**; the multi-carrier STOP stands undischarged. Decision:
+`.agents/Directional/Architecture_M6_CP3_R4_Terminal_A3_First_Rejection_Review_Decision.md`.
+
+---
+
 ## CURRENT — 2026-10-13 `M6-CP3-R4-ORIENTED-TERMINAL-SIDE-ARCH-REV` COMPLETE; RA-50 frozen
 
 **The RA-43.2 oriented-germ review request is resolved and supersedes the stop paragraphs below. There is no

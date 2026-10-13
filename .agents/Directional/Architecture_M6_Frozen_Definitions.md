@@ -1,3 +1,98 @@
+## RA-51 — both remaining RA-49.7 negatives are UNREACHABLE and RETIRED (coupled) **FROZEN at M6-CP3-CB1-ENTRY-R4** (2026-10-13)
+
+Adjudicates `Architecture_M6_CP3_R4_RA465_Terminal_A3_First_Rejection_Review_Stop_20261013.md` (`R4-TA3-01`).
+Basis: `Architecture_M6_CP3_R4_Terminal_A3_First_Rejection_Review_Decision.md`. **The REVIEW STOP is
+DISSOLVED. RA-49.7's two unadjudicated negatives are now adjudicated and BOTH are RETIRED, coupled to named
+guards; both guards are KEPT fail-closed.** No runtime credit. RA-50, RA-49, RA-48, RA-47 (.1–.10 implemented),
+RA-46 with .5 amended only as stated below, RA-45, RA-44 (less .2), RA-43 (less .2 as DISCHARGED, less .5 and
+less the superseded `sourceEdges` row of §4), RA-42 as corrected, RA-41 frozen scoped, RA-40, RA-39, RA-38,
+RA-37a and the RA-34.3 stop gates stand.
+
+- **RA-51.0 — the request is ACCEPTED in shape and confirmed in substance.** It stated a *conditional*
+  inference, explicitly refused to claim universal unreachability ("Do not claim universal unreachability
+  yet"), named its own counterexample class, and asked the one question that decides the matter. That is the
+  correct form for a feasibility stop, and both of its provisional inferences are confirmed. Contrast RA-49.0
+  (wrong stage) and RA-50.0 (wrong extent): this stop made neither error.
+- **RA-51.1 — Review A: the ingress census is CLOSED at two variants.** The primary
+  `build_surface_cell_network` (`src/geometry/SurfaceCellTracing.cpp:18743`) and the convenience overload
+  (`:20011`), which computes axes from the cross field and **delegates to the primary on both branches**. The
+  atlas gate at `:18771-18774` therefore dominates every path to the terminal loop. **No atlas built for a
+  distinct source can pass it:** `FieldTransportAtlas::make` pins the regions to its own `sourceMesh.F` at
+  `src/authority/FieldTransportAtlas.cpp:1909-1910` and stores `rowTopology_` from them at `:1926`, while the
+  consume-side gate pins `rowTopology_` row-by-row to `faces` (`:3101-3108` with
+  `include/directional/geometry/SourceTopologyRegions.h:151-188`), and `:18756-18764` **replaces** a
+  non-matching supplied authority with one built from `faces` so no path carries inconsistent regions.
+  Composing: `key(faces.row(r)) == key(sourceMesh.F.row(r))` for every `r`, hence an **identical undirected
+  edge set with identical per-edge incidence**. There is no "same regions, different edges" atlas.
+- **RA-51.2 — the distinction the request asked for: `NonTraversable` ≠ missing value.** In `make`'s edge
+  loop a one-face edge is recorded `SourceBoundary` and `continue`s **before** any value is published
+  (`:2008-2013`); a two-face edge without a cross-field transition fails `MissingAdjacency` (`:2016-2018`);
+  wrong face ownership fails `NonReciprocalAdjacency` (`:2020-2027`); and `transitionValues.push_back` runs at
+  **`:2039-2042`**, which is **before** the `HardFeature` (`:2043-2047`) and region/component
+  `NonTraversable` (`:2048-2054`) categorizations. **A barrier classification never withholds a transition
+  value.**
+- **RA-51.3 — Review B: `missing-or-nonreciprocal-terminal-A3` (`:19099-19105`) is UNREACHABLE.** Six links:
+  **H1** build-time pin (`FieldTransportAtlas.cpp:1909-1910`, `:1926`); **H2** consume-time pin
+  (`SurfaceCellTracing.cpp:18756-18764`, `:18771-18774`; a null atlas rejects earlier and differently at
+  `:19079`); **H3** the edge table is a function of `F` — RA-48.3 **landed** at commit `785dd7398` and
+  `TriMesh::set_mesh` (`include/directional/core/TriMesh.h:331-351`) now derives **unconditionally** and then
+  requires any supplied `_EV`/`_FE`/`_EF` to be **bit-identical** or throws; **H4** every two-face edge has a
+  value unconditionally (RA-51.2), and the consumer has already skipped boundary and hard-feature spokes, so
+  `!forward`/`!reverse` cannot fire; **H5** `reverse = forward.inverse()` is **computed** at `:2033-2034` and
+  `directed_transition_value` (`:910-922`) serves both directions from that one immutable record, so the third
+  disjunct compares `value.reverse` against `value.forward.inverse()` — **unrepresentable**, not merely
+  unobserved; **H6** `make` is the sole producer, with no public constructor and no mutator
+  (`include/directional/authority/FieldTransportAtlas.h:837-900`). **RETIRED coupled to H1–H6**; weakening any
+  of them **revives** the obligation. The guard stays fail-closed as the only backstop for an atlas obtained
+  other than through `make`.
+- **RA-51.4 — Review C: `overlapping-terminal-sectors` is ALSO UNREACHABLE, by an unrelated argument.**
+  **K1** the paired front edges are in different A2b regions (`:18892` dominates the certificate call);
+  **K2** a front edge's trace faces lie in its own region — all three constructors take the enclosing traced
+  region (`:12946`, `:14686`, `:17257`) and the per-region tracers reject foreign rows (`:12380`, `:14920`,
+  `:17538-17539`); K1∧K2 ⟹ `firstAttachment != secondAttachment`. **K3** every face has degree ≤ 2 in
+  `localStar` — `> 2` incidence rejects at `:19091` and boundary spokes `continue`, and each face carries
+  exactly two spokes at the vertex, so **the star graph is a disjoint union of paths and cycles**. **K4** a
+  cycle component yields `ambiguous-terminal-A3-path`, not overlap, because `path_to` requires `count == 1`
+  (`:19137`). **K5** both orientations are tried (`:19143`). **Proof:** on a path component ordered
+  `F1 … F2`, the un-reversed orientation's intervals `[p..F1]` and `[q..F2]` intersect iff `p` is at or after
+  `q`; the reversed orientation's `[p..F2]` and `[q..F1]` intersect iff `p` is at or before `q`; both overlap
+  **iff `p == q`**, excluded by K1∧K2. Distinct components give `missing-terminal-A3-path`. **RETIRED coupled
+  to K1–K5**; weakening K1 or K3 **revives** it. Guard kept fail-closed.
+- **RA-51.5 — RA-46.5 is amended only here, and only by removal.** The two retired negatives are struck from
+  its required list. Every other RA-46.5 negative stands unamended, including `ambiguous-terminal-contact`
+  (RA-49.1, **reachable**, still owed) and `no-exact-terminal-corner`. No new obligation is created.
+- **RA-51.6 — RA-48.1's overfull obligation does NOT revive; it is held more tightly.** RA-48.3's landed form
+  makes `compute_edge_quantities` run on **every** `set_mesh` call rather than only when no edge table is
+  supplied, so guard **G1 is now unconditional** and the DCEL throw (`TriMesh.h:160-163`) is intact.
+  R4-OVF-01 is **closed**. This is a strengthening, not the weakening RA-48.1's revival clause contemplated.
+- **RA-51.7 — `R4-TA3-02 / DEAD_DISJUNCT` (architectural, no runtime credit).** Two reciprocity tests are
+  dead by construction: `reverse->transport != forward->transport.inverse()`
+  (`SurfaceCellTracing.cpp:19103-19104`, dead by H5) and `compose(forward, reverse) != QuarterTurn{}`
+  (`FieldTransportAtlas.cpp:2035-2038`, dead for any correct `QuarterTurn::inverse`). Both are harmless
+  fail-closed guards and **stay**. **Forward constraint on RA-46.6: a typed sub-code may not be minted for a
+  disjunct that cannot fire.** Splitting `missing-or-nonreciprocal-terminal-A3` into "missing" and
+  "nonreciprocal" sub-codes would manufacture a fresh unsatisfiable fixture obligation of exactly the kind
+  retired twice here. Sub-codes separate **reachable** predicates only.
+- **RA-51.8 — one hypothesis checked, no defect reported.** The consumer's `localStar` (`:19081-19110`)
+  excludes only `hardFeatureEdges` and therefore **admits** steps across region/component seams the atlas
+  classified `NonTraversable`. Had the factory used a different rule, a consumer-accepted certificate would be
+  factory-rejected — a producer/validator disagreement. It does not:
+  `unique_terminal_star_path` (`:8395-8430`) applies the identical rule. **Consumer and factory agree — the
+  terminal star is cut by rails only.** Recorded as deliberate design so it is not re-raised as a defect.
+- **RA-51.9 — the request's one framing error.** Its step 4 groups RA-48.3 with RA-49.7's unadjudicated list.
+  RA-49.7 left two **feasibility** questions open; RA-48.3 was an **implementation** obligation and had
+  already landed at the request's own snapshot (`785dd7398` is an ancestor of `0240d0f00`). Its landing is not
+  a parallel open item — it **is** link H3, closing the forged-edge-table route. An implementation obligation
+  discharges by code; a feasibility question discharges only by review. Its frozen-definition line citation
+  (`:157-163`) also predates RA-50's prepend: **cite frozen clauses by RA number, never by line.**
+- **RA-51.10 — no credit.** Retiring two unrealizable obligations is a definition correction, not a runtime
+  regression. Ledger **66 events / 17 categories / 49 recurrences**, M6 debt **1**, unchanged. Selector 497
+  untouched; CP2 491/491 accepted; R3 403/497 rejected with 94 RED and 88 accepted CP2 losses. RA-41's
+  junction/sector clauses remain frozen **UNEXERCISED**; the multi-carrier STOP stands undischarged.
+  **RA-49.7 is now fully discharged: no RA-46.5 negative remains unadjudicated.**
+
+---
+
 ## RA-50 — RA-43.2 is DISCHARGED; the oriented-side producer receipt is REFUSED **FROZEN at M6-CP3-CB1-ENTRY-R4** (2026-10-13)
 
 Adjudicates `Architecture_M6_CP3_R4_RA432_Oriented_Germ_Producer_Boundary_Review_Request_20261013.md`. Basis:
