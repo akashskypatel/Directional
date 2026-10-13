@@ -99,6 +99,42 @@ std::vector<int> json_integer_array(const fs::path &path,
   return values;
 }
 
+// RA-51.6: an injected DCEL edge table cannot override the face-derived
+// topology, even when the other two injected tables are correct.
+TEST(MilestoneGP26, InjectedEdgeTablesMustMatchDerivedSourceFaces) {
+  const auto cases =
+      directional::bench::load_benchmark_manifest(fixture_manifest());
+  const auto &benchmarkCase = find_case(cases, "plane__surface_cells");
+  const auto meshData = directional::bench::load_benchmark_mesh(benchmarkCase);
+  directional::TriMesh reference;
+  reference.set_mesh(meshData.vertices, meshData.faces);
+  ASSERT_GT(reference.EV.rows(), 0);
+  ASSERT_GT(reference.FE.rows(), 0);
+  ASSERT_GT(reference.EF.rows(), 0);
+
+  directional::TriMesh matching;
+  EXPECT_NO_THROW(matching.set_mesh(reference.V, reference.F, reference.EV,
+                                    reference.FE, reference.EF));
+
+  const auto rejects = [&](const Eigen::MatrixXi &ev, const Eigen::MatrixXi &fe,
+                           const Eigen::MatrixXi &ef) {
+    directional::TriMesh injected;
+    EXPECT_THROW(injected.set_mesh(reference.V, reference.F, ev, fe, ef),
+                 std::runtime_error);
+  };
+  auto wrongEV = reference.EV;
+  wrongEV(0, 0) = -1;
+  rejects(wrongEV, reference.FE, reference.EF);
+
+  auto wrongFE = reference.FE;
+  wrongFE(0, 0) = -1;
+  rejects(reference.EV, wrongFE, reference.EF);
+
+  auto wrongEF = reference.EF;
+  wrongEF(0, 0) = -1;
+  rejects(reference.EV, reference.FE, wrongEF);
+}
+
 TEST(MilestoneGP26, RecoveryTargetProjectionIsBoundedAndDeterministic) {
   const auto cases =
       directional::bench::load_benchmark_manifest(fixture_manifest());
