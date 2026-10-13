@@ -1,0 +1,3 @@
+Canonical M6-CP3-CB1-ENTRY-R4 source snapshot for cross-file producer recovery inspection
+Frozen source authority 5fa5dea17b7862171a1a5264121f58efdd1bb8be
+Use marker push source; Code+Build runtime forbidden.
