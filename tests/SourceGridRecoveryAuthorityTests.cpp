@@ -133,6 +133,24 @@ TEST(MilestoneGP26, InjectedEdgeTablesMustMatchDerivedSourceFaces) {
   auto wrongEF = reference.EF;
   wrongEF(0, 0) = -1;
   rejects(reference.EV, reference.FE, wrongEF);
+
+  // A valid face-row permutation must not accept stale tables from the
+  // original face order; reject at the derived-topology comparison.
+  ASSERT_GT(reference.F.rows(), 1);
+  auto reorderedFaces = reference.F;
+  reorderedFaces.row(0).swap(reorderedFaces.row(1));
+  directional::TriMesh reordered;
+  ASSERT_NO_THROW(reordered.set_mesh(reference.V, reorderedFaces));
+  ASSERT_FALSE((reordered.FE.array() == reference.FE.array()).all());
+  directional::TriMesh stale;
+  try {
+    stale.set_mesh(reference.V, reorderedFaces, reference.EV, reference.FE,
+                   reference.EF);
+    FAIL() << "stale edge tables accepted after source face-row permutation";
+  } catch (const std::runtime_error &error) {
+    EXPECT_STREQ("set_mesh(): injected edge topology disagrees with faces",
+                 error.what());
+  }
 }
 
 TEST(MilestoneGP26, RecoveryTargetProjectionIsBoundedAndDeterministic) {
