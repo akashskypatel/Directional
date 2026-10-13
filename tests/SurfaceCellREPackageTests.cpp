@@ -440,6 +440,65 @@ TEST(SurfaceCellFieldAlignedNetworkAuthority,
             product->elementCount);
 }
 
+// RA-47.12 source oracle: reach the field-aligned producer on the ordinary
+// un-injected pipeline, not only in the stage-3 failure-injection diagnostic.
+// This is compile-only until the separately authorized runtime gate.
+TEST(SurfaceCellFieldAlignedNetworkAuthority,
+     DefaultPipelinePublishesSourceBoundMandatoryRailKeysWithoutInjection) {
+  const REPkgMesh mesh = make_rectangular_internal_hard_feature_grid();
+  const Eigen::MatrixXd raw = constant_raw_field(mesh.faces.rows());
+  directional::pipeline::RemeshOptions options = surface_options();
+  options.surfaceCells.featureMap.userHardEdges.insert({1, 4});
+  options.surfaceCells.featureMap.userHardEdges.insert({4, 7});
+  // Deliberately do not set injectFailureAfterStage.
+  const auto result = directional::pipeline::remesh_from_raw_cross_field(
+      mesh.vertices, mesh.faces, raw, options);
+  SCOPED_TRACE(::testing::Message()
+               << "terminal=" << result.diagnostics.terminalFailureCode
+               << ";stage=" << result.diagnostics.terminalFailureStage
+               << ";firstProducer="
+               << result.diagnostics.surfaceCellFirstInvalidProducerStage
+               << ";reason="
+               << result.diagnostics.surfaceCellFirstInvalidProducerReason);
+  const auto &context = result.surfaceCellContext;
+  const auto &snapshots = context.productSnapshots;
+  EXPECT_TRUE(context.fieldAlignedNetworkAuthorityUsed);
+  EXPECT_FALSE(context.rawSingularityProjectionUsed);
+  ASSERT_TRUE(snapshots.hasAuthoritativeRails);
+  ASSERT_TRUE(snapshots.fieldAlignedCurveNetwork.has_value());
+  const auto &network = *snapshots.fieldAlignedCurveNetwork;
+  ASSERT_FALSE(network.mandatory_edges().empty());
+  ASSERT_FALSE(snapshots.authoritativeRails.empty());
+
+  const auto first = directional::authority::SourceEdgeTopologyKey::from_indices(
+      1, 4, static_cast<std::size_t>(mesh.vertices.rows()));
+  const auto second = directional::authority::SourceEdgeTopologyKey::from_indices(
+      4, 7, static_cast<std::size_t>(mesh.vertices.rows()));
+  ASSERT_TRUE(first.has_value());
+  ASSERT_TRUE(second.has_value());
+  bool sawFirst = false;
+  bool sawSecond = false;
+  std::size_t authenticatedHardIntervals = 0;
+  for (const auto &rail : snapshots.authoritativeRails) {
+    if (rail.kind != directional::geometry::SurfaceCellRailKind::HardFeature)
+      continue;
+    ASSERT_FALSE(rail.sourceEdges.empty());
+    for (const auto &edge : rail.sourceEdges) {
+      const auto *mandatory = network.find_mandatory_edge(edge);
+      ASSERT_NE(nullptr, mandatory)
+          << "default pipeline discarded a producer-published typed rail key";
+      EXPECT_EQ(rail.id, mandatory->rail);
+      EXPECT_EQ(rail.kind, mandatory->kind);
+      sawFirst = sawFirst || edge == first.value();
+      sawSecond = sawSecond || edge == second.value();
+      ++authenticatedHardIntervals;
+    }
+  }
+  EXPECT_GT(authenticatedHardIntervals, 0U);
+  EXPECT_TRUE(sawFirst);
+  EXPECT_TRUE(sawSecond);
+}
+
 TEST(SurfaceCellTracingPhase14,
      InteriorHardRailSeedsBothIncidentFaceCharts) {
   const REPkgMesh mesh = make_grid(1);

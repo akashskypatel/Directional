@@ -1,3 +1,9 @@
+## CURRENT — R4 RA-47.12 uninjected producer liveness source oracle (2026-10-13 UTC)
+
+Same canonical `M6-CP3-CB1-ENTRY-R4` Code + Build. On snapshot `f1dbd6c6ddeb60c3c74b0a40862fd26340d7b4b5` (run `38389288632`, 5659/5659 hashes), added test `SurfaceCellFieldAlignedNetworkAuthority.DefaultPipelinePublishesSourceBoundMandatoryRailKeysWithoutInjection`. It requires the normal, no-injection rectangular hard-rail pipeline to publish a field-aligned network with the exact source-producer typed hard rail keys `(1,4)` and `(4,7)` and matching mandatory rail IDs/kinds. This extends beyond the existing injected-stage diagnostic; no runtime acceptance is claimed. See `Architecture_M6_CP3_R4_RA4712_Uninjected_Pipeline_Rail_Liveness_Source_Oracle_20261013.md`. Remote apply and mandatory eight-target GMP/GMPXX compile evidence are pending. No TB497, successor or change to frozen selector. Other RA-43/46, historical recovery and real odd-tau multi-carrier gates remain open.
+
+---
+
 ## CURRENT — R4 RA-43.1 differential source oracle COMPILE GREEN (2026-10-13 UTC)
 
 Same `M6-CP3-CB1-ENTRY-R4` remains unfinished. New diagnostic unit test `ResolvedBranchCorrection.HardCarrierStarCutPreservesBoundaryTransit` applied at semantic `3bb0733267a18e151866a3f25e388a173b56f8b4` in workflow `38387022153`; stage retired. Eight-target GMP/GMPXX compile GREEN `38387271419`, artifact `11806403200` SHA-256 `ce7ad76c28e84cdca1b96b9fd751d436e5f631318da3e2b8020d2e4e214db1fe`, 28/28 manifest, 8/8 targets, 0/0 exits, generated gmpxx/gmp linker, clean source, runtime disabled. The test has **NOT run**; the unit test's caller-labelled barrier map is not a production A1 attestation. Exact record `Architecture_M6_CP3_R4_RA431_Borrowed_Barrier_Differential_Oracle_20261013.md`. Retain RA-43.1/.4 global, RA-46.5, RA-47.12 liveness, 39/34/7/88/six and real odd-tau multi-carrier as open; RA-50 discharged RA-43.2. No TB497 or successor.

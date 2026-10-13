@@ -1,3 +1,10 @@
+## CURRENT — RA-47.12 default-path liveness source coverage (2026-10-13 UTC)
+
+- [ ] Apply and compile-only verify `DefaultPipelinePublishesSourceBoundMandatoryRailKeysWithoutInjection` against exact verified source `f1dbd6c6ddeb60c3c74b0a40862fd26340d7b4b5`; positive requires actual uninjected pipeline publishing producer-matched typed hard rail keys `(1,4)` and `(4,7)` through the field-aligned network. This is an **unexecuted** source oracle. No TB497 or runtime tests in Code + Build. Evidence plan `Architecture_M6_CP3_R4_RA4712_Uninjected_Pipeline_Rail_Liveness_Source_Oracle_20261013.md`.
+- [ ] RA-47.12 executed liveness and remaining R4 RA-43.1/.4, RA-46.5, 39/34/7/88/six and genuine odd-tau multi-carrier remain open; RA-50 discharged RA-43.2.
+
+---
+
 ## CURRENT — R4 RA-43.1 borrowed barrier differential regression (2026-10-13 UTC)
 
 - [x] Applied at `3bb0733267a18e151866a3f25e388a173b56f8b4` (workflow `38387022153`) and eight-target GMP/GMPXX compile GREEN `38387271419` (artifact `11806403200`, 28/28 checksums; no runtime). Compile-only verify new `ResolvedBranchCorrection.HardCarrierStarCutPreservesBoundaryTransit` on the exact applied source. Test category labels distinguish hard-carrier cut from boundary traversal over identical real A1 topology transports; they are diagnostic, not A1 producer attestations. Runtime/TB497 forbidden within CB. Evidence: `Architecture_M6_CP3_R4_RA431_Borrowed_Barrier_Differential_Oracle_20261013.md`.
