@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <array>
 #include <set>
 #include <string>
 #include <utility>
@@ -274,7 +276,27 @@ TEST(SurfaceCellPipelinePhase20,
   EXPECT_EQ(producerHardEdges,
             context.productSnapshots.traceNetwork.phaseFront.product()
                 .hardFeatureEdges());
+  const auto &carrierTransitions =
+      context.productSnapshots.traceNetwork.phaseFront.product()
+          .hardRailFieldTransitions();
+  std::set<directional::authority::SourceEdgeTopologyKey> verifiedCarriers;
+  for (const auto &carrier : carrierTransitions) {
+    EXPECT_TRUE(verifiedCarriers.insert(carrier.edge).second)
+        << "each A4 hard carrier must publish one directed A3 receipt";
+    EXPECT_EQ(1U, producerHardEdges.count(carrier.edge));
+    const auto first = regions.row_for_topology(carrier.firstFace);
+    const auto second = regions.row_for_topology(carrier.secondFace);
+    ASSERT_TRUE(first.has_value());
+    ASSERT_TRUE(second.has_value());
+    const auto a1 = atlas.transition_value(carrier.edge, *first, *second);
+    ASSERT_TRUE(a1.has_value());
+    EXPECT_EQ(a1->transport, carrier.firstToSecond)
+        << "hard-rail A3 crossing must originate in A1, not A4";
+  }
+  EXPECT_EQ(producerHardEdges, verifiedCarriers);
   std::size_t authenticatedContactSteps = 0U;
+  std::size_t authenticatedJunctions = 0U;
+  std::size_t authenticatedJunctionSteps = 0U;
   for (const auto &certificate : certificates) {
     for (const auto &endpoint : certificate.endpoints) {
       ASSERT_TRUE(endpoint.terminalVertex.has_value());
@@ -313,9 +335,78 @@ TEST(SurfaceCellPipelinePhase20,
             << "A4 contact path must terminate at its certified carrier face";
       }
     }
+    // The genuine two-edge midline rail must also publish an A4 junction.
+    // Its two disjoint sector walks must be source-incidental, face-contiguous,
+    // loop-free, and transport-authenticated against the independent A1 atlas.
+    const auto routeSteps = certificate.route.oriented_steps();
+    ASSERT_EQ(certificate.junctions.size() + 1U, routeSteps.size());
+    auto previous = certificate.endpoints[0].terminalCarrier;
+    for (std::size_t index = 0U; index < certificate.junctions.size(); ++index) {
+      const auto &junction = certificate.junctions[index];
+      const auto &nextEdge = routeSteps[index + 1U].topology();
+      ASSERT_EQ(previous.edge, routeSteps[index].topology());
+      EXPECT_NE(previous.edge, nextEdge);
+      EXPECT_EQ(1U, producerHardEdges.count(nextEdge));
+      EXPECT_TRUE(previous.edge.first() == junction.junction ||
+                  previous.edge.second() == junction.junction);
+      EXPECT_TRUE(nextEdge.first() == junction.junction ||
+                  nextEdge.second() == junction.junction);
+      std::array<directional::authority::SourceFaceTopologyKey, 2> at{
+          previous.firstFace, previous.secondFace};
+      std::array<directional::authority::QuarterTurn, 2> phi{
+          directional::authority::QuarterTurn::from_integer(0),
+          directional::authority::QuarterTurn::from_integer(0)};
+      std::array<std::set<directional::authority::SourceFaceTopologyKey>, 2> used{
+          std::set<directional::authority::SourceFaceTopologyKey>{at[0]},
+          std::set<directional::authority::SourceFaceTopologyKey>{at[1]}};
+      for (std::size_t side = 0U; side < 2U; ++side) {
+        for (const auto &step : junction.sectorPaths[side]) {
+          EXPECT_EQ(at[side], step.firstFace);
+          EXPECT_TRUE(step.edge.first() == junction.junction ||
+                      step.edge.second() == junction.junction);
+          EXPECT_EQ(0U, producerHardEdges.count(step.edge));
+          EXPECT_TRUE(used[side].insert(step.secondFace).second)
+              << "the A4 junction sector cannot repeat a source face";
+          const auto first = regions.row_for_topology(step.firstFace);
+          const auto second = regions.row_for_topology(step.secondFace);
+          ASSERT_TRUE(first.has_value());
+          ASSERT_TRUE(second.has_value());
+          const auto a1 = atlas.transition_value(step.edge, *first, *second);
+          ASSERT_TRUE(a1.has_value());
+          EXPECT_EQ(a1->transport, step.firstToSecond);
+          phi[side] = compose(step.firstToSecond, phi[side]);
+          at[side] = step.secondFace;
+          ++authenticatedJunctionSteps;
+        }
+      }
+      for (const auto &face : used[0])
+        EXPECT_EQ(0U, used[1].count(face))
+            << "the two A4 junction sectors must be disjoint";
+      const auto found = std::find_if(
+          carrierTransitions.begin(), carrierTransitions.end(),
+          [&](const auto &item) { return item.edge == nextEdge; });
+      ASSERT_NE(found, carrierTransitions.end());
+      auto next = *found;
+      if (next.firstFace != at[0] || next.secondFace != at[1]) {
+        next = {next.edge, next.secondFace, next.firstFace,
+                next.firstToSecond.inverse()};
+      }
+      EXPECT_EQ(at[0], next.firstFace);
+      EXPECT_EQ(at[1], next.secondFace);
+      EXPECT_EQ(compose(next.firstToSecond, phi[0]),
+                compose(phi[1], previous.firstToSecond))
+          << "the multi-carrier junction must satisfy A1's commuting square";
+      previous = next;
+      ++authenticatedJunctions;
+    }
+    EXPECT_EQ(previous, certificate.endpoints[1].terminalCarrier);
   }
   EXPECT_GT(authenticatedContactSteps, 0U)
       << "the A4 consumer must publish a real non-hard source-star step";
+  EXPECT_GT(authenticatedJunctions, 0U)
+      << "this fixture must reach an actual produced multi-carrier junction";
+  EXPECT_GT(authenticatedJunctionSteps, 0U)
+      << "the produced junction must publish a nonempty non-hard sector walk";
 
   // The tested rail producer must publish raw source-edge IDs for the same
   // original source topology as its independently carried vertex chain.
