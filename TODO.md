@@ -1,6 +1,6 @@
 ## CURRENT — R4 RA-43.4 strict no-network default tracing ingress (2026-10-13 UTC)
 
-- [ ] Preserve the producer-authenticated typed rail positive and missing-published-key negative in the existing Phase14 test at the real public `trace_surface_field` entry. Exact snapshot `fc22e74ec72570d401a14f7146cda8a8a82ffaec` (run `38356618714`), source-only oracle. Apply and compile eight GMP/GMPXX targets through durable Actions; no runtime test/benchmark, no TB497. Scope and non-vacuity: `Architecture_M6_CP3_R4_RA434_Strict_Trace_Entry_Missing_Edge_Oracle_20261013.md`.
+- [x] Applied and compile-only verified the typed rail positive and missing-published-key negative in existing Phase14 `trace_surface_field` entry (semantic `f1fbf8561d3d6d77f6807d0178263fa0a9ba11ef`, compile GREEN `38357644503`, 28/28 hashes, 8/8 targets, generated GMPXX/GMP, no runtime). Exact snapshot `fc22e74ec72570d401a14f7146cda8a8a82ffaec` (run `38356618714`), source-only oracle. Apply and compile eight GMP/GMPXX targets through durable Actions; no runtime test/benchmark, no TB497. Scope and non-vacuity: `Architecture_M6_CP3_R4_RA434_Strict_Trace_Entry_Missing_Edge_Oracle_20261013.md`.
 - [ ] R4 remains IN_PROGRESS: RA-43.1/.4 global, RA-46.5, RA-47.12 runtime liveness, historical 39/34/7/88/six and genuine odd-τ multi-carrier remain open. RA-43.2 discharged under RA-50.
 
 ---
