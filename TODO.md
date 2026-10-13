@@ -1,3 +1,9 @@
+## CURRENT — RA-47.11 test EV-row census verified (2026-10-13 UTC)
+
+- [x] Classified all five remaining `source_edge_index` test call sites (six textual uses including definition) as legitimate typed-key → DCEL `EV` row lookups for `EF`, indexed transition diagnostics or real topology membership; none republishes an EV index as `SurfaceCellRail::sourceEdges`. See `Architecture_M6_CP3_R4_RA4711_Test_EV_Row_Disposition_20261013.md`.
+- [x] RA-43.2 is DISCHARGED by RA-50; the suggested new source-authored filled-cell/side receipt is REFUSED and must not be implemented. The earlier RA-43.2 open item below is superseded by RA-50.
+- [ ] R4 Code + Build still requires independently scoped RA-43.1/.4, RA-46.5, RA-47.12 and historical/odd-τ gates. No TB497 or Test + Benchmark execution is authorized here; static census is not runtime PASS.
+
 ## CURRENT — R4 RA-43.2 source-owner design gate (2026-10-13 UTC)
 
 - [ ] Independently resolve which producer binds `(rail, terminal, oriented source-face germ, filled-side owner)` before A4 uses trace rows. Triangle winding plus ordered rail edges can supply source carrier-side ordering but **not the independent A4 filled-side owner mapping**. See `Architecture_M6_CP3_R4_RA432_Oriented_Germ_Producer_Boundary_Review_Request_20261013.md`; do not accept trace-face/self-certified A4 evidence as producer authority.

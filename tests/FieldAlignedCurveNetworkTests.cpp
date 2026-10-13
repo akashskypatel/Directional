@@ -156,6 +156,8 @@ directional::authority::FieldBranchBoundaryPairing continuation_pairing(
   return pairing;
 }
 
+// Test-only adapter from a typed source edge to the DCEL EV row.
+// The row is used to inspect EF/edgeTransitions, never as rail identity.
 int source_edge_index(const TriMesh &mesh,
                       const SourceEdgeTopologyKey &sourceEdge) {
   for (int edge = 0; edge < mesh.EV.rows(); ++edge) {

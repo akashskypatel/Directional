@@ -1,3 +1,9 @@
+## CURRENT — RA-47.11 remaining test-only EV lookup classified (2026-10-13 UTC)
+
+The canonical `M6-CP3-CB1-ENTRY-R4` Code + Build turn continues. Exact snapshot `b119a65bc0090f6e0517518bd2b95c66597d5620` (workflow `38336620819`, artifact `11785262187`, verified 5,547/5,547 hashes) was inspected. All five calls to `source_edge_index` in `tests/FieldAlignedCurveNetworkTests.cpp` require an actual mesh DCEL EV row for `EF` / indexed transition checks / edge membership and **none** reconstructs or publishes the pre-RA-47 integer `SurfaceCellRail::sourceEdges` identity. A test-only source comment makes this explicit. New disposition record: `Architecture_M6_CP3_R4_RA4711_Test_EV_Row_Disposition_20261013.md`. Patch application and compile receipt must be recorded separately before calling this source-comment checkpoint compile-verified. No executable/test/benchmark was run; no RA-47.12 runtime liveness credit, no TB497, no R4 closeout. **The RA-50 review below remains controlling: RA-43.2 DISCHARGED, oriented-side receipt REFUSED.** The older RA-43.2 TODO entry is superseded, not a revived requirement.
+
+---
+
 ## CURRENT — RA-43.2 DISCHARGED; oriented-side receipt REFUSED; RA-50 frozen (2026-10-13 UTC)
 
 **This supersedes the RA-43.2 oriented-germ review request below. There is no open REVIEW_BLOCKER.** Turn
