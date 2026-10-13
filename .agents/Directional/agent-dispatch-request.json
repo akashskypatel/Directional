@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra477-compile-closeout-20261013t1040z",
+  "request_id": "m6-cp3-r4-ra431-borrowed-cut-20261013t1058z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra477-compile-closeout-apply",
-  "file_id": "15selg2i6cnwePyQb9UxO26PmPtj1O9aK",
-  "patch_sha256": "8994286ec61abada2fdeda3d637f0662399bb1a84e56bfd874f3cdde211473bd",
-  "base_sha": "007585f8eac57a74e89e62a416a844e21c15fe35",
+  "mailbox_key": "m6-cp3-r4-ra431-borrowed-cut-apply",
+  "file_id": "1xtoe6zhtJPH43-vuai5VLlrF74WLL58g",
+  "patch_sha256": "4b2728c66690cbc4fd6684e3449af1af9092fc23168ddb95dfd43ef882583e7f",
+  "base_sha": "7c58889bf101043f7569779985330d14799505c0",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close RA-47.7 component-keys compile evidence"
+  "commit_message": "test(directional): distinguish hard-carrier cut from source boundary star transit"
 }
