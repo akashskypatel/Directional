@@ -1,3 +1,8 @@
+## CURRENT — R4-SID-01 load-bearing A4 trace-to-certificate side pin (2026-10-13 UTC)
+
+- [ ] Apply the source-only `M6CP3.CheckedA4RejectsGlobalHardRailSideSwapWithSelfInverseTau` test from verified snapshot `2ddf6fa143f61335fbfba511943d5e9cdde3dbe6`, record exact Drive dispatcher semantics and compile the standard eight GMP/GMPXX targets. The test uses real produced τ=0/2 certificates and swaps both sides without changing composed transport; checked A4 must reject the trace-attachment mismatch. **No execution or TB497 during Code + Build.** See `Architecture_M6_CP3_R4_SID01_SelfInverse_Side_Pin_Code_Build_Record_20261013.md`.
+- [ ] Independently protect the distinct A5 selected-face pin in later evidence; do not claim this A4 negative verifies it. Preserve RA-50's RA-43.2 discharge and prohibition on invented upstream filled-side authority. All remaining R4 production/first-rejection/historical gates stay open.
+
 ## CURRENT — RA-47.11 test EV-row census verified (2026-10-13 UTC)
 
 - [x] Classified all five remaining `source_edge_index` test call sites (six textual uses including definition) as legitimate typed-key → DCEL `EV` row lookups for `EF`, indexed transition diagnostics or real topology membership; none republishes an EV index as `SurfaceCellRail::sourceEdges`. See `Architecture_M6_CP3_R4_RA4711_Test_EV_Row_Disposition_20261013.md`.

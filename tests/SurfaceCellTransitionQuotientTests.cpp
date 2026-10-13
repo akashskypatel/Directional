@@ -8933,6 +8933,61 @@ TEST(M6CP3, A5RejectsA4AcceptedHardRailEndpointBranchForgery) {
                 HardRailTransportMismatch);
 }
 
+// RA-50 R4-SID-01: a side-symmetric A2b certificate is not an
+// independent owner of A4's filled-cell side. Check the external A4 trace
+// attachment pin even when inverting the certificate preserves tau (0 or 2).
+// Code + Build only: executing the oracle is deferred to the TB turn.
+TEST(M6CP3, CheckedA4RejectsGlobalHardRailSideSwapWithSelfInverseTau) {
+  const auto &fixture = hard_rail_fixture();
+  const auto &front = fixture.network.phaseFront.product();
+  ASSERT_TRUE(fixture.fieldTransportAtlas.has_value());
+  auto routes = front.hardRailRouteCertificates();
+  ASSERT_FALSE(routes.empty());
+
+  bool foundSelfInversePair = false;
+  for (auto &route : routes) {
+    const bool suitable = std::all_of(
+        route.endpoints.begin(), route.endpoints.end(), [](const auto &endpoint) {
+          const auto tau = endpoint.attachmentTransport();
+          return endpoint.firstAttachment != endpoint.secondAttachment &&
+                 tau == tau.inverse();
+        });
+    if (!suitable) continue;
+    foundSelfInversePair = true;
+    for (auto &endpoint : route.endpoints) {
+      const auto originalTau = endpoint.attachmentTransport();
+      std::swap(endpoint.firstAttachment, endpoint.secondAttachment);
+      std::swap(endpoint.contactPaths[0], endpoint.contactPaths[1]);
+      std::swap(endpoint.terminalCarrier.firstFace,
+                endpoint.terminalCarrier.secondFace);
+      endpoint.terminalCarrier.firstToSecond =
+          endpoint.terminalCarrier.firstToSecond.inverse();
+      EXPECT_EQ(originalTau, endpoint.attachmentTransport())
+          << "self-inverse transport must not accidentally detect the swap";
+    }
+    break;
+  }
+  ASSERT_TRUE(foundSelfInversePair)
+      << "a real A4 hard rail with two source faces and tau=0/2 is required";
+
+  const auto rebuilt = directional::geometry::SurfacePhaseFrontProduct::make(
+      front.gridU(), front.gridV(), front.sourceTopologyRegions(),
+      fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
+      &*fixture.fieldTransportAtlas,
+      front.isolationSeamTransportCertificates(), front.periodicHolonomies(),
+      front.boundedDiskBoundaryPhases(), front.edges(), front.events(),
+      front.cells(), front.conformityPlanReceipt(), front.hardFeatureEdges(),
+      front.sourceFaceBranchRotations(), front.hardRailFieldTransitions(),
+      routes, front.hardRailTerminalContacts(), front.hardRailClosedChains());
+  const auto *error =
+      std::get_if<directional::geometry::SurfacePhaseFrontProductError>(&rebuilt);
+  ASSERT_NE(error, nullptr)
+      << "A4 must not accept a globally swapped side authority";
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontProductErrorCode::
+                InvalidSourceAuthority,
+            error->code);
+}
+
 TEST(M6CP3, CheckedFactoryRejectsForgedTerminalA2bSideGerm) {
   const auto &fixture = nonconstant_hard_rail_fixture();
   const auto &front = fixture.network.phaseFront.product();
