@@ -12090,6 +12090,71 @@ TEST(ResolvedBranchCorrection,
   }
 }
 
+// RA-43.1 differential unit witness for the borrowed A1 barrier-map filter.
+// These test labels exercise the category gate; only producer-owned atlas
+// barriers can attest full pipeline authority (a separate runtime gate).
+TEST(ResolvedBranchCorrection, HardCarrierStarCutPreservesBoundaryTransit) {
+  using directional::authority::FieldNonTraversableEdge;
+  using directional::authority::FieldTransportBarrierKind;
+  using directional::geometry::FieldVertexArrivalMode;
+  using directional::geometry::surface_cell_tracing_detail::
+      FieldVertexTransitDecision;
+  using directional::geometry::surface_cell_tracing_detail::
+      resolve_field_vertex_transit;
+
+  const TriMesh mesh = make_three_right_angle_cone_fan();
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  const auto atlasBuild = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, {}, make_folded_cone_vertex_field(mesh, false));
+  ASSERT_TRUE(atlasBuild);
+  const auto &topology = atlasBuild.value().branch_topology();
+  const auto arrivalFace = topology_face(0, 1, 2, 4U);
+  const auto expectedOwner = topology_face(0, 2, 3, 4U);
+  const auto center = SourceVertexId::from_index(0, 4U).value();
+  const auto *arrivalFrame = topology.find_frame(arrivalFace);
+  ASSERT_NE(nullptr, arrivalFrame);
+
+  std::map<SourceEdgeTopologyKey, FieldNonTraversableEdge> labels;
+  for (const auto &transport : topology.transports()) {
+    const auto &edge = transport.sourceEdge;
+    if (edge.first() == center || edge.second() == center) {
+      labels.emplace(edge, FieldNonTraversableEdge{
+                               edge, FieldTransportBarrierKind::SourceBoundary,
+                               std::nullopt, std::nullopt});
+    }
+  }
+  ASSERT_FALSE(labels.empty()) << "requires real source-star transports";
+  std::map<SourceEdgeTopologyKey, const FieldNonTraversableEdge *> borrowed;
+  for (const auto &[edge, barrier] : labels) borrowed.emplace(edge, &barrier);
+
+  auto transit = [&]() {
+    return resolve_field_vertex_transit(
+        mesh, topology, arrivalFrame->sourceComponent,
+        arrivalFrame->topologyRegion, arrivalFace,
+        directional::authority::FieldBranch::from_integer(2), center,
+        FieldVertexArrivalMode::FaceInterior, std::nullopt, std::nullopt,
+        &borrowed);
+  };
+  const auto boundary = transit();
+  ASSERT_TRUE(std::holds_alternative<FieldVertexTransitDecision>(boundary));
+  EXPECT_EQ(expectedOwner,
+            std::get<FieldVertexTransitDecision>(boundary).nextFace);
+
+  for (auto &[edge, barrier] : labels)
+    barrier.kind = FieldTransportBarrierKind::HardFeature;
+  const auto cut = transit();
+  ASSERT_TRUE(std::holds_alternative<
+              directional::geometry::FieldAlignedCurveNetworkError>(cut));
+  const auto &error =
+      std::get<directional::geometry::FieldAlignedCurveNetworkError>(cut);
+  EXPECT_NE(FieldAlignedCurveNetworkErrorCode::VertexTransitSeedUnavailable,
+            error.code);
+  for (const auto &state : error.vertexTransitStates)
+    EXPECT_TRUE(state.transportPath.empty())
+        << "certified hard carriers must be cut before the star walk";
+}
+
 TEST(ResolvedBranchContinuation, RejectsUnresolvedRegularVertexSector) {
   const TriMesh mesh = make_four_triangle_fan();
   const auto sourceAuthority = make_source_authority(mesh);

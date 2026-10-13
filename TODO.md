@@ -1,3 +1,10 @@
+## CURRENT — R4 RA-43.1 borrowed barrier differential regression (2026-10-13 UTC)
+
+- [ ] Compile-only verify new `ResolvedBranchCorrection.HardCarrierStarCutPreservesBoundaryTransit` on the exact applied source. Test category labels distinguish hard-carrier cut from boundary traversal over identical real A1 topology transports; they are diagnostic, not A1 producer attestations. Runtime/TB497 forbidden within CB. Evidence: `Architecture_M6_CP3_R4_RA431_Borrowed_Barrier_Differential_Oracle_20261013.md`.
+- [ ] R4's other source/producer authority, RA-43.4/46.5, RA-47.12 liveness, historical 39/34/7/88/six and genuine odd-tau multi-carrier remain. RA-50 discharges RA-43.2. No successor.
+
+---
+
 ## CURRENT — R4 RA-47.7 component aggregation typed-key equality oracle (2026-10-13 UTC)
 
 - [x] Applied the source-exact independent-component/aggregated typed `sourceEdges` equality oracle at `007585f8eac57a74e89e62a416a844e21c15fe35` (Drive workflow `38383973192`); mandatory eight-target GMP/GMPXX compile GREEN `38384224673`, immutable artifact `11805220540` SHA-256 `e564eed3ea3636f1b36262dc91c29e9a65af6c229efc74e58d7935da0c07ddca`, 28/28 manifest and no runtime. Prior transport blocker cleared, Drive file retired. Evidence `Architecture_M6_CP3_R4_RA477_Component_Aggregation_Independent_Rail_Key_Oracle_20261013.md`. **Unexecuted source oracle, not runtime PASS.**
