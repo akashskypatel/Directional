@@ -1,3 +1,9 @@
+## CURRENT — R4 RA-43.2 source-owner design gate (2026-10-13 UTC)
+
+- [ ] Independently resolve which producer binds `(rail, terminal, oriented source-face germ, filled-side owner)` before A4 uses trace rows. Triangle winding plus ordered rail edges can supply source carrier-side ordering but **not the independent A4 filled-side owner mapping**. See `Architecture_M6_CP3_R4_RA432_Oriented_Germ_Producer_Boundary_Review_Request_20261013.md`; do not accept trace-face/self-certified A4 evidence as producer authority.
+- [ ] Distinguish the already authored **factory** `MissingTerminalA3Path` tamper oracle from the still-open **A4 consumer first-rejection** `missing-terminal-A3-path` obligation; avoid duplicating or double-counting. `overlapping-terminal-sectors` and `missing-or-nonreciprocal-terminal-A3` feasibility remains unadjudicated.
+- [ ] R4 still carries RA-43.4 diagnostic retirement, RA-46.5, RA-47.12 runtime, 39/34/7/88/six and odd-tau multi-carrier. No TB497 or successor.
+
 ## CURRENT — R4 RA-43.4 compile-only network override checkpoint (2026-10-13 UTC)
 
 - [x] Apply producer-backed typed-network override regression at semantic `f08770f004404f46356cc6fac59882aae5508849` through Drive workflow `38329088933`; consumed Drive stage deleted, source and test identity preserved.
