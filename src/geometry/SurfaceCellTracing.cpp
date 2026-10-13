@@ -19056,18 +19056,28 @@ SurfaceCellNetwork build_surface_cell_network(
         // own this endpoint carrier, before attempting an A3 bypass.
         bool ownsEndpointEdge = false;
         const auto &chain = closed->second.vertices;
-        if (chain.size() >= 3U) {
-          for (std::size_t at = 0U; at < chain.size(); ++at) {
-            const auto candidate = authority::SourceEdgeTopologyKey::make(
-                chain[at], chain[(at + 1U) % chain.size()]);
-            if (candidate && candidate.value() == edge) {
-              ownsEndpointEdge = true;
-              break;
-            }
-          }
+        if (chain.size() < 3U ||
+            std::set<authority::SourceVertexId>(chain.begin(), chain.end())
+                    .size() != chain.size())
+          return reject("closed-rail-chain-not-simple");
+        for (std::size_t at = 0U; at < chain.size(); ++at) {
+          const auto candidate = authority::SourceEdgeTopologyKey::make(
+              chain[at], chain[(at + 1U) % chain.size()]);
+          if (candidate && candidate.value() == edge)
+            ownsEndpointEdge = true;
         }
         if (!ownsEndpointEdge)
           return reject("closed-rail-endpoint-edge-not-owned");
+        // A matching carrier is necessary but cannot authenticate the rest
+        // of a spoofed closed rail. All cyclic edges must be source-owned
+        // hard carriers before this terminal-contact-free path is usable.
+        for (std::size_t at = 0U; at < chain.size(); ++at) {
+          const auto candidate = authority::SourceEdgeTopologyKey::make(
+              chain[at], chain[(at + 1U) % chain.size()]);
+          if (!candidate ||
+              !authoritativeOptions.hardFeatureEdges.contains(candidate.value()))
+            return reject("closed-rail-chain-non-hard-edge");
+        }
         const auto oriented = oriented_carrier(*carrier, firstAttachment,
                                                secondAttachment);
         if (!oriented) return reject("closed-rail-carrier-face-mismatch");

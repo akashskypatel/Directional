@@ -6825,6 +6825,77 @@ TEST(SurfaceCellAuthorityContractCutover,
             forgedFailure->hardRailRouteDiagnostic.find(
                 "a2bProbeFailure=closed-rail-endpoint-edge-not-owned"))
       << forgedFailure->hardRailRouteDiagnostic;
+
+  // A stronger forgery owns the actual endpoint carrier but appends two
+  // source edges that the A1 producer did not publish as hard features.
+  // Reject at this A4 consumer, not only in the checked A4 product factory.
+  std::optional<directional::authority::SourceVertexId> alienVertex;
+  for (int i = 0; i < fixture.mesh.V.rows(); ++i) {
+    const auto vertex = directional::authority::SourceVertexId::from_index(
+        i, static_cast<std::size_t>(fixture.mesh.V.rows()));
+    ASSERT_TRUE(vertex.has_value());
+    if (vertex.value() == endpointEdge.first() ||
+        vertex.value() == endpointEdge.second()) continue;
+    const auto outgoing = directional::authority::SourceEdgeTopologyKey::make(
+        endpointEdge.second(), vertex.value());
+    const auto incoming = directional::authority::SourceEdgeTopologyKey::make(
+        vertex.value(), endpointEdge.first());
+    if (outgoing && incoming &&
+        (!fixture.hardFeatureEdges.contains(outgoing.value()) ||
+         !fixture.hardFeatureEdges.contains(incoming.value()))) {
+      alienVertex = vertex.value();
+      break;
+    }
+  }
+  ASSERT_TRUE(alienVertex.has_value())
+      << "the independent forged chain needs a source-valid non-hard edge";
+  directional::geometry::SurfaceHardRailClosedChains partlyForeignClosed;
+  partlyForeignClosed.emplace(
+      route.rail, directional::geometry::SurfaceHardRailClosedChain{
+                      front.hardRailTerminalContacts().at(route.rail).component,
+                      {endpointEdge.first(), endpointEdge.second(),
+                       *alienVertex}});
+  const auto partlyForged = build_fixed_plan_rectangular_hard_rail_network(
+      fixture, 1.0, &contacts, nullptr, &partlyForeignClosed);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
+            partlyForged.phaseFront.disposition());
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
+                InvalidHardRailRouteCertificate,
+            partlyForged.phaseFront.rejection_reason());
+  const auto *partlyForgedFailure = partlyForged.phaseFront.rejection();
+  ASSERT_NE(partlyForgedFailure, nullptr);
+  EXPECT_EQ(directional::geometry::SurfaceHardRailRouteFailureLocus::
+                EndpointAttachment,
+            partlyForgedFailure->hardRailRouteLocus);
+  EXPECT_NE(std::string::npos,
+            partlyForgedFailure->hardRailRouteDiagnostic.find(
+                "a2bProbeFailure=closed-rail-chain-non-hard-edge"))
+      << partlyForgedFailure->hardRailRouteDiagnostic;
+
+  // Repeating a source vertex is not a closed source-owned cycle even when
+  // the endpoint carrier itself is one of the supplied consecutive edges.
+  directional::geometry::SurfaceHardRailClosedChains repeatedClosed;
+  repeatedClosed.emplace(
+      route.rail, directional::geometry::SurfaceHardRailClosedChain{
+                      front.hardRailTerminalContacts().at(route.rail).component,
+                      {endpointEdge.first(), endpointEdge.second(),
+                       endpointEdge.first()}});
+  const auto repeated = build_fixed_plan_rectangular_hard_rail_network(
+      fixture, 1.0, &contacts, nullptr, &repeatedClosed);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
+            repeated.phaseFront.disposition());
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
+                InvalidHardRailRouteCertificate,
+            repeated.phaseFront.rejection_reason());
+  const auto *repeatedFailure = repeated.phaseFront.rejection();
+  ASSERT_NE(repeatedFailure, nullptr);
+  EXPECT_EQ(directional::geometry::SurfaceHardRailRouteFailureLocus::
+                EndpointAttachment,
+            repeatedFailure->hardRailRouteLocus);
+  EXPECT_NE(std::string::npos,
+            repeatedFailure->hardRailRouteDiagnostic.find(
+                "a2bProbeFailure=closed-rail-chain-not-simple"))
+      << repeatedFailure->hardRailRouteDiagnostic;
 }
 
 // RA-49.2: use the actual first certified terminal vertex, not a fabricated
