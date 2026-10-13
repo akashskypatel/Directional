@@ -1,11 +1,11 @@
 {
- "schema_version":1,
- "request_id":"m6-cp3-r4-ra4712-compile-docs-20261013t1131z",
- "operation":"drive_apply",
- "mailbox_key":"m6-cp3-r4-ra4712-compile-docs-apply",
- "file_id":"1GOOFkPf8EYRkCDJnHp8Rd03AbsKNSdfv",
- "patch_sha256":"875fc1548382ee18585386efabb2915a97bb15d49faf12a8684d464616e5cbe6",
- "base_sha":"3b8b14e31f7546eb59f71fa9c1b3617b83ed59c7",
- "target_branch":"agent/surface_cell_quad/p5-recover-bridge-healing",
- "commit_message":"docs(directional): preserve RA-47.12 compile-only liveness evidence"
+  "schema_version": 1,
+  "request_id": "m6-cp3-r4-ra431-producer-barrier-apply-20261013t1149z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-ra431-producer-barrier-apply",
+  "file_id": "1leQmvN_u0ZFIGs2v_6_j0lmGNu3PukRU",
+  "patch_sha256": "99f3ba6d23bda49e973616f7b6ae2bf624316221a064fec84d77d343b199bd8e",
+  "base_sha": "45d09820b25f4330bad825cee1e5a1349d9fc0c1",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "test(directional): A1 producer-owned hard carrier barrier oracle"
 }
