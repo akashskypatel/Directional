@@ -1,0 +1,1 @@
+M6-CP3-CB1-ENTRY-R4 verified post-A5 correction source/doc snapshot for compile evidence closeout. Compile source remains pinned to b836329e540ddaca5a7e4d233a6c0a99f574fd85. No runtime allowed.
