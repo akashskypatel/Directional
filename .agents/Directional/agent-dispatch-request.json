@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-factory-typed-detail-20261013t2122z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-factory-typed-detail",
-  "file_id": "1KwjtcZJPuGRUCYA2bTUJL30-1m1AURaV",
-  "patch_sha256": "0f194a19c2a83798d90b836bb28f4f742b7ff127f803d18121692a96ac244cca",
-  "base_sha": "64e34b589a50ae57a633b5983b54409a55154233",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(directional): preserve typed factory source-authority diagnostic on publication",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-factory-typed-detail-compile-20261013t2124z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-factory-typed-detail-compile",
+  "source_sha": "2dfb4d06c21d9f9a24597e3a91a87838760474a4",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-r4-factory-typed-detail"
 }
