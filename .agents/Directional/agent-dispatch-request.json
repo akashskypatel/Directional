@@ -1,11 +1,9 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-public-foreign-edge-20261013t0805z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-public-foreign-edge-apply",
-  "file_id": "1jugp7GPvp8Lysf5ytmDT-jkK2U8JU94k",
-  "patch_sha256": "d62ed1a55e33a0dfc7b13b83e76727cafca39bb93cc4bf471424ca2c247d7287",
-  "base_sha": "45d210e51a12dd3b8416c5179e6737edbb53e4e3",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): reject foreign typed rail source-edge at public trace ingress"
+  "request_id": "m6-cp3-r4-public-foreign-edge-compile-20261013t0808z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-public-foreign-edge-compile",
+  "source_sha": "f5c0d0b325ecf7333abbd3573759ed09a011ea3e",
+  "targets": "directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks",
+  "artifact_prefix": "m6-cp3-r4-public-foreign-edge-gmp-compile"
 }
