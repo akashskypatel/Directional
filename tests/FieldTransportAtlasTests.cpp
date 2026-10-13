@@ -2839,6 +2839,43 @@ TEST(FieldTransportAtlas,
   EXPECT_EQ(-relabeledForward->signedLift, relabeledReverse->signedLift);
   EXPECT_FALSE(relabeled.value().transport(sourceEdge, first, second));
   EXPECT_FALSE(relabeled.value().transport(sourceEdge, second, first));
+
+  // A component/region seam is not a rail. It must remain nontraversable
+  // for ordinary branch adjacency while still carrying the two directed A3
+  // values needed by the source-vertex terminal-star consumer and validator.
+  SurfaceCellTracingOptions seamOptions;
+  seamOptions.sourceFaceComponents = {0, 1};
+  seamOptions.sourceFaceSheets = {0, 0};
+  const auto seamAuthority =
+      directional::geometry::surface_cell_tracing_detail::
+          build_source_topology_regions(mesh.F, seamOptions);
+  ASSERT_TRUE(seamAuthority.has_value());
+  const std::set<SourceEdgeTopologyKey> noHardEdges;
+  const auto seamBuilt = FieldTransportAtlas::make(
+      mesh, *seamAuthority, noHardEdges, relabeledField);
+  ASSERT_TRUE(seamBuilt)
+      << describe_field_atlas_build_error(seamBuilt.error());
+  const auto &seamAtlas = seamBuilt.value();
+  const auto seamBarrier = std::find_if(
+      seamAtlas.nontraversable_edges().begin(),
+      seamAtlas.nontraversable_edges().end(),
+      [&](const FieldNonTraversableEdge &candidate) {
+        return candidate.sourceEdge == sourceEdge;
+      });
+  ASSERT_NE(seamAtlas.nontraversable_edges().end(), seamBarrier);
+  EXPECT_EQ(FieldTransportBarrierKind::NonTraversable, seamBarrier->kind);
+  const auto seamForward = seamAtlas.transition_value(sourceEdge, first, second);
+  const auto seamReverse = seamAtlas.transition_value(sourceEdge, second, first);
+  ASSERT_TRUE(seamForward.has_value());
+  ASSERT_TRUE(seamReverse.has_value());
+  EXPECT_EQ(QuarterTurn::from_integer(relabeledLift), seamForward->transport);
+  EXPECT_EQ(relabeledLift, seamForward->signedLift);
+  EXPECT_EQ(seamForward->transport.inverse(), seamReverse->transport);
+  EXPECT_NE(seamForward->transport, seamReverse->transport);
+  EXPECT_EQ(-seamForward->signedLift, seamReverse->signedLift);
+  EXPECT_FALSE(seamAtlas.transport(sourceEdge, first, second));
+  EXPECT_FALSE(seamAtlas.transport(sourceEdge, second, first));
+  EXPECT_EQ(nullptr, seamAtlas.find_adjacency(sourceEdge));
 }
 
 TEST(FieldTransportAtlas,
