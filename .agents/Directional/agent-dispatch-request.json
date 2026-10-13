@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra431-borrowed-cut-compile-20261013t1100z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-ra431-borrowed-cut-compile",
-  "source_sha": "3bb0733267a18e151866a3f25e388a173b56f8b4",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-ra431-borrowed-cut-gmp"
+  "request_id": "m6-cp3-r4-ra431-compile-docs-20261013t1105z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-ra431-compile-docs-apply",
+  "file_id": "1DwX_djzUttOVULo-mXmJBIHGNJpxk9sX",
+  "patch_sha256": "6919370b0a12d63b144e15c49a3df64b950f43d037d2a09a6bc31ddd05d3d8a7",
+  "base_sha": "3bb0733267a18e151866a3f25e388a173b56f8b4",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record R4 RA-43.1 barrier differential GMP compile"
 }
