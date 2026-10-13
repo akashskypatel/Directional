@@ -1,6 +1,6 @@
 ## CURRENT — R4 RA-43.4 strict no-network published-edge key migration (2026-10-13 UTC)
 
-- [ ] Apply and exact eight-target GMP/GMPXX compile-check the `rail_interval_refs` default strict no-network producer edge-list requirement plus Phase14 / REPackage authored typed source-edge fixture migration, preserving first-rejection predicates and named no-network diagnostic mode. Frozen selector unchanged; no executable/test/benchmark run. Inspect `Architecture_M6_CP3_R4_RA434_Strict_NoNetwork_Published_Edge_Keys_Code_Build_Record_20261013.md` for exact snapshot/patch/authority. Update compile evidence only after verifying immutable package.
+- [x] Applied at `52389f6749e90e9fdc9c9f2b711ea0c339e323ca` and exact eight-target GMP/GMPXX compile GREEN in `38355543522` (28/28 package checksums, 8/8 targets, GMPXX/GMP link, runtime disabled) the `rail_interval_refs` default strict no-network producer edge-list requirement plus Phase14 / REPackage authored typed source-edge fixture migration, preserving first-rejection predicates and named no-network diagnostic mode. Frozen selector unchanged; no executable/test/benchmark run. Inspect `Architecture_M6_CP3_R4_RA434_Strict_NoNetwork_Published_Edge_Keys_Code_Build_Record_20261013.md` for exact snapshot/patch/authority. Update compile evidence only after verifying immutable package.
 - [ ] R4 remains IN_PROGRESS: RA-43.1/43.4 global, RA-46.5 first rejections, RA-47.12 executed liveness, historical 39/34/7/88/six and odd-τ multi-carrier remain open. No TB497 or successor.
 
 ---

@@ -1,3 +1,9 @@
+## CURRENT — RA-43.4 strict no-network source-edge key compile GREEN (2026-10-13 UTC)
+
+Same canonical `M6-CP3-CB1-ENTRY-R4`, Code + Build. Strict no-network published-edge requirement and all migrated Phase14/REPackage fixture keys applied at source `52389f6749e90e9fdc9c9f2b711ea0c339e323ca` (Drive workflow `38355365948`, stage owner deleted). Eight-target mandatory GMP/GMPXX compile **GREEN** in run `38355543522`, artifact `11792443636` ZIP SHA-256 `be9678338ab324cc490d8ed5cfd46757d2427568e97e0caa6ecf5d6e83fc0ec1`; verified 28/28 manifest hashes, eight targets, exits 0/0, GMPXX/GMP link, five clean source-status records, `runtimeExecution=false`. Authored first-rejection negative still **unexecuted**; no TB497 or successor. Detailed `Architecture_M6_CP3_R4_RA434_Strict_NoNetwork_Published_Edge_Keys_Code_Build_Record_20261013.md`. Other RA-43/46/47/historical/odd-τ gates remain open.
+
+---
+
 ## CURRENT — R4 strict no-network published source-edge key migration (2026-10-13 UTC)
 
 Same canonical `M6-CP3-CB1-ENTRY-R4` Code + Build, no runtime. Verified snapshot `d14a3fc025e686a6abee13d8a933932d3014bf29` (workflow `38354520497`, 5,594/5,594 file hashes). Harden strict `rail_interval_refs` to reject absent producer-published source-edge keys even without a network, retain explicitly named standalone diagnostic-only exception, migrate Phase14 and REPackage synthetic typed rail fixtures while preserving exact prior first rejections. New Phase14 strict-no-network absent-key negative asserts `TypedAuthorityMismatch` and failing rail ID; named standalone diagnostic accepts the same missing-key typed rail. Source record `Architecture_M6_CP3_R4_RA434_Strict_NoNetwork_Published_Edge_Keys_Code_Build_Record_20261013.md`. Patch and compile evidence to be added on successful application; no runtime PASS, RA-43.2 remains discharged, TB497 remains forbidden. Other R4 obligations open.
