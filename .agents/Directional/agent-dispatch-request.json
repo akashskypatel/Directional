@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra431-producer-barrier-gmp-20261013t1151z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-ra431-producer-barrier-gmp",
-  "source_sha": "cf87a8e10d3a390efbdc748c23388ae0da7965c4",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-ra431-producer-barrier-gmp"
+  "request_id": "m6-cp3-r4-ra431-producer-barrier-docs-20261013t1156z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-ra431-producer-barrier-docs-apply",
+  "file_id": "1ZhEPgnl2z4g35aHzs9hy48UXqt61kuPD",
+  "patch_sha256": "3b69ebd6f0186743e8502aa55f31b66b5956dc84799eafa4c4fdff8442934d75",
+  "base_sha": "cf87a8e10d3a390efbdc748c23388ae0da7965c4",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record RA-43.1 real producer barrier GMP compile receipt"
 }
