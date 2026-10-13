@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra4712-default-liveness-20261013t1124z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra4712-default-liveness-apply",
-  "file_id": "1UrTE6MOqEEi0_jd4yp6IpwJVQIOymQ62",
-  "patch_sha256": "72c294ae871631e87ee1ba7082e5a1f51d3527ec170cb97ae46341326551a123",
-  "base_sha": "f1dbd6c6ddeb60c3c74b0a40862fd26340d7b4b5",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): assert RA-47.12 uninjected typed rail liveness"
+  "request_id": "m6-cp3-r4-ra4712-default-liveness-gmp-20261013t1126z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-ra4712-default-liveness-gmp",
+  "source_sha": "3b8b14e31f7546eb59f71fa9c1b3617b83ed59c7",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-ra4712-default-liveness-gmp"
 }
