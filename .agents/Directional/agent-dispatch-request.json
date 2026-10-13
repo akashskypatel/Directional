@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-source-transit-20261013t1320z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-source-transit-apply",
-  "file_id": "1iEk5GbAZ8BSWebzW6oSxQd2SonxoaDcy",
-  "patch_sha256": "2276f412c594a3264cd9bd26f0c304dd3792828c0be0764c33fefbaecba41735",
-  "base_sha": "e9c2f250c81193ac7507e130880918829742c155",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): verify complete non-hard source star transport"
+  "request_id": "m6-cp3-r4-source-transit-compile-20261013t1324z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-source-transit-compile",
+  "source_sha": "b94f530301135fef5ccedd67b2e26960d67d2410",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-r4-source-transit-compile"
 }
