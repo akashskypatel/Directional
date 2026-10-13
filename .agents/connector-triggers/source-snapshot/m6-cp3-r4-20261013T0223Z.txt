@@ -1,3 +1,0 @@
-Purpose: exact source snapshot for M6-CP3-CB1-ENTRY-R4 Code + Build continuation.
-Started from branch head bd6499774932618ad43b284552e2aa731025b9bf; source authority is this trigger commit's event SHA.
-No runtime execution requested.
