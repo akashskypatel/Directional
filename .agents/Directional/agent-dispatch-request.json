@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra51-todo-reconcile-20261013t1833z",
+  "request_id": "m6-cp3-r4-ra431-a1-junction-20261013t1856z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra51-todo-reconcile",
-  "file_id": "1xHs3L2bE5eoxEurEGg_5pFpLWlNqNm7f",
-  "patch_sha256": "1c712567f0de2951875395f602c1f849a521f24742c04ce8d7a2c1f050f9f16b",
-  "base_sha": "d1d3a60ffc2ac69e895437ba26fcf5ffa9add4a4",
+  "mailbox_key": "m6-cp3-r4-ra431-a1-junction-apply",
+  "file_id": "1SE1wlsDsc8mis9FpbhuFd2YzuuJkCqb2",
+  "patch_sha256": "127ec4b58b1ef7abf8d071baefc3564d5eecd6041529e9abbd863444ad4da11b",
+  "base_sha": "fb5229743edc72b5922ec43c7733e3f0dc700eed",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: retire superseded R4-TA3-01 review stop under frozen RA-51"
+  "commit_message": "test: source-attest produced A4 multi-carrier A1 junction holonomy"
 }
