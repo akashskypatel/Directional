@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra434-network-keys-compile-20261013t0521z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-ra434-network-keys-compile",
-  "source_sha": "c11eb6f4aac75676f864c84aed501dcd38d2aeb6",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-ra434-network-keys-compile"
+  "request_id": "m6-cp3-r4-ra434-network-keys-closeout-20261013t0526z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-ra434-network-keys-closeout",
+  "file_id": "1haSzWhb_Kg3R8mBbSr_3Imt0NGIsxO08",
+  "patch_sha256": "b06dca0e397e94a190fdbab16ff170cfac8b178b255067bc7d4992db8023c296",
+  "base_sha": "c11eb6f4aac75676f864c84aed501dcd38d2aeb6",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record verified R4 RA-43.4 network-edge compile"
 }
