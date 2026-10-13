@@ -5929,6 +5929,121 @@ TEST(SurfaceCellAuthorityContractCutover,
   EXPECT_TRUE(restitched.success) << restitched.failure;
 }
 
+// RA-47.7: compare genuine disconnected component aggregation against
+// independent single-component producer runs on the identical source geometry.
+// The second component has a nonzero global vertex offset; treating typed
+// source-edge keys as local EV rows cannot satisfy this comparison.
+TEST(SurfaceCellAuthorityContractCutover,
+     DecomposedRailSourceKeysEqualIndependentComponentProducerKeys) {
+  const directional::TriMesh mesh = make_disconnected_square_pair_mesh();
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          mesh, constant_xy_raw_field(mesh.F.rows()));
+  directional::pipeline::RemeshOptions options;
+  options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+  options.surfaceCells.enabled = true;
+  options.surfaceCells.fallbackPolicy =
+      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+  options.surfaceCells.allowSourceGridRecovery = false;
+  options.parallelizeComponents = true;
+  options.maxComponentThreads = 2;
+  options.lengthRatio = 0.2;
+
+  const auto aggregated =
+      directional::pipeline::remesh_surface_cell_components_from_cross_field(
+          mesh.V, mesh.F, crossField, options);
+  ASSERT_TRUE(aggregated.is_produced())
+      << aggregated.diagnostics.terminalFailureCode << ':'
+      << aggregated.diagnostics.terminalFailureStage;
+  const auto &aggregatedRails =
+      aggregated.surfaceCellContext.productSnapshots.authoritativeRails;
+  ASSERT_FALSE(aggregatedRails.empty());
+  using Key = directional::authority::SourceEdgeTopologyKey;
+  std::array<std::multiset<Key>, 2> published;
+  bool sawNonaliasInSecondComponent = false;
+  std::vector<Key> lexicalKeys;
+  for (int row = 0; row < mesh.EV.rows(); ++row) {
+    lexicalKeys.push_back(test_source_edge_topology(
+        mesh.EV(row, 0), mesh.EV(row, 1)));
+  }
+  std::sort(lexicalKeys.begin(), lexicalKeys.end());
+  for (const auto &rail : aggregatedRails) {
+    ASSERT_FALSE(rail.sourceEdges.empty());
+    const std::size_t intervals =
+        rail.closed ? rail.sourceVertices.size()
+                    : (rail.sourceVertices.empty() ? 0U
+                                                   : rail.sourceVertices.size() - 1U);
+    ASSERT_EQ(intervals, rail.sourceEdges.size());
+    for (std::size_t interval = 0; interval < intervals; ++interval) {
+      const Key &key = rail.sourceEdges[interval];
+      const std::size_t next = (interval + 1U) % rail.sourceVertices.size();
+      const int first = rail.sourceVertices[interval];
+      const int second = rail.sourceVertices[next];
+      ASSERT_GE(first, 0);
+      ASSERT_GE(second, 0);
+      ASSERT_LT(first, mesh.V.rows());
+      ASSERT_LT(second, mesh.V.rows());
+      const int component = first / 4;
+      ASSERT_EQ(component, second / 4)
+          << "a produced rail cannot cross disconnected source components";
+      ASSERT_LT(component, 2);
+      EXPECT_EQ(test_source_edge_topology(first, second), key);
+      published[static_cast<std::size_t>(component)].insert(key);
+      if (component == 1) {
+        const auto lexical = std::lower_bound(
+            lexicalKeys.begin(), lexicalKeys.end(), key);
+        ASSERT_NE(lexicalKeys.end(), lexical);
+        ASSERT_EQ(key, *lexical);
+        for (int row = 0; row < mesh.EV.rows(); ++row) {
+          if (test_source_edge_topology(mesh.EV(row, 0), mesh.EV(row, 1)) == key) {
+            sawNonaliasInSecondComponent |=
+                std::distance(lexicalKeys.begin(), lexical) != row;
+            break;
+          }
+        }
+      }
+    }
+  }
+  EXPECT_TRUE(sawNonaliasInSecondComponent)
+      << "the component-remap oracle must exercise a rail with distinct "
+         "lexical and DCEL edge ordinals";
+
+  for (int component = 0; component < 2; ++component) {
+    const int vertexOffset = component * 4;
+    Eigen::MatrixXd localVertices = mesh.V.middleRows(vertexOffset, 4);
+    Eigen::MatrixXi localFaces = mesh.F.middleRows(component * 2, 2);
+    localFaces.array() -= vertexOffset;
+    directional::TriMesh isolated;
+    isolated.set_mesh(localVertices, localFaces);
+    auto isolatedOptions = options;
+    isolatedOptions.parallelizeComponents = false;
+    isolatedOptions.maxComponentThreads = 1;
+    const auto alone = directional::pipeline::remesh_from_raw_cross_field(
+        isolated.V, isolated.F,
+        constant_xy_raw_field(isolated.F.rows()), isolatedOptions);
+    ASSERT_TRUE(alone.is_produced())
+        << "isolated component " << component << " first failed at "
+        << alone.diagnostics.terminalFailureStage << ':'
+        << alone.diagnostics.terminalFailureCode;
+    const auto &localRails =
+        alone.surfaceCellContext.productSnapshots.authoritativeRails;
+    ASSERT_FALSE(localRails.empty());
+    std::multiset<Key> independentlyProduced;
+    for (const auto &rail : localRails) {
+      for (const Key &key : rail.sourceEdges) {
+        independentlyProduced.insert(test_source_edge_topology(
+            static_cast<int>(key.first().index()) + vertexOffset,
+            static_cast<int>(key.second().index()) + vertexOffset));
+      }
+    }
+    ASSERT_FALSE(published[static_cast<std::size_t>(component)].empty());
+    EXPECT_EQ(independentlyProduced,
+              published[static_cast<std::size_t>(component)])
+        << "aggregation must preserve each independently produced source "
+           "edge topology key across local-to-global remapping";
+  }
+}
+
 TEST(SurfaceCellAuthorityContractCutover,
      DisconnectedAggregationDoesNotPublishStalePreRemapIdentityCaches) {
   const directional::TriMesh mesh = make_disconnected_square_pair_mesh();

@@ -1,3 +1,10 @@
+## CURRENT — R4 RA-47.7 component aggregation typed-key equality oracle (2026-10-13 UTC)
+
+- [ ] Apply and eight-target GMP/GMPXX compile-only verify the source-exact, new independent-component/aggregated `sourceEdges` equality oracle. Snapshot `08de7bd1cc34c4877f566432f746969463c63a4e`, 5,640/5,640 checksums; record in `Architecture_M6_CP3_R4_RA477_Component_Aggregation_Independent_Rail_Key_Oracle_20261013.md`. This is not a runtime PASS.
+- [ ] Remain within canonical R4; RA-47.12 executed producer liveness, RA-43.1/.4, RA-46.5, 39/34/7/88/six, odd-τ multi-carrier and separate artifact-only TB remain open. Frozen 497 selector unchanged; no successor.
+
+---
+
 ## CURRENT — R4 RA-47.10 ordinal-discriminating producer positive (2026-10-13 UTC)
 
 - [x] Applied the one-test ordinal-discriminating positive at `1ee05785c9f35d60d7dc2264f92bccb0fe423b24` (workflow `38373640827`); mandatory eight-target GMP/GMPXX compile GREEN run `38373896079`, 28/28 artifact hashes and runtime disabled. See `Architecture_M6_CP3_R4_RA4710_Lexical_DCEL_Positive_Code_Build_Record_20261013.md`. This is not a runtime PASS.
