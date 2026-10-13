@@ -1,3 +1,10 @@
+## CURRENT — R4 RA-43.4 strict no-network published-edge key migration (2026-10-13 UTC)
+
+- [ ] Apply and exact eight-target GMP/GMPXX compile-check the `rail_interval_refs` default strict no-network producer edge-list requirement plus Phase14 / REPackage authored typed source-edge fixture migration, preserving first-rejection predicates and named no-network diagnostic mode. Frozen selector unchanged; no executable/test/benchmark run. Inspect `Architecture_M6_CP3_R4_RA434_Strict_NoNetwork_Published_Edge_Keys_Code_Build_Record_20261013.md` for exact snapshot/patch/authority. Update compile evidence only after verifying immutable package.
+- [ ] R4 remains IN_PROGRESS: RA-43.1/43.4 global, RA-46.5 first rejections, RA-47.12 executed liveness, historical 39/34/7/88/six and odd-τ multi-carrier remain open. No TB497 or successor.
+
+---
+
 ## CURRENT — R4 RA-43.4 network-bound foreign published edge key (2026-10-13 UTC)
 
 - [x] Applied and compile-only verified the test-source oracle extending `StandaloneRailDiagnosticModeCannotBypassProducedNetworkTypedIngress` to reject a present but *wrong* producer source-edge key at the `rail_interval_refs` consumer. This is distinct from the existing network **factory** forged-key oracle; requires producer-backed full-network positive, real alternate feature-edge key, wrong-key `TypedAuthorityMismatch` and correct failing rail ID. Applied source `91e5c2a` (Drive `38352833746`), eight-target GMP/GMPXX compile GREEN `38352976015` (artifact `11791682503`, ZIP SHA-256 `c449ccb818e42882106186afdae2066b3c1e7e591e454b4e62906617eaa7d764`, 28/28 hashes, 8/8 targets, exit 0/0, gmpxx/gmp linkage, clean source, no runtime). Exact snapshot `a2e63a6`, workflow `38352281752`, 5585/5585 file hashes; see `Architecture_M6_CP3_R4_RA434_Consumer_Foreign_Edge_Key_Regression_20261013.md`. No runtime, selectors or TB497.

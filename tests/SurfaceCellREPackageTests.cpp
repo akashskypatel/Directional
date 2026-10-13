@@ -455,6 +455,8 @@ TEST(SurfaceCellTracingPhase14,
   rail.curveId = 7;
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
   rail.sourceVertices = {0, 3};
+  rail.sourceEdges = {directional::authority::SourceEdgeTopologyKey::from_indices(
+      0, 3, static_cast<std::size_t>(mesh.vertices.rows())).value()};
   rail.samples = {
       rail_sample(mesh, 0, 1, 0.0, 0.0,
                   Eigen::RowVector3d(1.0, 0.0, 0.0), 0),

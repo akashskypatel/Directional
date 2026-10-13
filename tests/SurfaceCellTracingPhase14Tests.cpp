@@ -3,8 +3,10 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
+#include <initializer_list>
 #include <limits>
 #include <set>
+#include <utility>
 #include <vector>
 
 #include <gtest/gtest.h>
@@ -19,6 +21,22 @@ struct MeshFixture {
   Eigen::MatrixXd vertices;
   Eigen::MatrixXi faces;
 };
+
+// Legacy Phase14 fixtures author their typed edge list independently of the
+// sample geometry. This remains a test-only source-publisher substitute; it
+// does not grant the production helper a geometry-derived authority fallback.
+std::vector<directional::authority::SourceEdgeTopologyKey>
+fixture_source_edges(const MeshFixture &mesh,
+                     std::initializer_list<std::pair<int, int>> pairs) {
+  std::vector<directional::authority::SourceEdgeTopologyKey> edges;
+  edges.reserve(pairs.size());
+  for (const auto &[a, b] : pairs) {
+    edges.push_back(
+        directional::authority::SourceEdgeTopologyKey::from_indices(
+            a, b, static_cast<std::size_t>(mesh.vertices.rows())).value());
+  }
+  return edges;
+}
 
 MeshFixture make_grid(const int n) {
   MeshFixture mesh;
@@ -1194,6 +1212,7 @@ TEST(SurfaceCellTracingPhase14, CompatibleHardFeatureRailIsFollowed) {
   b.barycentric << 0.0, 0.0, 1.0;
   b.position = mesh.vertices.row(3);
   rail.sourceVertices = {0, 3};
+  rail.sourceEdges = fixture_source_edges(mesh, {{0, 3}});
   rail.samples = {a, b};
   options.authoritativeRails.push_back(rail);
 
@@ -1256,6 +1275,7 @@ TEST(SurfaceCellTracingPhase14,
   rail.curveId = 9;
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
   rail.sourceVertices = {0, 3};
+  rail.sourceEdges = fixture_source_edges(mesh, {{0, 3}});
   rail.samples = {
       rail_sample(mesh, 0, 1, 0.0, 0.0,
                   Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
@@ -1281,6 +1301,7 @@ TEST(SurfaceCellTracingPhase14,
   directional::geometry::SurfaceCellRail reverseRail = rail;
   reverseRail.id = directional::tests::test_hard_rail_id(44);
   reverseRail.sourceVertices = {3, 0};
+  reverseRail.sourceEdges = fixture_source_edges(mesh, {{3, 0}});
   reverseRail.samples = {
       rail_sample(mesh, 1, 2, 0.0, 1.0,
                   Eigen::RowVector3d(0.0, 1.0, 0.0), 3),
@@ -1496,6 +1517,7 @@ TEST(SurfaceCellTracingPhase14, CompatibleHardFeatureRailPreservesIntervalMetada
   b.barycentric << 0.0, 0.0, 1.0;
   b.position = mesh.vertices.row(3);
   rail.sourceVertices = {0, 3};
+  rail.sourceEdges = fixture_source_edges(mesh, {{0, 3}});
   rail.samples = {a, b};
   options.authoritativeRails.push_back(rail);
 
@@ -1531,6 +1553,7 @@ TEST(SurfaceCellTracingPhase14, CompatibleHardFeatureRailEntersFromEitherSide) {
   faceZeroRail.curveId = 21;
   faceZeroRail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
   faceZeroRail.sourceVertices = {0, 3};
+  faceZeroRail.sourceEdges = fixture_source_edges(mesh, {{0, 3}});
   faceZeroRail.samples = {
       rail_sample(mesh, 0, 1, 0.0, 0.0,
                   Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
@@ -1558,6 +1581,7 @@ TEST(SurfaceCellTracingPhase14, CompatibleHardFeatureRailEntersFromEitherSide) {
   faceOneReversedRail.kind =
       directional::geometry::SurfaceCellRailKind::HardFeature;
   faceOneReversedRail.sourceVertices = {3, 0};
+  faceOneReversedRail.sourceEdges = fixture_source_edges(mesh, {{3, 0}});
   faceOneReversedRail.samples = {
       rail_sample(mesh, 1, 2, 0.0, 1.0,
                   Eigen::RowVector3d(0.0, 1.0, 0.0), 3),
@@ -1634,6 +1658,7 @@ TEST(SurfaceCellTracingPhase14,
   b1.barycentric << 0.0, 0.0, 1.0;
   b1.position = mesh.vertices.row(7);
   rail.sourceVertices = {0, 4, 7};
+  rail.sourceEdges = fixture_source_edges(mesh, {{0, 4}, {4, 7}});
   rail.samples = {a0, b0, a1, b1};
   options.authoritativeRails.push_back(rail);
   directional::geometry::SurfaceCellRail spur(directional::tests::test_hard_rail_id(78));
@@ -1653,6 +1678,7 @@ TEST(SurfaceCellTracingPhase14,
   spurB.barycentric << 0.0, 0.0, 1.0;
   spurB.position = mesh.vertices.row(8);
   spur.sourceVertices = {4, 8};
+  spur.sourceEdges = fixture_source_edges(mesh, {{4, 8}});
   spur.samples = {spurA, spurB};
   options.authoritativeRails.push_back(spur);
 
@@ -1715,6 +1741,7 @@ TEST(SurfaceCellTracingPhase14,
   rail.curveId = 23;
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
   rail.sourceVertices = {0, 4, 7};
+  rail.sourceEdges = fixture_source_edges(mesh, {{0, 4}, {4, 7}});
   rail.samples = {
       rail_sample(mesh, 0, 1, 0.0, 0.0,
                   Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
@@ -1764,6 +1791,7 @@ TEST(SurfaceCellTracingPhase14,
   directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(94));
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
   rail.sourceVertices = {0, 4};
+  rail.sourceEdges = fixture_source_edges(mesh, {{0, 4}});
   rail.samples = {
       rail_sample(mesh, 0, 1, 0.0, 0.0,
                   Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
@@ -1789,6 +1817,19 @@ TEST(SurfaceCellTracingPhase14,
   };
   EXPECT_EQ(validateProduction().status,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::Valid);
+  // A no-network strict caller must not infer a missing producer edge key
+  // from the exact typed vertex endpoints or the geometric sample pair.
+  const auto originalPublishedEdges = rail.sourceEdges;
+  rail.sourceEdges.clear();
+  const auto missingStrictEdges = validateProduction();
+  EXPECT_EQ(missingStrictEdges.status,
+            directional::geometry::surface_cell_tracing_detail::RailBuildStatus::TypedAuthorityMismatch);
+  ASSERT_TRUE(missingStrictEdges.railId.has_value());
+  EXPECT_EQ(*missingStrictEdges.railId, rail.id);
+  EXPECT_EQ(validateStandaloneDiagnostic().status,
+            directional::geometry::surface_cell_tracing_detail::RailBuildStatus::Valid)
+      << "missing edge keys remain permissible only for named no-network diagnostics";
+  rail.sourceEdges = originalPublishedEdges;
   // Equal world coordinates do not turn a different source vertex into this
   // face's endpoint. Test the shared validation helper independently of the
   // later interval-level exact-corner guard.
@@ -1807,9 +1848,9 @@ TEST(SurfaceCellTracingPhase14,
   EXPECT_FALSE(directional::geometry::surface_cell_tracing_detail::
                    rail_sample_geometry_is_valid(
                        mesh.vertices, mesh.faces, nearCorner, 0));
-  // Optional raw source-edge metadata must not contradict the typed number
-  // of intervals, even when no field-aligned network is supplied. Its
-  // numerical topology binding requires the producer's original mesh.EV.
+  // Publisher-authored typed source-edge metadata must have exact interval
+  // cardinality even with no network. The typed key itself is the source
+  // topology identity; it is not a legacy mesh.EV row number.
   rail.sourceEdges = {
       directional::authority::SourceEdgeTopologyKey::from_indices(0, 4,
           static_cast<std::size_t>(mesh.vertices.rows())).value(),
@@ -1817,7 +1858,7 @@ TEST(SurfaceCellTracingPhase14,
           static_cast<std::size_t>(mesh.vertices.rows())).value()};
   EXPECT_EQ(validateProduction().status,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::TypedAuthorityMismatch);
-  rail.sourceEdges.clear();
+  rail.sourceEdges = fixture_source_edges(mesh, {{0, 4}});
   // A numerically in-range but foreign typed edge key cannot replace the
   // source-owned endpoint chain even if the sample geometry is unchanged.
   rail.sourceEdges = {
@@ -1825,7 +1866,7 @@ TEST(SurfaceCellTracingPhase14,
           static_cast<std::size_t>(mesh.vertices.rows())).value()};
   EXPECT_EQ(validateProduction().status,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::TypedAuthorityMismatch);
-  rail.sourceEdges.clear();
+  rail.sourceEdges = fixture_source_edges(mesh, {{0, 4}});
 
   // Both samples lie exactly on an alternate, in-range face-local source
   // edge (1,4). The producer-owned typed chain (0,4) must still prevail;
@@ -1895,6 +1936,9 @@ TEST(SurfaceCellTracingPhase14,
   // Preserve the malformed sample-pair first rejection with source-owned
   // vertices; an absent source-vertex chain must not select this oracle.
   rail.sourceVertices = {0, 4, 4, 7};
+  // Middle interval is deliberately malformed; cardinality is complete
+  // so InvalidSamplePair remains the first rejection.
+  rail.sourceEdges = fixture_source_edges(mesh, {{0, 4}, {0, 4}, {4, 7}});
   rail.samples = {
       rail_sample(mesh, 0, 1, 0.0, 0.0,
                   Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
@@ -1917,6 +1961,7 @@ TEST(SurfaceCellTracingPhase14,
   directional::geometry::SurfaceCellRail validRail = rail;
   validRail.samples.resize(2);
   validRail.sourceVertices = {0, 4};
+  validRail.sourceEdges = fixture_source_edges(mesh, {{0, 4}});
   const auto validRefs =
       directional::geometry::surface_cell_tracing_detail::rail_interval_refs(
           {validRail}, mesh.vertices, mesh.faces, edgeFaces, nullptr,
@@ -1994,6 +2039,7 @@ TEST(SurfaceCellTracingPhase14,
   directional::geometry::SurfaceCellRail valid = invalid;
   valid.id = directional::tests::test_hard_rail_id(103);
   valid.sourceVertices = {0, 3};
+  valid.sourceEdges = fixture_source_edges(mesh, {{0, 3}});
   valid.samples = {
       rail_sample(mesh, 0, 1, 0.0, 0.0,
                   Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
@@ -2012,6 +2058,7 @@ TEST(SurfaceCellTracingPhase14,
   ordered.id = directional::tests::test_hard_rail_id(104);
   ordered.closed = false;
   ordered.sourceVertices = {0, 3, 0};
+  ordered.sourceEdges = fixture_source_edges(mesh, {{0, 3}, {0, 3}});
   ordered.samples = {
       rail_sample(mesh, 0, 1, 0.0, 0.0,
                   Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
@@ -2032,6 +2079,7 @@ TEST(SurfaceCellTracingPhase14,
       rail_sample(mesh, 0, 0, 1.0, 1.0,
                   Eigen::RowVector3d(0.0, 1.0, 0.0), 1);
   ordered.sourceVertices.back() = 1;
+  ordered.sourceEdges = fixture_source_edges(mesh, {{0, 3}, {1, 3}});
   refs = directional::geometry::surface_cell_tracing_detail::rail_interval_refs(
       {ordered}, mesh.vertices, mesh.faces, edgeFaces);
   ASSERT_EQ(refs.status,
@@ -2062,6 +2110,7 @@ TEST(SurfaceCellTracingPhase14,
   directional::geometry::SurfaceCellRail first(directional::tests::test_hard_rail_id(201));
   first.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
   first.sourceVertices = {0, 4};
+  first.sourceEdges = fixture_source_edges(mesh, {{0, 4}});
   first.samples = {
       rail_sample(mesh, 0, 1, 0.0, 0.0,
                   Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
@@ -2099,6 +2148,7 @@ TEST(SurfaceCellTracingPhase14,
   directional::geometry::SurfaceCellRail parameterGap = first;
   parameterGap.id = directional::tests::test_hard_rail_id(203);
   parameterGap.sourceVertices = {0, 4, 7};
+  parameterGap.sourceEdges = fixture_source_edges(mesh, {{0, 4}, {4, 7}});
   parameterGap.samples.insert(
       parameterGap.samples.end(),
       {rail_sample(mesh, 7, 1, 0.0, 0.6,
@@ -2138,6 +2188,7 @@ TEST(SurfaceCellTracingPhase14,
   directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(96));
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
   rail.sourceVertices = {0, 4, 7};
+  rail.sourceEdges = fixture_source_edges(mesh, {{0, 4}, {4, 7}});
   rail.samples = {
       rail_sample(mesh, 0, 1, 0.0, 0.0,
                   Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
@@ -2255,6 +2306,7 @@ TEST(SurfaceCellTracingPhase14,
   rail.curveId = 24;
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
   rail.sourceVertices = {0, 4, 7};
+  rail.sourceEdges = fixture_source_edges(mesh, {{0, 4}, {4, 7}});
   rail.samples = {
       rail_sample(mesh, 0, 1, 0.0, 0.0,
                   Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
@@ -2309,6 +2361,7 @@ TEST(SurfaceCellTracingPhase14, ClosedHardFeatureRailWrapsIntervalSequence) {
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
   rail.closed = true;
   rail.sourceVertices = {0, 1, 2};
+  rail.sourceEdges = fixture_source_edges(mesh, {{0, 1}, {1, 2}, {2, 0}});
   const auto sample = [&](const int sourceEdge, const double parameter,
                           const double railParameter,
                           const Eigen::RowVector3d &barycentric,

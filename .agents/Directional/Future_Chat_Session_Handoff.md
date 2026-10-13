@@ -1,3 +1,9 @@
+## CURRENT — R4 strict no-network published source-edge key migration (2026-10-13 UTC)
+
+Same canonical `M6-CP3-CB1-ENTRY-R4` Code + Build, no runtime. Verified snapshot `d14a3fc025e686a6abee13d8a933932d3014bf29` (workflow `38354520497`, 5,594/5,594 file hashes). Harden strict `rail_interval_refs` to reject absent producer-published source-edge keys even without a network, retain explicitly named standalone diagnostic-only exception, migrate Phase14 and REPackage synthetic typed rail fixtures while preserving exact prior first rejections. New Phase14 strict-no-network absent-key negative asserts `TypedAuthorityMismatch` and failing rail ID; named standalone diagnostic accepts the same missing-key typed rail. Source record `Architecture_M6_CP3_R4_RA434_Strict_NoNetwork_Published_Edge_Keys_Code_Build_Record_20261013.md`. Patch and compile evidence to be added on successful application; no runtime PASS, RA-43.2 remains discharged, TB497 remains forbidden. Other R4 obligations open.
+
+---
+
 ## CURRENT — R4 RA-43.4 consumer foreign-edge regression COMPILE GREEN (2026-10-13 UTC)
 
 Same canonical `M6-CP3-CB1-ENTRY-R4` IN_PROGRESS. Distinct producer-backed `rail_interval_refs` wrong-but-existing `sourceEdges` key/typed rail ID negative was applied at `91e5c2a498ffc949ec229fd084cf49949ffe3a76` (workflow `38352833746`, staged Drive patch retired), and the eight-target GMP/GMPXX compile passed run `38352976015` (artifact `11791682503`, ZIP SHA-256 `c449ccb818e42882106186afdae2066b3c1e7e591e454b4e62906617eaa7d764`, 28/28 hashes, 8/8 targets, exit 0/0, generated gmpxx/gmp link, clean source, runtime disabled). Test source only; **no runtime PASS**. Exact evidence in `Architecture_M6_CP3_R4_RA434_Consumer_Foreign_Edge_Key_Regression_20261013.md`. Strict no-network typed-vertex fixture migration and all other RA-43/46/47/historical/multi-carrier gates still outstanding. RA-50 forbids invented filled-side publisher. No TB497 or successor.
