@@ -1,3 +1,9 @@
+## CURRENT — R4-SID-01 A5 selected-face side pin source regression (2026-10-13 UTC)
+
+Same canonical `M6-CP3-CB1-ENTRY-R4` Code + Build. Previous A4 self-inverse side-swap oracle is a compile-only checkpoint, not A5 coverage. The new nonvacuous `M6CP3.A5RejectsSourceEquivalentHardRailSelectedFaceRechart` independently exercises A5's selected-face equality after a source-equivalent, cell-corner-only rechart accepted by the checked A4 factory; its actual execution remains deferred. Exact source snapshot `9c126c1a9d814c39742bd63acbf9dbac3261a0da`, run `38340642958`, artifact `11785758501`, 5,561/5,561 hashes verified. See `Architecture_M6_CP3_R4_SID01_A5_Selected_Face_Pin_Code_Build_Record_20261013.md` for causal scope and verification. RA-43.2 remains DISCHARGED; fabricated producer-filled-side receipt remains REFUSED; no TB497, source runtime or successor. R4 still open.
+
+---
+
 ## CURRENT — R4-SID-01 nonvacuous self-inverse A4 side-pin test authored (2026-10-13 UTC)
 
 `M6-CP3-CB1-ENTRY-R4` continues. RA-50 discharges RA-43.2 and forbids a fabricated source-owned filled-side receipt; its remaining `R4-SID-01` makes the checked A4 trace attachment and A5 occurrence selected-face pins load-bearing even at self-inverse τ. From exact verified source `2ddf6fa143f61335fbfba511943d5e9cdde3dbe6` (snapshot run `38338458218`, 5,554/5,554 source hashes), a separate compile-only source regression `M6CP3.CheckedA4RejectsGlobalHardRailSideSwapWithSelfInverseTau` is prepared: it requires real produced hard-rail attachments with τ=τ⁻¹ and verifies swapping all source-side certificates preserves τ while A4 rejects the changed trace-face binding. This exercises the A4 pin only; the A5 pin is a separate obligation. No runtime test, TB497 or R4 successor. See `Architecture_M6_CP3_R4_SID01_SelfInverse_Side_Pin_Code_Build_Record_20261013.md`. Apply/compile evidence follows separately; other R4 gates remain open.

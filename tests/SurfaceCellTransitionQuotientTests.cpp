@@ -8988,6 +8988,126 @@ TEST(M6CP3, CheckedA4RejectsGlobalHardRailSideSwapWithSelfInverseTau) {
             error->code);
 }
 
+// RA-50 R4-SID-01: A4 certifies the trace/carrier attachment, but A5
+// independently binds the selected source face of the owned cell occurrence.
+// A source-equivalent corner recharts without changing A4's route or tau;
+// self-inverse tau cannot detect that side-identity mismatch by itself.
+// Code + Build: the test is authored, not executed, in this turn.
+TEST(M6CP3, A5RejectsSourceEquivalentHardRailSelectedFaceRechart) {
+  const auto &fixture = hard_rail_fixture();
+  const auto &front = fixture.network.phaseFront.product();
+  const auto baseline = directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+      fixture.mesh.V, fixture.mesh.F, front);
+  ASSERT_NE(nullptr,
+            std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+                &baseline))
+      << "the unmodified produced hard rail must first pass A5";
+
+  PhaseFrontDraft draft = phase_front_draft(fixture);
+  bool foundRechart = false;
+  for (const auto &certificate : draft.hardRailRouteCertificates) {
+    if (foundRechart) break;
+    if (!std::all_of(certificate.endpoints.begin(),
+                     certificate.endpoints.end(), [](const auto &endpoint) {
+          const auto tau = endpoint.attachmentTransport();
+          return endpoint.firstAttachment != endpoint.secondAttachment &&
+                 tau == tau.inverse();
+        })) {
+      continue;
+    }
+    for (int side = 0; side < 2 && !foundRechart; ++side) {
+      const int index = side == 0 ? certificate.firstFrontEdge
+                                  : certificate.secondFrontEdge;
+      ASSERT_GE(index, 0);
+      ASSERT_LT(static_cast<std::size_t>(index), draft.edges.size());
+      const auto &edge = draft.edges[static_cast<std::size_t>(index)];
+      ASSERT_GE(edge.filledSide, 0);
+      ASSERT_LT(edge.filledSide, 4);
+      auto cell = std::find_if(draft.cells.begin(), draft.cells.end(),
+                               [&](const auto &value) {
+                                 return value.id == edge.filledCell;
+                               });
+      ASSERT_NE(cell, draft.cells.end());
+      for (int endpoint = 0; endpoint < 2 && !foundRechart; ++endpoint) {
+        // The reciprocal HardRail side traverses its endpoint pair backward.
+        const std::size_t corner = static_cast<std::size_t>(
+            (edge.filledSide + (side == 0 ? endpoint : 1 - endpoint)) % 4);
+        auto &point = cell->corners[corner];
+        const auto originalRow = directional::authority::SourceFaceId::from_index(
+            point.face, static_cast<std::size_t>(fixture.mesh.F.rows()));
+        if (!originalRow ||
+            draft.sourceAuthority.region_for_row(*originalRow) !=
+                cell->sourceTopologyRegion) {
+          continue;
+        }
+        const auto &attachment = certificate.endpoints[endpoint];
+        const auto &expectedFace = side == 0 ? attachment.firstAttachment
+                                              : attachment.secondAttachment;
+        if (draft.sourceAuthority.topology_for_row(*originalRow) != expectedFace)
+          continue;
+        for (const auto alternative :
+             draft.sourceAuthority.rows_for_region(cell->sourceTopologyRegion)) {
+          if (alternative == *originalRow ||
+              draft.sourceAuthority.sheet_for_row(alternative) !=
+                  draft.sourceAuthority.sheet_for_row(*originalRow)) {
+            continue;
+          }
+          Eigen::RowVector3d rebased = Eigen::RowVector3d::Zero();
+          bool sourceEquivalent = true;
+          int supportCorners = 0;
+          for (int old = 0; old < 3; ++old) {
+            const double weight = point.barycentric(old);
+            if (weight == 0.0) continue;
+            ++supportCorners;
+            const int vertex = fixture.mesh.F(point.face, old);
+            int newCorner = -1;
+            for (int col = 0; col < 3; ++col) {
+              if (fixture.mesh.F(static_cast<int>(alternative.index()), col) ==
+                  vertex) {
+                newCorner = col;
+                break;
+              }
+            }
+            if (newCorner < 0) {
+              sourceEquivalent = false;
+              break;
+            }
+            rebased(newCorner) = weight;
+          }
+          if (!sourceEquivalent || supportCorners == 0 || supportCorners > 2 ||
+              rebased.sum() != point.barycentric.sum()) {
+            continue;
+          }
+          point.face = static_cast<int>(alternative.index());
+          point.barycentric = rebased;
+          EXPECT_NE(draft.sourceAuthority.topology_for_row(alternative),
+                    expectedFace);
+          foundRechart = true;
+          break;
+        }
+      }
+    }
+  }
+  ASSERT_TRUE(foundRechart)
+      << "requires an actual hard-rail endpoint corner on a shared source "
+         "entity with a same-region, same-sheet alternate triangle";
+
+  const auto checked = construct_phase_front_product(std::move(draft));
+  const auto *acceptedA4 =
+      std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&checked);
+  ASSERT_NE(acceptedA4, nullptr)
+      << "source-equivalent cell-only recharts must preserve A4 authority";
+  const auto result = directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+      fixture.mesh.V, fixture.mesh.F, *acceptedA4);
+  const auto *error =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(&result);
+  ASSERT_NE(error, nullptr)
+      << "A5 must not accept a wrong occurrence selected-face side";
+  EXPECT_EQ(directional::pipeline::SurfaceOccurrenceComplexErrorCode::
+                HardRailRouteAuthorityInvalid,
+            error->code);
+}
+
 TEST(M6CP3, CheckedFactoryRejectsForgedTerminalA2bSideGerm) {
   const auto &fixture = nonconstant_hard_rail_fixture();
   const auto &front = fixture.network.phaseFront.product();

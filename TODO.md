@@ -1,3 +1,8 @@
+## CURRENT — R4-SID-01 A5 selected-face pin (2026-10-13 UTC)
+
+- [ ] Apply and compile-only verify `M6CP3.A5RejectsSourceEquivalentHardRailSelectedFaceRechart` against exact source `9c126c1a9d814c39742bd63acbf9dbac3261a0da` (snapshot workflow `38340642958`, 5,561/5,561 hashes). It recharts only one produced hard-rail cell corner to a distinct same-region/sheet source face carrying the same intrinsic point, requires checked A4 acceptance and A5 `HardRailRouteAuthorityInvalid` rejection with self-inverse τ. Runtime tests deferred; no TB497.
+- [ ] R4-SID-01 A4 and A5 test sources are separate checks; both remain unexecuted. RA-43.2 discharged; do not invent upstream filled-side receipts. Preserve remaining R4 gates, full 497 selector freeze and independent Review decisions. See `Architecture_M6_CP3_R4_SID01_A5_Selected_Face_Pin_Code_Build_Record_20261013.md`.
+
 ## CURRENT — R4-SID-01 load-bearing A4 trace-to-certificate side pin (2026-10-13 UTC)
 
 - [ ] Apply the source-only `M6CP3.CheckedA4RejectsGlobalHardRailSideSwapWithSelfInverseTau` test from verified snapshot `2ddf6fa143f61335fbfba511943d5e9cdde3dbe6`, record exact Drive dispatcher semantics and compile the standard eight GMP/GMPXX targets. The test uses real produced τ=0/2 certificates and swaps both sides without changing composed transport; checked A4 must reject the trace-attachment mismatch. **No execution or TB497 during Code + Build.** See `Architecture_M6_CP3_R4_SID01_SelfInverse_Side_Pin_Code_Build_Record_20261013.md`.
