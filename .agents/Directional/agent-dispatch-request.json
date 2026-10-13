@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra431-producer-barrier-apply-20261013t1149z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra431-producer-barrier-apply",
-  "file_id": "1leQmvN_u0ZFIGs2v_6_j0lmGNu3PukRU",
-  "patch_sha256": "99f3ba6d23bda49e973616f7b6ae2bf624316221a064fec84d77d343b199bd8e",
-  "base_sha": "45d09820b25f4330bad825cee1e5a1349d9fc0c1",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): A1 producer-owned hard carrier barrier oracle"
+  "request_id": "m6-cp3-r4-ra431-producer-barrier-gmp-20261013t1151z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-ra431-producer-barrier-gmp",
+  "source_sha": "cf87a8e10d3a390efbdc748c23388ae0da7965c4",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-r4-ra431-producer-barrier-gmp"
 }
