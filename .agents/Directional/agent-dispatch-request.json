@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-public-foreign-edge-compile-r2-20261013t0811z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-public-foreign-edge-compile-r2",
-  "source_sha": "f5c0d0b325ecf7333abbd3573759ed09a011ea3e",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-r4-public-foreign-edge-gmp-compile"
+  "request_id": "m6-cp3-r4-public-foreign-docs-20261013t0815z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-public-foreign-compile-docs-apply",
+  "file_id": "1_dZuLRowgZLWuCv1MWTAs3ZJHTQmj0Ai",
+  "patch_sha256": "6d13b2ebe8e85196fe38787c6eb7db46659def9a531fa7dd654f2b3a6206f69c",
+  "base_sha": "f5c0d0b325ecf7333abbd3573759ed09a011ea3e",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record R4 public foreign-edge compile evidence"
 }
