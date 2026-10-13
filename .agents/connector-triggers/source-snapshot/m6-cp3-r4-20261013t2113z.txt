@@ -1,3 +1,0 @@
-Canonical R4 continuation exact-source inspection
-Baseline head before marker 554aefa7774af01aaaedfdf806eea42230596cbe
-Use marker source SHA; no binary execution
