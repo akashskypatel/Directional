@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra434-network-keys-closeout-20261013t0526z",
+  "request_id": "m6-cp3-r4-ra434-consumer-foreign-apply-20261013t0547z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra434-network-keys-closeout",
-  "file_id": "1haSzWhb_Kg3R8mBbSr_3Imt0NGIsxO08",
-  "patch_sha256": "b06dca0e397e94a190fdbab16ff170cfac8b178b255067bc7d4992db8023c296",
-  "base_sha": "c11eb6f4aac75676f864c84aed501dcd38d2aeb6",
+  "mailbox_key": "m6-cp3-r4-ra434-consumer-foreign-apply",
+  "file_id": "1ldTo5an-fd8caTwrWetTv3d49C6E3akP",
+  "patch_sha256": "97dac10a5d1c18f62c9067bec315d97528f0de2147d7bcf8538905518780bec0",
+  "base_sha": "a2e63a6676c90fdcdc56f1b8922d43e4cf4f670c",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record verified R4 RA-43.4 network-edge compile"
+  "commit_message": "test(directional): independently reject foreign source edge at rail consumer"
 }
