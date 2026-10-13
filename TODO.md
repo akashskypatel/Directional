@@ -1,6 +1,6 @@
 ## CURRENT — R4 RA-46.5 A4 missing terminal A3 consumer oracle (2026-10-13 UTC)
 
-- [ ] Compile-only verify the new Phase10 source test `MissingTerminalA3PathRejectsAtFirstA4ConsumerPredicate`: choose a genuinely produced non-hard A3 terminal step, block only that step in replay, require consumer `EndpointAttachment` and `a2bProbeFailure=missing-terminal-A3-path`. Existing checked-factory `MissingTerminalA3Path` is a separate later-stage oracle and cannot satisfy this coverage. No test runtime, TB497, selector change or successor. Evidence: `Architecture_M6_CP3_R4_RA465_A4_Missing_Terminal_A3_Consumer_Oracle_20261013.md`.
+- [x] Applied at `d6240c9bc2d59899829ec259e9babd2878736e50` and compile-only verified in `38370592790` (28/28 hashes, all 8 GMP/GMPXX targets, no runtime) the new Phase10 source test `MissingTerminalA3PathRejectsAtFirstA4ConsumerPredicate`: choose a genuinely produced non-hard A3 terminal step, block only that step in replay, require consumer `EndpointAttachment` and `a2bProbeFailure=missing-terminal-A3-path`. Existing checked-factory `MissingTerminalA3Path` is a separate later-stage oracle and cannot satisfy this coverage. No test runtime, TB497, selector change or successor. Evidence: `Architecture_M6_CP3_R4_RA465_A4_Missing_Terminal_A3_Consumer_Oracle_20261013.md`.
 - [ ] R4 RA-43.1/.4, RA-46.5 other consumer negatives, RA-47.12 executed liveness, historical 39/34/7/88/six and odd-τ multi-carrier obligations remain. RA-43.2 discharged under RA-50.
 
 ---
