@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra465-closeout-20261013t0842z",
+  "request_id": "m6-cp3-r4-ra4710-lexical-key-20261013t0904z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra465-compile-closeout-apply",
-  "file_id": "1v6uVvRJqm2s3ShFTkfSb9TRpYoRLbcz-",
-  "patch_sha256": "3e6e65ec6b1a7f7dbe077ab32a59d39d0aa1ff7a89c82e18e2ce2c8610f39fad",
-  "base_sha": "d6240c9bc2d59899829ec259e9babd2878736e50",
+  "mailbox_key": "m6-cp3-r4-ra4710-lexical-key-apply",
+  "file_id": "1HNHfs6xUI-_J574ZZFSoHu_vTVBOuUle",
+  "patch_sha256": "00437f68ea6e64140392ad58e3f4f4c937a471345c85c6461eba98e4aac35ef3",
+  "base_sha": "555f0489ac5a87492222b25a8437417d5f02a531",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record RA-46.5 missing-path compile evidence"
+  "commit_message": "test(directional): prove RA-47 typed source key differs from EV row"
 }
