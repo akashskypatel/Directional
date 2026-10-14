@@ -9328,17 +9328,19 @@ SurfaceCellRailBuildResult build_authoritative_surface_cell_rails(
                                         const int edgeIndex, const int a,
                                         const int b, const double t0,
                                         const double t1) {
-    int face = -1;
-    for (const int incidentFace : edge.incidentFaces) {
-      if (incidentFace >= 0 && incidentFace < meshWhole.F.rows()) {
-        face = incidentFace;
-        break;
-      }
-    }
-    if (face < 0 || a < 0 || b < 0 || a >= meshWhole.V.rows() ||
+    if (a < 0 || b < 0 || a >= meshWhole.V.rows() ||
         b >= meshWhole.V.rows() || a == b) {
       return fail_edge(edgeIndex);
     }
+    const auto support = sourceFacesByEdge.find(
+        geometry::AdaptiveFeatureMap::canonical_edge(a, b));
+    std::vector<int> claimedFaces = edge.incidentFaces;
+    std::sort(claimedFaces.begin(), claimedFaces.end());
+    if (support == sourceFacesByEdge.end() ||
+        claimedFaces != support->second || claimedFaces.empty()) {
+      return fail_edge(edgeIndex);
+    }
+    const int face = claimedFaces.front();
     bool hasA = false;
     bool hasB = false;
     for (int corner = 0; corner < 3; ++corner) {

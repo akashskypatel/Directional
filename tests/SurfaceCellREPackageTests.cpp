@@ -272,6 +272,19 @@ TEST(SurfaceCellClosedProductContracts,
   ASSERT_TRUE(second.is_produced());
   EXPECT_EQ(1, second.product().rails.front().component);
 
+  // A first valid supporting face does not authenticate the complete source
+  // incidence of the feature edge, even when all component labels agree.
+  auto forgedIncidence = sourcedMap;
+  forgedIncidence.edges[0].incidentFaces = {0, 1};
+  const auto foreignIncidentFace =
+      directional::pipeline::build_authoritative_surface_cell_rails(
+          twoComponentSource, forgedIncidence);
+  ASSERT_TRUE(foreignIncidentFace.is_rejected());
+  ASSERT_NE(foreignIncidentFace.rejection(), nullptr);
+  EXPECT_EQ(directional::pipeline::SurfaceCellRailBuildFailureKind::InvalidFeatureEdge,
+            foreignIncidentFace.rejection()->kind);
+  EXPECT_EQ(0, foreignIncidentFace.rejection()->failedEdgeIndex);
+
   auto forgedSourceComponent = sourcedMap;
   forgedSourceComponent.curves[0].component = 1;
   forgedSourceComponent.edges[0].component = 1;
