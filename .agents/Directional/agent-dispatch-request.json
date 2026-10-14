@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra465-ra434-static-census-apply-20261014t0323z",
+  "request_id": "m6-cp3-r4-open-contact-component-apply-20261014t0349z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra465-ra434-static-census-apply",
-  "file_id": "1WKiaIdCuxlrPRKg44ZdAdUE9y35cnIrN",
-  "patch_sha256": "5cbc59131b738be7ceac5607f2732037d897c3800ac2d4b600f87a827ea73a26",
+  "mailbox_key": "m6-cp3-r4-open-contact-component-apply",
+  "file_id": "1BiV5YZJ5fr3V3Gmu3ZxH_u8oKkEIjoKY",
+  "patch_sha256": "30849e26095a45f691eae6d9cf8247b615b36f8db13f3e6837bf772055c3c358",
   "base_sha": "0326e9ac3091b3e1fa0ef62ea8224cc4d218e5e2",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): reconcile R4 source-first negative and typed rail coverage",
+  "commit_message": "fix(surface-cells): reject foreign open-rail component at first A4 consumer",
   "retention_days": 14
 }
