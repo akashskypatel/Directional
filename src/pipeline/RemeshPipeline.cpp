@@ -9432,10 +9432,17 @@ SurfaceCellRailBuildResult build_authoritative_surface_cell_rails(
   // A produced feature-map curve owns each source feature edge exactly once.
   // A repeated member cannot create another authoritative rail interval.
   std::set<int> curveMemberEdges;
+  std::set<int> seenCurveIds;
   for (const geometry::AdaptiveFeatureCurve &curve : featureMap.curves) {
     const int edgeCount = static_cast<int>(curve.edges.size());
     if (edgeCount == 0) {
       continue;
+    }
+    // Feature-map curves have unique producer IDs. Allowing two disjoint
+    // curves to reuse one ID would alias their published rail ownership.
+    if (curve.id < 0 || !seenCurveIds.insert(curve.id).second) {
+      fail_edge(curve.edges.front());
+      return SurfaceCellRailBuildResult::rejected(std::move(failure));
     }
     const bool hasExplicitClosingVertex =
         curve.vertices.size() == static_cast<std::size_t>(edgeCount + 1);

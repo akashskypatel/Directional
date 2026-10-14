@@ -245,6 +245,25 @@ TEST(SurfaceCellClosedProductContracts,
             orphanedCurveEdge.rejection()->kind);
   EXPECT_EQ(1, orphanedCurveEdge.rejection()->failedEdgeIndex);
 
+  // Separate source-valid curves must not alias the same producer curve ID.
+  // The feature-map builder allocates a fresh ID for every traced curve;
+  // a forged duplicate would otherwise publish two distinct rails sharing
+  // an indistinguishable curve owner.
+  auto duplicatedCurveOwner = standaloneMember;
+  auto duplicateCurve = duplicatedCurveOwner.curves.front();
+  duplicateCurve.edges = {1};
+  duplicateCurve.vertices = {1, 4};
+  duplicatedCurveOwner.curves.push_back(duplicateCurve);
+  const auto aliasedOwners =
+      directional::pipeline::build_authoritative_surface_cell_rails(
+          source, duplicatedCurveOwner);
+  ASSERT_TRUE(aliasedOwners.is_rejected());
+  EXPECT_EQ(nullptr, aliasedOwners.produced_product());
+  ASSERT_NE(nullptr, aliasedOwners.rejection());
+  EXPECT_EQ(directional::pipeline::SurfaceCellRailBuildFailureKind::InvalidFeatureEdge,
+            aliasedOwners.rejection()->kind);
+  EXPECT_EQ(1, aliasedOwners.rejection()->failedEdgeIndex);
+
   // The source boundary class must agree with actual source incidence.
   auto sourceBoundary = validMap;
   sourceBoundary.edges[0].edgeClass =
