@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-duplicate-curve-owner-docs-20261014t1600z",
+  "request_id": "m6-cp3-r4-seven-dcel-census-docs-20261014t1624z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-duplicate-curve-owner-docs-apply",
-  "file_id": "1n6tXBlvZgQnwheF_XqiDIP49chDpuyIf",
-  "patch_sha256": "b27cd37b1f53f90796831e426dafd77575edb5e64fc9be544e8572287a5f8b6e",
-  "base_sha": "6d6d269dd2df211a96de1fcd20bacb54a4e34358",
+  "mailbox_key": "m6-cp3-r4-seven-dcel-census-docs-apply",
+  "file_id": "1SBqly31dxoF7URCYm5eD_dTS1z6lAQT2",
+  "patch_sha256": "518c1f3f597da0513b3d80bd1992004c3734f89ff9dfe740447877cab5dabc7c",
+  "base_sha": "840583d57ac0263b6d6230bf0b59e1a9b58b0622",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: synchronize R4 unique curve-owner compile receipt handoff",
+  "commit_message": "docs: preserve exact-source seven DCEL fixture census in R4 handoff",
   "retention_days": 7
 }
