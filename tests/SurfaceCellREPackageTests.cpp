@@ -209,6 +209,41 @@ TEST(SurfaceCellClosedProductContracts,
   EXPECT_EQ(directional::pipeline::SurfaceCellRailBuildFailureKind::InvalidFeatureEdge,
             result.rejection()->kind);
   EXPECT_EQ(0, result.rejection()->failedEdgeIndex);
+
+  // A source-valid feature edge must not be silently attributed to a
+  // different curve or component when its rail is published.
+  auto validMap = map;
+  validMap.edges[0].incidentFaces = {0};
+  validMap.edges[0].component = 0;
+  validMap.curves[0].component = 0;
+  const auto good = directional::pipeline::build_authoritative_surface_cell_rails(
+      source, validMap);
+  ASSERT_TRUE(good.is_produced());
+  ASSERT_EQ(1U, good.product().rails.size());
+  EXPECT_EQ(0, good.product().rails[0].component);
+  EXPECT_EQ(17, good.product().rails[0].curveId);
+
+  auto wrongComponent = validMap;
+  wrongComponent.edges[0].component = 1;
+  const auto foreignComponent =
+      directional::pipeline::build_authoritative_surface_cell_rails(
+          source, wrongComponent);
+  ASSERT_TRUE(foreignComponent.is_rejected());
+  ASSERT_NE(foreignComponent.rejection(), nullptr);
+  EXPECT_EQ(foreignComponent.rejection()->kind,
+            directional::pipeline::SurfaceCellRailBuildFailureKind::InvalidFeatureEdge);
+  EXPECT_EQ(0, foreignComponent.rejection()->failedEdgeIndex);
+
+  auto wrongCurve = validMap;
+  wrongCurve.edges[0].curve = 18;
+  const auto foreignCurve =
+      directional::pipeline::build_authoritative_surface_cell_rails(
+          source, wrongCurve);
+  ASSERT_TRUE(foreignCurve.is_rejected());
+  ASSERT_NE(foreignCurve.rejection(), nullptr);
+  EXPECT_EQ(foreignCurve.rejection()->kind,
+            directional::pipeline::SurfaceCellRailBuildFailureKind::InvalidFeatureEdge);
+  EXPECT_EQ(0, foreignCurve.rejection()->failedEdgeIndex);
 }
 
 TEST(SurfaceCellPipelinePhase20,
