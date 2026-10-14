@@ -1,3 +1,7 @@
+## 2026-10-14 — M6-CP3-CB1-ENTRY-R4 continued: closed-rail source component
+
+Source-exact A4 first-consumer closed-chain component guard and differential Phase10 negative applied at `62fec4a7f4ccf05a6fe8bc14f81d4b8ff774d809`; Pinned eight-target GMP/GMPXX compile request at dispatcher commit `608c5338f4a04a3ba3194a7e11ec7956e482c793`, exact semantic source `62fec4a7f4ccf05a6fe8bc14f81d4b8ff774d809`, mailbox `m6-cp3-r4-closedrail-component-compile`: **PENDING**; do not claim GREEN/RED until the immutable compile artifact and source/link evidence are verified.. No runtime execution or turn closeout. Evidence: `.agents/Directional/Architecture_M6_CP3_R4_Closed_Rail_Component_Code_Build_Record_20261014.md`.
+
 ## 2026-10-13 — R4 terminal-A3 and terminal-sector reachability: both RA-49.7 negatives RETIRED (architecture review)
 
 - **RA-51 frozen.** The `R4-TA3-01` REVIEW STOP is **DISSOLVED** and **RA-49.7 is fully discharged**: no RA-46.5 negative remains unadjudicated. `missing-or-nonreciprocal-terminal-A3` and `overlapping-terminal-sectors` are **both unreachable**, by two independent arguments; both fixture obligations are **RETIRED coupled to named guards** and both runtime guards are **kept fail-closed**.

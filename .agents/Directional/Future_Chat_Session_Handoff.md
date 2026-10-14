@@ -1,3 +1,11 @@
+## CURRENT — R4 closed-rail component A4 consumer guard (2026-10-14 UTC)
+
+Same `M6-CP3-CB1-ENTRY-R4` remains unfinished Code + Build, with no REVIEW_BLOCKER and no successor. Verified exact snapshot `d78d0c7bcc7486fe2c5497e911e65ca1b8f16b91`, workflow [38487953141](https://github.com/akashskypatel/Directional/actions/runs/38487953141), 5782/5782 source hashes. Patch SHA-256 `5afc476876a1517b797af1627cee7bbbebd8b618fb3ceb59339446d49665519c` applied via [38488410002](https://github.com/akashskypatel/Directional/actions/runs/38488410002) as exact semantic commit `62fec4a7f4ccf05a6fe8bc14f81d4b8ff774d809` (two changed paths). Transient Drive file owner-deleted. Pinned eight-target GMP/GMPXX compile request at dispatcher commit `608c5338f4a04a3ba3194a7e11ec7956e482c793`, exact semantic source `62fec4a7f4ccf05a6fe8bc14f81d4b8ff774d809`, mailbox `m6-cp3-r4-closedrail-component-compile`: **PENDING**; do not claim GREEN/RED until the immutable compile artifact and source/link evidence are verified. No runtime test/benchmark/TB497, no selector changes, no acceptance promotion. The RA-49.2 duplicate typed terminal regression and RA-46.9 `.find` guard were already source-authored; do not duplicate them. RA-51 retired only two unreachable negatives and retained their guards.
+
+**Next same-turn work:** global RA-43.1/43.4 source-germ/legacy-diagnostic disposition, RA-47.12 actual execution only in authorized TB, remaining reachable RA-46.5, 39 endpoint / 34 Phase10 / 7 DCEL / 88 accepted CP2 restorations / six CP3 positives, organic D1/D2/D3/D5 / A6/A7, odd-τ multi-carrier. Current source is compile-only pending or verified; do not start successor or TB497 before R4 completion and authorization. Supporting evidence: `Architecture_M6_CP3_R4_Closed_Rail_Component_Code_Build_Record_20261014.md`.
+
+---
+
 ## CURRENT — RA-49.7 fully discharged; both remaining negatives RETIRED; RA-51 frozen (2026-10-13 UTC)
 
 **This supersedes the `R4-TA3-01` review stop below. There is no open REVIEW_BLOCKER.** Turn

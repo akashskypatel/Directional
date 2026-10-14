@@ -1,3 +1,10 @@
+## CURRENT — R4 closed-rail source-component authority (2026-10-14 UTC)
+
+- [x] Same canonical `M6-CP3-CB1-ENTRY-R4` Code + Build. First A4 consumer now checks the contact-free closed chain's claimed component against **both** authentic source attachment components before granting a cyclic bypass; a differential Phase10 negative changes only the claimed component, contrasting against the same endpoint-owning chain with real component. Exact two-file patch SHA-256 `5afc476876a1517b797af1627cee7bbbebd8b618fb3ceb59339446d49665519c`, apply commit `62fec4a7f4ccf05a6fe8bc14f81d4b8ff774d809`, dispatcher [38488410002](https://github.com/akashskypatel/Directional/actions/runs/38488410002), matching receipt verified; transient staging file retired.
+- [ ] Pinned eight-target GMP/GMPXX compile request at dispatcher commit `608c5338f4a04a3ba3194a7e11ec7956e482c793`, exact semantic source `62fec4a7f4ccf05a6fe8bc14f81d4b8ff774d809`, mailbox `m6-cp3-r4-closedrail-component-compile`: **PENDING**; do not claim GREEN/RED until the immutable compile artifact and source/link evidence are verified. Code + Build only; no executable/test/benchmark run, no TB497, no runtime PASS, no frozen-selector or downstream factory changes. All open R4 historical/organic, RA-43.1/.4, RA-47.12 and genuine odd-τ multi-carrier duties carry forward. The older WIP subsection below is historical and superseded by this applied checkpoint.
+
+---
+
 ## CURRENT — RA-51 terminal-A3 reachability resolved; R4 Code + Build resumes (2026-10-13 UTC)
 
 - [x] The independent RA-51 Review **discharged** `R4-TA3-01`: `missing-or-nonreciprocal-terminal-A3` is unreachable under H1–H6 and `overlapping-terminal-sectors` is unreachable under K1–K5. Both fixture obligations are **RETIRED**, their runtime fail-closed guards **retained**. RA-48.3 already landed; its unconditional topology derivation keeps R4-OVF-01 **closed**. Authority: `Architecture_M6_CP3_R4_Terminal_A3_First_Rejection_Review_Decision.md` and frozen `Architecture_M6_Frozen_Definitions.md` RA-51. Do not resurrect these negatives without a broken guard premise or mint dead-disjunct typed sub-codes (RA-51.7).
