@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-admitted-fan-branch-compile-20261014t0705z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-admitted-fan-branch-compile",
-  "source_sha": "d47b363682e449bb6525ec9fc4f6fd4d56c04d14",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-admitted-fan-branch"
+  "request_id": "m6-cp3-r4-ra434-component-apply-20261014t0823z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-ra434-component-apply",
+  "file_id": "1Vu1fvSStg018cBTxSKHTVY00agCNiQqR",
+  "patch_sha256": "ca932f33dcbd05616dd744397a14bc9696e1b067b8509ad5e0e5e26e4b95b0cf",
+  "base_sha": "16f072b23a167351f039f8e29fe762c8a8756f26",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "fix(surface-cells): authenticate rail component at A2a interval ingress"
 }
