@@ -6737,20 +6737,33 @@ TEST(SurfaceCellAuthorityContractCutover,
     // The same producer atlas that retains hard-carrier directed A3 values
     // must also retain ordinary A3 adjacency and identical directed values
     // on every independently source-admissible non-hard interior edge.
+    const auto *adjacency = fixture.atlas->find_adjacency(transport.sourceEdge);
+    ASSERT_NE(adjacency, nullptr);
     const auto forward = fixture.atlas->transport(
-        transport.sourceEdge, transport.fromFace, transport.toFace);
+        transport.sourceEdge, adjacency->firstFace, adjacency->secondFace);
     const auto reverse = fixture.atlas->transport(
-        transport.sourceEdge, transport.toFace, transport.fromFace);
+        transport.sourceEdge, adjacency->secondFace, adjacency->firstFace);
     const auto forwardValue = fixture.atlas->transition_value(
-        transport.sourceEdge, transport.fromFace, transport.toFace);
+        transport.sourceEdge, adjacency->firstFace, adjacency->secondFace);
     const auto reverseValue = fixture.atlas->transition_value(
-        transport.sourceEdge, transport.toFace, transport.fromFace);
+        transport.sourceEdge, adjacency->secondFace, adjacency->firstFace);
     ASSERT_TRUE(forward.has_value());
     ASSERT_TRUE(reverse.has_value());
     ASSERT_TRUE(forwardValue.has_value());
     ASSERT_TRUE(reverseValue.has_value());
-    EXPECT_EQ(transport.transport, forward->transport);
-    EXPECT_EQ(transport.signedLift, forward->signedLift);
+    const auto firstTopo =
+        fixture.sourceAuthority->topology_for_row(adjacency->firstFace);
+    const auto secondTopo =
+        fixture.sourceAuthority->topology_for_row(adjacency->secondFace);
+    const bool sameOrientation =
+        transport.firstFace == firstTopo && transport.secondFace == secondTopo;
+    const bool reversedOrientation =
+        transport.firstFace == secondTopo && transport.secondFace == firstTopo;
+    ASSERT_TRUE(sameOrientation || reversedOrientation);
+    EXPECT_EQ(sameOrientation ? transport.forward : transport.reverse,
+              forward->transport);
+    EXPECT_EQ(sameOrientation ? transport.forwardLift : -transport.forwardLift,
+              forward->signedLift);
     EXPECT_EQ(forward->transport, forwardValue->transport);
     EXPECT_EQ(reverse->transport, reverseValue->transport);
     EXPECT_EQ(forward->signedLift, forwardValue->signedLift);
