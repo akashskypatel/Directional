@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-closed-curve-source-compile-20261014t1312z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-closed-curve-source-compile",
-  "source_sha": "ad91acb81e762cdb2d9334ef095642030242d70a",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-closed-curve"
+  "request_id": "m6-cp3-r4-ra47-stop-supersession-apply-20261014t1334z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-ra47-stop-supersession-apply",
+  "file_id": "1YgSD8gsNTCPDtRcl4SL51P1su2NiSZAG",
+  "patch_sha256": "a3a91bdb7e9418974531385fa20d23141306bacc8d6ee2dd32387487a10b04f3",
+  "base_sha": "378c07c2e819ade54454fbb2428fe8be788f9dac",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): reconcile historical R4-IDX stop with accepted RA-47",
+  "retention_days": 14
 }
