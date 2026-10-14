@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-duplicate-canonical-edge-apply-20261014t1811z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-duplicate-canonical-edge-apply",
-  "file_id": "1LjtvYQPOPDYTWOFbHkSxyD8rvDir1c_D",
-  "patch_sha256": "7c4755085fbbfbb140ecefa9323d67a318f368c5860a6c889bafbfaaab843b92",
-  "base_sha": "14411a89a05e2be5ca652bb674c9536393117679",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surfacecells): reject duplicate canonical source rail support",
-  "retention_days": 7
+  "request_id": "m6-cp3-r4-duplicate-canonical-edge-compile-20261014t1813z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-duplicate-canonical-edge-compile",
+  "source_sha": "5ecaa2acbec9a03622e14e6afac4dfc71763778f",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-r4-duplicate-canonical-edge"
 }
