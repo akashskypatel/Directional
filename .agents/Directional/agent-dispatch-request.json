@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra4711-census-docs-20261014t2130z",
+  "request_id": "m6-cp3-r4-ra4712-liveness-docs-20261014t2219z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra4711-census-docs",
-  "file_id": "1vrxH7mIbkO28pHr379272tthXX48dWBm",
-  "patch_sha256": "5e7a8ab820c7e32f6c33a9c81222074c6986cc4ce925f77fd4cc1f849b59f01c",
-  "base_sha": "09e8451ed6314a458e9abe8c6b74e866d19728fc",
+  "mailbox_key": "m6-cp3-r4-ra4712-liveness-docs",
+  "file_id": "1i9TcnrUAFQvME0ZEefyYfXpB7xX8_Y7R",
+  "patch_sha256": "1a54bd45d55da827e35984bdccaaf9a4b83983b87903b6e5fb6b60d5db273455",
+  "base_sha": "f983508edcd0157ca3c93832753102067ab392ef",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record RA-47.11 seven-site census",
+  "commit_message": "docs(directional): record RA-47.12 liveness coverage gap",
   "retention_days": 7
 }
