@@ -1,3 +1,12 @@
+## CURRENT — R4 source boundary-class incidence compile verified (2026-10-14 12:02 UTC)
+
+- [x] Verified exact source [snapshot 38559146201](https://github.com/akashskypatel/Directional/actions/runs/38559146201), 5898/5898 hashes. Source audit found that an interior two-face edge could claim `AdaptiveFeatureClass::Boundary` and be published as a boundary rail even though the canonical feature-map builder assigns Boundary only to one-face edges.
+- [x] First-producer exact incident-face cardinality guard plus existing test's true boundary positive and forged (1,4) two-face negative; patch in Directional Library and [successful apply 38560046391](https://github.com/akashskypatel/Directional/actions/runs/38560046391) to semantic `99399772c9f17ebbe39e1dbc0f2dfdb11009bfc0`. Independent compare proved exactly `src/pipeline/RemeshPipeline.cpp` and `tests/SurfaceCellREPackageTests.cpp`. Drive staging retired.
+- [x] [Exact GMP/GMPXX eight-target compile 38560327102](https://github.com/akashskypatel/Directional/actions/runs/38560327102) **GREEN**, artifact `11891348919` outer SHA-256 `144d53b7d3ca81907161904fb39daf6a9db78a14bafea960e392328ae3709952`; 28/28 hashes, targets 8/8, preflight/build 0/0, source status clean, GMPXX/GMP generated link, `runtimeExecution=false`. This is **not runtime PASS**. Owning details: `Architecture_M6_CP3_R4_Boundary_Class_Source_Incidence_20261014.md`.
+- [ ] Remain in canonical `M6-CP3-CB1-ENTRY-R4`; other RA-43.4 source-consumer and historical obligations remain; A4/A1 selected branch and filled-side attribution still requires independent RA-43.1/.2 Review. No TB497, frozen selector change, acceptance promotion, PR metadata mutation or successor.
+
+---
+
 ## CURRENT — R4 cross-trace branch attribution audited; independent Review required (2026-10-14 10:38 UTC)
 
 - [x] Source-only `b43fa8e95409bfe7f7f334a05804ffb008918e7f` / compile artifact `11885034526` (28/28 hashes, `runtimeExecution=false`) reviewed: A2a `FieldAlignedCandidateTraceSegment` has typed `FieldBranch`; A4 `SurfaceTraceSegment` instead has `family`, `sign`, optional source chart, route and rail occurrence but **no independently checked A2a segment ID / branch join**. A4 hard-rail junction certifies vertex, sector paths and A3 transport, not selected A1 field branch. Evidence appended to `Architecture_M6_CP3_R4_RA431_A1_A4_Branch_Coupling_Census_20261014.md` in [`cb925c7`](https://github.com/akashskypatel/Directional/commit/cb925c7bd2e6a60c27cf52ad5ca5ec97ad6632c2).
