@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-source-current-review-gate-20261014t1834z",
+  "request_id": "m6-cp3-r4-source-review-gate-retry1-20261014t1835z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-source-current-review-gate-apply",
+  "mailbox_key": "m6-cp3-r4-source-current-review-gate-retry1",
   "file_id": "14wTsFtQaZEHj6dexqh5JzZWBXDt3tzxS",
   "patch_sha256": "0b67a065817126d6bd68dbddb1cabc62ee62c39eb2b28559a69c59abe0baa0fa",
   "base_sha": "8f490bd7fb196bfb2a9d8b83cf9c65c5d6c001d0",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: preserve R4 source-current independent review gate",
+  "commit_message": "docs: record R4 independent review gate after snapshot race",
   "retention_days": 7
 }
