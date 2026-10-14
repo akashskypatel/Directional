@@ -2876,6 +2876,57 @@ TEST(FieldTransportAtlas,
   EXPECT_FALSE(seamAtlas.transport(sourceEdge, first, second));
   EXPECT_FALSE(seamAtlas.transport(sourceEdge, second, first));
   EXPECT_EQ(nullptr, seamAtlas.find_adjacency(sourceEdge));
+
+  // Reordering source-face rows must not change the value attached to a
+  // source-topological edge. Preserve the per-face gauge and compare the same
+  // physical direction (original row 0 -> row 1; reordered row 1 -> row 0).
+  const TriMesh reorderedMesh = make_square_mesh(true);
+  const CrossFieldResult reorderedField = gauge_relabel_field(
+      reorderedMesh, make_zero_transport_field(reorderedMesh), {0, 1});
+  const auto reorderedHardAuthority =
+      make_source_authority(reorderedMesh, hardEdges);
+  ASSERT_TRUE(reorderedHardAuthority.has_value());
+  const auto reorderedHard = FieldTransportAtlas::make(
+      reorderedMesh, *reorderedHardAuthority, hardEdges, reorderedField);
+  ASSERT_TRUE(reorderedHard)
+      << describe_field_atlas_build_error(reorderedHard.error());
+  const auto originalFrom = SourceFaceId::from_index(0, 2).value();
+  const auto originalTo = SourceFaceId::from_index(1, 2).value();
+  const auto reorderedFrom = SourceFaceId::from_index(1, 2).value();
+  const auto reorderedTo = SourceFaceId::from_index(0, 2).value();
+  const auto originalHardValue = relabeled.value().transition_value(
+      sourceEdge, originalFrom, originalTo);
+  const auto reorderedHardValue = reorderedHard.value().transition_value(
+      sourceEdge, reorderedFrom, reorderedTo);
+  ASSERT_TRUE(originalHardValue.has_value());
+  ASSERT_TRUE(reorderedHardValue.has_value());
+  EXPECT_EQ(originalHardValue->transport, reorderedHardValue->transport);
+  EXPECT_EQ(originalHardValue->signedLift, reorderedHardValue->signedLift);
+  EXPECT_FALSE(reorderedHard.value().transport(
+      sourceEdge, reorderedFrom, reorderedTo));
+
+  SurfaceCellTracingOptions reorderedSeamOptions;
+  reorderedSeamOptions.sourceFaceComponents = {1, 0};
+  reorderedSeamOptions.sourceFaceSheets = {0, 0};
+  const auto reorderedSeamAuthority =
+      directional::geometry::surface_cell_tracing_detail::
+          build_source_topology_regions(reorderedMesh.F,
+                                        reorderedSeamOptions);
+  ASSERT_TRUE(reorderedSeamAuthority.has_value());
+  const auto reorderedSeam = FieldTransportAtlas::make(
+      reorderedMesh, *reorderedSeamAuthority, noHardEdges, reorderedField);
+  ASSERT_TRUE(reorderedSeam)
+      << describe_field_atlas_build_error(reorderedSeam.error());
+  const auto originalSeamValue = seamAtlas.transition_value(
+      sourceEdge, originalFrom, originalTo);
+  const auto reorderedSeamValue = reorderedSeam.value().transition_value(
+      sourceEdge, reorderedFrom, reorderedTo);
+  ASSERT_TRUE(originalSeamValue.has_value());
+  ASSERT_TRUE(reorderedSeamValue.has_value());
+  EXPECT_EQ(originalSeamValue->transport, reorderedSeamValue->transport);
+  EXPECT_EQ(originalSeamValue->signedLift, reorderedSeamValue->signedLift);
+  EXPECT_FALSE(reorderedSeam.value().transport(
+      sourceEdge, reorderedFrom, reorderedTo));
 }
 
 TEST(FieldTransportAtlas,
