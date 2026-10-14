@@ -6122,7 +6122,9 @@ rail_interval_refs(
         const FieldAlignedMandatoryEdge *mandatory =
             fieldAlignedNetwork->find_mandatory_edge(key);
         if (mandatory == nullptr || mandatory->rail != rail.id ||
-            mandatory->kind != rail.kind) {
+            mandatory->kind != rail.kind || rail.component < 0 ||
+            static_cast<std::size_t>(rail.component) !=
+                mandatory->sourceComponent.index()) {
           result.status = RailBuildStatus::TypedAuthorityMismatch;
           result.railId = rail.id;
           result.intervalIndex = interval;

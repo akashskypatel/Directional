@@ -6543,6 +6543,26 @@ TEST(SurfaceCellAuthorityContractCutover,
       fixture.rails, fixture.mesh.V, fixture.mesh.F, edgeFaces,
       &*fixture.fieldNetwork);
   ASSERT_EQ(RailBuildStatus::Valid, allOwned.status);
+  // Correct edge, rail and kind cannot override the producer's component.
+  ASSERT_TRUE(fixture.sourceAuthority.has_value());
+  auto foreignComponentRails = fixture.rails;
+  const int originalComponent = foreignComponentRails.front().component;
+  const int foreignComponent = originalComponent == 0 ? 1 : 0;
+  ASSERT_TRUE(std::any_of(
+      fixture.sourceAuthority->regions().begin(),
+      fixture.sourceAuthority->regions().end(), [&](const auto &region) {
+        return static_cast<int>(region.component().index()) == foreignComponent;
+      }));
+  foreignComponentRails.front().component = foreignComponent;
+  const auto foreignComponentRefs = rail_interval_refs(
+      foreignComponentRails, fixture.mesh.V, fixture.mesh.F, edgeFaces,
+      &*fixture.fieldNetwork,
+      RailIntervalAuthorityMode::LegacyStandaloneDiagnostic);
+  EXPECT_EQ(RailBuildStatus::TypedAuthorityMismatch,
+            foreignComponentRefs.status);
+  ASSERT_TRUE(foreignComponentRefs.railId.has_value());
+  EXPECT_EQ(foreignComponentRails.front().id, *foreignComponentRefs.railId);
+  EXPECT_EQ(0, foreignComponentRefs.intervalIndex);
   auto missingKeys = fixture.rails;
   ASSERT_FALSE(missingKeys.front().sourceEdges.empty());
   ASSERT_FALSE(missingKeys.front().sourceVertices.empty());
