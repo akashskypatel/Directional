@@ -9579,6 +9579,12 @@ SurfaceCellRailBuildResult build_authoritative_surface_cell_rails(
     if (!surface_cell_feature_edge_is_rail(edge)) {
       continue;
     }
+    // A curve-owned rail edge cannot be published outside its owning curve.
+    // A standalone source rail is valid only when it claims no curve.
+    if (edge.curve >= 0 && curveMemberEdges.count(edgeIndex) == 0) {
+      fail_edge(edgeIndex);
+      return SurfaceCellRailBuildResult::rejected(std::move(failure));
+    }
     const auto railId = allocate_rail_id();
     if (!railId) {
       fail_edge(edgeIndex);

@@ -223,6 +223,28 @@ TEST(SurfaceCellClosedProductContracts,
   EXPECT_EQ(0, good.product().rails[0].component);
   EXPECT_EQ(17, good.product().rails[0].curveId);
 
+  // A second source-valid edge may be standalone, but cannot claim an
+  // existing curve without appearing in its ordered membership list.
+  auto standaloneMember = validMap;
+  auto extraEdge = validMap.edges[0];
+  extraEdge.vertices = {1, 4};
+  extraEdge.incidentFaces = {0, 3};
+  extraEdge.curve = -1;
+  standaloneMember.edges.push_back(extraEdge);
+  const auto standalone = directional::pipeline::build_authoritative_surface_cell_rails(
+      source, standaloneMember);
+  ASSERT_TRUE(standalone.is_produced());
+  ASSERT_EQ(2U, standalone.product().rails.size());
+  standaloneMember.edges[1].curve = 17;
+  const auto orphanedCurveEdge =
+      directional::pipeline::build_authoritative_surface_cell_rails(
+          source, standaloneMember);
+  ASSERT_TRUE(orphanedCurveEdge.is_rejected());
+  ASSERT_NE(nullptr, orphanedCurveEdge.rejection());
+  EXPECT_EQ(directional::pipeline::SurfaceCellRailBuildFailureKind::InvalidFeatureEdge,
+            orphanedCurveEdge.rejection()->kind);
+  EXPECT_EQ(1, orphanedCurveEdge.rejection()->failedEdgeIndex);
+
   // The source boundary class must agree with actual source incidence.
   auto sourceBoundary = validMap;
   sourceBoundary.edges[0].edgeClass =
