@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-same-component-incidence-compile-20261014t1132z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-same-component-incidence-compile",
-  "source_sha": "4f00c733cef830a258a1b23953057febe8823376",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-same-component-incidence"
+  "request_id": "m6-cp3-r4-boundary-incidence-apply-20261014t1157z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-boundary-incidence-apply",
+  "file_id": "1yBG8AXKE25th2wNtMqb8fBod-RJJ1Rz3",
+  "patch_sha256": "4f6da62d704821e365af63358fe9c477ec318ab6eeeab40a784fb1a6d9539aa4",
+  "base_sha": "6d9138b4098c7033df460981d5b43edde4616491",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "fix(surface-cells): reject non-boundary source edges with boundary rail class",
+  "retention_days": 14
 }
