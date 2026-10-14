@@ -1,0 +1,18 @@
+# R4 RA-43.1 / RA-51 — A1 directed seam identity under face-row permutation
+
+**Canonical boundary:** `M6-CP3-CB1-ENTRY-R4` Code + Build only, no TB497, runtime test/benchmark, selector or successor.
+
+## Source change
+
+- Exact inspected source snapshot: `13df05220f84cba35923855ec50d8aa6c7a6d088`, workflow [38492441978](https://github.com/akashskypatel/Directional/actions/runs/38492441978), artifact `11862018574`, outer SHA-256 `a58b3e902b224a7bffb15598cfe399df64cd5b5b9a5588e3a7bf7f15f782c3d6`, 5789/5789 source checksums; subsequent branch changes before the source patch touched no source/test files.
+- One existing `FieldTransportAtlas.RetainsDirectedTransitionValueForHardFeatureWithoutTraversalAdjacency` regression extended by 51 lines, no new test identity. Compare the same physical source face order before/after a two-face row swap, with per-face branch gauge preserved (`{1,0}` versus `{0,1}`): hard-rail and non-hard component-seam A1 published directed values must match in `QuarterTurn` and signed lift. Both classifications must still withhold ordinary traversable `transport`.
+- Source patch full SHA-256 `8b67e67f48d01d7c48912b357d4178ed35da1eb5eb767735f84935798803df95`, body SHA-256 `2fe95b9c0b05d20716e51e719b7dda75608f6a2351812da51b43f9d1cfe44ea9`. Exact-base forward and reverse application, produced-file byte comparison and whitespace checks all passed. One file changed: `tests/FieldTransportAtlasTests.cpp`. No production behavior, source topology validation, ABI, frozen selector or workflow permissions changed.
+
+## Immutable application and compile evidence
+
+- Exact single-file patch applied via [workflow 38497369813](https://github.com/akashskypatel/Directional/actions/runs/38497369813), artifact `11863927005` outer SHA-256 `85c3c5b712db654cefd7bee0f8c0ffbfb46fd5928f50770e26b3a386f0bb50ca`, event `b4cb57a84e9599891a1f674909d28c3e1558cfe6`, semantic commit [`7e8f7cd`](https://github.com/akashskypatel/Directional/commit/7e8f7cd936b08a841f9bb031fe7990a6d92662dd). Receipt independently verified exact base, patch SHA, semantic SHA, `runtimeExecution=false`; GitHub confirmed only `tests/FieldTransportAtlasTests.cpp` changed. Consumed Google Drive patch was owner permanently deleted.
+- **Pinned mandatory eight-target GMP/GMPXX compile GREEN**: request `495f1ec3967d9d55a930fb3aeff1388191b11fd0`, exact source `7e8f7cd936b08a841f9bb031fe7990a6d92662dd`, [workflow 38497529587](https://github.com/akashskypatel/Directional/actions/runs/38497529587), successful compile job `115636713372`, immutable result artifact `11864830175` outer ZIP SHA-256 `cedb6cbe6716fe1ff7517b76e022ccaed8a2ee0ef9fcddd5f780b588c843b324`, diagnostic artifact `11863734744` ZIP SHA-256 `13cbdc3010c1a0a99fab80cd3b51554c1689e6edd90b73f3124a59793cca1c49`. Independently verified 28/28 SHA256SUMS, eight approved targets, preflight/build `0/0`, generated real linker command containing both GMPXX and GMP, `exactArithmeticBackend=GMP`, five empty source-status files and `runtimeExecution=false`. Test/benchmark job skipped; no Directional binary, test, CLI, benchmark or TB497 executed.
+
+## Limits and continuation
+
+This verifies **only source and compilation**. Its face-row covariance assertions are unexecuted until a separately authorized artifact-only Test + Benchmark turn. It cannot close full RA-43.1 A4 producer/consumer/germ coverage, RA-43.4 runtime disposition, reachable RA-46.5 predicates, RA-47.12 uninjected liveness, 39 endpoint / 34 Phase10 / seven DCEL / 88 accepted CP2 restorations / six CP3 positives, organic D1/D2/D3/D5 + A6/A7 or genuine odd-τ multi-carrier acceptance. R4 remains unfinished, PR #8 draft, no successor.
