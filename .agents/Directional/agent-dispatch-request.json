@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-source-face-component-compile-20261014t1019z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-source-face-component-compile",
-  "source_sha": "b43fa8e95409bfe7f7f334a05804ffb008918e7f",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-source-face-component"
+  "request_id": "m6-cp3-r4-rail-incidence-apply-20261014t1107z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-source-rail-incidence-apply",
+  "file_id": "1iS6vc3oBiqdwZLoY3wQu8oIFntVNQQRC",
+  "patch_sha256": "ae28b2e76f5b94961f6e1b7e214a59441d8fe9b39f487e1095f4bc39c288aa7a",
+  "base_sha": "36e2594106e8eb8bbbd5b69f9eb465c6ca38fd6d",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "fix(surfacecells): authenticate exact feature-edge source incidence",
+  "retention_days": 14
 }
