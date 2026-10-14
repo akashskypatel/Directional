@@ -223,6 +223,32 @@ TEST(SurfaceCellClosedProductContracts,
   EXPECT_EQ(0, good.product().rails[0].component);
   EXPECT_EQ(17, good.product().rails[0].curveId);
 
+  // The source boundary class must agree with actual source incidence.
+  auto sourceBoundary = validMap;
+  sourceBoundary.edges[0].edgeClass =
+      directional::geometry::AdaptiveFeatureClass::Boundary;
+  const auto boundary = directional::pipeline::build_authoritative_surface_cell_rails(
+      source, sourceBoundary);
+  ASSERT_TRUE(boundary.is_produced());
+  ASSERT_EQ(1U, boundary.product().rails.size());
+  EXPECT_EQ(directional::geometry::SurfaceCellRailKind::Boundary,
+            boundary.product().rails.front().kind);
+
+  // Edge (1,4) has two real incident faces in this connected source mesh.
+  // Relabelling it as a source boundary cannot publish an authoritative rail.
+  auto forgedBoundary = sourceBoundary;
+  forgedBoundary.edges[0].vertices = {1, 4};
+  forgedBoundary.edges[0].incidentFaces = {0, 3};
+  forgedBoundary.curves[0].vertices = {1, 4};
+  const auto interiorAsBoundary =
+      directional::pipeline::build_authoritative_surface_cell_rails(
+          source, forgedBoundary);
+  ASSERT_TRUE(interiorAsBoundary.is_rejected());
+  ASSERT_NE(interiorAsBoundary.rejection(), nullptr);
+  EXPECT_EQ(directional::pipeline::SurfaceCellRailBuildFailureKind::InvalidFeatureEdge,
+            interiorAsBoundary.rejection()->kind);
+  EXPECT_EQ(0, interiorAsBoundary.rejection()->failedEdgeIndex);
+
   auto wrongComponent = validMap;
   wrongComponent.edges[0].component = 1;
   const auto foreignComponent =

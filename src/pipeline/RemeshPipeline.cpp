@@ -9337,7 +9337,9 @@ SurfaceCellRailBuildResult build_authoritative_surface_cell_rails(
     std::vector<int> claimedFaces = edge.incidentFaces;
     std::sort(claimedFaces.begin(), claimedFaces.end());
     if (support == sourceFacesByEdge.end() ||
-        claimedFaces != support->second || claimedFaces.empty()) {
+        claimedFaces != support->second || claimedFaces.empty() ||
+        (edge.edgeClass == geometry::AdaptiveFeatureClass::Boundary &&
+         claimedFaces.size() != 1U)) {
       return fail_edge(edgeIndex);
     }
     const int face = claimedFaces.front();
