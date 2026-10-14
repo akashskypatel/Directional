@@ -1,3 +1,10 @@
+## CURRENT — RA-47.12 default-path consumer-liveness census (2026-10-14)
+
+- [x] `M6-CP3-CB1-R4-RA4712-LIVENESS` source-only audit at verified snapshot `f983508edcd0157ca3c93832753102067ab392ef` (run 38645902635, artifact 11932381704, 5600/5600 files). Source path offers network-bound typed interval validation, but no *executed* normal-pipeline witness proves the consumer was reached with producer-built rails. **RP-02 TEST_AUTHORITY_COVERAGE_GAP**; see `.agents/Directional/Architecture_M6_CP3_R4_RA4712_Default_Path_Typed_Interval_Liveness_Census_20261014.md`. Prior authored factory/producer assertions do not close execution liveness.
+- [ ] Separate artifact-only TB and Review must supply a nonzero, non-vacuous real-consumer receipt; no runtime accepted here. The next separate Code + Build rung is `M6-CP3-CB1-R4-RA466-SUBCODES` (reachable predicates only); retain frozen RA-52/RA-53 and historical 497/ledger gates. No test/production code/build/TB performed here.
+
+---
+
 ## CURRENT — RA-47.11 seven-site source-only census (2026-10-14)
 
 - [x] Audit all seven `source_edge_index` textual sites at exact source `09e8451ed6314a458e9abe8c6b74e866d19728fc` (snapshot 38640107266, artifact 11930195949, 5598/5598 file hashes). All six callers require real EV rows or mesh-edge membership; the seventh site is the typed-key-to-row helper. **No wrongly untyped site or migration target**. Record: `.agents/Directional/Architecture_M6_CP3_R4_RA4711_Seven_Source_Edge_Index_Census_20261014.md`. No tests, builds or runtime ran.

@@ -1,3 +1,8 @@
+## 2026-10-14 — RA-47.12 default-path typed interval liveness census (source-only)
+
+- `M6-CP3-CB1-R4-RA4712-LIVENESS`: frozen snapshot `f983508edcd0157ca3c93832753102067ab392ef` / Actions `38645902635`, artifact `11932381704`, all 5600 source checksums verified. Static producer-to-consumer route exists, but no independently executed, non-vacuous ordinary pipeline witness proves producer-built rails reached **network-bound** `rail_interval_refs`. The earlier producer strict check uses `nullptr`; the source-authored ordinary-pipeline tests verify A2a publication or phase-front disposition without observing the interval consumer. **RP-02 TEST_AUTHORITY_COVERAGE_GAP** is recorded; neither observed liveness nor unreachable production is claimed. See `.agents/Directional/Architecture_M6_CP3_R4_RA4712_Default_Path_Typed_Interval_Liveness_Census_20261014.md`.
+- Source-only finding; no code/tests/build/runtime/TB497/ledger/selector/PR changes. R4 remains open; next separately authorized rung is `M6-CP3-CB1-R4-RA466-SUBCODES`.
+
 ## 2026-10-14 — RA-47.11 typed-edge migration disposition (no-op)
 
 - `M6-CP3-CB1-R4-RA4711-MIGRATE`: the frozen seven-site census identified **0** wrongly untyped `source_edge_index` uses; all seven require their existing typed-key-to-EV-row boundary or independent mesh adjacency assertion. Exact source remained unchanged since `09e8451ed6314a458e9abe8c6b74e866d19728fc`, verified by changed-path comparison and direct examination of the packaged snapshot. Record: `.agents/Directional/Architecture_M6_CP3_R4_RA4711_Migration_NoOp_20261014.md`.
