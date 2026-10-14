@@ -235,6 +235,25 @@ TEST(SurfaceCellClosedProductContracts,
       source, standaloneMember);
   ASSERT_TRUE(standalone.is_produced());
   ASSERT_EQ(2U, standalone.product().rails.size());
+
+  // Builder source edges are unique by canonical vertex pair. A second
+  // validly sourced feature-map entry with reversed endpoint order cannot
+  // publish a duplicate rail under a different (standalone) owner.
+  auto duplicateSourceSupport = standaloneMember;
+  auto duplicateSourceRecord = validMap.edges[0];
+  duplicateSourceRecord.vertices = {1, 0};
+  duplicateSourceRecord.curve = -1;
+  duplicateSourceSupport.edges.push_back(duplicateSourceRecord);
+  const auto duplicateSourceRail =
+      directional::pipeline::build_authoritative_surface_cell_rails(
+          source, duplicateSourceSupport);
+  ASSERT_TRUE(duplicateSourceRail.is_rejected());
+  EXPECT_EQ(nullptr, duplicateSourceRail.produced_product());
+  ASSERT_NE(nullptr, duplicateSourceRail.rejection());
+  EXPECT_EQ(directional::pipeline::SurfaceCellRailBuildFailureKind::InvalidFeatureEdge,
+            duplicateSourceRail.rejection()->kind);
+  EXPECT_EQ(2, duplicateSourceRail.rejection()->failedEdgeIndex);
+
   standaloneMember.edges[1].curve = 17;
   const auto orphanedCurveEdge =
       directional::pipeline::build_authoritative_surface_cell_rails(

@@ -9310,6 +9310,9 @@ SurfaceCellRailBuildResult build_authoritative_surface_cell_rails(
     return false;
   };
   std::set<authority::HardRailId> railOwners;
+  // The feature-map producer creates one record per canonical source edge.
+  // Independently reject alias records before emitting duplicate rail support.
+  std::set<std::pair<int, int>> emittedRailSourceEdges;
   const auto allocate_rail_id = [&]() -> std::optional<authority::HardRailId> {
     const std::size_t ownerExtent = railOwners.size() + 1U;
     for (std::size_t candidateIndex = 0; candidateIndex < ownerExtent;
@@ -9354,6 +9357,12 @@ SurfaceCellRailBuildResult build_authoritative_surface_cell_rails(
     }
     if (!hasA || !hasB ||
         edge.component != sourceFaceComponents[static_cast<std::size_t>(face)]) {
+      return fail_edge(edgeIndex);
+    }
+    // A distinct feature record cannot publish the same source-edge rail
+    // twice, even when both records carry individually valid source claims.
+    if (!emittedRailSourceEdges.insert(
+             geometry::AdaptiveFeatureMap::canonical_edge(a, b)).second) {
       return fail_edge(edgeIndex);
     }
     const geometry::SurfaceCellRailSample startSample =
