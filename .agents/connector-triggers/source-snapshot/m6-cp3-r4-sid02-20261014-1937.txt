@@ -1,2 +1,0 @@
-M6-CP3-CB1-R4-SID02-PROBE
-Source-only reachability census; no build or runtime tests.
