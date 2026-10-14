@@ -14,7 +14,7 @@ Exact two-path full-index patch preserved in ChatGPT Library `/Directional/Evide
 
 ## Compile-only evidence
 
-Exact eight-target GMP/GMPXX compile requested by dispatcher commit `51c426010fa9943c79857a4cd7d04ba7d155a197`, mailbox key `m6-cp3-r4-closed-curve-source-compile`, pinned semantic source `ad91acb81e762cdb2d9334ef095642030242d70a`. **Pending authoritative compile artifact verification**. Do not infer runtime PASS from a green compile.
+Exact eight-target GMP/GMPXX compile requested by dispatcher commit `51c426010fa9943c79857a4cd7d04ba7d155a197`, mailbox key `m6-cp3-r4-closed-curve-source-compile`, pinned semantic source `ad91acb81e762cdb2d9334ef095642030242d70a`. **Exact-source compile GREEN; runtime acceptance NOT claimed.** [Compile run 38569906173](https://github.com/akashskypatel/Directional/actions/runs/38569906173), compile job `115872278994` success, mailbox event `51c426010fa9943c79857a4cd7d04ba7d155a197` and semantic source `ad91acb81e762cdb2d9334ef095642030242d70a` matched. Immutable result artifact `11896842043`, ZIP SHA-256 `369de0c8dc7f8cd36eda87837bf75d9b3b6d54b00701bd7fe299f839d4eb4b0c`; independently checked `SHA256SUMS` 28/28, 8/8 approved targets, preflight/build exit 0/0, five source-status records clean, actual gmpxx/gmp linker evidence, `exactArithmeticBackend=GMP`, `runtimeExecution=false`, Test + Benchmark job skipped. Compile validates source buildability, not runtime assertion behavior or restored acceptance.
 
 ## Remaining canonical obligations
 
