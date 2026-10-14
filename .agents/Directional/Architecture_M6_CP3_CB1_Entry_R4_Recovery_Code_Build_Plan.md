@@ -1,3 +1,11 @@
+## CURRENT — R4 RA-43.4 first-consumer component guard compiled (2026-10-14 08:38 UTC)
+
+- [x] Network-bound `rail_interval_refs` validates `SurfaceCellRail.component` against producer `FieldAlignedMandatoryEdge.sourceComponent` at the first affected interval, retaining `TypedAuthorityMismatch` for foreign/negative IDs. Existing Phase10 contract includes a genuine second-component substitution even with `LegacyStandaloneDiagnostic` and supplied network. Exact semantic [`f04eda9`](https://github.com/akashskypatel/Directional/commit/f04eda9743e94e42cac9b19f6ada29ae7fde1a07); two source/test paths only; no selector changes.
+- [x] **Eight-target GMP/GMPXX compile GREEN** on exact source [run 38536008896](https://github.com/akashskypatel/Directional/actions/runs/38536008896), job `115759070843`, artifact `11879114903`, SHA-256 `672efa0e70715eb9fdfd6085efa8e010c0870792dcb674a4c8eb52113bf175a8`; 28/28 manifest, preflight/build 0/0, GMP and GMPXX in generated link, all five source-status records clean, packaged source contains guard and test, `runtimeExecution=false`. Test/BM skipped. Owning evidence: `Architecture_M6_CP3_R4_RA434_Network_Component_First_Consumer_20261014.md`.
+- [ ] **Remain same R4.** The new negative is compiled **not run**. Never promote it to runtime acceptance. Still require independent RA-43.1 selected-branch Review, broader typed consumer gaps and separately authorized artifact-only TB for actual odd-τ/A1, RA-47.12 and historical acceptance; do not begin TB497, successor, or edit frozen 497 selector.
+
+---
+
 ## CURRENT — R4 selected A1 branch upstream lineage resolution (2026-10-14 UTC)
 
 - [x] Verified source-only RA-43.1/A4 ancestry audit: `Architecture_M6_CP3_R4_RA431_A1_A4_Branch_Coupling_Census_20261014.md` now contains exact upstream lattice-gauge, trace/front owner and A4 certificate provenance, published in commit `0e38571eca94a6d4cb8d90b97ffc94fdc48e8625`. `LocalLatticeState::branchRotation` is a face-local grid +U gauge; neither it nor A4's paired front indices authenticate the A1 arrival branch *selected at the internal hard-rail junction*. An arbitrary successful A1 pairing must not be credited as the A4-selected branch. No source/test/runtime changed in this audit.
