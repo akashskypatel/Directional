@@ -1,8 +1,8 @@
 ---TURN_STATUS---
 Turn: M6-CP3-CB1-R4-RA4712-LIVENESS
-Status: IN_PROGRESS
-Successor: UNKNOWN
+Status: COMPLETE
+Successor: M6-CP3-CB1-R4-RA466-SUBCODES
 Started at: 2026-10-14T22:10:33Z
 Resumed at:
-Ended at:
+Ended at: 2026-10-14T22:21:40Z
 ---END_TURN_STATUS---
