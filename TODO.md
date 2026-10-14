@@ -1,3 +1,10 @@
+## CURRENT — RA-43.4 standalone geometry diagnostic census (2026-10-14)
+
+- [x] `M6-CP3-CB1-R4-RA434-CENSUS`: exact source `b0d5c584a98d5ad321c324be9f18db5ba03d434b`, snapshot `38653652905`, artifact `11935277891`, 5602/5602 hashes. Two identity-relevant standalone geometry helper APIs; no direct untyped production caller and no production legacy named opt-out. Frozen RA-52.6 caller table retained in `.agents/Directional/Architecture_M6_CP3_R4_RA434_Standalone_Geometry_Diagnostic_Census_20261014.md`. No runtime/build/test.
+- [ ] Next separate `M6-CP3-CB1-R4-RA434-DISPOSE`: adjudicate only those helpers without removing RA-52.6 opt-out or weakening the network override. R4, RP-02 and historical test gates remain open.
+
+---
+
 ## CURRENT — RA-46.6 typed factory subcodes (2026-10-14)
 
 - [x] `M6-CP3-CB1-R4-RA466-SUBCODES`: exact source `0f2b1822cf3fecd209a610b6055549c561a000c3` already implements the seven frozen typed distinctions. No duplicate production/test changes or unchanged-source compile. See `.agents/Directional/Architecture_M6_CP3_R4_RA466_Typed_Factory_Subcodes_NoOp_20261014.md`.

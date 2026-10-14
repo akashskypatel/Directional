@@ -1,3 +1,11 @@
+## CURRENT — RA-43.4 standalone geometry diagnostic census complete (2026-10-14)
+
+`M6-CP3-CB1-R4-RA434-CENSUS` closed as a source-only census against snapshot `b0d5c584a98d5ad321c324be9f18db5ba03d434b`, run `38653652905`, artifact `11935277891` (5602/5602 hashes). Two identity-relevant residual helper surfaces (`rail_sample_source_vertex`, `rail_sample_geometry_is_valid` with optional no-ID argument), no independent untyped production caller or production `LegacyStandaloneDiagnostic`. RA-52.6's three strict production callers are reproduced verbatim in `.agents/Directional/Architecture_M6_CP3_R4_RA434_Standalone_Geometry_Diagnostic_Census_20261014.md`; named opt-out is PRESERVED. No code/build/test/runtime/TB497 or ledger promotion.
+
+**Next separate authorized turn:** `M6-CP3-CB1-R4-RA434-DISPOSE`. Do not start it in the census. R4, RP-02, 39/34/7/88/six and organic/A1/multi-carrier runtime gates remain open; selector 497, ledger 66/17/49 and debt 1 unchanged.
+
+---
+
 ## CURRENT — RA-46.6 checked-factory typed subcodes confirmed already implemented (2026-10-14)
 
 `M6-CP3-CB1-R4-RA466-SUBCODES` is **complete as a source-verified no-op**. All seven authorized typed factory details already exist in `SurfacePhaseFrontSourceAuthorityDetail` and are set at the specified producer checks. Exact snapshot `0f2b1822cf3fecd209a610b6055549c561a000c3`, run `38651012007`, artifact `11934885965`, 5601/5601 source digests. Frozen RA-51.7/52/53 prevent new subcodes for dead or retired predicates; source-only assertions are not runtime passes. No production/test code, compile, tests, TB497, selectors, ledgers or PR state changed. Evidence: `.agents/Directional/Architecture_M6_CP3_R4_RA466_Typed_Factory_Subcodes_NoOp_20261014.md`.
