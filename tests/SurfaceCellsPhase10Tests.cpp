@@ -6732,8 +6732,35 @@ TEST(SurfaceCellAuthorityContractCutover,
       expectedTransports.insert(sourceEdge);
   }
   std::set<directional::authority::SourceEdgeTopologyKey> actualTransports;
-  for (const auto &transport : transportEdges)
+  for (const auto &transport : transportEdges) {
     EXPECT_TRUE(actualTransports.insert(transport.sourceEdge).second);
+    // The same producer atlas that retains hard-carrier directed A3 values
+    // must also retain ordinary A3 adjacency and identical directed values
+    // on every independently source-admissible non-hard interior edge.
+    const auto forward = fixture.atlas->transport(
+        transport.sourceEdge, transport.fromFace, transport.toFace);
+    const auto reverse = fixture.atlas->transport(
+        transport.sourceEdge, transport.toFace, transport.fromFace);
+    const auto forwardValue = fixture.atlas->transition_value(
+        transport.sourceEdge, transport.fromFace, transport.toFace);
+    const auto reverseValue = fixture.atlas->transition_value(
+        transport.sourceEdge, transport.toFace, transport.fromFace);
+    ASSERT_TRUE(forward.has_value());
+    ASSERT_TRUE(reverse.has_value());
+    ASSERT_TRUE(forwardValue.has_value());
+    ASSERT_TRUE(reverseValue.has_value());
+    EXPECT_EQ(transport.transport, forward->transport);
+    EXPECT_EQ(transport.signedLift, forward->signedLift);
+    EXPECT_EQ(forward->transport, forwardValue->transport);
+    EXPECT_EQ(reverse->transport, reverseValue->transport);
+    EXPECT_EQ(forward->signedLift, forwardValue->signedLift);
+    EXPECT_EQ(reverse->signedLift, reverseValue->signedLift);
+    EXPECT_EQ(forward->effort, forwardValue->effort);
+    EXPECT_EQ(reverse->effort, reverseValue->effort);
+    EXPECT_EQ(forward->transport.inverse(), reverse->transport);
+    EXPECT_EQ(-forward->signedLift, reverse->signedLift);
+    EXPECT_EQ(-forward->effort, reverse->effort);
+  }
   ASSERT_FALSE(expectedTransports.empty());
   EXPECT_EQ(expectedTransports, actualTransports)
       << "A1 must retain every within-region non-hard interior transit, "
