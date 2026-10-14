@@ -6663,6 +6663,24 @@ TEST(SurfaceCellAuthorityContractCutover,
           fixture.fieldNetwork->find_mandatory_edge(barrier.sourceEdge);
       ASSERT_NE(mandatory, nullptr);
       EXPECT_EQ(SurfaceCellRailKind::HardFeature, mandatory->kind);
+
+      // The producer's real hard carrier is a nontraversable A3 barrier,
+      // not a missing directed A3 value. The terminal-star consumer needs
+      // reciprocal values even though ordinary adjacency stays cut.
+      const auto forward = fixture.atlas->transition_value(
+          barrier.sourceEdge, *barrier.firstFace, *barrier.secondFace);
+      const auto reverse = fixture.atlas->transition_value(
+          barrier.sourceEdge, *barrier.secondFace, *barrier.firstFace);
+      ASSERT_TRUE(forward.has_value());
+      ASSERT_TRUE(reverse.has_value());
+      EXPECT_EQ(forward->transport.inverse(), reverse->transport);
+      EXPECT_EQ(-forward->signedLift, reverse->signedLift);
+      EXPECT_EQ(-forward->effort, reverse->effort);
+      EXPECT_FALSE(fixture.atlas->transport(
+          barrier.sourceEdge, *barrier.firstFace, *barrier.secondFace));
+      EXPECT_FALSE(fixture.atlas->transport(
+          barrier.sourceEdge, *barrier.secondFace, *barrier.firstFace));
+      EXPECT_EQ(nullptr, fixture.atlas->find_adjacency(barrier.sourceEdge));
       const auto ownedRail = std::find_if(
           fixture.rails.begin(), fixture.rails.end(), [&](const auto &rail) {
             return rail.kind == SurfaceCellRailKind::HardFeature &&
