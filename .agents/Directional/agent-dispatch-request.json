@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-rail-incidence-compile-20261014t1111z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-source-rail-incidence-compile",
-  "source_sha": "df4221ba68f7a398413cdb4a0f9be42c485bb527",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-source-rail-incidence"
+  "request_id": "m6-cp3-r4-same-component-incidence-apply-20261014t1130z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-same-component-incidence-apply",
+  "file_id": "1wwFaa4TpUKKUyuKCRqOruf7IsG_m3cEX",
+  "patch_sha256": "78cacac7ad9a92cd7744f048d848cb16e271f1d7a255fed06048c767e9ef3e75",
+  "base_sha": "dfb149df1d27f50e1b908f1e4059751ea462061d",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "test(surfacecells): reject wrong same-component source-edge incident face",
+  "retention_days": 14
 }
