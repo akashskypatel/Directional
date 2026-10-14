@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-seven-dcel-census-docs-20261014t1624z",
+  "request_id": "m6-cp3-r4-standalone-negative-owner-apply-20261014t1645z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-seven-dcel-census-docs-apply",
-  "file_id": "1SBqly31dxoF7URCYm5eD_dTS1z6lAQT2",
-  "patch_sha256": "518c1f3f597da0513b3d80bd1992004c3734f89ff9dfe740447877cab5dabc7c",
+  "mailbox_key": "m6-cp3-r4-standalone-negative-owner-apply",
+  "file_id": "19Vt3GDcl5bD_WV5eEWAqAWOeVqTX5AMT",
+  "patch_sha256": "076755954cc9fcdf4ab70465ceb5d0e3006b38f46346908901d954de4ee9ea6f",
   "base_sha": "840583d57ac0263b6d6230bf0b59e1a9b58b0622",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: preserve exact-source seven DCEL fixture census in R4 handoff",
+  "commit_message": "fix(surfacecells): reject malformed negative standalone curve owner",
   "retention_days": 7
 }
