@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra431-directed-seam-docs-apply-20261014t0151z",
+  "request_id": "m6-cp3-r4-produced-directed-value-apply-20261014t0214z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra431-directed-seam-docs-apply",
-  "file_id": "11t5vAphsEeSs5l0PLCnCZRzRk2hHuaQz",
-  "patch_sha256": "4c0519ee132cd7db9cccaeb2ca2ccfae0c5725826d88fbde39c354d70e81c163",
-  "base_sha": "7e8f7cd936b08a841f9bb031fe7990a6d92662dd",
+  "mailbox_key": "m6-cp3-r4-produced-directed-value-apply",
+  "file_id": "14OINibvhVes2fQTeC56R-FkMXc_NQtii",
+  "patch_sha256": "baf45e664e6c904a53e0215ed32d012e5fb094d62a3a16fea72594f9aedc9a66",
+  "base_sha": "39ca3697a49e60a5a552a7f246856c652f6125af",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record R4 A1 row-permutation compiled regression",
+  "commit_message": "test(directional): attest directed A3 values on producer hard carriers",
   "retention_days": 14
 }
