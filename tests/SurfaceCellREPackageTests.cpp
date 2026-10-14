@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <array>
+#include <map>
 #include <set>
 #include <string>
 #include <utility>
@@ -412,6 +413,90 @@ TEST(SurfaceCellPipelinePhase20,
   // original source topology as its independently carried vertex chain.
   directional::TriMesh sourceMesh;
   sourceMesh.set_mesh(mesh.vertices, mesh.faces);
+
+  // RA-43.1: exercise the actual A1 vertex-transit producer at the A4
+  // junction, with the source atlas's own hard-carrier barriers. A4's
+  // contact-path comparison above does not establish this independent germ.
+  const auto &branchTopology = atlas.branch_topology();
+  using EdgeKey = directional::authority::SourceEdgeTopologyKey;
+  using FaceKey = directional::authority::SourceFaceTopologyKey;
+  using Barrier = directional::authority::FieldNonTraversableEdge;
+  std::map<EdgeKey, const Barrier *> sourceBarriers;
+  for (const auto &barrier : atlas.nontraversable_edges()) {
+    ASSERT_TRUE(sourceBarriers.emplace(barrier.sourceEdge, &barrier).second);
+  }
+  std::size_t examinedGermPaths = 0U;
+  std::size_t germOwners = 0U;
+  for (const auto &certificate : certificates) {
+    for (const auto &junction : certificate.junctions) {
+      for (const auto &sector : junction.sectorPaths) {
+        if (sector.empty()) continue;
+        const FaceKey seedFace = sector.front().firstFace;
+        const auto *frame = branchTopology.find_frame(seedFace);
+        ASSERT_NE(frame, nullptr);
+        const auto faceRow = regions.row_for_topology(seedFace);
+        ASSERT_TRUE(faceRow.has_value());
+        for (const auto &pairing : frame->branches) {
+          auto outward = pairing.direction;
+          if (!outward.is_barycentric()) continue;
+          for (auto &coordinate : outward.barycentric) coordinate = -coordinate;
+          if (!directional::authority::direction_in_closed_vertex_wedge(
+                  sourceMesh, *faceRow, junction.junction, outward)) continue;
+          const auto transit = directional::geometry::surface_cell_tracing_detail::
+              resolve_field_vertex_transit(
+                  sourceMesh, branchTopology, frame->sourceComponent,
+                  frame->topologyRegion, seedFace, pairing.branch,
+                  junction.junction,
+                  directional::geometry::FieldVertexArrivalMode::FaceInterior,
+                  std::nullopt, std::nullopt, &sourceBarriers);
+          if (std::holds_alternative<directional::geometry::
+                  surface_cell_tracing_detail::FieldVertexTransitDecision>(transit)) {
+            ++germOwners;
+            continue;
+          }
+          const auto &rejection = std::get<directional::geometry::
+              FieldAlignedCurveNetworkError>(transit);
+          for (const auto &state : rejection.vertexTransitStates) {
+            if (state.outcome != directional::geometry::
+                    FieldVertexTransitStateOutcome::Evaluated ||
+                state.transportPath.empty()) continue;
+            FaceKey walkFace = seedFace;
+            int signedLift = 0;
+            for (const EdgeKey &edge : state.transportPath) {
+              EXPECT_EQ(0U, producerHardEdges.count(edge))
+                  << "the direct A1 germ crossed an actual hard carrier";
+              const auto adjacency = std::find_if(
+                  branchTopology.transports().begin(),
+                  branchTopology.transports().end(),
+                  [&](const auto &item) {
+                    return item.sourceEdge == edge &&
+                           (item.firstFace == walkFace ||
+                            item.secondFace == walkFace);
+                  });
+              ASSERT_NE(adjacency, branchTopology.transports().end());
+              const FaceKey nextFace = adjacency->firstFace == walkFace
+                                           ? adjacency->secondFace
+                                           : adjacency->firstFace;
+              const auto directed = branchTopology.transport(edge, walkFace,
+                                                              nextFace);
+              ASSERT_TRUE(directed.has_value());
+              signedLift += directed->signedLift;
+              walkFace = nextFace;
+            }
+            EXPECT_EQ(state.sourceFace, walkFace);
+            EXPECT_EQ(((signedLift % 4) + 4) % 4,
+                      state.composedQuarterTurn);
+            EXPECT_EQ(pairing.branch.rotated(signedLift), state.branch);
+            ++examinedGermPaths;
+          }
+        }
+      }
+    }
+  }
+  EXPECT_GT(germOwners + examinedGermPaths, 0U)
+      << "the produced multi-carrier junction must exercise an authentic "
+         "A1 vertex-transit germ";
+
   bool hasBoundaryRail = false;
   bool hasHardRail = false;
   std::set<directional::authority::HardRailId> railIds;
