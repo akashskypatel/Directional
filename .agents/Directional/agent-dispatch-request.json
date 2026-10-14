@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra434-atlas-binding-compile-20261014t0923z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-ra434-atlas-binding-compile",
-  "source_sha": "bbf2902ab56c6000867e538c16300720f95b14ff",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-ra434-atlas-binding"
+  "request_id": "m6-cp3-r4-feature-owner-apply-20261014t0955z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-feature-owner-apply",
+  "file_id": "1dKdarVSS0NaOCEgdNrgKCU2mjxLDIKfi",
+  "patch_sha256": "b767705c1f9013f5b77bf514981fe1f5eff3f51910a3570413b9c883f7877207",
+  "base_sha": "bbf2902ab56c6000867e538c16300720f95b14ff",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "fix(surface-cells): reject mixed feature curve edge ownership before rail assembly"
 }
