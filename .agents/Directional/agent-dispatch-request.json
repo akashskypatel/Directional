@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-nonhard-a3-compile-20261014t0235z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-nonhard-a3-compile",
-  "source_sha": "3a461b747579220cfac6b15049f6cab70b89f1eb",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-nonhard-a3-compile"
+  "request_id": "m6-cp3-r4-nonhard-a3-fix-apply-20261014t0238z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-nonhard-a3-fix-apply",
+  "file_id": "1gub5gRqCq_bRfZoIU3VdywI5s2WFnqyI",
+  "patch_sha256": "cc31065f8d97c56e0a21dfb28d20a95bdc0c07b210bec314309c07d16114af94",
+  "base_sha": "3a461b747579220cfac6b15049f6cab70b89f1eb",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "test(directional): use branch topology face fields for directed A3 oracle",
+  "retention_days": 14
 }
