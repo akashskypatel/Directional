@@ -691,20 +691,20 @@ TEST(SurfaceCellPipelinePhase20,
   std::map<Edge, const Barrier *> sourceBarriers;
   for (const auto &barrier : atlas.nontraversable_edges())
     ASSERT_TRUE(sourceBarriers.emplace(barrier.sourceEdge, &barrier).second);
-  ASSERT_TRUE(sourceBarriers.count(*a));
-  ASSERT_TRUE(sourceBarriers.count(*b));
+  ASSERT_TRUE(sourceBarriers.count(a.value()));
+  ASSERT_TRUE(sourceBarriers.count(b.value()));
   EXPECT_EQ(directional::authority::FieldTransportBarrierKind::HardFeature,
-            sourceBarriers.at(*a)->kind);
+            sourceBarriers.at(a.value())->kind);
   EXPECT_EQ(directional::authority::FieldTransportBarrierKind::HardFeature,
-            sourceBarriers.at(*b)->kind);
+            sourceBarriers.at(b.value())->kind);
 
   const auto &routes = front.hardRailRouteCertificates();
   const auto route = std::find_if(routes.begin(), routes.end(),
                                   [&](const auto &cert) {
     const auto edges = cert.route.oriented_steps();
     return edges.size() == 2U &&
-           ((edges[0].topology() == *a && edges[1].topology() == *b) ||
-            (edges[0].topology() == *b && edges[1].topology() == *a));
+           ((edges[0].topology() == a.value() && edges[1].topology() == b.value()) ||
+            (edges[0].topology() == b.value() && edges[1].topology() == a.value()));
   });
   ASSERT_NE(routes.end(), route)
       << "odd-tau proof needs an A4-produced TWO-carrier certificate";
@@ -769,8 +769,8 @@ TEST(SurfaceCellPipelinePhase20,
                    FieldVertexTransitStateOutcome::Evaluated ||
               state.transportPath.empty()) continue;
           for (const auto &edge : state.transportPath) {
-            EXPECT_NE(*a, edge);
-            EXPECT_NE(*b, edge);
+            EXPECT_NE(a.value(), edge);
+            EXPECT_NE(b.value(), edge);
             EXPECT_FALSE(front.hardFeatureEdges().contains(edge));
           }
           ++evaluatedNontrivialGerms;
