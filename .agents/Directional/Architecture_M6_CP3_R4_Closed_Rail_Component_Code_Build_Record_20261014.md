@@ -14,6 +14,12 @@ The first A4 `endpoint_certificate` source consumer previously checked closed-ch
 
 The paired Phase10 regression reuses the endpoint-owning forged closed chain from `MissingOpenRailTerminalContactRejectsBeforeClosedRailFallback`. Its real component reaches the *later* `closed-rail-chain-non-hard-edge` rejection; changing only the component to the other real source component must cause `EndpointAttachment`, `InvalidHardRailRouteCertificate`, and `a2bProbeFailure=closed-rail-component-mismatch`, not the later non-hard-edge reason. This is a first-rejection differential, **not a successful closed-rail production fixture**. Neither producer/factory guards nor tolerance/ABI/selector changed.
 
+## Superseding compile-only verification (2026-10-14 UTC)
+
+The original pinned request at dispatcher `608c5338f4a04a3ba3194a7e11ec7956e482c793` has no independently verified mailbox result and must not be called green. A replacement request at dispatcher `463f39802154c518a55a0b23e019f9a910473f62` pinned the later exact source `13df05220f84cba35923855ec50d8aa6c7a6d088` (the same closed-rail implementation/test bytes) and completed **GREEN** in workflow [38492719549](https://github.com/akashskypatel/Directional/actions/runs/38492719549), compile job `115621564151`, package artifact `11862361115`, outer SHA-256 `cf966f536d22b6b88afb11684fe04f11e5a53336ba33b660a67d32d323f9d003`. Independently verified `28/28` internal SHA256SUMS, all eight required targets, preflight/build exits `0/0`, `DIRECTIONAL_ENABLE_GMP=ON`, generated link containing both `libgmpxx.so` and `libgmp.so`, five empty source-status snapshots, `exactArithmeticBackend=GMP`, and `runtimeExecution=false`. The source snapshot [38492441978](https://github.com/akashskypatel/Directional/actions/runs/38492441978) matches that source and verifies 5789/5789 hashes.
+
+**This is compile evidence, not test execution or acceptance.** R4 remains incomplete; no TB497, selector mutation, successor or runtime PASS. Static RA-43.4 ingress census is recorded in `Architecture_M6_CP3_R4_RA434_Static_Ingress_Census_20261014.md`.
+
 ## Compile-only evidence
 
 Pinned eight-target GMP/GMPXX compile request at dispatcher commit `608c5338f4a04a3ba3194a7e11ec7956e482c793`, exact semantic source `62fec4a7f4ccf05a6fe8bc14f81d4b8ff774d809`, mailbox `m6-cp3-r4-closedrail-component-compile`: **PENDING**; do not claim GREEN/RED until the immutable compile artifact and source/link evidence are verified.
