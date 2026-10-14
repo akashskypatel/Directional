@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-compile-receipt-docs-20261014t1533z",
+  "request_id": "m6-cp3-r4-duplicate-curve-owner-apply-20261014t1554z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-compile-receipt-docs-apply",
-  "file_id": "1IMeIoRmmH2vnzaI5pZ2uX8Rbh-esMSOD",
-  "patch_sha256": "c45bd6a5f560898a134c45ab013165802d8c3da01a7fe6ebfd7738827c1b5e89",
+  "mailbox_key": "m6-cp3-r4-duplicate-curve-owner-apply",
+  "file_id": "1sLJ_lVXgZ1xdPC0zhr9WjMAnaCTWlMof",
+  "patch_sha256": "eb691b1bb2899b0683d221c2204f63f7e7cdf254286c42b31e4c489ad3782dc8",
   "base_sha": "f026512e4599eb9982c1f9afd4292ed429a82eae",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: synchronize R4 compile receipt, handoff and task ledger",
+  "commit_message": "fix(surfacecells): reject duplicate feature curve owner IDs",
   "retention_days": 7
 }
