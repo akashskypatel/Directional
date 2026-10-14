@@ -1,3 +1,0 @@
-turn=M6-CP3-CB1-ENTRY-R4
-frozen_source_sha=85fba4d5926e75e32cac010aa56f910f93e92a53
-purpose=exact-authority-inspection-only
