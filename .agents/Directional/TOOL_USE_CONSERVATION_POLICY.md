@@ -19,6 +19,8 @@ Use the cheapest authoritative access path that can answer the whole question on
 3. **Downloaded artifacts/local container = analysis plane.** Once source, logs, or evidence are downloaded and verified, inspect them locally with normal filesystem tools instead of repeatedly asking GitHub for the same bytes.
 4. **One authority read should feed many downstream decisions.** Do not repeatedly re-fetch unchanged state merely because a later sub-step needs the same fact.
 
+**Cross-branch authority:** Workflow mailboxes reside solely on orphan ref `workflow-mailbox`. Source snapshots, builds, patches, git refs and `STATUS` remain on the source/working branch. A mailbox branch head is never an implementation-source SHA. Never create or clean `.workflow-mailbox/**` on the working branch.
+
 The target is not the fewest possible calls in isolation. The target is the fewest calls that preserve deterministic authority and all required evidence.
 
 ## 2. Start-of-turn conservation procedure
@@ -79,7 +81,7 @@ Use the durable `.github/workflows/agent-source-snapshot.yml` source-snapshot ut
 
 1. Resolve and freeze the exact source SHA first.
 2. Run the snapshot workflow for that exact source authority.
-3. After the snapshot workflow publishes, fetch `.workflow-mailbox/repo-source-snapshot/latest.json` from the declared mailbox branch and use its `run_id` as the authoritative discovery handle after verifying its `source_sha`/`event_sha` against the frozen source authority.
+3. After the snapshot workflow publishes, fetch `.workflow-mailbox/repo-source-snapshot/latest.json` with **ref `workflow-mailbox` only** and use its `run_id` as the authoritative discovery handle after verifying its `source_sha`/`event_sha` against the frozen source authority.
 4. If the mailbox is absent or stale, use the PR observer/recent-runs path only as fallback; do not treat a missing mailbox record as proof that no run exists or trigger a duplicate run.
 5. Fetch the exact run's jobs once after the run is known.
 6. Fetch its artifacts once after the snapshot job is terminal.
@@ -151,7 +153,7 @@ Do not interleave discovery and mutation when it can be avoided. Finish the loca
 Workflow safety requirements remain unchanged, but validation can be batched.
 
 1. For ordinary Drive apply, compile/package, and artifact-only Test + Benchmark work, do **not** draft a workflow. Materialize one strict dispatcher request and overwrite `.agents/Directional/agent-dispatch-request.json` once.
-2. Reuse durable `agent-operation-dispatcher.yml`, `agent-test-benchmark-reusable.yml`, `agent-compile-reusable.yml`, `agent-google-drive-reusable.yml`, `workflow-mailbox-publisher.yml`, `agent-workflow-schema-validator-reusable.yml`, and source-snapshot/cleanup utilities. Treat `agent-run-observer-reusable.yml` and `agent-recent-workflow-runs-reusable.yml` as fallback discovery utilities, not the primary run-marker path.
+2. Reuse durable `agent-operation-dispatcher.yml`, `agent-test-benchmark-reusable.yml`, `agent-compile-reusable.yml`, `agent-google-drive-reusable.yml`, `workflow-mailbox-publisher.yml` (isolated orphan-branch publisher), `agent-workflow-schema-validator-reusable.yml`, and source-snapshot/cleanup utilities. Treat `agent-run-observer-reusable.yml` and `agent-recent-workflow-runs-reusable.yml` as fallback discovery utilities, not the primary run-marker path.
 3. The durable dispatcher validates its own workflow and the TB reusable before parsing each request; do not launch separate per-request schema-validation runs.
 4. If the dispatcher cannot represent required event semantics or is broken, record the blocker before using the legacy temporary-caller fallback in `GitHub_Workflow_Policy.md`. Only that fallback retains the separate caller-install/marker-trigger boundary.
 5. A diagnosed dispatcher-request correction overwrites the complete request once with a new request/retry identity. Do not replay unchanged deterministic failures.
@@ -160,7 +162,7 @@ Workflow safety requirements remain unchanged, but validation can be batched.
 
 After a workflow is triggered:
 
-1. The authoritative completed-run rendezvous is `.workflow-mailbox/<workflow-key>/latest.json`. Fetch that stable path once when the workload has plausibly reached final publication, verify `source_sha`/`event_sha`, and use its numeric `run_id`.
+1. The authoritative completed-run rendezvous is `.workflow-mailbox/<workflow-key>/latest.json` on **ref `workflow-mailbox` only**, never the source branch. Fetch that stable path once when the workload has plausibly reached final publication, verify `source_sha`/`event_sha`, and use its numeric `run_id`.
 2. Mailbox records normally publish after artifact-producing jobs complete. If live diagnosis is needed before that point, use a PR observer comment or `agent-recent-workflow-runs-reusable.yml` only as a provisional fallback. Do not repeatedly fetch PR comments and do not re-trigger merely because the final mailbox record is not present yet.
 3. Once the run ID is known, fetch the run's jobs once to establish job IDs/status.
 4. Avoid rapid polling. Re-query only when enough time has elapsed for the workload to plausibly change state or when an external event indicates completion.
@@ -193,7 +195,7 @@ Do not discover and delete temporary repository files one at a time at turn clos
 ### During the turn
 
 1. Maintain one authoritative temporary-file inventory for the turn.
-2. Add every temporary repository marker, legacy caller, legacy observation file, or generated control file when it is created. `.workflow-mailbox/**` records, durable dispatcher workflows, and `.agents/Directional/agent-dispatch-request.json` must **not** be added to the temporary-file ledger. Standard patch bytes live in Google Drive, not the repository; record their File ID separately until owner-side connector deletion or workflow-side trash is verified.
+2. Add every temporary repository marker, legacy caller, legacy observation file, or generated control file when it is created. `.workflow-mailbox/**` records **on the orphan `workflow-mailbox` branch**, durable dispatcher workflows, and `.agents/Directional/agent-dispatch-request.json` must **not** be added to the temporary-file ledger. Standard patch bytes live in Google Drive, not the repository; record their File ID separately until owner-side connector deletion or workflow-side trash is verified.
 3. Classify legacy temporary workflow callers separately because workflow-first deletion rules still apply to fallback use.
 4. Prefer a simple manifest under the approved cleanup trigger namespace when the durable cleanup workflow will consume it.
 
@@ -265,7 +267,7 @@ Before final closeout:
 | Compile/package an exact source | One `compile` dispatcher request pinned to literal source SHA and approved targets |
 | Execute artifact-only Test + Benchmark | One `test_benchmark` dispatcher request pinned to exact executor/harness/source authority; durable TB reusable only |
 | Validate durable dispatcher workflows | Dispatcher self-validation jobs; separate validation only when modifying durable workflow YAML |
-| Observe a push workflow | Read `.workflow-mailbox/<workflow-key>/latest.json` as authoritative completed-run discovery; use PR observer/recent-runs only as fallback; then query the exact run/jobs |
+| Observe a push workflow | Read `.workflow-mailbox/<workflow-key>/latest.json` at ref `workflow-mailbox` as authoritative completed-run discovery; use PR observer/recent-runs only as fallback; then query the exact run/jobs |
 | Diagnose successful workflow | Job summary + required evidence only; no blanket log downloads |
 | Diagnose failed workflow | One job inventory, then logs for failed/relevant job(s) |
 | Inspect immutable artifact | Download once, verify once, inspect locally |

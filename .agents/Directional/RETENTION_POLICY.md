@@ -34,7 +34,7 @@ The following records are durable project authority and must be retained unless 
 - `.agents/Directional/AGENT_POLICY.md`
 - `TODO.md`
 - `tests/TESTING_STRATEGY.md`
-- `.workflow-mailbox/**` workflow run-attempt records and `latest.json` rendezvous records, subject only to explicit future mailbox-retention policy changes
+- On the **dedicated orphan branch `workflow-mailbox` only**, `.workflow-mailbox/**` immutable workflow run-attempt records, key-local latest pointers, and root `latest.json` global rendezvous (no source files). These records are durable and excluded from source-branch temporary cleanup, subject only to explicit future mailbox-retention policy changes. The working branch is deliberately free of `.workflow-mailbox/**`.
 - `.github/workflows/agent-operation-dispatcher.yml` and `.github/workflows/agent-test-benchmark-reusable.yml` durable ChatGPT Web execution infrastructure
 - `.agents/Directional/agent-dispatch-request.json` durable mutable dispatcher request slot; its current contents are control-plane transport, not semantic/build/test authority
 

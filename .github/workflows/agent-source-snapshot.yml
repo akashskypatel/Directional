@@ -248,6 +248,7 @@ jobs:
       contents: write
     uses: ./.github/workflows/workflow-mailbox-publisher.yml
     with:
+      mailbox_branch: workflow-mailbox
       workflow_key: repo-source-snapshot
       source_sha: ${{ needs.snapshot.outputs.snapshot_sha || github.sha }}
       source_ref: ${{ inputs.source_ref != '' && inputs.source_ref || github.ref }}

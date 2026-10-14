@@ -15,7 +15,7 @@ This is repository-wide compile authority for Directional. It applies to **every
 
 ## GitHub Actions implementation
 
-All ChatGPT Web compile work must continue to use `.github/workflows/agent-compile-reusable.yml`. Compile callers must also publish their completed run through the authoritative `.workflow-mailbox` process defined by `GitHub_Workflow_Policy.md`; PR run-observer comments are fallback-only. That durable compile workflow is the implementation authority for this policy and must continue to:
+All ChatGPT Web compile work must continue to use `.github/workflows/agent-compile-reusable.yml`. Compile callers must also publish their completed run through the authoritative dedicated **orphan branch `workflow-mailbox`** process defined by `GitHub_Workflow_Policy.md`; all compile mailbox reads use that ref, never the source ref; PR run-observer comments are fallback-only. That durable compile workflow is the implementation authority for this policy and must continue to:
 
 - provision/verify GMP before configure;
 - force `DIRECTIONAL_ENABLE_GMP=ON`;

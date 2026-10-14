@@ -335,6 +335,7 @@ jobs:
       contents: write
     uses: ./.github/workflows/workflow-mailbox-publisher.yml
     with:
+      mailbox_branch: workflow-mailbox
       workflow_key: ${{ needs.parse.outputs.mailbox_key }}
       source_sha: ${{ needs.parse.outputs.source_sha }}
       source_ref: ${{ needs.parse.outputs.source_ref }}

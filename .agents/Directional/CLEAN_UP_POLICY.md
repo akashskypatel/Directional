@@ -14,12 +14,14 @@ Retention and destructive-mutation rules are defined in `RETENTION_POLICY.md`.
 
 Each turn must maintain a record of every temporary files created during the turn or files to be deleted at the end of the turn in `.agents/connector-triggers/turn-cleanup/manifest.txt`. The durable `.agents/Directional/agent-dispatch-request.json` request slot and durable dispatcher/reusable workflows are never temporary-ledger entries. \
 
-Each turn must end with executing `.github/workflows/agent-turn-cleanup.yml` to clean up temporary files using the temporary file ledger. `.workflow-mailbox/**` is durable workflow-discovery state and must never be listed in that ledger or deleted as temporary state.
+Each turn must end with executing `.github/workflows/agent-turn-cleanup.yml` to clean up temporary files using the temporary file ledger. The durable `.workflow-mailbox/**` discovery state and global root `latest.json` live **only on orphan branch `workflow-mailbox`**, and must never be placed in working-branch cleanup manifests or deleted as temporary state. The working branch must remain free of mailbox records.
 
 ## `[ChatGPT Web]` Workflow mailbox retention
 
+**Dedicated source separation:** Preserve the standalone `workflow-mailbox` orphan ref; it contains only `.workflow-mailbox/**` and root `latest.json`. All mailbox history checks must use `ref: workflow-mailbox`; cleanup operates on the separate working/source branch and must not modify this mailbox ref. Do not restore the formerly removed mailbox records to the working branch.
+
 - `.workflow-mailbox/<workflow-key>/latest.json` and `.workflow-mailbox/<workflow-key>/runs/<run-id>-attempt-<attempt>.json` are the authoritative workflow-run rendezvous/history defined by `GitHub_Workflow_Policy.md`.
-- Mailbox records are not caller/trigger debris and are outside the cleanup manifest allowlist. Preserve them across turn cleanup.
+- Mailbox records on the `workflow-mailbox` branch are not caller/trigger debris and are outside the cleanup manifest allowlist. Preserve them across turn cleanup.
 - PR run-observer comments are fallback-only transient state. They may be trimmed by cleanup without affecting workflow authority because the mailbox is authoritative whenever a valid matching record exists.
 - Legacy `.agents/workflow-observation/**` files remain temporary fallback state and may be removed after the matching run is durably represented and no longer needed for diagnosis.
 

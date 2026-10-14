@@ -1,4 +1,4 @@
-# Fallback-only workflow run observer. .workflow-mailbox/** is authoritative when available.
+# Fallback-only workflow run observer. The orphan workflow-mailbox branch's .workflow-mailbox/** is authoritative when available.
 name: Agent Reusable Run Observer Fallback
 
 on:

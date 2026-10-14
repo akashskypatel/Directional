@@ -117,45 +117,33 @@ Canonical request shapes are intentionally data-only; request templates containi
 
 ## Workflow mailbox observability
 
-The **authoritative workflow discovery/rendezvous channel is the same-repository workflow mailbox**, not a PR comment. The connector's commit-to-workflow discovery surface is not authoritative for push-triggered workflows: `fetch_commit_workflow_runs` currently filters to `pull_request` events, so an empty result must never be interpreted as proof that a push workflow did not run.
+**Mandatory dedicated mailbox branch:** All workflow run records are published exclusively to the same-repository **`workflow-mailbox` orphan branch**, never to the working/source branch, pull-request head, tag, or merge ref. The uploaded `github-connector-workflows/references/WORKFLOW_MAILBOX.md` and `templates/workflow-mailbox-publisher.yml` define this isolation contract. The publisher defaults to `workflow-mailbox` and rejects any nonempty override that names another branch. Caller `mailbox:` jobs MUST explicitly pass `mailbox_branch: workflow-mailbox` without changing existing reusable-workflow permissions.
 
-Canonical mailbox layout for stable key `<workflow-key>`:
+The first publication automatically creates the dedicated branch as an **orphan root** (no source-tree ancestry). Subsequent publications fetch its current head and retry non-fast-forward races without force-push. The branch tree must contain **only** `.workflow-mailbox/**` and root `latest.json`; if a pre-existing mailbox branch has source-tree files, the publisher removes unrelated tracked entries on that branch in its next normal non-forced commit. No source files, workflow definitions, tests, artifacts, or handoff documents belong on `workflow-mailbox`. Do not initialize this branch from the source tree.
+
+Canonical layout **on `workflow-mailbox` only**:
 
 ```text
+latest.json
 .workflow-mailbox/<workflow-key>/latest.json
 .workflow-mailbox/<workflow-key>/runs/<run-id>-attempt-<attempt>.json
 ```
 
-The immutable run-attempt record and `latest.json` contain at least: schema version, workflow key/name, repository/event/event SHA, exact `source_sha` and `source_ref`, numeric `run_id`, `run_attempt`, `run_number`, run URL, terminal/result classification, publication time, mailbox branch, optional summary, and artifact metadata. Artifact metadata includes ID/name/size, provider digest when available, created/expiry timestamps, expiration state, authenticated browser artifact URL, and REST archive-download URL.
+Both latest pointers choose the numerically newest `(run_id, run_attempt)`, not completion order. The root `latest.json` spans all workflow keys; a key's `latest.json` spans only its own attempts. Run-attempt records are immutable and a repeated publication of the same record is idempotent. Each record contains schema version, workflow key/name, repository, event/event SHA, exact source SHA/ref, numeric run ID/attempt/number, run URL, result, publication time, mailbox branch, and artifact ID/name/size/digest/expiry/authenticated URLs.
 
-`latest.json` is selected by numeric `(run_id, run_attempt)`, **not completion order**. Every attempt owns a unique immutable record. On a non-fast-forward publication race, `workflow-mailbox-publisher.yml` fetches the newest mailbox-branch head, rebuilds the candidate commit, re-evaluates `latest.json`, and retries without force-push. Do not serialize otherwise valid concurrent task runs merely to synchronize mailbox writes.
+A mailbox push uses repository `GITHUB_TOKEN`. It does **not** alter the source branch; mailbox `HEAD` is NEVER source/build/test authority. Always use the record's `source_sha` and `source_ref`. Ordinary `GITHUB_TOKEN` pushes do not retrigger regular push workflows; still avoid broad filters over `.workflow-mailbox/**`.
 
-By default the publisher writes to the caller's writable head branch/ref. If an explicitly configured durable mailbox branch is used, record it and read the mailbox there. A same-branch mailbox commit advances the branch beyond the exact source commit the workflow operated on; therefore always trust `source_sha` in the mailbox record for build/test/snapshot authority, not the post-publication branch head.
+### Authoritative connector retrieval
 
-Mailbox publication uses the repository `GITHUB_TOKEN` for the mailbox push. This prevents ordinary mailbox commits from recursively triggering normal push workflows. Task workflow `paths` filters must still remain narrow and must not intentionally include `.workflow-mailbox/**`.
+1. Pin `ref: workflow-mailbox` for **every** mailbox read, including the global root `latest.json`, `.workflow-mailbox/<workflow-key>/latest.json`, and immutable `runs/` records. **Never** read mailbox records from the source branch.
+2. Verify the recorded `workflow_key`, `mailbox_branch=workflow-mailbox`, `event_sha` and exact `source_sha`/`source_ref` against the requested operation. A stale record with the same key is not the requested run.
+3. Record `run_id`, `run_attempt`, result, run URL and artifact IDs, then inspect exact jobs and workload artifact/log evidence. Links may require authenticated GitHub access; expire with the artifact.
+4. Verify checksum manifests, source identity, execution boundary and active-turn gates. Mailbox publication or a green job badge alone is not semantic acceptance.
+5. Preserve per-run history exclusively on `workflow-mailbox`; the user has removed former `.workflow-mailbox/**` artifacts from the working branch. **Do not recreate or restore them on that branch.** Do not mistake this authorized cleanup for the loss of accepted run/package evidence.
 
-### Authoritative retrieval procedure
+### Fallback
 
-1. Resolve the stable workflow key and mailbox branch.
-2. Fetch `.workflow-mailbox/<workflow-key>/latest.json` through the GitHub connector.
-3. Verify that its `event_sha` and/or `source_sha` match the expected trigger/source authority for the task. Reject a stale record with the same workflow key but different authority.
-4. Record `run_id`, `run_attempt`, `source_sha`, `source_ref`, `result`, `run_url`, and artifact metadata.
-5. Treat `.workflow-mailbox/<workflow-key>/runs/<run-id>-attempt-<attempt>.json` as the immutable historical record for that attempt.
-6. Use the retrieved `run_id` for exact job/log/artifact API queries. Prefer artifact IDs for connector downloads; `artifact_url` is a human/browser link, not a bearer URL.
-7. The mailbox is discovery metadata, not success evidence. Verify terminal job state, detailed logs, artifact digests/internal manifests, source identity, and all active-turn gates before accepting a run.
-
-### Fallback channels
-
-Mailbox absence or staleness is **not proof that no run exists**. Syntax-invalid workflows, startup failures, forced cancellation, branch protection, fork permissions, or a publisher failure can prevent mailbox publication.
-
-Fallback order:
-
-1. If a PR exists and the workflow uses `agent-run-observer-reusable.yml`, its PR conversation comment may supply a **provisional** run ID. This comment is fallback-only and never overrides a valid mailbox record.
-2. Use `agent-recent-workflow-runs-reusable.yml` when repository-wide run discovery is required or the mailbox/PR fallback is unavailable.
-3. The legacy `.agents/workflow-observation/run-<run-id>.txt` branch-file channel may be enabled only when specifically justified; it is tertiary because it advances the source branch and creates cleanup/race surface.
-4. Once a valid mailbox record appears for the expected source/event authority, it becomes the authoritative run marker for subsequent connector work.
-
-Do not repeatedly poll PR comments. Do not re-trigger a workflow merely because the mailbox has not yet appeared; final mailbox publication normally occurs after artifact-producing workload jobs complete.
+A missing/stale mailbox is not proof a workflow never ran. Startup/schema errors, forced cancellation, branch restrictions, forks, and publication failures may prevent a record. First use the PR observer comment only where that fallback was explicitly enabled, then `agent-recent-workflow-runs-reusable.yml` for bounded authenticated repository-wide discovery; tertiary `.agents/workflow-observation/**` is allowed only with justification. Never retrigger a task merely because mailbox publication is still pending. Do not weaken branch protection or bypass permissions.
 
 ## Legacy fallback — drafting, executing, observing, and deleting a temporary workflow
 
@@ -166,12 +154,12 @@ This section is **exception-only**. Use it only after recording why `.github/wor
 Before writing any workflow file:
 
 1. Re-read this policy and fetch the current versions of every reusable workflow the caller will invoke. At minimum, inspect `.github/workflows/agent-workflow-schema-validator-reusable.yml` and `.github/workflows/workflow-mailbox-publisher.yml`; if PR-comment fallback may be required, inspect `.github/workflows/agent-run-observer-reusable.yml`; if compilation is required, also inspect `.github/workflows/agent-compile-reusable.yml`; if repository-wide fallback monitoring is needed, inspect `.github/workflows/agent-recent-workflow-runs-reusable.yml`.
-2. Inspect the working branch's `.github/workflows/`, `.agents/connector-triggers/`, `.agents/workflow-observation/`, `.agents/Directional/turn-payloads/`, and the relevant `.workflow-mailbox/<workflow-key>/` path. Do not reuse stale temporary callers/markers/payloads. Mailbox records are durable discovery history and are not cleanup debris.
+2. Inspect the working branch's `.github/workflows/`, `.agents/connector-triggers/`, `.agents/workflow-observation/`, `.agents/Directional/turn-payloads/`, and the relevant `.workflow-mailbox/<workflow-key>/` path **only on the dedicated `workflow-mailbox` ref**. Do not reuse stale temporary callers/markers/payloads. Mailbox records are durable discovery history and are not cleanup debris.
 3. Choose and record all control-plane names before drafting:
    - one unique temporary caller path under `.github/workflows/`;
    - one unique marker path under `.agents/connector-triggers/`;
    - one stable mailbox `workflow_key` for the run family;
-   - the exact mailbox branch (normally the working branch unless a durable mailbox branch is explicitly configured);
+   - the exact mailbox branch (`workflow-mailbox` exclusively; never the working/source branch);
    - the exact working branch;
    - the exact PR number only when PR-comment fallback is enabled;
    - whether PR-comment/branch-file fallback is disabled (default) or explicitly justified;
@@ -214,6 +202,7 @@ jobs:
     needs: [<workload-job>]
     uses: ./.github/workflows/workflow-mailbox-publisher.yml
     with:
+      mailbox_branch: workflow-mailbox
       workflow_key: <stable workflow key>
       source_sha: ${{ github.sha }}
       source_ref: ${{ github.ref }}
@@ -268,12 +257,12 @@ Apply these syntax rules before committing:
 1. Create or modify the exact marker file in `.agents/connector-triggers/` in a **separate later commit**. This marker commit is the execution trigger.
 2. Put a short human-readable purpose, expected source/run boundary, and retry number in the marker text when useful. The marker content is control metadata only; it must not alter runtime semantics.
 3. Record the marker-trigger commit SHA. For a standard push caller, this is the expected mailbox `event_sha` and normally the source SHA passed to the workload.
-4. After the trigger commit, do not change source/control files that the active workload is expected to consume. Mailbox publication may advance the branch after the workload finishes; its recorded `source_sha` remains authority. If the tertiary branch-file fallback is enabled, do not advance the branch until that fallback either succeeds or fails.
+4. After the trigger commit, do not change source/control files that the active workload is expected to consume. Mailbox publication advances only the isolated `workflow-mailbox` branch, never the source branch; the recorded `source_sha` remains authority. If the tertiary branch-file fallback is enabled, do not advance the branch until that fallback either succeeds or fails.
 5. Trigger once. Do not edit the marker repeatedly because a mailbox record has not appeared immediately; final publication normally follows workload/artifact completion.
 
 ### Phase 4 — obtain the run ID through the workflow mailbox
 
-1. Fetch `.workflow-mailbox/<workflow-key>/latest.json` from the declared mailbox branch.
+1. Fetch `.workflow-mailbox/<workflow-key>/latest.json` from **ref `workflow-mailbox`** (never the source ref).
 2. Verify its `event_sha` and/or `source_sha` against the marker-trigger/source authority. A matching key with a different SHA is stale/unrelated.
 3. Record the numeric `run_id`, `run_attempt`, exact `source_sha`, `source_ref`, `result`, `run_url`, and artifact metadata.
 4. Treat the matching `runs/<run-id>-attempt-<attempt>.json` path as the immutable attempt record.
@@ -314,7 +303,7 @@ Cleanup begins only after the run, logs/artifacts, and source identity have been
 4. Only after the caller deletion is branch authority, delete the marker file. Deleting the marker after the caller is gone prevents cleanup from triggering the temporary workflow again.
 5. For a successfully pushed Drive patch, verify either `drive_file_trashed=true` or `drive_file_retirement_required=true`. If retirement is required, use the owner-authorized Drive control plane to retire the file before turn closeout. If the workflow failed before push, retain the File ID until the retry/abandon decision is complete.
 6. Delete any `.agents/workflow-observation/run-<run-id>.txt` file created by the branch-file fallback.
-7. Re-inspect `.github/workflows/`, `.agents/connector-triggers/`, `.agents/workflow-observation/`, `.agents/Directional/turn-payloads/`, and the relevant `.workflow-mailbox/<workflow-key>/` record. Verify no temporary state remains while preserving mailbox history.
+7. Re-inspect `.github/workflows/`, `.agents/connector-triggers/`, `.agents/workflow-observation/`, `.agents/Directional/turn-payloads/`, and the relevant `.workflow-mailbox/<workflow-key>/` record **on branch `workflow-mailbox` only**. Verify no temporary state remains while preserving mailbox history.
 8. Do not delete remote Actions result/log artifacts that remain authoritative evidence unless retention policy explicitly authorizes it.
 
 ### Phase 8 — final closeout
@@ -383,7 +372,7 @@ When that legacy fallback is required:
 9. trigger once unless a diagnosed retry is required;
 10. discover the authoritative completed run from `.workflow-mailbox/<workflow-key>/latest.json`; use PR-comment/recent-runs/branch-file discovery only as fallback, then verify exact run, source, result/log artifacts, and outputs;
 11. remove/disable the temporary caller before deleting its marker and any generated legacy workflow-observation/control file; **do not delete `.workflow-mailbox/**` records as temporary state**;
-12. verify final workflow, trigger, turn-payload, and legacy workflow-observation directories, verify the relevant mailbox record is valid, and verify the Drive patch was deleted after a successful push.
+12. verify final workflow, trigger, turn-payload, and legacy workflow-observation directories, verify the relevant mailbox record on `workflow-mailbox` is valid, and verify the Drive patch was deleted after a successful push.
 
 Never leave turn-specific workflow/trigger/observation debris on the long-lived branch.
 
@@ -404,4 +393,4 @@ Record run/job IDs, result/log artifact IDs and digests, exact compiled source, 
 
 ## End-of-turn hygiene
 
-At start and end of every turn inspect `.github/workflows`, the durable `.agents/Directional/agent-dispatch-request.json`, `.agents/connector-triggers`, `.agents/workflow-observation`, `.agents/Directional/turn-payloads`, and the relevant `.workflow-mailbox/<workflow-key>/` records. Preserve durable workflows, the dispatcher request slot, and mailbox history; remove only legacy temporary caller/trigger/observation state and apply `CLEAN_UP_POLICY.md`. PR comments are fallback observations only and are never the final repository write; durable handoff/`STATUS` authority closes the turn.
+At start and end of every turn inspect `.github/workflows`, the durable `.agents/Directional/agent-dispatch-request.json`, `.agents/connector-triggers`, `.agents/workflow-observation`, `.agents/Directional/turn-payloads`, and the relevant `.workflow-mailbox/<workflow-key>/` records **on branch `workflow-mailbox` only**. Preserve durable workflows, the dispatcher request slot, and mailbox history; remove only legacy temporary caller/trigger/observation state and apply `CLEAN_UP_POLICY.md`. PR comments are fallback observations only and are never the final repository write; durable handoff/`STATUS` authority closes the turn.

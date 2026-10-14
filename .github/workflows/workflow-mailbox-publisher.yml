@@ -1,7 +1,10 @@
 # Reusable same-repository workflow mailbox publisher.
 # Copy to .github/workflows/workflow-mailbox-publisher.yml before calling it.
 #
-# Mailbox layout on mailbox_branch:
+# The branch defaults to workflow-mailbox and is created as an orphan if absent.
+# Only .workflow-mailbox/** and root latest.json may exist in the branch tree.
+# Mailbox layout on workflow-mailbox:
+#   latest.json (newest run across all workflow keys)
 #   .workflow-mailbox/<workflow_key>/latest.json
 #   .workflow-mailbox/<workflow_key>/runs/<run_id>-attempt-<run_attempt>.json
 #
@@ -20,10 +23,10 @@ on:
         required: true
         type: string
       mailbox_branch:
-        description: Branch that stores .workflow-mailbox. Empty uses the caller head branch/ref name.
+        description: Reserved mailbox-only branch; must be workflow-mailbox (created automatically if absent).
         required: false
         type: string
-        default: ""
+        default: "workflow-mailbox"
       source_sha:
         description: Exact source commit the caller operated on. Empty uses github.sha.
         required: false
@@ -124,19 +127,11 @@ jobs:
             exit 2
           fi
 
-          mailbox_branch="$MAILBOX_BRANCH_INPUT"
-          if [[ -z "$mailbox_branch" ]]; then
-            if [[ -n "${GITHUB_HEAD_REF:-}" ]]; then
-              mailbox_branch="$GITHUB_HEAD_REF"
-            else
-              mailbox_branch="$GITHUB_REF_NAME"
-            fi
-          fi
-
-          if [[ -z "$mailbox_branch" || "$mailbox_branch" == *"/merge" ]]; then
-            echo "Unable to determine a writable mailbox branch. Pass mailbox_branch explicitly." >&2
+          if [[ -n "$MAILBOX_BRANCH_INPUT" && "$MAILBOX_BRANCH_INPUT" != "workflow-mailbox" ]]; then
+            echo "mailbox_branch must be workflow-mailbox; refusing to modify a source branch." >&2
             exit 3
           fi
+          mailbox_branch="workflow-mailbox"
 
           source_sha="${SOURCE_SHA_INPUT:-$GITHUB_SHA}"
           source_ref="${SOURCE_REF_INPUT:-$GITHUB_REF}"
@@ -148,6 +143,7 @@ jobs:
 
           echo "mailbox_branch=${mailbox_branch}"
           echo "mailbox_path=${mailbox_path}"
+          echo "global_latest_path=latest.json"
           echo "run_record_path=${run_record_path}"
           echo "source_sha=${source_sha}"
           echo "source_ref=${source_ref}"
@@ -221,34 +217,55 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
+          update_latest() {
+            local path="$1" current_run_id=0 current_attempt=0
+            if [[ -f "$path" ]]; then
+              current_run_id="$(jq -r '(.run_id // 0) | tonumber? // 0' "$path" 2>/dev/null || echo 0)"
+              current_attempt="$(jq -r '(.run_attempt // 0) | tonumber? // 0' "$path" 2>/dev/null || echo 0)"
+            fi
+            if (( current_run_id < GITHUB_RUN_ID )) || \
+               (( current_run_id == GITHUB_RUN_ID && current_attempt < GITHUB_RUN_ATTEMPT )); then
+              mkdir -p "$(dirname "$path")"
+              cp "$run_record_path" "$path"
+            fi
+          }
+
           published_commit=""
           for retry in 1 2 3 4 5 6 7 8; do
             echo "publish_attempt=${retry}"
 
-            git fetch --no-tags origin "+refs/heads/${mailbox_branch}:refs/remotes/origin/${mailbox_branch}"
-            git reset --hard "origin/${mailbox_branch}"
-            git clean -fd
+            # Use a detached remote head, or create a new root commit with no
+            # source-branch ancestors when the dedicated branch is missing.
+            remote_sha="$(git ls-remote origin "refs/heads/${mailbox_branch}" | awk '{print $1}')"
+            if [[ -n "$remote_sha" ]]; then
+              git fetch --no-tags origin "+refs/heads/${mailbox_branch}:refs/remotes/origin/${mailbox_branch}"
+              git switch --detach "refs/remotes/origin/${mailbox_branch}"
+            else
+              git switch --orphan "mailbox-init-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${retry}"
+            fi
+            git clean -ffdx
+
+            # The mailbox branch must not contain any source files, including
+            # files inherited from a previously misconfigured mailbox branch.
+            while IFS= read -r -d '' path; do
+              case "$path" in
+                .workflow-mailbox/*|latest.json) ;;
+                *) git rm -q -- "$path" ;;
+              esac
+            done < <(git ls-files -z)
 
             mkdir -p "$(dirname "$run_record_path")"
-            cp "$record_tmp" "$run_record_path"
-
-            update_latest=true
-            if [[ -f "$mailbox_path" ]]; then
-              current_run_id="$(jq -r '(.run_id // 0) | tonumber? // 0' "$mailbox_path" 2>/dev/null || echo 0)"
-              current_attempt="$(jq -r '(.run_attempt // 0) | tonumber? // 0' "$mailbox_path" 2>/dev/null || echo 0)"
-
-              if (( current_run_id > GITHUB_RUN_ID )) || \
-                 (( current_run_id == GITHUB_RUN_ID && current_attempt >= GITHUB_RUN_ATTEMPT )); then
-                update_latest=false
-              fi
+            if [[ ! -f "$run_record_path" ]]; then
+              cp "$record_tmp" "$run_record_path"
             fi
+            update_latest "$mailbox_path"
+            update_latest latest.json
 
-            if [[ "$update_latest" == "true" ]]; then
-              mkdir -p "$(dirname "$mailbox_path")"
-              cp "$record_tmp" "$mailbox_path"
+            git add -A
+            if git ls-files | grep -vE '^(\.workflow-mailbox/.+|latest\.json)$'; then
+              echo "Mailbox branch contains unexpected tracked paths" >&2
+              exit 3
             fi
-
-            git add -- "$run_record_path" "$mailbox_path" 2>/dev/null || git add -- "$run_record_path"
 
             if git diff --cached --quiet; then
               echo "Mailbox record already published; treating as idempotent success."
