@@ -1,0 +1,3 @@
+turn=M6-CP3-CB1-ENTRY-R4
+resume_beacon=b772746c468226b21696deb197dd19aafaca4932
+purpose=exact-source snapshot for R4 bounded continuation
