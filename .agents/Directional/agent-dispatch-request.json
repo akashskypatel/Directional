@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-false-open-curve-compile-20261014t1401z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-false-open-curve-compile",
-  "source_sha": "370d84df79a1414148798c81c09bfece81e6d48d",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-false-open-curve"
+  "request_id": "m6-cp3-r4-overfull-incidence-apply-20261014t1419z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-overfull-incidence-apply",
+  "file_id": "1Eos6IrzsqAzLzDBES2MT85hvBDO_dxBs",
+  "patch_sha256": "7a719e802d62f15026952bb494ddbe55fcd7938c6380ae0219ace438101a280e",
+  "base_sha": "b57055f5a0786e1bf6bbe2cbd5d68ba86213f7b2",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "fix(surfacecells): reject rail edges with overfull source incidence",
+  "retention_days": 14
 }
