@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra431-directed-seam-permutation-compile-20261014t0147z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-ra431-directed-seam-permutation-compile",
-  "source_sha": "7e8f7cd936b08a841f9bb031fe7990a6d92662dd",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-ra431-directed-seam-permutation-compile"
+  "request_id": "m6-cp3-r4-ra431-directed-seam-docs-apply-20261014t0151z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-ra431-directed-seam-docs-apply",
+  "file_id": "11t5vAphsEeSs5l0PLCnCZRzRk2hHuaQz",
+  "patch_sha256": "4c0519ee132cd7db9cccaeb2ca2ccfae0c5725826d88fbde39c354d70e81c163",
+  "base_sha": "7e8f7cd936b08a841f9bb031fe7990a6d92662dd",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record R4 A1 row-permutation compiled regression",
+  "retention_days": 14
 }
