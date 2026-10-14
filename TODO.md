@@ -1,7 +1,8 @@
 ## CURRENT — RA-47.11 seven-site source-only census (2026-10-14)
 
 - [x] Audit all seven `source_edge_index` textual sites at exact source `09e8451ed6314a458e9abe8c6b74e866d19728fc` (snapshot 38640107266, artifact 11930195949, 5598/5598 file hashes). All six callers require real EV rows or mesh-edge membership; the seventh site is the typed-key-to-row helper. **No wrongly untyped site or migration target**. Record: `.agents/Directional/Architecture_M6_CP3_R4_RA4711_Seven_Source_Edge_Index_Census_20261014.md`. No tests, builds or runtime ran.
-- [ ] Next separately authorized `M6-CP3-CB1-R4-RA4711-MIGRATE` must respect the zero-target census (record a no-op; do not change source to manufacture migration). `M6-CP3-CB1-R4-RA4712-LIVENESS`, frozen 497, and all other carried R4 gates remain untouched.
+- [x] `M6-CP3-CB1-R4-RA4711-MIGRATE` disposed as a documented **no-op** because all seven sites were legitimate; zero edits, zero unchanged-source compiles. Record: `.agents/Directional/Architecture_M6_CP3_R4_RA4711_Migration_NoOp_20261014.md`.
+- [ ] Next separately authorized `M6-CP3-CB1-R4-RA4712-LIVENESS` must investigate producer-path typed-interval liveness without starting it in the migration turn. Frozen 497 and all other carried R4 gates remain untouched.
 
 ---
 
