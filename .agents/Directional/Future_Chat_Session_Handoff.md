@@ -1,3 +1,44 @@
+## CURRENT — 2026-10-14 RA-52 frozen; selected-branch gate DISSOLVED; no open REVIEW_BLOCKER
+
+**The `Architecture_M6_CP3_R4_Source_Current_Review_Gate_20261014.md` gate is resolved and supersedes the
+stop paragraph below. Both of its options are REFUSED; no selected-branch receipt is owed or permitted.**
+Decision: `Architecture_M6_CP3_R4_Selected_Branch_And_Diagnostic_Optout_Review_Decision.md`. Frozen: **RA-52**.
+
+**Do not re-raise any of these.** RA-43.2 is DISCHARGED (RA-50.1). The `(…, FieldBranch, arrival mode, filled
+cell/side)` receipt is REFUSED (RA-50.2, re-refused RA-52.2). RA-43.1's carrier cut is **LANDED**
+(`src/geometry/SurfaceCellTracing.cpp:1457-1467`). The RA-43.4 named opt-out is **PRESERVED** (RA-52.6):
+removing it would make the network-override claim vacuous, because the Phase10 negative at
+`tests/SurfaceCellsPhase10Tests.cpp:6502-6595` can only be authored through it.
+
+**New standing rule (RA-52.0, `R4-VIN-01`):** before raising RA-N as a blocker, cite RA-N's most recent
+disposition and say why it does not apply. The graded family is now RA-49.0 wrong **stage**, RA-50.0 wrong
+**extent**, RA-51.0 **neither** (correct shape), RA-52.0 wrong **vintage**.
+
+**Open obligations, smallest first — one per turn, each independently reviewable:**
+1. `R4-SID-02` reachability probe (source-only): can a produced cell have `corners[0]==corners[2]` and
+   `corners[1]==corners[3]`? Report only; do not repair in the same turn.
+2. The one-line comment correction at `src/geometry/SurfaceCellTracing.cpp:1457-1459`; the `continue` at
+   `:1460-1467` may not be touched.
+3. RA-46.6 typed sub-codes, constrained by RA-51.7 (no sub-code for a dead disjunct) and RA-52 (none for the
+   selected-branch join).
+4. RA-47.11 — the seven surviving `source_edge_index` uses in `tests/FieldAlignedCurveNetworkTests.cpp`:
+   migrate or justify, one report.
+5. RA-47.12 — liveness of the typed field-aligned interval check on the producer path; a negative answer is
+   an RP-02 finding, not a code change.
+6. RA-43.4's true residue — the untyped standalone geometry diagnostics **other than** `rail_interval_refs`.
+7. Verify and, if still inaccurate, correct the `FieldTransportAtlas` class comment about construction being
+   the only validation seam (RA-48.3 residual).
+
+**Carried, unchanged:** `R4-JCT-01` the multi-carrier junction witness is now **AUTHORED / COMPILED / NOT
+EXECUTED** (`tests/SurfaceCellREPackageTests.cpp`, `EXPECT_GT(authenticatedJunctions, 0U)`); RA-41's junction
+and sector clauses stay frozen **UNEXERCISED at runtime**. RA-49.2's witness is authored and correctly
+shaped, compiled, not executed. Organic D1/D2/D3/D5 and A6/A7 witnesses, the odd-τ witness, the **88**
+accepted CP2 restorations, and the 39 endpoint / 34 Phase10 / seven DCEL / six CP3 identities all require a
+separately authorized immutable-artifact Test + Benchmark and acceptance Review. Ledger 66/17/49, debt 1;
+CP2 accepted 491/491; R3 rejected 403/497 (94 RED, 88 accepted losses). No TB497, no successor credit.
+
+---
+
 ## CURRENT — R4 verified current source; independent selected-branch Review prerequisite (2026-10-14 18:30 UTC)
 
 R4 remains Code + Build with exact compile-GREEN source `5ecaa2acbec9a03622e14e6afac4dfc71763778f` / immutable GMP package `11919172109` / `38613136344` (28/28 checksums, 8/8 targets, runtimeExecution=false). Current source snapshot `8f490bd7fb196bfb2a9d8b83cf9c65c5d6c001d0` / [38615232734](https://github.com/akashskypatel/Directional/actions/runs/38615232734), artifact `11919555806`, 5594/5594 source hashes; no semantic source/test drift. Re-inspection confirms A4 junction route certificates cannot authenticate the A1 branch *selected* at the directed arrival and the oriented filled side. RA-43.4 production entries are typed; the explicit standalone opt-out has no demonstrated network-bound bypass, but its retention is an independent Review policy question. **Do not invent a selected-branch receipt or remove the opt-out without independent Review**; no newly verified unblocked source edit remains. Exact source/first-failure Review request: `Architecture_M6_CP3_R4_Source_Current_Review_Gate_20261014.md`. No runtime tests, TB497, successor, selector/accepted-ledger changes. 39/34/7/88/six and organic/A1/RA-47.12 remain for later authorized TB and acceptance Review.

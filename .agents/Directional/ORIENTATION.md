@@ -1,3 +1,21 @@
+## CURRENT — 2026-10-14 `M6-CP3-R4-SELECTED-BRANCH-OPTOUT-ARCH-REV` COMPLETE; RA-52 frozen
+
+**The source-current review gate is resolved and supersedes the stop paragraphs below. There is no open
+REVIEW_BLOCKER.** Both offered options — find a selected-branch join, or authorize a producer receipt for it
+— are **REFUSED**, because no consumer reads `SurfaceTraceSegment::family` absolutely: seven digest inputs,
+one copy-through, and same-frame run-merge equality. A4 never consumes A2a trace segments at all (**sixth
+namespace**). RA-43.2 stays DISCHARGED, RA-43.1's carrier cut is LANDED, and the RA-43.4 named opt-out is
+**PRESERVED** — removing it would make the network-override claim vacuous.
+
+The next turn is a **narrow source-only probe**, not a monolith: establish whether a produced quad cell can
+have equal opposite corners (`R4-SID-02`). Report only; the A5-locus repair, if any, is a later turn.
+
+**Before raising any RA-N as a blocker, cite its most recent disposition and say why it does not apply**
+(RA-52.0, `R4-VIN-01`). Failure family: RA-49.0 wrong stage, RA-50.0 wrong extent, RA-51.0 correct shape,
+RA-52.0 wrong vintage.
+
+---
+
 ## CURRENT — 2026-10-13 `M6-CP3-R4-TERMINAL-A3-REACHABILITY-ARCH-REV` COMPLETE; RA-51 frozen
 
 **The `R4-TA3-01` review stop is resolved and supersedes the stop paragraphs below. There is no open

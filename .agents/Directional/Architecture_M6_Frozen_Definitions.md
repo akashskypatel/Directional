@@ -1,3 +1,103 @@
+## RA-52 — the selected-branch join is REFUSED; the RA-43.4 opt-out is PRESERVED **FROZEN at M6-CP3-CB1-ENTRY-R4** (2026-10-14)
+
+Adjudicates `Architecture_M6_CP3_R4_Source_Current_Review_Gate_20261014.md`. Basis:
+`Architecture_M6_CP3_R4_Selected_Branch_And_Diagnostic_Optout_Review_Decision.md`. **The REVIEW_BLOCKER is
+DISSOLVED; both offered options are REFUSED.** No runtime credit. RA-51, RA-50, RA-49, RA-48, RA-47
+(.1–.10 implemented; .11/.12 open), RA-46 (.5 as amended by RA-51.5; .6 constrained by RA-51.7), RA-45,
+RA-44 (less .2), RA-43 (less .2 DISCHARGED, less .5, and with **.1 now LANDED**), RA-42 as corrected,
+RA-41 frozen scoped, RA-40, RA-39, RA-38, RA-37a and the RA-34.3 stop gates stand.
+
+- **RA-52.0 — `R4-VIN-01 / STALE_FROZEN_VINTAGE`, the third graded failure of a feasibility STOP.** The gate
+  demands Review of RA-43.2, which **RA-50.1 DISCHARGED** by bytes, without citing RA-50; and its option (B)
+  receipt ends in `filled cell/side`, the exact object **RA-50.2 REFUSED**, without engaging the refusal; and
+  it treats RA-43.1 as open when RA-43.1's sole outstanding element — the carrier cut — is **LANDED** at
+  `src/geometry/SurfaceCellTracing.cpp:1457-1467`. The family is now graded: **RA-49.0 wrong stage**,
+  **RA-50.0 wrong extent**, **RA-51.0 neither (correct shape)**, **RA-52.0 wrong vintage**. Standing rule for
+  every future STOP: *before raising RA-N as a blocker, cite RA-N's most recent disposition and say why it
+  does not apply.*
+- **RA-52.1 — Review A answered: option (A) is REFUSED because the join would have no consumer.** Every use
+  of `SurfaceTraceSegment::family` in `src/pipeline/RemeshPipeline.cpp` is a `hash_combine_i64` digest input
+  (`:1989`, `:2204`, `:2264`, `:2350`, `:2473`, `:2574`, `:2631`) or a copy-through (`:10749`). Inside A4 the
+  only gating reads are same-frame run-merge equalities against the immediately preceding segment
+  (`src/geometry/SurfaceCellTracing.cpp:12111`, `:13533`). **No decision anywhere depends on the absolute
+  value.** A digest cannot separate a correct branch selection from an incorrect one, because a
+  wrong-but-consistent `family` hashes consistently; any regression asserting otherwise is **vacuous** in the
+  LESSONS 171 sense.
+- **RA-52.2 — option (B) is REFUSED as RA-45.2's category error, third instance.** RA-45.2 withdrew RA-44.2
+  for "demand[ing] absolute authentication of a relationally-consumed quantity"; RA-50.2 refused the
+  oriented-germ receipt adjacently. Minting a `FieldBranch` receipt would **manufacture** the consumer that
+  does not exist, creating a fresh unsatisfiable obligation of exactly the kind RA-45, RA-50 and RA-51 have
+  now retired three times. **No selected-branch receipt may be specified, authored or requested.**
+- **RA-52.3 — the sixth namespace: A4 never consumes A2a trace segments.** The complete census of
+  `options.fieldAlignedNetwork` in `src/geometry/SurfaceCellTracing.cpp` is singularity ports/vertices/index
+  (`:5374-5375`, `:5382-5387`, `:5393-5399`, `:9955-9957`), mandatory edges (`:6137-6139`, `:6230-6232`) and
+  the digest binding (`:5666-5676`). `FieldAlignedCandidateTraceSegment` — the sole carrier of
+  `authority::FieldBranch` on the A2a side (`include/directional/geometry/SurfaceCellTracing.h:401-423`) —
+  **is never read by A4**. The A2a network's authority over A4 is mandatory edges and singularities; trace
+  identity is not part of that contract. Add as the **sixth namespace** beside RA-43.3's four and RA-50.2's
+  fifth, and as the **tenth** publish/don't-invent instance and its **third** structural variant: *do not
+  demand a join between two namespaces that have no data path, when neither side's consumer reads the
+  quantity absolutely.*
+- **RA-52.4 — filled-side provenance has a second, independent closure.** Beyond RA-50.4's
+  `src/pipeline/RemeshPipeline.cpp:5003-5004` / `:5008-5012`, the block at `:3562-3596` requires
+  `(filledCell, filledSide)` uniqueness, region agreement, `trace_equal(edge.from,
+  owner.corners[filledSide])` and `trace_equal(edge.to, owner.corners[(filledSide+1)%4])`,
+  `lattice_equal` on both lattice states, and `isolation_sheets_connected`. **Two independent closures stand
+  where the gate asserts none.** RA-50.4's "there is no seam" is re-confirmed on bytes RA-50 did not read.
+- **RA-52.5 — `R4-SID-02 / LATE_DEGENERACY_LOCUS` (new, bounded).** `:3562-3596` is blind to exactly one
+  configuration: `corners[0]==corners[2]` **and** `corners[1]==corners[3]`, where sides 0 and 2 present an
+  identical corner pair. A6's collapsed-edge guard tests **adjacent** corners only (`:8446-8449`). The case
+  dies at A7 `:7482-7486` (`std::set<int>(certified.vertices).size() != 4U` → `quad-degenerate`). It is
+  therefore **closed at the wrong locus**: a side-authority defect surfaces three stages downstream as a
+  geometry degeneracy. **Diagnostic-locus finding, not a correctness hole.** Reachability must be established
+  before any repair; if no produced cell can have equal opposite corners, record it unreachable and retire
+  coupled to `:7482-7486`, per the RA-51 discipline. **No new producer, no new receipt, no new namespace.**
+- **RA-52.6 — RA-43.4: the opt-out is PRESERVED, scoped and census-bound.** All three non-test callers of
+  `rail_interval_refs` pass `RequireTypedSource` **explicitly**
+  (`src/geometry/SurfaceCellTracing.cpp:10498-10502`, `:12426-12428`,
+  `src/pipeline/RemeshPipeline.cpp:9630-9634`); the declared default is also `RequireTypedSource`
+  (`include/directional/geometry/SurfaceCellTracing.h:2497-2510`), so omission is safe and the exception must
+  be **named**. `fieldAlignedNetwork != nullptr` forces typed vertices and a published edge list regardless
+  of mode (`:5975-5985`), and `:6137-6147` independently checks mandatory edge/rail/kind/component.
+  **Removing the opt-out would make the override claim vacuous**: the Phase10 negative
+  (`tests/SurfaceCellsPhase10Tests.cpp:6502-6595`) is the only artifact showing the override is load-bearing,
+  and it can only be authored through the opt-out — the guard-coupled-retirement principle read **forward**,
+  *a retained guard needs a retained attempt.* **Add no machinery**: no tag type, no builder, no separate
+  header. The standing obligation is a **one-line census** restating the caller table whenever a
+  `rail_interval_refs` caller is added, removed or re-moded; a production caller with
+  `LegacyStandaloneDiagnostic` is a REVIEW_BLOCKER on sight. RA-43.4's residue is narrowed to the **other**
+  untyped standalone geometry diagnostics, which the mode migration neither disposed of nor claimed to.
+- **RA-52.7 — one comment is narrower than the code it describes.** `src/geometry/SurfaceCellTracing.cpp:1457-1459`
+  says "certified incident hard-rail carriers"; `:1460-1467` cuts **every** incident
+  `FieldTransportBarrierKind::HardFeature` barrier, carrier or not. **The code is correct** — A3 transport
+  cannot cross a hard feature, so cutting only the route's own carriers would yield a germ the field cannot
+  traverse. The hazard is a future reader "repairing" the code to match the comment. One-line comment
+  correction; **the `continue` may not be touched**.
+- **RA-52.8 — `R4-JCT-01`: the multi-carrier junction witness is AUTHORED, not executed.**
+  `tests/SurfaceCellREPackageTests.cpp` now asserts `EXPECT_GT(authenticatedJunctions, 0U)` ("this fixture
+  must reach an actual produced multi-carrier junction"), `EXPECT_GT(authenticatedContactSteps, 0U)` and
+  `EXPECT_GT(authenticatedJunctionSteps, 0U)` over `certificate.junctions` of a **produced** phase front,
+  and checks A1's commuting square per junction step. Status moves **UNEXERCISED → AUTHORED / COMPILED / NOT
+  EXECUTED**. RA-41's junction and sector clauses stay **frozen UNEXERCISED at runtime**; no runtime credit
+  accrues from a compile (LESSONS 160). The gate's own reading of `:736-766` — that the loop over
+  `frame->branches` shows *existence*, not *selection* — is **accurate**, and per RA-52.1 it closes the
+  question rather than opening one.
+- **RA-52.9 — landed and verified since RA-51; no credit.** RA-49.2's duplicated-endpoint witness is
+  **correctly shaped** (`tests/SurfaceCellsPhase10Tests.cpp:7061-7095`: real produced
+  `endpoints[0].terminalVertex`, duplicated, rejects at `ambiguous-terminal-contact`, with the
+  `EXPECT_EQ(npos, ...)` anti-assertion excluding `no-exact-terminal-corner`) — **compiled, not executed**.
+  RA-46.9 landed fail-closed (`src/geometry/SurfaceCellTracing.cpp:18848-18857`). RA-43.1's carrier cut
+  landed. New first-consumer guards landed before the checked factory:
+  `closed-rail-component-mismatch`, `terminal-contact-component-mismatch`, `closed-rail-chain-not-simple`,
+  `closed-rail-endpoint-edge-not-owned`, `closed-rail-chain-non-hard-edge`. `field_aligned_network_binding_valid`
+  landed (`:5666-5676`, gated `:18800-18807`). `append_edge_interval` is **no longer architecturally inert**:
+  `src/pipeline/RemeshPipeline.cpp` re-derives source components from shared-edge face connectivity
+  independently of feature-map metadata and rejects alias records, `>2` claimed incidence and
+  boundary-class edges with other than one face. Ledger unchanged **66/17/49**, debt **1**; CP2 **491/491**
+  accepted; R3 **403/497** rejected with **94** RED and **88** accepted losses carried.
+
+---
+
 ## RA-51 — both remaining RA-49.7 negatives are UNREACHABLE and RETIRED (coupled) **FROZEN at M6-CP3-CB1-ENTRY-R4** (2026-10-13)
 
 Adjudicates `Architecture_M6_CP3_R4_RA465_Terminal_A3_First_Rejection_Review_Stop_20261013.md` (`R4-TA3-01`).

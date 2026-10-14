@@ -1,3 +1,61 @@
+## CURRENT — selected-branch join REFUSED; RA-43.4 opt-out PRESERVED; RA-52 frozen (2026-10-14)
+
+**The source-current REVIEW gate is DISSOLVED. RA-52 frozen. Both offered options are REFUSED.** No new
+blocker. No runtime credit. Ledger unchanged 66/17/49, debt 1.
+
+**`R4-VIN-01 / STALE_FROZEN_VINTAGE` — new recurrence class, third graded failure of a feasibility STOP.**
+The gate re-raised RA-43.2 (DISCHARGED by RA-50.1, uncited), re-proposed the receipt RA-50.2 REFUSED
+(unengaged), and treated RA-43.1 as open when its sole residue — the carrier cut — had already landed at
+`src/geometry/SurfaceCellTracing.cpp:1457-1467`. Graded family: RA-49.0 wrong **stage**; RA-50.0 wrong
+**extent**; RA-51.0 **neither** (correct shape); RA-52.0 wrong **vintage**. Standing rule: *before raising
+RA-N as a blocker, cite RA-N's most recent disposition and say why it does not apply.*
+
+**Why the join is refused.** `SurfaceTraceSegment::family` is consumed in `src/pipeline/RemeshPipeline.cpp`
+as seven `hash_combine_i64` digest inputs (`:1989`, `:2204`, `:2264`, `:2350`, `:2473`, `:2574`, `:2631`)
+and one copy-through (`:10749`); inside A4 only as same-frame run-merge equality (`:12111`, `:13533`). **No
+decision depends on the absolute value**, so a digest cannot separate a correct branch selection from an
+incorrect one — LESSONS 171, the vacuity class. Option (A) would find a join with no consumer; option (B)
+would manufacture the consumer. Third instance of RA-45.2's category error (absolute authentication of a
+relationally-consumed quantity), after RA-44.2 (WITHDRAWN) and the inflated RA-43.2 (REFUSED).
+
+**Sixth namespace.** A4 never reads A2a trace segments at all: the complete `fieldAlignedNetwork` census is
+singularities (`:5374-5375`, `:5382-5387`, `:5393-5399`, `:9955-9957`), mandatory edges (`:6137-6139`,
+`:6230-6232`) and the digest binding (`:5666-5676`). `FieldAlignedCandidateTraceSegment`, the sole carrier
+of `FieldBranch`, has no data path into A4.
+
+**`R4-SID-02 / LATE_DEGENERACY_LOCUS` — new, bounded.** `RemeshPipeline.cpp:3562-3596` is a second,
+independent filled-side closure (uniqueness, region, `trace_equal` on both corners, `lattice_equal` on both
+lattice states, isolation sheets) and is blind to exactly one configuration: `corners[0]==corners[2]` and
+`corners[1]==corners[3]`. A6's collapsed-edge guard is adjacent-only (`:8446-8449`); the case dies at A7
+`:7482-7486` as `quad-degenerate`. **Closed at the wrong locus, not a correctness hole.** Reachability first;
+if unreachable, retire coupled to `:7482-7486`.
+
+**RA-43.4 disposition.** Opt-out **PRESERVED, scoped, census-bound**. All three non-test callers pass
+`RequireTypedSource` explicitly and the default is safe. Removing the opt-out would make the network-override
+claim **vacuous** — the Phase10 negative at `tests/SurfaceCellsPhase10Tests.cpp:6502-6595` is the only
+artifact proving the override is load-bearing, and it can only be authored through the opt-out. *A retained
+guard needs a retained attempt.* No machinery added. Residue narrowed to the non-`rail_interval_refs`
+standalone geometry diagnostics.
+
+**`R4-JCT-01` — the multi-carrier junction witness is AUTHORED, not executed.**
+`tests/SurfaceCellREPackageTests.cpp` asserts `EXPECT_GT(authenticatedJunctions, 0U)` on a produced phase
+front. UNEXERCISED → AUTHORED / COMPILED / NOT EXECUTED. RA-41's junction and sector clauses stay frozen
+UNEXERCISED at runtime; no runtime credit from a compile (LESSONS 160).
+
+**Verified landed since RA-51, no credit:** RA-49.2's duplicated-endpoint witness correctly shaped
+(`tests/SurfaceCellsPhase10Tests.cpp:7061-7095`, including the anti-assertion); RA-46.9 fail-closed
+(`:18848-18857`); RA-43.1's carrier cut; five new first-consumer guards
+(`closed-rail-component-mismatch`, `terminal-contact-component-mismatch`, `closed-rail-chain-not-simple`,
+`closed-rail-endpoint-edge-not-owned`, `closed-rail-chain-non-hard-edge`); `field_aligned_network_binding_valid`;
+and `append_edge_interval` hardened from architecturally inert to source-component re-derivation with alias,
+`>2`-incidence and boundary-class rejection.
+
+**One comment correction owed:** `src/geometry/SurfaceCellTracing.cpp:1457-1459` is narrower than the code at
+`:1460-1467`, which cuts every incident `HardFeature` barrier, not only this route's carriers. The code is
+correct; the `continue` may not be touched.
+
+---
+
 ## CURRENT — both remaining RA-49.7 negatives UNREACHABLE and RETIRED; R4-TA3-02 frozen (2026-10-13)
 
 **The `R4-TA3-01` REVIEW STOP is DISSOLVED. RA-51 frozen. RA-49.7 is now fully discharged — no RA-46.5

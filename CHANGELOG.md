@@ -1,3 +1,11 @@
+## 2026-10-14 — RA-52 frozen: selected-branch join REFUSED, RA-43.4 opt-out PRESERVED
+
+- Architecture Review only; no source, test, selector or ledger change. The `Architecture_M6_CP3_R4_Source_Current_Review_Gate_20261014.md` REVIEW gate is **DISSOLVED** and both of its offered options are **REFUSED**. Decision record `Architecture_M6_CP3_R4_Selected_Branch_And_Diagnostic_Optout_Review_Decision.md`; frozen as **RA-52**.
+- Option (A) refused: `SurfaceTraceSegment::family` is consumed only as seven digest inputs and one copy-through in `src/pipeline/RemeshPipeline.cpp`, plus same-frame run-merge equality in A4 — no decision reads the absolute value, so the requested join would have no consumer. Option (B) refused: it would manufacture one, and its `filled cell/side` field is the object RA-50.2 already REFUSED. Third instance of RA-45.2's category error.
+- New: `R4-VIN-01 / STALE_FROZEN_VINTAGE` (a STOP adjudicated against a superseded frozen state); `R4-SID-02 / LATE_DEGENERACY_LOCUS` (equal-opposite-corner filled-side ambiguity closed at A7 rather than A5); `R4-JCT-01` (produced multi-carrier junction witness now AUTHORED / COMPILED / NOT EXECUTED). Sixth namespace frozen: A4 never consumes A2a trace segments.
+- RA-43.4: the named `LegacyStandaloneDiagnostic` opt-out is **PRESERVED, scoped and census-bound**; removing it would make the network-override claim vacuous. No machinery added. Residue narrowed to the non-`rail_interval_refs` standalone geometry diagnostics.
+- Ledger unchanged 66/17/49, debt 1; CP2 accepted 491/491; R3 rejected 403/497 (94 RED, 88 accepted losses). No runtime, no TB497, no successor credit.
+
 ## 2026-10-14 — M6-CP3-CB1-ENTRY-R4 continued: closed-rail source component
 
 Source-exact A4 first-consumer closed-chain component guard and differential Phase10 negative applied at `62fec4a7f4ccf05a6fe8bc14f81d4b8ff774d809`; Pinned eight-target GMP/GMPXX compile request at dispatcher commit `608c5338f4a04a3ba3194a7e11ec7956e482c793`, exact semantic source `62fec4a7f4ccf05a6fe8bc14f81d4b8ff774d809`, mailbox `m6-cp3-r4-closedrail-component-compile`: **PENDING**; do not claim GREEN/RED until the immutable compile artifact and source/link evidence are verified.. No runtime execution or turn closeout. Evidence: `.agents/Directional/Architecture_M6_CP3_R4_Closed_Rail_Component_Code_Build_Record_20261014.md`.
