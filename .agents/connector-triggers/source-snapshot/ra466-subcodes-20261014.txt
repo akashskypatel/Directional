@@ -1,0 +1,4 @@
+Turn: M6-CP3-CB1-R4-RA466-SUBCODES
+Authority base: 51d9b5f34abf9dc47420c2b3f112fcf226a16efe
+Read mode: snapshot
+Runtime execution: false
