@@ -1,0 +1,3 @@
+Snapshot trigger for source-only RA-43.4 standalone geometry diagnostic census.
+Requested source: exact trigger event commit.
+No tests, builds, or runtime execution.
