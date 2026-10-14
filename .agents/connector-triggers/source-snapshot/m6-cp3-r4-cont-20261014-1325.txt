@@ -1,0 +1,3 @@
+turn=M6-CP3-CB1-ENTRY-R4
+resume_beacon=96fe750060805065b869009d95b773df84192296
+purpose=exact-source R4 canonical continuation
