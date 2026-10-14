@@ -20,7 +20,7 @@ Full exact-base patch against `49c5362dd58365abdee05307b75e197bd0c071cf`: SHA256
 
 ## Corrected GMP compile
 
-Dispatcher commit [c353728](https://github.com/akashskypatel/Directional/commit/c3537284db8e2c93c56a7bea513f3499ed95d6d1) pinned corrected semantic source `651da423b66645a2e1fc1962d04acc047eef8070`, all eight approved targets and mailbox `m6-cp3-r4-nonconstant-odd-germ-fixed-compile`. **PENDING**: verify eventual immutable result/archive, all 28 hashes, GMPXX+GMP generated link, exact source, preflight/build exits, five clean source status files and `runtimeExecution=false`. Do not equate dispatcher acceptance with compile success.
+Dispatcher commit [c353728](https://github.com/akashskypatel/Directional/commit/c3537284db8e2c93c56a7bea513f3499ed95d6d1) pinned corrected semantic source `651da423b66645a2e1fc1962d04acc047eef8070`, all eight approved targets and mailbox `m6-cp3-r4-nonconstant-odd-germ-fixed-compile`. **GREEN corrected compile:** [workflow 38514261408](https://github.com/akashskypatel/Directional/actions/runs/38514261408), compile job `115689475286`, immutable result artifact `11871405217`, outer ZIP SHA256 `a2a0cac31d78944ad9f608ff5ec59f36c403753143afd9f374ad65c05b206837`. Independently verified 28/28 packaged SHA256 entries, eight approved targets, preflight/build exit codes 0/0, `DIRECTIONAL_ENABLE_GMP:BOOL=ON`, both `/usr/lib/x86_64-linux-gnu/libgmpxx.so` and `libgmp.so` in generated link, `exactArithmeticBackend=GMP`, five clean source-status files, and `runtimeExecution=false`. Packaged test source Git blob `9c1e333c82d4cf5a45eaaa11a6c91d36bda509c2` matches corrected committed file. Test + Benchmark skipped. This is strictly compiled source, **not runtime PASS or actual witness acceptance**.
 
 ## Carry-forward
 
