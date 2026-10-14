@@ -1,3 +1,11 @@
+## CURRENT — RA-46.6 checked-factory typed subcodes confirmed already implemented (2026-10-14)
+
+`M6-CP3-CB1-R4-RA466-SUBCODES` is **complete as a source-verified no-op**. All seven authorized typed factory details already exist in `SurfacePhaseFrontSourceAuthorityDetail` and are set at the specified producer checks. Exact snapshot `0f2b1822cf3fecd209a610b6055549c561a000c3`, run `38651012007`, artifact `11934885965`, 5601/5601 source digests. Frozen RA-51.7/52/53 prevent new subcodes for dead or retired predicates; source-only assertions are not runtime passes. No production/test code, compile, tests, TB497, selectors, ledgers or PR state changed. Evidence: `.agents/Directional/Architecture_M6_CP3_R4_RA466_Typed_Factory_Subcodes_NoOp_20261014.md`.
+
+**Next separately authorized turn:** `M6-CP3-CB1-R4-RA434-CENSUS`, inspecting non-`rail_interval_refs` standalone geometry diagnostics only and retaining the RA-52.6 opt-out policy. Do not start within RA-46.6. R4 remains unfinished; 39/34/7/88/six, RP-02 and organic/A1/multi-carrier gates remain pending; ledger 66/17/49, debt1 unchanged.
+
+---
+
 ## CURRENT — 2026-10-14 RA-47.12 default-path typed interval liveness census complete (RP-02)
 
 `M6-CP3-CB1-R4-RA4712-LIVENESS` inspected frozen source `f983508edcd0157ca3c93832753102067ab392ef` (snapshot run `38645902635`, artifact `11932381704`, **5600/5600** source digests). Source calls show valid producer-built typed rails and field-aligned network threading, but `rail_interval_refs(..., nullptr, RequireTypedSource)` at producer ingress is **not** network-bound; the network-bound consumer calls at trace/open-front ingress are conditional. Existing no-injection tests verify A2a publication and phase-front products without independently observing an actual network-bound `rail_interval_refs` invocation on a produced rail interval. **RP-02 TEST_AUTHORITY_COVERAGE_GAP** recorded (not a claim of unreachable consumer). Evidence: `.agents/Directional/Architecture_M6_CP3_R4_RA4712_Default_Path_Typed_Interval_Liveness_Census_20261014.md`. No implementation/test edits, compiled binaries, runtime tests, benchmarks, TB497, selector/ledger/PR modifications; R4 remains open.

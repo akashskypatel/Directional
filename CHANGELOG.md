@@ -1,3 +1,8 @@
+## 2026-10-14 — RA-46.6 checked-factory typed subcodes verified, no implementation needed
+
+- `M6-CP3-CB1-R4-RA466-SUBCODES`: snapshot `0f2b1822cf3fecd209a610b6055549c561a000c3`, run `38651012007`, artifact `11934885965` (5601/5601) verifies all seven required typed factory distinctions are already in source, including missing/ambiguous terminal-star paths and zero/overfull incidence. No code/test edits or unchanged-source compile; no runtime evidence or acceptance promotion. Evidence: `.agents/Directional/Architecture_M6_CP3_R4_RA466_Typed_Factory_Subcodes_NoOp_20261014.md`.
+- Frozen RA-51/52/53, selector497, ledger and remaining R4 gates unchanged. Next separate turn `M6-CP3-CB1-R4-RA434-CENSUS`.
+
 ## 2026-10-14 — RA-47.12 default-path typed interval liveness census (source-only)
 
 - `M6-CP3-CB1-R4-RA4712-LIVENESS`: frozen snapshot `f983508edcd0157ca3c93832753102067ab392ef` / Actions `38645902635`, artifact `11932381704`, all 5600 source checksums verified. Static producer-to-consumer route exists, but no independently executed, non-vacuous ordinary pipeline witness proves producer-built rails reached **network-bound** `rail_interval_refs`. The earlier producer strict check uses `nullptr`; the source-authored ordinary-pipeline tests verify A2a publication or phase-front disposition without observing the interval consumer. **RP-02 TEST_AUTHORITY_COVERAGE_GAP** is recorded; neither observed liveness nor unreachable production is claimed. See `.agents/Directional/Architecture_M6_CP3_R4_RA4712_Default_Path_Typed_Interval_Liveness_Census_20261014.md`.

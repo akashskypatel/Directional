@@ -1,3 +1,10 @@
+## CURRENT — RA-46.6 typed factory subcodes (2026-10-14)
+
+- [x] `M6-CP3-CB1-R4-RA466-SUBCODES`: exact source `0f2b1822cf3fecd209a610b6055549c561a000c3` already implements the seven frozen typed distinctions. No duplicate production/test changes or unchanged-source compile. See `.agents/Directional/Architecture_M6_CP3_R4_RA466_Typed_Factory_Subcodes_NoOp_20261014.md`.
+- [ ] The next **separate** `M6-CP3-CB1-R4-RA434-CENSUS` must inventory other standalone geometry diagnostic sites while preserving RA-52.6 and no-network opt-out; no TB497 or ledger update.
+
+---
+
 ## CURRENT — RA-47.12 default-path consumer-liveness census (2026-10-14)
 
 - [x] `M6-CP3-CB1-R4-RA4712-LIVENESS` source-only audit at verified snapshot `f983508edcd0157ca3c93832753102067ab392ef` (run 38645902635, artifact 11932381704, 5600/5600 files). Source path offers network-bound typed interval validation, but no *executed* normal-pipeline witness proves the consumer was reached with producer-built rails. **RP-02 TEST_AUTHORITY_COVERAGE_GAP**; see `.agents/Directional/Architecture_M6_CP3_R4_RA4712_Default_Path_Typed_Interval_Liveness_Census_20261014.md`. Prior authored factory/producer assertions do not close execution liveness.
