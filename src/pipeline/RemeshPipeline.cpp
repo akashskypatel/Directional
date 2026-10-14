@@ -9411,8 +9411,9 @@ SurfaceCellRailBuildResult build_authoritative_surface_cell_rails(
                         : curve.vertices[static_cast<std::size_t>(
                               (index + 1) % edgeCount)];
       if (geometry::AdaptiveFeatureMap::canonical_edge(a, b) !=
-          geometry::AdaptiveFeatureMap::canonical_edge(edge.vertices.first,
-                                                       edge.vertices.second)) {
+              geometry::AdaptiveFeatureMap::canonical_edge(
+                  edge.vertices.first, edge.vertices.second) ||
+          edge.component != curve.component || edge.curve != curve.id) {
         fail_edge(edgeIndex);
         return SurfaceCellRailBuildResult::rejected(std::move(failure));
       }

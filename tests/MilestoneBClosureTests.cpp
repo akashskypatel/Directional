@@ -108,6 +108,30 @@ TEST(MilestoneBClosure, ContiguousHardCurveRemainsOneOrderedRail) {
   EXPECT_EQ(result.product().rails.front().sourceVertices,
             std::vector<int>({0, 1, 4, 5}));
   EXPECT_EQ(result.product().rails.front().samples.size(), 6U);
+
+  // A valid curve may not publish a rail over an edge owned by a different
+  // component or curve, even when exact edge geometry and order are unchanged.
+  auto wrongComponent = map;
+  wrongComponent.edges[1].component = 1;
+  const auto componentResult =
+      directional::pipeline::build_authoritative_surface_cell_rails(
+          source, wrongComponent);
+  ASSERT_TRUE(componentResult.is_rejected());
+  ASSERT_NE(componentResult.rejection(), nullptr);
+  EXPECT_EQ(componentResult.rejection()->kind,
+            directional::pipeline::SurfaceCellRailBuildFailureKind::InvalidFeatureEdge);
+  EXPECT_EQ(componentResult.rejection()->failedEdgeIndex, 1);
+
+  auto wrongCurve = map;
+  wrongCurve.edges[1].curve = 18;
+  const auto curveResult =
+      directional::pipeline::build_authoritative_surface_cell_rails(
+          source, wrongCurve);
+  ASSERT_TRUE(curveResult.is_rejected());
+  ASSERT_NE(curveResult.rejection(), nullptr);
+  EXPECT_EQ(curveResult.rejection()->kind,
+            directional::pipeline::SurfaceCellRailBuildFailureKind::InvalidFeatureEdge);
+  EXPECT_EQ(curveResult.rejection()->failedEdgeIndex, 1);
 }
 
 
