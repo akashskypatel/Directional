@@ -1,3 +1,7 @@
+## 2026-10-14 — RA-43.4 standalone geometry helper disposition
+
+- Completed `M6-CP3-CB1-R4-RA434-DISPOSE` as an exact-source no-op. The two lower-level geometry helpers cannot independently authorize production rail source identity in the current call graph; the frozen named legacy diagnostic is retained for the non-vacuous network override negative. All three real `rail_interval_refs` production calls remain strict typed mode. Evidence: `Architecture_M6_CP3_R4_RA434_Standalone_Geometry_Helper_Disposition_20261014.md`, source `fa230b2a00e698eee9478fc06b3490cba5a86a11`, snapshot workflow 38656142605, artifact 11937071668, source SHA manifest 5603/5603. No implementation source edits, compilation, tests, benchmark, runtime acceptance or frozen-selector/ledger movement. No separately authorized named ladder successor established; broader R4 outstanding.
+
 ## 2026-10-14 — RA-43.4 standalone geometry diagnostic census (source-only)
 
 - `M6-CP3-CB1-R4-RA434-CENSUS`: snapshot `b0d5c584a98d5ad321c324be9f18db5ba03d434b`, run `38653652905`, artifact `11935277891`, verified 5602/5602 source hashes. Two residual identity-relevant helper surfaces, no independent untyped production call, no production `LegacyStandaloneDiagnostic`. Frozen RA-52.6 caller table preserved in `Architecture_M6_CP3_R4_RA434_Standalone_Geometry_Diagnostic_Census_20261014.md`.

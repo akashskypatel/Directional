@@ -1,3 +1,10 @@
+## CURRENT — RA-43.4 standalone geometry helper disposition (2026-10-14)
+
+- [x] `M6-CP3-CB1-R4-RA434-DISPOSE`: source-only no-op; retain `rail_sample_source_vertex` and `rail_sample_geometry_is_valid` with its explicitly scoped untyped diagnostic fallback. No independent untyped production caller or network bypass; strict production caller census 3/3. Frozen RA-52.6 preserves named opt-out and network override. Evidence `.agents/Directional/Architecture_M6_CP3_R4_RA434_Standalone_Geometry_Helper_Disposition_20261014.md`; exact verified snapshot `fa230b2a00e698eee9478fc06b3490cba5a86a11`, run 38656142605, artifact 11937071668, 5603/5603 hashes. No code/test/build/runtime/ledger/selector change.
+- [ ] Main R4 Code + Build and RP-02/39/34/7/88/six/organic/A1/odd-τ/multi-carrier evidence remain open. The frozen ladder names no additional successor; require fresh authorized next turn rather than inventing one. No TB497 here.
+
+---
+
 ## CURRENT — RA-43.4 standalone geometry diagnostic census (2026-10-14)
 
 - [x] `M6-CP3-CB1-R4-RA434-CENSUS`: exact source `b0d5c584a98d5ad321c324be9f18db5ba03d434b`, snapshot `38653652905`, artifact `11935277891`, 5602/5602 hashes. Two identity-relevant standalone geometry helper APIs; no direct untyped production caller and no production legacy named opt-out. Frozen RA-52.6 caller table retained in `.agents/Directional/Architecture_M6_CP3_R4_RA434_Standalone_Geometry_Diagnostic_Census_20261014.md`. No runtime/build/test.

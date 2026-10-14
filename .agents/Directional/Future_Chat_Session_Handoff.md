@@ -1,3 +1,11 @@
+## CURRENT — RA-43.4 standalone geometry helper disposition closed (2026-10-14)
+
+`M6-CP3-CB1-R4-RA434-DISPOSE` is a source-verified **no-op**. The two residual geometry helpers (`rail_sample_source_vertex` and `rail_sample_geometry_is_valid`'s optional untyped diagnostic argument) are retained: neither is a separate untyped production ingress, and strict or network-bound `rail_interval_refs` always requires typed vertices and edge keys. Frozen RA-52.6 keeps the named `LegacyStandaloneDiagnostic` mode and the network-override negative; all three production callers still pass `RequireTypedSource`. Evidence: `.agents/Directional/Architecture_M6_CP3_R4_RA434_Standalone_Geometry_Helper_Disposition_20261014.md`, snapshot `fa230b2a00e698eee9478fc06b3490cba5a86a11` / [38656142605](https://github.com/akashskypatel/Directional/actions/runs/38656142605), artifact `11937071668`, 5603/5603 hashes. No implementation/test code, compile, test, benchmark or TB497. No ledger/selector change.
+
+**No newly named successor** follows the completed frozen ladder. Wider `M6-CP3-CB1-ENTRY-R4` remains unfinished with `RP-02`, historical 39/34/7/88/six and organic/A1/multi-carrier/odd-τ execution requirements. Preserve CP2 491/491, R3 403/497 (94 RED, 88 losses), 497 selector, ledger 66/17/49, debt 1 and PR #8 draft/open. Do not invent a next task or claim runtime credit without separately resolved authority.
+
+---
+
 ## CURRENT — RA-43.4 standalone geometry diagnostic census complete (2026-10-14)
 
 `M6-CP3-CB1-R4-RA434-CENSUS` closed as a source-only census against snapshot `b0d5c584a98d5ad321c324be9f18db5ba03d434b`, run `38653652905`, artifact `11935277891` (5602/5602 hashes). Two identity-relevant residual helper surfaces (`rail_sample_source_vertex`, `rail_sample_geometry_is_valid` with optional no-ID argument), no independent untyped production caller or production `LegacyStandaloneDiagnostic`. RA-52.6's three strict production callers are reproduced verbatim in `.agents/Directional/Architecture_M6_CP3_R4_RA434_Standalone_Geometry_Diagnostic_Census_20261014.md`; named opt-out is PRESERVED. No code/build/test/runtime/TB497 or ledger promotion.
