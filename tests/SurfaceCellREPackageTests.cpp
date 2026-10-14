@@ -816,8 +816,12 @@ TEST(SurfaceCellPipelinePhase20,
       }
     }
   }
-  EXPECT_GT(verifiedOwners + evaluatedNontrivialGerms, 0U)
-      << "odd carrier must share a real, nontrivial A1 vertex-star germ";
+  // An evaluated path attached to a rejected resolver result is diagnostic
+  // evidence, not an admitted vertex-star transit. A positive coupled
+  // odd-tau/germ witness must have an elected source-authoritative owner.
+  EXPECT_GT(verifiedOwners, 0U)
+      << "the paired odd carrier has no admitted A1 vertex-star owner; "
+      << "nontrivial rejected diagnostic walks=" << evaluatedNontrivialGerms;
 }
 
 TEST(SurfaceCellFieldAlignedNetworkAuthority,
