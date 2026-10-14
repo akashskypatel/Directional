@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra431-directed-seam-permutation-apply-20261014t0145z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra431-directed-seam-permutation-apply",
-  "file_id": "1b-csg5tFEZD8DL1b9zdCPV-28B7cU_la",
-  "patch_sha256": "8b67e67f48d01d7c48912b357d4178ed35da1eb5eb767735f84935798803df95",
-  "base_sha": "13df05220f84cba35923855ec50d8aa6c7a6d088",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): pin A1 directed barrier values across source-row permutation",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-ra431-directed-seam-permutation-compile-20261014t0147z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-ra431-directed-seam-permutation-compile",
+  "source_sha": "7e8f7cd936b08a841f9bb031fe7990a6d92662dd",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-r4-ra431-directed-seam-permutation-compile"
 }
