@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-nonconstant-odd-germ-compile-20261014t0458z",
+  "request_id": "m6-cp3-r4-nonconstant-odd-germ-fixed-compile-20261014t0500z",
   "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-nonconstant-odd-germ-compile",
-  "source_sha": "b640d51a9e3369449ea4cc75ca5939754443740c",
+  "mailbox_key": "m6-cp3-r4-nonconstant-odd-germ-fixed-compile",
+  "source_sha": "651da423b66645a2e1fc1962d04acc047eef8070",
   "targets": [
     "directional_core",
     "directional_pipeline",
@@ -14,5 +14,5 @@
     "directional_compiled_api_tests",
     "directional_benchmarks"
   ],
-  "artifact_prefix": "directional-m6-cp3-r4-odd-germ"
+  "artifact_prefix": "directional-m6-cp3-r4-odd-germ-fixed"
 }
