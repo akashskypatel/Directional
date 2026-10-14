@@ -5660,8 +5660,24 @@ bool orient_transition_into_face_from_edge(
 
 namespace directional::geometry::surface_cell_tracing_detail {
 
+// The checked A2a network and the A3 atlas must refer to one exact source
+// binding.  Their semantic digests alone are insufficient: two gauge-related
+// atlases can have equal network semantics but different atlas provenance.
+bool field_aligned_network_binding_valid(
+    const SurfaceCellTracingOptions &options) {
+  if (options.fieldAlignedNetwork == nullptr ||
+      options.fieldTransportAtlas == nullptr) {
+    return true; // Legacy no-network / no-atlas entry retains its contract.
+  }
+  return options.fieldAlignedNetwork->source_digest() ==
+             options.fieldTransportAtlas->quadrangulability().source_digest() &&
+         options.fieldAlignedNetwork->atlas_digest() ==
+             authority::field_transport_atlas_hash(*options.fieldTransportAtlas);
+}
+
 bool source_authority_valid(const SurfaceCellTracingOptions &options,
                             const Eigen::MatrixXi &faces) {
+  if (!field_aligned_network_binding_valid(options)) return false;
   if (options.sourceAuthority == nullptr) {
     return options.fieldTransportAtlas == nullptr;
   }
@@ -18778,6 +18794,14 @@ SurfaceCellNetwork build_surface_cell_network(
           static_cast<std::size_t>(vertices.rows()))) {
     SurfacePhaseFrontFailure failure;
     failure.reason = SurfacePhaseFrontFailureReason::InvalidTopologyRegionTransport;
+    network.phaseFront = SurfacePhaseFrontResult::rejected(std::move(failure));
+    return network;
+  }
+  if (!surface_cell_tracing_detail::field_aligned_network_binding_valid(
+          options)) {
+    SurfacePhaseFrontFailure failure;
+    failure.reason =
+        SurfacePhaseFrontFailureReason::InvalidTopologyRegionTransport;
     network.phaseFront = SurfacePhaseFrontResult::rejected(std::move(failure));
     return network;
   }

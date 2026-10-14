@@ -3167,6 +3167,28 @@ TEST(SurfaceCutGraph,
 
   ASSERT_EQ(baselineNetwork.semantic_digest(), relabeledNetwork.semantic_digest());
   ASSERT_NE(baselineNetwork.atlas_digest(), relabeledNetwork.atlas_digest());
+  // RA-43.4: swapping two *valid* gauge-related network/atlas products
+  // must fail at the direct phase-front ingress, not only at S4 cut-graph
+  // validation.  They share source topology and semantic network identity,
+  // so the exact atlas provenance digest is the discriminating authority.
+  directional::geometry::SurfaceCellTracingOptions mixedOptions;
+  mixedOptions.sourceAuthority = &*sourceAuthority;
+  mixedOptions.fieldTransportAtlas = &relabeledAtlas.value();
+  mixedOptions.fieldAlignedNetwork = &baselineNetwork;
+  mixedOptions.authoritativeRails = relabeledRails;
+  const Eigen::VectorXd targetSize =
+      Eigen::VectorXd::Constant(mesh.V.rows(), 1.0);
+  const auto mixedFront = directional::geometry::build_surface_cell_network(
+      mesh.V, mesh.F, relabeledField, targetSize, mixedOptions);
+  EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
+            mixedFront.phaseFront.disposition());
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
+                InvalidTopologyRegionTransport,
+            mixedFront.phaseFront.rejection_reason());
+  EXPECT_FALSE(mixedFront.phaseFront.is_produced());
+  EXPECT_TRUE(mixedFront.seeds.empty());
+  EXPECT_TRUE(mixedFront.traces.empty());
+
   EXPECT_EQ(baselineCutGraph.value().semantic_digest(),
             relabeledCutGraph.value().semantic_digest());
   EXPECT_NE(baselineCutGraph.value().provenance_digest(),
