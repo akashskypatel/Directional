@@ -787,8 +787,11 @@ TEST(SurfaceCellPipelinePhase20,
           ASSERT_TRUE(radial.has_value());
           EXPECT_FALSE(sourceBarriers.contains(radial.value()));
           EXPECT_FALSE(front.hardFeatureEdges().contains(radial.value()));
-          EXPECT_TRUE(topology.transport(radial.value(), firstSector.sourceFace,
-                                         secondSector.sourceFace).has_value());
+          const auto directed = topology.transport(
+              radial.value(), firstSector.sourceFace, secondSector.sourceFace);
+          ASSERT_TRUE(directed.has_value());
+          EXPECT_EQ(firstSector.branch.rotated(directed->signedLift),
+                    secondSector.branch);
         };
         for (const auto &fanSector : audit.sectors) {
           const auto *fanFrame = topology.find_frame(fanSector.sourceFace);
