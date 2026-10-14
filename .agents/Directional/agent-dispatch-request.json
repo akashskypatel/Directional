@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-odd-terminal-seed-compile-20261014t0548z",
+  "request_id": "m6-cp3-r4-admissible-germ-compile-20261014t0612z",
   "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-odd-terminal-seed-compile",
-  "source_sha": "9780154878a37b9792179b76c4bc7b39d5b2667c",
+  "mailbox_key": "m6-cp3-r4-admissible-germ-compile",
+  "source_sha": "182b0b835148ac80c9add15a38f2a9d4380fada6",
   "targets": [
     "directional_core",
     "directional_pipeline",
@@ -14,5 +14,5 @@
     "directional_compiled_api_tests",
     "directional_benchmarks"
   ],
-  "artifact_prefix": "directional-m6-cp3-r4-odd-terminal-seed"
+  "artifact_prefix": "directional-m6-cp3-r4-admissible-germ"
 }
