@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra434-component-compile-20261014t0834z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-ra434-component-compile",
-  "source_sha": "f04eda9743e94e42cac9b19f6ada29ae7fde1a07",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-ra434-component"
+  "request_id": "m6-cp3-r4-ra434-atlas-binding-apply-20261014t0910z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-ra434-atlas-binding-apply",
+  "file_id": "1xRn14LytBt6y_3L60zdYVVoCaHdvMfEa",
+  "patch_sha256": "5ab02385a1ca63d1da8dcb6f7478b41010934ae29127ea8b04cd3bb65867fa65",
+  "base_sha": "f04eda9743e94e42cac9b19f6ada29ae7fde1a07",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "fix(surface-cells): bind A2a network to exact A3 atlas at tracing ingress"
 }
