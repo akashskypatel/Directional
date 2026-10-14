@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-produced-directed-value-apply-20261014t0214z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-produced-directed-value-apply",
-  "file_id": "14OINibvhVes2fQTeC56R-FkMXc_NQtii",
-  "patch_sha256": "baf45e664e6c904a53e0215ed32d012e5fb094d62a3a16fea72594f9aedc9a66",
-  "base_sha": "39ca3697a49e60a5a552a7f246856c652f6125af",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): attest directed A3 values on producer hard carriers",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-producer-directed-a3-compile-20261014t0217z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-producer-directed-a3-compile",
+  "source_sha": "7e633b81bb0d3ea37fdac1961a31cb7b72f1449a",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-r4-producer-directed-a3-compile"
 }
