@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra4712-liveness-docs-20261014t2219z",
+  "request_id": "m6-cp3-r4-ra466-noop-docs-20261014t2302z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra4712-liveness-docs",
-  "file_id": "1i9TcnrUAFQvME0ZEefyYfXpB7xX8_Y7R",
-  "patch_sha256": "1a54bd45d55da827e35984bdccaaf9a4b83983b87903b6e5fb6b60d5db273455",
-  "base_sha": "f983508edcd0157ca3c93832753102067ab392ef",
+  "mailbox_key": "m6-cp3-r4-ra466-noop-docs",
+  "file_id": "1BqcJDEn4Iy9AMfD817BYFq6etP6LxkdE",
+  "patch_sha256": "55988f3a16e9ff915bec7b96bdabfbfaff52a6dd173f08e23f496e96446f3a96",
+  "base_sha": "0f2b1822cf3fecd209a610b6055549c561a000c3",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record RA-47.12 liveness coverage gap",
+  "commit_message": "docs(directional): close RA-46.6 already-implemented subcodes",
   "retention_days": 7
 }
