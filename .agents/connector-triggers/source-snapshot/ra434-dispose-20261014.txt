@@ -1,0 +1,3 @@
+M6-CP3-CB1-R4-RA434-DISPOSE
+requested_source_sha=a3a053aa6cc4693def32731731a584557da54c7c
+read_mode=snapshot
