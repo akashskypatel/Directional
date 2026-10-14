@@ -1,0 +1,4 @@
+Turn: M6-CP3-CB1-R4-RA4711-CENSUS
+Frozen source: 6f30582164acf0b94362c020222e0c1d39bd3c59
+Purpose: source-only seven-site typed-key census
+No tests or builds.
