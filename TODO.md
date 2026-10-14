@@ -1,3 +1,10 @@
+## CURRENT — RA-47.11 seven-site source-only census (2026-10-14)
+
+- [x] Audit all seven `source_edge_index` textual sites at exact source `09e8451ed6314a458e9abe8c6b74e866d19728fc` (snapshot 38640107266, artifact 11930195949, 5598/5598 file hashes). All six callers require real EV rows or mesh-edge membership; the seventh site is the typed-key-to-row helper. **No wrongly untyped site or migration target**. Record: `.agents/Directional/Architecture_M6_CP3_R4_RA4711_Seven_Source_Edge_Index_Census_20261014.md`. No tests, builds or runtime ran.
+- [ ] Next separately authorized `M6-CP3-CB1-R4-RA4711-MIGRATE` must respect the zero-target census (record a no-op; do not change source to manufacture migration). `M6-CP3-CB1-R4-RA4712-LIVENESS`, frozen 497, and all other carried R4 gates remain untouched.
+
+---
+
 ## CURRENT — R4 verified current source; independent selected-branch Review prerequisite (2026-10-14 18:30 UTC)
 
 R4 remains Code + Build with exact compile-GREEN source `5ecaa2acbec9a03622e14e6afac4dfc71763778f` / immutable GMP package `11919172109` / `38613136344` (28/28 checksums, 8/8 targets, runtimeExecution=false). Current source snapshot `8f490bd7fb196bfb2a9d8b83cf9c65c5d6c001d0` / [38615232734](https://github.com/akashskypatel/Directional/actions/runs/38615232734), artifact `11919555806`, 5594/5594 source hashes; no semantic source/test drift. Re-inspection confirms A4 junction route certificates cannot authenticate the A1 branch *selected* at the directed arrival and the oriented filled side. RA-43.4 production entries are typed; the explicit standalone opt-out has no demonstrated network-bound bypass, but its retention is an independent Review policy question. **Do not invent a selected-branch receipt or remove the opt-out without independent Review**; no newly verified unblocked source edit remains. Exact source/first-failure Review request: `Architecture_M6_CP3_R4_Source_Current_Review_Gate_20261014.md`. No runtime tests, TB497, successor, selector/accepted-ledger changes. 39/34/7/88/six and organic/A1/RA-47.12 remain for later authorized TB and acceptance Review.

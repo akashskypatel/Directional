@@ -1,3 +1,8 @@
+## 2026-10-14 — RA-47.11 seven-site DCEL row census (source-only)
+
+- `M6-CP3-CB1-R4-RA4711-CENSUS`: exact snapshot `09e8451ed6314a458e9abe8c6b74e866d19728fc` (workflow `38640107266`, artifact `11930195949`, 5598/5598 files verified) confirms `source_edge_index` has one typed-to-EV-row helper and six callers. All seven are legitimate, including the RA-47.10 lexical-versus-`EV`-row mismatch assertion; **zero test migration candidates**. See `.agents/Directional/Architecture_M6_CP3_R4_RA4711_Seven_Source_Edge_Index_Census_20261014.md`.
+- Report only; no test/production/build/benchmark/runtime mutation, no `TB497` or acceptance promotion. Next separately authorized `M6-CP3-CB1-R4-RA4711-MIGRATE` has no eligible edit under the frozen conditional rule. Ledger and remaining R4 obligations unchanged.
+
 ## 2026-10-14 — RA-53 frozen: R4-SID-02 REFUTED, RA-52.5 WITHDRAWN
 
 - Architecture Review only; no source, test, selector or ledger change. The `M6-CP3-CB1-R4-SID02-PROBE` source-only answer is **ACCEPTED** on every decisive link, re-derived from bytes. Evidence `Architecture_M6_CP3_R4_SID02_Produced_Cell_Reachability_Probe_20261014.md`; frozen as **RA-53**.

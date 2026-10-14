@@ -1,3 +1,11 @@
+## CURRENT — 2026-10-14 RA-47.11 seven-site census complete (source-only)
+
+`M6-CP3-CB1-R4-RA4711-CENSUS` inspected the exact snapshot `09e8451ed6314a458e9abe8c6b74e866d19728fc` (run `38640107266`, artifact `11930195949`, 5598/5598 source hashes). Of seven textual `source_edge_index` occurrences in `tests/FieldAlignedCurveNetworkTests.cpp`, one is the typed-to-DCEL helper definition and all six callers legitimately require an actual EV row or an independent mesh-edge membership check. **0 migration candidates**, including the newer RA-47.10 lexical-order discriminant at line 912. Evidence: `Architecture_M6_CP3_R4_RA4711_Seven_Source_Edge_Index_Census_20261014.md`. No code/tests/builds/benchmarks or runtime execution in this turn.
+
+**Next authorized turn:** `M6-CP3-CB1-R4-RA4711-MIGRATE` (frozen next rung), constrained to migrate only sites proved wrongly untyped; census found none, so document the no-op rather than invent an edit or an unchanged-source compile. Do not start it in this turn. Following separate rung: `M6-CP3-CB1-R4-RA4712-LIVENESS`. Frozen architecture Review RA-52/RA-53 dispositions stand; no re-raised selected-branch/R4-SID-02 claims; no acceptance credit, TB497, or ledger change. The wider R4 remains unfinished.
+
+---
+
 ## CURRENT — 2026-10-14 RA-53 frozen; R4-SID-02 REFUTED; next turn is `M6-CP3-CB1-R4-CARRIER-CUT-COMMENT`
 
 **The `M6-CP3-CB1-R4-SID02-PROBE` answer is ACCEPTED. `R4-SID-02` is REFUTED and RA-52.5 is WITHDRAWN** — a
