@@ -18,7 +18,7 @@ Initial patch apply [38554338954](https://github.com/akashskypatel/Directional/a
 
 Corrected [apply 38554647517](https://github.com/akashskypatel/Directional/actions/runs/38554647517) is SUCCESS, exact result artifact `11887709322`, SHA-256 `d33a0226abf90e68938c70bd6934e12b2231d87b772f919b28345e9094ee3b5f`, source semantic commit **`df4221ba68f7a398413cdb4a0f9be42c485bb527`**, `runtimeExecution=false`.
 
-Eight-target GMP/GMPXX **compile requested** through durable dispatcher at event commit `557ba216eebdeb15fb68ea9a6d020796414f828d`, mailbox `m6-cp3-r4-source-rail-incidence-compile`; do **not** claim GREEN until immutable artifact and job verification. Compile exact semantic source `df4221ba68f7a398413cdb4a0f9be42c485bb527`. Test/BM execution prohibited in this turn.
+Eight-target GMP/GMPXX **compile GREEN** on exact semantic source `df4221ba68f7a398413cdb4a0f9be42c485bb527` through durable dispatcher at event `557ba216eebdeb15fb68ea9a6d020796414f828d`: [run 38554867588](https://github.com/akashskypatel/Directional/actions/runs/38554867588), compile and mailbox jobs success; Test + Benchmark skipped. Immutable package artifact `11889256705`, outer SHA-256 `d3c2781a8b1848c7e63ece0fcb520407d9911d5bcd8a32c42fdcab86a5328a12`. Verified 28/28 inner hashes, all eight compiled targets, preflight/build exits 0/0, exact source commit, GMPXX and GMP from the generated linker command, clean final source status; `runtimeExecution=false`, `semanticContracts=compiled-not-executed`. No test/benchmark execution or runtime PASS claim.
 
 ## Carry forward
 
