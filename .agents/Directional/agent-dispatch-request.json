@@ -1,19 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-closedrail-component-compile-20261014t0010z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-closedrail-component-compile",
-  "source_sha": "62fec4a7f4ccf05a6fe8bc14f81d4b8ff774d809",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-closedrail-component-compile",
+  "request_id": "m6-cp3-r4-closedrail-docs-apply-20261014t0014z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-closedrail-docs-apply",
+  "file_id": "1vIByD3FFOkd1elrendkJk9sBz0IepxDb",
+  "patch_sha256": "04f0ff7400be80709bf4a111a2d2bff4b6c63a475d1445b143b9fe9dfbafc5ce",
+  "base_sha": "d78d0c7bcc7486fe2c5497e911e65ca1b8f16b91",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): preserve R4 closed-rail component checkpoint and compile request",
   "retention_days": 14
 }
