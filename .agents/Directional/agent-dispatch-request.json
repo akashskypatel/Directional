@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-standalone-negative-owner-apply-20261014t1645z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-standalone-negative-owner-apply",
-  "file_id": "19Vt3GDcl5bD_WV5eEWAqAWOeVqTX5AMT",
-  "patch_sha256": "076755954cc9fcdf4ab70465ceb5d0e3006b38f46346908901d954de4ee9ea6f",
-  "base_sha": "840583d57ac0263b6d6230bf0b59e1a9b58b0622",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surfacecells): reject malformed negative standalone curve owner",
-  "retention_days": 7
+  "request_id": "m6-cp3-r4-negative-standalone-owner-compile-20261014t1646z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-negative-standalone-owner-compile",
+  "source_sha": "42d7915e9e3ba34216a50ff48974c8e9734af91f",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-r4-negative-standalone-owner"
 }
