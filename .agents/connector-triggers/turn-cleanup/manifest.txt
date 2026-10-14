@@ -1,2 +1,0 @@
-# RA-47.11 source-only census one-shot cleanup
-.agents/connector-triggers/source-snapshot/m6-cp3-r4-ra4711-census-20261014.txt
