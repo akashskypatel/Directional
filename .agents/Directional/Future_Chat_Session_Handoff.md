@@ -1,3 +1,11 @@
+## CURRENT — 2026-10-14 `M6-CP3-CB1-R4-SID02-PROBE` source-only COMPLETE; equal-opposite-corner configuration unreachable
+
+Exact verified snapshot `43e8a503baa1896fd133eecda5ce6a323b9229ed` / [run 38625280153](https://github.com/akashskypatel/Directional/actions/runs/38625280153), artifact `11923063390`, 5596/5596 source hashes. The three A4 producer paths reject physical `corners[0]==corners[2] && corners[1]==corners[3]` before publishing. A5's side match independently checks distinct lattice-coordinate owners; RA-52.5's exact `R4-SID-02` A5 guard proposal is **RETIRED AS PRODUCER-UNREACHABLE** with all existing fail-closed guards retained. A5 `trace_equal` has a tolerance; no universal near-coincidence theorem or runtime credit is claimed. Source-only, no code/build/test/benchmark changes. Evidence: `Architecture_M6_CP3_R4_SID02_Produced_Cell_Reachability_Probe_20261014.md`.
+
+**Next authorized single obligation:** correct the one-line comment at `src/geometry/SurfaceCellTracing.cpp:1457-1459` without modifying the guard at `:1460-1467`; select its formal turn ID only from new authority. All other RA-52 obligations below remain open in the original order. Do not resurrect selected-branch receipt, change the named opt-out, start TB497, or promote compile-only evidence.
+
+---
+
 ## CURRENT — 2026-10-14 RA-52 frozen; selected-branch gate DISSOLVED; no open REVIEW_BLOCKER
 
 **The `Architecture_M6_CP3_R4_Source_Current_Review_Gate_20261014.md` gate is resolved and supersedes the
@@ -15,18 +23,16 @@ disposition and say why it does not apply. The graded family is now RA-49.0 wron
 **extent**, RA-51.0 **neither** (correct shape), RA-52.0 wrong **vintage**.
 
 **Open obligations, smallest first — one per turn, each independently reviewable:**
-1. `R4-SID-02` reachability probe (source-only): can a produced cell have `corners[0]==corners[2]` and
-   `corners[1]==corners[3]`? Report only; do not repair in the same turn.
-2. The one-line comment correction at `src/geometry/SurfaceCellTracing.cpp:1457-1459`; the `continue` at
+1. The one-line comment correction at `src/geometry/SurfaceCellTracing.cpp:1457-1459`; the `continue` at
    `:1460-1467` may not be touched.
-3. RA-46.6 typed sub-codes, constrained by RA-51.7 (no sub-code for a dead disjunct) and RA-52 (none for the
+2. RA-46.6 typed sub-codes, constrained by RA-51.7 (no sub-code for a dead disjunct) and RA-52 (none for the
    selected-branch join).
-4. RA-47.11 — the seven surviving `source_edge_index` uses in `tests/FieldAlignedCurveNetworkTests.cpp`:
+3. RA-47.11 — the seven surviving `source_edge_index` uses in `tests/FieldAlignedCurveNetworkTests.cpp`:
    migrate or justify, one report.
-5. RA-47.12 — liveness of the typed field-aligned interval check on the producer path; a negative answer is
+4. RA-47.12 — liveness of the typed field-aligned interval check on the producer path; a negative answer is
    an RP-02 finding, not a code change.
-6. RA-43.4's true residue — the untyped standalone geometry diagnostics **other than** `rail_interval_refs`.
-7. Verify and, if still inaccurate, correct the `FieldTransportAtlas` class comment about construction being
+5. RA-43.4's true residue — the untyped standalone geometry diagnostics **other than** `rail_interval_refs`.
+6. Verify and, if still inaccurate, correct the `FieldTransportAtlas` class comment about construction being
    the only validation seam (RA-48.3 residual).
 
 **Carried, unchanged:** `R4-JCT-01` the multi-carrier junction witness is now **AUTHORED / COMPILED / NOT

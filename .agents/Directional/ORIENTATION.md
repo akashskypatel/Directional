@@ -1,3 +1,9 @@
+## CURRENT — 2026-10-14 R4-SID-02 source-only probe complete
+
+Exact equal-opposite-corner `SurfacePhaseFrontCell` is producer-unreachable: planar all-pairs geometric check; periodic and bounded-disk nonzero oriented loop-normal check. A5 additionally distinguishes opposite sides through exact lattice-coordinate states, regardless of trace proximity. Retire the RA-52.5 A5-locus repair for that exact configuration, preserve guards. Source-only, no runtime evidence. See `Architecture_M6_CP3_R4_SID02_Produced_Cell_Reachability_Probe_20261014.md`. Next open item: the one-line comment at `SurfaceCellTracing.cpp:1457-1459`; its guard `:1460-1467` is frozen. Remaining RA-52 obligations remain in handoff.
+
+---
+
 ## CURRENT — 2026-10-14 `M6-CP3-R4-SELECTED-BRANCH-OPTOUT-ARCH-REV` COMPLETE; RA-52 frozen
 
 **The source-current review gate is resolved and supersedes the stop paragraphs below. There is no open

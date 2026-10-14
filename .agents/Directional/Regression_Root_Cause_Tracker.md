@@ -1,3 +1,9 @@
+## CURRENT — `R4-SID-02` exact equal-opposite-corner candidate RETIRED (source-only, 2026-10-14)
+
+The A4 source producers reject physical two-point alternating quad loops before publishing (`SurfaceCellTracing.cpp:12627-12682`, `:14682-14709`, `:17230-17262`). Distinct per-corner lattice coordinates and the A5 `lattice_equal` check independently prevent opposite-side misattribution. RA-52.5's A5-locus correction is **not reachable on produced exact-equality input**, so no guard or new negative is added. The pre-existing quotient `DegenerateClassedQuad`, A6 and A7 validators stay unchanged. A5 uses tolerance-based `trace_equal`, which is not strict equality; near-coincidence under extreme scaling is not declared impossible. No code/build/runtime changes, no accepted-ledger change. Exact probe: `Architecture_M6_CP3_R4_SID02_Produced_Cell_Reachability_Probe_20261014.md`.
+
+---
+
 ## CURRENT — selected-branch join REFUSED; RA-43.4 opt-out PRESERVED; RA-52 frozen (2026-10-14)
 
 **The source-current REVIEW gate is DISSOLVED. RA-52 frozen. Both offered options are REFUSED.** No new
