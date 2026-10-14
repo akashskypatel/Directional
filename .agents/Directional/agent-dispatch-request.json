@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-boundary-incidence-compile-20261014t1158z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-boundary-incidence-compile",
-  "source_sha": "99399772c9f17ebbe39e1dbc0f2dfdb11009bfc0",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-boundary-incidence"
+  "request_id": "m6-cp3-r4-soft-curve-auth-apply-20261014t1223z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-soft-curve-auth-apply",
+  "file_id": "151TH-TZq9MWCZBGnpcQY9EabxJSZeRaa",
+  "patch_sha256": "9046c95dc962431ed364a5b9146293946a32dfdcf7acd4e7b33e8be450257467",
+  "base_sha": "dea48ec56ca0f6745cf3c6a501811294c063d06d",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "fix(surface-cells): authenticate non-rail feature curve source incidence",
+  "retention_days": 14
 }
