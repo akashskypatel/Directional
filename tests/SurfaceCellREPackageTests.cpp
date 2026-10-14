@@ -712,8 +712,12 @@ TEST(SurfaceCellPipelinePhase20,
   const auto junction = route->junctions.front().junction;
   EXPECT_EQ(4, static_cast<int>(junction.index()));
   bool oddCarrier = false;
+  // The two terminal certificates must account for BOTH independent source
+  // carriers; a duplicated terminal for only one edge is not a paired proof.
+  std::set<Edge> terminalCarrierEdges;
   for (const auto &endpoint : route->endpoints) {
     const auto &carrier = endpoint.terminalCarrier;
+    EXPECT_TRUE(terminalCarrierEdges.insert(carrier.edge).second);
     const auto first = regions.row_for_topology(carrier.firstFace);
     const auto second = regions.row_for_topology(carrier.secondFace);
     ASSERT_TRUE(first.has_value());
@@ -725,6 +729,8 @@ TEST(SurfaceCellPipelinePhase20,
         carrier.firstToSecond == Turn::from_integer(1) ||
         carrier.firstToSecond == Turn::from_integer(3);
   }
+  EXPECT_EQ((std::set<Edge>{a.value(), b.value()}), terminalCarrierEdges)
+      << "both produced rail carriers need distinct endpoint certificates";
   EXPECT_TRUE(oddCarrier)
       << "the real paired A4 carrier must have odd tau in its A1 gauge";
 
@@ -754,6 +760,12 @@ TEST(SurfaceCellPipelinePhase20,
       if (const auto *decision = std::get_if<Decision>(&transit)) {
         ASSERT_TRUE(decision->vertexStarTransit.has_value());
         const auto &audit = *decision->vertexStarTransit;
+        ASSERT_TRUE(audit.seed.has_value());
+        EXPECT_EQ(junction, audit.seed->sourceVertex);
+        EXPECT_EQ(seedFace, audit.seed->arrivalFace);
+        EXPECT_EQ(pairing.branch, audit.seed->arrivalBranch);
+        EXPECT_EQ(directional::geometry::FieldVertexArrivalMode::FaceInterior,
+                  audit.seed->arrivalMode);
         EXPECT_EQ(directional::geometry::VertexStarTransitState::Owner,
                   audit.state);
         EXPECT_EQ(1U, audit.ownerCardinality);
