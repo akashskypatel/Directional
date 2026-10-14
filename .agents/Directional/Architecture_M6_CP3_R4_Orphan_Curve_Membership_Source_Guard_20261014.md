@@ -25,3 +25,11 @@ Mandatory pinned eight-target GMP/GMPXX compile was **requested**, source `f0265
 ## Carried obligations
 
 RA-43.1 selected A4/A1 branch needs independent Review; RA-43.4 standalone diagnostic first-failure preservation remains unresolved; RA-47.12 observed liveness, historical 39/34/7/88/six, organic D1/D2/D3/D5/A6/A7 and genuine odd-τ multi-carrier remain for separately authorized artifact-only TB. Current canonical turn is unchanged.
+
+---
+
+## Exact-source compile reconciliation — 2026-10-14
+
+The earlier **requested/pending** compile above is superseded by terminal evidence. The pinned [workflow run 38586952664](https://github.com/akashskypatel/Directional/actions/runs/38586952664) completed successfully: compile job `115931534878`, immutable result artifact `11905148938`, ZIP SHA-256 `f4a10d548631ad44a3ec8a4a1fedb59c4f90186471f7503037e232fcc7f7ead1`. Verified exact `source-commit.txt=f026512e4599eb9982c1f9afd4292ed429a82eae`, 28/28 packaged SHA256SUMS, all eight required targets, `preflight-exit-code=0`, `build-exit-code=0`, `DIRECTIONAL_ENABLE_GMP:BOOL=ON`, actual generated linker command with `libgmpxx.so` and `libgmp.so`, five empty source-status snapshots, `runtimeExecution=false` and `turnBoundary=Code+Build-only`. The packaged exact source contains the new orphan guard and existing-test extension. Workflow validation, compile, and mailbox jobs succeeded; test/benchmark execution was skipped.
+
+**Disposition:** Code + Build checkpoint for this narrow guard is compile-GREEN only. No runtime result, acceptance change, frozen 497-selector edit, RA-43.1/RA-43.2 Review bypass, or successor advancement. Continue the same canonical R4 turn; the previously enumerated independent Review and future artifact-only runtime obligations remain open.
