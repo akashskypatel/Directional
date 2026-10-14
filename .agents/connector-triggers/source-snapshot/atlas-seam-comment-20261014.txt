@@ -1,2 +1,0 @@
-Purpose: exact-source inspection for M6-CP3-CB1-R4-ATLAS-SEAM-COMMENT
-Boundary: comment-only, no executable tests or compile.
