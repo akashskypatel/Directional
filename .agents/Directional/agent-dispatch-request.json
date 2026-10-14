@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-real-source-component-apply-20261014t1015z",
+  "request_id": "m6-cp3-r4-real-source-component-apply-20261014t1017z-retry1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-real-source-component-apply",
-  "file_id": "14cY1IVSN4vYHpdWcW-0FP6-SqSzmD5Wn",
-  "patch_sha256": "79e13d3e852f8cc5f7b6aa629fec326c148c7c67440b8fd5d78c63120d7907e5",
+  "mailbox_key": "m6-cp3-r4-real-source-component-apply-r1",
+  "file_id": "1lZa1Xw8IgEcMz53SkIwOnBtGYlUwNc1s",
+  "patch_sha256": "b4d848d96e8b7fac1be98a98284273e42a6874883e1c3c108bc10e440cd30ba4",
   "base_sha": "ef916e0c3d8257a71ebbbb00f5eee64b9363a7b9",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surface-cells): attest feature rail component from source face connectivity"
+  "commit_message": "fix(surface-cells): attest rail component from source face connectivity"
 }
