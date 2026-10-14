@@ -1,3 +1,8 @@
+## 2026-10-14 — RA-47.11 typed-edge migration disposition (no-op)
+
+- `M6-CP3-CB1-R4-RA4711-MIGRATE`: the frozen seven-site census identified **0** wrongly untyped `source_edge_index` uses; all seven require their existing typed-key-to-EV-row boundary or independent mesh adjacency assertion. Exact source remained unchanged since `09e8451ed6314a458e9abe8c6b74e866d19728fc`, verified by changed-path comparison and direct examination of the packaged snapshot. Record: `.agents/Directional/Architecture_M6_CP3_R4_RA4711_Migration_NoOp_20261014.md`.
+- No production/test code, compile, runtime execution, benchmark, frozen selector, acceptance ledger, or PR metadata change. Separately authorized successor: `M6-CP3-CB1-R4-RA4712-LIVENESS`; the wider R4 is not complete.
+
 ## 2026-10-14 — RA-47.11 seven-site DCEL row census (source-only)
 
 - `M6-CP3-CB1-R4-RA4711-CENSUS`: exact snapshot `09e8451ed6314a458e9abe8c6b74e866d19728fc` (workflow `38640107266`, artifact `11930195949`, 5598/5598 files verified) confirms `source_edge_index` has one typed-to-EV-row helper and six callers. All seven are legitimate, including the RA-47.10 lexical-versus-`EV`-row mismatch assertion; **zero test migration candidates**. See `.agents/Directional/Architecture_M6_CP3_R4_RA4711_Seven_Source_Edge_Index_Census_20261014.md`.
