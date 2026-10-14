@@ -245,6 +245,19 @@ TEST(SurfaceCellClosedProductContracts,
             orphanedCurveEdge.rejection()->kind);
   EXPECT_EQ(1, orphanedCurveEdge.rejection()->failedEdgeIndex);
 
+  // -1 is the only unassigned curve sentinel. A forged lower negative
+  // owner must not escape into a published standalone rail.
+  standaloneMember.edges[1].curve = -2;
+  const auto malformedStandaloneOwner =
+      directional::pipeline::build_authoritative_surface_cell_rails(
+          source, standaloneMember);
+  ASSERT_TRUE(malformedStandaloneOwner.is_rejected());
+  EXPECT_EQ(nullptr, malformedStandaloneOwner.produced_product());
+  ASSERT_NE(nullptr, malformedStandaloneOwner.rejection());
+  EXPECT_EQ(directional::pipeline::SurfaceCellRailBuildFailureKind::InvalidFeatureEdge,
+            malformedStandaloneOwner.rejection()->kind);
+  EXPECT_EQ(1, malformedStandaloneOwner.rejection()->failedEdgeIndex);
+
   // Separate source-valid curves must not alias the same producer curve ID.
   // The feature-map builder allocates a fresh ID for every traced curve;
   // a forged duplicate would otherwise publish two distinct rails sharing
