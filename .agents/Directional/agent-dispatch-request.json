@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-negative-standalone-owner-compile-20261014t1646z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-negative-standalone-owner-compile",
-  "source_sha": "42d7915e9e3ba34216a50ff48974c8e9734af91f",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-negative-standalone-owner"
+  "request_id": "m6-cp3-r4-negative-standalone-owner-docs-20261014t1653z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-negative-standalone-owner-docs-apply",
+  "file_id": "1GjYqiEM7UVPNo98lXizMmqEbqIsWWdf7",
+  "patch_sha256": "924d873a9305669c8ac23be8b41160fc97f688e95f43562c2e28ff9818c1a801",
+  "base_sha": "840583d57ac0263b6d6230bf0b59e1a9b58b0622",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: update R4 compile-green handoff plan and TODO",
+  "retention_days": 7
 }
