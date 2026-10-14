@@ -1,3 +1,10 @@
+## CURRENT — `M6-CP3-CB1-ENTRY-R4` compile evidence reconciled (2026-10-14)
+
+- [x] Correct source-curve membership for uncovered standalone hard rails: semantic `f026512e`, compile run `38586952664`, eight GMP/GMPXX targets GREEN, 28/28 manifest, no runtime; evidence `Architecture_M6_CP3_R4_Orphan_Curve_Membership_Source_Guard_20261014.md`.
+- [ ] Remain R4 Code + Build; independent RA-43.1/.2 provenance Review and RA-43.4 diagnostic API decision open. Retain 39/34/7/88/six and organic D1/D2/D3/D5/A6/A7/RA-47.12/odd-τ obligations for separately authorized artifact-only TB; no selector or acceptance promotion.
+
+---
+
 ## CURRENT — R4 produced odd-τ admitted A1 germ fan typed topology and directed branch-lift compile (2026-10-14 UTC)
 
 Canonical `M6-CP3-CB1-ENTRY-R4` **IN_PROGRESS Code + Build**, PR #8 draft/open; continue this same turn, not TB497/successor. Existing `SurfaceCellPipelinePhase20.ProducedNonconstantTwoCarrierOddTauSharesA1VertexGerm` source-only test now independently attests all sectors of a **genuinely admitted** A1 vertex-star owner on the real A4-produced two-carrier odd-τ rail: source-component/topology-region/junction containment, continuous radial edge ordering, absence of atlas nontraversable and A4 hard carrier crossings, actual directed `topology.transport`, and exact `FieldBranch` rotation under each signed A3 lift. Rejected diagnostic paths remain nonaccepting. Two isolated commits [c937c29](https://github.com/akashskypatel/Directional/commit/c937c29e91576313437d5ee2dd9427c452e1640d) and final [d47b363](https://github.com/akashskypatel/Directional/commit/d47b363682e449bb6525ec9fc4f6fd4d56c04d14) modify **only** this existing test; final Git blob `841eac2a7d8fd4f15f3405b6fefac83f937870a2`. Full-index verified recovery patches preserved in Directional Library.

@@ -1,3 +1,10 @@
+## CURRENT — R4 orphan curve-member guard exact-source compile checkpoint (2026-10-14)
+
+- [x] Applied minimal independent source integrity correction to `build_authoritative_surface_cell_rails`, source `f026512e4599eb9982c1f9afd4292ed429a82eae`; original existing producer rejection test extended without changing test identity. Verified mandatory eight-target GMP/GMPXX compile in run `38586952664`, artifact `11905148938`, ZIP SHA256 `f4a10d548631ad44a3ec8a4a1fedb59c4f90186471f7503037e232fcc7f7ead1`, 28/28 manifest, no runtime execution. Source and proof in `Architecture_M6_CP3_R4_Orphan_Curve_Membership_Source_Guard_20261014.md`.
+- [ ] Continue same canonical R4. RA-43.1/.2 typed selected-branch/filled-side source-domain Review and RA-43.4 diagnostic opt-out disposition remain unresolved; preserve historical and organic TB obligations and frozen selector. No successor, TB497, or runtime promotion in Code + Build.
+
+---
+
 ## CURRENT — R4 source boundary-class incidence compile verified (2026-10-14 12:02 UTC)
 
 - [x] Verified exact source [snapshot 38559146201](https://github.com/akashskypatel/Directional/actions/runs/38559146201), 5898/5898 hashes. Source audit found that an interior two-face edge could claim `AdaptiveFeatureClass::Boundary` and be published as a boundary rail even though the canonical feature-map builder assigns Boundary only to one-face edges.
