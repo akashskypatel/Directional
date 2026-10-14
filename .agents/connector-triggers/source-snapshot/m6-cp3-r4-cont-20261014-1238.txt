@@ -1,0 +1,3 @@
+turn=M6-CP3-CB1-ENTRY-R4
+resume_beacon=bd458cd22273faaa61bd31c4de6733e4689b84bd
+intent=source-snapshot-for-canonical-R4
