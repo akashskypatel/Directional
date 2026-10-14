@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-nonhard-a3-fixed-compile-20261014t0254z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-nonhard-a3-fixed-compile",
-  "source_sha": "524a0291847e08c33f316c9db71fc90a002d58db",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-nonhard-a3-fixed-compile"
+  "request_id": "m6-cp3-r4-nonhard-a3-docs-transportfix-20261014t0259z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-nonhard-a3-docs-transportfix",
+  "file_id": "1Vy4MrDjdsZABpkuqofx3m38mN69sKd8B",
+  "patch_sha256": "69058e76e15dc5e1c831cae1be9e4ead2e360f9b6b1c26b1f5ef0e9070d14c67",
+  "base_sha": "d9875463288bcb78c06d63df855ff3c9036708b2",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): preserve R4 nonhard A3 compile failure and recovery handoff",
+  "retention_days": 14
 }
