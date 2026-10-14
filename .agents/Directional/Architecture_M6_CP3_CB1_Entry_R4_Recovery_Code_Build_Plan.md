@@ -1,3 +1,11 @@
+## CURRENT — R4 A2a/A3 atlas provenance first-consumer apply verified; compile owed (2026-10-14 09:14 UTC)
+
+- [x] Existing checked S4 already required exact A2a network/source and A3 atlas pairing; the direct tracing and phase-front ingress lacked that pairing guard. Reused the existing valid gauge-relabelled semantic-equivalence witness and added the first `InvalidTopologyRegionTransport` rejection, without altering frozen selector, ABI or test identity.
+- [x] Exact-source two-file patch at base `f04eda9743e94e42cac9b19f6ada29ae7fde1a07`, SHA-256 `5ab02385a1ca63d1da8dcb6f7478b41010934ae29127ea8b04cd3bb65867fa65`, successfully applied through [workflow 38540378531](https://github.com/akashskypatel/Directional/actions/runs/38540378531) to semantic commit `bbf2902ab56c6000867e538c16300720f95b14ff`. Apply result `11882690492`, ZIP SHA-256 `0d85ec61922d0e09da974f0b3d96dd48175e7d2b0779d3607e8e703eee7c9296`, two changed paths confirmed, `runtimeExecution=false`. Consumed Drive staging permanently deleted. Owning evidence: `Architecture_M6_CP3_R4_RA434_Network_Atlas_Provenance_20261014.md`.
+- [ ] **Immediate same-R4 action: compile the NEW exact source `bbf2902ab56c6000867e538c16300720f95b14ff`.** Previous eight-target GMP/GMPXX compile GREEN for `f04eda9` is historical and does NOT cover `bbf2902`. Use the strict durable compile dispatcher, all eight standard targets, 28/28 packaged hashes, `runtimeExecution=false`. No runtime PASS or TB497. Maintain independent RA-43.1 design-gate and other open obligations.
+
+---
+
 ## CURRENT — R4 RA-43.4 first-consumer component guard compiled (2026-10-14 08:38 UTC)
 
 - [x] Network-bound `rail_interval_refs` validates `SurfaceCellRail.component` against producer `FieldAlignedMandatoryEdge.sourceComponent` at the first affected interval, retaining `TypedAuthorityMismatch` for foreign/negative IDs. Existing Phase10 contract includes a genuine second-component substitution even with `LegacyStandaloneDiagnostic` and supplied network. Exact semantic [`f04eda9`](https://github.com/akashskypatel/Directional/commit/f04eda9743e94e42cac9b19f6ada29ae7fde1a07); two source/test paths only; no selector changes.
