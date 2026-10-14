@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-duplicate-canonical-edge-compile-20261014t1813z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-duplicate-canonical-edge-compile",
-  "source_sha": "5ecaa2acbec9a03622e14e6afac4dfc71763778f",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-duplicate-canonical-edge"
+  "request_id": "m6-cp3-r4-source-current-review-gate-20261014t1834z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-source-current-review-gate-apply",
+  "file_id": "14wTsFtQaZEHj6dexqh5JzZWBXDt3tzxS",
+  "patch_sha256": "0b67a065817126d6bd68dbddb1cabc62ee62c39eb2b28559a69c59abe0baa0fa",
+  "base_sha": "8f490bd7fb196bfb2a9d8b83cf9c65c5d6c001d0",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: preserve R4 source-current independent review gate",
+  "retention_days": 7
 }
