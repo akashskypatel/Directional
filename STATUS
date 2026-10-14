@@ -1,8 +1,8 @@
 ---TURN_STATUS---
 Turn: M6-CP3-CB1-R4-RA466-SUBCODES
-Status: IN_PROGRESS
-Successor: UNKNOWN
+Status: COMPLETE
+Successor: M6-CP3-CB1-R4-RA434-CENSUS
 Started at: 2026-10-14T22:56:05Z
 Resumed at:
-Ended at:
+Ended at: 2026-10-14T23:06:48Z
 ---END_TURN_STATUS---
