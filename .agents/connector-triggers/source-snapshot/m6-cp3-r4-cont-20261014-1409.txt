@@ -1,3 +1,0 @@
-turn=M6-CP3-CB1-ENTRY-R4
-resume_beacon=04a08d4656428c6ac51706f5649605973c7d8425
-purpose=verified-exact-source-R4-continuation
