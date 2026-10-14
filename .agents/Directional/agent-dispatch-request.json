@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-closedchain-cyclic-hard-edge-docs-20261013t2300z",
+  "request_id": "m6-cp3-r4-closedrail-component-apply-20261014t0008z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-closedchain-cyclic-hard-edge-docs",
-  "file_id": "10gVZ80NSpmMIkw1i4N8-YRpitbMvpb_n",
-  "patch_sha256": "918033fd271003b4a0e2adef16bb32e9e289e187827aec968a68a502db211ee8",
-  "base_sha": "391d8d3de0ca617395cb3d275ded0b0a1c12a17b",
+  "mailbox_key": "m6-cp3-r4-closedrail-component-apply",
+  "file_id": "1JAQbtaRs5ZW1YFGGA4JRxiY2UxDclMMe",
+  "patch_sha256": "5afc476876a1517b797af1627cee7bbbebd8b618fb3ceb59339446d49665519c",
+  "base_sha": "d78d0c7bcc7486fe2c5497e911e65ca1b8f16b91",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): preserve R4 cyclic closed-rail A4 guard GMP compile receipt",
+  "commit_message": "fix(directional): enforce closed-rail source component at first A4 consumer",
   "retention_days": 14
 }
