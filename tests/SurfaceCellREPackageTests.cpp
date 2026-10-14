@@ -772,6 +772,37 @@ TEST(SurfaceCellPipelinePhase20,
         EXPECT_EQ(decision->nextFace, audit.ownerFace);
         EXPECT_EQ(decision->nextBranch, audit.ownerBranch);
         EXPECT_GT(audit.fanLength, 1U);
+        ASSERT_EQ(audit.fanLength, audit.sectors.size());
+        // Reconstruct the admitted fan independently from A1 source faces.
+        // The owner cannot be credited if its ordered sectors cross a hard
+        // carrier (or any other atlas-owned nontraversable edge).
+        const auto authenticatedFanLink = [&](std::size_t from,
+                                              std::size_t to) {
+          const auto &firstSector = audit.sectors[from];
+          const auto &secondSector = audit.sectors[to];
+          EXPECT_EQ(firstSector.previousRadialVertex,
+                    secondSector.nextRadialVertex);
+          const auto radial = Edge::make(junction,
+                                         firstSector.previousRadialVertex);
+          ASSERT_TRUE(radial.has_value());
+          EXPECT_FALSE(sourceBarriers.contains(radial.value()));
+          EXPECT_FALSE(front.hardFeatureEdges().contains(radial.value()));
+          EXPECT_TRUE(topology.transport(radial.value(), firstSector.sourceFace,
+                                         secondSector.sourceFace).has_value());
+        };
+        for (const auto &fanSector : audit.sectors) {
+          const auto *fanFrame = topology.find_frame(fanSector.sourceFace);
+          ASSERT_NE(nullptr, fanFrame);
+          EXPECT_EQ(frame->sourceComponent, fanFrame->sourceComponent);
+          EXPECT_EQ(frame->topologyRegion, fanFrame->topologyRegion);
+          const auto &corners = fanSector.sourceFace.vertices();
+          EXPECT_NE(corners.end(),
+                    std::find(corners.begin(), corners.end(), junction));
+        }
+        for (std::size_t i = 1U; i < audit.sectors.size(); ++i)
+          authenticatedFanLink(i - 1U, i);
+        if (audit.closedFan && !audit.sectors.empty())
+          authenticatedFanLink(audit.sectors.size() - 1U, 0U);
         ++verifiedOwners;
       } else {
         const auto &error = std::get<
