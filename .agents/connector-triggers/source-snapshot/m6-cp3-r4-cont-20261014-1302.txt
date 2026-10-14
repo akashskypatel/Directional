@@ -1,0 +1,3 @@
+turn=M6-CP3-CB1-ENTRY-R4
+resume_beacon=a4c0bdbb62efead90fe5f5128df98c4ca66eb1f3
+purpose=exact-source-inspection
