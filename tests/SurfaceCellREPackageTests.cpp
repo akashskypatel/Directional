@@ -266,6 +266,34 @@ TEST(SurfaceCellClosedProductContracts,
             duplicateMember.rejection()->kind);
   EXPECT_EQ(0, duplicateMember.rejection()->failedEdgeIndex);
 
+  // The builder marks a curve closed only when its traced source path
+  // returns to its starting vertex. A forged mixed hard/soft curve can
+  // publish only open hard runs, which otherwise never validate closure.
+  auto mixedSourceCurve = validMap;
+  auto softMember = validMap.edges[0];
+  softMember.vertices = {1, 4};
+  softMember.incidentFaces = {0, 3};
+  softMember.edgeClass = directional::geometry::AdaptiveFeatureClass::Soft;
+  mixedSourceCurve.edges.push_back(softMember);
+  mixedSourceCurve.curves[0].edges = {0, 1};
+  mixedSourceCurve.curves[0].vertices = {0, 1, 4};
+  const auto openMixed =
+      directional::pipeline::build_authoritative_surface_cell_rails(
+          source, mixedSourceCurve);
+  ASSERT_TRUE(openMixed.is_produced());
+  ASSERT_EQ(1U, openMixed.product().rails.size());
+  EXPECT_FALSE(openMixed.product().rails[0].closed);
+  mixedSourceCurve.curves[0].closed = true;
+  const auto falseClosedMixed =
+      directional::pipeline::build_authoritative_surface_cell_rails(
+          source, mixedSourceCurve);
+  ASSERT_TRUE(falseClosedMixed.is_rejected());
+  EXPECT_EQ(nullptr, falseClosedMixed.produced_product());
+  ASSERT_NE(nullptr, falseClosedMixed.rejection());
+  EXPECT_EQ(directional::pipeline::SurfaceCellRailBuildFailureKind::InvalidFeatureEdge,
+            falseClosedMixed.rejection()->kind);
+  EXPECT_EQ(0, falseClosedMixed.rejection()->failedEdgeIndex);
+
   auto wrongComponent = validMap;
   wrongComponent.edges[0].component = 1;
   const auto foreignComponent =
