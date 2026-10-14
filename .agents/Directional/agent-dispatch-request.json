@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-closedrail-resume-compile-20261014t0054z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-closedrail-resume-compile",
-  "source_sha": "13df05220f84cba35923855ec50d8aa6c7a6d088",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-closedrail-resume-compile"
+  "request_id": "m6-cp3-r4-resume-handoff-apply-20261014t0115z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-resume-handoff-apply",
+  "file_id": "16MSJn7Df_OkdelzOTaZhMCEFiioVeXfN",
+  "patch_sha256": "351abc02717e3cdb294a4381351d9f14073cb393b481e60992f468e39d44f459",
+  "base_sha": "13df05220f84cba35923855ec50d8aa6c7a6d088",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): preserve R4 compile checkpoint and source census",
+  "retention_days": 14
 }
