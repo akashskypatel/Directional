@@ -14,7 +14,7 @@ Exact full-index two-file patch retained in ChatGPT Library `/Directional/Eviden
 
 ## Exact compile request
 
-Mandatory eight-target GMP/GMPXX compile was triggered by dispatcher commit `c1bdcbc8e45f1f0764ceb9738b898e195ccf3cca`, mailbox `m6-cp3-r4-false-open-curve-compile`, pinned to semantic source `370d84df79a1414148798c81c09bfece81e6d48d`. **Await immutable compile result and independently verify exact source, 28/28 artifact manifest, all eight targets, 0/0 preflight/build, GMPXX/GMP actual generated linker, clean source-status records, and runtimeExecution=false.** Do not infer green until the result and job confirm it.
+Mandatory eight-target GMP/GMPXX compile was triggered by dispatcher commit `c1bdcbc8e45f1f0764ceb9738b898e195ccf3cca`, mailbox `m6-cp3-r4-false-open-curve-compile`, pinned to semantic source `370d84df79a1414148798c81c09bfece81e6d48d`. **Exact-source compile GREEN; runtime acceptance NOT claimed.** [Workflow 38576841476](https://github.com/akashskypatel/Directional/actions/runs/38576841476), compile job `115896301159` success, mailbox event `c1bdcbc8e45f1f0764ceb9738b898e195ccf3cca` and source `370d84df79a1414148798c81c09bfece81e6d48d` matched. Immutable result artifact `11902135365` SHA-256 `1322ec0968977cac1b31bd50339d9301432a7c043c94d6234f6109ef4a80f015`. Independent verification: `SHA256SUMS` 28/28 valid; exactly 8/8 approved targets; preflight/build exit 0/0; actual linker includes gmpxx and gmp; five source-status records clean; `exactArithmeticBackend=GMP` and `runtimeExecution=false`; Test + Benchmark job skipped. Source compilation is not a runtime test pass.
 
 ## Remaining canonical obligations
 
