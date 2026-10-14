@@ -249,6 +249,38 @@ TEST(SurfaceCellClosedProductContracts,
             interiorAsBoundary.rejection()->kind);
   EXPECT_EQ(0, interiorAsBoundary.rejection()->failedEdgeIndex);
 
+  // A two-sided hard rail is legitimate. When a third source triangle
+  // shares the same edge, the interval's two-side record cannot describe
+  // its incidence, even if feature-map incidence metadata is truthful.
+  directional::TriMesh manifoldHardSource;
+  Eigen::MatrixXd incidenceVertices(5, 3);
+  incidenceVertices << 0., 0., 0., 1., 0., 0., 0., 1., 0.,
+                       0., -1., 0., 0., 0., 1.;
+  Eigen::MatrixXi incidenceFaces(2, 3);
+  incidenceFaces << 0, 1, 2, 1, 0, 3;
+  manifoldHardSource.set_mesh(incidenceVertices, incidenceFaces);
+  auto twoSidedHard = validMap;
+  twoSidedHard.edges[0].incidentFaces = {0, 1};
+  const auto twoFaceRail =
+      directional::pipeline::build_authoritative_surface_cell_rails(
+          manifoldHardSource, twoSidedHard);
+  ASSERT_TRUE(twoFaceRail.is_produced());
+  incidenceFaces.conservativeResize(3, 3);
+  incidenceFaces.row(2) << 0, 1, 4;
+  directional::TriMesh threeFaceSource;
+  threeFaceSource.set_mesh(incidenceVertices, incidenceFaces);
+  auto overfullHard = twoSidedHard;
+  overfullHard.edges[0].incidentFaces = {0, 1, 2};
+  const auto threeFaceRail =
+      directional::pipeline::build_authoritative_surface_cell_rails(
+          threeFaceSource, overfullHard);
+  ASSERT_TRUE(threeFaceRail.is_rejected());
+  EXPECT_EQ(nullptr, threeFaceRail.produced_product());
+  ASSERT_NE(nullptr, threeFaceRail.rejection());
+  EXPECT_EQ(directional::pipeline::SurfaceCellRailBuildFailureKind::InvalidFeatureEdge,
+            threeFaceRail.rejection()->kind);
+  EXPECT_EQ(0, threeFaceRail.rejection()->failedEdgeIndex);
+
   // A feature-map builder visits each edge once. A forged closed curve that
   // traverses the same real boundary edge in both directions must not publish
   // a two-interval authoritative closed rail from that one source edge.

@@ -9338,6 +9338,9 @@ SurfaceCellRailBuildResult build_authoritative_surface_cell_rails(
     std::sort(claimedFaces.begin(), claimedFaces.end());
     if (support == sourceFacesByEdge.end() ||
         claimedFaces != support->second || claimedFaces.empty() ||
+        // Rail incident-side authority cannot represent three or more faces.
+        // Reject nonmanifold user-hard edges rather than dropping a side.
+        claimedFaces.size() > 2U ||
         (edge.edgeClass == geometry::AdaptiveFeatureClass::Boundary &&
          claimedFaces.size() != 1U)) {
       return fail_edge(edgeIndex);
