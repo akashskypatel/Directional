@@ -1,11 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-feature-owner-target-apply-20261014t0957z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-feature-owner-target-apply",
-  "file_id": "1XF1YzNY4kmn6tNxuxDhFXdQvxM8uXjVU",
-  "patch_sha256": "bfdc9f2deff7968449c81020eb6d2fa63d3bf20cac6e7a908c32b4f304eb5ccc",
-  "base_sha": "d7c67df66bcd098331ed440c27834cbffeb34231",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(surface-cells): compile feature curve ownership negative in default producer target"
+  "request_id": "m6-cp3-r4-feature-owner-compile-20261014t0959z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-feature-owner-compile",
+  "source_sha": "ef916e0c3d8257a71ebbbb00f5eee64b9363a7b9",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-r4-feature-owner"
 }
