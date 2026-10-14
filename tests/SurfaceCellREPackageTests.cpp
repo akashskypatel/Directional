@@ -768,11 +768,37 @@ TEST(SurfaceCellPipelinePhase20,
           if (state.outcome != directional::geometry::
                    FieldVertexTransitStateOutcome::Evaluated ||
               state.transportPath.empty()) continue;
+          // Independently authenticate the reported diagnostic walk against
+          // A1's directed source-face adjacency. An arbitrary nonempty path
+          // cannot count as the same producer-bound vertex germ.
+          auto walkFace = seedFace;
+          int accumulatedSignedLift = 0;
           for (const auto &edge : state.transportPath) {
             EXPECT_NE(a.value(), edge);
             EXPECT_NE(b.value(), edge);
             EXPECT_FALSE(front.hardFeatureEdges().contains(edge));
+            EXPECT_TRUE(edge.first() == junction ||
+                        edge.second() == junction);
+            const auto adjacency = std::find_if(
+                topology.transports().begin(), topology.transports().end(),
+                [&](const auto &item) {
+                  return item.sourceEdge == edge &&
+                         (item.firstFace == walkFace ||
+                          item.secondFace == walkFace);
+                });
+            ASSERT_NE(topology.transports().end(), adjacency);
+            const auto nextFace = adjacency->firstFace == walkFace
+                                      ? adjacency->secondFace
+                                      : adjacency->firstFace;
+            const auto directed = topology.transport(edge, walkFace, nextFace);
+            ASSERT_TRUE(directed.has_value());
+            accumulatedSignedLift += directed->signedLift;
+            walkFace = nextFace;
           }
+          EXPECT_EQ(walkFace, state.sourceFace);
+          EXPECT_EQ(((accumulatedSignedLift % 4) + 4) % 4,
+                    state.composedQuarterTurn);
+          EXPECT_EQ(pairing.branch.rotated(accumulatedSignedLift), state.branch);
           ++evaluatedNontrivialGerms;
         }
       }
