@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-unique-curve-edge-apply-20261014t1245z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-unique-curve-edge-apply",
-  "file_id": "1AzGKQcOy5z5kTfxKK356W2AnIghb5IT9",
-  "patch_sha256": "8560a4b93bd17a307f30817cd3dd9ab1df8b17008d413d27c9e853c01b363491",
-  "base_sha": "d60909ee11ce9bc7d15624558629575da5fca0ec",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surfacecells): reject duplicated feature curve edge membership",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-unique-curve-edge-compile-20261014t1248z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-unique-curve-edge-compile",
+  "source_sha": "1470c3258caa6b822a02d245b9719a57ff87632c",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-r4-unique-curve-edge"
 }
