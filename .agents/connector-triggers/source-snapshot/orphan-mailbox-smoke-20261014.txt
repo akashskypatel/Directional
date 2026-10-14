@@ -1,0 +1,1 @@
+Validate source snapshot mailbox publication on isolated workflow-mailbox branch.
