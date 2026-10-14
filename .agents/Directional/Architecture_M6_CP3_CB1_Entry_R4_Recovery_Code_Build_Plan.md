@@ -1,3 +1,11 @@
+## CURRENT — R4 selected A1 branch upstream lineage resolution (2026-10-14 UTC)
+
+- [x] Verified source-only RA-43.1/A4 ancestry audit: `Architecture_M6_CP3_R4_RA431_A1_A4_Branch_Coupling_Census_20261014.md` now contains exact upstream lattice-gauge, trace/front owner and A4 certificate provenance, published in commit `0e38571eca94a6d4cb8d90b97ffc94fdc48e8625`. `LocalLatticeState::branchRotation` is a face-local grid +U gauge; neither it nor A4's paired front indices authenticate the A1 arrival branch *selected at the internal hard-rail junction*. An arbitrary successful A1 pairing must not be credited as the A4-selected branch. No source/test/runtime changed in this audit.
+- [ ] Independent source-domain RA-43.1/RA-43.2 Review must precommit the smallest source-attached `(rail, directed occurrence, junction, chart, FieldBranch, arrival mode, filled-side)` receipt or identify a verified existing equivalent. Require wrong-branch-on-correct-face, reversed route, swapped front sides and foreign-chart first-rejection controls. Do not invent it or weaken `ProducedNonconstantTwoCarrierOddTauSharesA1VertexGerm`.
+- [ ] Continue unblocked R4 Code + Build obligations only on genuinely identified source defects. A separately authorized immutable-artifact TB/Review is required for actual odd-τ owner liveness, RA-47.12 and the historical regressions; compile GREEN is not runtime acceptance. Frozen 497 selector, accepted ledger and successor are unchanged.
+
+---
+
 ## CURRENT — R4 exact-source snapshot and compiled-owner checkpoint (2026-10-14 UTC)
 
 - [x] Verified fresh [source snapshot run 38527901524](https://github.com/akashskypatel/Directional/actions/runs/38527901524) at event/source `16f072b23a167351f039f8e29fe762c8a8756f26`, artifact `11876912141`, outer ZIP SHA-256 `d9e68913dbb918c64d54a766d0199578ead8f8b479b6dd889c37367fc90bab5f`, inner archive SHA-256 `713ce555e788fcadd5306d2e82319a44f128ab23e499995df4035a8763095ed2`, manifest **5858/5858**. Comparing final compiled semantic `d47b363682e449bb6525ec9fc4f6fd4d56c04d14` to this exact snapshot found only documentation, STATUS, dispatcher, marker and mailbox changes; no source or test edits.
