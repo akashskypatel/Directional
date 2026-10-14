@@ -1,0 +1,3 @@
+source_ref=d69a56860a33c54336511c62637eb93339eb09c4
+turn=M6-CP3-CB1-ENTRY-R4
+purpose=verified-source-inspection
