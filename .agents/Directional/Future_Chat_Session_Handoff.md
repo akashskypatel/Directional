@@ -1,3 +1,11 @@
+## CURRENT — 2026-10-14 RA-47.11 migration disposition complete (no-op)
+
+`M6-CP3-CB1-R4-RA4711-MIGRATE` closed its frozen conditional obligation: the preceding exact-source census found **0/7 wrongly untyped** `source_edge_index` sites, so no production/test source edits or unchanged-source compile were authorized. Reinspection of packaged source `09e8451ed6314a458e9abe8c6b74e866d19728fc` confirmed exactly seven occurrences and comparison to turn-entry commit `0f947d94db66354824171cd5936d3fb86380af26` proved no intervening test/production source drift. Evidence: `Architecture_M6_CP3_R4_RA4711_Migration_NoOp_20261014.md`. No runtime, tests, benchmarks, TB497, acceptance or ledger changes; R4 remains open.
+
+**Next authorized separate turn:** `M6-CP3-CB1-R4-RA4712-LIVENESS`. Verify whether the typed field-aligned interval check is reached with producer-built rails on the default path; a negative answer is an `RP-02 TEST_AUTHORITY_COVERAGE_GAP` finding rather than grounds to invent a migration. Do not start it in the closed migration turn. Frozen RA-52/RA-53, selector 497 and all carried acceptance gates remain unchanged.
+
+---
+
 ## CURRENT — 2026-10-14 RA-47.11 seven-site census complete (source-only)
 
 `M6-CP3-CB1-R4-RA4711-CENSUS` inspected the exact snapshot `09e8451ed6314a458e9abe8c6b74e866d19728fc` (run `38640107266`, artifact `11930195949`, 5598/5598 source hashes). Of seven textual `source_edge_index` occurrences in `tests/FieldAlignedCurveNetworkTests.cpp`, one is the typed-to-DCEL helper definition and all six callers legitimately require an actual EV row or an independent mesh-edge membership check. **0 migration candidates**, including the newer RA-47.10 lexical-order discriminant at line 912. Evidence: `Architecture_M6_CP3_R4_RA4711_Seven_Source_Edge_Index_Census_20261014.md`. No code/tests/builds/benchmarks or runtime execution in this turn.
