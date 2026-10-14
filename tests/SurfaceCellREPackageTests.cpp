@@ -249,6 +249,23 @@ TEST(SurfaceCellClosedProductContracts,
             interiorAsBoundary.rejection()->kind);
   EXPECT_EQ(0, interiorAsBoundary.rejection()->failedEdgeIndex);
 
+  // A feature-map builder visits each edge once. A forged closed curve that
+  // traverses the same real boundary edge in both directions must not publish
+  // a two-interval authoritative closed rail from that one source edge.
+  auto repeatedCurveMember = sourceBoundary;
+  repeatedCurveMember.curves[0].edges = {0, 0};
+  repeatedCurveMember.curves[0].vertices = {0, 1, 0};
+  repeatedCurveMember.curves[0].closed = true;
+  const auto duplicateMember =
+      directional::pipeline::build_authoritative_surface_cell_rails(
+          source, repeatedCurveMember);
+  ASSERT_TRUE(duplicateMember.is_rejected());
+  EXPECT_EQ(nullptr, duplicateMember.produced_product());
+  ASSERT_NE(duplicateMember.rejection(), nullptr);
+  EXPECT_EQ(directional::pipeline::SurfaceCellRailBuildFailureKind::InvalidFeatureEdge,
+            duplicateMember.rejection()->kind);
+  EXPECT_EQ(0, duplicateMember.rejection()->failedEdgeIndex);
+
   auto wrongComponent = validMap;
   wrongComponent.edges[0].component = 1;
   const auto foreignComponent =

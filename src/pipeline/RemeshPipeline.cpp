@@ -9426,6 +9426,9 @@ SurfaceCellRailBuildResult build_authoritative_surface_cell_rails(
     return true;
   };
 
+  // A produced feature-map curve owns each source feature edge exactly once.
+  // A repeated member cannot create another authoritative rail interval.
+  std::set<int> curveMemberEdges;
   for (const geometry::AdaptiveFeatureCurve &curve : featureMap.curves) {
     const int edgeCount = static_cast<int>(curve.edges.size());
     if (edgeCount == 0) {
@@ -9447,6 +9450,10 @@ SurfaceCellRailBuildResult build_authoritative_surface_cell_rails(
       const int edgeIndex = curve.edges[static_cast<std::size_t>(index)];
       if (edgeIndex < 0 ||
           edgeIndex >= static_cast<int>(featureMap.edges.size())) {
+        fail_edge(edgeIndex);
+        return SurfaceCellRailBuildResult::rejected(std::move(failure));
+      }
+      if (!curveMemberEdges.insert(edgeIndex).second) {
         fail_edge(edgeIndex);
         return SurfaceCellRailBuildResult::rejected(std::move(failure));
       }
