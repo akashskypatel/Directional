@@ -244,6 +244,45 @@ TEST(SurfaceCellClosedProductContracts,
   EXPECT_EQ(foreignCurve.rejection()->kind,
             directional::pipeline::SurfaceCellRailBuildFailureKind::InvalidFeatureEdge);
   EXPECT_EQ(0, foreignCurve.rejection()->failedEdgeIndex);
+
+  // Both published owners can agree with each other and still be foreign to
+  // the real source component. Use two disconnected source triangles so the
+  // replacement component is a real, independently supported source owner.
+  directional::TriMesh twoComponentSource;
+  Eigen::MatrixXd vertices(6, 3);
+  vertices << 0., 0., 0., 1., 0., 0., 0., 1., 0.,
+              3., 0., 0., 4., 0., 0., 3., 1., 0.;
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 1, 2, 3, 4, 5;
+  twoComponentSource.set_mesh(vertices, faces);
+  auto sourcedMap = validMap;
+  const auto actual = directional::pipeline::build_authoritative_surface_cell_rails(
+      twoComponentSource, sourcedMap);
+  ASSERT_TRUE(actual.is_produced());
+  ASSERT_EQ(1U, actual.product().rails.size());
+  EXPECT_EQ(0, actual.product().rails.front().component);
+  auto secondSourceOwner = sourcedMap;
+  secondSourceOwner.edges[0].vertices = {3, 4};
+  secondSourceOwner.edges[0].incidentFaces = {1};
+  secondSourceOwner.edges[0].component = 1;
+  secondSourceOwner.curves[0].vertices = {3, 4};
+  secondSourceOwner.curves[0].component = 1;
+  const auto second = directional::pipeline::build_authoritative_surface_cell_rails(
+      twoComponentSource, secondSourceOwner);
+  ASSERT_TRUE(second.is_produced());
+  EXPECT_EQ(1, second.product().rails.front().component);
+
+  auto forgedSourceComponent = sourcedMap;
+  forgedSourceComponent.curves[0].component = 1;
+  forgedSourceComponent.edges[0].component = 1;
+  const auto wrongSourceComponent =
+      directional::pipeline::build_authoritative_surface_cell_rails(
+          twoComponentSource, forgedSourceComponent);
+  ASSERT_TRUE(wrongSourceComponent.is_rejected());
+  ASSERT_NE(wrongSourceComponent.rejection(), nullptr);
+  EXPECT_EQ(directional::pipeline::SurfaceCellRailBuildFailureKind::InvalidFeatureEdge,
+            wrongSourceComponent.rejection()->kind);
+  EXPECT_EQ(0, wrongSourceComponent.rejection()->failedEdgeIndex);
 }
 
 TEST(SurfaceCellPipelinePhase20,

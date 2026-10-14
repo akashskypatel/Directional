@@ -9260,6 +9260,48 @@ SurfaceCellRailBuildResult build_authoritative_surface_cell_rails(
   SurfaceCellRailBuildProduct product;
   SurfaceCellRailBuildFailure failure;
   std::set<int> coveredEdges;
+  // Source components belong to the actual face/edge topology, not to
+  // mutually agreeing labels in an externally supplied feature map. Use the
+  // same shared-edge connectivity and ascending-face component order as the
+  // AdaptiveFeatureMapBuilder, independently of all feature-map metadata.
+  std::map<std::pair<int, int>, std::vector<int>> sourceFacesByEdge;
+  for (int face = 0; face < meshWhole.F.rows(); ++face) {
+    for (int corner = 0; corner < 3; ++corner) {
+      const int a = meshWhole.F(face, corner);
+      const int b = meshWhole.F(face, (corner + 1) % 3);
+      sourceFacesByEdge[geometry::AdaptiveFeatureMap::canonical_edge(a, b)]
+          .push_back(face);
+    }
+  }
+  std::vector<std::vector<int>> sourceFaceNeighbors(
+      static_cast<std::size_t>(meshWhole.F.rows()));
+  for (const auto &[key, faces] : sourceFacesByEdge) {
+    (void)key;
+    for (const int a : faces) {
+      for (const int b : faces) {
+        if (a != b) sourceFaceNeighbors[static_cast<std::size_t>(a)].push_back(b);
+      }
+    }
+  }
+  std::vector<int> sourceFaceComponents(
+      static_cast<std::size_t>(meshWhole.F.rows()), -1);
+  int sourceComponent = 0;
+  for (int seed = 0; seed < meshWhole.F.rows(); ++seed) {
+    if (sourceFaceComponents[static_cast<std::size_t>(seed)] != -1) continue;
+    std::vector<int> stack{seed};
+    sourceFaceComponents[static_cast<std::size_t>(seed)] = sourceComponent;
+    while (!stack.empty()) {
+      const int current = stack.back();
+      stack.pop_back();
+      for (const int adjacent : sourceFaceNeighbors[static_cast<std::size_t>(current)]) {
+        int &label = sourceFaceComponents[static_cast<std::size_t>(adjacent)];
+        if (label != -1) continue;
+        label = sourceComponent;
+        stack.push_back(adjacent);
+      }
+    }
+    ++sourceComponent;
+  }
   // Preserve feature-map ordinals only for diagnostics, never rail identity.
   std::map<authority::HardRailId, std::vector<int>> railFeatureIndices;
   const auto fail_edge = [&](const int edgeIndex) {
@@ -9303,7 +9345,8 @@ SurfaceCellRailBuildResult build_authoritative_surface_cell_rails(
       hasA = hasA || meshWhole.F(face, corner) == a;
       hasB = hasB || meshWhole.F(face, corner) == b;
     }
-    if (!hasA || !hasB) {
+    if (!hasA || !hasB ||
+        edge.component != sourceFaceComponents[static_cast<std::size_t>(face)]) {
       return fail_edge(edgeIndex);
     }
     const geometry::SurfaceCellRailSample startSample =
