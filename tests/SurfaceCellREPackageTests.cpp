@@ -294,6 +294,36 @@ TEST(SurfaceCellClosedProductContracts,
             falseClosedMixed.rejection()->kind);
   EXPECT_EQ(0, falseClosedMixed.rejection()->failedEdgeIndex);
 
+  // The feature-map builder also marks a source loop closed when the
+  // terminal vertex returns to the first. A forged open claim on a mixed
+  // boundary/hard triangle must not emit open rail runs from that loop.
+  auto cycleMap = sourceBoundary;
+  auto cycleSide = validMap.edges[0];
+  cycleSide.vertices = {1, 4};
+  cycleSide.incidentFaces = {0, 3};
+  cycleMap.edges.push_back(cycleSide);
+  cycleSide.vertices = {0, 4};
+  cycleSide.incidentFaces = {0, 1};
+  cycleMap.edges.push_back(cycleSide);
+  cycleMap.curves[0].edges = {0, 1, 2};
+  cycleMap.curves[0].vertices = {0, 1, 4, 0};
+  cycleMap.curves[0].closed = true;
+  const auto realClosedCycle =
+      directional::pipeline::build_authoritative_surface_cell_rails(
+          source, cycleMap);
+  ASSERT_TRUE(realClosedCycle.is_produced());
+  ASSERT_EQ(2U, realClosedCycle.product().rails.size());
+  cycleMap.curves[0].closed = false;
+  const auto falseOpenCycle =
+      directional::pipeline::build_authoritative_surface_cell_rails(
+          source, cycleMap);
+  ASSERT_TRUE(falseOpenCycle.is_rejected());
+  EXPECT_EQ(nullptr, falseOpenCycle.produced_product());
+  ASSERT_NE(nullptr, falseOpenCycle.rejection());
+  EXPECT_EQ(directional::pipeline::SurfaceCellRailBuildFailureKind::InvalidFeatureEdge,
+            falseOpenCycle.rejection()->kind);
+  EXPECT_EQ(0, falseOpenCycle.rejection()->failedEdgeIndex);
+
   auto wrongComponent = validMap;
   wrongComponent.edges[0].component = 1;
   const auto foreignComponent =

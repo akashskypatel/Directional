@@ -9443,11 +9443,12 @@ SurfaceCellRailBuildResult build_authoritative_surface_cell_rails(
       fail_edge(curve.edges.front());
       return SurfaceCellRailBuildResult::rejected(std::move(failure));
     }
-    // A closed producer curve with an explicit terminal vertex must actually
-    // return to its source start. Mixed hard/soft curves emit open rail runs,
-    // so downstream rail closure checks cannot authenticate this claim.
-    if (curve.closed && hasExplicitClosingVertex &&
-        curve.vertices.front() != curve.vertices.back()) {
+    // The source feature builder derives closure from returning to the first
+    // vertex. Check both directions of that claim: mixed hard/soft curves
+    // split into open rail runs, so rail-level closure cannot certify it.
+    if (hasExplicitClosingVertex &&
+        curve.closed != (curve.vertices.size() > 2U &&
+                         curve.vertices.front() == curve.vertices.back())) {
       fail_edge(curve.edges.front());
       return SurfaceCellRailBuildResult::rejected(std::move(failure));
     }
