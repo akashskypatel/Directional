@@ -21,9 +21,9 @@ In the existing `SurfaceCellAuthorityContractCutover.StandaloneRailDiagnosticMod
 
 **Historical pre-compile note (now superseded by the verified checkpoint below):** the change had not been compiled as of the initial application. The older eight-target GMP/GMPXX compile [38526113617](https://github.com/akashskypatel/Directional/actions/runs/38526113617) remains valid **only** for earlier semantic source `d47b363682e449bb6525ec9fc4f6fd4d56c04d14`, not for `f04eda9`. No Directional binary, tests, CLI, benchmark, or TB497 executed in this response.
 
-## Required next action — same R4
+## R4 continuation obligations (after completed compile)
 
-1. Use durable `agent-operation-dispatcher.yml` **compile** request pinned to exact `f04eda9743e94e42cac9b19f6ada29ae7fde1a07`; eight mandated GMP/GMPXX targets, zero runtime execution; verify mailbox, result artifact, 28/28 package digest, source identity, real GMPXX+GMP generated link, clean source status and explicit `runtimeExecution=false`. Diagnose any compile error without running tests.
+1. **COMPLETED:** Exact-source eight-target GMP/GMPXX compile, archive/manifest and no-runtime checks; all evidence is in the verified checkpoint below. Do not rerun unchanged source just to repeat successful compile evidence.
 2. Keep the new negative as compiled-only until an independently authorized artifact-only Test + Benchmark turn. No TB497 in this R4 Code + Build.
 3. Continue open RA-43.1 selected A4/A1 branch source attribution (independent Review), RA-43.4 broader consumer/test execution, RA-47.12 runtime liveness, original 39 endpoint / 34 Phase10 / seven DCEL / 88 CP2 / six CP3 and organic D1/D2/D3/D5/A6/A7. Frozen selector 497, historical accepted counts and PR state remain unchanged.
 
