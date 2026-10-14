@@ -1,3 +1,43 @@
+## CURRENT — R4-SID-02 REFUTED; RA-52.5 WITHDRAWN as a Review Agent error; RA-53 frozen (2026-10-14)
+
+**The `M6-CP3-CB1-R4-SID02-PROBE` answer is ACCEPTED on every decisive link. `R4-SID-02` is REFUTED and
+RA-52.5 is WITHDRAWN.** No open blocker. No runtime credit. Ledger unchanged 66/17/49, debt 1.
+
+**The Review Agent's error, recorded against itself.** RA-52.5 asserted `RemeshPipeline.cpp:3562-3596` is
+blind to `corners[0]==corners[2] && corners[1]==corners[3]`, closing only at A7. Both halves were wrong.
+`lattice_equal` (`:3312-3319`) compares `latticeCoordinate` with **`==` on exact integers**; every producer
+assigns the four corners the four distinct pairs `(u,v)`, `(u+1,v)`, `(u+1,v+1)`, `(u,v+1)`
+(`src/geometry/SurfaceCellTracing.cpp:12940`, `:14636-14637`, `:17188-17212`), so side 0's lattice pair can
+never equal side 2's. The reviewer read `trace_equal` as load-bearing and `lattice_equal` as corroboration;
+it is the reverse. **No locus gap existed and no A5 guard is owed.**
+
+**Four independent closures, none late.** (1) The uniform planar producer rejects all six corner-position
+pairs closer than `max(1e-12, 1e-9*target)` at `:12640-12649`, pre-publication. (2) The annulus and disk
+producers require `phase_front_loop_normal` — `Σ p_i × p_{i+1}` (`:12354-12362`) — to have
+`squaredNorm() > 1e-24`, and an alternating `A,B,A,B` cycle cancels to exactly zero by anticommutativity
+(`:14682-14709`, `:17230-17262`). The dispatch census is complete at `:17819-17833`: three variants, cascaded
+on `NotApplicable`. (3) A5's exact lattice discriminator, above. (4) `DegenerateClassedQuad` at
+`RemeshPipeline.cpp:6343-6350` requires four distinct corner **classes** at the quotient stage — a guard
+RA-52.5 also missed. A6 `:8446-8449` and A7 `:7482-7486` remain fail-closed behind all of these.
+
+**The probe's tolerance caveat is credited and DISSOLVED.** It correctly refused to extend a strict
+equal-point result to near-equality under `trace_equal`'s `1e-10` tolerance (`:3307-3310`). That restraint
+was right, and the caveat is moot for `R4-SID-02`: the discriminator is an exact integer comparison that no
+barycentric tolerance can defeat. **No follow-up turn is owed.**
+
+**`RP-03 REVIEWER_CONJUNCT_MISREAD` — new recurrence class.** A multi-conjunct guard was adjudicated by its
+weakest conjunct while the decisive one was treated as corroboration, yielding a phantom gap. Standing rule:
+**when refuting or relying on a conjunctive guard, state which conjunct carries the decision and why the
+others cannot.** Companion to `R4-VIN-01` (RA-52.0): that one mis-dated a frozen clause, this one mis-ranked
+a predicate.
+
+**Conduct.** The probe answered the one question asked, delivered the permitted verdict, declined to repair
+in the same turn, declined to amend a frozen clause itself, and bounded its own claim. Second instance of a
+correct feasibility answer after RA-51.0, and the first in which the implementation side's argument was
+**stronger** than the reviewer's.
+
+---
+
 ## CURRENT — `R4-SID-02` exact equal-opposite-corner candidate RETIRED (source-only, 2026-10-14)
 
 The A4 source producers reject physical two-point alternating quad loops before publishing (`SurfaceCellTracing.cpp:12627-12682`, `:14682-14709`, `:17230-17262`). Distinct per-corner lattice coordinates and the A5 `lattice_equal` check independently prevent opposite-side misattribution. RA-52.5's A5-locus correction is **not reachable on produced exact-equality input**, so no guard or new negative is added. The pre-existing quotient `DegenerateClassedQuad`, A6 and A7 validators stay unchanged. A5 uses tolerance-based `trace_equal`, which is not strict equality; near-coincidence under extreme scaling is not declared impossible. No code/build/runtime changes, no accepted-ledger change. Exact probe: `Architecture_M6_CP3_R4_SID02_Produced_Cell_Reachability_Probe_20261014.md`.

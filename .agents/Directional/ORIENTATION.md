@@ -1,3 +1,21 @@
+## CURRENT — 2026-10-14 RA-53 frozen; `R4-SID-02` REFUTED; RA-52.5 WITHDRAWN
+
+**The R4-SID-02 probe is ACCEPTED and supersedes the RA-52.5 paragraphs below. There is no open
+REVIEW_BLOCKER.** The equal-opposite-corner configuration is unreachable, and more than that, the A5 side
+match was never blind to it: `lattice_equal` compares `latticeCoordinate` with `==` on exact integers while
+producers assign four distinct integer corner pairs. RA-52.5 mis-ranked the conjuncts; that is a **Review
+Agent error**, recorded as `RP-03 REVIEWER_CONJUNCT_MISREAD`. **No A5 guard is owed; do not re-raise.**
+
+The next turn is the single authorized comment correction at
+`src/geometry/SurfaceCellTracing.cpp:1457-1459` — turn ID `M6-CP3-CB1-R4-CARRIER-CUT-COMMENT`. The code is
+correct and the `continue` at `:1460-1467` may not be touched.
+
+**Two standing rules now govern every STOP.** Cite a frozen clause's most recent disposition before raising
+it as a blocker (`R4-VIN-01`, RA-52.0). Name the deciding conjunct when refuting or relying on a conjunctive
+guard (`RP-03`, RA-53.0).
+
+---
+
 ## CURRENT — 2026-10-14 R4-SID-02 source-only probe complete
 
 Exact equal-opposite-corner `SurfacePhaseFrontCell` is producer-unreachable: planar all-pairs geometric check; periodic and bounded-disk nonzero oriented loop-normal check. A5 additionally distinguishes opposite sides through exact lattice-coordinate states, regardless of trace proximity. Retire the RA-52.5 A5-locus repair for that exact configuration, preserve guards. Source-only, no runtime evidence. See `Architecture_M6_CP3_R4_SID02_Produced_Cell_Reachability_Probe_20261014.md`. Next open item: the one-line comment at `SurfaceCellTracing.cpp:1457-1459`; its guard `:1460-1467` is frozen. Remaining RA-52 obligations remain in handoff.

@@ -1,3 +1,53 @@
+## RA-53 — the R4-SID-02 probe is ACCEPTED; RA-52.5 is WITHDRAWN as a Review Agent error **FROZEN at M6-CP3-CB1-R4-SID02-PROBE** (2026-10-14)
+
+Adjudicates `Architecture_M6_CP3_R4_SID02_Produced_Cell_Reachability_Probe_20261014.md`. The probe answered
+**(b) UNREACHABLE** with a complete producer census and a correct guard chain; every decisive link was
+re-derived from bytes and **CONFIRMED**. No runtime credit. RA-52 stands **less .5**; RA-51, RA-50, RA-49,
+RA-48, RA-47, RA-46 (.5 per RA-51.5, .6 per RA-51.7), RA-45, RA-44 less .2, RA-43 (.1 LANDED, .2 DISCHARGED,
+less .5), RA-42 corrected, RA-41 frozen scoped, RA-40, RA-39, RA-38, RA-37a and the RA-34.3 stop gates stand.
+
+- **RA-53.0 — RA-52.5 is WITHDRAWN, not merely closed.** RA-52.5 asserted that
+  `src/pipeline/RemeshPipeline.cpp:3562-3596` is "blind" to `corners[0]==corners[2] && corners[1]==corners[3]`
+  and that the configuration dies only at A7. **Both halves were wrong**, and the error was mine: I read
+  `trace_equal` as the load-bearing conjunct and treated `lattice_equal` as corroboration. `lattice_equal`
+  (`:3312-3319`) compares `latticeCoordinate` with **`==` on exact integers**, plus `branchRotation`,
+  `scaleLevel`, `sourceChart` and phase. Every producer assigns the four corners the four **distinct**
+  integer pairs `(u,v)`, `(u+1,v)`, `(u+1,v+1)`, `(u,v+1)` (`src/geometry/SurfaceCellTracing.cpp:12940`,
+  `:14636-14637`, `:17188-17212`), so side 0's lattice pair `((u,v),(u+1,v))` can never equal side 2's
+  `((u+1,v+1),(u,v+1))`. **`:3562-3596` is the discriminator, with no tolerance dependence at all.**
+  `R4-SID-02` is **REFUTED**; there was never a locus gap to repair, and no A5 guard is owed.
+- **RA-53.1 — the producer census is complete and the rejection is pre-publication.** Exactly three
+  region-build variants are dispatched, as a cascade on `NotApplicable`
+  (`src/geometry/SurfaceCellTracing.cpp:17819-17833`). The uniform planar producer runs
+  `orient_and_validate_phase_front_cell` (`:12627`, called `:12957`), which rejects **all six** distinct
+  corner-position pairs closer than `max(1e-12, 1e-9 * target)` at `:12640-12649`, before the loop-normal
+  test and before the append. The periodic-annulus (`:14682-14709`) and curved bounded-disk (`:17230-17262`)
+  producers require `phase_front_loop_normal` finite with `squaredNorm() > 1e-24`; that function is
+  `Σ p_i × p_{i+1}` (`:12354-12362`), which for an alternating `A,B,A,B` cycle is
+  `A×B + B×A + A×B + B×A = 0` by anticommutativity. **All three reject before publication.**
+- **RA-53.2 — the probe's own scope caveat is noted and DISSOLVED.** The probe correctly declined to extend a
+  strict equal-point result to *near*-equality under `trace_equal`'s `1e-10` barycentric tolerance
+  (`:3307-3310`), and correctly refused to construct a universal numerical theorem. That restraint was right
+  discipline and is credited. The caveat is nevertheless **moot for `R4-SID-02`**: per RA-53.0 the
+  discriminator is the exact integer lattice comparison, which no barycentric tolerance can defeat. **No
+  follow-up turn is owed for the near-equality case.**
+- **RA-53.3 — one guard the Review Agent missed is recorded.** `SurfaceQuotientProducer` rejects a classed
+  cell with fewer than four distinct corner classes as `DegenerateClassedQuad`
+  (`src/pipeline/RemeshPipeline.cpp:6343-6350`), at the **quotient** stage. RA-52.5's claim that A6's
+  adjacent-only check (`:8446-8449`) and A7's `quad-degenerate` (`:7482-7486`) were the only downstream
+  closures was therefore incomplete as well. Four independent closures exist; none is late.
+- **RA-53.4 — the probe's conduct is the reusable shape, after RA-51.0.** It answered the one question asked,
+  delivered the permitted verdict, declined to repair in the same turn, declined to amend a frozen clause
+  itself, and bounded its own claim. **It also corrected the Review Agent**, which is the behaviour the
+  adversarial cadence exists to produce. Recorded as the second instance of a correct feasibility answer, and
+  the first in which the implementation side's argument was **stronger** than the reviewer's.
+- **RA-53.5 — no credit.** Source-only inspection; no build, no executable, no test, no benchmark, no source
+  mutation. Ledger unchanged **66/17/49**, debt **1**; CP2 **491/491** accepted; R3 **403/497** rejected with
+  **94** RED and **88** accepted losses carried. `R4-JCT-01` stays AUTHORED / COMPILED / NOT EXECUTED;
+  RA-41's junction and sector clauses stay frozen **UNEXERCISED at runtime**.
+
+---
+
 ## RA-52 — the selected-branch join is REFUSED; the RA-43.4 opt-out is PRESERVED **FROZEN at M6-CP3-CB1-ENTRY-R4** (2026-10-14)
 
 Adjudicates `Architecture_M6_CP3_R4_Source_Current_Review_Gate_20261014.md`. Basis:

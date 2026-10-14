@@ -1,3 +1,66 @@
+## CURRENT — 2026-10-14 RA-53 frozen; R4-SID-02 REFUTED; next turn is `M6-CP3-CB1-R4-CARRIER-CUT-COMMENT`
+
+**The `M6-CP3-CB1-R4-SID02-PROBE` answer is ACCEPTED. `R4-SID-02` is REFUTED and RA-52.5 is WITHDRAWN** — a
+Review Agent error, not an implementation defect. There is no open REVIEW_BLOCKER and no A5 guard is owed.
+Frozen: **RA-53**. Evidence: `Architecture_M6_CP3_R4_SID02_Produced_Cell_Reachability_Probe_20261014.md`.
+
+**Why RA-52.5 was wrong.** `src/pipeline/RemeshPipeline.cpp:3562-3596` is not blind to equal opposite
+corners: `lattice_equal` (`:3312-3319`) compares `latticeCoordinate` with `==` on **exact integers**, and the
+producers assign the four distinct pairs `(u,v)`, `(u+1,v)`, `(u+1,v+1)`, `(u,v+1)`
+(`src/geometry/SurfaceCellTracing.cpp:12940`, `:14636-14637`, `:17188-17212`). Side 0 and side 2 can never
+both authenticate one lattice-state pair. **Do not add an A5 corner-distinctness guard. Do not re-raise
+`R4-SID-02`.** The probe's near-equality caveat is credited and **dissolved** — the discriminator carries no
+tolerance, so no follow-up turn is owed for it.
+
+**New standing rule (`RP-03 REVIEWER_CONJUNCT_MISREAD`):** when refuting or relying on a conjunctive guard,
+state which conjunct carries the decision and why the others cannot. Companion to `R4-VIN-01` (RA-52.0):
+that one mis-dated a frozen clause; this one mis-ranked a predicate.
+
+**NEXT TURN — `M6-CP3-CB1-R4-CARRIER-CUT-COMMENT`.** One-line comment correction at
+`src/geometry/SurfaceCellTracing.cpp:1457-1459` so the text matches the code's actual cut: **every** incident
+`FieldTransportBarrierKind::HardFeature` barrier, not only this route's own carriers. The code is correct;
+the `continue` at `:1460-1467` may not be touched. Comment only; no behaviour change; compile not required.
+Successor: `M6-CP3-CB1-R4-ATLAS-SEAM-COMMENT`.
+
+**Ladder after that — one rung per turn, each with its own beacon, gate run and review. Do not merge rungs.**
+1. `M6-CP3-CB1-R4-ATLAS-SEAM-COMMENT` — verify the `FieldTransportAtlas` class comment claiming construction
+   is the only validation seam; correct it if still inaccurate, or report that `785dd7398` already did. This
+   is the RA-48.3 residual. Comment only.
+2. `M6-CP3-CB1-R4-RA4711-CENSUS` — the seven surviving `source_edge_index` lines in
+   `tests/FieldAlignedCurveNetworkTests.cpp`. One table: per site, is an EV row genuinely wanted, or should
+   it carry the typed key? Report only.
+3. `M6-CP3-CB1-R4-RA4711-MIGRATE` — migrate only the sites the census marked wrongly untyped. Compile.
+4. `M6-CP3-CB1-R4-RA4712-LIVENESS` — is the typed field-aligned interval check reached with producer-built
+   rails on the default path? A negative answer is an `RP-02 TEST_AUTHORITY_COVERAGE_GAP` finding, not a code
+   change.
+5. `M6-CP3-CB1-R4-RA466-SUBCODES` — RA-46.6 typed sub-codes for **reachable** predicates only. Split the
+   atlas gate, bad-key, zero- vs overfull-incidence, missing-contact, and `unique_terminal_star_path`
+   zero-path vs ambiguous. Do **not** split `missing-or-nonreciprocal-terminal-A3` (dead disjunct, RA-51.7),
+   and mint none for the retired predicates or for `R4-SID-02`.
+6. `M6-CP3-CB1-R4-RA434-CENSUS` then `M6-CP3-CB1-R4-RA434-DISPOSE` — the untyped standalone geometry
+   diagnostics **other than** `rail_interval_refs`. Census first, disposition second, two turns. Restate the
+   RA-52.6 caller table verbatim; a production caller with `LegacyStandaloneDiagnostic` is a REVIEW_BLOCKER
+   on sight.
+
+**Durable-doc convention:** the canonical changelog is the repository-root `CHANGELOG.md`, the file the
+boundary gate counts. `.agents/Directional/CHANGELOG.md` is a secondary copy; writing only to it leaves the
+canonical record silent. Prepend to the root file.
+
+**Still REFUSED / DISCHARGED — do not re-raise:** RA-43.2 (DISCHARGED, RA-50.1); the
+`(…, FieldBranch, arrival mode, filled cell/side)` receipt (REFUSED, RA-50.2 and RA-52.1/.2); RA-43.1's
+carrier cut (LANDED, `:1457-1467`); the RA-43.4 named opt-out (PRESERVED, RA-52.6 — removing it would make
+the network-override claim vacuous); `R4-SID-02` (REFUTED, RA-53.0).
+
+**Carried, unchanged:** `R4-JCT-01` the multi-carrier junction witness is **AUTHORED / COMPILED / NOT
+EXECUTED**; RA-41's junction and sector clauses stay frozen **UNEXERCISED at runtime**. RA-49.2's witness is
+authored and correctly shaped, compiled, not executed. Organic D1/D2/D3/D5 and A6/A7 witnesses, the odd-τ
+witness, the **88** accepted CP2 restorations, and the 39 endpoint / 34 Phase10 / seven DCEL / six CP3
+identities all require a separately authorized immutable-artifact Test + Benchmark and acceptance Review.
+Ledger 66/17/49, debt 1; CP2 accepted 491/491; R3 rejected 403/497 (94 RED, 88 accepted losses). No TB497,
+no successor credit.
+
+---
+
 ## CURRENT — 2026-10-14 `M6-CP3-CB1-R4-SID02-PROBE` source-only COMPLETE; equal-opposite-corner configuration unreachable
 
 Exact verified snapshot `43e8a503baa1896fd133eecda5ce6a323b9229ed` / [run 38625280153](https://github.com/akashskypatel/Directional/actions/runs/38625280153), artifact `11923063390`, 5596/5596 source hashes. The three A4 producer paths reject physical `corners[0]==corners[2] && corners[1]==corners[3]` before publishing. A5's side match independently checks distinct lattice-coordinate owners; RA-52.5's exact `R4-SID-02` A5 guard proposal is **RETIRED AS PRODUCER-UNREACHABLE** with all existing fail-closed guards retained. A5 `trace_equal` has a tolerance; no universal near-coincidence theorem or runtime credit is claimed. Source-only, no code/build/test/benchmark changes. Evidence: `Architecture_M6_CP3_R4_SID02_Produced_Cell_Reachability_Probe_20261014.md`.

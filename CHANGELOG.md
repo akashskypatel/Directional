@@ -1,3 +1,11 @@
+## 2026-10-14 — RA-53 frozen: R4-SID-02 REFUTED, RA-52.5 WITHDRAWN
+
+- Architecture Review only; no source, test, selector or ledger change. The `M6-CP3-CB1-R4-SID02-PROBE` source-only answer is **ACCEPTED** on every decisive link, re-derived from bytes. Evidence `Architecture_M6_CP3_R4_SID02_Produced_Cell_Reachability_Probe_20261014.md`; frozen as **RA-53**.
+- **RA-52.5 is WITHDRAWN as a Review Agent error.** `RemeshPipeline.cpp:3562-3596` is not blind to equal opposite corners: `lattice_equal` (`:3312-3319`) compares `latticeCoordinate` with `==` on exact integers, and every producer assigns four distinct integer corner pairs, so sides 0 and 2 can never both authenticate. `R4-SID-02` is REFUTED and no A5 guard is owed.
+- Four independent closures confirmed, none late: the planar producer's six-pair separation check (`SurfaceCellTracing.cpp:12640-12649`), the annulus/disk loop-normal cancellation (`:12354-12362`, `:14682-14709`, `:17230-17262`), A5's exact lattice discriminator, and `DegenerateClassedQuad` (`RemeshPipeline.cpp:6343-6350`). Producer census complete at `:17819-17833`.
+- New: `RP-03 REVIEWER_CONJUNCT_MISREAD` — adjudicating a conjunctive guard by its weakest conjunct. The probe's near-equality caveat is credited and dissolved; no follow-up turn is owed.
+- Ledger unchanged 66/17/49, debt 1; CP2 accepted 491/491; R3 rejected 403/497 (94 RED, 88 accepted losses). No runtime, no TB497, no successor credit beyond the named comment turn.
+
 ## 2026-10-14 — RA-52 frozen: selected-branch join REFUSED, RA-43.4 opt-out PRESERVED
 
 - Architecture Review only; no source, test, selector or ledger change. The `Architecture_M6_CP3_R4_Source_Current_Review_Gate_20261014.md` REVIEW gate is **DISSOLVED** and both of its offered options are **REFUSED**. Decision record `Architecture_M6_CP3_R4_Selected_Branch_And_Diagnostic_Optout_Review_Decision.md`; frozen as **RA-52**.
