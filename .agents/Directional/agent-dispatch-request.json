@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-closed-curve-source-apply-20261014t1310z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-closed-curve-source-apply",
-  "file_id": "1J9kJISzYDjpvI-rGQnW5mzcdw_8ElxX1",
-  "patch_sha256": "99788133a72db9b783d59eb7c0464fde2334e6236d7030199f0167f01ab44304",
-  "base_sha": "51cc161c701a9225aa206115a44ff955aa0d36aa",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surfacecells): reject false closed feature curve claims",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-closed-curve-source-compile-20261014t1312z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-closed-curve-source-compile",
+  "source_sha": "ad91acb81e762cdb2d9334ef095642030242d70a",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-r4-closed-curve"
 }
