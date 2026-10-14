@@ -1,3 +1,11 @@
+## CURRENT — R4 standalone negative curve-owner sentinel compiled (2026-10-14 UTC)
+
+Same canonical `M6-CP3-CB1-ENTRY-R4`, still Code + Build. R4 standalone rail negative-owner sentinel guard: exact source `42d7915e9e3ba34216a50ff48974c8e9734af91f` now rejects `AdaptiveFeatureEdge::curve=-2` for a source-valid unowned rail (only `-1` denotes unassigned). Existing producer rejection test expanded, no new test identity. Apply run 38600624930 artifact 11913556037 verified; mandatory eight GMP/GMPXX targets compile GREEN in run 38600920037 job 115979814702, package 11913234237, SHA-256 `89d899cffebdf077c2903c88de716cf94862ae15512787410c3eafda9d339829`, manifest 28/28; no executable test, benchmark or acceptance claim. Owning record `Architecture_M6_CP3_R4_Standalone_Negative_Curve_Owner_Guard_20261014.md`.
+
+Open: independent RA-43.1/.2 directed A4/A1 branch/filled-side attribution and RA-43.4 diagnostic opt-out disposition; RA-47.12, 39/34/7/88/six historical and organic D1/D2/D3/D5/A6/A7 / odd-τ witness gates require future artifact-only TB + Review. Do not start successor, TB497, modify frozen selector or alter PR.
+
+---
+
 ## CURRENT — R4 seven historical DCEL source-fixture census (2026-10-14 UTC)
 
 Same canonical `M6-CP3-CB1-ENTRY-R4`, Code + Build. Snapshot [38596495573](https://github.com/akashskypatel/Directional/actions/runs/38596495573) of `840583d57ac0263b6d6230bf0b59e1a9b58b0622` passed 5963/5963 hashes. Original accepted-prefix DCEL-RED selector449 ordinals 40, 220, 221, 296, 302, 304 and 439 are **already source-migrated** to real two-triangle source fixtures and source-matched A3. Six share `direct_periodic_owner_fixture`, one FlowRep retains the original rail-support assertions. Evidence `Architecture_M6_CP3_R4_Seven_DCEL_Fixture_Static_Census_20261014.md` (commit `6ed42b4d`). Do not redo these source repairs. All seven are **runtime-unexecuted** on R4, so do not credit recovery until a separately authorized artifact-only TB and independent Review prove the original downstream oracles. Latest semantic source `6d6d269dd2df211a96de1fcd20bacb54a4e34358` is eight-target GMP compile-green (38593643840); no unchanged-source recompilation. RA-43.1/.2/.4, RA-47.12, 39/34/88/six, organic witnesses and frozen 497 remain as previously recorded. Do not start TB497 or successor.

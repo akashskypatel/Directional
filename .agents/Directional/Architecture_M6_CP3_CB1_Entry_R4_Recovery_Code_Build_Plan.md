@@ -1,3 +1,10 @@
+## CURRENT — R4 standalone negative curve-owner sentinel (2026-10-14)
+
+- [x] R4 standalone rail negative-owner sentinel guard: exact source `42d7915e9e3ba34216a50ff48974c8e9734af91f` now rejects `AdaptiveFeatureEdge::curve=-2` for a source-valid unowned rail (only `-1` denotes unassigned). Existing producer rejection test expanded, no new test identity. Apply run 38600624930 artifact 11913556037 verified; mandatory eight GMP/GMPXX targets compile GREEN in run 38600920037 job 115979814702, package 11913234237, SHA-256 `89d899cffebdf077c2903c88de716cf94862ae15512787410c3eafda9d339829`, manifest 28/28; no executable test, benchmark or acceptance claim. Owning record `Architecture_M6_CP3_R4_Standalone_Negative_Curve_Owner_Guard_20261014.md`.
+- [ ] Runtime and independent Review obligations remain open as listed below; compile GREEN is not a test PASS. No successor/TB/selector/acceptance advance.
+
+---
+
 ## CURRENT — R4 seven-DCEL source-completion census (2026-10-14)
 
 - [x] Exact snapshot `840583d57ac0263b6d6230bf0b59e1a9b58b0622` (run 38596495573, 5963/5963 hashes) confirms the *source-fixture* part of all seven R3 DCEL exceptions is implemented with two-triangle DCEL-oriented provenance and source-matched A3. Frozen selector449 ordinals `40/220/221/296/302/304/439` retain their original identities/oracles. Details: `Architecture_M6_CP3_R4_Seven_DCEL_Fixture_Static_Census_20261014.md`; do not redo the fixture migration.
