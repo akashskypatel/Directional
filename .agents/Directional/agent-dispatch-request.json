@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-nonhard-a3-fix-apply-20261014t0238z",
+  "request_id": "m6-cp3-r4-nonhard-a3-docs-apply-20261014t0239z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-nonhard-a3-fix-apply",
-  "file_id": "1gub5gRqCq_bRfZoIU3VdywI5s2WFnqyI",
-  "patch_sha256": "cc31065f8d97c56e0a21dfb28d20a95bdc0c07b210bec314309c07d16114af94",
-  "base_sha": "3a461b747579220cfac6b15049f6cab70b89f1eb",
+  "mailbox_key": "m6-cp3-r4-nonhard-a3-docs-apply",
+  "file_id": "1NZgLkskSeK9Fr-nVeoQJcrEFvITbXS4G",
+  "patch_sha256": "6df22a0fdd085260eb795f70152ffc33b13f524ffd1162a59fab459eb13cc4a7",
+  "base_sha": "d9875463288bcb78c06d63df855ff3c9036708b2",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): use branch topology face fields for directed A3 oracle",
+  "commit_message": "docs(directional): preserve R4 nonhard A3 compile failure and recovery handoff",
   "retention_days": 14
 }
