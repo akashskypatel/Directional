@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-sid02-probe-retry1-20261014t1951z",
+  "request_id": "m6-cp3-r4-ra4711-census-docs-20261014t2130z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-sid02-probe-docs-retry1",
-  "file_id": "14zATH-GmWpKdaFypt7rWiVCW9ojVVUg7",
-  "patch_sha256": "b6ccdff1119d3745154aae84baebe3b6f203e8203ebf1746fc8516a9010c4851",
-  "base_sha": "43e8a503baa1896fd133eecda5ce6a323b9229ed",
+  "mailbox_key": "m6-cp3-r4-ra4711-census-docs",
+  "file_id": "1vrxH7mIbkO28pHr379272tthXX48dWBm",
+  "patch_sha256": "5e7a8ab820c7e32f6c33a9c81222074c6986cc4ce925f77fd4cc1f849b59f01c",
+  "base_sha": "09e8451ed6314a458e9abe8c6b74e866d19728fc",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close source-only R4-SID02 reachability probe",
+  "commit_message": "docs(directional): record RA-47.11 seven-site census",
   "retention_days": 7
 }
