@@ -636,6 +636,152 @@ TEST(SurfaceCellPipelinePhase20,
 }
 
 
+// R4 RA-43.1/D2: the odd A3 carrier and the adjacent A1 germ must be
+// published by the SAME nonconstant, producer-generated two-carrier rail.
+// A standalone odd singleton cannot discharge this combined witness.
+TEST(SurfaceCellPipelinePhase20,
+     ProducedNonconstantTwoCarrierOddTauSharesA1VertexGerm) {
+  const REPkgMesh mesh = make_rectangular_internal_hard_feature_grid();
+  Eigen::MatrixXd raw = constant_raw_field(mesh.faces.rows());
+  // Preserve the real geometric face field under source face-row permutations.
+  // The right source component carries the quarter-turned gauge; the source
+  // midline remains the two real hard carriers (1,4) and (4,7).
+  for (int row = 0; row < mesh.faces.rows(); ++row) {
+    double centerX = 0.0;
+    for (int corner = 0; corner < 3; ++corner)
+      centerX += mesh.vertices(mesh.faces(row, corner), 0);
+    if (centerX / 3.0 > 1.0) {
+      raw.row(row) << 0.0, 1.0, 0.0, -1.0, 0.0, 0.0,
+          0.0, -1.0, 0.0, 1.0, 0.0, 0.0;
+    }
+  }
+  auto options = surface_options();
+  options.surfaceCells.featureMap.userHardEdges.insert({1, 4});
+  options.surfaceCells.featureMap.userHardEdges.insert({4, 7});
+  options.surfaceCells.injectFailureAfterStage = 6;
+  const auto result = directional::pipeline::remesh_from_raw_cross_field(
+      mesh.vertices, mesh.faces, raw, options);
+  SCOPED_TRACE(::testing::Message()
+               << "terminal=" << result.diagnostics.terminalFailureCode
+               << ";firstProducer="
+               << result.diagnostics.surfaceCellFirstInvalidProducerStage
+               << ";reason="
+               << result.diagnostics.surfaceCellFirstInvalidProducerReason);
+  ASSERT_EQ("InjectedStageFailure", result.diagnostics.terminalFailureCode);
+  ASSERT_TRUE(result.surfaceCellContext.hasTraceNetwork);
+  const auto &snapshot = result.surfaceCellContext.productSnapshots;
+  ASSERT_TRUE(snapshot.fieldTransportAtlas.has_value());
+  ASSERT_TRUE(snapshot.sourceTopologyRegions.has_value());
+  ASSERT_TRUE(snapshot.traceNetwork.phaseFront.is_produced());
+  const auto &front = snapshot.traceNetwork.phaseFront.product();
+  const auto &atlas = *snapshot.fieldTransportAtlas;
+  const auto &regions = *snapshot.sourceTopologyRegions;
+  const auto &topology = atlas.branch_topology();
+  using Edge = directional::authority::SourceEdgeTopologyKey;
+  using Turn = directional::authority::QuarterTurn;
+  using Decision = directional::geometry::surface_cell_tracing_detail::
+      FieldVertexTransitDecision;
+  using Barrier = directional::authority::FieldNonTraversableEdge;
+  const auto a = Edge::from_indices(1, 4,
+                                   static_cast<std::size_t>(mesh.vertices.rows()));
+  const auto b = Edge::from_indices(4, 7,
+                                   static_cast<std::size_t>(mesh.vertices.rows()));
+  ASSERT_TRUE(a.has_value());
+  ASSERT_TRUE(b.has_value());
+  std::map<Edge, const Barrier *> sourceBarriers;
+  for (const auto &barrier : atlas.nontraversable_edges())
+    ASSERT_TRUE(sourceBarriers.emplace(barrier.sourceEdge, &barrier).second);
+  ASSERT_TRUE(sourceBarriers.count(*a));
+  ASSERT_TRUE(sourceBarriers.count(*b));
+  EXPECT_EQ(directional::authority::FieldTransportBarrierKind::HardFeature,
+            sourceBarriers.at(*a)->kind);
+  EXPECT_EQ(directional::authority::FieldTransportBarrierKind::HardFeature,
+            sourceBarriers.at(*b)->kind);
+
+  const auto &routes = front.hardRailRouteCertificates();
+  const auto route = std::find_if(routes.begin(), routes.end(),
+                                  [&](const auto &cert) {
+    const auto edges = cert.route.oriented_steps();
+    return edges.size() == 2U &&
+           ((edges[0].topology() == *a && edges[1].topology() == *b) ||
+            (edges[0].topology() == *b && edges[1].topology() == *a));
+  });
+  ASSERT_NE(routes.end(), route)
+      << "odd-tau proof needs an A4-produced TWO-carrier certificate";
+  ASSERT_EQ(1U, route->junctions.size());
+  const auto junction = route->junctions.front().junction;
+  EXPECT_EQ(4, static_cast<int>(junction.index()));
+  bool oddCarrier = false;
+  for (const auto &endpoint : route->endpoints) {
+    const auto &carrier = endpoint.terminalCarrier;
+    const auto first = regions.row_for_topology(carrier.firstFace);
+    const auto second = regions.row_for_topology(carrier.secondFace);
+    ASSERT_TRUE(first.has_value());
+    ASSERT_TRUE(second.has_value());
+    const auto a1 = atlas.transition_value(carrier.edge, *first, *second);
+    ASSERT_TRUE(a1.has_value());
+    EXPECT_EQ(a1->transport, carrier.firstToSecond);
+    oddCarrier = oddCarrier ||
+        carrier.firstToSecond == Turn::from_integer(1) ||
+        carrier.firstToSecond == Turn::from_integer(3);
+  }
+  EXPECT_TRUE(oddCarrier)
+      << "the real paired A4 carrier must have odd tau in its A1 gauge";
+
+  directional::TriMesh source;
+  source.set_mesh(mesh.vertices, mesh.faces);
+  std::size_t evaluatedNontrivialGerms = 0U;
+  std::size_t verifiedOwners = 0U;
+  for (const auto &sector : route->junctions.front().sectorPaths) {
+    if (sector.empty()) continue;
+    const auto seedFace = sector.front().firstFace;
+    const auto *frame = topology.find_frame(seedFace);
+    ASSERT_NE(nullptr, frame);
+    const auto row = regions.row_for_topology(seedFace);
+    ASSERT_TRUE(row.has_value());
+    for (const auto &pairing : frame->branches) {
+      auto arrival = pairing.direction;
+      if (!arrival.is_barycentric()) continue;
+      for (auto &coordinate : arrival.barycentric) coordinate = -coordinate;
+      if (!directional::authority::direction_in_closed_vertex_wedge(
+              source, *row, junction, arrival)) continue;
+      const auto transit = directional::geometry::surface_cell_tracing_detail::
+          resolve_field_vertex_transit(
+              source, topology, frame->sourceComponent, frame->topologyRegion,
+              seedFace, pairing.branch, junction,
+              directional::geometry::FieldVertexArrivalMode::FaceInterior,
+              std::nullopt, std::nullopt, &sourceBarriers);
+      if (const auto *decision = std::get_if<Decision>(&transit)) {
+        ASSERT_TRUE(decision->vertexStarTransit.has_value());
+        const auto &audit = *decision->vertexStarTransit;
+        EXPECT_EQ(directional::geometry::VertexStarTransitState::Owner,
+                  audit.state);
+        EXPECT_EQ(1U, audit.ownerCardinality);
+        EXPECT_EQ(decision->nextFace, audit.ownerFace);
+        EXPECT_EQ(decision->nextBranch, audit.ownerBranch);
+        EXPECT_GT(audit.fanLength, 1U);
+        ++verifiedOwners;
+      } else {
+        const auto &error = std::get<
+            directional::geometry::FieldAlignedCurveNetworkError>(transit);
+        for (const auto &state : error.vertexTransitStates) {
+          if (state.outcome != directional::geometry::
+                   FieldVertexTransitStateOutcome::Evaluated ||
+              state.transportPath.empty()) continue;
+          for (const auto &edge : state.transportPath) {
+            EXPECT_NE(*a, edge);
+            EXPECT_NE(*b, edge);
+            EXPECT_FALSE(front.hardFeatureEdges().contains(edge));
+          }
+          ++evaluatedNontrivialGerms;
+        }
+      }
+    }
+  }
+  EXPECT_GT(verifiedOwners + evaluatedNontrivialGerms, 0U)
+      << "odd carrier must share a real, nontrivial A1 vertex-star germ";
+}
+
 TEST(SurfaceCellFieldAlignedNetworkAuthority,
      ProductionConsumesTypedSkeletonWithoutRawSingularityProjection) {
   const REPkgMesh mesh = make_rectangular_internal_hard_feature_grid();
