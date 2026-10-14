@@ -1,3 +1,10 @@
+## CURRENT — R4 seven-DCEL source-completion census (2026-10-14)
+
+- [x] Exact snapshot `840583d57ac0263b6d6230bf0b59e1a9b58b0622` (run 38596495573, 5963/5963 hashes) confirms the *source-fixture* part of all seven R3 DCEL exceptions is implemented with two-triangle DCEL-oriented provenance and source-matched A3. Frozen selector449 ordinals `40/220/221/296/302/304/439` retain their original identities/oracles. Details: `Architecture_M6_CP3_R4_Seven_DCEL_Fixture_Static_Census_20261014.md`; do not redo the fixture migration.
+- [ ] All seven remain **runtime-unexecuted** on R4. Demand their original downstream oracles in future authorized artifact-only TB and independent Review; no selector edit, runtime credit, successor or unchanged semantic recompilation.
+
+---
+
 ## CURRENT — R4 duplicate feature-curve owner source boundary (2026-10-14)
 
 - [x] Source integrity correction: semantic `6d6d269dd2df211a96de1fcd20bacb54a4e34358`, apply workflow [38593331149](https://github.com/akashskypatel/Directional/actions/runs/38593331149) GREEN, result artifact `11909000384` SHA256 `5584bc466c04a8f696ededf55b9b129fd4ec1b972815e14078c08edb95964f81`, staging owner-deleted, exact two-file +26-line change. Existing rail producer regression extended; owning report `Architecture_M6_CP3_R4_Duplicate_Curve_Owner_Guard_20261014.md`.

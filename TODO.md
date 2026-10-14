@@ -1,3 +1,10 @@
+## CURRENT — R4 historical seven-DCEL regression static census (2026-10-14)
+
+- [x] Source-fixture migration already present for selector449 R3 DCEL-RED ordinals 40/220/221/296/302/304/439; dual-triangle source-matched A3 and original test oracles verified statically against snapshot 38596495573 (5963/5963 hashes). See `Architecture_M6_CP3_R4_Seven_DCEL_Fixture_Static_Census_20261014.md`. Do not repeat these implementation edits.
+- [ ] All seven remain unverified at runtime: only future immutable artifact-only TB plus Review can restore their accepted-prefix credit. Frozen 497, ledger, RA-43.1/.2/.4, RA-47.12, 39/34/88/six and organic CP3 witnesses remain unchanged.
+
+---
+
 ## CURRENT — R4 duplicate curve-owner correction (2026-10-14)
 
 - [x] Apply two-file curve-owner ID integrity guard, semantic `6d6d269dd2df211a96de1fcd20bacb54a4e34358`, apply workflow [38593331149](https://github.com/akashskypatel/Directional/actions/runs/38593331149) GREEN, result artifact `11909000384` SHA256 `5584bc466c04a8f696ededf55b9b129fd4ec1b972815e14078c08edb95964f81`, staging owner-deleted, exact two-file +26-line change. No new test identity, selector or ABI change.
