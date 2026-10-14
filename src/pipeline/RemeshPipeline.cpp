@@ -9464,6 +9464,22 @@ SurfaceCellRailBuildResult build_authoritative_surface_cell_rails(
         fail_edge(edgeIndex);
         return SurfaceCellRailBuildResult::rejected(std::move(failure));
       }
+      // Even a non-rail curve member partitions authoritative rail runs.
+      // Its mesh-edge incidence and component therefore must be sourced from
+      // the mesh rather than accepted solely from feature-map claims.
+      if (!surface_cell_feature_edge_is_rail(edge)) {
+        const auto support = sourceFacesByEdge.find(
+            geometry::AdaptiveFeatureMap::canonical_edge(a, b));
+        std::vector<int> claimedFaces = edge.incidentFaces;
+        std::sort(claimedFaces.begin(), claimedFaces.end());
+        if (support == sourceFacesByEdge.end() || claimedFaces.empty() ||
+            claimedFaces != support->second ||
+            edge.component != sourceFaceComponents[
+                                  static_cast<std::size_t>(claimedFaces.front())]) {
+          fail_edge(edgeIndex);
+          return SurfaceCellRailBuildResult::rejected(std::move(failure));
+        }
+      }
       OrderedCurveEdge entry;
       entry.edgeIndex = edgeIndex;
       entry.startVertex = a;

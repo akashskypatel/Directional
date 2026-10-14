@@ -84,6 +84,21 @@ TEST(MilestoneBClosure, MixedFeatureCurveIsSplitIntoContiguousRailRuns) {
   EXPECT_EQ(result.product().rails[1].sourceVertices, std::vector<int>({4, 5}));
   EXPECT_FALSE(result.product().rails[0].closed);
   EXPECT_FALSE(result.product().rails[1].closed);
+
+  // A soft curve member is not emitted as a rail, but it controls where
+  // authoritative hard-rail runs split. A forged source-face claim on that
+  // middle member must reject before publishing the two otherwise-valid rails.
+  auto forgedSoftIncidence = map;
+  forgedSoftIncidence.edges[1].incidentFaces = {0};
+  const auto forged =
+      directional::pipeline::build_authoritative_surface_cell_rails(
+          source, forgedSoftIncidence);
+  ASSERT_TRUE(forged.is_rejected());
+  ASSERT_EQ(nullptr, forged.produced_product());
+  ASSERT_NE(nullptr, forged.rejection());
+  EXPECT_EQ(directional::pipeline::SurfaceCellRailBuildFailureKind::InvalidFeatureEdge,
+            forged.rejection()->kind);
+  EXPECT_EQ(1, forged.rejection()->failedEdgeIndex);
 }
 
 TEST(MilestoneBClosure, ContiguousHardCurveRemainsOneOrderedRail) {
