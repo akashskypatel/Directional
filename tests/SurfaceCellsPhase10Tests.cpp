@@ -6990,6 +6990,51 @@ TEST(SurfaceCellAuthorityContractCutover,
       << repeatedFailure->hardRailRouteDiagnostic;
 }
 
+// An authentic open terminal contact cannot borrow a different real source
+// component while retaining its producer-owned endpoint vertices and rail ID.
+// The rejection must occur in the first A4 endpoint consumer, not in the
+// downstream checked product factory. Runtime execution is deferred to TB.
+TEST(SurfaceCellAuthorityContractCutover,
+     ForeignOpenRailComponentRejectsAtFirstA4ConsumerPredicate) {
+  const auto fixture = build_rectangular_hard_rail_phase_front();
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            fixture.network.phaseFront.disposition())
+      << hard_rail_first_failure_detail(fixture.network);
+  const auto &front = fixture.network.phaseFront.product();
+  ASSERT_FALSE(front.hardRailRouteCertificates().empty());
+  const auto &route = front.hardRailRouteCertificates().front();
+  auto contacts = front.hardRailTerminalContacts();
+  auto contact = contacts.find(route.rail);
+  ASSERT_NE(contact, contacts.end());
+  ASSERT_TRUE(fixture.sourceAuthority.has_value());
+  const int actualComponent = contact->second.component;
+  ASSERT_TRUE(actualComponent == 0 || actualComponent == 1);
+  contact->second.component = actualComponent == 0 ? 1 : 0;
+  ASSERT_TRUE(std::any_of(
+      fixture.sourceAuthority->regions().begin(),
+      fixture.sourceAuthority->regions().end(), [&](const auto &region) {
+        return static_cast<int>(region.component().index()) ==
+               contact->second.component;
+      })) << "the forged component must name a real, foreign source component";
+
+  const auto rejected = build_fixed_plan_rectangular_hard_rail_network(
+      fixture, 1.0, &contacts);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
+            rejected.phaseFront.disposition());
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
+                InvalidHardRailRouteCertificate,
+            rejected.phaseFront.rejection_reason());
+  const auto *failure = rejected.phaseFront.rejection();
+  ASSERT_NE(failure, nullptr);
+  EXPECT_EQ(directional::geometry::SurfaceHardRailRouteFailureLocus::
+                EndpointAttachment,
+            failure->hardRailRouteLocus);
+  EXPECT_NE(std::string::npos,
+            failure->hardRailRouteDiagnostic.find(
+                "a2bProbeFailure=terminal-contact-component-mismatch"))
+      << failure->hardRailRouteDiagnostic;
+}
+
 // RA-49.2: use the actual first certified terminal vertex, not a fabricated
 // second geometric match. Duplicating that typed ID causes the consumer to
 // reject before the downstream checked factory can validate the contact.

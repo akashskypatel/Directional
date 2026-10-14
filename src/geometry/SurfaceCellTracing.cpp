@@ -19093,6 +19093,15 @@ SurfaceCellNetwork build_surface_cell_network(
         return SurfaceHardRailRouteEndpointCertificate{
             firstAttachment, secondAttachment, *oriented, std::nullopt, {}};
       }
+      // An open-rail contact is source-component authority, not just a
+      // vertex pair. Reject a foreign component at the first A4 consumer,
+      // before a route certificate can reach the checked product factory.
+      if (contact->second.component < 0 ||
+          static_cast<std::size_t>(contact->second.component) !=
+              network.sourceTopologyRegions->component_for_row(*from).index() ||
+          static_cast<std::size_t>(contact->second.component) !=
+              network.sourceTopologyRegions->component_for_row(*to).index())
+        return reject("terminal-contact-component-mismatch");
       const auto exact_corner = [&](const SurfaceTracePoint &point,
                                     const authority::SourceVertexId vertex) {
         if (point.face < 0 || point.face >= faces.rows()) return false;
