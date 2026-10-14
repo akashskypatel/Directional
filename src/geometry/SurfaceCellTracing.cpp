@@ -1455,7 +1455,7 @@ FieldVertexTransitResult resolve_field_vertex_transit(
       if (adjacency.sourceEdge.first() != sourceVertex &&
           adjacency.sourceEdge.second() != sourceVertex) continue;
       // RA-43.1: the terminal germ is a connected component of the
-      // vertex star after cutting certified incident hard-rail carriers.
+      // vertex star after cutting every incident HardFeature barrier.
       // SourceBoundary barriers are separate from this hard-carrier cut.
       if (sourceBarriers != nullptr) {
         const auto barrier = sourceBarriers->find(adjacency.sourceEdge);
