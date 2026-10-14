@@ -285,6 +285,19 @@ TEST(SurfaceCellClosedProductContracts,
             foreignIncidentFace.rejection()->kind);
   EXPECT_EQ(0, foreignIncidentFace.rejection()->failedEdgeIndex);
 
+  // Face 1 belongs to the same connected component as face 0, but does
+  // not contain source edge (0,1). Component agreement alone is insufficient.
+  auto sameComponentForeignFace = validMap;
+  sameComponentForeignFace.edges[0].incidentFaces = {0, 1};
+  const auto foreignSameComponent =
+      directional::pipeline::build_authoritative_surface_cell_rails(
+          source, sameComponentForeignFace);
+  ASSERT_TRUE(foreignSameComponent.is_rejected());
+  ASSERT_NE(foreignSameComponent.rejection(), nullptr);
+  EXPECT_EQ(directional::pipeline::SurfaceCellRailBuildFailureKind::InvalidFeatureEdge,
+            foreignSameComponent.rejection()->kind);
+  EXPECT_EQ(0, foreignSameComponent.rejection()->failedEdgeIndex);
+
   auto forgedSourceComponent = sourcedMap;
   forgedSourceComponent.curves[0].component = 1;
   forgedSourceComponent.edges[0].component = 1;
