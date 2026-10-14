@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-negative-standalone-owner-docs-rebase-20261014t1655z",
+  "request_id": "m6-cp3-r4-duplicate-canonical-edge-apply-20261014t1811z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-negative-standalone-owner-docs-rebase-apply",
-  "file_id": "17u0oX_5fL0IrDdRTdDsKqgStBEYP_ug3",
-  "patch_sha256": "d8893d2bdbe00eaf0e1bacd46a1bb6bf4dd5c45e2224142d3a1ba064d261d7bf",
-  "base_sha": "7fc867ff321489cbeaa216aaa6d57dbc7b3c175e",
+  "mailbox_key": "m6-cp3-r4-duplicate-canonical-edge-apply",
+  "file_id": "1LjtvYQPOPDYTWOFbHkSxyD8rvDir1c_D",
+  "patch_sha256": "7c4755085fbbfbb140ecefa9323d67a318f368c5860a6c889bafbfaaab843b92",
+  "base_sha": "14411a89a05e2be5ca652bb674c9536393117679",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: reconcile R4 negative standalone owner compile receipt",
+  "commit_message": "fix(surfacecells): reject duplicate canonical source rail support",
   "retention_days": 7
 }
