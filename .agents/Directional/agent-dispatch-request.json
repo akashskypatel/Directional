@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-nonhard-a3-docs-transportfix-20261014t0259z",
+  "request_id": "m6-cp3-r4-nonhard-a3-compile-green-docs-20261014t0301z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-nonhard-a3-docs-transportfix",
-  "file_id": "1Vy4MrDjdsZABpkuqofx3m38mN69sKd8B",
-  "patch_sha256": "69058e76e15dc5e1c831cae1be9e4ead2e360f9b6b1c26b1f5ef0e9070d14c67",
-  "base_sha": "d9875463288bcb78c06d63df855ff3c9036708b2",
+  "mailbox_key": "m6-cp3-r4-nonhard-a3-compile-green-docs",
+  "file_id": "1o8daUtfDZnQIT6p6_9d2DEqLIL6u3aeO",
+  "patch_sha256": "d0a53acdd4a96ce9559e2419d8f6861db92ac01d44acdb57ae36752ee0aa870f",
+  "base_sha": "3fc782fc794f7468e8af3e0b0dfa0215d279d640",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): preserve R4 nonhard A3 compile failure and recovery handoff",
+  "commit_message": "docs(directional): record verified R4 nonhard A3 corrected compile and transport fix",
   "retention_days": 14
 }
