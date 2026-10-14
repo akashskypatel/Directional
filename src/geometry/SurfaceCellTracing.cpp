@@ -19051,6 +19051,15 @@ SurfaceCellNetwork build_surface_cell_network(
             *first.railId);
         if (closed == authoritativeOptions.hardRailClosedChains.end())
           return reject("missing-terminal-or-closed-rail-provenance");
+        // A closed-chain component must belong to both actual source
+        // attachments; the later checked factory cannot protect this first
+        // consumer from accepting a foreign component claim.
+        if (closed->second.component < 0 ||
+            static_cast<std::size_t>(closed->second.component) !=
+                network.sourceTopologyRegions->component_for_row(*from).index() ||
+            static_cast<std::size_t>(closed->second.component) !=
+                network.sourceTopologyRegions->component_for_row(*to).index())
+          return reject("closed-rail-component-mismatch");
         // A closed-chain token is not sufficient to replace an open-rail
         // terminal contact. Its cyclic source-owned edge list must actually
         // own this endpoint carrier, before attempting an A3 bypass.

@@ -6872,6 +6872,40 @@ TEST(SurfaceCellAuthorityContractCutover,
                 "a2bProbeFailure=closed-rail-chain-non-hard-edge"))
       << partlyForgedFailure->hardRailRouteDiagnostic;
 
+  // Change only the closed-chain component. The same endpoint-owning
+  // chain reaches the later non-hard-edge check above with its actual
+  // component, so this must reject at the earlier source-component gate.
+  auto foreignComponentClosed = partlyForeignClosed;
+  auto &foreignChain = foreignComponentClosed.at(route.rail);
+  foreignChain.component = foreignChain.component == 0 ? 1 : 0;
+  ASSERT_TRUE(fixture.sourceAuthority.has_value());
+  ASSERT_TRUE(std::any_of(
+      fixture.sourceAuthority->regions().begin(),
+      fixture.sourceAuthority->regions().end(),
+      [&](const auto &region) {
+        return static_cast<int>(region.component().index()) ==
+               foreignChain.component;
+      })) << "the forgery must name another real source component";
+  const auto foreignComponent = build_fixed_plan_rectangular_hard_rail_network(
+      fixture, 1.0, &contacts, nullptr, &foreignComponentClosed);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
+            foreignComponent.phaseFront.disposition());
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
+                InvalidHardRailRouteCertificate,
+            foreignComponent.phaseFront.rejection_reason());
+  const auto *foreignFailure = foreignComponent.phaseFront.rejection();
+  ASSERT_NE(foreignFailure, nullptr);
+  EXPECT_EQ(directional::geometry::SurfaceHardRailRouteFailureLocus::
+                EndpointAttachment,
+            foreignFailure->hardRailRouteLocus);
+  EXPECT_NE(std::string::npos,
+            foreignFailure->hardRailRouteDiagnostic.find(
+                "a2bProbeFailure=closed-rail-component-mismatch"))
+      << foreignFailure->hardRailRouteDiagnostic;
+  EXPECT_EQ(std::string::npos,
+            foreignFailure->hardRailRouteDiagnostic.find(
+                "a2bProbeFailure=closed-rail-chain-non-hard-edge"));
+
   // Repeating a source vertex is not a closed source-owned cycle even when
   // the endpoint carrier itself is one of the supplied consecutive edges.
   directional::geometry::SurfaceHardRailClosedChains repeatedClosed;
