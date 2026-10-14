@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-source-review-gate-retry1-20261014t1835z",
+  "request_id": "m6-cp3-r4-sid02-probe-20261014t1947z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-source-current-review-gate-retry1",
-  "file_id": "14wTsFtQaZEHj6dexqh5JzZWBXDt3tzxS",
-  "patch_sha256": "0b67a065817126d6bd68dbddb1cabc62ee62c39eb2b28559a69c59abe0baa0fa",
-  "base_sha": "8f490bd7fb196bfb2a9d8b83cf9c65c5d6c001d0",
+  "mailbox_key": "m6-cp3-r4-sid02-probe-docs",
+  "file_id": "1rNalsQVh2N2wi5wmf9sQV07GkoD2R_6-",
+  "patch_sha256": "86f9f2553c4510a7c2ebc5f3280a42cf6d292334c4f03d8b367644e2b16143d2",
+  "base_sha": "43e8a503baa1896fd133eecda5ce6a323b9229ed",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: record R4 independent review gate after snapshot race",
+  "commit_message": "docs(directional): close source-only R4-SID02 reachability probe",
   "retention_days": 7
 }
