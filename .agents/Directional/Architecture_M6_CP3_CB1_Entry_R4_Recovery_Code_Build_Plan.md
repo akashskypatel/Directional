@@ -1,3 +1,10 @@
+## CURRENT — R4 duplicate feature-curve owner source boundary (2026-10-14)
+
+- [x] Source integrity correction: semantic `6d6d269dd2df211a96de1fcd20bacb54a4e34358`, apply workflow [38593331149](https://github.com/akashskypatel/Directional/actions/runs/38593331149) GREEN, result artifact `11909000384` SHA256 `5584bc466c04a8f696ededf55b9b129fd4ec1b972815e14078c08edb95964f81`, staging owner-deleted, exact two-file +26-line change. Existing rail producer regression extended; owning report `Architecture_M6_CP3_R4_Duplicate_Curve_Owner_Guard_20261014.md`.
+- [ ] GMP/GMPXX compile mailbox `m6-cp3-r4-duplicate-curve-owner-compile`: compile GREEN in [run 38593643840](https://github.com/akashskypatel/Directional/actions/runs/38593643840), job `115954831123`, artifact `11909760571`, outer SHA256 `b84cf6a8215c8cbf02a8b0f5a443854a18cf738d9144f7fb0b29bfabfd206fa8`, root manifest 28/28, all eight GMP/GMPXX targets, preflight/build 0/0, clean source, `runtimeExecution=false` (no tests/benchmarks). All independent Review, future exact-artifact TB and selector gates remain open; no runtime or successor.
+
+---
+
 ## CURRENT — R4 orphan curve-member guard exact-source compile checkpoint (2026-10-14)
 
 - [x] Applied minimal independent source integrity correction to `build_authoritative_surface_cell_rails`, source `f026512e4599eb9982c1f9afd4292ed429a82eae`; original existing producer rejection test extended without changing test identity. Verified mandatory eight-target GMP/GMPXX compile in run `38586952664`, artifact `11905148938`, ZIP SHA256 `f4a10d548631ad44a3ec8a4a1fedb59c4f90186471f7503037e232fcc7f7ead1`, 28/28 manifest, no runtime execution. Source and proof in `Architecture_M6_CP3_R4_Orphan_Curve_Membership_Source_Guard_20261014.md`.

@@ -1,3 +1,10 @@
+## CURRENT — R4 duplicate curve-owner correction (2026-10-14)
+
+- [x] Apply two-file curve-owner ID integrity guard, semantic `6d6d269dd2df211a96de1fcd20bacb54a4e34358`, apply workflow [38593331149](https://github.com/akashskypatel/Directional/actions/runs/38593331149) GREEN, result artifact `11909000384` SHA256 `5584bc466c04a8f696ededf55b9b129fd4ec1b972815e14078c08edb95964f81`, staging owner-deleted, exact two-file +26-line change. No new test identity, selector or ABI change.
+- [ ] Pinned eight-target GMP/GMPXX compile result: compile GREEN in [run 38593643840](https://github.com/akashskypatel/Directional/actions/runs/38593643840), job `115954831123`, artifact `11909760571`, outer SHA256 `b84cf6a8215c8cbf02a8b0f5a443854a18cf738d9144f7fb0b29bfabfd206fa8`, root manifest 28/28, all eight GMP/GMPXX targets, preflight/build 0/0, clean source, `runtimeExecution=false` (no tests/benchmarks); independent RA-43.1/.2 and RA-43.4, 39/34/7/88/six and all organic/RA-47.12/odd-τ TB obligations stay open. No runtime acceptance or successor.
+
+---
+
 ## CURRENT — `M6-CP3-CB1-ENTRY-R4` compile evidence reconciled (2026-10-14)
 
 - [x] Correct source-curve membership for uncovered standalone hard rails: semantic `f026512e`, compile run `38586952664`, eight GMP/GMPXX targets GREEN, 28/28 manifest, no runtime; evidence `Architecture_M6_CP3_R4_Orphan_Curve_Membership_Source_Guard_20261014.md`.
