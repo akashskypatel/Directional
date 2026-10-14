@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-feature-owner-apply-20261014t0955z",
+  "request_id": "m6-cp3-r4-feature-owner-target-apply-20261014t0957z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-feature-owner-apply",
-  "file_id": "1dKdarVSS0NaOCEgdNrgKCU2mjxLDIKfi",
-  "patch_sha256": "b767705c1f9013f5b77bf514981fe1f5eff3f51910a3570413b9c883f7877207",
-  "base_sha": "bbf2902ab56c6000867e538c16300720f95b14ff",
+  "mailbox_key": "m6-cp3-r4-feature-owner-target-apply",
+  "file_id": "1XF1YzNY4kmn6tNxuxDhFXdQvxM8uXjVU",
+  "patch_sha256": "bfdc9f2deff7968449c81020eb6d2fa63d3bf20cac6e7a908c32b4f304eb5ccc",
+  "base_sha": "d7c67df66bcd098331ed440c27834cbffeb34231",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surface-cells): reject mixed feature curve edge ownership before rail assembly"
+  "commit_message": "test(surface-cells): compile feature curve ownership negative in default producer target"
 }
