@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-false-open-curve-apply-v2-20261014t1359z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-false-open-curve-apply-v2",
-  "file_id": "1TqS3CPwWwhZG13nGQ1ZDcR4arE1TyZmB",
-  "patch_sha256": "1d7990077e464baf497a5dc69956a0963956a9977f1662f02a1e79329cf5da80",
-  "base_sha": "2ff3201cea2ce997ba8c67cf75210215cb591bbd",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surfacecells): reject false-open source curve closure claim",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-false-open-curve-compile-20261014t1401z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-false-open-curve-compile",
+  "source_sha": "370d84df79a1414148798c81c09bfece81e6d48d",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-r4-false-open-curve"
 }
