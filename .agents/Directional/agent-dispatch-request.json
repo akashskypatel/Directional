@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra47-stop-supersession-apply-20261014t1334z",
+  "request_id": "m6-cp3-r4-false-open-curve-apply-20261014t1355z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra47-stop-supersession-apply",
-  "file_id": "1YgSD8gsNTCPDtRcl4SL51P1su2NiSZAG",
-  "patch_sha256": "a3a91bdb7e9418974531385fa20d23141306bacc8d6ee2dd32387487a10b04f3",
-  "base_sha": "378c07c2e819ade54454fbb2428fe8be788f9dac",
+  "mailbox_key": "m6-cp3-r4-false-open-curve-apply",
+  "file_id": "1Uyi6GP7hHGR3c1HydhOde00AKiEaCtjW",
+  "patch_sha256": "a992638c474708440d983819e074a5b3102d7691fdcc9261a088bc723146e486",
+  "base_sha": "2ff3201cea2ce997ba8c67cf75210215cb591bbd",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): reconcile historical R4-IDX stop with accepted RA-47",
+  "commit_message": "fix(surfacecells): reject false-open source curve closure claim",
   "retention_days": 14
 }
