@@ -23,3 +23,11 @@ Mandatory eight-target GMP/GMPXX compile request submitted at dispatcher commit 
 ## Unchanged R4 obligations
 
 RA-43.1 selected A4/A1 admitted branch and filled-side authority independent source-domain Review, RA-43.4 diagnostic opt-out disposition, RA-47.12 executed liveness, 39/34/7/88/six historical restorations, organic D1/D2/D3/D5/A6/A7 and genuinely produced odd-τ multi-carrier remain open. Preserve frozen selector 497 and accepted baseline; no successor or artifact-only TB in this Code + Build turn.
+
+---
+
+## Exact-source pinned GMP/GMPXX compile reconciliation
+
+The pending compile request above completed successfully in [run 38593643840](https://github.com/akashskypatel/Directional/actions/runs/38593643840), compile job `115954831123`. Immutable result artifact `11909760571`, outer ZIP SHA-256 `b84cf6a8215c8cbf02a8b0f5a443854a18cf738d9144f7fb0b29bfabfd206fa8`; all 28/28 root SHA256SUMS validated. Exact source commit `6d6d269dd2df211a96de1fcd20bacb54a4e34358` and packaged source TAR SHA-256 `6086c1394896532e416261b56e2e09cce96bb424f114ee2ba71432de41d1cc5d`. Eight named required targets built, preflight and build exits both 0; generated C++ linker command includes `libgmpxx.so` and `libgmp.so`; clean source-status snapshots. `runtimeExecution=false`, `turnBoundary=Code+Build-only`; tests and benchmarks skipped. The packaged source contains `seenCurveIds` and the existing regression extension.
+
+**Disposition:** narrow producer identity guard compile-GREEN, not runtime-proven. Preserve same unfinished R4 canonical turn and all independent RA-43.1/.2, RA-43.4, historic and organic artifact-only TB obligations; no successor, frozen-selector change or acceptance promotion.
