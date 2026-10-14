@@ -1,8 +1,15 @@
+## CURRENT — R4 A2a/A3 atlas provenance compiled (2026-10-14 09:27 UTC)
+
+- [x] **New semantic-source compile verified.** Exact `bbf2902ab56c6000867e538c16300720f95b14ff`, [workflow 38541872128](https://github.com/akashskypatel/Directional/actions/runs/38541872128), compile job `115778443635`, immutable artifact `11883030813`, SHA-256 `6ba61fd158e7a6390d7255a31957515b0abf832d3e3a53ee0a894a030b8a10fc`. Independent read-only verification: 28/28 manifest files, eight targets, 0/0 preflight/build exit, GMPXX/GMP in generated linker evidence, five clean source-status files, source archive exact and including both atlas-binding guard and gauge-relabelled negative, `runtimeExecution=false`. The Test + Benchmark job was skipped. Evidence: `Architecture_M6_CP3_R4_RA434_Network_Atlas_Provenance_20261014.md`.
+- [ ] **R4 is not complete.** Do not count source-oracle compile as runtime PASS, alter frozen 497 selector, start TB497, or advance to successor. Continue nonduplicative source/consumer correction only with independent source evidence; selected A4/A1 branch attribution still needs an independent RA-43.1/RA-43.2 Review decision. The runtime organic/acceptance obligations require the separately authorized immutable-artifact TB.
+
+---
+
 ## CURRENT — R4 A2a/A3 atlas provenance first-consumer apply verified; compile owed (2026-10-14 09:14 UTC)
 
 - [x] Existing checked S4 already required exact A2a network/source and A3 atlas pairing; the direct tracing and phase-front ingress lacked that pairing guard. Reused the existing valid gauge-relabelled semantic-equivalence witness and added the first `InvalidTopologyRegionTransport` rejection, without altering frozen selector, ABI or test identity.
 - [x] Exact-source two-file patch at base `f04eda9743e94e42cac9b19f6ada29ae7fde1a07`, SHA-256 `5ab02385a1ca63d1da8dcb6f7478b41010934ae29127ea8b04cd3bb65867fa65`, successfully applied through [workflow 38540378531](https://github.com/akashskypatel/Directional/actions/runs/38540378531) to semantic commit `bbf2902ab56c6000867e538c16300720f95b14ff`. Apply result `11882690492`, ZIP SHA-256 `0d85ec61922d0e09da974f0b3d96dd48175e7d2b0779d3607e8e703eee7c9296`, two changed paths confirmed, `runtimeExecution=false`. Consumed Drive staging permanently deleted. Owning evidence: `Architecture_M6_CP3_R4_RA434_Network_Atlas_Provenance_20261014.md`.
-- [ ] **Immediate same-R4 action: compile the NEW exact source `bbf2902ab56c6000867e538c16300720f95b14ff`.** Previous eight-target GMP/GMPXX compile GREEN for `f04eda9` is historical and does NOT cover `bbf2902`. Use the strict durable compile dispatcher, all eight standard targets, 28/28 packaged hashes, `runtimeExecution=false`. No runtime PASS or TB497. Maintain independent RA-43.1 design-gate and other open obligations.
+- [x] **Superseded pending item — completed:** the exact `bbf2902ab56c6000867e538c16300720f95b14ff` eight-target GMP/GMPXX compile is verified in run `38541872128` and the CURRENT checkpoint above. The preceding `f04eda9` compile remains historical. The new negative remains unexecuted; independent RA-43.1 Review and all other R4 duties remain.
 
 ---
 
