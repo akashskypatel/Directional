@@ -1,3 +1,8 @@
+## 2026-10-15 — R4 A2b predicate diagnostic separation compiled; runtime acceptance unchanged
+
+- `M6-CP3-CB2-R4-PREDICATE-SEPARATION` Code + Build landed semantic `16c3134c02ab3872eee77a6b9dcc9d3fc6e01b7b` from `0cb0434c8ee7ec86fdc6ab7ebd7162d713492995`. Added source-vertex and exact shared-interval ordinal diagnostics plus distinct first-failed A2b predicate reporting; RA-62.2 committed-history guard now covers handoff/ORIENTATION and high-water floors. Only `SurfaceCellTracing.cpp` and `review_check.py` changed, with no acceptance branch or selector edits. Patch SHA-256 `c6f462ff3c0b646d876904fff795d448ed4427cce2947d039619600c5d530fea`, applied by [38742750098](https://github.com/akashskypatel/Directional/actions/runs/38742750098); staged Drive file retired.
+- Mandatory compile-only [38743048456](https://github.com/akashskypatel/Directional/actions/runs/38743048456) GREEN on exact semantic source; job `116449586867`, artifact `11976790988` (ZIP SHA-256 `31faf55a33c31abb60c8f34acb64ad901514de821cd6d2f3acbdcd817b1dbb36`), 28/28 manifest, 8/8 targets, preflight/build 0/0, GMPXX/GMP authoritative linker, clean source, `runtimeExecution=false`. No executable, tests, benchmarks or TB497 ran; runtime equivalence is unverified. Accepted ledger 66/17/49, debt 1, CP2 491/491, R3 403/497, frozen 497, PR #8 draft/open all unchanged. No successor turn ID frozen; independent artifact-only TB/Review require later authorization.
+
 ## 2026-10-15 — RA-62 frozen: the one-hot endpoint is the rail's junction vertex, a third shape with no certificate, and `RP-01` is located
 
 - Architecture Review only (`M6-CP3-TB2-R4-CONJUNCT-EXTRACT-REV`); no source, test, selector, binary, harness, workflow, benchmark or ledger-count change, and no Directional binary executed.
