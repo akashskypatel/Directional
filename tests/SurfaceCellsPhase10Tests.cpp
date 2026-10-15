@@ -6415,7 +6415,8 @@ build_fixed_plan_rectangular_hard_rail_network(
     const double targetScale,
     const directional::geometry::SurfaceHardRailTerminalContacts *contacts = nullptr,
     const std::set<directional::authority::SourceEdgeTopologyKey> *hardEdges = nullptr,
-    const directional::geometry::SurfaceHardRailClosedChains *closedChains = nullptr) {
+    const directional::geometry::SurfaceHardRailClosedChains *closedChains = nullptr,
+    const std::vector<directional::geometry::SurfaceCellRail> *rails = nullptr) {
   if (!fixture.sourceAuthority.has_value() || !fixture.atlas.has_value() ||
       !fixture.fieldNetwork.has_value() || !fixture.topologyPlan.has_value() ||
       !fixture.conformityBaseline.has_value()) {
@@ -6429,7 +6430,7 @@ build_fixed_plan_rectangular_hard_rail_network(
   options.globalTopologyPlan = &*fixture.topologyPlan;
   options.globalConformityBaselinePlan = &*fixture.conformityBaseline;
   options.hardFeatureEdges = hardEdges ? *hardEdges : fixture.hardFeatureEdges;
-  options.authoritativeRails = fixture.rails;
+  options.authoritativeRails = rails != nullptr ? *rails : fixture.rails;
   if (contacts != nullptr) options.hardRailTerminalContacts = *contacts;
   if (closedChains != nullptr) options.hardRailClosedChains = *closedChains;
   const Eigen::VectorXd target = fixture.targetSize * targetScale;
@@ -6644,6 +6645,92 @@ TEST(SurfaceCellAuthorityContractCutover,
   EXPECT_EQ(directional::geometry::FieldAlignedCurveNetworkErrorCode::
                 InvalidRailGeometry,
             rejected.error().code);
+}
+
+// RP-02: the produced A2a network must actually reach the open-front
+// boundary consumer. A2a publication and a direct rail_interval_refs call do
+// not prove the conditional consumer ran. The HardRail owner on a published
+// open-front side is assigned by assign_open_front_boundary_authority, after its
+// network-bound rail_interval_refs check; skipping that consumer leaves no
+// such owner/route. Runtime evidence is reserved for the separate TB turn.
+TEST(SurfaceCellAuthorityContractCutover,
+     ProducedRailIntervalReachesNetworkBoundOpenFrontConsumer) {
+  using directional::geometry::SurfaceCellProducerDisposition;
+  using directional::geometry::SurfaceFrontBoundaryKind;
+  using directional::geometry::SurfacePhaseFrontFailureReason;
+
+  const auto fixture = build_rectangular_hard_rail_phase_front();
+  ASSERT_TRUE(fixture.fieldNetwork.has_value());
+  ASSERT_FALSE(fixture.rails.empty());
+  ASSERT_EQ(SurfaceCellProducerDisposition::Produced,
+            fixture.network.phaseFront.disposition())
+      << hard_rail_first_failure_detail(fixture.network);
+  const auto &product = fixture.network.phaseFront.product();
+  const auto &edges = product.edges();
+  const auto &cells = product.cells();
+  ASSERT_FALSE(cells.empty());
+
+  // An actual published exterior rail side, not merely a produced rail or
+  // network entry, is the consumer's observable, non-vacuous receipt.
+  const directional::geometry::SurfaceCellRail *consumedRail = nullptr;
+  for (const auto &edge : edges) {
+    if (edge.boundaryKind != SurfaceFrontBoundaryKind::HardRail) continue;
+    ASSERT_TRUE(edge.railId.has_value());
+    ASSERT_FALSE(edge.route.steps().empty());
+    ASSERT_GE(edge.filledSide, 0);
+    ASSERT_LT(edge.filledSide, 4);
+    const auto rail = std::find_if(
+        fixture.rails.begin(), fixture.rails.end(), [&](const auto &candidate) {
+          return candidate.id == *edge.railId;
+        });
+    ASSERT_NE(rail, fixture.rails.end());
+    ASSERT_FALSE(rail->sourceVertices.empty());
+    ASSERT_FALSE(rail->sourceEdges.empty());
+    ASSERT_EQ(rail->sourceVertices.size(), rail->sourceEdges.size() + 1U);
+    for (const auto &key : rail->sourceEdges) {
+      const auto *mandatory = fixture.fieldNetwork->find_mandatory_edge(key);
+      ASSERT_NE(mandatory, nullptr);
+      EXPECT_EQ(rail->id, mandatory->rail);
+    }
+    ASSERT_NE(cells.end(),
+              std::find_if(cells.begin(), cells.end(), [&](const auto &cell) {
+                return cell.id == edge.filledCell;
+              }));
+    consumedRail = &*rail;
+  }
+  ASSERT_NE(consumedRail, nullptr)
+      << "the network-bound boundary consumer must publish an actual rail side";
+
+  // Keep the authentic A2a network, source charts, phase-front plan, samples,
+  // endpoint vertices and rail identity. Forge only one otherwise well-typed
+  // published edge key of a rail that the positive consumer actually used.
+  // This enters A4's open-front consumer, not FieldAlignedCurveNetwork::make.
+  auto forgedRails = fixture.rails;
+  auto forged = std::find_if(
+      forgedRails.begin(), forgedRails.end(), [&](const auto &rail) {
+        return rail.id == consumedRail->id;
+      });
+  ASSERT_NE(forged, forgedRails.end());
+  ASSERT_FALSE(forged->sourceEdges.empty());
+  const auto originalKey = forged->sourceEdges.front();
+  const auto foreignKey = std::find_if(
+      fixture.hardFeatureEdges.begin(), fixture.hardFeatureEdges.end(),
+      [&](const auto &key) { return key != originalKey; });
+  ASSERT_NE(foreignKey, fixture.hardFeatureEdges.end());
+  forged->sourceEdges.front() = *foreignKey;
+  ASSERT_EQ(forged->sourceVertices.size(), forged->sourceEdges.size() + 1U);
+  const auto rejected = build_fixed_plan_rectangular_hard_rail_network(
+      fixture, 1.0, nullptr, nullptr, nullptr, &forgedRails);
+  ASSERT_EQ(SurfaceCellProducerDisposition::Rejected,
+            rejected.phaseFront.disposition());
+  EXPECT_EQ(SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority,
+            rejected.phaseFront.rejection_reason());
+  const auto *failure = rejected.phaseFront.rejection();
+  ASSERT_NE(failure, nullptr);
+  EXPECT_GE(failure->cell, 0)
+      << "typed rejection must occur at an actual open-front cell boundary";
+  EXPECT_GE(failure->side, 0);
+  EXPECT_LT(failure->side, 4);
 }
 
 // RA-43.1: distinguish producer-attested hard carrier barriers from
