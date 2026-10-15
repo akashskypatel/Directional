@@ -1,0 +1,2 @@
+Purpose: exact-authority source snapshot for M6-CP3-CB2-R4-PREDICATE-SEPARATION
+Initial branch authority: e8313283abcd3b8c16f6f179cfdaafa8c5214d73
