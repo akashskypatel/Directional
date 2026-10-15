@@ -14,11 +14,12 @@ Two things every REVIEW turn does by hand, now one command each:
 
   boundary    The pre-commit gate for a REVIEW turn. Proves the turn mutated no product,
               test, fixture, benchmark, build or selector byte; that every selector still
-              hashes to its committed value; and that durable section markers survived.
-              It sees only the reviewer's UNCOMMITTED changes against HEAD.
+              hashes to its committed value; and that durable text retains its
+              committed-history high-water line floor. It detects uncommitted loss.
 
-  ledgers     Scans COMMITTED history in BASE..HEAD for any commit that shrank an
-              append-only durable ledger by more than 10% of its lines. `boundary` cannot
+  ledgers     Scans COMMITTED history in BASE..HEAD for shrinkage of protected
+              durable history (any loss for handoff/orientation; >10% for other ledgers).
+              `boundary` cannot
               catch a ledger overwrite committed by another turn, because HEAD already
               contains it. This is the check that would have caught ce9bf3cb and 0043dd4c.
               Pass the previous Review's final commit as BASE.
@@ -45,7 +46,7 @@ CODE_SURFACES = ["src", "include", "tests", "benchmarks", "CMakeLists.txt", "cma
 DURABLE_FILES = {
     ".agents/Directional/Future_Chat_Session_Handoff.md": "DURABLE",
     ".agents/Directional/ORIENTATION.md": "DURABLE",
-    # Protects only against the reviewer's own uncommitted edits; see `ledgers` for committed overwrites.
+    # Also checked against the high-water committed-history text floor below.
     ".agents/Directional/Regression_Root_Cause_Tracker.md": "DURABLE",
 }
 
@@ -56,6 +57,8 @@ APPEND_ONLY_LEDGERS = [
     ".agents/Directional/CHANGELOG.md",
     ".agents/Directional/LESSONS.md",
     "CHANGELOG.md",
+    ".agents/Directional/Future_Chat_Session_Handoff.md",
+    ".agents/Directional/ORIENTATION.md",
 ]
 
 FAILED = []
@@ -186,15 +189,19 @@ def cmd_boundary(args):
         if not os.path.exists(path):
             report(False, "durable file present: %s" % os.path.basename(rel), "missing")
             continue
-        live = open(path, encoding="utf-8", errors="replace").read().count(marker)
-        blob = git("show", "HEAD:%s" % rel)
-        if blob.returncode != 0:
-            report(True, "durable markers in %s" % os.path.basename(rel),
-                   "%d (new file)" % live)
-            continue
-        was = blob.stdout.count(marker)
-        report(live >= was, "durable markers preserved in %s" % os.path.basename(rel),
-               "%d -> %d" % (was, live))
+        live_text = open(path, encoding="utf-8", errors="replace").read()
+        # A marker that survives a whole-file overwrite cannot authenticate the
+        # preserved history. Take the maximum line count over committed versions,
+        # including HEAD, so no later commit can lower the baseline silently.
+        history = git("rev-list", "HEAD", "--", rel)
+        floor = max((_line_count(rev, rel) or 0
+                     for rev in history.stdout.split()), default=0)
+        live_lines = live_text.count("\n")
+        report(history.returncode == 0 and live_lines >= floor,
+               "durable high-water in %s" % os.path.basename(rel),
+               "%d >= %d" % (live_lines, floor))
+        report(marker in live_text, "durable marker in %s" % os.path.basename(rel),
+               "present" if marker in live_text else "missing")
 
     docs = [p for p in paths if not is_code(p) and "Required_Green_Selector_" not in p]
     print("\n  documents changed this turn (%d):" % len(docs))
@@ -214,9 +221,11 @@ def cmd_ledgers(args):
         shrinks = []
         for rev in [r for r in revs.stdout.split() if r]:
             before, after = _line_count(rev + "~1", path), _line_count(rev, path)
-            if before and after is not None and after < before * 0.9:
+            protected_history = path in DURABLE_FILES and path != ".agents/Directional/Regression_Root_Cause_Tracker.md"
+            if before and after is not None and (after < before if protected_history
+                                                  else after < before * 0.9):
                 shrinks.append("%s %d->%d" % (rev[:8], before, after))
-        report(not shrinks, "no >10%% shrink of %s" % path,
+        report(not shrinks, "no historical shrink of %s" % path,
                "clean" if not shrinks else "; ".join(shrinks))
 
 

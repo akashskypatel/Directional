@@ -19395,6 +19395,83 @@ SurfaceCellNetwork build_surface_cell_network(
       };
       append_endpoint_point("From", fromPoint);
       append_endpoint_point("To", toPoint);
+      // Report the actual exact source corner, including interior rail
+      // junctions omitted from the whole-rail terminal contact map.
+      const auto exact_source_vertex = [&](const SurfaceTracePoint &point)
+          -> std::optional<int> {
+        if (point.face < 0 || point.face >= faces.rows()) return std::nullopt;
+        for (int corner = 0; corner < 3; ++corner) {
+          bool oneHot = true;
+          for (int coordinate = 0; coordinate < 3; ++coordinate)
+            if (point.barycentric[coordinate] !=
+                (coordinate == corner ? 1.0 : 0.0)) oneHot = false;
+          if (oneHot) return faces(point.face, corner);
+        }
+        return std::nullopt;
+      };
+      const auto fromVertex = exact_source_vertex(fromPoint);
+      const auto toVertex = exact_source_vertex(toPoint);
+      endpointEvidence << ";a2bProbeFromSourceVertex=";
+      if (fromVertex) endpointEvidence << *fromVertex;
+      else endpointEvidence << "none";
+      endpointEvidence << ";a2bProbeToSourceVertex=";
+      if (toVertex) endpointEvidence << *toVertex;
+      else endpointEvidence << "none";
+      // Preserve exact rational interval numerators/denominators, not a
+      // rounded floating-point reconstruction of the two ordinals.
+      const auto append_interval = [&](const char *label,
+                                       const auto &edge) {
+        endpointEvidence << ";a2bProbe" << label << "IntervalPresent="
+                         << edge.sharedBoundaryInterval.has_value();
+        if (!edge.sharedBoundaryInterval) return;
+        const auto &interval = *edge.sharedBoundaryInterval;
+        endpointEvidence << ";a2bProbe" << label << "Span=" << interval.span.index()
+                         << ";a2bProbe" << label << "FirstOrdinal="
+                         << interval.firstOrdinal.exact_numerator().to_string()
+                         << '/' << interval.firstOrdinal.exact_denominator().to_string()
+                         << ";a2bProbe" << label << "SecondOrdinal="
+                         << interval.secondOrdinal.exact_numerator().to_string()
+                         << '/' << interval.secondOrdinal.exact_denominator().to_string();
+      };
+      append_interval("First", first);
+      append_interval("Second", second);
+      const auto *probeCarrier = find_carrier(endpointEdge);
+      const auto *firstInterval = first.sharedBoundaryInterval
+          ? &*first.sharedBoundaryInterval : nullptr;
+      const auto *secondInterval = second.sharedBoundaryInterval
+          ? &*second.sharedBoundaryInterval : nullptr;
+      const char *firstFailedCondition = "none";
+      if (!probeCarrier) firstFailedCondition = "carrier-absent";
+      else if (!surface_cell_tracing_detail::source_face_id(
+                   fromPoint.face, faces.rows()) ||
+               !surface_cell_tracing_detail::source_face_id(
+                   toPoint.face, faces.rows()))
+        firstFailedCondition = "invalid-source-face";
+      else if (!oriented_carrier(
+                   *probeCarrier,
+                   network.sourceTopologyRegions->topology_for_row(
+                       *surface_cell_tracing_detail::source_face_id(
+                           fromPoint.face, faces.rows())),
+                   network.sourceTopologyRegions->topology_for_row(
+                       *surface_cell_tracing_detail::source_face_id(
+                           toPoint.face, faces.rows()))))
+        firstFailedCondition = "carrier-orientation";
+      else if (!surface_cell_tracing_detail::same_interior_carrier_point(
+                   fromPoint, toPoint, faces, endpointEdge))
+        firstFailedCondition = fromVertex && toVertex && *fromVertex == *toVertex
+            ? "one-hot-carrier-junction" : "not-same-interior-carrier-point";
+      else if (!authoritativeOptions.fieldTransportAtlas)
+        firstFailedCondition = "missing-source-A3";
+      else if (!firstInterval || !secondInterval)
+        firstFailedCondition = "missing-shared-boundary-interval";
+      else if (firstInterval->span != secondInterval->span)
+        firstFailedCondition = "shared-interval-span-mismatch";
+      else if (firstInterval->firstOrdinal != secondInterval->secondOrdinal ||
+               firstInterval->secondOrdinal != secondInterval->firstOrdinal)
+        firstFailedCondition = "shared-interval-ordinals-not-reciprocal";
+      else if (first.railId != second.railId)
+        firstFailedCondition = "endpoint-rail-identity-mismatch";
+      endpointEvidence << ";a2bProbeFirstFailedCondition=" << firstFailedCondition;
       endpointEvidence << ";a2bProbeFailure="
                        << (firstMissing ? firstEndpointPredicate
                                         : secondEndpointPredicate)
