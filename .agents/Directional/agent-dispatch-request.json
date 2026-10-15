@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-witness-rev-20261015t0220z",
+  "request_id": "m6-cp3-r4-witness-rev-retry-20261015t0234z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-witness-rev-docs",
-  "file_id": "1anfDL-l5vwRB175pZSf8DTnSTJyP8law",
-  "patch_sha256": "8dc856066afc0d07ae8de279c428d84a8502645a54e5effae5c899e37ca684de",
+  "mailbox_key": "m6-cp3-r4-witness-rev-docs-v2",
+  "file_id": "1jqosQBBLShH5YkqjcMNnRjusufIT5vW9",
+  "patch_sha256": "c842935a6e765e3580e4b7d9f81081c186cae80dd6d9902103df0a481ae1809e",
   "base_sha": "f83bc044db739350eba044e9120bafddc1c1c537",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: independent R4 RP-02 first-RED review and corrective plan",
+  "commit_message": "docs(directional): independent R4 witness RED review and bounded repair plan",
   "retention_days": 7
 }
