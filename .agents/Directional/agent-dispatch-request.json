@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-rp02-witness-apply-20261015t0106z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-rp02-witness-apply",
-  "file_id": "1UREArmKzShWiYLYagXTGQuIbv-0Rwpuz",
-  "patch_sha256": "13ab33bf2086ff59afe7dbdc7214dc6aa037cc21dff2d6019f31f66b782aae82",
-  "base_sha": "82bc4fb9e6756cf50ab611f70940b5c6350a2e86",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): witness network-bound open-front rail consumer",
-  "retention_days": 7
+  "request_id": "m6-cp3-r4-rp02-witness-compile-20261015t0108z",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-rp02-witness-compile",
+  "source_sha": "953f812ff1f431e3ad3af3b68a92284a7831c94a",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-r4-rp02-witness-compile"
 }
