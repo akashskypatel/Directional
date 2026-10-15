@@ -1,12 +1,7 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-predicate-closeout-20261015-01",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-predicate-closeout-apply",
-  "file_id": "1AAaFigVF4kuGHvi8-RsGNwm3EymQFd0j",
-  "patch_sha256": "d221231a3c62e30b1305e07e47e5b1bd393b43c042eafa4b65dc196b946ef2be",
-  "base_sha": "2d52eeb04cf27b864666d84e30eca9daff617c93",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "Record R4 diagnostic compile-only closeout and preserve handoff history",
-  "retention_days": 7
+  "request_id": "m6-cp3-r4-ledger-content-floor-clear-20261015",
+  "operation": "noop",
+  "mailbox_key": "m6-cp3-r4-ledger-content-floor-clear",
+  "note": "Consumed drive_apply descriptor cleared. No source build, test, or benchmark requested."
 }
