@@ -1,0 +1,3 @@
+Snapshot request for M6-CP3-DEFN-R4-ENDPOINT-AUTHORITY-SPEC
+Frozen pre-trigger authority: db0b44a25661caf7337d67e7068a559b0aa6efa0
+Requested snapshot: push event source SHA; no binaries or tests.
