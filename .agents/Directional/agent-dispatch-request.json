@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-witness-breadth-20261015-0328",
+  "request_id": "m6-cp3-r4-true-control-20261015-0431",
   "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-r4-witness-breadth",
-  "executor_sha": "ef5ff07335a494b958f9e2aaa0495d1964afa0d8",
+  "mailbox_key": "m6-cp3-r4-true-control",
+  "executor_sha": "e7208cfc2cbb078be771251f50dac24659c066df",
   "semantic_source_sha": "953f812ff1f431e3ad3af3b68a92284a7831c94a",
-  "turn_id": "M6-CP3-TB1-R4-WITNESS-BREADTH",
-  "harness_path": ".agents/Directional/tools/m6_cp3_r4_witness_breadth_harness.sh",
-  "harness_sha256": "db1aea68782f68196da0abf26be24f6648e9c565d305f3200ced09740aedd65a",
+  "turn_id": "M6-CP3-TB1-R4-TRUE-CONTROL",
+  "harness_path": ".agents/Directional/tools/m6_cp3_r4_true_control_harness.sh",
+  "harness_sha256": "9d471c493b7d3c9c4fa5bf31916e37d9caa470a628da6c0e710f770f0c986162",
   "environment": {},
-  "artifact_prefix": "directional-m6-cp3-r4-witness-breadth",
+  "artifact_prefix": "directional-m6-cp3-r4-true-control",
   "retention_days": 7
 }
