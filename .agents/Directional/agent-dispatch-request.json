@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb4-closeout-docs-20261015a",
+  "request_id": "m6-cp3-r5-definition-closeout-20261015a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb4-closeout-docs",
-  "file_id": "1mwbYyc9qfy2bo5KYjE8FnSLn9S6NAnpu",
-  "patch_sha256": "bb506e6a09cd4cb63800fb80deeb5a0653342ae5a2f8b59af6ce60ea80f10868",
-  "base_sha": "393d6c5488ff2a8866327fad9bab27a8389619d6",
+  "mailbox_key": "m6-cp3-r5-definition-closeout",
+  "file_id": "1es3OAKtZi9LGEaEUQVrfgZ20Cd7jDq7j",
+  "patch_sha256": "1c9e4b329d706c901dc10473013402895d4fe36bc9f423da49de5d14adb66b13",
+  "base_sha": "eab9fad9bd203be291234f1def47fb8b83cbc3c8",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close endpoint-chart harvest with non-stable regression evidence",
+  "commit_message": "docs: close R5 junction carrier authority specification",
   "retention_days": 14
 }
