@@ -1,3 +1,0 @@
-RP02-WITNESS source snapshot request
-Exact semantic source: 102abcfc9f8bcc3a081b3908417a141ab1d5b6ad
-No runtime execution.
