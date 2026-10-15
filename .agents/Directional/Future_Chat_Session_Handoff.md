@@ -1,3 +1,10 @@
+## CURRENT — R4 ledger content floor implemented (2026-10-15)
+
+`M6-CP3-CB3-R4-LEDGER-CONTENT-FLOOR` implemented as Python-only integrity instrumentation. Snapshot `8b4b1584d383150ae2dcb7ff614fc4b361a3350f`, workflow `38751173471`, artifact `11982120504`, 5636/5636 source hashes verified. `review_check.py` at `401d46035d6e4873fa88500f9ba0f0a2aa591f24` enforces nonzero committed-history high-water `## ` headings and lines for handoff, ORIENTATION and regression tracker; tracker has zero-tolerance committed shrink checks. An isolated detached Git worktree confirmed equal-line overwrite rejected (`1 >= 303` headings fails while lines pass) and legitimate prepend accepted (`304 >= 303`); neither simulation committed. Consumed Drive request cleared to `noop` at `e2a0b5f17496ad1caa298715c4630f75740fe958`.
+
+No C++, GMP compile, tests, benchmark, frozen selector, or runtime acceptance. `RP-01` still unrepaired, `RP-02` unreached; RA-61.9 withdrawn. Stable 66/17/49, debt 1, CP2 491/491, R3 403/497 unchanged. Next separately authorized turn: `M6-CP3-TB3-R4-PROBE-HARVEST` (do not start here). See `Architecture_M6_CP3_R4_Ledger_Content_Floor_20261015.md`. Historical CURRENT sections remain intact below.
+
+---
 ## CURRENT — 2026-10-15 RA-63 frozen; an edge-level witness cannot identify an endpoint, RA-61.9 **WITHDRAWN**, `RP-01` is a pattern, next turn `M6-CP3-CB3-R4-LEDGER-CONTENT-FLOOR`
 
 **Supersedes the predicate-separation closeout CURRENT section below as the current state; that section and every section beneath it are retained as authorizing history.** `M6-CP3-CB2-R4-PREDICATE-SEPARATION` is adjudicated: **ACCEPTED**. Decision: `.agents/Directional/Architecture_M6_CP3_R4_Predicate_Separation_Review_Decision.md`.
