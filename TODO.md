@@ -1,3 +1,10 @@
+## CURRENT — true controls measured; 39-identity R4 census next (2026-10-15)
+
+- [x] `M6-CP3-TB1-R4-TRUE-CONTROL` 4/4 executed, square/cylinder PASS, both closed-chain torus tests RED. Orchestration complete with intact immutable package and 28/28 pre/post checksums; exact torus failures are missing arrangement/occurrence products, **not** proven open-rail `no-exact-terminal-corner`. See `Architecture_M6_CP3_R4_True_Control_Artifact_Only_TB_Report_20261015.md`.
+- [ ] **Next only `M6-CP3-TB1-R4-ENDPOINT39-CENSUS`** (new artifact-only turn), same immutable package and all 39 exact identities. Record owning fixture singleton, first predicate, `a2bProbeFailure`, `routeLength/step/chi`, source probe charts/parameters, `closedChainPresent` and complete `faceEnds`/rail/edge details (RA-57.12). No build, source/test/selector mutation, TB497 or acceptance. Then independent `M6-CP3-TB1-R4-CARRIER-REV` before any approved repair. Ledger 66/17/49, debt1 unchanged.
+
+---
+
 ## CURRENT — RP-02 first-RED independent Review, 2026-10-15
 
 - [x] `M6-CP3-TB1-R4-WITNESS-REV` independently localized `R4-TB-A-RP02-01`: paired source-edge-interior samples are not authentic whole-rail terminal source vertices; terminal-corner gate correctly rejects the incorrectly routed interval. Detailed `Architecture_M6_CP3_R4_Witness_First_RED_Independent_Review_Decision_20261015.md`. Valid first-RED measurement; non-stable; no RP-02 runtime PASS.
