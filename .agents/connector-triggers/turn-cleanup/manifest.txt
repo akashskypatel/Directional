@@ -1,2 +1,0 @@
-# Remove this turn's one source-snapshot trigger (workflow outputs are retained).
-.agents/connector-triggers/source-snapshot/true-control-20261015.txt
