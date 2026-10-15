@@ -1,3 +1,9 @@
+## 2026-10-15 — R4 true-control artifact-only measurement: 2 PASS, 2 RED
+
+- `M6-CP3-TB1-R4-TRUE-CONTROL` completed all four exact tests in [run 38681907622](https://github.com/akashskypatel/Directional/actions/runs/38681907622). Immutable package `11939982141` unchanged; result artifact `11948572472`, ZIP SHA-256 `2b6ac34c34ea3f0dd384f5be7a55ca9c9028328639effed3c9cc3e3c9674917f`. 28/28 checksums before/after; 4 selected, 2 RED, none missing, postflight true. No build, benchmark, test-source edit or frozen 497 run.
+- Square no-hard-rail PASS; cylinder periodic-cut/no-hard-rail PASS; closed-chain torus `M6CP1.A6ClosedComplexBoundaryIsCombinatoriallyEquivalentOnProducedTorus` RED (`hasArrangement=false`); torus `M6CP3.A6UniformFaceGaugeRotationPreservesRelationOutcome` RED (`originalOccurrences=nullptr`). This disproves universal A4 failure, but does **not** show the torus failures share the open-rail `no-exact-terminal-corner` cause.
+- Dedicated harness fixes the RA-57.8 orchestration defects for this rung; report `.agents/Directional/Architecture_M6_CP3_R4_True_Control_Artifact_Only_TB_Report_20261015.md`. Successor is separately authorized artifact-only `M6-CP3-TB1-R4-ENDPOINT39-CENSUS`, followed by independent `M6-CP3-TB1-R4-CARRIER-REV`. Ledger 66/17/49, debt 1, RP-02 open, 497 frozen.
+
 ## 2026-10-15 — RA-57 frozen: breadth measurement accepted from the artifact; 4/4 RED is one measured carrier; RA-56.5 resolved ACROSS-rail
 
 - Architecture Review only; no source, test, selector, binary or ledger change. `M6-CP3-TB1-R4-WITNESS-BREADTH`
