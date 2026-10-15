@@ -1,1 +1,0 @@
-Source snapshot for M6-CP3-TB3-R4-PROBE-HARVEST. The push event SHA is snapshot authority.
