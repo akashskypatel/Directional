@@ -1,3 +1,12 @@
+## 2026-10-14 — RA-54 frozen: the six-rung ladder accepted and closed
+
+- Architecture Review only; no source, test, selector or ledger change. All seven turns from `M6-CP3-CB1-R4-CARRIER-CUT-COMMENT` through `M6-CP3-CB1-R4-RA434-DISPOSE` are **ACCEPTED**, each decisive claim re-derived from bytes. Frozen as **RA-54**.
+- Six consecutive no-op dispositions audited independently; all six correct. The interval's only source change is one comment line at `src/geometry/SurfaceCellTracing.cpp:1457`.
+- **RA-43, RA-47 and RA-48 are now fully discharged**, and RA-46.6 is closed: `SurfacePhaseFrontSourceAuthorityDetail` carries seven values covering exactly the reachable predicates, with no sub-code minted for any dead disjunct or retired predicate (RA-51.7 honoured).
+- RA-47.12's `RP-02 TEST_AUTHORITY_COVERAGE_GAP` accepted; confirmed that `build_surface_cell_network` returns at `:19567` on the produced path, so `:10498-10502` is unreachable there and `:12414-12428` is the only network-bound ingress.
+- New: `R4-OHF-01 / UNTESTED_LIVE_DISJUNCT` — `OverfullHardFeatureIncidence` (`:8270-8277`) has no witness while its sibling does; settle reachability before writing a fixture, keep the guard fail-closed either way.
+- **The source-only vein is exhausted.** Two authoring items remain; everything else requires an authorized Test + Benchmark turn. Ledger unchanged 66/17/49, debt 1; CP2 accepted 491/491; R3 rejected 403/497 (94 RED, 88 accepted losses). No runtime, no TB497.
+
 ## 2026-10-14 — RA-43.4 standalone geometry helper disposition
 
 - Completed `M6-CP3-CB1-R4-RA434-DISPOSE` as an exact-source no-op. The two lower-level geometry helpers cannot independently authorize production rail source identity in the current call graph; the frozen named legacy diagnostic is retained for the non-vacuous network override negative. All three real `rail_interval_refs` production calls remain strict typed mode. Evidence: `Architecture_M6_CP3_R4_RA434_Standalone_Geometry_Helper_Disposition_20261014.md`, source `fa230b2a00e698eee9478fc06b3490cba5a86a11`, snapshot workflow 38656142605, artifact 11937071668, source SHA manifest 5603/5603. No implementation source edits, compilation, tests, benchmark, runtime acceptance or frozen-selector/ledger movement. No separately authorized named ladder successor established; broader R4 outstanding.

@@ -1,3 +1,79 @@
+## RA-54 — the six-rung ladder is ACCEPTED and CLOSED; the source-only vein is exhausted **FROZEN at M6-CP3-CB1-R4-RA434-DISPOSE** (2026-10-14)
+
+Adjudicates the seven turns from `M6-CP3-CB1-R4-CARRIER-CUT-COMMENT` through `M6-CP3-CB1-R4-RA434-DISPOSE`.
+Every decisive claim was re-derived from bytes and **CONFIRMED**; no report was taken on trust. No runtime
+credit. RA-53, RA-52 less .5, RA-51, RA-50, RA-49, RA-48, RA-47 (**now fully discharged**, see RA-54.3/.4),
+RA-46, RA-45, RA-44 less .2, RA-43 (**now fully discharged**, see RA-54.1/.5), RA-42 corrected, RA-41 frozen
+scoped, RA-40, RA-39, RA-38, RA-37a and the RA-34.3 stop gates stand.
+
+- **RA-54.0 — six consecutive no-op dispositions were audited, not accepted.** A ladder whose rungs all
+  conclude "nothing to do" is the shape a rubber stamp takes, so each was checked independently. **All six
+  are correct.** The single source change in the interval is one comment line
+  (`src/geometry/SurfaceCellTracing.cpp:1457`), with the `continue` at `:1460-1467`, the `SourceBoundary`
+  distinction and the RA-43.1 citation all intact — exactly the authorized scope and nothing else.
+- **RA-54.1 — RA-48.3's residual is CLOSED.** The `FieldTransportAtlas` class comment no longer claims
+  construction is the only validation seam; `include/directional/authority/FieldTransportAtlas.h:829-836`
+  now states that construction validates source authority and that injected edge tables must come from a
+  checked `set_mesh`. It was corrected before this interval, so the rung's "already done" report is accurate.
+  **RA-48 is fully discharged.**
+- **RA-54.2 — RA-46.6 is DISCHARGED; the typed sub-codes exist and honour RA-51.7.**
+  `SurfacePhaseFrontSourceAuthorityDetail` (`include/directional/geometry/SurfaceCellTracing.h:1873-1881`)
+  carries exactly seven values — `MissingTerminalA3Path`, `AmbiguousTerminalA3Path`, `AtlasSourceMismatch`,
+  `MalformedSourceEdgeKey`, `AbsentHardFeatureIncidence`, `OverfullHardFeatureIncidence`,
+  `MissingRailTerminalContact` — carried on `SurfacePhaseFrontProductError` and preserved through
+  `publish_phase_front_result` onto `SurfacePhaseFrontFailure::publishedProductSourceAuthorityDetail`.
+  **No sub-code was minted for `missing-or-nonreciprocal-terminal-A3`'s dead disjunct, for
+  `overlapping-terminal-sectors`, for `nonmanifold-terminal-star-spoke` or for the refuted `R4-SID-02`.**
+  The RA-51.7 constraint was honoured exactly.
+- **RA-54.3 — RA-47.11 is DISCHARGED as a genuine zero-target.** All six surviving `source_edge_index` call
+  sites in `tests/FieldAlignedCurveNetworkTests.cpp` (`:614`, `:912`, `:1032`, `:1744`, `:5585`, `:6413`)
+  immediately index `mesh.EF(...)` or iterate `mesh.EV` rows. Each takes a **typed key as identity** and the
+  returned int **only as a DCEL row**. RA-47 abolished the raw-int source-edge *namespace*, never the
+  typed-key-to-row bridge. Migrating these would have been a fabricated change; declining was correct.
+- **RA-54.4 — RA-47.12's `RP-02 TEST_AUTHORITY_COVERAGE_GAP` is ACCEPTED, and its decisive link confirmed.**
+  The report's load-bearing claim is that `src/geometry/SurfaceCellTracing.cpp:10498-10502` is not reached on
+  the produced path. **Confirmed:** `build_surface_cell_network` returns at `:19567` for a produced phase
+  front, before `generate_deterministic_surface_seeds` and before any `trace_surface_field` call. The
+  authoritative open-front consumer at `:12414-12428` is therefore the only network-bound ingress, reached
+  conditionally from `:13058`, `:14790`, `:17412`. A static call route exists; **executed liveness does
+  not.** The report correctly refused to claim either a PASS or unreachability, and its stated acceptance
+  criterion — *the assertion must fail if the whole consumer is skipped* — is the correct anti-vacuity bar
+  (LESSONS 171). RA-47 is otherwise fully discharged.
+- **RA-54.5 — RA-43.4 is DISCHARGED; the residue census is complete.** Exactly two non-`rail_interval_refs`
+  helpers carry authority-relaxing surface: `rail_sample_source_vertex` (`:5858-5886`) and
+  `rail_sample_geometry_is_valid`'s `publishedSourceVertex = std::nullopt`
+  (`include/directional/geometry/SurfaceCellTracing.h:2489-2492`). Independently re-scanned: no other
+  declaration in that region takes a defaulted authority argument. **Retain both unchanged**, on the RA-52.6
+  ground: a permitted bypass attempt is what makes the override demonstrably live. The RA-52.6 caller table
+  was restated verbatim and is unchanged. **RA-43 is now fully discharged — .1 LANDED, .2 DISCHARGED,
+  .4 DISPOSED.**
+- **RA-54.6 — `R4-OHF-01 / UNTESTED_LIVE_DISJUNCT` (new, narrow).** `OverfullHardFeatureIncidence` is minted
+  at `src/geometry/SurfaceCellTracing.cpp:8270-8277` when a hard-feature edge is incident to **three or more
+  source triangles**, counted from `sourceTopologyRegions.regions()` rather than from any two-face cache
+  (`:8246-8264`). Its sibling disjunct `AbsentHardFeatureIncidence` has a genuine factory witness
+  (`tests/SurfaceCellTransitionQuotientTests.cpp:9171-9183`, a real mutated `hardFeatureEdges` set through
+  `checked_with_routes_and_contacts`); the overfull disjunct has **none**. This is **not** an RA-51.7
+  violation: the factory is independently callable, so the disjunct is plausibly live at the factory boundary
+  even where `build_surface_cell_network`'s own guard (RA-46.9, `:18848-18857`) would reject first on the
+  produced path. **Reachability must be settled before a fixture is written**, by the RA-51/RA-53 discipline:
+  if a `SourceTopologyRegions` with a 3-incident hard-feature edge is constructible, author the mirror
+  witness; if it is not, retire the disjunct coupled to the guards that prevent it and keep `:8270-8277`
+  fail-closed. **Do not weaken the guard either way.**
+- **RA-54.7 — the source-only vein is EXHAUSTED; what remains is authoring and execution.** With RA-43,
+  RA-47 and RA-48 fully discharged and RA-46.6 closed, no Code + Build obligation remains that can be
+  answered by reading source. Exactly two authoring items are left — `R4-OHF-01`'s resolution (RA-54.6) and
+  the `RP-02` consumer-boundary witness RA-47.12 specified. **Everything else is execution**, which requires
+  a separately authorized immutable-artifact Test + Benchmark turn: `R4-JCT-01`, RA-49.2's witness, the
+  Phase10 network-override and Phase14 exact-corner negatives, the 39 endpoint / 34 Phase10 / seven DCEL /
+  six CP3 identities, the **88** accepted CP2 restorations, the organic D1/D2/D3/D5 and A6/A7 witnesses and
+  the odd-τ witness. **No further Code + Build rung may be invented to avoid that boundary.**
+- **RA-54.8 — no credit.** Ledger unchanged **66/17/49**, debt **1**; CP2 **491/491** accepted; R3
+  **403/497** rejected with **94** RED and **88** accepted losses carried. `R4-JCT-01` stays AUTHORED /
+  COMPILED / NOT EXECUTED; RA-41's junction and sector clauses stay frozen **UNEXERCISED at runtime**. A
+  compile is not a restoration (LESSONS 160); a census is not a witness (LESSONS 171).
+
+---
+
 ## RA-53 — the R4-SID-02 probe is ACCEPTED; RA-52.5 is WITHDRAWN as a Review Agent error **FROZEN at M6-CP3-CB1-R4-SID02-PROBE** (2026-10-14)
 
 Adjudicates `Architecture_M6_CP3_R4_SID02_Produced_Cell_Reachability_Probe_20261014.md`. The probe answered

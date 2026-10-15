@@ -1,3 +1,47 @@
+## CURRENT — the six-rung ladder is ACCEPTED and CLOSED; source-only vein exhausted; RA-54 frozen (2026-10-14)
+
+**All seven turns from `M6-CP3-CB1-R4-CARRIER-CUT-COMMENT` to `M6-CP3-CB1-R4-RA434-DISPOSE` are ACCEPTED.**
+Every decisive claim re-derived from bytes; no report taken on trust. No open blocker. No runtime credit.
+Ledger unchanged 66/17/49, debt 1.
+
+**Six consecutive no-op dispositions were audited, not rubber-stamped — and all six are correct.** The only
+source change in the whole interval is one comment line (`src/geometry/SurfaceCellTracing.cpp:1457`), with
+the `continue` at `:1460-1467`, the `SourceBoundary` distinction and the RA-43.1 citation intact.
+
+**Three amendments now fully discharged.** **RA-43** — .1 LANDED, .2 DISCHARGED (RA-50.1), .4 DISPOSED with
+a complete two-helper residue census, both retained on the RA-52.6 ground that a permitted bypass attempt is
+what makes the override demonstrably live. **RA-47** — .11 is a genuine zero-target (all six
+`source_edge_index` sites take a typed key as identity and the int only as a DCEL row, immediately indexing
+`mesh.EF`/`mesh.EV`), .12 recorded as `RP-02`. **RA-48** — the atlas class comment at
+`include/directional/authority/FieldTransportAtlas.h:829-836` no longer claims construction is the only
+validation seam. **RA-46.6** is closed: `SurfacePhaseFrontSourceAuthorityDetail`
+(`include/directional/geometry/SurfaceCellTracing.h:1873-1881`) has seven values covering exactly the
+reachable predicates, and **no sub-code was minted for any dead disjunct or retired predicate** — RA-51.7
+honoured exactly.
+
+**RA-47.12's `RP-02 TEST_AUTHORITY_COVERAGE_GAP` is ACCEPTED and its decisive link confirmed.**
+`build_surface_cell_network` returns at `:19567` for a produced phase front, before
+`generate_deterministic_surface_seeds` — so `:10498-10502` is **not** on the produced path, and
+`:12414-12428` is the only network-bound ingress, reached conditionally from `:13058`, `:14790`, `:17412`.
+A static call route exists; executed liveness does not. The report's acceptance bar — *the assertion must
+fail if the whole consumer is skipped* — is the correct anti-vacuity standard.
+
+**`R4-OHF-01 / UNTESTED_LIVE_DISJUNCT` — new, narrow.** `OverfullHardFeatureIncidence`
+(`src/geometry/SurfaceCellTracing.cpp:8270-8277`, counted from `sourceTopologyRegions.regions()` at
+`:8246-8264`) has **no witness**, while its sibling `AbsentHardFeatureIncidence` has a genuine factory one
+(`tests/SurfaceCellTransitionQuotientTests.cpp:9171-9183`). This is **not** an RA-51.7 violation: the
+factory is independently callable, so the disjunct is plausibly live at the factory boundary even where
+RA-46.9's consumer guard (`:18848-18857`) rejects first on the produced path. **Settle reachability before
+writing a fixture**; retire coupled if unreachable; keep the guard fail-closed either way.
+
+**`RA-54.7` — the source-only vein is EXHAUSTED.** With RA-43, RA-47 and RA-48 discharged and RA-46.6
+closed, no Code + Build obligation remains that reading source can answer. Two authoring items are left
+(`R4-OHF-01`'s resolution; the `RP-02` consumer-boundary witness). **Everything else is execution** and
+requires a separately authorized immutable-artifact Test + Benchmark turn. **No further Code + Build rung
+may be invented to avoid that boundary.**
+
+---
+
 ## CURRENT — R4-SID-02 REFUTED; RA-52.5 WITHDRAWN as a Review Agent error; RA-53 frozen (2026-10-14)
 
 **The `M6-CP3-CB1-R4-SID02-PROBE` answer is ACCEPTED on every decisive link. `R4-SID-02` is REFUTED and

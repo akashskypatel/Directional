@@ -1,3 +1,69 @@
+## CURRENT — 2026-10-14 RA-54 frozen; ladder CLOSED; next turn `M6-CP3-CB1-R4-OHF01-PROBE`
+
+**All seven ladder turns are ACCEPTED. RA-43, RA-47 and RA-48 are now fully discharged; RA-46.6 is closed.**
+No open REVIEW_BLOCKER. Frozen: **RA-54**. The six no-op dispositions were each audited against bytes and
+each is correct; declining to fabricate a change was the right call every time.
+
+**The source-only vein is EXHAUSTED (RA-54.7).** Exactly **two authoring items** remain in Code + Build.
+Everything else is **execution** and needs a separately authorized immutable-artifact Test + Benchmark turn.
+**Do not invent a further Code + Build rung to avoid that boundary.** When both authoring items are closed,
+the correct next action is to report R4 Code + Build complete and **stop**, pending TB authorization.
+
+**NEXT TURN — `M6-CP3-CB1-R4-OHF01-PROBE`** (`R4-OHF-01`, source-only, report-only).
+One question: can a `SourceTopologyRegions` reach `src/geometry/SurfaceCellTracing.cpp:8270-8277` with a
+hard-feature edge incident to **three or more** source triangles? The count is taken from
+`sourceTopologyRegions.regions()` at `:8246-8264`, not from a two-face cache. Note that
+`SurfacePhaseFrontProduct::make` is **independently callable**, so RA-46.9's consumer guard
+(`:18848-18857`) rejecting first on the produced path does **not** settle the factory boundary.
+Deliver exactly one of: **(a) REACHABLE** — name the construction and stop, the witness is the next turn;
+**(b) UNREACHABLE** — give the guard chain link by link, cited by symbol, and the disjunct retires coupled
+to it; **(c) UNDECIDED** — name the byte you could not establish. **(c) is acceptable; a fabricated (b) is
+not.** The guard at `:8270-8277` stays fail-closed under every outcome. Mirror model for a later witness:
+`tests/SurfaceCellTransitionQuotientTests.cpp:9171-9183`. Successor: `M6-CP3-CB1-R4-OHF01-WITNESS` on (a),
+otherwise `M6-CP3-CB1-R4-RP02-WITNESS`.
+
+**Then — `M6-CP3-CB1-R4-RP02-WITNESS`** (authoring, one test, no runtime). Author the consumer-boundary
+witness RA-47.12 specified, to its own acceptance bar: prove a producer-built rail interval reached the
+**network-bound** `rail_interval_refs` at `assign_open_front_boundary_authority` (`:12414-12428`, reached
+from `:13058`, `:14790`, `:17412`) with nonempty producer-authored `sourceVertices`/`sourceEdges` and a real
+`FieldAlignedCurveNetwork`, and separately forge a typed edge at that consumer boundary and require typed
+first rejection. **The assertion must fail if the whole consumer is skipped.** An A2a publication assertion,
+a call the test makes itself, a stage-injected run and a factory-only rejection are all insufficient — that
+is the RP-02 gap, not a fix for it. Do not add a no-op counter or weaken a guard to obtain green. Compile
+only; execution is TB.
+
+**Then — STOP and report R4 Code + Build complete.** Successor at that point is a Test + Benchmark
+authorization the Review Agent has not granted and the implementation agent may not assume.
+
+**Execution backlog, all requiring an authorized TB turn — none is a Code rung:** `R4-JCT-01` (the
+multi-carrier junction witness, AUTHORED / COMPILED / NOT EXECUTED); RA-49.2's duplicated-endpoint witness;
+the Phase10 network-override and Phase14 exact-corner negatives; the 39 endpoint / 34 Phase10 / seven DCEL /
+six CP3 identities; the **88** accepted CP2 restorations; the organic D1/D2/D3/D5 and A6/A7 witnesses; the
+odd-τ witness. RA-41's junction and sector clauses stay frozen **UNEXERCISED at runtime**.
+
+**Standing rules now governing every STOP and disposition.** Cite a frozen clause's most recent disposition
+before raising it as a blocker (`R4-VIN-01`, RA-52.0). Name the deciding conjunct when refuting or relying
+on a conjunctive guard (`RP-03`, RA-53.0). Settle reachability before writing a fixture, and retire coupled
+to named guards rather than deleting them (RA-51.3/.4, RA-53, RA-54.6). A compile is not a restoration
+(LESSONS 160); a census is not a witness (LESSONS 171).
+
+**Still REFUSED / DISCHARGED / REFUTED — do not re-raise:** RA-43.2 (DISCHARGED, RA-50.1); the
+`(…, FieldBranch, arrival mode, filled cell/side)` receipt (REFUSED, RA-50.2, RA-52.1/.2); RA-43.1's carrier
+cut (LANDED); RA-43.4's two helpers (RETAINED, RA-54.5); the RA-43.4 named opt-out (PRESERVED, RA-52.6);
+`R4-SID-02` (REFUTED, RA-53.0); RA-47.11 (zero-target, RA-54.3).
+
+**Durable-doc convention:** the canonical changelog is the repository-root `CHANGELOG.md`, the file the
+boundary gate counts. Prepend there, not only to `.agents/Directional/CHANGELOG.md`.
+
+**Beacon convention:** every turn closes with a named `Successor`. Two turns have now closed with
+`Successor: UNKNOWN`; the successor IDs for the next three turns are supplied above, so the field has no
+excuse to be unresolved again.
+
+Ledger 66/17/49, debt 1; CP2 accepted 491/491; R3 rejected 403/497 (94 RED, 88 accepted losses). No TB497,
+no successor credit.
+
+---
+
 ## CURRENT — RA-43.4 standalone geometry helper disposition closed (2026-10-14)
 
 `M6-CP3-CB1-R4-RA434-DISPOSE` is a source-verified **no-op**. The two residual geometry helpers (`rail_sample_source_vertex` and `rail_sample_geometry_is_valid`'s optional untyped diagnostic argument) are retained: neither is a separate untyped production ingress, and strict or network-bound `rail_interval_refs` always requires typed vertices and edge keys. Frozen RA-52.6 keeps the named `LegacyStandaloneDiagnostic` mode and the network-override negative; all three production callers still pass `RequireTypedSource`. Evidence: `.agents/Directional/Architecture_M6_CP3_R4_RA434_Standalone_Geometry_Helper_Disposition_20261014.md`, snapshot `fa230b2a00e698eee9478fc06b3490cba5a86a11` / [38656142605](https://github.com/akashskypatel/Directional/actions/runs/38656142605), artifact `11937071668`, 5603/5603 hashes. No implementation/test code, compile, test, benchmark or TB497. No ledger/selector change.

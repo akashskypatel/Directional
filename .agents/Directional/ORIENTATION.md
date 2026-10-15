@@ -1,3 +1,21 @@
+## CURRENT — 2026-10-14 RA-54 frozen; six-rung ladder CLOSED; source-only vein exhausted
+
+**All seven ladder turns are ACCEPTED and supersede the rung list below. RA-43, RA-47 and RA-48 are fully
+discharged; RA-46.6 is closed.** There is no open REVIEW_BLOCKER. The six no-op dispositions were audited
+against bytes and all six are correct — declining to fabricate a change was right each time.
+
+**Two authoring items remain in Code + Build, and nothing else.** `M6-CP3-CB1-R4-OHF01-PROBE` settles
+whether `OverfullHardFeatureIncidence` (`src/geometry/SurfaceCellTracing.cpp:8270-8277`) is reachable at the
+independently-callable factory boundary; then `M6-CP3-CB1-R4-RP02-WITNESS` authors the consumer-boundary
+witness RA-47.12 specified. **Then stop.** Everything remaining is execution behind an authorized
+Test + Benchmark turn, which has not been granted.
+
+**Four standing rules.** Cite a frozen clause's latest disposition before raising it (`R4-VIN-01`). Name the
+deciding conjunct of a conjunctive guard (`RP-03`). Settle reachability before writing a fixture, and retire
+coupled to guards rather than deleting them. A compile is not a restoration; a census is not a witness.
+
+---
+
 ## CURRENT — 2026-10-14 RA-53 frozen; `R4-SID-02` REFUTED; RA-52.5 WITHDRAWN
 
 **The R4-SID-02 probe is ACCEPTED and supersedes the RA-52.5 paragraphs below. There is no open
