@@ -1,3 +1,10 @@
+## CURRENT — RP-02 first-RED independent Review, 2026-10-15
+
+- [x] `M6-CP3-TB1-R4-WITNESS-REV` independently localized `R4-TB-A-RP02-01`: paired source-edge-interior samples are not authentic whole-rail terminal source vertices; terminal-corner gate correctly rejects the incorrectly routed interval. Detailed `Architecture_M6_CP3_R4_Witness_First_RED_Independent_Review_Decision_20261015.md`. Valid first-RED measurement; non-stable; no RP-02 runtime PASS.
+- [ ] **Next only `M6-CP3-CB1-R4-WITNESS-REPAIR`**, exact typed source-edge/interval-vs-terminal correction, 8-target GMP compile-only; see `Architecture_M6_CP3_R4_Witness_Interval_Terminal_Recovery_Code_Build_Plan.md`. Stop for Review if a sound interior certificate cannot be expressed without relaxing terminal authority. Separate immutably packaged supplemental TB/Review before TB497; six identities unexecuted, Phase14 historical binary still missing. Stable 66/17/49, debt1, 491/491 accepted CP2 and 403/497 rejected R3 frozen.
+
+---
+
 ## CURRENT — R4 supplemental TB first-execution RED (2026-10-15)
 
 - [x] `M6-CP3-TB1-R4-WITNESS-EXEC` immutable artifact-only run 38668126299; 1/1 executed RED at `SurfaceCellAuthorityContractCutover.ProducedRailIntervalReachesNetworkBoundOpenFrontConsumer` initial `Produced` precondition; actual `a2bProbeFailure=no-exact-terminal-corner` / no closed chain. 6 planned witnesses not executed under mandatory stop-on-first-RED. Artifact/source/selector immutable, no TB497 or benchmark.

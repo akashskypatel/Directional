@@ -1,3 +1,9 @@
+## CURRENT — 2026-10-15 `M6-CP3-TB1-R4-WITNESS-REV` resolves first RP-02 supplemental RED to interval/terminal boundary
+
+**New currency supersedes the RA-55 upcoming-TB wording below.** Immutable TB-A (workflow `38668126299`) stopped after one RED before A4 network-bound consumer; independent source review at `f83bc044db739350eba044e9120bafddc1c1c537` proves that opposing hard-rail interval samples are the same **interior** source-edge point `(1,0.25)` on `(1,4)`, not either authenticated whole-rail terminal vertex `(1, 7)`. Producer sends them through a source-corner-only terminal A2b path and rejects `no-exact-terminal-corner`. Guard is correct for terminals; missing classification/compatible interval construction is the defect. RP-02 is still unproven and `R4-TB-A-RP02-01` remains candidate/non-stable. Next `M6-CP3-CB1-R4-WITNESS-REPAIR` compile-only; only then new immutable supplemental TB/Review. Historical Phase14 binary prerequisite and six untouched supplemental identities remain. Stable **66/17/49**, debt1, CP2 491/491, R3 403/497; frozen 497 unchanged. See `Architecture_M6_CP3_R4_Witness_First_RED_Independent_Review_Decision_20261015.md`.
+
+---
+
 ## CURRENT — 2026-10-15 RA-55 frozen; R4 authoring CLOSED; **Test + Benchmark AUTHORIZED**
 
 **Both final authoring turns are ACCEPTED and supersede the two-item list below.** There is no open
@@ -1070,7 +1076,9 @@ A2a′ was added and closed in CP4c-2. A2b derives regions with disc proofs on t
 
 ## 3. Where we are
 
-**Current (2026-10-10 R3 independent Review):** CP2 remains accepted 491/491. R3 runtime has 403/497 PASS, 94 RED; **88** previously accepted CP2 cases RED (47 carried from R2 plus 41 new); all 53 R2 RED remain. Two distinct new accepted-source loss groups are 34 A3 publication/ingress and seven synthetic DCEL construction failures. Next authorized Definition: `M6-DEFN-R5-R4`; no promotion or implementation in this review. The older “Current priority R3 Code + Build” text below is historical.
+**Current (2026-10-15 RP-02 supplemental Review):** The first supplemental runtime identity is RED before the A4 network-bound consumer, at the source-edge-interior versus whole-rail-terminal A2b certificate. Six other supplementals remain unrun; frozen 497 deferred. Next bounded Code + Build `M6-CP3-CB1-R4-WITNESS-REPAIR` must preserve exact terminal guard and prove typed interior authority. Stable 66/17/49, debt1, CP2 491/491 accepted and R3 403/497 rejected unchanged. Older R3 priority below is historical.
+
+**Historical (2026-10-10 R3 independent Review):** CP2 remains accepted 491/491. R3 runtime has 403/497 PASS, 94 RED; **88** previously accepted CP2 cases RED (47 carried from R2 plus 41 new); all 53 R2 RED remain. Two distinct new accepted-source loss groups are 34 A3 publication/ingress and seven synthetic DCEL construction failures. Next authorized Definition: `M6-DEFN-R5-R4`; no promotion or implementation in this review. The older “Current priority R3 Code + Build” text below is historical.
 
 **M3, M4, M5 and M6 CP1/CP2 are CLOSED / ACCEPTED.** CP2 reviewed 491/491; CP3 R1 rejected 482/497, R2 rejected 444/497 (47 previously-green losses). RA-37a accepted as Definition only, with conditional R3 CB next; RP-01 A4 and A6 remain open. Stable **64 / 17 / 47**, debt 1.
 
@@ -1094,6 +1102,8 @@ CP1 exit items 1-3 are now met: conformant A5, complete A6, and reviewed A7 sour
 **Historical accounting note:** M5 closed at **51 / 14 / 37**; TB5 stood at **55 / 16 / 39**; TB6 Review stood at **57 / 16 / 41**; TB7 Review stood at **59 / 16 / 43**, then **60 / 16 / 44** after its addendum. TB8 recovered those events without repricing. Current project accounting is **60 / 16 / 44**.
 
 ## 4. The witnesses — the fastest way to understand the problem
+
+**Supplemental RP-02 witness (2026-10-15):** one execution RED at its `Produced` precondition; both front samples identify source-edge interior `(1,0.25)` but the whole-rail terminal certificate demands vertex 1 or 7. No actual A4 network-bound `HardRail` filled-side receipt, no consumer-tamper result and no other supplemental identity executed. Source-backed causal classification is not a successful witness.
 
 **R3 runtime review (2026-10-10):** none of six CP3-entry positives passed; five bounded periodic odd-τ enumerations found no odd gauge pair; 39 carried HardRail A4 certificate failures continue with first endpoint-0 rail edge incidences `(1,4): faces {0,3}` against requested `{0,2}`. These are observed first failures, not witness establishment. The 34 new publisher and seven DCEL source-construction failures do not establish produced front geometry. Do not credit synthetic source-star construction as an actual A4/A5 result.
 
@@ -1214,6 +1224,9 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
+**CURRENT priority 0 (2026-10-15 Review):** separately authorized `M6-CP3-CB1-R4-WITNESS-REPAIR` must correct typed source-interval/terminal classification at the earliest constructive front/A2b owner, retaining exact one-hot terminals, network and A3 authority, all frozen selectors, and fail-closed semantics. Compile only; following Review/TB must independently observe actual network-bound A4 consumer liveness and tamper rejection. Six supplemental tests are still unrun, Phase14 needs historical binary; TB497 remains gated. All older priority-0 paragraphs below are historical.
+
+
 **Current priority 0 (R3 independent Review):** first reconcile all 94 immutable REDs, then execute Definition `M6-DEFN-R5-R4` and mandatory independent Definition Review to authorize corrective implementation. In Definition, separate 34 new RA-40 A3 atlas publication failures from seven invalid DCEL synthetic fixtures and 39 carried endpoint-0 hard-rail incidences; no A3 bypass or fan-route detour, and no 497 selector edits. The historical “current priority 0” paragraph below predates the R3 runtime review and is superseded.
 
 **Current priority 0 — exactly `M6-CP3-CB1-ENTRY-R3` under RA-37a.** A4 unique two-sided fan and both local endpoint certificates must be established first or STOP. Then A3 typed commute, A5 strict consumption, separately carried A6 and organic witness STOPs. Eight-target GMP compile only; separate 497 TB/Review. No other CP3 task permitted. All older numbered items below are historical carryovers unless explicitly marked active.
@@ -1259,6 +1272,9 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 
 ## 8. Recurring defect patterns
+
+**New instance — granularity conflation at typed producer handoff (R4-TB-A-RP02-01):** valid source-chart-equivalent interior interval point is routed through a different contract for a whole-rail terminal source corner. Do not repair by weakening the exact-terminal guard; distinguish the event and authenticate the interior carrier interval upstream. This is an instance of the previously recorded producer-vs-downstream-repair pattern, not an independently minted generic lesson.
+
 
 **R3 Review finding:** source-authenticated publication can become non-vacuously *too restrictive* if old production/test ingress supplies no independent A3 (`34` accepted-prefix losses), while source-bound test fixtures can fail earlier on invalid mesh DCEL (`7` losses) and never reach their intended adversarial oracle. Treat these as **two grouped new accepted-green loss events** with recurrence under existing authority/publication and fixture categories, not 41 events; the existing endpoint-0 HardRail misattachment remains carried. Stable ledger **66/17/49**, debt 1. A design review must resolve domain-correct source-bound A3 bridging, typed first errors and DCEL-valid fixtures before implementation.
 
