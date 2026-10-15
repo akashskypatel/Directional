@@ -1,12 +1,14 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-rp02-doc-closeout-20261015t0112z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-rp02-doc-closeout",
-  "file_id": "1yi8YMCP5vUPxij1YVJGVVeeIJKaIk14P",
-  "patch_sha256": "cbbe3729aa56d8f1331f0637624974ab97e642810bd97403b37bc64e06626cc6",
-  "base_sha": "953f812ff1f431e3ad3af3b68a92284a7831c94a",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close RP02 code build authoring with compile evidence",
+  "request_id": "m6-cp3-r4-witness-exec-20261015t0155z",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-r4-witness-supplemental",
+  "executor_sha": "22abb93bce79ef843f4c047bb4f2a173eaff611a",
+  "semantic_source_sha": "953f812ff1f431e3ad3af3b68a92284a7831c94a",
+  "turn_id": "M6-CP3-TB1-R4-WITNESS-EXEC",
+  "harness_path": ".agents/Directional/tools/m6_cp3_r4_supplemental_witness_harness.sh",
+  "harness_sha256": "f61374f14dbe384687735369739df4a84e1c8f679675ee249cd71ce1220d301c",
+  "environment": {},
+  "artifact_prefix": "m6-cp3-r4-witness-supplemental",
   "retention_days": 7
 }
