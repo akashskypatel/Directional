@@ -1,14 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-endpoint39-20261015-0537",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-r4-endpoint39-census",
-  "executor_sha": "d18f3d43ce528402419d0309d873e13395cec971",
-  "semantic_source_sha": "953f812ff1f431e3ad3af3b68a92284a7831c94a",
-  "turn_id": "M6-CP3-TB1-R4-ENDPOINT39-CENSUS",
-  "harness_path": ".agents/Directional/tools/m6_cp3_r4_endpoint39_census_harness.sh",
-  "harness_sha256": "4dd5c605710c65317b2f524d0d3bed83602b7922ceec4bab87062374407c40f6",
-  "environment": {},
-  "artifact_prefix": "directional-m6-cp3-r4-endpoint39-census",
-  "retention_days": 7
+  "request_id": "m6-cp3-r4-endpoint39-census-doc-closure-20261015-0851",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-endpoint39-census-doc-closure",
+  "file_id": "1zy3MYBwe2ogHO9dVAm-JAms5F7D6eh0I",
+  "patch_sha256": "11f863855ce3fb637ab335d2deee23a97cf43de0e1e3254d1bda5fb471517b74",
+  "base_sha": "da34eed8a48f372c1d4258e195d9494a605e5a98",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "Record M6 R4 endpoint39 census evidence and handoff (39 executed)",
+  "retention_days": 14
 }
