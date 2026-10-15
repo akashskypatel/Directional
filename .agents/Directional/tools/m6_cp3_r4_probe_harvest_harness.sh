@@ -15,19 +15,19 @@ trap finish EXIT
 die() { echo "ORCHESTRATION_FAILURE $*" >&2; exit 90; }
 sha() { sha256sum "$1" | cut -d' ' -f1; }
 z="31faf55a33c31abb60c8f34acb64ad901514de821cd6d2f3acbdcd817b1dbb36"
-curl -fsSL -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/11964478813" > "$r/provider.json"
+curl -fsSL -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/11976790988" > "$r/provider.json"
 grep -q "sha256:$z" "$r/provider.json" || die 'provider digest'
-curl -fsSL -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/11964478813/zip" -o "$r/a.zip"
+curl -fsSL -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/11976790988/zip" -o "$r/a.zip"
 [[ "$(sha "$r/a.zip")" == "$z" ]] || die 'artifact digest'
 unzip -q "$r/a.zip" -d "$r/p"
 p="$r/p"; s="$r/s"
 [[ "$(sha "$p/SHA256SUMS")" == 0733087eeea65acccd5638cf208ff957f5091fb3dd4a303ad9bb96811aee43ae ]] || die manifest
 (cd "$p"; sha256sum -c SHA256SUMS) > "$o/manifest-before.txt" || die integrity
 [[ "$(grep -c ': OK$' "$o/manifest-before.txt")" -eq 28 ]] || die manifest_count
-[[ "$(cat "$p/metadata/source-commit.txt")" == 570c51733761c17a198bda6c9aba7d8b1e7ae2dd ]] || die source_identity
+[[ "$(cat "$p/metadata/source-commit.txt")" == 16c3134c02ab3872eee77a6b9dcc9d3fc6e01b7b ]] || die source_identity
 grep -qx 'exactArithmeticBackend=GMP' "$p/metadata/command-boundary.txt" || die arithmetic
 grep -qx 'runtimeExecution=false' "$p/metadata/command-boundary.txt" || die compile_only
-a="$p/source/source-570c51733761c17a198bda6c9aba7d8b1e7ae2dd.tar.gz"
+a="$p/source/source-16c3134c02ab3872eee77a6b9dcc9d3fc6e01b7b.tar.gz"
 [[ "$(sha "$a")" == 9671b28a187fccb5f0355f11487517bff744938f15e1bcb23c2a1cb8670d8440 ]] || die packaged_source_hash
 tar -xzf "$a" -C "$s"
 for pair in \
