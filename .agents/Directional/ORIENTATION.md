@@ -1,3 +1,53 @@
+## CURRENT — `M6-CP3-TB1-R4-REPAIR-REV`, 2026-10-15: RA-60 frozen; the repair is accepted and the next measurement is pre-registered
+
+**Supersedes the RA-59 "hypothesis set closed" paragraph below as the current state.**
+`M6-CP3-CB1-R4-WITNESS-REPAIR` ran and reported itself. The **compile is ACCEPTED**, the
+**implementation is ACCEPTED as faithful to RA-59.9**, the **Step 0 falsifier CLEARS**, and **four
+defects plus one principal design finding** are recorded. No open REVIEW_BLOCKER. No promotion, no new
+stable event, no recurrence, no gate credit. **No runtime outcome has been observed and none is claimed.**
+
+**§3 current state — the selected model is implemented, exactly and without epsilon.** The open hard-rail
+route certificate now has a second admissible endpoint shape: a source-attested **interior carrier
+endpoint**, authenticated across-rail from both incident source faces, with the exact shared intrinsic
+parameter on the same carrier edge. The parameter helper admits only strictly interior points whose
+weights sum exactly to one, so a **forged terminal cannot be laundered** through the new branch and a
+front ending exactly at the rail's interior **junction vertex is rejected rather than absorbed** — RA-41's
+junction clauses stay outside this repair. `exact_corner`, `no-exact-terminal-corner`, the closed-chain
+branch and every `Produced` precondition are unchanged and fail-closed; a certificate with **both**
+endpoints interior is still rejected, so a contact-less open rail remains impossible.
+
+**§4 runtime witness — there is none yet, and that is the whole point.** A compile is not a restoration
+(LESSON 160). The repair's own test is the **first positive witness of the hard-rail acceptance half ever
+authored** — until now every test asserting a published route certificate was a tamper test that failed at
+its own `Produced` gate — but it has not run. Four negatives on the new predicate are also unwritten, the
+most important being **both endpoints interior**. The next rung is therefore a measurement, on a **new**
+semantic source, so every prior measurement is a baseline and never a comparand (`R4-VIN-01`).
+
+**§7 priority — `M6-CP3-TB1-R4-INTERIOR-WITNESS`, under a decision rule written before the measurement.**
+From probe values that are exactly representable and sum exactly to one in both charts, the 38
+`endpoint-1` identities are **predicted to clear** the terminal predicate and A4 to accept. The binding
+reading of the three outcomes: production with the network-bound consumer reached means the repair works
+and `RP-02` becomes measurable for the first time; a new failure strictly **downstream** does **not**
+falsify the model but confirms the dropped terminal-coverage invariant and locates the next rung; a repeat
+of the same predicate is **ambiguous**, because the new refusal and the old one emit the identical
+diagnostic string, and that ambiguity must be fixed diagnostically before any re-measurement.
+**"Still RED" is not evidence against the model, and no outcome authorizes relaxing a predicate.**
+
+**§8 pattern — a new shape expressed by reusing an old shape's encoding is a conflation waiting for its
+first reader.** The interior endpoint is encoded as *no terminal vertex, no contact paths, carrier equals
+attachments* — which is byte-for-byte the shape the checked factory requires of a **closed-chain**
+endpoint. The two topologies are now structurally indistinguishable, and the previously sound inference
+*"no terminal vertex ⇒ closed chain"* is false. It is harmless today only because the single consumer
+outside that file is a structural fingerprint that aliases both to `-1`, and a fingerprint is not an
+authority. This is the `RP-01 AUTHORITY_DOMAIN_CONFLATION` pattern in its quietest form: nothing is wrong
+until something reads it. The remedy is a **positive discriminator** — carry the attested interior
+parameter, or tag the kind — so that absence of a terminal and attestation of an interior point are
+different states rather than the same one. Two further standing notes from this turn: a claim of having
+checked a falsifier is not a finding, and **amending the comment that states a contract is not deriving
+the contract** — the derivation must come from the producer's code, and the amended comment must never
+then be cited back as evidence for the model it was written to accommodate.
+
+---
 ## CURRENT — `M6-CP3-TB1-R4-CARRIER-REV`, 2026-10-15: RA-59 frozen; the hypothesis set is CLOSED and the certificate model is SELECTED
 
 **Supersedes the RA-58 "carrier bounded" paragraph below as the current state.**
