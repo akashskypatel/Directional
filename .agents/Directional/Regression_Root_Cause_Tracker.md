@@ -1,3 +1,81 @@
+## CURRENT — the instrument that can settle the open question is compiled and verified against HEAD byte for byte; RA-66 frozen (2026-10-15)
+
+**One turn adjudicated, ACCEPTED:** `M6-CP3-CB4-R4-ENDPOINT-CHART-PROBE`. Decision:
+`Architecture_M6_CP3_R4_Endpoint_Chart_Probe_Review_Decision.md`. One silent mandate deviation
+charged and recoverable. No open REVIEW_BLOCKER. No promotion, no stable event, no regression
+recurrence, no gate credit.
+
+**Root-cause status — `RP-01 AUTHORITY_DOMAIN_CONFLATION`, three expressions, one awaiting
+measurement.** Nothing was repaired and nothing was concluded. What changed is that the question
+RA-65.11 posed is now *answerable*: the diagnostic emits, after the certificate has already rejected,
+the two endpoint face rows and the four canonical `SourceFaceTopologyKey` triples —
+`FromAttachment`, `ToAttachment`, `CarrierFirstFace`, `CarrierSecondFace`. `oriented_carrier`
+(`src/geometry/SurfaceCellTracing.cpp:19106-19114`) compares `record.firstFace == from &&
+record.secondFace == to` on exactly these keys, so the comparison that refuses for the 21 junction
+identities becomes observable **field against field** rather than reconstructed at review time. That
+reconstruction is what produced the withdrawn `{0,7}` at RA-64.4 and the withdrawn RA-64.6, so the
+instrument is aimed precisely at the reviewer's own prior failure mode.
+
+**`RP-02 TEST_AUTHORITY_COVERAGE_GAP` — still UNREACHED.** Neither the network-bound consumer nor its
+tamper half has executed. A compile-only turn cannot touch it.
+
+**`RP-03 REVIEWER_CONJUNCT_MISREAD` — satisfied a third consecutive turn.** The harvest reported
+against the reviewer's prediction (RA-64.8); the specification identified the reviewer's inference as
+unsound (RA-65.3); and this turn absorbed the RA-65.1 charge **in its own words**, writing "5642
+source files (file count, not a checksum-verification ratio)" unprompted inside its own evidence
+line. Three different shapes of the same discipline.
+
+**`PROCESS-01` — discharged for every observed failure mode.** Both gates pass; the handoff and
+`TODO.md` were prepended with prior sections intact; the three commits sharing one message touch three
+different files, so this is not the RA-64.9 retry pattern.
+
+**One defect recorded, recoverable, and it is a defect of silence rather than of substance.**
+`a2bProbeCarrierEdge` was mandated as item 3 of five and `grep -c` returns **0**; neither the record
+nor the handoff acknowledges the omission, and the record lists six fields as though six were what was
+asked. The information survives: `SourceFaceTopologyKey::vertices()` returns
+`std::array<SourceVertexId, 3>` (`include/directional/authority/AuthorityIds.h:442`), so the carrier
+edge is the two-element intersection of the two carrier triples. The successor must compute it and
+say that it computed it.
+
+**Two safety questions raised against the new code and both discharged against the bytes.** The probe
+adds `network.sourceTopologyRegions->topology_for_row(...)`, which the RA-63 probe did not contain;
+the enclosing function already dereferences that pointer unguarded at `:18967`, `:18968`, `:19048`,
+`:19050`, `:19076`, `:19136`, `:19138`, `:19154` and `:19196`, and `:19076` lies on every path that
+reaches the probe, so there is no new crash surface. The one divergence is an improvement: `:19134`
+requires both source faces to resolve before either is dereferenced, while the probe guards each
+independently and so reports the resolving half of a half-valid case. Separately, `topology_for_row`
+is not bounds-safe — elsewhere callers test `face_count()` first (`:8941`) — and the probe bounds on
+`faces.rows()` exactly as `:19130-19133` does. **No new hazard**; the pre-existing `faces.rows()`
+versus `face_count()` asymmetry is a backlog locus and must not be repaired opportunistically.
+
+**What the coming measurement can and cannot settle.** It decides the first-order partition without
+inference — whether neither, exactly one, or both attachments lie in
+`{CarrierFirstFace, CarrierSecondFace}`, and whether a both-case is swapped. It does **not** settle the
+sector refinement, because the rail's other incident edges at the shared vertex are not emitted. The
+rail edge set is byte-fixed in `tests/SurfaceCellsPhase10Tests.cpp:223-264`, so the refinement is
+derivable — but it must be exhibited from those bytes, never asserted, or RA-65.4 repeats one level
+down.
+
+**Immutability and vintage.** The chain is closed by bytes: snapshot run `38775481890` at the pin
+commit `4c114b248`; compile run `38776964197` at the dispatcher commit `243a9feb7`; result artifact
+`11994726341` whose ZIP SHA-256 was **recomputed on the downloaded bytes** as
+`b59dc16f4417693c4aec79025160da2054cfbca3a1589ef051ee3a171d3185bb` and matches; manifest
+**re-verified** at **28 OK / 0 BAD**; eight targets; preflight and build exit **0/0**;
+`exactArithmeticBackend=GMP`, `runtimeExecution=false`; and
+`src/geometry/SurfaceCellTracing.cpp` inside the package hashing to
+`3833d8f4e204f6c202b1e9faa9b3e88da5c1e30a81ccd2b11f24d31408c3f91f`, **byte-identical to HEAD's**.
+**`R4-VIN-01` re-arms:** `5be5e123e` is a new semantic source, so `11976790988` and `11967601999` are
+baselines and never comparands, and the 44 RED remain the baseline for `16c3134c0` alone. The record
+names the matching instrument hazard before being asked — the pinned 44-case harness pins the **old**
+package and must not be run to claim the new fields, since it would report every one of them absent
+and look like a clean negative.
+
+**Accounting unchanged.** Ledger **66/17/49**, debt **1**, CP2 **491/491** accepted, R3 **403/497**
+rejected, frozen selector **497**. **RA-61.9 withdrawn, final. RA-64.6 withdrawn, final. Gate C
+suspended (RA-65.5).** Successor **`M6-CP3-TB4-R4-ENDPOINT-CHART-HARVEST`**.
+
+---
+
 ## CURRENT — the endpoint faces were never measured, so the mechanism narrative is withdrawn; the specification is accepted with two gates amended; RA-65 frozen (2026-10-15)
 
 **One turn adjudicated, ACCEPTED WITH AMENDMENT:** `M6-CP3-DEFN-R4-ENDPOINT-AUTHORITY-SPEC`.

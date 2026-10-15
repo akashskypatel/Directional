@@ -1,3 +1,96 @@
+## RA-66 — `M6-CP3-CB4-R4-ENDPOINT-CHART-PROBE-REV`, 2026-10-15 (frozen)
+
+Decision: `.agents/Directional/Architecture_M6_CP3_R4_Endpoint_Chart_Probe_Review_Decision.md`.
+Adjudicates `M6-CP3-CB4-R4-ENDPOINT-CHART-PROBE`: **ACCEPTED**. One silent mandate deviation charged
+and recoverable. No open REVIEW_BLOCKER. No promotion, no stable event, no regression recurrence, no
+gate credit. **`R4-VIN-01` re-arms at the new semantic source `5be5e123e`.**
+
+- **RA-66.1** **The compile chain is closed by bytes, end to end, and nothing is taken on report.**
+  Snapshot run `38775481890` `success`, `headSha 4c114b248` (the pin commit), artifact `11993616345`
+  present (24,114,547 bytes). Compile run `38776964197` `success`, `headSha 243a9feb7` (the
+  dispatcher request commit), result artifact `11994726341` present (39,026,791 bytes). **ZIP SHA-256
+  recomputed on the downloaded bytes —
+  `b59dc16f4417693c4aec79025160da2054cfbca3a1589ef051ee3a171d3185bb` — is identical to the reported
+  value.** The manifest was **re-verified, not read**: `shasum -a 256 -c SHA256SUMS` over the
+  extracted package gives **28 entries, 28 OK, 0 BAD**. Eight targets exactly as claimed;
+  `preflight-exit-code.txt` = **0** and `build-exit-code.txt` = **0**; `exactArithmeticBackend=GMP`,
+  `runtimeExecution=false`; `source-commit.txt` = `5be5e123e14e2ddab8bb8c0db2a354a0a900435a`.
+  **The decisive link:** `src/geometry/SurfaceCellTracing.cpp` *inside the manifest-verified package*
+  hashes to `3833d8f4e204f6c202b1e9faa9b3e88da5c1e30a81ccd2b11f24d31408c3f91f`, **byte-identical to
+  HEAD's**; the `src` tree is `fd09300ba38b10dfea728c8c3f7c4ed6b732c89c` at both `5be5e123e` and
+  HEAD; `5be5e123e`'s parent is the pin commit. `include`, `tests`, `benchmarks`, `cmake`, `.github`
+  and every selector untouched; no binary, test, benchmark or 497 executed.
+- **RA-66.2** **Decision-neutral by construction, verified structurally rather than asserted.** The
+  23 added lines sit at `:19439-19461`, inside the block opened at
+  `:19360 if (!firstEndpoint || !secondEndpoint) {`, after the pre-existing `:19438` carrier lookup.
+  Every added line declares a local or streams into `endpointEvidence`; no acceptance path can
+  observe any of it, because the block is entered only once both certificates have returned. Ladder,
+  predicates, `endpoint_certificate` and every rejection string unchanged.
+- **RA-66.3** **The turn improved on the mandate in the right direction.** Raw rows were asked for;
+  raw rows **and** the canonical attachment keys were delivered — `a2bProbeFromAttachment`,
+  `a2bProbeToAttachment`, `a2bProbeCarrierFirstFace`, `a2bProbeCarrierSecondFace`, each a three-vertex
+  `SourceFaceTopologyKey` triple. `oriented_carrier` (`:19106-19114`) compares
+  `record.firstFace == from && record.secondFace == to` on exactly these keys, so the failing
+  comparison is now observable **field against field**, with no row-to-key re-derivation at review
+  time and no opening for the reviewer to supply the missing half from imagination. After RA-65.3 that
+  is the correct instinct.
+- **RA-66.4 (DEFECT, recoverable)** **A mandated field is absent and the omission is
+  unacknowledged.** `a2bProbeCarrierEdge` was item 3 of five; `grep -c` returns **0**, and neither the
+  record nor the handoff notes the deviation. **The information is not lost:**
+  `SourceFaceTopologyKey::vertices()` returns `std::array<SourceVertexId, 3>`
+  (`include/directional/authority/AuthorityIds.h:442`), and the carrier edge is the two-element
+  **intersection** of the `CarrierFirstFace` and `CarrierSecondFace` triples. The substantive loss is
+  nil; **the silence is the defect.** The successor must compute the intersection and say that it
+  computed it, never print a carrier edge as though it had been emitted.
+- **RA-66.5** **A new dereference, raised and discharged.** The probe adds
+  `network.sourceTopologyRegions->topology_for_row(...)`, absent from the RA-63 probe. The enclosing
+  function already dereferences that pointer unguarded at `:18967`, `:18968`, `:19048`, `:19050`,
+  `:19076`, `:19136`, `:19138`, `:19154`, `:19196`, and `:19076` lies on **every path that reaches the
+  probe**. No new crash surface. One divergence exists and it is an improvement: `:19134` requires
+  **both** source faces to resolve before either is dereferenced, while the probe guards each
+  independently, so a case in which exactly one resolves now reports the half that does.
+- **RA-66.6** **The bounds idiom matches the surrounding code, and that idiom is unguarded.**
+  `topology_for_row` is not bounds-safe — elsewhere callers test `face_count()` first (`:8941`) — and
+  the probe bounds its row through `source_face_id(point.face, faces.rows())` exactly as
+  `:19130-19133` does, on `faces.rows()` rather than `face_count()`. **No new hazard**; the
+  pre-existing asymmetry between the two extents is a backlog locus and must not be repaired
+  opportunistically.
+- **RA-66.7** **What the measurement will decide, and what it will not.** The emitted set decides the
+  **first-order partition** without inference: whether neither, exactly one, or both of
+  `FromAttachment`/`ToAttachment` lie in `{CarrierFirstFace, CarrierSecondFace}`, and if both, whether
+  they are swapped. It does **not** by itself decide the sector refinement RA-65.11 named, because the
+  rail's *other* incident edges at the shared vertex are not emitted. For these 21 the rail edge set
+  is byte-fixed in `tests/SurfaceCellsPhase10Tests.cpp:223-264`, so the refinement is derivable — but
+  it must be **exhibited from those bytes, not asserted**. Asserting a sector from a merely consistent
+  reading is RA-65.4 one level down.
+- **RA-66.8** **The previous charge was absorbed in the turn's own words.** Record line 7 reads
+  "5642 source files (**file count, not a checksum-verification ratio**)". RA-65.1 charged exactly
+  that misdescription one rung earlier, and the correction appears unprompted inside the new turn's
+  own evidence line.
+- **RA-66.9** Documents: the handoff was **prepended**, the RA-65 section intact below, and the top
+  section declares the one beneath it "preserved as historic pending state". Two CURRENT sections for
+  one turn is a readability cost, not a defect, because the supersession is stated in text. `TODO.md`
+  likewise prepended. The three commits sharing the message "close endpoint chart compile checkpoint
+  with verified GMP evidence" touch **three different files**, so this is not the RA-64.9 retry
+  pattern.
+- **RA-66.10** Beacon: `Status: COMPLETE`, six fields, `Ended at:` populated, `Successor: UNKNOWN`
+  **with reasoning carried in the record** — *"there is no authorized named successor at closeout"* —
+  and reinforced in the handoff. The RA-63.13 shape. **No defect.**
+- **RA-66.11** **`R4-VIN-01` re-arms, and the old harness must not be pointed at the new fields.**
+  `5be5e123e` is a new semantic source and `11994726341` a new package; artifacts `11976790988` and
+  `11967601999` are now **baselines, never comparands**, and the 44 RED remain the baseline **for
+  `16c3134c0`** only. The record states the hazard about its own instrument before being asked: the
+  pinned 44-case harness **pins the old package** and "must not be run against it to claim these new
+  fields." Load-bearing — a harness silently measuring the old package would report every new field as
+  absent and look like a clean negative.
+- **RA-66 accounting.** Ledger **66/17/49**, debt **1**, CP2 **491/491**, R3 **403/497**, frozen
+  selector **497** — unchanged. `RP-01` located with three expressions, **one in question pending this
+  measurement**, not repaired; `RP-02` **UNREACHED**; `RP-03` satisfied a third consecutive turn;
+  `PROCESS-01` discharged. **RA-61.9 WITHDRAWN, final. RA-64.6 WITHDRAWN, final. Gate C SUSPENDED
+  (RA-65.5).** Successor **`M6-CP3-TB4-R4-ENDPOINT-CHART-HARVEST`**.
+
+---
+
 ## RA-65 — `M6-CP3-DEFN-R4-ENDPOINT-AUTHORITY-SPEC-REV`, 2026-10-15 (frozen)
 
 Decision: `.agents/Directional/Architecture_M6_CP3_R4_Endpoint_Authority_Spec_Review_Decision.md`.

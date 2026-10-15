@@ -1,3 +1,63 @@
+## CURRENT — `M6-CP3-CB4-R4-ENDPOINT-CHART-PROBE-REV`, 2026-10-15: RA-66 frozen; the instrument that can settle the open question is built, and for once the question it answers was chosen because the reviewer got the last one wrong
+
+**Supersedes the RA-65 paragraph below as the current state.** One turn was adjudicated and it is
+**accepted**, with a single recoverable defect of silence. No open REVIEW_BLOCKER. No promotion, no
+stable event, no regression recurrence, no gate credit.
+
+**§3 current state — nothing was concluded, and that is correct.** No predicate changed, no
+acceptance moved, no rejection string was touched, and the three located expressions of the
+granularity error stand exactly where the previous rung left them, with one of them still in
+question. What this rung produced is the ability to *look*. The refusing comparison asks whether two
+endpoint charts are the two faces of one carrier edge; until now the charts themselves were never
+reported, and a reviewer reconstructed them — wrongly — from a vertex and a verdict. The diagnostic
+now reports both charts and both carrier faces as canonical topology keys, which are the very values
+the comparison uses, so the next reading is a field-by-field observation rather than a reconstruction.
+
+**§4 runtime witness — still none, and the compile chain is closed by bytes.** No binary ran, no test,
+no benchmark, no frozen selector. The package was not accepted on its report: the archive's hash was
+recomputed on the downloaded bytes and matches, its internal manifest was **re-verified** rather than
+read and comes back entirely clean, the eight required targets are present, both exit codes are zero,
+the arithmetic backend is the exact one, and the runtime flag is false. The link that matters most is
+that the single decisive translation unit *inside* the verified package hashes identically to the one
+on the branch, and the source tree recorded in the package is the source tree at the branch head.
+There is no gap anywhere between what was pinned, what was compiled, and what is checked in. Because
+the semantic source is new, every earlier package becomes a baseline and stops being a comparand; the
+turn said so about its own instrument before being asked, noting that the previously pinned harness
+would report all the new fields as absent and look like a clean negative.
+
+**§5 instrument — neutral by construction, and better than specified in one respect, silent in
+another.** Every added line lives inside the block that runs only after both certificates have
+already refused, and each one either declares a local or writes into the evidence stream, so no
+acceptance path can observe the change. Where the instruction asked for raw row numbers, the turn
+also emitted the canonical keys that the comparison actually uses — strictly better, and aimed
+squarely at the failure mode that produced the withdrawn claim two rungs ago. Against that, one
+mandated field was simply not emitted and the omission is nowhere acknowledged; the value is
+recoverable by intersecting the two carrier triples, so the loss is nil and the silence is the whole
+of the defect. Two safety questions were raised against the new code — a pointer dereference the
+previous probe did not contain, and an unguarded row-bounds idiom — and both were discharged against
+the surrounding bytes, which already do the same thing on every path that reaches the probe; the one
+divergence turns out to make a half-valid case legible instead of blank.
+
+**§7 priority — harvest, and bring back values rather than a story.** The next rung runs the new
+package and nothing else: a fresh harness pinned to the new artifact, the same population with the
+odd identity still excluded, and a per-identity report of the two charts, the four keys, the computed
+carrier edge with its computation stated, and the unchanged first failing condition. The partition it
+must produce is purely arithmetical — whether neither, one, or both charts are carrier faces, and
+whether a both-case is reversed. What it must **not** produce is a sector, a mechanism or a repair.
+The rail's other edges at the shared vertex are not emitted, so any claim about which side of the
+feature a chart lies on has to be derived line by line from the fixture's own bytes, and asserting it
+from a merely consistent reading would repeat this family's newest lesson one level down.
+
+**§8 patterns — the same discipline, arriving in a third distinct shape.** A measuring turn once
+reported a result that contradicted the reviewer without softening it; a defining turn then named the
+reviewer's inference as unsound in its own text; and this turn absorbed a charge about its own
+evidence wording **inside its own evidence line**, unprompted, in the rung immediately after the
+charge was made. Three different shapes of the same behaviour, three turns running. Recorded as
+credit, and worth naming because it is the mechanism by which this process catches the reviewer
+rather than merely the implementation.
+
+---
+
 ## CURRENT — `M6-CP3-DEFN-R4-ENDPOINT-AUTHORITY-SPEC-REV`, 2026-10-15: RA-65 frozen; the faces that carried the previous rung's whole story were never measured, and the specification that caught it is accepted with two of its gates amended
 
 **Supersedes the RA-64 paragraph below as the current state.** One turn was adjudicated and it is
