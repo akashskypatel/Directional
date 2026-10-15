@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-ra434-dispose-docs-20261014t2351z",
+  "request_id": "m6-cp3-r4-rp02-witness-apply-20261015t0106z",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-ra434-dispose-docs",
-  "file_id": "1QuMV7dh12qTuU1N77IvI7c66-yOJ0yhk",
-  "patch_sha256": "2d6d2b8400ff67f393171b201b5ba8d40a1dd219e0f2faa22d6310c0fb3c6245",
-  "base_sha": "fa230b2a00e698eee9478fc06b3490cba5a86a11",
+  "mailbox_key": "m6-cp3-r4-rp02-witness-apply",
+  "file_id": "1UREArmKzShWiYLYagXTGQuIbv-0Rwpuz",
+  "patch_sha256": "13ab33bf2086ff59afe7dbdc7214dc6aa037cc21dff2d6019f31f66b782aae82",
+  "base_sha": "82bc4fb9e6756cf50ab611f70940b5c6350a2e86",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close RA-43.4 standalone geometry helper disposition",
+  "commit_message": "test(directional): witness network-bound open-front rail consumer",
   "retention_days": 7
 }
