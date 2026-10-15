@@ -1,3 +1,114 @@
+## RA-65 — `M6-CP3-DEFN-R4-ENDPOINT-AUTHORITY-SPEC-REV`, 2026-10-15 (frozen)
+
+Decision: `.agents/Directional/Architecture_M6_CP3_R4_Endpoint_Authority_Spec_Review_Decision.md`.
+Adjudicates `M6-CP3-DEFN-R4-ENDPOINT-AUTHORITY-SPEC`: **ACCEPTED WITH AMENDMENT**. Gate C suspended;
+gate A's reciprocity conjunct struck; **RA-64.6 withdrawn in full**; RA-64.4's illustration withdrawn,
+its conclusion retained. No open REVIEW_BLOCKER. No promotion, no stable event, no regression
+recurrence, no gate credit.
+
+- **RA-65.1** Authority re-derived from the provider and from tree objects. Run `38765685488`
+  (`Agent Source Snapshot`) `success`, `headSha e87b7a3ad`, matching the cited snapshot commit;
+  artifact `11989475541` present (24,087,190 bytes); the log records
+  `event_sha = snapshot_sha = final_sha = e87b7a3ad`, `snapshot_file_count=5640`,
+  `archive_sha256=5195b468af2fe726f3f526d73a831d3d20813bd52b5635dda5ec7a972d0aaf8b`. **Tree
+  identity:** `src` `76a12d4053a5…`, `include` `790328c2…`, `tests` `cbef8d5e…` and the blob
+  `src/geometry/SurfaceCellTracing.cpp` `6605c9f9ee8d7fc7859260b389f7fa2de755306f` are
+  **byte-identical at `16c3134c0`, at `e87b7a3ad` and at HEAD**, so the specification read exactly the
+  bytes compiled into package `11976790988` and measured by the harvest. Two files changed in the
+  whole turn — the specification and `STATUS`. **Charged under RA-61.5:** "5640/5640 source hashes" is
+  a **file count** presented as a verification ratio; the log verifies no hashes.
+- **RA-65.2** **ACCEPTED: the RA-64.6 answer is correct, and the bytes say it more strongly than the
+  document does.** `assign_open_front_boundary_authority` cannot silently omit a carrier — `:12570`
+  iterates every segment; `:12576-12591` derives the carrier from that segment's own face and
+  unsupported corner; `:12594-12597` **requires the segment's face to be incident to that carrier**;
+  `:12641-12644` flushes the run on a carrier change; `:12645-12647` rejects a nonconsecutive repeat;
+  `:12669` flushes the tail; and **every** failure path returns `InvalidFrontBoundaryAuthority`. A
+  two-carrier path yields two steps or no front. Declining to settle whether the *path itself* was
+  complete is the correct residue.
+- **RA-65.3 (PRINCIPAL)** **The endpoint faces `{0,7}` were never measured, and RA-64.6 is withdrawn
+  in full.** The probe emits only `a2bProbeCarrierPresent`, `a2bProbeFailure`,
+  `a2bProbeFirstFailedCondition`, `a2bProbeFromSourceVertex`, `a2bProbeToSourceVertex` and the two
+  `append_interval` blocks — **no face anywhere in `:19395-19477`**. Source vertex 4 belongs to **six**
+  fixture faces (`0,1,3,4,6,7`) and `carrier-orientation` fails for **any** attachment pair other than
+  `(0,3)`/`(3,0)`, so `{0,7}` was one admissible reading among many, chosen without warrant and
+  reported as measured. **RA-64.4's conclusion survives** — that a face-pair mismatch fires first for
+  all 21 is what `carrier-orientation` *means*, and it was measured — **its illustration does not**.
+  The specification caught this at its own line 15 and is credited; this is the second consecutive
+  turn to correct the reviewer on the record.
+- **RA-65.4 (new lesson)** **An explanatory instance is not a measurement: a mechanism that *would*
+  produce the observed value is not the mechanism that *did*.** Fifth in the family after RA-61.5
+  (provenance), RA-61.7 (satisfiability), RA-63.10 (event counting) and RA-64.12 (reachability):
+  **uniqueness**. An explanation must state that no other explanation fits the same evidence, and name
+  the measurement that separates them when others do.
+- **RA-65.5 (DEFECT)** **Gate C names a witness no producer publishes.** It admits a non-incident
+  chart "only through a source-attested, uniquely admissible vertex-star route". The A3 product is
+  `SurfaceHardRailFieldTransition` (`include/directional/geometry/SurfaceCellTracing.h:1482-1489`) —
+  one source **edge**, its two faces, one quarter turn. There is **no vertex-keyed transition record
+  in `include/` or `src/`**; every `vertexStar*` symbol in the tree is a *diagnostics* field
+  (`include/directional/diagnostics/RemeshDiagnostics.h:459-477`), not an authority product. That is
+  the RA-61.7 satisfiability failure one level up, and precisely what RA-64.11 bound this rung to
+  avoid. **Gate C is SUSPENDED** until a successor names the producer or withdraws it. **Gates A, B
+  and D stand.**
+- **RA-65.6 (DEFECT)** **Two vacuous conjuncts, immediately after RA-64.5 condemned the pattern.**
+  (a) Gate A's "exactly reciprocal endpoint ordinals" **cannot be false**: `:17073-17079` mints the
+  forward interval as `from_integer(ordinal)`/`from_integer(ordinal + 1U)` and `:17095-17101` the
+  reverse as `from_integer(ordinal)`/`from_integer(ordinal - 1U)`, so reciprocity is a **construction
+  identity** — stronger than RA-64.5's measured 44/44, because it would hold of any population.
+  (b) "Identical … support piece" carries no information: `:17051` rejects any
+  `supportPieceIndex != 0U`, so the piece is **0 in every surviving record**. The document warns
+  against exactly this and then commits it twice. The one conjunct that works — independent
+  per-endpoint exact parameter resolution — is kept; the two decorations are struck.
+- **RA-65.7** **The "exposure" the contract asks for is a type change.** `:17047-17060` resolves an
+  exact `FieldExactRational` edge parameter from `baseline.breakpoint_location(span, exactOrdinal)`
+  (`GlobalConformityBaseline.h:181`, `:216` — the document's citation is **accurate**), and it is then
+  destroyed twice: `:16791-16792` casts it to `double` into `SurfaceTracePoint`, whose entire
+  definition is `{int face; Eigen::RowVector3d barycentric;}` (`SurfaceCellTracing.h:90-93`); and the
+  published `SurfaceSharedBoundaryInterval` (`SurfaceCellTracing.h:1418-1428`) carries the **breakpoint
+  index**, never the parameter. **No published type has a field that can receive it.** Recorded, not
+  escalated: declining to design the type in a Definition turn was correct, but the successor must
+  budget the type change as the substance of the work.
+- **RA-65.8** **Reopened: a truncation mechanism sits inside the range the document cited.**
+  `append_point` **silently drops** a point when its UV lies within `1.0e-10 * max(1, width, height)`
+  of the previous one and returns **`true`** (`:17032-17036`), while the interval is pushed
+  **unconditionally** (`:17081`, `:17103`). Points and intervals can desynchronize, and a dropped
+  breakpoint can collapse a carrier run out of the path **upstream** of the publisher RA-65.2 cleared.
+  **Not demonstrated for the measured 44** — exact integer ordinals on a unit grid — so the
+  conclusion for the 44 stands; the general claim holds only of the A4 publisher, not of the pipeline.
+- **RA-65.9 (scoped correction)** **`routeLength = 1` is exact only up to 1e-9.**
+  `assign_open_front_boundary_authority` carries `constexpr double tolerance = 1.0e-9` (`:12507`) and
+  decides in doubles which corner is unsupported and hence **which edge is the carrier**
+  (`:12578-12579`), whether a run is long enough to publish (`:12539`), and whether consecutive
+  segments connect (`:12655`); `canonical_retained_edge_parameter` returns a clamped `double`
+  (`:12509-12531`). Harmless for the measured 44; it undercuts the framing in which the route is exact
+  authority while only the endpoint half needs exactness. Backlog locus.
+- **RA-65.10 (NEW structural locus)** **The endpoint points are not drawn from the front's own path.**
+  `edge.from = cell.corners[side]` and `edge.to = cell.corners[(side + 1) % 4]` at `:13034-13035`,
+  `:14774-14775` and `:17345-17346`; the route comes from `cell.boundaryPaths[side]`, whose every
+  segment is forced incident to its carrier at `:12594-12597`. **Nothing reconciles the corner array
+  against the path's face set.** That absent invariant — not the terminal-contact vocabulary — is where
+  gate D's "endpoint incidence" must bite: at **corner-to-path** incidence.
+- **RA-65.11** **The decisive measurement costs five integers and now outranks the RA-63.11
+  deferral.** Whether `oriented_carrier`'s refusal is a granularity defect or a **correct refusal**
+  turns on *which* faces the two corners are charted in — the one fact never measured. Same rail
+  sector of the shared vertex ⇒ gate C has something to admit and `RP-01`'s third expression is real;
+  opposite sectors ⇒ the endpoint is charted across the feature the rail protects, `oriented_carrier`
+  was right, and the defect is **chart selection**, not vocabulary. `fromPoint`, `toPoint`,
+  `probeCarrier` and the two compared attachment keys are already in scope in the post-decision block.
+  The package at `16c3134c0` was preserved to protect a measurement whose central narrative has just
+  been withdrawn; that argument no longer outweighs the measurement.
+- **RA-65.12** Beacon: `Status: COMPLETE`, six fields, `Ended at:` populated, `Successor: UNKNOWN`
+  **with reasoning carried in the document** — *"An implementation or independent Review successor
+  requires separate explicit turn authority; no successor ID is invented here."* The RA-63.13 shape,
+  not the RA-64.10 self-reference. **No defect.**
+- **RA-65 accounting.** Ledger **66/17/49**, debt **1**, CP2 **491/491**, R3 **403/497**, frozen
+  selector **497** — unchanged. The 44 RED remain the **`R4-VIN-01` baseline** for `16c3134c0`, never a
+  comparand against `11967601999`. `RP-01` located with three expressions, **one now in question**
+  (RA-65.11), not repaired; `RP-02` **UNREACHED**; `RP-03` satisfied and exemplified a second
+  consecutive turn; `PROCESS-01` tooling residual discharged. **RA-61.9 WITHDRAWN, final. RA-64.6
+  WITHDRAWN, final.** Successor **`M6-CP3-CB4-R4-ENDPOINT-CHART-PROBE`**.
+
+---
+
 ## RA-64 — `M6-CP3-TB3-R4-PROBE-HARVEST-REV`, 2026-10-15 (frozen)
 
 Decision: `.agents/Directional/Architecture_M6_CP3_R4_Probe_Harvest_Review_Decision.md`. Adjudicates

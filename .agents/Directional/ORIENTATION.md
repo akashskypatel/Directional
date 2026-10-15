@@ -1,3 +1,68 @@
+## CURRENT — `M6-CP3-DEFN-R4-ENDPOINT-AUTHORITY-SPEC-REV`, 2026-10-15: RA-65 frozen; the faces that carried the previous rung's whole story were never measured, and the specification that caught it is accepted with two of its gates amended
+
+**Supersedes the RA-64 paragraph below as the current state.** One turn was adjudicated and it is
+**accepted with amendment**. No open REVIEW_BLOCKER. No promotion, no stable event, no regression
+recurrence, no gate credit.
+
+**§3 current state — the ordering stands, the explanation does not.** The sequence in which the
+rejecting conjunction refuses is unchanged: the face-pair premise refuses first for the junction
+identities, the interval conjunct is reached and satisfied by everything, the whole-rail terminal set
+is never reached. What has been withdrawn is the *reason* the first refusal was called a defect. The
+previous rung justified it by naming the two faces the endpoints were charted in; those faces were
+**never measured**. The diagnostic emits the source vertex at each endpoint and the first condition
+that refused, and it emits **no face at all**. The shared vertex belongs to six faces of the fixture,
+and the refusal that was observed is consistent with any pairing of them except the carrier's own, so
+one admissible reading was selected and then reported as a finding. What survives is only what the
+observed refusal *means*: the pair of charts the endpoints sit in is not the carrier's pair. Whether
+that is a vocabulary defect or a **correct refusal of an endpoint charted across the feature the rail
+exists to protect** is now the open question of this family — and the two answers point in opposite
+directions, one toward repairing the predicate and one toward repairing chart selection.
+
+**§4 runtime witness — nothing ran, and that is the point.** This was a definition turn: one document,
+two files changed in the repository, no compile, no tests, no benchmark, no selector execution. The
+source snapshot it was measured against was re-derived from the provider and, more decisively, from
+tree objects: the source, header and test trees and the single decisive translation unit are
+byte-identical at the packaged semantic source, at the snapshot commit, and at the branch head. The
+specification therefore read exactly the bytes that were compiled and measured, which is what makes
+its line-level reasoning admissible at all. One evidence claim was dressed up: a file count was
+presented as a ratio of verified hashes, and no hashes were verified.
+
+**§5 instrument — the specification is sound where the bytes decide and unsound where it reached past
+them.** Its central publisher claim is confirmed and is in fact stronger than stated: the open-front
+authority cannot shorten a route, because a changed carrier flushes a run, a repeated carrier is
+refused, the tail is flushed after the loop, and every failure path rejects the whole front rather
+than publishing a shortened one. Two of its proposed gates do not survive. One requires a route
+through the fan of a shared vertex, attested by a producer that **does not exist** — the transition
+authority is keyed by edge, and the only vertex-fan vocabulary anywhere in the tree belongs to
+diagnostics. The other requires reciprocal endpoint ordinals, which **cannot be false**, because the
+producer mints consecutive integers in one direction and their reverse in the other; a companion
+clause about matching support pieces is empty for the same kind of reason, since the producer rejects
+every piece but the first. Both are struck. The conjunct that does real work — resolving an exact
+parameter independently at **each** endpoint rather than once per edge — is kept, and it is precisely
+what the previous rung showed the per-edge record cannot supply.
+
+**§7 priority — the next rung is five integers.** The question that decides this whole family is which
+charts the two endpoints are actually in, and every value needed is already in scope at the existing
+diagnostic site. The package was preserved across two rungs to avoid invalidating a measurement whose
+central narrative has now been withdrawn, so the preservation argument no longer outweighs the
+measurement. The rung adds emissions inside the existing post-decision block, establishes
+decision-neutrality by construction as before, and repackages — nothing else. The contract the
+specification drafted remains normative and unimplemented; the exact product it asks to expose is
+computed and then discarded in two places, and no published type has a field that could receive it, so
+the successor that implements it must budget the type change as the substance of the work.
+
+**§8 patterns — one about explanation, one about who corrects whom.** First: *an explanatory instance
+is not a measurement; a mechanism that would produce the observed value is not the mechanism that
+did.* Four rungs ago an expected value without stated provenance was ruled not to be a prediction;
+three ago a predicate verified only for faithfulness was ruled not to be verified; two ago a count of
+recorded events was ruled not to be a count of events; one ago a prediction that never named its rung
+was ruled unobservable; this rung adds **uniqueness**, and the instance is again the reviewer's own.
+Second, recorded as credit: the defining turn located the defect in the reviewer's reasoning and said
+so in its own text, rather than building on it. That is the second consecutive turn to correct the
+reviewer on the record, and it is the behaviour this process exists to produce.
+
+---
+
 ## CURRENT — `M6-CP3-TB3-R4-PROBE-HARVEST-REV`, 2026-10-15: RA-64 frozen; the conjunct that actually refuses first is not the one this family has been studying, and the reviewer's prediction was falsified at the rung it never reached
 
 **Supersedes the RA-63 "edge-level witness" paragraph below as the current state.** Two turns were

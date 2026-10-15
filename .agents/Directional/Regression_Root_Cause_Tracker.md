@@ -1,3 +1,78 @@
+## CURRENT — the endpoint faces were never measured, so the mechanism narrative is withdrawn; the specification is accepted with two gates amended; RA-65 frozen (2026-10-15)
+
+**One turn adjudicated, ACCEPTED WITH AMENDMENT:** `M6-CP3-DEFN-R4-ENDPOINT-AUTHORITY-SPEC`.
+Decision: `Architecture_M6_CP3_R4_Endpoint_Authority_Spec_Review_Decision.md`. No open
+REVIEW_BLOCKER. No promotion, no stable event, no regression recurrence, no gate credit.
+**RA-64.6 is withdrawn in full; RA-64.4's conclusion is retained and its illustration withdrawn.**
+
+**Root-cause status — `RP-01 AUTHORITY_DOMAIN_CONFLATION`, three expressions, one now in question.**
+The ordering established at RA-64 is unchanged in form: the face-pair premise refuses first for the
+21 junction identities, the edge-record interval conjunct is reached and satisfied by everything, and
+the rail-level terminal set is never reached. What has changed is the *warrant* for calling the first
+refusal a defect at all. RA-64.4 justified it with endpoint faces `{0,7}` — a pair that **was never
+measured**. The probe emits `a2bProbeCarrierPresent`, `a2bProbeFailure`,
+`a2bProbeFirstFailedCondition`, `a2bProbeFromSourceVertex`, `a2bProbeToSourceVertex` and the two
+`append_interval` blocks, and **no face at all** (`src/geometry/SurfaceCellTracing.cpp:19395-19477`).
+Source vertex 4 belongs to six fixture faces — `0=(0,1,4)`, `1=(0,4,3)`, `3=(1,5,4)`, `4=(3,4,7)`,
+`6=(4,5,8)`, `7=(4,8,7)` — and `carrier-orientation` fails for **any** attachment pair other than
+`(0,3)`/`(3,0)`, so `{0,7}` was one reading among many. What survives is only what
+`carrier-orientation` *means*: the attachment pair is not the carrier's face pair. Whether that is a
+granularity defect or a **correct refusal of an endpoint charted across the feature** is now the open
+question, and it is decided by five integers that are already in scope.
+
+**`RP-02 TEST_AUTHORITY_COVERAGE_GAP` — still UNREACHED.** Neither the network-bound consumer nor its
+tamper half has executed. Nothing in this Definition turn touched it.
+
+**`RP-03 REVIEWER_CONJUNCT_MISREAD` — satisfied and exemplified a second consecutive turn.** The
+harvest contradicted the reviewer's recorded prediction without reconciling it (RA-64.8); this
+specification went further and **identified the reviewer's inference as unsound at its own line 15**,
+naming the defect in the reviewer's reasoning rather than deferring to it. That is the behaviour the
+pattern was opened to obtain.
+
+**`PROCESS-01` — tooling residual discharged for every observed failure mode**, shape-(D) residual
+recorded at RA-64.2 and deliberately not escalated. Both gates pass this turn with zero documents
+changed by the adjudicated turn.
+
+**Two new defects recorded against the specification, both of the same family the project keeps
+re-learning.** Gate C requires a "source-attested, uniquely admissible vertex-star route", but the A3
+authority product is `SurfaceHardRailFieldTransition`
+(`include/directional/geometry/SurfaceCellTracing.h:1482-1489`) — one source **edge**, two faces, one
+quarter turn — and **no vertex-keyed transition record exists in `include/` or `src/`**; every
+`vertexStar*` symbol in the tree is a *diagnostics* field
+(`include/directional/diagnostics/RemeshDiagnostics.h:459-477`). The gate is **suspended**. Gate A
+then requires "exactly reciprocal endpoint ordinals", which **cannot be false**: `:17073-17079` mints
+the forward interval as `from_integer(ordinal)`/`from_integer(ordinal + 1U)` and `:17095-17101` the
+reverse as `from_integer(ordinal)`/`from_integer(ordinal - 1U)`, making reciprocity a construction
+identity rather than a measured property — strictly stronger than RA-64.5's measured 44/44. The
+companion "identical support piece" is equally empty, because `:17051` rejects any
+`supportPieceIndex != 0U`. Both conjuncts are struck; the per-endpoint exact parameter conjunct, which
+is the one RA-63.5 showed the per-edge interval cannot supply, is kept.
+
+**Two new loci, neither repaired.** First, the exact product the contract asks to expose is computed
+at `:17047-17060` and destroyed twice — cast to `double` at `:16791-16792` into a `SurfaceTracePoint`
+that is only `{int face; Eigen::RowVector3d barycentric;}` (`SurfaceCellTracing.h:90-93`), and omitted
+from `SurfaceSharedBoundaryInterval` (`SurfaceCellTracing.h:1418-1428`), which publishes the
+breakpoint **index** and never the parameter. Second, and more fundamental, the certificate's endpoint
+points are **not drawn from the front's own path**: `edge.from = cell.corners[side]` and
+`edge.to = cell.corners[(side + 1) % 4]` at `:13034-13035`, `:14774-14775` and `:17345-17346`, while
+every path segment is forced incident to its carrier at `:12594-12597`, and **nothing reconciles the
+corner array against the path's face set**.
+
+**Reopened, and recorded as a backlog locus rather than a finding.** `append_point` silently drops a
+point on a `1.0e-10` UV-proximity test and returns `true` (`:17032-17036`) while the interval is
+pushed unconditionally (`:17081`, `:17103`), so points and intervals can desynchronize upstream of the
+publisher that was cleared. Not demonstrated for the measured 44. Separately,
+`assign_open_front_boundary_authority` decides carrier identity, run viability and segment continuity
+entirely in doubles against `constexpr double tolerance = 1.0e-9` (`:12507`, `:12578-12579`, `:12539`,
+`:12655`), so `routeLength = 1` is exact only up to that tolerance.
+
+**Accounting unchanged.** Ledger **66/17/49**, debt **1**, CP2 **491/491** accepted, R3 **403/497**
+rejected, frozen selector **497**. The 44 RED remain the `R4-VIN-01` baseline for `16c3134c0`, never a
+comparand. **RA-61.9 withdrawn, final. RA-64.6 withdrawn, final.** New lesson **RA-65.4 — an
+explanatory instance is not a measurement.** Successor **`M6-CP3-CB4-R4-ENDPOINT-CHART-PROBE`**.
+
+---
+
 ## CURRENT — the gate that actually fails first is a third expression of the same granularity error; vertex 4 and 2 confirmed, `one-hot-carrier-junction` falsified, specification authorized; RA-64 frozen (2026-10-15)
 
 **Two turns adjudicated together, BOTH ACCEPTED:** `M6-CP3-CB3-R4-LEDGER-CONTENT-FLOOR` and
