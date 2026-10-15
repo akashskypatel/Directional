@@ -1,14 +1,7 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb3-r4-probe-harvest-20261015-a",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb3-r4-probe-harvest",
-  "executor_sha": "c16812da4798e5b4ebc6e8427a95ddad6a268ea7",
-  "semantic_source_sha": "16c3134c02ab3872eee77a6b9dcc9d3fc6e01b7b",
-  "turn_id": "M6-CP3-TB3-R4-PROBE-HARVEST",
-  "harness_path": ".agents/Directional/tools/m6_cp3_r4_probe_harvest_harness.sh",
-  "harness_sha256": "bec126c4b4fc835c92de2ae39c6e36295721227549aa6b4ca84178c88fea040a",
-  "environment": {},
-  "artifact_prefix": "directional-m6-cp3-tb3-r4-probe-harvest",
-  "retention_days": 7
+  "request_id": "m6-cp3-tb3-r4-probe-harvest-clear-20261015",
+  "operation": "noop",
+  "mailbox_key": "m6-cp3-tb3-r4-probe-harvest-clear",
+  "note": "Consumed immutable 44-identity test_benchmark request cleared after successful execution."
 }
