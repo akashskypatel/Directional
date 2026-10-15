@@ -1,3 +1,57 @@
+## CURRENT — `M6-CP3-CB2-R4-PREDICATE-SEPARATION-REV`, 2026-10-15: RA-63 frozen; the witness this project was about to rely on identifies the wrong object, and the new content guard protects a count rather than content
+
+**Supersedes the RA-62 "junction vertex / `RP-01` located" paragraph below as the current state.**
+`M6-CP3-CB2-R4-PREDICATE-SEPARATION` ran and is **ACCEPTED**: both mandated diagnostic payloads
+are correct and lossless, and the source edit is decision-neutral **by construction** rather than
+by assertion. One durable-integrity defect is open with a proven remedy. No open REVIEW_BLOCKER.
+No promotion, no stable event, no regression recurrence, no gate credit.
+
+**§3 current state — the remedy that was waiting in the wings has been withdrawn.** The exact
+witness this family had begun to lean on is carried **once per front-edge record**, while that
+record owns **two** endpoints, and the certificate consults it twice with the same values. It can
+therefore say something true about a pair of edges and nothing at all about which end of them is
+being certified. The candidate remedy recorded two rungs ago rested endpoint identity on exactly
+that witness; adopting it would have replaced a gate that refuses everything with a gate that
+cannot tell the ends apart. **A gate that fails closed is a visible defect; a gate that fails open
+is an invisible one.** The remedy is withdrawn rather than merely left unauthorized, and the
+question it was meant to answer needed only the record's field list, never a run.
+
+**§4 runtime witness — nothing ran, and the compile was verified by object identity.** The report's
+claimed semantic source and the workflow's own head commit differ; that was resolved by comparing
+tree objects rather than by trusting either, and the compiled source is byte-identical to what is
+live. Eight targets, exact arithmetic linked, no executable, no test, no benchmark, no frozen
+selector. The acceptance half of this subsystem still has no witness and the consumer-reachability
+probe has still never executed. The new diagnostics are compiled but **unharvested**: the next
+measurement is a **baseline**, never a comparand, because the semantic source changed.
+
+**§6 authority — the conflation is a construction habit, not a single site.** Two separate
+granularity mismatches now sit inside the **same** rejecting conjunction: authority published per
+rail answering a question about one carrier edge, and authority published per edge record
+answering a question about one endpoint. The practical consequence for any eventual repair is
+sharp: **widening an already-published set cannot fix either one.** Vocabulary has to exist at the
+granularity the question is asked at. Nothing here authorizes writing that vocabulary.
+
+**§7 priority — fix the instrument before trusting it, and prove the fix is satisfiable first.**
+The next rung is instrument-only, needs no compiler, and is deliberately small. The durable-history
+guard was genuinely repaired in one respect — it now notices a committed overwrite, which it could
+not before — and still returns green when a protected file's entire history is replaced by filler
+of the same length. The replacement predicate was chosen only after two alternatives were measured
+and one was found **unsatisfiable**; the satisfiability check came before the mandate, not after
+it, which is the discipline this lineage keeps having to relearn.
+
+**§8 patterns — two, and the second one is the reviewer's.** First: *a guard that counts lines does
+not protect content, for exactly the reason a guard that counts markers does not.* This file
+already recorded the marker version of that lesson by name; the repair instantiated it one level up
+and inherited the same hole, which was demonstrated by simulating the defect rather than by
+reasoning about it. Second, and harder: *a count of recorded events is not a count of events.* The
+integrity-event tally carried in these documents was short, because what was counted was the
+events that had been **written down** rather than the events in the bytes — including one whole-file
+destruction of the append-only ledger that appears in **no** durable document at all. That is this
+file's own "a census is not a witness", turned on the reviewer's own ledger while a content guard
+was being mandated for everyone else. Prose lessons have now failed four times in this lineage and
+the instrument twice; the remedy is the mechanical floor, not another paragraph.
+
+---
 ## CURRENT — `M6-CP3-TB2-R4-CONJUNCT-EXTRACT-REV`, 2026-10-15: RA-62 frozen; the failing endpoint is the rail's own junction vertex, and the conflation it exposes is the one this project has been chasing
 
 **Supersedes the RA-61 "acceptance path unsatisfiable" paragraph below as the current state.**

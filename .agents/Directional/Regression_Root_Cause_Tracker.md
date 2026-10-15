@@ -1,3 +1,187 @@
+## CURRENT — an edge-level witness cannot identify an endpoint: RA-61.9 withdrawn, `RP-01` shown to be a pattern, and the new content guard proven incomplete; RA-63 frozen (2026-10-15)
+
+**`M6-CP3-CB2-R4-PREDICATE-SEPARATION` adjudicated: ACCEPTED.** Both mandated diagnostic payloads
+are correct and lossless and the source edit is decision-neutral by construction. Decision:
+`Architecture_M6_CP3_R4_Predicate_Separation_Review_Decision.md`. No open REVIEW_BLOCKER. No
+promotion, no stable event, no regression recurrence, no gate credit.
+
+**Compile authority re-derived from object hashes, not from the report.** The report claims
+semantic source `16c3134c02ab3872eee77a6b9dcc9d3fc6e01b7b` while run `38743048456` carries
+`headSha 276fc267cddbc9ad3f4212be8e048e58785cee7a`. The discrepancy is benign and now **proven**
+so: the `src` tree `76a12d4053a5c0798adcb0dce6d5eb8bf4e29623` and `include` tree
+`790328c2bcffe29db5366ea1193cf0ab6d8cba58` are byte-identical at `16c3134c0`, at the run head and
+at **HEAD**, and the only commit between them touches `agent-dispatch-request.json`. Run
+`success`; artifact `11976790988` (38,939,446 bytes) present; eight targets, GMPXX/GMP in the
+generated link command, preflight/build `0/0`, `runtimeExecution=false`. `tests`, `benchmarks`,
+`cmake`, `.github`, `include` byte-unchanged from `700d6418f`. No Directional binary, test,
+benchmark or frozen-497 selector executed — **a compile is not a restoration** (LESSON 160), and
+the turn said so itself.
+
+**Decision-neutrality established by construction rather than by assertion.** Every added line in
+`src/geometry/SurfaceCellTracing.cpp` lies inside the post-decision diagnostic block (`:19360`),
+entered only after both `endpoint_certificate` calls have returned (`:19354-19359`), and each
+statement either declares a block-local or streams into `endpointEvidence`. No `return`, no write
+to either predicate string, no epsilon, no relaxation of `exact_corner`,
+`no-exact-terminal-corner`, the closed-chain branch or any `Produced` precondition. The helper
+lambdas it reuses are pure (`:19097-19114`). One null-dereference concern on
+`network.sourceTopologyRegions` was raised and **discharged**: the real certificate dereferences
+the same pointer at `:19135-19138`, so the probe adds no crash surface.
+
+**Both mandated payloads landed, and the second one is lossless.** `exact_source_vertex` tests
+exact one-hotness with no tolerance and reports the vertex or `none`, which **retires the RA-62.3
+hand derivation permanently** — the probe now states what the point *is*, not merely whether it
+matches a published terminal. Predicted subset-A emission is
+`a2bProbeFromSourceVertex=4;a2bProbeToSourceVertex=4`, and the **provenance of that prediction is
+stated** per RA-61.5: RA-62.3's derivation from `make_disconnected_rectangular_feature_pair_mesh`
+(`tests/SurfaceCellsPhase10Tests.cpp:223-264`). The interval ordinals are emitted through
+`exact_numerator()`/`exact_denominator()` (`FieldTransportAtlas.h:516-517`) returning `EInt`
+(`ExactNumber.h:24`), whose `to_string()` exists on both backends (`ENumberGMP.h:61` via
+`get_str()`, `BigInteger.h:401`) — **no double, no rounded decimal**. They are emitted
+unconditionally, outside the ladder, so they survive the ladder's early exit at the unsatisfiable
+`same_interior_carrier_point` rung.
+
+**PRINCIPAL FINDING — an edge-level witness cannot identify an endpoint, so RA-61.9 is
+WITHDRAWN.** `SurfaceFrontEdge` (`include/directional/geometry/SurfaceCellTracing.h:1545-1579`)
+carries **two** endpoints, `from` and `to` (`:1549-1550`), and exactly **one**
+`sharedBoundaryInterval` (`:1572`) and one `railId` (`:1568`). `endpoint_certificate` is invoked
+twice (`:19354-19359`) with `first` and `second` captured by reference and **identical in both
+calls**; only `fromPoint`, `toPoint` and `edge` differ. The interior branch's interval-reciprocity
+conjunct therefore **evaluates to the same value at endpoint 1 and endpoint 2**: if true, true for
+both; if false, false for both. **It pins the edge pair and can never pin the point.** RA-61.9
+proposed keeping strict interiority, dropping the dead closure gate and the cross-chart double
+equality, and resting endpoint identity on exactly this witness — which would leave the interior
+branch's only endpoint-sensitive conjunct as `oriented_carrier`, a **face-level** test. RA-61.9 as
+specified would admit an endpoint certificate carrying **no point-level exact evidence at all**.
+The asymmetry is decisive: **the dead gate fails closed; RA-61.9 would fail open.** An
+unsatisfiable gate rejects 44 valid identities visibly; an endpoint-blind gate would accept them
+invisibly. RA-61.9 is **withdrawn — remedy and falsifier (ii) both** — and no successor may
+implement it. Falsifier (ii) needed the record's field list, not a run. Fourth self-correction in
+the RA-57.3 / RA-58.8 / RA-59.4 / RA-61.5 / RA-61.7 family and the second candidate remedy of the
+reviewer's to die on inspection.
+
+**`RP-01` is a recurring construction habit, not a single site.** Two granularity mismatches now
+sit inside the one `if (!terminalVertex)` branch: **rail-level → carrier-level** (RA-62.5 —
+`SurfaceHardRailTerminalContacts` publishes two endpoints per rail,
+`SurfaceCellTracing.h:1530-1535`, consulted to answer a carrier-edge question at `:19213-19220`)
+and **edge-record-level → endpoint-level** (RA-63.5, new). The consequence for any eventual repair
+is concrete: **widening an existing published set cannot fix either instance.** The repair must
+introduce vocabulary at the granularity the question is asked at — per-interval terminal contacts
+(rail **intervals** already exist and are already consulted by the publisher at `:12610`) and
+per-endpoint exact parameters. **No repair is authorized**; this constrains the eventual
+specification, it does not license code.
+
+**The RA-62.2 integrity fix is a real improvement that still fails the one test it was mandated to
+pass.** What genuinely improved, and it matters: the floor is now `max` over
+`rev-list HEAD -- <rel>` (`tools/review_check.py:196-202`), so `boundary` **now detects a
+committed overwrite** — the entire RA-62.2 hole, closed; the handoff and ORIENTATION joined the
+`ledgers` coverage list (`:60-61`); `_line_count` and the live count both use `.count("\n")`, so
+the metrics agree with no off-by-one; both gates pass at HEAD with floors `4468 >= 4468`,
+`3108 >= 3108`, `13003 >= 13003`, the last exceeding RA-61's frozen floor of ≥12,949; measured
+runtime 3.8 s over 424 `git show` invocations. Both defect shapes were then simulated in an
+**isolated detached worktree**, never in the live tree: a 4,468 → 21 truncation produced
+`[FAIL] durable high-water … 21 >= 4468` — **caught**; an **equal-size whole-file overwrite** of
+4,468 filler lines with the marker retained and `## ` sections dropping **302 → 1** produced
+**`ALL CHECKS PASSED`** — **not caught**. That is the mandate's own acceptance criterion, quoted
+from `ORIENTATION.md:1853`: *"if deleting the protected content leaves the check green, the check
+does not cover that content."* **The lesson generalized one level and the fix instantiated it one
+level too low: a guard that counts lines does not protect content, for exactly the reason a guard
+that counts markers does not.** The marker check was also softened from a count to a presence test
+(`:203-204`) — correct in itself, since it removes the prose-pollution false positive that bit the
+reviewer twice, but it leaves **no** committed check that examines content.
+
+**The remedy, with its satisfiability proven before being mandated (RA-61.7).** Add a `## `-heading
+high-water floor, exactly symmetric with the line floor already written — same `max` over
+`rev-list HEAD -- <rel>`, same comparison direction. Measured: **satisfiable today**, live ==
+high-water for every protected file (handoff **302/302**, ORIENTATION **105/105**, tracker
+**651/651**); it **catches the uncaught shape** (302 → 1); and it **catches every historical
+destruction** (`f7add683` 611→1, `0e1909d3` 629→1, `b90c0f84` 648→1). **Rejected alternative
+recorded so it is not re-proposed:** heading-*set* inclusion over all history is **unsatisfiable**
+— 24 handoff, 3 ORIENTATION and 1 tracker headings differ across history because superseded
+`## CURRENT …` headings are legitimately reworded as they are demoted — and per-step inclusion,
+though satisfiable today at 0 missing on all three files, turns red on the next rewording and
+would train a successor to disable the gate. A **count** floor tolerates rewording, rises on every
+prepend and cannot be lowered. The tracker's one apparently-lost heading was chased to ground and
+is **not a loss**: `## 2026-10-08 — M6-CP3-TB1-ENTRY-R2-REV …` survives at line **1332** of this
+file with reworded trailing text, so **the RA-61 restoration is intact.**
+
+**The tracker's exemption from zero-tolerance is unjustified and inverted.**
+`tools/review_check.py:224` exempts this file from the zero-shrink rule applied to the handoff and
+ORIENTATION, leaving **the one file that has actually been destroyed three times** as the only
+protected file still permitting a silent ~1,300-line deletion — exactly the scale of the
+`0043dd4c`-class partial overwrite. No rationale appears in the code or the report. **Measured:
+this file has had zero shrinks in the 0–10% band across its entire history** (all three of its
+shrinks are >10%: `f7add683` 11,683→8, `0e1909d3` 12,147→11, `b90c0f84` 12,949→6). The exemption
+is pure slack with no historical justification and removing it is satisfiable immediately. Remove
+it: an append-only ledger tolerates no shrink, and a genuine consolidation should fail loudly and
+be justified in the open rather than pass silently.
+
+**The RA-62 integrity count was wrong, and the undercount is the reviewer's.** RA-62 recorded the
+handoff overwrite as the **fourth** integrity event. The bytes show at least **six**: `ce9bf3cb`
+(tracker 9,837 → 21) and `0043dd4c` (agent CHANGELOG 13,317 → 14), both recorded; **`f7add683`
+(2026-10-08, this file 11,683 → 8) — recorded in ZERO durable documents**, an entirely
+unadjudicated whole-file destruction of the append-only tracker, repaired by a later commit but
+never counted; `0e1909d3` (2026-10-12, 12,147 → 11), cited for its content in five documents but
+never flagged as a destruction; `b90c0f84` (12,949 → 6), recorded at RA-61; and RA-62's handoff
+overwrite. **The mechanism of the error: the integrity events that had been written down were
+counted, not the integrity events in the bytes** — LESSON 171, *"a census is not a witness"*,
+turned on the reviewer's own ledger while a content guard was being mandated for everyone else.
+**New lesson RA-63.10: a count of recorded events is not a count of events.** The remedy is not
+prose — the RA-63.8 heading high-water would have surfaced all three tracker destructions
+mechanically the moment each landed. Prose lessons have now failed four times in this lineage and
+the instrument twice. Integrity defect; filed against the pre-existing **`PROCESS-01`**; does
+**not** increment the regression recurrence counter.
+
+**Ladder faithfulness: one narrow divergence, and a structural hazard worth more than the bug.**
+The real conjunction order is `missing-source-face` (`:19134`) → `missing-carrier` (`:19140`) →
+the interior conjunction; the probe ladder checks `carrier-absent` **before**
+`invalid-source-face`, so the two disagree about which condition is "first" when **both** fail.
+Narrow and self-mitigating: `a2bProbeFailure` carries the real predicate on the same line, so the
+log cross-checks itself and no measurement can be silently misread. The structural point is
+larger: **the ladder is an independent second transcription of the acceptance conjunction**, so a
+future edit to one and not the other would make the instrument report confidently about a
+reconstruction rather than about the decision — RP-03 aimed at the diagnostic instead of the
+reviewer. Verified faithful today condition by condition, including that `firstAttachment` /
+`secondAttachment` are exactly `topology_for_row(*source_face_id(point.face, faces.rows()))`
+(`:19135-19138`), which the ladder reproduces. **Reordering is deliberately deferred**: it is a
+C++ edit that would cost a fresh eight-target compile and a new semantic source, invalidating the
+compile already packaged at `16c3134c0`. Information per turn is higher if the harvest runs first.
+Separately, `one-hot-carrier-junction` is a **good unrequested call** — it names the RA-62
+junction-terminated mechanism inside the instrument rather than leaving it for a reviewer to
+re-derive, and subset A is predicted to report it.
+
+**`Successor: UNKNOWN`, this time with a reasoned defence, and the reasoning is accepted.** The
+beacon again closed `UNKNOWN` against an explicit mandate, but this instance is **not** the
+earlier defect: the two prior occurrences left the field blank with no reasoning, while this one
+states a position — that repository authority supplies no successor identifier, so none may be
+invented and no successor work may begin merely because a Code + Build completed. That reasoning
+is sound, conservative and correctly refuses to self-authorize; naming the next turn is the Review
+Agent's prerogative in this cadence. **No defect recorded.** Mandate amended: where no identifier
+is authorized, say so in the handoff — as this turn did — rather than invent one. One hygiene item
+remains: a **consumed** `drive_apply` descriptor is still committed at
+`.agents/Directional/agent-dispatch-request.json` (`base_sha 2d52eeb04`, live Drive `file_id`), so
+the dispatch channel is not idempotent after consumption; clear it next turn.
+
+**Candidate/non-stable throughout; no promotion.** Stable ledger **66 events / 17 categories / 49
+recurrences**, debt **1**, CP2 **491/491** accepted, R3 **403/497** rejected (94 RED, 88 carried
+CP2 losses), frozen selector **30+12+449+6=497** — unchanged. No accepted-green loss and no ledger
+credit. No stable event, no regression recurrence, no 497 execution, no gate credit; no source,
+test, selector, binary, harness, workflow or benchmark change in this **Review**. PR #8
+draft/open. **`R4-VIN-01` applies: `16c3134c0` is a new semantic source, so artifact
+`11967601999` and every earlier measurement is a baseline, never a comparand.** **`RP-01` located
+and now known to be a pattern with two instances; NOT repaired and not authorized for repair.**
+**`RP-02` still UNREACHED** (neither the network-bound consumer nor its tamper half has executed);
+`RP-03` satisfied; **`PROCESS-01` open with a proven remedy (RA-63.8, RA-63.9)**. **RA-61.9
+WITHDRAWN.** Carried: RA-60.5 (discharged by this turn's item 4), RA-60.6 (confirmed by
+measurement), RA-60.7, RA-60.8, RA-60.9, RA-63.11's ladder reorder, RA-63.14's dispatch hygiene,
+the RA-58.7 A5/A6/A7 loci, `R4-OHF-02`, the two RA-57.9 guards, **RA-41's junction/sector clauses
+(the measured mechanism of 15–21 identities, recipe intact)**, ordinal 405, subset B's undetermined
+vertex, the upstream A1/A2a question why the traced front stops at vertex 4, 34 Phase10 / seven
+DCEL / six CP3 identities, CP2 restorations outside the 37, organic D1/D2/D3/D5 and A6/A7
+witnesses, the odd-τ witness, and the two `SurfaceCellTracingPhase14` identities
+(`cmake/DirectionalTests.cmake:554-572`). **Successor:**
+`M6-CP3-CB3-R4-LEDGER-CONTENT-FLOOR`, then `M6-CP3-TB3-R4-PROBE-HARVEST`.
+
+---
 ## CURRENT — the one-hot endpoint is the rail's junction vertex 4, a third shape with no certificate, and `RP-01` is finally located; RA-62 frozen (2026-10-15)
 
 **`M6-CP3-TB2-R4-CONJUNCT-EXTRACT` adjudicated: ACCEPTED, and the best-executed rung of this family.** Artifact-only from the pre-existing immutable artifact `11967601999` (ZIP SHA-256 `8b52373eebc7bda574f1fed2914dec4577ff70c670396f2ea3b19383d0fd25f1`, 50/50 manifest digests), original run `38725063279`, semantic `570c51733761c17a198bda6c9aba7d8b1e7ae2dd`; no dispatch, compile, test execution, benchmark, selector change or new runtime claim. The partition matches RA-61's prediction **exactly**: **23** interior-shaped (indices 1–11, 26–33, 38–39, 42, 45), **21** one-hot (12–25, 34, 36–37, 40–41, 43–44), ordinal **405** (index 35, `missing-terminal-or-closed-rail-provenance`). The turn delivered the three-conjunct truth table `RP-03` demands and the measuring turn had omitted, **refused to over-claim** the vertex identity, kept 405 separate with its distinguishing `ContactPresent=0`, and **named a successor** — ending two turns of `Successor: UNKNOWN`. Decision: `Architecture_M6_CP3_R4_Terminal_Conjunct_Extraction_Review_Decision.md`.

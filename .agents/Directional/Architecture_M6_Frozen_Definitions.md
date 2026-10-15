@@ -1,3 +1,112 @@
+## RA-63 — `M6-CP3-CB2-R4-PREDICATE-SEPARATION-REV`, 2026-10-15 (frozen)
+
+Decision: `.agents/Directional/Architecture_M6_CP3_R4_Predicate_Separation_Review_Decision.md`.
+Verdict **ACCEPTED**. No open REVIEW_BLOCKER. No promotion, no stable event, no regression
+recurrence, no gate credit. **RA-61.9 is WITHDRAWN by RA-63.5.**
+
+- **RA-63.1** Compile authority is re-derived from object hashes, never from the report. The
+  `src` tree `76a12d4053a5c0798adcb0dce6d5eb8bf4e29623` and `include` tree
+  `790328c2bcffe29db5366ea1193cf0ab6d8cba58` are byte-identical at the claimed semantic source
+  `16c3134c0`, at the run's `headSha` `276fc267c`, and at `HEAD`; the only commit between them
+  touches `agent-dispatch-request.json`. Run `38743048456` `success`, artifact `11976790988`
+  present. `tests`, `benchmarks`, `cmake`, `.github`, `include` byte-unchanged from `700d6418f`.
+  No binary executed; LESSON 160 holds.
+- **RA-63.2** Decision-neutrality is established **by construction**, not by assertion: every
+  added line lies inside the post-decision block (`src/geometry/SurfaceCellTracing.cpp:19360`),
+  after both certificate calls (`:19354-19359`), and either declares a block-local or streams
+  into `endpointEvidence`. No `return`, no predicate write, no epsilon, no relaxation. The
+  null-dereference concern on `sourceTopologyRegions` is discharged: the real certificate
+  dereferences the same pointer at `:19135-19138`.
+- **RA-63.3** Item (b) satisfied. `exact_source_vertex` is exact one-hot with no tolerance and
+  reports the vertex or `none`, retiring the RA-62.3 hand derivation permanently. Predicted
+  subset-A emission `a2bProbeFromSourceVertex=4;a2bProbeToSourceVertex=4`, **provenance stated**:
+  RA-62.3's fixture derivation (`tests/SurfaceCellsPhase10Tests.cpp:223-264`), per RA-61.5.
+- **RA-63.4** Item (a) satisfied and lossless. `exact_numerator()`/`exact_denominator()`
+  (`FieldTransportAtlas.h:516-517`) return `EInt` (`ExactNumber.h:24`), whose `to_string()`
+  exists on both backends (`ENumberGMP.h:61` via `get_str()`, `BigInteger.h:401`). Emitted
+  unconditionally, outside the ladder, so the ordinals survive the ladder's early exit.
+- **RA-63.5 (PRINCIPAL)** **An edge-level witness cannot identify an endpoint.**
+  `SurfaceFrontEdge` (`include/directional/geometry/SurfaceCellTracing.h:1545-1579`) carries two
+  endpoints (`:1549-1550`) and exactly **one** `sharedBoundaryInterval` (`:1572`) and one
+  `railId` (`:1568`); `endpoint_certificate` is called twice with `first`/`second` captured by
+  reference and identical, so the interval-reciprocity conjunct **evaluates the same at both
+  endpoints**. It pins the edge pair, never the point. RA-61.9 proposed resting endpoint identity
+  on precisely this witness, which would leave the interior branch with no point-level exact
+  evidence at all. **The dead gate fails closed; RA-61.9 would fail open.** RA-61.9 is
+  **WITHDRAWN** — remedy and falsifier (ii) both — and no successor may implement it. Falsifier
+  (ii) needed the record's field list, not a run.
+- **RA-63.6** **`RP-01` is a recurring construction habit, not a single site.** Two granularity
+  mismatches sit inside the one `if (!terminalVertex)` branch: rail-level terminal authority
+  answering a carrier-edge question (RA-62.5, `SurfaceCellTracing.h:1530-1535` consulted at
+  `:19213-19220`) and edge-record-level interval authority answering an endpoint question
+  (RA-63.5). **Widening an existing published set cannot repair either.** The eventual repair must
+  introduce vocabulary at the granularity the question is asked at — per-interval terminal
+  contacts (rail intervals already exist and are consulted at `:12610`) and per-endpoint exact
+  parameters. **No repair authorized.**
+- **RA-63.7** The RA-62.2 integrity fix is a **real improvement that still fails its own
+  acceptance test.** The floor is now `max` over committed history (`review_check.py:196-202`),
+  so `boundary` **does** now detect a committed overwrite — the entire RA-62.2 hole, closed.
+  Measured in an isolated worktree: a 4,468 → 21 truncation **FAILS** the gate (caught), but an
+  **equal-size whole-file overwrite** — 4,468 lines of filler, marker retained, `## ` sections
+  302 → 1 — returns **`ALL CHECKS PASSED`**. That is `ORIENTATION.md:1853` one level up: **a
+  guard that counts lines does not protect content, for the reason a guard that counts markers
+  does not.** The marker check was also softened from a count to a presence test (`:203-204`),
+  correct in itself but leaving **no** committed check that examines content.
+- **RA-63.8** The remedy, with satisfiability **proven before being mandated** (RA-61.7): add a
+  `## `-heading high-water floor symmetric with the line floor. Measured — live == high-water
+  today for every protected file (handoff **302/302**, ORIENTATION **105/105**, tracker
+  **651/651**), it catches the equal-size overwrite (302 → 1), and it catches all three
+  historical tracker destructions (`f7add683` 611→1, `0e1909d3` 629→1, `b90c0f84` 648→1).
+  **Rejected alternative recorded so it is not re-proposed:** heading-*set* inclusion over all
+  history is **unsatisfiable** (24 handoff / 3 ORIENTATION / 1 tracker headings differ, because
+  superseded `## CURRENT …` headings are legitimately reworded), and per-step inclusion, while
+  satisfiable today, turns red on the next rewording and would train a successor to disable the
+  gate. A **count** floor tolerates rewording, rises on every prepend, and cannot be lowered.
+- **RA-63.9** The tracker's exemption from zero-tolerance (`review_check.py:224`) is
+  **unjustified and inverted**: it leaves the one file destroyed three times as the only
+  protected file still permitting a silent ~1,300-line deletion. Measured: the tracker has had
+  **zero** shrinks in the 0–10% band across its entire history (all three are >10%). The
+  exemption is pure slack; remove it. An append-only ledger tolerates no shrink, and a genuine
+  consolidation should fail loudly and be justified in the open.
+- **RA-63.10 (new lesson)** **A count of recorded events is not a count of events.** RA-62 called
+  the handoff overwrite the *fourth* integrity event; the bytes show at least **six** —
+  `ce9bf3cb`, `0043dd4c`, `f7add683` (tracker 11,683 → 8, **recorded in zero durable
+  documents**), `0e1909d3` (12,147 → 11, cited for content but never flagged as a destruction),
+  `b90c0f84` (12,949 → 6) and RA-62's overwrite. The undercount is the reviewer's: **events that
+  had been written down were counted instead of events in the bytes** — LESSON 171 turned on the
+  reviewer's own ledger while mandating a content guard for everyone else. The remedy is not
+  prose; RA-63.8 would have surfaced all three tracker destructions mechanically. Filed against
+  the pre-existing **`PROCESS-01`**; does **not** increment the recurrence counter.
+- **RA-63.11** The `a2bProbeFirstFailedCondition` ladder diverges from the real conjunction in one
+  place: it checks `carrier-absent` before `invalid-source-face`, inverting `:19134` and `:19140`.
+  Low severity — it misreports only when both fail, and `a2bProbeFailure` carries the real
+  predicate on the same line, so the log cross-checks itself. The structural hazard is larger:
+  **the ladder is an independent second transcription of the acceptance conjunction**, so a future
+  edit to one and not the other makes the instrument report confidently about a reconstruction
+  rather than about the decision — RP-03 aimed at the diagnostic instead of the reviewer. Verified
+  faithful today condition by condition. **Reordering is deliberately deferred**: it is a C++ edit
+  that would cost a fresh compile and invalidate the packaged one at `16c3134c0`.
+- **RA-63.12** `one-hot-carrier-junction` is a good unrequested call: it names the RA-62
+  junction-terminated mechanism inside the instrument, firing when `!same_interior_carrier_point`
+  and both endpoints resolve to the same source vertex. Subset A is predicted to report it.
+- **RA-63.13** `Successor: UNKNOWN` closed with a **reasoned defence** this time — that repository
+  authority supplies no identifier and none may be invented. That reasoning is sound and correctly
+  refuses to self-authorize, and naming the next turn is the Review Agent's prerogative. **No
+  defect recorded**, unlike the two prior blank-field instances. Mandate amended: where no
+  identifier is authorized, say so in the handoff rather than invent one.
+- **RA-63.14** Hygiene: a **consumed** `drive_apply` descriptor remains committed at
+  `.agents/Directional/agent-dispatch-request.json` (`base_sha 2d52eeb04`, live Drive `file_id`).
+  A request channel whose descriptor stays live after consumption is not idempotent. Clear it next
+  turn. Not an architecture finding, not a blocker.
+- **RA-63 accounting.** Ledger **66/17/49**, debt **1**, CP2 **491/491**, R3 **403/497**, frozen
+  selector **497** — unchanged. `R4-VIN-01` applies: `16c3134c0` is a **new semantic source**, so
+  artifact `11967601999` and every earlier measurement is a **baseline, never a comparand**.
+  `RP-01` located and now known to be a pattern, **not repaired, repair not authorized**; `RP-02`
+  **UNREACHED**; `RP-03` satisfied; **`PROCESS-01` open with a proven remedy**. Successor
+  **`M6-CP3-CB3-R4-LEDGER-CONTENT-FLOOR`** (instrument-only, Python-only, no compile), then
+  `M6-CP3-TB3-R4-PROBE-HARVEST` at `16c3134c0`.
+
+---
 ## RA-62 — the junction-terminated front is a third shape with no certificate, and `RP-01` is located (2026-10-15, FROZEN)
 
 Reviewer turn `M6-CP3-TB2-R4-CONJUNCT-EXTRACT-REV`. Decision document:
