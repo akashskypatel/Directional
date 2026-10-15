@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-predicate-separation-apply-20261015-01",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-predicate-separation-apply",
-  "file_id": "1O0UK7TDvCVCXf9pB7D4Wv74ZWPowN3fp",
-  "patch_sha256": "c6f462ff3c0b646d876904fff795d448ed4427cce2947d039619600c5d530fea",
-  "base_sha": "0cb0434c8ee7ec86fdc6ab7ebd7162d713492995",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "Separate R4 terminal endpoint diagnostics without changing acceptance",
-  "retention_days": 7
+  "request_id": "m6-cp3-r4-predicate-compile-20261015-01",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-predicate-compile",
+  "source_sha": "16c3134c02ab3872eee77a6b9dcc9d3fc6e01b7b",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-r4-predicate-compile"
 }
