@@ -1,14 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-interior-witness-tb-20261015-1107",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-r4-interior-witness",
-  "executor_sha": "eef08a4d041cf35045f32c34748258d846f5b385",
-  "semantic_source_sha": "570c51733761c17a198bda6c9aba7d8b1e7ae2dd",
-  "turn_id": "M6-CP3-TB1-R4-INTERIOR-WITNESS",
-  "harness_path": ".agents/Directional/tools/m6_cp3_r4_interior_witness_harness.sh",
-  "harness_sha256": "13a7e73ea17bff8c7b6a14bb2e3bc35712e05b8914a1546668108354fdb02e21",
-  "environment": {},
-  "artifact_prefix": "directional-m6-cp3-r4-interior-witness",
+  "request_id": "m6-cp3-r4-predicate-separation-apply-20261015-01",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-predicate-separation-apply",
+  "file_id": "1O0UK7TDvCVCXf9pB7D4Wv74ZWPowN3fp",
+  "patch_sha256": "c6f462ff3c0b646d876904fff795d448ed4427cce2947d039619600c5d530fea",
+  "base_sha": "0cb0434c8ee7ec86fdc6ab7ebd7162d713492995",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "Separate R4 terminal endpoint diagnostics without changing acceptance",
   "retention_days": 7
 }
