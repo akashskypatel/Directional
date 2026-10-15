@@ -1,3 +1,58 @@
+## CURRENT — first TB RED reclassified as the 39-identity `A4_ROUTE_CERTIFICATE_REJECTION` carrier; repair DEFERRED behind two census rungs; RA-56 frozen (2026-10-15)
+
+**`M6-CP3-TB1-R4-WITNESS-EXEC` and `M6-CP3-TB1-R4-WITNESS-REV` adjudicated.** Execution and root cause
+**ACCEPTED and independently re-derived**; **classification REJECTED and corrected**; repair plan
+**RETAINED but DEFERRED**. No open REVIEW_BLOCKER. Ledger unchanged 66/17/49, debt 1. No new stable event.
+
+**The RED.** `SurfaceCellAuthorityContractCutover.ProducedRailIntervalReachesNetworkBoundOpenFrontConsumer`
+failed at its first precondition: the fixture returned `Rejected`, not `Produced`, with first predicate
+`endpoint-1` and `a2bProbeFailure=no-exact-terminal-corner`. The run died **before**
+`assign_open_front_boundary_authority`, so `RP-02` is untouched and the tamper half never ran.
+
+**Root cause CONFIRMED by re-derivation, not accepted on report.** `exact_corner`
+(`src/geometry/SurfaceCellTracing.cpp:19131-19143`) demands bit-exact one-hot barycentrics for both paired
+points at the same terminal vertex, else `:19152`. The fixture mesh (`tests/SurfaceCellsPhase10Tests.cpp
+:223-264`) gives `v1 = (1,0,0)`, `v4 = (1,1,0)`, `v7 = (1,2,0)`, face `0 = (0,1,4)`, face `3 = (1,5,4)`,
+hard feature `{1,4} ∪ {4,7}` (`:266-272`). Both probes resolve to `0.75·v1 + 0.25·v4 = (1, 0.25, 0)` —
+the **same** point, interior to edge `(1,4)` at parameter `0.25`, neither terminal. The predicate behaved
+correctly. The `currentFace=0 / expectedFace=2` co-signal is **not** a second defect and **not** an
+`RP-01` recurrence: those fields fall back to `first.from.face`/`second.to.face` (`:18939-18940`,
+`:18948`, `:18951-18952`).
+
+**CORRECTED CLASSIFICATION — the finding is far larger than reported.** All **21** other uses of
+`build_rectangular_hard_rail_phase_front` also assert `Produced`, so the whole family is down. Two of them
+sit inside frozen `selector449`. The R3 RED classification already carries this failure: of 94 RED, the
+largest carrier is **`A4_ROUTE_CERTIFICATE_REJECTION` at 39**, **37 of them CP2-accepted**; that set
+matches the long-carried "39 endpoint" backlog **39/39 exactly**, and **37 of the 39 lie inside the frozen
+497** (26 `selector449`, 9 `focused30`, 2 `focused12`) — i.e. **37 of the 88 carried CP2 losses**. So
+`R4-TB-A-RP02-01` is **not a new candidate and not baseline-free**: it is an 8 ms, single-test, fully
+typed **reproducer of ~42% of the carried CP2 losses**. The strongest result of the turn was understated.
+
+**Why the repair is deferred.** All 39 are owned by `directional_surface_cell_producer_tests` — already in
+the immutable package — and all 39 are `STATIC ONLY — current result unknown`. **38 of 39 hint
+`endpoint-0`; the one observation is `endpoint-1`.** Changing the shared producer on the minority endpoint
+while 38 majority instances are unmeasured and one free run away is how the wrong thing gets fixed.
+
+**Reviewer error, owned and amended.** RA-55.8's stop-at-first-RED rule is right inside a repair loop and
+wrong for triage. It cost the **control** (`M6CP3.CheckedFactoryRejectsForgedTerminalA2bSideGerm`, a
+different fixture) and three identities runnable from the same artifact. **Amended:** stop at first RED
+only within a dependent chain; independent identities are all run.
+
+**Architectural risk recorded.** `faceEnds=0,2|0,3` shows the first front wholly inside face 0 and the
+second spanning 3 → 2, meeting at `(1, 0.25, 0)` — the signature of fronts meeting **across** the rail,
+not intervals running **along** it. The repair plan's "ordered rail interval/face-side ownership"
+vocabulary presumes along-rail intervals and would freeze a mis-shaped certificate if the event is a
+crossing. The census answers it: every failing pair prints its own `faceEnds`.
+
+**Trajectory.** Two artifact-only measurement rungs, no rebuild, no source change:
+`M6-CP3-TB1-R4-WITNESS-BREADTH` (the four remaining executable supplementals, control first, all run) then
+`M6-CP3-TB1-R4-ENDPOINT39-CENSUS` (all 39 carrier identities with full first-predicate dumps), each
+outside the frozen 497. Then Review, then the retained repair plan. The two Phase14 identities need
+`DIRECTIONAL_BUILD_HISTORICAL_TESTS` (`cmake/DirectionalTests.cmake:556-574`) and belong to a separate
+packaging turn.
+
+---
+
 ## CURRENT — independent Review disposition of `R4-TB-A-RP02-01` (2026-10-15)
 
 **Candidate/non-stable, no new stable regression event.** First RED in supplemental workflow `38668126299` is before RP-02 consumer. Verified source `f83bc044db739350eba044e9120bafddc1c1c537` shows two source-chart representatives of one **interior** `(1,4)` carrier point `(1,0.25)` being checked as a whole-rail terminal vertex 1 or 7; `endpoint_certificate` rejects at `no-exact-terminal-corner`. Classification: front interval / terminal certificate granularity mismatch; the terminal guard itself must remain exact. The evidence does not yet prove the minimal implementation location or a downstream liveness PASS. **Owner:** separate Code + Build `M6-CP3-CB1-R4-WITNESS-REPAIR`; preserve typed rail, A2a mandatory ownership, source chart/region and A3 matching. **Falsifier:** source-exact construction of an interior interval with valid route, retention of true terminal negative, and subsequent immutable runtime consumer receipt plus typed tamper negative. No fixture weakening, closed-chain fabrication, source-grid fallback, selector or accepted ledger mutation. All other six supplemental identities unexecuted; Phase14 historical binary prerequisite. Stable 66/17/49, debt1, CP2 491/491, R3 403/497, frozen 497 unchanged. Source of decision: `Architecture_M6_CP3_R4_Witness_First_RED_Independent_Review_Decision_20261015.md`.

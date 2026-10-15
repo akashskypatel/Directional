@@ -1,3 +1,103 @@
+## CURRENT — 2026-10-15 RA-56 frozen; first RED is the 39-identity A4 carrier; repair DEFERRED; next turn `M6-CP3-TB1-R4-WITNESS-BREADTH`
+
+**Execution and root cause ACCEPTED and independently re-derived. Classification REJECTED and corrected.
+Repair plan RETAINED but DEFERRED behind two free measurement rungs.** Frozen as **RA-56**; decision
+record `.agents/Directional/Architecture_M6_CP3_R4_First_RED_Carrier_Reclassification_Review_Decision.md`.
+No open REVIEW_BLOCKER. Ledger **66/17/49**, debt **1**, selector **497** untouched, CP2 **491/491**
+accepted, R3 **403/497** rejected with 94 RED and 88 carried losses, PR #8 draft/open.
+
+**What the RED actually is.** The RP-02 witness died at its first precondition — the fixture returned
+`Rejected`, first predicate `endpoint-1`, `a2bProbeFailure=no-exact-terminal-corner`, before
+`assign_open_front_boundary_authority`. `RP-02` is therefore **still open**. The root cause is confirmed:
+both probes resolve to `(1, 0.25, 0)`, interior to source edge `(1,4)`, neither terminal `v1` nor `v7`.
+**But this is not a new candidate.** All 21 other uses of `build_rectangular_hard_rail_phase_front` also
+assert `Produced`; two sit in frozen `selector449`; and the failure is the existing
+`A4_ROUTE_CERTIFICATE_REJECTION` carrier — **39 of the 94 R3 RED, 37 CP2-accepted, matching the "39
+endpoint" backlog 39/39, with 37 inside the frozen 497**. It is an 8 ms reproducer of **~42% of the 88
+carried CP2 losses**. Measure that carrier before touching the producer.
+
+### Exact next turn — `M6-CP3-TB1-R4-WITNESS-BREADTH` (Test + Benchmark, artifact-only, NO rebuild)
+
+Re-use **the same immutable package** that ran TB-A (compile `38664036225`, artifact `11939982141`,
+semantic `953f812f...`). No compile, no source change, no selector edit, no benchmark, no 497.
+
+Run **all four** of these, **regardless of RED** — they are independent identities, not a dependent chain.
+All live in `directional_surface_cell_producer_tests`, already in the package:
+
+1. `M6CP3.CheckedFactoryRejectsForgedTerminalA2bSideGerm` — **run this FIRST. It is the control**, on a
+   *different* fixture. It separates "the rectangular hard-rail family is down" from "A4 production is
+   down generally," and its result conditions how the census is read.
+2. `SurfaceCellPipelinePhase20.AuthoritativePhaseFrontPropagatesBoundaryAndHardFeatureRailsThroughFlowRepAndArrangement`
+   — `R4-JCT-01`.
+3. `SurfaceCellAuthorityContractCutover.DuplicateSourceTerminalContactRejectsAtFirstA4ConsumerPredicate`
+   — RA-49.2's witness.
+4. `SurfaceCellAuthorityContractCutover.StandaloneRailDiagnosticModeCannotBypassProducedNetworkTypedIngress`
+   — the retained attempt RA-52.6 preserved the `LegacyStandaloneDiagnostic` opt-out for.
+
+Report each with PASS/FAIL and, on FAIL, the **verbatim first assertion and the complete first-predicate
+detail string**. Do **not** stop at the first RED: RA-56.4 amended that rule — stop at first RED only
+within a dependent chain. Successor: `M6-CP3-TB1-R4-ENDPOINT39-CENSUS`, on any outcome.
+
+### Then — `M6-CP3-TB1-R4-ENDPOINT39-CENSUS` (Test + Benchmark, artifact-only, NO rebuild)
+
+Same immutable package. Execute **all 39** identities in
+`.agents/Directional/Architecture_M6_CP3_R4_Historical_R3_A4_39_Current_Source_Inventory_20261013.tsv`
+(all owned by `directional_surface_cell_producer_tests`; 19 Quotient / 18 Phase10 / 2 REPackage), **all of
+them, regardless of RED**, as a named supplemental run **outside** the frozen 497. The selector files stay
+byte-identical — hashes pinned at
+`.agents/Directional/tools/m6_cp3_entry_497_artifact_only_harness.sh:211-217`, re-checked at `:270-272`.
+
+Deliver one TSV keyed by identity, with: PASS/FAIL; the first predicate (`endpoint-0` / `endpoint-1` /
+other); `a2bProbeFailure`; the **full `faceEnds` quadruple**; `rail`; `locus`; `routeLength`; and the
+`edge[i]` entries. That turns 39 rows of `STATIC ONLY — current result unknown` into a measured carrier.
+
+**It also decides RA-56.5.** `faceEnds=0,2|0,3` on the observed RED shows the first front wholly inside
+face 0 and the second spanning 3 → 2, meeting at `(1, 0.25, 0)` — the signature of fronts meeting
+**across** the rail, not intervals running **along** it. If that shape dominates the carrier, the repair
+plan's "ordered rail interval/face-side ownership" vocabulary is the **wrong abstraction** and must not be
+adopted. Report the along/across split explicitly; do not infer a model.
+
+Successor: `M6-CP3-TB1-R4-CARRIER-REV` (mandatory independent Review), which selects the certificate model.
+
+### Then — `M6-CP3-CB1-R4-WITNESS-REPAIR`, retained, re-entered with the census in hand
+
+The existing plan
+(`.agents/Directional/Architecture_M6_CP3_R4_Witness_Interval_Terminal_Recovery_Code_Build_Plan.md`) is
+**sound and is not rewritten**: it refuses to pick a fix merely to satisfy the assertion, keeps
+`no-exact-terminal-corner` and the duplicate-contact, barrier, closed-chain and missing-contact guards
+fail-closed for genuine terminals, forbids weakening the RP-02 `Produced` precondition or its consumer
+receipt, and bars fallback and source-grid recovery. It may be entered only after
+`M6-CP3-TB1-R4-CARRIER-REV` answers RA-56.5.
+
+### Prohibitions and standing rules
+
+- **Do not edit source in a measurement rung**, and never to obtain green. Do not weaken
+  `exact_corner`, `no-exact-terminal-corner`, or the RP-02 test's `Produced` precondition.
+- **Do not pick the certificate model before the census** — neither "interior interval," nor "pairing
+  error," nor "transversal crossing" is established. Choosing early is the RA-45.2 category error.
+- Do not open an `RP-01` namespace hunt on `currentFace / expectedFace`: RA-56.1 shows they are a fallback
+  echo of `first.from.face` / `second.to.face`.
+- Do not bundle the two Phase14 identities here — they need `DIRECTIONAL_BUILD_HISTORICAL_TESTS`
+  (`cmake/DirectionalTests.cmake:556-574`) and belong to a separate packaging turn.
+- Do not claim `RP-02` discharged (the consumer was never reached), do not mint a stable event or
+  recurrence from an unreviewed census, do not promote, do not run the frozen 497.
+- Do not re-raise `R4-SID-02` (REFUTED), RA-43.2, the FieldBranch/filled-side receipt (REFUSED),
+  RA-47.11, the RA-43.4 opt-out (PRESERVED), RA-52.5 (WITHDRAWN) or `R4-OHF-02` (recorded, guard
+  retained, **no probe**).
+- Root `CHANGELOG.md` is canonical; `Regression_Root_Cause_Tracker.md` is append-only; cite frozen clauses
+  by RA number, and cite tests by gtest `Suite.Name`, not by line.
+- **Close the beacon with a named `Successor`.** The IDs above remove any excuse.
+- `R4-VIN-01`; `RP-03` (name the deciding conjunct); reachability before fixture; LESSONS 160 / 171 — and
+  RA-56.8: **one measured identity is not a measured carrier**.
+
+### Execution backlog beyond the census
+
+34 Phase10 / seven DCEL / six CP3 identities; the remaining CP2 restorations outside the 37; organic
+D1/D2/D3/D5 and A6/A7 witnesses; the odd-τ witness; the two Phase14 supplementals. RA-41's junction/sector
+clauses remain frozen **UNEXERCISED at runtime**.
+
+---
+
 ## CURRENT — 2026-10-15 independent Review of first RP-02 supplemental RED; bounded Code + Build repair next
 
 `M6-CP3-TB1-R4-WITNESS-REV` independently re-derived `R4-TB-A-RP02-01` on verified source `f83bc044db739350eba044e9120bafddc1c1c537` (snapshot `38669377821`, artifact `11942494171`, 5609/5609 hashes). The actual first `no-exact-terminal-corner` compares equivalent source-edge-interior chart samples at `(1,0.25)` on `(1,4)` against whole-rail terminal vertices `(1, 7)`. The opposite-front pairing sends this interior interval to an exact-terminal certificate **before** reaching `assign_open_front_boundary_authority`. The legitimate producer/fixture cannot yet produce the requested downstream consumer receipt; no evidence that the A4 guard itself failed. Candidate remains non-stable; RP-02 coverage gap persists.

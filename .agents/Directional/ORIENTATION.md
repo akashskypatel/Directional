@@ -1,3 +1,45 @@
+## CURRENT — 2026-10-15 RA-56 frozen; the first RED is the 39-identity A4 carrier; repair DEFERRED behind two census rungs
+
+**Supersedes the RA-55 "authoring closed / TB authorized" paragraph below as the current state.** TB-A ran
+and produced one RED. Execution and root cause are **ACCEPTED and independently re-derived**; the
+**classification is REJECTED and corrected**; the repair plan is **RETAINED but DEFERRED**. No open
+REVIEW_BLOCKER. No runtime credit beyond the single executed identity.
+
+**The RED is far more valuable than it was reported to be.**
+`SurfaceCellAuthorityContractCutover.ProducedRailIntervalReachesNetworkBoundOpenFrontConsumer` failed at
+its first precondition — the fixture returned `Rejected` with first predicate `endpoint-1` and
+`a2bProbeFailure=no-exact-terminal-corner`, before `assign_open_front_boundary_authority`, so **`RP-02`
+remains open**. Root cause confirmed geometrically: both probes resolve to `0.75·v1 + 0.25·v4 =
+(1, 0.25, 0)`, interior to source edge `(1,4)`, neither terminal `v1 = (1,0,0)` nor `v7 = (1,2,0)`;
+`exact_corner` (`src/geometry/SurfaceCellTracing.cpp:19131-19143`) rejected correctly at `:19152`. But all
+**21** other uses of `build_rectangular_hard_rail_phase_front` also assert `Produced`, two of them inside
+frozen `selector449`, and the failure is the existing **`A4_ROUTE_CERTIFICATE_REJECTION` carrier — 39 of
+the 94 R3 RED, 37 CP2-accepted, matching the "39 endpoint" backlog 39/39, 37 of them inside the frozen
+497**. This single 8 ms test reproduces **~42% of the 88 carried CP2 losses**.
+
+**Exact next: two artifact-only measurement rungs, no rebuild, no source change.**
+`M6-CP3-TB1-R4-WITNESS-BREADTH` runs the four remaining executable supplementals — **control first**
+(`M6CP3.CheckedFactoryRejectsForgedTerminalA2bSideGerm`, a different fixture) — **all four regardless of
+RED**. Then `M6-CP3-TB1-R4-ENDPOINT39-CENSUS` runs **all 39** carrier identities (all owned by
+`directional_surface_cell_producer_tests`, already in the package, all currently `STATIC ONLY — current
+result unknown`; 38 of 39 hint `endpoint-0` while the one observation is `endpoint-1`) and delivers a TSV
+of first predicates and full `faceEnds` quadruples, outside the frozen 497. Then
+`M6-CP3-TB1-R4-CARRIER-REV` selects the certificate model, and only then the retained
+`M6-CP3-CB1-R4-WITNESS-REPAIR`.
+
+**Two rules changed.** RA-55.8's stop-at-first-RED is **amended** (RA-56.4): it is right inside a repair
+loop and wrong for triage, and it cost the control plus three same-artifact identities — stop at first RED
+only within a dependent chain. And **the certificate model must not be chosen before the census**
+(RA-56.5): `faceEnds=0,2|0,3` suggests fronts meeting **across** the rail rather than intervals running
+**along** it, so the repair plan's interval vocabulary could freeze a mis-shaped certificate.
+
+Ledger **66/17/49**, debt **1**; selector **497** untouched; CP2 **491/491** accepted; R3 **403/497**
+rejected with 94 RED and 88 carried losses; PR #8 draft/open. No new stable event, category or recurrence.
+Decision record
+`.agents/Directional/Architecture_M6_CP3_R4_First_RED_Carrier_Reclassification_Review_Decision.md`.
+
+---
+
 ## CURRENT — 2026-10-15 `M6-CP3-TB1-R4-WITNESS-REV` resolves first RP-02 supplemental RED to interval/terminal boundary
 
 **New currency supersedes the RA-55 upcoming-TB wording below.** Immutable TB-A (workflow `38668126299`) stopped after one RED before A4 network-bound consumer; independent source review at `f83bc044db739350eba044e9120bafddc1c1c537` proves that opposing hard-rail interval samples are the same **interior** source-edge point `(1,0.25)` on `(1,4)`, not either authenticated whole-rail terminal vertex `(1, 7)`. Producer sends them through a source-corner-only terminal A2b path and rejects `no-exact-terminal-corner`. Guard is correct for terminals; missing classification/compatible interval construction is the defect. RP-02 is still unproven and `R4-TB-A-RP02-01` remains candidate/non-stable. Next `M6-CP3-CB1-R4-WITNESS-REPAIR` compile-only; only then new immutable supplemental TB/Review. Historical Phase14 binary prerequisite and six untouched supplemental identities remain. Stable **66/17/49**, debt1, CP2 491/491, R3 403/497; frozen 497 unchanged. See `Architecture_M6_CP3_R4_Witness_First_RED_Independent_Review_Decision_20261015.md`.

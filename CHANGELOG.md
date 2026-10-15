@@ -1,3 +1,33 @@
+## 2026-10-15 — RA-56 frozen: first TB RED reclassified as the 39-identity A4 route-certificate carrier
+
+- Architecture Review only; no source, test, selector, harness or ledger change.
+  `M6-CP3-TB1-R4-WITNESS-EXEC` and `M6-CP3-TB1-R4-WITNESS-REV` adjudicated: execution and root cause
+  **ACCEPTED and independently re-derived**, **classification REJECTED and corrected**, repair plan
+  **RETAINED but DEFERRED**. Frozen as **RA-56**. Decision record
+  `.agents/Directional/Architecture_M6_CP3_R4_First_RED_Carrier_Reclassification_Review_Decision.md`.
+- **Root cause confirmed by geometric re-derivation:** both probe points resolve to
+  `0.75·v1 + 0.25·v4 = (1, 0.25, 0)`, interior to source edge `(1,4)` at parameter `0.25`, neither of the
+  rail terminals `v1 = (1,0,0)` / `v7 = (1,2,0)`. `exact_corner`
+  (`src/geometry/SurfaceCellTracing.cpp:19131-19143`) correctly rejected at `:19152`. The
+  `currentFace / expectedFace` co-signal is a fallback echo of `first.from.face` / `second.to.face`
+  (`:18939-18940`), not a second defect and not an `RP-01` recurrence.
+- **Classification corrected:** `R4-TB-A-RP02-01` is not a new baseline-free candidate. All 21 other uses
+  of `build_rectangular_hard_rail_phase_front` also assert `Produced`; two sit in frozen `selector449`;
+  and the failure is the existing `A4_ROUTE_CERTIFICATE_REJECTION` carrier — 39 of the 94 R3 RED, 37
+  CP2-accepted, matching the "39 endpoint" backlog 39/39, with 37 inside the frozen 497. The RED is an
+  8 ms single-test reproducer of ~42% of the 88 carried CP2 losses.
+- **Repair deferred behind two free measurement rungs:** all 39 are owned by the binary already in the
+  immutable package and all are recorded `STATIC ONLY — current result unknown`; 38 of 39 hint
+  `endpoint-0` while the single observation is `endpoint-1`.
+- **Reviewer error owned:** RA-55.8's stop-at-first-RED rule is correct inside a repair loop and wrong for
+  triage; it cost the control and three same-artifact identities. Amended — stop at first RED only within
+  a dependent chain.
+- **New architectural risk recorded (RA-56.5):** `faceEnds=0,2|0,3` indicates fronts meeting *across* the
+  rail rather than intervals running *along* it; the repair plan's interval vocabulary would freeze a
+  mis-shaped certificate. The census decides the model.
+- Ledger **66/17/49**, debt **1**, selector **497** untouched, CP2 **491/491** accepted, R3 **403/497**
+  rejected, PR #8 draft/open — unchanged. No new stable event, category or recurrence minted.
+
 ## 2026-10-15 — R4 RP-02 first-RED independent Review; corrective producer path bounded
 
 - `M6-CP3-TB1-R4-WITNESS-REV` accepted artifact-only TB-A's first RED as measurement, not as a runtime pass. Source-backed cause: interior coincident source-edge point `(1,0.25)` on `(1,4)` is incorrectly required to be exact whole-rail vertex 1 or 7 by terminal certificate; A4 open-front network-bound consumer never reached. Existing exact-terminal guard remains valid and must not be weakened. Candidate `R4-TB-A-RP02-01` remains non-stable; downstream `RP-02` remains unproven. Source snapshot `f83bc044db739350eba044e9120bafddc1c1c537`, workflow `38669377821`, artifact `11942494171`, 5609 source hashes verified; immutable runtime `38668126299`/`11942382424` unchanged.

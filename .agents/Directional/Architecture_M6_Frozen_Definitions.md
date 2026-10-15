@@ -1,3 +1,80 @@
+## RA-56 — the first RED is a live reproducer of the 39-identity `A4_ROUTE_CERTIFICATE_REJECTION` carrier, not a new candidate **FROZEN at M6-CP3-TB1-R4-WITNESS-REV** (2026-10-15)
+
+Adjudicates `M6-CP3-TB1-R4-WITNESS-EXEC` and `M6-CP3-TB1-R4-WITNESS-REV`. The execution and its
+root-cause localization are **ACCEPTED and independently re-derived**; the **classification is REJECTED
+and corrected**; the proposed repair turn is **RETAINED but DEFERRED** behind two measurement rungs. No
+runtime credit beyond the single executed identity. RA-55, RA-54, RA-53, RA-52 less .5, RA-51 … RA-37a
+and the RA-34.3 stop gates stand. Decision record
+`.agents/Directional/Architecture_M6_CP3_R4_First_RED_Carrier_Reclassification_Review_Decision.md`.
+
+- **RA-56.1 — the root cause is CONFIRMED from bytes and from geometry I re-derived.** `exact_corner`
+  (`src/geometry/SurfaceCellTracing.cpp:19131-19143`) demands a bit-exact one-hot barycentric for **both**
+  paired points at the **same** terminal vertex, else `no-exact-terminal-corner` at `:19152`. The fixture
+  (`tests/SurfaceCellsPhase10Tests.cpp:223-264`) is a 3×3 planar grid with `v1 = (1,0,0)`, `v4 = (1,1,0)`,
+  `v7 = (1,2,0)`, face `0 = (0,1,4)`, face `3 = (1,5,4)`, hard feature `{1,4} ∪ {4,7}` (`:266-272`), so the
+  rail is `1 → 4 → 7` with terminals `{1,7}`. Both probes resolve to **the same point**
+  `0.75·v1 + 0.25·v4 = (1, 0.25, 0)`, interior to edge `(1,4)` at parameter `0.25` and equal to neither
+  terminal. `corner[1]=0,0; corner[7]=0,0` is correct behaviour. **The co-signal is not a second defect:**
+  `currentFace=0; expectedFace=2` are `failure.face`/`failure.targetFace` (`:18939-18940`) falling back to
+  `first.from.face`/`second.to.face`, which `faceEnds=0,2|0,3` prints as the same values (`:18948`,
+  `:18951-18952`). This is **not** an `RP-01` namespace recurrence and must not start one.
+- **RA-56.2 — the classification is WRONG; `R4-TB-A-RP02-01` is not baseline-free.** All **21** other uses
+  of `build_rectangular_hard_rail_phase_front` also open by asserting `Produced`, so the whole family is
+  down, not one witness's precondition. Two of them — `ProductionA4PublishesAcceptedA2bA3ConformityReceipt`
+  and `HardRailPairingIsFaceRowOrderInvariant` — sit **inside frozen `selector449`**
+  (`Architecture_M5_CP4_CB2_Required_Green_Selector_449.txt`, pinned at
+  `tools/m6_cp3_entry_497_artifact_only_harness.sh:16`). `Entry_R3_Red_Classification.tsv` already carries
+  the failure: the 94 R3 RED split into eight carriers whose largest is
+  **`A4_ROUTE_CERTIFICATE_REJECTION` at 39**, with **37 `CP2_ACCEPTED = true`**; that set matches the
+  long-carried "39 endpoint" backlog **39/39 with nothing unmatched on either side**
+  (`Architecture_M6_CP3_R4_Historical_R3_A4_39_Current_Source_Inventory_20261013.tsv`), and **37 of the 39
+  lie inside the frozen 497** (26 `selector449`, 9 `focused30`, 2 `focused12`) — the same 37, i.e. **37 of
+  the 88 carried CP2 losses**. Corrected: this is a **new, cheap entry point into an existing carrier with
+  an accepted CP2 baseline**, and it is the most valuable result TB-A could have produced — an 8 ms,
+  single-test, fully typed reproducer of **~42% of the carried CP2 losses**. The review undersold itself.
+- **RA-56.3 — measure the carrier before repairing anything.** All **39** are owned by
+  `directional_surface_cell_producer_tests`, the binary already inside the immutable package that ran
+  TB-A (19 Quotient / 18 Phase10 / 2 REPackage), and every one is recorded
+  `status = "STATIC ONLY — current result unknown"`. **38 of the 39 hint `endpoint-0`; TB-A observed
+  `endpoint-1`.** A producer change driven by the single *minority* endpoint, while 38 majority instances
+  sit unmeasured and reachable for one artifact-only run with no rebuild, is how the wrong thing gets
+  fixed confidently.
+- **RA-56.4 — RA-55.8's stop-at-first-RED rule was wrong for a triage run; my error, amended.** The rule
+  is right **inside a repair loop**, to stop mass-patching; it is wrong for a **first measurement**, where
+  breadth is the point. The executor followed it exactly and is not marked down. It cost the **control**
+  (`M6CP3.CheckedFactoryRejectsForgedTerminalA2bSideGerm`, a *different* fixture — the one bit that
+  separates "this fixture family is down" from "A4 production is down") plus three identities runnable
+  from the same artifact. **Amended rule in force:** stop at first RED only **within a dependent chain**;
+  independent identities are **all** run, each RED reported with its verbatim first predicate.
+- **RA-56.5 — a third reading the repair plan excludes by vocabulary.** `faceEnds=0,2|0,3` decodes
+  (`:18948`) as `first.from.face = 0`, `second.to.face = 2`, `first.to.face = 0`, `second.from.face = 3`:
+  the first front lies **entirely inside face 0** and the second spans 3 → 2, both meeting at
+  `(1, 0.25, 0)`. That is the signature of two fronts meeting **transversally across** the rail, not of
+  intervals running **along** it. The plan's prescribed *"canonical intrinsic parameter on the same source
+  edge, ordered rail interval/face-side ownership"* presumes along-rail intervals; if the event is a
+  crossing, that abstraction is wrong and would freeze a mis-shaped certificate into the producer — the
+  RA-45.2 category error again. **Do not choose the certificate model before the census says which shape
+  dominates**; every failing pair prints its own `faceEnds`.
+- **RA-56.6 — the repair plan is otherwise sound and is RETAINED, not discarded.** It refuses to pick a
+  fix merely to satisfy the assertion, keeps `no-exact-terminal-corner` and the duplicate-contact,
+  barrier, closed-chain and missing-contact guards fail-closed for genuine terminals, forbids weakening
+  the RP-02 `Produced` precondition or its consumer receipt, bars fallback and source-grid recovery, and
+  carries real stop conditions. Re-enter it **with the census in hand** and with RA-56.5 answered.
+- **RA-56.7 — what remains true.** `RP-02` is **still open**: the run died before
+  `assign_open_front_boundary_authority`, so no consumer receipt exists and the tamper half never ran.
+  RA-55.3's non-vacuity finding is undisturbed, but non-vacuity is not liveness. `R4-OHF-02` stays
+  recorded, guard retained, no probe. The two Phase14 identities need `DIRECTIONAL_BUILD_HISTORICAL_TESTS`
+  (`cmake/DirectionalTests.cmake:556-574`) and belong to a separate packaging turn, not a measurement rung.
+- **RA-56.8 — accounting.** Ledger **66 / 17 / 49**, debt **1**, selector **497** untouched, CP2
+  **491/491** accepted, R3 **403/497** rejected with 94 RED and 88 carried losses, PR #8 draft/open —
+  unchanged. `R4-TB-A-RP02-01` is reclassified as an entry point into the existing
+  `A4_ROUTE_CERTIFICATE_REJECTION` carrier; **no new stable event, category or recurrence is minted**,
+  since a recurrence needs a reviewed runtime adjudication the census has not yet supplied. No promotion.
+  A compile is not a restoration (LESSONS 160); a census is not a witness (LESSONS 171); **and one
+  measured identity is not a measured carrier.**
+
+---
+
 ## RA-55 — R4 Code + Build authoring is CLOSED; Test + Benchmark AUTHORIZED in two rungs **FROZEN at M6-CP3-CB1-R4-RP02-WITNESS** (2026-10-15)
 
 Adjudicates `M6-CP3-CB1-R4-OHF01-PROBE` and `M6-CP3-CB1-R4-RP02-WITNESS`. Both **ACCEPTED**; every
