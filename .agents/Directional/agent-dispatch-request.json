@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-predicate-compile-20261015-01",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-predicate-compile",
-  "source_sha": "16c3134c02ab3872eee77a6b9dcc9d3fc6e01b7b",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-predicate-compile"
+  "request_id": "m6-cp3-r4-predicate-closeout-20261015-01",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-predicate-closeout-apply",
+  "file_id": "1AAaFigVF4kuGHvi8-RsGNwm3EymQFd0j",
+  "patch_sha256": "d221231a3c62e30b1305e07e47e5b1bd393b43c042eafa4b65dc196b946ef2be",
+  "base_sha": "2d52eeb04cf27b864666d84e30eca9daff617c93",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "Record R4 diagnostic compile-only closeout and preserve handoff history",
+  "retention_days": 7
 }
