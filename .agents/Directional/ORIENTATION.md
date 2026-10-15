@@ -1,3 +1,53 @@
+## CURRENT — `M6-CP3-TB2-R4-CONJUNCT-EXTRACT-REV`, 2026-10-15: RA-62 frozen; the failing endpoint is the rail's own junction vertex, and the conflation it exposes is the one this project has been chasing
+
+**Supersedes the RA-61 "acceptance path unsatisfiable" paragraph below as the current state.**
+`M6-CP3-TB2-R4-CONJUNCT-EXTRACT` ran, and it is the **best-executed rung of this family**: it
+delivered the per-candidate conjunct truth table that was demanded, refused to over-claim what its
+logs could not prove, kept the odd identity separate, and named its successor. The extraction is
+**ACCEPTED**. One integrity defect in a durable document is **repaired**. No open REVIEW_BLOCKER.
+No promotion, no stable event, no regression recurrence, no gate credit.
+
+**§3 current state — three shapes, and the one with no certificate is the common one.** A hard-rail
+front endpoint can now be seen to arrive in three distinct shapes. One is interior to its carrier
+edge: a certificate exists for it, and its admission gate cannot be satisfied by any traced input.
+One sits exactly on the carrier edge's *other* vertex — the rail's interior junction — and has **no
+certificate shape at all**; neither the terminal branch nor the interior branch can admit it, each
+refusing correctly. The third has no published terminal contact whatsoever and remains a separate
+upstream provenance defect. The specification written two rungs ago addressed only the first shape,
+and the measurement shows the second is roughly as common.
+
+**§4 runtime witness — the evidence was already in hand, twice over.** No new run was needed to
+reach any of this. The conjunct truth values were recorded in an artifact that already existed and
+had been quoted only in part; the vertex those values pointed at was then derivable from the
+fixture's own mesh construction, by arithmetic, with no execution at all. Every measured truth value
+is reproduced exactly by that derivation. The acceptance half of this subsystem still has no
+witness, and the consumer-reachability probe has still never executed.
+
+**§7 priority — emit what the instrument never said, before changing any decision.** The next rung
+is diagnostic-only and its ordering matters more than its name. First the gate coverage, because a
+durable document was overwritten again and neither check noticed. Then the one field whose absence
+cost this review a hand derivation: which vertex the endpoint actually is. The probe reports, for
+each *published terminal*, whether the point matches it — and never reports what the point is. Then
+the optional exact-rational interval evidence that no artifact can supply retroactively. The
+predicate-string split that was authorized earlier is now last, because the population it was meant
+to disambiguate has already been disambiguated for free.
+
+**§8 patterns — one structural, one about scope, one about guards.** First: *a predicate that asks a
+question in the wrong authority domain cannot be fixed by any input.* Terminal authority is
+published per rail, as a pair of endpoints; the certificate consults it to answer a question about
+one carrier edge. Where a rail has an interior junction, the two domains cannot be reconciled, and
+the failure is structural rather than numeric — the same shape as the unsatisfiable closure gate
+found one rung earlier, and the canonical form of the conflation pattern this project opened long
+ago and has only now located with a measured population. Second: *a configuration cited as
+reassurance that something is out of scope deserves the same scrutiny as a configuration cited as
+evidence.* The junction-terminated endpoint was recorded as proof that a dormant clause stayed
+dormant; it is the live mechanism for a third of the measured population. Third: *protecting one
+file by name does not protect the class.* Last rung's destruction was repaired and a floor recorded
+for that file; this rung's overwrite landed on a different durable file, which no check covers, and
+passed both gates — the marker heading survived while the content above it was replaced, which is
+the failure mode this very file already records by name.
+
+---
 ## CURRENT — `M6-CP3-TB1-R4-INTERIOR-WITNESS-REV`, 2026-10-15: RA-61 frozen; the repair's acceptance path cannot succeed, and the model it implements was only half right
 
 **Supersedes the RA-60 "repair accepted, next measurement pre-registered" paragraph below as the current state.**

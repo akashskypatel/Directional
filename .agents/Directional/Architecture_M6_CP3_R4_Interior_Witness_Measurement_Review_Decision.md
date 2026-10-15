@@ -99,10 +99,10 @@ companion; the standing per-turn procedure invoked only `boundary`.
 review commit>`. `boundary` alone may never again be reported as the gate.
 
 **Both of these lessons were already written down, and both recurred anyway.**
-`ORIENTATION.md:1669` records `LESSONS.md` **176** — *"An append-only durable
+`ORIENTATION.md:1719` records `LESSONS.md` **176** — *"An append-only durable
 ledger was replaced by a whole-file write, and nothing noticed for ~20 turns"* —
 for `ce9bf3cb`, which cut the same file from 9,837 lines to 21.
-`ORIENTATION.md:1749` records *"A guard that counts markers does not protect
+`ORIENTATION.md:1799` records *"A guard that counts markers does not protect
 content"*, naming the `1 -> 1` pass mode exactly. So RA-61.2 and RA-61.3 are not
 discoveries; they are **recurrences of documented lessons**, and the prose
 remedy has now failed twice.
