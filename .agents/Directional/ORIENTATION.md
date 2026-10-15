@@ -1,3 +1,7 @@
+## CURRENT — true-control measurement done (2026-10-15); 39-identity carrier census next
+
+`M6-CP3-TB1-R4-TRUE-CONTROL`: 4/4 selected and executed using immutable artifact `11939982141`; square and cylinder/no interior hard rail PASS; two torus/closed-chain hard rail RED (`hasArrangement=false`, `originalOccurrences=nullptr`). [Run 38681907622](https://github.com/akashskypatel/Directional/actions/runs/38681907622), result `11948572472`, 28/28 pre/post manifest, unchanged source and frozen 497. A4 production is not universally down; common root cause between torus and open-rail failures remains unproved. **Next only `M6-CP3-TB1-R4-ENDPOINT39-CENSUS`**, then independent Review; consult top of `Future_Chat_Session_Handoff.md` and the true-control TB report. Ledger 66/17/49, debt1 unchanged.
+
 ## CURRENT — 2026-10-15 RA-57 frozen; the carrier is MEASURED; the control was not a control; RA-56.5 resolved ACROSS-rail
 
 **Supersedes the RA-56 "repair deferred behind two census rungs" paragraph below as the current state.**
