@@ -19436,6 +19436,29 @@ SurfaceCellNetwork build_surface_cell_network(
       append_interval("First", first);
       append_interval("Second", second);
       const auto *probeCarrier = find_carrier(endpointEdge);
+      // Rejection-only chart evidence. Report the actual A4 source rows and
+      // canonical A2b/A3 attachment keys; do not infer them from fixture layout.
+      endpointEvidence << ";a2bProbeFromFace=" << fromPoint.face
+                       << ";a2bProbeToFace=" << toPoint.face;
+      const auto append_face_key = [&](const char *label,
+                                       const authority::SourceFaceTopologyKey &key) {
+        const auto &vertices = key.vertices();
+        endpointEvidence << ";a2bProbe" << label << '='
+                         << vertices[0].index() << ',' << vertices[1].index()
+                         << ',' << vertices[2].index();
+      };
+      if (const auto face = surface_cell_tracing_detail::source_face_id(
+              fromPoint.face, faces.rows()))
+        append_face_key("FromAttachment",
+                        network.sourceTopologyRegions->topology_for_row(*face));
+      if (const auto face = surface_cell_tracing_detail::source_face_id(
+              toPoint.face, faces.rows()))
+        append_face_key("ToAttachment",
+                        network.sourceTopologyRegions->topology_for_row(*face));
+      if (probeCarrier) {
+        append_face_key("CarrierFirstFace", probeCarrier->firstFace);
+        append_face_key("CarrierSecondFace", probeCarrier->secondFace);
+      }
       const auto *firstInterval = first.sharedBoundaryInterval
           ? &*first.sharedBoundaryInterval : nullptr;
       const auto *secondInterval = second.sharedBoundaryInterval

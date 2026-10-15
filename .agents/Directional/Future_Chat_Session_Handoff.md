@@ -1,3 +1,9 @@
+## CURRENT — 2026-10-15 endpoint chart rejection-only diagnostic prepared; awaiting exact-source compile evidence
+
+Same authorized `M6-CP3-CB4-R4-ENDPOINT-CHART-PROBE` Code + Build turn. This narrow diagnostic adds actual A4 `fromPoint.face` / `toPoint.face` and the two derived source-face attachment keys plus A3 carrier first/second face keys, all **only after** the endpoint certificate has already rejected. It does not make the unmeasured `{0,7}` hypothesis true, change topology/admission, or repair `RP-01`. The exact frozen snapshot was `4c114b24811140a8b74e05570ae3e17e4f7e5197` / run `38775481890` / artifact `11993616345`; source record `Architecture_M6_CP3_R4_Endpoint_Chart_Probe_Code_Build_Record_20261015.md`. Await exact patch/apply/compile verification; no binaries/tests/benchmarks run. Stable ledger 66/17/49, debt 1, CP2 491/491, R3 403/497, selector 497 remain unchanged. No separately authorized Test + Benchmark or successor can begin in this turn. The older CURRENT below is historical.
+
+---
+
 ## CURRENT — 2026-10-15 RA-65 frozen; the endpoint faces `{0,7}` were never measured, so RA-64.6 is WITHDRAWN; the specification is ACCEPTED WITH AMENDMENT (gate C suspended); next turn `M6-CP3-CB4-R4-ENDPOINT-CHART-PROBE`
 
 **Supersedes the RA-64 CURRENT section below as the current state; that section and every section beneath it are retained as authorizing history.** One turn adjudicated — `M6-CP3-DEFN-R4-ENDPOINT-AUTHORITY-SPEC` — **ACCEPTED WITH AMENDMENT**. Decision: `.agents/Directional/Architecture_M6_CP3_R4_Endpoint_Authority_Spec_Review_Decision.md`.

@@ -1,3 +1,10 @@
+## CURRENT — endpoint chart source diagnostic Code + Build (2026-10-15)
+
+- [ ] `M6-CP3-CB4-R4-ENDPOINT-CHART-PROBE`: publish post-rejection source-face rows and source topology attachment/carrier keys, apply the source patch, and verify exact-source mandatory eight-target GMP/GMPXX compile. No runtime, no `RP-01` repair, no selector/ledger changes. Evidence record `.agents/Directional/Architecture_M6_CP3_R4_Endpoint_Chart_Probe_Code_Build_Record_20261015.md`.
+- [ ] Separately authorize artifact-only diagnostic execution and independent Review after this compile, without assuming endpoint faces `{0,7}` or inventing a vertex-star authority product. Preserve RA-65 amendments, frozen 497 selectors and historical ledgers.
+
+---
+
 ## CURRENT — R4 ledger content floor completed (2026-10-15)
 
 - [x] `M6-CP3-CB3-R4-LEDGER-CONTENT-FLOOR`: Python-only nonzero committed-history heading/line floors, tracker zero-tolerance, consumed request cleared to noop. Isolated destructive-equal-line rejection and legitimate-prepend acceptance checked, no simulations committed. Evidence: `.agents/Directional/Architecture_M6_CP3_R4_Ledger_Content_Floor_20261015.md`. No C++ build, runtime, selectors, ledger credit.
