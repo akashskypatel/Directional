@@ -1,3 +1,98 @@
+## CURRENT — 2026-10-15 RA-55 frozen; R4 authoring CLOSED; **Test + Benchmark AUTHORIZED**; next turn `M6-CP3-TB1-R4-WITNESS-EXEC`
+
+**Both final authoring turns are ACCEPTED.** `M6-CP3-CB1-R4-OHF01-PROBE` answered (b) with a chain that
+holds; `M6-CP3-CB1-R4-RP02-WITNESS` authored a witness that meets its anti-vacuity bar. Every decisive
+claim was re-derived from bytes at `1e0e13a38`. Frozen as **RA-55**; decision record
+`.agents/Directional/Architecture_M6_CP3_R4_Authoring_Closeout_And_TB_Authorization_Review_Decision.md`.
+**No runtime credit.** Ledger **66/17/49**, debt **1**, selector **497** untouched, CP2 **491/491**
+accepted, R3 **403/497** rejected with 94 RED and 88 carried CP2 losses, PR #8 draft/open.
+
+**The execution boundary is now OPEN, in two rungs and no more.** RA-54.7 said the source-only vein was
+exhausted; RA-55.7 adds that the authoring vein is exhausted too. Withholding execution further would turn
+a boundary into a stall, so Test + Benchmark is authorized — split, because a mixed run would make a
+supplemental failure indistinguishable from a selector regression.
+
+### Exact next turn — `M6-CP3-TB1-R4-WITNESS-EXEC` (Test + Benchmark, supplemental, outside the frozen 497)
+
+Execute **only** the authored-but-never-executed witnesses, under the immutable-artifact discipline, as a
+**named supplemental run outside the frozen 497** — exactly as the four RA-40(C) supplementals sit outside
+it. The frozen selector files must stay byte-identical: their hashes are pinned at
+`.agents/Directional/tools/m6_cp3_entry_497_artifact_only_harness.sh:211-217` and re-checked at `:270-272`.
+Do **not** append any new test to `focused30`, `focused12` or `selector449`.
+
+The set to run, each named individually in the report with PASS/FAIL and, on FAIL, the assertion text:
+
+1. `SurfaceCellAuthorityContractCutover.ProducedRailIntervalReachesNetworkBoundOpenFrontConsumer`
+   (`tests/SurfaceCellsPhase10Tests.cpp`) — the RP-02 witness, both halves.
+2. `R4-JCT-01`, the multi-carrier junction witness —
+   `SurfaceCellPipelinePhase20.AuthoritativePhaseFrontPropagatesBoundaryAndHardFeatureRailsThroughFlowRepAndArrangement`
+   (`tests/SurfaceCellREPackageTests.cpp`), AUTHORED / COMPILED / **NOT EXECUTED**. Its
+   `EXPECT_GT(authenticatedJunctions, 0U)` is the non-vacuity assertion to watch.
+3. RA-49.2's duplicated-endpoint witness —
+   `SurfaceCellAuthorityContractCutover.DuplicateSourceTerminalContactRejectsAtFirstA4ConsumerPredicate`
+   (`tests/SurfaceCellsPhase10Tests.cpp`).
+4. The Phase10 network-override negative —
+   `SurfaceCellAuthorityContractCutover.StandaloneRailDiagnosticModeCannotBypassProducedNetworkTypedIngress`
+   (`tests/SurfaceCellsPhase10Tests.cpp`); this is the retained attempt RA-52.6 preserved the
+   `LegacyStandaloneDiagnostic` opt-out for, so a PASS here is what keeps that opt-out non-vacuous.
+5. The Phase14 exact-corner negatives —
+   `SurfaceCellTracingPhase14.ProducedRailEndpointsRequireExactSourceVertexIncidence` and
+   `SurfaceCellTracingPhase14.RailValidationRejectsDisconnectedGeometryParametersAndSharedEdges`
+   (`tests/SurfaceCellTracingPhase14Tests.cpp`).
+6. The `AbsentHardFeatureIncidence` factory witness —
+   `M6CP3.CheckedFactoryRejectsForgedTerminalA2bSideGerm`
+   (`tests/SurfaceCellTransitionQuotientTests.cpp`) — the live sibling of the retired
+   `OverfullHardFeatureIncidence` disjunct, run as the control.
+
+Cite these by gtest `Suite.Name`, not by line: the RP-02 insertion already shifted every
+`SurfaceCellsPhase10Tests.cpp` anchor after `:6650` by +89, and a line-cited backlog silently rots.
+
+One question: **does roughly ten turns of authoring survive first contact with a running binary?**
+
+**A RED is a finding to report, not a defect to patch in this turn.** Do not edit source, tests, fixtures
+or guards to obtain green; the fix is a separately authorized CB turn under Review. Report the exact
+failing assertion and stop. A PASS on (1) is the first runtime evidence that the network-bound consumer is
+live, and is the only thing that discharges `RP-02 TEST_AUTHORITY_COVERAGE_GAP`.
+
+**Successor:** `M6-CP3-TB1-R4-WITNESS-REV` (mandatory independent Review) on any outcome.
+
+### Then — `M6-CP3-TB1-R4-497-EXEC`, only after the Review of TB-A
+
+Re-measure the frozen `30 + 12 + 449 + 6 = 497` gate against current HEAD to establish whether R3's 94 RED
+has moved. Milestone-bearing; must not be folded into TB-A. Successor `M6-CP3-TB1-R4-497-REV`.
+
+### Standing findings and prohibitions carried into TB
+
+- **`R4-OHF-02 / UNCHECKED_MESH_PROVENANCE` (new, RA-55.2).** `FieldTransportAtlas::make`
+  (`src/authority/FieldTransportAtlas.cpp:1893-1912`) validates edge tables **by shape only** and never
+  re-runs `DCEL::check_consistency`. `OverfullHardFeatureIncidence`'s unreachability therefore rests on the
+  convention that every production `TriMesh` goes through `set_mesh`, not on a type-level invariant. The
+  guard and sub-code at `src/geometry/SurfaceCellTracing.cpp:8270-8277` are **RETAINED** fail-closed and
+  must not be weakened. `R4-OHF-02` is **recorded, not chased**: do not open a Code rung for it.
+- **Correction to RA-54.2:** six reachable predicates and one fail-closed-only sub-code, not seven
+  reachable. RA-51.7 is not reopened and no sub-code is removed.
+- **Do not re-raise** `R4-SID-02` (REFUTED), RA-43.2 (DISCHARGED), the FieldBranch/filled-side receipt
+  (REFUSED, RA-52), RA-47.11 (genuine zero-target), the RA-43.4 opt-out and its two helpers
+  (PRESERVED/RETAINED), or RA-52.5 (WITHDRAWN as a reviewer error).
+- **Do not invent another Code + Build rung.** Authoring is closed; the next source change is whatever a
+  TB RED justifies, under Review.
+- Root `CHANGELOG.md` is canonical — `.agents/Directional/CHANGELOG.md` is a secondary copy.
+  `Regression_Root_Cause_Tracker.md` is append-only. Cite frozen clauses by RA number, not by line.
+- **Close the beacon with a named `Successor`.** Three consecutive turns have closed with
+  `Successor: UNKNOWN`; the IDs above remove the excuse.
+- Standing rules: `R4-VIN-01` (adjudicate against the current frozen vintage), `RP-03` (when relying on or
+  refuting a conjunctive guard, name which conjunct carries the decision), reachability-before-fixture,
+  and LESSONS 160 / 171 — a compile is not a restoration, a census is not a witness, and an authored
+  expectation is not a PASS.
+
+### Execution backlog beyond TB-A
+
+39 endpoint / 34 Phase10 / seven DCEL / six CP3 identities; the **88** accepted CP2 restorations; organic
+D1/D2/D3/D5 and A6/A7 witnesses; the odd-τ witness. RA-41's junction/sector clauses remain frozen
+**UNEXERCISED at runtime**.
+
+---
+
 ## CURRENT — RP-02 network-bound open-front consumer witness compiled (2026-10-15 UTC)
 
 `M6-CP3-CB1-R4-RP02-WITNESS` authored **one** nonvacuous producer-to-consumer source test `SurfaceCellAuthorityContractCutover.ProducedRailIntervalReachesNetworkBoundOpenFrontConsumer` in `tests/SurfaceCellsPhase10Tests.cpp`: authentic A2a network and producer rail must yield an A4 `HardRail` open-front edge and an actual filled cell/side with typed route, while a forged typed rail source edge must cause `InvalidFrontBoundaryAuthority` at that same A4 consumer. The test fails if `assign_open_front_boundary_authority` is skipped. Semantic source `953f812ff1f431e3ad3af3b68a92284a7831c94a`; pinned eight-target GMP/GMPXX compile [38664036225](https://github.com/akashskypatel/Directional/actions/runs/38664036225), artifact `11939982141` SHA-256 `2d5d1fc3f75b573307cae8af3c837da3dde2302ffdb4fe0ef3dd34d2aafeed7a`. **Compile-only; no binaries, tests, benchmarks or TB497 executed; no runtime PASS.** Detailed evidence `.agents/Directional/Architecture_M6_CP3_R4_RP02_Network_Bound_Consumer_Witness_20261015.md`.

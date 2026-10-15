@@ -1,3 +1,34 @@
+## CURRENT — 2026-10-15 RA-55 frozen; R4 authoring CLOSED; **Test + Benchmark AUTHORIZED**
+
+**Both final authoring turns are ACCEPTED and supersede the two-item list below.** There is no open
+REVIEW_BLOCKER. `M6-CP3-CB1-R4-OHF01-PROBE` answered **(b) UNREACHABLE** with a chain re-derived from
+bytes; `M6-CP3-CB1-R4-RP02-WITNESS` authored a witness that meets its anti-vacuity bar. The whole interval
+diff is `tests/SurfaceCellsPhase10Tests.cpp` (+89/-2), two evidence documents and the beacons.
+
+**The execution boundary is now OPEN, in two rungs and no more.** Both the source-only vein (RA-54.7) and
+the authoring vein (RA-55.7) are exhausted; withholding execution further would turn a boundary into a
+stall. Exact next is **`M6-CP3-TB1-R4-WITNESS-EXEC`** — execute only the authored-but-never-executed
+witnesses as a named supplemental run **outside** the frozen 497 (selector hashes pinned at
+`.agents/Directional/tools/m6_cp3_entry_497_artifact_only_harness.sh:211-217`, re-checked at `:270-272`;
+do not append anything to `focused30`, `focused12` or `selector449`). Then, after a mandatory Review,
+`M6-CP3-TB1-R4-497-EXEC` re-measures the frozen `30 + 12 + 449 + 6 = 497` gate. The two must not be folded
+together, and **neither may edit source to obtain green** — a RED is a finding to report, and the fix is a
+separately authorized CB turn under Review.
+
+**`R4-OHF-02 / UNCHECKED_MESH_PROVENANCE` is recorded, not chased.** `FieldTransportAtlas::make`
+(`src/authority/FieldTransportAtlas.cpp:1893-1912`) validates edge tables **by shape only** and never
+re-runs `DCEL::check_consistency`, so `OverfullHardFeatureIncidence`'s unreachability rests on the
+convention that every production `TriMesh` goes through `set_mesh`, not on a type-level invariant. The
+guard and sub-code at `src/geometry/SurfaceCellTracing.cpp:8270-8277` are **RETAINED** fail-closed and must
+not be weakened; opening a Code rung for `R4-OHF-02` is prohibited. RA-54.2 is corrected: **six reachable
+predicates and one fail-closed-only sub-code**, not seven reachable; RA-51.7 is not reopened.
+
+No runtime credit. Ledger **66/17/49**, M6 debt **1**; selector **497** untouched; CP2 **491/491**
+accepted; R3 **403/497** rejected with 94 RED and 88 carried CP2 losses; PR #8 draft/open. Decision record
+`.agents/Directional/Architecture_M6_CP3_R4_Authoring_Closeout_And_TB_Authorization_Review_Decision.md`.
+
+---
+
 ## CURRENT — 2026-10-14 RA-54 frozen; six-rung ladder CLOSED; source-only vein exhausted
 
 **All seven ladder turns are ACCEPTED and supersede the rung list below. RA-43, RA-47 and RA-48 are fully

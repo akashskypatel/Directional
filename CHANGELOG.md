@@ -1,3 +1,32 @@
+## 2026-10-15 — RA-55 frozen: R4 Code + Build authoring closed; Test + Benchmark authorized
+
+- Architecture Review only; no source, test, selector, harness or ledger change. `M6-CP3-CB1-R4-OHF01-PROBE`
+  and `M6-CP3-CB1-R4-RP02-WITNESS` are both **ACCEPTED**, each decisive claim re-derived from bytes at
+  `1e0e13a38`. Frozen as **RA-55**. Decision record
+  `.agents/Directional/Architecture_M6_CP3_R4_Authoring_Closeout_And_TB_Authorization_Review_Decision.md`.
+- **OHF-01 (b) UNREACHABLE confirmed** on the checked construction path: unconditional
+  `compute_edge_quantities` at `include/directional/core/TriMesh.h:339`, `checkHalfedgeRepetition` enabled
+  as `check_consistency`'s second parameter (`include/directional/core/DCEL.h:1164-1169`) with section 5 at
+  `:1453-1492`, and the factory atlas pin at `src/geometry/SurfaceCellTracing.cpp:8137-8145` preceding the
+  census at `:8243-8266` / `:8270-8277`. The produced-path rejection was correctly demoted.
+- **New finding `R4-OHF-02 / UNCHECKED_MESH_PROVENANCE`.** `FieldTransportAtlas::make`
+  (`src/authority/FieldTransportAtlas.cpp:1893-1912`) validates edge tables by shape only and never re-runs
+  `DCEL::check_consistency`, so unreachability rests on the convention that every production `TriMesh` is
+  built via `set_mesh`, not on a type-level invariant. The OHF factory-negative requirement is RETIRED
+  coupled to that condition; the guard and sub-code at `:8270-8277` are RETAINED fail-closed.
+- **RP-02 witness accepted**: exactly one site assigns a `HardRail` boundary kind (`:12619-12620`, inside
+  `assign_open_front_boundary_authority`), gated behind the network-bound `rail_interval_refs` at
+  `:12425-12428`, so the positive cannot pass if the consumer is skipped. The negative's `cell >= 0`,
+  `side ∈ [0,4)` anchor excludes 62 of the 66 `InvalidFrontBoundaryAuthority` emission sites. Authored and
+  compiled only — **no runtime PASS**.
+- **Correction to RA-54.2:** six reachable predicates and one fail-closed-only sub-code, not seven
+  reachable. RA-51.7 is not reopened.
+- **Test + Benchmark AUTHORIZED in two rungs**, not one: `M6-CP3-TB1-R4-WITNESS-EXEC` (supplemental,
+  outside the frozen 497) then `M6-CP3-TB1-R4-497-EXEC` (the frozen `30 + 12 + 449 + 6` gate). Neither may
+  edit source to obtain green.
+- Ledger **66/17/49**, debt **1**, selector **497** untouched, CP2 **491/491** accepted, R3 **403/497**
+  rejected, PR #8 draft/open — unchanged.
+
 ## CURRENT — RP-02 network-bound open-front consumer witness compiled (2026-10-15 UTC)
 
 `M6-CP3-CB1-R4-RP02-WITNESS` authored **one** nonvacuous producer-to-consumer source test `SurfaceCellAuthorityContractCutover.ProducedRailIntervalReachesNetworkBoundOpenFrontConsumer` in `tests/SurfaceCellsPhase10Tests.cpp`: authentic A2a network and producer rail must yield an A4 `HardRail` open-front edge and an actual filled cell/side with typed route, while a forged typed rail source edge must cause `InvalidFrontBoundaryAuthority` at that same A4 consumer. The test fails if `assign_open_front_boundary_authority` is skipped. Semantic source `953f812ff1f431e3ad3af3b68a92284a7831c94a`; pinned eight-target GMP/GMPXX compile [38664036225](https://github.com/akashskypatel/Directional/actions/runs/38664036225), artifact `11939982141` SHA-256 `2d5d1fc3f75b573307cae8af3c837da3dde2302ffdb4fe0ef3dd34d2aafeed7a`. **Compile-only; no binaries, tests, benchmarks or TB497 executed; no runtime PASS.** Detailed evidence `.agents/Directional/Architecture_M6_CP3_R4_RP02_Network_Bound_Consumer_Witness_20261015.md`.

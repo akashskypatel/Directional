@@ -1,3 +1,55 @@
+## CURRENT — R4 authoring CLOSED; `R4-OHF-02` recorded; Test + Benchmark AUTHORIZED in two rungs; RA-55 frozen (2026-10-15)
+
+**`M6-CP3-CB1-R4-OHF01-PROBE` and `M6-CP3-CB1-R4-RP02-WITNESS` are both ACCEPTED.** Every decisive claim
+re-derived from bytes at `1e0e13a38`. No open blocker. No runtime credit. Ledger unchanged 66/17/49, debt 1.
+
+**What landed.** The whole interval diff is `tests/SurfaceCellsPhase10Tests.cpp` (+89/-2), two evidence
+documents and the beacons. No production source, header, selector, harness or ledger moved.
+
+**OHF-01 answered (b) UNREACHABLE and the chain holds.** `TriMesh::set_mesh` calls
+`compute_edge_quantities` unconditionally at `include/directional/core/TriMesh.h:339` before the
+injected-table comparison at `:340-350`; `check_consistency`'s second parameter is
+`checkHalfedgeRepetition` (`include/directional/core/DCEL.h:1164-1169`), so the call at `TriMesh.h:159-163`
+enables the repeated-directed-halfedge rejection at `DCEL.h:1453-1492`; three triangles on one undirected
+edge force a duplicate across two directions. The factory's atlas pin at
+`src/geometry/SurfaceCellTracing.cpp:8137-8145` precedes the census at `:8243-8266` and the emission at
+`:8270-8277`. The produced-path rejection was correctly **demoted** rather than relied on, because
+`SurfacePhaseFrontProduct::make` is independently callable.
+
+**New finding `R4-OHF-02 / UNCHECKED_MESH_PROVENANCE`.** The soft link is G3, not G1/G2.
+`FieldTransportAtlas::make` (`src/authority/FieldTransportAtlas.cpp:1893-1912`) validates the edge tables
+**by shape only**, never re-runs `DCEL::check_consistency`, and reads `sourceMesh.EF(edgeIndex, 0..1)` as
+adjacency authority — a third incident face is not rejected there, merely absent from a two-column table.
+Whether the downstream reciprocity checks would catch such a mesh is **not established**. Unreachability
+therefore rests on the convention that every production `TriMesh` goes through `set_mesh`, not on a
+type-level invariant; `V`, `F`, `EV`, `EF` are public and mutable. The OHF factory-negative requirement is
+**RETIRED coupled to G1/G2/G4 and `R4-OHF-02`**; the guard and sub-code at `:8270-8277` are **RETAINED**
+fail-closed. `R4-OHF-02` is **recorded, not chased** — probing it would be a seventh Code rung invented to
+avoid the execution boundary, which RA-54.7 forbids.
+
+**RP-02's witness meets its bar for a structural reason.** Exactly one site assigns a `HardRail` boundary
+kind — `:12619-12620`, inside `assign_open_front_boundary_authority` — and reaching it requires surviving
+the network-bound `rail_interval_refs` at `:12425-12428`. The only other `boundaryKind` writes
+(`:14745-14746`, `:18629-18630`) are `PeriodicCut`. A published `HardRail` edge **is** the consumer's
+receipt, so the positive cannot pass if the consumer is skipped. The negative's anchor was quantified:
+of **66** sites emitting `InvalidFrontBoundaryAuthority`, **only 4** supply a cell/side, and
+`set_phase_front_failure` defaults both to `-1` (`:11330-11335`), so `cell >= 0` with `side ∈ [0,4)`
+excludes 62 of 66. The expectation is nonetheless **authored, not executed**.
+
+**Correction to RA-54.2 (mine).** "Seven sub-codes covering exactly the reachable predicates" is one too
+generous now that OHF-01 answered (b): it is **six reachable and one fail-closed-only**. RA-51.7 is not
+reopened — it forbids minting a sub-code for a disjunct *already known* dead, and this one's reachability
+was the open question. Recorded per `RP-03` rather than quietly amended.
+
+**Trajectory.** Both the source-only vein (RA-54.7) and the authoring vein are now exhausted. Test +
+Benchmark is **AUTHORIZED in two rungs**: `M6-CP3-TB1-R4-WITNESS-EXEC` executes only the
+authored-but-never-executed witnesses as a supplemental run **outside** the frozen 497 (selector hashes
+pinned at `.agents/Directional/tools/m6_cp3_entry_497_artifact_only_harness.sh:211-217`, re-checked at
+`:270-272`); then `M6-CP3-TB1-R4-497-EXEC` re-measures the frozen `30 + 12 + 449 + 6 = 497` gate. They must
+not be folded together, and neither may edit source to obtain green.
+
+---
+
 ## CURRENT — the six-rung ladder is ACCEPTED and CLOSED; source-only vein exhausted; RA-54 frozen (2026-10-14)
 
 **All seven turns from `M6-CP3-CB1-R4-CARRIER-CUT-COMMENT` to `M6-CP3-CB1-R4-RA434-DISPOSE` are ACCEPTED.**

@@ -1,3 +1,95 @@
+## RA-55 — R4 Code + Build authoring is CLOSED; Test + Benchmark AUTHORIZED in two rungs **FROZEN at M6-CP3-CB1-R4-RP02-WITNESS** (2026-10-15)
+
+Adjudicates `M6-CP3-CB1-R4-OHF01-PROBE` and `M6-CP3-CB1-R4-RP02-WITNESS`. Both **ACCEPTED**; every
+decisive claim re-derived from bytes at `1e0e13a38`. No runtime credit. RA-54, RA-53, RA-52 less .5,
+RA-51, RA-50, RA-49, RA-48, RA-47, RA-46, RA-45, RA-44 less .2, RA-43, RA-42 corrected, RA-41 frozen
+scoped, RA-40, RA-39, RA-38, RA-37a and the RA-34.3 stop gates stand. Decision record:
+`.agents/Directional/Architecture_M6_CP3_R4_Authoring_Closeout_And_TB_Authorization_Review_Decision.md`.
+
+- **RA-55.1 — OHF-01's answer (b) UNREACHABLE is CONFIRMED on the checked construction path.** G1:
+  `include/directional/core/TriMesh.h:331-350` calls `compute_edge_quantities(verbose)` **unconditionally**
+  at `:339`, before the injected-table comparison at `:340-350` that throws on mismatch — supplied
+  `_EV/_FE/_EF` are a claim to be checked, never trusted input. G2: `check_consistency`'s signature at
+  `include/directional/core/DCEL.h:1164-1169` places **`checkHalfedgeRepetition` second**, so
+  `check_consistency(verbose, true, true, true)` at `TriMesh.h:159-163` enables it; section 5 at
+  `DCEL.h:1453-1492` rejects the second appearance of a directed `(source, target)` pair, and three
+  triangles on one undirected edge force a duplicate across only two directions — orientation-independent.
+  G4: the atlas pin at `src/geometry/SurfaceCellTracing.cpp:8137-8145` precedes the census construction at
+  `:8243-8266` and the emission at `:8270-8277`, and `FieldTransportAtlas::matches_source_faces`
+  (`src/authority/FieldTransportAtlas.cpp:3090-3110`) binds `sourceFaces` row-by-row to the atlas's own
+  construction faces. **G5 is correctly demoted**: the report declined to rest on the produced-path
+  rejection because the factory is independently callable. That distinction is the one I asked for.
+- **RA-55.2 — the retirement is CONDITIONAL; new finding `R4-OHF-02 / UNCHECKED_MESH_PROVENANCE`.** The
+  soft link is **G3, not G1/G2**. `FieldTransportAtlas::make`
+  (`src/authority/FieldTransportAtlas.cpp:1893-1912`) validates the edge tables **by shape only** and never
+  re-runs `DCEL::check_consistency`; it then consumes `sourceMesh.EF(edgeIndex, 0..1)` as adjacency
+  authority, so a third incident face is not rejected there — it is merely absent from a two-column table.
+  Whether the downstream `MissingAdjacency`/`NonReciprocalAdjacency` checks would catch such a mesh is
+  **not established and must not be asserted.** Unreachability therefore rests on the convention that every
+  production `TriMesh` is built through `set_mesh`, not on a type-level invariant: `V`, `F`, `EV`, `EF` are
+  public and mutable. Binding consequences: (1) the OHF factory-negative requirement is **RETIRED**, coupled
+  to G1, G2, G4 **and** `R4-OHF-02`; (2) the guard at `SurfaceCellTracing.cpp:8270-8277` and the
+  `OverfullHardFeatureIncidence` sub-code are **RETAINED** unchanged — the guard is the only thing between
+  `R4-OHF-02` and a silently accepted non-manifold carrier, and it is fail-closed; (3) `R4-OHF-02` is
+  **recorded, not chased** — probing it would be a seventh Code rung invented to avoid the execution
+  boundary, which RA-54.7 forbids; (4) any change letting production code reach a `TriMesh` without
+  `set_mesh`, or relaxing G1/G2/G4, **reopens reachability** and requires a non-vacuous witness before merge.
+- **RA-55.3 — the RP-02 witness MEETS its anti-vacuity bar, structurally.** **Exactly one site in the
+  translation unit assigns a `HardRail` boundary kind**: `edge.boundaryKind = *kind` with
+  `edge.railId = railId` at `src/geometry/SurfaceCellTracing.cpp:12619-12620`, inside
+  `assign_open_front_boundary_authority` (`:12414-12625`). The only other two `boundaryKind` assignments,
+  `:14745-14746` and `:18629-18630`, write `PeriodicCut`. Reaching `:12619` requires surviving the
+  network-bound `rail_interval_refs` at `:12425-12428` (`options.fieldAlignedNetwork`,
+  `RequireTypedSource`), which returns `InvalidFrontBoundaryAuthority` at `:12429-12431` otherwise. A
+  published `HardRail` edge **is itself the consumer's receipt**, so `ASSERT_NE(consumedRail, nullptr)`
+  cannot pass if the consumer is skipped. None of the four prohibited shapes is present: it is not an A2a
+  publication assertion, not a call the test makes itself, not a stage-injected run, not a factory-only
+  rejection. The test goes further and resolves every consumed key through
+  `fieldNetwork->find_mandatory_edge` with `EXPECT_EQ(rail->id, mandatory->rail)`, binding the receipt to
+  the real network rather than to the edge's self-report.
+- **RA-55.4 — the negative's anchor is discriminating, and quantified.** `InvalidFrontBoundaryAuthority` is
+  emitted at **66** `set_phase_front_failure` sites in `src/geometry/SurfaceCellTracing.cpp`, of which
+  **only 4** supply a cell/side (`:13052`, `:14784`, `:17439`, `:17448`); the helper defaults
+  `cell = -1, side = -1` (`:11330-11335`) and is first-failure-wins (`:11336-11338`). The test's
+  `EXPECT_GE(failure->cell, 0)` with `side ∈ [0,4)` therefore **excludes 62 of 66**, and the four anchored
+  sites test owner-cell lookup and `filledSide` range, which a `sourceEdges` substitution does not perturb.
+  **Caveat stated, not hidden:** the expectation is authored and compiled, never executed. If the forgery is
+  caught earlier at runtime the test fails — the correct direction, and a TB finding, not an authoring defect.
+- **RA-55.5 — the test-helper override weakens nothing.** One defaulted trailing parameter and
+  `options.authoritativeRails = rails != nullptr ? *rails : fixture.rails;`. Every pre-existing call site is
+  byte-identical in behaviour; no guard weakened, no counter added, no production API touched. Under RA-52.6
+  read forward — *a retained guard needs a retained attempt* — a test-side affordance whose only purpose is
+  to feed the guard a forgery is exactly right.
+- **RA-55.6 — CORRECTION to RA-54.2, my own prior acceptance.** I wrote that the seven
+  `SurfacePhaseFrontSourceAuthorityDetail` values "cover exactly the reachable predicates." With OHF-01
+  answered (b) that is one too generous: the correct statement is **six reachable predicates and one
+  fail-closed-only sub-code**. This does **not** reopen RA-51.7, which forbids *minting* a sub-code for a
+  disjunct already known dead — when RA-46.6 minted this one its reachability was the open question OHF-01
+  was commissioned to answer. The sub-code stays, per RA-55.2(2). Recorded rather than quietly amended,
+  per `RP-03`.
+- **RA-55.7 — R4 Code + Build authoring is CLOSED, verified rather than reported.** RA-54.7 left exactly two
+  authoring items; both are discharged. No third item was left open and nothing outside the authorized scope
+  moved — the interval's whole diff is `tests/SurfaceCellsPhase10Tests.cpp` (+89/-2), two evidence documents
+  and the beacons. **The Implementation Agent's refusal to invent a further Code rung is correct and accepted.**
+- **RA-55.8 — Test + Benchmark is AUTHORIZED, in two rungs, narrowly.** Withholding execution further would
+  convert a boundary into a stall. **TB-A `M6-CP3-TB1-R4-WITNESS-EXEC`** executes **only** the
+  authored-but-never-executed witnesses, as a named supplemental run **outside** the frozen 497, exactly as
+  the four RA-40(C) supplementals sit outside it; the frozen selector files stay byte-identical, their
+  hashes pinned at `.agents/Directional/tools/m6_cp3_entry_497_artifact_only_harness.sh:211-217` and
+  re-checked at `:270-272`. It answers one question: **does roughly ten turns of authoring survive first
+  contact with a running binary?** **TB-B `M6-CP3-TB1-R4-497-EXEC`**, only after TB-A, re-measures the frozen
+  `30 + 12 + 449 + 6 = 497` gate to establish whether R3's 94 RED has moved. The two must not be folded
+  together: a mixed run makes a supplemental failure indistinguishable from a selector regression.
+  **Neither rung may edit source to obtain green** — a RED is a finding to report, and the fix is a
+  separately authorized CB turn under Review.
+- **RA-55.9 — no credit conferred.** No source, test, header, selector, harness, fixture, benchmark or
+  ledger changed in this Review. Ledger **66 / 17 / 49**, M6 debt **1**, selector **497** untouched, CP2
+  **491/491** accepted, R3 **403/497** rejected with 94 RED and 88 carried CP2 losses, PR #8 draft/open.
+  A compile is not a restoration (LESSONS 160); a census is not a witness (LESSONS 171); an authored
+  expectation is not a PASS.
+
+---
+
 ## RA-54 — the six-rung ladder is ACCEPTED and CLOSED; the source-only vein is exhausted **FROZEN at M6-CP3-CB1-R4-RA434-DISPOSE** (2026-10-14)
 
 Adjudicates the seven turns from `M6-CP3-CB1-R4-CARRIER-CUT-COMMENT` through `M6-CP3-CB1-R4-RA434-DISPOSE`.
