@@ -1,3 +1,9 @@
+## CURRENT — OHF-01 overfull hard-feature factory reachability probe (2026-10-15 UTC)
+
+`M6-CP3-CB1-R4-OHF01-PROBE` answers **(b) UNREACHABLE through the checked source/atlas construction path**, source-only. `SourceTopologyRegions::make` can encode three incident faces, but `TriMesh::set_mesh` derives topology and rejects repeated directed halfedges via `DCEL::check_consistency` (three undirected-edge incidences force a duplicate direction), `FieldTransportAtlas::make` has no alternate supported construction seam, and `SurfacePhaseFrontProduct::make` pins the same source faces/regions to that atlas **before** counting rail incidences. Coupled retirement only; retain the fail-closed `OverfullHardFeatureIncidence` guard, reopen if any checked-construction/atlas-binding guard weakens. Evidence: `.agents/Directional/Architecture_M6_CP3_R4_OHF01_Overfull_Hard_Feature_Reachability_Probe_20261015.md`; source `3b655c44dc102603d1c7b16b2d1f4fa4a1c02987` snapshot run `38660874872`, artifact `11938238763`, **5604/5604** hashes. No implementation/test edits, compile, executable, benchmark or TB497. The only next Code + Build authoring turn is **`M6-CP3-CB1-R4-RP02-WITNESS`**, separate and not started; subsequent runtime requires separately authorized immutable-artifact TB. Ledger 66/17/49 and debt 1, accepted 491/491, R3 403/497, PR #8 draft/open remain unchanged.
+
+---
+
 ## 2026-10-14 — RA-54 frozen: the six-rung ladder accepted and closed
 
 - Architecture Review only; no source, test, selector or ledger change. All seven turns from `M6-CP3-CB1-R4-CARRIER-CUT-COMMENT` through `M6-CP3-CB1-R4-RA434-DISPOSE` are **ACCEPTED**, each decisive claim re-derived from bytes. Frozen as **RA-54**.
