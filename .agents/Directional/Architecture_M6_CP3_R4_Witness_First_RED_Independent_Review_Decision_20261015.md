@@ -28,6 +28,12 @@ RA-55's source-level finding still holds: a published `HardRail` open-front edge
 
 Audited `CLEAN_UP_POLICY.md` against the R4 family. The current TB report, its source-frozen RA-55 decision, the RP-02 source-authoring report, normative/selector/durable policy and unresolved earlier evidence are still needed for exact reconstruction; **no document was safely classified as superseded and folded in this turn**. No historical file was deleted, no folded index fabricated. Top-of-file currency was corrected in the handoff, `ORIENTATION`, `TODO`, `ROADMAP`, `CHANGELOG`, and candidate tracker rather than deleting their historical sections.
 
+## Deployment verification
+
+The original documentation-only dispatcher [38670478298](https://github.com/akashskypatel/Directional/actions/runs/38670478298) failed *before source application*: patch metadata omitted the required `# intended_paths=` header. The full Google Drive bytes independently matched the expected SHA-256, so the failure was a malformed patch header, not corrupted transport or a GitHub connector safety-check. The corrected preservation patch changed **metadata only**; its diff-body SHA-256 stayed `8fe67a091015971df562a33563f36eaeca97d1586a1c4536d1dc9b9288c5a063`.
+
+The corrected dispatcher [38671605362](https://github.com/akashskypatel/Directional/actions/runs/38671605362) succeeded and published immutable result artifact `11944627174` (ZIP SHA-256 `dba5dfc00d6a3e10cdd523eb8b9684a8ee73da3e941d6341ee8b810ee7e4efee`): exact patch SHA-256 `c842935a6e765e3580e4b7d9f81081c186cae80dd6d9902103df0a481ae1809e`, base `f83bc044db739350eba044e9120bafddc1c1c537`, semantic document commit `e033d417cf81260c1223786c810896715da95d34`, `runtimeExecution=false`. GitHub separately confirmed the commit changed **exactly the eight intended documents** and PR #8 working-branch head equaled the semantic commit immediately afterward. Both transient Drive staging files were permanently deleted by the user-authorized Drive connector after successful publication; the exact corrected patch remains in ChatGPT Library. No source/test/selector/build/workflow changes or runtime acceptance were claimed.
+
 ## Review closeout
 
 | Duty | Answer |
@@ -49,4 +55,4 @@ Audited `CLEAN_UP_POLICY.md` against the R4 family. The current TB report, its s
 | Turn boundary held | Review source inspection only; no Directional binaries, tests, compilation, product/test/selector/workflow mutation |
 | review_check.py boundary | Checked with snapshot-derived local git history; see local verification and work-preservation evidence; any environment-related limitation disclosed |
 | `STATUS` lifecycle maintained | Entry beacon published for this turn; required final direct beacon after document commit, with ended time only at COMPLETE |
-| Pushed to origin, branch in sync | Remote GitHub working-branch mutation requires exact parent/lease confirmation; final confirmation recorded in session result, not a self-referential commit hash |
+| Pushed to origin, branch in sync | Verified: GitHub PR working-branch head matched the semantic eight-document commit after successful workflow; direct connector check substituted for unavailable local `git status -sb`; no ahead/behind claim manufactured |
