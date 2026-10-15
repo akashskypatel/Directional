@@ -1,3 +1,7 @@
+## 2026-10-15 — R4 supplemental Test + Benchmark: first RP-02 witness RED
+
+- Artifact-only [run 38668126299](https://github.com/akashskypatel/Directional/actions/runs/38668126299), result `11942382424`, source `953f812ff1f431e3ad3af3b68a92284a7831c94a`; one exact-filter test ran and failed at its initial phase-front `Produced` precondition (`a2bProbeFailure=no-exact-terminal-corner`, closed-chain absent). Mandatory first-RED stop left the other six unexecuted. 28/28 GMP package hashes before/after and immutable source/selector validation passed. No source/test/selector edits, compile, relink or benchmark; no 497 execution or ledger promotion. Candidate `R4-TB-A-RP02-01` tracked without stable regression credit. Detailed `.agents/Directional/Architecture_M6_CP3_R4_Supplemental_Witness_TB_Report_20261015.md`; mandatory independent Review successor `M6-CP3-TB1-R4-WITNESS-REV`.
+
 ## 2026-10-15 — RA-55 frozen: R4 Code + Build authoring closed; Test + Benchmark authorized
 
 - Architecture Review only; no source, test, selector, harness or ledger change. `M6-CP3-CB1-R4-OHF01-PROBE`

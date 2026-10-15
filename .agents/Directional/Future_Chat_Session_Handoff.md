@@ -1,3 +1,9 @@
+## CURRENT — 2026-10-15 TB-A executed one RP-02 witness RED; stop-on-first-RED; **Review next**
+
+`M6-CP3-TB1-R4-WITNESS-EXEC` ran the immutable packaged source `953f812ff1f431e3ad3af3b68a92284a7831c94a`, compiled artifact `11939982141`, through [workflow 38668126299](https://github.com/akashskypatel/Directional/actions/runs/38668126299), result artifact `11942382424` (SHA-256 `738959c08bb543cbdf38848b45199e351644685b350dc9e6f7b5a5f44d765861`). **First exact identity RED**: `SurfaceCellAuthorityContractCutover.ProducedRailIntervalReachesNetworkBoundOpenFrontConsumer`, `tests/SurfaceCellsPhase10Tests.cpp:6665` expected `Produced`, obtained nonproduced enum 2; first predicate `a2bProbeFailure=no-exact-terminal-corner` / `a2bProbeClosedChainPresent=0`, rail 2, front 13,131. **Six remaining authorizations NOT EXECUTED**, as the frozen stop rule requires. Network-bound A4 consumer liveness not reached and `RP-02` remains open. Candidate `R4-TB-A-RP02-01` requires root-cause Review; do not patch production/test code in this TB turn. Both Phase14 witnesses will require a future immutable package containing the historical binary, absent from this eight-target package. All immutable-source/selector and 28/28 package postflight checks passed; no builds, changes to test source, benchmarks, or 497 gate. Ledger 66/17/49, debt 1, CP2 491/491, R3 403/497 with 94 RED and 88 losses, selector 497, PR #8 draft/open unchanged. **Next and only authorized turn: `M6-CP3-TB1-R4-WITNESS-REV` independent Review**, not TB497 or an unreviewed CB. See `.agents/Directional/Architecture_M6_CP3_R4_Supplemental_Witness_TB_Report_20261015.md` and the regression tracker for exact evidence.
+
+---
+
 ## CURRENT — 2026-10-15 RA-55 frozen; R4 authoring CLOSED; **Test + Benchmark AUTHORIZED**; next turn `M6-CP3-TB1-R4-WITNESS-EXEC`
 
 **Both final authoring turns are ACCEPTED.** `M6-CP3-CB1-R4-OHF01-PROBE` answered (b) with a chain that

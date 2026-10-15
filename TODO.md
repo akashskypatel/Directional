@@ -1,3 +1,10 @@
+## CURRENT — R4 supplemental TB first-execution RED (2026-10-15)
+
+- [x] `M6-CP3-TB1-R4-WITNESS-EXEC` immutable artifact-only run 38668126299; 1/1 executed RED at `SurfaceCellAuthorityContractCutover.ProducedRailIntervalReachesNetworkBoundOpenFrontConsumer` initial `Produced` precondition; actual `a2bProbeFailure=no-exact-terminal-corner` / no closed chain. 6 planned witnesses not executed under mandatory stop-on-first-RED. Artifact/source/selector immutable, no TB497 or benchmark.
+- [ ] **Next separate independent Review `M6-CP3-TB1-R4-WITNESS-REV`**: determine causal fork between source A2b terminal-corner failure and witness fixture validity. Preserve `RP-02` coverage gap; classify candidate `R4-TB-A-RP02-01` before a Code + Build correction. Future Phase14 executions also require separate immutable package with historical test executable.
+
+---
+
 ## CURRENT — RP-02 network-bound open-front consumer witness compiled (2026-10-15 UTC)
 
 `M6-CP3-CB1-R4-RP02-WITNESS` authored **one** nonvacuous producer-to-consumer source test `SurfaceCellAuthorityContractCutover.ProducedRailIntervalReachesNetworkBoundOpenFrontConsumer` in `tests/SurfaceCellsPhase10Tests.cpp`: authentic A2a network and producer rail must yield an A4 `HardRail` open-front edge and an actual filled cell/side with typed route, while a forged typed rail source edge must cause `InvalidFrontBoundaryAuthority` at that same A4 consumer. The test fails if `assign_open_front_boundary_authority` is skipped. Semantic source `953f812ff1f431e3ad3af3b68a92284a7831c94a`; pinned eight-target GMP/GMPXX compile [38664036225](https://github.com/akashskypatel/Directional/actions/runs/38664036225), artifact `11939982141` SHA-256 `2d5d1fc3f75b573307cae8af3c837da3dde2302ffdb4fe0ef3dd34d2aafeed7a`. **Compile-only; no binaries, tests, benchmarks or TB497 executed; no runtime PASS.** Detailed evidence `.agents/Directional/Architecture_M6_CP3_R4_RP02_Network_Bound_Consumer_Witness_20261015.md`.
