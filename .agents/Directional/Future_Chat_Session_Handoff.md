@@ -1,3 +1,13 @@
+## CURRENT — 2026-10-15 true-control measurement COMPLETE; next `M6-CP3-TB1-R4-ENDPOINT39-CENSUS`
+
+`M6-CP3-TB1-R4-TRUE-CONTROL` ran all 4 exact artifact-only controls via [GitHub Actions 38681907622](https://github.com/akashskypatel/Directional/actions/runs/38681907622), result artifact `11948572472` ZIP SHA-256 `2b6ac34c34ea3f0dd384f5be7a55ca9c9028328639effed3c9cc3e3c9674917f`. Same immutable GMP package `11939982141`, source `953f812ff1f431e3ad3af3b68a92284a7831c94a`. Receipt: executed=4, red=2, missing=0, postflight=true, exit=0; manifest 28/28 before and after, all immutability receipts true. No rebuild, relink, benchmark, frozen 497 run, production/test/selector edit or new stable event. The new dedicated true-control harness corrects both RA-57.8 orchestration defects. Detailed report: `Architecture_M6_CP3_R4_True_Control_Artifact_Only_TB_Report_20261015.md`.
+
+**Exact outcomes:** square/no hard rail `SurfacePhaseFrontProductFactoryAuthority.ReorderedCellStoragePreservesTypedEdgeOwnershipAtCheckedFactory` PASS; cylinder/periodic cut `SurfaceCellTypedTransportAuthority.ValidPeriodicCutRouteUsesTypedIdentity` PASS; closed-chain torus `M6CP1.A6ClosedComplexBoundaryIsCombinatoriallyEquivalentOnProducedTorus` RED at `hasArrangement=false`; torus `M6CP3.A6UniformFaceGaugeRotationPreservesRelationOutcome` RED at `originalOccurrences=nullptr`. A4 production is **not universally down**. These torus REDs are not established to be the previously measured open-rail `no-exact-terminal-corner` defect. Two torus tests share a fixture family.
+
+**NEXT TURN ONLY — `M6-CP3-TB1-R4-ENDPOINT39-CENSUS`**, independently authorized artifact-only measurement on the **same package**. Run all 39 exact identities from `Architecture_M6_CP3_R4_Historical_R3_A4_39_Current_Source_Inventory_20261013.tsv`, regardless of RED. Follow RA-57.12: record actual owning fixture singleton, varying `routeLength`, `step`, `chi`, probe chart and exact source-edge parameter, `closedChainPresent`, first predicate, `a2bProbeFailure`, full `faceEnds`, rail and edge records. Repeated constant signals are not independent evidence. Then separate `M6-CP3-TB1-R4-CARRIER-REV` to decide certificate model; only then an amended repair. No TB497, premature Code+Build repair, RP-02 acceptance, or ledger promotion. Ledger 66/17/49; debt 1; CP2 491/491; R3 403/497 with 94 RED and 88 carried losses; PR #8 remains draft/open.
+
+---
+
 ## CURRENT — 2026-10-15 RA-57 frozen; 4/4 RED is ONE measured carrier; the control was not a control; RA-56.5 resolved ACROSS-rail; next turn `M6-CP3-TB1-R4-TRUE-CONTROL`
 
 **Measurement ACCEPTED (re-derived from the artifact — no report was written). Turn state CORRECTED. The
