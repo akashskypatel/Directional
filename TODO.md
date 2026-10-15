@@ -1,3 +1,11 @@
+## CURRENT — TB4 endpoint-chart harvest evidence durably recorded; independent Review separately required (2026-10-15)
+
+- [x] `M6-CP3-TB4-R4-ENDPOINT-CHART-HARVEST`: 44/44 artifact-only identities executed against new immutable package `11994726341` and semantic source `5be5e123e`, 44 RED / 0 missing, run `38782417387`, result `11996317553`, ZIP SHA-256 `44df6e2fc1bdba1e15f81e11ddec7bbb6cc90e2d43adcda4f334d875d1dbd9c9`. Observed 23 both-attached interior and 21 from-only junction cases; computed canonical carrier edges, no emitted `a2bProbeCarrierEdge`. Detailed report: `.agents/Directional/Architecture_M6_CP3_R4_Endpoint_Chart_Harvest_Artifact_Only_TB_Report_20261015.md`.
+- [x] Append `R4-VIN-01` non-stable vintage in protected regression tracker and preserve previous headings and line floors; update handoff and two changelogs, using exact 5,647/5,647 verified source snapshot `393d6c5488ff2a8866327fad9bab27a8389619d6` (run `38805395498`). Earlier CURRENT section's unchecked closeout item is superseded by this evidence entry without erasing the historical task record.
+- [ ] **Next action requires separately authorized independent Review**, with no named turn ID established. Review measured attachment/carrier keys and *exhibit* the fixture's other incident rail edges before asserting a source sector, publisher failure or `RP-01` remedy. Do not start code changes, TB497, selector/acceptance promotion or new ledger credit. 66/17/49, debt 1, CP2 491/491, R3 403/497, frozen 497 unchanged; `RP-02` unreached.
+
+---
+
 ## CURRENT — endpoint chart artifact-only harvest measured; durable closeout pending (2026-10-15)
 
 - [x] `M6-CP3-TB4-R4-ENDPOINT-CHART-HARVEST` executed 44/44 identities on **new immutable artifact 11994726341** at semantic `5be5e123e`, workflow [38782417387](https://github.com/akashskypatel/Directional/actions/runs/38782417387), result artifact `11996317553`, ZIP SHA-256 `44df6e2fc1bdba1e15f81e11ddec7bbb6cc90e2d43adcda4f334d875d1dbd9c9`, entire manifest verified. **44 RED, 0 missing**, fail-closed. All 21 carrier-orientation cases measured actual rows `0→7`, with exactly one endpoint attachment in the carrier face pair: 15 computed edge (1,4), 6 computed edge (1,2). Full per-identity record: `.agents/Directional/Architecture_M6_CP3_R4_Endpoint_Chart_Harvest_Artifact_Only_TB_Report_20261015.md`.
