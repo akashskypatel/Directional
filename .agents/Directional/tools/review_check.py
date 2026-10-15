@@ -194,12 +194,26 @@ def cmd_boundary(args):
         # preserved history. Take the maximum line count over committed versions,
         # including HEAD, so no later commit can lower the baseline silently.
         history = git("rev-list", "HEAD", "--", rel)
-        floor = max((_line_count(rev, rel) or 0
-                     for rev in history.stdout.split()), default=0)
+        revisions = history.stdout.split()
+        # One blob read per revision supplies both independent history floors.
+        # Do not convert a missing history (or failed git read) into a passing 0.
+        metrics = []
+        for rev in revisions:
+            blob = git("show", "%s:%s" % (rev, rel))
+            if blob.returncode == 0:
+                metrics.append((blob.stdout.count("\n"),
+                                sum(line.startswith("## ") for line in blob.stdout.splitlines())))
+        floor = max((count for count, _ in metrics), default=0)
+        headings_floor = max((count for _, count in metrics), default=0)
         live_lines = live_text.count("\n")
-        report(history.returncode == 0 and live_lines >= floor,
+        live_headings = sum(line.startswith("## ") for line in live_text.splitlines())
+        history_valid = history.returncode == 0 and bool(revisions)
+        report(history_valid and floor > 0 and live_lines >= floor,
                "durable high-water in %s" % os.path.basename(rel),
                "%d >= %d" % (live_lines, floor))
+        report(history_valid and headings_floor > 0 and live_headings >= headings_floor,
+               "durable heading high-water in %s" % os.path.basename(rel),
+               "%d >= %d" % (live_headings, headings_floor))
         report(marker in live_text, "durable marker in %s" % os.path.basename(rel),
                "present" if marker in live_text else "missing")
 
@@ -221,7 +235,7 @@ def cmd_ledgers(args):
         shrinks = []
         for rev in [r for r in revs.stdout.split() if r]:
             before, after = _line_count(rev + "~1", path), _line_count(rev, path)
-            protected_history = path in DURABLE_FILES and path != ".agents/Directional/Regression_Root_Cause_Tracker.md"
+            protected_history = path in DURABLE_FILES
             if before and after is not None and (after < before if protected_history
                                                   else after < before * 0.9):
                 shrinks.append("%s %d->%d" % (rev[:8], before, after))
