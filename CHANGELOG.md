@@ -1,3 +1,11 @@
+## 2026-10-15 — R4 witness repair exact-source compile verified
+
+- `M6-CP3-CB1-R4-WITNESS-REPAIR` Code + Build produced an exact source-attested interior carrier certificate for paired across-rail source charts, and a nonvacuous source-authored positive/forged-terminal negative regression. GitHub atomic semantic commit `570c51733761c17a198bda6c9aba7d8b1e7ae2dd`; precisely two source/test files; source blob identities verified.
+- Pinned GMP/GMPXX eight-target compile GREEN workflow `38720128740`, immutable result `11964478813` (ZIP SHA-256 `0e1e87a48ef090588c8675bd87bc8c7560a1ade5dbe44cac391c78e0cbe21ae5`), log `11964676618` (ZIP SHA-256 `2d44c022651e95550d6cfaabd5fda9d2f050312477a464edcfd2c97cf9b7c451`). All 28/28 packaged hashes verified; preflight/build 0/0; source SHA exact, CMake GMP on, actual generated link `libgmpxx` and `libgmp`, clean pre/during/final status, `runtimeExecution=false`. No tests or benchmarks.
+- Drive `upload_file` rejected corrected Library patch bytes; native Docs export changed bytes. As a bounded transport exception the two exact content-addressed Git blobs were installed by Git tree/commit and non-forced compare-and-swap ref update. The original unheaded staged patch was not dispatched; no workflow permission or acceptance selector altered. Corrected metadata-wrapped recovery patch preserved in Library.
+- RA-59.9 model selected by prior Review is **compiled, not runtime validated**; RP-02, ordinal 405, RA-41, six supplementals, historical Phase14 packaging, frozen 497 and independent Review remain open. Ledger 66/17/49 debt1, CP2 491/491, R3 403/497 unchanged. Next separately authorized artifact-only TB/Review has no frozen exact successor ID.
+
+---
 ## 2026-10-15 — RA-59 frozen: the census closes the hypothesis set and the certificate model is selected
 
 - Architecture Review only (`M6-CP3-TB1-R4-CARRIER-REV`); no source, test, selector, binary, harness, workflow, benchmark or ledger change, and no Directional binary executed.

@@ -1,3 +1,9 @@
+## CURRENT — R4 interior carrier witness Code + Build compile complete (2026-10-15)
+
+- [x] `M6-CP3-CB1-R4-WITNESS-REPAIR`: RA-59.9 approved exact source-carrier certificate implemented at `570c51733761c17a198bda6c9aba7d8b1e7ae2dd`; mandatory eight-target GMP/GMPXX compile GREEN workflow 38720128740 result artifact 11964478813, 28/28 verified, no test runtime. Owner report `Architecture_M6_CP3_R4_Witness_Repair_Code_Build_Record_20261015.md`.
+- [ ] **Separately authorize immutable artifact-only supplemental TB and independent Review** of RP-02 original positive/typed tamper negatives, stop on first RED, then other six only as prescribed. Exact successor turn ID not yet frozen; do not invent. Historical Phase14 packaging is separate. Frozen 497 and ledger unchanged (66/17/49 debt1; 491/491 CP2; R3 403/497). The TODO CURRENT blocks below are historical superseded states.
+
+---
 ## CURRENT — Endpoint39 census measured; carrier independent Review is the next authorized turn (2026-10-15)
 
 - [x] `M6-CP3-TB1-R4-ENDPOINT39-CENSUS`: artifact-only workflow 38687783618; 39/39 exact identities executed, 39 RED, 0 missing, immutable package/selector/source, 28/28 manifest before and after, no build/TB497. Detailed report `Architecture_M6_CP3_R4_Endpoint39_Census_Artifact_Only_TB_Report_20261015.md` and 39-row `Architecture_M6_CP3_R4_Endpoint39_Census_Measured_Identities_20261015.tsv`. 38 endpoint-1/no-exact-terminal-corner; 1 endpoint-0/missing-terminal-or-closed-rail-provenance; shared thrown fixture causes flagged; no semantic acceptance, no new stable regression or ledger change.
