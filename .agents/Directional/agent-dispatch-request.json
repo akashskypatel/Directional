@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-rp02-witness-compile-20261015t0108z",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-rp02-witness-compile",
-  "source_sha": "953f812ff1f431e3ad3af3b68a92284a7831c94a",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-rp02-witness-compile"
+  "request_id": "m6-cp3-r4-rp02-doc-closeout-20261015t0112z",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r4-rp02-doc-closeout",
+  "file_id": "1yi8YMCP5vUPxij1YVJGVVeeIJKaIk14P",
+  "patch_sha256": "cbbe3729aa56d8f1331f0637624974ab97e642810bd97403b37bc64e06626cc6",
+  "base_sha": "953f812ff1f431e3ad3af3b68a92284a7831c94a",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close RP02 code build authoring with compile evidence",
+  "retention_days": 7
 }
