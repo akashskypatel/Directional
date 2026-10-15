@@ -1,3 +1,7 @@
+## CURRENT R4 evidence — 2026-10-15
+
+The separately authorized artifact-only interior witness measurement [38725063279](https://github.com/akashskypatel/Directional/actions/runs/38725063279) ran 45/45 selected identities, all RED, with zero missing and immutable postflight. RA-60.10 branch C requires independent diagnostic Review; the RP-02 network-bound consumer is not yet reached. No TB497/acceptance or stage promotion. See `.agents/Directional/Architecture_M6_CP3_R4_Interior_Witness_Artifact_Only_TB_Report_20261015.md`.
+
 ## CURRENT — 2026-10-15 R4 supplemental witness first-RED independent Review
 
 The next single bounded Code + Build turn is `M6-CP3-CB1-R4-WITNESS-REPAIR`. Source-exact Review resolved the first supplemental failure's immediate mechanism (interior source-edge interval incorrectly required to be whole-rail terminal source corner), **not** RP-02 consumer liveness or M6 CP3 acceptance. Eight GMP/GMPXX compile targets only, followed by separate artifact-only supplemental Test + Benchmark and independent Review before any frozen 497 run. Candidate `R4-TB-A-RP02-01` non-stable; 66/17/49, debt1, CP2 accepted 491/491 and R3 rejected 403/497 unchanged. Authority `Architecture_M6_CP3_R4_Witness_First_RED_Independent_Review_Decision_20261015.md`; previous `CURRENT` milestones below are historical states.

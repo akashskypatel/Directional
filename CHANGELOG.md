@@ -1,3 +1,7 @@
+## 2026-10-15 — R4 interior-witness artifact-only Test + Benchmark
+
+`M6-CP3-TB1-R4-INTERIOR-WITNESS`: immutable source `570c5173…`, compile package 11964478813, dispatcher ebd5f1fc, test run [38725063279](https://github.com/akashskypatel/Directional/actions/runs/38725063279), result 11967601999. 45/45 independently selected identities RED (39 historical plus six supplemental), zero missing, 50/50 evidence hashes, full postflight. RA-60.10 branch C: repeated ambiguous `no-exact-terminal-corner` in 44, ordinal405 separate A2b failure. RP-02 and A4 not reached. No production/test edits, no compile, no TB497, no accepted restoration or stable ledger change. Required independent Review of RA-60.5 diagnostic distinction and actual cross-chart probes. Report `.agents/Directional/Architecture_M6_CP3_R4_Interior_Witness_Artifact_Only_TB_Report_20261015.md`.
+
 ## 2026-10-15 — RA-60 frozen: the interior-endpoint repair is accepted, with an encoding collapse recorded and the next measurement pre-registered
 
 - Architecture Review only (`M6-CP3-TB1-R4-REPAIR-REV`); no source, test, selector, binary, harness, workflow, benchmark or ledger change, and no Directional binary executed. **No runtime outcome observed or claimed** (LESSON 160).

@@ -1,3 +1,10 @@
+## CURRENT — R4 interior carrier artifact-only witness measured (2026-10-15)
+
+- [x] `M6-CP3-TB1-R4-INTERIOR-WITNESS`: compiled package `11964478813` from `570c5173…`, run [38725063279](https://github.com/akashskypatel/Directional/actions/runs/38725063279), result `11967601999` SHA-256 `8b52373eebc7bda574f1fed2914dec4577ff70c670396f2ea3b19383d0fd25f1`. Exact 39 historical plus six supplemental executed; **45/45 RED, 0 missing**, 50/50 result manifest, package/source/execution-view/selector postflight true. No compile or source/test change.
+- [ ] **Next mandatory independent Review**: RA-60.10 outcome **C**, 44 `no-exact-terminal-corner` and ordinal 405's separate terminal-provenance failure; inspect paired one-ULP probes versus RA-60.10 assumed exact values, require RA-60.5 diagnostic-only separation before any rerun. RP-02 remains unproven and new positive source test failed its producer precondition. Do not manufacture green, weaken predicates, start TB497 or merge Review into this turn. Two Phase14 identities require their own historical executable package. Ledger 66/17/49 debt1 and frozen 497 unchanged. Evidence `.agents/Directional/Architecture_M6_CP3_R4_Interior_Witness_Artifact_Only_TB_Report_20261015.md`.
+
+---
+
 ## CURRENT — R4 interior carrier witness Code + Build compile complete (2026-10-15)
 
 - [x] `M6-CP3-CB1-R4-WITNESS-REPAIR`: RA-59.9 approved exact source-carrier certificate implemented at `570c51733761c17a198bda6c9aba7d8b1e7ae2dd`; mandatory eight-target GMP/GMPXX compile GREEN workflow 38720128740 result artifact 11964478813, 28/28 verified, no test runtime. Owner report `Architecture_M6_CP3_R4_Witness_Repair_Code_Build_Record_20261015.md`.
