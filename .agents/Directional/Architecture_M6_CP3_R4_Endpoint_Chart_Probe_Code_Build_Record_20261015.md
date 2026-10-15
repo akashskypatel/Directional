@@ -16,3 +16,9 @@ The existing probe parser and pinned 44-case artifact-only harness remain unchan
 ## Remote application and compilation
 
 Pending verified patch application and exact-semantic-source eight-target GMP/GMPXX compile at authoring time. Do not claim compile GREEN or runtime evidence until immutable receipts and hashes have been verified.
+
+## Applied source, compile request and transfer exception
+
+- Local backup patch full SHA-256 `bbe79752d37f173a0e34b4343400ef262c16868e31e8c9a99c8b11206af37da4`; diff-body SHA-256 `541c1c630690b6f89d022682f1abd6635a8b0e3594f78ed398df71d6d7625c97`; forward/reverse application and `git diff --check` verified against exact source. Immutable extracted snapshot verified 5642/5642 manifest hashes when using unchanged snapshot bytes for the three locally edited paths.
+- Standard Drive staging failed twice with `container_session_unavailable` (the file service could not read the active container file). Instead of leaving changes only locally, the authorized GitHub Git-object API created one four-file tree/commit atomically: semantic commit `5be5e123e14e2ddab8bb8c0db2a354a0a900435a`, parent `4c114b24811140a8b74e05570ae3e17e4f7e5197`; all four new blob hashes exactly match the local prepared patch. Branch ref update succeeded without force. The exact patch is preserved as a downloadable recovery artifact; it was **not** uploaded to Drive.
+- Compile-only dispatcher request commit `243a9feb7f982a2dfe5e1fb5a32a8a9ecc36fa84`, exact semantic source `5be5e123e14e2ddab8bb8c0db2a354a0a900435a`, mailbox key `m6-cp3-cb4-r4-endpoint-chart-compile`, standard eight targets. At this record update, no terminal compile receipt has been verified. **Compilation pending**, no claims of GREEN, no binary execution, tests or benchmarks.
