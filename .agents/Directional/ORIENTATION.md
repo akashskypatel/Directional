@@ -1,3 +1,9 @@
+## CURRENT — R5 junction/carrier definition: candidate remedies require missing producer authority, not a relaxed comparison (2026-10-15)
+
+**Definition only.** The R5 specification `.agents/Directional/Architecture_M6_CP3_R5_Junction_Carrier_Authority_Specification_20261015.md` independently confirms the RA-67 junction mechanism for 21/44 measured RED identities, names existing published types/producers and demonstrates the missing witness ordering. Existing A4 `SurfaceHardRailRouteJunctionCertificate` arises after endpoint admission and cannot certify that admission. The naive paired-front split of a length-one route also cannot manufacture a second carrier. Neither publisher-side splitting nor consumer-side vertex-aware acceptance is admitted until a separately reviewed, upstream produced exact witness is exhibited. The other 23 refusals have a different first condition; do not conflate populations. No code/test/selector/runtime change or promotion. Gate C suspended; RA-61.9/RA-64.6 withdrawn; RP-02 unreached. Next turn ID unknown pending independent authorization.
+
+---
+
 ## CURRENT — `M6-CP3-TB4-R4-ENDPOINT-CHART-HARVEST-REV`, 2026-10-15: RA-67 frozen; the refusal that has driven this family of turns is now explained structurally, and the explanation forbids the obvious repair as much as it invites one
 
 **Supersedes the RA-66 paragraph below as the current state.** One turn was adjudicated and it is

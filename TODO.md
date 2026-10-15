@@ -1,3 +1,11 @@
+## CURRENT — R5 junction/carrier definition delivered; independent decision gate (2026-10-15)
+
+- [x] `M6-CP3-DEFN-R5-JUNCTION-CARRIER-AUTHORITY-SPEC`: independent source/fixture check confirms RA-67.6 for 21 junction cases only. Recorded existing producer/witness census, both candidate repair shapes and concrete falsifiers in `.agents/Directional/Architecture_M6_CP3_R5_Junction_Carrier_Authority_Specification_20261015.md`; no implementation or runtime authority inferred.
+- [x] Both candidate shapes examined against actual producer ordering. Neither presently has the requisite pre-admission junction witness; naive division of a one-step carrier route is insufficient. The 23 nonjunction REDs remain separate controls. Gate C SUSPENDED; no replacement predicate licensed.
+- [ ] Authorize a **separately named independent Review/producer-definition decision** before any change to A2b/A3/A4/A5, new vertex-star type, new paired-front producer, test selector, or green ledger. No successor ID established. Frozen 66/17/49, debt 1, CP2 491/491, R3 403/497, selector 497; RP-02 still UNREACHED.
+
+---
+
 ## CURRENT — TB4 endpoint-chart harvest evidence durably recorded; independent Review separately required (2026-10-15)
 
 - [x] `M6-CP3-TB4-R4-ENDPOINT-CHART-HARVEST`: 44/44 artifact-only identities executed against new immutable package `11994726341` and semantic source `5be5e123e`, 44 RED / 0 missing, run `38782417387`, result `11996317553`, ZIP SHA-256 `44df6e2fc1bdba1e15f81e11ddec7bbb6cc90e2d43adcda4f334d875d1dbd9c9`. Observed 23 both-attached interior and 21 from-only junction cases; computed canonical carrier edges, no emitted `a2bProbeCarrierEdge`. Detailed report: `.agents/Directional/Architecture_M6_CP3_R4_Endpoint_Chart_Harvest_Artifact_Only_TB_Report_20261015.md`.
