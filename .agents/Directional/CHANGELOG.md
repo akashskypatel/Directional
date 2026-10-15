@@ -1,3 +1,7 @@
+## 2026-10-15 — Python durable ledger content floor
+
+- Added nonvacuous heading and line history floors to `review_check.py boundary`; removed tracker 10%-shrink exemption from `ledgers`; cleared consumed `drive_apply` descriptor to `noop`. Detached worktree rejected an equal-line heading-destroying overwrite and accepted a legitimate prepend. Snapshot 8b4b1584, verification 5636/5636. No C++ compile, runtime, test, frozen selector or accepted ledger changes. See `Architecture_M6_CP3_R4_Ledger_Content_Floor_20261015.md`.
+
 ## 2026-10-15 — `M6-CP3-CB2-R4-PREDICATE-SEPARATION` Code + Build verified, awaiting separately authorized successor
 
 - Scope under RA-62.9/RA-62.2: diagnostics only in `SurfaceCellTracing.cpp` (`a2bProbeFromSourceVertex`, `a2bProbeToSourceVertex`, `a2bProbeFirst/SecondIntervalPresent`, `Span`, exact `FirstOrdinal`/`SecondOrdinal`, and `a2bProbeFirstFailedCondition`). The original A2b refusal/acceptance branches and `a2bProbeFailure` are not modified. `review_check.py` adds handoff and ORIENTATION to committed `ledgers`, tightens their historical shrink threshold to any loss, and changes `boundary` to a maximum committed-history line-count floor plus durable marker check. Source code and Review-helper edits are compile verified **but not behaviorally tested**; new diagnostic fields have no runtime evidence.
