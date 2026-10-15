@@ -1,0 +1,3 @@
+turn=M6-CP3-TB4-R4-ENDPOINT-CHART-HARVEST
+entry_beacon_sha=8228a27f7779ac6c7c84aea113c4d0deacc5d7dd
+purpose=source snapshot for exact durable closeout
