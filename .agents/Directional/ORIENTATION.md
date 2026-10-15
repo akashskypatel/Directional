@@ -1,3 +1,55 @@
+## CURRENT — `M6-CP3-TB1-R4-CARRIER-REV`, 2026-10-15: RA-59 frozen; the hypothesis set is CLOSED and the certificate model is SELECTED
+
+**Supersedes the RA-58 "carrier bounded" paragraph below as the current state.**
+`M6-CP3-TB1-R4-ENDPOINT39-CENSUS` ran and reported itself. The **measurement is ACCEPTED**, its
+**interpretation is AMENDED then CLOSED**, **two of three hypotheses are ELIMINATED from source bytes**,
+the **certificate model is SELECTED** with a falsifier frozen, and the **classification is CORRECTED**.
+No open REVIEW_BLOCKER. No promotion, no new stable event, no recurrence, no gate credit.
+
+**§3 current state — the root cause is selected, and it is a domain gap, not a strictness dial.** All 39
+historical A4 identities ran once each on the same immutable package; `executed=39 red=39 missing=0
+postflight=true exit=0`. The measured carrier is a **half-terminal front**: in 38/39, **one end of the
+paired hard-rail front is certified at an exact rail terminal source vertex** and the other sits at an
+**interior parameter of the same carrier edge**. `endpoint_certificate` admits exactly two shapes — open
+rail with a published terminal contact, or contact-free rail with a typed closed chain — and an interior
+end on an **open** rail satisfies neither. One mechanism now accounts for every RA-58 control outcome:
+the torus passes on the **closed-chain** branch, square and cylinder never enter the block, and only
+open-rail fixtures reach the terminal branch with an interior end.
+
+**§4 runtime witness — what the 39 did and did not establish.** It established breadth across 5 fixture
+builders, 2 rail ids, `chi=0` and `chi=3`, and both full `remesh_from_raw_cross_field` pipeline entries,
+satisfying RA-56.8 for a **measured carrier**. It did **not** add 39 corroborations: 19 identities share
+two **throwing** fixture singletons, so under RA-58.9 they are **2** measurements and the independent-locus
+bound is **≤ 22**. Three recorded fields turned out to carry no information — `routeLength` (correct at 1,
+since it measures the front edge's own carrier extent, not the rail's length), `step` (arithmetically
+`routeLength-1` here) and `locus` (implied by the predicate name). A field must be measured before it can
+be shown uninformative, so recording them was right; reading them as breadth was not.
+
+**§7 priority — the next rung is the repair, under a selected model and a frozen falsifier.**
+`M6-CP3-CB1-R4-WITNESS-REPAIR` (Code + Build, compile-only) adds a **source-attested interior carrier
+endpoint** shape authenticated **across-rail** per RA-57.5, with `exact_corner`, `no-exact-terminal-corner`,
+the closed-chain branch and every `Produced` precondition **unchanged and fail-closed**, at least one
+certified terminal endpoint still required on an open rail, and no existing test contract weakened. The
+falsifier must be checked **first**, with a STOP: if hard-rail fronts are contracted to be cut only at rail
+terminals, the repair belongs upstream and the model is wrong. The single `endpoint-0` identity (historical
+ordinal 405) is a **separate** A2b provenance defect and is out of scope for this repair. Repair by fixture
+change is forbidden: every measured fixture authors a two-edge open rail `1→4→7`, so the interior endpoint
+is structural, and a one-edge rail would retire the only fixtures that can ever exercise the junction clauses.
+
+**§8 pattern — a measured value without its expected value is not a discriminator.** The route-truncation
+hypothesis was built on `routeLength=1` without ever establishing what `routeLength` is contracted to
+measure. Read against its producer, `1` is the **correct** value and the hypothesis dissolves. This is the
+third error of one family: RA-57.3 proposed a control that could not discriminate, RA-58.8 read a grid
+conditioned on the verdict rather than the locus, and RA-59.4 promoted a hypothesis on a field whose
+expected value was never derived. All three were caught by re-deriving from bytes rather than from the
+previous turn's prose. Two further standing facts were established the same way: the **acceptance half** of
+the hard-rail certificate model has **no witness at all**, green or RED — every test that asserts a
+published route certificate is a tamper test that fails at its own `Produced` gate — and the junction loop
+**cannot execute** at `routeLength=1`, so RA-41's junction/sector clauses can never be exercised by more
+`routeLength=1` measurement. They need a front spanning two rail topologies. Recorded, not authorized;
+not retired. `RP-02` is now localized to the unwitnessed acceptance half and **remains open**.
+
+---
 ## CURRENT — 2026-10-15 RA-58 frozen; the carrier is BOUNDED to OPEN hard-rail terminal certification
 
 **Supersedes the RA-57 "control still missing" paragraph below as the current state.**
