@@ -1,12 +1,14 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-witness-rev-retry-20261015t0234z",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-witness-rev-docs-v2",
-  "file_id": "1jqosQBBLShH5YkqjcMNnRjusufIT5vW9",
-  "patch_sha256": "c842935a6e765e3580e4b7d9f81081c186cae80dd6d9902103df0a481ae1809e",
-  "base_sha": "f83bc044db739350eba044e9120bafddc1c1c537",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): independent R4 witness RED review and bounded repair plan",
+  "request_id": "m6-cp3-r4-witness-breadth-20261015-0328",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-r4-witness-breadth",
+  "executor_sha": "ef5ff07335a494b958f9e2aaa0495d1964afa0d8",
+  "semantic_source_sha": "953f812ff1f431e3ad3af3b68a92284a7831c94a",
+  "turn_id": "M6-CP3-TB1-R4-WITNESS-BREADTH",
+  "harness_path": ".agents/Directional/tools/m6_cp3_r4_witness_breadth_harness.sh",
+  "harness_sha256": "db1aea68782f68196da0abf26be24f6648e9c565d305f3200ced09740aedd65a",
+  "environment": {},
+  "artifact_prefix": "directional-m6-cp3-r4-witness-breadth",
   "retention_days": 7
 }
