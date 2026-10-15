@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-true-control-20261015-0431",
+  "request_id": "m6-cp3-r4-endpoint39-20261015-0537",
   "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-r4-true-control",
-  "executor_sha": "e7208cfc2cbb078be771251f50dac24659c066df",
+  "mailbox_key": "m6-cp3-r4-endpoint39-census",
+  "executor_sha": "d18f3d43ce528402419d0309d873e13395cec971",
   "semantic_source_sha": "953f812ff1f431e3ad3af3b68a92284a7831c94a",
-  "turn_id": "M6-CP3-TB1-R4-TRUE-CONTROL",
-  "harness_path": ".agents/Directional/tools/m6_cp3_r4_true_control_harness.sh",
-  "harness_sha256": "9d471c493b7d3c9c4fa5bf31916e37d9caa470a628da6c0e710f770f0c986162",
+  "turn_id": "M6-CP3-TB1-R4-ENDPOINT39-CENSUS",
+  "harness_path": ".agents/Directional/tools/m6_cp3_r4_endpoint39_census_harness.sh",
+  "harness_sha256": "4dd5c605710c65317b2f524d0d3bed83602b7922ceec4bab87062374407c40f6",
   "environment": {},
-  "artifact_prefix": "directional-m6-cp3-r4-true-control",
+  "artifact_prefix": "directional-m6-cp3-r4-endpoint39-census",
   "retention_days": 7
 }
