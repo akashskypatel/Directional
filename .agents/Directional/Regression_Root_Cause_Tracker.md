@@ -1,3 +1,175 @@
+## CURRENT — the gate that actually fails first is a third expression of the same granularity error; vertex 4 and 2 confirmed, `one-hot-carrier-junction` falsified, specification authorized; RA-64 frozen (2026-10-15)
+
+**Two turns adjudicated together, BOTH ACCEPTED:** `M6-CP3-CB3-R4-LEDGER-CONTENT-FLOOR` and
+`M6-CP3-TB3-R4-PROBE-HARVEST`. Decision:
+`Architecture_M6_CP3_R4_Probe_Harvest_Review_Decision.md`. No open REVIEW_BLOCKER. No promotion, no
+stable event, no regression recurrence, no gate credit. **RA-61.9's withdrawal is now confirmed by
+measurement and is final.**
+
+**Authority re-derived, not accepted.** Harvest run `38756316813` `conclusion: success`,
+`headSha d31a241af`; result artifact **`11982824436`** present at 76,926 bytes. The harness SHA-256
+recomputed on disk — `bec126c4b4fc835c92de2ae39c6e36295721227549aa6b4ca84178c88fea040a` — is
+**byte-identical to the reported value**, so the harness that ran is the harness committed. The
+measurement is artifact-only against the pre-existing immutable package `11976790988` at semantic
+source `16c3134c0`, which RA-63.1 already proved byte-identical to HEAD's `src` tree. **No compile,
+relink, selector change, benchmark or 497.** `src`, `include`, `tests`, `benchmarks`, `cmake` and
+`.github` are untouched across both turns; only the instrument, the new harness, the dispatch
+descriptor and documents changed. **44/44 executed, 44 RED, zero missing, zero skipped or
+duplicated**, three `cmp` immutability checks and a postflight manifest clean.
+
+**The content floor is implemented and verified by simulation rather than by reading.** RA-63.7
+proved by simulation that the previous guard returned green on an equal-size overwrite; the same
+discipline is applied to the fix. Four simulations, each in a throwaway detached worktree, **nothing
+committed**: **(A)** equal-size whole-file overwrite with the marker retained and `## ` sections
+302 → 1 — the line floor passes `4502 >= 4502` while the **heading floor FAILS `1 >= 304`**, so
+**the RA-63.7 defect is CLOSED**; **(B)** a legitimate prepend passes (`4507 >= 4502` lines,
+`305 >= 304` headings); **(C)** three headings replaced by body lines with the **line count
+unchanged** — **FAILS `301 >= 304`**, which is *stronger* than specified because it catches a
+partial deletion; **(D)** line and heading counts and every heading's text preserved with all body
+prose replaced — **passes, and that is the honest residual.** All **six** observed integrity events
+(RA-63.10) collapsed the file and are caught by (A) or (C). Items 2–4 of the mandate landed: the
+tracker's exemption is gone (`tools/review_check.py:238`), both floors assert `> 0` against
+`history_valid` so a total read failure can no longer pass vacuously (`:206-211`), and the consumed
+Drive descriptor was reset to a no-op. The implementation **improved on the specification**,
+deriving both floors from one blob read per revision where the naive reading would have doubled the
+subprocess count. **`PROCESS-01`'s tooling residual is therefore discharged for every observed
+failure mode.** Shape (D) would need per-section content hashing and **this Review declines to
+mandate it** — the evidence does not support that scope, and the turn's own report states the limit
+in its own words: *"these checks do not prove arbitrary content integrity, only the explicitly
+authorized high-water properties."* Recorded without repair: a durable file with no committed
+history now fails rather than passing as `(new file)`, which is the right default and never fires
+for the three long-committed protected files.
+
+**The reviewer's recorded prediction was half right and half wrong.** RA-63 predicted, with its
+provenance stated, that subset A would emit `a2bProbeFromSourceVertex=4` /
+`a2bProbeToSourceVertex=4` **and** report `one-hot-carrier-junction`. Measured: subset A
+**`4/4` — CONFIRMED** (15 cases); subset B **`2/2`** (6 cases), *measured rather than assumed*,
+which **discharges the standing backlog prohibition on assuming it**; but the predicted first
+failed condition is **FALSIFIED** — all 21 report **`carrier-orientation`**. The error is the
+reviewer's and its mechanism is exact: `one-hot-carrier-junction` sits at **rung 4** of the
+diagnostic ladder and all 21 stop at **rung 3**, so the prediction named a *value* without checking
+that execution would ever *reach* the rung that produces it. The 23 interior identities report
+`not-same-interior-carrier-point`, so rung 3 **passed** for them — **the two subsets are separated
+by exactly one conjunct**, which independently corroborates the 23/21 partition from a direction
+RA-62 never used.
+
+**PRINCIPAL FINDING — the gate that actually fails first is a THIRD expression of the same
+granularity error, and it is re-derived from the fixture with no run.** `oriented_carrier`
+(`src/geometry/SurfaceCellTracing.cpp:19106-19114`) returns a value only when `{from, to}` **is**
+the carrier record's own face pair. Recomputing
+`make_disconnected_rectangular_feature_pair_mesh` (`tests/SurfaceCellsPhase10Tests.cpp:223-264`)
+yields, per component, `face 0 = (0,1,4)`, `face 3 = (1,5,4)`, `face 4 = (3,4,7)`,
+`face 7 = (4,8,7)` — so edge **`(1,4)` has face pair `{0,3}`** and edge **`(4,7)` has face pair
+`{4,7}`**. The measured endpoint faces are **`{0,7}`**, so **face 7 is not incident to the carrier
+edge at all**: it belongs to the rail's *other* edge. **`oriented_carrier` is structurally
+unsatisfiable for subset A**, by the fixture's own face table, with no execution. **Three
+expressions of one error now sit inside the same rejecting conjunction:** (1) **rail-level terminal
+set answering a carrier-edge question** (RA-62.5) — *never even reached* for the 21; (2)
+**edge-record interval answering an endpoint question** (RA-63.5) — reached, and satisfied by
+everything; (3) **a single carrier edge's face pair confronted with junction-straddling endpoint
+faces** — **the actual first failure for 21 of 44.** This **reorders the repair**: the
+terminal-contact set is **not** the first thing to fix, because the certificate's prior premise —
+that a front's two endpoint trace points lie in the two faces of **one** carrier edge — is false
+for every junction-terminated front, and no terminal vocabulary can rescue a conjunction that has
+already returned `nullopt`.
+
+**The interval witness is satisfied 44/44, which is stronger than the type argument.** Both
+shared-boundary intervals are present in all 44, spans are equal (`3` in 38 identities, `2` in the
+6 subset-B identities), and the ordinals are exactly reciprocal throughout — `0/1 → 1/1` against
+`1/1 → 0/1` for the 23 interior identities, `3/1 → 4/1` against `4/1 → 3/1` for the 21 one-hot —
+emitted as lossless exact rationals exactly as RA-63.4 required. RA-63.5 argued from the record's
+field list that this witness **cannot** pin the point; the measurement shows it **does not
+discriminate anything at all**. Stated without inflation: RA-61.9 retained strict interiority,
+which the 21 one-hot identities fail, so it would not have admitted those — it would have admitted
+**the 23**, on a warrant that is **equally true of the 21 it still rejects**, with the actual work
+done by **interiority, a double comparison**, while an **exact rational** was presented as the
+justification. That is worse than the dead gate it replaced, which at least failed closed and
+visibly. **RA-61.9 is withdrawn and the withdrawal is final.** The report reaches the same
+conclusion in its own words — *"the edge-record interval relationship is not an endpoint identity
+certificate"* — and correctly declines to treat its own data as authorization.
+
+**NEW: the route under-reports the front's extent, and the measurement does not say why.** RA-62.8
+concluded that `routeLength = 1` is a fact about the traced front. That needs refinement, because
+**the geometry already spans the junction**: the route reports **one** step, carrier `(1,4)`, while
+the endpoint faces `{0,7}` require **two** carrier edges, `(1,4)` and `(4,7)`. Two readings remain
+open and this measurement decides **neither**: **(i)** the A4 publisher cut a run that should have
+been a single route of two steps, so the route is wrong and the trace points are right — under
+which the RA-59 two-topology recipe may already be **latently satisfied by the geometry** while the
+route disagrees; or **(ii)** a single-step route may legitimately carry endpoint trace points in
+faces outside its carrier, under which the principal finding above is the whole defect.
+**Distinguishing them is the first question the specification rung must answer, and it must be
+answered from the publisher's own bytes, never inferred from the type** — the discipline RA-63.5
+earned. **Neither reading is authorized as a conclusion.**
+
+**Harness compliance verified against the RA-61 standard.** 156 lines: pinned artifact id and
+source SHA, provider and artifact digests, manifest SHA with a 28-OK count assertion,
+`source-commit.txt` identity, `exactArithmeticBackend=GMP` and `runtimeExecution=false` assertions,
+pinned packaged source hash, frozen selector hashes, pre-snapshots, a census inventory pinned by
+SHA with **39 identities and an explicit duplicate assertion**, ordinal **405** excluded by an
+explicit `continue` carrying its reason (`:56`), `NOT_SELECTED` paths incrementing `missing` and
+continuing, a `planned == 44` assertion (`:120`), three `cmp` immutability checks plus a postflight
+manifest, and the closing `executed == 44 && missing == 0 && postflight == true` with `exit 0`
+(`:155-156`). 39 census − 405 + 6 supplemental = **44**, matching the table's 23 + 21. **Specific
+credit to the extraction parser**: it regex-matches each field per raw log, writes an **empty
+string** when a field is absent and sets `probe_emitted = int(any(values))`, so a missing probe is
+**visible rather than synthesized**. One cosmetic residual, not worth a turn: the final `die`
+message still reads `'incomplete interior-witness measurement'`, a label copied from the RA-61
+harness.
+
+**Conduct, recorded as credit rather than as a defect.** The harvest reported
+`carrier-orientation` for all 21 — **contradicting the reviewer's own recorded prediction** —
+**without reconciling, hedging or relabelling it**; it claimed nothing for the vertex result it did
+not license, kept 405 out of the 44 with its reason stated, called its own RED set an `R4-VIN-01`
+**baseline** rather than a regression, and wrote *"independent Review required before deciding an
+implementation successor."* This is the reporting standard `RP-03` was opened to obtain, and
+drawing the consequence of the contradiction is the Review's job, not the measuring turn's.
+Separately, the content-floor turn's authorized Drive transport failed with
+`container_session_unavailable`; it fell back to direct repository writes **and disclosed it**,
+volunteering that the downloadable patch's documentation bytes may differ from the written records.
+The three identical `Record R4 Python heading-floor verification…` commits are that retry sequence
+and are harmless. **Beacon defect:** the harvest closed `Status: IN_PROGRESS` with `Ended at:`
+blank and `Successor: M6-CP3-TB3-R4-PROBE-HARVEST` — **the turn naming itself as its own
+successor**. The measurement demonstrably completed, so `IN_PROGRESS` is stale, and a
+self-referential successor is **worse than the reasoned `UNKNOWN` accepted at RA-63.13** because
+`UNKNOWN` signals absence while this asserts a successor that cannot be executed. The report's own
+prose carries the correct content, so this is an **encoding** failure, not a reasoning failure;
+closed here with a named successor.
+
+**The specification is authorized; the code still is not.** Through RA-62 and RA-63 the repair was
+withheld because no specification existed. Three measured expressions of one granularity error, a
+44/44 population, two exactly-characterised subsets and one named open question are now enough to
+write a specification — and still not enough to write code.
+`M6-CP3-DEFN-R4-ENDPOINT-AUTHORITY-SPEC` may produce a specification and nothing else: no C++, no
+compile, no tests, no instrument change. **Binding obligation, carried from RA-61.7 and sharpened
+by RA-64.12: every proposed predicate must carry its satisfiability witness AND its reachability
+witness against the measured 44** — which identities it would admit, which it would still reject,
+and at which rung each is decided. **A predicate whose admitting set is not exhibited against this
+population is not a specification.** New lesson **RA-64.12: a prediction must name the rung at
+which it will be observed, not only the value it will take** — fourth member of the family after
+RA-61.5 (provenance) and RA-61.7 (satisfiability), now **reachability**.
+
+**Candidate/non-stable throughout; no promotion.** Stable ledger **66 events / 17 categories / 49
+recurrences**, debt **1**, CP2 **491/491** accepted, R3 **403/497** rejected (94 RED, 88 carried
+CP2 losses), frozen selector **30+12+449+6=497** — unchanged. **The 44 RED are the `R4-VIN-01`
+baseline for semantic source `16c3134c0`, never a comparand** against artifact `11967601999` or any
+earlier measurement. No accepted-green loss, no ledger credit, no stable event, no regression
+recurrence, no 497 execution, no gate credit; no source, test, selector, binary, harness, workflow
+or benchmark change in this **Review**. PR #8 draft/open. **`RP-01` located with three expressions;
+NOT repaired; SPECIFICATION authorized, code NOT.** **`RP-02` still UNREACHED** (neither the
+network-bound consumer nor its tamper half has executed); `RP-03` satisfied and exemplified;
+**`PROCESS-01` tooling residual discharged for every observed failure mode**, shape-(D) residual
+recorded and deliberately not escalated. **RA-61.9 WITHDRAWN, final.** **Confirmed by measurement:**
+subset A vertex 4, subset B vertex 2, the 44/44 interval satisfaction, RA-60.6. **Falsified:**
+RA-63's `one-hot-carrier-junction` prediction. **Refined:** RA-62.8's `routeLength = 1` conclusion.
+Carried: the RA-64.6 publisher question, the RA-63.11 ladder reorder, RA-60.7/.8/.9, the RA-58.7
+A5/A6/A7 loci, `R4-OHF-02`, the two RA-57.9 guards, **RA-41's junction/sector clauses**, ordinal
+405's separate A2b provenance defect, the upstream A1/A2a question, 34 Phase10 / seven DCEL / six
+CP3 identities, CP2 restorations outside the 37, organic D1/D2/D3/D5 and A6/A7 witnesses, the odd-τ
+witness, and the two `SurfaceCellTracingPhase14` identities
+(`cmake/DirectionalTests.cmake:554-572`). **Successor:**
+`M6-CP3-DEFN-R4-ENDPOINT-AUTHORITY-SPEC`.
+
+---
 ## CURRENT — an edge-level witness cannot identify an endpoint: RA-61.9 withdrawn, `RP-01` shown to be a pattern, and the new content guard proven incomplete; RA-63 frozen (2026-10-15)
 
 **`M6-CP3-CB2-R4-PREDICATE-SEPARATION` adjudicated: ACCEPTED.** Both mandated diagnostic payloads

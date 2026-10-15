@@ -1,3 +1,133 @@
+## RA-64 — `M6-CP3-TB3-R4-PROBE-HARVEST-REV`, 2026-10-15 (frozen)
+
+Decision: `.agents/Directional/Architecture_M6_CP3_R4_Probe_Harvest_Review_Decision.md`. Adjudicates
+**two** turns, `M6-CP3-CB3-R4-LEDGER-CONTENT-FLOOR` and `M6-CP3-TB3-R4-PROBE-HARVEST`: **BOTH
+ACCEPTED**. No open REVIEW_BLOCKER. No promotion, no stable event, no regression recurrence, no
+gate credit. **RA-61.9 withdrawal confirmed by measurement and final.**
+
+- **RA-64.1** Authority re-derived, not accepted. Harvest run `38756316813` `success`, artifact
+  `11982824436` present (76,926 bytes); the harness SHA-256 recomputed on disk,
+  `bec126c4b4fc835c92de2ae39c6e36295721227549aa6b4ca84178c88fea040a`, is **byte-identical to the
+  reported value**, so the harness that ran is the harness committed. Measured against the
+  pre-existing immutable package `11976790988` at semantic source `16c3134c0`, already proven
+  byte-identical to HEAD's `src` tree at RA-63.1. No compile, relink, selector change, benchmark
+  or 497. `src`, `include`, `tests`, `benchmarks`, `cmake`, `.github` untouched across both turns.
+- **RA-64.2** **The content floor is implemented and verified by simulation, not by reading.** Four
+  throwaway-worktree simulations, nothing committed: **(A)** equal-size whole-file overwrite with
+  the marker retained and `## ` sections 302 → 1 — line floor passes `4502 >= 4502`, **heading
+  floor FAILS `1 >= 304`: the RA-63.7 defect is CLOSED**; **(B)** legitimate prepend — passes;
+  **(C)** three headings replaced by body lines with the **line count unchanged** — **FAILS
+  `301 >= 304`**, stronger than specified, catching a partial deletion; **(D)** line *and* heading
+  counts and all heading text preserved, body replaced — **passes, the honest residual.** All six
+  observed integrity events (RA-63.10) collapsed the file and are caught by (A) or (C). Items 2–4
+  landed: the tracker exemption is gone (`review_check.py:238`), both floors assert `> 0` against
+  `history_valid` so a total read failure cannot pass vacuously (`:206-211`), the consumed Drive
+  descriptor is a no-op. The implementation **improved on the specification** by deriving both
+  floors from one blob read per revision. **`PROCESS-01`'s tooling residual is discharged for every
+  observed failure mode**; shape (D) needs per-section content hashing and **this Review declines
+  to mandate it** — the evidence does not support that scope. Recorded without repair: a durable
+  file with no committed history now fails rather than passing as `(new file)`, which is the right
+  default.
+- **RA-64.3** **The reviewer's recorded prediction was half right and half wrong.** Subset A source
+  vertex **`4/4` CONFIRMED** (15 cases); subset B **measured as `2/2`** (6 cases) — *measured, not
+  assumed*, discharging the backlog item; but the predicted first failed condition
+  `one-hot-carrier-junction` is **FALSIFIED** — all 21 report **`carrier-orientation`**. The error
+  is the reviewer's: `one-hot-carrier-junction` is ladder rung 4 and all 21 stop at **rung 3**, so
+  the prediction named a *value* without checking that execution would ever *reach* the rung
+  producing it. The 23 interior identities report `not-same-interior-carrier-point`, so rung 3
+  **passed** for them — the two subsets are separated by exactly one conjunct, independently
+  corroborating the 23/21 partition from a direction RA-62 never used.
+- **RA-64.4 (PRINCIPAL)** **The first gate to fail is a third expression of the same granularity
+  error, re-derived from the fixture with no run.** `oriented_carrier`
+  (`src/geometry/SurfaceCellTracing.cpp:19106-19114`) yields a value only when `{from, to}` **is**
+  the carrier record's own face pair. Recomputing
+  `make_disconnected_rectangular_feature_pair_mesh` (`tests/SurfaceCellsPhase10Tests.cpp:223-264`)
+  gives edge `(1,4) -> faces {0,3}` and edge `(4,7) -> faces {4,7}`; the measured endpoint faces
+  are **{0,7}**, so **face 7 is not incident to the carrier edge at all** — it belongs to the
+  rail's *other* edge. `oriented_carrier` is **structurally unsatisfiable** for subset A, by the
+  fixture's own face table, with no execution. **Three expressions of one error now sit in the same
+  rejecting conjunction:** (1) rail-level terminal set ← carrier-edge question (RA-62.5, *never
+  reached* for the 21); (2) edge-record interval ← endpoint question (RA-63.5, reached and
+  satisfied by everything); (3) **single-carrier-edge face pair ← junction-straddling endpoint
+  faces — the actual first failure for 21 of 44.** This **reorders the repair**: the
+  terminal-contact set is *not* the first thing to fix, because the certificate's prior premise —
+  that a front's two endpoint trace points lie in the two faces of **one** carrier edge — is false
+  for every junction-terminated front, and no terminal vocabulary rescues a conjunction that has
+  already returned `nullopt`.
+- **RA-64.5** **The interval witness is satisfied 44/44, which is stronger than the type
+  argument.** Both intervals present in all 44, **equal spans** (`3` in 38, `2` in 6), **exactly
+  reciprocal ordinals** throughout — `0/1 → 1/1` against `1/1 → 0/1` for the 23, `3/1 → 4/1`
+  against `4/1 → 3/1` for the 21 — lossless exact rationals as RA-63.4 required. RA-63.5 argued
+  from the field list that this witness *cannot* pin the point; the measurement shows it **does not
+  discriminate anything at all**. Stated without inflation: RA-61.9 kept strict interiority, which
+  the 21 fail, so it would have admitted **the 23** — on a warrant equally true of the 21 it still
+  rejects, with the work done by **interiority, a double comparison**, while an **exact rational**
+  was presented as the justification. Worse than the dead gate, which at least failed closed and
+  visibly. **RA-61.9 withdrawn, final.**
+- **RA-64.6 (NEW)** **The route under-reports the front's extent, and the measurement does not say
+  why.** RA-62.8 concluded `routeLength = 1` is a fact about the traced front; that needs
+  refinement, because the **geometry already spans the junction** — the route reports **one** step
+  (carrier `(1,4)`) while the endpoint faces `{0,7}` require **two** carrier edges. Two readings
+  remain open and this measurement decides **neither**: **(i)** the A4 publisher cut a run that
+  should have been one route of two steps, so the route is wrong and the trace points right —
+  under which the RA-59 two-topology recipe may already be **latently satisfied by the geometry**;
+  or **(ii)** a single-step route may legitimately carry endpoint trace points in faces outside its
+  carrier, under which RA-64.4 is the whole defect. **Distinguishing them is the first question the
+  specification rung must answer, from the publisher's own bytes, never inferred from the type.**
+  Neither reading is authorized as a conclusion.
+- **RA-64.7** Harness compliance verified against the RA-61 standard: pinned artifact id and source
+  SHA, provider and artifact digests, manifest SHA with a 28-OK count, `source-commit.txt`
+  identity, `exactArithmeticBackend=GMP` and `runtimeExecution=false` assertions, pinned packaged
+  source hash, frozen selector hashes, pre-snapshots, census inventory pinned by SHA with **39
+  identities and a duplicate assertion**, ordinal **405** excluded by an explicit `continue` with
+  its reason (`:56`), `NOT_SELECTED` paths incrementing `missing` and continuing, `planned == 44`
+  (`:120`), three `cmp` immutability checks plus a postflight manifest, and the closing
+  `executed == 44 && missing == 0 && postflight == true` with `exit 0` (`:155-156`). 39 − 405 + 6 =
+  **44**, matching 23 + 21. **Specific credit** to the extraction parser: it writes an empty string
+  for an absent field and sets `probe_emitted = int(any(values))`, so a missing probe is **visible
+  rather than synthesized**. Cosmetic residual, not worth a turn: the final `die` message still
+  reads `'incomplete interior-witness measurement'`.
+- **RA-64.8** **A contradicted prediction was reported plainly.** The harvest reported
+  `carrier-orientation` for all 21 — contradicting the reviewer's recorded prediction — **without
+  reconciling, hedging or relabelling it**, claimed nothing for the vertex result it did not
+  license, kept 405 out of the 44 with its reason stated, called its own RED set an `R4-VIN-01`
+  **baseline** rather than a regression, and said *"independent Review required before deciding an
+  implementation successor."* This is the standard `RP-03` was opened to obtain; drawing the
+  consequence of the contradiction is the Review's job, not the measuring turn's.
+- **RA-64.9** The content-floor turn's authorized Drive transport failed
+  (`container_session_unavailable`); it fell back to direct repository writes **and disclosed it**,
+  volunteering that the downloadable patch's documentation bytes may differ from the written
+  records. The three identical `Record R4 Python heading-floor verification…` commits are that
+  retry sequence and are harmless. Disclosing a transport substitution and its exact consequence,
+  unprompted, is the behaviour this process depends on.
+- **RA-64.10** Beacon defect: closed `Status: IN_PROGRESS` with `Ended at:` blank and
+  `Successor: M6-CP3-TB3-R4-PROBE-HARVEST` — **the turn naming itself as its own successor**.
+  RA-64.1 establishes the measurement completed, so `IN_PROGRESS` is stale, and a self-referential
+  successor is **worse than the reasoned `UNKNOWN` accepted at RA-63.13**, because `UNKNOWN`
+  signals absence while this asserts a successor that cannot be executed. The report's own prose
+  carries the correct content, so this is an **encoding** failure, not a reasoning failure. Closed
+  with a named successor.
+- **RA-64.11** **The specification is authorized; the code still is not.** Three measured
+  expressions of one granularity error, a 44/44 population, two exactly-characterised subsets and
+  one named open question are enough to write a specification and not enough to write code.
+  `M6-CP3-DEFN-R4-ENDPOINT-AUTHORITY-SPEC` may produce a specification and nothing else — no C++,
+  no compile, no tests, no instrument change. **Binding obligation, from RA-61.7 sharpened by
+  RA-64.12: every proposed predicate must carry its satisfiability witness AND its reachability
+  witness against the measured 44** — which identities it admits, which it still rejects, and at
+  which rung each is decided. A predicate whose admitting set is not exhibited against this
+  population is not a specification.
+- **RA-64.12 (new lesson)** **A prediction must name the rung at which it will be observed, not
+  only the value it will take.** Fourth member of the family after RA-61.5 (provenance) and
+  RA-61.7 (satisfiability): **reachability**.
+- **RA-64 accounting.** Ledger **66/17/49**, debt **1**, CP2 **491/491**, R3 **403/497**, frozen
+  selector **497** — unchanged. The 44 RED are the **`R4-VIN-01` baseline** for `16c3134c0`, never
+  a comparand against `11967601999`. `RP-01` located with **three expressions**, not repaired,
+  **specification authorized, code not**; `RP-02` **UNREACHED**; `RP-03` satisfied and exemplified;
+  **`PROCESS-01` tooling residual discharged for every observed failure mode**, shape-(D) residual
+  recorded and deliberately not escalated. Successor
+  **`M6-CP3-DEFN-R4-ENDPOINT-AUTHORITY-SPEC`** — specification only.
+
+---
 ## RA-63 — `M6-CP3-CB2-R4-PREDICATE-SEPARATION-REV`, 2026-10-15 (frozen)
 
 Decision: `.agents/Directional/Architecture_M6_CP3_R4_Predicate_Separation_Review_Decision.md`.

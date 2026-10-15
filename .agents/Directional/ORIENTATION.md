@@ -1,3 +1,65 @@
+## CURRENT — `M6-CP3-TB3-R4-PROBE-HARVEST-REV`, 2026-10-15: RA-64 frozen; the conjunct that actually refuses first is not the one this family has been studying, and the reviewer's prediction was falsified at the rung it never reached
+
+**Supersedes the RA-63 "edge-level witness" paragraph below as the current state.** Two turns were
+adjudicated together and **both are ACCEPTED**: the durable-content guard and the 44-identity
+measurement. One beacon defect is closed. No open REVIEW_BLOCKER. No promotion, no stable event, no
+regression recurrence, no gate credit.
+
+**§3 current state — a third mismatch, and it is the one that fires.** The rejecting conjunction is
+now known to contain **three** separate instances of the same mistake, each asking a question in a
+different authority domain from the one that publishes the answer. The instance this family has
+studied for six rungs — whole-rail terminal authority confronted with a single carrier edge — is
+**never even reached** for the larger subset, because an earlier conjunct already refused. That
+earlier conjunct asks whether the front's two endpoint faces are the two sides of **one** carrier
+edge; for a front that ends at a rail's interior junction they are the two faces straddling the
+junction, belonging to **two different** rail edges, so the question has no satisfying answer. This
+was re-derived from the fixture's own face table with no execution. **The repair order is therefore
+reversed from what the previous two rungs implied:** the terminal set is not the first thing to fix,
+because nothing downstream of a conjunct that already returned nothing can matter.
+
+**§4 runtime witness — the measurement is complete, immutable, and it falsified the reviewer.** All
+forty-four independently selected identities executed against a package that was already frozen;
+the harness's own hash was recomputed and matches, and nothing in the source, package or selector
+view moved. Two predictions had been put on record. The one naming *which vertex* the endpoint is
+was **confirmed** for both subsets, and the second subset's vertex is now **measured rather than
+assumed**. The one naming *which condition* would be reported was **falsified**: the predicted label
+lives at a rung of the diagnostic ladder that execution never reaches. The exact witness the
+previous rung had already withdrawn is now shown to hold for **every single rejected identity**,
+which is a stronger refutation than the argument that withdrew it — a conjunct true of the whole
+population discriminates nothing, and resting admissions on it would have let an inexact comparison
+do the work while an exact one was displayed as the warrant.
+
+**§5 instrument — the content guard was fixed, and the fix was tested rather than read.** The
+previous guard returned green on an equal-size overwrite; that exact simulation now fails, and so
+does a subtler one that deletes sections while keeping the file the same length. Every observed
+destruction in this project's history is now caught. One shape remains uncaught — a rewrite
+preserving both counts and all headings — and this Review **deliberately declines to mandate more**,
+because catching it needs a different and much heavier design and no observed event has that shape.
+The implementing turn said the same thing about its own work before being asked, which is the
+posture that makes the guard trustworthy.
+
+**§7 priority — a specification is authorized; code is not.** For two rungs the repair was withheld
+for want of a specification. There is now enough: three located mismatches, a fully characterised
+population of forty-four, two measured subsets, and one genuinely open upstream question — whether
+the route under-reports the front's extent, or whether a one-step route may legitimately carry
+endpoint points outside its carrier. The next rung produces one document and nothing else, and every
+predicate it proposes must arrive with **both** an exhibited satisfying set and an exhibited
+reachable rung, checked against the measured population. A predicate whose admitting set is not
+shown against those forty-four is not a specification.
+
+**§8 patterns — one about predictions, one about reporting.** First: *a prediction must name the
+rung at which it will be observed, not only the value it will take.* Two rungs ago an expected value
+without stated provenance was ruled not to be a prediction; one rung ago a predicate verified for
+faithfulness but never for satisfiability was ruled not to be verified; this rung adds
+**reachability**, and the instance is the reviewer's own. Second, and recorded as credit rather than
+as a defect: *a measuring turn that reports a result contradicting the reviewer, without reconciling
+it, is doing the job the reviewer asked for.* The contradiction was stated plainly, the vertex
+result was not stretched beyond what it licensed, the odd identity stayed separate, the red results
+were called a baseline rather than a regression, and the successor was deferred to independent
+Review. A transport substitution in the companion turn was likewise disclosed unprompted, with its
+exact consequence named.
+
+---
 ## CURRENT — `M6-CP3-CB2-R4-PREDICATE-SEPARATION-REV`, 2026-10-15: RA-63 frozen; the witness this project was about to rely on identifies the wrong object, and the new content guard protects a count rather than content
 
 **Supersedes the RA-62 "junction vertex / `RP-01` located" paragraph below as the current state.**
