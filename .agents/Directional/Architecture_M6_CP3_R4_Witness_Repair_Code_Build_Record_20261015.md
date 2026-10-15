@@ -20,3 +20,7 @@
 ## Carried obligations
 
 RA-59's remaining obligations are unchanged: RP-02 consumer acceptance witness, ordinal 405 distinct A2b, RA-41 junction/sector, the frozen 497, six CP3 and historical gates, ledger 66/17/49 debt 1, CP2 491/491, R3 403/497. PR #8 remains open/draft. Update the canonical handoff, TODO, root CHANGELOG and final STATUS once compile evidence is available. No successor work begins inside this turn.
+
+## Immutable compile verification and closeout (2026-10-15)
+
+Compile **GREEN**: run [38720128740](https://github.com/akashskypatel/Directional/actions/runs/38720128740), exact semantic `570c51733761c17a198bda6c9aba7d8b1e7ae2dd`. Result artifact `11964478813`, outer SHA-256 `0e1e87a48ef090588c8675bd87bc8c7560a1ade5dbe44cac391c78e0cbe21ae5`; log artifact `11964676618`, outer SHA-256 `2d44c022651e95550d6cfaabd5fda9d2f050312477a464edcfd2c97cf9b7c451`. Independently checked **28/28** packaged SHA256SUMS, eight target names/artifacts, preflight/build exits `0/0`, `DIRECTIONAL_ENABLE_GMP:BOOL=ON`, generated real gmpxx/gmp linker, five empty status records, `exactArithmeticBackend=GMP`, and `runtimeExecution=false`. No test binaries, benchmarks, 497, or artifact-only harness ran. The historical pending status above is superseded by this verified evidence; source acceptance remains **compile-only**. Next separately authorized supplemental TB/Review has no exact frozen turn ID; do not invent a successor or execute TB inside this turn. Ledger and all RP-02/ordinal 405/RA-41 obligations unchanged.
