@@ -1,3 +1,54 @@
+## CURRENT — `M6-CP3-TB1-R4-INTERIOR-WITNESS-REV`, 2026-10-15: RA-61 frozen; the repair's acceptance path cannot succeed, and the model it implements was only half right
+
+**Supersedes the RA-60 "repair accepted, next measurement pre-registered" paragraph below as the current state.**
+`M6-CP3-TB1-R4-INTERIOR-WITNESS` ran and reported itself well. The **measurement is ACCEPTED as
+execution evidence**, the reviewer's own **RA-60.10 prediction is FALSIFIED**, **RA-59.9's
+single-mechanism claim is PARTIALLY FALSIFIED**, and a **destroyed append-only ledger has been
+restored**. No open REVIEW_BLOCKER remains. No promotion, no stable event, no regression
+recurrence, no gate credit.
+
+**§3 current state — the implemented model is exact, faithful, and unsatisfiable.** The interior
+carrier endpoint added by the repair requires, per chart, that a traced barycentric's two nonzero
+weights sum to exactly one, and then that both charts agree exactly. Measured on the real fixtures,
+one chart's weights sum to `1 + 2^-55` and the other's to exactly one, and the two shared parameters
+differ by one ULP. The first chart therefore yields no parameter at all, under every possible corner
+assignment, so the acceptance branch is never reached by legitimate input. The predicate is exact
+about the wrong object: it converts a double losslessly and thereby preserves the rounding error it
+then tests for equality. Nothing is wrong with the code; the specification it faithfully implements
+asked for a closure property that double arithmetic cannot provide.
+
+**§4 runtime witness — now measured, and the acceptance half is still unwitnessed.** 45 of 45
+identities executed, none green, zero missing, immutable postflight. The first positive witness of
+the hard-rail acceptance half ever authored ran and failed at its own production precondition, so
+the acceptance half remains without a single witness and `RP-02` remains unreached — neither the
+network-bound consumer nor its tamper half executed. The breadth discipline held: all 45 ran past
+the first RED and the verdict came from counters, not from the RED count.
+
+**§7 priority — read the evidence already in hand before touching code.** The next rung is an
+extraction from the immutable artifact that already exists, not a new run and not a repair. The
+measurement captured, per identity, which published rail terminal matched an exact corner in which
+chart, and whether that vertex lay on the carrier edge; the report quoted only the barycentrics. A
+three-way conjunction failed and no one has yet named which conjunct. After that, and only
+because the ambiguous branch actually occurred, a strictly diagnostic predicate separation is
+authorized so that a repeat becomes interpretable. The remedy itself stays unauthorized until the
+deciding conjunct is named.
+
+**§8 patterns — three, and two are the reviewer's own.** First: *a specification can be implemented
+perfectly and still be dead on arrival.* Faithfulness was verified; satisfiability was not asked
+about, and "fail-closed" was praised as a virtue without checking that the closed state is reachable
+by legitimate input. Second: *an expected value whose provenance is unstated is not a prediction* —
+the pre-registration asserted binary-exact probe values that the fixture's own length ratio made
+impossible, and the deciding fact sat in a file already cited by anchor, needing no run. The
+prediction failed cleanly, which is what pre-registration is for; the decision rule it carried held
+and was applied correctly. Third: *a check whose comparand is its own current state is not a check.*
+The durable-ledger guard compares the working tree to `HEAD`, so once a truncation is committed it
+compares zero to zero and reports success forever; the adequate check existed, was named in a
+comment, and was simply not being run. Alongside these, one finding that cuts the other way and is
+recorded as such: the implementing agent added an exact-rational reciprocity check nobody asked for,
+and that unrequested check — not the one specified — is the load-bearing witness the design actually
+needed.
+
+---
 ## CURRENT — `M6-CP3-TB1-R4-REPAIR-REV`, 2026-10-15: RA-60 frozen; the repair is accepted and the next measurement is pre-registered
 
 **Supersedes the RA-59 "hypothesis set closed" paragraph below as the current state.**
