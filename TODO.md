@@ -1,3 +1,9 @@
+## CURRENT — R4 ledger content floor completed (2026-10-15)
+
+- [x] `M6-CP3-CB3-R4-LEDGER-CONTENT-FLOOR`: Python-only nonzero committed-history heading/line floors, tracker zero-tolerance, consumed request cleared to noop. Isolated destructive-equal-line rejection and legitimate-prepend acceptance checked, no simulations committed. Evidence: `.agents/Directional/Architecture_M6_CP3_R4_Ledger_Content_Floor_20261015.md`. No C++ build, runtime, selectors, ledger credit.
+- [ ] Next separately authorized `M6-CP3-TB3-R4-PROBE-HARVEST`: artifact-only on the current new diagnostic source; no `RP-01` repair or RA-61.9 remedy. Ledger 66/17/49, debt 1, CP2 491/491 and R3 403/497 frozen.
+
+---
 ## CURRENT — R4 predicate diagnostics compile-only complete (2026-10-15)
 
 - [x] `M6-CP3-CB2-R4-PREDICATE-SEPARATION`: RA-62.2 committed-history durable integrity guard for handoff/ORIENTATION plus decision-neutral A2b actual one-hot source vertex, both exact-rational shared intervals/ordinals and typed first-rejection diagnostic. Semantic `16c3134c02ab3872eee77a6b9dcc9d3fc6e01b7b`, apply [38742750098](https://github.com/akashskypatel/Directional/actions/runs/38742750098). Source-exact GMP/GMPXX eight-target compile [38743048456](https://github.com/akashskypatel/Directional/actions/runs/38743048456), job `116449586867`, artifact `11976790988`, ZIP SHA-256 `31faf55a33c31abb60c8f34acb64ad901514de821cd6d2f3acbdcd817b1dbb36`, **28/28** digests; no runtime. No test/fixture/selector changes. Details in handoff and both changelogs.
