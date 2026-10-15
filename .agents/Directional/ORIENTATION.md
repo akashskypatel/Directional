@@ -1,3 +1,64 @@
+## CURRENT — `M6-CP3-TB4-R4-ENDPOINT-CHART-HARVEST-REV`, 2026-10-15: RA-67 frozen; the refusal that has driven this family of turns is now explained structurally, and the explanation forbids the obvious repair as much as it invites one
+
+**Supersedes the RA-66 paragraph below as the current state.** One turn was adjudicated and it is
+**accepted**, with one latent instrument defect verified harmless and one reporting omission. No open
+REVIEW_BLOCKER. No promotion, no stable event, no regression recurrence, no gate credit.
+
+**§3 current state — the question is answered and the answer is a design problem, not a bug.** The
+refusing comparison asks whether a front edge's two endpoint charts are the two faces of one carrier
+edge. The measurement says they are not, in every one of the twenty-one junction cases, always on
+the same side. The derivation says why, and it needs no appeal to sectors or tolerances: the fixture
+declares two hard edges that meet at a vertex, each endpoint sits in a face of a *different* one of
+them, and a carrier record is edge-keyed by construction — it holds one edge and exactly that edge's
+two faces. The comparison therefore cannot succeed for any pair drawn across the junction. What has
+been located is not a miscomputation but an authority whose domain is an edge being asked a question
+whose subject is a vertex. That is the root cause this family has been circling, now demonstrated
+rather than suspected.
+
+**§4 runtime witness — forty-four observations, none of them green, none of them new.** Every
+selected identity ran as its own process against the immutable package and every one refused; the
+population is fail-closed while the outcome is not, which is the right shape for an instrument and
+was checked rather than assumed. The package was not accepted on its report: the archive's hash was
+recomputed on the downloaded bytes, its manifest re-verified rather than read, and the package's own
+before-and-after inventories compared byte for byte. Because the semantic source is new, these
+failures are a new vintage of a known terminal condition and not evidence of any accepted result
+being lost; they are recorded as a candidate, not promoted.
+
+**§5 instrument — better than its predecessor, and still carrying the flaw it was built to find.**
+It pins the new package and never mentions the old one, so the hazard flagged a rung earlier was
+avoided in fact. It computes the value its predecessor failed to emit, by set intersection, and says
+in its own output that the value is derived rather than observed. Against that, it prints vertex
+identifiers without naming the domain they belong to, and the consequence is exactly the error under
+investigation: one phenomenon, observed twice under two different vertex labellings, appears in the
+table as two groups with different keys and different carrier edges. The relabelling is recoverable
+exactly, and six independent correspondences confirm it, so nothing measured is lost — but a reader
+would have read corroboration where there was repetition. It also records only the first emission
+per process, which cost nothing here because the repeated emissions proved identical, and would
+have hidden a divergence silently.
+
+**§7 priority — specify, with a producer test, and do not implement.** The next rung writes a
+definition and no code. It must re-derive the mechanism from the bytes and say whether it confirms
+or contradicts the reviewer; enumerate the admissible repair shapes, which at minimum means splitting
+a front edge at the junction vertex on the publisher side and making the matching vertex-aware on the
+consumer side; and for each shape name the existing producer of every witness it needs, by type and
+header line. A shape whose witness has no publisher is inadmissible and is to be marked so rather
+than specified — that test is why the vertex-star gate remains suspended even now that the
+measurement has confirmed the shape it was reaching for. Confirming that a witness would be apt is
+not finding its publisher.
+
+**§8 patterns — a charge answered twice, first in words and then in the machinery.** Two rungs ago a
+turn described a file count as a verification ratio and was charged for it; the next rung corrected
+the wording unprompted, inside its own evidence line; this rung changed the instrument so the claim
+is now true by construction, producing a package that carries a per-file manifest and verifying it
+end to end. The same discipline shows in the protected-history edit, which was made against an
+immutable snapshot of the pre-image rather than on trust, so that append-only is provable rather than
+promised. A fourth consecutive turn also reported its measurement without reconciling it to the
+reviewer, including a value that coincides with something the reviewer had invented and withdrawn —
+and the coincidence changes nothing, because the withdrawn claim was about a route being shortened
+and the publisher cannot shorten a route at all.
+
+---
+
 ## CURRENT — `M6-CP3-CB4-R4-ENDPOINT-CHART-PROBE-REV`, 2026-10-15: RA-66 frozen; the instrument that can settle the open question is built, and for once the question it answers was chosen because the reviewer got the last one wrong
 
 **Supersedes the RA-65 paragraph below as the current state.** One turn was adjudicated and it is

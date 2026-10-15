@@ -1,3 +1,134 @@
+## RA-67 — `M6-CP3-TB4-R4-ENDPOINT-CHART-HARVEST-REV`, 2026-10-15 (frozen)
+
+Decision: `.agents/Directional/Architecture_M6_CP3_R4_Endpoint_Chart_Harvest_Review_Decision.md`.
+Adjudicates `M6-CP3-TB4-R4-ENDPOINT-CHART-HARVEST`: **ACCEPTED**. One latent instrument defect,
+verified harmless for this measurement; one reporting omission. No open REVIEW_BLOCKER. No promotion,
+no stable event, no regression recurrence, no gate credit.
+
+- **RA-67.1** **The result package is closed by bytes.** Run `38782417387` `success`,
+  `headSha 8e8cf1cfa`; result artifact `11996317553` (80,281 bytes). **ZIP SHA-256 recomputed on the
+  downloaded bytes — `44df6e2fc1bdba1e15f81e11ddec7bbb6cc90e2d43adcda4f334d875d1dbd9c9` — matches
+  the provider digest.** Manifest **re-verified, not read**: **51 OK, 0 BAD** across 52 files.
+  `execution-boundary.txt`: `executed=44`, `red=44`, `missing=0`, `postflight=true`, `exit=0`,
+  `compile=false`, `relink=false`, `benchmarks=false`, `selector497=false`. `ledger.tsv` 44 RED, no
+  `NOT_SELECTED`, no `NOT_EXECUTED`. `manifest-before` ≡ `manifest-after` at 28 OK each — the
+  immutable package was not mutated across execution. Note: `planned=44` is a **literal** in the
+  harness `finish` printf (`:11`), true only because `:120` asserts it before `exit=0` is reachable;
+  read `exit` before `planned`.
+- **RA-67.2** **The harness pins the new package, and the old one was not reused.** Harness SHA-256
+  independently recomputed as `5b13f121bd678ec975e9c4d00df3685e79893eff8f7f9f42f980402b9b955fab`,
+  identical to the dispatch pin. It pins `11994726341` and `5be5e123e`; `11976790988` appears nowhere
+  — the RA-66.11 hazard was avoided in fact. RA-61 standard intact and fail-closed: provider digest,
+  recomputed ZIP digest, manifest hash and 28-count, source identity, GMP / `runtimeExecution=false`,
+  packaged source hash, four frozen selector hashes, three before/after `cmp` inventories, postflight
+  manifest, closing `executed==44 && missing==0 && postflight` assertion. Census inventory hash
+  `de05a7bd…` re-verified, 39 rows, one ordinal `405` → 38 + 6 = 44. **The harness never asserts the
+  verdict** — `red` is counted, never required; population fail-closed, outcome not. The two
+  `Phase14` identities are not bundled (one comment occurrence, zero ledger rows).
+- **RA-67.3** **The partition table re-derived independently and it holds.** Grouping
+  `endpoint-chart-harvest.tsv` on the full tuple yields **exactly three** distinct rows, counts
+  **23 / 15 / 6**, all RED, all COMPLETE: 23 interior `not-same-interior-carrier-point`, rows 0→3,
+  (0,1,4)→(1,4,5), carrier (0,1,4)/(1,4,5), edge (1,4), **both** attachments, not swapped; 15
+  junction `carrier-orientation`, rows 0→7, (0,1,4)→(4,7,8), carrier (0,1,4)/(1,4,5), edge (1,4),
+  **one**; 6 junction, rows 0→7, (0,1,2)→(2,6,8), carrier (0,1,2)/(1,2,5), edge (1,2), **one**.
+  Intersections check by hand. **The RA-66.7 first-order partition is settled: 21/21 exactly one,
+  always the *from* attachment; zero neither, zero both, zero swapped, zero missing keys.**
+- **RA-67.4** **RA-66.4 discharged correctly.** The carrier edge is a genuine two-element set
+  intersection (`:172`) guarded on cardinality two (`:173`), and the instrument declares it derived
+  in its own output — `chart-summary.txt` line 1, `not an emitted field`. Evidence is fail-closed:
+  any junction case with an unresolvable key raises `SystemExit` (`:181-182`, `:196-197`).
+- **RA-67.5 (NEW)** **The two junction groups are one phenomenon in two vertex-index domains.**
+  `make_disconnected_rectangular_feature_pair_mesh`
+  (`tests/SurfaceCellsPhase10Tests.cpp:223-263`) emits, per component at offset `k`,
+  `f0=(k,k+1,k+4) f1=(k,k+4,k+3) f2=(k+1,k+2,k+5) f3=(k+1,k+5,k+4) f4=(k+3,k+4,k+7)
+  f5=(k+3,k+7,k+6) f6=(k+4,k+5,k+8) f7=(k+4,k+8,k+7)`. Relabel a component's vertices by **order of
+  first appearance in its face list** (`4→2, 2→4, 7→6, 6→7`) and the Junction-A keys become the
+  Junction-B keys exactly: `f0 (0,1,4)→(0,1,2)`, `f3 (1,4,5)→(1,2,5)`, `f7 (4,7,8)→(2,6,8)`, carrier
+  edge `(1,4)→(1,2)`, terminal vertex `4→2`. **Six independent confirmations of one mapping.** Face
+  rows `0 → 7` coincide across both groups because the compaction relabels vertices and leaves face
+  order untouched. The 21 are a single uniform phenomenon observed twice. The report's per-identity
+  rows stay valid — membership is computed inside a row and is domain-consistent — but the table has
+  no domain column, and a probe printing a `SourceVertexId` without naming its domain makes one
+  object look like two. **`RP-01` reproducing inside the instrument built to measure it.**
+- **RA-67.6 (DECISIVE)** **The mechanism, exhibited from bytes line by line, and it needs no
+  sector.** (1) `add_rectangular_midline_hard_feature`
+  (`tests/SurfaceCellsPhase10Tests.cpp:266-273`) inserts **two** hard edges sharing a vertex:
+  `{offset+1, offset+4}` and `{offset+4, offset+7}` — component-local **(1,4)** and **(4,7)**,
+  meeting at vertex **4**. (2) Edge (1,4) lies in faces **{0,3}**; edge (4,7) lies in faces
+  **{4,7}**. (3) The measurement puts the endpoints at **face 0 and face 7** — one face of the first
+  hard edge and one of the **second** — with both endpoints at vertex 4 (`fromV=toV=4`). (4) A
+  carrier record is **edge-keyed by construction**: `SurfaceHardRailFieldTransition`
+  (`include/directional/geometry/SurfaceCellTracing.h:1482-1489`) holds one `SourceEdgeTopologyKey`
+  and exactly the two faces of that one edge. (5) `oriented_carrier`
+  (`src/geometry/SurfaceCellTracing.cpp:19106-19114`) matches only when
+  `{record.firstFace, record.secondFace} == {from, to}` in one order or the other. **Therefore, when
+  a front edge's endpoint faces are drawn from two different hard edges, no carrier record can
+  contain both and `oriented_carrier` cannot match in either orientation.** The refusal is
+  structural, not numerical and not a tolerance. Every premise is a repository byte; the only
+  measured input is the endpoint face pair. `RP-01`'s third expression is **demonstrated**, not
+  merely located: an edge-keyed authority is being asked a question that is about a vertex.
+  **Gate C stays suspended (RA-65.5)** — the measurement confirms the *shape* gate C reached for,
+  and confirming that a witness would be apt is not finding its publisher. **No repair is chosen:**
+  splitting the front edge at the junction vertex and making the consumer predicate vertex-aware are
+  both admissible and differ in which authority gains an obligation. That is a definition question.
+- **RA-67.7** **The row pair `{0,7}` does not vindicate the withdrawn RA-64.6.** The same pair arises
+  in two index domains, so it is not one object; rows are the least informative field measured, since
+  the predicate compares keys; and RA-64.6 claimed a **truncated route**, which nothing shows — the
+  publisher cannot shorten a route at all, only reject
+  (`assign_open_front_boundary_authority`, `:12481-12692`). A coinciding number is exactly what
+  **RA-65.4** warns about. **RA-64.6 remains withdrawn, final.**
+- **RA-67.8 (DEFECT, latent — verified harmless here)** **The first-match probe parse.** The
+  harvester takes `re.search` over the whole log (`:164`), capturing the **first** emission and
+  recording no occurrence count; the probe fires once per rejected edge. Checked rather than assumed:
+  `27.log` and `41.log` emit **three** times, the other 42 once; **all three emissions in both are
+  byte-identical**, and both belong to the interior 23, so no junction row is affected. Loss nil, the
+  **narrowing undisclosed**. Successor instrument must record the per-log emission count and assert
+  uniformity, or emit one row per emission.
+- **RA-67.9** **Harvested but unanalyzed — and it confirms a struck conjunct.** All 44 show both
+  intervals present, `FirstSpan == SecondSpan` (span 3 for the 23 and the 15, span 2 for the 6), and
+  **reciprocal reversed ordinals** — `(0/1,1/1)` against `(1/1,0/1)` for the 23, `(3/1,4/1)` against
+  `(4/1,3/1)` for the 21. That is **RA-65.6a measured**: the reciprocal-ordinal conjunct holds for
+  all 44 **including every RED**, so it cannot discriminate. The strike is confirmed by measurement,
+  not only argument. Integer ordinals re-confirm the RA-65.7 locus — the published object is the
+  **index**, never the parameter. Charged lightly as **under-reporting**.
+- **RA-67.10** **The long-file mutation was verified against an immutable pre-image.** The closeout
+  took an exact source snapshot first — run `38805395498` `success` at `393d6c548`, artifact
+  `12005034654` — and patched against it. Outer ZIP SHA-256 recomputed as
+  `09a865c0e7b6398a2b1dcc6cc3ed839449dd1de0486e81dfb56b2bc6d759e96e`, matching the provider digest;
+  inner `source.tar.gz` hashes to `adbc497359822d338a2831aade5e752a70907455f48932accb0783440fbd0225`,
+  matching its sidecar and the metadata; **`shasum -a 256 -c SHA256SUMS` over the extracted tree
+  returns 5,647 OK, 0 BAD.** **This is the RA-65.1 defect structurally eliminated, not reworded** —
+  the snapshot now *contains* a 5,647-line per-file manifest, so the ratio is a real checksum
+  verification. Preservation verifies too: the pre-image tracker is **exactly 13,512 lines**, HEAD is
+  **13,524**, diff **+12 / −0**, trailing 13,512 lines **byte-identical**. Append-only proven against
+  an artifact rather than asserted.
+- **RA-67.11** **Beacon and documents.** `Status: COMPLETE`, six fields, `Resumed at:` and
+  `Ended at:` populated, `Successor: UNKNOWN` **with reasoning in both the handoff and `TODO.md`** —
+  the RA-63.13 shape, **no defect**. The self-reference present while `IN_PROGRESS` was removed at
+  closeout and never appeared on a `COMPLETE` beacon, so **RA-64.10 is not charged**; noted only
+  because a continuation beacon that names itself cannot be told from a stalled one — write
+  `Successor:` empty while in progress. All four touched documents are **pure insertions, zero
+  deletions**: tracker +12, handoff +8, root changelog +7, agents changelog +4.
+- **RA-67.12** **Prohibitions honored; accounting unchanged.** No C++, compile, relink, new semantic
+  source, selector change, 497, benchmark or fixture change; `src`, `include`, `tests`, `benchmarks`,
+  `cmake`, `.github` and every selector untouched. No sector, mechanism, repair or root cause
+  asserted by the turn — report line 29 and `sector_classification=NOT_INFERRED`. Ordinal 405
+  excluded with its reason. `R4-VIN-01` correctly recorded **candidate / non-stable**; `5be5e123e` is
+  a new semantic source, so `11976790988` and `11967601999` stay **baselines, never comparands**, and
+  the 44 RED remain the baseline for `16c3134c0` alone. Ledger **66/17/49**, debt **1**, CP2
+  **491/491**, R3 **403/497**, frozen selector **497** — unchanged. `RP-01` **measured and
+  mechanistically derived, code still unauthorized**; `RP-02` **UNREACHED**; `RP-03` satisfied a
+  **fourth** consecutive turn; `PROCESS-01` discharged. **RA-61.9 WITHDRAWN, final. RA-64.6
+  WITHDRAWN, final. Gate C SUSPENDED (RA-65.5).**
+- **RA-67.13 (LESSON)** **Two labels for one object are not two observations.** An identifier printed
+  without its domain turns one phenomenon into two rows of a table, and the duplicate then reads as
+  corroboration. A measurement must name the index domain of every identifier it prints, or it
+  manufactures the appearance of independent confirmation.
+- **RA-67 disposition.** Successor **`M6-CP3-DEFN-R5-JUNCTION-CARRIER-AUTHORITY-SPEC`**, a definition
+  turn, no code.
+
+---
+
 ## RA-66 — `M6-CP3-CB4-R4-ENDPOINT-CHART-PROBE-REV`, 2026-10-15 (frozen)
 
 Decision: `.agents/Directional/Architecture_M6_CP3_R4_Endpoint_Chart_Probe_Review_Decision.md`.

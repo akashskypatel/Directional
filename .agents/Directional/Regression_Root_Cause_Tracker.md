@@ -1,3 +1,99 @@
+## CURRENT — the junction refusal is no longer unexplained: an edge-keyed carrier cannot hold a face pair drawn from two hard edges; RA-67 frozen (2026-10-15)
+
+**One turn adjudicated, ACCEPTED:** `M6-CP3-TB4-R4-ENDPOINT-CHART-HARVEST`. Decision:
+`Architecture_M6_CP3_R4_Endpoint_Chart_Harvest_Review_Decision.md`. One latent instrument defect,
+verified harmless for this measurement; one reporting omission. No open REVIEW_BLOCKER. No promotion,
+no stable event, no regression recurrence, no gate credit.
+
+**Root-cause status — `RP-01 AUTHORITY_DOMAIN_CONFLATION`: the third expression is now DEMONSTRATED,
+and the code is still not authorized.** The mechanism is exhibited from repository bytes, line by
+line, and it needs no sector argument. The fixture declares **two** hard edges that share a vertex —
+`add_rectangular_midline_hard_feature` (`tests/SurfaceCellsPhase10Tests.cpp:266-273`) inserts
+`{offset+1, offset+4}` and `{offset+4, offset+7}`, component-local **(1,4)** and **(4,7)**, meeting
+at vertex **4**. Edge (1,4) lies in faces **{0,3}** and edge (4,7) in faces **{4,7}**. The harvest
+measures the front edge's endpoints at **face 0 and face 7** with both endpoints at vertex 4 — one
+face of the first hard edge and one face of the **second**. A carrier record is **edge-keyed by
+construction**: `SurfaceHardRailFieldTransition`
+(`include/directional/geometry/SurfaceCellTracing.h:1482-1489`) holds one `SourceEdgeTopologyKey` and
+exactly the two faces of that one edge, and `oriented_carrier`
+(`src/geometry/SurfaceCellTracing.cpp:19106-19114`) matches only when
+`{record.firstFace, record.secondFace} == {from, to}` in one order or the other. **Therefore no
+carrier record can contain both endpoints, and the refusal is structural — not numerical, not a
+tolerance.** An edge-keyed authority is being asked a question that is about a vertex. Every premise
+is a byte; the only measured input is the endpoint face pair.
+
+**No repair is chosen, and none is authorized.** Splitting the front edge at the junction vertex so
+each piece has one carrier, and making the consumer predicate vertex-aware, are both admissible and
+differ in which authority gains a new obligation. That is a definition question, not a measurement.
+**Gate C stays suspended (RA-65.5)**: the measurement confirms the *shape* gate C reached for — both
+endpoints at one source vertex — but confirming that a witness would be apt is not finding its
+publisher, and no producer publishes a vertex-star witness.
+
+**The first-order partition is settled, and I re-derived it rather than reading it.** Grouping the
+immutable `endpoint-chart-harvest.tsv` on the full field tuple gives **exactly three** distinct rows,
+counts **23 / 15 / 6**, all RED, all COMPLETE. **21/21 junction cases have exactly one attachment in
+the carrier face pair, always the *from* side; zero neither, zero both, zero swapped, zero missing
+keys.** Intersections check by hand: `(0,1,4) ∩ (1,4,5) = {1,4}` and `(0,1,2) ∩ (1,2,5) = {1,2}`.
+
+**The two junction groups are one phenomenon in two vertex-index domains, and the instrument could
+not say so.** Relabel a component's vertices by order of first appearance in its face list
+(`4→2, 2→4, 7→6, 6→7`) and the 15-case keys become the 6-case keys exactly — `f0 (0,1,4)→(0,1,2)`,
+`f3 (1,4,5)→(1,2,5)`, `f7 (4,7,8)→(2,6,8)`, carrier edge `(1,4)→(1,2)`, terminal vertex `4→2`. Six
+independent confirmations of one mapping. The face rows `0 → 7` coincide because the compaction
+relabels vertices and leaves face order untouched. Per-identity rows stay valid, since membership is
+computed inside a row and is domain-consistent, but the table carries no domain column: **`RP-01`
+reproduced itself inside the instrument built to measure it.**
+
+**`RP-02 TEST_AUTHORITY_COVERAGE_GAP` — still UNREACHED.** Neither the network-bound consumer nor its
+tamper half has executed. A diagnostic harvest cannot touch it.
+
+**`RP-03 REVIEWER_CONJUNCT_MISREAD` — satisfied a fourth consecutive turn.** The turn reported the
+measurement without reconciling it to the reviewer, kept **RA-64.6 withdrawn** while reporting rows
+that coincide with the reviewer's withdrawn invention, and recorded
+`sector_classification=NOT_INFERRED` in its own instrument output rather than in prose.
+
+**`{0,7}` is measured and still does not rehabilitate RA-64.6.** The same row pair arises in two
+index domains, so it is not one object; rows are the least informative field measured, since the
+predicate compares keys; and RA-64.6 claimed a **truncated route**, which nothing here shows — the
+publisher cannot shorten a route at all, only reject (`:12481-12692`). A coinciding number is exactly
+what **RA-65.4** warns about. **RA-64.6 remains withdrawn, final.**
+
+**One latent instrument defect, checked rather than assumed.** The harvester takes `re.search` over
+the whole log and captures the **first** probe emission with no occurrence count recorded, while the
+probe fires once per rejected edge. Two of the 44 logs — `27.log` and `41.log` — emit three times;
+all three emissions in both are **byte-identical** and both belong to the interior 23, so no junction
+row is affected and nothing in the partition changes. Loss nil; the **narrowing is undisclosed**, and
+the successor instrument must record the per-log emission count and assert uniformity.
+
+**A struck conjunct is now confirmed by measurement.** All 44 show both intervals present, equal
+spans, and **reciprocal reversed ordinals** — `(0/1,1/1)` against `(1/1,0/1)` for the 23,
+`(3/1,4/1)` against `(4/1,3/1)` for the 21. **RA-65.6a measured:** the reciprocal-ordinal conjunct
+holds for all 44 **including every RED**, so it cannot discriminate. Integer ordinals re-confirm the
+RA-65.7 locus — the published object is the index, never the parameter. The turn harvested these
+fields and left them unexamined; charged lightly as under-reporting.
+
+**Immutability, vintage and protected-history preservation.** Result run `38782417387` `success` at
+the dispatch commit `8e8cf1cfa`; artifact `11996317553`, **ZIP SHA-256 recomputed on the downloaded
+bytes** as `44df6e2fc1bdba1e15f81e11ddec7bbb6cc90e2d43adcda4f334d875d1dbd9c9`, matching; manifest
+**re-verified** at **51 OK / 0 BAD**; `executed=44`, `red=44`, `missing=0`, `postflight=true`,
+`exit=0`; `manifest-before` ≡ `manifest-after` at 28 OK each. The harness pins the **new** package
+`11994726341` and never mentions `11976790988`, so the RA-66.11 hazard was avoided in fact. The
+closeout additionally took an exact source snapshot — run `38805395498` at `393d6c548`, artifact
+`12005034654` — and patched against it: outer ZIP recomputed as `09a865c0e7b6…`, inner archive
+`adbc497359…` matching its sidecar, and **`shasum -c` over the extracted tree returning 5,647 OK /
+0 BAD**. **The RA-65.1 provenance defect is structurally eliminated, not reworded** — the snapshot
+now contains a real 5,647-line per-file manifest. Preservation verifies against that pre-image: the
+tracker was **exactly 13,512 lines**, is now **13,524**, diff **+12 / −0**, trailing 13,512 lines
+**byte-identical**. **`R4-VIN-01` stays armed:** `5be5e123e` is the semantic source; `11976790988` and
+`11967601999` are baselines, never comparands; the 44 RED remain the baseline for `16c3134c0` alone,
+recorded **candidate / non-stable**.
+
+**Accounting unchanged.** Ledger **66/17/49**, debt **1**, CP2 **491/491** accepted, R3 **403/497**
+rejected, frozen selector **497**. **RA-61.9 withdrawn, final. RA-64.6 withdrawn, final. Gate C
+suspended (RA-65.5).** Successor **`M6-CP3-DEFN-R5-JUNCTION-CARRIER-AUTHORITY-SPEC`**.
+
+---
+
 ## CURRENT — R4-VIN-01 non-stable recurrence measured on the new endpoint-chart artifact; TB4 evidence closed (2026-10-15)
 
 **Test + Benchmark observation, not stable-ledger promotion.** `M6-CP3-TB4-R4-ENDPOINT-CHART-HARVEST` ran 44/44 selected diagnostic identities on immutable compile artifact `11994726341` (package ZIP SHA-256 `b59dc16f4417693c4aec79025160da2054cfbca3a1589ef051ee3a171d3185bb`, semantic source `5be5e123e14e2ddab8bb8c0db2a354a0a900435a`). The harness result workflow [38782417387](https://github.com/akashskypatel/Directional/actions/runs/38782417387) succeeded, artifact `11996317553`, ZIP SHA-256 `44df6e2fc1bdba1e15f81e11ddec7bbb6cc90e2d43adcda4f334d875d1dbd9c9`; manifest and immutable-package boundary were verified by the published harness. Every identity failed closed: **44 RED, zero missing**, first A2b failure `no-exact-terminal-corner`. Ordinal 405 was intentionally excluded under the preexisting separate-mechanism rule. No full TB497, rebuild, relink, benchmark or source/test/selector alteration took place.
