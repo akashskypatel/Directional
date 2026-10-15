@@ -1,18 +1,14 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-witness-repair-compile-20261015-1025",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-r4-witness-repair-compile",
-  "source_sha": "570c51733761c17a198bda6c9aba7d8b1e7ae2dd",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-r4-witness-repair-compile"
+  "request_id": "m6-cp3-r4-interior-witness-tb-20261015-1107",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-r4-interior-witness",
+  "executor_sha": "eef08a4d041cf35045f32c34748258d846f5b385",
+  "semantic_source_sha": "570c51733761c17a198bda6c9aba7d8b1e7ae2dd",
+  "turn_id": "M6-CP3-TB1-R4-INTERIOR-WITNESS",
+  "harness_path": ".agents/Directional/tools/m6_cp3_r4_interior_witness_harness.sh",
+  "harness_sha256": "13a7e73ea17bff8c7b6a14bb2e3bc35712e05b8914a1546668108354fdb02e21",
+  "environment": {},
+  "artifact_prefix": "directional-m6-cp3-r4-interior-witness",
+  "retention_days": 7
 }
