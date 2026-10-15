@@ -1,1 +1,0 @@
-Exact source snapshot for M6-CP3-CB3-R4-LEDGER-CONTENT-FLOOR; requested after STATUS bootstrap commit 5932d59378f138c8c5c86431c37fe677d63a2ecb. Snapshot the marker-trigger event commit only; no test/compile execution.
