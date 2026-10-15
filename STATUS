@@ -1,8 +1,8 @@
 ---TURN_STATUS---
 Turn: M6-CP3-CB1-R4-RP02-WITNESS
-Status: IN_PROGRESS
-Successor: M6-CP3-CB1-R4-RP02-WITNESS
+Status: COMPLETE
+Successor: UNKNOWN
 Started at: 2026-10-15T00:59:00Z
 Resumed at:
-Ended at:
+Ended at: 2026-10-15T01:13:56Z
 ---END_TURN_STATUS---
