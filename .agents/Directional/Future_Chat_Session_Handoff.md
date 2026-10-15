@@ -1,3 +1,119 @@
+## CURRENT — 2026-10-15 RA-58 frozen; carrier BOUNDED to OPEN hard-rail terminal certification; next turn `M6-CP3-TB1-R4-ENDPOINT39-CENSUS`
+
+**Measurement ACCEPTED. RA-57.8 DISCHARGED. Interpretation AMENDED (the report understated its own
+result). One torus RED's classification CORRECTED. Carrier BOUNDED. Census AUTHORIZED.** Frozen as
+**RA-58**; decision record
+`.agents/Directional/Architecture_M6_CP3_R4_True_Control_Review_Decision.md`. No open REVIEW_BLOCKER.
+Ledger **66/17/49**, debt **1**, selector **497** untouched, CP2 **491/491** accepted, R3 **403/497**
+rejected with 94 RED and 88 carried losses, PR #8 draft/open. **No new stable event, no promotion, no gate
+credit.**
+
+**Receipts.** Artifact `11948572472`, ZIP SHA-256
+`2b6ac34c34ea3f0dd384f5be7a55ca9c9028328639effed3c9cc3e3c9674917f`; `executed=4 red=2 missing=0
+postflight=true exit=0`; immutability all true; manifest 28 OK → 28 OK; harness SHA-256 `9d471c49…`; no
+`src`/`include`/`tests`/`cmake`/`benchmarks` diff since `c2b3571bb`. **Each log holds exactly one
+`: Failure` line** — `ASSERT_*` is fatal, so every preceding assertion passed. That is what makes the
+locus analysis below sound.
+
+**THE ANSWER, and it is the good case.**
+
+| path | hard rail | A4 production | result |
+|---|---|---|---|
+| `square_fixture`, `cylinder_fixture` | none | **green** | **PASS**, both frozen `selector449` members |
+| `torus_fixture` ×2 | **closed chain** | **green, certificates accepted** | RED downstream (A5 / arrangement) |
+| 3×3 midline ×4 (RA-57.2) | **open, interior terminals** | **REJECTED** | RED at `no-exact-terminal-corner` |
+
+**A4 production is not universally down** — and the cylinder PASS is a **613 ms** full pipeline on
+`PeriodicCut` authority, not a trivial green. **Closed-chain hard rails produce**: identity 3's `:6022
+hasTraceNetwork` passed before `:6023` failed, and identity 4's `:2795 ASSERT_NE(rotated, nullptr)` passed
+— guarding a `SurfacePhaseFrontProduct::make` fed `front.hardRailRouteCertificates()`,
+`front.hardRailTerminalContacts()` (`:2791`) and `front.hardRailClosedChains()` (`:2792`). Zero
+occurrences of `no-exact-terminal-corner` / `InvalidHardRailRouteCertificate` / `endpoint-1` in either
+torus log.
+
+**So the carrier is confined to OPEN hard-rail terminal certification** — and that independently
+corroborates RA-57.5, because a **closed chain has no terminals**, so `exact_corner` and the
+terminal-contact path are never taken on the torus and the torus A4 passes. **The three RA-57.7 hypotheses
+all survive — (a) certificate too strict, (b) pairing wrong, (c) route truncated. NONE may be chosen.**
+RA-58.5 narrows where to look; it does not say what is wrong.
+
+**Two accounting corrections to carry forward.** Identity 3 is **already one of the 94 R3 RED**
+(`focused30` ordinal 25, `first_observable=OTHER_FIRST_PREDICATE`, `R2_RED=true`, `CP2_ACCEPTED=true`,
+candidate `R2-CAND-04`), reproducing R3's `:5775` assertion at `:6023` — a reproduced carried loss **inside
+the frozen 497**, now vintage-resolved. Identity 4 is in **no selector and not in the 94** — no accepted
+baseline, so **not a regression** and not ledger-eligible. Never tabulate those two states as the same
+kind of RED.
+
+**New obligation recorded, NOT chased (RA-58.7).** A5 `SurfaceOccurrenceComplexProducer::produce` rejects
+a front that A4 produced and the checked factory accepted (`:2797-2799`, failing `:2807`); arrangement is
+absent on a produced torus trace network (`:6023`). **A5/A6/A7 backlog, not the hard-rail carrier.** No
+probe — that is the extra Code rung RA-54.7 forbids.
+
+**Reviewer error, owned (RP-03) — second instance of one class.** RA-57's reading grid said "torus RED but
+square/cylinder PASS → the defect is **all** hard-rail routing." Applied to this run it yields the
+**opposite** of the truth, because both torus REDs sit downstream of a successful hard-rail A4. The grid
+conditioned on the **verdict**; the question was about the **locus**. Same class as RA-57.3's
+non-discriminating control. **New standing rule: condition an instrument on the locus of failure, not on
+the verdict** — a pass/fail grid over a staged pipeline is valid only if each branch names the stage at
+which the verdict must appear.
+
+### NEXT TURN — `M6-CP3-TB1-R4-ENDPOINT39-CENSUS` (Test + Benchmark, artifact-only, no rebuild)
+
+Same immutable package (compile `38664036225`, artifact `11939982141`, semantic `953f812f…`). Execute
+**all 39** identities in
+`.agents/Directional/Architecture_M6_CP3_R4_Historical_R3_A4_39_Current_Source_Inventory_20261013.tsv`
+(19 Quotient / 18 Phase10 / 2 REPackage, all in `directional_surface_cell_producer_tests`) — **all of
+them regardless of RED** — as a named supplemental **outside the frozen 497**, selector files
+byte-identical (hashes pinned at `tools/m6_cp3_entry_497_artifact_only_harness.sh:211-217`, re-checked
+`:270-272`). Reuse the RA-57.8-compliant harness shape from
+`tools/m6_cp3_r4_true_control_harness.sh`: `NOT_SELECTED` and continue; verdict from
+`executed`/`missing`/`postflight` only, never from the RED count.
+
+**Deliver ONE TSV keyed by identity**, with (RA-57.12 as amended by RA-58.10):
+
+- PASS/FAIL and the **pipeline stage of the first failure**;
+- first predicate (`endpoint-0` / `endpoint-1` / other), `a2bProbeFailure`;
+- **the fixture singleton, and whether it constructed successfully** — RA-58.9: merge REDs only when the
+  singleton *threw*; two REDs off a *successful* shared singleton are two defects, not one;
+- `routeLength`, `step`, `chi`, both probe charts and their edge parameters, `closedChainPresent`;
+- `rail`, `locus`, every `edge[i]`, and the full `faceEnds` quadruple — **kept for the record, never read
+  as corroboration** (RA-56.1 echo, RA-57.12);
+- **carrier membership per identity**, stated against the 94-row R3 classification **and** all three
+  selector files, so reproduced carried losses, in-gate REDs and baseline-free first measurements are
+  never flattened together again (RA-58.6).
+
+Report the **along-rail vs across-rail** split only as observed data; RA-57.5 already resolved the
+geometry for the measured instances and the census must not re-decide it from `faceEnds`.
+
+**Then:** `M6-CP3-TB1-R4-CARRIER-REV` (mandatory independent Review — selects the certificate model) →
+the retained `M6-CP3-CB1-R4-WITNESS-REPAIR`, whose *"ordered rail interval/face-side ownership"*
+vocabulary must be **amended per RA-57.5** before re-entry.
+
+**PROHIBITED.** Editing source in a measurement rung, and never to obtain green. Weakening `exact_corner`,
+`no-exact-terminal-corner`, or any `Produced` precondition. **Choosing the certificate model** — (a), (b)
+and (c) are all live; RA-58.5 bounded *where*, not *what*. Probing the RA-58.7 A5/A6/A7 loci (recorded,
+guards retained, **no probe**). Folding the RA-58.7 failures into the hard-rail carrier. Claiming gate
+credit from the two frozen-`selector449` PASSes — the 497 did not run. Treating identity 4 as a
+regression — it has no baseline. Reopening the `RP-01` hunt on `currentFace`/`expectedFace` (echoes,
+RA-56.1). Bundling the two Phase14 identities (`DIRECTIONAL_BUILD_HISTORICAL_TESTS`,
+`cmake/DirectionalTests.cmake:554-572` — separate packaging turn). Claiming `RP-02` discharged — the
+network-bound consumer has still never been reached. Retiring the RA-57.9 guards. Minting a stable event
+or recurrence from an unreviewed census. Promotion. Running the frozen 497. Re-raising `R4-SID-02`,
+RA-43.2, the FieldBranch/filled-side receipt, RA-47.11, the RA-43.4 opt-out, RA-52.5, or `R4-OHF-02`
+(recorded, guard retained, **no probe**). Truncating `Regression_Root_Cause_Tracker.md` — append-only.
+Writing only to `.agents/Directional/CHANGELOG.md` — **root is canonical**. Citing frozen clauses by line
+rather than RA number. Citing tests by line rather than fully qualified gtest `Suite.Name`, and never by a
+bare `Suite.*` filter (`SurfaceCellPipelinePhase20` spans two targets, RA-57.10). Closing the beacon with
+`Successor: UNKNOWN` or with the turn's own name.
+
+**Standing.** `R4-VIN-01`; `RP-03` (name the deciding conjunct); reachability before fixture; LESSONS 160
+("a compile is not a restoration"), 171 ("a census is not a witness"), RA-56.8 ("one measured identity is
+not a measured carrier"), RA-57.12 ("a signal that never varies is not a measurement"), and new **RA-58.8:
+condition an instrument on the locus of failure, not on the verdict.** Backlog beyond the census: the
+39-identity carrier, 34 Phase10, seven DCEL, six CP3, the CP2 restorations outside the 37, organic
+D1/D2/D3/D5 and A6/A7, odd-τ, the two Phase14 supplementals, and the new RA-58.7 A5/A6/A7 loci. RA-41's
+junction/sector clauses and the two RA-57.9 guards remain frozen **UNEXERCISED**.
+
 ## CURRENT — 2026-10-15 true-control measurement COMPLETE; next `M6-CP3-TB1-R4-ENDPOINT39-CENSUS`
 
 `M6-CP3-TB1-R4-TRUE-CONTROL` ran all 4 exact artifact-only controls via [GitHub Actions 38681907622](https://github.com/akashskypatel/Directional/actions/runs/38681907622), result artifact `11948572472` ZIP SHA-256 `2b6ac34c34ea3f0dd384f5be7a55ca9c9028328639effed3c9cc3e3c9674917f`. Same immutable GMP package `11939982141`, source `953f812ff1f431e3ad3af3b68a92284a7831c94a`. Receipt: executed=4, red=2, missing=0, postflight=true, exit=0; manifest 28/28 before and after, all immutability receipts true. No rebuild, relink, benchmark, frozen 497 run, production/test/selector edit or new stable event. The new dedicated true-control harness corrects both RA-57.8 orchestration defects. Detailed report: `Architecture_M6_CP3_R4_True_Control_Artifact_Only_TB_Report_20261015.md`.

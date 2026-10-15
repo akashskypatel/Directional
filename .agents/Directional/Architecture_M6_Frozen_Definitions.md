@@ -1,3 +1,100 @@
+## RA-58 — the true control answers the question, more strongly than reported: the carrier is bounded to OPEN hard-rail terminal certification **FROZEN at M6-CP3-TB1-R4-TRUE-CONTROL-REV** (2026-10-15)
+
+Adjudicates `M6-CP3-TB1-R4-TRUE-CONTROL`. The **measurement is ACCEPTED**; **RA-57.8 is DISCHARGED**; the
+report's **interpretation is AMENDED** (it understated its own result) and its **classification of one
+torus RED is CORRECTED**; the **carrier is bounded**; the census is **AUTHORIZED** with one added column.
+RA-57, RA-56, RA-55, RA-54, RA-53, RA-52 less .5, RA-51 … RA-37a and the RA-34.3 stop gates stand. No
+promotion, no new stable event, no 497 run, **no gate credit**. Decision record
+`.agents/Directional/Architecture_M6_CP3_R4_True_Control_Review_Decision.md`.
+
+- **RA-58.1 — accepted on re-derived receipts.** Artifact `11948572472`, downloaded ZIP SHA-256
+  `2b6ac34c34ea3f0dd384f5be7a55ca9c9028328639effed3c9cc3e3c9674917f` matching the report;
+  `executed=4 red=2 missing=0 postflight=true exit=0`, `compile=false relink=false benchmarks=false
+  selector497=false`, `package=true source=true execution_view=true selector=true`, manifest 28 OK → 28
+  OK, harness SHA-256 `9d471c493b7d3c9c4fa5bf31916e37d9caa470a628da6c0e710f770f0c986162`. `git diff
+  c2b3571bb..HEAD -- src include tests cmake benchmarks` **empty**. Each log has **exactly one**
+  `: Failure` line, which is what makes the locus analysis sound: `ASSERT_*` is fatal, so every preceding
+  assertion passed. The turn reported itself and closed `COMPLETE` with a named successor; RA-57.1's
+  reconstruction problem does not recur.
+- **RA-58.2 — RA-57.8 DISCHARGED, and discharged the right way.** In
+  `tools/m6_cp3_r4_true_control_harness.sh`: non-selection records `NOT_SELECTED`, increments `missing`
+  and **continues** (ii); the verdict is `[[ executed == 4 && missing == 0 && postflight == true ]] ||
+  die` then `exit 0`, so the bare `[[ "$red" == 0 ]]` tail is gone and expected REDs no longer forge an
+  orchestration failure (i), with `die 'incomplete breadth'` retained. Done in a **new one-off harness**
+  rather than by editing the previously dispatched one whose SHA is pinned in RA-57.8's evidence — the
+  correct call.
+- **RA-58.3 — the decisive positive: A4 production is not universally down.** Both no-interior-hard-rail
+  identities PASS, and **both are members of the frozen `selector449`**:
+  `SurfacePhaseFrontProductFactoryAuthority.ReorderedCellStoragePreservesTypedEdgeOwnershipAtCheckedFactory`
+  (`square_fixture`, no `userHardEdges`) and
+  `SurfaceCellTypedTransportAuthority.ValidPeriodicCutRouteUsesTypedIdentity` (`cylinder_fixture` →
+  `make_committed_fixture("cylinder", false)`, no `userHardEdges`) — the latter a **613 ms** full pipeline
+  exercising `PeriodicCut` boundary authority. Neither is in the 94-row R3 RED set, so both were among the
+  403 R3 PASS and **remain green on `953f812f`**: a positive `R4-VIN-01` datapoint. **No gate credit** —
+  the frozen 497 did not run.
+- **RA-58.4 — the closed-chain arm is informative and POSITIVE; the report stopped one step short.** Its
+  premise is confirmed independently: **zero** occurrences of `no-exact-terminal-corner`,
+  `InvalidHardRailRouteCertificate` or `endpoint-1` in either torus log, so refusing to conflate loci was
+  right. But the loci themselves carry the finding. Identity 3
+  (`tests/SurfaceCellTransitionQuotientTests.cpp:6018`) fails only at `:6023`
+  `ASSERT_TRUE(run.surfaceCellContext.hasArrangement)`; the preceding fatal `:6022
+  ASSERT_TRUE(run.surfaceCellContext.hasTraceNetwork)` **passed** — the trace network, where the phase
+  front and hard-rail route certificates live, **was produced** on a closed-chain-hard-edge torus.
+  Identity 4 (`:2773`) fails only at `:2807`; everything before passed, including `:2795
+  ASSERT_NE(rotated, nullptr)`, which guards a `SurfacePhaseFrontProduct::make` fed
+  `front.hardRailRouteCertificates()`, `front.hardRailTerminalContacts()` (`:2791`) and
+  `front.hardRailClosedChains()` (`:2792`). **The checked factory ACCEPTED closed-chain hard-rail
+  certificates and terminal contacts under a Z4 gauge rotation.** Both torus identities reached and
+  cleared A4; they fail downstream, at arrangement and at A5.
+- **RA-58.5 — CONCLUSION: the carrier is bounded to OPEN hard-rail terminal certification.** No hard rail
+  → A4 green, PASS end-to-end (RA-58.3). Closed-chain hard rail → A4 green, certificates **accepted**, RED
+  downstream (RA-58.4). Open hard rail with interior terminals → A4 **rejected** at
+  `no-exact-terminal-corner`, four entries, one mesh (RA-57.2). This is RA-57's reading-grid case 1,
+  established. It corroborates RA-57.5 from an independent direction: a **closed chain has no terminals**,
+  so `exact_corner` and the terminal-contact path are never taken on the torus — and the torus A4 passes.
+  The defect attaches to the **terminal-closing requirement on an open rail**, precisely the construct
+  RA-57.5 showed being applied to two fronts meeting **across** the rail at an interior point. The three
+  RA-57.7 hypotheses all survive; **none may be chosen.** The bound narrows where to look, not what is
+  wrong.
+- **RA-58.6 — classification CORRECTED: one torus RED is already in the 94, the other has no baseline.**
+  Identity 3 is in `Architecture_M6_CP3_TB1_Entry_R3_Red_Classification.tsv` at `phase=focused30`,
+  `ordinal=25`, `first_observable=OTHER_FIRST_PREDICATE`, `R2_RED=true`, **`CP2_ACCEPTED=true`**, candidate
+  `R2-CAND-04`, recorded diagnostic `…:5775: Failure | Value of: run.surfaceCellContext.hasArrangement |
+  Actual: false | Expected: true` — **the same assertion on the same value** as today's `:6023`, the line
+  shifted +248 by source evolution. It is the **single** `OTHER_FIRST_PREDICATE` member of the 94: a
+  **reproduced carried loss inside the frozen 497**, now re-measured on `953f812f` and still RED, so its
+  vintage ambiguity is resolved. Identity 4 has **0 hits** in `focused30`, `focused12`, `selector449` and
+  in the 94 — **no accepted baseline, therefore not a regression**, not ledger-eligible, a first-ever
+  measurement. Tabulating the two as the same kind of RED flattens two very different accounting states.
+- **RA-58.7 — a new, separate obligation: recorded, not chased.** Identity 4 shows A5
+  `SurfaceOccurrenceComplexProducer::produce` returning its error alternative for a front that A4 produced
+  and the checked factory accepted (`:2797-2799`, failing `:2807`); identity 3 shows arrangement absent on
+  a produced torus trace network. Both belong to the **A5/A6/A7 backlog**, not the hard-rail carrier, and
+  must not be folded into it. **No probe authorized** — chasing them now is the extra Code rung RA-54.7
+  forbids. Guards untouched, fail-closed.
+- **RA-58.8 — my reading grid was wrong; second instance of one error class.** RA-57's grid read "torus RED
+  but square/cylinder PASS → the defect is **all** hard-rail routing." Applied to this run it yields the
+  **opposite** of the truth, because both torus REDs sit downstream of a **successful** hard-rail A4. The
+  grid conditioned on the **verdict**; the question was about the **locus**. Same class as RA-57.3, where
+  the "control" fixture could not discriminate: in both cases the instrument's output did not answer the
+  question it was built to answer. Recorded under `RP-03`. **LESSONS: condition an instrument on the locus
+  of failure, not on the verdict.** A pass/fail grid over a staged pipeline is valid only if each branch
+  also names the stage at which the verdict must appear. The executor's refusal to conflate loci was
+  better than my grid and is upheld.
+- **RA-58.9 — RA-57.11's blast radius did NOT fire, which changes the census column.** Both torus REDs
+  hang off the same `static torus_fixture()` singleton — the RA-57.11 shape — but **the singleton
+  succeeds** and the two tests fail at genuinely different downstream loci. A column recording merely
+  *which* singleton an identity hangs off would have merged them as one defect, wrongly. The column must
+  record **whether the singleton constructed successfully and the stage of the first failure**, not just
+  its name. RA-57.11's merge rule applies only to a **throwing** singleton.
+- **RA-58.10 — the census is authorized, scope unchanged, key extended.** `M6-CP3-TB1-R4-ENDPOINT39-CENSUS`
+  proceeds as frozen in RA-57.12 plus RA-58.9: per identity record the **fixture singleton, whether it
+  constructed, and the pipeline stage of the first failure**, alongside `routeLength`, `step`, `chi`, probe
+  charts and parameters, `closedChainPresent`, and the full `faceEnds` (kept for the record, never read as
+  corroboration). State carrier membership per identity against the 94-row R3 classification **and** all
+  three selectors, so reproduced carried losses, in-gate REDs and baseline-free first measurements are
+  never tabulated as one kind of thing again.
+
 ## RA-57 — the breadth measurement is accepted, the carrier is measured, my control was not a control, and RA-56.5 resolves to ACROSS-rail **FROZEN at M6-CP3-TB1-R4-WITNESS-BREADTH-REV** (2026-10-15)
 
 Adjudicates `M6-CP3-TB1-R4-WITNESS-BREADTH`. The **measurement is ACCEPTED** and re-derived from the

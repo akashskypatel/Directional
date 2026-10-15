@@ -1,3 +1,45 @@
+## 2026-10-15 — RA-58 frozen: the true control bounds the carrier to OPEN hard-rail terminal certification
+
+- Architecture Review only; no source, test, selector, binary, harness or ledger change.
+  `M6-CP3-TB1-R4-TRUE-CONTROL` adjudicated: measurement **ACCEPTED**, **RA-57.8 DISCHARGED**,
+  interpretation **AMENDED**, classification of one torus RED **CORRECTED**, carrier **BOUNDED**, census
+  **AUTHORIZED**. Frozen as **RA-58**. Decision record
+  `.agents/Directional/Architecture_M6_CP3_R4_True_Control_Review_Decision.md`.
+- **Receipts re-derived:** artifact `11948572472`, ZIP SHA-256
+  `2b6ac34c34ea3f0dd384f5be7a55ca9c9028328639effed3c9cc3e3c9674917f`, `executed=4 red=2 missing=0
+  postflight=true exit=0`, immutability all true, manifest 28 OK → 28 OK, harness SHA-256 `9d471c49…`,
+  no `src`/`include`/`tests`/`cmake`/`benchmarks` diff since `c2b3571bb`.
+- **A4 production is not universally down.** Both no-interior-hard-rail identities PASS and both are
+  frozen `selector449` members — `square_fixture` and a **613 ms** `cylinder_fixture` full pipeline on
+  `PeriodicCut` authority. Neither is in the 94 R3 RED, so both were R3 PASS and remain green on
+  `953f812f`: a positive `R4-VIN-01` datapoint. No gate credit — the frozen 497 did not run.
+- **Closed-chain hard rails PRODUCE.** Zero `no-exact-terminal-corner` /
+  `InvalidHardRailRouteCertificate` / `endpoint-1` in either torus log, and both torus identities cleared
+  A4: `tests/SurfaceCellTransitionQuotientTests.cpp:6022` (`hasTraceNetwork`) passed before `:6023`
+  failed, and `:2795` passed — guarding a `SurfacePhaseFrontProduct::make` fed
+  `front.hardRailRouteCertificates()` / `hardRailTerminalContacts()` (`:2791`) /
+  `hardRailClosedChains()` (`:2792`). **The checked factory accepted closed-chain hard-rail certificates
+  under a Z4 gauge rotation.**
+- **Carrier BOUNDED:** no hard rail → A4 green end-to-end; closed chain → A4 green, RED downstream; open
+  rail with interior terminals → A4 rejected at `no-exact-terminal-corner`. Independent corroboration of
+  RA-57.5: a closed chain has **no terminals**, so `exact_corner` is never taken and the torus passes. The
+  three RA-57.7 hypotheses all survive and **none may be chosen**.
+- **Classification corrected:** identity 3 is already one of the 94 R3 RED (`focused30` ordinal 25,
+  `OTHER_FIRST_PREDICATE`, `CP2_ACCEPTED=true`, `R2-CAND-04`) reproducing R3's `:5775` assertion at
+  `:6023` — a reproduced carried loss **inside the frozen 497**, now vintage-resolved. Identity 4 is in no
+  selector and not in the 94 — **no baseline, therefore not a regression**, not ledger-eligible.
+- **New separate obligation recorded, not chased:** A5 `SurfaceOccurrenceComplexProducer::produce` rejects
+  a front that A4 produced and the factory accepted; arrangement is absent on a produced torus network.
+  A5/A6/A7 backlog, not the hard-rail carrier. No probe (RA-54.7).
+- **Reviewer error owned (RP-03), second of one class:** RA-57's grid conditioned on the **verdict**, not
+  the **locus**, and applied naively would have inverted the conclusion. **LESSON: condition an instrument
+  on the locus of failure, not on the verdict.** The executor's refusal to conflate loci is upheld.
+- **RA-57.11 did not fire:** both torus REDs share a `static` fixture singleton that **succeeds**, so the
+  census column must record whether the singleton constructed and the stage of first failure, not just its
+  name. Merge only on a **throwing** singleton.
+- Ledger **66/17/49**, debt **1**, CP2 **491/491**, R3 **403/497**, selector **497** unchanged. `RP-02`
+  still open. Successor `M6-CP3-TB1-R4-ENDPOINT39-CENSUS` with the RA-58.10 key.
+
 ## 2026-10-15 — R4 true-control artifact-only measurement: 2 PASS, 2 RED
 
 - `M6-CP3-TB1-R4-TRUE-CONTROL` completed all four exact tests in [run 38681907622](https://github.com/akashskypatel/Directional/actions/runs/38681907622). Immutable package `11939982141` unchanged; result artifact `11948572472`, ZIP SHA-256 `2b6ac34c34ea3f0dd384f5be7a55ca9c9028328639effed3c9cc3e3c9674917f`. 28/28 checksums before/after; 4 selected, 2 RED, none missing, postflight true. No build, benchmark, test-source edit or frozen 497 run.

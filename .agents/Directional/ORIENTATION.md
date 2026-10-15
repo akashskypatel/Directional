@@ -1,3 +1,50 @@
+## CURRENT — 2026-10-15 RA-58 frozen; the carrier is BOUNDED to OPEN hard-rail terminal certification
+
+**Supersedes the RA-57 "control still missing" paragraph below as the current state.**
+`M6-CP3-TB1-R4-TRUE-CONTROL` ran and reported itself. The **measurement is ACCEPTED**, **RA-57.8 is
+DISCHARGED**, the report's **interpretation is AMENDED** (it understated its own result), one torus RED's
+**classification is CORRECTED**, and the **carrier is bounded**. No open REVIEW_BLOCKER. No promotion, no
+new stable event, no gate credit.
+
+**§3 current state — the control answers the question, and it is the good case.** No interior hard rail →
+A4 green and **PASS end-to-end**, on two **frozen `selector449`** members (one a **613 ms**
+`cylinder_fixture` full pipeline on `PeriodicCut` authority). Closed-chain hard rail → **A4 green and its
+certificates accepted**, RED only downstream. Open hard rail with interior terminals → A4 **rejected** at
+`no-exact-terminal-corner`, four entries, one mesh (RA-57.2). **A4 production is not universally down, and
+the defect is confined to OPEN hard-rail terminal certification.**
+
+**§4 runtime witness — what makes the locus reading sound.** Each of the four logs contains **exactly one**
+`: Failure` line, and gtest `ASSERT_*` is fatal, so every assertion preceding the reported one passed. That
+is how the closed-chain arm turns positive: identity 3's `:6022 ASSERT_TRUE(hasTraceNetwork)` passed before
+`:6023` failed, and identity 4's `:2795 ASSERT_NE(rotated, nullptr)` passed — guarding a
+`SurfacePhaseFrontProduct::make` fed `front.hardRailRouteCertificates()`,
+`front.hardRailTerminalContacts()` (`:2791`) and `front.hardRailClosedChains()` (`:2792`). Neither torus
+log contains `no-exact-terminal-corner`, `InvalidHardRailRouteCertificate` or `endpoint-1` at all. `RP-02`
+is still untouched — the network-bound consumer has never been reached — and the two RA-57.9 guards remain
+unexercised.
+
+**§7 priority — the census, now readable.** `M6-CP3-TB1-R4-ENDPOINT39-CENSUS` is artifact-only on the same
+package, outside the frozen 497, with the RA-58.10 key: per identity the **pipeline stage of first
+failure**, the **fixture singleton and whether it constructed**, `routeLength`, `step`, `chi`, both probe
+charts and parameters, `closedChainPresent`, and **carrier membership stated against the 94-row R3
+classification and all three selectors**. Then `M6-CP3-TB1-R4-CARRIER-REV`, then the retained
+`M6-CP3-CB1-R4-WITNESS-REPAIR` with its RA-57.5 vocabulary amendment. Two accounting states must stay
+distinct: identity 3 is a **reproduced carried loss inside the frozen 497** (`focused30` ordinal 25,
+`OTHER_FIRST_PREDICATE`, `CP2_ACCEPTED=true`, `R2-CAND-04`, R3's `:5775` = today's `:6023`), while identity
+4 is in **no selector and not in the 94** — no baseline, therefore **not a regression**.
+
+**§8 pattern — a verdict is not a locus.** RA-57's reading grid said "torus RED but square/cylinder PASS →
+the defect is **all** hard-rail routing." Applied to this run it yields the **opposite** of the truth,
+because both torus REDs sit downstream of a **successful** hard-rail A4. The grid conditioned on the
+**verdict** when the question was about the **locus** — the same error class as RA-57.3's
+non-discriminating control fixture. **Condition an instrument on the locus of failure, not on the verdict:
+a pass/fail grid over a staged pipeline is valid only if each branch names the stage at which the verdict
+must appear** (RA-58.8). A companion correction: RA-57.11's shared-fixture merge rule applies only to a
+**throwing** singleton — both torus REDs share a `torus_fixture()` that **succeeds**, so they are two
+defects, not one (RA-58.9). And the bound itself selects nothing: the three RA-57.7 hypotheses — certificate
+too strict, pairing wrong, route truncated — all survive, and choosing among them before the census remains
+the RA-45.2 category error. Older historical content below is explicitly superseded where it conflicts.
+
 ## CURRENT — true-control measurement done (2026-10-15); 39-identity carrier census next
 
 `M6-CP3-TB1-R4-TRUE-CONTROL`: 4/4 selected and executed using immutable artifact `11939982141`; square and cylinder/no interior hard rail PASS; two torus/closed-chain hard rail RED (`hasArrangement=false`, `originalOccurrences=nullptr`). [Run 38681907622](https://github.com/akashskypatel/Directional/actions/runs/38681907622), result `11948572472`, 28/28 pre/post manifest, unchanged source and frozen 497. A4 production is not universally down; common root cause between torus and open-rail failures remains unproved. **Next only `M6-CP3-TB1-R4-ENDPOINT39-CENSUS`**, then independent Review; consult top of `Future_Chat_Session_Handoff.md` and the true-control TB report. Ledger 66/17/49, debt1 unchanged.
