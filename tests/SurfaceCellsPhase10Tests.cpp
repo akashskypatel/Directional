@@ -7142,6 +7142,54 @@ TEST(SurfaceCellAuthorityContractCutover,
       << failure->hardRailRouteDiagnostic;
 }
 
+// An open rail may have a field-determined endpoint in the interior of
+// one source carrier, but only alongside a source-attested whole-rail terminal.
+// A forged terminal claim at that same interior sample must remain rejected.
+TEST(SurfaceCellAuthorityContractCutover,
+     ProducedOpenRailInteriorEndpointPreservesExactTerminalGuard) {
+  const auto fixture = build_rectangular_hard_rail_phase_front();
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            fixture.network.phaseFront.disposition())
+      << hard_rail_first_failure_detail(fixture.network);
+  const auto &front = fixture.network.phaseFront.product();
+  const auto &routes = front.hardRailRouteCertificates();
+  const auto candidate = std::find_if(routes.begin(), routes.end(),
+      [&](const auto &route) {
+        return front.hardRailTerminalContacts().contains(route.rail) &&
+               route.endpoints[0].terminalVertex.has_value() &&
+               !route.endpoints[1].terminalVertex.has_value() &&
+               route.endpoints[1].contactPaths[0].empty() &&
+               route.endpoints[1].contactPaths[1].empty();
+      });
+  ASSERT_NE(routes.end(), candidate)
+      << "real producer must witness one terminal and one interior carrier end";
+  const auto contact = front.hardRailTerminalContacts().find(candidate->rail);
+  ASSERT_NE(front.hardRailTerminalContacts().end(), contact);
+
+  auto forged = routes;
+  const auto index = static_cast<std::size_t>(std::distance(routes.begin(), candidate));
+  const auto legitimate = *candidate->endpoints[0].terminalVertex;
+  forged[index].endpoints[1].terminalVertex =
+      contact->second.endpoints[0] == legitimate
+          ? contact->second.endpoints[1]
+          : contact->second.endpoints[0];
+  const auto invalid = directional::geometry::SurfacePhaseFrontProduct::make(
+      front.gridU(), front.gridV(), front.sourceTopologyRegions(),
+      fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
+      fixture.atlas ? &*fixture.atlas : nullptr,
+      front.isolationSeamTransportCertificates(), front.periodicHolonomies(),
+      front.boundedDiskBoundaryPhases(), front.edges(), front.events(),
+      front.cells(), front.conformityPlanReceipt(), front.hardFeatureEdges(),
+      front.sourceFaceBranchRotations(), front.hardRailFieldTransitions(),
+      std::move(forged), front.hardRailTerminalContacts(),
+      front.hardRailClosedChains());
+  const auto *error =
+      std::get_if<directional::geometry::SurfacePhaseFrontProductError>(&invalid);
+  ASSERT_NE(nullptr, error);
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontProductErrorCode::
+                InvalidSourceAuthority, error->code);
+}
+
 // RA-49.2: use the actual first certified terminal vertex, not a fabricated
 // second geometric match. Duplicating that typed ID causes the consumer to
 // reject before the downstream checked factory can validate the contact.

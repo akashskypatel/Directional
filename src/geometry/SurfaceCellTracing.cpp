@@ -58,6 +58,45 @@ std::optional<authority::FieldExactRational> exact_edge_parameter(
   return edgePoint->parameter;
 }
 
+// Recover an intrinsic parameter only from the exact source-edge corners in
+// the published chart. This rejects other edges, off-edge barycentrics,
+// endpoint masquerades, and a non-unit barycentric sum without a 3D epsilon.
+std::optional<authority::FieldExactRational> interior_carrier_parameter(
+    const SurfaceTracePoint &point, const Eigen::MatrixXi &faces,
+    const authority::SourceEdgeTopologyKey &edge) {
+  if (faces.cols() != 3 || point.face < 0 || point.face >= faces.rows())
+    return std::nullopt;
+  int low = -1, high = -1, other = -1;
+  for (int corner = 0; corner < 3; ++corner) {
+    const int vertex = faces(point.face, corner);
+    if (vertex == static_cast<int>(edge.first().index())) low = corner;
+    else if (vertex == static_cast<int>(edge.second().index())) high = corner;
+    else other = corner;
+  }
+  if (low < 0 || high < 0 || other < 0 ||
+      point.barycentric[other] != 0.0)
+    return std::nullopt;
+  const auto first = authority::FieldExactRational::from_double_exact(
+      point.barycentric[low]);
+  const auto second = authority::FieldExactRational::from_double_exact(
+      point.barycentric[high]);
+  if (!first || !second) return std::nullopt;
+  const auto zero = authority::FieldExactRational::from_integer(0);
+  const auto one = authority::FieldExactRational::from_integer(1);
+  if (!(*second > zero && *second < one && *first + *second == one))
+    return std::nullopt;
+  return second;
+}
+
+bool same_interior_carrier_point(
+    const SurfaceTracePoint &first, const SurfaceTracePoint &second,
+    const Eigen::MatrixXi &faces,
+    const authority::SourceEdgeTopologyKey &edge) {
+  const auto a = interior_carrier_parameter(first, faces, edge);
+  const auto b = interior_carrier_parameter(second, faces, edge);
+  return a.has_value() && b.has_value() && *a == *b;
+}
+
 } // namespace directional::geometry::surface_cell_tracing_detail
 
 namespace directional::geometry::surface_cell_tracing_detail {
@@ -8514,11 +8553,26 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
                   contact->second.endpoints[0]);
       const auto firstVertex = certificate.endpoints[0].terminalVertex;
       const auto lastVertex = certificate.endpoints[1].terminalVertex;
-      if ((!forward && !reverse) || !firstVertex || !lastVertex ||
-          !((firstVertex == contact->second.endpoints[0] &&
-             lastVertex == contact->second.endpoints[1]) ||
-            (firstVertex == contact->second.endpoints[1] &&
-             lastVertex == contact->second.endpoints[0]))) {
+      // An open rail must retain source-attested terminal provenance, but
+      // a paired front may end at an interior parameter of one carrier.
+      // If both endpoints claim terminal status, preserve the original
+      // opposite-terminal orientation constraint without relaxation.
+      const bool bothTerminal = firstVertex && lastVertex;
+      const bool terminalPairValid =
+          (firstVertex == contact->second.endpoints[0] &&
+           lastVertex == contact->second.endpoints[1]) ||
+          (firstVertex == contact->second.endpoints[1] &&
+           lastVertex == contact->second.endpoints[0]);
+      const auto singleTerminalValid = [&](const std::optional<authority::SourceVertexId> &vertex,
+                                           const authority::SourceEdgeTopologyKey &edge) {
+        return vertex &&
+               (*vertex == contact->second.endpoints[0] ||
+                *vertex == contact->second.endpoints[1]) && touches(edge, *vertex);
+      };
+      if ((bothTerminal && (!forward && !reverse || !terminalPairValid)) ||
+          (!bothTerminal &&
+           !(singleTerminalValid(firstVertex, certificate.endpoints[0].terminalCarrier.edge) ||
+             singleTerminalValid(lastVertex, certificate.endpoints[1].terminalCarrier.edge)))) {
         error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
         return error;
       }
@@ -8605,8 +8659,21 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
               return false;
           return true;
         };
-        if (!vertex ||
-            (vertex != contact->second.endpoints[0] &&
+        if (!vertex) {
+          // Open-rail interior carrier: the opposite endpoint must already
+          // carry an independently checked whole-rail terminal witness.
+          if (!endpoint.contactPaths[0].empty() ||
+              !endpoint.contactPaths[1].empty() ||
+              carrier.firstFace != endpoint.firstAttachment ||
+              carrier.secondFace != endpoint.secondAttachment ||
+              !surface_cell_tracing_detail::same_interior_carrier_point(
+                  firstPoint, secondPoint, sourceFaces, carrier.edge)) {
+            error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+            return error;
+          }
+          continue;
+        }
+        if ((vertex != contact->second.endpoints[0] &&
              vertex != contact->second.endpoints[1]) ||
             (carrier.edge.first() != *vertex &&
              carrier.edge.second() != *vertex) ||
@@ -18906,7 +18973,9 @@ SurfaceCellNetwork build_surface_cell_network(
          reverseCanonical ? reverse->transport : forward->transport});
   }
   // A4 owns the paired-route topology, endpoint attachment and A3 transport.
-  // Publish one terminal crossing per spatial endpoint; A5 must not search.
+  // Publish one cross-rail certificate per spatial endpoint; A5 must not
+  // search. A field-determined front end may be inside a source carrier,
+  // whereas a claimed whole-rail terminal still requires an exact corner.
   for (int firstIndex = 0;
        firstIndex < static_cast<int>(phaseFrontState.edges.size()); ++firstIndex) {
     const auto &first = phaseFrontState.edges[static_cast<std::size_t>(firstIndex)];
@@ -19149,7 +19218,28 @@ SurfaceCellNetwork build_surface_cell_network(
         if (terminalVertex) return reject("ambiguous-terminal-contact");
         terminalVertex = vertex;
       }
-      if (!terminalVertex) return reject("no-exact-terminal-corner");
+      if (!terminalVertex) {
+        // A field-determined hard-rail front can have an interior endpoint
+        // even though the open rail itself still has source-vertex terminals.
+        // This is an across-rail certificate, never a fabricated terminal.
+        const auto oriented = oriented_carrier(*carrier, firstAttachment,
+                                               secondAttachment);
+        if (oriented &&
+            surface_cell_tracing_detail::same_interior_carrier_point(
+                fromPoint, toPoint, faces, edge) &&
+            authoritativeOptions.fieldTransportAtlas != nullptr &&
+            first.sharedBoundaryInterval && second.sharedBoundaryInterval &&
+            first.sharedBoundaryInterval->span ==
+                second.sharedBoundaryInterval->span &&
+            first.sharedBoundaryInterval->firstOrdinal ==
+                second.sharedBoundaryInterval->secondOrdinal &&
+            first.sharedBoundaryInterval->secondOrdinal ==
+                second.sharedBoundaryInterval->firstOrdinal &&
+            first.railId == second.railId)
+          return SurfaceHardRailRouteEndpointCertificate{
+              firstAttachment, secondAttachment, *oriented, std::nullopt, {}};
+        return reject("no-exact-terminal-corner");
+      }
       if (authoritativeOptions.fieldTransportAtlas == nullptr)
         return reject("missing-source-A3");
 
