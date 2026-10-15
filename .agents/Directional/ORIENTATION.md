@@ -1,3 +1,50 @@
+## CURRENT — 2026-10-15 RA-57 frozen; the carrier is MEASURED; the control was not a control; RA-56.5 resolved ACROSS-rail
+
+**Supersedes the RA-56 "repair deferred behind two census rungs" paragraph below as the current state.**
+`M6-CP3-TB1-R4-WITNESS-BREADTH` ran. The **measurement is ACCEPTED** and was re-derived from the
+immutable artifact because no report was written; the **turn state is CORRECTED**; the reviewer's own
+control claim is **WITHDRAWN**; **RA-56.5 is RESOLVED**; the repair stays **DEFERRED**. No open
+REVIEW_BLOCKER. No promotion, no new stable event, no 497 run.
+
+**§3 current state — 4/4 RED is one carrier, not four defects.** Four identities across three test files
+and three fixture builders, including one full `remesh_from_raw_cross_field` pipeline entry, all fail at
+`tracing/phase-front` with `InvalidHardRailRouteCertificate`, `predicate=endpoint-1`,
+`a2bProbeFailure=no-exact-terminal-corner`, on source edge `(1,4)`, with `routeLength=1`, `step=0`,
+`faceEnds=0,2|0,3`, `closedChain=0`. RA-56.3's `A4_ROUTE_CERTIFICATE_REJECTION` reading is now
+**measured** rather than inferred from a static inventory, satisfying RA-56.8.
+
+**§4 runtime witness — what the run cannot say.** All four identities run on **one mesh**: the 3×3 unit
+planar grid with the `x=1` midline hard feature. `make_nonconstant_hard_rail_fixture` was named "the
+control, on a different fixture" in the prior turn plan and is in fact the same mesh with the same
+`{1,4}`/`{4,7}` rail. So the run does **not** separate "open hard-rail production is down" from "A4
+production is down generally," and `RP-02` is still untouched — the network-bound consumer has never been
+reached. Two retained guards are now **measured as unexercised** (RA-57.9): the RA-52.6 retained attempt
+dies at its `Produced` precondition, and the forged-germ rejection is never reached because its fixture
+singleton throws on the test's first line.
+
+**§7 priority — the control first, then the census.** `M6-CP3-TB1-R4-TRUE-CONTROL` is artifact-only, uses
+the same package, and costs one workflow run: two no-hard-rail identities (`square_fixture`,
+`cylinder_fixture`) and two closed-chain-rail identities (`torus_fixture`, `closedChainPresent=1` — the
+one bit every RED reported as `0`). Its outcome conditions how the 39-identity census is read, which is
+precisely what the last rung was supposed to do and could not. Then
+`M6-CP3-TB1-R4-ENDPOINT39-CENSUS` (amended per RA-57.12), `M6-CP3-TB1-R4-CARRIER-REV`, then the retained
+and amended `M6-CP3-CB1-R4-WITNESS-REPAIR`.
+
+**§8 pattern — the interval frame was wrong, and an echo is not a measurement.** `faceEnds=0,2|0,3` read
+through the emitter at `src/geometry/SurfaceCellTracing.cpp:18948` puts the first front wholly inside
+face 0 and the second starting in face 3 — the two faces of edge `(1,4)`. **The fronts approach the rail
+from opposite sides and meet at a shared interior point of it.** They are not intervals running along it,
+so the retained repair plan's "ordered rail interval/face-side ownership" vocabulary must be amended
+before CB re-entry (RA-45.2 category error, caught before code). The same datum carries the general
+lesson: `faceEnds` was byte-identical across two mesh families, two fields, two A3 transitions and two
+interior parameters, because it is an echo set (RA-56.1). Four identical readings looked like four
+confirmations and were one echo printed four times — **a signal that never varies is not a measurement**
+(RA-57.12). The failure is also field- and transition-independent (`chi=3` vs `chi=0`, parameter `0.2` vs
+`0.25`, identical rejection), which falsifies any tolerance, parameter-special-case or
+transition-conditioned repair in advance. Three hypotheses remain — certificate too strict, pairing
+wrong, or **route truncated** (`routeLength=1`, new this turn) — and none may be chosen before the census.
+Older historical content below is explicitly superseded where it conflicts.
+
 ## CURRENT — 2026-10-15 RA-56 frozen; the first RED is the 39-identity A4 carrier; repair DEFERRED behind two census rungs
 
 **Supersedes the RA-55 "authoring closed / TB authorized" paragraph below as the current state.** TB-A ran

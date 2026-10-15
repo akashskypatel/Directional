@@ -1,3 +1,111 @@
+## CURRENT — 2026-10-15 RA-57 frozen; 4/4 RED is ONE measured carrier; the control was not a control; RA-56.5 resolved ACROSS-rail; next turn `M6-CP3-TB1-R4-TRUE-CONTROL`
+
+**Measurement ACCEPTED (re-derived from the artifact — no report was written). Turn state CORRECTED. The
+reviewer's own control claim WITHDRAWN. RA-56.5 RESOLVED. Repair still DEFERRED.** Frozen as **RA-57**;
+decision record
+`.agents/Directional/Architecture_M6_CP3_R4_Witness_Breadth_Measurement_Review_Decision.md`. No open
+REVIEW_BLOCKER. Ledger **66/17/49**, debt **1**, selector **497** untouched, CP2 **491/491** accepted,
+R3 **403/497** rejected with 94 RED and 88 carried losses, PR #8 draft/open. **No new stable event.**
+
+**Why the last turn looked unfinished and was not.** `M6-CP3-TB1-R4-WITNESS-BREADTH` ran all four
+identities correctly and edited nothing. Its harness ends on a bare `[[ "$red" == 0 ]]`
+(`tools/m6_cp3_r4_witness_breadth_harness.sh:85`), so four **expected** REDs set exit 1, the
+`test_benchmark / runtime` job concluded `failure`, and the turn closed `IN_PROGRESS` with `Successor`
+pointing at itself. The product was always intact: run `38676433923`, artifact `11946622500`, ZIP SHA-256
+`127c77580a9e77dafb1889575b8d69bdbe0271f7a3fc8041fc6c904e9918c6a3`, `executed=4 red=4 missing=0
+postflight=true`, `package=true source=true execution_view=true selector=true`, manifest 28 OK → 28 OK,
+harness SHA-256 matching its dispatch record, and no `src`/`include`/`tests`/`cmake` diff since
+`a44bbf534`. **Fix the harness verdict before the next measurement rung** (RA-57.8).
+
+**What is now measured.** 4/4 RED, **one carrier, four entries** — three files, three fixture builders,
+one focused-factory entry, two focused-producer entries and one full `remesh_from_raw_cross_field`
+pipeline entry. All at `tracing/phase-front`, `InvalidHardRailRouteCertificate`, `predicate=endpoint-1`,
+`a2bProbeFailure=no-exact-terminal-corner`, `edge[0]=1,4:faces=0,3`, `locus=3`, `rail=2`,
+`routeLength=1`, `step=0`, `faceEnds=0,2|0,3`, `closedChain=0`. **RA-56.8 satisfied — a measured carrier,
+not one measured identity.** Rows frozen in
+`Architecture_M6_CP3_R4_Witness_Breadth_Measured_Predicates_20261015.tsv`.
+
+**Two discriminations that constrain the repair.** The failure is **field- and transition-independent**:
+`chi=3` (non-constant field) vs `chi=0` (constant), interior parameter `0.2` vs `0.25`, identical
+rejection — so no tolerance, parameter special case or transition-conditioned branch can be the fix. And
+the geometry is settled: `faceEnds=0,2|0,3` read through `src/geometry/SurfaceCellTracing.cpp:18948`
+puts the first front wholly inside face 0 and the second starting in face 3, the two faces of edge
+`(1,4)`. **The fronts meet ACROSS the rail at a shared interior point, not ALONG it.** The retained
+repair plan's *"ordered rail interval/face-side ownership"* presumes along-rail and **must be amended
+before CB re-entry**.
+
+**Three hypotheses remain; none may be chosen.** (a) certificate too strict; (b) pairing wrong;
+(c) **route truncated** — `routeLength=1` with `step=0` in all four, where a real route to a whole-rail
+terminal would generally be longer. (c) is new this turn.
+
+**Reviewer error, owned (RP-03).** The prior `NEXT_TURN` ordered
+`M6CP3.CheckedFactoryRejectsForgedTerminalA2bSideGerm` first as "THE CONTROL, on a *different fixture*."
+`make_nonconstant_hard_rail_fixture` (`tests/SurfaceCellTransitionQuotientTests.cpp:776-853`) builds the
+same 3×3 planar grid as `make_rectangular_internal_hard_feature_grid`
+(`tests/SurfaceCellREPackageTests.cpp:46-75`) with the identical `userHardEdges {1,4}`/`{4,7}`
+(`:830-831`). **All four identities ran on one mesh.** The rung cannot separate "open hard-rail
+production is down" from "A4 production is down generally."
+
+### NEXT TURN — `M6-CP3-TB1-R4-TRUE-CONTROL` (Test + Benchmark, artifact-only, no rebuild)
+
+Same immutable package (compile `38664036225`, artifact `11939982141`, semantic `953f812f…`). The
+control that was missing, specified from the bytes. All four identities are already in
+`directional_surface_cell_producer_tests`, so the rung costs one workflow run.
+
+**No interior hard rail at all** — pure A4 production:
+1. `SurfacePhaseFrontProductFactoryAuthority.ReorderedCellStoragePreservesTypedEdgeOwnershipAtCheckedFactory`
+   — `square_fixture()`, whose builder `make_square_fixture`
+   (`tests/SurfaceCellTransitionQuotientTests.cpp:464-506`) inserts **no** `userHardEdges`.
+2. `SurfaceCellTypedTransportAuthority.ValidPeriodicCutRouteUsesTypedIdentity`
+   — `cylinder_fixture()` → `make_committed_fixture("cylinder", false)` (`:643`), **no**
+   `userHardEdges`; also exercises the `PeriodicCut` boundary kind rather than `HardRail`.
+
+**Closed-chain hard rail** — hard-rail machinery with `closedChainPresent=1`, the one bit every RED
+reported as `0`:
+3. `M6CP1.A6ClosedComplexBoundaryIsCombinatoriallyEquivalentOnProducedTorus`
+4. `M6CP3.A6UniformFaceGaugeRotationPreservesRelationOutcome`
+   — both `torus_fixture()` → `make_torus_pipeline_fixture` (`:697`), whose hard edges are inserted as a
+   **cycle** by `addCycle(minorCycle)` (`:725-733`), not an open midline chain.
+
+**How to read it.** All four PASS → the defect is confined to **open** hard-rail terminal certification;
+the repair target is narrow and the census is a scoping exercise. Torus RED but square/cylinder PASS →
+the defect is **all** hard-rail routing, open and closed. Any no-hard-rail control RED → **A4 production
+is down generally** and the whole 94-RED R3 picture must be re-read before any repair. State which of
+these the run selected, explicitly, in one sentence.
+
+**Then, in order:** `M6-CP3-TB1-R4-ENDPOINT39-CENSUS` (all 39 carrier identities, same package, outside
+the frozen 497, **amended per RA-57.12** — key on `routeLength`, `step`, `chi`, probe charts and
+parameters, `closedChainPresent`, **and the owning fixture singleton**; `faceEnds` is an echo set and its
+repetition is not corroboration) → `M6-CP3-TB1-R4-CARRIER-REV` (mandatory independent Review, selects the
+certificate model) → the retained **and amended** `M6-CP3-CB1-R4-WITNESS-REPAIR`.
+
+**Harness fixes required in the next measurement rung (RA-57.8).** The orchestration verdict must derive
+from `executed`, `missing` and `postflight` only — never from the RED count, which belongs in the ledger
+where it already is. `:84`'s `die 'incomplete breadth'` is correct and stays. `:68` must record
+`NOT_SELECTED` for a non-selected ordinal and `continue`, not `die` and abort every identity after it.
+
+**PROHIBITED.** Editing source in a measurement rung, and never to obtain green. Weakening `exact_corner`,
+`no-exact-terminal-corner`, or any `Produced` precondition. **Choosing the certificate model before the
+census** — (a), (b) and (c) are all live; RA-57.5 only removed the along-rail frame. Reopening the `RP-01`
+hunt on `currentFace`/`expectedFace` (echoes, RA-56.1, re-confirmed RA-57.5). Bundling the two Phase14
+identities (they need `DIRECTIONAL_BUILD_HISTORICAL_TESTS`, `cmake/DirectionalTests.cmake:554-572` —
+separate packaging turn). Claiming `RP-02` discharged — the network-bound consumer has still never been
+reached. Retiring the two guards RA-57.9 found unexercised. Minting a stable event or recurrence from an
+unreviewed census. Promotion. Running the frozen 497. Re-raising `R4-SID-02`, RA-43.2, the
+FieldBranch/filled-side receipt, RA-47.11, the RA-43.4 opt-out, RA-52.5, or `R4-OHF-02` (recorded, guard
+retained, **no probe**). Truncating `Regression_Root_Cause_Tracker.md` — append-only. Writing only to
+`.agents/Directional/CHANGELOG.md` — **root is canonical**. Citing frozen clauses by line rather than RA
+number. Citing tests by line rather than fully qualified gtest `Suite.Name` — and never by a bare
+`Suite.*` filter, since `SurfaceCellPipelinePhase20` spans two targets (RA-57.10). Closing the beacon with
+`Successor: UNKNOWN`, or with the turn's own name.
+
+**Standing.** `R4-VIN-01`; `RP-03` (name the deciding conjunct); reachability before fixture; LESSONS
+160 ("a compile is not a restoration"), 171 ("a census is not a witness"), RA-56.8 ("one measured identity
+is not a measured carrier"), and new **RA-57.12: a signal that never varies is not a measurement.**
+Backlog beyond the census: the 39-identity carrier, 34 Phase10, seven DCEL, six CP3, the CP2 restorations
+outside the 37, organic D1/D2/D3/D5 and A6/A7, odd-τ, the two Phase14 supplementals. RA-41's
+junction/sector clauses remain frozen **UNEXERCISED**, now joined by the two guards of RA-57.9.
+
 ## CURRENT — 2026-10-15 RA-56 frozen; first RED is the 39-identity A4 carrier; repair DEFERRED; next turn `M6-CP3-TB1-R4-WITNESS-BREADTH`
 
 **Execution and root cause ACCEPTED and independently re-derived. Classification REJECTED and corrected.

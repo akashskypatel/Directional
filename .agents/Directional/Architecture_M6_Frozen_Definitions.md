@@ -1,3 +1,104 @@
+## RA-57 — the breadth measurement is accepted, the carrier is measured, my control was not a control, and RA-56.5 resolves to ACROSS-rail **FROZEN at M6-CP3-TB1-R4-WITNESS-BREADTH-REV** (2026-10-15)
+
+Adjudicates `M6-CP3-TB1-R4-WITNESS-BREADTH`. The **measurement is ACCEPTED** and re-derived from the
+immutable artifact, since no report was written. Its **turn state is CORRECTED** — the workflow concluded
+`failure` on expected REDs; the measurement did not fail. The **control claim in the prior `NEXT_TURN` is
+WITHDRAWN as false on the bytes**. **RA-56.5 is RESOLVED.** The repair stays **DEFERRED**. RA-56, RA-55,
+RA-54, RA-53, RA-52 less .5, RA-51 … RA-37a and the RA-34.3 stop gates stand. No promotion, no new stable
+event, no 497 run. Decision record
+`.agents/Directional/Architecture_M6_CP3_R4_Witness_Breadth_Measurement_Review_Decision.md`.
+
+- **RA-57.1 — accepted from the artifact, not from prose.** No TB report exists; the turn closed
+  `IN_PROGRESS` with `Successor` pointing at itself (`63388be98`). Evidence taken from run
+  `38676433923`, artifact `11946622500`, ZIP SHA-256
+  `127c77580a9e77dafb1889575b8d69bdbe0271f7a3fc8041fc6c904e9918c6a3`: `executed=4`, `red=4`,
+  `missing=0`, `postflight=true`, `compile=false`, `relink=false`, `benchmarks=false`,
+  `selector497=false`; `package=true source=true execution_view=true selector=true`; manifest 28 OK
+  before and 28 OK after. Harness SHA-256
+  `db1aea68782f68196da0abf26be24f6648e9c565d305f3200ced09740aedd65a` matches its dispatch record and
+  re-checks all four frozen selector hashes around execution. `git diff a44bbf534..HEAD -- src include
+  tests cmake` is **empty**: the measurement rung edited no source, as required.
+- **RA-57.2 — the carrier is now MEASURED, satisfying RA-56.8.** 4/4 RED across three files, three
+  fixture builders, one focused-factory entry, two focused-producer entries and one full
+  `remesh_from_raw_cross_field` pipeline entry — all at `tracing/phase-front`,
+  `InvalidHardRailRouteCertificate`, `predicate=endpoint-1`,
+  `a2bProbeFailure=no-exact-terminal-corner`, `edge[0]=1,4:faces=0,3`, `locus=3`, `rail=2`,
+  `routeLength=1`, `step=0`, `vertex=-1`, `faceEnds=0,2|0,3`, `carrier=1 a3=1 contact=1 closedChain=0`.
+  RA-56.3's `A4_ROUTE_CERTIFICATE_REJECTION` reading is confirmed by execution, not inferred from a
+  static inventory. Measured rows frozen in
+  `Architecture_M6_CP3_R4_Witness_Breadth_Measured_Predicates_20261015.tsv`.
+- **RA-57.3 — WITHDRAWN: my own control was not a control.** The prior `NEXT_TURN` ordered
+  `M6CP3.CheckedFactoryRejectsForgedTerminalA2bSideGerm` first as "THE CONTROL, on a **different
+  fixture**." `make_nonconstant_hard_rail_fixture`
+  (`tests/SurfaceCellTransitionQuotientTests.cpp:776-853`) builds the same 3×3 planar grid as
+  `make_rectangular_internal_hard_feature_grid` (`tests/SurfaceCellREPackageTests.cpp:46-75`) and
+  inserts the identical `userHardEdges {1,4}` and `{4,7}` at `:830-831` — **same mesh, same hard
+  feature, same rail chain `1→4→7`, same terminals `{1,7}`**. Different file, different builder,
+  different field; not a different fixture in any sense that discriminates. The executor ran exactly
+  what was ordered and ran all four per RA-56.4. The error is the reviewer's and is recorded under
+  `RP-03` rather than amended silently.
+- **RA-57.4 — bounded claim.** All four identities run on **one mesh** — the 3×3 unit planar grid with
+  the `x=1` midline hard feature. The rung establishes that the defect is not entry-path-,
+  fixture-helper- or focused-producer-specific. It establishes **nothing** about mesh generality and
+  does **not** separate "all open hard-rail production is down" from "A4 production is down generally."
+- **RA-57.5 — RA-56.5 RESOLVED: the geometry is ACROSS-rail.** Per the emitter at
+  `src/geometry/SurfaceCellTracing.cpp:18948`, `faceEnds = first.from.face, second.to.face |
+  first.to.face, second.from.face`. The measured `0,2|0,3` therefore means the first front begins and
+  ends **inside face 0** and the second begins **in face 3** — and `face 0 = (0,1,4)`, `face 3 =
+  (1,5,4)` are exactly the two faces of edge `(1,4)`. The probes confirm it: `a2bProbeFrom` in face 0,
+  `a2bProbeTo` in face 3, both resolving to the same point on `(1,4)`. **The two fronts approach the
+  rail from opposite faces and meet at a shared interior point of it.** They are not collinear intervals
+  running along the rail. The retained repair plan's *"ordered rail interval/face-side ownership"*
+  presumes the along-rail frame and **must be amended before `M6-CP3-CB1-R4-WITNESS-REPAIR` is
+  re-entered**. This is the RA-45.2 category error RA-56.5 was raised to catch, caught before code.
+- **RA-57.6 — the failure is field- and transition-independent.** Identity 1 runs a non-constant field
+  and reports `chi=3` on edge `(1,4)`; identities 2–4 run a constant field and report `chi=0`. Identities
+  1–2 pair at interior parameter `0.2`, identities 3–4 at `0.25`. **All four rejections are identical.**
+  Any repair proposing a tolerance, a parameter special case or a transition-conditioned branch is
+  already falsified. **Second-order hazard recorded, not chased:** identity 1/2's two charts report the
+  shared third barycentric as `0x1.9999999999999p-3` and `0x1.9999999999998p-3` — one ULP apart — so a
+  certificate demanding bit-exact cross-chart agreement would fail exactly as `exact_corner` does. The
+  correct instrument is the exact rational parameter on the shared source edge.
+- **RA-57.7 — three hypotheses remain and `routeLength=1` promotes a third.** (a) the certificate is too
+  strict; (b) the pairing is wrong; (c) **the route is truncated** — `routeLength=1` with `step=0` in all
+  four means every failing route is a single step, where a genuine route to a whole-rail terminal would
+  generally be longer. (c) was not previously on the list. **None may be chosen before the census.**
+  RA-57.5 removed a fourth, wrong, frame; it did not select among these three.
+- **RA-57.8 — two harness design defects.** **(i)** A measurement rung must not fail its workflow on RED.
+  `tools/m6_cp3_r4_witness_breadth_harness.sh:85` is a bare `[[ "$red" == 0 ]]` as the last statement, so
+  four **expected** REDs set exit 1, the runtime job concluded `failure`, and the turn was left
+  `IN_PROGRESS` with its product unreported despite `executed=4 missing=0 postflight=true`. The
+  orchestration verdict must derive from `executed`, `missing` and `postflight` only; the RED count
+  belongs in the ledger, where it already is. `:84`'s `die 'incomplete breadth'` is correct and stays.
+  **(ii)** `:68` `die`s when `picked != 1`, aborting the whole loop — re-introducing stop-at-first-RED
+  through a different door. It must record `NOT_SELECTED` for that ordinal and `continue`.
+- **RA-57.9 — RA-52.6 now has a measured violation.** Identity 4 is the retained attempt RA-52.6's
+  forward reading kept alive; it is RED at its `Produced` precondition
+  (`tests/SurfaceCellsPhase10Tests.cpp:6506`), so the attempt **cannot run** and its guard is unexercised.
+  Identity 1 is the same shape — the body throws inside `nonconstant_hard_rail_fixture()` on its first
+  line, so the forged-germ rejection is never reached. Two guards are now known-unexercised for the same
+  upstream reason. Both stay retained and fail-closed; nothing is retired.
+- **RA-57.10 — a gtest suite name is not unique across targets.** `SurfaceCellPipelinePhase20` has
+  members in `tests/SurfaceCellREPackageTests.cpp` (producer target, `cmake/DirectionalTests.cmake:83`)
+  **and** `tests/SurfaceCellPipelinePhase20Tests.cpp` (historical target, `:571`). A bare `Suite.*`
+  filter denotes different sets in different binaries. Obligations are cited by fully qualified
+  `Suite.Name` only; a suite-level filter must never name one.
+- **RA-57.11 — a throwing fixture singleton has a blast radius.** `nonconstant_hard_rail_fixture()`
+  (`tests/SurfaceCellTransitionQuotientTests.cpp:855-858`) is a `static` function-local singleton; it
+  throws, so **every** consumer goes RED with it — `:2837`, `:2863`, `:3890`, `:8813`, `:8858`, `:9112`,
+  plus `make_nonconstant_hard_rail_fixture(true)` at `:2935`. Consistent with the carrier inventory's 19
+  Quotient-owned members, and it predicts that one upstream repair clears them together. The census must
+  record **which fixture singleton** each failing identity hangs off, or it will count one defect many
+  times and read it as many defects.
+- **RA-57.12 — the census design is amended, and a lesson is minted.** RA-56 said the along/across
+  question would be decided "from `faceEnds`". RA-57.5 decided it and in doing so showed `faceEnds` is an
+  **echo set** (RA-56.1) with low discriminating power: byte-identical across two mesh families, two
+  fields, two transitions and two parameters. The census keys instead on fields that vary — `routeLength`,
+  `step`, `chi`, the probe charts and parameters, the owning fixture singleton, and `closedChainPresent`
+  — and `faceEnds` repetition is never read as corroboration. **LESSONS: a signal that never varies is
+  not a measurement.** Four identical `faceEnds` looked like four confirmations and were one echo printed
+  four times.
+
 ## RA-56 — the first RED is a live reproducer of the 39-identity `A4_ROUTE_CERTIFICATE_REJECTION` carrier, not a new candidate **FROZEN at M6-CP3-TB1-R4-WITNESS-REV** (2026-10-15)
 
 Adjudicates `M6-CP3-TB1-R4-WITNESS-EXEC` and `M6-CP3-TB1-R4-WITNESS-REV`. The execution and its

@@ -1,3 +1,49 @@
+## 2026-10-15 — RA-57 frozen: breadth measurement accepted from the artifact; 4/4 RED is one measured carrier; RA-56.5 resolved ACROSS-rail
+
+- Architecture Review only; no source, test, selector, binary or ledger change. `M6-CP3-TB1-R4-WITNESS-BREADTH`
+  adjudicated: measurement **ACCEPTED**, turn state **CORRECTED**, the reviewer's own control claim
+  **WITHDRAWN**, RA-56.5 **RESOLVED**, repair still **DEFERRED**. Frozen as **RA-57**. Decision record
+  `.agents/Directional/Architecture_M6_CP3_R4_Witness_Breadth_Measurement_Review_Decision.md`.
+- **Re-derived from the artifact because no report was written.** The turn closed `IN_PROGRESS` with
+  `Successor` pointing at itself; the harness exits non-zero on RED, so the runtime job concluded
+  `failure` while the measurement was intact. Run `38676433923`, artifact `11946622500`, ZIP SHA-256
+  `127c77580a9e77dafb1889575b8d69bdbe0271f7a3fc8041fc6c904e9918c6a3`, `executed=4 red=4 missing=0
+  postflight=true`, immutability all true, manifest 28 OK → 28 OK, no source diff since `a44bbf534`.
+- **4/4 RED is ONE carrier through four entries** — three files, three fixture builders, one full
+  `remesh_from_raw_cross_field` entry — all `InvalidHardRailRouteCertificate` / `predicate=endpoint-1` /
+  `no-exact-terminal-corner` on edge `(1,4)`. RA-56.3's `A4_ROUTE_CERTIFICATE_REJECTION` reading is now
+  **measured**, satisfying RA-56.8. Rows frozen in
+  `.agents/Directional/Architecture_M6_CP3_R4_Witness_Breadth_Measured_Predicates_20261015.tsv`.
+- **RA-56.5 RESOLVED — the geometry is ACROSS-rail.** `faceEnds=0,2|0,3` read through the emitter at
+  `src/geometry/SurfaceCellTracing.cpp:18948` puts the first front wholly inside face 0 and the second
+  starting in face 3 — the two faces of edge `(1,4)`. The fronts meet at a shared **interior** point of
+  the rail from opposite sides. The retained repair plan's "ordered rail interval/face-side ownership"
+  vocabulary presumes along-rail and **must be amended before CB re-entry** (RA-45.2 category error,
+  caught before code).
+- **Field- and transition-independent.** `chi=3` vs `chi=0` on the same edge, non-constant vs constant
+  field, interior parameter `0.2` vs `0.25` — identical rejection. No tolerance, parameter special case
+  or transition-conditioned branch can be the repair. Recorded hazard: the two charts disagree by one ULP
+  on the shared barycentric, so a bit-exact cross-chart certificate would fail too; the exact rational
+  parameter on the shared source edge is the correct instrument.
+- **Third hypothesis added:** `routeLength=1` with `step=0` in all four makes route **truncation** a
+  first-class candidate alongside too-strict certificate and wrong pairing. None may be chosen before the
+  census.
+- **Reviewer error withdrawn (RP-03):** the prior `NEXT_TURN` called
+  `M6CP3.CheckedFactoryRejectsForgedTerminalA2bSideGerm` "THE CONTROL, on a different fixture."
+  `make_nonconstant_hard_rail_fixture` (`tests/SurfaceCellTransitionQuotientTests.cpp:776-853`) is the
+  same 3×3 grid with the same `{1,4}`/`{4,7}` rail as the others. All four identities run on **one mesh**;
+  the rung cannot separate "open hard-rail production down" from "A4 production down generally."
+- **Two harness design defects recorded:** a measurement rung must not fail its workflow on RED
+  (`tools/m6_cp3_r4_witness_breadth_harness.sh:85`), and `die` on non-selection (`:68`) re-introduces
+  stop-at-first-RED by aborting the loop.
+- **RA-52.6 measured violation:** two retained guards are now known-unexercised — identity 4 dies at its
+  `Produced` precondition, identity 1 throws inside its fixture singleton. Both stay retained,
+  fail-closed; nothing retired. `RP-02` remains open.
+- Ledger **66/17/49**, debt **1**, CP2 **491/491**, R3 **403/497**, frozen selector **497** — unchanged.
+  No promotion, no new stable event, no 497 run.
+- Successor `M6-CP3-TB1-R4-TRUE-CONTROL` (artifact-only, free): no-hard-rail and closed-chain-rail
+  identities from the same package.
+
 ## 2026-10-15 — RA-56 frozen: first TB RED reclassified as the 39-identity A4 route-certificate carrier
 
 - Architecture Review only; no source, test, selector, harness or ledger change.

@@ -1,3 +1,92 @@
+## CURRENT — breadth measurement accepted from the artifact; 4/4 RED is ONE measured carrier; the control was not a control; RA-56.5 resolves ACROSS-rail; RA-57 frozen (2026-10-15)
+
+**`M6-CP3-TB1-R4-WITNESS-BREADTH` adjudicated.** Measurement **ACCEPTED**; turn state **CORRECTED**;
+the reviewer's own control claim **WITHDRAWN**; RA-56.5 **RESOLVED**; repair still **DEFERRED**. No open
+REVIEW_BLOCKER. Ledger unchanged **66/17/49**, debt **1**, CP2 **491/491**, R3 **403/497**, selector
+**497** untouched. **No new stable event** — this measures an existing carrier, it does not discover a
+new regression.
+
+**Why it had to be re-derived.** No TB report was written. The turn closed `IN_PROGRESS` with
+`Successor` pointing at itself (`63388be98`, "pending documentation transport"), because the harness
+exits non-zero on RED and the runtime job therefore concluded `failure`. The product was intact all
+along: run `38676433923`, artifact `11946622500`, ZIP SHA-256
+`127c77580a9e77dafb1889575b8d69bdbe0271f7a3fc8041fc6c904e9918c6a3`, `executed=4 red=4 missing=0
+postflight=true`, `package=true source=true execution_view=true selector=true`, manifest 28 OK → 28 OK,
+harness SHA-256 `db1aea68…` matching its dispatch record, and `git diff a44bbf534..HEAD -- src include
+tests cmake` **empty**.
+
+**What was measured.** 4/4 RED, one carrier, four entries:
+`M6CP3.CheckedFactoryRejectsForgedTerminalA2bSideGerm` (Quotient `:9111`),
+`SurfaceCellPipelinePhase20.AuthoritativePhaseFrontPropagatesBoundaryAndHardFeatureRailsThroughFlowRepAndArrangement`
+(REPackage `:520`, full `remesh_from_raw_cross_field` entry),
+`SurfaceCellAuthorityContractCutover.DuplicateSourceTerminalContactRejectsAtFirstA4ConsumerPredicate`
+(Phase10 `:7148`) and
+`SurfaceCellAuthorityContractCutover.StandaloneRailDiagnosticModeCannotBypassProducedNetworkTypedIngress`
+(Phase10 `:6503`) — all at `tracing/phase-front`, `InvalidHardRailRouteCertificate`,
+`predicate=endpoint-1`, `a2bProbeFailure=no-exact-terminal-corner`, `edge[0]=1,4:faces=0,3`, `locus=3`,
+`rail=2`, `routeLength=1`, `step=0`, `faceEnds=0,2|0,3`, `closedChain=0`. **RA-56.8 is satisfied: a
+measured carrier, not one measured identity.** Rows frozen in
+`Architecture_M6_CP3_R4_Witness_Breadth_Measured_Predicates_20261015.tsv`.
+
+**ROOT CAUSE, narrowed by two independent discriminations.** The failure is **field-independent and
+transition-independent**: identity 1 runs a non-constant field with `chi=3` on edge `(1,4)`, identities
+2–4 a constant field with `chi=0`; identities 1–2 pair at interior parameter `0.2`, identities 3–4 at
+`0.25`; **all four rejections identical**. So no tolerance, parameter special case or
+transition-conditioned branch can be the repair. And the geometry is now settled: per the emitter at
+`src/geometry/SurfaceCellTracing.cpp:18948`, `faceEnds=0,2|0,3` means the first front begins and ends
+inside face 0 while the second begins in face 3, and those are exactly the two faces of edge `(1,4)`.
+**The fronts approach the rail from opposite faces and meet at a shared interior point of it — ACROSS
+the rail, not two intervals ALONG it.**
+
+**THREE HYPOTHESES REMAIN. NONE MAY BE CHOSEN.** (a) the certificate is too strict; (b) the pairing is
+wrong; (c) **the route is truncated** — `routeLength=1` with `step=0` in all four, where a genuine route
+to a whole-rail terminal would generally be longer. (c) is new. RA-57.5 removed a *fourth*, wrong frame
+(the along-rail interval vocabulary in the retained repair plan, which must be amended before CB
+re-entry); it did not select among these three. Selecting early is the RA-45.2 category error.
+
+**Reviewer error, owned.** The prior `NEXT_TURN` ordered identity 1 first as "THE CONTROL, on a
+*different fixture*." False on the bytes: `make_nonconstant_hard_rail_fixture`
+(`tests/SurfaceCellTransitionQuotientTests.cpp:776-853`) builds the same 3×3 planar grid as
+`make_rectangular_internal_hard_feature_grid` (`tests/SurfaceCellREPackageTests.cpp:46-75`) with the
+identical `userHardEdges {1,4}`/`{4,7}` at `:830-831` — same mesh, same hard feature, same rail chain,
+same terminals. **All four identities run on one mesh.** The rung therefore cannot separate "all open
+hard-rail production is down" from "A4 production is down generally," which is now the first question of
+the next rung. Recorded under `RP-03`, not amended silently.
+
+**Harness defects to fix before the next measurement.** (i) `:85`'s bare `[[ "$red" == 0 ]]` makes
+expected REDs a workflow failure — the orchestration verdict must come from `executed`/`missing`/
+`postflight` only; `:84`'s `die 'incomplete breadth'` is correct and stays. (ii) `:68` `die`s on
+non-selection and aborts the whole loop, re-introducing stop-at-first-RED through a different door; it
+must record `NOT_SELECTED` and `continue`.
+
+**Two guards now known-unexercised at runtime (RA-52.6 measured violation).** Identity 4 is the retained
+attempt and dies at its `Produced` precondition (`tests/SurfaceCellsPhase10Tests.cpp:6506`); identity 1
+throws inside `nonconstant_hard_rail_fixture()` on the test's first line, so its forged-germ rejection is
+never reached. Both stay retained and fail-closed. They join RA-41's junction/sector clauses as frozen
+**UNEXERCISED**.
+
+**Blast radius.** `nonconstant_hard_rail_fixture()`
+(`tests/SurfaceCellTransitionQuotientTests.cpp:855-858`) is a `static` function-local singleton, so every
+consumer goes RED with it — `:2837`, `:2863`, `:3890`, `:8813`, `:8858`, `:9112`, plus
+`make_nonconstant_hard_rail_fixture(true)` at `:2935`. Consistent with the carrier's 19 Quotient-owned
+members; one upstream repair likely clears them together. **The census must record which fixture
+singleton each identity hangs off**, or one defect gets counted many times.
+
+**Citation hazard.** `SurfaceCellPipelinePhase20` has members in both the producer target
+(`cmake/DirectionalTests.cmake:83`) and the historical target (`:571`), so a bare `Suite.*` filter names
+different sets in different binaries. Fully qualified `Suite.Name` only.
+
+**Carried, none retired.** `RP-02` still open — the network-bound consumer has never been reached.
+`R4-OHF-02` recorded, guard retained, no probe. `RP-01`, `RP-03` standing. The two Phase14 supplementals
+still need a separately packaged historical executable (`cmake/DirectionalTests.cmake:554-572`). Backlog:
+the 39-identity carrier, 34 Phase10, seven DCEL, six CP3, the CP2 restorations outside the 37, organic
+D1/D2/D3/D5 and A6/A7, odd-τ.
+
+**Successor:** `M6-CP3-TB1-R4-TRUE-CONTROL` — artifact-only, same package, free: no-hard-rail and
+closed-chain-rail identities, the control that was missing. Then `M6-CP3-TB1-R4-ENDPOINT39-CENSUS`
+(amended per RA-57.12), `M6-CP3-TB1-R4-CARRIER-REV`, then the retained and amended
+`M6-CP3-CB1-R4-WITNESS-REPAIR`.
+
 ## CURRENT — first TB RED reclassified as the 39-identity `A4_ROUTE_CERTIFICATE_REJECTION` carrier; repair DEFERRED behind two census rungs; RA-56 frozen (2026-10-15)
 
 **`M6-CP3-TB1-R4-WITNESS-EXEC` and `M6-CP3-TB1-R4-WITNESS-REV` adjudicated.** Execution and root cause
