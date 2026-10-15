@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r4-endpoint39-census-doc-closure-20261015-0851",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r4-endpoint39-census-doc-closure",
-  "file_id": "1zy3MYBwe2ogHO9dVAm-JAms5F7D6eh0I",
-  "patch_sha256": "11f863855ce3fb637ab335d2deee23a97cf43de0e1e3254d1bda5fb471517b74",
-  "base_sha": "da34eed8a48f372c1d4258e195d9494a605e5a98",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "Record M6 R4 endpoint39 census evidence and handoff (39 executed)",
-  "retention_days": 14
+  "request_id": "m6-cp3-r4-witness-repair-compile-20261015-1025",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-r4-witness-repair-compile",
+  "source_sha": "570c51733761c17a198bda6c9aba7d8b1e7ae2dd",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-r4-witness-repair-compile"
 }
