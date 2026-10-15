@@ -1,3 +1,9 @@
+## CURRENT — Endpoint39 census measured; carrier independent Review is the next authorized turn (2026-10-15)
+
+- [x] `M6-CP3-TB1-R4-ENDPOINT39-CENSUS`: artifact-only workflow 38687783618; 39/39 exact identities executed, 39 RED, 0 missing, immutable package/selector/source, 28/28 manifest before and after, no build/TB497. Detailed report `Architecture_M6_CP3_R4_Endpoint39_Census_Artifact_Only_TB_Report_20261015.md` and 39-row `Architecture_M6_CP3_R4_Endpoint39_Census_Measured_Identities_20261015.tsv`. 38 endpoint-1/no-exact-terminal-corner; 1 endpoint-0/missing-terminal-or-closed-rail-provenance; shared thrown fixture causes flagged; no semantic acceptance, no new stable regression or ledger change.
+- [ ] **Next turn only: `M6-CP3-TB1-R4-CARRIER-REV`**, mandatory independent architecture Review; adjudicate terminal certificate / incorrect pairing / truncated route with RA-58 and the full 39-row census. Do not silently pick hypothesis or relax terminal authority. Retained `M6-CP3-CB1-R4-WITNESS-REPAIR` requires subsequent authorization and RA-57.5 across-rail terminology correction; RA-58.7 A5/A6/A7 and RP-02 are independent debt. Frozen selector 497 untouched, stable 66/17/49, debt 1, CP2 491/491, R3 403/497, PR #8 open draft.
+
+---
 ## CURRENT — true controls measured; 39-identity R4 census next (2026-10-15)
 
 - [x] `M6-CP3-TB1-R4-TRUE-CONTROL` 4/4 executed, square/cylinder PASS, both closed-chain torus tests RED. Orchestration complete with intact immutable package and 28/28 pre/post checksums; exact torus failures are missing arrangement/occurrence products, **not** proven open-rail `no-exact-terminal-corner`. See `Architecture_M6_CP3_R4_True_Control_Artifact_Only_TB_Report_20261015.md`.

@@ -1,3 +1,10 @@
+## 2026-10-15 — M6-CP3-TB1-R4-ENDPOINT39-CENSUS artifact-only measurement completed
+
+- 39/39 exact historical A4 identities executed independently against immutable GMP compile package `11939982141`, semantic source `953f812ff1f431e3ad3af3b68a92284a7831c94a`; [run 38687783618](https://github.com/akashskypatel/Directional/actions/runs/38687783618) succeeded, result artifact `11950303475`, ZIP SHA-256 `3bce344f3a13403a830a2800fea4c47d1e7cdd53f6f3eac6629de57d70788b32`; **39 RED, 0 missing, postflight true, 28/28 pre/post integrity**; no compile, relink, benchmarks, TB497, source/test/selector modifications.
+- 38 first `endpoint-1` / `no-exact-terminal-corner`, one first `endpoint-0` / `missing-terminal-or-closed-rail-provenance` (ordinal 405). All A4 open-hard-rail terminal-rejection loci; two throwing shared fixture singletons cover 19 identities and are not independent root-cause confirmations. Report and 39-identity TSV: `.agents/Directional/Architecture_M6_CP3_R4_Endpoint39_Census_{Artifact_Only_TB_Report_20261015.md,Measured_Identities_20261015.tsv}`.
+- All 39 are previously RED in frozen R3 classification, so **candidate/non-stable only**, no accepted regression, no stable event/ledger promotion. Stable 66/17/49, debt 1, CP2 491/491, R3 403/497 (94 RED, 88 carried losses) unchanged. Three certificate hypotheses unresolved; next independent `M6-CP3-TB1-R4-CARRIER-REV`, repair deferred. Prior work-preservation staging initially failed `container_session_unavailable` and subsequently succeeded through Google Drive; this documentation closure uses full six-path patch transport.
+
+---
 ## 2026-10-15 — RA-58 frozen: the true control bounds the carrier to OPEN hard-rail terminal certification
 
 - Architecture Review only; no source, test, selector, binary, harness or ledger change.
