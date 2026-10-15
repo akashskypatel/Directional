@@ -1,3 +1,10 @@
+## CURRENT — endpoint chart probe compile-only completion (2026-10-15)
+
+- [x] `M6-CP3-CB4-R4-ENDPOINT-CHART-PROBE`: rejection-only actual endpoint face/source topology/carrier face diagnostic published at semantic `5be5e123e14e2ddab8bb8c0db2a354a0a900435a`; compile GREEN [38776964197](https://github.com/akashskypatel/Directional/actions/runs/38776964197), artifact `11994726341`, SHA256 `b59dc16f4417693c4aec79025160da2054cfbca3a1589ef051ee3a171d3185bb`, 28/28 manifest, eight GMP/GMPXX targets, preflight/build 0/0, no runtime. Owning record `.agents/Directional/Architecture_M6_CP3_R4_Endpoint_Chart_Probe_Code_Build_Record_20261015.md`.
+- [ ] **Separate authority required** for immutable artifact-only diagnostic execution and independent Review. Do not invent successor, repair RP-01, assume endpoint face pair, promote credits, run frozen TB497, or change ledger (66/17/49; debt 1; CP2 491/491; R3 403/497).
+
+---
+
 ## CURRENT — endpoint chart source diagnostic Code + Build (2026-10-15)
 
 - [ ] `M6-CP3-CB4-R4-ENDPOINT-CHART-PROBE`: publish post-rejection source-face rows and source topology attachment/carrier keys, apply the source patch, and verify exact-source mandatory eight-target GMP/GMPXX compile. No runtime, no `RP-01` repair, no selector/ledger changes. Evidence record `.agents/Directional/Architecture_M6_CP3_R4_Endpoint_Chart_Probe_Code_Build_Record_20261015.md`.
