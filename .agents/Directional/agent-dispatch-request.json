@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb7-r7-lattice-uv-apply-20261016a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb7-r7-lattice-uv-apply",
-  "file_id": "13zk2EfwUvH-3J7DceIz5kACQrkuv392D",
-  "patch_sha256": "389c5681be25af2821e0080426d9d0a1f48c53d05f983c82848bb08e2f19f1f6",
-  "base_sha": "aebeff9e2410e8ce554fdbbee70b9f00c4ee9f3d",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "trace(surface-cells): capture pre-snap lattice UV candidates for rejected endpoints",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb7-r7-lattice-uv-compile-20261016a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb7-r7-lattice-uv-compile",
+  "source_sha": "cdd6dc4a9ba95a42aace6226194b38e712b53e4b",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb7-r7-lattice-uv"
 }
