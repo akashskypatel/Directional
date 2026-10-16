@@ -1,3 +1,11 @@
+## CURRENT — TB7 pre-snap candidate harvest verified (2026-10-16)
+
+- [x] `M6-CP3-TB7-R7-LATTICE-UV-CANDIDATE-HARVEST`: immutable [run 38861867717](https://github.com/akashskypatel/Directional/actions/runs/38861867717) verified; 44/44 selected, 44 RED unchanged, 96 endpoint records. Report: `.agents/Directional/Architecture_M6_CP3_R7_Lattice_UV_Candidate_Harvest_TB_Report_20261016.md`.
+- [ ] **NEXT — independent Review, exact turn ID not yet frozen.** Adjudicate the accepted boundary override (original sampled SecondFrom face 3, published face 7) against authoritative A2b endpoint/carrier contracts. Do **not** implement repair without the Review/Definition gate.
+- [ ] Preserve 66/17/49, debt 1, CP2 491/491, R3 403/497 and frozen selector 497. `RP-02` remains unreached. No new accepted-green losses or stable event credited.
+
+---
+
 ## CURRENT — CB7 pre-snap producer-candidate probe compile complete; TB7 next (2026-10-16)
 
 - [x] `M6-CP3-CB7-R7-LATTICE-UV-CANDIDATE-PROBE`: producer-captured pre-snap UV, raw candidate barycentrics and pass/fail published only in original rejection diagnostic; one source file (+123), source commit `cdd6dc4a9ba95a42aace6226194b38e712b53e4b`. Exact apply and compile-only evidence: `.agents/Directional/Architecture_M6_CP3_R7_Lattice_UV_Candidate_Probe_Code_Build_Record_20261016.md`.
