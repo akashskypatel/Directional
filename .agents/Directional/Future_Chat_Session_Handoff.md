@@ -1,3 +1,68 @@
+## CURRENT — 2026-10-16 RA-80 frozen; branch V measured NOT APPLICABLE (0/21), the star path passes, and an unexamined membership test fails; next turn `M6-CP3-CB10-R9-CARRIER-ENDPOINT-SUBCONDITION-PROBE` (compile-only)
+
+**Supersedes the RA-79 CURRENT section below as the current state; that section and every section beneath it are retained as authorizing history.** Two turns adjudicated — `M6-CP3-CB9-R9-TERMINAL-STAR-PATH-PROBE` (rung 20) and `M6-CP3-TB9-R9-TERMINAL-STAR-PATH-HARVEST` (rung 21) — **both ACCEPTED**, one charge and one persistent note. Decision: `.agents/Directional/Architecture_M6_CP3_R9_Terminal_Star_Path_Review_Decision.md`.
+
+### TURN SEQUENCE — where this rung sits (read this first)
+
+Each Code+Build, Test+Benchmark or Definition turn is followed by a Review turn that freezes an RA-numbered amendment. The sequence is byte-derived from `STATUS` history; the frozen clauses live in `Architecture_M6_Frozen_Definitions.md`.
+
+| # | Turn | Kind | Review | Outcome |
+|---:|---|---|---|---|
+| 1-9 | `CB2` → `TB5` (R4/R5 ladder) | mixed | **RA-63 … RA-70** | probe/decision separation, mechanism derived, 44/44 RED, RA-68.9 confirmed |
+| 10 | `M6-CP3-DEFN-R6-CORNER-ASSIGNMENT-AUTHORITY-SPEC` | Definition | **RA-71** | falsified the reviewer's prediction **and** census |
+| 11 | `M6-CP3-DEFN-R7-CORNER-FACE-SELECTION-REPAIR-SPEC` | Definition | **RA-72** | accepted with amendment; passes RA-65.5 |
+| 12 | `M6-CP3-CB6-R7-NODE-ADMISSIBLE-FACE-SET-PROBE` | Code + Build | **RA-73** | calls the production predicate |
+| 13 | `M6-CP3-TB6-R7-NODE-ADMISSIBLE-FACE-SET-HARVEST` | Test + Benchmark | **RA-73** | **RA-72.8 falsified** |
+| 14 | `M6-CP3-CB7-R7-LATTICE-UV-CANDIDATE-PROBE` | Code + Build | **RA-74** | moved producer-side as instructed |
+| 15 | `M6-CP3-TB7-R7-LATTICE-UV-CANDIDATE-HARVEST` | Test + Benchmark | **RA-74** | **sampler exonerated** |
+| 16 | `M6-CP3-DEFN-R8-BOUNDARY-OVERRIDE-AUTHORITY-SPEC` | Definition | **RA-75** | overriding face legitimately derived |
+| 17 | `M6-CP3-CB8-R8-SOURCE-ENTITY-EQUIVALENCE-PROBE` | Code + Build | **RA-76** | first probe with deletions — correct |
+| 18 | `M6-CP3-TB8-R8-SOURCE-ENTITY-EQUIVALENCE-HARVEST` | Test + Benchmark | **RA-76** | **branch (b) settled**; every producer exonerated |
+| 19 | `M6-CP3-DEFN-R9-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC` | Definition | **RA-77** | **NO DELIVERABLE** — over-scoped by the reviewer; split |
+| 19a | `M6-CP3-DEFN-R9A-ENDPOINT-FACE-COMPARISON-CENSUS` | Definition | **RA-78** | **found a second active admission path** |
+| 19b | `M6-CP3-DEFN-R9B-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC` | Definition | **RA-79** | contract admissible; **narrowed RA-78.3** |
+| 20 | `M6-CP3-CB9-R9-TERMINAL-STAR-PATH-PROBE` | Code + Build | **RA-80** | accepted; 270-line hoist **verified semantics-preserving** |
+| 21 | `M6-CP3-TB9-R9-TERMINAL-STAR-PATH-HARVEST` | Test + Benchmark | **RA-80** | accepted; **branch V NOT APPLICABLE, 0/21** |
+| **22** | **`M6-CP3-CB10-R9-CARRIER-ENDPOINT-SUBCONDITION-PROBE`** | **Code + Build** | *pending* | **NEXT — compile-only; split the composite** |
+| 23 | `M6-CP3-TB10-R9-CARRIER-ENDPOINT-SUBCONDITION-HARVEST` | Test + Benchmark | *pending* | artifact-only harvest of rung 22 |
+| 24 | repair or further definition | *undetermined* | *pending* | **not authorized**; shape depends on which half fails |
+
+**Do not reorder rungs 22-24 and do not pre-empt them.**
+
+**THE RESULT — 0/21, and the failing conjunct is not the one under investigation.** Re-derived independently from the raw logs in result artifact `12055460315` by literal field scan — not from the harness summary nor the turn's own cross-check: **44 log files, 48 `a3Probe` records, 21 with `a3ProbeSameExactOneHotVertex=1`, 27 without.** Every field invariant across the 21:
+
+| conjunct | all 21 |
+|---|---|
+| `a3ProbeContactPublished` | `1` |
+| `a3ProbeComponentMatches` | `1` |
+| `a3ProbeSameExactOneHotVertex` | `1` |
+| **`a3ProbePublishedCarrierEndpoint`** | **`0`** |
+| `a3ProbeOrientation0First` / `Second` | **`Unique` / `Unique`** |
+| `a3ProbeOrientation0Disjoint` / `CarrierA3` | **`1` / `1`** |
+| `a3ProbeOrientation1First` / `Second` | `Missing` / `Missing` |
+| `a3ProbeOrientation1Disjoint` / `CarrierA3` | `0` / `1` |
+| **`a3ProbeAdmissibleOrientationCount`** | **`0`** |
+
+**The star path passes.** Under orientation 0 both sides return `Unique`, the directed-side face sets are **disjoint**, and carrier A3 transport validates — the relation nine rungs converged on holds. What fails is a membership test no rung had examined. Orientation 1's `Missing/Missing` does not invalidate orientation 0. `a3ProbePublishedCarrierEndpoint` is a **composite** of published-contact endpoint membership and canonical carrier-edge endpoint membership, and the turn correctly refused to guess which half fails. **Branch V is not applicable to the measured 21; this does not make the contract unsound.**
+
+**THE 270-LINE HOIST IS SEMANTICS-PRESERVING — verified by expansion, not accepted.** Rung 20 **deleted the production predicate `unique_terminal_star_path`** and promoted it to a free function at `src/geometry/SurfaceCellTracing.cpp:8166`, with wrapper `unique_terminal_star_path_checked` at `:8520` called at `:8727`. One clause changed: `!matchesA3(spoke, incident[0], incident[1], forward->transport)` became `!reverse || reverse->transport != forward->transport.inverse()`. `matchesA3` (`:8254-8267`) returns `forward && reverse && forward->transport == expected && reverse->transport == expected.inverse()`; **`expected` is bound to `forward->transport` itself**, so that conjunct is self-comparing and vacuous, and its row lookups duplicate `firstRow`/`secondRow` whose inequality is enforced two lines above in both versions. The predicate reduces **exactly** to the new form — **an exact inlining**. Residuals: the added `|| fieldTransportAtlas == nullptr` guard is **unreachable in production** (null atlas rejected at `:8245`); `uniquePathFaces` defaults `nullptr` and the production wrapper passes nothing; the call site at `:8724-8737` is structurally unchanged with the same detail codes. **No production admission change**, and the probe **calls** the hoisted function rather than reimplementing it.
+
+**CHARGE — the inlining was not named (RA-80.3).** The record's "no change to … predicate results" is **true** and is the right claim, but neither it nor the surrounding text mentions that `matchesA3` was removed and replaced by its inlined equivalent. A reviewer facing a 270-line diff that deletes an active admission predicate cannot take that claim on trust — it is the claim under test. **When a refactor substitutes a predicate call for its inlined equivalent, name the substitution and state why it is equivalent.**
+
+**CREDITS.** **It cross-checked its own instrument** — the harness "does not aggregate `a3Probe` directly," so the turn scanned all 44 raw logs literally and said so; an independent scan here reproduces its table exactly. **It named the deciding conjunct and refused to subclassify it.** It distinguished "not applicable to the 21" from "contract unsound." **Four disclosed failures, all independently `conclusion=failure`** — `38911565252`, `38914058261`, `38914322511`, `38915195172` — each named and corrected minimally. **Durable discipline improved:** tracker and `ORIENTATION.md` both written (RA-79.8 absorbed); beacon `COMPLETE` with `Successor: UNKNOWN` and reasoning (RA-79.6 absorbed). **`RP-03` satisfied a fifteenth turn.** **Note:** gates remain unreported, an eighth mandate — recorded and carried rather than repeated.
+
+**PREDICTION FOR RUNG 22, falsifier and observation rung named (RA-80.7).** From the fixture (`tests/SurfaceCellsPhase10Tests.cpp:223-273`) the carrier edge measured at RA-70 is `{1,4}` and the decoded vertex is `4`, so *vertex is an endpoint of the carrier's canonical source edge* should hold — pointing at the **published terminal contact's endpoint set** as the failing half. **Falsifier:** if the carrier reaching the endpoint certificate differs from the one RA-70 measured, or the decoded vertex is not an endpoint of it, the other half fails instead. **Observation rung: 22.** A prediction, **not** the subclassification rung 21 warned against inventing — rung 22 measures it.
+
+**LESSON RA-80.8 — the conjunct that fails is rarely the one under investigation.** Nine rungs converged on the star path and it passes. **When a multi-part predicate rejects, measure every conjunct, not the interesting one.**
+
+**`RP-01` STATE.** Branch V **measured not applicable**; the frontier is the composite `a3ProbePublishedCarrierEndpoint`, whose halves have never been measured separately. **Code remains NOT authorized.** `RP-02` **UNREACHED**.
+
+**Accounting.** Ledger **66/17/49**, debt **1**, CP2 **491/491** accepted, R3 **403/497** rejected (94 RED, 88 carried CP2 losses), frozen selector **30+12+449+6=497** — unchanged. **`R4-VIN-01` re-arms at `18cc4da5e`:** every earlier artifact through `12047105604`, `12049916826` and `12052388003` is a **baseline, never a comparand**; the 44 RED are the baseline for `18cc4da5e` alone, **candidate / non-stable**. Artifacts verified: result `12055460315` ZIP recomputed `fa729d87b7…`, manifest **49 OK / 0 BAD**, boundary `planned=44 executed=44 red=44 missing=0 postflight=True exit=0`; probe blob `0bcf462a0e…` **= HEAD**, `include`/`tests` byte-identical; `ledgers --base 35f34cd07` **ALL CHECKS PASSED**. No accepted-green loss, no ledger credit, no promotion, no stable event, no regression recurrence, no 497 execution, no gate credit, no binary executed by this Review. No source, test, selector, binary, harness, workflow or benchmark change in this **Review**. PR #8 draft/open. **`PROCESS-01` discharged.** **RA-61.9 WITHDRAWN, final. RA-64.6 WITHDRAWN, final. RA-70.14 WITHDRAWN. RA-72.8 WITHDRAWN. RA-71.5 AMENDED. RA-73.5 SUPERSEDED. RA-74.1 NARROWED and CONFIRMED. RA-76.8 AMENDED. RA-78.3 NARROWED. Gate C SUSPENDED (RA-65.5, RA-68.3) and moot for `RP-01` (RA-70.11), boundary per RA-78.4.** The historical `ledgers` failure at `b2b6e6541` remains permanent for any earlier base, is correct, must not be suppressed, and **must never hold a turn open**.
+
+**Strict next rung: `M6-CP3-CB10-R9-CARRIER-ENDPOINT-SUBCONDITION-PROBE` — compile-only, rejection-only.** Split the composite `a3ProbePublishedCarrierEndpoint` into its two named halves and emit both sides' raw identities so the comparison is readable rather than inferred: (1) is the decoded `SourceVertexId` a member of the **published terminal contact's endpoint set** — emit that set's vertex ids; (2) is it an endpoint of the **carrier's canonical `SourceEdgeTopologyKey`** — emit that edge's two vertex ids; (3) the decoded vertex id itself, and the carrier edge and rail id the certificate actually used at the point of the test. No predicate, ladder, rejection string or acceptance path may change. Compile only — no runtime, no 497, no benchmark, no fixture change. Then dispatch a compile package and stop. **Do not interpret the fields**; rung 23 harvests them and rung 24's shape depends on which half fails. The sections below are historical authorizing evidence, not fresh instructions to re-execute.
+
+---
+
 ## CURRENT — TB9 harvest complete; independent Review required before further repair (2026-10-16)
 
 **Canonical turn:** `M6-CP3-TB9-R9-TERMINAL-STAR-PATH-HARVEST`. Artifact-only workflow [38921052963](https://github.com/akashskypatel/Directional/actions/runs/38921052963) used exact compile package `12052388003` (semantic source `18cc4da5e2bc41138c5363a74de4e2db1e28ef23`) and published result `12055460315` (ZIP SHA-256 `fa729d87b7b8057f6800ba64d1146d1f8293d0192bb45580234281beefb5a0ae`). **44/44 selected, 44 RED, 0 missing, immutable postflight; no compilation, relinking, benchmark or frozen selector497 execution.** Exact result ZIP and all internal checksums reverified. New diagnostic independently read from immutable raw logs: 48 observations, including 21 bit-exact one-hot same-vertex cases; all 21 have forward `Unique` A3 paths and disjoint sides but `a3ProbePublishedCarrierEndpoint=0`, hence **0/21** satisfy the full RA-79 branch-V contract. Reverse `Missing` paths do not invalidate forward orientation; the failing composite endpoint predicate's individual subcondition remains unknown.

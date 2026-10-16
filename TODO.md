@@ -1,3 +1,41 @@
+## CURRENT — RA-80 frozen; branch V measured NOT APPLICABLE (0/21); the star path passes and an unexamined membership test fails (2026-10-16)
+
+### Turn sequence (byte-derived from `STATUS` history; frozen clauses in `Architecture_M6_Frozen_Definitions.md`)
+
+| # | Turn | Kind | Review | Outcome |
+|---:|---|---|---|---|
+| 1-9 | `CB2` → `TB5` (R4/R5 ladder) | mixed | RA-63 … RA-70 | probe/decision separation; mechanism derived; 44/44 RED; RA-68.9 confirmed |
+| 10 | `M6-CP3-DEFN-R6-CORNER-ASSIGNMENT-AUTHORITY-SPEC` | Definition | RA-71 | falsified the reviewer's prediction **and** census |
+| 11 | `M6-CP3-DEFN-R7-CORNER-FACE-SELECTION-REPAIR-SPEC` | Definition | RA-72 | accepted w/ amendment; passes RA-65.5 |
+| 12 | `M6-CP3-CB6-R7-NODE-ADMISSIBLE-FACE-SET-PROBE` | Code + Build | RA-73 | calls the production predicate |
+| 13 | `M6-CP3-TB6-R7-NODE-ADMISSIBLE-FACE-SET-HARVEST` | Test + Benchmark | RA-73 | RA-72.8 falsified |
+| 14 | `M6-CP3-CB7-R7-LATTICE-UV-CANDIDATE-PROBE` | Code + Build | RA-74 | moved producer-side as instructed |
+| 15 | `M6-CP3-TB7-R7-LATTICE-UV-CANDIDATE-HARVEST` | Test + Benchmark | RA-74 | sampler exonerated |
+| 16 | `M6-CP3-DEFN-R8-BOUNDARY-OVERRIDE-AUTHORITY-SPEC` | Definition | RA-75 | overriding face legitimately derived |
+| 17 | `M6-CP3-CB8-R8-SOURCE-ENTITY-EQUIVALENCE-PROBE` | Code + Build | RA-76 | first probe with deletions — correct |
+| 18 | `M6-CP3-TB8-R8-SOURCE-ENTITY-EQUIVALENCE-HARVEST` | Test + Benchmark | RA-76 | **branch (b) settled**; every producer exonerated |
+| 19 | `M6-CP3-DEFN-R9-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC` | Definition | RA-77 | **NO DELIVERABLE** — over-scoped by the reviewer; split |
+| 19a | `M6-CP3-DEFN-R9A-ENDPOINT-FACE-COMPARISON-CENSUS` | Definition | RA-78 | **found a second active admission path** |
+| 19b | `M6-CP3-DEFN-R9B-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC` | Definition | RA-79 | contract admissible; **narrowed RA-78.3** |
+| 20 | `M6-CP3-CB9-R9-TERMINAL-STAR-PATH-PROBE` | Code + Build | RA-80 | 270-line hoist **verified semantics-preserving** |
+| 21 | `M6-CP3-TB9-R9-TERMINAL-STAR-PATH-HARVEST` | Test + Benchmark | RA-80 | **branch V NOT APPLICABLE, 0/21** |
+| **22** | **`M6-CP3-CB10-R9-CARRIER-ENDPOINT-SUBCONDITION-PROBE`** | **Code + Build** | pending | **NEXT — compile-only** |
+| 23 | `M6-CP3-TB10-R9-CARRIER-ENDPOINT-SUBCONDITION-HARVEST` | Test + Benchmark | pending | artifact-only harvest of rung 22 |
+| 24 | repair or further definition | undetermined | pending | **not authorized**; shape depends on which half fails |
+
+- [x] Rungs 20 and 21 **both ACCEPTED** (RA-80), one charge, one carried note. Decision: `.agents/Directional/Architecture_M6_CP3_R9_Terminal_Star_Path_Review_Decision.md`.
+- [x] **RA-80.1 — 0/21.** Re-derived independently from raw logs: 44 files, 48 `a3Probe` records, 21 vertex / 27 non-vertex, every field invariant. `a3ProbeContactPublished=1`, `a3ProbeComponentMatches=1`, `a3ProbeSameExactOneHotVertex=1`, **`a3ProbePublishedCarrierEndpoint=0`**, orientation 0 `Unique`/`Unique`/disjoint/A3 ✓, orientation 1 `Missing`/`Missing`, **`a3ProbeAdmissibleOrientationCount=0`**. **The star path passes**; the failing conjunct is a membership test no rung had examined. Branch V **not applicable** to the 21 — which does **not** make the contract unsound.
+- [x] **RA-80.2 — the 270-line hoist is semantics-preserving**, verified by expansion: `matchesA3(spoke, incident[0], incident[1], forward->transport)` reduces exactly to `forward && reverse && reverse->transport == forward->transport.inverse()` because `expected` is bound to `forward->transport` itself. Null guard unreachable (`:8245`); `uniquePathFaces` defaults null and production passes nothing; call site `:8724-8737` structurally unchanged. **No production admission change**; the probe **calls** the hoisted function.
+- [x] Charge **RA-80.3** — the inlining was not named. "No change to predicate results" is true but is the claim under test; a reviewer had to reconstruct the equivalence. **When a refactor substitutes a predicate call for its inlined equivalent, name the substitution and say why it is equivalent.**
+- [x] Credits: **cross-checked its own instrument** (the harness does not aggregate `a3Probe`, so it scanned all 44 raw logs and said so); **named the deciding conjunct and refused to subclassify**; distinguished "not applicable" from "unsound"; **four disclosed failures all independently `conclusion=failure`** (`38911565252`, `38914058261`, `38914322511`, `38915195172`); **tracker and ORIENTATION written** (RA-79.8 absorbed); beacon `COMPLETE`/`UNKNOWN` with reasoning (RA-79.6 absorbed). **`RP-03` satisfied a fifteenth turn.** Note: gates unreported, eighth mandate — carried.
+- [x] **RA-80.7 prediction for rung 22**, falsifier and rung named: the carrier edge at RA-70 is `{1,4}` and the vertex is `4`, so carrier-edge membership should hold, pointing at the **published terminal contact's endpoint set** as the failing half. **Falsifier:** a different carrier reaches the certificate, or the vertex is not an endpoint of it. **Observation rung: 22.**
+- [ ] **Rung 22 — `M6-CP3-CB10-R9-CARRIER-ENDPOINT-SUBCONDITION-PROBE` (compile-only, rejection-only).** Split `a3ProbePublishedCarrierEndpoint` into its two halves and emit raw identities on both sides: (1) is the decoded `SourceVertexId` in the **published terminal contact's endpoint set** — emit that set's vertex ids; (2) is it an endpoint of the **carrier's canonical `SourceEdgeTopologyKey`** — emit that edge's two vertex ids; (3) the decoded vertex id, and the carrier edge and rail id actually used at the test. **Do not interpret the fields.**
+- [ ] **Rung 23** harvests. **Rung 24** is **not authorized**; its shape depends on which half fails. **Do not reorder rungs 22-24.**
+- [ ] Standing: no epsilon anywhere; relocation is not repair (RA-72.5); no new star predicate, no weakening of `unique_terminal_star_path`, `Ambiguous`/`Missing` never acceptable (RA-78.4); gate C suspended; branch I exact-rational strictness and branch C restrictions stand (RA-79.4); do not revive branch (a) (RA-76.1), `point_on_source` as the locus (RA-71.5), or RA-73.5's framing (superseded); admission does **not** compare raw endpoint faces (RA-76.8 amended).
+- [ ] Carried: `RP-02` **UNREACHED**. Frozen 66/17/49, debt 1, CP2 491/491, R3 403/497, selector 497. **`R4-VIN-01` re-arms at `18cc4da5e`** — every earlier artifact through `12052388003` is a baseline, never a comparand. RA-61.9, RA-64.6, RA-70.14, RA-72.8 withdrawn; RA-71.5 amended; RA-73.5 superseded; RA-74.1 narrowed and confirmed; RA-76.8 amended; RA-78.3 narrowed. `PROCESS-01` discharged. The historical `ledgers` failure at `b2b6e6541` is permanent for any earlier base, correct, **must not be suppressed, and must never hold a turn open**.
+
+---
+
 ## CURRENT — TB9 artifact-only harvest complete; independent Review required (2026-10-16)
 
 - [x] `M6-CP3-CB9-R9-TERMINAL-STAR-PATH-PROBE`: compile-only, source `18cc4da5e2bc41138c5363a74de4e2db1e28ef23`, immutable compile artifact `12052388003`, no runtime in CB9.

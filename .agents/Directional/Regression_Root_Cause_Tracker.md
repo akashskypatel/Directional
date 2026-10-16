@@ -1,3 +1,133 @@
+## 2026-10-16 — branch V is measured not applicable: 0/21, and the star path passes while an unexamined membership test fails (RA-80)
+
+**Review:** `M6-CP3-R9-TERMINAL-STAR-PATH-REV`, adjudicating rungs 20 and 21 —
+`M6-CP3-CB9-R9-TERMINAL-STAR-PATH-PROBE` and
+`M6-CP3-TB9-R9-TERMINAL-STAR-PATH-HARVEST`. **Both ACCEPTED**, one charge, one persistent
+note. Decision:
+`.agents/Directional/Architecture_M6_CP3_R9_Terminal_Star_Path_Review_Decision.md`.
+Semantic source `18cc4da5e2bc41138c5363a74de4e2db1e28ef23`.
+
+### Root-cause state
+
+`RP-01 AUTHORITY_DOMAIN_CONFLATION`: branch V of the R9B contract is **measured NOT
+APPLICABLE** to the 21. The contract stands; it does not cover them. The frontier is the
+composite `a3ProbePublishedCarrierEndpoint`, whose two halves have never been measured
+separately. **Code remains NOT authorized.** `RP-02` **UNREACHED**.
+
+### The measurement, re-derived independently from raw bytes
+
+Result artifact `12055460315` (run `38921052963`), ZIP SHA-256 recomputed
+`fa729d87b7b8057f6800ba64d1146d1f8293d0192bb45580234281beefb5a0ae`, manifest **49 OK /
+0 BAD**, `planned=44 executed=44 red=44 missing=0 postflight=True exit=0`. A literal field
+scan of all 44 raw logs — independent of the harness summary and of the turn's own
+cross-check — finds **48 `a3Probe` records, 21 with `a3ProbeSameExactOneHotVertex=1`, 27
+without**, with every field invariant across the 21:
+
+| conjunct | all 21 |
+|---|---|
+| `a3ProbeContactPublished` | `1` |
+| `a3ProbeComponentMatches` | `1` |
+| `a3ProbeSameExactOneHotVertex` | `1` |
+| **`a3ProbePublishedCarrierEndpoint`** | **`0`** |
+| `a3ProbeOrientation0First` / `Second` | **`Unique` / `Unique`** |
+| `a3ProbeOrientation0Disjoint` / `CarrierA3` | **`1` / `1`** |
+| `a3ProbeOrientation1First` / `Second` | `Missing` / `Missing` |
+| `a3ProbeOrientation1Disjoint` / `CarrierA3` | `0` / `1` |
+| **`a3ProbeAdmissibleOrientationCount`** | **`0`** |
+
+Conjunction satisfied: **0 of 21**.
+
+**The star path passes.** Under orientation 0 both sides return `Unique`, the directed-side
+face sets are disjoint, and carrier A3 transport validates — the relation nine rungs
+converged on holds. What fails is a membership test no rung had examined. Orientation 1's
+`Missing/Missing` does not invalidate orientation 0.
+`a3ProbePublishedCarrierEndpoint` is a **composite** of published-contact endpoint
+membership and canonical carrier-edge endpoint membership; the turn refused to guess which
+half fails — "avoid inventing that subclassification" — and was right to.
+
+### The 270-line hoist is semantics-preserving, verified by expansion
+
+Rung 20 **deleted the production predicate `unique_terminal_star_path`** from the
+checked-product verifier and promoted it to a free function at
+`src/geometry/SurfaceCellTracing.cpp:8166`, with a capture-binding wrapper
+`unique_terminal_star_path_checked` at `:8520` called at `:8727`. One clause changed:
+`!matchesA3(spoke, incident[0], incident[1], forward->transport)` became
+`!reverse || reverse->transport != forward->transport.inverse()`.
+
+`matchesA3` (`:8254-8267`) returns `forward && reverse && forward->transport == expected &&
+reverse->transport == expected.inverse()`. **Here `expected` is bound to
+`forward->transport` itself**, so that conjunct is a self-comparison and vacuous, and its
+row lookups duplicate `firstRow`/`secondRow` whose inequality is enforced two lines above
+in both versions. The predicate reduces **exactly** to the new form — **an exact inlining,
+not a change**. Residuals: the added `|| fieldTransportAtlas == nullptr` guard is
+**unreachable in production** (null atlas rejected at `:8245`); `uniquePathFaces` defaults
+`nullptr` and the production wrapper passes nothing; the call site at `:8724-8737` is
+structurally unchanged with the same `MissingTerminalA3Path` / `AmbiguousTerminalA3Path`
+codes. **No production admission change**, and the probe **calls** the hoisted function
+rather than reimplementing it (RA-73.10 honoured).
+
+### Charge
+
+**RA-80.3 — the inlining was not named.** The record's "no change to … predicate results"
+is **true**, but neither it nor the surrounding text mentions that `matchesA3` was removed
+from the predicate and replaced by its inlined equivalent. A reviewer facing a 270-line
+diff that deletes an active admission predicate cannot take that claim on trust — it is the
+claim under test — and had to reconstruct the equivalence from `matchesA3`'s body. **When a
+refactor substitutes a predicate call for its inlined equivalent, name the substitution and
+state why it is equivalent.** The obligation is heaviest exactly where the claim is
+"nothing changed."
+
+### Credits
+
+**It cross-checked its own instrument:** the harness "does not aggregate `a3Probe`
+directly," so the turn ran a separate literal-field scan of all 44 raw logs and said so; an
+independent scan here reproduces its table exactly. Noticing that a summary path does not
+cover newly added fields, and closing that gap before reporting, is new behaviour in this
+ladder. **It named the deciding conjunct and refused to subclassify it.** It distinguished
+"not applicable to the 21" from "contract unsound." **Four disclosed failures, all
+independently `conclusion=failure`** — `38911565252` (targets as a string), `38914058261`
+(forbidden `retention_days`), `38914322511` and `38915195172` (a missing `probeCarrier`
+declaration and a ternary mixing `DomainResult<SourceVertexId>` with `std::nullopt`) —
+each named and corrected minimally. **Durable discipline improved:** this tracker and
+`ORIENTATION.md` were both written after five and three consecutive omissions (RA-79.8
+absorbed); the beacon is `COMPLETE` with `Successor: UNKNOWN` and reasoning (RA-79.6
+absorbed). **`RP-03` satisfied a fifteenth turn.** **Note:** gates remain unreported, an
+eighth mandate — recorded and carried rather than repeated.
+
+### Prediction for rung 22, falsifier and observation rung named
+
+From the fixture (`tests/SurfaceCellsPhase10Tests.cpp:223-273`) the carrier edge measured
+at RA-70 is `{1,4}` and the decoded vertex is `4`, so *vertex is an endpoint of the
+carrier's canonical source edge* should hold, pointing at the **published terminal
+contact's endpoint set** as the failing half. **Falsifier:** if the carrier reaching the
+endpoint certificate differs from the one RA-70 measured, or the decoded vertex is not an
+endpoint of it, the other half fails instead. **Observation rung: 22.**
+
+### Lesson
+
+**RA-80.8 — the conjunct that fails is rarely the one under investigation.** Nine rungs
+converged on the star path and it passes. **When a multi-part predicate rejects, measure
+every conjunct, not the interesting one** — the interesting one is where attention has
+already been spent, and therefore the least likely to hold the unexamined defect.
+
+### Accounting
+
+Ledger **66/17/49**, debt **1**, CP2 **491/491** accepted, R3 **403/497** rejected, frozen
+selector **497** — unchanged. No promotion, no stable event, no regression recurrence, no
+ledger recomputation, no 497 execution, no benchmark, no binary executed by this Review.
+**`R4-VIN-01` re-arms at `18cc4da5e`**; every earlier artifact through `12047105604`,
+`12049916826` and `12052388003` is a **baseline, never a comparand**; the 44 RED are the
+baseline for `18cc4da5e` alone, candidate / non-stable. `PROCESS-01` discharged. RA-61.9
+WITHDRAWN, final. RA-64.6 WITHDRAWN, final. RA-70.14 WITHDRAWN. RA-72.8 WITHDRAWN. RA-71.5
+AMENDED. RA-73.5 SUPERSEDED. RA-74.1 NARROWED and CONFIRMED. RA-76.8 AMENDED. RA-78.3
+NARROWED. Gate C SUSPENDED and moot for `RP-01`, boundary per RA-78.4. The historical
+`ledgers` failure at `b2b6e6541` remains permanent for any earlier base, is correct, must
+not be suppressed, and must never hold a turn open. Successor
+**`M6-CP3-CB10-R9-CARRIER-ENDPOINT-SUBCONDITION-PROBE`** (rung 22, compile-only: split the
+composite into its two named halves).
+
+---
+
 ## 2026-10-16 — TB9 terminal-star-path harvest; `R4-VIN-01` candidate/non-stable, no ledger change
 
 **Turn:** `M6-CP3-TB9-R9-TERMINAL-STAR-PATH-HARVEST` (artifact-only).

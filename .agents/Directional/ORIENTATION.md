@@ -1,3 +1,59 @@
+## CURRENT — `M6-CP3-R9-TERMINAL-STAR-PATH-REV`, 2026-10-16: RA-80 frozen; the thing everyone was building toward works, and a condition nobody had looked at is what refuses
+
+**Supersedes the RA-79 paragraph below as the current state.** Two turns were adjudicated and
+both are **accepted**, with one charge and one carried note. No open REVIEW_BLOCKER. No
+promotion, no stable event, no regression recurrence, no gate credit.
+
+**§3 current state — the proposed rule does not cover the cases it was written for, and the
+reason is a surprise.** Nine rungs of work converged on one relation: that two
+representations of the same corner can be reconciled when exactly one route exists between
+their triangles around that corner. Measured against the twenty-one failing cases, **that
+relation holds every time** — one route on each side, no overlap between the two sides,
+valid transport. The rule still does not apply, because a separate condition fails in all
+twenty-one: the corner's vertex is not recognised as belonging to both the published
+contact for that rail and the edge the carrier names. Nobody had examined that condition.
+It is a compound of two memberships and the turn deliberately did not guess which half
+fails, which was the right call.
+
+**§4 runtime witness — forty-four processes, forty-eight diagnostic records, reproduced
+here from the raw bytes.** The turn noticed that its own summary tool did not aggregate the
+new fields at all, so it scanned every raw log directly and said so; this review repeated
+that scan independently and got the identical table. Four earlier attempts failed outright
+— two rejected for malformed dispatch configuration, two on compile errors — and all four
+were reported with their run identifiers.
+
+**§5 instrument — a two-hundred-and-seventy-line change that deleted a live safety check,
+and it was correct.** To let the diagnostic ask the same question production asks, the
+shared routine had to be lifted out of the verifier it lived in. That meant deleting it
+from its old home, which is the most alarming shape a "nothing changed" diff can take. One
+clause did change: a call to a general transport-matching helper was replaced by the
+condition that helper actually computes here. Expanded, the two are identical, because the
+helper was being handed the very value it was asked to compare against, so one of its three
+tests was comparing something to itself. The remaining differences are a null guard that
+cannot be reached in production and an optional output that production never requests.
+What is charged is that none of this was said: the record asserts that predicate results
+are unchanged, which is true, but a reader has to prove it from scratch, and a single
+sentence naming the substitution would have saved that.
+
+**§7 priority — split the compound condition and measure both halves.** The next turn
+reports, for each failing case, whether the corner's vertex appears in the published
+contact's endpoint list and whether it is an endpoint of the carrier's edge, printing the
+actual identifiers on both sides rather than a verdict. From the fixture the vertex does
+look like an endpoint of the carrier's edge, which would put the fault in the contact's
+endpoint list — but that is a prediction with a stated way to be wrong, not a finding, and
+the previous turn was explicitly right not to assert it.
+
+**§8 patterns — fifteenth turn to report something unflattering, and the first to audit its
+own measurement path.** Discovering that the summary tool did not cover the newly added
+fields, and closing that gap before publishing rather than after being asked, is new here.
+The long-running complaints have mostly resolved: the regression history and the
+orientation document were both written this time, after five and three consecutive
+omissions, and the status marker was left in the correct shape. Only the two verification
+commands remain unreported, now for the eighth turn; that is recorded and carried rather
+than restated again.
+
+---
+
 ## CURRENT — CB9 compile/package verified; TB9 separate (2026-10-16)
 
 The diagnostic-only terminal-star-path probe is compile/package GREEN at `18cc4da5e2bc41138c5363a74de4e2db1e28ef23` (run `38916496178`, artifact `12052388003`, 28/28 packaged hashes, 8/8 targets, mandatory GMP/GMPXX, clean source, no runtime). No test or benchmark executed. CB9 final beacon pending; afterward `M6-CP3-TB9-R9-TERMINAL-STAR-PATH-HARVEST` alone is next. RP-01 open, RP-02 UNREACHED, RA-79 66/17/49, debt1, CP2 491/491, R3 403/497, selector497 unchanged.
