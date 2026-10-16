@@ -1,3 +1,13 @@
+## CURRENT — TB9 artifact-only harvest complete; independent Review required (2026-10-16)
+
+- [x] `M6-CP3-CB9-R9-TERMINAL-STAR-PATH-PROBE`: compile-only, source `18cc4da5e2bc41138c5363a74de4e2db1e28ef23`, immutable compile artifact `12052388003`, no runtime in CB9.
+- [x] `M6-CP3-TB9-R9-TERMINAL-STAR-PATH-HARVEST`: [run 38921052963](https://github.com/akashskypatel/Directional/actions/runs/38921052963), result `12055460315`, 44/44 selected, 44 RED, 0 missing, postflight immutable. The 48 `a3Probe` observations contain 21 exact-one-hot vertex cases and 27 controls; **0/21** vertex cases satisfy the complete branch-V conjunction because `a3ProbePublishedCarrierEndpoint=0`. Root-cause candidate recorded as non-stable in `Regression_Root_Cause_Tracker.md`; stable ledger unchanged.
+- [ ] **Independent Review before any further repair or Code + Build.** The composite published-terminal/carrier-endpoint rejection is not separated into its subconditions; do not infer which fails. Review turn identifier and any next implementation authorization are **UNKNOWN**. Do not initiate conditional rung 22 based on star-path evidence alone. `RP-01` open, `RP-02` unreached; branch I strict, branch C suspended, no relaxation.
+
+Owning report: `.agents/Directional/Architecture_M6_CP3_TB9_Terminal_Star_Path_Harvest_Report_20261016.md`. Earlier CURRENT material below is historical and superseded.
+
+---
+
 ## CURRENT — CB9 compile/package verified; TB9 separate (2026-10-16)
 
 The diagnostic-only terminal-star-path probe is compile/package GREEN at `18cc4da5e2bc41138c5363a74de4e2db1e28ef23` (run `38916496178`, artifact `12052388003`, 28/28 packaged hashes, 8/8 targets, mandatory GMP/GMPXX, clean source, no runtime). No test or benchmark executed. CB9 final beacon pending; afterward `M6-CP3-TB9-R9-TERMINAL-STAR-PATH-HARVEST` alone is next. RP-01 open, RP-02 UNREACHED, RA-79 66/17/49, debt1, CP2 491/491, R3 403/497, selector497 unchanged.
@@ -37,9 +47,9 @@ Source-only probe committed at `81101d7370a7d3cfe36baa57b4635ef7e0819bb2`; Drive
 | 19 | `M6-CP3-DEFN-R9-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC` | Definition | RA-77 | **NO DELIVERABLE** — over-scoped by the reviewer; split |
 | 19a | `M6-CP3-DEFN-R9A-ENDPOINT-FACE-COMPARISON-CENSUS` | Definition | RA-78 | accepted; **found a second active admission path** |
 | 19b | `M6-CP3-DEFN-R9B-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC` | Definition | RA-79 | accepted; contract admissible; **narrowed RA-78.3** |
-| **20** | **`M6-CP3-CB9-R9-TERMINAL-STAR-PATH-PROBE`** | **Code + Build** | pending | **NEXT — compile-only** |
-| 21 | `M6-CP3-TB9-R9-TERMINAL-STAR-PATH-HARVEST` | Test + Benchmark | pending | artifact-only harvest of rung 20 |
-| 22 | first repair-implementation rung | undetermined | pending | **not authorized**; only if the conjunction holds |
+| **20** | **`M6-CP3-CB9-R9-TERMINAL-STAR-PATH-PROBE`** | **Code + Build** | complete | compile-only; immutable package verified |
+| 21 | `M6-CP3-TB9-R9-TERMINAL-STAR-PATH-HARVEST` | Test + Benchmark | complete | 44 RED, 0/21 vertex contract applicability; Review pending |
+| 22 | first repair-implementation rung | undetermined | **not authorized** | conjunction failed (0/21); independent Review required |
 
 - [x] Rung 19b **ACCEPTED** (RA-79) — the strongest Definition turn in this ladder. Decision: `.agents/Directional/Architecture_M6_CP3_R9B_Endpoint_Equivalence_Contract_Review_Decision.md`.
 - [x] **RA-79.2 — RA-78.3 NARROWED.** The vertex branch accepts *same vertex, different face* **only when** all five hold: a published open-rail terminal contact agreeing on component; both points decoding the same `SourceVertexId` with **bit-exact one-hot** barycentrics; a **unique** admissible non-hard-feature A3 star path from each side's attachment face to the correspondingly oriented carrier face; **disjoint** directed-side face sets; **exactly one** admissible carrier orientation. **Whether the 21 satisfy that conjunction is unmeasured.**

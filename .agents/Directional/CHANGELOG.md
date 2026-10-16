@@ -1,3 +1,7 @@
+## 2026-10-16 — TB9 R9 terminal-star-path artifact harvest (candidate/non-stable)
+
+`M6-CP3-TB9-R9-TERMINAL-STAR-PATH-HARVEST`: exact package `12052388003` at semantic source `18cc4da5e2bc41138c5363a74de4e2db1e28ef23`; artifact-only [run 38921052963](https://github.com/akashskypatel/Directional/actions/runs/38921052963), result `12055460315`, verified ZIP SHA-256 `fa729d87b7b8057f6800ba64d1146d1f8293d0192bb45580234281beefb5a0ae`. All 44 selected targeted identities executed and remained RED; 48 A3 rejection observations included 21 exact one-hot same-vertex cases, **0/21** satisfying the branch-V five-part conjunction (`a3ProbePublishedCarrierEndpoint=0`). Raw logs verified separately from the older A2b-focused harness summary. No compile, benchmark, selector497 run, repair, accepted-green loss, stable regression, or ledger change. `RP-01` open and `RP-02` unreached; next independently authorized Review identifier UNKNOWN. See TB9 report and root-cause tracker.
+
 ## 2026-10-16 — M6 CP3 R8 accepted-boundary face authority Definition
 
 Documents only: accepted conformity boundary owns source-edge placement, not a unique directed-side face. The 21/23 boundary/interior partition is unproved (current 27 control cases unmeasured). Raw face equality relocates RED; source-entity/sheet plus per-side carrier reconciliation remains an unimplemented, reviewable repair shape. No code/compile/runtime/selector/gate change. Independent R8 Review next. See `Architecture_M6_CP3_R8_Boundary_Override_Authority_Specification_20261016.md`.
