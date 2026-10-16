@@ -1,0 +1,3 @@
+Purpose: exact pinned source snapshot for M6-CP3-CB5-R5-ROUTE-PATH-RECONCILIATION-PROBE
+Source SHA: 1f3f5b6aa3bf93e6de366aaf86a3cd441009bf17
+No binary execution.
