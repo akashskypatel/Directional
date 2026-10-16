@@ -4342,3 +4342,455 @@ The table below records the original DEFN closeout at its 2026-09-18 boundary. L
 
 </details>
 
+### 2.2 Immutable runtime acceptance and execution reports
+
+The four preserved source reports below remain primary artifact-only runtime evidence, not general commentary. Their
+run/job IDs, package digests, result/log hashes, selection mechanics, measured outcomes, and contemporaneous scope
+boundaries are unchanged. The final CP4 TB3 report remains the final M4 runtime evidence notwithstanding its
+relocation to this record.
+
+| # | Original report | Evidentiary role | Git blob SHA | Exact Git source |
+|---:|---|---|---|---|
+| 5 | [`Architecture_M4_CP2_TB2_R1_Test_Benchmark_Report.md`](#m4-source-5) | **PRIMARY EXECUTION EVIDENCE** — CP2 immutable TB2-R1 evidence | `daced5fed65608261d7e32a2c4ea89f902ac3188` | [Original](https://github.com/akashskypatel/Directional/blob/168787e1ac47bb4de2b9215c8ffef7d821e3406c/.agents/Directional/Architecture_M4_CP2_TB2_R1_Test_Benchmark_Report.md) |
+| 6 | [`Architecture_M4_CP3_TB8_Artifact_Only_Test_Benchmark_Report.md`](#m4-source-6) | **PRIMARY EXECUTION EVIDENCE** — CP3 immutable TB8 evidence | `80d7699357b24cb194260096b1d4f56b6e316bb9` | [Original](https://github.com/akashskypatel/Directional/blob/168787e1ac47bb4de2b9215c8ffef7d821e3406c/.agents/Directional/Architecture_M4_CP3_TB8_Artifact_Only_Test_Benchmark_Report.md) |
+| 7 | [`Architecture_M4_CP_SCALE_TB13_Artifact_Only_Test_Benchmark_Report.md`](#m4-source-7) | **PRIMARY EXECUTION EVIDENCE** — CP-SCALE TB13 execution evidence | `f1556d8d67a6d7618f2c67f772b84b6859fbb56c` | [Original](https://github.com/akashskypatel/Directional/blob/168787e1ac47bb4de2b9215c8ffef7d821e3406c/.agents/Directional/Architecture_M4_CP_SCALE_TB13_Artifact_Only_Test_Benchmark_Report.md) |
+| 8 | [`Architecture_M4_CP4_TB3_Artifact_Only_Test_Benchmark_Report.md`](#m4-source-8) | **PRIMARY EXECUTION EVIDENCE** — Final CP4 TB3 runtime evidence | `43fd82717a5fccb717003bb56c38f05ebe76e576` | [Original](https://github.com/akashskypatel/Directional/blob/168787e1ac47bb4de2b9215c8ffef7d821e3406c/.agents/Directional/Architecture_M4_CP4_TB3_Artifact_Only_Test_Benchmark_Report.md) |
+
+<a id="m4-source-5"></a>
+<details>
+<summary><strong>Architecture_M4_CP2_TB2_R1_Test_Benchmark_Report.md</strong> — PRIMARY EXECUTION EVIDENCE</summary>
+
+# M4-CP2-TB2-R1 Artifact-Only Test + Benchmark Report
+
+**Turn:** `M4-CP2-TB2-R1-EXEC`
+**Status:** **COMPLETE / MEASURED GREEN / IMMUTABLE POSTFLIGHT GREEN / REVIEW PENDING / PACKAGE117 UNPROMOTED**
+**Date:** 2026-09-10 UTC
+**Working branch:** `agent/surface_cell_quad/p5-recover-bridge-healing`
+
+## 1. Frozen authority
+
+This execution consumed the unchanged package117 candidate frozen by CB2 and carried through CB3:
+
+- semantic source: `534c0d41ae05b31e66711f21f4b4280b59f6483f`;
+- package117 artifact: `10172820820`, `directional-m4-cp2-cb2-package117-result-34529050994`;
+- package ZIP/provider SHA-256: `e804c8a88082befcdfbc7091f64182b854f5fe8eac00861ddf1ccdb47ecb7725`;
+- selector382 SHA-256: `1d59b1f709e51854f8ceaee1a161687ff882a128dabdc79882712c97a15ca84f`;
+- accepted selector373 prefix SHA-256: `6d00cafa939a0e89c4816a6b0e8fec83232c0e7a94a468ae547b1667171e7d8b`;
+- selector380 prefix SHA-256: `512c9ecea76b20ed85f6d74cbbdd9c415504ffc69d37a595d68b2de78bc409c4`;
+- expected owner partition: **30 authority-kernel / 236 producer / 75 completion / 41 validation**.
+
+No configure, compile, relink, package repair, chmod/mode repair, generated discovery, source/test/fixture/selector mutation, or benchmark was authorized or performed.
+
+## 2. Corrected harness authority
+
+CB3 corrected exactly the invalid attempt's preflight census basename. R1 used:
+
+- corrected preflight SHA-256: `12090d4b5e01f6c3e55de712b595dff3444b509ba58b040201a2c61f87d805c1`;
+- byte-identical executor SHA-256: `717a4dd6cda5ba96fb8bd6e16879c422f9b2e1ff561951801dc5658d85480019`;
+- frozen caller draft/published bytes: `baf81bf788f6823d79f3b34431424a1e19e7e45b6eacb6fb788604333a08d6ab`.
+
+The preflight wrote `execution-view-census-before.tsv`; postflight read that exact file and produced `execution-view-census-after.tsv`. The prior no-credit run `34532107988 / 103055098832` was not stitched into this retry.
+
+## 3. Exact execution evidence
+
+- workflow run/job: `34539783373 / 103079623871` — **SUCCESS / SUCCESS**;
+- exact workflow event SHA: `ee63f438ccd258092fedac0a27f0955a1c066ea4`;
+- result artifact: `10176889758`, `directional-m4-cp2-tb2-r1-result-34539783373`, SHA-256 `51d16f992fe7784ac8fcc4db64868823108c147e92fa71acfdf97f73c001e5b0`;
+- diagnostic-log artifact: `10176890045`, `directional-m4-cp2-tb2-r1-log-34539783373`, SHA-256 `b4a1e0fa555de319a816fffb6aa84b370a7b18862ad107a08a65b48aa37a56d6`;
+- preflight: `preflight_exit=0`, package checksums **28/28**, selector rows **382**, owner partition **30/236/75/41**;
+- semantic gate: `gate_exit=0`;
+- execution boundary: `runtime_started=true`, `runtime_completed=true`, `preflight_completed=true`, `selection_integrity=true`, `orchestration_failure=false`.
+
+The workflow boundary explicitly records `generated_discovery=false`, `configure_execution=false`, `compile_execution=false`, `relink_execution=false`, `package_repair=false`, `mode_repair=false`, and `benchmark_execution=false`.
+
+## 4. Focused correction phases
+
+The frozen focused sequence 374, 381, 382 was executed twice, one exact identity per fresh process.
+
+| Phase | 374 | 381 | 382 | Result |
+|---|---|---|---|---|
+| A | PASS | PASS | PASS | **3/3** |
+| B | PASS | PASS | PASS | **3/3** |
+
+The verdict vectors are identical. Each ordinal374 raw log contains exactly one required source-derived receipt:
+
+`M4_CP2_ORACLE_RECEIPT coordinateCount=4; containsBidirectedCoefficientMagnitude2=true; magnitude2LoadBearing=true`
+
+Receipt audit: phase A `count=1 / PASS`; phase B `count=1 / PASS`.
+
+## 5. Full selector382 gate
+
+The entire frozen selector was executed in order, one identity per fresh process:
+
+- selector382: **382/382 PASS**;
+- accepted predecessor prefix: **373/373 PASS**;
+- CP2 rows 374-380: **7/7 PASS**;
+- correction rows 381-382: **2/2 PASS**;
+- authority-kernel owner: **30/30 PASS**;
+- producer owner: **236/236 PASS**;
+- completion owner: **75/75 PASS**;
+- validation owner: **41/41 PASS**;
+- RED: **0**;
+- SKIP: **0**;
+- timeout: **0**;
+- selection mismatch: **0**.
+
+The full ledger contains exactly 382 data rows with one selected intended identity and exit 0 for every row.
+
+## 6. Immutable postflight
+
+Before/after census files compare byte-identically for all three required domains:
+
+- package census SHA-256: `c45c423e7365887ccc5ef5974d1c61c32c775e9b064d41e47709500721d6938d`;
+- extracted-source census SHA-256: `67726528d5e31765005b1fee3360acfed9d23958a754a71aaa62d5ff7507cee2`;
+- execution-view census SHA-256: `1a5b1de75f2c9ae27c28ea77509e57b5e8c4565a2dd537b789cef03f98505f02`.
+
+This directly closes the CB3 falsifier: the canonical execution-view census pair exists and postflight completed successfully with package/source/execution-view immutability preserved.
+
+## 7. Classification and authority boundary
+
+`M4-CP2-TB2-EXEC-CAND-01` is **CLOSED / RECOVERY PROVED / ORCHESTRATION / NON-STABLE**. The earlier invalid attempt remains no-credit provenance; R1 independently re-executed the full gate from scratch and disproved the harness defect after the one-name correction.
+
+No new RED, crash, skip, timeout, nondeterminism, integrity failure, or orchestration failure was observed. Stable accounting therefore remains **47 events / 14 categories / 33 recurrences**, produced-witness debt **5**, accepted package authority **115**.
+
+This TB-EXEC turn does **not** promote package117 or close M4-CP2. Package117/selector382 is mechanically valid measured-green candidate evidence pending review. Accepted runtime authority remains package115 / selector373 **373/373** until review adjudicates promotion.
+
+## 8. Exact successor
+
+Exact next turn: **`M4-CP2-TB2-R1-REV`**.
+
+That review is runtime-free. It must re-open the immutable package117 authority plus result artifact `10176889758` and log artifact `10176890045`, independently re-derive the decisive selector/process/receipt/immutability facts, audit the corrected source contract against the frozen M4 definitions, and decide package117 promotion and M4-CP2 closure or route to the next corrective turn. No compile, rerun, or package repair precedes that review.
+
+## 9. Remote closeout and cleanup evidence
+
+The durable 14-path closeout patch was applied by GitHub Actions run/job `34540984697 / 103083397797`. The metadata-bearing patch SHA-256 was `f53762878d730066b092ecacdef9ae57e29ad46f66f20902944b4dd2a3365821`, with diff-body SHA-256 `6d060546346df9664a5cdeeca8a959853f207349795feaf70cfc45a291f514ce`; applied commit `693725802876d92fd3db4337d28139cf53d54469`. Apply result/log artifacts are `10177241365 / 10177241785` at SHA-256 `e39462b31cbf8f15dc6be7e419127dfff43406b2442ad19fa3d38b75110f5357 / 89577c4444b49e74c6c1a8f3d86eb01ef261cb88ec67e13afb86fb69c5f302e9`. The workflow correctly reported `runtimeExecution=false` and required owner-side Drive retirement; the staged patch file was then permanently deleted.
+
+The temporary closeout-apply and R1-exec workflow callers were deleted workflow-first. Cleanup run/job `34541111906 / 103083739690` removed all seven inventoried non-workflow temporary paths and produced cleanup commit `bcb493e662b955ea5d62137a0adabf5fa7f59697`. Cleanup result/log artifacts are `10177280592 / 10177280968` at SHA-256 `e860da302d177429e19ae1c829b24e1fcf1df834d10d6671cb4bf8668b69757e / 57447d9498fd7e259b61dc0439e10caa7e63cba95eb9a24385c6b361d9fb763d`. The cleanup result records `runtimeExecution=false` and zero PR comments remaining before the cleanup observer republished its run receipt.
+
+Final repository hygiene: `.github/workflows/` contains exactly the seven durable workflows; `.agents/Directional/turn-payloads/` and `.agents/connector-triggers/` are absent. No temporary R1 execution or closeout caller remains. Package117 remains unchanged and unpromoted. Exact next remains runtime-free `M4-CP2-TB2-R1-REV`.
+
+</details>
+
+<a id="m4-source-6"></a>
+<details>
+<summary><strong>Architecture_M4_CP3_TB8_Artifact_Only_Test_Benchmark_Report.md</strong> — PRIMARY EXECUTION EVIDENCE</summary>
+
+# M4-CP3-TB8 Artifact-Only Test + Benchmark Report
+
+**Turn:** `M4-CP3-TB8-EXEC`
+**Disposition:** COMPLETE / MECHANICALLY GREEN / SEMANTICALLY UNADJUDICATED
+**Successor:** `M4-CP3-TB8-REV`
+**Runtime authority after this EXEC:** unchanged pending Review; corrected R4 artifact `10289601000` / selector403 `403/403` remains accepted.
+
+## 1. Frozen candidate authority
+
+TB8 consumed the immutable CB10 candidate package only:
+
+- semantic source: `1611e9ef57bd1437b4422ab2fca7acef20b19a3a`
+- compile run/job: `34727247774 / 103643462175`
+- candidate package artifact: `10307919492` (`m4-cp3-cb10-result-34727247774`)
+- candidate package/provider ZIP SHA-256: `8988a12fa8b2e6476bf3fd91a6a6936eaef8a9ab7c73837b74ea2e980d29b2ec`
+- packaged source archive SHA-256: `1ff187c6c08d13f5be5e6481f5323541e48fc93e6ffc0ada78af73a7926c205d`
+- package root `SHA256SUMS`: 28/28 entries verified
+- source status: empty
+- exact arithmetic backend evidence: GMP/GMPXX present
+- compile package boundary: `runtimeExecution=false`
+
+The byte-frozen selectors were unchanged:
+
+- selector403: 403 rows, SHA-256 `c3f509afc823cd73761bdebea0d072d497acf5587a013cb52b795f273af70cb7`
+- selector408: 408 rows, SHA-256 `c689c0cd8a51f9a8bd8c9ed3a2e8b603728d5a0359ee2732f776a422744b0484`
+- selector408 first 403 rows: exact match to selector403
+
+The static owner map resolved all 408 identities with distribution:
+
+| Owner executable | selector408 | first403 |
+|---|---:|---:|
+| `directional_surface_cell_authority_kernel_tests` | 30 | 30 |
+| `directional_surface_cell_producer_tests` | 262 | 257 |
+| `directional_surface_cell_completion_tests` | 75 | 75 |
+| `directional_surface_cell_validation_tests` | 41 | 41 |
+
+## 2. Execution authority
+
+Authoritative execution:
+
+- workflow run: `34729562893`
+- execution job: `103649745950`
+- event/control SHA: `7fa6af1f18bc5c804e974231234c1c23760f8490`
+- result artifact: `10309365777` (`m4-cp3-tb8-result-34729562893`)
+- result artifact provider/download SHA-256: `a8d91cd62cb2c633ed46ab963a13060e903a5043d3941fdea6aaec9c77091c04`
+- log artifact: `10309009858` (`m4-cp3-tb8-log-34729562893`)
+- log artifact provider SHA-256: `c7a7cf9e32269b85afde621c18799f49f9ad815ed9b7fb2eedd066f102275772`
+- process ledger SHA-256: `2700e511a12505dbaf87b87d00bed7f2d2b73e65dd38adb1934682cb72abf63d`
+
+The bounded TB8 harness used by the authoritative run had SHA-256 `600d48029adbce345b10867b1cec0b4377e1783a2624de76ada648c535bdca23`. It did not wrap individual runtime processes in a repository/job timeout. Every identity was invoked as an exact-filter fresh process.
+
+Three earlier orchestration attempts are excluded from semantic/runtime evidence because they failed before Directional runtime with a generated-shell unmatched-quote error:
+
+- `34729051005 / 103648364992`
+- `34729138219 / 103648603187`
+- `34729277163 / 103649042249`
+
+They carry **no test credit** and are not stitched into the authoritative ledger.
+
+## 3. Frozen execution boundary
+
+The authoritative result records:
+
+```text
+script_exit=0
+runtime_started=true
+runtime_completed=true
+preflight_completed=true
+postflight_completed=true
+orchestration_failure=false
+selection_integrity=true
+processes_executed=835
+pass_count=835
+red_count=0
+skip_count=0
+crash_count=0
+selection_mismatch_count=0
+stop_kind=NONE
+benchmark_execution=false
+configure_execution=false
+compile_execution=false
+relink_execution=false
+generated_discovery=false
+package_repair=false
+source_test_fixture_selector_mutation=false
+```
+
+No compile, configure, relink, package repair, generated discovery, benchmark execution, or source/test/fixture/selector mutation occurred in the authoritative TB8 runtime.
+
+## 4. Mechanical runtime result
+
+All prescribed phases completed:
+
+| Phase | Scope | Processes | Mechanical result |
+|---|---|---:|---:|
+| A-shared-A | six corrected shared-fixture identities, pass A | 6 | 6/6 PASS |
+| A-shared-B | same six identities, pass B | 6 | 6/6 PASS |
+| B-ordinal138-A | accepted ordinal138, pass A | 1 | 1/1 PASS |
+| B-ordinal138-B | accepted ordinal138, pass B | 1 | 1/1 PASS |
+| C-row408-A | candidate row408, pass A | 1 | 1/1 PASS |
+| C-row408-B | candidate row408, pass B | 1 | 1/1 PASS |
+| D-controls-A | rows404-407, pass A | 4 | 4/4 PASS |
+| D-controls-B | rows404-407, pass B | 4 | 4/4 PASS |
+| E-selector403 | accepted selector403 to completion, semantic fail-fast disabled | 403 | 403/403 PASS |
+| F-selector408 | cumulative selector408 | 408 | 408/408 PASS |
+| **Total** |  | **835** | **835/835 PASS** |
+
+The complete accepted selector403 RED census is empty. The result artifact's `semantic-red-census.tsv` contains only its header. No process was skipped, crashed, or selection-mismatched.
+
+The six corrected shared-fixture identities are mechanically green in both A/B passes:
+
+1. `SurfaceCellTransitionQuotient.AmbiguousHardRailCounterpartIsRejected`
+2. `SurfaceCellTransitionQuotient.ExactHardRailCounterpartsStitchAcrossTopologyRegions`
+3. `SurfaceCellTransitionQuotient.MissingHardRailCounterpartIsRejected`
+4. `SurfaceCellTypedTransportAuthority.DuplicateSemanticRouteTopologyFailsClosed`
+5. `SurfaceCellTypedTransportAuthority.RouteTopologyTransitionMismatchFailsClosed`
+6. `SurfaceCellTypedTransportAuthority.ValidHardRailRouteUsesTypedIdentity`
+
+The candidate tail rows 404-408 are also mechanically green in the dedicated A/B discriminator phases and again in cumulative selector408 execution.
+
+## 5. Immutability
+
+Postflight records exact equality for every frozen execution surface:
+
+```text
+package_census_equal=true
+source_census_equal=true
+execution_view_census_equal=true
+```
+
+The package, packaged source, and copied execution view remained byte-identical and executable-mode-identical across runtime. No mutation is admitted by TB8 evidence.
+
+## 6. EXEC boundary and mandatory successor
+
+`M4-CP3-TB8-EXEC` is **mechanically green**. It does not classify root cause, close candidates, alter stable-event accounting, or promote the CB10 package. Those decisions are explicitly reserved for `M4-CP3-TB8-REV`.
+
+Until Review adjudicates the immutable TB8 evidence:
+
+- corrected R4 artifact `10289601000` / selector403 **403/403** remains accepted M4-CP3 runtime authority;
+- CB10 package `10307919492` remains candidate/unpromoted despite the mechanically green TB8 execution;
+- stable accounting remains **49 events / 14 categories / 35 recurrences**;
+- produced-witness debt remains **5**;
+- CP3 and `G4-B002` remain OPEN.
+
+**Exact next turn:** `M4-CP3-TB8-REV`.
+
+</details>
+
+<a id="m4-source-7"></a>
+<details>
+<summary><strong>Architecture_M4_CP_SCALE_TB13_Artifact_Only_Test_Benchmark_Report.md</strong> — PRIMARY EXECUTION EVIDENCE</summary>
+
+# M4-CP-SCALE-TB13-EXEC — selector427 artifact-only Test + Benchmark report
+
+**Turn:** `M4-CP-SCALE-TB13-EXEC`
+**Result:** **ALL GREEN / REVIEW REQUIRED / NOT YET PROMOTED**
+**Immutable package:** artifact `10565723112` / `m4-cp-scale-cb24-result-35391181281`
+**Exact compiled source:** `6fe075f7d9397a561fe50b79517b4f714fb9eeef`
+**Benchmark execution:** 0
+
+## 1. Execution authority
+
+TB13 consumed the CB24 package exactly. Input artifact provider ZIP SHA-256 is `96e9e900e67777f31fbbf97d05efc44ed8c944d9f2bc031a5826e47602ea7bfa`; packaged source archive SHA-256 is `3b6b587efadf3b83082b11e5f7a9e1c06b5c8f1ce0671d82db707ffc7fac3bfd`; package `SHA256SUMS` is **28/28**. Package metadata records `runtimeExecution=false`, `turnBoundary=Code+Build-only`, `exactArithmeticBackend=GMP`, clean source receipts, executable modes `0755`, and authoritative GMPXX+GMP linkage.
+
+Execution workflow run/job `35393657851 / 105757517161` ran from control SHA `6df7419e2e7f910a93e985ebf0693ecc1644c6db`. The frozen Drive harness is `1-KvdWwIBT81skkdNudg5xOkrQp5qjasA`, **16,485 bytes**, SHA-256 `b34ea0caf1b27016d84124452dc13e5bb0a3105556a24041a47a09020e1697aa`. The caller's SchemaStore validation job `105757458094` is GREEN before the execution job proceeds.
+
+## 2. Immutable preflight
+
+The packaged selector is exactly **427 LF rows**, SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`; first426 is `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`; first425 is `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`; row427 is exactly `M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology`. Static ownership is **30 authority-kernel / 281 producer / 75 completion / 41 validation**.
+
+The execution harness froze package, packaged-source, and runtime execution-view byte+mode censuses before the first generated process. The execution view preserves packaged binary bytes/modes and supplies only the immutable packaged fixture tree at the compiled sibling `test-data/benchmarks/fixtures` path; no package or permission repair occurred.
+
+## 3. Runtime gate
+
+All selector427 identities executed **exactly once in exact file order**, one fresh process per identity, using the owning packaged test binary and exact GTest filter with fail-on-zero-selection enabled.
+
+- **PASS:** 427
+- **RED:** 0
+- **SKIP:** 0
+- **crash:** 0
+- **timeout:** 0
+- **selection mismatch:** 0
+- **unexecuted:** 0
+- exact selected-count receipt: **427 rows with selected=1**
+- exact skipped-count receipt: **427 rows with skipped=0**
+- PASS ownership: **30 / 281 / 75 / 41**
+
+Row427 `M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology` PASSes in its own fresh producer-test process. The complete 427-row ledger SHA-256 is `2a71510891fd7cc9c4e33483a908ce4505c4bcd315053ea6f72f7055322abfed`; `identity-map.tsv` is `69756384783390b6eb5f0324dce006939e4b287f28c2b9313f9f889d42c8ebcf`, and its identity sequence is byte-order equivalent to selector427.
+
+## 4. Immutable postflight and evidence
+
+Postflight completed after row427 and proves exact equality with preflight:
+
+- package census before/after SHA-256: `1e48857b5810aa9520754d37c4d684e27a40eb494a46dd55d71256c2df2ca70c`;
+- packaged-source census before/after SHA-256: `be93504b4d81a3c92c633389bce39c93aaaf968b14296df370bebeaaed75edf4`;
+- execution-view census before/after SHA-256: `d2079a0b45e0f1a9c8df827d6a6fdfd78e1efa88d56310ce3d72be872a3d5b5a`;
+- package manifest verification before/after is identical at SHA-256 `3fab9b68ce79a2140bd963584a8be1b4ff06b3a421d3bb7fcaf481ad46d19721`;
+- result evidence manifest contains **870** self-excluding entries and hashes to `94f02091cfcbc672ab05679e91175fdf4a828efef013d935ad067af913c5bb93`.
+
+Result artifact `10566648975` / `m4-cp-scale-tb13-result-35393657851` has provider ZIP SHA-256 `3dd23c08cad9eccd49e61fae4cd14cb735bccc5a00ef23f2192af339aef1f366`. Persistent log artifact `10567158604` has provider ZIP SHA-256 `f7987aa4219881b966f324dff939294585fb3992980ebf730d0dbb9889b1cda6`. The evidence boundary records `orchestration_failure=false`, `semantic_non_green=false`, `runtime_started=true`, `postflight_complete=true`, `stop_reason=all_green`.
+
+Benchmark/build/configure/compile/relink/generated-discovery/repair/package-repair/mode-repair/source/test/fixture/selector-mutation counts are all **zero**.
+
+## 5. EXEC disposition
+
+TB13 provides the fresh cumulative selector427 runtime leg required by `M4-CP-SCALE-TB12-R10-REV-OBS-01`, but EXEC does **not** independently promote CB24 package `10565723112` or grant cumulative S5 selector credit. Accepted current M4 runtime authority therefore remains R10 Review package `10560828304` / semantic source `e86206759a6a0f68afbf83d8f6abf9efbe7bd5ff` / selector426 **426/426** until mandatory Review adjudicates TB13.
+
+No accepted-green regression is observed and no new regression candidate is opened. Stable accounting remains **49 events / 14 categories / 35 recurrences**, produced-witness debt **5**. `M4-CP-SCALE-TB12-R10-REV-OBS-01` now has both publication and fresh-runtime legs complete; only independent Review remains.
+
+Exact successor: **`M4-CP-SCALE-TB13-REV`**. Review must be runtime-free, independently re-open artifact `10566648975` plus the immutable input package authority, re-derive selector/prefix/owner authority and complete-ledger/postflight evidence, and decide promotion/cumulative S5 credit.
+
+## 6. Turn-end hygiene
+
+Durable closeout evidence was applied through the Google Drive patch workflow run/job `35395903278 / 105764581759`. The preservation patch SHA-256 was `acf74da62318e1e33140ccdf4e932db0384d8d000a64fe5f2cc6897961e526fc`; it applied at commit `48ecb7e81941a9904d8685a2a591d708cd6c268a`. Apply result artifact `10567233918` has provider ZIP SHA-256 `a208433a91a89f822dc406da8d736966aa5b47dcd0b6c099a025177569054fcc`; its recorded `runtimeExecution=false`.
+
+Temporary callers were removed connector-first at commits `1fcb155a86b5024a9b91bf172153e691674738e2` and `5bf720d8fc561002e13056b255ba559d26d67b34`. Mandatory cleanup run/job `35396046077 / 105764992899` completed GREEN and produced cleanup commit `10f33521e9046269bd1fa0b978ec16dd3c6f8e7b`. Cleanup result artifact `10567403690` has provider ZIP SHA-256 `5c8664427a2527d390315ed23e8fd242fb27d8d938048bf2c2967b8164a30bc9`; cleanup removed the TB13 execution marker, closeout-apply marker, initial source-snapshot marker, and resume source-snapshot marker. The cleanup workflow deleted five PR conversation comments and zero inline review comments, leaving zero of each before its observer, and records `runtimeExecution=false`.
+
+The post-cleanup workflow inventory contains only the seven durable agent workflows: compile, Google Drive patch transport, recent-runs observer, run observer, source snapshot, turn cleanup, and workflow schema validator. Immutable Actions evidence remains preserved. The consumed frozen harness, the applied closeout preservation patch, and the obsolete pre-reconcile preservation patch were all permanently retired from Google Drive after their work was authoritative in repository/Actions evidence.
+
+</details>
+
+<a id="m4-source-8"></a>
+<details>
+<summary><strong>Architecture_M4_CP4_TB3_Artifact_Only_Test_Benchmark_Report.md</strong> — PRIMARY EXECUTION EVIDENCE</summary>
+
+# M4-CP4-TB3 Artifact-Only Test + Benchmark Report
+
+**Turn:** `M4-CP4-TB3-EXEC`
+**Disposition:** COMPLETE / MECHANICALLY GREEN / SEMANTICALLY UNADJUDICATED
+**Successor:** `M4-CP4-TB3-REV`
+**Runtime authority after EXEC:** unchanged pending mandatory Review; accepted M4 authority remains package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**.
+
+## 1. Frozen candidate authority
+
+TB3 consumed only the immutable CB8 package:
+
+- exact compiled source: `aa6cab176f4f7297c1f9ab20a7a49bf6a00a7431`;
+- compile run/job: `35468097574 / 105964043163`;
+- candidate artifact: `10591801825` (`m4-cp4-cb8-result-result-35468097574`);
+- provider/download ZIP SHA-256: `20d9b07bae631e68f3292ee37ccb80c4724bae6eec0c50cd2274c36443183da6`;
+- package root manifest: **26/26**, manifest SHA-256 `30c3f51fa0e43882d1a3c1227f58c069023007e38dbdc9a96c832ce152157b5a`;
+- packaged source archive SHA-256: `4d057381ba3f1caed55579f7a9b662753632637eb0aff7b1432326d8e557021a`;
+- all four selector-owner executables retained mode `0755`;
+- clean source receipts and mandatory GMPXX+GMP linkage were present;
+- CB8 boundary remained `runtimeExecution=false`.
+
+Selector430 was verified only from the immutable packaged source: **430 LF rows / 35,001 bytes / SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6`**, exact first427 SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`, exact frozen final three identities, owner census **31 / 283 / 75 / 41**.
+
+## 2. Execution authority
+
+Authoritative artifact-only execution:
+
+- workflow run: `35470130614`;
+- execution job: `105969470184`;
+- event/control SHA: `d691a93896516b8f8644098e4c2588d1c0e0b9b1`;
+- immutable harness SHA-256: `5848a8d40d9bcf747d0a5cbba5436b0c6af12aa4768416333e7991dc328034a5`;
+- result artifact: `10592987234` (`m4-cp4-tb3-exec-result-35470130614`), provider/download ZIP SHA-256 `352c8cfc9c9b89cf0d532c8e0836339a31ba35fd6e854a781721cbc76f02afce`;
+- log artifact: `10592817804` (`m4-cp4-tb3-exec-log-35470130614`), provider ZIP SHA-256 `8d10ad76c42cdb9a6e6bc14a3a213deab2b3d3917c361c6d92bb95f313647d5b`;
+- process ledger SHA-256: `0e1884ec95bf5043662f42ce5c24186aedb83d74cfe1e0395881a886768694a5`;
+- identity map SHA-256: `7a92e7a3b8a69466423c4a0d2ad5ece2dcd4912f04eeb99e1f32fa70b4a5cf6c`.
+
+The workflow had no repository/job elapsed-time watchdog for the full gate. Every selector identity ran as one fresh exact-filter process in file order.
+
+## 3. Frozen execution boundary
+
+The authoritative result records:
+
+```text
+script_exit=0
+runtime_started=true
+runtime_completed=true
+preflight_completed=true
+postflight_complete=true
+orchestration_failure=false
+semantic_non_green=false
+configure_execution_count=0
+compile_execution_count=0
+relink_execution_count=0
+generated_discovery_count=0
+package_repair_count=0
+mode_repair_count=0
+source_mutation_count=0
+test_mutation_count=0
+fixture_mutation_count=0
+selector_mutation_count=0
+benchmark_execution_count=0
+```
+
+No configure, compile, relink, generated discovery, package or mode repair, source/test/fixture/selector mutation, or benchmark execution occurred.
+
+## 4. Mechanical runtime result
+
+The complete selector430 gate is mechanically GREEN:
+
+- attempted **430** / unexecuted **0**;
+- **430 PASS / 0 RED / 0 SKIP / 0 crash / 0 invalid-selection**;
+- exact-one selected and zero skipped for every process;
+- owner PASS census **31 / 283 / 75 / 41**;
+- final three publication identities all PASS at ordinals 428-430;
+- result records `mechanically_green=true`.
+
+The process ledger contains one header plus all 430 process rows. The result artifact root `SHA256SUMS` verifies all **447/447** entries.
+
+## 5. Immutable postflight
+
+Mandatory postflight is complete. Package, packaged source, and execution-view byte+mode censuses are each exactly equal before and after runtime. Package manifest verification remains **26/26** both before and after. Selector430 retains its exact frozen digest.
+
+## 6. Regression/accounting boundary
+
+TB3 observed **no RED, SKIP, crash, selection mismatch, or new failure surface**, so there is no observed regression requiring a new or updated `Regression_Root_Cause_Tracker.md` entry. Stable accounting therefore remains **49 events / 14 categories / 35 recurrences** and produced-witness debt remains **5**. The M6-owned closed-complex `G4-B002` debt and four M5-owned periodic debts are unchanged.
+
+EXEC does not promote package `10591801825`, grant cumulative selector430 acceptance credit, or close CP4/M4. Those semantic and closure decisions are reserved to mandatory Review.
+
+## 7. Successor boundary
+
+`M4-CP4-TB3-EXEC` is **COMPLETE / MECHANICALLY GREEN / SEMANTICALLY UNADJUDICATED**. Exact next is runtime-free **`M4-CP4-TB3-REV`**. Review must independently re-derive package/selector/ledger/postflight authority, decide whether package `10591801825` becomes accepted runtime authority, grant or deny cumulative selector430 credit, preserve stable accounting/debt correctly, and decide CP4/M4 closure against all amended exit conjuncts.
+
+</details>
+
