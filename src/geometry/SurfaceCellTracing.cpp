@@ -19614,11 +19614,14 @@ SurfaceCellNetwork build_surface_cell_network(
                               *fromVertex == *toVertex;
       endpointEvidence << ";a3ProbeSameExactOneHotVertex=" << sameOneHot;
       int admissibleOrientations = 0;
+      const auto *probeCarrier = find_carrier(endpointEdge);
       if (probeCarrier != nullptr) {
-        const auto sourceVertex = sameOneHot
-            ? authority::SourceVertexId::from_index(
-                  *fromVertex, surface_cell_tracing_detail::source_vertex_extent(faces))
-            : std::nullopt;
+        std::optional<authority::SourceVertexId> sourceVertex;
+        if (sameOneHot) {
+          const auto typedVertex = authority::SourceVertexId::from_index(
+              *fromVertex, surface_cell_tracing_detail::source_vertex_extent(faces));
+          if (typedVertex) sourceVertex = typedVertex.value();
+        }
         const auto firstRow = surface_cell_tracing_detail::source_face_id(
             fromPoint.face, faces.rows());
         const auto secondRow = surface_cell_tracing_detail::source_face_id(
