@@ -134,14 +134,17 @@ def rows(s):
  if not re.fullmatch(r'[0-9]+(?:,[0-9]+)*',s): return None
  return tuple(sorted(set(map(int,s.split(',')))))
 ledger=list(csv.DictReader((out/'ledger.tsv').open(),delimiter='\t'))
-counts=collections.Counter(); partitions=collections.Counter(); missing=[]
+counts=collections.Counter(); partitions=collections.Counter(); multiplicities=collections.Counter(); missing=[]
 with (out/'route-path-reconciliation.tsv').open('w',newline='') as fp:
  writer=csv.writer(fp,delimiter='\t')
- writer.writerow(['index','historical_ordinal','identity','verdict','probe_emitted']+fields+['route_step_keys','carrier_edge','to_face_incident_route_steps','from_face_incident_route_steps','membership','first_path_includes_from_face','second_path_includes_to_face','evidence_status'])
+ writer.writerow(['index','historical_ordinal','identity','verdict','probe_emitted']+fields+['route_step_keys','carrier_edge','to_face_incident_route_steps','from_face_incident_route_steps','membership','first_path_includes_from_face','second_path_includes_to_face','probe_occurrences','evidence_status'])
  for row in ledger:
   raw=(out/'raw'/(row['index']+'.log')).read_text(errors='replace')
   v={k:get(raw,k) for k in fields}
-  actual=re.findall(r'a2bProbeRouteStep\[([0-9]+)\]=([0-9]+,[0-9]+)',raw)
+  probe_lines=[line for line in raw.splitlines() if 'a2bProbeRouteStepCount=' in line]
+  occurrences=[(get(line,'a2bProbeRouteStepCount'),re.findall(r'a2bProbeRouteStep\[([0-9]+)\]=([0-9]+,[0-9]+)',line)) for line in probe_lines]
+  actual=occurrences[0][1] if occurrences else []
+  occurrences_consistent=bool(occurrences) and all(count.isdigit() and int(count)==len(steps) and steps==actual for count,steps in occurrences)
   n=int(v['a2bProbeRouteStepCount']) if v['a2bProbeRouteStepCount'].isdigit() else -1
   indices=[int(i) for i,k in actual]
   edges=[frozenset(map(int,k.split(','))) for i,k in actual]
@@ -155,17 +158,19 @@ with (out/'route-path-reconciliation.tsv').open('w',newline='') as fp:
   hit_from=sum(bool(f and e <= f) for e in edges)
   matched=int(f in (c,d))+int(t in (c,d)) if all((f,t,c,d)) else -1
   membership={0:'neither',1:'one',2:'both'}.get(matched,'UNRESOLVED')
-  complete=(row['verdict'] in ('RED','PASS') and bool(v['a2bProbeFailure']) and n>0 and len(actual)==n and indices==list(range(n)) and all(len(e)==2 for e in edges) and all(x is not None for x in (f,t,c,d,pf,pt,rf,rt)) and len(carrier)==2)
+  complete=(row['verdict'] in ('RED','PASS') and bool(v['a2bProbeFailure']) and n>0 and len(actual)==n and occurrences_consistent and indices==list(range(n)) and all(len(e)==2 for e in edges) and all(x is not None for x in (f,t,c,d,pf,pt,rf,rt)) and len(carrier)==2)
   if not complete: missing.append(row['identity'])
+  multiplicities[len(occurrences)]+=1
   counts[(v['a2bProbeFirstFailedCondition'],row['verdict'])]+=1
   partitions[(v['a2bProbeFirstFailedCondition'],membership,hit_to)]+=1
-  writer.writerow([row['index'],row['historical_ordinal'],row['identity'],row['verdict'],int(any(v.values()))]+[v[k] for k in fields]+['|'.join(k for i,k in actual),','.join(map(str,sorted(carrier))),hit_to,hit_from,membership,rf in pf if pf is not None else '',rt in pt if pt is not None else '','COMPLETE' if complete else 'INCOMPLETE'])
+  writer.writerow([row['index'],row['historical_ordinal'],row['identity'],row['verdict'],int(any(v.values()))]+[v[k] for k in fields]+['|'.join(k for i,k in actual),','.join(map(str,sorted(carrier))),hit_to,hit_from,membership,rf in pf if pf is not None else '',rt in pt if pt is not None else '',len(occurrences),'COMPLETE' if complete else 'INCOMPLETE'])
 with (out/'route-path-summary.txt').open('w') as fp:
  fp.write('route_key_semantics=source-edge SourceVertexId endpoint pair for each oriented route step\n')
  fp.write('to_incidence_test=route edge key is subset of canonical ToAttachment face vertex triple\n')
  fp.write('path_faces=distinct source-face row indices of each owning cell actual traced boundary path\n')
  fp.write('counts='+repr(sorted(counts.items()))+'\n')
  fp.write('first_rejection_membership_to_incidence='+repr(sorted(partitions.items()))+'\n')
+ fp.write('probe_multiplicity='+repr(sorted(multiplicities.items()))+'\n')
  fp.write('missing_evidence='+repr(missing)+'\n')
  fp.write('historical_ordinal_405=EXCLUDED; separate non-interior mechanism\n')
  fp.write('producer_correction=NOT_AUTHORIZED\n')
