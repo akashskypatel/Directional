@@ -1,0 +1,2 @@
+M6-CP3-CB6-R7-NODE-ADMISSIBLE-FACE-SET-PROBE
+Snapshot frozen by this trigger commit; no executable/test dispatch.
