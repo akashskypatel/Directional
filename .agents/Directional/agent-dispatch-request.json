@@ -1,14 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb7-r7-presnap-harvest-20261016a",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb7-r7-presnap-harvest",
-  "executor_sha": "f3ed82bc5d84953c4150429ee149e514644573d8",
-  "semantic_source_sha": "cdd6dc4a9ba95a42aace6226194b38e712b53e4b",
-  "turn_id": "M6-CP3-TB7-R7-LATTICE-UV-CANDIDATE-HARVEST",
-  "harness_path": ".agents/Directional/tools/m6_cp3_r7_lattice_uv_harvest_harness.sh",
-  "harness_sha256": "36b1fab3ab9a1b5aa6359df934e355c1f5a02451abf42b04b9e920e56d50a7d4",
-  "environment": {},
-  "artifact_prefix": "m6-cp3-tb7-r7-presnap",
+  "request_id": "m6-cp3-cb8-source-entity-probe-apply-20261016a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb8-source-entity-probe-apply",
+  "file_id": "13V1N73ofPD2jCyNqmGq9bFsfW88_gzsW",
+  "patch_sha256": "8cd1d1592db5aebe7f9f98d6d62514340c2063a91ace20e09a3989380e85c028",
+  "base_sha": "59208778b024a46f9f6549f16b52722f39796192",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "Probe exact boundary source-entity equivalence without changing acceptance",
   "retention_days": 14
 }
