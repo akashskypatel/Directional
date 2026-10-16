@@ -1,3 +1,13 @@
+## CURRENT — 2026-10-16 CB7 pre-snap lattice UV probe code/compile boundary complete; TB7 separately authorized next
+
+**Supersedes the RA-73 CURRENT section below; RA-73 remains the frozen architecture authority.** Completed `M6-CP3-CB7-R7-LATTICE-UV-CANDIDATE-PROBE`: code `cdd6dc4a9ba95a42aace6226194b38e712b53e4b` touches only `src/geometry/SurfaceCellTracing.cpp` (+123 diagnostic-only lines), recording pre-snap producer UV and raw per-face barycentrics/containment for the rejected endpoints; it does **not** change selection or admission. Exact patch and immutable apply workflow evidence are recorded in `.agents/Directional/Architecture_M6_CP3_R7_Lattice_UV_Candidate_Probe_Code_Build_Record_20261016.md`.
+
+Immutable GMP compile [38859497594](https://github.com/akashskypatel/Directional/actions/runs/38859497594) **GREEN**, job `116838424581`, artifact `12028682600` ZIP SHA-256 `54b7f5a73ae7a041491fddef64807f71a9ac49f42c1508cea0ce64dfe61095d9`: 28/28 package checksums, 8/8 targets, GMPXX/GMP, preflight/build 0/0, clean source, `runtimeExecution=false`. Not runtime acceptance.
+
+**NEXT only:** `M6-CP3-TB7-R7-LATTICE-UV-CANDIDATE-HARVEST` — a separate immutable artifact-only Test + Benchmark turn; no compile, relink, repair or fixture change. It must determine at the **producer's own sampled UV** whether the published face was the minimum admissible one, without pre-judging results. The repair rung remains unapproved until that harvest and review. Frozen ledger 66/17/49, debt 1, CP2 491/491, R3 403/497, selector 497, `RP-02` unreached remain unchanged. PR #8 draft/open.
+
+---
+
 ## CURRENT — 2026-10-16 RA-73 frozen; RA-72.8 falsified, and the junction cases are exactly where one corner has three admissible faces and the producer published the largest; next turn `M6-CP3-CB7-R7-LATTICE-UV-CANDIDATE-PROBE` (compile-only)
 
 **Supersedes the RA-72 CURRENT section below as the current state; that section and every section beneath it are retained as authorizing history.** Two turns adjudicated — `M6-CP3-CB6-R7-NODE-ADMISSIBLE-FACE-SET-PROBE` (rung 12) and `M6-CP3-TB6-R7-NODE-ADMISSIBLE-FACE-SET-HARVEST` (rung 13) — **both ACCEPTED**, two charges. Decision: `.agents/Directional/Architecture_M6_CP3_R7_Node_Admissible_Face_Set_Review_Decision.md`. **This Review also closes the beacon rung 13 left open and restores the tracker and ORIENTATION sections it did not write.**

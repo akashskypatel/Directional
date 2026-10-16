@@ -1,3 +1,13 @@
+## CURRENT — CB7 pre-snap producer-candidate probe compile complete; TB7 next (2026-10-16)
+
+- [x] `M6-CP3-CB7-R7-LATTICE-UV-CANDIDATE-PROBE`: producer-captured pre-snap UV, raw candidate barycentrics and pass/fail published only in original rejection diagnostic; one source file (+123), source commit `cdd6dc4a9ba95a42aace6226194b38e712b53e4b`. Exact apply and compile-only evidence: `.agents/Directional/Architecture_M6_CP3_R7_Lattice_UV_Candidate_Probe_Code_Build_Record_20261016.md`.
+- [ ] **NEXT: `M6-CP3-TB7-R7-LATTICE-UV-CANDIDATE-HARVEST`** — immutable artifact-only harvest; answer the producer sample-point minimum-admissible selection question. No code repair in this turn.
+- [ ] Repair rung unapproved until harvest and Review. Frozen 66/17/49, debt 1; CP2 491/491, R3 403/497 and selector 497 unchanged, `RP-02` unreached.
+
+Immutable GMP compile [38859497594](https://github.com/akashskypatel/Directional/actions/runs/38859497594) **GREEN**, job `116838424581`, artifact `12028682600` ZIP SHA-256 `54b7f5a73ae7a041491fddef64807f71a9ac49f42c1508cea0ce64dfe61095d9`: 28/28 package checksums, 8/8 targets, GMPXX/GMP, preflight/build 0/0, clean source, `runtimeExecution=false`. Not runtime acceptance.
+
+---
+
 ## CURRENT — RA-73 frozen; RA-72.8 falsified; the junction cases are exactly where one corner had three candidates and the producer took the largest (2026-10-16)
 
 ### Turn sequence (byte-derived from `STATUS` history; frozen clauses in `Architecture_M6_Frozen_Definitions.md`)
