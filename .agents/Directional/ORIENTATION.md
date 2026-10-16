@@ -1,3 +1,9 @@
+## CURRENT — R8 Definition (2026-10-16)
+
+**§3:** Accepted boundary owns ordered source-edge subdivisions, not unique directed-side carrier face; chart sample 3 and accepted point 7 may be different representations of one vertex, pending entity/sheet proof. **§4:** No runtime; R7 44 candidate RED, CP2 491/491, R3 403/497 and selector497 frozen. **§7:** Independent R8 Definition Review next, code held; 21 changed-face junctions do not prove all boundary nodes, 27 latest controls unmeasured (23 older cohort). **§8:** RA-74.11 substitution ownership; RA-72.5 raw equality is relocation. RP-01 open, RP-02 unreached, 66/17/49, debt1. See `Architecture_M6_CP3_R8_Boundary_Override_Authority_Specification_20261016.md`.
+
+---
+
 ## CURRENT — `M6-CP3-R7-LATTICE-UV-CANDIDATE-REV`, 2026-10-16: RA-74 frozen; the thing everyone was blaming turns out to have done its job, and its answer is thrown away a few lines later
 
 **Supersedes the RA-73 paragraph below as the current state.** Two turns were adjudicated and both

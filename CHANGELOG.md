@@ -1,3 +1,7 @@
+## 2026-10-16 — M6 CP3 R8 boundary-override authority Definition
+
+Documentation-only source authority: accepted boundary geometry is authoritative, but the boundary source-face row is not a universal directed-side carrier certificate. No 21/23 boundary/interior partition or runtime claim; independent Review required. See `.agents/Directional/Architecture_M6_CP3_R8_Boundary_Override_Authority_Specification_20261016.md`.
+
 ## 2026-10-16 — RA-74 frozen: the face selector is innocent; the sampled point is replaced wholesale by the accepted conformity boundary, with no reconciliation of any kind
 
 - Architecture Review only (`M6-CP3-R7-LATTICE-UV-CANDIDATE-REV`), adjudicating two turns; no source, test, selector, binary, harness, workflow, benchmark or ledger-count change in this Review, and no Directional binary executed.

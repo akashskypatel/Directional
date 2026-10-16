@@ -1,3 +1,9 @@
+## CURRENT — M6 CP3 R8 boundary authority Definition (2026-10-16)
+
+Accepted conformity owns source-edge boundary placement and face-relative representation, not a universal directed-side face. The 21 changed-face junction samples show overwrite, not an exhaustive boundary count; 27 latest unmeasured controls do not prove interior (23 older controls are a different cohort). RP-01 source-entity/sheet and per-side carrier reconciliation remains open. No runtime; 66/17/49, debt1, CP2 491/491, R3 403/497, selector497. See `Architecture_M6_CP3_R8_Boundary_Override_Authority_Specification_20261016.md`. **Next: `M6-CP3-DEFN-R8-BOUNDARY-OVERRIDE-AUTHORITY-SPEC-REV`, independent static Review; code held.**
+
+---
+
 ## CURRENT — 2026-10-16 RA-74 frozen; the face selector is innocent and the sampled point is replaced wholesale by the accepted conformity boundary; next turn `M6-CP3-DEFN-R8-BOUNDARY-OVERRIDE-AUTHORITY-SPEC` (documents-only)
 
 **Supersedes the RA-73 CURRENT section below as the current state; that section and every section beneath it are retained as authorizing history.** Two turns adjudicated — `M6-CP3-CB7-R7-LATTICE-UV-CANDIDATE-PROBE` (rung 14) and `M6-CP3-TB7-R7-LATTICE-UV-CANDIDATE-HARVEST` (rung 15) — **both ACCEPTED**, with one **hard** charge and two lesser. Decision: `.agents/Directional/Architecture_M6_CP3_R7_Lattice_UV_Candidate_Review_Decision.md`. **This Review also restores the `ORIENTATION.md` section rung 15 did not write.**

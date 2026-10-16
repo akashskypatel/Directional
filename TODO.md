@@ -1,3 +1,9 @@
+## CURRENT — M6 CP3 R8 Definition recorded (2026-10-16)
+
+- [x] Four-question source-static boundary override authority Definition: `Architecture_M6_CP3_R8_Boundary_Override_Authority_Specification_20261016.md`.
+- [ ] **Next:** independent `M6-CP3-DEFN-R8-BOUNDARY-OVERRIDE-AUTHORITY-SPEC-REV` to rederive face ownership, cohort distinction, RA-65.5 and F1–F7; repair code held.
+- [ ] RP-01 source-entity/sheet and per-side carrier proof; RP-02 unreached. 66/17/49, debt1; CP2 491/491, R3 403/497, selector497 frozen. No runtime evidence.
+
 ## CURRENT — RA-74 frozen; the sampler is exonerated and the point is overwritten by the accepted conformity boundary; next rung names the owning authority (2026-10-16)
 
 ### Turn sequence (byte-derived from `STATUS` history; frozen clauses in `Architecture_M6_Frozen_Definitions.md`)
