@@ -1,14 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb6-r7-face-harvest-20261016c",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb6-r7-face-harvest",
-  "executor_sha": "385992f233fb9f79233a0bc14866c4626a6821fd",
-  "semantic_source_sha": "4d64b7684ac7ec2d0655f96c88ecf05f2906bca7",
-  "turn_id": "M6-CP3-TB6-R7-NODE-ADMISSIBLE-FACE-SET-HARVEST",
-  "harness_path": ".agents/Directional/tools/m6_cp3_r7_admissible_face_harvest_harness.sh",
-  "harness_sha256": "206cb5a3ae50fd227a1f8f48095e55dd42a3cab2327a6f9911ccc54be035b523",
-  "environment": {},
-  "artifact_prefix": "m6-cp3-tb6-r7-face-harvest",
+  "request_id": "m6-cp3-cb7-r7-lattice-uv-apply-20261016a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb7-r7-lattice-uv-apply",
+  "file_id": "13zk2EfwUvH-3J7DceIz5kACQrkuv392D",
+  "patch_sha256": "389c5681be25af2821e0080426d9d0a1f48c53d05f983c82848bb08e2f19f1f6",
+  "base_sha": "aebeff9e2410e8ce554fdbbee70b9f00c4ee9f3d",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "trace(surface-cells): capture pre-snap lattice UV candidates for rejected endpoints",
   "retention_days": 14
 }
