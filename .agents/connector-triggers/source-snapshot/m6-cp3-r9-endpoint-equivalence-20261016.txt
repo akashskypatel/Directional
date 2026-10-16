@@ -1,3 +1,0 @@
-R9 endpoint equivalence contract specification
-Requested by ChatGPT Web for source snapshot at trigger commit.
-Code and tests are not executed.
