@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb6-r7-face-harvest-20261016a",
+  "request_id": "m6-cp3-tb6-r7-face-harvest-20261016b",
   "operation": "test_benchmark",
   "mailbox_key": "m6-cp3-tb6-r7-face-harvest",
-  "executor_sha": "b37220d9068e5c224a2e938bf3a921e25a04a92a",
+  "executor_sha": "c4da30a37fba3ceaba600bc69d9b40f9abfca488",
   "semantic_source_sha": "4d64b7684ac7ec2d0655f96c88ecf05f2906bca7",
   "turn_id": "M6-CP3-TB6-R7-NODE-ADMISSIBLE-FACE-SET-HARVEST",
   "harness_path": ".agents/Directional/tools/m6_cp3_r7_admissible_face_harvest_harness.sh",
-  "harness_sha256": "94801db115935565df61876785bc5a13f2eec3ab1c03e5df6c46d0485b4032fb",
+  "harness_sha256": "bfe03d718628b2c8af20d8ee6a6e25ddb95f86a6b86b3e0c3c7161de49305caf",
   "environment": {},
   "artifact_prefix": "m6-cp3-tb6-r7-face-harvest",
   "retention_days": 14
