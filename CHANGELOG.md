@@ -1,3 +1,7 @@
+## 2026-10-16 — M6 CP3 TB7 pre-snap candidate harvest
+
+Immutable artifact-only run [38861867717](https://github.com/akashskypatel/Directional/actions/runs/38861867717) completed (44/44 selected, 44 existing RED; 0 missing; 96 endpoint records). All measured original producer samples selected the minimum passing face; at 21 SecondFrom junction endpoints an accepted conforming boundary override changed published face 3 to 7. Report: `.agents/Directional/Architecture_M6_CP3_R7_Lattice_UV_Candidate_Harvest_TB_Report_20261016.md`. No repair authorization, compiled binary modification, selectors, stable ledger change or production acceptance.
+
 ## 2026-10-16 — RA-73 frozen: RA-72.8 falsified; the junction cases are exactly where one corner has three admissible faces and the producer published the largest
 
 - Architecture Review only (`M6-CP3-R7-NODE-ADMISSIBLE-FACE-SET-REV`), adjudicating two turns; no source, test, selector, binary, harness, workflow, benchmark or ledger-count change in this Review, and no Directional binary executed.
