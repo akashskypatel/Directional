@@ -1,12 +1,9 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb9-terminal-star-probe-20261016a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb9-r9-drive-apply",
-  "file_id": "1wn9Hwuirbh-kCWsszgBVvTtwI780pxrF",
-  "patch_sha256": "ae15adf5aa350c4c65805c79df40cc7f2280dc6637470cd031a21996d2831d16",
-  "base_sha": "0adc9ab08e01692ec2dcb769bb19458dbb8dfbc0",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "chore(surface-cells): add rejection-only terminal star-path F1/F2 probe",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb9-r9-compile-20261016a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb9-r9-compile",
+  "source_sha": "81101d7370a7d3cfe36baa57b4635ef7e0819bb2",
+  "targets": "directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks",
+  "artifact_prefix": "directional-m6-cp3-cb9-r9-compile"
 }
