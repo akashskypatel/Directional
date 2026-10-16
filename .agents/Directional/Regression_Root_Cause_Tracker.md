@@ -1,3 +1,142 @@
+## 2026-10-16 — the census corrects the localization and finds a second active admission path; "same vertex, unique star path" is already production behaviour (RA-78)
+
+**Review:** `M6-CP3-DEFN-R9A-ENDPOINT-FACE-COMPARISON-CENSUS-REV`, adjudicating rung 19a —
+`M6-CP3-DEFN-R9A-ENDPOINT-FACE-COMPARISON-CENSUS`. **ACCEPTED**, one charge, one note.
+Decision:
+`.agents/Directional/Architecture_M6_CP3_R9A_Endpoint_Face_Comparison_Census_Review_Decision.md`.
+Semantic source unchanged at `f0d7240455b10237af47de58c035cd4c576d889a`. **This Review
+writes the tracker, ORIENTATION and frozen-definitions sections rung 19a did not.**
+
+### Root-cause state — localized more precisely, still at the consumer
+
+`RP-01 AUTHORITY_DOMAIN_CONFLATION`. **Not** "the consumer compares raw faces," which is
+false. The demand is:
+
+> each endpoint's **representative face** must either **equal** the carrier's face (product
+> verifier, interior branch, `:8662-8674`) or **admit a unique A3 terminal star path** to it
+> (product verifier, vertex branch, `:8685-8699`); and independently, `oriented_carrier`
+> must find its ordered face pair equal to the endpoint-derived attachments
+> (`:19253-19261`), with `path_to` taking its start face from the endpoint's representative
+> (`:19425-19450`) — **in two separately enforced checkers.**
+
+Every producer remains exonerated (RA-76.8). **Code remains NOT authorized.** `RP-02`
+**UNREACHED**.
+
+### RA-76.8 is amended — there is no direct endpoint face comparison
+
+An exhaustive search for
+`(fromPoint|toPoint|first\.(from|to)|second\.(from|to))\.face\s*[!=]=` returns **no
+matches**. The consumer never asks whether the two endpoints agree with each other; it asks
+whether **each endpoint's representative face agrees with the carrier's**, indirectly via
+`oriented_carrier`'s ordered-pair demand (`:19253-19261`) and via
+`path_to(firstAttachment, oriented.firstFace)` taking its start face from the endpoint
+(`:19425-19450`).
+
+### The discovery — a second admission path, active, never previously examined
+
+`src/geometry/SurfaceCellTracing.cpp:8621-8736` is an independent checked-product verifier,
+and it is **active, not diagnostic**. Its interior branch returns
+`SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority` when
+`carrier.firstFace != endpoint.firstAttachment`, `carrier.secondFace !=
+endpoint.secondAttachment`, a contact path is non-empty, or `same_interior_carrier_point`
+fails.
+
+**Two consequences, both material.**
+
+1. **Any consumer-side repair must satisfy two independent checkers.** Eighteen rungs
+   reasoned about the endpoint certificate at `:19265-19495` alone; a contract written
+   against that one checker would have been defeated here, after implementation rather than
+   before.
+2. **The vertex branch already implements the relation the repair needs.** For a vertex
+   endpoint it does **not** demand face equality — it requires `exact_vertex_attachment` on
+   both points, that the vertex terminate the carrier edge, and
+   `unique_terminal_star_path(*vertex, endpoint.firstAttachment, carrier.firstFace)` and its
+   symmetric pair to return `Unique`, rejecting `Missing` and `Ambiguous` (`:8685-8699`).
+   **"Same source vertex, different representative face, reconciled by a unique A3 star
+   path" is already accepted production behaviour**, and the measured 21 are vertex cases
+   (`vertex:4` ×42, `vertex:2` ×6, RA-76.1). The repair is a **precedent to apply
+   consistently, not an invention.**
+
+### The vertex-star prohibition, clarified so it does not misfire
+
+Gate C (RA-65.5, RA-68.3) concerns a **pre-admission, rail-scoped, producer-authored
+vertex-star sector certificate** that does not exist, whose nearest analogue
+(`SurfaceHardRailRouteJunctionCertificate`) is ordered after the admission it would
+license. **Gate C remains SUSPENDED and moot for `RP-01`.** `unique_terminal_star_path` is
+a **consumer-side lambda at `:8452`**, computed from source topology at consumption time
+and **already enforced**. **The prohibition bars introducing a new producer-authored
+vertex-star certificate; it does not bar reasoning about the existing consumer-side
+check.** No new star predicate may be invented, `unique_terminal_star_path` may not be
+weakened, and `Ambiguous` or `Missing` may not be treated as acceptable.
+
+### The one-ULP hazard is confirmed consequential
+
+`same_interior_carrier_point` (`:91-97`) is **exact rational equality** —
+`return a.has_value() && b.has_value() && *a == *b;`. RA-76.7 measured the two producers
+agreeing on an edge parameter only to **one ULP** in 324 instances, and this test would
+reject such a pair outright. **Not** the current cause — the measured 21 are vertex cases
+taking the other branch — but a live constraint on any contract. **No epsilon is
+authorized.**
+
+### Charge
+
+**RA-78.7 — neither gate was run or reported, for the sixth consecutive mandate.** No
+closeout duty table, no gate output. Both pass; the defect is the silence, not the state.
+It is not cosmetic: **RA-74.6 was the one genuine integrity incident of this
+investigation** — the append-only tracker destroyed and pushed across four commits — and
+the `ledgers` gate detects it exactly. **The ask is changed rather than repeated a seventh
+time** (RA-77.5 applied to the reviewer): the next rung pastes **one line each** into its
+closeout, the final `ALL CHECKS PASSED` or `FAILED:` line from each gate, verbatim.
+
+### Credits
+
+The census **states its search queries verbatim** — both `rg` invocations printed, which is
+**RA-71.4 applied** one rung after restatement and what makes the enumeration falsifiable
+rather than assertive. It **respected the split**, declaring "Former R9 questions 1 and 2
+only… No replacement contract, soundness proof, repair," and did not drift into 19b — the
+failure mode a split invites. It hedged honestly where the source does not settle a
+classification. Beacon `COMPLETE` with `Successor: UNKNOWN` and reasoning in the owning
+document. Transport limitation disclosed with no claim of a push. **`RP-03` satisfied a
+thirteenth turn** — it corrected the reviewer's localization and found an enforcement path
+the reviewer had missed.
+
+### Note
+
+`Regression_Root_Cause_Tracker.md` (fourth omission), `ORIENTATION.md` (third) and
+`Architecture_M6_Frozen_Definitions.md` were not written by rung 19a. Not charged — the
+Review writes all three regardless — but recorded once rather than re-noted each rung.
+
+### Provenance
+
+Snapshot artifact `12040008801` (run `38888296894`) digest
+`501523b30aaa1f53ed13fb57bb7e27b0d23f9398e2bd585d1920c69acfbcd957`, matches;
+`src`/`include`/`tests` **tree-identical at `b34c57176`, `f0d724045`, `cd4a539e8` and
+`HEAD`**; documents only; `ledgers --base 053ec455a` **ALL CHECKS PASSED**.
+
+### Lesson
+
+**RA-78.10 — a census that finds a second enforcement path has changed the repair's scope,
+not just its description.** **Enumerate the enforcers before designing the rule**: a
+contract proved sound against one checker and silently defeated by a second is worse than
+no contract, because it fails after implementation rather than before.
+
+### Accounting
+
+Ledger **66/17/49**, debt **1**, CP2 **491/491** accepted, R3 **403/497** rejected, frozen
+selector **497** — unchanged. No promotion, no stable event, no regression recurrence, no
+ledger recomputation, no 497 execution, no benchmark, no binary executed. `R4-VIN-01`
+remains armed at `f0d724045` with **no new semantic source**; every earlier artifact
+through `12036818514` and `12040008801` is a **baseline, never a comparand**. `PROCESS-01`
+discharged. RA-61.9 WITHDRAWN, final. RA-64.6 WITHDRAWN, final. RA-70.14 WITHDRAWN.
+RA-72.8 WITHDRAWN. RA-71.5 AMENDED. RA-73.5 SUPERSEDED. RA-74.1 NARROWED and CONFIRMED.
+**RA-76.8 AMENDED.** Gate C SUSPENDED and moot for `RP-01`, boundary clarified. The
+historical `ledgers` failure at `b2b6e6541` remains permanent for any earlier base, is
+correct, and must not be suppressed. Successor
+**`M6-CP3-DEFN-R9B-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC`** (rung 19b, documents-only: the
+contract against **both** checkers, with a non-weakening proof).
+
+---
+
 ## 2026-10-16 — rung 19 produced no deliverable; the rung is split because the reviewer over-scoped it (RA-77)
 
 **Review:** `M6-CP3-R9-RUNG-RESCOPE-REV`, adjudicating rung 19 —

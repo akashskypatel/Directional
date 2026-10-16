@@ -1,3 +1,58 @@
+## CURRENT — `M6-CP3-DEFN-R9A-ENDPOINT-FACE-COMPARISON-CENSUS-REV`, 2026-10-16: RA-78 frozen; the enumeration found a second gatekeeper, and the rule the fix needs is already running inside it
+
+**Supersedes the RA-77 paragraph below as the current state.** One turn was adjudicated and it
+is **accepted**, with one charge and one note. The turn also corrected this review's own
+description of what the consumer checks. No open REVIEW_BLOCKER. No promotion, no stable
+event, no regression recurrence, no gate credit.
+
+**§3 current state — the splitting worked, and the census paid for itself twice.** The
+previous rung came back empty because it had been asked to enumerate and to design in one
+go; split in two, the enumeration half landed cleanly. It returned two things nobody
+expected. First, the consumer does not actually compare the two endpoints' triangles
+against each other — there is no such comparison anywhere in the code. What it does is
+insist that each endpoint's chosen triangle line up with the carrier's, which is a
+different and much more specific complaint than the one recorded a rung ago. Second, and
+more consequential, there is a **second gatekeeper** that nobody in eighteen rungs had
+looked at: an independent verifier that re-checks the finished product and rejects it
+outright with its own error code. Any fix has to satisfy both, and a fix designed against
+only the first would have passed review and then failed in production.
+
+**§4 runtime witness — none, and none was due.** A document turn over source read from a
+verified snapshot, with the three source trees identical at the snapshot, at the compiled
+commit, at the turn's entry point and at the branch head. The protected history was added
+to, not overwritten.
+
+**§5 instrument — the enumeration states the searches it ran.** That was asked for after an
+earlier census of this reviewer's own turned out to be bounded by a filter that excluded
+the very thing being looked for. Printing the queries is what makes a list of this kind
+checkable rather than merely asserted, and it is the reason the second gatekeeper could be
+confirmed from the bytes rather than taken on trust. The turn also stayed inside its half
+of the split and refused to start designing, which is the obvious temptation when the
+design question is the interesting one.
+
+**§7 priority — write the rule against both gatekeepers, and prove it still refuses
+things.** The encouraging find is that the second verifier already accepts exactly the
+relation the fix seems to need: where an endpoint sits on a shared corner, it does not
+demand the same triangle, but demands that there be exactly one way to walk between the two
+triangles around that corner, and refuses when there is none or more than one. The failing
+cases are all of that kind. So the next turn is not inventing a rule; it is deciding whether
+to apply an existing one consistently — and showing what it would still turn away. A
+separate constraint is now confirmed to bite elsewhere: the two producers agree on positions
+along an edge only to the last bit, and the equality test for that case is exact, so any
+contract covering edge points has to say so rather than quietly relax the comparison.
+
+**§8 patterns — thirteenth turn to contradict the reviewer, and the sixth to skip the
+checks.** The correction to the localization and the discovery of the second gatekeeper both
+cut against what this review had written, and both were right. Against that, the two
+verification commands have now been required before every push for six turns running and
+reported in essentially none — and these are the same checks that would have caught the one
+real integrity incident of this investigation, when the long regression history was
+overwritten and pushed. Repeating the instruction a seventh time would be the same mistake
+the previous rung taught; the ask has been reduced instead to pasting a single line from
+each command into the closeout.
+
+---
+
 ## CURRENT — `M6-CP3-R9-RUNG-RESCOPE-REV`, 2026-10-16: RA-77 frozen; the turn came back empty, and the instruction was the thing at fault
 
 **Supersedes the RA-76 paragraph below as the current state.** One turn was examined and it

@@ -1,3 +1,128 @@
+## RA-78 — frozen definitions, M6 CP3 R9A endpoint face-comparison census (2026-10-16); RA-76.8 AMENDED, a second admission path found
+
+**Authority:** `.agents/Directional/Architecture_M6_CP3_R9A_Endpoint_Face_Comparison_Census_Review_Decision.md`.
+Adjudicates `M6-CP3-DEFN-R9A-ENDPOINT-FACE-COMPARISON-CENSUS` (rung 19a); **ACCEPTED**, one
+charge and one note. Semantic source unchanged at
+`f0d7240455b10237af47de58c035cd4c576d889a`.
+
+- **RA-78.1 Provenance and boundary.** Snapshot artifact `12040008801` (run `38888296894`)
+  digest `501523b30aaa1f53ed13fb57bb7e27b0d23f9398e2bd585d1920c69acfbcd957`, matches;
+  `src`/`include`/`tests` **tree-identical at `b34c57176`, `f0d724045`, `cd4a539e8` and
+  `HEAD`**; documents only; `ledgers --base 053ec455a` **ALL CHECKS PASSED**. The split rung
+  delivered — the RA-77.3 re-scoping was the right call.
+- **RA-78.2 RA-76.8 is AMENDED — admission does not compare raw endpoint faces.** An
+  exhaustive search for `(fromPoint|toPoint|first\.(from|to)|second\.(from|to))\.face\s*[!=]=`
+  returns **no matches**: there is **no direct endpoint-to-endpoint face comparison
+  anywhere**. The over-specific demand is **indirect**, through `oriented_carrier`
+  (`src/geometry/SurfaceCellTracing.cpp:19253-19261`, used at `:19332-19334` and
+  `:19372-19388`), which requires its **ordered source-face pair** to equal the
+  endpoint-derived attachment keys or their reverse; and through
+  `path_to(firstAttachment, oriented.firstFace)` (`:19425-19450`, used `:19463-19466`),
+  which requires exactly one admissible face-keyed path **taking its start face from the
+  endpoint's representative**. The consumer never asks whether the two endpoints agree with
+  each other; it asks whether **each endpoint's representative face agrees with the
+  carrier's**.
+- **RA-78.3 THE DISCOVERY — a second active admission path, never previously examined.**
+  `:8621-8736` is an independent checked-product verifier, and it is **active, not
+  diagnostic**: its interior branch returns
+  `SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority` when
+  `carrier.firstFace != endpoint.firstAttachment`, `carrier.secondFace !=
+  endpoint.secondAttachment`, a contact path is non-empty, or
+  `same_interior_carrier_point` fails. **Two consequences.** *(1)* **Any consumer-side
+  repair must satisfy two independent checkers** — eighteen rungs reasoned about the
+  endpoint certificate at `:19265-19495` alone, and a contract written against it would
+  have been defeated here. *(2)* **The vertex branch already implements the relation the
+  repair needs**: for a vertex endpoint it does **not** demand face equality but requires
+  `exact_vertex_attachment` on both points, that the vertex terminate the carrier edge, and
+  `unique_terminal_star_path(*vertex, endpoint.firstAttachment, carrier.firstFace)` —
+  and symmetrically — to return `Unique`, rejecting `Missing` and `Ambiguous`
+  (`:8685-8699`). **"Same source vertex, different representative face, reconciled by a
+  unique A3 star path" is therefore already an accepted relation in production code**, and
+  the measured 21 are vertex cases (`vertex:4` ×42, `vertex:2` ×6, RA-76.1). The repair is
+  a **precedent to apply consistently, not an invention**.
+- **RA-78.4 CLARIFICATION — the vertex-star prohibition, stated precisely.** Gate C
+  (RA-65.5, RA-68.3) concerns a **pre-admission, rail-scoped, producer-authored vertex-star
+  sector certificate** that does not exist, whose nearest analogue
+  (`SurfaceHardRailRouteJunctionCertificate`) is ordered after the admission it would
+  license; **gate C remains SUSPENDED and moot for `RP-01`**. `unique_terminal_star_path`
+  is a **consumer-side lambda at `:8452`**, computed from source topology at consumption
+  time and **already enforced in production**. These are different objects. **The
+  prohibition bars introducing a new producer-authored vertex-star certificate; it does not
+  bar reasoning about, or proposing consistent application of, the existing consumer-side
+  star-path check.** No new star predicate may be invented, `unique_terminal_star_path` may
+  not be weakened, and `Ambiguous` or `Missing` may not be treated as acceptable.
+- **RA-78.5 The one-ULP hazard is confirmed consequential.** `same_interior_carrier_point`
+  (`:91-97`) is **exact rational equality** — `return a.has_value() && b.has_value() && *a
+  == *b;` over `interior_carrier_parameter`. RA-76.7 measured the accepted boundary and the
+  chart sample agreeing on an edge parameter only to **one ULP** in 324 instances, and this
+  test would reject such a pair outright. It is **not** the current cause — the measured 21
+  are vertex cases taking the other branch — but it is a live constraint on any contract.
+  **No epsilon is authorized here or anywhere.**
+- **RA-78.6 Credits.** The census **states its search queries verbatim**, both `rg`
+  invocations printed — **RA-71.4 applied** one rung after it was restated, and what makes
+  the enumeration falsifiable rather than assertive. It **respected the split**, declaring
+  "Former R9 questions 1 and 2 only… No replacement contract, soundness proof, repair" and
+  not drifting into 19b. It hedged honestly where the source does not settle a
+  classification rather than guessing. The beacon is `COMPLETE` with `Successor: UNKNOWN`
+  and reasoning in the owning document — the RA-63.13 shape. A transport limitation
+  (`container_session_unavailable`) was disclosed with no claim of a staging push.
+- **RA-78.7 CHARGE — neither gate was run or reported, for the sixth consecutive mandate.**
+  No closeout duty table and no gate output. Both pass — this Review ran them — so the
+  defect is the silence, not the state. It is not cosmetic: **RA-74.6 was the one genuine
+  integrity incident of this investigation**, the append-only tracker destroyed and pushed
+  across four commits, and the `ledgers` gate detects it exactly. **The ask is changed
+  rather than repeated a seventh time** (RA-77.5 applied to the reviewer): the next rung
+  must paste **one line each** into its closeout — the final `ALL CHECKS PASSED` or
+  `FAILED:` line from each gate, verbatim.
+- **RA-78.8 NOTE — three durable documents were not written.**
+  `Regression_Root_Cause_Tracker.md` (fourth omission), `ORIENTATION.md` (third) and
+  `Architecture_M6_Frozen_Definitions.md`. Not charged — the Review writes the
+  authoritative sections of all three regardless — but recorded rather than re-noted each
+  rung.
+- **RA-78.9 `RP-01` state — localized more precisely.** Not "the consumer compares raw
+  faces," which is false. The demand is: **each endpoint's representative face must either
+  equal the carrier's face (product verifier, interior branch, `:8662-8674`) or admit a
+  unique A3 terminal star path to it (product verifier, vertex branch, `:8685-8699`); and
+  independently `oriented_carrier` must find its ordered face pair equal to the
+  endpoint-derived attachments (`:19253-19261`), with `path_to` taking its start face from
+  the endpoint's representative (`:19425-19450`) — in two separately enforced checkers.**
+  Every producer remains exonerated (RA-76.8). **Code remains NOT authorized.** `RP-02`
+  **UNREACHED**.
+- **RA-78.10 LESSON — a census that finds a second enforcement path has changed the
+  repair's scope, not just its description.** Eighteen rungs reasoned about one admission
+  site; the enumeration found another equally binding, and a relation already enforced
+  there that the repair can follow rather than invent. **Enumerate the enforcers before
+  designing the rule**: a contract proved sound against one checker and silently defeated
+  by a second is worse than no contract, because it fails after implementation rather than
+  before.
+
+### Rung 19b scope — `M6-CP3-DEFN-R9B-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC`, documents only
+
+1. **Specify the contract against BOTH checkers** — the endpoint certificate
+   (`:19265-19495`) and the checked-product verifier (`:8621-8736`). A rule satisfying one
+   and not the other is not a candidate.
+2. **Prove it is not a weakening** by exhibiting what it still rejects; the vertex branch at
+   `:8685-8699` is the precedent — same vertex, differing representative face, **unique**
+   star path — so show what `Missing` and `Ambiguous` still exclude.
+3. **State what happens at interior endpoints**, where `same_interior_carrier_point` demands
+   exact rational equality and RA-76.7's one-ULP difference would reject; say whether the
+   contract covers them, and if not, say so explicitly.
+4. **Apply RA-65.5** and classify each candidate as repair or **relocation** (RA-72.5).
+
+### Accounting
+
+Ledger **66/17/49**, debt **1**, CP2 **491/491**, R3 **403/497**, frozen selector **497** —
+unchanged. `R4-VIN-01` remains armed at `f0d724045` with **no new semantic source**; every
+earlier artifact through `12036818514` and `12040008801` is a **baseline, never a
+comparand**. **RA-61.9 WITHDRAWN, final. RA-64.6 WITHDRAWN, final. RA-70.14 WITHDRAWN.
+RA-72.8 WITHDRAWN. RA-71.5 AMENDED. RA-73.5 SUPERSEDED. RA-74.1 NARROWED and CONFIRMED.
+RA-76.8 AMENDED. Gate C SUSPENDED and moot for `RP-01`, boundary clarified at RA-78.4.**
+`PROCESS-01` discharged. **`RP-03` satisfied a thirteenth turn.** The historical `ledgers`
+failure at `b2b6e6541` remains permanent for any earlier base, is correct, and must not be
+suppressed.
+
+---
+
 ## RA-77 — frozen definitions, M6 CP3 R9 rung re-scope (2026-10-16); rung 19 did not execute
 
 **Authority:** `.agents/Directional/Architecture_M6_CP3_R9_Rung_Rescope_Review_Decision.md`.

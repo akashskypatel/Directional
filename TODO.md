@@ -1,3 +1,46 @@
+## CURRENT — RA-78 frozen; census corrects the localization and finds a second active admission path; next rung writes the contract against both (2026-10-16)
+
+### Turn sequence (byte-derived from `STATUS` history; frozen clauses in `Architecture_M6_Frozen_Definitions.md`)
+
+| # | Turn | Kind | Review | Outcome |
+|---:|---|---|---|---|
+| 1 | `M6-CP3-CB2-R4-PREDICATE-SEPARATION` | Code + Build | RA-63 | accepted; probe separated from decision |
+| 2 | `M6-CP3-CB3-R4-LEDGER-CONTENT-FLOOR` | Code + Build | — | tooling floor added to both gates |
+| 3 | `M6-CP3-TB3-R4-PROBE-HARVEST` | Test + Benchmark | RA-64 | accepted; contradicted the reviewer, credited |
+| 4 | `M6-CP3-DEFN-R4-ENDPOINT-AUTHORITY-SPEC` | Definition | RA-65 | accepted w/ amendment; RA-64.6 withdrawn, gate C suspended |
+| 5 | `M6-CP3-CB4-R4-ENDPOINT-CHART-PROBE` | Code + Build | RA-66 | accepted; compile chain closed by bytes |
+| 6 | `M6-CP3-TB4-R4-ENDPOINT-CHART-HARVEST` | Test + Benchmark | RA-67 | accepted; mechanism derived; 44/44 RED |
+| 7 | `M6-CP3-DEFN-R5-JUNCTION-CARRIER-AUTHORITY-SPEC` | Definition | RA-68 | accepted; both repair shapes inadmissible |
+| 8 | `M6-CP3-CB5-R5-ROUTE-PATH-RECONCILIATION-PROBE` | Code + Build | RA-69 | accepted; neutrality structural |
+| 9 | `M6-CP3-TB5-R5-ROUTE-PATH-RECONCILIATION-HARVEST` | Test + Benchmark | RA-70 | accepted; RA-68.9 CONFIRMED |
+| 10 | `M6-CP3-DEFN-R6-CORNER-ASSIGNMENT-AUTHORITY-SPEC` | Definition | RA-71 | accepted; falsified the reviewer's prediction **and** census |
+| 11 | `M6-CP3-DEFN-R7-CORNER-FACE-SELECTION-REPAIR-SPEC` | Definition | RA-72 | accepted w/ amendment; passes RA-65.5 |
+| 12 | `M6-CP3-CB6-R7-NODE-ADMISSIBLE-FACE-SET-PROBE` | Code + Build | RA-73 | accepted; calls the production predicate |
+| 13 | `M6-CP3-TB6-R7-NODE-ADMISSIBLE-FACE-SET-HARVEST` | Test + Benchmark | RA-73 | accepted; RA-72.8 falsified |
+| 14 | `M6-CP3-CB7-R7-LATTICE-UV-CANDIDATE-PROBE` | Code + Build | RA-74 | accepted; moved producer-side as instructed |
+| 15 | `M6-CP3-TB7-R7-LATTICE-UV-CANDIDATE-HARVEST` | Test + Benchmark | RA-74 | accepted; sampler exonerated |
+| 16 | `M6-CP3-DEFN-R8-BOUNDARY-OVERRIDE-AUTHORITY-SPEC` | Definition | RA-75 | accepted; overriding face legitimately derived |
+| 17 | `M6-CP3-CB8-R8-SOURCE-ENTITY-EQUIVALENCE-PROBE` | Code + Build | RA-76 | accepted; first probe with deletions — correct |
+| 18 | `M6-CP3-TB8-R8-SOURCE-ENTITY-EQUIVALENCE-HARVEST` | Test + Benchmark | RA-76 | accepted; **branch (b) settled** |
+| 19 | `M6-CP3-DEFN-R9-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC` | Definition | RA-77 | **NO DELIVERABLE** — over-scoped by the reviewer; split |
+| 19a | `M6-CP3-DEFN-R9A-ENDPOINT-FACE-COMPARISON-CENSUS` | Definition | RA-78 | accepted; **corrected the localization; found a second admission path** |
+| **19b** | **`M6-CP3-DEFN-R9B-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC`** | **Definition** | pending | **NEXT — documents only** |
+| 20 | first repair-implementation rung | undetermined | pending | **not authorized** |
+
+- [x] Rung 19a **ACCEPTED** (RA-78), one charge, one note. The split worked — RA-77.3 was the right call. Decision: `.agents/Directional/Architecture_M6_CP3_R9A_Endpoint_Face_Comparison_Census_Review_Decision.md`.
+- [x] **RA-78.2 — RA-76.8 AMENDED.** Exhaustive search for `(fromPoint|toPoint|first\.(from|to)|second\.(from|to))\.face\s*[!=]=` returns **no matches**: there is **no direct endpoint-to-endpoint face comparison**. The demand is indirect — `oriented_carrier` (`:19253-19261`) requires its ordered face pair to equal the endpoint-derived attachments, and `path_to(firstAttachment, oriented.firstFace)` (`:19425-19450`) takes its start face from the endpoint's representative.
+- [x] **RA-78.3 THE DISCOVERY — a second active admission path at `:8621-8736`**, never previously examined. Its interior branch returns `InvalidSourceAuthority` on `carrier.firstFace != endpoint.firstAttachment` etc. **(1) Any repair must satisfy two independent checkers.** **(2) The vertex branch already implements the needed relation** — `exact_vertex_attachment` plus `unique_terminal_star_path(...)==Unique`, rejecting `Missing`/`Ambiguous` (`:8685-8699`). **"Same vertex, different face, unique star path" is already production behaviour**, and the measured 21 are vertex cases.
+- [x] **RA-78.4 — the vertex-star prohibition clarified.** Gate C concerns a **producer-authored pre-admission** certificate that does not exist and **stays SUSPENDED**; `unique_terminal_star_path` is a **consumer-side lambda at `:8452`**, already enforced. **The prohibition bars inventing a new producer-authored certificate, not reasoning about the existing consumer-side check.** No new star predicate; no weakening of `unique_terminal_star_path`; `Ambiguous`/`Missing` never acceptable.
+- [x] **RA-78.5 — the one-ULP hazard is consequential.** `same_interior_carrier_point` (`:91-97`) is exact rational equality (`*a == *b`); RA-76.7's one-ULP difference would reject outright. Not the current cause (the 21 are vertex cases) but a live constraint. **No epsilon.**
+- [x] Charge **RA-78.7** — neither gate run or reported, **sixth consecutive mandate**. Both pass; the defect is the silence. Not cosmetic: the `ledgers` gate is exactly what detects RA-74.6, the one real integrity incident. **The ask is changed:** paste **one line each** — the final `ALL CHECKS PASSED` / `FAILED:` line from each gate — verbatim into the closeout.
+- [x] Credits: **search queries stated verbatim** (RA-71.4 applied); **respected the split** and did not drift into 19b; honest hedging where the source does not settle a classification; beacon `COMPLETE` with `Successor: UNKNOWN` and reasoning; transport limitation disclosed. **`RP-03` satisfied a thirteenth turn.** Note (not charged): tracker (4th), ORIENTATION (3rd) and frozen definitions not written — the Review writes all three.
+- [ ] **Rung 19b — `M6-CP3-DEFN-R9B-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC` (documents only).** (1) **Specify the contract against BOTH checkers** — the endpoint certificate (`:19265-19495`) and the checked-product verifier (`:8621-8736`); a rule satisfying one and not the other is not a candidate. (2) **Prove it is not a weakening** by exhibiting what it still rejects; the vertex branch at `:8685-8699` is the precedent — show what `Missing` and `Ambiguous` still exclude. (3) **State what happens at interior endpoints**, where exact rational equality and the one-ULP difference collide; if the contract does not cover them, say so. (4) **Apply RA-65.5** and classify each candidate as repair or **relocation** (RA-72.5).
+- [ ] **Rung 20** implements only after 19b. **Do not reorder 19b / 20 and do not pre-empt them.**
+- [ ] Standing: no epsilon anywhere; relocation is not repair (RA-72.5); no new star predicate and gate C stays suspended; do not revive branch (a) (zero support, RA-76.1), `point_on_source` as the locus (RA-71.5 amended), or RA-73.5's framing (superseded); do not claim the override is junction-specific (RA-74.1 narrowed, RA-76.2 confirmed otherwise).
+- [ ] Carried: `RP-02` **UNREACHED**. Frozen 66/17/49, debt 1, CP2 491/491, R3 403/497, selector 497. **`R4-VIN-01` armed at `f0d724045`**, no new semantic source — every earlier artifact through `12040008801` is a baseline, never a comparand. RA-61.9, RA-64.6, RA-70.14, RA-72.8 withdrawn; RA-71.5 amended; RA-73.5 superseded; RA-74.1 narrowed and confirmed; **RA-76.8 amended**. `PROCESS-01` discharged. The historical `ledgers` failure at `b2b6e6541` is permanent for any earlier base, correct, and **must not be suppressed**.
+
+---
+
 ## CURRENT — R9A endpoint face-comparison census delivered; independent Review required (2026-10-16)
 
 - [x] `M6-CP3-DEFN-R9A-ENDPOINT-FACE-COMPARISON-CENSUS` — static, document-only census: `.agents/Directional/Architecture_M6_CP3_R9A_Endpoint_Face_Comparison_Census_20261016.md`. Active constructor, face-keyed A3 sector paths, independent checked-product validator, and rejection-only diagnostics distinguished with source line anchors. The exact source snapshot was `b34c571768e2227a8ea2fed42e7b287e21e466eb`; semantic producer `f0d724045` unchanged. RA-76's 48 same-source-vertex mismatched-face samples and 324 exact one-ULP same-edge representations retained without claiming parameter identity or tolerance.
