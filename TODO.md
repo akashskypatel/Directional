@@ -1,3 +1,42 @@
+## CURRENT — RA-73 frozen; RA-72.8 falsified; the junction cases are exactly where one corner had three candidates and the producer took the largest (2026-10-16)
+
+### Turn sequence (byte-derived from `STATUS` history; frozen clauses in `Architecture_M6_Frozen_Definitions.md`)
+
+| # | Turn | Kind | Review | Outcome |
+|---:|---|---|---|---|
+| 1 | `M6-CP3-CB2-R4-PREDICATE-SEPARATION` | Code + Build | RA-63 | accepted; probe separated from decision |
+| 2 | `M6-CP3-CB3-R4-LEDGER-CONTENT-FLOOR` | Code + Build | — | tooling floor added to both gates |
+| 3 | `M6-CP3-TB3-R4-PROBE-HARVEST` | Test + Benchmark | RA-64 | accepted; contradicted the reviewer, credited |
+| 4 | `M6-CP3-DEFN-R4-ENDPOINT-AUTHORITY-SPEC` | Definition | RA-65 | accepted w/ amendment; RA-64.6 withdrawn, gate C suspended |
+| 5 | `M6-CP3-CB4-R4-ENDPOINT-CHART-PROBE` | Code + Build | RA-66 | accepted; compile chain closed by bytes |
+| 6 | `M6-CP3-TB4-R4-ENDPOINT-CHART-HARVEST` | Test + Benchmark | RA-67 | accepted; mechanism derived; 44/44 RED |
+| 7 | `M6-CP3-DEFN-R5-JUNCTION-CARRIER-AUTHORITY-SPEC` | Definition | RA-68 | accepted; both repair shapes inadmissible |
+| 8 | `M6-CP3-CB5-R5-ROUTE-PATH-RECONCILIATION-PROBE` | Code + Build | RA-69 | accepted; neutrality structural |
+| 9 | `M6-CP3-TB5-R5-ROUTE-PATH-RECONCILIATION-HARVEST` | Test + Benchmark | RA-70 | accepted; RA-68.9 CONFIRMED; locus localized |
+| 10 | `M6-CP3-DEFN-R6-CORNER-ASSIGNMENT-AUTHORITY-SPEC` | Definition | RA-71 | accepted; falsified the reviewer's prediction **and** census |
+| 11 | `M6-CP3-DEFN-R7-CORNER-FACE-SELECTION-REPAIR-SPEC` | Definition | RA-72 | accepted w/ amendment; passes RA-65.5; RA-71.6 amended |
+| 12 | `M6-CP3-CB6-R7-NODE-ADMISSIBLE-FACE-SET-PROBE` | Code + Build | RA-73 | accepted; probe calls the production predicate — faithful by construction |
+| 13 | `M6-CP3-TB6-R7-NODE-ADMISSIBLE-FACE-SET-HARVEST` | Test + Benchmark | RA-73 | accepted; **RA-72.8 falsified**; 96/96 complete |
+| **14** | **`M6-CP3-CB7-R7-LATTICE-UV-CANDIDATE-PROBE`** | **Code + Build** | pending | **NEXT — compile-only** |
+| 15 | `M6-CP3-TB7-R7-LATTICE-UV-CANDIDATE-HARVEST` | Test + Benchmark | pending | artifact-only harvest of rung 14 |
+| 16 | first repair-implementation rung | undetermined | pending | **not authorized**; runs only if rung 15 settles the rule |
+
+- [x] Rungs 12 and 13 **both ACCEPTED** (RA-73), two charges. Decision: `.agents/Directional/Architecture_M6_CP3_R7_Node_Admissible_Face_Set_Review_Decision.md`. This Review closed the beacon rung 13 left open and wrote the tracker and ORIENTATION sections it skipped.
+- [x] **RA-72.8 FALSIFIED and WITHDRAWN.** The junction `Second` side's `from_admissible` is `{3,6,7}` — **it contains 3**, so the two selections are not drawing from sets that exclude the path's face. Credit to the turn.
+- [x] **RA-73.5 — the asymmetry.** Per `:19365-19366`, on a second-certificate failure `FromFace=0` is `first.to` and `ToFace=7` is `second.from`. `first.to` published **0** from `{0,1,4}` = the **minimum**; `second.from` published **7** from `{3,6,7}` = the **maximum**. Same rejection, same source vertex, two regions. **A single minimum-row rule cannot explain both**, so RA-72.6 does not survive as a universal account.
+- [x] **RA-73.5 — the discriminator is set cardinality.** Controls: that corner's set is the **singleton** `{3}`, published 3. Junction: **three** members, published the largest. *The junction population is exactly the population where a choice existed* — complete separator, no exceptions. 96 rows re-derived, all `COMPLETE`, `frame` empty, multiplicity `[(1,42),(3,2)]`.
+- [x] **RA-73.6 charge — measured at the wrong UV.** The probe samples at `phase_uv(frame, point_position(point))`, the **published post-snap** position; the producer sampled the **lattice** UV at `:12951-12952`, and `point_on_source` snaps barycentrics within `1e-10` to exact 0/1 (`:11495-11501`). **The measured set is not the set the producer chose from**, so the apparent violation may be a post-snap artefact. The headline overstates; the report's own later sentence is accurate. **Fourth turn in the claim-calibration category** (RA-67.9, RA-70.7, RA-71.10, RA-73.6), first to **over**-claim.
+- [x] **RA-73.7 constraint** — `UniformPhaseFrame` (`:11421-11426`) carries `minU/maxU/minV/maxV`, `faceBranchRotation`, `faceChart` but **no `stepU`/`stepV` and no node counts**; `cell.lattice[k].latticeCoordinate` is published at `:13005-13008` but a coordinate without the step does not determine the UV. **A consumer-side probe cannot rebuild the producer's sample point.**
+- [x] **RA-73.8 charge — beacon left `IN_PROGRESS` with a self-referential `Successor`**, fourth consecutive NEXT_TURN to prohibit exactly that (RA-67.11); durable closeout incomplete. Credited separately: the commit subject declared the incompleteness rather than faking a close.
+- [x] Credits: probe neutral structurally (`:19360` → `:19504-19576` → closes `:19639`); **calls `point_on_source` with singleton lists rather than re-implementing it** — faithful by construction; chain closed by content (blob `bfcc7f88ee…` = HEAD, `include`/`tests` byte-identical); **both orchestration failures independently `conclusion=failure`** (`38851813094`, `38851975506`) and disclosed when the retry would have hidden them. **`RP-03` satisfied a ninth consecutive turn.**
+- [ ] **Rung 14 — `M6-CP3-CB7-R7-LATTICE-UV-CANDIDATE-PROBE` (compile-only, rejection-only).** Emit, for the ambiguous corner only, the **pre-snap** candidate evidence at the **producer's own lattice UV**: the sample UV, and for each active face the raw unsnapped barycentric from `face_barycentric_from_uv` with the containment pass/fail. Do not modify `point_on_source`. If the lattice UV is not reconstructible from published state (RA-73.7), **say so, name the missing field, and move the emission producer-side** rather than substituting an input. Compile and dispatch; **do not interpret the fields**.
+- [ ] **Rung 15** harvests and answers: **at the producer's sample point, is the published face the minimum admissible one?** Yes → RA-72.6 stands and the snap explains RA-73.5. No → the selection rule is unidentified and the repair shape changes again.
+- [ ] **Rung 16** implements only if rung 15 settles the rule. **Do not reorder rungs 14-16 and do not pre-empt rung 16.**
+- [ ] Standing: relocation is not repair (RA-72.5); do not touch `tolerance` or any epsilon; do not sort or reorder `activeFaces` (already sorted at `:17823`).
+- [ ] Carried: `RP-02` **UNREACHED**. Frozen 66/17/49, debt 1, CP2 491/491, R3 403/497, selector 497. **`R4-VIN-01` re-arms at `4d64b7684`** — `11994726341`, `11996317553`, `12005034654`, `12010485442`, `12019178209`, `12021892076`, `12024554349` are baselines, never comparands. RA-61.9, RA-64.6, RA-70.14 and **RA-72.8** withdrawn; RA-71.6 amended and contradicted at one corner pending rung 15. Gate C suspended and moot for `RP-01`. `PROCESS-01` discharged.
+
+---
+
 ## CURRENT — 2026-10-16 CB6 rejection-only node/side face census compiled; TB6 harvest next
 
 `M6-CP3-CB6-R7-NODE-ADMISSIBLE-FACE-SET-PROBE` completed its **Code + Build** boundary. Exact semantic commit `4d64b7684ac7ec2d0655f96c88ecf05f2906bca7` changes only `src/geometry/SurfaceCellTracing.cpp` (+73 lines): after the existing A2b endpoint-certificate rejection, emit producer-region `ActiveFaces`, independent `From/ToAdmissibleFaces` evaluated through the original `point_on_source` containment predicate at the **actual published endpoint position** (not inferred lattice-node UV), and previously existing `PathFaces` for each directed side. Planar-frame-unavailable cases explicitly report `Frame=not-planar`. It does **not** change admission, topology, tolerance, tests, selectors or frozen evidence.

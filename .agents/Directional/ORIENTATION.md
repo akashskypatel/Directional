@@ -1,3 +1,61 @@
+## CURRENT — `M6-CP3-R7-NODE-ADMISSIBLE-FACE-SET-REV`, 2026-10-16: RA-73 frozen; the measurement cleared one suspicion and raised a sharper one, and it was taken at the wrong moment to be final
+
+**Supersedes the RA-72 paragraph below as the current state.** Two turns were adjudicated and both
+are **accepted**, carrying two charges. This review also **withdraws a deduction it made itself one
+rung earlier**, closes a beacon the previous turn left open, and writes the two durable sections that
+turn did not. No open REVIEW_BLOCKER. No promotion, no stable event, no regression recurrence, no
+gate credit.
+
+**§3 current state — the suspicion was wrong, and what replaced it is better.** A rung ago it was
+reasoned that the failing corner and its own side's path must be drawing from different lists of
+candidate triangles. They are not: the list at that corner contains the path's triangle. What the
+measurement shows instead is a clean split nobody predicted. Of the two corners involved in each
+failure, one has a single candidate triangle and uses it, and the other — in the failing cases only —
+has **three** candidates and the producer published the **highest-numbered** of them, while the
+corresponding corner in the other region published the **lowest**. Every passing case has a single
+candidate at that position, so there is nothing to get wrong. The failing population is exactly the
+population where a choice existed.
+
+**§4 runtime witness — forty-four processes, ninety-six comparisons, all complete.** Each case ran as
+its own process against a packaged binary nobody could rebuild, every comparison carries its evidence
+flag, and the frame-construction failure path never fired. Two earlier attempts failed outright — one
+rejected a bad uniqueness assumption before running anything, one silently selected zero tests because
+unpacking stripped execute permissions — and both were reported with their run identifiers even though
+the successful third attempt would have buried them.
+
+**§5 instrument — built better than it was asked to be, and still sampled in the wrong place.** The
+instruction offered to let the probe re-implement the containment test. Instead it calls the
+production function itself, once per candidate triangle, which defeats the early return without
+touching the predicate; that is a strictly better design and removes a whole class of instrument
+error. But the point it tests is the corner as finally published, not the point the producer tested
+when it chose. The producer snaps a coordinate that is within a whisker of a shared vertex onto the
+vertex exactly, so a sample taken afterwards can see three candidate triangles where the producer saw
+one. The probe's own comment says it chose the published point deliberately and why, which is to its
+credit; the conclusion drawn from it is nevertheless stronger than the evidence carries, and the
+report's own later sentence — that this does not establish why the producer chose as it did — is the
+accurate one and should have led.
+
+**§7 priority — ask the same question at the moment the producer asked it.** The next turn emits, for
+the ambiguous corner only, the coordinate the producer actually sampled and the raw unrounded
+containment result for every candidate triangle at that coordinate. That settles in one run whether
+the producer was choosing from one candidate or three, and therefore whether the rule everyone has
+been assuming holds at all. A constraint found while scoping it: the frame that is published carries
+the extent of the lattice but not its spacing, so the sampled coordinate cannot be rebuilt downstream
+from what exists today — the emission may have to move next to the producer, and if so that should be
+said plainly rather than worked around with a substitute input.
+
+**§8 patterns — the agent falsified the reviewer again, and overstated the consequence.** This is the
+ninth consecutive turn to report something that did not flatter the reviewer or the process, and the
+falsification is clean. Against that, the headline claims the decisive question was answered when the
+body of the same document says it was not — the fourth turn running whose claim and whose evidence are
+out of step, though the first in that run to overstate rather than understate. The beacon was also left
+open and pointing at itself, which four successive instructions had asked it not to do; the turn did at
+least declare the closeout incomplete instead of faking it, which is why that counts once rather than
+twice. The lesson written down from all of this is about measurement rather than bookkeeping: getting
+the test exactly right does not help if the input is taken at the wrong moment.
+
+---
+
 ## CURRENT — `M6-CP3-DEFN-R7-CORNER-FACE-SELECTION-REPAIR-SPEC-REV`, 2026-10-16: RA-72 frozen; the fix has the right shape, and the reason everyone believed for it turns out to be wrong
 
 **Supersedes the RA-71 paragraph below as the current state.** One turn was adjudicated and it is

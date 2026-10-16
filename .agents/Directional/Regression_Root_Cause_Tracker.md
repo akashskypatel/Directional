@@ -1,3 +1,140 @@
+## 2026-10-16 — the junction cases are exactly where one corner has three admissible faces and the producer published the largest (RA-73; RA-72.8 withdrawn)
+
+**Review:** `M6-CP3-R7-NODE-ADMISSIBLE-FACE-SET-REV`, adjudicating rungs 12 and 13 —
+`M6-CP3-CB6-R7-NODE-ADMISSIBLE-FACE-SET-PROBE` and
+`M6-CP3-TB6-R7-NODE-ADMISSIBLE-FACE-SET-HARVEST`. **Both ACCEPTED**, two charges. Decision:
+`.agents/Directional/Architecture_M6_CP3_R7_Node_Admissible_Face_Set_Review_Decision.md`.
+Semantic source `4d64b7684ac7ec2d0655f96c88ecf05f2906bca7`.
+
+### Root-cause state
+
+`RP-01 AUTHORITY_DOMAIN_CONFLATION`: repair premise **sharper, not settled**. **Code remains
+NOT authorized.** The question has moved from *does the node's admissible set contain the
+path's face?* — answered **yes**, at the published position — to **what set did the producer
+choose from, and why did it take the largest member at one corner and the smallest at the
+other?**
+
+### The measured census
+
+Result artifact `12025322701` (run `38852145039`), ZIP SHA-256 recomputed
+`cd7ebc41eb1ea20fa9e9ed120c537d5540f4c302dff2df419cf3d307330bb3a9`, manifest **49 OK /
+0 BAD**, `planned=44 executed=44 red=44 missing=0 postflight=true exit=0`. Re-derived
+independently from `admissible-face-census.tsv`: 96 side-occurrence rows, `COMPLETE` on every
+one, `frame` empty throughout, multiplicity `[(1,42),(3,2)]` as at RA-70. Exactly four
+tuples:
+
+| n | condition | side | active | from_admissible | to_admissible | path |
+|---:|---|---|---|---|---|---|
+| 27 | `not-same-interior-carrier-point` | First | `0,1,4,5` | `0` | `0` | `0` |
+| 27 | `not-same-interior-carrier-point` | Second | `2,3,6,7` | `3` | `2,3` | `3` |
+| 21 | `carrier-orientation` | First | `0,1,4,5` | `0` | `0,1,4` | `0` |
+| 21 | `carrier-orientation` | Second | `2,3,6,7` | `3,6,7` | `3` | `3` |
+
+### RA-72.8 falsified and withdrawn
+
+The reviewer deduced that, both selectors taking the minimum admissible row, the node's
+`activeFaces` must exclude every row below 7 that the side's interval set includes. The
+junction `Second` side's `from_admissible` is `{3,6,7}` — **it contains 3**. The deduction is
+wrong and the clause is **WITHDRAWN**; the turn is credited for the falsification.
+
+### The asymmetry that replaces it
+
+`:19365-19366` fixes the bindings — `fromPoint = firstMissing ? first.from : first.to`,
+`toPoint = firstMissing ? second.to : second.from` — so on a second-certificate failure
+RA-70's `FromFace=0` is `first.to` and `ToFace=7` is `second.from`:
+
+| corner | published face | admissible set | minimum | verdict |
+|---|---:|---|---:|---|
+| `first.to` | **0** | `{0,1,4}` | 0 | obeys minimum-row |
+| `second.from` | **7** | `{3,6,7}` | 3 | **violates minimum-row** |
+
+Same rejection, same source vertex, two cells in two regions — one corner takes the smallest
+admissible face and the other the **largest**. A single global minimum-row rule cannot
+explain both, so **RA-72.6's conclusion does not survive as a universal account of the
+published corner**.
+
+**The discriminator is set cardinality.** In the 23 controls that corner's admissible set is
+the **singleton** `{3}` and 3 is published; in the 21 junction cases it has **three** members
+and the largest is published. The junction population is exactly the population where that
+corner sits where three faces are admissible — a complete measured separator, no exceptions.
+
+### Why this is still not decisive — and the charge
+
+The probe samples at `phase_uv(frame, point_position(vertices, faces, point))`, the
+**published, post-snap** corner position. The producer sampled the **lattice** UV
+`(frame.minU + stepU*u, frame.minV + stepV*v)` at `:12951-12952`. Because
+`point_on_source` snaps any barycentric within `1.0e-10` to exactly `0` or `1`
+(`:11495-11501`), a lattice UV lying *near* vertex 4 can pass containment in only one face
+**before** snapping and be published *at* the vertex, where all three pass. **The set the
+census measured is not the set the producer chose from**, and the apparent minimum-row
+violation may be entirely an artefact of measuring after the snap.
+
+**RA-73.6 charge:** the probe's comment discloses the choice and gives a reason, so it is
+reasoned and visible, but the consequence was not drawn and the report's headline — "Yes,
+for every measured rejected side"; "the previously suspected absence … is falsified by this
+probe" — claims more than the evidence supports for the decision it was built to enable. The
+report's own later sentence is the accurate one: "the present census does not establish why
+the producer selected 7 despite the later independently measured admissible alternative 3."
+**Fourth turn in the claim-calibration category** (RA-67.9, RA-70.7, RA-71.10, RA-73.6), this
+one **over**-claiming where the prior three under-claimed.
+
+### A constraint discovered while scoping the next rung
+
+`UniformPhaseFrame` (`:11421-11426`) carries `minU`, `maxU`, `minV`, `maxV`,
+`faceBranchRotation` and `faceChart` — but **no `stepU`/`stepV` and no node counts**.
+`cell.lattice[k].latticeCoordinate` is published at `:13005-13008` and reaches the consumer
+via `SurfaceFrontEdge::fromLattice`/`toLattice`, but a lattice **coordinate** without the
+**step** does not determine the UV. **A consumer-side probe cannot rebuild the producer's
+sample point exactly**; rung 14 must recover the step from published state and say how, or
+move the emission producer-side.
+
+### Second charge — the beacon
+
+`STATUS` was left `IN_PROGRESS` with `Successor` naming the turn itself. **Four consecutive
+NEXT_TURN blocks instructed "leave `Successor` EMPTY while in progress, never self-naming
+(RA-67.11)."** It is a machine-read state field and a successor reading it is handed a cycle.
+The durable closeout was also incomplete — this tracker and `ORIENTATION.md` were not
+updated. **Credited separately:** the commit subject declared the closeout "incomplete"
+rather than faking a close, which is why this is one charge and not two. This Review closes
+the beacon and restores both documents.
+
+### Credits
+
+Rung 12's probe is neutral **structurally** (branch opens `:19360`, census at `:19504-19576`,
+branch closes `:19639`) and was built **better than specified**: instead of re-implementing
+the containment test it **calls `point_on_source` itself** once per face with a singleton
+`{face}` list, defeating first-match-returns-early while leaving the production predicate
+untouched — faithful by construction, which removes an entire class of instrument error.
+Absence is reported as absence (`missing-region`, `invalid-region-face`,
+`Frame=not-planar`, `none`). Chain closed by content: probe blob
+`bfcc7f88ee0222752d4309d157becc3e480ad514` **= HEAD**, with `include` and `tests`
+byte-identical. **Both orchestration failures are independently `conclusion=failure`** —
+`38851813094` and `38851975506` — and both were disclosed when the successful third attempt
+would have concealed them. **`RP-03` satisfied a ninth consecutive turn.**
+
+### Lesson
+
+**RA-73.10 — a faithful instrument at the wrong sample point is still the wrong
+measurement.** Rung 12 eliminated instrument error completely and the result is still not
+decisive, because the point it sampled was not the point the producer sampled. Fidelity of
+the test and fidelity of the input are separate obligations; satisfying one conspicuously
+well does not discharge the other.
+
+### Accounting
+
+Ledger **66/17/49**, debt **1**, CP2 **491/491** accepted, R3 **403/497** rejected, frozen
+selector **497** — unchanged. No promotion, no stable event, no regression recurrence, no
+ledger recomputation, no 497 execution, no benchmark. **`R4-VIN-01` re-arms at `4d64b7684`**;
+artifacts `11994726341`, `11996317553`, `12005034654`, `12010485442`, `12019178209`,
+`12021892076` and `12024554349` are **baselines, never comparands**; the 44 RED are the
+baseline for `4d64b7684` alone, candidate / non-stable. `RP-02` **UNREACHED**. `PROCESS-01`
+discharged. RA-61.9 WITHDRAWN, final. RA-64.6 WITHDRAWN, final. RA-70.14 WITHDRAWN. RA-71.6
+AMENDED and contradicted at one corner pending rung 15. **RA-72.8 WITHDRAWN.** Gate C
+SUSPENDED and moot for `RP-01`. Successor **`M6-CP3-CB7-R7-LATTICE-UV-CANDIDATE-PROBE`**
+(rung 14, compile-only: pre-snap candidate evidence at the producer's own lattice UV).
+
+---
+
 ## 2026-10-16 — RP-01's repair shape is admissible but its premise is not: both face selectors are minimum-row, so the measured 7-vs-3 cannot be a tie-break (RA-72; RA-71.6 amended)
 
 **Review:** `M6-CP3-DEFN-R7-CORNER-FACE-SELECTION-REPAIR-SPEC-REV`, adjudicating rung 11 —
