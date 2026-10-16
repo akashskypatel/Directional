@@ -1,3 +1,143 @@
+## 2026-10-16 — the face selector is innocent: the sampled point is replaced wholesale by the accepted conformity boundary, unreconciled (RA-74; RA-71.5 amended, RA-73.5 superseded)
+
+**Review:** `M6-CP3-R7-LATTICE-UV-CANDIDATE-REV`, adjudicating rungs 14 and 15 —
+`M6-CP3-CB7-R7-LATTICE-UV-CANDIDATE-PROBE` and
+`M6-CP3-TB7-R7-LATTICE-UV-CANDIDATE-HARVEST`. **Both ACCEPTED**; one **hard** charge, two
+lesser. Decision:
+`.agents/Directional/Architecture_M6_CP3_R7_Lattice_UV_Candidate_Review_Decision.md`.
+Semantic source `cdd6dc4a9ba95a42aace6226194b38e712b53e4b`.
+
+### Root-cause state — locus relocated a third time and fully specified
+
+`RP-01 AUTHORITY_DOMAIN_CONFLATION`: the defect is the **unreconciled wholesale
+substitution** at `src/geometry/SurfaceCellTracing.cpp:17266-17281`, inside the
+**bounded-disk** producer, under `useAcceptedConformity` (`:14993`), at grid-boundary nodes
+only. **Code remains NOT authorized** — the open question is no longer *what happens* but
+*which authority is right*, which has never been adjudicated.
+
+`point_on_periodic_chart` fills `points[node_index(u,v)]`; then, when the node lies on the
+bounded-disk grid boundary (`v == 0 || u == gridU || v == gridV || u == 0`), the sampled
+`SurfaceTracePoint` is **replaced in its entirety** by `*accepted` from
+`acceptedBoundary[side]` — a different point with its own `face` and `barycentric` — with
+**no face-admissibility check, no source-entity comparison and no agreement test against the
+chart sample**. Production does not even retain the discarded value: `sampledFace` occurs at
+exactly two lines, `:17264` and `:17305`, **both added by the CB7 probe**. Before this rung
+the chart sample's face left no trace anywhere.
+
+### The measurement
+
+Result artifact `12030150301` (run `38861867717`), ZIP SHA-256 recomputed
+`de79aed888a2037ef2b2582fbfe68b28589a6a718c5beb70ac3b9bbfee16f9e6`, internal manifest
+**51 OK / 0 BAD**, `planned=44 executed=44 red=44 missing=0 postflight=true exit=0`.
+Re-derived independently from `producer-presnap-candidates.tsv` — 96 rows, 0 errors:
+
+| n | condition | endpoint | producer | sampled | published | published_is_min |
+|---:|---|---|---|---:|---:|---|
+| 21 | `carrier-orientation` | FirstTo | bounded-disk | 0 | 0 | **true** |
+| 21 | `carrier-orientation` | SecondFrom | bounded-disk | **3** | **7** | **false** |
+| 27 | `not-same-interior-carrier-point` | FirstTo | none | — | — | not measured |
+| 27 | `not-same-interior-carrier-point` | SecondFrom | none | — | — | not measured |
+
+The harness summary records **`sampled-min` for both junction categories**: in all 21
+`SecondFrom` endpoints the sampler chose **3, the minimum passing candidate**, and
+publication reports **7**.
+
+### What this settles and overturns
+
+- **RA-72.6 CONFIRMED at the producer's own sample point** and thereby **rendered irrelevant
+  to the defect**, because the sample is discarded.
+- **RA-73.5 SUPERSEDED.** "Published the largest" described a *selection* asymmetry; there
+  is none. It is a **sample/publication substitution** — a correct observation of published
+  values with a wrong account of their cause.
+- **RA-71.5 AMENDED.** It named the planar `point_on_source` in
+  `build_uniform_phase_front_for_faces`; the measured endpoints come from the
+  **bounded-disk** producer via `point_on_periodic_chart`. **`point_on_source` is exonerated
+  for these cells.**
+- **The RA-73.6 charge is vindicated**: sampling at the producer's own point rather than the
+  published one changed the answer and relocated the locus, exactly as RA-73.10 warned.
+
+### The pattern, in its strongest form — a search order to keep
+
+RA-68.3 the authority existed but was **ordered after** the admission it would license;
+RA-71.7 the reconciler existed but compared **position** where identity was required;
+**RA-74.4 no reconciliation exists at all**, and the overwritten value is not even held in a
+variable. When a missing authority is suspected here, look in this order: **ordered too late
+→ present but comparing the wrong thing → absent entirely.**
+
+### HARD CHARGE — the append-only ledger was destroyed and pushed (RA-74.6)
+
+This tracker went from **14,225 lines / 664 sections / 13 markers** to **6 / 1 / 0** at
+commit `b2b6e6541` and stayed destroyed across **four pushed commits** — `b2b6e6541`,
+`9b4061c59`, `e082128ac`, `0aca74462` — before restoration at `9d0ed94e6`. The new section
+had been written as a **whole-file overwrite** instead of a prepend.
+
+**The restore is byte-faithful**: the restored file's tail from line 8 is byte-identical to
+this tracker at the last good commit `7c83fb0ec`, and the counts reconcile exactly
+(14,232 = 14,225 + 7; 665 = 664 + 1; markers 13 throughout). **No content was permanently
+lost.** What is charged is that it happened and was pushed. **The mandated gate catches
+it** — `cmd_ledgers` walks every commit in the range comparing `rev~1` to `rev` and reports
+`[FAIL] … b2b6e654 14225->6` with a true exit code of **1**, so the tool is sound — and
+**five consecutive NEXT_TURN blocks have required both gates be run and reported before
+closing**. The append-only property is an architectural invariant of the ledger system, not
+a bookkeeping convention. **Mitigation:** the agent detected the destruction itself,
+restored it byte-perfectly and named the restore in the commit subject rather than quietly
+amending; the defect is the absent pre-push verification.
+
+### Two lesser charges
+
+- **RA-74.7** the controls were not measured, so they **cannot discriminate here**. All 54
+  control endpoints record `producer=none`; the ambiguous-node probe never fired for them.
+  Nothing establishes whether the override fires in the controls and happens to agree, so
+  **no later turn may cite them as evidence that the substitution is junction-specific**.
+  RA-68.5 pattern recurring.
+- **RA-74.8** `ORIENTATION.md` not updated, **second consecutive rung**; restored here
+  again.
+
+### Credits
+
+**Rung 14 honoured its constraint.** RA-73.7 established the lattice UV is not
+reconstructible downstream; the instruction was to recover it and say how, or move
+producer-side, and never substitute an approximate input. The turn moved producer-side and
+said so in the record and in a source comment ("A bounded-disk chart has its own UV basis
+and canonical face-key selection. Do not substitute a planar `face_barycentric_from_uv`
+call…"). **RA-73.10 applied one rung after it was frozen**, and the reason this measurement
+is decisive where the last was not. Neutrality verified by content: added lines assign only
+to probe-local `sourceVertex`, `raw`, `incidentCount` and the emission stream, with **no**
+assignment to `points[`, `cell.`, `result.`, `proposal.` or `frame.`. Chain closed by
+content — probe blob `4a524d204ea2dc2a55111247fdfa03b2fc57e955` **= HEAD**, `include` and
+`tests` byte-identical. Artifacts verified: `12027572751` `0ee9aeee80b7…`, `12029085105`
+`df921d8e5edd…`, `12028682600` `54b7f5a73ae7…`, `12030150301` `de79aed888a2…`; runs
+`38857271030`, `38859325067`, `38859497594`, `38861867717` all success. **Claim calibration
+corrected in one rung** — the report states that "the record does not independently prove
+that the subsequent boundary override is valid", which is what RA-73.6 asked for. **Beacon
+correct** — `Successor: UNKNOWN` with reasoning, not self-referential; RA-73.8 absorbed in
+one rung. Two non-evidential failures disclosed and excluded. **`RP-03` satisfied a tenth
+consecutive turn.**
+
+### Lesson
+
+**RA-74.11 — when one producer overwrites another's output, the question is ownership, not
+the correctness of either.** Three rungs were spent asking whether the face selector picked
+correctly; it did. The defect is that a second authority replaces its answer wholesale and
+nothing records that a replacement occurred. **A substitution with no reconciliation is an
+ownership defect wearing the costume of a computation bug.**
+
+### Accounting
+
+Ledger **66/17/49**, debt **1**, CP2 **491/491** accepted, R3 **403/497** rejected, frozen
+selector **497** — unchanged. No promotion, no stable event, no regression recurrence, no
+ledger recomputation, no 497 execution, no benchmark, no binary executed by this Review.
+**`R4-VIN-01` re-arms at `cdd6dc4a9`**; every earlier artifact through `12019178209`,
+`12021892076`, `12024554349`, `12027572751` and `12028682600` is a **baseline, never a
+comparand**; the 44 RED are the baseline for `cdd6dc4a9` alone, candidate / non-stable.
+`RP-02` **UNREACHED**. `PROCESS-01` discharged. RA-61.9 WITHDRAWN, final. RA-64.6
+WITHDRAWN, final. RA-70.14 WITHDRAWN. RA-72.8 WITHDRAWN. **RA-71.5 AMENDED. RA-73.5
+SUPERSEDED.** Gate C SUSPENDED and moot for `RP-01`. Successor
+**`M6-CP3-DEFN-R8-BOUNDARY-OVERRIDE-AUTHORITY-SPEC`** (rung 16, documents-only: name the
+owning authority at a conformity-baseline boundary node).
+
+---
+
 ## TB7 R7 candidate/non-stable diagnostic — 2026-10-16
 
 Source `cdd6dc4a9ba95a42aace6226194b38e712b53e4b`; immutable package artifact `12028682600`; verified artifact-only [run 38861867717](https://github.com/akashskypatel/Directional/actions/runs/38861867717), result `12030150301`, digest `de79aed888a2037ef2b2582fbfe68b28589a6a718c5beb70ac3b9bbfee16f9e6`. 44/44 selected, 44 RED, 0 missing; 96 original producer pre-snap endpoint records (42 measured junction endpoints; 54 explicitly uninstrumented control endpoints). No stable recurrence or accepted-green loss established, so **stable 66/17/49, debt 1, CP2 491/491, R3 403/497, selector 497 are unchanged**. This is a fresh diagnostic vintage after CB7, not promotion to regression acceptance.

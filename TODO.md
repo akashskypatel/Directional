@@ -1,3 +1,42 @@
+## CURRENT — RA-74 frozen; the sampler is exonerated and the point is overwritten by the accepted conformity boundary; next rung names the owning authority (2026-10-16)
+
+### Turn sequence (byte-derived from `STATUS` history; frozen clauses in `Architecture_M6_Frozen_Definitions.md`)
+
+| # | Turn | Kind | Review | Outcome |
+|---:|---|---|---|---|
+| 1 | `M6-CP3-CB2-R4-PREDICATE-SEPARATION` | Code + Build | RA-63 | accepted; probe separated from decision |
+| 2 | `M6-CP3-CB3-R4-LEDGER-CONTENT-FLOOR` | Code + Build | — | tooling floor added to both gates |
+| 3 | `M6-CP3-TB3-R4-PROBE-HARVEST` | Test + Benchmark | RA-64 | accepted; contradicted the reviewer, credited |
+| 4 | `M6-CP3-DEFN-R4-ENDPOINT-AUTHORITY-SPEC` | Definition | RA-65 | accepted w/ amendment; RA-64.6 withdrawn, gate C suspended |
+| 5 | `M6-CP3-CB4-R4-ENDPOINT-CHART-PROBE` | Code + Build | RA-66 | accepted; compile chain closed by bytes |
+| 6 | `M6-CP3-TB4-R4-ENDPOINT-CHART-HARVEST` | Test + Benchmark | RA-67 | accepted; mechanism derived; 44/44 RED |
+| 7 | `M6-CP3-DEFN-R5-JUNCTION-CARRIER-AUTHORITY-SPEC` | Definition | RA-68 | accepted; both repair shapes inadmissible |
+| 8 | `M6-CP3-CB5-R5-ROUTE-PATH-RECONCILIATION-PROBE` | Code + Build | RA-69 | accepted; neutrality structural |
+| 9 | `M6-CP3-TB5-R5-ROUTE-PATH-RECONCILIATION-HARVEST` | Test + Benchmark | RA-70 | accepted; RA-68.9 CONFIRMED |
+| 10 | `M6-CP3-DEFN-R6-CORNER-ASSIGNMENT-AUTHORITY-SPEC` | Definition | RA-71 | accepted; falsified the reviewer's prediction **and** census |
+| 11 | `M6-CP3-DEFN-R7-CORNER-FACE-SELECTION-REPAIR-SPEC` | Definition | RA-72 | accepted w/ amendment; passes RA-65.5 |
+| 12 | `M6-CP3-CB6-R7-NODE-ADMISSIBLE-FACE-SET-PROBE` | Code + Build | RA-73 | accepted; calls the production predicate |
+| 13 | `M6-CP3-TB6-R7-NODE-ADMISSIBLE-FACE-SET-HARVEST` | Test + Benchmark | RA-73 | accepted; RA-72.8 falsified |
+| 14 | `M6-CP3-CB7-R7-LATTICE-UV-CANDIDATE-PROBE` | Code + Build | RA-74 | accepted; moved **producer-side** as instructed |
+| 15 | `M6-CP3-TB7-R7-LATTICE-UV-CANDIDATE-HARVEST` | Test + Benchmark | RA-74 | accepted; **sampler exonerated**; locus relocated |
+| **16** | **`M6-CP3-DEFN-R8-BOUNDARY-OVERRIDE-AUTHORITY-SPEC`** | **Definition** | pending | **NEXT — documents only** |
+| 17 | first repair-implementation rung | undetermined | pending | **not authorized**; runs only if rung 16 names the owner |
+
+- [x] Rungs 14 and 15 **both ACCEPTED** (RA-74); one hard charge, two lesser. Decision: `.agents/Directional/Architecture_M6_CP3_R7_Lattice_UV_Candidate_Review_Decision.md`. This Review restored the `ORIENTATION.md` section rung 15 skipped.
+- [x] **RA-74.1 — the sampler is innocent.** At `src/geometry/SurfaceCellTracing.cpp:17256-17281` in the **bounded-disk** producer, `point_on_periodic_chart` fills the point; then, under `useAcceptedConformity` (`:14993`) **at grid-boundary nodes** (`v==0 || u==gridU || v==gridV || u==0`), it is **replaced in its entirety** by `*accepted` from `acceptedBoundary[side]`, with **no admissibility check, no source-entity comparison, no agreement test**. `sampledFace` exists only at `:17264` and `:17305`, **both probe-added** — production never retained the discarded value.
+- [x] **RA-74.2 measurement re-derived.** Artifact `12030150301` ZIP recomputed `de79aed888a2…`, manifest **51 OK / 0 BAD**, boundary clean; 96 rows, 0 errors. Junction `FirstTo` sampled 0 / published 0; junction `SecondFrom` **sampled 3 / published 7**; both control categories `producer=none`, **not measured**. Harness summary records **`sampled-min` for both junction categories**.
+- [x] **RA-74.3** — **RA-72.6 CONFIRMED** at the sample point and thereby **moot**; **RA-73.5 SUPERSEDED** (a substitution, not a selection asymmetry); **RA-71.5 AMENDED** (the measured cells are **bounded-disk**; planar `point_on_source` is **exonerated**). The reviewer's **RA-73.6 charge is vindicated**.
+- [x] **RA-74.4 — search order now frozen:** RA-68.3 ordered too late → RA-71.7 present but comparing the wrong thing → **RA-74.4 absent entirely**.
+- [x] **RA-74.6 HARD CHARGE — the append-only tracker was destroyed and pushed.** 14,225 lines → **6** at `b2b6e6541`, destroyed across **four pushed commits**, restored at `9d0ed94e6`. **Restore is byte-faithful** (restored tail ≡ `7c83fb0ec`; 14,232 = 14,225 + 7; 665 = 664 + 1; markers 13 throughout) — nothing permanently lost. **The mandated gate catches it** (`[FAIL] … b2b6e654 14225->6`, exit **1**); **five consecutive NEXT_TURNs have required both gates before closing**. Mitigation: self-detected, byte-perfect restore, named in the commit subject.
+- [x] **RA-74.7 charge** — all 54 control endpoints record `producer=none`, so **the controls cannot discriminate on the override**; no later turn may cite them as evidence it is junction-specific (RA-68.5 pattern). **RA-74.8 charge** — `ORIENTATION.md` skipped, second consecutive rung.
+- [x] Credits: rung 14 **moved producer-side** rather than substituting an approximate input, with the reason in the record **and** a source comment — **RA-73.10 applied one rung after freezing**; neutrality verified by content (no assignment to `points[`, `cell.`, `result.`, `proposal.`, `frame.`); blob `4a524d204e…` = HEAD, `include`/`tests` byte-identical; all four artifact digests and all four runs verified; **claim calibration corrected in one rung**; **beacon correct** (`Successor: UNKNOWN` with reasoning, not self-referential); two non-evidential failures disclosed. **`RP-03` satisfied a tenth consecutive turn.**
+- [ ] **Rung 16 — `M6-CP3-DEFN-R8-BOUNDARY-OVERRIDE-AUTHORITY-SPEC` (documents only).** (1) What authority does `acceptedBoundary` carry — produced at `:16822`, `:16867-16885`; what do `useAcceptedConformity` (`:14993`) and `useAcceptedCutDomain` (`:14998`) gate; what does it guarantee about `.face`? (2) Is the override guard `v==0 || u==gridU || v==gridV || u==0` **coextensive with the measured 21**, derived **from source, not the measurement**? (3) **Which authority owns the corner's face at a conformity-baseline boundary node** — chart sample or accepted boundary? If the accepted boundary is authoritative, face 7 is *correct* and `RP-01` is a downstream consumer defect. (4) Apply RA-65.5 to each candidate repair and say whether it is repair or **relocation**.
+- [ ] **Rung 17** implements only if rung 16 names the owner. **Do not reorder rungs 16-17 and do not pre-empt rung 17.**
+- [ ] Standing: relocation is not repair (RA-72.5); do not touch `tolerance` or any epsilon; do not sort or reorder `activeFaces`; do not revive `point_on_source` as the locus for these cells (RA-71.5 amended).
+- [ ] Carried: `RP-02` **UNREACHED**. Frozen 66/17/49, debt 1, CP2 491/491, R3 403/497, selector 497. **`R4-VIN-01` re-arms at `cdd6dc4a9`** — every earlier artifact through `12028682600` is a baseline, never a comparand. RA-61.9, RA-64.6, RA-70.14 and RA-72.8 withdrawn; **RA-71.5 amended, RA-73.5 superseded**. Gate C suspended and moot for `RP-01`. `PROCESS-01` discharged.
+
+---
+
 ## CURRENT — TB7 pre-snap candidate harvest verified (2026-10-16)
 
 - [x] `M6-CP3-TB7-R7-LATTICE-UV-CANDIDATE-HARVEST`: immutable [run 38861867717](https://github.com/akashskypatel/Directional/actions/runs/38861867717) verified; 44/44 selected, 44 RED unchanged, 96 endpoint records. Report: `.agents/Directional/Architecture_M6_CP3_R7_Lattice_UV_Candidate_Harvest_TB_Report_20261016.md`.

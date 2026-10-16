@@ -1,3 +1,58 @@
+## CURRENT — `M6-CP3-R7-LATTICE-UV-CANDIDATE-REV`, 2026-10-16: RA-74 frozen; the thing everyone was blaming turns out to have done its job, and its answer is thrown away a few lines later
+
+**Supersedes the RA-73 paragraph below as the current state.** Two turns were adjudicated and both
+are **accepted**, with one serious charge and two lesser ones. This review also restores the
+orientation section the previous turn did not write. No open REVIEW_BLOCKER. No promotion, no stable
+event, no regression recurrence, no gate credit.
+
+**§3 current state — three rungs of suspicion about the chooser, and the chooser was right all
+along.** The question for several rungs was whether the routine that picks which triangle a cell
+corner belongs to picks badly when several are possible. Measured at the moment it actually runs, it
+picks the expected one every time. What happens next is the defect: when the corner sits on the edge
+of the producer's own grid and a previously accepted boundary exists, the whole point — triangle,
+coordinates and all — is **overwritten** by the corresponding point from that accepted boundary.
+Nothing checks that the replacement is even a legitimate triangle for that corner, nothing compares
+it with what was just computed, and the discarded value is not kept anywhere. Until this turn added
+a diagnostic, the computed answer left no trace in the system at all.
+
+**§4 runtime witness — forty-four processes, ninety-six endpoint records, no errors.** Each case ran
+as its own process against a packaged binary nobody could rebuild, every digest was recomputed from
+the downloaded bytes and matched, and the internal manifest verified completely. Two non-evidential
+failures were disclosed and excluded: a local exploratory run that ran out of its time allowance
+part-way through, and a local run that failed on file permissions. Neither was used.
+
+**§5 instrument — the previous measurement's flaw was corrected exactly where it mattered.** Last
+rung's census sampled the corner as finally published rather than as the producer sampled it, and
+that was enough to make its answer misleading. The instruction was to recover the producer's own
+sample point or, failing that, to move the measurement next to the producer and say so — and on no
+account to substitute something close enough. The turn moved it, explained why in the record, and
+left a comment in the source warning the next reader not to reach for the planar routine because
+this producer has its own chart. That is the whole difference between a measurement that settles
+something and one that does not.
+
+**§7 priority — the next question is ownership, and it is a question for a document, not a run.**
+Two producers disagree about which triangle a boundary corner belongs to, and the system has no
+opinion about which of them is right: one simply overwrites the other. So the next turn establishes,
+on paper, what the accepted boundary's authority actually is, whether the condition that triggers the
+overwrite really does coincide with the failing cases, and which of the two should win. If the
+accepted boundary is the authority, then the published value is correct and the fault lies further
+downstream in what consumes it — which would move the problem again, in the opposite direction.
+Nothing can be implemented until that is settled, and adding a check at the overwrite would only
+reject the same cases earlier without making any of them succeed.
+
+**§8 patterns — the agent relocated the fault off the reviewer's own target for the third time, and
+destroyed a protected ledger doing it.** The measurement exonerated the component this review had
+named and pointed somewhere else entirely; that is the tenth consecutive turn to report something
+that did not flatter the reviewer or the process. Against that, the long-running regression history
+was written over wholesale instead of being added to, leaving four pushed commits with the entire
+file replaced by a six-line stub before it was noticed and put back. The restoration is exact, byte
+for byte, and the agent found and announced it rather than quietly amending — but the check that
+exists precisely to catch this does catch it, and running it before pushing would have prevented the
+whole episode. The other standing complaints were answered within a single rung: the status beacon
+was correct this time, and the report's opening claim matches what its evidence actually supports.
+
+---
+
 ## CURRENT — `M6-CP3-R7-NODE-ADMISSIBLE-FACE-SET-REV`, 2026-10-16: RA-73 frozen; the measurement cleared one suspicion and raised a sharper one, and it was taken at the wrong moment to be final
 
 **Supersedes the RA-72 paragraph below as the current state.** Two turns were adjudicated and both
