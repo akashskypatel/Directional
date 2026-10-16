@@ -1,3 +1,9 @@
+## CURRENT — CB9 terminal-star-path probe compile/package GREEN; TB9 next separately (2026-10-16)
+
+`M6-CP3-CB9-R9-TERMINAL-STAR-PATH-PROBE` is compile-verified at semantic source `18cc4da5e2bc41138c5363a74de4e2db1e28ef23`: run `38916496178`, artifact `12052388003`, ZIP SHA-256 `ed250e970a78dcdae621117cb2a7fd9333849d6083cc8e01775cb207823c07b9`. Eight targets, 28/28 checksum entries, GMP/GMPXX link evidence, clean five source-status receipts, `runtimeExecution=false`; no tests or benchmarks. The rejection-only F1/F2 probe is **not interpreted or accepted as a runtime repair**. RA-79 ledger 66/17/49, debt1, CP2 491/491, R3 403/497, selector497 unchanged; RP-01 open, RP-02 UNREACHED. Formal CB9 closeout requires the final `STATUS` beacon. Once it is complete, the authorized next **separate** turn is `M6-CP3-TB9-R9-TERMINAL-STAR-PATH-HARVEST` (artifact-only, no rebuild or code change). Owning record: `.agents/Directional/Architecture_M6_CP3_CB9_Terminal_Star_Path_Probe_Code_Build_Record_20261016.md`. Earlier CURRENT sections below are historical.
+
+---
+
 ## CURRENT — CB9 terminal-star-path probe source committed; GMP compile awaiting immutable evidence (2026-10-16)
 
 `M6-CP3-CB9-R9-TERMINAL-STAR-PATH-PROBE` is **IN_PROGRESS** until exact eight-target GMP/GMPXX compile artifact validation. One-path rejection-only instrumentation landed as semantic `81101d7370a7d3cfe36baa57b4635ef7e0819bb2` by verified Drive apply run `38911327141` (result `12050312516`, SHA-256 `e595f64a9ee1e0c269cdb2f4e539d3a5b16ec44fca2ac4fabc9fd978907c62ac`). Snapshot base `0adc9ab08e01692ec2dcb769bb19458dbb8dfbc0`, artifact `12049916826`, 5,678/5,678 hashes verified. Compile request commit `a17e59517486470d1a89eceab91b70c5214cce26` targets that exact semantic source; mailbox `m6-cp3-cb9-r9-compile` on orphan `workflow-mailbox` branch. No compile result is yet claimed.

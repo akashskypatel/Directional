@@ -1,3 +1,9 @@
+## CURRENT — CB9 compile/package verified; TB9 separate (2026-10-16)
+
+The diagnostic-only terminal-star-path probe is compile/package GREEN at `18cc4da5e2bc41138c5363a74de4e2db1e28ef23` (run `38916496178`, artifact `12052388003`, 28/28 packaged hashes, 8/8 targets, mandatory GMP/GMPXX, clean source, no runtime). No test or benchmark executed. CB9 final beacon pending; afterward `M6-CP3-TB9-R9-TERMINAL-STAR-PATH-HARVEST` alone is next. RP-01 open, RP-02 UNREACHED, RA-79 66/17/49, debt1, CP2 491/491, R3 403/497, selector497 unchanged.
+
+---
+
 ## CURRENT — CB9 rejection-only terminal-star-path probe (2026-10-16)
 
 Source-only probe committed at `81101d7370a7d3cfe36baa57b4635ef7e0819bb2`; Drive patch-apply `38911327141` verified exact one-path change. GMP/GMPXX eight-target compile dispatched from `a17e59517486470d1a89eceab91b70c5214cce26`; immutable package verification pending. Neither 497 selector nor tests/benchmarks were executed. `RP-01` open, `RP-02` UNREACHED; unchanged 66/17/49, debt1, CP2 491/491, R3 403/497. CB9 remains IN_PROGRESS; TB9 cannot start before CB9 formal closeout.

@@ -1,3 +1,7 @@
+## 2026-10-16 — CB9 terminal-star-path diagnostic compile verified
+
+- Rejection-only diagnostic compiled eight GMP/GMPXX targets at `18cc4da5e2bc41138c5363a74de4e2db1e28ef23`; run `38916496178`, artifact `12052388003`, 28/28 checksums, 0/0 preflight/build, five clean source status receipts, no binary executed. Two C++ diagnostic declaration/type corrections after initial compiler failures; no acceptance, test, selector, or benchmark change. Separate artifact-only TB9 is next once final CB9 beacon is complete.
+
 ## 2026-10-16 — CB9 rejection-only A3 terminal path evidence (compile pending)
 
 - Exact source commit `81101d7370a7d3cfe36baa57b4635ef7e0819bb2` adds diagnostics only; no acceptance/test/selector/runtime changes. Mandatory GMP compile submitted, result awaiting verification. Internal evidence: `.agents/Directional/Architecture_M6_CP3_CB9_Terminal_Star_Path_Probe_Code_Build_Record_20261016.md`.
