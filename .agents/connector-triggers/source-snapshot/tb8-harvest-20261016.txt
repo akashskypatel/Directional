@@ -1,1 +1,0 @@
-TB8 frozen source snapshot request; snapshot authority is the trigger commit SHA.
