@@ -1,14 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb9-r9-harvest-20261016a",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb9-r9-harvest",
-  "executor_sha": "754ef65a8361b488c2bce343f62fb34924706c74",
-  "semantic_source_sha": "18cc4da5e2bc41138c5363a74de4e2db1e28ef23",
-  "turn_id": "M6-CP3-TB9-R9-TERMINAL-STAR-PATH-HARVEST",
-  "harness_path": ".agents/Directional/tools/m6_cp3_r9_terminal_star_path_harvest_harness.sh",
-  "harness_sha256": "baefec87673478a82cac49c6c2e3301bb103192195f90751253e794eb0a5f016",
-  "environment": {},
-  "artifact_prefix": "directional-m6-cp3-tb9-r9-star-path",
+  "request_id": "m6-cp3-tb9-r9-docs-20261016a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb9-r9-doc-closeout",
+  "file_id": "1ysmgD-YJx4KfNGEt-ZlvJX-n-921DsiJ",
+  "patch_sha256": "16a87be687e3d6196d8e31a57c1fef70a56240ab2bb1d78c5951606206edd8ff",
+  "base_sha": "e618ed1d8df2edb7cae60d6514411d13888e7104",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: close TB9 terminal star-path harvest with non-stable evidence",
   "retention_days": 14
 }
