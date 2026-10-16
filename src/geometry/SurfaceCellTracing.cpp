@@ -12784,6 +12784,9 @@ struct SurfacePhaseFrontBuildState {
   // any selection, front-ownership, or acceptance predicate.
   std::map<std::tuple<std::size_t, int, int>, std::string>
       latticeUvCandidateProbes;
+  // Rejection-only evidence; never consumed by topology or admission.
+  std::map<std::tuple<std::size_t, int, int>, std::string>
+      boundarySourceEntityProbes;
   std::vector<SurfaceFrontEdge> edges;
   std::vector<SurfaceFrontEvent> events;
   std::vector<SurfacePhaseFrontCell> cells;
@@ -17237,6 +17240,38 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
   const auto node_index = [columns](const int u, const int v) {
     return v * columns + u;
   };
+  // Source entities use exact barycentric zero/one tests, not spatial
+  // proximity or a tolerance. Hex floats preserve the edge parameter bits.
+  const auto source_entity = [&](const SurfaceTracePoint &point) {
+    std::ostringstream out;
+    out << "face=" << point.face << ",entity=";
+    if (point.face < 0 || point.face >= faces.rows()) {
+      out << "invalid-face";
+      return out.str();
+    }
+    for (int i = 0; i < 3; ++i) {
+      if (point.barycentric[i] == 1.0) {
+        out << "vertex:" << faces(point.face, i);
+        return out.str();
+      }
+    }
+    for (int opposite = 0; opposite < 3; ++opposite) {
+      if (point.barycentric[opposite] != 0.0) continue;
+      const int a = (opposite + 1) % 3;
+      const int b = (opposite + 2) % 3;
+      const int lo = std::min(faces(point.face, a), faces(point.face, b));
+      const int hi = std::max(faces(point.face, a), faces(point.face, b));
+      const double parameter = faces(point.face, a) == hi
+          ? point.barycentric[a] : point.barycentric[b];
+      out << "edge:" << lo << ',' << hi << "@"
+          << std::hexfloat << parameter << std::defaultfloat;
+      return out.str();
+    }
+    out << "interior:" << point.face << '@' << std::hexfloat
+        << point.barycentric[0] << ',' << point.barycentric[1] << ','
+        << point.barycentric[2] << std::defaultfloat;
+    return out.str();
+  };
   for (int v = 0; v < rows; ++v) {
     for (int u = 0; u < columns; ++u) {
       Eigen::Vector2d uv(stepU * u, stepV * v);
@@ -17261,10 +17296,11 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
             result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart);
         return result;
       }
-      const int sampledFace =
-          points[static_cast<std::size_t>(node_index(u, v))].face;
+      const SurfaceTracePoint sampled =
+          points[static_cast<std::size_t>(node_index(u, v))];
+      const int sampledFace = sampled.face;
+      const SurfaceTracePoint *accepted = nullptr;
       if (useAcceptedConformity) {
-        const SurfaceTracePoint *accepted = nullptr;
         if (v == 0) {
           accepted = &acceptedBoundary[0].points[static_cast<std::size_t>(u)];
         } else if (u == result.gridU) {
@@ -17279,6 +17315,16 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
         if (accepted != nullptr) {
           points[static_cast<std::size_t>(node_index(u, v))] = *accepted;
         }
+      }
+      if (u == 0 || v == 0 || u == result.gridU || v == result.gridV) {
+        std::ostringstream evidence;
+        evidence << "override=" << (accepted != nullptr)
+                 << ",sampled=" << source_entity(sampled)
+                 << ",accepted=";
+        if (accepted != nullptr) evidence << source_entity(*accepted);
+        else evidence << "none";
+        result.boundarySourceEntityProbes.emplace(
+            std::make_tuple(region.id().index(), u, v), evidence.str());
       }
 
       // A bounded-disk chart has its own UV basis and canonical face-key
@@ -18147,6 +18193,9 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
     result.latticeUvCandidateProbes.insert(
         local.latticeUvCandidateProbes.begin(),
         local.latticeUvCandidateProbes.end());
+    result.boundarySourceEntityProbes.insert(
+        local.boundarySourceEntityProbes.begin(),
+        local.boundarySourceEntityProbes.end());
     bool localCoverage = false;
     const authority::TopologyRegionId typedRegion = region.id();
     std::map<authority::CellId, authority::CellId> finalCellByLocalOwner;
@@ -19688,6 +19737,20 @@ SurfaceCellNetwork build_surface_cell_network(
           endpointEvidence << found->second;
         }
       };
+      // Emit every grid-boundary node in each involved region only after
+      // this existing endpoint certificate has rejected. This does not
+      // participate in choosing the endpoint or changing the rejection.
+      endpointEvidence << ";a2bProbeBoundarySourceEntities=";
+      bool firstNode = true;
+      for (const auto &[key, evidence] : phaseFrontState.boundarySourceEntityProbes) {
+        const auto [regionId, u, v] = key;
+        if (regionId != first.sourceTopologyRegion.index() &&
+            regionId != second.sourceTopologyRegion.index()) continue;
+        if (!firstNode) endpointEvidence << '|';
+        endpointEvidence << regionId << ',' << u << ',' << v << ':' << evidence;
+        firstNode = false;
+      }
+      if (firstNode) endpointEvidence << "none";
       // These are precisely the two endpoints consumed by the rejected
       // certificate; emit only their ambiguous producer-captured samples.
       if (firstMissing) {
