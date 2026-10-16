@@ -1,3 +1,126 @@
+## RA-79 — frozen definitions, M6 CP3 R9B endpoint equivalence contract (2026-10-16); RA-78.3 NARROWED
+
+**Authority:** `.agents/Directional/Architecture_M6_CP3_R9B_Endpoint_Equivalence_Contract_Review_Decision.md`.
+Adjudicates `M6-CP3-DEFN-R9B-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC` (rung 19b); **ACCEPTED**,
+two charges, one of them partly the reviewer's. Semantic source unchanged at
+`f0d7240455b10237af47de58c035cd4c576d889a`.
+
+- **RA-79.1 Provenance and boundary.** Snapshot artifact `12047105604` (run `38901551349`,
+  `conclusion=success`) digest
+  `74a2ea191e777cd186ceeb0d272e4b7ccae6e2112477a95934b9b04f90abbc57`, matches;
+  `src`/`include`/`tests` **tree-identical at `6eda761dd`, `f0d724045` and `HEAD`**;
+  documents only; `ledgers --base 87b770b6d` **ALL CHECKS PASSED**. The Drive transport
+  failure (`container_session_unavailable`) was disclosed with "do not represent it as a
+  successful Drive application."
+- **RA-79.2 RA-78.3 is NARROWED — a precedent is a conjunction.** RA-78.3 said the repair
+  is "a precedent to apply consistently, not an invention." The specification accepts the
+  precedent and refuses the inference: "**The existence of this valid contract shape is not
+  a proof that any of the 21 observed failing endpoint pairs satisfies all its
+  conjuncts.**" The vertex branch does not accept *same vertex, different face*. It accepts
+  that **only when** a published open-rail terminal contact exists and agrees on component;
+  **and** both points decode the same `SourceVertexId` with bit-exact one-hot barycentrics;
+  **and** a unique admissible non-hard-feature A3 star path runs from each side's actual
+  attachment face to the correspondingly oriented carrier face; **and** the two
+  directed-side face sets are disjoint; **and** exactly one carrier orientation is
+  admissible. **Whether the measured 21 satisfy that conjunction is unmeasured.**
+- **RA-79.3 It specifies against both checkers, as required.** §3 is an explicit
+  correspondence table over six obligations — source contact and face attachments, carrier
+  orientation, vertex-star path, side separation, interior position, closed chains — each
+  anchored in **both** the A4 endpoint certificate and the checked-product verifier, with
+  the residual stated honestly: "the implementations are not literally identical…
+  **pass/fail equivalence is a goal subject to implementation Review and independent tamper
+  oracles, not an asserted fact.** Preserve the verifier as an independent oracle; do not
+  make it accept merely because a certificate constructor returned non-null."
+- **RA-79.4 It refuses two relaxations that were not asked about.** **Branch I (interior)
+  deliberately NOT relaxed** — exact `FieldExactRational` equality retained and the measured
+  one-ULP population named and refused: "does not authorize accepting those pairs, a
+  tolerance, rounding, moving points, or canonicalization from near equality… The 21
+  currently localized cases are vertex observations, not evidence to relax the interior
+  gate." **Branch C (closed rail) deliberately NOT promoted** — "do not invent
+  terminal-vertex authority for a closed rail." It also rejects by name selecting "a carrier
+  orientation, star route or corner representative by minimum face index alone" as
+  **inadmissible**, refusing as a *repair mechanism* the very rule RA-72.6 identified as the
+  producer's selection discipline. RA-78.4's boundary is honoured exactly: "**no synthetic
+  producer-side vertex-star certificate is introduced.**"
+- **RA-79.5 The non-weakening obligation is met, including the concrete case.** §4 gives ten
+  counterexample classes with dispositions — `Missing`, `Ambiguous`, overlapping sectors,
+  two admissible orientations and inferred or near-corner terminals all still excluded. The
+  specifically demanded item — one endpoint the current rule rejects that the new rule also
+  rejects, drawn from the measured population — is supplied though not labelled: the row
+  *"Interior points on same canonical edge but rational parameters differ by one ULP →
+  Reject under I"* is exactly the **324 measured instances** of RA-76.1, currently rejected
+  by `same_interior_carrier_point` and still rejected under branch I. Five falsifiers F1–F5
+  are stated, with "any F1/F2/F4/F5 defeats this contract shape."
+- **RA-79.6 CHARGE — the beacon is self-referential again and contradicts its own
+  document.** `STATUS` is `IN_PROGRESS` with `Successor` naming the same turn, after **seven
+  consecutive NEXT_TURN blocks** requiring it be left EMPTY (RA-67.11) and three clean
+  rungs. Worse than prior instances: the specification's own closing says "**successor
+  remains `UNKNOWN`**", so the machine-read field **contradicts the prose of the document it
+  belongs to**. The document is right.
+- **RA-79.7 CHARGE — gates still unreported, and the instruction conflict is the
+  reviewer's.** No gate output appears in the turn's additions — the **seventh** mandate,
+  and the first since the ask was reduced to pasting two lines. **But the instruction was
+  self-contradictory:** it required both "if either says FAILED, STOP AND SAY SO rather than
+  pushing" and "ledgers with any base earlier than `b2b6e6541` FAILS PERMANENTLY… hence the
+  base above." A turn running a wider base would see `FAILED` and, obeying the first clause,
+  stop — which commit `a86c91e86` ("preserve R9B turn pending historical ledger closeout
+  verification") and the open beacon suggest is what happened. **Stopping rather than
+  pushing past a FAILED gate is the wanted behaviour**; the conflict is the reviewer's
+  drafting. **RESOLVED AND FROZEN:** the mandated base is **always the last Review commit**
+  and nothing else; the historical failure at `b2b6e6541` is **permanent, expected, and
+  never a reason to hold a turn**; "stop on FAILED" applies **only** to a run at the
+  mandated base; do not run `ledgers` against any earlier base as a closeout check. The
+  residue of the charge is narrow — the `boundary` gate was also unreported and has no such
+  ambiguity.
+- **RA-79.8 NOTE.** `Regression_Root_Cause_Tracker.md` (fifth omission) and
+  `Architecture_M6_Frozen_Definitions.md` were not written; `ORIENTATION.md` **was**. Not
+  charged — the Review writes the authoritative sections regardless.
+- **RA-79.9 `RP-01` state.** The contract shape is **admissible**: branch V is expressible
+  entirely from existing witnesses — `SurfaceTracePoint` faces and one-hot barycentrics,
+  typed terminal contacts, published carrier and field atlas, source incidence and
+  hard-edge maps — with `unique_terminal_star_path` already computed consumer-side at
+  `:8452` and already enforced at `:8685-8699`. **RA-65.5 is satisfied without a new
+  producer.** What is **not** established is whether the measured 21 satisfy V's
+  conjunction; that is the spec's own **F1** and **F2**, an empirical question with an
+  existing instrument. **Code remains NOT authorized** until it is answered. `RP-02`
+  **UNREACHED**.
+- **RA-79.10 LESSON — a precedent is a conjunction, and the reviewer collapsed it.**
+  RA-78.3 reported that the product verifier "already accepts same vertex, different face,
+  reconciled by a unique star path," and treated that as licensing the repair; the verifier
+  accepts a **five-part conjunction** of which the star path is one part. **When citing
+  existing behaviour as precedent for a change, enumerate every conjunct that behaviour
+  requires, and say which of them the target population is known to satisfy. An
+  under-stated precedent is an over-stated licence.**
+
+### Rung 20 scope — `M6-CP3-CB9-R9-TERMINAL-STAR-PATH-PROBE`, compile-only
+
+Rejection-only, in the rung 12 and 17 pattern, answering the spec's own F1/F2: **do the
+measured 21 satisfy branch V's conjuncts?** For each rejected endpoint pair emit (1)
+whether a published `hardRailTerminalContacts[rail]` exists, its component, and whether the
+decoded vertex is one of its published endpoints and an endpoint of the carrier's canonical
+source edge; (2) whether **both** points decode the same `SourceVertexId` with **bit-exact
+one-hot** barycentrics in their own faces; (3) the result of
+`unique_terminal_star_path(vertex, attachment, carrierFace)` — `Unique`, `Missing`,
+`Ambiguous` or `Invalid` — **for each side and both carrier orientations**, by calling the
+existing function rather than reimplementing it; (4) whether the two directed-side face sets
+are disjoint and how many carrier orientations are admissible. Rung 21 harvests; rung 22
+implements only if the conjunction holds. If it does not, the contract is sound and the 21
+fall outside it, which is equally a result (RA-68.12).
+
+### Accounting
+
+Ledger **66/17/49**, debt **1**, CP2 **491/491**, R3 **403/497**, frozen selector **497** —
+unchanged. `R4-VIN-01` remains armed at `f0d724045` with **no new semantic source**; every
+earlier artifact through `12040008801` and `12047105604` is a **baseline, never a
+comparand**. **RA-61.9 WITHDRAWN, final. RA-64.6 WITHDRAWN, final. RA-70.14 WITHDRAWN.
+RA-72.8 WITHDRAWN. RA-71.5 AMENDED. RA-73.5 SUPERSEDED. RA-74.1 NARROWED and CONFIRMED.
+RA-76.8 AMENDED. RA-78.3 NARROWED. Gate C SUSPENDED and moot for `RP-01`, boundary per
+RA-78.4.** `PROCESS-01` discharged. **`RP-03` satisfied a fourteenth turn.** The historical
+`ledgers` failure at `b2b6e6541` remains permanent for any earlier base, is correct, must
+not be suppressed, and **must never hold a turn open**.
+
+---
+
 ## RA-78 — frozen definitions, M6 CP3 R9A endpoint face-comparison census (2026-10-16); RA-76.8 AMENDED, a second admission path found
 
 **Authority:** `.agents/Directional/Architecture_M6_CP3_R9A_Endpoint_Face_Comparison_Census_Review_Decision.md`.

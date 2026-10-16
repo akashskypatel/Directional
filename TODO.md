@@ -1,3 +1,49 @@
+## CURRENT — RA-79 frozen; contract admissible, precedent is a five-part conjunction, applicability to the 21 unmeasured (2026-10-16)
+
+### Turn sequence (byte-derived from `STATUS` history; frozen clauses in `Architecture_M6_Frozen_Definitions.md`)
+
+| # | Turn | Kind | Review | Outcome |
+|---:|---|---|---|---|
+| 1 | `M6-CP3-CB2-R4-PREDICATE-SEPARATION` | Code + Build | RA-63 | accepted; probe separated from decision |
+| 2 | `M6-CP3-CB3-R4-LEDGER-CONTENT-FLOOR` | Code + Build | — | tooling floor added to both gates |
+| 3 | `M6-CP3-TB3-R4-PROBE-HARVEST` | Test + Benchmark | RA-64 | accepted; contradicted the reviewer, credited |
+| 4 | `M6-CP3-DEFN-R4-ENDPOINT-AUTHORITY-SPEC` | Definition | RA-65 | accepted w/ amendment; RA-64.6 withdrawn, gate C suspended |
+| 5 | `M6-CP3-CB4-R4-ENDPOINT-CHART-PROBE` | Code + Build | RA-66 | accepted; compile chain closed by bytes |
+| 6 | `M6-CP3-TB4-R4-ENDPOINT-CHART-HARVEST` | Test + Benchmark | RA-67 | accepted; mechanism derived; 44/44 RED |
+| 7 | `M6-CP3-DEFN-R5-JUNCTION-CARRIER-AUTHORITY-SPEC` | Definition | RA-68 | accepted; both repair shapes inadmissible |
+| 8 | `M6-CP3-CB5-R5-ROUTE-PATH-RECONCILIATION-PROBE` | Code + Build | RA-69 | accepted; neutrality structural |
+| 9 | `M6-CP3-TB5-R5-ROUTE-PATH-RECONCILIATION-HARVEST` | Test + Benchmark | RA-70 | accepted; RA-68.9 CONFIRMED |
+| 10 | `M6-CP3-DEFN-R6-CORNER-ASSIGNMENT-AUTHORITY-SPEC` | Definition | RA-71 | accepted; falsified the reviewer's prediction **and** census |
+| 11 | `M6-CP3-DEFN-R7-CORNER-FACE-SELECTION-REPAIR-SPEC` | Definition | RA-72 | accepted w/ amendment; passes RA-65.5 |
+| 12 | `M6-CP3-CB6-R7-NODE-ADMISSIBLE-FACE-SET-PROBE` | Code + Build | RA-73 | accepted; calls the production predicate |
+| 13 | `M6-CP3-TB6-R7-NODE-ADMISSIBLE-FACE-SET-HARVEST` | Test + Benchmark | RA-73 | accepted; RA-72.8 falsified |
+| 14 | `M6-CP3-CB7-R7-LATTICE-UV-CANDIDATE-PROBE` | Code + Build | RA-74 | accepted; moved producer-side as instructed |
+| 15 | `M6-CP3-TB7-R7-LATTICE-UV-CANDIDATE-HARVEST` | Test + Benchmark | RA-74 | accepted; sampler exonerated |
+| 16 | `M6-CP3-DEFN-R8-BOUNDARY-OVERRIDE-AUTHORITY-SPEC` | Definition | RA-75 | accepted; overriding face legitimately derived |
+| 17 | `M6-CP3-CB8-R8-SOURCE-ENTITY-EQUIVALENCE-PROBE` | Code + Build | RA-76 | accepted; first probe with deletions — correct |
+| 18 | `M6-CP3-TB8-R8-SOURCE-ENTITY-EQUIVALENCE-HARVEST` | Test + Benchmark | RA-76 | accepted; **branch (b) settled** |
+| 19 | `M6-CP3-DEFN-R9-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC` | Definition | RA-77 | **NO DELIVERABLE** — over-scoped by the reviewer; split |
+| 19a | `M6-CP3-DEFN-R9A-ENDPOINT-FACE-COMPARISON-CENSUS` | Definition | RA-78 | accepted; **found a second active admission path** |
+| 19b | `M6-CP3-DEFN-R9B-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC` | Definition | RA-79 | accepted; contract admissible; **narrowed RA-78.3** |
+| **20** | **`M6-CP3-CB9-R9-TERMINAL-STAR-PATH-PROBE`** | **Code + Build** | pending | **NEXT — compile-only** |
+| 21 | `M6-CP3-TB9-R9-TERMINAL-STAR-PATH-HARVEST` | Test + Benchmark | pending | artifact-only harvest of rung 20 |
+| 22 | first repair-implementation rung | undetermined | pending | **not authorized**; only if the conjunction holds |
+
+- [x] Rung 19b **ACCEPTED** (RA-79) — the strongest Definition turn in this ladder. Decision: `.agents/Directional/Architecture_M6_CP3_R9B_Endpoint_Equivalence_Contract_Review_Decision.md`.
+- [x] **RA-79.2 — RA-78.3 NARROWED.** The vertex branch accepts *same vertex, different face* **only when** all five hold: a published open-rail terminal contact agreeing on component; both points decoding the same `SourceVertexId` with **bit-exact one-hot** barycentrics; a **unique** admissible non-hard-feature A3 star path from each side's attachment face to the correspondingly oriented carrier face; **disjoint** directed-side face sets; **exactly one** admissible carrier orientation. **Whether the 21 satisfy that conjunction is unmeasured.**
+- [x] **RA-79.3 — specified against both checkers**, with a six-obligation correspondence table, and the residual stated honestly ("pass/fail equivalence is a goal… not an asserted fact").
+- [x] **RA-79.4 — two relaxations refused unprompted.** Branch **I** keeps exact `FieldExactRational` equality and names the one-ULP population as not a reason to relax; branch **C** is not promoted. Minimum-face-index selection rejected by name as inadmissible. "No synthetic producer-side vertex-star certificate is introduced" — RA-78.4 honoured.
+- [x] **RA-79.5 — non-weakening met**, ten counterexample classes with dispositions; the demanded concrete case is the **324 measured one-ULP instances**, rejected now and still rejected under branch I. F1–F5 stated.
+- [x] **RA-79.9 — RA-65.5 satisfied without a new producer**: branch V uses only existing witnesses, with `unique_terminal_star_path` already at `:8452` and enforced at `:8685-8699`. **Code NOT authorized** until applicability is measured.
+- [x] Charges: **RA-79.6** beacon self-referential after seven prohibitions and now contradicting its own document (which correctly says `UNKNOWN`); **RA-79.7** gates unreported, seventh mandate — **the instruction conflict is the reviewer's** and is now **RESOLVED AND FROZEN: the mandated base is always the last Review commit; the `b2b6e6541` failure is permanent, expected, and never a reason to hold a turn; "stop on FAILED" applies only at the mandated base.**
+- [x] Credits: **`RP-03` satisfied a fourteenth turn** — refused the inference the reviewer drew from the reviewer's own census. Provenance verified (artifact `12047105604` digest matches; trees identical at `6eda761dd`, `f0d724045`, HEAD; `ledgers --base 87b770b6d` ALL CHECKS PASSED). Note (not charged): tracker (fifth omission) and frozen definitions not written; ORIENTATION was.
+- [ ] **Rung 20 — `M6-CP3-CB9-R9-TERMINAL-STAR-PATH-PROBE` (compile-only, rejection-only).** Answer the spec's own **F1/F2**: for each rejected endpoint pair emit (1) whether a published `hardRailTerminalContacts[rail]` exists, its component, and whether the decoded vertex is one of its published endpoints and an endpoint of the carrier's canonical source edge; (2) whether **both** points decode the same `SourceVertexId` with **bit-exact one-hot** barycentrics; (3) `unique_terminal_star_path(vertex, attachment, carrierFace)` — `Unique`/`Missing`/`Ambiguous`/`Invalid` — **for each side and both orientations**, by **calling the existing function at `:8452`**; (4) whether the directed-side face sets are disjoint and how many orientations are admissible. **Do not interpret the fields.**
+- [ ] **Rung 21** harvests. **Rung 22** implements only if the conjunction holds; if it does not, the contract is sound and the 21 fall outside it — equally a result (RA-68.12). **Do not reorder rungs 20-22.**
+- [ ] Standing: no epsilon anywhere; relocation is not repair (RA-72.5); no new star predicate, no weakening of `unique_terminal_star_path`, `Ambiguous`/`Missing` never acceptable (RA-78.4); gate C stays suspended; do not revive branch (a) (RA-76.1), `point_on_source` as the locus (RA-71.5), or RA-73.5's framing (superseded); admission does **not** compare raw endpoint faces (RA-76.8 amended).
+- [ ] Carried: `RP-02` **UNREACHED**. Frozen 66/17/49, debt 1, CP2 491/491, R3 403/497, selector 497. **`R4-VIN-01` armed at `f0d724045`**, no new semantic source — every earlier artifact through `12047105604` is a baseline, never a comparand. RA-61.9, RA-64.6, RA-70.14, RA-72.8 withdrawn; RA-71.5 amended; RA-73.5 superseded; RA-74.1 narrowed and confirmed; RA-76.8 amended; **RA-78.3 narrowed**. `PROCESS-01` discharged. The historical `ledgers` failure at `b2b6e6541` is permanent, correct, **must not be suppressed, and must never hold a turn open**.
+
+---
+
 ## CURRENT — R9B endpoint-equivalence contract specified (2026-10-16)
 
 - [x] `M6-CP3-DEFN-R9B-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC`: documents-only proposed V/I/C equivalence contract, both consumer checkers, missing/ambiguous rejection proof obligations, one-ULP strict interior limit, RA-65.5 and RA-72.5 dispositions. See `.agents/Directional/Architecture_M6_CP3_R9B_Endpoint_Equivalence_Contract_Specification_20261016.md`. No implementation, compile or runtime authorized; independent review pending with exact successor name UNKNOWN.

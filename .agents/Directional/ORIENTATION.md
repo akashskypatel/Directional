@@ -1,3 +1,57 @@
+## CURRENT — `M6-CP3-DEFN-R9B-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC-REV`, 2026-10-16: RA-79 frozen; the rule is written, and the turn refuses to claim it covers the cases that prompted it
+
+**Supersedes the RA-78 paragraph below as the current state.** One turn was adjudicated and it
+is **accepted** — the strongest document turn in this sequence — with two charges, one of
+which is the reviewer's own drafting. No open REVIEW_BLOCKER. No promotion, no stable
+event, no regression recurrence, no gate credit.
+
+**§3 current state — the contract exists on paper, and its reach is honestly unknown.** The
+rule is written in three branches: one for endpoints that sit on a shared corner, one for
+endpoints part-way along an edge, one for closed loops. Only the first is proposed for
+change, and even there the turn declines the convenient conclusion. This review had said a
+rung earlier that the behaviour the fix needs is already running inside the independent
+verifier, and treated that as licensing the change. The turn points out that the verifier
+accepts that arrangement only when five separate conditions all hold together, and that
+nobody has checked whether the failing cases satisfy them. That correction is right, and it
+is the difference between a rule that is admissible and a rule that applies.
+
+**§4 runtime witness — none, and none was due.** A document turn over source read from a
+verified snapshot, with the three source trees identical at the snapshot, at the compiled
+commit and at the branch head. A transport failure was disclosed with an explicit
+instruction not to represent it as a success.
+
+**§5 instrument — the turn declined two invitations to loosen things nobody had asked it to
+loosen.** For endpoints part-way along an edge, the existing test demands exact equality of
+a rational position, and a measured population of three hundred and twenty-four pairs
+differs in the last bit. The turn keeps the exact test and says so in terms: no tolerance,
+no rounding, no moving the point, no treating near-equality as equality, and the failing
+cases are not evidence for relaxing a gate they do not touch. For closed loops it likewise
+refuses to invent the endpoint authority that the open case has. It also rules out choosing
+among ambiguous options by lowest index — which is how the producer makes its own
+selection — on the grounds that turning an undetermined decision into an arbitrary
+acceptance is how a safety check quietly stops working.
+
+**§7 priority — ask the existing checker, about the actual failing cases.** The function
+that decides whether two representations of a shared corner can be reconciled already
+exists and already runs. The next turn calls it, for the twenty-one failing endpoint pairs,
+on both sides and both orientations, and reports what it returns, along with the other four
+conditions the rule depends on. One run then says whether the proposed contract covers the
+cases that prompted it. If it does not, the contract is still sound and the failing cases
+lie outside it — which is just as useful an answer, and far cheaper to learn now than after
+the change is written.
+
+**§8 patterns — fourteenth turn to contradict this review, and the most useful one yet.**
+The contradiction was not about a measurement but about an inference: the reviewer had
+collapsed a five-part condition into the phrase "a precedent," and the turn unpicked it.
+Against that, the status marker was again left pointing at itself — the seventh time that
+has been asked against — and this time it disagrees with the turn's own closing sentence,
+which correctly says the successor is unknown. The verification commands went unreported
+again, but the instruction that governs them was self-contradictory, telling the turn both
+to stop on any failure and that one particular failure is permanent and expected; that
+conflict has now been resolved in one place.
+
+---
+
 ## CURRENT — M6 CP3 R9B endpoint contract definition (2026-10-16)
 
 Proposed V/I/C contract now recorded in `Architecture_M6_CP3_R9B_Endpoint_Equivalence_Contract_Specification_20261016.md`: shared vertex alone is insufficient; require published open terminal, exact corner identity and unique admissible source-star paths for both source sectors, with independent checked-product verification. Exact interior rational equality and no-contact closed-rail restrictions remain; RA-76 one-ULP discrepancies not excused. Independent Review required before implementation. No new runtime or source acceptance, frozen ledgers and selectors unchanged, `RP-01` open and `RP-02` UNREACHED.

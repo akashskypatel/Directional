@@ -1,3 +1,124 @@
+## 2026-10-16 — the contract is admissible and the precedent is a five-part conjunction the 21 are not known to satisfy (RA-79; RA-78.3 narrowed)
+
+**Review:** `M6-CP3-DEFN-R9B-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC-REV`, adjudicating rung 19b
+— `M6-CP3-DEFN-R9B-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC`. **ACCEPTED**, two charges, one of
+them partly the reviewer's. Decision:
+`.agents/Directional/Architecture_M6_CP3_R9B_Endpoint_Equivalence_Contract_Review_Decision.md`.
+Semantic source unchanged at `f0d7240455b10237af47de58c035cd4c576d889a`. **This Review
+writes the tracker and frozen-definitions sections rung 19b did not.**
+
+### Root-cause state — contract admissible, applicability unmeasured
+
+`RP-01 AUTHORITY_DOMAIN_CONFLATION`. The contract **shape** is admissible: branch V is
+expressible entirely from witnesses that already exist — `SurfaceTracePoint` faces and
+one-hot barycentrics, typed terminal contacts, the published carrier and field atlas,
+source incidence and hard-edge maps — with `unique_terminal_star_path` already computed
+consumer-side at `src/geometry/SurfaceCellTracing.cpp:8452` and already enforced at
+`:8685-8699`. **RA-65.5 is satisfied without a new producer.**
+
+What is **not** established is whether the measured 21 satisfy branch V's conjunction.
+**Code remains NOT authorized.** `RP-02` **UNREACHED**.
+
+### RA-78.3 is narrowed — a precedent is a conjunction
+
+RA-78.3 said the repair is "a precedent to apply consistently, not an invention." The
+specification accepts the precedent and refuses the inference drawn from it:
+
+> "The existence of this valid *contract shape* is not a proof that any of the 21 observed
+> failing endpoint pairs satisfies all its conjuncts."
+
+The vertex branch does not accept *same vertex, different face*. It accepts that **only
+when** all of the following hold: a published open-rail terminal contact exists and agrees
+on component; both points decode the same `SourceVertexId` with **bit-exact one-hot**
+barycentrics; a **unique** admissible non-hard-feature A3 star path runs from each side's
+actual attachment face to the correspondingly oriented carrier face; the two directed-side
+face sets are **disjoint**; and **exactly one** carrier orientation is admissible. Whether
+the 21 satisfy that conjunction is unmeasured.
+
+### What the specification delivered
+
+**Both checkers, with a correspondence table.** §3 covers six obligations — source contact
+and face attachments, carrier orientation, vertex-star path, side separation, interior
+position, closed chains — each anchored in **both** the A4 endpoint certificate and the
+checked-product verifier, and states the residual honestly: "the implementations are not
+literally identical… **pass/fail equivalence is a goal subject to implementation Review and
+independent tamper oracles, not an asserted fact.** Preserve the verifier as an independent
+oracle; do not make it accept merely because a certificate constructor returned non-null."
+
+**Two relaxations refused that were never asked about.** Branch **I** (interior) retains
+exact `FieldExactRational` equality and names the measured one-ULP population explicitly:
+"does not authorize accepting those pairs, a tolerance, rounding, moving points, or
+canonicalization from near equality… The 21 currently localized cases are vertex
+observations, not evidence to relax the interior gate." Branch **C** (closed rail) is not
+promoted: "do not invent terminal-vertex authority for a closed rail." Selecting "a carrier
+orientation, star route or corner representative by minimum face index alone" is rejected
+by name as **inadmissible** — refusing as a *repair mechanism* the very rule RA-72.6
+identified as the producer's selection discipline. RA-78.4's boundary is honoured exactly:
+"no synthetic producer-side vertex-star certificate is introduced."
+
+**Non-weakening met, including the concrete case.** Ten counterexample classes with
+dispositions; `Missing`, `Ambiguous`, overlapping sectors, two admissible orientations and
+inferred or near-corner terminals all still excluded. The specifically demanded item — one
+endpoint the current rule rejects that the new rule also rejects, from the measured
+population — is supplied though unlabelled: the one-ULP interior row is exactly the **324
+measured instances** of RA-76.1, rejected now by `same_interior_carrier_point` and still
+rejected under branch I. Five falsifiers F1–F5 stated.
+
+### Charges
+
+- **RA-79.6** the beacon is `IN_PROGRESS` with a self-referential `Successor` after **seven**
+  prohibitions and three clean rungs — and now **contradicts its own document**, whose
+  closing says "successor remains `UNKNOWN`." The document is right; the machine-read field
+  hands a successor a cycle.
+- **RA-79.7** gates still unreported, **seventh** mandate — **but the instruction was
+  self-contradictory and that is the reviewer's fault.** It required both "if either says
+  FAILED, STOP AND SAY SO rather than pushing" and "ledgers with any base earlier than
+  `b2b6e6541` FAILS PERMANENTLY… hence the base above." A turn running a wider base sees
+  `FAILED` and, obeying the first clause, stops — which commit `a86c91e86` and the open
+  beacon suggest happened. Stopping rather than pushing past a FAILED gate is the wanted
+  behaviour. **RESOLVED AND FROZEN:** the mandated base is **always the last Review
+  commit**; the historical failure at `b2b6e6541` is **permanent, expected, and never a
+  reason to hold a turn**; "stop on FAILED" applies **only** at the mandated base; do not
+  run `ledgers` against an earlier base as a closeout check. Residue: the `boundary` gate
+  was also unreported and has no such ambiguity.
+
+### Credits and provenance
+
+**`RP-03` satisfied a fourteenth turn** — it refused the inference the reviewer had drawn
+from the reviewer's own census, which is the most useful contradiction available at this
+stage. Snapshot artifact `12047105604` (run `38901551349`, success) digest
+`74a2ea191e777cd186ceeb0d272e4b7ccae6e2112477a95934b9b04f90abbc57` matches;
+`src`/`include`/`tests` **tree-identical at `6eda761dd`, `f0d724045` and `HEAD`**;
+documents only; `ledgers --base 87b770b6d` **ALL CHECKS PASSED**. The Drive transport
+failure was disclosed with "do not represent it as a successful Drive application."
+**Note, not charged:** the tracker (fifth omission) and frozen definitions were not
+written; `ORIENTATION.md` was.
+
+### Lesson
+
+**RA-79.10 — a precedent is a conjunction, and the reviewer collapsed it.** **When citing
+existing behaviour as precedent for a change, enumerate every conjunct that behaviour
+requires, and say which of them the target population is known to satisfy. An under-stated
+precedent is an over-stated licence.**
+
+### Accounting
+
+Ledger **66/17/49**, debt **1**, CP2 **491/491** accepted, R3 **403/497** rejected, frozen
+selector **497** — unchanged. No promotion, no stable event, no regression recurrence, no
+ledger recomputation, no 497 execution, no benchmark, no binary executed. `R4-VIN-01`
+remains armed at `f0d724045` with **no new semantic source**; every earlier artifact
+through `12040008801` and `12047105604` is a **baseline, never a comparand**; the 44 RED
+remain the baseline for `f0d724045` alone, candidate / non-stable. `PROCESS-01` discharged.
+RA-61.9 WITHDRAWN, final. RA-64.6 WITHDRAWN, final. RA-70.14 WITHDRAWN. RA-72.8 WITHDRAWN.
+RA-71.5 AMENDED. RA-73.5 SUPERSEDED. RA-74.1 NARROWED and CONFIRMED. RA-76.8 AMENDED.
+**RA-78.3 NARROWED.** Gate C SUSPENDED and moot for `RP-01`, boundary per RA-78.4. The
+historical `ledgers` failure at `b2b6e6541` remains permanent for any earlier base, is
+correct, must not be suppressed, and **must never hold a turn open**. Successor
+**`M6-CP3-CB9-R9-TERMINAL-STAR-PATH-PROBE`** (rung 20, compile-only: measure whether the 21
+satisfy branch V's conjuncts — the spec's own F1/F2).
+
+---
+
 ## 2026-10-16 — the census corrects the localization and finds a second active admission path; "same vertex, unique star path" is already production behaviour (RA-78)
 
 **Review:** `M6-CP3-DEFN-R9A-ENDPOINT-FACE-COMPARISON-CENSUS-REV`, adjudicating rung 19a —
