@@ -1,4 +1,0 @@
-turn=M6-CP3-DEFN-R6-CORNER-ASSIGNMENT-AUTHORITY-SPEC
-base_status_commit=113f39dec631bc45a76ae198e58912b2388ff32e
-purpose=exact-source-static-definition
-runtimeExecution=false
