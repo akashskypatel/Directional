@@ -1,3 +1,9 @@
+## CURRENT — 2026-10-16 TB5 route/path reconciliation harvest verified (separate independent decision pending)
+
+`M6-CP3-TB5-R5-ROUTE-PATH-RECONCILIATION-HARVEST` completed its bounded artifact-only observation. Workflow [38831615391](https://github.com/akashskypatel/Directional/actions/runs/38831615391) **succeeded**, immutable result artifact `12017109271` outer SHA-256 `e394c4deab99e5f8dca919a7a8e61a24aa93de3ba0ed96c3c3afddc19f8b9458`, internal SHA256SUMS verified; packaged source `a143af264bc8b33f0e1b2f8def16b2479b53d5fc` from build artifact `12015849679`. **44/44 separate processes executed; 44 RED, zero missing, postflight passed**, with no compile or benchmark. Diagnostic multiplicity was verified (42×1, 2×3). **RA-68.9 confirmed observationally:** 21/21 junction cases have no route edge incident to the to-attachment face (to row 7, traced second boundary path row 3); 23/23 interior controls have route incidence (to row 3). This supports investigating A4 corner/path producer reconciliation but neither prior repair shape is authorized; no specific producer cause has been proven. First harness attempt [38831159326](https://github.com/akashskypatel/Directional/actions/runs/38831159326) failed postflight due to aggregating multiple diagnostic occurrences; diagnosed retry did not modify production/test semantics. Full record: `.agents/Directional/Architecture_M6_CP3_R5_Route_Path_Reconciliation_Harvest_Artifact_Only_TB_Report_20261016.md`. Ledger 66/17/49 debt 1, CP2 491/491, R3 403/497, frozen 497; RP-02 unreached. Next separately authorized independent decision; no successor ID established.
+
+---
+
 ## CURRENT — `M6-CP3-DEFN-R5-JUNCTION-CARRIER-AUTHORITY-SPEC-REV`, 2026-10-15: RA-68 frozen; both ways of fixing the thing turn out to be unbuildable with what exists, and saying so was the point
 
 **Supersedes the RA-67 paragraph below as the current state.** One turn was adjudicated and it is

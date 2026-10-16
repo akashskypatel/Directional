@@ -1,3 +1,7 @@
+## 2026-10-16 — M6 CP3 R5 artifact-only route/path harvest
+
+Verified [run 38831615391](https://github.com/akashskypatel/Directional/actions/runs/38831615391): 44/44 independently executed, 44 RED, complete postflight; 21 junctions have no route-edge incidence at endpoint face 7 and trace row 3, while 23 interior controls agree at row 3. Report `.agents/Directional/Architecture_M6_CP3_R5_Route_Path_Reconciliation_Harvest_Artifact_Only_TB_Report_20261016.md`; no production changes, no acceptance credit. Earlier parser-only retry diagnosed and corrected.
+
 ## 2026-10-15 — RA-68 frozen: both candidate repairs fail the producer test, gate C suspended on ordering as well as nonexistence, and a cheap measurement is sequenced ahead of any producer definition
 
 - Architecture Review only (`M6-CP3-DEFN-R5-JUNCTION-CARRIER-AUTHORITY-SPEC-REV`), adjudicating one turn; no source, test, selector, binary, harness, workflow, benchmark or ledger-count change in this Review, and no Directional binary executed.
