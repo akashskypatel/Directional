@@ -1,10 +1,10 @@
 {
  "schema_version": 1,
- "request_id": "m6-cp3-cb7-r7-closeout-apply-20261016a",
+ "request_id": "m6-cp3-cb7-r7-closeout-apply-20261016b",
  "operation": "drive_apply",
  "mailbox_key": "m6-cp3-cb7-r7-closeout-apply",
- "file_id": "1XfYnSBqul8yjzEVZ1ZY1UKvnczkIf7Cf",
- "patch_sha256": "08fdfd100745e7f4d29abf5666f9bdd850f9e9fffb3978715984f2c5cad47b8a",
+ "file_id": "1gxuh3-wsXIAaJvWiJC43jB8Ms8KRsc5I",
+ "patch_sha256": "9c812eb0ad27b06f6c2076bd36e5c85d0ddab041fa03629f031e45b00ffdd75b",
  "base_sha": "cdd6dc4a9ba95a42aace6226194b38e712b53e4b",
  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
  "commit_message": "docs(agent): close CB7 GMP compile and hand off immutable TB7 harvest",
