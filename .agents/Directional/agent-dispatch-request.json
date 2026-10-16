@@ -1,12 +1,14 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb9-r9-doc-closeout-20261016a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb9-r9-closeout-docs",
-  "file_id": "1GzI9eMJ_iWfq3xXj0wp0x-ISiculBwrn",
-  "patch_sha256": "4f19fee11ebc410a823beac55cf0dbfe078453180ae5673b956d863f3351ffd7",
-  "base_sha": "5b9807bc995e9e7b9a32eec5f253c1f47c0babce",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close out CB9 GMP compile evidence and TB9 handoff",
+  "request_id": "m6-cp3-tb9-r9-harvest-20261016a",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb9-r9-harvest",
+  "executor_sha": "754ef65a8361b488c2bce343f62fb34924706c74",
+  "semantic_source_sha": "18cc4da5e2bc41138c5363a74de4e2db1e28ef23",
+  "turn_id": "M6-CP3-TB9-R9-TERMINAL-STAR-PATH-HARVEST",
+  "harness_path": ".agents/Directional/tools/m6_cp3_r9_terminal_star_path_harvest_harness.sh",
+  "harness_sha256": "baefec87673478a82cac49c6c2e3301bb103192195f90751253e794eb0a5f016",
+  "environment": {},
+  "artifact_prefix": "directional-m6-cp3-tb9-r9-star-path",
   "retention_days": 14
 }
