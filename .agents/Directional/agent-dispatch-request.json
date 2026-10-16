@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb9-r9-fix-20261016a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb9-r9-compile-fix-apply",
-  "file_id": "1gJRXAdhJP8yMNCPtOGQJ-LXyRlUY4iUE",
-  "patch_sha256": "56c91974f24d50a9d8611bacc92ed60bafbbdfff0861af12beb182bfa72e8be5",
-  "base_sha": "81101d7370a7d3cfe36baa57b4635ef7e0819bb2",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surface-cells): correct diagnostic carrier and vertex optional typing",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb9-r9-compile-fix-20261016a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb9-r9-compile-corrected",
+  "source_sha": "4507b209759aa6e8935c24db5be37f89379a913e",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-cb9-r9-compile-corrected"
 }
