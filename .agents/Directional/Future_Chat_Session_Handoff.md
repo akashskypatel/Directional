@@ -1,3 +1,11 @@
+## CURRENT — TB10 harvest complete; Review required (2026-10-16)
+
+TB10 immutable run [38941839640](https://github.com/akashskypatel/Directional/actions/runs/38941839640), result `12062873272` ZIP SHA-256 `4db22a924f31a7bc6fdf1575a66849a2f660a760003e03e26e7f9277ac200513`; compiled source `d938ecb57e1040c2a73d5d25c4a613414556cb18`, artifact `12062565622`. 44/44 selected, 44 RED, 0 missing, 48 A3 observations, 21 exact-one-hot vertices: **contact-endpoint membership 0/21; carrier-edge membership 21/21; composite 0/21**. Example decoded vertex 4, published contact endpoints {1,7}, carrier edge {1,4}, certificate rail 2. Immutable postflight passed, 28/28 package hashes, compile/relink/benchmarks/selector497 not executed. Evidence is candidate/non-stable and does not modify 66/17/49, debt1, CP2 491/491, R3 403/497, selector497; RP-01 open, RP-02 UNREACHED. Independent Review next (ID UNKNOWN); no repair authorized.
+
+Owning record `.agents/Directional/Architecture_M6_CP3_TB10_Carrier_Endpoint_Subcondition_Harvest_Report_20261016.md`. Prior CURRENT sections below are historical.
+
+---
+
 ## CURRENT — CB10 carrier endpoint subcondition probe compiled; TB10 artifact-only harvest next (2026-10-16)
 
 `M6-CP3-CB10-R9-CARRIER-ENDPOINT-SUBCONDITION-PROBE` has **completed Code + Build**: semantic `d938ecb57e1040c2a73d5d25c4a613414556cb18` adds 26 rejection-only diagnostic lines to `SurfaceCellTracing.cpp`, separating contact endpoint and carrier edge membership, with raw decoded vertex, published contact endpoint IDs, certificate/resolved carrier edge and rail ID. The original composite predicate and production acceptance, rejection and routing are unchanged. Verified snapshot `2997b0adfe6bd6d62840edf51dfd5621d7b996db`, run `38937869505`, artifact `12061008957`, 5,682/5,682 source hashes.
