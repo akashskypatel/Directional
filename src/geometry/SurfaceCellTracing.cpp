@@ -8151,6 +8151,75 @@ resolve_periodic_relation_semantic_action(
   return std::nullopt;
 }
 
+
+// Single A3 terminal-star path evaluator. Both checked-product admission and
+// rejection-only route diagnostics construct their own source incidence; this
+// routine only evaluates that independently supplied exact graph.
+namespace {
+enum class TerminalStarPathResult { Unique, Missing, Ambiguous, Invalid };
+using TerminalStarFace = authority::SourceFaceTopologyKey;
+using TerminalStarEdge = authority::SourceEdgeTopologyKey;
+using TerminalStarIncidence = std::map<
+    authority::SourceVertexId,
+    std::map<TerminalStarEdge, std::vector<TerminalStarFace>>>;
+
+TerminalStarPathResult unique_terminal_star_path(
+    const TerminalStarIncidence &incidence,
+    const std::set<TerminalStarEdge> &hardFeatureEdges,
+    const SourceTopologyRegions &sourceTopologyRegions,
+    const authority::FieldTransportAtlas *fieldTransportAtlas,
+    const authority::SourceVertexId vertex,
+    const TerminalStarFace &from,
+    const TerminalStarFace &to,
+    std::set<TerminalStarFace> *uniquePathFaces = nullptr) {
+  if (uniquePathFaces != nullptr) uniquePathFaces->clear();
+  const auto found = incidence.find(vertex);
+  if (found == incidence.end() || fieldTransportAtlas == nullptr)
+    return TerminalStarPathResult::Invalid;
+  std::map<TerminalStarFace, std::set<TerminalStarFace>> adjacency;
+  for (const auto &[spoke, incident] : found->second) {
+    if (incident.size() > 2U) return TerminalStarPathResult::Invalid;
+    if (hardFeatureEdges.contains(spoke) || incident.size() != 2U)
+      continue;
+    const auto firstRow = sourceTopologyRegions.row_for_topology(incident[0]);
+    const auto secondRow = sourceTopologyRegions.row_for_topology(incident[1]);
+    if (!firstRow || !secondRow || *firstRow == *secondRow)
+      return TerminalStarPathResult::Invalid;
+    const auto forward = fieldTransportAtlas->transition_value(
+        spoke, *firstRow, *secondRow);
+    const auto reverse = fieldTransportAtlas->transition_value(
+        spoke, *secondRow, *firstRow);
+    if (!forward || !reverse ||
+        reverse->transport != forward->transport.inverse())
+      return TerminalStarPathResult::Invalid;
+    adjacency[incident[0]].insert(incident[1]);
+    adjacency[incident[1]].insert(incident[0]);
+  }
+  std::set<TerminalStarFace> visited{from}, selectedFaces;
+  unsigned paths = 0U;
+  const auto visit = [&](const auto &self, const TerminalStarFace &at) -> void {
+    if (paths > 1U) return;
+    if (at == to) {
+      if (++paths == 1U) selectedFaces = visited;
+      return;
+    }
+    const auto options = adjacency.find(at);
+    if (options == adjacency.end()) return;
+    for (const auto &next : options->second) {
+      if (!visited.insert(next).second) continue;
+      self(self, next);
+      visited.erase(next);
+    }
+  };
+  visit(visit, from);
+  if (paths == 1U && uniquePathFaces != nullptr)
+    *uniquePathFaces = std::move(selectedFaces);
+  return paths == 1U ? TerminalStarPathResult::Unique
+         : paths == 0U ? TerminalStarPathResult::Missing
+                       : TerminalStarPathResult::Ambiguous;
+}
+} // namespace
+
 SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
     int gridU, int gridV, SourceTopologyRegions sourceTopologyRegions,
     const Eigen::MatrixXi &sourceFaces, std::size_t sourceVertexCount,
@@ -8448,45 +8517,13 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
       }
     }
   }
-  enum class TerminalStarPathResult { Unique, Missing, Ambiguous, Invalid };
-  const auto unique_terminal_star_path = [&](const authority::SourceVertexId vertex,
-                                             const StarFace &from,
-                                             const StarFace &to) {
-    const auto found = terminalStarIncidence.find(vertex);
-    if (found == terminalStarIncidence.end()) return TerminalStarPathResult::Invalid;
-    std::map<StarFace, std::set<StarFace>> adjacency;
-    for (const auto &[spoke, incident] : found->second) {
-      if (incident.size() > 2U) return TerminalStarPathResult::Invalid;
-      if (hardFeatureEdges.contains(spoke) || incident.size() != 2U)
-        continue;
-      const auto firstRow = sourceTopologyRegions.row_for_topology(incident[0]);
-      const auto secondRow = sourceTopologyRegions.row_for_topology(incident[1]);
-      if (!firstRow || !secondRow || *firstRow == *secondRow) return TerminalStarPathResult::Invalid;
-      const auto forward = fieldTransportAtlas->transition_value(
-          spoke, *firstRow, *secondRow);
-      if (!forward || !matchesA3(spoke, incident[0], incident[1],
-                                 forward->transport)) return TerminalStarPathResult::Invalid;
-      adjacency[incident[0]].insert(incident[1]);
-      adjacency[incident[1]].insert(incident[0]);
-    }
-    std::set<StarFace> visited{from};
-    unsigned paths = 0U;
-    const auto visit = [&](const auto &self, const StarFace &at) -> void {
-      if (paths > 1U) return;
-      if (at == to) { ++paths; return; }
-      const auto options = adjacency.find(at);
-      if (options == adjacency.end()) return;
-      for (const auto &next : options->second) {
-        if (!visited.insert(next).second) continue;
-        self(self, next);
-        visited.erase(next);
-      }
-    };
-    visit(visit, from);
-    return paths == 1U ? TerminalStarPathResult::Unique
-           : paths == 0U ? TerminalStarPathResult::Missing
-                         : TerminalStarPathResult::Ambiguous;
-  };
+  const auto unique_terminal_star_path_checked =
+      [&](const authority::SourceVertexId vertex,
+          const StarFace &from, const StarFace &to) {
+        return unique_terminal_star_path(
+            terminalStarIncidence, hardFeatureEdges, sourceTopologyRegions,
+            fieldTransportAtlas, vertex, from, to);
+      };
   std::set<int> certifiedHardRailPairs;
   for (const auto &certificate : hardRailRouteCertificates) {
     if (certificate.firstFrontEdge < 0 ||
@@ -8687,7 +8724,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
         for (const auto [from, to] : {
                  std::pair{endpoint.firstAttachment, carrier.firstFace},
                  std::pair{endpoint.secondAttachment, carrier.secondFace}}) {
-          const auto path = unique_terminal_star_path(*vertex, from, to);
+          const auto path = unique_terminal_star_path_checked(*vertex, from, to);
           if (path == TerminalStarPathResult::Unique) continue;
           error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
           if (path == TerminalStarPathResult::Missing)
@@ -19564,6 +19601,155 @@ SurfaceCellNetwork build_surface_cell_network(
       endpointEvidence << ";a2bProbeToSourceVertex=";
       if (toVertex) endpointEvidence << *toVertex;
       else endpointEvidence << "none";
+
+      // CB9 rejection-only F1/F2 census. The exact same terminal-star
+      // evaluator used by the independent product verifier is called here
+      // against freshly reconstructed source incidence. No result feeds
+      // endpoint_certificate or any acceptance/selection path.
+      endpointEvidence << ";a3ProbeContactPublished="
+                       << (contact != authoritativeOptions.hardRailTerminalContacts.end());
+      if (contact != authoritativeOptions.hardRailTerminalContacts.end())
+        endpointEvidence << ";a3ProbeContactComponent=" << contact->second.component;
+      const bool sameOneHot = fromVertex && toVertex &&
+                              *fromVertex == *toVertex;
+      endpointEvidence << ";a3ProbeSameExactOneHotVertex=" << sameOneHot;
+      int admissibleOrientations = 0;
+      if (probeCarrier != nullptr) {
+        const auto sourceVertex = sameOneHot
+            ? authority::SourceVertexId::from_index(
+                  *fromVertex, surface_cell_tracing_detail::source_vertex_extent(faces))
+            : std::nullopt;
+        const auto firstRow = surface_cell_tracing_detail::source_face_id(
+            fromPoint.face, faces.rows());
+        const auto secondRow = surface_cell_tracing_detail::source_face_id(
+            toPoint.face, faces.rows());
+        const bool publishedTerminal = sourceVertex &&
+            contact != authoritativeOptions.hardRailTerminalContacts.end() &&
+            (contact->second.endpoints[0] == *sourceVertex ||
+             contact->second.endpoints[1] == *sourceVertex) &&
+            (endpointEdge.first() == *sourceVertex ||
+             endpointEdge.second() == *sourceVertex);
+        const bool matchingComponent = firstRow && secondRow &&
+            contact != authoritativeOptions.hardRailTerminalContacts.end() &&
+            contact->second.component >= 0 &&
+            static_cast<std::size_t>(contact->second.component) ==
+                network.sourceTopologyRegions->component_for_row(*firstRow).index() &&
+            static_cast<std::size_t>(contact->second.component) ==
+                network.sourceTopologyRegions->component_for_row(*secondRow).index();
+        endpointEvidence << ";a3ProbePublishedCarrierEndpoint=" << publishedTerminal
+                         << ";a3ProbeComponentMatches=" << matchingComponent;
+        TerminalStarIncidence starIncidence;
+        if (sourceVertex) {
+          starIncidence.try_emplace(*sourceVertex);
+          for (const auto &region : network.sourceTopologyRegions->regions()) {
+            for (const auto &member : region.faces()) {
+              const auto &corners = member.topology.vertices();
+              if (std::find(corners.begin(), corners.end(), *sourceVertex) ==
+                  corners.end()) continue;
+              for (const auto neighbor : corners) {
+                if (neighbor == *sourceVertex) continue;
+                const auto spoke = authority::SourceEdgeTopologyKey::make(
+                    *sourceVertex, neighbor);
+                if (spoke)
+                  starIncidence[*sourceVertex][spoke.value()].push_back(
+                      member.topology);
+              }
+            }
+          }
+        }
+        const auto path_result_text = [](const TerminalStarPathResult result) {
+          switch (result) {
+            case TerminalStarPathResult::Unique: return "Unique";
+            case TerminalStarPathResult::Missing: return "Missing";
+            case TerminalStarPathResult::Ambiguous: return "Ambiguous";
+            case TerminalStarPathResult::Invalid: return "Invalid";
+          }
+          return "Invalid";
+        };
+        const auto emit_faces = [&](const std::set<TerminalStarFace> &used) {
+          if (used.empty()) { endpointEvidence << "none"; return; }
+          bool firstFace = true;
+          for (const auto &face : used) {
+            if (!firstFace) endpointEvidence << '|';
+            const auto &ids = face.vertices();
+            endpointEvidence << ids[0].index() << ','
+                             << ids[1].index() << ','
+                             << ids[2].index();
+            firstFace = false;
+          }
+        };
+        if (firstRow && secondRow) {
+          const auto firstAttachment =
+              network.sourceTopologyRegions->topology_for_row(*firstRow);
+          const auto secondAttachment =
+              network.sourceTopologyRegions->topology_for_row(*secondRow);
+          for (const bool reverse : {false, true}) {
+            const auto oriented = reverse
+                ? SurfaceHardRailFieldTransition{
+                      probeCarrier->edge, probeCarrier->secondFace,
+                      probeCarrier->firstFace,
+                      probeCarrier->firstToSecond.inverse()}
+                : *probeCarrier;
+            std::set<TerminalStarFace> firstUsed, secondUsed;
+            const auto firstResult = sourceVertex
+                ? unique_terminal_star_path(
+                      starIncidence, authoritativeOptions.hardFeatureEdges,
+                      *network.sourceTopologyRegions,
+                      authoritativeOptions.fieldTransportAtlas,
+                      *sourceVertex, firstAttachment, oriented.firstFace, &firstUsed)
+                : TerminalStarPathResult::Invalid;
+            const auto secondResult = sourceVertex
+                ? unique_terminal_star_path(
+                      starIncidence, authoritativeOptions.hardFeatureEdges,
+                      *network.sourceTopologyRegions,
+                      authoritativeOptions.fieldTransportAtlas,
+                      *sourceVertex, secondAttachment, oriented.secondFace, &secondUsed)
+                : TerminalStarPathResult::Invalid;
+            const bool disjoint = firstResult == TerminalStarPathResult::Unique &&
+                secondResult == TerminalStarPathResult::Unique &&
+                std::none_of(firstUsed.begin(), firstUsed.end(),
+                             [&](const auto &face) {
+                               return secondUsed.contains(face);
+                             });
+            bool carrierA3 = false;
+            if (authoritativeOptions.fieldTransportAtlas) {
+              const auto fromCarrier =
+                  network.sourceTopologyRegions->row_for_topology(oriented.firstFace);
+              const auto toCarrier =
+                  network.sourceTopologyRegions->row_for_topology(oriented.secondFace);
+              if (fromCarrier && toCarrier) {
+                const auto forward = authoritativeOptions.fieldTransportAtlas->
+                    transition_value(oriented.edge, *fromCarrier, *toCarrier);
+                const auto backward = authoritativeOptions.fieldTransportAtlas->
+                    transition_value(oriented.edge, *toCarrier, *fromCarrier);
+                carrierA3 = forward && backward &&
+                    forward->transport == oriented.firstToSecond &&
+                    backward->transport == oriented.firstToSecond.inverse();
+              }
+            }
+            admissibleOrientations +=
+                publishedTerminal && matchingComponent && disjoint && carrierA3;
+            endpointEvidence << ";a3ProbeOrientation" << reverse
+                             << "First=" << path_result_text(firstResult)
+                             << ";a3ProbeOrientation" << reverse
+                             << "Second=" << path_result_text(secondResult)
+                             << ";a3ProbeOrientation" << reverse
+                             << "Disjoint=" << disjoint
+                             << ";a3ProbeOrientation" << reverse
+                             << "CarrierA3=" << carrierA3
+                             << ";a3ProbeOrientation" << reverse << "FirstFaces=";
+            emit_faces(firstUsed);
+            endpointEvidence << ";a3ProbeOrientation" << reverse << "SecondFaces=";
+            emit_faces(secondUsed);
+          }
+        } else {
+          endpointEvidence << ";a3ProbeAttachments=Invalid";
+        }
+      } else {
+        endpointEvidence << ";a3ProbeCarrier=Missing";
+      }
+      endpointEvidence << ";a3ProbeAdmissibleOrientationCount="
+                       << admissibleOrientations;
       // Preserve exact rational interval numerators/denominators, not a
       // rounded floating-point reconstruction of the two ordinals.
       const auto append_interval = [&](const char *label,
