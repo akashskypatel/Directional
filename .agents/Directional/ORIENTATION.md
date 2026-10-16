@@ -1,3 +1,9 @@
+## CURRENT — M6 CP3 R9B endpoint contract definition (2026-10-16)
+
+Proposed V/I/C contract now recorded in `Architecture_M6_CP3_R9B_Endpoint_Equivalence_Contract_Specification_20261016.md`: shared vertex alone is insufficient; require published open terminal, exact corner identity and unique admissible source-star paths for both source sectors, with independent checked-product verification. Exact interior rational equality and no-contact closed-rail restrictions remain; RA-76 one-ULP discrepancies not excused. Independent Review required before implementation. No new runtime or source acceptance, frozen ledgers and selectors unchanged, `RP-01` open and `RP-02` UNREACHED.
+
+---
+
 ## CURRENT — `M6-CP3-DEFN-R9A-ENDPOINT-FACE-COMPARISON-CENSUS-REV`, 2026-10-16: RA-78 frozen; the enumeration found a second gatekeeper, and the rule the fix needs is already running inside it
 
 **Supersedes the RA-77 paragraph below as the current state.** One turn was adjudicated and it
