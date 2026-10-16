@@ -1,3 +1,8 @@
+## 2026-10-16 — M6 CP3 R9A endpoint face-comparison census (Definition only)
+
+- Delivered `.agents/Directional/Architecture_M6_CP3_R9A_Endpoint_Face_Comparison_Census_20261016.md`: static, line-anchored complete endpoint-admission/checked-product face-comparison inventory; true source-face topology obligations separated from source-entity decoding and rejected-only probes. Snapshot `b34c57176` was verified (5,672/5,672), and inspected code unchanged against entry head. RA-76's 48 same-source-vertex differing-face samples and 324 exactly one-ULP same-edge parameter differences retained as measured limits, not new predicate authority.
+- No contract or repair proposed; no implementation, tests, binary execution or selector change. Independent review of R9A is required before separately scoped R9B. `RP-01` unresolved, `RP-02` UNREACHED, gate C suspended, ledgers/debt/accepted gates unchanged. Recorded the late snapshot-mode choice and failed Library preservation upload rather than claiming successful Google Drive patch transport.
+
 ## 2026-10-16 — RA-77 frozen: rung 19 produced no deliverable, and the rung is split because the reviewer over-scoped it
 
 - Architecture Review only (`M6-CP3-R9-RUNG-RESCOPE-REV`); no source, test, selector, binary, harness, workflow, benchmark or ledger-count change in this Review, and no Directional binary executed.
