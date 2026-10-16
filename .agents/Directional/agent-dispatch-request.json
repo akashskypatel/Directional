@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb6-r7-node-face-probe-apply-20261016a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb6-r7-node-face-probe-apply",
-  "file_id": "1ovSFyBA5nR8UMVFmQEXHyPgqezrdcEdC",
-  "patch_sha256": "0a1f779996edcb6088298462403867f30ace3fd70bdb0ddce04c5a178db11f0f",
-  "base_sha": "5f70370cd920765388ce6f0d29517cf7498bb945",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "Record node and side source-face admissibility after A2b rejection",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb6-r7-node-face-probe-compile-20261016a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb6-r7-node-face-probe-compile",
+  "source_sha": "4d64b7684ac7ec2d0655f96c88ecf05f2906bca7",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-cb6-node-face-probe-compile"
 }
