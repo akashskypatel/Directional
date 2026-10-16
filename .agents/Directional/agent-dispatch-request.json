@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-r6-corner-authority-20261016b",
+  "request_id": "m6-cp3-defn-r7-corner-face-spec-20261016a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-r6-corner-authority-apply",
-  "file_id": "1CdF9InvcIwPT4EkkmMoLg6jw62UVgwez",
-  "patch_sha256": "e6c67b497b33c7a4863f131481e89b229e8ccb43d3a67ceddb9614f944a31bd2",
-  "base_sha": "c85bd360098bb0675443b5ca62702a9b2df0a686",
+  "mailbox_key": "m6-cp3-defn-r7-corner-face-spec-apply",
+  "file_id": "1iMNZXedEQbTyes_6rS7pLqNc7H82TWAk",
+  "patch_sha256": "2b201eecbd9ba22236e8f20a2e577ab6bde97282c45f0a7f16502ea38e574beb",
+  "base_sha": "491914f9371b799be594fa9d3aa35569280682d4",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "Define R6 corner assignment authority from exact source",
+  "commit_message": "Define R7 source-attested corner face selection repair",
   "retention_days": 14
 }
