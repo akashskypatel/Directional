@@ -1,3 +1,9 @@
+## 2026-10-16 — RP-01 R6 Definition clarification (unreviewed; no new stable event)
+
+Exact-source inspection disconfirms RA-70.14's `SurfaceCellTracing.cpp:11269` fallback-walk hypothesis on the measured rejected phase-front path. The actual face-valued data producer is planar `point_on_source` (`:11477-11509`) copied into `SurfacePhaseFrontCell` at `:12987`, independently of its subsequently traced path; geometric closure at `:7319-7357` does not compare source-face identity. This is a **source-static candidate attribution pending independent Review**, not a new runtime result or authorized repair. Falsifiers and scope in `Architecture_M6_CP3_R6_Corner_Assignment_Authority_Specification_20261016.md`. RP-01 remains unresolved; no new stable event; 66/17/49 debt1 unchanged. RP-02 unreached. Gate C suspended and moot for RP-01.
+
+---
+
 ## 2026-10-16 — RP-01 producer locus localized: the corner walked around the junction, the path did not (RA-69, RA-70)
 
 **Review:** `M6-CP3-R5-ROUTE-PATH-RECONCILIATION-REV`, adjudicating rungs 8 and 9 —

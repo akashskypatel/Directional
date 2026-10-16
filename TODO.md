@@ -1,3 +1,11 @@
+## CURRENT — R6 Definition source-static result; Review gate only (2026-10-16)
+
+- [x] `M6-CP3-DEFN-R6-CORNER-ASSIGNMENT-AUTHORITY-SPEC`: exact verified source shows RA-70.14 predicted `:11269` cause is unreachable for rejected phase fronts; `:10479` also fallback-only and `:19790` produced-success copy. Actual responsible boundary: planar `point_on_source` first-containing-face selection (`SurfaceCellTracing.cpp:11477-11509`), propagated to phase-front corners (`:12953-12959`, `:12985-12989`) before side paths (`:13012-13022`); closure compares only 3D positions (`:7319-7357`), so source-face disagreement can survive. See `Architecture_M6_CP3_R6_Corner_Assignment_Authority_Specification_20261016.md` for bounded source evidence and falsifiers.
+- [ ] Next and only authorized turn: `M6-CP3-DEFN-R6-CORNER-ASSIGNMENT-AUTHORITY-SPEC-REV` independent source-static Review; adjudicate whether this producer supplies the measured f7 vs f3 mismatch and whether any pre-A4 reconciliation exists. **No Code+Build, TB, repair or rung11 implementation is authorized.**
+- [ ] RP-01 still unresolved; RP-02 UNREACHED; RA-65 gate C SUSPENDED and moot for RP-01. Frozen ledger 66/17/49 debt 1, CP2 491/491, R3 403/497, selector 497 unchanged. No new runtime/build/tests were performed this Definition turn.
+
+---
+
 ## CURRENT — RA-69/RA-70 frozen; RP-01's producer locus localized; next rung is a corner-assignment definition, documents only (2026-10-16)
 
 ### Turn sequence (byte-derived from `STATUS` history; frozen clauses in `Architecture_M6_Frozen_Definitions.md`)

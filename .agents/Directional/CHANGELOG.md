@@ -1,3 +1,7 @@
+## 2026-10-16 — R6 corner-assignment authority Definition (source-static)
+
+Verified source snapshot `c85bd360098bb0675443b5ca62702a9b2df0a686`, run `38837317846`, artifact `12019178209` (5,656/5,656 hashes). Falsified the RA-70.14 `:11269` hypothesis: both proposed fallback corner writes are unreachable before rejected phase-front return; `:19790` is only a successful-result copy. The active planar phase-front first-containing-face choice at `:11477-11509`, copied at `:12987`, is independent of the side path and passes position-only closure. Named producer locus for independent Review, without implementing repair or running binaries. See `Architecture_M6_CP3_R6_Corner_Assignment_Authority_Specification_20261016.md`; ledger and selector unchanged.
+
 ## 2026-10-16 — route/path diagnostic harvest
 
 Artifact-only TB5 [38831615391](https://github.com/akashskypatel/Directional/actions/runs/38831615391) completes 44/44, 44 RED, postflight true, source `a143af264bc8b33f0e1b2f8def16b2479b53d5fc`; 21 junction path/endpoint mismatches, 23 consistent-incidence interior controls; per-identity evidence in `.agents/Directional/Architecture_M6_CP3_R5_Route_Path_Reconciliation_Harvest_Artifact_Only_TB_Report_20261016.md`. No implementation/test/selector change, no gate or ledger credit. First harness attempt failed multiplicity parsing; corrected retry succeeded.
