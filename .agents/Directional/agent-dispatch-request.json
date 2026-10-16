@@ -1,12 +1,14 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb6-r7-closeout-docs-apply-20261016a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb6-r7-closeout-docs-apply",
-  "file_id": "1BxZQ5vAXQM-iK1F_bqEu4ccb4ugDMuBL",
-  "patch_sha256": "cee4c1b1a26ac30e52d1f628faa31ba790e1a24fd44f2f674ffba2fc46c92d86",
-  "base_sha": "5f70370cd920765388ce6f0d29517cf7498bb945",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "Record CB6 verified compile and TB6 handoff",
+  "request_id": "m6-cp3-tb6-r7-face-harvest-20261016a",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb6-r7-face-harvest",
+  "executor_sha": "b37220d9068e5c224a2e938bf3a921e25a04a92a",
+  "semantic_source_sha": "4d64b7684ac7ec2d0655f96c88ecf05f2906bca7",
+  "turn_id": "M6-CP3-TB6-R7-NODE-ADMISSIBLE-FACE-SET-HARVEST",
+  "harness_path": ".agents/Directional/tools/m6_cp3_r7_admissible_face_harvest_harness.sh",
+  "harness_sha256": "94801db115935565df61876785bc5a13f2eec3ab1c03e5df6c46d0485b4032fb",
+  "environment": {},
+  "artifact_prefix": "m6-cp3-tb6-r7-face-harvest",
   "retention_days": 14
 }
