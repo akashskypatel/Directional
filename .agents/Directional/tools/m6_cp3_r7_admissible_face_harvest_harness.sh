@@ -38,7 +38,7 @@ try:
  pkgzip=root/"pkg.zip"
  subprocess.run(["curl","-fsSL",*auth,url+"/zip","-o",str(pkgzip)],check=True)
  check(hashfile(pkgzip)==digest,"package digest")
- with zipfile.ZipFile(pkgzip) as f:f.extractall(root/"package")
+ subprocess.run(["unzip","-q",str(pkgzip),"-d",str(root/"package")],check=True)
  pkg=root/"package"
  check(manifest(pkg)==28,"manifest count")
  check((pkg/"metadata/source-commit.txt").read_text().strip()==sha0,"source SHA")
