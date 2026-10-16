@@ -1,2 +1,0 @@
-Snapshot request for M6-CP3-CB10-R9-CARRIER-ENDPOINT-SUBCONDITION-PROBE.
-Freeze at this trigger commit's exact SHA.
