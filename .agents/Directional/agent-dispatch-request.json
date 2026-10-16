@@ -1,18 +1,13 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb10-r9-compile-20261016a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb10-r9-gmp-compile",
-  "source_sha": "d938ecb57e1040c2a73d5d25c4a613414556cb18",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-cb10-r9-gmp"
+  "request_id": "m6-cp3-tb10-r9-endpoint-subconditions-20261016a",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb10-r9-endpoint-harvest",
+  "executor_sha": "3a5a726fc0e2eb5f32f8cef5399d92e203eb836c",
+  "semantic_source_sha": "d938ecb57e1040c2a73d5d25c4a613414556cb18",
+  "turn_id": "M6-CP3-TB10-R9-CARRIER-ENDPOINT-SUBCONDITION-HARVEST",
+  "harness_path": ".agents/Directional/tools/m6_cp3_r9_carrier_endpoint_subcondition_harvest_harness.sh",
+  "harness_sha256": "23875c6ab3fdd3bb983ee8404fe027aaf3ddb80cf43a8f1f8f4bac450e155e65",
+  "environment": {},
+  "artifact_prefix": "directional-m6-cp3-tb10-r9"
 }
