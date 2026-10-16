@@ -1,3 +1,0 @@
-Purpose: exact source snapshot for M6-CP3-DEFN-R7-CORNER-FACE-SELECTION-REPAIR-SPEC.
-Initial STATUS bootstrap commit: ab6d966195bb799e124ec5c12d771671630f95ed.
-Snapshot source authority: this marker-trigger commit SHA.
