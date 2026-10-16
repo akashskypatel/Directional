@@ -1,3 +1,0 @@
-M6-CP3-DEFN-R9B-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC
-Snapshot request: immutable document-and-source inspection.
-No code, build, runtime, test or benchmark requested.
