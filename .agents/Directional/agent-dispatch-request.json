@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-r7-corner-face-spec-20261016a",
+  "request_id": "m6-cp3-cb6-r7-node-face-probe-apply-20261016a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-r7-corner-face-spec-apply",
-  "file_id": "1iMNZXedEQbTyes_6rS7pLqNc7H82TWAk",
-  "patch_sha256": "2b201eecbd9ba22236e8f20a2e577ab6bde97282c45f0a7f16502ea38e574beb",
-  "base_sha": "491914f9371b799be594fa9d3aa35569280682d4",
+  "mailbox_key": "m6-cp3-cb6-r7-node-face-probe-apply",
+  "file_id": "1ovSFyBA5nR8UMVFmQEXHyPgqezrdcEdC",
+  "patch_sha256": "0a1f779996edcb6088298462403867f30ace3fd70bdb0ddce04c5a178db11f0f",
+  "base_sha": "5f70370cd920765388ce6f0d29517cf7498bb945",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "Define R7 source-attested corner face selection repair",
+  "commit_message": "Record node and side source-face admissibility after A2b rejection",
   "retention_days": 14
 }
