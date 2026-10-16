@@ -1,3 +1,59 @@
+## CURRENT — `M6-CP3-R5-ROUTE-PATH-RECONCILIATION-REV`, 2026-10-16: RA-69 and RA-70 frozen; the measurement found the culprit by finding everything that agreed
+
+**Supersedes the RA-68 paragraph below as the current state.** Two turns were adjudicated and both
+are **accepted**, one with a provenance charge and one with two charges. No open REVIEW_BLOCKER. No
+promotion, no stable event, no regression recurrence, no gate credit.
+
+**§3 current state — the question moved from "what would a repair be made of" to "whose fault is it",
+and the answer is now a single field.** Two rungs ago the refusal was explained; one rung ago both
+proposed repairs were shown to be unbuildable. This pair of rungs added a handful of fields to a
+diagnostic that already existed, ran the same forty-four cases again, and found that the path a cell
+actually traced and the corner the cell was judged against disagree — in every failing case and in
+none of the passing ones. The traced path visits exactly the two faces of the one source edge the
+route crossed. The corner, meanwhile, names a face belonging to the *neighbouring* hard feature,
+reached by stepping around the vertex the two features share. Nothing anywhere compares the two.
+
+**§4 runtime witness — forty-four processes, and the separation is total.** Every case was run as its
+own process against a packaged binary nobody could rebuild, and the discriminating column is clean:
+in all twenty-one failing cases no step of the route touches the face the corner names, and in all
+twenty-three controls it does. There is no overlap and no exception, which is what makes this a
+measurement rather than an illustration. The package was checked back to the byte: the source file
+inside it hashes to the same value as the file in the repository, so the thing that ran is the thing
+that is written down.
+
+**§5 instrument — the sharpest thing here is what did *not* change.** The turn reported the
+difference between the two groups and stopped. But the traced path is **identical in all forty-four
+cases**, controls included, and the first endpoint is correct in all forty-four too. That is the half
+that does the work: because the tracing, the route, the carrier and the first corner are the same
+whether the case passes or fails, each of them is cleared by the very same measurement, and only one
+field on one side is left standing. A finding that reports only the difference throws away the
+evidence that narrows it. Separately, two of the groups turned out to be one group printed in two
+different vertex numberings — the same confusion caught one rung earlier, and the lesson had been
+written down but not applied to the table.
+
+**§7 priority — define the producer of the corner, and nothing else.** Both repairs proposed a rung
+ago are now addressed to innocent parties: the publisher published a correct route for the path it
+took, and the consumer correctly refused a face pair that touches at a single point. Fixing either
+would only make the pipeline accept something that is wrong. There are exactly three places in the
+tracing code that write a cell's corners, all findable by reading, so the next turn is a document
+turn over those three: say what defines each corner's face, say whether anything checks it against
+the path, and name the one that can name a face the path never visited. One of the three resolves a
+disagreement between two independent walks by measuring the *distance* between their results — and
+at a shared vertex two different faces can be at zero distance from each other, which would let the
+wrong face through silently. That is stated as a prediction with its falsifier, to be settled by
+reading, not by another run.
+
+**§8 patterns — a charge that came back as a failed run, and was reported anyway.** A complaint made
+one rung ago about a parser that only ever read the first of several identical diagnostic lines was
+fixed here, and the fix immediately turned a hidden ambiguity into an outright failed dispatch. The
+retry succeeded, and nothing in the final evidence would have revealed the first attempt; it was
+disclosed regardless, with the failed run named. That is the sixth consecutive turn to report
+something that did not flatter the process, each in a different shape. The deferral decided one rung
+ago was also vindicated: the definition turn had been pushed behind this measurement precisely
+because the measurement could change which producer needed defining, and it did.
+
+---
+
 ## CURRENT — 2026-10-16 TB5 route/path reconciliation harvest verified (separate independent decision pending)
 
 `M6-CP3-TB5-R5-ROUTE-PATH-RECONCILIATION-HARVEST` completed its bounded artifact-only observation. Workflow [38831615391](https://github.com/akashskypatel/Directional/actions/runs/38831615391) **succeeded**, immutable result artifact `12017109271` outer SHA-256 `e394c4deab99e5f8dca919a7a8e61a24aa93de3ba0ed96c3c3afddc19f8b9458`, internal SHA256SUMS verified; packaged source `a143af264bc8b33f0e1b2f8def16b2479b53d5fc` from build artifact `12015849679`. **44/44 separate processes executed; 44 RED, zero missing, postflight passed**, with no compile or benchmark. Diagnostic multiplicity was verified (42×1, 2×3). **RA-68.9 confirmed observationally:** 21/21 junction cases have no route edge incident to the to-attachment face (to row 7, traced second boundary path row 3); 23/23 interior controls have route incidence (to row 3). This supports investigating A4 corner/path producer reconciliation but neither prior repair shape is authorized; no specific producer cause has been proven. First harness attempt [38831159326](https://github.com/akashskypatel/Directional/actions/runs/38831159326) failed postflight due to aggregating multiple diagnostic occurrences; diagnosed retry did not modify production/test semantics. Full record: `.agents/Directional/Architecture_M6_CP3_R5_Route_Path_Reconciliation_Harvest_Artifact_Only_TB_Report_20261016.md`. Ledger 66/17/49 debt 1, CP2 491/491, R3 403/497, frozen 497; RP-02 unreached. Next separately authorized independent decision; no successor ID established.

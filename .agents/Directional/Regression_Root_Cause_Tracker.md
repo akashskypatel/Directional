@@ -1,3 +1,121 @@
+## 2026-10-16 — RP-01 producer locus localized: the corner walked around the junction, the path did not (RA-69, RA-70)
+
+**Review:** `M6-CP3-R5-ROUTE-PATH-RECONCILIATION-REV`, adjudicating rungs 8 and 9 —
+`M6-CP3-CB5-R5-ROUTE-PATH-RECONCILIATION-PROBE` and
+`M6-CP3-TB5-R5-ROUTE-PATH-RECONCILIATION-HARVEST`. **Both ACCEPTED**; RA-69 carries one
+charge, RA-70 carries two. Decision:
+`.agents/Directional/Architecture_M6_CP3_R5_Route_Path_Reconciliation_Review_Decision.md`.
+Semantic source `a143af264bc8b33f0e1b2f8def16b2479b53d5fc`.
+
+### Root-cause state change
+
+`RP-01 AUTHORITY_DOMAIN_CONFLATION` moves from *measured, mechanistically derived and
+bounded on both repair families* to **producer locus localized**. Code remains **NOT
+authorized**.
+
+The defect is the assignment of `SurfacePhaseFrontCell::corners[(side+1)%4].face`.
+`corners` is `std::array<SurfaceTracePoint,4>`
+(`include/directional/geometry/SurfaceCellTracing.h:1719`) and `SurfaceTracePoint` carries
+its own `int face` (`:90-93`). That field is the origin of the measured
+`a2bProbeToFace=7`, while the owning cell's `boundaryPaths[filledSide]` yields face row
+`{3}`. Nothing reconciles the two — RA-65.10, recorded four rungs ago and now the measured
+defect rather than a backlog note.
+
+### The measurement
+
+Result artifact `12017109271` (run `38831615391`), ZIP SHA-256 recomputed
+`e394c4deab99e5f8dca919a7a8e61a24aa93de3ba0ed96c3c3afddc19f8b9458`, 81,938 bytes,
+internal manifest **51 OK / 0 BAD**, `manifest-before` byte-identical to `manifest-after`,
+44 raw logs, `planned=44 executed=44 red=44 missing=0 postflight=true exit=0`. Partition
+re-derived independently from `route-path-reconciliation.tsv`:
+
+| n | first failing condition | route step | fromFace | toFace | path1 | path2 | hit_to | hit_from |
+|---:|---|---|---:|---:|---|---|---:|---:|
+| 23 | `not-same-interior-carrier-point` | `1,4` | 0 | **3** | `0` | `3` | **1** | 1 |
+| 15 | `carrier-orientation` | `1,4` | 0 | **7** | `0` | `3` | **0** | 1 |
+| 6 | `carrier-orientation` | `1,2` | 0 | **7** | `0` | `3` | **0** | 1 |
+
+`routeStepCount=1` and `a2bProbeFailure=no-exact-terminal-corner` are universal; all 44
+rows are `COMPLETE`. `hit_to` separates the populations **perfectly and without
+exception**: 0 in all 21 junction cases, 1 in all 23 controls. **RA-68.9 is CONFIRMED and
+its named falsifier did not occur.**
+
+The 15 and the 6 are **one phenomenon in two vertex index domains**, not two: the RA-67.5
+first-appearance compaction (`4→2, 2→4, 7→6, 6→7`) maps `0,1,4↦0,1,2`, `4,7,8↦2,6,8`,
+carrier `1,4↦1,2` and route `1,4↦1,2`, all under one bijection, with both populations in
+the same suite `SurfaceCellAuthorityContractCutover`. The harness's own
+`route-path-summary.txt` partitions into **two** tuples with the 21 undivided.
+
+### Mechanism, derived from fixture bytes
+
+From `tests/SurfaceCellsPhase10Tests.cpp:223-273`: `f0=(0,1,4) f1=(0,4,3) f2=(1,2,5)
+f3=(1,5,4) f4=(3,4,7) f5=(3,7,6) f6=(4,5,8) f7=(4,8,7)`, with hard edges `(1,4)` and
+`(4,7)` sharing vertex 4. Edge `{1,4}` is incident to faces `{0,3}`; edge `{4,7}` to
+`{4,7}`.
+
+The route's single step is `{1,4}` and the traced boundary paths visit exactly `{0}` and
+`{3}` — precisely the two faces of the crossed edge, so the tracing is correct and
+complete. The corner array declares the `to` endpoint in `f7=(4,8,7)`, the far face of the
+**other** hard edge, sharing only vertex 4 with the crossed edge. `oriented_carrier` is
+therefore asked for the pair `((0,1,4),(4,8,7))`, whose intersection is a lone vertex and
+not an edge; no edge-keyed carrier can exist for it (RA-67.6), and `carrier-orientation`
+fails first in all 21. In the controls `ToAttachment=1,4,5=f3` is the genuine second face,
+a carrier exists, and rejection falls through to `not-same-interior-carrier-point` in all
+23.
+
+### What the same measurement exonerates
+
+`FirstPathFaces=0` and `SecondPathFaces=3` are **identical in all 44 rows**, controls and
+failures alike, and `hit_from=1` **universally**. The tracer, the route publisher, the
+carrier producer and the `from` corner are therefore exonerated by the same measurement
+that convicts the `to` corner. The defect is **one field, on one side**.
+
+Consequently both RA-68 repair shapes are **the wrong family**, not merely unbuildable:
+the publisher published a correct single-step route for the path it crossed, and the
+consumer correctly refused a face pair sharing only a vertex. A repair at either locus
+would make the pipeline accept an endpoint that is simply wrong. Gate C gains a third
+ground for suspension and is additionally **moot for `RP-01`** (RA-70.11).
+
+### Charges
+
+- **RA-69.5** chat-retained evidence is not provenance. The non-standard source transport
+  is settled harmless by content — packaged
+  `src/geometry/SurfaceCellTracing.cpp` hashes `16615b23581a7ab2…`, equal to the
+  `a143af264` blob and to `HEAD`; packaged `tests/SurfaceCellsPhase10Tests.cpp` equals
+  `HEAD`. What is charged is citing a chat attachment as a preservation store: under
+  RA-61.5 it is neither addressable nor hashable by a successor.
+- **RA-70.7** the result is under-claimed; the unreported path-identity and `hit_from`
+  facts are the half of the evidence that localizes the defect. Same category as RA-67.9,
+  a **repeat**.
+- **RA-70.8** two labels for one edge tabulated as two route topologies — RA-67.13 not
+  applied one rung after it was frozen.
+
+### Credits
+
+The RA-67.8 charge is discharged on the route fields and proved consequential: the first
+dispatch `38831159326` is independently `conclusion=failure`, was refused and disclosed
+when the successful retry would have concealed it. **`RP-03` satisfied a sixth consecutive
+turn.** The residue — first-match parsing on the nine non-route fields — is bounded to two
+**control** identities and then **measured** harmless, both logs byte-identical across all
+three emissions of the full payload. Rung 8's probe is decision-neutral **structurally**
+(branch opens `:19360`, insertion at depth 2, branch closes `:19566`, junction
+construction resumes `:19567`) and reports absence as absence via `missing-cell`,
+`missing-side` and `none`, so RA-66.4 is not repeated.
+
+### Accounting
+
+Ledger **66/17/49**, debt **1**, CP2 **491/491** accepted, R3 **403/497** rejected, frozen
+selector **497** — unchanged. No promotion, no stable event, no regression recurrence, no
+ledger recomputation, no 497 execution, no benchmark. **`R4-VIN-01` re-arms at
+`a143af264`**: artifacts `11994726341`, `11996317553`, `12005034654` and `12010485442` are
+**baselines, never comparands**; the 44 RED are the baseline for `a143af264` alone,
+candidate / non-stable, a diagnostic vintage and not a new stable recurrence. `RP-02`
+**UNREACHED**. `PROCESS-01` discharged. RA-61.9 WITHDRAWN, final. RA-64.6 WITHDRAWN,
+final. Successor **`M6-CP3-DEFN-R6-CORNER-ASSIGNMENT-AUTHORITY-SPEC`** (rung 10,
+documents-only, three bounded corner producers at `:10479`, `:11269`, `:19790`).
+
+---
+
 ## CURRENT — both candidate repairs fail the producer test, and a cheaper measurement may yet change which producer is needed; RA-68 frozen (2026-10-15)
 
 **One turn adjudicated, ACCEPTED:** `M6-CP3-DEFN-R5-JUNCTION-CARRIER-AUTHORITY-SPEC`. Decision:

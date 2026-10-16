@@ -1,3 +1,153 @@
+## RA-69 and RA-70 — frozen definitions, M6 CP3 R5 route/path reconciliation (2026-10-16)
+
+**Authority:** `.agents/Directional/Architecture_M6_CP3_R5_Route_Path_Reconciliation_Review_Decision.md`.
+Adjudicates `M6-CP3-CB5-R5-ROUTE-PATH-RECONCILIATION-PROBE` (rung 8) and
+`M6-CP3-TB5-R5-ROUTE-PATH-RECONCILIATION-HARVEST` (rung 9); **both ACCEPTED**.
+Semantic source `a143af264bc8b33f0e1b2f8def16b2479b53d5fc`.
+
+### RA-69 — the probe (rung 8)
+
+- **RA-69.1** A diagnostic emission is decision-neutral only when neutrality is
+  **structural**. Verified by brace accounting: rejection branch opens
+  `src/geometry/SurfaceCellTracing.cpp:19360`, insertion sits at depth 2, branch closes
+  `:19566`, junction construction resumes `:19567`. `42 0` on one file. No acceptance
+  path can observe the probe.
+- **RA-69.2** The only `return` statements in the insertion are lambda-local — the
+  `std::find_if` predicate and the early exit of `append_traced_faces`. Nothing writes
+  `phaseFrontState`, mutates a certificate, or constructs a rejection string.
+- **RA-69.3** Absence is published as absence. `missing-cell`, `missing-side` and `none`
+  are emitted as distinct sentinels and parsed as incomplete. **RA-66.4 is not repeated.**
+- **RA-69.4** The compile chain is closed **by content**: packaged
+  `src/geometry/SurfaceCellTracing.cpp` hashes to `16615b23581a7ab2…`, equal to the
+  `a143af264` blob and to `HEAD`; packaged `tests/SurfaceCellsPhase10Tests.cpp` equals
+  `HEAD` at `7c88a51373ca…`. Package `12015849679` ZIP SHA-256 recomputed `92a014a6d0bc…`,
+  28/28 manifest, `source-commit.txt = a143af264…`, `runtimeExecution=false`,
+  `exactArithmeticBackend=GMP`, preflight/build exits `0`/`0`, five `source-status-*`
+  snapshots empty, eight targets, GMP and GMPXX both linked. Snapshot `48ba0b6b1` is
+  tree-identical to `5be5e123e` on `src`/`include`/`tests`.
+- **RA-69.5 CHARGE — chat-retained evidence is not provenance.** A non-standard source
+  transport (Google Drive staging failed twice; GitHub Git-objects API fallback) is
+  **settled harmless by content** at RA-69.4. What is charged is citing "a downloadable
+  preservation patch retained in this chat" as a preservation store. Under RA-61.5 a claim
+  is provenanced when it is re-derivable from repository bytes or an immutable artifact;
+  a chat attachment is neither addressable nor hashable by a successor. The landed blob is
+  the preserved object.
+- **RA-69.6** Informational: the probe's `std::find_if` over `phaseFrontState.cells` is
+  O(rejections x cells). Diagnostic-only, **not authorized for optimisation**, recorded so
+  no later turn inherits it into a non-diagnostic path.
+- **RA-69.7** The self-disclosed `READ_MODE` ordering defect is procedural; **credited as
+  disclosure, not charged**, and establishes no semantic result.
+
+### RA-70 — the harvest (rung 9)
+
+- **RA-70.1** The instrument compares inside one index domain. `hit_to` is
+  `sum(bool(t and e <= t) for e in edges)` — a **subset test of the route edge's vertex
+  pair against the ToAttachment face's vertex triple**, the definition of edge-face
+  incidence. Path faces are parsed as row indices and compared only to row indices.
+  Carrier edges derive as `c & d` with `len(carrier)==2` asserted.
+- **RA-70.2** Fail-closed via `if missing: raise SystemExit`, with `complete` requiring
+  `n>0`, `len(actual)==n`, contiguous `indices==list(range(n))`, 2-element edges, all eight
+  derived values present. **The RA-67.8 charge is discharged on the route fields** —
+  every emission is collected and `occurrences_consistent` requires agreement; a
+  `probe_occurrences` column now exists. The charge was consequential: dispatch
+  `38831159326` is independently `conclusion=failure`, was refused and disclosed when the
+  retry would have concealed it. **`RP-03` satisfied a sixth consecutive turn.**
+- **RA-70.3** Residue, bounded then **measured**: `get()` is still first-match for the
+  nine non-route fields, so `hit_to` mixes a first-match `t` with a consistency-checked
+  `edges`. `probe_multiplicity=[(1,42),(3,2)]`; both multi-emission identities are
+  **controls**, so no junction case is exposed; and in both logs the full probe payload is
+  byte-identical across all three emissions. Harmless by measurement; **open as a
+  narrowing to close.**
+- **RA-70.4** Result artifact `12017109271`: ZIP SHA-256 recomputed `e394c4deab99…`,
+  81,938 bytes, internal manifest **51 OK / 0 BAD**, `manifest-before` byte-identical to
+  `manifest-after`, 44 raw logs. `execution-boundary.txt` =
+  `planned=44 executed=44 red=44 missing=0 postflight=true exit=0`,
+  `compile=false relink=false benchmarks=false selector497=false`; `immutability.txt` all
+  `true`; harness SHA-256 `64a6bb67a02e…` equal at working tree and executor `c46615bcc`.
+- **RA-70.5** Partition re-derived from the TSV: exactly three tuples, 44 rows, all
+  `COMPLETE`, `routeStepCount=1` and `a2bProbeFailure=no-exact-terminal-corner` universal.
+  23 controls `(route 1,4; toFace 3; path 0/3; hit_to 1)`, 15 junction
+  `(route 1,4; toFace 7; path 0/3; hit_to 0)`, 6 junction
+  `(route 1,2; toFace 7; path 0/3; hit_to 0)`. `hit_to` separates the populations
+  **perfectly and without exception**.
+- **RA-70.6** **RA-68.9 CONFIRMED; the named falsifier did not occur.** 21 of 21 junction
+  cases have no route step incident to the `to` face; 23 of 23 controls do.
+- **RA-70.7 CHARGE — the result is under-claimed, and the discarded half is the half that
+  localizes it.** Unreported: `FirstPathFaces=0` and `SecondPathFaces=3` are **identical in
+  all 44 rows**, and `hit_from=1` **universally**. Because path, route, step count, carrier
+  edge and `from` corner are measurably identical across the populations that pass and fail
+  incidence, the tracer, route publisher, carrier producer and `from` corner are all
+  exonerated by the same measurement, isolating the defect to one field on one side.
+  Same category as RA-67.9; **a repeat.**
+- **RA-70.8 CHARGE — one edge printed in two index domains, one rung after that lesson was
+  frozen.** The report tabulates two route topology keys `(1,4)` and `(1,2)`; its own
+  `route-path-summary.txt` partitions into **two** tuples with the 21 undivided, and the
+  RA-67.5 first-appearance compaction (`4→2, 2→4, 7→6, 6→7`) maps every measured triple
+  exactly: `0,1,4↦0,1,2`, `4,7,8↦2,6,8`, carrier `1,4↦1,2`, route `1,4↦1,2`. Both
+  populations are the same suite `SurfaceCellAuthorityContractCutover`. One phenomenon,
+  two vertex index domains — **RA-67.5 independently corroborated on fields that did not
+  exist when it was derived**, and **RA-67.13 not applied where it changes a reader's
+  count.**
+- **RA-70.9 Mechanism, re-derived from fixture bytes** (`tests/SurfaceCellsPhase10Tests.cpp:223-273`):
+  `f0=(0,1,4) f1=(0,4,3) f2=(1,2,5) f3=(1,5,4) f4=(3,4,7) f5=(3,7,6) f6=(4,5,8) f7=(4,8,7)`;
+  hard edges `(1,4)` and `(4,7)` share vertex 4; so edge `{1,4}` is incident to `{0,3}` and
+  `{4,7}` to `{4,7}`. The route's single step is `{1,4}` and the traced paths visit exactly
+  `{0}` and `{3}` — the two faces of the crossed edge. The corner declares `to` in
+  `f7=(4,8,7)`, the far face of the **other** hard edge, sharing only vertex 4. So
+  `oriented_carrier` is asked for `((0,1,4),(4,8,7))`, whose intersection is a lone vertex,
+  not an edge; no edge-keyed carrier can exist (RA-67.6) and `carrier-orientation` fails
+  first in all 21. In the controls `ToAttachment=1,4,5=f3` is the genuine second face, a
+  carrier exists, and rejection falls through to `not-same-interior-carrier-point` in all
+  23. **The corner walked around the junction; the path did not.**
+- **RA-70.10** Shapes A and B are now **the wrong family, not merely unbuildable**. The
+  publisher published a correct single-step route for the path it crossed; the consumer
+  correctly refused a face pair sharing only a vertex. A repair at either locus would make
+  the pipeline accept an endpoint that is simply wrong.
+- **RA-70.11** Gate C gains a third and more basic ground: a vertex-star sector certificate
+  at the consumer would authorize admission of a corner naming a face the path never
+  visited. **No consumer-side authority can repair a wrong corner.** Gate C remains
+  **SUSPENDED** and is additionally **moot for `RP-01`**. No vertex-star predicate may be
+  implemented.
+- **RA-70.12** `RP-01` advances to **producer locus localized**: the assignment of
+  `SurfacePhaseFrontCell::corners[(side+1)%4].face`. `corners` is
+  `std::array<SurfaceTracePoint,4>` (`include/directional/geometry/SurfaceCellTracing.h:1719`)
+  and `SurfaceTracePoint` carries its own `int face` (`:90-93`), which is where
+  `a2bProbeToFace=7` originates while `boundaryPaths` yields `{3}`. **Code NOT authorized.**
+- **RA-70.13 LESSON** — **the controls' agreement is half the result.** A perfectly
+  separating measurement says what differed and what did not; the second half performs the
+  localization, because every column that agrees exonerates the producer behind it. State
+  the null half explicitly.
+- **RA-70.14 Rung-10 prediction, with falsifier and observation rung named.** At
+  `src/geometry/SurfaceCellTracing.cpp:11258-11271` two walks reach one corner; the code
+  keeps `xy.point`, discards `yx.point`, and reduces the disagreement to
+  `closureError = max(closureError, (xyPosition - yxPosition).norm())` against
+  `options.closureToleranceFactor * min(hx, hy)`. **Prediction:** a face-index disagreement
+  is invisible to that test, because a position on the shared junction vertex is
+  representable in several faces at zero positional error, so the corner silently takes the
+  first walk's face. **Falsifier:** the rejected cells do not reach `:11269`, or a face
+  comparison guards it — then `:10479` or `:19790` is the locus. **Observation rung:** rung
+  10, by static reading. A prediction with provenance (RA-61.5) and its rung named
+  (RA-64.12); it does **not** revive RA-64.6, which the publisher's exoneration refutes.
+
+### Rung 10 scope — bounded corner-assignment authority
+
+`src/geometry/SurfaceCellTracing.cpp` has exactly **three** producers of a cell corner
+array: `:10479` the primary aggregate from four traced points; `:11269` the per-corner
+override from a two-way closure walk; `:19790` the propagation copy. Rung 10 is a
+**documents-only Definition turn** over these three loci and the `boundaryPaths` producer.
+
+### Accounting
+
+Ledger **66/17/49**, debt **1**, CP2 **491/491**, R3 **403/497**, frozen selector **497** —
+unchanged. **`R4-VIN-01` re-arms at `a143af264`**: every earlier artifact, including
+`11994726341`, `11996317553`, `12005034654` and `12010485442`, is a **baseline, never a
+comparand**; the 44 RED are the baseline for `a143af264` alone, candidate / non-stable.
+`RP-01` producer locus localized, code NOT authorized. `RP-02` **UNREACHED**. `RP-03`
+satisfied a sixth consecutive turn. `PROCESS-01` discharged. RA-61.9 WITHDRAWN, final.
+RA-64.6 WITHDRAWN, final.
+
+---
+
 ## RA-68 — `M6-CP3-DEFN-R5-JUNCTION-CARRIER-AUTHORITY-SPEC-REV`, 2026-10-15 (frozen)
 
 Decision: `.agents/Directional/Architecture_M6_CP3_R5_Junction_Carrier_Authority_Spec_Review_Decision.md`.

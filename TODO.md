@@ -1,3 +1,37 @@
+## CURRENT — RA-69/RA-70 frozen; RP-01's producer locus localized; next rung is a corner-assignment definition, documents only (2026-10-16)
+
+### Turn sequence (byte-derived from `STATUS` history; frozen clauses in `Architecture_M6_Frozen_Definitions.md`)
+
+| # | Turn | Kind | Review | Outcome |
+|---:|---|---|---|---|
+| 1 | `M6-CP3-CB2-R4-PREDICATE-SEPARATION` | Code + Build | RA-63 | accepted; probe separated from decision |
+| 2 | `M6-CP3-CB3-R4-LEDGER-CONTENT-FLOOR` | Code + Build | — | tooling floor added to both gates |
+| 3 | `M6-CP3-TB3-R4-PROBE-HARVEST` | Test + Benchmark | RA-64 | accepted; contradicted the reviewer, credited |
+| 4 | `M6-CP3-DEFN-R4-ENDPOINT-AUTHORITY-SPEC` | Definition | RA-65 | accepted w/ amendment; RA-64.6 withdrawn, gate C suspended |
+| 5 | `M6-CP3-CB4-R4-ENDPOINT-CHART-PROBE` | Code + Build | RA-66 | accepted; compile chain closed by bytes |
+| 6 | `M6-CP3-TB4-R4-ENDPOINT-CHART-HARVEST` | Test + Benchmark | RA-67 | accepted; mechanism derived; 44/44 RED |
+| 7 | `M6-CP3-DEFN-R5-JUNCTION-CARRIER-AUTHORITY-SPEC` | Definition | RA-68 | accepted; both repair shapes inadmissible |
+| 8 | `M6-CP3-CB5-R5-ROUTE-PATH-RECONCILIATION-PROBE` | Code + Build | RA-69 | accepted; neutrality structural; chain closed by content |
+| 9 | `M6-CP3-TB5-R5-ROUTE-PATH-RECONCILIATION-HARVEST` | Test + Benchmark | RA-70 | accepted; **RA-68.9 CONFIRMED**; RP-01 locus localized |
+| **10** | **`M6-CP3-DEFN-R6-CORNER-ASSIGNMENT-AUTHORITY-SPEC`** | **Definition** | pending | **NEXT — documents only** |
+| 11 | scope set by rung 10 | undetermined | pending | not authorized; do not pre-empt |
+
+- [x] Rungs 8 and 9 **both ACCEPTED** (RA-69, RA-70). Decision: `.agents/Directional/Architecture_M6_CP3_R5_Route_Path_Reconciliation_Review_Decision.md`.
+- [x] **RA-68.9 CONFIRMED; the named falsifier did not occur.** `hit_to` separates perfectly and without exception — 0 in all 21 junction cases, 1 in all 23 controls. Partition re-derived from the TSV: 23 controls (route `1,4`, toFace `3`, paths `0`/`3`), 15 junction (route `1,4`, toFace **7**), 6 junction (route `1,2`, toFace **7**); `routeStepCount=1` universal.
+- [x] **Mechanism closed from fixture bytes.** Edge `{1,4}` is incident to faces `{0,3}`; the traced paths visit exactly `{0}` and `{3}`. The corner declares `to` in `f7=(4,8,7)`, the far face of the **other** hard edge `(4,7)`, sharing only vertex 4 — so `oriented_carrier` is asked for a face pair meeting at a lone vertex, no edge-keyed carrier can exist, and `carrier-orientation` fails first. **The corner walked around the junction; the path did not.**
+- [x] **What the same measurement exonerates (RA-70.7 charge — the turn omitted this):** paths are `0`/`3` in **all 44 rows** and `hit_from=1` **universally**, so the tracer, route publisher, carrier producer and `from` corner are all cleared, leaving **one field on one side**.
+- [x] **Both RA-68 repair shapes are the wrong family (RA-70.10)**, not merely unbuildable. Gate C gains a third ground and is additionally **moot for `RP-01`** (RA-70.11) — no consumer-side vertex-star authority can repair a wrong corner.
+- [x] `RP-01` → **producer locus localized**: the assignment of `SurfacePhaseFrontCell::corners[(side+1)%4].face` (`include/directional/geometry/SurfaceCellTracing.h:1719`, `SurfaceTracePoint` carries `int face` at `:90-93`). **Code NOT authorized.** RA-65.10 is now the measured defect, not a backlog note.
+- [x] Charges: **RA-69.5** chat-retained evidence is not provenance (transport settled harmless by content — packaged cpp hashes equal to the `a143af264` blob and to `HEAD`); **RA-70.7** under-claimed result; **RA-70.8** one edge printed in two index domains, RA-67.13 not applied one rung after freezing.
+- [x] Credits: probe neutrality verified **structurally** (`:19360` → depth 2 → `:19566` → `:19567`); absence published as absence; **RA-67.8 discharged and consequential** — the fix turned a hidden ambiguity into dispatch `38831159326`, independently `conclusion=failure`, refused and **disclosed** when the retry would have concealed it. **`RP-03` satisfied a sixth consecutive turn.**
+- [ ] **Rung 10 — `M6-CP3-DEFN-R6-CORNER-ASSIGNMENT-AUTHORITY-SPEC` (documents only).** Three bounded corner producers in `src/geometry/SurfaceCellTracing.cpp`: `:10479` primary aggregate from four traced points; `:11269` per-corner override from a two-way closure walk; `:19790` propagation copy. For each, state what authority defines the corner's `face`, whether anything reconciles it against `boundaryPaths[side]`, and which can supply a `face` the traced path never visits. Name the single responsible locus and stop. **No code, no compile, no runtime, no repair design.**
+- [ ] **RA-70.14 prediction for rung 10, falsifier named:** `:11258-11271` keeps `xy.point`, discards `yx.point`, and reduces the two walks' disagreement to a positional `closureError` against `closureToleranceFactor * min(hx,hy)` — a face-index disagreement is invisible to a distance test when both faces meet at the junction vertex. **Falsifier:** rejected cells never reach `:11269`, or a face comparison guards it → the locus is `:10479` or `:19790`. **Observation rung: 10, by static reading.** Does **not** revive RA-64.6.
+- [ ] **Rung 11 is not authorized.** Its scope is set by rung 10's named locus. **Do not reorder rungs 10-11 and do not pre-empt rung 11.**
+- [ ] Residue to close: `get()` is still first-match for the nine non-route fields (bounded to two **control** identities, **measured** harmless — both logs byte-identical across all three emissions).
+- [ ] Carried: `RP-02` **UNREACHED**. Frozen 66/17/49, debt 1, CP2 491/491, R3 403/497, selector 497. **`R4-VIN-01` re-arms at `a143af264`** — `11994726341`, `11996317553`, `12005034654`, `12010485442` are baselines, never comparands. RA-61.9 and RA-64.6 withdrawn, final. `PROCESS-01` discharged.
+
+---
+
 ## CURRENT — 2026-10-16 TB5 route/path reconciliation harvest verified (separate independent decision pending)
 
 `M6-CP3-TB5-R5-ROUTE-PATH-RECONCILIATION-HARVEST` completed its bounded artifact-only observation. Workflow [38831615391](https://github.com/akashskypatel/Directional/actions/runs/38831615391) **succeeded**, immutable result artifact `12017109271` outer SHA-256 `e394c4deab99e5f8dca919a7a8e61a24aa93de3ba0ed96c3c3afddc19f8b9458`, internal SHA256SUMS verified; packaged source `a143af264bc8b33f0e1b2f8def16b2479b53d5fc` from build artifact `12015849679`. **44/44 separate processes executed; 44 RED, zero missing, postflight passed**, with no compile or benchmark. Diagnostic multiplicity was verified (42×1, 2×3). **RA-68.9 confirmed observationally:** 21/21 junction cases have no route edge incident to the to-attachment face (to row 7, traced second boundary path row 3); 23/23 interior controls have route incidence (to row 3). This supports investigating A4 corner/path producer reconciliation but neither prior repair shape is authorized; no specific producer cause has been proven. First harness attempt [38831159326](https://github.com/akashskypatel/Directional/actions/runs/38831159326) failed postflight due to aggregating multiple diagnostic occurrences; diagnosed retry did not modify production/test semantics. Full record: `.agents/Directional/Architecture_M6_CP3_R5_Route_Path_Reconciliation_Harvest_Artifact_Only_TB_Report_20261016.md`. Ledger 66/17/49 debt 1, CP2 491/491, R3 403/497, frozen 497; RP-02 unreached. Next separately authorized independent decision; no successor ID established.
