@@ -1,3 +1,11 @@
+## 2026-10-16 — CB10 carrier/contact endpoint diagnostics, compile-only verified
+
+- `M6-CP3-CB10-R9-CARRIER-ENDPOINT-SUBCONDITION-PROBE`: one-source-path rejection-only +26-line instrumentation, commit `d938ecb57e1040c2a73d5d25c4a613414556cb18`, separating published-contact and carrier-edge vertex membership and emitting their raw identities. Existing composite/production predicates unaffected.
+- Verified source snapshot `2997b0adfe6bd6d62840edf51dfd5621d7b996db`, [38937869505](https://github.com/akashskypatel/Directional/actions/runs/38937869505), artifact `12061008957`, 5682/5682 hashes; GMP/GMPXX eight-target compile [38938801351](https://github.com/akashskypatel/Directional/actions/runs/38938801351), artifact `12062565622` (SHA-256 `30111e7f26c8bbeb7ef9762e31fea5fb449b70c9cbdee64a27d4fc660834ef4f`), manifest 28/28, 0/0 exit codes, five clean source-status files and `runtimeExecution=false`. No test/benchmark/selector execution, promotion or stable ledger change.
+- Exceptional transport: Library patch upload `container_session_unavailable` twice; downloadable exact patch preserved, one-file direct GitHub CAS returned exactly expected blob SHA. Next independent `M6-CP3-TB10-R9-CARRIER-ENDPOINT-SUBCONDITION-HARVEST`. Owning record `.agents/Directional/Architecture_M6_CP3_CB10_Carrier_Endpoint_Subcondition_Probe_Code_Build_Record_20261016.md`.
+
+---
+
 ## 2026-10-16 — RA-80 frozen: branch V measured NOT APPLICABLE (0/21); the star path passes and an unexamined membership test fails
 
 - Architecture Review only (`M6-CP3-R9-TERMINAL-STAR-PATH-REV`), adjudicating two turns; no source, test, selector, binary, harness, workflow, benchmark or ledger-count change in this Review, and no Directional binary executed.
