@@ -1,18 +1,14 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb5-r5-route-path-compile-20261016a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb5-r5-route-path-compile",
-  "source_sha": "a143af264bc8b33f0e1b2f8def16b2479b53d5fc",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-cb5-r5-route-path-compile"
+  "request_id": "m6-cp3-tb5-r5-route-path-harvest-20261016a",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb5-r5-route-path-harvest",
+  "executor_sha": "52149a1d439b0dd744584ed384c2ea898ab5c8aa",
+  "semantic_source_sha": "a143af264bc8b33f0e1b2f8def16b2479b53d5fc",
+  "turn_id": "M6-CP3-TB5-R5-ROUTE-PATH-RECONCILIATION-HARVEST",
+  "harness_path": ".agents/Directional/tools/m6_cp3_r5_route_path_harvest_harness.sh",
+  "harness_sha256": "798c0c81fa6b7711fc6114fef6c3917d37582fe259ad9308d83323940534e6fa",
+  "environment": {},
+  "artifact_prefix": "m6-cp3-tb5-route-path-reconciliation",
+  "retention_days": 14
 }
