@@ -1,3 +1,31 @@
+## CURRENT — RA-68 frozen; both repair shapes inadmissible; next rung is a probe, not a producer (2026-10-15)
+
+### Turn sequence (byte-derived from `STATUS` history; frozen clauses in `Architecture_M6_Frozen_Definitions.md`)
+
+| # | Turn | Kind | Review | Outcome |
+|---:|---|---|---|---|
+| 1 | `M6-CP3-CB2-R4-PREDICATE-SEPARATION` | Code + Build | RA-63 | accepted; probe separated from decision |
+| 2 | `M6-CP3-CB3-R4-LEDGER-CONTENT-FLOOR` | Code + Build | — | tooling floor added to both gates |
+| 3 | `M6-CP3-TB3-R4-PROBE-HARVEST` | Test + Benchmark | RA-64 | accepted; contradicted the reviewer, credited |
+| 4 | `M6-CP3-DEFN-R4-ENDPOINT-AUTHORITY-SPEC` | Definition | RA-65 | accepted w/ amendment; RA-64.6 withdrawn, gate C suspended |
+| 5 | `M6-CP3-CB4-R4-ENDPOINT-CHART-PROBE` | Code + Build | RA-66 | accepted; compile chain closed by bytes |
+| 6 | `M6-CP3-TB4-R4-ENDPOINT-CHART-HARVEST` | Test + Benchmark | RA-67 | accepted; mechanism derived; 44/44 RED |
+| 7 | `M6-CP3-DEFN-R5-JUNCTION-CARRIER-AUTHORITY-SPEC` | Definition | RA-68 | accepted; both repair shapes inadmissible |
+| **8** | **`M6-CP3-CB5-R5-ROUTE-PATH-RECONCILIATION-PROBE`** | **Code + Build** | pending | **NEXT** |
+| 9 | `M6-CP3-TB5-R5-ROUTE-PATH-RECONCILIATION-HARVEST` | Test + Benchmark | pending | artifact-only harvest of rung 8 |
+| 10 | producer-definition turn, scope set by rung 9 | Definition | pending | deferred behind rung 9 on purpose |
+
+- [x] `M6-CP3-DEFN-R5-JUNCTION-CARRIER-AUTHORITY-SPEC` **ACCEPTED** (RA-68). Both repair shapes fail the RA-65.5 producer test and no winner was picked. Decision: `.agents/Directional/Architecture_M6_CP3_R5_Junction_Carrier_Authority_Spec_Review_Decision.md`.
+- [x] Gate C **re-grounded and still SUSPENDED**: `SurfaceHardRailRouteJunctionCertificate` exists (`SurfaceCellTracing.h:1512-1516`) but is constructed at `SurfaceCellTracing.cpp:19525-19530` and published at `:19728-19731`, both reachable only past the rejection branch at `:19352-19360` — ordered too late to authorize the admission it would license.
+- [x] Naive split falsified by measurement: `routeLength=1` in every raw log. **RA-68.5 charge:** the spec reports this of the 21 when it holds for all 44; the 23 do not control for this property.
+- [x] Two new loci recorded, neither authorized: boundary hard rails publish **no** carrier (`:18939-18941`, `incident->second[1] < 0` → `continue`); the published face pair is canonically ordered (`:18968-18970`), so `oriented_carrier`'s two-branch test is complete.
+- [ ] **Rung 8 — `M6-CP3-CB5-R5-ROUTE-PATH-RECONCILIATION-PROBE` (compile-only, rejection-only).** Extend the post-decision probe block opened at `:19360` to emit, for rejected edges only, the route's step count, each step's source-edge topology key, and the distinct source-face set visited by the traced path, beside the corner-derived endpoint faces already emitted. Decision-neutral by construction; compile and dispatch a package; **do not interpret the fields**.
+- [ ] **Rung 9** harvests those fields against the new package and tests the RA-68.9 prediction: the route's step edge set contains no edge incident to the `to` endpoint face (falsifier: it does).
+- [ ] **Rung 10** defines a producer only if rung 9 leaves one needed. **Do not reorder rungs 8-10.**
+- [ ] Carried: `RP-01` measured, mechanistically derived and bounded on both families — **code NOT authorized**. `RP-02` **UNREACHED**. Frozen 66/17/49, debt 1, CP2 491/491, R3 403/497, selector 497. RA-61.9 and RA-64.6 withdrawn, final.
+
+---
+
 ## CURRENT — R5 junction/carrier definition delivered; independent decision gate (2026-10-15)
 
 - [x] `M6-CP3-DEFN-R5-JUNCTION-CARRIER-AUTHORITY-SPEC`: independent source/fixture check confirms RA-67.6 for 21 junction cases only. Recorded existing producer/witness census, both candidate repair shapes and concrete falsifiers in `.agents/Directional/Architecture_M6_CP3_R5_Junction_Carrier_Authority_Specification_20261015.md`; no implementation or runtime authority inferred.

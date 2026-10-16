@@ -1,3 +1,55 @@
+## CURRENT — `M6-CP3-DEFN-R5-JUNCTION-CARRIER-AUTHORITY-SPEC-REV`, 2026-10-15: RA-68 frozen; both ways of fixing the thing turn out to be unbuildable with what exists, and saying so was the point
+
+**Supersedes the RA-67 paragraph below as the current state.** One turn was adjudicated and it is
+**accepted**, with one charge of understatement. No open REVIEW_BLOCKER. No promotion, no stable
+event, no regression recurrence, no gate credit.
+
+**§3 current state — the question moved from "why does it refuse" to "what would it take", and the
+answer is: more than exists.** The refusal was explained a rung ago. This rung asked what a repair
+would have to be made of, applied the rule that every witness must already have a publisher, and ran
+that rule over the only two shapes anyone has proposed. Both failed. One would need the pipeline to
+publish an exact, source-anchored record of the place where a front crosses a junction, together
+with a producer able to reissue both halves of a paired boundary consistently; nothing publishes
+either. The other would need a certificate, issued before admission, attesting the whole fan of
+faces around the shared vertex and the transport along each way round; nothing publishes that
+either. No winner was chosen, and the absence of a winner is the result.
+
+**§4 runtime witness — none, and none was wanted.** This was a document turn. Nothing compiled,
+nothing ran, no selector was touched. What was checked instead is that the document read the same
+bytes that were measured: the three source trees are identical at the measured commit, at the turn's
+entry commit and at the branch head, so there is no gap between the text and the thing it describes.
+The turn also took its own immutable snapshot before editing protected history and verified every
+file in it, a practice adopted one rung earlier and carried forward here without being asked.
+
+**§5 instrument — the sharpest finding is about ordering, not existence.** The nearest thing to the
+missing vertex certificate turns out to exist already, as a real published type carrying the shared
+vertex and two paths around it. It cannot be used, because it is built from the very endpoint
+certificates whose admission it would have to authorize: it is constructed after both have
+succeeded and published after that. A suspended gate that was suspended for want of a producer is
+now suspended for a better reason — the producer is there and is in the wrong place in the order.
+That version of the objection survives the obvious rebuttal, which the previous version did not.
+
+**§7 priority — one cheap measurement before any new producer is designed.** Every measured route is
+a single step, which means the traced path crossed exactly one source edge; the publisher cannot
+quietly shorten a route, only reject. But the endpoints a route is judged against do not come from
+the path at all — they come from the cell's corner array, and nothing anywhere reconciles the two.
+One of the measured endpoints sits in a face that the single crossed edge does not touch. If the
+route's own steps turn out to avoid that face entirely, the defect is a reconciliation failure
+upstream of the consumer and neither proposed repair is in the right family; if they touch it, the
+reconciliation holds and designing a producer becomes the right move. The observation is a handful
+of extra fields in a diagnostic that already exists, and it is sequenced deliberately ahead of the
+producer work.
+
+**§8 patterns — a test designed to be failable, and then failed honestly.** The rung was given a
+rule that could disqualify both candidates and was told to apply it rather than to produce a
+recommendation. It disqualified both and said so, naming for each one the specific witness that has
+no publisher. A turn that returns "neither, and here is what each is missing" has moved the work
+further than one that promotes the less-bad option; recorded as the fifth consecutive turn to report
+a result that did not flatter the reviewer or the process, and the charge made against the previous
+rung was absorbed into this one's own analysis a single rung after it was raised.
+
+---
+
 ## CURRENT — R5 junction/carrier definition: candidate remedies require missing producer authority, not a relaxed comparison (2026-10-15)
 
 **Definition only.** The R5 specification `.agents/Directional/Architecture_M6_CP3_R5_Junction_Carrier_Authority_Specification_20261015.md` independently confirms the RA-67 junction mechanism for 21/44 measured RED identities, names existing published types/producers and demonstrates the missing witness ordering. Existing A4 `SurfaceHardRailRouteJunctionCertificate` arises after endpoint admission and cannot certify that admission. The naive paired-front split of a length-one route also cannot manufacture a second carrier. Neither publisher-side splitting nor consumer-side vertex-aware acceptance is admitted until a separately reviewed, upstream produced exact witness is exhibited. The other 23 refusals have a different first condition; do not conflate populations. No code/test/selector/runtime change or promotion. Gate C suspended; RA-61.9/RA-64.6 withdrawn; RP-02 unreached. Next turn ID unknown pending independent authorization.

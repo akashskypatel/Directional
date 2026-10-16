@@ -1,3 +1,89 @@
+## CURRENT — both candidate repairs fail the producer test, and a cheaper measurement may yet change which producer is needed; RA-68 frozen (2026-10-15)
+
+**One turn adjudicated, ACCEPTED:** `M6-CP3-DEFN-R5-JUNCTION-CARRIER-AUTHORITY-SPEC`. Decision:
+`Architecture_M6_CP3_R5_Junction_Carrier_Authority_Spec_Review_Decision.md`. One understated-scope
+charge, minor. No open REVIEW_BLOCKER. No promotion, no stable event, no regression recurrence, no
+gate credit. No binary executed.
+
+**Root-cause status — `RP-01 AUTHORITY_DOMAIN_CONFLATION`: measured, mechanistically derived, and
+now bounded on both repair families. Code is still not authorized.** The definition turn applied the
+RA-65.5 producer test to the two admissible repair shapes and **both failed it**. Shape A —
+publisher-side cut at an authenticated rail junction — lacks a published exact junction-split
+occurrence tied to the source vertex, the front-side parametric location, the carrier side and the
+A2b schedule, together with a producer that remints both matching front edges and the affected cell
+boundary paths consistently. Shape B — consumer-side source-vertex-aware admission — lacks a
+pre-admission, rail-scoped, producer-authored vertex-star sector certificate.
+
+**The gate-C objection is now sharper than the reviewer's own.**
+`SurfaceHardRailRouteJunctionCertificate` **exists** — `SourceVertexId junction` plus two
+`sectorPaths` at `include/directional/geometry/SurfaceCellTracing.h:1512-1516`, carried in
+`SurfaceHardRailRouteCertificate` at `:1518-1526` — and it is **ordered too late to authorize the
+admission it would have to license**. Its construction at
+`src/geometry/SurfaceCellTracing.cpp:19525-19530` opens with
+`auto previous = firstEndpoint->terminalCarrier;` and its publication at `:19728-19731` dereferences
+`*firstEndpoint, *secondEndpoint`, both reachable only past the rejection branch at `:19352-19360`.
+At RA-65.5 the ground for suspending gate C was that no producer publishes a vertex-star witness; the
+better statement is that a producer of something very like it exists and is unusable by position.
+**Gate C stays SUSPENDED, now on ordering as well as nonexistence.**
+
+**The naive split is falsified by measurement, not by argument.** `routeLength=1` in the raw logs,
+with no other value anywhere. A one-step route carries a single carrier, so splitting it at its
+endpoint cannot manufacture a second. **Charged as understatement:** the specification reports this
+of the 21 junction identities when it holds for **all 44**. The obstruction is therefore stronger
+than claimed, and the 23 interior cases **do not control for this property** — they remain valid
+negative controls for the attachment-membership partition, which is what they were nominated for,
+but a control that shares the property under test cannot discriminate on it.
+
+**Two new loci, both recorded and neither authorized for repair.** First, a **boundary hard rail
+publishes no carrier at all**: `src/geometry/SurfaceCellTracing.cpp:18939-18941` skips any edge with
+`incident->second[1] < 0`, so a hard edge with one incident face yields no
+`SurfaceHardRailFieldTransition` and `find_carrier` returns `nullptr` rather than a non-matching
+record — any vertex-aware admission must treat carrier **absence** as distinct from carrier
+**mismatch**, and nothing in the measured 21 exercises it. Second, the published face pair is
+**canonically ordered** (`:18968-18970`, `reverseCanonical = to < from`), so `oriented_carrier`'s
+two-branch test is complete, no orientation case is unreachable, and the cheapest rebuttal to
+RA-67.6 — that the comparison merely got the orientation wrong — is closed from the bytes.
+
+**The next measurement precedes the producer definition, and it is cheap.** Put the `routeLength=1`
+observation beside **RA-65.10**. The publisher cannot shorten a route — at a source-edge topology
+change `assign_open_front_boundary_authority` either publishes a second step (`:12642`) or
+hard-rejects (`:12645`, `:12669`) — so a one-step route means the traced path crossed exactly one
+source-edge topology. But the endpoints are **not taken from the path**:
+`edge.from = cell.corners[side]` and `edge.to = cell.corners[(side+1)%4]` at `:13034-13035`,
+`:14774-14775`, `:17345-17346`, and **nothing reconciles the corner array against the path's face
+set**. The measurement puts `to` in face 7, incident to edges `(4,7)`, `(7,8)` and `(4,8)` but **not**
+to `(1,4)`. **Prediction:** the route's step edge set will contain no edge incident to the `to`
+endpoint face, which would make this a **corner/path reconciliation defect at A4**, upstream of the
+consumer, for which neither shape A nor shape B is the right family. **Falsifier:** if that edge set
+does contain an edge of face 7, the hypothesis is wrong, corner array and path agree, and the
+producer-definition turn becomes the correct next move. **This does not revive RA-64.6** — that
+claimed the publisher *truncated* a route; this says the publisher may have published a correct
+route for its path and been handed an endpoint from elsewhere. Recorded as a prediction with its
+provenance stated and its observation rung named, **not as a finding**.
+
+**`RP-02 TEST_AUTHORITY_COVERAGE_GAP` — still UNREACHED.** A definition turn cannot touch it.
+
+**`RP-03 REVIEWER_CONJUNCT_MISREAD` — satisfied a fifth consecutive turn.** Asked to apply a test
+that both candidates could fail, the turn reported that both failed rather than promoting the
+less-bad option, and it absorbed the RA-67.9 charge into its own §1 one rung after it was made.
+
+**Provenance and preservation.** `src`, `include` and `tests` are **tree-identical at `5be5e123e`,
+the entry commit `825a04bc8` and HEAD**, so the specification read exactly the bytes that were
+compiled and measured. The R5 snapshot verifies independently: artifact `12010485442` at `3d1b413a8`
+(run `38814059292`), outer ZIP SHA-256 recomputed as
+`020bc02980fb661d4b4bdc0f26de3b74c91887a6dad43a100ab3391bea4dc62e` matching the provider digest,
+5,648 manifest entries, **`shasum -c` returning 5,648 OK / 0 BAD**. The RA-67.10 practice was carried
+forward unprompted. All five documents the turn edited are pure insertions, zero deletions.
+
+**Accounting unchanged.** Ledger **66/17/49**, debt **1**, CP2 **491/491** accepted, R3 **403/497**
+rejected, frozen selector **497**. `R4-VIN-01` armed: `5be5e123e` is the semantic source,
+`11976790988` and `11967601999` are baselines and never comparands, the 44 RED are the baseline for
+`16c3134c0` alone and stay **candidate / non-stable**. **RA-61.9 withdrawn, final. RA-64.6 withdrawn,
+final. Gate C suspended (RA-65.5, RA-68.3).** Successor
+**`M6-CP3-CB5-R5-ROUTE-PATH-RECONCILIATION-PROBE`**.
+
+---
+
 ## CURRENT — the junction refusal is no longer unexplained: an edge-keyed carrier cannot hold a face pair drawn from two hard edges; RA-67 frozen (2026-10-15)
 
 **One turn adjudicated, ACCEPTED:** `M6-CP3-TB4-R4-ENDPOINT-CHART-HARVEST`. Decision:
