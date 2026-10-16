@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r5-definition-closeout-20261015a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r5-definition-closeout",
-  "file_id": "1es3OAKtZi9LGEaEUQVrfgZ20Cd7jDq7j",
-  "patch_sha256": "1c9e4b329d706c901dc10473013402895d4fe36bc9f423da49de5d14adb66b13",
-  "base_sha": "eab9fad9bd203be291234f1def47fb8b83cbc3c8",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close R5 junction carrier authority specification",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb5-r5-route-path-compile-20261016a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb5-r5-route-path-compile",
+  "source_sha": "a143af264bc8b33f0e1b2f8def16b2479b53d5fc",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-cb5-r5-route-path-compile"
 }
