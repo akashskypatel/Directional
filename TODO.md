@@ -1,3 +1,10 @@
+## CURRENT — R9B endpoint-equivalence contract specified (2026-10-16)
+
+- [x] `M6-CP3-DEFN-R9B-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC`: documents-only proposed V/I/C equivalence contract, both consumer checkers, missing/ambiguous rejection proof obligations, one-ULP strict interior limit, RA-65.5 and RA-72.5 dispositions. See `.agents/Directional/Architecture_M6_CP3_R9B_Endpoint_Equivalence_Contract_Specification_20261016.md`. No implementation, compile or runtime authorized; independent review pending with exact successor name UNKNOWN.
+- [ ] Obtain independent Review of R9B contract before any producer repair. No selector, frozen accounting or RP-02 promotion. `RP-01` open, Gate C suspended.
+
+---
+
 ## CURRENT — RA-78 frozen; census corrects the localization and finds a second active admission path; next rung writes the contract against both (2026-10-16)
 
 ### Turn sequence (byte-derived from `STATUS` history; frozen clauses in `Architecture_M6_Frozen_Definitions.md`)
