@@ -1,1 +1,0 @@
-Snapshot request for M6-CP3-DEFN-R8-BOUNDARY-OVERRIDE-AUTHORITY-SPEC. Immutable source via event SHA.
