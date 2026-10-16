@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb9-r9-duplicate-fix-20261016",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb9-r9-duplicate-fix-apply",
-  "file_id": "1hbd3aiB-KZIl_lNkxktjnKIkez23XjQD",
-  "patch_sha256": "608afce0998ce19cb152359549cbe1b558512062b1cd75ad3a69540c693667b3",
-  "base_sha": "4507b209759aa6e8935c24db5be37f89379a913e",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surface-cells): eliminate duplicate rejection probe carrier declaration",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb9-r9-compile-20261016-resume3",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb9-r9-final-gmp-compile",
+  "source_sha": "18cc4da5e2bc41138c5363a74de4e2db1e28ef23",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-cb9-r9-final-gmp"
 }
