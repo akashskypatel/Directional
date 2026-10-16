@@ -1,3 +1,45 @@
+## CURRENT — RA-76 frozen; branch (b) settled, every producer exonerated, RP-01 localized to the consumer's equivalence contract (2026-10-16)
+
+### Turn sequence (byte-derived from `STATUS` history; frozen clauses in `Architecture_M6_Frozen_Definitions.md`)
+
+| # | Turn | Kind | Review | Outcome |
+|---:|---|---|---|---|
+| 1 | `M6-CP3-CB2-R4-PREDICATE-SEPARATION` | Code + Build | RA-63 | accepted; probe separated from decision |
+| 2 | `M6-CP3-CB3-R4-LEDGER-CONTENT-FLOOR` | Code + Build | — | tooling floor added to both gates |
+| 3 | `M6-CP3-TB3-R4-PROBE-HARVEST` | Test + Benchmark | RA-64 | accepted; contradicted the reviewer, credited |
+| 4 | `M6-CP3-DEFN-R4-ENDPOINT-AUTHORITY-SPEC` | Definition | RA-65 | accepted w/ amendment; RA-64.6 withdrawn, gate C suspended |
+| 5 | `M6-CP3-CB4-R4-ENDPOINT-CHART-PROBE` | Code + Build | RA-66 | accepted; compile chain closed by bytes |
+| 6 | `M6-CP3-TB4-R4-ENDPOINT-CHART-HARVEST` | Test + Benchmark | RA-67 | accepted; mechanism derived; 44/44 RED |
+| 7 | `M6-CP3-DEFN-R5-JUNCTION-CARRIER-AUTHORITY-SPEC` | Definition | RA-68 | accepted; both repair shapes inadmissible |
+| 8 | `M6-CP3-CB5-R5-ROUTE-PATH-RECONCILIATION-PROBE` | Code + Build | RA-69 | accepted; neutrality structural |
+| 9 | `M6-CP3-TB5-R5-ROUTE-PATH-RECONCILIATION-HARVEST` | Test + Benchmark | RA-70 | accepted; RA-68.9 CONFIRMED |
+| 10 | `M6-CP3-DEFN-R6-CORNER-ASSIGNMENT-AUTHORITY-SPEC` | Definition | RA-71 | accepted; falsified the reviewer's prediction **and** census |
+| 11 | `M6-CP3-DEFN-R7-CORNER-FACE-SELECTION-REPAIR-SPEC` | Definition | RA-72 | accepted w/ amendment; passes RA-65.5 |
+| 12 | `M6-CP3-CB6-R7-NODE-ADMISSIBLE-FACE-SET-PROBE` | Code + Build | RA-73 | accepted; calls the production predicate |
+| 13 | `M6-CP3-TB6-R7-NODE-ADMISSIBLE-FACE-SET-HARVEST` | Test + Benchmark | RA-73 | accepted; RA-72.8 falsified |
+| 14 | `M6-CP3-CB7-R7-LATTICE-UV-CANDIDATE-PROBE` | Code + Build | RA-74 | accepted; moved producer-side as instructed |
+| 15 | `M6-CP3-TB7-R7-LATTICE-UV-CANDIDATE-HARVEST` | Test + Benchmark | RA-74 | accepted; sampler exonerated |
+| 16 | `M6-CP3-DEFN-R8-BOUNDARY-OVERRIDE-AUTHORITY-SPEC` | Definition | RA-75 | accepted; overriding face legitimately derived; RA-74.1 narrowed |
+| 17 | `M6-CP3-CB8-R8-SOURCE-ENTITY-EQUIVALENCE-PROBE` | Code + Build | RA-76 | accepted; first probe with deletions — correct and necessary |
+| 18 | `M6-CP3-TB8-R8-SOURCE-ENTITY-EQUIVALENCE-HARVEST` | Test + Benchmark | RA-76 | accepted; **branch (b) settled** |
+| **19** | **`M6-CP3-DEFN-R9-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC`** | **Definition** | pending | **NEXT — documents only** |
+| 20 | first repair-implementation rung | undetermined | pending | **not authorized**; only if rung 19 proves no weakening |
+
+- [x] Rungs 17 and 18 **both ACCEPTED** (RA-76), two charges. Decision: `.agents/Directional/Architecture_M6_CP3_R8_Source_Entity_Equivalence_Review_Decision.md`. This Review wrote the tracker section rung 18 staged but could not apply, and closed its beacon.
+- [x] **RA-76.1 — branch (b) settled.** 2,628 rows, 0 errors: `carrier-orientation` 1,008 SAME / 0 DIFFERENT; controls 1,296 SAME / 324 DIFFERENT. All 48 `sampled_face=3` / `accepted_face=7` rows are **SAME_ENTITY** — 42 × `vertex:4`, 6 × `vertex:2` (the RA-67.5 compaction again). **The 324 are same canonical edge with ULP histogram `{1: 324}` and zero vertex entities** — branch (a) has **no** support.
+- [x] **RA-76.2 — `override=1` on all 2,628 rows.** The substitution fires at **every** grid-boundary node including `FirstTo`. RA-74.1's narrowing **confirmed**: the override is not junction-specific.
+- [x] **RA-76.8 — every producer exonerated**: chart sampler (RA-74), planar selector (RA-71.5 amended), accepted-boundary producer (RA-75.2), the override (RA-76.1), route publisher / carrier producer / tracer / `from` corner (RA-70.7). **The consumer's endpoint admission is the sole remaining candidate** — it compares raw `SurfaceTracePoint::face` where producers guaranteed only **source-entity** identity. **Code NOT authorized.**
+- [x] **RA-76.3 — rung 17's three deletions are correct**: a widened capture before the in-place overwrite at `:17279`, and a hoist of `accepted` out of the `if` so the outcome is observable. Semantics-preserving and necessary. Neutrality verified (emission `:19743`, depth 1, branch `:19507`→`:19825`; no writes to `points[`, `cell.`, `proposal.`, `frame.`). Classifier in the right domain — exact `== 1.0` / `!= 0.0`, source-vertex ids, canonical `(lo,hi)` edges, hexfloat parameters.
+- [x] Charges: **RA-76.5** hedged where total ("include one-ULP-like" vs all 324 exactly one ULP) — fifth in the claim-calibration family; **RA-76.6** beacon `IN_PROGRESS` with self-referential `Successor` after six prohibitions, **mitigated** by a genuine transport failure and an explicit "do not claim this patch pushed."
+- [x] **RA-76.7 latent locus** — accepted boundary and chart sample agree on edge parameters only to **one ULP**, not bit-identically (324 instances). Any exact comparison of those parameters will fail. **Not authorized for repair; no epsilon.**
+- [x] Credits: probe blob `fd07f514da…` = HEAD, `include`/`tests` byte-identical; all four artifact digests and all runs verified; both dispatcher failures independently `conclusion=failure` (`38879689539`, `38879850655`); `ledgers --base 7f5160cd8` **ALL PASSED** — RA-74.6 not repeated. **`RP-03` satisfied a twelfth consecutive turn.**
+- [ ] **Rung 19 — `M6-CP3-DEFN-R9-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC` (documents only).** (1) Name every comparison in the endpoint-certificate path that tests `SurfaceTracePoint::face` or a face-keyed lookup against a corner, with line anchors. (2) State precisely what equality the producers guarantee — source-entity identity (RA-75.2, RA-76.1), with the one-ULP edge-parameter caveat (RA-76.7). (3) **Specify the contract the consumer should require and prove it is not a weakening** by showing what it would still reject; the carrier is edge-keyed (RA-67.6) and the `to` endpoint is a vertex of the crossed edge, so an incidence test is the obvious candidate **and the obvious danger**; **gate C stays SUSPENDED and no vertex-star predicate may be introduced**. (4) Apply RA-65.5 and classify each candidate as repair or **relocation** (RA-72.5).
+- [ ] **Rung 20** implements only if rung 19 proves the contract is not a weakening. **Do not reorder rungs 19-20 and do not pre-empt rung 20.**
+- [ ] Standing: relocation is not repair (RA-72.5); no epsilon anywhere; do not sort or reorder `activeFaces`; do not revive `point_on_source` as the locus (RA-71.5 amended); do not replace `.face` without transporting barycentrics (RA-75.2).
+- [ ] Carried: `RP-02` **UNREACHED**. Frozen 66/17/49, debt 1, CP2 491/491, R3 403/497, selector 497. **`R4-VIN-01` re-arms at `f0d724045`** — every earlier artifact through `12035788036` is a baseline, never a comparand. RA-61.9, RA-64.6, RA-70.14, RA-72.8 withdrawn; RA-71.5 amended; RA-73.5 superseded; RA-74.1 narrowed and confirmed. Gate C suspended and moot for `RP-01`. `PROCESS-01` discharged. The historical `ledgers` failure at `b2b6e6541` is permanent for any earlier base, correct, and **must not be suppressed**.
+
+---
+
 ## CURRENT — M6 CP3 CB8 source-entity probe, compile-only (2026-10-16)
 
 `M6-CP3-CB8-R8-SOURCE-ENTITY-EQUIVALENCE-PROBE` records boundary override activation and exact chart/accepted source-entity representations for every reached boundary lattice node in a rejected region, without modifying admission or selecting either repair branch. Semantic `f0d7240455b10237af47de58c035cd4c576d889a`; verified application run `38877023124`. GMP/GMPXX eight-target **GREEN**, workflow `38877282902`, immutable artifact `12035788036`, outer ZIP SHA-256 `1967771d10b765168102158ae8460a7973319f0bbec452166a1c732a6e7c097d`; exact source `f0d7240455b10237af47de58c035cd4c576d889a`, 28/28 packaged hashes, 8/8 targets, preflight/build 0/0, five empty source-status files, `DIRECTIONAL_ENABLE_GMP=ON`, real link includes GMPXX/GMP, `exactArithmeticBackend=GMP`, `runtimeExecution=false`. No runtime, tests, benchmarks or selector 497; RP-01 remains unresolved and RP-02 UNREACHED. **Next authorized separate turn:** `M6-CP3-TB8-R8-SOURCE-ENTITY-EQUIVALENCE-HARVEST` (artifact-only). Detailed evidence: `.agents/Directional/Architecture_M6_CP3_R8_Source_Entity_Equivalence_Probe_Code_Build_Record_20261016.md`. Historical current sections below are superseded, not deleted.

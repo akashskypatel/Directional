@@ -1,3 +1,140 @@
+## RA-76 — frozen definitions, M6 CP3 R8 source-entity equivalence (2026-10-16); the branch is settled: (b)
+
+**Authority:** `.agents/Directional/Architecture_M6_CP3_R8_Source_Entity_Equivalence_Review_Decision.md`.
+Adjudicates `M6-CP3-CB8-R8-SOURCE-ENTITY-EQUIVALENCE-PROBE` (rung 17) and
+`M6-CP3-TB8-R8-SOURCE-ENTITY-EQUIVALENCE-HARVEST` (rung 18); **both ACCEPTED**, two
+charges. Semantic source `f0d7240455b10237af47de58c035cd4c576d889a`.
+
+- **RA-76.1 THE RESULT — branch (b), and no row anywhere denotes a different source
+  entity.** Re-derived from `source-entity-census.tsv`: **2,628 rows, 0 errors** —
+  `carrier-orientation` **1,008 SAME / 0 DIFFERENT**, `not-same-interior-carrier-point`
+  **1,296 SAME / 324 DIFFERENT**. Every row with `sampled_face=3` and `accepted_face=7`
+  resolves to the **same canonical source vertex**: 42 × `vertex:4 ‖ vertex:4` and
+  6 × `vertex:2 ‖ vertex:2`, all 48 `SAME_ENTITY` — the 4/2 split being the RA-67.5
+  first-appearance compaction appearing again at occurrence granularity. **The 324 are not
+  a counterexample, measured rather than characterised:** parsing every token and computing
+  integer ULP distance gives **324/324 on the same canonical edge** with histogram
+  **`{1: 324}`**, and **zero** `DIFFERENT` rows involving a vertex entity. So every
+  difference is the final mantissa bit of an edge parameter on an identical edge.
+  **Branch (a) — different source entities or sheets, override invalid upstream — has zero
+  support. Branch (b) stands: the override substitutes a different *representation* of the
+  same source entity, and the defect is the consumer's contract demanding raw face
+  equality.**
+- **RA-76.2 RA-75.3's open question is closed by measurement.** `override` is `1` on **all
+  2,628 rows**: the substitution fires at **every** measured grid-boundary node, including
+  the `FirstTo` corner whose published face equals its sample. **RA-74.1's narrowing is
+  confirmed — the override is not junction-specific**; the earlier appearance that it
+  distinguished the 21 was an artefact of only one corner's face changing.
+- **RA-76.3 Rung 17 — the first probe with deletions, and they are correct.** Three lines
+  were removed:
+  `const int sampledFace = points[node_index(u,v)].face;` became
+  `const SurfaceTracePoint sampled = points[node_index(u,v)]; const int sampledFace =
+  sampled.face;`, and `const SurfaceTracePoint *accepted = nullptr;` was hoisted out of the
+  `if (useAcceptedConformity)` block. Both are **semantics-preserving** — `sampledFace`
+  holds the same value and `accepted` is `nullptr` exactly when the block does not run —
+  and both are **necessary**: the substitution at `:17279` overwrites in place so the point
+  had to be copied first, and the hoist is the only way to observe the
+  `accepted != nullptr` outcome. **Neutrality verified:** the emission sits at depth 1
+  inside the rejection branch, which opens at `src/geometry/SurfaceCellTracing.cpp:19507`
+  and closes at `:19825`, with the emission at `:19743`; no added line assigns to
+  `points[`, `cell.`, `proposal.` or `frame.`; the only `result.*` writes are to the
+  diagnostic map `boundarySourceEntityProbes`, declared beside the existing
+  `latticeUvCandidateProbes` and propagated by a plain map merge; the consumer hunk is a
+  read-only iteration filtered to the two involved regions, emitting `none` when empty.
+  **The classifier is built in the right domain** — RA-75.4 applied one rung after it was
+  charged: `source_entity` tests `barycentric[i] == 1.0` and `!= 0.0` **exactly**, with no
+  tolerance, reports a vertex as a **source vertex id** `faces(point.face, i)` and an edge
+  as a **canonical `(lo, hi)` source-vertex pair** with a hexfloat parameter. That is what
+  makes a point in face 3 and a point in face 7 comparable at all.
+- **RA-76.4 Chain and artifacts re-derived.** Probe blob
+  `fd07f514dab95b5fa9ecde35c8b0eec294c729ee` **= HEAD**; `include` and `tests`
+  byte-identical at `f0d724045` and HEAD. Snapshot `12035302774` `0577eedd0c31…`,
+  patch-apply `12035488476` `2fb730bb1a4b…`, compile `12035788036` `1967771d10b7…`, result
+  `12036818514` ZIP **recomputed** `4305035309ef…` — all matching, all runs
+  `conclusion=success`; result manifest **49 OK / 0 BAD**;
+  `planned=44 executed=44 red=44 missing=0 postflight=True exit=0`. Both disclosed
+  dispatcher failures are independently **`conclusion=failure`** — `38879689539` (an
+  unsupported `environment_json`) and `38879850655` (an incorrect copied selector digest) —
+  each rejecting before any test ran and each disclosed with its run id. `ledgers --base
+  7f5160cd8` **ALL CHECKS PASSED**; RA-74.6 not repeated. **`RP-03` satisfied a twelfth
+  consecutive turn.**
+- **RA-76.5 CHARGE — the result is hedged where it is actually total.** The record says the
+  324 "**include** one-ULP-**like** hexfloat edge-parameter representations." Measured:
+  **all 324, exactly one ULP, identical canonical edge, no vertex entity involved.** The
+  hedge understates a complete result, and leaving "324 DIFFERENT" unqualified invites a
+  successor to believe branch (a) retains partial support; **it retains none**. Fifth turn
+  in the claim-calibration family (RA-67.9, RA-70.7, RA-71.10, RA-73.6, RA-76.5), though
+  not monotone — RA-74.9 credited a correction and RA-75 was well calibrated. The specific
+  pattern is **a hedge attached to a measurement the turn's own data already settle**.
+- **RA-76.6 CHARGE — the beacon is `IN_PROGRESS` with a self-referential `Successor`
+  again.** **Six consecutive NEXT_TURN blocks have required `Successor` be left EMPTY while
+  in progress and never self-naming (RA-67.11)**; RA-73.8 charged exactly this, it was then
+  correct for two rungs, and it has recurred. **Mitigation, substantial:** the cause is a
+  genuine transport failure — the closeout patch could not be applied because "Files
+  reported no active container session" — and the record says plainly "**do not claim this
+  patch pushed**" and to keep the turn `IN_PROGRESS` until verified remote apply. Declaring
+  an incomplete closeout rather than faking one is correct. The charge is narrow: the
+  `Successor` field costs nothing to leave empty, and a successor reading it is handed a
+  cycle. **Consequence:** `Regression_Root_Cause_Tracker.md` was again not written, its
+  content staged in an unapplied patch; this Review writes it and closes the beacon.
+- **RA-76.7 A latent locus the measurement exposes.** The accepted boundary and the chart
+  sample compute the **same** edge parameter to within one ULP but **not bit-identically**
+  — 324 instances. Any consumer comparing those parameters by exact equality will fail on
+  them. Nothing in the measured 44 turns on this today, because the failures are vertex
+  cases, but it is a real property of the two producers and bears directly on the contract
+  rung 19 must specify. **Backlog; not authorized for repair, and no epsilon may be
+  introduced to paper over it** — the contract must say what equality is required, not
+  loosen a comparison.
+- **RA-76.8 `RP-01` state — every producer is now exonerated.** Chart sampler
+  (`point_on_periodic_chart`) exonerated by RA-74; planar selector (`point_on_source`)
+  exonerated for these cells by the RA-71.5 amendment; accepted-boundary producer
+  exonerated by RA-75.2 (face from `run.sourceFaces[edgeIndex]`); the override itself
+  exonerated by RA-76.1; route publisher, carrier producer, tracer and `from` corner
+  exonerated by RA-70.7. **The consumer's endpoint admission is the sole remaining
+  candidate**, and `RP-01` is localized to its **endpoint-equivalence contract**: admission
+  compares raw `SurfaceTracePoint::face` where the producers only ever guaranteed
+  *source-entity* identity. **Code remains NOT authorized** — the contract must be
+  specified before it is changed, and the obvious weakening is exactly the predicate
+  relaxation prohibited throughout. `RP-02` **UNREACHED**.
+- **RA-76.9 LESSON — a classifier stricter than the question answers a different
+  question.** `DIFFERENT_ENTITY` was reported 324 times and the entity was identical every
+  time, because the classifier compared exact float tokens where the question asked about
+  entities. **When a measurement's verdict column disagrees with its own evidence columns,
+  the verdict is the thing to re-derive.** Taken at face value, the 324 would have left
+  branch (a) looking partially alive and scoped the next rung to adjudicate a difference
+  that does not exist.
+
+### Rung 19 scope — `M6-CP3-DEFN-R9-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC`, documents only
+
+1. **Where exactly does admission demand raw face equality?** Name every comparison in the
+   endpoint-certificate path testing `SurfaceTracePoint::face` or a face-keyed lookup
+   against a corner, with line anchors.
+2. **What equality did the producers actually guarantee?** RA-75.2 and RA-76.1 establish
+   source-entity identity, not face identity; RA-76.7 shows edge parameters agree only to
+   one ULP. State the guarantee precisely, including the ULP caveat.
+3. **Specify the contract the consumer should require, and prove it is not a weakening** —
+   show what it would *still* reject. The carrier is edge-keyed (RA-67.6) and the measured
+   `to` endpoint is a vertex of the crossed edge, so an incidence-based test is the obvious
+   candidate and the obvious danger. **Gate C remains SUSPENDED (RA-65.5, RA-68.3) and no
+   vertex-star predicate may be introduced**, so the contract must be expressible from
+   already-published witnesses.
+4. **Apply RA-65.5**, and say for each candidate whether it is repair or **relocation**
+   (RA-72.5).
+
+### Accounting
+
+Ledger **66/17/49**, debt **1**, CP2 **491/491**, R3 **403/497**, frozen selector **497** —
+unchanged. **`R4-VIN-01` re-arms at `f0d724045`**; every earlier artifact through
+`12030150301`, `12032341939`, `12035302774` and `12035788036` is a **baseline, never a
+comparand**; the 44 RED are the baseline for `f0d724045` alone, candidate / non-stable.
+**RA-61.9 WITHDRAWN, final. RA-64.6 WITHDRAWN, final. RA-70.14 WITHDRAWN. RA-72.8
+WITHDRAWN. RA-71.5 AMENDED. RA-73.5 SUPERSEDED. RA-74.1 NARROWED and now CONFIRMED by
+measurement. Gate C SUSPENDED and moot for `RP-01`.** `PROCESS-01` discharged. The
+historical `ledgers` failure at `b2b6e6541` remains permanent for any earlier base, is
+correct, and must not be suppressed.
+
+---
+
 ## RA-75 — frozen definitions, M6 CP3 R8 boundary-override authority (2026-10-16); RA-74.1 NARROWED
 
 **Authority:** `.agents/Directional/Architecture_M6_CP3_R8_Boundary_Override_Authority_Spec_Review_Decision.md`.

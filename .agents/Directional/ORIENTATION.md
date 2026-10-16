@@ -1,3 +1,56 @@
+## CURRENT — `M6-CP3-R8-SOURCE-ENTITY-EQUIVALENCE-REV`, 2026-10-16: RA-76 frozen; the two disputed points turn out to be the same place, and every producer is now cleared
+
+**Supersedes the RA-75 paragraph below as the current state.** Two turns were adjudicated and both
+are **accepted**, with two charges. This review also writes the regression section the previous turn
+staged but could not deliver, and closes the beacon it left open. No open REVIEW_BLOCKER. No
+promotion, no stable event, no regression recurrence, no gate credit.
+
+**§3 current state — the fork is resolved, and the remaining suspect is the last one standing.** The
+question was whether the point a corner is given and the point it computed for itself refer to the
+same place on the surface. They do, in every one of two and a half thousand records: wherever the
+two disagree about which triangle they belong to, they still name the identical source vertex. So the
+substitution that looked like the fault is legitimate — it swaps one representation of a point for
+another representation of the same point. Everything upstream has now been cleared by measurement in
+turn: the chart sampler, the planar selector, the accepted-boundary producer, the substitution
+itself, the route publisher, the tracer and the first corner. What remains is the consumer, which
+refuses the pair because it compares the raw triangle numbers, a thing the producers never promised
+would match.
+
+**§4 runtime witness — forty-four processes, two and a half thousand records, no errors.** Every
+digest was recomputed from downloaded bytes and matched, the internal manifest verified completely,
+and the protected history was added to rather than overwritten. Two dispatcher attempts failed
+outright before running anything — one on an unsupported configuration object, one on a mistyped
+digest — and both were reported with their run identifiers although only the third carries evidence.
+
+**§5 instrument — a count that said "different" three hundred and twenty-four times, and was not.**
+The harvest flagged that many boundary records as differing. Checked bit by bit, every single one
+sits on the *same* edge and differs only in the last bit of the parameter along it — one unit in the
+last place, three hundred and twenty-four times out of three hundred and twenty-four. None involves
+a vertex. The classifier was comparing exact decimal expansions where the question asked about
+places on a surface, so its verdict column disagreed with its own evidence columns. Taken at face
+value it would have kept a dead possibility alive and sent the next turn to adjudicate a difference
+that does not exist. Separately worth keeping: the two producers agree on edge positions only to
+that last bit, so any future check that compares them exactly will fail, and the right response is
+to say what equality is required rather than to loosen a comparison.
+
+**§7 priority — specify what the consumer should demand, and prove it is not a relaxation.** The
+next turn is a document turn with one hard obligation: naming a weaker test is easy, and this
+investigation has refused several already. It must say exactly where the current code insists on
+identical triangle numbers, what the producers actually guarantee instead, and what the replacement
+rule would still reject — because the obvious candidate, accepting a point that lies on the right
+edge rather than in the right triangle, is also the obvious way to let something wrong through.
+
+**§8 patterns — a probe that deleted lines for the first time, and was right to.** Every earlier
+diagnostic added lines only. This one removed three, because the value it needed was destroyed a few
+lines later and the flag it needed was scoped too tightly to see. Both edits leave behaviour
+identical and both were necessary; checking them individually was the point. Twelfth consecutive turn
+to report something unflattering. Against that, the result was hedged where the data were conclusive,
+and the status marker was again left pointing at itself — though in that case a genuine transport
+failure prevented the closeout, and the turn said so plainly rather than pretending otherwise, which
+is the behaviour that matters most.
+
+---
+
 ## CURRENT — M6 CP3 CB8 source-entity probe, compile-only (2026-10-16)
 
 `M6-CP3-CB8-R8-SOURCE-ENTITY-EQUIVALENCE-PROBE` records boundary override activation and exact chart/accepted source-entity representations for every reached boundary lattice node in a rejected region, without modifying admission or selecting either repair branch. Semantic `f0d7240455b10237af47de58c035cd4c576d889a`; verified application run `38877023124`. GMP/GMPXX eight-target **GREEN**, workflow `38877282902`, immutable artifact `12035788036`, outer ZIP SHA-256 `1967771d10b765168102158ae8460a7973319f0bbec452166a1c732a6e7c097d`; exact source `f0d7240455b10237af47de58c035cd4c576d889a`, 28/28 packaged hashes, 8/8 targets, preflight/build 0/0, five empty source-status files, `DIRECTIONAL_ENABLE_GMP=ON`, real link includes GMPXX/GMP, `exactArithmeticBackend=GMP`, `runtimeExecution=false`. No runtime, tests, benchmarks or selector 497; RP-01 remains unresolved and RP-02 UNREACHED. **Next authorized separate turn:** `M6-CP3-TB8-R8-SOURCE-ENTITY-EQUIVALENCE-HARVEST` (artifact-only). Detailed evidence: `.agents/Directional/Architecture_M6_CP3_R8_Source_Entity_Equivalence_Probe_Code_Build_Record_20261016.md`. Historical current sections below are superseded, not deleted.
