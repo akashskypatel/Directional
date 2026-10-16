@@ -1,3 +1,15 @@
+## CURRENT — R9A face-comparison census delivered (2026-10-16; Definition only)
+
+**Canonical worked turn:** `M6-CP3-DEFN-R9A-ENDPOINT-FACE-COMPARISON-CENSUS`. **Deliverable:** `.agents/Directional/Architecture_M6_CP3_R9A_Endpoint_Face_Comparison_Census_20261016.md`. The document provides a line-anchored static census of every endpoint-admission comparison involving source-face representation, distinguishes true A3/topology face obligations from face-as-handle source-entity checks, includes the independent product verifier, and separates post-rejection diagnostics from predicates. No contract designed, soundness proof asserted, implementation authorized, source modified, binary executed, selector changed or test run.
+
+**Authority:** snapshot run `38888296894`, artifact `12040008801`, `b34c571768e2227a8ea2fed42e7b287e21e466eb`, outer SHA-256 `501523b30aaa1f53ed13fb57bb7e27b0d23f9398e2bd585d1920c69acfbcd957`; verified **5,672/5,672** source hashes. Compare to turn-entry head `cd4a539e8aa0f518d6dfab1b95b940cd9205ff8e` showed only documentation/control changes, so inspected `SurfaceCellTracing.cpp` is unchanged. Semantic source `f0d7240455b10237af47de58c035cd4c576d889a`. RA-76.1 vertex observations (42×vertex:4, 6×vertex:2) and the **324/324 exactly one-ULP** same-edge representations remain measured, not assumed to prove a bit-identical parameter contract.
+
+**Required independent next boundary:** review R9A's census **before** authorizing `M6-CP3-DEFN-R9B-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC`. The exact review-turn ID was not assigned in RA-77; do not invent or enter R9B from this handoff. `RP-01` consumer contract unresolved; `RP-02` UNREACHED; gate C suspended; frozen 66/17/49, debt 1, CP2 491/491, R3 403/497, selector 497. `R4-VIN-01` armed against `f0d724045`; no newer runtime authority, no green claim.
+
+**Operational exception recorded:** pre-read snapshot selection was late after direct document reads; the exact source snapshot was subsequently verified locally. A Library work-preservation upload failed with `container_session_unavailable`; documentation was direct-written through the GitHub connector. This is not represented as a successful Google Drive transport. The prior task's STATUS beacon was COMPLETE before entering R9A, and this session entered R9A via its own initial IN_PROGRESS beacon.
+
+---
+
 ## CURRENT — 2026-10-16 RA-77 frozen; rung 19 produced no deliverable and is split in two because the reviewer over-scoped it; next turn `M6-CP3-DEFN-R9A-ENDPOINT-FACE-COMPARISON-CENSUS` (documents-only)
 
 **Supersedes the RA-76 CURRENT section below as the current state; that section and every section beneath it are retained as authorizing history.** One turn examined — `M6-CP3-DEFN-R9-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC` (rung 19) — **no deliverable; nothing to accept, reject or charge**. Decision: `.agents/Directional/Architecture_M6_CP3_R9_Rung_Rescope_Review_Decision.md`.
