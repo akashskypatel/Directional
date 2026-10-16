@@ -1,3 +1,8 @@
+## 2026-10-16 — CB6 rejection-only node/side source-face census (compile-only)
+
+- Semantic `4d64b7684ac7ec2d0655f96c88ecf05f2906bca7`, source-only +73 lines, post-rejection face-set census; no acceptance/decision changes. Exact source snapshot 38849265619 and 5660/5660 hashes; patch apply run 38850167371 and artifact 12024129249; staging owner-retired.
+- Pinned [compile run 38850333038](https://github.com/akashskypatel/Directional/actions/runs/38850333038), artifact `12024554349`, outer SHA-256 `c824a6aa43617309aaae6a54a3dd49a987c51390caa404600a88763d3b04fabf`: 28/28 package hashes, 8/8 targets, preflight/build 0/0, GMPXX/GMP link, clean source, `runtimeExecution=false`. No tests or benchmarks executed; no credit to frozen 497 or historical ledgers. Next `M6-CP3-TB6-R7-NODE-ADMISSIBLE-FACE-SET-HARVEST` only.
+
 ## 2026-10-16 — RA-72 frozen: the repair shape passes the producer test, its premise does not survive scrutiny, and RA-71.6 is amended
 
 - Architecture Review only (`M6-CP3-DEFN-R7-CORNER-FACE-SELECTION-REPAIR-SPEC-REV`), adjudicating one turn; no source, test, selector, binary, harness, workflow, benchmark or ledger-count change in this Review, and no Directional binary executed.

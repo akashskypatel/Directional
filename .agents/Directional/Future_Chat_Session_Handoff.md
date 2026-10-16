@@ -1,4 +1,14 @@
-## CURRENT — 2026-10-16 RA-72 frozen; the repair shape passes the producer test but its premise does not survive scrutiny, and RA-71.6 is amended; next turn `M6-CP3-CB6-R7-NODE-ADMISSIBLE-FACE-SET-PROBE` (compile-only)
+## CURRENT — 2026-10-16 CB6 rejection-only node/side face census compiled; TB6 harvest next
+
+`M6-CP3-CB6-R7-NODE-ADMISSIBLE-FACE-SET-PROBE` completed its **Code + Build** boundary. Exact semantic commit `4d64b7684ac7ec2d0655f96c88ecf05f2906bca7` changes only `src/geometry/SurfaceCellTracing.cpp` (+73 lines): after the existing A2b endpoint-certificate rejection, emit producer-region `ActiveFaces`, independent `From/ToAdmissibleFaces` evaluated through the original `point_on_source` containment predicate at the **actual published endpoint position** (not inferred lattice-node UV), and previously existing `PathFaces` for each directed side. Planar-frame-unavailable cases explicitly report `Frame=not-planar`. It does **not** change admission, topology, tolerance, tests, selectors or frozen evidence.
+
+Patch transport `38850167371` (result artifact `12024129249`) verified base `5f70370cd920765388ce6f0d29517cf7498bb945`, full patch SHA-256 `0a1f779996edcb6088298462403867f30ace3fd70bdb0ddce04c5a178db11f0f`, one-path semantic commit, owner-retired Drive staging. Immutable GMP/GMPXX eight-target compile [38850333038](https://github.com/akashskypatel/Directional/actions/runs/38850333038), result artifact `12024554349` ZIP SHA-256 `c824a6aa43617309aaae6a54a3dd49a987c51390caa404600a88763d3b04fabf`: **28/28** manifest, **8/8** targets, configure/preflight and build `0/0`, `DIRECTIONAL_ENABLE_GMP=ON`, linker contains GMPXX/GMP, five empty source-status files, exact packaged source SHA, `exactArithmeticBackend=GMP`, **`runtimeExecution=false`**. No tests, benchmarks, 497 or production acceptance executed.
+
+**Next authorized turn only:** `M6-CP3-TB6-R7-NODE-ADMISSIBLE-FACE-SET-HARVEST` must run an immutable artifact-only harvest and answer whether each rejected side path's face is in the actual node-admissible set. Do not infer that result from compile success, implement the repair, adjust selectors, or advance beyond TB6 in this turn. Ledger 66/17/49, debt 1, CP2 491/491, R3 403/497, frozen selector 497 and `RP-02` UNREACHED unchanged.
+
+---
+
+## HISTORICAL — 2026-10-16 RA-72 frozen; the repair shape passes the producer test but its premise does not survive scrutiny, and RA-71.6 is amended; next turn `M6-CP3-CB6-R7-NODE-ADMISSIBLE-FACE-SET-PROBE` (compile-only)
 
 **Supersedes the RA-71 CURRENT section below as the current state; that section and every section beneath it are retained as authorizing history.** One turn adjudicated — `M6-CP3-DEFN-R7-CORNER-FACE-SELECTION-REPAIR-SPEC` (rung 11) — **ACCEPTED WITH AMENDMENT**, two charges. Decision: `.agents/Directional/Architecture_M6_CP3_R7_Corner_Face_Selection_Repair_Spec_Review_Decision.md`.
 
