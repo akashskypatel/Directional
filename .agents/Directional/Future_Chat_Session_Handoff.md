@@ -1,3 +1,56 @@
+## CURRENT — 2026-10-16 RA-77 frozen; rung 19 produced no deliverable and is split in two because the reviewer over-scoped it; next turn `M6-CP3-DEFN-R9A-ENDPOINT-FACE-COMPARISON-CENSUS` (documents-only)
+
+**Supersedes the RA-76 CURRENT section below as the current state; that section and every section beneath it are retained as authorizing history.** One turn examined — `M6-CP3-DEFN-R9-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC` (rung 19) — **no deliverable; nothing to accept, reject or charge**. Decision: `.agents/Directional/Architecture_M6_CP3_R9_Rung_Rescope_Review_Decision.md`.
+
+### TURN SEQUENCE — where this rung sits (read this first)
+
+Each Code+Build, Test+Benchmark or Definition turn is followed by a Review turn that freezes an RA-numbered amendment. The sequence is byte-derived from `STATUS` history; the frozen clauses live in `Architecture_M6_Frozen_Definitions.md`.
+
+| # | Turn | Kind | Review | Outcome |
+|---:|---|---|---|---|
+| 1 | `M6-CP3-CB2-R4-PREDICATE-SEPARATION` | Code + Build | **RA-63** | accepted; probe separated from decision |
+| 2 | `M6-CP3-CB3-R4-LEDGER-CONTENT-FLOOR` | Code + Build | — | tooling floor added to both gates |
+| 3 | `M6-CP3-TB3-R4-PROBE-HARVEST` | Test + Benchmark | **RA-64** | accepted; contradicted the reviewer and was credited |
+| 4 | `M6-CP3-DEFN-R4-ENDPOINT-AUTHORITY-SPEC` | Definition | **RA-65** | accepted with amendment; **RA-64.6 withdrawn**, **gate C suspended** |
+| 5 | `M6-CP3-CB4-R4-ENDPOINT-CHART-PROBE` | Code + Build | **RA-66** | accepted; compile chain closed by bytes |
+| 6 | `M6-CP3-TB4-R4-ENDPOINT-CHART-HARVEST` | Test + Benchmark | **RA-67** | accepted; mechanism derived; 44/44 RED |
+| 7 | `M6-CP3-DEFN-R5-JUNCTION-CARRIER-AUTHORITY-SPEC` | Definition | **RA-68** | accepted; both repair shapes inadmissible |
+| 8 | `M6-CP3-CB5-R5-ROUTE-PATH-RECONCILIATION-PROBE` | Code + Build | **RA-69** | accepted; neutrality structural |
+| 9 | `M6-CP3-TB5-R5-ROUTE-PATH-RECONCILIATION-HARVEST` | Test + Benchmark | **RA-70** | accepted; **RA-68.9 CONFIRMED** |
+| 10 | `M6-CP3-DEFN-R6-CORNER-ASSIGNMENT-AUTHORITY-SPEC` | Definition | **RA-71** | accepted; falsified the reviewer's prediction **and** census |
+| 11 | `M6-CP3-DEFN-R7-CORNER-FACE-SELECTION-REPAIR-SPEC` | Definition | **RA-72** | accepted with amendment; passes RA-65.5 |
+| 12 | `M6-CP3-CB6-R7-NODE-ADMISSIBLE-FACE-SET-PROBE` | Code + Build | **RA-73** | accepted; calls the production predicate |
+| 13 | `M6-CP3-TB6-R7-NODE-ADMISSIBLE-FACE-SET-HARVEST` | Test + Benchmark | **RA-73** | accepted; **RA-72.8 falsified** |
+| 14 | `M6-CP3-CB7-R7-LATTICE-UV-CANDIDATE-PROBE` | Code + Build | **RA-74** | accepted; moved producer-side as instructed |
+| 15 | `M6-CP3-TB7-R7-LATTICE-UV-CANDIDATE-HARVEST` | Test + Benchmark | **RA-74** | accepted; **sampler exonerated** |
+| 16 | `M6-CP3-DEFN-R8-BOUNDARY-OVERRIDE-AUTHORITY-SPEC` | Definition | **RA-75** | accepted; overriding face legitimately derived; RA-74.1 narrowed |
+| 17 | `M6-CP3-CB8-R8-SOURCE-ENTITY-EQUIVALENCE-PROBE` | Code + Build | **RA-76** | accepted; first probe with deletions — correct and necessary |
+| 18 | `M6-CP3-TB8-R8-SOURCE-ENTITY-EQUIVALENCE-HARVEST` | Test + Benchmark | **RA-76** | accepted; **branch (b) settled**; every producer exonerated |
+| 19 | `M6-CP3-DEFN-R9-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC` | Definition | **RA-77** | **NO DELIVERABLE — over-scoped by the reviewer; split into 19a/19b** |
+| **19a** | **`M6-CP3-DEFN-R9A-ENDPOINT-FACE-COMPARISON-CENSUS`** | **Definition** | *pending* | **NEXT — documents-only; the mechanical half** |
+| 19b | `M6-CP3-DEFN-R9B-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC` | Definition | *pending* | contract + non-weakening proof; **scoped by 19a, not authorized until 19a is reviewed** |
+| 20 | first repair-implementation rung | *undetermined* | *pending* | **not authorized** |
+
+**Do not reorder rungs 19a / 19b / 20 and do not pre-empt them.**
+
+**WHAT RUNG 19 PRODUCED — nothing.** Four commits, no work product: `c5121b3bf` flipped `STATUS` to `IN_PROGRESS`; `2ee549827` added a snapshot trigger; `b34c57176` removed the same trigger, netting zero; `ecb175b92` is an **empty commit** labelled "checkpoint unfinished R9 contract turn". `git diff --stat c3e1e2948..HEAD` reports **one file, `STATUS`** — no specification document, no durable-document section, no source, test, selector, harness or workflow change; `ledgers --base c3e1e2948` is clean because nothing was written. **There is nothing to accept, reject or charge.**
+
+**The turn did start properly.** Source-snapshot runs `38886874381` and `38888296894` report `conclusion=success` at `2ee549827` and `b34c57176`, so authority was requested and obtained before work stopped. The beacon was left `IN_PROGRESS` with **`Successor: UNKNOWN`** — correct under RA-63.13 and **not self-referential**, so the **RA-76.6 charge is absorbed**.
+
+**THE SCOPE WAS THE REVIEWER'S, AND IT WAS WRONG (RA-77.2).** Rung 19 asked four questions, the third being *"specify the contract the consumer should require, and prove it is not a weakening — exhibit what it would still reject, concretely."* That is a soundness argument. Every prior Definition turn in this ladder enumerated producers (RA-71), applied the producer test (RA-72), named an authority (RA-75) or classified candidates against an admissibility table (RA-75.6); **none was asked to prove a predicate sound**. Bundling a mechanical census with a soundness proof in one turn violates the standing instruction against monolithic turns, and the correction is to split it rather than re-issue it unchanged.
+
+**THE SPLIT (RA-77.3).** The substance is unchanged; only the packaging is. **19a** takes the former Q1 and Q2 — enumerate every face comparison in the admission path with line anchors, classify each as *needs a face* or *a face was merely the available handle*, and state precisely what the producers guarantee including the RA-76.7 one-ULP caveat. **19b** takes the former Q3 and Q4 — specify the contract, prove it is not a weakening by exhibiting what it still rejects, and classify each candidate as repair or relocation (RA-65.5, RA-72.5), **scoped by 19a's census and not authorized until 19a is reviewed**. Questions 1 and 2 are static reading of the kind this ladder has delivered reliably — rung 10 **improved** on a reviewer-supplied census rather than merely completing one (RA-71.3) — while question 3 is design work that cannot begin until the census exists, because the contract must be written against the actual comparison sites.
+
+**NOTHING ELSE CHANGES (RA-77.4).** `RP-01` remains exactly where RA-76.8 left it: every producer exonerated — chart sampler (RA-74), planar selector (RA-71.5 amended), accepted-boundary producer (RA-75.2), the override itself (RA-76.1), route publisher / carrier producer / tracer / `from` corner (RA-70.7) — with the **consumer's endpoint-equivalence contract the sole remaining candidate** and **code NOT authorized**. No measurement was taken this rung and none was due. `RP-02` **UNREACHED**.
+
+**LESSON RA-77.5 — a turn that returns nothing is a scoping result.** An empty turn is evidence about the instruction, not only about the executor. When a rung produces no deliverable after acquiring its authority, the first question is whether it was askable as posed. **Recording the empty turn honestly and splitting the scope is the correct response; re-issuing the same instruction is not.** Credited: the turn checkpointed an unfinished state plainly rather than producing a document it could not support.
+
+**Accounting.** Ledger **66/17/49**, debt **1**, CP2 **491/491** accepted, R3 **403/497** rejected (94 RED, 88 carried CP2 losses), frozen selector **30+12+449+6=497** — unchanged. `R4-VIN-01` remains armed at `f0d724045` with **no new semantic source**; every earlier artifact through `12035788036` and `12036818514` is a **baseline, never a comparand**; the 44 RED remain the baseline for `f0d724045` alone, **candidate / non-stable**. No accepted-green loss, no ledger credit, no promotion, no stable event, no regression recurrence, no 497 execution, no gate credit, no binary executed. No source, test, selector, binary, harness, workflow or benchmark change by rung 19 or by this **Review**. PR #8 draft/open. **`PROCESS-01` discharged. `RP-03` is NOT advanced this rung** — no result was reported, so the streak stands at **twelve**, neither extended nor broken. **RA-61.9 WITHDRAWN, final. RA-64.6 WITHDRAWN, final. RA-70.14 WITHDRAWN. RA-72.8 WITHDRAWN. RA-71.5 AMENDED. RA-73.5 SUPERSEDED. RA-74.1 NARROWED and CONFIRMED. Gate C SUSPENDED (RA-65.5, RA-68.3) and moot for `RP-01` (RA-70.11).** The historical `ledgers` failure at `b2b6e6541` remains permanent for any earlier base, is correct, and **must not be suppressed**.
+
+**Strict next rung: `M6-CP3-DEFN-R9A-ENDPOINT-FACE-COMPARISON-CENSUS` — documents only, two questions, both pure static reading.** (1) **Enumerate every place admission demands raw face equality.** Walk the endpoint-certificate path and list, with line anchors, every comparison testing `SurfaceTracePoint::face` or performing a face-keyed lookup against a corner — `find_carrier`, `oriented_carrier`, `exact_corner`, the no-exact-terminal-corner test, the closed-chain branch, and anything else found. For each, say whether it compares faces because it **needs a face** or because a face was merely **the handle that happened to be available**. State the query you ran, not only its result (RA-71.4). (2) **State precisely what the producers guarantee**: source-entity identity rather than face identity (RA-75.2, RA-76.1), with the **one-ULP edge-parameter caveat** (RA-76.7) — what is promised about vertices, about edge points, about interior points, and what is **not** promised. **Do not design the contract and do not propose a repair — that is 19b.** No code, no compile, no runtime. The sections below are historical authorizing evidence, not fresh instructions to re-execute.
+
+---
+
 ## CURRENT — 2026-10-16 RA-76 frozen; branch (b) settled, every producer exonerated, RP-01 localized to the consumer's equivalence contract; next turn `M6-CP3-DEFN-R9-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC` (documents-only)
 
 **Supersedes the RA-75 CURRENT section below as the current state; that section and every section beneath it are retained as authorizing history.** Two turns adjudicated — `M6-CP3-CB8-R8-SOURCE-ENTITY-EQUIVALENCE-PROBE` (rung 17) and `M6-CP3-TB8-R8-SOURCE-ENTITY-EQUIVALENCE-HARVEST` (rung 18) — **both ACCEPTED**, two charges. Decision: `.agents/Directional/Architecture_M6_CP3_R8_Source_Entity_Equivalence_Review_Decision.md`. **This Review writes the tracker section rung 18 staged but could not apply, and closes the beacon it left open.**

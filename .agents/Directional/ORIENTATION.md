@@ -1,3 +1,45 @@
+## CURRENT — `M6-CP3-R9-RUNG-RESCOPE-REV`, 2026-10-16: RA-77 frozen; the turn came back empty, and the instruction was the thing at fault
+
+**Supersedes the RA-76 paragraph below as the current state.** One turn was examined and it
+**produced nothing**, so there is nothing to accept, reject or charge. No open
+REVIEW_BLOCKER. No promotion, no stable event, no regression recurrence, no gate credit.
+No measurement was taken and none was due.
+
+**§3 current state — unchanged, deliberately.** The investigation stands exactly where the
+last measurement left it: every producer in the chain has been cleared, and the only
+remaining candidate is the consumer's rule for deciding whether two endpoints refer to the
+same place. Nothing was learned this rung and nothing was lost.
+
+**§4 runtime witness — none, and none was due.** The turn opened, asked for and received
+its exact source snapshot, removed the request marker, and then stopped, leaving an empty
+checkpoint commit behind. Across the whole range exactly one file changed, the status
+marker, and the protected history was untouched.
+
+**§5 instrument — the instruction, and it was overloaded.** The rung asked for four things,
+and the third was to design a replacement rule *and* demonstrate it would still refuse what
+it must. Every earlier document turn in this sequence listed producers, applied a standing
+admissibility test, or named an owner. None was asked to argue that a rule is sound. That
+is a different kind of work, and bundling it with a mechanical enumeration made the turn
+unaskable as posed. The fault is the reviewer's, not the executor's, and the remedy is to
+split the rung rather than repeat the instruction and hope.
+
+**§7 priority — the enumeration first, on its own.** The next turn does only the mechanical
+half: find every place the admission path compares a raw triangle number, say for each
+whether it genuinely needs a triangle or whether a triangle was simply the handle at hand,
+and write down exactly what the producers do and do not promise — including that two of
+them agree on positions along an edge only to the last bit. Designing the replacement rule,
+and showing it still rejects what it should, becomes its own turn afterwards, written
+against that list rather than against an imagined one.
+
+**§8 patterns — an empty turn is a result about the question.** The executor checkpointed
+an unfinished state plainly instead of producing a document it could not stand behind, and
+left the status marker in the correct shape — the complaint raised one rung earlier about
+that marker is now answered. Nothing was fabricated to fill the gap, which is the behaviour
+that matters when a turn runs short. Recorded as a scoping failure on the instruction side,
+with the rung re-issued in two narrower pieces.
+
+---
+
 ## CURRENT — `M6-CP3-R8-SOURCE-ENTITY-EQUIVALENCE-REV`, 2026-10-16: RA-76 frozen; the two disputed points turn out to be the same place, and every producer is now cleared
 
 **Supersedes the RA-75 paragraph below as the current state.** Two turns were adjudicated and both

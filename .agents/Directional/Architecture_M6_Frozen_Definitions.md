@@ -1,3 +1,72 @@
+## RA-77 — frozen definitions, M6 CP3 R9 rung re-scope (2026-10-16); rung 19 did not execute
+
+**Authority:** `.agents/Directional/Architecture_M6_CP3_R9_Rung_Rescope_Review_Decision.md`.
+`M6-CP3-DEFN-R9-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC` (rung 19) produced **no deliverable**;
+there is nothing to accept, reject or charge. The rung is **re-scoped and re-issued as
+two**. Semantic source unchanged at `f0d7240455b10237af47de58c035cd4c576d889a`.
+
+- **RA-77.1 What rung 19 produced.** Four commits, no work product: `c5121b3bf` flipped
+  `STATUS` to `IN_PROGRESS`; `2ee549827` added a snapshot trigger; `b34c57176` removed the
+  same trigger, netting zero; `ecb175b92` is an **empty commit** labelled "checkpoint
+  unfinished R9 contract turn". `git diff --stat c3e1e2948..HEAD` reports **one file,
+  `STATUS`**. No specification document, no durable-document section, no source, test,
+  selector, harness or workflow change; `ledgers --base c3e1e2948` is clean because nothing
+  was written. **The turn did start properly** — source-snapshot runs `38886874381` and
+  `38888296894` both report `conclusion=success` at `2ee549827` and `b34c57176`, so
+  authority was requested and obtained before work stopped. The beacon was left
+  `IN_PROGRESS` with **`Successor: UNKNOWN`**, correct under RA-63.13 and **not
+  self-referential**, so the **RA-76.6 charge is absorbed**.
+- **RA-77.2 The scope was the reviewer's, and it was wrong.** Rung 19 asked four questions,
+  the third being *"specify the contract the consumer should require, and prove it is not a
+  weakening — exhibit what it would still reject, concretely."* That is a soundness
+  argument. Every prior Definition turn in this ladder enumerated producers (RA-71), applied
+  the producer test (RA-72), named an authority (RA-75) or classified candidates against an
+  admissibility table (RA-75.6); **none was asked to prove a predicate sound**. Bundling a
+  mechanical census with a soundness proof in one turn violates the standing instruction
+  against monolithic turns, and the correction is to split it rather than re-issue it
+  unchanged.
+- **RA-77.3 The split.** The substance is unchanged; only the packaging is. Questions 1 and
+  2 are static reading of the kind this ladder has delivered reliably — rung 10 notably
+  **improved** on a reviewer-supplied census rather than merely completing one (RA-71.3) —
+  while question 3 is design work that cannot begin until the census exists, because the
+  contract must be written against the actual comparison sites.
+  **19a `M6-CP3-DEFN-R9A-ENDPOINT-FACE-COMPARISON-CENSUS`** — former Q1 + Q2: enumerate
+  every face comparison in the admission path with line anchors and classify each as *needs
+  a face* or *a face was merely the available handle*; state precisely what the producers
+  guarantee, including the RA-76.7 one-ULP caveat.
+  **19b `M6-CP3-DEFN-R9B-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC`** — former Q3 + Q4: specify the
+  contract, prove it is not a weakening by exhibiting what it still rejects, and classify
+  each candidate as repair or relocation under RA-65.5 / RA-72.5. **Scoped by 19a's census;
+  not authorized until 19a is reviewed.**
+  **20** — first repair-implementation rung, unchanged, **not authorized**.
+- **RA-77.4 Nothing else changes.** `RP-01` remains where RA-76.8 left it: every producer
+  exonerated, the consumer's endpoint-equivalence contract the sole remaining candidate,
+  **code NOT authorized**. No measurement was taken and none was due. `RP-02`
+  **UNREACHED**. Ledger counts, frozen selector, withdrawals and the gate-C suspension are
+  untouched, and `R4-VIN-01` stays armed at `f0d724045` with no new semantic source.
+- **RA-77.5 LESSON — a turn that returns nothing is a scoping result.** An empty turn is
+  evidence about the instruction, not only about the executor. When a rung produces no
+  deliverable after acquiring its authority, the first question is whether it was askable as
+  posed. Here it was not: a census and a soundness proof are different kinds of work and
+  belong in different turns. **Recording the empty turn honestly and splitting the scope is
+  the correct response; re-issuing the same instruction is not.** Credited: the turn
+  checkpointed an unfinished state plainly rather than producing a document it could not
+  support, and left the beacon in the RA-63.13 shape.
+
+### Accounting
+
+Ledger **66/17/49**, debt **1**, CP2 **491/491**, R3 **403/497**, frozen selector **497** —
+unchanged. `R4-VIN-01` remains armed at `f0d724045`; every earlier artifact through
+`12035788036` and `12036818514` is a **baseline, never a comparand**. **RA-61.9 WITHDRAWN,
+final. RA-64.6 WITHDRAWN, final. RA-70.14 WITHDRAWN. RA-72.8 WITHDRAWN. RA-71.5 AMENDED.
+RA-73.5 SUPERSEDED. RA-74.1 NARROWED and CONFIRMED. Gate C SUSPENDED and moot for
+`RP-01`.** `PROCESS-01` discharged. **`RP-03` is not advanced this rung** — no result was
+reported, so the streak stands at twelve, neither extended nor broken. The historical
+`ledgers` failure at `b2b6e6541` remains permanent for any earlier base, is correct, and
+must not be suppressed.
+
+---
+
 ## RA-76 — frozen definitions, M6 CP3 R8 source-entity equivalence (2026-10-16); the branch is settled: (b)
 
 **Authority:** `.agents/Directional/Architecture_M6_CP3_R8_Source_Entity_Equivalence_Review_Decision.md`.
