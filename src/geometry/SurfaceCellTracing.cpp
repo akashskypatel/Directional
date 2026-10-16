@@ -19639,6 +19639,32 @@ SurfaceCellNetwork build_surface_cell_network(
                 network.sourceTopologyRegions->component_for_row(*firstRow).index() &&
             static_cast<std::size_t>(contact->second.component) ==
                 network.sourceTopologyRegions->component_for_row(*secondRow).index();
+        // CB10 rejection-only separation of the two membership clauses.
+        // Leave publishedTerminal and every certificate predicate untouched.
+        const bool contactEndpointMember = sourceVertex &&
+            contact != authoritativeOptions.hardRailTerminalContacts.end() &&
+            (contact->second.endpoints[0] == *sourceVertex ||
+             contact->second.endpoints[1] == *sourceVertex);
+        const bool carrierEndpointMember = sourceVertex &&
+            (endpointEdge.first() == *sourceVertex ||
+             endpointEdge.second() == *sourceVertex);
+        endpointEvidence << ";a3ProbeContactEndpointMember=" << contactEndpointMember
+                         << ";a3ProbeCarrierEndpointMember=" << carrierEndpointMember
+                         << ";a3ProbeDecodedVertex=";
+        if (sourceVertex) endpointEvidence << sourceVertex->index();
+        else endpointEvidence << "none";
+        endpointEvidence << ";a3ProbeContactEndpointIds=";
+        if (contact != authoritativeOptions.hardRailTerminalContacts.end())
+          endpointEvidence << contact->second.endpoints[0].index() << ','
+                           << contact->second.endpoints[1].index();
+        else endpointEvidence << "none";
+        endpointEvidence << ";a3ProbeCertificateCarrierEdge="
+                         << endpointEdge.first().index() << ','
+                         << endpointEdge.second().index()
+                         << ";a3ProbeResolvedCarrierEdge="
+                         << probeCarrier->edge.first().index() << ','
+                         << probeCarrier->edge.second().index()
+                         << ";a3ProbeCertificateRailId=" << first.railId->index();
         endpointEvidence << ";a3ProbePublishedCarrierEndpoint=" << publishedTerminal
                          << ";a3ProbeComponentMatches=" << matchingComponent;
         TerminalStarIncidence starIncidence;
