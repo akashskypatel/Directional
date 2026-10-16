@@ -1,3 +1,11 @@
+## CURRENT — CB10 compile verified; TB10 artifact-only successor (2026-10-16)
+
+- [x] `M6-CP3-CB10-R9-CARRIER-ENDPOINT-SUBCONDITION-PROBE`: +26 diagnostic-only lines; source `d938ecb57e1040c2a73d5d25c4a613414556cb18`; eight-target GMP/GMPXX compile GREEN [38938801351](https://github.com/akashskypatel/Directional/actions/runs/38938801351); artifact `12062565622`, SHA-256 `30111e7f26c8bbeb7ef9762e31fea5fb449b70c9cbdee64a27d4fc660834ef4f`, 28/28 manifest, 0/0 preflight/build, clean source, `runtimeExecution=false`. Composite predicate unchanged; no runtime membership outcome claimed. Owning record `Architecture_M6_CP3_CB10_Carrier_Endpoint_Subcondition_Probe_Code_Build_Record_20261016.md`.
+- [ ] **NEXT:** `M6-CP3-TB10-R9-CARRIER-ENDPOINT-SUBCONDITION-HARVEST` — consume immutable compile artifact, measure both membership halves on authorized selected logs only; no code mutation or hypothetical repair. Strict separation: any subsequent repair/definition requires separate Review authority.
+- Ledger 66/17/49, debt 1, CP2 491/491, R3 403/497, frozen selector 497; `RP-01` open, `RP-02` UNREACHED, Gate C suspended. Historical RA-80 and old CURRENT below superseded, not reauthorized.
+
+---
+
 ## CURRENT — RA-80 frozen; branch V measured NOT APPLICABLE (0/21); the star path passes and an unexamined membership test fails (2026-10-16)
 
 ### Turn sequence (byte-derived from `STATUS` history; frozen clauses in `Architecture_M6_Frozen_Definitions.md`)
