@@ -19501,6 +19501,79 @@ SurfaceCellNetwork build_surface_cell_network(
       };
       append_traced_faces("First", first);
       append_traced_faces("Second", second);
+      // Rejection-only census of the *producer's* regional face scope. Rebuild
+      // its planar frame from the same inputs rather than inferring source-face
+      // admissibility from the selected corner or the traced side's owner.
+      // Neither the sampled candidates nor any frame rebuilt here is consumed
+      // by endpoint_certificate or by published topology.
+      const auto append_face_census = [&](const char *label,
+                                          const SurfaceFrontEdge &edge) {
+        endpointEvidence << ";a2bProbe" << label << "ActiveFaces=";
+        const auto &regions = network.sourceTopologyRegions->regions();
+        const auto region = std::find_if(
+            regions.begin(), regions.end(), [&](const SurfaceTopologyRegion &r) {
+              return r.id() == edge.sourceTopologyRegion;
+            });
+        if (region == regions.end()) {
+          endpointEvidence << "missing-region";
+          return;
+        }
+        std::vector<authority::SourceFaceId> activeFaces;
+        for (const SourceRegionFaceAuthority &member : region->faces()) {
+          const auto row = network.sourceTopologyRegions->row_for_topology(
+              member.topology);
+          if (!row) {
+            endpointEvidence << "invalid-region-face";
+            return;
+          }
+          activeFaces.push_back(*row);
+        }
+        std::sort(activeFaces.begin(), activeFaces.end());
+        for (std::size_t i = 0; i < activeFaces.size(); ++i) {
+          if (i != 0U) endpointEvidence << ',';
+          endpointEvidence << activeFaces[i].index();
+        }
+        if (activeFaces.empty()) endpointEvidence << "none";
+
+        SurfacePhaseFrontFailure probeFailure;
+        surface_cell_tracing_detail::UniformPhaseFrame frame;
+        const auto sourceMatchingIndices =
+            surface_cell_tracing_detail::edge_matching_indices(sourceEdges);
+        if (!surface_cell_tracing_detail::build_planar_phase_frame(
+                vertices, faces, faceAxisX, faceAxisY, activeFaces,
+                *network.sourceTopologyRegions, sourceEdges,
+                sourceMatchingIndices, edgeMatching, edgeEffort,
+                edgeTransitions, &authoritativeOptions, probeFailure, frame)) {
+          endpointEvidence << ";a2bProbe" << label
+                           << "Frame=not-planar";
+          return;
+        }
+        const auto append_node = [&](const char *endpoint,
+                                     const SurfaceTracePoint &point) {
+          endpointEvidence << ";a2bProbe" << label << endpoint
+                           << "AdmissibleFaces=";
+          // Use the actual published source point, not a reconstructed
+          // lattice coordinate: bounded-disk sides may use separately
+          // prescribed conforming boundary subdivision positions.
+          const Eigen::Vector2d uv = surface_cell_tracing_detail::phase_uv(
+              frame, surface_cell_tracing_detail::point_position(
+                         vertices, faces, point));
+          bool firstFace = true;
+          for (const auto face : activeFaces) {
+            SurfaceTracePoint candidate;
+            if (!surface_cell_tracing_detail::point_on_source(
+                    vertices, faces, frame, {face}, uv, candidate)) continue;
+            if (!firstFace) endpointEvidence << ',';
+            endpointEvidence << face.index();
+            firstFace = false;
+          }
+          if (firstFace) endpointEvidence << "none";
+        };
+        append_node("From", edge.from);
+        append_node("To", edge.to);
+      };
+      append_face_census("First", first);
+      append_face_census("Second", second);
       const auto *firstInterval = first.sharedBoundaryInterval
           ? &*first.sharedBoundaryInterval : nullptr;
       const auto *secondInterval = second.sharedBoundaryInterval
