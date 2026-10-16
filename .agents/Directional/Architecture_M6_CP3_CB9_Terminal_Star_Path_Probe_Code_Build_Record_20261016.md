@@ -1,0 +1,13 @@
+# M6 CP3 CB9 — terminal-star-path probe Code + Build evidence
+
+Canonical turn: `M6-CP3-CB9-R9-TERMINAL-STAR-PATH-PROBE`. Scope is rejection-only instrumentation answering RA-79's F1/F2; compile-only, no runtime. Semantics and interpretation await separately authorized Test + Benchmark and Review.
+
+- Snapshot: exact `0adc9ab08e01692ec2dcb769bb19458dbb8dfbc0`, workflow `38910081766`, artifact `12049916826`, ZIP SHA-256 `6ec4ad5429379fc602ac9718ced9622b9e216e5a67fbbab317d65e09d2680c92`, internal 5,678/5,678 hashes valid.
+- Code patch: one path, `src/geometry/SurfaceCellTracing.cpp`; full SHA-256 `ae15adf5aa350c4c65805c79df40cc7f2280dc6637470cd031a21996d2831d16`. `git diff --check` and reverse-apply check passed locally; no local compile.
+- Patch application: run `38911327141`, result artifact `12050312516` ZIP SHA-256 `e595f64a9ee1e0c269cdb2f4e539d3a5b16ec44fca2ac4fabc9fd978907c62ac`; semantic commit `81101d7370a7d3cfe36baa57b4635ef7e0819bb2`, `runtimeExecution=false`; both temporary Drive uploads deleted after success.
+- Code: factored the independent checked-product verifier's A3 path algorithm into an exact shared evaluation routine; the verifier still reconstructs its own source-incidence graph and keeps the same fail-closed conditions. Only after an A4 endpoint rejection, the route diagnostic reconstructs the true star graph and calls this routine for both attachments under both carrier orientations, emitting contact, bit-exact one-hot identity, component, each path result and exact sector set, disjointness, carrier A3 and admissible orientation count. No change to matching, source/topology authority, predicate results, acceptance, rejection messages or route selection.
+- Compile dispatch: source pinned to `81101d7370a7d3cfe36baa57b4635ef7e0819bb2`, request commit `a17e59517486470d1a89eceab91b70c5214cce26`, mailbox key `m6-cp3-cb9-r9-compile` on `workflow-mailbox`, eight mandated GMP/GMPXX targets. **Compile/package outcome not verified at the time of this record.** No binary/runtime, tests or benchmarks executed locally.
+
+**To close this turn:** wait for compile mailbox, confirm source, collect job/artifact inventory and evidence once, validate 8/8 target receipts, all checksums, GMP/GMPXX linker, exact backend and `runtimeExecution=false`. Update this report and handoff if compile evidence changes the stated status; then publish final STATUS **last**. Separate successor when COMPLETE is `M6-CP3-TB9-R9-TERMINAL-STAR-PATH-HARVEST`, not executable in this turn.
+
+RA-79 accounting unchanged: 66/17/49, debt 1, CP2 491/491, R3 403/497, frozen selector 497. RP-01 open, RP-02 UNREACHED, Gate C suspended. No regression promotion or gate credit.

@@ -1,3 +1,7 @@
+## 2026-10-16 — CB9 rejection-only A3 terminal path evidence (compile pending)
+
+- Exact source commit `81101d7370a7d3cfe36baa57b4635ef7e0819bb2` adds diagnostics only; no acceptance/test/selector/runtime changes. Mandatory GMP compile submitted, result awaiting verification. Internal evidence: `.agents/Directional/Architecture_M6_CP3_CB9_Terminal_Star_Path_Probe_Code_Build_Record_20261016.md`.
+
 ## 2026-10-16 — RA-79 frozen: the contract is admissible, the precedent is a five-part conjunction, and the 21 are not known to satisfy it
 
 - Architecture Review only (`M6-CP3-DEFN-R9B-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC-REV`), adjudicating one turn; no source, test, selector, binary, harness, workflow, benchmark or ledger-count change in this Review, and no Directional binary executed. This Review also writes the tracker and frozen-definitions sections rung 19b did not.

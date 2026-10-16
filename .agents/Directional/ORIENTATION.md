@@ -1,3 +1,9 @@
+## CURRENT — CB9 rejection-only terminal-star-path probe (2026-10-16)
+
+Source-only probe committed at `81101d7370a7d3cfe36baa57b4635ef7e0819bb2`; Drive patch-apply `38911327141` verified exact one-path change. GMP/GMPXX eight-target compile dispatched from `a17e59517486470d1a89eceab91b70c5214cce26`; immutable package verification pending. Neither 497 selector nor tests/benchmarks were executed. `RP-01` open, `RP-02` UNREACHED; unchanged 66/17/49, debt1, CP2 491/491, R3 403/497. CB9 remains IN_PROGRESS; TB9 cannot start before CB9 formal closeout.
+
+---
+
 ## CURRENT — `M6-CP3-DEFN-R9B-ENDPOINT-EQUIVALENCE-CONTRACT-SPEC-REV`, 2026-10-16: RA-79 frozen; the rule is written, and the turn refuses to claim it covers the cases that prompted it
 
 **Supersedes the RA-78 paragraph below as the current state.** One turn was adjudicated and it
