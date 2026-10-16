@@ -1,3 +1,9 @@
+## 2026-10-16 — R9B endpoint equivalence definition only
+
+- Defined strict two-consumer V/I/C endpoint comparison requirements, source authority and fail-closed counterexamples in `Architecture_M6_CP3_R9B_Endpoint_Equivalence_Contract_Specification_20261016.md`. No runtime, tests, build, selector or source changes. Independent Review pending.
+
+---
+
 ## 2026-10-16 — RA-78 frozen: the census corrects the localization and finds a second active admission path; "same vertex, unique star path" is already production behaviour
 
 - Architecture Review only (`M6-CP3-DEFN-R9A-ENDPOINT-FACE-COMPARISON-CENSUS-REV`), adjudicating one turn; no source, test, selector, binary, harness, workflow, benchmark or ledger-count change in this Review, and no Directional binary executed. This Review also writes the tracker, ORIENTATION and frozen-definitions sections rung 19a did not.
