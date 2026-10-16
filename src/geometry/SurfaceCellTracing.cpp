@@ -12780,6 +12780,10 @@ struct SurfacePhaseFrontBuildState {
   std::vector<SurfaceHardRailFieldTransition> hardRailFieldTransitions;
   std::vector<SurfaceHardRailRouteCertificate> hardRailRouteCertificates;
   SurfacePhaseFrontFailure failure;
+  // Diagnostic-only, producer-captured lattice samples. Never consulted by
+  // any selection, front-ownership, or acceptance predicate.
+  std::map<std::tuple<std::size_t, int, int>, std::string>
+      latticeUvCandidateProbes;
   std::vector<SurfaceFrontEdge> edges;
   std::vector<SurfaceFrontEvent> events;
   std::vector<SurfacePhaseFrontCell> cells;
@@ -12954,6 +12958,52 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_for_faces(
                            points[static_cast<std::size_t>(node_index(u, v))])) {
         set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::PointProjectionFailure);
         return result;
+      }
+
+      // The post-snap point identifies ambiguous source-vertex occurrences;
+      // the evidence itself is evaluated at the exact pre-snap lattice UV.
+      const SurfaceTracePoint &published =
+          points[static_cast<std::size_t>(node_index(u, v))];
+      int sourceVertex = -1;
+      for (int corner = 0; corner < 3; ++corner) {
+        if (published.barycentric[corner] == 1.0) {
+          sourceVertex = faces(published.face, corner);
+          break;
+        }
+      }
+      int incidentCount = 0;
+      for (const auto faceId : activeFaces) {
+        const int face = static_cast<int>(faceId.index());
+        for (int corner = 0; corner < 3; ++corner) {
+          if (faces(face, corner) == sourceVertex) {
+            ++incidentCount;
+            break;
+          }
+        }
+      }
+      if (sourceVertex >= 0 && incidentCount > 1) {
+        std::ostringstream evidence;
+        evidence << "uniform;UV=" << std::hexfloat << uv.x() << ',' << uv.y()
+                 << std::defaultfloat << ";PublishedFace=" << published.face;
+        for (const auto faceId : activeFaces) {
+          const int face = static_cast<int>(faceId.index());
+          Eigen::RowVector3d raw;
+          const bool inverted = face_barycentric_from_uv(
+              vertices, faces, frame, face, uv, raw);
+          SurfaceTracePoint candidate;
+          const bool passes = point_on_source(
+              vertices, faces, frame, {faceId}, uv, candidate);
+          evidence << "|" << face << ':';
+          if (inverted) {
+            evidence << std::hexfloat << raw[0] << ',' << raw[1] << ','
+                     << raw[2] << std::defaultfloat;
+          } else {
+            evidence << "inverse-failed";
+          }
+          evidence << ":pass=" << passes;
+        }
+        result.latticeUvCandidateProbes.emplace(
+            std::make_tuple(region.id().index(), u, v), evidence.str());
       }
     }
   }
@@ -17211,6 +17261,8 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
             result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart);
         return result;
       }
+      const int sampledFace =
+          points[static_cast<std::size_t>(node_index(u, v))].face;
       if (useAcceptedConformity) {
         const SurfaceTracePoint *accepted = nullptr;
         if (v == 0) {
@@ -17227,6 +17279,47 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
         if (accepted != nullptr) {
           points[static_cast<std::size_t>(node_index(u, v))] = *accepted;
         }
+      }
+
+      // A bounded-disk chart has its own UV basis and canonical face-key
+      // selection. Do not substitute a planar face_barycentric_from_uv call:
+      // it would inspect a different sample from this producer's own chart.
+      const SurfaceTracePoint &published =
+          points[static_cast<std::size_t>(node_index(u, v))];
+      int sourceVertex = -1;
+      for (int corner = 0; corner < 3; ++corner) {
+        if (published.barycentric[corner] == 1.0) {
+          sourceVertex = faces(published.face, corner);
+          break;
+        }
+      }
+      int incidentCount = 0;
+      for (const auto &triangle : chartTriangles) {
+        if (std::find(triangle.vertices.begin(), triangle.vertices.end(),
+                      sourceVertex) != triangle.vertices.end()) ++incidentCount;
+      }
+      if (sourceVertex >= 0 && incidentCount > 1) {
+        std::ostringstream evidence;
+        evidence << "bounded-disk;UV=" << std::hexfloat << uv.x() << ','
+                 << uv.y() << std::defaultfloat << ";SampledFace="
+                 << sampledFace << ";PublishedFace=" << published.face;
+        for (const auto &triangle : chartTriangles) {
+          Eigen::RowVector3d raw;
+          const bool inverted = chart_barycentric(triangle, uv, raw);
+          const bool passes = inverted &&
+              raw.minCoeff() >= -kPeriodicChartCoverageTolerance &&
+              raw.maxCoeff() <= 1.0 + kPeriodicChartCoverageTolerance;
+          evidence << "|" << triangle.sourceFace.index() << ':';
+          if (inverted) {
+            evidence << std::hexfloat << raw[0] << ',' << raw[1] << ','
+                     << raw[2] << std::defaultfloat;
+          } else {
+            evidence << "inverse-failed";
+          }
+          evidence << ":pass=" << passes;
+        }
+        result.latticeUvCandidateProbes.emplace(
+            std::make_tuple(region.id().index(), u, v), evidence.str());
       }
     }
   }
@@ -18049,6 +18142,11 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
   for (RegionBuild &build : regionBuilds) {
     const SurfaceTopologyRegion &region = *build.work->region;
     SurfacePhaseFrontBuildState &local = build.result;
+    // Preserve the local producer's original UV evidence when final cell IDs
+    // are renumbered. Region and integer lattice nodes remain unchanged.
+    result.latticeUvCandidateProbes.insert(
+        local.latticeUvCandidateProbes.begin(),
+        local.latticeUvCandidateProbes.end());
     bool localCoverage = false;
     const authority::TopologyRegionId typedRegion = region.id();
     std::map<authority::CellId, authority::CellId> finalCellByLocalOwner;
@@ -19574,6 +19672,31 @@ SurfaceCellNetwork build_surface_cell_network(
       };
       append_face_census("First", first);
       append_face_census("Second", second);
+      const auto append_lattice_uv_candidates = [&](const char *label,
+                                                    const SurfaceFrontEdge &edge,
+                                                    const bool from) {
+        const auto &node = from ? edge.fromLattice.latticeCoordinate
+                                : edge.toLattice.latticeCoordinate;
+        const auto key = std::make_tuple(edge.sourceTopologyRegion.index(),
+                                         static_cast<int>(node.x),
+                                         static_cast<int>(node.y));
+        const auto found = phaseFrontState.latticeUvCandidateProbes.find(key);
+        endpointEvidence << ";a2bProbe" << label << "PreSnapCandidates=";
+        if (found == phaseFrontState.latticeUvCandidateProbes.end()) {
+          endpointEvidence << "none";
+        } else {
+          endpointEvidence << found->second;
+        }
+      };
+      // These are precisely the two endpoints consumed by the rejected
+      // certificate; emit only their ambiguous producer-captured samples.
+      if (firstMissing) {
+        append_lattice_uv_candidates("FirstFrom", first, true);
+        append_lattice_uv_candidates("SecondTo", second, false);
+      } else {
+        append_lattice_uv_candidates("FirstTo", first, false);
+        append_lattice_uv_candidates("SecondFrom", second, true);
+      }
       const auto *firstInterval = first.sharedBoundaryInterval
           ? &*first.sharedBoundaryInterval : nullptr;
       const auto *secondInterval = second.sharedBoundaryInterval
