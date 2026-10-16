@@ -19771,7 +19771,6 @@ SurfaceCellNetwork build_surface_cell_network(
       };
       append_interval("First", first);
       append_interval("Second", second);
-      const auto *probeCarrier = find_carrier(endpointEdge);
       // Rejection-only chart evidence. Report the actual A4 source rows and
       // canonical A2b/A3 attachment keys; do not infer them from fixture layout.
       endpointEvidence << ";a2bProbeFromFace=" << fromPoint.face
