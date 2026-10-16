@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-r6-corner-authority-20261016a",
+  "request_id": "m6-cp3-defn-r6-corner-authority-20261016b",
   "operation": "drive_apply",
   "mailbox_key": "m6-cp3-defn-r6-corner-authority-apply",
   "file_id": "1CdF9InvcIwPT4EkkmMoLg6jw62UVgwez",
-  "patch_sha256": "d7d90566f1a06e10ae8e741757012c8410664eae5c13b56022d40c482b929d0f",
+  "patch_sha256": "e6c67b497b33c7a4863f131481e89b229e8ccb43d3a67ceddb9614f944a31bd2",
   "base_sha": "c85bd360098bb0675443b5ca62702a9b2df0a686",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
   "commit_message": "Define R6 corner assignment authority from exact source",
