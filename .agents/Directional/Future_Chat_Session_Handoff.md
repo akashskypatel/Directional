@@ -1,4 +1,12 @@
-## CURRENT — 2026-10-16 RA-71 frozen; RP-01's producer is named and verified, the reviewer's own prediction and census were falsified, and code is still not authorized; next turn `M6-CP3-DEFN-R7-CORNER-FACE-SELECTION-REPAIR-SPEC` (documents-only)
+## CURRENT — R7 corner-face selection repair defined (2026-10-16; documents only)
+
+`M6-CP3-DEFN-R7-CORNER-FACE-SELECTION-REPAIR-SPEC` has a source-static **definition** in [`Architecture_M6_CP3_R7_Corner_Face_Selection_Repair_Specification_20261016.md`](Architecture_M6_CP3_R7_Corner_Face_Selection_Repair_Specification_20261016.md). The planar path producer already publishes face-valued side endpoints; selecting one face per lattice node is insufficient where incident oriented paths use different faces. The proposed bounded remedy uses per-directed-side source-attested endpoint occurrences while retaining a single geometric lattice node, exact source-route/A3/rail ownership and paired front incidence. This is **not implemented**, not measured, and **requires independent Review** before any code rung. A simple face-equality check relocates the rejection; it does not repair it. The midpoint path-face tie-break remains a determinism concern to investigate, not a proven source-authoritative choice.
+
+`RP-01` OPEN, `RP-02` UNREACHED, Gate C SUSPENDED/moot for RP-01. Prior RA-71 remains frozen. Stable 66/17/49, debt 1; CP2 491/491; R3 403/497; frozen 497 and R4-VIN-01 baseline unchanged. No C++/headers/tests/selector/workflow/compile/runtime mutations. **Next:** independent Review of this definition (exact successor turn ID not frozen; code not authorized).
+
+---
+
+## HISTORICAL — 2026-10-16 RA-71 frozen; RP-01's producer is named and verified, the reviewer's own prediction and census were falsified, and code is still not authorized; next turn `M6-CP3-DEFN-R7-CORNER-FACE-SELECTION-REPAIR-SPEC` (documents-only)
 
 **Supersedes the RA-69/RA-70 CURRENT section below as the current state; that section and every section beneath it are retained as authorizing history.** One turn adjudicated — `M6-CP3-DEFN-R6-CORNER-ASSIGNMENT-AUTHORITY-SPEC` (rung 10) — **ACCEPTED** with two charges. Decision: `.agents/Directional/Architecture_M6_CP3_R6_Corner_Assignment_Authority_Spec_Review_Decision.md`.
 

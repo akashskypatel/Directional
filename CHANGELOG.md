@@ -1,3 +1,7 @@
+## 2026-10-16 — R7 directed-side corner-face repair definition (no implementation)
+
+On exact verified snapshot `491914f9371b799be594fa9d3aa35569280682d4` (run `38843434916`, artifact `12021892076`, 5,658 source file checks), definition-only R7 identified existing side-path source-face publishers and specified per-side corner occurrences with preserved geometric node identity, A3 transport, rail route, paired front ownership, and strict fail-closed verification. Per-node selection-order and standalone face-equality checks are not general repairs. Source determinism/route-compatibility falsifiers remain for independent Review. Owning report `.agents/Directional/Architecture_M6_CP3_R7_Corner_Face_Selection_Repair_Specification_20261016.md`. No runtime, code, selector, ledger or acceptance change; RP-01 unresolved, RP-02 unreached; 66/17/49 debt1, 491/491 CP2, 403/497 R3, frozen 497 remain unchanged.
+
 ## 2026-10-16 — RA-71 frozen: RP-01's producer is named and verified; the reviewer's prediction and census were both falsified, correctly
 
 - Architecture Review only (`M6-CP3-DEFN-R6-CORNER-ASSIGNMENT-AUTHORITY-SPEC-REV`), adjudicating one turn; no source, test, selector, binary, harness, workflow, benchmark or ledger-count change in this Review, and no Directional binary executed.

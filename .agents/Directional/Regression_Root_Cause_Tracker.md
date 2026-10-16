@@ -1,3 +1,7 @@
+## 2026-10-16 — R7 RP-01 candidate repair boundary (definition only; non-stable)
+
+Exact static source evidence identifies the planar node-wide face choice versus directed-side boundary-path face divergence. R7 proposes per-directed-side source-attested endpoint binding using already published `SurfaceTraceSegment` endpoints, without relaxing A3/A4 or changing the canonical geometric lattice node. This **does not close `RP-01`**, establish unique carrier acceptance, or change the `R4-VIN-01` baseline/44 RED. Independent Review must settle the listed source-route, reciprocal ownership and row-order falsifiers before code is authorized. See `.agents/Directional/Architecture_M6_CP3_R7_Corner_Face_Selection_Repair_Specification_20261016.md`. Stable ledger 66/17/49, debt1; RP-02 unreached; selector 497 unchanged.
+
 ## 2026-10-16 — RP-01's producer is named and verified: the corner's face is chosen per lattice node by first-match, and the reconciler that would catch it compares position (RA-71)
 
 **Review:** `M6-CP3-DEFN-R6-CORNER-ASSIGNMENT-AUTHORITY-SPEC-REV`, adjudicating rung 10 —
