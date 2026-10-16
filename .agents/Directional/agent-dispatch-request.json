@@ -1,9 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb9-r9-compile-20261016a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb9-r9-compile",
-  "source_sha": "81101d7370a7d3cfe36baa57b4635ef7e0819bb2",
-  "targets": "directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks",
-  "artifact_prefix": "directional-m6-cp3-cb9-r9-compile"
+  "request_id": "m6-cp3-cb9-r9-docs-20261016a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb9-r9-docs-apply",
+  "file_id": "10FnSEzIw12SWXy2DGb7_gViD1QDDfFt3",
+  "patch_sha256": "d04dd9c3875cc629f7682c7717202a033f3ec789d3f0113d179ee1fdcfbe9a83",
+  "base_sha": "0adc9ab08e01692ec2dcb769bb19458dbb8dfbc0",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): preserve CB9 rejection-only probe handoff",
+  "retention_days": 14
 }
