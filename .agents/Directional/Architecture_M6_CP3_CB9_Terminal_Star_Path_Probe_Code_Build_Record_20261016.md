@@ -10,4 +10,12 @@ Canonical turn: `M6-CP3-CB9-R9-TERMINAL-STAR-PATH-PROBE`. Scope is rejection-onl
 
 **To close this turn:** wait for compile mailbox, confirm source, collect job/artifact inventory and evidence once, validate 8/8 target receipts, all checksums, GMP/GMPXX linker, exact backend and `runtimeExecution=false`. Update this report and handoff if compile evidence changes the stated status; then publish final STATUS **last**. Separate successor when COMPLETE is `M6-CP3-TB9-R9-TERMINAL-STAR-PATH-HARVEST`, not executable in this turn.
 
+
+## CB9 continuation — compile recovery (2026-10-16)
+
+- Original compile requests were rejected before compiling: run `38911565252` used a string rather than the schema-required `targets` array; run `38914058261` supplied forbidden compile field `retention_days`. No generated executable ran in either attempt.
+- Correctly dispatched run `38914322511` configured and generated GMP/GMPXX linkage but failed at source compilation in `SurfaceCellTracing.cpp`: missing `probeCarrier` declaration at line 19617 and a ternary mixing `DomainResult<SourceVertexId>` and `std::nullopt` at line 19619. Log artifact `12052370678` (SHA-256 `aaaff68f2c2d71fa5a301ce5271920089a53e3234a7162cef7685d8e5d8622df`); no test or runtime execution.
+- The minimal one-path correction obtains `probeCarrier` from existing `find_carrier(endpointEdge)` and validates `SourceVertexId::from_index` before assigning a nullable typed identity, without changing admission, rejection or authority predicates. Local forward/reverse patch application and diff checks passed. Patch SHA-256 `56c91974f24d50a9d8611bacc92ed60bafbbdfff0861af12beb182bfa72e8be5`; apply run `38914859130` succeeded, result artifact `12052216836` ZIP SHA-256 `fc88bd7a0d2bb00ad4016902cfb3d7be2ca9fb34a9c92e8dae9632e4b33779be`; revised semantic source `4507b209759aa6e8935c24db5be37f89379a913e`. Staged Drive patch was retired.
+- Corrected-source compile dispatched at request commit `d84393026ea22aefa04750e8ccfcb6cc6ad572d1`, workflow mailbox `m6-cp3-cb9-r9-compile-corrected`, eight mandatory targets. **Result remains unverified at this update.** Verify GMP, 8/8 targets, manifest 28/28, clean source and runtime-free command receipts before closing CB9. TB9 remains a separate, not-yet-authorized execution.
+
 RA-79 accounting unchanged: 66/17/49, debt 1, CP2 491/491, R3 403/497, frozen selector 497. RP-01 open, RP-02 UNREACHED, Gate C suspended. No regression promotion or gate credit.
