@@ -1,3 +1,59 @@
+## CURRENT — `M6-CP3-DEFN-R6-CORNER-ASSIGNMENT-AUTHORITY-SPEC-REV`, 2026-10-16: RA-71 frozen; the culprit is named, and the turn got there by refusing the list it was handed
+
+**Supersedes the RA-69/RA-70 paragraph below as the current state.** One turn was adjudicated and it
+is **accepted**, with two charges. No open REVIEW_BLOCKER. No promotion, no stable event, no
+regression recurrence, no gate credit.
+
+**§3 current state — the question moved from "whose fault is it" to a named line of code.** The
+measurement a rung ago showed that the corner a cell is judged against disagrees with the path the
+cell actually traced. This rung found who writes that corner, and the answer is a helper that picks a
+source face for each lattice point by walking the list of active faces and taking the **first** one
+whose barycentric test accepts the point. The choice is made once per lattice node, shared by every
+side and every cell that touches it, and made before any path has been traced. The corners are copied
+from that array; the paths are built separately afterwards; the front edge's endpoints are read
+straight out of the corners. Nothing in between compares the two.
+
+**§4 runtime witness — none, and none was needed.** This was a document turn over source read from a
+verified snapshot. What was checked instead is that the text describes the bytes that were actually
+measured: the three source trees are identical at the snapshot commit, at the commit that was
+compiled two rungs ago, and at the branch head, and the snapshot's own manifest verifies
+file-for-file. The one thing this turn refused to claim was a push it could not see from inside the
+snapshot, which is the right instinct.
+
+**§5 instrument — two corrections worth more than the finding they came with.** First, the thing that
+looks like a tolerance problem is not one. A point sitting exactly on a shared vertex genuinely
+belongs to every triangle around that vertex, so every one of them passes the containment test, and
+which one wins is decided purely by the order the face list happens to be in. Tightening the
+tolerance cannot help, and that is the first repair anyone will reach for. Second, the check that
+would have caught this **already exists and runs twice** — a validator that compares each corner
+against the start and end of its own side's path. It compares them by distance in space. Two
+different faces meeting at the same vertex are zero distance apart, so the comparison passes. That is
+the third time in this investigation that the missing authority turned out to exist in a form that
+cannot do its job; it is now written down as something to look for first.
+
+**§7 priority — one more document turn, then code, and not before.** Three things have to be settled
+on paper. Whether every piece of evidence a repair would need is already published, which for the
+first time looks likely. Whether one face per lattice node can ever satisfy all four sides that share
+it, because if it cannot, the repair is a change of shape rather than a change of order. And whether
+making the existing validator compare faces instead of positions would be a repair at all — it would
+not; it would move the rejection to an honest place without making any cell succeed. Confusing that
+relocation for a fix is the obvious next mistake, so it is named in advance.
+
+**§8 patterns — the turn was handed a list of three suspects and found all three had alibis.** It was
+told to name one of three writers, and it declined, showing instead that none of them is reached on
+the path that fails: two live in a fallback the rejected cells never enter, and the third runs only
+when the front succeeds. The real writer was in a different structure that happens to share the same
+member name and type, which is the same confusion between two similarly-named things that this review
+charged the implementation agent for twice in the preceding rungs — committed this time by the
+reviewer, one rung after writing the lesson down. The lesson is now generalized: a list offered as
+complete carries every blind spot of the search that produced it, so say what you searched for, not
+just what you found. Recorded as the seventh consecutive turn to report something that did not
+flatter the reviewer or the process. Against that, the turn twice described its own result as less
+settled than its evidence made it — the third turn in a row to understate what it had actually
+established.
+
+---
+
 ## CURRENT — 2026-10-16 R6 corner-assignment source-static Definition delivered; independent Review next
 
 `M6-CP3-DEFN-R6-CORNER-ASSIGNMENT-AUTHORITY-SPEC` inspected the exact snapshot `c85bd360098bb0675443b5ca62702a9b2df0a686` (run `38837317846`, artifact `12019178209`, ZIP SHA-256 `37dab2b2f1292e7f0a530042b90be1d9813ee4e7eb4e76df7cd50226c2e98bdb`, 5,656/5,656 hashes). **RA-70.14's `:11269` hypothesis is falsified by reachability:** `:10479` and `:11269` are seed-proposal fallback writers, called only after phase-front does not reject; `:19790` is a copy on produced success, not the rejecting path. The live planar phase-front samples lattice vertices with first-containing-source-face `point_on_source` (`SurfaceCellTracing.cpp:11477-11509`), copies that face into `SurfacePhaseFrontCell::corners` (`:12953-12959`, `:12985-12989`), then traces boundaries independently (`:13012-13022`). `validate_closed_boundary_paths` uses 3D endpoint proximity (`:7319-7357`), not source-face/path authority. That allows the measured f7-corner / f3-path mismatch at a junction without contradicting closure. **Single responsible producer boundary: planar phase-front point-to-source-face selection before path reconciliation; exact f7 choice remains reviewable, not newly measured.** Record: `.agents/Directional/Architecture_M6_CP3_R6_Corner_Assignment_Authority_Specification_20261016.md`. Code, compile, runtime, fixtures, selectors and acceptance untouched; RP-02 unreached, gate C suspended, ledger 66/17/49 debt1, CP2 491/491, R3 403/497, frozen 497 unchanged. **Only next successor:** `M6-CP3-DEFN-R6-CORNER-ASSIGNMENT-AUTHORITY-SPEC-REV`, independent evidence-only Review of named falsifiers; no implementation successor authorized. Prior CURRENT sections below are history.

@@ -1,3 +1,142 @@
+## RA-71 — frozen definitions, M6 CP3 R6 corner-assignment authority (2026-10-16)
+
+**Authority:** `.agents/Directional/Architecture_M6_CP3_R6_Corner_Assignment_Authority_Spec_Review_Decision.md`.
+Adjudicates `M6-CP3-DEFN-R6-CORNER-ASSIGNMENT-AUTHORITY-SPEC` (rung 10); **ACCEPTED** with
+two charges. Semantic source unchanged at `a143af264bc8b33f0e1b2f8def16b2479b53d5fc`.
+
+- **RA-71.1 Provenance re-derived.** Snapshot run `38837317846` `conclusion=success` at
+  `c85bd3600`; artifact `12019178209` ZIP SHA-256 **recomputed**
+  `37dab2b2f1292e7f0a530042b90be1d9813ee4e7eb4e76df7cd50226c2e98bdb`, matches; manifest
+  **5,656 OK / 0 BAD**; `src`/`include`/`tests` **tree-identical at `c85bd3600`,
+  `a143af264` and `HEAD`**. Documents only; no source, test, header, selector, workflow or
+  benchmark change. Tree-object identity is the decisive statement: the specification read
+  exactly the bytes compiled at rung 8 and measured at rung 9.
+- **RA-71.2 RA-70.14 is WITHDRAWN, falsified on its own named falsifier (a).** The measured
+  44 are rejections; `src/geometry/SurfaceCellTracing.cpp:19801-19803`
+  (`if (network.phaseFront.is_rejected()) { return network; }`) returns before `:19814`'s
+  `make_surface_cell_proposal`, so `:11269` and `:10479` are **unreachable on the measured
+  path**, and `:19790` sits inside the `is_produced()` branch at `:19781`. The `:11269`
+  reasoning remains true of that fallback and explains nothing about `RP-01`.
+- **RA-71.3 The reviewer-supplied three-writer census was wrong by type conflation.**
+  `include/directional/geometry/SurfaceCellTracing.h` declares an identically-typed
+  `std::array<SurfaceTracePoint,4> corners` on **two different structs** — `:1719`
+  `SurfacePhaseFrontCell` and `:2160` `SurfaceCellProposal`. All three nominated writers
+  (`:10479`, `:11269`, `:19790`) write `proposal.corners`, i.e. **`SurfaceCellProposal`**,
+  not the field A4 judges. The sole writer of `SurfacePhaseFrontCell::corners` is
+  `:12986-12987` `cell.corners[corner] = points[nodeIds[corner]];`. An unfiltered census
+  returns exactly four `corners` assignments in the file. **This is the error class charged
+  at RA-67.13 and RA-70.8, committed by the reviewer one rung after freezing it.** The
+  method was blind twice over: the first census grep excluded `cell\.corners\[static_cast`
+  to filter reads, which removes the real write, and the "unfiltered" grep required
+  `=[^=]` while `:12986` ends its line with `=`.
+- **RA-71.4 LESSON — an enumeration is only as bounded as the filter that produced it.** A
+  census presented as exhaustive inherits every blind spot of its query, and a reviewer who
+  hands a successor a bounded list converts their own filter into the successor's search
+  space. **State the query, not just its result**, so a successor can falsify the boundary
+  rather than work inside it.
+- **RA-71.5 Named locus, verified line by line.** The planar lattice point-to-source-face
+  selection in `point_on_source` (`:11477-11509`), made authoritative for corner faces by
+  `build_uniform_phase_front_for_faces` at `:12949-12958` and `:12986-12987`, with no
+  reconciliation against `boundaryPaths`. Chain: planar producer called first at
+  `:17884-17890` (annulus only on `NotApplicable`; the fixture is planar-and-rectangular);
+  `point_on_source` loops `activeFaces` and on the **first** successful barycentric
+  containment does `point.face = face; return true;`, with no reference to side, path, cell
+  or route; `:12949-12958` fills `points[node_index(u,v)]` **once per lattice node**, so one
+  face choice is shared by every side and cell touching that node and is made **before any
+  path exists**; `:12986-12987` copies it into the corner; `:13012-13021` builds
+  `boundaryPaths[side]` separately via `segment_on_source`; `:13033-13035` derives
+  `edge.from`/`edge.to` from the corners. This explains the RA-70.7 asymmetry directly —
+  `from` and `to` are **different lattice nodes**, each independently first-matched, and
+  only the node on the shared junction vertex has more than one admissible face.
+- **RA-71.6 This is an ordering dependency, not a tolerance defect.** `:11483` sets
+  `constexpr double tolerance = 1.0e-10`, containment admits `[-tolerance, 1+tolerance]`,
+  and `:11495-11501` snaps `|b| <= tolerance` to exactly `0` and `|b-1| <= tolerance` to
+  exactly `1`. A lattice point lying **exactly on a shared source vertex** satisfies the
+  test in **every incident face** — vertex 4 is a corner of `f0, f1, f3, f4, f6, f7` — so
+  **the winner is decided purely by `activeFaces` iteration order**. Therefore **(a) no
+  epsilon change can repair this**, because the vertex genuinely belongs to every incident
+  face and only *near*-vertex ambiguity responds to tolerance; and **(b) the attribution is
+  complete without identifying the winning face**, since any order-dependent corner face is
+  the defect.
+- **RA-71.7 The reconciler exists and is blind — third instance of the pattern.**
+  `orient_and_validate_phase_front_cell` calls `validate_closed_boundary_paths` at `:12718`
+  **and again** at `:12736`. Inside it (`:7319-7357`), `valid()` applies a **bounds** check
+  `point.face >= 0 && point.face < faces.rows()` and never an identity check, while
+  `close()` is a pure 3D distance test
+  `(point_position(a) - point_position(b)).norm() <= tolerance`; the corner/path comparison
+  is `close(start, corners[side])` and `close(end, corners[(side+1)%4])`. **A corner in
+  `f7` and a path endpoint in `f3` at the same physical vertex pass at distance exactly 0.**
+  The comparison that would have caught `RP-01` is made twice and cannot see the defect.
+  **Generalization, now frozen:** at RA-68.3 the junction certificate existed but was
+  ordered after the admission it would authorize; here the reconciler exists but compares
+  position where identity is required — **when a missing authority is sought in this
+  pipeline, look first for it existing in a form that cannot do the job.** Informational:
+  `valid()` uses `faces.rows()` not `face_count()`, the RA-66.6 locus, unchanged.
+- **RA-71.8 Falsifiers (c) and (d) settled, not assumed.** (c) does **not** hold — the only
+  pre-A4 corner/path check is positional, per RA-71.7. (d) does **not** hold —
+  `reverse_phase_front_cell_cycle(cell)` at `:12730` permutes the cycle and recomputes
+  positions without rewriting any corner's `face`, and no other writer of
+  `SurfacePhaseFrontCell::corners` exists. The attribution survives all four of its own
+  named falsifiers.
+- **RA-71.9 CHARGE — a mandated verification was omitted and not disclosed.** The turn was
+  instructed to run **both** gates and report both; the closeout table carries a
+  `review_check.py boundary` row and **no `ledgers` row**, and the absence was not declared.
+  **RA-66.4 category — a mandated item silently dropped — therefore a repeat.** Both gates
+  were run by this Review and both pass; the defect is the silence, not the state. Minor,
+  not charged: `review_check.py` invoked without `-I`.
+- **RA-71.10 CHARGE — the turn under-claims its own completed attribution, and this is now a
+  pattern.** The specification calls the per-vertex choice "the reviewable attribution, not
+  an executed new measurement", reading as a confession of incompleteness; its own evidence
+  completes it per RA-71.6. **Third consecutive turn in this category** — RA-67.9 (harvested
+  interval fields never examined), RA-70.7 (path identity and `hit_from` left unstated), now
+  RA-71.10. **Recorded as a pattern, not an isolated lapse:** the measurements have
+  repeatedly been stronger than the claims made about them. The failure mode is
+  conservative, which is preferable to the opposite, but it costs a rung each time.
+- **RA-71.11 Credits.** It **falsified a reviewer prediction and a reviewer-supplied census
+  in the same turn**, on the merits, explicitly declining to name `:11269` "merely because
+  it discards one of two corner walks" — **`RP-03` satisfied a seventh consecutive turn**.
+  It stated **four explicit falsifiers** for its own attribution, all four settleable from
+  source, which is what makes the attribution reviewable. It refused to claim a push it
+  could not verify from inside a snapshot. Guidance, not a charge: the closeout `CHANGELOG`
+  row names `.agents/Directional/CHANGELOG.md` while **root `CHANGELOG.md` is canonical** —
+  practice is correct (the Review writes the root ledger), the row should name its file.
+- **RA-71.12 `RP-01` state.** Advances from *producer locus localized* to **producer locus
+  NAMED AND VERIFIED**: the corner's source face is selected per **lattice node** by
+  first-match over `activeFaces` in `point_on_source` (`:11477-11509`), made authoritative
+  for `SurfacePhaseFrontCell::corners` at `:12949-12958` / `:12986-12987`, while the
+  designated reconciler `validate_closed_boundary_paths` (`:12718`, `:12736` →
+  `:7319-7357`) compares corner against path by 3D position and is blind to face identity.
+  **Code is still NOT authorized**, because the RA-65.5 producer test has not been applied
+  to the repair family. `RP-02` remains **UNREACHED**.
+
+### Rung 11 scope — `M6-CP3-DEFN-R7-CORNER-FACE-SELECTION-REPAIR-SPEC`, documents only
+
+1. **Apply the RA-65.5 producer test to the repair family.** Enumerate every witness a
+   repair needs and name its existing publisher. Already published: `activeFaces` plus the
+   barycentric containment test yields the *admissible* face set at a node;
+   `boundaryPaths[side]` segments carry `segment.face`. This may be the first repair family
+   whose witnesses all already exist — state the outcome either way.
+2. **Settle per-node versus per-side.** A lattice node is shared by up to four sides and
+   four cells and `:12949-12958` makes **one** choice for all of them. If their traced paths
+   lie in different faces, no single per-node face can satisfy every consumer and the repair
+   is **structural** — a per-side corner face or an explicit reconciliation pass — not a
+   selection-order fix.
+3. **State what a face-identity check at `:12718` would and would not achieve.** It would
+   **relocate** the failure from a late A4 `carrier-orientation` rejection to an honest
+   cell-production rejection at the true producer. **It would not repair `RP-01`.** No later
+   rung may mistake relocation for repair.
+
+### Accounting
+
+Ledger **66/17/49**, debt **1**, CP2 **491/491**, R3 **403/497**, frozen selector **497** —
+unchanged. `R4-VIN-01` remains armed at `a143af264`; artifacts `11994726341`,
+`11996317553`, `12005034654`, `12010485442` and `12019178209` are **baselines, never
+comparands**; the 44 RED are the baseline for `a143af264` alone, candidate / non-stable.
+**RA-61.9 WITHDRAWN, final. RA-64.6 WITHDRAWN, final. RA-70.14 WITHDRAWN. Gate C SUSPENDED
+(RA-65.5, RA-68.3) and moot for `RP-01` (RA-70.11).** `PROCESS-01` discharged.
+
+---
+
 ## RA-69 and RA-70 — frozen definitions, M6 CP3 R5 route/path reconciliation (2026-10-16)
 
 **Authority:** `.agents/Directional/Architecture_M6_CP3_R5_Route_Path_Reconciliation_Review_Decision.md`.

@@ -1,3 +1,36 @@
+## CURRENT — RA-71 frozen; RP-01's producer named and verified; next rung is the repair spec, documents only (2026-10-16)
+
+### Turn sequence (byte-derived from `STATUS` history; frozen clauses in `Architecture_M6_Frozen_Definitions.md`)
+
+| # | Turn | Kind | Review | Outcome |
+|---:|---|---|---|---|
+| 1 | `M6-CP3-CB2-R4-PREDICATE-SEPARATION` | Code + Build | RA-63 | accepted; probe separated from decision |
+| 2 | `M6-CP3-CB3-R4-LEDGER-CONTENT-FLOOR` | Code + Build | — | tooling floor added to both gates |
+| 3 | `M6-CP3-TB3-R4-PROBE-HARVEST` | Test + Benchmark | RA-64 | accepted; contradicted the reviewer, credited |
+| 4 | `M6-CP3-DEFN-R4-ENDPOINT-AUTHORITY-SPEC` | Definition | RA-65 | accepted w/ amendment; RA-64.6 withdrawn, gate C suspended |
+| 5 | `M6-CP3-CB4-R4-ENDPOINT-CHART-PROBE` | Code + Build | RA-66 | accepted; compile chain closed by bytes |
+| 6 | `M6-CP3-TB4-R4-ENDPOINT-CHART-HARVEST` | Test + Benchmark | RA-67 | accepted; mechanism derived; 44/44 RED |
+| 7 | `M6-CP3-DEFN-R5-JUNCTION-CARRIER-AUTHORITY-SPEC` | Definition | RA-68 | accepted; both repair shapes inadmissible |
+| 8 | `M6-CP3-CB5-R5-ROUTE-PATH-RECONCILIATION-PROBE` | Code + Build | RA-69 | accepted; neutrality structural; chain closed by content |
+| 9 | `M6-CP3-TB5-R5-ROUTE-PATH-RECONCILIATION-HARVEST` | Test + Benchmark | RA-70 | accepted; RA-68.9 CONFIRMED; RP-01 locus localized |
+| 10 | `M6-CP3-DEFN-R6-CORNER-ASSIGNMENT-AUTHORITY-SPEC` | Definition | RA-71 | accepted; **falsified the reviewer's prediction AND census**; producer NAMED AND VERIFIED |
+| **11** | **`M6-CP3-DEFN-R7-CORNER-FACE-SELECTION-REPAIR-SPEC`** | **Definition** | pending | **NEXT — documents only** |
+| 12 | first code rung, scope set by rung 11 | undetermined | pending | **not authorized**; rung 11 must pass RA-65.5 first |
+
+- [x] Rung 10 **ACCEPTED** (RA-71) with two charges. Decision: `.agents/Directional/Architecture_M6_CP3_R6_Corner_Assignment_Authority_Spec_Review_Decision.md`.
+- [x] **`RP-01` producer NAMED AND VERIFIED.** The corner's source face is selected per **lattice node** by first-match over `activeFaces` in `point_on_source` (`src/geometry/SurfaceCellTracing.cpp:11477-11509`), made authoritative for `SurfacePhaseFrontCell::corners` at `:12949-12958` / `:12986-12987`; `boundaryPaths[side]` is built separately at `:13012-13021`; endpoints are read from the corners at `:13033-13035`. **Code NOT authorized** — RA-65.5 producer test not yet applied to the repair family.
+- [x] **RA-71.6 — ordering dependency, NOT a tolerance defect.** `:11483` `tolerance = 1.0e-10`, containment admits `[-tol, 1+tol]`, `:11495-11501` snaps to exact 0/1. A point exactly on a shared vertex passes in **every** incident face (vertex 4 is a corner of f0, f1, f3, f4, f6, f7), so the winner is decided purely by `activeFaces` order. **No epsilon change can repair this — do not touch `tolerance`.**
+- [x] **RA-71.7 — the reconciler exists and is blind; third instance of the pattern.** `validate_closed_boundary_paths` is called twice (`:12718`, `:12736`); inside (`:7319-7357`) `valid()` bounds-checks `point.face` and `close()` is a 3D distance test, so a corner in f7 and a path endpoint in f3 at the same vertex pass at distance **exactly 0**. Generalization: **when a missing authority is sought here, look first for it existing in a form that cannot do the job** (cf. RA-68.3).
+- [x] **RA-70.14 WITHDRAWN** on its own falsifier (a): the measured 44 are rejections and `:19801-19803` returns before `:19814`, so `:11269` and `:10479` are unreachable; `:19790` is inside the `is_produced()` branch at `:19781`. **The reviewer's three-writer census was wrong by type conflation** — `H:1719` `SurfacePhaseFrontCell::corners` vs `H:2160` `SurfaceCellProposal::corners`, identically typed; all three nominated writers target the latter. **Lesson RA-71.4: an enumeration is only as bounded as the filter that produced it — state the query, not just its result.**
+- [x] Charges: **RA-71.9** mandated `ledgers` gate omitted from the closeout and not disclosed (RA-66.4 category, a repeat; both gates run by this Review, both pass); **RA-71.10** under-claimed its own completed attribution — **third consecutive turn in this category** (RA-67.9, RA-70.7, RA-71.10), recorded as a pattern.
+- [x] Credits: **`RP-03` satisfied a seventh consecutive turn** — falsified a reviewer prediction **and** a reviewer census in one turn, on the merits; four explicit self-falsifiers stated, all four settleable from source; refused to claim an unverifiable push. Provenance: snapshot `12019178209` ZIP SHA-256 recomputed `37dab2b2f129…`, manifest **5,656 OK / 0 BAD**, `src`/`include`/`tests` tree-identical at `c85bd3600`, `a143af264` and HEAD.
+- [ ] **Rung 11 — `M6-CP3-DEFN-R7-CORNER-FACE-SELECTION-REPAIR-SPEC` (documents only).** Three static questions: (1) **apply the RA-65.5 producer test** — enumerate every witness a repair needs and name its publisher (`activeFaces` + barycentric test gives the admissible face set; `boundaryPaths[side]` segments carry `segment.face`; this may be the first family whose witnesses all exist); (2) **settle per-node versus per-side** — a node is shared by up to four sides and four cells and `:12949-12958` makes one choice for all, so if their paths lie in different faces the repair is **structural**, not a selection-order fix; (3) **state what a face-identity check at `:12718` would and would not achieve** — it **relocates** the rejection to the true producer and **does not repair `RP-01`**. No code, no compile, no runtime.
+- [ ] **Rung 12 is not authorized.** It is the first code rung and its scope is set by rung 11. **Do not reorder rungs 11-12 and do not pre-empt rung 12.**
+- [ ] Do not mistake relocation for repair; do not touch `tolerance`; do not epsilon.
+- [ ] Carried: `RP-02` **UNREACHED**. Frozen 66/17/49, debt 1, CP2 491/491, R3 403/497, selector 497. **`R4-VIN-01` armed at `a143af264`** — `11994726341`, `11996317553`, `12005034654`, `12010485442`, `12019178209` are baselines, never comparands. RA-61.9, RA-64.6 and RA-70.14 withdrawn. Gate C suspended and moot for `RP-01`. `PROCESS-01` discharged.
+
+---
+
 ## CURRENT — R6 Definition source-static result; Review gate only (2026-10-16)
 
 - [x] `M6-CP3-DEFN-R6-CORNER-ASSIGNMENT-AUTHORITY-SPEC`: exact verified source shows RA-70.14 predicted `:11269` cause is unreachable for rejected phase fronts; `:10479` also fallback-only and `:19790` produced-success copy. Actual responsible boundary: planar `point_on_source` first-containing-face selection (`SurfaceCellTracing.cpp:11477-11509`), propagated to phase-front corners (`:12953-12959`, `:12985-12989`) before side paths (`:13012-13022`); closure compares only 3D positions (`:7319-7357`), so source-face disagreement can survive. See `Architecture_M6_CP3_R6_Corner_Assignment_Authority_Specification_20261016.md` for bounded source evidence and falsifiers.
