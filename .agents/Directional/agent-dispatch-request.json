@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb8-source-entity-probe-apply-20261016a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb8-source-entity-probe-apply",
-  "file_id": "13V1N73ofPD2jCyNqmGq9bFsfW88_gzsW",
-  "patch_sha256": "8cd1d1592db5aebe7f9f98d6d62514340c2063a91ace20e09a3989380e85c028",
-  "base_sha": "59208778b024a46f9f6549f16b52722f39796192",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "Probe exact boundary source-entity equivalence without changing acceptance",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb8-source-entity-probe-compile-20261016a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb8-source-entity-probe-compile",
+  "source_sha": "f0d7240455b10237af47de58c035cd4c576d889a",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb8-source-entity"
 }
