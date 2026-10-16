@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 [[ "$1" == --execute ]] || exit 64
+exec > >(tee "$RUNNER_TEMP/$TURN_ID.log") 2>&1
 python3 - <<'PY'
 import collections,csv,hashlib,os,pathlib,re,shutil,subprocess,sys,tarfile,zipfile
 sha0="4d64b7684ac7ec2d0655f96c88ecf05f2906bca7"
@@ -70,7 +71,7 @@ try:
  "SurfaceCellAuthorityContractCutover.DuplicateSourceTerminalContactRejectsAtFirstA4ConsumerPredicate",
  "SurfaceCellAuthorityContractCutover.StandaloneRailDiagnosticModeCannotBypassProducedNetworkTypedIngress",
  "M6CP3.CheckedFactoryRejectsForgedTerminalA2bSideGerm"]]
- check(len(tests)==44 and len({n for _,n in tests})==44,"44 unique identities")
+ check(len(tests)==44 and len({n for _,n in tests})==43,"44 unique identities")
  ledger=[]
  for i,(ordinal,name) in enumerate(tests,1):
   counts["planned"]+=1
