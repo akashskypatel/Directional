@@ -1,0 +1,1 @@
+TB6 R7 artifact-only harness preparation; preserve immutable semantic source 4d64b7684ac7ec2d0655f96c88ecf05f2906bca7.
