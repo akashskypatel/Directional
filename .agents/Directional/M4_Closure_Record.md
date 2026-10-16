@@ -11,10 +11,9 @@ Final TB3 authority is run/job `35470130614 / 105969470184`, result/log artifact
 M4 closure does **not** claim production-ready output. Stable accounting remains **49 events / 14 categories / 35 recurrences**, and produced-witness debt remains **5**: four M5-owned periodic/relation debts and one M6-owned occurrence-complex debt. M5 is the next milestone; exact next is planning-only `M5-DEFN`.
 
 The six checkpoint closure records, final independent Review, supporting historical Reviews and consolidated
-M4 turn history are preserved in full in the **historical source archive below**. The separately retained
-`Architecture_M4_CP4_TB3_Artifact_Only_Test_Benchmark_Report.md` remains the final runtime evidence.
-Normative definitions, independent definition amendments, frozen selectors and retained runtime reports remain
-separate and unchanged. This M4 acceptance verdict supersedes only historical status/successor prose, not
+M4 turn history are preserved in full in the **historical source archive below**. Binding frozen
+definitions, the definition amendment and runtime reports are preserved in the separate source-relocation
+section at the end of this closure record; original authority remains unchanged. Byte-frozen selectors remain separate. This M4 acceptance verdict supersedes only historical status/successor prose, not
 substantive evidence or frozen rules.
 
 
@@ -34,9 +33,9 @@ old turn successors or the necessity of a separate historical document are **dat
 not live instructions. When a claim requires its original review context, read the preserved source
 section and cited primary evidence; do not silently reinterpret it from a later status.
 
-This consolidation does **not** fold or amend normative/frozen definitions, including the source-
-boundary-alias DEFN-R1 record, byte-frozen selectors, execution reports, source code, or project
-policy. Current run and task authority still resides in the live handoff, tracker, TODO and applicable
+**Historical note:** The first M4 consolidation excluded normative definitions and execution evidence.
+The subsequent user-authorized source relocation below retains those definitions and primary reports verbatim;
+none of their binding obligations is retired. Byte-frozen selectors, source code and policies remain untouched. Current run and task authority still resides in the live handoff, tracker, TODO and applicable
 frozen definitions. The accepted final required-green M4 selector is **430/430**.
 
 | Archive | Retired source file | Historical role | Original Git blob SHA | Exact original source |
@@ -2763,6 +2762,1583 @@ selector427; the three appended identities and their order; the state and histor
 Accepted as reported: package and result artifact hashes, the 26/26 and 447/447 checksum verifications, run/job
 identifiers, and per-row raw-log binding — all artifact-side, and consistent with a Review that re-parsed rather
 than summarised.
+
+</details>
+
+---
+
+## 2. Preserved M4 normative definitions and primary execution evidence
+
+**Verbatim source relocation; normative authority remains binding.** The source records relocated here are not retired as implementation contracts merely because their previous standalone filenames are removed. Frozen definitions retain their original precedence, amendments, and semantic force. Runtime reports remain immutable primary evidence. Historical status and successor pointers inside them describe the original turns, not current execution instructions. Exact original blob SHAs and Git permalinks are provided for every source. Byte-frozen selector files remain untouched.
+
+### 2.1 Milestone and checkpoint frozen definitions
+
+| # | Original document | Authority classification | Original blob SHA | Exact Git source |
+|---:|---|---|---|---|
+| 1 | [`Architecture_M4_DEFN_Frozen_Definitions.md`](#m4-source-1) | **BINDING FROZEN DEFINITIONS** | `11f0caaf2eca86574fbe22570e2e68a2410479a8` | [Original](https://github.com/akashskypatel/Directional/blob/416e8c05db200d7b0360302a4dd9f0c8f637b61e/.agents/Directional/Architecture_M4_DEFN_Frozen_Definitions.md) |
+| 2 | [`Architecture_M4_CP_COND_Frozen_Definitions.md`](#m4-source-2) | **BINDING FROZEN DEFINITIONS** | `90bb8d974f0616a3b1fac31eb8e58f240d554e92` | [Original](https://github.com/akashskypatel/Directional/blob/416e8c05db200d7b0360302a4dd9f0c8f637b61e/.agents/Directional/Architecture_M4_CP_COND_Frozen_Definitions.md) |
+| 3 | [`Architecture_M4_CP_SCALE_Frozen_Definitions.md`](#m4-source-3) | **BINDING FROZEN DEFINITIONS** | `b6f88604e112f502ce1e2c9f8dfd80efb6750dd8` | [Original](https://github.com/akashskypatel/Directional/blob/416e8c05db200d7b0360302a4dd9f0c8f637b61e/.agents/Directional/Architecture_M4_CP_SCALE_Frozen_Definitions.md) |
+| 4 | [`Architecture_M4_CP4_Frozen_Definitions.md`](#m4-source-4) | **BINDING FROZEN DEFINITIONS** | `e094fd51d472b0365099426e8c83ee03989dabbd` | [Original](https://github.com/akashskypatel/Directional/blob/416e8c05db200d7b0360302a4dd9f0c8f637b61e/.agents/Directional/Architecture_M4_CP4_Frozen_Definitions.md) |
+
+<a id="m4-source-1"></a>
+<details>
+<summary><strong>Architecture_M4_DEFN_Frozen_Definitions.md</strong> — BINDING FROZEN DEFINITIONS</summary>
+
+# M4-DEFN Frozen Definitions — Global Conformity
+
+**Status:** FROZEN / M4 BASELINE A3 SEMANTICS AMENDED BY `M4-CP3-DEFN-R1` / EXACT NEXT = `M4-CP3-CB2` / RUNTIME-FREE
+**Date:** 2026-09-09; solver amendment 2026-09-10; production-baseline incidence amendment 2026-09-11
+**Definition authority:** §§1-16 retain the historical M4-DEFN/M4-DEFN-R1 framed schedule contract and evidence lineage. **§17 is the current production-baseline authority** and supersedes conflicting family/sign, balance, infeasibility, solver, checkpoint-exit, and successor clauses for production A3. Historical CP1/CP2 evidence is not rewritten.
+
+This document freezes the M4 contract. It does not implement it and creates no runtime evidence.
+
+## 1. Entering authority and M3 reconciliation
+
+M4 enters from the accepted M3 boundary, not from the final audit selector:
+
+- reviewed semantic package: package113, semantic source `6dae3f6959551f6dcdd81f153aedb5f38411a96b`;
+- final M3 audit runtime: `34409262512 / 102659650326`, selector409, **405 PASS / 4 RED / 0 SKIP**;
+- accepted required-green predecessor: selector **365**, LF SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`;
+- carried final-audit REDs: `[368,369,374,398]`, each under its pre-existing separate owner;
+- ownership: **300 established / 0 unavailable / 0 conflicting**;
+- stable regression accounting: **47 events / 14 categories / 33 recurrences**;
+- produced-witness debt: **5** total, of which three `G4-B002` contracts are M4-owned and two `G4-B003` contracts are M5-owned;
+- accepted package count: **113**.
+
+Selector409 remains a retained audit surface. It is not the prefix from which M4 selectors may be constructed.
+
+### 1.1 Correction to the independent TB48 review amendment
+
+The appended §12.2 of `Architecture_M3_CP4c3_TB48_Independent_Review_Record.md` says
+`M3-CP4c-0-TB-R9` was never executed and tries to derive CP4c-0 closure from later cumulative inclusion. That historical
+premise is false.
+
+Primary and retained evidence agree that **TB-R9 did execute and directly closed CP4c-0**:
+
+- workflow run `33079817998`, named `M3 CP4c0 TB-R9 Whole-Gate Reproof`, completed successfully;
+- workload job `98543736213`;
+- source `7bbc0480d9ab5954329b940992ef41a9223102ed`;
+- selector346 SHA-256 `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`;
+- result artifact `9649625534`, SHA-256 `6cd4e3c21dc46fd7e0d6df2209ee5a382531d768f50ae52d190302e05bec02af`;
+- log artifact `9649626115`, SHA-256 `3ba381cd12ec1188bd9ae36020d35bdaa458271ea2c7b1163aac31a9a474d7f9`;
+- **346/346 PASS**, including Q8 criteria **1, 4 and 5**, with immutable pre/postflight green and no timeout,
+  exception or orchestration failure.
+
+`CHANGELOG.md`, `Regression_Root_Cause_Tracker.md` and `M3_CP4c_Consolidated_Record.md` all retain the same direct gate
+result. Later 353/355/365 prefix inclusion is consistent corroboration, but it is **not** the closure basis and no
+conditional M3 re-opening check remains for M4. M3 stays CLOSED / ACCEPTED.
+
+This correction is definition-time historical reconciliation only. It changes no runtime result, stable regression
+count, selector, package, product semantics or M3 acceptance state.
+
+## 2. One M4 checkpoint chain
+
+The two previously overlapping roadmap decompositions are frozen into this single **development/acceptance order**:
+
+1. **`M4-CP1` — Global schedule authority.** Introduce the immutable `GlobalConformityPlan`, canonical conformity
+   spans/incidences, one shared subdivision count per span, exact breakpoint identity, deterministic minimum-deviation
+   schedule, and an independent validator for feasible plans. One A3 writer only.
+2. **`M4-CP2` — Certification and typed infeasibility.** Add complete positivity/optimality certificates and
+   subset-scoped infeasibility certificates/outcomes. Mathematical infeasibility is data, not a run-wide producer
+   error and not permission for local repair.
+3. **`M4-CP3` — Producer cutover.** Regional producers consume the verified schedule and lose authority to choose,
+   insert, remove, quantize, re-pair or reorder shared breakpoints. Remove the post-hoc hard-rail-pairing authority;
+   recover `G4-B002` on the produced exact torus.
+4. **`M4-CP-COND` — Input conditioning coverage.** Implement Amendment 20's conditioning stage **architecturally
+   before A0**, with raw-to-conditioned correspondence and typed inadmissibility. Development occurs after the A3
+   semantic core so conditioning cannot become an unstated prerequisite for defining the schedule. It may change the
+   A0 input product, but it may not redefine A3 schedule semantics.
+5. **`M4-CP-SCALE` — Scale and boundedness.** Establish S1 expression-swell evidence, S2 certified-filter
+   equivalence, S3 exact limit-cycle termination reporting, S4 incremental-Betti early rejection and S5 genus>=2
+   coverage. Scale mechanisms may accelerate exact decisions but may not become alternate semantic authorities.
+6. **`M4-CP4` — Cumulative M4 exit.** Re-prove the full accepted predecessor plus every M4 required identity,
+   discharge all three M4-owned `G4-B002` produced-witness debts, retain work/bit-width evidence, and prove no
+   post-hoc local pairing authority remains.
+
+`M4-CP4` is an exit/cumulative-proof checkpoint, not a second schedule writer.
+
+### 2.1 Architectural order versus development order
+
+`M4-CP-COND` is developed fourth but its final product is inserted before A0. This is deliberate. CP1–CP3 are defined
+and proved on already-admissible accepted M3 inputs; CP-COND later supplies the conditioned immutable source that A0
+consumes. The A3 contract below binds only to A0/A2b/metric authority and therefore does not depend on the particular
+conditioning algorithm. Before M4 exits, the production stage order is:
+
+`Conditioning -> A0 -> A1 -> A2a -> A2a' -> A2b -> A3 GlobalConformityPlan -> A4 regional construction`.
+
+## 3. A3 product and single-writer boundary
+
+### 3.1 Product family
+
+M4 freezes these semantic roles; exact C++ spellings may follow repository style but may not change their meaning:
+
+- `GlobalConformityPlan` — immutable A3 scheduled-product authority and **only** shared-breakpoint/subdivision writer;
+- `ConformitySpanId` — semantic identity for one canonical A2b boundary arc between topology nodes; it is one
+  scheduling variable even when its exact source path crosses several source simplices;
+- `ConformitySupportPiece` — one ordered exact source-attached linear piece of a span's bound A2a/A2a' path; support
+  pieces locate breakpoints but do **not** own independent subdivision counts;
+- `ConformityBoundaryIncidenceId` — semantic identity for one occurrence of a span in one canonical region boundary
+  walk, preserving multiplicity even when both incidences belong to the same `NetworkRegionId`;
+- `ConformityBreakpointId` — strong pair-valued identity `{ConformitySpanId, exactOrdinal}` where `exactOrdinal` uses
+  the semantic arbitrary-precision integer type; it is **not** a `SemanticId<size_t>` alias;
+- `ConformitySourcePoint` — exact source point (`SourceVertexId`, edge + exact unit parameter, or source face + exact
+  barycentric triple) used for path-piece endpoints;
+- `ConformityIncidence` — one boundary occurrence with region/family/sign/orientation authority;
+- `ConformityScheduleEntry` — one exact positive subdivision count plus a compact deterministic breakpoint-generator
+  rule; A3 never stores an O(`x_s`) breakpoint vector;
+- `GlobalConformityCertificate` — CP2-carried binding, primal-feasibility, positivity/parity and optimality evidence for
+  scheduled components;
+- `ConformityInfeasibleSubset` — CP2-carried canonical subset-scoped infeasibility fact plus independently checkable
+  witness;
+- `GlobalConformityPlanError` — malformed/binding/contract failure only, never ordinary mathematical infeasibility.
+
+The **final CP2+ A3 outcome** partitions the normalized incidence graph into connected constraint components. Every
+region/family boundary incidence is covered exactly once by a scheduled component or an infeasible-subset fact; one
+region may participate in more than one component. No input region or boundary incidence disappears. A3 does not assign
+D0-D4 disposition; later disposition authority consumes these facts.
+
+**CP1 staging is intentionally narrower:** CP1 implements and validates only constructed inputs whose normalized
+constraint components are known to be feasible. It does not expose a production A3 entry point that maps ordinary
+infeasibility to `GlobalConformityPlanError`, and it does not carry a provisional CP2 certificate. CP2 adds the
+certificate and infeasible alternative **without changing CP1 schedule semantics**.
+
+### 3.2 Exact bindings
+
+Every plan publishes and the independent oracle re-derives:
+
+- `sourceDigest == GlobalTopologyPlan::source_digest()`;
+- `networkDigest` bound to the accepted `FieldAlignedCurveNetwork`;
+- `cutGraphDigest == GlobalTopologyPlan::cut_graph_digest()`;
+- `topologyPlanDigest == GlobalTopologyPlan::semantic_digest()`;
+- a deterministic `targetMetricDigest` over the exact dyadic interpretation of the source-vertex target-size field;
+- a semantic plan digest over canonical bindings, full spans/support paths, boundary incidences, exact counts, compact
+  breakpoint-generator contracts, certificates and infeasible-subset facts.
+
+A zero/mismatched digest is a typed binding error. Diagnostics, vector row numbers, hash-container order, thread order,
+floating positions and output emission order are never identity.
+
+### 3.3 Stage ownership
+
+Only A3 may construct schedule entries. A4 receives a `const GlobalConformityPlan&` (or an immutable product handle)
+and may only resolve IDs and validate bindings. It may not:
+
+- derive another count from `targetSize`;
+- insert a shared breakpoint because a local chart wants one;
+- delete/coalesce/reorder a planned shared breakpoint;
+- group chart edges by floating support or tolerance;
+- run the existing `support_key(...1e-9/1e12...)` post-hoc hard-rail pairing as semantic authority;
+- rewrite a plan after one region has already committed output.
+
+The current `SurfaceCellTracing.cpp` local `targetSize.mean() -> gridU/gridV` selection and post-production
+`HardRailPairKey` grouping are the migration targets. They are retained until the owning cutover checkpoint, then lose
+semantic authority rather than being made a fallback.
+
+## 4. Canonical conformity spans and breakpoint identity
+
+### 4.1 Span construction
+
+A2b `GlobalTopologyPlan` is the source of boundary topology, while its bound A2a `FieldAlignedCurveNetwork` and A2a'
+`SurfaceCutGraph` provide exact path detail for trace/contact/cut segments. A3 consumes the bound A0-A2b products; it
+does not infer exact points from `GlobalTopologyArc::sourceFaces` alone.
+
+One **canonical conformity span is one canonical A2b boundary arc between topology nodes**. `ConformitySpanId` is
+therefore semantically equivalent to the bound `NetworkArcId` (a distinct strong namespace is permitted for type
+safety), not to a source-face/source-segment ordinal. An A2b arc that crosses ten source triangles still owns exactly
+one schedule variable and may receive `x_s = 1`; input-triangle count is never a lower bound on output subdivision.
+
+Each span publishes a canonical ordered `ConformitySupportPiece` path reconstructed from the bound exact A2a/A2a'
+authority. Each nondegenerate piece publishes exact source-point endpoints and carrier provenance. Pieces are ordered by
+the arc's semantic trace/cut order, never source-face row or container order. Empty paths, disconnected piece chains,
+nonmatching consecutive endpoints, or zero-length pieces that cannot be canonically removed without changing a fixed
+feature/node locus are malformed `DegenerateConformityPath` input.
+
+Every occurrence of a span in a region's canonical oriented boundary walk becomes a
+`ConformityBoundaryIncidenceId = (NetworkRegionId, canonicalBoundaryOccurrenceOrdinal)`. The occurrence carries family
+`U|V`, sign `+|-`, and forward/reverse orientation derived from field/topology authority. Multiplicity is preserved:
+two incidences of one shared span need not name distinct regions, and repeated occurrences are never collapsed merely
+because their `NetworkRegionId` matches. A non-boundary/shared span has two incidence **ends**; a source-boundary
+terminal has one. More than two ends or contradictory bound owners is malformed input. In the induced bi-directed
+network, a self-incidence is a loop with two signed ends; after row aggregation it may contribute `0` or `+-2`, so the
+implementation must not discard incidence-level multiplicity to force a simple matrix shape.
+
+### 4.2 Compact path parameter and breakpoint definition
+
+Let a span `s` have `m_s >= 1` ordered support pieces. The canonical exact path coordinate assigns piece `q` the equal
+interval `[q/m_s, (q+1)/m_s]`. This coordinate is **source-authoritative but not physical arclength**; its purpose is to
+map one global schedule to exact points on the already-bound A2 path without an algebraic-length/tolerance dependency.
+The path segmentation is part of the bound A2 semantic input. Reversal maps `t -> 1-t`.
+
+For every span `s`, A3 owns one exact positive integer subdivision count
+
+`x_s in Z, x_s >= 1`.
+
+The semantic count type must not truncate at machine-word range. Authoritative builds use the repository exact-integer
+surface backed by GMP/GMPXX. `std::size_t` or another machine type is permitted only after an independently verified
+fit/output-budget check in the later consumer and never becomes semantic source.
+
+The breakpoint sequence is **implicit**:
+
+`B_s = { (s,j) | j in Z, 0 <= j <= x_s }`.
+
+`ConformityBreakpointId(s,j)` stores the exact ordinal `j`; `ConformityScheduleEntry` stores `x_s` and the generator
+contract, not `x_s+1` IDs. For `0 < j < x_s`, map `t=j/x_s` to support piece
+`q=floor(m_s*j/x_s)` and local exact parameter `u=(m_s*j-q*x_s)/x_s`; the two endpoints map directly to the first/last
+path endpoints. The opposite incidence consumes exact ordinal `x_s-j`. Thus both sides reference the same semantic
+breakpoints without geometric matching.
+
+A3 semantic digest hashes the span/path authority, exact count and generator rule, never an enumerated O(`x_s`) list.
+CP1/CP2 validation may enumerate **small test counts only** as a test convenience. Production enumeration is A4
+output-sensitive work after an explicit fit/budget check; inability to materialize a huge exact count does not permit
+A4 to rewrite the A3 schedule.
+
+## 5. Exact target objective
+
+Target size chooses among globally feasible plans; it never grants a regional producer independent breakpoint
+authority. The authoritative target metric remains the source-vertex
+`AdaptiveTargetSizeResult::targetSize` vector, bound to the A0 vertex count.
+
+### 5.1 Backend-independent binary64 ingress
+
+Every finite source coordinate and target-size `double` is converted to an exact dyadic by **bit decomposition**, not
+by the tolerance-based `ENumber(double,tol)` constructor and not by backend-dependent implicit conversion. For binary64
+sign `s`, biased exponent `e`, and 52-bit fraction `F`:
+
+- `e == 0`: exact value is `(-1)^s * F * 2^-1074`;
+- `0 < e < 2047`: exact value is `(-1)^s * (2^52 + F) * 2^(e-1075)`;
+- `e == 2047`: reject as non-finite.
+
+Canonicalize the resulting exact numerator/power-of-two denominator. Source-coordinate signed zero normalizes to exact
+zero. Target metric entries must additionally be strictly positive. This conversion is shared only as a primitive;
+producer and independent validator each derive semantic target data from the exact bits.
+
+### 5.2 Exact full-span preference proxy
+
+M4 deliberately avoids both per-source-simplex positivity and an unbounded exact sum-of-square-roots arclength
+decision. For span `s` with `m_s` support pieces, piece displacement `Delta_q`, and exact positive target value `h_q`
+interpolated at that piece's exact midpoint, define the exact rational target-normalized path energy
+
+`R_s = m_s * sum_q ( ||Delta_q||^2 / h_q^2 )`.
+
+`R_s` is the squared RMS target-normalized speed of the canonical equal-piece path parameter. It is exact because
+source coordinates, source-point barycentrics and target values are exact rationals; it is invariant under path
+reversal and semantic row/container permutation. It is **not claimed to be physical arclength** and may change if the
+bound A2 path segmentation/re-triangulation itself changes. Such a change is a new bound semantic input; it still can
+never produce different schedules on the two sides of one span. A span with zero exact path energy is
+`DegenerateConformityPath`, not a zero-count schedule.
+
+A3 derives preferred `d_s >= 1` as the nearest integer to `sqrt(R_s)` without an inexact square root: compare the exact
+rational `R_s` with half-integer squared thresholds `(k+1/2)^2`. Exact half-way ties choose the smaller integer.
+
+Let spans be in canonical order `s_1..s_E`. The semantic objective is the lexicographic integer vector
+
+`J(x) = ( C(x), x_(s_1), x_(s_2), ..., x_(s_E) )`, where `C(x)=sum_s |x_s-d_s|`.
+
+Thus primary minimum deviation is authoritative and the unique tie result is the lexicographically least count vector.
+All spans have unit primary weight in M4. Later quality work may replace this proxy only through a new definition/review;
+A4 cannot smuggle geometric weights or local target decisions into validity.
+
+**Target-size invariance means:** once a `GlobalConformityPlan` is fixed, changing any A4-local target-size input cannot
+change the breakpoint sequence it consumes. Changing the bound A3 target metric is a new input and may legitimately
+produce a different globally consistent plan/digest.
+
+## 6. Constraint and parity system
+
+Constraints are formed over **boundary incidences**, not deduplicated region IDs. For each
+`(NetworkRegionId r, family f in {U,V})`, a feasible schedule satisfies
+
+`sum_{i in boundaryIncidences(r,f)} sigma_i * x_span(i) = 0`, with `sigma_i in {-1,+1}`.
+
+A shared span has two signed incidence ends in the bi-directed network even when both ends attach to the same row/region.
+A source-boundary terminal has one end. The implementation keeps that incidence graph as authority; matrix aggregation
+may yield loop coefficients outside `{-1,0,+1}` and is only a derived representation.
+
+**Parity is mandatory from CP1 onward, not an optional later constraint.** For each region/family define the unsigned
+boundary multiplicity
+
+`B_(r,f) = sum_{i in boundaryIncidences(r,f)} x_span(i)`.
+
+The signed balance equation partitions those incidences into equal positive/negative sums, therefore
+`B_(r,f) = 2 * sum_{sigma_i=+1} x_span(i)` and is even. Consequently each region's total scheduled boundary edge count
+is even, the required all-quad disc parity condition. The solver enforces parity structurally by satisfying the exact
+balance system; the independent validator must **also check the evenness explicitly** so a broken family/sign
+derivation cannot hide behind producer/oracle agreement. A CP2 infeasibility witness may label an obstruction
+`ParityCut` when its modulo-two projection is the shortest independent explanation, but parity is not a separate
+heuristic repair variable.
+
+The lower bound is eliminated by `y_s=x_s-1 >= 0`; the induced exact imbalance is part of the normalized problem.
+**No active 2:1 adaptivity constraint is frozen for baseline M4** because the current bound A0-A2b/target input has no
+separate authoritative enable/constraint product. A future active 2:1 contract requires a definition/review and cannot
+appear because a local mesher prefers it.
+
+Malformed side decomposition, contradictory incidence, unbound arc, degenerate path or invalid metric fails before the
+solver. Ordinary exact infeasibility does not become a fatal construction error.
+
+## 7. Exact finite-convergence solver contract — amended by `M4-DEFN-R1`
+
+The semantic scheduling problem and objective are unchanged, but the production solver assurance is amended. M4 still
+forbids generic ILP/branch-and-bound, inexact optimization, machine-width semantic narrowing, numeric-range enumeration,
+and heuristic scalarization. It no longer claims a polynomial bound for the **outer exact optimizer**. The selected
+implementation authority is the exact fixed-`M=2` Bi-MDF iterative-refinement algorithm disclosed by Heistermann,
+Warnett and Bommes, *Min-Deviation-Flow in Bi-directed Graphs for T-Mesh Quantization*, ACM TOG 42(4), 2023,
+DOI `10.1145/3592437`, §§3.6–3.9.
+
+The previous Gabow 1983 primitive and `O(E'^2 log V' log Cmax)` WorkLedger theorem tag are **retired**. Independent
+`M4-CP1-CB2-REV` established that the cited Gabow paper states the arbitrary-capacity minimum-cost biflow result while
+deferring the construction, so that implementation identity could not be traced without invention or substitution.
+`Architecture_M4_DEFN_R1_Definition_Record.md` records the route adjudication and assurance change.
+
+### 7.1 Input-derived finite optimum cap — unchanged semantic proof
+
+For a feasible CP1 component with `V` region/family rows and `E` span columns, every incidence column has at most two
+ends and Euclidean norm at most `2`, including same-row `+/-2` loops. The rational cone `{x>=0 | A x=0}` has primitive
+extreme-ray generators whose entries are signed minors of minimally dependent column sets. By Hadamard's inequality,
+those minors have magnitude at most `2^V`. Because a strictly positive feasible vector is a nonnegative combination of
+extreme rays, choosing one positive primitive ray per coordinate and summing them yields a positive integer circulation
+with every coordinate at most
+
+`H = E * 2^V`.
+
+Let `D = sum_s d_s`. That feasible circulation has primary deviation at most `D + E*H`; hence every primary optimum
+obeys
+
+`1 <= x_s <= U`, where `U = 2D + E*H = 2D + E^2*2^V`.
+
+`U` is a **proof/domain bound, never an iteration range**. Its encoded bit width is polynomial in input width. No graph
+expansion, allocation, or loop may be linear in the numeric value of `H`, `U`, `D`, `d_s`, or an exact count.
+
+### 7.2 Exact lexicographic objective encoding — semantic order unchanged
+
+The semantic objective remains
+
+`J(x) = (C(x), x_(s_1), ..., x_(s_E))`, `C(x)=sum|x_s-d_s|`,
+
+for canonical span order `s_1..s_E`. Set `Q=U+1`, `L=Q^E`, and `q_i=Q^(E-i)`. Since every count is a base-`Q`
+digit in `1..U`, `S(x)=sum_i q_i*x_i` orders count vectors exactly lexicographically and its entire variation is less
+than `L`. Thus
+
+`F(x)=L*C(x)+S(x)`
+
+has exactly the same ordering as `J(x)`. For the production Bi-MDF representation, use the exact separable convex
+integer edge cost
+
+`c_i(x) = L*|x-d_i| + q_i*x`, for `1 <= x <= U`.
+
+The previous `x=d+p-n` linearization remains a valid proof of the L1 deviation identity and finite-cap/radix
+construction, but it is no longer the required production solver representation. `J` remains semantic authority;
+`F` and `c_i` are private solver representations. Powers/weights are built with exact arithmetic without
+numeric-range enumeration.
+
+### 7.3 Selected exact algorithm — Heistermann/Warnett/Bommes fixed-`M=2` refinement
+
+The production algorithm follows the disclosed 2023 construction:
+
+1. obtain a feasible integer starting flow using the paper's double-cover/T-join approximation pipeline, adapted to
+   exact M4 arithmetic and independently validate it before refinement;
+2. around current feasible flow `f`, construct the zero-demand bounded Bi-MCF refinement problem of §3.7;
+3. fix maximum node throughflow **`M=2`**;
+4. reduce Bi-MCF to capacitated weighted perfect b-matching using the disclosed node-splitting construction;
+5. reduce weighted perfect b-matching to weighted perfect matching using the disclosed construction;
+6. solve the matching problem with exact arbitrary-precision weights/comparisons and translate the result back through
+   every reduction;
+7. commit only an exact strict objective improvement; terminate on exact non-improvement.
+
+Corollary 3.7 proves finite convergence for fixed `M`; Theorem 3.8 proves that a non-improving iteration with `M>=2`
+is globally optimal; Corollary 3.9 concludes that the refinement algorithm finds an optimum for any Bi-MDF problem.
+These identities are the solver theorem authority. There is no floating epsilon terminal and no inherited Gabow bound.
+
+The admissible M4 incidence class remains genuinely bidirected: same-row two-end spans may carry one `+2` or `-2`
+coefficient and are not dropped. The ordinary-MCF route is therefore not frozen. A direct one-shot capacitated
+b-matching route is also not frozen because the simple reduction disclosed in Heistermann et al. §3.7 is specialized to
+the zero-demand refinement subproblem, while the previous one-shot `p/n` Bi-MCF carries nonzero demand `-A d`.
+
+The standing user authorization permits adding a solver library for the weighted-perfect-matching primitive. Any such
+primitive must preserve exact arbitrary-precision comparisons. Upstream `libSatsuma` is implementation/reference
+material only: its `int` flow, `double` target/cost, `int64_t` matching weights and floating refinement terminal are not
+M4 semantic authority and must not be inherited as-is.
+
+### 7.4 WorkLedger and assurance class — amended
+
+The outer optimization assurance class is now **exact finite convergence**, not polynomial runtime. `WorkLedger` records
+at minimum:
+
+- semantic `V,E`, algorithm identity `HeistermannWarnettBommes2023ExactBiMDFRefinementM2`, and theorem class
+  `FiniteExactConvergence(Corollary3.7+Theorem3.8+Corollary3.9,M=2)`;
+- exact `H/U/Q/L` bit widths, target/count/capacity/cost bit widths, and maximum observed exact-integer width;
+- feasible-initialization graph dimensions and independent exact feasibility receipt;
+- `refinementM=2`, exact `refinementCount`, and exact objective before/after every committed refinement;
+- each refinement's Bi-MCF/WPbM/WPM graph dimensions, peak matching vertices/edges, and matching primitive identity;
+- retry/reset count, fixed at zero.
+
+Every implementation loop still has a finite bound derived from graph/container cardinality or encoded bit width. A
+violated local bound is `WorkBoundExceeded`, never permission to truncate, approximate, retry, or switch solvers. No
+solver work may depend linearly on exact numeric magnitude. CP-SCALE may report measured refinement/resource scaling
+but must not relabel it polynomial.
+
+## 8. Certificates and typed outcomes
+
+### 8.1 Scheduled-component certificate — CP2 addition
+
+CP1 has no carried final certificate; its separately implemented validator independently recomputes and checks feasible
+plans and the fixed-small test oracle independently checks optimum/tie behavior. **Because `M4-DEFN-R1` withdraws the
+outer polynomial-runtime claim, CP2's scalable independent optimality certificate is a mandatory semantic barrier
+before CP3 cutover.**
+
+For each scheduled component the CP2 certificate contains at minimum:
+
+- binding/normalized-problem digest;
+- exact compact `x_s`, preferred `d_s`, objective `J*` and mandatory region/family parity results;
+- every region-family balance and positivity result;
+- exact terminal `M=2` refinement-problem identity plus a producer-native WPM/refinement witness sufficient to
+  reconstruct the zero-improvement claim;
+- independently checkable mapping from that terminal matching/refinement witness back to the semantic Bi-MDF schedule;
+- exact theorem-hypothesis evidence needed to apply Heistermann/Warnett/Bommes Theorem 3.8;
+- WorkLedger bounds and observed maxima.
+
+The independent CP2 verifier must recompute exact `J`, validate the terminal `M=2` refinement instance and verify that
+no negative-cost admissible refinement exists. A solver-emitted `no improvement` flag alone is not a certificate. The
+certificate proves semantic optimality; it does **not** claim a polynomial bound on outer refinement count. It hashes
+compact schedule/generator data and never expands O(`x_s`) breakpoint vectors.
+
+### 8.2 Subset-scoped infeasibility — CP2 addition
+
+CP1 is exercised only on independently constructed feasible components and does not publish a temporary fatal
+infeasibility outcome. CP2 adds the production alternative. Ordinary inability to satisfy the exact positive
+balance/parity system is **not** `GlobalConformityPlanError`; CP2 publishes `ConformityInfeasibleSubset` with:
+
+- canonical connected constraint-component ID;
+- sorted affected `NetworkRegionId`s, boundary-incidence IDs and `ConformitySpanId`s;
+- reason `BalanceCut | PositivityCut | ParityCut`;
+- an algorithm-native residual/cut/deficit witness reconstructible exactly by the independent oracle;
+- source/topology/metric/problem digests;
+- no A4 replacement schedule.
+
+The subset need not be cardinality-minimal; it must be a deterministic valid obstruction witness. `ParityCut` denotes an
+independently checkable modulo-two projection of the same frozen balance system, not a new heuristic constraint. Future
+M7 disposition may map this fact to D3. M4 itself does not.
+
+### 8.3 Fatal construction errors
+
+The fatal A3 error vocabulary is frozen to these semantic classes (exact enum names may follow repository style):
+
+- `InvalidSourceBinding`;
+- `InvalidTopologyPlanBinding`;
+- `InvalidTargetMetricBinding`;
+- `DuplicateConformitySpan`;
+- `MissingSpanSourceSupport`;
+- `DegenerateConformityPath`;
+- `InvalidSharedSpanIncidence`;
+- `InvalidRegionSideDecomposition`;
+- `ConflictingRailOwner`;
+- `CertificateConstructionMismatch`;
+- `WorkBoundExceeded`.
+
+There is no `UnsupportedEnabledAdaptivityConstraint` in baseline M4 because no active 2:1 enable contract exists. Every
+error carries the earliest available semantic locus: span, boundary incidence, arc, rail, region, source edge/face or
+metric entry. No fatal code means "solver found no feasible schedule"; that semantic alternative begins in CP2.
+
+## 9. Independent oracle contract
+
+`validate_global_conformity_plan(...)` (exact name may follow repository style) accepts only the bound A0/A2a/A2a'/A2b
+products, source-vertex target field, and a read-only candidate view. It may not call the producer's canonicalization, solver, certificate-construction or
+private cached schedule helpers.
+
+It independently:
+
+1. rebuilds full A2b conformity spans, ordered exact support pieces and boundary-occurrence multiplicity;
+2. bit-decomposes source/target binary64 inputs and re-derives exact `R_s` and each `d_s`;
+3. checks source/topology/metric/semantic bindings;
+4. checks one compact exact count per span, `x_s>=1`, breakpoint-ID generator arithmetic and reverse-orientation
+   agreement without materializing O(`x_s`) data;
+5. checks every incidence-preserving region/family balance **and explicit even boundary parity**;
+6. re-evaluates `C(x)`, semantic lex-vector serialization, the `D/H/U/Q/L/q_i` bound/radix identities, transformed
+   capacity/cost consistency and WorkLedger dimension/bit-width claims;
+7. in CP1, performs **no second generic production solve**; focused CP1 test authority compares the producer solver to
+   an independently implemented fixed-small exact oracle. From CP2 onward, the production oracle verifies the carried
+   algorithm-native optimality witness and lexicographic canonical-minimizer proof;
+8. from CP2 onward, verifies every infeasible-subset obstruction from source-derived normalized constraints;
+9. from CP2 onward, proves every normalized boundary incidence is covered exactly once by a scheduled component or
+   infeasible subset and every input region/family is fully accounted for.
+
+The oracle may share public value types and exact arithmetic primitives. It may not share semantic derivation helpers
+whose defect would make producer and oracle agree for the same reason.
+
+### 9.1 Required tamper matrix
+
+The cumulative M4 gate must contain independently falsifying identities for at least:
+
+- missing span;
+- duplicate span;
+- non-positive count and huge exact count whose ID/generator remains compact;
+- altered count that breaks a region-family balance or explicit region parity;
+- A4-side inserted/deleted/reordered shared breakpoint;
+- reversed incidence without exact-ordinal `j -> x_s-j`;
+- collapsed/duplicated boundary occurrence, including a same-region two-end case;
+- wrong `HardRailId`, support-piece order or source support;
+- wrong source/topology/target digest or backend-dependent/tolerance-based binary64 exactification;
+- altered objective/dual potential/residual witness;
+- duplicate or omitted region incidence;
+- omitted infeasible subset member/cut witness;
+- semantic equality under source row/container permutation where topology is unchanged;
+- fixed-plan A4 target-size perturbation leaves consumed shared breakpoints unchanged;
+- global A3 target-size change either changes the bound plan digest consistently or deterministically leaves it equal;
+  no per-side divergence is permitted.
+
+## 10. Witness and reachability matrix
+
+No required-green identity is appended until its stated precondition is independently constructed/reachable.
+
+| Witness/obligation | Current provenance/reachability | M4 checkpoint | Gate status rule |
+|---|---|---|---|
+| canonical shared full-span fixture | direct deterministic fixture can span multiple source pieces and may include same-region two-end incidence; no production claim | CP1 | gating once CB authors/compiles it and oracle derives incidence multiplicity independently |
+| positive/parity/compact-breakpoint schedule + tamper matrix | same CP1 direct product fixture, including huge exact count without enumeration | CP1 | gating |
+| exact-torus `G4-B002` | ~~already reaches regional phase-front aggregation and fails at the current post-hoc `InvalidHardRailPairing` seam~~ **CORRECTED 2026-09-12 — this claim cited no evidence and is contradicted by observation.** TB3 (run `34671972132`) observed `NotApplicable` with no hard-rail authority; TB5 (run `34680334158`), with the intended 18-edge authority proved at runtime, observed the curved bounded-disk producer return `NotApplicable` at its Euler applicability test (`chi_whole=0` vs required `1`) **before** any boundary phase is constructed — so the torus does not reach hard-rail pairing at all. The semantic obligation is unchanged: CP3 still owes a production torus witness that carries shared hard-rail authority and completes without `InvalidHardRailPairing`; it may not be reported as reproducing a historically observed failure. | CP3 | gating once A3 is production-wired; failure before A3 is evidence, not a weakened gate |
+| A4-local target perturbation | direct scheduled fixture, later production torus | CP3 | gating |
+| three `G4-B002` produced-witness re-proofs | debt named in M1 closure; require produced closed/periodic authority, not direct drafts | CP4 | gating; all three must pass before M4 closes |
+| sliver/anisotropic raw input | coverage gap; raw input necessarily reaches the pre-A0 conditioner entry once CP-COND exists | CP-COND | gating after fixture/correspondence precondition is authored and independently verified |
+| high-valence raw input | same | CP-COND | gating after precondition verification |
+| negative-index singularity raw input | same | CP-COND | gating after field admissibility/inadmissibility expectation is derived, not hand asserted |
+| boundary-truncated separatrix raw input | same | CP-COND | gating after precondition verification |
+| deliberately inadmissible field | same | CP-COND | gating typed refusal/certificate; never “repair until accepted” |
+| conditioning correspondence + idempotence + S6 perturbation | no current accepted production witness | CP-COND | gating after CB construction; perturbation metrics may be report-only until threshold frozen |
+| S1 bit-width/expression swell | current meshes <=152 vertices/300 faces, so production envelope is uncalibrated | CP-SCALE | **non-gating measurement** first; a later review may freeze a numeric gate, never M4-DEFN guesswork |
+| S2 certified-filter equivalence | exact fallback can provide oracle | CP-SCALE | gating: filtered and exact decisions must agree |
+| S3 limit-cycle typed termination | **CORRECTED by M4-CP-SCALE-DEFN:** prescribed-sphere history proves a repeated position-free combinatorial circuit with drifting exact entry positions, not a full exact-state repeat; dedicated exact-repeat construction is owed | CP-SCALE | gating typed outcome only when the exact full-state repeat precondition reaches the detector |
+| S4 incremental-Betti early rejection | construction owed | CP-SCALE | gating only after independently proved precondition/reachability |
+| S5 genus>=2 | **TB13 Review 2026-09-18:** genuine retained genus2 authority reaches independently verified A3 on package `10565723112`; exact selector427 publication and fresh cumulative runtime are independently accepted | CP-SCALE/CP4 | **cumulative selector427 credit accepted**; torus genus1 remains zero S5 credit |
+
+Representative Bunny/Vase quality/resource acceptance remains later milestone authority and is not silently pulled into
+M4.
+
+**CP-SCALE supersession note (2026-09-14).** `Architecture_M4_CP_SCALE_Frozen_Definitions.md` is the checkpoint-local normative authority for S1-S5 and supersedes only CP-SCALE predicate/reachability details in this section where they conflict. The surrounding M4 obligations, selector policy and checkpoint ownership are unchanged. Its citation map binds the correction to current source and retained evidence.
+
+**CP-SCALE R10 Review amendment (2026-09-18).** R10 independently establishes the S5 reachability precondition on genuine genus-2 authority and accepts the focused S5 identity for publication. This does not bypass §12's append-only selector rule: cumulative S5 credit requires selector427 publication, fresh immutable cumulative runtime and Review. S1 calibration, S2-arrival exact-fallback ownership and CP4's three `G4-B002` produced-witness debts remain separately owned.
+
+**CP-SCALE TB13 Review amendment (2026-09-18).** Exact selector427 publication, fresh 427/427 immutable cumulative runtime and independent Review now satisfy that append-only contract. Package `10565723112` / source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` is accepted current M4 runtime authority and CP-SCALE is CLOSED / ACCEPTED. S1 calibration, S2-arrival exact-fallback ownership, the zero-transport helper audit and CP3 carried observations remain separately owned; CP4 still owns all three `G4-B002` produced-witness debts and cumulative M4 exit.
+
+## 11. Debt and `G4-B004` adjudication
+
+### 11.1 `G4-B002` — M4-owned, unchanged count three
+
+M4-CP4 cannot close until all three inherited contracts are re-proven on pipeline-produced authority:
+
+1. `CandidateExtractionBaselineForCanonicalSourceScopeIdentityIsNonVacuous` on a produced closed complex;
+2. `PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization` through the torus pipeline;
+3. `MissingPeriodicRelationOwnerIsRejected` on produced periodic authority rather than `direct_periodic_owner_product()`.
+
+The main exact-torus `InvalidHardRailPairing` product blocker must be removed by CP3 without post-hoc pairing. The three
+debts are discharged only at the cumulative CP4 exit. Total produced-witness debt remains **5** until actual runtime
+acceptance; M4-DEFN does not decrement it.
+
+### 11.2 `G4-B004` — not M4 work
+
+`G4-B004` is split explicitly and **adds no M4 gate identity/debt**:
+
+- **M5 owns the focused positive multi-isolation quotient relation/certificate witness.** It must prove the relation
+  producer emits positive multi-isolation authority with explicit owners/certificate, matching `REORIENTATION_PLAN.md`
+  §9.
+- **M6 owns representative occurrence/embedding/verifier consumption.** It must prove the M5-produced authority is
+  materialized/consumed exactly once and independently verified on the representative product path.
+
+This resolves the former “M5/M6” ambiguity without importing relation/embedding semantics into A3.
+
+## 12. Selector and gate contract
+
+M4 selector lineage is append-only from the exact 365-line accepted predecessor.
+
+1. Every M4 selector begins with selector365 byte-for-byte/LF-hash preserved.
+2. New identities are appended only after their test source is authored and compile evidence exists in the owning CB.
+3. Direct deterministic CP1/CP2 contract/oracle/tamper identities with fully constructed preconditions are **gating**.
+4. CP3 exact-torus and consumption invariance identities are **gating** once the pipeline reaches A3.
+5. CP-COND semantic admissibility/correspondence identities are **gating** once their raw preconditions are independently
+   verified.
+6. CP-SCALE exact-decision/termination/early-rejection/genus identities are gating only when their preconditions are
+   proved; uncalibrated S1 numeric measurements are explicitly **non-gating diagnostic** rows and contribute zero gate
+   credit.
+7. CP4 appends the three produced-witness debt identities as gating and re-runs the full cumulative accepted prefix.
+8. The four M3 audit RED rows 368/369/374/398 are not copied into M4's accepted prefix merely because selector409
+   exists; their independent owners remain visible in the tracker/audit record.
+
+Every selector publication must record line count, LF SHA-256 and predecessor-prefix SHA. A prose obligation that has
+no selector identity is not gate-enforced and must be labeled as such.
+
+## 13. Checkpoint-specific exit conditions
+
+- **CP1 closes** when one immutable feasible schedule has a single writer, each full A2b span uses one exact positive
+  count and one compact exact-ordinal breakpoint generator, region/family balance plus explicit all-quad boundary parity
+  are proved, multi-piece/same-region incidence authority is preserved, binary64 exactification is backend-independent,
+  deterministic permutation/reversal invariance is proved, the amended exact fixed-`M=2` Bi-MDF refinement/cap/radix
+  solver contract is compiled, the independent structural oracle rejects binding/feasibility/objective/encoding tamper,
+  and fixed-small test oracles independently reproduce optimum/tie results on the frozen CP1 graph classes.
+- **CP2 closes** when positivity and **scalable production optimality** are independently certified from carried
+  algorithm-native evidence and a genuinely infeasible constructed component yields a verified subset-scoped fact
+  without ad-hoc schedule substitution or run-wide A3 failure.
+- **CP3 closes** when A4 consumes the plan, no local target/grid/post-hoc support-pairing path can change shared
+  boundaries, the exact-torus `InvalidHardRailPairing` blocker is removed through A3 authority, and fixed-plan
+  target-size perturbation cannot change consumed breakpoints.
+- **CP-COND closes** when the pre-A0 conditioner produces immutable conditioned source + certified raw correspondence,
+  typed inadmissibility and the named coverage witnesses, without changing A3 semantics.
+- **CP-SCALE closes** when certified filters are semantically equivalent to exact fallback, limit-cycle/Betti outcomes
+  are typed and bounded, S1 measurements are published, and a genus>=2 witness reaches the required stage or the
+  checkpoint remains open with that precondition explicit.
+- **CP4 closes M4** only on a cumulative green required selector, all three `G4-B002` debts runtime-reproved on produced
+  authority, exact-torus production path green past the retired post-hoc pairing seam, and work/bit-width evidence
+  satisfies the frozen bounds then in force.
+
+**M4-CP4-TB3-REV reconciliation amendment (2026-09-19).** The `all three G4-B002 debts runtime-reproved on
+produced authority` conjunct above was overtaken by `M4-CP4-DEFN-R1` and `M4-CP4-DEFN-R2`, which re-homed all
+three debts rather than discharging them: the two periodic debts to **M5** (M5-CP1 canonical relation ID/path,
+M5-CP2 typed missing-owner failure, M5-CP3 direct-production re-proof) and the closed candidate-bearing-complex
+debt to **M6** (M6-CP1 A5 occurrence-complex/stage separation, M6-CP3 direct-production re-proof). Those
+decisions each rest on the pre-existing `DESIGN.md` §14 charters for the receiving milestones and are recorded
+there. CP4 accordingly closed M4 against the amended seven-conjunct exit theorem in
+`Architecture_M4_CP4_Frozen_Definitions.md` §2, under which no later-stage produced-witness debt is an M4 exit
+conjunct. All three debts remain **OPEN** in the global produced-witness debt total of **5**, carry **zero M4
+credit**, and retain their original subjects, oracles, tampers and `>=2` discriminators unchanged. This
+amendment reconciles the durable record with decisions already taken, reviewed and accepted; it changes no
+decision and grants no credit. The remaining conjuncts of this clause — cumulative green required selector, and
+exact-torus production path green past the retired post-hoc pairing seam with work/bit-width evidence — were
+satisfied at `M4-CP4-TB3` on published selector430 (430/430 PASS).
+
+## 14. Exact implementation seam frozen for the first CB
+
+Current source at the latest amended head establishes a surgical seam:
+
+- `src/pipeline/RemeshPipeline.cpp` constructs `GlobalTopologyPlan` and then calls `build_surface_cell_network(...)`;
+- `src/geometry/SurfaceCellTracing.cpp` still chooses region `gridU/gridV` from local/mean target size and later groups
+  hard-rail chart copies using tolerance/quantized floating `support_key` values before assigning `oppositeEdge`;
+- `GlobalTopologyPlan` already publishes source/network/cut-graph/semantic digests and exact A2b arc/region identities;
+- `authority::ExactUnitParameter` and `SourceSupport` already provide the exact support vocabulary needed by A3.
+
+Therefore M4 does not require a new topology authority. CP1 introduces a new A3 product from existing accepted A2b
+inputs. CP3, not CP1, removes the legacy consumer-side authority.
+
+## 15. Definition falsifiers
+
+Any later plan or implementation must stop/review if it would require one of these changes:
+
+- making geometry/tolerance/quantized barycentrics semantic breakpoint identity;
+- splitting one A2b boundary arc into independently positive per-source-simplex schedule variables;
+- enumerating O(`x_s`) semantic breakpoint storage or narrowing exact ordinals to `size_t`;
+- exactifying binary64 semantics through tolerance/backend-dependent double constructors;
+- treating mandatory region parity as optional or a downstream A4 repair;
+- letting two regional producers own separate counts for one shared span;
+- using a generic ILP/branch-and-bound solver, inexact feasibility/reduced-cost comparison, or heuristic/unproved
+  scalarization; the exact theorem-derived mixed-radix encoding of §7.2 is the sole permitted scalar solver encoding;
+- restoring the retired Gabow solver identity/bound, inheriting upstream libSatsuma/Blossom-V machine-width scalar
+  semantics, or terminating exact refinement through a floating tolerance;
+- changing fixed refinement `M=2`, hiding a numeric-magnitude loop behind a solver adapter, or claiming the amended
+  outer refinement process has a polynomial runtime bound without a new definition/review and source-backed theorem;
+- activating an unfrozen 2:1 adaptivity constraint without a new authoritative input contract/review;
+- repairing an infeasible component locally instead of publishing its typed obstruction;
+- assigning D0–D4 inside A3;
+- making CP-COND algorithm details a precondition for A3 semantics;
+- moving uncalibrated S1 measurements into a hard numeric gate without review;
+- importing `G4-B004` relation/embedding work into M4;
+- using selector409 as the accepted M4 predecessor;
+- re-opening M3 based on the refuted “TB-R9 never ran” premise.
+
+## 16. Exact successor
+
+**`M4-CP1-CB3` — canonical Code + Build / runtime-free.** Its frozen plan is
+`Architecture_M4_CP1_CB3_Code_Build_Plan.md`, issued by `M4-DEFN-R1` after independently reviewed CB1/CB2
+traceability stops. No M4 runtime or benchmark is authorized before that Code + Build turn produces a
+GMP/GMPXX-linked immutable package and the next artifact-only Test + Benchmark plan.
+
+## 17. `M4-CP3-DEFN-R1` amendment — baseline conformity is exact shared subdivision plus region parity
+
+This amendment was forced by the `M4-CP3-CB1` pre-mutation derivation guard and an independent source re-derivation. It is normative for production A3. Earlier family/sign Bi-MDF material in §§3.1, 6-9, 13, 15 and 16 remains historical authority for the already accepted framed CP1/CP2 proof surface only where it does not conflict with this section.
+
+### 17.1 Why the framed incidence contract cannot be the production baseline
+
+A2b publishes three production arc kinds: `Mandatory`, `Trace`, and `Cut`. Exact source/support/topology identity exists for all three, but accepted upstream products do **not** publish a universal global coordinate-frame label for every arc:
+
+- artificial `Cut` arcs are selected from `SurfaceCutGraph` source edges to cellularize the complement; the accepted cut product carries exact edge/support/topology authority but no `ConformityFamily U|V` or `ConformitySign +/-`;
+- `FieldAlignedMandatoryEdge` and `SurfaceCellRail` likewise carry source/rail/topology provenance but no globally comparable family/sign authority for arbitrary hard-feature or source-boundary arcs;
+- trace material may carry face-local branch information, but a raw `FieldBranch` integer is face-gauge-local and is not a globally comparable family identity across arbitrary region boundaries.
+
+Therefore a production binder cannot derive `{family, sign}` for every A2b boundary occurrence without inventing a convention, comparing raw cross-face branch integers, or reintroducing geometric/tolerance matching. All three are prohibited. The accepted torus has 28 artificial cut edges, so the missing authority is production-reachable.
+
+### 17.2 Adjudication of the CB1 alternatives
+
+**Alternative A is selected and expanded:** baseline A3 uses family/sign-free boundary incidences. Artificial cuts and mandatory barriers are ordinary exact shared-boundary seams. A3 owns shared subdivision identity and the all-quad parity invariant; stronger local chart/field constructibility remains an A4 responsibility.
+
+**Alternative B is rejected:** requiring every artificial cellularizing cut to be field-certified would reopen accepted A2a'/A2b semantics and contradict the accepted ability to cellularize with otherwise admissible source edges, including trace-crossed source edges. It would still not manufacture an upstream family/sign certificate for arbitrary mandatory source-boundary or hard-feature arcs.
+
+**Alternative C is rejected:** a deterministic ordinal, raw branch number, or combinatorial labeling rule can create repeatable labels but cannot make them semantic coordinate families. No accepted source product or theorem makes such labels gauge/relabel invariant. Determinism is not authority.
+
+### 17.3 Production A3 product and incidence authority
+
+Production baseline roles are now:
+
+- `ConformitySpanId`: one canonical full A2b arc, regardless of arc kind, with one global subdivision variable;
+- exact ordered support pieces: unchanged and still the only source-location authority for breakpoints;
+- `ConformityBoundaryIncidenceId`: one occurrence of a span in one region boundary walk, preserving multiplicity and incidence orientation;
+- **baseline `ConformityIncidence`: region + span + orientation only. `ConformityFamily` and `ConformitySign` are not production-baseline semantic inputs.**
+
+A valid manifold A2b binding gives every span one or two incidence ends. A same-region two-end span preserves both occurrences. A source-boundary terminal has one region incidence. Any other incidence multiplicity is a malformed binding error.
+
+If the accepted framed CP1/CP2 implementation surface must remain temporarily to keep already accepted selector identities executable, it must be an explicitly separate legacy/framed API or test surface. It may not be selected by production, may not be implicitly activated by populated optional fields, and may not be converted into baseline A3 authority without a future definition that introduces a real upstream frame certificate.
+
+### 17.4 Counts, breakpoints, and exact target preference are unchanged
+
+For canonical spans `s_1..s_E`, production A3 still owns exactly one arbitrary-precision integer count
+
+`x_s >= 1`
+
+and compact breakpoint identities `{ConformitySpanId, exactOrdinal}`. The exact support-piece breakpoint generator, source/metric/topology digest bindings, binary64 exactification rule, and full-span preferred count `d_s >= 1` from §5 remain authoritative.
+
+The semantic objective remains
+
+`J(x) = ( sum_s |x_s-d_s|, x_(s_1), ..., x_(s_E) )`.
+
+No A4-local target, grid, chart, tolerance, floating support key, or geometric nearest-arm rule may change `x_s` or the resulting shared breakpoint sequence.
+
+### 17.5 Baseline feasibility constraint: region all-quad parity
+
+For every A2b region `r`, using **boundary-incidence multiplicity**, production A3 requires
+
+`sum_{i in boundaryIncidences(r)} x_span(i) ≡ 0 (mod 2)`.
+
+There is no baseline `(region,family)` signed-balance row because family/sign are not universally source-derived. Same-region double incidences contribute twice and therefore cancel modulo two while remaining present in the semantic boundary walk.
+
+This is the exact topological boundary-parity condition required by an all-quad disc complex. It is deliberately narrower than local rectangular/parametric constructibility. A4 must independently classify/construct the region under its field, feature, singularity and geometry obligations; it may return the existing typed nonconstructible/degraded outcome, but it may not repair or renegotiate A3 shared counts.
+
+Baseline parity scheduling is **always mathematically feasible for a well-formed binding**: `x_s = 2` for every span is a positive witness. Consequently `ConformityInfeasibleSubset` and `BalanceCut | PositivityCut | ParityCut` are not production-baseline A3 outcomes. They remain historical framed-CP2 evidence only. Production baseline A3 has scheduled output or a malformed/binding/metric/work-bound construction error; a future stronger cross-span validity constraint requires a new definition before it can reintroduce mathematical infeasibility.
+
+### 17.6 Exact minimum-deviation parity scheduler
+
+Let `q_s = d_s mod 2`. Let `y_s = 1` when the selected parity of `x_s` differs from `q_s`, otherwise `0`. For fixed parity, the unique positive count minimizing `|x_s-d_s|` and then `x_s` is:
+
+- `x_s = d_s` when `y_s = 0`;
+- `x_s = d_s - 1` when `y_s = 1` and `d_s > 1`;
+- `x_s = 2` when `y_s = 1` and `d_s = 1`.
+
+Every flip therefore contributes exactly one unit to the primary objective. Region parity becomes a GF(2) incidence problem on a graph whose vertices are A2b regions:
+
+- a two-region span is one graph edge;
+- a same-region two-incidence span is a self-loop with zero parity effect;
+- a one-ended source-boundary span connects its region to a **virtual exterior vertex local to that connected incidence component**.
+
+Compute each region's residual parity under preferred parities `q_s`. On a closed component, residual-demand cardinality is even because every non-loop span contributes to two region rows. On a component with terminals, set the component-local exterior demand to the XOR of region residuals. Then a flip set is feasible exactly when it is a `T`-join for those demanded vertices.
+
+The primary optimum is therefore a **minimum-cardinality T-join**. Production implementation must solve it exactly through an exact graph/matching formulation; no ILP/branch-and-bound, floating cost, tolerance, numeric-magnitude enumeration, or heuristic repair is permitted. Existing exact weighted-perfect-matching infrastructure may be reused only with integer graph-cardinality weights and exact comparisons.
+
+After the minimum flip count `K*` is known, enforce the semantic lexicographic tie-break without huge invented scalar weights. Scan spans in canonical order. For span `s`, first try the parity choice that gives the smaller resulting `x_s` (`flip` when `d_s>1`, `no flip` when `d_s=1`), subject to all previously fixed choices, and recompute the exact minimum achievable T-join cardinality. Keep that choice iff the optimum remains `K*`; otherwise force the other choice. The invariant is that the fixed prefix always extends to at least one primary-optimal solution. This yields exactly the lexicographically least count vector under `J`.
+
+Same-region self-loops never need to flip at primary optimum and therefore retain `x_s=d_s`.
+
+### 17.7 Certificate, validator, and independent-oracle contract
+
+The baseline plan/certificate carries enough exact information to verify, without trusting producer-normalized rows:
+
+1. source/network/cut/topology/metric bindings and full span/support/incidence coverage;
+2. preferred counts/parities and independently reconstructed region residuals;
+3. component/exterior construction and exact demanded-vertex set `T`;
+4. selected flip set and `minimumFlipCount = K*`;
+5. every canonical lex-prefix decision and its constrained optimum receipt;
+6. final positive counts, per-region even boundary sums, compact breakpoint generators, and semantic plan digest.
+
+The independent validator rebuilds the incidence graph from A2b boundary walks, recomputes the minimum-cardinality T-join and each lex-prefix optimum independently of the producer's normalized rows, then checks the final schedule/objective and exact breakpoint generator. Fixed-small tests additionally exhaust parity assignments to reproduce `K*` and the lexicographic optimum without the production matching implementation.
+
+Tamper coverage must separately falsify binding/support, incidence multiplicity/orientation, residual/T construction, flip set, optimum count, lex-prefix receipts, final counts/parity, breakpoint generation and semantic digest.
+
+### 17.8 A4 contract correction
+
+A3 does **not** promise that every region boundary is a convex integer rectangle. It promises an exact immutable shared subdivision and an even boundary-edge count for each disc region. A4 owns the stronger local construction question. Existing `PureQuadCompletion` already distinguishes rectangular/small-side/singularity cases from generic even-boundary combinatorial completion and typed nonconstructibility. A4 may choose among its authorized local constructions but must consume A3 breakpoints unchanged.
+
+Field alignment and geometric quality remain required by their own downstream contracts and verification/disposition. They cannot be back-filled into A3 by fabricating family/sign identity for arbitrary topological seams.
+
+### 17.9 CP1/CP2 evidence and checkpoint impact
+
+Package117 / selector382 **382/382** remains accepted historical runtime evidence for the old fully framed CP1/CP2 problem; package115/selector373 remains its predecessor. Their measured results, closure records, stable regression accounting, and artifacts are not rewritten.
+
+However, the **production-sufficiency** part of those proof obligations is superseded by this amendment. The family/sign balance solver, fixed-`M=2` Bi-MDF production optimization, typed mathematical infeasibility and their CP2 certificates cannot be cited as proof of the new baseline production A3 semantics. CP3 must re-prove the parity scheduler, certificate/validator, compact-breakpoint invariants and production reachability before cutover. This is a semantic re-proof inside CP3; it does not reopen accepted M3 A2a'/A2b authority and does not create a runtime regression event.
+
+Until replacement runtime evidence is accepted, package117/selector382 remains the latest accepted M4 runtime authority. Existing accepted selector identities must not be silently weakened or rewritten; compatibility needed to keep them executable must remain explicitly non-production.
+
+### 17.10 Revised CP3 sequence and successor
+
+`M4-CP3` now proceeds in two evidence-separated stages before the final producer cutover:
+
+1. **`M4-CP3-CB2`** implements the family/sign-free baseline parity A3 scheduler/certificate/validator and compiles new regression identities while preserving existing accepted selector identities as historical compatibility coverage. It does **not** production-wire A3 into A4 yet.
+2. An artifact-only TB turn runtime-proves the new parity semantics and independent oracle/certificate surface.
+3. Only after that runtime acceptance may a later CP3 Code + Build turn perform the production A3->A4 cutover, retire local target/grid and floating `support_key` shared-boundary authority, and attack the exact-torus `InvalidHardRailPairing` gate.
+
+**Exact next: `M4-CP3-CB2` under `Architecture_M4_CP3_CB2_Code_Build_Plan.md`.** No Directional runtime belongs in that Code + Build turn.
+
+**Historical-sequence note:** the CB2 -> artifact-only TB -> corrective CB3/TB1-R1 semantic-proof stages have since completed and package119/selector394 is accepted. Current production-cutover sequencing is further amended by §17.12; `M4-CP3-CB4-R1` is the current successor.
+
+### 17.11 The removed A3 family/sign is not the A4 hard-rail family/sign
+
+Recorded because §17.3 and the CP3 exit otherwise read as contradictory. CP3 must remove the exact-torus
+`InvalidHardRailPairing` blocker **through A3 authority**, yet that predicate tests
+`first.family != second.family || first.advanceSign == second.advanceSign`
+(`src/geometry/SurfaceCellTracing.cpp:15532-15533`). No CB turn may treat this as a definition conflict.
+
+`SurfaceFrontEdge::family` and `::advanceSign` are plain `int`s
+(`include/directional/geometry/SurfaceCellTracing.h:1269-1270`), A4-local phase-front values derived from A4's
+own field frame; `ConformityFamily` appears **zero times** in `src/geometry/SurfaceCellTracing.cpp`. The
+phase-front layer never consumed the A3 family type, so §17.3 cannot affect those conjuncts. The same idiom
+recurs at `:11642-11643`, `:13291-13292` and `:14741-14742`.
+
+The A3-owned conjuncts are the shared-boundary agreements: `support_key` equality across the pair
+(`:15527-15528`), route reversal (`:15529`), and the grouping key (`:15503-15505`) that decides
+`pair.size() == 2`. An immutable exact shared subdivision gives both sides identical exact breakpoints, turning
+that agreement into a guarantee instead of a floating coincidence — which is why §17.10 pairs the cutover with
+retiring floating `support_key` shared-boundary authority. A4 keeps deriving its own `family`/`advanceSign`
+locally and A3 never supplies them.
+
+### 17.12 A2b must publish each full arc's exact ordered source path
+
+`M4-CP3-CB4` proved that the reconstruction wording in §4.1 is not sufficient for the accepted public product surface.
+A2b construction privately knows exact split loci for artificial cuts and mandatory barriers, but the accepted
+`GlobalTopologyArc` product does not publish those loci. After a source edge is split, the parent source-edge key and
+synthetic endpoint node IDs therefore do not identify which exact subinterval belongs to each A2b arc. A3 may not fill
+that publication gap from synthetic-node allocation order, floating geometry, tolerance, source-face overlap, or another
+invented convention.
+
+This subsection supersedes the production reconstruction implication of §4.1 and sharpens §§17.1/17.3:
+
+1. **A2b is the publication owner.** Every accepted `GlobalTopologyArc`, for `Mandatory`, `Trace`, and `Cut`, publishes
+   one non-empty canonical ordered exact source path in `firstNode -> secondNode` orientation. A2b is the first accepted
+   stage that combines A2a trace/terminal authority with A2a′ cut authority into the actual embedded-graph arc
+   decomposition.
+2. **One upstream-neutral exact representation is canonical.** A path point is exactly one source vertex, one source
+   edge plus exact rational parameter, or one source face plus exact barycentric coordinates associated with canonical
+   face-topology vertex order. A support piece binds two exact points to one `SourceSupport` carrier. The existing A3
+   `ConformitySourcePoint` / `ConformitySupportPiece` surface must reuse or alias that representation rather than create a
+   second independently canonicalized encoding.
+3. **Exact canonical path invariants.** Pieces are nondegenerate, carrier-contained and exactly contiguous. Exact edge
+   endpoints canonicalize to source vertices; interior edge points remain edge points; true face-interior points remain
+   face points. The first/last path point is the exact locus of the arc's first/second node. Reverse incidence reverses
+   piece order/endpoints and never creates a second semantic path.
+4. **Mandatory arcs.** Each arc publishes the exact source-edge interval it owns. If A2b splits a mandatory edge at an
+   A2a terminal, the two arcs publish the two exact endpoint-to-terminal intervals; neither may claim the whole parent
+   edge.
+5. **Cut arcs.** Each arc publishes the exact interval between the adjacent exact cut-node parameters already used by
+   A2b construction. Distinct split arcs on one selected cut edge therefore publish distinct exact subintervals.
+6. **Trace arcs.** Each arc publishes the exact ordered support chain for its segment range from accepted A2a exact
+   entry/exit/contact/terminal authority. A missing or contradictory exact endpoint is an A2b construction/binding
+   failure, not permission for geometric reconstruction.
+7. **Validation and digest.** A2b candidate validation reconstructs expected support from source + accepted A2a/A2a′
+   authority and compares it exactly; the candidate cannot authenticate its own support. A2b semantic hashing includes
+   the published path.
+8. **A3 is a copier, not a path reconstructor.** Production creates exactly one `ConformitySpanInput` per canonical A2b
+   arc, with the same ordered exact support path. `GlobalTopologyArc::sourceFaces`, the parent cut edge, synthetic-node
+   numbering and floating geometry are not alternate path authorities.
+
+This is an additive A2b publication/certificate strengthening. It does not change selected cuts, arc IDs/order/topology,
+rotation system, region walks, disc certificates, or accepted package119 parity-scheduler semantics. Historical M3 runtime
+evidence remains authority for those unchanged semantics but does **not** prove the newly published support field. The
+new publication and production A3 binder require artifact-only runtime proof before A4 may consume them.
+
+## 18. `M4-CP-COND-DEFN` amendment — conditioning is one certified pre-A0 product
+
+`Architecture_M4_CP_COND_Frozen_Definitions.md` is the checkpoint-local normative authority for Amendment-20 input conditioning. This section binds it into the M4 definition set without rewriting the accepted CP3 A3/A4 contract.
+
+1. Pipeline B now has one semantic raw-input boundary: `RawSourceInput -> InputConditioner -> ConditionedSourceProduct -> A0`. The conditioner is the only writer permitted to change source geometry or raw cross-field values.
+2. Finite binary64 raw values are exactified bit-for-bit before semantic conditioning decisions. Correspondence/admissibility/merge decisions are exact/certified; epsilon and proximity are not identity authority.
+3. The conditioned product owns raw and conditioned digests, exact policy identity, complete typed correspondence and a recorded operation log. An independent validator recomputes those relations from raw input + policy rather than trusting the candidate.
+4. CB1 freezes a one-to-one face correspondence. Post-quantization vertex merge is allowed only for exact coordinate equality with exact combinatorial safety and canonical minimum-raw-ID ownership; otherwise reject.
+5. The initial permitted value-changing set is one exact bounded-lattice transform plus safe exact-equality merge and unique/canonical discrete `Z4` branch reindex. Sliver handling is exact **refusal** in the first contract; topology-changing repair is not frozen.
+6. The older `DESIGN.md` A0-mollification wording is superseded by Amendment 20: A0 validates/canonicalizes immutable conditioned input and may not become a second value writer. Current legacy `BoundedMeshPreconditioner` and tolerant raw-field finalization checks are not CP-COND semantic authority.
+7. CP-COND selector credit is conditional on independently proved raw witness preconditions and non-vacuous certificate/tamper oracles. Boundary-truncated reachability remains an explicit blocker/non-selector if it cannot be proved; guaranteed-green fixtures are prohibited.
+8. Stable accounting remains 49 events / 14 categories / 35 recurrences, produced-witness debt 5. CP-SCALE thresholds, M5/M6/M7 semantics and CP4 produced-witness debt remain outside this checkpoint.
+
+**Exact successor:** `M4-CP-COND-CB1` under `Architecture_M4_CP_COND_CB1_Code_Build_Plan.md`, compile-only and runtime-free. The historical §16 successor remains part of the earlier M4 sequence but is not the current branch successor.
+
+</details>
+
+<a id="m4-source-2"></a>
+<details>
+<summary><strong>Architecture_M4_CP_COND_Frozen_Definitions.md</strong> — BINDING FROZEN DEFINITIONS</summary>
+
+# M4-CP-COND Frozen Definitions — Pre-A0 Input Conditioning
+
+**Authority turn:** `M4-CP-COND-DEFN`
+**Status:** FROZEN / implementation not yet accepted
+**Accepted predecessor:** M4-CP3 package `10307919492`, semantic source `1611e9ef57bd1437b4422ab2fca7acef20b19a3a`, selector408 **408/408**
+**Checkpoint state after this definition:** `M4-CP-COND` OPEN
+**Exact successor:** `M4-CP-COND-CB1`
+
+This document freezes the Amendment-20 conditioner contract. It is architecturally before A0 even though it is developed after accepted CP3. Nothing here changes accepted A2b/A3/A4 semantics or the accepted selector408 prefix.
+
+## 1. Stage boundary and single writer
+
+Pipeline B has one raw-input boundary:
+
+`RawSourceInput -> InputConditioner -> ConditionedSourceProduct -> A0 SourceAuthoritySnapshot -> ...`
+
+`InputConditioner` is the **only** writer permitted to change source geometry or raw cross-field values. It consumes the complete raw source bundle once and returns exactly one of:
+
+- `Produced(ConditionedSourceProduct)`; or
+- `Rejected(ConditioningFailure)`.
+
+A0 and every later stage consume only the immutable `ConditionedSourceProduct`. They may validate, index, canonicalize identities, derive exact products, or reject, but they may not perform another value-changing sanitization. No SurfaceCells production entry point may publish A0 authority directly from unconditioned raw values after the CP-COND cutover.
+
+Legacy `BoundedMeshPreconditioner` behavior is **not** CP-COND authority. Its current double-valued thresholds/local flip machinery and lack of a certified raw-to-conditioned correspondence make it a legacy preprocessing utility only. It may remain for non-SurfaceCells compatibility while CP-COND is implemented, but it may not be cited as satisfying this checkpoint, may not become a second SurfaceCells writer, and may not be silently composed with the new conditioner.
+
+## 2. Immutable product and semantic digest
+
+`ConditionedSourceProduct` owns, at minimum:
+
+1. conditioned source vertices and faces;
+2. conditioned per-face raw cross-field data needed by the existing A1 construction path;
+3. conditioned feature/rail metadata when such metadata is part of the raw source bundle;
+4. `rawInputDigest` over canonical raw bytes/topology;
+5. `conditionedSemanticDigest` over canonical conditioned bytes/topology and conditioning policy identity;
+6. one immutable `ConditioningCertificate` containing the complete raw-to-conditioned correspondence and operation log;
+7. a typed `ConditioningPolicyId` plus its exact integer/rational parameters.
+
+The conditioned semantic digest is a deterministic serialization of typed integer topology, canonical binary64 bit patterns where the public API remains binary64, exact rational policy values, typed correspondence, and operation records. It is not defined by approximate equality, spatial hashing, quantized floating lookup, container order, or object address.
+
+Re-running the conditioner on an already conditioned product under the same policy must not create a second semantic writer. Idempotence is defined in §9.
+
+## 3. Exact raw authority
+
+The public raw API may still arrive as binary64. Finite binary64 inputs are first **exactified bit-for-bit** into exact dyadic rationals. Existing `FieldExactRational::from_double_exact` is the model for this boundary. From that point through every semantic conditioning decision:
+
+- equality/order is exact;
+- the initial CB1 lattice is **dyadic**, represented by an integer exponent, so every conditioned coordinate/component remains exactly materializable as binary64; a later non-dyadic rational lattice requires a new definition of the public representation;
+- rounding onto that dyadic lattice is an explicitly frozen deterministic rule over exact rationals: nearest with ties-to-even;
+- branch permutations and transport are discrete `Z4` data;
+- any certified numerical filter may only return a provably exact answer or defer to exact arithmetic.
+
+A tolerance may be reported as historical/diagnostic evidence but cannot decide whether two values are the same source identity, whether a field is admissible, whether a merge is owned, or whether conditioning succeeded.
+
+## 4. Certified raw-to-conditioned correspondence
+
+The certificate is an independently checkable relation. The conditioned candidate does not authenticate itself.
+
+### 4.1 Vertex identity and ownership
+
+Every raw vertex has exactly one correspondence entry. Under an identity/no-merge outcome it maps one-to-one. A many-to-one merge is permitted only when:
+
+1. the vertices become **exactly equal after the single frozen lattice transform**;
+2. exact combinatorial safety checks prove the merge does not conflate distinct source sheets/components/features or create duplicate/degenerate face incidence;
+3. the canonical conditioned owner is the minimum raw typed vertex ID; and
+4. the certificate records the ordered complete raw-owner set and the exact operation that caused equality.
+
+If any safety condition fails, conditioning rejects. There is no nearest-point or radius merge.
+
+### 4.2 Face identity
+
+For the first CP-COND implementation, raw faces map **one-to-one and order-preservingly** to conditioned faces after vertex correspondence. Conditioning does not delete, add, retriangulate, flip, split, or otherwise invent source faces. If a permitted vertex merge would collapse a face or create contradictory incidence, the input is rejected instead.
+
+This deliberately keeps topology-changing sliver repair out of CB1. Amendment 20 permits repair **or refusal**; CP-COND initially chooses exact refusal where a safe certified repair is not yet frozen.
+
+### 4.3 Field identity
+
+Each raw face owns the same four-branch cross set before and after conditioning. Conditioning may apply only:
+
+- exact component lattice quantization recorded branch-by-branch; and
+- an exact discrete `Z4` reindex/gauge change whose permutation is recorded and whose branch set is unchanged.
+
+No branch is invented or deleted. A field-matching "repair" is admissible only when exact discrete transport/cycle evidence determines one canonical reindexing. Contradictory/non-integrable matching is typed refusal, never iterative perturbation until the current A1 tolerance happens to accept it.
+
+### 4.4 Feature identity
+
+Every raw hard feature/source barrier maps through the certified vertex/edge correspondence to one unambiguous conditioned feature. A merge that conflates incompatible feature ownership or removes a required feature edge rejects.
+
+### 4.5 Operation log
+
+Every value-changing operation record contains:
+
+- typed operation kind;
+- raw typed locus/owner IDs;
+- exact before value or canonical input bits;
+- exact after value or canonical output bits;
+- exact policy parameter(s) and policy ID;
+- correspondence IDs affected;
+- deterministic operation evidence sufficient for an independent validator to recompute the decision.
+
+An empty operation log is a meaningful clean outcome and must validate as such.
+
+## 5. Permitted conditioning operations — closed list
+
+The semantic operation list is closed. A later implementation may use fewer operations but may not add one without a new definition/review.
+
+### C0 — canonical exactification
+
+Convert finite public binary64 values to exact dyadic authority and canonical typed IDs. This is not a value change and must be lossless.
+
+### C1 — bounded dyadic lattice quantization
+
+Geometry and raw field components may be mapped once to the explicitly configured dyadic lattice `k / 2^e`. The policy stores the integer exponent `e` and any exact integer range bound; nearest/ties-to-even is evaluated over exact rationals. The exact rounding result and every changed locus are recorded. No adaptive epsilon and no repeated snap-to-fit loop is permitted. Amendment 20 permits a general bounded rational lattice, but the first accepted binary64 product freezes the exactly representable dyadic subset only.
+
+### C2 — exact-equality near-duplicate merge
+
+"Near duplicate" means only that C1 maps multiple raw vertices to **exactly the same conditioned lattice point**. The merge then obeys §4.1. Raw-space distance by itself never authorizes a merge.
+
+### C3 — sliver refusal
+
+CB1 freezes **refusal**, not topology-changing repair. Sliver/degeneracy classification must use an exact scale-aware rational predicate whose policy bound is an explicit exact input, not a source constant hidden in `double`. If a fixture exceeds that policy, return the typed failure from §7. A later sliver-repair algorithm requires a new definition because face flips/retriangulation would change the §4.2 correspondence contract.
+
+### C4 — exact field matching admissibility reindex
+
+Only a unique/canonical discrete `Z4` reindexing proved from exact field/transport authority is permitted. It may relabel branches but cannot perturb vectors until a cycle closes. If no unique admissible reindexing exists, reject.
+
+No other value-changing operation is permitted. In particular, mid-pipeline mollification, geometric nearest-owner selection, topology invention, unrecorded edge flips, repeated correction until validators pass, and consumer-local snapping are forbidden.
+
+## 6. Relationship to A0/A1 and legacy tolerant seams
+
+Amendment 20 supersedes the older sentence in `DESIGN.md` §6.3 that called A0 mollification the single sanitization boundary. After CP-COND cutover:
+
+- **CP-COND/InputConditioner** is the sole value-changing sanitization boundary;
+- **A0** validates and publishes exact source support/identity from the immutable conditioned product; it may not mollify or mutate values;
+- **A1** derives transport/matching/singularity authority from the conditioned field and may fail closed, but it may not modify the field.
+
+The current `finalize_surface_cell_raw_cross_field` checks branch norms with `1e-12` and accepts rounded cycle indices within `1e-6`. Those checks may remain diagnostic/materialization aids while the cutover is staged, but after CP-COND acceptance they cannot be the semantic admissibility authority. CB1 must place the certified conditioner verdict ahead of them and ensure no tolerant result can override a typed conditioner refusal.
+
+This is a **boundary correction only**. It does not change CP3 A3 counts, breakpoints, shared-boundary identities, parity scheduling, or A4-local family/advance-sign semantics.
+
+## 7. Typed refusal semantics
+
+`ConditioningFailure` records a stable failure code, exact locus where meaningful, raw digest, policy ID, and certificate/derivation evidence sufficient for independent validation. The minimum frozen code surface is:
+
+- `NonFiniteInput`;
+- `InvalidSourceConnectivity`;
+- `ExactDegenerateFace`;
+- `SliverPolicyExceeded`;
+- `FeatureCorrespondenceConflict`;
+- `FieldShapeInvalid`;
+- `FieldTransportInadmissible`;
+- `ConditioningPolicyUnrepresentable`.
+
+The broader architecture distinction `FatalInadmissible` versus `RegularizableDegeneracy` remains typed metadata, but CP-COND does **not** assign D0-D4 or freeze M5/M7 disposition mapping here. Amendment 21's later disposition ownership is unchanged.
+
+One invocation returns one result. There is no retry with relaxed thresholds, no alternate policy cascade, no "repair until accepted", and no fallback that bypasses the refusal.
+
+## 8. Independent certificate validator
+
+A separate validator receives raw input, policy and produced result. It recomputes:
+
+- raw digest and conditioned semantic digest;
+- every vertex/face/field/feature correspondence invariant;
+- every operation's exact before/after relation;
+- policy-bound compliance;
+- no unlogged value changes;
+- no missing raw owner and no multiply owned conditioned entity except a certified §4.1 merge;
+- one-to-one face correspondence;
+- field branch-set preservation up to the recorded exact `Z4` permutation;
+- typed refusal derivation when outcome is Rejected.
+
+The producer's own `ok` bit, digest, log or correspondence is evidence to compare, never the validator's oracle.
+
+## 9. Idempotence and tamper semantics
+
+For a Produced result `P` and the same frozen policy, conditioning `P` as a raw bundle must produce `P2` such that:
+
+- `P2.conditionedSemanticDigest == P.conditionedSemanticDigest`;
+- topology/typed IDs/canonical bits are byte-identical under canonical serialization;
+- correspondence is identity relative to `P`;
+- operation log contains zero value-changing operations.
+
+Idempotence is not "within tolerance". Any second value change is a semantic failure.
+
+The independent oracle must be non-vacuous. Deleting, swapping or corrupting at least one of vertex correspondence, face correspondence, field permutation, operation log or digest must change the validator outcome to rejection. A validator that verifies an empty subset or trusts the candidate's digest is invalid acceptance evidence.
+
+## 10. CP-COND witness matrix and gate preconditions
+
+No identity becomes a required selector gate until its raw precondition is independently established. Guaranteed-green fixtures are prohibited.
+
+| Coverage item | independently established raw precondition | required CP-COND outcome | gate status after CB construction |
+|---|---|---|---|
+| sliver / anisotropic geometry | exact rational shape predicate proves the fixture crosses the fixture-declared exact sliver policy; raw connectivity itself is valid | typed `SliverPolicyExceeded` for the initial refusal-only contract, with exact locus/certificate | **gating once precondition helper is independently verified** |
+| high valence | independent integer valence census proves at least one source vertex exceeds the currently accepted max-6 witness surface; no sliver/feature/field contradiction masks it | **Produced**, preserving exact incidence and certified correspondence; high valence alone is not inadmissibility | **gating once a clean high-valence raw fixture exists** |
+| negative-index singularity | independent exact/discrete cycle oracle derives a **valid negative index** and proves field admissibility from raw branch/transport data rather than reading production output | **Produced**, preserving the independently derived negative-index authority through the conditioner; contradictory transport belongs to the separate deliberately-inadmissible-field gate | **gating only after the admissible expectation is independently derived** |
+| boundary-truncated separatrix | independent source-boundary/field construction proves, before production execution, that one separatrix is truncated by a real source boundary and that conditioning preserves the data on which that derivation depends | **Produced** correspondence preserving boundary and field authority; later A2a behavior is not CP-COND's decision | **conditional gate; if the raw precondition cannot be proved independently, record blocker/non-selector** |
+| deliberately inadmissible field | independent exact cycle/matching construction proves contradictory transport or branch-set inconsistency before conditioner execution | typed `FieldTransportInadmissible`; never vector perturbation until A1 accepts | **gating** |
+| correspondence integrity | independently constructed raw owners include non-empty vertex, face, field and feature/correspondence surfaces | produced certificate validates; one-at-a-time tamper/delete/swap of each authority class fails | **gating** |
+| idempotence | at least one Produced witness contains a non-empty recorded C1/C2/C4 operation surface, plus one clean identity witness | second pass same digest/topology/bits and zero changes; tampered policy/product is discriminated | **gating** |
+| S6 perturbation | two raw inputs are independently proved, in exact arithmetic, to quantize to the same frozen lattice cells/branch authority | identical conditioned semantic digest/topology under same policy | **gating for exact same-cell equivalence once built; physical-distance/uncertainty metrics remain report-only until a later threshold review** |
+
+The existing `BoundedMeshPreconditionerPhase07` tests and accepted selector408 rows do not satisfy these gates merely by being green; they do not exercise this product/certificate contract.
+
+## 11. Carried obligations and scope exclusions
+
+- `M4-CP3-TB1-R1-REV-OBS-01` is **not naturally independent CP-COND coverage**. It stays carried to the first later independently falsifiable M4 test-authority turn before CP4; CP-COND must not distort its multiplicity-2 oracle to absorb unrelated debt.
+- `M4-CP3-CB4-REV-OBS-02` remains owned by the next legitimate row399 touch. CP-COND does not touch row399.
+- TB3 row408 provenance remains a historical-claim bound.
+- the three `G4-B002` produced-witness debts remain M4-CP4 gates; the two `G4-B003` debts remain M5 gates.
+- CP-SCALE owns expression-swell thresholds, certified-filter scale work, typed exact-computation bounds and genus>=2 reachability.
+- field generation/holonomy optimization, M5/M6 relation/quotient work and M7 disposition policy are outside CP-COND.
+
+Stable regression accounting therefore remains **49 events / 14 categories / 35 recurrences**, produced-witness debt **5**.
+
+## 12. CP-COND exit condition
+
+CP-COND may close only when one immutable package runtime-proves, on a cumulative append-only selector:
+
+1. the single-writer conditioned source product and exact policy identity;
+2. independently validated raw-to-conditioned correspondence;
+3. typed refusal for deliberately inadmissible input and exact sliver policy breach;
+4. independently proved high-valence, negative-index, and boundary-truncated witness preconditions, with any genuinely unreachable item left as an explicit blocker rather than fabricated gate credit;
+5. non-vacuous correspondence-tamper discrimination;
+6. exact idempotence;
+7. exact S6 same-cell equivalence if its precondition is constructed;
+8. no mutation of the accepted CP3 A3/A4 semantics and selector408 preserved byte-for-byte as predecessor prefix.
+
+Definition freeze alone does not close CP-COND.
+
+## 13. Definition falsifiers / STOP rules
+
+STOP and return to independent definition/review if any implementation requires:
+
+- a second source/field value writer after InputConditioner;
+- epsilon/raw-floating geometry as correspondence or admissibility authority;
+- topology-changing sliver repair under the CB1 one-to-one face contract;
+- a repeated/relaxed repair loop whose stopping condition is acceptance;
+- branch-vector perturbation to make field transport close;
+- conditioned/raw identity inferred from proximity rather than the certificate;
+- A0 or A1 value mutation after the conditioner;
+- any change to accepted CP3 A3/A4 semantics;
+- CP-SCALE thresholds, genus>=2 acceptance, M5/M6 relation work, M7 disposition mapping, or CP4 produced-witness debt;
+- a gating identity whose independent raw precondition is not established.
+
+## 14. Exact successor
+
+**`M4-CP-COND-CB1` — Code + Build / compile-only.** Implement the smallest conditioner product/certificate/validator seam and the frozen witness fixtures/tests without executing Directional runtime. Its authoritative plan is `Architecture_M4_CP_COND_CB1_Code_Build_Plan.md`.
+
+</details>
+
+<a id="m4-source-3"></a>
+<details>
+<summary><strong>Architecture_M4_CP_SCALE_Frozen_Definitions.md</strong> — BINDING FROZEN DEFINITIONS</summary>
+
+# M4-CP-SCALE Frozen Definitions
+
+**Turn:** `M4-CP-SCALE-DEFN` + `M4-CP-SCALE-DEFN-R1` amendment
+**Status:** DEFINITIONS FROZEN / CP-SCALE CLOSED + ACCEPTED / S2-S5 CUMULATIVE CREDIT / S1 DIAGNOSTIC NON-GATING / DEFN-R1 RECOVERY PROVED
+**Current accepted authority after TB13 Review:** package `10565723112`, semantic source `6fe075f7d9397a561fe50b79517b4f714fb9eeef`, selector427 **427/427**, SHA-256 `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`; selector426 remains its exact first426 prefix at `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`, first425 `e0e0f394faae536ac257ec5409653a34755a8afe0ca437562eb44c9895790e0b`. S2 vertex-star, S3, S4 and S5 cumulative selector credit are accepted. S1 remains explicitly diagnostic/non-gating and the S2-arrival exact-fallback observation remains separately carried. Final topology certification remains sole acceptance authority; S4 is an earlier-never-different reject-only accelerator.
+
+**R10 predecessor state (historical):** artifact-only run/job `35382311474 / 105721178393` executed CB23 authority controls **3/3**, inherited Gate A **4/4**, production S5 **1/1**, and selector426 **426/426**, total **434/434 PASS**, with exact immutable postflight. R10 Review independently re-derived the artifacts/ledger, selector/prefix and owner census, proved the controls and S5 non-vacuous, promoted package `10560828304`, closed the R9/R4 `RP-01` recovery obligations and discharged `DEFN-OBS-04`. It opened `M4-CP-SCALE-TB12-R10-REV-OBS-01`; TB13 Review now discharges that append-only publication/runtime/Review obligation and supersedes R10 as current runtime authority.
+
+## 1. Authority and supersession
+
+This checkpoint-local document is normative for CP-SCALE S1-S5. It refines `Architecture_M4_DEFN_Frozen_Definitions.md` §§10,12,13 without weakening any accepted M4 contract. Where the older M4 witness row says the prescribed sphere proves a real **exact** limit-cycle surface, this document supersedes only that reachability claim: retained source/history prove a periodic **combinatorial** circuit with drifting exact entry positions, not repetition of the frozen full semantic state. The S3 obligation itself is unchanged.
+
+Selector lineage starts byte-for-byte from accepted selector423. DEFN changes no selector, product, test, fixture, benchmark, or build source and executes no Directional runtime.
+
+## 2. S1 — deterministic exact-arithmetic scale census
+
+S1 is diagnostic/non-gating until a later review has measurements from representative witnesses and freezes a justified bound. The existing `kFieldExactContinuationMagnitudeBits = 4096` guard is an operational fail-closed bound; it is **not** a CP-SCALE calibration threshold.
+
+The first measurement surface is the A2a exact trace continuation state, because `FieldAlignedTraceTraversalState::entryPoint.parameter.value` is the exact rational recursively transported face-to-face and `FieldExactRational::magnitude_bits()` already exposes the GMP numerator/denominator magnitude. The deterministic row schema is:
+
+`{witness, trace, step, sourceFace, branch, incomingCarrier, sampleClass, numeratorBits, denominatorBits, magnitudeBits}`.
+
+The aggregate publishes sample count, exact integer sums, maxima, and means as exact `sum/count` ratios; it never rounds to a floating gate. The census is passive: deleting it must leave every production decision, error code, topology product and exact value unchanged. GMP/GMPXX is the authoritative measurement backend for accepted packages. The non-GMP fallback `BigInteger::magnitude_bits()` may be reported separately but may not be asserted byte-for-byte equivalent without its own proof.
+
+S1 source inventory also records, for later slices, exact work at: continuation exit-time cross-products; vertex-star algebraic rational/radical comparisons; exact barycentric contact/intersection predicates; and the existing A3 conformity bit-width ledger. CB1 is deliberately narrower: instrument the trace-state exact-parameter census first and compile it without runtime.
+
+## 3. S2 — certified filters remain accelerators only
+
+Two current seams are distinct.
+
+1. **Eligible first gate surface — vertex-star algebraic sign.** `vertex_star_algebraic_sign_filter` returns a sign only from certified dyadic sqrt bounds; `vertex_star_compare_angle_sums` otherwise invokes `vertex_star_algebraic_sign_exact_recursive`. The exact fallback remains semantic authority. A future gating identity must compare the certified route with an independently invoked exact oracle on positive, negative, near-boundary and discriminating-tamper cases, and prove both Filter and ExactFallback routes are non-vacuous.
+2. **Not yet eligible — filtered arrival/arclength ordering.** `FieldAlignedFilteredScalar` / `field_aligned_compare_arrivals` can return `Inconclusive`, but the reviewed seam has no separately frozen exact fallback that owns the same semantic ordering. It therefore cannot receive CP-SCALE gate credit yet. Defining that exact authority is a later bounded design/CB obligation, not something DEFN invents by relabeling the existing filter.
+
+A certified filter may only return the result that the corresponding exact predicate would return; otherwise it must defer. Approximate disagreement, epsilon ownership, or filtered-only semantic authority is prohibited.
+
+## 4. S3 — exact semantic-state repetition
+
+The semantic cycle key is exactly `FieldAlignedTraceTraversalState`:
+`(sourceFace, branch, incomingCarrier, exact FieldBoundaryPoint entryPoint)`.
+Only equality of that full typed state may authorize `LimitCycleTermination`. Wall clock, step count, container identity, floating proximity and the position-free `(face,branch,carrier)` key are not semantic cycle authority.
+
+Current source already distinguishes:
+- full-state exact repeat -> `CycleDetected`;
+- position-free recurrence -> `CombinatorialRecurrenceExceeded`;
+- step budget -> `StepBudgetExhausted`.
+
+The future S3 gate must map the first case to the typed semantic `LimitCycleTermination` outcome and prove it with a dedicated exact-repeat construction. Existing unit coverage proves exact repeat is constructible at the traversal-guard boundary. Historical prescribed-sphere evidence does **not** satisfy this precondition: its circulating traces revisit a 32-state combinatorial circuit while exact entry positions drift, so the full state does not repeat. Position-free recurrence and step budget remain operational fail-closed backstops/reportable anomalies, not S3 success.
+
+## 5. S4 — incremental topology may reject earlier, never differently
+
+Final topology authority remains the existing exact actual-embedded certificate: `SurfaceCutGraphCellularityCertificate::proves_embedded_cellularity()` and per-face `SurfaceCutGraphFaceCertificate::proves_disc_topology()`, consumed by `GlobalTopologyRegionDiscCertificate`. Historical `RegionEulerCharacteristicNotOne` source-support proxy is retired as normative disc authority and must not be revived.
+
+An S4 accelerator may maintain an incremental Betti/connectivity invariant only after the authoritative candidate topology state it observes is fixed for that step. It may reject only when an independently derived invariant proves that the final exact certificate cannot succeed. It may not add/remove/reorder A2a' cuts, backtrack cut search, repair a region, or become a second topology authority. The decisive future falsifier is a paired oracle showing every early rejection also fails the unchanged final certificate while positive/adversarial near-boundary cases are never rejected early.
+
+CB10 corrected the structurally separate raw topology oracle around the genuinely production-reachable empty-cut torus subject, and TB9 Review accepted that prerequisite. CB11 then implemented the bounded product accelerator at source `2adb7b8169a387fcb6db6487768d7bd3d678265c`: it reconstructs connected actual-complement components from exact source-path pieces and local exact planar subdivision, derives `b1=E-V+c` and `F_required=chi-s+b1`, and may bypass only a fixed candidate whose observed complement-component count differs. Unavailable/ambiguous reconstruction falls through to final certification.
+
+TB10 Review independently re-derives the safety theorem. If `c!=s`, the unchanged final certificate already cannot prove cellularity. If `c=s`, a successful cellular embedding requires `F_observed=chi+E-V=chi-s+b1=F_required`; therefore `F_observed != F_required` is a necessary-condition failure and an S4 reject cannot disagree with a successful final certificate. Non-reject is never acceptance. TB10 focused runtime is non-vacuous: negative `3 != 4` rejects, positive `4 == 4` does not, adversarial one-way safety and enumeration invariance hold, decision-neutral accepted outputs match, and accelerated/reference full-certification attempts are `1/2` with one genuine bypass. Package `10461816370` is promoted under unchanged selector425. CB12 published selector426 (exact selector425 prefix + this S4 identity) and compiled immutable artifact `10473134357` without runtime. TB11 then executes selector426 **426/426 PASS** in 426 fresh exact-filter processes and Review independently accepts the cumulative evidence. S4 is **ACCEPTED / CUMULATIVE SELECTOR426 CREDIT**. `M4-CP-SCALE-TB10-REV-OBS-01` is discharged.
+
+## 6. S5 — genus >= 2 means genus >= 2
+
+A static census of every retained milestone-G OBJ gives:
+
+| fixture | V/E/F | chi | components | boundary loops | orientable genus sum |
+|---|---:|---:|---:|---:|---:|
+| bunny_1k_random | 502/1500/1000 | 2 | 1 | 0 | 0 |
+| close_sheets | 32/66/36 | 2 | 2 | 2 | 0 |
+| cylinder | 80/208/128 | 0 | 1 | 2 | 0 |
+| mechanical_feature | 152/450/300 | 2 | 1 | 0 | 0 |
+| multi_face_seam | 25/56/32 | 1 | 1 | 1 | 0 |
+| plane | 20/43/24 | 1 | 1 | 1 | 0 |
+| sphere_prescribed | 98/288/192 | 2 | 1 | 0 | 0 |
+| thin_bent_tube | 132/372/240 | 0 | 1 | 2 | 0 |
+| torus | 72/216/144 | 0 | 1 | 0 | 1 |
+| genus_two | 120/366/244 | -2 | 1 | 0 | 2 |
+
+A deterministic retained genus-2 fixture exists: independent census over the exact packaged OBJ derives `V/E/F=120/366/244`, one connected closed orientable component, zero boundary loops, `chi=-2`, genus `2`. Torus genus1 remains valuable accepted evidence but receives **zero S5 credit**. The TB12 repair chain corrected cycle ordering and then DEFN-R1/CB23 corrected source-global boundary-cycle authority. R10 artifact-only runtime first reached the focused S5 identity on immutable package `10560828304`: production and independently rebuilt atlas digests both equal `6035809732721064170`, A3 is produced with semantic/structural/debug hash `15065394778054153947`, 14 regions, 92 arcs and 76 rotations, and the row passes. R10 Review accepted S5 for publication. CB24 then published exact selector427, TB13 executed it **427/427 PASS** immutably, and TB13 Review independently re-derived the prefix/owner/ledger/postflight and genus-two A3 evidence. S5 therefore now has **cumulative selector427 credit** and `M4-CP-SCALE-TB12-R10-REV-OBS-01` is discharged.
+
+## 7. Gate / diagnostic membership and selector lineage
+
+| Obligation | Intended identity / owner | Independent precondition | Deepest evidence now | Status now | Decisive falsifier / next proof |
+|---|---|---|---|---|---|
+| S1 | `M4CPScaleS1.ExactTraceParameterScaleCensusIsDeterministicAndDecisionNeutral` / producer | canonical trace states expose exact rational entry parameters | torus reaches A4; sphere A2a; two-ring A2a'/A2b direct authority; mechanical A2b | **diagnostic, outside selector** | same semantic result with census disabled; deterministic rows and exact aggregates on all four witnesses |
+| S2 vertex-star | `M4CPScaleS2.VertexStarCertifiedFilterMatchesIndependentExactOracle` / producer | same independently constructed subjects evaluable by filter and exact path | TB5 Review independently validates fresh row424 plus selector424 **424/424**, six-subject exact oracle, Filter + ExactFallback non-vacuity and exact prefix authority | **ACCEPTED / cumulative selector424 credit** | closed for this seam; arrival comparator remains separate |
+| S2 arrival | not allocated | exact fallback for the same ordering must be frozen | filtered interval comparator exists; exact fallback not established | **blocked/non-selector** | exact owner/fallback defined and equivalence proved |
+| S3 | `M4CPScaleS3.ExactTraversalStateRepeatPublishesLimitCycleTermination` / producer | exact full traversal state repeats | TB7 Review independently validates exact selector425-prefix publication, fresh row425, all 425 cumulative rows, receipt/discriminator semantics and immutable postflight | **ACCEPTED / cumulative selector425 credit** | closed for this seam; combinatorial recurrence and step budget remain distinct backstops |
+| S4 | `M4CPScaleS4.IncrementalTopologyRejectorNeverDisagreesWithFinalDiscCertificate` / producer | independent monotone oracle + reachable negative | TB11 Review independently validates exact selector425-prefix publication, fresh selector426 **426/426**, row426 non-vacuity, owner census **30/280/75/41** and immutable postflight | **ACCEPTED / cumulative selector426 credit** | closed for this seam; final certificate remains sole acceptance authority |
+| S5 | `M4CPScaleS5.GenusTwoProducedWitnessReachesA3WithVerifiedTopology` / producer | independently verified genus>=2 source + admissible field | TB13 Review validates exact selector427 prefix/hash/owners, **427/427** fresh runtime, genuine genus-two topology, independent/production atlas hash equality and A3 receipt on immutable package `10565723112` | **ACCEPTED / cumulative selector427 credit** | closed for this seam; torus genus1 remains zero S5 credit |
+
+Selector427 is the accepted current cumulative gate at 427 LF rows / `f9c88380...ae86f`; its first426 rows are exact selector426 `41f4d559...b5114`, first425 `e0e0f394...790e0b`, first424 `f202a172...466ca`, first423 `4e67e4dc...d89343`, and first422 `bbd496f3...f7cc`. S1 contributes zero gate rows. TB13 Review promotes package `10565723112` / source `6fe075f7...eeef`, accepts S5 cumulative credit and closes CP-SCALE.
+
+## 8. Source-boundary global-cycle authority and current bounded implementation slice
+
+R10 Review promotes package `10560828304` / semantic source `e86206759a6a0f68afbf83d8f6abf9efbe7bd5ff` as accepted runtime authority under unchanged selector426 **426/426**, exact selector425 prefix `e0e0f394...790e0b`, owners **30/280/75/41**. S4 cumulative credit remains complete. S5 focused acceptance is complete but cumulative selector publication is still owed.
+
+DEFN-R1 freezes the source-boundary rule exposed by R9. `dual_cycles` aggregates each connected source boundary loop into one complete-source cycle row, and field finalization computes its index once before projecting that same row back to boundary vertices. Those vertex entries are legacy aliases of one **source-global boundary-cycle fact**. They are not independent singularities and no vertex or region owns the global number.
+
+The source-global fact SHALL use a typed source-topology identity, independent of `TopologyRegionId`/`FieldCycleId`, based on source component plus the exact canonical source-boundary edge loop. Its `indexNumerator` comes from the same producer cycle-index computation that creates the aliases; A1 must not reconstruct a competing value. Before collapse, every nonzero global boundary cycle must have exactly one equal alias per source-boundary vertex and zero-index loops must have no nonzero alias. Missing, duplicate, foreign or unequal aliases reject.
+
+Regional `FieldCycleWitness::BoundaryLoop` objects remain region-relative. A global source-boundary cycle may associate with one or many regional loops. The true source-boundary edge subsets of those regional loops must be disjoint and cover the global source-boundary loop exactly on the same source component; hard-feature cut edges are not part of that cover. Zero, incomplete, overlapping or foreign-component association rejects. Regional `turningLift` remains regional authority and SHALL NOT be equated to the global source-boundary `indexNumerator`, individually, by aggregation, or by selecting a representative region.
+
+The atlas publishes the global facts and their global-to-regional support associations separately from region-relative `cycles()`. Boundary global facts do not publish `FieldSingularityFact` or singularity ports and do not enter four-index interior port arithmetic. `sourceBoundaryBoundSingularityCount` is diagnostic only and counts reconciled nonzero global source-boundary facts supported in each region; one global fact may be counted once in multiple regions.
+
+CB21 globally-interior separating ownership, same-region slit ownership, hard-feature partition, exact-one-owner interior reconciliation, cycle ordering, retained fixture/rawfield bytes and accepted selector426/first425 remain frozen. R10 Review recovery-proves and closes R9/R4 `RP-01` non-stably and discharges `DEFN-OBS-04`. CB24 then publishes exact selector427 and TB13 supplies fresh cumulative runtime; TB13 Review promotes package `10565723112`, grants S5 cumulative selector credit and closes CP-SCALE. Exact next is runtime-free `M4-CP4-DEFN`; DEFN-R1 source-global boundary authority remains frozen unchanged.
+
+## 9. Citation / evidence map
+
+| Claim | Primary source/evidence |
+|---|---|
+| exact rational magnitude available | `include/directional/authority/FieldTransportAtlas.h` (`FieldExactRational`, `ExactUnitParameter`, `FieldBoundaryPoint`) |
+| A2a exact traversal state and guards | `include/directional/geometry/SurfaceCellTracing.h`; `src/geometry/SurfaceCellTracing.cpp` |
+| certified vertex-star filter and exact fallback | `src/geometry/SurfaceCellTracing.cpp` (`vertex_star_algebraic_sign_filter`, `vertex_star_algebraic_sign_exact_recursive`, `vertex_star_compare_angle_sums`) |
+| arrival filter is interval/inconclusive surface | `include/directional/geometry/SurfaceCellTracing.h`; `src/geometry/SurfaceCellTracing.cpp` |
+| final disc/cellularity authority | `include/directional/geometry/SurfaceCutGraph.h`, `src/geometry/SurfaceCutGraph.cpp`, `include/directional/geometry/GlobalTopologyPlan.h` |
+| sphere combinatorial recurrence history | retained `CHANGELOG.md`, `Regression_Root_Cause_Tracker.md`, `M3_CP4c_Consolidated_Record.md` |
+| current witness deepest stages | `ORIENTATION.md` §4 and accepted M4 closure/review records |
+| retained fixture topology census | `benchmarks/fixtures/milestone-g/*.obj`, static V/E/F/boundary census in this DEFN |
+| source-global boundary-cycle aggregation/aliases | `src/geometry/MeshTopology.cpp` (`dual_cycles`), `src/fields/FieldMatching.cpp` (`effort_to_indices`) |
+| regional boundary-cycle reconstruction and current invalid one-owner alias map | `src/authority/FieldTransportAtlas.cpp`; `tests/FieldTransportAtlasTests.cpp` independent boundary validator |
+
+## 10. STOP rules
+
+STOP rather than broaden CB scope if a proposal guesses an S1 threshold, lets a filter decide without exact certification/fallback, calls a budget/proximity event an S3 cycle, changes A2a' cut selection for S4, credits torus as S5, edits the retained genus-two fixture/raw field to change the reviewed S5 subject, appends a gate without independent reachability, publishes selector427 other than the exact reviewed selector426-prefix + S5 append, modifies accepted selector423/CP-COND/CP3 semantics, reintroduces a regional owner for a source-global boundary fact, chooses a representative region by ordering, equates global boundary index with regional `turningLift`, silently drops a legacy alias instead of exactly reconciling it, weakens exact source-boundary edge-cover validation, or changes the frozen D1-D5 semantics.
+
+</details>
+
+<a id="m4-source-4"></a>
+<details>
+<summary><strong>Architecture_M4_CP4_Frozen_Definitions.md</strong> — BINDING FROZEN DEFINITIONS</summary>
+
+# M4-CP4 Frozen Definitions — cumulative M4 exit
+
+**Turn:** `M4-CP4-DEFN`
+**Status:** DEFINITIONS FROZEN / RUNTIME-FREE
+**Predecessor runtime authority:** package `10565723112` / semantic source `6fe075f7d9397a561fe50b79517b4f714fb9eeef` / selector427 **427/427**
+**Selector427 SHA-256:** `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`
+**Exact selector426 prefix SHA-256:** `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`
+**Selector427 owner partition:** **30 / 281 / 75 / 41**
+**Checkpoint role:** cumulative M4 exit proof only; **no second A3 writer**.
+**DEFN-R1 ownership amendment (2026-09-19):** Reading **B** is frozen. The two periodic produced-witness debts are explicitly M5-owned.
+**DEFN-R2 ownership amendment (2026-09-19):** Reading **B** is frozen for the remaining closed-complex subject. `surfaceCellContext` is explicitly diagnostic-only and `hasArrangement` retains a post-tracing global arrangement after occurrence-bearing embedding work; it is not the A4 `RegionCellComplex` authority. The unchanged closed-complex candidate-extraction debt is therefore re-homed to **M6-CP1 mechanism / M6-CP3 direct-production re-proof**. M4 owns no remaining produced-witness debt; total project debt remains **5**.
+
+## 1. Authority and scope
+
+`Architecture_M4_DEFN_Frozen_Definitions.md` §17 remains the production A3 semantic authority. CP4 does not reopen its scheduler, shared-breakpoint ownership, parity model, or A3→A4 cutover. CP4 only proves that the accepted M4 products satisfy their cumulative exit obligations.
+
+This definition turn is planning-only. It executes no Directional runtime, compiles nothing, and changes no product, test, fixture, selector, benchmark, or build-system semantics.
+
+The accepted predecessor is exact selector427. Any eventual CP4 cumulative selector must preserve all 427 LF rows byte-for-byte and may append only identities whose reachability and independent oracle were first established outside that selector publication step.
+
+## 2. CP4 exit theorem
+
+M4 may close only when all of the following are simultaneously true:
+
+1. selector427 remains the exact cumulative prefix;
+2. no later-stage produced-witness debt is treated as an M4 exit conjunct; the closed candidate-bearing-complex debt remains OPEN globally under the DEFN-R2 M6 owner in §3.1;
+3. production A3 publishes auditable work evidence whose operation count and monotone progress are independently reproducible;
+4. same-region multiplicity-2 is proved end-to-end from A2b boundary authority through the production baseline binder;
+5. the zero-transport test-helper precondition audit is complete enough that no CP4 gate derives semantic-success authority from a helper whose upstream atlas/topology precondition is false;
+6. every CP4 identity is independently reviewed before selector publication;
+7. a final artifact-only cumulative gate passes the exact accepted prefix plus only reviewed CP4 rows, with immutable postflight.
+
+None of these conditions authorizes another conformity schedule writer, consumer-side schedule repair, direct/draft substitution for a produced witness, or post-hoc ownership reconstruction.
+
+### 2.1 DEFN-R1 periodic ownership decision — Reading B
+
+DEFN-R1 rejects Reading C on current source authority and freezes Reading B. The row408-aligned torus uses the committed 72-vertex / 144-face torus and exactly 18 hard-feature edges. `build_source_topology_regions(...)` removes those hard edges from face adjacency, but an independent static connectivity derivation over the exact fixture still yields **one** connected `sourceTopologyRegion` containing all **144** faces. The product's supported “multiple relations on distinct authoritative sheets/components” path therefore cannot provide two produced relation owners for this witness. `M4-CP4-TB1-R3-REV-OBS-01` is discharged.
+
+Reading A is also rejected as M4-local authority. Naming two independent cycles inside that one source topology region requires a canonical same-sheet topology-basis identity and binding produced relation edges to that identity. `DESIGN.md` §14 assigns canonical relation IDs, explicit path certificates, relation-renumbering invariance, and torus quotient lineage to **M5**. The current product source likewise states that distinct same-sheet cycles require a later topology-basis solver and refuses discovery-order ownership as `AmbiguousBasis`. Freezing a second M4 relation/basis authority would duplicate or pre-empt M5's normative relation domain.
+
+Accordingly:
+
+- `PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization` is **OPEN / M5-owned**: M5-CP1 owns the canonical ID/path mechanism; M5-CP3 owns the required direct-production torus re-proof.
+- `MissingPeriodicRelationOwnerIsRejected` is **OPEN / M5-owned**: M5-CP2 owns the typed missing-owner failure; M5-CP3 owns the required direct-production re-proof.
+- The `>=2` periodic-relation/edge discriminator is **preserved unchanged** as the production witness requirement for the re-homed M5 debt. It is not weakened to `>=1`, inferred from hard rails, or satisfied by direct/draft authority.
+- M4 may close without produced periodic relation authority only after every remaining M4 exit conjunct in §2 is satisfied. The re-homed debts remain in the global debt total and receive no M4 credit.
+
+## 3. `G4-B002` produced-witness debt ownership
+
+The accepted selector427 contains historical identities whose current subjects are direct/synthetic. CP4 does **not** rewrite those accepted rows. DEFN-R1 re-homed §§3.2–3.3 to M5 because canonical same-sheet relation identity is part of M5 relation/certificate authority. DEFN-R2 re-homes §3.1 to M6 because its required retained candidate-bearing subject is a later occurrence/arrangement product, not A4 `RegionCellComplex` authority. No debt is deleted or marked satisfied.
+
+### 3.1 Produced closed-complex candidate extraction
+
+**Debt:** `CandidateExtractionBaselineForCanonicalSourceScopeIdentityIsNonVacuous`.
+
+**Required subject:** a closed source run through direct `SurfaceCells` with:
+
+- `fallbackPolicy = Fail`;
+- `allowSourceGridRecovery = false`;
+- `retainIntermediateGeometry = true`;
+- independently verified zero source-boundary loops;
+- a retained, incidence-valid arrangement/complex produced by the pipeline.
+
+A direct call to `closed_toroidal_candidate_complex()` is not credit.
+
+**Proposed focused identity:**
+`M4CP4.ProducedClosedComplexCandidateExtractionHasIndependentEligibilityOracle`.
+
+**Independent oracle:** derive candidate eligibility from retained authoritative arrangement facts rather than from `extract_surface_simplification_candidates(...)`'s success flag. For at least one extracted candidate, independently check its canonical halfedge/twin ownership, protected-feature/boundary/singularity status, side feasibility, source-scope/chart consistency, and the local path/loop degree condition that makes the candidate admissible.
+
+**Discriminating tamper:** change one authoritative support/protection fact used by that oracle on a copied retained product. The independent oracle must reject/change classification and the extractor must not preserve the original semantic candidate identity unchanged.
+
+**Stop condition:** if no currently produced closed fixture reaches a retained candidate-bearing complex without fallback/recovery, focused runtime records the exact blocking stage and returns to Review; it does not replace the subject with a synthetic complex.
+
+**R3 Review amendment (2026-09-19):** this stop condition has fired for the current focused helper. CB4 corrected its rawfield reader, but R3 then stops at `NotProductionReady/tracing` before retained arrangement authority exists. This does **not** establish a product defect or weaken the required subject: §3.1 does not freeze the generic torus setup as unique authority. The first post-definition Code + Build may correct only the test-local production precondition, including reuse of already accepted hard-rail production setup when needed, while preserving fail-closed/no-recovery execution and the independent candidate oracle/tamper. The debt remains open until a produced candidate-bearing arrangement reaches that oracle.
+
+**R2 Review amendment (2026-09-19):** CB5 performed that one authorized test-precondition correction by reusing the accepted row408 18-hard-edge torus setup. Fresh R2 still reaches `NotProductionReady/tracing` with `surfaceCellContext.hasArrangement == false`; row408 proves only `phaseFront == Produced`. The test-only correction path is therefore exhausted. No further fixture/precondition edit is authorized until runtime-free `M4-CP4-DEFN-R2` reconciles whether the retained candidate-bearing complex is M4/A4 authority or belongs to a later stage. The debt, independent oracle, tamper and fail-closed/no-recovery requirements remain unchanged.
+
+**DEFN-R2 disposition (2026-09-19): OPEN / RE-HOMED TO M6.** Reading **B** is required by the stage contracts. `DESIGN.md` defines A4 as one `RegionCellComplex` **per region**, while A5 creates the global `SurfaceOccurrenceComplex` in which every cell corner and directed side has an occurrence identity. `SurfaceCellPipelineContext` is explicitly documented as diagnostic-only and forbidden from carrying semantic stage authority. Its `hasArrangement` flag is set only after the produced phase front has passed through the later `strands` and `embedding` work and `build_surface_cell_complex(...)`; the retained arrangement is explicitly a debug copy consumed by simplification. Current transitional materialization also creates `OccurrenceId` ownership/quotient data directly from the phase front, confirming that this surface crosses the A5/A6 boundary rather than defining A4.
+
+The debt is therefore **not an M4 exit conjunct**. Its subject/oracle/tamper are preserved unchanged and re-homed to **M6-CP1**, where occurrence creation / quotient construction / geometry embedding become separate complete stage products. **M6-CP3** owns the required direct-production re-proof on authoritative A5 occurrence-complex output after that mechanism exists. No synthetic/direct arrangement, recovery output, or `phaseFront == Produced` proxy receives credit. Total project debt remains **5**.
+
+### 3.2 Produced torus relation ownership under container reordering
+
+**Debt:** `PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization`.
+
+The accepted row currently uses `direct_periodic_owner_product()`. **R2 Review correction (2026-09-19):** the earlier claim that generic `make_torus_pipeline_fixture()` / `torus_fixture()` already reaches the required produced torus phase front is false. R2 executes that helper fail-closed with recovery disabled and it stops at `InvalidBoundedDiskBoundaryTurn`. Accepted selector row408 provides the relevant production precondition authority instead: its fail-closed/recovery-disabled torus path supplies the explicit two-generator hard-rail cut graph (18 effective hard-feature edges) and reaches a `Produced` phase front. A CP4 focused fixture may align to that already accepted hard-rail precondition, but **must independently prove at runtime** that the produced phase front has the required periodic-relation/periodic-edge multiplicity. If it does not, stop to Review/DEFN; do not substitute direct/draft authority or weaken the multiplicity requirement.
+
+**Proposed focused identity:**
+`M4CP4.ProducedTorusPeriodicRelationOwnersSurviveContainerReordering`.
+
+**Required subject:** the production torus phase-front product, with at least two distinct periodic relation IDs and at least two periodic edges resolving through typed relation ownership.
+
+**Independent oracle:** before any permutation, build a typed-ID map
+
+`PeriodicRelationId -> (sourceTopologyRegion, action, route, cutRoute)`
+
+from the produced relation table. Reverse only the relation container. Every periodic edge must still resolve the same semantic tuple by its typed `PeriodicRelationId`; container position is never ownership.
+
+**Discriminating tamper:** swap two distinct produced relation IDs on periodic edges. The materializer/product validator must reject typed-owner mismatch. The existing production `SwappedPeriodicRelationOwnersAreRejected` behavior may be reused as evidence only if the new focused identity independently derives the before/after owner tuples rather than trusting the materializer's failure alone.
+
+**R3 Review amendment (2026-09-19):** the row408-aligned hard-rail precondition correction is runtime-proved: the focused torus reaches `Produced`. The produced product nevertheless contains **zero** `periodicHolonomies`, so the required same-production multiplicity and both discriminators remain unreached. Static product authority shows that the hard-rail/A3 path defers away from the periodic-annulus producer, the periodic-annulus path itself constructs one relation, and `insert_periodic_holonomy(...)` intentionally returns `AmbiguousBasis` for a second distinct relation in the same source topology region because same-sheet basis selection is deferred to a later topology-basis solver. This is a definition/architecture ownership conflict, not permission to reinterpret HardRail authority as periodic relation authority. The `>=2` produced-relation requirement remains explicitly **unweakened** pending `M4-CP4-DEFN-R1`; no direct/draft substitution or cycle-count inference receives credit.
+
+**DEFN-R1 disposition (2026-09-19): OPEN / RE-HOMED TO M5.** Independent static re-derivation of the exact row408 torus and `build_source_topology_regions(...)` rule gives one 144-face source topology region after excluding all 18 hard edges, so the distinct-sheet Reading C cannot satisfy this witness. A canonical two-generator identity inside that one region is the canonical-relation/path-certificate problem assigned by `DESIGN.md` §14 to M5. M5-CP1 owns the relation-ID/path mechanism and M5-CP3 owns this exact produced-torus reorder re-proof. The `>=2` requirement, typed-ID map oracle, reorder check, and swapped-owner tamper above remain unchanged and uncredited. They are no longer M4-CP4 exit conjuncts.
+
+### 3.3 Missing owner on produced periodic authority
+
+**Debt:** `MissingPeriodicRelationOwnerIsRejected`.
+
+**Proposed focused identity:**
+`M4CP4.ProducedTorusMissingPeriodicRelationOwnerIsRejected`.
+
+**Required subject:** the same production torus authority, with at least one `PeriodicCut` edge whose typed relation ID resolves to an existing produced periodic relation.
+
+**Independent oracle:** establish that exact relation membership by ID before mutation. Then remove exactly that edge's `periodicRelation` in a copied draft and reconstruct through the checked `SurfacePhaseFrontProduct::make(...)` path.
+
+**Required result:** typed `MissingPeriodicRelationOwner`. A direct `direct_periodic_owner_product()` subject receives zero produced-witness credit.
+
+**R3 Review amendment (2026-09-19):** this debt is reopened at the definition layer together with §3.2 because the accepted row408-aligned produced subject has no explicit produced periodic relation owner to remove. `M4-CP4-DEFN-R1` must resolve same-sheet periodic-authority ownership before a later Code + Build can re-attempt this discriminator. The typed `MissingPeriodicRelationOwner` result and prohibition on direct/draft substitution remain unchanged.
+
+**DEFN-R1 disposition (2026-09-19): OPEN / RE-HOMED TO M5.** M5-CP2 owns the typed missing/duplicate/conflicting/nonreciprocal relation-failure surface and M5-CP3 owns the direct-production torus proof. The required `MissingPeriodicRelationOwner` result, exact produced-ID membership oracle, and prohibition on direct/draft substitution remain unchanged. This debt remains counted and receives no M4 credit.
+
+## 4. Same-region multiplicity-2 is an M4-CP4 exit conjunct
+
+`Architecture_M4_DEFN_Frozen_Definitions.md` §17 requires a same-region two-incidence span to remain two semantic boundary occurrences while contributing zero parity effect as a graph self-loop. The existing `SameRegionDoubleIncidenceIsZeroEffectSelfLoop` unit test proves only the parity primitive; it does not prove the production A2b→A3 binder preserves both occurrences.
+
+**Proposed focused identity:**
+`M4CP4.ProducedSameRegionMultiplicityTwoSurvivesA2bToBaselineBinder`.
+
+**Precondition:** a produced `GlobalTopologyPlan` contains one `ConformitySpanId` twice in one `NetworkRegionId` boundary walk, with distinct canonical boundary occurrence ordinals.
+
+**Independent oracle:** derive multiplicity directly from the produced A2b region boundary walk before baseline construction. Record the two exact occurrence ordinals and orientations. After `build_global_conformity_baseline(...)`, require exactly two matching `BaselineConformityIncidence` records with the same region/span and the independently derived occurrence identities/orientations.
+
+**Tamper:** delete, merge, or re-key exactly one of the two incidences in a validation candidate. `validate_global_conformity_baseline_candidate(...)` must reject because candidate incidence sequence no longer equals exact A2b authority.
+
+A synthetic one-vertex `ParityGraphProblem` is not an end-to-end oracle. If no current produced fixture has the required multiplicity, the focused test must report that precondition failure and Review must assign the smallest producer/witness owner; the test must not manufacture production credit.
+
+## 5. Production A3 work/boundedness contract
+
+### 5.1 Current production algorithm, not the historical framed solver
+
+The active production baseline is `build_global_conformity_baseline(...)` in `GlobalConformityBaseline.cpp`, validated by `validate_global_conformity_baseline(...)`. Historical CP1/CP2 `GlobalConformityWorkLedger` / Bi-MDF evidence remains valid for its accepted framed domain but is **not** current production A3 work authority after §17.
+
+Let:
+
+- `E = normalized spans`;
+- `V = parity-graph vertices`;
+- `G = parity-graph edges`;
+- `T_j = demanded terminal count for minimum-T-join invocation j`.
+
+The producer performs exactly:
+
+- one unconstrained minimum-T-join call;
+- two minimum-T-join calls per canonical span during lex-prefix refinement.
+
+Therefore producer calls are exactly `1 + 2E` on a successful baseline.
+
+The producer then invokes its independent validator. That validator repeats the same one unconstrained plus two-per-span optimum reconstruction. Therefore the successful end-to-end production baseline performs exactly:
+
+`J = 2 + 4E`
+
+`minimum_t_join_cardinality(...)` invocations.
+
+CP4 work accounting must report producer and validator counts separately **and** their aggregate. Reporting only `1 + 2E` for the whole production call would hide the validator's multiplicative work and is false authority.
+
+### 5.2 Per-T-join finite work domain
+
+For each invocation `j`, `minimum_t_join_cardinality(...)`:
+
+1. scans at most `G` parity edges to apply fixed choices and construct adjacency;
+2. derives at most `V` demanded terminals;
+3. executes exactly `T_j` BFS traversals, each over at most `V` vertices and the finite adjacency induced by at most `G` graph edges;
+4. inserts at most `T_j(T_j-1)/2` terminal-pair matching edges;
+5. invokes the pinned exact `LEMON-1.3.1-MaxWeightedPerfectMatching-exact-EInt-adapter` exactly once when `T_j > 0` (zero times when `T_j = 0`).
+
+The pinned primitive revision remains `seqan/lemon@813c63d4f1d603858d941ac6f04abbe57901996a`. LEMON 1.3.1 documents `MaxWeightedPerfectMatching` as Edmonds weighted perfect matching with `O(n m log n)` combinatorial time for its matching graph. CP4 binds that bound to the **reported matching dimensions** `n=T_j`, `m<=T_j(T_j-1)/2`; it does not treat one matching call as an opaque unit with no size.
+
+No retry, backtracking, subset enumeration, or prefix reset is authorized in the baseline scheduler.
+
+### 5.3 Global monotone progress
+
+The stage progress measure is the lexicographic pair:
+
+`Phi = (initialOptimumPending, remainingCanonicalSpanDecisions)`.
+
+Initial state is `(1, E)`. The unconstrained optimum call changes the first coordinate from `1` to `0`. Each canonical lex-prefix step fixes exactly one previously unfixed span permanently and decreases the second coordinate by one. No accepted operation may increase either coordinate, clear an earlier fixed prefix choice, or restart the scan.
+
+The producer terminates at `(0, 0)`. The validator independently replays the same finite schedule over immutable input; it has its own identical progress pair and may not mutate the producer's certificate to make replay succeed.
+
+### 5.4 Required work evidence
+
+The production baseline certificate or an immutable certificate-owned subordinate receipt must expose, at minimum:
+
+- `spanCount = E`, `parityVertexCount = V`, `parityEdgeCount = G`;
+- producer and validator T-join invocation counts;
+- exact expected aggregate `2 + 4E` on a successful build;
+- one ordered receipt per T-join invocation identifying producer/validator phase, initial/trial/selected purpose, canonical span when applicable, fixed-prefix length, `T_j`, matching node count, matching edge count, and whether matching executed;
+- `retryResetCount = 0`;
+- final progress `(0,0)` for producer and validator.
+
+The independent validator must derive `E/V/G`, receipt order, fixed-prefix progression, `T_j`, matching dimensions, exact invocation counts and zero resets from the normalized input/candidate rather than trusting copied counters.
+
+A tamper to count, order, prefix length, terminal count, matching dimensions, retry count, or final progress must be rejected.
+
+### 5.5 Bit-width / expression-swell evidence
+
+A3's exact arithmetic is integer/rational authority, not the trace-state S1 algebraic census. CP4 therefore records exact magnitude widths for the quantities the baseline owns:
+
+- preferred target-derived counts;
+- final scheduled counts;
+- `minimumFlipCount`;
+- trial and selected lex-prefix minimum counts;
+- per-region final boundary counts;
+- matching graph distance weights;
+- compact breakpoint ordinals/numerators/denominators encountered by validation.
+
+Use `EInt::magnitude_bits()` or the exact equivalent. The certificate records the maximum for each category and an overall maximum across these baseline-owned exact values. Matching-input distance magnitude is additionally checked against the finite graph-cardinality domain (`distance < V` when reachable).
+
+These widths are **report-only measurements** in M4-CP4. They are gating only for completeness, deterministic recomputation, and exact equality to independently derived values. No absolute numeric threshold is frozen here. In particular:
+
+- S1's observed `429`-bit maximum is not an A3 bound;
+- the `4096` operational guard is not a calibration threshold;
+- target/count magnitude is not allowed to become an iteration count because the scheduler operates on span parity and graph cardinality.
+
+A later representative/stress-domain calibration may add a numeric acceptance threshold only through its owning definition/review.
+
+## 6. Carried-observation disposition
+
+Every carried item has exactly one owner.
+
+| Carried item | CP4 disposition | Exact owner / rule |
+|---|---|---|
+| `M4-CP-SCALE-TB1-REV-OBS-01` — S1 calibration | **re-homed later; not a CP4 exit conjunct** | `M8-CP2` resource-accounting/calibration. S1 remains report-only/non-gating until a representative/stress domain separately justifies a numeric threshold. `429` and `4096` are not thresholds. |
+| `M4-CP-SCALE-DEFN-OBS-01` — arrival/arclength exact fallback | **re-homed later; not a CP4 exit conjunct** | `M8-CP2` owns the hardening only if an exact fallback is observationally equivalent to accepted semantics. Current accepted semantics remain `ArcLengthFiltered`, with overlap -> `Inconclusive` and non-self `Inconclusive` -> symmetric termination. If a proposed exact fallback changes a semantic contact decision on accepted authority, stop and reopen the owning A2a/M3 semantic checkpoint rather than calling it hardening. |
+| `M4-CP-SCALE-TB2-REV-OBS-02` — `make_zero_transport_field` precondition audit | **DISCHARGED; exact typed expectation runtime-proved by TB2-R2 Review** | R3 proves flat zero-transport success, a genuinely non-flat subject with independently nonzero apex angle defect, and typed non-flat rejection. CB5 then corrects only the test expectation to exact `NonIntegralCycleLift`; R2 runtime + Review proves that expectation without changing product validation order. |
+| `M4-CP3-TB1-R1-REV-OBS-01` — same-region multiplicity-2 | **DISCHARGED / M4-CP4 exit conjunct proved** | `M4-CP4-TB2-R2-REV` independently credits the freshly executed produced binder witness after R2 passes `M4CP4.ProducedSameRegionMultiplicityTwoSurvivesA2bToBaselineBinder`. |
+| `M4-CP3-CB4-REV-OBS-02` — row399 path/`sourceFaces` divergence tamper | **explicit later trigger-owner; not a CP4 exit conjunct** | First Code+Build turn that legitimately changes selector row399 `GlobalTopologyPlan.IndependentValidationRejectsExactSourcePathTamperMatrix`, its path/`sourceFaces` binder, or the owning producer contract. Until then row399 remains byte-frozen. |
+| historical TB3 row408 provenance | **CP4 truth constraint, not a test row** | All CP4 records must preserve that row408 `RemeshPipeline.ExactA3ToA4TorusProductionPathPublishesTypedSharedBoundaryIdentity` was not historically observed failing with `InvalidHardRailPairing`. No rewrite of history receives credit. |
+| `G4-B002` produced closed-complex debt | **OPEN / re-homed; not an M4 exit conjunct** | **M6.** M6-CP1 owns the occurrence-complex/stage-separation mechanism; M6-CP3 owns the exact direct-production candidate-extraction re-proof. The independent eligibility oracle, hard-feature tamper, fail-closed/no-recovery subject and debt remain unchanged. |
+| two periodic `G4-B002` produced-witness debts | **re-homed; not M4 exit conjuncts** | **M5.** Reorder: M5-CP1 mechanism + M5-CP3 production re-proof. Missing owner: M5-CP2 typed failure + M5-CP3 production re-proof. Exact discriminators preserved. |
+| two `G4-B003` produced-witness debts | **explicit later owner** | M5, unchanged. CP4 must not pull them forward. |
+
+The S2-arrival disposition does not certify the current filtered comparator as exact. It only keeps the already accepted semantics fixed while placing the missing exact-authority hardening at the production-readiness resource/diagnostic checkpoint. Any semantic disagreement is a reopen trigger, not a tolerated divergence.
+
+## 7. Selector publication and acceptance sequence
+
+CP4 uses two evidence phases so test-authority repair cannot self-publish:
+
+1. **CB1:** implement work receipts/validator support and new focused CP4 identities; compile/package only. selector427 is unchanged.
+2. **Artifact-only TB + Review:** execute the focused identities plus the exact required accepted-prefix reproof defined by the successor TB plan. Review adjudicates produced reachability, independent oracles, work evidence and all tampers.
+3. **Publication CB:** only reviewed-green CP4 identities may be appended after the exact 427-row prefix. DEFN-R2 freezes exactly three rows, in this order:
+   1. `M4CP4.ProductionBaselineWorkReceiptIsBoundedAndIndependentlyValidated`;
+   2. `M4CP4.ProducedSameRegionMultiplicityTwoSurvivesA2bToBaselineBinder`;
+   3. `M4CP4.ZeroTransportFieldPreconditionDistinguishesFlatSuccessFromNonFlatRejection`.
+   Exact selector430 is selector427 byte-for-byte plus those three LF rows: **430 rows / 35,001 bytes / SHA-256 `1c4128500cb2f70f3bf00b85aadc44363ab89fdab906bf4aa7b140a4955a9db6` / owners 31 / 283 / 75 / 41**. The re-homed closed-complex row and both M5 periodic rows are excluded from M4 publication.
+4. **Final artifact-only cumulative TB + Review:** re-prove every cumulative selector row from immutable package authority. M4 closes only here.
+
+No DEFN or CB may edit existing selector427 rows to make a new witness fit.
+
+## 8. CP4 falsifiers
+
+Stop and return to Review/DEFN rather than broadening the checkpoint if any of these occurs:
+
+- the re-homed closed-complex `G4-B002` obligation is weakened, credited to M4, pulled backward from A5/M6, or satisfied from fallback/source-grid-recovery/direct/draft authority;
+- a re-homed periodic `G4-B002` obligation is weakened, credited to M4, inferred from hard rails/authored cycles, or satisfied from direct/draft authority;
+- no produced same-region multiplicity-2 subject can be reached without changing upstream semantics;
+- work evidence can only claim `1+2E` while omitting the validator's second `1+2E` schedule;
+- matching work is reported without terminal/matching graph dimensions;
+- progress can reset/reopen a fixed prefix or depends on timeout;
+- any numeric bit-width threshold is inferred from `429` or `4096`;
+- the helper audit requires a product-semantic change;
+- an exact arrival fallback disagrees with accepted semantics and is nevertheless treated as M8-only hardening;
+- CP4 introduces a second A3 writer, consumer-side schedule repair, or container-position ownership;
+- selector427 changes before independent focused runtime and Review authorize publication.
+
+## 9. Exact next turn
+
+`M4-CP4-DEFN-R2` freezes Reading B for the closed-complex subject: the remaining debt belongs to M6, while R2 Review already credited the three M4-owned focused obligations. CP4 remains OPEN because reviewed identities have not yet been published or re-proved cumulatively. Exact next is publication-only **`M4-CP4-CB8`** under `Architecture_M4_CP4_CB8_Publication_Code_Build_Plan.md`, followed on compile/package GREEN by immutable artifact-only `M4-CP4-TB3-EXEC`.
+
+
+## Historical `M4-CP4-DEFN` Review closeout
+
+The table below records the original DEFN closeout at its 2026-09-18 boundary. Later ownership facts in it are superseded by the explicit DEFN-R1/DEFN-R2 amendments above; it is retained as historical process evidence rather than current ownership authority.
+
+| Duty | Answer |
+|---|---|
+| Accepted selector prefix re-hashed | selector427 re-hashed as `f9c88380135a14d20492e215758cce35cab78ffe167b09fe5267d5ba2beae86f`; exact first-426 prefix re-hashed as `41f4d559211375c11c8d1f8c9ccde2581db75819d9409366e8f2695b008b5114`; 427 LF rows confirmed. |
+| Decisive claims independently re-derived | Re-derived the active production A3 owner as `build_global_conformity_baseline(...)` plus independent validator; producer T-join schedule `1+2E`, validator schedule `1+2E`, successful aggregate `2+4E`; per-call finite `T_j` BFS/matching domain; monotone progress `(1,E)->(0,0)`; produced-subject requirements for all three `G4-B002` debts and same-region multiplicity-2. |
+| Non-vacuity checked | Every proposed CP4 witness freezes a produced subject, independent oracle and discriminating tamper; §§3–4 and §8 require STOP/Review rather than synthetic/direct substitution when a produced fixture cannot reach the required stage. |
+| Prior obligations discharged/carried | `M4-CP-SCALE-TB1-REV-OBS-01` -> M8-CP2; `M4-CP-SCALE-DEFN-OBS-01` -> M8-CP2 only if observationally equivalent, otherwise reopen owner; `M4-CP-SCALE-TB2-REV-OBS-02` -> CB1 prerequisite; `M4-CP3-TB1-R1-REV-OBS-01` -> CP4 exit; `M4-CP3-CB4-REV-OBS-02` -> first legitimate row399/binder/producer touch; row408 history retained as truth constraint; three `G4-B002` debts remain CP4-gating; two `G4-B003` debts remain M5-owned. |
+| Stable accounting | **49 / 14 / 35**, produced-witness debt **5**; accepted runtime authority remains package `10565723112` / selector427 **427/427** with owner partition **30 / 281 / 75 / 41**. |
+| New candidates/obligations recorded | No new stable regression candidate. Definition-only obligations and exact owners were recorded in the tracker/TODO/frozen definitions without changing stable counts. |
+| ORIENTATION currency line | `M4-CP4-DEFN` / 2026-09-18 written. |
+| ORIENTATION §3 / §4 / §7 / §8 | Updated for CP4 definition authority, exact next work, carried observations and stop/falsifier boundaries; no witness-table rewrite was needed because no runtime witness changed. |
+| CHANGELOG | `M4-CP4-DEFN` entry added. |
+| ROADMAP | Updated: CP-SCALE closed/accepted; CP4 DEFN complete; CP4 execution remains open with CB1 next; M8-CP2 owns the deferred calibration/hardening items. |
+| Selector manifest | n/a — selector427 is frozen and no selector row changed in this runtime-free DEFN turn. |
+| LESSONS | n/a — this turn introduced no new recurring failure pattern beyond already recorded policy/lessons. |
+| Consolidation under CLEAN_UP_POLICY | Consumed `Architecture_M4_CP4_DEFN_Plan.md` was folded/indexed in `M4_Consolidated_Record.md` and deleted; exactly one bounded successor plan, `Architecture_M4_CP4_CB1_Code_Build_Plan.md`, is retained. Temporary source-snapshot and Drive-patch markers were removed by cleanup run `35403664814`; only the seven durable workflows remain. |
+| Successor frozen | Exactly one successor: `M4-CP4-CB1`; falsifiers and stop rules are frozen in this record §8 and `Architecture_M4_CP4_CB1_Code_Build_Plan.md`. |
+| Turn boundary held | Yes — definition/planning remained runtime-free; no Directional binary executed and no product/test/fixture/selector/benchmark/build semantics changed. The Drive patch application recorded `runtimeExecution=false`; staged Drive patch was retired owner-side after successful push. |
+| review_check.py boundary | **ALL CHECKS PASSED**, including selector prefix/hash and prohibited-mutation checks. |
+| `STATUS` lifecycle maintained | `Turn=M4-CP4-DEFN`; entry `Status=IN_PROGRESS`; final `Status=COMPLETE`; `Successor=M4-CP4-CB1`; `Started at=2026-09-18T22:18:00Z`; `Resumed at=n/a`; `Ended at` is written by the final root `STATUS` mutation after this closeout record. |
+| Pushed to origin, branch in sync | Connector/Actions writes landed directly on the configured origin branch; after cleanup, current branch authority was re-read successfully, only the seven durable workflows remain, and all temporary trigger/observation/payload directories are absent. `git status -sb` is n/a because this Web turn retained no local origin-tracking checkout after connector/Actions pushes; direct origin re-read is the equivalent authority check. |
 
 </details>
 
