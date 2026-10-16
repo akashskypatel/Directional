@@ -1,3 +1,0 @@
-Purpose: code/build closeout document patch authority; do not execute tests.
-Turn: M6-CP3-CB9-R9-TERMINAL-STAR-PATH-PROBE
-Frozen semantic source: 18cc4da5e2bc41138c5363a74de4e2db1e28ef23
