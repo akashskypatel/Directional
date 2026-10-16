@@ -19459,6 +19459,48 @@ SurfaceCellNetwork build_surface_cell_network(
         append_face_key("CarrierFirstFace", probeCarrier->firstFace);
         append_face_key("CarrierSecondFace", probeCarrier->secondFace);
       }
+      // Rejection-only route/path reconciliation evidence. The canonical
+      // route belongs to the published front edge; the traced source faces
+      // belong to the owning cells' boundary paths, not their corner array.
+      endpointEvidence << ";a2bProbeRouteStepCount=" << routeSteps.size();
+      for (std::size_t step = 0; step < routeSteps.size(); ++step) {
+        const auto topology = routeSteps[step].topology();
+        endpointEvidence << ";a2bProbeRouteStep[" << step << "]="
+                         << topology.first().index() << ','
+                         << topology.second().index();
+      }
+      const auto append_traced_faces = [&](const char *label,
+                                           const SurfaceFrontEdge &edge) {
+        endpointEvidence << ";a2bProbe" << label << "PathFaces=";
+        const auto cell = std::find_if(
+            phaseFrontState.cells.begin(), phaseFrontState.cells.end(),
+            [&](const SurfacePhaseFrontCell &item) {
+              return item.id == edge.filledCell;
+            });
+        if (cell == phaseFrontState.cells.end()) {
+          endpointEvidence << "missing-cell";
+          return;
+        }
+        if (edge.filledSide < 0 || edge.filledSide >= 4) {
+          endpointEvidence << "missing-side";
+          return;
+        }
+        std::set<int> tracedFaces;
+        for (const SurfaceTraceSegment &segment :
+             cell->boundaryPaths[static_cast<std::size_t>(edge.filledSide)])
+          tracedFaces.insert(segment.face);
+        if (tracedFaces.empty()) endpointEvidence << "none";
+        else {
+          bool firstFace = true;
+          for (const int face : tracedFaces) {
+            if (!firstFace) endpointEvidence << ',';
+            endpointEvidence << face;
+            firstFace = false;
+          }
+        }
+      };
+      append_traced_faces("First", first);
+      append_traced_faces("Second", second);
       const auto *firstInterval = first.sharedBoundaryInterval
           ? &*first.sharedBoundaryInterval : nullptr;
       const auto *secondInterval = second.sharedBoundaryInterval
