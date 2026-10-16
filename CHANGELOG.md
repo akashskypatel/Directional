@@ -1,3 +1,9 @@
+## CURRENT — M6 CP3 CB8 source-entity probe, compile-only (2026-10-16)
+
+`M6-CP3-CB8-R8-SOURCE-ENTITY-EQUIVALENCE-PROBE` records boundary override activation and exact chart/accepted source-entity representations for every reached boundary lattice node in a rejected region, without modifying admission or selecting either repair branch. Semantic `f0d7240455b10237af47de58c035cd4c576d889a`; verified application run `38877023124`. GMP/GMPXX eight-target **GREEN**, workflow `38877282902`, immutable artifact `12035788036`, outer ZIP SHA-256 `1967771d10b765168102158ae8460a7973319f0bbec452166a1c732a6e7c097d`; exact source `f0d7240455b10237af47de58c035cd4c576d889a`, 28/28 packaged hashes, 8/8 targets, preflight/build 0/0, five empty source-status files, `DIRECTIONAL_ENABLE_GMP=ON`, real link includes GMPXX/GMP, `exactArithmeticBackend=GMP`, `runtimeExecution=false`. No runtime, tests, benchmarks or selector 497; RP-01 remains unresolved and RP-02 UNREACHED. **Next authorized separate turn:** `M6-CP3-TB8-R8-SOURCE-ENTITY-EQUIVALENCE-HARVEST` (artifact-only). Detailed evidence: `.agents/Directional/Architecture_M6_CP3_R8_Source_Entity_Equivalence_Probe_Code_Build_Record_20261016.md`. Historical current sections below are superseded, not deleted.
+
+---
+
 ## 2026-10-16 — RA-75 frozen: the overriding face has genuine source-edge authority, and RP-01 reframes to a two-branch question whose branches imply opposite repairs
 
 - Architecture Review only (`M6-CP3-DEFN-R8-BOUNDARY-OVERRIDE-AUTHORITY-SPEC-REV`), adjudicating one turn; no source, test, selector, binary, harness, workflow, benchmark or ledger-count change in this Review, and no Directional binary executed.
