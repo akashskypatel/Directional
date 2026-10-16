@@ -1,12 +1,14 @@
 {
- "schema_version": 1,
- "request_id": "m6-cp3-cb7-r7-closeout-apply-20261016b",
- "operation": "drive_apply",
- "mailbox_key": "m6-cp3-cb7-r7-closeout-apply",
- "file_id": "1gxuh3-wsXIAaJvWiJC43jB8Ms8KRsc5I",
- "patch_sha256": "9c812eb0ad27b06f6c2076bd36e5c85d0ddab041fa03629f031e45b00ffdd75b",
- "base_sha": "cdd6dc4a9ba95a42aace6226194b38e712b53e4b",
- "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
- "commit_message": "docs(agent): close CB7 GMP compile and hand off immutable TB7 harvest",
- "retention_days": 14
+  "schema_version": 1,
+  "request_id": "m6-cp3-tb7-r7-presnap-harvest-20261016a",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb7-r7-presnap-harvest",
+  "executor_sha": "f3ed82bc5d84953c4150429ee149e514644573d8",
+  "semantic_source_sha": "cdd6dc4a9ba95a42aace6226194b38e712b53e4b",
+  "turn_id": "M6-CP3-TB7-R7-LATTICE-UV-CANDIDATE-HARVEST",
+  "harness_path": ".agents/Directional/tools/m6_cp3_r7_lattice_uv_harvest_harness.sh",
+  "harness_sha256": "36b1fab3ab9a1b5aa6359df934e355c1f5a02451abf42b04b9e920e56d50a7d4",
+  "environment": {},
+  "artifact_prefix": "m6-cp3-tb7-r7-presnap",
+  "retention_days": 14
 }
