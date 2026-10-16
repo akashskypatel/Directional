@@ -1,3 +1,44 @@
+## CURRENT — RA-75 frozen; the overriding face is legitimately derived; RP-01 splits into two branches with opposite repairs (2026-10-16)
+
+### Turn sequence (byte-derived from `STATUS` history; frozen clauses in `Architecture_M6_Frozen_Definitions.md`)
+
+| # | Turn | Kind | Review | Outcome |
+|---:|---|---|---|---|
+| 1 | `M6-CP3-CB2-R4-PREDICATE-SEPARATION` | Code + Build | RA-63 | accepted; probe separated from decision |
+| 2 | `M6-CP3-CB3-R4-LEDGER-CONTENT-FLOOR` | Code + Build | — | tooling floor added to both gates |
+| 3 | `M6-CP3-TB3-R4-PROBE-HARVEST` | Test + Benchmark | RA-64 | accepted; contradicted the reviewer, credited |
+| 4 | `M6-CP3-DEFN-R4-ENDPOINT-AUTHORITY-SPEC` | Definition | RA-65 | accepted w/ amendment; RA-64.6 withdrawn, gate C suspended |
+| 5 | `M6-CP3-CB4-R4-ENDPOINT-CHART-PROBE` | Code + Build | RA-66 | accepted; compile chain closed by bytes |
+| 6 | `M6-CP3-TB4-R4-ENDPOINT-CHART-HARVEST` | Test + Benchmark | RA-67 | accepted; mechanism derived; 44/44 RED |
+| 7 | `M6-CP3-DEFN-R5-JUNCTION-CARRIER-AUTHORITY-SPEC` | Definition | RA-68 | accepted; both repair shapes inadmissible |
+| 8 | `M6-CP3-CB5-R5-ROUTE-PATH-RECONCILIATION-PROBE` | Code + Build | RA-69 | accepted; neutrality structural |
+| 9 | `M6-CP3-TB5-R5-ROUTE-PATH-RECONCILIATION-HARVEST` | Test + Benchmark | RA-70 | accepted; RA-68.9 CONFIRMED |
+| 10 | `M6-CP3-DEFN-R6-CORNER-ASSIGNMENT-AUTHORITY-SPEC` | Definition | RA-71 | accepted; falsified the reviewer's prediction **and** census |
+| 11 | `M6-CP3-DEFN-R7-CORNER-FACE-SELECTION-REPAIR-SPEC` | Definition | RA-72 | accepted w/ amendment; passes RA-65.5 |
+| 12 | `M6-CP3-CB6-R7-NODE-ADMISSIBLE-FACE-SET-PROBE` | Code + Build | RA-73 | accepted; calls the production predicate |
+| 13 | `M6-CP3-TB6-R7-NODE-ADMISSIBLE-FACE-SET-HARVEST` | Test + Benchmark | RA-73 | accepted; RA-72.8 falsified |
+| 14 | `M6-CP3-CB7-R7-LATTICE-UV-CANDIDATE-PROBE` | Code + Build | RA-74 | accepted; moved **producer-side** as instructed |
+| 15 | `M6-CP3-TB7-R7-LATTICE-UV-CANDIDATE-HARVEST` | Test + Benchmark | RA-74 | accepted; **sampler exonerated** |
+| 16 | `M6-CP3-DEFN-R8-BOUNDARY-OVERRIDE-AUTHORITY-SPEC` | Definition | RA-75 | accepted; **the overriding face is legitimately derived**; RA-74.1 narrowed |
+| **17** | **`M6-CP3-CB8-R8-SOURCE-ENTITY-EQUIVALENCE-PROBE`** | **Code + Build** | pending | **NEXT — compile-only** |
+| 18 | `M6-CP3-TB8-R8-SOURCE-ENTITY-EQUIVALENCE-HARVEST` | Test + Benchmark | pending | artifact-only harvest of rung 17 |
+| 19 | repair for the surviving branch | undetermined | pending | **not authorized**; branch unknown until rung 18 |
+
+- [x] Rung 16 **ACCEPTED** (RA-75), one charge, one note. Decision: `.agents/Directional/Architecture_M6_CP3_R8_Boundary_Override_Authority_Spec_Review_Decision.md`.
+- [x] **RA-75.2 — the overriding face is legitimately derived.** At `src/geometry/SurfaceCellTracing.cpp:17117-17118` and `:17139-17140`, `append_point(*parameter, run.sourceFaces[edgeIndex])` — **the accepted point's face comes from the source-edge run's own face, never a chart selector**. Face 7 is **not** an error value. The accepted boundary also **sizes the lattice**: grid interval counts come from `acceptedBoundary[side].intervals.size()` at `:17204-17215`. Flags: `useAcceptedConformity` (`:14993`) and `useAcceptedCutDomain` (`:14998`) are **not coextensive**.
+- [x] **RA-75.3 — RA-74.1 NARROWED.** The guard `v==0 || u==gridU || v==gridV || u==0` selects **every** grid-boundary node, and **`FirstTo` face 0 may also have been replaced**. So the override is **not** shown to be junction-specific; only that at `SecondFrom` the published face differs from the sample.
+- [x] **RA-75.4 charge — the cohort "discrepancy" is one population in four index domains.** 54 endpoint records = 27 occurrences = 23 ledger entries = 22 distinct identities (multiplicity `{2: 21, 12: 1}`; the duplicate is deliberate, commit `c4da30a37`). No cross-vintage mapping needed. **RA-67.13 a third time.** The caution survives on its other ground (RA-74.7, the control override state was never measured).
+- [x] **RA-75.5 — Q3 declines to name one owner, with a reason**: accepted conformity owns the published source-edge point and its face-relative location, chart sampling owns interior samples, and **neither face is a unique directed-side carrier certificate** (consistent with RA-72.4). Admissible under RA-68.12.
+- [x] **RA-75.6 — Q4 admissibility table**: two admissible **shapes only**, one **relocation only** (RA-72.5), three forbidden including an invented vertex-star route (RA-65.5, gate C suspended); F1–F7 stated, none executed.
+- [x] Credits: **both RA-74 charges absorbed in one rung** — ledger prepended not overwritten (`ledgers --base 298b6779d` clean), `ORIENTATION.md` written after two omissions; beacon `COMPLETE` with a named Successor, not self-referential. **`RP-03` satisfied an eleventh consecutive turn.** Note (not charged): the tracker was not written by rung 16.
+- [ ] **Rung 17 — `M6-CP3-CB8-R8-SOURCE-ENTITY-EQUIVALENCE-PROBE` (compile-only, rejection-only).** For **every** grid-boundary node reached in a rejected case, emit (1) whether the override fired (`accepted != nullptr` at `:17278`), settling whether `FirstTo` is also overridden; (2) the **exact source entity** of the chart sample — vertex id when a barycentric coordinate is exactly `1`, else edge plus exact parameter when one is exactly `0`, else interior; (3) the same for the accepted boundary point. Do not modify `point_on_periodic_chart` or the override. Compile and dispatch; **do not interpret the fields**.
+- [ ] **Rung 18** harvests and answers the discriminator: **do the two points denote the same source entity?** Same → **branch (b)**, the override is legitimate and the consumer contract is at fault. Different entity or sheet → **branch (a)**, the override is invalid upstream. This is the spec's own **F1** falsifier.
+- [ ] **Rung 19** repairs the surviving branch only. **Do not reorder rungs 17-19 and do not pre-empt rung 19.**
+- [ ] Standing: relocation is not repair (RA-72.5); do not touch `tolerance` or any epsilon; do not sort or reorder `activeFaces`; do not revive `point_on_source` as the locus (RA-71.5 amended); do not replace `.face` without transporting barycentrics.
+- [ ] Carried: `RP-02` **UNREACHED**. Frozen 66/17/49, debt 1, CP2 491/491, R3 403/497, selector 497. **`R4-VIN-01` armed at `cdd6dc4a9`** — every earlier artifact through `12032341939` is a baseline, never a comparand. RA-61.9, RA-64.6, RA-70.14, RA-72.8 withdrawn; RA-71.5 amended; RA-73.5 superseded; **RA-74.1 narrowed**. Gate C suspended and moot for `RP-01`. `PROCESS-01` discharged. The historical `ledgers` failure at `b2b6e6541` is permanent for any earlier base, correct, and **must not be suppressed**.
+
+---
+
 ## CURRENT — M6 CP3 R8 Definition recorded (2026-10-16)
 
 - [x] Four-question source-static boundary override authority Definition: `Architecture_M6_CP3_R8_Boundary_Override_Authority_Specification_20261016.md`.

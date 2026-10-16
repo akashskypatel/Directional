@@ -1,3 +1,53 @@
+## CURRENT — `M6-CP3-DEFN-R8-BOUNDARY-OVERRIDE-AUTHORITY-SPEC-REV`, 2026-10-16: RA-75 frozen; the value that looked wrong turns out to have a proper pedigree, and the question splits in two
+
+**Supersedes the RA-74 paragraph below as the current state.** One turn was adjudicated and it is
+**accepted**, with one charge and one note. It also corrected this review's description of what the
+measurement had shown. No open REVIEW_BLOCKER. No promotion, no stable event, no regression
+recurrence, no gate credit.
+
+**§3 current state — the overwriting value is not a mistake, and that changes the question.** Last
+rung established that a corner's computed triangle is thrown away and replaced by one taken from a
+previously accepted boundary. The natural reading was that the replacement is the bug. It is not so
+simple: the replacement's triangle comes from the accepted boundary's own source-edge run, so it
+carries real authority, and that boundary also determines how the producer's grid is sized in the
+first place. Two producers are each entitled to an opinion about the same corner, and nothing in the
+system reconciles them. So the question is no longer which one is broken but whether the two
+opinions are even about the same point.
+
+**§4 runtime witness — none, and none was needed.** A document turn over source read from a verified
+snapshot, with the three source trees identical at the snapshot, at the commit that was compiled two
+rungs ago, and at the branch head. The protected history was added to rather than overwritten this
+time, and the orientation document — skipped twice — was written. Both of the previous review's
+complaints were answered within a single rung.
+
+**§5 instrument — the turn corrected the reviewer, and the correction matters.** This review had
+implied that the overwrite is what separates the failing cases from the passing ones. The turn
+pointed out that the condition triggering it applies to every node on the edge of the producer's
+grid and knows nothing about which cases fail — and that a corner whose published triangle happens
+to match its computed one may have been overwritten too, with the same value. So "the overwrite is
+what goes wrong at the junction" is not established, only that at one of the two corners the
+published triangle differs from the computed one. That narrowing is now recorded.
+
+**§7 priority — one small measurement decides between two opposite repairs.** If the computed point
+and the replacement point are the same place on the surface, then the overwrite is harmless and the
+fault lies in what consumes the result, which demands a strict equality the representation was never
+meant to carry. If they are different places, the overwrite is invalid and must be refused. These
+call for opposite changes, so the next turn measures the one fact that eliminates one of them: for
+each boundary corner in a failing case, whether the overwrite fired at all, and exactly which source
+vertex or edge-with-parameter each of the two points denotes. One run settles it.
+
+**§8 patterns — the agent declined to answer a malformed question and said why.** Asked to name
+which of the two producers owns a corner's triangle, it argued that neither answer can be right as
+posed, because one corner serves two directed sides and a single triangle cannot be authoritative
+for both. That is a refusal with a reason rather than a hedge, and it matches a conclusion reached
+independently several rungs earlier. Eleventh consecutive turn to report something that did not
+flatter the reviewer or the process. The one charge is a familiar shape: two counts of the same set
+of tests, taken in different units, were read as a discrepancy between two measurement vintages and
+used to justify caution. The caution happens to be right for an unrelated reason, but the arithmetic
+behind it was not — the third time this particular confusion has had to be written down.
+
+---
+
 ## CURRENT — R8 Definition (2026-10-16)
 
 **§3:** Accepted boundary owns ordered source-edge subdivisions, not unique directed-side carrier face; chart sample 3 and accepted point 7 may be different representations of one vertex, pending entity/sheet proof. **§4:** No runtime; R7 44 candidate RED, CP2 491/491, R3 403/497 and selector497 frozen. **§7:** Independent R8 Definition Review next, code held; 21 changed-face junctions do not prove all boundary nodes, 27 latest controls unmeasured (23 older cohort). **§8:** RA-74.11 substitution ownership; RA-72.5 raw equality is relocation. RP-01 open, RP-02 unreached, 66/17/49, debt1. See `Architecture_M6_CP3_R8_Boundary_Override_Authority_Specification_20261016.md`.

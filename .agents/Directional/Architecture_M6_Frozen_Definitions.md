@@ -1,3 +1,120 @@
+## RA-75 — frozen definitions, M6 CP3 R8 boundary-override authority (2026-10-16); RA-74.1 NARROWED
+
+**Authority:** `.agents/Directional/Architecture_M6_CP3_R8_Boundary_Override_Authority_Spec_Review_Decision.md`.
+Adjudicates `M6-CP3-DEFN-R8-BOUNDARY-OVERRIDE-AUTHORITY-SPEC` (rung 16); **ACCEPTED**, one
+charge and one note. Semantic source unchanged at
+`cdd6dc4a9ba95a42aace6226194b38e712b53e4b`.
+
+- **RA-75.1 Provenance and boundary.** Snapshot run `38868534647` `conclusion=success` at
+  `e8db3859b`; artifact `12032341939` digest
+  `ae817b332a1fb8e862f036578c22211d8a9c194bfaf8d9796a5f94b1d638d0be`, matches;
+  `src`/`include`/`tests` **tree-identical at `e8db3859b`, `cdd6dc4a9` and `HEAD`**.
+  Documents only. `ledgers --base 298b6779d` over the agent's range: **ALL CHECKS PASSED**.
+- **RA-75.2 Q1 answered decisively — face 7 is not a stray value.** At
+  `src/geometry/SurfaceCellTracing.cpp:17117-17118` and `:17139-17140`, in both the forward
+  and reverse ordinal loops, the accepted boundary point is built by
+  `append_point(*parameter, run.sourceFaces[edgeIndex])` — **its face comes from the
+  source-edge run's own face, never from a chart selector** — so the published face 7
+  carries genuine accepted-conformity source-edge authority. The flags are as specified:
+  `useAcceptedConformity = hasTopologyPlan && hasBaselinePlan` (`:14993`) while
+  `useAcceptedCutDomain = useAcceptedConformity && regionHasHardFeature` (`:14998`),
+  **not coextensive**. The authority is structural, not merely point-level: at
+  `:17204-17215` the grid interval counts are taken from
+  `acceptedBoundary[side].intervals.size()` with `bottom != top || right != left`
+  rejected, so the accepted boundary **sizes the producer's lattice before any sampling
+  happens**. Correctly not claimed: that its `.face` must equal the chart sample's, be the
+  unique incident face, or be correct for both directed-side carriers. Its warning never to
+  replace `.face` without transporting barycentrics is right — a face-relative coordinate
+  is meaningless against a different face.
+- **RA-75.3 Q2 answered honestly, and RA-74.1 is NARROWED.** The guard
+  `v == 0 || u == gridU || v == gridV || u == 0` selects **every** grid-boundary node and
+  knows nothing about the failing or control cohorts. The specification adds the point the
+  reviewer missed: **an unchanged `FirstTo` face 0 may also have been replaced** — the
+  measurement cannot distinguish "the override did not fire" from "the override fired and
+  produced the same face." **RA-74.1 is narrowed: what is measured is that at `SecondFrom`
+  the published face differs from the sample, NOT that the override is junction-specific.**
+- **RA-75.4 CHARGE — the cohort "discrepancy" is one population counted in four domains.**
+  The specification reports 27 control occurrences against "the older R5 controls numbered
+  23" and concludes that cross-vintage identity mapping is needed. Recomputed from
+  `producer-presnap-candidates.tsv`: **54** control endpoint records, **27** occurrences
+  (54 ÷ 2), **23** ledger entries (21 singles plus 2 entries emitting three times each),
+  **22** distinct identity strings — measured directly as 54 rows, 22 distinct identities,
+  per-identity multiplicity `{2: 21, 12: 1}`, the twelve being the duplicated identity
+  emitting three times on two ledger entries. The duplication is deliberate and documented
+  in the agent's own commit `c4da30a37` ("preserve intentional **duplicate** TB identity").
+  So 23 and 27 are **the same population in two index domains** and no mapping is required.
+  **RA-67.13 recurring a third time** — derived RA-67.5, charged RA-70.8, charged again
+  here. The resulting caution ("do not code to these cohort counts") **survives**, because
+  the specification's other ground is sound: the override state at the control nodes was
+  never measured (RA-74.7). The conclusion stands on one good leg and one bad one.
+- **RA-75.5 Q3 — it declines to name a single owner, with a reason, and that is
+  admissible.** Accepted conformity owns the published source-edge point and its
+  face-relative location; chart sampling owns interior samples and the preliminary
+  competing representation at a boundary; and **neither face is a unique directed-side
+  carrier certificate.** That last clause is consistent with RA-72.4's per-directed-side
+  necessity: a single corner face cannot be authoritative for both the incoming and
+  outgoing side, so "which face is the corner's" is malformed as posed. `RP-01` is reframed
+  as **missing boundary-point-to-directed-side carrier reconciliation**, explicitly **not**
+  a proven downstream-only bug. An inadmissible answer is a result (RA-68.12) and this one
+  is argued, not dodged. The cited side paths do carry the material:
+  `cell.boundaryPaths[side]` is built by `bounded_disk_chart_segment` at `:17383-17390`,
+  and `SurfaceTraceSegment` (`include/directional/geometry/SurfaceCellTracing.h:1211-1232`)
+  carries `face`, both barycentrics, `sourceChart` and a typed `entryRoute`.
+- **RA-75.6 Q4 — a proper admissibility table.** Six candidates adjudicated: two
+  **admissible shapes only** (reconcile canonical source-entity/sheet and side-specific
+  face/chart/route while preserving accepted edge placement; publish separate
+  directed-side face/chart/route rather than one corner face), one **relocation only**
+  under RA-72.5 (raw face equality at the override or the consumer — rejects the same 21
+  earlier and creates no successful cell), and three forbidden, including inventing a
+  vertex-star route, correctly refused under RA-65.5 with gate C suspended. Seven
+  falsifiers F1–F7 stated, none claimed executed.
+- **RA-75.7 Credits.** **Both RA-74 charges absorbed in one rung**: the ledger was
+  prepended, not overwritten (`ledgers --base 298b6779d` clean), and `ORIENTATION.md` was
+  written after two consecutive omissions. Beacon `COMPLETE` with a named Successor, not
+  self-referential. It corrected the reviewer on the override's scope. **`RP-03` satisfied
+  an eleventh consecutive turn.**
+- **RA-75.8 NOTE — the tracker was not written.**
+  `Regression_Root_Cause_Tracker.md` is absent from the rung-16 diff though rungs 10 and 11
+  wrote it. Not charged; recorded so the pattern does not drift.
+- **RA-75.9 `RP-01` state — reframed, not resolved.** The defect is *missing reconciliation
+  between the accepted boundary point and the directed-side carriers*, with two mutually
+  exclusive branches: **(a)** the accepted and chart points denote **different source
+  entities or sheets**, so the override is invalid upstream and must be rejected; or
+  **(b)** they denote the **same** point and only raw face equality is being demanded, so
+  the consumer's representation contract is wrong. **These branches imply opposite
+  repairs** and nothing yet distinguishes them. **Code remains NOT authorized.** `RP-02`
+  **UNREACHED**.
+- **RA-75.10 LESSON — when a specification offers two branches with opposite repairs, the
+  next rung measures the discriminator, not the branches.** It is tempting to specify both
+  and pick later. The cheaper and safer move is to measure the one fact that eliminates one
+  branch.
+
+### Rung 17 scope — `M6-CP3-CB8-R8-SOURCE-ENTITY-EQUIVALENCE-PROBE`, compile-only
+
+Rejection-only, in the rung 14 producer-side pattern. For **every** grid-boundary node
+reached in a rejected case, emit: (1) **whether the override fired** — the
+`accepted != nullptr` outcome at `:17278` — settling RA-75.3's open question of whether
+`FirstTo` is also overridden; (2) the **exact source entity** of the chart sample,
+barycentric-exact (source vertex id when a coordinate is exactly `1`; otherwise source edge
+plus exact parameter when a coordinate is exactly `0`; otherwise interior); (3) the **exact
+source entity** of the accepted boundary point, by the same classification. One run then
+answers the discriminator: **do the two points denote the same source entity?** Same →
+branch (b); different entity or sheet → branch (a). This is the specification's own F1
+falsifier, measured. Rung 18 harvests; rung 19 defines or implements the surviving branch.
+
+### Accounting
+
+Ledger **66/17/49**, debt **1**, CP2 **491/491**, R3 **403/497**, frozen selector **497** —
+unchanged. `R4-VIN-01` remains armed at `cdd6dc4a9`; every earlier artifact through
+`12028682600`, `12030150301` and `12032341939` is a **baseline, never a comparand**; the 44
+RED are the baseline for `cdd6dc4a9` alone, candidate / non-stable. **RA-61.9 WITHDRAWN,
+final. RA-64.6 WITHDRAWN, final. RA-70.14 WITHDRAWN. RA-72.8 WITHDRAWN. RA-71.5 AMENDED.
+RA-73.5 SUPERSEDED. RA-74.1 NARROWED. Gate C SUSPENDED and moot for `RP-01`.**
+`PROCESS-01` discharged. The historical `ledgers` failure at `b2b6e6541` remains permanent
+for any base earlier than it, is correct, and must not be suppressed.
+
+---
+
 ## RA-74 — frozen definitions, M6 CP3 R7 pre-snap lattice-UV candidates (2026-10-16); RA-71.5 AMENDED, RA-73.5 SUPERSEDED
 
 **Authority:** `.agents/Directional/Architecture_M6_CP3_R7_Lattice_UV_Candidate_Review_Decision.md`.

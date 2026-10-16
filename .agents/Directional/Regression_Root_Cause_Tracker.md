@@ -1,3 +1,136 @@
+## 2026-10-16 — the overriding face has genuine source-edge authority; RP-01 reframes to a two-branch reconciliation question with opposite repairs (RA-75; RA-74.1 narrowed)
+
+**Review:** `M6-CP3-DEFN-R8-BOUNDARY-OVERRIDE-AUTHORITY-SPEC-REV`, adjudicating rung 16 —
+`M6-CP3-DEFN-R8-BOUNDARY-OVERRIDE-AUTHORITY-SPEC`. **ACCEPTED**, one charge, one note.
+Decision:
+`.agents/Directional/Architecture_M6_CP3_R8_Boundary_Override_Authority_Spec_Review_Decision.md`.
+Semantic source unchanged at `cdd6dc4a9ba95a42aace6226194b38e712b53e4b`.
+
+### Root-cause state — reframed, not resolved
+
+`RP-01 AUTHORITY_DOMAIN_CONFLATION` is now **missing reconciliation between the accepted
+boundary point and the directed-side carriers**, with two mutually exclusive branches:
+
+- **(a)** the accepted and chart points denote **different source entities or sheets** →
+  the override is invalid upstream and must be rejected;
+- **(b)** they denote the **same** point and only raw face equality is being demanded →
+  the consumer's representation contract is wrong.
+
+**These branches imply opposite repairs**, and nothing yet distinguishes them. **Code
+remains NOT authorized.** `RP-02` **UNREACHED**.
+
+### The overriding face is legitimately derived
+
+Verified at `src/geometry/SurfaceCellTracing.cpp:17117-17118` and `:17139-17140`, in both
+the forward and reverse ordinal loops:
+
+```cpp
+!append_point(*firstParameter,  run.sourceFaces[edgeIndex]) ||
+!append_point(*secondParameter, run.sourceFaces[edgeIndex])
+```
+
+**The accepted boundary point's face comes from `run.sourceFaces[edgeIndex]`, the
+source-edge run's own face — never from a chart selector.** The published face 7 therefore
+carries genuine accepted-conformity source-edge authority; it is not an error value. Three
+rungs were spent suspecting the chart selector, which was looking at the wrong object.
+
+The authority is structural, not merely point-level: at `:17204-17215` the grid interval
+counts come from `acceptedBoundary[side].intervals.size()`, with
+`bottom != top || right != left` rejected — **the accepted boundary sizes the producer's
+lattice before any sampling happens**. The flags behave as specified:
+`useAcceptedConformity = hasTopologyPlan && hasBaselinePlan` (`:14993`) while
+`useAcceptedCutDomain = useAcceptedConformity && regionHasHardFeature` (`:14998`) — **not
+coextensive**.
+
+Correctly **not** claimed: that the accepted `.face` must equal the chart sample's, be the
+unique incident face, or be correct for both directed-side carriers. And the caution never
+to replace `.face` without transporting barycentrics is right — a face-relative coordinate
+is meaningless against a different face.
+
+### RA-74.1 is narrowed by the turn's own observation
+
+The override guard `v == 0 || u == gridU || v == gridV || u == 0` selects **every**
+grid-boundary node and knows nothing about the cohorts. The specification adds what this
+reviewer missed: **an unchanged `FirstTo` face 0 may also have been replaced** — the
+measurement cannot distinguish "the override did not fire" from "the override fired and
+produced the same face." **RA-74.1 is narrowed: what is measured is that at `SecondFrom`
+the published face differs from the sample, not that the override is junction-specific.**
+
+### Charge — the cohort "discrepancy" is one population in four index domains
+
+The specification reports 27 control occurrences against "the older R5 controls numbered
+23" and infers that cross-vintage identity mapping is needed. Recomputed from
+`producer-presnap-candidates.tsv`:
+
+| count | domain |
+|---:|---|
+| **54** | control **endpoint records** (two per occurrence) |
+| **27** | control **occurrences** |
+| **23** | control **ledger entries** (21 singles + 2 entries emitting 3× each) |
+| **22** | control **distinct identity strings** (one entry is a deliberate duplicate) |
+
+Measured directly: 54 rows, 22 distinct identities, per-identity multiplicity
+`{2: 21, 12: 1}` — the twelve being the duplicated identity emitting three times across two
+ledger entries. The duplication is deliberate and documented in the agent's own commit
+`c4da30a37` ("preserve intentional **duplicate** TB identity"). So 23 and 27 are **the same
+population counted in two index domains**; no mapping is required. **RA-67.13 recurring a
+third time** (derived RA-67.5, charged RA-70.8, charged again here). The derived caution —
+"do not code to these cohort counts" — **survives**, because the other ground is sound: the
+override state at the control nodes was never measured (RA-74.7).
+
+### Q3 and Q4 — what the specification delivered
+
+It declines to name a single owning authority **with a reason**: accepted conformity owns
+the published source-edge point and its face-relative location, chart sampling owns interior
+samples and the preliminary competing representation at a boundary, and **neither face is a
+unique directed-side carrier certificate**. That is consistent with RA-72.4 — a single
+corner face cannot be authoritative for both the incoming and outgoing side, so the question
+as posed is malformed. An inadmissible answer is a result (RA-68.12), and this one is
+argued, not dodged. The cited side paths carry the needed material:
+`cell.boundaryPaths[side]` is built by `bounded_disk_chart_segment` at `:17383-17390`, and
+`SurfaceTraceSegment` (`include/directional/geometry/SurfaceCellTracing.h:1211-1232`)
+carries `face`, both barycentrics, `sourceChart` and a typed `entryRoute`.
+
+Q4 is a proper admissibility table: two **admissible shapes only**, one **relocation only**
+under RA-72.5 (raw face equality rejects the same 21 earlier and creates no successful
+cell), three forbidden including an invented vertex-star route, refused under RA-65.5 with
+gate C suspended; seven falsifiers F1–F7 stated, none claimed executed.
+
+### Credits and provenance
+
+**Both RA-74 charges absorbed in one rung:** `ledgers --base 298b6779d` passes clean over
+the agent's range — the ledger was prepended, not overwritten — and `ORIENTATION.md` was
+written after two consecutive omissions. Beacon `COMPLETE` with a named Successor, not
+self-referential. **`RP-03` satisfied an eleventh consecutive turn**, by correcting the
+reviewer on the override's scope. Snapshot run `38868534647` `conclusion=success` at
+`e8db3859b`; artifact `12032341939` digest `ae817b332a1f…` matches;
+`src`/`include`/`tests` **tree-identical at `e8db3859b`, `cdd6dc4a9` and `HEAD`**.
+Documents only. **Note:** `Regression_Root_Cause_Tracker.md` was not written by rung 16
+though rungs 10 and 11 wrote it; not charged, recorded so the pattern does not drift.
+
+### Lesson
+
+**RA-75.10 — when a specification offers two branches with opposite repairs, the next rung
+measures the discriminator, not the branches.** Specifying both and picking later is the
+expensive path; measuring the one fact that eliminates a branch is the cheap one.
+
+### Accounting
+
+Ledger **66/17/49**, debt **1**, CP2 **491/491** accepted, R3 **403/497** rejected, frozen
+selector **497** — unchanged. No promotion, no stable event, no regression recurrence, no
+ledger recomputation, no 497 execution, no benchmark, no binary executed by this Review.
+`R4-VIN-01` remains armed at `cdd6dc4a9`; every earlier artifact through `12028682600`,
+`12030150301` and `12032341939` is a **baseline, never a comparand**. `PROCESS-01`
+discharged. RA-61.9 WITHDRAWN, final. RA-64.6 WITHDRAWN, final. RA-70.14 WITHDRAWN.
+RA-72.8 WITHDRAWN. RA-71.5 AMENDED. RA-73.5 SUPERSEDED. **RA-74.1 NARROWED.** Gate C
+SUSPENDED and moot for `RP-01`. The historical `ledgers` failure at `b2b6e6541` remains
+permanent for any earlier base, is correct, and must not be suppressed. Successor
+**`M6-CP3-CB8-R8-SOURCE-ENTITY-EQUIVALENCE-PROBE`** (rung 17, compile-only: whether the
+override fired, and the exact source entity of both the chart sample and the accepted
+point).
+
+---
+
 ## 2026-10-16 — the face selector is innocent: the sampled point is replaced wholesale by the accepted conformity boundary, unreconciled (RA-74; RA-71.5 amended, RA-73.5 superseded)
 
 **Review:** `M6-CP3-R7-LATTICE-UV-CANDIDATE-REV`, adjudicating rungs 14 and 15 —
