@@ -1,3 +1,13 @@
+## CURRENT — 2026-10-16 TB7 original producer-UV harvest completed; independent Review required
+
+`M6-CP3-TB7-R7-LATTICE-UV-CANDIDATE-HARVEST` is **artifact-only complete**. Exact CB7 source `cdd6dc4a9ba95a42aace6226194b38e712b53e4b`, immutable compile artifact `12028682600` (SHA-256 `54b7f5a73ae7a041491fddef64807f71a9ac49f42c1508cea0ce64dfe61095d9`), TB workflow [38861867717](https://github.com/akashskypatel/Directional/actions/runs/38861867717), result artifact `12030150301` verified ZIP SHA-256 `de79aed888a2037ef2b2582fbfe68b28589a6a718c5beb70ac3b9bbfee16f9e6`. 44/44 selected, 44 existing candidate RED, 0 missing, 96 producer endpoint records, zero parser errors, immutable before/after, compile/relink/benchmark/selector497 all false. Report: `.agents/Directional/Architecture_M6_CP3_R7_Lattice_UV_Candidate_Harvest_TB_Report_20261016.md`.
+
+**Decisive answer:** all 42 ambiguous junction endpoints initially sampled the minimum admissible face. In 21 `FirstTo` endpoints, sample/published = 0 from {0,1,4}; in 21 `SecondFrom`, sampled = 3 but published = 7 from {3,6,7}. The bounded-disk producer independently overrides the original chart-selected point with an accepted conforming boundary point **after** sampling. Thus the published mismatch does not establish that the initial face-selection rule chooses the largest. A2b endpoint/carrier authority of this override is **not adjudicated**, and the 27 control occurrences yield 54 explicitly absent ambiguous-sample records. The prior RA-73 post-snap asymmetry is explained as a sampling-versus-publication distinction, subject to independent Review.
+
+No repair code, test/fixture, selector, ABI, benchmark or build changes in TB7. Frozen ledger 66/17/49, debt 1, CP2 491/491, R3 403/497, selector 497 unchanged; `RP-02` UNREACHED. **Next: independent R7 Review (turn ID not yet established); do not start any proposed repair until authorized.** PR #8 remains draft/unmerged.
+
+---
+
 ## CURRENT — 2026-10-16 CB7 pre-snap lattice UV probe code/compile boundary complete; TB7 separately authorized next
 
 **Supersedes the RA-73 CURRENT section below; RA-73 remains the frozen architecture authority.** Completed `M6-CP3-CB7-R7-LATTICE-UV-CANDIDATE-PROBE`: code `cdd6dc4a9ba95a42aace6226194b38e712b53e4b` touches only `src/geometry/SurfaceCellTracing.cpp` (+123 diagnostic-only lines), recording pre-snap producer UV and raw per-face barycentrics/containment for the rejected endpoints; it does **not** change selection or admission. Exact patch and immutable apply workflow evidence are recorded in `.agents/Directional/Architecture_M6_CP3_R7_Lattice_UV_Candidate_Probe_Code_Build_Record_20261016.md`.
