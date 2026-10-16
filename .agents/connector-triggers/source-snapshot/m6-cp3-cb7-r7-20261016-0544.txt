@@ -1,0 +1,2 @@
+M6-CP3-CB7-R7-LATTICE-UV-CANDIDATE-PROBE
+source entry beacon commit: f6cb5c2dd73d957ba6e14cfd42b38cd14212dfb6
