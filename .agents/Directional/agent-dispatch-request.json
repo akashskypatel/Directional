@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb5-r5-route-path-harvest-20261016a",
+  "request_id": "m6-cp3-tb5-r5-route-path-harvest-20261016b",
   "operation": "test_benchmark",
   "mailbox_key": "m6-cp3-tb5-r5-route-path-harvest",
-  "executor_sha": "52149a1d439b0dd744584ed384c2ea898ab5c8aa",
+  "executor_sha": "c46615bccdbc490040ef77449f20f897043e4d1f",
   "semantic_source_sha": "a143af264bc8b33f0e1b2f8def16b2479b53d5fc",
   "turn_id": "M6-CP3-TB5-R5-ROUTE-PATH-RECONCILIATION-HARVEST",
   "harness_path": ".agents/Directional/tools/m6_cp3_r5_route_path_harvest_harness.sh",
-  "harness_sha256": "798c0c81fa6b7711fc6114fef6c3917d37582fe259ad9308d83323940534e6fa",
+  "harness_sha256": "64a6bb67a02ec425b8ea084ddebe3b5c0a19b14eb2b039fa6fe38987b4a3b72f",
   "environment": {},
   "artifact_prefix": "m6-cp3-tb5-route-path-reconciliation",
   "retention_days": 14
