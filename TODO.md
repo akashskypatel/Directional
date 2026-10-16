@@ -1,3 +1,39 @@
+## CURRENT — RA-72 frozen; repair shape passes the producer test, premise unverified; RA-71.6 amended; next rung is a probe, not code (2026-10-16)
+
+### Turn sequence (byte-derived from `STATUS` history; frozen clauses in `Architecture_M6_Frozen_Definitions.md`)
+
+| # | Turn | Kind | Review | Outcome |
+|---:|---|---|---|---|
+| 1 | `M6-CP3-CB2-R4-PREDICATE-SEPARATION` | Code + Build | RA-63 | accepted; probe separated from decision |
+| 2 | `M6-CP3-CB3-R4-LEDGER-CONTENT-FLOOR` | Code + Build | — | tooling floor added to both gates |
+| 3 | `M6-CP3-TB3-R4-PROBE-HARVEST` | Test + Benchmark | RA-64 | accepted; contradicted the reviewer, credited |
+| 4 | `M6-CP3-DEFN-R4-ENDPOINT-AUTHORITY-SPEC` | Definition | RA-65 | accepted w/ amendment; RA-64.6 withdrawn, gate C suspended |
+| 5 | `M6-CP3-CB4-R4-ENDPOINT-CHART-PROBE` | Code + Build | RA-66 | accepted; compile chain closed by bytes |
+| 6 | `M6-CP3-TB4-R4-ENDPOINT-CHART-HARVEST` | Test + Benchmark | RA-67 | accepted; mechanism derived; 44/44 RED |
+| 7 | `M6-CP3-DEFN-R5-JUNCTION-CARRIER-AUTHORITY-SPEC` | Definition | RA-68 | accepted; both repair shapes inadmissible |
+| 8 | `M6-CP3-CB5-R5-ROUTE-PATH-RECONCILIATION-PROBE` | Code + Build | RA-69 | accepted; neutrality structural; chain closed by content |
+| 9 | `M6-CP3-TB5-R5-ROUTE-PATH-RECONCILIATION-HARVEST` | Test + Benchmark | RA-70 | accepted; RA-68.9 CONFIRMED; RP-01 locus localized |
+| 10 | `M6-CP3-DEFN-R6-CORNER-ASSIGNMENT-AUTHORITY-SPEC` | Definition | RA-71 | accepted; falsified the reviewer's prediction AND census; producer named |
+| 11 | `M6-CP3-DEFN-R7-CORNER-FACE-SELECTION-REPAIR-SPEC` | Definition | RA-72 | accepted **with amendment**; passes RA-65.5, **premise unverified**; **RA-71.6 amended** |
+| **12** | **`M6-CP3-CB6-R7-NODE-ADMISSIBLE-FACE-SET-PROBE`** | **Code + Build** | pending | **NEXT — compile-only** |
+| 13 | `M6-CP3-TB6-R7-NODE-ADMISSIBLE-FACE-SET-HARVEST` | Test + Benchmark | pending | artifact-only harvest of rung 12 |
+| 14 | first repair-implementation rung | undetermined | pending | **not authorized**; runs only if rung 13 confirms the premise |
+
+- [x] Rung 11 **ACCEPTED WITH AMENDMENT** (RA-72), two charges. Decision: `.agents/Directional/Architecture_M6_CP3_R7_Corner_Face_Selection_Repair_Spec_Review_Decision.md`.
+- [x] **First repair family to pass the RA-65.5 producer test (RA-72.3).** `SurfaceTraceSegment` (`include/directional/geometry/SurfaceCellTracing.h:1211-1232`) carries `face`, `startBarycentric`, `endBarycentric`, `family`, `sign`, `sourceChart`, a typed `CanonicalRoute entryRoute` and `railId`; `cell.boundaryPaths[side]` is filled at `:13012-13021` **before** `SurfaceFrontEdge` is built at `:13030-13035`.
+- [x] **Per-directed-side is structurally necessary (RA-72.4).** One face per `(u,v)` node at `:12949-12958`, copied to the corner at `:12986-12987` and to the endpoints at `:13033-13035`, while each path is traced independently; a node belongs to up to four cells with incoming and outgoing side incidences. Keep one canonical geometric node, allow several side-occurrence representations.
+- [x] **RA-72.6 AMENDMENT — RA-71.6's "arbitrary iteration order" clause WITHDRAWN.** `:17823` sorts `work.sourceRows` before it is passed as `activeFaces` at `:17887`; `SourceFaceId = SemanticId<...>` has one `std::size_t value_`, `index()` returning it, and `auto operator<=>(...) const = default`; `source_face_row` (`:189-195`) returns `faceId.index()`. So **`activeFaces` is ascending by row** and `point_on_source` first-match = **minimum admissible row**, while `segment_on_source` at `:12124-12130` also takes the **minimum** covering row. **Both rules are the same rule.** Surviving conclusion, on firmer ground: `face_barycentric_from_uv` (`:11450-11474`) is a planar inverse affine map failing only on `|det| <= 1e-18`, so at a shared vertex every incident active face is admissible — the ambiguity is structural, **no epsilon can repair it**, and the choice is still made without reference to the consuming side.
+- [x] **RA-72.8 — the premise fails.** A minimum-row rule **cannot return 7 from a set containing 3**, yet RA-70 measured `toFace=7` and path `{3}` in all 21. So **the two selections draw from different face sets**, and §3.2's `path.back().face` binding would adopt a face the node test never saw. **Do not implement before measuring.**
+- [x] Charges: **RA-72.7** inherited the reviewer's premise instead of re-deriving it (rung 10 refused a census and was credited; rung 11 accepted a mechanism unchecked); **RA-72.9** both mandated gates omitted and the closeout table dropped — escalation on RA-71.9; `ORIENTATION.md` also not updated. Both gates run by this Review, both pass; ORIENTATION currency restored here.
+- [x] Credits: root `CHANGELOG.md` written this turn, correcting RA-71.11 within one rung; **declined to authorize its own code successor** (`Successor: UNKNOWN` with reasoning, the RA-63.13 shape) — **`RP-03` satisfied an eighth consecutive turn**; seven falsifiers F1–F7 stated; disclosed the local snapshot was not a Git clone; rejected sorting `activeFaces` as a general repair (right conclusion, wrong reason — the list is already sorted, and changing it would alter **every** node's corner face).
+- [ ] **Rung 12 — `M6-CP3-CB6-R7-NODE-ADMISSIBLE-FACE-SET-PROBE` (compile-only, rejection-only).** Extend the post-decision probe block at `:19360` to emit, for rejected edges only: (1) the **full** admissible face set at each endpoint node — every active face passing the `point_on_source` containment test, not merely the first; (2) the region's `activeFaces` content as presented to the producer; (3) the side path's covering face set. Decision-neutral by construction; compile and dispatch a package; **do not interpret the fields**.
+- [ ] **Rung 13** harvests those fields and answers the single decisive question: **does the node's admissible set contain the path's face?**
+- [ ] **Rung 14** implements only if rung 13 confirms the premise. **Do not reorder rungs 12-14 and do not pre-empt rung 14.**
+- [ ] Standing: relocation is not repair (RA-72.5); do not touch `tolerance` or any epsilon (RA-72.6); do not sort or reorder `activeFaces`.
+- [ ] Carried: `RP-02` **UNREACHED**. Frozen 66/17/49, debt 1, CP2 491/491, R3 403/497, selector 497. **`R4-VIN-01` armed at `a143af264`** — `11994726341`, `11996317553`, `12005034654`, `12010485442`, `12019178209`, `12021892076` are baselines, never comparands. RA-61.9, RA-64.6 and RA-70.14 withdrawn; **RA-71.6 amended**. Gate C suspended and moot for `RP-01`. `PROCESS-01` discharged.
+
+---
+
 ## CURRENT — R7 definition prepared; independent review required (2026-10-16)
 
 - [x] `M6-CP3-DEFN-R7-CORNER-FACE-SELECTION-REPAIR-SPEC`: source witnesses enumerated; per-node face proven insufficient as a general side authority; source-attested per-directed-side endpoint repair shape and blast radius defined. Report: `.agents/Directional/Architecture_M6_CP3_R7_Corner_Face_Selection_Repair_Specification_20261016.md`.

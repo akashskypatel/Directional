@@ -1,3 +1,60 @@
+## CURRENT — `M6-CP3-DEFN-R7-CORNER-FACE-SELECTION-REPAIR-SPEC-REV`, 2026-10-16: RA-72 frozen; the fix has the right shape, and the reason everyone believed for it turns out to be wrong
+
+**Supersedes the RA-71 paragraph below as the current state.** One turn was adjudicated and it is
+**accepted with an amendment**, carrying two charges. This review also **corrects a clause it froze
+itself one rung earlier**. No open REVIEW_BLOCKER. No promotion, no stable event, no regression
+recurrence, no gate credit.
+
+**§3 current state — the shape of the repair is settled and its justification is not.** The last
+rung asked what a fix would have to be made of. The answer is good: each side of a cell should take
+its endpoint from the path it actually traced, while the cell keeps one shared geometric corner for
+everything else. For the first time in this investigation, every piece of evidence such a fix would
+consume is already produced and published before the thing that consumes it is built, so the standing
+rule that blocked every previous proposal is satisfied. What is not settled is the step in the middle:
+the proposal assumes the path's face is one the corner could legitimately have chosen, and the
+measurement says otherwise.
+
+**§4 runtime witness — none, and the document matched the bytes.** A document turn over source read
+from a verified snapshot, with the three source trees identical at the snapshot, at the commit that
+was compiled, and at the branch head. The turn volunteered that its local copy was not a real clone,
+which is the kind of limitation that is easy to leave out.
+
+**§5 instrument — the correction runs against this reviewer.** One rung ago it was written down that
+the corner's face is whichever triangle happens to come first in a list, implying the order is
+arbitrary. The list is sorted before it is handed over, and the identifier type it holds compares by
+the very number that is the triangle's row, so "first" means "lowest-numbered". The separate rule
+used when tracing a side also picks the lowest-numbered triangle. **Both rules are the same rule**,
+and the earlier description is withdrawn. The part that survives is the important part and is now on
+firmer ground: a point sitting exactly on a shared corner genuinely belongs to every triangle around
+it, the mapping used to test that is an ordinary planar one that only fails on a degenerate triangle,
+so the ambiguity is real and no tolerance change can touch it. But the correction has a sharp
+consequence. If both rules pick the lowest-numbered triangle, then the corner could not have landed
+on a high-numbered one while the path landed on a low-numbered one — unless the two were choosing
+from **different lists**. That is now the open question, and it was invisible while the wrong
+description stood.
+
+**§7 priority — one cheap measurement before any code, for the third time, and for the same reason.**
+The next turn adds a few more fields to the diagnostic that already exists: for a rejected case, every
+triangle the corner test would have accepted, the list the producer was actually given, and the
+triangles the side's path covers. That settles in one run whether the path's triangle was ever
+available to the corner. If it was, the proposed fix is legal and can be written. If it was not, the
+fault lies further upstream in how a region's triangles are assembled, and the shape of the fix
+changes again. Writing the fix first and discovering this afterwards would mean implementing a
+structural change to cell corners on a false premise.
+
+**§8 patterns — the agent checked the reviewer's list last time and the reviewer's reasoning this
+time, and only did one of them.** A rung ago it was handed three suspects, refused them, and found
+the real one — and was credited for it. This time it was handed an explanation of how the faulty
+choice is made, answered three well-posed questions carefully on top of it, and never checked the
+explanation itself, which was wrong. The lesson is now written down: check the ground you are asked to
+build on, not just the thing you are asked to build. Against that, this turn declined to authorize its
+own next step, stated seven ways its own proposal could be wrong, and corrected a bookkeeping
+complaint from the previous review within a single rung. It also dropped both of the verification
+gates it was told to run and report, which is the second rung in a row with that omission and the
+first with no verification table at all.
+
+---
+
 ## CURRENT — `M6-CP3-DEFN-R6-CORNER-ASSIGNMENT-AUTHORITY-SPEC-REV`, 2026-10-16: RA-71 frozen; the culprit is named, and the turn got there by refusing the list it was handed
 
 **Supersedes the RA-69/RA-70 paragraph below as the current state.** One turn was adjudicated and it

@@ -1,3 +1,131 @@
+## RA-72 — frozen definitions, M6 CP3 R7 corner-face selection repair (2026-10-16); RA-71.6 AMENDED
+
+**Authority:** `.agents/Directional/Architecture_M6_CP3_R7_Corner_Face_Selection_Repair_Spec_Review_Decision.md`.
+Adjudicates `M6-CP3-DEFN-R7-CORNER-FACE-SELECTION-REPAIR-SPEC` (rung 11); **ACCEPTED WITH
+AMENDMENT**. Semantic source unchanged at `a143af264bc8b33f0e1b2f8def16b2479b53d5fc`.
+
+- **RA-72.1 Provenance re-derived.** Snapshot run `38843434916` `conclusion=success` at
+  `491914f93`; artifact `12021892076` digest
+  `005211e882847639d563b74650da4f753a5b0023ed599d92520959a0cbf218bc`, matches;
+  `src`/`include`/`tests` **tree-identical at `491914f93`, `a143af264` and `HEAD`**.
+  Documents only. The turn disclosed that the local snapshot was not a Git clone.
+- **RA-72.2 The deliverable is complete.** All three mandated questions answered in order
+  with source citations, plus seven falsifiers (F1–F7) for its own proposal.
+- **RA-72.3 The producer test verdict is substantially right, and this is the FIRST repair
+  family to pass RA-65.5.** Verified: `SurfaceTraceSegment`
+  (`include/directional/geometry/SurfaceCellTracing.h:1211-1232`) carries `int face`,
+  `startBarycentric`, `endBarycentric`, `family`, `sign`,
+  `std::optional<FieldChartId> sourceChart`, a typed `authority::CanonicalRoute entryRoute`
+  and `std::optional<HardRailId> railId`; and `cell.boundaryPaths[side]` is filled by
+  `segment_on_source` at `:13012-13021` **before** `SurfaceFrontEdge` is constructed at
+  `:13030-13035`. A face-valued, barycentric-exact, chart- and route-attributed endpoint
+  **per directed side** is therefore already published before the edges are minted. Every
+  prior repair family failed RA-65.5 for want of a publisher; this one does not.
+- **RA-72.4 Per-directed-side is the correct structural answer.** `point_on_source` chooses
+  one face per `(u,v)` node at `:12949-12958` before any boundary segment exists;
+  `:12986-12987` copies it to the corner; `:13033-13035` copies the corner to the edge
+  endpoints; each of the four directed paths is built independently at `:13012-13021` and
+  may approach a shared node from a different incident triangle. A node belongs to up to
+  four cells, each contributing an incoming and an outgoing side incidence, so **one
+  `SurfaceTracePoint::face` cannot be authoritative for all of them**. Retaining one
+  canonical geometric node while allowing several side-occurrence representations is the
+  right shape; a per-node fix works only under a *proved* special condition.
+- **RA-72.5 Relocation is not repair, and the turn said so.** A literal
+  `corner.face == boundaryPaths[side].front().face` test inside
+  `validate_closed_boundary_paths` would move the measured 7-vs-3 discrepancy to a
+  producer-stage closure rejection and make no cell succeed. The turn also identified,
+  unprompted, that imposing it globally would **over-reject** legitimate adjacent-face
+  representations of a canonical source vertex. **No later rung may count relocation as
+  repair.**
+- **RA-72.6 AMENDMENT — RA-71.6's "arbitrary iteration order" clause is WITHDRAWN; both
+  selectors are minimum-face-row.** Verified chain: `src/geometry/SurfaceCellTracing.cpp:17823`
+  does `std::sort(work.sourceRows.begin(), work.sourceRows.end());` before passing it as
+  `activeFaces` at `:17887`; `using SourceFaceId = SemanticId<detail::SourceFaceTag>` in
+  `include/directional/authority/AuthorityIds.h`, where `SemanticId` holds one
+  `std::size_t value_`, exposes `index()` returning it, and declares
+  `auto operator<=>(const SemanticId &) const = default`; and `source_face_row`
+  (`:189-195`) returns `faceId.index()`. So **`activeFaces` is ascending by face row** and
+  `point_on_source`'s first match is the **minimum admissible face row**. Independently
+  `segment_on_source` selects by `(selectedFace < 0 || interval.face < selectedFace)` at
+  `:12124-12130` — also the **minimum** covering row. **Both disambiguation rules are the
+  same rule.** What survives, on firmer ground: `face_barycentric_from_uv` (`:11450-11474`)
+  is a plain planar inverse affine map through `phase_uv` that fails only when
+  `|determinant| <= 1.0e-18`, so at a UV point lying exactly on a shared source vertex
+  **every incident active face yields a valid barycentric inside tolerance** — the
+  ambiguity is structural, not numerical, **no epsilon change can repair it**, and the
+  selection is still made with no reference to the consuming side. The defect is a
+  **side-independent deterministic rule**, not an arbitrary one.
+- **RA-72.7 CHARGE — the specification inherited the reviewer's premise instead of
+  re-deriving it.** It describes `point_on_source` as returning "the first face in
+  `activeFaces`" in the sense that made RA-71.6 wrong, and labels `segment_on_source`'s
+  midpoint choice "an independently order-sensitive *path-face* tie-break"; both are
+  minimum-row, so its "Limit on determinism" paragraph warns against an asymmetry that does
+  not exist in the form described. **Rung 10 refused a reviewer-supplied census and was
+  credited (RA-71.2, RA-71.3); rung 11 accepted a reviewer-supplied mechanism unchecked.**
+  The obligation runs in both directions.
+- **RA-72.8 The repair contract's central premise is unverified and the measurement runs
+  against it.** Both selectors take the minimum admissible row over a sorted, non-degenerate
+  set, and at a node on a shared vertex every incident active face is admissible, so **a
+  minimum-row rule cannot return 7 from a set containing 3** — yet RA-70 measured
+  `toFace=7` on the corner and `{3}` on that side's path in all 21 junction cases. The only
+  consistent reading is that **the two selections draw from different face sets**: the
+  node-level `activeFaces` for that region must exclude every row below 7 that the side's
+  interval set includes. §3.2's instruction to take `path.back().face/endBarycentric` would
+  therefore bind the corner to a face the **node-level containment test never saw**. That
+  may be the correct repair; the specification does not establish that it is legal and does
+  not notice the tension. **A repair whose premise is contradicted by the measurement it
+  cites must not be implemented before the premise is measured.** This disturbs neither
+  RA-71.5, RA-71.7, RA-72.3 nor RA-72.4 — only the step assuming the path's face is
+  available to the corner.
+- **RA-72.9 CHARGE — both mandated gates omitted and the closeout table dropped.** RA-71.9
+  charged the omission of `ledgers` one rung ago from a table that at least reported
+  `boundary`; this rung reports **neither**, and the duty table is gone. Escalation, not
+  repetition. Both gates were run by this Review and both pass. Also dropped:
+  **`ORIENTATION.md` was not updated**, though both preceding Definition turns updated it,
+  leaving it describing RA-71 as current while `STATUS` recorded rung 11 complete; this
+  Review restores currency.
+- **RA-72.10 Credits.** **Root `CHANGELOG.md` was written this turn**, correcting the
+  RA-71.11 guidance within one rung. It **declined to authorize its own code successor**
+  ("No code implementation is authorized by this record alone") and left
+  `Successor: UNKNOWN` with reasoning in the owning document, the RA-63.13 shape —
+  **`RP-03` satisfied an eighth consecutive turn**. It rejected sorting `activeFaces` as a
+  general repair, the right conclusion for a reason that turns out to be wrong since the
+  list is already sorted; the conclusion is in fact **stronger** than argued, because
+  changing that order would alter the corner face of **every** node in the pipeline.
+- **RA-72.11 LESSON — re-derive the premise you were handed, not only the question.** A
+  specification inherits the reviewer's premises unless it re-derives them. Rung 10 showed
+  the correct behaviour by refusing a census; rung 11 answered three well-posed questions on
+  top of a mechanism it never checked, and the mechanism was wrong. **Check the ground you
+  are asked to build on, not just the thing you are asked to build.**
+- **RA-72.12 `RP-01` state.** Repair **shape admissible** — per-directed-side endpoint
+  binding with the canonical geometric node retained. Repair **premise unverified** — the
+  node's admissible face set at the failing corner has never been observed, and minimum-row
+  selection implies it differs from the side's covering set. **Code remains NOT
+  authorized.** `RP-02` **UNREACHED**.
+
+### Rung 12 scope — `M6-CP3-CB6-R7-NODE-ADMISSIBLE-FACE-SET-PROBE`, compile-only
+
+Rejection-only, in the rung 8–9 pattern. Extend the post-decision probe block at `:19360`
+to emit, for a rejected edge only: (1) the **full** admissible face set at each endpoint
+node — every active face passing the `point_on_source` containment test, not merely the
+first; (2) the region's `activeFaces` content as actually presented to the producer; (3)
+the side path's covering face set, for direct comparison. Dispatch a compile package and
+stop. Rung 13 harvests; rung 14 implements only if the premise holds. **The single
+decisive question: does the node's admissible set contain the path's face?** If yes, the
+§3.2 binding is legal. If no, the defect is upstream in region face membership and the
+repair shape changes again.
+
+### Accounting
+
+Ledger **66/17/49**, debt **1**, CP2 **491/491**, R3 **403/497**, frozen selector **497** —
+unchanged. `R4-VIN-01` remains armed at `a143af264`; artifacts `11994726341`,
+`11996317553`, `12005034654`, `12010485442`, `12019178209` and `12021892076` are
+**baselines, never comparands**. **RA-61.9 WITHDRAWN, final. RA-64.6 WITHDRAWN, final.
+RA-70.14 WITHDRAWN. RA-71.6 AMENDED. Gate C SUSPENDED and moot for `RP-01`.**
+`PROCESS-01` discharged.
+
+---
+
 ## RA-71 — frozen definitions, M6 CP3 R6 corner-assignment authority (2026-10-16)
 
 **Authority:** `.agents/Directional/Architecture_M6_CP3_R6_Corner_Assignment_Authority_Spec_Review_Decision.md`.

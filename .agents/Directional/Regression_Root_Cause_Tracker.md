@@ -1,3 +1,134 @@
+## 2026-10-16 — RP-01's repair shape is admissible but its premise is not: both face selectors are minimum-row, so the measured 7-vs-3 cannot be a tie-break (RA-72; RA-71.6 amended)
+
+**Review:** `M6-CP3-DEFN-R7-CORNER-FACE-SELECTION-REPAIR-SPEC-REV`, adjudicating rung 11 —
+`M6-CP3-DEFN-R7-CORNER-FACE-SELECTION-REPAIR-SPEC`. **ACCEPTED WITH AMENDMENT**, two
+charges. Decision:
+`.agents/Directional/Architecture_M6_CP3_R7_Corner_Face_Selection_Repair_Spec_Review_Decision.md`.
+Semantic source unchanged at `a143af264bc8b33f0e1b2f8def16b2479b53d5fc`.
+
+### Root-cause state change
+
+`RP-01 AUTHORITY_DOMAIN_CONFLATION`: repair **shape admissible**, repair **premise
+unverified**. **Code remains NOT authorized.**
+
+- **Shape (admissible):** per-directed-side endpoint binding — each side's endpoint
+  representation taken from its own traced path, with one canonical geometric lattice node
+  retained for geometry, adjacency, lattice coordinates and topology.
+- **Premise (unverified, and the evidence runs against it):** that the path's face is
+  admissible at the node. See the amendment below.
+
+### AMENDMENT — RA-71.6's "arbitrary iteration order" clause is WITHDRAWN
+
+Verified chain, from bytes:
+
+| step | anchor | content |
+|---|---|---|
+| the list is sorted | `src/geometry/SurfaceCellTracing.cpp:17823` | `std::sort(work.sourceRows.begin(), work.sourceRows.end());` before it is passed as `activeFaces` at `:17887` |
+| the sort key is the row | `include/directional/authority/AuthorityIds.h` | `using SourceFaceId = SemanticId<detail::SourceFaceTag>`; `SemanticId` holds one `std::size_t value_`, exposes `index()`, and declares `auto operator<=>(const SemanticId &) const = default` |
+| the row *is* the index | `SurfaceCellTracing.cpp:189-195` | `source_face_row` returns `faceId.index()` |
+
+So **`activeFaces` is ascending by face row** and `point_on_source`'s first match is the
+**minimum admissible face row**. Independently, `segment_on_source` selects by
+`(selectedFace < 0 || interval.face < selectedFace)` at `:12124-12130` — also the
+**minimum** covering row. **Both disambiguation rules are the same rule.**
+
+RA-71.6's operative conclusion survives on firmer ground: `face_barycentric_from_uv`
+(`:11450-11474`) is a plain planar inverse affine map through `phase_uv`, failing only when
+`|determinant| <= 1.0e-18`, so at a UV point lying exactly on a shared source vertex
+**every incident active face yields a valid barycentric inside tolerance**. The ambiguity
+is structural, not numerical; **no epsilon change can repair it**; and the selection is
+still made with no reference to the consuming side. The defect is a **side-independent
+deterministic rule**, not an arbitrary one.
+
+### The consequence — the measured discrepancy is not a tie-break
+
+A minimum-row rule **cannot return 7 from a set containing 3**. Yet RA-70 measured, in all
+21 junction cases, `toFace=7` on the corner and `{3}` on that side's traced path. The only
+consistent reading is that **the two selections draw from different face sets**: the
+node-level `activeFaces` for that region must exclude every row below 7 that the side's
+interval set includes.
+
+The R7 contract's §3.2 instructs that the endpoint be taken as
+`path.back().face/endBarycentric`. On current evidence that binds the corner to a face the
+**node-level containment test never saw**. That may still be the correct repair; it is not
+yet shown to be legal. **A repair whose premise is contradicted by the measurement it
+cites must not be implemented before the premise is measured.** This disturbs neither
+RA-71.5 (the locus), RA-71.7 (the blind reconciler), RA-72.3 (the producer test) nor
+RA-72.4 (per-directed-side) — only the step assuming the path's face is available to the
+corner.
+
+### What the turn got right
+
+**The first repair family to pass the RA-65.5 producer test.** Verified:
+`SurfaceTraceSegment` (`include/directional/geometry/SurfaceCellTracing.h:1211-1232`)
+carries `int face`, `startBarycentric`, `endBarycentric`, `family`, `sign`,
+`std::optional<FieldChartId> sourceChart`, a typed `authority::CanonicalRoute entryRoute`
+and `std::optional<HardRailId> railId`; and `cell.boundaryPaths[side]` is filled by
+`segment_on_source` at `:13012-13021` **before** `SurfaceFrontEdge` is constructed at
+`:13030-13035`. A face-valued, barycentric-exact, chart- and route-attributed endpoint
+**per directed side** is already published before the edges are minted. Every prior repair
+family failed RA-65.5 for want of a publisher.
+
+**Per-directed-side is structurally necessary.** One face per `(u,v)` node is chosen at
+`:12949-12958` before any boundary segment exists; a node belongs to up to four cells,
+each with an incoming and an outgoing side incidence, and each path is traced
+independently at `:13012-13021`. One `SurfaceTracePoint::face` cannot be authoritative for
+all of them.
+
+**Relocation is not repair, and the turn said so.** A face-identity test inside
+`validate_closed_boundary_paths` would move the discrepancy to a producer-stage closure
+rejection and make no cell succeed; the turn also noted, unprompted, that imposing it
+globally would **over-reject** legitimate adjacent-face representations of a canonical
+source vertex.
+
+### Charges
+
+- **RA-72.7** the specification inherited the reviewer's premise instead of re-deriving it.
+  It describes `point_on_source` as returning "the first face in `activeFaces`" in the
+  sense that made RA-71.6 wrong, and labels `segment_on_source`'s midpoint choice
+  "independently order-sensitive"; both are minimum-row. **Rung 10 refused a
+  reviewer-supplied census and was credited; rung 11 accepted a reviewer-supplied mechanism
+  unchecked.**
+- **RA-72.9** both mandated gates omitted and the closeout table dropped. RA-71.9 charged
+  the `ledgers` omission one rung ago from a table that at least reported `boundary`; this
+  rung reports **neither**. Escalation, not repetition. Both gates run by this Review, both
+  pass. `ORIENTATION.md` also not updated, leaving it describing RA-71 as current while
+  `STATUS` recorded rung 11 complete; this Review restores currency.
+
+### Credits
+
+**Root `CHANGELOG.md` was written this turn**, correcting the RA-71.11 guidance within one
+rung. It **declined to authorize its own code successor** and left `Successor: UNKNOWN`
+with reasoning in the owning document, the RA-63.13 shape — **`RP-03` satisfied an eighth
+consecutive turn**. It stated seven falsifiers (F1–F7) for its own proposal, disclosed that
+the local snapshot was not a Git clone, and rejected sorting `activeFaces` as a general
+repair — the right conclusion, for a reason that turns out to be wrong since the list is
+already sorted, and in fact **stronger** than argued because changing that order would
+alter the corner face of **every** node in the pipeline.
+
+### Provenance
+
+Snapshot run `38843434916` `conclusion=success` at `491914f93`; artifact `12021892076`
+digest `005211e882847639d563b74650da4f753a5b0023ed599d92520959a0cbf218bc`, matches;
+`src`/`include`/`tests` **tree-identical at `491914f93`, `a143af264` and `HEAD`**, so the
+specification read exactly the bytes compiled at rung 8 and measured at rung 9. Documents
+only.
+
+### Accounting
+
+Ledger **66/17/49**, debt **1**, CP2 **491/491** accepted, R3 **403/497** rejected, frozen
+selector **497** — unchanged. No promotion, no stable event, no regression recurrence, no
+ledger recomputation, no 497 execution, no benchmark, no binary executed. `R4-VIN-01`
+remains armed at `a143af264`; artifacts `11994726341`, `11996317553`, `12005034654`,
+`12010485442`, `12019178209` and `12021892076` are **baselines, never comparands**.
+`RP-02` **UNREACHED**. `PROCESS-01` discharged. RA-61.9 WITHDRAWN, final. RA-64.6
+WITHDRAWN, final. RA-70.14 WITHDRAWN. **RA-71.6 AMENDED.** Gate C SUSPENDED and moot for
+`RP-01`. Successor **`M6-CP3-CB6-R7-NODE-ADMISSIBLE-FACE-SET-PROBE`** (rung 12,
+compile-only: emit the node's full admissible face set, the region's `activeFaces`, and the
+side path's covering set).
+
+---
+
 ## 2026-10-16 — R7 RP-01 candidate repair boundary (definition only; non-stable)
 
 Exact static source evidence identifies the planar node-wide face choice versus directed-side boundary-path face divergence. R7 proposes per-directed-side source-attested endpoint binding using already published `SurfaceTraceSegment` endpoints, without relaxing A3/A4 or changing the canonical geometric lattice node. This **does not close `RP-01`**, establish unique carrier acceptance, or change the `R4-VIN-01` baseline/44 RED. Independent Review must settle the listed source-route, reciprocal ownership and row-order falsifiers before code is authorized. See `.agents/Directional/Architecture_M6_CP3_R7_Corner_Face_Selection_Repair_Specification_20261016.md`. Stable ledger 66/17/49, debt1; RP-02 unreached; selector 497 unchanged.
