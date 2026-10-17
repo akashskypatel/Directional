@@ -1,0 +1,2 @@
+Purpose: exact-current-authority post-prework snapshot for M6-CP3 R10 documents-only continuation.
+No compile, tests, benchmarks, or product changes.
