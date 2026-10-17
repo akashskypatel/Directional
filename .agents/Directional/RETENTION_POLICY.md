@@ -1,5 +1,7 @@
 # Retention Policy
 
+> This file requires EXPLICIT USER AUTHORIZATION to modify or delete. Any modifications or deletions must be reverted during documentation drift audit unless explicitly approved by the user.
+
 ## Purpose
 
 Define which project records are durable, which turn records may be retired, and the authorization required before durable information may be removed, weakened, consolidated, or replaced. This policy is maintained separately from `Future_Chat_Session_Handoff.md`.

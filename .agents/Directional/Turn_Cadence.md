@@ -1,5 +1,7 @@
 # Turn Cadence — DURABLE, DO NOT DELETE
 
+> This file requires EXPLICIT USER AUTHORIZATION to modify or delete. Any modifications or deletions must be reverted during documentation drift audit unless explicitly approved by the user.
+
 **Authorized by the user on 2026-08-25 and binding for all future work.**
 
 ```

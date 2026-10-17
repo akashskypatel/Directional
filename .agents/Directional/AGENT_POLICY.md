@@ -1,5 +1,7 @@
 # Agent Policy
 
+> This file requires EXPLICIT USER AUTHORIZATION to modify or delete. Any modifications or deletions must be reverted during documentation drift audit unless explicitly approved by the user.
+
 Except for the same-agent REVIEW/DEFN authorization below, this policy does not apply to `ChatGPT Web` sessions.
 
 ## Same-agent REVIEW and DEFN authorization — DURABLE, DO NOT DELETE

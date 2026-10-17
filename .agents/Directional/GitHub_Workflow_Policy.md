@@ -1,5 +1,7 @@
 # `[ChatGPT Web]` GitHub Workflow Policy
 
+> This file requires EXPLICIT USER AUTHORIZATION to modify or delete. Any modifications or deletions must be reverted during documentation drift audit unless explicitly approved by the user.
+
 ## Purpose
 
 GitHub is the control plane; GitHub Actions is the bounded remote execution plane for computation the connector cannot perform. The turn-based cadence remains authoritative. Actions never relax Code + Build, Test + Benchmark, or Review boundaries.

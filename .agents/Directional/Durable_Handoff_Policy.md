@@ -1,5 +1,7 @@
 # Durable handoff policy — DURABLE, DO NOT DELETE
 
+> This file requires EXPLICIT USER AUTHORIZATION to modify or delete. Any modifications or deletions must be reverted during documentation drift audit unless explicitly approved by the user.
+
 At the end of every turn:
 
 1. replace stale next-turn/status text instead of appending chronological narrative;

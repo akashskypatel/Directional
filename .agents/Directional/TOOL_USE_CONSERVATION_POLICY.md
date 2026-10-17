@@ -1,5 +1,7 @@
 # `[ChatGPT Web]` Agent Tool Use Conservation Policy
 
+> This file requires EXPLICIT USER AUTHORIZATION to modify or delete. Any modifications or deletions must be reverted during documentation drift audit unless explicitly approved by the user.
+
 ## Status — DURABLE, DO NOT DELETE
 
 This document is durable project authority under `RETENTION_POLICY.md`. It defines the mandatory strategy for minimizing GitHub connector, workflow-observation, artifact, and repository-maintenance tool calls without weakening source authority, turn boundaries, evidence requirements, or cleanup safety.

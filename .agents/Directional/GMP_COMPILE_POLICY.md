@@ -1,5 +1,7 @@
 # GMP Compile Policy
 
+> This file requires EXPLICIT USER AUTHORIZATION to modify or delete. Any modifications or deletions must be reverted during documentation drift audit unless explicitly approved by the user.
+
 ## Status — DURABLE, MANDATORY, DO NOT DELETE
 
 This is repository-wide compile authority for Directional. It applies to **every future compile**, regardless of agent, host, IDE, CI provider, or build entry point. It may be strengthened or corrected, but it must not be weakened, bypassed, or removed without explicit user authorization.

@@ -1,5 +1,7 @@
 # Review Turn Policy — DURABLE, DO NOT DELETE
 
+> This file requires EXPLICIT USER AUTHORIZATION to modify or delete. Any modifications or deletions must be reverted during documentation drift audit unless explicitly approved by the user.
+
 **Authoritative for every REVIEW, REVIEW + PLAN, TB-REVIEW, CB-REVIEW and DEFN turn, including delegated
 ones and same-agent reviews authorized by `AGENT_POLICY.md`.** Where another document lists review duties,
 this one is the superset and governs; `ORIENTATION.md`'s durable header remains binding and is reproduced
