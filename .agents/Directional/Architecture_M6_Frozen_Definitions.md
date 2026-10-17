@@ -1,6 +1,17 @@
+## RA-83 — R10A census accepted; I–I asymmetry corrected; open-rail chain dropped by projection (2026-10-17)
+
+Authority: `Architecture_M6_CP3_R10A_Witness_Census_Review_Decision.md`.
+
+- **RA-83.1** R10A accepted as facts; RA-82.4 confirmed. The verifier seeds star incidence only for published contact endpoints (`SurfaceCellTracing.cpp:8495-8519`), so an R vertex gets `Invalid` from `unique_terminal_star_path` before any search.
+- **RA-83.2** The I–I asymmetry is sequenced: the consumer has no route-level terminal requirement up to the certificate push (`:20243-20245`); publication (`:12858` → `SurfacePhaseFrontProduct::make`) rejects it at `:8603-8614`.
+- **RA-83.3** The ordered open-rail chain (`SurfaceCellRail::sourceVertices`, built by `build_authoritative_surface_cell_rails` before tracing) already reaches the consumer whole as `SurfaceCellTracingOptions::authoritativeRails` (`RemeshPipeline.cpp:12476`; `SurfaceCellTracing.cpp:19059`), unused by the endpoint checker. The verifier receives only `hard_rail_source_provenance_from_rails`'s projection (`SurfaceCellTracing.cpp:12858-12869`), which keeps closed chains (`RemeshPipeline.cpp:9741-9754`) but only the two ends of an open rail (`:9756-9765`). The absence is a plumbing loss at the verifier boundary (RA-72.5 relocation question), not a missing producer.
+- **RA-83.4** R10B must state one rule for both verifier layers and both checkers, leave no consumer/verifier disagreement on the six shapes T–T, T–I, I–I, T–R, I–R, R–R, cite an independent witness for every clause, classify any new published chain against RA-78.4/gate C, and keep T–T, T–I and the forged-terminal tamper unchanged.
+
+---
+
 ## RA-82 — R10 pre-work verified; history gates belong to Review; R10 split (2026-10-17)
 
-Authority: `Architecture_M6_CP3_R10_Prework_Verification_Review_Decision.md`.
+Authority: `Architecture_M6_CP3_R10_Prework_Verification_Review_Decision.md` (folded into `M6_Consolidated_Record.md`; text in git history).
 
 - **RA-82.1** Pre-work `0660af9d1` accepted on a full clone: `review_check.py boundary` and `ledgers --base 8b7299b43` pass; drift audit 0 errors; the changelog move lost no identifier (433/433). RA-81.2's expected-failure exception is retired: every check must now pass.
 - **RA-82.2** Known limits of the re-baselined tool (heading-level, line-count, committed-only checks) are accepted; the Review Agent covers them by reading each turn's diff.
@@ -12,7 +23,7 @@ Authority: `Architecture_M6_CP3_R10_Prework_Verification_Review_Decision.md`.
 
 ## RA-81 — open-rail interior-vertex coverage gap (2026-10-17)
 
-Authority: `Architecture_M6_CP3_R9_Carrier_Endpoint_Subcondition_Review_Decision.md`.
+Authority: `Architecture_M6_CP3_R9_Carrier_Endpoint_Subcondition_Review_Decision.md` (folded into `M6_Consolidated_Record.md`; text in git history).
 
 - **RA-81.1** The RA-79 V/I/C endpoint contract is **incomplete**. An endpoint at an interior vertex of an open rail (fixture rail `1–4–7`, vertex `4`) is admitted by no branch: V needs a rail terminal, I's `interior_carrier_parameter` (`SurfaceCellTracing.cpp:64-90`) requires `0 < t < 1`, C is closed-rail only. RA-80.7 confirmed: carrier-edge membership 21/21, terminal-contact membership 0/21.
 - **RA-81.2** The legacy `review_check.py` high-water/append-only rules conflict with the user-authorized rewrite of the handoff, ORIENTATION and tracker; classified for human review under `DOCUMENT_DRIFT_AUDIT_POLICY.md` §2.4. The resulting `boundary` floor failures for those three documents, and `ledgers` shrink reports from in-place handoff replacement, are expected and do not block a turn; all other checks must pass.

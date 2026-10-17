@@ -1,3 +1,9 @@
+## 2026-10-17 — RA-83: R10A witness census reviewed; interior-rail-vertex rule next
+
+- R10A accepted as facts on a full clone (`boundary`, `ledgers` pass; drift audit 0 errors). Two-layer verifier rejection confirmed; star incidence is seeded only for published terminals.
+- Correction: the consumer has no route-level terminal requirement, so it certifies I–I fronts that publication rejects. Sharpened: the ordered open-rail chain reaches the consumer (`SurfaceCellTracingOptions::authoritativeRails`, unused) but not the verifier.
+- RA-81 and RA-82 review records folded into `M6_Consolidated_Record.md`. No code, test or selector change. Next: `M6-CP3-DEFN-R10B-RAIL-INTERIOR-VERTEX-ENDPOINT-RULE`. Record: `.agents/Directional/Architecture_M6_CP3_R10A_Witness_Census_Review_Decision.md`.
+
 ## 2026-10-17 — R10A static rail-interior-vertex witness census
 
 - Source `9c4da0f1d0b4205e1fb952df50175575636eed23`; author two source-line-backed tables (T/R/I endpoint outcomes and independent witnesses), plus a conditional two-hard-spoke star-path answer: `.agents/Directional/Architecture_M6_CP3_R10A_Rail_Interior_Vertex_Witness_Census_20261017.md`. Source snapshot workflow 39076035316, artifact 12116838793, SHA-256 `bdcffaefc141d2f6e58dac7f81d29bc1733cb8a599d44f8fc5b56a7fad24d3c0`; 5646/5646 source hashes verified. No-base drift audit: 0 error(s), 0 warning(s). Git-history gates deferred to Review (RA-82.3); no code, tests, compilation, selector or stable counts altered. Next `M6-CP3-DEFN-R10A-RAIL-INTERIOR-VERTEX-WITNESS-CENSUS-REV`.

@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-17 · M6-CP3 R10 pre-work verified (RA-82); census of the interior-rail-vertex case next.  
+**Currency:** 2026-10-17 · M6-CP3 interior-rail-vertex census reviewed (RA-83); the rule is defined next.  
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,7 +50,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Latest focused evidence (TB10, reviewed 2026-10-17):** 44/44 diagnostic executions were RED, with no acceptance credit. In the 21 relevant observations the failing corner sits on an **interior vertex of an open rail** — on the carrier's edge (21/21) but never a rail end (0/21). The proposed endpoint contract covers rail ends, points part-way along an edge, and closed rails, but has **no case for a rail's interior vertex**. The checker that verifies finished products also requires every front on an open rail to touch a rail end, so the middle front of a longer rail would still fail. Both points are being written down as facts first, then a rule, before any code. **CP3 has not been promoted.**
+**Latest focused evidence (TB10, reviewed 2026-10-17):** 44/44 diagnostic executions were RED, with no acceptance credit. In the 21 relevant observations the failing corner sits on an **interior vertex of an open rail** — on the carrier's edge (21/21) but never a rail end (0/21). The proposed endpoint contract covers rail ends, points part-way along an edge, and closed rails, but has **no case for a rail's interior vertex**. The checker that verifies finished products also requires every front on an open rail to touch a rail end, so the middle front of a longer rail would still fail. A source-only census has confirmed both points. The rail's full vertex order is already available to the first checker but not to the verifier. The rule is written next, before any code. **CP3 has not been promoted.**
 
 Stable accounting reported with that evidence: **66 events / 17 categories / 49 recurrences**; **one** produced-witness debt remains. The [handoff](Future_Chat_Session_Handoff.md) and [regression tracker](Regression_Root_Cause_Tracker.md) supersede this dated snapshot for later decisions.
 
@@ -102,7 +102,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Define the endpoint contract's missing open-rail interior-vertex case against both active checkers, at route level as well as per endpoint: first a facts-only census, then the rule. No semantic patch authorized. | M6-CP3 Definition; [handoff](Future_Chat_Session_Handoff.md) |
+| **1** | Define the endpoint contract's missing open-rail interior-vertex case against both active checkers, at route level as well as per endpoint, with one outcome shared by both checkers. Census accepted (RA-83); rule next. No semantic patch authorized. | M6-CP3 Definition; [handoff](Future_Chat_Session_Handoff.md) |
 | **2** | Restore accepted-prefix execution and prove actual direct-production positive/tamper paths; `RP-01` open, downstream `RP-02` not reached. | M6-CP3 definitions and [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
