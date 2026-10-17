@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-r10-prework-20261017a",
+  "request_id": "m6-cp3-r10b-rule-20261017a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-r10-prework-apply",
-  "file_id": "1I7KkJcTFkfXWqIbaUfnrur1Y9VfxDk4m",
-  "patch_sha256": "71e5091de88fc6bb59201035dbc9d3edc52ac6254cf9eab3a8c9cc8c5cda9d82",
-  "base_sha": "9d64e11e92eb7361ed81ac4066d61340bb908aeb",
+  "mailbox_key": "m6-cp3-r10b-rule-apply",
+  "file_id": "1vzpLlXKpDSbs1EwpkKI7jmuY-5NbsipJ",
+  "patch_sha256": "9883b79e1b3f9e49de987ae999c6f8c6003b815f2f872b69bc4554723bdc30fe",
+  "base_sha": "df37ffc191ee3eaa8f27c9aeade25b2804f2a3b8",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: rebaseline review guards and consolidate Directional changelog",
-  "retention_days": 14
+  "commit_message": "docs: define R10B rail interior vertex endpoint contract",
+  "retention_days": 7
 }
