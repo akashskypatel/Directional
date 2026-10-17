@@ -1,3 +1,13 @@
+## RA-81 — open-rail interior-vertex coverage gap (2026-10-17)
+
+Authority: `Architecture_M6_CP3_R9_Carrier_Endpoint_Subcondition_Review_Decision.md`.
+
+- **RA-81.1** The RA-79 V/I/C endpoint contract is **incomplete**. An endpoint at an interior vertex of an open rail (fixture rail `1–4–7`, vertex `4`) is admitted by no branch: V needs a rail terminal, I's `interior_carrier_parameter` (`SurfaceCellTracing.cpp:64-90`) requires `0 < t < 1`, C is closed-rail only. RA-80.7 confirmed: carrier-edge membership 21/21, terminal-contact membership 0/21.
+- **RA-81.2** The legacy `review_check.py` high-water/append-only rules conflict with the user-authorized rewrite of the handoff, ORIENTATION and tracker; classified for human review under `DOCUMENT_DRIFT_AUDIT_POLICY.md` §2.4. The resulting `boundary` floor failures for those three documents, and `ledgers` shrink reports from in-place handoff replacement, are expected and do not block a turn; all other checks must pass.
+- **RA-81.3** Next: `M6-CP3-DEFN-R10-RAIL-INTERIOR-VERTEX-ENDPOINT-SPEC`, documents only. Code not authorized.
+
+---
+
 ## RA-80 — frozen definitions, M6 CP3 R9 terminal star path (2026-10-16); branch V measured NOT APPLICABLE, 0/21
 
 **Authority:** `.agents/Directional/Architecture_M6_CP3_R9_Terminal_Star_Path_Review_Decision.md`.

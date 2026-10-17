@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-16 · M6-CP3 TB10 diagnostic harvest complete; independent Review pending.  
+**Currency:** 2026-10-17 · M6-CP3 TB10 reviewed (RA-81); interior-rail-vertex endpoint definition next.  
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,7 +50,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Latest focused evidence (TB10, 2026-10-16):** 44/44 diagnostic executions were RED, with no acceptance credit. Among 21 relevant exact-one-hot observations, the decoded vertex belongs to the carrier's canonical source-edge endpoints **21/21**, but to the published terminal-contact endpoint set **0/21**. This is a measured discrepancy, **not** an approved root-cause repair. **Independent Review is next; CP3 has not been promoted.**
+**Latest focused evidence (TB10, reviewed 2026-10-17):** 44/44 diagnostic executions were RED, with no acceptance credit. In the 21 relevant observations the failing corner sits on an **interior vertex of an open rail** — on the carrier's edge (21/21) but never a rail end (0/21). The proposed endpoint contract covers rail ends, points part-way along an edge, and closed rails, but has **no case for a rail's interior vertex**. That case is defined next, on paper, before any code. **CP3 has not been promoted.**
 
 Stable accounting reported with that evidence: **66 events / 17 categories / 49 recurrences**; **one** produced-witness debt remains. The [handoff](Future_Chat_Session_Handoff.md) and [regression tracker](Regression_Root_Cause_Tracker.md) supersede this dated snapshot for later decisions.
 
@@ -102,7 +102,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Independently adjudicate TB10's published-contact vs carrier-edge endpoint mismatch; no semantic patch yet authorized by the harvest. | M6-CP3 review; [handoff](Future_Chat_Session_Handoff.md) |
+| **1** | Define the endpoint contract's missing open-rail interior-vertex case against both active checkers; no semantic patch authorized. | M6-CP3 Definition; [handoff](Future_Chat_Session_Handoff.md) |
 | **2** | Restore accepted-prefix execution and prove actual direct-production positive/tamper paths; `RP-01` open, downstream `RP-02` not reached. | M6-CP3 definitions and [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
@@ -113,6 +113,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 - **Conflated authority:** row number, gauge, semantic ID, terminal incidence or certificate provenance used as interchangeable identities. Find the unique writer and exact typed correspondence.
 - **Premature credit:** compile-green, diagnostic data or focused PASS/RED presented as cumulative acceptance. Separate candidate evidence from reviewed promotion.
 - **Predicted cause substituted for measured cause:** inspect the **actual first rejecting predicate** and discriminate its subconditions before proposing a repair.
+- **Incomplete case analysis:** a contract excludes a case from one branch without assigning it to another. When a specification says "X cannot enter branch B", ask which branch admits X.
 - **Documentation drift:** a second “CURRENT” section appended rather than revising the existing one. Move incident history into its owning tracker, changelog, report or closure record.
 
 Reusable rules and examples belong in [LESSONS.md](LESSONS.md), not here.
