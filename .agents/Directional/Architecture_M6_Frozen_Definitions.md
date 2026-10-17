@@ -1,3 +1,15 @@
+## RA-82 — R10 pre-work verified; history gates belong to Review; R10 split (2026-10-17)
+
+Authority: `Architecture_M6_CP3_R10_Prework_Verification_Review_Decision.md`.
+
+- **RA-82.1** Pre-work `0660af9d1` accepted on a full clone: `review_check.py boundary` and `ledgers --base 8b7299b43` pass; drift audit 0 errors; the changelog move lost no identifier (433/433). RA-81.2's expected-failure exception is retired: every check must now pass.
+- **RA-82.2** Known limits of the re-baselined tool (heading-level, line-count, committed-only checks) are accepted; the Review Agent covers them by reading each turn's diff.
+- **RA-82.3** `review_check.py authority|boundary|ledgers` and `document_drift_audit.py --base` are Review Agent gates. Implementation turns run `document_drift_audit.py --root .`, report history gates as deferred to Review, and never block on them.
+- **RA-82.4** Any interior-rail-vertex rule must address both verifier layers — route level (`SurfaceCellTracing.cpp:8581-8615`) and per endpoint (`:8699-8721`) — and fronts with no endpoint on a rail terminal, not only the two-front fixture rail.
+- **RA-82.5** R10 is replaced by R10A (witness census, facts only) → R10A Review → R10B (rule) → R10B Review. Only R10A and its Review are authorized.
+
+---
+
 ## RA-81 — open-rail interior-vertex coverage gap (2026-10-17)
 
 Authority: `Architecture_M6_CP3_R9_Carrier_Endpoint_Subcondition_Review_Decision.md`.

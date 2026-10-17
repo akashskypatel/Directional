@@ -1,5 +1,11 @@
 
 
+## 2026-10-17 — RA-82: R10 pre-work verified on full history; history gates moved to Review; R10 split
+
+- Pre-work `0660af9d1` accepted: `review_check.py boundary` and `ledgers --base 8b7299b43` pass on a full clone; drift audit 0 errors (3 user-authorized protected-file warnings); changelog move kept 433/433 identifiers. R10 had blocked only because its snapshot has no `.git`.
+- History-dependent gates are now Review gates; implementation turns run the drift audit without `--base` (RA-82.3). The verifier rejects an interior-rail-vertex endpoint at route level as well as per endpoint (RA-82.4). R10 replaced by R10A census → Review → R10B rule → Review.
+- No code, test or selector change. Next: `M6-CP3-DEFN-R10A-RAIL-INTERIOR-VERTEX-WITNESS-CENSUS`. Record: `.agents/Directional/Architecture_M6_CP3_R10_Prework_Verification_Review_Decision.md`.
+
 ## 2026-10-17 — User-authorized documentation housekeeping queued for the next turn
 
 - The user explicitly authorized, as pre-work for `M6-CP3-DEFN-R10-RAIL-INTERIOR-VERTEX-ENDPOINT-SPEC`: re-baselining `tools/review_check.py` to the rewrite `8b7299b43`; fixing `ROADMAP.md:7`; and making root `CHANGELOG.md` the only changelog by losslessly moving and then deleting `.agents/Directional/CHANGELOG.md`. Scope and completion criteria are in the handoff.
