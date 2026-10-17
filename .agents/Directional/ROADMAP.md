@@ -1,5 +1,7 @@
 # Directional — Surface-Cell Development Roadmap
 
+>This rewrite was expressly requested on 2026-10-16.
+
 **Updated:** 2026-10-16 · **Track:** experimental direct surface-cell quadrangulation (Pipeline B) · **Target:** certified, production-ready output.
 
 This roadmap answers **what is done, what comes next, and what each milestone delivers**. It is not a turn log, task queue, test ledger, definition spec, or implementation handoff. The product and acceptance contract is [DESIGN.md](DESIGN.md) (especially §§2 and 14); status, detailed plans, unresolved findings, and exact next-turn authorization live in [ORIENTATION.md](ORIENTATION.md), [Future_Chat_Session_Handoff.md](Future_Chat_Session_Handoff.md), [TODO.md](TODO.md), and [Regression_Root_Cause_Tracker.md](Regression_Root_Cause_Tracker.md).

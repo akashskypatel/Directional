@@ -1,5 +1,7 @@
 # Directional — Project Orientation
 
+>This rewrite was expressly requested on 2026-10-16.
+
 **Currency:** 2026-10-16 · M6-CP3 TB10 diagnostic harvest complete; independent Review pending.  
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
