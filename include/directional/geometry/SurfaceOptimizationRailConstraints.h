@@ -16,6 +16,7 @@
 
 #include <Eigen/Dense>
 
+#include <directional/authority/AuthorityIds.h>
 #include <directional/geometry/SurfaceCellTracing.h>
 #include <directional/geometry/SurfaceMeshOptimizer.h>
 
@@ -23,9 +24,9 @@ namespace directional::geometry {
 
 namespace surface_optimization_rail_detail {
 
-bool source_face_contains_vertex(const Eigen::MatrixXi &faces,
-                                        const int face,
-                                        const int vertex);
+bool source_face_contains_vertex(
+    const Eigen::MatrixXi &faces, authority::SourceFaceId face,
+    authority::SourceVertexId vertex);
 
 bool provenance_supports_interval_sheet(
     const SurfacePoint &provenance,

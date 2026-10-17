@@ -45,11 +45,12 @@ private:
   bool negative;
 
   void trim() {
-    int whileTest = 0;
+    // Each iteration removes exactly one digit, so the initial digit count is a
+    // strict bound. A fixed constant would fire on legitimate large values.
+    std::size_t remaining = digits.size() + 1U;
     while (!digits.empty() && digits.back() == 0) {
       digits.pop_back();
-      whileTest++;
-      if (whileTest >= 10000) {
+      if (remaining-- == 0U) {
         throw std::runtime_error("trim(): while running too long! ");
       }
     }
@@ -60,6 +61,35 @@ private:
   }
 
 public:
+  /**
+   * @brief Number of base-1e9 limbs in the stored magnitude.
+   *
+   * This is a deterministic, allocation-free size measure. Consumers that must
+   * bound the cost of exact arithmetic use it as a magnitude policy input; it is
+   * never a numeric value and never participates in a comparison of magnitudes.
+   */
+  [[nodiscard]] std::size_t limb_count() const noexcept { return digits.size(); }
+
+  /**
+   * @brief Deterministic bit-width measure of the stored magnitude.
+   *
+   * Backend-independent size unit shared with the GMP backend, so a magnitude
+   * policy expressed in bits means the same thing in either build. One base-1e9
+   * limb carries slightly more than 29 bits, so the count is a strict lower
+   * bound on the true width; it is monotone in the magnitude, which is all a
+   * cost policy requires. It is never a numeric value.
+   */
+  [[nodiscard]] std::size_t magnitude_bits() const noexcept {
+    if (digits.empty()) return 0U;
+    std::size_t topBits = 0U;
+    long long top = digits.back();
+    while (top > 0) {
+      ++topBits;
+      top >>= 1;
+    }
+    return (digits.size() - 1U) * 29U + topBits;
+  }
+
   BigInteger() : negative(false) {}
 
   BigInteger(long long value) {
@@ -257,7 +287,9 @@ public:
     long long left = (currDividend).convert() / (currDivisor + 1).convert();
     long long right = (currDividend + 1).convert() / (currDivisor).convert();
 
-    int whileTest = 0;
+    // Binary search over a single base-1e9 quotient digit halves the candidate
+    // range every iteration, so twice the range's bit width is a strict bound.
+    std::size_t searchBudget = 2U * 64U + 8U;
     BigInteger diff;
     diff.digits.reserve(dividend.digits.size());
     while (left <= right) {
@@ -272,8 +304,7 @@ public:
       } else {
         right = mid - 1;
       }
-      whileTest++;
-      if (whileTest >= 10000) {
+      if (searchBudget-- == 0U) {
         throw std::runtime_error("operator/: while running too long! ");
       }
     }

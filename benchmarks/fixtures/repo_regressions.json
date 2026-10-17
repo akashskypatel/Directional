@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "cases": [
+    {
+      "name": "bunny_1k_random_medium",
+      "mesh": "milestone-g/bunny_1k_random.obj",
+      "generated_field": "smooth",
+      "length_ratio": 0.08,
+      "integral_seamless": false,
+      "round_seams": false,
+      "backend": "SurfaceCells",
+      "surface_cell_fallback": "Fail",
+      "tags": [
+        "medium",
+        "organic",
+        "random-triangulation",
+        "regression",
+        "milestone-g"
+      ]
+    }
+  ]
+}

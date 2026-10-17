@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "request_id": "m6-cp3-r10-prework-20261017a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-r10-prework-apply",
+  "file_id": "1I7KkJcTFkfXWqIbaUfnrur1Y9VfxDk4m",
+  "patch_sha256": "71e5091de88fc6bb59201035dbc9d3edc52ac6254cf9eab3a8c9cc8c5cda9d82",
+  "base_sha": "9d64e11e92eb7361ed81ac4066d61340bb908aeb",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: rebaseline review guards and consolidate Directional changelog",
+  "retention_days": 14
+}

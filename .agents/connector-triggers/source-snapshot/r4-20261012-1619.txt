@@ -1,0 +1,3 @@
+turn=M6-CP3-CB1-ENTRY-R4
+requested_semantic_source=785dd73981683635e00142e6a5df2bf551875d47
+purpose=exact_source_inspection_for_same_turn

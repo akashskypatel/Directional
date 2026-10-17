@@ -4,6 +4,7 @@
 #include <cmath>
 #include <complex>
 #include <numbers>
+#include <optional>
 #include <queue>
 #include <set>
 #include <stdexcept>
@@ -20,6 +21,107 @@
 #include <directional/fields/PCFaceTangentBundle.h>
 
 namespace directional::fields {
+
+namespace {
+
+std::vector<authority::SourceVertexId> canonical_boundary_vertices(
+    const std::vector<int> &rawVertices, const std::size_t vertexExtent) {
+  std::vector<authority::SourceVertexId> vertices;
+  vertices.reserve(rawVertices.size());
+  for (const int rawVertex : rawVertices) {
+    const auto vertex =
+        authority::SourceVertexId::from_index(rawVertex, vertexExtent);
+    if (!vertex) return {};
+    vertices.push_back(vertex.value());
+  }
+  if (vertices.empty()) return {};
+
+  const auto best_rotation = [](const std::vector<authority::SourceVertexId> &input) {
+    std::vector<authority::SourceVertexId> best;
+    for (std::size_t start = 0; start < input.size(); ++start) {
+      std::vector<authority::SourceVertexId> candidate;
+      candidate.reserve(input.size());
+      for (std::size_t offset = 0; offset < input.size(); ++offset) {
+        candidate.push_back(input[(start + offset) % input.size()]);
+      }
+      if (best.empty() || candidate < best) best = std::move(candidate);
+    }
+    return best;
+  };
+
+  std::vector<authority::SourceVertexId> forward = best_rotation(vertices);
+  std::reverse(vertices.begin(), vertices.end());
+  std::vector<authority::SourceVertexId> reverse = best_rotation(vertices);
+  return reverse < forward ? reverse : forward;
+}
+
+bool populate_source_boundary_cycle_facts(const CartesianField &field,
+                                          CrossFieldResult &result) {
+  result.sourceBoundaryCycles.clear();
+  result.sourceBoundaryCyclesComputed = false;
+  const auto *bundle = dynamic_cast<const PCFaceTangentBundle *>(field.tb);
+  if (bundle == nullptr || bundle->mesh == nullptr ||
+      field.cycleIndices.size() != bundle->cycles.rows()) {
+    return false;
+  }
+
+  const TriMesh &mesh = *bundle->mesh;
+  const std::size_t vertexExtent = static_cast<std::size_t>(mesh.V.rows());
+  std::vector<CrossFieldSourceBoundaryCycleFact> facts;
+  facts.reserve(mesh.boundaryLoops.size());
+  for (const std::vector<int> &rawLoop : mesh.boundaryLoops) {
+    const auto canonicalVertices =
+        canonical_boundary_vertices(rawLoop, vertexExtent);
+    if (canonicalVertices.size() != rawLoop.size() || rawLoop.empty()) {
+      return false;
+    }
+
+    int cycleRow = -1;
+    for (const int rawVertex : rawLoop) {
+      if (rawVertex < 0 || rawVertex >= bundle->local2Cycle.size()) return false;
+      const int current = bundle->local2Cycle(rawVertex);
+      if (current < 0 || current >= field.cycleIndices.size()) return false;
+      if (cycleRow < 0) {
+        cycleRow = current;
+      } else if (cycleRow != current) {
+        return false;
+      }
+    }
+    if (cycleRow < 0) return false;
+
+    std::vector<authority::SourceEdgeTopologyKey> sourceEdges;
+    sourceEdges.reserve(canonicalVertices.size());
+    for (std::size_t i = 0; i < canonicalVertices.size(); ++i) {
+      const auto edge = authority::SourceEdgeTopologyKey::make(
+          canonicalVertices[i], canonicalVertices[(i + 1) % canonicalVertices.size()]);
+      if (!edge) return false;
+      sourceEdges.push_back(edge.value());
+    }
+
+    facts.push_back(CrossFieldSourceBoundaryCycleFact{
+        authority::SourceBoundaryCycleId::from_index(0, 1).value(),
+        canonicalVertices, sourceEdges, field.cycleIndices(cycleRow)});
+  }
+
+  std::sort(facts.begin(), facts.end(),
+            [](const CrossFieldSourceBoundaryCycleFact &a,
+               const CrossFieldSourceBoundaryCycleFact &b) {
+              return a.canonicalVertices < b.canonicalVertices;
+            });
+  for (std::size_t i = 0; i < facts.size(); ++i) {
+    const auto id = authority::SourceBoundaryCycleId::from_index(i, facts.size());
+    if (!id || (i > 0 &&
+                facts[i - 1].canonicalVertices == facts[i].canonicalVertices)) {
+      return false;
+    }
+    facts[i].id = id.value();
+  }
+  result.sourceBoundaryCycles = std::move(facts);
+  result.sourceBoundaryCyclesComputed = true;
+  return true;
+}
+
+} // namespace
 
 void populate_cross_field_edge_transitions(const CartesianField &field,
                                            CrossFieldResult &result) {
@@ -103,6 +205,10 @@ CrossFieldResult finalize_cross_field_result(CartesianField &rawField,
     result.singularCycles = outputField->singLocalCycles;
     result.singularIndices = outputField->singIndices;
     populate_cross_field_edge_transitions(*outputField, result);
+    if (!populate_source_boundary_cycle_facts(*outputField, result)) {
+      throw std::runtime_error(
+          "Cross-field finalization could not publish source-boundary cycle authority.");
+    }
     result.matchingComputed = true;
     result.singularitiesComputed = true;
   }

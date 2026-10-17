@@ -1,0 +1,21 @@
+# M6-CP3-CB1-ENTRY-R4 — RA-47.12 default pipeline typed-rail liveness regression
+
+**Boundary:** Same R4 Code + Build; source-authored test only. No Directional runtime, binary tests or benchmarks; no TB497 or successor.
+
+## Exact authority and static call path
+
+- Fresh source snapshot workflow `38322389269`, exact commit `1b096eee34f6c2c81f8cdf087dabcbbd4f38c513`, artifact `11779541076`, outer SHA-256 `4708bf8e20f1aadbc03a1ee0b8cb30faae29c297055e16b305a48fee52b642b2`. Verified all 6,565 source manifest hashes and `source.tar.gz` digest `1173355ae347cb5564b8e498f5bb01d1df8e614aa68252a1285b6c6ecf929091`.
+- `src/pipeline/RemeshPipeline.cpp`: default production calls `build_authoritative_surface_cell_rails`, retains `railProduct->rails`, then calls `FieldAlignedCurveNetwork::make(meshWhole, sourceTopologyRegions, fieldTransportAtlas, authoritativeRails)` after upstream atlas validation. `src/geometry/SurfaceCellTracing.cpp`, `canonical_field_aligned_candidate`, iterates actual rail `sourceEdges`, re-derives keys from `sourceVertices` and checks typed equality, returning `InvalidRailGeometry` for a mismatched key.
+- Static reachability is **not** runtime liveness. The existing `build_rectangular_hard_rail_phase_front` fixture makes an actual `remesh_from_raw_cross_field` call and retains the producer's original rails, typed source authority, atlas and published field-aligned network. The new separate `SurfaceCellAuthorityContractCutover.ProducedRailsReachTypedFieldAlignedConsumerOnDefaultPipelinePath` regression checks that the default producer reaches field-aligned publication with nonempty rails; every produced typed rail key is owned by a `FieldAlignedMandatoryEdge` under the matching rail ID and kind. It then substitutes a *different actual hard-feature topology key* into one interval and asserts that the **same checked consumer** rejects `InvalidRailGeometry`. It neither fabricates a network candidate nor relies on the one-edge `(0,1)` vacuous fixture.
+
+## What this does not establish
+
+- A new unexecuted test is **not** a PASS, and cannot resolve RA-47.12's observational question until an explicitly authorized artifact-only Test + Benchmark turn executes it with immutable evidence. In particular, it does not prove that historical R3 failure was triggered by the former integer-domain check.
+- It does not repair RA-43.2 producer-owned oriented terminal side, globally retire RA-43.4's explicit standalone diagnostic opt-out, or complete first-rejection coverage/39+34+7+88+six/odd-τ multi-carrier recovery. All R4 obligations stay open.
+- Existing frozen 497 test selectors and identities are unchanged. GMP/GMPXX eight-target compile must be verified separately against the exact semantic applied commit; source compilation alone cannot be runtime credit. Ledger remains 66/17/49, debt 1; CP2 491/491 accepted, R3 403/497 rejected, 94 RED and 88 CP2 losses.
+
+## Applied source and immutable compile evidence
+
+- The source and documentation patch SHA-256 `8c8f52ade3fb24967ccc9fb754eb85f3bfece097869e140db45f00074b91b18a` was applied at semantic source `60d3292018105ffd4e0064dd9b6849ffecefc2e0`, dispatcher run `38322786915`, artifact `11779586751` SHA-256 `b744ba38641956343b63fdd91aa87df4b3c8fdec14c9ee178566106bccc85b12`. The immutable apply receipt verifies exact source and patch identity, `runtimeExecution=false`; GitHub verified the four intended paths. Consumed owner Drive stage deleted.
+- Exact-source GMP/GMPXX eight-target compile: workflow [`38322933412`](https://github.com/akashskypatel/Directional/actions/runs/38322933412), artifact `11779273254` ZIP SHA-256 `75a86ca1c88c2c3c8537f84a25dfe2b7487034a26438482b513adfd95f251849`. Verified `28/28 checksums` checksum records, `8/8 targets` requested targets, `preflight/build 0/0, GMPXX/GMP linker, clean source, exactArithmeticBackend=GMP, runtimeExecution=false`. **No test binary was executed** and no runtime liveness acceptance is inferred.
+- Canonical R4 remains IN_PROGRESS. RA-47.12 now has a production-derived first-rejection test source, but observational answer still requires separate artifact-only TB execution. All other frozen historical/RA-43 and multi-carrier gates stay open; TB497 not authorized.

@@ -80,6 +80,8 @@ struct SurfaceSimplificationObjectiveWeights {
 
 struct SurfaceSimplificationCandidate {
   int stableId = -1;
+  int generation = 0;
+  std::uint64_t semanticHash = 0U;
   SurfaceSimplificationCandidateType type =
       SurfaceSimplificationCandidateType::OpenStrip;
   // Canonical arrangement halfedge IDs. Each undirected edge is represented
@@ -142,16 +144,64 @@ struct SurfaceSimplificationOptions {
   /// Production surface-cell integration uses this conservative mode until
   /// the general FlowRep edit operators have independent fidelity gates.
   bool topologyHealingOnly = false;
+  /// Refresh the candidate frontier after every committed edit. This is the
+  /// established fixed-point API contract. Set false only for an explicitly
+  /// bounded one-transaction diagnostic call.
+  bool refreshCandidatesAfterCommit = true;
+  /// Optional hard limit on committed transactions. Negative is unbounded.
+  int maxCommittedTransactions = -1;
+  /// Preserve per-candidate transaction payloads. Production callers can
+  /// disable this after scalar counters/hashes are sufficient, avoiding one
+  /// retained vector-of-vectors record per evaluated simplification candidate.
+  bool retainTransactionDetails = true;
 };
 
 struct SurfaceSimplificationTransaction {
   int candidateId = -1;
   SurfaceSimplificationCandidateType type =
       SurfaceSimplificationCandidateType::OpenStrip;
+  bool topologyHealing = false;
+  std::vector<int> elementIds;
+  std::vector<int> affectedCellIds;
   bool committed = false;
   SurfaceSimplificationRejectionReason rejection =
       SurfaceSimplificationRejectionReason::None;
   double objectiveCost = 0.0;
+  int beforeNonDiskDefect = -1;
+  int afterNonDiskDefect = -1;
+  int beforeNodeCount = -1;
+  int afterNodeCount = -1;
+  int beforeUndirectedEdgeCount = -1;
+  int afterUndirectedEdgeCount = -1;
+  int beforeInteriorCellCount = -1;
+  int afterInteriorCellCount = -1;
+  int beforeEulerCharacteristic = 0;
+  int afterEulerCharacteristic = 0;
+  int sourceEulerCharacteristic = 0;
+  int beforeConnectedComponentCount = 0;
+  int afterConnectedComponentCount = 0;
+  int sourceConnectedComponentCount = 0;
+  int beforeBoundaryLoopCount = 0;
+  int afterBoundaryLoopCount = 0;
+  int sourceBoundaryLoopCount = 0;
+  int beforeUnsplitCrossings = 0;
+  int afterUnsplitCrossings = 0;
+  int beforeGeometricTJunctions = 0;
+  int afterGeometricTJunctions = 0;
+  bool trialBuilt = false;
+  bool beforeEmbeddingValid = false;
+  bool beforeOrientationValid = false;
+  bool beforeBoundaryLoopsValid = false;
+  bool beforeEulerCharacteristicValid = false;
+  bool incidenceValid = false;
+  bool embeddingValid = false;
+  bool orientationValid = false;
+  bool boundaryLoopsValid = false;
+  bool eulerCharacteristicValid = false;
+  bool noUnsplitCrossings = false;
+  bool noGeometricTJunctions = false;
+  bool topologyMismatchNotWorse = false;
+  bool protectedSupportPreserved = false;
   std::uint64_t beforeHash = 0;
   std::uint64_t afterHash = 0;
 };
@@ -165,6 +215,11 @@ struct SurfaceSimplificationResult {
   int rejected = 0;
   int invalidatedCandidates = 0;
   int recomputedCandidates = 0;
+  int generatedCandidates = 0;
+  int deduplicatedCandidates = 0;
+  int staleGenerationCandidates = 0;
+  int frontierGenerations = 0;
+  int peakLiveCandidates = 0;
   int incidenceRebuilds = 0;
   int validationPasses = 0;
   int initialActiveElements = 0;
@@ -219,6 +274,98 @@ SurfaceSimplificationRejectionReason validate_candidate(
     const std::vector<SurfaceSimplificationElement> &elements,
     const SurfaceSimplificationOptions &options, const double cost);
 
+enum class SurfaceCellIncidenceFailureKind : int {
+  None = 0,
+  NodeIdMismatch = 1,
+  HalfedgeIdMismatch = 2,
+  InvalidTwin = 3,
+  TwinAsymmetry = 4,
+  InvalidEndpoint = 5,
+  DegenerateEdge = 6,
+  InvalidCell = 7,
+  InvalidNext = 8,
+  NextEndpointMismatch = 9,
+  CellIdMismatch = 10,
+  CellNotClosed = 11,
+  CellTooSmall = 12,
+  NonDiskCell = 13,
+  SideMetadataMismatch = 14,
+  RepeatedCellHalfedge = 15,
+  HalfedgeCellMismatch = 16,
+  CellNextMismatch = 17,
+  HalfedgeUseMismatch = 18,
+  DirectedEdgeMultiplicity = 19,
+  PredecessorMultiplicity = 20,
+  OwnershipRegistryMismatch = 21,
+};
+
+inline const char *surface_cell_incidence_failure_name(
+    const SurfaceCellIncidenceFailureKind failure) {
+  switch (failure) {
+  case SurfaceCellIncidenceFailureKind::None:
+    return "none";
+  case SurfaceCellIncidenceFailureKind::NodeIdMismatch:
+    return "node-id-mismatch";
+  case SurfaceCellIncidenceFailureKind::HalfedgeIdMismatch:
+    return "halfedge-id-mismatch";
+  case SurfaceCellIncidenceFailureKind::InvalidTwin:
+    return "invalid-twin";
+  case SurfaceCellIncidenceFailureKind::TwinAsymmetry:
+    return "twin-asymmetry";
+  case SurfaceCellIncidenceFailureKind::InvalidEndpoint:
+    return "invalid-endpoint";
+  case SurfaceCellIncidenceFailureKind::DegenerateEdge:
+    return "degenerate-edge";
+  case SurfaceCellIncidenceFailureKind::InvalidCell:
+    return "invalid-cell";
+  case SurfaceCellIncidenceFailureKind::InvalidNext:
+    return "invalid-next";
+  case SurfaceCellIncidenceFailureKind::NextEndpointMismatch:
+    return "next-endpoint-mismatch";
+  case SurfaceCellIncidenceFailureKind::CellIdMismatch:
+    return "cell-id-mismatch";
+  case SurfaceCellIncidenceFailureKind::CellNotClosed:
+    return "cell-not-closed";
+  case SurfaceCellIncidenceFailureKind::CellTooSmall:
+    return "cell-too-small";
+  case SurfaceCellIncidenceFailureKind::NonDiskCell:
+    return "non-disk-cell";
+  case SurfaceCellIncidenceFailureKind::SideMetadataMismatch:
+    return "side-metadata-mismatch";
+  case SurfaceCellIncidenceFailureKind::RepeatedCellHalfedge:
+    return "repeated-cell-halfedge";
+  case SurfaceCellIncidenceFailureKind::HalfedgeCellMismatch:
+    return "halfedge-cell-mismatch";
+  case SurfaceCellIncidenceFailureKind::CellNextMismatch:
+    return "cell-next-mismatch";
+  case SurfaceCellIncidenceFailureKind::HalfedgeUseMismatch:
+    return "halfedge-use-mismatch";
+  case SurfaceCellIncidenceFailureKind::DirectedEdgeMultiplicity:
+    return "directed-edge-multiplicity";
+  case SurfaceCellIncidenceFailureKind::PredecessorMultiplicity:
+    return "predecessor-multiplicity";
+  case SurfaceCellIncidenceFailureKind::OwnershipRegistryMismatch:
+    return "ownership-registry-mismatch";
+  }
+  return "unknown";
+}
+
+struct SurfaceCellIncidenceAudit {
+  bool valid = false;
+  SurfaceCellIncidenceFailureKind failure =
+      SurfaceCellIncidenceFailureKind::None;
+  int node = -1;
+  int halfedge = -1;
+  int twin = -1;
+  int next = -1;
+  int cell = -1;
+  int expected = -1;
+  int actual = -1;
+};
+
+SurfaceCellIncidenceAudit audit_complex_incidence(
+    const SurfaceCellComplex &complex, bool requireDiskCells = true);
+
 bool validate_complex_incidence(const SurfaceCellComplex &complex,
                                 bool requireDiskCells = true);
 
@@ -227,7 +374,21 @@ int non_disk_topology_defect(const SurfaceCellComplex &complex);
 std::vector<std::int64_t> protected_node_signature(
     const SurfaceArrangementNode &node);
 
-std::multiset<std::vector<std::int64_t>> protected_support(
+struct SourceScope {
+  std::optional<authority::TopologyRegionId> region;
+  std::optional<SourceProjectionChart> chart;
+
+  auto operator<=>(const SourceScope &) const = default;
+};
+
+struct SourceAwareIdentity {
+  std::vector<std::int64_t> values;
+  std::vector<SourceScope> sourceScopes;
+
+  auto operator<=>(const SourceAwareIdentity &) const = default;
+};
+
+std::multiset<SourceAwareIdentity> protected_support(
     const SurfaceCellComplex &complex);
 
 bool same_protected_support(const SurfaceCellComplex &before,
@@ -283,18 +444,18 @@ SurfaceSimplificationResult simplify_surface_complex(
     const SurfaceSimplificationOptions &options = {});
 
 SurfaceSimplificationResult simplify_surface_cell_complex_impl(
-    const SurfaceCellComplex &inputComplex,
+    SurfaceCellComplex inputComplex,
     std::vector<SurfaceSimplificationCandidate> candidates,
     const Eigen::MatrixXd *vertices, const Eigen::MatrixXi *faces,
     const SurfaceSimplificationOptions &options);
 
 SurfaceSimplificationResult simplify_surface_cell_complex(
-    const SurfaceCellComplex &inputComplex,
+    SurfaceCellComplex inputComplex,
     std::vector<SurfaceSimplificationCandidate> candidates,
     const SurfaceSimplificationOptions &options = {});
 
 SurfaceSimplificationResult simplify_surface_cell_complex(
-    const SurfaceCellComplex &inputComplex, const Eigen::MatrixXd &vertices,
+    SurfaceCellComplex inputComplex, const Eigen::MatrixXd &vertices,
     const Eigen::MatrixXi &faces,
     std::vector<SurfaceSimplificationCandidate> candidates,
     const SurfaceSimplificationOptions &options = {});

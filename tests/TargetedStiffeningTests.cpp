@@ -84,7 +84,7 @@ TEST(TargetedStiffeningPhase09, StiffeningPreservesFixedIntegerVariables) {
   const directional::pipeline::RemeshResult result =
       run_integration_only(true);
 
-  ASSERT_TRUE(result.success);
+  ASSERT_TRUE(result.is_produced());
   const directional::IntegrationDiagnostics &diagnostics =
       result.diagnostics.integration;
   EXPECT_TRUE(std::isfinite(diagnostics.maximumUnresolvedIntegerResidual));
@@ -97,8 +97,8 @@ TEST(TargetedStiffeningPhase09, StiffeningDoesNotWorsenConstraintResidual) {
   const directional::pipeline::RemeshResult stiffened =
       run_integration_only(true);
 
-  ASSERT_TRUE(baseline.success);
-  ASSERT_TRUE(stiffened.success);
+  ASSERT_TRUE(baseline.is_produced());
+  ASSERT_TRUE(stiffened.is_produced());
   const double tolerance =
       1.0e-8 * std::max(1.0, baseline.diagnostics.integration
                                  .finalConstraintResidualNorm);
@@ -112,7 +112,7 @@ TEST(TargetedStiffeningPhase09, SyntheticFixtureRecordsQualityDiagnostics) {
   const directional::pipeline::RemeshResult result =
       run_integration_only(true);
 
-  ASSERT_TRUE(result.success);
+  ASSERT_TRUE(result.is_produced());
   const directional::IntegrationDiagnostics &diagnostics =
       result.diagnostics.integration;
   EXPECT_TRUE(std::isfinite(diagnostics.parametrizationQualityAnalysisSeconds));
@@ -126,7 +126,7 @@ TEST(TargetedStiffeningPhase09, BroadBadFaceRegionDoesNotTriggerExtraSolve) {
   const directional::pipeline::RemeshResult result =
       run_broad_bad_region_probe();
 
-  ASSERT_TRUE(result.success);
+  ASSERT_TRUE(result.is_produced());
   const directional::IntegrationDiagnostics &diagnostics =
       result.diagnostics.integration;
   EXPECT_GT(diagnostics.parametrizationInitialBadFaceCount, 0U);

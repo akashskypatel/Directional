@@ -1,0 +1,407 @@
+name: Agent Reusable Compile
+
+on:
+  workflow_call:
+    inputs:
+      source_sha:
+        required: true
+        type: string
+      targets:
+        required: false
+        type: string
+        default: directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks
+      artifact_prefix:
+        required: false
+        type: string
+        default: agent-compile
+
+jobs:
+  compile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    concurrency:
+      group: directional-compile-cache-${{ github.repository_id }}-${{ github.ref }}
+      cancel-in-progress: false
+    env:
+      CCACHE_MAXSIZE: 256M
+      CCACHE_COMPRESS: "true"
+      CCACHE_NOHASHDIR: "true"
+      GMP_ROOT: /usr
+
+    steps:
+      - name: Initialize persistent activity log
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > "$RUNNER_TEMP/activity.log"
+          printf '%s\n' \
+            "workflow=$GITHUB_WORKFLOW" \
+            "run_id=$GITHUB_RUN_ID" \
+            "event=$GITHUB_EVENT_NAME" \
+            "ref=$GITHUB_REF" \
+            "requested_source_sha=${{ inputs.source_sha }}" \
+            "targets=${{ inputs.targets }}" \
+            'turnBoundary=Code+Build-only' \
+            'runtimeExecution=false' | tee -a "$RUNNER_TEMP/activity.log"
+
+      - name: Checkout exact source and shallow submodules
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_sha }}
+          fetch-depth: 1
+          submodules: recursive
+
+      - name: Restore cached ccache tool binary
+        id: ccache_tool_restore
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ runner.temp }}/directional-ccache-tool
+          key: directional-ccache-tool-${{ runner.os }}-ubuntu-24.04-v1
+
+      - name: Verify source and configure ccache
+        id: toolchain
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$RUNNER_TEMP/activity.log") 2>&1
+          test "$(git rev-parse HEAD)" = "${{ inputs.source_sha }}"
+          dpkg -s libgmp-dev >/dev/null 2>&1 || { sudo apt-get update; sudo apt-get install -y libgmp-dev; }
+          dpkg-query -W -f='libgmp-dev=${Version}\n' libgmp-dev
+          ccache_tool_root="$RUNNER_TEMP/directional-ccache-tool"
+          ccache_tool_dir="$ccache_tool_root/bin"
+          ccache_tool_lib_dir="$ccache_tool_root/lib"
+          cached_ccache="$ccache_tool_dir/ccache"
+          ccache_tool_cache_key="directional-ccache-tool-${RUNNER_OS}-ubuntu-24.04-v1"
+          mkdir -p "$ccache_tool_dir" "$ccache_tool_lib_dir"
+          if [ -n "${LD_LIBRARY_PATH:-}" ]; then
+            export LD_LIBRARY_PATH="$ccache_tool_lib_dir:$LD_LIBRARY_PATH"
+          else
+            export LD_LIBRARY_PATH="$ccache_tool_lib_dir"
+          fi
+          if [ -x "$cached_ccache" ] && "$cached_ccache" --version >/dev/null 2>&1; then
+            ccache_tool_source=cache
+            ccache_tool_cache_refresh=false
+          else
+            if command -v ccache >/dev/null 2>&1; then
+              ccache_tool_source=runner
+            else
+              sudo apt-get update
+              sudo apt-get install -y ccache
+              ccache_tool_source=apt
+            fi
+            cp "$(command -v ccache)" "$cached_ccache"
+            chmod +x "$cached_ccache"
+            hiredis_path="$(ldd "$(command -v ccache)" | awk '$1 ~ /^libhiredis/ {print $3; exit}')"
+            test -n "$hiredis_path"
+            test -f "$hiredis_path"
+            cp -L "$hiredis_path" "$ccache_tool_lib_dir/$(basename "$hiredis_path")"
+            "$cached_ccache" --version >/dev/null
+            ccache_tool_cache_refresh=true
+          fi
+          export PATH="$ccache_tool_dir:$PATH"
+          echo "$ccache_tool_dir" >> "$GITHUB_PATH"
+          echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> "$GITHUB_ENV"
+          echo "ccache_tool_cache_refresh=$ccache_tool_cache_refresh" >> "$GITHUB_OUTPUT"
+          printf '%s\n' \
+            "ccache_tool_cache_key=$ccache_tool_cache_key" \
+            "ccache_tool_cache_hit=${{ steps.ccache_tool_restore.outputs.cache-hit }}" \
+            "ccache_tool_source=$ccache_tool_source" \
+            "ccache_tool_cache_refresh=$ccache_tool_cache_refresh"
+          cmake --version
+          ninja --version
+          c++ --version
+          ccache --version
+          compiler_version="$(c++ -dumpfullversion -dumpversion)"
+          cache_key="directional-ccache-${RUNNER_OS}-gcc-${compiler_version}-release-static-gmp-pretest-v2"
+          echo "cache_key=$cache_key" >> "$GITHUB_OUTPUT"
+          echo "BUILD_DIR=$RUNNER_TEMP/directional-build" >> "$GITHUB_ENV"
+          echo "CCACHE_DIR=$RUNNER_TEMP/directional-ccache" >> "$GITHUB_ENV"
+          echo "CCACHE_BASEDIR=$GITHUB_WORKSPACE" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/directional-ccache"
+          CCACHE_DIR="$RUNNER_TEMP/directional-ccache" ccache --set-config=max_size="$CCACHE_MAXSIZE"
+          CCACHE_DIR="$RUNNER_TEMP/directional-ccache" ccache --set-config=compression=true
+          CCACHE_DIR="$RUNNER_TEMP/directional-ccache" ccache --zero-stats
+          printf '%s\n' \
+            "cache_key=$cache_key" \
+            "cache_scope_ref=$GITHUB_REF" \
+            'cache_policy=fixed-key-refresh'
+          git status --porcelain=v1 | tee "$RUNNER_TEMP/source-status-preconfigure.txt"
+          test ! -s "$RUNNER_TEMP/source-status-preconfigure.txt"
+
+      - name: Prepare ccache tool binary cache refresh
+        if: steps.toolchain.outputs.ccache_tool_cache_refresh == 'true'
+        id: ccache_tool_prepare
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CACHE_KEY: directional-ccache-tool-${{ runner.os }}-ubuntu-24.04-v1
+        shell: bash
+        run: |
+          set -euo pipefail
+          case "$GITHUB_EVENT_NAME" in
+            push|workflow_dispatch|repository_dispatch|schedule)
+              cache_write_allowed=true
+              ;;
+            *)
+              cache_write_allowed=false
+              ;;
+          esac
+          echo "ccache_tool_cache_write_allowed=$cache_write_allowed" | tee -a "$RUNNER_TEMP/activity.log"
+          if [ "$cache_write_allowed" != true ]; then
+            echo "cache_save_allowed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          gh api --method GET "repos/$GITHUB_REPOSITORY/actions/caches" -f ref="$GITHUB_REF" -f per_page=100 > "$RUNNER_TEMP/ccache-tool-caches.json"
+          cache_ids="$(jq -r --arg key "$CACHE_KEY" '.actions_caches[] | select(.key == $key) | .id' "$RUNNER_TEMP/ccache-tool-caches.json")"
+          for cache_id in $cache_ids; do
+            test -n "$cache_id" || continue
+            echo "delete_ccache_tool_cache_id=$cache_id key=$CACHE_KEY" | tee -a "$RUNNER_TEMP/activity.log"
+            gh api --method DELETE "repos/$GITHUB_REPOSITORY/actions/caches/$cache_id"
+          done
+          echo "cache_save_allowed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Save ccache tool binary cache
+        if: steps.ccache_tool_prepare.outputs.cache_save_allowed == 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ runner.temp }}/directional-ccache-tool
+          key: directional-ccache-tool-${{ runner.os }}-ubuntu-24.04-v1
+
+      - name: Restore compiler cache
+        id: cache_restore
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ runner.temp }}/directional-ccache
+          key: ${{ steps.toolchain.outputs.cache_key }}
+
+      - name: Record cache restore
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "cache_key=${{ steps.toolchain.outputs.cache_key }}"
+            echo "cache_scope_ref=$GITHUB_REF"
+            echo "cache_hit=${{ steps.cache_restore.outputs.cache-hit }}"
+            echo "cache_max_size=$CCACHE_MAXSIZE"
+          } | tee -a "$RUNNER_TEMP/activity.log" "$RUNNER_TEMP/cache-restore.txt"
+          ccache --set-config=max_size="$CCACHE_MAXSIZE"
+          ccache --set-config=compression=true
+          ccache --zero-stats
+
+      - name: Configure Release static PRE_TEST out of tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$RUNNER_TEMP/activity.log") 2>&1
+          git status --porcelain=v1 | tee "$RUNNER_TEMP/source-status-before-configure.txt"
+          test ! -s "$RUNNER_TEMP/source-status-before-configure.txt"
+          rm -rf "$BUILD_DIR"
+          cmake -S . -B "$BUILD_DIR" -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DDIRECTIONAL_BUILD_CLI=OFF \
+            -DDIRECTIONAL_BUILD_GUI=OFF \
+            -DDIRECTIONAL_BUILD_TESTS=ON \
+            -DDIRECTIONAL_BUILD_BENCHMARKS=ON \
+            -DDIRECTIONAL_BUILD_HISTORICAL_TESTS=OFF \
+            -DDIRECTIONAL_BUILD_LEGACY_INTEGRATION_TESTS=OFF \
+            -DDIRECTIONAL_BUILD_OPTIONAL_GUIDANCE_TESTS=OFF \
+            -DDIRECTIONAL_ENABLE_GMP=ON \
+            -DGMP_ROOT="$GMP_ROOT" \
+            -DDIRECTIONAL_ENABLE_PARDISO=OFF \
+            -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
+            -DDIRECTIONAL_ENABLE_CUDSS=OFF \
+            -DCMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE=PRE_TEST \
+            2>&1 | tee "$RUNNER_TEMP/configure.log"
+          grep -q '^DIRECTIONAL_ENABLE_GMP:BOOL=ON$' "$BUILD_DIR/CMakeCache.txt"
+          grep -q 'GMP found for Directional core' "$RUNNER_TEMP/configure.log"
+          {
+            grep -E '^(GMP_ROOT|GMP_INCLUDE_DIRS|GMP_LIBRARIES|GMPXX_LIBRARIES):' "$BUILD_DIR/CMakeCache.txt"
+            ninja -C "$BUILD_DIR" -t commands directional_surface_cell_authority_kernel_tests | grep -E 'gmpxx.*gmp|gmp.*gmpxx' | tail -n 1
+          } | tee "$RUNNER_TEMP/gmp-evidence.txt"
+          grep -qi gmpxx "$RUNNER_TEMP/gmp-evidence.txt"
+          git status --porcelain=v1 | tee "$RUNNER_TEMP/source-status-after-configure.txt"
+          test ! -s "$RUNNER_TEMP/source-status-after-configure.txt"
+
+      - name: Preflight first target, then compile and link approved targets
+        id: build
+        shell: bash
+        run: |
+          set -uo pipefail
+          exec > >(tee -a "$RUNNER_TEMP/activity.log") 2>&1
+          read -r -a TARGETS <<< "${{ inputs.targets }}"
+          test "${#TARGETS[@]}" -gt 0
+          preflight_target="${TARGETS[0]}"
+          echo "$preflight_target" > "$RUNNER_TEMP/preflight-target.txt"
+          set +e
+          cmake --build "$BUILD_DIR" --target "$preflight_target" -- -j2 2>&1 | tee "$RUNNER_TEMP/build.log"
+          preflight_rc=${PIPESTATUS[0]}
+          set -e
+          echo "$preflight_rc" > "$RUNNER_TEMP/preflight-exit-code.txt"
+          echo "preflight_target=$preflight_target"
+          echo "preflight_exit=$preflight_rc"
+          if [ "$preflight_rc" -eq 0 ]; then
+            set +e
+            cmake --build "$BUILD_DIR" --target "${TARGETS[@]}" -- -j2 2>&1 | tee -a "$RUNNER_TEMP/build.log"
+            rc=${PIPESTATUS[0]}
+            set -e
+          else
+            rc="$preflight_rc"
+            echo "full_target_compile=skipped-preflight-failed"
+          fi
+          echo "$rc" > "$RUNNER_TEMP/build-exit-code"
+          echo "compile_exit=$rc" >> "$GITHUB_OUTPUT"
+          echo "build_exit=$rc"
+          git status --porcelain=v1 | tee "$RUNNER_TEMP/source-status-after-build.txt"
+          ccache --show-stats | tee "$RUNNER_TEMP/ccache-stats.txt"
+          echo 'runtimeExecution=false'
+          echo 'No generated Directional binary, test, benchmark, discovery command, ctest, CLI, fuzzer, help/version command, or custom input was executed.'
+          exit 0
+
+      - name: Prepare fixed compiler cache refresh
+        if: always()
+        id: cache_prepare
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CACHE_KEY: ${{ steps.toolchain.outputs.cache_key }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="$RUNNER_TEMP/cache-prune.txt"
+          : > "$OUT"
+
+          case "$GITHUB_EVENT_NAME" in
+            push|workflow_dispatch|repository_dispatch|schedule)
+              cache_write_allowed=true
+              ;;
+            *)
+              cache_write_allowed=false
+              ;;
+          esac
+
+          echo "cache_write_allowed=$cache_write_allowed event=$GITHUB_EVENT_NAME ref=$GITHUB_REF" | tee -a "$OUT" "$RUNNER_TEMP/activity.log"
+          if [ "$cache_write_allowed" != true ]; then
+            echo "cache_save_allowed=false" >> "$GITHUB_OUTPUT"
+            echo "cache_refresh=skipped-readonly-event" | tee -a "$OUT" "$RUNNER_TEMP/activity.log"
+            exit 0
+          fi
+
+          set +e
+          gh api --method GET "repos/$GITHUB_REPOSITORY/actions/caches" -f ref="$GITHUB_REF" -f per_page=100 > "$RUNNER_TEMP/caches.json"
+          list_rc=$?
+          set -e
+          if [ "$list_rc" -ne 0 ]; then
+            echo "cache_save_allowed=false" >> "$GITHUB_OUTPUT"
+            echo "cache_refresh=skipped-list-failed rc=$list_rc" | tee -a "$OUT" "$RUNNER_TEMP/activity.log"
+            exit 0
+          fi
+
+          cache_ids="$(jq -r --arg key "$CACHE_KEY" '.actions_caches[] | select(.key == $key) | .id' "$RUNNER_TEMP/caches.json")"
+
+          for cache_id in $cache_ids; do
+            test -n "$cache_id" || continue
+            cache_key="$(jq -r --argjson id "$cache_id" '.actions_caches[] | select(.id == $id) | .key' "$RUNNER_TEMP/caches.json")"
+            echo "delete_cache_id=$cache_id key=$cache_key" | tee -a "$OUT" "$RUNNER_TEMP/activity.log"
+            set +e
+            gh api --method DELETE "repos/$GITHUB_REPOSITORY/actions/caches/$cache_id"
+            delete_rc=$?
+            set -e
+            if [ "$delete_rc" -ne 0 ]; then
+              echo "cache_save_allowed=false" >> "$GITHUB_OUTPUT"
+              echo "cache_refresh=skipped-delete-failed id=$cache_id rc=$delete_rc" | tee -a "$OUT" "$RUNNER_TEMP/activity.log"
+              exit 0
+            fi
+          done
+
+          echo "cache_save_allowed=true" >> "$GITHUB_OUTPUT"
+          echo "cache_refresh=ready key=$CACHE_KEY" | tee -a "$OUT" "$RUNNER_TEMP/activity.log"
+
+      - name: Save fixed compiler cache
+        if: always() && steps.cache_prepare.outputs.cache_save_allowed == 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ runner.temp }}/directional-ccache
+          key: ${{ steps.toolchain.outputs.cache_key }}
+
+      - name: Package compile evidence
+        if: steps.build.outputs.compile_exit == '0'
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$RUNNER_TEMP/activity.log") 2>&1
+          SOURCE_SHA="$(git rev-parse HEAD)"
+          test "$SOURCE_SHA" = "${{ inputs.source_sha }}"
+          git status --porcelain=v1 | tee "$RUNNER_TEMP/source-status-final.txt"
+          test ! -s "$RUNNER_TEMP/source-status-final.txt"
+          OUT="$RUNNER_TEMP/result"
+          rm -rf "$OUT"
+          mkdir -p "$OUT/metadata" "$OUT/source" "$OUT/bin" "$OUT/lib"
+          echo "$SOURCE_SHA" > "$OUT/metadata/source-commit.txt"
+          git submodule status --recursive > "$OUT/metadata/dependency-revisions.txt"
+          git archive --format=tar.gz -o "$OUT/source/source-$SOURCE_SHA.tar.gz" "$SOURCE_SHA"
+          cp "$RUNNER_TEMP"/source-status-*.txt "$OUT/metadata/"
+          cp "$RUNNER_TEMP/configure.log" "$OUT/metadata/configure.log"
+          cp "$RUNNER_TEMP/build.log" "$OUT/metadata/build.log"
+          cp "$RUNNER_TEMP/build-exit-code" "$OUT/metadata/build-exit-code.txt"
+          cp "$RUNNER_TEMP/preflight-target.txt" "$OUT/metadata/preflight-target.txt"
+          cp "$RUNNER_TEMP/preflight-exit-code.txt" "$OUT/metadata/preflight-exit-code.txt"
+          cp "$RUNNER_TEMP/ccache-stats.txt" "$OUT/metadata/ccache-stats.txt"
+          cp "$RUNNER_TEMP/cache-restore.txt" "$OUT/metadata/cache-restore.txt"
+          cp "$RUNNER_TEMP/cache-prune.txt" "$OUT/metadata/cache-prune.txt"
+          cp "$RUNNER_TEMP/gmp-evidence.txt" "$OUT/metadata/gmp-evidence.txt"
+          cp "$BUILD_DIR/CMakeCache.txt" "$OUT/metadata/CMakeCache.txt"
+          printf '%s\n' \
+            'runtimeExecution=false' \
+            'turnBoundary=Code+Build-only' \
+            'exactArithmeticBackend=GMP' \
+            'preflightCompile=true' \
+            'cachePolicy=compiler-cache-fixed-key-refresh' \
+            'cacheMaxSize=256M' \
+            "cacheKey=${{ steps.toolchain.outputs.cache_key }}" \
+            "cacheScopeRef=$GITHUB_REF" \
+            'semanticContracts=compiled-not-executed' \
+            'manifestExcludesSelf=true' \
+            'buildLocation=runner-temp-out-of-tree' > "$OUT/metadata/command-boundary.txt"
+          echo "${{ inputs.targets }}" | tr ' ' '\n' > "$OUT/metadata/compiled-targets.txt"
+          copy_if_exists() { test ! -f "$1" || cp "$1" "$2/"; }
+          copy_if_exists "$BUILD_DIR/directional_surface_cell_authority_kernel_tests" "$OUT/bin"
+          copy_if_exists "$BUILD_DIR/directional_surface_cell_producer_tests" "$OUT/bin"
+          copy_if_exists "$BUILD_DIR/directional_surface_cell_completion_tests" "$OUT/bin"
+          copy_if_exists "$BUILD_DIR/directional_surface_cell_validation_tests" "$OUT/bin"
+          copy_if_exists "$BUILD_DIR/directional_compiled_api_tests" "$OUT/bin"
+          copy_if_exists "$BUILD_DIR/directional_benchmarks" "$OUT/bin"
+          copy_if_exists "$BUILD_DIR/libdirectional_core.a" "$OUT/lib"
+          copy_if_exists "$BUILD_DIR/libdirectional_pipeline.a" "$OUT/lib"
+          (cd "$OUT" && find . -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS)
+          (cd "$OUT" && sha256sum -c SHA256SUMS)
+          test "$(grep -c 'SHA256SUMS' "$OUT/SHA256SUMS" || true)" -eq 0
+          echo 'manifest_self_verification=pass'
+          echo 'source_status_clean=pass'
+
+      - name: Upload compile result
+        if: steps.build.outputs.compile_exit == '0'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.artifact_prefix }}-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/result
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload persistent activity log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.artifact_prefix }}-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/activity.log
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Propagate compile status
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f "$RUNNER_TEMP/build-exit-code" || { echo 'compile_status=missing'; exit 1; }
+          rc="$(cat "$RUNNER_TEMP/build-exit-code")"
+          echo "compile_status=$rc" | tee -a "$RUNNER_TEMP/activity.log"
+          exit "$rc"

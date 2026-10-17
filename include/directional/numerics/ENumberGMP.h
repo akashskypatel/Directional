@@ -36,6 +36,24 @@ public:
 
   EInt abs() const { return EInt(::abs(value)); }
 
+  /// Number of GMP limbs in the stored magnitude; a deterministic size measure.
+  [[nodiscard]] std::size_t limb_count() const noexcept {
+    return mpz_size(value.get_mpz_t());
+  }
+
+  /**
+   * @brief Deterministic bit-width measure of the stored magnitude.
+   *
+   * Backend-independent size unit shared with the fallback BigInteger backend,
+   * so a magnitude policy expressed in bits means the same thing in either
+   * build. It is never a numeric value.
+   */
+  [[nodiscard]] std::size_t magnitude_bits() const noexcept {
+    return mpz_sgn(value.get_mpz_t()) == 0
+               ? 0U
+               : mpz_sizeinbase(value.get_mpz_t(), 2);
+  }
+
   long long convert() const {
     return value.get_si(); // only if fits in long long
   }

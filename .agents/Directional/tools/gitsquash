@@ -1,0 +1,3 @@
+git reset --soft 82b1bfcd513671b5dccb0593abe74ddacf36779d
+git commit -m "Squash" 
+git push --force-with-lease origin agent/surface_cell_quad/p5-recover-bridge-healing

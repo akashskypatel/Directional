@@ -363,36 +363,61 @@ PYBIND11_MODULE(_directional, module) {
           &directional::pipeline::RemeshOptions::normalizeDirections);
 
   py::class_<directional::pipeline::RemeshResult>(module, "RemeshResult")
-      .def_readonly("success",
-                    &directional::pipeline::RemeshResult::success)
-      .def_readonly("vertices",
-                    &directional::pipeline::RemeshResult::vertices)
-      .def_readonly("degrees",
-                    &directional::pipeline::RemeshResult::degrees)
-      .def_readonly("faces", &directional::pipeline::RemeshResult::faces)
-      .def_readonly("cutVertices",
-                    &directional::pipeline::RemeshResult::cutVertices)
-      .def_readonly("cutFaces",
-                    &directional::pipeline::RemeshResult::cutFaces)
-      .def_readonly("cutFunctions",
-                    &directional::pipeline::RemeshResult::cutFunctions)
-      .def_readonly(
-          "cutCornerFunctions",
-          &directional::pipeline::RemeshResult::cutCornerFunctions)
-      .def_readonly("rawCrossField",
-                    &directional::pipeline::RemeshResult::rawCrossField)
-      .def_readonly(
-          "crossFieldMatching",
-          &directional::pipeline::RemeshResult::crossFieldMatching)
-      .def_readonly(
-          "crossFieldEffort",
-          &directional::pipeline::RemeshResult::crossFieldEffort)
-      .def_readonly(
-          "crossFieldSingularCycles",
-          &directional::pipeline::RemeshResult::crossFieldSingularCycles)
-      .def_readonly(
-          "crossFieldSingularIndices",
-          &directional::pipeline::RemeshResult::crossFieldSingularIndices);
+      .def_property_readonly("is_produced",
+                             &directional::pipeline::RemeshResult::is_produced)
+      .def_property_readonly("is_rejected",
+                             &directional::pipeline::RemeshResult::is_rejected)
+      .def_property_readonly(
+          "is_not_applicable",
+          &directional::pipeline::RemeshResult::is_not_applicable)
+      .def_property_readonly("vertices",
+          [](const directional::pipeline::RemeshResult &result) {
+            return result.product().vertices;
+          })
+      .def_property_readonly("degrees",
+          [](const directional::pipeline::RemeshResult &result) {
+            return result.product().degrees;
+          })
+      .def_property_readonly("faces",
+          [](const directional::pipeline::RemeshResult &result) {
+            return result.product().faces;
+          })
+      .def_property_readonly("cutVertices",
+          [](const directional::pipeline::RemeshResult &result) {
+            return result.product().cutVertices;
+          })
+      .def_property_readonly("cutFaces",
+          [](const directional::pipeline::RemeshResult &result) {
+            return result.product().cutFaces;
+          })
+      .def_property_readonly("cutFunctions",
+          [](const directional::pipeline::RemeshResult &result) {
+            return result.product().cutFunctions;
+          })
+      .def_property_readonly("cutCornerFunctions",
+          [](const directional::pipeline::RemeshResult &result) {
+            return result.product().cutCornerFunctions;
+          })
+      .def_property_readonly("rawCrossField",
+          [](const directional::pipeline::RemeshResult &result) {
+            return result.product().rawCrossField;
+          })
+      .def_property_readonly("crossFieldMatching",
+          [](const directional::pipeline::RemeshResult &result) {
+            return result.product().crossFieldMatching;
+          })
+      .def_property_readonly("crossFieldEffort",
+          [](const directional::pipeline::RemeshResult &result) {
+            return result.product().crossFieldEffort;
+          })
+      .def_property_readonly("crossFieldSingularCycles",
+          [](const directional::pipeline::RemeshResult &result) {
+            return result.product().crossFieldSingularCycles;
+          })
+      .def_property_readonly("crossFieldSingularIndices",
+          [](const directional::pipeline::RemeshResult &result) {
+            return result.product().crossFieldSingularIndices;
+          });
 
   module.def(
       "remesh_from_raw_cross_field",
