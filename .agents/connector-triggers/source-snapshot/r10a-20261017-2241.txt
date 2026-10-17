@@ -1,1 +1,0 @@
-R10A definition-only source inventory; snapshot exact trigger SHA. Remove marker after evidence is verified.
