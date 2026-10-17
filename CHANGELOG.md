@@ -1,3 +1,7 @@
+## 2026-10-17 — User-authorized documentation housekeeping queued for the next turn
+
+- The user explicitly authorized, as pre-work for `M6-CP3-DEFN-R10-RAIL-INTERIOR-VERTEX-ENDPOINT-SPEC`: re-baselining `tools/review_check.py` to the rewrite `8b7299b43`; fixing `ROADMAP.md:7`; and making root `CHANGELOG.md` the only changelog by losslessly moving and then deleting `.agents/Directional/CHANGELOG.md`. Scope and completion criteria are in the handoff.
+
 ## 2026-10-17 — RA-81: TB10 reviewed; endpoint contract lacks an open-rail interior-vertex case
 
 - CB10/TB10 accepted as diagnostic evidence (no promotion). Re-derived from raw logs: carrier-edge membership 21/21, terminal-contact membership 0/21. Vertex `4` is the interior vertex of the open rail `1–4–7`, which no RA-79 V/I/C branch admits; RA-79 amended (incomplete).
