@@ -1,3 +1,7 @@
+## 2026-10-17 — Rail-interior endpoint rule specified (R10B)
+
+Documents-only contract for independent source-chain witness and symmetric endpoint/route checking; independent Review pending. No source, test, selector, runtime or accepted regression-gate changes. See `.agents/Directional/Architecture_M6_CP3_R10B_Rail_Interior_Vertex_Endpoint_Rule_20261017.md`.
+
 ## 2026-10-17 — RA-83: R10A witness census reviewed; interior-rail-vertex rule next
 
 - R10A accepted as facts on a full clone (`boundary`, `ledgers` pass; drift audit 0 errors). Two-layer verifier rejection confirmed; star incidence is seeded only for published terminals.

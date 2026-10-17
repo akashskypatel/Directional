@@ -30,59 +30,39 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | Patch Application Strategy | `.agents/Directional/Patch_Application_Strategy.md` |
 | Mandatory End Checklist | `.agents/Directional/Mandatory_End_Checklist.md` |
 
-## Current immutable authority — 2026-10-17
+## Current immutable authority — 2026-10-17 (R10B Definition authored; independent Review next)
 
-| Topic | Status / owner |
+| Topic | Authority |
 |---|---|
-| Branch | `agent/surface_cell_quad/p5-recover-bridge-healing` (PR #8). Refetch HEAD on resume; a handoff edit is **not semantic evidence**. |
-| Milestones | M0–M5 CLOSED. M6 CP1 and CP2 CLOSED; **M6 CP3 OPEN**. M7/M8 planned; see `ROADMAP.md`. |
-| Last accepted runtime | **M6 CP2 491/491 PASS**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`; see `M6_CP2_Closure_Record.md`. |
-| CP3 entry | Frozen gate **497** identities (30 + 12 + 449 + 6). R3 **403 PASS / 94 RED**, independently rejected. No CP3 gate is accepted. |
-| Latest candidate | TB10 `M6-CP3-TB10-R9-CARRIER-ENDPOINT-SUBCONDITION-HARVEST`: **44/44 RED**, zero missing, 48 diagnostic records; accepted as diagnostic evidence by RA-81. **Non-stable; no promotion, selector497 execution, or new gate credit.** |
-| Exact evidence | Source `d938ecb57e1040c2a73d5d25c4a613414556cb18` (unchanged at HEAD in `src`/`include`/`tests`); compiled artifact `12062565622`; run `38941839640`; result `12062873272`; ZIP SHA-256 `4db22a924f31a7bc6fdf1575a66849a2f660a760003e03e26e7f9277ac200513`. See `Architecture_M6_CP3_TB10_Carrier_Endpoint_Subcondition_Harvest_Report_20261016.md`. |
-| Reviewed findings (RA-81–RA-83) | An endpoint at an **interior vertex of an open rail** (fixture rail 1–4–7, vertex 4) is admitted by no branch. The verifier rejects it per endpoint (`SurfaceCellTracing.cpp:8699-8721`) **and** at route level (`:8597-8614`: an open-rail front needs a published terminal end), and seeds star incidence only for published terminals (`:8495-8519`). The consumer has no route-level requirement, so it can certify an I–I front that publication then rejects (RA-83.2). The ordered open-rail chain already reaches the consumer (`SurfaceCellTracingOptions::authoritativeRails`, unused there) but not the verifier, whose input projection keeps only an open rail's two ends (`RemeshPipeline.cpp:9756-9765`; RA-83.3). Facts: `Architecture_M6_CP3_R10A_Rail_Interior_Vertex_Witness_Census_20261017.md`; review: `Architecture_M6_CP3_R10A_Witness_Census_Review_Decision.md`. No remedy approved. |
-| Open blockers | `RP-01` open, owned by the endpoint contract (per endpoint and route level); downstream `RP-02` unentered; Gate C suspended. Sole produced-witness debt: M6 `G4-B002` closed-complex candidate extraction. Stable accounting **66 events / 17 categories / 49 recurrences**, debt **1**; see `Regression_Root_Cause_Tracker.md`. |
-| Lifecycle | Root `STATUS`: `M6-CP3-DEFN-R10A-RAIL-INTERIOR-VERTEX-WITNESS-CENSUS-REV` COMPLETE, successor `M6-CP3-DEFN-R10B-RAIL-INTERIOR-VERTEX-ENDPOINT-RULE`. History-dependent gates are Review gates (RA-82.3): implementation turns run `document_drift_audit.py --root .` only. |
+| Branch | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; refetch head at next entry. |
+| Milestones | M0–M5 CLOSED; M6 CP1/CP2 CLOSED; **M6 CP3 OPEN**, M7/M8 planned (`ROADMAP.md`). |
+| Accepted baseline | M6 CP2 **491/491** PASS, package `11391685901` (source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`). CP3 selector 497 unchanged; R3 **403/497**, independently rejected. |
+| Latest runtime | TB10 44/44 RED, 21 one-hot vertex records, 0/21 contact membership and 21/21 carrier endpoint membership, candidate evidence only. Run `38941839640`, result `12062873272`; compile artifact `12062565622`, source `d938ecb57e1040c2a73d5d25c4a613414556cb18`. |
+| R10A/RA-83 | Interior rail vertex 4 on open rail 1–4–7 lacks V/I/C classification; verifier rejects at endpoint and route layers, while consumer can certify I–I. Ordered rail chain reaches consumer but is dropped from verifier projection. Source-owned facts in `Architecture_M6_CP3_R10A_Rail_Interior_Vertex_Witness_Census_20261017.md`; RA-83 decision in `Architecture_M6_CP3_R10A_Witness_Census_Review_Decision.md`. |
+| R10B contract | `Architecture_M6_CP3_R10B_Rail_Interior_Vertex_Endpoint_Rule_20261017.md` (Definition, pending Review). Choose independent ordered open-rail chain; exact R vertex + two named hard spokes + unique disjoint A3 sectors; allow T–R, I–R, R–R only conditionally, reject I–I symmetrically; retain T–T/T–I, strict I rationals and closed-rail C. Static source snapshot `df37ffc191ee3eaa8f27c9aeade25b2804f2a3b8`, run `39080614250`, artifact `12118283137`, 5,646/5,646 hashes. **No runtime/acceptance claim.** |
+| Open accounting | `RP-01` unresolved; `RP-02` UNREACHED; Gate C suspended. Stable **66 events / 17 categories / 49 recurrences**, debt **1**; no selector, source or test changes. |
+| Turn lifecycle | Root `STATUS` to be finalized by this turn. Next exact turn upon completion: `M6-CP3-DEFN-R10B-RAIL-INTERIOR-VERTEX-ENDPOINT-RULE-REV`. History gates belong to Review (RA-82.3). |
 
-## Mandatory next turn — `M6-CP3-DEFN-R10B-RAIL-INTERIOR-VERTEX-ENDPOINT-RULE` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-DEFN-R10B-RAIL-INTERIOR-VERTEX-ENDPOINT-RULE-REV` — EXACT NEXT, conditional on R10B closeout
 
-- **Type / owner:** `DEFN`, documents only; authorized by RA-83 (`Architecture_M6_CP3_R10A_Witness_Census_Review_Decision.md`).
-- **Objective:** state **one** admission rule for a front endpoint at an interior vertex of an open rail (R) that both checkers apply identically, at both verifier layers — or establish that R must be rejected and say what then produces a rail's middle fronts.
-- **Read before work:** RA-83 decision; the R10A census; `Architecture_M6_CP3_R9B_Endpoint_Equivalence_Contract_Specification_20261016.md` (contract being extended); `Architecture_M6_CP3_R9A_Endpoint_Face_Comparison_Census_20261016.md`; Frozen RA-65.5, RA-68.3, RA-72.5, RA-78.4, RA-79, RA-83.
-- **Deliverable:** one document, `Architecture_M6_CP3_R10B_Rail_Interior_Vertex_Endpoint_Rule_20261017.md`:
-  1. **Witness source.** Which independent witness proves "R is an interior vertex of rail X, between rail edges e1 and e2". Compare (a) data already at both checkers (two hard spokes at R, the carrier) — say what it cannot prove — with (b) the ordered open-rail chain, which the consumer already holds (`SurfaceCellTracingOptions::authoritativeRails`, `SurfaceCellTracing.cpp:19059`) and the verifier lacks; say how it would reach `SurfacePhaseFrontProduct::make` (`:12858-12869`) — through `hard_rail_source_provenance_from_rails` (`RemeshPipeline.cpp:9756-9765`, as closed rails already are at `:9741-9754`) or otherwise. Choose one; classify it as repair or relocation (RA-72.5) and against the RA-78.4 / gate C boundary.
-  2. **Per-endpoint rule** for both checkers (consumer `SurfaceCellTracing.cpp:19397-19425`; verifier `:8699-8721`), as a conjunction; each clause cites an R10A table-2 row or a `file:line`. Say how the verifier's star incidence (`:8495-8519`) covers R vertices.
-  3. **Route-level rule:** what replaces or extends the verifier's "at least one published terminal" (`:8597-8614`) for fronts with no terminal end, and how the I–I disagreement (RA-83.2) closes. Both checkers admit or both reject.
-  4. **Outcome matrix:** T–T, T–I, I–I, T–R, I–R, R–R × consumer/verifier after the rule, with no row where they differ. T–T and T–I unchanged. At least one R endpoint the rule still rejects, with the clause that rejects it.
-  5. **Code sites and test obligations:** list each code site the rule touches (`file:line`) grouped into independently testable units, and for each unit the positive and tamper cases with expected outcomes. Existing tests that must keep their outcome include `SurfaceCellsPhase10Tests.cpp:7145-7187`. Names and expectations only; no code.
-- **In scope:** static source reading; the one rule document; in-place updates to this handoff, `TODO.md` and the tracker; one short root `CHANGELOG.md` entry.
-- **Out of scope:** any source, test, fixture, selector, harness, workflow, tool or benchmark change; compile or runtime; any epsilon or tolerance; weakening `unique_terminal_star_path` or accepting `Missing`/`Ambiguous`; a witness authored by the A4 producer (RA-65.5) or a producer-authored vertex-star certificate (gate C suspended); relaxing branch I's exact equality; changing T–T or T–I outcomes.
-- **Gates (RA-82.3):** run `document_drift_audit.py --root .` and paste its last line; report `review_check.py` and the `--base` audit as *deferred to Review*.
-- **Success evidence:** items 1–5 present; every rule clause cites a witness; the matrix has no consumer/verifier disagreement.
-- **On success:** `M6-CP3-DEFN-R10B-RAIL-INTERIOR-VERTEX-ENDPOINT-RULE-REV`.
-- **On failure/blocker:** `UNKNOWN — STOP`; record the boundary reached. A rule for the per-endpoint layer alone is **not** a partial success unless it states why the route layer cannot yet be decided.
+- **Type:** independent Review of the R10B document; **not** a code/build or test/benchmark turn.
+- **First:** verify the delivered rule against RA-83, R10A census, R9B branch V/I/C and RA-65.5/68.3/72.5/78.4; inspect exact producer→consumer→checked-factory paths in frozen source and the new R10B document.
+- **Decide:** is the upstream ordered open-rail chain independent, source-authenticatable and sufficient to add R without a producer-authored vertex-star witness? Does the same per-endpoint and route-level anchor rule reject I–I in both checkers while preserving T–T, T–I and tamper negatives? Are T–R / I–R / R–R conditional gates complete, or is further independent witness required?
+- **Check:** independently enumerate code sites and separate positive/negative test oracles in groups A–E; review the six-row outcome matrix and explicit R negatives. Verify no forbidden source/selector/acceptance modifications, no documentation drift, and full-history `review_check.py authority|boundary|ledgers` plus `document_drift_audit.py --base` (RA-82.3). The Definition's `--root` audit is not a substitute.
+- **Disposition:** accept, amend, or reject with cited evidence. **Only an accepted Review** may authorize narrowly split Code + Build units; do not invent the next code turn or change frozen accounting. On a blocking design conflict, keep the R10B Review open and record the specific unresolved condition.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition |
 |---|---|---|
-| 1 — next | `M6-CP3-DEFN-R10B-RAIL-INTERIOR-VERTEX-ENDPOINT-RULE` | Documents only: one rule for both checkers and both verifier layers, outcome matrix, code sites and test obligations. No code. |
-| 2 — conditional | `M6-CP3-DEFN-R10B-RAIL-INTERIOR-VERTEX-ENDPOINT-RULE-REV` | Only after step 1 delivers. That Review splits any authorized code into narrow Code + Build units, one per code-site group. |
+| 1 — current Definition | `M6-CP3-DEFN-R10B-RAIL-INTERIOR-VERTEX-ENDPOINT-RULE` | Documents-only proposal and closeout; no implementation. |
+| 2 — next Review | `M6-CP3-DEFN-R10B-RAIL-INTERIOR-VERTEX-ENDPOINT-RULE-REV` | Only after step 1 is complete; independently review rule, code sites, tests and full-history gates. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **plan**. Use turn-based-coding-agent **Definition/plan** guidance, **not** its Code + Build instructions.
+`load_next`: **independent Review**. Use turn-based-coding-agent Review guidance; no Code + Build or Test + Benchmark is authorized.
 
-Minimum successor context **after** mandatory durable policies/start checklist:
-
-0. `.agents/Directional/ORIENTATION.md` — read first for project/fixtures.
-1. `.agents/Directional/ROADMAP.md` — milestone position only.
-2. This handoff, repository-root `STATUS`, and `TODO.md` — live authority/lifecycle.
-3. `.agents/Directional/Architecture_M6_CP3_R10A_Witness_Census_Review_Decision.md` (RA-83, the authorizing review) and `Architecture_M6_CP3_R10A_Rail_Interior_Vertex_Witness_Census_20261017.md` (the accepted facts).
-4. `.agents/Directional/Architecture_M6_CP3_R9B_Endpoint_Equivalence_Contract_Specification_20261016.md` and `Architecture_M6_CP3_R9A_Endpoint_Face_Comparison_Census_20261016.md` — the contract being extended and both checkers' comparison sites.
-5. `.agents/Directional/Architecture_M6_Frozen_Definitions.md` (RA-65.5, RA-68.3, RA-72.5, RA-78.4, RA-79, RA-83) and `Regression_Root_Cause_Tracker.md`; source `SurfaceCellTracing.cpp:8495-8890,19397-20245`, `RemeshPipeline.cpp:9404-9428,9732-9767`.
-
-**Review tooling:** `.agents/Directional/tools/`: `review_check.py authority|boundary|ledgers` and `document_drift_audit.py --base` need full Git history and run at Review only (RA-82.3); implementation turns run `document_drift_audit.py --root .`. `selector_probe.py` and `fixture_probe.py` for selectors and fixture topology. See `tools/README.md`.
+Minimum R10B Review context after mandatory policies/start checklist: `ORIENTATION.md`, `ROADMAP.md`, this handoff, `STATUS`, `TODO.md`, `Architecture_M6_CP3_R10B_Rail_Interior_Vertex_Endpoint_Rule_20261017.md`, `Architecture_M6_CP3_R10A_Witness_Census_Review_Decision.md`, R10A census, R9B contract, R9A census, `Architecture_M6_Frozen_Definitions.md` (RA-65.5/68.3/72.5/78.4/79/83), `Regression_Root_Cause_Tracker.md`, and both consumer/verifier source windows cited in R10B. The full-history Review checks require a genuine Git history, not the `.git`-free ChatGPT Web snapshot.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
