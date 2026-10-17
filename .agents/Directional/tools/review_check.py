@@ -15,14 +15,13 @@ Two things every REVIEW turn does by hand, now one command each:
   boundary    The pre-commit gate for a REVIEW turn. Proves the turn mutated no product,
               test, fixture, benchmark, build or selector byte; that every selector still
               hashes to its committed value; and that durable text retains its
-              committed-history high-water line floor. It detects uncommitted loss.
+              rewrite-baseline durable section preservation. It detects uncommitted loss.
 
-  ledgers     Scans COMMITTED history in BASE..HEAD for shrinkage of protected
-              durable history (any loss for handoff/orientation; >10% for other ledgers).
-              `boundary` cannot
-              catch a ledger overwrite committed by another turn, because HEAD already
-              contains it. This is the check that would have caught ce9bf3cb and 0043dd4c.
-              Pass the previous Review's final commit as BASE.
+  ledgers     Scans committed history since the authorized documentation rewrite
+              8b7299b43 for shrinkage of append-only root CHANGELOG and LESSONS.
+              In-place maintained handoff/orientation/tracker instead preserve the
+              rewrite-baseline DURABLE/DO NOT DELETE sections via `boundary`.
+              Pass 8b7299b43 as BASE (earlier history is intentionally excluded).
 
 Usage
 -----
@@ -43,23 +42,16 @@ import sys
 
 CODE_SURFACES = ["src", "include", "tests", "benchmarks", "CMakeLists.txt", "cmake"]
 
-DURABLE_FILES = {
-    ".agents/Directional/Future_Chat_Session_Handoff.md": "DURABLE",
-    ".agents/Directional/ORIENTATION.md": "DURABLE",
-    # Also checked against the high-water committed-history text floor below.
-    ".agents/Directional/Regression_Root_Cause_Tracker.md": "DURABLE",
-}
-
-# Append-only durable ledgers (RETENTION_POLICY.md). Whole-file writes overwrote the first two
-# at ce9bf3cb / 0043dd4c on 2026-09-22; both were restored at M5-CP3-TB2-REV.
-APPEND_ONLY_LEDGERS = [
-    ".agents/Directional/Regression_Root_Cause_Tracker.md",
-    ".agents/Directional/CHANGELOG.md",
-    ".agents/Directional/LESSONS.md",
-    "CHANGELOG.md",
+REWRITE_BASE = "8b7299b43"  # authorized in R10 handoff; do not infer from current HEAD
+DURABLE_FILES = (
     ".agents/Directional/Future_Chat_Session_Handoff.md",
     ".agents/Directional/ORIENTATION.md",
-]
+    ".agents/Directional/Regression_Root_Cause_Tracker.md",
+)
+# These two append-only histories keep strict line-count non-shrinkage from REWRITE_BASE.
+APPEND_ONLY_LEDGERS = ("CHANGELOG.md", ".agents/Directional/LESSONS.md")
+DURABLE_HEADING = re.compile(r"^#{1,6}\s+.*(?:DURABLE|DO NOT DELETE).*$", re.M)
+
 
 FAILED = []
 
@@ -184,38 +176,32 @@ def cmd_boundary(args):
         ok = live.startswith(want.rstrip(".")) or live == want
         report(ok, "selector %d matches declared hash" % n, live)
 
-    for rel, marker in DURABLE_FILES.items():
+    # The user-approved rewrite intentionally shortened these documents. Comparing
+    # lengths or heading counts to every historical revision would falsely reject it.
+    # Instead preserve EACH protected section heading recorded at the rewrite base.
+    baseline = git("cat-file", "-t", REWRITE_BASE)
+    base_valid = baseline.returncode == 0 and baseline.stdout.strip() == "commit"
+    ancestor = git("merge-base", "--is-ancestor", REWRITE_BASE, "HEAD")
+    report(base_valid and ancestor.returncode == 0, "durable rewrite baseline exists and is ancestor",
+           REWRITE_BASE)
+    for rel in DURABLE_FILES:
         path = os.path.join(repo_root(), rel)
-        if not os.path.exists(path):
-            report(False, "durable file present: %s" % os.path.basename(rel), "missing")
+        exists = os.path.isfile(path)
+        report(exists, "durable file present: %s" % os.path.basename(rel))
+        if not exists:
             continue
-        live_text = open(path, encoding="utf-8", errors="replace").read()
-        # A marker that survives a whole-file overwrite cannot authenticate the
-        # preserved history. Take the maximum line count over committed versions,
-        # including HEAD, so no later commit can lower the baseline silently.
-        history = git("rev-list", "HEAD", "--", rel)
-        revisions = history.stdout.split()
-        # One blob read per revision supplies both independent history floors.
-        # Do not convert a missing history (or failed git read) into a passing 0.
-        metrics = []
-        for rev in revisions:
-            blob = git("show", "%s:%s" % (rev, rel))
-            if blob.returncode == 0:
-                metrics.append((blob.stdout.count("\n"),
-                                sum(line.startswith("## ") for line in blob.stdout.splitlines())))
-        floor = max((count for count, _ in metrics), default=0)
-        headings_floor = max((count for _, count in metrics), default=0)
-        live_lines = live_text.count("\n")
-        live_headings = sum(line.startswith("## ") for line in live_text.splitlines())
-        history_valid = history.returncode == 0 and bool(revisions)
-        report(history_valid and floor > 0 and live_lines >= floor,
-               "durable high-water in %s" % os.path.basename(rel),
-               "%d >= %d" % (live_lines, floor))
-        report(history_valid and headings_floor > 0 and live_headings >= headings_floor,
-               "durable heading high-water in %s" % os.path.basename(rel),
-               "%d >= %d" % (live_headings, headings_floor))
-        report(marker in live_text, "durable marker in %s" % os.path.basename(rel),
-               "present" if marker in live_text else "missing")
+        baseline_blob = git("show", "%s:%s" % (REWRITE_BASE, rel))
+        baseline_ok = base_valid and baseline_blob.returncode == 0
+        report(baseline_ok, "durable rewrite source: %s" % os.path.basename(rel))
+        if not baseline_ok:
+            continue  # lack of baseline is a FAILURE, not permission to omit the check
+        original = set(DURABLE_HEADING.findall(baseline_blob.stdout))
+        live = open(path, encoding="utf-8", errors="replace").read()
+        current = set(DURABLE_HEADING.findall(live))
+        missing = sorted(original - current)
+        report(not missing, "rewrite durable sections in %s" % os.path.basename(rel),
+               "preserved %d/%d" % (len(original) - len(missing), len(original))
+               if not missing else "MISSING: " + "; ".join(missing))
 
     docs = [p for p in paths if not is_code(p) and "Required_Green_Selector_" not in p]
     print("\n  documents changed this turn (%d):" % len(docs))
@@ -229,16 +215,32 @@ def _line_count(rev, path):
 
 
 def cmd_ledgers(args):
-    print("append-only ledger shrink scan %s..HEAD" % args.base)
+    print("append-only ledger shrink scan %s..HEAD" % REWRITE_BASE)
+    baseline = git("cat-file", "-t", REWRITE_BASE)
+    ancestor = git("merge-base", "--is-ancestor", REWRITE_BASE, "HEAD")
+    report(baseline.returncode == 0 and baseline.stdout.strip() == "commit"
+           and ancestor.returncode == 0, "ledger rewrite baseline authority", REWRITE_BASE)
+    # A later supplied --base may not exempt shrinkage since REWRITE_BASE.
     for path in APPEND_ONLY_LEDGERS:
-        revs = git("rev-list", "--reverse", "%s..HEAD" % args.base, "--", path)
+        before_base = _line_count(REWRITE_BASE, path)
+        revs = git("rev-list", "--reverse", "%s..HEAD" % REWRITE_BASE, "--", path)
+        report(before_base is not None and revs.returncode == 0,
+               "ledger baseline present: %s" % path)
         shrinks = []
-        for rev in [r for r in revs.stdout.split() if r]:
-            before, after = _line_count(rev + "~1", path), _line_count(rev, path)
-            protected_history = path in DURABLE_FILES
-            if before and after is not None and (after < before if protected_history
-                                                  else after < before * 0.9):
-                shrinks.append("%s %d->%d" % (rev[:8], before, after))
+        if before_base is None or revs.returncode != 0:
+            continue
+        previous = before_base
+        for rev in revs.stdout.split():
+            after = _line_count(rev, path)
+            if after is None:
+                shrinks.append("%s deleted" % rev[:8])
+                continue
+            if after < previous:
+                shrinks.append("%s %d->%d" % (rev[:8], previous, after))
+            previous = after
+        live = _line_count("HEAD", path)
+        if live is None:
+            shrinks.append("missing at HEAD")
         report(not shrinks, "no historical shrink of %s" % path,
                "clean" if not shrinks else "; ".join(shrinks))
 
@@ -257,7 +259,7 @@ def main():
     p.set_defaults(fn=cmd_boundary)
 
     p = subs.add_parser("ledgers")
-    p.add_argument("--base", required=True)
+    p.add_argument("--base", required=True, help="Historical caller base; ledger scan always starts at 8b7299b43")
     p.set_defaults(fn=cmd_ledgers)
 
     args = parser.parse_args()

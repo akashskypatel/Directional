@@ -40,6 +40,7 @@ grants no authority — where it disagrees with a selector file, **the selector 
 ```
 python3 review_check.py authority <semantic-source-sha>
 python3 review_check.py boundary [--expect-selector N=SHA ...]
+python3 review_check.py ledgers --base 8b7299b43
 ```
 
 **`authority`** is the first thing a review turn should run. It proves the declared
@@ -49,8 +50,8 @@ the working tree as evidence about the immutable package. Without it, quoting `H
 in a review record proves nothing about what was actually tested.
 
 **`boundary`** is the gate before committing a review turn: no product/test/fixture/build
-mutation, no selector mutation, every selector still hashing to its committed value, durable
-section markers preserved, and a printed list of exactly which documents the turn changed.
+mutation, no selector mutation, every selector still hashing to its committed value, all `DURABLE` / `DO NOT DELETE` section headings at rewrite baseline
+`8b7299b43` preserved, and a printed list of exactly which documents the turn changed.
 Exit code 1 on any failure, so it can gate a commit.
 
 ## `selector_probe.py`

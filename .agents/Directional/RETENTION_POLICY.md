@@ -31,7 +31,7 @@ The following records are durable project authority and must be retained unless 
 - `.agents/Directional/M3_CP3_Closure_Record.md`
 - `.agents/Directional/M4_CP1_Closure_Record.md`
 - `.agents/Directional/Architecture_M3_CP4_DEFN_Frozen_Definitions.md`
-- `.agents/Directional/CHANGELOG.md`
+- `CHANGELOG.md`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`
 - `.agents/Directional/AGENT_POLICY.md`
 - `TODO.md`
@@ -50,7 +50,7 @@ In addition to the durable set, retain only the current authoritative evidence/r
 
 ## Handoff, TODO, and changelog ownership
 
-`.agents/Directional/CHANGELOG.md` is the durable historical record for completed changes and immutable acceptance checkpoints. `TODO.md` is the durable task index. Maintain both separately from the handoff.
+`CHANGELOG.md` is the durable historical record for completed changes and immutable acceptance checkpoints. `TODO.md` is the durable task index. Maintain both separately from the handoff.
 
 - `Future_Chat_Session_Handoff.md` contains the mandatory next action, current immutable authority, live blockers, resume-critical lessons, durable operating sections/checklists, and references needed by a new agent to continue correctly.
 - `TODO.md` contains active, pending, blocked, deferred, and completed task status needed to track the product, architecture, and testing roadmaps without duplicating detailed evidence.
