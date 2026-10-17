@@ -1,11 +1,11 @@
-## CURRENT — R10 pre-work verified (RA-82); interior-rail-vertex witness census next (2026-10-17)
+## CURRENT — R10A witness census authored; independent Review next (2026-10-17)
 
 - [x] `M6-CP3-TB10-R9-CARRIER-ENDPOINT-SUBCONDITION-HARVEST`: TB10 immutable run [38941839640](https://github.com/akashskypatel/Directional/actions/runs/38941839640), result `12062873272` ZIP SHA-256 `4db22a924f31a7bc6fdf1575a66849a2f660a760003e03e26e7f9277ac200513`; compiled source `d938ecb57e1040c2a73d5d25c4a613414556cb18`, artifact `12062565622`. 44/44 selected, 44 RED, 0 missing, 48 A3 observations, 21 exact-one-hot vertices: **contact-endpoint membership 0/21; carrier-edge membership 21/21; composite 0/21**. Example decoded vertex 4, published contact endpoints {1,7}, carrier edge {1,4}, certificate rail 2. Immutable postflight passed, 28/28 package hashes, compile/relink/benchmarks/selector497 not executed. Evidence is candidate/non-stable and does not modify 66/17/49, debt1, CP2 491/491, R3 403/497, selector497; RP-01 open, RP-02 UNREACHED. Independent Review next (ID UNKNOWN); no repair authorized.
 - [x] Independent Review (RA-81): TB10 accepted as diagnostic evidence; vertex 4 is the interior vertex of the open rail 1–4–7 and no V/I/C branch admits it. Record: `Architecture_M6_CP3_R9_Carrier_Endpoint_Subcondition_Review_Decision.md`.
 - [x] R10 pre-work (`0660af9d1`, user-authorized): `review_check.py` re-baselined to `8b7299b43`; `ROADMAP.md:7` link fixed; root `CHANGELOG.md` is the only changelog. The R10 turn then blocked: its snapshot has no `.git`, so it could not run the history checks.
 - [x] Review (RA-82): pre-work verified on a full clone — `boundary` and `ledgers` pass, drift audit 0 errors, 433/433 changelog identifiers kept. History-dependent gates are now Review gates. The verifier rejects an interior-rail-vertex endpoint in two layers (route level and per endpoint). R10 split into R10A/R10B. Record: `Architecture_M6_CP3_R10_Prework_Verification_Review_Decision.md`.
-- [ ] **NEXT** — `M6-CP3-DEFN-R10A-RAIL-INTERIOR-VERTEX-WITNESS-CENSUS` (documents only, facts only): rejection trace per checker for front shapes T–R, R–R, I–R plus controls; witness inventory with publisher or *absent*; the star-path answer at a two-hard-edge vertex. No rule.
-- [ ] Then `M6-CP3-DEFN-R10A-RAIL-INTERIOR-VERTEX-WITNESS-CENSUS-REV`. Planned, not authorized (RA-82.5): R10B rule → its Review → code only if that Review authorizes it.
+- [x] `M6-CP3-DEFN-R10A-RAIL-INTERIOR-VERTEX-WITNESS-CENSUS`: source-only, two-table rejection/witness census and conditional two-hard-spoke answer; `Architecture_M6_CP3_R10A_Rail_Interior_Vertex_Witness_Census_20261017.md`. No rule, runtime, build or code change.
+- [ ] **NEXT** — `M6-CP3-DEFN-R10A-RAIL-INTERIOR-VERTEX-WITNESS-CENSUS-REV`: independent review of every citation, witness independence, source-derived outcome and required history gates. R10B remains conditional; no code authorized.
 
 ---
 
