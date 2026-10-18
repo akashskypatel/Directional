@@ -1,3 +1,7 @@
+## 2026-10-18 — TB13A artifact-only gates passed; U3 scoped closure
+
+- [Run 39121449664](https://github.com/akashskypatel/Directional/actions/runs/39121449664), result 12134411966: 2/2 gate PASS; four unchanged expected B2/B3 diagnostic RED; 10/10 checksums, no falsifier or missing selection. No compile, relink, benchmark, source, test, fixture or selector497 modifications. U3 closed; B2 U4/U5 and B3 U6 remain. Next TB13C selector497.
+
 ## 2026-10-18 — CB13A truth-table row corrected and compiled; RA-89 closeout by Review; TB13A next
 
 - CB13A (test-only, RA-88.4) flips the `[4-7, 1-4]` row to true and adds reverse T7–T1 (true), T1–T7 on the reverse walk (false) and the backtrack `[1-4, 1-4]` (false). Source `e88ac65ffcf87548138d1c56f2cc6ed4a3d8177b`; compile [run 39117126811](https://github.com/akashskypatel/Directional/actions/runs/39117126811); package `12132184878`, ZIP SHA-256 `36197dffa91b5dbb3a36d589cab314e95e4d7d24e9121617ed17f59256f2b072`; eight GMP/GMPXX targets; `runtimeExecution=false`.
