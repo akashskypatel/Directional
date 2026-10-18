@@ -1,12 +1,14 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb13-closure-docs-20261018-01",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb13-closure-docs-apply",
-  "file_id": "1OSb-AWxXEPDF_mNC-pZYNdDFL3Cq5HfK",
-  "patch_sha256": "37649e5be815a64adf6ed7350bde63bde341722dd5d980ce74ebc004c624ae8a",
-  "base_sha": "8ea30b55a8dd981e90845a28a4c1b0597dcb5033",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "Record CB13 compile verification and hand off TB13",
+  "request_id": "m6-cp3-tb13-r10-chain-interval-20261018-01",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb13-chain-interval-harvest",
+  "executor_sha": "157145f3e2f1cf5a500dfb8d8b2bc2ce3fdd9272",
+  "semantic_source_sha": "70217cc2bf7d257bebd2969e1aa56b5a43326a70",
+  "turn_id": "M6-CP3-TB13-R10-OPEN-RAIL-CHAIN-INTERVAL-ROUTE",
+  "harness_path": ".agents/Directional/tools/m6_cp3_r10_open_rail_chain_interval_harness.sh",
+  "harness_sha256": "2cb9ef9e8799ed9fd704f93109c283f082884a4ee4e2489a0434e9021e487ae7",
+  "environment": {},
+  "artifact_prefix": "m6-cp3-tb13-chain-interval",
   "retention_days": 14
 }
