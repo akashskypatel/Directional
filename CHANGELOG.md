@@ -1,3 +1,8 @@
+## 2026-10-18 — CB11 shared open-rail route anchor compiled (U1)
+
+- Code and tests committed at semantic source `9432aa05ef4719cbea912ae0feb2c5508c4e497a`: one pure anchor predicate shared by factory and consumer; consumer now rejects an open-rail route missing a terminal anchor before publication. Closed rails, endpoint R admission and selector497 unchanged.
+- Eight-target GMP/GMPXX compile [39085601323](https://github.com/akashskypatel/Directional/actions/runs/39085601323) GREEN; result artifact `12121016836`, SHA-256 `e92158729bf4cfc13432678e8a05cffba4d922feca6e902d8154a535ab1f2676`; manifest 28/28, source clean, `runtimeExecution=false`. Test binaries compiled but **not executed**. Independent runtime gate is `M6-CP3-TB11-R10-OPEN-RAIL-ROUTE-ANCHOR`. Record: `.agents/Directional/Architecture_M6_CP3_CB11_R10_Open_Rail_Route_Anchor_Code_Build_Record_20261018.md`.
+
 ## 2026-10-17 — RA-84: R10B endpoint rule accepted with amendments; four code units
 
 - Reviewed on a full clone: `authority df37ffc19`, `boundary` and `ledgers --base 43d5fd512` pass; drift audit 0 errors. Source unchanged since `d938ecb57`.
