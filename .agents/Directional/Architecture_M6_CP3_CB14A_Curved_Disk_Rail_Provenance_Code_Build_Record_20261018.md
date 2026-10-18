@@ -1,0 +1,12 @@
+# CB14A — curved-disk rail provenance (Code + Build; 2026-10-18)
+- Canonical turn: `M6-CP3-CB14A-R10-CURVED-DISK-RAIL-PROVENANCE`; source `2ee499a3403c07be05e8084a669f30c1c735f04a`.
+- Change: only `tests/SurfaceCellsPhase10Tests.cpp` (+78/-7). Created eight source-face-backed boundary edges in one closed `AdaptiveFeatureMap` curve, producer-built rails, source-projected terminal contacts and closed/open chains, verified exact hard edge union; face-row reversal takes the same fixture path.
+- Selected `AdaptiveFeatureClass::Hard` despite geometric source-boundary status: `Boundary`-kind rails do not participate in `hard_rail_source_provenance_from_rails`; this distinction is explicit and independently reviewable.
+- Typed failure-name, `publishedProductError` and `publishedProductSourceAuthorityDetail` diagnostics now attach to first factory assertions for selectors 235/236/294/299. No assertions, production semantics, selector or harness changed.
+- Snapshot: source `1269c1e6723600f3a280423d01d086b19eb01a92`, run `39137641705`, artifact `12140381557`; source 5665/5665 SHA256.
+- Verified compile: [39138385869](https://github.com/akashskypatel/Directional/actions/runs/39138385869), package `12140756646`, ZIP SHA-256 `eee92aeb38ce098c8580a199f340ec65f3bf650df6464d5a3f2b7dfee5add906`.
+- Manifest 28/28; root manifest SHA-256 `495cf0b54322e54aee1020802d8f6f4a65297fdfe519cf0871509a70f74bb2d1`; source archive SHA-256 `f414dce2543edfbfd44e528b739edb0685172719f010680ffd4659da0ad945a2`.
+- Eight requested targets compiled and packaged; configure/preflight/build 0/0; five source-status files empty; `DIRECTIONAL_ENABLE_GMP=ON`, GMPXX/GMP linked, `exactArithmeticBackend=GMP`.
+- `runtimeExecution=false`; no executable, test, benchmark, or selector-497 run in this CB. Acceptance remains unmeasured.
+- Stable 66/17/49, debt 1, CP2 491/491, R3 403/497, selector 497 unchanged; RP-01 open, RP-02 UNREACHED.
+- Authorized successor: `M6-CP3-TB14A-R10-CURVED-DISK-CONTROL-CENSUS` (artifact-only RA-92.7). No TB execution in this turn.

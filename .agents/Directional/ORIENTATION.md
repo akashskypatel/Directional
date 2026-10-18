@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-18 · TB13D bisect reviewed (RA-92). None of the 8 tests that newly fail since R3 is a production regression: all are test debt. The curved-disk fixture predates the factory's rail-provenance rule. A test-only CB14A restores it as the `make` control before U4–U6 resume.  
+**Currency:** 2026-10-18 · CB14A test-only curved-disk hard rail provenance compiled and packaged with GMP/GMPXX; TB14A artifact-only census is next.  
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 

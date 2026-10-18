@@ -1,3 +1,8 @@
+## 2026-10-18 — CB14A curved-disk fixture source authority; compile-only green
+
+- Restored producer-built closed hard-feature rail provenance for the eight geometric boundary edges in `make_curved_disk_fixture`; added typed first-factory rejection diagnostics to four tests. Only `tests/SurfaceCellsPhase10Tests.cpp` changed (+78/-7). Feature class `Hard` chosen explicitly because the provenance projector processes `HardFeature` rails, not `Boundary`-kind rails.
+- Source `2ee499a3403c07be05e8084a669f30c1c735f04a`; workflow `39138385869`, GMP eight-target artifact `12140756646`, SHA-256 `eee92aeb38ce098c8580a199f340ec65f3bf650df6464d5a3f2b7dfee5add906`; 28/28 hashes, zero build/preflight errors, `runtimeExecution=false`. TB14A owns runtime verification. Frozen selector and baselines unchanged.
+
 ## 2026-10-18 — RA-92: TB13D bisect reviewed; the 8 new REDs are test debt; CB14A curved-disk control next
 
 - TB13D measured P1 (+32, 422/497) and P4 (CB12, 420/497). P2 and P3 were cancelled while pending, because the dispatcher holds one pending run. The turn stopped without a report, so Review closed it out.
