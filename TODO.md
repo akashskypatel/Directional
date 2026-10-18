@@ -1,4 +1,4 @@
-## CURRENT — DEFN-U6A exact origin traced, independent Review next (2026-10-18)
+## CURRENT — DEFN-U6A reviewed (RA-96): exact witness design accepted with amendments; CB15 next (2026-10-18)
 
 - [x] `M6-CP3-TB10-R9-CARRIER-ENDPOINT-SUBCONDITION-HARVEST`: TB10 immutable run [38941839640](https://github.com/akashskypatel/Directional/actions/runs/38941839640), result `12062873272` ZIP SHA-256 `4db22a924f31a7bc6fdf1575a66849a2f660a760003e03e26e7f9277ac200513`; compiled source `d938ecb57e1040c2a73d5d25c4a613414556cb18`, artifact `12062565622`. 44/44 selected, 44 RED, 0 missing, 48 A3 observations, 21 exact-one-hot vertices: **contact-endpoint membership 0/21; carrier-edge membership 21/21; composite 0/21**. Example decoded vertex 4, published contact endpoints {1,7}, carrier edge {1,4}, certificate rail 2. Immutable postflight passed, 28/28 package hashes, compile/relink/benchmarks/selector497 not executed. Evidence is candidate/non-stable and does not modify 66/17/49, debt1, CP2 491/491, R3 403/497, selector497; RP-01 open, RP-02 UNREACHED. Independent Review next (ID UNKNOWN); no repair authorized.
 - [x] Independent Review (RA-81): TB10 accepted as diagnostic evidence; vertex 4 is the interior vertex of the open rail 1–4–7 and no V/I/C branch admits it. Record: `Architecture_M6_CP3_R9_Carrier_Endpoint_Subcondition_Review_Decision.md`.
@@ -65,8 +65,21 @@
   - give p exactly;
   - compare representations (a)/(b)/(c) with the doubles binding and fail-closed behavior, and recommend one;
   - a CB outline of 10 lines or fewer.
-- [ ] **NEXT:** `M6-CP3-DEFN-U6A-I-ENDPOINT-EXACT-ORIGIN-TRACE-REV`:  accept or amend the representation, issue the CB15 (U4) spec and the U6 CB spec (or DEFN-U6B), and schedule the fixture debt.
-- [ ] Fixture debt (RA-92.3, RA-93.3), each a narrow test-only CB scheduled by DEFN-U6A-REV; none blocks U4–U6:
+- [x] Review (RA-96): the U6A trace is verified independently. Amendments:
+  - A1: the witness is canonical, edge points only;
+  - A2: the DEFN's dedup rule would reject every multi-edge side at a shared vertex, so a conflict clears the witness instead;
+  - A3: the witness lives inside `SurfaceTracePoint`;
+  - A4: the witness is bound bit for bit to one rounding helper; the trust root is the producer.
+  - U6 goes first: CB15 (producer witness) and CB16 (checkers); U4/U5 become CB17/CB18. Record: RA-96, appended to `.agents/Directional/Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md`.
+- [ ] **NEXT: `M6-CP3-CB15-R10-EXACT-I-ENDPOINT-WITNESS-PRODUCER`** (compile only; RA-96.4):
+  - `SurfaceTracePoint::exactEdgePoint`;
+  - `accepted_boundary_trace_point` and `exact_interior_witness_binds`;
+  - dedup clears conflicting witnesses;
+  - four appended probe fields;
+  - three P10 tests.
+  - No admission change.
+- [ ] Then `M6-CP3-TB15-R10-EXACT-I-ENDPOINT-WITNESS-PRODUCER` (RA-96.5, nine identities): the 19-identity template must show equal, bound, strictly interior witnesses; bytes outside the new fields must be unchanged. Then TB15-REV issues the CB16 spec.
+- [ ] Fixture debt (RA-92.3, RA-93.3), scheduled by RA-96.6 after TB18 as test-only CB/TB pairs, in the order 242 → 174 → 250 → adjacent-sheet → 191 family → 442; none blocks U4–U6:
   - 174: replace the non-manifold three-face TriMesh source;
   - 191 family (189–195): print the atlas build error, then repair the fixture field;
   - 242: retarget the tamper to an input that is actually consumed;
@@ -74,11 +87,11 @@
   - 250: the composite gives its disk boundary as hard edges with no provenance (P10:3580-3593). It was RED at R3 for another reason;
   - the adjacent-sheet curved-disk helper (P10:2670) must rebuild or clear rail provenance before any `make` use (RA-93.3).
 - [ ] Remaining units (RA-85.5, RA-87.3):
-  - U4 factory admits R (`M6-CP3-CB15-R10-FACTORY-RAIL-VERTEX-ENDPOINT`; 11 identities);
-  - U5 consumer emits R (`M6-CP3-CB16-R10-CONSUMER-RAIL-VERTEX-ENDPOINT`);
-  - U6 exact I parameter (19 identities, one template; DEFN-U6A, then CB).
+  - U6 exact I parameter (19 identities, one template): `M6-CP3-CB15-R10-EXACT-I-ENDPOINT-WITNESS-PRODUCER`, then `M6-CP3-CB16-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS`;
+  - U4 factory admits R (`M6-CP3-CB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT`; 11 identities);
+  - U5 consumer emits R (`M6-CP3-CB18-R10-CONSUMER-RAIL-VERTEX-ENDPOINT`).
   - RP-01 closes only after all three blocker shapes are cleared.
-- Turn sequence: DEFN-U6A → DEFN-U6A-REV → CB15/TB15 (U4) → CB16/TB16 (U5) → U6 CB/TB → RP-01 Review. Fixture debt is interleaved by DEFN-U6A-REV, which may reorder U6 with a reason. DEFN-U6 (stopped) and RA-95 are done. A RED TB goes to Review (rule 4). Dispatch several runs only one at a time, after each run starts.
+- Turn sequence: CB15 → TB15 → TB15-REV → CB16 → TB16 → TB16-REV → CB17/TB17 (U4) → CB18/TB18 (U5) → fixture debt → census → RP-01 Review. A RED TB goes to Review (rule 4). Dispatch several runs only one at a time, after each run starts. DEFN-U6A and RA-96 are done.
 - Frozen: `RP-01` unresolved; `RP-02` UNREACHED; Gate C suspended; **66/17/49**, debt **1** (no new production regression; 4 test-debt REDs since R3), accepted M6 CP2 **491/491**, rejected R3 **403/497**, frozen selector **497** unchanged; latest census 425/497 (TB14A).
 
 ---

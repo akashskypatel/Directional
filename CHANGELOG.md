@@ -1,3 +1,13 @@
+## 2026-10-18 — RA-96: DEFN-U6A reviewed; exact witness design amended; CB15 next
+
+- The U6A trace was verified independently (B:740-766; S:17219-17262; S:12535-12546). Accepted: the UV dedup at S:17190-17194 is a tolerance merge that any witness must pass through exactly.
+- Amendments:
+  - A1: canonical witness, edge points only;
+  - A2: the DEFN's dedup rule would reject every multi-edge side at a shared vertex, so a conflict clears the witness;
+  - A3: the witness lives in `SurfaceTracePoint`;
+  - A4: bit-exact binding to one rounding helper, with the producer as trust root.
+- Order: U6 first. CB15 (producer witness, no admission change) and TB15 (nine identities) come next, then CB16; U4/U5 are renamed CB17/CB18. The fixture debt is scheduled after TB18. Record: RA-96 in `.agents/Directional/Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md`.
+
 ## 2026-10-18 — U6A exact I-endpoint origin definition (documents only)
 
 - Verified RA-95.3's exact schedule `p` and orientation-dependent `double` conversion; traced accepted-boundary nodes through corners, reversal, cross-region pairing and all three checkers (`2ee499a3`). Defined optional per-endpoint `ExactSourceEdgePoint` provenance, bit-exact face/orientation geometry binding and independent `(span,ordinal)→p` authentication as **requirements for independent Review**, not implemented behavior. Exact numerator/denominator of `p` remain unlogged; a named minimal probe is specified, not executed. No code, build, tests or selector change. Stable 66/17/49, debt 1, CP2 491/491, R3 403/497, TB14A 425/497, selector 497; `RP-01` open, `RP-02` UNREACHED.

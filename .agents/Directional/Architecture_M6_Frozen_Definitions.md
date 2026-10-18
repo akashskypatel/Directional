@@ -1,3 +1,19 @@
+## RA-96 — DEFN-U6A reviewed: trace accepted; exact witness amended; U6 first as CB15/CB16 (2026-10-18)
+
+Authority: `Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md` (RA-96, appended).
+
+- **RA-96.1** The U6A trace is verified independently: `breakpoint_location` gives j/count; the interval ordinals map to `from`/`to`; reversal only permutes; nothing writes barycentrics downstream. The UV dedup (S:17190-17194) is a tolerance merge the side invariant needs. The factory cannot authenticate (span, ordinal) → p, so (b) is rejected.
+- **RA-96.2** Amendments:
+  - A1: the witness is canonical and exists only for 0 < p < 1;
+  - A2: on a dedup conflict, clear the witness rather than reject (the DEFN's rule would reject every multi-edge side at a shared vertex);
+  - A3: the witness lives inside `SurfaceTracePoint`;
+  - A4: it is bound bit for bit to one rounding helper, and the trust root is the producer (RA-84.2).
+- **RA-96.3** U6 goes first: CB15 is the producer witness with no admission change, CB16 the checkers. U4 and U5 are renamed CB17 and CB18.
+- **RA-96.4–96.5** CB15 spec; TB15 runs nine identities. Its falsifiers: bytes change outside the four probe fields, or the template's witness is absent, unbound or unequal.
+- **RA-96.6** The fixture debt follows TB18 in the order 242 → 174 → 250 → adjacent-sheet → 191 → 442, then a census and the RP-01 Review.
+
+---
+
 ## RA-95 — DEFN-U6 stopped without a deliverable; exact I-endpoint origin located; DEFN-U6A narrowed (2026-10-18)
 
 Authority: `Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md`.

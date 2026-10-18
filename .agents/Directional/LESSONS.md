@@ -165,6 +165,10 @@ This document records **reusable failure-derived engineering lessons**, not an e
   source/quotient transitions. An integer-valued branch or local coordinate is not a global direction or
   seam endpoint identity; a common name or exact type does not establish a common geometric datum.
   Compose transports in one frame, prove reference independence, and check both endpoints' evidence.
+- **Test an exact-identity rule against the coincidences the data already contains.** A witness that
+  must "agree exactly" at every merge also meets legitimate merges: a shared rail vertex is p = 1 on one
+  edge and p = 0 on the next. Run the rule over every merge the data passes through, including tolerance
+  dedups and junctions, before you specify rejection (RA-96.2 A2).
 
 ## Geometry, topology, and mathematical obligations
 
