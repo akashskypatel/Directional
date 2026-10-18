@@ -1,3 +1,8 @@
+## 2026-10-18 — TB13 immutable chain-interval harvest; truth table RED
+
+- CB13 source `70217cc2` compiled package `12130290543`; TB13 [run 39112131501](https://github.com/akashskypatel/Directional/actions/runs/39112131501), result `12130683535` ZIP SHA-256 `43505af2912b840262307db96865c5e7f9e2af8ca3b9cbe5426f0b18e87f4885`: 6 selected, 1 PASS / 5 RED, 0 missing, immutable postflight. No compile, relink, benchmark, selector497.
+- Truth-table false row contradicts RA-87.4 bidirectional reverse path. Two P10 diagnostics advance to `endpoint-1` B2; B3 full-pipeline failure lines unchanged from TB12. No stable ledger credit; conditional TB13C held for independent Review.
+
 ## 2026-10-18 — CB13 open-rail interval compiled; TB13 next
 
 - Exact semantic source `70217cc2bf7d257bebd2969e1aa56b5a43326a70` replaces terminal-anchor gating with a shared ordered open-chain interval predicate in the factory and verifier; requires open-chain provenance and threads real chains through hand-built fixtures. Compiled contract table; no endpoint predicate, selector, harness or runtime changes.
