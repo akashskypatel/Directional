@@ -1,3 +1,14 @@
+## 2026-10-17 — RA-84: R10B endpoint rule accepted with amendments; four code units
+
+- Reviewed on a full clone: `authority df37ffc19`, `boundary` and `ledgers --base 43d5fd512` pass; drift audit 0 errors. Source unchanged since `d938ecb57`.
+- Accepted: the ordered open-rail chain is the R witness (plumbing, not Gate C). One route-anchor rule for both checkers. I–I rejected by both; T–T, T–I, I and C unchanged.
+- Corrected:
+  - `hardFeatureEdges`, the terminal pair and the chain come from one rail product, so checking them against each other is a consistency check;
+  - the factory has no shared-boundary interval.
+- Added clauses: exactly two hard spokes at R; R is the outer vertex of its end step; chain validity at ≥2 vertices.
+- Split into U1–U4 (`CB11`–`CB14`, each with its TB); only U1 is authorized. RA-83's record is folded.
+- No code, test, selector or ledger change. Next: `M6-CP3-CB11-R10-OPEN-RAIL-ROUTE-ANCHOR`. Record: `.agents/Directional/Architecture_M6_CP3_R10B_Endpoint_Rule_Review_Decision.md`.
+
 ## 2026-10-17 — Rail-interior endpoint rule specified (R10B)
 
 Documents-only contract for independent source-chain witness and symmetric endpoint/route checking; independent Review pending. No source, test, selector, runtime or accepted regression-gate changes. See `.agents/Directional/Architecture_M6_CP3_R10B_Rail_Interior_Vertex_Endpoint_Rule_20261017.md`.

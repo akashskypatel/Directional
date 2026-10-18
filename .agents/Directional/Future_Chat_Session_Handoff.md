@@ -30,39 +30,60 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | Patch Application Strategy | `.agents/Directional/Patch_Application_Strategy.md` |
 | Mandatory End Checklist | `.agents/Directional/Mandatory_End_Checklist.md` |
 
-## Current immutable authority — 2026-10-17 (R10B Definition authored; independent Review next)
+## Current immutable authority — replace in place
 
-| Topic | Authority |
+| Field | Exact value / evidence owner |
 |---|---|
-| Branch | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; refetch head at next entry. |
-| Milestones | M0–M5 CLOSED; M6 CP1/CP2 CLOSED; **M6 CP3 OPEN**, M7/M8 planned (`ROADMAP.md`). |
-| Accepted baseline | M6 CP2 **491/491** PASS, package `11391685901` (source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`). CP3 selector 497 unchanged; R3 **403/497**, independently rejected. |
-| Latest runtime | TB10 44/44 RED, 21 one-hot vertex records, 0/21 contact membership and 21/21 carrier endpoint membership, candidate evidence only. Run `38941839640`, result `12062873272`; compile artifact `12062565622`, source `d938ecb57e1040c2a73d5d25c4a613414556cb18`. |
-| R10A/RA-83 | Interior rail vertex 4 on open rail 1–4–7 lacks V/I/C classification; verifier rejects at endpoint and route layers, while consumer can certify I–I. Ordered rail chain reaches consumer but is dropped from verifier projection. Source-owned facts in `Architecture_M6_CP3_R10A_Rail_Interior_Vertex_Witness_Census_20261017.md`; RA-83 decision in `Architecture_M6_CP3_R10A_Witness_Census_Review_Decision.md`. |
-| R10B contract | `Architecture_M6_CP3_R10B_Rail_Interior_Vertex_Endpoint_Rule_20261017.md` (Definition, pending Review). Choose independent ordered open-rail chain; exact R vertex + two named hard spokes + unique disjoint A3 sectors; allow T–R, I–R, R–R only conditionally, reject I–I symmetrically; retain T–T/T–I, strict I rationals and closed-rail C. Static source snapshot `df37ffc191ee3eaa8f27c9aeade25b2804f2a3b8`, run `39080614250`, artifact `12118283137`, 5,646/5,646 hashes. **No runtime/acceptance claim.** |
-| Open accounting | `RP-01` unresolved; `RP-02` UNREACHED; Gate C suspended. Stable **66 events / 17 categories / 49 recurrences**, debt **1**; no selector, source or test changes. |
-| Turn lifecycle | Root `STATUS` to be finalized by this turn. Next exact turn upon completion: `M6-CP3-DEFN-R10B-RAIL-INTERIOR-VERTEX-ENDPOINT-RULE-REV`. History gates belong to Review (RA-82.3). |
+| Currency | 2026-10-17, after `M6-CP3-DEFN-R10B-RAIL-INTERIOR-VERTEX-ENDPOINT-RULE-REV` (RA-84) |
+| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft; refetch HEAD before mutation. Source unchanged since `d938ecb57`. |
+| Last accepted semantic runtime | M6 CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. |
+| Latest candidate or rejected evidence | TB10 44/44 RED (run `38941839640`, result `12062873272`, source `d938ecb57`): 21 one-hot vertex records, carrier membership 21/21, contact membership 0/21. Diagnostic only, **not promoted**. R3 **403/497** rejected. |
+| Regression accounting and debt | **66/17/49**, debt **1**, selector 497 frozen; `Regression_Root_Cause_Tracker.md`. |
+| Active boundary | `RP-01`: no endpoint branch admits an interior vertex of an open rail. The R10B rule is accepted with amendments (`Architecture_M6_CP3_R10B_Endpoint_Rule_Review_Decision.md`, RA-84) and split into U1–U4 (RA-84.5). Only U1 is authorized. `RP-02` UNREACHED; Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-DEFN-R10B-RAIL-INTERIOR-VERTEX-ENDPOINT-RULE-REV` — EXACT NEXT, conditional on R10B closeout
+## Mandatory next turn — `M6-CP3-CB11-R10-OPEN-RAIL-ROUTE-ANCHOR` — EXACT NEXT
 
-- **Type:** independent Review of the R10B document; **not** a code/build or test/benchmark turn.
-- **First:** verify the delivered rule against RA-83, R10A census, R9B branch V/I/C and RA-65.5/68.3/72.5/78.4; inspect exact producer→consumer→checked-factory paths in frozen source and the new R10B document.
-- **Decide:** is the upstream ordered open-rail chain independent, source-authenticatable and sufficient to add R without a producer-authored vertex-star witness? Does the same per-endpoint and route-level anchor rule reject I–I in both checkers while preserving T–T, T–I and tamper negatives? Are T–R / I–R / R–R conditional gates complete, or is further independent witness required?
-- **Check:** independently enumerate code sites and separate positive/negative test oracles in groups A–E; review the six-row outcome matrix and explicit R negatives. Verify no forbidden source/selector/acceptance modifications, no documentation drift, and full-history `review_check.py authority|boundary|ledgers` plus `document_drift_audit.py --base` (RA-82.3). The Definition's `--root` audit is not a substitute.
-- **Disposition:** accept, amend, or reject with cited evidence. **Only an accepted Review** may authorize narrowly split Code + Build units; do not invent the next code turn or change frozen accounting. On a blocking design conflict, keep the R10B Review open and record the specific unresolved condition.
+- **Type / owner:** `CB` (compile only); unit U1 of RA-84.5.
+- **Objective:** one pure open-rail route-anchor helper that both checkers call, so the consumer refuses, before its push, every open-rail route that `SurfacePhaseFrontProduct::make` refuses. No `Produced` result changes.
+- **Read before work:** RA-84 record; R10B rule §3; `SurfaceCellTracing.cpp:8576-8615`, `:20225-20253`; `tests/SurfaceCellsPhase10Tests.cpp:7145-7190`.
+- **In scope:**
+  1. Move the open-rail branch at `:8576-8615` into one pure `surface_cell_tracing_detail` helper, with the same clauses (none added or dropped), and call it from the factory.
+  2. Call the same helper in the consumer immediately before `:20243`. On failure, call `invalid_route(TerminalCarrier, -1, -1, "open-rail-route-anchor")`. Closed rails are unchanged.
+  3. Tests below, then compile and package.
+- **Out of scope:** R admission, open-chain plumbing (U2–U4), any other clause in `:8616-8890` or `:19265-19544`, I/C branches, tolerance, selector/harness/workflow/benchmark, running tests.
+- **Success evidence:**
+  - Helper truth table with hand-written expectations: T–T opposite admits, either order; T–T same terminal rejects; T–T whose carriers do not touch rejects; T–I with T at either end admits; non-contact T rejects; T not on its carrier rejects; I–I rejects.
+  - Factory test: the produced T–I candidate with `endpoints[0].terminalVertex` cleared is refused (`InvalidSourceAuthority`).
+  - The `:7145-7190` control is unmodified and the fixture stays `Produced`.
+  - A consumer I–I test, or the record "consumer I–I: helper-covered, not end-to-end observed".
+  - Compile package ID and source SHA, with `runtimeExecution=false`.
+- **On success:** `M6-CP3-TB11-R10-OPEN-RAIL-ROUTE-ANCHOR`.
+- **On failure/blocker:** `UNKNOWN — STOP`; orchestration failures follow `Turn_Cadence.md` rule 5.
 
 ## Turn Sequence
 
-| Step | Canonical turn | Condition |
+| Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — current Definition | `M6-CP3-DEFN-R10B-RAIL-INTERIOR-VERTEX-ENDPOINT-RULE` | Documents-only proposal and closeout; no implementation. |
-| 2 — next Review | `M6-CP3-DEFN-R10B-RAIL-INTERIOR-VERTEX-ENDPOINT-RULE-REV` | Only after step 1 is complete; independently review rule, code sites, tests and full-history gates. |
+| 1 — next | `M6-CP3-CB11-R10-OPEN-RAIL-ROUTE-ANCHOR` | Implementation; U1 only, compile only. |
+| 2 — conditional | `M6-CP3-TB11-R10-OPEN-RAIL-ROUTE-ANCHOR` | Only after CB11 is packaged and its diff reviewed. It runs CB11's tests and the controls on the immutable package. A red result goes to Review. |
+
+U2–U4 (`CB12`–`CB14`, each followed by its TB) are frozen in RA-84.5. Each needs a green, reviewed predecessor TB; anything beyond is `UNKNOWN`.
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **independent Review**. Use turn-based-coding-agent Review guidance; no Code + Build or Test + Benchmark is authorized.
+`load_next`: **code-build** — use the turn-based-coding-agent Code + Build guidance; no runtime execution.
 
-Minimum R10B Review context after mandatory policies/start checklist: `ORIENTATION.md`, `ROADMAP.md`, this handoff, `STATUS`, `TODO.md`, `Architecture_M6_CP3_R10B_Rail_Interior_Vertex_Endpoint_Rule_20261017.md`, `Architecture_M6_CP3_R10A_Witness_Census_Review_Decision.md`, R10A census, R9B contract, R9A census, `Architecture_M6_Frozen_Definitions.md` (RA-65.5/68.3/72.5/78.4/79/83), `Regression_Root_Cause_Tracker.md`, and both consumer/verifier source windows cited in R10B. The full-history Review checks require a genuine Git history, not the `.git`-free ChatGPT Web snapshot.
+Minimum successor context **after the mandatory start checklist and policies**:
+
+0. `.agents/Directional/ORIENTATION.md` — project context, read first.
+1. `.agents/Directional/ROADMAP.md` — milestone position only.
+2. `.agents/Directional/Future_Chat_Session_Handoff.md` — exact current handoff.
+3. `Architecture_M6_CP3_R10B_Endpoint_Rule_Review_Decision.md` (RA-84), `Architecture_M6_CP3_R10B_Rail_Interior_Vertex_Endpoint_Rule_20261017.md` §3, `Architecture_M6_Frozen_Definitions.md` RA-83/RA-84, `GMP_COMPILE_POLICY.md`.
+4. `.agents/Directional/Regression_Root_Cause_Tracker.md` and `TODO.md` — unresolved issues and scope; required policy readings still govern.
+
+**Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py authority <sha>` and
+`review_check.py boundary`, `selector_probe.py` for selector hashes, ordinal ↔ identity and identity-existence
+checks, and `fixture_probe.py` for fixture topology and vertex fans. See `tools/README.md` for the caveats. History gates (`authority|boundary|ledgers`, drift `--base`) are Review gates (RA-82.3); implementation turns run `document_drift_audit.py --root .` only.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

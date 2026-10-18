@@ -1,6 +1,28 @@
+## RA-84 — R10B endpoint rule accepted with amendments; four Code + Build units (2026-10-17)
+
+Authority: `Architecture_M6_CP3_R10B_Endpoint_Rule_Review_Decision.md`.
+
+- **RA-84.1** R10B accepted. The ordered open-rail chain is the R witness, carried to the factory next to the terminal pair. This is plumbing at the verifier boundary (RA-72.5), not a Gate C certificate. I–I is rejected by both checkers; T–T, T–I, I and C are unchanged.
+- **RA-84.2** `hardFeatureEdges` and the terminal pair are projections of the same rail product as the chain (`RemeshPipeline.cpp:12335-12350`, `:9756-9765`). Checking one against the other is a consistency check; only the source-face/component check is independent. R gets T's trust root, no stronger.
+- **RA-84.3** The factory receives no shared-boundary interval; that clause is consumer-only (`SurfaceCellTracing.cpp:19413-19421`). On the factory side, route contiguity on the chain stands in for it.
+- **RA-84.4** The R rule also requires:
+  - exactly two hard spokes at R, both chain edges (as at a junction, `:8800-8812`);
+  - R is the outer vertex of its end step, and two vertex endpoints are distinct;
+  - chain validity at entry accepts ≥2 vertices, while ≥3 applies only to R eligibility;
+  - the vacuous "one hard spoke" negative is replaced by "chain edge missing from `hardFeatureEdges`" (U2) and "third hard edge at R" (U3).
+- **RA-84.5** Units in frozen order:
+  - U1 `M6-CP3-CB11-R10-OPEN-RAIL-ROUTE-ANCHOR`: one shared route-anchor helper for both checkers;
+  - U2 `…CB12…OPEN-RAIL-CHAIN-PROVENANCE`: carry and validate open chains, no admission change;
+  - U3 `…CB13…FACTORY-RAIL-VERTEX-ENDPOINT`: factory admits R;
+  - U4 `…CB14…CONSUMER-RAIL-VERTEX-ENDPOINT`: consumer emits R.
+
+  Each CB is followed by its TB; a red TB routes to Review. Only U1 is authorized. The order never creates a consumer-admits / factory-rejects state.
+
+---
+
 ## RA-83 — R10A census accepted; I–I asymmetry corrected; open-rail chain dropped by projection (2026-10-17)
 
-Authority: `Architecture_M6_CP3_R10A_Witness_Census_Review_Decision.md`.
+Authority: `Architecture_M6_CP3_R10A_Witness_Census_Review_Decision.md` (folded into `M6_Consolidated_Record.md`; text in git history).
 
 - **RA-83.1** R10A accepted as facts; RA-82.4 confirmed. The verifier seeds star incidence only for published contact endpoints (`SurfaceCellTracing.cpp:8495-8519`), so an R vertex gets `Invalid` from `unique_terminal_star_path` before any search.
 - **RA-83.2** The I–I asymmetry is sequenced: the consumer has no route-level terminal requirement up to the certificate push (`:20243-20245`); publication (`:12858` → `SurfacePhaseFrontProduct::make`) rejects it at `:8603-8614`.
