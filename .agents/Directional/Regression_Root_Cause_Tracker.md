@@ -1,3 +1,9 @@
+## CANDIDATE / NON-STABLE — TB14A curved-disk control census (2026-10-18)
+
+[Run 39143325285](https://github.com/akashskypatel/Directional/actions/runs/39143325285), result `12141843937` (`1b06e43e87f416e7b44dce65059f1789301f402dd9d43d71fcabf2a3c604d455`) on unchanged CB14A package `12140756646`, exact semantic source `2ee499a3`: 497/497 executed; **425 PASS / 72 RED**, five RED→PASS (selector 199/235/236/294/299) relative to TB13C; no new RED. 237/253/254 remain PASS; 250 remains RED at `SurfaceCellsPhase10Tests.cpp:3597` / `PublishedProductRejected`. **RA-93.4 falsified at 199**: it predicted a later RED but the identity now PASSes. This is a non-stable *prediction/fixture-interaction candidate* pending `M6-CP3-TB14A-R10-CURVED-DISK-CONTROL-CENSUS-REV`; runtime evidence does not identify a new production regression or license promotion. The 4 restored curved-disk controls agree with RA-93.4; all other identities retain their TB13C status. Stable accounting **66/17/49**, debt **1** unchanged. Owning TB report: `Architecture_M6_CP3_TB14A_Curved_Disk_Control_Census_Report_20261018.md`.
+
+---
+
 ## TB13D bisect — TB13C candidates resolved: test debt, no production regression (2026-10-18)
 
 P1 [run 39132801755](https://github.com/akashskypatel/Directional/actions/runs/39132801755), result `12138931233`, source `007585f8e` (+32): 422/497. P4 [run 39132921344](https://github.com/akashskypatel/Directional/actions/runs/39132921344), result `12138633102`, CB12 `b1b02d5be`: 420/497, identical to CB13A on all 497. P2 and P3 were cancelled while pending (dispatcher concurrency) and are not needed.
