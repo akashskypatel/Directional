@@ -1,13 +1,19 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb13a-r10-six-case-20261018-01",
+  "request_id": "m6-cp3-tb13c-selector-497-20261018-01",
   "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb13a-r10-truth-table",
-  "executor_sha": "c278c683de4477b803bb0a93007cdf51e45c64d7",
+  "mailbox_key": "m6-cp3-tb13c-selector-497",
+  "executor_sha": "90399f6108d75326bf932cb54c56c7bede546a5d",
   "semantic_source_sha": "e88ac65ffcf87548138d1c56f2cc6ed4a3d8177b",
-  "turn_id": "M6-CP3-TB13A-R10-OPEN-RAIL-CHAIN-INTERVAL-TRUTH-TABLE",
-  "harness_path": ".agents/Directional/tools/m6_cp3_r10_open_rail_chain_interval_truth_table_harness.sh",
-  "harness_sha256": "a42ae6e0b3de79f16388a5017ac7426b4174d8184dd3de9b99b6b9df12d4350b",
-  "environment": {},
-  "artifact_prefix": "m6-cp3-tb13a-r10-truth-table"
+  "turn_id": "M6-CP3-TB13C-R10-SELECTOR-497-CENSUS",
+  "harness_path": ".agents/Directional/tools/m6_cp3_entry_497_artifact_only_harness.sh",
+  "harness_sha256": "947a95ee4f684143a0f8d7c768a39253ab893d921da488802b45fb6ed58879dd",
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "12132184878",
+    "EXPECTED_SOURCE_SHA": "e88ac65ffcf87548138d1c56f2cc6ed4a3d8177b",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "36197dffa91b5dbb3a36d589cab314e95e4d7d24e9121617ed17f59256f2b072",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "bdb4ad988c463f082a1129d17d463da7e3638f24c81396220adb996a328583e1",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "25ec06e748ea29445d50993c0cd0874bb30da7ab030e24a99cff737e70b3e77f"
+  },
+  "artifact_prefix": "m6-cp3-tb13c-selector-497"
 }
