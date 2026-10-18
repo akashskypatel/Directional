@@ -1,3 +1,16 @@
+## RA-88 — TB13 reviewed: the RED row was a Review specification defect; U3 code accepted; CB13A corrects the row (2026-10-18)
+
+Authority: `Architecture_M6_CP3_TB13_Chain_Interval_Review_Decision.md`. Amends RA-87.4.7 (one row).
+
+- **RA-88.1** TB13 was re-verified independently. #2 PASS; #3/#4 B2 at front 61/179 (vertex 4); #5/#6 byte-identical to TB12 (B3). The U3 falsifiers are absent.
+- **RA-88.2** #1 RED is an owned Review defect. Under the either-direction rule (RA-85.4, RA-87.4.1), `[4-7, 1-4]` on `[1,4,7]` is the valid reverse walk 7→4→1. The helper is correct and the row was wrong. The replacement rows keep the order-sensitivity intent (terminals that contradict the walk, a backtrack) and were checked against an executable model of the rule.
+- **RA-88.3** The U3 production code is accepted. Front 29/147 now passes the consumer interval rule on real data. The factory call has no real-data coverage yet. U3 closes when TB13A's truth table passes.
+- **RA-88.4** CB13A is test-only: flip that row to true; add reverse T7–T1 (true), T1–T7 on the reverse walk (false), and the backtrack `[1-4, 1-4]` (false). Nothing else changes.
+- **RA-88.5** TB13A reruns TB13's six identities. Predictions: #1/#2 PASS, #3–#6 byte-identical to TB13. TB13C (RA-87.5) then runs on the CB13A package, with one added falsifier: a RED whose first predicate is `open-rail-chain-interval`.
+- **RA-88.6** Sequence: CB13A → TB13A → TB13C → TB13C-REV → DEFN-U6.
+
+---
+
 ## RA-87 — TB12 reviewed: U2 closed; B3 has no unit, so U6 is added; CB13 specified; selector census (2026-10-18)
 
 Authority: `Architecture_M6_CP3_TB12_Chain_Provenance_Review_Decision.md`.
@@ -22,7 +35,7 @@ Authority: `Architecture_M6_CP3_TB12_Chain_Provenance_Review_Decision.md`.
   - `cp3entry:2/6` are byte-identical to TB12.
 
   TB13C runs the unchanged 497 harness and classifies every RED by blocker shape.
-- **RA-87.6** Sequence: CB13 → TB13 → TB13C → Review → DEFN-U6. RA-86's record is folded.
+- **RA-87.6** Sequence: CB13 → TB13 → TB13C → Review → DEFN-U6. RA-86's record is folded. The sequence is superseded by RA-88.6.
 
 ---
 

@@ -65,7 +65,7 @@ The frozen selector was last measured at R3, source `d82e34427`, 67 source commi
 
      False rows:
      - `[1-4, 4-7]` with T7–T1;
-     - `[4-7, 1-4]`;
+     - ~~`[4-7, 1-4]`~~ — amended by RA-88.2: this is the valid reverse walk 7→4→1, so it is a true row;
      - `[1-4]` with first T7, and with first T4;
      - `[1-7]`;
      - an empty route.

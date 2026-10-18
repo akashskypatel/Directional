@@ -1,3 +1,10 @@
+## 2026-10-18 — RA-88: TB13 reviewed; the RED truth-table row was a Review specification defect; U3 code accepted; CB13A next
+
+- TB13 (run `39112131501`, result `12130683535`) was re-verified independently: hashes match, the harness deltas are within bounds, #3/#4 are at B2 (front 61/179, vertex 4), and #5/#6 are byte-identical to TB12 (B3). `open-rail-chain-interval` occurs in no log.
+- #1 RED is an owned Review defect. RA-87.4.7 listed `[4-7, 1-4]` as false, but under RA-87.4.1's either-direction rule it is the valid reverse walk 7→4→1. The helper is correct. CB13A (test-only) flips the row and adds three discriminating rows, all checked against an executable model of the rule.
+- The U3 production code is accepted. Front 29/147 passes the consumer interval rule, its first real-data coverage; the factory call has none yet. U3 closes at TB13A. TB13C now runs on the CB13A package.
+- TODO's two top sections for the R10 arc are merged into one, and the CHANGELOG's RA-86/TB12 blocks are back in order. Record: `.agents/Directional/Architecture_M6_CP3_TB13_Chain_Interval_Review_Decision.md`. Stable 66/17/49, debt 1, CP2 491/491, R3 403/497, selector 497 unchanged.
+
 ## 2026-10-18 — TB13 immutable chain-interval harvest; truth table RED
 
 - CB13 source `70217cc2` compiled package `12130290543`; TB13 [run 39112131501](https://github.com/akashskypatel/Directional/actions/runs/39112131501), result `12130683535` ZIP SHA-256 `43505af2912b840262307db96865c5e7f9e2af8ca3b9cbe5426f0b18e87f4885`: 6 selected, 1 PASS / 5 RED, 0 missing, immutable postflight. No compile, relink, benchmark, selector497.
@@ -14,12 +21,11 @@
 - New finding: the full-pipeline RP-01 identities `cp3entry:2/6` first fail at an I endpoint, front 17/203. Face 0's barycentrics sum to exactly 1 + 2⁻⁵⁵, the RA-61.6 mechanism that R9B left open. RA-85.5 had no unit for it, so U6 (exact I-endpoint parameter, DEFN first) is added. RP-01 now has three blocker shapes: B1 → U3, B2 → U4/U5, B3 → U6.
 - CB13 (U3) is specified: one chain-interval helper serves both checkers; chains are mandatory; every hand-built input with contacts carries the real chains; the truth table is replaced. The frozen selector has not been measured for 67 source commits, so census TB13C runs on the CB13 package after TB13. RA-86's record is folded. Record: `.agents/Directional/Architecture_M6_CP3_TB12_Chain_Provenance_Review_Decision.md`. Stable 66/17/49, debt 1, CP2 491/491, R3 403/497, selector 497 unchanged.
 
-## 2026-10-18 — RA-86: TB12 harness authorized; CB12 accepted; TB12 gains full-pipeline diagnostics
-
 ## 2026-10-18 — TB12 immutable open-rail chain provenance harvest
 
 - `M6-CP3-TB12-R10-OPEN-RAIL-CHAIN-PROVENANCE`: committed the RA-86-authorized six-identity harness (`2bb45fa6084bcfce4b1287f65e4f88ead2678557`) and executed immutable CB12 package `12125223513` via [run 39103358061](https://github.com/akashskypatel/Directional/actions/runs/39103358061), result `12127706461`. Six exact cases selected: two gates PASS, four existing RP-01 diagnostics RED with predicted consumer predicates. Postflight immutable; no compile, relink, benchmarks, selector, semantic-source or test mutation. No stable-regression promotion, unchanged 66/17/49. Independent Review follows; see `Architecture_M6_CP3_TB12_Open_Rail_Chain_Provenance_Harvest_Report_20261018.md`.
 
+## 2026-10-18 — RA-86: TB12 harness authorized; CB12 accepted; TB12 gains full-pipeline diagnostics
 
 - TB12's first attempt stopped `BLOCKED` before dispatch. CB12's "no harness" scope had been copied into TB12's handoff, but every TB authors its own per-turn harness (TB8–TB11), so this is a handoff defect, not an orchestration failure. TB12 adds one new harness derived from TB11's (RA-86.1).
 - CB12 accepted. Package `12125223513` (run `39097975393`, ZIP SHA-256 `c98ed3a509e9d1ccc1df83eaeb6112b8636bc0e7ee63b73140d789c32f38eeb6`) was verified independently: 28/28 manifest hashes, source parity with HEAD. The validator mirrors the closed-chain check and is a consistency check on pipeline data. The placeholders in the CB12 record and CHANGELOG are filled.

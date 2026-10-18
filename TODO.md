@@ -1,12 +1,4 @@
-## CURRENT — TB13 harvested; truth-table gate RED, independent Review needed (2026-10-18)
-
-- [x] `M6-CP3-TB13-R10-OPEN-RAIL-CHAIN-INTERVAL-ROUTE`: exact immutable [run 39112131501](https://github.com/akashskypatel/Directional/actions/runs/39112131501), artifact `12130683535`; **6/6 selected, 1 PASS / 5 RED**, postflight immutable, no rebuild, benchmarks, or selector497. Required truth-table gate rejects reversed route `[4–7,1–4]` although RA-87.4 permits reverse direction. P10 cases advance to B2 at vertex 4; full-pipeline B3 lines byte-identical to TB12. No acceptance or ledger credit.
-- [ ] **NEXT: independent TB13 gate Review, exact ID UNKNOWN.** Resolve bidirectional specification versus false-row oracle before code, test, or gate changes.
-- [ ] **HELD** conditional `M6-CP3-TB13C-R10-SELECTOR-497-CENSUS`, subsequent Review and U4/U5/U6 until independent authorization. Frozen 66/17/49, debt1, CP2 491/491, R3 403/497, selector497; RP-01 open, RP-02 UNREACHED.
-
----
-
-## CURRENT — CB13 compiled; TB13 artifact-only validation next (2026-10-18)
+## CURRENT — TB13 reviewed (RA-88); CB13A truth-table row correction next (2026-10-18)
 
 - [x] `M6-CP3-TB10-R9-CARRIER-ENDPOINT-SUBCONDITION-HARVEST`: TB10 immutable run [38941839640](https://github.com/akashskypatel/Directional/actions/runs/38941839640), result `12062873272` ZIP SHA-256 `4db22a924f31a7bc6fdf1575a66849a2f660a760003e03e26e7f9277ac200513`; compiled source `d938ecb57e1040c2a73d5d25c4a613414556cb18`, artifact `12062565622`. 44/44 selected, 44 RED, 0 missing, 48 A3 observations, 21 exact-one-hot vertices: **contact-endpoint membership 0/21; carrier-edge membership 21/21; composite 0/21**. Example decoded vertex 4, published contact endpoints {1,7}, carrier edge {1,4}, certificate rail 2. Immutable postflight passed, 28/28 package hashes, compile/relink/benchmarks/selector497 not executed. Evidence is candidate/non-stable and does not modify 66/17/49, debt1, CP2 491/491, R3 403/497, selector497; RP-01 open, RP-02 UNREACHED. Independent Review next (ID UNKNOWN); no repair authorized.
 - [x] Independent Review (RA-81): TB10 accepted as diagnostic evidence; vertex 4 is the interior vertex of the open rail 1–4–7 and no V/I/C branch admits it. Record: `Architecture_M6_CP3_R9_Carrier_Endpoint_Subcondition_Review_Decision.md`.
@@ -28,17 +20,21 @@
   - `open_rail_route_interval_valid` replaces the anchor helper in both checkers; consumer predicate `open-rail-chain-interval`;
   - chains mandatory; real chains in every hand-built input with contacts;
   - new truth table.
-- [ ] **NEXT** `M6-CP3-TB13-R10-OPEN-RAIL-CHAIN-INTERVAL-ROUTE`, with six identities (RA-87.5). Predictions:
-  - gates PASS;
-  - the P10 midline tests move past front 29/147 to B2;
-  - `cp3entry:2/6` are byte-identical to TB12.
-- [ ] Then `M6-CP3-TB13C-R10-SELECTOR-497-CENSUS`: the unchanged 497 harness on the CB13 package; every RED sorted into B1/B2/B3/other; R3 PASS → now RED listed.
+- [x] `M6-CP3-TB13-R10-OPEN-RAIL-CHAIN-INTERVAL-ROUTE`: [run 39112131501](https://github.com/akashskypatel/Directional/actions/runs/39112131501), result `12130683535`, 6/6 selected, 1 PASS / 5 RED, immutable postflight. The truth-table gate went RED on one row: it expected `[4-7, 1-4]` (no endpoints) to be false, and the helper returned true. P10 #3/#4 moved to B2 (front 61/179, vertex 4); `cp3entry:2/6` stayed byte-identical to TB12 (B3).
+- [x] Review (RA-88): the RED row is an owned Review defect. Under the either-direction rule, `[4-7, 1-4]` is the valid reverse walk 7→4→1. The U3 code is accepted, and front 29/147 now passes the consumer interval rule on real data. Record: `.agents/Directional/Architecture_M6_CP3_TB13_Chain_Interval_Review_Decision.md`.
+- [ ] **NEXT: `M6-CP3-CB13A-R10-OPEN-RAIL-CHAIN-INTERVAL-TRUTH-TABLE`** (test-only CB, RA-88.4):
+  - flip that row to true;
+  - add T7–T1 on the reverse walk (true), T1–T7 on the reverse walk (false), and the backtrack `[1-4, 1-4]` (false);
+  - compile and package.
+- [ ] Then `M6-CP3-TB13A-R10-OPEN-RAIL-CHAIN-INTERVAL-TRUTH-TABLE`: TB13's six identities; #1/#2 PASS; #3–#6 byte-identical to TB13. U3 closes on success.
+- [ ] Then `M6-CP3-TB13C-R10-SELECTOR-497-CENSUS` on the **CB13A** package: every RED sorted into B1/B2/B3/other; R3 PASS → now RED listed; any `open-rail-chain-interval` RED goes to Review.
 - [ ] Then `M6-CP3-TB13C-R10-SELECTOR-497-CENSUS-REV`: order U4/U5/U6 and issue the DEFN for U6 (the exact I-endpoint parameter: no epsilon, producer-origin, satisfiable on TB12's doubles).
 - [ ] Remaining units (RA-85.5, RA-87.3), each after a reviewed predecessor TB:
   - U4 `CB14` factory admits R;
   - U5 `CB15` consumer emits R;
   - U6 exact I parameter (DEFN, then CB).
   - RP-01 closes only after all three blocker shapes are cleared.
+- Turn sequence: CB13A → TB13A → TB13C → TB13C-REV → DEFN-U6. A RED TB goes to Review (rule 4).
 - Frozen: `RP-01` unresolved; `RP-02` UNREACHED; Gate C suspended; **66/17/49**, debt **1**, accepted M6 CP2 **491/491**, rejected R3 **403/497**, frozen selector **497** unchanged.
 
 ---

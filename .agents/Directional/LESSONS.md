@@ -103,6 +103,9 @@ This document records **reusable failure-derived engineering lessons**, not an e
   "unchanged" as evidence for a change, trace where the test stops: a test that fails upstream of the
   change (in the consumer, before the factory runs) cannot falsify it. Add a test whose path reaches the
   change, and give it a falsifier that is readable from its failure text (RA-86.3).
+- **Evaluate every truth-table row against an executable model of the rule before freezing it.** A
+  row written beside a rule, rather than derived from it, can contradict that rule. A false gate then
+  stops a correct implementation for a whole TB cycle. A model of a few lines catches this (RA-88.2).
 
 ## Semantic ownership, identity, and dataflow
 
