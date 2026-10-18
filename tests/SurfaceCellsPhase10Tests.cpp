@@ -2499,8 +2499,81 @@ CurvedDiskFixture make_curved_disk_fixture(const bool reverseFaceRows = false) {
     add_boundary(y * 3, (y + 1) * 3);
     add_boundary(y * 3 + 2, (y + 1) * 3 + 2);
   }
+  // These source-boundary edges are intentionally Hard: Boundary-kind rails
+  // validate as boundary rails, but do not project hard-feature closed chains.
+  // The checked A4 product requires the latter for hardFeatureEdges.
+  directional::TriMesh source;
+  source.set_mesh(fixture.vertices, fixture.faces);
+  directional::geometry::AdaptiveFeatureMap features;
+  directional::geometry::AdaptiveFeatureCurve boundary;
+  boundary.id = 0;
+  boundary.component = 0;
+  boundary.closed = true;
+  boundary.vertices = {0, 1, 2, 5, 8, 7, 6, 3, 0};
+  for (std::size_t i = 0; i + 1 < boundary.vertices.size(); ++i) {
+    const int a = boundary.vertices[i];
+    const int b = boundary.vertices[i + 1];
+    directional::geometry::AdaptiveFeatureEdge edge;
+    edge.vertices = {a, b};
+    edge.edgeClass = directional::geometry::AdaptiveFeatureClass::Hard;
+    edge.component = 0;
+    edge.curve = boundary.id;
+    for (int f = 0; f < fixture.faces.rows(); ++f) {
+      bool hasA = false;
+      bool hasB = false;
+      for (int c = 0; c < 3; ++c) {
+        hasA |= fixture.faces(f, c) == a;
+        hasB |= fixture.faces(f, c) == b;
+      }
+      if (hasA && hasB) edge.incidentFaces.push_back(f);
+    }
+    if (edge.incidentFaces.size() != 1U) {
+      throw std::runtime_error("Curved-disk rail must be a source-boundary edge");
+    }
+    boundary.edges.push_back(static_cast<int>(features.edges.size()));
+    features.edges.push_back(std::move(edge));
+  }
+  features.curves.push_back(std::move(boundary));
+  const auto built = directional::pipeline::build_authoritative_surface_cell_rails(
+      source, features);
+  if (!built.is_produced() || built.product().rails.size() != 1U ||
+      !built.product().rails.front().closed) {
+    throw std::runtime_error("Curved-disk boundary rail production failed");
+  }
+  fixture.options.authoritativeRails = built.product().rails;
+  const auto provenance = directional::pipeline::hard_rail_source_provenance_from_rails(
+      fixture.options.authoritativeRails,
+      static_cast<std::size_t>(fixture.vertices.rows()));
+  if (!provenance || provenance->closedChains.empty() ||
+      directional::pipeline::hard_feature_edge_keys_from_rails(
+          fixture.options.authoritativeRails,
+          static_cast<std::size_t>(fixture.vertices.rows())) !=
+          fixture.options.hardFeatureEdges) {
+    throw std::runtime_error("Curved-disk hard rail provenance is incomplete");
+  }
+  fixture.options.hardRailTerminalContacts = provenance->terminalContacts;
+  fixture.options.hardRailClosedChains = provenance->closedChains;
+  fixture.options.hardRailOpenChains = provenance->openChains;
   bind_curved_disk_atlas(fixture);
   return fixture;
+}
+
+std::string curved_disk_factory_rejection_detail(
+    const directional::geometry::SurfacePhaseFrontResult &front) {
+  std::ostringstream detail;
+  detail << directional::geometry::surface_phase_front_failure_reason_name(
+      front.rejection_reason());
+  if (const auto *failure = front.rejection()) {
+    if (failure->publishedProductError) {
+      detail << " publishedProductError="
+             << static_cast<int>(*failure->publishedProductError);
+    }
+    if (failure->publishedProductSourceAuthorityDetail) {
+      detail << " publishedProductSourceAuthorityDetail="
+             << static_cast<int>(*failure->publishedProductSourceAuthorityDetail);
+    }
+  }
+  return detail.str();
 }
 
 Eigen::MatrixXd curved_disk_raw_field(const CurvedDiskFixture &fixture) {
@@ -3279,8 +3352,7 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
       fixture.targetSize, fixture.options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             network.phaseFront.disposition())
-      << directional::geometry::surface_phase_front_failure_reason_name(
-             network.phaseFront.rejection_reason());
+      << curved_disk_factory_rejection_detail(network.phaseFront);
   const auto &product = network.phaseFront.product();
   ASSERT_EQ(1U, product.boundedDiskBoundaryPhases().size());
   // Positive independent factory round-trip excludes an earlier authority
@@ -3314,8 +3386,7 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
       fixture.targetSize, fixture.options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             network.phaseFront.disposition())
-      << directional::geometry::surface_phase_front_failure_reason_name(
-             network.phaseFront.rejection_reason());
+      << curved_disk_factory_rejection_detail(network.phaseFront);
   const auto &product = network.phaseFront.product();
   ASSERT_EQ(1U, product.boundedDiskBoundaryPhases().size());
   // Positive independent factory round-trip excludes an earlier authority
@@ -3348,7 +3419,8 @@ TEST(SurfaceCellsPhase10, CurvedBoundedDiskIsInvariantToFaceRowEnumeration) {
       reversed.targetSize, reversed.options);
 
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            forwardNetwork.phaseFront.disposition());
+            forwardNetwork.phaseFront.disposition())
+      << curved_disk_factory_rejection_detail(forwardNetwork.phaseFront);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             reversedNetwork.phaseFront.disposition());
   EXPECT_EQ(forwardNetwork.phaseFront.product().gridU(),
@@ -3370,8 +3442,7 @@ TEST(SurfaceCellsPhase10, CurvedBoundedDiskPreservesAuthoritativeHardBoundary) {
       fixture.targetSize, fixture.options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             network.phaseFront.disposition())
-      << directional::geometry::surface_phase_front_failure_reason_name(
-             network.phaseFront.rejection_reason());
+      << curved_disk_factory_rejection_detail(network.phaseFront);
   ASSERT_EQ(1U, network.phaseFront.product().boundedDiskBoundaryPhases().size());
   bool sawHardFeatureAuthority = false;
   for (const auto &run :
