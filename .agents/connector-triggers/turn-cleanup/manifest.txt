@@ -1,2 +1,0 @@
-# TB12 temporary control-file cleanup
-.agents/connector-triggers/source-snapshot/tb12-open-rail-20261018-0609.txt
