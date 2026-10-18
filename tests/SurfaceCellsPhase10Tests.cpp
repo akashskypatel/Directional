@@ -7179,7 +7179,10 @@ TEST(SurfaceCellAuthorityContractCutover, OpenRailRouteChainIntervalTruthTable) 
   EXPECT_TRUE(check({{1, 4}, {4, 7}}, std::nullopt, std::nullopt, chain));
   EXPECT_TRUE(check({{1, 4}}, t1, t4, shortChain));
   EXPECT_FALSE(check({{1, 4}, {4, 7}}, t7, t1, chain));
-  EXPECT_FALSE(check({{4, 7}, {1, 4}}, std::nullopt, std::nullopt, chain));
+  EXPECT_TRUE(check({{4, 7}, {1, 4}}, std::nullopt, std::nullopt, chain));
+  EXPECT_TRUE(check({{4, 7}, {1, 4}}, t7, t1, chain));
+  EXPECT_FALSE(check({{4, 7}, {1, 4}}, t1, t7, chain));
+  EXPECT_FALSE(check({{1, 4}, {1, 4}}, std::nullopt, std::nullopt, chain));
   EXPECT_FALSE(check({{1, 4}}, t7, std::nullopt, chain));
   EXPECT_FALSE(check({{1, 4}}, t4, std::nullopt, chain));
   EXPECT_FALSE(check({{1, 7}}, std::nullopt, std::nullopt, chain));
