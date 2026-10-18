@@ -242,7 +242,7 @@ TEST(SurfaceCellClosedProductContracts, OpenHardRailChainProvenanceIsSourceValid
                      contacts, closed, hardEdges)); // Contacts require their chain.
   EXPECT_TRUE(valid(directional::geometry::SurfaceHardRailOpenChains{},
                     directional::geometry::SurfaceHardRailTerminalContacts{},
-                    closed, {})); // No contacts and no chains.
+                    closed, hardEdges)); // No contacts and no chains.
 
   auto tampered = projection->openChains;
   tampered.at(rail).vertices.erase(tampered.at(rail).vertices.begin() + 1);
