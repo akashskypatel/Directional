@@ -1,3 +1,18 @@
+## RA-93 — CB14A accepted; TB14A predictions sharpened (2026-10-18)
+
+Authority: `Architecture_M6_CP3_TB13D_Bisect_Review_Decision.md` (RA-93, appended).
+
+- **RA-93.1–93.2** Package `12140756646` re-verified, and the code is accepted. Class `Hard` is correct, because both rail projections skip non-`HardFeature` rails.
+- **RA-93.3** `make_curved_disk_with_adjacent_source_sheet` inherits rail provenance that contradicts its own hard edges. Its census users (237/253/254) read no rail field. This is fixture debt.
+- **RA-93.4** TB14A predictions, replacing RA-92.7's:
+  - 235/236/294/299 and 237/253/254 PASS;
+  - 199 RED with its first failure moved from P10:5395 to the cylinder half (P10:5428);
+  - 250 unchanged (P10:3597, `PublishedProductRejected`, its own provenance-free composite);
+  - every other identity keeps its TB13C status.
+- **RA-93.5** TB14A → TB14A-REV. The fixture debt adds 250 and the adjacent-sheet helper.
+
+---
+
 ## RA-92 — TB13D reviewed: none of the 8 new REDs is a production regression; curved-disk control first (2026-10-18)
 
 Authority: `Architecture_M6_CP3_TB13D_Bisect_Review_Decision.md`.
@@ -12,7 +27,7 @@ Authority: `Architecture_M6_CP3_TB13D_Bisect_Review_Decision.md`.
   - 442: an assertion never run (`b9f70f3fe`).
 - **RA-92.4** Owned correction to RA-91.3: an unchanged test that turns RED is not by itself a production regression.
 - **RA-92.5** RA-91.4's hold on U4–U6 is discharged. The curved-disk `make` control is restored before U4.
-- **RA-92.6–92.7** CB14A binds `make_curved_disk_fixture` to producer-built rails and provenance, and prints the typed factory code (test-only). TB14A is the unchanged census on CB14A: 235/236/294/299 PASS, and nothing else changes except observing 199/250.
+- **RA-92.6–92.7** (RA-92.7 predictions replaced by RA-93.4) CB14A binds `make_curved_disk_fixture` to producer-built rails and provenance, and prints the typed factory code (test-only). TB14A is the unchanged census on CB14A: 235/236/294/299 PASS, and nothing else changes except observing 199/250.
 - **RA-92.8** Sequence: CB14A → TB14A → TB14A-REV (then DEFN-U6 and the U4/U5 order; the other test-debt repairs are scheduled separately).
 
 ---

@@ -4,7 +4,7 @@
 - P1 run `39132801755`, result `12138931233` (ZIP `0de1f10c334e6a2a3c1aef8be8b2f87f0b842ccf76426ee7842f260c5b112e03`);
 - P4 run `39132921344`, result `12138633102` (ZIP `fba5def74ddbdc87be703d21d62d553888f5b8eb6ac3fd9efeb9903b77d62699`).
 
-**Amends:** RA-91.3 (curved-disk status) and RA-91.4 (U4–U6 hold). **S** = `src/geometry/SurfaceCellTracing.cpp`; **P10** = `tests/SurfaceCellsPhase10Tests.cpp`.
+**Amends:** RA-91.3 (curved-disk status) and RA-91.4 (U4–U6 hold). RA-93 (the CB14A review) is appended and amends RA-92.7. **S** = `src/geometry/SurfaceCellTracing.cpp`; **P10** = `tests/SurfaceCellsPhase10Tests.cpp`.
 
 ## RA-92.1 Closeout and re-verification
 
@@ -60,6 +60,8 @@ RA-91.3 called the curved-disk failures a production regression because the test
 
 ## RA-92.7 TB14A specification — `M6-CP3-TB14A-R10-CURVED-DISK-CONTROL-CENSUS`
 
+*The predictions and the report list are replaced by RA-93.4.*
+
 - Run the unchanged census harness `947a95ee…` with `--execute` on the CB14A package. It is one dispatch, and its five inputs come from the CB14A record.
 - **Predictions:**
   - 235, 236, 294 and 299 PASS;
@@ -72,3 +74,20 @@ RA-91.3 called the curved-disk failures a production regression because the test
 ## RA-92.8 Sequence
 
 CB14A → TB14A → TB14A-REV. That Review adjudicates TB14A, then issues DEFN-U6 and sets the U4/U5 order. The test-debt repairs for 174, the 191 family, 242 and 442 are scheduled separately. Each CB follows a reviewed TB. A turn that dispatches several runs waits for each to start before pushing the next.
+
+## RA-93 CB14A accepted; TB14A predictions sharpened (2026-10-18)
+
+**Turn:** `M6-CP3-CB14A-R10-CURVED-DISK-RAIL-PROVENANCE-REV`. **Input:** CB14A source `2ee499a3403c07be05e8084a669f30c1c735f04a`, package `12140756646` (run `39138385869`). **Amends:** RA-92.7 (predictions only).
+
+- **RA-93.1 Re-verification.** ZIP `eee92aeb…d906`, 28/28, root manifest `495cf0b5…b2d1`, source archive `f414dce2…45a2`, `source-commit` `2ee499a3`. All 351 `src`/`include`/`tests` files are byte-identical to the commit; only P10 differs from CB13A (+78/−7), and ccache missed exactly 1 of 129 calls. Build and preflight 0, GMP, `runtimeExecution=false`.
+- **RA-93.2 Code accepted (RA-92.6).** Class `Hard` is right. The boundary positive in `RailBuildRejectionCarriesFailureWithoutConsumableRails` is itself `Hard` with one incident face. Both projections skip non-`HardFeature` rails (`RemeshPipeline.cpp:9707`, `:9732`), so `Boundary` would yield no chains and hit the guard. Statically, the builder emits one closed rail from this loop (explicit closing vertex, one source face per edge, component 0, one kind; `RemeshPipeline.cpp:9456-9545`). The guard is stricter than specified (non-empty closed chains), which is accepted.
+- **RA-93.3 Finding — derived fixture (RA-92.6 omission, owned).** `make_curved_disk_with_adjacent_source_sheet` (P10:2670) starts from the changed fixture, erases edge 0–1 from `hardFeatureEdges` and adds faces that make 0–1 interior. It keeps the 8-edge closed rail and chain, so its rail provenance now contradicts its own hard edges. Its census users 237/253/254 call only `build_source_topology_regions`, `source_faces_compatible` and `source_edge_is_authoritative_local_boundary`, and none of them reads a rail field (S:5733-5807, S:9382-9739). No status change is predicted, but they now run the new guards. No test reaches `make` on this fixture. Recorded as fixture debt: the helper must rebuild or clear provenance before any `make` use.
+- **RA-93.4 TB14A predictions (replace RA-92.7's; harness, single dispatch, package and deliverables are unchanged):**
+  - 235/236/294/299 PASS;
+  - 237/253/254 PASS. RED means a base-fixture guard threw (P10:2531/2541/2552), and Review reads the message;
+  - 199 stays RED, and its first failure leaves P10:5395, the bounded disk on the same path as 236. It is expected at P10:5428 (the cylinder half; RED at R3 with `A4_INVALID_FINAL_CELL_STATE`). A first failure still at 5395 alongside a 236 PASS is a falsifier;
+  - 250 is unchanged: RED at P10:3597 with `PublishedProductRejected`. Its composite builds its own options with the disk boundary as hard edges and no provenance (P10:3580-3593), the same stale-fixture cause. It was RED at R3 for another reason, so it joins the fixture debt;
+  - every other identity keeps its TB13C status.
+
+  The report gives status, and the first failure line and reason for each RED, for these 9 identities, plus every other divergence.
+- **RA-93.5 Sequence.** TB14A → TB14A-REV. TB14A-REV adjudicates TB14A, issues DEFN-U6 and sets the U4/U5 order. It also schedules the fixture debt: 174, the 191 family, 242, 442, 250 and the adjacent-sheet helper.

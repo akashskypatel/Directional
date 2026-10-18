@@ -34,11 +34,11 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-18, after verified `M6-CP3-CB14A-R10-CURVED-DISK-RAIL-PROVENANCE` (compile-only). TB14A is next. |
+| Currency | 2026-10-18, after `M6-CP3-CB14A-R10-CURVED-DISK-RAIL-PROVENANCE-REV` (RA-93): CB14A accepted, and TB14A predictions sharpened. TB14A is next. |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft; refetch HEAD before mutation. CB14A semantic source `2ee499a3403c07be05e8084a669f30c1c735f04a` (test-only); production code unchanged since CB13 (`70217cc2`). |
 | Last accepted semantic runtime | M6 CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. Frozen selector last measured at R3 (source `d82e34427`, 403/497). The R3 baseline is `Architecture_M6_CP3_TB1_Entry_R3_Red_Classification.tsv` (SHA-256 `890a105e…`, 94 RED); artifact `11661044443` expires 2026-10-24. |
-| Latest candidate or rejected evidence | TB13C census on CB13A: **420/497** (`12136761296`; inventory `Architecture_M6_CP3_TB13C_Selector_497_Red_Inventory.tsv`). TB13D bisect: P1 (+32) 422/497 (`12138931233`); P4 (CB12) 420/497 (`12138633102`), identical to CB13A. The 8 identities that passed at R3 and fail now are all test debt (RA-92.3). |
-| Regression accounting and debt | **66/17/49**, debt **1**, selector 497 frozen; R3 **403/497** rejected. There is no new production regression. Curved disk ×4 is now a compiled, unexecuted CB14A control; remaining test debt includes 174, the 191 family, 242 and 442 (scheduled later). See `Regression_Root_Cause_Tracker.md`. |
+| Latest candidate or rejected evidence | TB13C census on CB13A: **420/497** (`12136761296`; inventory `Architecture_M6_CP3_TB13C_Selector_497_Red_Inventory.tsv`). TB13D bisect: P1 (+32) 422/497 (`12138931233`); P4 (CB12) 420/497 (`12138633102`), identical to CB13A. The 8 identities that passed at R3 and fail now are all test debt (RA-92.3). CB14A package `12140756646` was re-verified by Review (RA-93.1); it has not run yet. |
+| Regression accounting and debt | **66/17/49**, debt **1**, selector 497 frozen; R3 **403/497** rejected. There is no new production regression. Curved disk ×4 is now a compiled, unexecuted CB14A control; remaining test debt includes 174, the 191 family, 242, 442, 250 (a provenance-free composite) and the adjacent-sheet curved-disk helper (RA-93.3), all scheduled later. See `Regression_Root_Cause_Tracker.md`. |
 | Active boundary | `RP-01` (RA-87.3): B1 cleared (U3 closed); B2 R endpoint → U4/U5 (11 identities); B3 inexact I parameter → U6, DEFN first (19 identities). The hold on U4–U6 is discharged (RA-92.5); curved-disk `make` control is now compiled but not yet measured (TB14A next). `RP-02` UNREACHED; Gate C suspended. |
 
 ## Mandatory next turn — `M6-CP3-TB14A-R10-CURVED-DISK-CONTROL-CENSUS` — EXACT NEXT
@@ -47,8 +47,18 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 - **Immutable package:** workflow [39138385869](https://github.com/akashskypatel/Directional/actions/runs/39138385869), artifact `12140756646`. Exact compiled source `2ee499a3403c07be05e8084a669f30c1c735f04a`; outer ZIP SHA-256 `eee92aeb38ce098c8580a199f340ec65f3bf650df6464d5a3f2b7dfee5add906`, root manifest SHA-256 `495cf0b54322e54aee1020802d8f6f4a65297fdfe519cf0871509a70f74bb2d1`, source archive SHA-256 `f414dce2543edfbfd44e528b739edb0685172719f010680ffd4659da0ad945a2`.
 - **Preflight:** 28/28 packaged checksums; eight targets compiled, configure/preflight and build 0/0; five empty statuses; `DIRECTIONAL_ENABLE_GMP=ON` and actual GMPXX/GMP link; `exactArithmeticBackend=GMP`; `runtimeExecution=false`. CB record: `.agents/Directional/Architecture_M6_CP3_CB14A_Curved_Disk_Rail_Provenance_Code_Build_Record_20261018.md`.
 - **Execution:** dispatch the unchanged census harness `947a95ee4f684143a0f8d7c768a39253ab893d921da488802b45fb6ed58879dd` with `--execute`, on this exact artifact. Extract packaged executables preserving executable mode bits; never chmod/repair package.
-- **Predictions / falsifiers (RA-92.7):** 235/236/294/299 PASS; every other identity retains TB13C status except 199/250 (observe only). Any different identity status routes to Review; no synthetic acceptance.
-- **Deliver:** a TB report of 25 lines or fewer with run, immutable result, ZIP digest, per-phase totals, six named identities and every divergence. On semantic RED, independent Review + Plan; orchestration failure uses Turn Cadence rule 5.
+  - The harness inputs are `CANDIDATE_ARTIFACT_ID=12140756646`, `EXPECTED_SOURCE_SHA`, `EXPECTED_CANDIDATE_ZIP_SHA256`, `EXPECTED_ROOT_MANIFEST_SHA256` and `EXPECTED_SOURCE_ARCHIVE_SHA256`, with the values above. The dispatch file carries every field TB13C used, including `turn_id` and `semantic_source_sha`.
+  - Make exactly one dispatch. Wait for the run to finish, then download and verify the result.
+  - The turn is not complete until the report is committed. TB13C and TB13D stopped after dispatching; do not repeat that.
+- **Predictions / falsifiers (RA-93.4, replacing RA-92.7):**
+  - 235/236/294/299 PASS;
+  - 237/253/254 PASS (a RED means a base-fixture guard threw at P10:2531/2541/2552);
+  - 199 stays RED with its first failure moved off P10:5395 (expected at P10:5428). Still at 5395 alongside a 236 PASS is a falsifier;
+  - 250 unchanged: RED at P10:3597, `PublishedProductRejected`;
+  - every other identity keeps its TB13C status.
+
+  Any other divergence goes to Review; no synthetic acceptance.
+- **Deliver:** a TB report of 25 lines or fewer: run, immutable result, ZIP digest, per-phase totals, the status of the 9 named identities with first-failure line and reason for each RED, and every other divergence from TB13C. On semantic RED, independent Review + Plan; orchestration failure uses Turn Cadence rule 5.
 - **Conditional successor:** `M6-CP3-TB14A-R10-CURVED-DISK-CONTROL-CENSUS-REV`. Nothing beyond it is authorized.
 
 ## Turn Sequence
@@ -56,14 +66,15 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
 | done | `M6-CP3-CB14A-R10-CURVED-DISK-RAIL-PROVENANCE` | Test-only source `2ee499a3403c`; verified GMP compile-only package `12140756646`. |
-| 1 — next | `M6-CP3-TB14A-R10-CURVED-DISK-CONTROL-CENSUS` | Artifact-only unchanged selector-497 census (RA-92.7). |
-| 2 — conditional | `M6-CP3-TB14A-R10-CURVED-DISK-CONTROL-CENSUS-REV` | Review adjudicates TB14A, issues DEFN-U6, sets U4/U5 order, schedules other fixture debt. |
+| done | `M6-CP3-CB14A-R10-CURVED-DISK-RAIL-PROVENANCE-REV` | RA-93: CB14A accepted; derived-fixture finding; TB14A predictions sharpened. |
+| 1 — next | `M6-CP3-TB14A-R10-CURVED-DISK-CONTROL-CENSUS` | Artifact-only unchanged selector-497 census, one dispatch (RA-92.7, with predictions from RA-93.4). |
+| 2 — conditional | `M6-CP3-TB14A-R10-CURVED-DISK-CONTROL-CENSUS-REV` | Review adjudicates TB14A, issues DEFN-U6, sets U4/U5 order, schedules fixture debt (174, 191 family, 242, 442, 250, adjacent-sheet helper). |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
 `load_next`: **test-benchmark** — execute unchanged selector-497 census on the verified immutable CB14A package; no compile, code, fixture, selector or recovery mutation.
 
-Minimum context after mandatory policies/checklists: `.agents/Directional/ORIENTATION.md`, `.agents/Directional/ROADMAP.md`, this handoff, RA-92 decision `Architecture_M6_CP3_TB13D_Bisect_Review_Decision.md`, the CB14A build record, `Architecture_M6_CP3_TB13C_Selector_497_Red_Inventory.tsv` and its owning Review, `Regression_Root_Cause_Tracker.md`, `TODO.md`. Use `.agents/Directional/tools/m6_cp3_entry_497_artifact_only_harness.sh` at hash above.
+Minimum context after mandatory policies/checklists: `.agents/Directional/ORIENTATION.md`, `.agents/Directional/ROADMAP.md`, this handoff, RA-92 decision `Architecture_M6_CP3_TB13D_Bisect_Review_Decision.md` (RA-93 is appended there), the CB14A build record, `Architecture_M6_CP3_TB13C_Selector_497_Red_Inventory.tsv` and its owning Review, `Regression_Root_Cause_Tracker.md`, `TODO.md`. Use `.agents/Directional/tools/m6_cp3_entry_497_artifact_only_harness.sh` at hash above.
 
 **Review tooling:** `.agents/Directional/tools/` holds read-only `review_check.py`, `selector_probe.py`, and `fixture_probe.py`; history-sensitive review gates require real committed history, not a synthesized snapshot.
 

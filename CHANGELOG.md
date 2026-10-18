@@ -1,3 +1,13 @@
+## 2026-10-18 — RA-93: CB14A accepted; TB14A predictions sharpened
+
+- Review re-verified package `12140756646`: ZIP, 28/28, root manifest and source archive hashes; 351 files byte-identical to `2ee499a3`; only P10 changed. Class `Hard` is correct, because both rail projections skip non-`HardFeature` rails.
+- Finding (an owned RA-92.6 omission): `make_curved_disk_with_adjacent_source_sheet` inherits rail provenance that contradicts its own hard edges. Its census users 237/253/254 read no rail field. Fixture debt now also covers 250 (a provenance-free composite).
+- TB14A predictions (RA-93.4):
+  - 235/236/294/299 and 237/253/254 PASS;
+  - 199's first failure moves off P10:5395;
+  - 250 is unchanged.
+- Record: RA-93 in `Architecture_M6_CP3_TB13D_Bisect_Review_Decision.md`.
+
 ## 2026-10-18 — CB14A curved-disk fixture source authority; compile-only green
 
 - Restored producer-built closed hard-feature rail provenance for the eight geometric boundary edges in `make_curved_disk_fixture`; added typed first-factory rejection diagnostics to four tests. Only `tests/SurfaceCellsPhase10Tests.cpp` changed (+78/-7). Feature class `Hard` chosen explicitly because the provenance projector processes `HardFeature` rails, not `Boundary`-kind rails.

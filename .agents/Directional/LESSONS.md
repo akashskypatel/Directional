@@ -109,6 +109,10 @@ This document records **reusable failure-derived engineering lessons**, not an e
 - **Evaluate every truth-table row against an executable model of the rule before freezing it.** A
   row written beside a rule, rather than derived from it, can contradict that rule. A false gate then
   stops a correct implementation for a whole TB cycle. A model of a few lines catches this (RA-88.2).
+- **A fixture change reaches every fixture built from it.** Before specifying or predicting one, list
+  each helper and test that calls the changed builder, and say what each inherits. A derived fixture
+  that edits the inputs afterwards can be left with authority that contradicts its own mesh (RA-93.3:
+  the adjacent-sheet curved disk kept a rail over an edge it made interior).
 
 ## Semantic ownership, identity, and dataflow
 

@@ -1,6 +1,4 @@
-## CURRENT — CB14A curved-disk rail provenance compiled; TB14A artifact-only census next (2026-10-18)
-
-- [x] `M6-CP3-CB14A-R10-CURVED-DISK-RAIL-PROVENANCE` (test-only; RA-92.6): source `2ee499a3403c07be05e8084a669f30c1c735f04a`, one file `tests/SurfaceCellsPhase10Tests.cpp` +78/-7, source-supported 8-edge closed Hard rail and producer-owned provenance; typed factory diagnostics for 235/236/294/299. Compile-only [39138385869](https://github.com/akashskypatel/Directional/actions/runs/39138385869), package `12140756646`, SHA-256 `eee92aeb38ce098c8580a199f340ec65f3bf650df6464d5a3f2b7dfee5add906`, 28/28 manifest, 8/8 targets, GMPXX/GMP, preflight/build 0/0, five clean source statuses, runtimeExecution=false. No tests run; TB14A next. See CB14A record.
+## CURRENT — CB14A accepted (RA-93); TB14A artifact-only census next (2026-10-18)
 
 - [x] `M6-CP3-TB10-R9-CARRIER-ENDPOINT-SUBCONDITION-HARVEST`: TB10 immutable run [38941839640](https://github.com/akashskypatel/Directional/actions/runs/38941839640), result `12062873272` ZIP SHA-256 `4db22a924f31a7bc6fdf1575a66849a2f660a760003e03e26e7f9277ac200513`; compiled source `d938ecb57e1040c2a73d5d25c4a613414556cb18`, artifact `12062565622`. 44/44 selected, 44 RED, 0 missing, 48 A3 observations, 21 exact-one-hot vertices: **contact-endpoint membership 0/21; carrier-edge membership 21/21; composite 0/21**. Example decoded vertex 4, published contact endpoints {1,7}, carrier edge {1,4}, certificate rail 2. Immutable postflight passed, 28/28 package hashes, compile/relink/benchmarks/selector497 not executed. Evidence is candidate/non-stable and does not modify 66/17/49, debt1, CP2 491/491, R3 403/497, selector497; RP-01 open, RP-02 UNREACHED. Independent Review next (ID UNKNOWN); no repair authorized.
 - [x] Independent Review (RA-81): TB10 accepted as diagnostic evidence; vertex 4 is the interior vertex of the open rail 1–4–7 and no V/I/C branch admits it. Record: `Architecture_M6_CP3_R9_Carrier_Endpoint_Subcondition_Review_Decision.md`.
@@ -45,24 +43,27 @@
   - 442: an assertion that has never been run (`b9f70f3fe`).
 
   The U4–U6 hold is discharged. Record: `.agents/Directional/Architecture_M6_CP3_TB13D_Bisect_Review_Decision.md`.
-- [ ] **NEXT: `M6-CP3-CB14A-R10-CURVED-DISK-RAIL-PROVENANCE`** (test-only CB, compile only; RA-92.6).
-  - In `make_curved_disk_fixture`, build rails with `build_authoritative_surface_cell_rails` (one closed curve over the 8 boundary edges; precedent REPackage:184-212).
-  - Set contacts, closed chains and open chains from `hard_rail_source_provenance_from_rails`. Throw unless the rail edges are exactly the 8 boundary edges. No hand-built chains.
-  - Print the typed factory code in the first `ASSERT` of 235/236/294/299.
-  - Record the five package inputs for TB14A.
-- [ ] Then `M6-CP3-TB14A-R10-CURVED-DISK-CONTROL-CENSUS` (RA-92.7): run the unchanged census harness once on the CB14A package. Predictions: 235/236/294/299 PASS; every other identity keeps its TB13C status, except 199/250, which are observed only.
+- [x] `M6-CP3-CB14A-R10-CURVED-DISK-RAIL-PROVENANCE` (test-only; RA-92.6): source `2ee499a3403c07be05e8084a669f30c1c735f04a`, one file `tests/SurfaceCellsPhase10Tests.cpp` +78/-7, source-supported 8-edge closed Hard rail and producer-owned provenance; typed factory diagnostics for 235/236/294/299. Compile-only [39138385869](https://github.com/akashskypatel/Directional/actions/runs/39138385869), package `12140756646`, SHA-256 `eee92aeb38ce098c8580a199f340ec65f3bf650df6464d5a3f2b7dfee5add906`, 28/28 manifest, 8/8 targets, GMPXX/GMP, preflight/build 0/0, five clean source statuses, runtimeExecution=false. No tests run; TB14A next. See CB14A record.
+- [x] Review (RA-93): CB14A accepted after independent package verification (351 files match the source commit; only P10 changed). Class `Hard` is correct.
+  - Finding: `make_curved_disk_with_adjacent_source_sheet` inherits rail provenance that contradicts its own hard edges. Its users 237/253/254 read no rail field.
+  - TB14A predictions sharpened. Record: RA-93, appended to `Architecture_M6_CP3_TB13D_Bisect_Review_Decision.md`.
+- [ ] **NEXT: `M6-CP3-TB14A-R10-CURVED-DISK-CONTROL-CENSUS`** (artifact-only; RA-92.7, with predictions from RA-93.4). Run the unchanged census harness `947a95ee…` once on package `12140756646`.
+  - Predictions: 235/236/294/299 and 237/253/254 PASS; 199 RED with its first failure moved off P10:5395 (expected P10:5428); 250 unchanged (P10:3597); every other identity keeps its TB13C status.
+  - Wait for the run, verify it, and commit a report of 25 lines or fewer before closing.
 - [ ] Then `M6-CP3-TB14A-R10-CURVED-DISK-CONTROL-CENSUS-REV`: adjudicate TB14A, issue DEFN-U6, set the U4/U5 order, and schedule the test-debt repairs.
 - [ ] Test debt (RA-92.3), each a narrow test-only CB after a reviewed TB:
   - 174: replace the non-manifold three-face TriMesh source;
   - 191 family (189–195): print the atlas build error, then repair the fixture field;
   - 242: retarget the tamper to an input that is actually consumed;
-  - 442: either show the seam claim is required (a production gap) or correct its fixture.
+  - 442: either show the seam claim is required (a production gap) or correct its fixture;
+  - 250: the composite gives its disk boundary as hard edges with no provenance (P10:3580-3593). It was RED at R3 for another reason;
+  - the adjacent-sheet curved-disk helper (P10:2670) must rebuild or clear rail provenance before any `make` use (RA-93.3).
 - [ ] Remaining units (RA-85.5, RA-87.3):
   - U4 factory admits R (11 identities);
   - U5 consumer emits R;
   - U6 exact I parameter (19 identities; DEFN, then CB).
   - RP-01 closes only after all three blocker shapes are cleared.
-- Turn sequence: CB14A → TB14A → TB14A-REV → (DEFN-U6, the U4/U5 order and the test-debt repairs, set by that Review). TB13D done. A RED TB goes to Review (rule 4). Dispatch several runs only one at a time, after each run starts.
+- Turn sequence: TB14A → TB14A-REV → (DEFN-U6, the U4/U5 order and the test-debt repairs, set by that Review). CB14A and RA-93 are done. A RED TB goes to Review (rule 4). Dispatch several runs only one at a time, after each run starts.
 - Frozen: `RP-01` unresolved; `RP-02` UNREACHED; Gate C suspended; **66/17/49**, debt **1** (no new production regression; 8 test-debt items), accepted M6 CP2 **491/491**, rejected R3 **403/497**, frozen selector **497** unchanged; latest census 420/497 (TB13C).
 
 ---
