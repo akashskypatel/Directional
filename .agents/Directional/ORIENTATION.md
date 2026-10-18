@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-18 · CB12 (ordered open-rail chain reaches the verifier) accepted on package verification (RA-86). Next: TB12 runs its contract test plus four RP-01 diagnostics. After that comes U3, the open-chain interval route rule.  
+**Currency:** 2026-10-18 · TB12 complete on immutable CB12 artifact (2/2 gates PASS; 4/4 RP-01 diagnostics RED as predicted; no direct-production acceptance). Next: independent `M6-CP3-TB12-R10-OPEN-RAIL-CHAIN-PROVENANCE-REV`, which must authorize any CB13 implementation.  
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
