@@ -238,7 +238,8 @@ TEST(SurfaceCellClosedProductContracts, OpenHardRailChainProvenanceIsSourceValid
   const auto &contacts = projection->terminalContacts;
   const auto &closed = projection->closedChains;
   ASSERT_TRUE(valid(projection->openChains, contacts, closed, hardEdges));
-  EXPECT_TRUE(valid({}, contacts, closed, hardEdges)); // Optional legacy input.
+  EXPECT_TRUE(valid(directional::geometry::SurfaceHardRailOpenChains{},
+                    contacts, closed, hardEdges)); // Optional legacy input.
 
   auto tampered = projection->openChains;
   tampered.at(rail).vertices.erase(tampered.at(rail).vertices.begin() + 1);
@@ -266,7 +267,8 @@ TEST(SurfaceCellClosedProductContracts, OpenHardRailChainProvenanceIsSourceValid
   ASSERT_TRUE(edge.has_value());
   missingEdge.erase(edge.value());
   EXPECT_FALSE(valid(tampered, contacts, closed, missingEdge));
-  tampered.at(rail).vertices.resize(1);
+  tampered.at(rail).vertices.erase(tampered.at(rail).vertices.begin() + 1,
+                                   tampered.at(rail).vertices.end());
   EXPECT_FALSE(valid(tampered, contacts, closed, hardEdges));
 
   // Two-vertex rails are valid; only later R eligibility requires >=3.
