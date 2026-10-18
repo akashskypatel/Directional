@@ -1,18 +1,13 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb13a-gmp-compile-20261018-01",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb13a-gmp-compile",
-  "source_sha": "e88ac65ffcf87548138d1c56f2cc6ed4a3d8177b",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb13a-gmp-compile"
+  "request_id": "m6-cp3-tb13a-r10-six-case-20261018-01",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb13a-r10-truth-table",
+  "executor_sha": "c278c683de4477b803bb0a93007cdf51e45c64d7",
+  "semantic_source_sha": "e88ac65ffcf87548138d1c56f2cc6ed4a3d8177b",
+  "turn_id": "M6-CP3-TB13A-R10-OPEN-RAIL-CHAIN-INTERVAL-TRUTH-TABLE",
+  "harness_path": ".agents/Directional/tools/m6_cp3_r10_open_rail_chain_interval_truth_table_harness.sh",
+  "harness_sha256": "a42ae6e0b3de79f16388a5017ac7426b4174d8184dd3de9b99b6b9df12d4350b",
+  "environment": {},
+  "artifact_prefix": "m6-cp3-tb13a-r10-truth-table"
 }
