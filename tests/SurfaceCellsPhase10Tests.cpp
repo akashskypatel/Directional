@@ -9,6 +9,7 @@
 #include <directional/validation/ValidationVisualizer.h>
 
 #include <algorithm>
+#include <bit>
 #include <cmath>
 #include <chrono>
 #include <cstdint>
@@ -9250,6 +9251,124 @@ TEST(SurfaceCellAuthorityContractCutover,
             materialized.consumedTopologyRegions);
   EXPECT_EQ(static_cast<std::size_t>(mesh.F.rows()),
             network.phaseFront.product().sourceTopologyRegions().face_count());
+}
+
+
+TEST(SurfaceCellAuthorityContractCutover,
+     AcceptedBoundaryRoundingReproducesTemplatePair) {
+  using namespace directional;
+  using namespace directional::geometry::surface_cell_tracing_detail;
+  Eigen::MatrixXi faces(4, 3);
+  faces << 0, 1, 4,
+           0, 1, 7,
+           0, 4, 7,
+           1, 7, 4;
+  const auto edge = test_source_edge_topology(1, 4);
+  const auto parameter = authority::FieldExactRational::from_double_exact(
+      0x1.9999999999999p-3);
+  ASSERT_TRUE(parameter);
+  const auto forward = accepted_boundary_trace_point(
+      faces, 0, 1, 4, *parameter, edge);
+  const auto reverse = accepted_boundary_trace_point(
+      faces, 3, 4, 1, *parameter, edge);
+  ASSERT_TRUE(forward);
+  ASSERT_TRUE(reverse);
+  ASSERT_TRUE(forward->exactEdgePoint);
+  ASSERT_TRUE(reverse->exactEdgePoint);
+  EXPECT_EQ(forward->exactEdgePoint, reverse->exactEdgePoint);
+  const auto same_bits = [](double a, double b) {
+    return std::bit_cast<std::uint64_t>(a) ==
+           std::bit_cast<std::uint64_t>(b);
+  };
+  EXPECT_TRUE(same_bits(forward->barycentric[0], 0.0));
+  EXPECT_TRUE(same_bits(forward->barycentric[1], 0x1.999999999999ap-1));
+  EXPECT_TRUE(same_bits(forward->barycentric[2], 0x1.9999999999999p-3));
+  EXPECT_TRUE(same_bits(reverse->barycentric[0], 0x1.999999999999ap-1));
+  EXPECT_TRUE(same_bits(reverse->barycentric[1], 0.0));
+  EXPECT_TRUE(same_bits(reverse->barycentric[2], 0x1.9999999999998p-3));
+  for (const auto boundary : {0, 1}) {
+    const auto endpoint = accepted_boundary_trace_point(
+        faces, 0, 1, 4,
+        authority::FieldExactRational::from_integer(boundary), edge);
+    ASSERT_TRUE(endpoint);
+    EXPECT_FALSE(endpoint->exactEdgePoint);
+  }
+}
+
+TEST(SurfaceCellAuthorityContractCutover,
+     ExactInteriorWitnessBindsOnlyItsOwnRounding) {
+  using namespace directional;
+  using namespace directional::geometry::surface_cell_tracing_detail;
+  Eigen::MatrixXi faces(5, 3);
+  faces << 0, 1, 4,
+           0, 1, 7,
+           0, 4, 7,
+           1, 7, 4,
+           0, 6, 7;
+  const auto edge = test_source_edge_topology(1, 4);
+  const auto parameter = authority::FieldExactRational::from_double_exact(
+      0x1.9999999999999p-3);
+  const auto otherParameter = authority::FieldExactRational::from_double_exact(
+      0x1.9999999999998p-3);
+  ASSERT_TRUE(parameter);
+  ASSERT_TRUE(otherParameter);
+  const auto forward = accepted_boundary_trace_point(
+      faces, 0, 1, 4, *parameter, edge);
+  const auto reverse = accepted_boundary_trace_point(
+      faces, 3, 4, 1, *parameter, edge);
+  ASSERT_TRUE(forward);
+  ASSERT_TRUE(reverse);
+  ASSERT_TRUE(exact_interior_witness_binds(*forward, faces, edge));
+  ASSERT_TRUE(exact_interior_witness_binds(*reverse, faces, edge));
+
+  auto altered = *forward;
+  altered.barycentric[2] = std::nextafter(altered.barycentric[2], 1.0);
+  EXPECT_FALSE(exact_interior_witness_binds(altered, faces, edge));
+  EXPECT_FALSE(exact_interior_witness_binds(
+      *forward, faces, test_source_edge_topology(4, 7)));
+  altered = *forward;
+  altered.exactEdgePoint->parameter = *otherParameter;
+  EXPECT_FALSE(exact_interior_witness_binds(altered, faces, edge));
+  altered = *forward;
+  altered.face = 4;
+  EXPECT_FALSE(exact_interior_witness_binds(altered, faces, edge));
+  altered = *forward;
+  altered.exactEdgePoint.reset();
+  EXPECT_FALSE(exact_interior_witness_binds(altered, faces, edge));
+}
+
+TEST(SurfaceCellAuthorityContractCutover,
+     OneUlpDistinctCrossingsKeepDistinctWitnesses) {
+  using namespace directional;
+  using namespace directional::geometry::surface_cell_tracing_detail;
+  Eigen::MatrixXi faces(1, 3);
+  faces << 0, 1, 4;
+  const auto edge = test_source_edge_topology(1, 4);
+  const auto firstParameter = authority::FieldExactRational::from_double_exact(
+      0x1.9999999999999p-3);
+  const auto secondParameter = authority::FieldExactRational::from_double_exact(
+      0x1.999999999999ap-3);
+  ASSERT_TRUE(firstParameter);
+  ASSERT_TRUE(secondParameter);
+  const auto first = accepted_boundary_trace_point(
+      faces, 0, 1, 4, *firstParameter, edge);
+  const auto second = accepted_boundary_trace_point(
+      faces, 0, 1, 4, *secondParameter, edge);
+  ASSERT_TRUE(first);
+  ASSERT_TRUE(second);
+  ASSERT_TRUE(first->exactEdgePoint);
+  ASSERT_TRUE(second->exactEdgePoint);
+  EXPECT_NE(first->exactEdgePoint, second->exactEdgePoint);
+  EXPECT_TRUE(exact_interior_witness_binds(*first, faces, edge));
+  EXPECT_TRUE(exact_interior_witness_binds(*second, faces, edge));
+  auto firstWithSecondWitness = *first;
+  firstWithSecondWitness.exactEdgePoint = second->exactEdgePoint;
+  auto secondWithFirstWitness = *second;
+  secondWithFirstWitness.exactEdgePoint = first->exactEdgePoint;
+  EXPECT_FALSE(exact_interior_witness_binds(
+      firstWithSecondWitness, faces, edge));
+  EXPECT_FALSE(exact_interior_witness_binds(
+      secondWithFirstWitness, faces, edge));
 }
 
 } // namespace

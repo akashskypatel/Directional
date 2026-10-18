@@ -32,6 +32,7 @@
 #include <directional/authority/AuthorityIds.h>
 #include <directional/authority/CanonicalRoute.h>
 #include <directional/authority/FieldTransportAtlas.h>
+#include <directional/authority/ExactSourcePath.h>
 #include <directional/authority/GridAutomorphism.h>
 #include <directional/fields/CrossField.h>
 #include <directional/geometry/ReliefTopology.h>
@@ -90,6 +91,8 @@ enum class SurfaceCellRailKind : int {
 struct SurfaceTracePoint {
   int face = -1;
   Eigen::RowVector3d barycentric = Eigen::RowVector3d::Zero();
+  // Producer-origin provenance; never point identity unless exact-bound.
+  std::optional<authority::ExactSourceEdgePoint> exactEdgePoint;
 };
 
 struct SurfaceCellRailSample {
@@ -1552,6 +1555,13 @@ using SurfaceHardRailOpenChains =
     std::map<authority::HardRailId, SurfaceHardRailOpenChain>;
 
 namespace surface_cell_tracing_detail {
+[[nodiscard]] std::optional<SurfaceTracePoint> accepted_boundary_trace_point(
+    const Eigen::MatrixXi &faces, int face, int firstVertex, int secondVertex,
+    const authority::FieldExactRational &parameter,
+    const authority::SourceEdgeTopologyKey &edge);
+[[nodiscard]] bool exact_interior_witness_binds(
+    const SurfaceTracePoint &point, const Eigen::MatrixXi &faces,
+    const authority::SourceEdgeTopologyKey &edge);
 // A route occupies one contiguous, non-wrapping interval of the source chain.
 // Only a genuine chain-end vertex may be certified as a terminal.
 [[nodiscard]] bool open_rail_route_interval_valid(

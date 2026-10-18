@@ -58,6 +58,90 @@ std::optional<authority::FieldExactRational> exact_edge_parameter(
   return edgePoint->parameter;
 }
 
+// Preserve the accepted-boundary producer's one authoritative floating-point
+// rounding path. Other producers do not gain exact provenance.
+std::optional<SurfaceTracePoint> accepted_boundary_trace_point(
+    const Eigen::MatrixXi &faces, const int face, const int firstVertex,
+    const int secondVertex,
+    const authority::FieldExactRational &canonicalParameter,
+    const authority::SourceEdgeTopologyKey &edge) {
+  const double canonical =
+      static_cast<double>(canonicalParameter.to_double());
+  if (!std::isfinite(canonical)) return std::nullopt;
+  const auto firstId = authority::SourceVertexId::from_index(
+      static_cast<std::int64_t>(firstVertex), source_vertex_extent(faces));
+  if (!firstId) return std::nullopt;
+  const bool forward = firstId.value() == edge.first();
+  const double alpha = forward ? canonical : 1.0 - canonical;
+  if (alpha < -1.0e-12 || alpha > 1.0 + 1.0e-12) return std::nullopt;
+  SurfaceTracePoint point;
+  point.face = face;
+  point.barycentric.setZero();
+  int firstCorner = -1;
+  int secondCorner = -1;
+  for (int corner = 0; corner < 3; ++corner) {
+    if (faces(face, corner) == firstVertex) firstCorner = corner;
+    if (faces(face, corner) == secondVertex) secondCorner = corner;
+  }
+  if (firstCorner < 0 || secondCorner < 0 || firstCorner == secondCorner) {
+    return std::nullopt;
+  }
+  point.barycentric[firstCorner] = 1.0 - std::clamp(alpha, 0.0, 1.0);
+  point.barycentric[secondCorner] = std::clamp(alpha, 0.0, 1.0);
+  const auto canonicalPoint = authority::canonical_exact_source_edge_point(
+      edge, canonicalParameter);
+  if (canonicalPoint) {
+    if (const auto *interior =
+            std::get_if<authority::ExactSourceEdgePoint>(&*canonicalPoint)) {
+      point.exactEdgePoint = *interior;
+    }
+  }
+  return point;
+}
+
+bool exact_interior_witness_binds(
+    const SurfaceTracePoint &point, const Eigen::MatrixXi &faces,
+    const authority::SourceEdgeTopologyKey &edge) {
+  if (!point.exactEdgePoint || point.exactEdgePoint->edge != edge ||
+      faces.cols() != 3 || point.face < 0 || point.face >= faces.rows()) {
+    return false;
+  }
+  const auto canonical = authority::canonical_exact_source_edge_point(
+      edge, point.exactEdgePoint->parameter);
+  if (!canonical ||
+      !std::holds_alternative<authority::ExactSourceEdgePoint>(*canonical)) {
+    return false;
+  }
+  const auto &witness = *point.exactEdgePoint;
+  bool hasLow = false;
+  bool hasHigh = false;
+  for (int corner = 0; corner < 3; ++corner) {
+    hasLow = hasLow || faces(point.face, corner) ==
+        static_cast<int>(edge.first().index());
+    hasHigh = hasHigh || faces(point.face, corner) ==
+        static_cast<int>(edge.second().index());
+  }
+  if (!hasLow || !hasHigh) return false;
+  for (const bool forward : {true, false}) {
+    const int firstVertex = static_cast<int>(
+        (forward ? edge.first() : edge.second()).index());
+    const int secondVertex = static_cast<int>(
+        (forward ? edge.second() : edge.first()).index());
+    const auto reproduced = accepted_boundary_trace_point(
+        faces, point.face, firstVertex, secondVertex,
+        witness.parameter, edge);
+    if (!reproduced) continue;
+    bool identical = true;
+    for (int corner = 0; corner < 3; ++corner) {
+      identical = identical &&
+          std::bit_cast<std::uint64_t>(point.barycentric[corner]) ==
+              std::bit_cast<std::uint64_t>(reproduced->barycentric[corner]);
+    }
+    if (identical) return true;
+  }
+  return false;
+}
+
 // Recover an intrinsic parameter only from the exact source-edge corners in
 // the published chart. This rejects other edges, off-edge barycentrics,
 // endpoint masquerades, and a non-unit barycentric sum without a 3D epsilon.
@@ -16943,33 +17027,10 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
   };
   const auto boundary_trace_point = [&faces](
       const int face, const int firstVertex, const int secondVertex,
-      const authority::FieldExactRational &canonicalParameter,
-      const authority::SourceEdgeTopologyKey &edge)
-      -> std::optional<SurfaceTracePoint> {
-    const double canonical =
-        static_cast<double>(canonicalParameter.to_double());
-    if (!std::isfinite(canonical)) return std::nullopt;
-    const auto firstId = authority::SourceVertexId::from_index(
-        static_cast<std::int64_t>(firstVertex), source_vertex_extent(faces));
-    if (!firstId) return std::nullopt;
-    const bool forward = firstId.value() == edge.first();
-    const double alpha = forward ? canonical : 1.0 - canonical;
-    if (alpha < -1.0e-12 || alpha > 1.0 + 1.0e-12) return std::nullopt;
-    SurfaceTracePoint point;
-    point.face = face;
-    point.barycentric.setZero();
-    int firstCorner = -1;
-    int secondCorner = -1;
-    for (int corner = 0; corner < 3; ++corner) {
-      if (faces(face, corner) == firstVertex) firstCorner = corner;
-      if (faces(face, corner) == secondVertex) secondCorner = corner;
-    }
-    if (firstCorner < 0 || secondCorner < 0 || firstCorner == secondCorner) {
-      return std::nullopt;
-    }
-    point.barycentric[firstCorner] = 1.0 - std::clamp(alpha, 0.0, 1.0);
-    point.barycentric[secondCorner] = std::clamp(alpha, 0.0, 1.0);
-    return point;
+      const authority::FieldExactRational &parameter,
+      const authority::SourceEdgeTopologyKey &edge) {
+    return surface_cell_tracing_detail::accepted_boundary_trace_point(
+        faces, face, firstVertex, secondVertex, parameter, edge);
   };
 
   if (useAcceptedConformity) {
@@ -17190,6 +17251,10 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
           if (!subdivision.points.empty() &&
               (subdivision.uv.back() - uv).norm() <=
                   1.0e-10 * std::max({1.0, width, height})) {
+            if (subdivision.points.back().exactEdgePoint !=
+                point->exactEdgePoint) {
+              subdivision.points.back().exactEdgePoint.reset();
+            }
             return true;
           }
           subdivision.points.push_back(*point);
@@ -20099,6 +20164,25 @@ SurfaceCellNetwork build_surface_cell_network(
                                endpointEdge.second() == vertex);
         }
       }
+      const auto append_exact_witness = [&](const char *label,
+                                            const SurfaceTracePoint &point) {
+        endpointEvidence << ";a2bProbe" << label << "Exact=";
+        if (point.exactEdgePoint) {
+          const auto &witness = *point.exactEdgePoint;
+          endpointEvidence << witness.edge.first().index() << ','
+                           << witness.edge.second().index() << '@'
+                           << witness.parameter.exact_numerator().to_string()
+                           << '/'
+                           << witness.parameter.exact_denominator().to_string();
+        } else {
+          endpointEvidence << "none";
+        }
+        endpointEvidence << ";a2bProbe" << label << "ExactBinds="
+                         << surface_cell_tracing_detail::exact_interior_witness_binds(
+                                point, faces, endpointEdge);
+      };
+      append_exact_witness("From", fromPoint);
+      append_exact_witness("To", toPoint);
       invalid_route(SurfaceHardRailRouteFailureLocus::EndpointAttachment,
                     firstMissing ? 0 : static_cast<int>(routeSteps.size() - 1U),
                     -1, firstMissing ? "endpoint-0" : "endpoint-1",
