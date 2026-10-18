@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-18 · TB12 complete on immutable CB12 artifact (2/2 gates PASS; 4/4 RP-01 diagnostics RED as predicted; no direct-production acceptance). Next: independent `M6-CP3-TB12-R10-OPEN-RAIL-CHAIN-PROVENANCE-REV`, which must authorize any CB13 implementation.  
+**Currency:** 2026-10-18 · TB12 reviewed (RA-87). The rail chain now reaches the verifier. Open rails are blocked three ways: I–I fronts (fixed next by CB13), rail-interior vertices (U4/U5), and inexact interior-point parameters (new unit U6). A full selector census follows CB13.  
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -102,7 +102,12 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Define the endpoint contract's missing open-rail interior-vertex case against both active checkers, at route level as well as per endpoint, with one outcome shared by both checkers. The shared route check is in place (U1). RA-85 replaced "needs a rail terminal" with "contiguous stretch of the rail chain", so I–I middle segments are admitted. U2–U5 follow; only U2, carrying the chain to the verifier, is authorized. | M6-CP3 Definition; [handoff](Future_Chat_Session_Handoff.md) |
+| **1** | Admit subdivided open hard rails in both checkers with one shared outcome. Three blocker shapes (RA-87.3):
+  - B1, I–I middle fronts: U3, the chain-interval route rule; CB13 is next.
+  - B2, rail-interior vertex endpoints: U4/U5.
+  - B3, interior-point parameters whose doubles do not close exactly: U6, which needs a no-epsilon exact witness designed in a DEFN.
+
+  U1 (the route check) and U2 (the chain reaching the verifier) are done. | M6-CP3; [handoff](Future_Chat_Session_Handoff.md) |
 | **2** | Restore accepted-prefix execution and prove actual direct-production positive/tamper paths; `RP-01` open, downstream `RP-02` not reached. | M6-CP3 definitions and [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |

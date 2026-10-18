@@ -1,3 +1,9 @@
+## 2026-10-18 — RA-87: TB12 reviewed; U2 closed; third RP-01 blocker (B3) gets unit U6; CB13 specified; selector census added
+
+- TB12 (run `39103358061`, result `12127706461`) was re-verified independently. Every RA-86.4 prediction held (gates 2/2 PASS, #3/#4 byte-identical to TB11, CB12 falsifier absent), so U2 is closed. No real fixture reaches `make` yet.
+- New finding: the full-pipeline RP-01 identities `cp3entry:2/6` first fail at an I endpoint, front 17/203. Face 0's barycentrics sum to exactly 1 + 2⁻⁵⁵, the RA-61.6 mechanism that R9B left open. RA-85.5 had no unit for it, so U6 (exact I-endpoint parameter, DEFN first) is added. RP-01 now has three blocker shapes: B1 → U3, B2 → U4/U5, B3 → U6.
+- CB13 (U3) is specified: one chain-interval helper serves both checkers; chains are mandatory; every hand-built input with contacts carries the real chains; the truth table is replaced. The frozen selector has not been measured for 67 source commits, so census TB13C runs on the CB13 package after TB13. RA-86's record is folded. Record: `.agents/Directional/Architecture_M6_CP3_TB12_Chain_Provenance_Review_Decision.md`. Stable 66/17/49, debt 1, CP2 491/491, R3 403/497, selector 497 unchanged.
+
 ## 2026-10-18 — RA-86: TB12 harness authorized; CB12 accepted; TB12 gains full-pipeline diagnostics
 
 ## 2026-10-18 — TB12 immutable open-rail chain provenance harvest

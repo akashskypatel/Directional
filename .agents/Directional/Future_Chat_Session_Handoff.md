@@ -34,40 +34,54 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-18, after `M6-CP3-TB12-R10-OPEN-RAIL-CHAIN-PROVENANCE`; independent Review next. |
-| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft; refetch HEAD before mutation. CB12 semantic source `b1b02d5bed43898af0708d76dcd70ada96aeecc9`. |
-| Last accepted semantic runtime | M6 CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. |
-| Latest candidate or rejected evidence | TB12 [run 39103358061](https://github.com/akashskypatel/Directional/actions/runs/39103358061), result `12127706461`, ZIP SHA-256 `1b6c3babd942cfc7fc7bbeff94774bf719297fdb9bc7ca3c0088e40110f2dfee`, CB12 package `12125223513`. **6/6 selected; two gates PASS, four existing RP-01 diagnostics RED; immutable postflight.** `Architecture_M6_CP3_TB12_Open_Rail_Chain_Provenance_Harvest_Report_20261018.md`. |
-| Regression accounting and debt | **66/17/49**, debt **1**, selector 497 frozen; R3 **403/497** rejected; `Regression_Root_Cause_Tracker.md`. No TB12 stable-regression promotion. |
-| Active boundary | `RP-01` open: #3/#4 byte-identical TB11 open-rail route-anchor rejection at front 29/147; #5/#6 `endpoint-1` rejection before CB12 product publication. U3–U5 (CB13–CB15) remain conditional on Review. `RP-02` UNREACHED; Gate C suspended. |
+| Currency | 2026-10-18, after `M6-CP3-TB12-R10-OPEN-RAIL-CHAIN-PROVENANCE-REV` (RA-87) |
+| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft; refetch HEAD before mutation. Semantic source `b1b02d5bed43898af0708d76dcd70ada96aeecc9` (CB12). |
+| Last accepted semantic runtime | M6 CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. Frozen selector last measured at R3 (source `d82e34427`, result `11661044443`, 403/497). |
+| Latest candidate or rejected evidence | TB12 run `39103358061`, result `12127706461`, on CB12 package `12125223513`: gates 2/2 PASS (U2 closed); the 4 RP-01 diagnostics are RED as predicted. `cp3entry:2/6` first fail at B3 (`endpoint-1`, front 17/203, face-0 sum 1 + 2⁻⁵⁵), RA-87.2. |
+| Regression accounting and debt | **66/17/49**, debt **1**, selector 497 frozen; R3 **403/497** rejected; `Regression_Root_Cause_Tracker.md`. |
+| Active boundary | `RP-01` has three blocker shapes (RA-87.3): B1 I–I anchor → U3 (CB13, authorized); B2 R endpoint → U4/U5; B3 inexact I parameter → U6 (DEFN first). `RP-02` UNREACHED; Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-TB12-R10-OPEN-RAIL-CHAIN-PROVENANCE-REV` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB13-R10-OPEN-RAIL-CHAIN-INTERVAL-ROUTE` — EXACT NEXT
 
-- **Type / owner:** independent `REV` after TB12, authorized by RA-86.4.
-- **Objective:** independently adjudicate all six TB12 measurements against RA-86.4, including reachability, prediction non-vacuity, and the precise scope of CB12 validation; issue or amend the CB13 specification only after Review.
-- **Read before work:** RA-86 decision; TB12 owning report and raw immutable result artifact; TB11 report; CB12 record; `Architecture_M6_Frozen_Definitions.md`, `Regression_Root_Cause_Tracker.md`.
-- **In scope:** re-derive observed predicates and ledger; examine #3/#4 exact TB11 equivalence and #5/#6 `firstPredicate=`; classify stable versus non-stable evidence; decide the U3 constraints under RA-86.5, and carry any unresolved witnesses.
-- **Out of scope:** code, tests, source, harness, selector, compile, benchmark, unreviewed CB13 work, or fabricated direct-production success.
-- **Success evidence:** independent Review decision and non-vacuity assessment; corrected/frozen CB13 authority if justified; tracker and handoff updated with exact next turn.
-- **On any measured outcome:** CB13 may follow only after a completed Review that explicitly authorizes it; do not begin CB13 from this TB12 turn.
+- **Type / owner:** `CB` (compile only); unit U3. The specification is RA-87.4 and is binding item by item.
+- **Objective:** replace the open-rail terminal anchor with the open-chain interval rule (RA-85.4) in both checkers, make chains mandatory, and carry the real chains through every hand-built input.
+- **Read before work:** RA-87 record; RA-85.4; the CB12 record; S:8150-8190 (helper), S:8262-8300 (entry validator), S:8667-8679 and the closed-chain interval at S:8679-8716 (template), S:8764-8765, S:20296-20316; P10:6380-6440; TQ:1775-1862.
+- **In scope:** RA-87.4 items 1–7, exactly:
+  1. the helper `open_rail_route_interval_valid`, and deletion of `open_rail_route_anchor_valid`;
+  2. the factory call;
+  3. the consumer call with predicate `open-rail-chain-interval`;
+  4. no empty-map exemption;
+  5. the I-branch comment;
+  6. real chains in every hand-built input with contacts;
+  7. the new truth table and the flipped CB12 expectation.
+
+  Then GMP/GMPXX compile and package.
+- **Out of scope:** R or I admission (U4–U6); endpoint predicates; probes; tolerance; selector, harness or workflow changes; running tests.
+- **Success evidence:** compile green; package ID, ZIP SHA-256 and source SHA recorded; `runtimeExecution=false`; a list of every direct `make` call site and how it now receives chains; a CB13 record of 40 lines or fewer.
+- **On success:** `M6-CP3-TB13-R10-OPEN-RAIL-CHAIN-INTERVAL-ROUTE` (RA-87.5).
+- **On failure/blocker:** `UNKNOWN — STOP`; orchestration failures follow `Turn_Cadence.md` rule 5.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
-|---|---| 
-| 1 — next | `M6-CP3-TB12-R10-OPEN-RAIL-CHAIN-PROVENANCE-REV` | Review TB12 artifact and RA-86 predictions. |
-| 2 — conditional | `UNKNOWN` (CB13) | Canonical ID and exact allowed scope require the next independent Review; do not start before an explicitly reviewed specification. |
+|---|---|---|
+| 1 — next | `M6-CP3-CB13-R10-OPEN-RAIL-CHAIN-INTERVAL-ROUTE` | U3, compile only (RA-87.4). |
+| 2 — conditional | `M6-CP3-TB13-R10-OPEN-RAIL-CHAIN-INTERVAL-ROUTE` | After CB13 is packaged. Six identities (RA-87.5): two gates; the P10 midline tests predicted to move past front 29/147 to B2; `cp3entry:2/6` byte-identical to TB12. |
+| 3 — conditional | `M6-CP3-TB13C-R10-SELECTOR-497-CENSUS` | Same CB13 package; the unchanged 497 harness; the first failure of every RED classified as B1/B2/B3/other; identities that passed at R3 and are now RED listed. No interpretation. |
+| 4 — conditional | `M6-CP3-TB13C-R10-SELECTOR-497-CENSUS-REV` | Review of TB13 and TB13C. It orders U4/U5/U6 and issues the DEFN for U6 (the exact I-endpoint parameter). |
+
+Orchestration failures follow rule 5. Anything beyond step 4 is `UNKNOWN`.
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **review** — independently examine TB12 raw evidence and RA-86.4 predictions; no code/build/test mutation.
+`load_next`: **code-build** — use the turn-based-coding-agent Code + Build guidance; no runtime execution.
 
 Minimum successor context **after the mandatory start checklist and policies**:
 
 0. `.agents/Directional/ORIENTATION.md` — project context, read first.
 1. `.agents/Directional/ROADMAP.md` — milestone position only.
 2. `.agents/Directional/Future_Chat_Session_Handoff.md` — exact current handoff.
-3. `Architecture_M6_CP3_TB12_Harness_Authority_Review_Decision.md` (RA-86), `Architecture_M6_CP3_TB12_Open_Rail_Chain_Provenance_Harvest_Report_20261018.md` and its raw result artifact, the TB11 report, CB12 record, and `Architecture_M6_Frozen_Definitions.md` RA-85/RA-86.
+3. `Architecture_M6_CP3_TB12_Chain_Provenance_Review_Decision.md` (RA-87), `Architecture_M6_CP3_TB11_Route_Anchor_Review_Decision.md` (RA-85.4), `Architecture_M6_CP3_CB12_R10_Open_Rail_Chain_Provenance_Code_Build_Record_20261018.md`, `Architecture_M6_Frozen_Definitions.md` RA-85/RA-87, `GMP_COMPILE_POLICY.md`.
 4. `.agents/Directional/Regression_Root_Cause_Tracker.md` and `TODO.md` — unresolved issues and scope; required policy readings still govern.
 
 **Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py authority <sha>` and

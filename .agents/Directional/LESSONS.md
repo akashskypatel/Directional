@@ -301,6 +301,10 @@ This document records **reusable failure-derived engineering lessons**, not an e
   read-only or explicitly permitted checks establish; it cannot declare runtime outcomes or implement a
   repair under a diagnostic mandate. Separate Code + Build from Test + Benchmark, and do not invent
   successor authorization from an unfinished or conditionally blocked review.
+- **A limitation a specification leaves open must reappear in every later plan.** Carry it either as a
+  planned unit or as an explicit exclusion with its consequence for the plan's end state. R9B left inexact
+  interior-point parameters open; three later plans did not mention them. The unit plan therefore could not
+  close `RP-01` until a full-pipeline diagnostic exposed the gap (RA-87.2).
 
 ## Build, artifact, workflow, and tool mechanics
 

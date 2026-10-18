@@ -1,4 +1,4 @@
-## CURRENT — TB12 harness authorized (RA-86); TB12 artifact-only next (2026-10-18)
+## CURRENT — TB12 reviewed (RA-87); CB13 open-chain interval route next (2026-10-18)
 
 - [x] `M6-CP3-TB10-R9-CARRIER-ENDPOINT-SUBCONDITION-HARVEST`: TB10 immutable run [38941839640](https://github.com/akashskypatel/Directional/actions/runs/38941839640), result `12062873272` ZIP SHA-256 `4db22a924f31a7bc6fdf1575a66849a2f660a760003e03e26e7f9277ac200513`; compiled source `d938ecb57e1040c2a73d5d25c4a613414556cb18`, artifact `12062565622`. 44/44 selected, 44 RED, 0 missing, 48 A3 observations, 21 exact-one-hot vertices: **contact-endpoint membership 0/21; carrier-edge membership 21/21; composite 0/21**. Example decoded vertex 4, published contact endpoints {1,7}, carrier edge {1,4}, certificate rail 2. Immutable postflight passed, 28/28 package hashes, compile/relink/benchmarks/selector497 not executed. Evidence is candidate/non-stable and does not modify 66/17/49, debt1, CP2 491/491, R3 403/497, selector497; RP-01 open, RP-02 UNREACHED. Independent Review next (ID UNKNOWN); no repair authorized.
 - [x] Independent Review (RA-81): TB10 accepted as diagnostic evidence; vertex 4 is the interior vertex of the open rail 1–4–7 and no V/I/C branch admits it. Record: `Architecture_M6_CP3_R9_Carrier_Endpoint_Subcondition_Review_Decision.md`.
@@ -15,12 +15,22 @@
 - [x] TB12 first attempt stopped `BLOCKED` before dispatch (`e718548a3`): no harness for CB12's tests, and the handoff barred harness changes.
 - [x] Review (RA-86): this was a handoff defect, not orchestration; TB12 authors one new harness like every prior TB. CB12 is accepted after independent verification of the package (`12125223513`, 28/28, source parity). TB11's tests stop in the consumer, so the two full-pipeline RP-01 tests are added as diagnostics, with falsifier `PublishedProductRejected` without `firstPredicate=`. The U3 constraints are fixed now. Record: `Architecture_M6_CP3_TB12_Harness_Authority_Review_Decision.md`.
 - [x] `M6-CP3-TB12-R10-OPEN-RAIL-CHAIN-PROVENANCE`: immutable [run 39103358061](https://github.com/akashskypatel/Directional/actions/runs/39103358061), result `12127706461`, 6/6 selected, 2/2 gates PASS, 4/4 RP-01 diagnostics RED as predicted, postflight immutable; owning TB12 report in `.agents/Directional/`. No new stable regression or direct-production acceptance.
-- [ ] **NEXT** `M6-CP3-TB12-R10-OPEN-RAIL-CHAIN-PROVENANCE-REV`: independently adjudicate RA-86.4 predictions, reachability and non-vacuity; freeze or amend the CB13 specification with RA-86.5 constraints.
-- [ ] Frozen order, each after a reviewed predecessor TB (RA-85.5):
-  - `CB13/TB13` open-chain interval route rule with RA-86.5 constraints; prediction: front 29/147 passes and the first failure moves to vertex 4;
-  - `CB14/TB14` factory admits R;
-  - `CB15/TB15` consumer emits R;
-  - then a Review of the 21 RP-01 records, measuring every conjunct.
+- [x] Review (RA-87): every TB12 prediction held; U2 closed. New: `cp3entry:2/6` first fail at B3 (`endpoint-1`, front 17/203; face-0 barycentrics sum to 1 + 2⁻⁵⁵), the RA-61.6 mechanism that R9B left open. RA-85.5 had no unit for it, so U6 is added. The selector has not been measured for 67 source commits, so census TB13C is added. Record: `Architecture_M6_CP3_TB12_Chain_Provenance_Review_Decision.md`.
+- [ ] **NEXT** `M6-CP3-CB13-R10-OPEN-RAIL-CHAIN-INTERVAL-ROUTE` (U3, compile only, RA-87.4):
+  - `open_rail_route_interval_valid` replaces the anchor helper in both checkers; consumer predicate `open-rail-chain-interval`;
+  - chains mandatory; real chains in every hand-built input with contacts;
+  - new truth table.
+- [ ] Then `M6-CP3-TB13-R10-OPEN-RAIL-CHAIN-INTERVAL-ROUTE`, with six identities (RA-87.5). Predictions:
+  - gates PASS;
+  - the P10 midline tests move past front 29/147 to B2;
+  - `cp3entry:2/6` are byte-identical to TB12.
+- [ ] Then `M6-CP3-TB13C-R10-SELECTOR-497-CENSUS`: the unchanged 497 harness on the CB13 package; every RED sorted into B1/B2/B3/other; R3 PASS → now RED listed.
+- [ ] Then `M6-CP3-TB13C-R10-SELECTOR-497-CENSUS-REV`: order U4/U5/U6 and issue the DEFN for U6 (the exact I-endpoint parameter: no epsilon, producer-origin, satisfiable on TB12's doubles).
+- [ ] Remaining units (RA-85.5, RA-87.3), each after a reviewed predecessor TB:
+  - U4 `CB14` factory admits R;
+  - U5 `CB15` consumer emits R;
+  - U6 exact I parameter (DEFN, then CB).
+  - RP-01 closes only after all three blocker shapes are cleared.
 - Frozen: `RP-01` unresolved; `RP-02` UNREACHED; Gate C suspended; **66/17/49**, debt **1**, accepted M6 CP2 **491/491**, rejected R3 **403/497**, frozen selector **497** unchanged.
 
 ---

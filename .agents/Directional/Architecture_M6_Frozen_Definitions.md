@@ -1,6 +1,34 @@
+## RA-87 — TB12 reviewed: U2 closed; B3 has no unit, so U6 is added; CB13 specified; selector census (2026-10-18)
+
+Authority: `Architecture_M6_CP3_TB12_Chain_Provenance_Review_Decision.md`.
+
+- **RA-87.1** Every TB12 prediction held after independent re-verification. U2 is closed. No real fixture reaches `make`, so the CB12 validator stays accepted on its construction argument.
+- **RA-87.2** `cp3entry:2/6` first fail at `endpoint-1`, front 17/203: face 0's barycentrics sum to exactly 1 + 2⁻⁵⁵. This is the RA-61.6 mechanism, left open by R9B (RA-76's 324 one-ULP pairs). RA-85.5 has no unit for it.
+- **RA-87.3** RP-01 has three shapes, each with a unit:
+  - B1 (I–I anchor) → U3;
+  - B2 (R endpoint) → U4/U5;
+  - B3 (inexact I parameter) → **U6, new**, designed first in a DEFN: no epsilon, a producer-origin exact witness, satisfiable on TB12's doubles.
+
+  The selector was last measured 67 source commits ago, so census TB13C runs after TB13.
+- **RA-87.4** CB13 (U3):
+  - one helper `open_rail_route_interval_valid` (a contiguous non-cyclic chain interval, with each T at its chain end) replaces the anchor helper in the factory and the consumer;
+  - the consumer predicate is `open-rail-chain-interval`;
+  - chains are mandatory and the empty-map exemption ends;
+  - every hand-built input with contacts carries the real chains;
+  - the truth table is replaced.
+- **RA-87.5** TB13 predictions:
+  - two gates PASS;
+  - the P10 midline tests move past front 29/147 to B2;
+  - `cp3entry:2/6` are byte-identical to TB12.
+
+  TB13C runs the unchanged 497 harness and classifies every RED by blocker shape.
+- **RA-87.6** Sequence: CB13 → TB13 → TB13C → Review → DEFN-U6. RA-86's record is folded.
+
+---
+
 ## RA-86 — TB12 harness authority; CB12 accepted; TB12 selection; CB13 constraints (2026-10-18)
 
-Authority: `Architecture_M6_CP3_TB12_Harness_Authority_Review_Decision.md`.
+Authority: `Architecture_M6_CP3_TB12_Harness_Authority_Review_Decision.md` (folded into `M6_Consolidated_Record.md` by RA-87; live clauses carried by RA-87.4).
 
 - **RA-86.1** TB12's block is a handoff defect: CB12's "no harness" scope was copied into TB12. Every TB authors its own per-turn harness, and nothing was dispatched, so rule 5 does not apply. TB12 adds exactly one new harness derived from TB11's, with the deltas RA-86.1 enumerates.
 - **RA-86.2** CB12 is implemented to specification and its package is verified independently. On pipeline data the validator is a consistency check (RA-84.2). Gaps: no isolated face-support tamper, and no `make`-level test (no open-rail fixture is `Produced`).
