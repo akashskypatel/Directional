@@ -56,7 +56,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | Step | Canonical turn | Condition / boundary |
 |---|---| 
 | 1 — next | `M6-CP3-TB12-R10-OPEN-RAIL-CHAIN-PROVENANCE-REV` | Review TB12 artifact and RA-86 predictions. |
-| 2 — conditional | `M6-CP3-CB13-R10-OPEN-RAIL-INTERVAL-ROUTE-RULE` | Name is descriptive only; **exact canonical ID UNKNOWN until Review freezes it**. Do not start without explicit reviewed specification. |
+| 2 — conditional | `UNKNOWN` (CB13) | Canonical ID and exact allowed scope require the next independent Review; do not start before an explicitly reviewed specification. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
