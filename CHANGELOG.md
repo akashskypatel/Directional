@@ -1,3 +1,8 @@
+## 2026-10-18 — CB13 open-rail interval compiled; TB13 next
+
+- Exact semantic source `70217cc2bf7d257bebd2969e1aa56b5a43326a70` replaces terminal-anchor gating with a shared ordered open-chain interval predicate in the factory and verifier; requires open-chain provenance and threads real chains through hand-built fixtures. Compiled contract table; no endpoint predicate, selector, harness or runtime changes.
+- Initial compile-dispatch request was rejected before build (`retention_days` unsupported); the second compile hit a generic-lambda deduction issue and was corrected without changing assertions. Final invocation [run 39109464680](https://github.com/akashskypatel/Directional/actions/runs/39109464680) compiled eight targets with mandatory GMP/GMPXX and emitted artifact `12130290543`, ZIP SHA-256 `7aea91a1b689f26ae9a4786c48152fe0a3d9c8e17382b6e155db0465e3445fd3`, `runtimeExecution=false`. No tests or benchmarks executed. Owning record: `.agents/Directional/Architecture_M6_CP3_CB13_R10_Open_Rail_Chain_Interval_Route_Code_Build_Record_20261018.md`. Stable `66/17/49`, debt 1; CP2 491/491 and selector497 unchanged. Next `M6-CP3-TB13-R10-OPEN-RAIL-CHAIN-INTERVAL-ROUTE`.
+
 ## 2026-10-18 — RA-87: TB12 reviewed; U2 closed; third RP-01 blocker (B3) gets unit U6; CB13 specified; selector census added
 
 - TB12 (run `39103358061`, result `12127706461`) was re-verified independently. Every RA-86.4 prediction held (gates 2/2 PASS, #3/#4 byte-identical to TB11, CB12 falsifier absent), so U2 is closed. No real fixture reaches `make` yet.

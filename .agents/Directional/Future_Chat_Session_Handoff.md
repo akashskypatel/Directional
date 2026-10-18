@@ -34,39 +34,28 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-18, after `M6-CP3-TB12-R10-OPEN-RAIL-CHAIN-PROVENANCE-REV` (RA-87) |
-| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft; refetch HEAD before mutation. Semantic source `b1b02d5bed43898af0708d76dcd70ada96aeecc9` (CB12). |
+| Currency | 2026-10-18, after `M6-CP3-CB13-R10-OPEN-RAIL-CHAIN-INTERVAL-ROUTE` (compile-only) |
+| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft; refetch HEAD before mutation. Semantic source `70217cc2bf7d257bebd2969e1aa56b5a43326a70` (CB13). |
 | Last accepted semantic runtime | M6 CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. Frozen selector last measured at R3 (source `d82e34427`, result `11661044443`, 403/497). |
-| Latest candidate or rejected evidence | TB12 run `39103358061`, result `12127706461`, on CB12 package `12125223513`: gates 2/2 PASS (U2 closed); the 4 RP-01 diagnostics are RED as predicted. `cp3entry:2/6` first fail at B3 (`endpoint-1`, front 17/203, face-0 sum 1 + 2⁻⁵⁵), RA-87.2. |
+| Latest candidate or rejected evidence | CB13 compile run `39109464680`, artifact `12130290543`, ZIP SHA-256 `7aea91a1b689f26ae9a4786c48152fe0a3d9c8e17382b6e155db0465e3445fd3`, source `70217cc2bf7d257bebd2969e1aa56b5a43326a70`; eight GMP/GMPXX targets; `runtimeExecution=false`. No CB13 runtime acceptance; TB12 evidence and B3 remain the latest executed semantic observations. |
 | Regression accounting and debt | **66/17/49**, debt **1**, selector 497 frozen; R3 **403/497** rejected; `Regression_Root_Cause_Tracker.md`. |
-| Active boundary | `RP-01` has three blocker shapes (RA-87.3): B1 I–I anchor → U3 (CB13, authorized); B2 R endpoint → U4/U5; B3 inexact I parameter → U6 (DEFN first). `RP-02` UNREACHED; Gate C suspended. |
+| Active boundary | `RP-01` has three blocker shapes (RA-87.3): B1 I–I anchor → U3 compiled, TB13 not yet executed; B2 R endpoint → U4/U5; B3 inexact I parameter → U6 (DEFN first). `RP-02` UNREACHED; Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-CB13-R10-OPEN-RAIL-CHAIN-INTERVAL-ROUTE` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-TB13-R10-OPEN-RAIL-CHAIN-INTERVAL-ROUTE` — EXACT NEXT
 
-- **Type / owner:** `CB` (compile only); unit U3. The specification is RA-87.4 and is binding item by item.
-- **Objective:** replace the open-rail terminal anchor with the open-chain interval rule (RA-85.4) in both checkers, make chains mandatory, and carry the real chains through every hand-built input.
-- **Read before work:** RA-87 record; RA-85.4; the CB12 record; S:8150-8190 (helper), S:8262-8300 (entry validator), S:8667-8679 and the closed-chain interval at S:8679-8716 (template), S:8764-8765, S:20296-20316; P10:6380-6440; TQ:1775-1862.
-- **In scope:** RA-87.4 items 1–7, exactly:
-  1. the helper `open_rail_route_interval_valid`, and deletion of `open_rail_route_anchor_valid`;
-  2. the factory call;
-  3. the consumer call with predicate `open-rail-chain-interval`;
-  4. no empty-map exemption;
-  5. the I-branch comment;
-  6. real chains in every hand-built input with contacts;
-  7. the new truth table and the flipped CB12 expectation.
-
-  Then GMP/GMPXX compile and package.
-- **Out of scope:** R or I admission (U4–U6); endpoint predicates; probes; tolerance; selector, harness or workflow changes; running tests.
-- **Success evidence:** compile green; package ID, ZIP SHA-256 and source SHA recorded; `runtimeExecution=false`; a list of every direct `make` call site and how it now receives chains; a CB13 record of 40 lines or fewer.
-- **On success:** `M6-CP3-TB13-R10-OPEN-RAIL-CHAIN-INTERVAL-ROUTE` (RA-87.5).
-- **On failure/blocker:** `UNKNOWN — STOP`; orchestration failures follow `Turn_Cadence.md` rule 5.
+- **Type / owner:** Test + Benchmark (artifact only). Execute the six RA-87.5 identities from the immutable CB13 package; no rebuild, relink, source/test/fixture mutation, or harness scope expansion.
+- **Exact package:** source `70217cc2bf7d257bebd2969e1aa56b5a43326a70`; compile run `39109464680`, immutable artifact `12130290543`, outer ZIP SHA-256 `7aea91a1b689f26ae9a4786c48152fe0a3d9c8e17382b6e155db0465e3445fd3`. Verify package hashes, GMP runtime, `runtimeExecution=false`, and executable modes without repair before running.
+- **Gates:** `SurfaceCellAuthorityContractCutover.OpenRailRouteChainIntervalTruthTable` and `SurfaceCellClosedProductContracts.OpenHardRailChainProvenanceIsSourceValidated` must each PASS.
+- **Diagnostics:** execute both P10 midline fixtures; predict that the previous first failure at front 29/147 moves past `open-rail-route-anchor`, possibly to B2. Also run `cp3entry:2/6`; predict the same B3 `first_failure` bytes as TB12. Falsifiers: `open-rail-chain-interval` anywhere or P10 first failure still at front 29/147.
+- **Boundaries:** TB harness may use only the frozen package and should follow TB12's six identities with changes only to source/artifact/digest and identities. No general 497 census in this TB13 turn. Maintain independent evidence: predictions are not outcomes.
+- **Conditional next:** `M6-CP3-TB13C-R10-SELECTOR-497-CENSUS` after TB13; any required independent gate/Review decision takes precedence as specified by turn cadence. Never promote a candidate runtime gate absent Review.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — next | `M6-CP3-CB13-R10-OPEN-RAIL-CHAIN-INTERVAL-ROUTE` | U3, compile only (RA-87.4). |
-| 2 — conditional | `M6-CP3-TB13-R10-OPEN-RAIL-CHAIN-INTERVAL-ROUTE` | After CB13 is packaged. Six identities (RA-87.5): two gates; the P10 midline tests predicted to move past front 29/147 to B2; `cp3entry:2/6` byte-identical to TB12. |
+| 1 — completed | `M6-CP3-CB13-R10-OPEN-RAIL-CHAIN-INTERVAL-ROUTE` | U3 compiled; no runtime executed. |
+| 2 — next | `M6-CP3-TB13-R10-OPEN-RAIL-CHAIN-INTERVAL-ROUTE` | After CB13 is packaged. Six identities (RA-87.5): two gates; the P10 midline tests predicted to move past front 29/147 to B2; `cp3entry:2/6` byte-identical to TB12. |
 | 3 — conditional | `M6-CP3-TB13C-R10-SELECTOR-497-CENSUS` | Same CB13 package; the unchanged 497 harness; the first failure of every RED classified as B1/B2/B3/other; identities that passed at R3 and are now RED listed. No interpretation. |
 | 4 — conditional | `M6-CP3-TB13C-R10-SELECTOR-497-CENSUS-REV` | Review of TB13 and TB13C. It orders U4/U5/U6 and issues the DEFN for U6 (the exact I-endpoint parameter). |
 
@@ -74,14 +63,14 @@ Orchestration failures follow rule 5. Anything beyond step 4 is `UNKNOWN`.
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **code-build** — use the turn-based-coding-agent Code + Build guidance; no runtime execution.
+`load_next`: **test-benchmark** — artifact-only six-identity TB13 harness; do not compile or modify source.
 
 Minimum successor context **after the mandatory start checklist and policies**:
 
 0. `.agents/Directional/ORIENTATION.md` — project context, read first.
 1. `.agents/Directional/ROADMAP.md` — milestone position only.
 2. `.agents/Directional/Future_Chat_Session_Handoff.md` — exact current handoff.
-3. `Architecture_M6_CP3_TB12_Chain_Provenance_Review_Decision.md` (RA-87), `Architecture_M6_CP3_TB11_Route_Anchor_Review_Decision.md` (RA-85.4), `Architecture_M6_CP3_CB12_R10_Open_Rail_Chain_Provenance_Code_Build_Record_20261018.md`, `Architecture_M6_Frozen_Definitions.md` RA-85/RA-87, `GMP_COMPILE_POLICY.md`.
+3. `Architecture_M6_CP3_TB12_Chain_Provenance_Review_Decision.md` (RA-87.5 TB13 six-identity plan), `Architecture_M6_CP3_CB13_R10_Open_Rail_Chain_Interval_Route_Code_Build_Record_20261018.md` (CB13 package), `Architecture_M6_CP3_TB12_Open_Rail_Chain_Provenance_Harvest_Report_20261018.md` (B3 baseline), `Architecture_M6_Frozen_Definitions.md`, `GMP_COMPILE_POLICY.md`.
 4. `.agents/Directional/Regression_Root_Cause_Tracker.md` and `TODO.md` — unresolved issues and scope; required policy readings still govern.
 
 **Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py authority <sha>` and
