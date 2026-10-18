@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-18 · TB13 reviewed (RA-88). The chain-interval rule (U3) is accepted in code, and real I–I fronts now pass it in the verifier. One truth-table row in the Review's own specification was wrong; a test-only fix (CB13A) and a rerun come next, then a full selector census. Open rails stay blocked at rail-interior vertices (U4/U5) and at inexact interior-point parameters (U6).  
+**Currency:** 2026-10-18 · CB13A closed (RA-89). The chain-interval rule (U3) is accepted in code, and real I–I fronts pass it in the verifier. The corrected truth table is compiled; TB13A measures it next, then a full selector census. Open rails stay blocked at rail-interior vertices (U4/U5) and at inexact interior-point parameters (U6).  
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -103,7 +103,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 | Priority | Missing outcome | Owner |
 |---|---|---|
 | **1** | Admit subdivided open hard rails in both checkers with one shared outcome. Three blocker shapes (RA-87.3):
-  - B1, I–I middle fronts: U3, the chain-interval route rule. The code is accepted (RA-88), and it closes once CB13A's corrected truth table passes at TB13A.
+  - B1, I–I middle fronts: U3, the chain-interval route rule. The code is accepted (RA-88), and it closes once the corrected truth table (compiled in CB13A) passes at TB13A.
   - B2, rail-interior vertex endpoints: U4/U5.
   - B3, interior-point parameters whose doubles do not close exactly: U6, which needs a no-epsilon exact witness designed in a DEFN.
 

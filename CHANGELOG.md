@@ -1,3 +1,8 @@
+## 2026-10-18 — CB13A truth-table row corrected and compiled; RA-89 closeout by Review; TB13A next
+
+- CB13A (test-only, RA-88.4) flips the `[4-7, 1-4]` row to true and adds reverse T7–T1 (true), T1–T7 on the reverse walk (false) and the backtrack `[1-4, 1-4]` (false). Source `e88ac65ffcf87548138d1c56f2cc6ed4a3d8177b`; compile [run 39117126811](https://github.com/akashskypatel/Directional/actions/runs/39117126811); package `12132184878`, ZIP SHA-256 `36197dffa91b5dbb3a36d589cab314e95e4d7d24e9121617ed17f59256f2b072`; eight GMP/GMPXX targets; `runtimeExecution=false`.
+- RA-89: the turn stopped before its documentation closeout. Review verified the package independently (28/28, source parity, only the four test lines changed since CB13) and closed the turn in place. The root manifest and source archive hashes are recorded for TB13C. Next is TB13A on this package. Stable 66/17/49, debt 1, CP2 491/491, R3 403/497, selector 497 unchanged.
+
 ## 2026-10-18 — RA-88: TB13 reviewed; the RED truth-table row was a Review specification defect; U3 code accepted; CB13A next
 
 - TB13 (run `39112131501`, result `12130683535`) was re-verified independently: hashes match, the harness deltas are within bounds, #3/#4 are at B2 (front 61/179, vertex 4), and #5/#6 are byte-identical to TB12 (B3). `open-rail-chain-interval` occurs in no log.

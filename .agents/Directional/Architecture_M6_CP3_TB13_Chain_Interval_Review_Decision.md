@@ -1,6 +1,6 @@
 # RA-88 — TB13 reviewed: the RED truth-table row is a Review specification defect; U3 code accepted; CB13A corrects the row (2026-10-18)
 
-**Turn:** `M6-CP3-TB13-R10-OPEN-RAIL-CHAIN-INTERVAL-ROUTE-REV`. **Inputs:** CB13 source `70217cc2bf7d257bebd2969e1aa56b5a43326a70`, package `12130290543`; TB13 run `39112131501`, result `12130683535` (ZIP SHA-256 `43505af2…4885`). **Amends:** RA-87.4.7 (one row). RA-87.3 and RA-87.5 (TB13C) stay live.
+**Turn:** `M6-CP3-TB13-R10-OPEN-RAIL-CHAIN-INTERVAL-ROUTE-REV` (RA-89, the CB13A closeout, is appended). **Inputs:** CB13 source `70217cc2bf7d257bebd2969e1aa56b5a43326a70`, package `12130290543`; TB13 run `39112131501`, result `12130683535` (ZIP SHA-256 `43505af2…4885`). **Amends:** RA-87.4.7 (one row). RA-87.3 and RA-87.5 (TB13C) stay live.
 
 ## RA-88.1 Re-verification
 
@@ -52,3 +52,20 @@ Falsifiers: #1 RED; any #3–#6 change; `open-rail-chain-interval` anywhere. A R
 ## RA-88.6 Sequence
 
 CB13A → TB13A → TB13C → TB13C-REV (orders U4/U5/U6 and issues DEFN-U6). Each CB follows a reviewed TB.
+
+## RA-89 CB13A accepted; Review completes its closeout; TB13A authorized (2026-10-18)
+
+- CB13A (`M6-CP3-CB13A-R10-OPEN-RAIL-CHAIN-INTERVAL-TRUTH-TABLE`) stopped with STATUS `IN_PROGRESS` after its compile. Only the documentation closeout remained.
+- Independent verification:
+  - ZIP SHA-256 `36197dffa91b5dbb3a36d589cab314e95e4d7d24e9121617ed17f59256f2b072` (package `12132184878`, run `39117126811`);
+  - root manifest 28/28 OK (SHA-256 `bdb4ad988c463f082a1129d17d463da7e3638f24c81396220adb996a328583e1`);
+  - source archive SHA-256 `25ec06e748ea29445d50993c0cd0874bb30da7ab030e24a99cff737e70b3e77f`; `source-commit` `e88ac65ffcf87548138d1c56f2cc6ed4a3d8177b`;
+  - build exit 0, 8 targets, `DIRECTIONAL_ENABLE_GMP=ON`, gmp/gmpxx linked, `runtimeExecution=false`, all five source-status files empty.
+- The packaged P10 test is byte-identical to HEAD. Relative to CB13 (`70217cc2`), `src`, `include` and `tests` differ only by the four RA-88.4 lines. CB13A is accepted, and Review completes the closeout in place, so no semantic work is outstanding.
+- **TB13A** runs on this package, as RA-88.5 specifies.
+- **TB13C** then uses the same package, through the harness's environment inputs:
+  - `CANDIDATE_ARTIFACT_ID=12132184878`;
+  - `EXPECTED_SOURCE_SHA=e88ac65f…`;
+  - `EXPECTED_CANDIDATE_ZIP_SHA256=36197dff…`;
+  - `EXPECTED_ROOT_MANIFEST_SHA256=bdb4ad98…`;
+  - `EXPECTED_SOURCE_ARCHIVE_SHA256=25ec06e7…` (full values above).

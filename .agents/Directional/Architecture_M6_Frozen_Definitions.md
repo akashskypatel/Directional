@@ -1,3 +1,12 @@
+## RA-89 — CB13A accepted; Review closes it out; TB13A authorized (2026-10-18)
+
+Authority: `Architecture_M6_CP3_TB13_Chain_Interval_Review_Decision.md` §RA-89.
+
+- **RA-89.1** CB13A package `12132184878` (ZIP `36197dff…`, source `e88ac65f…`) was verified independently: 28/28, GMP, no runtime, and only the four RA-88.4 test lines changed since CB13. It is accepted. The turn stopped before its documentation closeout, which Review completes in place.
+- **RA-89.2** TB13A follows RA-88.5 on this package. TB13C then uses the same package; its five environment inputs are recorded in §RA-89.
+
+---
+
 ## RA-88 — TB13 reviewed: the RED row was a Review specification defect; U3 code accepted; CB13A corrects the row (2026-10-18)
 
 Authority: `Architecture_M6_CP3_TB13_Chain_Interval_Review_Decision.md`. Amends RA-87.4.7 (one row).

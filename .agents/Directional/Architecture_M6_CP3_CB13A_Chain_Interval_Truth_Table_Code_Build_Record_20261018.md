@@ -12,5 +12,5 @@
 - `DIRECTIONAL_ENABLE_GMP=ON`; generated link includes `libgmpxx.so` and `libgmp.so`; `exactArithmeticBackend=GMP`.
 - Five source-status snapshots empty; `runtimeExecution=false`; no binaries, tests, or benchmarks executed.
 - Selector 497, code semantics, and accepted runtime evidence unchanged.
-- Formal closeout outstanding: handoff, TODO, change log, drift audit, final beacon. Do not advance to TB13A until this turn is closed.
+- Closeout completed by Review (RA-89): package independently verified (root manifest `bdb4ad98…`, source archive `25ec06e7…`); successor `M6-CP3-TB13A-R10-OPEN-RAIL-CHAIN-INTERVAL-TRUTH-TABLE`.
 - Procedure note: read-mode selection occurred after initial handoff/TODO reads; corrected by exact snapshot before source analysis.
