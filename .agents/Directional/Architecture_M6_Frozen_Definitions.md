@@ -1,3 +1,22 @@
+## RA-92 — TB13D reviewed: none of the 8 new REDs is a production regression; curved-disk control first (2026-10-18)
+
+Authority: `Architecture_M6_CP3_TB13D_Bisect_Review_Decision.md`.
+
+- **RA-92.1** P1 (`12138931233`) and P4 (`12138633102`) verified. P2 and P3 were cancelled while pending, because the dispatcher's concurrency group holds one pending run. They are not rerun.
+- **RA-92.2** P1 422/497; P4 = CB13A = 420/497 on all 497 (CB13 changed nothing). P1 and P4 differ only at 174 and 442.
+- **RA-92.3** All 8 are test debt:
+  - curved disk 235/236/294/299: a stale fixture after `c7cb5d68b`/`715fe2d66`;
+  - 242: a test-spec defect;
+  - 191: a fixture whose atlas build fails, with the error code dropped;
+  - 174: a non-manifold TriMesh in the fixture (`18357617a`);
+  - 442: an assertion never run (`b9f70f3fe`).
+- **RA-92.4** Owned correction to RA-91.3: an unchanged test that turns RED is not by itself a production regression.
+- **RA-92.5** RA-91.4's hold on U4–U6 is discharged. The curved-disk `make` control is restored before U4.
+- **RA-92.6–92.7** CB14A binds `make_curved_disk_fixture` to producer-built rails and provenance, and prints the typed factory code (test-only). TB14A is the unchanged census on CB14A: 235/236/294/299 PASS, and nothing else changes except observing 199/250.
+- **RA-92.8** Sequence: CB14A → TB14A → TB14A-REV (then DEFN-U6 and the U4/U5 order; the other test-debt repairs are scheduled separately).
+
+---
+
 ## RA-91 — TB13C census reviewed: RP-01 owns 30 of the 497; 8 new REDs since R3; bisect next (2026-10-18)
 
 Authority: `Architecture_M6_CP3_TB13C_Census_Review_Decision.md`.
@@ -5,11 +24,11 @@ Authority: `Architecture_M6_CP3_TB13C_Census_Review_Decision.md`.
 - **RA-91.1** TB13C (run `39127652521`, result `12136761296`) was verified and closed out by Review: 497 executed, no orchestration failure, **420/497 PASS, 77 RED**.
 - **RA-91.2** Inventory `Architecture_M6_CP3_TB13C_Selector_497_Red_Inventory.tsv` (`8d2b02b7…`). B2 also requires `a3ProbeContactPublished=1`, which amends RA-90.4. B1 0, B2 11, B3 19, other 47. RP-01's footprint is 30 identities, all on rail 2 and all RED at R3.
 - **RA-91.3** 25 R3 RED → PASS are now measured controls. 8 R3 PASS → RED are CANDIDATE / NON-STABLE:
-  - curved disk 235/236/294/299: a production regression, rejected by the checked factory;
+  - curved disk 235/236/294/299: ~~a production regression~~ a stale fixture (amended by RA-92.4);
   - 242: a test-specification defect, not a fail-open, because transport reads only the atlas;
   - 174/191/442: unattributed.
 - **RA-91.4–91.5** TB13D bisects the regressions over four verified retained packages (P1 +32, P2 +54, P3 CB11, P4 CB12) with the unchanged harness, artifact-only. P1 expires 2026-10-20T10:36Z.
-- **RA-91.6** Sequence: TB13D → TB13D-REV (attribution, repair turns, then the U4/U5/U6 order and DEFN-U6).
+- **RA-91.6** ~~Sequence: TB13D → TB13D-REV (attribution, repair turns, then the U4/U5/U6 order and DEFN-U6).~~ Superseded by RA-92.8.
 
 ---
 

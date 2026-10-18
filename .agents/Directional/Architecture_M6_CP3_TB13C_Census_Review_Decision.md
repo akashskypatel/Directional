@@ -1,6 +1,6 @@
 # RA-91 — TB13C census reviewed: RP-01 owns 30 of the 497; 8 new REDs since R3; retained-package bisect next (2026-10-18)
 
-**Turn:** `M6-CP3-TB13C-R10-SELECTOR-497-CENSUS-REV`. **Input:** TB13C run `39127652521`, result `12136761296` (ZIP SHA-256 `92d9c9bd4d05ac7bf4ef06e402fa0b44fbeeb46d27a0b4c0b1994236632bf545`) on CB13A package `12132184878`. **Amends:** RA-90.4 (B2 rule). **S** = `src/geometry/SurfaceCellTracing.cpp`.
+**Turn:** `M6-CP3-TB13C-R10-SELECTOR-497-CENSUS-REV`. **Input:** TB13C run `39127652521`, result `12136761296` (ZIP SHA-256 `92d9c9bd4d05ac7bf4ef06e402fa0b44fbeeb46d27a0b4c0b1994236632bf545`) on CB13A package `12132184878`. **Amends:** RA-90.4 (B2 rule). **Amended by:** RA-92 (`Architecture_M6_CP3_TB13D_Bisect_Review_Decision.md`), covering RA-91.3's curved-disk status and RA-91.4's U4–U6 hold. **S** = `src/geometry/SurfaceCellTracing.cpp`.
 
 ## RA-91.1 Closeout and re-verification
 
@@ -29,7 +29,7 @@
 
 | Sel | Identity (abridged) | First failure | Test changed since R3? | Status |
 |---|---|---|---|---|
-| 235, 236 | `CurvedBoundedDisk{IsInvariantToFaceRowEnumeration, PreservesAuthoritativeHardBoundary}` | pipeline `Rejected`, `PublishedProductRejected` | No. The bodies, `make_curved_disk_fixture` and `bind_curved_disk_atlas` are unchanged. | **Production regression**: the checked factory rejects the product the producer published. Commit unknown. |
+| 235, 236 | `CurvedBoundedDisk{IsInvariantToFaceRowEnumeration, PreservesAuthoritativeHardBoundary}` | pipeline `Rejected`, `PublishedProductRejected` | No. The bodies, `make_curved_disk_fixture` and `bind_curved_disk_atlas` are unchanged. | ~~Production regression~~. *Amended by RA-92.4: a stale fixture after the deliberate factory contract change in `c7cb5d68b`/`715fe2d66`.* |
 | 294, 299 | `{Duplicate,Foreign}BoundedDiskRegionRejectsAtCheckedFactory` | the same, at the first `ASSERT`, before the post-R3 edits run | Only after the failing line | The same regression |
 | 242 | `NonReciprocalSourceAdjacentIsolationSeamFailsClosed` | `Produced`; the test expects `Rejected` | Yes. `8df105b56` (2026-10-12) bound an untampered source A3. | **Test-specification defect** (below) |
 | 174 | `RailBuildRejectionCarriesFailureWithoutConsumableRails` | `compute_edge_quantities(): DCEL consistency check failed` | Yes, by about ten compile-only R4 CBs | Unattributed |

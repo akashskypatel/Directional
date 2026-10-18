@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-18 · TB13C census reviewed (RA-91): 420 of the 497 pass. RP-01 accounts for 30 of the failures, and all 30 were already failing at R3. Eight tests that passed at R3 now fail; four are curved-disk products that the checked factory rejects. A bisect over older retained packages (TB13D) runs next, before any work on U4–U6.  
+**Currency:** 2026-10-18 · TB13D bisect reviewed (RA-92). None of the 8 tests that newly fail since R3 is a production regression: all are test debt. The curved-disk fixture predates the factory's rail-provenance rule. A test-only CB14A restores it as the `make` control before U4–U6 resume.  
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -108,7 +108,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
   - B3, interior-point parameters whose doubles do not close exactly: U6, which needs a no-epsilon exact witness designed in a DEFN (19 of the 497).
 
   U1 (the route check) and U2 (the chain reaching the verifier) are done. | M6-CP3; [handoff](Future_Chat_Session_Handoff.md) |
-| **2** | Restore accepted-prefix execution and prove actual direct-production positive/tamper paths; `RP-01` open, downstream `RP-02` not reached. Eight tests that passed at R3 now fail (RA-91.3), including curved-disk products rejected by the checked factory; TB13D attributes them before U4–U6. | M6-CP3 definitions and [tracker](Regression_Root_Cause_Tracker.md) |
+| **2** | Restore accepted-prefix execution and prove actual direct-production positive/tamper paths; `RP-01` open, downstream `RP-02` not reached. Eight tests that passed at R3 now fail; all are test debt (RA-92.3). The curved-disk `make` control is restored first (CB14A). | M6-CP3 definitions and [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
 

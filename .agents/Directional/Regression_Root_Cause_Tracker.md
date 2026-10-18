@@ -1,3 +1,21 @@
+## TB13D bisect — TB13C candidates resolved: test debt, no production regression (2026-10-18)
+
+P1 [run 39132801755](https://github.com/akashskypatel/Directional/actions/runs/39132801755), result `12138931233`, source `007585f8e` (+32): 422/497. P4 [run 39132921344](https://github.com/akashskypatel/Directional/actions/runs/39132921344), result `12138633102`, CB12 `b1b02d5be`: 420/497, identical to CB13A on all 497. P2 and P3 were cancelled while pending (dispatcher concurrency) and are not needed.
+
+**Classification (RA-92):** none of the 8 is a production regression, and none receives a stable ID.
+
+| Ordinal | First RED | Cause | Class |
+|---|---|---|---|
+| 235/236/294/299 | by P1 | `make_curved_disk_fixture` lacks the rail provenance required since `c7cb5d68b`/`715fe2d66` | stale fixture (repair CB14A) |
+| 242 | by P1 | `8df105b56` | test-spec defect |
+| 191 | by P1 | `7ccdcd527`: the atlas build fails in the fixture and its error is dropped | fixture |
+| 174 | after P1 | `18357617a`: non-manifold three-face TriMesh | fixture |
+| 442 | after P1 | `b9f70f3fe`: seam assertion never run, `SingularityMismatch` | assertion never run |
+
+This corrects RA-91's "production regression" label for the curved disk. **66/17/49**, debt **1** unchanged. Record: `Architecture_M6_CP3_TB13D_Bisect_Review_Decision.md`.
+
+---
+
 ## CANDIDATE / NON-STABLE — TB13C census: 8 identities PASS at R3 are RED on CB13A (2026-10-18)
 
 [Run 39127652521](https://github.com/akashskypatel/Directional/actions/runs/39127652521), result `12136761296` (ZIP SHA-256 `92d9c9bd…f545`), CB13A package `12132184878`: 497 executed, **420 PASS / 77 RED**, no orchestration failure. Inventory: `Architecture_M6_CP3_TB13C_Selector_497_Red_Inventory.tsv`.

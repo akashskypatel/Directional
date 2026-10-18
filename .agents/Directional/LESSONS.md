@@ -44,6 +44,9 @@ This document records **reusable failure-derived engineering lessons**, not an e
   subsequently introduced obligation. Distinguish exact source, execution environment, fixture class,
   witness-specific assumptions, and stage ownership. Never promote a theorem established on one
   genus/topology or a single successful instance to another without proving its premises.
+- **An unchanged test that turns RED is not by itself a production regression.** Before labeling it,
+  check whether a deliberate contract change made the fixture's inputs insufficient (RA-92.4: the
+  curved-disk fixture predated the factory's rail-provenance rule).
 
 ## Witnesses, tests, and independent oracles
 
@@ -341,3 +344,5 @@ This document records **reusable failure-derived engineering lessons**, not an e
   local inspections, structured summaries over repeated log greps, and an explicit bounded retry only
   for a diagnosed orchestration failure. Do not replay unchanged deterministic failures, perform broad
   searches to justify a specific known action, or optimize call count at the expense of exactness.
+- **The dispatcher's concurrency group holds one pending run.** A later push cancels a run that is
+  still queued, so dispatch several runs only one at a time, after each has started (RA-92.1).

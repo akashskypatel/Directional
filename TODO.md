@@ -1,4 +1,4 @@
-## CURRENT — TB13C census reviewed (RA-91): 8 new REDs since R3; TB13D retained-package bisect next (2026-10-18)
+## CURRENT — TB13D bisect reviewed (RA-92): the 8 new REDs are test debt; CB14A curved-disk control next (2026-10-18)
 
 - [x] `M6-CP3-TB10-R9-CARRIER-ENDPOINT-SUBCONDITION-HARVEST`: TB10 immutable run [38941839640](https://github.com/akashskypatel/Directional/actions/runs/38941839640), result `12062873272` ZIP SHA-256 `4db22a924f31a7bc6fdf1575a66849a2f660a760003e03e26e7f9277ac200513`; compiled source `d938ecb57e1040c2a73d5d25c4a613414556cb18`, artifact `12062565622`. 44/44 selected, 44 RED, 0 missing, 48 A3 observations, 21 exact-one-hot vertices: **contact-endpoint membership 0/21; carrier-edge membership 21/21; composite 0/21**. Example decoded vertex 4, published contact endpoints {1,7}, carrier edge {1,4}, certificate rail 2. Immutable postflight passed, 28/28 package hashes, compile/relink/benchmarks/selector497 not executed. Evidence is candidate/non-stable and does not modify 66/17/49, debt1, CP2 491/491, R3 403/497, selector497; RP-01 open, RP-02 UNREACHED. Independent Review next (ID UNKNOWN); no repair authorized.
 - [x] Independent Review (RA-81): TB10 accepted as diagnostic evidence; vertex 4 is the interior vertex of the open rail 1–4–7 and no V/I/C branch admits it. Record: `Architecture_M6_CP3_R9_Carrier_Endpoint_Subcondition_Review_Decision.md`.
@@ -30,22 +30,38 @@
   - **Rule fix:** the B2 rule now also requires a published contact (selector 405 was a vacuous match).
   - **RP-01 owns 30 identities**, all on rail 2 and all RED at R3.
   - **R3 deltas:** 25 R3 RED → PASS (now controls). 8 R3 PASS → RED, held as candidates:
-    - curved disk 235/236/294/299: a production regression, rejected by the checked factory;
+    - curved disk 235/236/294/299: rejected by the checked factory (reclassified by RA-92 as a stale fixture);
     - 242: a test-spec defect from `8df105b56`, not a fail-open;
     - 174/191/442: unattributed.
   - Record: `.agents/Directional/Architecture_M6_CP3_TB13C_Census_Review_Decision.md`.
-- [ ] **NEXT: `M6-CP3-TB13D-R10-RETAINED-PACKAGE-BISECT`** (artifact-only; RA-91.4–91.5). Run the unchanged harness `947a95ee…` with `--execute`, one dispatch per package: P1 `11805220540`, P2 `11939982141`, P3 `12121016836` (CB11), P4 `12125223513` (CB12). The five inputs per package are in the handoff.
-  - **P1 expires 2026-10-20T10:36Z, so run it first.** A failed run is recorded and the next package still runs.
-  - Deliver a report of 25 lines or fewer: per package, run/result IDs, ZIP hash, totals per phase, and PASS/RED for selector 174, 191, 235, 236, 242, 294, 299, 442.
-  - Prediction: 242 and the 30 B2/B3 identities are RED at all four. Falsifier: 242 PASS anywhere.
-- [ ] Then `M6-CP3-TB13D-R10-RETAINED-PACKAGE-BISECT-REV`: attribute the 8 regressions; specify narrow repair turns (the curved-disk factory rejection, the 242 test repair); then order U4/U5/U6 (B3 owns 19, B2 owns 11) and issue DEFN-U6.
-- [ ] Remaining units (RA-85.5, RA-87.3), each after a reviewed predecessor TB:
-  - U4 factory admits R;
+- [x] `M6-CP3-TB13D-R10-RETAINED-PACKAGE-BISECT`: P1 [run 39132801755](https://github.com/akashskypatel/Directional/actions/runs/39132801755) 422/497; P4 [run 39132921344](https://github.com/akashskypatel/Directional/actions/runs/39132921344) 420/497. P2 and P3 were cancelled while pending (the dispatcher holds one pending run). The turn stopped without a report, so Review closed it out (RA-92.1).
+- [x] Review (RA-92): P4 equals CB13A on all 497, so CB13 changed nothing. **None of the 8 is a production regression:**
+  - curved disk ×4: a stale fixture after the provenance contract (`c7cb5d68b`/`715fe2d66`); this corrects RA-91.3;
+  - 242: a test-spec defect;
+  - 191: an atlas build failure in the fixture, with the error code dropped;
+  - 174: a non-manifold TriMesh fixture (`18357617a`);
+  - 442: an assertion that has never been run (`b9f70f3fe`).
+
+  The U4–U6 hold is discharged. Record: `.agents/Directional/Architecture_M6_CP3_TB13D_Bisect_Review_Decision.md`.
+- [ ] **NEXT: `M6-CP3-CB14A-R10-CURVED-DISK-RAIL-PROVENANCE`** (test-only CB, compile only; RA-92.6).
+  - In `make_curved_disk_fixture`, build rails with `build_authoritative_surface_cell_rails` (one closed curve over the 8 boundary edges; precedent REPackage:184-212).
+  - Set contacts, closed chains and open chains from `hard_rail_source_provenance_from_rails`. Throw unless the rail edges are exactly the 8 boundary edges. No hand-built chains.
+  - Print the typed factory code in the first `ASSERT` of 235/236/294/299.
+  - Record the five package inputs for TB14A.
+- [ ] Then `M6-CP3-TB14A-R10-CURVED-DISK-CONTROL-CENSUS` (RA-92.7): run the unchanged census harness once on the CB14A package. Predictions: 235/236/294/299 PASS; every other identity keeps its TB13C status, except 199/250, which are observed only.
+- [ ] Then `M6-CP3-TB14A-R10-CURVED-DISK-CONTROL-CENSUS-REV`: adjudicate TB14A, issue DEFN-U6, set the U4/U5 order, and schedule the test-debt repairs.
+- [ ] Test debt (RA-92.3), each a narrow test-only CB after a reviewed TB:
+  - 174: replace the non-manifold three-face TriMesh source;
+  - 191 family (189–195): print the atlas build error, then repair the fixture field;
+  - 242: retarget the tamper to an input that is actually consumed;
+  - 442: either show the seam claim is required (a production gap) or correct its fixture.
+- [ ] Remaining units (RA-85.5, RA-87.3):
+  - U4 factory admits R (11 identities);
   - U5 consumer emits R;
-  - U6 exact I parameter (DEFN, then CB).
+  - U6 exact I parameter (19 identities; DEFN, then CB).
   - RP-01 closes only after all three blocker shapes are cleared.
-- Turn sequence: TB13D → TB13D-REV → (repair turns and the U4/U5/U6 order, set by that Review; DEFN-U6 first for U6). TB13C done. A RED TB goes to Review (rule 4).
-- Frozen: `RP-01` unresolved; `RP-02` UNREACHED; Gate C suspended; **66/17/49**, debt **1** (8 TB13C candidates pending attribution), accepted M6 CP2 **491/491**, rejected R3 **403/497**, frozen selector **497** unchanged; latest census 420/497 (TB13C).
+- Turn sequence: CB14A → TB14A → TB14A-REV → (DEFN-U6, the U4/U5 order and the test-debt repairs, set by that Review). TB13D done. A RED TB goes to Review (rule 4). Dispatch several runs only one at a time, after each run starts.
+- Frozen: `RP-01` unresolved; `RP-02` UNREACHED; Gate C suspended; **66/17/49**, debt **1** (no new production regression; 8 test-debt items), accepted M6 CP2 **491/491**, rejected R3 **403/497**, frozen selector **497** unchanged; latest census 420/497 (TB13C).
 
 ---
 

@@ -1,3 +1,15 @@
+## 2026-10-18 — RA-92: TB13D bisect reviewed; the 8 new REDs are test debt; CB14A curved-disk control next
+
+- TB13D measured P1 (+32, 422/497) and P4 (CB12, 420/497). P2 and P3 were cancelled while pending, because the dispatcher holds one pending run. The turn stopped without a report, so Review closed it out.
+- P4 equals CB13A on all 497, so CB13 changed nothing. P1 and P4 differ only at 174 and 442.
+- Static attribution: none of the 8 is a production regression.
+  - The curved disk fails because its fixture lacks the rail provenance that `make` has required since `c7cb5d68b`/`715fe2d66`. This corrects RA-91.3.
+  - 242 is a test-spec defect.
+  - 191 is a fixture whose atlas build fails with the error dropped.
+  - 174 is a non-manifold fixture.
+  - 442 is an assertion that has never been run.
+- The U4–U6 hold is discharged. CB14A (test-only) restores the curved-disk `make` control; TB14A reruns the unchanged census. Record: `.agents/Directional/Architecture_M6_CP3_TB13D_Bisect_Review_Decision.md`. Stable 66/17/49, debt 1, CP2 491/491, R3 403/497, selector 497 unchanged.
+
 ## 2026-10-18 — RA-91: TB13C census reviewed; 420/497; 8 new REDs since R3; retained-package bisect next
 
 - TB13C (run `39127652521`, result `12136761296`) stopped after dispatch. Review verified the run and closed the turn out: 497 executed, no orchestration failure, **420/497 PASS** (R3: 403/497).
