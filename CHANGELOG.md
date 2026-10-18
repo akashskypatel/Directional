@@ -1,3 +1,9 @@
+## 2026-10-18 — TB15 exact I-endpoint witness harvest (artifact-only)
+
+- [Run 39170298228](https://github.com/akashskypatel/Directional/actions/runs/39170298228), result artifact `12152685129` (ZIP SHA-256 `2536c38b958f76cfef6c5e0ef951e902e958d2cdb863e650e2b8b4002a50f748`), CB15 source `e4785d734e35d2f01ca3ee8099772f6ab5257f4c`, immutable package `12150973440`. Nine separately executed identities, 4 expected PASS, 5 expected diagnostic RED, 0 missing, immutable postflight, no build/relink or selector497 run.
+- B2 endpoints remain witness-absent/binds 0; B3 `cp3entry:2/6` and selector 217 carry equal, bound `1,4@1/5` exact witnesses. Removing exactly four new probe fields preserves byte-identical first failures against TB13A/TB14A; no admission change or new regression. Stable 66/17/49 and debt 1 unchanged; RP-01 open, RP-02 UNREACHED. Owning report `.agents/Directional/Architecture_M6_CP3_TB15_Exact_I_Witness_Harvest_Report_20261018.md`.
+- **Next**: independent `M6-CP3-TB15-R10-EXACT-I-ENDPOINT-WITNESS-PRODUCER-REV`; CB16 not automatically authorized.
+
 ## 2026-10-18 — CB15: exact interior source-edge witness (compile-only)
 
 - Source `e4785d734e35d2f01ca3ee8099772f6ab5257f4c` changes `SurfaceTracePoint`, the accepted-boundary producer, exact-binding detail helper, dedup clearing, rejection-only four-field probe and three compiled P10 tests. No admission/checker contract changes, selector changes, test execution or benchmarks.
