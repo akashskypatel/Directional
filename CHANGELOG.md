@@ -1,3 +1,13 @@
+## 2026-10-18 — RA-97: TB15 reviewed; CB15 accepted; CB16 checker rule specified
+
+- Both artifacts re-verified: CB15 package `7f56c6a5…` (28/28; source identical to `e4785d73`) and TB15 result `2536c38b…` (13/13). All nine RA-96.5 predictions held. With the four new fields removed, the five REDs are byte-identical to TB13A/TB14A.
+- The B3 witness is exactly `1,4@1/5` and binds on both sides. RA-95.3's "p ≠ 1/5" was an owned Review error and is withdrawn: GMP `mpq_class::get_d` truncates toward zero.
+- Binding proves consistency, not identity. CB16 therefore changes only `same_interior_carrier_point`, which the factory, consumer and probe all share:
+  - an unbound present witness → false;
+  - two witnesses → exact equality;
+  - otherwise the legacy rule.
+- Next: CB16 → TB16 (12 identities) → TB16C (497 census against TB14A) → TB16C-REV (CB17 spec). Accounting unchanged. Record: RA-97 in `.agents/Directional/Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md`.
+
 ## 2026-10-18 — TB15 exact I-endpoint witness harvest (artifact-only)
 
 - [Run 39170298228](https://github.com/akashskypatel/Directional/actions/runs/39170298228), result artifact `12152685129` (ZIP SHA-256 `2536c38b958f76cfef6c5e0ef951e902e958d2cdb863e650e2b8b4002a50f748`), CB15 source `e4785d734e35d2f01ca3ee8099772f6ab5257f4c`, immutable package `12150973440`. Nine separately executed identities, 4 expected PASS, 5 expected diagnostic RED, 0 missing, immutable postflight, no build/relink or selector497 run.

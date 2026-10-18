@@ -1,3 +1,21 @@
+## RA-97 — TB15 reviewed: the witness is p = 1/5, bound on both sides; CB15 accepted; CB16 rule specified (2026-10-18)
+
+Authority: `Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md` (RA-97, appended).
+
+- **RA-97.1** CB15 and TB15 were re-verified from both artifacts. All nine RA-96.5 predictions held. With the four new fields removed, all five REDs are byte-identical to TB13A/TB14A. At front 17/203 the only failing consumer condition is `same_interior_carrier_point`.
+- **RA-97.2** Owned error: RA-95.3's "p ≠ 1/5" assumed round-to-nearest. GMP `get_d` truncates (`ENumberGMP.h:147`), and p = 1/5. The binding is backend-specific, so the witness is never persisted across backends.
+- **RA-97.3** CB15 is accepted. Binding proves consistency, not identity, because `to_double` is many-to-one. A pair of bound witnesses therefore decides the comparison both ways. One predicate serves the factory, the consumer and the probe.
+- **RA-97.4** CB16 changes `same_interior_carrier_point` only:
+  - a present witness that does not bind → false;
+  - two witnesses → exact equality;
+  - otherwise the legacy rule.
+
+  It adds two probe labels and three P10 tests.
+- **RA-97.5** TB16 runs 12 identities; front 17/203 must move. TB16C is the 497 census against TB14A: no PASS → RED, and the 19 B3 identities leave B3.
+- **RA-97.6** CB16 → TB16 → TB16C → TB16C-REV (CB17 spec) → CB17/TB17 → CB18/TB18 → fixture debt → census → RP-01 Review.
+
+---
+
 ## RA-96 — DEFN-U6A reviewed: trace accepted; exact witness amended; U6 first as CB15/CB16 (2026-10-18)
 
 Authority: `Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md` (RA-96, appended).
@@ -20,7 +38,7 @@ Authority: `Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md`.
 
 - **RA-95.1** DEFN-U6 stopped `IN_PROGRESS` with no deliverable, so there was nothing to adjudicate. Its spec was too wide.
 - **RA-95.2** All 19 B3 identities are one template: front 17/203, edge 1–4, faces 0/3, span 3, ordinal 1; face 0 sums to 1 + 2⁻⁵⁵ and face 3 to 1.
-- **RA-95.3** Origin: both sides share one exact `location_parameter(span, ordinal)` (S:17205-17218). `boundary_trace_point` (S:16944-16972) then rounds it differently per orientation. The model reproduces both observed triples bit for bit; p ≠ 1/5. RA-63.5 still binds: p must be bound to each side's doubles.
+- **RA-95.3** Origin: both sides share one exact `location_parameter(span, ordinal)` (S:17205-17218). `boundary_trace_point` (S:16944-16972) then rounds it differently per orientation. The model reproduces both observed triples bit for bit; ~~p ≠ 1/5~~ (withdrawn by RA-97.2: p = 1/5). RA-63.5 still binds: p must be bound to each side's doubles.
 - **RA-95.4** DEFN-first feasibility is largely discharged. Order U4 → U5 → U6 is kept, and DEFN-U6A-REV may reorder it with a reason.
 - **RA-95.5** DEFN-U6A spec (amends RA-94.6): verify the trace, trace link 4, map ordinals to endpoints, give p exactly, compare representations, recommend one, and outline the CB.
 - **RA-95.6** DEFN-U6A → DEFN-U6A-REV → CB15/TB15 → CB16/TB16 → U6 → RP-01 Review.

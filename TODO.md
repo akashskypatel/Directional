@@ -1,7 +1,20 @@
-## CURRENT — TB15 witness harvest complete; independent Review next (2026-10-18)
+## CURRENT — TB15 reviewed (RA-97): witness p = 1/5 bound on both sides; CB16 next (2026-10-18)
 
-- [x] `M6-CP3-TB15-R10-EXACT-I-ENDPOINT-WITNESS-PRODUCER`: immutable [run 39170298228](https://github.com/akashskypatel/Directional/actions/runs/39170298228), result `12152685129`, exact 9/9 selected; 4 PASS control/witness gates, 5 expected RED B2/B3 diagnostics. No new regressions or gate promotion. Owning report `.agents/Directional/Architecture_M6_CP3_TB15_Exact_I_Witness_Harvest_Report_20261018.md`.
-- [ ] **Exact next:** `M6-CP3-TB15-R10-EXACT-I-ENDPOINT-WITNESS-PRODUCER-REV` — re-derive TB15 and adjudicate CB16 authorization; do not dispatch CB16 automatically. Frozen 66/17/49, debt 1, CP2 491/491, rejected R3 403/497, latest census 425/497; RP-01 open and RP-02 UNREACHED.
+- [x] `M6-CP3-TB15-R10-EXACT-I-ENDPOINT-WITNESS-PRODUCER-REV` (RA-97).
+  - CB15 package and TB15 result re-verified; all nine predictions held; CB15 accepted.
+  - RA-95.3's "p ≠ 1/5" is withdrawn: GMP `get_d` truncates.
+  - Binding proves consistency, not identity, so a pair of bound witnesses decides the comparison both ways.
+  - Record: RA-97 in `.agents/Directional/Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md`.
+- [ ] **NEXT:** `M6-CP3-CB16-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS` (RA-97.4). Compile only.
+  - Rule, in `same_interior_carrier_point` only: an unbound present witness → false; two witnesses → exact equality; otherwise the legacy rule.
+  - Declare the predicate in H; add two probe labels and three P10 tests.
+- [ ] Then `M6-CP3-TB16-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS` (12 identities). Then, if TB16 holds, `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS` against TB14A, followed by `…-REV`, which issues the CB17 spec.
+- [ ] Units:
+  - U6 = CB16 (CB15 done);
+  - U4 = CB17 and U5 = CB18, both re-derived from the TB16C census;
+  - fixture debt after TB18 (242 → 174 → 250 → adjacent-sheet → 191 → 442), then a census and the RP-01 Review.
+- **Turn sequence:** CB16 → TB16 → TB16C → TB16C-REV → CB17 → TB17 → CB18 → TB18 → fixture debt → census → RP-01 Review.
+- Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, census 425/497, selector 497. `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
 
 ---
 

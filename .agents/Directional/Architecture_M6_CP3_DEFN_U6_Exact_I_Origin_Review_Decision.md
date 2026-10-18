@@ -1,6 +1,6 @@
 # RA-95 — DEFN-U6 stopped without a deliverable; Review locates the exact I-endpoint origin; DEFN-U6A narrowed (2026-10-18)
 
-**Turn:** `M6-CP3-DEFN-U6-EXACT-I-ENDPOINT-PARAMETER-REV`. **Inputs:** HEAD `73a014c4e`. `src`, `include` and `tests` are identical to CB14A `2ee499a3`, so every `S:` line below is valid there. TB14A result `12141843937` raw logs. **S** = `src/geometry/SurfaceCellTracing.cpp`. **Amends:** RA-94.5 (order) and RA-94.6 (spec). RA-96 (the DEFN-U6A review) is appended and amends RA-95.4/95.6.
+**Turn:** `M6-CP3-DEFN-U6-EXACT-I-ENDPOINT-PARAMETER-REV`. **Inputs:** HEAD `73a014c4e`. `src`, `include` and `tests` are identical to CB14A `2ee499a3`, so every `S:` line below is valid there. TB14A result `12141843937` raw logs. **S** = `src/geometry/SurfaceCellTracing.cpp`. **Amends:** RA-94.5 (order) and RA-94.6 (spec). RA-96 (the DEFN-U6A review) is appended and amends RA-95.4/95.6. RA-97 (the TB15 review) is appended and withdraws RA-95.3's "p ≠ 1/5".
 
 ## RA-95.1 Turn state
 
@@ -27,7 +27,7 @@ Only `chi` differs: 0 in the 17 focused and selector identities, 3 in `cp3entry`
    - `bary[first] = 1 − alpha` and `bary[second] = alpha`.
 4. The lattice-boundary override (S:17406-17421) places `acceptedBoundary[side].points[k]` at the boundary node. Cell corners copy `points[nodeIds]` (S:17500-17502), and the front edges copy the corners (S:17589-17590). The links onward to the three checkers are **not traced by Review**.
 
-**Model check.** Take `c = to_double(p) = 0x1.9999999999999p-3`. Face 0, forward, then gives (`0x1.999999999999ap-1`, `0x1.9999999999999p-3`) with sum 1 + 2⁻⁵⁵. Face 3, reversed, gives (`0x1.999999999999ap-1`, `0x1.9999999999998p-3`) with sum exactly 1. Both observed triples match bit for bit. `a2bProbeBoundarySourceEntities` shows the same two parameters at region 0 node (5,1) and region 1 node (0,1). Because `to_double(1/5) = 0x1.999999999999ap-3`, p ≠ 1/5, and the exact value of p is not logged.
+**Model check.** Take `c = to_double(p) = 0x1.9999999999999p-3`. Face 0, forward, then gives (`0x1.999999999999ap-1`, `0x1.9999999999999p-3`) with sum 1 + 2⁻⁵⁵. Face 3, reversed, gives (`0x1.999999999999ap-1`, `0x1.9999999999998p-3`) with sum exactly 1. Both observed triples match bit for bit. `a2bProbeBoundarySourceEntities` shows the same two parameters at region 0 node (5,1) and region 1 node (0,1). ~~Because `to_double(1/5) = 0x1.999999999999ap-3`, p ≠ 1/5~~ — withdrawn by RA-97.2: the GMP conversion truncates, and TB15 measured p = 1/5. The exact value of p is not logged.
 
 **Consequence:**
 - The one-ULP pair is orientation-dependent rounding at a single site, applied to one producer-origin exact rational that both sides share by construction.
@@ -149,7 +149,7 @@ The harness is derived from `m6_cp3_r10_open_rail_chain_interval_truth_table_har
 | 1–3 | the three CB15 tests | PASS |
 | 4 | `SurfaceCellAuthorityContractCutover.OpenRailRouteChainIntervalTruthTable` | PASS (control) |
 | 5, 6 | the two P10 midline tests (B2, front 61/179) | RED. First failure identical to TB13A once the four new fields are removed. New fields: `none`, binds 0 (vertex 4). |
-| 7, 8 | `cp3entry:2/6` | RED. Identical once the four new fields are removed. `FromExact` = `ToExact` = `1,4@n/d` with the same n/d; both binds 1; 0 < n/d < 1; nearest double `0x1.9999999999999p-3`. |
+| 7, 8 | `cp3entry:2/6` | RED. Identical once the four new fields are removed. `FromExact` = `ToExact` = `1,4@n/d` with the same n/d; both binds 1; 0 < n/d < 1; ~~nearest~~ converted double `0x1.9999999999999p-3` (RA-97.2). |
 | 9 | `SurfaceCellTransitionQuotient.ExactHardRailCounterpartsStitchAcrossTopologyRegions` (selector 217, chi 0) | as #7/#8 |
 
 Falsifiers, each sent to Review:
@@ -163,3 +163,115 @@ No census.
 - **Sequence:** CB15 → TB15 → TB15-REV (issues the CB16 spec) → CB16 → TB16 → TB16-REV (issues the CB17 spec) → CB17 (U4) → TB17 → CB18 (U5) → TB18.
 - **Fixture debt** (RA-92.3, RA-93.3) follows TB18. These are test-only CB/TB pairs in the order 242 → 174 → 250 → adjacent-sheet helper → 191 family → 442. Then one census, then the RP-01 Review.
 - Accounting unchanged.
+
+---
+
+# RA-97 — TB15 reviewed: the witness is p = 1/5, bound on both sides; CB15 accepted; CB16 rule specified (2026-10-18)
+
+**Turn:** `M6-CP3-TB15-R10-EXACT-I-ENDPOINT-WITNESS-PRODUCER-REV`. **Inputs:**
+- CB15 source `e4785d734e35d2f01ca3ee8099772f6ab5257f4c` (HEAD `src/include/tests` identical) and package `12150973440`;
+- TB15 result `12152685129`.
+
+`S:` lines below are at `e4785d73`. **Amends:** RA-95.3 (last sentence), RA-96.5 (#7 wording) and RA-96.6 (sequence).
+
+## RA-97.1 Re-verification
+
+- **CB15 package.** ZIP `7f56c6a5…c073` reproduced; 28/28; build exit 0; source status empty. The packaged S, H and P10 are byte-identical to `e4785d73` and to HEAD.
+- **CB15 diff from `2ee499a3`.** H +10, S +138/−27, P10 +119; nothing else under `src/include/tests`.
+  - `accepted_boundary_trace_point` is the old lambda body moved verbatim, plus the A1 witness. The lambda now forwards to it.
+  - Unchanged: the checkers (S:148-182), the factory call (S:8857) and the consumer call (S:19545).
+  - Dedup follows A2. The probe fields follow the `railEnd` loop.
+- **TB15.** ZIP `2536c38b…f748` reproduced; 13/13 manifest; 9/9 selected, 0 missing.
+  - Harness `b3aa46de…` differs from TB13A's only in the pin and the identity list.
+  - #1–#4 PASS.
+  - #5/#6: `none`, binds 0.
+  - #7–#9: `1,4@1/5` on both sides, binds 1/1.
+- **Byte comparison.** With only the four new fields removed, #5–#8 are byte-identical to TB13A cases 3–6, and #9 to TB14A `raw/selector/ordinal-217.log`. Every RA-96.5 prediction held, and no falsifier fired.
+- **The B3 record passes every later consumer condition:** A3 present, span 3 on both sides, reciprocal ordinals 0→1 / 1→0, rail 2. The only failing condition at front 17/203 is `same_interior_carrier_point`.
+
+## RA-97.2 Owned Review error: p = 1/5
+
+- **The error.** RA-95.3 inferred "p ≠ 1/5" from `to_double(1/5) = 0x1.999999999999ap-3`. That premise is false in the GMP build.
+  - `FieldExactRational::to_double` calls `mpq_class::get_d()` (`include/directional/numerics/ENumberGMP.h:147`), which truncates toward zero. So `to_double(1/5) = 0x1.9999999999999p-3`.
+  - RA-96.5's "nearest double" repeats the error. The agent's wording correction (`c03f31baa`) is accepted.
+- **The measured value.** p = 1/5 = j/count, with j = 1 and count = 5.
+  - The record's other accepted samples (2/5, 3/5, 4/5) are truncated the same way.
+  - Truncation is the source of the 2⁻⁵⁵: face 0 stores trunc(1/5) beside round(1 − trunc(1/5)).
+  - The rest of RA-95.3 stands.
+- **Consequence for the design.** The bit binding is specific to the backend's conversion.
+  - Producer and checkers share one binary and one helper, and the witness is never serialized, so they agree.
+  - Any future persistence of the witness must not bind across backends.
+
+## RA-97.3 CB15 accepted; binding proves consistency, not identity
+
+- **Accepted.** CB15 makes no admission change.
+- **Binding proves consistency, not identity.** `to_double` is many-to-one, so two distinct rationals with equal conversions bind the same doubles. One example: 1/5 and `from_double_exact(0x1.9999999999999p-3)`.
+  - Identity therefore comes only from comparing the exact witnesses.
+  - A bound pair must decide **both ways**. Otherwise the legacy rule, which compares doubles, accepts two distinct crossings whose rounded doubles coincide. That happens in the reversed form, which has an exact unit sum.
+- **No later writer to check.**
+  - Nothing rewrites a witnessed point: S:13602 is the periodic-chart locator in another producer, and S:20903 seeds streamlines.
+  - No product digest covers `SurfaceTracePoint`.
+- **One predicate serves all three sites.** `same_interior_carrier_point` (S:175-182) is called by the factory (S:8857), the consumer (S:19545) and the probe (S:20130). Changing it alone keeps all three in lockstep.
+- **Limit.** The factory call still has no real-data coverage until a fixture reaches `make`.
+
+## RA-97.4 CB16 specification — `M6-CP3-CB16-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS`
+
+1. **Rule.** Change `same_interior_carrier_point` only:
+   - (a) If either point carries a witness for which `exact_interior_witness_binds(point, faces, edge)` is false, return false. A witness that contradicts its doubles is corruption, so this fails closed.
+   - (b) If both points carry witnesses, which by (a) are bound, return `*first.exactEdgePoint == *second.exactEdgePoint`. The legacy parameter is not consulted.
+   - (c) Otherwise (no witness, or exactly one), apply the legacy rule unchanged. Cross-producer and witness-cleared pairs keep today's rule; nothing is weakened.
+2. **Declaration.** Declare `same_interior_carrier_point` in H beside the CB15 helpers. Its signature does not change.
+3. **Probe label** (S:20130-20133), inside the existing branch only:
+   - `exact-witness-unbound` when (a) rejects;
+   - `exact-witness-mismatch` when (b) rejects;
+   - the existing labels otherwise.
+4. **Unchanged:**
+   - `interior_carrier_parameter`, the CB15 helpers, dedup and every producer;
+   - every other guard at the three sites: orientation, A3, intervals, rail, contact paths and the terminal branches.
+5. **Tests** (P10; compiled, not run). Let p = `from_ratio(1,5)` and q = `from_double_exact(double(p.to_double()))`, and assert q ≠ p.
+   - `ExactWitnessIdentifiesTemplateInteriorPair`:
+     - the face-0 forward point and face-3 reverse point built from p give true;
+     - with both witnesses reset they give false, which reproduces B3.
+   - `ExactWitnessRejectsDistinctValuesWithEqualDoubles`:
+     - face-3 reverse points built from p and from q have bit-equal doubles and both bind, yet give false;
+     - with both witnesses reset they give true. This is the hole the rule closes.
+   - `ExactWitnessUnboundFailsClosedAndMixedKeepsLegacy`. Each of these gives false:
+     - a `nextafter` applied to one witnessed point;
+     - a witness on edge 4–7 checked against carrier 1–4;
+     - the forward point with its witness against the reverse point without one.
+
+     A pair of identical reverse points with one witness reset gives true.
+6. **Build.** GMP/GMPXX compile and package. Record of 25 lines or fewer.
+
+**Out of scope:** U4/U5, fixtures, selector, harness, and running tests.
+
+## RA-97.5 TB16 and TB16C
+
+**TB16** — `M6-CP3-TB16-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS`. The harness is the TB15 harness, changing only sha, artifact, digest, labels and identities. Twelve identities, in this order:
+
+| # | Identity | Prediction |
+|---|---|---|
+| 1–3 | the CB16 tests | PASS |
+| 4–6 | the CB15 tests | PASS |
+| 7 | `OpenRailRouteChainIntervalTruthTable` | PASS |
+| 8, 9 | the P10 midline B2 tests | Byte-identical to TB15 #5/#6. They fail at `carrier-orientation`, before the predicate. |
+| 10–12 | `cp3entry:2/6`, selector 217 | The first failure is no longer `endpoint-1` at front 17,203. Record it verbatim and classify it by RA-90.4 with RA-91.2. Expected, not required: B2 at a later front. A PASS is admissible and is recorded. |
+
+Falsifiers, each sent to Review:
+- any change in #1–#9;
+- any of #10–#12 still failing at `endpoint-1`, front 17,203;
+- any `exact-witness-` label;
+- `open-rail-chain-interval` anywhere.
+
+**TB16C** — `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS`, run only if TB16 holds.
+- **Run:** the unchanged `m6_cp3_entry_497_artifact_only_harness.sh` (`947a95ee…`) on the CB16 package, given only through its environment inputs.
+- **Deliverables:** as RA-90.5, compared against TB14A (`12141843937`) instead of R3.
+- **Predictions:** every TB14A PASS stays PASS, and each of the 19 B3 identities leaves B3.
+- **Falsifiers:** any PASS → RED, any `exact-witness-` label, or any B1. Each goes to Review.
+- **Why a census now:**
+  - CB16 changes production admission at every I–I endpoint, and RA-61.7 requires a measurement before the next rule change.
+  - U4/U5 need their measured population: RA-96.3 found that their spec must be re-derived.
+
+## RA-97.6 Sequence
+
+CB16 → TB16 → TB16C → TB16C-REV (re-derives and issues the CB17 U4 spec from the census) → CB17 → TB17 → CB18 → TB18 → fixture debt (RA-96.6 order) → census → RP-01 Review. Each CB follows a reviewed TB, and a falsifier goes to Review. Accounting is unchanged.

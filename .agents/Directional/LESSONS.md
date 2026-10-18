@@ -218,6 +218,11 @@ This document records **reusable failure-derived engineering lessons**, not an e
   failing subcondition, compare deliberate counterexamples, and preserve any valid prior rejection
   coverage. Relaxation or new topology is authorized only from the verified shared root cause and
   normative contract.
+- **A double is a lossy, mode-dependent image of an exact value.** Check the conversion's rounding
+  mode before reasoning backward from a double. RA-95.3 assumed round-to-nearest and concluded
+  p ≠ 1/5; GMP `get_d` truncates, and TB15 measured p = 1/5. Binding a witness to doubles bit for
+  bit proves consistency, not identity, because many exact values share one double. Identity comes
+  from comparing the exact values (RA-97).
 
 ## Diagnostics, classifiers, and causal investigation
 
