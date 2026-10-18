@@ -1,3 +1,9 @@
+## 2026-10-18 — RA-90: TB13A reviewed; U3 closed; TB13C census can run and its classification is fixed
+
+- TB13A (run `39121449664`, result `12134411966`) was re-verified independently: #1/#2 PASS, #3–#6 byte-identical to TB13 by direct comparison, and no `open-rail-chain-interval`. U3 is closed and B1 is cleared on the RP-01 fixtures.
+- TB13C feasibility was checked statically: all 497 identities exist in their routed binaries at `e88ac65f`, so the harness's exact-one selection gate should not abort. The R3 baseline is the in-repo RED TSV (`890a105e…`), because the R3 artifact expires 2026-10-24.
+- TB13C now classifies each RED from first-failure tokens (B1 `open-rail-chain-interval`, B2 a decoded non-terminal vertex, B3 `not-same-interior-carrier-point`). It delivers a RED-inventory TSV and a short report. TODO's top items for the R10 arc are merged into one section again. Record: §RA-90 of `.agents/Directional/Architecture_M6_CP3_TB13_Chain_Interval_Review_Decision.md`. Stable 66/17/49, debt 1, CP2 491/491, R3 403/497, selector 497 unchanged.
+
 ## 2026-10-18 — TB13A artifact-only gates passed; U3 scoped closure
 
 - [Run 39121449664](https://github.com/akashskypatel/Directional/actions/runs/39121449664), result 12134411966: 2/2 gate PASS; four unchanged expected B2/B3 diagnostic RED; 10/10 checksums, no falsifier or missing selection. No compile, relink, benchmark, source, test, fixture or selector497 modifications. U3 closed; B2 U4/U5 and B3 U6 remain. Next TB13C selector497.

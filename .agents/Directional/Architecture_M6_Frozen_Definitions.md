@@ -1,3 +1,19 @@
+## RA-90 — TB13A reviewed: U3 closed; TB13C classification fixed (2026-10-18)
+
+Authority: `Architecture_M6_CP3_TB13_Chain_Interval_Review_Decision.md` §RA-90.
+
+- **RA-90.1** TB13A was re-verified independently: #1/#2 PASS, #3–#6 byte-identical to TB13, no falsifier.
+- **RA-90.2** U3 is closed and B1 is cleared on the RP-01 fixtures. The factory call still lacks real-data coverage, which waits on U4–U6.
+- **RA-90.3** TB13C can run. All 497 identities exist in their routed binaries (0 missing, 0 parameterized). The R3 baseline is the in-repo RED TSV (`890a105e…`), not the expiring artifact.
+- **RA-90.4** RED classes are assigned mechanically from first-failure tokens:
+  - B1: `open-rail-chain-interval` (a falsifier);
+  - B2: an endpoint predicate with a decoded non-terminal vertex;
+  - B3: `not-same-interior-carrier-point`;
+  - otherwise, other.
+- **RA-90.5** TB13C delivers a RED-inventory TSV and a report of 30 lines or fewer. Predicted: `cp3entry` 2 and 6 are B3. Sequence: TB13C → TB13C-REV, which orders U4/U5/U6 and issues DEFN-U6.
+
+---
+
 ## RA-89 — CB13A accepted; Review closes it out; TB13A authorized (2026-10-18)
 
 Authority: `Architecture_M6_CP3_TB13_Chain_Interval_Review_Decision.md` §RA-89.

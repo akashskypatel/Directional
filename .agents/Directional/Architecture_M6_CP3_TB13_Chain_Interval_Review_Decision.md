@@ -1,6 +1,6 @@
 # RA-88 — TB13 reviewed: the RED truth-table row is a Review specification defect; U3 code accepted; CB13A corrects the row (2026-10-18)
 
-**Turn:** `M6-CP3-TB13-R10-OPEN-RAIL-CHAIN-INTERVAL-ROUTE-REV` (RA-89, the CB13A closeout, is appended). **Inputs:** CB13 source `70217cc2bf7d257bebd2969e1aa56b5a43326a70`, package `12130290543`; TB13 run `39112131501`, result `12130683535` (ZIP SHA-256 `43505af2…4885`). **Amends:** RA-87.4.7 (one row). RA-87.3 and RA-87.5 (TB13C) stay live.
+**Turn:** `M6-CP3-TB13-R10-OPEN-RAIL-CHAIN-INTERVAL-ROUTE-REV` (RA-89, the CB13A closeout, and RA-90, the TB13A review, are appended). **Inputs:** CB13 source `70217cc2bf7d257bebd2969e1aa56b5a43326a70`, package `12130290543`; TB13 run `39112131501`, result `12130683535` (ZIP SHA-256 `43505af2…4885`). **Amends:** RA-87.4.7 (one row). RA-87.3 and RA-87.5 (TB13C) stay live.
 
 ## RA-88.1 Re-verification
 
@@ -69,3 +69,25 @@ CB13A → TB13A → TB13C → TB13C-REV (orders U4/U5/U6 and issues DEFN-U6). Ea
   - `EXPECTED_CANDIDATE_ZIP_SHA256=36197dff…`;
   - `EXPECTED_ROOT_MANIFEST_SHA256=bdb4ad98…`;
   - `EXPECTED_SOURCE_ARCHIVE_SHA256=25ec06e7…` (full values above).
+
+## RA-90 TB13A reviewed: U3 closed; TB13C feasibility checked and its classification fixed (2026-10-18)
+
+- **RA-90.1 Re-verification.** TB13A was checked independently.
+  - Result `12134411966`: ZIP `17decdbf…`, 0 manifest mismatches, 6 executed, 0 missing.
+  - Harness `a42ae6e0…` differs from TB13's only in sha, artifact, digest and labels.
+  - #1 and #2 PASS. #3–#6 `first_failure` fields compared directly with TB13: byte-identical. `open-rail-chain-interval` occurs in no log.
+  - The report's two hashes (`cbf8bbfe…`, `923d41c5…`) cannot be reproduced from the ledger field or the raw line, and their method is unstated. Identity rests on the direct comparison.
+- **RA-90.2 U3 closed.** B1 is cleared on the RP-01 fixtures. The consumer rule has real-data coverage; the factory call gains it only once an open-rail fixture reaches `make`, which requires U4–U6.
+- **RA-90.3 TB13C can run.**
+  - All 497 identities exist at `e88ac65f` in the binary they are routed to: 30 + 12 + 6 in producer, 449 per the routing receipt; 0 missing and 0 parameterized. The harness's exact-one selection gate therefore should not abort.
+  - The R3 artifact `11661044443` expires on 2026-10-24, but the baseline is the in-repo `Architecture_M6_CP3_TB1_Entry_R3_Red_Classification.tsv` (SHA-256 `890a105e…`, 94 RED; any other identity was a PASS at R3). The comparison uses that file, not the artifact.
+- **RA-90.4 TB13C classification is mechanical, applied to each RED's first `firstPredicate=` text, or its first gtest failure line when there is none:**
+  - **B1:** contains `open-rail-chain-interval`. This is a falsifier and goes to Review.
+  - **B2:** `predicate=endpoint-0|endpoint-1` with `a3ProbeDecodedVertex=<integer>` and `a3ProbeContactEndpointMember=0` (a rail vertex that is not a terminal; TB13 #3 is the template).
+  - **B3:** `a2bProbeFirstFailedCondition=not-same-interior-carrier-point` (TB13 #5 is the template).
+  - **B2+B3** if both apply; **other** otherwise, grouped by `predicate=` name or by the first 80 characters of the failure line.
+- **RA-90.5 TB13C deliverables:**
+  - the unchanged harness `947a95ee…`, run with `--execute` and the five RA-89 inputs;
+  - `Architecture_M6_CP3_TB13C_Selector_497_Red_Inventory.tsv`, one row per RED with columns `phase, ordinal, identity, owner, exit, raw_sha256, class, first_failure (≤200 chars), R3 (PASS/RED), R3_first_observable`;
+  - a report of 30 lines or fewer giving totals per phase (30/12/449/6), counts per class, the R3 PASS → now RED list, the R3 RED → now PASS list, and the TSV's SHA-256.
+  - Prediction: `cp3entry` ordinals 2 and 6 are B3. Nothing else is predicted, so no interpretation is needed. Falsifier: any B1.
