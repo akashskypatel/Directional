@@ -1,4 +1,4 @@
-## CURRENT — DEFN-U6 reviewed (RA-95): exact I-endpoint origin located; DEFN-U6A next (2026-10-18)
+## CURRENT — DEFN-U6A exact origin traced, independent Review next (2026-10-18)
 
 - [x] `M6-CP3-TB10-R9-CARRIER-ENDPOINT-SUBCONDITION-HARVEST`: TB10 immutable run [38941839640](https://github.com/akashskypatel/Directional/actions/runs/38941839640), result `12062873272` ZIP SHA-256 `4db22a924f31a7bc6fdf1575a66849a2f660a760003e03e26e7f9277ac200513`; compiled source `d938ecb57e1040c2a73d5d25c4a613414556cb18`, artifact `12062565622`. 44/44 selected, 44 RED, 0 missing, 48 A3 observations, 21 exact-one-hot vertices: **contact-endpoint membership 0/21; carrier-edge membership 21/21; composite 0/21**. Example decoded vertex 4, published contact endpoints {1,7}, carrier edge {1,4}, certificate rail 2. Immutable postflight passed, 28/28 package hashes, compile/relink/benchmarks/selector497 not executed. Evidence is candidate/non-stable and does not modify 66/17/49, debt1, CP2 491/491, R3 403/497, selector497; RP-01 open, RP-02 UNREACHED. Independent Review next (ID UNKNOWN); no repair authorized.
 - [x] Independent Review (RA-81): TB10 accepted as diagnostic evidence; vertex 4 is the interior vertex of the open rail 1–4–7 and no V/I/C branch admits it. Record: `Architecture_M6_CP3_R9_Carrier_Endpoint_Subcondition_Review_Decision.md`.
@@ -58,14 +58,14 @@
   - origin: one exact `location_parameter` (S:17205-17218), rounded per orientation by `boundary_trace_point` (S:16944-16972). The model reproduces both observed hexfloat triples;
   - DEFN-U6 is narrowed to U6A.
   - Record: `.agents/Directional/Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md`.
-- [ ] **NEXT: `M6-CP3-DEFN-U6A-I-ENDPOINT-EXACT-ORIGIN-TRACE`** (documents only; RA-95.5). Deliverable `Architecture_M6_CP3_DEFN_U6A_I_Endpoint_Exact_Origin_Trace_20261018.md`, 80 lines or fewer:
+- [x] `M6-CP3-DEFN-U6A-I-ENDPOINT-EXACT-ORIGIN-TRACE` (documents only; RA-95.5). Deliverable `.agents/Directional/Architecture_M6_CP3_DEFN_U6A_I_Endpoint_Exact_Origin_Trace_20261018.md` (37 lines; existing source-authoritative deliverable):
   - verify RA-95.3;
   - trace link 4 to the three checkers;
   - map ordinals to endpoints;
   - give p exactly;
   - compare representations (a)/(b)/(c) with the doubles binding and fail-closed behavior, and recommend one;
   - a CB outline of 10 lines or fewer.
-- [ ] Then `M6-CP3-DEFN-U6A-I-ENDPOINT-EXACT-ORIGIN-TRACE-REV`: accept or amend the representation, issue the CB15 (U4) spec and the U6 CB spec (or DEFN-U6B), and schedule the fixture debt.
+- [ ] **NEXT:** `M6-CP3-DEFN-U6A-I-ENDPOINT-EXACT-ORIGIN-TRACE-REV`:  accept or amend the representation, issue the CB15 (U4) spec and the U6 CB spec (or DEFN-U6B), and schedule the fixture debt.
 - [ ] Fixture debt (RA-92.3, RA-93.3), each a narrow test-only CB scheduled by DEFN-U6A-REV; none blocks U4–U6:
   - 174: replace the non-manifold three-face TriMesh source;
   - 191 family (189–195): print the atlas build error, then repair the fixture field;

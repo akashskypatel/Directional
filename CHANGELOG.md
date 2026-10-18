@@ -1,3 +1,7 @@
+## 2026-10-18 — U6A exact I-endpoint origin definition (documents only)
+
+- Verified RA-95.3's exact schedule `p` and orientation-dependent `double` conversion; traced accepted-boundary nodes through corners, reversal, cross-region pairing and all three checkers (`2ee499a3`). Defined optional per-endpoint `ExactSourceEdgePoint` provenance, bit-exact face/orientation geometry binding and independent `(span,ordinal)→p` authentication as **requirements for independent Review**, not implemented behavior. Exact numerator/denominator of `p` remain unlogged; a named minimal probe is specified, not executed. No code, build, tests or selector change. Stable 66/17/49, debt 1, CP2 491/491, R3 403/497, TB14A 425/497, selector 497; `RP-01` open, `RP-02` UNREACHED.
+
 ## 2026-10-18 — RA-95: DEFN-U6 stopped; exact I-endpoint origin located; DEFN-U6A next
 
 - DEFN-U6 began and took a source snapshot (run `39148463200`), then stopped `IN_PROGRESS` with no deliverable. Nothing was adjudicated.
