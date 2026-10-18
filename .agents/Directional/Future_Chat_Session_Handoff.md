@@ -34,41 +34,51 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-18, after immutable `M6-CP3-TB14A-R10-CURVED-DISK-CONTROL-CENSUS`: **425/497**, with unexpected selector 199 PASS; independent TB14A Review next. |
-| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft; refetch HEAD before mutation. CB14A semantic source `2ee499a3403c07be05e8084a669f30c1c735f04a` (test-only); production code unchanged since CB13 (`70217cc2`). |
-| Last accepted semantic runtime | M6 CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. Frozen selector last measured at R3 (source `d82e34427`, 403/497). The R3 baseline is `Architecture_M6_CP3_TB1_Entry_R3_Red_Classification.tsv` (SHA-256 `890a105e…`, 94 RED); artifact `11661044443` expires 2026-10-24. |
-| Latest candidate or rejected evidence | TB14A [run 39143325285](https://github.com/akashskypatel/Directional/actions/runs/39143325285), result `12141843937` SHA-256 `1b06e43e87f416e7b44dce65059f1789301f402dd9d43d71fcabf2a3c604d455`, CB14A package `12140756646`: **425 PASS / 72 RED** of 497, +5 over TB13C 420/497 (selectors 199,235,236,294,299 RED→PASS). Identity 199 falsifies RA-93.4 predicted RED; no production promotion. Owner `Architecture_M6_CP3_TB14A_Curved_Disk_Control_Census_Report_20261018.md`. |
-| Regression accounting and debt | **66/17/49**, debt **1** unchanged; selector 497 frozen; M6 CP2 491/491 remains last accepted runtime, R3 403/497 rejected. Selector 199 unexpectedly PASS; 250 remains RED; remaining fixture debts 174/191-family/242/442/250 and adjacent-sheet helper. See regression tracker. |
-| Active boundary | `RP-01`: B1 U3 closed; B2 U4/U5 11 identities; B3 U6 DEFN-first 19 identities. Four restored curved-disk controls 235/236/294/299 PASS; 199 PASS unexpectedly (RA-93.4 prediction falsifier) requires Review before promotion. `RP-02` UNREACHED; Gate C suspended. |
+| Currency | 2026-10-18, after `M6-CP3-TB14A-R10-CURVED-DISK-CONTROL-CENSUS-REV` (RA-94): TB14A closed out and adjudicated; DEFN-U6 is next. |
+| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft; refetch HEAD before mutation. Latest semantic source `2ee499a3403c07be05e8084a669f30c1c735f04a` (CB14A, test-only); production code unchanged since CB13 (`70217cc2`). |
+| Last accepted semantic runtime | M6 CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. The R3 baseline (source `d82e34427`, 403/497) is `Architecture_M6_CP3_TB1_Entry_R3_Red_Classification.tsv` (SHA-256 `890a105e…`, 94 RED). |
+| Latest candidate or rejected evidence | TB14A [run 39143325285](https://github.com/akashskypatel/Directional/actions/runs/39143325285), result `12141843937` (ZIP `1b06e43e…d455`, retained 14 days), on CB14A package `12140756646`: **425/497**. Exactly five tests went RED → PASS against TB13C (199/235/236/294/299), and the 72 REDs are unchanged in substance (RA-94.2). Report: `Architecture_M6_CP3_TB14A_Curved_Disk_Control_Census_Report_20261018.md`. |
+| Regression accounting and debt | **66/17/49**, debt **1**, selector 497 frozen; R3 403/497 rejected; no production regression. 425 = 403 + 26 RED → PASS − 4 test-debt REDs (174, 191, 242, 442). Fixture debt also covers 250 and the adjacent-sheet curved-disk helper. See `Regression_Root_Cause_Tracker.md`. |
+| Active boundary | `RP-01` (RA-87.3): B1 cleared (U3); B2 R endpoint → U4/U5, 11 identities; B3 inexact I parameter → U6, 19 identities (first on `cp3entry:2/6`). The curved-disk `make` control is restored (RA-94.4), so U4's precondition is met. `RP-02` UNREACHED; Gate C suspended. |
 
-## Incomplete TB14A documentation closeout — resume before Review
+## Mandatory next turn — `M6-CP3-DEFN-U6-EXACT-I-ENDPOINT-PARAMETER` — EXACT NEXT
 
-- TB14A report, candidate tracker and this handoff are committed. `TODO.md` and `CHANGELOG.md` closeout edits remain uncommitted because the Google Drive patch-transport upload could not access the local container session. This is procedural WIP, not a test failure or an independently resolved Review gate.
-- Exact remaining changes are preserved as `Directional_TB14A_remaining_TODO_CHANGELOG_work-preservation.patch` (SHA-256 `600afd3b8599e970f3e55a06517da4fc3bf87a143a1a058070147fd152e18f55`, base `a6a4b309a3beb410a1e32e2904b6c0890fdfefe6`). Apply only through authorized Drive transport, verify the changed paths remain untouched, then finalize `STATUS` to COMPLETE. Do not start Review while `STATUS` is IN_PROGRESS.
-
-## Mandatory next turn — `M6-CP3-TB14A-R10-CURVED-DISK-CONTROL-CENSUS-REV` — EXACT NEXT
-
-- **Type:** independent Review + Plan; no implementation, test, fixture, selector, compile, or runtime mutations.
-- Re-open immutable TB14A [run 39143325285](https://github.com/akashskypatel/Directional/actions/runs/39143325285), result `12141843937` and unchanged source/package `2ee499a3403c07be05e8084a669f30c1c735f04a` / `12140756646`; compare TB13C census.
-- Verify 497/497 processes, 1019/1019 result hashes, 425 PASS / 72 RED, five RED→PASS, no new RED, zero compile/relink/test/fixture/selector mutation.
-- **Critical:** RA-93.4 predicted selector 199 stays RED but moves from P10:5395 to P10:5428; observed **PASS**. Independently determine non-vacuity and correct oracle behavior; do not presume promotion.
-- Verify 235/236/294/299 expected PASS, 237/253/254 unchanged PASS and 250 unchanged RED at P10:3597 (`PublishedProductRejected`); assess all other unchanged identities.
-- Classify any discrepancy without inventing stable regression IDs, update evidence and task records, perform Review policy orientation/consolidation. Only after Review assign DEFN-U6, U4/U5 order and test debt. No successor beyond Review yet authorized.
+- **Type:** documents-only definition (DEFN absorbs Review + Plan; Turn Cadence). No code, build, dispatch or runtime.
+- **Authority:** RA-94.6 in `Architecture_M6_CP3_TB14A_Curved_Disk_Control_Review_Decision.md`; U6 constraints from RA-87.3; R9B:29.
+- **Deliverable:** `.agents/Directional/Architecture_M6_CP3_DEFN_U6_Exact_I_Endpoint_Parameter_20261018.md`, 120 lines or fewer, citing `file:line` at `2ee499a3`:
+  1. **Producer-origin trace** of the template: `cp3entry:2`, front 17/203, endpoint-1, edge 1–4, faces 0 and 3; hexfloats in TB14A `raw/cp3entry/ordinal-002.log`. Cover every site that writes the compared barycentrics (S:91-97; factory S:8773; consumer S:19480), and say whether the two sides share one scalar and which operation makes the one-ULP difference.
+  2. **Candidate exact parameter:** its exact inputs, its type (prefer `ExactSourceEdgePoint`/`FieldExactRational`), its orientation, the single site that computes it, and how it reaches both checkers. Compare the alternatives and recommend one.
+  3. **Rule:** exact equality of that parameter, with the doubles used for geometry only. No epsilon, rounding or near-equality canonicalization, and no interval-only identity.
+  4. **Satisfiability**, as exact rationals, on all 19 B3 identities (focused30 3/12/14/15/17/18/22/23/24; focused12 5/6; selector 211/217/219/227/230/231; `cp3entry` 2/6), each marked equal, unequal, or missing data (name the field and the probe). Also say what the rule does with RA-76's 324 one-ULP pairs.
+  5. **Negatives the CB must test:**
+     - crossings one ULP apart stay distinct;
+     - 0/1 vertex masquerade rejected;
+     - different edge rejected;
+     - reversed orientation compares correctly;
+     - tampered parameter rejected at the factory.
+  6. **Narrow CB units**, each with TB predictions, falsifiers and named controls.
+- **If no exact origin exists:** say so with evidence and propose alternatives. Never a tolerance.
+- **Out of scope:** U4/U5, fixture debt, test, selector or harness changes.
+- **Gates:** `document_drift_audit.py --root .`.
+- **Docs:** in place only — handoff live sections, top `TODO.md` section, one `CHANGELOG.md` entry.
+- **STATUS:** `IN_PROGRESS` with an empty Successor while working; `COMPLETE` with the successor below as the final write.
+- **Conditional successor:** `M6-CP3-DEFN-U6-EXACT-I-ENDPOINT-PARAMETER-REV`. Nothing beyond it is authorized.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| done | `M6-CP3-CB14A-R10-CURVED-DISK-RAIL-PROVENANCE` | Test-only source `2ee499a3403c`; GMP eight-target package `12140756646`. |
-| done | `M6-CP3-CB14A-R10-CURVED-DISK-RAIL-PROVENANCE-REV` | RA-93 accepted CB14A and froze TB predictions. |
-| done | `M6-CP3-TB14A-R10-CURVED-DISK-CONTROL-CENSUS` | 425/497; unexpected selector 199 PASS; immutable source/package. |
-| 1 — next | `M6-CP3-TB14A-R10-CURVED-DISK-CONTROL-CENSUS-REV` | Independent primary evidence review and plan; no implementation or runtime. |
+| done | `M6-CP3-TB14A-R10-CURVED-DISK-CONTROL-CENSUS` | 425/497; five RED → PASS; closed out by Review. |
+| done | `M6-CP3-TB14A-R10-CURVED-DISK-CONTROL-CENSUS-REV` | RA-94: control restored; 199 explained; DEFN-U6 ordered first. |
+| 1 — next | `M6-CP3-DEFN-U6-EXACT-I-ENDPOINT-PARAMETER` | Documents only (RA-94.6). |
+| 2 — conditional | `M6-CP3-DEFN-U6-EXACT-I-ENDPOINT-PARAMETER-REV` | Accepts or amends U6 units, authorizes CB15 (U4), schedules fixture debt. |
+| planned, not authorized | `M6-CP3-CB15-R10-FACTORY-RAIL-VERTEX-ENDPOINT` → TB15 → `M6-CP3-CB16-R10-CONSUMER-RAIL-VERTEX-ENDPOINT` → TB16 → U6 CB/TB units → RP-01 Review | Each CB follows a reviewed TB; a RED TB goes to Review. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **review-plan** — independently re-open immutable TB14A primary evidence and TB13C comparator; do not execute, compile or alter implementation/fixtures/selectors.
+`load_next`: **definition** — documents-only U6 design from source and retained TB14A raw logs; no code, build or runtime.
 
-Minimum context after mandatory policies/checklists: `.agents/Directional/ORIENTATION.md`, `.agents/Directional/ROADMAP.md`, this handoff, TB14A report and primary artifact `12141843937`, TB13C selector inventory, RA-92/93 review decision, `Regression_Root_Cause_Tracker.md`, `TODO.md`, and `REVIEW_TURN_POLICY.md`.
+Minimum context after mandatory policies/checklists: `.agents/Directional/ORIENTATION.md`, `.agents/Directional/ROADMAP.md`, this handoff, RA-94 (`Architecture_M6_CP3_TB14A_Curved_Disk_Control_Review_Decision.md`), RA-87 (`Architecture_M6_CP3_TB12_Chain_Provenance_Review_Decision.md`), the R9B contract (`Architecture_M6_CP3_R9B_Endpoint_Equivalence_Contract_Specification_20261016.md`), `Architecture_M6_CP3_TB13C_Selector_497_Red_Inventory.tsv`, TB14A result `12141843937`, `LESSONS.md` §3–§5, `TODO.md`.
 
 **Review tooling:** `.agents/Directional/tools/` holds read-only `review_check.py`, `selector_probe.py`, and `fixture_probe.py`; history-sensitive review gates require real committed history, not a synthesized snapshot.
 

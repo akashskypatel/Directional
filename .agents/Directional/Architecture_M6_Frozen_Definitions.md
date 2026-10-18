@@ -1,3 +1,22 @@
+## RA-94 — TB14A reviewed: curved-disk control restored (425/497); 199 is a hidden fixture repair; DEFN-U6 next (2026-10-18)
+
+Authority: `Architecture_M6_CP3_TB14A_Curved_Disk_Control_Review_Decision.md`.
+
+- **RA-94.1–94.2** TB14A was closed out by Review and re-verified. Compared with TB13C on all 497, exactly five tests went RED → PASS (199/235/236/294/299). The 72 REDs are unchanged in substance.
+- **RA-94.3** 199 falsified RA-93.4. `2be228d96` (after R3) gave its cylinder half the required source A3, so 199 is a valid control, not a weakened test.
+- **RA-94.4** The curved-disk `make` control is restored. 425 = 403 + 26 − 4. No production regression.
+- **RA-94.5** DEFN-U6 comes first, then U4 → U5, which are renamed CB15/CB16 (RA-85.5 IDs amended; scope unchanged).
+- **RA-94.6** DEFN-U6 spec:
+  - a producer-origin trace of the template;
+  - an exact candidate parameter;
+  - a no-tolerance rule;
+  - satisfiability on all 19 B3 identities;
+  - the negatives;
+  - narrow units.
+- **RA-94.7** DEFN-U6 → DEFN-U6-REV, which authorizes CB15 and schedules the fixture debt.
+
+---
+
 ## RA-93 — CB14A accepted; TB14A predictions sharpened (2026-10-18)
 
 Authority: `Architecture_M6_CP3_TB13D_Bisect_Review_Decision.md` (RA-93, appended).

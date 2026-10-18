@@ -113,6 +113,9 @@ This document records **reusable failure-derived engineering lessons**, not an e
   each helper and test that calls the changed builder, and say what each inherits. A derived fixture
   that edits the inputs afterwards can be left with authority that contradicts its own mesh (RA-93.3:
   the adjacent-sheet curved disk kept a rail over an edge it made interior).
+- **A failure hidden behind an earlier one is unmeasured.** When an earlier failure is removed, do not
+  predict the next one from an old baseline without first reading the test's history since that baseline.
+  A fixture repair may have landed in between (RA-94.3: 199's cylinder half was repaired after R3).
 
 ## Semantic ownership, identity, and dataflow
 

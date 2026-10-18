@@ -1,3 +1,10 @@
+## 2026-10-18 — TB14A census on CB14A (425/497) and RA-94 review; DEFN-U6 next
+
+- TB14A ([run 39143325285](https://github.com/akashskypatel/Directional/actions/runs/39143325285), result `12141843937`) ran the unchanged census on CB14A: **425 PASS / 72 RED**. The turn stopped before its TODO/CHANGELOG closeout, so Review closed it out.
+- RA-94: exactly five tests went RED → PASS against TB13C (199/235/236/294/299), and the REDs are unchanged in substance. The curved-disk `make` control is restored.
+- 199 falsified the RA-93.4 prediction: post-R3 commit `2be228d96` had given its cylinder half the required source A3. It is a valid control.
+- Order: DEFN-U6 first, then U4 → U5 (renamed CB15/CB16). Record: `Architecture_M6_CP3_TB14A_Curved_Disk_Control_Review_Decision.md`.
+
 ## 2026-10-18 — RA-93: CB14A accepted; TB14A predictions sharpened
 
 - Review re-verified package `12140756646`: ZIP, 28/28, root manifest and source archive hashes; 351 files byte-identical to `2ee499a3`; only P10 changed. Class `Hard` is correct, because both rail projections skip non-`HardFeature` rails.

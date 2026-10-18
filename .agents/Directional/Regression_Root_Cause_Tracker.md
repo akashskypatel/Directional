@@ -1,6 +1,11 @@
-## CANDIDATE / NON-STABLE — TB14A curved-disk control census (2026-10-18)
+## TB14A curved-disk control census — adjudicated by RA-94 (2026-10-18)
 
-[Run 39143325285](https://github.com/akashskypatel/Directional/actions/runs/39143325285), result `12141843937` (`1b06e43e87f416e7b44dce65059f1789301f402dd9d43d71fcabf2a3c604d455`) on unchanged CB14A package `12140756646`, exact semantic source `2ee499a3`: 497/497 executed; **425 PASS / 72 RED**, five RED→PASS (selector 199/235/236/294/299) relative to TB13C; no new RED. 237/253/254 remain PASS; 250 remains RED at `SurfaceCellsPhase10Tests.cpp:3597` / `PublishedProductRejected`. **RA-93.4 falsified at 199**: it predicted a later RED but the identity now PASSes. This is a non-stable *prediction/fixture-interaction candidate* pending `M6-CP3-TB14A-R10-CURVED-DISK-CONTROL-CENSUS-REV`; runtime evidence does not identify a new production regression or license promotion. The 4 restored curved-disk controls agree with RA-93.4; all other identities retain their TB13C status. Stable accounting **66/17/49**, debt **1** unchanged. Owning TB report: `Architecture_M6_CP3_TB14A_Curved_Disk_Control_Census_Report_20261018.md`.
+[Run 39143325285](https://github.com/akashskypatel/Directional/actions/runs/39143325285), result `12141843937` (`1b06e43e…d455`), on CB14A package `12140756646` (source `2ee499a3`): **425 PASS / 72 RED**.
+- Against TB13C, exactly five identities went RED → PASS (199/235/236/294/299) and none went PASS → RED. The 72 REDs are unchanged in substance (RA-94.2).
+- 235/236/294/299 are restored curved-disk controls.
+- 199 falsified RA-93.4. Its cylinder half was repaired after R3 by `2be228d96` (source A3 supplied, assertions unchanged), and the stale disk half hid that at TB13C. It is a valid control.
+- 425 = R3 403 + 26 RED → PASS − 4 test-debt REDs (174, 191, 242, 442).
+- No production regression; **66/17/49**, debt **1** unchanged.
 
 ---
 
