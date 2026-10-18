@@ -1,4 +1,0 @@
-Purpose: M6-CP3-TB13A-R10 exact source inspection snapshot.
-Working branch: agent/surface_cell_quad/p5-recover-bridge-healing
-Frozen pre-trigger head: 2cad48ef0b03107d832b24823605feac242606e1
-Control-plane snapshot trigger only. Runtime artifact authority: 12132184878, source: e88ac65ffcf87548138d1c56f2cc6ed4a3d8177b.
