@@ -34,41 +34,40 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-18, after compile-only `M6-CP3-CB11-R10-OPEN-RAIL-ROUTE-ANCHOR` |
-| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft; refetch HEAD before mutation. Exact CB11 semantic source `9432aa05ef4719cbea912ae0feb2c5508c4e497a`. |
+| Currency | 2026-10-18, after artifact-only `M6-CP3-TB11-R10-OPEN-RAIL-ROUTE-ANCHOR` (semantic RED) |
+| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft; refetch before mutation. Immutable CB11 source `9432aa05ef4719cbea912ae0feb2c5508c4e497a`. |
 | Last accepted semantic runtime | M6 CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. |
-| Latest candidate or rejected evidence | CB11 eight-target GMP compile **GREEN**, [run `39085601323`](https://github.com/akashskypatel/Directional/actions/runs/39085601323), artifact `12121016836`, source `9432aa05ef4719cbea912ae0feb2c5508c4e497a`; no runtime and **not promoted**. Latest TB10 diagnostic 44/44 RED (`38941839640`); R3 **403/497** rejected. |
-| Regression accounting and debt | **66/17/49**, debt **1**, selector 497 frozen; `Regression_Root_Cause_Tracker.md`. |
-| Active boundary | `RP-01`: no endpoint branch admits an interior vertex of an open rail. U1 shared route-anchor is compile-only complete; TB11 is next. R10B U2–U4 require a reviewed green predecessor (RA-84.5). `RP-02` UNREACHED; Gate C suspended. |
+| Latest candidate/rejected evidence | [TB11 run 39092477302](https://github.com/akashskypatel/Directional/actions/runs/39092477302), immutable result artifact `12123605663`, ZIP SHA-256 `e98acd39a8a72f54118c6e6a66f7ec8346a6dd5d1043db06f1b12ad5298d9a65`; **1 PASS, 2 RED**, 0 missing. Both RED at `open-rail-route-anchor` locus 9 before intended assertions. CB11 compile artifact `12121016836`; prior R3 **403/497** rejected. |
+| Regression accounting and debt | **66/17/49**, debt **1**, selector **497** frozen. Candidate-only in `Regression_Root_Cause_Tracker.md`. |
+| Active boundary | `RP-01` still open; U1 route-anchor checker rejects pre-existing `Produced` control. Unverified root cause. `RP-02` UNREACHED; Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-TB11-R10-OPEN-RAIL-ROUTE-ANCHOR` — EXACT NEXT
+## Mandatory next turn — independent TB11 Review + Plan, exact ID UNKNOWN
 
-- **Type / owner:** `TB` (artifact-only, immutable); RA-84.5 U1 verification.
-- **Objective:** execute the CB11 truth-table and forged-terminal regressions and the retained `Produced` control against the compiled U1 package; establish runtime evidence without source mutation.
-- **Read before work:** `Architecture_M6_CP3_CB11_R10_Open_Rail_Route_Anchor_Code_Build_Record_20261018.md`, RA-84 review, and the R10B rule §3; exact compile artifact `12121016836` at source `9432aa05ef4719cbea912ae0feb2c5508c4e497a`.
-- **In scope:** immutable artifact-only Test + Benchmark with the authorized CB11 tests and unchanged controls, exact-one process accounting, verified package and frozen selector authority.
-- **Out of scope:** recompiling/relinking, test/source/selector mutation, new endpoint eligibility, U2–U4, recovery, or speculative repairs.
-- **Success evidence:** tests run with independent assertions and existing `Produced` control intact; package/source hashes, GMP runtime dependencies, exact selection and immutability receipts; report runtime outcomes without conflating compile with pass.
-- **On success:** mandatory independent predecessor review before conditional `M6-CP3-CB12-R10-OPEN-RAIL-CHAIN-PROVENANCE` (Review turn ID `UNKNOWN`; do not invent).
-- **On semantic failure:** Review + Plan, ID `UNKNOWN — STOP`; orchestration failures follow `Turn_Cadence.md` rule 5.
+- **Type:** independent Review + Plan; its canonical identifier is **UNKNOWN** until established by repository authority. Do not invent it.
+- **Objective:** independently adjudicate the two shared U1 `open-rail-route-anchor` locus-9 rejections: both original `Produced` fixture preconditions now produce `Rejected`. The forged-terminal tampering was **not reached**.
+- **Read before work:** `Architecture_M6_CP3_TB11_Open_Rail_Route_Anchor_Harvest_Report_20261018.md`, result artifact `12123605663`, compiled artifact `12121016836`, CB11 code/build record, RA-84 review and R10B rule.
+- **Determine:** whether consumer implementation overrestricts a legal anchor, a fixture is truly invalid, or source-published witness data are absent; require evidence preserving existing positive/negative assertions and source-authoritative constraints.
+- **Out of scope:** no automatic remedial code, tests, selectors or acceptance changes in TB11. `CB12/TB12` and U2–U4 require reviewed GREEN U1 predecessor and are currently NOT authorized.
+- **Next:** independent Review + Plan with a prescribed authorized turn, ID UNKNOWN. Retain frozen 66/17/49, debt 1, CP2 491/491, R3 403/497, selector 497.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — next | `M6-CP3-TB11-R10-OPEN-RAIL-ROUTE-ANCHOR` | Immutable artifact-only verification of compiled U1. |
-| 2 — conditional | `M6-CP3-CB12-R10-OPEN-RAIL-CHAIN-PROVENANCE` | Only after green TB11 and its required independent Review; do not start during TB11. |
+| 1 — next | Independent TB11 Review + Plan (ID `UNKNOWN`) | Review two common route-anchor semantic regressions; no unreviewed implementation. |
+| 2 — conditional | Remediation (ID `UNKNOWN`) | Only if independently authorized with concrete causal proof. |
+| 3 — held | `M6-CP3-CB12-R10-OPEN-RAIL-CHAIN-PROVENANCE` | Only after reviewed GREEN U1 predecessor. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **test-benchmark** — immutable compiled artifact; no compile or source mutation.
+`load_next`: **independent review-plan** — use TB11 immutable evidence and CB11 source; CB12 unauthorized.
 
 Minimum successor context **after the mandatory start checklist and policies**:
 
 0. `.agents/Directional/ORIENTATION.md` — project context, read first.
 1. `.agents/Directional/ROADMAP.md` — milestone position only.
 2. `.agents/Directional/Future_Chat_Session_Handoff.md` — exact current handoff.
-3. `Architecture_M6_CP3_CB11_R10_Open_Rail_Route_Anchor_Code_Build_Record_20261018.md`, RA-84 Review, R10B rule §3, `Architecture_M6_Frozen_Definitions.md` RA-84, `GMP_COMPILE_POLICY.md`.
+3. `Architecture_M6_CP3_TB11_Open_Rail_Route_Anchor_Harvest_Report_20261018.md`, CB11 code/build record, RA-84 Review, R10B rule §3, frozen definitions and required policies.
 4. `.agents/Directional/Regression_Root_Cause_Tracker.md` and `TODO.md` — unresolved issues and scope; required policy readings still govern.
 
 **Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py authority <sha>` and
