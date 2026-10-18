@@ -1,3 +1,13 @@
+## 2026-10-18 — RA-95: DEFN-U6 stopped; exact I-endpoint origin located; DEFN-U6A next
+
+- DEFN-U6 began and took a source snapshot (run `39148463200`), then stopped `IN_PROGRESS` with no deliverable. Nothing was adjudicated.
+- RA-95.2: the TB14A raw logs show all 19 B3 identities are one template: front 17/203, edge 1–4, span 3, ordinal 1; face 0 sums to 1 + 2⁻⁵⁵.
+- RA-95.3:
+  - Both sides share one exact `location_parameter(span, ordinal)` (S:17205-17218), which `boundary_trace_point` (S:16944-16972) rounds per orientation (`1.0 − canonical`, then `1.0 − alpha`).
+  - The model reproduces both observed hexfloat triples.
+  - RA-63.5 still binds: p must be bound to each side's doubles.
+- RA-95.5 narrows the next turn to DEFN-U6A (trace verification and representation). Record: `.agents/Directional/Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md`.
+
 ## 2026-10-18 — TB14A census on CB14A (425/497) and RA-94 review; DEFN-U6 next
 
 - TB14A ([run 39143325285](https://github.com/akashskypatel/Directional/actions/runs/39143325285), result `12141843937`) ran the unchanged census on CB14A: **425 PASS / 72 RED**. The turn stopped before its TODO/CHANGELOG closeout, so Review closed it out.

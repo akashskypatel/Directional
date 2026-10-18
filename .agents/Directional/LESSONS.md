@@ -321,6 +321,10 @@ This document records **reusable failure-derived engineering lessons**, not an e
   planned unit or as an explicit exclusion with its consequence for the plan's end state. R9B left inexact
   interior-point parameters open; three later plans did not mention them. The unit plan therefore could not
   close `RP-01` until a full-pipeline diagnostic exposed the gap (RA-87.2).
+- **Localize before you specify a design turn.** A definition turn asked to search an unlocalized origin
+  across a 21k-line file, and to design five more items in the same turn, stopped with nothing written.
+  Review then traced from the logged hexfloats and found the single rounding site (RA-95.1, RA-95.3).
+  Name the suspected site and the evidence that locates it before asking for a design.
 
 ## Build, artifact, workflow, and tool mechanics
 

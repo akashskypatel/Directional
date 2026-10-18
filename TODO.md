@@ -1,4 +1,4 @@
-## CURRENT — TB14A reviewed (RA-94): curved-disk control restored, 425/497; DEFN-U6 next (2026-10-18)
+## CURRENT — DEFN-U6 reviewed (RA-95): exact I-endpoint origin located; DEFN-U6A next (2026-10-18)
 
 - [x] `M6-CP3-TB10-R9-CARRIER-ENDPOINT-SUBCONDITION-HARVEST`: TB10 immutable run [38941839640](https://github.com/akashskypatel/Directional/actions/runs/38941839640), result `12062873272` ZIP SHA-256 `4db22a924f31a7bc6fdf1575a66849a2f660a760003e03e26e7f9277ac200513`; compiled source `d938ecb57e1040c2a73d5d25c4a613414556cb18`, artifact `12062565622`. 44/44 selected, 44 RED, 0 missing, 48 A3 observations, 21 exact-one-hot vertices: **contact-endpoint membership 0/21; carrier-edge membership 21/21; composite 0/21**. Example decoded vertex 4, published contact endpoints {1,7}, carrier edge {1,4}, certificate rail 2. Immutable postflight passed, 28/28 package hashes, compile/relink/benchmarks/selector497 not executed. Evidence is candidate/non-stable and does not modify 66/17/49, debt1, CP2 491/491, R3 403/497, selector497; RP-01 open, RP-02 UNREACHED. Independent Review next (ID UNKNOWN); no repair authorized.
 - [x] Independent Review (RA-81): TB10 accepted as diagnostic evidence; vertex 4 is the interior vertex of the open rail 1–4–7 and no V/I/C branch admits it. Record: `Architecture_M6_CP3_R9_Carrier_Endpoint_Subcondition_Review_Decision.md`.
@@ -52,14 +52,21 @@
   - 199 falsified RA-93.4. A post-R3 fixture repair (`2be228d96`) had been hidden, so 199 is a valid control.
   - Order: DEFN-U6 first, then U4 → U5 (renamed CB15/CB16).
   - Record: `.agents/Directional/Architecture_M6_CP3_TB14A_Curved_Disk_Control_Review_Decision.md`.
-- [ ] **NEXT: `M6-CP3-DEFN-U6-EXACT-I-ENDPOINT-PARAMETER`** (documents only; RA-94.6). Deliverable `Architecture_M6_CP3_DEFN_U6_Exact_I_Endpoint_Parameter_20261018.md`, 120 lines or fewer:
-  - a producer-origin trace of the template (`cp3entry:2`, front 17/203, edge 1–4, faces 0/3);
-  - a candidate exact parameter and the rule (no tolerance, no interval-only identity);
-  - satisfiability on all 19 B3 identities from the TB14A raw logs;
-  - the CB negatives;
-  - narrow units.
-- [ ] Then `M6-CP3-DEFN-U6-EXACT-I-ENDPOINT-PARAMETER-REV`: accept or amend U6, authorize CB15 (U4), and schedule the fixture debt.
-- [ ] Fixture debt (RA-92.3, RA-93.3), each a narrow test-only CB scheduled by DEFN-U6-REV; none blocks U4–U6:
+- [x] `M6-CP3-DEFN-U6-EXACT-I-ENDPOINT-PARAMETER`: began and requested a source snapshot (run `39148463200`), then stopped `IN_PROGRESS` with no deliverable. It is superseded by DEFN-U6A.
+- [x] Review (RA-95):
+  - all 19 B3 identities are one template (front 17/203, edge 1–4, span 3, ordinal 1);
+  - origin: one exact `location_parameter` (S:17205-17218), rounded per orientation by `boundary_trace_point` (S:16944-16972). The model reproduces both observed hexfloat triples;
+  - DEFN-U6 is narrowed to U6A.
+  - Record: `.agents/Directional/Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md`.
+- [ ] **NEXT: `M6-CP3-DEFN-U6A-I-ENDPOINT-EXACT-ORIGIN-TRACE`** (documents only; RA-95.5). Deliverable `Architecture_M6_CP3_DEFN_U6A_I_Endpoint_Exact_Origin_Trace_20261018.md`, 80 lines or fewer:
+  - verify RA-95.3;
+  - trace link 4 to the three checkers;
+  - map ordinals to endpoints;
+  - give p exactly;
+  - compare representations (a)/(b)/(c) with the doubles binding and fail-closed behavior, and recommend one;
+  - a CB outline of 10 lines or fewer.
+- [ ] Then `M6-CP3-DEFN-U6A-I-ENDPOINT-EXACT-ORIGIN-TRACE-REV`: accept or amend the representation, issue the CB15 (U4) spec and the U6 CB spec (or DEFN-U6B), and schedule the fixture debt.
+- [ ] Fixture debt (RA-92.3, RA-93.3), each a narrow test-only CB scheduled by DEFN-U6A-REV; none blocks U4–U6:
   - 174: replace the non-manifold three-face TriMesh source;
   - 191 family (189–195): print the atlas build error, then repair the fixture field;
   - 242: retarget the tamper to an input that is actually consumed;
@@ -69,9 +76,9 @@
 - [ ] Remaining units (RA-85.5, RA-87.3):
   - U4 factory admits R (`M6-CP3-CB15-R10-FACTORY-RAIL-VERTEX-ENDPOINT`; 11 identities);
   - U5 consumer emits R (`M6-CP3-CB16-R10-CONSUMER-RAIL-VERTEX-ENDPOINT`);
-  - U6 exact I parameter (19 identities; DEFN, then CB).
+  - U6 exact I parameter (19 identities, one template; DEFN-U6A, then CB).
   - RP-01 closes only after all three blocker shapes are cleared.
-- Turn sequence: DEFN-U6 → DEFN-U6-REV → CB15/TB15 (U4) → CB16/TB16 (U5) → U6 CB/TB units → RP-01 Review. Fixture debt is interleaved by DEFN-U6-REV. TB14A and RA-94 are done. A RED TB goes to Review (rule 4). Dispatch several runs only one at a time, after each run starts.
+- Turn sequence: DEFN-U6A → DEFN-U6A-REV → CB15/TB15 (U4) → CB16/TB16 (U5) → U6 CB/TB → RP-01 Review. Fixture debt is interleaved by DEFN-U6A-REV, which may reorder U6 with a reason. DEFN-U6 (stopped) and RA-95 are done. A RED TB goes to Review (rule 4). Dispatch several runs only one at a time, after each run starts.
 - Frozen: `RP-01` unresolved; `RP-02` UNREACHED; Gate C suspended; **66/17/49**, debt **1** (no new production regression; 4 test-debt REDs since R3), accepted M6 CP2 **491/491**, rejected R3 **403/497**, frozen selector **497** unchanged; latest census 425/497 (TB14A).
 
 ---
