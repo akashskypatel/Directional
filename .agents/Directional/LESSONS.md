@@ -251,6 +251,9 @@ This document records **reusable failure-derived engineering lessons**, not an e
   producer, stage, or Review than the place it surfaced. A rejection-only implementation may localize
   facts but must not silently decide ownership of a corrective measure, amend a frozen rule, or change
   acceptance.
+- **A "not a member" classifier must first require that the set was published.** Non-membership is
+  vacuously true of an absent set, so the rule silently admits a different failure shape (RA-91.2:
+  selector 405 matched B2 although its fixture published no terminal contact).
 
 ## Contracts, planning, reviews, and durable records
 

@@ -1,3 +1,13 @@
+## 2026-10-18 — RA-91: TB13C census reviewed; 420/497; 8 new REDs since R3; retained-package bisect next
+
+- TB13C (run `39127652521`, result `12136761296`) stopped after dispatch. Review verified the run and closed the turn out: 497 executed, no orchestration failure, **420/497 PASS** (R3: 403/497).
+- Review built the RED inventory (`Architecture_M6_CP3_TB13C_Selector_497_Red_Inventory.tsv`). Classes: B1 0, B2 11, B3 19, other 47. RA-90.4's B2 rule now also requires a published contact, which corrects a vacuous match on selector 405. RP-01 owns 30 identities, all RED at R3.
+- Against R3: 25 RED → PASS, now measured controls (no assertion removed). **8 PASS → RED**, held as candidates:
+  - the curved-disk tests (235/236/294/299): a production regression, rejected by the checked factory;
+  - 242: a test-spec defect, not a fail-open;
+  - 174/191/442: unattributed.
+- TB13D bisects these over four verified retained packages with the unchanged harness. Record: `.agents/Directional/Architecture_M6_CP3_TB13C_Census_Review_Decision.md`. Stable 66/17/49, debt 1, CP2 491/491, R3 403/497, selector 497 unchanged.
+
 ## 2026-10-18 — RA-90: TB13A reviewed; U3 closed; TB13C census can run and its classification is fixed
 
 - TB13A (run `39121449664`, result `12134411966`) was re-verified independently: #1/#2 PASS, #3–#6 byte-identical to TB13 by direct comparison, and no `open-rail-chain-interval`. U3 is closed and B1 is cleared on the RP-01 fixtures.

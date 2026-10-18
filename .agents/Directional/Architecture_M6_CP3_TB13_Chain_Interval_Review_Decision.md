@@ -1,6 +1,6 @@
 # RA-88 — TB13 reviewed: the RED truth-table row is a Review specification defect; U3 code accepted; CB13A corrects the row (2026-10-18)
 
-**Turn:** `M6-CP3-TB13-R10-OPEN-RAIL-CHAIN-INTERVAL-ROUTE-REV` (RA-89, the CB13A closeout, and RA-90, the TB13A review, are appended). **Inputs:** CB13 source `70217cc2bf7d257bebd2969e1aa56b5a43326a70`, package `12130290543`; TB13 run `39112131501`, result `12130683535` (ZIP SHA-256 `43505af2…4885`). **Amends:** RA-87.4.7 (one row). RA-87.3 and RA-87.5 (TB13C) stay live.
+**Turn:** `M6-CP3-TB13-R10-OPEN-RAIL-CHAIN-INTERVAL-ROUTE-REV` (RA-89, the CB13A closeout, and RA-90, the TB13A review, are appended; RA-90.4 is amended by RA-91.2 in `Architecture_M6_CP3_TB13C_Census_Review_Decision.md`). **Inputs:** CB13 source `70217cc2bf7d257bebd2969e1aa56b5a43326a70`, package `12130290543`; TB13 run `39112131501`, result `12130683535` (ZIP SHA-256 `43505af2…4885`). **Amends:** RA-87.4.7 (one row). RA-87.3 and RA-87.5 (TB13C) stay live.
 
 ## RA-88.1 Re-verification
 
@@ -83,7 +83,7 @@ CB13A → TB13A → TB13C → TB13C-REV (orders U4/U5/U6 and issues DEFN-U6). Ea
   - The R3 artifact `11661044443` expires on 2026-10-24, but the baseline is the in-repo `Architecture_M6_CP3_TB1_Entry_R3_Red_Classification.tsv` (SHA-256 `890a105e…`, 94 RED; any other identity was a PASS at R3). The comparison uses that file, not the artifact.
 - **RA-90.4 TB13C classification is mechanical, applied to each RED's first `firstPredicate=` text, or its first gtest failure line when there is none:**
   - **B1:** contains `open-rail-chain-interval`. This is a falsifier and goes to Review.
-  - **B2:** `predicate=endpoint-0|endpoint-1` with `a3ProbeDecodedVertex=<integer>` and `a3ProbeContactEndpointMember=0` (a rail vertex that is not a terminal; TB13 #3 is the template).
+  - **B2:** `predicate=endpoint-0|endpoint-1` with `a3ProbeDecodedVertex=<integer>` and `a3ProbeContactEndpointMember=0` (a rail vertex that is not a terminal; TB13 #3 is the template). *Amended by RA-91.2: B2 also requires `a3ProbeContactPublished=1`.*
   - **B3:** `a2bProbeFirstFailedCondition=not-same-interior-carrier-point` (TB13 #5 is the template).
   - **B2+B3** if both apply; **other** otherwise, grouped by `predicate=` name or by the first 80 characters of the failure line.
 - **RA-90.5 TB13C deliverables:**

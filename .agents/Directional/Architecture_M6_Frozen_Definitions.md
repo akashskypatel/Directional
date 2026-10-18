@@ -1,3 +1,18 @@
+## RA-91 — TB13C census reviewed: RP-01 owns 30 of the 497; 8 new REDs since R3; bisect next (2026-10-18)
+
+Authority: `Architecture_M6_CP3_TB13C_Census_Review_Decision.md`.
+
+- **RA-91.1** TB13C (run `39127652521`, result `12136761296`) was verified and closed out by Review: 497 executed, no orchestration failure, **420/497 PASS, 77 RED**.
+- **RA-91.2** Inventory `Architecture_M6_CP3_TB13C_Selector_497_Red_Inventory.tsv` (`8d2b02b7…`). B2 also requires `a3ProbeContactPublished=1`, which amends RA-90.4. B1 0, B2 11, B3 19, other 47. RP-01's footprint is 30 identities, all on rail 2 and all RED at R3.
+- **RA-91.3** 25 R3 RED → PASS are now measured controls. 8 R3 PASS → RED are CANDIDATE / NON-STABLE:
+  - curved disk 235/236/294/299: a production regression, rejected by the checked factory;
+  - 242: a test-specification defect, not a fail-open, because transport reads only the atlas;
+  - 174/191/442: unattributed.
+- **RA-91.4–91.5** TB13D bisects the regressions over four verified retained packages (P1 +32, P2 +54, P3 CB11, P4 CB12) with the unchanged harness, artifact-only. P1 expires 2026-10-20T10:36Z.
+- **RA-91.6** Sequence: TB13D → TB13D-REV (attribution, repair turns, then the U4/U5/U6 order and DEFN-U6).
+
+---
+
 ## RA-90 — TB13A reviewed: U3 closed; TB13C classification fixed (2026-10-18)
 
 Authority: `Architecture_M6_CP3_TB13_Chain_Interval_Review_Decision.md` §RA-90.
@@ -7,10 +22,10 @@ Authority: `Architecture_M6_CP3_TB13_Chain_Interval_Review_Decision.md` §RA-90.
 - **RA-90.3** TB13C can run. All 497 identities exist in their routed binaries (0 missing, 0 parameterized). The R3 baseline is the in-repo RED TSV (`890a105e…`), not the expiring artifact.
 - **RA-90.4** RED classes are assigned mechanically from first-failure tokens:
   - B1: `open-rail-chain-interval` (a falsifier);
-  - B2: an endpoint predicate with a decoded non-terminal vertex;
+  - B2: an endpoint predicate with a decoded non-terminal vertex (and a published contact, RA-91.2);
   - B3: `not-same-interior-carrier-point`;
   - otherwise, other.
-- **RA-90.5** TB13C delivers a RED-inventory TSV and a report of 30 lines or fewer. Predicted: `cp3entry` 2 and 6 are B3. Sequence: TB13C → TB13C-REV, which orders U4/U5/U6 and issues DEFN-U6.
+- **RA-90.5** TB13C delivers a RED-inventory TSV and a report of 30 lines or fewer. Predicted: `cp3entry` 2 and 6 are B3. ~~Sequence: TB13C → TB13C-REV, which orders U4/U5/U6 and issues DEFN-U6.~~ Superseded by RA-91.6.
 
 ---
 

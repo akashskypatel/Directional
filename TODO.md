@@ -1,4 +1,4 @@
-## CURRENT — TB13A reviewed (RA-90), U3 closed; TB13C selector 497 census next (2026-10-18)
+## CURRENT — TB13C census reviewed (RA-91): 8 new REDs since R3; TB13D retained-package bisect next (2026-10-18)
 
 - [x] `M6-CP3-TB10-R9-CARRIER-ENDPOINT-SUBCONDITION-HARVEST`: TB10 immutable run [38941839640](https://github.com/akashskypatel/Directional/actions/runs/38941839640), result `12062873272` ZIP SHA-256 `4db22a924f31a7bc6fdf1575a66849a2f660a760003e03e26e7f9277ac200513`; compiled source `d938ecb57e1040c2a73d5d25c4a613414556cb18`, artifact `12062565622`. 44/44 selected, 44 RED, 0 missing, 48 A3 observations, 21 exact-one-hot vertices: **contact-endpoint membership 0/21; carrier-edge membership 21/21; composite 0/21**. Example decoded vertex 4, published contact endpoints {1,7}, carrier edge {1,4}, certificate rail 2. Immutable postflight passed, 28/28 package hashes, compile/relink/benchmarks/selector497 not executed. Evidence is candidate/non-stable and does not modify 66/17/49, debt1, CP2 491/491, R3 403/497, selector497; RP-01 open, RP-02 UNREACHED. Independent Review next (ID UNKNOWN); no repair authorized.
 - [x] Independent Review (RA-81): TB10 accepted as diagnostic evidence; vertex 4 is the interior vertex of the open rail 1–4–7 and no V/I/C branch admits it. Record: `Architecture_M6_CP3_R9_Carrier_Endpoint_Subcondition_Review_Decision.md`.
@@ -25,18 +25,27 @@
 - [x] `M6-CP3-CB13A-R10-OPEN-RAIL-CHAIN-INTERVAL-TRUTH-TABLE` (test-only, RA-88.4): source `e88ac65f`, package `12132184878`, ZIP `36197dff…`; 28/28, GMP, no runtime. The turn stopped before closeout; Review verified the package and closed it (RA-89).
 - [x] `M6-CP3-TB13A-R10-OPEN-RAIL-CHAIN-INTERVAL-TRUTH-TABLE`: [run 39121449664](https://github.com/akashskypatel/Directional/actions/runs/39121449664), result `12134411966`; #1/#2 PASS, and #3–#6 are byte-identical to TB13.
 - [x] Review (RA-90): TB13A was re-verified and **U3 is closed** (B1 cleared). TB13C can run: all 497 identities exist in their routed binaries, and the R3 baseline is the in-repo TSV, since the artifact expires 2026-10-24. RED classification is now mechanical (RA-90.4).
-- [ ] **NEXT: `M6-CP3-TB13C-R10-SELECTOR-497-CENSUS`** (artifact-only). The unchanged harness `947a95ee…` runs with `--execute` and the five RA-89 inputs.
-  - Classify every RED as B1/B2/B3/B2+B3/other by the RA-90.4 tokens.
-  - Deliver the RED-inventory TSV and a report of 30 lines or fewer (RA-90.5).
-  - Prediction: `cp3entry` 2 and 6 are B3. Falsifier: any B1.
-- [ ] Then `M6-CP3-TB13C-R10-SELECTOR-497-CENSUS-REV`: adjudicate the census, re-baseline controls, order U4/U5/U6, and issue the DEFN for U6 (exact I-endpoint parameter: no epsilon, producer-origin, satisfiable on TB12's doubles).
+- [x] `M6-CP3-TB13C-R10-SELECTOR-497-CENSUS`: [run 39127652521](https://github.com/akashskypatel/Directional/actions/runs/39127652521), result `12136761296`; 497 executed, **420 PASS / 77 RED**. The turn stopped after dispatch, so Review closed it out (RA-91.1).
+- [x] Review (RA-91): Review built the inventory (`Architecture_M6_CP3_TB13C_Selector_497_Red_Inventory.tsv`). Classes: B1 0, B2 11, B3 19, other 47.
+  - **Rule fix:** the B2 rule now also requires a published contact (selector 405 was a vacuous match).
+  - **RP-01 owns 30 identities**, all on rail 2 and all RED at R3.
+  - **R3 deltas:** 25 R3 RED → PASS (now controls). 8 R3 PASS → RED, held as candidates:
+    - curved disk 235/236/294/299: a production regression, rejected by the checked factory;
+    - 242: a test-spec defect from `8df105b56`, not a fail-open;
+    - 174/191/442: unattributed.
+  - Record: `.agents/Directional/Architecture_M6_CP3_TB13C_Census_Review_Decision.md`.
+- [ ] **NEXT: `M6-CP3-TB13D-R10-RETAINED-PACKAGE-BISECT`** (artifact-only; RA-91.4–91.5). Run the unchanged harness `947a95ee…` with `--execute`, one dispatch per package: P1 `11805220540`, P2 `11939982141`, P3 `12121016836` (CB11), P4 `12125223513` (CB12). The five inputs per package are in the handoff.
+  - **P1 expires 2026-10-20T10:36Z, so run it first.** A failed run is recorded and the next package still runs.
+  - Deliver a report of 25 lines or fewer: per package, run/result IDs, ZIP hash, totals per phase, and PASS/RED for selector 174, 191, 235, 236, 242, 294, 299, 442.
+  - Prediction: 242 and the 30 B2/B3 identities are RED at all four. Falsifier: 242 PASS anywhere.
+- [ ] Then `M6-CP3-TB13D-R10-RETAINED-PACKAGE-BISECT-REV`: attribute the 8 regressions; specify narrow repair turns (the curved-disk factory rejection, the 242 test repair); then order U4/U5/U6 (B3 owns 19, B2 owns 11) and issue DEFN-U6.
 - [ ] Remaining units (RA-85.5, RA-87.3), each after a reviewed predecessor TB:
-  - U4 `CB14` factory admits R;
-  - U5 `CB15` consumer emits R;
+  - U4 factory admits R;
+  - U5 consumer emits R;
   - U6 exact I parameter (DEFN, then CB).
   - RP-01 closes only after all three blocker shapes are cleared.
-- Turn sequence: TB13C → TB13C-REV → (U4/U5/U6 order set by that Review; DEFN-U6 first for U6). TB13A done. A RED TB goes to Review (rule 4).
-- Frozen: `RP-01` unresolved; `RP-02` UNREACHED; Gate C suspended; **66/17/49**, debt **1**, accepted M6 CP2 **491/491**, rejected R3 **403/497**, frozen selector **497** unchanged.
+- Turn sequence: TB13D → TB13D-REV → (repair turns and the U4/U5/U6 order, set by that Review; DEFN-U6 first for U6). TB13C done. A RED TB goes to Review (rule 4).
+- Frozen: `RP-01` unresolved; `RP-02` UNREACHED; Gate C suspended; **66/17/49**, debt **1** (8 TB13C candidates pending attribution), accepted M6 CP2 **491/491**, rejected R3 **403/497**, frozen selector **497** unchanged; latest census 420/497 (TB13C).
 
 ---
 

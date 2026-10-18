@@ -1,3 +1,21 @@
+## CANDIDATE / NON-STABLE — TB13C census: 8 identities PASS at R3 are RED on CB13A (2026-10-18)
+
+[Run 39127652521](https://github.com/akashskypatel/Directional/actions/runs/39127652521), result `12136761296` (ZIP SHA-256 `92d9c9bd…f545`), CB13A package `12132184878`: 497 executed, **420 PASS / 77 RED**, no orchestration failure. Inventory: `Architecture_M6_CP3_TB13C_Selector_497_Red_Inventory.tsv`.
+
+The 8 identities that were PASS at R3 (`d82e34427`) and are RED now are all in selector449:
+
+| Ordinal | First failure | Status |
+|---|---|---|
+| 235, 236, 294, 299 | Curved bounded disk: the pipeline returns `PublishedProductRejected`. Fixture and failing lines unchanged since R3. | Production regression, commit unknown |
+| 242 | The must-reject seam test now produces. | Test-specification defect from `8df105b56`. Transport reads only the A3 atlas (S:5389-5397), so the tampered raw transitions are never consumed. |
+| 174 | DCEL consistency exception | Unattributed |
+| 191 | Periodic-route fixture A3 unavailable | Unattributed |
+| 442 | FTA:2856 `seamBuilt` false | Unattributed |
+
+**Classification (RA-91):** these are candidates, not stable IDs, until TB13D's retained-package bisect attributes them. The stable counts stay **66/17/49**, debt **1**. The 30 RP-01 identities (B2 11, B3 19) were RED at R3 and are not regressions. The 25 that were R3 RED and now pass are accepted as measured controls; no assertion was removed. Record: `Architecture_M6_CP3_TB13C_Census_Review_Decision.md`.
+
+---
+
 ## TB13A — U3 scoped closure, no new stable regression (2026-10-18)
 
 [Run 39121449664](https://github.com/akashskypatel/Directional/actions/runs/39121449664), result 12134411966, CB13A package 12132184878: two PASS gates; B2 (#3/#4) and B3 (#5/#6) expected RED byte-identical to TB13. No `open-rail-chain-interval` falsifier. U3 closed, B2 U4/U5 and B3 U6 still open. No new stable ID or historical-count change: 66 events / 17 categories / 49 recurrences; debt 1. See `Architecture_M6_CP3_TB13A_Truth_Table_Harvest_Report_20261018.md`.
