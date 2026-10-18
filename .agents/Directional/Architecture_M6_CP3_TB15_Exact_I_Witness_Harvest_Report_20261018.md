@@ -18,7 +18,7 @@
 | 7–8 | `cp3entry:2/6` **RED** at `endpoint-1`, front `17/203`; both exact witnesses `1,4@1/5`, binds `1/1`; `chi=3`. |
 | 9 | Selector 217 **RED** at the same predicate/front; both exact witnesses `1,4@1/5`, binds `1/1`; `chi=0`. |
 
-`1/5` is strictly interior, equal on both sides, and rounds nearest to `0x1.9999999999999p-3`. The two template-face barycentrics remain asymmetric by one ULP, as previously measured.
+`1/5` is strictly interior, equal on both sides, and the producer's observed face-0 conversion is `0x1.9999999999999p-3` (this is not round-to-nearest of mathematical 1/5). The two template-face barycentrics remain asymmetric by one ULP, as previously measured.
 
 **Independent comparison:** remove *only* `a2bProbeFromExact`, `a2bProbeFromExactBinds`, `a2bProbeToExact`, `a2bProbeToExactBinds` from each new first-failure record. Identities 5–8 then compare byte-for-byte equal to TB13A result artifact `12134411966` cases 3–6 respectively; identity 9 compares byte-for-byte equal to the TB14A selector-217 record in artifact `12141843937`. No unexpected earlier predicate change, witness absence/mismatch, or forbidden admission change was observed.
 
