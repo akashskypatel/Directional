@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb13-open-rail-interval-compile-20261018-01",
+  "request_id": "m6-cp3-cb13-open-rail-interval-compile-20261018-02",
   "operation": "compile",
   "mailbox_key": "m6-cp3-cb13-open-rail-interval-compile",
   "source_sha": "b2032288ee5af464eec2bb9ccc88870098ebf5ad",
@@ -14,6 +14,5 @@
     "directional_compiled_api_tests",
     "directional_benchmarks"
   ],
-  "artifact_prefix": "m6-cp3-cb13-open-rail-interval",
-  "retention_days": 14
+  "artifact_prefix": "m6-cp3-cb13-open-rail-interval"
 }
