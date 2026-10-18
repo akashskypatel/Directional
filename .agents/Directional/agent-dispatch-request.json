@@ -1,14 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb12-open-chain-20261018-01",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb12-open-rail-chain-provenance",
-  "executor_sha": "2bb45fa6084bcfce4b1287f65e4f88ead2678557",
-  "semantic_source_sha": "b1b02d5bed43898af0708d76dcd70ada96aeecc9",
-  "turn_id": "M6-CP3-TB12-R10-OPEN-RAIL-CHAIN-PROVENANCE",
-  "harness_path": ".agents/Directional/tools/m6_cp3_r10_open_rail_chain_provenance_harness.sh",
-  "harness_sha256": "37fe7152bde8e25c366115189487a629a3439a432fd98d7d33ac0b0ac643fde5",
-  "environment": {},
-  "artifact_prefix": "m6-cp3-tb12-open-rail-chain-provenance",
-  "retention_days": 7
+  "request_id": "m6-cp3-cb13-open-rail-interval-apply-20261018-01",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb13-open-rail-interval-apply",
+  "file_id": "1DeF9Z-ac9onwJUFelW2l2vKWO-3fh8x-",
+  "patch_sha256": "917d359eabfe5c8f13a7042c1bebddf84532d63ffcb6f3895bb0f08d03c1d170",
+  "base_sha": "e0d386aeae573ce08a25adfe586f5aa0452a4aa7",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "Implement CB13 open-rail contiguous chain interval route",
+  "retention_days": 14
 }
