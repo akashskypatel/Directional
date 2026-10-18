@@ -1562,6 +1562,10 @@ namespace surface_cell_tracing_detail {
 [[nodiscard]] bool exact_interior_witness_binds(
     const SurfaceTracePoint &point, const Eigen::MatrixXi &faces,
     const authority::SourceEdgeTopologyKey &edge);
+[[nodiscard]] bool same_interior_carrier_point(
+    const SurfaceTracePoint &first, const SurfaceTracePoint &second,
+    const Eigen::MatrixXi &faces,
+    const authority::SourceEdgeTopologyKey &edge);
 // A route occupies one contiguous, non-wrapping interval of the source chain.
 // Only a genuine chain-end vertex may be certified as a terminal.
 [[nodiscard]] bool open_rail_route_interval_valid(

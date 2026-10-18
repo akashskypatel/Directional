@@ -176,6 +176,15 @@ bool same_interior_carrier_point(
     const SurfaceTracePoint &first, const SurfaceTracePoint &second,
     const Eigen::MatrixXi &faces,
     const authority::SourceEdgeTopologyKey &edge) {
+  if ((first.exactEdgePoint &&
+       !exact_interior_witness_binds(first, faces, edge)) ||
+      (second.exactEdgePoint &&
+       !exact_interior_witness_binds(second, faces, edge))) {
+    return false;
+  }
+  if (first.exactEdgePoint && second.exactEdgePoint) {
+    return *first.exactEdgePoint == *second.exactEdgePoint;
+  }
   const auto a = interior_carrier_parameter(first, faces, edge);
   const auto b = interior_carrier_parameter(second, faces, edge);
   return a.has_value() && b.has_value() && *a == *b;
@@ -20128,9 +20137,20 @@ SurfaceCellNetwork build_surface_cell_network(
                            toPoint.face, faces.rows()))))
         firstFailedCondition = "carrier-orientation";
       else if (!surface_cell_tracing_detail::same_interior_carrier_point(
-                   fromPoint, toPoint, faces, endpointEdge))
-        firstFailedCondition = fromVertex && toVertex && *fromVertex == *toVertex
-            ? "one-hot-carrier-junction" : "not-same-interior-carrier-point";
+                   fromPoint, toPoint, faces, endpointEdge)) {
+        const bool unbound =
+            (fromPoint.exactEdgePoint &&
+             !surface_cell_tracing_detail::exact_interior_witness_binds(
+                 fromPoint, faces, endpointEdge)) ||
+            (toPoint.exactEdgePoint &&
+             !surface_cell_tracing_detail::exact_interior_witness_binds(
+                 toPoint, faces, endpointEdge));
+        firstFailedCondition = unbound ? "exact-witness-unbound" :
+            (fromPoint.exactEdgePoint && toPoint.exactEdgePoint)
+                ? "exact-witness-mismatch" :
+            fromVertex && toVertex && *fromVertex == *toVertex
+                ? "one-hot-carrier-junction" : "not-same-interior-carrier-point";
+      }
       else if (!authoritativeOptions.fieldTransportAtlas)
         firstFailedCondition = "missing-source-A3";
       else if (!firstInterval || !secondInterval)

@@ -9371,4 +9371,112 @@ TEST(SurfaceCellAuthorityContractCutover,
       secondWithFirstWitness, faces, edge));
 }
 
+TEST(SurfaceCellAuthorityContractCutover,
+     ExactWitnessIdentifiesTemplateInteriorPair) {
+  using namespace directional;
+  using namespace directional::geometry::surface_cell_tracing_detail;
+  Eigen::MatrixXi faces(4, 3);
+  faces << 0, 1, 4,
+           0, 1, 7,
+           0, 4, 7,
+           1, 7, 4;
+  const auto edge = test_source_edge_topology(1, 4);
+  const auto p = authority::FieldExactRational::from_ratio(1, 5);
+  ASSERT_TRUE(p);
+  const auto forward = accepted_boundary_trace_point(
+      faces, 0, 1, 4, *p, edge);
+  const auto reverse = accepted_boundary_trace_point(
+      faces, 3, 4, 1, *p, edge);
+  ASSERT_TRUE(forward);
+  ASSERT_TRUE(reverse);
+  ASSERT_TRUE(forward->exactEdgePoint);
+  ASSERT_TRUE(reverse->exactEdgePoint);
+  ASSERT_TRUE(exact_interior_witness_binds(*forward, faces, edge));
+  ASSERT_TRUE(exact_interior_witness_binds(*reverse, faces, edge));
+  EXPECT_TRUE(same_interior_carrier_point(*forward, *reverse, faces, edge));
+
+  auto forwardWithoutWitness = *forward;
+  auto reverseWithoutWitness = *reverse;
+  forwardWithoutWitness.exactEdgePoint.reset();
+  reverseWithoutWitness.exactEdgePoint.reset();
+  EXPECT_FALSE(same_interior_carrier_point(
+      forwardWithoutWitness, reverseWithoutWitness, faces, edge));
+}
+
+TEST(SurfaceCellAuthorityContractCutover,
+     ExactWitnessRejectsDistinctValuesWithEqualDoubles) {
+  using namespace directional;
+  using namespace directional::geometry::surface_cell_tracing_detail;
+  Eigen::MatrixXi faces(4, 3);
+  faces << 0, 1, 4,
+           0, 1, 7,
+           0, 4, 7,
+           1, 7, 4;
+  const auto edge = test_source_edge_topology(1, 4);
+  const auto p = authority::FieldExactRational::from_ratio(1, 5);
+  ASSERT_TRUE(p);
+  const auto q = authority::FieldExactRational::from_double_exact(
+      static_cast<double>(p->to_double()));
+  ASSERT_TRUE(q);
+  ASSERT_NE(*p, *q);
+  const auto first = accepted_boundary_trace_point(
+      faces, 3, 4, 1, *p, edge);
+  const auto second = accepted_boundary_trace_point(
+      faces, 3, 4, 1, *q, edge);
+  ASSERT_TRUE(first);
+  ASSERT_TRUE(second);
+  ASSERT_TRUE(exact_interior_witness_binds(*first, faces, edge));
+  ASSERT_TRUE(exact_interior_witness_binds(*second, faces, edge));
+  for (int corner = 0; corner < 3; ++corner) {
+    EXPECT_EQ(std::bit_cast<std::uint64_t>(first->barycentric[corner]),
+              std::bit_cast<std::uint64_t>(second->barycentric[corner]));
+  }
+  EXPECT_FALSE(same_interior_carrier_point(*first, *second, faces, edge));
+  auto firstWithoutWitness = *first;
+  auto secondWithoutWitness = *second;
+  firstWithoutWitness.exactEdgePoint.reset();
+  secondWithoutWitness.exactEdgePoint.reset();
+  EXPECT_TRUE(same_interior_carrier_point(
+      firstWithoutWitness, secondWithoutWitness, faces, edge));
+}
+
+TEST(SurfaceCellAuthorityContractCutover,
+     ExactWitnessUnboundFailsClosedAndMixedKeepsLegacy) {
+  using namespace directional;
+  using namespace directional::geometry::surface_cell_tracing_detail;
+  Eigen::MatrixXi faces(4, 3);
+  faces << 0, 1, 4,
+           0, 1, 7,
+           0, 4, 7,
+           1, 7, 4;
+  const auto edge = test_source_edge_topology(1, 4);
+  const auto p = authority::FieldExactRational::from_ratio(1, 5);
+  ASSERT_TRUE(p);
+  const auto forward = accepted_boundary_trace_point(
+      faces, 0, 1, 4, *p, edge);
+  const auto reverse = accepted_boundary_trace_point(
+      faces, 3, 4, 1, *p, edge);
+  ASSERT_TRUE(forward);
+  ASSERT_TRUE(reverse);
+  auto corrupted = *reverse;
+  corrupted.barycentric[2] = std::nextafter(corrupted.barycentric[2], 1.0);
+  EXPECT_FALSE(exact_interior_witness_binds(corrupted, faces, edge));
+  EXPECT_FALSE(same_interior_carrier_point(*reverse, corrupted, faces, edge));
+
+  const auto wrongEdge = test_source_edge_topology(4, 7);
+  const auto edge47 = accepted_boundary_trace_point(
+      faces, 3, 4, 7, *p, wrongEdge);
+  ASSERT_TRUE(edge47);
+  ASSERT_TRUE(edge47->exactEdgePoint);
+  EXPECT_FALSE(exact_interior_witness_binds(*edge47, faces, edge));
+  EXPECT_FALSE(same_interior_carrier_point(*reverse, *edge47, faces, edge));
+
+  auto reverseWithoutWitness = *reverse;
+  reverseWithoutWitness.exactEdgePoint.reset();
+  EXPECT_FALSE(same_interior_carrier_point(
+      *forward, reverseWithoutWitness, faces, edge));
+  EXPECT_TRUE(same_interior_carrier_point(
+      *reverse, reverseWithoutWitness, faces, edge));
+}
+
 } // namespace
