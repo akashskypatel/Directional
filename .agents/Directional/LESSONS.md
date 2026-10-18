@@ -95,6 +95,10 @@ This document records **reusable failure-derived engineering lessons**, not an e
   only non-rejection. Enumerate each failure site's reachability with meaningful tampering, including
   exact-once, bijection, sheet, class, orientation and consistency cases. Do not weaken correct
   rejection-only validation merely because it does not publish or choose authority.
+- **A test is a control only after a run has measured it in the stated state.** Before naming a control, cite
+  the run that measured its outcome; a test titled `Produced…` may never have produced. Before freezing a
+  *reject* row in an outcome matrix, check whether the real producer generates that shape — a rejected shape
+  that production emits routinely (middle segments of a subdivided rail) turns the plan's final TB RED (RA-85).
 
 ## Semantic ownership, identity, and dataflow
 

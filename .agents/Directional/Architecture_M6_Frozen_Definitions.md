@@ -1,3 +1,26 @@
+## RA-85 — TB11 reviewed: RED predates CB11; I–I admitted by open-chain interval; plan realigned (2026-10-18)
+
+Authority: `Architecture_M6_CP3_TB11_Route_Anchor_Review_Decision.md`.
+
+- **RA-85.1** U1 is implemented to specification. The helper is an exact extraction, the consumer passes the same inputs as `make`, and the truth table passed. The factory forgery test was never reached.
+- **RA-85.2** The midline fixture has never been `Produced` (R4 interior-witness TB, 2026-10-15: `no-exact-terminal-corner`). Calling it a control in RA-83.4, R10B §5 and RA-84 was a Review error. TB11 shows no regression.
+- **RA-85.3** TB11's first failure, front 29/147 on edge 1–4, is an I–I front. Middle segments of a rail subdivided by iso-lines are I–I by construction. **RA-84.1's I–I clause and R10B §3's I–I rejection are withdrawn.**
+- **RA-85.4** Open-rail route rule:
+  - the route's step edges are a contiguous interval of the rail's published open chain, in either direction;
+  - each endpoint passes its T, R or I predicate;
+  - a T endpoint is the chain end at the end of the interval.
+
+  No terminal is required; this is the closed-chain rule, made non-cyclic. T–T and T–I fronts that follow the rail are unchanged.
+- **RA-85.5** Unit order, superseding RA-84.5:
+  - U2 `M6-CP3-CB12-R10-OPEN-RAIL-CHAIN-PROVENANCE`: pure, directly tested validator; positive case from the real rail builder;
+  - U3 `…CB13…OPEN-RAIL-CHAIN-INTERVAL-ROUTE`;
+  - U4 `…CB14…FACTORY-RAIL-VERTEX-ENDPOINT`;
+  - U5 `…CB15…CONSUMER-RAIL-VERTEX-ENDPOINT`.
+
+  Each CB is followed by its TB. Predictions: at TB12 the TB11 locus is unchanged; at TB13 front 29/147 passes and the first failure moves to vertex 4. Only U2 is authorized.
+
+---
+
 ## RA-84 — R10B endpoint rule accepted with amendments; four Code + Build units (2026-10-17)
 
 Authority: `Architecture_M6_CP3_R10B_Endpoint_Rule_Review_Decision.md`.

@@ -34,40 +34,59 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-18, after artifact-only `M6-CP3-TB11-R10-OPEN-RAIL-ROUTE-ANCHOR` (semantic RED) |
-| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft; refetch before mutation. Immutable CB11 source `9432aa05ef4719cbea912ae0feb2c5508c4e497a`. |
+| Currency | 2026-10-18, after `M6-CP3-TB11-R10-OPEN-RAIL-ROUTE-ANCHOR-REV` (RA-85) |
+| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft; refetch HEAD before mutation. Semantic source `9432aa05e` (CB11). |
 | Last accepted semantic runtime | M6 CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. |
-| Latest candidate/rejected evidence | [TB11 run 39092477302](https://github.com/akashskypatel/Directional/actions/runs/39092477302), immutable result artifact `12123605663`, ZIP SHA-256 `e98acd39a8a72f54118c6e6a66f7ec8346a6dd5d1043db06f1b12ad5298d9a65`; **1 PASS, 2 RED**, 0 missing. Both RED at `open-rail-route-anchor` locus 9 before intended assertions. CB11 compile artifact `12121016836`; prior R3 **403/497** rejected. |
-| Regression accounting and debt | **66/17/49**, debt **1**, selector **497** frozen. Candidate-only in `Regression_Root_Cause_Tracker.md`. |
-| Active boundary | `RP-01` still open; U1 route-anchor checker rejects pre-existing `Produced` control. Unverified root cause. `RP-02` UNREACHED; Gate C suspended. |
+| Latest candidate or rejected evidence | TB11 run `39092477302`, result `12123605663`, on CB11 package `12121016836`: truth table PASS; two midline-fixture tests RED at `open-rail-route-anchor`, front 29/147. The fixture has never been `Produced`; **not a regression** (RA-85.2). Not promoted. |
+| Regression accounting and debt | **66/17/49**, debt **1**, selector 497 frozen; R3 **403/497** rejected; `Regression_Root_Cause_Tracker.md`. |
+| Active boundary | `RP-01`: two blockers on subdivided open rails, the R endpoint (vertex 4) and I–I middle fronts. RA-85.4 replaces the terminal anchor with an open-chain interval rule; units U2–U5 (RA-85.5). Only U2 is authorized. `RP-02` UNREACHED; Gate C suspended. |
 
-## Mandatory next turn — independent TB11 Review + Plan, exact ID UNKNOWN
+## Mandatory next turn — `M6-CP3-CB12-R10-OPEN-RAIL-CHAIN-PROVENANCE` — EXACT NEXT
 
-- **Type:** independent Review + Plan; its canonical identifier is **UNKNOWN** until established by repository authority. Do not invent it.
-- **Objective:** independently adjudicate the two shared U1 `open-rail-route-anchor` locus-9 rejections: both original `Produced` fixture preconditions now produce `Rejected`. The forged-terminal tampering was **not reached**.
-- **Read before work:** `Architecture_M6_CP3_TB11_Open_Rail_Route_Anchor_Harvest_Report_20261018.md`, result artifact `12123605663`, compiled artifact `12121016836`, CB11 code/build record, RA-84 review and R10B rule.
-- **Determine:** whether consumer implementation overrestricts a legal anchor, a fixture is truly invalid, or source-published witness data are absent; require evidence preserving existing positive/negative assertions and source-authoritative constraints.
-- **Out of scope:** no automatic remedial code, tests, selectors or acceptance changes in TB11. `CB12/TB12` and U2–U4 require reviewed GREEN U1 predecessor and are currently NOT authorized.
-- **Next:** independent Review + Plan with a prescribed authorized turn, ID UNKNOWN. Retain frozen 66/17/49, debt 1, CP2 491/491, R3 403/497, selector 497.
+- **Type / owner:** `CB` (compile only); unit U2 of RA-85.5.
+- **Objective:** carry each open hard rail's ordered source-vertex chain to `SurfacePhaseFrontProduct::make`, validate it there, and expose it on the product. Admission is unchanged.
+- **Read before work:** RA-85 and RA-84 records (RA-84.2, RA-84.4.3); `RemeshPipeline.cpp:9727-9767`, `:12476-12485`; `SurfaceCellTracing.cpp` closed-chain entry validation in `make` and the `publish_phase_front_result` call in the consumer; `SurfaceCellTracing.h:1534-1560`, `:1912-2030`, `:2246-2248`, `:2733`.
+- **In scope:**
+  1. Add `SurfaceHardRailOpenChain{component, vertices}` and a `SurfaceHardRailOpenChains` map keyed by `HardRailId`, beside the closed-chain type.
+  2. `hard_rail_source_provenance_from_rails` also emits each open rail's full ordered `sourceVertices`; declare it in a header.
+  3. Wire `SurfaceCellTracingOptions::hardRailOpenChains` → consumer publish call → `publish_phase_front_result` → `make` (trailing defaulted parameter) → product accessor `hardRailOpenChains()`.
+  4. Add one pure detail validator, called at `make` entry beside the closed-chain check, that fails with `InvalidSourceAuthority`. For each chain it requires:
+     - the rail has a terminal contact and no closed chain;
+     - the component is ≥0 and equals the contact's component;
+     - at least 2 vertices, all distinct;
+     - the ends equal the contact's endpoints, in either order;
+     - each consecutive pair is a valid edge, in `hardFeatureEdges`, and inside a source face of the component.
+
+     When the map is non-empty, its rail ids equal the terminal-contact rail ids. An empty map is not checked.
+- **Out of scope:** any admission or route-rule change (U3–U5); a ≥3-vertex rule; cross-rail edge uniqueness or coverage; I/C branches; tolerance; selector/harness/workflow/benchmark; running tests.
+- **Success evidence (compiled tests, expectations written by hand):**
+  - The real `build_authoritative_surface_cell_rails` run on the midline fixture projects chains equal to each rail's `sourceVertices` (e.g. `[1,4,7]`), with ends equal to its contact.
+  - The validator accepts that projection, using the fixture's hard edges and `build_source_topology_regions`.
+  - One tamper per clause is rejected: missing middle vertex, duplicate vertex, wrong component, rail id absent from the contacts, rail id also closed, ends ≠ contact, chain edge removed from `hardFeatureEdges`, 1-vertex chain.
+  - A 2-vertex chain is valid.
+  - Package ID and source SHA recorded, `runtimeExecution=false`.
+- **On success:** `M6-CP3-TB12-R10-OPEN-RAIL-CHAIN-PROVENANCE`. Prediction: TB11's three tests are unchanged.
+- **On failure/blocker:** `UNKNOWN — STOP`; orchestration failures follow `Turn_Cadence.md` rule 5.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — next | Independent TB11 Review + Plan (ID `UNKNOWN`) | Review two common route-anchor semantic regressions; no unreviewed implementation. |
-| 2 — conditional | Remediation (ID `UNKNOWN`) | Only if independently authorized with concrete causal proof. |
-| 3 — held | `M6-CP3-CB12-R10-OPEN-RAIL-CHAIN-PROVENANCE` | Only after reviewed GREEN U1 predecessor. |
+| 1 — next | `M6-CP3-CB12-R10-OPEN-RAIL-CHAIN-PROVENANCE` | Implementation; U2 only, compile only. |
+| 2 — conditional | `M6-CP3-TB12-R10-OPEN-RAIL-CHAIN-PROVENANCE` | Only after CB12 is packaged and its diff reviewed. It runs CB12's tests and TB11's three tests; the TB11 locus is predicted unchanged. A red result goes to Review. |
+
+U3–U5 (`CB13`–`CB15`, each followed by its TB) are frozen in RA-85.5. Each needs a reviewed predecessor TB; anything beyond is `UNKNOWN`.
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **independent review-plan** — use TB11 immutable evidence and CB11 source; CB12 unauthorized.
+`load_next`: **code-build** — use the turn-based-coding-agent Code + Build guidance; no runtime execution.
 
 Minimum successor context **after the mandatory start checklist and policies**:
 
 0. `.agents/Directional/ORIENTATION.md` — project context, read first.
 1. `.agents/Directional/ROADMAP.md` — milestone position only.
 2. `.agents/Directional/Future_Chat_Session_Handoff.md` — exact current handoff.
-3. `Architecture_M6_CP3_TB11_Open_Rail_Route_Anchor_Harvest_Report_20261018.md`, CB11 code/build record, RA-84 Review, R10B rule §3, frozen definitions and required policies.
+3. `Architecture_M6_CP3_TB11_Route_Anchor_Review_Decision.md` (RA-85), `Architecture_M6_CP3_R10B_Endpoint_Rule_Review_Decision.md` (RA-84), `Architecture_M6_Frozen_Definitions.md` RA-84/RA-85, `GMP_COMPILE_POLICY.md`.
 4. `.agents/Directional/Regression_Root_Cause_Tracker.md` and `TODO.md` — unresolved issues and scope; required policy readings still govern.
 
 **Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py authority <sha>` and

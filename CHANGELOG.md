@@ -1,3 +1,10 @@
+## 2026-10-18 — RA-85: TB11 reviewed; RED predates CB11; I–I admitted by an open-chain interval
+
+- TB11 (run `39092477302`, result `12123605663`, CB11 package `12121016836`): truth table PASS; the two midline-fixture tests RED at `open-rail-route-anchor`, front 29/147, edge 1–4. The orchestration was valid.
+- Review on a full clone (`authority 9432aa05e`, `ledgers` pass): U1 implemented to spec. The fixture has never been `Produced` (R4 interior-witness TB, 2026-10-15), so this is not a regression; calling it a control was a Review error.
+- Finding: front 29/147 is an I–I middle segment of a subdivided rail. RA-84's I–I rejection is withdrawn. The new route rule is a contiguous interval of the rail's open chain, with no terminal required (RA-85.4).
+- Units realigned to U2–U5 (`CB12`–`CB15`); only U2 is authorized. One lesson added. No code, selector or ledger change. Next: `M6-CP3-CB12-R10-OPEN-RAIL-CHAIN-PROVENANCE`. Record: `.agents/Directional/Architecture_M6_CP3_TB11_Route_Anchor_Review_Decision.md`.
+
 ## 2026-10-18 — CB11 shared open-rail route anchor compiled (U1)
 
 - Code and tests committed at semantic source `9432aa05ef4719cbea912ae0feb2c5508c4e497a`: one pure anchor predicate shared by factory and consumer; consumer now rejects an open-rail route missing a terminal anchor before publication. Closed rails, endpoint R admission and selector497 unchanged.
