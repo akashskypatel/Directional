@@ -1,2 +1,0 @@
-# TB12 source snapshot trigger
-.agents/connector-triggers/source-snapshot/tb12-r10-20261018-0501.txt
