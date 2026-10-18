@@ -8152,6 +8152,43 @@ resolve_periodic_relation_semantic_action(
 }
 
 
+namespace surface_cell_tracing_detail {
+bool open_rail_route_anchor_valid(
+    const std::optional<authority::SourceVertexId> &firstVertex,
+    const authority::SourceEdgeTopologyKey &firstCarrier,
+    const std::optional<authority::SourceVertexId> &lastVertex,
+    const authority::SourceEdgeTopologyKey &lastCarrier,
+    const SurfaceHardRailTerminalContact &contact) {
+  const auto touches = [](const authority::SourceEdgeTopologyKey &edge,
+                          const authority::SourceVertexId vertex) {
+    return edge.first() == vertex || edge.second() == vertex;
+  };
+  const bool forward =
+      touches(firstCarrier, contact.endpoints[0]) &&
+      touches(lastCarrier, contact.endpoints[1]);
+  const bool reverse =
+      touches(firstCarrier, contact.endpoints[1]) &&
+      touches(lastCarrier, contact.endpoints[0]);
+  const bool bothTerminal = firstVertex && lastVertex;
+  const bool terminalPairValid =
+      (firstVertex == contact.endpoints[0] &&
+       lastVertex == contact.endpoints[1]) ||
+      (firstVertex == contact.endpoints[1] &&
+       lastVertex == contact.endpoints[0]);
+  const auto singleTerminalValid = [&](
+      const std::optional<authority::SourceVertexId> &vertex,
+      const authority::SourceEdgeTopologyKey &edge) {
+    return vertex &&
+           (*vertex == contact.endpoints[0] ||
+            *vertex == contact.endpoints[1]) && touches(edge, *vertex);
+  };
+  return bothTerminal
+             ? ((forward || reverse) && terminalPairValid)
+             : (singleTerminalValid(firstVertex, firstCarrier) ||
+                singleTerminalValid(lastVertex, lastCarrier));
+}
+} // namespace surface_cell_tracing_detail
+
 // Single A3 terminal-star path evaluator. Both checked-product admission and
 // rejection-only route diagnostics construct their own source incidence; this
 // routine only evaluates that independently supplied exact graph.
@@ -8574,42 +8611,13 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
     const auto contact = hardRailTerminalContacts.find(certificate.rail);
     const auto closed = hardRailClosedChains.find(certificate.rail);
     if (contact != hardRailTerminalContacts.end()) {
-      const auto touches = [](const authority::SourceEdgeTopologyKey &edge,
-                              const authority::SourceVertexId vertex) {
-        return edge.first() == vertex || edge.second() == vertex;
-      };
-      const bool forward =
-          touches(certificate.endpoints[0].terminalCarrier.edge,
-                  contact->second.endpoints[0]) &&
-          touches(certificate.endpoints[1].terminalCarrier.edge,
-                  contact->second.endpoints[1]);
-      const bool reverse =
-          touches(certificate.endpoints[0].terminalCarrier.edge,
-                  contact->second.endpoints[1]) &&
-          touches(certificate.endpoints[1].terminalCarrier.edge,
-                  contact->second.endpoints[0]);
-      const auto firstVertex = certificate.endpoints[0].terminalVertex;
-      const auto lastVertex = certificate.endpoints[1].terminalVertex;
-      // An open rail must retain source-attested terminal provenance, but
-      // a paired front may end at an interior parameter of one carrier.
-      // If both endpoints claim terminal status, preserve the original
-      // opposite-terminal orientation constraint without relaxation.
-      const bool bothTerminal = firstVertex && lastVertex;
-      const bool terminalPairValid =
-          (firstVertex == contact->second.endpoints[0] &&
-           lastVertex == contact->second.endpoints[1]) ||
-          (firstVertex == contact->second.endpoints[1] &&
-           lastVertex == contact->second.endpoints[0]);
-      const auto singleTerminalValid = [&](const std::optional<authority::SourceVertexId> &vertex,
-                                           const authority::SourceEdgeTopologyKey &edge) {
-        return vertex &&
-               (*vertex == contact->second.endpoints[0] ||
-                *vertex == contact->second.endpoints[1]) && touches(edge, *vertex);
-      };
-      if ((bothTerminal && (!forward && !reverse || !terminalPairValid)) ||
-          (!bothTerminal &&
-           !(singleTerminalValid(firstVertex, certificate.endpoints[0].terminalCarrier.edge) ||
-             singleTerminalValid(lastVertex, certificate.endpoints[1].terminalCarrier.edge)))) {
+      // Reuse the consumer's exact open-rail anchor rule.
+      if (!surface_cell_tracing_detail::open_rail_route_anchor_valid(
+              certificate.endpoints[0].terminalVertex,
+              certificate.endpoints[0].terminalCarrier.edge,
+              certificate.endpoints[1].terminalVertex,
+              certificate.endpoints[1].terminalCarrier.edge,
+              contact->second)) {
         error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
         return error;
       }
@@ -20238,6 +20246,15 @@ SurfaceCellNetwork build_surface_cell_network(
       invalid_route(SurfaceHardRailRouteFailureLocus::TerminalCarrier,
                     static_cast<int>(routeSteps.size() - 1U), -1,
                     "endpoint-1-terminal-carrier");
+      return network;
+    }
+    if (contact != authoritativeOptions.hardRailTerminalContacts.end() &&
+        !surface_cell_tracing_detail::open_rail_route_anchor_valid(
+            firstEndpoint->terminalVertex, firstEndpoint->terminalCarrier.edge,
+            secondEndpoint->terminalVertex, secondEndpoint->terminalCarrier.edge,
+            contact->second)) {
+      invalid_route(SurfaceHardRailRouteFailureLocus::TerminalCarrier,
+                    -1, -1, "open-rail-route-anchor");
       return network;
     }
     phaseFrontState.hardRailRouteCertificates.push_back({

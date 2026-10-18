@@ -7142,6 +7142,38 @@ TEST(SurfaceCellAuthorityContractCutover,
       << failure->hardRailRouteDiagnostic;
 }
 
+// The expected decisions are independent of the implementation's branching.
+TEST(SurfaceCellAuthorityContractCutover, OpenRailRouteAnchorTruthTable) {
+  using directional::authority::SourceVertexId;
+  const auto vertex = [](int i) {
+    const auto id = SourceVertexId::from_index(i, 8);
+    if (!id) throw std::runtime_error("Invalid anchor test vertex");
+    return id.value();
+  };
+  const auto t0 = vertex(0);
+  const auto t1 = vertex(1);
+  const directional::geometry::SurfaceHardRailTerminalContact contact{
+      0, {t0, t1}};
+  const auto check = [&](std::optional<SourceVertexId> first,
+                         int firstA, int firstB,
+                         std::optional<SourceVertexId> last,
+                         int lastA, int lastB) {
+    return directional::geometry::surface_cell_tracing_detail::
+        open_rail_route_anchor_valid(
+            first, test_source_edge_topology(firstA, firstB),
+            last, test_source_edge_topology(lastA, lastB), contact);
+  };
+  EXPECT_TRUE(check(t0, 0, 2, t1, 1, 3)); // Opposite T-T, forward.
+  EXPECT_TRUE(check(t1, 1, 3, t0, 0, 2)); // Opposite T-T, reversed.
+  EXPECT_FALSE(check(t0, 0, 2, t0, 0, 3)); // Same terminal on both ends.
+  EXPECT_FALSE(check(t0, 2, 3, t1, 4, 5)); // Neither carrier touches its T.
+  EXPECT_TRUE(check(t0, 0, 2, std::nullopt, 2, 3)); // T-I.
+  EXPECT_TRUE(check(std::nullopt, 2, 3, t1, 1, 3)); // I-T.
+  EXPECT_FALSE(check(vertex(4), 4, 5, std::nullopt, 2, 3)); // Not a T.
+  EXPECT_FALSE(check(t0, 2, 3, std::nullopt, 1, 4)); // T misses carrier.
+  EXPECT_FALSE(check(std::nullopt, 0, 2, std::nullopt, 1, 3)); // I-I.
+}
+
 // An open rail may have a field-determined endpoint in the interior of
 // one source carrier, but only alongside a source-attested whole-rail terminal.
 // A forged terminal claim at that same interior sample must remain rejected.
@@ -7173,6 +7205,45 @@ TEST(SurfaceCellAuthorityContractCutover,
       contact->second.endpoints[0] == legitimate
           ? contact->second.endpoints[1]
           : contact->second.endpoints[0];
+  const auto invalid = directional::geometry::SurfacePhaseFrontProduct::make(
+      front.gridU(), front.gridV(), front.sourceTopologyRegions(),
+      fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
+      fixture.atlas ? &*fixture.atlas : nullptr,
+      front.isolationSeamTransportCertificates(), front.periodicHolonomies(),
+      front.boundedDiskBoundaryPhases(), front.edges(), front.events(),
+      front.cells(), front.conformityPlanReceipt(), front.hardFeatureEdges(),
+      front.sourceFaceBranchRotations(), front.hardRailFieldTransitions(),
+      std::move(forged), front.hardRailTerminalContacts(),
+      front.hardRailClosedChains());
+  const auto *error =
+      std::get_if<directional::geometry::SurfacePhaseFrontProductError>(&invalid);
+  ASSERT_NE(nullptr, error);
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontProductErrorCode::
+                InvalidSourceAuthority, error->code);
+}
+
+// Clearing the sole legitimate terminal removes the open route's anchor.
+// This is an independent factory rejection; the consumer I-I path has not
+// been witnessed end-to-end and is covered by the shared helper above.
+TEST(SurfaceCellAuthorityContractCutover,
+     CheckedFactoryRejectsOpenRailWithClearedTerminalAnchor) {
+  const auto fixture = build_rectangular_hard_rail_phase_front();
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            fixture.network.phaseFront.disposition())
+      << hard_rail_first_failure_detail(fixture.network);
+  const auto &front = fixture.network.phaseFront.product();
+  const auto &routes = front.hardRailRouteCertificates();
+  const auto candidate = std::find_if(routes.begin(), routes.end(),
+      [&](const auto &route) {
+        return front.hardRailTerminalContacts().contains(route.rail) &&
+               route.endpoints[0].terminalVertex.has_value() &&
+               !route.endpoints[1].terminalVertex.has_value();
+      });
+  ASSERT_NE(routes.end(), candidate);
+  auto forged = routes;
+  const auto index = static_cast<std::size_t>(
+      std::distance(routes.begin(), candidate));
+  forged[index].endpoints[0].terminalVertex.reset();
   const auto invalid = directional::geometry::SurfacePhaseFrontProduct::make(
       front.gridU(), front.gridV(), front.sourceTopologyRegions(),
       fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
