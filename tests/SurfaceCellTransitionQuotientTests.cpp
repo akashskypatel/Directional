@@ -1801,6 +1801,7 @@ struct PhaseFrontDraft {
   directional::geometry::SurfaceHardRailTerminalContacts
       hardRailTerminalContacts;
   directional::geometry::SurfaceHardRailClosedChains hardRailClosedChains;
+  directional::geometry::SurfaceHardRailOpenChains hardRailOpenChains;
 };
 PhaseFrontDraft direct_full_periodic_materializer_draft(); bool action_has_nonzero_turn(const directional::authority::GridAutomorphism &action);
 PhaseFrontDraft phase_front_draft(
@@ -1821,7 +1822,8 @@ PhaseFrontDraft phase_front_draft(
           product.hardRailRouteCertificates(),
           product.conformityPlanReceipt(),
           product.hardRailTerminalContacts(),
-          product.hardRailClosedChains()};
+          product.hardRailClosedChains(),
+          product.hardRailOpenChains()};
 }
 
 PhaseFrontDraft phase_front_draft(const SurfacePhaseFrontResult &phaseFront) {
@@ -1859,7 +1861,8 @@ construct_phase_front_product(PhaseFrontDraft draft) {
       std::move(draft.hardRailFieldTransitions),
       std::move(draft.hardRailRouteCertificates),
       std::move(draft.hardRailTerminalContacts),
-      std::move(draft.hardRailClosedChains));
+      std::move(draft.hardRailClosedChains),
+      std::move(draft.hardRailOpenChains));
 }
 
 void expect_phase_front_product_error(
@@ -1988,13 +1991,17 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
     SurfaceHardRailTerminalContacts terminalContacts;
     terminalContacts.emplace(railId.value(), SurfaceHardRailTerminalContact{
         0, {declaredEdge.first(), declaredEdge.second()}});
+    SurfaceHardRailOpenChains openChains;
+    openChains.emplace(railId.value(), SurfaceHardRailOpenChain{
+        0, {declaredEdge.first(), declaredEdge.second()}});
     const auto construction = SurfacePhaseFrontProduct::make(
         0, 0, std::move(source.value()), sourceFaces,
         static_cast<std::size_t>(sourceVertices.rows()),
         sourceAtlas ? &sourceAtlas.value() : nullptr,
         {}, {}, {}, {}, {}, {},
         std::nullopt, {declaredEdge}, {},
-        std::move(transitions), {}, std::move(terminalContacts));
+        std::move(transitions), {}, std::move(terminalContacts), {},
+        std::move(openChains));
     const auto *error = std::get_if<SurfacePhaseFrontProductError>(
         &construction);
     EXPECT_NE(error, nullptr);
@@ -2680,7 +2687,7 @@ TEST(M6CP3, PeriodicExactA3UnequalFaceGaugeUsesRelationAndOccurrenceAuthority) {
         front.cells(), front.conformityPlanReceipt(),
         front.hardFeatureEdges(), std::move(rotations),
         front.hardRailFieldTransitions(), front.hardRailRouteCertificates(),
-        front.hardRailTerminalContacts(), front.hardRailClosedChains());
+        front.hardRailTerminalContacts(), front.hardRailClosedChains(), front.hardRailOpenChains());
   };
   const auto originalGaugeProduct = checkedGauge(front.sourceFaceBranchRotations());
   ASSERT_NE(nullptr,
@@ -2789,7 +2796,7 @@ TEST(M6CP3, A6UniformFaceGaugeRotationPreservesRelationOutcome) {
       front.cells(), front.conformityPlanReceipt(), front.hardFeatureEdges(),
       std::move(rotatedGauge), front.hardRailFieldTransitions(),
       front.hardRailRouteCertificates(), front.hardRailTerminalContacts(),
-      front.hardRailClosedChains());
+      front.hardRailClosedChains(), front.hardRailOpenChains());
   const auto *rotated =
       std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&rebuilt);
   ASSERT_NE(rotated, nullptr) << "uniform Z4 gauge rotation must be accepted";
@@ -3109,7 +3116,7 @@ TEST(M6CP3, HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge) {
         front.boundedDiskBoundaryPhases(), front.edges(), front.events(),
         front.cells(), front.conformityPlanReceipt(), front.hardFeatureEdges(),
         front.sourceFaceBranchRotations(), transitions, certificates,
-        front.hardRailTerminalContacts(), front.hardRailClosedChains());
+        front.hardRailTerminalContacts(), front.hardRailClosedChains(), front.hardRailOpenChains());
   };
   const auto &sourceAtlas = *fixture.fieldTransportAtlas;
   auto accepted = checkedFactory(front.hardRailFieldTransitions(),
@@ -8877,7 +8884,7 @@ TEST(M6CP3, CheckedFactoryReconstructsProducedTerminalA2bStarUniqueness) {
       front.cells(), front.conformityPlanReceipt(), front.hardFeatureEdges(),
       front.sourceFaceBranchRotations(), front.hardRailFieldTransitions(),
       front.hardRailRouteCertificates(), front.hardRailTerminalContacts(),
-      front.hardRailClosedChains());
+      front.hardRailClosedChains(), front.hardRailOpenChains());
   EXPECT_NE(nullptr, std::get_if<directional::geometry::SurfacePhaseFrontProduct>(
                          &checked));
 }
@@ -8978,7 +8985,7 @@ TEST(M6CP3, CheckedA4RejectsGlobalHardRailSideSwapWithSelfInverseTau) {
       front.boundedDiskBoundaryPhases(), front.edges(), front.events(),
       front.cells(), front.conformityPlanReceipt(), front.hardFeatureEdges(),
       front.sourceFaceBranchRotations(), front.hardRailFieldTransitions(),
-      routes, front.hardRailTerminalContacts(), front.hardRailClosedChains());
+      routes, front.hardRailTerminalContacts(), front.hardRailClosedChains(), front.hardRailOpenChains());
   const auto *error =
       std::get_if<directional::geometry::SurfacePhaseFrontProductError>(&rebuilt);
   ASSERT_NE(error, nullptr)
@@ -9125,7 +9132,7 @@ TEST(M6CP3, CheckedFactoryRejectsForgedTerminalA2bSideGerm) {
             front.boundedDiskBoundaryPhases(), front.edges(), front.events(),
             front.cells(), front.conformityPlanReceipt(), hardEdges,
             front.sourceFaceBranchRotations(), front.hardRailFieldTransitions(),
-            routes, contacts, front.hardRailClosedChains());
+            routes, contacts, front.hardRailClosedChains(), front.hardRailOpenChains());
       };
   const auto checked_with_routes = [&](const auto &routes) {
     return checked_with_routes_and_contacts(

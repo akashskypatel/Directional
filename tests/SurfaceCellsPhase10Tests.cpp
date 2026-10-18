@@ -2548,7 +2548,7 @@ rebuild_curved_disk_phase_front(
       product.conformityPlanReceipt(), product.hardFeatureEdges(),
       product.sourceFaceBranchRotations(), product.hardRailFieldTransitions(),
       product.hardRailRouteCertificates(), product.hardRailTerminalContacts(),
-      product.hardRailClosedChains());
+      product.hardRailClosedChains(), product.hardRailOpenChains());
 }
 
 struct PhaseFrontGeometrySignature {
@@ -6400,7 +6400,7 @@ rebuild_phase_front_with_edges(
       product.cells(), product.conformityPlanReceipt(),
       product.hardFeatureEdges(), product.sourceFaceBranchRotations(),
       product.hardRailFieldTransitions(), product.hardRailRouteCertificates(),
-      product.hardRailTerminalContacts(), product.hardRailClosedChains());
+      product.hardRailTerminalContacts(), product.hardRailClosedChains(), product.hardRailOpenChains());
   auto *value =
       std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&rebuilt);
   if (value == nullptr) {
@@ -6431,7 +6431,13 @@ build_fixed_plan_rectangular_hard_rail_network(
   options.globalConformityBaselinePlan = &*fixture.conformityBaseline;
   options.hardFeatureEdges = hardEdges ? *hardEdges : fixture.hardFeatureEdges;
   options.authoritativeRails = rails != nullptr ? *rails : fixture.rails;
-  if (contacts != nullptr) options.hardRailTerminalContacts = *contacts;
+  if (contacts != nullptr) {
+    options.hardRailTerminalContacts = *contacts;
+    const auto provenance = directional::pipeline::hard_rail_source_provenance_from_rails(
+        options.authoritativeRails, static_cast<std::size_t>(fixture.mesh.V.rows()));
+    if (!provenance) throw std::runtime_error("Missing source rail chain provenance");
+    options.hardRailOpenChains = provenance->openChains;
+  }
   if (closedChains != nullptr) options.hardRailClosedChains = *closedChains;
   const Eigen::VectorXd target = fixture.targetSize * targetScale;
   if (target.size() > 0) options.defaultTargetSize = target.mean();
@@ -7143,35 +7149,41 @@ TEST(SurfaceCellAuthorityContractCutover,
 }
 
 // The expected decisions are independent of the implementation's branching.
-TEST(SurfaceCellAuthorityContractCutover, OpenRailRouteAnchorTruthTable) {
+TEST(SurfaceCellAuthorityContractCutover, OpenRailRouteChainIntervalTruthTable) {
   using directional::authority::SourceVertexId;
+  using directional::authority::SourceEdgeTopologyKey;
   const auto vertex = [](int i) {
     const auto id = SourceVertexId::from_index(i, 8);
-    if (!id) throw std::runtime_error("Invalid anchor test vertex");
+    if (!id) throw std::runtime_error("Invalid open-rail test vertex");
     return id.value();
   };
-  const auto t0 = vertex(0);
   const auto t1 = vertex(1);
-  const directional::geometry::SurfaceHardRailTerminalContact contact{
-      0, {t0, t1}};
-  const auto check = [&](std::optional<SourceVertexId> first,
-                         int firstA, int firstB,
+  const auto t4 = vertex(4);
+  const auto t7 = vertex(7);
+  const directional::geometry::SurfaceHardRailOpenChain chain{0, {t1, t4, t7}};
+  const directional::geometry::SurfaceHardRailOpenChain shortChain{0, {t1, t4}};
+  const auto check = [&](const std::vector<std::pair<int, int>> &edges,
+                         std::optional<SourceVertexId> first,
                          std::optional<SourceVertexId> last,
-                         int lastA, int lastB) {
+                         const auto &railChain) {
+    std::vector<SourceEdgeTopologyKey> steps;
+    for (const auto [a, b] : edges)
+      steps.push_back(test_source_edge_topology(a, b));
     return directional::geometry::surface_cell_tracing_detail::
-        open_rail_route_anchor_valid(
-            first, test_source_edge_topology(firstA, firstB),
-            last, test_source_edge_topology(lastA, lastB), contact);
+        open_rail_route_interval_valid(steps, first, last, railChain);
   };
-  EXPECT_TRUE(check(t0, 0, 2, t1, 1, 3)); // Opposite T-T, forward.
-  EXPECT_TRUE(check(t1, 1, 3, t0, 0, 2)); // Opposite T-T, reversed.
-  EXPECT_FALSE(check(t0, 0, 2, t0, 0, 3)); // Same terminal on both ends.
-  EXPECT_FALSE(check(t0, 2, 3, t1, 4, 5)); // Neither carrier touches its T.
-  EXPECT_TRUE(check(t0, 0, 2, std::nullopt, 2, 3)); // T-I.
-  EXPECT_TRUE(check(std::nullopt, 2, 3, t1, 1, 3)); // I-T.
-  EXPECT_FALSE(check(vertex(4), 4, 5, std::nullopt, 2, 3)); // Not a T.
-  EXPECT_FALSE(check(t0, 2, 3, std::nullopt, 1, 4)); // T misses carrier.
-  EXPECT_FALSE(check(std::nullopt, 0, 2, std::nullopt, 1, 3)); // I-I.
+  EXPECT_TRUE(check({{1, 4}}, t1, std::nullopt, chain));  // T-I
+  EXPECT_TRUE(check({{1, 4}}, std::nullopt, t1, chain));  // I-T (reverse)
+  EXPECT_TRUE(check({{1, 4}}, std::nullopt, std::nullopt, chain)); // I-I
+  EXPECT_TRUE(check({{1, 4}, {4, 7}}, t1, t7, chain)); // T-T
+  EXPECT_TRUE(check({{1, 4}, {4, 7}}, std::nullopt, std::nullopt, chain));
+  EXPECT_TRUE(check({{1, 4}}, t1, t4, shortChain));
+  EXPECT_FALSE(check({{1, 4}, {4, 7}}, t7, t1, chain));
+  EXPECT_FALSE(check({{4, 7}, {1, 4}}, std::nullopt, std::nullopt, chain));
+  EXPECT_FALSE(check({{1, 4}}, t7, std::nullopt, chain));
+  EXPECT_FALSE(check({{1, 4}}, t4, std::nullopt, chain));
+  EXPECT_FALSE(check({{1, 7}}, std::nullopt, std::nullopt, chain));
+  EXPECT_FALSE(check({}, std::nullopt, std::nullopt, chain));
 }
 
 // An open rail may have a field-determined endpoint in the interior of
@@ -7214,7 +7226,7 @@ TEST(SurfaceCellAuthorityContractCutover,
       front.cells(), front.conformityPlanReceipt(), front.hardFeatureEdges(),
       front.sourceFaceBranchRotations(), front.hardRailFieldTransitions(),
       std::move(forged), front.hardRailTerminalContacts(),
-      front.hardRailClosedChains());
+      front.hardRailClosedChains(), front.hardRailOpenChains());
   const auto *error =
       std::get_if<directional::geometry::SurfacePhaseFrontProductError>(&invalid);
   ASSERT_NE(nullptr, error);
@@ -7253,7 +7265,7 @@ TEST(SurfaceCellAuthorityContractCutover,
       front.cells(), front.conformityPlanReceipt(), front.hardFeatureEdges(),
       front.sourceFaceBranchRotations(), front.hardRailFieldTransitions(),
       std::move(forged), front.hardRailTerminalContacts(),
-      front.hardRailClosedChains());
+      front.hardRailClosedChains(), front.hardRailOpenChains());
   const auto *error =
       std::get_if<directional::geometry::SurfacePhaseFrontProductError>(&invalid);
   ASSERT_NE(nullptr, error);
@@ -7438,7 +7450,7 @@ TEST(SurfaceCellAuthorityContractCutover,
       product.events(), product.cells(), product.conformityPlanReceipt(),
       product.hardFeatureEdges(), product.sourceFaceBranchRotations(),
       product.hardRailFieldTransitions(), product.hardRailRouteCertificates(),
-      product.hardRailTerminalContacts(), product.hardRailClosedChains());
+      product.hardRailTerminalContacts(), product.hardRailClosedChains(), product.hardRailOpenChains());
   const auto *missingError =
       std::get_if<directional::geometry::SurfacePhaseFrontProductError>(&missing);
   ASSERT_NE(nullptr, missingError);
@@ -7463,7 +7475,7 @@ TEST(SurfaceCellAuthorityContractCutover,
       product.events(), product.cells(), product.conformityPlanReceipt(),
       product.hardFeatureEdges(), product.sourceFaceBranchRotations(),
       product.hardRailFieldTransitions(), product.hardRailRouteCertificates(),
-      product.hardRailTerminalContacts(), product.hardRailClosedChains());
+      product.hardRailTerminalContacts(), product.hardRailClosedChains(), product.hardRailOpenChains());
   const auto *tamperedError =
       std::get_if<directional::geometry::SurfacePhaseFrontProductError>(
           &tamperedProduct);
@@ -9004,7 +9016,7 @@ rebuild_checked_region_reference_product(
       std::move(cells), product.conformityPlanReceipt(), product.hardFeatureEdges(),
       product.sourceFaceBranchRotations(), product.hardRailFieldTransitions(),
       product.hardRailRouteCertificates(), product.hardRailTerminalContacts(),
-      product.hardRailClosedChains());
+      product.hardRailClosedChains(), product.hardRailOpenChains());
 }
 
 TEST(SurfaceCellAuthorityContractCutover,

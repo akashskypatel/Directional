@@ -8153,39 +8153,43 @@ resolve_periodic_relation_semantic_action(
 
 
 namespace surface_cell_tracing_detail {
-bool open_rail_route_anchor_valid(
+bool open_rail_route_interval_valid(
+    const std::vector<authority::SourceEdgeTopologyKey> &steps,
     const std::optional<authority::SourceVertexId> &firstVertex,
-    const authority::SourceEdgeTopologyKey &firstCarrier,
     const std::optional<authority::SourceVertexId> &lastVertex,
-    const authority::SourceEdgeTopologyKey &lastCarrier,
-    const SurfaceHardRailTerminalContact &contact) {
-  const auto touches = [](const authority::SourceEdgeTopologyKey &edge,
-                          const authority::SourceVertexId vertex) {
-    return edge.first() == vertex || edge.second() == vertex;
-  };
-  const bool forward =
-      touches(firstCarrier, contact.endpoints[0]) &&
-      touches(lastCarrier, contact.endpoints[1]);
-  const bool reverse =
-      touches(firstCarrier, contact.endpoints[1]) &&
-      touches(lastCarrier, contact.endpoints[0]);
-  const bool bothTerminal = firstVertex && lastVertex;
-  const bool terminalPairValid =
-      (firstVertex == contact.endpoints[0] &&
-       lastVertex == contact.endpoints[1]) ||
-      (firstVertex == contact.endpoints[1] &&
-       lastVertex == contact.endpoints[0]);
-  const auto singleTerminalValid = [&](
-      const std::optional<authority::SourceVertexId> &vertex,
-      const authority::SourceEdgeTopologyKey &edge) {
-    return vertex &&
-           (*vertex == contact.endpoints[0] ||
-            *vertex == contact.endpoints[1]) && touches(edge, *vertex);
-  };
-  return bothTerminal
-             ? ((forward || reverse) && terminalPairValid)
-             : (singleTerminalValid(firstVertex, firstCarrier) ||
-                singleTerminalValid(lastVertex, lastCarrier));
+    const SurfaceHardRailOpenChain &chain) {
+  const auto &vertices = chain.vertices;
+  if (steps.empty() || vertices.size() < 2U ||
+      steps.size() >= vertices.size()) return false;
+  for (std::size_t start = 0; start < vertices.size(); ++start) {
+    for (const int direction : {1, -1}) {
+      if (direction == 1 && steps.size() > vertices.size() - 1U - start)
+        continue;
+      if (direction == -1 && steps.size() > start) continue;
+      const std::size_t end = direction == 1
+                                  ? start + steps.size()
+                                  : start - steps.size();
+      if (firstVertex &&
+          (*firstVertex != vertices[start] ||
+           (start != 0U && start + 1U != vertices.size()))) continue;
+      if (lastVertex &&
+          (*lastVertex != vertices[end] ||
+           (end != 0U && end + 1U != vertices.size()))) continue;
+      bool contiguous = true;
+      for (std::size_t k = 0; k < steps.size(); ++k) {
+        const std::size_t a = direction == 1 ? start + k : start - k;
+        const std::size_t b = direction == 1 ? a + 1U : a - 1U;
+        const auto edge = authority::SourceEdgeTopologyKey::make(
+            vertices[a], vertices[b]);
+        if (!edge || steps[k] != edge.value()) {
+          contiguous = false;
+          break;
+        }
+      }
+      if (contiguous) return true;
+    }
+  }
+  return false;
 }
 } // namespace surface_cell_tracing_detail
 
@@ -8265,8 +8269,6 @@ bool hard_rail_open_chains_valid(
     const SurfaceHardRailClosedChains &closedChains,
     const std::set<authority::SourceEdgeTopologyKey> &hardFeatureEdges,
     const SourceTopologyRegions &sourceTopologyRegions) {
-  // Legacy direct factory callers may omit this optional projection.
-  if (openChains.empty()) return true;
   if (openChains.size() != terminalContacts.size()) return false;
   for (const auto &[rail, chain] : openChains) {
     const auto contact = terminalContacts.find(rail);
@@ -8667,13 +8669,14 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
     const auto contact = hardRailTerminalContacts.find(certificate.rail);
     const auto closed = hardRailClosedChains.find(certificate.rail);
     if (contact != hardRailTerminalContacts.end()) {
-      // Reuse the consumer's exact open-rail anchor rule.
-      if (!surface_cell_tracing_detail::open_rail_route_anchor_valid(
-              certificate.endpoints[0].terminalVertex,
-              certificate.endpoints[0].terminalCarrier.edge,
-              certificate.endpoints[1].terminalVertex,
-              certificate.endpoints[1].terminalCarrier.edge,
-              contact->second)) {
+      const auto chain = hardRailOpenChains.find(certificate.rail);
+      std::vector<authority::SourceEdgeTopologyKey> routeEdges;
+      routeEdges.reserve(steps.size());
+      for (const auto &step : steps) routeEdges.push_back(step.topology());
+      if (chain == hardRailOpenChains.end() ||
+          !surface_cell_tracing_detail::open_rail_route_interval_valid(
+              routeEdges, certificate.endpoints[0].terminalVertex,
+              certificate.endpoints[1].terminalVertex, chain->second)) {
         error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
         return error;
       }
@@ -8761,8 +8764,8 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
           return true;
         };
         if (!vertex) {
-          // Open-rail interior carrier: the opposite endpoint must already
-          // carry an independently checked whole-rail terminal witness.
+          // Open-rail interior carrier membership is witnessed by the
+          // checked contiguous source-chain interval above.
           if (!endpoint.contactPaths[0].empty() ||
               !endpoint.contactPaths[1].empty() ||
               carrier.firstFace != endpoint.firstAttachment ||
@@ -20305,14 +20308,19 @@ SurfaceCellNetwork build_surface_cell_network(
                     "endpoint-1-terminal-carrier");
       return network;
     }
-    if (contact != authoritativeOptions.hardRailTerminalContacts.end() &&
-        !surface_cell_tracing_detail::open_rail_route_anchor_valid(
-            firstEndpoint->terminalVertex, firstEndpoint->terminalCarrier.edge,
-            secondEndpoint->terminalVertex, secondEndpoint->terminalCarrier.edge,
-            contact->second)) {
-      invalid_route(SurfaceHardRailRouteFailureLocus::TerminalCarrier,
-                    -1, -1, "open-rail-route-anchor");
-      return network;
+    if (contact != authoritativeOptions.hardRailTerminalContacts.end()) {
+      const auto chain = authoritativeOptions.hardRailOpenChains.find(*first.railId);
+      std::vector<authority::SourceEdgeTopologyKey> routeEdges;
+      routeEdges.reserve(routeSteps.size());
+      for (const auto &step : routeSteps) routeEdges.push_back(step.topology());
+      if (chain == authoritativeOptions.hardRailOpenChains.end() ||
+          !surface_cell_tracing_detail::open_rail_route_interval_valid(
+              routeEdges, firstEndpoint->terminalVertex,
+              secondEndpoint->terminalVertex, chain->second)) {
+        invalid_route(SurfaceHardRailRouteFailureLocus::TerminalCarrier,
+                      -1, -1, "open-rail-chain-interval");
+        return network;
+      }
     }
     phaseFrontState.hardRailRouteCertificates.push_back({
         firstIndex, first.oppositeEdge, *first.railId, first.route,

@@ -1534,18 +1534,6 @@ struct SurfaceHardRailTerminalContact {
 using SurfaceHardRailTerminalContacts =
     std::map<authority::HardRailId, SurfaceHardRailTerminalContact>;
 
-namespace surface_cell_tracing_detail {
-// Same open-rail route anchor at producer admission and checked publication.
-// A source terminal is valid only if it belongs to the named contact and
-// touches its actual endpoint carrier. Both terminal ends must be opposite.
-[[nodiscard]] bool open_rail_route_anchor_valid(
-    const std::optional<authority::SourceVertexId> &firstVertex,
-    const authority::SourceEdgeTopologyKey &firstCarrier,
-    const std::optional<authority::SourceVertexId> &lastVertex,
-    const authority::SourceEdgeTopologyKey &lastCarrier,
-    const SurfaceHardRailTerminalContact &contact);
-} // namespace surface_cell_tracing_detail
-
 // Exact ordered closed-rail source chain; closed rails have no terminal contact.
 struct SurfaceHardRailClosedChain {
   int component = -1;
@@ -1562,6 +1550,16 @@ struct SurfaceHardRailOpenChain {
 };
 using SurfaceHardRailOpenChains =
     std::map<authority::HardRailId, SurfaceHardRailOpenChain>;
+
+namespace surface_cell_tracing_detail {
+// A route occupies one contiguous, non-wrapping interval of the source chain.
+// Only a genuine chain-end vertex may be certified as a terminal.
+[[nodiscard]] bool open_rail_route_interval_valid(
+    const std::vector<authority::SourceEdgeTopologyKey> &steps,
+    const std::optional<authority::SourceVertexId> &firstVertex,
+    const std::optional<authority::SourceVertexId> &lastVertex,
+    const SurfaceHardRailOpenChain &chain);
+} // namespace surface_cell_tracing_detail
 
 namespace surface_cell_tracing_detail {
 [[nodiscard]] bool hard_rail_open_chains_valid(
