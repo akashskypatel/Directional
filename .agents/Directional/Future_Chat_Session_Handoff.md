@@ -54,7 +54,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
 | 1 — next | `M6-CP3-TB15-R10-EXACT-I-ENDPOINT-WITNESS-PRODUCER-REV` | Independent Review of TB15 (RA-96.5), no runtime. |
-| 2 — conditional | `M6-CP3-CB16-R10-EXACT-I-ENDPOINT-ADMISSION` | **Not authorized until** the Review explicitly approves a concrete rule and non-weakening proof. |
+| 2 — conditional | CB16 (exact canonical turn ID to be authorized by Review) | **Not authorized until** the Review explicitly approves a concrete rule and non-weakening proof. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
