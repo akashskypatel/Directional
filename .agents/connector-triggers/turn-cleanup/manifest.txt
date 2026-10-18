@@ -1,0 +1,3 @@
+# CB11 temporary source snapshot triggers only; preserve durable dispatcher, workflow/mailbox and all reports.
+.agents/connector-triggers/source-snapshot/cb11-route-anchor-20261018.txt
+.agents/connector-triggers/source-snapshot/cb11-20261018-0148.txt
