@@ -1,0 +1,2 @@
+M6-CP3-TB12-R10-OPEN-RAIL-CHAIN-PROVENANCE
+Source snapshot required before TB12 harness authoring.
