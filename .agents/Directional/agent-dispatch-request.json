@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb12-u2-compile-20261018-01",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb12-u2-compile",
-  "source_sha": "cdc4755904e6cd45fe6751e05a0f90b587d8bd3c",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb12-open-chain-provenance"
+  "request_id": "m6-cp3-cb12-compile-fix-apply-20261018-01",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb12-compile-fix-apply",
+  "file_id": "1KtM8S4Z8iqB_KhucIr9iBfBkvKIxAfpD",
+  "patch_sha256": "281bb2d4ccadcb7734e16c16881bb6a4578e691c0ea1d1c34dbc844c12f55dfd",
+  "base_sha": "cdc4755904e6cd45fe6751e05a0f90b587d8bd3c",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "Fix CB12 source-chain contract test compile errors"
 }
