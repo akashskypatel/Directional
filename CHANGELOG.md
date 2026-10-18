@@ -1,5 +1,10 @@
 ## 2026-10-18 — RA-86: TB12 harness authorized; CB12 accepted; TB12 gains full-pipeline diagnostics
 
+## 2026-10-18 — TB12 immutable open-rail chain provenance harvest
+
+- `M6-CP3-TB12-R10-OPEN-RAIL-CHAIN-PROVENANCE`: committed the RA-86-authorized six-identity harness (`2bb45fa6084bcfce4b1287f65e4f88ead2678557`) and executed immutable CB12 package `12125223513` via [run 39103358061](https://github.com/akashskypatel/Directional/actions/runs/39103358061), result `12127706461`. Six exact cases selected: two gates PASS, four existing RP-01 diagnostics RED with predicted consumer predicates. Postflight immutable; no compile, relink, benchmarks, selector, semantic-source or test mutation. No stable-regression promotion, unchanged 66/17/49. Independent Review follows; see `Architecture_M6_CP3_TB12_Open_Rail_Chain_Provenance_Harvest_Report_20261018.md`.
+
+
 - TB12's first attempt stopped `BLOCKED` before dispatch. CB12's "no harness" scope had been copied into TB12's handoff, but every TB authors its own per-turn harness (TB8–TB11), so this is a handoff defect, not an orchestration failure. TB12 adds one new harness derived from TB11's (RA-86.1).
 - CB12 accepted. Package `12125223513` (run `39097975393`, ZIP SHA-256 `c98ed3a509e9d1ccc1df83eaeb6112b8636bc0e7ee63b73140d789c32f38eeb6`) was verified independently: 28/28 manifest hashes, source parity with HEAD. The validator mirrors the closed-chain check and is a consistency check on pipeline data. The placeholders in the CB12 record and CHANGELOG are filled.
 - TB11's tests stop in the consumer before `make`, so they cannot exercise CB12. TB12 therefore adds the two full-pipeline RP-01 tests `cp3entry:2` and `cp3entry:6` as non-gating diagnostics, with falsifier `PublishedProductRejected` without `firstPredicate=`.
