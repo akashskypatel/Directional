@@ -1,0 +1,1 @@
+TB13D source snapshot trigger; exact event commit SHA is authoritative. No implementation changes.
