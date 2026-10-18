@@ -1,4 +1,11 @@
-## CURRENT — CB15 exact I-edge witness compiled; TB15 immutable nine-identity harvest next (2026-10-18)
+## CURRENT — TB15 witness harvest complete; independent Review next (2026-10-18)
+
+- [x] `M6-CP3-TB15-R10-EXACT-I-ENDPOINT-WITNESS-PRODUCER`: immutable [run 39170298228](https://github.com/akashskypatel/Directional/actions/runs/39170298228), result `12152685129`, exact 9/9 selected; 4 PASS control/witness gates, 5 expected RED B2/B3 diagnostics. No new regressions or gate promotion. Owning report `.agents/Directional/Architecture_M6_CP3_TB15_Exact_I_Witness_Harvest_Report_20261018.md`.
+- [ ] **Exact next:** `M6-CP3-TB15-R10-EXACT-I-ENDPOINT-WITNESS-PRODUCER-REV` — re-derive TB15 and adjudicate CB16 authorization; do not dispatch CB16 automatically. Frozen 66/17/49, debt 1, CP2 491/491, rejected R3 403/497, latest census 425/497; RP-01 open and RP-02 UNREACHED.
+
+---
+
+## HISTORY — CB15 exact I-edge witness compiled; TB15 subsequently executed (2026-10-18)
 
 - [x] `M6-CP3-TB10-R9-CARRIER-ENDPOINT-SUBCONDITION-HARVEST`: TB10 immutable run [38941839640](https://github.com/akashskypatel/Directional/actions/runs/38941839640), result `12062873272` ZIP SHA-256 `4db22a924f31a7bc6fdf1575a66849a2f660a760003e03e26e7f9277ac200513`; compiled source `d938ecb57e1040c2a73d5d25c4a613414556cb18`, artifact `12062565622`. 44/44 selected, 44 RED, 0 missing, 48 A3 observations, 21 exact-one-hot vertices: **contact-endpoint membership 0/21; carrier-edge membership 21/21; composite 0/21**. Example decoded vertex 4, published contact endpoints {1,7}, carrier edge {1,4}, certificate rail 2. Immutable postflight passed, 28/28 package hashes, compile/relink/benchmarks/selector497 not executed. Evidence is candidate/non-stable and does not modify 66/17/49, debt1, CP2 491/491, R3 403/497, selector497; RP-01 open, RP-02 UNREACHED. Independent Review next (ID UNKNOWN); no repair authorized.
 - [x] Independent Review (RA-81): TB10 accepted as diagnostic evidence; vertex 4 is the interior vertex of the open rail 1–4–7 and no V/I/C branch admits it. Record: `Architecture_M6_CP3_R9_Carrier_Endpoint_Subcondition_Review_Decision.md`.
