@@ -1,18 +1,20 @@
 {
   "schema_version": 1,
-  "request_id": "cb14a-20261018-01",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb14a",
-  "source_sha": "2ee499a3403c07be05e8084a669f30c1c735f04a",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb14a"
+  "request_id": "m6-cp3-tb14a-r10-20261018-01",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb14a-r10",
+  "executor_sha": "a6a4b309a3beb410a1e32e2904b6c0890fdfefe6",
+  "semantic_source_sha": "2ee499a3403c07be05e8084a669f30c1c735f04a",
+  "turn_id": "M6-CP3-TB14A-R10-CURVED-DISK-CONTROL-CENSUS",
+  "harness_path": ".agents/Directional/tools/m6_cp3_entry_497_artifact_only_harness.sh",
+  "harness_sha256": "947a95ee4f684143a0f8d7c768a39253ab893d921da488802b45fb6ed58879dd",
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "12140756646",
+    "EXPECTED_SOURCE_SHA": "2ee499a3403c07be05e8084a669f30c1c735f04a",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "eee92aeb38ce098c8580a199f340ec65f3bf650df6464d5a3f2b7dfee5add906",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "495cf0b54322e54aee1020802d8f6f4a65297fdfe519cf0871509a70f74bb2d1",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "f414dce2543edfbfd44e528b739edb0685172719f010680ffd4659da0ad945a2"
+  },
+  "artifact_prefix": "m6-cp3-tb14a-r10",
+  "retention_days": 14
 }
