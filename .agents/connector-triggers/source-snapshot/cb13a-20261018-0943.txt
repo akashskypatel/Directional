@@ -1,0 +1,1 @@
+CB13A exact source-snapshot request; requested by ChatGPT Web on 2026-10-18; source event SHA is immutable snapshot authority.
