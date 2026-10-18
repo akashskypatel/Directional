@@ -1,11 +1,14 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb12-u2-docs-closeout-20261018-01",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb12-u2-docs-closeout",
-  "file_id": "1K7MIlMFbCTHG6sfA_YfWggiDNsZL6qOx",
-  "patch_sha256": "489ee012d8fa7e30832e202c6efa29fffaba55c4e804177af4d68a9965e753e4",
-  "base_sha": "b1b02d5bed43898af0708d76dcd70ada96aeecc9",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "Close CB12 compile-only provenance record and hand off immutable TB12"
+  "request_id": "m6-cp3-tb12-open-chain-20261018-01",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb12-open-rail-chain-provenance",
+  "executor_sha": "2bb45fa6084bcfce4b1287f65e4f88ead2678557",
+  "semantic_source_sha": "b1b02d5bed43898af0708d76dcd70ada96aeecc9",
+  "turn_id": "M6-CP3-TB12-R10-OPEN-RAIL-CHAIN-PROVENANCE",
+  "harness_path": ".agents/Directional/tools/m6_cp3_r10_open_rail_chain_provenance_harness.sh",
+  "harness_sha256": "37fe7152bde8e25c366115189487a629a3439a432fd98d7d33ac0b0ac643fde5",
+  "environment": {},
+  "artifact_prefix": "m6-cp3-tb12-open-rail-chain-provenance",
+  "retention_days": 7
 }
