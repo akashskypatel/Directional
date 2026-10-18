@@ -1,3 +1,9 @@
+## TB15 exact I-endpoint witness harvest — expected B2/B3 RED, no new stable regression (2026-10-18)
+
+[Run 39170298228](https://github.com/akashskypatel/Directional/actions/runs/39170298228), result `12152685129` (ZIP SHA-256 `2536c38b958f76cfef6c5e0ef951e902e958d2cdb863e650e2b8b4002a50f748`), immutable CB15 semantic source `e4785d734e35d2f01ca3ee8099772f6ab5257f4c`, package `12150973440`. All nine exact tests selected and postflight-immutable: 4 PASS gates, 5 expected RED diagnostics. Two B2 tests retain no exact witness and binds 0; three B3 tests show matching bound `1,4@1/5` witnesses on both sides. Removing precisely the four new exact-witness fields makes all five first-failure records byte-equal to TB13A (#3–6) or TB14A (selector 217) baselines. **Classification:** existing `RP-01` B2/B3 causes, not newly introduced stable or candidate regressions; no early-admission behavioral change. **66/17/49**, debt **1**, CP2 **491/491**, rejected R3 **403/497**, latest full census **425/497** unchanged. Required independent TB15 Review before CB16. Owning report: `Architecture_M6_CP3_TB15_Exact_I_Witness_Harvest_Report_20261018.md`.
+
+---
+
 ## TB14A curved-disk control census — adjudicated by RA-94 (2026-10-18)
 
 [Run 39143325285](https://github.com/akashskypatel/Directional/actions/runs/39143325285), result `12141843937` (`1b06e43e…d455`), on CB14A package `12140756646` (source `2ee499a3`): **425 PASS / 72 RED**.
