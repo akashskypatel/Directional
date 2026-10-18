@@ -8257,6 +8257,55 @@ TerminalStarPathResult unique_terminal_star_path(
 }
 } // namespace
 
+namespace surface_cell_tracing_detail {
+
+bool hard_rail_open_chains_valid(
+    const SurfaceHardRailOpenChains &openChains,
+    const SurfaceHardRailTerminalContacts &terminalContacts,
+    const SurfaceHardRailClosedChains &closedChains,
+    const std::set<authority::SourceEdgeTopologyKey> &hardFeatureEdges,
+    const SourceTopologyRegions &sourceTopologyRegions) {
+  // Legacy direct factory callers may omit this optional projection.
+  if (openChains.empty()) return true;
+  if (openChains.size() != terminalContacts.size()) return false;
+  for (const auto &[rail, chain] : openChains) {
+    const auto contact = terminalContacts.find(rail);
+    if (contact == terminalContacts.end() || closedChains.contains(rail) ||
+        chain.component < 0 || chain.component != contact->second.component ||
+        chain.vertices.size() < 2U) return false;
+    const auto &ends = contact->second.endpoints;
+    if (!((chain.vertices.front() == ends[0] && chain.vertices.back() == ends[1]) ||
+          (chain.vertices.front() == ends[1] && chain.vertices.back() == ends[0])))
+      return false;
+    const std::set<authority::SourceVertexId> distinct(chain.vertices.begin(),
+                                                        chain.vertices.end());
+    if (distinct.size() != chain.vertices.size()) return false;
+    for (std::size_t i = 1U; i < chain.vertices.size(); ++i) {
+      const auto edge = authority::SourceEdgeTopologyKey::make(
+          chain.vertices[i - 1U], chain.vertices[i]);
+      if (!edge || !hardFeatureEdges.contains(edge.value())) return false;
+      const bool supported = std::any_of(
+          sourceTopologyRegions.regions().begin(),
+          sourceTopologyRegions.regions().end(), [&](const auto &region) {
+            if (region.component().index() !=
+                static_cast<std::size_t>(chain.component)) return false;
+            return std::any_of(region.faces().begin(), region.faces().end(),
+                               [&](const auto &member) {
+              const auto &vertices = member.topology.vertices();
+              return std::find(vertices.begin(), vertices.end(),
+                               edge.value().first()) != vertices.end() &&
+                     std::find(vertices.begin(), vertices.end(),
+                               edge.value().second()) != vertices.end();
+            });
+          });
+      if (!supported) return false;
+    }
+  }
+  return true;
+}
+
+} // namespace surface_cell_tracing_detail
+
 SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
     int gridU, int gridV, SourceTopologyRegions sourceTopologyRegions,
     const Eigen::MatrixXi &sourceFaces, std::size_t sourceVertexCount,
@@ -8274,7 +8323,8 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
     std::vector<SurfaceHardRailFieldTransition> hardRailFieldTransitions,
     std::vector<SurfaceHardRailRouteCertificate> hardRailRouteCertificates,
     SurfaceHardRailTerminalContacts hardRailTerminalContacts,
-    SurfaceHardRailClosedChains hardRailClosedChains) {
+    SurfaceHardRailClosedChains hardRailClosedChains,
+    SurfaceHardRailOpenChains hardRailOpenChains) {
   SurfacePhaseFrontProductError error;
   // RA-40: a commuting square is gauge-invariant; it cannot authenticate
   // either nonrail phi or hard-carrier chi. Bind a genuinely produced A3 atlas
@@ -8467,6 +8517,12 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
         return error;
       }
     }
+  }
+  if (!surface_cell_tracing_detail::hard_rail_open_chains_valid(
+          hardRailOpenChains, hardRailTerminalContacts, hardRailClosedChains,
+          hardFeatureEdges, sourceTopologyRegions)) {
+    error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+    return error;
   }
   // A closed-only rail set must cover every hard-feature edge, not merely
   // supply a convenient nonempty closed-chain token.
@@ -9313,7 +9369,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
       std::move(sourceFaceBranchRotations),
       std::move(hardRailFieldTransitions),
       std::move(hardRailRouteCertificates), std::move(hardRailTerminalContacts),
-      std::move(hardRailClosedChains));
+      std::move(hardRailClosedChains), std::move(hardRailOpenChains));
 }
 
 } // namespace directional::geometry
@@ -12842,7 +12898,8 @@ SurfacePhaseFrontResult publish_phase_front_result(
     std::size_t sourceVertexCount,
     const authority::FieldTransportAtlas *fieldTransportAtlas,
     const SurfaceHardRailTerminalContacts &hardRailTerminalContacts,
-    const SurfaceHardRailClosedChains &hardRailClosedChains) {
+    const SurfaceHardRailClosedChains &hardRailClosedChains,
+    const SurfaceHardRailOpenChains &hardRailOpenChains) {
   if (state.disposition == SurfaceCellProducerDisposition::NotApplicable) {
     return SurfacePhaseFrontResult::not_applicable();
   }
@@ -12874,7 +12931,7 @@ SurfacePhaseFrontResult publish_phase_front_result(
       std::move(state.faceBranchRotation),
       std::move(state.hardRailFieldTransitions),
       std::move(state.hardRailRouteCertificates), hardRailTerminalContacts,
-      hardRailClosedChains);
+      hardRailClosedChains, hardRailOpenChains);
   if (auto *value = std::get_if<SurfacePhaseFrontProduct>(&product)) {
     return SurfacePhaseFrontResult::produced(std::move(*value));
   }
@@ -20267,7 +20324,8 @@ SurfaceCellNetwork build_surface_cell_network(
       static_cast<std::size_t>(vertices.rows()),
       authoritativeOptions.fieldTransportAtlas,
       authoritativeOptions.hardRailTerminalContacts,
-      authoritativeOptions.hardRailClosedChains);
+      authoritativeOptions.hardRailClosedChains,
+      authoritativeOptions.hardRailOpenChains);
   if (network.phaseFront.is_produced()) {
     const SurfacePhaseFrontProduct &phaseFront = network.phaseFront.product();
     network.proposals.reserve(phaseFront.cells().size());

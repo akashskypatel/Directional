@@ -1859,6 +1859,16 @@ private:
 SurfaceCellRailBuildResult build_authoritative_surface_cell_rails(
     const TriMesh &meshWhole, const geometry::AdaptiveFeatureMap &featureMap);
 
+struct HardRailSourceProvenance {
+  geometry::SurfaceHardRailTerminalContacts terminalContacts;
+  geometry::SurfaceHardRailClosedChains closedChains;
+  geometry::SurfaceHardRailOpenChains openChains;
+};
+
+std::optional<HardRailSourceProvenance> hard_rail_source_provenance_from_rails(
+    const std::vector<geometry::SurfaceCellRail> &rails,
+    std::size_t vertexExtent);
+
 std::set<authority::SourceEdgeTopologyKey> relief_barrier_edges_from_topology(
     const geometry::ReliefTopologyResult &topology, std::size_t vertexExtent);
 

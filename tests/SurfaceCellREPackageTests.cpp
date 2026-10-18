@@ -181,6 +181,105 @@ TEST(SurfaceCellClosedProductContracts,
       std::invalid_argument);
 }
 
+TEST(SurfaceCellClosedProductContracts, OpenHardRailChainProvenanceIsSourceValidated) {
+  const REPkgMesh mesh = make_rectangular_internal_hard_feature_grid();
+  directional::TriMesh source;
+  source.set_mesh(mesh.vertices, mesh.faces);
+  directional::geometry::AdaptiveFeatureMap map;
+  for (const auto &[vertices, incident] :
+       std::array<std::pair<std::pair<int, int>, std::vector<int>>, 2>{{
+           {{1, 4}, {0, 3}}, {{4, 7}, {4, 7}}}}) {
+    directional::geometry::AdaptiveFeatureEdge edge;
+    edge.vertices = vertices;
+    edge.incidentFaces = incident;
+    edge.edgeClass = directional::geometry::AdaptiveFeatureClass::Hard;
+    edge.component = 0;
+    edge.curve = 17;
+    map.edges.push_back(edge);
+  }
+  directional::geometry::AdaptiveFeatureCurve curve;
+  curve.id = 17;
+  curve.component = 0;
+  curve.edges = {0, 1};
+  curve.vertices = {1, 4, 7};
+  map.curves.push_back(curve);
+  const auto built = directional::pipeline::build_authoritative_surface_cell_rails(
+      source, map);
+  ASSERT_TRUE(built.is_produced());
+  const auto &rails = built.product().rails;
+  ASSERT_EQ(1U, rails.size());
+  ASSERT_EQ((std::vector<int>{1, 4, 7}), rails.front().sourceVertices);
+  const auto projection = directional::pipeline::hard_rail_source_provenance_from_rails(
+      rails, static_cast<std::size_t>(mesh.vertices.rows()));
+  ASSERT_TRUE(projection.has_value());
+  ASSERT_EQ(1U, projection->openChains.size());
+  ASSERT_TRUE(projection->closedChains.empty());
+  const auto rail = rails.front().id;
+  const auto original = projection->openChains.at(rail);
+  ASSERT_EQ(3U, original.vertices.size());
+  EXPECT_EQ(1U, original.vertices[0].index());
+  EXPECT_EQ(4U, original.vertices[1].index());
+  EXPECT_EQ(7U, original.vertices[2].index());
+  ASSERT_EQ(projection->terminalContacts.at(rail).endpoints[0], original.vertices.front());
+  ASSERT_EQ(projection->terminalContacts.at(rail).endpoints[1], original.vertices.back());
+
+  directional::geometry::SurfaceCellTracingOptions options;
+  const auto regions = directional::geometry::surface_cell_tracing_detail::
+      build_source_topology_regions(mesh.faces, options);
+  ASSERT_TRUE(regions.has_value());
+  const auto hardEdges = directional::pipeline::hard_feature_edge_keys_from_rails(
+      rails, static_cast<std::size_t>(mesh.vertices.rows()));
+  const auto valid = [&](const auto &openChains, const auto &contacts,
+                         const auto &closedChains, const auto &edges) {
+    return directional::geometry::surface_cell_tracing_detail::
+        hard_rail_open_chains_valid(openChains, contacts, closedChains, edges,
+                                    *regions);
+  };
+  const auto &contacts = projection->terminalContacts;
+  const auto &closed = projection->closedChains;
+  ASSERT_TRUE(valid(projection->openChains, contacts, closed, hardEdges));
+  EXPECT_TRUE(valid({}, contacts, closed, hardEdges)); // Optional legacy input.
+
+  auto tampered = projection->openChains;
+  tampered.at(rail).vertices.erase(tampered.at(rail).vertices.begin() + 1);
+  EXPECT_FALSE(valid(tampered, contacts, closed, hardEdges)); // Lost middle step.
+  tampered = projection->openChains;
+  tampered.at(rail).vertices.insert(tampered.at(rail).vertices.begin() + 1,
+                                    original.vertices.front());
+  EXPECT_FALSE(valid(tampered, contacts, closed, hardEdges)); // Duplicate vertex.
+  tampered = projection->openChains;
+  tampered.at(rail).component = 1;
+  EXPECT_FALSE(valid(tampered, contacts, closed, hardEdges));
+  tampered = projection->openChains;
+  auto missingContact = contacts;
+  missingContact.erase(rail);
+  EXPECT_FALSE(valid(tampered, missingContact, closed, hardEdges));
+  auto alsoClosed = closed;
+  alsoClosed.emplace(rail, directional::geometry::SurfaceHardRailClosedChain{});
+  EXPECT_FALSE(valid(tampered, contacts, alsoClosed, hardEdges));
+  tampered.at(rail).vertices.front() = original.vertices[1];
+  EXPECT_FALSE(valid(tampered, contacts, closed, hardEdges)); // Endpoint mismatch.
+  tampered = projection->openChains;
+  auto missingEdge = hardEdges;
+  const auto edge = directional::authority::SourceEdgeTopologyKey::make(
+      original.vertices[1], original.vertices[2]);
+  ASSERT_TRUE(edge.has_value());
+  missingEdge.erase(edge.value());
+  EXPECT_FALSE(valid(tampered, contacts, closed, missingEdge));
+  tampered.at(rail).vertices.resize(1);
+  EXPECT_FALSE(valid(tampered, contacts, closed, hardEdges));
+
+  // Two-vertex rails are valid; only later R eligibility requires >=3.
+  tampered.at(rail).vertices = {original.vertices[0], original.vertices[1]};
+  auto shortContacts = contacts;
+  shortContacts.at(rail).endpoints[1] = original.vertices[1];
+  EXPECT_TRUE(valid(tampered, shortContacts, closed, hardEdges));
+  tampered = projection->openChains;
+  std::reverse(tampered.at(rail).vertices.begin(),
+               tampered.at(rail).vertices.end());
+  EXPECT_TRUE(valid(tampered, contacts, closed, hardEdges));
+}
+
 TEST(SurfaceCellClosedProductContracts,
      RailBuildRejectionCarriesFailureWithoutConsumableRails) {
   const REPkgMesh mesh = make_rectangular_internal_hard_feature_grid();

@@ -9724,11 +9724,6 @@ std::set<authority::SourceEdgeTopologyKey> hard_feature_edge_keys_from_rails(
   return keys;
 }
 
-struct HardRailSourceProvenance {
-  geometry::SurfaceHardRailTerminalContacts terminalContacts;
-  geometry::SurfaceHardRailClosedChains closedChains;
-};
-
 std::optional<HardRailSourceProvenance> hard_rail_source_provenance_from_rails(
     const std::vector<geometry::SurfaceCellRail> &rails,
     const std::size_t vertexExtent) {
@@ -9763,6 +9758,15 @@ std::optional<HardRailSourceProvenance> hard_rail_source_provenance_from_rails(
                          rail.component, {first.value(), last.value()}}).second) {
       return std::nullopt;
     }
+    geometry::SurfaceHardRailOpenChain chain;
+    chain.component = rail.component;
+    for (const int vertex : rail.sourceVertices) {
+      const auto id = authority::SourceVertexId::from_index(vertex, vertexExtent);
+      if (!id) return std::nullopt;
+      chain.vertices.push_back(id.value());
+    }
+    if (!result.openChains.emplace(rail.id, std::move(chain)).second)
+      return std::nullopt;
   }
   return result;
 }
@@ -12482,6 +12486,7 @@ remesh_from_raw_cross_field_impl_with_stage_products(
     }
     tracingOptions.hardRailTerminalContacts = railProvenance->terminalContacts;
     tracingOptions.hardRailClosedChains = railProvenance->closedChains;
+    tracingOptions.hardRailOpenChains = railProvenance->openChains;
     tracingOptions.hardFeatureEdges = hardFeatureRailEdges;
     tracingOptions.reliefRootVertices = reliefRootSelection.roots;
     tracingOptions.reliefRegionLabels = reliefRootSelection.labels;
