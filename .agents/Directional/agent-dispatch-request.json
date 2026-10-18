@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb11-r10-anchor-20261018a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb11-anchor-apply",
-  "file_id": "1Ryu_cX22ftyjLafGSnFSxZcZdAJjJ9RP",
-  "patch_sha256": "360b090249ea709f879007a1b1c7bf03be4f83b5f2b99014d865c8443652b5ba",
-  "base_sha": "026a59dd12bea3b3e798151a307681c66b757768",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix: share exact open-rail route anchor across producer and verifier",
-  "retention_days": 7
+  "request_id": "m6-cp3-cb11-anchor-compile-20261018a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb11-anchor-compile",
+  "source_sha": "9432aa05ef4719cbea912ae0feb2c5508c4e497a",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb11-anchor-compile"
 }
