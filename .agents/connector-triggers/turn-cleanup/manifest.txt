@@ -1,0 +1,2 @@
+# TB13A cleanup: only the temporary source-snapshot trigger is removable; preserve durable dispatcher and mailbox branch.
+.agents/connector-triggers/source-snapshot/manifest.txt
