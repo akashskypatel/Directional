@@ -1,3 +1,8 @@
+## 2026-10-18 — CB12 ordered open-rail chain provenance compiled (U2)
+
+- Source `b1b02d5bed43898af0708d76dcd70ada96aeecc9` publishes immutable ordered open source chains with exact authority checks at the phase-front factory; no admission, tolerance, route-rule, selector, or accepted runtime change. Five implementation/test files modified by initial semantic patch; a one-test-file compile correction fixes the undeduced empty-map type and non-default-constructible ID resizing without weakening assertions.
+- Initial compile `39097092114` failed at those two test-source expressions; corrected eight-target GMP/GMPXX compile [{run}](https://github.com/akashskypatel/Directional/actions/runs/{run}), immutable artifact `{artifact}`, ZIP SHA-256 `{zip_digest}`; `runtimeExecution=false`. Test cases compiled, **not run**. Owning report: `.agents/Directional/Architecture_M6_CP3_CB12_R10_Open_Rail_Chain_Provenance_Code_Build_Record_20261018.md`. Next `M6-CP3-TB12-R10-OPEN-RAIL-CHAIN-PROVENANCE` (artifact-only). Stable 66/17/49, debt1, CP2 491/491, R3 403/497, selector497 unchanged.
+
 ## 2026-10-18 — RA-85: TB11 reviewed; RED predates CB11; I–I admitted by an open-chain interval
 
 - TB11 (run `39092477302`, result `12123605663`, CB11 package `12121016836`): truth table PASS; the two midline-fixture tests RED at `open-rail-route-anchor`, front 29/147, edge 1–4. The orchestration was valid.

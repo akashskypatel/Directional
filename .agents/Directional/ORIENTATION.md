@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-18 · M6-CP3 route-anchor test run reviewed (RA-85). Open rails also need their middle segments (I–I) admitted; the route rule becomes "contiguous stretch of the rail's vertex chain". Next: carry that chain to the verifier.  
+**Currency:** 2026-10-18 · CB12 compiles ordered open-rail source-chain provenance as U2, with no admission change. TB12 artifact-only verification is next; open-chain interval route admission remains separate frozen U3.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
