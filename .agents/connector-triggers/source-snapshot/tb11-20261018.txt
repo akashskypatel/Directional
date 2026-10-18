@@ -1,2 +1,0 @@
-TB11 read-only source snapshot
-source_ref=a2189a93a19172e52db5226c879e5e588cb1c889
