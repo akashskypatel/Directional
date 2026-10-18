@@ -1,3 +1,9 @@
+## 2026-10-18 — CB15: exact interior source-edge witness (compile-only)
+
+- Source `e4785d734e35d2f01ca3ee8099772f6ab5257f4c` changes `SurfaceTracePoint`, the accepted-boundary producer, exact-binding detail helper, dedup clearing, rejection-only four-field probe and three compiled P10 tests. No admission/checker contract changes, selector changes, test execution or benchmarks.
+- GMP/GMPXX eight-target compile [run 39166755633](https://github.com/akashskypatel/Directional/actions/runs/39166755633), immutable package `12150973440`, ZIP SHA-256 `7f56c6a551494ab4e5b9276719946e358ea23bd8b2c5bddec94014796d76c073`; packaged 28/28 hashes, GMP exact backend and clean source; `runtimeExecution=false`. Separate TB15 owns nine-identity runtime observations.
+- `RP-01` remains open, `RP-02` UNREACHED; 66/17/49, debt 1, CP2 491/491, rejected R3 403/497, TB14A 425/497 and selector 497 unchanged. Evidence: `.agents/Directional/Architecture_M6_CP3_CB15_Exact_I_Witness_Code_Build_Record_20261018.md`.
+
 ## 2026-10-18 — RA-96: DEFN-U6A reviewed; exact witness design amended; CB15 next
 
 - The U6A trace was verified independently (B:740-766; S:17219-17262; S:12535-12546). Accepted: the UV dedup at S:17190-17194 is a tolerance merge that any witness must pass through exactly.

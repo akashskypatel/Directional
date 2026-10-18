@@ -1,4 +1,4 @@
-## CURRENT — DEFN-U6A reviewed (RA-96): exact witness design accepted with amendments; CB15 next (2026-10-18)
+## CURRENT — CB15 exact I-edge witness compiled; TB15 immutable nine-identity harvest next (2026-10-18)
 
 - [x] `M6-CP3-TB10-R9-CARRIER-ENDPOINT-SUBCONDITION-HARVEST`: TB10 immutable run [38941839640](https://github.com/akashskypatel/Directional/actions/runs/38941839640), result `12062873272` ZIP SHA-256 `4db22a924f31a7bc6fdf1575a66849a2f660a760003e03e26e7f9277ac200513`; compiled source `d938ecb57e1040c2a73d5d25c4a613414556cb18`, artifact `12062565622`. 44/44 selected, 44 RED, 0 missing, 48 A3 observations, 21 exact-one-hot vertices: **contact-endpoint membership 0/21; carrier-edge membership 21/21; composite 0/21**. Example decoded vertex 4, published contact endpoints {1,7}, carrier edge {1,4}, certificate rail 2. Immutable postflight passed, 28/28 package hashes, compile/relink/benchmarks/selector497 not executed. Evidence is candidate/non-stable and does not modify 66/17/49, debt1, CP2 491/491, R3 403/497, selector497; RP-01 open, RP-02 UNREACHED. Independent Review next (ID UNKNOWN); no repair authorized.
 - [x] Independent Review (RA-81): TB10 accepted as diagnostic evidence; vertex 4 is the interior vertex of the open rail 1–4–7 and no V/I/C branch admits it. Record: `Architecture_M6_CP3_R9_Carrier_Endpoint_Subcondition_Review_Decision.md`.
@@ -71,14 +71,15 @@
   - A3: the witness lives inside `SurfaceTracePoint`;
   - A4: the witness is bound bit for bit to one rounding helper; the trust root is the producer.
   - U6 goes first: CB15 (producer witness) and CB16 (checkers); U4/U5 become CB17/CB18. Record: RA-96, appended to `.agents/Directional/Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md`.
-- [ ] **NEXT: `M6-CP3-CB15-R10-EXACT-I-ENDPOINT-WITNESS-PRODUCER`** (compile only; RA-96.4):
+- [x] `M6-CP3-CB15-R10-EXACT-I-ENDPOINT-WITNESS-PRODUCER` (compile-only; RA-96.4):
   - `SurfaceTracePoint::exactEdgePoint`;
   - `accepted_boundary_trace_point` and `exact_interior_witness_binds`;
   - dedup clears conflicting witnesses;
   - four appended probe fields;
   - three P10 tests.
-  - No admission change.
-- [ ] Then `M6-CP3-TB15-R10-EXACT-I-ENDPOINT-WITNESS-PRODUCER` (RA-96.5, nine identities): the 19-identity template must show equal, bound, strictly interior witnesses; bytes outside the new fields must be unchanged. Then TB15-REV issues the CB16 spec.
+  - No admission change; exact semantic source `e4785d734e35d2f01ca3ee8099772f6ab5257f4c`.
+  - GMP/GMPXX eight-target compile package `12150973440`, source/run/hash in CB15 code-build record; runtimeExecution=false.
+- [ ] **NEXT:** `M6-CP3-TB15-R10-EXACT-I-ENDPOINT-WITNESS-PRODUCER` (RA-96.5, nine identities): the 19-identity template must show equal, bound, strictly interior witnesses; bytes outside the new fields must be unchanged. Then TB15-REV issues the CB16 spec.
 - [ ] Fixture debt (RA-92.3, RA-93.3), scheduled by RA-96.6 after TB18 as test-only CB/TB pairs, in the order 242 → 174 → 250 → adjacent-sheet → 191 family → 442; none blocks U4–U6:
   - 174: replace the non-manifold three-face TriMesh source;
   - 191 family (189–195): print the atlas build error, then repair the fixture field;
