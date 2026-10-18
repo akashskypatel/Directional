@@ -1,12 +1,1 @@
-{
-  "schema_version": 1,
-  "request_id": "m6-cp3-defn-u6a-tracking-20261018-02",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-u6a-tracking",
-  "file_id": "1xlcXV0FbJ_21r1lGmDjKQgo2M0Ik-SHY",
-  "patch_sha256": "751439965192ebcbc14047511c8c22e3f89149c68ec2c09000dd91973f902925",
-  "base_sha": "cfd16727ee7d07afcb8f3408c10b34ae0d697cce",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close out U6A definition tracking",
-  "retention_days": 14
-}
+{"schema_version":1,"request_id":"m6-cp3-cb15-patch-20261018-01","operation":"drive_apply","mailbox_key":"m6-cp3-cb15-patch","file_id":"165r4G5jXEbT7umo23vvM2Yvr160w2DwY","patch_sha256":"09396c760c395c729546ba7b515eb0fecd5c4b1ba4b832f8e693ba4aad6e1aba","base_sha":"4919887514143ede74e80a74b104b430829991fd","target_branch":"agent/surface_cell_quad/p5-recover-bridge-healing","commit_message":"feat(directional): preserve exact interior source-edge witness at accepted boundary","retention_days":14}
