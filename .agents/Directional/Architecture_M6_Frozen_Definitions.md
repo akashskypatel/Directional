@@ -1,3 +1,19 @@
+## RA-86 — TB12 harness authority; CB12 accepted; TB12 selection; CB13 constraints (2026-10-18)
+
+Authority: `Architecture_M6_CP3_TB12_Harness_Authority_Review_Decision.md`.
+
+- **RA-86.1** TB12's block is a handoff defect: CB12's "no harness" scope was copied into TB12. Every TB authors its own per-turn harness, and nothing was dispatched, so rule 5 does not apply. TB12 adds exactly one new harness derived from TB11's, with the deltas RA-86.1 enumerates.
+- **RA-86.2** CB12 is implemented to specification and its package is verified independently. On pipeline data the validator is a consistency check (RA-84.2). Gaps: no isolated face-support tamper, and no `make`-level test (no open-rail fixture is `Produced`).
+- **RA-86.3** TB11's tests stop in the consumer before `make`, so they cannot exercise CB12. The two full-pipeline RP-01 tests that build `nonconstant_hard_rail_fixture` are added as non-gating diagnostics. Falsifier: `PublishedProductRejected` without `firstPredicate=`.
+- **RA-86.4** Six identities: two gating (the CB12 contract test and the truth table), four diagnostic. Whatever the outcome, the successor is the Review `…TB12-…-REV`, which issues the CB13 specification.
+- **RA-86.5** U3 constraints:
+  - the chain is mandatory, with no anchor fallback, and the empty-map exemption ends;
+  - direct-factory tests supply valid chains, so their negatives are not vacuous;
+  - `PhaseFrontDraft` carries the chains;
+  - one interval rule serves both checkers.
+
+---
+
 ## RA-85 — TB11 reviewed: RED predates CB11; I–I admitted by open-chain interval; plan realigned (2026-10-18)
 
 Authority: `Architecture_M6_CP3_TB11_Route_Anchor_Review_Decision.md`.

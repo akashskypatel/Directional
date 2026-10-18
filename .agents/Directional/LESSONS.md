@@ -99,6 +99,10 @@ This document records **reusable failure-derived engineering lessons**, not an e
   the run that measured its outcome; a test titled `Produced…` may never have produced. Before freezing a
   *reject* row in an outcome matrix, check whether the real producer generates that shape — a rejected shape
   that production emits routinely (middle segments of a subdivided rail) turns the plan's final TB RED (RA-85).
+- **A test exercises a change only if its execution path reaches the changed code.** Before predicting
+  "unchanged" as evidence for a change, trace where the test stops: a test that fails upstream of the
+  change (in the consumer, before the factory runs) cannot falsify it. Add a test whose path reaches the
+  change, and give it a falsifier that is readable from its failure text (RA-86.3).
 
 ## Semantic ownership, identity, and dataflow
 

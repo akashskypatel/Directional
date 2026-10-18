@@ -34,43 +34,45 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-18, after compiled CB12 (RA-85.5 U2); TB12 artifact-only next |
+| Currency | 2026-10-18, after `M6-CP3-TB12-R10-HARNESS-AUTHORITY-REV` (RA-86) |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft; refetch HEAD before mutation. Semantic source `b1b02d5bed43898af0708d76dcd70ada96aeecc9` (CB12). |
 | Last accepted semantic runtime | M6 CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. |
-| Latest candidate or rejected evidence | TB11 run `39092477302`, result `12123605663`, on CB11 package `12121016836`: truth table PASS; two midline-fixture tests RED at `open-rail-route-anchor`, front 29/147. The fixture has never been `Produced`; **not a regression** (RA-85.2). Not promoted. |
+| Latest candidate or rejected evidence | CB12 package `12125223513` (run `39097975393`, ZIP SHA-256 `c98ed3a509e9d1ccc1df83eaeb6112b8636bc0e7ee63b73140d789c32f38eeb6`), verified by RA-86.2; tests not yet run. TB11 run `39092477302`: truth table PASS, two midline tests RED at `open-rail-route-anchor`, front 29/147 (RP-01, not a regression, RA-85.2). |
 | Regression accounting and debt | **66/17/49**, debt **1**, selector 497 frozen; R3 **403/497** rejected; `Regression_Root_Cause_Tracker.md`. |
-| Active boundary | `RP-01`: two blockers on subdivided open rails, the R endpoint (vertex 4) and I–I middle fronts. U2 (ordered open source-chain provenance) is compiled; U3–U5 remain frozen until their reviewed predecessor TB. RA-85.4 specifies an open-chain interval route rule, not yet implemented. `RP-02` UNREACHED; Gate C suspended. |
+| Active boundary | `RP-01`: on subdivided open rails, the R endpoint (vertex 4) and I–I middle fronts. U2 (CB12) is compiled and verified; TB12 measures it. U3–U5 frozen (RA-85.5), and U3 carries the RA-86.5 constraints. `RP-02` UNREACHED; Gate C suspended. |
 
 ## Mandatory next turn — `M6-CP3-TB12-R10-OPEN-RAIL-CHAIN-PROVENANCE` — EXACT NEXT
 
-- **Type / owner:** `TB` artifact-only, RA-85.5 U2 verification. No code, rebuild, relink, fixture mutation, or implementation changes.
-- **Objective:** independently run CB12's open-chain provenance contract tests and retained TB11 route-anchor tests on the immutable CB12 compile package. Report every observed outcome; CB12 did not run these tests.
-- **Read before work:** `.agents/Directional/Architecture_M6_CP3_CB12_R10_Open_Rail_Chain_Provenance_Code_Build_Record_20261018.md`, RA-85 Review, RA-84 clauses, TB11 report and applicable frozen gates; immutable compile run `39097975393` / package `12125223513`.
-- **In scope:** verify exact compiled semantic source `b1b02d5bed43898af0708d76dcd70ada96aeecc9`, package hashes/GMP/GMPXX, execute each authorized identity in a fresh process from the immutable package without rebuilding, and record both new contract behavior and the three TB11 tests. Red outcomes are independent evidence for Review, never repaired within TB.
-- **Out of scope:** admission-rule implementation (U3–U5), changing production code, test expectations, harnesses, selector 497, baseline, artifacts or accepted semantic ledgers without an independent Review.
-- **Success evidence:** immutable artifact identity, selected test counts, per-identity outcomes and source-authority receipts; report whether TB11's prior route-anchor locus is unchanged as predicted. Code + Build compilation alone is not acceptance.
-- **On success:** the formally authorized successor of a green TB, if established by the applicable approved plan; otherwise `UNKNOWN — STOP` pending authoritative determination.
-- **On semantic red:** `UNKNOWN — STOP`, mandatory independent Review + Plan; no speculative CB13.
+- **Type / owner:** `TB`, artifact-only, on the immutable CB12 package. It restarts the blocked attempt; nothing from that attempt was dispatched.
+- **Objective:** measure U2 (gate) and record four RP-01 diagnostics against the RA-86.4 predictions.
+- **Read before work:** RA-86 record; CB12 record; TB11 report and harness `.agents/Directional/tools/m6_cp3_r10_open_rail_route_anchor_harness.sh` (`763dee35a`).
+- **In scope:**
+  1. Add one new file, `.agents/Directional/tools/m6_cp3_r10_open_rail_chain_provenance_harness.sh`, derived from the TB11 harness. Only the deltas RA-86.1 allows: sha `b1b02d5bed43898af0708d76dcd70ada96aeecc9`, artifact `12125223513`, digest `c98ed3a509e9d1ccc1df83eaeb6112b8636bc0e7ee63b73140d789c32f38eeb6`, the six RA-86.4 identities in order, `TB12_` tags, and the ledger columns `role` and `first_failure`. Commit it alone and record its SHA-256 and the executor commit.
+  2. Dispatch `test_benchmark` with that harness. Run one fresh process per identity, with no rebuild, relink, benchmark or selector run.
+  3. Write a TB12 report of 40 lines or fewer. For each identity give the verdict and `first_failure`, and compare it with its RA-86.4 prediction. Compare #3 and #4 byte for byte with TB11's predicate. For #5 and #6, state whether `firstPredicate=` is present.
+- **Out of scope:** product, test, workflow or existing-harness changes; selector 497; reinterpreting outcomes; any CB13 work.
+- **Success evidence:** result artifact ID and ZIP SHA-256; 6 selected, 0 missing; immutability postflight; the ledger; the prediction comparison.
+- **On any measured outcome:** `M6-CP3-TB12-R10-OPEN-RAIL-CHAIN-PROVENANCE-REV`, a Review that adjudicates the predictions and issues the CB13 specification. Orchestration failure: `Turn_Cadence.md` rule 5.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — next | `M6-CP3-TB12-R10-OPEN-RAIL-CHAIN-PROVENANCE` | Artifact-only immutable CB12 verification. |
-| 2 — conditional | `UNKNOWN` | Review if semantic RED; any later U3/CB13 implementation requires reviewed TB12 authority. |
+| 1 — next | `M6-CP3-TB12-R10-OPEN-RAIL-CHAIN-PROVENANCE` | Artifact-only; one new harness (RA-86.1); six identities (RA-86.4). |
+| 2 — conditional | `M6-CP3-TB12-R10-OPEN-RAIL-CHAIN-PROVENANCE-REV` | Review after any measured TB12 outcome. It issues the CB13 specification under the RA-85.4 rule and the RA-86.5 constraints. |
 
-U3–U5 (`CB13`–`CB15`, each followed by its TB) are frozen in RA-85.5; nothing beyond TB12 is initiated in this turn.
+Then U3 `CB13`/`TB13` → U4 `CB14`/`TB14` → U5 `CB15`/`TB15` (RA-85.5), each after a reviewed predecessor TB; anything beyond is `UNKNOWN`.
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **test-benchmark** — consume the immutable compiled package; no rebuild or code edits.
+`load_next`: **test-benchmark** — consume the immutable CB12 package; author only the RA-86.1 harness; no rebuild or code edits.
 
 Minimum successor context **after the mandatory start checklist and policies**:
 
 0. `.agents/Directional/ORIENTATION.md` — project context, read first.
 1. `.agents/Directional/ROADMAP.md` — milestone position only.
 2. `.agents/Directional/Future_Chat_Session_Handoff.md` — exact current handoff.
-3. `Architecture_M6_CP3_CB12_R10_Open_Rail_Chain_Provenance_Code_Build_Record_20261018.md`, `Architecture_M6_CP3_TB11_Route_Anchor_Review_Decision.md` (RA-85), `Architecture_M6_Frozen_Definitions.md`, `GMP_COMPILE_POLICY.md`.
+3. `Architecture_M6_CP3_TB12_Harness_Authority_Review_Decision.md` (RA-86), `Architecture_M6_CP3_CB12_R10_Open_Rail_Chain_Provenance_Code_Build_Record_20261018.md`, `Architecture_M6_CP3_TB11_Open_Rail_Route_Anchor_Harvest_Report_20261018.md`, `Architecture_M6_Frozen_Definitions.md` RA-85/RA-86.
 4. `.agents/Directional/Regression_Root_Cause_Tracker.md` and `TODO.md` — unresolved issues and scope; required policy readings still govern.
 
 **Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py authority <sha>` and
