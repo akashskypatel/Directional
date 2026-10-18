@@ -1,2 +1,0 @@
-source snapshot for M6-CP3-CB11-R10-OPEN-RAIL-ROUTE-ANCHOR
-request_source_sha=28c1c53e2821174ce37d0466f7b835396fcf7a8b
