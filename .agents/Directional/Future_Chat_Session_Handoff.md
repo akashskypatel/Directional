@@ -41,6 +41,11 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | Regression accounting and debt | **66/17/49**, debt **1** unchanged; selector 497 frozen; M6 CP2 491/491 remains last accepted runtime, R3 403/497 rejected. Selector 199 unexpectedly PASS; 250 remains RED; remaining fixture debts 174/191-family/242/442/250 and adjacent-sheet helper. See regression tracker. |
 | Active boundary | `RP-01`: B1 U3 closed; B2 U4/U5 11 identities; B3 U6 DEFN-first 19 identities. Four restored curved-disk controls 235/236/294/299 PASS; 199 PASS unexpectedly (RA-93.4 prediction falsifier) requires Review before promotion. `RP-02` UNREACHED; Gate C suspended. |
 
+## Incomplete TB14A documentation closeout — resume before Review
+
+- TB14A report, candidate tracker and this handoff are committed. `TODO.md` and `CHANGELOG.md` closeout edits remain uncommitted because the Google Drive patch-transport upload could not access the local container session. This is procedural WIP, not a test failure or an independently resolved Review gate.
+- Exact remaining changes are preserved as `Directional_TB14A_remaining_TODO_CHANGELOG_work-preservation.patch` (SHA-256 `600afd3b8599e970f3e55a06517da4fc3bf87a143a1a058070147fd152e18f55`, base `a6a4b309a3beb410a1e32e2904b6c0890fdfefe6`). Apply only through authorized Drive transport, verify the changed paths remain untouched, then finalize `STATUS` to COMPLETE. Do not start Review while `STATUS` is IN_PROGRESS.
+
 ## Mandatory next turn — `M6-CP3-TB14A-R10-CURVED-DISK-CONTROL-CENSUS-REV` — EXACT NEXT
 
 - **Type:** independent Review + Plan; no implementation, test, fixture, selector, compile, or runtime mutations.
