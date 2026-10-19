@@ -1,2 +1,0 @@
-M6-CP3-TB16 immutable source snapshot request.
-Pinned source is this trigger commit; no runtime execution.
