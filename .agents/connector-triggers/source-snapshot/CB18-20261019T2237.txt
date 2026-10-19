@@ -1,0 +1,3 @@
+source-snapshot trigger for M6-CP3-CB18-R10-CONSUMER-RAIL-VERTEX-ENDPOINT
+source ref: agent/surface_cell_quad/p5-recover-bridge-healing
+bootstrap parent: 39794412b054f2badbc26a35b026bb4e8f7fead1
