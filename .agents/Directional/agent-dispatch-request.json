@@ -1,14 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb16-exact-i-witness-20261019-01",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb16-exact-i-witness",
-  "executor_sha": "3f0220bc4f2bf27317fb0834f89c7ca3c6435275",
-  "semantic_source_sha": "1c45e89ae0ca7a072c5140aea2b95be6387ec078",
-  "turn_id": "M6-CP3-TB16-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS",
-  "harness_path": ".agents/Directional/tools/m6_cp3_tb16_exact_i_endpoint_witness_checkers_harness.sh",
-  "harness_sha256": "f8db713ee6a98445cc26f29ce8dfc248cca88de1b927ceabf1892ed0aa43769b",
-  "environment": {},
-  "artifact_prefix": "m6-cp3-tb16-exact-i-witness",
+  "request_id": "m6-cp3-cb16a-apply-20261019-01",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb16a-drive-apply",
+  "file_id": "1rOJ_sxsBINXWgzZLkB6vXBmznJZweNhX",
+  "patch_sha256": "437fc495b5a95b28fba6506580e194a0b0e3aee07cb57ba5d3a6f02bf975b74a",
+  "base_sha": "1a00b9af69ec80339bfb8af9c0c85379d3be2a1e",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "test(surface-cells): correct exact witness unbound mutation",
   "retention_days": 14
 }
