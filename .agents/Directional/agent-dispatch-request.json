@@ -1,12 +1,14 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb17-doc-closeout-20261019-01",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb17-doc-closeout",
-  "file_id": "1B4SLG9ysbllMY2B-O5tq06Re1BiEbExP",
-  "patch_sha256": "12edaa8f26a10731945c520e95422051dc0fdb6ce141692bd0af4d47c3e067a7",
-  "base_sha": "287b53252d756607834a722abfad1cbb94faa773",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close CB17 compile-only factory rail endpoint",
+  "request_id": "m6-cp3-tb17-r10-20261019-01",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb17-factory-rail-vertex",
+  "executor_sha": "209947282a152e125fbaf3801818ae858da27a93",
+  "semantic_source_sha": "ccc0b00ab6a94d0889ed7c60e4532b6c985ce03e",
+  "turn_id": "M6-CP3-TB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT",
+  "harness_path": ".agents/Directional/tools/open_rail_interior_vertex_harness.sh",
+  "harness_sha256": "efa91d9ba48b1a26b6caf189b7a6d76ca3746109c969d8f20531e32d2191c7a9",
+  "environment": {},
+  "artifact_prefix": "m6-cp3-tb17-rail-vertex",
   "retention_days": 14
 }
