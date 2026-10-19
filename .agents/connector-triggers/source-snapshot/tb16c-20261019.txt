@@ -1,0 +1,2 @@
+Snapshot source authority for M6-CP3-TB16C-R10-SELECTOR-497-CENSUS.
+Semantic package source: 7cfa5b4612ed67ec0bbddb747edbc6c53076b781
