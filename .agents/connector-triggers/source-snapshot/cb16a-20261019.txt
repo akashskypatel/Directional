@@ -1,0 +1,3 @@
+Source snapshot for M6-CP3-CB16A-R10-EXACT-I-WITNESS-UNBOUND-ROW.
+Frozen pre-trigger head: 35831be961add272e0897fc2590c9f36538f8fe6.
+Purpose: code/build inspection only; no local build or runtime.
