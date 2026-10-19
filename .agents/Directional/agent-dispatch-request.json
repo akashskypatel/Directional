@@ -1,13 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb16a-20261019-01",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb16a-r10",
-  "executor_sha": "337156789bcf7394caeae032096883ef38667c8b",
-  "semantic_source_sha": "7cfa5b4612ed67ec0bbddb747edbc6c53076b781",
-  "turn_id": "M6-CP3-TB16A-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS",
-  "harness_path": ".agents/Directional/tools/m6_cp3_tb16a_exact_i_endpoint_witness_checkers_harness.sh",
-  "harness_sha256": "20b2ebd80f96e7d4bab6cb727b4f55cfa74f6c7006bf8c1e25e35a289f9aafea",
-  "environment": {},
-  "artifact_prefix": "directional-m6-cp3-tb16a"
+  "request_id": "m6-cp3-tb16a-closeout-20261019-01",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb16a-doc-closeout",
+  "file_id": "1T10PH6D8RYpxo0i80RmgES1ReUbEaSx7",
+  "patch_sha256": "4b02427f8903ae0d1d5fc45a59158587080c5098fa3b2bf482ab1785ee7e3d33",
+  "base_sha": "92f88616e8da009866be13aa879fefad10cce1d6",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close TB16A witness checker harvest",
+  "retention_days": 14
 }
