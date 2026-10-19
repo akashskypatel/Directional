@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb17-r10-closeout-20261019-02",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb17-doc-closeout",
-  "file_id": "1EicIUtvFv_0de9IW1h60RbcV4dhXgQGY",
-  "patch_sha256": "45af378b123fec822227e79776ba027097c19b0c8c05f34e05bce1bfe3ef6eab",
-  "base_sha": "c5d1741030cd21bcc89c135128ecd8b798987925",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): finalize TB17 evidence and review handoff",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb18-r10-compile-20261019-01",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb18-r10-compile",
+  "source_sha": "3bd24682c5e18eece541ab4d1f38f781a2230e41",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb18-r10-compile"
 }
