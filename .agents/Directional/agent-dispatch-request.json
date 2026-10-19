@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb16-compile-20261018-02",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb16-compile",
-  "source_sha": "1c45e89ae0ca7a072c5140aea2b95be6387ec078",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-cb16"
+  "request_id": "m6-cp3-cb16-docs-apply-20261019-01",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb16-docs-apply",
+  "file_id": "1Oz7QnLWNOM8MFACyeNgzx4Et5Uwl-ygF",
+  "patch_sha256": "1bfc92d21e9982562a7e71efa54f9f371382be57a775834d3778d436b3afa278",
+  "base_sha": "243bef34d0f22affdaae22055990bceeb335ff9c",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "Close CB16 exact-I checker Code+Build documents"
 }
