@@ -7237,12 +7237,15 @@ TEST(SurfaceCellAuthorityContractCutover, OpenRailRouteChainIntervalTruthTable) 
   const auto check = [&](const std::vector<std::pair<int, int>> &edges,
                          std::optional<SourceVertexId> first,
                          std::optional<SourceVertexId> last,
-                         const auto &railChain) {
+                         const auto &railChain,
+                         std::optional<SourceVertexId> firstRail = std::nullopt,
+                         std::optional<SourceVertexId> lastRail = std::nullopt) {
     std::vector<SourceEdgeTopologyKey> steps;
     for (const auto [a, b] : edges)
       steps.push_back(test_source_edge_topology(a, b));
     return directional::geometry::surface_cell_tracing_detail::
-        open_rail_route_interval_valid(steps, first, last, railChain);
+        open_rail_route_interval_valid(steps, first, last, railChain,
+                                       firstRail, lastRail);
   };
   EXPECT_TRUE(check({{1, 4}}, t1, std::nullopt, chain));  // T-I
   EXPECT_TRUE(check({{1, 4}}, std::nullopt, t1, chain));  // I-T (reverse)
@@ -7259,6 +7262,59 @@ TEST(SurfaceCellAuthorityContractCutover, OpenRailRouteChainIntervalTruthTable) 
   EXPECT_FALSE(check({{1, 4}}, t4, std::nullopt, chain));
   EXPECT_FALSE(check({{1, 7}}, std::nullopt, std::nullopt, chain));
   EXPECT_FALSE(check({}, std::nullopt, std::nullopt, chain));
+  // R endpoints must be strictly interior vertices at the route's outer ends.
+  EXPECT_TRUE(check({{1, 4}}, std::nullopt, std::nullopt, chain,
+                    std::nullopt, t4)); // I-R
+  EXPECT_TRUE(check({{4, 7}}, std::nullopt, std::nullopt, chain,
+                    t4, std::nullopt)); // R-I
+  EXPECT_TRUE(check({{1, 4}}, t1, std::nullopt, chain,
+                    std::nullopt, t4)); // T-R
+  EXPECT_FALSE(check({{1, 4}}, std::nullopt, std::nullopt, chain,
+                     std::nullopt, t1)); // R at chain terminal
+  EXPECT_FALSE(check({{1, 4}}, std::nullopt, std::nullopt, chain,
+                     std::nullopt, t7)); // R outside route
+  EXPECT_FALSE(check({{1, 4}, {4, 7}}, std::nullopt, std::nullopt,
+                     chain, t4, std::nullopt)); // R not outer endpoint
+  EXPECT_FALSE(check({{1, 4}}, std::nullopt, t4, chain,
+                     std::nullopt, t4)); // both T and R
+  EXPECT_FALSE(check({{1, 4}}, std::nullopt, std::nullopt, shortChain,
+                     std::nullopt, t4)); // no interior vertices
+  const directional::geometry::SurfaceHardRailOpenChain longerChain{
+      0, {vertex(0), t1, t4, t7}};
+  EXPECT_TRUE(check({{1, 4}}, std::nullopt, std::nullopt, longerChain,
+                    t1, t4)); // R-R
+}
+
+TEST(SurfaceCellAuthorityContractCutover,
+     OpenRailInteriorVertexEligibilityTruthTable) {
+  using directional::authority::SourceVertexId;
+  const auto vertex = [](int i) {
+    const auto id = SourceVertexId::from_index(i, 8);
+    if (!id) throw std::runtime_error("Invalid open-rail test vertex");
+    return id.value();
+  };
+  using directional::geometry::SurfaceHardRailOpenChain;
+  const SurfaceHardRailOpenChain chain{0, {vertex(1), vertex(4), vertex(7)}};
+  const auto edge = [](int a, int b) { return test_source_edge_topology(a, b); };
+  const std::set<directional::authority::SourceEdgeTopologyKey> hard{
+      edge(1, 4), edge(4, 7)};
+  const auto valid = [&](int id, const SurfaceHardRailOpenChain &rail,
+                         const auto &spokes) {
+    return directional::geometry::surface_cell_tracing_detail::
+        open_rail_interior_vertex_valid(vertex(id), rail, spokes);
+  };
+  EXPECT_TRUE(valid(4, chain, hard));
+  EXPECT_FALSE(valid(1, chain, hard));
+  EXPECT_FALSE(valid(7, chain, hard));
+  EXPECT_FALSE(valid(5, chain, hard));
+  auto extra = hard;
+  extra.insert(edge(4, 5));
+  EXPECT_FALSE(valid(4, chain, extra));
+  EXPECT_FALSE(valid(4, chain, std::set<directional::authority::SourceEdgeTopologyKey>{
+      edge(1, 4)}));
+  EXPECT_FALSE(valid(4, SurfaceHardRailOpenChain{0, {vertex(1), vertex(4)}}, hard));
+  EXPECT_FALSE(valid(4, SurfaceHardRailOpenChain{
+      0, {vertex(1), vertex(4), vertex(7), vertex(4)}}, hard));
 }
 
 // An open rail may have a field-determined endpoint in the interior of

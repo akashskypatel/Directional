@@ -8250,8 +8250,12 @@ bool open_rail_route_interval_valid(
     const std::vector<authority::SourceEdgeTopologyKey> &steps,
     const std::optional<authority::SourceVertexId> &firstVertex,
     const std::optional<authority::SourceVertexId> &lastVertex,
-    const SurfaceHardRailOpenChain &chain) {
+    const SurfaceHardRailOpenChain &chain,
+    const std::optional<authority::SourceVertexId> &firstRailVertex,
+    const std::optional<authority::SourceVertexId> &lastRailVertex) {
   const auto &vertices = chain.vertices;
+  if ((firstVertex && firstRailVertex) || (lastVertex && lastRailVertex))
+    return false;
   if (steps.empty() || vertices.size() < 2U ||
       steps.size() >= vertices.size()) return false;
   for (std::size_t start = 0; start < vertices.size(); ++start) {
@@ -8268,6 +8272,12 @@ bool open_rail_route_interval_valid(
       if (lastVertex &&
           (*lastVertex != vertices[end] ||
            (end != 0U && end + 1U != vertices.size()))) continue;
+      if (firstRailVertex &&
+          (*firstRailVertex != vertices[start] || start == 0U ||
+           start + 1U == vertices.size())) continue;
+      if (lastRailVertex &&
+          (*lastRailVertex != vertices[end] || end == 0U ||
+           end + 1U == vertices.size())) continue;
       bool contiguous = true;
       for (std::size_t k = 0; k < steps.size(); ++k) {
         const std::size_t a = direction == 1 ? start + k : start - k;
@@ -8283,6 +8293,31 @@ bool open_rail_route_interval_valid(
     }
   }
   return false;
+}
+
+bool open_rail_interior_vertex_valid(
+    const authority::SourceVertexId vertex, const SurfaceHardRailOpenChain &chain,
+    const std::set<authority::SourceEdgeTopologyKey> &hardFeatureEdges) {
+  const auto &vertices = chain.vertices;
+  if (vertices.size() < 3U) return false;
+  const auto occurrence = std::find(vertices.begin(), vertices.end(), vertex);
+  if (occurrence == vertices.begin() || occurrence == vertices.end() ||
+      occurrence + 1 == vertices.end() ||
+      std::find(occurrence + 1, vertices.end(), vertex) != vertices.end())
+    return false;
+  const auto index = static_cast<std::size_t>(occurrence - vertices.begin());
+  const auto previous = authority::SourceEdgeTopologyKey::make(
+      vertices[index - 1U], vertex);
+  const auto next = authority::SourceEdgeTopologyKey::make(
+      vertex, vertices[index + 1U]);
+  if (!previous || !next || previous.value() == next.value() ||
+      !hardFeatureEdges.contains(previous.value()) ||
+      !hardFeatureEdges.contains(next.value())) return false;
+  for (const auto &edge : hardFeatureEdges)
+    if ((edge.first() == vertex || edge.second() == vertex) &&
+        edge != previous.value() && edge != next.value())
+      return false;
+  return true;
 }
 } // namespace surface_cell_tracing_detail
 
@@ -8685,6 +8720,11 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
     for (const auto vertex : contact.endpoints)
       terminalStarIncidence.try_emplace(vertex);
   }
+  for (const auto &[rail, chain] : hardRailOpenChains) {
+    (void)rail;
+    for (std::size_t i = 1U; i + 1U < chain.vertices.size(); ++i)
+      terminalStarIncidence.try_emplace(chain.vertices[i]);
+  }
   if (!terminalStarIncidence.empty()) {
     for (const auto &region : sourceTopologyRegions.regions()) {
       for (const auto &member : region.faces()) {
@@ -8769,7 +8809,9 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
       if (chain == hardRailOpenChains.end() ||
           !surface_cell_tracing_detail::open_rail_route_interval_valid(
               routeEdges, certificate.endpoints[0].terminalVertex,
-              certificate.endpoints[1].terminalVertex, chain->second)) {
+              certificate.endpoints[1].terminalVertex, chain->second,
+              certificate.endpoints[0].railVertex,
+              certificate.endpoints[1].railVertex)) {
         error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
         return error;
       }
@@ -8840,7 +8882,12 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
         return error;
       }
       if (contact != hardRailTerminalContacts.end()) {
-        const auto vertex = endpoint.terminalVertex;
+        if (endpoint.terminalVertex && endpoint.railVertex) {
+          error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+          return error;
+        }
+        const auto vertex = endpoint.terminalVertex
+            ? endpoint.terminalVertex : endpoint.railVertex;
         const auto firstPoint = endpointIndex == 0U ? first.from : first.to;
         const auto secondPoint = endpointIndex == 0U ? second.to : second.from;
         const auto exact_vertex_attachment = [&](const SurfaceTracePoint &point) {
@@ -8870,8 +8917,21 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
           }
           continue;
         }
-        if ((vertex != contact->second.endpoints[0] &&
+        if ((endpoint.terminalVertex &&
+             vertex != contact->second.endpoints[0] &&
              vertex != contact->second.endpoints[1]) ||
+            (endpoint.railVertex &&
+             ((vertex == contact->second.endpoints[0] ||
+               vertex == contact->second.endpoints[1]) ||
+              !surface_cell_tracing_detail::open_rail_interior_vertex_valid(
+                  *vertex, hardRailOpenChains.at(certificate.rail),
+                  hardFeatureEdges) ||
+              (unique_terminal_star_path_checked(
+                   *vertex, endpoint.firstAttachment, carrier.secondFace) ==
+                   TerminalStarPathResult::Unique &&
+               unique_terminal_star_path_checked(
+                   *vertex, endpoint.secondAttachment, carrier.firstFace) ==
+                   TerminalStarPathResult::Unique))) ||
             (carrier.edge.first() != *vertex &&
              carrier.edge.second() != *vertex) ||
             !exact_vertex_attachment(firstPoint) ||
@@ -8923,7 +8983,8 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
           error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
           return error;
         }
-      } else if (endpoint.terminalVertex || !endpoint.contactPaths[0].empty() ||
+      } else if (endpoint.terminalVertex || endpoint.railVertex ||
+                 !endpoint.contactPaths[0].empty() ||
                  !endpoint.contactPaths[1].empty() ||
                  carrier.firstFace != endpoint.firstAttachment ||
                  carrier.secondFace != endpoint.secondAttachment) {

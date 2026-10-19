@@ -1500,6 +1500,9 @@ struct SurfaceHardRailRouteEndpointCertificate {
   // not be the source faces immediately incident to the hard-rail carrier.
   std::optional<authority::SourceVertexId> terminalVertex;
   std::array<std::vector<SurfaceHardRailFieldTransition>, 2> contactPaths;
+  // Strictly interior vertex of this route's published open chain; never a
+  // terminal, and exclusive with terminalVertex.
+  std::optional<authority::SourceVertexId> railVertex;
 
   [[nodiscard]] authority::QuarterTurn attachmentTransport() const noexcept {
     auto phi = std::array{authority::QuarterTurn::from_integer(0),
@@ -1567,12 +1570,18 @@ namespace surface_cell_tracing_detail {
     const Eigen::MatrixXi &faces,
     const authority::SourceEdgeTopologyKey &edge);
 // A route occupies one contiguous, non-wrapping interval of the source chain.
-// Only a genuine chain-end vertex may be certified as a terminal.
+// Only a genuine chain-end vertex may be certified as a terminal; a rail
+// vertex must coincide with the route end and be strictly inside the chain.
 [[nodiscard]] bool open_rail_route_interval_valid(
     const std::vector<authority::SourceEdgeTopologyKey> &steps,
     const std::optional<authority::SourceVertexId> &firstVertex,
     const std::optional<authority::SourceVertexId> &lastVertex,
-    const SurfaceHardRailOpenChain &chain);
+    const SurfaceHardRailOpenChain &chain,
+    const std::optional<authority::SourceVertexId> &firstRailVertex = std::nullopt,
+    const std::optional<authority::SourceVertexId> &lastRailVertex = std::nullopt);
+[[nodiscard]] bool open_rail_interior_vertex_valid(
+    authority::SourceVertexId vertex, const SurfaceHardRailOpenChain &chain,
+    const std::set<authority::SourceEdgeTopologyKey> &hardFeatureEdges);
 } // namespace surface_cell_tracing_detail
 
 namespace surface_cell_tracing_detail {

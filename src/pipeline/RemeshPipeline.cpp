@@ -2122,6 +2122,11 @@ std::uint64_t hash_trace_network(
         hash_combine_i64(seed, carrier.firstToSecond.value());
         hash_combine_i64(seed, endpoint.terminalVertex.has_value() ?
             static_cast<std::int64_t>(endpoint.terminalVertex->index()) : -1);
+        if (endpoint.railVertex) {
+          hash_combine_u64(seed, 0x5241494c56455254ULL); // RAILVERT
+          hash_combine_i64(seed,
+              static_cast<std::int64_t>(endpoint.railVertex->index()));
+        }
         for (const auto &path : endpoint.contactPaths) {
           hash_combine_u64(seed, path.size());
           for (const auto &step : path) {
