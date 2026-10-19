@@ -34,36 +34,22 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-18, after `M6-CP3-TB15-R10-EXACT-I-ENDPOINT-WITNESS-PRODUCER-REV` (RA-97). CB15 and TB15 re-verified and accepted. The B3 witness is exactly `1,4@1/5`, bound on both sides. CB16 (checker rule) is specified. RA-95.3's "p ≠ 1/5" is withdrawn: GMP `get_d` truncates. |
-| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft; refetch HEAD before mutation. Latest semantic source is `e4785d734e35d2f01ca3ee8099772f6ab5257f4c` (CB15). The CB15 package is `12150973440` (ZIP `7f56c6a551494ab4e5b9276719946e358ea23bd8b2c5bddec94014796d76c073`). |
+| Currency | 2026-10-18, after `M6-CP3-CB16-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS`. RA-97.4 checker implemented and compiled, runtime-free. The B3 witness remains exactly `1,4@1/5`; TB16 is not executed yet. |
+| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft; refetch HEAD before mutation. Latest semantic source is `1c45e89ae0ca7a072c5140aea2b95be6387ec078` (CB16). CB16 compile package `12154623660` (ZIP SHA-256 `821edfc6653af356c902d2debedc065a0ee6b51d287c27bdfd0679ef3a619956`), run `39176761903`; `runtimeExecution=false`. |
 | Last accepted semantic runtime | M6 CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. The R3 baseline (403/497) is `Architecture_M6_CP3_TB1_Entry_R3_Red_Classification.tsv`. |
 | Latest candidate or rejected evidence | TB15 [run 39170298228](https://github.com/akashskypatel/Directional/actions/runs/39170298228), result `12152685129` (ZIP `2536c38b…f748`): 4 PASS and 5 predicted REDs. With the four new fields removed, those REDs are byte-identical to TB13A/TB14A (RA-97.1). The latest full census is still TB14A, **425/497** (result `12141843937`). |
 | Regression accounting and debt | **66/17/49**, debt **1**, selector 497 frozen; R3 403/497 rejected; no production regression. Fixture debt covers 174, 191, 242, 442, 250 and the adjacent-sheet helper (RA-96.6 order). |
 | Active boundary | `RP-01` (RA-87.3):<br>• B1 is cleared.<br>• B2 (R endpoint, 11 identities) is U4/U5 = CB17/CB18; its spec is re-derived from the TB16C census.<br>• B3 (19 identities, one template) is U6. CB15 measured a bound witness `1,4@1/5` on both sides, and CB16 makes the checkers use it.<br>`RP-02` UNREACHED; Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-CB16-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-TB16-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS` — EXACT NEXT
 
-- **Type:** Code + Build, compile only. No test execution, TB dispatch or census.
-- **Authority:** RA-97.4 in `Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md`. Line numbers are at `e4785d73`.
-- **Scope:**
-  1. Change `same_interior_carrier_point` (S:175-182) only:
-     - a present witness that fails `exact_interior_witness_binds(point, faces, edge)` → false;
-     - both witnesses present → `*first.exactEdgePoint == *second.exactEdgePoint`, with the legacy rule not consulted;
-     - otherwise the legacy rule, unchanged.
-  2. Declare `same_interior_carrier_point` in H beside the CB15 helpers (H:1558-1564). Signature unchanged.
-  3. Probe (S:20130-20133), inside the existing branch only: add `exact-witness-unbound` and `exact-witness-mismatch`; the existing labels otherwise.
-  4. Unchanged:
-     - `interior_carrier_parameter` (S:148-173), the CB15 helpers, dedup and every producer;
-     - the factory (S:8857) and consumer (S:19545) call sites, and every other guard there.
-  5. Three P10 tests (RA-97.4 item 5), compiled, not run:
-     - `ExactWitnessIdentifiesTemplateInteriorPair`;
-     - `ExactWitnessRejectsDistinctValuesWithEqualDoubles`;
-     - `ExactWitnessUnboundFailsClosedAndMixedKeepsLegacy`.
-- **Build:** GMP/GMPXX compile and package. Record of 25 lines or fewer: package ID, ZIP SHA-256, source SHA, `runtimeExecution=false`.
-- **Stop:** if the rule cannot be written without touching another guard or call site, stop and report.
-- **Docs:** in place only (handoff live sections, top `TODO.md` section, one `CHANGELOG.md` entry).
-- **STATUS:** `IN_PROGRESS` with an empty Successor while working; `COMPLETE` with the successor below as the final write.
-- **Conditional successor:** `M6-CP3-TB16-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS` (RA-97.5: 12 identities, with predictions and falsifiers there). Nothing beyond it is authorized.
+- **Type:** Test + Benchmark, artifact-only. No compile, link, build or source mutation.
+- **Authority:** RA-97.5 in `Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md`.
+- **Immutable input:** CB16 package `12154623660`, source `1c45e89ae0ca7a072c5140aea2b95be6387ec078`, ZIP SHA-256 `821edfc6653af356c902d2debedc065a0ee6b51d287c27bdfd0679ef3a619956`.
+- **Harness:** derive from TB15 harness; change only the source/package pins, labels and 12 exact identities as RA-97.5. The three CB16 tests, three CB15 tests and control must PASS. Two B2 cases remain byte-identical to TB15 at `carrier-orientation`. B3 must leave the front 17/203 endpoint-1 failure.
+- **Falsifiers:** any change in cases 1–9; cases 10–12 still failing at endpoint-1 front 17/203; any `exact-witness-` label or `open-rail-chain-interval`. A falsifier routes to Review.
+- **Conditional successor:** `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS` only if TB16 holds; otherwise mandatory Review + Plan.
+- **No work beyond this TB turn is authorized now.**
 
 ## Turn Sequence
 
@@ -72,15 +58,15 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | done | `M6-CP3-CB15-R10-EXACT-I-ENDPOINT-WITNESS-PRODUCER` | Producer witness; no admission change. |
 | done | `M6-CP3-TB15-R10-EXACT-I-ENDPOINT-WITNESS-PRODUCER` | 9/9 as predicted; witness `1,4@1/5`, bound on both sides. |
 | done | `M6-CP3-TB15-R10-EXACT-I-ENDPOINT-WITNESS-PRODUCER-REV` | RA-97: CB15 accepted; CB16 specified; RA-95.3's "p ≠ 1/5" withdrawn. |
-| 1 — next | `M6-CP3-CB16-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS` | Compile only (RA-97.4). |
-| 2 — conditional | `M6-CP3-TB16-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS` | 12 identities (RA-97.5). A falsifier goes to Review. |
+| done | `M6-CP3-CB16-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS` | Compile-only, GMP eight-target package; no runtime. |
+| 1 — next | `M6-CP3-TB16-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS` | 12 identities (RA-97.5). A falsifier goes to Review. |
 | 3 — conditional | `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS` | Only if TB16 holds. Unchanged 497 harness; compared with TB14A. |
 | 4 — conditional | `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS-REV` | Re-derives and issues the CB17 (U4) spec from the census. |
 | planned, not authorized | CB17 → TB17 → CB18 → TB18 → fixture debt (242 → 174 → 250 → adjacent-sheet → 191 → 442) → census → RP-01 Review | Each CB follows a reviewed TB; a RED TB goes to Review. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **code_build** — CB16 compile-only checker rule at `e4785d73`; no test execution.
+`load_next`: **test_benchmark** — TB16 immutable 12-case artifact-only execution against source `1c45e89ae0ca7a072c5140aea2b95be6387ec078`, package `12154623660`; RA-97.5 controls/falsifiers apply.
 
 Minimum context after mandatory policies/checklists: `.agents/Directional/ORIENTATION.md`, `.agents/Directional/ROADMAP.md`, this handoff, RA-96/RA-97 (`Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md`), `src/geometry/SurfaceCellTracing.cpp` S:60-182, S:8850-8862, S:19540-19560 and S:20110-20190, `include/directional/geometry/SurfaceCellTracing.h` H:90-96 and H:1555-1570, the three CB15 tests at the end of `tests/SurfaceCellsPhase10Tests.cpp`, `LESSONS.md` §3, §4 and §7, `TODO.md`.
 

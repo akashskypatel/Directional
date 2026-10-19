@@ -1,3 +1,9 @@
+## 2026-10-18 — CB16: exact interior witness checkers (compile only)
+
+- Applied RA-97.4 to the common factory/consumer/probe predicate: unbound present witnesses fail closed, two bound witnesses compare exact values, and mixed/absent pairs retain legacy matching. Added the two rejection-only probe labels and three independently falsifiable P10 tests (compiled, not executed).
+- Source `1c45e89ae0ca7a072c5140aea2b95be6387ec078`. GMP/GMPXX eight-target compile [run 39176761903](https://github.com/akashskypatel/Directional/actions/runs/39176761903), package `12154623660`, ZIP SHA-256 `821edfc6653af356c902d2debedc065a0ee6b51d287c27bdfd0679ef3a619956`; `runtimeExecution=false`. No runtime acceptance claim, no selector changes, stable accounting unchanged.
+- Next: `M6-CP3-TB16-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS` (12 cases, RA-97.5); conditional census and Review afterward.
+
 ## 2026-10-18 — RA-97: TB15 reviewed; CB15 accepted; CB16 checker rule specified
 
 - Both artifacts re-verified: CB15 package `7f56c6a5…` (28/28; source identical to `e4785d73`) and TB15 result `2536c38b…` (13/13). All nine RA-96.5 predictions held. With the four new fields removed, the five REDs are byte-identical to TB13A/TB14A.
