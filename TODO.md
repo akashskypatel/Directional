@@ -1,22 +1,11 @@
-## CURRENT — TB16A reviewed (RA-101): the U6 gates are closed; TB16C census next (2026-10-19)
+## CURRENT — TB16C immutable selector census complete; mandatory independent Review next (2026-10-19)
 
-- [x] `M6-CP3-CB16A-R10-EXACT-I-WITNESS-UNBOUND-ROW` (RA-99/RA-100): test-only patch `7cfa5b46`; package `12193816372` re-verified and accepted.
-- [x] `M6-CP3-TB16A-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS`: [run 39277232731](https://github.com/akashskypatel/Directional/actions/runs/39277232731), result `12198063461` (ZIP `7f8769ed…6cba`); 7 PASS / 5 expected RED.
-- [x] `M6-CP3-TB16A-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS-REV` (RA-101).
-  - Re-verified: manifest 16/16; the harness diff is lines 7–9 and the labels only; #3 PASS.
-  - #8–#12 have full predicate lines byte-identical to TB16, not only the 600-character ledger field.
-  - The U6 gates are closed. The census is feasible: no identity was removed since CB14A.
-  - Record: RA-101 in `.agents/Directional/Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md`.
-- [ ] **NEXT:** `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS` (RA-101.4). The unchanged harness `947a95ee…79dd` with `--execute` and the five RA-100.4 inputs, compared with TB14A `12141843937` (expires 2026-11-01).
-  - Deliverables: `Architecture_M6_CP3_TB16C_Selector_497_Red_Inventory.tsv` and a report of 30 lines or fewer that gives each of the 19 B3 identities' class by name.
-  - Predictions: at least 425 PASS with no PASS → RED; the 19 leave B3.
-- [ ] Then `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS-REV` (mandatory): re-derives and issues the CB17 (U4) spec from the census, or adjudicates a falsifier.
-- [ ] Units:
-  - U6 is implemented and its gates are closed (CB15/CB16/CB16A, TB16A), pending the census;
-  - U4 = CB17 and U5 = CB18, both re-derived from TB16C;
-  - fixture debt after TB18 (242 → 174 → 250 → adjacent-sheet → 191 → 442), then a census and the RP-01 Review.
-- **Turn sequence:** TB16C → TB16C-REV → CB17 → TB17 → CB18 → TB18 → fixture debt → census → RP-01 Review.
-- Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, census 425/497, selector 497. `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
+- [x] `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS`: [run 39295624822](https://github.com/akashskypatel/Directional/actions/runs/39295624822), artifact `12207970911` (ZIP `d10553f0…4fcb`), CB16A package `12193816372` source `7cfa5b46`, all 497 exact processes and postflight checks PASS; no compile/relink/benchmark.
+- [x] 425 PASS / 72 RED: focused30 15/30, focused12 10/12, selector449 400/449, cp3entry 0/6; byte-frozen TB14A baseline 425/497, no PASS↔RED changes.
+- [x] B1=0; B2=30; B3=0; U6=0; other=42. All 19 previously B3 identities now B2; zero RA-101.4 falsifiers. Evidence `Architecture_M6_CP3_TB16C_Selector_497_Red_Inventory.tsv` (72 rows) and `Architecture_M6_CP3_TB16C_Selector_497_Census_Report_20261019.md`.
+- [ ] **NEXT:** `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS-REV`: independently re-derive census and spec for CB17 U4 from exact predicates, or adjudicate a falsifier. Runtime-free; do not start CB17 before Review.
+- [ ] Later (not yet authorized): CB17 → TB17 → CB18 → TB18 → fixture debt 242 → 174 → 250 → adjacent-sheet → 191 → 442 → census → RP-01 Review.
+- Frozen stable accounting: **66/17/49**, debt **1**, accepted CP2 491/491, R3 403/497 rejected, selector497; RP-01 open, RP-02 UNREACHED, Gate C suspended.
 
 ---
 

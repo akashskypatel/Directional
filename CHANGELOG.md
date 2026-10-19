@@ -1,3 +1,8 @@
+## 2026-10-19 — TB16C selector-497 census measured (artifact-only)
+
+- [Run 39295624822](https://github.com/akashskypatel/Directional/actions/runs/39295624822), result `12207970911` (ZIP SHA-256 `d10553f037a4ae92913db3c07b325636fe221335f79d955258d16b4671874fcb`), source `7cfa5b46`, CB16A package `12193816372`: 497/497 selected, 425 PASS / 72 RED. Focused30 15/30, focused12 10/12, selector449 400/449, cp3entry 0/6; package and gate immutable, no build/relink/benchmark.
+- TB14A comparison: zero PASS→RED and zero RED→PASS; 19/19 RA-95.2 B3 identities become B2. Classes B1=0, B2=30, B3=0, U6=0, other=42; no falsifier. RED inventory 72 rows, SHA-256 `9ea7c62ec4bbc1c9d703f121429827f2d077c25f643d9a314b641186bebb4acf`; ≤30-line census report. No new stable regression established, **66/17/49** and debt **1** unchanged. Required next: independent `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS-REV` to re-derive CB17 spec.
+
 ## 2026-10-19 — RA-101: TB16A reviewed; the U6 gates are closed; TB16C census next
 
 - TB16A result `12198063461` re-verified: manifest 16/16; the harness differs from TB16's only in lines 7–9 and the labels. #1–#7 PASS (#3 corrected). The full #8–#12 predicate lines (up to 9,565 bytes), not only the 600-character ledger field, are byte-identical to TB16.
