@@ -7333,6 +7333,7 @@ TEST(SurfaceCellAuthorityContractCutover,
         return front.hardRailTerminalContacts().contains(route.rail) &&
                route.endpoints[0].terminalVertex.has_value() &&
                !route.endpoints[1].terminalVertex.has_value() &&
+               !route.endpoints[1].railVertex.has_value() &&
                route.endpoints[1].contactPaths[0].empty() &&
                route.endpoints[1].contactPaths[1].empty();
       });
@@ -7402,6 +7403,78 @@ TEST(SurfaceCellAuthorityContractCutover,
   ASSERT_NE(nullptr, error);
   EXPECT_EQ(directional::geometry::SurfacePhaseFrontProductErrorCode::
                 InvalidSourceAuthority, error->code);
+}
+
+// The producer must publish an R endpoint anchored to a strictly internal
+// source-chain vertex. The checked factory independently authenticates both
+// the positive receipt and each altered endpoint tag.
+TEST(SurfaceCellAuthorityContractCutover,
+     ProducedOpenRailInteriorVertexEndpointRejectsForgedTags) {
+  const auto fixture = build_rectangular_hard_rail_phase_front();
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            fixture.network.phaseFront.disposition())
+      << hard_rail_first_failure_detail(fixture.network);
+  const auto &front = fixture.network.phaseFront.product();
+  const auto &routes = front.hardRailRouteCertificates();
+  const auto candidate = std::find_if(routes.begin(), routes.end(),
+      [](const auto &route) {
+        return std::any_of(route.endpoints.begin(), route.endpoints.end(),
+            [](const auto &endpoint) { return endpoint.railVertex.has_value(); });
+      });
+  ASSERT_NE(routes.end(), candidate) << "real producer must emit an R endpoint";
+  const auto endpointIndex = candidate->endpoints[0].railVertex ? 0U : 1U;
+  const auto &endpoint = candidate->endpoints[endpointIndex];
+  ASSERT_TRUE(endpoint.railVertex.has_value());
+  EXPECT_FALSE(endpoint.terminalVertex.has_value());
+  const auto contact = front.hardRailTerminalContacts().find(candidate->rail);
+  ASSERT_NE(front.hardRailTerminalContacts().end(), contact);
+  const auto vertex = *endpoint.railVertex;
+  EXPECT_NE(contact->second.endpoints[0], vertex);
+  EXPECT_NE(contact->second.endpoints[1], vertex);
+  const auto chain = front.hardRailOpenChains().find(candidate->rail);
+  ASSERT_NE(front.hardRailOpenChains().end(), chain);
+  EXPECT_TRUE(directional::geometry::surface_cell_tracing_detail::
+      open_rail_interior_vertex_valid(
+          vertex, chain->second, front.hardFeatureEdges()));
+  const auto carrier = endpoint.terminalCarrier.edge;
+  ASSERT_TRUE(carrier.first() == vertex || carrier.second() == vertex);
+
+  const auto checked = [&](const auto &candidateRoutes) {
+    return directional::geometry::SurfacePhaseFrontProduct::make(
+        front.gridU(), front.gridV(), front.sourceTopologyRegions(),
+        fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
+        fixture.atlas ? &*fixture.atlas : nullptr,
+        front.isolationSeamTransportCertificates(), front.periodicHolonomies(),
+        front.boundedDiskBoundaryPhases(), front.edges(), front.events(),
+        front.cells(), front.conformityPlanReceipt(), front.hardFeatureEdges(),
+        front.sourceFaceBranchRotations(), front.hardRailFieldTransitions(),
+        candidateRoutes, front.hardRailTerminalContacts(),
+        front.hardRailClosedChains(), front.hardRailOpenChains());
+  };
+  const auto valid = checked(routes);
+  ASSERT_NE(nullptr,
+      std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&valid));
+
+  const auto index = static_cast<std::size_t>(
+      std::distance(routes.begin(), candidate));
+  const auto invalid_auth = [&](const auto &forged) {
+    const auto result = checked(forged);
+    const auto *error = std::get_if<
+        directional::geometry::SurfacePhaseFrontProductError>(&result);
+    ASSERT_NE(nullptr, error);
+    EXPECT_EQ(directional::geometry::SurfacePhaseFrontProductErrorCode::
+                  InvalidSourceAuthority, error->code);
+  };
+  auto forged = routes;
+  forged[index].endpoints[endpointIndex].terminalVertex = vertex;
+  invalid_auth(forged);
+  forged = routes;
+  forged[index].endpoints[endpointIndex].railVertex.reset();
+  invalid_auth(forged);
+  forged = routes;
+  forged[index].endpoints[endpointIndex].railVertex =
+      carrier.first() == vertex ? carrier.second() : carrier.first();
+  invalid_auth(forged);
 }
 
 // RA-49.2: use the actual first certified terminal vertex, not a fabricated

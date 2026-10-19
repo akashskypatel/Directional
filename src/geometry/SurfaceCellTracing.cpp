@@ -19605,6 +19605,7 @@ SurfaceCellNetwork build_surface_cell_network(
         if (terminalVertex) return reject("ambiguous-terminal-contact");
         terminalVertex = vertex;
       }
+      std::optional<authority::SourceVertexId> railVertex;
       if (!terminalVertex) {
         // A field-determined hard-rail front can have an interior endpoint
         // even though the open rail itself still has source-vertex terminals.
@@ -19625,17 +19626,32 @@ SurfaceCellNetwork build_surface_cell_network(
             first.railId == second.railId)
           return SurfaceHardRailRouteEndpointCertificate{
               firstAttachment, secondAttachment, *oriented, std::nullopt, {}};
-        return reject("no-exact-terminal-corner");
+        const auto chain = authoritativeOptions.hardRailOpenChains.find(
+            *first.railId);
+        if (chain != authoritativeOptions.hardRailOpenChains.end()) {
+          for (const auto vertex : {edge.first(), edge.second()}) {
+            if (vertex == contact->second.endpoints[0] ||
+                vertex == contact->second.endpoints[1] ||
+                !exact_corner(fromPoint, vertex) ||
+                !exact_corner(toPoint, vertex) ||
+                !surface_cell_tracing_detail::open_rail_interior_vertex_valid(
+                    vertex, chain->second, authoritativeOptions.hardFeatureEdges))
+              continue;
+            railVertex = vertex;
+          }
+        }
+        if (!railVertex) return reject("no-exact-terminal-corner");
       }
       if (authoritativeOptions.fieldTransportAtlas == nullptr)
         return reject("missing-source-A3");
 
+      const auto starVertex = terminalVertex ? *terminalVertex : *railVertex;
       using Face = authority::SourceFaceTopologyKey;
       using Transition = SurfaceHardRailFieldTransition;
       std::map<Face, std::vector<Transition>> localStar;
       for (const auto &[spoke, incident] : sourceEdges) {
-        if (spoke.first() != *terminalVertex &&
-            spoke.second() != *terminalVertex) continue;
+        if (spoke.first() != starVertex &&
+            spoke.second() != starVertex) continue;
         const auto incidence = sourceEdgeFaceCounts.find(spoke);
         if (incidence == sourceEdgeFaceCounts.end())
           return reject("missing-terminal-star-spoke-incidence");
@@ -19692,6 +19708,7 @@ SurfaceCellNetwork build_surface_cell_network(
       std::optional<SurfaceHardRailRouteEndpointCertificate> selected;
       bool overlappingSectors = false;
       bool ambiguousTerminalPath = false;
+      int admissibleOrientationCount = 0;
       for (const bool reverse : {false, true}) {
         const auto oriented = reverse
             ? SurfaceHardRailFieldTransition{
@@ -19711,6 +19728,7 @@ SurfaceCellNetwork build_surface_cell_network(
                                   firstPathCount > 1 || secondPathCount > 1;
           continue;
         }
+        ++admissibleOrientationCount;
         std::set<Face> firstSector{firstAttachment};
         std::set<Face> secondSector{secondAttachment};
         for (const auto &step : *firstPath) firstSector.insert(step.secondFace);
@@ -19724,8 +19742,10 @@ SurfaceCellNetwork build_surface_cell_network(
         if (selected) return reject("ambiguous-carrier-orientation");
         selected = SurfaceHardRailRouteEndpointCertificate{
             firstAttachment, secondAttachment, oriented, terminalVertex,
-            {std::move(*firstPath), std::move(*secondPath)}};
+            {std::move(*firstPath), std::move(*secondPath)}, railVertex};
       }
+      if (railVertex && admissibleOrientationCount == 2)
+        return reject("ambiguous-carrier-orientation");
       if (!selected)
         return reject(overlappingSectors ? "overlapping-terminal-sectors"
                                          : ambiguousTerminalPath
@@ -20481,7 +20501,8 @@ SurfaceCellNetwork build_surface_cell_network(
       if (chain == authoritativeOptions.hardRailOpenChains.end() ||
           !surface_cell_tracing_detail::open_rail_route_interval_valid(
               routeEdges, firstEndpoint->terminalVertex,
-              secondEndpoint->terminalVertex, chain->second)) {
+              secondEndpoint->terminalVertex, chain->second,
+              firstEndpoint->railVertex, secondEndpoint->railVertex)) {
         invalid_route(SurfaceHardRailRouteFailureLocus::TerminalCarrier,
                       -1, -1, "open-rail-chain-interval");
         return network;
