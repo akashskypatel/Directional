@@ -1,4 +1,4 @@
-## CURRENT — CB16A accepted (RA-100); TB16A next (2026-10-19)
+## CURRENT — TB16A predictions verified; TB16C next (2026-10-19)
 
 - [x] `M6-CP3-CB16A-R10-EXACT-I-WITNESS-UNBOUND-ROW-PATCH-REV` (RA-99): the test patch `7cfa5b46` conforms to RA-98.4.
 - [x] `M6-CP3-CB16A-R10-EXACT-I-WITNESS-UNBOUND-ROW`: compile only, [run 39266100202](https://github.com/akashskypatel/Directional/actions/runs/39266100202), package `12193816372` (ZIP `113a5d8d…b2a3`); no runtime.
@@ -6,10 +6,11 @@
   - Package re-verified: manifest 28/28; packaged source byte-identical to `7cfa5b46`; GMP on; build exit 0. CB16A is accepted.
   - TB16A and TB16C inputs are pinned (RA-100.3/100.4).
   - Record: RA-100 in `.agents/Directional/Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md`.
-- [ ] **NEXT:** `M6-CP3-TB16A-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS` (RA-100.3). The TB16 harness with only lines 7–9 and the labels changed; 12 identities. #1–#7 PASS; #8–#12 `first_failure` byte-identical to TB16.
-- [ ] If TB16A holds: `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS` with the five RA-100.4 inputs, then `…-REV`, which issues the CB17 spec. A TB16A falsifier goes to `M6-CP3-TB16A-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS-REV` instead.
+- [x] `M6-CP3-TB16A-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS` (RA-100.3): [run 39277232731](https://github.com/akashskypatel/Directional/actions/runs/39277232731), result `12198063461` (ZIP `7f8769ed…06cba`); 12/12, 7 PASS / 5 expected RED, #3 corrected; #8–#12 `first_failure` byte-identical to TB16. No source or selector mutation.
+- [ ] **NEXT:** `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS` (RA-100.4). Immutable CB16A package `12193816372`, unchanged harness `947a95ee…79dd`, `--execute`, five pinned inputs from RA-100.4; compare all 497 with TB14A. Do not invent B3 improvement without census evidence.
+- [ ] After TB16C: independent `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS-REV` re-derives and issues the CB17 spec. A TB16C falsifier requires its review before any implementation.
 - [ ] Units:
-  - U6 is implemented (CB15/CB16, CB16A accepted), pending TB16A and the census;
+  - U6 is implemented (CB15/CB16, CB16A accepted), TB16A evidence verified, pending the 497 census;
   - U4 = CB17 and U5 = CB18, both re-derived from TB16C;
   - fixture debt after TB18 (242 → 174 → 250 → adjacent-sheet → 191 → 442), then a census and the RP-01 Review.
 - **Turn sequence:** TB16A → TB16C → TB16C-REV → CB17 → TB17 → CB18 → TB18 → fixture debt → census → RP-01 Review.

@@ -1,3 +1,9 @@
+## 2026-10-19 — TB16A exact-I checker predictions confirmed (artifact-only)
+
+- [Run 39277232731](https://github.com/akashskypatel/Directional/actions/runs/39277232731), result artifact `12198063461` (ZIP SHA-256 `7f8769edbddc8439662526ca9520919ad78888b31a12abdd9548d476edd06cba`), immutable CB16A package `12193816372`, source `7cfa5b4612ed67ec0bbddb747edbc6c53076b781`.
+- Harness `20b2ebd80f96e7d4bab6cb727b4f55cfa74f6c7006bf8c1e25e35a289f9aafea` differs from TB16 only in three immutable inputs and two output labels; selector hashes/12 identities untouched. Manifest 16/16, 12/12 executed: **7 PASS, 5 expected diagnostic RED**. #3 is corrected; #8–#12 have byte-identical `first_failure` to TB16 artifact `12183498229`. No compile, relink, benchmark, or 497 census.
+- All RA-100.3 predictions held. Stable 66/17/49, debt 1, CP2 491/491, rejected R3 403/497 and last full census TB14A 425/497 remain unchanged. RP-01 open; RP-02 UNREACHED; Gate C suspended. Next separate turn: `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS` (RA-100.4). Report: `.agents/Directional/Architecture_M6_CP3_TB16A_Exact_I_Witness_Checkers_Harvest_Report_20261019.md`.
+
 ## 2026-10-19 — RA-100: CB16A accepted; TB16A next
 
 - Package `12193816372` re-verified: ZIP `113a5d8d…b2a3`, root manifest 28/28 (`f5ebf229…f556`), source archive `85d487e4…106b`, `source-commit` `7cfa5b46`, build exit 0, GMP on, `runtimeExecution=false`. The packaged `src`/`include`/`tests`/`CMakeLists.txt` are byte-identical to git `7cfa5b46`. CB16A is accepted.
