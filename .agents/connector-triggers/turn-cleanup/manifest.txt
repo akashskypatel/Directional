@@ -1,1 +1,0 @@
-.agents/connector-triggers/source-snapshot/m6-cp3-tb16a-r10-cont-20261019-1627.txt
