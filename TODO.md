@@ -1,13 +1,10 @@
-## CURRENT — CB16 exact I witness checker compiled; TB16 next (2026-10-18)
+## CURRENT — TB16 immutable gate falsifier; independent Review required (2026-10-19)
 
-- [x] `M6-CP3-CB16-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS` (RA-97.4). Semantic source `1c45e89ae0ca7a072c5140aea2b95be6387ec078`, compile [run 39176761903](https://github.com/akashskypatel/Directional/actions/runs/39176761903), artifact `12154623660`, SHA-256 `821edfc6653af356c902d2debedc065a0ee6b51d287c27bdfd0679ef3a619956`.
-  - An unbound witness fails closed; two bound witnesses compare exact parameters; otherwise the original legacy rule is preserved.
-  - Existing probe branch receives `exact-witness-unbound` and `exact-witness-mismatch`; three named P10 tests were compiled, not executed.
-  - Eight GMP/GMPXX targets; `runtimeExecution=false`. Record: `.agents/Directional/Architecture_M6_CP3_CB16_Exact_I_Witness_Checkers_Code_Build_Record_20261018.md`.
-- [ ] **NEXT:** `M6-CP3-TB16-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS` (RA-97.5). Artifact-only twelve identities, unchanged harness semantics; compare to TB15 and obey falsifiers. No compile, relink or source edits.
-- [ ] Conditional: `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS` if TB16 holds, then Review to issue CB17 U4 spec.
-- [ ] U4/U5 CB17/CB18 remain conditional and unauthorized until the census Review; fixture debt remains deferred.
-- Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, TB14A 425/497, selector497; `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
+- [x] `M6-CP3-TB16-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS`: [run 39246335010](https://github.com/akashskypatel/Directional/actions/runs/39246335010), artifact `12183498229` ZIP `8a329317a610a014cb834947d841fac788ffa55813519dc5259c342a3b62dc32`. 12/12 selected, 6 PASS / 6 RED; immutable, no compile. CB16 test #3 RED is a candidate invalid `nextafter` oracle (forward-equivalent rounding). Two B2 first-predicate records match TB15; three B3 failures advance from 17/203 to 97/283 but remain RED.
+- [ ] **NEXT:** mandatory independent TB16 Review + Plan (canonical ID **UNKNOWN**, not invented). Adjudicate failed CB16 test #3 and B3 next front, before any fixture/test change or unconditional census.
+- [ ] **HOLD:** `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS` until independent Review adjudicates RA-97.5 falsifier; no CB17/CB18 authorization.
+- Frozen: 66/17/49, debt1, CP2 491/491, R3 403/497 rejected, TB14A 425/497, selector497; RP-01 open, RP-02 UNREACHED, Gate C suspended.
+
 ---
 
 ## HISTORY — CB15 exact I-edge witness compiled; TB15 subsequently executed (2026-10-18)
