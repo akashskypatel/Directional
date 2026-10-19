@@ -1,19 +1,10 @@
-## CURRENT — CB16A patch reviewed (RA-99): it conforms; compile pending; resume compile only (2026-10-19)
+## CURRENT — CB16A GMP/GMPXX compile complete; TB16A immutable gate next (2026-10-19)
 
-- [x] `M6-CP3-TB16-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS-REV` (RA-98): CB16 code accepted; the TB16 #3 falsifier was an owned Review spec defect; B3 cleared on `cp3entry:2/6` and selector 217, which now stop at B2 (front 97/283, vertex 4).
-- [ ] `M6-CP3-CB16A-R10-EXACT-I-WITNESS-UNBOUND-ROW` (partial): test patch applied at `7cfa5b46`; no compile has run.
-- [x] `M6-CP3-CB16A-R10-EXACT-I-WITNESS-UNBOUND-ROW-PATCH-REV` (RA-99).
-  - The patch changes only P10 (+13/−1), exactly RA-98.4; production is unchanged.
-  - Evaluated in exact arithmetic: the mutation `…97p-3` matches neither image (`…98p-3`, `…99p-3`), so all six rows hold. This predicts TB16A #3; it is not a runtime claim.
-  - Record: RA-99 in `.agents/Directional/Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md`.
-- [ ] **NEXT:** `M6-CP3-CB16A-R10-EXACT-I-WITNESS-UNBOUND-ROW` (resume, RA-99.4). Compile only from `source_sha` `7cfa5b4612ed67ec0bbddb747edbc6c53076b781` (eight CB16 targets, prefix `directional-m6-cp3-cb16a`). Do not re-apply or edit the patch.
-- [ ] Then `M6-CP3-TB16A-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS` (same 12; #1–#7 PASS; #8–#12 byte-identical to TB16). If TB16A holds, `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS` on the CB16A package, followed by `…-REV`, which issues the CB17 spec.
-- [ ] Units:
-  - U6 is implemented (CB15/CB16), pending the CB16A package, TB16A and the census;
-  - U4 = CB17 and U5 = CB18, both re-derived from TB16C;
-  - fixture debt after TB18 (242 → 174 → 250 → adjacent-sheet → 191 → 442), then a census and the RP-01 Review.
-- **Turn sequence:** CB16A (resume, compile) → TB16A → TB16C → TB16C-REV → CB17 → TB17 → CB18 → TB18 → fixture debt → census → RP-01 Review.
-- Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, census 425/497, selector 497. `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
+- [x] `M6-CP3-CB16A-R10-EXACT-I-WITNESS-UNBOUND-ROW` (RA-99.4): existing RA-99-reviewed P10 test patch `7cfa5b46`, **no additional code edits**. Exact source `7cfa5b4612ed67ec0bbddb747edbc6c53076b781`, [compile run 39266100202](https://github.com/akashskypatel/Directional/actions/runs/39266100202), artifact `12193816372`, ZIP SHA-256 `113a5d8d783dc77f6b60a4da7c338478b3bd753a7e342b01169e4115dc77b2a3`. Eight targets, GMP/GMPXX, 28/28 manifest, five clean source status files, `runtimeExecution=false`. Owning record: `.agents/Directional/Architecture_M6_CP3_CB16A_Exact_I_Witness_Unbound_Row_Code_Build_Record_20261019.md`.
+- [ ] **NEXT:** `M6-CP3-TB16A-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS` — TB16 harness, 12 identities, exact immutable CB16A package; #1–#7 predicted PASS, #8–#12 byte-identical to TB16. A falsifier routes to Review; no compile, patch, fixture or selector edit.
+- [ ] Conditional: `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS` only if TB16A holds, followed by independent Review issuing CB17 U4 spec. No CB17/CB18 work authorized yet.
+- [ ] U6 implemented (CB15/CB16) and CB16A compile verified; B3 clearance on 3 measured identities, broader census pending. U4/U5 CB17/CB18 and fixture debt are deferred as in handoff.
+- Frozen 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, census 425/497, selector 497; `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
 
 ---
 
