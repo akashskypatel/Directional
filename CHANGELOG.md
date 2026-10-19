@@ -1,3 +1,8 @@
+## 2026-10-19 — RA-100: CB16A accepted; TB16A next
+
+- Package `12193816372` re-verified: ZIP `113a5d8d…b2a3`, root manifest 28/28 (`f5ebf229…f556`), source archive `85d487e4…106b`, `source-commit` `7cfa5b46`, build exit 0, GMP on, `runtimeExecution=false`. The packaged `src`/`include`/`tests`/`CMakeLists.txt` are byte-identical to git `7cfa5b46`. CB16A is accepted.
+- TB16A is pinned: the TB16 harness with only `sha`/`artifact`/`digest` and the labels changed; #1–#7 PASS; #8–#12 byte-identical to TB16. The `first_failure` field carries no `file:line`, so the 13-line P10 insertion cannot move it. TB16C's five census inputs are pinned. Record: RA-100 in `.agents/Directional/Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md`.
+
 ## 2026-10-19 — CB16A test-only source compiled and packaged; TB16A next
 
 - Reviewed patch `7cfa5b46` (RA-99) compiled without further source edits: [run 39266100202](https://github.com/akashskypatel/Directional/actions/runs/39266100202), result `12193816372`, ZIP SHA-256 `113a5d8d783dc77f6b60a4da7c338478b3bd753a7e342b01169e4115dc77b2a3`; exact source `7cfa5b4612ed67ec0bbddb747edbc6c53076b781`. Eight GMP/GMPXX targets, 28/28 packaged hashes, preflight/build 0/0, five clean statuses, `exactArithmeticBackend=GMP`, `runtimeExecution=false`. No tests, benchmarks or selector run. Report: `.agents/Directional/Architecture_M6_CP3_CB16A_Exact_I_Witness_Unbound_Row_Code_Build_Record_20261019.md`.

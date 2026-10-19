@@ -1,3 +1,13 @@
+## RA-100 — CB16A accepted; TB16A and TB16C inputs pinned (2026-10-19)
+
+Authority: `Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md` (RA-100, appended).
+
+- **RA-100.1–100.2** Package `12193816372` re-verified: ZIP `113a5d8d…b2a3`, manifest 28/28, packaged source byte-identical to `7cfa5b46`. CB16A is accepted.
+- **RA-100.3** TB16A: the TB16 harness with only `sha`/`artifact`/`digest` (lines 7–9) and the labels changed; #1–#7 PASS; #8–#12 `first_failure` byte-identical to TB16.
+- **RA-100.4–100.5** TB16C (only if TB16A holds) runs the unchanged census harness with the five pinned CB16A inputs. Then TB16C-REV issues the CB17 spec.
+
+---
+
 ## RA-99 — CB16A patch reviewed: it conforms; compile pending; resume compile only (2026-10-19)
 
 Authority: `Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md` (RA-99, appended).

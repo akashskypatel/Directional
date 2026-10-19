@@ -1,6 +1,6 @@
 # RA-95 — DEFN-U6 stopped without a deliverable; Review locates the exact I-endpoint origin; DEFN-U6A narrowed (2026-10-18)
 
-**Turn:** `M6-CP3-DEFN-U6-EXACT-I-ENDPOINT-PARAMETER-REV`. **Inputs:** HEAD `73a014c4e`. `src`, `include` and `tests` are identical to CB14A `2ee499a3`, so every `S:` line below is valid there. TB14A result `12141843937` raw logs. **S** = `src/geometry/SurfaceCellTracing.cpp`. **Amends:** RA-94.5 (order) and RA-94.6 (spec). RA-96 (the DEFN-U6A review) is appended and amends RA-95.4/95.6. RA-97 (the TB15 review) is appended and withdraws RA-95.3's "p ≠ 1/5". RA-98 (the TB16 review) is appended and amends RA-97.4 item 5 and RA-97.5/97.6. RA-99 (the CB16A patch review) is appended; it fixes the CB16A compile source.
+**Turn:** `M6-CP3-DEFN-U6-EXACT-I-ENDPOINT-PARAMETER-REV`. **Inputs:** HEAD `73a014c4e`. `src`, `include` and `tests` are identical to CB14A `2ee499a3`, so every `S:` line below is valid there. TB14A result `12141843937` raw logs. **S** = `src/geometry/SurfaceCellTracing.cpp`. **Amends:** RA-94.5 (order) and RA-94.6 (spec). RA-96 (the DEFN-U6A review) is appended and amends RA-95.4/95.6. RA-97 (the TB15 review) is appended and withdraws RA-95.3's "p ≠ 1/5". RA-98 (the TB16 review) is appended and amends RA-97.4 item 5 and RA-97.5/97.6. RA-99 (the CB16A patch review) is appended; it fixes the CB16A compile source. RA-100 (the CB16A review) is appended; it accepts CB16A and pins the TB16A and TB16C inputs.
 
 ## RA-95.1 Turn state
 
@@ -359,3 +359,28 @@ CB16A → TB16A → TB16C → TB16C-REV (re-derives and issues the CB17 U4 spec 
   - Therefore both `EXPECT_NE` rows hold; `corrupted` binds to neither image, so both `EXPECT_FALSE` rows hold; `otherImage` binds and carries the same witness, so both `EXPECT_TRUE` rows hold.
 - **RA-99.3 The turn is incomplete, not failed.** No compile request follows the patch; the latest dispatcher run is the drive-apply. CB16A is not accepted until its package is verified.
 - **RA-99.4 Resume, compile only.** Same turn ID. Do not re-apply or edit the patch. The compile request uses `source_sha` `7cfa5b4612ed67ec0bbddb747edbc6c53076b781`, the eight CB16 targets and the prefix `directional-m6-cp3-cb16a`. The record (25 lines or fewer) gives the package ID, ZIP SHA-256, source SHA and `runtimeExecution=false`. TB16A, TB16C and the sequence are unchanged (RA-98.5/98.6).
+
+## RA-100 — CB16A accepted; TB16A inputs pinned (2026-10-19)
+
+**Turn:** `M6-CP3-CB16A-R10-EXACT-I-WITNESS-UNBOUND-ROW-REV`. **Inputs:** HEAD `abe261709`; compile [run 39266100202](https://github.com/akashskypatel/Directional/actions/runs/39266100202), package `12193816372`; record `Architecture_M6_CP3_CB16A_Exact_I_Witness_Unbound_Row_Code_Build_Record_20261019.md`.
+
+- **RA-100.1 Re-verification.**
+  - ZIP SHA-256 `113a5d8d783dc77f6b60a4da7c338478b3bd753a7e342b01169e4115dc77b2a3` matches.
+  - Root manifest 28/28 OK (SHA-256 `f5ebf229a8ac9fad6a8797aefb36d8acb34a7e7441bb8dd9edb9858b4dfbf556`). Source archive SHA-256 `85d487e45086eb0a111207f790e67dcf7069517f1f06f3b3620573d56e29106b`. `source-commit` is `7cfa5b46`.
+  - Preflight and build exit 0; the eight targets; `DIRECTIONAL_ENABLE_GMP=ON`, gmp/gmpxx linked; `runtimeExecution=false`; all five source-status files empty.
+  - The packaged `src`, `include`, `tests` and `CMakeLists.txt` are byte-identical to git `7cfa5b46`. The compile request differs from CB16's only in its id, mailbox, source SHA and prefix.
+- **RA-100.2 CB16A is accepted.** No source line changed after the RA-99 review.
+- **RA-100.3 TB16A** (`M6-CP3-TB16A-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS`; refines RA-98.5).
+  - **Harness:** the TB16 harness (SHA-256 `f8db713e…769b`), with only lines 7–9 changed (`sha` `7cfa5b4612ed67ec0bbddb747edbc6c53076b781`, `artifact` `12193816372`, `digest` `113a5d8d…b2a3`) and the `TB16_` output labels renamed `TB16A_`. The four pinned selector hashes (lines 49–52) stay unchanged; they still match at `7cfa5b46`. The same 12 identities, in the same order.
+  - **Predictions:** #1–#7 PASS. #8–#12 RED, with `first_failure` byte-identical to TB16 result `12183498229`.
+  - The 13 inserted P10 lines cannot move that field. It is the first runtime `predicate=` or `producer failed:` line, which carries no `file:line`, and the two P10 diagnostics (P10:7268, P10:7316) sit above the insertion.
+  - **Falsifiers:** any other outcome goes to Review. A RED #3 also falsifies RA-99.2.
+- **RA-100.4 TB16C**, only if TB16A holds: the unchanged census harness (`947a95ee…79dd`), run with `--execute` and:
+  - `CANDIDATE_ARTIFACT_ID=12193816372`;
+  - `EXPECTED_SOURCE_SHA=7cfa5b4612ed67ec0bbddb747edbc6c53076b781`;
+  - `EXPECTED_CANDIDATE_ZIP_SHA256=113a5d8d783dc77f6b60a4da7c338478b3bd753a7e342b01169e4115dc77b2a3`;
+  - `EXPECTED_ROOT_MANIFEST_SHA256=f5ebf229a8ac9fad6a8797aefb36d8acb34a7e7441bb8dd9edb9858b4dfbf556`;
+  - `EXPECTED_SOURCE_ARCHIVE_SHA256=85d487e45086eb0a111207f790e67dcf7069517f1f06f3b3620573d56e29106b`.
+
+  Deliverables, classification and predictions are as in RA-97.5/RA-98.5, compared with TB14A.
+- **RA-100.5 Sequence** (unchanged): TB16A → TB16C → TB16C-REV (CB17 spec) → CB17 → TB17 → CB18 → TB18 → fixture debt → census → RP-01 Review.
