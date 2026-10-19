@@ -1,3 +1,10 @@
+## 2026-10-19 — RA-103: TB17 reviewed; CB17 (U4) accepted; CB18 (U5) specified
+
+- TB17 re-verified: ZIP and manifest 17/17; #1–#7 and #13 PASS; #8–#12 first failures byte-identical to TB16A, including the full raw lines. The CB17 package (28/28) carries source byte-identical to `ccc0b00ab`.
+- CB17 conforms to RA-102.4 and is accepted. The factory's opposite-orientation clause is a parity guard that cannot fire on an eligible R.
+- CB18 specified (RA-103.4): the consumer emits R where the factory admits it; ineligible vertices keep `no-exact-terminal-corner`. TB18 specified (RA-103.5): a focused part, then the census against TB16C.
+- Record: `.agents/Directional/Architecture_M6_CP3_TB17_Rail_Vertex_U5_Review_Decision.md`. Accounting unchanged.
+
 ## 2026-10-19 — TB17 factory rail-interior-vertex truth tables verified (artifact-only)
 
 - [Run 39313027637](https://github.com/akashskypatel/Directional/actions/runs/39313027637), result `12215967774` (ZIP SHA-256 `b32366a1b4f102a2c09388bd5debb34bbbb6b6ff9d71931f8e0a06e700ea2ace`), immutable CB17 package `12214741070`/source `ccc0b00ab6a94d0889ed7c60e4532b6c985ce03e`. All 13 exact-filter processes selected once: 8 PASS (#1–#7, #13), 5 expected diagnostic RED (#8–#12); all five `first_failure` strings byte-identical to TB16A. Postflight immutable; no compile, relink, benchmark or selector-497 run.

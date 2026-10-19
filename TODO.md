@@ -1,23 +1,14 @@
-## CURRENT — TB17 focused verification completed; independent TB17 Review next (2026-10-19)
+## CURRENT — TB17 reviewed (RA-103): CB17 (U4) accepted; CB18 (U5, consumer emits R) next (2026-10-19)
 
-- [x] `M6-CP3-TB16A-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS-REV` (RA-101): the U6 gates are closed.
-- [x] `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS`: [run 39295624822](https://github.com/akashskypatel/Directional/actions/runs/39295624822), result `12207970911`; 425/497.
-- [x] `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS-REV` (RA-102).
-  - Re-verified: 1019/1019; 0 status changes against TB14A; REDs reclassified from raw logs as B2 30 and other 42 (72/72 agreement). Outside the B3 set nothing changed in substance (10 line shifts from P10:12).
-  - B3 is cleared on all 19, and U6 is complete.
-  - All 30 B2 records are one I–R shape at rail vertex 4, and the R rule is satisfiable on that data.
-  - Record: RA-102 in `.agents/Directional/Architecture_M6_CP3_TB16C_Census_U4_Review_Decision.md`.
-- [x] `M6-CP3-CB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT` (U4, RA-102.4): exact `ccc0b00ab6a94d0889ed7c60e4532b6c985ce03e`, compiled eight GMP/GMPXX targets in [run 39306529387](https://github.com/akashskypatel/Directional/actions/runs/39306529387), artifact `12214741070`, ZIP `9acb50815485cb597d5673d3daab473ad140eb8aaddcd0a2dbe7d4c435b45ca5`; runtimeExecution=false. All following subitems describe compiled—not run—code.
-  - Typed `railVertex` (last member) and the defaulted R anchors in the interval helper.
-  - The pure `open_rail_interior_vertex_valid`.
-  - The factory R branch with star incidence; closed rails reject R; the digest hashes R only when present.
-  - Two truth tables.
-- [x] `M6-CP3-TB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT` (RA-102.5): [run 39313027637](https://github.com/akashskypatel/Directional/actions/runs/39313027637), result `12215967774`, 13/13 executed; #1–#7 and #13 PASS, #8–#12 expected RED and `first_failure` byte-identical to TB16A; postflight immutable, no rebuild/relink/benchmark/selector-497.
-- [ ] **NEXT:** `M6-CP3-TB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT-REV` — independent evidence re-derivation and conditional CB18 (U5) spec; do not implement U5 beforehand.
-- [ ] Units:
-  - U4 = CB17 (factory, focused TB17 verified) and U5 = CB18 (consumer emits R, review-gated); the TB18 census measures both;
-  - fixture debt after TB18 (242 → 174 → 250 → adjacent-sheet → 191 → 442), then a census and the RP-01 Review.
-- **Turn sequence:** CB17 → TB17 → TB17-REV → CB18 → TB18 (focused run plus census) → TB18-REV → fixture debt → census → RP-01 Review.
+- [x] `M6-CP3-CB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT` (U4): source `ccc0b00ab6`, package `12214741070`, compile only.
+- [x] `M6-CP3-TB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT`: result `12215967774`; #1–#7 and #13 PASS; #8–#12 byte-identical to TB16A.
+- [x] `M6-CP3-TB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT-REV` (RA-103): TB17 and the CB17 package re-verified (28/28, 17/17, source byte-identical); CB17 conforms to RA-102.4 and is accepted. Record: `.agents/Directional/Architecture_M6_CP3_TB17_Rail_Vertex_U5_Review_Decision.md`.
+- [ ] **NEXT:** `M6-CP3-CB18-R10-CONSUMER-RAIL-VERTEX-ENDPOINT` (U5, RA-103.4), compile only.
+  - R candidate replaces the S:19628 reject (label kept for ineligible vertices); star vertex; orientation parity; sixth certificate member; route check passes R anchors.
+  - Tests: #9 filter excludes R; new `ProducedOpenRailInteriorVertexEndpointRejectsForgedTags`.
+- [ ] Then `M6-CP3-TB18-R10-RAIL-VERTEX-ENDPOINT` (RA-103.5): Part A focused (TB17 harness + #14); Part B census only if the gates hold. Then `…-REV`.
+- [ ] Fixture debt after TB18-REV (242 → 174 → 250 → adjacent-sheet → 191 → 442, plus I/R test-assumption sites TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518 if TB18 reaches them), then a census and the RP-01 Review.
+- **Turn sequence:** CB18 → TB18 (A, then B) → TB18-REV → fixture debt → census → RP-01 Review.
 - Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, census 425/497, selector 497. `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
 
 ---

@@ -1,4 +1,4 @@
-## TB17 — focused artifact-only gate, no new stable regression (2026-10-19)
+## TB17 — focused artifact-only gate, no new stable regression — adjudicated by RA-103 (2026-10-19)
 
 [Run 39313027637](https://github.com/akashskypatel/Directional/actions/runs/39313027637), result `12215967774` (ZIP SHA-256 `b32366a1b4f102a2c09388bd5debb34bbbb6b6ff9d71931f8e0a06e700ea2ace`) on immutable CB17 package `12214741070`/source `ccc0b00ab6a94d0889ed7c60e4532b6c985ce03e`. 13/13 exact-filter processes: #1–#7 and #13 PASS; five previously RED diagnostic identities #8–#12 remain RED and each `first_failure` is byte-identical to TB16A. These are existing candidate/non-stable `endpoint-1` route-certificate failures: CB17 changes only the factory R rule while the consumer still does not emit R. No new regression identity or root cause is evidenced. Immutable postflight; no compile/relink/benchmarks or selector-497 census. **Stable accounting 66/17/49, debt 1, candidate census 425/497 unchanged.** `RP-01` open, `RP-02` UNREACHED. Owning report `Architecture_M6_CP3_TB17_Factory_Rail_Vertex_Endpoint_Harvest_Report_20261019.md`; independent TB17-REV next.
 

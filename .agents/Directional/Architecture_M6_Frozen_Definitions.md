@@ -1,3 +1,18 @@
+## RA-103 — TB17 reviewed: CB17 (U4) accepted; CB18 (U5) and TB18 specified (2026-10-19)
+
+Authority: `Architecture_M6_CP3_TB17_Rail_Vertex_U5_Review_Decision.md`.
+
+- **RA-103.1–103.2** TB17 result `12215967774` and CB17 package `12214741070` re-verified (17/17, 28/28, packaged source byte-identical to `ccc0b00ab`); every RA-102.5 prediction held. CB17 conforms to RA-102.4 and is accepted. The factory's opposite-orientation clause cannot fire on an eligible R; it is a parity guard.
+- **RA-103.3–103.4** CB18, the consumer emits R:
+  - an R candidate replaces the `no-exact-terminal-corner` reject, and an ineligible vertex keeps that label;
+  - the star is keyed to T or R; orientation parity with the factory; `railVertex` as the sixth member; the route check passes R anchors;
+  - #9's filter excludes R; one new produced-R forgery test with a positive `make` control.
+
+  T, I, closed, probes, factory and digest are unchanged. Tests that assume every endpoint is T are fixture debt.
+- **RA-103.5–103.6** TB18: Part A, the TB17 harness plus #14 (no B2 first failure may remain); Part B, the unchanged census against TB16C (0 PASS→RED; none of the 30 stays B2). Then TB18-REV and fixture debt.
+
+---
+
 ## RA-102 — TB16C reviewed: B3 cleared on all 19; one I–R blocker shape; CB17 (U4) specified (2026-10-19)
 
 Authority: `Architecture_M6_CP3_TB16C_Census_U4_Review_Decision.md`.
