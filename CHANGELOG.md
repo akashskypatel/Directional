@@ -1,3 +1,9 @@
+## 2026-10-19 — CB18 consumer rail-vertex endpoint compiled (U5, no runtime)
+
+- RA-103.4 A4 consumer produces source-attested typed R at a strictly interior open-rail vertex, uses the common A3 star with orientation parity, publishes the sixth endpoint member and passes R anchors to the route validator; T/I and closed cases remain unchanged. #9 excludes R and a forged-tag test is compiled, not executed.
+- Exact source `3bd24682c5e18eece541ab4d1f38f781a2230e41`; GMP/GMPXX eight-target compile [run 39337458721](https://github.com/akashskypatel/Directional/actions/runs/39337458721); result artifact `12227516380`, ZIP SHA-256 `d09c32d6e7c06e280b3f9888008cde2ebb4738c3e6273f7a661903f2d231cdc4`; manifest 28/28, clean source, `runtimeExecution=false`.
+- No runtime or selector execution, no acceptance/promotion. Stable 66/17/49, debt 1, selector 497, last census 425/497 unchanged. Next `M6-CP3-TB18-R10-RAIL-VERTEX-ENDPOINT` (RA-103.5). Owning record: `.agents/Directional/Architecture_M6_CP3_CB18_R10_Consumer_Rail_Vertex_Endpoint_Code_Build_Record_20261019.md`.
+
 ## 2026-10-19 — RA-103: TB17 reviewed; CB17 (U4) accepted; CB18 (U5) specified
 
 - TB17 re-verified: ZIP and manifest 17/17; #1–#7 and #13 PASS; #8–#12 first failures byte-identical to TB16A, including the full raw lines. The CB17 package (28/28) carries source byte-identical to `ccc0b00ab`.

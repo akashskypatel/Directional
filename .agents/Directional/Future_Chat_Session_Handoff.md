@@ -34,43 +34,42 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-19, after `M6-CP3-TB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT-REV` (RA-103): TB17 re-verified, every RA-102.5 prediction held; CB17 (U4, factory R branch) accepted; CB18 (U5, consumer emits R) and TB18 specified. |
-| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing` (PR #8 draft) / refetch before mutation. Semantic source `ccc0b00ab6a94d0889ed7c60e4532b6c985ce03e`; CB17 package `12214741070` (ZIP `9acb5081…5ca5`, expires 2026-10-26), compile-only. |
-| Last accepted semantic runtime | M6 CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. R3 baseline 403/497: `Architecture_M6_CP3_TB1_Entry_R3_Red_Classification.tsv`. |
-| Latest candidate or rejected evidence | TB17 result `12215967774` (ZIP `b32366a1…2ace`): 13/13, #1–#7 and #13 PASS, #8–#12 byte-identical to TB16A; adjudicated by RA-103 (`Architecture_M6_CP3_TB17_Rail_Vertex_U5_Review_Decision.md`). Census baseline TB16C result `12207970911`: **425/497** (expires 2026-11-02). Not promoted. |
-| Regression accounting and debt | **66/17/49**, debt **1**, selector 497 frozen; R3 403/497 rejected. Fixture debt (RA-96.6 order) after TB18; see `Regression_Root_Cause_Tracker.md`. |
-| Active boundary | `RP-01` (RA-102.3, RA-103.3): B2 is the only blocker, 30 records of one I–R shape (rail 2, chain [1,4,7], route [1-4], R = vertex 4). U4 accepted; U5 = CB18 makes the consumer emit R. The factory I and R branches get their first real-data coverage at TB18. `RP-02` UNREACHED; Gate C suspended. |
+| Currency | 2026-10-19, after `M6-CP3-CB18-R10-CONSUMER-RAIL-VERTEX-ENDPOINT` compiled and packaged successfully; runtime validation is owned by TB18, not CB18. |
+| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing` (PR #8 draft); refetch head before mutation. Exact compiled semantic source `3bd24682c5e18eece541ab4d1f38f781a2230e41`. |
+| Last accepted semantic runtime | M6 CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. R3 baseline **403/497** rejected. |
+| Latest candidate or rejected evidence | CB18 compile [run 39337458721](https://github.com/akashskypatel/Directional/actions/runs/39337458721), artifact `12227516380` (ZIP `d09c32d6e7c06e280b3f9888008cde2ebb4738c3e6273f7a661903f2d231cdc4`), manifest 28/28, 8 GMP/GMPXX targets, `runtimeExecution=false`; unpromoted. Owning record: `Architecture_M6_CP3_CB18_R10_Consumer_Rail_Vertex_Endpoint_Code_Build_Record_20261019.md`. TB17 reviewed RA-103; last full TB16C census 425/497. |
+| Regression accounting and debt | **66/17/49**, debt **1**, selector 497 frozen. No new runtime evidence from CB18. |
+| Active boundary | `RP-01` B2 on 30 I–R rail-vertex-4 records. CB17 factory U4 and CB18 consumer U5 are compile-complete; TB18 RA-103.5 must measure them. `RP-02` UNREACHED; Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-CB18-R10-CONSUMER-RAIL-VERTEX-ENDPOINT` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-TB18-R10-RAIL-VERTEX-ENDPOINT` — EXACT NEXT
 
-- **Type / owner:** CB (Code + Build, compile only); RA-103.4.
-- **Objective:** the A4 consumer emits a typed R endpoint exactly where the CB17 factory admits one, and nowhere else.
-- **Read before work:** RA-103 (`Architecture_M6_CP3_TB17_Rail_Vertex_U5_Review_Decision.md`); RA-102.4; R10B §2; S:19505-19735 and S:20476-20488; P10:7320-7406.
-- **In scope:** RA-103.4 items 1–7 only (R candidate replacing the S:19628 reject; star vertex; orientation parity; sixth certificate member; route-check R anchors; #9 filter; one new test); GMP/GMPXX eight-target compile and package.
-- **Out of scope:** T, I and closed behaviour; probes; factory; digest; fixture-debt tests (TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518); selectors, harnesses, workflows; any test execution.
-- **Success evidence:** package with `runtimeExecution=false`; record ≤25 lines (package ID, ZIP SHA-256, source SHA); docs updated in place.
-- **On success:** `M6-CP3-TB18-R10-RAIL-VERTEX-ENDPOINT` (RA-103.5).
-- **On failure/blocker:** STOP and report; any clause that cannot be implemented as written goes to Review.
+- **Type / owner:** TB (Test + Benchmark, artifact-only); RA-103.5.
+- **Objective:** measure CB18's R endpoint behavior against the frozen focused and conditional selector-497 gates; do not infer runtime success from compilation.
+- **Read before work:** RA-103 §103.5 (`Architecture_M6_CP3_TB17_Rail_Vertex_U5_Review_Decision.md`), CB18 compile record `Architecture_M6_CP3_CB18_R10_Consumer_Rail_Vertex_Endpoint_Code_Build_Record_20261019.md`, TB17 harness and frozen TB16C baseline.
+- **In scope:** consume immutable artifact `12227516380` with exact semantic source `3bd24682c5e18eece541ab4d1f38f781a2230e41` and ZIP SHA-256 `d09c32d6e7c06e280b3f9888008cde2ebb4738c3e6273f7a661903f2d231cdc4`. Part A: TB17 harness with #14 added (14 exact-filter identities); Part B: unchanged 497 census harness only if Part A satisfies its gate. Produce frozen comparison TSV and ≤30-line results report per RA-103.5.
+- **Out of scope:** source edits, fixture changes, compiles, relinks, selector edits, workflow redesign, remediation within the immutable TB gate, or benchmark execution.
+- **Success evidence:** exact package/source postflight, full selected test ledger, RA-103.5 Part A falsifier adjudication and conditional Part B evidence. Even a RED gate goes to Review.
+- **On success:** `M6-CP3-TB18-R10-RAIL-VERTEX-ENDPOINT-REV` (mandatory).
+- **On failure/blocker:** do not repair/retest inside TB; mandatory `M6-CP3-TB18-R10-RAIL-VERTEX-ENDPOINT-REV`, or STOP for environmental inability to execute the authorized TB.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
-|---|---|---|
-| 1 — next | `M6-CP3-CB18-R10-CONSUMER-RAIL-VERTEX-ENDPOINT` | CB, compile only; RA-103.4. |
-| 2 — conditional | `M6-CP3-TB18-R10-RAIL-VERTEX-ENDPOINT` | Only after a clean CB18 package; artifact-only; Part A focused (14 identities), then Part B census only if the gates hold (RA-103.5). |
-| 3 — mandatory | `M6-CP3-TB18-R10-RAIL-VERTEX-ENDPOINT-REV` | Review of TB18 in every case; assigns fixture debt. |
-| planned, not authorized | fixture debt (242 → 174 → 250 → adjacent-sheet → 191 → 442) → census → RP-01 Review | Each CB follows a reviewed TB. |
+|---|---|
+| 1 — next | `M6-CP3-TB18-R10-RAIL-VERTEX-ENDPOINT` | Artifact-only Part A; Part B only if Part A meets RA-103.5 gate. |
+| 2 — mandatory | `M6-CP3-TB18-R10-RAIL-VERTEX-ENDPOINT-REV` | Independent review of TB18 under any measured outcome. |
+| planned, not authorized | Fixture debt → census → RP-01 Review | Only after mandatory TB18 Review assigns exact turns. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **code-build** — CB18 consumer R emission (RA-103.4), compile only; no runtime.
+`load_next`: **test-benchmark** — TB18 immutable CB18 package, Part A then conditional Part B (RA-103.5); no compile or source edits.
 
 Minimum successor context after the mandatory start checklist and policies:
 
 0. `.agents/Directional/ORIENTATION.md`.
 1. `.agents/Directional/ROADMAP.md`.
 2. This handoff.
-3. RA-103 (`Architecture_M6_CP3_TB17_Rail_Vertex_U5_Review_Decision.md`); RA-102.4 (`Architecture_M6_CP3_TB16C_Census_U4_Review_Decision.md`); R10B §2 (`Architecture_M6_CP3_R10B_Rail_Interior_Vertex_Endpoint_Rule_20261017.md`); S:8249-8321, S:8884-8990, S:19505-19735, S:20476-20488, H:1495-1580, P10:7320-7406; `LESSONS.md` §§2, 3, 7.
+3. RA-103.5 (`Architecture_M6_CP3_TB17_Rail_Vertex_U5_Review_Decision.md`), CB18 compiled package/record (`Architecture_M6_CP3_CB18_R10_Consumer_Rail_Vertex_Endpoint_Code_Build_Record_20261019.md`), TB17 harness `efa91d9b…c7a9`, last full census TB16C report `Architecture_M6_CP3_TB16C_Selector_497_Census_Report_20261019.md`; `LESSONS.md` §§1, 2, 7.
 4. `.agents/Directional/Regression_Root_Cause_Tracker.md` and `TODO.md`.
 
 **Review tooling:** `.agents/Directional/tools/` holds read-only `review_check.py`, `selector_probe.py`, and `fixture_probe.py`; history-sensitive review gates require real committed history, not a synthesized snapshot.

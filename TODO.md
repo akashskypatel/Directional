@@ -1,14 +1,12 @@
-## CURRENT — TB17 reviewed (RA-103): CB17 (U4) accepted; CB18 (U5, consumer emits R) next (2026-10-19)
+## CURRENT — CB18 consumer R endpoint compiled; TB18 artifact-only next (2026-10-19)
 
 - [x] `M6-CP3-CB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT` (U4): source `ccc0b00ab6`, package `12214741070`, compile only.
 - [x] `M6-CP3-TB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT`: result `12215967774`; #1–#7 and #13 PASS; #8–#12 byte-identical to TB16A.
 - [x] `M6-CP3-TB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT-REV` (RA-103): TB17 and the CB17 package re-verified (28/28, 17/17, source byte-identical); CB17 conforms to RA-102.4 and is accepted. Record: `.agents/Directional/Architecture_M6_CP3_TB17_Rail_Vertex_U5_Review_Decision.md`.
-- [ ] **NEXT:** `M6-CP3-CB18-R10-CONSUMER-RAIL-VERTEX-ENDPOINT` (U5, RA-103.4), compile only.
-  - R candidate replaces the S:19628 reject (label kept for ineligible vertices); star vertex; orientation parity; sixth certificate member; route check passes R anchors.
-  - Tests: #9 filter excludes R; new `ProducedOpenRailInteriorVertexEndpointRejectsForgedTags`.
-- [ ] Then `M6-CP3-TB18-R10-RAIL-VERTEX-ENDPOINT` (RA-103.5): Part A focused (TB17 harness + #14); Part B census only if the gates hold. Then `…-REV`.
+- [x] `M6-CP3-CB18-R10-CONSUMER-RAIL-VERTEX-ENDPOINT` (U5, RA-103.4): source `3bd24682c5e18eece541ab4d1f38f781a2230e41`, compile run `39337458721`, artifact `12227516380` (28/28, GMP/GMPXX eight targets, `runtimeExecution=false`); R consumer, route parity, #9 filter and forged-tag test compiled. Owning record: `.agents/Directional/Architecture_M6_CP3_CB18_R10_Consumer_Rail_Vertex_Endpoint_Code_Build_Record_20261019.md`.
+- [ ] **NEXT:** `M6-CP3-TB18-R10-RAIL-VERTEX-ENDPOINT` (RA-103.5): artifact-only Part A focused (TB17 harness + #14); Part B selector-497 census only if Part A gates hold. Mandatory follow-up Review `M6-CP3-TB18-R10-RAIL-VERTEX-ENDPOINT-REV`.
 - [ ] Fixture debt after TB18-REV (242 → 174 → 250 → adjacent-sheet → 191 → 442, plus I/R test-assumption sites TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518 if TB18 reaches them), then a census and the RP-01 Review.
-- **Turn sequence:** CB18 → TB18 (A, then B) → TB18-REV → fixture debt → census → RP-01 Review.
+- **Turn sequence:** TB18 (A, then conditional B) → TB18-REV → fixture debt → census → RP-01 Review.
 - Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, census 425/497, selector 497. `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
 
 ---
