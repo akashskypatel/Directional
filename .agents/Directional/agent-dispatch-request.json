@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb16c-doc-closeout-20261019-02",
+  "request_id": "m6-cp3-cb17-code-20261019-01",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb16c-doc-closeout-retry",
-  "file_id": "18q0F_oHAyDtCmRfsowsrf9SYy4QDR10j",
-  "patch_sha256": "e2d9bf6235075dbfdf165c04d3ed0bb907dfca3960f4b34cafb1f6d3138e7211",
-  "base_sha": "9ff383b3ae85af8d9cb5a8904e28b93e666b2dda",
+  "mailbox_key": "m6-cp3-cb17-code-apply",
+  "file_id": "1fsPExYRPQEUH4vF7a_tS7snSjuTpWH0l",
+  "patch_sha256": "8d8dc2555330fde77bb758d06f83674442873ad187c384fbb22329969f0bb2a1",
+  "base_sha": "287b53252d756607834a722abfad1cbb94faa773",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record immutable TB16C selector census",
+  "commit_message": "feat(surface-cells): certify interior open-rail vertex endpoints",
   "retention_days": 14
 }
