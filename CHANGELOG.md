@@ -1,3 +1,8 @@
+## 2026-10-19 — CB16A test-only source compiled and packaged; TB16A next
+
+- Reviewed patch `7cfa5b46` (RA-99) compiled without further source edits: [run 39266100202](https://github.com/akashskypatel/Directional/actions/runs/39266100202), result `12193816372`, ZIP SHA-256 `113a5d8d783dc77f6b60a4da7c338478b3bd753a7e342b01169e4115dc77b2a3`; exact source `7cfa5b4612ed67ec0bbddb747edbc6c53076b781`. Eight GMP/GMPXX targets, 28/28 packaged hashes, preflight/build 0/0, five clean statuses, `exactArithmeticBackend=GMP`, `runtimeExecution=false`. No tests, benchmarks or selector run. Report: `.agents/Directional/Architecture_M6_CP3_CB16A_Exact_I_Witness_Unbound_Row_Code_Build_Record_20261019.md`.
+- Conditional successor: `M6-CP3-TB16A-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS` (RA-98.5), 12 immutable identities. Frozen regression accounting and RP-01/RP-02 gates unchanged.
+
 ## 2026-10-19 — RA-99: CB16A patch reviewed; it conforms; compile pending
 
 - The CB16A test patch (`7cfa5b46`, drive-apply [run 39256723348](https://github.com/akashskypatel/Directional/actions/runs/39256723348)) changes only P10 (+13/−1), exactly RA-98.4. Production is unchanged from CB16.
