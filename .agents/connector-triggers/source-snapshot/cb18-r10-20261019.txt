@@ -1,0 +1,4 @@
+Purpose: exact source snapshot for M6-CP3-CB18-R10-CONSUMER-RAIL-VERTEX-ENDPOINT continuation.
+Pre-trigger authority: bcb14b43c1f3295efa997c49ad1b29302b4f7ffa
+Expected source: this marker commit SHA (push event SHA).
+Runtime: none.
