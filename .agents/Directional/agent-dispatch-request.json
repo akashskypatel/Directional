@@ -1,12 +1,20 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb16a-closeout-20261019-01",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb16a-doc-closeout",
-  "file_id": "1T10PH6D8RYpxo0i80RmgES1ReUbEaSx7",
-  "patch_sha256": "4b02427f8903ae0d1d5fc45a59158587080c5098fa3b2bf482ab1785ee7e3d33",
-  "base_sha": "92f88616e8da009866be13aa879fefad10cce1d6",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close TB16A witness checker harvest",
+  "request_id": "m6-cp3-tb16c-20261019-01",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb16c-selector-497",
+  "executor_sha": "3d4832a715536d21aa9a5b0df09778ac40ba25db",
+  "semantic_source_sha": "7cfa5b4612ed67ec0bbddb747edbc6c53076b781",
+  "turn_id": "M6-CP3-TB16C-R10-SELECTOR-497-CENSUS",
+  "harness_path": ".agents/Directional/tools/m6_cp3_entry_497_artifact_only_harness.sh",
+  "harness_sha256": "947a95ee4f684143a0f8d7c768a39253ab893d921da488802b45fb6ed58879dd",
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": 12193816372,
+    "EXPECTED_SOURCE_SHA": "7cfa5b4612ed67ec0bbddb747edbc6c53076b781",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "113a5d8d783dc77f6b60a4da7c338478b3bd753a7e342b01169e4115dc77b2a3",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "f5ebf229a8ac9fad6a8797aefb36d8acb34a7e7441bb8dd9edb9858b4dfbf556",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "85d487e45086eb0a111207f790e67dcf7069517f1f06f3b3620573d56e29106b"
+  },
+  "artifact_prefix": "directional-m6-cp3-tb16c",
   "retention_days": 14
 }
