@@ -1,3 +1,9 @@
+## 2026-10-19 — RA-102: TB16C reviewed; U6 complete; CB17 (U4) specified
+
+- TB16C re-verified: 1019/1019; 425/497; 0 status changes against TB14A. The 72 REDs were reclassified from raw logs as B2 30 and other 42, agreeing with the agent's TSV on 72/72. Outside the B3 set, no first failure changed in substance; 10 changed only by the P10:12 line shift.
+- B3 is cleared on all 19 RA-95.2 identities, and U6 is complete. RP-01 has one blocker shape: an I–R front ending at rail vertex 4 (30 records). The R rule is satisfiable there: one admissible orientation and exactly two hard spokes.
+- CB17 (U4, the factory R branch) is specified: typed `railVertex`, R anchors in the interval helper, `open_rail_interior_vertex_valid`, the factory R clauses, closed rails rejecting R, and the digest hashing R only when present. TB17 is the TB16A harness plus one gate. Record: RA-102 in `.agents/Directional/Architecture_M6_CP3_TB16C_Census_U4_Review_Decision.md`.
+
 ## 2026-10-19 — TB16C selector-497 census measured (artifact-only)
 
 - [Run 39295624822](https://github.com/akashskypatel/Directional/actions/runs/39295624822), result `12207970911` (ZIP SHA-256 `d10553f037a4ae92913db3c07b325636fe221335f79d955258d16b4671874fcb`), source `7cfa5b46`, CB16A package `12193816372`: 497/497 selected, 425 PASS / 72 RED. Focused30 15/30, focused12 10/12, selector449 400/449, cp3entry 0/6; package and gate immutable, no build/relink/benchmark.

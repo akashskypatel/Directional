@@ -277,6 +277,9 @@ This document records **reusable failure-derived engineering lessons**, not an e
 - **A "not a member" classifier must first require that the set was published.** Non-membership is
   vacuously true of an absent set, so the rule silently admits a different failure shape (RA-91.2:
   selector 405 matched B2 although its fixture published no terminal contact).
+- **Normalize `file:line` before calling a changed failure line a behaviour change.** Any edit to a test
+  file shifts every gtest location below it. Read the diff hunks, or strip line numbers, before comparing
+  first failures across builds (RA-102.1: ten apparent changes were one inserted `#include`).
 
 ## Contracts, planning, reviews, and durable records
 

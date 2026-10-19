@@ -1,7 +1,9 @@
-## TB16C selector-497 census — candidate evidence, pending independent Review (2026-10-19)
+## TB16C selector-497 census — adjudicated by RA-102 (2026-10-19)
 
 [Run 39295624822](https://github.com/akashskypatel/Directional/actions/runs/39295624822), result `12207970911`, ZIP SHA-256 `d10553f037a4ae92913db3c07b325636fe221335f79d955258d16b4671874fcb`; immutable CB16A package `12193816372`/source `7cfa5b46`. 497 exact processes, package manifest 28/28 and immutable postflight; 425 PASS / 72 RED, identical in disposition to TB14A, with no new PASS→RED/RED→PASS identities. Under RA-90.4 with RA-91.2, B1=0, B2=30, B3=0, U6=0, other=42. All 19 previously B3 identities now B2. Candidate/non-stable classification is retained because this is a mechanistic blocker migration, not a newly demonstrated production regression; no stable ID or count change. **66/17/49**, debt **1** unchanged. Owning evidence `Architecture_M6_CP3_TB16C_Selector_497_Red_Inventory.tsv` (SHA-256 `9ea7c62ec4bbc1c9d703f121429827f2d077c25f643d9a314b641186bebb4acf`) and `Architecture_M6_CP3_TB16C_Selector_497_Census_Report_20261019.md`; TB16C-REV mandatory before CB17.
 
+
+**Adjudicated by RA-102:** independently re-verified (1019/1019; the 72 REDs reclassified from raw logs as B2 30 and other 42, agreeing 72/72). Outside the B3 set, no first failure changed in substance; 10 differ only by the P10:12 `#include <bit>` line shift. U6 is complete. All 30 B2 records are one I–R shape at rail vertex 4, which the R rule satisfies. CB17 (U4) is specified. No new regression.
 ---
 
 ## TB16A exact-I checker harvest — predictions confirmed; adjudicated by RA-101 (2026-10-19)

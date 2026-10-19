@@ -1,3 +1,22 @@
+## RA-102 — TB16C reviewed: B3 cleared on all 19; one I–R blocker shape; CB17 (U4) specified (2026-10-19)
+
+Authority: `Architecture_M6_CP3_TB16C_Census_U4_Review_Decision.md`.
+
+- **RA-102.1–102.2** TB16C re-verified: 425/497; 0 status changes against TB14A; REDs reclassified as B2 30 and other 42 (72/72 agreement). U6 is complete.
+- **RA-102.3** All 30 B2 records are I–R at rail vertex 4 (rail 2, chain [1,4,7], route [1-4]). There is exactly one admissible star orientation, and vertex 4 has exactly the two hard spokes 1–4 and 4–7. The R rule is satisfiable.
+- **RA-102.4** CB17, the factory R branch:
+  - typed `railVertex`, the last member of the certificate;
+  - defaulted R anchors in the interval helper;
+  - a pure `open_rail_interior_vertex_valid`;
+  - star incidence for interior chain vertices;
+  - R clauses: not a contact, eligibility, and the opposite orientation not both Unique;
+  - closed rails reject R; the digest hashes R only when present.
+
+  Two truth tables; no vacuous factory test.
+- **RA-102.5–102.6** TB17: the TB16A harness plus #13; #8–#12 byte-identical. Then TB17-REV issues CB18 (U5).
+
+---
+
 ## RA-101 — TB16A reviewed: every prediction held; the U6 gates are closed; TB16C deliverables pinned (2026-10-19)
 
 Authority: `Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md` (RA-101, appended).

@@ -1,11 +1,23 @@
-## CURRENT — TB16C immutable selector census complete; mandatory independent Review next (2026-10-19)
+## CURRENT — TB16C reviewed (RA-102): U6 complete; CB17 (U4, factory R endpoint) next (2026-10-19)
 
-- [x] `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS`: [run 39295624822](https://github.com/akashskypatel/Directional/actions/runs/39295624822), artifact `12207970911` (ZIP `d10553f0…4fcb`), CB16A package `12193816372` source `7cfa5b46`, all 497 exact processes and postflight checks PASS; no compile/relink/benchmark.
-- [x] 425 PASS / 72 RED: focused30 15/30, focused12 10/12, selector449 400/449, cp3entry 0/6; byte-frozen TB14A baseline 425/497, no PASS↔RED changes.
-- [x] B1=0; B2=30; B3=0; U6=0; other=42. All 19 previously B3 identities now B2; zero RA-101.4 falsifiers. Evidence `Architecture_M6_CP3_TB16C_Selector_497_Red_Inventory.tsv` (72 rows) and `Architecture_M6_CP3_TB16C_Selector_497_Census_Report_20261019.md`.
-- [ ] **NEXT:** `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS-REV`: independently re-derive census and spec for CB17 U4 from exact predicates, or adjudicate a falsifier. Runtime-free; do not start CB17 before Review.
-- [ ] Later (not yet authorized): CB17 → TB17 → CB18 → TB18 → fixture debt 242 → 174 → 250 → adjacent-sheet → 191 → 442 → census → RP-01 Review.
-- Frozen stable accounting: **66/17/49**, debt **1**, accepted CP2 491/491, R3 403/497 rejected, selector497; RP-01 open, RP-02 UNREACHED, Gate C suspended.
+- [x] `M6-CP3-TB16A-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS-REV` (RA-101): the U6 gates are closed.
+- [x] `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS`: [run 39295624822](https://github.com/akashskypatel/Directional/actions/runs/39295624822), result `12207970911`; 425/497.
+- [x] `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS-REV` (RA-102).
+  - Re-verified: 1019/1019; 0 status changes against TB14A; REDs reclassified from raw logs as B2 30 and other 42 (72/72 agreement). Outside the B3 set nothing changed in substance (10 line shifts from P10:12).
+  - B3 is cleared on all 19, and U6 is complete.
+  - All 30 B2 records are one I–R shape at rail vertex 4, and the R rule is satisfiable on that data.
+  - Record: RA-102 in `.agents/Directional/Architecture_M6_CP3_TB16C_Census_U4_Review_Decision.md`.
+- [ ] **NEXT:** `M6-CP3-CB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT` (U4, RA-102.4), compile only.
+  - Typed `railVertex` (last member) and the defaulted R anchors in the interval helper.
+  - The pure `open_rail_interior_vertex_valid`.
+  - The factory R branch with star incidence; closed rails reject R; the digest hashes R only when present.
+  - Two truth tables.
+- [ ] Then `M6-CP3-TB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT` (the TB16A harness plus #13; #1–#7 and #13 PASS; #8–#12 byte-identical to TB16A), then `…-REV`, which issues the CB18 (U5) spec.
+- [ ] Units:
+  - U4 = CB17 (factory) and U5 = CB18 (consumer emits R); the TB18 census measures both;
+  - fixture debt after TB18 (242 → 174 → 250 → adjacent-sheet → 191 → 442), then a census and the RP-01 Review.
+- **Turn sequence:** CB17 → TB17 → TB17-REV → CB18 → TB18 (focused run plus census) → TB18-REV → fixture debt → census → RP-01 Review.
+- Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, census 425/497, selector 497. `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
 
 ---
 
