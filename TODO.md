@@ -1,4 +1,4 @@
-## CURRENT — TB16C reviewed (RA-102): U6 complete; CB17 (U4, factory R endpoint) next (2026-10-19)
+## CURRENT — CB17 (U4) compiled; TB17 immutable artifact-only verification next (2026-10-19)
 
 - [x] `M6-CP3-TB16A-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS-REV` (RA-101): the U6 gates are closed.
 - [x] `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS`: [run 39295624822](https://github.com/akashskypatel/Directional/actions/runs/39295624822), result `12207970911`; 425/497.
@@ -7,12 +7,12 @@
   - B3 is cleared on all 19, and U6 is complete.
   - All 30 B2 records are one I–R shape at rail vertex 4, and the R rule is satisfiable on that data.
   - Record: RA-102 in `.agents/Directional/Architecture_M6_CP3_TB16C_Census_U4_Review_Decision.md`.
-- [ ] **NEXT:** `M6-CP3-CB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT` (U4, RA-102.4), compile only.
+- [x] `M6-CP3-CB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT` (U4, RA-102.4): exact `ccc0b00ab6a94d0889ed7c60e4532b6c985ce03e`, compiled eight GMP/GMPXX targets in [run 39306529387](https://github.com/akashskypatel/Directional/actions/runs/39306529387), artifact `12214741070`, ZIP `9acb50815485cb597d5673d3daab473ad140eb8aaddcd0a2dbe7d4c435b45ca5`; runtimeExecution=false. All following subitems describe compiled—not run—code.
   - Typed `railVertex` (last member) and the defaulted R anchors in the interval helper.
   - The pure `open_rail_interior_vertex_valid`.
   - The factory R branch with star incidence; closed rails reject R; the digest hashes R only when present.
   - Two truth tables.
-- [ ] Then `M6-CP3-TB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT` (the TB16A harness plus #13; #1–#7 and #13 PASS; #8–#12 byte-identical to TB16A), then `…-REV`, which issues the CB18 (U5) spec.
+- [ ] **NEXT:** `M6-CP3-TB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT` (the TB16A harness plus #13; #1–#7 and #13 PASS; #8–#12 byte-identical to TB16A), then `…-REV`, which issues the CB18 (U5) spec.
 - [ ] Units:
   - U4 = CB17 (factory) and U5 = CB18 (consumer emits R); the TB18 census measures both;
   - fixture debt after TB18 (242 → 174 → 250 → adjacent-sheet → 191 → 442), then a census and the RP-01 Review.

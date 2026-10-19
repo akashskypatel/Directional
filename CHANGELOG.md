@@ -1,3 +1,9 @@
+## 2026-10-19 — CB17 factory rail-vertex endpoint compiled (U4, no runtime)
+
+- RA-102.4 factory-only R support: optional `railVertex`, strict interior interval/eligibility check and hard spokes, A3-star/orientation validation, closed-rail rejection and digest tag only for R; the consumer remains unchanged. Added the prescribed R interval and eligibility truth tables (compiled, not run).
+- Exact semantic source `ccc0b00ab6a94d0889ed7c60e4532b6c985ce03e`, verified Google Drive patch application run `39306253290`; GMP/GMPXX eight-target compile [run 39306529387](https://github.com/akashskypatel/Directional/actions/runs/39306529387), immutable artifact `12214741070`, ZIP SHA-256 `9acb50815485cb597d5673d3daab473ad140eb8aaddcd0a2dbe7d4c435b45ca5`; `runtimeExecution=false`.
+- Stable ledger 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, candidate census 425/497 and frozen selector 497 unchanged. RP-01 open, RP-02 UNREACHED. Separate next turn: `M6-CP3-TB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT` (RA-102.5). Record: `.agents/Directional/Architecture_M6_CP3_CB17_R10_Factory_Rail_Vertex_Endpoint_Code_Build_Record_20261019.md`.
+
 ## 2026-10-19 — RA-102: TB16C reviewed; U6 complete; CB17 (U4) specified
 
 - TB16C re-verified: 1019/1019; 425/497; 0 status changes against TB14A. The 72 REDs were reclassified from raw logs as B2 30 and other 42, agreeing with the agent's TSV on 72/72. Outside the B3 set, no first failure changed in substance; 10 changed only by the P10:12 line shift.
