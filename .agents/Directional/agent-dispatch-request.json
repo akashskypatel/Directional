@@ -1,11 +1,14 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb16-docs-apply-20261019-01",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb16-docs-apply",
-  "file_id": "1Oz7QnLWNOM8MFACyeNgzx4Et5Uwl-ygF",
-  "patch_sha256": "1bfc92d21e9982562a7e71efa54f9f371382be57a775834d3778d436b3afa278",
-  "base_sha": "243bef34d0f22affdaae22055990bceeb335ff9c",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "Close CB16 exact-I checker Code+Build documents"
+  "request_id": "m6-cp3-tb16-exact-i-witness-20261019-01",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb16-exact-i-witness",
+  "executor_sha": "3f0220bc4f2bf27317fb0834f89c7ca3c6435275",
+  "semantic_source_sha": "1c45e89ae0ca7a072c5140aea2b95be6387ec078",
+  "turn_id": "M6-CP3-TB16-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS",
+  "harness_path": ".agents/Directional/tools/m6_cp3_tb16_exact_i_endpoint_witness_checkers_harness.sh",
+  "harness_sha256": "f8db713ee6a98445cc26f29ce8dfc248cca88de1b927ceabf1892ed0aa43769b",
+  "environment": {},
+  "artifact_prefix": "m6-cp3-tb16-exact-i-witness",
+  "retention_days": 14
 }
