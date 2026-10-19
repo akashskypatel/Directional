@@ -1,19 +1,18 @@
-## CURRENT — TB16 reviewed (RA-98): CB16 accepted; CB16A corrects one test row (2026-10-19)
+## CURRENT — CB16A patch reviewed (RA-99): it conforms; compile pending; resume compile only (2026-10-19)
 
-- [x] `M6-CP3-TB16-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS-REV` (RA-98).
-  - Both artifacts re-verified; CB16 code accepted.
-  - The #3 falsifier is an owned Review spec defect: `nextafter` toward 1.0 turned the reverse image of 1/5 into the forward image, which A4 accepts.
-  - B3 is cleared on `cp3entry:2/6` and selector 217, which now stop at B2 (front 97/283, vertex 4).
-  - Record: RA-98 in `.agents/Directional/Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md`.
-- [ ] **NEXT:** `M6-CP3-CB16A-R10-EXACT-I-WITNESS-UNBOUND-ROW` (RA-98.4). Test-only, compile only.
-  - Mutate toward 0.0 and assert the result differs from both images.
-  - Add the accepted image-swap property.
+- [x] `M6-CP3-TB16-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS-REV` (RA-98): CB16 code accepted; the TB16 #3 falsifier was an owned Review spec defect; B3 cleared on `cp3entry:2/6` and selector 217, which now stop at B2 (front 97/283, vertex 4).
+- [ ] `M6-CP3-CB16A-R10-EXACT-I-WITNESS-UNBOUND-ROW` (partial): test patch applied at `7cfa5b46`; no compile has run.
+- [x] `M6-CP3-CB16A-R10-EXACT-I-WITNESS-UNBOUND-ROW-PATCH-REV` (RA-99).
+  - The patch changes only P10 (+13/−1), exactly RA-98.4; production is unchanged.
+  - Evaluated in exact arithmetic: the mutation `…97p-3` matches neither image (`…98p-3`, `…99p-3`), so all six rows hold. This predicts TB16A #3; it is not a runtime claim.
+  - Record: RA-99 in `.agents/Directional/Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md`.
+- [ ] **NEXT:** `M6-CP3-CB16A-R10-EXACT-I-WITNESS-UNBOUND-ROW` (resume, RA-99.4). Compile only from `source_sha` `7cfa5b4612ed67ec0bbddb747edbc6c53076b781` (eight CB16 targets, prefix `directional-m6-cp3-cb16a`). Do not re-apply or edit the patch.
 - [ ] Then `M6-CP3-TB16A-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS` (same 12; #1–#7 PASS; #8–#12 byte-identical to TB16). If TB16A holds, `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS` on the CB16A package, followed by `…-REV`, which issues the CB17 spec.
 - [ ] Units:
-  - U6 is implemented (CB15/CB16), pending CB16A and the census;
+  - U6 is implemented (CB15/CB16), pending the CB16A package, TB16A and the census;
   - U4 = CB17 and U5 = CB18, both re-derived from TB16C;
   - fixture debt after TB18 (242 → 174 → 250 → adjacent-sheet → 191 → 442), then a census and the RP-01 Review.
-- **Turn sequence:** CB16A → TB16A → TB16C → TB16C-REV → CB17 → TB17 → CB18 → TB18 → fixture debt → census → RP-01 Review.
+- **Turn sequence:** CB16A (resume, compile) → TB16A → TB16C → TB16C-REV → CB17 → TB17 → CB18 → TB18 → fixture debt → census → RP-01 Review.
 - Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, census 425/497, selector 497. `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
 
 ---

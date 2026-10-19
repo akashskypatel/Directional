@@ -1,3 +1,9 @@
+## 2026-10-19 — RA-99: CB16A patch reviewed; it conforms; compile pending
+
+- The CB16A test patch (`7cfa5b46`, drive-apply [run 39256723348](https://github.com/akashskypatel/Directional/actions/runs/39256723348)) changes only P10 (+13/−1), exactly RA-98.4. Production is unchanged from CB16.
+- Evaluated in exact arithmetic, all six rows hold: the mutation `…97p-3` matches neither accepted image of 1/5, and the image swap binds with the same witness.
+- No compile has run, so CB16A is not yet accepted. Next: CB16A resumes, compile only, from `7cfa5b46` (RA-99.4) → TB16A → TB16C → TB16C-REV. Accounting unchanged. Record: RA-99 in `.agents/Directional/Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md`.
+
 ## 2026-10-19 — RA-98: TB16 reviewed; CB16 accepted; the #3 falsifier is a Review spec defect; CB16A next
 
 - Both artifacts re-verified: CB16 package `821edfc6…` (source `1c45e89a`) and TB16 result `8a329317…` (16/16, 12/12 selected).

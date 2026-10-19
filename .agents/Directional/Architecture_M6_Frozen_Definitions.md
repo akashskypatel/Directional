@@ -1,3 +1,12 @@
+## RA-99 — CB16A patch reviewed: it conforms; compile pending; resume compile only (2026-10-19)
+
+Authority: `Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md` (RA-99, appended).
+
+- **RA-99.1–99.2** Patch commit `7cfa5b46` changes only P10 (+13/−1), exactly RA-98.4. Evaluated in exact arithmetic, all six new or kept rows hold (the mutation `…97p-3` matches neither image, `…98p-3` or `…99p-3`).
+- **RA-99.3–99.4** No compile has run. CB16A resumes, compile only, from `source_sha` `7cfa5b4612ed67ec0bbddb747edbc6c53076b781`. TB16A and the sequence are unchanged.
+
+---
+
 ## RA-98 — TB16 reviewed: CB16 code accepted; the #3 falsifier is a Review spec defect; B3 cleared on the measured identities; CB16A corrects one row (2026-10-19)
 
 Authority: `Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md` (RA-98, appended).

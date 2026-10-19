@@ -1,6 +1,6 @@
 # RA-95 — DEFN-U6 stopped without a deliverable; Review locates the exact I-endpoint origin; DEFN-U6A narrowed (2026-10-18)
 
-**Turn:** `M6-CP3-DEFN-U6-EXACT-I-ENDPOINT-PARAMETER-REV`. **Inputs:** HEAD `73a014c4e`. `src`, `include` and `tests` are identical to CB14A `2ee499a3`, so every `S:` line below is valid there. TB14A result `12141843937` raw logs. **S** = `src/geometry/SurfaceCellTracing.cpp`. **Amends:** RA-94.5 (order) and RA-94.6 (spec). RA-96 (the DEFN-U6A review) is appended and amends RA-95.4/95.6. RA-97 (the TB15 review) is appended and withdraws RA-95.3's "p ≠ 1/5". RA-98 (the TB16 review) is appended and amends RA-97.4 item 5 and RA-97.5/97.6.
+**Turn:** `M6-CP3-DEFN-U6-EXACT-I-ENDPOINT-PARAMETER-REV`. **Inputs:** HEAD `73a014c4e`. `src`, `include` and `tests` are identical to CB14A `2ee499a3`, so every `S:` line below is valid there. TB14A result `12141843937` raw logs. **S** = `src/geometry/SurfaceCellTracing.cpp`. **Amends:** RA-94.5 (order) and RA-94.6 (spec). RA-96 (the DEFN-U6A review) is appended and amends RA-95.4/95.6. RA-97 (the TB15 review) is appended and withdraws RA-95.3's "p ≠ 1/5". RA-98 (the TB16 review) is appended and amends RA-97.4 item 5 and RA-97.5/97.6. RA-99 (the CB16A patch review) is appended; it fixes the CB16A compile source.
 
 ## RA-95.1 Turn state
 
@@ -347,3 +347,15 @@ No other row, test or production line changes. GMP/GMPXX compile and package. Re
 ## RA-98.6 Sequence
 
 CB16A → TB16A → TB16C → TB16C-REV (re-derives and issues the CB17 U4 spec from the census) → CB17 → TB17 → CB18 → TB18 → fixture debt (RA-96.6 order) → census → RP-01 Review. Accounting is unchanged.
+
+## RA-99 — CB16A patch reviewed: it conforms; the compile has not run; resume authorized (2026-10-19)
+
+**Turn:** `M6-CP3-CB16A-R10-EXACT-I-WITNESS-UNBOUND-ROW-PATCH-REV`. **Inputs:** HEAD `0fdc5e9c9`; patch commit `7cfa5b4612ed67ec0bbddb747edbc6c53076b781` (drive-apply [run 39256723348](https://github.com/akashskypatel/Directional/actions/runs/39256723348), patch SHA-256 `437fc495…b74a`). STATUS is CB16A `IN_PROGRESS`, successor itself.
+
+- **RA-99.1 The patch conforms.** `git diff 1c45e89a 7cfa5b46 -- src include tests` touches only P10 (+13/−1), and those lines are exactly RA-98.4 items 1–3. No production line changed. `<bit>` and `<cstdint>` are already included (P10:12, P10:15).
+- **RA-99.2 Static evaluation, in exact arithmetic.** This predicts TB16A #3; it is not a runtime claim.
+  - `to_double(1/5)` truncates to `…99p-3`. Face 3 reproduces slot 2 as `…98p-3` (reverse) and `…99p-3` (forward). The mutation gives `…97p-3`.
+  - The binding compares the three barycentrics with those two reproductions (S:125-143). `SurfaceTracePoint` has only `face`, `barycentric` and the witness (H:91-96), so `otherImage` is the forward image in full.
+  - Therefore both `EXPECT_NE` rows hold; `corrupted` binds to neither image, so both `EXPECT_FALSE` rows hold; `otherImage` binds and carries the same witness, so both `EXPECT_TRUE` rows hold.
+- **RA-99.3 The turn is incomplete, not failed.** No compile request follows the patch; the latest dispatcher run is the drive-apply. CB16A is not accepted until its package is verified.
+- **RA-99.4 Resume, compile only.** Same turn ID. Do not re-apply or edit the patch. The compile request uses `source_sha` `7cfa5b4612ed67ec0bbddb747edbc6c53076b781`, the eight CB16 targets and the prefix `directional-m6-cp3-cb16a`. The record (25 lines or fewer) gives the package ID, ZIP SHA-256, source SHA and `runtimeExecution=false`. TB16A, TB16C and the sequence are unchanged (RA-98.5/98.6).
