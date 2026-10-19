@@ -1,6 +1,6 @@
 # RA-95 — DEFN-U6 stopped without a deliverable; Review locates the exact I-endpoint origin; DEFN-U6A narrowed (2026-10-18)
 
-**Turn:** `M6-CP3-DEFN-U6-EXACT-I-ENDPOINT-PARAMETER-REV`. **Inputs:** HEAD `73a014c4e`. `src`, `include` and `tests` are identical to CB14A `2ee499a3`, so every `S:` line below is valid there. TB14A result `12141843937` raw logs. **S** = `src/geometry/SurfaceCellTracing.cpp`. **Amends:** RA-94.5 (order) and RA-94.6 (spec). RA-96 (the DEFN-U6A review) is appended and amends RA-95.4/95.6. RA-97 (the TB15 review) is appended and withdraws RA-95.3's "p ≠ 1/5". RA-98 (the TB16 review) is appended and amends RA-97.4 item 5 and RA-97.5/97.6. RA-99 (the CB16A patch review) is appended; it fixes the CB16A compile source. RA-100 (the CB16A review) is appended; it accepts CB16A and pins the TB16A and TB16C inputs.
+**Turn:** `M6-CP3-DEFN-U6-EXACT-I-ENDPOINT-PARAMETER-REV`. **Inputs:** HEAD `73a014c4e`. `src`, `include` and `tests` are identical to CB14A `2ee499a3`, so every `S:` line below is valid there. TB14A result `12141843937` raw logs. **S** = `src/geometry/SurfaceCellTracing.cpp`. **Amends:** RA-94.5 (order) and RA-94.6 (spec). RA-96 (the DEFN-U6A review) is appended and amends RA-95.4/95.6. RA-97 (the TB15 review) is appended and withdraws RA-95.3's "p ≠ 1/5". RA-98 (the TB16 review) is appended and amends RA-97.4 item 5 and RA-97.5/97.6. RA-99 (the CB16A patch review) is appended; it fixes the CB16A compile source. RA-100 (the CB16A review) is appended; it accepts CB16A and pins the TB16A and TB16C inputs. RA-101 (the TB16A review) is appended; it pins the TB16C deliverables.
 
 ## RA-95.1 Turn state
 
@@ -384,3 +384,31 @@ CB16A → TB16A → TB16C → TB16C-REV (re-derives and issues the CB17 U4 spec 
 
   Deliverables, classification and predictions are as in RA-97.5/RA-98.5, compared with TB14A.
 - **RA-100.5 Sequence** (unchanged): TB16A → TB16C → TB16C-REV (CB17 spec) → CB17 → TB17 → CB18 → TB18 → fixture debt → census → RP-01 Review.
+
+## RA-101 — TB16A reviewed: every prediction held; the U6 gates are closed; TB16C deliverables pinned (2026-10-19)
+
+**Turn:** `M6-CP3-TB16A-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS-REV`. **Inputs:** HEAD `28b55522e`; TB16A [run 39277232731](https://github.com/akashskypatel/Directional/actions/runs/39277232731), result `12198063461`; harness `m6_cp3_tb16a_exact_i_endpoint_witness_checkers_harness.sh` (SHA-256 `20b2ebd8…afea`); report `Architecture_M6_CP3_TB16A_Exact_I_Witness_Checkers_Harvest_Report_20261019.md`.
+
+- **RA-101.1 Re-verification.**
+  - ZIP SHA-256 `7f8769edbddc8439662526ca9520919ad78888b31a12abdd9548d476edd06cba` matches; manifest 16/16. Immutability: package, source, execution view and frozen selectors all true. 12 planned, 12 executed, 0 missing; compile, relink, benchmarks and selector497 all false.
+  - The harness differs from TB16's only in lines 7–9 and the two labels.
+  - #1–#7 PASS. The #3 log runs the corrected test, reports `OK`, and has no failure line.
+  - #8–#12: the ledger `first_failure` fields match TB16's, but the ledger truncates at 600 characters. The full first predicate lines in the raw logs (6,972–9,565 bytes) are also byte-identical to TB16's.
+- **RA-101.2 The U6 gates are closed.** All six U6 tests and the U3 truth table pass on one package. B3 status is unchanged from RA-98.3: cleared on the three measured identities, with 16 left for the census. The factory rule still has no real-data coverage; that needs an open-rail fixture that reaches `make`.
+- **RA-101.3 TB16C can run.**
+  - No test identity was removed since CB14A (1,231 → 1,237; the six new ones are CB15's and CB16's tests).
+  - All 491 selector-file names exist at `7cfa5b46`. The selector files and the census harness are unchanged since TB14A.
+  - The baseline is TB14A's `combined-ledger.tsv` in artifact `12141843937` (ZIP `1b06e43e…d455`), which **expires on 2026-11-01**. TB16C therefore commits its comparison as a TSV, so the baseline survives the artifact.
+- **RA-101.4 TB16C deliverables** (refines RA-97.5, RA-98.5 and RA-100.4). The run is as RA-100.4.
+  1. `Architecture_M6_CP3_TB16C_Selector_497_Red_Inventory.tsv`, one row per TB16C RED, with columns `phase, ordinal, identity, owner, exit, raw_sha256, class, first_failure (≤200 chars), TB14A (PASS/RED), TB14A_first_observable`.
+  2. **Classification:** RA-90.4 with RA-91.2, applied to each RED's first `firstPredicate=` text, or its first gtest failure line when there is none. Class **U6** for any `exact-witness-unbound` or `exact-witness-mismatch`.
+  3. A report of 30 lines or fewer giving:
+     - totals per phase (30/12/449/6) and the count per class;
+     - the TB14A PASS → RED list and the TB14A RED → PASS list;
+     - the class of each of the 19 RA-95.2 B3 identities, by name;
+     - the TSV's SHA-256.
+
+     No interpretation.
+  - **Predictions:** every TB14A PASS stays PASS, so there are at least 425 PASS. Each of the 19 leaves B3; becoming B2 is expected, not required.
+  - **Falsifiers:** any PASS → RED, any U6 class, any B1, or any of the 19 still in B3. TB16C-REV follows in every case.
+- **RA-101.5 Sequence:** TB16C → TB16C-REV (re-derives and issues the CB17 U4 spec from the census) → CB17 → TB17 → CB18 → TB18 → fixture debt → census → RP-01 Review.

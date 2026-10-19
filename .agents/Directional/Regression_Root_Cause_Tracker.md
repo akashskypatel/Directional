@@ -1,7 +1,9 @@
-## TB16A exact-I checker harvest — predictions confirmed (2026-10-19)
+## TB16A exact-I checker harvest — predictions confirmed; adjudicated by RA-101 (2026-10-19)
 
 [Run 39277232731](https://github.com/akashskypatel/Directional/actions/runs/39277232731), result `12198063461` (ZIP SHA-256 `7f8769edbddc8439662526ca9520919ad78888b31a12abdd9548d476edd06cba`), source `7cfa5b46`, CB16A package `12193816372`. Full 12/12 immutable selection: **7 PASS / 5 expected diagnostic RED**, 0 missing, no rebuild or selector-497 run. Corrected independent oracle #3 goes RED → PASS; #8–#12 remain RED with `first_failure` byte-identical to TB16 artifact `12183498229`. No new stable production regression established, and no promotion of the B2 diagnostics to accepted production. Stable **66/17/49**, debt **1**, CP2 **491/491**, rejected R3 **403/497**, last full census TB14A **425/497**; RP-01 open, RP-02 UNREACHED, Gate C suspended. All RA-100.3 predictions hold. Conditional TB16C 497 census now authorized; do not ascribe an unmeasured outcome to its remaining B3 identities. Report: `Architecture_M6_CP3_TB16A_Exact_I_Witness_Checkers_Harvest_Report_20261019.md`.
 
+
+**Adjudicated by RA-101:** independently re-verified (manifest 16/16; the harness diff is lines 7–9 and the labels only). The full #8–#12 predicate lines, not only the 600-character ledger field, are byte-identical to TB16. The U6 gates are closed. The TB16C deliverables are pinned (RA-101.4).
 ---
 
 ## TB16 exact-I checker harvest — adjudicated by RA-98 (2026-10-19)

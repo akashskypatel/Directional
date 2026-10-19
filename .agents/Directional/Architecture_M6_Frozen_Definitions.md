@@ -1,3 +1,18 @@
+## RA-101 — TB16A reviewed: every prediction held; the U6 gates are closed; TB16C deliverables pinned (2026-10-19)
+
+Authority: `Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md` (RA-101, appended).
+
+- **RA-101.1–101.2** TB16A result `12198063461` re-verified: #1–#7 PASS; #8–#12 first predicate lines byte-identical to TB16 in full, not only the 600-character ledger field. The U6 gates are closed; B3 status is unchanged from RA-98.3.
+- **RA-101.3** TB16C can run. The TB14A baseline (`combined-ledger.tsv`, artifact `12141843937`) expires on 2026-11-01, so TB16C commits its comparison as a TSV.
+- **RA-101.4** TB16C deliverables:
+  - `Architecture_M6_CP3_TB16C_Selector_497_Red_Inventory.tsv`, with the RA-90.5 columns and TB14A in place of R3;
+  - classification by RA-90.4 with RA-91.2, plus class U6 for any `exact-witness-` label;
+  - a report of 30 lines or fewer that gives each of the 19 B3 identities' class by name.
+
+  Falsifiers: any PASS → RED, U6, B1, or any of the 19 still in B3.
+
+---
+
 ## RA-100 — CB16A accepted; TB16A and TB16C inputs pinned (2026-10-19)
 
 Authority: `Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md` (RA-100, appended).

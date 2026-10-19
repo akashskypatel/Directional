@@ -1,3 +1,8 @@
+## 2026-10-19 — RA-101: TB16A reviewed; the U6 gates are closed; TB16C census next
+
+- TB16A result `12198063461` re-verified: manifest 16/16; the harness differs from TB16's only in lines 7–9 and the labels. #1–#7 PASS (#3 corrected). The full #8–#12 predicate lines (up to 9,565 bytes), not only the 600-character ledger field, are byte-identical to TB16.
+- TB16C is feasible: no identity removed since CB14A, and all 491 selector names exist at `7cfa5b46`. Its deliverables are pinned (RA-101.4): a RED-inventory TSV against TB14A (whose artifact expires on 2026-11-01), classification by RA-90.4 and RA-91.2 plus class U6, and the class of each of the 19 B3 identities. Record: RA-101 in `.agents/Directional/Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md`.
+
 ## 2026-10-19 — TB16A exact-I checker predictions confirmed (artifact-only)
 
 - [Run 39277232731](https://github.com/akashskypatel/Directional/actions/runs/39277232731), result artifact `12198063461` (ZIP SHA-256 `7f8769edbddc8439662526ca9520919ad78888b31a12abdd9548d476edd06cba`), immutable CB16A package `12193816372`, source `7cfa5b4612ed67ec0bbddb747edbc6c53076b781`.
