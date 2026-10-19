@@ -1,18 +1,11 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb18-r10-compile-20261019-01",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb18-r10-compile",
-  "source_sha": "3bd24682c5e18eece541ab4d1f38f781a2230e41",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb18-r10-compile"
+  "request_id": "m6-cp3-cb18-r10-closeout-docs-20261019-01",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb18-r10-docs",
+  "file_id": "11v3hvZRDqWrM8E2XORlRb8HXNmvTICnX",
+  "patch_sha256": "36574941e86db4c6df8d29af40908a68a76a7003060300a1794c23460c9196b5",
+  "base_sha": "f2719dce33a6129bb877a6277a2d37219be07002",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: record CB18 compile evidence and TB18 handoff"
 }
