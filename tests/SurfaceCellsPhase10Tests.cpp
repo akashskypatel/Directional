@@ -9456,12 +9456,24 @@ TEST(SurfaceCellAuthorityContractCutover,
       faces, 0, 1, 4, *p, edge);
   const auto reverse = accepted_boundary_trace_point(
       faces, 3, 4, 1, *p, edge);
+  const auto forwardInFace3 = accepted_boundary_trace_point(
+      faces, 3, 1, 4, *p, edge);
   ASSERT_TRUE(forward);
   ASSERT_TRUE(reverse);
+  ASSERT_TRUE(forwardInFace3);
   auto corrupted = *reverse;
-  corrupted.barycentric[2] = std::nextafter(corrupted.barycentric[2], 1.0);
+  corrupted.barycentric[2] = std::nextafter(corrupted.barycentric[2], 0.0);
+  EXPECT_NE(std::bit_cast<std::uint64_t>(corrupted.barycentric[2]),
+            std::bit_cast<std::uint64_t>(reverse->barycentric[2]));
+  EXPECT_NE(std::bit_cast<std::uint64_t>(corrupted.barycentric[2]),
+            std::bit_cast<std::uint64_t>(forwardInFace3->barycentric[2]));
   EXPECT_FALSE(exact_interior_witness_binds(corrupted, faces, edge));
   EXPECT_FALSE(same_interior_carrier_point(*reverse, corrupted, faces, edge));
+
+  auto otherImage = *reverse;
+  otherImage.barycentric = forwardInFace3->barycentric;
+  EXPECT_TRUE(exact_interior_witness_binds(otherImage, faces, edge));
+  EXPECT_TRUE(same_interior_carrier_point(*reverse, otherImage, faces, edge));
 
   const auto wrongEdge = test_source_edge_topology(4, 7);
   const auto edge47 = accepted_boundary_trace_point(
