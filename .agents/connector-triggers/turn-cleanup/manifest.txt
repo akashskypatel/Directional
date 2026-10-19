@@ -1,2 +1,0 @@
-# CB17 temporary workflow trigger cleanup; preserve durable dispatcher, docs, policies and workflow-mailbox branch.
-.agents/connector-triggers/source-snapshot/m6-cp3-cb17-20261019.txt
