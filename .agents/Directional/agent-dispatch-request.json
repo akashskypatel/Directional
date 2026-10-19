@@ -1,14 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb17-r10-20261019-01",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb17-factory-rail-vertex",
-  "executor_sha": "209947282a152e125fbaf3801818ae858da27a93",
-  "semantic_source_sha": "ccc0b00ab6a94d0889ed7c60e4532b6c985ce03e",
-  "turn_id": "M6-CP3-TB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT",
-  "harness_path": ".agents/Directional/tools/open_rail_interior_vertex_harness.sh",
-  "harness_sha256": "efa91d9ba48b1a26b6caf189b7a6d76ca3746109c969d8f20531e32d2191c7a9",
-  "environment": {},
-  "artifact_prefix": "m6-cp3-tb17-rail-vertex",
+  "request_id": "m6-cp3-tb17-r10-closeout-20261019-02",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb17-doc-closeout",
+  "file_id": "1EicIUtvFv_0de9IW1h60RbcV4dhXgQGY",
+  "patch_sha256": "45af378b123fec822227e79776ba027097c19b0c8c05f34e05bce1bfe3ef6eab",
+  "base_sha": "c5d1741030cd21bcc89c135128ecd8b798987925",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): finalize TB17 evidence and review handoff",
   "retention_days": 14
 }
