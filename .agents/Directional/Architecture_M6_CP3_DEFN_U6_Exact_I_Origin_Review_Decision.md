@@ -1,6 +1,6 @@
 # RA-95 — DEFN-U6 stopped without a deliverable; Review locates the exact I-endpoint origin; DEFN-U6A narrowed (2026-10-18)
 
-**Turn:** `M6-CP3-DEFN-U6-EXACT-I-ENDPOINT-PARAMETER-REV`. **Inputs:** HEAD `73a014c4e`. `src`, `include` and `tests` are identical to CB14A `2ee499a3`, so every `S:` line below is valid there. TB14A result `12141843937` raw logs. **S** = `src/geometry/SurfaceCellTracing.cpp`. **Amends:** RA-94.5 (order) and RA-94.6 (spec). RA-96 (the DEFN-U6A review) is appended and amends RA-95.4/95.6. RA-97 (the TB15 review) is appended and withdraws RA-95.3's "p ≠ 1/5".
+**Turn:** `M6-CP3-DEFN-U6-EXACT-I-ENDPOINT-PARAMETER-REV`. **Inputs:** HEAD `73a014c4e`. `src`, `include` and `tests` are identical to CB14A `2ee499a3`, so every `S:` line below is valid there. TB14A result `12141843937` raw logs. **S** = `src/geometry/SurfaceCellTracing.cpp`. **Amends:** RA-94.5 (order) and RA-94.6 (spec). RA-96 (the DEFN-U6A review) is appended and amends RA-95.4/95.6. RA-97 (the TB15 review) is appended and withdraws RA-95.3's "p ≠ 1/5". RA-98 (the TB16 review) is appended and amends RA-97.4 item 5 and RA-97.5/97.6.
 
 ## RA-95.1 Turn state
 
@@ -275,3 +275,75 @@ Falsifiers, each sent to Review:
 ## RA-97.6 Sequence
 
 CB16 → TB16 → TB16C → TB16C-REV (re-derives and issues the CB17 U4 spec from the census) → CB17 → TB17 → CB18 → TB18 → fixture debt (RA-96.6 order) → census → RP-01 Review. Each CB follows a reviewed TB, and a falsifier goes to Review. Accounting is unchanged.
+
+---
+
+# RA-98 — TB16 reviewed: CB16 code accepted; the #3 falsifier is a Review spec defect; B3 cleared on the measured identities; CB16A corrects one row (2026-10-19)
+
+**Turn:** `M6-CP3-TB16-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS-REV`. **Inputs:**
+- CB16 source `1c45e89ae0ca7a072c5140aea2b95be6387ec078` (HEAD `src/include/tests` identical) and package `12154623660`;
+- TB16 result `12183498229`.
+
+**Amends:** RA-97.4 item 5 (one row) and RA-97.5/97.6 (sequence; TB16C runs on the CB16A package).
+
+## RA-98.1 Re-verification
+
+- **CB16 package.** ZIP `821edfc6…9956` reproduced; 0 manifest mismatches; `source-commit` `1c45e89a`; build exit 0. The packaged S, H and P10 are identical to the commit and to HEAD.
+- **CB16 diff from `e4785d73`.** It touches only S, H and P10.
+  - The rule (S:175-191) follows RA-97.4 item 1 line for line.
+  - The declaration is at H:1565-1568.
+  - The two labels sit inside the existing probe branch (S:20139-20153).
+  - No other guard or call site changed.
+- **TB16.** ZIP `8a329317…2dc32` reproduced; 16/16; 12/12 selected, 0 missing.
+  - **#3** fails exactly twice, at P10:9463-9464, on the `corrupted` row. Its other five assertions hold.
+  - **#8/#9:** the complete first-failure records are byte-identical to TB15 #5/#6. RA-97.5's "fail at `carrier-orientation`" names `a2bProbeFirstFailedCondition`; the predicate is `endpoint-1`.
+  - **#10–#12:** the first failure moved to `endpoint-1` at front 97/283. Both ends are one-hot at vertex 4 (face 0 `(0,0,1)`, face 7 `(1,0,0)`), with `a3ProbeDecodedVertex=4`, `ContactEndpointMember=0` and `ContactPublished=1`. The ordinals on span 3 are 4→5 / 5→4, and there is no witness. That is **B2** by RA-90.4 with RA-91.2, the RA-97.5 expectation.
+  - No `exact-witness-` label and no `open-rail-chain-interval` appear.
+
+## RA-98.2 The #3 falsifier is an owned Review spec defect; the checker is right
+
+- **What the mutation does.** Face 3 is (1, 7, 4). From p = 1/5 the helper gives:
+  - reverse image: (`0x1.999999999999ap-1`, 0, `0x1.9999999999998p-3`);
+  - forward image: (`0x1.999999999999ap-1`, 0, `0x1.9999999999999p-3`).
+
+  `nextafter(slot 2, 1.0)` turns the reverse image into the forward image exactly.
+- **Why the checker is right.** A4 (RA-96.2) binds to "one orientation" on purpose: the producer emits either image, depending on side traversal, and both represent p. The mutated point is therefore a valid image of its own witness, not a corruption, and `binds = true` and `same = true` are both correct.
+- **Where the defect is.** RA-97.4 item 5 said "a `nextafter` applied to one witnessed point". It named no point, slot or direction, and Review did not check the mutation against both images. CB15's own row survives only because forward slot 2 toward 1.0 gives `…9ap-3`, which matches neither image. The localization in the TB16 report is confirmed.
+- **No code change.** Swapping one valid image for the other changes no identity, because identity is the exact witness (RA-97.3).
+- **Not weakening.** The replacement keeps the row's intent with a genuine corruption, and pins the measured image swap as an accepted property.
+
+## RA-98.3 CB16 accepted; B3 status
+
+- **CB16 accepted.**
+- **B3 is cleared on the three measured identities.** They now stop at B2 at vertex 4, the same shape as the P10 midline tests at front 61/179.
+- **The other 16 B3 identities** share the template (RA-95.2) and are predicted to move the same way. TB16C measures it.
+- **Limit.** The factory call still has no real-data coverage.
+
+## RA-98.4 CB16A — `M6-CP3-CB16A-R10-EXACT-I-WITNESS-UNBOUND-ROW` (test-only)
+
+In `ExactWitnessUnboundFailsClosedAndMixedKeepsLegacy` (P10:9444; the `corrupted` row is at P10:9461-9464):
+
+1. Let `forwardInFace3 = accepted_boundary_trace_point(faces, 3, 1, 4, *p, edge)`, and assert it is present.
+2. Change the mutation to `std::nextafter(corrupted.barycentric[2], 0.0)`, which gives `0x1.9999999999997p-3`. Before the two existing `EXPECT_FALSE` rows, assert that the corrupted slot 2 differs bit for bit from slot 2 of both `*reverse` and `*forwardInFace3`. Keep both `EXPECT_FALSE` rows.
+3. Add the accepted property. Let `otherImage = *reverse` with `otherImage.barycentric = forwardInFace3->barycentric`, keeping the witness. Then:
+   - `EXPECT_TRUE(exact_interior_witness_binds(otherImage, faces, edge))`;
+   - `EXPECT_TRUE(same_interior_carrier_point(*reverse, otherImage, faces, edge))`.
+
+No other row, test or production line changes. GMP/GMPXX compile and package. Record of 25 lines or fewer: package ID, ZIP SHA-256, source SHA, `runtimeExecution=false`.
+
+## RA-98.5 TB16A and TB16C
+
+**TB16A** — `M6-CP3-TB16A-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS`.
+- **Harness:** the TB16 harness, changing only sha, artifact, digest and labels. The same 12 identities, in the same order.
+- **Predictions:** #1–#7 PASS. #8–#12 have first-failure records byte-identical to TB16.
+- **Falsifiers:** any other outcome. Each goes to Review.
+
+**TB16C** — `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS`, as RA-97.5 but on the **CB16A** package, and only if TB16A holds.
+- **Predictions:**
+  - every TB14A PASS stays PASS;
+  - all 19 B3 identities leave B3. They are expected, not required, to become B2.
+- **Falsifiers:** unchanged from RA-97.5.
+
+## RA-98.6 Sequence
+
+CB16A → TB16A → TB16C → TB16C-REV (re-derives and issues the CB17 U4 spec from the census) → CB17 → TB17 → CB18 → TB18 → fixture debt (RA-96.6 order) → census → RP-01 Review. Accounting is unchanged.

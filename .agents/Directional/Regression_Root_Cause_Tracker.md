@@ -1,6 +1,9 @@
-## TB16 candidate/non-stable verification falsifier (2026-10-19)
+## TB16 exact-I checker harvest — adjudicated by RA-98 (2026-10-19)
 
-[Run 39246335010](https://github.com/akashskypatel/Directional/actions/runs/39246335010), artifact `12183498229`, ZIP `8a329317a610a014cb834947d841fac788ffa55813519dc5259c342a3b62dc32`, CB16 `1c45e89a`: **12/12 selected; 6 PASS, 6 RED; immutable postflight**. Ordinal 3 is a **candidate test-oracle defect**: nextafter on reverse bary[2] yields the other legitimately reconstructed canonical rounding, so bound witness remains true. Ordinals 8–9 unchanged relative to TB15 #5/#6; ordinals 10–12 advance from front 17/203 to 97/283 but remain RED. RA-97.5 falsifier triggers independent Review; TB16C held. **Not a demonstrated new production regression**; stable **66/17/49**, debt 1, CP2 491/491, rejected R3 403/497, TB14A census 425/497 unchanged. Report: `Architecture_M6_CP3_TB16_Exact_I_Witness_Checkers_Harvest_Report_20261019.md`.
+[Run 39246335010](https://github.com/akashskypatel/Directional/actions/runs/39246335010), artifact `12183498229`, ZIP `8a329317a610a014cb834947d841fac788ffa55813519dc5259c342a3b62dc32`, CB16 `1c45e89a`: **12/12 selected; 6 PASS, 6 RED; immutable postflight**. Ordinal 3 is a **candidate test-oracle defect**: nextafter on reverse bary[2] yields the other legitimately reconstructed canonical rounding, so bound witness remains true. Ordinals 8–9 unchanged relative to TB15 #5/#6; ordinals 10–12 advance from front 17/203 to 97/283 but remain RED. RA-97.5 falsifier triggers independent Review; TB16C held. **Not a demonstrated new production regression**; stable **66/17/49**, debt 1, CP2 491/491, rejected R3 403/497, TB14A census 425/497 unchanged. Report: `Architecture_M6_CP3_TB16_Exact_I_Witness_Checkers_Harvest_Report_20261019.md`. **Adjudicated by RA-98:** independently re-verified.
+- #3 is a Review spec defect: the mutation produced the other valid orientation image, so the checker is correct.
+- #10–#12 are now B2 (front 97/283, vertex 4), so B3 is cleared on these identities.
+- No regression.
 
 ---
 

@@ -1,3 +1,21 @@
+## RA-98 — TB16 reviewed: CB16 code accepted; the #3 falsifier is a Review spec defect; B3 cleared on the measured identities; CB16A corrects one row (2026-10-19)
+
+Authority: `Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md` (RA-98, appended).
+
+- **RA-98.1** CB16 and TB16 were re-verified from both artifacts.
+  - The rule follows RA-97.4 line for line.
+  - #8/#9 are byte-identical to TB15.
+  - #10–#12 leave front 17/203 and stop at B2: front 97/283, one-hot vertex 4.
+  - #3 fails only on its `corrupted` row.
+- **RA-98.2** Owned spec defect. `nextafter(slot 2, 1.0)` on the face-3 reverse image of 1/5 produces exactly the forward image, which A4 accepts by design. The checker is right; the row was not a corruption. No code change.
+- **RA-98.3** CB16 is accepted. B3 is cleared on the three measured identities; TB16C measures the other 16.
+- **RA-98.4** CB16A (test-only):
+  - mutate toward 0.0, to `…97p-3`, and assert it differs from both images;
+  - add the accepted image-swap property.
+- **RA-98.5–98.6** CB16A → TB16A (same 12; #1–#7 PASS; #8–#12 byte-identical) → TB16C on the CB16A package → TB16C-REV (CB17 spec) → CB17/TB17 → CB18/TB18 → fixture debt → census → RP-01 Review.
+
+---
+
 ## RA-97 — TB15 reviewed: the witness is p = 1/5, bound on both sides; CB15 accepted; CB16 rule specified (2026-10-18)
 
 Authority: `Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md` (RA-97, appended).

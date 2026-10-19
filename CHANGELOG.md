@@ -1,3 +1,12 @@
+## 2026-10-19 — RA-98: TB16 reviewed; CB16 accepted; the #3 falsifier is a Review spec defect; CB16A next
+
+- Both artifacts re-verified: CB16 package `821edfc6…` (source `1c45e89a`) and TB16 result `8a329317…` (16/16, 12/12 selected).
+  - The rule follows RA-97.4 line for line.
+  - #8/#9 are byte-identical to TB15.
+  - #10–#12 left front 17/203 and now stop at B2: front 97/283, one-hot vertex 4.
+- #3 fails only on its `corrupted` row. `nextafter` toward 1.0 turned the face-3 reverse image of 1/5 into the forward image, which A4 accepts by design. This is an owned Review spec defect (RA-97.4 named no slot or direction). No code change.
+- Next: CB16A (test-only: mutate toward 0.0; pin the image-swap property) → TB16A (same 12) → TB16C (497 census on the CB16A package) → TB16C-REV (CB17 spec). Accounting unchanged. Record: RA-98 in `.agents/Directional/Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md`.
+
 ## 2026-10-19 — TB16 immutable exact-I witness checker harvest; falsifier
 
 - Artifact-only [run 39246335010](https://github.com/akashskypatel/Directional/actions/runs/39246335010), result `12183498229` (SHA-256 `8a329317a610a014cb834947d841fac788ffa55813519dc5259c342a3b62dc32`); 12/12 selected, 6 PASS / 6 RED, immutable postflight, no compile/relink. CB16 test #3 has a false negative oracle because its nextafter mutation reaches the alternative accepted orientation rounding. B2 firstPredicate unchanged; B3 moves from front 17/203 to 97/283, still rejected. RA-97.5 falsifier requires independent Review; TB16C not authorized. Stable 66/17/49, debt1, selector497 unchanged. Owning report: `.agents/Directional/Architecture_M6_CP3_TB16_Exact_I_Witness_Checkers_Harvest_Report_20261019.md`.

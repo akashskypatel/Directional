@@ -1,9 +1,20 @@
-## CURRENT — TB16 immutable gate falsifier; independent Review required (2026-10-19)
+## CURRENT — TB16 reviewed (RA-98): CB16 accepted; CB16A corrects one test row (2026-10-19)
 
-- [x] `M6-CP3-TB16-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS`: [run 39246335010](https://github.com/akashskypatel/Directional/actions/runs/39246335010), artifact `12183498229` ZIP `8a329317a610a014cb834947d841fac788ffa55813519dc5259c342a3b62dc32`. 12/12 selected, 6 PASS / 6 RED; immutable, no compile. CB16 test #3 RED is a candidate invalid `nextafter` oracle (forward-equivalent rounding). Two B2 first-predicate records match TB15; three B3 failures advance from 17/203 to 97/283 but remain RED.
-- [ ] **NEXT:** mandatory independent TB16 Review + Plan (canonical ID **UNKNOWN**, not invented). Adjudicate failed CB16 test #3 and B3 next front, before any fixture/test change or unconditional census.
-- [ ] **HOLD:** `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS` until independent Review adjudicates RA-97.5 falsifier; no CB17/CB18 authorization.
-- Frozen: 66/17/49, debt1, CP2 491/491, R3 403/497 rejected, TB14A 425/497, selector497; RP-01 open, RP-02 UNREACHED, Gate C suspended.
+- [x] `M6-CP3-TB16-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS-REV` (RA-98).
+  - Both artifacts re-verified; CB16 code accepted.
+  - The #3 falsifier is an owned Review spec defect: `nextafter` toward 1.0 turned the reverse image of 1/5 into the forward image, which A4 accepts.
+  - B3 is cleared on `cp3entry:2/6` and selector 217, which now stop at B2 (front 97/283, vertex 4).
+  - Record: RA-98 in `.agents/Directional/Architecture_M6_CP3_DEFN_U6_Exact_I_Origin_Review_Decision.md`.
+- [ ] **NEXT:** `M6-CP3-CB16A-R10-EXACT-I-WITNESS-UNBOUND-ROW` (RA-98.4). Test-only, compile only.
+  - Mutate toward 0.0 and assert the result differs from both images.
+  - Add the accepted image-swap property.
+- [ ] Then `M6-CP3-TB16A-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS` (same 12; #1–#7 PASS; #8–#12 byte-identical to TB16). If TB16A holds, `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS` on the CB16A package, followed by `…-REV`, which issues the CB17 spec.
+- [ ] Units:
+  - U6 is implemented (CB15/CB16), pending CB16A and the census;
+  - U4 = CB17 and U5 = CB18, both re-derived from TB16C;
+  - fixture debt after TB18 (242 → 174 → 250 → adjacent-sheet → 191 → 442), then a census and the RP-01 Review.
+- **Turn sequence:** CB16A → TB16A → TB16C → TB16C-REV → CB17 → TB17 → CB18 → TB18 → fixture debt → census → RP-01 Review.
+- Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, census 425/497, selector 497. `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
 
 ---
 

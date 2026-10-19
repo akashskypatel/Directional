@@ -116,6 +116,10 @@ This document records **reusable failure-derived engineering lessons**, not an e
 - **A failure hidden behind an earlier one is unmeasured.** When an earlier failure is removed, do not
   predict the next one from an old baseline without first reading the test's history since that baseline.
   A fixture repair may have landed in between (RA-94.3: 199's cylinder half was repaired after R3).
+- **Specify a negative mutation by its exact result, and check that result against every accepted image.**
+  "Perturb by one ULP" is not a corruption when the rule accepts more than one rounding. RA-97.4 left
+  the slot and direction open, and the chosen step landed exactly on the other orientation's valid image
+  of 1/5 (RA-98.2).
 
 ## Semantic ownership, identity, and dataflow
 
