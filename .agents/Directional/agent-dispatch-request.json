@@ -1,18 +1,13 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb16a-compile-20261019-01",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb16a-compile",
-  "source_sha": "7cfa5b4612ed67ec0bbddb747edbc6c53076b781",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-cb16a"
+  "request_id": "m6-cp3-tb16a-20261019-01",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb16a-r10",
+  "executor_sha": "337156789bcf7394caeae032096883ef38667c8b",
+  "semantic_source_sha": "7cfa5b4612ed67ec0bbddb747edbc6c53076b781",
+  "turn_id": "M6-CP3-TB16A-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS",
+  "harness_path": ".agents/Directional/tools/m6_cp3_tb16a_exact_i_endpoint_witness_checkers_harness.sh",
+  "harness_sha256": "20b2ebd80f96e7d4bab6cb727b4f55cfa74f6c7006bf8c1e25e35a289f9aafea",
+  "environment": {},
+  "artifact_prefix": "directional-m6-cp3-tb16a"
 }
