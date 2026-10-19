@@ -1,3 +1,8 @@
+## 2026-10-19 — TB17 factory rail-interior-vertex truth tables verified (artifact-only)
+
+- [Run 39313027637](https://github.com/akashskypatel/Directional/actions/runs/39313027637), result `12215967774` (ZIP SHA-256 `b32366a1b4f102a2c09388bd5debb34bbbb6b6ff9d71931f8e0a06e700ea2ace`), immutable CB17 package `12214741070`/source `ccc0b00ab6a94d0889ed7c60e4532b6c985ce03e`. All 13 exact-filter processes selected once: 8 PASS (#1–#7, #13), 5 expected diagnostic RED (#8–#12); all five `first_failure` strings byte-identical to TB16A. Postflight immutable; no compile, relink, benchmark or selector-497 run.
+- No new stable regression: 66/17/49, debt 1 and candidate census 425/497 unchanged. RA-102.5 predictions met; next independent `M6-CP3-TB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT-REV` issues U5 specification conditional on review. Owning report: `.agents/Directional/Architecture_M6_CP3_TB17_Factory_Rail_Vertex_Endpoint_Harvest_Report_20261019.md`.
+
 ## 2026-10-19 — CB17 factory rail-vertex endpoint compiled (U4, no runtime)
 
 - RA-102.4 factory-only R support: optional `railVertex`, strict interior interval/eligibility check and hard spokes, A3-star/orientation validation, closed-rail rejection and digest tag only for R; the consumer remains unchanged. Added the prescribed R interval and eligibility truth tables (compiled, not run).

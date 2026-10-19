@@ -1,4 +1,4 @@
-## CURRENT — CB17 (U4) compiled; TB17 immutable artifact-only verification next (2026-10-19)
+## CURRENT — TB17 focused verification completed; independent TB17 Review next (2026-10-19)
 
 - [x] `M6-CP3-TB16A-R10-EXACT-I-ENDPOINT-WITNESS-CHECKERS-REV` (RA-101): the U6 gates are closed.
 - [x] `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS`: [run 39295624822](https://github.com/akashskypatel/Directional/actions/runs/39295624822), result `12207970911`; 425/497.
@@ -12,9 +12,10 @@
   - The pure `open_rail_interior_vertex_valid`.
   - The factory R branch with star incidence; closed rails reject R; the digest hashes R only when present.
   - Two truth tables.
-- [ ] **NEXT:** `M6-CP3-TB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT` (the TB16A harness plus #13; #1–#7 and #13 PASS; #8–#12 byte-identical to TB16A), then `…-REV`, which issues the CB18 (U5) spec.
+- [x] `M6-CP3-TB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT` (RA-102.5): [run 39313027637](https://github.com/akashskypatel/Directional/actions/runs/39313027637), result `12215967774`, 13/13 executed; #1–#7 and #13 PASS, #8–#12 expected RED and `first_failure` byte-identical to TB16A; postflight immutable, no rebuild/relink/benchmark/selector-497.
+- [ ] **NEXT:** `M6-CP3-TB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT-REV` — independent evidence re-derivation and conditional CB18 (U5) spec; do not implement U5 beforehand.
 - [ ] Units:
-  - U4 = CB17 (factory) and U5 = CB18 (consumer emits R); the TB18 census measures both;
+  - U4 = CB17 (factory, focused TB17 verified) and U5 = CB18 (consumer emits R, review-gated); the TB18 census measures both;
   - fixture debt after TB18 (242 → 174 → 250 → adjacent-sheet → 191 → 442), then a census and the RP-01 Review.
 - **Turn sequence:** CB17 → TB17 → TB17-REV → CB18 → TB18 (focused run plus census) → TB18-REV → fixture debt → census → RP-01 Review.
 - Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, census 425/497, selector 497. `RP-01` open, `RP-02` UNREACHED, Gate C suspended.

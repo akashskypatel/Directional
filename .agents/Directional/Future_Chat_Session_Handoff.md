@@ -34,22 +34,20 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-19, after CB17 (U4) compile-only. Factory R endpoint, interval/eligibility helpers and truth tables are compiled, not executed. Direct consumer R emission remains CB18; candidate census 425/497 is unchanged. Next: TB17 (RA-102.5). |
+| Currency | 2026-10-19, TB17 artifact-only completed: all 13 identities selected, 8 PASS / 5 expected diagnostic RED; #8–#12 first failures identical to TB16A. Factory R endpoint and helpers passed their focused truth-table gates. Direct consumer R emission remains CB18, not authorized before TB17-REV; candidate census 425/497 unchanged. |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft; refetch HEAD before mutation. Latest semantic source `ccc0b00ab6a94d0889ed7c60e4532b6c985ce03e`; CB17 exact-source package `12214741070` ([run 39306529387](https://github.com/akashskypatel/Directional/actions/runs/39306529387)), ZIP SHA-256 `9acb50815485cb597d5673d3daab473ad140eb8aaddcd0a2dbe7d4c435b45ca5`, GMP/GMPXX eight-target compile-only; runtimeExecution=false. Owning record `Architecture_M6_CP3_CB17_R10_Factory_Rail_Vertex_Endpoint_Code_Build_Record_20261019.md`. |
 | Last accepted semantic runtime | M6 CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. The R3 baseline (403/497) is `Architecture_M6_CP3_TB1_Entry_R3_Red_Classification.tsv`. |
-| Latest candidate or rejected evidence | TB16C [run 39295624822](https://github.com/akashskypatel/Directional/actions/runs/39295624822), result `12207970911` (ZIP SHA-256 `d10553f037a4ae92913db3c07b325636fe221335f79d955258d16b4671874fcb`): **425 PASS / 72 RED**, 497/497 identities; 19/19 prior B3 now B2; exact artifact/postflight immutable. `Architecture_M6_CP3_TB16C_Selector_497_Census_Report_20261019.md` and `Architecture_M6_CP3_TB16C_Selector_497_Red_Inventory.tsv`. No acceptance promotion before Review. |
+| Latest candidate or rejected evidence | TB17 [run 39313027637](https://github.com/akashskypatel/Directional/actions/runs/39313027637), result `12215967774`, ZIP SHA-256 `b32366a1b4f102a2c09388bd5debb34bbbb6b6ff9d71931f8e0a06e700ea2ace`: 13/13, 8 PASS / 5 expected RED, immutable postflight, no census; owning report `Architecture_M6_CP3_TB17_Factory_Rail_Vertex_Endpoint_Harvest_Report_20261019.md`. Prior TB16C [run 39295624822](https://github.com/akashskypatel/Directional/actions/runs/39295624822), result `12207970911` (ZIP SHA-256 `d10553f037a4ae92913db3c07b325636fe221335f79d955258d16b4671874fcb`): **425 PASS / 72 RED**, 497/497 identities; 19/19 prior B3 now B2; exact artifact/postflight immutable. `Architecture_M6_CP3_TB16C_Selector_497_Census_Report_20261019.md` and `Architecture_M6_CP3_TB16C_Selector_497_Red_Inventory.tsv`. No acceptance promotion before Review. |
 | Regression accounting and debt | **66/17/49**, debt **1**, selector 497 frozen; R3 403/497 rejected; no production regression. Fixture debt covers 174, 191, 242, 442, 250 and the adjacent-sheet helper (RA-96.6 order). |
-| Active boundary | `RP-01` (RA-87.3, RA-102.3):<br>• B1 and B3 are cleared (U3, U6).<br>• B2 is the only blocker: 30 records, one I–R shape (rail 2, chain [1,4,7], route [1-4], R = vertex 4).<br>• U4 = CB17 factory R branch compiled (runtime untested), next TB17 and its independent Review; U5 = CB18 consumer, not authorized before TB17-REV.<br>`RP-02` UNREACHED; Gate C suspended. |
+| Active boundary | `RP-01` (RA-87.3, RA-102.3):<br>• B1 and B3 are cleared (U3, U6).<br>• B2 is the only blocker: 30 records, one I–R shape (rail 2, chain [1,4,7], route [1-4], R = vertex 4).<br>• U4 = CB17 factory R branch compiled and its TB17 focused gates verified; no real-data factory R coverage until U5. TB17-REV is next; U5 = CB18 consumer, not authorized before TB17-REV.<br>`RP-02` UNREACHED; Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-TB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-TB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT-REV` — EXACT NEXT
 
-- **Type:** Test + Benchmark, artifact-only, no rebuild, relink, implementation, fixture or selector change.
-- **Authority:** RA-102.5 in `Architecture_M6_CP3_TB16C_Census_U4_Review_Decision.md`.
-- **Inputs:** exact CB17 GMP/GMPXX package `12214741070` (run 39306529387, source `ccc0b00ab6a94d0889ed7c60e4532b6c985ce03e`, ZIP SHA-256 `9acb50815485cb597d5673d3daab473ad140eb8aaddcd0a2dbe7d4c435b45ca5`).
-- **Harness:** TB16A harness (`20b2ebd80f96e7d4bab6cb727b4f55cfa74f6c7006bf8c1e25e35a289f9aafea`); change only source/artifact/digest/labels, append eligibility-table identity #13 and update count.
-- **Predictions:** #1–#7 and #13 PASS (#7 contains the R interval rows); #8–#12 `first_failure` byte-identical to TB16A.
-- **Any contrary outcome:** falsifier requiring independent Review before further implementation. No selector-497 census this turn; U4/U5 together measured at TB18.
-- **After TB17:** mandatory `M6-CP3-TB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT-REV` (issues CB18 U5 specification); do not advance into it within TB17.
+- **Type:** Independent Review + Plan, no source code, compile, test or benchmark execution.
+- **Authority:** RA-102.5–102.6 in `Architecture_M6_CP3_TB16C_Census_U4_Review_Decision.md`; TB17 evidence `Architecture_M6_CP3_TB17_Factory_Rail_Vertex_Endpoint_Harvest_Report_20261019.md`.
+- **Inputs:** immutable CB17 package `12214741070`/source `ccc0b00ab6a94d0889ed7c60e4532b6c985ce03e`; TB17 [39313027637](https://github.com/akashskypatel/Directional/actions/runs/39313027637), result `12215967774`, ZIP SHA-256 `b32366a1b4f102a2c09388bd5debb34bbbb6b6ff9d71931f8e0a06e700ea2ace`, 13/13 exact filters, 8 PASS and 5 expected RED.
+- **Required review:** independently verify archive/manifests, gate identities and outcomes #1–#7/#13, byte-identical #8–#12 `first_failure` compared with TB16A artifact `12198063461`, and immutable execution boundary; adjudicate any falsifier rather than inferring acceptance.
+- **Conditional deliverable:** if verified, specify CB18 (U5: consumer emits R) under R10B/RA-102 and define TB18 focused run plus selector-497 census. Preserve B2's 30-record blocker until evidence changes, selector/accounting, strict exactness and Gate C suspension. No CB18 work in this Review turn.
 
 ## Turn Sequence
 
@@ -66,15 +64,15 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | done | `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS` | 425/497; the 19 former B3 are now B2; no falsifier. |
 | done | `M6-CP3-TB16C-R10-SELECTOR-497-CENSUS-REV` | RA-102: census verified; U6 complete; one I–R blocker shape; CB17 specified. |
 | done | `M6-CP3-CB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT` | U4 compiled `ccc0b00ab6`, package `12214741070`, no runtime. |
-| 1 — next | `M6-CP3-TB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT` | 13 identities (RA-102.5). A falsifier goes to Review. |
-| 3 — mandatory | `M6-CP3-TB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT-REV` | Issues the CB18 (U5, consumer emits R) spec. |
+| done | `M6-CP3-TB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT` | 13/13 exact filters: 8 PASS, 5 expected RED; #8–#12 byte-identical to TB16A; run 39313027637. |
+| 1 — next | `M6-CP3-TB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT-REV` | Independently review TB17 evidence and issue the CB18 (U5) specification if verified. |
 | planned, not authorized | CB18 → TB18 (focused run plus census) → TB18-REV → fixture debt (242 → 174 → 250 → adjacent-sheet → 191 → 442) → census → RP-01 Review | Each CB follows a reviewed TB; a RED TB goes to Review. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **test_benchmark** — TB17 immutable artifact-only 13-identity verification of CB17 package `12214741070` (RA-102.5); no rebuild or source changes.
+`load_next`: **review** — independently verify TB17 13-identity immutable artifact (RA-102.5) and specify U5 CB18 only if evidence holds; no implementation or runtime.
 
-Minimum context after mandatory policies/checklists: `.agents/Directional/ORIENTATION.md`, `.agents/Directional/ROADMAP.md`, this handoff, RA-102 (`Architecture_M6_CP3_TB16C_Census_U4_Review_Decision.md`), R10B §2 (`Architecture_M6_CP3_R10B_Rail_Interior_Vertex_Endpoint_Rule_20261017.md`), RA-84.4 (`Architecture_M6_CP3_R10B_Endpoint_Rule_Review_Decision.md`), RA-85.4 (`Architecture_M6_CP3_TB11_Route_Anchor_Review_Decision.md`), S:8249-8286 and S:8676-8935, H:1495-1580, P:2105-2135, P10:7224-7262, `LESSONS.md` §§2, 3, 7, `TODO.md`.
+Minimum context after mandatory policies/checklists: `.agents/Directional/ORIENTATION.md`, `.agents/Directional/ROADMAP.md`, this handoff, TB17 report (`Architecture_M6_CP3_TB17_Factory_Rail_Vertex_Endpoint_Harvest_Report_20261019.md`), TB16A baseline report (`Architecture_M6_CP3_TB16A_Exact_I_Witness_Checkers_Harvest_Report_20261019.md`), RA-102 (`Architecture_M6_CP3_TB16C_Census_U4_Review_Decision.md`), R10B §2 (`Architecture_M6_CP3_R10B_Rail_Interior_Vertex_Endpoint_Rule_20261017.md`), RA-84.4 (`Architecture_M6_CP3_R10B_Endpoint_Rule_Review_Decision.md`), RA-85.4 (`Architecture_M6_CP3_TB11_Route_Anchor_Review_Decision.md`), S:8249-8286 and S:8676-8935, H:1495-1580, P:2105-2135, P10:7224-7262, `LESSONS.md` §§2, 3, 7, `TODO.md`.
 
 **Review tooling:** `.agents/Directional/tools/` holds read-only `review_check.py`, `selector_probe.py`, and `fixture_probe.py`; history-sensitive review gates require real committed history, not a synthesized snapshot.
 
