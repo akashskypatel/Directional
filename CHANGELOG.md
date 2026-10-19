@@ -1,3 +1,7 @@
+## 2026-10-19 — TB16 immutable exact-I witness checker harvest; falsifier
+
+- Artifact-only [run 39246335010](https://github.com/akashskypatel/Directional/actions/runs/39246335010), result `12183498229` (SHA-256 `8a329317a610a014cb834947d841fac788ffa55813519dc5259c342a3b62dc32`); 12/12 selected, 6 PASS / 6 RED, immutable postflight, no compile/relink. CB16 test #3 has a false negative oracle because its nextafter mutation reaches the alternative accepted orientation rounding. B2 firstPredicate unchanged; B3 moves from front 17/203 to 97/283, still rejected. RA-97.5 falsifier requires independent Review; TB16C not authorized. Stable 66/17/49, debt1, selector497 unchanged. Owning report: `.agents/Directional/Architecture_M6_CP3_TB16_Exact_I_Witness_Checkers_Harvest_Report_20261019.md`.
+
 ## 2026-10-18 — CB16: exact interior witness checkers (compile only)
 
 - Applied RA-97.4 to the common factory/consumer/probe predicate: unbound present witnesses fail closed, two bound witnesses compare exact values, and mixed/absent pairs retain legacy matching. Added the two rejection-only probe labels and three independently falsifiable P10 tests (compiled, not executed).
