@@ -1,3 +1,16 @@
+## RA-106 — CB19 compile failure reviewed: diagnostic design stands; corrective CB19A authorized (2026-10-20)
+
+Authority: `Architecture_M6_CP3_CB19_Factory_Rejection_Site_Compile_Review_Decision.md`. Evidence: `Architecture_M6_CP3_CB19_Factory_Rejection_Site_Compile_Failure_20261020.md`.
+
+- **RA-106.1** The CB19 patch was verified statically: the 47 labels cover every `InvalidSourceAuthority` return of `make` and are unique; the other 30 returns set explicit non-zero codes; all nine M2 identities report the site; no selector uses wildcards.
+- **RA-106.2** Cause: 28 labels concatenate two string literals. No other defect is masked. The TQ changes have never been compiled. This is an implementation defect, not a design block.
+- **RA-106.3** Fix: scope-local `certificate_site`, `endpoint_site` and `junction_site` lambdas, and a `std::string` first operand for the two pin labels. The `make` diff stays insertions-only, and every label is byte-identical to CB19's.
+- **RA-106.4** The new test must require both edge vertices to be corners of face 0.
+- **RA-106.5** Amends RA-105.6: the falsifier is `product=0` with an empty site. A non-zero code is a recorded result; codes with several returns get a follow-up only if TB19 hits them.
+- **RA-106.6** Next: `M6-CP3-CB19A-RP01-FACTORY-REJECTION-SITE` (CB, compile only); then TB19 and the mandatory TB19-REV.
+
+---
+
 ## RA-105 — TB18-REV (RA-104) reviewed: measurements confirmed; RP-01 realigned to the checked-factory rejections (2026-10-20)
 
 Authority: `Architecture_M6_CP3_TB18_REV_Factory_Rejection_Review_Decision.md`. RA-104 is recorded in `Architecture_M6_CP3_TB18_Rail_Vertex_Endpoint_Independent_Review_20261020.md`.

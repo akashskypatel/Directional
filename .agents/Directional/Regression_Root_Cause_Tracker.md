@@ -12,6 +12,8 @@ Runs [Part A 39349041417](https://github.com/akashskypatel/Directional/actions/r
 | M2: the RA-45.3 gauge pin spans rail carriers and periodic cuts (H-pin) | `focused30:12` (proved); `cp3entry:1`, `focused30:6, 20, 24`, `selector:446, 447` (nonzero-holonomy torus) | S:8510–8550, `1eaea310f`; the torus first observable changed between R3 and CB13A | TB19 site labels confirm or refute it |
 | Unlocated checked-factory rejection | `cp3entry:2, 6` (Part A #10/#11) | S:13097, clause not logged | TB19; decides the RA-103.5 R-route falsifier |
 
+RA-106 (2026-10-20): the site labels (CB19, `1f73d0abd`) did not compile, so no attribution changed. They are carried to CB19A.
+
 ## TB17 — focused artifact-only gate, no new stable regression — adjudicated by RA-103 (2026-10-19)
 
 [Run 39313027637](https://github.com/akashskypatel/Directional/actions/runs/39313027637), result `12215967774` (ZIP SHA-256 `b32366a1b4f102a2c09388bd5debb34bbbb6b6ff9d71931f8e0a06e700ea2ace`) on immutable CB17 package `12214741070`/source `ccc0b00ab6a94d0889ed7c60e4532b6c985ce03e`. 13/13 exact-filter processes: #1–#7 and #13 PASS; five previously RED diagnostic identities #8–#12 remain RED and each `first_failure` is byte-identical to TB16A. These are existing candidate/non-stable `endpoint-1` route-certificate failures: CB17 changes only the factory R rule while the consumer still does not emit R. No new regression identity or root cause is evidenced. Immutable postflight; no compile/relink/benchmarks or selector-497 census. **Stable accounting 66/17/49, debt 1, candidate census 425/497 unchanged.** `RP-01` open, `RP-02` UNREACHED. Owning report `Architecture_M6_CP3_TB17_Factory_Rail_Vertex_Endpoint_Harvest_Report_20261019.md`; independent TB17-REV next.

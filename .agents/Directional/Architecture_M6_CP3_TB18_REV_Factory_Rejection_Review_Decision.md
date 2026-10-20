@@ -68,6 +68,8 @@ RA-45.3's pin (S:8510–8550) requires `compose(T_A3, g_first) == g_second` on *
 
 ## RA-105.5 Next unit — `M6-CP3-CB19-RP01-FACTORY-REJECTION-SITE` (Code + Build, compile only; rejection-only)
 
+> **RA-106 (2026-10-20):** CB19 failed to compile. The corrected build is `M6-CP3-CB19A-RP01-FACTORY-REJECTION-SITE` (RA-106.3/106.4/106.6).
+
 1. `include/directional/geometry/SurfaceCellTracing.h`:
    - add `std::string sourceAuthoritySite` as the **last** member of `SurfacePhaseFrontProductError`;
    - add `std::string publishedProductSourceAuthoritySite` as the last member of `SurfacePhaseFrontFailure`.
@@ -94,6 +96,8 @@ RA-45.3's pin (S:8510–8550) requires `compose(T_A3, g_first) == g_second` on *
    - any file outside items 1–5.
 
 ## RA-105.6 TB19 — `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE` (artifact-only, focused, after CB19)
+
+> **Amended by RA-106.5 (2026-10-20):** the empty-site falsifier applies only to `product=0`. TB19 pins the CB19A package.
 
 TB19 uses the TB18 Part A harness with the CB19 values and runs 22 identities:
 - **M2 (9):** `cp3entry:1, 2, 6`; `focused30:6, 12, 20, 24`; `selector:446, 447`.

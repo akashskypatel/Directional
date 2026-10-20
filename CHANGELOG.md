@@ -1,3 +1,10 @@
+## 2026-10-20 — CB19 failed to compile; reviewed (RA-106); corrective CB19A authorized
+
+- CB19 (`1f73d0abd`) added 47 rejection-site labels to `SurfacePhaseFrontProduct::make` and the test reporting. The eight-target GMP build failed in `directional_core` preflight (run `39428435345`) because 28 labels concatenate two string literals. No package was produced.
+- RA-106 found the patch complete and insertions-only, with no second defect masked; the design of RA-105.5 stands. The fix replaces the 26 copied suffix expressions with three scope-local lambdas, and the new test now requires both edge vertices on face 0.
+- RA-105.6 amended: an empty site is a falsifier only for `product=0`.
+- Next: CB19A (compile only), then TB19 and TB19-REV. Accounting is unchanged.
+
 ## 2026-10-20 — Review of TB18-REV (RA-105): RP-01 realigned to the checked-factory rejections
 
 - TB18 is confirmed at 448/497, with 0 PASS→RED; this matches Review's earlier withheld check. RA-104 is corrected:
