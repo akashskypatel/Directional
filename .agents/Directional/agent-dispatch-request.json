@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb20-gauge-pin-domain-20261020-01",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb20-gauge-pin-domain-apply",
-  "file_id": "1411tvMZY1nCoGELU1Pf4rhXaKeEvHSbR",
-  "patch_sha256": "40cd730e9859d677d6e5510b6c7bb97b8a8924920e606eeec93e9849743e3c95",
-  "base_sha": "9c6bb760576407be6d488ccaf5b5f7f17037298a",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "fix(surface-cells): restrict gauge pin to spanning same-region non-hard edges",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb20-gauge-pin-domain-compile-20261020-01",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb20-gauge-pin-domain-compile",
+  "source_sha": "7dc9b89ecd13753173057577d1da320db9515ebb",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb20-gauge-pin-domain"
 }
