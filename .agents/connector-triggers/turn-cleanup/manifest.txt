@@ -1,2 +1,0 @@
-# M6-CP3-CB18-R10 continuation temporary-state retirement
-.agents/connector-triggers/source-snapshot/cb18-r10-20261019.txt
