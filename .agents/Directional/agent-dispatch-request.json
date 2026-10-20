@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-p1-domain-20261020-01",
+  "request_id": "m6-cp3-cb20-gauge-pin-domain-20261020-01",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-p1-gauge-pin-domain",
-  "file_id": "1fKmRusi7Ub0uWk2z7op-5TkJyKuo_i0b",
-  "patch_sha256": "5b164d9dbabba23511e3ea0f0f4dcd9f618de2cbb4f9934286869d3d06b64a6b",
-  "base_sha": "ee3ef2652fc3cacc6c1ba5619c0f9159681dfcc0",
+  "mailbox_key": "m6-cp3-cb20-gauge-pin-domain-apply",
+  "file_id": "1411tvMZY1nCoGELU1Pf4rhXaKeEvHSbR",
+  "patch_sha256": "40cd730e9859d677d6e5510b6c7bb97b8a8924920e606eeec93e9849743e3c95",
+  "base_sha": "9c6bb760576407be6d488ccaf5b5f7f17037298a",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): define selected-producer gauge-pin relation domain",
+  "commit_message": "fix(surface-cells): restrict gauge pin to spanning same-region non-hard edges",
   "retention_days": 14
 }
