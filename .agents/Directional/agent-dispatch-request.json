@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb19-site-compile-20261020-01",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb19-site-compile",
-  "source_sha": "1f73d0abd1a4f83a85570decd79dfa40c6e2508a",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb19-site-compile"
+  "request_id": "m6-cp3-cb19a-site-patch-20261020-01",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb19a-site-patch",
+  "file_id": "1PSv3hO6gxEDOCdF3H8S9Qh6wgHIgJqFm",
+  "patch_sha256": "c7df5bbd081de16256b3dd23f38399666a822590f18661d481ebcb669a9edb8a",
+  "base_sha": "5eb62406b48467e92cdb6b5689ce907d2633aaea",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "fix: compile factory rejection-site diagnostic labels",
+  "retention_days": 14
 }
