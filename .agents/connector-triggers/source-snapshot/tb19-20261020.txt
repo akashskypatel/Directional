@@ -1,0 +1,2 @@
+TB19 artifact-only source snapshot trigger.
+Frozen bootstrap ref: 7e7976e9580a4997474cc38df27a795f42d097cb
