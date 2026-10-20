@@ -439,6 +439,17 @@ void require_produced(const PhaseFrontFixture &fixture,
         failure != nullptr && !failure->hardRailRouteDiagnostic.empty()) {
       message += " firstPredicate=" + failure->hardRailRouteDiagnostic;
     }
+    if (const auto *failure = fixture.network.phaseFront.rejection();
+        failure != nullptr &&
+        failure->reason == directional::geometry::SurfacePhaseFrontFailureReason::PublishedProductRejected) {
+      message += " product=" + std::to_string(failure->publishedProductError
+                      ? static_cast<int>(*failure->publishedProductError) : -1);
+      message += " detail=" + (failure->publishedProductSourceAuthorityDetail
+                      ? std::to_string(static_cast<int>(
+                            *failure->publishedProductSourceAuthorityDetail))
+                      : std::string("none"));
+      message += " site=" + failure->publishedProductSourceAuthoritySite;
+    }
     throw std::runtime_error(message);
   }
 }
@@ -1876,6 +1887,47 @@ void expect_phase_front_product_error(
   if (error != nullptr) {
     EXPECT_EQ(expected, error->code);
   }
+}
+
+TEST(SurfaceCellFactoryRejectionSite, OneFaceGaugePinNamesSourceEdge) {
+  const auto &fixture = hard_rail_fixture();
+  auto unmodified = phase_front_draft(fixture);
+  auto baseline = construct_phase_front_product(unmodified);
+  ASSERT_NE(std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&baseline),
+            nullptr) << "Unmodified independently sourced draft must construct";
+
+  // Source faces 0 and 1 share diagonal (0,4) inside the left topology region.
+  // It is not the hard-rail carrier (1,4) or (4,7).
+  const auto interior = test_source_edge_topology(0, 4, 9U);
+  ASSERT_FALSE(unmodified.hardFeatureEdges.contains(interior));
+  ASSERT_EQ(unmodified.sourceFaces.rows(), 8);
+  ASSERT_EQ(unmodified.sourceFaceBranchRotations.size(), 8U);
+  auto tampered = std::move(unmodified);
+  tampered.sourceFaceBranchRotations[0] =
+      (tampered.sourceFaceBranchRotations[0] + 1) % 4;
+  auto rejected = construct_phase_front_product(std::move(tampered));
+  const auto *error = std::get_if<
+      directional::geometry::SurfacePhaseFrontProductError>(&rejected);
+  ASSERT_NE(error, nullptr);
+  EXPECT_EQ(error->code,
+            directional::geometry::SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority);
+  EXPECT_EQ(error->sourceAuthoritySite.rfind("gauge-pin-consistency;edge=", 0), 0U)
+      << error->sourceAuthoritySite;
+  // The first rejected pin edge has an endpoint on the modified source face.
+  const auto &site = error->sourceAuthoritySite;
+  const auto edgePosition = site.find(";edge=");
+  ASSERT_NE(edgePosition, std::string::npos) << site;
+  const auto separator = site.find(',', edgePosition + 6U);
+  ASSERT_NE(separator, std::string::npos) << site;
+  const int first = std::stoi(site.substr(edgePosition + 6U,
+                                          separator - (edgePosition + 6U)));
+  const int second = std::stoi(site.substr(separator + 1U));
+  bool incidentToChangedFace = false;
+  for (int column = 0; column < 3; ++column) {
+    if (fixture.mesh.F(0, column) == first || fixture.mesh.F(0, column) == second)
+      incidentToChangedFace = true;
+  }
+  EXPECT_TRUE(incidentToChangedFace);
 }
 
 TEST(SurfacePhaseFrontProductFactoryAuthority,
@@ -4977,7 +5029,13 @@ TEST(M6CP1, RelationPlacementTransportIsCoordinateRigidAndFaceGaugeInvariant) {
   const auto *relabelledFront =
       std::get_if<directional::geometry::SurfacePhaseFrontProduct>(
           &relabelledFrontConstruction);
-  ASSERT_NE(relabelledFront, nullptr);
+  const auto *relabelledError = std::get_if<
+      directional::geometry::SurfacePhaseFrontProductError>(
+          &relabelledFrontConstruction);
+  ASSERT_NE(relabelledFront, nullptr)
+      << " product=" << (relabelledError
+          ? std::to_string(static_cast<int>(relabelledError->code)) : "none")
+      << " site=" << (relabelledError ? relabelledError->sourceAuthoritySite : "none");
   auto relabelledA5Construction = produceA5(hardRailFixture, *relabelledFront);
   const auto *relabelledA5 =
       std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(

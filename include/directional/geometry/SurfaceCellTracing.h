@@ -1882,6 +1882,7 @@ struct SurfacePhaseFrontFailure {
   // Bounded, byte-stable source-topology first-predicate evidence; never used
   // to authorize production or change an A4 disposition.
   std::string hardRailRouteDiagnostic;
+  std::string publishedProductSourceAuthoritySite;
 };
 
 const char *surface_phase_front_failure_reason_name(
@@ -1940,6 +1941,7 @@ struct SurfacePhaseFrontProductError {
   std::optional<authority::CellId> cell;
   std::optional<authority::TopologyRegionId> region;
   std::optional<authority::PeriodicRelationId> periodicRelation;
+  std::string sourceAuthoritySite;
 };
 
 class SurfacePhaseFrontProduct {

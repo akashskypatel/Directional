@@ -8466,6 +8466,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
     error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
     error.sourceAuthorityDetail =
         SurfacePhaseFrontSourceAuthorityDetail::AtlasSourceMismatch;
+    error.sourceAuthoritySite = "atlas-binding";
     return error;
   }
   const auto matchesA3 = [&](const authority::SourceEdgeTopologyKey &edge,
@@ -8485,6 +8486,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
   if (sourceTopologyRegions.regions().empty() ||
       sourceTopologyRegions.face_count() == 0U) {
     error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+    error.sourceAuthoritySite = "region-empty";
     return error;
   }
   // A6 requires a published face gauge whenever seam/periodic relations
@@ -8492,6 +8494,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
   if ((!isolationSeamTransportCertificates.empty() ||
        !periodicHolonomies.empty()) && sourceFaceBranchRotations.empty()) {
     error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+    error.sourceAuthoritySite = "face-gauge-missing";
     return error;
   }
   if (!sourceFaceBranchRotations.empty() &&
@@ -8500,6 +8503,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
                    sourceFaceBranchRotations.end(),
                    [](const int value) { return value < 0 || value >= 4; }))) {
     error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+    error.sourceAuthoritySite = "face-gauge-shape";
     return error;
   }
   // RA-45 relational pin: the +U face gauge is consumed only through
@@ -8515,6 +8519,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
           row, sourceFaceBranchRotations.size());
       if (!faceId) {
         error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+        error.sourceAuthoritySite = "gauge-pin-face-row";
         return error;
       }
       const auto &corners =
@@ -8524,6 +8529,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
             corners[corner], corners[(corner + 1U) % corners.size()]);
         if (!edge) {
           error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+          error.sourceAuthoritySite = "gauge-pin-edge-key";
           return error;
         }
         sourceEdgeIncidence[edge.value()].push_back(faceId.value());
@@ -8533,6 +8539,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
       if (incident.size() == 1U) continue; // Open source boundary.
       if (incident.size() != 2U) {
         error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+        error.sourceAuthoritySite = "gauge-pin-edge-incidence" + ";edge=" + std::to_string(edge.first().index()) + "," + std::to_string(edge.second().index());
         return error;
       }
       const auto forward = fieldTransportAtlas->transition_value(
@@ -8547,6 +8554,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
           reverse->transport != forward->transport.inverse() ||
           compose(forward->transport, first) != second) {
         error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+        error.sourceAuthoritySite = "gauge-pin-consistency" + ";edge=" + std::to_string(edge.first().index()) + "," + std::to_string(edge.second().index());
         return error;
       }
     }
@@ -8581,6 +8589,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
             error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
             error.sourceAuthorityDetail =
                 SurfacePhaseFrontSourceAuthorityDetail::MalformedSourceEdgeKey;
+            error.sourceAuthoritySite = "hard-rail-source-edge";
             return error;
           }
           const auto found = railIncidenceCounts.find(edge.value());
@@ -8598,6 +8607,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
       error.sourceAuthorityDetail = count == 0U
           ? SurfacePhaseFrontSourceAuthorityDetail::AbsentHardFeatureIncidence
           : SurfacePhaseFrontSourceAuthorityDetail::OverfullHardFeatureIncidence;
+      error.sourceAuthoritySite = "hard-rail-incidence";
       return error;
     }
   }
@@ -8609,6 +8619,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
     error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
     error.sourceAuthorityDetail =
         SurfacePhaseFrontSourceAuthorityDetail::MissingRailTerminalContact;
+    error.sourceAuthoritySite = "hard-rail-contact-missing";
     return error;
   }
   std::set<authority::SourceEdgeTopologyKey> coveredClosedEdges;
@@ -8616,12 +8627,14 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
     if (hardRailTerminalContacts.contains(rail) || chain.component < 0 ||
         chain.vertices.size() < 3U) {
       error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+      error.sourceAuthoritySite = "closed-rail-contact-conflict";
       return error;
     }
     std::set<authority::SourceVertexId> distinct(chain.vertices.begin(),
                                                   chain.vertices.end());
     if (distinct.size() != chain.vertices.size()) {
       error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+      error.sourceAuthoritySite = "closed-rail-distinct-vertices";
       return error;
     }
     for (std::size_t i = 0U; i < chain.vertices.size(); ++i) {
@@ -8644,6 +8657,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
                          });
                        })) {
         error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+        error.sourceAuthoritySite = "closed-rail-edge-coverage";
         return error;
       }
     }
@@ -8652,12 +8666,14 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
           hardRailOpenChains, hardRailTerminalContacts, hardRailClosedChains,
           hardFeatureEdges, sourceTopologyRegions)) {
     error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+    error.sourceAuthoritySite = "open-rail-chain";
     return error;
   }
   // A closed-only rail set must cover every hard-feature edge, not merely
   // supply a convenient nonempty closed-chain token.
   if (hardRailTerminalContacts.empty() && coveredClosedEdges != hardFeatureEdges) {
     error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+    error.sourceAuthoritySite = "closed-rail-cover";
     return error;
   }
   for (const auto &[rail, contact] : hardRailTerminalContacts) {
@@ -8665,6 +8681,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
     if (contact.component < 0 ||
         contact.endpoints[0] == contact.endpoints[1]) {
       error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+      error.sourceAuthoritySite = "rail-contact-endpoints";
       return error;
     }
     for (const auto &vertex : contact.endpoints) {
@@ -8686,6 +8703,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
                          return edge.first() == vertex || edge.second() == vertex;
                        })) {
         error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+        error.sourceAuthoritySite = "rail-contact-source-vertex";
         return error;
       }
     }
@@ -8703,6 +8721,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
         !matchesA3(transition.edge, transition.firstFace,
                    transition.secondFace, transition.firstToSecond)) {
       error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+      error.sourceAuthoritySite = "rail-transition-a3";
       return error;
     }
   }
@@ -8737,6 +8756,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
             const auto spoke = StarEdge::make(vertex, neighbor);
             if (!spoke) {
               error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+              error.sourceAuthoritySite = "terminal-star-spoke";
               return error;
             }
             star->second[spoke.value()].push_back(member.topology);
@@ -8759,6 +8779,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
         certificate.secondFrontEdge >= static_cast<int>(edges.size()) ||
         !certifiedHardRailPairs.insert(certificate.firstFrontEdge).second) {
       error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+      error.sourceAuthoritySite = "certificate-pair-indices" + ";certificate=" + std::to_string(static_cast<std::size_t>(&certificate - hardRailRouteCertificates.data())) + ";rail=" + std::to_string(certificate.rail.index());
       return error;
     }
     const auto &first = edges[static_cast<std::size_t>(certificate.firstFrontEdge)];
@@ -8772,6 +8793,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
         second.route != certificate.route.reversed() ||
         first.sourceTopologyRegion == second.sourceTopologyRegion) {
       error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+      error.sourceAuthoritySite = "certificate-pair-binding" + ";certificate=" + std::to_string(static_cast<std::size_t>(&certificate - hardRailRouteCertificates.data())) + ";rail=" + std::to_string(certificate.rail.index());
       return error;
     }
     const auto firstFrom = authority::SourceFaceId::from_index(
@@ -8792,11 +8814,13 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
         certificate.endpoints[1].secondAttachment !=
             sourceTopologyRegions.topology_for_row(secondFrom.value())) {
       error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+      error.sourceAuthoritySite = "certificate-attachments" + ";certificate=" + std::to_string(static_cast<std::size_t>(&certificate - hardRailRouteCertificates.data())) + ";rail=" + std::to_string(certificate.rail.index());
       return error;
     }
     const auto &steps = certificate.route.oriented_steps();
     if (steps.empty() || certificate.junctions.size() + 1U != steps.size()) {
       error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+      error.sourceAuthoritySite = "certificate-route-length" + ";certificate=" + std::to_string(static_cast<std::size_t>(&certificate - hardRailRouteCertificates.data())) + ";rail=" + std::to_string(certificate.rail.index());
       return error;
     }
     const auto contact = hardRailTerminalContacts.find(certificate.rail);
@@ -8813,6 +8837,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
               certificate.endpoints[0].railVertex,
               certificate.endpoints[1].railVertex)) {
         error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+        error.sourceAuthoritySite = "certificate-open-interval" + ";certificate=" + std::to_string(static_cast<std::size_t>(&certificate - hardRailRouteCertificates.data())) + ";rail=" + std::to_string(certificate.rail.index());
         return error;
       }
     } else if (closed != hardRailClosedChains.end()) {
@@ -8827,6 +8852,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
             vertices[i], vertices[(i + 1U) % vertices.size()]);
         if (!edge) {
           error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+          error.sourceAuthoritySite = "certificate-closed-edge" + ";certificate=" + std::to_string(static_cast<std::size_t>(&certificate - hardRailRouteCertificates.data())) + ";rail=" + std::to_string(certificate.rail.index());
           return error;
         }
         cycle.push_back(edge.value());
@@ -8851,10 +8877,12 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
       }
       if (!cyclicInterval) {
         error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+        error.sourceAuthoritySite = "certificate-closed-interval" + ";certificate=" + std::to_string(static_cast<std::size_t>(&certificate - hardRailRouteCertificates.data())) + ";rail=" + std::to_string(certificate.rail.index());
         return error;
       }
     } else {
       error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+      error.sourceAuthoritySite = "certificate-rail-kind" + ";certificate=" + std::to_string(static_cast<std::size_t>(&certificate - hardRailRouteCertificates.data())) + ";rail=" + std::to_string(certificate.rail.index());
       return error;
     }
     const auto published_carrier = [&](const SurfaceHardRailFieldTransition &transition) {
@@ -8879,11 +8907,13 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
           !sourceTopologyRegions.row_for_topology(endpoint.firstAttachment).has_value() ||
           !sourceTopologyRegions.row_for_topology(endpoint.secondAttachment).has_value()) {
         error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+        error.sourceAuthoritySite = "endpoint-carrier" + ";certificate=" + std::to_string(static_cast<std::size_t>(&certificate - hardRailRouteCertificates.data())) + ";rail=" + std::to_string(certificate.rail.index()) + ";endpoint=" + std::to_string(endpointIndex) + ";kind=" + (endpoint.terminalVertex && endpoint.railVertex ? "TR" : endpoint.terminalVertex ? "T" : endpoint.railVertex ? "R" : "I");
         return error;
       }
       if (contact != hardRailTerminalContacts.end()) {
         if (endpoint.terminalVertex && endpoint.railVertex) {
           error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+          error.sourceAuthoritySite = "endpoint-kind-overlap" + ";certificate=" + std::to_string(static_cast<std::size_t>(&certificate - hardRailRouteCertificates.data())) + ";rail=" + std::to_string(certificate.rail.index()) + ";endpoint=" + std::to_string(endpointIndex) + ";kind=" + (endpoint.terminalVertex && endpoint.railVertex ? "TR" : endpoint.terminalVertex ? "T" : endpoint.railVertex ? "R" : "I");
           return error;
         }
         const auto vertex = endpoint.terminalVertex
@@ -8913,6 +8943,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
               !surface_cell_tracing_detail::same_interior_carrier_point(
                   firstPoint, secondPoint, sourceFaces, carrier.edge)) {
             error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+            error.sourceAuthoritySite = "endpoint-interior-point" + ";certificate=" + std::to_string(static_cast<std::size_t>(&certificate - hardRailRouteCertificates.data())) + ";rail=" + std::to_string(certificate.rail.index()) + ";endpoint=" + std::to_string(endpointIndex) + ";kind=" + (endpoint.terminalVertex && endpoint.railVertex ? "TR" : endpoint.terminalVertex ? "T" : endpoint.railVertex ? "R" : "I");
             return error;
           }
           continue;
@@ -8937,6 +8968,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
             !exact_vertex_attachment(firstPoint) ||
             !exact_vertex_attachment(secondPoint)) {
           error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+          error.sourceAuthoritySite = "endpoint-source-vertex" + ";certificate=" + std::to_string(static_cast<std::size_t>(&certificate - hardRailRouteCertificates.data())) + ";rail=" + std::to_string(certificate.rail.index()) + ";endpoint=" + std::to_string(endpointIndex) + ";kind=" + (endpoint.terminalVertex && endpoint.railVertex ? "TR" : endpoint.terminalVertex ? "T" : endpoint.railVertex ? "R" : "I");
           return error;
         }
         // A2b uniqueness is checked from source topology, not asserted by
@@ -8953,6 +8985,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
           else if (path == TerminalStarPathResult::Ambiguous)
             error.sourceAuthorityDetail =
                 SurfacePhaseFrontSourceAuthorityDetail::AmbiguousTerminalA3Path;
+          error.sourceAuthoritySite = "endpoint-a3-path" + ";certificate=" + std::to_string(static_cast<std::size_t>(&certificate - hardRailRouteCertificates.data())) + ";rail=" + std::to_string(certificate.rail.index()) + ";endpoint=" + std::to_string(endpointIndex) + ";kind=" + (endpoint.terminalVertex && endpoint.railVertex ? "TR" : endpoint.terminalVertex ? "T" : endpoint.railVertex ? "R" : "I");
           return error;
         }
         std::array<std::set<authority::SourceFaceTopologyKey>, 2> used;
@@ -8969,18 +9002,21 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
                            step.firstToSecond) ||
                 !used[side].insert(step.secondFace).second) {
               error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+              error.sourceAuthoritySite = "endpoint-contact-path" + ";certificate=" + std::to_string(static_cast<std::size_t>(&certificate - hardRailRouteCertificates.data())) + ";rail=" + std::to_string(certificate.rail.index()) + ";endpoint=" + std::to_string(endpointIndex) + ";kind=" + (endpoint.terminalVertex && endpoint.railVertex ? "TR" : endpoint.terminalVertex ? "T" : endpoint.railVertex ? "R" : "I");
               return error;
             }
             at = step.secondFace;
           }
           if (at != (side == 0U ? carrier.firstFace : carrier.secondFace)) {
             error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+            error.sourceAuthoritySite = "endpoint-contact-target" + ";certificate=" + std::to_string(static_cast<std::size_t>(&certificate - hardRailRouteCertificates.data())) + ";rail=" + std::to_string(certificate.rail.index()) + ";endpoint=" + std::to_string(endpointIndex) + ";kind=" + (endpoint.terminalVertex && endpoint.railVertex ? "TR" : endpoint.terminalVertex ? "T" : endpoint.railVertex ? "R" : "I");
             return error;
           }
         }
         if (std::any_of(used[0].begin(), used[0].end(),
                         [&](const auto &face) { return used[1].contains(face); })) {
           error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+          error.sourceAuthoritySite = "endpoint-sector-overlap" + ";certificate=" + std::to_string(static_cast<std::size_t>(&certificate - hardRailRouteCertificates.data())) + ";rail=" + std::to_string(certificate.rail.index()) + ";endpoint=" + std::to_string(endpointIndex) + ";kind=" + (endpoint.terminalVertex && endpoint.railVertex ? "TR" : endpoint.terminalVertex ? "T" : endpoint.railVertex ? "R" : "I");
           return error;
         }
       } else if (endpoint.terminalVertex || endpoint.railVertex ||
@@ -8989,6 +9025,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
                  carrier.firstFace != endpoint.firstAttachment ||
                  carrier.secondFace != endpoint.secondAttachment) {
         error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+        error.sourceAuthoritySite = "endpoint-no-contact" + ";certificate=" + std::to_string(static_cast<std::size_t>(&certificate - hardRailRouteCertificates.data())) + ";rail=" + std::to_string(certificate.rail.index()) + ";endpoint=" + std::to_string(endpointIndex) + ";kind=" + (endpoint.terminalVertex && endpoint.railVertex ? "TR" : endpoint.terminalVertex ? "T" : endpoint.railVertex ? "R" : "I");
         return error;
       }
     }
@@ -9003,6 +9040,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
                                nextEdge.second() == junction.junction;
       if (!previousTouches || !nextTouches || nextEdge == previous.edge) {
         error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+        error.sourceAuthoritySite = "junction-edge-continuation" + ";certificate=" + std::to_string(static_cast<std::size_t>(&certificate - hardRailRouteCertificates.data())) + ";rail=" + std::to_string(certificate.rail.index()) + ";junction=" + std::to_string(junctionIndex);
         return error;
       }
       std::set<authority::SourceFaceTopologyKey> allStarFaces;
@@ -9023,12 +9061,14 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
           continue;
         if (edge != previous.edge && edge != nextEdge) {
           error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+          error.sourceAuthoritySite = "junction-hard-spokes" + ";certificate=" + std::to_string(static_cast<std::size_t>(&certificate - hardRailRouteCertificates.data())) + ";rail=" + std::to_string(certificate.rail.index()) + ";junction=" + std::to_string(junctionIndex);
           return error;
         }
         ++hardSpokes;
       }
       if (hardSpokes != 2 || allStarFaces.size() < 3U) {
         error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+        error.sourceAuthoritySite = "junction-star-size" + ";certificate=" + std::to_string(static_cast<std::size_t>(&certificate - hardRailRouteCertificates.data())) + ";rail=" + std::to_string(certificate.rail.index()) + ";junction=" + std::to_string(junctionIndex);
         return error;
       }
       // This must be one interior two-manifold vertex link, not a
@@ -9050,6 +9090,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
         }
         if (neighbors != 2) {
           error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+          error.sourceAuthoritySite = "junction-manifold-star" + ";certificate=" + std::to_string(static_cast<std::size_t>(&certificate - hardRailRouteCertificates.data())) + ";rail=" + std::to_string(certificate.rail.index()) + ";junction=" + std::to_string(junctionIndex);
           return error;
         }
       }
@@ -9074,6 +9115,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
               !allStarFaces.contains(witness.secondFace) ||
               !sectorFaces[side].insert(witness.secondFace).second) {
             error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+            error.sourceAuthoritySite = "junction-sector-step" + ";certificate=" + std::to_string(static_cast<std::size_t>(&certificate - hardRailRouteCertificates.data())) + ";rail=" + std::to_string(certificate.rail.index()) + ";junction=" + std::to_string(junctionIndex);
             return error;
           }
           transport[side] = compose(witness.firstToSecond, transport[side]);
@@ -9084,6 +9126,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
           std::any_of(sectorFaces[0].begin(), sectorFaces[0].end(),
                       [&](const auto &face) { return sectorFaces[1].contains(face); })) {
         error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+        error.sourceAuthoritySite = "junction-sector-cover" + ";certificate=" + std::to_string(static_cast<std::size_t>(&certificate - hardRailRouteCertificates.data())) + ";rail=" + std::to_string(certificate.rail.index()) + ";junction=" + std::to_string(junctionIndex);
         return error;
       }
       const auto underlying = std::find_if(
@@ -9091,6 +9134,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
           [&](const auto &item) { return item.edge == nextEdge; });
       if (underlying == hardRailFieldTransitions.end()) {
         error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+        error.sourceAuthoritySite = "junction-next-carrier" + ";certificate=" + std::to_string(static_cast<std::size_t>(&certificate - hardRailRouteCertificates.data())) + ";rail=" + std::to_string(certificate.rail.index()) + ";junction=" + std::to_string(junctionIndex);
         return error;
       }
       auto next = *underlying;
@@ -9101,12 +9145,14 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
           compose(next.firstToSecond, transport[0]) !=
               compose(transport[1], previous.firstToSecond)) {
         error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+        error.sourceAuthoritySite = "junction-transport" + ";certificate=" + std::to_string(static_cast<std::size_t>(&certificate - hardRailRouteCertificates.data())) + ";rail=" + std::to_string(certificate.rail.index()) + ";junction=" + std::to_string(junctionIndex);
         return error;
       }
       previous = next;
     }
     if (previous != certificate.endpoints[1].terminalCarrier) {
       error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+      error.sourceAuthoritySite = "certificate-final-carrier" + ";certificate=" + std::to_string(static_cast<std::size_t>(&certificate - hardRailRouteCertificates.data())) + ";rail=" + std::to_string(certificate.rail.index());
       return error;
     }
   }
@@ -9119,6 +9165,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
     if (edge.sourceTopologyRegion != opposite.sourceTopologyRegion &&
         !certifiedHardRailPairs.contains(static_cast<int>(index))) {
       error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+      error.sourceAuthoritySite = "hard-rail-uncertified-pair";
       return error;
     }
   }
@@ -13099,6 +13146,8 @@ SurfacePhaseFrontResult publish_phase_front_result(
   state.failure.publishedProductError = factoryError.code;
   state.failure.publishedProductSourceAuthorityDetail =
       factoryError.sourceAuthorityDetail;
+  state.failure.publishedProductSourceAuthoritySite =
+      factoryError.sourceAuthoritySite;
   return SurfacePhaseFrontResult::rejected(std::move(state.failure));
 }
 
