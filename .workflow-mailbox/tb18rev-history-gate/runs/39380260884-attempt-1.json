@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "workflow_key": "tb18rev-history-gate",
+  "workflow": "TB18 Independent Review History Gate",
+  "workflow_ref": "akashskypatel/Directional/.github/workflows/agent-tb18rev-history-gate.yml@refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "repository": "akashskypatel/Directional",
+  "event": "push",
+  "event_sha": "aeccc6682ebcf9db9eb6a020d67565a0a15c0931",
+  "source_sha": "aeccc6682ebcf9db9eb6a020d67565a0a15c0931",
+  "source_ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref_name": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "run_id": 39380260884,
+  "run_attempt": 1,
+  "run_number": 2,
+  "run_url": "https://github.com/akashskypatel/Directional/actions/runs/39380260884",
+  "result": "success",
+  "summary": "TB18 independent review read-only full-history gates.",
+  "reported_at": "2026-10-20T06:26:22Z",
+  "mailbox_branch": "workflow-mailbox",
+  "artifacts": [
+    {
+      "id": 12245615076,
+      "name": "agent-workflow-schema-validator-log-39380260884",
+      "size_in_bytes": 500,
+      "digest": "sha256:a3e4d6723f356a61370e567839e94e71aee85415094f1fd9d15cfa237a401487",
+      "expired": false,
+      "created_at": "2026-10-20T06:25:24Z",
+      "expires_at": "2026-10-27T06:25:24Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/39380260884/artifacts/12245615076",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/12245615076/zip"
+    },
+    {
+      "id": 12245206039,
+      "name": "agent-workflow-schema-validation-39380260884",
+      "size_in_bytes": 442,
+      "digest": "sha256:9cce4b8102e8d37c0dcb9ee32d968d8c6a517915128162dd23617eababff23f5",
+      "expired": false,
+      "created_at": "2026-10-20T06:25:23Z",
+      "expires_at": "2026-10-27T06:25:23Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/39380260884/artifacts/12245206039",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/12245206039/zip"
+    },
+    {
+      "id": 12244737394,
+      "name": "tb18rev-history-gate-log-39380260884",
+      "size_in_bytes": 1635,
+      "digest": "sha256:d93bdb8b907494a4425319355018cf69df139840dbe4df821e331ca7851595f6",
+      "expired": false,
+      "created_at": "2026-10-20T06:25:39Z",
+      "expires_at": "2026-11-03T06:25:38Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/39380260884/artifacts/12244737394",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/12244737394/zip"
+    },
+    {
+      "id": 12244608506,
+      "name": "workflow-mailbox-publisher-log-39380260884-attempt-1",
+      "size_in_bytes": 392,
+      "digest": "sha256:33b2ddb4ac76e68549016759f5af1ded48c05980f386567b9cd5d2702c842162",
+      "expired": false,
+      "created_at": "2026-10-20T06:26:22Z",
+      "expires_at": "2026-11-03T06:26:21Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/39380260884/artifacts/12244608506",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/12244608506/zip"
+    }
+  ]
+}
