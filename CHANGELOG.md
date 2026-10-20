@@ -1,3 +1,8 @@
+## 2026-10-19 — Review pull: TB18 runs complete but unharvested; TB18 resumes for harvest only
+
+- TB18 (RA-103.5) yielded IN_PROGRESS after dispatching both parts. Part A (run `39349041417`, result `12231529583`) and Part B (run `39349459268`, result `12232299548`) have since completed, and Review verified both ZIP digests. Neither has been harvested, so RA-103.5 is not adjudicated.
+- Review re-verified the CB18 package (`12227516380`, 28/28; packaged source byte-identical to `3bd24682c`) and found the CB18 diff conforms to RA-103.4. The next turn resumes TB18 for harvest only (handoff scope); TB18-REV follows. The STATUS successor was repaired to TB18-REV. Stable accounting is unchanged.
+
 ## 2026-10-19 — CB18 consumer rail-vertex endpoint compiled (U5, no runtime)
 
 - RA-103.4 A4 consumer produces source-attested typed R at a strictly interior open-rail vertex, uses the common A3 star with orientation parity, publishes the sixth endpoint member and passes R anchors to the route validator; T/I and closed cases remain unchanged. #9 excludes R and a forged-tag test is compiled, not executed.

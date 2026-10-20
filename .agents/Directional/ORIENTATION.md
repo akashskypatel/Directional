@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-19 · TB17 reviewed (RA-103): CB17 (U4, the factory R branch) is accepted. RP-01 still has one blocker shape, an I–R front ending at rail vertex 4 (30 records). Next: CB18 (U5, the consumer emits R), then TB18 (focused run and census).  
+**Currency:** 2026-10-19 · CB18 (U5, the consumer emits R) is compiled. Both TB18 runs (the focused gate and the 497 census) are complete but not yet harvested or reviewed; RP-01's only adjudicated blocker is still the I–R front at rail vertex 4. Next: resume TB18 for harvest only, then TB18-REV.  
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -108,7 +108,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
   - B3, interior-point parameters whose doubles do not close exactly: U6, which needs a no-epsilon exact witness designed in a DEFN (19 of the 497).
 
   U1 (the route check) and U2 (the chain reaching the verifier) are done. | M6-CP3; [handoff](Future_Chat_Session_Handoff.md) |
-| **2** | Restore accepted-prefix execution and prove actual direct-production positive/tamper paths; `RP-01` open, downstream `RP-02` not reached. Eight tests that passed at R3 now fail; all are test debt (RA-92.3). The curved-disk `make` control is restored (RA-94; census 425/497). The exact B3 origin is located (RA-95). The witness design is accepted (RA-96). CB15 measured p = 1/5, bound on both sides (RA-97). CB16 is accepted, and B3 is cleared on the measured identities (RA-98). U6 is complete; the TB16C census cleared B3 on all 19 (RA-101/RA-102). The only blocker is I–R at rail vertex 4. CB17 (U4) is accepted (RA-103). Next: CB18/TB18 (U5). | M6-CP3 definitions and [tracker](Regression_Root_Cause_Tracker.md) |
+| **2** | Restore accepted-prefix execution and prove actual direct-production positive/tamper paths; `RP-01` open, downstream `RP-02` not reached. Eight tests that passed at R3 now fail; all are test debt (RA-92.3). The curved-disk `make` control is restored (RA-94; census 425/497). The exact B3 origin is located (RA-95). The witness design is accepted (RA-96). CB15 measured p = 1/5, bound on both sides (RA-97). CB16 is accepted, and B3 is cleared on the measured identities (RA-98). U6 is complete; the TB16C census cleared B3 on all 19 (RA-101/RA-102). The only blocker is I–R at rail vertex 4. CB17 (U4) is accepted (RA-103). CB18 (U5) is compiled; the TB18 runs are complete but unharvested. Next: TB18 harvest, then TB18-REV. | M6-CP3 definitions and [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
 
