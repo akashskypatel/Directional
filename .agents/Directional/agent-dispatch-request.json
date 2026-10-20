@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb18-rev-final-20261020-06",
+  "request_id": "m6-cp3-cb19-site-apply-20261020-01",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb18-rev-final",
-  "file_id": "1kMYzYOWo_PqCDY-go-dIlb9-QdA1_SSD",
-  "patch_sha256": "0e6c0afa6e625918a0425890a3ab67f912d712a9cafaad06ebf5a5a3a12382b1",
-  "base_sha": "aeccc6682ebcf9db9eb6a020d67565a0a15c0931",
+  "mailbox_key": "m6-cp3-cb19-site-apply",
+  "file_id": "1PDZSdJR3vIpMPkoBI85omL-4jHZoS9TZ",
+  "patch_sha256": "0670408146d932c427724bea9cb83feec0733bea3b9cefa5627df4188b110b60",
+  "base_sha": "5c287615785c9562fbb8bcf23eaf9c3207205157",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: adjudicate TB18 independent review and assign selector242 CB19",
+  "commit_message": "diagnostics: label factory source-authority rejection sites",
   "retention_days": 14
 }
