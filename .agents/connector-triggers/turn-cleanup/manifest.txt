@@ -1,0 +1,2 @@
+# TB18 independent review temporary caller was removed first.
+.agents/connector-triggers/review-history/tb18rev-20261020.txt
