@@ -4,9 +4,9 @@ set -euo pipefail
 exec > >(tee "$RUNNER_TEMP/$TURN_ID.log") 2>&1
 python3 - <<'PY'
 import csv,hashlib,json,os,pathlib,re,shutil,subprocess,sys,tarfile,collections
-sha="ccc0b00ab6a94d0889ed7c60e4532b6c985ce03e"
-artifact=12214741070
-digest="9acb50815485cb597d5673d3daab473ad140eb8aaddcd0a2dbe7d4c435b45ca5"
+sha="3bd24682c5e18eece541ab4d1f38f781a2230e41"
+artifact=12227516380
+digest="d09c32d6e7c06e280b3f9888008cde2ebb4738c3e6273f7a661903f2d231cdc4"
 root=pathlib.Path(os.environ["RUNNER_TEMP"])/os.environ["TURN_ID"]
 out=pathlib.Path(str(root)+"-result")
 for p in [root,out,out/"raw",root/"package",root/"source",root/"view",root/"run"]:p.mkdir(parents=True,exist_ok=True)
@@ -68,8 +68,9 @@ try:
  ("diagnostic", "M6CP3.HardRailCrossRegionBranchCertificateStripsEndpointFaceGauge"),
  ("diagnostic", "M6CP3.HardRailCrossRegionBindingDoesNotCompareGlobalSheetLabels"),
  ("diagnostic", "SurfaceCellTransitionQuotient.ExactHardRailCounterpartsStitchAcrossTopologyRegions"),
- ("gate", "SurfaceCellAuthorityContractCutover.OpenRailInteriorVertexEligibilityTruthTable")]
- check(len(tests)==13 and len(set(n for _,n in tests))==13,"duplicate or missing focused tests")
+ ("gate", "SurfaceCellAuthorityContractCutover.OpenRailInteriorVertexEligibilityTruthTable"),
+ ("diagnostic", "SurfaceCellAuthorityContractCutover.ProducedOpenRailInteriorVertexEndpointRejectsForgedTags")]
+ check(len(tests)==14 and len(set(n for _,n in tests))==14,"duplicate or missing focused tests")
  exe=view/"bin/directional_surface_cell_producer_tests"
  check(exe.is_file(),"missing immutable test executable")
  ledger=[]
@@ -88,8 +89,8 @@ try:
   first_failure=next((line.strip()[:600] for line in data.splitlines() if "predicate=" in line or "producer failed:" in line),"")
   ledger.append((i,role,name,proc.returncode,selected,passed,verdict,first_failure))
  write_tsv(out/"ledger.tsv",["index","role","identity","exit","selected","passed","verdict","first_failure"],ledger)
- check(state["planned"]==state["executed"]==13 and state["missing"]==0,
-       "thirteen exact-filter processes did not select one identity each")
+ check(state["planned"]==state["executed"]==14 and state["missing"]==0,
+       "fourteen exact-filter processes did not select one identity each")
  dependency=subprocess.run(["ldd",str(exe)],text=True,capture_output=True,check=True)
  (out/"runtime-dependencies.txt").write_text(dependency.stdout+dependency.stderr)
  check("not found" not in dependency.stdout+dependency.stderr and "libgmp" in dependency.stdout,
@@ -100,12 +101,12 @@ try:
  (out/"immutability.txt").write_text("package=true source=true execution_view=true frozen_selectors=true\n")
  rc=0
 except Exception as exc:
- print("TB17_HARNESS_FAILURE",repr(exc),file=sys.stderr)
+ print("TB18_HARNESS_FAILURE",repr(exc),file=sys.stderr)
 finally:
  (out/"execution-boundary.txt").write_text("artifact_id="+str(artifact)+"\nsemantic_source="+sha+"\n"+ "".join(k+"="+str(v)+"\n" for k,v in state.items())+"compile=false\nrelink=false\nbenchmarks=false\nselector497=false\nexit="+str(rc)+"\n")
  with (out/"SHA256SUMS").open("w") as fp:
   for file in sorted(out.rglob("*")):
    if file.is_file() and file.name!="SHA256SUMS":fp.write(sha256(file)+"  "+str(file.relative_to(out))+"\n")
- print("TB17_RESULT",state,"exit",rc)
+ print("TB18_RESULT",state,"exit",rc)
 sys.exit(rc)
 PY
