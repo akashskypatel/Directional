@@ -1,0 +1,4 @@
+TB18 independent review read-only history verification.
+Canonical turn: M6-CP3-TB18-R10-RAIL-VERTEX-ENDPOINT-REV
+Check: exact git history, authority, boundary, ledgers.
+Request: one audit; no build/test execution or product mutation.
