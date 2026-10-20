@@ -98,6 +98,7 @@ RA-45.3's pin (S:8510–8550) requires `compose(T_A3, g_first) == g_second` on *
 ## RA-105.6 TB19 — `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE` (artifact-only, focused, after CB19)
 
 > **Amended by RA-106.5 (2026-10-20):** the empty-site falsifier applies only to `product=0`. TB19 pins the CB19A package.
+> **Superseded by RA-107.3 (2026-10-20)** as the TB19 specification: TQ line mapping and the exact 22-row table.
 
 TB19 uses the TB18 Part A harness with the CB19 values and runs 22 identities:
 - **M2 (9):** `cp3entry:1, 2, 6`; `focused30:6, 12, 20, 24`; `selector:446, 447`.

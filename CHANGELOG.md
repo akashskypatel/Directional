@@ -1,3 +1,13 @@
+## 2026-10-20 — Review of CB19A (RA-107): accepted; TB19 specified exactly
+
+- CB19A is accepted. The provider digest of package `12275794192` matches, the compile run's source equals `d2c7483cd`, `make` is insertions only against `3bd24682c`, and the 47 labels are identical to CB19's in clause and suffix.
+- The TB19 specification is corrected before it runs:
+  - CB19/CB19A shifted the TQ lines, so RA-105.6's byte-identical M1 prediction would have fired falsely. M1 first failures are now compared after a line mapping.
+  - `selector:217` is TB18 Part A #12.
+  - The Part A harness hard-codes its tests, so TB19 authors a new harness.
+  - `focused30:12`'s pin edge must be a rail carrier, (1,4) or (4,7).
+- Next: TB19 (artifact-only; package expires 2026-10-27), then the mandatory TB19-REV. Accounting is unchanged.
+
 ## 2026-10-20 — CB19A corrective factory-site labels compile successfully
 
 - RA-106 correction to `SurfaceCellTracing.cpp` and `SurfaceCellTransitionQuotientTests.cpp` at semantic `d2c7483cde8e65d6c35c5df06fa880465a4da46c`: reusable suffix lambdas, type-safe pin labels, stronger face-edge oracle. 47 distinct `InvalidSourceAuthority` labels retained; no admission/selector changes.

@@ -1,10 +1,19 @@
-## CURRENT — CB19A corrected and GMP-compiled; TB19 artifact-only next (2026-10-20)
+## CURRENT — CB19A accepted (RA-107); TB19 artifact-only next (2026-10-20)
 
-- [x] `M6-CP3-CB19-RP01-FACTORY-REJECTION-SITE`: 47 unique labels; initial compile failed at `1f73d0abd` (RA-106).
-- [x] `M6-CP3-CB19A-RP01-FACTORY-REJECTION-SITE`: RA-106.3/106.4 correction committed `d2c7483cde8e65d6c35c5df06fa880465a4da46c`; GMP/GMPXX eight-target compile [39446712217](https://github.com/akashskypatel/Directional/actions/runs/39446712217), artifact `12275794192`, ZIP `e4a39cdb2db5ef9953748cffd3e031e4294ddaf348f4a64fee3b97e08bdd723a`; 28/28 hashes, no runtime. Record: `.agents/Directional/Architecture_M6_CP3_CB19A_Factory_Rejection_Site_Code_Build_Record_20261020.md`.
-- [ ] **EXACT NEXT:** `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE` — artifact-only 22 identities per RA-105.6 amended by RA-106.5; pin to immutable CB19A package, reuse TB18 Part A harness. `product=0` with empty site is the amended falsifier; do not repair source or selectors inside TB19.
-- [ ] Mandatory `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE-REV` — rule on H-pin, `cp3entry:2/6` site, RA-103.5 R-route falsifier; orders any DEFN before repair.
-- [ ] Planned only: DEFN on gauge-pin domain and M1 binding owner → corrective CB/TB → fixture debt (242, 174, 250, adjacent-sheet, 191, 442, I/R) → census → RP-01 review. No autonomous next CB.
+- [x] `M6-CP3-CB19-RP01-FACTORY-REJECTION-SITE`: 47 unique labels; the compile failed at `1f73d0abd` (RA-106).
+- [x] `M6-CP3-CB19A-RP01-FACTORY-REJECTION-SITE`: the RA-106.3/106.4 correction, committed as `d2c7483cd`. GMP/GMPXX eight-target compile [39446712217](https://github.com/akashskypatel/Directional/actions/runs/39446712217), package `12275794192` (ZIP `e4a39cdb…d723a`, expires 2026-10-27T15:24Z), no runtime. Record: `.agents/Directional/Architecture_M6_CP3_CB19A_Factory_Rejection_Site_Code_Build_Record_20261020.md`.
+- [x] Review (RA-107):
+  - CB19A accepted: digest verified, insertions only, 47 labels identical to CB19's.
+  - The TB19 specification is corrected: TQ line mapping (+11/+53/+59), `selector:217` = TB18 A#12, a new harness, M1 as a no-regression check only, and `focused30:12`'s edge must be (1,4) or (4,7).
+  - Record: `Architecture_M6_CP3_CB19A_Factory_Rejection_Site_Review_Decision.md`.
+- [ ] **EXACT NEXT:** `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE` — TB, artifact-only, RA-107.3:
+  - new harness `m6_cp3_tb19_factory_rejection_site_harness.sh`, copied from `open_rail_interior_vertex_harness.sh`; only the pinned inputs, the 22-row list and the extraction of product/detail/site change;
+  - run before 2026-10-27T15:24Z;
+  - the report has a 22-row ledger and F1–F4 plus the R-route falsifier, held or fired;
+  - no compile, no source/test/selector/fixture change, no repair.
+- [ ] `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE-REV` — mandatory Review. Rules on H-pin, on the `cp3entry:2/6` clause and on the RA-103.5 R-route falsifier; orders the DEFN.
+- [ ] Planned, not authorized: DEFN on the gauge-pin domain and the M1 binding owner → corrective CB/TB → fixture debt (242 per `Architecture_M6_CP3_CB19_Selector242_Atlas_Authority_Test_Plan_20261020.md`, then 174 → 250 → adjacent-sheet → 191 → 442, plus I/R sites TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518) → census → RP-01 Review.
+- **Turn sequence:** CB19 (compile failure) → CB19A (compiled) → **TB19** → TB19-REV → [DEFN → CB/TB] → fixture debt → census → RP-01 Review.
 - Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, TB18 candidate 448/497, selector 497; `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
 
 ---

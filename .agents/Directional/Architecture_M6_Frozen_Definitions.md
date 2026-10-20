@@ -1,3 +1,20 @@
+## RA-107 — CB19A accepted; TB19 specified exactly (2026-10-20)
+
+Authority: `Architecture_M6_CP3_CB19A_Factory_Rejection_Site_Review_Decision.md`. Build record: `Architecture_M6_CP3_CB19A_Factory_Rejection_Site_Code_Build_Record_20261020.md`.
+
+- **RA-107.1** CB19A is accepted: source `d2c7483cd`, package `12275794192` (digest verified, expires 2026-10-27T15:24Z). The `make` diff is insertions only, and the 47 labels match CB19's one by one.
+- **RA-107.2** Corrections to the TB19 specification:
+  - TQ line drift is mapped (+11/+53/+59), so M1 first failures are compared after mapping, not byte for byte;
+  - `selector:217` is TB18 Part A #12;
+  - TB19 authors a new harness;
+  - M1 is a no-regression check only;
+  - `focused30:12`'s pin edge must be (1,4) or (4,7);
+  - STOP if the package has expired.
+- **RA-107.3** The TB19 specification, which replaces RA-105.6 and RA-106.5: 22 identities, predictions, falsifiers F1–F4 and the R-route falsifier, the harness boundary and the report.
+- **RA-107.4** Next: `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE`, then the mandatory TB19-REV.
+
+---
+
 ## RA-106 — CB19 compile failure reviewed: diagnostic design stands; corrective CB19A authorized (2026-10-20)
 
 Authority: `Architecture_M6_CP3_CB19_Factory_Rejection_Site_Compile_Review_Decision.md`. Evidence: `Architecture_M6_CP3_CB19_Factory_Rejection_Site_Compile_Failure_20261020.md`.
