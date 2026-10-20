@@ -104,6 +104,9 @@ A PASS proves that the binary resolves the staged root. It also shows a torus pr
 - **Not falsifiers:**
   - the reported edge, which is recorded, not predicted;
   - a non-zero `product=`, which is recorded under RA-106.5.
+
+> **Amended by RA-109.4:** the report also classifies each torus site's edge against the 18 `torus_row408_hard_edges`.
+
 - **Output:** `Architecture_M6_CP3_TB19A_Torus_Rejection_Site_Harvest_Report_<date>.md` with:
   - the run, the artifact and the ZIP SHA-256;
   - manifest counts;

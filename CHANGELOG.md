@@ -1,3 +1,14 @@
+## 2026-10-20 — TB19 closed; Review of the closeout (RA-109); TB19A next
+
+- TB19 harvest report `Architecture_M6_CP3_TB19_Factory_Rejection_Site_Harvest_Report_20261020.md`:
+  - 16 valid rows;
+  - the six torus rows NOT MEASURED (fixture staging);
+  - F1–F4 held where measured, and the R-route not reached.
+- RA-109 accepts the report after re-checking the 22 raw hashes and TB18 statuses against the artifact. Review completed the TODO, CHANGELOG and tracker updates the agent left pending, so TB19 is closed.
+- The handoff is restored to the template: the `Mandatory next turn` heading, and a Turn Sequence with only next and conditional edges.
+- TB19A gains a static classification of each torus site edge against the 18 `torus_row408_hard_edges`.
+- Next: TB19A (artifact-only, before 2026-10-27T15:24Z), then the mandatory TB19-REV. Accounting is unchanged.
+
 ## 2026-10-20 — Review of the TB19 run (RA-108): 16 rows valid; torus rows unmeasured; TB19A authorized
 
 - TB19 (run `39464430751`, artifact `12285225197`) was re-derived independently: digest, 26/26 manifest entries and 22/22 raw hashes.

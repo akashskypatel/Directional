@@ -1,3 +1,15 @@
+## RA-109 — TB19 harvest report accepted; TB19 closed by Review; TB19A gains a static edge classification (2026-10-20)
+
+Authority: `Architecture_M6_CP3_TB19_Closeout_Review_Decision.md`. Report: `Architecture_M6_CP3_TB19_Factory_Rejection_Site_Harvest_Report_20261020.md`.
+
+- **RA-109.1** The TB19 report is accepted: 22/22 raw hashes and TB18 statuses match the artifact, and RA-108's rulings are applied as written. No adjudication.
+- **RA-109.2** Review completes TB19's outstanding TODO, CHANGELOG and tracker updates, and TB19 is closed.
+- **RA-109.3** The handoff is restored to the template: the `Mandatory next turn — EXACT NEXT` heading, and a Turn Sequence that lists only next and conditional edges.
+- **RA-109.4** The TB19A report also states whether each torus site's edge is one of the 18 `torus_row408_hard_edges` (TQ:908–927), and on which cycle. This is a static lookup with no adjudication.
+- **RA-109.5** Sequence: TB19A → TB19-REV (mandatory).
+
+---
+
 ## RA-108 — TB19 torus rows unmeasured (fixture staging); TB19 closes on 16 rows; TB19A reruns the torus (2026-10-20)
 
 Authority: `Architecture_M6_CP3_TB19_Torus_Staging_Review_Decision.md`. Evidence: TB19 run `39464430751`, artifact `12285225197`.
