@@ -1,0 +1,2 @@
+M6-CP3-TB18-R10-RAIL-VERTEX-ENDPOINT
+Snapshot only; immutable artifact-only TB.
