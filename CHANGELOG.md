@@ -1,3 +1,7 @@
+## 2026-10-20 — TB18 immutable R10 rail-vertex endpoint harvest (candidate evidence)
+
+- Part A run `39349041417`, result `12231529583` (18/18 hashes), 12/14 PASS; Part B run `39349459268`, result `12232299548` (1019/1019), 448/497 PASS / 49 RED. Against TB16C, 23 RED→PASS, zero PASS→RED; 30/30 B2 identities exited B2 (16 PASS, 14 RED/other). No rebuild, retest, source/selector/harness edits or stable promotion. The two Part A cross-region diagnostics end at producer `PublishedProductRejected` and require independent review. Inventory/report under `.agents/Directional/Architecture_M6_CP3_TB18_*`; mandatory TB18-REV next; stable 66/17/49, debt 1 unchanged.
+
 ## 2026-10-19 — Review pull: TB18 runs complete but unharvested; TB18 resumes for harvest only
 
 - TB18 (RA-103.5) yielded IN_PROGRESS after dispatching both parts. Part A (run `39349041417`, result `12231529583`) and Part B (run `39349459268`, result `12232299548`) have since completed, and Review verified both ZIP digests. Neither has been harvested, so RA-103.5 is not adjudicated.

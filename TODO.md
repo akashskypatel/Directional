@@ -1,13 +1,10 @@
-## CURRENT — TB18 runs complete but unharvested; resume TB18 (harvest only), then TB18-REV (2026-10-19)
+## CURRENT — TB18 immutable evidence harvested; mandatory TB18-REV next (2026-10-20)
 
-- [x] `M6-CP3-CB17-R10-FACTORY-RAIL-VERTEX-ENDPOINT` (U4), accepted by RA-103: source `ccc0b00ab6`, package `12214741070`.
-- [x] `M6-CP3-CB18-R10-CONSUMER-RAIL-VERTEX-ENDPOINT` (U5, RA-103.4): source `3bd24682c5e18eece541ab4d1f38f781a2230e41`, compile run `39337458721`, artifact `12227516380` (28/28, GMP/GMPXX eight targets, `runtimeExecution=false`; expires 2026-10-26). Review re-verified the package source as byte-identical to git. Record: `.agents/Directional/Architecture_M6_CP3_CB18_R10_Consumer_Rail_Vertex_Endpoint_Code_Build_Record_20261019.md`.
-- [ ] `M6-CP3-TB18-R10-RAIL-VERTEX-ENDPOINT` (RA-103.5), IN_PROGRESS. Both runs are complete: Part A run `39349041417` → result `12231529583`; Part B run `39349459268` → result `12232299548` (both expire 2026-11-03). Nothing is harvested yet.
-  - **NEXT:** resume TB18 for harvest only, per the handoff's next-turn scope: verify both artifacts; adjudicate the Part A predictions and falsifiers; write `Architecture_M6_CP3_TB18_Selector_497_Red_Inventory.tsv` against the TB16C baseline and one report of 30 lines or fewer. No re-runs.
-- [ ] Then `M6-CP3-TB18-R10-RAIL-VERTEX-ENDPOINT-REV` (mandatory): adjudicates RA-103.5 and assigns the next RP-01 turn and fixture debt.
-- [ ] Fixture debt after TB18-REV (242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test-assumption sites TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518 if TB18 reaches them), then a census and the RP-01 Review.
-- **Turn sequence:** TB18 (resume, harvest only) → TB18-REV → next RP-01 turn per TB18-REV → fixture debt → census → RP-01 Review.
-- Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, census 425/497, selector 497. `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
+- [x] `M6-CP3-CB18-R10-CONSUMER-RAIL-VERTEX-ENDPOINT`: compiled source `3bd24682c`, package `12227516380`, GMP/GMPXX eight targets, no runtime.
+- [x] `M6-CP3-TB18-R10-RAIL-VERTEX-ENDPOINT`: Part A run `39349041417` (artifact `12231529583`, 12/14 PASS), Part B run `39349459268` (artifact `12232299548`, 448/497 PASS / 49 RED); both immutable, no rebuild or reruns. TB16C→TB18 23 RED→PASS, zero PASS→RED. All 30 B2 exited B2: 16 PASS, 14 RED at other first failures. Inventory and report in `.agents/Directional/Architecture_M6_CP3_TB18_*`.
+- [ ] **EXACT NEXT:** `M6-CP3-TB18-R10-RAIL-VERTEX-ENDPOINT-REV` (independent Review): adjudicate RA-103.5 and Part A `PublishedProductRejected` (two diagnostics); assign the next `RP-01` turn and fixture debt without presuming root causes or upgrading candidate acceptance.
+- [ ] Fixture debt after independent Review: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus I/R test-assumption sites TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518, only as assigned by Review.
+- Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, TB16C 425/497, TB18 candidate 448/497, selector 497; `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
 
 ---
 
