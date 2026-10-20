@@ -1,9 +1,19 @@
-## CURRENT — DEFN-P1 source-domain definition drafted; independent Review required (2026-10-20)
+## CURRENT — DEFN-P1 reviewed (RA-111); CB20 gauge-pin domain next (2026-10-20)
 
 - [x] `M6-CP3-DEFN-P1-GAUGE-PIN-DOMAIN` — source-only producer-domain definition in `.agents/Directional/Architecture_M6_CP3_DEFN_P1_Gauge_Pin_Domain_Definition_Record_20261020.md`. Exact relation-pair input is not presently published to `make`. Torus {0,3} is same-region. Cut-set inclusion is unproved; hard-carrier producer-domain reachability is a mandatory Review stop check. No implementation/compile/runtime.
-- [ ] **EXACT NEXT:** `M6-CP3-DEFN-P1-GAUGE-PIN-DOMAIN-REV` — mandatory Review of the record; authorizes CB20 or returns DEFN-P1.
-- [ ] Planned, not authorized: CB20 (pin domain, compile only) → TB20 (artifact-only: nine M2 plus controls) → TB20-REV → DEFN on the M1 binding owner (RA-105.3) → corrective CB/TB → fixture debt (242 per `Architecture_M6_CP3_CB19_Selector242_Atlas_Authority_Test_Plan_20261020.md`, then 174 → 250 → adjacent-sheet → 191 → 442, plus I/R sites TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518) → census → RP-01 Review.
-- **Turn sequence:** TB19A (closed) → TB19-REV (RA-110) → DEFN-P1 (definition delivered) → **DEFN-P1-REV** → [CB20 → TB20 → TB20-REV] → DEFN-M1 → corrective CB/TB → fixture debt → census → RP-01 Review.
+- [x] Review (RA-111, DEFN-P1-REV):
+  - producer table, torus single region and consumer census confirmed;
+  - exactness (RA-110.4 item 3) withdrawn: a same-region, non-hard pin spans every region and fixes the gauge up to a per-region shift;
+  - RA-110.5's first STOP withdrawn; cut-set inclusion open but fail-closed;
+  - record: `Architecture_M6_CP3_DEFN_P1_Gauge_Pin_Domain_Review_Decision.md`.
+- [ ] **EXACT NEXT:** `M6-CP3-CB20-RP01-GAUGE-PIN-DOMAIN` — Code + Build, compile only, RA-111.4/111.6:
+  - in the pin block (S:8509–8567), skip hard edges and cross-region pairs; add the span guard `gauge-pin-span;region=<index>`; update the RA-45 comment;
+  - TQ: tighten `OneFaceGaugePinNamesSourceEdge` to `edge=0,4`; add `RegionGaugeShiftPassesPin` and `HardEdgeIsolatingFaceRejectsAtSpan`;
+  - GMP/GMPXX eight-target compile, package, `runtimeExecution=false`; 48 unique labels; lines ≤ 100 columns;
+  - STOP on a compile error, a single-face region for face 0, or any change needed outside the pin block.
+- [ ] `M6-CP3-CB20-RP01-GAUGE-PIN-DOMAIN-REV` — mandatory Review of the patch and the package; authorizes TB20 and sets its rows.
+- [ ] Planned, not authorized: TB20 (artifact-only: nine M2, ten M1 no-regression, `SurfaceCellFactoryRejectionSite` suite, controls) → TB20-REV → DEFN on the M1 binding owner (RA-105.3) → corrective CB/TB → fixture debt (242 per `Architecture_M6_CP3_CB19_Selector242_Atlas_Authority_Test_Plan_20261020.md`, then 174 → 250 → adjacent-sheet → 191 → 442, plus I/R sites TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518) → census → RP-01 Review.
+- **Turn sequence:** DEFN-P1 (delivered) → DEFN-P1-REV (RA-111) → **CB20** → CB20-REV → [TB20 → TB20-REV] → DEFN-M1 → corrective CB/TB → fixture debt → census → RP-01 Review.
 - Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, TB18 candidate 448/497, selector 497; `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
 
 ---

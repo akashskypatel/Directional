@@ -1,5 +1,7 @@
 # M6 CP3 DEFN-P1 — gauge-pin domain, source-only definition (2026-10-20)
 
+> **Reviewed by RA-111 (2026-10-20):** items 1, 3 and 5 are confirmed and item 2 stays open. Item 4's predicate and its added input are superseded by RA-111.4 (`Architecture_M6_CP3_DEFN_P1_Gauge_Pin_Domain_Review_Decision.md`).
+
 **Authority:** RA-110.4/110.5 (`Architecture_M6_CP3_TB19_REV_Gauge_Pin_Domain_Review_Decision.md`). **Source:** verified immutable snapshot of `ee3ef2652fc3cacc6c1ba5619c0f9159681dfcc0`, workflow `39493959673`, artifact `12297225688`, 5,709/5,709 file digests. `S` = `src/geometry/SurfaceCellTracing.cpp`, `R` = `src/pipeline/RemeshPipeline.cpp`, `TQ` = `tests/SurfaceCellTransitionQuotientTests.cpp`. Static inspection only; no code, test, build or runtime execution. **Candidate definition for mandatory independent Review, not CB20 authorization.**
 
 ## Producer census and exact domain

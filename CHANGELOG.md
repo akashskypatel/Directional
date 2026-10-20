@@ -1,3 +1,10 @@
+## 2026-10-20 — DEFN-P1 Review (RA-111): spanning pin domain frozen; CB20 next
+
+- RA-111 confirms the DEFN-P1 producer table, the torus as one region ({0,3} between faces 1 and 22, recomputed from the OBJ) and the consumer census.
+- RA-110.4 item 3 (exactness) is withdrawn. On a connected pinned graph the gauge is fixed up to one Z4 shift per region, and extra edges constrain only atlas holonomy. Regions are the components of the non-hard dual graph, so no new `make` input is needed. RA-110.5's first STOP is withdrawn.
+- Frozen domain: the pin covers same-region, non-hard two-face edges, with a span guard `gauge-pin-span;region=<index>`. This is a monotone relaxation; RA-45.3's rejections still hold.
+- Next: CB20 (compile only), then CB20-REV. Accounting is unchanged.
+
 ## 2026-10-20 — DEFN-P1 gauge-pin relation-domain source census
 
 - Definition record `.agents/Directional/Architecture_M6_CP3_DEFN_P1_Gauge_Pin_Domain_Definition_Record_20261020.md` statically identifies the three producer relation domains. Torus hard edge {0,3} has both incident faces in one topology region. `acceptedCutEdges ⊆ hardFeatureEdges` is not established by the producer; `make` lacks a selected-producer gauge-relation set.

@@ -54,6 +54,8 @@
 
 ## RA-110.4 Constraints on the corrected domain
 
+> **Amended by RA-111.3 (2026-10-20):** item 3 (exactness) is withdrawn; the domain must instead span each region. RA-111.4 gives the domain.
+
 DEFN-P1 must define a domain that satisfies all five:
 1. **Inputs.** It is computable from `make`'s inputs. `make` receives `hardFeatureEdges` and `sourceTopologyRegions`, but not the producer's `acceptedCutEdges`. If the domain needs more, DEFN-P1 names the minimal added input and does not design it.
 2. **Producers.** It covers the uniform (S:13178), periodic-annulus (S:13997) and curved-bounded-disk (S:15284) producers.
@@ -62,6 +64,8 @@ DEFN-P1 must define a domain that satisfies all five:
 5. **Consumers.** It confirms or refutes RA-45.1 at the current source: does any production consumer read a gauge difference across an excluded edge?
 
 ## RA-110.5 Next unit — `M6-CP3-DEFN-P1-GAUGE-PIN-DOMAIN` (Definition, documents only)
+
+> **Amended by RA-111.2 (2026-10-20):** the first STOP condition is withdrawn; a producer relating an intra-region hard edge does not falsify H-pin.
 
 **Deliverable:** `Architecture_M6_CP3_DEFN_P1_Gauge_Pin_Domain_Definition_Record_<date>.md`, containing:
 1. **Producer table** (3 rows): the function and its S range, the gauge root rule, and the two-face edges excluded from its gauge domain, each with S lines.

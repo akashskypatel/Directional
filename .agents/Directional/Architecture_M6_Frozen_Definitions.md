@@ -1,3 +1,16 @@
+## RA-111 — DEFN-P1 reviewed: census accepted; exactness withdrawn for a spanning domain; CB20 authorized (2026-10-20)
+
+Authority: `Architecture_M6_CP3_DEFN_P1_Gauge_Pin_Domain_Review_Decision.md`. Record: `Architecture_M6_CP3_DEFN_P1_Gauge_Pin_Domain_Definition_Record_20261020.md`.
+
+- **RA-111.1** Producer table, torus single region ({0,3} between faces 1 and 22) and consumer census confirmed; cut-set inclusion open.
+- **RA-111.2** RA-110.5's first STOP is withdrawn; the corrected STOP is a production consumer reading a gauge difference outside the pin domain (none found).
+- **RA-111.3** RA-110.4 item 3 (exactness) is withdrawn: on a connected pinned graph the gauge is fixed up to one Z4 shift per region, so extra edges constrain only atlas holonomy. Regions are the components of the two-face, same-component, non-hard dual graph (S:9670–9727), so no new `make` input is needed.
+- **RA-111.4** Frozen domain: `pin(e,a,b) <=> two_face && e not in hardFeatureEdges && region_for_row(a) == region_for_row(b)`, plus span guard `gauge-pin-span;region=<index>`. Monotone relaxation; RA-45.3's rejections hold.
+- **RA-111.5** A non-hard cut carrier stays pinned (fail-closed); TB20 evidence would open a follow-up.
+- **RA-111.6** Next: `M6-CP3-CB20-RP01-GAUGE-PIN-DOMAIN` (compile only), then CB20-REV.
+
+---
+
 ## RA-110 — TB19-REV: TB19A accepted; H-pin confirmed as a producer/factory gauge-domain mismatch; DEFN-P1 ordered (2026-10-20)
 
 Authority: `Architecture_M6_CP3_TB19_REV_Gauge_Pin_Domain_Review_Decision.md`. Evidence: TB19A run `39484475466`, artifact `12292268624`; report `Architecture_M6_CP3_TB19A_Torus_Rejection_Site_Harvest_Report_20261020.md`.
