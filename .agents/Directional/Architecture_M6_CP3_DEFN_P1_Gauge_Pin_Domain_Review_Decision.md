@@ -64,6 +64,7 @@ A non-hard accepted cut carrier, if one exists, stays pinned exactly as it is to
 5. **New** `RegionGaugeShiftPassesPin`:
    - the `hard_rail_fixture()` draft, with +1 mod 4 on the gauge of every face in the region that does not contain face 0;
    - assert the result is a product, or an error whose site does not begin with `gauge-pin-`.
+   - *Amended by RA-112.4: the test asserts a product only.*
 6. **New** `HardEdgeIsolatingFaceRejectsAtSpan`:
    - insert every non-hard two-face edge of face 0 into the draft's `hardFeatureEdges`;
    - expect `InvalidSourceAuthority` with site `gauge-pin-span;region=<face 0's region index>`.
@@ -84,6 +85,8 @@ A non-hard accepted cut carrier, if one exists, stays pinned exactly as it is to
 **On success:** `M6-CP3-CB20-RP01-GAUGE-PIN-DOMAIN-REV` (Review). The TB20 rows are set there.
 
 ## RA-111.7 Sequence and accounting
+
+> *Amended by RA-112.6: CB20 stopped at compile; CB20A and CB20A-REV follow before TB20.*
 
 - **Sequence:** CB20 → CB20-REV → TB20 (artifact-only: the nine M2, the ten M1 as a no-regression check, the `SurfaceCellFactoryRejectionSite` suite, controls) → TB20-REV → DEFN on the M1 binding owner (RA-105.3) → corrective CB/TB → fixture debt → census → RP-01 Review.
 - **Accounting is unchanged:** 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, TB18 candidate 448/497, selector 497. `RP-01` is open, `RP-02` is UNREACHED and Gate C is suspended.

@@ -1,5 +1,7 @@
 # M6 CP3 CB20 — gauge-pin domain Code + Build STOP (2026-10-20)
 
+> **Reviewed by RA-112 (2026-10-20):** the stop is verified and the S patch is accepted statically. The accessor correction is authorized as CB20A (`Architecture_M6_CP3_CB20_Gauge_Pin_Domain_Compile_Stop_Review_Decision.md`).
+
 - Canonical turn: `M6-CP3-CB20-RP01-GAUGE-PIN-DOMAIN`; authority RA-111.4/RA-111.6. **Compile RED; mandatory STOP and independent Review.**
 - Source code/test semantic commit: `7dc9b89ecd13753173057577d1da320db9515ebb`, applied by Drive workflow `39505814372`; patch SHA-256 `40cd730e9859d677d6e5510b6c7bb97b8a8924920e606eeec93e9849743e3c95` against `9c6bb760576407be6d488ccaf5b5f7f17037298a`.
 - Scoped S diff: +37/-5, within RA-45 pin block plus immediate span guard. TQ diff: +82/-2, exact edge site and two RA-111 tests. No header, producer, pipeline or selector edits.

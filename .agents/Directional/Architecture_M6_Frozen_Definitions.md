@@ -1,3 +1,15 @@
+## RA-112 — CB20 compile stop reviewed: source accepted statically; test accessor correction authorized as CB20A (2026-10-20)
+
+Authority: `Architecture_M6_CP3_CB20_Gauge_Pin_Domain_Compile_Stop_Review_Decision.md`. Record: `Architecture_M6_CP3_CB20_Gauge_Pin_Domain_Code_Build_Stop_Record_20261020.md`.
+
+- **RA-112.1** CB20 compile run `39512680019` RED: five `operator*` errors on `DomainResult<SourceFaceId>` at TQ:1941–1979; `directional_core` compiled; the stop is verified.
+- **RA-112.2** The S patch `7dc9b89ec` (skip S:8559–8563, span guard S:8584–8598) matches RA-111.4, statically. Runtime acceptance belongs to TB20.
+- **RA-112.3** Root cause: `DomainResult` has `value()` and no dereference operator. Not a design defect.
+- **RA-112.4** Static walk: item 4 site `edge=0,4`; item 6 span rejection on the left region. Item 5's oracle is tightened to a product only, because a non-pin error would be RA-111.2's STOP condition.
+- **RA-112.5** Next: `M6-CP3-CB20A-RP01-GAUGE-PIN-TEST-ACCESSOR` (TQ only, compile only), then CB20A-REV.
+
+---
+
 ## RA-111 — DEFN-P1 reviewed: census accepted; exactness withdrawn for a spanning domain; CB20 authorized (2026-10-20)
 
 Authority: `Architecture_M6_CP3_DEFN_P1_Gauge_Pin_Domain_Review_Decision.md`. Record: `Architecture_M6_CP3_DEFN_P1_Gauge_Pin_Domain_Definition_Record_20261020.md`.
