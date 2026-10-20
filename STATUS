@@ -1,8 +1,8 @@
 ---TURN_STATUS---
 Turn: M6-CP3-CB20-RP01-GAUGE-PIN-DOMAIN-REV
-Status: IN_PROGRESS
-Successor: 
+Status: COMPLETE
+Successor: M6-CP3-CB20A-RP01-GAUGE-PIN-TEST-ACCESSOR
 Started at: 2026-10-20T23:49:33Z
 Resumed at: 
-Ended at: 
+Ended at: 2026-10-20T23:54:56Z
 ---END_TURN_STATUS---
