@@ -1,8 +1,8 @@
 ---TURN_STATUS---
 Turn: M6-CP3-DEFN-P1-GAUGE-PIN-DOMAIN
-Status: IN_PROGRESS
+Status: COMPLETE
 Successor: M6-CP3-DEFN-P1-GAUGE-PIN-DOMAIN-REV
 Started at: 2026-10-20T20:39:27Z
 Resumed at: 
-Ended at: 
+Ended at: 2026-10-20T20:58:35Z
 ---END_TURN_STATUS---
