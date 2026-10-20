@@ -34,7 +34,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-20, Review of the TB19 run (RA-108). 16 of 22 rows are valid: `cp3entry:2/6` and `focused30:12` reject at `gauge-pin-consistency;edge=1,4`, and M1 shows no regression. The six torus rows were not measured because the harness copied the fixtures one level too high (a gap in Review's spec). Next: the TB19 closeout report, then TB19A to rerun the torus rows. |
+| Currency | 2026-10-20, TB19 harvest verified; 16 of 22 rows are valid: `cp3entry:2/6` and `focused30:12` reject at `gauge-pin-consistency;edge=1,4`, and M1 shows no regression. The six torus rows were not measured because the harness copied the fixtures one level too high (a gap in Review's spec). TB19 closeout complete; TB19A reruns torus. |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; refetch before mutation. Semantic source `d2c7483cde8e65d6c35c5df06fa880465a4da46c`. |
 | Last compiled semantic source | CB19A eight-target GMP/GMPXX compile [39446712217](https://github.com/akashskypatel/Directional/actions/runs/39446712217), package `12275794192`, ZIP SHA-256 `e4a39cdb2db5ef9953748cffd3e031e4294ddaf348f4a64fee3b97e08bdd723a`; hashes `28/28`, statuses clean, `runtimeExecution=false`; expires 2026-10-27T15:24Z; accepted by RA-107. Record: `Architecture_M6_CP3_CB19A_Factory_Rejection_Site_Code_Build_Record_20261020.md`. |
 | Last accepted semantic runtime | CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. R3 baseline **403/497** rejected. |
@@ -42,35 +42,14 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | Regression accounting | **66/17/49**, debt **1**, selector 497 frozen; R3 403/497 rejected, TB18 candidate 448/497. |
 | Active boundary | `RP-01` open. B2 cleared; M1 certificate shadowing (10 identities), and M2, the H-pin hypothesis that the gauge pin's domain is wrong. Measured by TB19: `cp3entry:2/6` and `focused30:12` reject at the pin on rail carrier (1,4). The torus six are still unmeasured (TB19A). `RP-02` UNREACHED; Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE` (closeout) — EXACT NEXT
+## Mandatory next turn — `M6-CP3-TB19A-RP01-TORUS-REJECTION-SITE` — EXACT NEXT
 
-- **Type / owner:** Test + Benchmark closeout. Harvest only: no dispatch, no rerun. Authority: RA-108.4 (`Architecture_M6_CP3_TB19_Torus_Staging_Review_Decision.md`) with RA-107.3.
-- **STATUS:** the previous beacon is this Review's COMPLETE, so TB19 starts again with a new `Started at`. The 17:04:52Z attempt stays in git history.
-- **Objective:** write the TB19 harvest report from artifact `12285225197`, applying RA-108's validity ruling.
-- **In scope:**
-  1. **Report** `Architecture_M6_CP3_TB19_Factory_Rejection_Site_Harvest_Report_20261020.md`:
-     - the run, the artifact and the ZIP SHA-256;
-     - manifest counts;
-     - the 22-row ledger as RA-107.3 specifies.
-  2. **Torus rows** #1, #4 and #6–#9 are marked `NOT MEASURED — fixture staging (RA-108.2)`.
-  3. **`focused30:12`:** product and site are taken from its first-failure text; detail is `not streamed`.
-  4. **Falsifier lines,** exactly as RA-108.3 gives them:
-     - F1 held on 16 rows;
-     - F2 held;
-     - F3 held for `focused30:12`, torus not measured;
-     - F4 held, 10/10;
-     - R-route not reached;
-     - no non-zero code.
-- **Out of scope:**
-  - a new harness, a dispatch or rerun;
-  - source, test, selector or fixture changes;
-  - adjudicating H-pin or the R-route.
-- **Success evidence:**
-  - the ZIP SHA-256 is re-verified;
-  - the raw-log hashes are 22/22;
-  - the report covers every row and every falsifier line.
-- **On success:** `M6-CP3-TB19A-RP01-TORUS-REJECTION-SITE` (RA-108.5).
-- **On failure/blocker:** if the artifact is unavailable or does not verify, STOP and return to Review.
+- **Type:** Test + Benchmark, artifact-only. **Authority:** RA-108.5 (`Architecture_M6_CP3_TB19_Torus_Staging_Review_Decision.md`).
+- **Entry:** TB19 report `Architecture_M6_CP3_TB19_Factory_Rejection_Site_Harvest_Report_20261020.md` committed and verified; 26/26 packaged hashes, 22/22 raw-log hashes; 16 valid measurements, 6 torus NOT MEASURED. No adjudication.
+- **Action:** Derive TB19A harness from TB19; correct fixture staging to `view/test-data/benchmarks/fixtures`; precheck `torus.obj` and `torus.rawfield`; fail on any `test-data package not found` log; execute six torus tests and `selector:443` control.
+- **Immutable pins:** source `d2c7483cde8e65d6c35c5df06fa880465a4da46c`, package `12275794192`, digest `e4a39cdb2db5ef9953748cffd3e031e4294ddaf348f4a64fee3b97e08bdd723a`, expires `2026-10-27T15:24Z`. Preserve 28 manifest checks, GMP, no-runtime-build, postflight and G1–G4.
+- **Output:** Seven-row ledger and G1–G4 held/fired. Apply all exact RA-108.5 requirements and STOP conditions. No source, test, selector, fixture, package mutation, compiler, relinker, benchmark, discovery or adjudication.
+- **On success:** `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE-REV` (mandatory).
 
 ## Turn Sequence
 
@@ -78,14 +57,14 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 |---|---|---|
 | done | `M6-CP3-CB19A-RP01-FACTORY-REJECTION-SITE` | Compiled; package `12275794192`, expires 2026-10-27T15:24Z. Accepted by RA-107. |
 | done | TB19 dispatch (run `39464430751`) | 22/22 executed. RA-108 found 16 rows valid and 6 torus rows NOT MEASURED. |
-| 1 — next | `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE` (closeout) | Harvest report only; RA-108.4. |
-| 2 | `M6-CP3-TB19A-RP01-TORUS-REJECTION-SITE` | TB, artifact-only: 6 torus rows plus the `selector:443` control, with staging fixed; RA-108.5. Must run before 2026-10-27T15:24Z. |
-| 3 — mandatory | `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE-REV` | Review of the TB19 and TB19A reports: rules on H-pin (rail carriers and periodic cuts), records the R-route as not reached, and orders the DEFN. No code repair before it. |
+| done | `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE` (closeout) | Verified harvest report, 16 valid and 6 NOT MEASURED. |
+| 1 — next | `M6-CP3-TB19A-RP01-TORUS-REJECTION-SITE` | TB, artifact-only: 6 torus rows plus the `selector:443` control, with staging fixed; RA-108.5. Must run before 2026-10-27T15:24Z. |
+| 2 — mandatory | `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE-REV` | Review of the TB19 and TB19A reports: rules on H-pin (rail carriers and periodic cuts), records the R-route as not reached, and orders the DEFN. No code repair before it. |
 | planned, not authorized | DEFN on the gauge-pin domain and the M1 binding owner → corrective CB/TB → fixture debt (242, 174, 250, adjacent-sheet, 191, 442, plus the I/R sites) → census → RP-01 Review | Only as TB19-REV assigns them. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **test-benchmark** — the TB19 closeout report (RA-108.4), then TB19A artifact-only on the immutable CB19A package (RA-108.5); never Code + Build.
+`load_next`: **test-benchmark** — TB19A artifact-only on CB19A package (RA-108.5); TB19 harvest complete.
 
 Minimum successor context after the mandatory start checklist and policies:
 
