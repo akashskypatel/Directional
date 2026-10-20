@@ -1,3 +1,15 @@
+## RA-110 — TB19-REV: TB19A accepted; H-pin confirmed as a producer/factory gauge-domain mismatch; DEFN-P1 ordered (2026-10-20)
+
+Authority: `Architecture_M6_CP3_TB19_REV_Gauge_Pin_Domain_Review_Decision.md`. Evidence: TB19A run `39484475466`, artifact `12292268624`; report `Architecture_M6_CP3_TB19A_Torus_Rejection_Site_Harvest_Report_20261020.md`.
+
+- **RA-110.1** TB19A verified independently (ZIP, 7 raw hashes, ledger, harness diff = RA-108.5); G1–G4 held; the report is accepted and TB19A is closed by Review.
+- **RA-110.2** All nine M2 identities reject at `gauge-pin-consistency`: the rectangle at (1,4), the torus at {0,3}, both members of `hardFeatureEdges`. The R-route is NOT REACHED; the RA-103.5 falsifier carries to the first TB after the pin correction.
+- **RA-110.3** H-pin CONFIRMED: producers establish face gauges per region (S:18336–18352) and skip accepted cut edges (S:16000, S:16217, S:16346), while the pin (S:8509–8567) checks every two-face edge. The pin stays mandatory inside the gauge domain; RA-45.5 stands. Rail carrier versus periodic cut is not separated and need not be. `focused30:12` is not uniform-relabel debt.
+- **RA-110.4** The corrected domain must be computable from `make`'s inputs, cover all three producers, exclude exactly the unrelated edges, name the authority for each excluded class, and re-check RA-45.1.
+- **RA-110.5** Next: `M6-CP3-DEFN-P1-GAUGE-PIN-DOMAIN` (documents only), then the mandatory DEFN-P1-REV.
+
+---
+
 ## RA-109 — TB19 harvest report accepted; TB19 closed by Review; TB19A gains a static edge classification (2026-10-20)
 
 Authority: `Architecture_M6_CP3_TB19_Closeout_Review_Decision.md`. Report: `Architecture_M6_CP3_TB19_Factory_Rejection_Site_Harvest_Report_20261020.md`.

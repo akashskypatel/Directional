@@ -1,4 +1,20 @@
-## CURRENT — TB19 closed (RA-109); TB19A torus rerun next (2026-10-20)
+## CURRENT — H-pin confirmed (RA-110); DEFN-P1 gauge-pin domain next (2026-10-20)
+
+- [ ] **EXACT NEXT:** `M6-CP3-DEFN-P1-GAUGE-PIN-DOMAIN` — Definition, documents only, RA-110.4/110.5:
+  - record `Architecture_M6_CP3_DEFN_P1_Gauge_Pin_Domain_Definition_Record_<date>.md`;
+  - producer table (uniform S:13178, periodic annulus S:13997, curved bounded disk S:15284) with each gauge domain's excluded edges;
+  - whether `acceptedCutEdges` ⊆ `hardFeatureEdges`; whether torus {0,3} is same-region;
+  - the corrected pin domain as one predicate over `make`'s inputs, with the authority for each excluded edge class;
+  - a consumer census against RA-45.1, and an oracle plan for CB20;
+  - no code, build or run; STOP if a producer relates gauges across a hard carrier, or a consumer reads such a difference.
+- [ ] `M6-CP3-DEFN-P1-GAUGE-PIN-DOMAIN-REV` — mandatory Review of the record; authorizes CB20 or returns DEFN-P1.
+- [ ] Planned, not authorized: CB20 (pin domain, compile only) → TB20 (artifact-only: nine M2 plus controls) → TB20-REV → DEFN on the M1 binding owner (RA-105.3) → corrective CB/TB → fixture debt (242 per `Architecture_M6_CP3_CB19_Selector242_Atlas_Authority_Test_Plan_20261020.md`, then 174 → 250 → adjacent-sheet → 191 → 442, plus I/R sites TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518) → census → RP-01 Review.
+- **Turn sequence:** TB19A (closed) → TB19-REV (RA-110) → **DEFN-P1** → DEFN-P1-REV → [CB20 → TB20 → TB20-REV] → DEFN-M1 → corrective CB/TB → fixture debt → census → RP-01 Review.
+- Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, TB18 candidate 448/497, selector 497; `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
+
+---
+
+## HISTORY — Factory rejection site measured: CB19/CB19A, TB19, TB19A; H-pin confirmed (2026-10-20)
 
 - [x] `M6-CP3-CB19-RP01-FACTORY-REJECTION-SITE`: 47 unique labels; the compile failed at `1f73d0abd` (RA-106).
 - [x] `M6-CP3-CB19A-RP01-FACTORY-REJECTION-SITE`: the RA-106.3/106.4 correction, committed as `d2c7483cd`. GMP/GMPXX eight-target compile [39446712217](https://github.com/akashskypatel/Directional/actions/runs/39446712217), package `12275794192` (ZIP `e4a39cdb…d723a`, expires 2026-10-27T15:24Z), no runtime. Record: `.agents/Directional/Architecture_M6_CP3_CB19A_Factory_Rejection_Site_Code_Build_Record_20261020.md`.
@@ -19,16 +35,13 @@
   - The handoff is restored to the template.
   - TB19A gains a static classification of each torus edge against the 18 row408 hard edges.
   - Record: `Architecture_M6_CP3_TB19_Closeout_Review_Decision.md`.
-- [ ] **EXACT NEXT:** `M6-CP3-TB19A-RP01-TORUS-REJECTION-SITE` — TB, artifact-only, RA-108.5 + RA-109.4:
-  - new harness `m6_cp3_tb19a_torus_rejection_site_harness.sh`, copied from the TB19 harness with fixed staging (`view/test-data/benchmarks/fixtures`), a torus fixture pre-check and a not-found guard;
-  - rows `cp3entry:1`, `focused30:6/20/24`, `selector:446/447`, plus the control `selector:443`;
-  - G1–G4, plus each site edge classified against `torus_row408_hard_edges` (TQ:908–927);
-  - dispatch before 2026-10-27T15:24Z;
-  - no compile, no change, no repair, no adjudication.
-- [ ] `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE-REV` — mandatory Review of the TB19 and TB19A reports: H-pin on rail carriers and periodic cuts, the R-route not reached, and the DEFN order.
-- [ ] Planned, not authorized: DEFN on the gauge-pin domain and the M1 binding owner → corrective CB/TB → fixture debt (242 per `Architecture_M6_CP3_CB19_Selector242_Atlas_Authority_Test_Plan_20261020.md`, then 174 → 250 → adjacent-sheet → 191 → 442, plus I/R sites TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518) → census → RP-01 Review.
-- **Turn sequence:** CB19A (compiled) → TB19 (closed: 16/22 valid) → **TB19A** → TB19-REV → [DEFN → CB/TB] → fixture debt → census → RP-01 Review.
-- Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, TB18 candidate 448/497, selector 497; `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
+- [x] `M6-CP3-TB19A-RP01-TORUS-REJECTION-SITE`: harness `m6_cp3_tb19a_torus_rejection_site_harness.sh` (`9aa2a84d6`); run [39484475466](https://github.com/akashskypatel/Directional/actions/runs/39484475466), artifact `12292268624` (ZIP `25d48ed7…7efa7c`, expires 2026-11-03); 7/7, control `selector:443` PASS, 6 torus RED at `gauge-pin-consistency;edge=0,3`; G1–G4 held. Report `.agents/Directional/Architecture_M6_CP3_TB19A_Torus_Rejection_Site_Harvest_Report_20261020.md`. STATUS was left `IN_PROGRESS`.
+- [x] Review (RA-110, TB19-REV):
+  - TB19A verified independently and accepted; Review closed TB19A.
+  - All nine M2 identities reject at the pin; the R-route is NOT REACHED.
+  - H-pin CONFIRMED: producers establish face gauges per region and skip accepted cut edges, but the pin checks every two-face edge.
+  - `focused30:12` is not uniform-relabel debt.
+  - Record: `Architecture_M6_CP3_TB19_REV_Gauge_Pin_Domain_Review_Decision.md`.
 
 ---
 

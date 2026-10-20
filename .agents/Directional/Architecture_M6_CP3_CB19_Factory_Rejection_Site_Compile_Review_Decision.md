@@ -122,6 +122,8 @@ Required instead. Every change below is a new line, so the `make` diff against `
 
 ## RA-106.7 Sequence and accounting
 
+> **Amended by RA-110.6 (2026-10-20):** sequence.
+
 - **Sequence:** CB19A → TB19 → TB19-REV (mandatory) → [DEFN on the gauge-pin domain and the M1 binding owner → corrective CB/TB] → fixture debt → census → RP-01 Review.
 - **Accounting is unchanged:**
   - 66/17/49, debt 1;

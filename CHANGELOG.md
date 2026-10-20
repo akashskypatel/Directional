@@ -1,3 +1,11 @@
+## 2026-10-20 — TB19A closed; TB19-REV (RA-110): H-pin confirmed; DEFN-P1 next
+
+- TB19A (run `39484475466`, artifact `12292268624`): the control `selector:443` PASS; the six torus identities reject at `gauge-pin-consistency;edge=0,3`, a minor-cycle hard edge. Report `Architecture_M6_CP3_TB19A_Torus_Rejection_Site_Harvest_Report_20261020.md`.
+- RA-110 verifies the artifact independently and accepts the report. Review completed the closeout the agent left open, so TB19A is closed.
+- Combined with TB19, all nine M2 identities stop at the gauge pin, and the R-route is NOT REACHED.
+- H-pin is CONFIRMED: the producers establish face gauges per region and skip accepted cut edges, but the pin checks every two-face edge. The pin stays mandatory inside the gauge domain. `focused30:12` is not uniform-relabel debt.
+- The DEFN is split: DEFN-P1 (gauge-pin domain, documents only) is next; the M1 binding-owner DEFN follows TB20-REV. Accounting is unchanged.
+
 ## 2026-10-20 — TB19 closed; Review of the closeout (RA-109); TB19A next
 
 - TB19 harvest report `Architecture_M6_CP3_TB19_Factory_Rejection_Site_Harvest_Report_20261020.md`:

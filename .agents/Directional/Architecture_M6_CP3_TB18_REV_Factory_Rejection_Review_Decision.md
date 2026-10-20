@@ -47,6 +47,8 @@ The identities are `focused30:3, 22, 23` and `selector:139, 140, 142, 211, 219, 
 
 ## RA-105.4 M2 — the relational A3 gauge pin over-reaches its domain (hypothesis H-pin)
 
+> **Confirmed by RA-110.3 (2026-10-20):** H-pin holds on both measured edges; the corrected domain is defined by `M6-CP3-DEFN-P1-GAUGE-PIN-DOMAIN`.
+
 RA-45.3's pin (S:8510–8550) requires `compose(T_A3, g_first) == g_second` on **every** source edge with two incident faces. That includes HardRail carriers and periodic cut edges.
 
 - **`focused30:12` (static proof).**
@@ -121,6 +123,8 @@ TB19 uses the TB18 Part A harness with the CB19 values and runs 22 identities:
 TB19-REV adjudicates every falsifier. TB19-REV also settles the RA-103.5 falsifier: an R-endpoint label on `cp3entry:2` or `cp3entry:6` fires it.
 
 ## RA-105.7 Sequence
+
+> **Amended by RA-110.6 (2026-10-20):** the DEFN is split; the gauge-pin domain (DEFN-P1) comes first and the M1 binding owner follows TB20-REV.
 
 CB19 (site) → TB19 → TB19-REV (mandatory; rules on H-pin and on `cp3entry:2/6`) → DEFN on the gauge-pin domain and the M1 binding owner, as TB19-REV orders → corrective CB/TB → fixture debt → census → RP-01 Review.
 
