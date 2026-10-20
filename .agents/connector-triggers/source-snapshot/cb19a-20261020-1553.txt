@@ -1,0 +1,1 @@
+CB19A source snapshot; exact event commit is snapshot authority. Pre-trigger HEAD 3507f4d5f22a5a216fa3637af76e09dcb6dd19ee.
