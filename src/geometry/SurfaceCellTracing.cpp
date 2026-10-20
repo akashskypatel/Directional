@@ -8506,12 +8506,22 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
     error.sourceAuthoritySite = "face-gauge-shape";
     return error;
   }
-  // RA-45 relational pin: the +U face gauge is consumed only through
-  // differences. Source-bound A3 transitions authenticate those differences;
-  // a uniform Z4 rotation is valid and must not be normalised away.
-  // Build incidence from typed source topology, not numeric adjacency order,
-  // so permuting source rows cannot suppress a field discontinuity.
+  // RA-45: pin relational face gauges on same-region, non-hard two-face edges.
+  // A3 authenticates those differences, modulo a uniform Z4 region shift.
+  // Typed incidence keeps the pin independent of source-row ordering.
   if (!sourceFaceBranchRotations.empty()) {
+    const std::size_t faceCount = sourceTopologyRegions.face_count();
+    std::vector<std::size_t> parent(faceCount);
+    for (std::size_t row = 0U; row < faceCount; ++row) parent[row] = row;
+    const auto root = [&parent](std::size_t row) {
+      while (parent[row] != row) {
+        parent[row] = parent[parent[row]];
+        row = parent[row];
+      }
+      return row;
+    };
+    std::vector<authority::SourceFaceId> sourceFaceIds;
+    sourceFaceIds.reserve(faceCount);
     std::map<authority::SourceEdgeTopologyKey,
              std::vector<authority::SourceFaceId>> sourceEdgeIncidence;
     for (std::size_t row = 0U; row < sourceFaceBranchRotations.size(); ++row) {
@@ -8522,6 +8532,7 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
         error.sourceAuthoritySite = "gauge-pin-face-row";
         return error;
       }
+      sourceFaceIds.push_back(faceId.value());
       const auto &corners =
           sourceTopologyRegions.topology_for_row(faceId.value()).vertices();
       for (std::size_t corner = 0U; corner < corners.size(); ++corner) {
@@ -8545,6 +8556,12 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
             std::to_string(edge.second().index());
         return error;
       }
+      if (hardFeatureEdges.contains(edge) ||
+          sourceTopologyRegions.region_for_row(incident[0]) !=
+              sourceTopologyRegions.region_for_row(incident[1])) {
+        continue;
+      }
+      parent[root(incident[0].index())] = root(incident[1].index());
       const auto forward = fieldTransportAtlas->transition_value(
           edge, incident[0], incident[1]);
       const auto reverse = fieldTransportAtlas->transition_value(
@@ -8561,6 +8578,21 @@ SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
             std::string("gauge-pin-consistency;edge=") +
             std::to_string(edge.first().index()) + "," +
             std::to_string(edge.second().index());
+        return error;
+      }
+    }
+    std::vector<std::size_t> firstFaceByRegion(
+        sourceTopologyRegions.regions().size(), faceCount);
+    for (std::size_t row = 0U; row < faceCount; ++row) {
+      const std::size_t region =
+          sourceTopologyRegions.region_for_row(sourceFaceIds[row]).index();
+      auto &first = firstFaceByRegion[region];
+      if (first == faceCount) {
+        first = row;
+      } else if (root(first) != root(row)) {
+        error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+        error.sourceAuthoritySite =
+            std::string("gauge-pin-span;region=") + std::to_string(region);
         return error;
       }
     }

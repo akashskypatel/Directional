@@ -1911,8 +1911,7 @@ TEST(SurfaceCellFactoryRejectionSite, OneFaceGaugePinNamesSourceEdge) {
   ASSERT_NE(error, nullptr);
   EXPECT_EQ(error->code,
             directional::geometry::SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority);
-  EXPECT_EQ(error->sourceAuthoritySite.rfind("gauge-pin-consistency;edge=", 0), 0U)
-      << error->sourceAuthoritySite;
+  EXPECT_EQ(error->sourceAuthoritySite, "gauge-pin-consistency;edge=0,4");
   // Both vertices of the rejected pin edge must lie on the modified face.
   const auto &site = error->sourceAuthoritySite;
   const auto edgePosition = site.find(";edge=");
@@ -1929,6 +1928,87 @@ TEST(SurfaceCellFactoryRejectionSite, OneFaceGaugePinNamesSourceEdge) {
     secondIsCorner = secondIsCorner || fixture.mesh.F(0, column) == second;
   }
   EXPECT_TRUE(firstIsCorner && secondIsCorner);
+}
+
+TEST(SurfaceCellFactoryRejectionSite, RegionGaugeShiftPassesPin) {
+  const auto &fixture = hard_rail_fixture();
+  auto draft = phase_front_draft(fixture);
+  const std::size_t faceCount = draft.sourceAuthority.face_count();
+  ASSERT_EQ(faceCount, draft.sourceFaceBranchRotations.size());
+  const auto face0 =
+      directional::authority::SourceFaceId::from_index(0U, faceCount);
+  ASSERT_TRUE(face0.has_value());
+  const auto firstRegion = draft.sourceAuthority.region_for_row(*face0);
+  std::size_t shifted = 0U;
+  for (std::size_t row = 0U; row < faceCount; ++row) {
+    const auto face =
+        directional::authority::SourceFaceId::from_index(row, faceCount);
+    ASSERT_TRUE(face.has_value());
+    if (draft.sourceAuthority.region_for_row(*face) == firstRegion) continue;
+    draft.sourceFaceBranchRotations[row] =
+        (draft.sourceFaceBranchRotations[row] + 1) % 4;
+    ++shifted;
+  }
+  ASSERT_GT(shifted, 0U);
+  const auto result = construct_phase_front_product(std::move(draft));
+  const auto *error = std::get_if<
+      directional::geometry::SurfacePhaseFrontProductError>(&result);
+  if (error != nullptr) {
+    EXPECT_NE(error->sourceAuthoritySite.rfind("gauge-pin-", 0), 0U)
+        << error->sourceAuthoritySite;
+  } else {
+    EXPECT_NE(std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&result),
+              nullptr);
+  }
+}
+
+TEST(SurfaceCellFactoryRejectionSite, HardEdgeIsolatingFaceRejectsAtSpan) {
+  const auto &fixture = hard_rail_fixture();
+  auto draft = phase_front_draft(fixture);
+  const std::size_t faceCount = draft.sourceAuthority.face_count();
+  const auto face0 =
+      directional::authority::SourceFaceId::from_index(0U, faceCount);
+  ASSERT_TRUE(face0.has_value());
+  const std::size_t region = draft.sourceAuthority.region_for_row(*face0).index();
+  std::size_t sameRegionPeers = 0U;
+  for (std::size_t row = 1U; row < faceCount; ++row) {
+    const auto face =
+        directional::authority::SourceFaceId::from_index(row, faceCount);
+    ASSERT_TRUE(face.has_value());
+    sameRegionPeers += draft.sourceAuthority.region_for_row(*face) ==
+                       draft.sourceAuthority.region_for_row(*face0);
+  }
+  ASSERT_GT(sameRegionPeers, 0U) << "face 0 must not be its own region";
+  std::size_t isolated = 0U;
+  for (int corner = 0; corner < 3; ++corner) {
+    const int a = draft.sourceFaces(0, corner);
+    const int b = draft.sourceFaces(0, (corner + 1) % 3);
+    const auto edge = test_source_edge_topology(a, b, draft.sourceVertexCount);
+    if (draft.hardFeatureEdges.contains(edge)) continue;
+    std::size_t incidence = 0U;
+    for (int face = 0; face < draft.sourceFaces.rows(); ++face) {
+      bool hasA = false;
+      bool hasB = false;
+      for (int col = 0; col < 3; ++col) {
+        hasA = hasA || draft.sourceFaces(face, col) == a;
+        hasB = hasB || draft.sourceFaces(face, col) == b;
+      }
+      incidence += hasA && hasB;
+    }
+    if (incidence == 2U) {
+      draft.hardFeatureEdges.insert(edge);
+      ++isolated;
+    }
+  }
+  ASSERT_GT(isolated, 0U) << "face 0 must have a non-hard interior edge";
+  const auto result = construct_phase_front_product(std::move(draft));
+  const auto *error = std::get_if<
+      directional::geometry::SurfacePhaseFrontProductError>(&result);
+  ASSERT_NE(error, nullptr);
+  EXPECT_EQ(error->code,
+            directional::geometry::SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority);
+  EXPECT_EQ(error->sourceAuthoritySite,
+            "gauge-pin-span;region=" + std::to_string(region));
 }
 
 TEST(SurfacePhaseFrontProductFactoryAuthority,
