@@ -1,12 +1,14 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb19-closeout-20261020-01",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb19-harvest-report",
-  "file_id": "1nqfhetaJrkYfYjpfL7MWiGm0irRYbK2r",
-  "patch_sha256": "0b8ad02f6f22f7fe654e4215c426209b41fe576925ba9c231434f9df76da6dbe",
-  "base_sha": "e9e6e26e1e311f21b3ad656d93a32ca7ddf11600",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): harvest verified TB19 rejection-site evidence",
+  "request_id": "m6-cp3-tb19a-torus-20261020-01",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb19a-torus-rejection-site",
+  "executor_sha": "9aa2a84d679088cb40ddd75b5da7738fa5c74154",
+  "semantic_source_sha": "d2c7483cde8e65d6c35c5df06fa880465a4da46c",
+  "turn_id": "M6-CP3-TB19A-RP01-TORUS-REJECTION-SITE",
+  "harness_path": ".agents/Directional/tools/m6_cp3_tb19a_torus_rejection_site_harness.sh",
+  "harness_sha256": "21480db48fe005896d126bad30054e4711f5597117324ff4039a30c74d05cabc",
+  "environment": {},
+  "artifact_prefix": "m6-cp3-tb19a-torus-rejection-site",
   "retention_days": 14
 }
