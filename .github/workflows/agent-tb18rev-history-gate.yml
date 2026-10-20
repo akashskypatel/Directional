@@ -50,7 +50,7 @@ jobs:
           git log -1 --format='%H %s'
           python3 .agents/Directional/tools/review_check.py authority 3bd24682c5e18eece541ab4d1f38f781a2230e41
           python3 .agents/Directional/tools/review_check.py boundary
-          python3 .agents/Directional/tools/review_check.py ledgers
+          python3 .agents/Directional/tools/review_check.py ledgers --base 8b7299b43
           echo 'review_exit=0'
       - name: Report final source status
         if: always()
