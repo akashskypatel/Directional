@@ -1913,7 +1913,7 @@ TEST(SurfaceCellFactoryRejectionSite, OneFaceGaugePinNamesSourceEdge) {
             directional::geometry::SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority);
   EXPECT_EQ(error->sourceAuthoritySite.rfind("gauge-pin-consistency;edge=", 0), 0U)
       << error->sourceAuthoritySite;
-  // The first rejected pin edge has an endpoint on the modified source face.
+  // Both vertices of the rejected pin edge must lie on the modified face.
   const auto &site = error->sourceAuthoritySite;
   const auto edgePosition = site.find(";edge=");
   ASSERT_NE(edgePosition, std::string::npos) << site;
@@ -1922,12 +1922,13 @@ TEST(SurfaceCellFactoryRejectionSite, OneFaceGaugePinNamesSourceEdge) {
   const int first = std::stoi(site.substr(edgePosition + 6U,
                                           separator - (edgePosition + 6U)));
   const int second = std::stoi(site.substr(separator + 1U));
-  bool incidentToChangedFace = false;
+  bool firstIsCorner = false;
+  bool secondIsCorner = false;
   for (int column = 0; column < 3; ++column) {
-    if (fixture.mesh.F(0, column) == first || fixture.mesh.F(0, column) == second)
-      incidentToChangedFace = true;
+    firstIsCorner = firstIsCorner || fixture.mesh.F(0, column) == first;
+    secondIsCorner = secondIsCorner || fixture.mesh.F(0, column) == second;
   }
-  EXPECT_TRUE(incidentToChangedFace);
+  EXPECT_TRUE(firstIsCorner && secondIsCorner);
 }
 
 TEST(SurfacePhaseFrontProductFactoryAuthority,
