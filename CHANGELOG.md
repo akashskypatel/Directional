@@ -1,3 +1,12 @@
+## 2026-10-20 — Review of the TB19 run (RA-108): 16 rows valid; torus rows unmeasured; TB19A authorized
+
+- TB19 (run `39464430751`, artifact `12285225197`) was re-derived independently: digest, 26/26 manifest entries and 22/22 raw hashes.
+- `cp3entry:2/6` and `focused30:12` reject with `product=0` at `gauge-pin-consistency;edge=1,4`, a hard-rail carrier.
+- The 10 M1 rows are byte-identical to TB18 after line mapping, and the 3 controls PASS.
+- The six torus rows failed with `test-data package not found`. The harness copied the fixtures one directory level too high, a line inherited from the template that RA-107.3 prescribed. This was a gap in Review's spec, so those rows are NOT MEASURED.
+- The R-route is not reached: the pin runs before the certificate loop.
+- Next: the TB19 closeout report (no dispatch), then TB19A (6 torus rows plus the `selector:443` control, with staging fixed), then the mandatory TB19-REV. Accounting is unchanged.
+
 ## 2026-10-20 — Review of CB19A (RA-107): accepted; TB19 specified exactly
 
 - CB19A is accepted. The provider digest of package `12275794192` matches, the compile run's source equals `d2c7483cd`, `make` is insertions only against `3bd24682c`, and the 47 labels are identical to CB19's in clause and suffix.

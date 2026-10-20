@@ -12,7 +12,7 @@ Runs [Part A 39349041417](https://github.com/akashskypatel/Directional/actions/r
 | M2: the RA-45.3 gauge pin spans rail carriers and periodic cuts (H-pin) | `focused30:12` (proved); `cp3entry:1`, `focused30:6, 20, 24`, `selector:446, 447` (nonzero-holonomy torus) | S:8510–8550, `1eaea310f`; the torus first observable changed between R3 and CB13A | TB19 site labels confirm or refute it |
 | Unlocated checked-factory rejection | `cp3entry:2, 6` (Part A #10/#11) | S:13097, clause not logged | TB19; decides the RA-103.5 R-route falsifier |
 
-RA-106/RA-107 (2026-10-20): the site labels compiled in CB19A (`d2c7483cd`, package `12275794192`), which RA-107 accepted. TB19 measures them. No attribution has changed.
+RA-106/RA-107 (2026-10-20): the site labels compiled in CB19A (`d2c7483cd`, package `12275794192`), which RA-107 accepted. RA-108 (TB19 run `39464430751`): `cp3entry:2/6` and `focused30:12` reject at `gauge-pin-consistency;edge=1,4`, so the `cp3entry:2/6` clause is the gauge pin. The six torus rows were not measured (fixture staging) and TB19A reruns them. No attribution has changed until TB19-REV.
 
 ## TB17 — focused artifact-only gate, no new stable regression — adjudicated by RA-103 (2026-10-19)
 

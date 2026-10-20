@@ -353,7 +353,9 @@ This document records **reusable failure-derived engineering lessons**, not an e
   transfer while executable mode bits do not; preserve mode metadata and reject rather than patch an
   immutable test package in place. Extract source using its recorded directory layout; independently
   verify the fixture path *resolved by the binary*, not merely that an identically named fixture exists
-  elsewhere.
+  elsewhere. A harness copied from a template has validated only what the template's own tests
+  exercised. If the copy adds fixture-loading tests, add a positive control that loads the same fixture
+  (RA-108: the template's tests loaded no fixture, and it staged them one level too high).
 - **Inspect actual tool and build API contracts.** Reusable workflow caller permissions must cover every
   nested job, even conditional branches. A workflow definition and its trigger must be ordered according
   to the documented mechanism; use the durable dispatcher where authoritative, never gratuitously

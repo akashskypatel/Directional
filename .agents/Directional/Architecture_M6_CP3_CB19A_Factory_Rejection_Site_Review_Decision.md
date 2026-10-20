@@ -47,6 +47,8 @@
 
 ### Harness
 
+> **Amended by RA-108.2 and RA-108.5:** the template stages fixtures one level too high, so the six torus rows were not measured. TB19A reruns them with the staging fixed.
+
 - **File:** new `.agents/Directional/tools/m6_cp3_tb19_factory_rejection_site_harness.sh`, a copy of `open_rail_interior_vertex_harness.sh` changed only as follows:
   - **pinned inputs:**
     - source `d2c7483cde8e65d6c35c5df06fa880465a4da46c`;

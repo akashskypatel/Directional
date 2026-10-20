@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-20 · TB18 is confirmed as candidate evidence: 448/497, 0 PASS→RED. RA-105 corrects RA-104. Every cross-region CP3-entry RED ends at the checked factory (`PublishedProductRejected`), and two mechanisms are identified (M1, M2). The site labels compiled in CB19A, which RA-107 accepted. Next: TB19, artifact-only (RA-107.3), then TB19-REV.  
+**Currency:** 2026-10-20 · TB18 is confirmed as candidate evidence: 448/497, 0 PASS→RED. RA-105 corrects RA-104. Every cross-region CP3-entry RED ends at the checked factory (`PublishedProductRejected`), and two mechanisms are identified (M1, M2). The site labels compiled in CB19A, which RA-107 accepted. TB19 ran (RA-108): `cp3entry:2/6` and `focused30:12` reject at the gauge pin on rail carrier (1,4), and the six torus rows were not measured because of a fixture-staging defect. Next: the TB19 closeout report, TB19A (torus rerun), then TB19-REV.  
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -102,7 +102,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Locate and correct the checked-factory rejections on the cross-region CP3-entry path. First the site diagnostic: TB19 on the accepted CB19A package (RA-107.3); then TB19-REV rules on H-pin (the gauge-pin domain), on the `cp3entry:2/6` clause and on who owns the M1 binding. | M6-CP3; [handoff](Future_Chat_Session_Handoff.md) |
+| **1** | Locate and correct the checked-factory rejections on the cross-region CP3-entry path. First the site diagnostic: the TB19 closeout report and TB19A, the torus rerun (RA-108.4/108.5). Then TB19-REV rules on H-pin (the gauge-pin domain on rail carriers and periodic cuts) and on who owns the M1 binding, and records the R-route as not reached. | M6-CP3; [handoff](Future_Chat_Session_Handoff.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |

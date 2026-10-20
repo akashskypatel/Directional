@@ -1,3 +1,16 @@
+## RA-108 — TB19 torus rows unmeasured (fixture staging); TB19 closes on 16 rows; TB19A reruns the torus (2026-10-20)
+
+Authority: `Architecture_M6_CP3_TB19_Torus_Staging_Review_Decision.md`. Evidence: TB19 run `39464430751`, artifact `12285225197`.
+
+- **RA-108.1** Re-derived from the artifact: `cp3entry:2/6` and `focused30:12` reject at `gauge-pin-consistency;edge=1,4` with `product=0`; the 10 M1 rows match TB18 after mapping; the 3 controls PASS.
+- **RA-108.2** The six torus rows failed with `test-data package not found`. The harness copies the fixtures one level too high, a latent defect inherited from the template that RA-107.3 prescribed. Review owns this defect.
+- **RA-108.3** 16 rows are valid and the 6 torus rows are NOT MEASURED. The R-route is NOT REACHED because the pin runs before the certificate loop. The falsifier lines for the report are fixed.
+- **RA-108.4** TB19 closes with its harvest report only; there is no dispatch.
+- **RA-108.5** TB19A is artifact-only and runs 7 identities: the 6 torus rows plus the `selector:443` positive control, with the staging fixed and G1–G4.
+- **RA-108.6** Sequence: TB19 closeout → TB19A → TB19-REV (mandatory).
+
+---
+
 ## RA-107 — CB19A accepted; TB19 specified exactly (2026-10-20)
 
 Authority: `Architecture_M6_CP3_CB19A_Factory_Rejection_Site_Review_Decision.md`. Build record: `Architecture_M6_CP3_CB19A_Factory_Rejection_Site_Code_Build_Record_20261020.md`.

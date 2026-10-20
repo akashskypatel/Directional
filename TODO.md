@@ -1,4 +1,4 @@
-## CURRENT — CB19A accepted (RA-107); TB19 artifact-only next (2026-10-20)
+## CURRENT — TB19 run read (RA-108): 16 rows valid, torus rows unmeasured; TB19 closeout, then TB19A (2026-10-20)
 
 - [x] `M6-CP3-CB19-RP01-FACTORY-REJECTION-SITE`: 47 unique labels; the compile failed at `1f73d0abd` (RA-106).
 - [x] `M6-CP3-CB19A-RP01-FACTORY-REJECTION-SITE`: the RA-106.3/106.4 correction, committed as `d2c7483cd`. GMP/GMPXX eight-target compile [39446712217](https://github.com/akashskypatel/Directional/actions/runs/39446712217), package `12275794192` (ZIP `e4a39cdb…d723a`, expires 2026-10-27T15:24Z), no runtime. Record: `.agents/Directional/Architecture_M6_CP3_CB19A_Factory_Rejection_Site_Code_Build_Record_20261020.md`.
@@ -6,14 +6,25 @@
   - CB19A accepted: digest verified, insertions only, 47 labels identical to CB19's.
   - The TB19 specification is corrected: TQ line mapping (+11/+53/+59), `selector:217` = TB18 A#12, a new harness, M1 as a no-regression check only, and `focused30:12`'s edge must be (1,4) or (4,7).
   - Record: `Architecture_M6_CP3_CB19A_Factory_Rejection_Site_Review_Decision.md`.
-- [ ] **EXACT NEXT:** `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE` — TB, artifact-only, RA-107.3:
-  - new harness `m6_cp3_tb19_factory_rejection_site_harness.sh`, copied from `open_rail_interior_vertex_harness.sh`; only the pinned inputs, the 22-row list and the extraction of product/detail/site change;
-  - run before 2026-10-27T15:24Z;
-  - the report has a 22-row ledger and F1–F4 plus the R-route falsifier, held or fired;
-  - no compile, no source/test/selector/fixture change, no repair.
-- [ ] `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE-REV` — mandatory Review. Rules on H-pin, on the `cp3entry:2/6` clause and on the RA-103.5 R-route falsifier; orders the DEFN.
+- [x] TB19 dispatched by the agent: run [39464430751](https://github.com/akashskypatel/Directional/actions/runs/39464430751), artifact `12285225197` (ZIP `2b5dfacf…dec0`, expires 2026-11-03); 22/22 executed. STATUS was left `IN_PROGRESS` while results were pending.
+- [x] Review (RA-108):
+  - Valid rows: `cp3entry:2/6` and `focused30:12` reject at `gauge-pin-consistency;edge=1,4` (`product=0`); the 10 M1 rows match TB18 after mapping; the 3 controls PASS.
+  - The six torus rows are NOT MEASURED: `test-data package not found`. The harness inherited a fixture-staging line from its template that is one directory level too high; this is a gap in Review's spec.
+  - The R-route is not reached, because the pin runs before the certificate loop.
+  - Record: `Architecture_M6_CP3_TB19_Torus_Staging_Review_Decision.md`.
+- [ ] **EXACT NEXT:** `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE` (closeout) — harvest report only, RA-108.4:
+  - `Architecture_M6_CP3_TB19_Factory_Rejection_Site_Harvest_Report_20261020.md` from artifact `12285225197`;
+  - torus rows marked NOT MEASURED; `focused30:12` product and site taken from its first-failure text;
+  - falsifier lines as RA-108.3 gives them;
+  - no dispatch, rerun or change.
+- [ ] `M6-CP3-TB19A-RP01-TORUS-REJECTION-SITE` — TB, artifact-only, RA-108.5:
+  - new harness `m6_cp3_tb19a_torus_rejection_site_harness.sh`, copied from the TB19 harness with fixed staging, a fixture pre-check and a not-found guard;
+  - 6 torus rows plus the `selector:443` positive control;
+  - G1–G4;
+  - run before 2026-10-27T15:24Z.
+- [ ] `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE-REV` — mandatory Review of the TB19 and TB19A reports: H-pin on rail carriers and periodic cuts, the R-route not reached, and the DEFN order.
 - [ ] Planned, not authorized: DEFN on the gauge-pin domain and the M1 binding owner → corrective CB/TB → fixture debt (242 per `Architecture_M6_CP3_CB19_Selector242_Atlas_Authority_Test_Plan_20261020.md`, then 174 → 250 → adjacent-sheet → 191 → 442, plus I/R sites TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518) → census → RP-01 Review.
-- **Turn sequence:** CB19 (compile failure) → CB19A (compiled) → **TB19** → TB19-REV → [DEFN → CB/TB] → fixture debt → census → RP-01 Review.
+- **Turn sequence:** CB19 (compile failure) → CB19A (compiled) → TB19 dispatch (16/22 valid) → **TB19 closeout** → TB19A → TB19-REV → [DEFN → CB/TB] → fixture debt → census → RP-01 Review.
 - Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, TB18 candidate 448/497, selector 497; `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
 
 ---
