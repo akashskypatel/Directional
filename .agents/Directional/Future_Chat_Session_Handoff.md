@@ -42,8 +42,9 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | Regression accounting | **66/17/49**, debt **1**, selector 497 frozen; R3 403/497 rejected, TB18 candidate 448/497. |
 | Active boundary | `RP-01` open. B2 cleared; M1 certificate shadowing (10 identities), and M2, the H-pin hypothesis that the gauge pin's domain is wrong. Measured by TB19: `cp3entry:2/6` and `focused30:12` reject at the pin on rail carrier (1,4). The torus six are still unmeasured (TB19A). `RP-02` UNREACHED; Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-TB19A-RP01-TORUS-REJECTION-SITE` — EXACT NEXT
+## Pending successor — `M6-CP3-TB19A-RP01-TORUS-REJECTION-SITE` — NOT ENTERED
 
+- **Pending TB19 closeout:** Report and handoff committed; TODO, CHANGELOG and regression tracker updates remain. Finish them and the final beacon before TB19A.
 - **Type:** Test + Benchmark, artifact-only. **Authority:** RA-108.5 (`Architecture_M6_CP3_TB19_Torus_Staging_Review_Decision.md`).
 - **Entry:** TB19 report `Architecture_M6_CP3_TB19_Factory_Rejection_Site_Harvest_Report_20261020.md` committed and verified; 26/26 packaged hashes, 22/22 raw-log hashes; 16 valid measurements, 6 torus NOT MEASURED. No adjudication.
 - **Action:** Derive TB19A harness from TB19; correct fixture staging to `view/test-data/benchmarks/fixtures`; precheck `torus.obj` and `torus.rawfield`; fail on any `test-data package not found` log; execute six torus tests and `selector:443` control.
@@ -58,7 +59,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | done | `M6-CP3-CB19A-RP01-FACTORY-REJECTION-SITE` | Compiled; package `12275794192`, expires 2026-10-27T15:24Z. Accepted by RA-107. |
 | done | TB19 dispatch (run `39464430751`) | 22/22 executed. RA-108 found 16 rows valid and 6 torus rows NOT MEASURED. |
 | done | `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE` (closeout) | Verified harvest report, 16 valid and 6 NOT MEASURED. |
-| 1 — next | `M6-CP3-TB19A-RP01-TORUS-REJECTION-SITE` | TB, artifact-only: 6 torus rows plus the `selector:443` control, with staging fixed; RA-108.5. Must run before 2026-10-27T15:24Z. |
+| pending | `M6-CP3-TB19A-RP01-TORUS-REJECTION-SITE` | TB, artifact-only: 6 torus rows plus the `selector:443` control, with staging fixed; RA-108.5. Must run before 2026-10-27T15:24Z. |
 | 2 — mandatory | `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE-REV` | Review of the TB19 and TB19A reports: rules on H-pin (rail carriers and periodic cuts), records the R-route as not reached, and orders the DEFN. No code repair before it. |
 | planned, not authorized | DEFN on the gauge-pin domain and the M1 binding owner → corrective CB/TB → fixture debt (242, 174, 250, adjacent-sheet, 191, 442, plus the I/R sites) → census → RP-01 Review | Only as TB19-REV assigns them. |
 
