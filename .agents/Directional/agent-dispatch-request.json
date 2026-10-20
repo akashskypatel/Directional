@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb18-rev-wip-20261020-03",
+  "request_id": "m6-cp3-tb18-rev-final-20261020-06",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb18-rev-wip",
-  "file_id": "1Pa9CUJmvBDD3kQXNEv47rfslA_9Qto0b",
-  "patch_sha256": "233174a9c78a62068bc07887fcaa668d156f9c07adc28b4110a69c59b5bc6017",
-  "base_sha": "d0b6de8de10537ad04297f061ab59d5bae022d2f",
+  "mailbox_key": "m6-cp3-tb18-rev-final",
+  "file_id": "1kMYzYOWo_PqCDY-go-dIlb9-QdA1_SSD",
+  "patch_sha256": "0e6c0afa6e625918a0425890a3ab67f912d712a9cafaad06ebf5a5a3a12382b1",
+  "base_sha": "aeccc6682ebcf9db9eb6a020d67565a0a15c0931",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: preserve TB18 independent review WIP and boundary gate",
+  "commit_message": "docs: adjudicate TB18 independent review and assign selector242 CB19",
   "retention_days": 14
 }
