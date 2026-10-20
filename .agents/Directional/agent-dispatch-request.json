@@ -1,11 +1,14 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb18-r10-closeout-docs-20261019-01",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb18-r10-docs",
-  "file_id": "11v3hvZRDqWrM8E2XORlRb8HXNmvTICnX",
-  "patch_sha256": "36574941e86db4c6df8d29af40908a68a76a7003060300a1794c23460c9196b5",
-  "base_sha": "f2719dce33a6129bb877a6277a2d37219be07002",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: record CB18 compile evidence and TB18 handoff"
+  "request_id": "m6-cp3-tb18-r10-part-a-20261020-01",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb18-r10-part-a",
+  "executor_sha": "e96f8b9c632457938ff12d7bb45222c62a914332",
+  "semantic_source_sha": "3bd24682c5e18eece541ab4d1f38f781a2230e41",
+  "turn_id": "M6-CP3-TB18-R10-RAIL-VERTEX-ENDPOINT",
+  "harness_path": ".agents/Directional/tools/open_rail_interior_vertex_harness.sh",
+  "harness_sha256": "cf6131112f180797da6d300cb868009e4e342b291d696142013f090baf50ead6",
+  "environment": {},
+  "artifact_prefix": "m6-cp3-tb18-r10-part-a",
+  "retention_days": 14
 }
