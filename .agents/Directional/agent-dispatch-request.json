@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb18-r10-harvest-patch-20261020-02",
+  "request_id": "m6-cp3-tb18-rev-wip-20261020-03",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb18-r10-harvest-patch",
-  "file_id": "1bJpDire2PMseZIo-Jr-pZswH0aozobNc",
-  "patch_sha256": "e525b0a0cde912e03dadf666ed7a85b9f367b4251ac65ef2332aefeb93ba6d76",
-  "base_sha": "f6e28c8e37516be9babf97c399e5301df44f9b32",
+  "mailbox_key": "m6-cp3-tb18-rev-wip",
+  "file_id": "1Pa9CUJmvBDD3kQXNEv47rfslA_9Qto0b",
+  "patch_sha256": "233174a9c78a62068bc07887fcaa668d156f9c07adc28b4110a69c59b5bc6017",
+  "base_sha": "d0b6de8de10537ad04297f061ab59d5bae022d2f",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: harvest immutable TB18 endpoint evidence",
+  "commit_message": "docs: preserve TB18 independent review WIP and boundary gate",
   "retention_days": 14
 }
