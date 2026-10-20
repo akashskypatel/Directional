@@ -1,15 +1,9 @@
-## CURRENT — H-pin confirmed (RA-110); DEFN-P1 gauge-pin domain next (2026-10-20)
+## CURRENT — DEFN-P1 source-domain definition drafted; independent Review required (2026-10-20)
 
-- [ ] **EXACT NEXT:** `M6-CP3-DEFN-P1-GAUGE-PIN-DOMAIN` — Definition, documents only, RA-110.4/110.5:
-  - record `Architecture_M6_CP3_DEFN_P1_Gauge_Pin_Domain_Definition_Record_<date>.md`;
-  - producer table (uniform S:13178, periodic annulus S:13997, curved bounded disk S:15284) with each gauge domain's excluded edges;
-  - whether `acceptedCutEdges` ⊆ `hardFeatureEdges`; whether torus {0,3} is same-region;
-  - the corrected pin domain as one predicate over `make`'s inputs, with the authority for each excluded edge class;
-  - a consumer census against RA-45.1, and an oracle plan for CB20;
-  - no code, build or run; STOP if a producer relates gauges across a hard carrier, or a consumer reads such a difference.
-- [ ] `M6-CP3-DEFN-P1-GAUGE-PIN-DOMAIN-REV` — mandatory Review of the record; authorizes CB20 or returns DEFN-P1.
+- [x] `M6-CP3-DEFN-P1-GAUGE-PIN-DOMAIN` — source-only producer-domain definition in `.agents/Directional/Architecture_M6_CP3_DEFN_P1_Gauge_Pin_Domain_Definition_Record_20261020.md`. Exact relation-pair input is not presently published to `make`. Torus {0,3} is same-region. Cut-set inclusion is unproved; hard-carrier producer-domain reachability is a mandatory Review stop check. No implementation/compile/runtime.
+- [ ] **EXACT NEXT:** `M6-CP3-DEFN-P1-GAUGE-PIN-DOMAIN-REV` — mandatory Review of the record; authorizes CB20 or returns DEFN-P1.
 - [ ] Planned, not authorized: CB20 (pin domain, compile only) → TB20 (artifact-only: nine M2 plus controls) → TB20-REV → DEFN on the M1 binding owner (RA-105.3) → corrective CB/TB → fixture debt (242 per `Architecture_M6_CP3_CB19_Selector242_Atlas_Authority_Test_Plan_20261020.md`, then 174 → 250 → adjacent-sheet → 191 → 442, plus I/R sites TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518) → census → RP-01 Review.
-- **Turn sequence:** TB19A (closed) → TB19-REV (RA-110) → **DEFN-P1** → DEFN-P1-REV → [CB20 → TB20 → TB20-REV] → DEFN-M1 → corrective CB/TB → fixture debt → census → RP-01 Review.
+- **Turn sequence:** TB19A (closed) → TB19-REV (RA-110) → DEFN-P1 (definition delivered) → **DEFN-P1-REV** → [CB20 → TB20 → TB20-REV] → DEFN-M1 → corrective CB/TB → fixture debt → census → RP-01 Review.
 - Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, TB18 candidate 448/497, selector 497; `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
 
 ---

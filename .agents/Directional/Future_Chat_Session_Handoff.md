@@ -34,7 +34,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-20, TB19-REV (RA-110). The TB19A report is accepted and TB19A is closed by Review. All nine M2 identities reject at the gauge pin: the rectangle on rail carrier (1,4), the torus on minor-cycle hard edge {0,3}. H-pin is CONFIRMED: the producers establish face gauges per region and skip accepted cut edges, but the pin checks every two-face edge. The R-route is NOT REACHED. Next: DEFN-P1 defines the corrected pin domain (documents only). |
+| Currency | 2026-10-20, DEFN-P1 source-only definition recorded; mandatory DEFN-P1-REV next. The exact pin domain must follow the selected producer's proved relation set, not the same-region or all-nonhard-edge heuristic. Static torus {0,3} belongs to one region; accepted cuts are not statically proved a hard-edge subset. Review must adjudicate the conditional hard-carrier stop finding before any implementation. The nine M2 still reject at the old pin; R-route NOT REACHED. |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; refetch before mutation. Semantic source `d2c7483cde8e65d6c35c5df06fa880465a4da46c`. |
 | Last compiled semantic source | CB19A eight-target GMP/GMPXX compile [39446712217](https://github.com/akashskypatel/Directional/actions/runs/39446712217), package `12275794192`, ZIP SHA-256 `e4a39cdb2db5ef9953748cffd3e031e4294ddaf348f4a64fee3b97e08bdd723a`; hashes `28/28`, statuses clean, `runtimeExecution=false`; expires 2026-10-27T15:24Z; accepted by RA-107. Record: `Architecture_M6_CP3_CB19A_Factory_Rejection_Site_Code_Build_Record_20261020.md`. |
 | Last accepted semantic runtime | CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. R3 baseline **403/497** rejected. |
@@ -42,53 +42,33 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | Regression accounting | **66/17/49**, debt **1**, selector 497 frozen; R3 403/497 rejected, TB18 candidate 448/497. |
 | Active boundary | `RP-01` open. M2 = H-pin, CONFIRMED by RA-110.3: the pin (S:8509–8567) checks edges no producer relates. All nine M2 identities stop there, so the RA-103.5 R-route falsifier stays undetermined until the first TB after the correction. M1 certificate shadowing (10 identities, RA-105.3) is unchanged; its DEFN follows TB20-REV. `RP-02` UNREACHED; Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-DEFN-P1-GAUGE-PIN-DOMAIN` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-DEFN-P1-GAUGE-PIN-DOMAIN-REV` — EXACT NEXT
 
-- **Type / owner:** Definition, documents only; implementation agent. Authority: RA-110.4 and RA-110.5 (`Architecture_M6_CP3_TB19_REV_Gauge_Pin_Domain_Review_Decision.md`).
-- **Objective:** define the exact domain of the RA-45.3 gauge pin as one predicate over `SurfacePhaseFrontProduct::make`'s inputs, matching the edges over which the producers establish the face gauge.
-- **Read before work:**
-  - RA-110 and RA-105.4;
-  - RA-45 and RA-31a.1, RA-33.3, RA-34.3 in `Architecture_M6_Frozen_Definitions.md`;
-  - S:8509–8567 (the pin), S:8717–8732 (`rail-transition-a3`), S:13104–13107, S:18336–18352 (producer dispatch);
-  - the three producers: `build_uniform_phase_front_for_faces` (S:13178), `build_periodic_annulus_phase_front_for_faces` (S:13997), `build_curved_bounded_disk_phase_front_for_faces` (S:15284; cut set S:15333, S:15532, S:16000, S:16217, S:16346).
-- **In scope:** the record `Architecture_M6_CP3_DEFN_P1_Gauge_Pin_Domain_Definition_Record_<date>.md`, containing:
-  1. a producer table: function and S range, gauge root rule, and the two-face edges excluded from its gauge domain, with S lines;
-  2. whether every `acceptedCutEdges` member (S:15532) is in `hardFeatureEdges`, by S-line proof or counterexample;
-  3. whether the two faces at torus edge {0,3} share a topology region, statically, or a statement that this cannot be decided statically;
-  4. the corrected domain as one predicate over `make`'s inputs, and a table naming the `make` clause that authenticates each excluded edge class, or the gap;
-  5. a consumer census: does any production consumer read a face-gauge difference across an excluded edge (RA-45.1)? Give S and `RemeshPipeline.cpp` lines;
-  6. an oracle plan for the later CB, not executed:
-     - the nine M2 identities are predicted only to pass the pin;
-     - the `SurfaceCellFactoryRejectionSite` negative still rejects, at (0,4);
-     - at least one proposed negative shows a one-face gauge change inside a hard-feature region's gauge domain still rejects.
-- **Out of scope:**
-  - code, tests, builds, runs and dispatches;
-  - the M1 binding (RA-105.3);
-  - the R-route;
-  - fixture debt;
-  - edits to frozen RA text.
-- **Success evidence:** the record answers items 1–6 with S lines; the predicate uses only `make` inputs, or names the one minimal added input; nothing outside the record (and the end-of-turn docs) changes.
-- **On success:** `M6-CP3-DEFN-P1-GAUGE-PIN-DOMAIN-REV` (Review, mandatory).
-- **On failure/blocker:** STOP and return to Review if a producer's gauge domain includes a hard-feature carrier, or a production consumer reads a face-gauge difference across an excluded edge. Either would falsify H-pin. Record the S lines and do not propose a fix.
+- **Type / owner:** Independent Review; RA-110.5 mandatory gate.
+- **Objective:** independently review `.agents/Directional/Architecture_M6_CP3_DEFN_P1_Gauge_Pin_Domain_Definition_Record_20261020.md` against producer source and RA-110.4/110.5, including the conditional hard-feature-carrier STOP and exact domain-evidence gap.
+- **Read before work:** RA-110 decision, definition record, `Architecture_M6_Frozen_Definitions.md` RA-45 and RA-31a/33/34, S producer and factory sites.
+- **In scope:** prove or refute whether any reachable selected producer relates face gauges across an intra-region hard carrier; assess cut inclusion, torus same-region proof, missing relation input, authority, consumer census and oracle.
+- **Out of scope:** code, tests, compile, benchmark, selector promotion, source recovery or unreviewed pin repair.
+- **Success evidence:** review decision with independently verified evidence and an authorized successor only if warranted.
+- **On success/failure:** Review chooses CB20 authorization, returns a corrected definition, or stops for producer-contract correction; successor beyond Review remains UNKNOWN.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — next | `M6-CP3-DEFN-P1-GAUGE-PIN-DOMAIN` | Definition, documents only, per RA-110.5. No code, build or run. |
-| 2 — mandatory | `M6-CP3-DEFN-P1-GAUGE-PIN-DOMAIN-REV` | Review of the record; it authorizes CB20 or returns DEFN-P1. |
-| planned, not authorized | CB20 (pin domain, compile only) → TB20 (artifact-only: nine M2 plus controls) → TB20-REV → DEFN on the M1 binding owner (RA-105.3) → corrective CB/TB → fixture debt (242, 174, 250, adjacent-sheet, 191, 442, plus the I/R sites) → census → RP-01 Review | Only as DEFN-P1-REV assigns them. |
+| 1 — next | `M6-CP3-DEFN-P1-GAUGE-PIN-DOMAIN-REV` | Mandatory independent source-contract and stop-gate review. |
+| 2 — conditional | `UNKNOWN` | Review must authorize any DEFN correction or CB20; no automatic implementation. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **definition** — DEFN-P1, documents only (RA-110.5); never Code + Build or Test + Benchmark.
+`load_next`: **review** — DEFN-P1-REV, adjudicate RA-110.5 conditional STOP before implementation.
 
 Minimum successor context after the mandatory start checklist and policies:
 
 0. `.agents/Directional/ORIENTATION.md`.
 1. `.agents/Directional/ROADMAP.md`.
 2. This handoff.
-3. `Architecture_M6_CP3_TB19_REV_Gauge_Pin_Domain_Review_Decision.md` (RA-110, the DEFN-P1 specification); `Architecture_M6_CP3_TB18_REV_Factory_Rejection_Review_Decision.md` (RA-105.3, RA-105.4); `Architecture_M6_Frozen_Definitions.md` (RA-45, RA-31a, RA-33.3, RA-34.3); the TB19 and TB19A harvest reports; `LESSONS.md` §§3, 4, 6.
+3. `Architecture_M6_CP3_DEFN_P1_Gauge_Pin_Domain_Definition_Record_20261020.md` (current definition); `Architecture_M6_CP3_TB19_REV_Gauge_Pin_Domain_Review_Decision.md` (RA-110); `Architecture_M6_CP3_TB18_REV_Factory_Rejection_Review_Decision.md` (RA-105.3, RA-105.4); `Architecture_M6_Frozen_Definitions.md` (RA-45, RA-31a, RA-33.3, RA-34.3); the TB19 and TB19A harvest reports; `LESSONS.md` §§3, 4, 6.
 4. `.agents/Directional/Regression_Root_Cause_Tracker.md` and `TODO.md`.
 
 **Review tooling:** `.agents/Directional/tools/` holds read-only `review_check.py`, `selector_probe.py`, and `fixture_probe.py`; history-sensitive review gates require real committed history, not a synthesized snapshot.

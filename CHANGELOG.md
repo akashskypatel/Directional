@@ -1,3 +1,8 @@
+## 2026-10-20 — DEFN-P1 gauge-pin relation-domain source census
+
+- Definition record `.agents/Directional/Architecture_M6_CP3_DEFN_P1_Gauge_Pin_Domain_Definition_Record_20261020.md` statically identifies the three producer relation domains. Torus hard edge {0,3} has both incident faces in one topology region. `acceptedCutEdges ⊆ hardFeatureEdges` is not established by the producer; `make` lacks a selected-producer gauge-relation set.
+- Conditional stop evidence: without an accepted conformity baseline, uniform/periodic producers can relate intra-region hard carriers; independent DEFN-P1 Review must adjudicate RA-110.5 before any code turn. No source, test, build, runtime, stable-ledger or selector change. RP-01 remains open.
+
 ## 2026-10-20 — TB19A closed; TB19-REV (RA-110): H-pin confirmed; DEFN-P1 next
 
 - TB19A (run `39484475466`, artifact `12292268624`): the control `selector:443` PASS; the six torus identities reject at `gauge-pin-consistency;edge=0,3`, a minor-cycle hard edge. Report `Architecture_M6_CP3_TB19A_Torus_Rejection_Site_Harvest_Report_20261020.md`.
