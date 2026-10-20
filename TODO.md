@@ -1,11 +1,22 @@
-## CURRENT — TB18 independently adjudicated; M6-CP3-CB19-RP01-SELECTOR242-ATLAS-AUTHORITY-TEST next (2026-10-20)
+## CURRENT — TB18-REV reviewed (RA-105); CB19 factory rejection-site diagnostic next (2026-10-20)
 
 - [x] `M6-CP3-CB18-R10-CONSUMER-RAIL-VERTEX-ENDPOINT`: compiled source `3bd24682c`, package `12227516380`, GMP/GMPXX eight targets, no runtime.
-- [x] `M6-CP3-TB18-R10-RAIL-VERTEX-ENDPOINT`: Part A run `39349041417` (artifact `12231529583`, 12/14 PASS), Part B run `39349459268` (artifact `12232299548`, 448/497 PASS / 49 RED); both immutable, no rebuild or reruns. TB16C→TB18 23 RED→PASS, zero PASS→RED. All 30 B2 exited B2: 16 PASS, 14 RED at other first failures. Inventory and report in `.agents/Directional/Architecture_M6_CP3_TB18_*`.
-- [x] `M6-CP3-TB18-R10-RAIL-VERTEX-ENDPOINT-REV`: independent raw ZIP/497-hash/classification re-derivation and full-history review gate PASS (run 39380260884); both TB18 parts accepted only as candidate evidence, not CP3 promotion. R factory universal proof and two producer exceptions remain unproved.
-- [ ] **EXACT NEXT:** `M6-CP3-CB19-RP01-SELECTOR242-ATLAS-AUTHORITY-TEST` test-only CB for selector242 (plan `.agents/Directional/Architecture_M6_CP3_CB19_Selector242_Atlas_Authority_Test_Plan_20261020.md`); next conditional artifact-only `M6-CP3-TB19-RP01-SELECTOR242-ATLAS-AUTHORITY-TEST`. No runtime in CB.
-- [ ] Fixture debt after selector242: 174 → 250 → adjacent-sheet → 191 → 442, plus I/R test-assumption sites TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518, only as assigned by Review.
-- Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, TB16C 425/497, TB18 candidate 448/497, selector 497; `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
+- [x] `M6-CP3-TB18-R10-RAIL-VERTEX-ENDPOINT`:
+  - Part A: run `39349041417`, artifact `12231529583`, 12/14 PASS.
+  - Part B: run `39349459268`, artifact `12232299548`, 448/497.
+  - Against TB16C: 23 RED→PASS, 0 PASS→RED.
+  - The 30 former B2 identities: 16 PASS, 14 RED.
+- [x] `M6-CP3-TB18-R10-RAIL-VERTEX-ENDPOINT-REV` (RA-104), reviewed by RA-105:
+  - Measurements confirmed.
+  - Corrected: `PublishedProductRejected` is the checked factory rejecting a product the consumer published.
+  - Two mechanisms found: M1 certificate-binding shadowing (10 identities) and M2 gauge-pin domain (H-pin; torus 6 + `focused30:12`).
+  - Selector242 deferred to fixture debt.
+- [ ] **EXACT NEXT:** `M6-CP3-CB19-RP01-FACTORY-REJECTION-SITE` — CB, compile only, rejection-only. The `make` diff must be insertions only: one unique site label before each `InvalidSourceAuthority` return, the failure carries the site, `require_produced` and TQ:4980 report it, and one new suite `SurfaceCellFactoryRejectionSite` is added. Spec: RA-105.5.
+- [ ] `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE` — TB, artifact-only, 22 identities (RA-105.6). Predictions: no status change; torus and `focused30:12` report the pin label; `cp3entry:2/6` report a site, with no prediction.
+- [ ] `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE-REV` — mandatory Review. Rules on H-pin, on the `cp3entry:2/6` clause and on the RA-103.5 R-route falsifier; orders the DEFN.
+- [ ] Planned, not authorized: DEFN on the gauge-pin domain and the M1 binding owner → corrective CB/TB → fixture debt (242 per `Architecture_M6_CP3_CB19_Selector242_Atlas_Authority_Test_Plan_20261020.md`, then 174 → 250 → adjacent-sheet → 191 → 442, plus I/R sites TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518) → census → RP-01 Review.
+- **Turn sequence:** CB19 (site) → TB19 → TB19-REV → [DEFN → CB/TB] → fixture debt → census → RP-01 Review.
+- Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, TB18 candidate 448/497, selector 497; `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
 
 ---
 

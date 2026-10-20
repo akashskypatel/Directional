@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-20 · TB18 was independently adjudicated as candidate (448/497 PASS; 49 RED), and the real-history authority/boundary/ledgers gate passed (run 39380260884). CP3 has not been promoted. Next: CB19 selector242 test-only fixture repair.
+**Currency:** 2026-10-20 · TB18 is confirmed as candidate evidence: 448/497, 0 PASS→RED. RA-105 corrects RA-104. Every cross-region CP3-entry RED ends at the checked factory (`PublishedProductRejected`), the clause is unlogged, and two mechanisms are identified (M1, M2). Next: the CB19 rejection-only factory site diagnostic, then TB19 and TB19-REV.  
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,7 +50,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Latest candidate (TB18, independent re-derivation in progress):** Part A 12/14 PASS (two `PublishedProductRejected` fixture producer exceptions), Part B 448/497 PASS against TB16C 425/497, with zero PASS→RED. The 30 prior B2 identities are 16 PASS / 14 RED at other first failures; the factory R-tag positive/forgery test passes on its produced witness, but universal factory coverage remains unproved. U4/U5 evidence does not establish CP3 acceptance. Independent Review accepted diagnostic evidence only; the next test-only CB repairs selector242 under RA-96.6. **RP-01 stays open, RP-02 UNREACHED, Gate C suspended.**
+**Latest candidate (TB18, reviewed by RA-104/RA-105):** Part A 12/14 PASS; Part B 448/497 against TB16C 425/497, with zero PASS→RED. B2 is cleared. The remaining cross-region CP3-entry REDs (`cp3entry:1/2/6`) end at the checked factory's rejection of a consumer-published product. RA-105 found two mechanisms. **M1:** the R2 certificate binding (`80fc1688f`) preempts frozen A5 and `InvalidOppositeEdge` precedence for 10 tamper tests. **M2 (H-pin):** RA-45.3's gauge pin spans rail carriers and periodic cuts, so it rejects `focused30:12` and cannot be satisfied on the nonzero-holonomy torus witness. The clause that rejects `cp3entry:2/6` is not yet located. No CP3 acceptance.
 
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's frozen 497 identities are not yet accepted. See [handoff](Future_Chat_Session_Handoff.md), the TB18 report/inventory, the independent-review WIP record and [regression tracker](Regression_Root_Cause_Tracker.md).
 
@@ -102,8 +102,8 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Repair test-authority defect in selector242 via CB19; the independent TB18 review and real-history boundary gate passed. TB18 is harvested: B1/B2/B3/U6 all zero by current first-failure rule, but 49 other RED and two early producer exceptions remain; the R factory test gives bounded, not universal, coverage. CP3 not accepted. | M6-CP3; [handoff](Future_Chat_Session_Handoff.md) |
-| **2** | Restore accepted-prefix execution and direct-production positive/tamper paths. Fixture debts proceed 242 (CB19) → 174 → 250 → adjacent-sheet → 191 → 442, plus test I/R assumptions. Preserve the exact prior accepted 491/491 and frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
+| **1** | Locate and correct the checked-factory rejections on the cross-region CP3-entry path. First the CB19/TB19 site diagnostic (RA-105.5–105.6); then TB19-REV rules on H-pin (the gauge-pin domain), on the `cp3entry:2/6` clause and on who owns the M1 binding. | M6-CP3; [handoff](Future_Chat_Session_Handoff.md) |
+| **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
 

@@ -1,5 +1,7 @@
 # CB19 test-only plan — selector242 atlas authority (RA-104, 2026-10-20)
 
+> **Deferred by RA-105 (2026-10-20):** this is fixture debt after TB19-REV. The `CB19`/`TB19` IDs below are superseded and will be reassigned when the work is scheduled. The step-3 qualifier "if supported by actual field-atlas contract" is struck: the oracle stays as written, or the turn STOPs.
+
 **Turn:** `M6-CP3-CB19-RP01-SELECTOR242-ATLAS-AUTHORITY-TEST`. **Type:** Code + Build only, runtime forbidden. **Successor on successful compile-only package:** `M6-CP3-TB19-RP01-SELECTOR242-ATLAS-AUTHORITY-TEST` (artifact-only). **Owner:** the implementation agent; no change to accepted production or selector bytes.
 
 ## Authority and reason

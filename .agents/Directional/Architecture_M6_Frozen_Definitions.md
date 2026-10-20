@@ -1,3 +1,27 @@
+## RA-105 — TB18-REV (RA-104) reviewed: measurements confirmed; RP-01 realigned to the checked-factory rejections (2026-10-20)
+
+Authority: `Architecture_M6_CP3_TB18_REV_Factory_Rejection_Review_Decision.md`. RA-104 is recorded in `Architecture_M6_CP3_TB18_Rail_Vertex_Endpoint_Independent_Review_20261020.md`.
+
+- **RA-105.1** TB18 is confirmed: 448/497, 23 RED→PASS, 0 PASS→RED, no B1/B2/B3/U6. It is accepted as candidate evidence only.
+- **RA-105.2** Corrections to RA-104:
+  - `PublishedProductRejected` (S:13097) is a checked-factory rejection of a consumer-published product; it is not a pre-factory fixture exception.
+  - The RA-103.5 R-route falsifier is undetermined.
+  - Fixture debt does not advance `cp3entry:1/2/6`.
+- **RA-105.3** M1 (10 tamper identities): the R2 certificate binding (S:8755–8775, `80fc1688f`) is the first clause of `make` to read `edges`, and it preempts frozen precedence:
+  - the TB6-A6-REV HardRail amendment;
+  - RA-15.2–15.4;
+  - RA-19.1.
+
+  The binding stays fail-closed. Who owns it is decided by a DEFN after TB19-REV.
+- **RA-105.4** M2 (H-pin): RA-45.3's pin (S:8510–8550) covers HardRail carriers and periodic cut edges.
+  - It provably rejects `focused30:12`.
+  - It cannot be satisfied on the nonzero-holonomy torus witness (`cp3entry:1`, `focused30:6/20/24`, `selector:446/447`).
+  - It contradicts RA-31a.1, RA-33.3 and RA-34.3.
+  - The clause that rejects `cp3entry:2/6` is not yet known.
+- **RA-105.5–105.7** CB19 adds a rejection-only site label to every `InvalidSourceAuthority` return in `make`. TB19 then runs 22 identities, and TB19-REV is mandatory. After that: a DEFN on the pin domain and the binding owner, the corrective work, fixture debt, a census and the RP-01 Review. Accounting is unchanged.
+
+---
+
 ## RA-103 — TB17 reviewed: CB17 (U4) accepted; CB18 (U5) and TB18 specified (2026-10-19)
 
 Authority: `Architecture_M6_CP3_TB17_Rail_Vertex_U5_Review_Decision.md`.

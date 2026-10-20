@@ -1,6 +1,18 @@
+## 2026-10-20 — Review of TB18-REV (RA-105): RP-01 realigned to the checked-factory rejections
+
+- TB18 is confirmed at 448/497, with 0 PASS→RED; this matches Review's earlier withheld check. RA-104 is corrected:
+  - `PublishedProductRejected` (S:13097) is the checked factory rejecting a product the consumer published;
+  - the RA-103.5 R-route falsifier is undetermined;
+  - fixture debt does not advance `cp3entry:1/2/6`.
+- Two mechanisms found:
+  - **M1**, 10 tamper identities: the R2 certificate binding (`80fc1688f`) preempts frozen A5 and `InvalidOppositeEdge` precedence. Static proof.
+  - **M2** (H-pin): RA-45.3's gauge pin covers rail carriers and periodic cuts. It provably rejects `focused30:12`, cannot be satisfied on the nonzero-holonomy torus witness, and contradicts RA-31a, RA-33.3 and RA-34.3.
+- Next: CB19, a rejection-only factory site diagnostic; then TB19 and TB19-REV. Selector242 is deferred to fixture debt. Accounting is unchanged.
+
 ## 2026-10-20 — Independent TB18-REV adjudication
 
 - Evidence: raw immutable Part A 12/14 and Part B 448/497 (49 RED), 23 TB16C RED→PASS, 0 PASS→RED, 30 B2 migrated; history-backed authority/boundary/ledgers passed on run 39380260884. Candidate-only; no CP3 acceptance or stable accounting change. Next exact test-only CB19 selector242 per RA-96.6; two early producer exceptions and universal R factory remain open.
+
 ## 2026-10-20 — TB18 immutable R10 rail-vertex endpoint harvest (candidate evidence)
 
 - Part A run `39349041417`, result `12231529583` (18/18 hashes), 12/14 PASS; Part B run `39349459268`, result `12232299548` (1019/1019), 448/497 PASS / 49 RED. Against TB16C, 23 RED→PASS, zero PASS→RED; 30/30 B2 identities exited B2 (16 PASS, 14 RED/other). No rebuild, retest, source/selector/harness edits or stable promotion. The two Part A cross-region diagnostics end at producer `PublishedProductRejected` and require independent review. Inventory/report under `.agents/Directional/Architecture_M6_CP3_TB18_*`; mandatory TB18-REV next; stable 66/17/49, debt 1 unchanged.
