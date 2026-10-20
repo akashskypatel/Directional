@@ -1,26 +1,10 @@
-## CURRENT — CB19 compile failure reviewed (RA-106); corrective CB19A next (2026-10-20)
+## CURRENT — CB19A corrected and GMP-compiled; TB19 artifact-only next (2026-10-20)
 
-- [x] `M6-CP3-TB18-R10-RAIL-VERTEX-ENDPOINT-REV` (RA-104), reviewed by RA-105:
-  - TB18 confirmed at 448/497.
-  - `PublishedProductRejected` is the checked factory rejecting a product the consumer published.
-  - Two mechanisms found: M1 certificate-binding shadowing (10 identities) and M2 gauge-pin domain (H-pin; torus 6 + `focused30:12`).
-  - Selector242 deferred to fixture debt.
-- [x] `M6-CP3-CB19-RP01-FACTORY-REJECTION-SITE`: source `1f73d0abd` failed the GMP compile (run `39428435345`, log `12265949093`, no package). Cause: 28 labels concatenate two string literals.
-- [x] Review (RA-106):
-  - The patch is complete: 47 unique labels, every `InvalidSourceAuthority` return covered, insertions only.
-  - No second defect is masked. The TQ changes have never been compiled.
-  - The fix uses three scope-local site lambdas instead of 26 copies.
-  - The new test must require both edge vertices to be on face 0.
-  - RA-105.6's empty-site falsifier is narrowed to `product=0`.
-- [ ] **EXACT NEXT:** `M6-CP3-CB19A-RP01-FACTORY-REJECTION-SITE` — CB, compile only, RA-106.6:
-  - RA-106.3 changes in S and the RA-106.4 assertion in TQ, on top of `1f73d0abd`;
-  - the `make` diff against `3bd24682c` is insertions only;
-  - 47 labels, byte-identical to CB19's; no line in `make` over 100 columns;
-  - eight GMP targets; STOP on any compile error.
-- [ ] `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE` — TB, artifact-only, 22 identities (RA-105.6 as amended by RA-106.5), pinned to the CB19A package.
-- [ ] `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE-REV` — mandatory Review. Rules on H-pin, on the `cp3entry:2/6` clause and on the RA-103.5 R-route falsifier; orders the DEFN.
-- [ ] Planned, not authorized: DEFN on the gauge-pin domain and the M1 binding owner → corrective CB/TB → fixture debt (242 per `Architecture_M6_CP3_CB19_Selector242_Atlas_Authority_Test_Plan_20261020.md`, then 174 → 250 → adjacent-sheet → 191 → 442, plus I/R sites TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518) → census → RP-01 Review.
-- **Turn sequence:** CB19 (compile failure) → CB19A → TB19 → TB19-REV → [DEFN → CB/TB] → fixture debt → census → RP-01 Review.
+- [x] `M6-CP3-CB19-RP01-FACTORY-REJECTION-SITE`: 47 unique labels; initial compile failed at `1f73d0abd` (RA-106).
+- [x] `M6-CP3-CB19A-RP01-FACTORY-REJECTION-SITE`: RA-106.3/106.4 correction committed `d2c7483cde8e65d6c35c5df06fa880465a4da46c`; GMP/GMPXX eight-target compile [39446712217](https://github.com/akashskypatel/Directional/actions/runs/39446712217), artifact `12275794192`, ZIP `e4a39cdb2db5ef9953748cffd3e031e4294ddaf348f4a64fee3b97e08bdd723a`; 28/28 hashes, no runtime. Record: `.agents/Directional/Architecture_M6_CP3_CB19A_Factory_Rejection_Site_Code_Build_Record_20261020.md`.
+- [ ] **EXACT NEXT:** `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE` — artifact-only 22 identities per RA-105.6 amended by RA-106.5; pin to immutable CB19A package, reuse TB18 Part A harness. `product=0` with empty site is the amended falsifier; do not repair source or selectors inside TB19.
+- [ ] Mandatory `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE-REV` — rule on H-pin, `cp3entry:2/6` site, RA-103.5 R-route falsifier; orders any DEFN before repair.
+- [ ] Planned only: DEFN on gauge-pin domain and M1 binding owner → corrective CB/TB → fixture debt (242, 174, 250, adjacent-sheet, 191, 442, I/R) → census → RP-01 review. No autonomous next CB.
 - Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, TB18 candidate 448/497, selector 497; `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
 
 ---

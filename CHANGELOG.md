@@ -1,3 +1,8 @@
+## 2026-10-20 — CB19A corrective factory-site labels compile successfully
+
+- RA-106 correction to `SurfaceCellTracing.cpp` and `SurfaceCellTransitionQuotientTests.cpp` at semantic `d2c7483cde8e65d6c35c5df06fa880465a4da46c`: reusable suffix lambdas, type-safe pin labels, stronger face-edge oracle. 47 distinct `InvalidSourceAuthority` labels retained; no admission/selector changes.
+- Compile-only [run 39446712217](https://github.com/akashskypatel/Directional/actions/runs/39446712217), immutable artifact `12275794192`, SHA-256 `e4a39cdb2db5ef9953748cffd3e031e4294ddaf348f4a64fee3b97e08bdd723a`: GMP/GMPXX 8/8, package hashes 28/28, source clean, `runtimeExecution=false`. TB19 artifact-only is next; frozen accounting unchanged. Owning record `.agents/Directional/Architecture_M6_CP3_CB19A_Factory_Rejection_Site_Code_Build_Record_20261020.md`.
+
 ## 2026-10-20 — CB19 failed to compile; reviewed (RA-106); corrective CB19A authorized
 
 - CB19 (`1f73d0abd`) added 47 rejection-site labels to `SurfacePhaseFrontProduct::make` and the test reporting. The eight-target GMP build failed in `directional_core` preflight (run `39428435345`) because 28 labels concatenate two string literals. No package was produced.

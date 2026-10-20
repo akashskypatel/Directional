@@ -34,63 +34,44 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-20, Review of the CB19 compile failure (RA-106). CB19 (`1f73d0abd`) failed the GMP compile in `directional_core` preflight: 28 labels concatenate two string literals. The RA-105.5 diagnostic design stands, and no second defect is masked. Next: the corrective build CB19A (RA-106.6). |
-| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing` (PR #8 draft); refetch before mutation. Last compiled semantic source `3bd24682c5e18eece541ab4d1f38f781a2230e41`, CB18 package `12227516380` (ZIP `d09c32d6…31cdc4`, expires 2026-10-26), compile-only. CB19 source `1f73d0abd` did not compile: run `39428435345`, log artifact `12265949093`, no package. Record: `Architecture_M6_CP3_CB19_Factory_Rejection_Site_Compile_Failure_20261020.md`. |
-| Last accepted semantic runtime | M6 CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. R3 baseline **403/497** rejected. |
-| Latest candidate or rejected evidence | TB18 Part A: run `39349041417`, result `12231529583` (ZIP `e08b092d…b459`), 12/14. TB18 Part B: run `39349459268`, result `12232299548` (ZIP `b3ba4566…6e9b`), 448/497. Both expire 2026-11-03 and are adjudicated as candidate evidence (RA-104 as corrected by RA-105). Inventory `Architecture_M6_CP3_TB18_Selector_497_Red_Inventory.tsv`. Not promoted. |
-| Regression accounting and debt | **66/17/49**, debt **1**, selector 497 frozen; R3 403/497 rejected. RA-105 records candidate attributions only, with no count change: M1 (`80fc1688f`, certificate binding) and M2 (`1eaea310f`, gauge-pin domain). |
-| Active boundary | `RP-01`: B2 is cleared. `cp3entry:1/2/6` end at checked-factory rejection. RA-105 found two mechanisms: M1 validation-order shadowing (10 identities) and M2, the gauge-pin domain hypothesis H-pin (torus 6 + `focused30:12`). The clause that rejects `cp3entry:2/6` is unknown. `RP-02` UNREACHED; Gate C suspended. |
+| Currency | 2026-10-20. CB19A corrective source compiled; TB19 artifact-only is next, no runtime acceptance yet. |
+| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; refetch before mutation. Semantic source `d2c7483cde8e65d6c35c5df06fa880465a4da46c`. |
+| Last compiled semantic source | CB19A eight-target GMP/GMPXX compile [39446712217](https://github.com/akashskypatel/Directional/actions/runs/39446712217), package `12275794192`, ZIP SHA-256 `e4a39cdb2db5ef9953748cffd3e031e4294ddaf348f4a64fee3b97e08bdd723a`; hashes `28/28`, statuses clean, `runtimeExecution=false`. Record: `Architecture_M6_CP3_CB19A_Factory_Rejection_Site_Code_Build_Record_20261020.md`. |
+| Last accepted semantic runtime | CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. R3 baseline **403/497** rejected. |
+| Latest candidate / rejected evidence | TB18 Part A run `39349041417`, artifact `12231529583`: 12/14; Part B run `39349459268`, artifact `12232299548`: 448/497. RA-105 adjudicated candidate evidence, not promoted. |
+| Regression accounting | **66/17/49**, debt **1**, selector 497 frozen; R3 403/497 rejected, TB18 candidate 448/497. |
+| Active boundary | `RP-01` open. B2 cleared; M1 certificate shadowing (10 identities) and M2 H-pin gauge-domain hypothesis (torus six + `focused30:12`). The exact `cp3entry:2/6` rejection site remains unmeasured. `RP-02` UNREACHED; Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-CB19A-RP01-FACTORY-REJECTION-SITE` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE` — EXACT NEXT
 
-- **Type / owner:** Code + Build, compile only; corrects CB19 with no admission change. Authority: RA-106.3, RA-106.4 and RA-106.6 (`Architecture_M6_CP3_CB19_Factory_Rejection_Site_Compile_Review_Decision.md`), on top of RA-105.5.
-- **Objective:** compile CB19's rejection-site labels so that TB19 can name the clause that rejects each `PublishedProductRejected` identity.
-- **In scope** (on top of `1f73d0abd`):
-  1. S, certificate loop: insert `certificate_site`, `endpoint_site` and `junction_site` lambdas at the loop heads (S:8776, S:8901, S:9035), as RA-106.3 gives them.
-  2. Rewrite the 26 scoped labels as calls to those lambdas.
-  3. Give the two pin labels a `std::string` first operand, wrapped to the file's width.
-  4. TQ:1892 new test: both edge vertices must be corners of face 0.
-  5. GMP/GMPXX, eight targets, package with `runtimeExecution=false`. The CB19A record has the label → S-line table.
-  6. CB19's staged transport file is removed at closeout.
-- **Out of scope:**
-  - the header and S:13146;
-  - any other test;
-  - selectors, harnesses and fixtures;
-  - `RemeshPipeline.cpp`;
-  - any condition, ordering or code;
-  - running anything.
-- **Success evidence:**
-  - the eight targets compile;
-  - the package and source SHA-256 match;
-  - against `3bd24682c`, the `make` diff is insertions only;
-  - 47 labels, unique, byte-identical to CB19's;
-  - no line in `make` is longer than 100 columns.
-- **On success:** `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE`, pinned to the CB19A package.
-- **On failure/blocker:** STOP on any compile error. Record the first diagnostic of each distinct error and return to Review. There is no second repair inside the turn.
+- **Type / owner:** Test + Benchmark, artifact-only, RA-105.6 amended by RA-106.5; reuse the TB18 Part A harness and immutable CB19A package `12275794192`.
+- **Objective:** execute and report the exact 22 identities: M2 nine (`cp3entry:1/2/6`, `focused30:6/12/20/24`, `selector:446/447`), M1 ten (RA-105.3), controls three (`selector:217`, TB18 Part A #14, new site regression test).
+- **In scope:** immutable package execution, diagnostics and evidence report. Record unchanged TB18 statuses, diagnostic sites, and amended `product=0` empty-site falsifier; distinguish nonzero codes without site.
+- **Out of scope:** recompilation, source/test/fixture/harness/selector changes beyond an independently authorized immutable TB harness, acceptance promotion, code repair or benchmarking outside the authorized TB19 plan.
+- **Success evidence:** artifact SHA, GMP source/package parity and immutable postflight; 22 identity outcomes, R-site diagnosis and all RA-105.6/RA-106.5 predictions/falsifiers. No speculative green.
+- **On success:** mandatory `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE-REV`; Review rules on H-pin, `cp3entry:2/6` and RA-103.5 R-route falsifier, then authorizes DEFN if supported.
+- **On failure/blocker:** preserve evidence and stop for independent Review; do not launch a corrective CB during TB19.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| done | `M6-CP3-CB19-RP01-FACTORY-REJECTION-SITE` | Compile failure (`1f73d0abd`). Reviewed by RA-106. |
-| 1 — next | `M6-CP3-CB19A-RP01-FACTORY-REJECTION-SITE` | CB, compile only; RA-106.6. |
-| 2 — conditional | `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE` | TB, artifact-only; the 22 identities of RA-105.6, with RA-106.5's falsifier. Runs only after CB19A compiles. |
-| 3 — mandatory | `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE-REV` | Review: rules on H-pin, on the `cp3entry:2/6` clause and on the RA-103.5 R-route falsifier, and orders the DEFN. |
-| planned, not authorized | DEFN on the gauge-pin domain and the M1 binding owner → corrective CB/TB → fixture debt (242, 174, 250, adjacent-sheet, 191, 442, plus the I/R sites) → census → RP-01 Review | Only as TB19-REV assigns them. |
+| 1 — next | `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE` | Artifact-only immutable execution, RA-105.6/RA-106.5 |
+| 2 — mandatory | `M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE-REV` | Independent review before any code repair |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **code+build** — CB19A corrective build of the factory site labels (RA-106.6), GMP compile only, no runtime.
+`load_next`: **test-benchmark** — TB19 artifact-only on the immutable CB19A GMP package, never Code + Build.
 
-Minimum successor context after the mandatory start checklist and policies:
+Minimum successor context after mandatory policies and checklist:
 
 0. `.agents/Directional/ORIENTATION.md`.
 1. `.agents/Directional/ROADMAP.md`.
 2. This handoff.
-3. `Architecture_M6_CP3_CB19_Factory_Rejection_Site_Compile_Review_Decision.md` (RA-106) and `Architecture_M6_CP3_TB18_REV_Factory_Rejection_Review_Decision.md` (RA-105.5); `src/geometry/SurfaceCellTracing.cpp` S:8439–9577 (CB19 labels; loop heads S:8776, S:8901, S:9035); TQ:1892–1931 (new test); `LESSONS.md` §§5, 7.
+3. `.agents/Directional/Architecture_M6_CP3_TB18_REV_Factory_Rejection_Review_Decision.md` (RA-105.6), `.agents/Directional/Architecture_M6_CP3_CB19_Factory_Rejection_Site_Compile_Review_Decision.md` (RA-106.5), and `.agents/Directional/Architecture_M6_CP3_CB19A_Factory_Rejection_Site_Code_Build_Record_20261020.md`.
 4. `.agents/Directional/Regression_Root_Cause_Tracker.md` and `TODO.md`.
 
-**Review tooling:** `.agents/Directional/tools/` holds read-only `review_check.py`, `selector_probe.py`, and `fixture_probe.py`; history-sensitive review gates require real committed history, not a synthesized snapshot.
+**Review tooling:** `.agents/Directional/tools/` contains read-only `review_check.py`, `selector_probe.py`, `fixture_probe.py`; history-sensitive review gates need actual committed history.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
