@@ -1,4 +1,0 @@
-# CB19A temporary snapshot trigger cleanup; retain dispatcher, mailbox branch and workflows.
-.agents/connector-triggers/source-snapshot/cb19a-20261020-1418.txt
-.agents/connector-triggers/source-snapshot/CB19A-20261020-1503.txt
-.agents/connector-triggers/source-snapshot/cb19a-20261020-1553.txt
