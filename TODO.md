@@ -1,24 +1,24 @@
-## CURRENT — DEFN-P1 reviewed (RA-111); CB20 gauge-pin domain next (2026-10-20)
+## CURRENT — CB20 compile stopped and reviewed (RA-112); CB20A test accessor next (2026-10-20)
 
-- [x] `M6-CP3-DEFN-P1-GAUGE-PIN-DOMAIN` — source-only producer-domain definition in `.agents/Directional/Architecture_M6_CP3_DEFN_P1_Gauge_Pin_Domain_Definition_Record_20261020.md`. Exact relation-pair input is not presently published to `make`. Torus {0,3} is same-region. Cut-set inclusion is unproved; hard-carrier producer-domain reachability is a mandatory Review stop check. No implementation/compile/runtime.
-- [x] Review (RA-111, DEFN-P1-REV):
-  - producer table, torus single region and consumer census confirmed;
-  - exactness (RA-110.4 item 3) withdrawn: a same-region, non-hard pin spans every region and fixes the gauge up to a per-region shift;
-  - RA-110.5's first STOP withdrawn; cut-set inclusion open but fail-closed;
-  - record: `Architecture_M6_CP3_DEFN_P1_Gauge_Pin_Domain_Review_Decision.md`.
-- [ ] **EXACT NEXT:** `M6-CP3-CB20-RP01-GAUGE-PIN-DOMAIN` — Code + Build, compile only, RA-111.4/111.6:
-  - in the pin block (S:8509–8567), skip hard edges and cross-region pairs; add the span guard `gauge-pin-span;region=<index>`; update the RA-45 comment;
-  - TQ: tighten `OneFaceGaugePinNamesSourceEdge` to `edge=0,4`; add `RegionGaugeShiftPassesPin` and `HardEdgeIsolatingFaceRejectsAtSpan`;
-  - GMP/GMPXX eight-target compile, package, `runtimeExecution=false`; 48 unique labels; lines ≤ 100 columns;
-  - STOP on a compile error, a single-face region for face 0, or any change needed outside the pin block.
-- [ ] `M6-CP3-CB20-RP01-GAUGE-PIN-DOMAIN-REV` — mandatory Review of the patch and the package; authorizes TB20 and sets its rows.
+- [x] `M6-CP3-CB20-RP01-GAUGE-PIN-DOMAIN`: source `7dc9b89ec` (S +37/−5 inside the pin block, TQ +82/−2). Compile [39512680019](https://github.com/akashskypatel/Directional/actions/runs/39512680019) RED on five test lines; stop record `.agents/Directional/Architecture_M6_CP3_CB20_Gauge_Pin_Domain_Code_Build_Stop_Record_20261020.md`.
+- [x] Review (RA-112, CB20-REV):
+  - the stop is verified, and the S patch is accepted statically against RA-111.4;
+  - root cause: `DomainResult` offers `value()` and has no `operator*`. This is not a design defect;
+  - a static walk of the three tests; `RegionGaugeShiftPassesPin` is tightened to require a product;
+  - record: `Architecture_M6_CP3_CB20_Gauge_Pin_Domain_Compile_Stop_Review_Decision.md`.
+- [ ] **EXACT NEXT:** `M6-CP3-CB20A-RP01-GAUGE-PIN-TEST-ACCESSOR` — Code + Build, compile only, TQ only, RA-112.5:
+  - replace `*face0`/`*face` with `face0.value()`/`face.value()` on TQ:1941, 1947, 1972, 1978 and 1979;
+  - `RegionGaugeShiftPassesPin` asserts a product and prints the error site on failure;
+  - S and `include` stay byte-identical to `7dc9b89ec`; lines ≤ 100 columns; GMP/GMPXX eight-target compile, package, `runtimeExecution=false`;
+  - STOP on a compile error, or on any change needed outside those lines.
+- [ ] `M6-CP3-CB20A-RP01-GAUGE-PIN-DOMAIN-REV` — mandatory Review of CB20 + CB20A and the package; authorizes TB20 and sets its rows.
 - [ ] Planned, not authorized: TB20 (artifact-only: nine M2, ten M1 no-regression, `SurfaceCellFactoryRejectionSite` suite, controls) → TB20-REV → DEFN on the M1 binding owner (RA-105.3) → corrective CB/TB → fixture debt (242 per `Architecture_M6_CP3_CB19_Selector242_Atlas_Authority_Test_Plan_20261020.md`, then 174 → 250 → adjacent-sheet → 191 → 442, plus I/R sites TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518) → census → RP-01 Review.
-- **Turn sequence:** DEFN-P1 (delivered) → DEFN-P1-REV (RA-111) → **CB20** → CB20-REV → [TB20 → TB20-REV] → DEFN-M1 → corrective CB/TB → fixture debt → census → RP-01 Review.
+- **Turn sequence:** CB20 (compile RED) → CB20-REV (RA-112) → **CB20A** → CB20A-REV → [TB20 → TB20-REV] → DEFN-M1 → corrective CB/TB → fixture debt → census → RP-01 Review.
 - Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, TB18 candidate 448/497, selector 497; `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
 
 ---
 
-## HISTORY — Factory rejection site measured: CB19/CB19A, TB19, TB19A; H-pin confirmed (2026-10-20)
+## HISTORY — Factory rejection site measured (CB19/CB19A, TB19, TB19A); H-pin confirmed; pin domain frozen (2026-10-20)
 
 - [x] `M6-CP3-CB19-RP01-FACTORY-REJECTION-SITE`: 47 unique labels; the compile failed at `1f73d0abd` (RA-106).
 - [x] `M6-CP3-CB19A-RP01-FACTORY-REJECTION-SITE`: the RA-106.3/106.4 correction, committed as `d2c7483cd`. GMP/GMPXX eight-target compile [39446712217](https://github.com/akashskypatel/Directional/actions/runs/39446712217), package `12275794192` (ZIP `e4a39cdb…d723a`, expires 2026-10-27T15:24Z), no runtime. Record: `.agents/Directional/Architecture_M6_CP3_CB19A_Factory_Rejection_Site_Code_Build_Record_20261020.md`.
@@ -46,6 +46,12 @@
   - H-pin CONFIRMED: producers establish face gauges per region and skip accepted cut edges, but the pin checks every two-face edge.
   - `focused30:12` is not uniform-relabel debt.
   - Record: `Architecture_M6_CP3_TB19_REV_Gauge_Pin_Domain_Review_Decision.md`.
+- [x] `M6-CP3-DEFN-P1-GAUGE-PIN-DOMAIN` — source-only producer-domain definition in `.agents/Directional/Architecture_M6_CP3_DEFN_P1_Gauge_Pin_Domain_Definition_Record_20261020.md`. Exact relation-pair input is not presently published to `make`. Torus {0,3} is same-region. Cut-set inclusion is unproved; hard-carrier producer-domain reachability is a mandatory Review stop check. No implementation/compile/runtime.
+- [x] Review (RA-111, DEFN-P1-REV):
+  - producer table, torus single region and consumer census confirmed;
+  - exactness (RA-110.4 item 3) withdrawn: a same-region, non-hard pin spans every region and fixes the gauge up to a per-region shift;
+  - RA-110.5's first STOP withdrawn; cut-set inclusion open but fail-closed;
+  - record: `Architecture_M6_CP3_DEFN_P1_Gauge_Pin_Domain_Review_Decision.md`.
 
 ---
 

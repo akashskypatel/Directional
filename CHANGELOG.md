@@ -1,3 +1,9 @@
+## 2026-10-20 — CB20 compile-stop Review (RA-112): source accepted statically; CB20A next
+
+- CB20 implemented the frozen pin domain in `7dc9b89ec` (S +37/−5 inside the pin block; TQ +82/−2). The compile (run `39512680019`) failed on five test lines that applied `*` to `DomainResult<SourceFaceId>`, which offers `value()` instead.
+- RA-112 accepts the S patch statically against RA-111.4 and finds the failure mechanical, not a design defect. A static walk of the fixture predicts site `edge=0,4` for item 4 and a span rejection for item 6. `RegionGaugeShiftPassesPin` is tightened to require a product, because any other error would be RA-111.2's STOP condition.
+- Next: CB20A (TQ only, compile only), then CB20A-REV. Accounting is unchanged.
+
 ## 2026-10-20 — DEFN-P1 Review (RA-111): spanning pin domain frozen; CB20 next
 
 - RA-111 confirms the DEFN-P1 producer table, the torus as one region ({0,3} between faces 1 and 22, recomputed from the OBJ) and the consumer census.
