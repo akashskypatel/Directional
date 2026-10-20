@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-19 · CB18 (U5, the consumer emits R) is compiled. Both TB18 runs (the focused gate and the 497 census) are complete but not yet harvested or reviewed; RP-01's only adjudicated blocker is still the I–R front at rail vertex 4. Next: resume TB18 for harvest only, then TB18-REV.  
+**Currency:** 2026-10-20 · TB18 was harvested (448/497 candidate PASS; 49 RED) and its independent Review has re-derived the immutable evidence. The review remains unfinished pending the real-history boundary gate; CP3 has not been promoted. Next: resume TB18-REV only.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,9 +50,9 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Latest focused evidence (TB10, reviewed 2026-10-17):** 44/44 diagnostic executions were RED, with no acceptance credit. In the 21 relevant observations the failing corner sits on an **interior vertex of an open rail** — on the carrier's edge (21/21) but never a rail end (0/21). The proposed endpoint contract covers rail ends, points part-way along an edge, and closed rails, but has **no case for a rail's interior vertex**. The checker that verifies finished products also requires every front on an open rail to touch a rail end, so the middle front of a longer rail would still fail. A source-only census has confirmed both points. The rail's full vertex order is already available to the first checker but not to the verifier. The rule is written next, before any code. **CP3 has not been promoted.**
+**Latest candidate (TB18, independent re-derivation in progress):** Part A 12/14 PASS (two `PublishedProductRejected` fixture producer exceptions), Part B 448/497 PASS against TB16C 425/497, with zero PASS→RED. The 30 prior B2 identities are 16 PASS / 14 RED at other first failures; the factory R-tag positive/forgery test passes on its produced witness, but universal factory coverage remains unproved. U4/U5 evidence does not establish CP3 acceptance. After the history-backed independent Review, fixture debt begins at selector242 under RA-96.6. **RP-01 stays open, RP-02 UNREACHED, Gate C suspended.**
 
-Stable accounting reported with that evidence: **66 events / 17 categories / 49 recurrences**; **one** produced-witness debt remains. The [handoff](Future_Chat_Session_Handoff.md) and [regression tracker](Regression_Root_Cause_Tracker.md) supersede this dated snapshot for later decisions.
+Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's frozen 497 identities are not yet accepted. See [handoff](Future_Chat_Session_Handoff.md), the TB18 report/inventory, the independent-review WIP record and [regression tracker](Regression_Root_Cause_Tracker.md).
 
 ## 4. Fixtures and witnesses
 
@@ -102,13 +102,8 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Admit subdivided open hard rails in both checkers with one shared outcome. Three blocker shapes (RA-87.3):
-  - B1, I–I middle fronts: U3, the chain-interval route rule. Closed at TB13A (RA-90).
-  - B2, rail-interior vertex endpoints: U4/U5 (11 of the 497, RA-91.2).
-  - B3, interior-point parameters whose doubles do not close exactly: U6, which needs a no-epsilon exact witness designed in a DEFN (19 of the 497).
-
-  U1 (the route check) and U2 (the chain reaching the verifier) are done. | M6-CP3; [handoff](Future_Chat_Session_Handoff.md) |
-| **2** | Restore accepted-prefix execution and prove actual direct-production positive/tamper paths; `RP-01` open, downstream `RP-02` not reached. Eight tests that passed at R3 now fail; all are test debt (RA-92.3). The curved-disk `make` control is restored (RA-94; census 425/497). The exact B3 origin is located (RA-95). The witness design is accepted (RA-96). CB15 measured p = 1/5, bound on both sides (RA-97). CB16 is accepted, and B3 is cleared on the measured identities (RA-98). U6 is complete; the TB16C census cleared B3 on all 19 (RA-101/RA-102). The only blocker is I–R at rail vertex 4. CB17 (U4) is accepted (RA-103). CB18 (U5) is compiled; the TB18 runs are complete but unharvested. Next: TB18 harvest, then TB18-REV. | M6-CP3 definitions and [tracker](Regression_Root_Cause_Tracker.md) |
+| **1** | Finish independent TB18-REV with a real-history review-boundary gate. TB18 is harvested: B1/B2/B3/U6 all zero by current first-failure rule, but 49 other RED and two early producer exceptions remain; the R factory test gives bounded, not universal, coverage. CP3 not accepted. | M6-CP3; [handoff](Future_Chat_Session_Handoff.md) |
+| **2** | Restore accepted-prefix execution and direct-production positive/tamper paths. After TB18-REV, fixture debts proceed 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus test I/R assumptions. Preserve the exact prior accepted 491/491 and frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
 

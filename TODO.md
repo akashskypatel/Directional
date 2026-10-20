@@ -3,6 +3,7 @@
 - [x] `M6-CP3-CB18-R10-CONSUMER-RAIL-VERTEX-ENDPOINT`: compiled source `3bd24682c`, package `12227516380`, GMP/GMPXX eight targets, no runtime.
 - [x] `M6-CP3-TB18-R10-RAIL-VERTEX-ENDPOINT`: Part A run `39349041417` (artifact `12231529583`, 12/14 PASS), Part B run `39349459268` (artifact `12232299548`, 448/497 PASS / 49 RED); both immutable, no rebuild or reruns. TB16C→TB18 23 RED→PASS, zero PASS→RED. All 30 B2 exited B2: 16 PASS, 14 RED at other first failures. Inventory and report in `.agents/Directional/Architecture_M6_CP3_TB18_*`.
 - [ ] **EXACT NEXT:** `M6-CP3-TB18-R10-RAIL-VERTEX-ENDPOINT-REV` (independent Review): adjudicate RA-103.5 and Part A `PublishedProductRejected` (two diagnostics); assign the next `RP-01` turn and fixture debt without presuming root causes or upgrading candidate acceptance.
+  - WIP evidence re-verified: both manifests and all raw logs, 23 clears, zero new RED, 30 B2 outcomes; continue history-backed `review_check.py boundary` then adjudicate. Evidence: `Architecture_M6_CP3_TB18_Rail_Vertex_Endpoint_Independent_Review_20261020.md`. No successor authorized yet.
 - [ ] Fixture debt after independent Review: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus I/R test-assumption sites TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518, only as assigned by Review.
 - Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, TB16C 425/497, TB18 candidate 448/497, selector 497; `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
 

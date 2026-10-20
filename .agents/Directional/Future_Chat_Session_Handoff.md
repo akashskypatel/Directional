@@ -45,6 +45,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 - **Type / owner:** Independent Review; RA-103.5 and existing review policy.
 - **Objective:** independently re-derive and adjudicate TB18 Part A/Part B; assign the next precise `RP-01` and fixture-debt turn.
+- **Continuation evidence:** independent ZIP/manifests, 497-row raw hashes, 49 RED first failures, 30 B2 and 14 focused outcomes were re-derived on 2026-10-20 and recorded in `Architecture_M6_CP3_TB18_Rail_Vertex_Endpoint_Independent_Review_20261020.md`. **Review is unfinished:** history-sensitive `review_check.py boundary` cannot validate from a `.git`-less snapshot. Resume by obtaining actual committed-history authority and finishing the review/checklist, not by rerunning TB18 or issuing CB source changes.
 - **Read before work:** RA-103.5 (`Architecture_M6_CP3_TB17_Rail_Vertex_U5_Review_Decision.md`); report `Architecture_M6_CP3_TB18_Rail_Vertex_Endpoint_Harvest_Report_20261020.md`; inventory `Architecture_M6_CP3_TB18_Selector_497_Red_Inventory.tsv`; immutable artifacts `12231529583`, `12232299548` and TB16C baseline `Architecture_M6_CP3_TB16C_Selector_497_Red_Inventory.tsv`.
 - **In scope:** independent artifact/log/hash/classification verification; assign or reject candidate evidence; document corrective plan and fixture debt, update appropriate review records/tracker.
 - **Out of scope:** runtime execution, compiles, source/test/fixture/selector changes or unreviewed `RP-01` repairs.
