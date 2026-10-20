@@ -1,12 +1,14 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb19a-closeout-docs-20261020-01",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb19a-closeout-docs",
-  "file_id": "1eARa7ZvCtnYs4FQDTgft3P_zFFjn1wDj",
-  "patch_sha256": "982cd75fba91aabb27464da247641f89b0f3f4a248e861420189ebef7cb1b726",
-  "base_sha": "1c22f045a43320c2ddf9a5839258e0fddc033d33",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close CB19A corrective compile and hand off TB19",
+  "request_id": "m6-cp3-tb19-factory-site-20261020-01",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb19-factory-rejection-site",
+  "executor_sha": "f8e6e3efcc7ffcac5461dd791f2bd05b8d0d66d6",
+  "semantic_source_sha": "d2c7483cde8e65d6c35c5df06fa880465a4da46c",
+  "turn_id": "M6-CP3-TB19-RP01-FACTORY-REJECTION-SITE",
+  "harness_path": ".agents/Directional/tools/m6_cp3_tb19_factory_rejection_site_harness.sh",
+  "harness_sha256": "c33014b5f2eb2547259efdf3b0e493eae94516bb7f4b7b5160d4076e8d915b5c",
+  "environment": {},
+  "artifact_prefix": "m6-cp3-tb19-factory-rejection-site",
   "retention_days": 14
 }
