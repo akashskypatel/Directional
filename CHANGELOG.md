@@ -1,3 +1,6 @@
+## 2026-10-20 — Independent TB18-REV adjudication
+
+- Evidence: raw immutable Part A 12/14 and Part B 448/497 (49 RED), 23 TB16C RED→PASS, 0 PASS→RED, 30 B2 migrated; history-backed authority/boundary/ledgers passed on run 39380260884. Candidate-only; no CP3 acceptance or stable accounting change. Next exact test-only CB19 selector242 per RA-96.6; two early producer exceptions and universal R factory remain open.
 ## 2026-10-20 — TB18 immutable R10 rail-vertex endpoint harvest (candidate evidence)
 
 - Part A run `39349041417`, result `12231529583` (18/18 hashes), 12/14 PASS; Part B run `39349459268`, result `12232299548` (1019/1019), 448/497 PASS / 49 RED. Against TB16C, 23 RED→PASS, zero PASS→RED; 30/30 B2 identities exited B2 (16 PASS, 14 RED/other). No rebuild, retest, source/selector/harness edits or stable promotion. The two Part A cross-region diagnostics end at producer `PublishedProductRejected` and require independent review. Inventory/report under `.agents/Directional/Architecture_M6_CP3_TB18_*`; mandatory TB18-REV next; stable 66/17/49, debt 1 unchanged.

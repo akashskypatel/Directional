@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-20 · TB18 was harvested (448/497 candidate PASS; 49 RED) and its independent Review has re-derived the immutable evidence. The review remains unfinished pending the real-history boundary gate; CP3 has not been promoted. Next: resume TB18-REV only.
+**Currency:** 2026-10-20 · TB18 was independently adjudicated as candidate (448/497 PASS; 49 RED), and the real-history authority/boundary/ledgers gate passed (run 39380260884). CP3 has not been promoted. Next: CB19 selector242 test-only fixture repair.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,7 +50,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Latest candidate (TB18, independent re-derivation in progress):** Part A 12/14 PASS (two `PublishedProductRejected` fixture producer exceptions), Part B 448/497 PASS against TB16C 425/497, with zero PASS→RED. The 30 prior B2 identities are 16 PASS / 14 RED at other first failures; the factory R-tag positive/forgery test passes on its produced witness, but universal factory coverage remains unproved. U4/U5 evidence does not establish CP3 acceptance. After the history-backed independent Review, fixture debt begins at selector242 under RA-96.6. **RP-01 stays open, RP-02 UNREACHED, Gate C suspended.**
+**Latest candidate (TB18, independent re-derivation in progress):** Part A 12/14 PASS (two `PublishedProductRejected` fixture producer exceptions), Part B 448/497 PASS against TB16C 425/497, with zero PASS→RED. The 30 prior B2 identities are 16 PASS / 14 RED at other first failures; the factory R-tag positive/forgery test passes on its produced witness, but universal factory coverage remains unproved. U4/U5 evidence does not establish CP3 acceptance. Independent Review accepted diagnostic evidence only; the next test-only CB repairs selector242 under RA-96.6. **RP-01 stays open, RP-02 UNREACHED, Gate C suspended.**
 
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's frozen 497 identities are not yet accepted. See [handoff](Future_Chat_Session_Handoff.md), the TB18 report/inventory, the independent-review WIP record and [regression tracker](Regression_Root_Cause_Tracker.md).
 
@@ -102,8 +102,8 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Finish independent TB18-REV with a real-history review-boundary gate. TB18 is harvested: B1/B2/B3/U6 all zero by current first-failure rule, but 49 other RED and two early producer exceptions remain; the R factory test gives bounded, not universal, coverage. CP3 not accepted. | M6-CP3; [handoff](Future_Chat_Session_Handoff.md) |
-| **2** | Restore accepted-prefix execution and direct-production positive/tamper paths. After TB18-REV, fixture debts proceed 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus test I/R assumptions. Preserve the exact prior accepted 491/491 and frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
+| **1** | Repair test-authority defect in selector242 via CB19; the independent TB18 review and real-history boundary gate passed. TB18 is harvested: B1/B2/B3/U6 all zero by current first-failure rule, but 49 other RED and two early producer exceptions remain; the R factory test gives bounded, not universal, coverage. CP3 not accepted. | M6-CP3; [handoff](Future_Chat_Session_Handoff.md) |
+| **2** | Restore accepted-prefix execution and direct-production positive/tamper paths. Fixture debts proceed 242 (CB19) → 174 → 250 → adjacent-sheet → 191 → 442, plus test I/R assumptions. Preserve the exact prior accepted 491/491 and frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
 
