@@ -20,6 +20,9 @@ The new census now distinguishes `sourceFaceGaugePairs=5; oddFaceGaugePairs=0` f
 
 ## Review closeout
 
+The verified 32,048-byte Review patch (SHA-256 `8ace3ed09bcafbf620f51dbb9e5067691744eabedfb0a58d41ad60e968499f04`) was applied by the durable Drive dispatcher (`39546749497`, result artifact `12321875478`) and the user-owned Drive staging object was permanently retired (`delete_file success=true`). The independent full-history review gate passed before the temporary workflow and markers were retired. No tests or benchmarks were executed.
+
+
 | Duty | Answer |
 |---|---|
 | Accepted selector prefix re-hashed | n/a to CB21: no selector mutation; selector497 remains frozen; accepted CP2 is unchanged (491/491), no new accepted prefix |
@@ -37,6 +40,6 @@ The new census now distinguishes `sourceFaceGaugePairs=5; oddFaceGaugePairs=0` f
 | Consolidation under CLEAN_UP_POLICY | CB21's 21-line compile evidence remains current immutable package authority; no superseded per-turn report eligible to fold before TB22 |
 | Successor frozen | `M6-CP3-TB22-RP01-TORUS-WITNESS-HARVEST`, 11 rows and falsifiers in TB22 plan |
 | Turn boundary held | Runtime-free Review; documentation only |
-| review_check.py boundary | Not yet certified against full Git history: workflow source archive excludes `.git`; requires actual committed-history environment, not synthetic history. Do not report a green gate. |
-| `STATUS` lifecycle maintained | Entry beacon was published; final state must be written last after durable docs/transport |
-| Pushed to origin, branch in sync | Pending actual patch transport and final authority confirmation; do not claim until verified |
+| review_check.py boundary | **PASS** on complete-history GitHub Actions checkout, run `39547232827`, log artifact `12322225719`, exact event source `4cfe0d1a5e1c042e57d40c8a96236c9a213047cd`: all frozen selector hashes match, protected durable rewrite sections preserved, zero source/test/build mutation. `review_check.py ledgers --base 8b7299b43` also **PASS**; no historical CHANGELOG/LESSONS shrinkage. |
+| `STATUS` lifecycle maintained | Entry and resume beacons published, `Started at` preserved (`2026-10-21T04:28:35Z`); final COMPLETE beacon to be published as the final repository action after cleanup and verification. |
+| Pushed to origin, branch in sync | The complete verified patch was pushed as `56a1754794e0b90012dce99884afc302288eaaca`, with all six intended paths independently confirmed. PR #8 GitHub head verified after workflow and trigger retirement (`46ea50f8aff8b0254fd02939f0a7cadd3e47a0bb`); the full-history CI checkout is clean, though it is a detached HEAD (`git status -sb` does not supply a local branch tracking comparison). |
