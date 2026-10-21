@@ -1,0 +1,2 @@
+# TB22 turn temporary source-snapshot marker
+.agents/connector-triggers/source-snapshot/m6-cp3-tb22-20261021.txt
