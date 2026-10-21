@@ -1,2 +1,0 @@
-# TB20 temporary source-snapshot trigger only; dispatcher slot and mailbox remain durable.
-.agents/connector-triggers/source-snapshot/tb20-20261021-0123.txt
