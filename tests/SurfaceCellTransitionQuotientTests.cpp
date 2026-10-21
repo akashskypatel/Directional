@@ -1670,6 +1670,7 @@ ProducedTorusWitnessFixture make_nonzero_z4_torus_witness_fixture() {
   fixture.components = snapshots.sourceSurfaceLabels.componentByFace;
   fixture.sheets = snapshots.sourceSurfaceLabels.localSheetByFace;
   fixture.network = snapshots.traceNetwork;
+  fixture.fieldTransportAtlas = snapshots.fieldTransportAtlas;
   require_produced(fixture, "torus nonzero-Z4 source witness");
 
   // D1: enumerate real source/A3 generators before selecting a reciprocal

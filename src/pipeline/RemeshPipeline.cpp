@@ -4164,6 +4164,36 @@ SurfaceOccurrenceComplexProducer::produce(
         region, seam, from.sheet, to.sheet};
     return std::nullopt;
   };
+  // Rejection-only source/sheet witness; no isolation decision uses this data.
+  const auto isolation_binding_label = [&](const auto face, const auto sheet) {
+    const auto row = phaseFront.sourceTopologyRegions().row_for_topology(face);
+    return (row.has_value() ? std::to_string(row->index()) : "none") +
+           "/" + std::to_string(sheet.index());
+  };
+  const auto isolation_side_site = [&](const char *site,
+                                       const authority::TopologyRegionId region,
+                                       const authority::SourceEdgeTopologyKey &seam,
+                                       const CornerWedgeFaceBinding &from,
+                                       const CornerWedgeFaceBinding &to,
+                                       const authority::CellId cell) {
+    std::string detail =
+        std::string(site) + ";region=" + std::to_string(region.index()) +
+        ";seam=" + std::to_string(seam.first().index()) + "," +
+        std::to_string(seam.second().index()) +
+        ";from=" + isolation_binding_label(from.face, from.sheet) +
+        ";to=" + isolation_binding_label(to.face, to.sheet) + ";cert=";
+    const auto certificate =
+        isolationCertificateBySeam.find(IsolationCertificateKey{region, seam});
+    if (certificate == isolationCertificateBySeam.end()) {
+      detail += "none";
+    } else {
+      const auto &value = *certificate->second;
+      detail += isolation_binding_label(value.firstFace(), value.firstSheet()) +
+                "->" +
+                isolation_binding_label(value.secondFace(), value.secondSheet());
+    }
+    return detail + ";cell=" + std::to_string(cell.index());
+  };
   const auto append_transition = [](
       std::vector<geometry::CornerWedgeIsolationTransition> &target,
       const geometry::CornerWedgeIsolationTransition &transition) {
@@ -4323,6 +4353,9 @@ SurfaceOccurrenceComplexProducer::produce(
           } else if (transitionError.has_value()) {
             error.code = transitionError.value();
             error.cell = cell.id;
+            error.isolationSite = isolation_side_site(
+                "side-step", cell.sourceTopologyRegion, step.topology(),
+                previousBinding.value(), currentBinding, cell.id);
             return error;
           }
           currentBinding = previousBinding.value();
@@ -4364,6 +4397,10 @@ SurfaceOccurrenceComplexProducer::produce(
               } else if (transitionError.has_value()) {
                 error.code = transitionError.value();
                 error.cell = cell.id;
+                error.isolationSite = isolation_side_site(
+                    "side-collinear", cell.sourceTopologyRegion,
+                    collinearEdge.value(), interiorBinding.value(),
+                    oppositeBinding.value(), cell.id);
                 return error;
               }
             }
@@ -4476,6 +4513,9 @@ SurfaceOccurrenceComplexProducer::produce(
             error.code = transitionError.value();
             error.cell = cell.id;
             error.occurrence = cornerOccurrences[cornerIndex];
+            error.isolationSite = isolation_side_site(
+                "wedge-edge", cell.sourceTopologyRegion, edgeSupport->edge,
+                outgoing, incoming, cell.id);
             return error;
           }
         }
@@ -4557,6 +4597,9 @@ SurfaceOccurrenceComplexProducer::produce(
             error.code = transitionError.value();
             error.cell = cell.id;
             error.occurrence = cornerOccurrences[cornerIndex];
+            error.isolationSite = isolation_side_site(
+                "wedge-fan", cell.sourceTopologyRegion, crossingEdge.value(),
+                current, next.value(), cell.id);
             return error;
           }
           current = next.value();
@@ -5218,6 +5261,80 @@ SurfaceOccurrenceComplexProducer::produce(
                         })) {
           error.code = SurfaceOccurrenceComplexErrorCode::MismatchedIsolationEvidence;
           error.relation = relationId;
+          const auto &firstSpan = *evidence.firstEndpointSpan;
+          const auto &secondSpan = *evidence.secondEndpointSpan;
+          const auto &firstOccurrence = *firstRecord->second;
+          const auto &secondOccurrence = *secondRecord->second;
+          const auto region = firstOccurrence.topologyRegion;
+          const auto seam = *firstSpan.collinearEdge;
+          std::string site =
+              "relation-collinear-seam;region=" + std::to_string(region.index()) +
+              ";seam=" + std::to_string(seam.first().index()) + "," +
+              std::to_string(seam.second().index()) +
+              ";relation=" + std::to_string(relationId.first.index()) + "," +
+              std::to_string(relationId.second.index()) +
+              ";first=" + isolation_binding_label(
+                  firstSpan.interiorBinding.face, firstSpan.interiorBinding.sheet) +
+              ";second=" + isolation_binding_label(
+                  secondSpan.interiorBinding.face, secondSpan.interiorBinding.sheet);
+          std::size_t matchingCount = 0U;
+          std::size_t passingCount = 0U;
+          for (const auto &certificate :
+               phaseFront.isolationSeamTransportCertificates()) {
+            if (certificate.region() != region || certificate.seam() != seam)
+              continue;
+            ++matchingCount;
+            if (certified_seam_direction(firstOccurrence, secondOccurrence,
+                                         firstSpan, secondSpan, certificate))
+              ++passingCount;
+          }
+          site += ";certs=" + std::to_string(matchingCount);
+          std::size_t certificateIndex = 0U;
+          for (const auto &certificate :
+               phaseFront.isolationSeamTransportCertificates()) {
+            if (certificate.region() != region || certificate.seam() != seam)
+              continue;
+            std::string clause;
+            if (!firstSpan.collinearEdge.has_value() ||
+                firstSpan.collinearEdge != secondSpan.collinearEdge ||
+                firstSpan.collinearEdge != certificate.seam()) {
+              clause = "collinear";
+            } else if (firstOccurrence.topologyRegion != certificate.region() ||
+                       secondOccurrence.topologyRegion != certificate.region()) {
+              clause = "region";
+            } else if (firstSpan.interiorBinding.face !=
+                       firstOccurrence.placement.selectedFace) {
+              clause = "first-face";
+            } else if (secondSpan.interiorBinding.face !=
+                       secondOccurrence.placement.selectedFace) {
+              clause = "second-face";
+            } else if (certificate.firstSheet() == certificate.secondSheet()) {
+              clause = "same-sheet";
+            } else {
+              const auto firstSide = certified_seam_wedge_side(
+                  firstOccurrence, firstSpan.interiorBinding, certificate);
+              const auto secondSide = certified_seam_wedge_side(
+                  secondOccurrence, secondSpan.interiorBinding, certificate);
+              if (!firstSide.has_value()) {
+                clause = "first-side";
+              } else if (!secondSide.has_value()) {
+                clause = "second-side";
+              } else if (*firstSide == *secondSide ||
+                         *firstSide == CertifiedSeamSide::NotOnSeam ||
+                         *secondSide == CertifiedSeamSide::NotOnSeam) {
+                clause = "same-side";
+              } else {
+                clause = passingCount > 1U ? "ambiguous" : "valid";
+              }
+            }
+            site += ";cert" + std::to_string(certificateIndex++) + "=" +
+                    isolation_binding_label(certificate.firstFace(),
+                                            certificate.firstSheet()) +
+                    "->" + isolation_binding_label(certificate.secondFace(),
+                                                   certificate.secondSheet()) +
+                    ":" + clause;
+          }
+          error.isolationSite = std::move(site);
           return error;
         }
       }
@@ -8962,6 +9079,9 @@ build_authoritative_phase_front_mesh_with_hard_features(
                          ? "OccurrenceUnknownFailure"
                          : surface_occurrence_complex_legacy_failure_name(
                                *occurrenceError);
+    if (occurrenceError != nullptr && !occurrenceError->isolationSite.empty()) {
+      result.failure += ";site=" + occurrenceError->isolationSite;
+    }
     if (occurrenceError != nullptr && occurrenceError->cell.has_value()) {
       result.invalidCell =
           static_cast<int>(occurrenceError->cell->index());

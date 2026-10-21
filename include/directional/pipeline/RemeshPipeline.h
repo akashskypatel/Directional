@@ -967,6 +967,7 @@ struct SurfaceOccurrenceComplexError {
   std::optional<authority::OccurrenceId> occurrence;
   std::optional<SurfaceOccurrenceRelationId> relation;
   std::optional<int> frontEdge;
+  std::string isolationSite;
 };
 
 struct SurfaceOccurrenceVerificationRecords {
