@@ -1,3 +1,22 @@
+## RA-117 — TB22 reviewed: fixture selection fixed; five CP2 torus rows split into a fixture atlas defect and an unowned A5 isolation family; CB22 next (2026-10-21)
+
+Authority: `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Review_Decision.md`.
+
+- **RA-117.1** TB22 result `12323004201` (ZIP `71569a41…8c87`): 11/11 executed, 4 PASS / 7 RED, 15/15 hashes, postflight immutable; the report matches the raw logs.
+- **RA-117.2** Falsifier not observed (reciprocal 5/5, holonomy 5/5, `selected=c0`): CB21 accepted at runtime for its scope. `cp3entry:1` RED at its D2 assertion (five minor-cycle carriers, `delta=0`); controls PASS; P1 falsified.
+- **RA-117.3** F: `focused30:6`, `selector:447` rebuild the product from a draft with no atlas; the torus witness fixture never sets `fieldTransportAtlas`, missed by `7de636c88` while masked (one-line test fix). A5-ISO: `focused30:20/24`, `selector:446` fail A5 `MismatchedIsolationEvidence` (`a5-side`), the same unowned family as `selector:444/448`, `focused30:26/27/28` (≥ 8 CP2 rows, incl. G4-B002 on the torus); not caused by CB20. Branch unknown: RP:4318/4359 side crossing or the post-CP2 RP:5205 reject (`8be01326d`).
+- **RA-117.4** M1, `focused30:12`, `cp3entry:2` unchanged; accounting frozen.
+- **RA-117.5** Next: `M6-CP3-CB22-RP01-TORUS-A5-ISOLATION-SITE`: Part A atlas binding (TQ, one line); Part B `isolationSite` on A5 isolation-evidence rejections, appended to the legacy failure name; no decision change.
+- **RA-117.6** CB22 → CB22-REV → TB23 → TB23-REV → DEFN-ISO → corrective CB/TB → DEFN-M1 → corrective → DEFN-T1 → fixture debt → census → RP-01 Review.
+
+## RA-116 — CB21 independent Review: test-only witness-selection scope accepted statically; TB22 authorized (2026-10-21)
+
+Authority: `Architecture_M6_CP3_CB21_Torus_Witness_Scope_Review_Decision_20261021.md` (independent reviewer); TB22 plan `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Plan_20261021.md`.
+
+- **RA-116.1** One-file diff (TQ +73/−47) matches RA-115.5; package `12318897957` (ZIP `f0ae4338…c606`) 28/28, GMP/GMPXX, `runtimeExecution=false`.
+- **RA-116.2** No runtime claim; reciprocal/holonomy existence unmeasured until TB22.
+- **RA-116.3** Successor TB22: 11 processes (seven torus consumers, `cp3entry:6`, three controls) with P1–P4 and the reciprocal/holonomy falsifier.
+
 ## RA-115 — TB21 reviewed: CB20/CB20A regression-free on the 497 selector; torus rows reclassified as a fixture-scope defect; CB21 next (2026-10-21)
 
 Authority: `Architecture_M6_CP3_TB21_Selector_497_Census_Review_Decision.md` (it holds the verified harvest and absorbs the census report; the agent wrote no TB21 inventory or report).

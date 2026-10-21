@@ -61,3 +61,5 @@
 
 - **Sequence:** TB21 → TB21-REV (RA-115) → **CB21** → CB21-REV → TB22 (the seven torus consumers, `cp3entry:6`, three controls) → TB22-REV → DEFN-T1 (D2 attainability on the torus under RA-111.3, from the TB22 receipt) → DEFN-M1 (M1 binding owner, RA-105.3; also `cp3entry:2`, `focused30:12`) → corrective CB/TB → fixture debt → census → RP-01 Review.
 - **Accounting:** candidate evidence TB21 449/497 (was TB18 448/497); everything else as RA-115.4.
+
+> *Closed by RA-116 (2026-10-21): CB21 accepted statically; TB22 authorized. TB22 reviewed by RA-117.*
