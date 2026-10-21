@@ -1,3 +1,13 @@
+## RA-120 — CB22B accepted statically; the site reaches all nine A5-ISO rows; TB23 harvest issued (2026-10-21)
+
+Authority: `Architecture_M6_CP3_CB22B_Torus_A5_Site_Test_Messages_Review_Decision.md`.
+
+- **RA-120.1** Package `12341307713` (ZIP `b5f9a668…8ad5`) verified: 28/28, 1,046 source files match `c6e90916e`, GMP/GMPXX, zero warnings, no runtime.
+- **RA-120.2** Diff TQ only (+22/−24) exactly as RA-119.4; every A5 isolation return carries a site, and all nine A5-ISO rows print it.
+- **RA-120.3** `focused30:24` asserts inside a three-fixture lambda; resolved by TB23 P3 (cross-check against the W pipeline rows), not by code.
+- **RA-120.4** Next: `M6-CP3-TB23-RP01-TORUS-A5-SITE-HARVEST` (artifact-only; plan `Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Plan_20261021.md`).
+- **RA-120.5** TB23 → TB23-REV → DEFN-ISO → corrective CB/TB → DEFN-M1 → corrective → DEFN-T1 → fixture debt → census → RP-01 Review.
+
 ## RA-119 — CB22A harvested and accepted statically; five A5-ISO rows cannot show the site; test-message routing authorized as CB22B (2026-10-21)
 
 Authority: `Architecture_M6_CP3_CB22A_Torus_A5_Isolation_Site_Formatter_Review_Decision.md`.

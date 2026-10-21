@@ -1,3 +1,8 @@
+## 2026-10-21 — CB22B Review (RA-120): site reaches all nine A5-ISO rows; TB23 harvest issued
+
+- Review verified CB22B's package independently (28/28, 1,046 source files match `c6e90916e`, zero warnings, no runtime) and accepted the test-only diff statically. Every A5 isolation return now carries a site, and all nine torus A5-ISO rows print it, including G4-B002.
+- TB23 is issued as an artifact-only sixteen-row harvest with frozen predictions, falsifiers and pre-registered routing to H-ISO-1/2/3. Accounting is unchanged.
+
 ## 2026-10-21 — CB22B torus A5 failure-message routing compiled (no runtime)
 
 - Test-only diagnostic routing in `SurfaceCellTransitionQuotientTests.cpp` (+22/−24), exact source `c6e90916eb90bfd33bc8a38c5ece7def15dcc766`, RA-119.4 scope. `;site=` now reaches five A5-ISO failure messages; assertions and production unchanged.

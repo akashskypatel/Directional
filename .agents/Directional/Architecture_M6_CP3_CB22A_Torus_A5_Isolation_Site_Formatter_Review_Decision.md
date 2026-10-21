@@ -63,3 +63,5 @@ RA-117.5 routed `isolationSite` only into the pipeline failure string (RP:9082�
 
 - **Accounting:** RA-117.4 unchanged. Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, selector 497, candidate evidence TB21 449/497. `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
 - **Sequence:** CB22-REV (RA-118) → CB22A (compile GREEN, harvested) → CB22A-REV (RA-119) → **CB22B** → CB22B-REV → TB23 (torus A5 site harvest) → TB23-REV → DEFN-ISO → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+
+Closed by RA-120 (`Architecture_M6_CP3_CB22B_Torus_A5_Site_Test_Messages_Review_Decision.md`): CB22B accepted statically; TB23 issued.
