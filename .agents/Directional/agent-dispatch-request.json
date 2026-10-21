@@ -1,12 +1,14 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb23-review-ra122-currency-20261021-b",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb23-review-currency",
-  "file_id": "1UXZIz6mI0KOC9QvlPba5Ar0AUuV_whC4",
-  "patch_sha256": "1b9fbdc38907ab8d269a81e5b0ebd2e29e7eac4206786a49eaad031d9d47549c",
-  "base_sha": "c93d3359cc4832e61af17f320cc3fa24a58fc436",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: correct M6 CP3 orientation and roadmap currency",
+  "request_id": "m6-cp3-tb24-seam-face-harvest-20261021-a",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb24-seam-face-harvest",
+  "executor_sha": "04a1799b9bab042c254e9a618ecba5afbccfefad",
+  "semantic_source_sha": "e859175333f879273a75e3bfc321600e451048aa",
+  "turn_id": "M6-CP3-TB24-RP01-TORUS-A5-SEAM-FACE-HARVEST",
+  "harness_path": ".agents/Directional/tools/torus_a5_seam_face_harvest.sh",
+  "harness_sha256": "f0b30909d598b451603ff90f4c228af9ceae49628e6b91f7d2e1e0c1cea1bd84",
+  "environment": {},
+  "artifact_prefix": "m6-cp3-tb24-torus-a5-seam-face",
   "retention_days": 7
 }
