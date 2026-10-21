@@ -1,14 +1,20 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb20-gauge-pin-domain-20261021-01",
+  "request_id": "m6-cp3-tb21-selector-497-census-20261021-01",
   "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb20-gauge-pin-domain",
-  "executor_sha": "18a1325d25aae46d26e185b861cd836871ca0d0f",
+  "mailbox_key": "m6-cp3-tb21-selector-497-census",
+  "executor_sha": "94a986c1d19bfc9702c9f9770678f709f939f6ec",
   "semantic_source_sha": "e22c5da5f8ab86a39650c670340a658847a2ac7e",
-  "turn_id": "M6-CP3-TB20-RP01-GAUGE-PIN-DOMAIN",
-  "harness_path": ".agents/Directional/tools/m6_cp3_tb20_gauge_pin_domain_harness.sh",
-  "harness_sha256": "69b173e597cdf7eda36b2046aa7b50e4854770fe1341b38744dd6bdc5e3c48bb",
-  "environment": {},
-  "artifact_prefix": "m6-cp3-tb20-gauge-pin-domain",
+  "turn_id": "M6-CP3-TB21-RP01-SELECTOR-497-CENSUS",
+  "harness_path": ".agents/Directional/tools/m6_cp3_entry_497_artifact_only_harness.sh",
+  "harness_sha256": "947a95ee4f684143a0f8d7c768a39253ab893d921da488802b45fb6ed58879dd",
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "12310848591",
+    "EXPECTED_SOURCE_SHA": "e22c5da5f8ab86a39650c670340a658847a2ac7e",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "0c9f048e9a67fdaf61231b2ffa6834ee21a48e142f9cdae9e7ab14e015fc3ff5",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "c735e5f76f84a887e0b5613bb65969a68cb4e10321d33a8113167e3978c8206b",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "e231fcead36c5436719f13a87b249e2ff6bb69f54c3480fbecee2773d1878f57"
+  },
+  "artifact_prefix": "m6-cp3-tb21-selector-497-census",
   "retention_days": 14
 }
