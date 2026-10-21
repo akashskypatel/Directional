@@ -903,6 +903,7 @@ struct ProducedTorusSourceWitness {
 struct ProducedTorusWitnessFixture {
   PhaseFrontFixture fixture;
   ProducedTorusSourceWitness witness;
+  std::string selectionReceipt;
 };
 
 std::set<directional::authority::SourceEdgeTopologyKey>
@@ -1678,24 +1679,25 @@ ProducedTorusWitnessFixture make_nonzero_z4_torus_witness_fixture() {
       *snapshots.sourceTopologyRegions, *snapshots.globalTopologyPlan,
       nonzeroHardCarriers);
   const auto &front = fixture.network.phaseFront.product();
-  // Fail-only diagnostic counters. Never substitute a generated or
-  // source-only candidate for a genuinely tracer-produced Periodic relation.
+  // Count independent predicates over every real source/A3 candidate.
   std::size_t gaugeFacePairs = 0U;
   std::size_t oddGaugePairs = 0U;
   std::size_t reciprocalTracerPairs = 0U;
-  std::optional<ProducedTorusSourceWitness> witness;
-  for (const auto &candidate : candidates) {
-    const auto &rotations = front.sourceFaceBranchRotations();
-    if (candidate.fromFace.index() >= rotations.size() ||
-        candidate.toFace.index() >= rotations.size()) {
-      continue;
+  std::size_t holonomyMatchedPairs = 0U;
+  std::optional<std::size_t> firstReciprocalHolonomy;
+  std::optional<std::size_t> firstOddReciprocalHolonomy;
+  std::string candidateReceipt;
+  const auto &rotations = front.sourceFaceBranchRotations();
+  for (std::size_t i = 0U; i < candidates.size(); ++i) {
+    const auto &candidate = candidates[i];
+    int delta = -1;
+    if (candidate.fromFace.index() < rotations.size() &&
+        candidate.toFace.index() < rotations.size()) {
+      ++gaugeFacePairs;
+      delta = (rotations[candidate.toFace.index()] -
+               rotations[candidate.fromFace.index()] + 4) % 4;
+      if (delta == 1 || delta == 3) ++oddGaugePairs;
     }
-    ++gaugeFacePairs;
-    const int delta =
-        (rotations[candidate.toFace.index()] -
-         rotations[candidate.fromFace.index()] + 4) % 4;
-    if (delta != 1 && delta != 3) continue;
-    ++oddGaugePairs;
 
     const directional::geometry::SurfaceFrontEdge *forward = nullptr;
     const directional::geometry::SurfaceFrontEdge *reverse = nullptr;
@@ -1721,46 +1723,69 @@ ProducedTorusWitnessFixture make_nonzero_z4_torus_witness_fixture() {
         reverse = &edge;
       }
     }
-    if (forward == nullptr || reverse == nullptr ||
-        forward->periodicRelation != reverse->periodicRelation ||
-        reverse->route != forward->route.reversed()) {
-      continue;
+    const bool reciprocal =
+        forward != nullptr && reverse != nullptr &&
+        forward->periodicRelation == reverse->periodicRelation &&
+        reverse->route == forward->route.reversed();
+    if (reciprocal) ++reciprocalTracerPairs;
+
+    bool holonomyMatched = false;
+    if (reciprocal) {
+      const auto stored = std::find_if(
+          front.periodicHolonomies().begin(), front.periodicHolonomies().end(),
+          [&](const auto &relation) {
+            return relation.id() == *forward->periodicRelation;
+          });
+      holonomyMatched =
+          stored != front.periodicHolonomies().end() &&
+          directional::geometry::resolve_periodic_relation_semantic_action(
+              *stored, *forward, *reverse).has_value() &&
+          (stored->cutRoute() == forward->route ||
+           stored->cutRoute().reversed() == forward->route);
+      if (holonomyMatched) ++holonomyMatchedPairs;
     }
-    ++reciprocalTracerPairs;
-    const auto stored = std::find_if(
-        front.periodicHolonomies().begin(), front.periodicHolonomies().end(),
-        [&](const auto &relation) {
-          return relation.id() == *forward->periodicRelation;
-        });
-    if (stored == front.periodicHolonomies().end() ||
-        !directional::geometry::resolve_periodic_relation_semantic_action(
-             *stored, *forward, *reverse).has_value() ||
-        !(stored->cutRoute() == forward->route ||
-          stored->cutRoute().reversed() == forward->route)) {
-      continue;
+
+    candidateReceipt += ";c" + std::to_string(i) + "=" +
+        std::to_string(candidate.carrier.first().index()) + "-" +
+        std::to_string(candidate.carrier.second().index()) +
+        ":delta=" + std::to_string(delta) +
+        ";recip=" + (reciprocal ? "1" : "0") +
+        ";holo=" + (holonomyMatched ? "1" : "0");
+    if (holonomyMatched) {
+      if (!firstReciprocalHolonomy.has_value()) firstReciprocalHolonomy = i;
+      if ((delta == 1 || delta == 3) &&
+          !firstOddReciprocalHolonomy.has_value()) {
+        firstOddReciprocalHolonomy = i;
+      }
     }
-    witness = candidate;
-    break;
   }
-  if (!witness.has_value()) {
+  const auto selected = firstOddReciprocalHolonomy.has_value()
+      ? firstOddReciprocalHolonomy : firstReciprocalHolonomy;
+  const std::string selectionReceipt =
+      "sourceA3Candidates=" + std::to_string(candidates.size()) +
+      ";sourceFaceGaugePairs=" + std::to_string(gaugeFacePairs) +
+      ";oddFaceGaugePairs=" + std::to_string(oddGaugePairs) +
+      ";reciprocalTracerPairs=" + std::to_string(reciprocalTracerPairs) +
+      ";holonomyMatchedPairs=" + std::to_string(holonomyMatchedPairs) +
+      ";publishedPeriodicHolonomies=" +
+          std::to_string(front.periodicHolonomies().size()) +
+      ";nonzeroHardCarriers=" + std::to_string(nonzeroHardCarriers.size()) +
+      candidateReceipt + ";selected=" +
+      (selected.has_value() ? "c" + std::to_string(*selected) : "none");
+  if (!selected.has_value()) {
     throw std::runtime_error(
         "No tracer-produced reciprocal periodic torus witness with "
-        "an exact source/A3 generator and odd selected-face gauge delta."
-        " firstPredicate=periodic-organic-witness-not-found"
-        ";sourceA3Candidates=" + std::to_string(candidates.size()) +
-        ";sourceFaceGaugePairs=" + std::to_string(gaugeFacePairs) +
-        ";oddFaceGaugePairs=" + std::to_string(oddGaugePairs) +
-        ";reciprocalTracerPairs=" + std::to_string(reciprocalTracerPairs) +
-        ";publishedPeriodicHolonomies=" +
-        std::to_string(front.periodicHolonomies().size()) +
-        ";nonzeroHardCarriers=" + std::to_string(nonzeroHardCarriers.size()));
+        "an exact source/A3 generator."
+        " firstPredicate=periodic-organic-witness-not-found;" +
+        selectionReceipt);
   }
+  const auto &witness = candidates[*selected];
 
   const auto *pipelineTransition =
       source_transition_for(fixture.mesh, snapshots.crossField,
-                            witness->carrier);
+                            witness.carrier);
   const auto *sourceTransition =
-      source_transition_for(fixture.mesh, sourceCrossField, witness->carrier);
+      source_transition_for(fixture.mesh, sourceCrossField, witness.carrier);
   if (pipelineTransition == nullptr || sourceTransition == nullptr ||
       pipelineTransition->matching != sourceTransition->matching ||
       pipelineTransition->firstFace != sourceTransition->firstFace ||
@@ -1768,7 +1793,7 @@ ProducedTorusWitnessFixture make_nonzero_z4_torus_witness_fixture() {
     throw std::runtime_error(
         "Pipeline source transition diverged from the pre-finalized witness.");
   }
-  return {std::move(fixture), *witness};
+  return {std::move(fixture), witness, selectionReceipt};
 }
 
 const ProducedTorusWitnessFixture &nonzero_z4_torus_witness_fixture() {
@@ -2800,7 +2825,8 @@ TEST(M6CP3, PeriodicExactA3UnequalFaceGaugeUsesRelationAndOccurrenceAuthority) {
       static_cast<std::size_t>(fixture.witness.toFace.index()));
   const int gaugeDelta = (toGauge - fromGauge + 4) % 4;
   ASSERT_TRUE(gaugeDelta == 1 || gaugeDelta == 3)
-      << "D1 requires unequal non-self-inverse face gauge authority";
+      << "D1 requires unequal non-self-inverse face gauge authority"
+      << " receipt=" << fixture.selectionReceipt;
 
   // RA-44 relational-pin negative on the *same* accepted torus product:
   // mutate one source face's chart gauge while preserving the source atlas,
