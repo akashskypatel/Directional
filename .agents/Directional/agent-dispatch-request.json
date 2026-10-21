@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb20-gauge-pin-domain-compile-20261020-01",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb20-gauge-pin-domain-compile",
-  "source_sha": "7dc9b89ecd13753173057577d1da320db9515ebb",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb20-gauge-pin-domain"
+  "request_id": "m6-cp3-cb20a-gauge-pin-test-apply-20261021-01",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb20a-gauge-pin-test-apply",
+  "file_id": "11wwMd_kLEZVfK0z6h6oqgs1ZACwBH1Fd",
+  "patch_sha256": "40885b213c08ba09c4c2f7b561397858a4f8b7ea59c6bd856eee0f41ac4b55d3",
+  "base_sha": "71aa3cc9dcc8480e3e9e372d5008b5096e685de3",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "fix: correct typed gauge-pin test accessors and product oracle",
+  "retention_days": 7
 }
