@@ -1,3 +1,13 @@
+## RA-115 — TB21 reviewed: CB20/CB20A regression-free on the 497 selector; torus rows reclassified as a fixture-scope defect; CB21 next (2026-10-21)
+
+Authority: `Architecture_M6_CP3_TB21_Selector_497_Census_Review_Decision.md` (it holds the verified harvest and absorbs the census report; the agent wrote no TB21 inventory or report).
+
+- **RA-115.1** TB21 result `12317287104` (ZIP `12279a26…9c8d`): 497/497 executed, 449 PASS / 48 RED, 1019/1019 hashes, postflight immutable. Inventory `Architecture_M6_CP3_TB21_Selector_497_Red_Inventory.tsv` (`6eb5022a…7c34`) is the new census baseline.
+- **RA-115.2** 0 PASS→RED; `cp3entry:6` RED→PASS; no `gauge-pin` site in any log. CB20/CB20A is regression-free; TB21 449/497 replaces TB18 448/497 as candidate evidence.
+- **RA-115.3** Amends RA-114.3. TQ:1697 is D2 / RA-33.2 (odd face-gauge delta, so `cp3entry:1` discriminates). `88aa8eae0` placed it in the torus fixture shared with six CP2-GREEN rows, so they inherit D2's STOP. H-T2 has no support (every enumeration since R3 shows `oddFaceGaugePairs=0`). The reciprocal/holonomy predicates behind the filter are unmeasured.
+- **RA-115.4** M1, `cp3entry:2`, `focused30:12` unchanged; 66/17/49, debt 1, CP2 491/491, R3 403/497 frozen.
+- **RA-115.5** Next: `M6-CP3-CB21-RP01-TORUS-WITNESS-SCOPE` (test-only): every predicate on every candidate, D2-first selection with fallback, receipt member, `cp3entry:1` keeps its D2 assertion. Then CB21-REV → TB22 → TB22-REV → DEFN-T1 → DEFN-M1.
+
 ## RA-114 — TB20 reviewed: corrected pin confirmed at runtime; M2 cleared at the factory; selector-497 census next (2026-10-21)
 
 Authority: `Architecture_M6_CP3_TB20_Gauge_Pin_Domain_Review_Decision.md` (it holds the verified harvest facts; the agent wrote no TB20 report).

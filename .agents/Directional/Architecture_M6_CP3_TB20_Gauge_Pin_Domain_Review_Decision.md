@@ -34,6 +34,8 @@ The torus message is byte-identical in all six rows: `sourceA3Candidates=5; sour
 
 ## RA-114.3 M2 after the pin: three outcomes
 
+> *Amended by RA-115.3 (2026-10-21): TQ:1697 is D2 / RA-33.2, not a proxy for odd A3 transport; it sits in a fixture shared with six CP2 rows. H-T2 has no support.*
+
 - **Passing, 1 row:** `cp3entry:6`.
 - **Hard-rail certificate area, 2 rows:**
   - `cp3entry:2` constructs its product, but the producer publishes no paired (1,4)→(4,7) route certificate;
@@ -97,3 +99,5 @@ There is no repair inside the turn.
 - **Sequence:** TB20 → TB20-REV (RA-114) → **TB21** → TB21-REV → DEFN-T1 → DEFN on the M1 binding owner (RA-105.3), which also classifies `cp3entry:2` and `focused30:12` → corrective CB/TB → fixture debt → census → RP-01 Review.
   - DEFN-T1 is source-only. It compares the torus witness fixture at CP2 `5ce3132ec` with `88aa8eae0` and HEAD, names the invariant behind the odd-gauge filter, and decides between H-T1 and H-T2.
 - **Accounting is unchanged:** 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, TB18 candidate 448/497, selector 497. `RP-01` is open, `RP-02` is UNREACHED and Gate C is suspended.
+
+> *Closed by RA-115 (2026-10-21): TB21 is regression-free (449/497, 0 PASS→RED); CB21 (test-only witness-selection scope) precedes DEFN-T1.*
