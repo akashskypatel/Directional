@@ -5261,22 +5261,28 @@ SurfaceOccurrenceComplexProducer::produce(
                         })) {
           error.code = SurfaceOccurrenceComplexErrorCode::MismatchedIsolationEvidence;
           error.relation = relationId;
-          const auto &firstSpan = *evidence.firstEndpointSpan;
-          const auto &secondSpan = *evidence.secondEndpointSpan;
-          const auto &firstOccurrence = *firstRecord->second;
-          const auto &secondOccurrence = *secondRecord->second;
-          const auto region = firstOccurrence.topologyRegion;
-          const auto seam = *firstSpan.collinearEdge;
+          const auto &canonicalFirstSpan = *evidence.firstEndpointSpan;
+          const auto &canonicalSecondSpan = *evidence.secondEndpointSpan;
+          const auto &canonicalFirstOccurrence = *firstRecord->second;
+          const auto &canonicalSecondOccurrence = *secondRecord->second;
+          const auto region = canonicalFirstOccurrence.topologyRegion;
+          const auto seam = *canonicalFirstSpan.collinearEdge;
           std::string site =
               "relation-collinear-seam;region=" + std::to_string(region.index()) +
               ";seam=" + std::to_string(seam.first().index()) + "," +
               std::to_string(seam.second().index()) +
-              ";relation=" + std::to_string(relationId.first.index()) + "," +
-              std::to_string(relationId.second.index()) +
+              ";relation=" + std::to_string(relationId.first.cell().index()) + ":" +
+              std::to_string(static_cast<int>(
+                  relationId.first.canonical_corner_role())) + "," +
+              std::to_string(relationId.second.cell().index()) + ":" +
+              std::to_string(static_cast<int>(
+                  relationId.second.canonical_corner_role())) +
               ";first=" + isolation_binding_label(
-                  firstSpan.interiorBinding.face, firstSpan.interiorBinding.sheet) +
+                  canonicalFirstSpan.interiorBinding.face,
+                  canonicalFirstSpan.interiorBinding.sheet) +
               ";second=" + isolation_binding_label(
-                  secondSpan.interiorBinding.face, secondSpan.interiorBinding.sheet);
+                  canonicalSecondSpan.interiorBinding.face,
+                  canonicalSecondSpan.interiorBinding.sheet);
           std::size_t matchingCount = 0U;
           std::size_t passingCount = 0U;
           for (const auto &certificate :
@@ -5284,8 +5290,8 @@ SurfaceOccurrenceComplexProducer::produce(
             if (certificate.region() != region || certificate.seam() != seam)
               continue;
             ++matchingCount;
-            if (certified_seam_direction(firstOccurrence, secondOccurrence,
-                                         firstSpan, secondSpan, certificate))
+            if (certified_seam_direction(canonicalFirstOccurrence, canonicalSecondOccurrence,
+                                         canonicalFirstSpan, canonicalSecondSpan, certificate))
               ++passingCount;
           }
           site += ";certs=" + std::to_string(matchingCount);
@@ -5295,26 +5301,26 @@ SurfaceOccurrenceComplexProducer::produce(
             if (certificate.region() != region || certificate.seam() != seam)
               continue;
             std::string clause;
-            if (!firstSpan.collinearEdge.has_value() ||
-                firstSpan.collinearEdge != secondSpan.collinearEdge ||
-                firstSpan.collinearEdge != certificate.seam()) {
+            if (!canonicalFirstSpan.collinearEdge.has_value() ||
+                canonicalFirstSpan.collinearEdge != canonicalSecondSpan.collinearEdge ||
+                canonicalFirstSpan.collinearEdge != certificate.seam()) {
               clause = "collinear";
-            } else if (firstOccurrence.topologyRegion != certificate.region() ||
-                       secondOccurrence.topologyRegion != certificate.region()) {
+            } else if (canonicalFirstOccurrence.topologyRegion != certificate.region() ||
+                       canonicalSecondOccurrence.topologyRegion != certificate.region()) {
               clause = "region";
-            } else if (firstSpan.interiorBinding.face !=
-                       firstOccurrence.placement.selectedFace) {
+            } else if (canonicalFirstSpan.interiorBinding.face !=
+                       canonicalFirstOccurrence.placement.selectedFace) {
               clause = "first-face";
-            } else if (secondSpan.interiorBinding.face !=
-                       secondOccurrence.placement.selectedFace) {
+            } else if (canonicalSecondSpan.interiorBinding.face !=
+                       canonicalSecondOccurrence.placement.selectedFace) {
               clause = "second-face";
             } else if (certificate.firstSheet() == certificate.secondSheet()) {
               clause = "same-sheet";
             } else {
               const auto firstSide = certified_seam_wedge_side(
-                  firstOccurrence, firstSpan.interiorBinding, certificate);
+                  canonicalFirstOccurrence, canonicalFirstSpan.interiorBinding, certificate);
               const auto secondSide = certified_seam_wedge_side(
-                  secondOccurrence, secondSpan.interiorBinding, certificate);
+                  canonicalSecondOccurrence, canonicalSecondSpan.interiorBinding, certificate);
               if (!firstSide.has_value()) {
                 clause = "first-side";
               } else if (!secondSide.has_value()) {
