@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb24-seam-frame-values-compile-20261021-b",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb24-seam-frame-values-compile-b",
-  "source_sha": "dae267a82fb884ff9eba4fd0122ad61750d0c924",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb24-seam-frame-values"
+  "request_id": "m6-cp3-cb24-closeout-docs-20261021-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb24-closeout-docs",
+  "file_id": "1ydkTyPA_x8_LReREcu2ZsOUWZvHpPIhp",
+  "patch_sha256": "47726f7b1700b832171afa090959d1d8e47d3cf8ea9deae6cf17c36c0d37bee7",
+  "base_sha": "28be7046173c4b01ba0939ad2114e08d5a8f7d3b",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close CB24 and hand off independent review",
+  "retention_days": 7
 }
