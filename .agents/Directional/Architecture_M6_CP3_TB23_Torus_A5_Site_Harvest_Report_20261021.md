@@ -2,7 +2,7 @@
 
 - **Authority:** artifact-only Test + Benchmark `M6-CP3-TB23-RP01-TORUS-A5-SITE-HARVEST`; semantic source `c6e90916eb90bfd33bc8a38c5ece7def15dcc766`, immutable CB22B package `12341307713` (ZIP `b5f9a6688226375ea1c6241c2d9a464d9b9ede7679f9259acd03b3fbbb1c8ad5`).
 - **Execution:** [run 39609365590](https://github.com/akashskypatel/Directional/actions/runs/39609365590), result `12348649684`, ZIP SHA-256 `5ce737452a23637e74f0241f5f8a9a0ebe34b874b83ad1ff2d0d6f4456ee34d6`; harness executor `0948a81b09e5ff07d240d01f8968f225c285ac2c`, harness SHA-256 `bf2cb7bc2799137e9a3556816380dc93388e9e05ee134cf320b068411f982cbe`.
-- **Integrity:** 28/28 preflight and postflight package hashes; 21/21 result files verified against `SHA256SUMS`; 16/16 selected/executed in distinct processes, zero skips, 6 PASS / 10 RED; source, package, execution view and frozen selectors unchanged; `compile=false`, `relink=false`, `benchmarks=false`, `selector497=false`, `exit=0`. No rebuild.
+- **Integrity:** 28/28 preflight and postflight package hashes; 20/20 result files verified against `SHA256SUMS`; 16/16 selected/executed in distinct processes, zero skips, 6 PASS / 10 RED; source, package, execution view and frozen selectors unchanged; `compile=false`, `relink=false`, `benchmarks=false`, `selector497=false`, `exit=0`. No rebuild.
 - **Site notation:** all ten RED rows share full `site_raw=relation-collinear-seam;region=0;seam=60,61;relation=0:1,1:0;first=120/0;second=97/2;certs=1;cert0=120/0->97/2:first-face`. Full untruncated per-row occurrences and raw-log hashes are in the immutable result `ledger.tsv`.
 
 | Key | Fixture | Path | Verdict | Label | Region | Seam | Certificate / first clause |
