@@ -2,6 +2,15 @@
 
 Immutable artifact-only [run 39549820087](https://github.com/akashskypatel/Directional/actions/runs/39549820087), result `12323004201` (ZIP SHA-256 `71569a41315a727da3b1285cbdc94ffa360c366074fdecc3729ef0ed0b058c87`), CB21 package `12318897957`, source `8453e19e6ac7d976a9cac45978ad31104a52f034`: 11 selected/executed, 4 PASS, 7 RED, zero skips, immutable postflight. Five formerly CP2-GREEN torus identities pass shared fixture selection but RED downstream at TQ:8387, 5831, 6007, 8324, 1913 (distinct first sites; do not equate to five newly proven stable regressions). `cp3entry:1` reaches D2 assertion TQ:2827; receipt is reciprocal=5, holonomy=5, oddFaceGaugePairs=0, all candidate deltas 0. `focused30:12` unchanged A5 failure TQ:5147. Four controls PASS. **Candidate only:** TB22 Review owns causal/regression adjudication; no stable event added or historical counter changed: 66/17/49, debt 1, CP2 491/491, R3 rejected 403/497, selector497 frozen. Report: `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Report_20261021.md`.
 
+**Review (RA-117, 2026-10-21):** the five CP2 rows have two causes. The candidate attributions below change no counts:
+
+| Family | Identities | Locus / origin | Status |
+|---|---|---|---|
+| F: torus witness fixture lacks `fieldTransportAtlas` | `focused30:6`, `selector:447` | TQ:1607–1796; factory `atlas-binding` S:8462; `7de636c88` added the binding to the other pipeline fixtures (TQ:649, 757, 861) while this one was masked by `88aa8eae0` | CB22 Part A (one line) |
+| A5-ISO: torus A5 `MismatchedIsolationEvidence` (`a5-side`) | `focused30:20, 24, 26, 27, 28`; `selector:444, 446, 448`; probable `focused30:25`; F rows next | RP:4318/4359 side crossing (pre-CP2) or the RP:5205–5221 certified-collinear-seam reject (`8be01326d`, post-CP2); R3-classified, previously unowned; predates CB20 | CB22 Part B site diagnostic → TB23 → DEFN-ISO |
+
+Record: `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Review_Decision.md`.
+
 ## TB21 — selector-497 census on CB20A; candidate/non-stable (2026-10-21)
 
 Artifact-only [run 39533914719](https://github.com/akashskypatel/Directional/actions/runs/39533914719), result `12317287104` (ZIP SHA-256 `12279a26fbe8d2f9d2c4bae6b0317b46b9fb6480212127a59e415fb46f089c8d`), semantic source `e22c5da5f`, package `12310848591`. **449/497 PASS, 48 RED; 0 PASS→RED; RED→PASS `cp3entry:6`.** Every other RED keeps its TB18 first failure, except the eight M2 rows, which keep their TB20 failures. Inventory `.agents/Directional/Architecture_M6_CP3_TB21_Selector_497_Red_Inventory.tsv`. Reviewed by RA-115; no stable count changes.

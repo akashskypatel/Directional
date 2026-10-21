@@ -1,9 +1,36 @@
-## CURRENT — TB22 artifact-only semantic RED; mandatory independent Review next (2026-10-21)
+## CURRENT — TB22 reviewed (RA-117): fixture atlas defect and unowned torus A5 isolation family; CB22 next (2026-10-21)
 
+- [ ] **EXACT NEXT:** `M6-CP3-CB22-RP01-TORUS-A5-ISOLATION-SITE` — Code + Build, RA-117.5:
+  - Part A (TQ, one line): `fixture.fieldTransportAtlas = snapshots.fieldTransportAtlas;` after TQ:1672 in `make_nonzero_z4_torus_witness_fixture`, as at TQ:649/861;
+  - Part B (RP + header, rejection path only): `std::string isolationSite` as the last member of `SurfaceOccurrenceComplexError`; filled at the isolation-evidence returns (`side-step` RP:4318, `side-collinear` RP:4359, `wedge-edge` RP:4470, `wedge-fan` RP:4551, `relation-collinear-seam` RP:5205–5221 with the failing `certified_seam_direction` clause); appended as `;site=` to the legacy failure name at RP:8963;
+  - no A5 decision, code or ordering change; no other test; no A4;
+  - eight-target GMP/GMPXX compile, `runtimeExecution=false`; record `Architecture_M6_CP3_CB22_Torus_A5_Isolation_Site_Code_Build_Record_20261021.md`;
+  - STOP on a compile failure or any need to change an A5 decision, another test, or A4.
+- [ ] `M6-CP3-CB22-RP01-TORUS-A5-ISOLATION-SITE-REV` — mandatory Review: static no-decision-change check; TB23 rows (A5-ISO `focused30:20/24/25/26/27/28`, `selector:444/446/448`; F `focused30:6`, `selector:447`; `cp3entry:6`, `selector:217`, TB18 A#14, `selector:443`, one certified-seam positive control) and predictions.
+- [ ] Planned, not authorized: TB23 → TB23-REV → DEFN-ISO (A4 seam certificate ↔ A5 binding contract; the `8be01326d` reject) → corrective CB/TB → DEFN-M1 (RA-105.3; also `focused30:12`, `cp3entry:2`) → corrective CB/TB → DEFN-T1 (D2 attainability on the torus) → fixture debt (242 per `Architecture_M6_CP3_CB19_Selector242_Atlas_Authority_Test_Plan_20261020.md`, then 174 → 250 → adjacent-sheet → 191 → 442, plus I/R sites TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518) → census → RP-01 Review.
+- **Turn sequence:** TB22 (reported) → TB22-REV (RA-117) → **CB22** → CB22-REV → TB23 → TB23-REV → DEFN-ISO → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+- Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, selector 497; candidate evidence TB21 449/497; `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
+
+---
+
+## HISTORY — Torus witness scope: CB21 compiled and accepted (RA-116); TB22 harvested and reviewed (RA-117) (2026-10-21)
+
+- [x] `M6-CP3-CB21-RP01-TORUS-WITNESS-SCOPE` — Code + Build, test-only (TQ), RA-115.5:
+  - evaluate every torus witness predicate on every candidate (gauge presence, delta, reciprocal tracer pair, holonomy match), with no early `continue` on the delta;
+  - select the first D2-qualifying candidate (`delta ∈ {1,3}`), else the first that passes every non-gauge predicate; throw only if none passes them;
+  - add `selectionReceipt` (seven counts, a `c<i>` entry per candidate, `selected=`) as the last member of `ProducedTorusWitnessFixture`, and append it to the throw message;
+  - `cp3entry:1` keeps its TQ:2802 D2 assertion and streams the receipt; no other test changes; no `src`/`include`;
+  - eight-target GMP/GMPXX compile, `runtimeExecution=false`; record `Architecture_M6_CP3_CB21_Torus_Witness_Scope_Code_Build_Record_20261021.md`;
+  - STOP on a compile failure or any need to touch `src`, `include` or another test.
+  - **Evidence:** source `8453e19e6ac7d976a9cac45978ad31104a52f034`, run `39540888446` GREEN, package `12318897957`, hashes 28/28, GMP/GMPXX, no runtime. Record: `Architecture_M6_CP3_CB21_Torus_Witness_Scope_Code_Build_Record_20261021.md`.
+- [x] **CB21 independent Review (RA-116):** exact one-file GitHub diff and packaged TQ independently checked; 28/28 package hashes, GMP/GMPXX, runtime-free. Static scope/compile accepted only; no selector or runtime promotion. Decision: `.agents/Directional/Architecture_M6_CP3_CB21_Torus_Witness_Scope_Review_Decision_20261021.md`.
 - [x] `M6-CP3-TB22-RP01-TORUS-WITNESS-HARVEST`: run `39549820087`, result `12323004201`, exact CB21 source `8453e19e`; 11/11 selected/executed, 4 PASS / 7 RED, immutable postflight. Five previously CP2-GREEN torus cases fail at later assertions, so predicted P1 is false; `cp3entry:1` D2 odd gauge assertion fails with five reciprocal/holonomy matches and zero odd gauges; `focused30:12` A5 RED; four controls PASS. No build or source/selector edits. Full evidence in `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Report_20261021.md`.
-- [ ] **EXACT NEXT:** `M6-CP3-TB22-RP01-TORUS-WITNESS-HARVEST-REV` — independent Review + Plan: reverify exact 11 raw logs/receipts, categorize five downstream failure sites and the D2 witness shortage, decide whether fixture-selection scope was sufficient, and issue exactly one corrective/definition successor; do not infer one now.
-- Planned, **not authorized until Review**: DEFN-T1 (D2 attainability under RA-111.3) → DEFN-M1 (RA-105.3) → corrective CB/TB → fixture debt → census → RP-01 Review.
-- Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, selector497; latest broad TB21 candidate 449/497; RP-01 open, RP-02 UNREACHED, Gate C suspended.
+- [x] Review (RA-117, TB22-REV):
+  - harvest verified: result `12323004201`, 15/15 hashes, 11/11 executed, 4 PASS / 7 RED, postflight immutable; the report matches the raw logs;
+  - falsifier not observed (reciprocal 5/5, holonomy 5/5, `selected=c0`): CB21 accepted at runtime for its scope; `cp3entry:1` RED at its D2 assertion (all five minor-cycle carriers `delta=0`); P1 falsified;
+  - F: `focused30:6`, `selector:447` — the torus witness fixture never sets `fieldTransportAtlas` (missed by `7de636c88` while masked);
+  - A5-ISO: `focused30:20/24`, `selector:446` — A5 `MismatchedIsolationEvidence` (`a5-side`), the same unowned family as `selector:444/448`, `focused30:26/27/28`; not caused by CB20; branch unknown;
+  - record: `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Review_Decision.md`.
 
 ---
 

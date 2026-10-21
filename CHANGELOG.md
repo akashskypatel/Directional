@@ -1,3 +1,9 @@
+## 2026-10-21 — TB22 Review (RA-117): fixture selection fixed; fixture atlas defect and unowned torus A5 isolation family; CB22 next
+
+- Review re-verified TB22 (result `12323004201`): 11/11 executed, 4 PASS / 7 RED, 15/15 hashes. The fixture now selects a witness (reciprocal 5/5, holonomy 5/5), so CB21 works for its scope. `cp3entry:1` fails at its own D2 assertion: all five minor-cycle carriers have gauge delta 0.
+- The five CP2 rows now fail later, for two causes. `focused30:6` and `selector:447` rebuild the product from a draft without an atlas, because the torus witness fixture never sets `fieldTransportAtlas` (missed by `7de636c88` while the fixture was masked). `focused30:20/24` and `selector:446` hit A5 `MismatchedIsolationEvidence` (`a5-side`), the same unowned family already failing on `selector:444/448` and `focused30:26/27/28`, including the torus G4-B002 extraction. It predates CB20.
+- Next: CB22 adds the one-line atlas binding and an A5 isolation rejection site diagnostic, with no decision change; then TB23 and DEFN-ISO. Accounting is unchanged.
+
 ## 2026-10-21 — TB22 immutable torus witness harvest
 
 - Artifact-only TB22 [run 39549820087](https://github.com/akashskypatel/Directional/actions/runs/39549820087), result `12323004201`: all 11 identities selected in independent processes, 4 PASS / 7 RED; exact CB21 package/source, immutable postflight. Five torus consumers previously CP2-GREEN now fail downstream (P1 falsified), D2 own assertion confirms 0 odd gauges despite five reciprocal/holonomy matches, independent A5 row remains RED, four controls PASS. No source, selector, benchmark or compile mutation. Semantic RED routes only to `M6-CP3-TB22-RP01-TORUS-WITNESS-HARVEST-REV`; stable ledger unchanged. Report `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Report_20261021.md`.
