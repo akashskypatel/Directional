@@ -5340,6 +5340,74 @@ SurfaceOccurrenceComplexProducer::produce(
                                                    certificate.secondSheet()) +
                     ":" + clause;
           }
+          // Rejection-only chart, support and seam-side witnesses. No
+          // admission or transport decision reads the appended site fields.
+          const auto selected_face_label = [&](const SurfaceOccurrence &occurrence) {
+            const auto row = phaseFront.sourceTopologyRegions().row_for_topology(
+                occurrence.placement.selectedFace);
+            if (!row.has_value()) return std::string("none");
+            return isolation_binding_label(
+                occurrence.placement.selectedFace,
+                phaseFront.sourceTopologyRegions().sheet_for_row(*row));
+          };
+          const auto support_label = [](const SurfaceOccurrence &occurrence) {
+            switch (authority::support_kind(occurrence.support)) {
+            case authority::SourceSupportKind::Vertex: return "vertex";
+            case authority::SourceSupportKind::Edge: return "edge";
+            case authority::SourceSupportKind::FaceInterior: return "face";
+            }
+            return "unknown";
+          };
+          const auto wedge_label = [&](const SurfaceOccurrence &occurrence) {
+            std::string labels;
+            for (const auto &binding : occurrence.cornerWedgeBindings) {
+              if (!labels.empty()) labels += "+";
+              labels += isolation_binding_label(binding.face, binding.sheet);
+            }
+            return labels;
+          };
+          site += ";sel=" + selected_face_label(canonicalFirstOccurrence) + "," +
+                  selected_face_label(canonicalSecondOccurrence);
+          site += ";support=" + std::string(support_label(canonicalFirstOccurrence)) +
+                  "," + support_label(canonicalSecondOccurrence);
+          site += ";wedge=" + wedge_label(canonicalFirstOccurrence) + "," +
+                  wedge_label(canonicalSecondOccurrence);
+          std::size_t spanOnlyIndex = 0U;
+          for (const auto &certificate :
+               phaseFront.isolationSeamTransportCertificates()) {
+            if (certificate.region() != region || certificate.seam() != seam)
+              continue;
+            std::string clause;
+            if (!canonicalFirstSpan.collinearEdge.has_value() ||
+                canonicalFirstSpan.collinearEdge != canonicalSecondSpan.collinearEdge ||
+                canonicalFirstSpan.collinearEdge != certificate.seam()) {
+              clause = "collinear";
+            } else if (canonicalFirstOccurrence.topologyRegion != certificate.region() ||
+                       canonicalSecondOccurrence.topologyRegion != certificate.region()) {
+              clause = "region";
+            } else if (certificate.firstSheet() == certificate.secondSheet()) {
+              clause = "same-sheet";
+            } else {
+              const auto firstSide = certified_seam_wedge_side(
+                  canonicalFirstOccurrence, canonicalFirstSpan.interiorBinding,
+                  certificate);
+              const auto secondSide = certified_seam_wedge_side(
+                  canonicalSecondOccurrence, canonicalSecondSpan.interiorBinding,
+                  certificate);
+              if (!firstSide.has_value()) {
+                clause = "first-side";
+              } else if (!secondSide.has_value()) {
+                clause = "second-side";
+              } else if (*firstSide == *secondSide ||
+                         *firstSide == CertifiedSeamSide::NotOnSeam ||
+                         *secondSide == CertifiedSeamSide::NotOnSeam) {
+                clause = "same-side";
+              } else {
+                clause = *firstSide == CertifiedSeamSide::First ? "forward" : "reverse";
+              }
+            }
+            site += ";spanOnly" + std::to_string(spanOnlyIndex++) + "=" + clause;
+          }
           error.isolationSite = std::move(site);
           return error;
         }
