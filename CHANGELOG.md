@@ -1,3 +1,9 @@
+## 2026-10-21 — CB24 seam-frame diagnostic compiled; independent Review next
+
+- RA-124.5's two-hunk diagnostic-only change is committed at `dae267a82fb884ff9eba4fd0122ad61750d0c924`: RP appends the canonical occurrence branches, selected/span face gauges and certificate turn pairs to the existing A5 rejection site; the D3 fixture helper now reports the complete A5 rejection. No decision or assertion changed.
+- [Eight-target GMP/GMPXX compile 39667030493](https://github.com/akashskypatel/Directional/actions/runs/39667030493) GREEN; package `12378590512` ZIP SHA-256 `bbaaa3853e4a0d3cef13d327fefa10676ab0d10108213964772215ec79d630b4`, 28/28 hashes, `runtimeExecution=false`; build record `Architecture_M6_CP3_CB24_Seam_Frame_Values_Site_Code_Build_Record_20261021.md`.
+- Mandatory CB24 independent Review next to inspect the diff/package and freeze TB25's eleven-row harvest. No runtime acceptance or regression-ledger promotion; CP2 491/491, stable 66/17/49, debt 1 remain unchanged.
+
 ## 2026-10-21 — DEFN-ISO-A census reviewed (RA-124): the certified-seam contract cannot pass on shared-node producer data
 
 - Review accepted the census's `src` inventory and amended two answers: the annulus producer never sets a corner branch, and the turn arithmetic it called undecidable can be derived per producer.

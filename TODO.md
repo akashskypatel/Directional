@@ -1,14 +1,8 @@
-## CURRENT — Census reviewed (RA-124): the seam contract cannot pass on shared-node producer data; frame values (CB24) before DEFN-SEAM (2026-10-21)
+## CURRENT — CB24 compiled; mandatory independent Review of seam frame values before TB25 (2026-10-21)
 
-- [ ] **EXACT NEXT:** `M6-CP3-CB24-RP01-SEAM-FRAME-VALUES-SITE` — Code + Build, RA-124.5, compile only:
-  - RP relation-collinear-seam block, after `spanOnlyN`, before `error.isolationSite = std::move(site);`: append `;branch=<a>,<b>`, `;gaugeSel=<a>,<b>`, `;gaugeSpan=<a>,<b>` (`none` if unavailable) and `;turnN=<f>,<r>` per matching certificate in `certN` order;
-  - TQ:2756–2762 (`m6cp3_produced_seam_fixture` A5 branch): record `a5_rejection_message(a5Construction)`;
-  - no decision, return, error-code or assertion change; append only; every other file unchanged; at most 100 columns;
-  - eight-target GMP/GMPXX compile, `runtimeExecution=false`; record `Architecture_M6_CP3_CB24_Seam_Frame_Values_Site_Code_Build_Record_20261021.md`;
-  - STOP on any compile error or any need to edit outside the two hunks.
-- [ ] **CONDITIONAL:** `M6-CP3-CB24-RP01-SEAM-FRAME-VALUES-SITE-REV` — Review: verifies the diff and package; freezes the TB25 plan (RA-124.6).
-- [ ] Planned, not authorized: TB25 (`focused30:20`, `selector:444`, `focused30:28`, `cp3entry:3`, `cp3entry:5`; guard `selector:447`; controls `cp3entry:6`, `selector:217`, TB18 A#14, `selector:443`, `focused30:7`) → TB25-REV → DEFN-SEAM → DEFN-SEAM-REV → corrective CB → CB-REV → TB → TB-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
-- **Turn sequence:** TB24 → TB24-REV (RA-123) → DEFN-ISO-A → DEFN-ISO-A-REV (RA-124) → **CB24** → CB24-REV → TB25 → TB25-REV → DEFN-SEAM → DEFN-SEAM-REV → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+- [ ] **EXACT NEXT:** `M6-CP3-CB24-RP01-SEAM-FRAME-VALUES-SITE-REV` — independent Review under RA-124.5. Verify the two-hunk rejection-only diff at source `dae267a82fb884ff9eba4fd0122ad61750d0c924` and compile-only package `12378590512` from [run 39667030493](https://github.com/akashskypatel/Directional/actions/runs/39667030493) (eight GMP/GMPXX targets, 28/28 checksums, `runtimeExecution=false`). Freeze RA-124.6's eleven-row TB25 plan and exact successor ID; do not run TB25 in Review.
+- [x] `M6-CP3-CB24-RP01-SEAM-FRAME-VALUES-SITE` — two authorized diagnostic hunks (RP +28; TQ +1/−6), no admission/return/assertion changes. Applied commit `dae267a82fb884ff9eba4fd0122ad61750d0c924`; record: `.agents/Directional/Architecture_M6_CP3_CB24_Seam_Frame_Values_Site_Code_Build_Record_20261021.md`. Compile/package verification is complete; independent review is pending.
+- [ ] **CONDITIONAL:** TB25 (canonical ID to be frozen by CB24-REV), eleven artifact-only identities from RA-124.6. Then TB25-REV, DEFN-SEAM, DEFN-M1, DEFN-T1 and subsequent recovery only when independently authorized.
 - Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB21 candidate 449/497; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
 
 ---
