@@ -1,0 +1,2 @@
+# CB20A temporary snapshot trigger cleanup
+.agents/connector-triggers/source-snapshot/cb20a-20261021.txt
