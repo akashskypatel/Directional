@@ -1,0 +1,2 @@
+Source snapshot trigger for M6-CP3-CB23-RP01-TORUS-A5-SEAM-FACE-SITE
+Entry STATUS commit a089dfd9c2a60ade5c3673620ca7aa086cfdb797
