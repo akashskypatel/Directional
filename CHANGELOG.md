@@ -1,3 +1,9 @@
+## 2026-10-21 — CB20A Review (RA-113): corrected gauge-pin domain compiled; TB20 next
+
+- CB20A corrected the five test accessors and tightened `RegionGaugeShiftPassesPin` to require a product (source `e22c5da5f`). The compile (run `39520787768`, package `12310848591`) is green. The agent left the turn without a record, so Review verified the package independently: ZIP digest, 28/28 hashes, empty statuses, no warnings, GMP/GMPXX, `runtimeExecution=false`.
+- RA-113 accepts CB20 and CB20A as one compiled unit, statically. It sets 26 TB20 rows (9 M2, 10 M1, 3 controls, 3 suite, 1 oracle) and predictions P1–P4: the suite passes, no pin site on a hard edge, no span site, and the controls pass.
+- Next: TB20 (artifact-only) before the package expires on 2026-10-28, then TB20-REV. Accounting is unchanged.
+
 ## 2026-10-20 — CB20 compile-stop Review (RA-112): source accepted statically; CB20A next
 
 - CB20 implemented the frozen pin domain in `7dc9b89ec` (S +37/−5 inside the pin block; TQ +82/−2). The compile (run `39512680019`) failed on five test lines that applied `*` to `DomainResult<SourceFaceId>`, which offers `value()` instead.

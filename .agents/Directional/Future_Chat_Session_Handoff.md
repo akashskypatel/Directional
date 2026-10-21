@@ -34,62 +34,71 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-20, CB20 compile-stop Review (RA-112). The CB20 S patch `7dc9b89ec` matches the frozen domain (RA-111.4), statically. The compile failed only on five test lines that dereference `DomainResult` with `*`; the type offers `value()` instead. RA-112.4 tightens `RegionGaugeShiftPassesPin` to require a product. Next: CB20A corrects the tests (TQ only, compile only). |
-| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; refetch before mutation. Last compiled semantic source `d2c7483cde8e65d6c35c5df06fa880465a4da46c`. CB20 source `7dc9b89ecd13753173057577d1da320db9515ebb` is not compiled. |
-| Last compiled semantic source | CB19A eight-target GMP/GMPXX compile [39446712217](https://github.com/akashskypatel/Directional/actions/runs/39446712217), package `12275794192`, ZIP SHA-256 `e4a39cdb2db5ef9953748cffd3e031e4294ddaf348f4a64fee3b97e08bdd723a`; hashes `28/28`, statuses clean, `runtimeExecution=false`; expires 2026-10-27T15:24Z; accepted by RA-107. Record: `Architecture_M6_CP3_CB19A_Factory_Rejection_Site_Code_Build_Record_20261020.md`. |
+| Currency | 2026-10-21, CB20A Review (RA-113). CB20 and CB20A are accepted as one compiled unit: the frozen pin domain (RA-111.4) is compiled and verified statically. The agent left CB20A `IN_PROGRESS` without a record, so RA-113.1 holds the verified package facts. Next: TB20 (artifact-only, 26 rows) measures the corrected pin at runtime. |
+| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; refetch before mutation. Semantic source `e22c5da5f8ab86a39650c670340a658847a2ac7e`; HEAD `src`, `include` and `tests` are identical to it. |
+| Last compiled semantic source | CB20A eight-target GMP/GMPXX compile [39520787768](https://github.com/akashskypatel/Directional/actions/runs/39520787768), package `12310848591`, ZIP SHA-256 `0c9f048e9a67fdaf61231b2ffa6834ee21a48e142f9cdae9e7ab14e015fc3ff5`; hashes `28/28`, statuses clean, `runtimeExecution=false`; **expires 2026-10-28T00:23:30Z**; accepted by RA-113. Record: `Architecture_M6_CP3_CB20A_Gauge_Pin_Domain_Review_Decision.md` (RA-113.1). |
 | Last accepted semantic runtime | CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. R3 baseline **403/497** rejected. |
-| Latest candidate / rejected evidence | CB20 compile RED: run [39512680019](https://github.com/akashskypatel/Directional/actions/runs/39512680019), log artifact `12306507832`; five test accessor errors; record `Architecture_M6_CP3_CB20_Gauge_Pin_Domain_Code_Build_Stop_Record_20261020.md`, reviewed by RA-112. TB19A: run `39484475466`, artifact `12292268624` (ZIP `25d48ed7…7efa7c`), expires 2026-11-03; 7/7 selected, control `selector:443` PASS, 6 torus RED at `gauge-pin-consistency;edge=0,3`; report `Architecture_M6_CP3_TB19A_Torus_Rejection_Site_Harvest_Report_20261020.md`, accepted by RA-110. TB19: run `39464430751`, artifact `12285225197` (ZIP `2b5dfacf…dec0`), expires 2026-11-03; 16 valid rows; report `Architecture_M6_CP3_TB19_Factory_Rejection_Site_Harvest_Report_20261020.md`, accepted by RA-109. TB18 Part A `12231529583` (12/14) and Part B `12232299548` (448/497), expire 2026-11-03; candidate evidence per RA-105. First failures: `Architecture_M6_CP3_TB18_Selector_497_Red_Inventory.tsv`. |
+| Latest candidate / rejected evidence | CB20 compile RED (superseded by CB20A): run [39512680019](https://github.com/akashskypatel/Directional/actions/runs/39512680019), log artifact `12306507832`; five test accessor errors; record `Architecture_M6_CP3_CB20_Gauge_Pin_Domain_Code_Build_Stop_Record_20261020.md`, reviewed by RA-112. TB19A: run `39484475466`, artifact `12292268624` (ZIP `25d48ed7…7efa7c`), expires 2026-11-03; 7/7 selected, control `selector:443` PASS, 6 torus RED at `gauge-pin-consistency;edge=0,3`; report `Architecture_M6_CP3_TB19A_Torus_Rejection_Site_Harvest_Report_20261020.md`, accepted by RA-110. TB19: run `39464430751`, artifact `12285225197` (ZIP `2b5dfacf…dec0`), expires 2026-11-03; 16 valid rows; report `Architecture_M6_CP3_TB19_Factory_Rejection_Site_Harvest_Report_20261020.md`, accepted by RA-109. TB18 Part A `12231529583` (12/14) and Part B `12232299548` (448/497), expire 2026-11-03; candidate evidence per RA-105. First failures: `Architecture_M6_CP3_TB18_Selector_497_Red_Inventory.tsv`. |
 | Regression accounting | **66/17/49**, debt **1**, selector 497 frozen; R3 403/497 rejected, TB18 candidate 448/497. |
-| Active boundary | `RP-01` open. M2 = H-pin, CONFIRMED (RA-110.3). The corrected domain (RA-111.4) is implemented in `7dc9b89ec` and accepted statically by RA-112.2, but it is not yet compiled. All nine M2 identities still stop at the old pin, so the RA-103.5 R-route falsifier stays undetermined until TB20. Cut-set inclusion is open but fail-closed (RA-111.5). M1 certificate shadowing (10 identities, RA-105.3) is unchanged; its DEFN follows TB20-REV. `RP-02` UNREACHED; Gate C suspended. |
+| Active boundary | `RP-01` open. M2 = H-pin, CONFIRMED (RA-110.3). The corrected domain (RA-111.4) is compiled in `e22c5da5f` (RA-113) but not yet measured. The RA-103.5 R-route falsifier stays undetermined until TB20. Cut-set inclusion is open but fail-closed (RA-111.5); TB20's P3 bears on it. M1 certificate shadowing (10 identities, RA-105.3) is unchanged; its DEFN follows TB20-REV. `RP-02` UNREACHED; Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-CB20A-RP01-GAUGE-PIN-TEST-ACCESSOR` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-TB20-RP01-GAUGE-PIN-DOMAIN` — EXACT NEXT
 
-- **Type / owner:** Code + Build, compile only; implementation agent. Authority: RA-112.5 (`Architecture_M6_CP3_CB20_Gauge_Pin_Domain_Compile_Stop_Review_Decision.md`).
-- **Objective:** correct the CB20 test accessors, tighten the item 5 oracle, and produce the compiled package for the CB20 source.
+- **Type / owner:** Test + Benchmark, artifact-only; implementation agent. Authority: RA-113.3–113.5 (`Architecture_M6_CP3_CB20A_Gauge_Pin_Domain_Review_Decision.md`).
+- **Objective:** measure the corrected gauge pin at runtime on the 26 RA-113.3 rows, using the CB20A package.
 - **Read before work:**
-  - RA-112;
-  - TQ:1933–2012 (the two new tests) at `7dc9b89ec`;
-  - `include/directional/authority/AuthorityIds.h:73–93` (`DomainResult`);
-  - the CB20 stop record (build procedure, diagnostics).
-- **In scope (TQ only):**
-  1. **Accessors.** On TQ:1941, 1947, 1972, 1978 and 1979, replace `*face0` with `face0.value()` and `*face` with `face.value()`.
-  2. **Item 5 oracle.** In `RegionGaugeShiftPassesPin`, replace the product-or-other-error branch with one assertion that the result is a `SurfacePhaseFrontProduct`. The failure message prints the error's `sourceAuthoritySite`.
-  3. **Build.** GMP/GMPXX eight-target compile with the package and `runtimeExecution=false`. The CB20A record gives the TQ diff against `7dc9b89ec`, the package hashes and the 48-label count.
+  - RA-113;
+  - the TB19A harness `.agents/Directional/tools/m6_cp3_tb19a_torus_rejection_site_harness.sh` and the TB19A report (dispatch procedure);
+  - the TB19 report (M1 first failures).
+- **In scope:**
+  1. **Harness.** Create `.agents/Directional/tools/m6_cp3_tb20_gauge_pin_domain_harness.sh` from the TB19A harness. Its diff is limited to:
+     - `sha` `e22c5da5f8ab86a39650c670340a658847a2ac7e`, `artifact` `12310848591`, `digest` `0c9f048e9a67fdaf61231b2ffa6834ee21a48e142f9cdae9e7ab14e015fc3ff5`;
+     - the 26-row table from RA-113.3, whose fourth field is the baseline;
+     - the count 7→26;
+     - the `TB19A` labels and ledger header → `TB20`, and `TB18` → `baseline`.
+  2. **Run.** One dispatch against artifact `12310848591` before 2026-10-28T00:23:30Z.
+  3. **Report.** `Architecture_M6_CP3_TB20_Gauge_Pin_Domain_Harvest_Report_20261021.md`, containing:
+     - the run, artifact and digest;
+     - the 26-row table: status, first failure, product, detail, site and raw SHA-256;
+     - for each M1 row, whether its first failure equals TB19's after the +77 TQ mapping;
+     - P1–P4 marked observed or not observed. The report does not interpret the M2 outcomes.
 - **Out of scope:**
-  - S, `include` and every file other than TQ, which stay byte-identical to `7dc9b89ec`;
-  - any runtime, test execution or benchmark;
-  - the M1 binding and the R-route.
+  - any source, test, selector or workflow change;
+  - any repair;
+  - accounting changes;
+  - the M1 binding.
 - **Success evidence:**
-  - the TQ diff against `7dc9b89ec` touches only items 1–2;
-  - `git diff 7dc9b89ec -- src include` is empty;
-  - no line is longer than 100 columns;
-  - the compile is green, with verified package hashes and `runtimeExecution=false`;
-  - the record is committed.
-- **On success:** `M6-CP3-CB20A-RP01-GAUGE-PIN-DOMAIN-REV` (Review, mandatory). It accepts CB20 and CB20A together, authorizes TB20 and sets its rows.
+  - 26/26 single-identity selections;
+  - the package digest and 28/28 manifest are verified before and after the run;
+  - the result artifact is retained with its SHA-256;
+  - the report and harness are committed.
+- **On success:** `M6-CP3-TB20-RP01-GAUGE-PIN-DOMAIN-REV` (Review, mandatory). It adjudicates P1–P4, determines the R-route and decides whether a selector-497 regression run must come before the M1 DEFN.
 - **On failure/blocker:** STOP and return to Review on any of:
-  - a compile error (record the first diagnostic of each distinct error);
-  - any need to change a line outside items 1–2.
+  - a digest or manifest mismatch;
+  - a missing fixture;
+  - a selection count other than 26;
+  - a harness failure.
 
-  There is no second repair inside the turn.
+  There is no second harness repair inside the turn.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — next | `M6-CP3-CB20A-RP01-GAUGE-PIN-TEST-ACCESSOR` | Code + Build, compile only, TQ only, per RA-112.5. No runtime. |
-| 2 — mandatory | `M6-CP3-CB20A-RP01-GAUGE-PIN-DOMAIN-REV` | Review of the CB20 and CB20A source and the package; it authorizes TB20 and sets its rows. |
-| planned, not authorized | TB20 (artifact-only: the nine M2, the ten M1 as a no-regression check, the `SurfaceCellFactoryRejectionSite` suite, controls) → TB20-REV → DEFN on the M1 binding owner (RA-105.3) → corrective CB/TB → fixture debt (242, 174, 250, adjacent-sheet, 191, 442, plus the I/R sites) → census → RP-01 Review | Only as CB20A-REV assigns them. |
+| 1 — next | `M6-CP3-TB20-RP01-GAUGE-PIN-DOMAIN` | Test + Benchmark, artifact-only, 26 rows, per RA-113.5. The package expires 2026-10-28T00:23:30Z. |
+| 2 — mandatory | `M6-CP3-TB20-RP01-GAUGE-PIN-DOMAIN-REV` | Review: adjudicates P1–P4, determines the R-route and sets the next unit. |
+| planned, not authorized | [selector-497 regression run, if TB20-REV requires it] → DEFN on the M1 binding owner (RA-105.3) → corrective CB/TB → fixture debt (242, 174, 250, adjacent-sheet, 191, 442, plus the I/R sites) → census → RP-01 Review | Only as TB20-REV assigns them. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **code-build** — CB20A, compile only, TQ only (RA-112.5); never Test + Benchmark.
+`load_next`: **test-benchmark** — TB20, artifact-only (RA-113.5); never Code + Build.
 
 Minimum successor context after the mandatory start checklist and policies:
 
 0. `.agents/Directional/ORIENTATION.md`.
 1. `.agents/Directional/ROADMAP.md`.
 2. This handoff.
-3. `Architecture_M6_CP3_CB20_Gauge_Pin_Domain_Compile_Stop_Review_Decision.md` (RA-112, the CB20A specification); `Architecture_M6_CP3_CB20_Gauge_Pin_Domain_Code_Build_Stop_Record_20261020.md` (build procedure); `Architecture_M6_CP3_DEFN_P1_Gauge_Pin_Domain_Review_Decision.md` (RA-111, the frozen domain); `Architecture_M6_Frozen_Definitions.md` (RA-45); `LESSONS.md` §§2, 6, 7.
+3. `Architecture_M6_CP3_CB20A_Gauge_Pin_Domain_Review_Decision.md` (RA-113, the TB20 specification and package facts); `Architecture_M6_CP3_TB19A_Torus_Rejection_Site_Harvest_Report_20261020.md` and its harness (procedure); `Architecture_M6_CP3_TB19_Factory_Rejection_Site_Harvest_Report_20261020.md` (M1 baselines); `Architecture_M6_CP3_DEFN_P1_Gauge_Pin_Domain_Review_Decision.md` (RA-111, the domain); `LESSONS.md` §§1, 2, 7.
 4. `.agents/Directional/Regression_Root_Cause_Tracker.md` and `TODO.md`.
 
 **Review tooling:** `.agents/Directional/tools/` holds read-only `review_check.py`, `selector_probe.py`, and `fixture_probe.py`; history-sensitive review gates require real committed history, not a synthesized snapshot.
