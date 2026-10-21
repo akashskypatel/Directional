@@ -75,3 +75,5 @@
 
 - **Sequence:** TB22 → TB22-REV (RA-117) → **CB22** → CB22-REV → TB23 (torus A5 site harvest) → TB23-REV → DEFN-ISO (the A4 seam certificate ↔ A5 binding contract, including the `8be01326d` reject) → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
 - **Accounting:** unchanged (RA-117.4).
+
+Closed by RA-118 — CB22 compile stop reviewed; CB22A authorized (`Architecture_M6_CP3_CB22_Torus_A5_Isolation_Site_Compile_Stop_Review_Decision.md`).

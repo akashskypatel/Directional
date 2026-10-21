@@ -1,3 +1,15 @@
+## RA-118 — CB22 compile stop reviewed: diagnostic accepted statically; occurrence formatter and name correction authorized as CB22A (2026-10-21)
+
+Authority: `Architecture_M6_CP3_CB22_Torus_A5_Isolation_Site_Compile_Stop_Review_Decision.md`.
+
+- **RA-118.1** Run `39564087707`: exactly two errors, RP:5274–5275 (`OccurrenceId` has no `index`); rest of RP type-checks; TQ not compiled; no package.
+- **RA-118.2** CB22 diff (`384961bb4`) accepted statically: side sites print their `transition_between` inputs and certificate; the relation classifier mirrors `certified_seam_direction` (`valid` unreachable); `;site=` only on the five isolation returns; no A5 decision change.
+- **RA-118.3** Root cause: `OccurrenceId` is (cell, corner role); formatter `<cell>:<corner>` per TQ:3454–3468.
+- **RA-118.4** Design finding: inner canonical-order names shadow outer storage-order names in RP:5264–5337; rename with a `canonical` prefix.
+- **RA-118.5** Next: `M6-CP3-CB22A-RP01-TORUS-A5-ISOLATION-SITE-FORMATTER` (RP:5264–5337 only; compile only).
+- **RA-118.6** TB23 frame fixed: A5-ISO 9 rows, F 2 rows, controls `cp3entry:6`, `selector:217`, TB18 A#14, `selector:443`, `focused30:7`.
+- **RA-118.7** CB22A → CB22A-REV → TB23 → TB23-REV → DEFN-ISO → corrective CB/TB → DEFN-M1 → corrective → DEFN-T1 → fixture debt → census → RP-01 Review.
+
 ## RA-117 — TB22 reviewed: fixture selection fixed; five CP2 torus rows split into a fixture atlas defect and an unowned A5 isolation family; CB22 next (2026-10-21)
 
 Authority: `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Review_Decision.md`.
