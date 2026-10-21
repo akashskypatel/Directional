@@ -543,6 +543,8 @@ field-extraction and quad-remeshing pipeline.
   backend publishes, even when a later stage rejects: topology regions, isolation
   sheets and isolation seams, and the field-aligned curve network (traces from each
   singularity, mandatory boundary and feature edges, singularities colored by index).
+- Trace and display streamlines of the cross field (section 7): evenly spaced seeds,
+  adjustable line length and thickness, colored per line or by direction family.
 - Save fields through the existing field-conversion implementation.
 - Save pure quad meshes as OBJ or OFF.
 - Run field extraction and remeshing asynchronously so the viewer remains responsive.
@@ -673,6 +675,19 @@ A layer is absent when the run stopped before publishing it. A field without
 singularities has no traces. With the committed fixtures in
 `benchmarks/fixtures/milestone-g/`, the torus shows 4 regions, 3 isolation sheets and
 12 seam edges, and `sphere_prescribed` shows 24 traces between 8 singularities.
+
+### Trace field streamlines
+
+1. Load a mesh, then calculate a field (section 3) or load a RawField (section 4).
+2. In section 7, choose the field source and select **Trace streamlines**.
+
+Lengths are in average edge lengths. **Seed spacing** sets the minimum distance between
+seeds (0 seeds every face); **Steps** times **Step length** bounds the length of each
+half-line from its seed. **Line thickness** and **Line colors** (random per line, or by
+direction family) apply immediately without re-tracing. Lines stop at boundaries. Seeding
+is deterministic, so equal settings give equal lines. For a clean print look, hide the
+ground plane and set a white background in Polyscope's **View** and **Appearance**
+settings.
 
 The **Browse...** buttons use the operating system's native file dialog:
 

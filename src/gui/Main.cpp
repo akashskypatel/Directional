@@ -8,6 +8,7 @@
 #include <array>
 #include <atomic>
 #include <chrono>
+#include <cstdint>
 #include <cstring>
 #include <filesystem>
 #include <future>
@@ -27,6 +28,7 @@
 #include <imgui.h>
 
 #include <directional/fields/CompareCrossFields.h>
+#include <directional/visualization/FieldStreamlines.h>
 
 #include <polyscope/curve_network.h>
 #include <polyscope/point_cloud.h>
@@ -49,6 +51,9 @@ constexpr const char *kRegionBoundariesName = "A0 region boundaries";
 constexpr const char *kFaceRegionQuantity = "A0 topology region";
 constexpr const char *kFaceSheetQuantity = "A0 isolation sheet";
 constexpr const char *kFaceComponentQuantity = "A0 source component";
+constexpr const char *kStreamlinesName = "Field streamlines";
+constexpr const char *kStreamlineLineColors = "line colors";
+constexpr const char *kStreamlineFamilyColors = "direction family";
 
 enum class FilePickerTarget { None, Mesh, Field };
 
@@ -90,12 +95,14 @@ struct TaskResult {
   bool hasQuadMesh = false;
   bool hasComparison = false;
   bool hasSurfaceCellDiagnostics = false;
+  bool hasStreamlines = false;
   directional::gui::MeshData mesh;
   directional::gui::FieldData field;
   std::optional<directional::gui::FieldOptions> fieldOptions;
   directional::gui::QuadMeshData quadMesh;
   directional::gui::FieldComparisonData comparison;
   directional::gui::SurfaceCellDiagnosticsData surfaceCellDiagnostics;
+  directional::visualization::FieldStreamlines streamlines;
   std::optional<ComparisonReportContext> comparisonContext;
   int simplificationSourceFaceCount = 0;
   int simplificationRootCount = 0;
@@ -135,6 +142,31 @@ void text_colored_wrapped(const ImVec4 &color, const std::string &text) {
   ImGui::PushStyleColor(ImGuiCol_Text, color);
   ImGui::TextWrapped("%s", text.c_str());
   ImGui::PopStyleColor();
+}
+
+// One color per streamline from a small print-like palette; the multiplicative
+// hash keeps neighbouring line ids from sharing a color.
+Eigen::MatrixXd streamline_colors(const Eigen::VectorXi &edgeLine) {
+  static const std::array<Eigen::RowVector3d, 6> palette{
+      Eigen::RowVector3d(0.00, 0.75, 0.95), Eigen::RowVector3d(0.95, 0.10, 0.60),
+      Eigen::RowVector3d(1.00, 0.88, 0.10), Eigen::RowVector3d(0.30, 0.55, 0.95),
+      Eigen::RowVector3d(1.00, 0.55, 0.75), Eigen::RowVector3d(0.65, 0.45, 0.95)};
+  Eigen::MatrixXd colors(edgeLine.size(), 3);
+  for (Eigen::Index edge = 0; edge < edgeLine.size(); ++edge) {
+    const auto hash = static_cast<std::uint32_t>(edgeLine(edge)) * 2654435761U;
+    colors.row(edge) = palette[(hash >> 16U) % palette.size()];
+  }
+  return colors;
+}
+
+Eigen::MatrixXd family_colors(const Eigen::VectorXi &edgeFamily) {
+  Eigen::MatrixXd colors(edgeFamily.size(), 3);
+  for (Eigen::Index edge = 0; edge < edgeFamily.size(); ++edge) {
+    colors.row(edge) = edgeFamily(edge) == 0
+                           ? Eigen::RowVector3d(0.00, 0.75, 0.95)
+                           : Eigen::RowVector3d(0.95, 0.10, 0.60);
+  }
+  return colors;
 }
 
 template <typename DrawFunction>
@@ -249,6 +281,7 @@ private:
   std::optional<directional::gui::QuadMeshData> quadMesh_;
   std::optional<directional::gui::SurfaceCellDiagnosticsData>
       surfaceCellDiagnostics_;
+  std::optional<directional::visualization::FieldStreamlines> streamlines_;
 
   std::array<char, 1024> meshPath_{};
   std::array<char, 1024> fieldInputPath_{};
@@ -264,6 +297,12 @@ private:
   int fieldOutputFormat_ = 0;
   int fieldOutputSource_ = 0;
   int diagnosticsFieldSource_ = 0;
+  int streamlineFieldSource_ = 0;
+  float streamlineSeedSpacing_ = 2.0F;
+  int streamlineSteps_ = 120;
+  float streamlineStepLength_ = 0.5F;
+  float streamlineThickness_ = 0.06F;
+  int streamlineColorMode_ = 0;
   int fieldSampleStride_ = 1;
   float glyphLengthRatio_ = 0.35F;
   float glyphSurfaceOffsetRatio_ = 0.04F;
@@ -324,6 +363,7 @@ private:
     comparisonContext_.reset();
     quadMesh_.reset();
     clear_surface_cell_diagnostics();
+    clear_streamlines();
     calculatedFieldLabel_.clear();
     uploadedFieldLabel_.clear();
     calculatedFieldGlyph_ = {};
@@ -359,6 +399,13 @@ private:
                                kFaceComponentQuantity}) {
         inputMesh->removeQuantity(name, false);
       }
+    }
+  }
+
+  void clear_streamlines() {
+    streamlines_.reset();
+    if (polyscope::hasCurveNetwork(kStreamlinesName)) {
+      polyscope::removeCurveNetwork(kStreamlinesName);
     }
   }
 
@@ -604,7 +651,7 @@ private:
     }
   }
 
-  void sync_surface_cell_transforms() {
+  void sync_overlay_transforms() {
     if (!polyscope::hasSurfaceMesh(kInputMeshName)) {
       return;
     }
@@ -616,7 +663,8 @@ private:
       }
     };
     for (const char *name : {kNetworkTracesName, kNetworkMandatoryName,
-                             kRegionSeamsName, kRegionBoundariesName}) {
+                             kRegionSeamsName, kRegionBoundariesName,
+                             kStreamlinesName}) {
       if (polyscope::hasCurveNetwork(name)) {
         sync(polyscope::getCurveNetwork(name));
       }
@@ -689,6 +737,40 @@ private:
     }
   }
 
+  void apply_streamline_style() {
+    if (!streamlines_.has_value() || !polyscope::hasCurveNetwork(kStreamlinesName)) {
+      return;
+    }
+    auto *lines = polyscope::getCurveNetwork(kStreamlinesName);
+    lines->setRadius(streamlineThickness_ *
+                         static_cast<float>(streamlines_->averageEdgeLength),
+                     false);
+    lines
+        ->getQuantity(streamlineColorMode_ == 0 ? kStreamlineLineColors
+                                                : kStreamlineFamilyColors)
+        ->setEnabled(true);
+  }
+
+  void visualize_streamlines() {
+    if (!streamlines_.has_value()) {
+      return;
+    }
+    if (polyscope::hasCurveNetwork(kStreamlinesName)) {
+      polyscope::removeCurveNetwork(kStreamlinesName);
+    }
+    if (streamlines_->edges.rows() == 0) {
+      return;
+    }
+    auto *lines = polyscope::registerCurveNetwork(
+        kStreamlinesName, streamlines_->points, streamlines_->edges);
+    lines->addEdgeColorQuantity(kStreamlineLineColors,
+                                streamline_colors(streamlines_->edgeLine));
+    lines->addEdgeColorQuantity(kStreamlineFamilyColors,
+                                family_colors(streamlines_->edgeFamily));
+    apply_streamline_style();
+    sync_overlay_transforms();
+  }
+
   void visualize_surface_cell_diagnostics() {
     if (!surfaceCellDiagnostics_.has_value()) {
       return;
@@ -700,7 +782,7 @@ private:
     if (surfaceCellDiagnostics_->network.has_value()) {
       visualize_field_network(*surfaceCellDiagnostics_->network);
     }
-    sync_surface_cell_transforms();
+    sync_overlay_transforms();
   }
 
   directional::gui::ProgressCallback progress_callback() const {
@@ -998,6 +1080,47 @@ private:
     set_status("Running SurfaceCells diagnostics...");
   }
 
+  void launch_trace_streamlines() {
+    require_mesh();
+    const std::optional<directional::gui::FieldData> &source =
+        streamlineFieldSource_ == 0 ? calculatedField_ : uploadedField_;
+    if (!source.has_value()) {
+      throw std::runtime_error(
+          streamlineFieldSource_ == 0
+              ? "Calculate a field before tracing streamlines."
+              : "Load an uploaded field before tracing streamlines.");
+    }
+
+    const directional::gui::MeshData mesh = *mesh_;
+    const directional::gui::FieldData field = *source;
+    directional::visualization::FieldStreamlineOptions options;
+    options.seedSpacing = streamlineSeedSpacing_;
+    options.steps = streamlineSteps_;
+    options.stepLength = streamlineStepLength_;
+    const auto progress = progress_;
+    progress_->update(0, 100, "Tracing field streamlines");
+
+    task_ = std::async(std::launch::async, [mesh, field, options, progress]() {
+      TaskResult result;
+      try {
+        directional::gui::validate_field(field, mesh.faces.rows());
+        result.streamlines = directional::visualization::trace_field_streamlines(
+            mesh.vertices, mesh.faces, field.raw, options);
+        result.hasStreamlines = true;
+        result.message =
+            "Traced " + std::to_string(result.streamlines.lineCount) +
+            " streamlines from " +
+            std::to_string(result.streamlines.seedFaces.size()) + " seeds (" +
+            std::to_string(result.streamlines.edges.rows()) + " segments).";
+      } catch (const std::exception &error) {
+        result.error = error.what();
+      }
+      progress->update(100, 100, "Field streamlines finished");
+      return result;
+    });
+    set_status("Tracing field streamlines...");
+  }
+
   void process_completed_task() {
     if (!task_.valid() ||
         task_.wait_for(std::chrono::seconds(0)) != std::future_status::ready) {
@@ -1027,6 +1150,10 @@ private:
     if (result.hasQuadMesh) {
       quadMesh_ = std::move(result.quadMesh);
       visualize_quad_mesh();
+    }
+    if (result.hasStreamlines) {
+      streamlines_ = std::move(result.streamlines);
+      visualize_streamlines();
     }
     if (result.hasSurfaceCellDiagnostics) {
       surfaceCellDiagnostics_ = std::move(result.surfaceCellDiagnostics);
@@ -1260,7 +1387,7 @@ void save_quad_mesh() {
                                  calculatedFieldGlyph_);
     update_field_glyph_positions(kUploadedFieldGlyphName,
                                  uploadedFieldGlyph_);
-    sync_surface_cell_transforms();
+    sync_overlay_transforms();
     const bool isBusy = busy();
 
     ImGui::TextUnformatted("Directional Quad Remesher");
@@ -1664,6 +1791,64 @@ void save_quad_mesh() {
           ImGui::TextWrapped("SurfaceCells stopped at: %s",
                              diagnostics.pipelineStage.c_str());
         }
+      }
+    }
+
+    if (ImGui::CollapsingHeader("7. Field streamlines")) {
+      ImGui::TextWrapped(
+          "Traces streamlines of the cross field from evenly spaced seeds. "
+          "Each seed starts one line per direction family; lengths are in "
+          "average edge lengths.");
+      const char *streamlineSources[] = {"Calculated field", "Uploaded field"};
+      draw_labeled_full_width_control("Streamline field source",
+                                      [this, &streamlineSources] {
+                                        ImGui::Combo("##streamline_field_source",
+                                                     &streamlineFieldSource_,
+                                                     streamlineSources, 2);
+                                      });
+      draw_labeled_full_width_control(
+          "Seed spacing (0 seeds every face)", [this] {
+            ImGui::SliderFloat("##streamline_spacing", &streamlineSeedSpacing_,
+                               0.0F, 10.0F, "%.2f edges");
+          });
+      draw_labeled_full_width_control("Steps (line length = steps x step)",
+                                      [this] {
+                                        ImGui::InputInt("##streamline_steps",
+                                                        &streamlineSteps_, 10, 100);
+                                        streamlineSteps_ =
+                                            std::clamp(streamlineSteps_, 1, 5000);
+                                      });
+      draw_labeled_full_width_control("Step length", [this] {
+        ImGui::SliderFloat("##streamline_step", &streamlineStepLength_, 0.05F,
+                           2.0F, "%.2f edges");
+      });
+      draw_labeled_full_width_control("Line thickness", [this] {
+        if (ImGui::SliderFloat("##streamline_thickness", &streamlineThickness_,
+                               0.005F, 0.3F, "%.3f edges")) {
+          apply_streamline_style();
+        }
+      });
+      const char *colorModes[] = {"Random per line", "Direction family"};
+      draw_labeled_full_width_control("Line colors", [this, &colorModes] {
+        if (ImGui::Combo("##streamline_colors", &streamlineColorMode_,
+                         colorModes, 2)) {
+          apply_streamline_style();
+        }
+      });
+      const bool streamlineFieldAvailable =
+          streamlineFieldSource_ == 0 ? calculatedField_.has_value()
+                                      : uploadedField_.has_value();
+      ImGui::BeginDisabled(isBusy || !mesh_.has_value() ||
+                           !streamlineFieldAvailable);
+      if (ImGui::Button("Trace streamlines")) {
+        guarded_action([this] { launch_trace_streamlines(); });
+      }
+      ImGui::EndDisabled();
+      if (streamlines_.has_value()) {
+        ImGui::Text("Seeds: %d  Lines: %zu  Segments: %d",
+                    static_cast<int>(streamlines_->seedFaces.size()),
+                    streamlines_->lineCount,
+                    static_cast<int>(streamlines_->edges.rows()));
       }
     }
 

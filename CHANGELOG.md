@@ -1,3 +1,9 @@
+## 2026-10-21 — GUI: field streamlines; two fixes to the legacy streamline tracer
+
+- New GUI section "7. Field streamlines" traces the calculated or uploaded cross field from evenly spaced seeds and draws the lines as tubes. Controls cover seed spacing, steps, step length, line thickness, and colors (random per line from a print-like palette, or by direction family). Tracing runs in the background, and thickness and colors change without re-tracing.
+- New adapter `directional/visualization/FieldStreamlines.h`. It seeds deterministically, normalizes the field, and recovers which line each segment belongs to, which the tracer does not record. Tests check seed spacing, that segments follow the input field, per-line length and chaining, the surface lift, and determinism.
+- Fixed in the legacy tracer, which SurfaceCells does not use: with explicit seed faces, `streamlines_init` sliced only column 1 of the face barycenters, giving N x 1 seeds; and `StreamlineState::currTime` was read before it was ever set.
+
 ## 2026-10-21 — GUI: SurfaceCells diagnostics show regions, sheets and seams
 
 - GUI section 6 is now "SurfaceCells diagnostics". One run shows every product it retained, even when a later stage rejects: per-face topology region, isolation sheet and source component (face colors), isolation seams and region boundaries (lines), plus the field-aligned curve network. A run that stops before the network no longer reports an error if the regions were published.

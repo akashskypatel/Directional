@@ -60,6 +60,7 @@ add_executable(
   directional_compiled_api_tests
   tests/CompiledLibraryTests.cpp
   tests/FieldAlignedNetworkPolylinesTests.cpp
+  tests/FieldStreamlinesTests.cpp
   tests/SourceRegionDisplayTests.cpp)
 directional_configure_test_target(directional_compiled_api_tests)
 

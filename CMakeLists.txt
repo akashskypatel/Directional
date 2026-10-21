@@ -265,6 +265,7 @@ add_library(
   src/pipeline/ParallelRemeshPipeline.cpp
   src/pipeline/RemeshPipeline.cpp
   src/visualization/FieldAlignedNetworkPolylines.cpp
+  src/visualization/FieldStreamlines.cpp
   src/visualization/SourceRegionDisplay.cpp)
 add_library(Directional::pipeline ALIAS directional_pipeline)
 set_target_properties(
