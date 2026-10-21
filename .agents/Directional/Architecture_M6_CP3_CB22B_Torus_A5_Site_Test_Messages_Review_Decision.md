@@ -28,3 +28,5 @@ Plan: `Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Plan_20261021.md`. It hold
 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, selector 497 frozen, TB21 candidate 449/497; `RP-01` open, `RP-02` UNREACHED, Gate C suspended. CB22 + CB22A + CB22B form one statically accepted diagnostic unit; none of it is runtime evidence until TB23.
 
 Sequence: **TB23** → TB23-REV → DEFN-ISO → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+
+Closed by RA-121 (`Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Review_Decision.md`): TB23 reviewed; CB23 seam-face measurement next.

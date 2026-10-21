@@ -1,3 +1,15 @@
+## RA-121 — TB23 reviewed: one site owns all ten torus A5 rows; the occurrence chart face disagrees with its own seam span; seam-face measurement before DEFN-ISO (2026-10-21)
+
+Authority: `Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Review_Decision.md`.
+
+- **RA-121.1** TB23 harvest verified: run `39609365590`, result `12348649684`, 20/20, raw-log hashes match, 16/16, 6 PASS / 10 RED; harness fix `0948a81b0` accepted.
+- **RA-121.2** P1–P5 held; one byte-identical site on all ten RED rows; F closed at candidate level (`selector:447` PASS, `focused30:6` joins A5-ISO).
+- **RA-121.3** Site: `OrdinaryFront` relation 0:1↔1:0 on certified seam 60–61 (faces 120/sheet 0 and 97/sheet 2, the only faces on that edge); certificate equals both spans; occurrence (0,1)'s `placement.selectedFace` ≠ face 120 (`first-face`, RP:3891). H-ISO-2 refined; H-ISO-3 excluded.
+- **RA-121.4** The face clause is post-CP2 (CP2 used span sheets and transitions only). Reverting `8be01326d` is inadmissible. Two branches with different owners: B-across (A2 corner chart face) and B-fan (A5 clause over-strict); not yet decidable.
+- **RA-121.5** Next: `M6-CP3-CB23-RP01-TORUS-A5-SEAM-FACE-SITE` (RP relation site block only: `sel`, `support`, `wedge`, `spanOnlyN`; compile only).
+- **RA-121.6** TB24 frame: `focused30:20`, `selector:444`, `focused30:28`; guard `selector:447`; five controls; routing B-across / B-fan / face-clause-insufficient.
+- **RA-121.7** CB23 → CB23-REV → TB24 → TB24-REV → DEFN-ISO → corrective CB/TB → DEFN-M1 → corrective → DEFN-T1 → fixture debt → census → RP-01 Review.
+
 ## RA-120 — CB22B accepted statically; the site reaches all nine A5-ISO rows; TB23 harvest issued (2026-10-21)
 
 Authority: `Architecture_M6_CP3_CB22B_Torus_A5_Site_Test_Messages_Review_Decision.md`.

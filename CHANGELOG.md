@@ -1,3 +1,8 @@
+## 2026-10-21 — TB23 Review (RA-121): one site owns all ten torus A5 rows; seam-face measurement next
+
+- Review verified TB23 independently. All ten RED rows, across both torus fixtures, fail at one relation: an ordinary front pair lying on certified seam 60–61, where the A4 certificate agrees with both spans but one occurrence's chart face differs from its own seam span's face. The torus fixture atlas fix is confirmed at runtime (`selector:447` passes); `focused30:6` joins the A5 family.
+- The face requirement was added after CP2, and the evidence cannot yet say whether the corner chart is on the wrong sheet (A2) or the A5 clause is too strict. CB23 adds the deciding fields to the rejection site before DEFN-ISO. Accounting is unchanged.
+
 ## 2026-10-21 — TB23 immutable A5 site harvest; mandatory Review next
 
 - Artifact-only TB23 [run 39609365590](https://github.com/akashskypatel/Directional/actions/runs/39609365590), result `12348649684`, source `c6e90916e`: 16/16 selected/executed, 6 PASS / 10 RED, all five controls PASS; package/source/frozen selectors immutable, 20/20 result hashes verified, no runtime compilation. All ten A5 RED rows report `relation-collinear-seam;region=0;seam=60,61;cert0=120/0->97/2:first-face`; the F fixture atlas fix makes `selector:447` PASS. The H-ISO classification remains for mandatory TB23-REV; no stable count, selector or source acceptance promoted. Report `Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Report_20261021.md`.

@@ -34,40 +34,66 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-21, after TB23: 16/16 artifact-only rows executed, 6 PASS / 10 RED, all 5 controls GREEN; P1–P5 observed. Nine A5-ISO rows plus F `focused30:6` agree on `relation-collinear-seam;region=0;seam=60,61;certs=1;cert0=120/0->97/2:first-face`. F `selector:447` PASS. Next mandatory Review adjudicates the A4/A5 certificate mismatch and F-family outcome; no root-cause verdict or stable promotion. |
-| Working branch / source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; refetch before mutation. Immutable semantic CB22B source `c6e90916eb90bfd33bc8a38c5ece7def15dcc766`; compile package artifact `12341307713` (ZIP `b5f9a668…8ad5`, 28/28, GMP/GMPXX, compile `runtimeExecution=false`), expires 2026-10-28T11:21:37Z. TB23 executor `0948a81b09e5ff07d240d01f8968f225c285ac2c`; no source/fixture/selector edits in TB23. |
-| Latest runtime evidence | TB23 [run 39609365590](https://github.com/akashskypatel/Directional/actions/runs/39609365590), result artifact `12348649684` (ZIP SHA-256 `5ce737452a23637e74f0241f5f8a9a0ebe34b874b83ad1ff2d0d6f4456ee34d6`), harness SHA-256 `bf2cb7bc2799137e9a3556816380dc93388e9e05ee134cf320b068411f982cbe`; 20/20 result manifest, zero skips, immutable postflight. Report `Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Report_20261021.md`; tracker and CHANGELOG updated. Last accepted CP2 `491/491`, package `11391685901`; R3 baseline `403/497` rejected; last candidate census TB21 `449/497` (artifact `12317287104`). |
-| Regression accounting and debt | **66/17/49**, debt **1**, selector 497 frozen. TB23 does not alter stable accounting. Tracker `Regression_Root_Cause_Tracker.md`. |
-| Active boundary | `RP-01` open; **A5-ISO** ten measured A5 rejections at `relation-collinear-seam` / `first-face` (H-ISO-2 candidate, not verdict). **F** fixture atlas binding corrected: `selector:447` PASS, `focused30:6` advances to A5 RED. **M1** ten plus `focused30:12`, `cp3entry:2` deferred to DEFN-M1; D2 `cp3entry:1` deferred to DEFN-T1. `RP-02` UNREACHED; Gate C suspended. Review must precede repair. |
+| Currency | 2026-10-21, after TB23 Review (RA-121). One site owns all ten torus A5 rows: an `OrdinaryFront` relation on certified seam 60–61, where occurrence (0,1)'s chart face (`placement.selectedFace`) is not its own seam span's face 120. The A4 certificate agrees with both spans. The F fixture fix is confirmed at runtime (`selector:447` PASS). The owner (A2 corner placement or the A5 face clause) is not yet decidable, so CB23 measures the seam faces before DEFN-ISO. |
+| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; refetch before mutation. Semantic source CB22B `c6e90916eb90bfd33bc8a38c5ece7def15dcc766`; HEAD `src`, `include` and `tests` are identical to it. |
+| Last accepted semantic runtime | CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. R3 baseline **403/497** rejected. |
+| Latest candidate or rejected evidence | TB23: run [39609365590](https://github.com/akashskypatel/Directional/actions/runs/39609365590), result `12348649684` (ZIP `5ce73745…6d1`), expires 2026-11-04T13:37:29Z; 16/16, 6 PASS / 10 RED; report `Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Report_20261021.md`, reviewed by RA-121 (`Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Review_Decision.md`). Census: TB21 **449/497** (RA-115). **Not promoted.** |
+| Regression accounting and debt | **66/17/49**, debt **1**, selector 497 frozen; R3 403/497 rejected; candidate evidence TB21 449/497. Tracker: `Regression_Root_Cause_Tracker.md`. |
+| Active boundary | `RP-01` open. **A5-ISO**: 10 rows (`focused30:6, 20, 24, 25, 26, 27, 28`; `selector:444, 446, 448`; incl. G4-B002), one site `relation-collinear-seam` / `first-face` (RA-121.3). The unknowns are the selected faces, the corner supports and the span-only direction, which separate B-across from B-fan (RA-121.4). Reverting `8be01326d`'s reject is not admissible. **F**: closed at candidate level. **M1**: 10 rows plus `focused30:12`, `cp3entry:2` (DEFN-M1). CP3-entry: D2 `cp3entry:1` (DEFN-T1). Restriction: CB23 is diagnostic-only, in RP's relation-seam block. `RP-02` UNREACHED; Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-TB23-RP01-TORUS-A5-SITE-HARVEST-REV` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB23-RP01-TORUS-A5-SEAM-FACE-SITE` — EXACT NEXT
 
-- **Type / owner:** mandatory Review of artifact-only TB23; same agent is permitted by Turn_Cadence.md, independent evidence required. Primary authority: `Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Plan_20261021.md`, RA-120.4, RA-117.3 (H-ISO-1/2/3), and the immutable TB23 artifact.
-- **Objective:** independently re-download and verify TB23 result `12348649684`; re-derive 16/16 selection, manifest/postflight, all row sites, and observed P1–P5; adjudicate whether the recorded `cert0=120/0->97/2:first-face` identifies H-ISO-2 or another contract problem. Verify F `selector:447` PASS and `focused30:6` A5 RED; do not infer an accepted production fix.
-- **Decision:** write a bounded Review record/definition-routing plan for DEFN-ISO or record an explicit review stop if required evidence is absent; retain the frozen stable regression ledger, selector and gate authority. Review `LESSONS.md` and required policies; apply mandatory Review document consolidation, ORIENTATION update and documentation drift audit.
-- **Prohibited:** runtime tests or benchmarks, new compile, source/test/fixture/selector edits, ad hoc A5 repair, DEFN-M1/DEFN-T1 work or CP3 acceptance. Only the Review may authorize its successor.
-- **Evidence:** [TB23 run 39609365590](https://github.com/akashskypatel/Directional/actions/runs/39609365590), artifact `12348649684`, ZIP `5ce73745…4456ee34d6`, report `Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Report_20261021.md` (32 lines), full result `ledger.tsv` and 16 raw logs.
+- **Type / owner:** CB (Code + Build, compile only); implementation agent. Authority: RA-121.5 (`Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Review_Decision.md`).
+- **Objective:** extend the `relation-collinear-seam` rejection site with the facts that separate B-across from B-fan, without changing any decision.
+- **Read before work:**
+  - RA-121 (§3–§6);
+  - `src/pipeline/RemeshPipeline.cpp` (RP) at `c6e90916e`: `certified_seam_wedge_side` and `certified_seam_direction` RP:3850–3911; `isolation_binding_label` RP:4168; `selectedFace` RP:4448–4458; the relation site block RP:5262–5344;
+  - `SourceTopologyRegions::row_for_topology` and `sheet_for_row`; `authority::support_kind`;
+  - `LESSONS.md` §§5, 7.
+- **In scope (RP only, inside the relation site block, before `error.isolationSite = std::move(site);`):** append, in this order:
+  1. `;sel=<a>,<b>`: each canonical occurrence's `placement.selectedFace` as `<row>/<sheet>`, or `none`;
+  2. `;support=<a>,<b>`: `vertex`, `edge` or `face`;
+  3. `;wedge=<a>,<b>`: each occurrence's `cornerWedgeBindings` labels joined by `+`;
+  4. `;spanOnlyN=<v>` for each matching certificate, in `certN` order: the existing classifier without the two face clauses (`same-sheet`, `first-side`, `second-side`, `same-side`, `forward` or `reverse`).
+
+  Then compile the eight targets with GMP/GMPXX and `runtimeExecution=false`, and write `Architecture_M6_CP3_CB23_Torus_A5_Seam_Face_Site_Code_Build_Record_20261021.md` (at most 30 lines: source SHA, RP diff stat and ranges, compile run, package id, ZIP SHA-256, hash count, expiry, root-manifest and source-archive SHA-256).
+- **Out of scope:**
+  - any decision, return or error-code change;
+  - any change to existing site text; the new fields are appended only;
+  - the header, TQ and every other file (byte-identical to `c6e90916e`);
+  - runtime, any repair, DEFN-ISO.
+- **Success evidence:**
+  - the diff is confined to the block, with no line over 100 columns;
+  - the compile is GREEN and the package is verified;
+  - the record is committed and STATUS is COMPLETE.
+
+  If the compile is still running at your closeout bound, leave STATUS `IN_PROGRESS`; Review harvests.
+- **On success:** `M6-CP3-CB23-RP01-TORUS-A5-SEAM-FACE-SITE-REV` (Review, mandatory). It verifies the diff and package and issues the TB24 plan (RA-121.6 frame).
+- **On failure/blocker:** STOP and return to Review on any compile error or any need to edit outside the block. There is no repair inside the turn.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| done | `M6-CP3-CB22B-RP01-TORUS-A5-SITE-TEST-MESSAGES-REV` | RA-120 statically accepted CB22B package and issued TB23. |
-| done | `M6-CP3-TB23-RP01-TORUS-A5-SITE-HARVEST` | Artifact-only 16/16, 6 PASS/10 RED, P1–P5 observed; no source/build edit, report committed. |
-| **1 — exact next** | `M6-CP3-TB23-RP01-TORUS-A5-SITE-HARVEST-REV` | Mandatory independent Review of `relation-collinear-seam` / `first-face`, H-ISO-1/2/3, and F outcomes. |
-| planned, not authorized | DEFN-ISO → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review | Only after each Review-authorized boundary. |
+| 1 — next | `M6-CP3-CB23-RP01-TORUS-A5-SEAM-FACE-SITE` | CB, per RA-121.5: diagnostic-only seam-face site fields; RP relation block only; compile only. |
+| 2 — conditional | `M6-CP3-CB23-RP01-TORUS-A5-SEAM-FACE-SITE-REV` | Review, only after step 1: verifies the diff and package; issues the TB24 plan (RA-121.6). |
+| later — UNKNOWN until assigned | TB24 (seam-face harvest: `focused30:20`, `selector:444`, `focused30:28`; guard `selector:447`; five controls) → TB24-REV → DEFN-ISO (B-across or B-fan) → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review | Planned, not authorized; each Review assigns the next edge. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **review** — TB23-REV of the immutable sixteen-row torus A5 site harvest (result `12348649684`, RA-120.4 and H-ISO-1/2/3). Do not start DEFN-ISO before Review.
+`load_next`: **code-build** — CB23: append the seam-face fields to the A5 `relation-collinear-seam` site (RA-121.5); RP only; compile only, no runtime.
 
-Minimum next-turn context after mandatory checklist and policies:
+Minimum successor context **after the mandatory start checklist and policies**:
 
-0. `.agents/Directional/ORIENTATION.md` and `.agents/Directional/ROADMAP.md`.
-1. This handoff, `TODO.md`, `Regression_Root_Cause_Tracker.md`, and the artifact-only TB23 report.
-2. `Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Plan_20261021.md`; `Architecture_M6_CP3_CB22B_Torus_A5_Site_Test_Messages_Review_Decision.md` (RA-120); `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Review_Decision.md` (RA-117.3); `Architecture_M6_CP3_CB22A_Torus_A5_Isolation_Site_Formatter_Review_Decision.md` (RA-119.5).
-3. TB23 raw artifact `12348649684` (16 logs, `ledger.tsv`, `execution-boundary.txt`, `immutability.txt`) and `LESSONS.md` §§1, 5, 6, 7.
-4. Review tooling `.agents/Directional/tools/` includes read-only `review_check.py`, `selector_probe.py`, `fixture_probe.py`; history-sensitive Review gates require real committed history, not a synthesized snapshot.
+0. `.agents/Directional/ORIENTATION.md` — project context, read first.
+1. `.agents/Directional/ROADMAP.md` — milestone position only.
+2. `.agents/Directional/Future_Chat_Session_Handoff.md` — exact current handoff.
+3. `Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Review_Decision.md` (RA-121: the site decoded, the two branches, the CB23 specification and the TB24 frame); `Architecture_M6_CP3_CB22A_Torus_A5_Isolation_Site_Formatter_Review_Decision.md` (RA-119, site format); `LESSONS.md` §§5, 7.
+4. `.agents/Directional/Regression_Root_Cause_Tracker.md` and `TODO.md` — unresolved issues and scope; required policy readings still govern.
+
+**Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py authority <sha>` and
+`review_check.py boundary`, `selector_probe.py` for selector hashes, ordinal ↔ identity and identity-existence
+checks, and `fixture_probe.py` for fixture topology and vertex fans. See `tools/README.md` for the caveats.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
