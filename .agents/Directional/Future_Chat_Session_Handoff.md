@@ -34,61 +34,41 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-21, after TB23 Review (RA-121). One site owns all ten torus A5 rows: an `OrdinaryFront` relation on certified seam 60–61, where occurrence (0,1)'s chart face (`placement.selectedFace`) is not its own seam span's face 120. The A4 certificate agrees with both spans. The F fixture fix is confirmed at runtime (`selector:447` PASS). The owner (A2 corner placement or the A5 face clause) is not yet decidable, so CB23 measures the seam faces before DEFN-ISO. |
-| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; refetch before mutation. Semantic source CB22B `c6e90916eb90bfd33bc8a38c5ece7def15dcc766`; HEAD `src`, `include` and `tests` are identical to it. |
+| Currency | 2026-10-21, CB23 diagnostic-only seam-face site compiled GREEN from `e859175333f`; package `12355892070`, 28/28, eight GMP/GMPXX targets, no runtime. RA-121's A5-ISO owner (B-across vs B-fan) is undecided until a separate TB24 harvest. CB23 independent Review is the exact next turn. |
+| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; refetch before mutation. Semantic source CB23 `e859175333f879273a75e3bfc321600e451048aa`; RP-only diagnostic increment over `c6e90916eb90bfd33bc8a38c5ece7def15dcc766`. Refetch live HEAD before mutation. |
 | Last accepted semantic runtime | CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. R3 baseline **403/497** rejected. |
-| Latest candidate or rejected evidence | TB23: run [39609365590](https://github.com/akashskypatel/Directional/actions/runs/39609365590), result `12348649684` (ZIP `5ce73745…6d1`), expires 2026-11-04T13:37:29Z; 16/16, 6 PASS / 10 RED; report `Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Report_20261021.md`, reviewed by RA-121 (`Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Review_Decision.md`). Census: TB21 **449/497** (RA-115). **Not promoted.** |
+| Latest candidate or rejected evidence | CB23 [compile 39623185718](https://github.com/akashskypatel/Directional/actions/runs/39623185718), package `12355892070` (ZIP SHA-256 `5215e5c2…af91f`), 28/28, no runtime; record `Architecture_M6_CP3_CB23_Torus_A5_Seam_Face_Site_Code_Build_Record_20261021.md`. Latest TB23: 16/16, 6 PASS / 10 RED (RA-121); TB21 census 449/497 (RA-115). **Not promoted.** |
 | Regression accounting and debt | **66/17/49**, debt **1**, selector 497 frozen; R3 403/497 rejected; candidate evidence TB21 449/497. Tracker: `Regression_Root_Cause_Tracker.md`. |
-| Active boundary | `RP-01` open. **A5-ISO**: 10 rows (`focused30:6, 20, 24, 25, 26, 27, 28`; `selector:444, 446, 448`; incl. G4-B002), one site `relation-collinear-seam` / `first-face` (RA-121.3). The unknowns are the selected faces, the corner supports and the span-only direction, which separate B-across from B-fan (RA-121.4). Reverting `8be01326d`'s reject is not admissible. **F**: closed at candidate level. **M1**: 10 rows plus `focused30:12`, `cp3entry:2` (DEFN-M1). CP3-entry: D2 `cp3entry:1` (DEFN-T1). Restriction: CB23 is diagnostic-only, in RP's relation-seam block. `RP-02` UNREACHED; Gate C suspended. |
+| Active boundary | `RP-01` open. **A5-ISO**: 10 rows (`focused30:6, 20, 24, 25, 26, 27, 28`; `selector:444, 446, 448`; incl. G4-B002), one site `relation-collinear-seam` / `first-face` (RA-121.3). The unknowns are the selected faces, the corner supports and the span-only direction, which separate B-across from B-fan (RA-121.4). Reverting `8be01326d`'s reject is not admissible. **F**: closed at candidate level. **M1**: 10 rows plus `focused30:12`, `cp3entry:2` (DEFN-M1). CP3-entry: D2 `cp3entry:1` (DEFN-T1). Restriction: CB23 was diagnostic-only and is awaiting independent Review; new site fields have not yet been harvested at runtime. `RP-02` UNREACHED; Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-CB23-RP01-TORUS-A5-SEAM-FACE-SITE` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB23-RP01-TORUS-A5-SEAM-FACE-SITE-REV` — EXACT NEXT
 
-- **Type / owner:** CB (Code + Build, compile only); implementation agent. Authority: RA-121.5 (`Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Review_Decision.md`).
-- **Objective:** extend the `relation-collinear-seam` rejection site with the facts that separate B-across from B-fan, without changing any decision.
-- **Read before work:**
-  - RA-121 (§3–§6);
-  - `src/pipeline/RemeshPipeline.cpp` (RP) at `c6e90916e`: `certified_seam_wedge_side` and `certified_seam_direction` RP:3850–3911; `isolation_binding_label` RP:4168; `selectedFace` RP:4448–4458; the relation site block RP:5262–5344;
-  - `SourceTopologyRegions::row_for_topology` and `sheet_for_row`; `authority::support_kind`;
-  - `LESSONS.md` §§5, 7.
-- **In scope (RP only, inside the relation site block, before `error.isolationSite = std::move(site);`):** append, in this order:
-  1. `;sel=<a>,<b>`: each canonical occurrence's `placement.selectedFace` as `<row>/<sheet>`, or `none`;
-  2. `;support=<a>,<b>`: `vertex`, `edge` or `face`;
-  3. `;wedge=<a>,<b>`: each occurrence's `cornerWedgeBindings` labels joined by `+`;
-  4. `;spanOnlyN=<v>` for each matching certificate, in `certN` order: the existing classifier without the two face clauses (`same-sheet`, `first-side`, `second-side`, `same-side`, `forward` or `reverse`).
-
-  Then compile the eight targets with GMP/GMPXX and `runtimeExecution=false`, and write `Architecture_M6_CP3_CB23_Torus_A5_Seam_Face_Site_Code_Build_Record_20261021.md` (at most 30 lines: source SHA, RP diff stat and ranges, compile run, package id, ZIP SHA-256, hash count, expiry, root-manifest and source-archive SHA-256).
-- **Out of scope:**
-  - any decision, return or error-code change;
-  - any change to existing site text; the new fields are appended only;
-  - the header, TQ and every other file (byte-identical to `c6e90916e`);
-  - runtime, any repair, DEFN-ISO.
-- **Success evidence:**
-  - the diff is confined to the block, with no line over 100 columns;
-  - the compile is GREEN and the package is verified;
-  - the record is committed and STATUS is COMPLETE.
-
-  If the compile is still running at your closeout bound, leave STATUS `IN_PROGRESS`; Review harvests.
-- **On success:** `M6-CP3-CB23-RP01-TORUS-A5-SEAM-FACE-SITE-REV` (Review, mandatory). It verifies the diff and package and issues the TB24 plan (RA-121.6 frame).
-- **On failure/blocker:** STOP and return to Review on any compile error or any need to edit outside the block. There is no repair inside the turn.
+- **Type / owner:** independent Review; authority RA-121.5–121.6 and CB23's completed compile-only record.
+- **Objective:** verify the source diff is confined to RP's relation-collinear-seam rejection block, the appended fields match RA-121.5, and the compile package is valid; issue a bounded TB24 plan based on RA-121.6.
+- **Read before work:** RA-121 (§3–§6); `Architecture_M6_CP3_CB23_Torus_A5_Seam_Face_Site_Code_Build_Record_20261021.md`; exact diff `c6e90916e` → `e859175333f`; package `12355892070`; applicable review policy and LESSONS §§5, 7.
+- **In scope:** independently inspect `;sel=`, `;support=`, `;wedge=`, `;spanOnlyN=` order/meaning and source scope; verify packaged SHA-256, 28/28 manifest, source tar, GMP/GMPXX, eight targets, empty source statuses and `runtimeExecution=false`; record an explicit acceptance/rejection verdict and issue TB24 plan if valid.
+- **Out of scope:** no runtime, tests, benchmarks, implementation repairs, selector changes, relaxation of A5 isolation decisions, or acceptance promotion in Review.
+- **Success evidence:** formal independent Review decision, durable tracker/handoff updates as needed, explicit TB24 plan using RA-121.6's three A5 rows, one guard and five controls.
+- **On success:** TB24 only if this Review explicitly authorizes its canonical ID; otherwise `UNKNOWN` and STOP.
+- **On failure/blocker:** STOP; issue bounded corrective authority rather than editing code in the Review.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — next | `M6-CP3-CB23-RP01-TORUS-A5-SEAM-FACE-SITE` | CB, per RA-121.5: diagnostic-only seam-face site fields; RP relation block only; compile only. |
-| 2 — conditional | `M6-CP3-CB23-RP01-TORUS-A5-SEAM-FACE-SITE-REV` | Review, only after step 1: verifies the diff and package; issues the TB24 plan (RA-121.6). |
-| later — UNKNOWN until assigned | TB24 (seam-face harvest: `focused30:20`, `selector:444`, `focused30:28`; guard `selector:447`; five controls) → TB24-REV → DEFN-ISO (B-across or B-fan) → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review | Planned, not authorized; each Review assigns the next edge. |
+| 1 — next | `M6-CP3-CB23-RP01-TORUS-A5-SEAM-FACE-SITE-REV` | Independent Review of RP-only diff and immutable compile package; issue TB24 plan. |
+| later — conditional | TB24 ID `UNKNOWN` pending Review | Planned nine-row seam-face harvest (three A5, guard, five controls); not yet authorized. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **code-build** — CB23: append the seam-face fields to the A5 `relation-collinear-seam` site (RA-121.5); RP only; compile only, no runtime.
+`load_next`: **review** — CB23 independent Review: verify RA-121.5 RP-only rejection-site diff and eight-target compile package; issue TB24 plan using RA-121.6; no runtime.
 
 Minimum successor context **after the mandatory start checklist and policies**:
 
 0. `.agents/Directional/ORIENTATION.md` — project context, read first.
 1. `.agents/Directional/ROADMAP.md` — milestone position only.
 2. `.agents/Directional/Future_Chat_Session_Handoff.md` — exact current handoff.
-3. `Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Review_Decision.md` (RA-121: the site decoded, the two branches, the CB23 specification and the TB24 frame); `Architecture_M6_CP3_CB22A_Torus_A5_Isolation_Site_Formatter_Review_Decision.md` (RA-119, site format); `LESSONS.md` §§5, 7.
+3. `Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Review_Decision.md` (RA-121), CB23 Code + Build record and the RP-only semantic diff; `LESSONS.md` §§5, 7.
 4. `.agents/Directional/Regression_Root_Cause_Tracker.md` and `TODO.md` — unresolved issues and scope; required policy readings still govern.
 
 **Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py authority <sha>` and

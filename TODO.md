@@ -1,4 +1,13 @@
-## CURRENT — TB23 reviewed (RA-121): one site owns all ten torus A5 rows; seam-face measurement (CB23) before DEFN-ISO (2026-10-21)
+## CURRENT — CB23 seam-face diagnostics compiled; mandatory independent Review next (2026-10-21)
+
+- [x] `M6-CP3-CB23-RP01-TORUS-A5-SEAM-FACE-SITE` — diagnostic-only RP +68 lines; source `e859175333f879273a75e3bfc321600e451048aa`; eight-target GMP/GMPXX compile [39623185718](https://github.com/akashskypatel/Directional/actions/runs/39623185718) GREEN, artifact `12355892070`, 28/28 hashes, `runtimeExecution=false`; exact details in `Architecture_M6_CP3_CB23_Torus_A5_Seam_Face_Site_Code_Build_Record_20261021.md`.
+- [ ] **EXACT NEXT:** `M6-CP3-CB23-RP01-TORUS-A5-SEAM-FACE-SITE-REV` — independent Review: verify RP-only diff, new seam-face site fields, eight GMP/GMPXX targets, package/archive identity and compile-only boundary; issue TB24 plan (RA-121.6) only if evidence passes. No runtime or corrective code in Review.
+- [ ] **PLANNED, NOT AUTHORIZED:** TB24 (three A5-ISO, guard 447, five controls) → TB24-REV → DEFN-ISO (B-across vs B-fan) → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+- Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB21 candidate 449/497; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
+
+---
+
+## HISTORY — TB23 reviewed (RA-121): one site owns all ten torus A5 rows; seam-face measurement (CB23) before DEFN-ISO (2026-10-21)
 
 - [ ] **EXACT NEXT:** `M6-CP3-CB23-RP01-TORUS-A5-SEAM-FACE-SITE` — Code + Build, RA-121.5, base `c6e90916e`, RP only, inside the `relation-collinear-seam` block (before `error.isolationSite = std::move(site);`):
   - append `;sel=<a>,<b>` (each canonical occurrence's `placement.selectedFace` as `<row>/<sheet>`), `;support=<a>,<b>` (`vertex`/`edge`/`face`), `;wedge=<a>,<b>` (`cornerWedgeBindings` labels joined by `+`), and `;spanOnlyN=<v>` per matching certificate (classifier without the two face clauses);

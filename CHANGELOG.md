@@ -1,3 +1,8 @@
+## 2026-10-21 — CB23 torus A5 seam-face site compiled; independent Review next
+
+- RP-only rejection-site measurement (+68 lines) adds `sel`, `support`, `wedge` and `spanOnlyN` diagnostics without changing A5 admission/return/error behavior; exact source `e859175333f879273a75e3bfc321600e451048aa`.
+- Eight-target GMP/GMPXX compile [39623185718](https://github.com/akashskypatel/Directional/actions/runs/39623185718) GREEN; package `12355892070` (SHA-256 `5215e5c216cde5cd45d851d36c9aa9b2a62de496aa78db2aac54d828996af91f`), 28/28 checksums, no runtime. Mandatory CB23 Review next; no stable promotion.
+
 ## 2026-10-21 — TB23 Review (RA-121): one site owns all ten torus A5 rows; seam-face measurement next
 
 - Review verified TB23 independently. All ten RED rows, across both torus fixtures, fail at one relation: an ordinary front pair lying on certified seam 60–61, where the A4 certificate agrees with both spans but one occurrence's chart face differs from its own seam span's face. The torus fixture atlas fix is confirmed at runtime (`selector:447` passes); `focused30:6` joins the A5 family.
