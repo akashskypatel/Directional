@@ -1,18 +1,14 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb20a-gauge-pin-test-compile-20261021-01",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb20a-gauge-pin-test-compile",
-  "source_sha": "e22c5da5f8ab86a39650c670340a658847a2ac7e",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb20a-gauge-pin-test"
+  "request_id": "m6-cp3-tb20-gauge-pin-domain-20261021-01",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb20-gauge-pin-domain",
+  "executor_sha": "18a1325d25aae46d26e185b861cd836871ca0d0f",
+  "semantic_source_sha": "e22c5da5f8ab86a39650c670340a658847a2ac7e",
+  "turn_id": "M6-CP3-TB20-RP01-GAUGE-PIN-DOMAIN",
+  "harness_path": ".agents/Directional/tools/m6_cp3_tb20_gauge_pin_domain_harness.sh",
+  "harness_sha256": "69b173e597cdf7eda36b2046aa7b50e4854770fe1341b38744dd6bdc5e3c48bb",
+  "environment": {},
+  "artifact_prefix": "m6-cp3-tb20-gauge-pin-domain",
+  "retention_days": 14
 }
