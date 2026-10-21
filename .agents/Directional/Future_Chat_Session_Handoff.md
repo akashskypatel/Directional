@@ -34,37 +34,37 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-21: CB21 independently reviewed (RA-116), static source/compile accepted, no runtime. Exactly next is immutable TB22, eleven independent tests; no selector or product acceptance. |
+| Currency | 2026-10-21: TB22 immutable harvest executed 11/11, 4 PASS / 7 RED; next mandatory independent TB22 Review, not implementation. No selector or product acceptance. |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; refetch before mutation. Last semantic CB21 source `8453e19e6ac7d976a9cac45978ad31104a52f034`; later STATUS/snapshot/record commits are nonsemantic. |
 | CB21 immutable compile authority | Run [39540888446](https://github.com/akashskypatel/Directional/actions/runs/39540888446), package `12318897957`, ZIP SHA-256 `f0ae4338c462600b6cddbd0a768e0432f2148148f40f920790d6c8f1c0e9c606`; 28/28, clean statuses, eight GMP/GMPXX targets, `runtimeExecution=false`, expires 2026-10-28T03:54:02Z. Independent exact-byte revalidation: `Architecture_M6_CP3_CB21_Torus_Witness_Scope_Review_Decision_20261021.md`. |
 | Last accepted semantic runtime | CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`; R3 **403/497 rejected**. |
-| Latest candidate census | TB21 run `39533914719`, result `12317287104`: **449/497** (48 RED, 0 PASS→RED), reviewed RA-115 and inventory `Architecture_M6_CP3_TB21_Selector_497_Red_Inventory.tsv`; frozen selector 497 unchanged. |
+| Latest candidate census | TB21 run `39533914719`, result `12317287104`: **449/497** (48 RED, 0 PASS→RED), reviewed RA-115; TB22 focused candidate harvest 4/11 PASS, 7 RED, not selector promotion. Frozen selector 497 unchanged. |
 | Regression and blockers | **66/17/49**, debt **1**; `RP-01` open, `RP-02` UNREACHED, Gate C suspended. D2 organic odd-gauge witness unresolved, M1/other fixture debt unchanged. |
 
-## Mandatory next turn — `M6-CP3-TB22-RP01-TORUS-WITNESS-HARVEST` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-TB22-RP01-TORUS-WITNESS-HARVEST-REV` — EXACT NEXT
 
-- **Type:** Test + Benchmark (artifact-only); after the independent RA-116 CB21 Review. Full immutable scope, identity names, predictions and stop rules: `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Plan_20261021.md`.
-- **Exact package:** artifact `12318897957`, source `8453e19e6ac7d976a9cac45978ad31104a52f034`, ZIP SHA-256 `f0ae4338c462600b6cddbd0a768e0432f2148148f40f920790d6c8f1c0e9c606`; no compiling, modifying source/tests/fixtures, selector promotion or regeneration. Run exactly **11 independent test processes**: the 7 torus fixture consumers, `cp3entry:6`, and 3 control identities. Verify manifest/source before and after.
-- **Predictions:** five CP2-GREEN torus consumers advance through fixture and pass their assertions; `cp3entry:1` reaches and, absent an odd pair, fails its own D2 assertion with `oddFaceGaugePairs=0` receipt; `focused30:12` unchanged A5 failure; four controls PASS. **Falsifier:** fixture throw with `reciprocalTracerPairs=0` or `holonomyMatchedPairs=0` diagnoses missing earlier periodic witness publication, not D2; return to TB22 Review. Any new first failure must be captured honestly.
-- **Boundary:** TB22 itself must not repair anything. Its only planned successor is separate mandatory `M6-CP3-TB22-RP01-TORUS-WITNESS-HARVEST-REV`; DEFN-T1, DEFN-M1 and further CB turns are not yet authorized.
+- **Type:** independent Review + Plan. Inspect raw logs and semantic first failures from `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Report_20261021.md`; review must adjudicate five new downstream candidate failure sites and D2 gauge attainability, not merely repeat the prediction.
+- **Evidence:** immutable source `8453e19e6ac7d976a9cac45978ad31104a52f034`, package `12318897957`; TB22 [run 39549820087](https://github.com/akashskypatel/Directional/actions/runs/39549820087), artifact `12323004201`, ZIP SHA-256 `71569a41315a727da3b1285cbdc94ffa360c366074fdecc3729ef0ed0b058c87`. Eleven selected, 4 PASS / 7 RED, zero skips, immutable postflight; stable 66/17/49 unchanged.
+- **Findings to adjudicate:** D2 own assertion reached with `oddFaceGaugePairs=0`, `reciprocalTracerPairs=5`, `holonomyMatchedPairs=5`, all five deltas zero; `focused30:6/20/24`, `selector:446/447` RED downstream, contrary to P1; `focused30:12` independent A5 RED; all four controls PASS.
+- **Boundary:** TB22 is a completed semantic RED artifact-only harvest; its successor is only this Review. DEFN-T1, DEFN-M1, and any source fixes remain conditionally planned, not authorized.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — next | `M6-CP3-TB22-RP01-TORUS-WITNESS-HARVEST` | Immutable 11-process torus fixture and control harvest, no build; artifact-only |
-| planned, not authorized | TB22-REV → DEFN-T1 (D2 attainability under RA-111.3) → DEFN-M1 (M1 binding owner, RA-105.3) → corrective CB/TB → remaining fixture debt → census → RP-01 Review | Requires the separate preceding Review at each boundary. |
+| 1 — next | `M6-CP3-TB22-RP01-TORUS-WITNESS-HARVEST-REV` | Independently review exact immutable TB22 evidence, classify candidate failures, authorize one successor |
+| planned, not authorized | DEFN-T1 → DEFN-M1 → corrective CB/TB → fixture debt → census → RP-01 Review | Dependent on TB22 Review's decision. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **test_benchmark** — the RA-116-frozen immutable 11-process TB22, with CB21 package exact authority.
+`load_next`: **review** — independently adjudicate TB22 semantic RED evidence, using exact result artifact and RA-116-frozen CB21 package authority.
 
 Minimum successor context after the mandatory start checklist and policies:
 
 0. `.agents/Directional/ORIENTATION.md`.
 1. `.agents/Directional/ROADMAP.md`.
 2. This handoff.
-3. `Architecture_M6_CP3_CB21_Torus_Witness_Scope_Review_Decision_20261021.md` (RA-116), `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Plan_20261021.md`, CB21 compile record, RA-115, D2 definition/review; `LESSONS.md` §§2, 7.
+3. `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Report_20261021.md` and exact result artifact, TB22 plan, RA-116 CB21 Review, RA-115, D2 definition/review; `LESSONS.md` §§2, 7.
 4. `.agents/Directional/Regression_Root_Cause_Tracker.md` and `TODO.md`.
 
 **Review tooling:** `.agents/Directional/tools/` holds read-only `review_check.py`, `selector_probe.py`, and `fixture_probe.py`; history-sensitive review gates require real committed history, not a synthesized snapshot.

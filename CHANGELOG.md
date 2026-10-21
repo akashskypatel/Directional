@@ -1,3 +1,7 @@
+## 2026-10-21 — TB22 immutable torus witness harvest
+
+- Artifact-only TB22 [run 39549820087](https://github.com/akashskypatel/Directional/actions/runs/39549820087), result `12323004201`: all 11 identities selected in independent processes, 4 PASS / 7 RED; exact CB21 package/source, immutable postflight. Five torus consumers previously CP2-GREEN now fail downstream (P1 falsified), D2 own assertion confirms 0 odd gauges despite five reciprocal/holonomy matches, independent A5 row remains RED, four controls PASS. No source, selector, benchmark or compile mutation. Semantic RED routes only to `M6-CP3-TB22-RP01-TORUS-WITNESS-HARVEST-REV`; stable ledger unchanged. Report `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Report_20261021.md`.
+
 ## 2026-10-21 — CB21 Review (RA-116): torus witness scope accepted statically; TB22 authorized
 
 - Independently rederived the one-file CB21 semantic diff `8453e19e` (`tests/SurfaceCellTransitionQuotientTests.cpp`, +73/-47): odd gauge no longer filters six CP2 consumers at shared fixture entry, all candidates receive reciprocal/holonomy census, D2 assertion remains unchanged except the receipt. No product/test logic changed in Review.
