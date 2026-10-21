@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb23-a5-seam-face-compile-20261021-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb23-a5-seam-face-compile",
-  "source_sha": "e859175333f879273a75e3bfc321600e451048aa",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb23-a5-seam-face"
+  "request_id": "m6-cp3-cb23-closeout-docs-20261021-b",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb23-closeout-docs",
+  "file_id": "1SRKyQVWmO-5xl5ZdcDhm0OoBWAXMlO9b",
+  "patch_sha256": "7fe37f93668e9dfc3aacd9810d5df14647ca2fbbd00eefb096ad951d104ce408",
+  "base_sha": "95b0f01235cd23412fc111370a2413b351c5c547",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: close CB23 seam-face compile and hand off independent review",
+  "retention_days": 7
 }
