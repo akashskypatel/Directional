@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb22a-formatter-compile-20261021-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb22a-formatter-compile",
-  "source_sha": "f082d9aebce0ad72906ccbf70c37a4bf90a9ae6f",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb22a-formatter-result"
+  "request_id": "m6-cp3-cb22b-a5-sites-apply-20261021-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb22b-a5-sites-apply",
+  "file_id": "1BNX8FEv2BEsefExDXWpqsuCzRDqMcFX6",
+  "patch_sha256": "ac8b82eaced0397410e82019c2cb4a99c0a7cc75a206cca86a532f1e1ffc27bb",
+  "base_sha": "34212105d63a35f9adc8e5d05ce54444dcd7800a",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "test: include A5 isolation site in torus failure messages",
+  "retention_days": 14
 }
