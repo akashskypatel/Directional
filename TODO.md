@@ -1,15 +1,9 @@
-## CURRENT — CB22B reviewed (RA-120): site reaches all nine A5-ISO rows; TB23 torus A5 site harvest next (2026-10-21)
+## CURRENT — TB23 artifact-only site harvest complete; TB23 Review mandatory next (2026-10-21)
 
-- [ ] **EXACT NEXT:** `M6-CP3-TB23-RP01-TORUS-A5-SITE-HARVEST` — Test + Benchmark, artifact-only, RA-120.4, plan `Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Plan_20261021.md`:
-  - harness `m6_cp3_tb23_torus_a5_site_harvest_harness.sh` derived from TB22's (identities, sixteen rows, site columns only);
-  - package `12341307713` (ZIP `b5f9a668…8ad5`, source `c6e90916e`) verified before and after; one process per row; exactly one selected test; zero skips;
-  - rows: A5-ISO `focused30:20/24/25/26/27/28`, `selector:444/446/448`; F `focused30:6`, `selector:447`; controls `cp3entry:6`, `selector:217`, TB18 A#14, `selector:443`, `focused30:7`;
-  - report `Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Report_20261021.md` (≤ 40 lines), P1–P5 marked as observed, no root-cause verdict;
-  - STOP on a missing `site=`, a `valid` clause, a label contradicting `a5-side`/`a5-wedge`, a RED control, or any integrity, selection, skip or timeout fault.
-- [ ] `M6-CP3-TB23-RP01-TORUS-A5-SITE-HARVEST-REV` — mandatory Review: adjudicates P1–P5; routes A5-ISO to DEFN-ISO under H-ISO-1/2/3; classifies the F rows.
-- [ ] Planned, not authorized: DEFN-ISO (A4 seam certificate ↔ A5 binding contract; the `8be01326d` reject) → corrective CB/TB → DEFN-M1 (RA-105.3; also `focused30:12`, `cp3entry:2`) → corrective CB/TB → DEFN-T1 (D2 attainability on the torus) → fixture debt (242 per `Architecture_M6_CP3_CB19_Selector242_Atlas_Authority_Test_Plan_20261020.md`, then 174 → 250 → adjacent-sheet → 191 → 442, plus I/R sites TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518) → census → RP-01 Review.
-- **Turn sequence:** CB22-REV (RA-118) → CB22A → CB22A-REV (RA-119) → CB22B attempt 1 (yielded) → CB22B-YIELD-REV → CB22B (compile GREEN) → CB22B-REV (RA-120) → **TB23** → TB23-REV → DEFN-ISO → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
-- Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, selector 497; candidate evidence TB21 449/497; `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
+- [x] `M6-CP3-TB23-RP01-TORUS-A5-SITE-HARVEST` — [run 39609365590](https://github.com/akashskypatel/Directional/actions/runs/39609365590), result `12348649684` (ZIP `5ce73745…4456ee34d6`); 16/16 selected/executed, six PASS/ten RED, five controls GREEN, immutable package/source/view, 20/20 result hashes; P1–P5 observed. Every A5-ISO row and F `focused30:6` reaches `relation-collinear-seam;region=0;seam=60,61;cert0=120/0->97/2:first-face`. `selector:447` PASS. Report: `Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Report_20261021.md`.
+- [ ] **EXACT NEXT:** `M6-CP3-TB23-RP01-TORUS-A5-SITE-HARVEST-REV` — mandatory Review: independently verify immutable TB23 artifact, P1–P5, A5 site data; adjudicate H-ISO-1/2/3 (first-face is H-ISO-2 *candidate*); classify F rows and issue bounded DEFN-ISO successor or Review stop. No runtime, compile, source/fixture/selector edit, or premature acceptance.
+- [ ] Planned, **not authorized:** DEFN-ISO (A4 seam certificate ↔ A5 binding contract; `8be01326d` reject) → corrective CB/TB → DEFN-M1 (`focused30:12`, `cp3entry:2`, ten M1) → corrective CB/TB → DEFN-T1 (D2 odd gauge) → fixture debt → census → RP-01 Review; authorization only as Review determines.
+- Frozen: **66/17/49**, debt **1**, CP2 **491/491**, R3 **403/497** rejected, selector **497**; TB21 candidate **449/497**; `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
 
 ---
 
