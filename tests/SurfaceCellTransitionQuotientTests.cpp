@@ -1938,13 +1938,13 @@ TEST(SurfaceCellFactoryRejectionSite, RegionGaugeShiftPassesPin) {
   const auto face0 =
       directional::authority::SourceFaceId::from_index(0U, faceCount);
   ASSERT_TRUE(face0.has_value());
-  const auto firstRegion = draft.sourceAuthority.region_for_row(*face0);
+  const auto firstRegion = draft.sourceAuthority.region_for_row(face0.value());
   std::size_t shifted = 0U;
   for (std::size_t row = 0U; row < faceCount; ++row) {
     const auto face =
         directional::authority::SourceFaceId::from_index(row, faceCount);
     ASSERT_TRUE(face.has_value());
-    if (draft.sourceAuthority.region_for_row(*face) == firstRegion) continue;
+    if (draft.sourceAuthority.region_for_row(face.value()) == firstRegion) continue;
     draft.sourceFaceBranchRotations[row] =
         (draft.sourceFaceBranchRotations[row] + 1) % 4;
     ++shifted;
@@ -1953,13 +1953,10 @@ TEST(SurfaceCellFactoryRejectionSite, RegionGaugeShiftPassesPin) {
   const auto result = construct_phase_front_product(std::move(draft));
   const auto *error = std::get_if<
       directional::geometry::SurfacePhaseFrontProductError>(&result);
-  if (error != nullptr) {
-    EXPECT_NE(error->sourceAuthoritySite.rfind("gauge-pin-", 0), 0U)
-        << error->sourceAuthoritySite;
-  } else {
-    EXPECT_NE(std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&result),
-              nullptr);
-  }
+  const auto *product =
+      std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&result);
+  ASSERT_NE(product, nullptr)
+      << (error == nullptr ? "" : error->sourceAuthoritySite);
 }
 
 TEST(SurfaceCellFactoryRejectionSite, HardEdgeIsolatingFaceRejectsAtSpan) {
@@ -1969,14 +1966,14 @@ TEST(SurfaceCellFactoryRejectionSite, HardEdgeIsolatingFaceRejectsAtSpan) {
   const auto face0 =
       directional::authority::SourceFaceId::from_index(0U, faceCount);
   ASSERT_TRUE(face0.has_value());
-  const std::size_t region = draft.sourceAuthority.region_for_row(*face0).index();
+  const std::size_t region = draft.sourceAuthority.region_for_row(face0.value()).index();
   std::size_t sameRegionPeers = 0U;
   for (std::size_t row = 1U; row < faceCount; ++row) {
     const auto face =
         directional::authority::SourceFaceId::from_index(row, faceCount);
     ASSERT_TRUE(face.has_value());
-    sameRegionPeers += draft.sourceAuthority.region_for_row(*face) ==
-                       draft.sourceAuthority.region_for_row(*face0);
+    sameRegionPeers += draft.sourceAuthority.region_for_row(face.value()) ==
+                       draft.sourceAuthority.region_for_row(face0.value());
   }
   ASSERT_GT(sameRegionPeers, 0U) << "face 0 must not be its own region";
   std::size_t isolated = 0U;
