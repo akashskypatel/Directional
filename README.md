@@ -124,7 +124,7 @@ SuiteSparse is enabled with `DIRECTIONAL_ENABLE_SUITESPARSE=ON` (or `--enable-su
 
 | Option | Default | Purpose |
 |---|---:|---|
-| `BUILD_SHARED_LIBS` | `ON` | Build the Directional Core and Pipeline modules as shared libraries; set `OFF` for static archives |
+| `BUILD_SHARED_LIBS` | `ON` | Build the Directional Core and Pipeline modules as shared libraries; set `OFF` for static archives. On Windows they are always static, because a shared `directional_core` would exceed the 65,535-export DLL limit |
 | `BUILD_PYTHON` | `OFF` | Build the Python extension |
 | `BUILD_TUTORIALS` | `OFF` | Build the tutorials |
 | `DIRECTIONAL_TUTORIALS` | `ALL` | Semicolon-separated tutorial directories to build when `BUILD_TUTORIALS=ON` |
@@ -150,6 +150,12 @@ Directional is split into `Directional::core` and `Directional::pipeline`.
 Pipeline links Core and contains the meshing and high-level remeshing
 implementation. `Directional::directional` remains available as a compatibility
 target that links the complete Pipeline/Core stack.
+
+On Windows both libraries are built as static archives whatever
+`BUILD_SHARED_LIBS` says: a Windows DLL can export at most 65,535 symbols, and
+`directional_core` has more. Executables and the Python extension link them in,
+and the installed package exports the static libraries. The "shared library"
+examples below therefore produce shared libraries on macOS and Linux only.
 
 ### Shared library with SuiteSparse
 
@@ -589,7 +595,7 @@ Optional parameters for a UI build:
 | `-DDIRECTIONAL_ENABLE_CUDSS=ON -DCUDSS_ROOT=<path>` | Use NVIDIA cuDSS |
 | `-DDIRECTIONAL_ENABLE_GMP=OFF` | Build without GMP exact arithmetic |
 | `-DGMP_ROOT=<prefix>` | Locate GMP and GMPXX installed outside the default search paths |
-| `-DBUILD_SHARED_LIBS=OFF` | Link Directional statically into `directional-ui` |
+| `-DBUILD_SHARED_LIBS=OFF` | Link Directional statically into `directional-ui` (always the case on Windows) |
 | `-DDIRECTIONAL_BUILD_CLI=ON` | Also configure the native CLI; build it with `--target directional_cli` |
 | `-DCMAKE_INSTALL_PREFIX=<path>` | Default destination for `cmake --install` |
 

@@ -1,3 +1,8 @@
+## 2026-10-21 — Windows build fix: static Directional libraries and `/bigobj`
+
+- MSVC could not link `directional_core.dll`: exporting every symbol exceeded the 65,535-export DLL limit (LNK1189). On Windows the core and pipeline libraries are now always static; other platforms still honour `BUILD_SHARED_LIBS`. `DIRECTIONAL_SHARED` follows the actual library type, and the unreachable Windows install rule for Directional's own DLLs is removed.
+- `src/pipeline/RemeshPipeline.cpp` joins the MSVC `/bigobj` list (C1128: too many sections). No RP-01 semantic change.
+
 ## 2026-10-21 — TB25 immutable frame-values harvest; independent Review pending
 
 - Artifact-only [TB25 run 39682528031](https://github.com/akashskypatel/Directional/actions/runs/39682528031), result `12384333036` (SHA-256 `f10ef7786ca2af1f9e2cfa8cc0dfdf0b889c03b2adb54c9f8a5e87de1be6ccbc`): 11/11 executed, 6 PASS controls, 3 A5 RED and 2 contested D3 RED; 16/16 digest manifest, immutable postflight, no build/relink/benchmark/source/test/selector changes.

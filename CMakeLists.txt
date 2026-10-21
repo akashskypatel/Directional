@@ -133,8 +133,20 @@ if(DIRECTIONAL_ENABLE_SUITESPARSE)
   include(DirectionalDependenciesSuiteSparse)
 endif()
 
+# A Windows DLL exports at most 65,535 symbols, and exporting every symbol of
+# directional_core exceeds that (LNK1189). On Windows the Directional libraries
+# are therefore static; executables and the Python extension link them in.
+set(DIRECTIONAL_LIBRARY_TYPE STATIC)
+if(BUILD_SHARED_LIBS AND NOT WIN32)
+  set(DIRECTIONAL_LIBRARY_TYPE SHARED)
+elseif(BUILD_SHARED_LIBS)
+  message(STATUS
+    "Directional: building static libraries on Windows; a shared "
+    "directional_core would exceed the 65,535-export DLL limit")
+endif()
+
 add_library(
-  directional_core
+  directional_core ${DIRECTIONAL_LIBRARY_TYPE}
   src/authority/AuthorityKernel.cpp
   src/authority/FieldTransportAtlas.cpp
   src/core/Library.cpp
@@ -225,13 +237,12 @@ set_target_properties(
   PROPERTIES OUTPUT_NAME directional_core
              EXPORT_NAME core
              VERSION ${PROJECT_VERSION}
-             SOVERSION ${PROJECT_VERSION_MAJOR}
-             WINDOWS_EXPORT_ALL_SYMBOLS ON)
+             SOVERSION ${PROJECT_VERSION_MAJOR})
 target_compile_definitions(
   directional_core
   PRIVATE DIRECTIONAL_BUILDING_LIBRARY
   PUBLIC DIRECTIONAL_VERSION="${CMAKE_PROJECT_VERSION}"
-         $<$<BOOL:${BUILD_SHARED_LIBS}>:DIRECTIONAL_SHARED>)
+         $<$<STREQUAL:${DIRECTIONAL_LIBRARY_TYPE},SHARED>:DIRECTIONAL_SHARED>)
 target_include_directories(
   directional_core
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -243,7 +254,7 @@ target_include_directories(
 target_compile_features(directional_core PUBLIC cxx_std_20)
 
 add_library(
-  directional_pipeline
+  directional_pipeline ${DIRECTIONAL_LIBRARY_TYPE}
   src/meshing/GenerateMesh.cpp
   src/meshing/Mesher.cpp
   src/meshing/PatchRegion.cpp
@@ -260,13 +271,12 @@ set_target_properties(
   PROPERTIES OUTPUT_NAME directional_pipeline
              EXPORT_NAME pipeline
              VERSION ${PROJECT_VERSION}
-             SOVERSION ${PROJECT_VERSION_MAJOR}
-             WINDOWS_EXPORT_ALL_SYMBOLS ON)
+             SOVERSION ${PROJECT_VERSION_MAJOR})
 target_compile_definitions(
   directional_pipeline
   PRIVATE DIRECTIONAL_BUILDING_PIPELINE
   PUBLIC DIRECTIONAL_VERSION="${CMAKE_PROJECT_VERSION}"
-         $<$<BOOL:${BUILD_SHARED_LIBS}>:DIRECTIONAL_SHARED>)
+         $<$<STREQUAL:${DIRECTIONAL_LIBRARY_TYPE},SHARED>:DIRECTIONAL_SHARED>)
 target_include_directories(
   directional_pipeline
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -287,6 +297,7 @@ if(MSVC)
     src/meshing/GenerateMesh.cpp
     src/meshing/Mesher.cpp
     src/meshing/TriFlowSimplification.cpp
+    src/pipeline/RemeshPipeline.cpp
     PROPERTIES COMPILE_OPTIONS "/bigobj")
 endif()
 
@@ -642,12 +653,6 @@ if(DIRECTIONAL_ENABLE_PARDISO)
 endif()
 
 if(WIN32)
-  if(BUILD_SHARED_LIBS)
-    install(
-      FILES $<TARGET_RUNTIME_DLLS:directional_core>
-            $<TARGET_RUNTIME_DLLS:directional_pipeline>
-      DESTINATION "${CMAKE_INSTALL_BINDIR}")
-  endif()
   if(DIRECTIONAL_BUILD_CLI)
     install(
       FILES $<TARGET_RUNTIME_DLLS:directional_cli>
@@ -659,7 +664,7 @@ if(WIN32)
       DESTINATION "${CMAKE_INSTALL_BINDIR}")
   endif()
   if(BUILD_PYTHON)
-    # Keep ordinary linked DLLs, including directional.dll and mkl_rt, next
+    # Keep ordinary linked DLLs, such as GMP and mkl_rt, next
     # to the Python extension. Explicit PARDISO deployment above adds the
     # oneMKL modules that mkl_rt loads dynamically.
     install(
