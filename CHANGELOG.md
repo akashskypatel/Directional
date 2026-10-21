@@ -1,3 +1,10 @@
+## 2026-10-21 — TB20 Review (RA-114): corrected pin confirmed at runtime; selector-497 census next
+
+- TB20 (run `39527537505`, result `12314700010`) ran 26 rows on the CB20A package: 26/26 executed, 19 RED. The agent left the turn without a report, so Review verified the harvest.
+- P1–P4 hold: the three new pin tests and the three controls PASS, and no log shows a pin or factory rejection. The RA-103.5 R-route falsifier is not observed, so M2 is cleared at the checked factory. `cp3entry:6` now PASSES.
+- The other eight M2 rows fail further on. Six torus rows stop at a test-fixture filter requiring an odd face-gauge delta across hard carriers (TQ:1697); it was added in `88aa8eae0`, after CP2, and DEFN-T1 decides whether it is a test proxy or a lost producer contract. `cp3entry:2` and `focused30:12` stop in the hard-rail certificate/A5 area. M1 is 10/10 unchanged.
+- Next: TB21, the selector-497 census on the CB20A package, then TB21-REV. Accounting is unchanged.
+
 ## 2026-10-21 — CB20A Review (RA-113): corrected gauge-pin domain compiled; TB20 next
 
 - CB20A corrected the five test accessors and tightened `RegionGaugeShiftPassesPin` to require a product (source `e22c5da5f`). The compile (run `39520787768`, package `12310848591`) is green. The agent left the turn without a record, so Review verified the package independently: ZIP digest, 28/28 hashes, empty statuses, no warnings, GMP/GMPXX, `runtimeExecution=false`.

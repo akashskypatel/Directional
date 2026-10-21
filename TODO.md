@@ -1,24 +1,25 @@
-## CURRENT — CB20/CB20A accepted (RA-113); TB20 gauge-pin domain harvest next (2026-10-21)
+## CURRENT — TB20 reviewed (RA-114): corrected pin confirmed; selector-497 census next (2026-10-21)
 
-- [x] `M6-CP3-CB20A-RP01-GAUGE-PIN-TEST-ACCESSOR`: source `e22c5da5f` (TQ +9/−12: five accessors and the item 5 product oracle). Compile [39520787768](https://github.com/akashskypatel/Directional/actions/runs/39520787768) GREEN, package `12310848591`. The agent left the turn `IN_PROGRESS` without a record.
-- [x] Review (RA-113, CB20A-REV):
-  - package verified independently: ZIP digest, 28/28 hashes, empty statuses, build exit 0, no warnings, GMP/GMPXX, `runtimeExecution=false`;
-  - the CB20A diff matches RA-112.5; CB20 and CB20A are accepted as one compiled unit (static);
-  - TB20 rows (26) and predictions P1–P4 set;
-  - record: `Architecture_M6_CP3_CB20A_Gauge_Pin_Domain_Review_Decision.md`.
-- [ ] **EXACT NEXT:** `M6-CP3-TB20-RP01-GAUGE-PIN-DOMAIN` — Test + Benchmark, artifact-only, RA-113.5:
-  - harness `m6_cp3_tb20_gauge_pin_domain_harness.sh` from TB19A: change only sha, artifact, digest, the 26-row table, the count 7→26 and the labels;
-  - one run against artifact `12310848591` before 2026-10-28T00:23:30Z;
-  - report `Architecture_M6_CP3_TB20_Gauge_Pin_Domain_Harvest_Report_20261021.md`: 26-row table, M1 comparison with TB19 (+77 TQ mapping), P1–P4 observed or not;
-  - STOP on a digest or manifest mismatch, a missing fixture, a selection count other than 26, or a harness failure.
-- [ ] `M6-CP3-TB20-RP01-GAUGE-PIN-DOMAIN-REV` — mandatory Review: adjudicates P1–P4, determines the R-route, and decides whether a selector-497 regression run comes before the M1 DEFN.
-- [ ] Planned, not authorized: [selector-497 regression run, if TB20-REV requires it] → DEFN on the M1 binding owner (RA-105.3) → corrective CB/TB → fixture debt (242 per `Architecture_M6_CP3_CB19_Selector242_Atlas_Authority_Test_Plan_20261020.md`, then 174 → 250 → adjacent-sheet → 191 → 442, plus I/R sites TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518) → census → RP-01 Review.
-- **Turn sequence:** CB20A (compiled) → CB20A-REV (RA-113) → **TB20** → TB20-REV → [selector-497 regression run] → DEFN-M1 → corrective CB/TB → fixture debt → census → RP-01 Review.
+- [x] `M6-CP3-TB20-RP01-GAUGE-PIN-DOMAIN`: harness `m6_cp3_tb20_gauge_pin_domain_harness.sh` (`18a1325d2`); run [39527537505](https://github.com/akashskypatel/Directional/actions/runs/39527537505), result `12314700010`. The agent left the turn `IN_PROGRESS` after dispatch, without a report.
+- [x] Review (RA-114, TB20-REV):
+  - harvest verified: 26/26 executed, 19 RED, 30/30 hashes, postflight immutable;
+  - P1–P4 observed (suite 3/3, controls 3/3, no pin or factory rejection in any log); the R-route falsifier is not observed;
+  - M2 after the pin: `cp3entry:6` PASS; six torus rows at the fixture odd-gauge filter TQ:1697 (added in `88aa8eae0`, after CP2); `cp3entry:2` and `focused30:12` in the hard-rail certificate/A5 area;
+  - M1 10/10 unchanged;
+  - record: `Architecture_M6_CP3_TB20_Gauge_Pin_Domain_Review_Decision.md`.
+- [ ] **EXACT NEXT:** `M6-CP3-TB21-RP01-SELECTOR-497-CENSUS` — Test + Benchmark, artifact-only, RA-114.5:
+  - unchanged census harness `m6_cp3_entry_497_artifact_only_harness.sh` (`947a95ee…79dd`) with the five CB20A values from RA-114.5; package expires 2026-10-28T00:23:30Z;
+  - inventory `Architecture_M6_CP3_TB21_Selector_497_Red_Inventory.tsv` and report `Architecture_M6_CP3_TB21_Selector_497_Census_Report_20261021.md` (≤ 30 lines, TB18→TB21 PASS→RED and RED→PASS lists, no interpretation);
+  - STOP on a harness orchestration failure, a digest mismatch, or any need to change the harness;
+  - finish in the same turn: harvest, commit, STATUS COMPLETE. Do not yield after dispatch.
+- [ ] `M6-CP3-TB21-RP01-SELECTOR-497-CENSUS-REV` — mandatory Review: regression verdict (0 PASS→RED predicted; `cp3entry:6` RED→PASS; ≥ 449 PASS) and the next unit.
+- [ ] Planned, not authorized: DEFN-T1 (source-only: the torus witness odd-gauge filter, CP2 `5ce3132ec` vs `88aa8eae0` vs HEAD; H-T1 test proxy vs H-T2 lost producer contract) → DEFN on the M1 binding owner (RA-105.3), also classifying `cp3entry:2` and `focused30:12` → corrective CB/TB → fixture debt (242 per `Architecture_M6_CP3_CB19_Selector242_Atlas_Authority_Test_Plan_20261020.md`, then 174 → 250 → adjacent-sheet → 191 → 442, plus I/R sites TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518) → census → RP-01 Review.
+- **Turn sequence:** TB20 (harvested) → TB20-REV (RA-114) → **TB21** → TB21-REV → DEFN-T1 → DEFN-M1 → corrective CB/TB → fixture debt → census → RP-01 Review.
 - Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, TB18 candidate 448/497, selector 497; `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
 
 ---
 
-## HISTORY — Gauge-pin domain: DEFN-P1 frozen (RA-111); CB20 compile stop reviewed (RA-112) (2026-10-20)
+## HISTORY — Gauge-pin domain: DEFN-P1 frozen (RA-111); CB20/CB20A compiled and accepted (RA-112, RA-113) (2026-10-20/21)
 
 - [x] `M6-CP3-DEFN-P1-GAUGE-PIN-DOMAIN` — source-only producer-domain definition in `.agents/Directional/Architecture_M6_CP3_DEFN_P1_Gauge_Pin_Domain_Definition_Record_20261020.md`. Exact relation-pair input is not presently published to `make`. Torus {0,3} is same-region. Cut-set inclusion is unproved; hard-carrier producer-domain reachability is a mandatory Review stop check. No implementation/compile/runtime.
 - [x] Review (RA-111, DEFN-P1-REV):
@@ -32,6 +33,12 @@
   - root cause: `DomainResult` offers `value()` and has no `operator*`. This is not a design defect;
   - a static walk of the three tests; `RegionGaugeShiftPassesPin` is tightened to require a product;
   - record: `Architecture_M6_CP3_CB20_Gauge_Pin_Domain_Compile_Stop_Review_Decision.md`.
+- [x] `M6-CP3-CB20A-RP01-GAUGE-PIN-TEST-ACCESSOR`: source `e22c5da5f` (TQ +9/−12: five accessors and the item 5 product oracle). Compile [39520787768](https://github.com/akashskypatel/Directional/actions/runs/39520787768) GREEN, package `12310848591`. The agent left the turn `IN_PROGRESS` without a record.
+- [x] Review (RA-113, CB20A-REV):
+  - package verified independently: ZIP digest, 28/28 hashes, empty statuses, build exit 0, no warnings, GMP/GMPXX, `runtimeExecution=false`;
+  - the CB20A diff matches RA-112.5; CB20 and CB20A are accepted as one compiled unit (static);
+  - TB20 rows (26) and predictions P1–P4 set;
+  - record: `Architecture_M6_CP3_CB20A_Gauge_Pin_Domain_Review_Decision.md`.
 
 ---
 
