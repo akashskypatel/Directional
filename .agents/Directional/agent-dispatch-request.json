@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb24-closeout-docs-20261021-a",
+  "request_id": "m6-cp3-cb24rev-docs-20261021-b",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb24-closeout-docs",
-  "file_id": "1ydkTyPA_x8_LReREcu2ZsOUWZvHpPIhp",
-  "patch_sha256": "47726f7b1700b832171afa090959d1d8e47d3cf8ea9deae6cf17c36c0d37bee7",
-  "base_sha": "28be7046173c4b01ba0939ad2114e08d5a8f7d3b",
+  "mailbox_key": "m6-cp3-cb24rev-docs-apply-b",
+  "file_id": "1fWA8pzeN6wQP8hzYK6aXfflxxFFqjimC",
+  "patch_sha256": "53541ba29c2ebb84dfd5d4ec33092a4616f84e5577450088b73c003078d47155",
+  "base_sha": "40bf38126cc70713422cbdb2e38364e294fa1253",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close CB24 and hand off independent review",
+  "commit_message": "docs(directional): complete CB24 independent review and freeze TB25",
   "retention_days": 7
 }
