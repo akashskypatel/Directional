@@ -2754,12 +2754,7 @@ std::unique_ptr<PhaseFrontFixture> m6cp3_produced_seam_fixture(
         std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
             &a5Construction);
     if (a5 == nullptr) {
-      const auto *error = std::get_if<
-          directional::pipeline::SurfaceOccurrenceComplexError>(&a5Construction);
-      record(size, error == nullptr ? "A5:unexpected-disposition"
-          : "A5:" + std::string(
-                directional::pipeline::surface_occurrence_complex_error_name(
-                    error->code)));
+      record(size, a5_rejection_message(a5Construction));
       continue;
     }
     const auto *relation = m6cp3_seam_ordinary(*a5);

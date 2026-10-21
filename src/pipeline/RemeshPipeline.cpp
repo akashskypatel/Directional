@@ -5408,6 +5408,34 @@ SurfaceOccurrenceComplexProducer::produce(
             }
             site += ";spanOnly" + std::to_string(spanOnlyIndex++) + "=" + clause;
           }
+          // Report the producer frame values without changing seam admission.
+          const auto face_gauge_label = [&](const authority::SourceFaceTopologyKey &face) {
+            const auto row = phaseFront.sourceTopologyRegions().row_for_topology(face);
+            const auto &gauges = phaseFront.sourceFaceBranchRotations();
+            if (!row.has_value() || row->index() >= gauges.size())
+              return std::string("none");
+            const int gauge = gauges[static_cast<std::size_t>(row->index())];
+            if (gauge < 0 || gauge >= 4) return std::string("none");
+            return std::to_string(gauge);
+          };
+          site += ";branch=" + std::to_string(
+              canonicalFirstOccurrence.placement.lattice.branchRotation) + "," +
+              std::to_string(canonicalSecondOccurrence.placement.lattice.branchRotation);
+          site += ";gaugeSel=" + face_gauge_label(
+              canonicalFirstOccurrence.placement.selectedFace) + "," +
+              face_gauge_label(canonicalSecondOccurrence.placement.selectedFace);
+          site += ";gaugeSpan=" + face_gauge_label(
+              canonicalFirstSpan.interiorBinding.face) + "," +
+              face_gauge_label(canonicalSecondSpan.interiorBinding.face);
+          std::size_t turnIndex = 0U;
+          for (const auto &certificate :
+               phaseFront.isolationSeamTransportCertificates()) {
+            if (certificate.region() != region || certificate.seam() != seam)
+              continue;
+            site += ";turn" + std::to_string(turnIndex++) + "=" +
+                    std::to_string(certificate.forward().value()) + "," +
+                    std::to_string(certificate.reverse().value());
+          }
           error.isolationSite = std::move(site);
           return error;
         }
