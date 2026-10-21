@@ -1,12 +1,14 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb23-a5-site-harness-apply-20261021-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb23-a5-site-harness-apply",
-  "file_id": "1VfYTzhCaNLOf5-xIBfRPWJ2EM9SZSW_i",
-  "patch_sha256": "b513e58130668912a05d82292bbdaba769601695ff0fc54a30d3ff2c2e78f8a6",
-  "base_sha": "28c9d37049ad50c4c03efe737732ee60f79a0859",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test: add immutable TB23 torus A5 site harvest harness",
+  "request_id": "m6-cp3-tb23-a5-site-harvest-20261021-a",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb23-a5-site-harvest",
+  "executor_sha": "0948a81b09e5ff07d240d01f8968f225c285ac2c",
+  "semantic_source_sha": "c6e90916eb90bfd33bc8a38c5ece7def15dcc766",
+  "turn_id": "M6-CP3-TB23-RP01-TORUS-A5-SITE-HARVEST",
+  "harness_path": ".agents/Directional/tools/m6_cp3_tb23_torus_a5_site_harvest_harness.sh",
+  "harness_sha256": "bf2cb7bc2799137e9a3556816380dc93388e9e05ee134cf320b068411f982cbe",
+  "environment": {},
+  "artifact_prefix": "m6-cp3-tb23-a5-site-harvest",
   "retention_days": 14
 }
