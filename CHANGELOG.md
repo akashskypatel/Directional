@@ -1,3 +1,8 @@
+## 2026-10-21 — CB23 independent Review (RA-122): diagnostic scope accepted; TB24 authorized
+
+- Independently checked CB23's single-file +68/−0 rejection-only diff and exact compile package `12355892070`: outer/source hashes, 28/28 file digests, eight targets, mandatory GMP/GMPXX linkage, clean source records, no runtime. This is **compile-only** acceptance, not A5 correctness or CP3 promotion.
+- Issued `M6-CP3-TB24-RP01-TORUS-A5-SEAM-FACE-HARVEST` for three A5-ISO cases, guard `selector:447`, and five controls, with pre-registered B-across/B-fan/span-only routing. RA-121's unmeasured alternatives remain unresolved; counts and selector stay frozen. See `Architecture_M6_CP3_CB23_Torus_A5_Seam_Face_Site_Review_Decision_20261021.md` and `Architecture_M6_CP3_TB24_Torus_A5_Seam_Face_Harvest_Plan_20261021.md`.
+
 ## 2026-10-21 — CB23 torus A5 seam-face site compiled; independent Review next
 
 - RP-only rejection-site measurement (+68 lines) adds `sel`, `support`, `wedge` and `spanOnlyN` diagnostics without changing A5 admission/return/error behavior; exact source `e859175333f879273a75e3bfc321600e451048aa`.

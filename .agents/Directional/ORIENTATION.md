@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-21 · RA-121 reviewed TB23. All ten torus A5 isolation rows, including G4-B002 `focused30:28`, fail at one relation on certified seam 60–61: the A4 certificate agrees with both spans, but one occurrence's chart face is not its own seam span's face. The torus fixture atlas fix is confirmed (`selector:447` passes). Next: CB23 adds the selected faces, corner supports and span-only direction to the rejection site, so DEFN-ISO can choose between an A2 chart-face defect and an over-strict A5 clause. Accepted CP2 491/491; TB21 candidate 449/497; accounting 66/17/49, debt 1. `RP-01` open, `RP-02` unreached.  
+**Currency:** 2026-10-21 · RA-122 independently accepts CB23 for diagnostic-only scope and compile package; TB24 is the next nine-row artifact-only seam-face harvest (three A5 failures, guard and five controls). The B-across/B-fan owner is still unmeasured. Accepted CP2 491/491; TB21 candidate 449/497; stable 66/17/49, debt 1; RP-01 open and RP-02 unreached.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -102,7 +102,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Recover the CP2 rows on the CP3-entry path. The gauge pin is corrected (RA-111 to RA-115), and CB21 fixed the torus witness selection (RA-116, RA-117). Remaining CP2 families: the torus A5 isolation family (10 rows including G4-B002; one site, RA-121; CB23 seam-face measurement, then TB24 and DEFN-ISO; the torus witness fixture atlas binding is fixed and confirmed by TB23), and M1 (10 rows, DEFN-M1). D2 for `cp3entry:1` follows (DEFN-T1). | M6-CP3; [handoff](Future_Chat_Session_Handoff.md) |
+| **1** | Recover the CP2 rows on the CP3-entry path. The gauge pin is corrected (RA-111 to RA-115), and CB21 fixed the torus witness selection (RA-116, RA-117). Remaining CP2 families: the torus A5 isolation family (10 rows including G4-B002; one site, RA-121; CB23 review accepted, then TB24 seam-face harvest and independent Review before DEFN-ISO; the torus witness fixture atlas binding is fixed and confirmed by TB23), and M1 (10 rows, DEFN-M1). D2 for `cp3entry:1` follows (DEFN-T1). | M6-CP3; [handoff](Future_Chat_Session_Handoff.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |

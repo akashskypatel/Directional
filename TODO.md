@@ -1,8 +1,9 @@
-## CURRENT — CB23 seam-face diagnostics compiled; mandatory independent Review next (2026-10-21)
+## CURRENT — CB23 independently reviewed; TB24 seam-face harvest next (2026-10-21)
 
-- [x] `M6-CP3-CB23-RP01-TORUS-A5-SEAM-FACE-SITE` — diagnostic-only RP +68 lines; source `e859175333f879273a75e3bfc321600e451048aa`; eight-target GMP/GMPXX compile [39623185718](https://github.com/akashskypatel/Directional/actions/runs/39623185718) GREEN, artifact `12355892070`, 28/28 hashes, `runtimeExecution=false`; exact details in `Architecture_M6_CP3_CB23_Torus_A5_Seam_Face_Site_Code_Build_Record_20261021.md`.
-- [ ] **EXACT NEXT:** `M6-CP3-CB23-RP01-TORUS-A5-SEAM-FACE-SITE-REV` — independent Review: verify RP-only diff, new seam-face site fields, eight GMP/GMPXX targets, package/archive identity and compile-only boundary; issue TB24 plan (RA-121.6) only if evidence passes. No runtime or corrective code in Review.
-- [ ] **PLANNED, NOT AUTHORIZED:** TB24 (three A5-ISO, guard 447, five controls) → TB24-REV → DEFN-ISO (B-across vs B-fan) → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+- [x] `M6-CP3-CB23-RP01-TORUS-A5-SEAM-FACE-SITE` — RP-only +68 diagnostic fields, exact source `e859175333f879273a75e3bfc321600e451048aa`, run [39623185718](https://github.com/akashskypatel/Directional/actions/runs/39623185718), package `12355892070` (28/28, GMP/GMPXX, compile only).
+- [x] `M6-CP3-CB23-RP01-TORUS-A5-SEAM-FACE-SITE-REV` — RA-122 independent acceptance of diagnostic scope and immutable package only. Record: `Architecture_M6_CP3_CB23_Torus_A5_Seam_Face_Site_Review_Decision_20261021.md`. No runtime proof and no A5 ownership decision.
+- [ ] **EXACT NEXT:** `M6-CP3-TB24-RP01-TORUS-A5-SEAM-FACE-HARVEST` — immutable artifact-only nine-row test per `Architecture_M6_CP3_TB24_Torus_A5_Seam_Face_Harvest_Plan_20261021.md`; three A5-ISO, guard 447 and five controls. No recompile or code/selector repair.
+- [ ] **CONDITIONAL:** independent TB24 Review (ID `UNKNOWN`) → DEFN-ISO only after the Review establishes B-across/B-fan and span-only clause ownership → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
 - Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB21 candidate 449/497; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
 
 ---
