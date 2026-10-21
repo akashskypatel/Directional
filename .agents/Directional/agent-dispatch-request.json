@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb22-doc-closeout-20261021-b",
+  "request_id": "m6-cp3-cb22-a5-isolation-20261021-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb22-doc-closeout",
-  "file_id": "1L8FUJWL3iTsOzHGkoN0hwRgaBlbHFDDx",
-  "patch_sha256": "27e61a100028002f6b2c4c8cbb8f8f3ab8968d944d0674eb65dc14560a32d520",
-  "base_sha": "7e0da5f44922b58fb1446a9a0f4ce1f0abf2e59d",
+  "mailbox_key": "m6-cp3-cb22-a5-isolation-apply",
+  "file_id": "12NsbjfaFIwO9-FHhWCt9-f3qGLp-_ajG",
+  "patch_sha256": "9d3ddfbf49269fe5da3e92970b4b010f947ab8a46aead853faee2caf630bb4bd",
+  "base_sha": "49c982195327d86cb5a1ef64e934bd95507147de",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record immutable TB22 torus witness harvest",
+  "commit_message": "fix(directional): expose torus A5 isolation rejection sites",
   "retention_days": 14
 }
