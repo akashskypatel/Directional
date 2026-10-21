@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb22b-closeout-docs-apply-20261021-a",
+  "request_id": "m6-cp3-tb23-a5-site-harness-apply-20261021-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb22b-closeout-docs-apply",
-  "file_id": "1Ulp7CBorJhSUZdkUOkGfM1MAodW9Ldiv",
-  "patch_sha256": "e132e2122032be1a19fb0d45a027817847f2d6006f99bc2461d898b7820f0684",
-  "base_sha": "5a4ad80147e6db978f051134d6b8f71fb1e4d400",
+  "mailbox_key": "m6-cp3-tb23-a5-site-harness-apply",
+  "file_id": "1VfYTzhCaNLOf5-xIBfRPWJ2EM9SZSW_i",
+  "patch_sha256": "b513e58130668912a05d82292bbdaba769601695ff0fc54a30d3ff2c2e78f8a6",
+  "base_sha": "28c9d37049ad50c4c03efe737732ee60f79a0859",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs: close CB22B compile checkpoint and hand off independent review",
+  "commit_message": "test: add immutable TB23 torus A5 site harvest harness",
   "retention_days": 14
 }
