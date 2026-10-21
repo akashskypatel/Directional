@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb22b-a5-sites-compile-20261021-a",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb22b-a5-sites-compile",
-  "source_sha": "c6e90916eb90bfd33bc8a38c5ece7def15dcc766",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb22b-a5-sites-result"
+  "request_id": "m6-cp3-cb22b-closeout-docs-apply-20261021-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb22b-closeout-docs-apply",
+  "file_id": "1Ulp7CBorJhSUZdkUOkGfM1MAodW9Ldiv",
+  "patch_sha256": "e132e2122032be1a19fb0d45a027817847f2d6006f99bc2461d898b7820f0684",
+  "base_sha": "5a4ad80147e6db978f051134d6b8f71fb1e4d400",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: close CB22B compile checkpoint and hand off independent review",
+  "retention_days": 14
 }
