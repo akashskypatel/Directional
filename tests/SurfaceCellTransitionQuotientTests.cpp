@@ -957,6 +957,20 @@ directional::pipeline::RemeshResult run_retained_torus_pipeline() {
       fixture.mesh.V, fixture.mesh.F, raw, options);
 }
 
+std::string a5_rejection_message(
+    const directional::pipeline::SurfaceOccurrenceComplexProducer::ConstructionResult
+        &construction) {
+  const auto *error =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(
+          &construction);
+  if (error == nullptr) return "A5:unexpected-disposition";
+  std::string message = "A5:";
+  message += directional::pipeline::surface_occurrence_complex_error_name(
+      error->code);
+  if (!error->isolationSite.empty()) message += ";site=" + error->isolationSite;
+  return message;
+}
+
 std::optional<directional::pipeline::SurfaceQuotientClosedComplexView>
 build_torus_closed_complex_view(
     const directional::TriMesh &mesh,
@@ -970,12 +984,7 @@ build_torus_closed_complex_view(
       std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(&a5);
   if (occurrences == nullptr) {
     if (firstFailure != nullptr) {
-      const auto *error =
-          std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(&a5);
-      *firstFailure = error == nullptr ? "A5:unexpected-disposition"
-          : "A5:" + std::string(
-                directional::pipeline::surface_occurrence_complex_error_name(
-                    error->code));
+      *firstFailure = a5_rejection_message(a5);
     }
     return std::nullopt;
   }
@@ -6005,7 +6014,7 @@ TEST(M6CP1, ThinAdapterOutputIsPureProjectionOfStageProducts) {
     const auto *a5 =
         std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
             &a5Construction);
-    ASSERT_NE(a5, nullptr);
+    ASSERT_NE(a5, nullptr) << a5_rejection_message(a5Construction);
     auto a6Construction = directional::pipeline::SurfaceQuotientProducer::produce(*a5);
     const auto *a6 =
         std::get_if<directional::pipeline::SurfaceQuotientProduct>(
@@ -6190,7 +6199,8 @@ TEST(M6CP1, A6ClosedComplexBoundaryIsCombinatoriallyEquivalentOnProducedTorus) {
   const auto hardEdges = torus_row408_hard_edges(fixture.mesh);
   const auto run = run_retained_torus_pipeline();
   ASSERT_TRUE(run.surfaceCellContext.hasTraceNetwork);
-  ASSERT_TRUE(run.surfaceCellContext.hasArrangement);
+  ASSERT_TRUE(run.surfaceCellContext.hasArrangement)
+      << retained_pipeline_first_failure(run);
   const auto &network = run.surfaceCellContext.productSnapshots.traceNetwork;
   const auto &phaseFront = network.phaseFront.product();
   ASSERT_EQ(network.proposals.size(), phaseFront.cells().size());
@@ -6472,15 +6482,9 @@ TEST(M6CP1, A6ClosedComplexBoundaryPreservesHardRailAndPeriodicLabels) {
       fixture.mesh.V, fixture.mesh.F, fixture.network.phaseFront.product());
   const auto *a5 = std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
       &a5Construction);
-  const auto *a5Error =
-      std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(
-          &a5Construction);
   ASSERT_NE(a5, nullptr)
-      << "torus downstream first rejection=A5:"
-      << (a5Error == nullptr ? "unexpected-disposition"
-                             : directional::pipeline::
-                                   surface_occurrence_complex_error_name(
-                                       a5Error->code));
+      << "torus downstream first rejection="
+      << a5_rejection_message(a5Construction);
   auto a6Construction = directional::pipeline::SurfaceQuotientProducer::produce(
       *a5, hardEdges);
   const auto *a6 = std::get_if<directional::pipeline::SurfaceQuotientProduct>(
@@ -6544,15 +6548,9 @@ TEST(M6CP1, A6ClosedComplexBoundaryPreservesQuotientVertexLineage) {
       fixture.mesh.V, fixture.mesh.F, fixture.network.phaseFront.product());
   const auto *a5 = std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
       &a5Construction);
-  const auto *a5Error =
-      std::get_if<directional::pipeline::SurfaceOccurrenceComplexError>(
-          &a5Construction);
   ASSERT_NE(a5, nullptr)
-      << "torus downstream first rejection=A5:"
-      << (a5Error == nullptr ? "unexpected-disposition"
-                             : directional::pipeline::
-                                   surface_occurrence_complex_error_name(
-                                       a5Error->code));
+      << "torus downstream first rejection="
+      << a5_rejection_message(a5Construction);
   auto a6Construction = directional::pipeline::SurfaceQuotientProducer::produce(
       *a5, torus_row408_hard_edges(fixture.mesh));
   const auto *a6 = std::get_if<directional::pipeline::SurfaceQuotientProduct>(
