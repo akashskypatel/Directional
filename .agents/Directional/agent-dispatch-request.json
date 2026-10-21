@@ -1,14 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb24-seam-face-harvest-20261021-a",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb24-seam-face-harvest",
-  "executor_sha": "04a1799b9bab042c254e9a618ecba5afbccfefad",
-  "semantic_source_sha": "e859175333f879273a75e3bfc321600e451048aa",
-  "turn_id": "M6-CP3-TB24-RP01-TORUS-A5-SEAM-FACE-HARVEST",
-  "harness_path": ".agents/Directional/tools/torus_a5_seam_face_harvest.sh",
-  "harness_sha256": "f0b30909d598b451603ff90f4c228af9ceae49628e6b91f7d2e1e0c1cea1bd84",
-  "environment": {},
-  "artifact_prefix": "m6-cp3-tb24-torus-a5-seam-face",
+  "request_id": "m6-cp3-defn-iso-a-docs-closeout-20261021-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-defn-iso-a-docs-closeout",
+  "file_id": "1eRYL-qonpMH8bqWmV-cxc_D5Xblw8xhr",
+  "patch_sha256": "041cbdb041ed99fe073688e8a25bc1c95c4582475c1589986077ab6dcf4f3ed1",
+  "base_sha": "eedd535c6b6f6508da1d53e5d774c5b6b748ffc3",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close out DEFN-ISO-A census and hand off Review",
   "retention_days": 7
 }
