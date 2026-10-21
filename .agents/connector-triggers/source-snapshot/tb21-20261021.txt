@@ -1,0 +1,2 @@
+M6-CP3-TB21-RP01-SELECTOR-497-CENSUS
+Snapshot trigger; exact source authority is this commit.
