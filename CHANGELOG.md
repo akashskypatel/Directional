@@ -1,3 +1,9 @@
+## 2026-10-21 — DEFN-ISO-A static seam-node representative census delivered
+
+- Completed the RA-123.7 documents-only census at `Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_20261021.md` (commit `d2e2dc523d802ae83f81bdf7afec1eb44c70c0cb`, 49 lines). Enumerated `placement.selectedFace`, lattice/branch, corner-wedge and endpoint-gauge producers/consumers with source lines; distinguished conditional curved-chart row-121 selection from proven runtime lineage.
+- One per-node representative has no proven sufficiency across both certified seam sides. The torus producer path, row-121 boundary override and stripped A6 turn after re-expression remain unresolved; the census names a rejection-only probe, not a repair. Independent `M6-CP3-DEFN-ISO-A-RP01-SEAM-NODE-REPRESENTATIVE-CENSUS-REV` is mandatory next.
+- Frozen source and runtime acceptance unchanged: no `src`/`include`/`tests`/selector/workflow modifications, compilation, runtime, or promoted regression totals.
+
 ## 2026-10-21 — TB24 harvested and reviewed (RA-123): a per-node corner representative owns the torus A5 site
 
 - TB24 ran the nine-row seam-face harvest on the CB23 package (run 39641426480, result `12364838156`): 3 A5 RED / 6 PASS, both predictions held. Review verified it independently.

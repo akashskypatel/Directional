@@ -1,16 +1,9 @@
-## CURRENT — TB24 reviewed (RA-123): per-node corner representative owns the torus A5 site; DEFN-ISO split into census and contract (2026-10-21)
+## CURRENT — DEFN-ISO-A seam-node representative census committed; mandatory independent Review next (2026-10-21)
 
-- [ ] **EXACT NEXT:** `M6-CP3-DEFN-ISO-A-RP01-SEAM-NODE-REPRESENTATIVE-CENSUS` — documents only, RA-123.7. Write `Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_20261021.md` (at most 80 lines, line-anchored, search commands verbatim):
-  1. enforcers of `placement.selectedFace`, `placement.lattice`, `cornerWedgeBindings` and endpoint face gauges, with the frame each assumes;
-  2. frame semantics: gauge-table writer on the torus path; corner `branchRotation` vs gauge at the node face; what A6's stripped turn computes; whether TB24's relation could satisfy `seam.forward()` with (1,0) at `97/2`;
-  3. sufficiency: the face each consumer kind needs; one wedge face or per (occurrence, side);
-  4. the rule that put vertex 61's node on row 121 (RA-72.6 predicts 97);
-  5. reach: affected A5-ISO rows and controls.
-  No code, compile, runtime, contract, relaxation, minimum-face rule or new producer certificate. STOP and name a compile-only probe for any question that cannot be answered statically.
-- [ ] **CONDITIONAL:** `M6-CP3-DEFN-ISO-A-RP01-SEAM-NODE-REPRESENTATIVE-CENSUS-REV` — Review: adjudicates the census; issues DEFN-ISO-B (contract) or a compile-only probe.
-- [ ] Planned, not authorized: DEFN-ISO-B → DEFN-ISO-B-REV → corrective CB → CB-REV → TB → TB-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
-- **Turn sequence:** CB23 → CB23-REV (RA-122) → TB24 (9/9, 3 RED / 6 PASS) → TB24-REV (RA-123) → **DEFN-ISO-A** → DEFN-ISO-A-REV → DEFN-ISO-B → DEFN-ISO-B-REV → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
-- Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB21 candidate 449/497; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
+- [x] `M6-CP3-DEFN-ISO-A-RP01-SEAM-NODE-REPRESENTATIVE-CENSUS` — RA-123.7 documents-only census committed `d2e2dc523d802ae83f81bdf7afec1eb44c70c0cb` (49 lines); `Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_20261021.md`. Five question classes line-anchored with search commands and undecidable runtime premises; no code, tests, selectors, workflow, compile or runtime.
+- [ ] **EXACT NEXT:** `M6-CP3-DEFN-ISO-A-RP01-SEAM-NODE-REPRESENTATIVE-CENSUS-REV` — independent Review of the census. Verify exhaustive enforcers, regional gauge semantics, origin of vertex-61 row 121 vs minimum-row assumption, seam-side sufficiency, affected ten A5 rows/controls and missing runtime proof. Issue an authorized DEFN-ISO-B contract turn or bounded rejection-only compile probe; do not infer a repair, relax A5/A6, or begin implementation.
+- [ ] **UNASSIGNED:** successor after Review is `UNKNOWN` until its decision. Planned only: DEFN-ISO-B → DEFN-ISO-B-REV → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → RP-01 Review. `RP-02` UNREACHED; Gate C suspended.
+- Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; candidate TB21 449/497; selector 497 unchanged. No runtime acceptance is claimed by DEFN-ISO-A.
 
 ---
 
