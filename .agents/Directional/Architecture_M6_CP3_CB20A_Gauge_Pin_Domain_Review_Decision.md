@@ -113,5 +113,7 @@ There is no second harness repair inside the turn.
 
 ## RA-113.6 Sequence and accounting
 
+> *Closed by RA-114 (2026-10-21): TB20 confirmed P1–P4; the R-route falsifier is not observed; TB21 (selector-497 census) is next.*
+
 - **Sequence:** CB20 → CB20-REV (RA-112) → CB20A → CB20A-REV (RA-113) → **TB20** → TB20-REV → [selector-497 regression run, if TB20-REV requires it] → DEFN on the M1 binding owner (RA-105.3) → corrective CB/TB → fixture debt → census → RP-01 Review.
 - **Accounting is unchanged:** 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, TB18 candidate 448/497, selector 497. `RP-01` is open, `RP-02` is UNREACHED and Gate C is suspended.

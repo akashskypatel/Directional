@@ -1,3 +1,18 @@
+## RA-114 — TB20 reviewed: corrected pin confirmed at runtime; M2 cleared at the factory; selector-497 census next (2026-10-21)
+
+Authority: `Architecture_M6_CP3_TB20_Gauge_Pin_Domain_Review_Decision.md` (it holds the verified harvest facts; the agent wrote no TB20 report).
+
+- **RA-114.1** TB20 result `12314700010` (ZIP `3731402f…787f`): 26/26 executed, 19 RED, 30/30 hashes, postflight immutable.
+- **RA-114.2** P1–P4 observed: suite 3/3 PASS, no `gauge-pin` or `PublishedProductRejected` in any log, controls 3/3 PASS. The RA-103.5 R-route falsifier is not observed, so M2 is cleared at the checked factory.
+- **RA-114.3** M2 now splits three ways:
+  - `cp3entry:6` PASS;
+  - `cp3entry:2` and `focused30:12` fail in the hard-rail certificate/A5 area, which the M1 DEFN classifies;
+  - six torus rows fail at a test-fixture filter that requires an odd face-gauge delta across hard carriers (TQ:1697). The filter is absent at CP2 and was added in `88aa8eae0`. H-T1 (test proxy) versus H-T2 (lost producer contract) goes to DEFN-T1.
+- **RA-114.4** M1 is 10/10 unchanged; accounting is unchanged.
+- **RA-114.5** Next: `M6-CP3-TB21-RP01-SELECTOR-497-CENSUS` (unchanged census harness, CB20A package), then TB21-REV.
+
+---
+
 ## RA-113 — CB20 and CB20A accepted: corrected gauge-pin domain compiled; TB20 authorized (2026-10-21)
 
 Authority: `Architecture_M6_CP3_CB20A_Gauge_Pin_Domain_Review_Decision.md` (it holds the verified package facts; the agent wrote no CB20A record).
