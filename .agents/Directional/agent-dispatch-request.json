@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-iso-a-docs-closeout-20261021-a",
+  "request_id": "m6-cp3-cb24-seam-frame-values-apply-20261021-a",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-iso-a-docs-closeout",
-  "file_id": "1eRYL-qonpMH8bqWmV-cxc_D5Xblw8xhr",
-  "patch_sha256": "041cbdb041ed99fe073688e8a25bc1c95c4582475c1589986077ab6dcf4f3ed1",
-  "base_sha": "eedd535c6b6f6508da1d53e5d774c5b6b748ffc3",
+  "mailbox_key": "m6-cp3-cb24-seam-frame-values-apply",
+  "file_id": "1mmRHWmvcJxuyG4uGUHAlAvS5hL0i0ZN0",
+  "patch_sha256": "938da3d7a01b94d8717fc600bdc4f567af4b4f5829fdefbe12be27fc46d82dfb",
+  "base_sha": "70ac40253c1c93f4cbed3af1cca18661358ce277",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close out DEFN-ISO-A census and hand off Review",
+  "commit_message": "fix(directional): add CB24 seam frame diagnostics",
   "retention_days": 7
 }
