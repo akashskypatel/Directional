@@ -2,9 +2,10 @@
 
 - [x] `M6-CP3-CB24-RP01-SEAM-FRAME-VALUES-SITE-REV` — independently verified CB24's RP +28 / TQ +1−6 rejection-only semantic diff; package `12378590512`, 28/28 hashes, GMP/GMPXX, 8 targets, clean source and no runtime. Decision `Architecture_M6_CP3_CB24_Seam_Frame_Values_Site_Review_Decision_20261021.md`.
 - [x] Interim `M6-TOOL-VIS-FIELD-NETWORK-GUI-LAYER` (user-directed tooling) — commit `bf518b003`: A2a network polyline adapter, GUI section "6. Field-aligned curve network", 2 adapter tests; display only, RP-01 sources byte-identical to CB24 `dae267a82`. Record: `Architecture_M6_TOOL_VIS_Field_Network_GUI_Layer_Record_20261021.md`.
+- [x] Interim `M6-TOOL-README-GUI-BUILD-DOCS` (user-directed) — README: CMake and `setup.py` GUI build commands, complete CMake options, corrected solver defaults, `setup.py` flags and PEP 517 keys; `CMakeLists.txt`: OBJCXX enabled after `project()` for Apple GUI builds (CMake 4.3). No RP-01 source change.
 - [ ] **EXACT NEXT:** `M6-CP3-TB25-RP01-SEAM-FRAME-VALUES-HARVEST` — immutable artifact-only 11-row seam gauge/turn and D3 witness harvest, authority `Architecture_M6_CP3_TB25_Seam_Frame_Values_Harvest_Plan_20261021.md`. No rebuild, fixture/test/selector changes, or CP3 promotion; TB25 Review mandatory before DEFN-SEAM.
 - [ ] **CONDITIONAL:** TB25 Review ID UNKNOWN, then DEFN-SEAM pending observed gauge-jump branch and independent Review. RP-01 open; M1/D2 and fixture debt remain deferred.
-- **Turn sequence:** CB24 → CB24-REV (RA-125) → interim VIS (GUI network layer) → **TB25** → TB25-REV → DEFN-SEAM → DEFN-SEAM-REV → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+- **Turn sequence:** CB24 → CB24-REV (RA-125) → interim VIS (GUI network layer) → interim README GUI build docs → **TB25** → TB25-REV → DEFN-SEAM → DEFN-SEAM-REV → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
 
 
 ## HISTORY — Seam-node representative census: DEFN-ISO-A committed and reviewed (RA-124) (2026-10-21)

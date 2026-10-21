@@ -7,6 +7,13 @@ project(
   VERSION 1.0.0
   LANGUAGES CXX)
 
+# The macOS file dialog is Objective-C++. Enable it here rather than only in the
+# GUI block below: with CMake 4.3 and Ninja, enabling it there leaves the OBJCXX
+# rule variables unset and generation fails.
+if(APPLE AND DIRECTIONAL_BUILD_GUI)
+  enable_language(OBJCXX)
+endif()
+
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 

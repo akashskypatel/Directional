@@ -1,3 +1,9 @@
+## 2026-10-21 — Interim: GUI build documentation and a macOS CMake fix
+
+- README documents building `directional-ui` with CMake (Windows and macOS/Linux) and with `setup.py`, `build_standalone --build-gui`, `build_ext --build-gui` and `pip`. It also lists every CMake option with its real default, and how to view the field-aligned network.
+- Corrected documentation: CMake defaults SuiteSparse to OFF and PARDISO to ON only with MSVC (Eigen SparseLU otherwise). `setup.py` has no `--build-cli` flag and never packages the CLI in wheels. The PEP 517 backend forwards only `use-gmp` and `enable-suitesparse`; other options are environment variables.
+- `CMakeLists.txt` enables Objective-C++ right after `project()` for Apple GUI builds. Before this, generation failed with CMake 4.3, which `pip` builds use. No RP-01 source change.
+
 ## 2026-10-21 — Interim: the A2a field-aligned curve network is visible in the GUI
 
 - `directional-ui` has a new section, "6. Field-aligned curve network". It runs the SurfaceCells backend on the calculated or uploaded raw field and overlays the network's traces, mandatory edges and singularities on the input mesh, even when a later SurfaceCells stage rejects.

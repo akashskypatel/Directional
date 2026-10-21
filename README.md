@@ -15,6 +15,7 @@ The top-level project can build:
 2. `_directional` — Python extension module
 3. `directional_cli` — optional native executable installed as `directional`
 4. `directional_cli_backend` — shared C++ command implementation used by both CLIs
+5. `directional_gui` — optional Polyscope desktop UI installed as `directional-ui`
 
 The Python console script and native executable intentionally expose the same commands and option parsing through the C++ CLI backend.
 
@@ -22,9 +23,10 @@ The Python console script and native executable intentionally expose the same co
 
 ### Native build
 
-- CMake 3.21 or newer
+- CMake 3.21 or newer (`pip` builds pull CMake 4.0 or newer)
 - C++20-capable compiler
-- Git submodules initialized, including Eigen
+- Ninja when building through `setup.py` or `pip`, which always use the Ninja generator
+- Git submodules initialized: Eigen always, Polyscope for the desktop UI
 - Python only when building Python bindings or invoking `setup.py`
 
 ### Python build
@@ -87,12 +89,14 @@ CUDSS_ROOT=<path>
 CMake defaults are:
 
 ```text
-PARDISO=OFF
+PARDISO=ON on Windows with MSVC, OFF elsewhere
 CUDSS=OFF
-SUITESPARSE=ON
+SUITESPARSE=OFF
 ```
 
-The current `setup.py` defaults request all three backends and therefore resolve to PARDISO unless overridden.
+With no backend enabled, integration falls back to Eigen SparseLU.
+
+`setup.py` and `pip` request PARDISO by default, unless `DIRECTIONAL_ENABLE_CUDSS` or `DIRECTIONAL_ENABLE_SUITESPARSE` is enabled in the environment. A backend flag passed on the command line (for example `--enable-suitesparse`) replaces that default. PARDISO needs Intel oneMKL, so on macOS (and on Linux without oneMKL) pass `--disable-pardiso` for Eigen SparseLU, or select another backend; otherwise CMake stops at configure with `Could not find ... "MKL"`.
 
 #### PARDISO
 
@@ -114,7 +118,7 @@ cmake -S . -B build\cudss `
 
 #### SuiteSparse
 
-SuiteSparse is the default CMake backend. Supported MSVC builds can auto-install it when necessary. Other platforms should provide a usable SuiteSparse package or CMake configuration.
+SuiteSparse is enabled with `DIRECTIONAL_ENABLE_SUITESPARSE=ON` (or `--enable-suitesparse` through `setup.py`). Supported MSVC builds can auto-install it when necessary. Other platforms should provide a usable SuiteSparse package or CMake configuration (for example `brew install suite-sparse` on macOS).
 
 ## CMake options
 
@@ -122,12 +126,22 @@ SuiteSparse is the default CMake backend. Supported MSVC builds can auto-install
 |---|---:|---|
 | `BUILD_SHARED_LIBS` | `ON` | Build the Directional Core and Pipeline modules as shared libraries; set `OFF` for static archives |
 | `BUILD_PYTHON` | `OFF` | Build the Python extension |
+| `BUILD_TUTORIALS` | `OFF` | Build the tutorials |
+| `DIRECTIONAL_TUTORIALS` | `ALL` | Semicolon-separated tutorial directories to build when `BUILD_TUTORIALS=ON` |
 | `DIRECTIONAL_BUILD_CLI` | `OFF` | Build the native CLI executable |
+| `DIRECTIONAL_BUILD_GUI` | `OFF` | Build the Polyscope desktop UI (`directional_gui`, output name `directional-ui`) |
+| `DIRECTIONAL_BUILD_TESTS` | `OFF` | Build the unit-test executables |
+| `DIRECTIONAL_BUILD_HISTORICAL_TESTS` | `OFF` | Also build superseded milestone and diagnostic tests (needs `DIRECTIONAL_BUILD_TESTS`) |
+| `DIRECTIONAL_BUILD_LEGACY_INTEGRATION_TESTS` | `OFF` | Also build legacy integer-parametrization tests (needs `DIRECTIONAL_BUILD_TESTS`) |
+| `DIRECTIONAL_BUILD_OPTIONAL_GUIDANCE_TESTS` | `OFF` | Also build optional relief-guidance tests (needs `DIRECTIONAL_BUILD_TESTS`) |
+| `DIRECTIONAL_BUILD_BENCHMARKS` | `OFF` | Build the benchmark tools |
 | `DIRECTIONAL_ENABLE_GMP` | `ON` | Enable GMP exact arithmetic |
-| `DIRECTIONAL_ENABLE_SUITESPARSE` | `ON` | Request SuiteSparse |
-| `DIRECTIONAL_ENABLE_PARDISO` | `OFF` | Request Intel oneMKL PARDISO |
+| `GMP_ROOT` | empty | GMP install prefix when it is not found automatically (for example `/opt/homebrew/opt/gmp`) |
+| `DIRECTIONAL_ENABLE_PARDISO` | `ON` with MSVC, else `OFF` | Request Intel oneMKL PARDISO |
 | `DIRECTIONAL_ENABLE_CUDSS` | `OFF` | Request NVIDIA cuDSS |
+| `DIRECTIONAL_ENABLE_SUITESPARSE` | `OFF` | Request SuiteSparse UMFPACK |
 | `CUDSS_ROOT` | empty | cuDSS installation root |
+| `CMAKE_BUILD_TYPE` | empty | `Release` for single-config generators such as Ninja; multi-config generators use `--config Release` instead |
 | `CMAKE_INSTALL_PREFIX` | platform default | Installation destination |
 
 ## Native CMake builds
@@ -250,15 +264,32 @@ cmake -S . -B build `
 
 `setup.py` forwards build features to CMake and uses the same solver-selection priority.
 
+### Commands
+
+| Command (alias) | Builds and installs | Default build tree |
+|---|---|---|
+| `build_standalone` (`standalone`) | Shared library; also `directional-ui` with `--build-gui` | `build/standalone/` |
+| `build_cli` (`cli`) | Native CLI | `build/cli/` |
+| `build_gui` (`gui`) | Polyscope desktop UI | `build/gui/` |
+| `build_tutorials` (`tutorials`) | Tutorials | `build/tutorials/` |
+| `build_ext` (`ext`) | Python extension; packages `directional-ui` under `directional/bin/` with `--build-gui` | setuptools build tree |
+
+Every command configures a Release build with the Ninja generator. The install tree defaults to `<build-dir>/install/`.
+
 ### Feature flags
 
 ```text
---enable-gmp / --disable-gmp
---enable-suitesparse / --disable-suitesparse
---enable-pardiso / --disable-pardiso
---enable-cudss / --disable-cudss
---build-cli / --no-build-cli
+--enable-gmp / --disable-gmp                  all commands
+--enable-suitesparse / --disable-suitesparse  all commands
+--enable-pardiso / --disable-pardiso          all commands
+--enable-cudss / --disable-cudss              all commands
+--build-gui / --no-build-gui                  build_standalone, build_ext
+--build-dir=<path>                            all commands except build_ext
+--install-dir=<path>                          build_standalone, build_cli, build_gui
+--tutorial=<prefix>[,<prefix>...]             build_tutorials
 ```
+
+`build_standalone` and `build_ext` never build the native CLI; use `build_cli` for it.
 
 ### Standalone library
 
@@ -273,10 +304,10 @@ build tree:   build/standalone/
 install tree: build/standalone/install/
 ```
 
-Build the library and native CLI together:
+Build the native CLI:
 
 ```powershell
-python setup.py standalone --build-cli
+python setup.py build_cli
 ```
 
 Select a solver explicitly:
@@ -285,8 +316,7 @@ Select a solver explicitly:
 python setup.py standalone `
   --enable-pardiso `
   --disable-cudss `
-  --disable-suitesparse `
-  --build-cli
+  --disable-suitesparse
 ```
 
 ### Python extension and wheel
@@ -313,31 +343,40 @@ python setup.py build_ext `
   bdist_wheel
 ```
 
-Build and package the native executable with the wheel:
+Package the desktop UI with the wheel:
 
 ```powershell
-python setup.py build_ext --build-cli bdist_wheel
+python setup.py build_ext --build-gui bdist_wheel
 ```
 
-When enabled, the installed native CLI and its runtime dependency closure are packaged beneath:
+With `--build-gui`, the installed `directional-ui` and its runtime files are packaged beneath:
 
 ```text
 directional/bin/
 ```
 
-The Python console script remains available as `directional` and forwards commands to the same C++ backend through the extension module.
+The wheel does not contain the native CLI. The Python console script remains available as `directional` and forwards commands to the same C++ backend through the extension module.
 
 ## PEP 517 and `pip`
 
-The custom build backend accepts short and namespaced configuration keys.
+The custom build backend forwards two configuration settings to `setup.py`, in short or namespaced form:
 
-| Short key | Namespaced key | Environment variable |
+| Short key | Namespaced key | Effect |
 |---|---|---|
-| `enable-gmp` | `directional.enable-gmp` | `DIRECTIONAL_ENABLE_GMP` |
-| `enable-suitesparse` | `directional.enable-suitesparse` | `DIRECTIONAL_ENABLE_SUITESPARSE` |
-| `enable-pardiso` | `directional.enable-pardiso` | `DIRECTIONAL_ENABLE_PARDISO` |
-| `enable-cudss` | `directional.enable-cudss` | `DIRECTIONAL_ENABLE_CUDSS` |
-| `build-cli` | `directional.build-cli` | `DIRECTIONAL_BUILD_CLI` |
+| `use-gmp` | `directional.use-gmp` | Enable or disable GMP |
+| `enable-suitesparse` | `directional.enable-suitesparse` | Request SuiteSparse |
+
+Every other build option is read by `setup.py` from the environment:
+
+| Environment variable | Default | Effect |
+|---|---|---|
+| `DIRECTIONAL_ENABLE_GMP` | on | Enable GMP exact arithmetic |
+| `DIRECTIONAL_ENABLE_PARDISO` | on, unless CUDSS or SuiteSparse is enabled | Request Intel oneMKL PARDISO |
+| `DIRECTIONAL_ENABLE_CUDSS` | off | Request NVIDIA cuDSS |
+| `DIRECTIONAL_ENABLE_SUITESPARSE` | off | Request SuiteSparse |
+| `DIRECTIONAL_BUILD_GUI` | off | Build `directional-ui` and package it under `directional/bin/` |
+| `DIRECTIONAL_CMAKE_EXECUTABLE` or `CMAKE_COMMAND` | — | CMake executable override (Windows) |
+| `CMAKE_MAKE_PROGRAM` | — | Ninja executable override (Windows) |
 
 Boolean values accept:
 
@@ -354,33 +393,28 @@ python -m pip install . --no-build-isolation
 ### Build a PARDISO wheel
 
 ```powershell
-python -m pip wheel . `
-  --no-deps `
-  --no-build-isolation `
-  -Cdirectional.enable-pardiso=true `
-  -Cdirectional.enable-cudss=false `
-  -Cdirectional.enable-suitesparse=false
-```
-
-### Build a wheel containing the native CLI
-
-```powershell
-python -m pip wheel . `
-  --no-deps `
-  --no-build-isolation `
-  -Cdirectional.build-cli=true
-```
-
-### Environment-variable configuration
-
-```powershell
-$env:DIRECTIONAL_ENABLE_GMP = "1"
 $env:DIRECTIONAL_ENABLE_PARDISO = "1"
 $env:DIRECTIONAL_ENABLE_CUDSS = "0"
 $env:DIRECTIONAL_ENABLE_SUITESPARSE = "0"
-$env:DIRECTIONAL_BUILD_CLI = "1"
 
-python -m pip wheel . --no-build-isolation
+python -m pip wheel . --no-deps --no-build-isolation
+```
+
+### Build a SuiteSparse wheel without GMP
+
+```powershell
+python -m pip wheel . `
+  --no-deps `
+  --no-build-isolation `
+  -Cdirectional.enable-suitesparse=true `
+  -Cdirectional.use-gmp=false
+```
+
+### Build a wheel containing the desktop UI
+
+```bash
+DIRECTIONAL_BUILD_GUI=1 DIRECTIONAL_ENABLE_PARDISO=0 \
+  python -m pip wheel . --no-deps --no-build-isolation
 ```
 
 The legacy GMP environment variable `DIRECTIONAL_DIRECTIONAL_ENABLE_GMP` remains accepted as an alias.
@@ -499,11 +533,27 @@ field-extraction and quad-remeshing pipeline.
 - Automatically calculate a field and quad-remesh the loaded mesh.
 - Load a RawField, CrossField, or RoSy field and quad-remesh with it.
 - Visualize the input triangle mesh, four cross-field branches, and output quads.
+- Trace and display the SurfaceCells field-aligned curve network (section 6 of the
+  panel): traces from each singularity, mandatory boundary and feature edges, and
+  singularities colored by index.
 - Save fields through the existing field-conversion implementation.
 - Save pure quad meshes as OBJ or OFF.
 - Run field extraction and remeshing asynchronously so the viewer remains responsive.
 
-### Build
+### Build prerequisites
+
+- Initialize the submodules, which include Polyscope and its dependencies:
+  `git submodule update --init --recursive`.
+- macOS: Xcode command-line tools. PARDISO is unavailable, so build with
+  `DIRECTIONAL_ENABLE_PARDISO=OFF` (CMake) or `--disable-pardiso` (`setup.py`).
+  If Homebrew GMP is not found, pass `-DGMP_ROOT=/opt/homebrew/opt/gmp`.
+- Linux: X11 and OpenGL development packages for GLFW (for example `xorg-dev` and
+  `libgl1-mesa-dev` on Debian/Ubuntu), plus the optional GIO package described below.
+- Windows: Visual Studio with the Desktop development with C++ workload.
+
+### Build with CMake
+
+Windows (Visual Studio generator, PARDISO):
 
 ```powershell
 cmake -S . -B build\gui `
@@ -513,53 +563,100 @@ cmake -S . -B build\gui `
   -DDIRECTIONAL_ENABLE_PARDISO=ON
 
 cmake --build build\gui --config Release --target directional_gui
+cmake --install build\gui --config Release --prefix build\gui\install
 ```
+
+macOS or Linux (Ninja, Eigen SparseLU):
+
+```bash
+cmake -S . -B build/gui -G Ninja \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DBUILD_PYTHON=OFF \
+  -DDIRECTIONAL_BUILD_CLI=OFF \
+  -DDIRECTIONAL_BUILD_GUI=ON \
+  -DDIRECTIONAL_ENABLE_PARDISO=OFF \
+  -DDIRECTIONAL_ENABLE_GMP=ON
+
+cmake --build build/gui --target directional_gui
+cmake --install build/gui --prefix build/gui/install
+```
+
+Optional parameters for a UI build:
+
+| Parameter | Use |
+|---|---|
+| `-DDIRECTIONAL_ENABLE_SUITESPARSE=ON` | Use SuiteSparse UMFPACK instead of PARDISO or Eigen SparseLU |
+| `-DDIRECTIONAL_ENABLE_CUDSS=ON -DCUDSS_ROOT=<path>` | Use NVIDIA cuDSS |
+| `-DDIRECTIONAL_ENABLE_GMP=OFF` | Build without GMP exact arithmetic |
+| `-DGMP_ROOT=<prefix>` | Locate GMP and GMPXX installed outside the default search paths |
+| `-DBUILD_SHARED_LIBS=OFF` | Link Directional statically into `directional-ui` |
+| `-DDIRECTIONAL_BUILD_CLI=ON` | Also configure the native CLI; build it with `--target directional_cli` |
+| `-DCMAKE_INSTALL_PREFIX=<path>` | Default destination for `cmake --install` |
+
+If the Polyscope submodule is absent, CMake falls back to `find_package(polyscope)`;
+set `polyscope_DIR` or `CMAKE_PREFIX_PATH` to an installed Polyscope package.
 
 ### Build with setup.py
 
-Build and install only the desktop UI:
+Build and install only the desktop UI. Select a backend that exists on the platform:
 
 ```powershell
-python setup.py build_gui --enable-pardiso
+python setup.py build_gui --enable-pardiso          # Windows with oneMKL
+python setup.py build_gui --disable-pardiso         # macOS / Linux, Eigen SparseLU
+python setup.py build_gui --enable-suitesparse      # any platform with SuiteSparse
 ```
 
-The executable and runtime dependencies are installed beneath:
+`build_gui` accepts `--build-dir=<path>`, `--install-dir=<path>` and the solver and
+GMP flags in [Feature flags](#feature-flags). The executable and its runtime
+dependencies are installed beneath:
 
 ```text
 build/gui/install/bin/
 ```
 
-Build the standalone library, CLI, and UI together:
+Build the shared library and the UI together:
 
 ```powershell
-python setup.py build_standalone `
-  --build-cli `
-  --build-gui `
-  --enable-pardiso
+python setup.py build_standalone --build-gui --disable-pardiso
 ```
 
-Build a Python wheel which also packages the native UI under
-`directional/bin/`:
+Package the UI under `directional/bin/` in a Python wheel:
 
 ```powershell
 python setup.py build_ext --build-gui bdist_wheel
 ```
 
-The equivalent PEP 517 setting is:
+With `pip`, set `DIRECTIONAL_BUILD_GUI=1` instead
+(see [PEP 517 and `pip`](#pep-517-and-pip)).
+
+### Run
 
 ```powershell
-python -m pip wheel . `
-  --no-deps `
-  --no-build-isolation `
-  -Cdirectional.build-gui=true
+build\gui\install\bin\directional-ui.exe
+build\gui\install\bin\directional-ui.exe path\to\mesh.obj
 ```
 
-Run:
-
-```powershell
-build\gui\Release\directional-ui.exe
-build\gui\Release\directional-ui.exe path\to\mesh.obj
+```bash
+build/gui/install/bin/directional-ui
+build/gui/install/bin/directional-ui path/to/mesh.obj
 ```
+
+Without installing, the executable is `build/gui/directional-ui` for Ninja builds and
+`build\gui\Release\directional-ui.exe` for Visual Studio builds.
+
+### View the field-aligned curve network
+
+1. Load a mesh in section 1.
+2. Calculate a field in section 3, or load a RawField in section 4.
+3. In section 6, choose the field source and select **Trace field-aligned network**.
+
+The panel reports the number of traces, segments, singularities and mandatory edges.
+The structures appear as `A2a field-aligned traces`, `A2a mandatory edges` and
+`A2a singularities` in Polyscope's structure list. The network is shown even when a
+later SurfaceCells stage rejects the remesh; the panel then names that stage. A field
+without singularities has no traces, so only mandatory edges appear. For example,
+`benchmarks/fixtures/milestone-g/sphere_prescribed.obj` with its `.rawfield` shows 24
+traces between 8 singularities.
 
 The **Browse...** buttons use the operating system's native file dialog:
 
