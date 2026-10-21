@@ -1,3 +1,7 @@
+## 2026-10-21 — TB23 immutable A5 site harvest; mandatory Review next
+
+- Artifact-only TB23 [run 39609365590](https://github.com/akashskypatel/Directional/actions/runs/39609365590), result `12348649684`, source `c6e90916e`: 16/16 selected/executed, 6 PASS / 10 RED, all five controls PASS; package/source/frozen selectors immutable, 20/20 result hashes verified, no runtime compilation. All ten A5 RED rows report `relation-collinear-seam;region=0;seam=60,61;cert0=120/0->97/2:first-face`; the F fixture atlas fix makes `selector:447` PASS. The H-ISO classification remains for mandatory TB23-REV; no stable count, selector or source acceptance promoted. Report `Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Report_20261021.md`.
+
 ## 2026-10-21 — CB22B Review (RA-120): site reaches all nine A5-ISO rows; TB23 harvest issued
 
 - Review verified CB22B's package independently (28/28, 1,046 source files match `c6e90916e`, zero warnings, no runtime) and accepted the test-only diff statically. Every A5 isolation return now carries a site, and all nine torus A5-ISO rows print it, including G4-B002.
