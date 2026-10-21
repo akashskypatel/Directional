@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "workflow_key": "cb21-rp01-review-boundary",
+  "workflow": "CB21 Independent Review Boundary",
+  "workflow_ref": "akashskypatel/Directional/.github/workflows/agent-cb21-review-boundary.yml@refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "repository": "akashskypatel/Directional",
+  "event": "push",
+  "event_sha": "4cfe0d1a5e1c042e57d40c8a96236c9a213047cd",
+  "source_sha": "4cfe0d1a5e1c042e57d40c8a96236c9a213047cd",
+  "source_ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref_name": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "run_id": 39547232827,
+  "run_attempt": 1,
+  "run_number": 1,
+  "run_url": "https://github.com/akashskypatel/Directional/actions/runs/39547232827",
+  "result": "success",
+  "summary": "Independent review boundary and committed-ledger verification.",
+  "reported_at": "2026-10-21T05:02:14Z",
+  "mailbox_branch": "workflow-mailbox",
+  "artifacts": [
+    {
+      "id": 12322570457,
+      "name": "agent-workflow-schema-validation-39547232827",
+      "size_in_bytes": 445,
+      "digest": "sha256:343b0f374911b6dc5139c5ad5e57c096bcd19494f2116b1b0156644386ff4c51",
+      "expired": false,
+      "created_at": "2026-10-21T05:01:42Z",
+      "expires_at": "2026-10-28T05:01:41Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/39547232827/artifacts/12322570457",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/12322570457/zip"
+    },
+    {
+      "id": 12322376340,
+      "name": "workflow-mailbox-publisher-log-39547232827-attempt-1",
+      "size_in_bytes": 387,
+      "digest": "sha256:81a14ecf1c3b8483c8032cd43e37336755e72175f1c05c4b48f540d0c1c57426",
+      "expired": false,
+      "created_at": "2026-10-21T05:02:14Z",
+      "expires_at": "2026-11-04T05:02:13Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/39547232827/artifacts/12322376340",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/12322376340/zip"
+    },
+    {
+      "id": 12322225719,
+      "name": "cb21-review-boundary-log-39547232827",
+      "size_in_bytes": 1349,
+      "digest": "sha256:090f8a7163d93294d7375ab0a58537dcdd9e0b7c49d1ba181363afbc8ddf7463",
+      "expired": false,
+      "created_at": "2026-10-21T05:02:00Z",
+      "expires_at": "2026-10-28T05:01:59Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/39547232827/artifacts/12322225719",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/12322225719/zip"
+    },
+    {
+      "id": 12322055942,
+      "name": "agent-workflow-schema-validator-log-39547232827",
+      "size_in_bytes": 496,
+      "digest": "sha256:e240c6936ced496684700b8b2db4b2b9356ccd00f3270b343c5f033102e70420",
+      "expired": false,
+      "created_at": "2026-10-21T05:01:43Z",
+      "expires_at": "2026-10-28T05:01:42Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/39547232827/artifacts/12322055942",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/12322055942/zip"
+    }
+  ]
+}
