@@ -1,22 +1,40 @@
-## CURRENT — CB23 independently reviewed; TB24 seam-face harvest next (2026-10-21)
+## CURRENT — TB24 reviewed (RA-123): per-node corner representative owns the torus A5 site; DEFN-ISO split into census and contract (2026-10-21)
+
+- [ ] **EXACT NEXT:** `M6-CP3-DEFN-ISO-A-RP01-SEAM-NODE-REPRESENTATIVE-CENSUS` — documents only, RA-123.7. Write `Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_20261021.md` (at most 80 lines, line-anchored, search commands verbatim):
+  1. enforcers of `placement.selectedFace`, `placement.lattice`, `cornerWedgeBindings` and endpoint face gauges, with the frame each assumes;
+  2. frame semantics: gauge-table writer on the torus path; corner `branchRotation` vs gauge at the node face; what A6's stripped turn computes; whether TB24's relation could satisfy `seam.forward()` with (1,0) at `97/2`;
+  3. sufficiency: the face each consumer kind needs; one wedge face or per (occurrence, side);
+  4. the rule that put vertex 61's node on row 121 (RA-72.6 predicts 97);
+  5. reach: affected A5-ISO rows and controls.
+  No code, compile, runtime, contract, relaxation, minimum-face rule or new producer certificate. STOP and name a compile-only probe for any question that cannot be answered statically.
+- [ ] **CONDITIONAL:** `M6-CP3-DEFN-ISO-A-RP01-SEAM-NODE-REPRESENTATIVE-CENSUS-REV` — Review: adjudicates the census; issues DEFN-ISO-B (contract) or a compile-only probe.
+- [ ] Planned, not authorized: DEFN-ISO-B → DEFN-ISO-B-REV → corrective CB → CB-REV → TB → TB-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+- **Turn sequence:** CB23 → CB23-REV (RA-122) → TB24 (9/9, 3 RED / 6 PASS) → TB24-REV (RA-123) → **DEFN-ISO-A** → DEFN-ISO-A-REV → DEFN-ISO-B → DEFN-ISO-B-REV → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+- Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB21 candidate 449/497; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
+
+---
+
+## HISTORY — Torus A5 seam-face fields: CB23 compiled and reviewed (RA-122); TB24 harvested and reviewed (RA-123) (2026-10-21)
 
 - [x] `M6-CP3-CB23-RP01-TORUS-A5-SEAM-FACE-SITE` — RP-only +68 diagnostic fields, exact source `e859175333f879273a75e3bfc321600e451048aa`, run [39623185718](https://github.com/akashskypatel/Directional/actions/runs/39623185718), package `12355892070` (28/28, GMP/GMPXX, compile only).
-- [x] `M6-CP3-CB23-RP01-TORUS-A5-SEAM-FACE-SITE-REV` — RA-122 independent acceptance of diagnostic scope and immutable package only. Record: `Architecture_M6_CP3_CB23_Torus_A5_Seam_Face_Site_Review_Decision_20261021.md`. No runtime proof and no A5 ownership decision.
-- [ ] **EXACT NEXT:** `M6-CP3-TB24-RP01-TORUS-A5-SEAM-FACE-HARVEST` — immutable artifact-only nine-row test per `Architecture_M6_CP3_TB24_Torus_A5_Seam_Face_Harvest_Plan_20261021.md`; three A5-ISO, guard 447 and five controls. No recompile or code/selector repair.
-- [ ] **CONDITIONAL:** independent TB24 Review (ID `UNKNOWN`) → DEFN-ISO only after the Review establishes B-across/B-fan and span-only clause ownership → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
-- Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB21 candidate 449/497; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
+- [x] `M6-CP3-CB23-RP01-TORUS-A5-SEAM-FACE-SITE-REV` — RA-122 independent acceptance of diagnostic scope and immutable package only. Record: `Architecture_M6_CP3_CB23_Torus_A5_Seam_Face_Site_Review_Decision_20261021.md`.
+- [x] `M6-CP3-TB24-RP01-TORUS-A5-SEAM-FACE-HARVEST` — run `39641426480`, result `12364838156`; 9/9, 3 A5 RED / 6 PASS, zero skips; site suffix `sel=121/0,121/0;support=vertex,vertex;wedge=120/0+121/0,97/2;spanOnly0=forward`. Report: `Architecture_M6_CP3_TB24_Torus_A5_Seam_Face_Harvest_Report_20261021.md`. Yielded with documentation sync pending; the Review performed it.
+- [x] Review (RA-123, TB24-REV):
+  - harvest verified (ZIP digest, 14/14 manifest, one RUN per log, raw hashes = ledger); P1/P2 held;
+  - both occurrences are one vertex-61 node with one per-node representative `121/0`: inside (0,1)'s wedge, outside (1,0)'s (`97/2`, other sheet); neither B-across nor B-fan; owner the A2 per-node representative (RA-72.4 class);
+  - relaxing the face clauses is inadmissible (A6 RP:5832–5877 relies on them); DEFN-ISO split into census (A) and contract (B); record: `Architecture_M6_CP3_TB24_Torus_A5_Seam_Face_Harvest_Review_Decision_20261021.md`.
 
 ---
 
 ## HISTORY — TB23 reviewed (RA-121): one site owns all ten torus A5 rows; seam-face measurement (CB23) before DEFN-ISO (2026-10-21)
 
-- [ ] **EXACT NEXT:** `M6-CP3-CB23-RP01-TORUS-A5-SEAM-FACE-SITE` — Code + Build, RA-121.5, base `c6e90916e`, RP only, inside the `relation-collinear-seam` block (before `error.isolationSite = std::move(site);`):
+- [x] `M6-CP3-CB23-RP01-TORUS-A5-SEAM-FACE-SITE` — Code + Build, RA-121.5, base `c6e90916e`, RP only, inside the `relation-collinear-seam` block (before `error.isolationSite = std::move(site);`):
   - append `;sel=<a>,<b>` (each canonical occurrence's `placement.selectedFace` as `<row>/<sheet>`), `;support=<a>,<b>` (`vertex`/`edge`/`face`), `;wedge=<a>,<b>` (`cornerWedgeBindings` labels joined by `+`), and `;spanOnlyN=<v>` per matching certificate (classifier without the two face clauses);
   - no decision, return or error-code change; existing site text byte-identical; header, TQ and every other file unchanged; at most 100 columns;
   - eight-target GMP/GMPXX compile, `runtimeExecution=false`; record `Architecture_M6_CP3_CB23_Torus_A5_Seam_Face_Site_Code_Build_Record_20261021.md`;
   - STOP on any compile error or any need to edit outside the block.
-- [ ] `M6-CP3-CB23-RP01-TORUS-A5-SEAM-FACE-SITE-REV` — mandatory Review: verifies the CB23 diff and package; issues the TB24 plan (RA-121.6 frame).
-- [ ] Planned, not authorized: TB24 (`focused30:20`, `selector:444`, `focused30:28`; guard `selector:447`; controls `cp3entry:6`, `selector:217`, TB18 A#14, `selector:443`, `focused30:7`) → TB24-REV → DEFN-ISO (B-across: A2 corner chart face on certified seams; B-fan: side from span binding plus in-sheet chart transition) → corrective CB/TB → DEFN-M1 (RA-105.3; also `focused30:12`, `cp3entry:2`) → corrective CB/TB → DEFN-T1 (D2 attainability on the torus) → fixture debt (242 per `Architecture_M6_CP3_CB19_Selector242_Atlas_Authority_Test_Plan_20261020.md`, then 174 → 250 → adjacent-sheet → 191 → 442, plus I/R sites TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518) → census → RP-01 Review.
+- [x] `M6-CP3-CB23-RP01-TORUS-A5-SEAM-FACE-SITE-REV` — mandatory Review: verifies the CB23 diff and package; issues the TB24 plan (RA-121.6 frame).
+- Planned at RA-121: TB24 (`focused30:20`, `selector:444`, `focused30:28`; guard `selector:447`; controls `cp3entry:6`, `selector:217`, TB18 A#14, `selector:443`, `focused30:7`) → TB24-REV → DEFN-ISO (B-across: A2 corner chart face on certified seams; B-fan: side from span binding plus in-sheet chart transition) → corrective CB/TB → DEFN-M1 (RA-105.3; also `focused30:12`, `cp3entry:2`) → corrective CB/TB → DEFN-T1 (D2 attainability on the torus) → fixture debt (242 per `Architecture_M6_CP3_CB19_Selector242_Atlas_Authority_Test_Plan_20261020.md`, then 174 → 250 → adjacent-sheet → 191 → 442, plus I/R sites TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518) → census → RP-01 Review.
 - **Turn sequence:** CB22B-REV (RA-120) → TB23 (16/16, 6 PASS / 10 RED) → TB23-REV (RA-121) → **CB23** → CB23-REV → TB24 → TB24-REV → DEFN-ISO → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
 - Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, selector 497; candidate evidence TB21 449/497; `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
 

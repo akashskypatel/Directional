@@ -34,41 +34,53 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-21, RA-122 independently accepts CB23 for diagnostic-only source scope and eight-target GMP/GMPXX compile (28/28, no runtime); TB24 is the exact next artifact-only nine-row harvest. The B-across/B-fan owner remains undecided. |
-| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; refetch before mutation. Semantic source CB23 `e859175333f879273a75e3bfc321600e451048aa`; RP-only diagnostic increment over `c6e90916eb90bfd33bc8a38c5ece7def15dcc766`. Refetch live HEAD before mutation. |
+| Currency | 2026-10-21, after TB24 Review (RA-123). TB24 held P1/P2: both occurrences of the failing seam relation are the same vertex-61 node and carry one per-node representative face `121/0`; it lies inside occurrence (0,1)'s wedge but outside (1,0)'s (`97/2`, other sheet). The site is neither B-across nor B-fan; the owner is the A2 per-node corner representative (RA-72.4 class). Relaxing the A5 face clauses is inadmissible (A6 relies on them). DEFN-ISO is split: census (A), then contract (B). |
+| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; refetch before mutation. Semantic source CB23 `e859175333f879273a75e3bfc321600e451048aa`; HEAD `src`, `include` and `tests` are identical to it. |
 | Last accepted semantic runtime | CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. R3 baseline **403/497** rejected. |
-| Latest candidate or rejected evidence | CB23 [compile 39623185718](https://github.com/akashskypatel/Directional/actions/runs/39623185718), package `12355892070` (ZIP SHA-256 `5215e5c2…af91f`), 28/28, no runtime; record `Architecture_M6_CP3_CB23_Torus_A5_Seam_Face_Site_Code_Build_Record_20261021.md`. Latest TB23: 16/16, 6 PASS / 10 RED (RA-121); TB21 census 449/497 (RA-115). **Not promoted.** |
+| Latest candidate or rejected evidence | TB24: run [39641426480](https://github.com/akashskypatel/Directional/actions/runs/39641426480), result `12364838156` (ZIP `dcf42df9…220d3`), expires 2026-10-28T17:12:14Z; 9/9, 3 A5 RED / 6 PASS; report `Architecture_M6_CP3_TB24_Torus_A5_Seam_Face_Harvest_Report_20261021.md`, reviewed by RA-123 (`Architecture_M6_CP3_TB24_Torus_A5_Seam_Face_Harvest_Review_Decision_20261021.md`). CB23 package `12355892070` (RA-122). Census: TB21 **449/497** (RA-115). **Not promoted.** |
 | Regression accounting and debt | **66/17/49**, debt **1**, selector 497 frozen; R3 403/497 rejected; candidate evidence TB21 449/497. Tracker: `Regression_Root_Cause_Tracker.md`. |
-| Active boundary | `RP-01` open. **A5-ISO**: 10 rows (`focused30:6, 20, 24, 25, 26, 27, 28`; `selector:444, 446, 448`; incl. G4-B002), one site `relation-collinear-seam` / `first-face` (RA-121.3). The unknowns are the selected faces, the corner supports and the span-only direction, which separate B-across from B-fan (RA-121.4). Reverting `8be01326d`'s reject is not admissible. **F**: closed at candidate level. **M1**: 10 rows plus `focused30:12`, `cp3entry:2` (DEFN-M1). CP3-entry: D2 `cp3entry:1` (DEFN-T1). Restriction: CB23 diagnostic-only Review accepted (RA-122); its new site fields have not yet been harvested at runtime. `RP-02` UNREACHED; Gate C suspended. |
+| Active boundary | `RP-01` open. **A5-ISO**: 10 rows (`focused30:6, 20, 24, 25, 26, 27, 28`; `selector:444, 446, 448`; incl. G4-B002), one site; owner the A2 per-node representative (RA-123.3–123.6). Unestablished premises: one representative per occurrence serves every consumer; lattice re-expression at another face is exact and A6's stripped-turn check is meaningful. No clause relaxation, no minimum-face rule, no new producer certificate. **M1**: 10 rows plus `focused30:12`, `cp3entry:2` (DEFN-M1). CP3-entry: D2 `cp3entry:1` (DEFN-T1). Restriction: DEFN-ISO-A is documents-only. `RP-02` UNREACHED; Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-TB24-RP01-TORUS-A5-SEAM-FACE-HARVEST` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-DEFN-ISO-A-RP01-SEAM-NODE-REPRESENTATIVE-CENSUS` — EXACT NEXT
 
-- **Type / owner:** artifact-only Test + Benchmark; RA-122 independently accepted CB23 diagnostic scope and issued `Architecture_M6_CP3_TB24_Torus_A5_Seam_Face_Harvest_Plan_20261021.md`.
-- **Objective:** observe CB23's seam-face rejection suffix on three torus A5 rows while preserving the guard and five controls, to discriminate B-across vs B-fan for later Review.
-- **Read before work:** RA-122, RA-121.3–121.6, `Architecture_M6_CP3_TB24_Torus_A5_Seam_Face_Harvest_Plan_20261021.md`, TB23 harness, CB23 package `12355892070`, and mandatory artifact-only/turn policies.
-- **In scope:** exact nine gtest identities and read-only artifact execution, independently hashed raw logs, complete site field ledger, result artifact, source/package immutability and candidate tracker/report updates.
-- **Out of scope:** no recompilation, relinking, benchmarks, product/test/fixture/selector repair or changes to A5 admission, no CP3 promotion.
-- **Success evidence:** 9/9 executed, expected 3 A5 RED/6 PASS, P1/P2 comparisons, immutable artifact checks, reviewed report; record falsifiers even if observed.
-- **On success:** independent TB24 Review, canonical ID `UNKNOWN` unless separately authorized; no immediate DEFN-ISO.
-- **On failure/blocker:** STOP and report exact evidence and source authority; no speculative repair.
+- **Type / owner:** DEFN (documents-only census); implementation agent. Authority: RA-123.7 (`Architecture_M6_CP3_TB24_Torus_A5_Seam_Face_Harvest_Review_Decision_20261021.md`).
+- **Objective:** enumerate every enforcer of the occurrence representative and settle the frame premises, so DEFN-ISO-B can write a contract without guessing.
+- **Read before work:**
+  - RA-123 (all), RA-72.4–72.6 (`Architecture_M6_CP3_R7_Corner_Face_Selection_Repair_Spec_Review_Decision.md`), RA-78.10, RA-79.4;
+  - `src/pipeline/RemeshPipeline.cpp` (RP): RP:3855–3911, RP:4448–4458, RP:4669–4684, RP:5051–5052, RP:5832–5877;
+  - `src/geometry/SurfaceCellTracing.cpp` (SCT): SCT:13404–13422, SCT:13191, SCT:13579, SCT:18037, SCT:18434;
+  - `LESSONS.md` §§3, 5.
+- **In scope:** write `Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_20261021.md` (at most 80 lines), each answer line-anchored at HEAD with the search commands printed verbatim:
+  1. **Enforcers:** every read of `placement.selectedFace`, `placement.lattice` (`branchRotation`, `sourceChart`), `cornerWedgeBindings` and the endpoint face gauges in `src/`, each with the frame it assumes (face, sheet or region).
+  2. **Frame semantics:** which writer fills `sourceFaceBranchRotations` on the torus path; whether the corner `branchRotation` equals the gauge at the node face by construction; what A6's stripped turn computes for same-sheet occurrences and for occurrences on the two certified sides; whether TB24's relation could satisfy `seam.forward()` with (1,0)'s representative at `97/2`.
+  3. **Sufficiency:** per consumer kind (seam and non-seam `OrdinaryFront`, hard-rail endpoint, periodic), the face the representative must equal; whether one wedge face serves them all or the gauge must be per (occurrence, side).
+  4. **Node face rule:** what put vertex 61's node on row 121, against RA-72.6's minimum-row prediction of 97.
+  5. **Reach:** which A5-ISO rows share this relation shape, and which controls read a field that a representative change would touch.
+- **Out of scope:**
+  - any `src`/`include`/`tests`/selector/workflow change, compile or runtime;
+  - any contract, rule or repair, including a clause relaxation, a minimum-face rule (RA-79.4) or a new producer certificate (RA-78.4).
+- **Success evidence:** the record is committed with all five answers anchored or explicitly marked undecidable, and STATUS is COMPLETE.
+- **On success:** `M6-CP3-DEFN-ISO-A-RP01-SEAM-NODE-REPRESENTATIVE-CENSUS-REV` (Review, mandatory). It adjudicates the census and issues DEFN-ISO-B (the contract) or a compile-only probe.
+- **On failure/blocker:** if a question cannot be answered statically, STOP: record what is known, name the compile-only, rejection-only probe that would answer it, and return to Review. Do not guess.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — next | `M6-CP3-TB24-RP01-TORUS-A5-SEAM-FACE-HARVEST` | Exact nine-row immutable artifact-only harvest; plan and falsifiers frozen by RA-122. |
-| 2 — conditional | `UNKNOWN` (TB24-REV) | Independent Review must adjudicate TB24, then may authorize DEFN-ISO; no automatic advancement. |
+| 1 — next | `M6-CP3-DEFN-ISO-A-RP01-SEAM-NODE-REPRESENTATIVE-CENSUS` | DEFN, per RA-123.7: documents-only census of representative enforcers and frame premises. |
+| 2 — conditional | `M6-CP3-DEFN-ISO-A-RP01-SEAM-NODE-REPRESENTATIVE-CENSUS-REV` | Review, only after step 1: adjudicates the census; issues DEFN-ISO-B or a compile-only probe. |
+| later — UNKNOWN until assigned | DEFN-ISO-B (contract: per-occurrence representative, lattice re-expression, non-weakening, falsifiers) → DEFN-ISO-B-REV → corrective CB → CB-REV → TB → TB-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review | Planned, not authorized; each Review assigns the next edge. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **test-benchmark** — TB24 nine-row artifact-only harvest from reviewed CB23 package; execute no build, honor P1/P2 falsifiers and independent Review boundary.
+`load_next`: **plan** — DEFN-ISO-A: documents-only census of the occurrence-representative enforcers and frame premises (RA-123.7); no code, compile or runtime.
 
 Minimum successor context **after the mandatory start checklist and policies**:
 
 0. `.agents/Directional/ORIENTATION.md` — project context, read first.
 1. `.agents/Directional/ROADMAP.md` — milestone position only.
 2. `.agents/Directional/Future_Chat_Session_Handoff.md` — exact current handoff.
-3. `Architecture_M6_CP3_CB23_Torus_A5_Seam_Face_Site_Review_Decision_20261021.md` (RA-122), `Architecture_M6_CP3_TB24_Torus_A5_Seam_Face_Harvest_Plan_20261021.md` and RA-121; verified CB23 package and TB23 harness; `LESSONS.md` §§5, 7.
+3. `Architecture_M6_CP3_TB24_Torus_A5_Seam_Face_Harvest_Review_Decision_20261021.md` (RA-123: decoded site, B-node owner, why relaxation is inadmissible, census questions); `Architecture_M6_CP3_R7_Corner_Face_Selection_Repair_Spec_Review_Decision.md` (RA-72.4–72.6); TB24 report; `LESSONS.md` §§3, 5.
 4. `.agents/Directional/Regression_Root_Cause_Tracker.md` and `TODO.md` — unresolved issues and scope; required policy readings still govern.
 
 **Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py authority <sha>` and

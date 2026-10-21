@@ -280,6 +280,9 @@ This document records **reusable failure-derived engineering lessons**, not an e
 - **Normalize `file:line` before calling a changed failure line a behaviour change.** Any edit to a test
   file shifts every gtest location below it. Read the diff hunks, or strip line numbers, before comparing
   first failures across builds (RA-102.1: ten apparent changes were one inserted `#include`).
+- **A routing rule over a pair must read both members.** Branches keyed on the first occurrence of a
+  relation let a mixed result read as one branch (RA-123.4: occurrence (0,1) fit B-fan, while (1,0)'s
+  chart face sat across the seam).
 
 ## Contracts, planning, reviews, and durable records
 

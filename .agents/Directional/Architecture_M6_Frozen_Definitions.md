@@ -1,3 +1,17 @@
+## RA-123 — TB24 reviewed: a per-node corner representative owns the torus A5 site; DEFN-ISO split into census and contract (2026-10-21)
+
+Authority: `Architecture_M6_CP3_TB24_Torus_A5_Seam_Face_Harvest_Review_Decision_20261021.md`.
+
+- **RA-123.1** TB24 verified: run `39641426480`, result `12364838156`, 14/14 manifest, 9/9, 3 A5 RED / 6 PASS.
+- **RA-123.2** P1/P2 held; suffix `sel=121/0,121/0;support=vertex,vertex;wedge=120/0+121/0,97/2;spanOnly0=forward`.
+- **RA-123.3** One vertex-61 node; one per-node representative `121/0`, inside (0,1)'s wedge and outside (1,0)'s (`97/2`); span/wedge side authority alone is forward; the face clauses are the only reject.
+- **RA-123.4** Neither B-across nor B-fan: **B-node**. RA-121.6's first-occurrence routing was under-specified.
+- **RA-123.5** Relaxing the A5 face clauses is inadmissible: A6 (RP:5832–5877) relies on them.
+- **RA-123.6** Owner: A2 per-node corner representative. Unestablished: one representative serves every consumer; lattice re-expression is exact and A6's stripped turn is meaningful.
+- **RA-123.7** Next: `M6-CP3-DEFN-ISO-A-RP01-SEAM-NODE-REPRESENTATIVE-CENSUS` (documents only; five questions).
+- **RA-123.8** DEFN-ISO-A → REV → DEFN-ISO-B → REV → corrective CB/TB → DEFN-M1 → DEFN-T1 → fixture debt → census → RP-01 Review.
+
+---
 ## RA-121 — TB23 reviewed: one site owns all ten torus A5 rows; the occurrence chart face disagrees with its own seam span; seam-face measurement before DEFN-ISO (2026-10-21)
 
 Authority: `Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Review_Decision.md`.

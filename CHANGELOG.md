@@ -1,3 +1,9 @@
+## 2026-10-21 — TB24 harvested and reviewed (RA-123): a per-node corner representative owns the torus A5 site
+
+- TB24 ran the nine-row seam-face harvest on the CB23 package (run 39641426480, result `12364838156`): 3 A5 RED / 6 PASS, both predictions held. Review verified it independently.
+- Both occurrences of the failing seam relation are the same vertex-61 node and share one representative face (`121/0`). It sits inside the first occurrence's corner wedge but outside the second's (`97/2`, on the other sheet). The site matches neither pre-registered branch; the owner is the A2 corner representative, which is chosen per node rather than per occurrence (the RA-72.4 defect class).
+- Relaxing the A5 face clauses is inadmissible, because the A6 seam-turn check depends on them. DEFN-ISO is split into a documents-only census (`M6-CP3-DEFN-ISO-A-RP01-SEAM-NODE-REPRESENTATIVE-CENSUS`) and a later contract. Accounting is unchanged. Record: `Architecture_M6_CP3_TB24_Torus_A5_Seam_Face_Harvest_Review_Decision_20261021.md`.
+
 ## 2026-10-21 — CB23 independent Review (RA-122): diagnostic scope accepted; TB24 authorized
 
 - Independently checked CB23's single-file +68/−0 rejection-only diff and exact compile package `12355892070`: outer/source hashes, 28/28 file digests, eight targets, mandatory GMP/GMPXX linkage, clean source records, no runtime. This is **compile-only** acceptance, not A5 correctness or CP3 promotion.
