@@ -1,11 +1,9 @@
-## CURRENT — CB24 compiled; mandatory independent Review of seam frame values before TB25 (2026-10-21)
+## CURRENT — RA-125 accepts CB24 compile only; immutable TB25 next (2026-10-21)
 
-- [ ] **EXACT NEXT:** `M6-CP3-CB24-RP01-SEAM-FRAME-VALUES-SITE-REV` — independent Review under RA-124.5. Verify the two-hunk rejection-only diff at source `dae267a82fb884ff9eba4fd0122ad61750d0c924` and compile-only package `12378590512` from [run 39667030493](https://github.com/akashskypatel/Directional/actions/runs/39667030493) (eight GMP/GMPXX targets, 28/28 checksums, `runtimeExecution=false`). Freeze RA-124.6's eleven-row TB25 plan and exact successor ID; do not run TB25 in Review.
-- [x] `M6-CP3-CB24-RP01-SEAM-FRAME-VALUES-SITE` — two authorized diagnostic hunks (RP +28; TQ +1/−6), no admission/return/assertion changes. Applied commit `dae267a82fb884ff9eba4fd0122ad61750d0c924`; record: `.agents/Directional/Architecture_M6_CP3_CB24_Seam_Frame_Values_Site_Code_Build_Record_20261021.md`. Compile/package verification is complete; independent review is pending.
-- [ ] **CONDITIONAL:** TB25 (canonical ID to be frozen by CB24-REV), eleven artifact-only identities from RA-124.6. Then TB25-REV, DEFN-SEAM, DEFN-M1, DEFN-T1 and subsequent recovery only when independently authorized.
-- Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB21 candidate 449/497; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
+- [x] `M6-CP3-CB24-RP01-SEAM-FRAME-VALUES-SITE-REV` — independently verified CB24's RP +28 / TQ +1−6 rejection-only semantic diff; package `12378590512`, 28/28 hashes, GMP/GMPXX, 8 targets, clean source and no runtime. Decision `Architecture_M6_CP3_CB24_Seam_Frame_Values_Site_Review_Decision_20261021.md`.
+- [ ] **EXACT NEXT:** `M6-CP3-TB25-RP01-SEAM-FRAME-VALUES-HARVEST` — immutable artifact-only 11-row seam gauge/turn and D3 witness harvest, authority `Architecture_M6_CP3_TB25_Seam_Frame_Values_Harvest_Plan_20261021.md`. No rebuild, fixture/test/selector changes, or CP3 promotion; TB25 Review mandatory before DEFN-SEAM.
+- [ ] **CONDITIONAL:** TB25 Review ID UNKNOWN, then DEFN-SEAM pending observed gauge-jump branch and independent Review. RP-01 open; M1/D2 and fixture debt remain deferred.
 
----
 
 ## HISTORY — Seam-node representative census: DEFN-ISO-A committed and reviewed (RA-124) (2026-10-21)
 

@@ -1,3 +1,9 @@
+## 2026-10-21 — RA-125 accepts CB24 diagnostic-only compile and freezes TB25
+
+- Independently reviewed `dae267a82fb884ff9eba4fd0122ad61750d0c924` against its parent: RP +28 rejection-only frame/gauge/turn labels and TQ +1/−6 A5 message formatting; maximum new RP line width 91. No admission, return, error, or assertion change. Source snapshot `39671021648` verified (5,743 hashes).
+- Re-hashed CB24 artifact `12378590512` (ZIP `bbaaa3853e4a0d3cef13d327fefa10676ab0d10108213964772215ec79d630b4`): 28/28 member hashes, eight targets, GMP/GMPXX, clean source, `runtimeExecution=false`; no runtime claims.
+- Issued `M6-CP3-TB25-RP01-SEAM-FRAME-VALUES-HARVEST` with exactly 11 artifact-only identities, falsifiers, `branch/gaugeSel/gaugeSpan/turnN` routing, and D3 contested witnesses. No change to stable 66/17/49, debt 1, CP2 491/491, or frozen 497 selector. Record `Architecture_M6_CP3_CB24_Seam_Frame_Values_Site_Review_Decision_20261021.md`; plan `Architecture_M6_CP3_TB25_Seam_Frame_Values_Harvest_Plan_20261021.md`.
+
 ## 2026-10-21 — CB24 seam-frame diagnostic compiled; independent Review next
 
 - RA-124.5's two-hunk diagnostic-only change is committed at `dae267a82fb884ff9eba4fd0122ad61750d0c924`: RP appends the canonical occurrence branches, selected/span face gauges and certificate turn pairs to the existing A5 rejection site; the D3 fixture helper now reports the complete A5 rejection. No decision or assertion changed.
