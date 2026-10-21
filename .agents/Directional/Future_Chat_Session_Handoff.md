@@ -34,8 +34,8 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-21, after CB22A Review (RA-119). CB22A compiled GREEN (harvested by Review) and CB22+CB22A are accepted statically: the A5 isolation site diagnostic compiles and changes no decision. Design finding: the site reaches only rows that print the pipeline failure string; five A5-ISO rows, including G4-B002 `focused30:28`, call A5 directly or assert without a message. Next: CB22B routes the site into those test messages (test-only), then TB23. |
-| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; refetch before mutation. Semantic source CB22A `f082d9aebce0ad72906ccbf70c37a4bf90a9ae6f`; HEAD `src`, `include` and `tests` are identical to it. Last compiled: CB22A package `12333216637` (ZIP `ecde5067…4066`, 28/28, GMP/GMPXX, `runtimeExecution=false`), expires 2026-10-28T09:05:23Z; accepted statically by RA-119; not yet executed. |
+| Currency | 2026-10-21, after the CB22B yield Review. The first CB22B attempt (entered 10:01:18Z) took a source snapshot and yielded `IN_PROGRESS` with no source change. Review re-checked every RA-119.4 anchor at HEAD: the specification stands, and CB22B is re-entered as a new turn. Standing (RA-119): CB22 + CB22A are accepted statically; the A5 isolation site reaches only rows that print the pipeline failure string, so CB22B routes it into the five A5-ISO test messages, including G4-B002 `focused30:28` (test-only), before TB23. |
+| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; refetch before mutation. Semantic source CB22A `f082d9aebce0ad72906ccbf70c37a4bf90a9ae6f`; HEAD `src`, `include` and `tests` are identical to it; exact snapshot of those sources: run `39582530295` (source `56a4190d2`, archive `8154fd06…6c96`, 5,727 files), expires 2026-10-28T10:10:24Z. Last compiled: CB22A package `12333216637` (ZIP `ecde5067…4066`, 28/28, GMP/GMPXX, `runtimeExecution=false`), expires 2026-10-28T09:05:23Z; accepted statically by RA-119; not yet executed. |
 | Last accepted semantic runtime | CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. R3 baseline **403/497** rejected. |
 | Latest candidate or rejected evidence | TB22: run [39549820087](https://github.com/akashskypatel/Directional/actions/runs/39549820087), result `12323004201` (ZIP `71569a41…8c87`), expires 2026-11-04T05:31:17Z; 11/11 executed, 4 PASS / 7 RED; report `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Report_20261021.md`, reviewed by RA-117 (`Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Review_Decision.md`). Census: TB21 result `12317287104`, **449/497**, 0 PASS→RED (RA-115); baseline `Architecture_M6_CP3_TB21_Selector_497_Red_Inventory.tsv`. **Not promoted.** |
 | Regression accounting and debt | **66/17/49**, debt **1**, selector 497 frozen; R3 403/497 rejected; candidate evidence TB21 449/497. Tracker: `Regression_Root_Cause_Tracker.md`. |
@@ -43,7 +43,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Mandatory next turn — `M6-CP3-CB22B-RP01-TORUS-A5-SITE-TEST-MESSAGES` — EXACT NEXT
 
-- **Type / owner:** Code + Build; implementation agent. Authority: RA-119.4 (`Architecture_M6_CP3_CB22A_Torus_A5_Isolation_Site_Formatter_Review_Decision.md`).
+- **Type / owner:** Code + Build; implementation agent. Authority: RA-119.4 (`Architecture_M6_CP3_CB22A_Torus_A5_Isolation_Site_Formatter_Review_Decision.md`). Enter as a new turn with a new `Started at`; the 10:01:18Z attempt made no source change and is superseded.
 - **Objective:** make the A5 isolation site visible in the five A5-ISO rows that call A5 directly or assert without a message, by changing test failure messages only.
 - **Read before work:**
   - RA-119 (§3, §4, §5);
@@ -82,13 +82,15 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 |---|---|---|
 | done | `M6-CP3-CB22-RP01-TORUS-A5-ISOLATION-SITE` | Compile RED; reviewed by RA-118: diagnostic accepted statically. |
 | done | `M6-CP3-CB22A-RP01-TORUS-A5-ISOLATION-SITE-FORMATTER` | Compile GREEN (package `12333216637`), harvested and accepted statically by RA-119. |
-| 1 — next | `M6-CP3-CB22B-RP01-TORUS-A5-SITE-TEST-MESSAGES` | Code + Build per RA-119.4: route the site into five A5-ISO test messages; TQ only; compile only. |
+| done | `M6-CP3-CB22B-RP01-TORUS-A5-SITE-TEST-MESSAGES` (attempt 1) | Yielded `IN_PROGRESS` after a source snapshot; no source change. |
+| done | `M6-CP3-CB22B-RP01-TORUS-A5-SITE-TEST-MESSAGES-YIELD-REV` | Review: RA-119.4 anchors re-verified at HEAD; specification unchanged; CB22B re-entered as a new turn. |
+| 1 — next | `M6-CP3-CB22B-RP01-TORUS-A5-SITE-TEST-MESSAGES` | Code + Build per RA-119.4, new turn: route the site into five A5-ISO test messages; TQ only; compile only. |
 | 2 — mandatory | `M6-CP3-CB22B-RP01-TORUS-A5-SITE-TEST-MESSAGES-REV` | Review: verifies the diff and package; issues the TB23 plan (RA-119.5). |
 | planned, not authorized | TB23 (torus A5 site harvest: A5-ISO `focused30:20/24/25/26/27/28`, `selector:444/446/448`; F `focused30:6`, `selector:447`; controls `cp3entry:6`, `selector:217`, TB18 A#14, `selector:443`, `focused30:7`) → TB23-REV → DEFN-ISO (A4 seam certificate ↔ A5 binding contract; the `8be01326d` reject) → corrective CB/TB → DEFN-M1 (RA-105.3; also `focused30:12`, `cp3entry:2`) → corrective CB/TB → DEFN-T1 (D2 attainability) → fixture debt → census → RP-01 Review | Only as each Review assigns them. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **code-build** — CB22B: route the A5 isolation site into five torus test failure messages (RA-119.4); TQ only; compile only, no runtime.
+`load_next`: **code-build** — CB22B (new turn; RA-119.4 unchanged): route the A5 isolation site into five torus test failure messages (RA-119.4); TQ only; compile only, no runtime.
 
 Minimum successor context after the mandatory start checklist and policies:
 
