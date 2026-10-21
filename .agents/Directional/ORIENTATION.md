@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-21 · RA-118 reviewed the CB22 compile stop. CB22's diagnostic (`384961bb4`) is accepted statically: each A5 isolation rejection site prints exactly what its decision read, and no decision changed. It failed to compile only because `OccurrenceId` (cell, corner role) has no `index()`. Next: CB22A fixes that formatter and a canonical/storage name shadow, compile only; then TB23 prints the site of the torus A5 isolation family (≥ 8 CP2 rows, including G4-B002). Accepted CP2 491/491; TB21 candidate 449/497; accounting 66/17/49, debt 1. `RP-01` open, `RP-02` unreached.  
+**Currency:** 2026-10-21 · RA-119 reviewed CB22A. The A5 isolation site diagnostic now compiles (package `12333216637`) and is accepted statically: it changes no decision. But the site reaches only rows that print the pipeline failure string; five torus A5 rows, including G4-B002 `focused30:28`, call A5 directly or assert without a message. Next: CB22B routes the site into those test messages (test-only), then TB23 prints the site of the torus A5 isolation family. Accepted CP2 491/491; TB21 candidate 449/497; accounting 66/17/49, debt 1. `RP-01` open, `RP-02` unreached.  
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -102,7 +102,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Recover the CP2 rows on the CP3-entry path. The gauge pin is corrected (RA-111 to RA-115), and CB21 fixed the torus witness selection (RA-116, RA-117). Remaining CP2 families: the torus A5 isolation family (≥ 8 rows including G4-B002; CB22/CB22A site diagnostic, then TB23 and DEFN-ISO), the torus witness fixture atlas binding (2 rows, in CB22 source), and M1 (10 rows, DEFN-M1). D2 for `cp3entry:1` follows (DEFN-T1). | M6-CP3; [handoff](Future_Chat_Session_Handoff.md) |
+| **1** | Recover the CP2 rows on the CP3-entry path. The gauge pin is corrected (RA-111 to RA-115), and CB21 fixed the torus witness selection (RA-116, RA-117). Remaining CP2 families: the torus A5 isolation family (≥ 8 rows including G4-B002; site diagnostic compiled in CB22/CB22A, test-message routing CB22B, then TB23 and DEFN-ISO), the torus witness fixture atlas binding (2 rows, in CB22 source), and M1 (10 rows, DEFN-M1). D2 for `cp3entry:1` follows (DEFN-T1). | M6-CP3; [handoff](Future_Chat_Session_Handoff.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |

@@ -1,3 +1,9 @@
+## 2026-10-21 — CB22A Review (RA-119): site diagnostic compiled; routing to five torus test messages next
+
+- CB22A (`f082d9aeb`) corrected the occurrence formatter and the shadowing names; compile run `39573431400` is GREEN (package `12333216637`, 28/28, no runtime). Review harvested it, because the turn was left open while the compile ran.
+- Review accepted CB22 and CB22A statically as one unit: the diff stays inside the authorized block and changes no A5 decision.
+- Design finding: the site only reaches rows that print the pipeline failure string. Five torus A5 rows, including G4-B002, call A5 directly or assert without a message, so TB23 could not explain them. CB22B routes the site into those test messages; accounting is unchanged.
+
 ## 2026-10-21 — CB22 compile-stop Review (RA-118): diagnostic accepted statically; CB22A next
 
 - CB22 (`384961bb4`) added the torus fixture atlas line and a rejection-only site diagnostic to every A5 isolation-evidence return. Compile run `39564087707` failed on two lines: `OccurrenceId` is a (cell, corner role) pair with no `index()`.

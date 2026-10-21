@@ -1,19 +1,19 @@
-## CURRENT — CB22 compile stop reviewed (RA-118): diagnostic accepted statically; CB22A next (2026-10-21)
+## CURRENT — CB22A reviewed (RA-119): diagnostic compiled and accepted statically; site routing to five torus test messages next (CB22B) (2026-10-21)
 
-- [ ] **EXACT NEXT:** `M6-CP3-CB22A-RP01-TORUS-A5-ISOLATION-SITE-FORMATTER` — Code + Build, RA-118.5, base `384961bb4`, RP only:
-  - formatter: on RP:5274–5275 print each relation endpoint as `<id.cell().index()>:<static_cast<int>(id.canonical_corner_role())>` (`OccurrenceId` has no `index()`);
-  - names: within RP:5264–5337 rename `firstSpan`, `secondSpan`, `firstOccurrence`, `secondOccurrence` to `canonicalFirstSpan`, `canonicalSecondSpan`, `canonicalFirstOccurrence`, `canonicalSecondOccurrence`;
-  - header, TQ and every other file byte-identical to `384961bb4`; no A5 decision, code or ordering change; no line over 100 columns;
-  - eight-target GMP/GMPXX compile, `runtimeExecution=false`; record `Architecture_M6_CP3_CB22A_Torus_A5_Isolation_Site_Formatter_Code_Build_Record_20261021.md`;
-  - STOP on any compile error (TQ compiles for the first time) or any need to edit outside RP:5264–5337.
-- [ ] `M6-CP3-CB22A-RP01-TORUS-A5-ISOLATION-SITE-FORMATTER-REV` — mandatory Review: verifies the CB22A diff and package; issues the TB23 plan with the RA-118.6 rows, predictions and package identity.
+- [ ] **EXACT NEXT:** `M6-CP3-CB22B-RP01-TORUS-A5-SITE-TEST-MESSAGES` — Code + Build, RA-119.4, base `f082d9aeb`, TQ only:
+  - helper `a5_rejection_message(const SurfaceOccurrenceComplexProducer::ConstructionResult &)` before TQ:960: `A5:<code name>` plus `;site=<isolationSite>` when non-empty (`A5:unexpected-disposition` without an error);
+  - use it at TQ:973–978 (`focused30:28`, `focused30:25`), TQ:6008 (`focused30:24`), TQ:6475–6483 (`focused30:26`) and TQ:6547–6555 (`focused30:27`), deleting the now-unused `a5Error` declarations; append `<< retained_pipeline_first_failure(run)` at TQ:6193 (`focused30:25`);
+  - RP, header and every other file byte-identical to `f082d9aeb`; no assertion, fixture, selection or control-flow change; message text unchanged except the `;site=` suffix; no line over 100 columns;
+  - eight-target GMP/GMPXX compile, `runtimeExecution=false`; record `Architecture_M6_CP3_CB22B_Torus_A5_Site_Test_Messages_Code_Build_Record_20261021.md`;
+  - STOP on any compile error or any need to edit outside TQ or to change an assertion.
+- [ ] `M6-CP3-CB22B-RP01-TORUS-A5-SITE-TEST-MESSAGES-REV` — mandatory Review: verifies the CB22B diff and package; issues the TB23 plan (RA-119.5 frame).
 - [ ] Planned, not authorized: TB23 (A5-ISO `focused30:20/24/25/26/27/28`, `selector:444/446/448`; F `focused30:6`, `selector:447`; controls `cp3entry:6`, `selector:217`, TB18 A#14, `selector:443`, `focused30:7`) → TB23-REV → DEFN-ISO (A4 seam certificate ↔ A5 binding contract; the `8be01326d` reject) → corrective CB/TB → DEFN-M1 (RA-105.3; also `focused30:12`, `cp3entry:2`) → corrective CB/TB → DEFN-T1 (D2 attainability on the torus) → fixture debt (242 per `Architecture_M6_CP3_CB19_Selector242_Atlas_Authority_Test_Plan_20261020.md`, then 174 → 250 → adjacent-sheet → 191 → 442, plus I/R sites TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518) → census → RP-01 Review.
-- **Turn sequence:** TB22-REV (RA-117) → CB22 (compile RED) → CB22-REV (RA-118) → **CB22A** → CB22A-REV → TB23 → TB23-REV → DEFN-ISO → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+- **Turn sequence:** CB22-REV (RA-118) → CB22A (compile GREEN) → CB22A-REV (RA-119) → **CB22B** → CB22B-REV → TB23 → TB23-REV → DEFN-ISO → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
 - Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, selector 497; candidate evidence TB21 449/497; `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
 
 ---
 
-## HISTORY — Torus A5 isolation site: CB22 compile stop reviewed (RA-118) (2026-10-21)
+## HISTORY — Torus A5 isolation site: CB22 compile stop reviewed (RA-118); CB22A compiled and reviewed (RA-119) (2026-10-21)
 
 - [x] `M6-CP3-CB22-RP01-TORUS-A5-ISOLATION-SITE` — **STOPPED, compile RED**: source `384961bb4ac292e99bf41681117bf8d1d4e9d520` (3 files, +122: TQ atlas line, header `isolationSite`, RP rejection-site diagnostic); run `39564087707` failed at RP:5274–5275 (`OccurrenceId` has no member `index`); no package, no runtime. Record: `Architecture_M6_CP3_CB22_Torus_A5_Isolation_Site_Code_Build_Stop_Record_20261021.md`.
 - [x] Review (RA-118, CB22-REV):
@@ -21,6 +21,11 @@
   - diff accepted statically against RA-117.5: each side site prints its `transition_between` arguments and certificate; the relation classifier mirrors `certified_seam_direction` clause for clause (`valid` unreachable); `;site=` only on the five isolation returns; no exact consumer of the legacy names; no A5 decision change;
   - root cause: wrong identity projection, not a design defect; design finding: canonical names shadow storage-order names in the relation block (RA-118.4);
   - TB23 frame fixed, with certified-seam control `focused30:7`; record: `Architecture_M6_CP3_CB22_Torus_A5_Isolation_Site_Compile_Stop_Review_Decision.md`.
+- [x] `M6-CP3-CB22A-RP01-TORUS-A5-ISOLATION-SITE-FORMATTER` — compile GREEN, harvested by Review (STATUS left `IN_PROGRESS` while the compile ran): source `f082d9aebce0ad72906ccbf70c37a4bf90a9ae6f` (RP only, +29/−23: `<cell>:<corner>` formatter, `canonical` renames); run `39573431400`; package `12333216637`, ZIP `ecde5067…4066`, 28/28, GMP/GMPXX, no runtime; expires 2026-10-28T09:05:23Z.
+- [x] Review (RA-119, CB22A-REV):
+  - package verified (28/28; 350 source files match git; clean statuses); diff inside RP:5264–5337, no bare old names, no A5 decision change; CB22 + CB22A accepted statically as one compiled unit;
+  - design finding: the site reaches only rows printing the pipeline failure string; `focused30:24/25/26/27/28` (including G4-B002) call A5 directly or assert without a message, and four use `torus_fixture()`, so their site cannot be inferred;
+  - CB22B authorized (TQ messages only); TB23 frame amended; record: `Architecture_M6_CP3_CB22A_Torus_A5_Isolation_Site_Formatter_Review_Decision.md`.
 
 ---
 
