@@ -46,7 +46,7 @@ QuadMeshData remesh_with_field(const MeshData &mesh, const FieldData &field,
 
 SurfaceCellDiagnosticsData run_surface_cell_diagnostics(
     const MeshData &mesh, const FieldData &field, const RemeshOptions &options,
-    ProgressCallback progress) {
+    const bool stopAfterQuadTracing, ProgressCallback progress) {
   validate_field(field, mesh.faces.rows());
   validate_options({}, options);
   if (field.raw.rows() != mesh.faces.rows() || field.raw.cols() != 12) {
@@ -62,6 +62,9 @@ SurfaceCellDiagnosticsData run_surface_cell_diagnostics(
   pipelineOptions.surfaceCells.allowSourceGridRecovery = false;
   // Snapshots are cleared at closeout unless intermediate geometry is kept.
   pipelineOptions.surfaceCells.retainIntermediateGeometry = true;
+  // Stage 3 is "tracing"; the pipeline reports the stop as an injected failure.
+  pipelineOptions.surfaceCells.injectFailureAfterStage =
+      stopAfterQuadTracing ? 3 : -1;
   pipelineOptions.parallelizeComponents = false;
   pipelineOptions.lengthRatio = options.lengthRatio;
   pipelineOptions.verbose = options.verbose;
@@ -79,9 +82,16 @@ SurfaceCellDiagnosticsData run_surface_cell_diagnostics(
     result.network = visualization::field_aligned_network_polylines(
         mesh.vertices, *snapshots.fieldAlignedCurveNetwork);
   }
+  const auto &context = remesh.surfaceCellContext;
+  result.tracing = visualization::surface_cell_tracing_display(
+      mesh.vertices, mesh.faces, remesh.diagnostics,
+      context.hasTraceNetwork ? &snapshots.traceNetwork : nullptr);
   result.pipelineProduced = remesh.is_produced();
+  result.stoppedOnRequest =
+      remesh.diagnostics.terminalFailureCode == "InjectedStageFailure";
   result.pipelineStage = remesh.diagnostics.terminalFailureStage;
-  if (!result.regions.has_value() && !result.network.has_value()) {
+  if (!result.regions.has_value() && !result.network.has_value() &&
+      !result.tracing.has_stop_location() && result.tracing.cellCount == 0U) {
     throw std::runtime_error(
         "SurfaceCells stopped before publishing any diagnostic product (" +
         (result.pipelineStage.empty() ? std::string("no stage reported")

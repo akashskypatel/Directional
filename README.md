@@ -670,6 +670,8 @@ stopped it. Each published product appears as its own layer:
 | `A2a field-aligned traces` | Curve network | Traces, colored by trace or by how each ends |
 | `A2a mandatory edges` | Curve network | Boundary and hard-feature edges the network must keep |
 | `A2a singularities` | Point cloud | Singular vertices, colored by index |
+| `A4 traced cells`, `A4 cell corners` | Curve network, point cloud | Quad cells traced by A4, when it succeeds |
+| `SurfaceCells stop faces/edges/vertices` (orange) | Surface mesh, curve network, point cloud | Where the run stopped; the panel lists the reason |
 
 A layer is absent when the run stopped before publishing it. A field without
 singularities has no traces. With the committed fixtures in

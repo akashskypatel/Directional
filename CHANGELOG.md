@@ -1,3 +1,8 @@
+## 2026-10-21 — GUI: where SurfaceCells stopped, and the traced quad cells
+
+- GUI section 6 now highlights where a SurfaceCells run stopped, in orange: faces, edges and vertices from the reported failure location and from the quad-tracing (A4) failure, with the reason in the panel. When quad tracing succeeds, it draws the traced cell boundaries and corners. "Stop after quad tracing (faster)", on by default, skips the slow later stages.
+- New display adapter `directional/visualization/SurfaceCellTracingDisplay.h`, with tests on three real stops (genus-two at quad tracing, mechanical_feature at the atlas, sphere at the cut graph) and on traced cells from a flat grid. RP-01 sources are unchanged.
+
 ## 2026-10-21 — GUI: field streamlines; two fixes to the legacy streamline tracer
 
 - New GUI section "7. Field streamlines" traces the calculated or uploaded cross field from evenly spaced seeds and draws the lines as tubes. Controls cover seed spacing, steps, step length, line thickness, and colors (random per line from a print-like palette, or by direction family). Tracing runs in the background, and thickness and colors change without re-tracing.

@@ -12,6 +12,7 @@
 #include <directional/fields/CompareCrossFields.h>
 #include <directional/visualization/FieldAlignedNetworkPolylines.h>
 #include <directional/visualization/SourceRegionDisplay.h>
+#include <directional/visualization/SurfaceCellTracingDisplay.h>
 
 namespace directional::gui {
 
@@ -128,7 +129,11 @@ struct AutoRemeshResult {
 struct SurfaceCellDiagnosticsData {
   std::optional<visualization::SourceRegionDisplay> regions;
   std::optional<visualization::FieldAlignedNetworkPolylines> network;
+  /// Where the run stopped and, when quad tracing produced them, its cells.
+  visualization::SurfaceCellTracingDisplay tracing;
   bool pipelineProduced = false;
+  /// The run stopped after quad tracing because the caller asked it to.
+  bool stoppedOnRequest = false;
   std::string pipelineStage;
 };
 
@@ -168,9 +173,11 @@ QuadMeshData remesh_with_field(const MeshData &mesh, const FieldData &field,
                                ProgressCallback progress = {});
 /// Runs the SurfaceCells backend and returns display data for the products
 /// it retains, which are published even when a later stage rejects the remesh.
+/// With `stopAfterQuadTracing`, the run ends right after quad tracing (A4),
+/// which skips the slow later stages that diagnostics do not display.
 SurfaceCellDiagnosticsData run_surface_cell_diagnostics(
     const MeshData &mesh, const FieldData &field, const RemeshOptions &options,
-    ProgressCallback progress = {});
+    bool stopAfterQuadTracing, ProgressCallback progress = {});
 void save_mesh(const std::filesystem::path &path, const MeshData &mesh);
 void save_quad_mesh(const std::filesystem::path &path,
                     const QuadMeshData &mesh);

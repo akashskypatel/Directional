@@ -52,6 +52,11 @@ constexpr const char *kFaceRegionQuantity = "A0 topology region";
 constexpr const char *kFaceSheetQuantity = "A0 isolation sheet";
 constexpr const char *kFaceComponentQuantity = "A0 source component";
 constexpr const char *kStreamlinesName = "Field streamlines";
+constexpr const char *kStopFacesName = "SurfaceCells stop faces";
+constexpr const char *kStopEdgesName = "SurfaceCells stop edges";
+constexpr const char *kStopVerticesName = "SurfaceCells stop vertices";
+constexpr const char *kTracedCellsName = "A4 traced cells";
+constexpr const char *kTracedCornersName = "A4 cell corners";
 constexpr const char *kStreamlineLineColors = "line colors";
 constexpr const char *kStreamlineFamilyColors = "direction family";
 
@@ -297,6 +302,7 @@ private:
   int fieldOutputFormat_ = 0;
   int fieldOutputSource_ = 0;
   int diagnosticsFieldSource_ = 0;
+  bool diagnosticsStopAfterTracing_ = true;
   int streamlineFieldSource_ = 0;
   float streamlineSeedSpacing_ = 2.0F;
   int streamlineSteps_ = 120;
@@ -385,13 +391,20 @@ private:
 
   void remove_surface_cell_layers() {
     for (const char *name : {kNetworkTracesName, kNetworkMandatoryName,
-                             kRegionSeamsName, kRegionBoundariesName}) {
+                             kRegionSeamsName, kRegionBoundariesName,
+                             kStopEdgesName, kTracedCellsName}) {
       if (polyscope::hasCurveNetwork(name)) {
         polyscope::removeCurveNetwork(name);
       }
     }
-    if (polyscope::hasPointCloud(kNetworkSingularitiesName)) {
-      polyscope::removePointCloud(kNetworkSingularitiesName);
+    for (const char *name : {kNetworkSingularitiesName, kStopVerticesName,
+                             kTracedCornersName}) {
+      if (polyscope::hasPointCloud(name)) {
+        polyscope::removePointCloud(name);
+      }
+    }
+    if (polyscope::hasSurfaceMesh(kStopFacesName)) {
+      polyscope::removeSurfaceMesh(kStopFacesName);
     }
     if (polyscope::hasSurfaceMesh(kInputMeshName)) {
       auto *inputMesh = polyscope::getSurfaceMesh(kInputMeshName);
@@ -664,13 +677,72 @@ private:
     };
     for (const char *name : {kNetworkTracesName, kNetworkMandatoryName,
                              kRegionSeamsName, kRegionBoundariesName,
-                             kStreamlinesName}) {
+                             kStreamlinesName, kStopEdgesName,
+                             kTracedCellsName}) {
       if (polyscope::hasCurveNetwork(name)) {
         sync(polyscope::getCurveNetwork(name));
       }
     }
-    if (polyscope::hasPointCloud(kNetworkSingularitiesName)) {
-      sync(polyscope::getPointCloud(kNetworkSingularitiesName));
+    for (const char *name : {kNetworkSingularitiesName, kStopVerticesName,
+                             kTracedCornersName}) {
+      if (polyscope::hasPointCloud(name)) {
+        sync(polyscope::getPointCloud(name));
+      }
+    }
+    if (polyscope::hasSurfaceMesh(kStopFacesName)) {
+      sync(polyscope::getSurfaceMesh(kStopFacesName));
+    }
+  }
+
+  void visualize_quad_tracing(
+      const directional::visualization::SurfaceCellTracingDisplay &tracing) {
+    if (tracing.stopFaces.rows() > 0 && mesh_.has_value()) {
+      // Lift each highlighted face off the surface so it does not z-fight.
+      const double lift =
+          0.002 * (mesh_->vertices.colwise().maxCoeff() -
+                   mesh_->vertices.colwise().minCoeff())
+                      .norm();
+      Eigen::MatrixXd lifted = tracing.stopFaceVertices;
+      for (Eigen::Index face = 0; face < tracing.stopFaces.rows(); ++face) {
+        const Eigen::RowVector3d a = lifted.row(tracing.stopFaces(face, 0));
+        const Eigen::RowVector3d b = lifted.row(tracing.stopFaces(face, 1));
+        const Eigen::RowVector3d c = lifted.row(tracing.stopFaces(face, 2));
+        const Eigen::RowVector3d normal = (b - a).cross(c - a).normalized();
+        for (int corner = 0; corner < 3; ++corner) {
+          lifted.row(tracing.stopFaces(face, corner)) += lift * normal;
+        }
+      }
+      auto *faces = polyscope::registerSurfaceMesh(kStopFacesName, lifted,
+                                                   tracing.stopFaces);
+      faces->setSurfaceColor({1.0F, 0.50F, 0.0F});
+      faces->setBackFacePolicy(polyscope::BackFacePolicy::Identical);
+      // 0 stopping face, 1 related face.
+      faces->addFaceScalarQuantity("role", tracing.stopFaceRole,
+                                   polyscope::DataType::CATEGORICAL);
+    }
+    if (tracing.stopEdges.rows() > 0) {
+      auto *edges = polyscope::registerCurveNetwork(
+          kStopEdgesName, tracing.stopEdgePoints, tracing.stopEdges);
+      edges->setColor({1.0F, 0.35F, 0.0F});
+      edges->setRadius(0.004F);
+    }
+    if (tracing.stopVertices.rows() > 0) {
+      auto *vertices =
+          polyscope::registerPointCloud(kStopVerticesName, tracing.stopVertices);
+      vertices->setPointColor({1.0F, 0.20F, 0.0F});
+      vertices->setPointRadius(0.012F);
+    }
+    if (tracing.cellEdges.rows() > 0) {
+      auto *cells = polyscope::registerCurveNetwork(
+          kTracedCellsName, tracing.cellPoints, tracing.cellEdges);
+      cells->setColor({0.05F, 0.45F, 0.20F});
+      cells->setRadius(0.0012F);
+    }
+    if (tracing.cellCorners.rows() > 0) {
+      auto *corners =
+          polyscope::registerPointCloud(kTracedCornersName, tracing.cellCorners);
+      corners->setPointColor({0.05F, 0.30F, 0.12F});
+      corners->setPointRadius(0.0025F);
     }
   }
 
@@ -782,6 +854,7 @@ private:
     if (surfaceCellDiagnostics_->network.has_value()) {
       visualize_field_network(*surfaceCellDiagnostics_->network);
     }
+    visualize_quad_tracing(surfaceCellDiagnostics_->tracing);
     sync_overlay_transforms();
   }
 
@@ -1033,16 +1106,18 @@ private:
     const directional::gui::MeshData mesh = *mesh_;
     const directional::gui::FieldData field = *source;
     const directional::gui::RemeshOptions options = remeshOptions_;
+    const bool stopAfterTracing = diagnosticsStopAfterTracing_;
     enable_verbose_session_log_if_needed(options.verbose);
     const auto progress = progress_;
     progress_->update(0, 100, "Starting SurfaceCells diagnostics");
 
-    task_ = std::async(std::launch::async, [mesh, field, options, progress]() {
+    task_ = std::async(std::launch::async, [mesh, field, options,
+                                            stopAfterTracing, progress]() {
       TaskResult result;
       try {
         result.surfaceCellDiagnostics =
             directional::gui::run_surface_cell_diagnostics(
-                mesh, field, options,
+                mesh, field, options, stopAfterTracing,
                 [progress](const std::size_t current, const std::size_t total,
                            const std::string_view task) {
                   progress->update(current, total, task);
@@ -1067,8 +1142,14 @@ private:
         } else {
           message += "no field-aligned network; ";
         }
+        if (diagnostics.tracing.cellCount > 0U) {
+          message += std::to_string(diagnostics.tracing.cellCount) +
+                     " traced cells; ";
+        }
         message += diagnostics.pipelineProduced
                        ? std::string("remesh produced.")
+                   : diagnostics.stoppedOnRequest
+                       ? std::string("stopped after quad tracing as requested.")
                        : "stopped at " + diagnostics.pipelineStage + ".";
         result.message = std::move(message);
       } catch (const std::exception &error) {
@@ -1749,7 +1830,8 @@ void save_quad_mesh() {
       ImGui::TextWrapped(
           "Runs the SurfaceCells backend and shows what it publishes, even "
           "when a later stage rejects: topology regions, isolation sheets and "
-          "seams (A0), and the field-aligned curve network (A2a).");
+          "seams (A0), the field-aligned curve network (A2a), the traced quad "
+          "cells (A4), and where the run stopped (orange).");
       const char *diagnosticsSources[] = {"Calculated field", "Uploaded field"};
       draw_labeled_full_width_control("Diagnostics field source",
                                       [this, &diagnosticsSources] {
@@ -1760,6 +1842,8 @@ void save_quad_mesh() {
       const bool diagnosticsFieldAvailable =
           diagnosticsFieldSource_ == 0 ? calculatedField_.has_value()
                                        : uploadedField_.has_value();
+      ImGui::Checkbox("Stop after quad tracing (faster)",
+                      &diagnosticsStopAfterTracing_);
       ImGui::BeginDisabled(isBusy || !mesh_.has_value() ||
                            !diagnosticsFieldAvailable);
       if (ImGui::Button("Run SurfaceCells diagnostics")) {
@@ -1787,9 +1871,29 @@ void save_quad_mesh() {
         } else {
           ImGui::TextWrapped("The field-aligned network was not published.");
         }
-        if (!diagnostics.pipelineProduced) {
+        const auto &tracing = diagnostics.tracing;
+        if (tracing.cellCount > 0U) {
+          ImGui::Text("Traced cells: %zu", tracing.cellCount);
+        }
+        if (diagnostics.stoppedOnRequest) {
+          ImGui::TextWrapped("Stopped after quad tracing, as requested.");
+        } else if (!diagnostics.pipelineProduced) {
           ImGui::TextWrapped("SurfaceCells stopped at: %s",
                              diagnostics.pipelineStage.c_str());
+          if (tracing.has_stop_location()) {
+            ImGui::Text("Highlighted: %d faces, %d edges, %d vertices",
+                        static_cast<int>(tracing.stopFaces.rows()),
+                        static_cast<int>(tracing.stopEdges.rows()),
+                        static_cast<int>(tracing.stopVertices.rows()));
+          } else {
+            ImGui::TextWrapped("The stage reported no mesh location.");
+          }
+          for (const std::string &note : tracing.stopNotes) {
+            // BulletText does not wrap; notes can be long stage strings.
+            ImGui::Bullet();
+            ImGui::SameLine();
+            ImGui::TextWrapped("%s", note.c_str());
+          }
         }
       }
     }

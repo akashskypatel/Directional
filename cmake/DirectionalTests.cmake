@@ -61,7 +61,8 @@ add_executable(
   tests/CompiledLibraryTests.cpp
   tests/FieldAlignedNetworkPolylinesTests.cpp
   tests/FieldStreamlinesTests.cpp
-  tests/SourceRegionDisplayTests.cpp)
+  tests/SourceRegionDisplayTests.cpp
+  tests/SurfaceCellTracingDisplayTests.cpp)
 directional_configure_test_target(directional_compiled_api_tests)
 
 # Default gate 1: tests that construct or directly accept/reject the intended
