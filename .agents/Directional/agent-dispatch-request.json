@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb22b-a5-sites-apply-20261021-a",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb22b-a5-sites-apply",
-  "file_id": "1BNX8FEv2BEsefExDXWpqsuCzRDqMcFX6",
-  "patch_sha256": "ac8b82eaced0397410e82019c2cb4a99c0a7cc75a206cca86a532f1e1ffc27bb",
-  "base_sha": "34212105d63a35f9adc8e5d05ce54444dcd7800a",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test: include A5 isolation site in torus failure messages",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb22b-a5-sites-compile-20261021-a",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb22b-a5-sites-compile",
+  "source_sha": "c6e90916eb90bfd33bc8a38c5ece7def15dcc766",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb22b-a5-sites-result"
 }
