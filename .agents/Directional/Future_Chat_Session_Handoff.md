@@ -34,40 +34,37 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-21, CB21 Code + Build compiled GREEN on exact source `8453e19e6ac7d976a9cac45978ad31104a52f034`; 28/28 package checksums, GMP/GMPXX eight targets, runtime-free. Next: mandatory independent CB21-REV; TB22 not yet authorized. |
-| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; refetch before mutation. Semantic source `8453e19e6ac7d976a9cac45978ad31104a52f034` (TQ only); HEAD will include nonsemantic evidence/closeout commits. |
-| Last compiled semantic source | CB21 GMP/GMPXX eight-target compile [39540888446](https://github.com/akashskypatel/Directional/actions/runs/39540888446), package `12318897957`, ZIP SHA-256 `f0ae4338c462600b6cddbd0a768e0432f2148148f40f920790d6c8f1c0e9c606`; 28/28, statuses clean, `runtimeExecution=false`, expires 2026-10-28T03:54:02Z. Source archive `63b260ac…c98520`, root SHA256SUMS `4726b882…1bc0`; owning `Architecture_M6_CP3_CB21_Torus_Witness_Scope_Code_Build_Record_20261021.md`. |
-| Last accepted semantic runtime | CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. R3 baseline **403/497** rejected. |
-| Latest candidate / rejected evidence | TB21: run [39533914719](https://github.com/akashskypatel/Directional/actions/runs/39533914719), result `12317287104` (ZIP `12279a26…9c8d`), expires 2026-11-04T02:46:55Z; 497/497 executed, 449 PASS / 48 RED, 0 PASS→RED; verified harvest in `Architecture_M6_CP3_TB21_Selector_497_Census_Review_Decision.md` (RA-115.1); census baseline `Architecture_M6_CP3_TB21_Selector_497_Red_Inventory.tsv` (`6eb5022a…7c34`). TB20: run `39527537505`, result `12314700010`, expires 2026-11-04; 26 rows; RA-114.1. TB19A `12292268624` and TB19 `12285225197` (expire 2026-11-03): pin-site harvests accepted by RA-110/RA-109. TB18 Part A `12231529583` and Part B `12232299548` (448/497), expire 2026-11-03; superseded as candidate evidence by TB21. |
-| Regression accounting | **66/17/49**, debt **1**, selector 497 frozen; R3 403/497 rejected; candidate evidence TB21 **449/497** (was TB18 448/497). |
-| Active boundary | `RP-01` open. CB20/CB20A is regression-free on the 497 selector (RA-115.2). M2 residue: six torus rows fail at the D2 odd-gauge selection inherited from the shared fixture (RA-115.3; test-scope defect, CB21); `cp3entry:1` alone requires D2, and D2's attainability on this torus goes to DEFN-T1 after TB22; `cp3entry:2` and `focused30:12` go to the M1 DEFN. M1 (10 identities, RA-105.3) unchanged. `RP-02` UNREACHED; Gate C suspended. |
+| Currency | 2026-10-21: CB21 independently reviewed (RA-116), static source/compile accepted, no runtime. Exactly next is immutable TB22, eleven independent tests; no selector or product acceptance. |
+| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; refetch before mutation. Last semantic CB21 source `8453e19e6ac7d976a9cac45978ad31104a52f034`; later STATUS/snapshot/record commits are nonsemantic. |
+| CB21 immutable compile authority | Run [39540888446](https://github.com/akashskypatel/Directional/actions/runs/39540888446), package `12318897957`, ZIP SHA-256 `f0ae4338c462600b6cddbd0a768e0432f2148148f40f920790d6c8f1c0e9c606`; 28/28, clean statuses, eight GMP/GMPXX targets, `runtimeExecution=false`, expires 2026-10-28T03:54:02Z. Independent exact-byte revalidation: `Architecture_M6_CP3_CB21_Torus_Witness_Scope_Review_Decision_20261021.md`. |
+| Last accepted semantic runtime | CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`; R3 **403/497 rejected**. |
+| Latest candidate census | TB21 run `39533914719`, result `12317287104`: **449/497** (48 RED, 0 PASS→RED), reviewed RA-115 and inventory `Architecture_M6_CP3_TB21_Selector_497_Red_Inventory.tsv`; frozen selector 497 unchanged. |
+| Regression and blockers | **66/17/49**, debt **1**; `RP-01` open, `RP-02` UNREACHED, Gate C suspended. D2 organic odd-gauge witness unresolved, M1/other fixture debt unchanged. |
 
-## Mandatory next turn — `M6-CP3-CB21-RP01-TORUS-WITNESS-SCOPE-REV` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-TB22-RP01-TORUS-WITNESS-HARVEST` — EXACT NEXT
 
-- **Type / owner:** independent Review (planning-only). Authority RA-115.5 and verified CB21 record.
-- **Immutable source:** `8453e19e6ac7d976a9cac45978ad31104a52f034`. Compile run `39540888446`, package `12318897957`, SHA-256 `f0ae4338c462600b6cddbd0a768e0432f2148148f40f920790d6c8f1c0e9c606`; runtime-free, GMP/GMPXX, hashes 28/28. PR #8 remains draft/open.
-- **Read:** RA-115 sections 3 and 5; D2 definition/review; CB21 code/build record; exact CB21 diff and `LESSONS.md` §2.
-- **Review:** independently verify that only TQ struct member, candidate selection/predicate census, receipt, return and `cp3entry:1` assertion stream changed. Every candidate must be evaluated; reciprocal/holonomy conditions unchanged; D2 assertion must remain; no source/include/other test edits. Correct any missing evidence or handoff issues only under Review permissions; do not execute tests or change test logic.
-- **TB22 plan/predictions:** seven torus consumers, `cp3entry:6`, three controls; five CP2 rows should pass the fixture, `cp3entry:1` may fail at its own D2 assertion with receipt, `focused30:12` unchanged; falsifier if fixture throws with `reciprocalTracerPairs=0` or `holonomyMatchedPairs=0`. Do not promote unexecuted predictions or authorize TB22 until Review resolves the static gate.
-- **On review success:** set exact TB22 scope, immutability, and handoff; respect next turn boundary. On defect: record actionable findings, assign corrective Code + Build, no implementation inside Review.
+- **Type:** Test + Benchmark (artifact-only); after the independent RA-116 CB21 Review. Full immutable scope, identity names, predictions and stop rules: `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Plan_20261021.md`.
+- **Exact package:** artifact `12318897957`, source `8453e19e6ac7d976a9cac45978ad31104a52f034`, ZIP SHA-256 `f0ae4338c462600b6cddbd0a768e0432f2148148f40f920790d6c8f1c0e9c606`; no compiling, modifying source/tests/fixtures, selector promotion or regeneration. Run exactly **11 independent test processes**: the 7 torus fixture consumers, `cp3entry:6`, and 3 control identities. Verify manifest/source before and after.
+- **Predictions:** five CP2-GREEN torus consumers advance through fixture and pass their assertions; `cp3entry:1` reaches and, absent an odd pair, fails its own D2 assertion with `oddFaceGaugePairs=0` receipt; `focused30:12` unchanged A5 failure; four controls PASS. **Falsifier:** fixture throw with `reciprocalTracerPairs=0` or `holonomyMatchedPairs=0` diagnoses missing earlier periodic witness publication, not D2; return to TB22 Review. Any new first failure must be captured honestly.
+- **Boundary:** TB22 itself must not repair anything. Its only planned successor is separate mandatory `M6-CP3-TB22-RP01-TORUS-WITNESS-HARVEST-REV`; DEFN-T1, DEFN-M1 and further CB turns are not yet authorized.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — next | `M6-CP3-CB21-RP01-TORUS-WITNESS-SCOPE-REV` | Review: static diff and evidence check; TB22 rows and predictions. |
-| planned, not authorized | TB22 (the seven torus consumers, `cp3entry:6`, three controls) → TB22-REV → DEFN-T1 (D2 attainability on the torus under RA-111.3, from the TB22 receipt) → DEFN-M1 (M1 binding owner, RA-105.3; also `cp3entry:2`, `focused30:12`) → corrective CB/TB → fixture debt (242, 174, 250, adjacent-sheet, 191, 442, plus the I/R sites) → census → RP-01 Review | Only as each Review assigns them. |
+| 1 — next | `M6-CP3-TB22-RP01-TORUS-WITNESS-HARVEST` | Immutable 11-process torus fixture and control harvest, no build; artifact-only |
+| planned, not authorized | TB22-REV → DEFN-T1 (D2 attainability under RA-111.3) → DEFN-M1 (M1 binding owner, RA-105.3) → corrective CB/TB → remaining fixture debt → census → RP-01 Review | Requires the separate preceding Review at each boundary. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **review** — CB21 independent static diff and evidence check; TB22 remains not yet authorized.
+`load_next`: **test_benchmark** — the RA-116-frozen immutable 11-process TB22, with CB21 package exact authority.
 
 Minimum successor context after the mandatory start checklist and policies:
 
 0. `.agents/Directional/ORIENTATION.md`.
 1. `.agents/Directional/ROADMAP.md`.
 2. This handoff.
-3. `Architecture_M6_CP3_TB21_Selector_497_Census_Review_Decision.md` (RA-115); D2 in `Architecture_M6_DEFN_R5_R1_CP3_Entry_Recovery_Definition_Record.md` and `Architecture_M6_DEFN_R5_R2_Review_Record.md`; `Architecture_M6_CP3_CB21_Torus_Witness_Scope_Code_Build_Record_20261021.md`; `LESSONS.md` §§2, 7.
+3. `Architecture_M6_CP3_CB21_Torus_Witness_Scope_Review_Decision_20261021.md` (RA-116), `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Plan_20261021.md`, CB21 compile record, RA-115, D2 definition/review; `LESSONS.md` §§2, 7.
 4. `.agents/Directional/Regression_Root_Cause_Tracker.md` and `TODO.md`.
 
 **Review tooling:** `.agents/Directional/tools/` holds read-only `review_check.py`, `selector_probe.py`, and `fixture_probe.py`; history-sensitive review gates require real committed history, not a synthesized snapshot.

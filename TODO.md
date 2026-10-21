@@ -1,4 +1,4 @@
-## CURRENT — CB21 compiled: torus witness scope is test-only; CB21-REV next (2026-10-21)
+## CURRENT — CB21 static Review approved; immutable TB22 torus harvest next (2026-10-21)
 
 - [x] **COMPILED:** `M6-CP3-CB21-RP01-TORUS-WITNESS-SCOPE` — Code + Build, test-only (TQ), RA-115.5:
   - evaluate every torus witness predicate on every candidate (gauge presence, delta, reciprocal tracer pair, holonomy match), with no early `continue` on the delta;
@@ -8,9 +8,10 @@
   - eight-target GMP/GMPXX compile, `runtimeExecution=false`; record `Architecture_M6_CP3_CB21_Torus_Witness_Scope_Code_Build_Record_20261021.md`;
   - STOP on a compile failure or any need to touch `src`, `include` or another test.
   - **Evidence:** source `8453e19e6ac7d976a9cac45978ad31104a52f034`, run `39540888446` GREEN, package `12318897957`, hashes 28/28, GMP/GMPXX, no runtime. Record: `Architecture_M6_CP3_CB21_Torus_Witness_Scope_Code_Build_Record_20261021.md`.
-- [ ] **EXACT NEXT:** `M6-CP3-CB21-RP01-TORUS-WITNESS-SCOPE-REV` — mandatory Review: static diff check; TB22 rows (seven torus consumers, `cp3entry:6`, three controls) and predictions (five CP2 rows past the fixture; `cp3entry:1` RED at its D2 assertion with the receipt; falsifier `reciprocalTracerPairs=0` or `holonomyMatchedPairs=0`).
-- [ ] Planned, not authorized: TB22 → TB22-REV → DEFN-T1 (D2 attainability on the torus under RA-111.3, from the TB22 receipt) → DEFN-M1 (M1 binding owner, RA-105.3; also `cp3entry:2`, `focused30:12`) → corrective CB/TB → fixture debt (242 per `Architecture_M6_CP3_CB19_Selector242_Atlas_Authority_Test_Plan_20261020.md`, then 174 → 250 → adjacent-sheet → 191 → 442, plus I/R sites TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518) → census → RP-01 Review.
-- **Turn sequence:** TB21 (harvested) → TB21-REV (RA-115) → CB21 (compiled) → **CB21-REV** → TB22 → TB22-REV → DEFN-T1 → DEFN-M1 → corrective CB/TB → fixture debt → census → RP-01 Review.
+- [x] **CB21 independent Review (RA-116):** exact one-file GitHub diff and packaged TQ independently checked; 28/28 package hashes, GMP/GMPXX, runtime-free. Static scope/compile accepted only; no selector or runtime promotion. Decision: `.agents/Directional/Architecture_M6_CP3_CB21_Torus_Witness_Scope_Review_Decision_20261021.md`.
+- [ ] **EXACT NEXT:** `M6-CP3-TB22-RP01-TORUS-WITNESS-HARVEST` — immutable artifact-only TB22, 11 independent test processes (seven torus consumers, `cp3entry:6`, three controls). Predictions and falsifiers in `.agents/Directional/Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Plan_20261021.md`. Package `12318897957`, source `8453e19e`, no rebuild or test edits.
+- [ ] Planned beyond authorized TB22: TB22-REV → DEFN-T1 (D2 attainability on the torus under RA-111.3, from the TB22 receipt) → DEFN-M1 (M1 binding owner, RA-105.3; also `cp3entry:2`, `focused30:12`) → corrective CB/TB → fixture debt (242 per `Architecture_M6_CP3_CB19_Selector242_Atlas_Authority_Test_Plan_20261020.md`, then 174 → 250 → adjacent-sheet → 191 → 442, plus I/R sites TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518) → census → RP-01 Review.
+- **Turn sequence:** TB21 (harvested) → TB21-REV (RA-115) → CB21 (compiled) → CB21-REV (RA-116) → **TB22** → TB22-REV → DEFN-T1 → DEFN-M1 → corrective CB/TB → fixture debt → census → RP-01 Review.
 - Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, selector 497; candidate evidence TB21 449/497 (was TB18 448/497); `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
 
 ---

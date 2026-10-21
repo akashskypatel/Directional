@@ -1,3 +1,9 @@
+## 2026-10-21 — CB21 Review (RA-116): torus witness scope accepted statically; TB22 authorized
+
+- Independently rederived the one-file CB21 semantic diff `8453e19e` (`tests/SurfaceCellTransitionQuotientTests.cpp`, +73/-47): odd gauge no longer filters six CP2 consumers at shared fixture entry, all candidates receive reciprocal/holonomy census, D2 assertion remains unchanged except the receipt. No product/test logic changed in Review.
+- Independently downloaded package `12318897957` (ZIP `f0ae4338c462600b6cddbd0a768e0432f2148148f40f920790d6c8f1c0e9c606`): 28/28 hashes, GMP/GMPXX eight targets, zero build/preflight exits, clean source receipts and runtime-free boundary. No runtime acceptance or selector change.
+- RA-116 freezes exactly one artifact-only TB22 (7 torus consumers + `cp3entry:6` + 3 controls), with measured predicate falsifiers and mandatory separate TB22 Review. D2, RP-01, M1 and deferred fixture debts remain open; 66/17/49, debt 1, CP2 491/491, TB21 candidate 449/497 unchanged.
+
 ## 2026-10-21 — TB21 Review (RA-115): census regression-free; torus rows reclassified; CB21 next
 
 - TB21 (run `39533914719`, result `12317287104`) ran the unchanged census harness on the CB20A package: 497/497 executed, 449 PASS / 48 RED, 0 PASS→RED, `cp3entry:6` RED→PASS, no gauge-pin site in any log. The agent left the turn without the inventory or report, so Review verified the harvest and wrote the inventory, now the census baseline.
