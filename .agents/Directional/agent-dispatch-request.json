@@ -1,14 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb23-a5-site-harvest-20261021-a",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb23-a5-site-harvest",
-  "executor_sha": "0948a81b09e5ff07d240d01f8968f225c285ac2c",
-  "semantic_source_sha": "c6e90916eb90bfd33bc8a38c5ece7def15dcc766",
-  "turn_id": "M6-CP3-TB23-RP01-TORUS-A5-SITE-HARVEST",
-  "harness_path": ".agents/Directional/tools/m6_cp3_tb23_torus_a5_site_harvest_harness.sh",
-  "harness_sha256": "bf2cb7bc2799137e9a3556816380dc93388e9e05ee134cf320b068411f982cbe",
-  "environment": {},
-  "artifact_prefix": "m6-cp3-tb23-a5-site-harvest",
+  "request_id": "m6-cp3-cb23-a5-seam-face-apply-20261021-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb23-a5-seam-face-apply",
+  "file_id": "1igODsL05Pu8yiIBRmJ8izcLW4NopKYcP",
+  "patch_sha256": "b992ebddbf197b0718da747f5ee6fcd9db6e281cc8fd982d415736b5e9a918ef",
+  "base_sha": "95b0f01235cd23412fc111370a2413b351c5c547",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "feat: report A5 seam face and span-only rejection witnesses",
   "retention_days": 14
 }
