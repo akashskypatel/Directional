@@ -1,15 +1,26 @@
-## CURRENT — TB22 reviewed (RA-117): fixture atlas defect and unowned torus A5 isolation family; CB22 next (2026-10-21)
+## CURRENT — CB22 compile stop reviewed (RA-118): diagnostic accepted statically; CB22A next (2026-10-21)
 
-- [ ] **EXACT NEXT:** `M6-CP3-CB22-RP01-TORUS-A5-ISOLATION-SITE` — Code + Build, RA-117.5:
-  - Part A (TQ, one line): `fixture.fieldTransportAtlas = snapshots.fieldTransportAtlas;` after TQ:1672 in `make_nonzero_z4_torus_witness_fixture`, as at TQ:649/861;
-  - Part B (RP + header, rejection path only): `std::string isolationSite` as the last member of `SurfaceOccurrenceComplexError`; filled at the isolation-evidence returns (`side-step` RP:4318, `side-collinear` RP:4359, `wedge-edge` RP:4470, `wedge-fan` RP:4551, `relation-collinear-seam` RP:5205–5221 with the failing `certified_seam_direction` clause); appended as `;site=` to the legacy failure name at RP:8963;
-  - no A5 decision, code or ordering change; no other test; no A4;
-  - eight-target GMP/GMPXX compile, `runtimeExecution=false`; record `Architecture_M6_CP3_CB22_Torus_A5_Isolation_Site_Code_Build_Record_20261021.md`;
-  - STOP on a compile failure or any need to change an A5 decision, another test, or A4.
-- [ ] `M6-CP3-CB22-RP01-TORUS-A5-ISOLATION-SITE-REV` — mandatory Review: static no-decision-change check; TB23 rows (A5-ISO `focused30:20/24/25/26/27/28`, `selector:444/446/448`; F `focused30:6`, `selector:447`; `cp3entry:6`, `selector:217`, TB18 A#14, `selector:443`, one certified-seam positive control) and predictions.
-- [ ] Planned, not authorized: TB23 → TB23-REV → DEFN-ISO (A4 seam certificate ↔ A5 binding contract; the `8be01326d` reject) → corrective CB/TB → DEFN-M1 (RA-105.3; also `focused30:12`, `cp3entry:2`) → corrective CB/TB → DEFN-T1 (D2 attainability on the torus) → fixture debt (242 per `Architecture_M6_CP3_CB19_Selector242_Atlas_Authority_Test_Plan_20261020.md`, then 174 → 250 → adjacent-sheet → 191 → 442, plus I/R sites TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518) → census → RP-01 Review.
-- **Turn sequence:** TB22 (reported) → TB22-REV (RA-117) → **CB22** → CB22-REV → TB23 → TB23-REV → DEFN-ISO → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+- [ ] **EXACT NEXT:** `M6-CP3-CB22A-RP01-TORUS-A5-ISOLATION-SITE-FORMATTER` — Code + Build, RA-118.5, base `384961bb4`, RP only:
+  - formatter: on RP:5274–5275 print each relation endpoint as `<id.cell().index()>:<static_cast<int>(id.canonical_corner_role())>` (`OccurrenceId` has no `index()`);
+  - names: within RP:5264–5337 rename `firstSpan`, `secondSpan`, `firstOccurrence`, `secondOccurrence` to `canonicalFirstSpan`, `canonicalSecondSpan`, `canonicalFirstOccurrence`, `canonicalSecondOccurrence`;
+  - header, TQ and every other file byte-identical to `384961bb4`; no A5 decision, code or ordering change; no line over 100 columns;
+  - eight-target GMP/GMPXX compile, `runtimeExecution=false`; record `Architecture_M6_CP3_CB22A_Torus_A5_Isolation_Site_Formatter_Code_Build_Record_20261021.md`;
+  - STOP on any compile error (TQ compiles for the first time) or any need to edit outside RP:5264–5337.
+- [ ] `M6-CP3-CB22A-RP01-TORUS-A5-ISOLATION-SITE-FORMATTER-REV` — mandatory Review: verifies the CB22A diff and package; issues the TB23 plan with the RA-118.6 rows, predictions and package identity.
+- [ ] Planned, not authorized: TB23 (A5-ISO `focused30:20/24/25/26/27/28`, `selector:444/446/448`; F `focused30:6`, `selector:447`; controls `cp3entry:6`, `selector:217`, TB18 A#14, `selector:443`, `focused30:7`) → TB23-REV → DEFN-ISO (A4 seam certificate ↔ A5 binding contract; the `8be01326d` reject) → corrective CB/TB → DEFN-M1 (RA-105.3; also `focused30:12`, `cp3entry:2`) → corrective CB/TB → DEFN-T1 (D2 attainability on the torus) → fixture debt (242 per `Architecture_M6_CP3_CB19_Selector242_Atlas_Authority_Test_Plan_20261020.md`, then 174 → 250 → adjacent-sheet → 191 → 442, plus I/R sites TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518) → census → RP-01 Review.
+- **Turn sequence:** TB22-REV (RA-117) → CB22 (compile RED) → CB22-REV (RA-118) → **CB22A** → CB22A-REV → TB23 → TB23-REV → DEFN-ISO → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
 - Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, selector 497; candidate evidence TB21 449/497; `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
+
+---
+
+## HISTORY — Torus A5 isolation site: CB22 compile stop reviewed (RA-118) (2026-10-21)
+
+- [x] `M6-CP3-CB22-RP01-TORUS-A5-ISOLATION-SITE` — **STOPPED, compile RED**: source `384961bb4ac292e99bf41681117bf8d1d4e9d520` (3 files, +122: TQ atlas line, header `isolationSite`, RP rejection-site diagnostic); run `39564087707` failed at RP:5274–5275 (`OccurrenceId` has no member `index`); no package, no runtime. Record: `Architecture_M6_CP3_CB22_Torus_A5_Isolation_Site_Code_Build_Stop_Record_20261021.md`.
+- [x] Review (RA-118, CB22-REV):
+  - stop verified: exactly two errors; the rest of RP type-checks; TQ not yet compiled;
+  - diff accepted statically against RA-117.5: each side site prints its `transition_between` arguments and certificate; the relation classifier mirrors `certified_seam_direction` clause for clause (`valid` unreachable); `;site=` only on the five isolation returns; no exact consumer of the legacy names; no A5 decision change;
+  - root cause: wrong identity projection, not a design defect; design finding: canonical names shadow storage-order names in the relation block (RA-118.4);
+  - TB23 frame fixed, with certified-seam control `focused30:7`; record: `Architecture_M6_CP3_CB22_Torus_A5_Isolation_Site_Compile_Stop_Review_Decision.md`.
 
 ---
 

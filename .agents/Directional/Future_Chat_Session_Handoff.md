@@ -34,47 +34,42 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-21, after TB22 Review (RA-117). CB21's fixture-selection scope works at runtime (reciprocal 5/5, holonomy 5/5). The five CP2 torus rows split into a fixture atlas defect (`focused30:6`, `selector:447`) and the unowned torus A5 isolation family (`focused30:20/24`, `selector:446`, already seen on `selector:444/448`, `focused30:26/27/28`). Next: CB22 fixes the atlas binding and makes A5 isolation rejections name their site. |
-| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; refetch before mutation. Semantic source CB21 `8453e19e6ac7d976a9cac45978ad31104a52f034`; HEAD `src`, `include` and `tests` are identical to it. Last compiled: CB21 package `12318897957` (ZIP `f0ae4338…c606`, 28/28, GMP/GMPXX, `runtimeExecution=false`), expires 2026-10-28T03:54:02Z; accepted statically by RA-116, at runtime for its scope by RA-117.2. |
+| Currency | 2026-10-21, after CB22 compile-stop Review (RA-118). CB22 (`384961bb4`) failed to compile on one wrong identity projection (`OccurrenceId` has no `index()`, RP:5274–5275); its diagnostic is otherwise accepted statically: every site prints exactly what the decision read and no A5 decision changes. Next: CB22A corrects the formatter and removes a canonical/storage name shadow, compile only. |
+| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; refetch before mutation. Semantic source CB22 `384961bb4ac292e99bf41681117bf8d1d4e9d520` (uncompiled: run [39564087707](https://github.com/akashskypatel/Directional/actions/runs/39564087707) RED, no package); HEAD `src`, `include` and `tests` are identical to it. Last compiled: CB21 package `12318897957` (ZIP `f0ae4338…c606`, 28/28, GMP/GMPXX, `runtimeExecution=false`), expires 2026-10-28T03:54:02Z; accepted statically by RA-116, at runtime for its scope by RA-117.2. |
 | Last accepted semantic runtime | CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. R3 baseline **403/497** rejected. |
 | Latest candidate or rejected evidence | TB22: run [39549820087](https://github.com/akashskypatel/Directional/actions/runs/39549820087), result `12323004201` (ZIP `71569a41…8c87`), expires 2026-11-04T05:31:17Z; 11/11 executed, 4 PASS / 7 RED; report `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Report_20261021.md`, reviewed by RA-117 (`Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Review_Decision.md`). Census: TB21 result `12317287104`, **449/497**, 0 PASS→RED (RA-115); baseline `Architecture_M6_CP3_TB21_Selector_497_Red_Inventory.tsv`. **Not promoted.** |
 | Regression accounting and debt | **66/17/49**, debt **1**, selector 497 frozen; R3 403/497 rejected; candidate evidence TB21 449/497. Tracker: `Regression_Root_Cause_Tracker.md`. |
-| Active boundary | `RP-01` open. Owned CP2 families: **A5-ISO** (torus A5 `MismatchedIsolationEvidence`, ≥ 8 rows incl. G4-B002 `focused30:28`; branch unknown: RP:4318/4359 side crossing or the post-CP2 RP:5205 reject from `8be01326d`; needs the site, RA-117.3); **F** (torus witness fixture lacks `fieldTransportAtlas`, 2 rows); **M1** (10 rows plus `focused30:12`, `cp3entry:2`, DEFN-M1). CP3-entry: D2 for `cp3entry:1` (DEFN-T1). Restriction: CB22 may not change any A5 decision. `RP-02` UNREACHED; Gate C suspended. |
+| Active boundary | `RP-01` open. Owned CP2 families: **A5-ISO** (torus A5 `MismatchedIsolationEvidence`, ≥ 8 rows incl. G4-B002 `focused30:28`; branch unknown until TB23 prints the site; RA-117.3); **F** (torus witness fixture lacks `fieldTransportAtlas`, 2 rows; fixed in CB22 source, unverified at runtime); **M1** (10 rows plus `focused30:12`, `cp3entry:2`, DEFN-M1). CP3-entry: D2 for `cp3entry:1` (DEFN-T1). Restriction: CB22A edits RP:5264–5337 only and may not change any A5 decision. `RP-02` UNREACHED; Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-CB22-RP01-TORUS-A5-ISOLATION-SITE` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB22A-RP01-TORUS-A5-ISOLATION-SITE-FORMATTER` — EXACT NEXT
 
-- **Type / owner:** Code + Build; implementation agent. Authority: RA-117.5 (`Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Review_Decision.md`).
-- **Objective:** correct the torus witness fixture's missing atlas binding, and make every A5 isolation-evidence rejection name its site, without changing any accept/reject decision.
+- **Type / owner:** Code + Build; implementation agent. Authority: RA-118.5 (`Architecture_M6_CP3_CB22_Torus_A5_Isolation_Site_Compile_Stop_Review_Decision.md`).
+- **Objective:** make the CB22 diagnostic compile by printing each relation endpoint through its real identity (cell, corner role), and remove the canonical/storage name shadow in the same block. No other change.
 - **Read before work:**
-  - RA-117 (§3 and §5);
-  - `src/pipeline/RemeshPipeline.cpp` (RP): `transition_between` RP:4136–4165 and its callers RP:4318, 4359, 4470, 4551; `certified_seam_direction` RP:3880–3911; the relation reject RP:5205–5221; the legacy name RP:3231–3260; the mesh failure RP:8955–8970;
-  - `LESSONS.md` §5 and §2 **A negative must reach the intended guard on a valid baseline**.
-- **In scope:**
-  1. **Part A (TQ, one line).** In `make_nonzero_z4_torus_witness_fixture`, after `fixture.network = snapshots.traceNetwork;` (TQ:1672), add `fixture.fieldTransportAtlas = snapshots.fieldTransportAtlas;`, as at TQ:649 and TQ:861.
-  2. **Part B (RP and `include/directional/pipeline/RemeshPipeline.h`, rejection path only).**
-     - Add `std::string isolationSite` as the last member of `SurfaceOccurrenceComplexError` (header :963–970).
-     - Fill it only where `MissingIsolationEvidence` or `MismatchedIsolationEvidence` is returned:
-       - `side-step` (RP:4318), `side-collinear` (RP:4359), `wedge-edge` (RP:4470), `wedge-fan` (RP:4551): `;region=<r>;seam=<a>,<b>;from=<row>/<sheet>;to=<row>/<sheet>;cert=<firstRow>/<firstSheet>-><secondRow>/<secondSheet>|none;cell=<id>`;
-       - `relation-collinear-seam` (RP:5205–5221): `;region=<r>;seam=<a>,<b>;relation=<first>,<second>;first=<row>/<sheet>;second=<row>/<sheet>;certs=<n>`, plus, for each certificate with that region and seam, its faces/sheets and the first failing `certified_seam_direction` clause (`collinear`, `region`, `first-face`, `second-face`, `same-sheet`, `first-side`, `second-side`, `same-side`), or `ambiguous`.
-     - At RP:8963, when `isolationSite` is non-empty, append `;site=<isolationSite>` to the legacy name. Every other failure string is unchanged.
-  3. **Compile.** Eight-target GMP/GMPXX compile, `runtimeExecution=false`.
-  4. **Record.** `Architecture_M6_CP3_CB22_Torus_A5_Isolation_Site_Code_Build_Record_20261021.md`, at most 30 lines: source SHA, per-file diff stat, compile run, package id, ZIP digest, hash count, expiry, root-manifest and source-archive SHA-256.
+  - RA-118 (§3, §4, §5); the CB22 stop record `Architecture_M6_CP3_CB22_Torus_A5_Isolation_Site_Code_Build_Stop_Record_20261021.md`;
+  - `include/directional/authority/AuthorityIds.h:250–289` (`OccurrenceId`); the formatter idiom at TQ:3454–3468;
+  - `src/pipeline/RemeshPipeline.cpp` (RP) at `384961bb4`: the relation reject RP:5249–5339, and the outer storage-order names RP:5193 and RP:5208–5212;
+  - `LESSONS.md` §5 and §7.
+- **In scope (RP only, base `384961bb4`):**
+  1. **Formatter.** On RP:5274–5275, print each endpoint as `<id.cell().index()>:<static_cast<int>(id.canonical_corner_role())>`, giving `;relation=<c>:<k>,<c>:<k>`.
+  2. **Names.** Within RP:5264–5337 only, rename `firstSpan`, `secondSpan`, `firstOccurrence` and `secondOccurrence` to `canonicalFirstSpan`, `canonicalSecondSpan`, `canonicalFirstOccurrence` and `canonicalSecondOccurrence`.
+  3. **Compile.** The CB22 procedure: GMP/GMPXX, eight targets, package, `runtimeExecution=false`.
+  4. **Record.** `Architecture_M6_CP3_CB22A_Torus_A5_Isolation_Site_Formatter_Code_Build_Record_20261021.md`, at most 30 lines: source SHA; RP diff stat and changed line range against `384961bb4`; cumulative per-file stat against `49c982195`; compile run, package id, ZIP SHA-256, hash count, expiry, root-manifest and source-archive SHA-256.
 - **Out of scope:**
-  - any A5 predicate, ordering, error code or return change; `transition_between` and `certified_seam_direction` must decide exactly as before;
-  - any other test or helper; `src/geometry` and A4;
-  - any repair of A5-ISO; selectors, harnesses, workflows; runtime;
-  - DEFN-M1 and DEFN-T1.
+  - the header, TQ and every file other than RP, which stay byte-identical to `384961bb4`;
+  - any RP edit outside RP:5264–5337; any A5 predicate, ordering, error code or return change;
+  - refactoring `certified_seam_direction` or the clause classifier; any A5-ISO repair; selectors, harnesses, workflows; runtime; DEFN-M1 and DEFN-T1.
 - **Success evidence:**
-  - the diff touches only the TQ line, the header member and the RP rejection paths and RP:8963;
-  - the compile is GREEN;
+  - the diff against `384961bb4` touches only RP:5264–5337, with no line longer than 100 columns;
+  - the compile is GREEN, including TQ, which compiles for the first time with the CB22 atlas line;
   - the package is verified: hashes, clean statuses, `runtimeExecution=false`;
   - the record is committed and STATUS is COMPLETE.
 
   If the compile is still running at your closeout bound, leave STATUS `IN_PROGRESS`; Review harvests.
-- **On success:** `M6-CP3-CB22-RP01-TORUS-A5-ISOLATION-SITE-REV` (Review, mandatory). It checks the no-decision-change invariant statically and fixes the TB23 rows and predictions (RA-117.5 frame).
+- **On success:** `M6-CP3-CB22A-RP01-TORUS-A5-ISOLATION-SITE-FORMATTER-REV` (Review, mandatory). It verifies the CB22A diff and package, and issues the TB23 plan with the RA-118.6 rows and predictions and the package identity.
 - **On failure/blocker:** STOP and return to Review on:
-  - a compile failure;
-  - any need to change an A5 decision, another test, or A4.
+  - any compile error, in RP, TQ or elsewhere;
+  - any need to edit outside RP:5264–5337 or to change an A5 decision.
 
   There is no repair inside the turn.
 
@@ -82,20 +77,21 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — next | `M6-CP3-CB22-RP01-TORUS-A5-ISOLATION-SITE` | Code + Build per RA-117.5: one-line fixture atlas binding; A5 isolation rejection site diagnostic; no decision change; compile only. |
-| 2 — mandatory | `M6-CP3-CB22-RP01-TORUS-A5-ISOLATION-SITE-REV` | Review: static invariant check; fixes TB23 rows and predictions. |
-| planned, not authorized | TB23 (torus A5 site harvest: `focused30:6/20/24/25/26/27/28`, `selector:444/446/447/448`, controls) → TB23-REV → DEFN-ISO (A4 seam certificate ↔ A5 binding contract; the `8be01326d` reject) → corrective CB/TB → DEFN-M1 (RA-105.3; also `focused30:12`, `cp3entry:2`) → corrective CB/TB → DEFN-T1 (D2 attainability) → fixture debt → census → RP-01 Review | Only as each Review assigns them. |
+| done | `M6-CP3-CB22-RP01-TORUS-A5-ISOLATION-SITE` | Compile RED at RP:5274–5275; stopped. Reviewed by RA-118: diagnostic accepted statically. |
+| 1 — next | `M6-CP3-CB22A-RP01-TORUS-A5-ISOLATION-SITE-FORMATTER` | Code + Build per RA-118.5: `OccurrenceId` formatter and four renames in RP:5264–5337; compile only. |
+| 2 — mandatory | `M6-CP3-CB22A-RP01-TORUS-A5-ISOLATION-SITE-FORMATTER-REV` | Review: verifies the diff and package; issues the TB23 plan (RA-118.6). |
+| planned, not authorized | TB23 (torus A5 site harvest: A5-ISO `focused30:20/24/25/26/27/28`, `selector:444/446/448`; F `focused30:6`, `selector:447`; controls `cp3entry:6`, `selector:217`, TB18 A#14, `selector:443`, `focused30:7`) → TB23-REV → DEFN-ISO (A4 seam certificate ↔ A5 binding contract; the `8be01326d` reject) → corrective CB/TB → DEFN-M1 (RA-105.3; also `focused30:12`, `cp3entry:2`) → corrective CB/TB → DEFN-T1 (D2 attainability) → fixture debt → census → RP-01 Review | Only as each Review assigns them. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **code-build** — CB22: one-line torus fixture atlas binding and the A5 isolation rejection site diagnostic (RA-117.5); compile only, no runtime.
+`load_next`: **code-build** — CB22A: `OccurrenceId` formatter and canonical renames in RP:5264–5337 (RA-118.5); compile only, no runtime.
 
 Minimum successor context after the mandatory start checklist and policies:
 
 0. `.agents/Directional/ORIENTATION.md`.
 1. `.agents/Directional/ROADMAP.md`.
 2. This handoff.
-3. `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Review_Decision.md` (RA-117, the CB22 specification); `Architecture_M6_CP3_CB21_Torus_Witness_Scope_Review_Decision_20261021.md` (RA-116, compile facts); `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Report_20261021.md`; `LESSONS.md` §§2, 5, 7.
+3. `Architecture_M6_CP3_CB22_Torus_A5_Isolation_Site_Compile_Stop_Review_Decision.md` (RA-118, the CB22A specification and the TB23 frame); `Architecture_M6_CP3_CB22_Torus_A5_Isolation_Site_Code_Build_Stop_Record_20261021.md`; `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Review_Decision.md` (RA-117, the CB22 scope); `LESSONS.md` §§5, 7.
 4. `.agents/Directional/Regression_Root_Cause_Tracker.md` and `TODO.md`.
 
 **Review tooling:** `.agents/Directional/tools/` holds read-only `review_check.py`, `selector_probe.py`, and `fixture_probe.py`; history-sensitive review gates require real committed history, not a synthesized snapshot.

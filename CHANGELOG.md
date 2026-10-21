@@ -1,3 +1,9 @@
+## 2026-10-21 — CB22 compile-stop Review (RA-118): diagnostic accepted statically; CB22A next
+
+- CB22 (`384961bb4`) added the torus fixture atlas line and a rejection-only site diagnostic to every A5 isolation-evidence return. Compile run `39564087707` failed on two lines: `OccurrenceId` is a (cell, corner role) pair with no `index()`.
+- Review checked the diff against RA-117.5: every site prints exactly the inputs and certificate its decision read, the relation clause classifier mirrors `certified_seam_direction`, and no A5 decision changed. It also found canonical-order names shadowing storage-order names in the relation block.
+- Next: CB22A corrects the formatter and renames the four shadowing names, compile only; then TB23 harvests the sites with `focused30:7` as the certified-seam control. Accounting is unchanged.
+
 ## 2026-10-21 — TB22 Review (RA-117): fixture selection fixed; fixture atlas defect and unowned torus A5 isolation family; CB22 next
 
 - Review re-verified TB22 (result `12323004201`): 11/11 executed, 4 PASS / 7 RED, 15/15 hashes. The fixture now selects a witness (reciprocal 5/5, holonomy 5/5), so CB21 works for its scope. `cp3entry:1` fails at its own D2 assertion: all five minor-cycle carriers have gauge delta 0.

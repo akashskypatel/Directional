@@ -6,8 +6,8 @@ Immutable artifact-only [run 39549820087](https://github.com/akashskypatel/Direc
 
 | Family | Identities | Locus / origin | Status |
 |---|---|---|---|
-| F: torus witness fixture lacks `fieldTransportAtlas` | `focused30:6`, `selector:447` | TQ:1607–1796; factory `atlas-binding` S:8462; `7de636c88` added the binding to the other pipeline fixtures (TQ:649, 757, 861) while this one was masked by `88aa8eae0` | CB22 Part A (one line) |
-| A5-ISO: torus A5 `MismatchedIsolationEvidence` (`a5-side`) | `focused30:20, 24, 26, 27, 28`; `selector:444, 446, 448`; probable `focused30:25`; F rows next | RP:4318/4359 side crossing (pre-CP2) or the RP:5205–5221 certified-collinear-seam reject (`8be01326d`, post-CP2); R3-classified, previously unowned; predates CB20 | CB22 Part B site diagnostic → TB23 → DEFN-ISO |
+| F: torus witness fixture lacks `fieldTransportAtlas` | `focused30:6`, `selector:447` | TQ:1607–1796; factory `atlas-binding` S:8462; `7de636c88` added the binding to the other pipeline fixtures (TQ:649, 757, 861) while this one was masked by `88aa8eae0` | CB22 Part A (one line; in source `384961bb4`; compiles in CB22A, RA-118) |
+| A5-ISO: torus A5 `MismatchedIsolationEvidence` (`a5-side`) | `focused30:20, 24, 26, 27, 28`; `selector:444, 446, 448`; probable `focused30:25`; F rows next | RP:4318/4359 side crossing (pre-CP2) or the RP:5205–5221 certified-collinear-seam reject (`8be01326d`, post-CP2); R3-classified, previously unowned; predates CB20 | CB22 Part B site diagnostic (accepted statically, RA-118) → CB22A compile → TB23 → DEFN-ISO |
 
 Record: `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Review_Decision.md`.
 
