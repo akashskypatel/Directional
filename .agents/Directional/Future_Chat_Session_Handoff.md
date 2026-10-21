@@ -53,6 +53,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 |---|---|---|
 | 1 — pending | `UNKNOWN` (independent TB25 Review) | After TB25 evidence, canonical ID must be supplied by authority before execution |
 | 2 — conditional | `UNKNOWN` (DEFN-SEAM, only if reviewed and authorized) | No implementation or rule change before independent adjudication |
+| later — UNKNOWN until assigned | `DIAG-RETAIN` (user-directed): retain A5 occurrences and relations, A6 merged classes and A7 vertex geometry as diagnostic snapshots for GUI/CLI; scope in `TODO.md` CURRENT | Planned, not authorized; Review places it in the sequence clear of RP-01 turns |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 

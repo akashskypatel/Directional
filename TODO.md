@@ -6,6 +6,11 @@
 - [x] **TB25:** `M6-CP3-TB25-RP01-SEAM-FRAME-VALUES-HARVEST` — immutable [run 39682528031](https://github.com/akashskypatel/Directional/actions/runs/39682528031), result `12384333036`, 11/11 selected, 6 PASS controls / 5 RED A5+D3, 16/16 manifests/postflight; curved A5 and uniform D3 seam candidates both `d=F=0`. Evidence: `Architecture_M6_CP3_TB25_Seam_Frame_Values_Harvest_Report_20261021.md`. No rebuild or selector changes.
 - [ ] **EXACT NEXT REQUIRED TYPE:** independent TB25 Review; canonical ID **UNKNOWN — STOP** pending authoritative assignment. Review immutable artifact, A5-side and D3 fixture interpretation before DEFN-SEAM; do not invent an ID or advance.
 - [ ] **CONDITIONAL:** DEFN-SEAM only after independent TB25 Review adjudicates identity-certificate A5-side authority and D3 candidate classification. RP-01 open; M1/D2 and fixture debt remain deferred.
+- [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
+  - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
+  - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
+  - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
+  - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
 - **Turn sequence:** CB24 → CB24-REV (RA-125) → interim VIS (GUI network layer) → interim README GUI build docs → TB25 [harvest complete] → **TB25-REV [ID UNKNOWN]** → DEFN-SEAM → DEFN-SEAM-REV → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
 
 
