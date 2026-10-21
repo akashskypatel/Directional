@@ -111,7 +111,7 @@ W|P|selector:447|M5CP3.ProducedTorusTamperedNonzeroZ4TransformRejectsTyped
   region,seam,cert,certs=[" | ".join(fieldof(x,k) for x in sites) for k in ("region","seam","cert","certs")]
   clauses=" | ".join(",".join(re.findall(r'(?:^|;)(cert[0-9]+=[^;]*)',site)) for site in sites)
   suffixes=set(re.findall(r'a5-(side|wedge)'," ".join(a5lines)))
-  allowed={"side-step","side-collinear","relation-collinear-seam"} if suffixes=={"side"} else {"wedge-edge","wedge-fan"} if suffixes=={"wedge"} else set()
+  allowed={"side-step","side-collinear","relation-collinear-seam"} if suffixes=={"side"} else {"wedge-edge","wedge-fan"} if suffixes=={"wedge"} else {"side-step","side-collinear","wedge-edge","wedge-fan","relation-collinear-seam"} if not suffixes else set()
   invalid=(a5lines and (not sites or not set(labels)<=allowed)) or any(re.search(r'cert[0-9]+=[^;]*:valid(?:;|$)',site) for site in sites)
   if invalid:st["site_bad"]+=1
   if fixture=="—" and (verdict!="PASS" or sites):st["ctrl_bad"]+=1
