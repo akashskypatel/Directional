@@ -283,6 +283,9 @@ This document records **reusable failure-derived engineering lessons**, not an e
 - **A routing rule over a pair must read both members.** Branches keyed on the first occurrence of a
   relation let a mixed result read as one branch (RA-123.4: occurrence (0,1) fit B-fan, while (1,0)'s
   chart face sat across the seam).
+- **Before designing around a relation predicate, ask whether its operands can differ under the producer's
+  data model.** A check over two occurrences of one shared node is either tautological or unsatisfiable
+  (RA-124.3: the A5 seam face clauses could never hold; a ladder of site diagnostics measured one instance).
 
 ## Contracts, planning, reviews, and durable records
 

@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-21 · RA-123 reviews TB24: the torus A5 site is owned by the per-node corner representative (one face shared by both occurrences at seam vertex 61, outside one occurrence's wedge), not by either pre-registered branch. Relaxing the A5 face clauses is inadmissible. Next: DEFN-ISO-A, a documents-only census of the representative's enforcers and frame premises. Accepted CP2 491/491; TB21 candidate 449/497; stable 66/17/49, debt 1; RP-01 open and RP-02 unreached.
+**Currency:** 2026-10-21 · RA-124 reviews the DEFN-ISO-A census and finds, statically, that the certified-seam contract cannot pass on produced data: both occurrences of an OrdinaryFront relation are one shared grid node, so the A5 seam face checks never hold and A6's gauge-stripped turn is identity by construction (frozen D3 holds only for an identity turn). Next: CB24 seam frame values, then TB25, then DEFN-SEAM. Accepted CP2 491/491; TB21 candidate 449/497; stable 66/17/49, debt 1; RP-01 open and RP-02 unreached.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,9 +50,9 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Latest candidate (TB21, reviewed by RA-115):** 449 PASS / 48 RED on the frozen 497-row CP3 entry selector, with zero PASS→RED relative to TB18. It is **not accepted CP3 evidence**; last accepted runtime remains CP2 491/491. TB23 showed that ten torus A5-ISO rows reject at the same certified seam relation and found a selected-corner-face versus span-face disagreement (RA-121). TB24 observed CB23's fields at runtime (RA-123): both occurrences share one per-node representative face that lies outside one occurrence's corner wedge, so the owner is A2's per-node representative (RA-72.4 class). DEFN-ISO-A (census) precedes any contract. The remaining M1 and D2 cases follow their separate gates.
+**Latest candidate (TB21, reviewed by RA-115):** 449 PASS / 48 RED on the frozen 497-row CP3 entry selector, with zero PASS→RED relative to TB18. It is **not accepted CP3 evidence**; last accepted runtime remains CP2 491/491. TB23 showed that ten torus A5-ISO rows reject at the same certified seam relation and found a selected-corner-face versus span-face disagreement (RA-121). TB24 observed CB23's fields at runtime (RA-123): both occurrences share one per-node representative face. RA-124 shows this is structural: every OrdinaryFront relation pairs one shared node, so the A5 seam face checks can never pass and the frozen D3 stripped-turn rule holds only for an identity turn. CB24/TB25 measure the gauge jump against the certificate turn before DEFN-SEAM. The remaining M1 and D2 cases follow their separate gates.
 
-Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-123 Review](Architecture_M6_CP3_TB24_Torus_A5_Seam_Face_Harvest_Review_Decision_20261021.md) and [regression tracker](Regression_Root_Cause_Tracker.md).
+Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md) and [regression tracker](Regression_Root_Cause_Tracker.md).
 
 ## 4. Fixtures and witnesses
 
@@ -102,14 +102,14 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Recover the CP2 rows on the CP3-entry path. The gauge pin is corrected (RA-111 to RA-115), and CB21 fixed the torus witness selection (RA-116, RA-117). Remaining CP2 families: the torus A5 isolation family (10 rows including G4-B002; one site, RA-121; owner the A2 per-node corner representative, RA-123; DEFN-ISO-A census, then the DEFN-ISO-B contract; the torus witness fixture atlas binding is fixed and confirmed by TB23), and M1 (10 rows, DEFN-M1). D2 for `cp3entry:1` follows (DEFN-T1). | M6-CP3; [handoff](Future_Chat_Session_Handoff.md) |
+| **1** | Recover the CP2 rows on the CP3-entry path. The gauge pin is corrected (RA-111 to RA-115), and CB21 fixed the torus witness selection (RA-116, RA-117). Remaining CP2 families: the torus A5 isolation family (10 rows including G4-B002; one site, RA-121; RA-124: the certified-seam contract cannot pass on shared-node producer data; CB24/TB25 frame values, then DEFN-SEAM; the torus witness fixture atlas binding is fixed and confirmed by TB23), and M1 (10 rows, DEFN-M1). D2 for `cp3entry:1` follows (DEFN-T1). | M6-CP3; [handoff](Future_Chat_Session_Handoff.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
 
 ## 8. Recurring defect patterns
 
-- **Vacuous witness:** never reached the path that the test claims to check. Prove the precondition and use independent positive/negative oracles.
+- **Vacuous witness:** never reached the path that the test claims to check, or a relation check whose two operands are one shared object (RA-124: shared grid nodes). Prove the precondition and use independent positive/negative oracles.
 - **Conflated authority:** row number, gauge, semantic ID, terminal incidence, certificate provenance or a per-node representative face (RA-72.4, RA-123) used as interchangeable identities. Find the unique writer and exact typed correspondence.
 - **Premature credit:** compile-green, diagnostic data or focused PASS/RED presented as cumulative acceptance. Separate candidate evidence from reviewed promotion.
 - **Predicted cause substituted for measured cause:** inspect the **actual first rejecting predicate** and discriminate its subconditions before proposing a repair.

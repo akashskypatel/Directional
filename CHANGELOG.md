@@ -1,3 +1,9 @@
+## 2026-10-21 — DEFN-ISO-A census reviewed (RA-124): the certified-seam contract cannot pass on shared-node producer data
+
+- Review accepted the census's `src` inventory and amended two answers: the annulus producer never sets a corner branch, and the turn arithmetic it called undecidable can be derived per producer.
+- Static finding: both occurrences of an OrdinaryFront relation are one shared grid node with one representative face. The A5 seam face checks therefore can never pass, and A6's gauge-stripped turn is identity by construction. The frozen D3 seam rule (RA-30a.3) holds only when the certified turn is identity. The representative fix proposed at RA-123 would only move the rejection, so it is withdrawn.
+- Next: CB24 adds gauge, branch and turn values to the seam rejection message; TB25 then decides whether D3 must be amended or the producer gauges are wrong. Accounting is unchanged. Record: `Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md`.
+
 ## 2026-10-21 — DEFN-ISO-A static seam-node representative census delivered
 
 - Completed the RA-123.7 documents-only census at `Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_20261021.md` (commit `d2e2dc523d802ae83f81bdf7afec1eb44c70c0cb`, 49 lines). Enumerated `placement.selectedFace`, lattice/branch, corner-wedge and endpoint-gauge producers/consumers with source lines; distinguished conditional curved-chart row-121 selection from proven runtime lineage.

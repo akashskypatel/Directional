@@ -1,3 +1,16 @@
+## RA-124 — DEFN-ISO-A census reviewed: the certified-seam contract cannot pass on shared-node producer data; DEFN-ISO-B withdrawn (2026-10-21)
+
+Authority: `Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md`.
+
+- **RA-124.1** Census Q1 (enforcer inventory) and Q5 accepted.
+- **RA-124.2** Q2/Q4 amended: annulus never writes `branchRotation`; residual decidable per producer; `point_on_periodic_chart` shared by annulus and curved; observed 121 is evidence against the uniform producer.
+- **RA-124.3** P1 shared node (RP:4943–4947; SCT:13404, 15115, 17741); P2 A5 seam face clauses unsatisfiable for every certified collinear-seam OrdinaryFront; P3 A6 stripped turn identity by construction (uniform/curved), gauge-only (annulus). RA-30a.3 (D3) satisfiable only for an identity turn. **RA-30a.3 is challenged, not amended.**
+- **RA-124.4** RA-123.6 amended; DEFN-ISO-B withdrawn (relocation). Families: (i) amend D3 for the continuous frame (gauge jump = certificate turn); (ii) per-side representatives with sheet-relative gauges.
+- **RA-124.5** Next: `M6-CP3-CB24-RP01-SEAM-FRAME-VALUES-SITE` (RP site frame values; TQ helper message; compile only).
+- **RA-124.6** TB25 frame: 11 rows; routing on producer signature, P3, and gauge jump d vs turn F.
+- **RA-124.7** CB24 → REV → TB25 → REV → DEFN-SEAM → REV → corrective CB/TB → DEFN-M1 → DEFN-T1 → fixture debt → census → RP-01 Review.
+
+---
 ## RA-123 — TB24 reviewed: a per-node corner representative owns the torus A5 site; DEFN-ISO split into census and contract (2026-10-21)
 
 Authority: `Architecture_M6_CP3_TB24_Torus_A5_Seam_Face_Harvest_Review_Decision_20261021.md`.

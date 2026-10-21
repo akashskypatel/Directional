@@ -1,9 +1,25 @@
-## CURRENT — DEFN-ISO-A seam-node representative census committed; mandatory independent Review next (2026-10-21)
+## CURRENT — Census reviewed (RA-124): the seam contract cannot pass on shared-node producer data; frame values (CB24) before DEFN-SEAM (2026-10-21)
 
-- [x] `M6-CP3-DEFN-ISO-A-RP01-SEAM-NODE-REPRESENTATIVE-CENSUS` — RA-123.7 documents-only census committed `d2e2dc523d802ae83f81bdf7afec1eb44c70c0cb` (49 lines); `Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_20261021.md`. Five question classes line-anchored with search commands and undecidable runtime premises; no code, tests, selectors, workflow, compile or runtime.
-- [ ] **EXACT NEXT:** `M6-CP3-DEFN-ISO-A-RP01-SEAM-NODE-REPRESENTATIVE-CENSUS-REV` — independent Review of the census. Verify exhaustive enforcers, regional gauge semantics, origin of vertex-61 row 121 vs minimum-row assumption, seam-side sufficiency, affected ten A5 rows/controls and missing runtime proof. Issue an authorized DEFN-ISO-B contract turn or bounded rejection-only compile probe; do not infer a repair, relax A5/A6, or begin implementation.
-- [ ] **UNASSIGNED:** successor after Review is `UNKNOWN` until its decision. Planned only: DEFN-ISO-B → DEFN-ISO-B-REV → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → RP-01 Review. `RP-02` UNREACHED; Gate C suspended.
-- Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; candidate TB21 449/497; selector 497 unchanged. No runtime acceptance is claimed by DEFN-ISO-A.
+- [ ] **EXACT NEXT:** `M6-CP3-CB24-RP01-SEAM-FRAME-VALUES-SITE` — Code + Build, RA-124.5, compile only:
+  - RP relation-collinear-seam block, after `spanOnlyN`, before `error.isolationSite = std::move(site);`: append `;branch=<a>,<b>`, `;gaugeSel=<a>,<b>`, `;gaugeSpan=<a>,<b>` (`none` if unavailable) and `;turnN=<f>,<r>` per matching certificate in `certN` order;
+  - TQ:2756–2762 (`m6cp3_produced_seam_fixture` A5 branch): record `a5_rejection_message(a5Construction)`;
+  - no decision, return, error-code or assertion change; append only; every other file unchanged; at most 100 columns;
+  - eight-target GMP/GMPXX compile, `runtimeExecution=false`; record `Architecture_M6_CP3_CB24_Seam_Frame_Values_Site_Code_Build_Record_20261021.md`;
+  - STOP on any compile error or any need to edit outside the two hunks.
+- [ ] **CONDITIONAL:** `M6-CP3-CB24-RP01-SEAM-FRAME-VALUES-SITE-REV` — Review: verifies the diff and package; freezes the TB25 plan (RA-124.6).
+- [ ] Planned, not authorized: TB25 (`focused30:20`, `selector:444`, `focused30:28`, `cp3entry:3`, `cp3entry:5`; guard `selector:447`; controls `cp3entry:6`, `selector:217`, TB18 A#14, `selector:443`, `focused30:7`) → TB25-REV → DEFN-SEAM → DEFN-SEAM-REV → corrective CB → CB-REV → TB → TB-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+- **Turn sequence:** TB24 → TB24-REV (RA-123) → DEFN-ISO-A → DEFN-ISO-A-REV (RA-124) → **CB24** → CB24-REV → TB25 → TB25-REV → DEFN-SEAM → DEFN-SEAM-REV → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+- Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB21 candidate 449/497; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
+
+---
+
+## HISTORY — Seam-node representative census: DEFN-ISO-A committed and reviewed (RA-124) (2026-10-21)
+
+- [x] `M6-CP3-DEFN-ISO-A-RP01-SEAM-NODE-REPRESENTATIVE-CENSUS` — documents-only census committed `d2e2dc523` (49 lines): `Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_20261021.md`.
+- [x] Review (RA-124, DEFN-ISO-A-REV):
+  - Q1 enforcer inventory verified exact; Q5 accepted; Q2 and Q4 amended (annulus never writes `branchRotation`; stripped residual decidable per producer; `point_on_periodic_chart` shared by annulus and curved; 3 of 6 fan faces compared);
+  - finding: an OrdinaryFront relation's two occurrences share one producer node, so the A5 certified-seam face clauses are unsatisfiable and A6's stripped turn is identity by construction (uniform/curved); frozen D3 (RA-30a.3) holds only for an identity turn; `cp3entry:3/5` contested as fixture debt;
+  - RA-123.6 amended; DEFN-ISO-B withdrawn as relocation; CB24 measures the gauge jump against the certificate turn; record: `Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md`.
 
 ---
 
