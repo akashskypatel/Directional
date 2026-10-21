@@ -1,3 +1,0 @@
-turn=M6-CP3-CB21-RP01-TORUS-WITNESS-SCOPE-REV
-mode=review-only
-execute_Directional_tests=false
