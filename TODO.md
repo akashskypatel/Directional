@@ -1,11 +1,12 @@
-## CURRENT — RA-125 accepts CB24 compile only; immutable TB25 next (2026-10-21)
+## CURRENT — TB25 immutable harvest complete; independent Review pending (2026-10-21)
 
 - [x] `M6-CP3-CB24-RP01-SEAM-FRAME-VALUES-SITE-REV` — independently verified CB24's RP +28 / TQ +1−6 rejection-only semantic diff; package `12378590512`, 28/28 hashes, GMP/GMPXX, 8 targets, clean source and no runtime. Decision `Architecture_M6_CP3_CB24_Seam_Frame_Values_Site_Review_Decision_20261021.md`.
 - [x] Interim `M6-TOOL-VIS-FIELD-NETWORK-GUI-LAYER` (user-directed tooling) — commit `bf518b003`: A2a network polyline adapter, GUI section "6. Field-aligned curve network", 2 adapter tests; display only, RP-01 sources byte-identical to CB24 `dae267a82`. Record: `Architecture_M6_TOOL_VIS_Field_Network_GUI_Layer_Record_20261021.md`.
 - [x] Interim `M6-TOOL-README-GUI-BUILD-DOCS` (user-directed) — README: CMake and `setup.py` GUI build commands, complete CMake options, corrected solver defaults, `setup.py` flags and PEP 517 keys; `CMakeLists.txt`: OBJCXX enabled after `project()` for Apple GUI builds (CMake 4.3). No RP-01 source change.
-- [ ] **EXACT NEXT:** `M6-CP3-TB25-RP01-SEAM-FRAME-VALUES-HARVEST` — immutable artifact-only 11-row seam gauge/turn and D3 witness harvest, authority `Architecture_M6_CP3_TB25_Seam_Frame_Values_Harvest_Plan_20261021.md`. No rebuild, fixture/test/selector changes, or CP3 promotion; TB25 Review mandatory before DEFN-SEAM.
-- [ ] **CONDITIONAL:** TB25 Review ID UNKNOWN, then DEFN-SEAM pending observed gauge-jump branch and independent Review. RP-01 open; M1/D2 and fixture debt remain deferred.
-- **Turn sequence:** CB24 → CB24-REV (RA-125) → interim VIS (GUI network layer) → interim README GUI build docs → **TB25** → TB25-REV → DEFN-SEAM → DEFN-SEAM-REV → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+- [x] **TB25:** `M6-CP3-TB25-RP01-SEAM-FRAME-VALUES-HARVEST` — immutable [run 39682528031](https://github.com/akashskypatel/Directional/actions/runs/39682528031), result `12384333036`, 11/11 selected, 6 PASS controls / 5 RED A5+D3, 16/16 manifests/postflight; curved A5 and uniform D3 seam candidates both `d=F=0`. Evidence: `Architecture_M6_CP3_TB25_Seam_Frame_Values_Harvest_Report_20261021.md`. No rebuild or selector changes.
+- [ ] **EXACT NEXT REQUIRED TYPE:** independent TB25 Review; canonical ID **UNKNOWN — STOP** pending authoritative assignment. Review immutable artifact, A5-side and D3 fixture interpretation before DEFN-SEAM; do not invent an ID or advance.
+- [ ] **CONDITIONAL:** DEFN-SEAM only after independent TB25 Review adjudicates identity-certificate A5-side authority and D3 candidate classification. RP-01 open; M1/D2 and fixture debt remain deferred.
+- **Turn sequence:** CB24 → CB24-REV (RA-125) → interim VIS (GUI network layer) → interim README GUI build docs → TB25 [harvest complete] → **TB25-REV [ID UNKNOWN]** → DEFN-SEAM → DEFN-SEAM-REV → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
 
 
 ## HISTORY — Seam-node representative census: DEFN-ISO-A committed and reviewed (RA-124) (2026-10-21)

@@ -1,3 +1,8 @@
+## 2026-10-21 — TB25 immutable frame-values harvest; independent Review pending
+
+- Artifact-only [TB25 run 39682528031](https://github.com/akashskypatel/Directional/actions/runs/39682528031), result `12384333036` (SHA-256 `f10ef7786ca2af1f9e2cfa8cc0dfdf0b889c03b2adb54c9f8a5e87de1be6ccbc`): 11/11 executed, 6 PASS controls, 3 A5 RED and 2 contested D3 RED; 16/16 digest manifest, immutable postflight, no build/relink/benchmark/source/test/selector changes.
+- A5 torus curved `branch=3,3` and D3 uniform candidate `branch=0,0` both measure gauge jump `d=0` and certificate turn `F=0`; original seam face clauses still reject. Evidence: `Architecture_M6_CP3_TB25_Seam_Frame_Values_Harvest_Report_20261021.md`. Independent TB25 Review (ID UNKNOWN) must adjudicate candidate attribution; no change to frozen D3, stable 66/17/49, debt1, CP2 491/491 or CP3 497-selector authority.
+
 ## 2026-10-21 — Interim: GUI build documentation and a macOS CMake fix
 
 - README documents building `directional-ui` with CMake (Windows and macOS/Linux) and with `setup.py`, `build_standalone --build-gui`, `build_ext --build-gui` and `pip`. It also lists every CMake option with its real default, and how to view the field-aligned network.
