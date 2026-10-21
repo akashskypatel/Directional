@@ -245,7 +245,8 @@ add_library(
   src/meshing/TriFlowSimplificationDCEL.cpp
   src/pipeline/InputConditioner.cpp
   src/pipeline/ParallelRemeshPipeline.cpp
-  src/pipeline/RemeshPipeline.cpp)
+  src/pipeline/RemeshPipeline.cpp
+  src/visualization/FieldAlignedNetworkPolylines.cpp)
 add_library(Directional::pipeline ALIAS directional_pipeline)
 set_target_properties(
   directional_pipeline

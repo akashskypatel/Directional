@@ -3,11 +3,13 @@
 #include <cstddef>
 #include <filesystem>
 #include <functional>
+#include <string>
 #include <string_view>
 
 #include <Eigen/Core>
 
 #include <directional/fields/CompareCrossFields.h>
+#include <directional/visualization/FieldAlignedNetworkPolylines.h>
 
 namespace directional::gui {
 
@@ -119,6 +121,12 @@ struct AutoRemeshResult {
   QuadMeshData quadMesh;
 };
 
+struct FieldNetworkData {
+  visualization::FieldAlignedNetworkPolylines polylines;
+  bool pipelineProduced = false;
+  std::string pipelineStage;
+};
+
 MeshData load_mesh(const std::filesystem::path &path);
 
 FieldData load_field(const std::filesystem::path &path, FieldFormat format,
@@ -153,6 +161,13 @@ AutoRemeshResult auto_remesh(const MeshData &mesh,
 QuadMeshData remesh_with_field(const MeshData &mesh, const FieldData &field,
                                const RemeshOptions &options,
                                ProgressCallback progress = {});
+/// Runs the SurfaceCells backend and returns display geometry for its A2a
+/// field-aligned curve network, which is published even when a later stage
+/// rejects the remesh.
+FieldNetworkData trace_field_network(const MeshData &mesh,
+                                     const FieldData &field,
+                                     const RemeshOptions &options,
+                                     ProgressCallback progress = {});
 void save_mesh(const std::filesystem::path &path, const MeshData &mesh);
 void save_quad_mesh(const std::filesystem::path &path,
                     const QuadMeshData &mesh);

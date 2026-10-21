@@ -28,6 +28,7 @@
 
 #include <directional/fields/CompareCrossFields.h>
 
+#include <polyscope/curve_network.h>
 #include <polyscope/point_cloud.h>
 #include <polyscope/polyscope.h>
 #include <polyscope/surface_mesh.h>
@@ -40,6 +41,9 @@ constexpr const char *kCalculatedFieldGlyphName = "Calculated field";
 constexpr const char *kUploadedFieldGlyphName = "Uploaded field";
 constexpr const char *kQuadMeshName = "Quad remesh";
 constexpr const char *kDeviationHeatmapName = "Cross-field deviation (degrees)";
+constexpr const char *kNetworkTracesName = "A2a field-aligned traces";
+constexpr const char *kNetworkMandatoryName = "A2a mandatory edges";
+constexpr const char *kNetworkSingularitiesName = "A2a singularities";
 
 enum class FilePickerTarget { None, Mesh, Field };
 
@@ -80,11 +84,13 @@ struct TaskResult {
   bool hasField = false;
   bool hasQuadMesh = false;
   bool hasComparison = false;
+  bool hasFieldNetwork = false;
   directional::gui::MeshData mesh;
   directional::gui::FieldData field;
   std::optional<directional::gui::FieldOptions> fieldOptions;
   directional::gui::QuadMeshData quadMesh;
   directional::gui::FieldComparisonData comparison;
+  directional::gui::FieldNetworkData fieldNetwork;
   std::optional<ComparisonReportContext> comparisonContext;
   int simplificationSourceFaceCount = 0;
   int simplificationRootCount = 0;
@@ -227,6 +233,7 @@ private:
   std::optional<directional::gui::FieldComparisonData> fieldComparison_;
   std::optional<ComparisonReportContext> comparisonContext_;
   std::optional<directional::gui::QuadMeshData> quadMesh_;
+  std::optional<directional::gui::FieldNetworkData> fieldNetwork_;
 
   std::array<char, 1024> meshPath_{};
   std::array<char, 1024> fieldInputPath_{};
@@ -241,6 +248,7 @@ private:
   int fieldInputFormat_ = 0;
   int fieldOutputFormat_ = 0;
   int fieldOutputSource_ = 0;
+  int fieldNetworkSource_ = 0;
   int fieldSampleStride_ = 1;
   float glyphLengthRatio_ = 0.35F;
   float glyphSurfaceOffsetRatio_ = 0.04F;
@@ -300,6 +308,7 @@ private:
     fieldComparison_.reset();
     comparisonContext_.reset();
     quadMesh_.reset();
+    clear_field_network();
     calculatedFieldLabel_.clear();
     uploadedFieldLabel_.clear();
     calculatedFieldGlyph_ = {};
@@ -316,6 +325,19 @@ private:
     if (polyscope::hasSurfaceMesh(kInputMeshName)) {
       polyscope::getSurfaceMesh(kInputMeshName)
           ->removeQuantity(kDeviationHeatmapName, false);
+    }
+  }
+
+  void clear_field_network() {
+    fieldNetwork_.reset();
+    if (polyscope::hasCurveNetwork(kNetworkTracesName)) {
+      polyscope::removeCurveNetwork(kNetworkTracesName);
+    }
+    if (polyscope::hasCurveNetwork(kNetworkMandatoryName)) {
+      polyscope::removeCurveNetwork(kNetworkMandatoryName);
+    }
+    if (polyscope::hasPointCloud(kNetworkSingularitiesName)) {
+      polyscope::removePointCloud(kNetworkSingularitiesName);
     }
   }
 
@@ -556,6 +578,74 @@ private:
     }
   }
 
+  void sync_field_network_transform() {
+    if (!polyscope::hasSurfaceMesh(kInputMeshName)) {
+      return;
+    }
+    const glm::mat4 meshTransform =
+        polyscope::getSurfaceMesh(kInputMeshName)->getTransform();
+    const auto sync = [&meshTransform](polyscope::Structure *structure) {
+      if (!matrix_nearly_equal(structure->getTransform(), meshTransform)) {
+        structure->setTransform(meshTransform);
+      }
+    };
+    if (polyscope::hasCurveNetwork(kNetworkTracesName)) {
+      sync(polyscope::getCurveNetwork(kNetworkTracesName));
+    }
+    if (polyscope::hasCurveNetwork(kNetworkMandatoryName)) {
+      sync(polyscope::getCurveNetwork(kNetworkMandatoryName));
+    }
+    if (polyscope::hasPointCloud(kNetworkSingularitiesName)) {
+      sync(polyscope::getPointCloud(kNetworkSingularitiesName));
+    }
+  }
+
+  void visualize_field_network() {
+    if (!fieldNetwork_.has_value()) {
+      return;
+    }
+    const directional::visualization::FieldAlignedNetworkPolylines &network =
+        fieldNetwork_->polylines;
+    if (polyscope::hasCurveNetwork(kNetworkTracesName)) {
+      polyscope::removeCurveNetwork(kNetworkTracesName);
+    }
+    if (polyscope::hasCurveNetwork(kNetworkMandatoryName)) {
+      polyscope::removeCurveNetwork(kNetworkMandatoryName);
+    }
+    if (polyscope::hasPointCloud(kNetworkSingularitiesName)) {
+      polyscope::removePointCloud(kNetworkSingularitiesName);
+    }
+
+    if (network.traceEdges.rows() > 0) {
+      auto *traces = polyscope::registerCurveNetwork(
+          kNetworkTracesName, network.tracePoints, network.traceEdges);
+      traces->setColor({0.10F, 0.45F, 0.85F});
+      traces->setRadius(0.0015F);
+      traces->addEdgeScalarQuantity("trace", network.traceEdgeTrace,
+                                    polyscope::DataType::CATEGORICAL);
+      // 0 open, 1 barrier, 2 singularity, 3 contact, 4 limit cycle.
+      traces->addEdgeScalarQuantity("terminal kind", network.traceEdgeTerminal,
+                                    polyscope::DataType::CATEGORICAL);
+    }
+    if (network.mandatoryEdges.rows() > 0) {
+      auto *mandatory = polyscope::registerCurveNetwork(
+          kNetworkMandatoryName, network.mandatoryPoints,
+          network.mandatoryEdges);
+      mandatory->setColor({0.15F, 0.15F, 0.15F});
+      mandatory->setRadius(0.0025F);
+    }
+    if (network.singularityPoints.rows() > 0) {
+      auto *singularities = polyscope::registerPointCloud(
+          kNetworkSingularitiesName, network.singularityPoints);
+      singularities->setPointRadius(0.006F);
+      singularities
+          ->addScalarQuantity("index numerator", network.singularityIndex,
+                              polyscope::DataType::SYMMETRIC)
+          ->setEnabled(true);
+    }
+    sync_field_network_transform();
+  }
+
   directional::gui::ProgressCallback progress_callback() const {
     const auto progress = progress_;
     return [progress](const std::size_t current, const std::size_t total,
@@ -790,6 +880,55 @@ private:
     set_status("Remeshing with the uploaded field...");
   }
 
+  void launch_trace_field_network() {
+    require_mesh();
+    const std::optional<directional::gui::FieldData> &source =
+        fieldNetworkSource_ == 0 ? calculatedField_ : uploadedField_;
+    if (!source.has_value()) {
+      throw std::runtime_error(fieldNetworkSource_ == 0
+                                   ? "Calculate a field before tracing its network."
+                                   : "Load an uploaded field before tracing its network.");
+    }
+
+    const directional::gui::MeshData mesh = *mesh_;
+    const directional::gui::FieldData field = *source;
+    const directional::gui::RemeshOptions options = remeshOptions_;
+    enable_verbose_session_log_if_needed(options.verbose);
+    const auto progress = progress_;
+    progress_->update(0, 100, "Starting field-aligned network trace");
+
+    task_ = std::async(std::launch::async, [mesh, field, options, progress]() {
+      TaskResult result;
+      try {
+        result.fieldNetwork = directional::gui::trace_field_network(
+            mesh, field, options,
+            [progress](const std::size_t current, const std::size_t total,
+                       const std::string_view task) {
+              progress->update(current, total, task);
+            });
+        result.hasFieldNetwork = true;
+        const auto &polylines = result.fieldNetwork.polylines;
+        result.message =
+            "Traced " + std::to_string(polylines.traceCount) +
+            " field-aligned traces (" + std::to_string(polylines.segmentCount) +
+            " face segments), " +
+            std::to_string(polylines.singularityPoints.rows()) +
+            " singularities and " +
+            std::to_string(polylines.mandatoryEdges.rows()) +
+            " mandatory edges. " +
+            (result.fieldNetwork.pipelineProduced
+                 ? std::string("SurfaceCells produced a remesh.")
+                 : "SurfaceCells rejected later at " +
+                       result.fieldNetwork.pipelineStage + ".");
+      } catch (const std::exception &error) {
+        result.error = error.what();
+      }
+      progress->update(100, 100, "Field-aligned network trace finished");
+      return result;
+    });
+    set_status("Tracing the SurfaceCells field-aligned network...");
+  }
+
   void process_completed_task() {
     if (!task_.valid() ||
         task_.wait_for(std::chrono::seconds(0)) != std::future_status::ready) {
@@ -819,6 +958,10 @@ private:
     if (result.hasQuadMesh) {
       quadMesh_ = std::move(result.quadMesh);
       visualize_quad_mesh();
+    }
+    if (result.hasFieldNetwork) {
+      fieldNetwork_ = std::move(result.fieldNetwork);
+      visualize_field_network();
     }
     if (result.hasComparison) {
       fieldComparison_ = std::move(result.comparison);
@@ -1048,6 +1191,7 @@ void save_quad_mesh() {
                                  calculatedFieldGlyph_);
     update_field_glyph_positions(kUploadedFieldGlyphName,
                                  uploadedFieldGlyph_);
+    sync_field_network_transform();
     const bool isBusy = busy();
 
     ImGui::TextUnformatted("Directional Quad Remesher");
@@ -1403,6 +1547,40 @@ void save_quad_mesh() {
       ImGui::TextWrapped(
           "Writes a versioned JSON summary plus per-face CSV and PLY heatmap "
           "sidecars for comparing parameter sweeps between runs.");
+    }
+
+    if (ImGui::CollapsingHeader("6. Field-aligned curve network")) {
+      ImGui::TextWrapped(
+          "Traces the SurfaceCells A2a network from singularities along the "
+          "field. It is shown even when a later SurfaceCells stage rejects.");
+      const char *networkSources[] = {"Calculated field", "Uploaded field"};
+      draw_labeled_full_width_control("Network field source",
+                                      [this, &networkSources] {
+                                        ImGui::Combo("##network_field_source",
+                                                     &fieldNetworkSource_,
+                                                     networkSources, 2);
+                                      });
+      const bool networkFieldAvailable =
+          fieldNetworkSource_ == 0 ? calculatedField_.has_value()
+                                   : uploadedField_.has_value();
+      ImGui::BeginDisabled(isBusy || !mesh_.has_value() ||
+                           !networkFieldAvailable);
+      if (ImGui::Button("Trace field-aligned network")) {
+        guarded_action([this] { launch_trace_field_network(); });
+      }
+      ImGui::EndDisabled();
+      if (fieldNetwork_.has_value()) {
+        const auto &polylines = fieldNetwork_->polylines;
+        ImGui::Text("Traces: %zu  Segments: %zu", polylines.traceCount,
+                    polylines.segmentCount);
+        ImGui::Text("Singularities: %d  Mandatory edges: %d",
+                    static_cast<int>(polylines.singularityPoints.rows()),
+                    static_cast<int>(polylines.mandatoryEdges.rows()));
+        if (!fieldNetwork_->pipelineProduced) {
+          ImGui::TextWrapped("SurfaceCells rejected later at: %s",
+                             fieldNetwork_->pipelineStage.c_str());
+        }
+      }
     }
 
     if (ImGui::CollapsingHeader("Remesh options",
