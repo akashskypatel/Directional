@@ -1,3 +1,14 @@
+## RA-119 — CB22A harvested and accepted statically; five A5-ISO rows cannot show the site; test-message routing authorized as CB22B (2026-10-21)
+
+Authority: `Architecture_M6_CP3_CB22A_Torus_A5_Isolation_Site_Formatter_Review_Decision.md`.
+
+- **RA-119.1** CB22A compile GREEN, harvested by Review: source `f082d9aeb`, run `39573431400`, package `12333216637` (ZIP `ecde5067…4066`), 28/28, 350 source files match git, GMP/GMPXX, no runtime.
+- **RA-119.2** Diff inside RP:5264–5337; formatter and renames as RA-118.5; no A5 decision change. CB22 + CB22A accepted statically as one unit.
+- **RA-119.3** Design finding: the site reaches only the pipeline failure string; `focused30:24/25/26/27/28` (incl. G4-B002) call A5 directly or assert without a message; four use `torus_fixture()`.
+- **RA-119.4** Next: `M6-CP3-CB22B-RP01-TORUS-A5-SITE-TEST-MESSAGES` (TQ only: `a5_rejection_message` helper at five sites; compile only).
+- **RA-119.5** TB23 frame: 16 rows unchanged; per-row fixture and output path; pipeline/direct torus rows expected to agree; missing `site=` on an isolation code is a Review stop.
+- **RA-119.6** CB22B → CB22B-REV → TB23 → TB23-REV → DEFN-ISO → corrective CB/TB → DEFN-M1 → corrective → DEFN-T1 → fixture debt → census → RP-01 Review.
+
 ## RA-118 — CB22 compile stop reviewed: diagnostic accepted statically; occurrence formatter and name correction authorized as CB22A (2026-10-21)
 
 Authority: `Architecture_M6_CP3_CB22_Torus_A5_Isolation_Site_Compile_Stop_Review_Decision.md`.

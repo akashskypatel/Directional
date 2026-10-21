@@ -55,3 +55,5 @@ RP:5264–5267 redeclare `firstSpan` and `secondSpan` (outer: storage-order `con
 
 - **Accounting:** RA-117.4 unchanged. Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, selector 497, candidate evidence TB21 449/497. `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
 - **Sequence:** TB22-REV (RA-117) → CB22 (compile RED) → CB22-REV (RA-118) → **CB22A** → CB22A-REV → TB23 (torus A5 site harvest) → TB23-REV → DEFN-ISO → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+
+Closed by RA-119 — CB22A harvested and accepted statically; CB22B authorized (`Architecture_M6_CP3_CB22A_Torus_A5_Isolation_Site_Formatter_Review_Decision.md`).
