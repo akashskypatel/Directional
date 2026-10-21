@@ -1,3 +1,15 @@
+## RA-113 — CB20 and CB20A accepted: corrected gauge-pin domain compiled; TB20 authorized (2026-10-21)
+
+Authority: `Architecture_M6_CP3_CB20A_Gauge_Pin_Domain_Review_Decision.md` (it holds the verified package facts; the agent wrote no CB20A record).
+
+- **RA-113.1** Package `12310848591` (ZIP `0c9f048e…3ff5`, source `e22c5da5f`, expires 2026-10-28T00:23:30Z): 28/28 hashes, statuses empty, build exit 0, no warnings, GMP/GMPXX, `runtimeExecution=false`.
+- **RA-113.2** CB20A changes only the five accessor lines and the item 5 product oracle; S is unchanged from `7dc9b89ec`. CB20 and CB20A are accepted as one compiled unit, statically.
+- **RA-113.3** TB20 has 26 rows: 9 M2, 10 M1, 3 controls, 3 suite, 1 oracle. TQ failure lines map from TB19 by +77.
+- **RA-113.4** Predictions: the suite passes 3/3; no pin site on edges 1,4, 4,7 or 0,3; no span site; the controls pass 3/3. M2 outcomes determine the R-route.
+- **RA-113.5** Next: `M6-CP3-TB20-RP01-GAUGE-PIN-DOMAIN` (artifact-only), then TB20-REV.
+
+---
+
 ## RA-112 — CB20 compile stop reviewed: source accepted statically; test accessor correction authorized as CB20A (2026-10-20)
 
 Authority: `Architecture_M6_CP3_CB20_Gauge_Pin_Domain_Compile_Stop_Review_Decision.md`. Record: `Architecture_M6_CP3_CB20_Gauge_Pin_Domain_Code_Build_Stop_Record_20261020.md`.

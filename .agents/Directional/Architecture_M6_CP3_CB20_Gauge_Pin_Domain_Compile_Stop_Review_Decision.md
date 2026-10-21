@@ -68,5 +68,7 @@ There is no second repair inside the turn.
 
 ## RA-112.6 Sequence and accounting
 
+> *Closed by RA-113 (2026-10-21): CB20A compiled green; CB20 and CB20A are accepted together and TB20 is authorized.*
+
 - **Sequence:** CB20 (compile RED, stopped) → CB20-REV (RA-112) → **CB20A** → CB20A-REV → [TB20 → TB20-REV] → DEFN on the M1 binding owner (RA-105.3) → corrective CB/TB → fixture debt → census → RP-01 Review.
 - **Accounting is unchanged:** 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, TB18 candidate 448/497, selector 497. `RP-01` is open, `RP-02` is UNREACHED and Gate C is suspended.
