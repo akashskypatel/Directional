@@ -1,3 +1,7 @@
+## 2026-10-21 — GUI: long messages wrap instead of clipping
+
+- The status/error line, field labels and the file-picker error now wrap inside their panels. Wrapped text grows the panel's content, so its scroll range reaches the last line.
+
 ## 2026-10-21 — Windows build fix: static Directional libraries and `/bigobj`
 
 - MSVC could not link `directional_core.dll`: exporting every symbol exceeded the 65,535-export DLL limit (LNK1189). On Windows the core and pipeline libraries are now always static; other platforms still honour `BUILD_SHARED_LIBS`. `DIRECTIONAL_SHARED` follows the actual library type, and the unreachable Windows install rule for Directional's own DLLs is removed.

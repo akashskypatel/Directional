@@ -123,6 +123,15 @@ std::filesystem::path path_from_buffer(const std::array<char, 1024> &buffer,
   return path;
 }
 
+// ImGui::TextColored never wraps, so a long error or field label is clipped at
+// the panel edge. Wrapped text also grows the panel's content height, which
+// extends its scroll range to the last line.
+void text_colored_wrapped(const ImVec4 &color, const std::string &text) {
+  ImGui::PushStyleColor(ImGuiCol_Text, color);
+  ImGui::TextWrapped("%s", text.c_str());
+  ImGui::PopStyleColor();
+}
+
 template <typename DrawFunction>
 void draw_labeled_full_width_control(const char *label,
                                      DrawFunction &&drawFunction) {
@@ -1393,8 +1402,8 @@ void save_quad_mesh() {
       ImGui::EndDisabled();
 
       if (!calculatedFieldLabel_.empty()) {
-        ImGui::TextColored(ImVec4(0.15F, 0.65F, 1.0F, 1.0F), "%s",
-                           calculatedFieldLabel_.c_str());
+        text_colored_wrapped(ImVec4(0.15F, 0.65F, 1.0F, 1.0F),
+                             calculatedFieldLabel_);
       }
     }
 
@@ -1435,8 +1444,8 @@ void save_quad_mesh() {
       ImGui::EndDisabled();
 
       if (!uploadedFieldLabel_.empty()) {
-        ImGui::TextColored(ImVec4(1.0F, 0.45F, 0.15F, 1.0F), "%s",
-                           uploadedFieldLabel_.c_str());
+        text_colored_wrapped(ImVec4(1.0F, 0.45F, 0.15F, 1.0F),
+                             uploadedFieldLabel_);
       }
       ImGui::TextWrapped(
           "The uploaded field is shared by remeshing and field comparison.");
@@ -1673,8 +1682,7 @@ void save_quad_mesh() {
 
     ImGui::Separator();
     if (!error_.empty()) {
-      ImGui::TextColored(ImVec4(1.0F, 0.35F, 0.35F, 1.0F), "%s",
-                         error_.c_str());
+      text_colored_wrapped(ImVec4(1.0F, 0.35F, 0.35F, 1.0F), error_);
     } else {
       ImGui::TextWrapped("%s", status_.c_str());
     }
