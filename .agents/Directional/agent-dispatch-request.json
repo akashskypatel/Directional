@@ -1,14 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb25-seam-frame-harvest-20261021",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb25-seam-frame-harvest",
-  "executor_sha": "36c4b489ac3cd7e8039e3e99aae1c14543bbb08a",
-  "semantic_source_sha": "dae267a82fb884ff9eba4fd0122ad61750d0c924",
-  "turn_id": "M6-CP3-TB25-RP01-SEAM-FRAME-VALUES-HARVEST",
-  "harness_path": ".agents/Directional/tools/m6_cp3_tb25_seam_frame_values_harvest_harness.sh",
-  "harness_sha256": "bd64b409a8adca8c2b9d30e0c1a34670868f428b226fea868f4245d250332713",
-  "environment": {},
-  "artifact_prefix": "m6-cp3-tb25-seam-frame-values",
+  "request_id": "m6-cp3-tb25-closeout-docs-20261021-a",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb25-closeout-docs-apply-a",
+  "file_id": "1AyZlTuIZtAnJMtMKZWlwwU75fRIHFydf",
+  "patch_sha256": "255cbfefef4195eef480735021d2353258cbe8e9b2f4709c48394019cd0371b1",
+  "base_sha": "dd7e84943732b07e2de5e7c6b3ad5d19e38ba8db",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close TB25 immutable harvest and freeze independent review",
   "retention_days": 7
 }
