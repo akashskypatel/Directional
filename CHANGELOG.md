@@ -1,3 +1,8 @@
+## 2026-10-21 — CB22B torus A5 failure-message routing compiled (no runtime)
+
+- Test-only diagnostic routing in `SurfaceCellTransitionQuotientTests.cpp` (+22/−24), exact source `c6e90916eb90bfd33bc8a38c5ece7def15dcc766`, RA-119.4 scope. `;site=` now reaches five A5-ISO failure messages; assertions and production unchanged.
+- GMP/GMPXX eight-target compile [39591106454](https://github.com/akashskypatel/Directional/actions/runs/39591106454) GREEN; immutable package `12341307713` SHA-256 `b5f9a6688226375ea1c6241c2d9a464d9b9ede7679f9259acd03b3fbbb1c8ad5`, 28/28 hashes, `runtimeExecution=false`. Independent Review next; no TB23 execution or semantic promotion.
+
 ## 2026-10-21 — CB22A Review (RA-119): site diagnostic compiled; routing to five torus test messages next
 
 - CB22A (`f082d9aeb`) corrected the occurrence formatter and the shadowing names; compile run `39573431400` is GREEN (package `12333216637`, 28/28, no runtime). Review harvested it, because the turn was left open while the compile ran.

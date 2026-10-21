@@ -1,15 +1,9 @@
-## CURRENT — CB22B re-entered: first attempt yielded with no source change; RA-119.4 unchanged; site routing to five torus test messages next (2026-10-21)
+## CURRENT — CB22B GMP/GMPXX compile GREEN; independent Review next (2026-10-21)
 
-- [ ] **EXACT NEXT:** `M6-CP3-CB22B-RP01-TORUS-A5-SITE-TEST-MESSAGES` — Code + Build, RA-119.4, **new turn** (the 10:01:18Z attempt made no source change and is superseded), base `f082d9aeb`, TQ only:
-  - helper `a5_rejection_message(const SurfaceOccurrenceComplexProducer::ConstructionResult &)` before TQ:960: `A5:<code name>` plus `;site=<isolationSite>` when non-empty (`A5:unexpected-disposition` without an error);
-  - use it at TQ:973–978 (`focused30:28`, `focused30:25`), TQ:6008 (`focused30:24`), TQ:6475–6483 (`focused30:26`) and TQ:6547–6555 (`focused30:27`), deleting the now-unused `a5Error` declarations; append `<< retained_pipeline_first_failure(run)` at TQ:6193 (`focused30:25`);
-  - RP, header and every other file byte-identical to `f082d9aeb`; no assertion, fixture, selection or control-flow change; message text unchanged except the `;site=` suffix; no line over 100 columns;
-  - eight-target GMP/GMPXX compile, `runtimeExecution=false`; record `Architecture_M6_CP3_CB22B_Torus_A5_Site_Test_Messages_Code_Build_Record_20261021.md`;
-  - STOP on any compile error or any need to edit outside TQ or to change an assertion.
-- [ ] `M6-CP3-CB22B-RP01-TORUS-A5-SITE-TEST-MESSAGES-REV` — mandatory Review: verifies the CB22B diff and package; issues the TB23 plan (RA-119.5 frame).
-- [ ] Planned, not authorized: TB23 (A5-ISO `focused30:20/24/25/26/27/28`, `selector:444/446/448`; F `focused30:6`, `selector:447`; controls `cp3entry:6`, `selector:217`, TB18 A#14, `selector:443`, `focused30:7`) → TB23-REV → DEFN-ISO (A4 seam certificate ↔ A5 binding contract; the `8be01326d` reject) → corrective CB/TB → DEFN-M1 (RA-105.3; also `focused30:12`, `cp3entry:2`) → corrective CB/TB → DEFN-T1 (D2 attainability on the torus) → fixture debt (242 per `Architecture_M6_CP3_CB19_Selector242_Atlas_Authority_Test_Plan_20261020.md`, then 174 → 250 → adjacent-sheet → 191 → 442, plus I/R sites TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518) → census → RP-01 Review.
-- **Turn sequence:** CB22-REV (RA-118) → CB22A (compile GREEN) → CB22A-REV (RA-119) → CB22B attempt 1 (yielded, no source change) → CB22B-YIELD-REV → **CB22B** → CB22B-REV → TB23 → TB23-REV → DEFN-ISO → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
-- Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, selector 497; candidate evidence TB21 449/497; `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
+- [x] `M6-CP3-CB22B-RP01-TORUS-A5-SITE-TEST-MESSAGES`: TQ test messages only (+22/−24), semantic `c6e90916eb90bfd33bc8a38c5ece7def15dcc766`; compile [39591106454](https://github.com/akashskypatel/Directional/actions/runs/39591106454), package `12341307713`, 28/28 hashes, eight targets, GMP/GMPXX, clean statuses, `runtimeExecution=false`. No runtime, no selector changes. Owning record: `.agents/Directional/Architecture_M6_CP3_CB22B_Torus_A5_Site_Test_Messages_Code_Build_Record_20261021.md`.
+- [ ] **EXACT NEXT:** `M6-CP3-CB22B-RP01-TORUS-A5-SITE-TEST-MESSAGES-REV` — independent Review of CB22B diff and package against RA-119.4, issue artifact-only TB23 plan if accepted (RA-119.5). No TB23 execution in Review.
+- [ ] Conditional: TB23 (16 rows, RA-119.5) → TB23-REV → DEFN-ISO → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; each separate authorization.
+- Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, selector 497; candidate TB21 449/497. `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
 
 ---
 

@@ -34,47 +34,22 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-21, after the CB22B yield Review. The first CB22B attempt (entered 10:01:18Z) took a source snapshot and yielded `IN_PROGRESS` with no source change. Review re-checked every RA-119.4 anchor at HEAD: the specification stands, and CB22B is re-entered as a new turn. Standing (RA-119): CB22 + CB22A are accepted statically; the A5 isolation site reaches only rows that print the pipeline failure string, so CB22B routes it into the five A5-ISO test messages, including G4-B002 `focused30:28` (test-only), before TB23. |
-| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; refetch before mutation. Semantic source CB22A `f082d9aebce0ad72906ccbf70c37a4bf90a9ae6f`; HEAD `src`, `include` and `tests` are identical to it; exact snapshot of those sources: run `39582530295` (source `56a4190d2`, archive `8154fd06…6c96`, 5,727 files), expires 2026-10-28T10:10:24Z. Last compiled: CB22A package `12333216637` (ZIP `ecde5067…4066`, 28/28, GMP/GMPXX, `runtimeExecution=false`), expires 2026-10-28T09:05:23Z; accepted statically by RA-119; not yet executed. |
+| Currency | 2026-10-21, after CB22B test-only message routing compiled GREEN; independent CB22B Review is next. |
+| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; CB22B semantic source `c6e90916eb90bfd33bc8a38c5ece7def15dcc766`, later control/documentation heads must be re-fetched. |
 | Last accepted semantic runtime | CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. R3 baseline **403/497** rejected. |
 | Latest candidate or rejected evidence | TB22: run [39549820087](https://github.com/akashskypatel/Directional/actions/runs/39549820087), result `12323004201` (ZIP `71569a41…8c87`), expires 2026-11-04T05:31:17Z; 11/11 executed, 4 PASS / 7 RED; report `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Report_20261021.md`, reviewed by RA-117 (`Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Review_Decision.md`). Census: TB21 result `12317287104`, **449/497**, 0 PASS→RED (RA-115); baseline `Architecture_M6_CP3_TB21_Selector_497_Red_Inventory.tsv`. **Not promoted.** |
 | Regression accounting and debt | **66/17/49**, debt **1**, selector 497 frozen; R3 403/497 rejected; candidate evidence TB21 449/497. Tracker: `Regression_Root_Cause_Tracker.md`. |
-| Active boundary | `RP-01` open. Owned CP2 families: **A5-ISO** (torus A5 `MismatchedIsolationEvidence`, ≥ 8 rows incl. G4-B002 `focused30:28`; branch unknown until TB23 prints the site; RA-117.3, RA-119.3); **F** (torus witness fixture lacks `fieldTransportAtlas`, 2 rows; fixed in source, unverified at runtime); **M1** (10 rows plus `focused30:12`, `cp3entry:2`, DEFN-M1). CP3-entry: D2 for `cp3entry:1` (DEFN-T1). Restriction: CB22B edits TQ messages only; no assertion, fixture or production change. `RP-02` UNREACHED; Gate C suspended. |
+| Active boundary | `RP-01` open; A5-ISO/F/M1 and D2 ownership as RA-119.3, unchanged. CB22B messages compiled only; independent Review must verify diff and package before authorizing TB23. `RP-02` UNREACHED; Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-CB22B-RP01-TORUS-A5-SITE-TEST-MESSAGES` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB22B-RP01-TORUS-A5-SITE-TEST-MESSAGES-REV` — EXACT NEXT
 
-- **Type / owner:** Code + Build; implementation agent. Authority: RA-119.4 (`Architecture_M6_CP3_CB22A_Torus_A5_Isolation_Site_Formatter_Review_Decision.md`). Enter as a new turn with a new `Started at`; the 10:01:18Z attempt made no source change and is superseded.
-- **Objective:** make the A5 isolation site visible in the five A5-ISO rows that call A5 directly or assert without a message, by changing test failure messages only.
-- **Read before work:**
-  - RA-119 (§3, §4, §5);
-  - `tests/SurfaceCellTransitionQuotientTests.cpp` (TQ) at `f082d9aeb`: `retained_pipeline_first_failure` TQ:461–473; `build_torus_closed_complex_view` TQ:960–1000; TQ:6008 (`focused30:24`), TQ:6193 (`focused30:25`), TQ:6472–6484 (`focused30:26`), TQ:6544–6556 (`focused30:27`);
-  - `include/directional/pipeline/RemeshPipeline.h:963–971` (`SurfaceOccurrenceComplexError`) and :1015–1018 (`ConstructionResult`);
-  - `LESSONS.md` §5 and §7.
-- **In scope (TQ only, base `f082d9aeb`):**
-  1. **Helper.** Immediately before TQ:960 add `std::string a5_rejection_message(const directional::pipeline::SurfaceOccurrenceComplexProducer::ConstructionResult &construction)`: `A5:unexpected-disposition` when there is no error; otherwise `A5:<surface_occurrence_complex_error_name(code)>`, plus `;site=<isolationSite>` when non-empty.
-  2. **TQ:973–978:** `*firstFailure = a5_rejection_message(a5);`.
-  3. **TQ:6008:** `ASSERT_NE(a5, nullptr) << a5_rejection_message(a5Construction);`.
-  4. **TQ:6193:** append `<< retained_pipeline_first_failure(run)`.
-  5. **TQ:6475–6483 and TQ:6547–6555:** stream `"torus downstream first rejection=" << a5_rejection_message(a5Construction)`; delete the now-unused `a5Error` declarations.
-  6. **Compile.** GMP/GMPXX, eight targets, package, `runtimeExecution=false`.
-  7. **Record.** `Architecture_M6_CP3_CB22B_Torus_A5_Site_Test_Messages_Code_Build_Record_20261021.md`, at most 30 lines: source SHA; TQ diff stat and changed ranges against `f082d9aeb`; compile run, package id, ZIP SHA-256, hash count, expiry, root-manifest and source-archive SHA-256.
-- **Out of scope:**
-  - RP, the header and every file other than TQ, which stay byte-identical to `f082d9aeb`;
-  - any assertion condition, fixture, selection or control-flow change; any other test's messages;
-  - any A5-ISO repair; selectors, harnesses, workflows; runtime; DEFN-M1 and DEFN-T1.
-- **Success evidence:**
-  - the diff touches only the helper and the five listed TQ sites; existing message text is unchanged except the `;site=` suffix; no line over 100 columns;
-  - the compile is GREEN;
-  - the package is verified: hashes, clean statuses, `runtimeExecution=false`;
-  - the record is committed and STATUS is COMPLETE.
-
-  If the compile is still running at your closeout bound, leave STATUS `IN_PROGRESS`; Review harvests.
-- **On success:** `M6-CP3-CB22B-RP01-TORUS-A5-SITE-TEST-MESSAGES-REV` (Review, mandatory). It verifies the diff and package and issues the TB23 plan (RA-119.5 frame).
-- **On failure/blocker:** STOP and return to Review on:
-  - any compile error;
-  - any need to edit outside TQ or to change an assertion.
-
-  There is no repair inside the turn.
+- **Type/owner:** Independent Review, authorized by RA-119.4 and the completed CB22B code-build. This is a separate turn.
+- **Objective:** Verify the exact TQ-only +22/−24 diagnostic-message diff and immutable eight-target GMP/GMPXX compile package; issue the TB23 plan using RA-119.5 only if review accepts.
+- **Read first:** RA-119 (`Architecture_M6_CP3_CB22A_Torus_A5_Isolation_Site_Formatter_Review_Decision.md`), `Architecture_M6_CP3_CB22B_Torus_A5_Site_Test_Messages_Code_Build_Record_20261021.md`, packaged result `12341307713`, `LESSONS.md`, frozen regression ledger.
+- **In scope:** Verify unchanged assertions/fixtures/selector/control flow, site suffix formatting, exactly one test-source path, no added line over 100 columns; 28/28 hashes, exact source, eight targets, clean statuses, GMP/GMPXX, `runtimeExecution=false`.
+- **Out of scope:** No source repairs, runtime, TB23 execution, selector changes or acceptance promotion during the Review.
+- **Success evidence:** Frozen Review decision, precise verdict, TB23 artifact-only plan keyed to RA-119.5's 16 rows and falsifiers.
+- **On success:** TB23 only if independently authorized by that Review; otherwise `UNKNOWN` and STOP. On failure: STOP and issue bounded corrective authority, never silently change the test or runtime boundary.
 
 ## Turn Sequence
 
@@ -85,19 +60,19 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 | done | `M6-CP3-CB22B-RP01-TORUS-A5-SITE-TEST-MESSAGES` (attempt 1) | Yielded `IN_PROGRESS` after a source snapshot; no source change. |
 | done | `M6-CP3-CB22B-RP01-TORUS-A5-SITE-TEST-MESSAGES-YIELD-REV` | Review: RA-119.4 anchors re-verified at HEAD; specification unchanged; CB22B re-entered as a new turn. |
 | 1 — next | `M6-CP3-CB22B-RP01-TORUS-A5-SITE-TEST-MESSAGES` | Code + Build per RA-119.4, new turn: route the site into five A5-ISO test messages; TQ only; compile only. |
-| 2 — mandatory | `M6-CP3-CB22B-RP01-TORUS-A5-SITE-TEST-MESSAGES-REV` | Review: verifies the diff and package; issues the TB23 plan (RA-119.5). |
+| 2 — conditional | TB23 (exact ID only when Review grants authority) | Artifact-only, separate turn; no runtime here. |
 | planned, not authorized | TB23 (torus A5 site harvest: A5-ISO `focused30:20/24/25/26/27/28`, `selector:444/446/448`; F `focused30:6`, `selector:447`; controls `cp3entry:6`, `selector:217`, TB18 A#14, `selector:443`, `focused30:7`) → TB23-REV → DEFN-ISO (A4 seam certificate ↔ A5 binding contract; the `8be01326d` reject) → corrective CB/TB → DEFN-M1 (RA-105.3; also `focused30:12`, `cp3entry:2`) → corrective CB/TB → DEFN-T1 (D2 attainability) → fixture debt → census → RP-01 Review | Only as each Review assigns them. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **code-build** — CB22B (new turn; RA-119.4 unchanged): route the A5 isolation site into five torus test failure messages (RA-119.4); TQ only; compile only, no runtime.
+`load_next`: **review** — CB22B independent code-build review; verify TQ-only scope and compile-only package, then decide TB23 authority.
 
 Minimum successor context after the mandatory start checklist and policies:
 
 0. `.agents/Directional/ORIENTATION.md`.
 1. `.agents/Directional/ROADMAP.md`.
 2. This handoff.
-3. `Architecture_M6_CP3_CB22A_Torus_A5_Isolation_Site_Formatter_Review_Decision.md` (RA-119, the CB22B specification and the TB23 frame); `Architecture_M6_CP3_CB22_Torus_A5_Isolation_Site_Compile_Stop_Review_Decision.md` (RA-118, the CB22 diagnostic); `LESSONS.md` §§5, 7.
+3. `Architecture_M6_CP3_CB22A_Torus_A5_Isolation_Site_Formatter_Review_Decision.md` (RA-119), `Architecture_M6_CP3_CB22B_Torus_A5_Site_Test_Messages_Code_Build_Record_20261021.md`, package `12341307713`; `LESSONS.md` §§5, 7.
 4. `.agents/Directional/Regression_Root_Cause_Tracker.md` and `TODO.md`.
 
 **Review tooling:** `.agents/Directional/tools/` holds read-only `review_check.py`, `selector_probe.py`, and `fixture_probe.py`; history-sensitive review gates require real committed history, not a synthesized snapshot.
