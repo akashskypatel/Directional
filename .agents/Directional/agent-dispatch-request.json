@@ -1,12 +1,14 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb24rev-docs-20261021-b",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb24rev-docs-apply-b",
-  "file_id": "1fWA8pzeN6wQP8hzYK6aXfflxxFFqjimC",
-  "patch_sha256": "53541ba29c2ebb84dfd5d4ec33092a4616f84e5577450088b73c003078d47155",
-  "base_sha": "40bf38126cc70713422cbdb2e38364e294fa1253",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): complete CB24 independent review and freeze TB25",
+  "request_id": "m6-cp3-tb25-seam-frame-harvest-20261021",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb25-seam-frame-harvest",
+  "executor_sha": "36c4b489ac3cd7e8039e3e99aae1c14543bbb08a",
+  "semantic_source_sha": "dae267a82fb884ff9eba4fd0122ad61750d0c924",
+  "turn_id": "M6-CP3-TB25-RP01-SEAM-FRAME-VALUES-HARVEST",
+  "harness_path": ".agents/Directional/tools/m6_cp3_tb25_seam_frame_values_harvest_harness.sh",
+  "harness_sha256": "bd64b409a8adca8c2b9d30e0c1a34670868f428b226fea868f4245d250332713",
+  "environment": {},
+  "artifact_prefix": "m6-cp3-tb25-seam-frame-values",
   "retention_days": 7
 }
