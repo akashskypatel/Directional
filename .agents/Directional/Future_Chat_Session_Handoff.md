@@ -34,71 +34,40 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-21, after CB22B Review (RA-120). CB22B compiled GREEN and is accepted statically: the A5 isolation site now reaches all nine A5-ISO rows (five through the pipeline failure string, four through the CB22B test messages), including G4-B002 `focused30:28`. CB22 + CB22A + CB22B are one statically accepted diagnostic unit, not yet executed. Next: TB23 runs the sixteen-row site harvest from the immutable package. |
-| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; refetch before mutation. Semantic source CB22B `c6e90916eb90bfd33bc8a38c5ece7def15dcc766`; HEAD `src`, `include` and `tests` are identical to it. Package for TB23: CB22B artifact `12341307713` (ZIP `b5f9a668…8ad5`, 28/28, GMP/GMPXX, `runtimeExecution=false`), expires 2026-10-28T11:21:37Z; accepted statically by RA-120; not yet executed. |
-| Last accepted semantic runtime | CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. R3 baseline **403/497** rejected. |
-| Latest candidate or rejected evidence | TB22: run [39549820087](https://github.com/akashskypatel/Directional/actions/runs/39549820087), result `12323004201` (ZIP `71569a41…8c87`), expires 2026-11-04T05:31:17Z; 11/11 executed, 4 PASS / 7 RED; report `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Report_20261021.md`, reviewed by RA-117 (`Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Review_Decision.md`). Census: TB21 result `12317287104`, **449/497**, 0 PASS→RED (RA-115); baseline `Architecture_M6_CP3_TB21_Selector_497_Red_Inventory.tsv`. **Not promoted.** |
-| Regression accounting and debt | **66/17/49**, debt **1**, selector 497 frozen; R3 403/497 rejected; candidate evidence TB21 449/497. Tracker: `Regression_Root_Cause_Tracker.md`. |
-| Active boundary | `RP-01` open. Owned CP2 families: **A5-ISO** (torus A5 isolation rejection, 9 rows incl. G4-B002 `focused30:28`; branch unknown until TB23 prints the site; RA-117.3, RA-120); **F** (torus witness fixture lacks `fieldTransportAtlas`, 2 rows; fixed in source, first executed in TB23); **M1** (10 rows plus `focused30:12`, `cp3entry:2`, DEFN-M1). CP3-entry: D2 for `cp3entry:1` (DEFN-T1). Restriction: TB23 is artifact-only; no rebuild, test, fixture, selector or source edit. `RP-02` UNREACHED; Gate C suspended. |
+| Currency | 2026-10-21, after TB23: 16/16 artifact-only rows executed, 6 PASS / 10 RED, all 5 controls GREEN; P1–P5 observed. Nine A5-ISO rows plus F `focused30:6` agree on `relation-collinear-seam;region=0;seam=60,61;certs=1;cert0=120/0->97/2:first-face`. F `selector:447` PASS. Next mandatory Review adjudicates the A4/A5 certificate mismatch and F-family outcome; no root-cause verdict or stable promotion. |
+| Working branch / source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; refetch before mutation. Immutable semantic CB22B source `c6e90916eb90bfd33bc8a38c5ece7def15dcc766`; compile package artifact `12341307713` (ZIP `b5f9a668…8ad5`, 28/28, GMP/GMPXX, compile `runtimeExecution=false`), expires 2026-10-28T11:21:37Z. TB23 executor `0948a81b09e5ff07d240d01f8968f225c285ac2c`; no source/fixture/selector edits in TB23. |
+| Latest runtime evidence | TB23 [run 39609365590](https://github.com/akashskypatel/Directional/actions/runs/39609365590), result artifact `12348649684` (ZIP SHA-256 `5ce737452a23637e74f0241f5f8a9a0ebe34b874b83ad1ff2d0d6f4456ee34d6`), harness SHA-256 `bf2cb7bc2799137e9a3556816380dc93388e9e05ee134cf320b068411f982cbe`; 20/20 result manifest, zero skips, immutable postflight. Report `Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Report_20261021.md`; tracker and CHANGELOG updated. Last accepted CP2 `491/491`, package `11391685901`; R3 baseline `403/497` rejected; last candidate census TB21 `449/497` (artifact `12317287104`). |
+| Regression accounting and debt | **66/17/49**, debt **1**, selector 497 frozen. TB23 does not alter stable accounting. Tracker `Regression_Root_Cause_Tracker.md`. |
+| Active boundary | `RP-01` open; **A5-ISO** ten measured A5 rejections at `relation-collinear-seam` / `first-face` (H-ISO-2 candidate, not verdict). **F** fixture atlas binding corrected: `selector:447` PASS, `focused30:6` advances to A5 RED. **M1** ten plus `focused30:12`, `cp3entry:2` deferred to DEFN-M1; D2 `cp3entry:1` deferred to DEFN-T1. `RP-02` UNREACHED; Gate C suspended. Review must precede repair. |
 
-## Mandatory next turn — `M6-CP3-TB23-RP01-TORUS-A5-SITE-HARVEST` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-TB23-RP01-TORUS-A5-SITE-HARVEST-REV` — EXACT NEXT
 
-- **Type / owner:** Test + Benchmark, artifact-only; implementation agent. Authority: RA-120.4 (`Architecture_M6_CP3_CB22B_Torus_A5_Site_Test_Messages_Review_Decision.md`); plan `Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Plan_20261021.md`.
-- **Objective:** execute the sixteen TB23 rows from the immutable CB22B package and record the A5 isolation site for every A5-ISO row.
-- **Read before work:**
-  - the TB23 plan (all of it) and RA-120;
-  - RA-117.3 (H-ISO-1/2/3) and RA-119.5;
-  - the TB22 harness `.agents/Directional/tools/m6_cp3_tb22_torus_witness_harvest_harness.sh` and the TB22 report;
-  - `LESSONS.md` §§1, 5, 7.
-- **In scope:**
-  1. **Harness.** `.agents/Directional/tools/m6_cp3_tb23_torus_a5_site_harvest_harness.sh`, derived from TB22's. Change only the package/source identities, the sixteen rows and the plan's added ledger columns (`fixture`, `path`, `a5_failures`, `site_raw`, parsed `label`, `region`, `seam`, `cert` or `certs` + `certN` clauses).
-  2. **Integrity.** Verify package `12341307713`: ZIP `b5f9a6688226375ea1c6241c2d9a464d9b9ede7679f9259acd03b3fbbb1c8ad5`, root `SHA256SUMS` `7c396be6…7f11`, source archive `c3779cc9…cd75`. Check before execution and unchanged after.
-  3. **Execute.** Use the durable `test_benchmark` dispatcher: one process per row, `GTEST_FAIL_IF_NO_TEST_SELECTED=1`, exactly one selected test per row, zero skips.
-  4. **Report.** `Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Report_20261021.md`, at most 40 lines: run, result artifact and ZIP SHA-256, harness SHA-256, integrity counts; one line per row (key, fixture, path, verdict, label, region, seam, cert or clauses); P1–P5 marked as observed.
-- **Out of scope:**
-  - rebuild, relink or benchmarks;
-  - test, fixture, source, selector or workflow edits;
-  - a broader census, a retry, any A5-ISO repair or root-cause verdict;
-  - DEFN-ISO, DEFN-M1 and DEFN-T1.
-- **Success evidence:**
-  - 16/16 selected and executed, with no skips;
-  - integrity holds before and after;
-  - every A5-ISO row's site is recorded or its absence is classified;
-  - the report is committed and STATUS is COMPLETE.
-
-  A RED A5-ISO or F row is an expected observation, not a failure of the turn.
-- **On success:** `M6-CP3-TB23-RP01-TORUS-A5-SITE-HARVEST-REV` (Review, mandatory). It adjudicates P1–P5 and routes the family to DEFN-ISO under H-ISO-1, 2 or 3.
-- **On failure/blocker:** STOP and return to Review on:
-  - an isolation code without `site=`, a `valid` clause, or a label that contradicts its `a5-side`/`a5-wedge` suffix;
-  - any control RED;
-  - a package or source mismatch, `selected≠1`, a skip, a timeout or a runtime-flag mismatch.
-
-  There is no repair or retry inside the turn.
+- **Type / owner:** mandatory Review of artifact-only TB23; same agent is permitted by Turn_Cadence.md, independent evidence required. Primary authority: `Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Plan_20261021.md`, RA-120.4, RA-117.3 (H-ISO-1/2/3), and the immutable TB23 artifact.
+- **Objective:** independently re-download and verify TB23 result `12348649684`; re-derive 16/16 selection, manifest/postflight, all row sites, and observed P1–P5; adjudicate whether the recorded `cert0=120/0->97/2:first-face` identifies H-ISO-2 or another contract problem. Verify F `selector:447` PASS and `focused30:6` A5 RED; do not infer an accepted production fix.
+- **Decision:** write a bounded Review record/definition-routing plan for DEFN-ISO or record an explicit review stop if required evidence is absent; retain the frozen stable regression ledger, selector and gate authority. Review `LESSONS.md` and required policies; apply mandatory Review document consolidation, ORIENTATION update and documentation drift audit.
+- **Prohibited:** runtime tests or benchmarks, new compile, source/test/fixture/selector edits, ad hoc A5 repair, DEFN-M1/DEFN-T1 work or CP3 acceptance. Only the Review may authorize its successor.
+- **Evidence:** [TB23 run 39609365590](https://github.com/akashskypatel/Directional/actions/runs/39609365590), artifact `12348649684`, ZIP `5ce73745…4456ee34d6`, report `Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Report_20261021.md` (32 lines), full result `ledger.tsv` and 16 raw logs.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| done | `M6-CP3-CB22A-RP01-TORUS-A5-ISOLATION-SITE-FORMATTER` | Compile GREEN (package `12333216637`), accepted statically by RA-119. |
-| done | `M6-CP3-CB22B-RP01-TORUS-A5-SITE-TEST-MESSAGES` | First attempt yielded with no source change (CB22B-YIELD-REV); re-entered; compile GREEN (package `12341307713`). |
-| done | `M6-CP3-CB22B-RP01-TORUS-A5-SITE-TEST-MESSAGES-REV` | RA-120: diff and package accepted statically; site reaches all nine A5-ISO rows; TB23 plan issued. |
-| 1 — next | `M6-CP3-TB23-RP01-TORUS-A5-SITE-HARVEST` | Test + Benchmark, artifact-only, per `Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Plan_20261021.md`: sixteen rows; records the site of every A5-ISO row. |
-| 2 — mandatory | `M6-CP3-TB23-RP01-TORUS-A5-SITE-HARVEST-REV` | Review: adjudicates P1–P5; routes A5-ISO to DEFN-ISO under H-ISO-1/2/3; classifies the F rows. |
-| planned, not authorized | DEFN-ISO (A4 seam certificate ↔ A5 binding contract; the `8be01326d` reject) → corrective CB/TB → DEFN-M1 (RA-105.3; also `focused30:12`, `cp3entry:2`) → corrective CB/TB → DEFN-T1 (D2 attainability) → fixture debt → census → RP-01 Review | Only as each Review assigns them. |
+| done | `M6-CP3-CB22B-RP01-TORUS-A5-SITE-TEST-MESSAGES-REV` | RA-120 statically accepted CB22B package and issued TB23. |
+| done | `M6-CP3-TB23-RP01-TORUS-A5-SITE-HARVEST` | Artifact-only 16/16, 6 PASS/10 RED, P1–P5 observed; no source/build edit, report committed. |
+| **1 — exact next** | `M6-CP3-TB23-RP01-TORUS-A5-SITE-HARVEST-REV` | Mandatory independent Review of `relation-collinear-seam` / `first-face`, H-ISO-1/2/3, and F outcomes. |
+| planned, not authorized | DEFN-ISO → corrective CB/TB → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review | Only after each Review-authorized boundary. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **test-benchmark** — TB23: artifact-only sixteen-row torus A5 site harvest from CB22B package `12341307713` (RA-120.4; plan `Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Plan_20261021.md`).
+`load_next`: **review** — TB23-REV of the immutable sixteen-row torus A5 site harvest (result `12348649684`, RA-120.4 and H-ISO-1/2/3). Do not start DEFN-ISO before Review.
 
-Minimum successor context after the mandatory start checklist and policies:
+Minimum next-turn context after mandatory checklist and policies:
 
-0. `.agents/Directional/ORIENTATION.md`.
-1. `.agents/Directional/ROADMAP.md`.
-2. This handoff.
-3. `Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Plan_20261021.md` (the TB23 authority); `Architecture_M6_CP3_CB22B_Torus_A5_Site_Test_Messages_Review_Decision.md` (RA-120); `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Review_Decision.md` (RA-117.3, H-ISO-1/2/3); the TB22 harness and report; `LESSONS.md` §§1, 5, 7.
-4. `.agents/Directional/Regression_Root_Cause_Tracker.md` and `TODO.md`.
-
-**Review tooling:** `.agents/Directional/tools/` holds read-only `review_check.py`, `selector_probe.py`, and `fixture_probe.py`; history-sensitive review gates require real committed history, not a synthesized snapshot.
+0. `.agents/Directional/ORIENTATION.md` and `.agents/Directional/ROADMAP.md`.
+1. This handoff, `TODO.md`, `Regression_Root_Cause_Tracker.md`, and the artifact-only TB23 report.
+2. `Architecture_M6_CP3_TB23_Torus_A5_Site_Harvest_Plan_20261021.md`; `Architecture_M6_CP3_CB22B_Torus_A5_Site_Test_Messages_Review_Decision.md` (RA-120); `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Review_Decision.md` (RA-117.3); `Architecture_M6_CP3_CB22A_Torus_A5_Isolation_Site_Formatter_Review_Decision.md` (RA-119.5).
+3. TB23 raw artifact `12348649684` (16 logs, `ledger.tsv`, `execution-boundary.txt`, `immutability.txt`) and `LESSONS.md` §§1, 5, 6, 7.
+4. Review tooling `.agents/Directional/tools/` includes read-only `review_check.py`, `selector_probe.py`, `fixture_probe.py`; history-sensitive Review gates require real committed history, not a synthesized snapshot.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
