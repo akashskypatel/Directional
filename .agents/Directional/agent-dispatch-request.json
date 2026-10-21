@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb21-torus-witness-scope-compile-20261021-01",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb21-torus-witness-scope-compile",
-  "source_sha": "8453e19e6ac7d976a9cac45978ad31104a52f034",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb21-torus-witness-scope"
+  "request_id": "m6-cp3-cb21-torus-witness-scope-closeout-20261021-01",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb21-torus-witness-scope-closeout",
+  "file_id": "1DCAK47oCJTidjQGhRTPcJSVeMeZdEXCx",
+  "patch_sha256": "e3c6944438708b3297f93e17056fcc9f0f7f05b7331d0eaa3c577b7433eb4a22",
+  "base_sha": "e399ba9146b37d1b49299fb262afc7c2f07f8925",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs: close CB21 evidence and hand off independent Review",
+  "retention_days": 14
 }
