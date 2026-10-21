@@ -1,25 +1,20 @@
-## CURRENT — TB20 reviewed (RA-114): corrected pin confirmed; selector-497 census next (2026-10-21)
+## CURRENT — TB21 reviewed (RA-115): census regression-free; torus rows are a fixture-scope defect; CB21 next (2026-10-21)
 
-- [x] `M6-CP3-TB20-RP01-GAUGE-PIN-DOMAIN`: harness `m6_cp3_tb20_gauge_pin_domain_harness.sh` (`18a1325d2`); run [39527537505](https://github.com/akashskypatel/Directional/actions/runs/39527537505), result `12314700010`. The agent left the turn `IN_PROGRESS` after dispatch, without a report.
-- [x] Review (RA-114, TB20-REV):
-  - harvest verified: 26/26 executed, 19 RED, 30/30 hashes, postflight immutable;
-  - P1–P4 observed (suite 3/3, controls 3/3, no pin or factory rejection in any log); the R-route falsifier is not observed;
-  - M2 after the pin: `cp3entry:6` PASS; six torus rows at the fixture odd-gauge filter TQ:1697 (added in `88aa8eae0`, after CP2); `cp3entry:2` and `focused30:12` in the hard-rail certificate/A5 area;
-  - M1 10/10 unchanged;
-  - record: `Architecture_M6_CP3_TB20_Gauge_Pin_Domain_Review_Decision.md`.
-- [ ] **EXACT NEXT:** `M6-CP3-TB21-RP01-SELECTOR-497-CENSUS` — Test + Benchmark, artifact-only, RA-114.5:
-  - unchanged census harness `m6_cp3_entry_497_artifact_only_harness.sh` (`947a95ee…79dd`) with the five CB20A values from RA-114.5; package expires 2026-10-28T00:23:30Z;
-  - inventory `Architecture_M6_CP3_TB21_Selector_497_Red_Inventory.tsv` and report `Architecture_M6_CP3_TB21_Selector_497_Census_Report_20261021.md` (≤ 30 lines, TB18→TB21 PASS→RED and RED→PASS lists, no interpretation);
-  - STOP on a harness orchestration failure, a digest mismatch, or any need to change the harness;
-  - finish in the same turn: harvest, commit, STATUS COMPLETE. Do not yield after dispatch.
-- [ ] `M6-CP3-TB21-RP01-SELECTOR-497-CENSUS-REV` — mandatory Review: regression verdict (0 PASS→RED predicted; `cp3entry:6` RED→PASS; ≥ 449 PASS) and the next unit.
-- [ ] Planned, not authorized: DEFN-T1 (source-only: the torus witness odd-gauge filter, CP2 `5ce3132ec` vs `88aa8eae0` vs HEAD; H-T1 test proxy vs H-T2 lost producer contract) → DEFN on the M1 binding owner (RA-105.3), also classifying `cp3entry:2` and `focused30:12` → corrective CB/TB → fixture debt (242 per `Architecture_M6_CP3_CB19_Selector242_Atlas_Authority_Test_Plan_20261020.md`, then 174 → 250 → adjacent-sheet → 191 → 442, plus I/R sites TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518) → census → RP-01 Review.
-- **Turn sequence:** TB20 (harvested) → TB20-REV (RA-114) → **TB21** → TB21-REV → DEFN-T1 → DEFN-M1 → corrective CB/TB → fixture debt → census → RP-01 Review.
-- Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, TB18 candidate 448/497, selector 497; `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
+- [ ] **EXACT NEXT:** `M6-CP3-CB21-RP01-TORUS-WITNESS-SCOPE` — Code + Build, test-only (TQ), RA-115.5:
+  - evaluate every torus witness predicate on every candidate (gauge presence, delta, reciprocal tracer pair, holonomy match), with no early `continue` on the delta;
+  - select the first D2-qualifying candidate (`delta ∈ {1,3}`), else the first that passes every non-gauge predicate; throw only if none passes them;
+  - add `selectionReceipt` (seven counts, a `c<i>` entry per candidate, `selected=`) as the last member of `ProducedTorusWitnessFixture`, and append it to the throw message;
+  - `cp3entry:1` keeps its TQ:2802 D2 assertion and streams the receipt; no other test changes; no `src`/`include`;
+  - eight-target GMP/GMPXX compile, `runtimeExecution=false`; record `Architecture_M6_CP3_CB21_Torus_Witness_Scope_Code_Build_Record_20261021.md`;
+  - STOP on a compile failure or any need to touch `src`, `include` or another test.
+- [ ] `M6-CP3-CB21-RP01-TORUS-WITNESS-SCOPE-REV` — mandatory Review: static diff check; TB22 rows (seven torus consumers, `cp3entry:6`, three controls) and predictions (five CP2 rows past the fixture; `cp3entry:1` RED at its D2 assertion with the receipt; falsifier `reciprocalTracerPairs=0` or `holonomyMatchedPairs=0`).
+- [ ] Planned, not authorized: TB22 → TB22-REV → DEFN-T1 (D2 attainability on the torus under RA-111.3, from the TB22 receipt) → DEFN-M1 (M1 binding owner, RA-105.3; also `cp3entry:2`, `focused30:12`) → corrective CB/TB → fixture debt (242 per `Architecture_M6_CP3_CB19_Selector242_Atlas_Authority_Test_Plan_20261020.md`, then 174 → 250 → adjacent-sheet → 191 → 442, plus I/R sites TQ:3017, TQ:3257, TQ:8832, RE:713, P10:7518) → census → RP-01 Review.
+- **Turn sequence:** TB21 (harvested) → TB21-REV (RA-115) → **CB21** → CB21-REV → TB22 → TB22-REV → DEFN-T1 → DEFN-M1 → corrective CB/TB → fixture debt → census → RP-01 Review.
+- Frozen: 66/17/49, debt 1, CP2 491/491, R3 403/497 rejected, selector 497; candidate evidence TB21 449/497 (was TB18 448/497); `RP-01` open, `RP-02` UNREACHED, Gate C suspended.
 
 ---
 
-## HISTORY — Gauge-pin domain: DEFN-P1 frozen (RA-111); CB20/CB20A compiled and accepted (RA-112, RA-113) (2026-10-20/21)
+## HISTORY — Gauge-pin domain: DEFN-P1 frozen (RA-111); CB20/CB20A accepted (RA-112, RA-113); TB20 and TB21 confirmed at runtime (RA-114, RA-115) (2026-10-20/21)
 
 - [x] `M6-CP3-DEFN-P1-GAUGE-PIN-DOMAIN` — source-only producer-domain definition in `.agents/Directional/Architecture_M6_CP3_DEFN_P1_Gauge_Pin_Domain_Definition_Record_20261020.md`. Exact relation-pair input is not presently published to `make`. Torus {0,3} is same-region. Cut-set inclusion is unproved; hard-carrier producer-domain reachability is a mandatory Review stop check. No implementation/compile/runtime.
 - [x] Review (RA-111, DEFN-P1-REV):
@@ -39,6 +34,20 @@
   - the CB20A diff matches RA-112.5; CB20 and CB20A are accepted as one compiled unit (static);
   - TB20 rows (26) and predictions P1–P4 set;
   - record: `Architecture_M6_CP3_CB20A_Gauge_Pin_Domain_Review_Decision.md`.
+- [x] `M6-CP3-TB20-RP01-GAUGE-PIN-DOMAIN`: harness `m6_cp3_tb20_gauge_pin_domain_harness.sh` (`18a1325d2`); run [39527537505](https://github.com/akashskypatel/Directional/actions/runs/39527537505), result `12314700010`. The agent left the turn `IN_PROGRESS` after dispatch, without a report.
+- [x] Review (RA-114, TB20-REV):
+  - harvest verified: 26/26 executed, 19 RED, 30/30 hashes, postflight immutable;
+  - P1–P4 observed (suite 3/3, controls 3/3, no pin or factory rejection in any log); the R-route falsifier is not observed;
+  - M2 after the pin: `cp3entry:6` PASS; six torus rows at the fixture odd-gauge filter TQ:1697 (added in `88aa8eae0`, after CP2); `cp3entry:2` and `focused30:12` in the hard-rail certificate/A5 area;
+  - M1 10/10 unchanged;
+  - record: `Architecture_M6_CP3_TB20_Gauge_Pin_Domain_Review_Decision.md`.
+- [x] `M6-CP3-TB21-RP01-SELECTOR-497-CENSUS`: unchanged census harness (`947a95ee…79dd`) on CB20A; run [39533914719](https://github.com/akashskypatel/Directional/actions/runs/39533914719), result `12317287104`. The agent left the turn `IN_PROGRESS` after dispatch, without the inventory or report.
+- [x] Review (RA-115, TB21-REV):
+  - harvest verified: 497/497 executed, 449 PASS / 48 RED, 1019/1019 hashes, postflight immutable; census report absorbed into RA-115.1;
+  - 0 PASS→RED, `cp3entry:6` RED→PASS, no `gauge-pin` site in any log: CB20/CB20A regression-free; TB21 replaces TB18 as candidate evidence;
+  - inventory `Architecture_M6_CP3_TB21_Selector_497_Red_Inventory.tsv` (48 rows) is the new census baseline;
+  - RA-114.3 amended: TQ:1697 is D2 / RA-33.2, placed by `88aa8eae0` in a fixture shared with six CP2-GREEN rows; H-T2 unsupported; reciprocal/holonomy predicates unmeasured;
+  - record: `Architecture_M6_CP3_TB21_Selector_497_Census_Review_Decision.md`.
 
 ---
 

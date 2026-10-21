@@ -1,3 +1,10 @@
+## 2026-10-21 — TB21 Review (RA-115): census regression-free; torus rows reclassified; CB21 next
+
+- TB21 (run `39533914719`, result `12317287104`) ran the unchanged census harness on the CB20A package: 497/497 executed, 449 PASS / 48 RED, 0 PASS→RED, `cp3entry:6` RED→PASS, no gauge-pin site in any log. The agent left the turn without the inventory or report, so Review verified the harvest and wrote the inventory, now the census baseline.
+- CB20/CB20A is regression-free on the 497 selector; TB21 449/497 replaces TB18 448/497 as candidate evidence.
+- RA-115.3 amends RA-114.3: the torus filter at TQ:1697 is the frozen D2 / RA-33.2 odd-gauge selection, which only `cp3entry:1` needs. `88aa8eae0` placed it in a fixture shared with six CP2-GREEN rows. H-T2 (lost producer contract) has no support.
+- Next: CB21, a test-only change that confines D2 to `cp3entry:1` and measures every witness predicate; then CB21-REV, TB22, DEFN-T1 and the M1 DEFN. Accounting is unchanged.
+
 ## 2026-10-21 — TB20 Review (RA-114): corrected pin confirmed at runtime; selector-497 census next
 
 - TB20 (run `39527537505`, result `12314700010`) ran 26 rows on the CB20A package: 26/26 executed, 19 RED. The agent left the turn without a report, so Review verified the harvest.
