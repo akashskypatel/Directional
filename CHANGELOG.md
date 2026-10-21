@@ -1,3 +1,8 @@
+## 2026-10-21 — GUI: SurfaceCells diagnostics show regions, sheets and seams
+
+- GUI section 6 is now "SurfaceCells diagnostics". One run shows every product it retained, even when a later stage rejects: per-face topology region, isolation sheet and source component (face colors), isolation seams and region boundaries (lines), plus the field-aligned curve network. A run that stops before the network no longer reports an error if the regions were published.
+- New display-only adapter `directional/visualization/SourceRegionDisplay.h`, with tests that check labels against the published regions and that every seam separates two isolation sheets. RP-01 sources are unchanged.
+
 ## 2026-10-21 — GUI: long messages wrap instead of clipping
 
 - The status/error line, field labels and the file-picker error now wrap inside their panels. Wrapped text grows the panel's content, so its scroll range reaches the last line.

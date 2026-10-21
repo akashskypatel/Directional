@@ -44,16 +44,14 @@ QuadMeshData remesh_with_field(const MeshData &mesh, const FieldData &field,
   return {quad.vertices, quad.faces};
 }
 
-FieldNetworkData trace_field_network(const MeshData &mesh,
-                                     const FieldData &field,
-                                     const RemeshOptions &options,
-                                     ProgressCallback progress) {
+SurfaceCellDiagnosticsData run_surface_cell_diagnostics(
+    const MeshData &mesh, const FieldData &field, const RemeshOptions &options,
+    ProgressCallback progress) {
   validate_field(field, mesh.faces.rows());
   validate_options({}, options);
   if (field.raw.rows() != mesh.faces.rows() || field.raw.cols() != 12) {
     throw std::runtime_error(
-        "The field-aligned network needs one 12-value raw cross per mesh "
-        "face.");
+        "SurfaceCells diagnostics need one 12-value raw cross per mesh face.");
   }
 
   pipeline::RemeshOptions pipelineOptions;
@@ -71,22 +69,25 @@ FieldNetworkData trace_field_network(const MeshData &mesh,
 
   const pipeline::RemeshResult remesh = pipeline::remesh_from_raw_cross_field(
       mesh.vertices, mesh.faces, field.raw, pipelineOptions);
-  const auto &network =
-      remesh.surfaceCellContext.productSnapshots.fieldAlignedCurveNetwork;
-  if (!network.has_value()) {
-    throw std::runtime_error(
-        "SurfaceCells stopped before publishing a field-aligned network (" +
-        (remesh.diagnostics.terminalFailureStage.empty()
-             ? std::string("no stage reported")
-             : remesh.diagnostics.terminalFailureStage) +
-        ").");
+  const auto &snapshots = remesh.surfaceCellContext.productSnapshots;
+  SurfaceCellDiagnosticsData result;
+  if (snapshots.sourceTopologyRegions.has_value()) {
+    result.regions = visualization::source_region_display(
+        mesh.vertices, mesh.faces, *snapshots.sourceTopologyRegions);
   }
-
-  FieldNetworkData result;
-  result.polylines =
-      visualization::field_aligned_network_polylines(mesh.vertices, *network);
+  if (snapshots.fieldAlignedCurveNetwork.has_value()) {
+    result.network = visualization::field_aligned_network_polylines(
+        mesh.vertices, *snapshots.fieldAlignedCurveNetwork);
+  }
   result.pipelineProduced = remesh.is_produced();
   result.pipelineStage = remesh.diagnostics.terminalFailureStage;
+  if (!result.regions.has_value() && !result.network.has_value()) {
+    throw std::runtime_error(
+        "SurfaceCells stopped before publishing any diagnostic product (" +
+        (result.pipelineStage.empty() ? std::string("no stage reported")
+                                      : result.pipelineStage) +
+        ").");
+  }
   return result;
 }
 

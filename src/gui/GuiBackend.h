@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <filesystem>
 #include <functional>
+#include <optional>
 #include <string>
 #include <string_view>
 
@@ -10,6 +11,7 @@
 
 #include <directional/fields/CompareCrossFields.h>
 #include <directional/visualization/FieldAlignedNetworkPolylines.h>
+#include <directional/visualization/SourceRegionDisplay.h>
 
 namespace directional::gui {
 
@@ -121,8 +123,11 @@ struct AutoRemeshResult {
   QuadMeshData quadMesh;
 };
 
-struct FieldNetworkData {
-  visualization::FieldAlignedNetworkPolylines polylines;
+/// Display data for the SurfaceCells products retained by one run. A product
+/// is absent when the run stopped before publishing it.
+struct SurfaceCellDiagnosticsData {
+  std::optional<visualization::SourceRegionDisplay> regions;
+  std::optional<visualization::FieldAlignedNetworkPolylines> network;
   bool pipelineProduced = false;
   std::string pipelineStage;
 };
@@ -161,13 +166,11 @@ AutoRemeshResult auto_remesh(const MeshData &mesh,
 QuadMeshData remesh_with_field(const MeshData &mesh, const FieldData &field,
                                const RemeshOptions &options,
                                ProgressCallback progress = {});
-/// Runs the SurfaceCells backend and returns display geometry for its A2a
-/// field-aligned curve network, which is published even when a later stage
-/// rejects the remesh.
-FieldNetworkData trace_field_network(const MeshData &mesh,
-                                     const FieldData &field,
-                                     const RemeshOptions &options,
-                                     ProgressCallback progress = {});
+/// Runs the SurfaceCells backend and returns display data for the products
+/// it retains, which are published even when a later stage rejects the remesh.
+SurfaceCellDiagnosticsData run_surface_cell_diagnostics(
+    const MeshData &mesh, const FieldData &field, const RemeshOptions &options,
+    ProgressCallback progress = {});
 void save_mesh(const std::filesystem::path &path, const MeshData &mesh);
 void save_quad_mesh(const std::filesystem::path &path,
                     const QuadMeshData &mesh);

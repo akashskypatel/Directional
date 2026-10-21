@@ -539,9 +539,10 @@ field-extraction and quad-remeshing pipeline.
 - Automatically calculate a field and quad-remesh the loaded mesh.
 - Load a RawField, CrossField, or RoSy field and quad-remesh with it.
 - Visualize the input triangle mesh, four cross-field branches, and output quads.
-- Trace and display the SurfaceCells field-aligned curve network (section 6 of the
-  panel): traces from each singularity, mandatory boundary and feature edges, and
-  singularities colored by index.
+- Run SurfaceCells diagnostics (section 6 of the panel) and display what the
+  backend publishes, even when a later stage rejects: topology regions, isolation
+  sheets and isolation seams, and the field-aligned curve network (traces from each
+  singularity, mandatory boundary and feature edges, singularities colored by index).
 - Save fields through the existing field-conversion implementation.
 - Save pure quad meshes as OBJ or OFF.
 - Run field extraction and remeshing asynchronously so the viewer remains responsive.
@@ -650,19 +651,28 @@ build/gui/install/bin/directional-ui path/to/mesh.obj
 Without installing, the executable is `build/gui/directional-ui` for Ninja builds and
 `build\gui\Release\directional-ui.exe` for Visual Studio builds.
 
-### View the field-aligned curve network
+### View SurfaceCells diagnostics
 
 1. Load a mesh in section 1.
 2. Calculate a field in section 3, or load a RawField in section 4.
-3. In section 6, choose the field source and select **Trace field-aligned network**.
+3. In section 6, choose the field source and select **Run SurfaceCells diagnostics**.
 
-The panel reports the number of traces, segments, singularities and mandatory edges.
-The structures appear as `A2a field-aligned traces`, `A2a mandatory edges` and
-`A2a singularities` in Polyscope's structure list. The network is shown even when a
-later SurfaceCells stage rejects the remesh; the panel then names that stage. A field
-without singularities has no traces, so only mandatory edges appear. For example,
-`benchmarks/fixtures/milestone-g/sphere_prescribed.obj` with its `.rawfield` shows 24
-traces between 8 singularities.
+The panel reports what the run retained and, when it stopped early, the stage that
+stopped it. Each published product appears as its own layer:
+
+| Layer | Structure in Polyscope | Shows |
+|---|---|---|
+| `A0 isolation sheet` (shown), `A0 topology region`, `A0 source component` | Face quantities on `Input mesh` | Per-face labels from the source topology regions |
+| `A0 isolation seams` (magenta) | Curve network | Edges where the field changes isolation sheet |
+| `A0 region boundaries` (black) | Curve network | Source boundary and cuts between regions |
+| `A2a field-aligned traces` | Curve network | Traces, colored by trace or by how each ends |
+| `A2a mandatory edges` | Curve network | Boundary and hard-feature edges the network must keep |
+| `A2a singularities` | Point cloud | Singular vertices, colored by index |
+
+A layer is absent when the run stopped before publishing it. A field without
+singularities has no traces. With the committed fixtures in
+`benchmarks/fixtures/milestone-g/`, the torus shows 4 regions, 3 isolation sheets and
+12 seam edges, and `sphere_prescribed` shows 24 traces between 8 singularities.
 
 The **Browse...** buttons use the operating system's native file dialog:
 
