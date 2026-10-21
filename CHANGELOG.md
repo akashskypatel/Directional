@@ -1,3 +1,8 @@
+## 2026-10-21 — Interim: the A2a field-aligned curve network is visible in the GUI
+
+- `directional-ui` has a new section, "6. Field-aligned curve network". It runs the SurfaceCells backend on the calculated or uploaded raw field and overlays the network's traces, mandatory edges and singularities on the input mesh, even when a later SurfaceCells stage rejects.
+- A polyscope-free adapter (`directional/visualization/FieldAlignedNetworkPolylines.h`) converts the network; two tests check it against the input field and an independent reconstruction. Display only: no pipeline stage reads it, and the RP-01 sources are unchanged. The canonical sequence resumes at TB25. Record: `Architecture_M6_TOOL_VIS_Field_Network_GUI_Layer_Record_20261021.md`.
+
 ## 2026-10-21 — RA-125 accepts CB24 diagnostic-only compile and freezes TB25
 
 - Independently reviewed `dae267a82fb884ff9eba4fd0122ad61750d0c924` against its parent: RP +28 rejection-only frame/gauge/turn labels and TQ +1/−6 A5 message formatting; maximum new RP line width 91. No admission, return, error, or assertion change. Source snapshot `39671021648` verified (5,743 hashes).
