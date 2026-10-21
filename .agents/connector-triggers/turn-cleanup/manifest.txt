@@ -1,0 +1,2 @@
+# Temporary state created for CB21 source snapshot
+.agents/connector-triggers/source-snapshot/20261021-cb21-torus-witness-scope.txt
