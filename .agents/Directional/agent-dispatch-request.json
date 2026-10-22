@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb28a-eight-target-compile-20261022-r2",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb28a-compile",
-  "source_sha": "4473e41e94a35f1bf189fa046e86bac92c7391fb",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb28a-compile"
+  "request_id": "m6-cp3-cb28a-doc-closeout-20261022-r1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb28a-doc-closeout",
+  "file_id": "1PGMtSmzGW7optM5rjB1BHlcSJM0W5vkE",
+  "patch_sha256": "26c6a2e07c91ab1978c7fc1c8a9d5ecc1e715e7f9f95acb3481880e318c12ad5",
+  "base_sha": "4473e41e94a35f1bf189fa046e86bac92c7391fb",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close CB28A compile-only diagnostics",
+  "retention_days": 7
 }
