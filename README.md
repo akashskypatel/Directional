@@ -539,11 +539,14 @@ field-extraction and quad-remeshing pipeline.
 - Automatically calculate a field and quad-remesh the loaded mesh.
 - Load a RawField, CrossField, or RoSy field and quad-remesh with it.
 - Visualize the input triangle mesh, four cross-field branches, and output quads.
-- Run SurfaceCells diagnostics (section 6 of the panel) and display what the
+- Trace the SurfaceCells field-aligned curve network on its own (section 6):
+  traces from each singularity, mandatory boundary and feature edges, and
+  singularities colored by index.
+- Run SurfaceCells diagnostics (section 7 of the panel) and display what the
   backend publishes, even when a later stage rejects: topology regions, isolation
   sheets and isolation seams, and the field-aligned curve network (traces from each
   singularity, mandatory boundary and feature edges, singularities colored by index).
-- Trace and display streamlines of the cross field (section 7): evenly spaced seeds,
+- Trace and display streamlines of the cross field (section 8): evenly spaced seeds,
   adjustable line length and thickness, colored per line or by direction family.
 - Save fields through the existing field-conversion implementation.
 - Save pure quad meshes as OBJ or OFF.
@@ -657,7 +660,9 @@ Without installing, the executable is `build/gui/directional-ui` for Ninja build
 
 1. Load a mesh in section 1.
 2. Calculate a field in section 3, or load a RawField in section 4.
-3. In section 6, choose the field source and select **Run SurfaceCells diagnostics**.
+3. In section 7, choose the field source and select **Run SurfaceCells diagnostics**.
+   To see only the field-aligned network, use **Trace field-aligned network** in
+   section 6 instead.
 
 The panel reports what the run retained and, when it stopped early, the stage that
 stopped it. Each published product appears as its own layer:
@@ -681,7 +686,7 @@ singularities has no traces. With the committed fixtures in
 ### Trace field streamlines
 
 1. Load a mesh, then calculate a field (section 3) or load a RawField (section 4).
-2. In section 7, choose the field source and select **Trace streamlines**.
+2. In section 8, choose the field source and select **Trace streamlines**.
 
 Lengths are in average edge lengths. **Seed spacing** sets the minimum distance between
 seeds (0 seeds every face); **Steps** times **Step length** bounds the length of each

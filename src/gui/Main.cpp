@@ -101,6 +101,7 @@ struct TaskResult {
   bool hasComparison = false;
   bool hasSurfaceCellDiagnostics = false;
   bool hasStreamlines = false;
+  bool hasFieldNetwork = false;
   directional::gui::MeshData mesh;
   directional::gui::FieldData field;
   std::optional<directional::gui::FieldOptions> fieldOptions;
@@ -108,6 +109,8 @@ struct TaskResult {
   directional::gui::FieldComparisonData comparison;
   directional::gui::SurfaceCellDiagnosticsData surfaceCellDiagnostics;
   directional::visualization::FieldStreamlines streamlines;
+  directional::visualization::FieldAlignedNetworkPolylines fieldNetwork;
+  std::string fieldNetworkStage;
   std::optional<ComparisonReportContext> comparisonContext;
   int simplificationSourceFaceCount = 0;
   int simplificationRootCount = 0;
@@ -287,6 +290,9 @@ private:
   std::optional<directional::gui::SurfaceCellDiagnosticsData>
       surfaceCellDiagnostics_;
   std::optional<directional::visualization::FieldStreamlines> streamlines_;
+  std::optional<directional::visualization::FieldAlignedNetworkPolylines>
+      fieldNetwork_;
+  std::string fieldNetworkStage_;
 
   std::array<char, 1024> meshPath_{};
   std::array<char, 1024> fieldInputPath_{};
@@ -304,6 +310,7 @@ private:
   int diagnosticsFieldSource_ = 0;
   bool diagnosticsStopAfterTracing_ = true;
   int streamlineFieldSource_ = 0;
+  int fieldNetworkSource_ = 0;
   float streamlineSeedSpacing_ = 2.0F;
   int streamlineSteps_ = 120;
   float streamlineStepLength_ = 0.5F;
@@ -370,6 +377,7 @@ private:
     quadMesh_.reset();
     clear_surface_cell_diagnostics();
     clear_streamlines();
+    clear_field_network();
     calculatedFieldLabel_.clear();
     uploadedFieldLabel_.clear();
     calculatedFieldGlyph_ = {};
@@ -413,6 +421,23 @@ private:
         inputMesh->removeQuantity(name, false);
       }
     }
+  }
+
+  void remove_field_network_layers() {
+    for (const char *name : {kNetworkTracesName, kNetworkMandatoryName}) {
+      if (polyscope::hasCurveNetwork(name)) {
+        polyscope::removeCurveNetwork(name);
+      }
+    }
+    if (polyscope::hasPointCloud(kNetworkSingularitiesName)) {
+      polyscope::removePointCloud(kNetworkSingularitiesName);
+    }
+  }
+
+  void clear_field_network() {
+    fieldNetwork_.reset();
+    fieldNetworkStage_.clear();
+    remove_field_network_layers();
   }
 
   void clear_streamlines() {
@@ -1161,6 +1186,61 @@ private:
     set_status("Running SurfaceCells diagnostics...");
   }
 
+  void launch_trace_field_network() {
+    require_mesh();
+    const std::optional<directional::gui::FieldData> &source =
+        fieldNetworkSource_ == 0 ? calculatedField_ : uploadedField_;
+    if (!source.has_value()) {
+      throw std::runtime_error(
+          fieldNetworkSource_ == 0
+              ? "Calculate a field before tracing its network."
+              : "Load an uploaded field before tracing its network.");
+    }
+
+    const directional::gui::MeshData mesh = *mesh_;
+    const directional::gui::FieldData field = *source;
+    const directional::gui::RemeshOptions options = remeshOptions_;
+    enable_verbose_session_log_if_needed(options.verbose);
+    const auto progress = progress_;
+    progress_->update(0, 100, "Starting field-aligned network trace");
+
+    task_ = std::async(std::launch::async, [mesh, field, options, progress]() {
+      TaskResult result;
+      try {
+        // The network (A2a) is built during the tracing stage, so the run can
+        // stop right after it.
+        directional::gui::SurfaceCellDiagnosticsData run =
+            directional::gui::run_surface_cell_diagnostics(
+                mesh, field, options, true,
+                [progress](const std::size_t current, const std::size_t total,
+                           const std::string_view task) {
+                  progress->update(current, total, task);
+                });
+        if (!run.network.has_value()) {
+          throw std::runtime_error(
+              "SurfaceCells stopped before publishing a field-aligned network (" +
+              run.pipelineStage + "). Run SurfaceCells diagnostics to see where.");
+        }
+        result.fieldNetwork = std::move(*run.network);
+        result.fieldNetworkStage =
+            run.stoppedOnRequest ? std::string() : run.pipelineStage;
+        result.hasFieldNetwork = true;
+        const auto &network = result.fieldNetwork;
+        result.message =
+            "Traced " + std::to_string(network.traceCount) +
+            " field-aligned traces (" + std::to_string(network.segmentCount) +
+            " face segments), " + std::to_string(network.singularityPoints.rows()) +
+            " singularities and " + std::to_string(network.mandatoryEdges.rows()) +
+            " mandatory edges.";
+      } catch (const std::exception &error) {
+        result.error = error.what();
+      }
+      progress->update(100, 100, "Field-aligned network trace finished");
+      return result;
+    });
+    set_status("Tracing the SurfaceCells field-aligned network...");
+  }
+
   void launch_trace_streamlines() {
     require_mesh();
     const std::optional<directional::gui::FieldData> &source =
@@ -1231,6 +1311,13 @@ private:
     if (result.hasQuadMesh) {
       quadMesh_ = std::move(result.quadMesh);
       visualize_quad_mesh();
+    }
+    if (result.hasFieldNetwork) {
+      fieldNetwork_ = std::move(result.fieldNetwork);
+      fieldNetworkStage_ = std::move(result.fieldNetworkStage);
+      remove_field_network_layers();
+      visualize_field_network(*fieldNetwork_);
+      sync_overlay_transforms();
     }
     if (result.hasStreamlines) {
       streamlines_ = std::move(result.streamlines);
@@ -1826,7 +1913,42 @@ void save_quad_mesh() {
           "sidecars for comparing parameter sweeps between runs.");
     }
 
-    if (ImGui::CollapsingHeader("6. SurfaceCells diagnostics")) {
+    if (ImGui::CollapsingHeader("6. Field-aligned curve network")) {
+      ImGui::TextWrapped(
+          "Traces the SurfaceCells A2a network from the field's singularities: "
+          "traces, mandatory boundary and feature edges, and singularities "
+          "colored by index. It is shown even when a later SurfaceCells stage "
+          "rejects.");
+      const char *networkSources[] = {"Calculated field", "Uploaded field"};
+      draw_labeled_full_width_control("Network field source",
+                                      [this, &networkSources] {
+                                        ImGui::Combo("##network_field_source",
+                                                     &fieldNetworkSource_,
+                                                     networkSources, 2);
+                                      });
+      const bool networkFieldAvailable =
+          fieldNetworkSource_ == 0 ? calculatedField_.has_value()
+                                   : uploadedField_.has_value();
+      ImGui::BeginDisabled(isBusy || !mesh_.has_value() ||
+                           !networkFieldAvailable);
+      if (ImGui::Button("Trace field-aligned network")) {
+        guarded_action([this] { launch_trace_field_network(); });
+      }
+      ImGui::EndDisabled();
+      if (fieldNetwork_.has_value()) {
+        ImGui::Text("Traces: %zu  Segments: %zu", fieldNetwork_->traceCount,
+                    fieldNetwork_->segmentCount);
+        ImGui::Text("Singularities: %d  Mandatory edges: %d",
+                    static_cast<int>(fieldNetwork_->singularityPoints.rows()),
+                    static_cast<int>(fieldNetwork_->mandatoryEdges.rows()));
+        if (!fieldNetworkStage_.empty()) {
+          ImGui::TextWrapped("SurfaceCells rejected later at: %s",
+                             fieldNetworkStage_.c_str());
+        }
+      }
+    }
+
+    if (ImGui::CollapsingHeader("7. SurfaceCells diagnostics")) {
       ImGui::TextWrapped(
           "Runs the SurfaceCells backend and shows what it publishes, even "
           "when a later stage rejects: topology regions, isolation sheets and "
@@ -1898,7 +2020,7 @@ void save_quad_mesh() {
       }
     }
 
-    if (ImGui::CollapsingHeader("7. Field streamlines")) {
+    if (ImGui::CollapsingHeader("8. Field streamlines")) {
       ImGui::TextWrapped(
           "Traces streamlines of the cross field from evenly spaced seeds. "
           "Each seed starts one line per direction family; lengths are in "

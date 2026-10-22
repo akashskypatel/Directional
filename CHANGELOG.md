@@ -1,3 +1,7 @@
+## 2026-10-21 — GUI: the field-aligned curve network has its own section again
+
+- Section 6 is again "Field-aligned curve network": one button traces the SurfaceCells network from the field's singularities and shows only the traces, mandatory edges and singularities, stopping the run after quad tracing. SurfaceCells diagnostics (now section 7) and field streamlines (now section 8) are unchanged.
+
 ## 2026-10-21 — GUI: where SurfaceCells stopped, and the traced quad cells
 
 - GUI section 6 now highlights where a SurfaceCells run stopped, in orange: faces, edges and vertices from the reported failure location and from the quad-tracing (A4) failure, with the reason in the panel. When quad tracing succeeds, it draws the traced cell boundaries and corners. "Stop after quad tracing (faster)", on by default, skips the slow later stages.
