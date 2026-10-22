@@ -1,2 +1,0 @@
-Request a frozen source snapshot for M6-CP3-DEFN-SEAM-RP01-A5-SHARED-NODE-SIDE-AUTHORITY.
-Initial beacon commit: 9003ee6d9575cbc9a15e1a5c25c82946049d7ef9
