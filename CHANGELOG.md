@@ -1,3 +1,9 @@
+## 2026-10-22 — TB25 reviewed (RA-126): identity turn on every measured seam; DEFN-SEAM narrowed
+
+- Review verified TB25. On the torus seam (curved producer) and on the D3 test grid (uniform producer), the gauges and the certified turn are all identity. The frozen D3 seam rule therefore holds there, and the only blocker is the A5 face check on relations whose two corners are one shared node.
+- `cp3entry:3/5` join the A5 family (12 rows). RA-124 wrongly called them adjacent-sheet fixture debt; that debt item is a different curved-disk helper.
+- Next: DEFN-SEAM (documents only), narrowed to letting shared-node seam relations take their side from the corner wedges. Nonzero-turn seams are deferred. Accounting unchanged. Record: `Architecture_M6_CP3_TB25_Seam_Frame_Values_Harvest_Review_Decision_20261022.md`.
+
 ## 2026-10-21 — GUI: target size and feature heatmaps
 
 - New GUI section "10. Target size and feature heatmaps" shows the SurfaceCells target edge length and its inputs (salience, curvature, thickness, feature density) as switchable vertex heatmaps, and the classified feature edges. The run stops after the metric stage. Sections 6–9 are unchanged.

@@ -1,3 +1,7 @@
+## TB25 Review (RA-126, 2026-10-22)
+
+TB25 verified: on every measured seam the turn is identity (torus curved, D3 grid uniform; d = F = 0). `cp3entry:3/5` join A5-ISO (12 rows); RA-124's adjacent-sheet filing corrected. No count changes. Record: `Architecture_M6_CP3_TB25_Seam_Frame_Values_Harvest_Review_Decision_20261022.md`.
+
 ## TB25 — seam frame and D3 witnesses, candidate/non-stable (2026-10-21)
 
 Immutable artifact-only [run 39682528031](https://github.com/akashskypatel/Directional/actions/runs/39682528031), result `12384333036` (ZIP SHA-256 `f10ef7786ca2af1f9e2cfa8cc0dfdf0b889c03b2adb54c9f8a5e87de1be6ccbc`), exact CB24 semantic source `dae267a82fb884ff9eba4fd0122ad61750d0c924`: 11/11 individual tests, 6 PASS controls, 5 semantic RED (three A5 torus, two D3), 0 skips, 16/16 result digests and immutable postflight. No source, fixture, selector, compile, relink or benchmark mutation. **Candidate only; independent TB25 Review required.**
@@ -27,7 +31,7 @@ Immutable artifact-only [run 39549820087](https://github.com/akashskypatel/Direc
 | Family | Identities | Locus / origin | Status |
 |---|---|---|---|
 | F: torus witness fixture lacks `fieldTransportAtlas` | `focused30:6`, `selector:447` | TQ:1607–1796; factory `atlas-binding` S:8462; `7de636c88` added the binding to the other pipeline fixtures (TQ:649, 757, 861) while this one was masked by `88aa8eae0` | **Closed at candidate level (RA-121):** TB23 `selector:447` PASS; `focused30:6` passes the atlas and moves to A5-ISO |
-| A5-ISO: torus A5 `MismatchedIsolationEvidence` (`a5-side`) | `focused30:6, 20, 24, 25, 26, 27, 28`; `selector:444, 446, 448`; contested: `cp3entry:3, 5` | One site (TB23/TB24): RP:5249 at `first-face` (RP:3891), relation 0:1↔1:0 on seam 60–61, one shared vertex-61 node with `selectedFace` `121/0`. RA-124.3: shared producer nodes (RP:4943–4947; SCT:13404, 15115, 17741) make the A5 face clauses unsatisfiable for every certified collinear-seam OrdinaryFront, and A6's stripped turn degenerate (RP:5859–5868), so frozen D3 (RA-30a.3) holds only for an identity turn. Owner: the seam contract against the shared-node producer model (A2 representative contributing) | CB24 frame values → TB25 (gauge jump vs certificate turn; `cp3entry:3/5` attribution) → DEFN-SEAM |
+| A5-ISO: A5 `MismatchedIsolationEvidence` on certified collinear seams | `focused30:6, 20, 24, 25, 26, 27, 28`; `selector:444, 446, 448`; `cp3entry:3, 5` | One mechanism (TB23–TB25): the A5 face clauses (RP:3891–3892) on shared-node OrdinaryFront relations (RA-124.3). Torus seam 60–61 (curved) and D3 grid seam 1–4 (uniform) both have identity turn (d = F = 0, RA-126.2), so frozen D3 holds and A5 is the only blocker | DEFN-SEAM (RA-126.4: shared-node side authority) → CB25 → TB26 |
 
 Record: `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Review_Decision.md`.
 

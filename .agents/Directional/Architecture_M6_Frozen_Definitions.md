@@ -1,3 +1,14 @@
+## RA-126 — TB25 reviewed: identity turn on every measured seam; DEFN-SEAM narrowed to A5 shared-node side authority (2026-10-22)
+
+Authority: `Architecture_M6_CP3_TB25_Seam_Frame_Values_Harvest_Review_Decision_20261022.md`.
+
+- **RA-126.1** TB25 verified: result `12384333036`, 16/16, 11/11, 6 PASS / 5 RED.
+- **RA-126.2** Torus curved (`branch − gauge = 3`), D3 grid uniform (`0`); stripped turn 0; d = F = 0 → F = 0 branch; RA-124.3 P3 confirmed.
+- **RA-126.3** A5-ISO = 12 rows incl. `cp3entry:3/5`; owner the A5 face clauses on shared-node relations; RA-124.3 Corollary 2 amended (adjacent-sheet debt is P10:2670).
+- **RA-126.4** Next: `M6-CP3-DEFN-SEAM-RP01-A5-SHARED-NODE-SIDE-AUTHORITY` (documents only): shared-node side authority in `certified_seam_direction`; A6/D3 unchanged; nonzero-turn seams deferred (`DEFN-SEAM-NZ`).
+- **RA-126.5** DEFN-SEAM → REV → CB25 → REV → TB26 → REV → census → DEFN-M1 → DEFN-T1 → fixture debt → census → RP-01 Review.
+
+---
 ## RA-124 — DEFN-ISO-A census reviewed: the certified-seam contract cannot pass on shared-node producer data; DEFN-ISO-B withdrawn (2026-10-21)
 
 Authority: `Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md`.
