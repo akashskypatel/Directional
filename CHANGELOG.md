@@ -1,3 +1,9 @@
+## 2026-10-22 — CB28A M1/A5 diagnostic assertions compiled
+
+- Added failure text at exactly three targeted `M6CP1` assertions without changing checks or production behavior; semantic `4473e41e94a35f1bf189fa046e86bac92c7391fb`.
+- Eight GMP/GMPXX targets compiled on [run 39867988763](https://github.com/akashskypatel/Directional/actions/runs/39867988763), artifact `12465330920`, 28/28 verified checksums; `runtimeExecution=false`, no TB or acceptance. Initial dispatcher JSON-type error corrected before compilation.
+- Independent `M6-CP3-CB28A-RP01-M1-PRECEDENCE-ASSERT-DIAGNOSTICS-REV` Review is next, followed by separately authorized TB29 only if accepted. Stable accounting and selector unchanged. See `Architecture_M6_CP3_CB28A_M1_Precedence_Assert_Diagnostics_Code_Build_Record_20261022.md`.
+
 ## 2026-10-22 — CB28 reviewed (RA-136): failure messages added; three still missing
 
 - Review accepted CB28. It changes only failure messages, so 18 of the 21 previously silent failing tests now say why the product or atlas was rejected.

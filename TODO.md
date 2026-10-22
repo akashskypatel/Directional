@@ -1,21 +1,9 @@
-## CURRENT — CB28 reviewed (RA-136): 18/21 silent REDs now report; CB28A adds the last three before TB29 (2026-10-22)
+## CURRENT — CB28A compile-only complete; independent Review next (2026-10-22)
 
-- [x] Review (RA-136, CB28-REV):
-  - CB28 `19aeb3e60` is message-only (no assertion, control-flow, fixture or product change); package `12460974720` digest verified;
-  - covers `focused30:3`, `selector:139, 140, 142, 189–195, 220, 221, 296, 302, 304, 439`, `cp3entry:4`, plus `expect_phase_front_product_error`;
-  - **missed:** `focused30:12` (A5 assert) and `focused30:22/23` (the M1 frozen-precedence tests). Cause: RA-134.5 gave stale line numbers without test names. Rule: specs name targets by test identity;
-  - CB27A spot-checked against RA-135 (P1–P6, locus). Record: `Architecture_M6_CP3_CB28_Factory_Error_Diagnostics_Review_Decision_20261022.md`.
-- [ ] **EXACT NEXT:** `M6-CP3-CB28A-RP01-M1-PRECEDENCE-ASSERT-DIAGNOSTICS` — test-only, TQ only, compile only. Message text at three asserts, found by test name:
-  1. `RelationPlacementTransportIsCoordinateRigidAndFaceGaugeInvariant`: `relabelledA5` ← `a5_rejection_message`;
-  2. `A5OwnsIsolationAndHardRailRouteValidationWithFrozenNames`: `front` ← factory error;
-  3. `A5ValidationPrecedencePreservesHardRailAuthorityBeforeTransport`: `front` ← factory error.
-
-  Record `Architecture_M6_CP3_CB28A_M1_Precedence_Assert_Diagnostics_Code_Build_Record_20261022.md`.
-- [ ] **CONDITIONAL:** `M6-CP3-CB28A-RP01-M1-PRECEDENCE-ASSERT-DIAGNOSTICS-REV` — Review: static check; issues TB29.
-- [ ] Planned, not authorized: TB29 (targeted artifact-only harness on the CB28A package: 4 A7 negatives + D3/D7 + 3 A7 guards + all 35 TB28 REDs; typed-reason attribution table; RA-136.4) → TB29-REV → DEFN-M1 (scoped from measured factory clauses) → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up (RA-130.7) only after a witness.
-- [ ] **Planned user-directed `DIAG-RETAIN`** remains deferred: A5 occurrence/relation, A6 quotient classes and A7 geometry snapshots for GUI/CLI when retention enabled, with no read-back, bounded memory. Review schedules clear of RP-01.
-- **Turn sequence:** design review (RA-135) → CB27A → CB27A-REV → CB28 → CB28-REV (RA-136) → **CB28A** → CB28A-REV → TB29 → TB29-REV → DEFN-M1 → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
-- Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB28 462/497 **candidate only**; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
+- [x] `M6-CP3-CB28A-RP01-M1-PRECEDENCE-ASSERT-DIAGNOSTICS` — RA-136.3 three message-only asserts, TQ only (+16/−3), semantic `4473e41e94a35f1bf189fa046e86bac92c7391fb`. Exact GMP/GMPXX eight-target compile [run 39867988763](https://github.com/akashskypatel/Directional/actions/runs/39867988763), artifact `12465330920`; 28/28 hashes, `runtimeExecution=false`. Build record: `Architecture_M6_CP3_CB28A_M1_Precedence_Assert_Diagnostics_Code_Build_Record_20261022.md`.
+- [ ] **EXACT NEXT:** `M6-CP3-CB28A-RP01-M1-PRECEDENCE-ASSERT-DIAGNOSTICS-REV` — independent Review of changed assertions and compile evidence, then issue TB29 if accepted. No tests, runtime, or source fixes in this Review.
+- [ ] Planned, not yet authorized: TB29 (four A7 negatives, D3/D7, three A7 guards, all 35 TB28 RED rows; RA-136.4) → TB29-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; nonzero-turn and Periodic follow-ups witness-gated.
+- [ ] `DIAG-RETAIN` remains deferred; Review schedules clear of RP-01. Stable 66/17/49, debt 1, CP2 491/491, R3 rejected 403/497, TB28 462/497 candidate, selector 497 frozen, RP-01 open, RP-02 UNREACHED, Gate C suspended.
 
 ---
 
