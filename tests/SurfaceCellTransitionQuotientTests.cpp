@@ -5522,7 +5522,8 @@ TEST(M6CP1, RelationPlacementTransportIsCoordinateRigidAndFaceGaugeInvariant) {
   const auto *relabelledA5 =
       std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
           &relabelledA5Construction);
-  ASSERT_NE(relabelledA5, nullptr);
+  ASSERT_NE(relabelledA5, nullptr)
+      << a5_rejection_message(relabelledA5Construction);
   std::size_t relabelledHardRailCount = 0U;
   for (const auto &relation : relabelledA5->owned_relations()) {
     if (relation.id.kind !=
@@ -6306,7 +6307,13 @@ TEST(M6CP1, A5OwnsIsolationAndHardRailRouteValidationWithFrozenNames) {
   auto construction = construct_phase_front_product(std::move(tampered));
   const auto *front =
       std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&construction);
-  ASSERT_NE(front, nullptr);
+  ASSERT_NE(front, nullptr)
+      << (std::get_if<directional::geometry::SurfacePhaseFrontProductError>(
+              &construction)
+              ? describe_phase_front_product_error(
+                    std::get<directional::geometry::SurfacePhaseFrontProductError>(
+                        construction))
+              : "no factory error");
   auto a5 = directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
       fixture.mesh.V, fixture.mesh.F, *front);
   const auto *error =
@@ -6347,7 +6354,13 @@ TEST(M6CP1, A5ValidationPrecedencePreservesHardRailAuthorityBeforeTransport) {
   auto construction = construct_phase_front_product(std::move(tampered));
   const auto *front =
       std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&construction);
-  ASSERT_NE(front, nullptr);
+  ASSERT_NE(front, nullptr)
+      << (std::get_if<directional::geometry::SurfacePhaseFrontProductError>(
+              &construction)
+              ? describe_phase_front_product_error(
+                    std::get<directional::geometry::SurfacePhaseFrontProductError>(
+                        construction))
+              : "no factory error");
   auto a5 = directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
       fixture.mesh.V, fixture.mesh.F, *front);
   const auto *a5Error =
