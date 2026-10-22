@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb26-ra131-review-apply-20261022-r1",
+  "request_id": "m6-cp3-cb26-ra131-doc-integrity-20261022-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb26-ra131-review-apply",
-  "file_id": "1PVg3d_pGsLtrD0LI0nHi4JRkiNiU8vkA",
-  "patch_sha256": "8655db83197a2e5d33093015855d213e63ff69bdc99ac13f3cb81025cfed2901",
-  "base_sha": "1f6577eaa1aaa6eec8332109205caaafa56333c9",
+  "mailbox_key": "m6-cp3-cb26-ra131-doc-integrity",
+  "file_id": "1ZihVCGChzBiklb8LGTy4gswz5KIb1gcV",
+  "patch_sha256": "788b3fbaa6d2e9cbc9869a0e3127d694b99a81ebb5e72fa484b4f932fd90eb4c",
+  "base_sha": "4f4ec72733909b9df98a24a322cc26cac1e704d8",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): accept RA-131 CB26 compile-only review",
+  "commit_message": "docs(directional): remove stale review and successor directives",
   "retention_days": 7
 }
