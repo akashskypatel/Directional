@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-22 · DEFN-SEAM documents-only contract authored from RA-126.4, awaiting independent DEFN-SEAM-REV before any corrective code. TB25 measured d = F = 0 for all observed seams; A5 shared-node face clauses own 12 rows. Accepted CP2 491/491; candidate TB21 449/497; stable 66/17/49, debt 1; RP-01 open, RP-02 unreached.
+**Currency:** 2026-10-22 · RA-127 accepts the DEFN-SEAM contract with amendments: a shared node needs equal support, selected face and lattice coordinate, and the rejection-site classifier mirrors the rule. Next: CB25, a compile-only RP change. Accepted CP2 491/491; TB21 candidate 449/497; stable 66/17/49, debt 1; RP-01 open and RP-02 unreached.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -102,7 +102,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Recover the CP2 rows on the CP3-entry path. The gauge pin is corrected (RA-111 to RA-115), and CB21 fixed the torus witness selection (RA-116, RA-117). Remaining CP2 families: the torus A5 isolation family (10 rows including G4-B002; one site, RA-121; RA-124: the certified-seam contract cannot pass on shared-node producer data; CB24 accepted compile-only by RA-125; TB25: identity turn on every measured seam (RA-126), `cp3entry:3/5` joined; DEFN-SEAM contract authored, Review required; the torus witness fixture atlas binding is fixed and confirmed by TB23), and M1 (10 rows, DEFN-M1). D2 for `cp3entry:1` follows (DEFN-T1). | M6-CP3; [handoff](Future_Chat_Session_Handoff.md) |
+| **1** | Recover the CP2 rows on the CP3-entry path. The gauge pin is corrected (RA-111 to RA-115), and CB21 fixed the torus witness selection (RA-116, RA-117). Remaining CP2 families: the torus A5 isolation family (10 rows including G4-B002; one site, RA-121; RA-124: the certified-seam contract cannot pass on shared-node producer data; CB24 accepted compile-only by RA-125; TB25: identity turn on every measured seam (RA-126), `cp3entry:3/5` joined; DEFN-SEAM accepted with amendments (RA-127), CB25 next; the torus witness fixture atlas binding is fixed and confirmed by TB23), and M1 (10 rows, DEFN-M1). D2 for `cp3entry:1` follows (DEFN-T1). | M6-CP3; [handoff](Future_Chat_Session_Handoff.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |

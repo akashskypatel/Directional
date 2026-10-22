@@ -1,3 +1,16 @@
+## RA-127 — DEFN-SEAM reviewed: accepted with amendments; CB25 authorized (2026-10-22)
+
+Authority: `Architecture_M6_CP3_DEFN_SEAM_A5_Shared_Node_Side_Authority_Review_Decision_20261022.md`; contract `Architecture_M6_CP3_DEFN_SEAM_A5_Shared_Node_Side_Authority_20261022.md`.
+
+- **RA-127.1** Scope, non-weakening table, A6/D3 independence and nonzero-turn deferral accepted. Correction: A6 source unchanged, but shared-node pairs no longer fail A6 as `InvalidIsolationEvidence` (RP:5881–5885); D3 becomes their guard.
+- **RA-127.2 (A1)** `sharedNode` ⇔ equal `support`, `placement.selectedFace` and `placement.lattice.latticeCoordinate`. Producer nodes do not wrap, so producer data is unaffected. In TB26, a face label with equal `support`/`sel` tokens falsifies this.
+- **RA-127.3 (A2)** The rejection-site classifier (RP:5303–5333) must mirror the exemption (RA-118.2), in the same commit.
+- **RA-127.4 (A3)** TB26 reports, for `cp3entry:3/5`, the certified reciprocal relation, A6 admission and rejection of the D3 gauge tamper (TQ:3652–3677); a passing tamper falsifies the contract.
+- **RA-127.4b (A4)** Negative tests (span outside wedge, same side, same edge/face with different lattice coordinates) in CB26, TQ only.
+- **RA-127.5** Next: `M6-CP3-CB25-RP01-A5-SHARED-NODE-SIDE-AUTHORITY` (RP only, compile only).
+- **RA-127.6** CB25 → REV → TB26 → REV → CB26 → REV → TB27 (+ census) → REV → DEFN-M1 → DEFN-T1 → fixture debt → census → RP-01 Review.
+
+---
 ## RA-126 — TB25 reviewed: identity turn on every measured seam; DEFN-SEAM narrowed to A5 shared-node side authority (2026-10-22)
 
 Authority: `Architecture_M6_CP3_TB25_Seam_Frame_Values_Harvest_Review_Decision_20261022.md`.

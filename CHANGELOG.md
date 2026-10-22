@@ -1,3 +1,12 @@
+## 2026-10-22 — DEFN-SEAM reviewed (RA-127): accepted with amendments; CB25 authorized
+
+- Review accepted the A5 shared-node seam rule with four amendments:
+  - "same node" must also compare lattice coordinates, because two different points on one edge or face would otherwise count;
+  - the rejection-site message builder repeats the face checks and must follow the new rule;
+  - the next test run must show whether A6 accepts the two D3 seam tests and still rejects their tampered copy;
+  - negative tests for the new branch follow in a later test-only turn.
+- Next: CB25, a compile-only change confined to `RemeshPipeline.cpp`. Accounting unchanged. Record: `Architecture_M6_CP3_DEFN_SEAM_A5_Shared_Node_Side_Authority_Review_Decision_20261022.md`.
+
 ## 2026-10-22 — DEFN-SEAM: A5 shared-node side-authority contract (documents only)
 
 - Froze the scoped `certified_seam_direction` contract: equal canonical `support` and `placement.selectedFace` identify a shared node; only then are two span-to-selected-face clauses inapplicable. Certified opposite wedge sides, distinct sheets, seam/region guards and unique certificate remain required. Non-shared-node cases retain both clauses.

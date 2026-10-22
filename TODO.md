@@ -1,4 +1,30 @@
-## CURRENT — DEFN-SEAM contract authored; independent Review exact next (2026-10-22)
+## CURRENT — DEFN-SEAM reviewed (RA-127): accepted with amendments; CB25 authorized (2026-10-22)
+
+- [x] Review (RA-127, DEFN-SEAM-REV): contract scope, non-weakening table, A6/D3 independence and nonzero-turn deferral accepted. Binding amendments:
+  - **A1:** equal `support` + `selectedFace` does not identify a node (edge/face supports carry no parameter); also require equal `placement.lattice.latticeCoordinate`. Producer nodes never wrap, so producer data is unaffected;
+  - **A2:** the rejection-site classifier (RP:5303–5333) duplicates the face clauses; it must mirror the exemption (RA-118.2);
+  - **A3:** TB26 reports, for `cp3entry:3/5`, the certified reciprocal relation, A6 admission and the D3 gauge tamper (TQ:3652–3677);
+  - **A4:** negative tests for the new branch are owed (CB26, TQ only);
+  - correction: A6 source is unchanged, but A6 stops rejecting shared-node pairs as `InvalidIsolationEvidence`; D3 becomes their guard. Record: `Architecture_M6_CP3_DEFN_SEAM_A5_Shared_Node_Side_Authority_Review_Decision_20261022.md`.
+- [ ] **EXACT NEXT:** `M6-CP3-CB25-RP01-A5-SHARED-NODE-SIDE-AUTHORITY` — Code + Build, compile only, RP only (RA-127.5):
+  1. helper `certified_seam_shared_node` (support, `selectedFace`, lattice coordinate all equal);
+  2. skip RP:3891–3892 when it holds; every other clause byte-identical;
+  3. classifier RP:5303–5333 skips `first-face`/`second-face` when it holds; site format unchanged;
+  4. eight targets with GMP/GMPXX, `runtimeExecution=false`; record `Architecture_M6_CP3_CB25_A5_Shared_Node_Side_Authority_Code_Build_Record_20261022.md` (at most 30 lines).
+  No A6, A2, header, test, selector, workflow or runtime change.
+- [ ] **CONDITIONAL:** `M6-CP3-CB25-RP01-A5-SHARED-NODE-SIDE-AUTHORITY-REV` — Review: static diff adjudication; issues TB26.
+- [ ] Planned, not authorized: CB25-REV → TB26 (12 A5-ISO rows reporting RA-127.4 for `cp3entry:3/5`; guard `selector:447`; TB25 controls) → TB26-REV → CB26 (RA-127.4b negative tests, TQ only) → CB26-REV → TB27 (new tests + selector-497 census) → TB27-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` only after a nonzero-turn witness.
+- [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
+  - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
+  - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
+  - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
+  - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
+- **Turn sequence:** TB25 → TB25-REV (RA-126) → DEFN-SEAM → DEFN-SEAM-REV (RA-127) → **CB25** → CB25-REV → TB26 → TB26-REV → CB26 → CB26-REV → TB27 → TB27-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+- Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB21 candidate 449/497; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
+
+---
+
+## HISTORY — DEFN-SEAM contract authored and reviewed (RA-127) (2026-10-22)
 
 - [x] Review (RA-126, TB25-REV):
   - harvest verified (ZIP digest, 16/16 manifest, 11 logs with one RUN each and no skip); torus `branch=3,3;gaugeSel=0,0;gaugeSpan=0,0;turn0=0,0` (curved), D3 grid `0,0;0,0;0,0;0,0` (uniform); d = F = 0;
@@ -10,13 +36,8 @@
   3. non-weakening table with the rejecting clause per case;
   4. corrective-TB predictions and falsifiers.
   No code, compile or runtime; no nonzero-turn seams, A2 change, A6/D3 change, minimum-face rule or new certificate.
-- [ ] **EXACT NEXT:** `M6-CP3-DEFN-SEAM-RP01-A5-SHARED-NODE-SIDE-AUTHORITY-REV` — independent Review: re-derive A5 shared-node side authority, all four enforcers, non-weakening cases, A6/D3 independence and TB falsifiers; issues exact CB25 turn only if accepted. No source/compile/runtime.
-- [ ] Planned, not authorized: CB25 → CB25-REV → TB26 (12 A5-ISO rows, guard, controls) → TB26-REV → selector-497 census → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` when a nonzero-turn seam is observed.
-- [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
-  - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
-  - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
-  - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
-  - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
+- [x] `M6-CP3-DEFN-SEAM-RP01-A5-SHARED-NODE-SIDE-AUTHORITY-REV` done (RA-127) — independent Review: re-derive A5 shared-node side authority, all four enforcers, non-weakening cases, A6/D3 independence and TB falsifiers; issues exact CB25 turn only if accepted. No source/compile/runtime.
+- Planned at the time: CB25 → CB25-REV → TB26 (12 A5-ISO rows, guard, controls) → TB26-REV → selector-497 census → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` when a nonzero-turn seam is observed.
 - **Turn sequence:** CB24 → CB24-REV (RA-125) → interim GUI tooling (network, diagnostics, streamlines, cut graph, target size; build fixes) → TB25 → TB25-REV (RA-126) → DEFN-SEAM [contract authored] → **DEFN-SEAM-REV** → CB25 → CB25-REV → TB26 → TB26-REV → census → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
 - Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB21 candidate 449/497; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
 

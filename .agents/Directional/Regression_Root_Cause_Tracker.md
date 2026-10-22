@@ -1,3 +1,7 @@
+## DEFN-SEAM Review (RA-127, 2026-10-22)
+
+Contract accepted with amendments A1–A4. The shared-node predicate gains lattice-coordinate equality, the rejection-site classifier mirrors the rule, TB26 reports the A6 seam branch and D3 tamper for `cp3entry:3/5`, and negative tests follow in CB26. No count changes. Record: `Architecture_M6_CP3_DEFN_SEAM_A5_Shared_Node_Side_Authority_Review_Decision_20261022.md`.
+
 ## TB25 Review (RA-126, 2026-10-22)
 
 TB25 verified: on every measured seam the turn is identity (torus curved, D3 grid uniform; d = F = 0). `cp3entry:3/5` join A5-ISO (12 rows); RA-124's adjacent-sheet filing corrected. No count changes. Record: `Architecture_M6_CP3_TB25_Seam_Frame_Values_Harvest_Review_Decision_20261022.md`.
@@ -31,7 +35,7 @@ Immutable artifact-only [run 39549820087](https://github.com/akashskypatel/Direc
 | Family | Identities | Locus / origin | Status |
 |---|---|---|---|
 | F: torus witness fixture lacks `fieldTransportAtlas` | `focused30:6`, `selector:447` | TQ:1607–1796; factory `atlas-binding` S:8462; `7de636c88` added the binding to the other pipeline fixtures (TQ:649, 757, 861) while this one was masked by `88aa8eae0` | **Closed at candidate level (RA-121):** TB23 `selector:447` PASS; `focused30:6` passes the atlas and moves to A5-ISO |
-| A5-ISO: A5 `MismatchedIsolationEvidence` on certified collinear seams | `focused30:6, 20, 24, 25, 26, 27, 28`; `selector:444, 446, 448`; `cp3entry:3, 5` | One mechanism (TB23–TB25): the A5 face clauses (RP:3891–3892) on shared-node OrdinaryFront relations (RA-124.3). Torus seam 60–61 (curved) and D3 grid seam 1–4 (uniform) both have identity turn (d = F = 0, RA-126.2), so frozen D3 holds and A5 is the only blocker | DEFN-SEAM contract authored (RA-126.4; independent DEFN-SEAM-REV pending) → conditional CB25 → TB26 |
+| A5-ISO: A5 `MismatchedIsolationEvidence` on certified collinear seams | `focused30:6, 20, 24, 25, 26, 27, 28`; `selector:444, 446, 448`; `cp3entry:3, 5` | One mechanism (TB23–TB25): the A5 face clauses (RP:3891–3892) on shared-node OrdinaryFront relations (RA-124.3). Torus seam 60–61 (curved) and D3 grid seam 1–4 (uniform) both have identity turn (d = F = 0, RA-126.2), so frozen D3 holds and A5 is the only blocker | RA-127: CB25 (shared node = support, `selectedFace`, lattice coordinate; classifier mirror) → TB26 → CB26 negative tests |
 
 Record: `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Review_Decision.md`.
 
