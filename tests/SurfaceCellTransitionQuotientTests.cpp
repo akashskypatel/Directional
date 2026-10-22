@@ -4068,7 +4068,8 @@ namespace {
 template <typename Tamper, typename A6Oracle>
 void check_d7_certified_seam_negative(const Tamper &tamper,
                                        const A6Oracle &checkA6,
-                                       const char *expectedSite) {
+                                       const char *expectedSite,
+                                       bool expectRelationFirstLocus = false) {
   std::string searchDiagnostic;
   const auto fixture = m6cp3_produced_seam_fixture(&searchDiagnostic);
   ASSERT_NE(fixture, nullptr) << searchDiagnostic;
@@ -4135,6 +4136,9 @@ void check_d7_certified_seam_negative(const Tamper &tamper,
             directional::pipeline::GeometryEmbeddingFailureCode::
                 UncertifiedCrossSheetBinding);
   EXPECT_EQ(failure->site, expectedSite);
+  if (expectRelationFirstLocus) {
+    EXPECT_EQ(failure->occurrence, relation->id.first);
+  }
 }
 
 // A6 disposition is asserted independently of A7's original-forest check.
@@ -4263,34 +4267,111 @@ TEST(M6CP3, CertifiedSeamSharedNodeRequiresSameLatticeCoordinate) {
       "cross-sheet:seam-direction");
 }
 
-TEST(M6CP3, CertifiedSeamRejectsSpanBindingOutsideEndpointWedge) {
+TEST(M6CP3, CertifiedSeamRejectsSpanBindingWithdrawnFromEndpointWedge) {
   check_d7_certified_seam_negative(
-      [](auto &, auto &altered, const auto &original, const auto &first,
-         const auto &) {
-        const auto &certificate =
-            *original.evidence.isolationSeamTransportCertificate;
+      [](auto &records, auto &altered, const auto &original,
+         const auto &first, const auto &second) {
+        ASSERT_TRUE(original.evidence.isolationSeamTransportCertificate.has_value());
         ASSERT_TRUE(altered.evidence.firstEndpointSpan.has_value());
         ASSERT_TRUE(altered.evidence.secondEndpointSpan.has_value());
-        const auto substitute =
+        const auto &certificate =
+            *original.evidence.isolationSeamTransportCertificate;
+        const auto &firstBinding =
+            altered.evidence.firstEndpointSpan->interiorBinding;
+        const auto &secondBinding =
             altered.evidence.secondEndpointSpan->interiorBinding;
-        ASSERT_TRUE(substitute.face == certificate.firstFace() ||
-                    substitute.face == certificate.secondFace());
-        ASSERT_EQ(std::find(first.cornerWedgeBindings.begin(),
-                            first.cornerWedgeBindings.end(), substitute),
-                  first.cornerWedgeBindings.end());
-        altered.evidence.firstEndpointSpan->interiorBinding = substitute;
+        const auto eligible = [](const auto &occurrence, const auto &binding) {
+          const auto &wedge = occurrence.cornerWedgeBindings;
+          return std::find(wedge.begin(), wedge.end(), binding) != wedge.end() &&
+                 wedge.size() >= 2 &&
+                 std::any_of(wedge.begin(), wedge.end(), [&](const auto &entry) {
+                   return entry != binding && entry.sheet == binding.sheet;
+                 });
+        };
+        // P1–P2: select the first eligible endpoint; D7's second endpoint
+        // has a genuine same-sheet sibling while its first endpoint does not.
+        const bool useFirst = eligible(first, firstBinding);
+        const auto &originalOccurrence = useFirst ? first : second;
+        const auto &binding = useFirst ? firstBinding : secondBinding;
+        ASSERT_TRUE(eligible(originalOccurrence, binding));
+        auto occurrence = std::find_if(
+            records.occurrences.begin(), records.occurrences.end(),
+            [&](const auto &entry) {
+              return entry.id ==
+                     (useFirst ? original.id.first : original.id.second);
+            });
+        ASSERT_NE(occurrence, records.occurrences.end());
+        ASSERT_EQ(occurrence->cornerWedgeBindings,
+                  originalOccurrence.cornerWedgeBindings);
+        const auto sheets = [](const auto &wedge) {
+          std::set<directional::authority::IsolationSheetId> result;
+          for (const auto &entry : wedge) result.insert(entry.sheet);
+          return result;
+        };
+        const auto before = sheets(occurrence->cornerWedgeBindings);
+        ASSERT_EQ(before, std::set<directional::authority::IsolationSheetId>(
+                              occurrence->cornerWedgeSheets.begin(),
+                              occurrence->cornerWedgeSheets.end()));
+        // P3: withdraw the full producer binding, retaining its sheet via
+        // the sibling; do not change spans, certificate or placement.
+        const auto entry = std::find(occurrence->cornerWedgeBindings.begin(),
+                                     occurrence->cornerWedgeBindings.end(),
+                                     binding);
+        ASSERT_NE(entry, occurrence->cornerWedgeBindings.end());
+        occurrence->cornerWedgeBindings.erase(entry);
+        ASSERT_EQ(std::find(occurrence->cornerWedgeBindings.begin(),
+                            occurrence->cornerWedgeBindings.end(), binding),
+                  occurrence->cornerWedgeBindings.end());
+        ASSERT_EQ(sheets(occurrence->cornerWedgeBindings), before);
+        ASSERT_EQ(sheets(occurrence->cornerWedgeBindings),
+                  std::set<directional::authority::IsolationSheetId>(
+                      occurrence->cornerWedgeSheets.begin(),
+                      occurrence->cornerWedgeSheets.end()));
+        // P4: the shared-node exemption remains active.
+        ASSERT_EQ(first.support, second.support);
+        ASSERT_EQ(first.placement.selectedFace, second.placement.selectedFace);
+        ASSERT_EQ(first.placement.lattice.latticeCoordinate,
+                  second.placement.lattice.latticeCoordinate);
+        // P5: face/sheet-only classification still returns opposite sides;
+        // unlike A7's classification this deliberately does NOT read a wedge.
+        const auto sideWithoutMembership = [&](const auto &entry) {
+          if (entry.face == certificate.firstFace() &&
+              entry.sheet == certificate.firstSheet()) return 1;
+          if (entry.face == certificate.secondFace() &&
+              entry.sheet == certificate.secondSheet()) return 2;
+          return 0;
+        };
+        const int firstSide = sideWithoutMembership(firstBinding);
+        const int secondSide = sideWithoutMembership(secondBinding);
+        ASSERT_NE(firstSide, 0);
+        ASSERT_NE(secondSide, 0);
+        ASSERT_EQ(firstSide + secondSide, 3);
+        // P6: the exact seam certificate transition remains in the evidence.
+        const auto matchesCertificate = [&](const auto &transition) {
+          return transition.region == certificate.region() &&
+                 transition.seam == certificate.seam() &&
+                 ((transition.fromSheet == certificate.firstSheet() &&
+                   transition.toSheet == certificate.secondSheet()) ||
+                  (transition.fromSheet == certificate.secondSheet() &&
+                   transition.toSheet == certificate.firstSheet()));
+        };
+        const auto containsCertificate = [&](const auto &transitions) {
+          return std::any_of(transitions.begin(), transitions.end(),
+                             matchesCertificate);
+        };
+        ASSERT_TRUE(containsCertificate(altered.evidence.firstSideIsolationEvidence) ||
+                    containsCertificate(altered.evidence.secondSideIsolationEvidence) ||
+                    containsCertificate(altered.evidence.equivalence.isolationTransitions));
       },
       a6_rejects(directional::pipeline::SurfaceQuotientProductErrorCode::
-                     MissingIsolationEvidence),
-      "cross-sheet:seam-direction");
+                     InvalidIsolationEvidence),
+      "cross-sheet:seam-direction", true);
 }
 
 // Same-side wedge bindings cannot be constructed from D7 without an earlier
-// invalid-wedge guard: D7 endpoint sheet sets are disjoint and the certificate
-// requires distinct first/second sheets. Assigning the other side to either
-// endpoint necessarily removes membership in that endpoint's wedge. The
-// outside-wedge negative above is the reachable protection; no fake same-side
-// test is added.
+// invalid-wedge guard (RA-135.1): the endpoint sheets are disjoint and the
+// certificate requires distinct sheets. Reassigning a side would first break
+// wedge membership; the withdrawal negative above tests that guard alone.
 
 TEST(M6CP3, HardRailCrossRegionBindingDoesNotCompareGlobalSheetLabels) {
   const auto &fixture = nonconstant_hard_rail_fixture();
