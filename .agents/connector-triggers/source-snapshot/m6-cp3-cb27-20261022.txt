@@ -1,4 +1,0 @@
-M6-CP3-CB27-RP01-A7-CERTIFIED-SEAM-NEGATIVE-ORACLES
-Read-mode: snapshot
-Purpose: immutable source snapshot for test-only CB27 code/build
-Entry beacon commit: a5a57118ddac70469169435eb509b468e3002823

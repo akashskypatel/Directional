@@ -1,2 +1,0 @@
-# CB27 temporary-state cleanup
-.agents/connector-triggers/source-snapshot/m6-cp3-cb27-20261022.txt
