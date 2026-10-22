@@ -1,3 +1,8 @@
+## 2026-10-22 — CB27A wedge-membership negative corrected and compiled
+
+- Replaced the previously masked certified-seam outside-wedge negative with a real endpoint binding-withdrawal witness, explicitly asserting P1–P6 and A6/A7 rejection site/locus. Only `tests/SurfaceCellTransitionQuotientTests.cpp` changed (+101/-20), source `f021e8f7b876c261b8337334596f519f4b7652a7`.
+- Eight-target GMP/GMPXX compile [run 39838687950](https://github.com/akashskypatel/Directional/actions/runs/39838687950), artifact `12452346647` (28/28 hashes, `runtimeExecution=false`); no tests or benchmarks executed. Independent CB27A-REV next. Details: `.agents/Directional/Architecture_M6_CP3_CB27A_Wedge_Membership_Oracle_Code_Build_Record_20261022.md`. Stable 66/17/49, CP2 491/491 and TB28 candidate 462/497 unchanged.
+
 ## 2026-10-22 — CB27A design block resolved (RA-135)
 
 - The wedge-membership negative test was blocked. It had been required to alter the first corner. That corner's wedge holds only one face, so no valid alteration could break membership alone.
