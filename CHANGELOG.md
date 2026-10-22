@@ -1,3 +1,8 @@
+## 2026-10-22 — TB28 complete: selector-497 census 462/497; 13 improved, no regressions
+
+- Artifact-only [run 39772864202](https://github.com/akashskypatel/Directional/actions/runs/39772864202) on immutable CB26 package `12409939859` (semantic source `e3d60337`), result artifact `12424484672` (ZIP SHA-256 `a54110dbb5475b76e6b6a6baa8fc1b7dcabd7aa50c95c5b390532509d1c656e6`). Verified 1019/1019 manifest entries, 497 single-process executions, unchanged before/after source and package, no compile/relink/benchmarks. **462 PASS / 35 RED**, vs TB21 449/48: 13 RED→PASS (12 known seam family and selector:447), no PASS→RED. Residual 35 inherited REDs retained with exact first failures; full ledger and report under `.agents/Directional/Architecture_M6_CP3_TB28_Selector_497_*`.
+- Candidate evidence only: no accepted stable 66/17/49 or debt-1 ledger change; RP-01 still open, RP-02 UNREACHED, Gate C suspended. Mandatory independent Review `M6-CP3-TB28-RP01-SELECTOR-497-CENSUS-REV` next; no CB27 work started.
+
 ## 2026-10-22 — TB27 reviewed (RA-132): the seam fixes pass their targeted tests; full census next
 
 - Review verified TB27: all 21 targeted tests pass. That covers the 12 seam-family tests and both tamper checks: a rotated gauge is still rejected, and so is removed crossing evidence. The two seam fixes (A5 and A7) now work end to end on these tests.

@@ -1,25 +1,10 @@
-## CURRENT — TB27 reviewed (RA-132): seam family and both tampers PASS; census first, then negative tests (2026-10-22)
+## CURRENT — TB28 full selector census measured 462/497; independent Review next (2026-10-22)
 
-- [x] Review (RA-132, TB27-REV):
-  - verified result `12420676412` (24/24 manifest; 21 logs, one RUN and one OK each, test names match the ledger);
-  - CB26 matches RA-130.8;
-  - **PASS:** the 12 seam-family rows; the D3 gauge tamper (`RelationCertificateConflict`); D7 A7-positive and evidence tamper (`cross-sheet`); all guards and controls. RA-127.4 (iii) and RA-130 B1 discharged;
-  - **not yet tested:** `cross-sheet:seam-direction`, `cross-sheet:no-certificate`, `cross-sheet:periodic`, B4 precision, RA-127.4b;
-  - **realigned:** census before CB27 (product final; a regression is the main risk). Record: `Architecture_M6_CP3_TB27_A7_Certified_Seam_Cross_Sheet_Verification_Review_Decision_20261022.md`.
-- [ ] **EXACT NEXT:** `M6-CP3-TB28-RP01-SELECTOR-497-CENSUS` — artifact-only census (RA-132.5):
-  1. run `m6_cp3_entry_497_artifact_only_harness.sh` unchanged on package `12409939859` with source `e3d60337e…`, ZIP `ee08279e…86fa`, root manifest `0c9183b8…b1cf`, source archive `d37cfbda…955c` (full values in the handoff); the package expires 2026-10-29T08:00:15Z;
-  2. report `Architecture_M6_CP3_TB28_Selector_497_Census_Report_20261022.md`: totals, PASS→RED and RED→PASS against TB21, first failures, A7 sites;
-  3. inventory `Architecture_M6_CP3_TB28_Selector_497_Red_Inventory.tsv`.
-  Predictions: seam family + `selector:447` RED→PASS, no PASS→RED, at least 462/497. STOP on any falsifier; no fixes.
-- [ ] **CONDITIONAL:** `M6-CP3-TB28-RP01-SELECTOR-497-CENSUS-REV` — Review: census adjudication, RED classification; issues CB27.
-- [ ] Planned, not authorized: CB27 (test-only, TQ: unrelated-seam evidence, no-certificate, lattice-coordinate and outside-wedge negatives; same-side if constructible; RA-132.6) → CB27-REV → TB29 (new tests + guards) → TB29-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up (RA-130.7) only after a witness.
-- [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
-  - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
-  - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
-  - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
-  - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
-- **Turn sequence:** CB26 → CB26-REV (RA-131) → TB27 → TB27-REV (RA-132) → **TB28 (census)** → TB28-REV → CB27 → CB27-REV → TB29 → TB29-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
-- Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB21 candidate 449/497; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
+- [x] **TB28 artifact-only census:** `M6-CP3-TB28-RP01-SELECTOR-497-CENSUS`. Immutable [run 39772864202](https://github.com/akashskypatel/Directional/actions/runs/39772864202), result `12424484672` (SHA-256 `a54110dbb5475b76e6b6a6baa8fc1b7dcabd7aa50c95c5b390532509d1c656e6`), 1019/1019 manifest, 497/497 executed, 462 PASS, 35 RED; vs TB21: 13 RED→PASS (12 seam family + selector:447), zero PASS→RED. Original CB26 package `12409939859`, unchanged harness/selector; no rebuild, relink or benchmark. Report `Architecture_M6_CP3_TB28_Selector_497_Census_Report_20261022.md`, red inventory and full ledger TSV.
+- [ ] **EXACT NEXT:** `M6-CP3-TB28-RP01-SELECTOR-497-CENSUS-REV` — independent Review: verify manifest, 497 execution records and 13-row improvement; classify 35 inherited RED failures against M1, D2 and fixture debt, maintain stable accounting or explicitly justify disposition, decide promotion, issue CB27 only if Review accepts. No new TB, CB or fixes during this TB28 turn.
+- [ ] Conditional, **not yet authorized to execute**: CB27 test-only negatives (RA-132.6; A7 unrelated-seam, no-certificate, lattice-coordinate and outside-wedge; same-side if constructible), then CB27-REV → TB29 → TB29-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review. Nonzero-turn and Periodic obligations wait for witnesses.
+- [ ] **Planned user-directed `DIAG-RETAIN`** remains deferred: A5 occurrence/relation, A6 quotient classes and A7 geometry snapshots for GUI/CLI when retention enabled, with no read-back, bounded memory. Review schedules clear of RP-01.
+- Frozen stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB28 462/497 **candidate only**; selector 497 byte-frozen. RP-01 OPEN, RP-02 UNREACHED, Gate C suspended.
 
 ---
 
