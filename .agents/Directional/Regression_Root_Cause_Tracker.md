@@ -1,3 +1,7 @@
+## RA-136 — CB28 reviewed (2026-10-22)
+
+CB28 diagnostics are message-only and accepted. 18 of the 21 silent REDs now report a typed reason. `focused30:12` and `focused30:22/23` (the M1 precedence tests) are still silent; CB28A adds those messages before TB29. TB29 will measure all 35 REDs. No count changes. Record: `Architecture_M6_CP3_CB28_Factory_Error_Diagnostics_Review_Decision_20261022.md`.
+
 ## CB27A-REV — independent static non-vacuity accepted (2026-10-22)
 
 The prior outside-wedge oracle was masked by same-side classification. RA-135's repaired test removes authentic `3/1` from D7's two-binding second wedge while leaving `2/1`, sheet set, certificate transition and both endpoint placements intact; P1–P6 independently isolate A7 wedge membership. CB27A-REV accepts this as a **static negative oracle**, not a runtime PASS or CP3 promotion. Counterfactual removal of only the membership guard admits the tamper. The next owner is `M6-CP3-CB28-RP01-FACTORY-ERROR-DIAGNOSTICS` (RA-134.5 test-only factory diagnostic reasons), followed by independent CB28-REV/TB29. Falsifier: any earlier rejection with the membership guard removed or violation of the P1–P6 guards; stop rather than adapting expectations. Selector 497 frozen; stable 66/17/49, debt 1; TB28 462/497 candidate; RP-01 open, RP-02 UNREACHED. Detail: `Architecture_M6_CP3_CB27A_Wedge_Membership_Oracle_Review_Decision_20261022.md`.

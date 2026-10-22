@@ -1,4 +1,25 @@
-## CURRENT — CB28 diagnostics compiled; independent static Review required (2026-10-22)
+## CURRENT — CB28 reviewed (RA-136): 18/21 silent REDs now report; CB28A adds the last three before TB29 (2026-10-22)
+
+- [x] Review (RA-136, CB28-REV):
+  - CB28 `19aeb3e60` is message-only (no assertion, control-flow, fixture or product change); package `12460974720` digest verified;
+  - covers `focused30:3`, `selector:139, 140, 142, 189–195, 220, 221, 296, 302, 304, 439`, `cp3entry:4`, plus `expect_phase_front_product_error`;
+  - **missed:** `focused30:12` (A5 assert) and `focused30:22/23` (the M1 frozen-precedence tests). Cause: RA-134.5 gave stale line numbers without test names. Rule: specs name targets by test identity;
+  - CB27A spot-checked against RA-135 (P1–P6, locus). Record: `Architecture_M6_CP3_CB28_Factory_Error_Diagnostics_Review_Decision_20261022.md`.
+- [ ] **EXACT NEXT:** `M6-CP3-CB28A-RP01-M1-PRECEDENCE-ASSERT-DIAGNOSTICS` — test-only, TQ only, compile only. Message text at three asserts, found by test name:
+  1. `RelationPlacementTransportIsCoordinateRigidAndFaceGaugeInvariant`: `relabelledA5` ← `a5_rejection_message`;
+  2. `A5OwnsIsolationAndHardRailRouteValidationWithFrozenNames`: `front` ← factory error;
+  3. `A5ValidationPrecedencePreservesHardRailAuthorityBeforeTransport`: `front` ← factory error.
+
+  Record `Architecture_M6_CP3_CB28A_M1_Precedence_Assert_Diagnostics_Code_Build_Record_20261022.md`.
+- [ ] **CONDITIONAL:** `M6-CP3-CB28A-RP01-M1-PRECEDENCE-ASSERT-DIAGNOSTICS-REV` — Review: static check; issues TB29.
+- [ ] Planned, not authorized: TB29 (targeted artifact-only harness on the CB28A package: 4 A7 negatives + D3/D7 + 3 A7 guards + all 35 TB28 REDs; typed-reason attribution table; RA-136.4) → TB29-REV → DEFN-M1 (scoped from measured factory clauses) → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up (RA-130.7) only after a witness.
+- [ ] **Planned user-directed `DIAG-RETAIN`** remains deferred: A5 occurrence/relation, A6 quotient classes and A7 geometry snapshots for GUI/CLI when retention enabled, with no read-back, bounded memory. Review schedules clear of RP-01.
+- **Turn sequence:** design review (RA-135) → CB27A → CB27A-REV → CB28 → CB28-REV (RA-136) → **CB28A** → CB28A-REV → TB29 → TB29-REV → DEFN-M1 → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+- Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB28 462/497 **candidate only**; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
+
+---
+
+## HISTORY — CB27A built and reviewed; CB28 built and reviewed (RA-136) (2026-10-22)
 
 - [x] Design review (RA-135):
   - the block came from CB27-REV's insistence on the **first** endpoint's **span binding**, but D7's first wedge has one binding (`0/0`), so any same face/sheet binding outside it would be synthetic, and removing it trips `cross-sheet:wedge`;
@@ -8,9 +29,8 @@
 - [x] **CB27A COMPLETE — compile only:** `M6-CP3-CB27A-RP01-A7-WEDGE-MEMBERSHIP-ORACLE-CORRECTION`. Test-only one-path correction, P1–P6 and A6/A7/locus oracles; exact source `f021e8f7b876c261b8337334596f519f4b7652a7`, GMP/GMPXX eight-target compile [run 39838687950](https://github.com/akashskypatel/Directional/actions/runs/39838687950) artifact `12452346647`. No runtime; see `Architecture_M6_CP3_CB27A_Wedge_Membership_Oracle_Code_Build_Record_20261022.md`.
 - [x] **CB27A-REV:** accepted static non-vacuity of real D7 span-binding withdrawal under P1–P6; no executed runtime evidence. See `Architecture_M6_CP3_CB27A_Wedge_Membership_Oracle_Review_Decision_20261022.md`.
 - [x] **CB28 COMPILED (no runtime):** `M6-CP3-CB28-RP01-FACTORY-ERROR-DIAGNOSTICS` — test-only message formatting on TQ/SP10; source `19aeb3e60e2d762006d95dc4a5007af54f094ee7`; [run 39861294132](https://github.com/akashskypatel/Directional/actions/runs/39861294132), artifact `12460974720`. Independent CB28-REV must audit RA-134.5 scope including stale line references.
-- [ ] **EXACT NEXT:** independent CB28-REV static review (full canonical ID not yet assigned); no runtime, no TB29 before Review.
-- [ ] Planned after Review, not authorized yet: CB28-REV → TB29 (4 A7 negatives + D3/D7 + 3 A7 guards + 21 silent + 4 wrong-code rows, on the CB28 package) → TB29-REV → DEFN-M1 (scoped from measured factory clauses) → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up (RA-130.7) only after a witness.
-- [ ] **Planned user-directed `DIAG-RETAIN`** remains deferred: A5 occurrence/relation, A6 quotient classes and A7 geometry snapshots for GUI/CLI when retention enabled, with no read-back, bounded memory. Review schedules clear of RP-01.
+- [x] Independent CB28-REV done (RA-136). Was: independent CB28-REV static review (full canonical ID not yet assigned); no runtime, no TB29 before Review.
+- Planned at the time: CB28-REV → TB29 (4 A7 negatives + D3/D7 + 3 A7 guards + 21 silent + 4 wrong-code rows, on the CB28 package) → TB29-REV → DEFN-M1 (scoped from measured factory clauses) → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up (RA-130.7) only after a witness.
 - **Turn sequence:** TB28-REV audit (RA-134) → CB27 → CB27-REV (fourth oracle rejected) → CB27A [BLOCKED] → design review (RA-135) → CB27A [compiled] → CB27A-REV [static accepted] → CB28 [compiled] → **CB28-REV** → TB29 → TB29-REV → DEFN-M1 → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
 - Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB28 462/497 **candidate only**; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
 

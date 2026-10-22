@@ -1,3 +1,9 @@
+## 2026-10-22 — CB28 reviewed (RA-136): failure messages added; three still missing
+
+- Review accepted CB28. It changes only failure messages, so 18 of the 21 previously silent failing tests now say why the product or atlas was rejected.
+- Three were missed: the two tests that define the M1 ordering question, and one A5 test. The turn spec gave line numbers that later edits had shifted, and no test names. CB28A adds those three messages; turn specs now name tests, not lines.
+- Next: CB28A, then the TB29 run of all 35 remaining failures. Accounting unchanged. Record: `Architecture_M6_CP3_CB28_Factory_Error_Diagnostics_Review_Decision_20261022.md`.
+
 ## 2026-10-22 — CB28 factory-error diagnostics compiled; independent Review required
 
 - Test-only TQ/SP10 factory diagnostic context at exact source `19aeb3e60e2d762006d95dc4a5007af54f094ee7`, no assertions or product code changed; source-line drift in RA-134.5 remains a Review check.

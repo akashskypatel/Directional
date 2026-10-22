@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-22 · CB28 test-only factory-error diagnostics compiled at source `19aeb3e60e2d762006d95dc4a5007af54f094ee7` (run 39861294132); no runtime credit. Next independent CB28-REV (full ID unassigned); TB29 and DEFN-M1 remain gated. Accepted CP2 491/491; TB28 462/497 candidate; stable 66/17/49, debt 1; RP-01 open and RP-02 unreached.
+**Currency:** 2026-10-22 · RA-136 accepts CB28. 18 of 21 previously silent failing tests now report a typed reason. CB28A adds the last three (including the two M1 precedence tests), then TB29 runs all 35 remaining failures and DEFN-M1 follows from the measured causes. Accepted CP2 491/491; TB28 462/497 candidate; stable 66/17/49, debt 1; RP-01 open and RP-02 unreached.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 

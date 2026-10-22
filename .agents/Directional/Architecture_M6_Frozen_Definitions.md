@@ -1,3 +1,14 @@
+## RA-136 — CB28 reviewed: 18/21 silent REDs covered; CB28A before TB29 (2026-10-22)
+
+Authority: `Architecture_M6_CP3_CB28_Factory_Error_Diagnostics_Review_Decision_20261022.md`.
+
+- **RA-136.1** CB28 `19aeb3e60` is message-only and accepted; package `12460974720` verified. Covered: `focused30:3`, `selector:139, 140, 142, 189–195, 220, 221, 296, 302, 304, 439`, `cp3entry:4`. CB27A matches RA-135.
+- **RA-136.2** Missed: `focused30:12` (`relabelledA5`), `focused30:22/23` (`front`; the M1 precedence tests). Rule: turn specs name targets by test identity; line numbers are advisory.
+- **RA-136.3** Next: `M6-CP3-CB28A-RP01-M1-PRECEDENCE-ASSERT-DIAGNOSTICS` — three assert messages in TQ, compile only.
+- **RA-136.4** TB29: targeted harness on the CB28A package — 4 A7 negatives, D3/D7, 3 A7 guards, all 35 TB28 REDs; typed-reason attribution table.
+- **RA-136.5** CB28A → REV → TB29 → REV → DEFN-M1 → REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+
+---
 ## RA-135 — CB27A design block resolved: wedge-withdrawal witness (2026-10-22)
 
 Authority: `Architecture_M6_CP3_CB27A_Wedge_Membership_Witness_Design_Review_Decision_20261022.md`; amends CB27-REV (`Architecture_M6_CP3_CB27_A7_Certified_Seam_Negative_Oracles_Review_Decision_20261022.md`) successor items 1–2.
