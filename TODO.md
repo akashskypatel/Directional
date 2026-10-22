@@ -1,4 +1,4 @@
-## CURRENT — CB26 GMP compile GREEN; mandatory A7 Review next (2026-10-22)
+## CURRENT — RA-131 accepts CB26 compile-only; immutable TB27 next (2026-10-22)
 
 - [x] Review (RA-130, DEFN-SEAM-A7-REV): consumer census, the proof that `relationCertified` can hold, the core rule and the diagnostic are accepted. Binding amendments:
   - **B1:** the frozen D7 test `cp3entry:5` (TQ:3977–4056) requires A7 to accept the certified seam relation and to reject its evidence tamper with site `cross-sheet`; TB27 reports the D7 tamper. §6 correction: the D3 tamper is a face-gauge quarter turn;
@@ -13,14 +13,15 @@
   3. TQ:2811 helper records the A7 code and site;
   4. eight targets compiled with GMP/GMPXX, `runtimeExecution=false`; [run 39744189868](https://github.com/akashskypatel/Directional/actions/runs/39744189868), artifact `12409939859` (28/28 manifest). Record: `Architecture_M6_CP3_CB26_A7_Certified_Seam_Cross_Sheet_Authority_Code_Build_Record_20261022.md`.
   No A5, A6, per-member A7, A8, header, other-test, selector or workflow change.
-- [ ] **EXACT NEXT:** `M6-CP3-CB26-RP01-A7-CERTIFIED-SEAM-CROSS-SHEET-AUTHORITY-REV` — Review: independently adjudicate the source diff, certificate-bound B1–B6, compile package and the frozen D7 oracle; issue TB27 only on acceptance.
+- [x] **RA-131 Review COMPLETE:** `M6-CP3-CB26-RP01-A7-CERTIFIED-SEAM-CROSS-SHEET-AUTHORITY-REV` — independently accepted the two-path CB26 B1–B6 diff and hashed exact GMP compile evidence; no runtime. Record: `Architecture_M6_CP3_CB26_A7_Certified_Seam_Cross_Sheet_Authority_Review_Decision_20261022.md`.
+- [ ] **EXACT NEXT:** `M6-CP3-TB27-RP01-A7-CERTIFIED-SEAM-CROSS-SHEET-VERIFICATION` — artifact-only TB27: original 18 TB26 selections plus three RA-130.9 A7 guards; report D3/D7 falsifiers, preserve controls, no rebuild/compile/selector edits.
 - [ ] Planned, not authorized: TB27 (18 TB26 selections + 3 A7 site guards; D3 and D7 tamper falsifiers) → TB27-REV → CB27 (negative tests, TQ only: RA-127.4b + A7 unrelated-seam evidence and no-direction) → CB27-REV → TB28 (new tests + selector-497 census) → TB28-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up (RA-130.7) only after a witness.
 - [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
   - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
   - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
   - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
-- **Turn sequence:** TB26-REV (RA-129) → DEFN-SEAM-A7 → DEFN-SEAM-A7-REV (RA-130) → **CB26** → CB26-REV → TB27 → TB27-REV → CB27 → CB27-REV → TB28 (+ census) → TB28-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+- **Turn sequence:** TB26-REV (RA-129) → DEFN-SEAM-A7 → DEFN-SEAM-A7-REV (RA-130) → CB26 → CB26-REV (RA-131) → **TB27** → TB27-REV → CB27 → CB27-REV → TB28 (+ census) → TB28-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
 - Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB21 candidate 449/497; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
 
 ---

@@ -34,43 +34,40 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-22, after CB26 Code + Build: A7 certified OrdinaryFront cross-sheet branch committed and eight GMP/GMPXX targets compiled. RA-130 amendments B1–B6 are implemented but have **not** been independently reviewed or measured at runtime. CB26-REV is now the only authorized next turn. |
+| Currency | 2026-10-22, after RA-131 CB26-REV: B1–B6 independently static-reviewed and compile package verified; **runtime unmeasured**. TB27 is the sole authorized next turn. |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; CB26 semantic source `e3d60337ed34538547d3a6d519bafae5b184330e` (compile GREEN), later STATUS/control-plane commits are not semantic evidence; refetch HEAD before mutation. CB25 semantic source `c5e0b242f3c3015f1f4f5f886058f0086fe1f679` (compile GREEN); CB24 semantic source `dae267a82fb884ff9eba4fd0122ad61750d0c924`; CB24 independent Review RA-125 accepts compile-only evidence. Later non-documentation commits are GUI, build and README tooling only (A2a network display `bf518b003`, record `Architecture_M6_TOOL_VIS_Field_Network_GUI_Layer_Record_20261021.md`; macOS GUI configure; Windows static libraries and `/bigobj`; GUI text wrapping; GUI SurfaceCells diagnostics and field streamlines, with two fixes to the legacy streamline tracer `src/geometry/Streamlines.*`, which SurfaceCells does not use; see CHANGELOG). CB25 changes only RP A5 shared-node predicates relative to `dae267a82`; no other RP-01 source file changed, and Linux CI compile behavior is unchanged. Exact current HEAD must be re-fetched. |
 | Last accepted semantic runtime | CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. R3 baseline **403/497** rejected. |
 | Latest candidate or rejected evidence | CB26 GMP compile [run 39744189868](https://github.com/akashskypatel/Directional/actions/runs/39744189868), artifact `12409939859`, outer SHA-256 `ee08279e537af4e99f287d28595df0ef639e632aa345bc0b1986bbb361ee86fa`, 28/28 manifest, `runtimeExecution=false`, exact source `e3d60337ed34538547d3a6d519bafae5b184330e` (compile-only; NOT runtime accepted); TB26 [run 39727886868](https://github.com/akashskypatel/Directional/actions/runs/39727886868), result `12403479548` (ZIP `3f7df8c2…ac2d`), expires 2026-10-29T05:26:45Z; 18/18, 9 PASS / 9 RED; reviewed by RA-129 (`Architecture_M6_CP3_TB26_Shared_Node_Seam_Witness_Harvest_Review_Decision_20261022.md`). CB25 package `12399179446`, source `c5e0b242f` (RA-128). Census: TB21 **449/497** (RA-115). **Not promoted.** |
 | Regression accounting and debt | **66/17/49**, debt **1**, selector 497 frozen; R3 403/497 rejected; candidate evidence TB21 449/497. Tracker: `Regression_Root_Cause_Tracker.md`. |
 | Active boundary | `RP-01` open. **Seam family (12 rows):** `focused30:6, 20, 24, 25, 26, 27, 28`; `selector:444, 446, 448` (incl. G4-B002); `cp3entry:3, 5`. TB26 found A5 and A6 admit while nine rows stopped at A7. CB26 now statically adds RA-130.8 certificate-bound A7 direction/evidence checking and diagnostic sites; no runtime effect has been measured. Periodic behavior unchanged (latent B6), D3 and D7 tamper outcomes unmeasured. **M1**: 10 rows plus `focused30:12`, `cp3entry:2` (DEFN-M1). CP3-entry: D2 `cp3entry:1` (DEFN-T1). `RP-02` UNREACHED; Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-CB26-RP01-A7-CERTIFIED-SEAM-CROSS-SHEET-AUTHORITY-REV` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-TB27-RP01-A7-CERTIFIED-SEAM-CROSS-SHEET-VERIFICATION` — EXACT NEXT
 
-- **Type / owner:** mandatory independent Review (static diff and immutable compile-package adjudication); RA-130.8–9 governs the contract and TB27 issuance.
-- **Objective:** inspect the exact CB26 two-file semantic diff against RA-130 B1–B6, the frozen D7 positive/tamper oracle, and certificate-specific side-evidence selection. Verify that no A5/A6, per-member A7, A8, Periodic semantics, header, selector, workflow or other test was changed.
-- **Read before work:** `Architecture_M6_CP3_DEFN_SEAM_A7_Certified_Seam_Cross_Sheet_Authority_Review_Decision_20261022.md` (all, especially §§2–9), `Architecture_M6_CP3_DEFN_SEAM_A7_Certified_Seam_Cross_Sheet_Authority_20261022.md`, `Architecture_M6_CP3_CB26_A7_Certified_Seam_Cross_Sheet_Authority_Code_Build_Record_20261022.md`, RP A7 forest edge/failure mapping, TQ fixture helper and D7 test, `LESSONS.md` §§3, 5.
-- **In scope:** independent source/contract/evidence review, documentation drift audit, compulsory Review consolidation and ORIENTATION/ROADMAP currency checks, acceptance or precise corrective disposition. Compile package `12409939859` from [run 39744189868](https://github.com/akashskypatel/Directional/actions/runs/39744189868), exact source `e3d60337ed34538547d3a6d519bafae5b184330e`; 28/28 checksums, GMP/GMPXX, `runtimeExecution=false` already checked.
-- **Out of scope:** source/test edits, test/benchmark execution, semantic acceptance from compile evidence alone, fabricated TB27 outcomes, changing frozen selector-497, and starting a successor without Review disposition.
-- **Success evidence:** a Review decision with independently re-derived B1–B6 reasoning, source-path/line scope, compile artifact hashes, explicit D7/D3 falsifiers, retained state and durable handoff.
-- **On success:** Review may assign the planned TB27 according to RA-130.9; exact canonical TB ID must be explicitly frozen by Review.
-- **On failure/blocker:** follow Review policy; retain CP2 acceptance, RP-01 open, and route only the evidenced corrective work.
+- **Type / owner:** immutable artifact-only Test + Benchmark; issued by RA-131 after independent CB26 source/compile review; use `Architecture_M6_CP3_CB26_A7_Certified_Seam_Cross_Sheet_Authority_Review_Decision_20261022.md` and RA-130.9.
+- **Source/package:** `e3d60337ed34538547d3a6d519bafae5b184330e`, artifact `12409939859`, ZIP SHA-256 `ee08279e537af4e99f287d28595df0ef639e632aa345bc0b1986bbb361ee86fa`, 28/28 manifest, `runtimeExecution=false` at compile.
+- **Selections:** 18 unchanged TB26 case identities (same six controls/guard) plus RA-130.9 three exact A7 site guards. Do not modify the frozen 497 selector. Run only packaged binaries, do not rebuild, reconfigure or change test source; preserve immutability.
+- **Falsifiers:** eight target rows still at `cross-sheet:seam-direction`; D7 tamper passes or has a site other than exactly `cross-sheet`; D3 quarter-turn tamper passes; any TB26 control or A7 site guard RED; any `cross-sheet:periodic` event; missing/duplicate/skipped selected test; mutated/mismatched package.
+- **On completion:** TB27-REV required; report measured first failures without inferred PASS and do not start CB27 or alter stable ledgers without independent Review.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — next | `M6-CP3-CB26-RP01-A7-CERTIFIED-SEAM-CROSS-SHEET-AUTHORITY-REV` | Mandatory static diff and immutable package Review of CB26, RA-130 B1–B6; no runtime. |
-| 2 — conditional | TB27 (canonical ID to be assigned by CB26-REV) | Only if Review accepts CB26. RA-130.9 freezes the 18 TB26 selections + three A7 site guards and D3/D7 falsifiers. |
+| 1 — next | `M6-CP3-TB27-RP01-A7-CERTIFIED-SEAM-CROSS-SHEET-VERIFICATION` | RA-131-authorized artifact-only TB27; 18 TB26 rows + three A7 site guards, D3/D7 falsifiers. |
+| 2 — conditional | TB27-REV (canonical ID to be assigned by TB27 closeout) | Required independent adjudication of TB27 outcomes; no successor until Review. |
 | later — unassigned | CB27 → CB27-REV → TB28 → TB28-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review | Planned only; each intervening Review must authorize its next edge. Periodic and nonzero-turn seams remain witness-gated. |
 | later — unassigned | `DIAG-RETAIN` | User-directed diagnostic snapshots, queued clear of RP-01 turns in `TODO.md`. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **review** — CB26-REV: static B1–B6 and frozen-D7 adjudication, immutable GMP compile evidence; no runtime.
+`load_next`: **test/benchmark** — RA-131-authorized TB27 immutable package, 21 exact identities, D3/D7 oracle.
 
 Minimum successor context **after the mandatory start checklist and policies**:
 
 0. `.agents/Directional/ORIENTATION.md` — project context, read first.
 1. `.agents/Directional/ROADMAP.md` — milestone position only.
 2. `.agents/Directional/Future_Chat_Session_Handoff.md` — exact current handoff.
-3. RA-130 (`Architecture_M6_CP3_DEFN_SEAM_A7_Certified_Seam_Cross_Sheet_Authority_Review_Decision_20261022.md`), frozen DEFN-SEAM-A7 contract, CB26 Code + Build record, exact semantic source `e3d60337ed34538547d3a6d519bafae5b184330e`; TQ D7 witness; `LESSONS.md` §§3, 5.
+3. RA-131 (`Architecture_M6_CP3_CB26_A7_Certified_Seam_Cross_Sheet_Authority_Review_Decision_20261022.md`), RA-130 B1–B6, TB26 harness selections, CB26 code/build record, exact GMP package `12409939859`, TQ D3/D7 oracles; `LESSONS.md` evidence/witness sections.
 4. `.agents/Directional/Regression_Root_Cause_Tracker.md` and `TODO.md` — unresolved issues and scope; required policy readings still govern.
 
 **Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py authority <sha>` and

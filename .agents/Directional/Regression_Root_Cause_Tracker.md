@@ -1,5 +1,7 @@
 ## DEFN-SEAM-A7 Review (RA-130, 2026-10-22)
 
+> 2026-10-22 RA-131: CB26 was independently accepted as compile-only; no TB27 run or regression promotion yet. Certified-seam A7 D3/D7 positive/tamper, Periodic B6 and three A7 guard obligations transfer unchanged to `M6-CP3-TB27-RP01-A7-CERTIFIED-SEAM-CROSS-SHEET-VERIFICATION`. See `Architecture_M6_CP3_CB26_A7_Certified_Seam_Cross_Sheet_Authority_Review_Decision_20261022.md`.
+
 Contract accepted with amendments B1–B6:
 - the frozen D7 test `cp3entry:5` already pins A7's acceptance and its `cross-sheet` evidence tamper;
 - spans are bound to canonical endpoints, and the duplicate pair check is dropped;
