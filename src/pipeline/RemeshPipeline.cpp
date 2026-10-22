@@ -7576,6 +7576,49 @@ SourceAttachedGeometryProducer::produce(
                             secondSheets.begin(), secondSheets.end(),
                             std::back_inserter(sharedSheets));
       if (!sharedSheets.empty()) continue;
+      if (relation.id.kind == SurfaceOccurrenceRelationKind::OrdinaryFront &&
+          relation.evidence.isolationSeamTransportCertificate.has_value()) {
+        const auto &certificate =
+            *relation.evidence.isolationSeamTransportCertificate;
+        const auto &firstSpan = relation.evidence.firstEndpointSpan;
+        const auto &secondSpan = relation.evidence.secondEndpointSpan;
+        std::optional<authority::Orientation> direction;
+        if (firstSpan.has_value() && secondSpan.has_value()) {
+          direction = certified_seam_direction(
+              *occurrenceById.at(relation.id.first),
+              *occurrenceById.at(relation.id.second),
+              *firstSpan, *secondSpan, certificate);
+        }
+        if (!direction.has_value()) {
+          return fail(GeometryEmbeddingFailureCode::UncertifiedCrossSheetBinding,
+                      quotient.id, edge.first, {}, "cross-sheet:seam-direction");
+        }
+        const auto firstSheet = *direction == authority::Orientation::Forward
+                                    ? certificate.firstSheet()
+                                    : certificate.secondSheet();
+        const auto secondSheet = *direction == authority::Orientation::Forward
+                                     ? certificate.secondSheet()
+                                     : certificate.firstSheet();
+        const auto matches_certificate = [&](const auto &transition) {
+          return transition.region == certificate.region() &&
+                 transition.seam == certificate.seam() &&
+                 ((transition.fromSheet == firstSheet &&
+                   transition.toSheet == secondSheet) ||
+                  (transition.fromSheet == secondSheet &&
+                   transition.toSheet == firstSheet));
+        };
+        const auto has_certificate = [&](const auto &transitions) {
+          return std::any_of(transitions.begin(), transitions.end(),
+                             matches_certificate);
+        };
+        if (!has_certificate(relation.evidence.firstSideIsolationEvidence) &&
+            !has_certificate(relation.evidence.secondSideIsolationEvidence) &&
+            !has_certificate(relation.evidence.equivalence.isolationTransitions)) {
+          return fail(GeometryEmbeddingFailureCode::UncertifiedCrossSheetBinding,
+                      quotient.id, edge.first, {}, "cross-sheet");
+        }
+        continue;
+      }
       const auto transition_connects_endpoints =
           [&](const geometry::CornerWedgeIsolationTransition &transition) {
             return (firstSheets.contains(transition.fromSheet) &&
@@ -7598,8 +7641,11 @@ SourceAttachedGeometryProducer::produce(
           any_connecting_transition(first.cornerWedgeIsolation) ||
           any_connecting_transition(second.cornerWedgeIsolation);
       if (!relationCertified || !occurrenceCertified) {
+        const char *site = relation.id.kind == SurfaceOccurrenceRelationKind::Periodic
+                               ? "cross-sheet:periodic"
+                               : "cross-sheet:no-certificate";
         return fail(GeometryEmbeddingFailureCode::UncertifiedCrossSheetBinding,
-                    quotient.id, edge.first, {}, "cross-sheet");
+                    quotient.id, edge.first, {}, site);
       }
     }
 
@@ -9274,6 +9320,11 @@ build_authoritative_phase_front_mesh_with_hard_features(
       return result;
     }
     result.failure = geometry_embedding_failure_name(geometryError->code);
+    if (geometryError->code ==
+            GeometryEmbeddingFailureCode::UncertifiedCrossSheetBinding &&
+        !geometryError->site.empty()) {
+      result.failure += ":" + geometryError->site;
+    }
     if (geometryError->code ==
         GeometryEmbeddingFailureCode::SourceSupportPointMismatch) {
       result.failure += ":support-point";

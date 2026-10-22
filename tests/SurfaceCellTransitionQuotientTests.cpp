@@ -2808,7 +2808,13 @@ std::unique_ptr<PhaseFrontFixture> m6cp3_produced_seam_fixture(
             &a7Construction) != nullptr) {
       return fixture;
     }
-    record(size, "A7:rejected-certified-seam");
+    const auto *error =
+        std::get_if<directional::pipeline::GeometryEmbeddingFailure>(
+            &a7Construction);
+    record(size, error == nullptr ? "A7:unexpected-disposition"
+        : "A7:" + std::string(
+              directional::pipeline::geometry_embedding_failure_name(error->code)) +
+              ":" + error->site);
   }
   return nullptr;
 }
