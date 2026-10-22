@@ -1,3 +1,9 @@
+## 2026-10-22 — CB28A independently accepted (static Review); TB29 scoped
+
+- Independent Review verified semantic `4473e41e94a35f1bf189fa046e86bac92c7391fb` (+16/−3 in TQ only), three guarded diagnostic streams by test name, build package `12465330920` with 28/28 hashes, eight GMP/GMPXX targets and `runtimeExecution=false`; no runtime or gate promotion.
+- Issued `M6-CP3-TB29-RP01-TYPED-FACTORY-CAUSE-HARVEST` artifact-only 44-identity typed-cause plan (`Architecture_M6_CP3_TB29_Typed_Factory_Cause_Harvest_Plan_20261022.md`); maintain CP2 491/491 accepted, TB28 462/497 candidate and stable 66/17/49.
+- Review record: `Architecture_M6_CP3_CB28A_M1_Precedence_Assert_Diagnostics_Review_Decision_20261022.md`.
+
 ## 2026-10-22 — CB28A M1/A5 diagnostic assertions compiled
 
 - Added failure text at exactly three targeted `M6CP1` assertions without changing checks or production behavior; semantic `4473e41e94a35f1bf189fa046e86bac92c7391fb`.

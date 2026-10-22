@@ -1,8 +1,9 @@
-## CURRENT — CB28A compile-only complete; independent Review next (2026-10-22)
+## CURRENT — CB28A independently reviewed; TB29 artifact-only next (2026-10-22)
 
 - [x] `M6-CP3-CB28A-RP01-M1-PRECEDENCE-ASSERT-DIAGNOSTICS` — RA-136.3 three message-only asserts, TQ only (+16/−3), semantic `4473e41e94a35f1bf189fa046e86bac92c7391fb`. Exact GMP/GMPXX eight-target compile [run 39867988763](https://github.com/akashskypatel/Directional/actions/runs/39867988763), artifact `12465330920`; 28/28 hashes, `runtimeExecution=false`. Build record: `Architecture_M6_CP3_CB28A_M1_Precedence_Assert_Diagnostics_Code_Build_Record_20261022.md`.
-- [ ] **EXACT NEXT:** `M6-CP3-CB28A-RP01-M1-PRECEDENCE-ASSERT-DIAGNOSTICS-REV` — independent Review of changed assertions and compile evidence, then issue TB29 if accepted. No tests, runtime, or source fixes in this Review.
-- [ ] Planned, not yet authorized: TB29 (four A7 negatives, D3/D7, three A7 guards, all 35 TB28 RED rows; RA-136.4) → TB29-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; nonzero-turn and Periodic follow-ups witness-gated.
+- [x] `M6-CP3-CB28A-RP01-M1-PRECEDENCE-ASSERT-DIAGNOSTICS-REV` — independent Review accepted the exact one-file three-message-only diff and 28/28 immutable GMP/GMPXX compile package; no runtime or CP3 promotion. Decision: `Architecture_M6_CP3_CB28A_M1_Precedence_Assert_Diagnostics_Review_Decision_20261022.md`.
+- [ ] **EXACT NEXT:** `M6-CP3-TB29-RP01-TYPED-FACTORY-CAUSE-HARVEST` — TB29 artifact-only 44-identity typed-cause harvest; exact plan `Architecture_M6_CP3_TB29_Typed_Factory_Cause_Harvest_Plan_20261022.md`; no rebuild, no selector/source/test/fixture changes.
+- [ ] Planned after the authorized TB29: TB29-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; nonzero-turn and Periodic follow-ups witness-gated.
 - [ ] `DIAG-RETAIN` remains deferred; Review schedules clear of RP-01. Stable 66/17/49, debt 1, CP2 491/491, R3 rejected 403/497, TB28 462/497 candidate, selector 497 frozen, RP-01 open, RP-02 UNREACHED, Gate C suspended.
 
 ---

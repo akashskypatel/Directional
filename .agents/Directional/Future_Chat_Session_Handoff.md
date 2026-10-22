@@ -34,40 +34,40 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-22, CB28A test-only three-assert messages compiled, pending mandatory independent Review. No runtime evidence. RA-136.3; compiled source `4473e41e94a35f1bf189fa046e86bac92c7391fb` package `12465330920`. |
+| Currency | 2026-10-22, CB28A test-only three-assert messages independently accepted, TB29 artifact-only next; no new runtime. RA-136.3/4; compiled source `4473e41e94a35f1bf189fa046e86bac92c7391fb` package `12465330920`. |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`; PR #8 draft/open. Exact CB28A semantic commit `4473e41e94a35f1bf189fa046e86bac92c7391fb`, GMP/GMPXX package `12465330920` (run `39867988763`), outer ZIP SHA-256 `da56650a18f99443abf5f721620bb00fd5701dd1e660741da9aafb924a6dfbf5`; branch head includes subsequent dispatcher/documentation commits. |
 | Last accepted semantic runtime | CP2 **491/491**, package `11391685901`, semantic `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. R3 **403/497** rejected. |
 | Latest candidate evidence | RA-133-reviewed TB28 [run 39772864202](https://github.com/akashskypatel/Directional/actions/runs/39772864202), result artifact **`12424484672`**, ZIP SHA-256 `a54110dbb5475b76e6b6a6baa8fc1b7dcabd7aa50c95c5b390532509d1c656e6`; 1019/1019 manifest, 497/497 executed, **462 PASS/35 RED**, 13 RED→PASS and no PASS→RED vs TB21 449/48. Owning report `Architecture_M6_CP3_TB28_Selector_497_Census_Report_20261022.md`; TSV inventory and full ledger. **Not promoted.** |
 | Regression accounting and debt | **66 events / 17 categories / 49 recurrences**, witness debt **1**, selector **497 frozen**, TB28 candidate 462/497, RP-01 OPEN. Tracker: `Regression_Root_Cause_Tracker.md`. |
-| Active boundary | `RP-01` open. The seam family (12) and `selector:447` PASS at TB28. **35 REDs by first failing component (RA-134.2):**<br>- checked phase-front factory: 17 (13 silent: `focused30:3, 22, 23`; `selector:139, 140, 142, 220, 221, 296, 302, 304, 439`; `cp3entry:4`. 4 with the wrong code: `selector:211, 219, 227, 230`);<br>- A3 atlas: 8 (`selector:189–195` silent, `selector:442`);<br>- A5: `focused30:12`;<br>- producer disposition or oracle: 7 (`selector:174, 201, 204, 242, 247, 250, 405`);<br>- witness absence: `cp3entry:1` (D2), `cp3entry:2`.<br>CB27A-REV accepted the static oracle; CB28 adds diagnostic text only, pending independent Review before TB29. `RP-02` UNREACHED; Gate C suspended. |
+| Active boundary | `RP-01` open. The seam family (12) and `selector:447` PASS at TB28. **35 REDs by first failing component (RA-134.2):**<br>- checked phase-front factory: 17 (13 silent: `focused30:3, 22, 23`; `selector:139, 140, 142, 220, 221, 296, 302, 304, 439`; `cp3entry:4`. 4 with the wrong code: `selector:211, 219, 227, 230`);<br>- A3 atlas: 8 (`selector:189–195` silent, `selector:442`);<br>- A5: `focused30:12`;<br>- producer disposition or oracle: 7 (`selector:174, 201, 204, 242, 247, 250, 405`);<br>- witness absence: `cp3entry:1` (D2), `cp3entry:2`.<br>CB27A-REV accepted the static oracle; CB28 and CB28A diagnostic text independently reviewed; TB29 measures typed reasons next. `RP-02` UNREACHED; Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-CB28A-RP01-M1-PRECEDENCE-ASSERT-DIAGNOSTICS-REV` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-TB29-RP01-TYPED-FACTORY-CAUSE-HARVEST` — EXACT NEXT
 
-- **Type:** independent Review. Authority: RA-136.3/RA-136.4 (`Architecture_M6_CP3_CB28_Factory_Error_Diagnostics_Review_Decision_20261022.md`). Do **not** run TB29 as part of this turn.
-- **Reviewed semantic source:** `4473e41e94a35f1bf189fa046e86bac92c7391fb`, exactly `tests/SurfaceCellTransitionQuotientTests.cpp` +16/−3, three targeted messages only, with no assertion predicate/fixture/production change. Build record: `Architecture_M6_CP3_CB28A_M1_Precedence_Assert_Diagnostics_Code_Build_Record_20261022.md`.
-- **Required re-derivation:** verify exact changed paths and diff against RA-136.2 by **test names**; confirm guarded error formatting does not introduce unsafe evaluation; verify immutable GMP/GMPXX package `12465330920` from [compile run 39867988763](https://github.com/akashskypatel/Directional/actions/runs/39867988763), full manifest and `runtimeExecution=false`; preserve 497 selector and accepted ledger.
-- **Review outcome:** if accepted, issue the separate TB29 artifact-only targeted 44-identity plan under RA-136.4. If not, file explicit findings/stop without advancing. Review owns orientation currency and consolidation.
-- **No Code + Build or runtime work authorized by this handoff's successor.**
+- **Type:** Test + Benchmark, artifact-only, authorized by CB28A independent Review and RA-136.4. **Do not compile/rebuild/relink/configure/modify source, fixture, selector or workflow.**
+- **Immutable executor:** CB28A semantic `4473e41e94a35f1bf189fa046e86bac92c7391fb`, compile result `12465330920`, outer SHA-256 `da56650a18f99443abf5f721620bb00fd5701dd1e660741da9aafb924a6dfbf5`, 28/28 internal checksums, GMP/GMPXX. Runtime has **not** run on this package.
+- **Exactly 44 tests:** four A7 negatives, D3/D7 positives (`cp3entry:3/5`), three existing A7 site guards, and all 35 frozen TB28 REDs. Source inventory and checks: `Architecture_M6_CP3_TB29_Typed_Factory_Cause_Harvest_Plan_20261022.md`. Measure each authentic first-failure code/site; report falsifiers and non-vacuous A7 paths; do not infer root cause from topic.
+- **Review record:** `Architecture_M6_CP3_CB28A_M1_Precedence_Assert_Diagnostics_Review_Decision_20261022.md`. After TB29, a separately authorized independent TB29-REV determines DEFN-M1 scope. No successor beyond TB29 may be entered within this turn.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
 | 1 — completed | `M6-CP3-CB28A-RP01-M1-PRECEDENCE-ASSERT-DIAGNOSTICS` | Message-only 3 asserts; semantic `4473e41e94a3`; eight-target GMP/GMPXX compile `12465330920`, no runtime. |
-| 2 — next | `M6-CP3-CB28A-RP01-M1-PRECEDENCE-ASSERT-DIAGNOSTICS-REV` | Independent static Review, mandatory before separate TB29 under RA-136.4. |
-| later — UNKNOWN until assigned | TB29 (targeted artifact-only harness on the CB28A package: 4 A7 negatives + D3/D7 + 3 A7 guards + all 35 TB28 REDs; typed-reason attribution table; RA-136.4) → TB29-REV → DEFN-M1 (scoped from measured factory clauses) → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up (RA-130.7) only after a witness | Planned, not authorized; each Review assigns the next edge. |
+| 2 — completed | `M6-CP3-CB28A-RP01-M1-PRECEDENCE-ASSERT-DIAGNOSTICS-REV` | Static-only acceptance of three assertion messages, exact package verification, no runtime. |
+| 3 — next | `M6-CP3-TB29-RP01-TYPED-FACTORY-CAUSE-HARVEST` | Targeted artifact-only 44-identity harvest, no compile; independent TB29-REV follows. |
+| later — UNKNOWN until assigned | TB29-REV → DEFN-M1 (scoped from measured factory clauses) → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up (RA-130.7) only after a witness | Planned, not authorized; each Review assigns the next edge. |
 | later — UNKNOWN until assigned | `DIAG-RETAIN` (user-directed): retain A5 occurrences and relations, A6 merged classes and A7 vertex geometry as diagnostic snapshots for GUI/CLI; scope in `TODO.md` | Planned, not authorized; Review places it in the sequence clear of RP-01 turns. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **review** — CB28A static scope and GMP/GMPXX compile-package evidence (`12465330920`); no runtime, no TB29 in Review.
+`load_next`: **test_benchmark** — exact CB28A package (`12465330920`) and 44-identity TB29 plan; no compile and no semantic edits.
 
 Minimum successor context **after the mandatory start checklist and policies**:
 
 0. `.agents/Directional/ORIENTATION.md` — project context, read first.
 1. `.agents/Directional/ROADMAP.md` — milestone position only.
 2. `.agents/Directional/Future_Chat_Session_Handoff.md` — exact current handoff.
-3. `Architecture_M6_CP3_CB28_Factory_Error_Diagnostics_Review_Decision_20261022.md` RA-136.2–4; `Architecture_M6_CP3_CB28A_M1_Precedence_Assert_Diagnostics_Code_Build_Record_20261022.md`; compare `4473e41e94a35f1bf189fa046e86bac92c7391fb` against its parent; compile package `12465330920`.
+3. `Architecture_M6_CP3_TB29_Typed_Factory_Cause_Harvest_Plan_20261022.md`, `Architecture_M6_CP3_CB28A_M1_Precedence_Assert_Diagnostics_Review_Decision_20261022.md`, RA-136.4, and exact immutable compile package `12465330920`; no source mutation.
 4. `.agents/Directional/Regression_Root_Cause_Tracker.md` and `TODO.md` — unresolved issues and scope; required policy readings still govern.
 
 **Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py authority <sha>` and
