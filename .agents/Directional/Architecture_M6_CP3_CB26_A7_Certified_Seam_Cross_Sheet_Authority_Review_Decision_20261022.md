@@ -47,4 +47,4 @@
 | Turn boundary held | Static review only; no binaries, compiles, tests, benchmarks, source/test/selector edits. |
 | review_check.py boundary | Exact helper requires historical `.git` objects absent from Action snapshot. Run attempted; its historical baseline and commit ancestry checks cannot be proven with a git-less archive. GitHub commit/compare and complete hashed snapshot independently confirm unchanged code and selectors. |
 | `STATUS` lifecycle maintained | New-turn bootstrap on 2026-10-22; final direct beacon after documentation commit. |
-| Pushed to origin, branch in sync | To be verified on remote after documentation application; source snapshot itself is a pinned GitHub origin commit. |
+| Pushed to origin, branch in sync | Verified PR #8 remote HEAD `f199852100bd2ceae10d9c0831189de464cf79a2` after verified patch pushes and cleanup; GitHub compare from `e3d60337` lists only documents/control state. A local `git status -sb` cannot be asserted because the downloaded snapshot has no Git history; remote HEAD and workflow push results were independently checked. |
