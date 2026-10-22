@@ -1,3 +1,7 @@
+## 2026-10-22 — RA-133 independent TB28 census Review (candidate, not CP3 acceptance)
+
+- Primary archive reverified (1019/1019 SHA-256; 497 exact per-case logs; 5,784-file source snapshot). TB28 **462/497** vs TB21 449/497: **13 RED→PASS, zero PASS→RED**; 35 inherited REDs partitioned by observed failure precondition, not falsely assigned one root cause. No stable ledger or selector mutation. Independent record: `.agents/Directional/Architecture_M6_CP3_TB28_Selector_497_Census_Review_Decision_20261022.md`. Next **M6-CP3-CB27-RP01-A7-CERTIFIED-SEAM-NEGATIVE-ORACLES** (test-only A7 negative oracles, compile-only; no runtime).
+
 ## 2026-10-22 — TB28 complete: selector-497 census 462/497; 13 improved, no regressions
 
 - Artifact-only [run 39772864202](https://github.com/akashskypatel/Directional/actions/runs/39772864202) on immutable CB26 package `12409939859` (semantic source `e3d60337`), result artifact `12424484672` (ZIP SHA-256 `a54110dbb5475b76e6b6a6baa8fc1b7dcabd7aa50c95c5b390532509d1c656e6`). Verified 1019/1019 manifest entries, 497 single-process executions, unchanged before/after source and package, no compile/relink/benchmarks. **462 PASS / 35 RED**, vs TB21 449/48: 13 RED→PASS (12 known seam family and selector:447), no PASS→RED. Residual 35 inherited REDs retained with exact first failures; full ledger and report under `.agents/Directional/Architecture_M6_CP3_TB28_Selector_497_*`.

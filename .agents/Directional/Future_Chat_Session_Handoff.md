@@ -34,41 +34,37 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-22: TB28 full frozen selector-497 census completed and verified, **462/497 PASS**, 35 inherited RED, 13 RED→PASS and **0 PASS→RED** vs TB21. Await independent TB28 Review; no promoted acceptance. |
+| Currency | 2026-10-22: RA-133 independently reviewed TB28: **462/497 PASS**, 35 inherited RED, 13 RED→PASS and **0 PASS→RED** vs TB21. Candidate only; successor CB27 A7 test negatives authorized, no promoted CP3 acceptance. |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`; PR #8 draft/open. Exact CB26 semantic source **`e3d60337ed34538547d3a6d519bafae5b184330e`**, compiled package `12409939859`; later control/document/tooling commits do not replace semantic source. Refresh current branch HEAD before mutation. |
 | Last accepted semantic runtime | CP2 **491/491**, package `11391685901`, semantic `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. R3 **403/497** rejected. |
-| Latest candidate evidence | TB28 [run 39772864202](https://github.com/akashskypatel/Directional/actions/runs/39772864202), result artifact **`12424484672`**, ZIP SHA-256 `a54110dbb5475b76e6b6a6baa8fc1b7dcabd7aa50c95c5b390532509d1c656e6`; 1019/1019 manifest, 497/497 executed, **462 PASS/35 RED**, 13 RED→PASS and no PASS→RED vs TB21 449/48. Owning report `Architecture_M6_CP3_TB28_Selector_497_Census_Report_20261022.md`; TSV inventory and full ledger. **Not promoted.** |
+| Latest candidate evidence | RA-133-reviewed TB28 [run 39772864202](https://github.com/akashskypatel/Directional/actions/runs/39772864202), result artifact **`12424484672`**, ZIP SHA-256 `a54110dbb5475b76e6b6a6baa8fc1b7dcabd7aa50c95c5b390532509d1c656e6`; 1019/1019 manifest, 497/497 executed, **462 PASS/35 RED**, 13 RED→PASS and no PASS→RED vs TB21 449/48. Owning report `Architecture_M6_CP3_TB28_Selector_497_Census_Report_20261022.md`; TSV inventory and full ledger. **Not promoted.** |
 | Regression accounting and debt | **66 events / 17 categories / 49 recurrences**, witness debt **1**, selector **497 frozen**, TB28 candidate 462/497, RP-01 OPEN. Tracker: `Regression_Root_Cause_Tracker.md`. |
 | Active boundary | All 12 seam-family cases and selector:447 PASS at TB28, but 35 inherited RED remain. A7 `cross-sheet:seam-direction`, `cross-sheet:no-certificate`, `cross-sheet:periodic`, B4 precision and RA-127.4b tests still unproven (RA-132.6). M1 and D2 and fixture debt require independent classification. `RP-02` UNREACHED; Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-TB28-RP01-SELECTOR-497-CENSUS-REV` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB27-RP01-A7-CERTIFIED-SEAM-NEGATIVE-ORACLES` — EXACT NEXT
 
-- **Type / owner:** Independent Review. Authority RA-132.5 in `Architecture_M6_CP3_TB27_A7_Certified_Seam_Cross_Sheet_Verification_Review_Decision_20261022.md`.
-- **Objective:** independently adjudicate TB28's full census and all residual inherited failures, without inferring root causes beyond evidence.
-- **Read before work:** TB28 report and both selector-497 TSVs, TB21 inventory and RA-115, RA-132 Review decision, tracker, the immutable artifact `12424484672` and its 497 raw logs.
-- **In scope:** verify exact result digest, 1019/1019 archive file hashes, 497 distinct execution identities, per-case log hashes and verdicts, immutable postflight, 13 improvements and zero regression; classify all 35 inherited REDs and A7 site coverage; decide candidate promotion and formal next action under Review policy; update ORIENTATION and consolidate as required for Review.
-- **Out of scope:** any source, test, fixture, selector, harness or workflow modification, any compile/relink/benchmark, new runtime, CB27 implementation or product repair.
-- **Success evidence:** independent Review record, individual RED disposition, stable accounting decision, retained durable tracker/handoff, exact next authorization.
-- **On success:** Review may issue the planned **CB27 test-only** corrective negatives under RA-132.6; canonical CB27 turn ID not yet assigned by this TB turn. Do not invent or begin it.
-- **On failure/blocker:** record falsifier and exact Review decision; no speculative repair or change to the frozen selector.
+- **Type:** Code + Build, test-only, GMP/GMPXX eight-target compile; no runtime. Authorization RA-133 in `Architecture_M6_CP3_TB28_Selector_497_Census_Review_Decision_20261022.md`, implementing RA-132.6 from `Architecture_M6_CP3_TB27_A7_Certified_Seam_Cross_Sheet_Verification_Review_Decision_20261022.md`.
+- **Only file:** `tests/SurfaceCellTransitionQuotientTests.cpp`. Preserve all source/header/fixtures/selector/harness/workflow paths. Five D7/A7 tamper negatives (unrelated seam, missing cert, lattice-coordinate mismatch, outside wedge, same-side only if reachable), assert actual A7 site and A6 disposition, keep D3/D7 positives. Compiled package review next, runtime separately in TB29.
+- **STOP/falsifiers:** inability to construct each intended witness, earlier unrelated rejection, positive control change, unexpected rejection site, assertion weakening, unauthorized production changes.
+- **Frozen:** last accepted CP2 491/491, R3 rejected 403/497, TB28 candidate 462/497, stable 66/17/49 debt1, selector497, RP-01 OPEN, RP-02 UNREACHED, Gate C suspended.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — next | `M6-CP3-TB28-RP01-SELECTOR-497-CENSUS-REV` | Mandatory independent census adjudication before CB27. |
-| 2 — conditional | `UNKNOWN` (planned CB27 test-only) | Only if TB28 Review issues canonical authorization; follow RA-132.6. |
+| 1 — next | `M6-CP3-CB27-RP01-A7-CERTIFIED-SEAM-NEGATIVE-ORACLES` | Test-only A7 negative oracles; compile-only. |
+| 2 — conditional | `UNKNOWN` (CB27-REV then TB29) | Separate independent Review must first accept compiled test-only change and specify exact successor. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **review** — independently adjudicate the completed TB28 selector-497 census and 35 inherited REDs; no compile or runtime.
+`load_next`: **code-build** — implement RA-133-authorized CB27 test-only A7 negative oracles, compile-only, no runtime.
 
 Minimum successor context **after the mandatory start checklist and policies**:
 
 0. `.agents/Directional/ORIENTATION.md` — project context, read first.
 1. `.agents/Directional/ROADMAP.md` — milestone position only.
 2. `.agents/Directional/Future_Chat_Session_Handoff.md` — exact current handoff.
-3. `Architecture_M6_CP3_TB28_Selector_497_Census_Report_20261022.md`, its 35-RED inventory and 497-row full ledger; `Architecture_M6_CP3_TB27_A7_Certified_Seam_Cross_Sheet_Verification_Review_Decision_20261022.md` (RA-132); TB21 inventory and RA-115 Review.
+3. `Architecture_M6_CP3_TB28_Selector_497_Census_Review_Decision_20261022.md` (RA-133), `Architecture_M6_CP3_TB27_A7_Certified_Seam_Cross_Sheet_Verification_Review_Decision_20261022.md` §RA-132.6 (five falsifiers); TQ D7 fixture and A7 typed seam rule.
 4. `.agents/Directional/Regression_Root_Cause_Tracker.md` and `TODO.md` — unresolved issues and scope; required policy readings still govern.
 
 **Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py authority <sha>` and
