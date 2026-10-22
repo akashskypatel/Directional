@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb28-census-docs-20261022-r1",
+  "request_id": "m6-cp3-tb28-review-docs-20261022-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb28-census-docs",
-  "file_id": "1hTJQ12YDvMDwtr8ORcC_GeZOEfOJMbE4",
-  "patch_sha256": "bc166425e8e8e5aa0d2a5a2a9c0796d2087cd68f9c69abc7881bad09215f6ccc",
-  "base_sha": "71c0d0c842df19d875b72a700a6a812d436954ce",
+  "mailbox_key": "m6-cp3-tb28-review-docs",
+  "file_id": "1MoFZaQDN_xz-lu_tZW3oThhA0i38Nbtf",
+  "patch_sha256": "89e52570186d14a5277c57c8224d20a563956d145bbbf63feb4620dba4e4f354",
+  "base_sha": "9f23dd290694c74edb21e7f80cec60824c594550",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record TB28 selector census and review handoff",
+  "commit_message": "docs(directional): independently review TB28 selector census",
   "retention_days": 14
 }
