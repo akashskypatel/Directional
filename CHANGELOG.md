@@ -1,3 +1,8 @@
+## 2026-10-22 — CB28 factory-error diagnostics compiled; independent Review required
+
+- Test-only TQ/SP10 factory diagnostic context at exact source `19aeb3e60e2d762006d95dc4a5007af54f094ee7`, no assertions or product code changed; source-line drift in RA-134.5 remains a Review check.
+- GMP/GMPXX compile-only run `39861294132`, artifact `12460974720`; no runtime or selector advancement. Record: `.agents/Directional/Architecture_M6_CP3_CB28_Factory_Error_Diagnostics_Code_Build_Record_20261022.md`. Next CB28-REV; stable accounting unchanged.
+
 ## 2026-10-22 — CB27A independent static Review accepts discriminating wedge-membership oracle
 
 - Verified D7's authentic second-endpoint `3/1` wedge withdrawal isolates membership while retaining P1–P6, original A6 authority and unchanged certificate; first three negatives and D3/D7 positives preserved. CB27A is **compile-only** (`39838687950`, artifact `12452346647`); no runtime tests/benchmarks or CP3 acceptance. Decision: `Architecture_M6_CP3_CB27A_Wedge_Membership_Oracle_Review_Decision_20261022.md`.
