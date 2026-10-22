@@ -1,20 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb28-selector497-20261022-r1",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb28-selector497",
-  "executor_sha": "71c0d0c842df19d875b72a700a6a812d436954ce",
-  "semantic_source_sha": "e3d60337ed34538547d3a6d519bafae5b184330e",
-  "turn_id": "M6-CP3-TB28-RP01-SELECTOR-497-CENSUS",
-  "harness_path": ".agents/Directional/tools/m6_cp3_entry_497_artifact_only_harness.sh",
-  "harness_sha256": "947a95ee4f684143a0f8d7c768a39253ab893d921da488802b45fb6ed58879dd",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "12409939859",
-    "EXPECTED_SOURCE_SHA": "e3d60337ed34538547d3a6d519bafae5b184330e",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "ee08279e537af4e99f287d28595df0ef639e632aa345bc0b1986bbb361ee86fa",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "0c9183b848e4b13afae4c0b84c23ddd18f0f1526ccdcf4d4da688dc893e8b1cf",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "d37cfbdab24b92aad6ab2ecfd135d92702c0874f9c69a0164bf578705d78955c"
-  },
-  "artifact_prefix": "m6-cp3-tb28-selector497",
+  "request_id": "m6-cp3-tb28-census-docs-20261022-r1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb28-census-docs",
+  "file_id": "1hTJQ12YDvMDwtr8ORcC_GeZOEfOJMbE4",
+  "patch_sha256": "bc166425e8e8e5aa0d2a5a2a9c0796d2087cd68f9c69abc7881bad09215f6ccc",
+  "base_sha": "71c0d0c842df19d875b72a700a6a812d436954ce",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record TB28 selector census and review handoff",
   "retention_days": 14
 }
