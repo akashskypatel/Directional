@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb27rev-docs-20261022-r1",
+  "request_id": "m6-cp3-cb27a-apply-20261022-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb27rev-docs",
-  "file_id": "1rvDWLcaSCc0FS4Gr-SFvM3kHUkU6OWwl",
-  "patch_sha256": "619c0911c0cfc48fd377fe0286ea01ee41d0e1cf3aa66e14b6d1a671438b4e19",
-  "base_sha": "6dbc8cefdedc79e2830e6f1e438427f4212be8b9",
+  "mailbox_key": "m6-cp3-cb27a-apply",
+  "file_id": "1tokRQKd9XB7iI3BUvryTG-52w83ZcHlf",
+  "patch_sha256": "5e5b4c26363d66453ee59f0745b98ac1c0d612bb37ebcad8f0a4c99f11fb294d",
+  "base_sha": "aa143c3003dc9b0a21a50951b90c56987e178a6d",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): review CB27 wedge oracle and authorize CB27A",
+  "commit_message": "test(directional): isolate certified seam wedge-membership rejection",
   "retention_days": 7
 }
