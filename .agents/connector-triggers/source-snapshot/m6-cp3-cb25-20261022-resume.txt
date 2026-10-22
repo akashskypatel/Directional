@@ -1,3 +1,0 @@
-M6-CP3-CB25 source inspection snapshot
-Beacons: 4ec6ba88a733b9e9a4ba78fbddd15477a1404367
-READ_MODE=snapshot
