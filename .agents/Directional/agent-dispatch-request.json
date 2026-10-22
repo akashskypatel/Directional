@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-seam-a5-contract-20261022-b",
+  "request_id": "m6-cp3-cb25-a5-apply-20261022-1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-seam-a5-contract-apply-b",
-  "file_id": "1Ayw8ektUIapiNIBBTKyi3Xl9CmEC4M51",
-  "patch_sha256": "6ae66010298a428802d247f5c5b3ea82bacf022e8d8c7a548180a47c1355e485",
-  "base_sha": "7efc2ded291091e045b59c154dd6a00f64748fa6",
+  "mailbox_key": "m6-cp3-cb25-a5-apply",
+  "file_id": "1NeKdr6VPZsbnLprYrVw7gztqOeC1kiXL",
+  "patch_sha256": "58d0ee33bc62c59f9ef0a52ba853ebfbfa324dd58a6747620a5e90245201e991",
+  "base_sha": "1b9b742663bb29b864c9f1710a42a9e1b1e4eb07",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): define A5 shared-node side authority contract",
+  "commit_message": "fix(surface-cells): honor certified shared-node seam side authority",
   "retention_days": 7
 }
