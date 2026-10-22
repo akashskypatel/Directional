@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-defn-seam-a7-docs-20261022-2",
+  "request_id": "m6-cp3-cb26-a7-apply-20261022",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-defn-seam-a7-docs-v2",
-  "file_id": "1uEmqC6TbUpCbDUTNFISg1IzpXHRrHAy3",
-  "patch_sha256": "c833a27232c7dcf625649ec259b4db1ed7c40dbf7033880beba9d8aad98c3f92",
-  "base_sha": "575d10ef8e6efc6f20c24b1643b0620859a489a9",
+  "mailbox_key": "m6-cp3-cb26-a7-apply-20261022",
+  "file_id": "1F4uvB6kAcbPD0401LMx6yz9h4wgkz2Lz",
+  "patch_sha256": "9675bc7595b7cd0fcd0240c9403fbe8055ca1dd70d96e7c206ffee5c8101cef1",
+  "base_sha": "84bbdabde4a4db0ed3c816d7a97f86808e85f98a",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): define certified A7 seam authority and Review handoff",
+  "commit_message": "fix(surface-cells): validate A7 certified seam cross-sheet authority",
   "retention_days": 7
 }
