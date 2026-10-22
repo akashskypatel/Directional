@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb27a-review-docs-20261022-r1",
+  "request_id": "m6-cp3-cb28-diagnostics-apply-20261022-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb27a-review-docs",
-  "file_id": "1t4j0ow6Hqd56hotmAJBllwy__H6Kh2cR",
-  "patch_sha256": "fa9752be325391f9346e457846663dfc057e8cf17e55ff8e96d2adf89c29beac",
-  "base_sha": "6d9493037a9ad61ea178bf317ebe4dd8b5fc3e95",
+  "mailbox_key": "m6-cp3-cb28-diagnostics-apply",
+  "file_id": "1WzoJVwD3GG0nFh5SRKdXymQEX2RhPNtJ",
+  "patch_sha256": "90c48711d454be0a5755e74e4ae9e4281afe2b849dd81a788cb2430370a95c3e",
+  "base_sha": "2d35c43ca091b7c6082e0ee892bca9a3f54d7f89",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): accept CB27A review and authorize scoped CB28",
+  "commit_message": "test(directional): expose typed factory errors in CB28 diagnostics",
   "retention_days": 7
 }
