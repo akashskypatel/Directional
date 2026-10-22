@@ -1,3 +1,0 @@
-CB27A source snapshot trigger
-Source before marker: e1e73d7cb9de3f40f7e16e6f72965daa877b8774
-Purpose: immutable test-only code/build source analysis
