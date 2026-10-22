@@ -57,6 +57,9 @@ constexpr const char *kStopEdgesName = "SurfaceCells stop edges";
 constexpr const char *kStopVerticesName = "SurfaceCells stop vertices";
 constexpr const char *kTracedCellsName = "A4 traced cells";
 constexpr const char *kTracedCornersName = "A4 cell corners";
+constexpr const char *kCutEdgesName = "A2a' cut edges";
+constexpr const char *kGraphArcsName = "A2b graph arcs";
+constexpr const char *kFaceDiscRegionQuantity = "A2b disc region";
 constexpr const char *kStreamlineLineColors = "line colors";
 constexpr const char *kStreamlineFamilyColors = "direction family";
 
@@ -102,6 +105,7 @@ struct TaskResult {
   bool hasSurfaceCellDiagnostics = false;
   bool hasStreamlines = false;
   bool hasFieldNetwork = false;
+  bool hasCutGraph = false;
   directional::gui::MeshData mesh;
   directional::gui::FieldData field;
   std::optional<directional::gui::FieldOptions> fieldOptions;
@@ -111,6 +115,8 @@ struct TaskResult {
   directional::visualization::FieldStreamlines streamlines;
   directional::visualization::FieldAlignedNetworkPolylines fieldNetwork;
   std::string fieldNetworkStage;
+  directional::visualization::CutGraphDisplay cutGraph;
+  std::string cutGraphStage;
   std::optional<ComparisonReportContext> comparisonContext;
   int simplificationSourceFaceCount = 0;
   int simplificationRootCount = 0;
@@ -293,6 +299,8 @@ private:
   std::optional<directional::visualization::FieldAlignedNetworkPolylines>
       fieldNetwork_;
   std::string fieldNetworkStage_;
+  std::optional<directional::visualization::CutGraphDisplay> cutGraph_;
+  std::string cutGraphStage_;
 
   std::array<char, 1024> meshPath_{};
   std::array<char, 1024> fieldInputPath_{};
@@ -311,6 +319,7 @@ private:
   bool diagnosticsStopAfterTracing_ = true;
   int streamlineFieldSource_ = 0;
   int fieldNetworkSource_ = 0;
+  int cutGraphFieldSource_ = 0;
   float streamlineSeedSpacing_ = 2.0F;
   int streamlineSteps_ = 120;
   float streamlineStepLength_ = 0.5F;
@@ -378,6 +387,7 @@ private:
     clear_surface_cell_diagnostics();
     clear_streamlines();
     clear_field_network();
+    clear_cut_graph();
     calculatedFieldLabel_.clear();
     uploadedFieldLabel_.clear();
     calculatedFieldGlyph_ = {};
@@ -438,6 +448,57 @@ private:
     fieldNetwork_.reset();
     fieldNetworkStage_.clear();
     remove_field_network_layers();
+  }
+
+  void remove_cut_graph_layers() {
+    for (const char *name : {kCutEdgesName, kGraphArcsName}) {
+      if (polyscope::hasCurveNetwork(name)) {
+        polyscope::removeCurveNetwork(name);
+      }
+    }
+    if (polyscope::hasSurfaceMesh(kInputMeshName)) {
+      polyscope::getSurfaceMesh(kInputMeshName)
+          ->removeQuantity(kFaceDiscRegionQuantity, false);
+    }
+  }
+
+  void clear_cut_graph() {
+    cutGraph_.reset();
+    cutGraphStage_.clear();
+    remove_cut_graph_layers();
+  }
+
+  void visualize_cut_graph(
+      const directional::visualization::CutGraphDisplay &cutGraph) {
+    remove_cut_graph_layers();
+    if (cutGraph.hasTopologyPlan && polyscope::hasSurfaceMesh(kInputMeshName)) {
+      auto *inputMesh = polyscope::getSurfaceMesh(kInputMeshName);
+      // -1: in no region; -2: split among regions by traces.
+      inputMesh
+          ->addFaceScalarQuantity(kFaceDiscRegionQuantity, cutGraph.faceRegion,
+                                  polyscope::DataType::CATEGORICAL)
+          ->setEnabled(true);
+      inputMesh->setEnabled(true);
+    }
+    if (cutGraph.cutEdges.rows() > 0) {
+      auto *cuts = polyscope::registerCurveNetwork(
+          kCutEdgesName, cutGraph.cutPoints, cutGraph.cutEdges);
+      cuts->setColor({0.80F, 0.25F, 0.05F});
+      cuts->setRadius(0.003F);
+    }
+    if (cutGraph.arcEdges.rows() > 0) {
+      auto *arcs = polyscope::registerCurveNetwork(
+          kGraphArcsName, cutGraph.arcPoints, cutGraph.arcEdges);
+      arcs->setColor({0.15F, 0.15F, 0.15F});
+      arcs->setRadius(0.002F);
+      // 0 mandatory, 1 trace, 2 cut.
+      arcs->addEdgeScalarQuantity("arc kind", cutGraph.arcKind,
+                                  polyscope::DataType::CATEGORICAL)
+          ->setEnabled(true);
+      arcs->addEdgeScalarQuantity("arc", cutGraph.arcIndex,
+                                  polyscope::DataType::CATEGORICAL);
+    }
+    sync_overlay_transforms();
   }
 
   void clear_streamlines() {
@@ -703,7 +764,8 @@ private:
     for (const char *name : {kNetworkTracesName, kNetworkMandatoryName,
                              kRegionSeamsName, kRegionBoundariesName,
                              kStreamlinesName, kStopEdgesName,
-                             kTracedCellsName}) {
+                             kTracedCellsName, kCutEdgesName,
+                             kGraphArcsName}) {
       if (polyscope::hasCurveNetwork(name)) {
         sync(polyscope::getCurveNetwork(name));
       }
@@ -1241,6 +1303,60 @@ private:
     set_status("Tracing the SurfaceCells field-aligned network...");
   }
 
+  void launch_cut_graph() {
+    require_mesh();
+    const std::optional<directional::gui::FieldData> &source =
+        cutGraphFieldSource_ == 0 ? calculatedField_ : uploadedField_;
+    if (!source.has_value()) {
+      throw std::runtime_error(
+          cutGraphFieldSource_ == 0
+              ? "Calculate a field before computing its cut graph."
+              : "Load an uploaded field before computing its cut graph.");
+    }
+
+    const directional::gui::MeshData mesh = *mesh_;
+    const directional::gui::FieldData field = *source;
+    const directional::gui::RemeshOptions options = remeshOptions_;
+    enable_verbose_session_log_if_needed(options.verbose);
+    const auto progress = progress_;
+    progress_->update(0, 100, "Starting cut graph and disc regions");
+
+    task_ = std::async(std::launch::async, [mesh, field, options, progress]() {
+      TaskResult result;
+      try {
+        // Both products are built during the tracing stage.
+        directional::gui::SurfaceCellDiagnosticsData run =
+            directional::gui::run_surface_cell_diagnostics(
+                mesh, field, options, true,
+                [progress](const std::size_t current, const std::size_t total,
+                           const std::string_view task) {
+                  progress->update(current, total, task);
+                });
+        if (!run.cutGraph.has_value()) {
+          throw std::runtime_error(
+              "SurfaceCells stopped before publishing the cut graph (" +
+              run.pipelineStage + "). Run SurfaceCells diagnostics to see where.");
+        }
+        result.cutGraph = std::move(*run.cutGraph);
+        result.cutGraphStage =
+            run.stoppedOnRequest ? std::string() : run.pipelineStage;
+        result.hasCutGraph = true;
+        const auto &cutGraph = result.cutGraph;
+        result.message =
+            "Cut graph: " + std::to_string(cutGraph.cutEdges.rows()) +
+            " cut edges; " + std::to_string(cutGraph.regionCount) +
+            " disc regions (" + std::to_string(cutGraph.discRegionCount) +
+            " proven discs), " + std::to_string(cutGraph.arcCount) +
+            " graph arcs.";
+      } catch (const std::exception &error) {
+        result.error = error.what();
+      }
+      progress->update(100, 100, "Cut graph and disc regions finished");
+      return result;
+    });
+    set_status("Computing the cut graph and disc regions...");
+  }
+
   void launch_trace_streamlines() {
     require_mesh();
     const std::optional<directional::gui::FieldData> &source =
@@ -1318,6 +1434,11 @@ private:
       remove_field_network_layers();
       visualize_field_network(*fieldNetwork_);
       sync_overlay_transforms();
+    }
+    if (result.hasCutGraph) {
+      cutGraph_ = std::move(result.cutGraph);
+      cutGraphStage_ = std::move(result.cutGraphStage);
+      visualize_cut_graph(*cutGraph_);
     }
     if (result.hasStreamlines) {
       streamlines_ = std::move(result.streamlines);
@@ -2075,6 +2196,51 @@ void save_quad_mesh() {
                     static_cast<int>(streamlines_->seedFaces.size()),
                     streamlines_->lineCount,
                     static_cast<int>(streamlines_->edges.rows()));
+      }
+    }
+
+    if (ImGui::CollapsingHeader("9. Cut graph and disc regions")) {
+      ImGui::TextWrapped(
+          "Shows how SurfaceCells cuts the surface into discs before quad "
+          "tracing: the cut-graph edges (A2a'), the embedded graph arcs "
+          "colored by kind, and each face's disc region (A2b).");
+      const char *cutGraphSources[] = {"Calculated field", "Uploaded field"};
+      draw_labeled_full_width_control("Cut graph field source",
+                                      [this, &cutGraphSources] {
+                                        ImGui::Combo("##cut_graph_field_source",
+                                                     &cutGraphFieldSource_,
+                                                     cutGraphSources, 2);
+                                      });
+      const bool cutGraphFieldAvailable =
+          cutGraphFieldSource_ == 0 ? calculatedField_.has_value()
+                                    : uploadedField_.has_value();
+      ImGui::BeginDisabled(isBusy || !mesh_.has_value() || !cutGraphFieldAvailable);
+      if (ImGui::Button("Show cut graph and disc regions")) {
+        guarded_action([this] { launch_cut_graph(); });
+      }
+      ImGui::EndDisabled();
+      if (cutGraph_.has_value()) {
+        if (cutGraph_->hasCutGraph) {
+          ImGui::Text("Cut edges: %d", static_cast<int>(cutGraph_->cutEdges.rows()));
+        } else {
+          ImGui::TextWrapped("The cut graph was not published.");
+        }
+        if (cutGraph_->hasTopologyPlan) {
+          ImGui::Text("Disc regions: %zu (%zu proven discs, %zu singularity-free)",
+                      cutGraph_->regionCount, cutGraph_->discRegionCount,
+                      cutGraph_->regularRegionCount);
+          ImGui::Text("Graph arcs: %zu  Faces split by traces: %zu",
+                      cutGraph_->arcCount, cutGraph_->splitFaceCount);
+          ImGui::TextWrapped(
+              "Disc region colors: -1 is no region, -2 a face that traces split "
+              "among regions. Arc kind: 0 mandatory, 1 trace, 2 cut.");
+        } else {
+          ImGui::TextWrapped("The topology plan was not published.");
+        }
+        if (!cutGraphStage_.empty()) {
+          ImGui::TextWrapped("SurfaceCells rejected later at: %s",
+                             cutGraphStage_.c_str());
+        }
       }
     }
 

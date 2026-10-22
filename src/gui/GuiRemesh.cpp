@@ -82,6 +82,13 @@ SurfaceCellDiagnosticsData run_surface_cell_diagnostics(
     result.network = visualization::field_aligned_network_polylines(
         mesh.vertices, *snapshots.fieldAlignedCurveNetwork);
   }
+  if (snapshots.surfaceCutGraph.has_value() ||
+      snapshots.globalTopologyPlan.has_value()) {
+    result.cutGraph = visualization::cut_graph_display(
+        mesh.vertices, mesh.faces,
+        snapshots.surfaceCutGraph ? &*snapshots.surfaceCutGraph : nullptr,
+        snapshots.globalTopologyPlan ? &*snapshots.globalTopologyPlan : nullptr);
+  }
   const auto &context = remesh.surfaceCellContext;
   result.tracing = visualization::surface_cell_tracing_display(
       mesh.vertices, mesh.faces, remesh.diagnostics,

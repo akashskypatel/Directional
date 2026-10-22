@@ -1,3 +1,8 @@
+## 2026-10-21 — GUI: cut graph and disc regions
+
+- New GUI section "9. Cut graph and disc regions" shows the A2a' cut-graph edges, the A2b embedded graph arcs colored by kind (drawn from their exact source paths), and each face's disc region, with a separate category for faces that traces split. The panel counts proven-disc and singularity-free regions. Sections 6–8 are unchanged.
+- New display-only adapter `directional/visualization/CutGraphDisplay.h`, tested on the torus and genus-two against the published products. RP-01 sources are unchanged.
+
 ## 2026-10-21 — GUI: the field-aligned curve network has its own section again
 
 - Section 6 is again "Field-aligned curve network": one button traces the SurfaceCells network from the field's singularities and shows only the traces, mandatory edges and singularities, stopping the run after quad tracing. SurfaceCells diagnostics (now section 7) and field streamlines (now section 8) are unchanged.

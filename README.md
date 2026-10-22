@@ -548,6 +548,8 @@ field-extraction and quad-remeshing pipeline.
   singularity, mandatory boundary and feature edges, singularities colored by index).
 - Trace and display streamlines of the cross field (section 8): evenly spaced seeds,
   adjustable line length and thickness, colored per line or by direction family.
+- Show how SurfaceCells cuts the surface into discs (section 9): cut-graph edges,
+  embedded graph arcs colored by kind, and each face's disc region.
 - Save fields through the existing field-conversion implementation.
 - Save pure quad meshes as OBJ or OFF.
 - Run field extraction and remeshing asynchronously so the viewer remains responsive.
@@ -695,6 +697,21 @@ direction family) apply immediately without re-tracing. Lines stop at boundaries
 is deterministic, so equal settings give equal lines. For a clean print look, hide the
 ground plane and set a white background in Polyscope's **View** and **Appearance**
 settings.
+
+### Show the cut graph and disc regions
+
+In section 9, choose the field source and select **Show cut graph and disc regions**.
+The run stops after quad tracing, where both products are built, and shows:
+
+| Layer | Structure in Polyscope | Shows |
+|---|---|---|
+| `A2b disc region` | Face quantity on `Input mesh` | Each face's disc region; -1 no region, -2 a face that traces split among regions |
+| `A2a' cut edges` | Curve network | Edges cut so that every region is a disc |
+| `A2b graph arcs` | Curve network | Embedded graph arcs from their exact source paths, colored by kind (0 mandatory, 1 trace, 2 cut) |
+
+The panel also counts the regions whose certificates prove a disc and an interior
+free of singularities. With the committed fixtures, the torus has 28 cut edges and 4
+disc regions.
 
 The **Browse...** buttons use the operating system's native file dialog:
 

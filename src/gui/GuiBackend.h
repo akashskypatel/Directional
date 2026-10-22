@@ -10,6 +10,7 @@
 #include <Eigen/Core>
 
 #include <directional/fields/CompareCrossFields.h>
+#include <directional/visualization/CutGraphDisplay.h>
 #include <directional/visualization/FieldAlignedNetworkPolylines.h>
 #include <directional/visualization/SourceRegionDisplay.h>
 #include <directional/visualization/SurfaceCellTracingDisplay.h>
@@ -129,6 +130,8 @@ struct AutoRemeshResult {
 struct SurfaceCellDiagnosticsData {
   std::optional<visualization::SourceRegionDisplay> regions;
   std::optional<visualization::FieldAlignedNetworkPolylines> network;
+  /// The A2a' cut graph and A2b disc regions, when either was published.
+  std::optional<visualization::CutGraphDisplay> cutGraph;
   /// Where the run stopped and, when quad tracing produced them, its cells.
   visualization::SurfaceCellTracingDisplay tracing;
   bool pipelineProduced = false;

@@ -264,6 +264,7 @@ add_library(
   src/pipeline/InputConditioner.cpp
   src/pipeline/ParallelRemeshPipeline.cpp
   src/pipeline/RemeshPipeline.cpp
+  src/visualization/CutGraphDisplay.cpp
   src/visualization/FieldAlignedNetworkPolylines.cpp
   src/visualization/FieldStreamlines.cpp
   src/visualization/SourceRegionDisplay.cpp

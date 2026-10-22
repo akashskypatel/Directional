@@ -59,6 +59,7 @@ endfunction()
 add_executable(
   directional_compiled_api_tests
   tests/CompiledLibraryTests.cpp
+  tests/CutGraphDisplayTests.cpp
   tests/FieldAlignedNetworkPolylinesTests.cpp
   tests/FieldStreamlinesTests.cpp
   tests/SourceRegionDisplayTests.cpp
