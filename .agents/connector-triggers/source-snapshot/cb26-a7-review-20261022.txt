@@ -1,0 +1,2 @@
+Purpose: immutable source snapshot for M6-CP3-CB26-RP01-A7-CERTIFIED-SEAM-CROSS-SHEET-AUTHORITY-REV
+Review is static only; no runtime, tests or compile.
