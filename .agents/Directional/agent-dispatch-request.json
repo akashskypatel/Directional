@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb27-negatives-compile-20261022-r2",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb27-negatives-compile-r2",
-  "source_sha": "175c70e44d2c162d72812c842149f30c53c1fa25",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "directional-m6-cp3-cb27-negative-oracles-compile"
+  "request_id": "m6-cp3-cb27-closeout-docs-20261022-r1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb27-closeout-docs",
+  "file_id": "1sQlP4Ab_YYiQI_nOwFBAmxxadsrUuP6s",
+  "patch_sha256": "f89632fe30a0d53592fd4f81d802c292206a7de2e7f9664f3e7c2d8410906aed",
+  "base_sha": "175c70e44d2c162d72812c842149f30c53c1fa25",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): record CB27 compiled negative oracles and review handoff",
+  "retention_days": 7
 }
