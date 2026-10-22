@@ -1,12 +1,9 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb28a-three-asserts-20261022-r1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb28a-three-asserts",
-  "file_id": "1SAWvA4AOf5B_kwr47CrGdpaKWcbWBHZI",
-  "patch_sha256": "b533844d82ca111a09bb25f79f6e34f02d457ed4a54de6d0520de9bf6357118c",
-  "base_sha": "b04b0391f3d2b046d76d729f40ebf3d6448456d4",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): expose three M1 precedence rejection reasons",
-  "retention_days": 7
+  "request_id": "m6-cp3-cb28a-eight-target-compile-20261022-r1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb28a-compile",
+  "source_sha": "4473e41e94a35f1bf189fa046e86bac92c7391fb",
+  "targets": "directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks",
+  "artifact_prefix": "m6-cp3-cb28a-compile"
 }
