@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb28a-doc-closeout-20261022-r2",
+  "request_id": "m6-cp3-cb28a-review-docs-20261022-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb28a-doc-closeout-r2",
-  "file_id": "1z4l9yMQEbKypcnnuY6VWZw1zaC8_92B-",
-  "patch_sha256": "978f46d47ffa3810f816397aa2acdf7262edb8e2324db93c895cca42ea343bd1",
-  "base_sha": "4473e41e94a35f1bf189fa046e86bac92c7391fb",
+  "mailbox_key": "m6-cp3-cb28a-review-docs",
+  "file_id": "1_LhF9_VgnoB5Sovno5w1ojXqhskssl3r",
+  "patch_sha256": "5289ef75206d01333715db31919b85d84829785d80193ef9970f9e39c0cc8848",
+  "base_sha": "b1bbafeb60ec2370896b5a89301527bf0d99999e",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close CB28A compile-only diagnostics",
+  "commit_message": "docs(directional): close CB28A independent review",
   "retention_days": 7
 }
