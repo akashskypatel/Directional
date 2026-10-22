@@ -1,12 +1,14 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb26-ra131-doc-integrity-20261022-r1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb26-ra131-doc-integrity",
-  "file_id": "1ZihVCGChzBiklb8LGTy4gswz5KIb1gcV",
-  "patch_sha256": "788b3fbaa6d2e9cbc9869a0e3127d694b99a81ebb5e72fa484b4f932fd90eb4c",
-  "base_sha": "4f4ec72733909b9df98a24a322cc26cac1e704d8",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): remove stale review and successor directives",
+  "request_id": "m6-cp3-tb27-a7-cross-sheet-20261022-r1",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb27-a7-cross-sheet",
+  "executor_sha": "b6f2e16b56b3a12a4eecec4ac2d6507a8f06e88b",
+  "semantic_source_sha": "e3d60337ed34538547d3a6d519bafae5b184330e",
+  "turn_id": "M6-CP3-TB27-RP01-A7-CERTIFIED-SEAM-CROSS-SHEET-VERIFICATION",
+  "harness_path": ".agents/Directional/tools/m6_cp3_tb27_a7_cross_sheet_verification_harness.sh",
+  "harness_sha256": "dde3608f291d0541348cfa014812d225bcf770981b89643c9ac1eff14feda985",
+  "environment": {},
+  "artifact_prefix": "m6-cp3-tb27-a7-seam",
   "retention_days": 7
 }
