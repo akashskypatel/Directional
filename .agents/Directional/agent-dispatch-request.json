@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb27a-docs-20261022-r1",
+  "request_id": "m6-cp3-cb27a-review-docs-20261022-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb27a-docs",
-  "file_id": "1VkrpKgDLeaYBmGUa9VISO1j0VhL-Czih",
-  "patch_sha256": "3edb176c1a5ddab4960a988b9293fcca0c3cbe33f3002aa5a9149c1881f84259",
-  "base_sha": "aa143c3003dc9b0a21a50951b90c56987e178a6d",
+  "mailbox_key": "m6-cp3-cb27a-review-docs",
+  "file_id": "1t4j0ow6Hqd56hotmAJBllwy__H6Kh2cR",
+  "patch_sha256": "fa9752be325391f9346e457846663dfc057e8cf17e55ff8e96d2adf89c29beac",
+  "base_sha": "6d9493037a9ad61ea178bf317ebe4dd8b5fc3e95",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close CB27A compile and hand off non-vacuity review",
+  "commit_message": "docs(directional): accept CB27A review and authorize scoped CB28",
   "retention_days": 7
 }
