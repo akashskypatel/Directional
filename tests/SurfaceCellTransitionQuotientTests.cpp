@@ -4060,6 +4060,238 @@ TEST(M6CP3, ProducedSeamCollinearOrdinaryFrontRequiresExactCrossSheetTransition)
   EXPECT_EQ(failure->site, "cross-sheet");
 }
 
+namespace {
+
+// Every negative starts with an A5/A6/A7-produced D7 seam. A7 consumes the
+// original immutable A6 forest, so its rejection is not masked by A6's earlier
+// independent guards on the deliberately tampered A5 records.
+template <typename Tamper, typename A6Oracle>
+void check_d7_certified_seam_negative(const Tamper &tamper,
+                                       const A6Oracle &checkA6,
+                                       const char *expectedSite) {
+  std::string searchDiagnostic;
+  const auto fixture = m6cp3_produced_seam_fixture(&searchDiagnostic);
+  ASSERT_NE(fixture, nullptr) << searchDiagnostic;
+  const auto a5Construction =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
+          fixture->mesh.V, fixture->mesh.F,
+          fixture->network.phaseFront.product());
+  const auto *a5 =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+          &a5Construction);
+  ASSERT_NE(a5, nullptr);
+  const auto *relation = m6cp3_seam_ordinary(*a5);
+  ASSERT_NE(relation, nullptr);
+  ASSERT_TRUE(relation->evidence.isolationSeamTransportCertificate.has_value());
+  const auto *first = m6cp3_occurrence_by_id(*a5, relation->id.first);
+  const auto *second = m6cp3_occurrence_by_id(*a5, relation->id.second);
+  ASSERT_NE(first, nullptr);
+  ASSERT_NE(second, nullptr);
+  const auto a6Construction =
+      directional::pipeline::SurfaceQuotientProducer::produce(*a5);
+  const auto *a6 =
+      std::get_if<directional::pipeline::SurfaceQuotientProduct>(
+          &a6Construction);
+  ASSERT_NE(a6, nullptr);
+  ASSERT_TRUE(std::any_of(a6->selected_forest().begin(),
+                          a6->selected_forest().end(), [&](const auto &edge) {
+                            return edge.relation == relation->id;
+                          }));
+  const auto positive =
+      directional::pipeline::SourceAttachedGeometryProducer::produce(
+          fixture->mesh.V, fixture->mesh.F, *a5, *a6);
+  ASSERT_NE(std::get_if<directional::pipeline::SourceAttachedGeometryProduct>(
+                &positive), nullptr);
+
+  auto records = a5->verification_records();
+  auto altered = std::find_if(records.ownedRelations.begin(),
+                              records.ownedRelations.end(),
+                              [&](const auto &entry) {
+                                return entry.id == relation->id;
+                              });
+  ASSERT_NE(altered, records.ownedRelations.end());
+  tamper(records, *altered, *relation, *first, *second);
+  if (::testing::Test::HasFatalFailure()) return;
+  const auto tamperedConstruction =
+      directional::pipeline::SurfaceOccurrenceComplexProducer::
+          publish_records_for_validation(std::move(records.cells),
+                                         std::move(records.occurrences),
+                                         std::move(records.ownedRelations));
+  const auto *tampered =
+      std::get_if<directional::pipeline::SurfaceOccurrenceComplex>(
+          &tamperedConstruction);
+  ASSERT_NE(tampered, nullptr);
+  const auto a6Tampered =
+      directional::pipeline::SurfaceQuotientProducer::produce(*tampered);
+  checkA6(a6Tampered);
+  if (::testing::Test::HasFatalFailure()) return;
+  const auto rejected =
+      directional::pipeline::SourceAttachedGeometryProducer::produce(
+          fixture->mesh.V, fixture->mesh.F, *tampered, *a6);
+  const auto *failure =
+      std::get_if<directional::pipeline::GeometryEmbeddingFailure>(&rejected);
+  ASSERT_NE(failure, nullptr);
+  EXPECT_EQ(failure->code,
+            directional::pipeline::GeometryEmbeddingFailureCode::
+                UncertifiedCrossSheetBinding);
+  EXPECT_EQ(failure->site, expectedSite);
+}
+
+// A6 disposition is asserted independently of A7's original-forest check.
+const auto a6_produced = [](const auto &result) {
+  EXPECT_NE(std::get_if<directional::pipeline::SurfaceQuotientProduct>(&result),
+            nullptr);
+};
+const auto a6_rejects = [](auto code) {
+  return [code](const auto &result) {
+    const auto *error =
+        std::get_if<directional::pipeline::SurfaceQuotientProductError>(&result);
+    ASSERT_NE(error, nullptr);
+    EXPECT_EQ(error->code, code);
+  };
+};
+
+}  // namespace
+
+TEST(M6CP3, CertifiedSeamRejectsConnectingEvidenceOnUnrelatedSeam) {
+  check_d7_certified_seam_negative(
+      [](auto &, auto &altered, const auto &original, const auto &first,
+         const auto &second) {
+        const auto &certificate =
+            *original.evidence.isolationSeamTransportCertificate;
+        const auto unrelated = certificate.seam() ==
+                                       test_source_edge_topology(0, 1, 6U)
+                                   ? test_source_edge_topology(1, 2, 6U)
+                                   : test_source_edge_topology(0, 1, 6U);
+        auto changeSeam = [&](auto &transitions) {
+          for (auto &transition : transitions) transition.seam = unrelated;
+        };
+        changeSeam(altered.evidence.firstSideIsolationEvidence);
+        changeSeam(altered.evidence.secondSideIsolationEvidence);
+        changeSeam(altered.evidence.equivalence.isolationTransitions);
+        const auto connects = [&](const auto &transition) {
+          const auto &a = first.cornerWedgeSheets;
+          const auto &b = second.cornerWedgeSheets;
+          return (std::find(a.begin(), a.end(), transition.fromSheet) != a.end() &&
+                  std::find(b.begin(), b.end(), transition.toSheet) != b.end()) ||
+                 (std::find(a.begin(), a.end(), transition.toSheet) != a.end() &&
+                  std::find(b.begin(), b.end(), transition.fromSheet) != b.end());
+        };
+        bool connecting = false;
+        for (const auto *transitions : {
+                 &altered.evidence.firstSideIsolationEvidence,
+                 &altered.evidence.secondSideIsolationEvidence,
+                 &altered.evidence.equivalence.isolationTransitions}) {
+          for (const auto &transition : *transitions) {
+            ASSERT_NE(transition.seam, certificate.seam());
+            connecting |= connects(transition);
+          }
+        }
+        ASSERT_TRUE(connecting)
+            << "B4 requires a connecting transition on an unrelated seam";
+      },
+      a6_produced, "cross-sheet");
+}
+
+TEST(M6CP3, CertifiedSeamRejectsMissingCertificate) {
+  using Code = directional::pipeline::SurfaceQuotientProductErrorCode;
+  Code expectedA6 = Code::RelationCertificateConflict;
+  check_d7_certified_seam_negative(
+      [&](auto &, auto &altered, const auto &original, const auto &first,
+          const auto &second) {
+        ASSERT_TRUE(original.evidence.isolationSeamTransportCertificate.has_value());
+        ASSERT_TRUE(first.placement.lattice.sourceChart.has_value());
+        ASSERT_TRUE(second.placement.lattice.sourceChart.has_value());
+        const bool identicalRepresentation =
+            first.placement.lattice.sourceChart ==
+                second.placement.lattice.sourceChart &&
+            first.placement.lattice.branchRotation ==
+                second.placement.lattice.branchRotation;
+        // A6 first checks the ordinary-front lattice identity. With no typed
+        // seam, it then requires identical representations and equal span
+        // sheets; derive the exact rejection from the source witness.
+        const bool sameSpanSheet =
+            altered.evidence.firstEndpointSpan->interiorBinding.sheet ==
+            altered.evidence.secondEndpointSpan->interiorBinding.sheet;
+        expectedA6 = !identicalRepresentation
+                         ? Code::RelationCertificateConflict
+                         : Code::ReciprocalSideAuthorityMismatch;
+        ASSERT_FALSE(identicalRepresentation && sameSpanSheet)
+            << "D7 no-certificate A6 should reject before admitting a seam";
+        altered.evidence.isolationSeamTransportCertificate.reset();
+        altered.evidence.firstSideIsolationEvidence.clear();
+        altered.evidence.secondSideIsolationEvidence.clear();
+        altered.evidence.equivalence.isolationTransitions.clear();
+        ASSERT_FALSE(altered.evidence.isolationSeamTransportCertificate.has_value());
+        ASSERT_TRUE(altered.evidence.firstSideIsolationEvidence.empty());
+        ASSERT_TRUE(altered.evidence.secondSideIsolationEvidence.empty());
+        ASSERT_TRUE(altered.evidence.equivalence.isolationTransitions.empty());
+      },
+      [&](const auto &result) {
+        const auto *error =
+            std::get_if<directional::pipeline::SurfaceQuotientProductError>(
+                &result);
+        ASSERT_NE(error, nullptr);
+        EXPECT_EQ(error->code, expectedA6);
+      },
+      "cross-sheet:no-certificate");
+}
+
+TEST(M6CP3, CertifiedSeamSharedNodeRequiresSameLatticeCoordinate) {
+  check_d7_certified_seam_negative(
+      [](auto &records, auto &, const auto &relation, const auto &first,
+         const auto &second) {
+        ASSERT_EQ(first.support, second.support);
+        ASSERT_EQ(first.placement.selectedFace, second.placement.selectedFace);
+        ASSERT_TRUE((first.placement.lattice.latticeCoordinate.array() ==
+                     second.placement.lattice.latticeCoordinate.array()).all());
+        auto occurrence = std::find_if(records.occurrences.begin(),
+                                        records.occurrences.end(),
+                                        [&](const auto &entry) {
+                                          return entry.id == relation.id.first;
+                                        });
+        ASSERT_NE(occurrence, records.occurrences.end());
+        occurrence->placement.lattice.latticeCoordinate.x() += 1;
+        ASSERT_EQ(occurrence->support, second.support);
+        ASSERT_EQ(occurrence->placement.selectedFace,
+                  second.placement.selectedFace);
+        ASSERT_FALSE((occurrence->placement.lattice.latticeCoordinate.array() ==
+                      second.placement.lattice.latticeCoordinate.array()).all());
+      },
+      a6_rejects(directional::pipeline::SurfaceQuotientProductErrorCode::
+                     RelationCertificateConflict),
+      "cross-sheet:seam-direction");
+}
+
+TEST(M6CP3, CertifiedSeamRejectsSpanBindingOutsideEndpointWedge) {
+  check_d7_certified_seam_negative(
+      [](auto &, auto &altered, const auto &original, const auto &first,
+         const auto &) {
+        const auto &certificate =
+            *original.evidence.isolationSeamTransportCertificate;
+        ASSERT_TRUE(altered.evidence.firstEndpointSpan.has_value());
+        ASSERT_TRUE(altered.evidence.secondEndpointSpan.has_value());
+        const auto substitute =
+            altered.evidence.secondEndpointSpan->interiorBinding;
+        ASSERT_TRUE(substitute.face == certificate.firstFace() ||
+                    substitute.face == certificate.secondFace());
+        ASSERT_EQ(std::find(first.cornerWedgeBindings.begin(),
+                            first.cornerWedgeBindings.end(), substitute),
+                  first.cornerWedgeBindings.end());
+        altered.evidence.firstEndpointSpan->interiorBinding = substitute;
+      },
+      a6_rejects(directional::pipeline::SurfaceQuotientProductErrorCode::
+                     MissingIsolationEvidence),
+      "cross-sheet:seam-direction");
+}
+
+// Same-side wedge bindings cannot be constructed from D7 without an earlier
+// invalid-wedge guard: D7 endpoint sheet sets are disjoint and the certificate
+// requires distinct first/second sheets. Assigning the other side to either
+// endpoint necessarily removes membership in that endpoint's wedge. The
+// outside-wedge negative above is the reachable protection; no fake same-side
+// test is added.
+
 TEST(M6CP3, HardRailCrossRegionBindingDoesNotCompareGlobalSheetLabels) {
   const auto &fixture = nonconstant_hard_rail_fixture();
   auto a5Result = directional::pipeline::SurfaceOccurrenceComplexProducer::produce(
