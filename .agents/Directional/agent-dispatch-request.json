@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb26-docs-closeout-20261022-1",
+  "request_id": "m6-cp3-defn-seam-a7-docs-20261022-1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb26-docs-closeout",
-  "file_id": "1EToFP_bOZmL3BlVbYtBnoAcZcuaT1g6s",
-  "patch_sha256": "17d452e39284fd6cec8f703ac672454918f016f3fb51937b64e467f880e4689e",
-  "base_sha": "97bf079f4a95f8c125f5039bac3963a150deea2d",
+  "mailbox_key": "m6-cp3-defn-seam-a7-docs",
+  "file_id": "1qaaPfohc84Kolh_G04eTxEJnAtyNL4S5",
+  "patch_sha256": "cc66cb9e2aa385465f9364c7e6bd95bb358b4ea168cad2814d1ebf0e6ff59814",
+  "base_sha": "575d10ef8e6efc6f20c24b1643b0620859a489a9",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close TB26 evidence and require independent Review",
+  "commit_message": "docs(directional): define certified A7 seam authority and Review handoff",
   "retention_days": 7
 }
