@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb26-a5-shared-node-harvest-20261022-1",
+  "request_id": "m6-cp3-tb26-a5-shared-node-harvest-20261022-2",
   "operation": "test_benchmark",
   "mailbox_key": "m6-cp3-tb26-a5-shared-node-harvest",
-  "executor_sha": "5d3b5ff7c85038ecad353e0b9c5a727bf8a30ae2",
+  "executor_sha": "59b5410c48e0e2780fe48f5dbf163cd24b1be52b",
   "semantic_source_sha": "c5e0b242f3c3015f1f4f5f886058f0086fe1f679",
   "turn_id": "M6-CP3-TB26-RP01-A5-SHARED-NODE-SEAM-WITNESS-HARVEST",
   "harness_path": ".agents/Directional/tools/m6_cp3_tb26_shared_node_seam_witness_harness.sh",
-  "harness_sha256": "c20b78463c8ad1aa2581d2a4f5f8b0cdd85b54b4805fee95033adcb6739f3f14",
+  "harness_sha256": "54c54aaf757510c0c32ab09b8416b1e747a69750d18cdabae1ae621255d18eb3",
   "environment": {},
   "artifact_prefix": "m6-cp3-tb26-shared-node-seam-harvest",
   "retention_days": 7
