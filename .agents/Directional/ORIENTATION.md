@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-22 · RA-134 audits the TB28 review. Census upheld (462/497, no regressions); CB27 upheld with discriminating preconditions. Corrected: the phase-front product's own validation is the first failure in 17 of the 35 remaining REDs, and 21 print no reason. CB27 compiled test-only; next: CB27-REV, then conditional CB28 (test-only failure messages) and TB29, before DEFN-M1. Accepted CP2 491/491; stable 66/17/49, debt 1; RP-01 open and RP-02 unreached.
+**Currency:** 2026-10-22 · CB27-REV rejected the fourth A7 negative oracle (outside-wedge) as non-discriminating: side opposition independently rejects the same tamper when wedge membership is removed. Three other negative tests are statically plausible; runtime unverified. CB27A test-only correction comes before conditional CB28/TB29. TB28 remains 462/497 candidate (not promoted); accepted CP2 491/491; stable 66/17/49, debt 1; RP-01 open and RP-02 unreached.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,7 +50,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Latest candidate (TB28, reviewed by RA-133):** 462 PASS / 35 inherited RED on the frozen 497-row CP3 selector, with 13 RED→PASS and no PASS→RED vs TB21. The 12 seam-family cases and selector:447 are PASS. All 35 inherited first failures are classified in `Architecture_M6_CP3_TB28_Selector_497_Census_Review_Decision_20261022.md`; M1, D2 and fixture-debt causal obligations remain. TB28 is NOT accepted CP3 evidence; CP2 remains 491/491. Four A7 rejection negatives are compiled in CB27, awaiting independent static Review; no runtime was executed.
+**Latest candidate (TB28, reviewed by RA-133):** 462 PASS / 35 inherited RED on the frozen 497-row CP3 selector, with 13 RED→PASS and no PASS→RED vs TB21. The 12 seam-family cases and selector:447 are PASS. All 35 inherited first failures are classified in `Architecture_M6_CP3_TB28_Selector_497_Census_Review_Decision_20261022.md`; M1, D2 and fixture-debt causal obligations remain. TB28 is NOT accepted CP3 evidence; CP2 remains 491/491. Four A7 rejection negatives compiled in CB27; CB27-REV found the outside-wedge case non-discriminating, requiring CB27A before runtime. No CB27 negatives were run.
 
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md) and [regression tracker](Regression_Root_Cause_Tracker.md).
 
@@ -102,7 +102,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Preserve TB28 462/497 candidate while adding missing A7 negative tests (RA-133; preconditions RA-134.4). For the 35 inherited REDs, measure typed reasons first (CB28/TB29, RA-134.3): the checked phase-front factory is the first failure in 17. Then M1, D2 and fixture-debt adjudication. No promotion of CP3 or modification to the frozen selector. | `M6-CP3-CB27-RP01-A7-CERTIFIED-SEAM-NEGATIVE-ORACLES` → CB28 → TB29 → DEFN-M1 / DEFN-T1; [handoff](Future_Chat_Session_Handoff.md) |
+| **1** | Preserve TB28 462/497 candidate while correcting CB27's outside-wedge A7 negative oracle (CB27-REV). For the 35 inherited REDs, measure typed reasons first (CB28/TB29, RA-134.3): the checked phase-front factory is the first failure in 17. Then M1, D2 and fixture-debt adjudication. No promotion of CP3 or modification to the frozen selector. | `M6-CP3-CB27A-RP01-A7-WEDGE-MEMBERSHIP-ORACLE-CORRECTION` → CB27A-REV → CB28 → TB29 → DEFN-M1 / DEFN-T1; [handoff](Future_Chat_Session_Handoff.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |

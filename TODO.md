@@ -1,11 +1,11 @@
-## CURRENT — RA-134 audit: TB28 and CB27 upheld; RED partition corrected; typed-reason harvest before DEFN-M1 (2026-10-22)
+## CURRENT — CB27-REV finds non-discriminating A7 wedge oracle; CB27A correction before CB28 (2026-10-22)
 
 - [x] Audit (RA-134) of the TB28 review (RA-133):
   - re-derived the ZIP digest, 1019/1019 files, 497/462/35, and **0 PASS→RED / 13 RED→PASS** against TB21;
   - **correction:** RA-133's "periodic fixture setup" family merged A3-atlas failures (`selector:189–195`) with checked-factory rejections (`selector:220, 221, 296, 302, 304, 439`);
   - the factory is the first failure in **17/35**; **21/35** carry no typed reason;
   - DEFN-M1's scope (10, 17 or a split) is unknown until those reasons are measured. Record: `Architecture_M6_CP3_TB28_Census_Review_Audit_Decision_20261022.md`.
-- [x] **CB27 compile-only delivered:** `M6-CP3-CB27-RP01-A7-CERTIFIED-SEAM-NEGATIVE-ORACLES` — test-only, TQ only, compile only. Five D7-fixture negatives, each against the original A6 product:
+- [x] **CB27 compile-only delivered:** `M6-CP3-CB27-RP01-A7-CERTIFIED-SEAM-NEGATIVE-ORACLES` — test-only, TQ only, compile only. Four D7-fixture negatives, each against the original A6 product (fifth is conditional and omitted):
   1. unrelated seam → `cross-sheet` (precondition: a connecting transition is kept, none on the certificate seam);
   2. no certificate → `cross-sheet:no-certificate`;
   3. lattice coordinate → `cross-sheet:seam-direction` (precondition: support and selectedFace equal);
@@ -13,10 +13,11 @@
   5. same side only if reachable.
 
   Record `Architecture_M6_CP3_CB27_A7_Certified_Seam_Negative_Oracles_Code_Build_Record_20261022.md`.
-- [ ] **EXACT NEXT:** `M6-CP3-CB27-RP01-A7-CERTIFIED-SEAM-NEGATIVE-ORACLES-REV` — Review: static adjudication; issues CB28.
-- [ ] Planned, not authorized: CB28 (test-only diagnostic messages for the 21 silent REDs; RA-134.5) → CB28-REV → TB29 (CB27 negatives + D3/D7 + 3 A7 guards + 21 silent + 4 wrong-code rows, on the CB28 package) → TB29-REV → DEFN-M1 (scoped from measured factory clauses) → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up (RA-130.7) only after a witness.
+- [x] **CB27-REV adjudicated:** three A7 negatives statically discriminating, fourth outside-wedge tamper copies the second endpoint binding and leaves both certificate sides equal; A7 still rejects if wedge-membership guard is deleted. Not accepted as full coverage. Same-side negative not constructible on D7 without earlier guards. Review: `.agents/Directional/Architecture_M6_CP3_CB27_A7_Certified_Seam_Negative_Oracles_Review_Decision_20261022.md`. No runtime or CP3 promotion.
+- [ ] **EXACT NEXT:** `M6-CP3-CB27A-RP01-A7-WEDGE-MEMBERSHIP-ORACLE-CORRECTION` — test-only correction of the outside-wedge negative, GMP/GMPXX compile only; retain all other tests and product source; STOP if no source-produced discriminating binding exists. Independent CB27A-REV before CB28.
+- [ ] Planned, not authorized until CB27A and CB27A-REV: CB28 (test-only diagnostic messages for the 21 silent REDs; RA-134.5) → CB28-REV → TB29 (CB27 negatives + D3/D7 + 3 A7 guards + 21 silent + 4 wrong-code rows, on the CB28 package) → TB29-REV → DEFN-M1 (scoped from measured factory clauses) → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up (RA-130.7) only after a witness.
 - [ ] **Planned user-directed `DIAG-RETAIN`** remains deferred: A5 occurrence/relation, A6 quotient classes and A7 geometry snapshots for GUI/CLI when retention enabled, with no read-back, bounded memory. Review schedules clear of RP-01.
-- **Turn sequence:** TB27-REV (RA-132) → TB28 → TB28-REV (RA-133) → TB28-REV audit (RA-134) → CB27 [compile-only] → **CB27-REV** → CB28 → CB28-REV → TB29 → TB29-REV → DEFN-M1 → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+- **Turn sequence:** TB27-REV (RA-132) → TB28 → TB28-REV (RA-133) → TB28-REV audit (RA-134) → CB27 [compile-only] → CB27-REV [rejected fourth oracle] → **CB27A** → CB27A-REV → CB28 → CB28-REV → TB29 → TB29-REV → DEFN-M1 → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
 - Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB28 462/497 **candidate only**; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
 
 ---

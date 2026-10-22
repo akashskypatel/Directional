@@ -1,3 +1,7 @@
+## CB27-REV — test-authority non-vacuity defect (2026-10-22)
+
+Independent static review of CB27 source `175c70e44d2c162d72812c842149f30c53c1fa25` and GMP compile package `12443015113` (28/28 hashes) found the outside-wedge A7 negative non-discriminating: copying the second span's entire interior binding into the first gives both endpoints the same certificate side, so the independent side-opposition guard rejects even with the wedge-membership predicate removed. This is **not** an accepted-green loss or stable product regression. Falsifier for corrected oracle: removing only membership must admit the otherwise valid source-produced mutation; a rejection due to opposite-side mismatch or earlier A5/A6 guard does not count. Owner: `M6-CP3-CB27A-RP01-A7-WEDGE-MEMBERSHIP-ORACLE-CORRECTION` and mandatory CB27A-REV before CB28/TB29. Prohibited: synthetic success, tamper that changes multiple independent predicates, test assertion weakening, product changes in test-only CB. Three other negatives await runtime. Stable counts **66/17/49**, debt **1**, CP2 **491/491**, TB28 **462/497 candidate only**; RP-01 open. Record: `Architecture_M6_CP3_CB27_A7_Certified_Seam_Negative_Oracles_Review_Decision_20261022.md`.
+
 ## RA-134 audit of the TB28 review (2026-10-22)
 
 TB28 re-derived: 462/497, 13 RED→PASS, 0 PASS→RED. RA-133's RED partition is corrected to group by first failing component:
