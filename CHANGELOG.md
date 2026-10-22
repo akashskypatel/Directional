@@ -1,3 +1,9 @@
+## 2026-10-22 — Audit of the TB28 review (RA-134): census upheld; remaining failures need their reasons recorded
+
+- Re-checked the census: 462 of 497 pass, 13 tests newly pass, and none newly fail. The CB27 negative-test turn is upheld, with three checks added so that each negative test can only pass for the intended reason.
+- Corrected how the 35 remaining failures were grouped. In 17 of them, the first thing that fails is the phase-front product's own validation, and 21 of them never print why. Two groups that the review had merged actually fail in different components.
+- Next: CB27. Then a test-only change to print the typed reason for those 21 failures (CB28), and a run to collect them (TB29), before the M1 definition is written. Accounting unchanged. Record: `Architecture_M6_CP3_TB28_Census_Review_Audit_Decision_20261022.md`.
+
 ## 2026-10-22 — RA-133 independent TB28 census Review (candidate, not CP3 acceptance)
 
 - Primary archive reverified (1019/1019 SHA-256; 497 exact per-case logs; 5,784-file source snapshot). TB28 **462/497** vs TB21 449/497: **13 RED→PASS, zero PASS→RED**; 35 inherited REDs partitioned by observed failure precondition, not falsely assigned one root cause. No stable ledger or selector mutation. Independent record: `.agents/Directional/Architecture_M6_CP3_TB28_Selector_497_Census_Review_Decision_20261022.md`. Next **M6-CP3-CB27-RP01-A7-CERTIFIED-SEAM-NEGATIVE-ORACLES** (test-only A7 negative oracles, compile-only; no runtime).

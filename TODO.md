@@ -1,10 +1,32 @@
-## CURRENT — RA-133 TB28 independently reviewed; CB27 A7 negative tests next (2026-10-22)
+## CURRENT — RA-134 audit: TB28 and CB27 upheld; RED partition corrected; typed-reason harvest before DEFN-M1 (2026-10-22)
+
+- [x] Audit (RA-134) of the TB28 review (RA-133):
+  - re-derived the ZIP digest, 1019/1019 files, 497/462/35, and **0 PASS→RED / 13 RED→PASS** against TB21;
+  - **correction:** RA-133's "periodic fixture setup" family merged A3-atlas failures (`selector:189–195`) with checked-factory rejections (`selector:220, 221, 296, 302, 304, 439`);
+  - the factory is the first failure in **17/35**; **21/35** carry no typed reason;
+  - DEFN-M1's scope (10, 17 or a split) is unknown until those reasons are measured. Record: `Architecture_M6_CP3_TB28_Census_Review_Audit_Decision_20261022.md`.
+- [ ] **EXACT NEXT:** `M6-CP3-CB27-RP01-A7-CERTIFIED-SEAM-NEGATIVE-ORACLES` — test-only, TQ only, compile only. Five D7-fixture negatives, each against the original A6 product:
+  1. unrelated seam → `cross-sheet` (precondition: a connecting transition is kept, none on the certificate seam);
+  2. no certificate → `cross-sheet:no-certificate`;
+  3. lattice coordinate → `cross-sheet:seam-direction` (precondition: support and selectedFace equal);
+  4. outside wedge → `cross-sheet:seam-direction` (precondition: binding not in the wedge, and on a certificate face);
+  5. same side only if reachable.
+
+  Record `Architecture_M6_CP3_CB27_A7_Certified_Seam_Negative_Oracles_Code_Build_Record_20261022.md`.
+- [ ] **CONDITIONAL:** `M6-CP3-CB27-RP01-A7-CERTIFIED-SEAM-NEGATIVE-ORACLES-REV` — Review: static adjudication; issues CB28.
+- [ ] Planned, not authorized: CB28 (test-only diagnostic messages for the 21 silent REDs; RA-134.5) → CB28-REV → TB29 (CB27 negatives + D3/D7 + 3 A7 guards + 21 silent + 4 wrong-code rows, on the CB28 package) → TB29-REV → DEFN-M1 (scoped from measured factory clauses) → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up (RA-130.7) only after a witness.
+- [ ] **Planned user-directed `DIAG-RETAIN`** remains deferred: A5 occurrence/relation, A6 quotient classes and A7 geometry snapshots for GUI/CLI when retention enabled, with no read-back, bounded memory. Review schedules clear of RP-01.
+- **Turn sequence:** TB27-REV (RA-132) → TB28 → TB28-REV (RA-133) → TB28-REV audit (RA-134) → **CB27** → CB27-REV → CB28 → CB28-REV → TB29 → TB29-REV → DEFN-M1 → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+- Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB28 462/497 **candidate only**; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
+
+---
+
+## HISTORY — TB28 census and RA-133 review; RA-134 audit (2026-10-22)
 
 - [x] **TB28 artifact-only census:** `M6-CP3-TB28-RP01-SELECTOR-497-CENSUS`. Immutable [run 39772864202](https://github.com/akashskypatel/Directional/actions/runs/39772864202), result `12424484672` (SHA-256 `a54110dbb5475b76e6b6a6baa8fc1b7dcabd7aa50c95c5b390532509d1c656e6`), 1019/1019 manifest, 497/497 executed, 462 PASS, 35 RED; vs TB21: 13 RED→PASS (12 seam family + selector:447), zero PASS→RED. Original CB26 package `12409939859`, unchanged harness/selector; no rebuild, relink or benchmark. Report `Architecture_M6_CP3_TB28_Selector_497_Census_Report_20261022.md`, red inventory and full ledger TSV.
 - [x] **RA-133 independent TB28 Review:** 1019/1019 result hashes and 497 exact log/identity/hash/verdict records; 13 improvements, zero regressions; 35 inherited REDs classified without invented causes. Candidate-only 462/497, unchanged stable totals. Record `Architecture_M6_CP3_TB28_Selector_497_Census_Review_Decision_20261022.md`.
-- [ ] **EXACT NEXT:** `M6-CP3-CB27-RP01-A7-CERTIFIED-SEAM-NEGATIVE-ORACLES` — RA-132.6 five A7 negatives in `SurfaceCellTransitionQuotientTests.cpp` only (unrelated-seam, no-certificate, different lattice coordinate, outside-wedge and conditional same-side); compile-only and independent CB27-REV, then TB29. Preserve D3/D7 controls and frozen selector; STOP if the tamper cannot reach the intended negative branch.
-- [ ] Conditional, **not yet authorized to execute**: CB27 test-only negatives (RA-132.6; A7 unrelated-seam, no-certificate, lattice-coordinate and outside-wedge; same-side if constructible), then CB27-REV → TB29 → TB29-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review. Nonzero-turn and Periodic obligations wait for witnesses.
-- [ ] **Planned user-directed `DIAG-RETAIN`** remains deferred: A5 occurrence/relation, A6 quotient classes and A7 geometry snapshots for GUI/CLI when retention enabled, with no read-back, bounded memory. Review schedules clear of RP-01.
+- RA-133 issued `M6-CP3-CB27-RP01-A7-CERTIFIED-SEAM-NEGATIVE-ORACLES` — RA-132.6 five A7 negatives in `SurfaceCellTransitionQuotientTests.cpp` only (unrelated-seam, no-certificate, different lattice coordinate, outside-wedge and conditional same-side); compile-only and independent CB27-REV, then TB29. Preserve D3/D7 controls and frozen selector; STOP if the tamper cannot reach the intended negative branch.
+- (superseded by RA-134; contradictory duplicate removed) Conditional: CB27 test-only negatives (RA-132.6; A7 unrelated-seam, no-certificate, lattice-coordinate and outside-wedge; same-side if constructible), then CB27-REV → TB29 → TB29-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review. Nonzero-turn and Periodic obligations wait for witnesses.
 - Frozen stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB28 462/497 **candidate only**; selector 497 byte-frozen. RP-01 OPEN, RP-02 UNREACHED, Gate C suspended.
 
 ---

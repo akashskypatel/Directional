@@ -1,3 +1,22 @@
+## RA-134 — Audit of the TB28 review (RA-133): evidence and CB27 upheld; RED partition corrected; typed-reason harvest before DEFN-M1 (2026-10-22)
+
+Authority: `Architecture_M6_CP3_TB28_Census_Review_Audit_Decision_20261022.md`; reviewed: `Architecture_M6_CP3_TB28_Selector_497_Census_Review_Decision_20261022.md` (RA-133).
+
+- **RA-134.1** TB28 re-derived: `12424484672`, 1019/1019, 462/35, 0 PASS→RED, 13 RED→PASS against TB21.
+- **RA-134.2** Partition by first failing component:
+  - checked phase-front factory: 17 (13 silent, 4 wrong code);
+  - A3 atlas: 8 (`189–195` silent, `442`);
+  - A5: `focused30:12`;
+  - producer disposition or oracle: 7;
+  - witness absence: `cp3entry:1/2`.
+
+  RA-133's periodic family split. M1 membership of `selector:220, 221, 296, 302, 304, 439` and `cp3entry:4` is unknown (RA-105.3 is static).
+- **RA-134.3** CB28 (test-only messages) and TB29 run before DEFN-M1.
+- **RA-134.4** CB27 binding preconditions: unrelated seam keeps a connecting transition and none on the certificate seam; lattice case keeps support and selectedFace equal; outside-wedge binding is not in the wedge and lies on a certificate face. All cases run against the original A6 product.
+- **RA-134.5** CB28: a factory-error formatter (code, site, edge, event, cell, region, periodic relation); helpers TQ:358, TQ:2498, SP10:6479, SP10:4340 (atlas); asserts TQ:5942, 5983, 3900, 5158. Messages only.
+- **RA-134.6** CB27 → REV → CB28 → REV → TB29 → REV → DEFN-M1 → REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+
+---
 ## RA-132 — TB27 reviewed: seam family and both tampers PASS; census before negative tests (2026-10-22)
 
 Authority: `Architecture_M6_CP3_TB27_A7_Certified_Seam_Cross_Sheet_Verification_Review_Decision_20261022.md`.

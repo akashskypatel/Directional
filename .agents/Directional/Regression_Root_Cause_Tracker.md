@@ -1,3 +1,14 @@
+## RA-134 audit of the TB28 review (2026-10-22)
+
+TB28 re-derived: 462/497, 13 RED→PASS, 0 PASS→RED. RA-133's RED partition is corrected to group by first failing component:
+- checked phase-front factory: 17 (13 silent, 4 wrong code);
+- A3 atlas: 8;
+- A5: 1;
+- producer disposition or oracle: 7;
+- witness absence: 2.
+
+21 REDs have no typed reason. CB28 (test-only messages) and TB29 run before DEFN-M1. No count changes. Record: `Architecture_M6_CP3_TB28_Census_Review_Audit_Decision_20261022.md`.
+
 ## RA-133 — independent TB28 census Review (2026-10-22)
 
 Independently verified [run 39772864202](https://github.com/akashskypatel/Directional/actions/runs/39772864202), result `12424484672`: 1019/1019 checksums, 497 one-RUN records with matching log SHA, 462 PASS/35 RED, 13 RED→PASS, zero PASS→RED vs TB21. All 35 RED identities are inherited and partitioned in `Architecture_M6_CP3_TB28_Selector_497_Census_Review_Decision_20261022.md`: M1 10, neighboring hard-rail/A5 2, D2 1, periodic product/fixture 13, typed hard-feature front 1, other independent producer/test oracles 8. **Candidate/non-stable only**, no accepted-green regression or new event; no established single cause for the remaining 35. Falsifiers: future individually reproducible accepted-green loss, proved product origin for a failure currently attributed to missing fixture, or a new distinct RED identity. Owners: CB27 A7 negative tests under RA-132.6; DEFN-M1, DEFN-T1 and fixture-debt review afterward. Prohibited: force green, change selector/test oracle to erase RED, infer causal equivalence from shared RED status. Stable **66/17/49**, debt **1**, CP2 **491/491**, R3 **403/497** rejected; TB28 candidate **462/497**, RP-01 OPEN, RP-02 UNREACHED.
@@ -80,7 +91,7 @@ Immutable artifact-only [run 39549820087](https://github.com/akashskypatel/Direc
 | Family | Identities | Locus / origin | Status |
 |---|---|---|---|
 | F: torus witness fixture lacks `fieldTransportAtlas` | `focused30:6`, `selector:447` | TQ:1607–1796; factory `atlas-binding` S:8462; `7de636c88` added the binding to the other pipeline fixtures (TQ:649, 757, 861) while this one was masked by `88aa8eae0` | **Closed at candidate level (RA-121):** TB23 `selector:447` PASS; `focused30:6` passes the atlas and moves to A5-ISO |
-| A5-ISO: A5 `MismatchedIsolationEvidence` on certified collinear seams | `focused30:6, 20, 24, 25, 26, 27, 28`; `selector:444, 446, 448`; `cp3entry:3, 5` | One mechanism (TB23–TB25): the A5 face clauses (RP:3891–3892) on shared-node OrdinaryFront relations (RA-124.3). Torus seam 60–61 (curved) and D3 grid seam 1–4 (uniform) both have identity turn (d = F = 0, RA-126.2), so frozen D3 holds and A5 is the only blocker | CB25 (A5) + CB26 (A7). TB27 (RA-132): all 12 PASS targeted; D3 and D7 tampers reject. Census TB28 next; negative tests in CB27 |
+| A5-ISO: A5 `MismatchedIsolationEvidence` on certified collinear seams | `focused30:6, 20, 24, 25, 26, 27, 28`; `selector:444, 446, 448`; `cp3entry:3, 5` | One mechanism (TB23–TB25): the A5 face clauses (RP:3891–3892) on shared-node OrdinaryFront relations (RA-124.3). Torus seam 60–61 (curved) and D3 grid seam 1–4 (uniform) both have identity turn (d = F = 0, RA-126.2), so frozen D3 holds and A5 is the only blocker | CB25 (A5) + CB26 (A7). TB27 (RA-132): all 12 PASS targeted; D3 and D7 tampers reject. TB28 census (RA-133, audited RA-134): all 12 PASS, 0 PASS→RED. Negative tests in CB27 |
 
 Record: `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Review_Decision.md`.
 
