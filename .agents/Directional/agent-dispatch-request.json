@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb28-diagnostics-apply-20261022-r1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb28-diagnostics-apply",
-  "file_id": "1WzoJVwD3GG0nFh5SRKdXymQEX2RhPNtJ",
-  "patch_sha256": "90c48711d454be0a5755e74e4ae9e4281afe2b849dd81a788cb2430370a95c3e",
-  "base_sha": "2d35c43ca091b7c6082e0ee892bca9a3f54d7f89",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): expose typed factory errors in CB28 diagnostics",
-  "retention_days": 7
+  "request_id": "m6-cp3-cb28-compile-20261022-r1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb28-compile",
+  "source_sha": "19aeb3e60e2d762006d95dc4a5007af54f094ee7",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb28-compile"
 }
