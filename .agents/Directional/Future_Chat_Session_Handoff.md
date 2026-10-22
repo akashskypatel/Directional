@@ -34,38 +34,60 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-22, CB27-REV independently rejected the fourth A7 negative oracle: copying the second binding also collapses opposite-side orientation, so the test remains green when wedge membership is removed. Three other negatives are statically discriminating, not runtime verified. Same-side omitted for the D7 witness. CB27A test-only correction must precede CB28 and TB29; RA-134 RED partition and TB28 462/497 candidate retained. |
+| Currency | 2026-10-22, after the CB27A design review (RA-135). CB27A blocked because CB27-REV required the tamper on the first endpoint's span binding, and D7's first wedge holds a single binding (`0/0`). Resolved: membership is checked for both endpoints, so withdraw the second span's real binding (`3/1`) from the second wedge (`{2/1, 3/1}`). Only membership changes, which in-test preconditions P1–P6 verify. CB27A resumes, test-only. |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`; PR #8 draft/open. Exact CB27 test-only source **`175c70e44d2c162d72812c842149f30c53c1fa25`**, compiled package `12443015113` (CB26 semantic base `e3d60337ed34538547d3a6d519bafae5b184330e`); later control/document/tooling commits do not replace semantic source. Refresh current branch HEAD before mutation. |
 | Last accepted semantic runtime | CP2 **491/491**, package `11391685901`, semantic `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. R3 **403/497** rejected. |
 | Latest candidate evidence | RA-133-reviewed TB28 [run 39772864202](https://github.com/akashskypatel/Directional/actions/runs/39772864202), result artifact **`12424484672`**, ZIP SHA-256 `a54110dbb5475b76e6b6a6baa8fc1b7dcabd7aa50c95c5b390532509d1c656e6`; 1019/1019 manifest, 497/497 executed, **462 PASS/35 RED**, 13 RED→PASS and no PASS→RED vs TB21 449/48. Owning report `Architecture_M6_CP3_TB28_Selector_497_Census_Report_20261022.md`; TSV inventory and full ledger. **Not promoted.** |
 | Regression accounting and debt | **66 events / 17 categories / 49 recurrences**, witness debt **1**, selector **497 frozen**, TB28 candidate 462/497, RP-01 OPEN. Tracker: `Regression_Root_Cause_Tracker.md`. |
 | Active boundary | `RP-01` open. The seam family (12) and `selector:447` PASS at TB28. **35 REDs by first failing component (RA-134.2):**<br>- checked phase-front factory: 17 (13 silent: `focused30:3, 22, 23`; `selector:139, 140, 142, 220, 221, 296, 302, 304, 439`; `cp3entry:4`. 4 with the wrong code: `selector:211, 219, 227, 230`);<br>- A3 atlas: 8 (`selector:189–195` silent, `selector:442`);<br>- A5: `focused30:12`;<br>- producer disposition or oracle: 7 (`selector:174, 201, 204, 242, 247, 250, 405`);<br>- witness absence: `cp3entry:1` (D2), `cp3entry:2`.<br>CB27 four negatives compiled, but CB27-REV rejected the outside-wedge oracle as non-discriminating; CB27A and independent review required before runtime verification. `RP-02` UNREACHED; Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-CB27A-RP01-A7-WEDGE-MEMBERSHIP-ORACLE-CORRECTION` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB27A-RP01-A7-WEDGE-MEMBERSHIP-ORACLE-CORRECTION` (resumed under RA-135) — EXACT NEXT
 
-- **Type / owner:** Code + Build; `tests/SurfaceCellTransitionQuotientTests.cpp` only. Authorized by CB27-REV (Architecture_M6_CP3_CB27_A7_Certified_Seam_Negative_Oracles_Review_Decision_20261022.md); no product, other-test, selector, fixture, benchmark or workflow change.
-- **Objective:** replace the outside-wedge negative with a source-produced D7 binding that keeps both certificate sides opposite and first endpoint face/sheet unchanged while violating first-wedge membership alone. Demonstrate the counterfactual: removing only wedge membership would admit this tamper. If no valid D7 binding exists, STOP and report the missing witness rather than synthesizing invalid source authority.
-- **Verification:** binding-specific preconditions, A5 republish success, original A6 forest, A7 exact rejection path, and independent evidence of non-vacuity. Retain the three other negative tests and D3/D7 controls. Eight-target GMP/GMPXX compile only, `runtimeExecution=false`.
-- **On success:** independent CB27A-REV must adjudicate before CB28. CB28 diagnostics and TB29 remain conditional, not started.
+- **Type / owner:** Code + Build, test-only, compile only; implementation agent. Authority: RA-135 (`Architecture_M6_CP3_CB27A_Wedge_Membership_Witness_Design_Review_Decision_20261022.md`), amending CB27-REV (`Architecture_M6_CP3_CB27_A7_Certified_Seam_Negative_Oracles_Review_Decision_20261022.md`) items 1–2.
+- **Objective:** replace the non-discriminating outside-wedge negative with a test whose only failing predicate is wedge membership.
+- **Read before work:** RA-135 (all); CB27-REV; `RemeshPipeline.h:769–775` (binding identity); RP:3855–3934, 3708–3830, 5740–5898, 7423–7535, 7580–7600; TQ:4065–4141 (helper), TQ:4266–4286 (test to replace); `LESSONS.md` §2.
+- **In scope** (`tests/SurfaceCellTransitionQuotientTests.cpp` only):
+  1. **Replace** `CertifiedSeamRejectsSpanBindingOutsideEndpointWedge` with `CertifiedSeamRejectsSpanBindingWithdrawnFromEndpointWedge`.
+     - **Tamper:** remove the chosen endpoint's span `interiorBinding` (the full triple) from that occurrence's `cornerWedgeBindings` in `records.occurrences`. Nothing else changes.
+     - **Endpoint:** the first if P1–P2 hold for it, else the second (D7: second, wedge `{2/1, 3/1}`).
+  2. **Assert the preconditions:**
+     - P1: the binding is in the wedge before the tamper;
+     - P2: the wedge has at least two bindings, one of them another binding on the same sheet;
+     - P3: after the tamper the binding is absent, and the sheet set is unchanged and equal to `cornerWedgeSheets`;
+     - P4: the shared-node triple is equal;
+     - P5: a test-local face/sheet-only classification gives opposite sides;
+     - P6: the certificate transition is present in the relation evidence.
+  3. **Expect:** A6 `InvalidIsolationEvidence`; A7 `UncertifiedCrossSheetBinding`, site `cross-sheet:seam-direction`, failure `occurrence == relation.id.first`.
+  4. **Helper:** an optional expected-locus argument on `check_d7_certified_seam_negative` (default unchecked).
+  5. **Preserve:** the other three negatives and the D3/D7 positives. Update the same-side comment to cite RA-135.1.
+- **Out of scope:** production source, headers, other tests, fixtures, selectors, workflows, runtime; CB28.
+- **Success evidence:**
+  - the diff touches only TQ;
+  - eight targets compile with GMP/GMPXX, `runtimeExecution=false`;
+  - record `Architecture_M6_CP3_CB27A_Wedge_Membership_Oracle_Code_Build_Record_20261022.md` (at most 30 lines);
+  - STATUS is COMPLETE.
+- **On success:** `M6-CP3-CB27A-RP01-A7-WEDGE-MEMBERSHIP-ORACLE-CORRECTION-REV` (Review, mandatory): static non-vacuity adjudication; issues CB28 (RA-134.5).
+- **On failure/blocker:** STOP and return to Review if neither endpoint satisfies P1–P2, a precondition cannot hold, a production change is needed, or an assertion would be weakened.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
-|---|---|
-| 1 — next | `M6-CP3-CB27A-RP01-A7-WEDGE-MEMBERSHIP-ORACLE-CORRECTION` | Correct only the A7 wedge-membership negative and compile/package, no runtime. STOP if no legitimate D7 mutation can isolate the predicate. |
-| later — conditional | CB27A-REV → CB28 → CB28-REV → TB29 → TB29-REV | CB27A-REV decides whether the correction is a valid oracle; CB28 message-only work only after acceptance. |
-| later — UNKNOWN until assigned | DEFN-M1 → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` and Periodic after witnesses; `DIAG-RETAIN` deferred | Planned; do not start without review-authorized next edge. |
+|---|---|---|
+| 1 — next | `M6-CP3-CB27A-RP01-A7-WEDGE-MEMBERSHIP-ORACLE-CORRECTION` (resumed) | Code + Build, test-only, compile only (RA-135): wedge-withdrawal negative with P1–P6. |
+| 2 — conditional | `M6-CP3-CB27A-RP01-A7-WEDGE-MEMBERSHIP-ORACLE-CORRECTION-REV` | Review, only after step 1 completes: static non-vacuity adjudication; issues CB28. |
+| later — UNKNOWN until assigned | CB28 (test-only diagnostic messages for the 21 silent REDs; RA-134.5) → CB28-REV → TB29 (4 A7 negatives + D3/D7 + 3 A7 guards + 21 silent + 4 wrong-code rows, on the CB28 package) → TB29-REV → DEFN-M1 (scoped from measured factory clauses) → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up (RA-130.7) only after a witness | Planned, not authorized; each Review assigns the next edge. |
+| later — UNKNOWN until assigned | `DIAG-RETAIN` (user-directed): retain A5 occurrences and relations, A6 merged classes and A7 vertex geometry as diagnostic snapshots for GUI/CLI; scope in `TODO.md` | Planned, not authorized; Review places it in the sequence clear of RP-01 turns. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **code-build** — test-only CB27A wedge membership correction; compile-only, no runtime.
+`load_next`: **code-build** — CB27A resumed: test-only wedge-withdrawal negative (RA-135); compile only, no runtime.
 
 Minimum successor context **after the mandatory start checklist and policies**:
 
 0. `.agents/Directional/ORIENTATION.md` — project context, read first.
 1. `.agents/Directional/ROADMAP.md` — milestone position only.
 2. `.agents/Directional/Future_Chat_Session_Handoff.md` — exact current handoff.
-3. `Architecture_M6_CP3_CB27_A7_Certified_Seam_Negative_Oracles_Review_Decision_20261022.md` (binding successor and falsifiers), `Architecture_M6_CP3_CB27_A7_Certified_Seam_Negative_Oracles_Code_Build_Record_20261022.md` (exact compile authority), and `Architecture_M6_CP3_TB28_Census_Review_Audit_Decision_20261022.md` (RA-134: CB28 scope); TQ:4065–4286 and RP:3855–3925, 7587–7619.
+3. `Architecture_M6_CP3_CB27A_Wedge_Membership_Witness_Design_Review_Decision_20261022.md` (RA-135: block analysis, withdrawal construction, P1–P6); `Architecture_M6_CP3_CB27_A7_Certified_Seam_Negative_Oracles_Review_Decision_20261022.md` (CB27-REV); TQ:4065–4141 and TQ:4266–4286; `RemeshPipeline.h:769–775`.
 4. `.agents/Directional/Regression_Root_Cause_Tracker.md` and `TODO.md` — unresolved issues and scope; required policy readings still govern.
 
 **Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py authority <sha>` and

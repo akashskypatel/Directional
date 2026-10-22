@@ -1,4 +1,25 @@
-## CURRENT — CB27-REV finds non-discriminating A7 wedge oracle; CB27A correction before CB28 (2026-10-22)
+## CURRENT — RA-135 resolves the CB27A block: wedge-withdrawal witness; CB27A resumes (2026-10-22)
+
+- [x] Design review (RA-135):
+  - the block came from CB27-REV's insistence on the **first** endpoint's **span binding**, but D7's first wedge has one binding (`0/0`), so any same face/sheet binding outside it would be synthetic, and removing it trips `cross-sheet:wedge`;
+  - membership is checked for both endpoints. Withdraw the second span's real binding `3/1` from the second wedge `{2/1, 3/1}`;
+  - republishing is structural only (RP:3708–3830); A7's per-member checks do not read bindings beyond the sheet set; A6 reads membership only through `certified_seam_direction` → `InvalidIsolationEvidence`;
+  - with the membership clause deleted, the tamper would be accepted. Record: `Architecture_M6_CP3_CB27A_Wedge_Membership_Witness_Design_Review_Decision_20261022.md`.
+- [ ] **EXACT NEXT:** `M6-CP3-CB27A-RP01-A7-WEDGE-MEMBERSHIP-ORACLE-CORRECTION` (resumed) — test-only, TQ only, compile only:
+  1. replace the outside-wedge test with `CertifiedSeamRejectsSpanBindingWithdrawnFromEndpointWedge` (remove the span binding from its own wedge; endpoint first if eligible, else second);
+  2. assert P1–P6 (membership before, at least two bindings with a same-sheet sibling, sheet set unchanged, shared-node triple, face/sheet-only sides opposite, certificate transition present);
+  3. expect A6 `InvalidIsolationEvidence`, A7 `cross-sheet:seam-direction` at `relation.id.first`;
+  4. optional locus argument on the helper;
+  5. the other three negatives and D3/D7 unchanged; eight-target GMP compile; record `Architecture_M6_CP3_CB27A_Wedge_Membership_Oracle_Code_Build_Record_20261022.md`.
+- [ ] **CONDITIONAL:** `M6-CP3-CB27A-RP01-A7-WEDGE-MEMBERSHIP-ORACLE-CORRECTION-REV` — Review: static non-vacuity; issues CB28.
+- [ ] Planned, not authorized: CB28 (test-only diagnostic messages for the 21 silent REDs; RA-134.5) → CB28-REV → TB29 (4 A7 negatives + D3/D7 + 3 A7 guards + 21 silent + 4 wrong-code rows, on the CB28 package) → TB29-REV → DEFN-M1 (scoped from measured factory clauses) → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up (RA-130.7) only after a witness.
+- [ ] **Planned user-directed `DIAG-RETAIN`** remains deferred: A5 occurrence/relation, A6 quotient classes and A7 geometry snapshots for GUI/CLI when retention enabled, with no read-back, bounded memory. Review schedules clear of RP-01.
+- **Turn sequence:** TB28-REV audit (RA-134) → CB27 → CB27-REV (fourth oracle rejected) → CB27A [BLOCKED] → design review (RA-135) → **CB27A (resumed)** → CB27A-REV → CB28 → CB28-REV → TB29 → TB29-REV → DEFN-M1 → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+- Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB28 462/497 **candidate only**; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
+
+---
+
+## HISTORY — CB27 compiled and reviewed (CB27-REV); CB27A blocked; RA-135 design resolution (2026-10-22)
 
 - [x] Audit (RA-134) of the TB28 review (RA-133):
   - re-derived the ZIP digest, 1019/1019 files, 497/462/35, and **0 PASS→RED / 13 RED→PASS** against TB21;
@@ -14,9 +35,8 @@
 
   Record `Architecture_M6_CP3_CB27_A7_Certified_Seam_Negative_Oracles_Code_Build_Record_20261022.md`.
 - [x] **CB27-REV adjudicated:** three A7 negatives statically discriminating, fourth outside-wedge tamper copies the second endpoint binding and leaves both certificate sides equal; A7 still rejects if wedge-membership guard is deleted. Not accepted as full coverage. Same-side negative not constructible on D7 without earlier guards. Review: `.agents/Directional/Architecture_M6_CP3_CB27_A7_Certified_Seam_Negative_Oracles_Review_Decision_20261022.md`. No runtime or CP3 promotion.
-- [ ] **EXACT NEXT:** `M6-CP3-CB27A-RP01-A7-WEDGE-MEMBERSHIP-ORACLE-CORRECTION` — test-only correction of the outside-wedge negative, GMP/GMPXX compile only; retain all other tests and product source; STOP if no source-produced discriminating binding exists. Independent CB27A-REV before CB28.
-- [ ] Planned, not authorized until CB27A and CB27A-REV: CB28 (test-only diagnostic messages for the 21 silent REDs; RA-134.5) → CB28-REV → TB29 (CB27 negatives + D3/D7 + 3 A7 guards + 21 silent + 4 wrong-code rows, on the CB28 package) → TB29-REV → DEFN-M1 (scoped from measured factory clauses) → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up (RA-130.7) only after a witness.
-- [ ] **Planned user-directed `DIAG-RETAIN`** remains deferred: A5 occurrence/relation, A6 quotient classes and A7 geometry snapshots for GUI/CLI when retention enabled, with no read-back, bounded memory. Review schedules clear of RP-01.
+- [x] CB27A started, then BLOCKED (`45d9da85a`): `M6-CP3-CB27A-RP01-A7-WEDGE-MEMBERSHIP-ORACLE-CORRECTION` — test-only correction of the outside-wedge negative, GMP/GMPXX compile only; retain all other tests and product source; STOP if no source-produced discriminating binding exists. Independent CB27A-REV before CB28.
+- Planned at the time: CB28 (test-only diagnostic messages for the 21 silent REDs; RA-134.5) → CB28-REV → TB29 (CB27 negatives + D3/D7 + 3 A7 guards + 21 silent + 4 wrong-code rows, on the CB28 package) → TB29-REV → DEFN-M1 (scoped from measured factory clauses) → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up (RA-130.7) only after a witness.
 - **Turn sequence:** TB27-REV (RA-132) → TB28 → TB28-REV (RA-133) → TB28-REV audit (RA-134) → CB27 [compile-only] → CB27-REV [rejected fourth oracle] → **CB27A** → CB27A-REV → CB28 → CB28-REV → TB29 → TB29-REV → DEFN-M1 → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
 - Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB28 462/497 **candidate only**; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
 

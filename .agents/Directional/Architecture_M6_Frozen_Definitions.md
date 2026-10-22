@@ -1,3 +1,14 @@
+## RA-135 — CB27A design block resolved: wedge-withdrawal witness (2026-10-22)
+
+Authority: `Architecture_M6_CP3_CB27A_Wedge_Membership_Witness_Design_Review_Decision_20261022.md`; amends CB27-REV (`Architecture_M6_CP3_CB27_A7_Certified_Seam_Negative_Oracles_Review_Decision_20261022.md`) successor items 1–2.
+
+- **RA-135.1** The block came from requiring the first endpoint's span binding. D7's first wedge is `{0/0}`, so a same face/sheet binding outside it is synthetic, and removing it trips `cross-sheet:wedge`.
+- **RA-135.2** Withdraw the chosen endpoint's real span binding from its own wedge (D7: second endpoint, `3/1` from `{2/1, 3/1}`). Republishing is structural only; A7 per-member checks pass; only membership fails. Expected: A6 `InvalidIsolationEvidence`, A7 `cross-sheet:seam-direction` at `relation.id.first`.
+- **RA-135.3** In-test preconditions P1–P6, plus a locus check (optional helper argument).
+- **RA-135.4** The resumed CB27A replaces the outside-wedge test. TQ only; eight-target compile.
+- **RA-135.5** CB27A → REV → CB28 → REV → TB29 → REV → DEFN-M1 → REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+
+---
 ## RA-134 — Audit of the TB28 review (RA-133): evidence and CB27 upheld; RED partition corrected; typed-reason harvest before DEFN-M1 (2026-10-22)
 
 Authority: `Architecture_M6_CP3_TB28_Census_Review_Audit_Decision_20261022.md`; reviewed: `Architecture_M6_CP3_TB28_Selector_497_Census_Review_Decision_20261022.md` (RA-133).

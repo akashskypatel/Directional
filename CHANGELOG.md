@@ -1,3 +1,9 @@
+## 2026-10-22 — CB27A design block resolved (RA-135)
+
+- The wedge-membership negative test was blocked. It had been required to alter the first corner. That corner's wedge holds only one face, so no valid alteration could break membership alone.
+- The membership check applies to both corners. The second corner's wedge holds two faces, so removing the seam face from that wedge breaks membership and nothing else. The test asserts this in advance, and the case would be accepted if the check were removed.
+- Next: CB27A resumes (test-only, compile only). Accounting unchanged. Record: `Architecture_M6_CP3_CB27A_Wedge_Membership_Witness_Design_Review_Decision_20261022.md`.
+
 ## 2026-10-22 — CB27 negative-oracle Review rejects masked outside-wedge test
 
 - Reviewed exact source `175c70e44d2c162d72812c842149f30c53c1fa25` and GMP/GMPXX compile package `12443015113` (28/28 hashes; compile-only); no runtime execution. Three A7 negatives statically discriminating, fourth outside-wedge tamper masked by same-side guard, so CB27 oracle coverage **not accepted**; same-side omission justified for disjoint D7 witness. New bounded test-only CB27A correction and independent CB27A-REV precede CB28/TB29. No accepted selector, product, test or stable-count mutation in this Review. Record `.agents/Directional/Architecture_M6_CP3_CB27_A7_Certified_Seam_Negative_Oracles_Review_Decision_20261022.md`.
