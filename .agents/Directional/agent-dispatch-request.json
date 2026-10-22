@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb26-docs-closeout-20261022",
+  "request_id": "m6-cp3-cb26-ra131-review-apply-20261022-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb26-docs-closeout-20261022",
-  "file_id": "1FXaoOA2NtgzzLnqBFHCZZ-4OZxbDFPhi",
-  "patch_sha256": "f3814e11119b4c8394c98cc87129f62fe06beb36f316811b1d82965af4b3aa85",
-  "base_sha": "4f182806b80b21b38334a5f0decef02210b853d6",
+  "mailbox_key": "m6-cp3-cb26-ra131-review-apply",
+  "file_id": "1PVg3d_pGsLtrD0LI0nHi4JRkiNiU8vkA",
+  "patch_sha256": "8655db83197a2e5d33093015855d213e63ff69bdc99ac13f3cb81025cfed2901",
+  "base_sha": "1f6577eaa1aaa6eec8332109205caaafa56333c9",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record CB26 certified seam compile and Review handoff",
+  "commit_message": "docs(directional): accept RA-131 CB26 compile-only review",
   "retention_days": 7
 }
