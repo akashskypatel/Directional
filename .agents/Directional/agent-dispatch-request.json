@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb27-a7-cross-sheet-20261022-r1",
+  "request_id": "m6-cp3-tb27-a7-cross-sheet-20261022-r2",
   "operation": "test_benchmark",
   "mailbox_key": "m6-cp3-tb27-a7-cross-sheet",
-  "executor_sha": "b6f2e16b56b3a12a4eecec4ac2d6507a8f06e88b",
+  "executor_sha": "60414d738eb61a8aa747ba15e9fd65a61071b769",
   "semantic_source_sha": "e3d60337ed34538547d3a6d519bafae5b184330e",
   "turn_id": "M6-CP3-TB27-RP01-A7-CERTIFIED-SEAM-CROSS-SHEET-VERIFICATION",
   "harness_path": ".agents/Directional/tools/m6_cp3_tb27_a7_cross_sheet_verification_harness.sh",
-  "harness_sha256": "dde3608f291d0541348cfa014812d225bcf770981b89643c9ac1eff14feda985",
+  "harness_sha256": "5e3ca0a7c513d5373ee200b2442af315d7845d2dce81c6ea71b971ccbff2fe1f",
   "environment": {},
-  "artifact_prefix": "m6-cp3-tb27-a7-seam",
+  "artifact_prefix": "m6-cp3-tb27-a7-seam-compliant",
   "retention_days": 7
 }
