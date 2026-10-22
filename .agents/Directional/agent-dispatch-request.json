@@ -1,18 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb27a-compile-20261022-r1",
-  "operation": "compile",
-  "mailbox_key": "m6-cp3-cb27a-compile",
-  "source_sha": "f021e8f7b876c261b8337334596f519f4b7652a7",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb27a-compile"
+  "request_id": "m6-cp3-cb27a-docs-20261022-r1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-cb27a-docs",
+  "file_id": "1VkrpKgDLeaYBmGUa9VISO1j0VhL-Czih",
+  "patch_sha256": "3edb176c1a5ddab4960a988b9293fcca0c3cbe33f3002aa5a9149c1881f84259",
+  "base_sha": "aa143c3003dc9b0a21a50951b90c56987e178a6d",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close CB27A compile and hand off non-vacuity review",
+  "retention_days": 7
 }
