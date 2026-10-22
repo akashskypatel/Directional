@@ -4243,20 +4243,20 @@ TEST(M6CP3, CertifiedSeamSharedNodeRequiresSameLatticeCoordinate) {
          const auto &second) {
         ASSERT_EQ(first.support, second.support);
         ASSERT_EQ(first.placement.selectedFace, second.placement.selectedFace);
-        ASSERT_TRUE((first.placement.lattice.latticeCoordinate.array() ==
-                     second.placement.lattice.latticeCoordinate.array()).all());
+        ASSERT_EQ(first.placement.lattice.latticeCoordinate,
+                  second.placement.lattice.latticeCoordinate);
         auto occurrence = std::find_if(records.occurrences.begin(),
                                         records.occurrences.end(),
                                         [&](const auto &entry) {
                                           return entry.id == relation.id.first;
                                         });
         ASSERT_NE(occurrence, records.occurrences.end());
-        occurrence->placement.lattice.latticeCoordinate.x() += 1;
+        occurrence->placement.lattice.latticeCoordinate.x += 1;
         ASSERT_EQ(occurrence->support, second.support);
         ASSERT_EQ(occurrence->placement.selectedFace,
                   second.placement.selectedFace);
-        ASSERT_FALSE((occurrence->placement.lattice.latticeCoordinate.array() ==
-                      second.placement.lattice.latticeCoordinate.array()).all());
+        ASSERT_NE(occurrence->placement.lattice.latticeCoordinate,
+                  second.placement.lattice.latticeCoordinate);
       },
       a6_rejects(directional::pipeline::SurfaceQuotientProductErrorCode::
                      RelationCertificateConflict),
