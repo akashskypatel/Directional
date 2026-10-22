@@ -1,3 +1,8 @@
+## 2026-10-22 — CB25 independent Review (RA-128): source/compile accepted, TB26 issued
+
+- Independently inspected the single-file CB25 RP diff and immutable exact-source compile package: same RP SHA across review snapshot and compile source, 28/28 manifest checks, GMP/GMPXX links, eight compiled targets, no runtime. Shared-node predicate and classifier mirror RA-127 A1/A2, with other A5/A6/D3 guards preserved.
+- No new runtime PASS, selector change or stable count. Assigned `M6-CP3-TB26-RP01-A5-SHARED-NODE-SEAM-WITNESS-HARVEST` to harvest 12 A5-ISO rows, `selector:447`, six TB25 controls and `cp3entry:3/5` certified A6+D3 tamper; CB26 negatives remain pending. Record: `Architecture_M6_CP3_CB25_A5_Shared_Node_Side_Authority_Review_Decision_20261022.md`.
+
 ## 2026-10-22 — CB25 certified A5 shared-node side authority (compile only)
 
 - One RP source change (21 insertions / 6 deletions): shared-node identity now checks exact support, selected face and lattice coordinate; the A5 certified-seam per-occurrence face checks and mirrored rejection-site labels are bypassed only for that same-node identity. All other A5 tests remain and A6/D3 code is untouched.

@@ -1,3 +1,7 @@
+## CB25 Review (RA-128, 2026-10-22)
+
+Single-file shared-node A5 corrective source and compile evidence accepted, no runtime yet. A3 obligation: TB26 must independently observe all 12 A5-ISO identities including certified reciprocal A6 and D3 tamper at `cp3entry:3/5`; falsifier is a recurring exempted face rejection, control regression, or a successful D3 tamper. A4 obligation: later CB26 must add focused negative tests for invalid wedge, same certified side and edge/face support with unequal lattice coordinate. No new stable or candidate evidence and no count change. Source review `Architecture_M6_CP3_CB25_A5_Shared_Node_Side_Authority_Review_Decision_20261022.md`.
+
 ## DEFN-SEAM Review (RA-127, 2026-10-22)
 
 Contract accepted with amendments A1–A4. The shared-node predicate gains lattice-coordinate equality, the rejection-site classifier mirrors the rule, TB26 reports the A6 seam branch and D3 tamper for `cp3entry:3/5`, and negative tests follow in CB26. No count changes. Record: `Architecture_M6_CP3_DEFN_SEAM_A5_Shared_Node_Side_Authority_Review_Decision_20261022.md`.
