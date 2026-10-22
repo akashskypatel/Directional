@@ -1,3 +1,0 @@
-CB27 resumption exact-source inspection snapshot.
-Requested after STATUS resume at 2026-10-22T16:24:11Z.
-Purpose: inspect test-only semantic commit and diagnose compile failure.
