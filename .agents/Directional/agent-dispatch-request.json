@@ -1,14 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb26-a5-shared-node-harvest-20261022-2",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb26-a5-shared-node-harvest",
-  "executor_sha": "59b5410c48e0e2780fe48f5dbf163cd24b1be52b",
-  "semantic_source_sha": "c5e0b242f3c3015f1f4f5f886058f0086fe1f679",
-  "turn_id": "M6-CP3-TB26-RP01-A5-SHARED-NODE-SEAM-WITNESS-HARVEST",
-  "harness_path": ".agents/Directional/tools/m6_cp3_tb26_shared_node_seam_witness_harness.sh",
-  "harness_sha256": "54c54aaf757510c0c32ab09b8416b1e747a69750d18cdabae1ae621255d18eb3",
-  "environment": {},
-  "artifact_prefix": "m6-cp3-tb26-shared-node-seam-harvest",
+  "request_id": "m6-cp3-tb26-docs-closeout-20261022-1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb26-docs-closeout",
+  "file_id": "1EToFP_bOZmL3BlVbYtBnoAcZcuaT1g6s",
+  "patch_sha256": "17d452e39284fd6cec8f703ac672454918f016f3fb51937b64e467f880e4689e",
+  "base_sha": "97bf079f4a95f8c125f5039bac3963a150deea2d",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close TB26 evidence and require independent Review",
   "retention_days": 7
 }
