@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb27-closeout-docs-20261022-r1",
+  "request_id": "m6-cp3-cb27rev-docs-20261022-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb27-closeout-docs",
-  "file_id": "1sQlP4Ab_YYiQI_nOwFBAmxxadsrUuP6s",
-  "patch_sha256": "f89632fe30a0d53592fd4f81d802c292206a7de2e7f9664f3e7c2d8410906aed",
-  "base_sha": "175c70e44d2c162d72812c842149f30c53c1fa25",
+  "mailbox_key": "m6-cp3-cb27rev-docs",
+  "file_id": "1rvDWLcaSCc0FS4Gr-SFvM3kHUkU6OWwl",
+  "patch_sha256": "619c0911c0cfc48fd377fe0286ea01ee41d0e1cf3aa66e14b6d1a671438b4e19",
+  "base_sha": "6dbc8cefdedc79e2830e6f1e438427f4212be8b9",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record CB27 compiled negative oracles and review handoff",
+  "commit_message": "docs(directional): review CB27 wedge oracle and authorize CB27A",
   "retention_days": 7
 }
