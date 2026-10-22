@@ -1,4 +1,4 @@
-## CURRENT — DEFN-SEAM reviewed (RA-127): accepted with amendments; CB25 authorized (2026-10-22)
+## CURRENT — CB25 code compiled; independent CB25 Review next (2026-10-22)
 
 - [x] Review (RA-127, DEFN-SEAM-REV): contract scope, non-weakening table, A6/D3 independence and nonzero-turn deferral accepted. Binding amendments:
   - **A1:** equal `support` + `selectedFace` does not identify a node (edge/face supports carry no parameter); also require equal `placement.lattice.latticeCoordinate`. Producer nodes never wrap, so producer data is unaffected;
@@ -6,13 +6,13 @@
   - **A3:** TB26 reports, for `cp3entry:3/5`, the certified reciprocal relation, A6 admission and the D3 gauge tamper (TQ:3652–3677);
   - **A4:** negative tests for the new branch are owed (CB26, TQ only);
   - correction: A6 source is unchanged, but A6 stops rejecting shared-node pairs as `InvalidIsolationEvidence`; D3 becomes their guard. Record: `Architecture_M6_CP3_DEFN_SEAM_A5_Shared_Node_Side_Authority_Review_Decision_20261022.md`.
-- [ ] **EXACT NEXT:** `M6-CP3-CB25-RP01-A5-SHARED-NODE-SIDE-AUTHORITY` — Code + Build, compile only, RP only (RA-127.5):
+- [x] **CB25 COMPLETE:** `M6-CP3-CB25-RP01-A5-SHARED-NODE-SIDE-AUTHORITY` — Code + Build, compile only, RP only (RA-127.5):
   1. helper `certified_seam_shared_node` (support, `selectedFace`, lattice coordinate all equal);
   2. skip RP:3891–3892 when it holds; every other clause byte-identical;
   3. classifier RP:5303–5333 skips `first-face`/`second-face` when it holds; site format unchanged;
   4. eight targets with GMP/GMPXX, `runtimeExecution=false`; record `Architecture_M6_CP3_CB25_A5_Shared_Node_Side_Authority_Code_Build_Record_20261022.md` (at most 30 lines).
   No A6, A2, header, test, selector, workflow or runtime change.
-- [ ] **CONDITIONAL:** `M6-CP3-CB25-RP01-A5-SHARED-NODE-SIDE-AUTHORITY-REV` — Review: static diff adjudication; issues TB26.
+- [ ] **EXACT NEXT:** `M6-CP3-CB25-RP01-A5-SHARED-NODE-SIDE-AUTHORITY-REV` — Review: static diff adjudication; issues TB26.
 - [ ] Planned, not authorized: CB25-REV → TB26 (12 A5-ISO rows reporting RA-127.4 for `cp3entry:3/5`; guard `selector:447`; TB25 controls) → TB26-REV → CB26 (RA-127.4b negative tests, TQ only) → CB26-REV → TB27 (new tests + selector-497 census) → TB27-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` only after a nonzero-turn witness.
 - [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
   - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.

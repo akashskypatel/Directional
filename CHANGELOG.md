@@ -1,3 +1,8 @@
+## 2026-10-22 — CB25 certified A5 shared-node side authority (compile only)
+
+- One RP source change (21 insertions / 6 deletions): shared-node identity now checks exact support, selected face and lattice coordinate; the A5 certified-seam per-occurrence face checks and mirrored rejection-site labels are bypassed only for that same-node identity. All other A5 tests remain and A6/D3 code is untouched.
+- Patch applied at `c5e0b242f3c3015f1f4f5f886058f0086fe1f679`; exact GMP/GMPXX eight-target compile evidence is in `Architecture_M6_CP3_CB25_A5_Shared_Node_Side_Authority_Code_Build_Record_20261022.md`. No runtime was executed or accepted. Independent CB25-REV next; stable ledgers unchanged.
+
 ## 2026-10-22 — DEFN-SEAM reviewed (RA-127): accepted with amendments; CB25 authorized
 
 - Review accepted the A5 shared-node seam rule with four amendments:
