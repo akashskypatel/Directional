@@ -1,2 +1,0 @@
-# TB28 temporary source snapshot trigger; immutable snapshot has been verified.
-.agents/connector-triggers/source-snapshot/m6-cp3-tb28-20261022.txt

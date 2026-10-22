@@ -1,4 +1,0 @@
-Turn: M6-CP3-TB28-RP01-SELECTOR-497-CENSUS
-Working branch: agent/surface_cell_quad/p5-recover-bridge-healing
-Pre-trigger authority: c7a27bf6e1b9a0ae7c711c516b67e291c2e9c85a
-Purpose: immutable source snapshot and mandatory policy inspection; no product changes.
