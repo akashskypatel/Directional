@@ -5,7 +5,7 @@
   - **correction:** RA-133's "periodic fixture setup" family merged A3-atlas failures (`selector:189–195`) with checked-factory rejections (`selector:220, 221, 296, 302, 304, 439`);
   - the factory is the first failure in **17/35**; **21/35** carry no typed reason;
   - DEFN-M1's scope (10, 17 or a split) is unknown until those reasons are measured. Record: `Architecture_M6_CP3_TB28_Census_Review_Audit_Decision_20261022.md`.
-- [ ] **EXACT NEXT:** `M6-CP3-CB27-RP01-A7-CERTIFIED-SEAM-NEGATIVE-ORACLES` — test-only, TQ only, compile only. Five D7-fixture negatives, each against the original A6 product:
+- [x] **CB27 compile-only delivered:** `M6-CP3-CB27-RP01-A7-CERTIFIED-SEAM-NEGATIVE-ORACLES` — test-only, TQ only, compile only. Five D7-fixture negatives, each against the original A6 product:
   1. unrelated seam → `cross-sheet` (precondition: a connecting transition is kept, none on the certificate seam);
   2. no certificate → `cross-sheet:no-certificate`;
   3. lattice coordinate → `cross-sheet:seam-direction` (precondition: support and selectedFace equal);
@@ -13,10 +13,10 @@
   5. same side only if reachable.
 
   Record `Architecture_M6_CP3_CB27_A7_Certified_Seam_Negative_Oracles_Code_Build_Record_20261022.md`.
-- [ ] **CONDITIONAL:** `M6-CP3-CB27-RP01-A7-CERTIFIED-SEAM-NEGATIVE-ORACLES-REV` — Review: static adjudication; issues CB28.
+- [ ] **EXACT NEXT:** `M6-CP3-CB27-RP01-A7-CERTIFIED-SEAM-NEGATIVE-ORACLES-REV` — Review: static adjudication; issues CB28.
 - [ ] Planned, not authorized: CB28 (test-only diagnostic messages for the 21 silent REDs; RA-134.5) → CB28-REV → TB29 (CB27 negatives + D3/D7 + 3 A7 guards + 21 silent + 4 wrong-code rows, on the CB28 package) → TB29-REV → DEFN-M1 (scoped from measured factory clauses) → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up (RA-130.7) only after a witness.
 - [ ] **Planned user-directed `DIAG-RETAIN`** remains deferred: A5 occurrence/relation, A6 quotient classes and A7 geometry snapshots for GUI/CLI when retention enabled, with no read-back, bounded memory. Review schedules clear of RP-01.
-- **Turn sequence:** TB27-REV (RA-132) → TB28 → TB28-REV (RA-133) → TB28-REV audit (RA-134) → **CB27** → CB27-REV → CB28 → CB28-REV → TB29 → TB29-REV → DEFN-M1 → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+- **Turn sequence:** TB27-REV (RA-132) → TB28 → TB28-REV (RA-133) → TB28-REV audit (RA-134) → CB27 [compile-only] → **CB27-REV** → CB28 → CB28-REV → TB29 → TB29-REV → DEFN-M1 → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
 - Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB28 462/497 **candidate only**; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
 
 ---

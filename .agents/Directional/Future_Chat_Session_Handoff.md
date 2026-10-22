@@ -34,54 +34,38 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-22, after the independent audit of the TB28 review (RA-134). Upheld: TB28 462/497, 13 RED→PASS and 0 PASS→RED, all re-derived, and the CB27 authorization (now with three binding precondition assertions). Corrected: RA-133's RED partition. The checked phase-front factory is the first failure in 17 of 35 REDs, and 21 REDs carry no typed reason. Realigned: CB28 (test-only diagnostic messages) and TB29 come before DEFN-M1. |
-| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`; PR #8 draft/open. Exact CB26 semantic source **`e3d60337ed34538547d3a6d519bafae5b184330e`**, compiled package `12409939859`; later control/document/tooling commits do not replace semantic source. Refresh current branch HEAD before mutation. |
+| Currency | 2026-10-22, CB27 test-only compile delivered for independent Review (not runtime acceptance). RA-134 audit authority retained. Upheld: TB28 462/497, 13 RED→PASS and 0 PASS→RED, all re-derived, and the CB27 authorization (now with three binding precondition assertions). Corrected: RA-133's RED partition. The checked phase-front factory is the first failure in 17 of 35 REDs, and 21 REDs carry no typed reason. Realigned: CB28 (test-only diagnostic messages) and TB29 come before DEFN-M1. |
+| Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`; PR #8 draft/open. Exact CB27 test-only source **`175c70e44d2c162d72812c842149f30c53c1fa25`**, compiled package `12443015113` (CB26 semantic base `e3d60337ed34538547d3a6d519bafae5b184330e`); later control/document/tooling commits do not replace semantic source. Refresh current branch HEAD before mutation. |
 | Last accepted semantic runtime | CP2 **491/491**, package `11391685901`, semantic `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. R3 **403/497** rejected. |
 | Latest candidate evidence | RA-133-reviewed TB28 [run 39772864202](https://github.com/akashskypatel/Directional/actions/runs/39772864202), result artifact **`12424484672`**, ZIP SHA-256 `a54110dbb5475b76e6b6a6baa8fc1b7dcabd7aa50c95c5b390532509d1c656e6`; 1019/1019 manifest, 497/497 executed, **462 PASS/35 RED**, 13 RED→PASS and no PASS→RED vs TB21 449/48. Owning report `Architecture_M6_CP3_TB28_Selector_497_Census_Report_20261022.md`; TSV inventory and full ledger. **Not promoted.** |
 | Regression accounting and debt | **66 events / 17 categories / 49 recurrences**, witness debt **1**, selector **497 frozen**, TB28 candidate 462/497, RP-01 OPEN. Tracker: `Regression_Root_Cause_Tracker.md`. |
-| Active boundary | `RP-01` open. The seam family (12) and `selector:447` PASS at TB28. **35 REDs by first failing component (RA-134.2):**<br>- checked phase-front factory: 17 (13 silent: `focused30:3, 22, 23`; `selector:139, 140, 142, 220, 221, 296, 302, 304, 439`; `cp3entry:4`. 4 with the wrong code: `selector:211, 219, 227, 230`);<br>- A3 atlas: 8 (`selector:189–195` silent, `selector:442`);<br>- A5: `focused30:12`;<br>- producer disposition or oracle: 7 (`selector:174, 201, 204, 242, 247, 250, 405`);<br>- witness absence: `cp3entry:1` (D2), `cp3entry:2`.<br>Untested A7 sites are owed to CB27. `RP-02` UNREACHED; Gate C suspended. |
+| Active boundary | `RP-01` open. The seam family (12) and `selector:447` PASS at TB28. **35 REDs by first failing component (RA-134.2):**<br>- checked phase-front factory: 17 (13 silent: `focused30:3, 22, 23`; `selector:139, 140, 142, 220, 221, 296, 302, 304, 439`; `cp3entry:4`. 4 with the wrong code: `selector:211, 219, 227, 230`);<br>- A3 atlas: 8 (`selector:189–195` silent, `selector:442`);<br>- A5: `focused30:12`;<br>- producer disposition or oracle: 7 (`selector:174, 201, 204, 242, 247, 250, 405`);<br>- witness absence: `cp3entry:1` (D2), `cp3entry:2`.<br>CB27 added four compile-only A7 negative tests; independent Review and runtime verification remain outstanding. `RP-02` UNREACHED; Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-CB27-RP01-A7-CERTIFIED-SEAM-NEGATIVE-ORACLES` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-CB27-RP01-A7-CERTIFIED-SEAM-NEGATIVE-ORACLES-REV` — EXACT NEXT
 
-- **Type / owner:** Code + Build, test-only, compile only; implementation agent. Authority: RA-133 (`Architecture_M6_CP3_TB28_Selector_497_Census_Review_Decision_20261022.md`) implementing RA-132.6 (`Architecture_M6_CP3_TB27_A7_Certified_Seam_Cross_Sheet_Verification_Review_Decision_20261022.md`), with RA-134.4's binding preconditions (`Architecture_M6_CP3_TB28_Census_Review_Audit_Decision_20261022.md`).
-- **Objective:** add discriminating negative tests for CB26's A7 certified-seam branch and the A5/A6 shared-node predicate, without touching product code.
-- **Read before work:** RA-134.4, RA-133 (successor section), RA-132.3 and RA-132.6, RA-130 (B4/B5); TQ:2725–2814 (D7 helper), TQ:3983–4061 (D7 test and tamper pattern); RP:3855–3934 and RP:7543–7650 (A7 branch); `LESSONS.md` §§2, 5.
-- **In scope** (`tests/SurfaceCellTransitionQuotientTests.cpp` only): new tests on the D7 fixture. Each one tampers the A5 records, republishes them, runs A7 against the **original** A6 product, and asserts the exact A7 site plus the A6 code the author derives:
-  1. **Unrelated seam** → `cross-sheet`. **Precondition:** the evidence still holds a transition joining the endpoint sheet sets, and none on `certificate.seam()`.
-  2. **No certificate** (the relation's certificate cleared) → `cross-sheet:no-certificate`.
-  3. **Lattice coordinate changed on one endpoint** → `cross-sheet:seam-direction`. **Precondition:** `support` and `selectedFace` stay equal.
-  4. **Span binding outside its wedge** → `cross-sheet:seam-direction`. **Precondition:** the binding is not in `cornerWedgeBindings`, and its face is a certificate side face.
-  5. **Same side**, only if it can be built without tripping an earlier check; otherwise record which check covers it.
-
-  The D3 and D7 positive tests stay intact. No `GTEST_SKIP` and no early return.
-- **Out of scope:** any production source, header or other test file; fixtures, selectors, workflows; runtime; Periodic (RA-130.7); the CB28 diagnostics.
-- **Success evidence:**
-  - the diff touches only TQ;
-  - eight targets compile with GMP/GMPXX, `runtimeExecution=false`;
-  - record `Architecture_M6_CP3_CB27_A7_Certified_Seam_Negative_Oracles_Code_Build_Record_20261022.md` (at most 30 lines) with the new test names, package id and hashes;
-  - STATUS is COMPLETE.
-- **On success:** `M6-CP3-CB27-RP01-A7-CERTIFIED-SEAM-NEGATIVE-ORACLES-REV` (Review, mandatory): static adjudication of the tests; issues CB28 (RA-134.5).
-- **On failure/blocker:** STOP and return to Review if a precondition cannot be built, A7 rejects before the forest-edge branch, a positive control changes, or a production change would be needed. Never weaken an assertion.
+- **Type / owner:** Independent Review; no runtime, no product/test/selector/fixture mutation. Authorization RA-133 and RA-134.4 after completed CB27 compile-only.
+- **Review:** independently inspect four D7-based negative tests and their preconditions; prove each A7 rejection is reached on the original A6 forest and would fail for a weakened predicate. Adjudicate the conditional same-side omission and its earlier A5/A6 guards; do not grant acceptance based on compilation alone.
+- **Evidence:** `Architecture_M6_CP3_CB27_A7_Certified_Seam_Negative_Oracles_Code_Build_Record_20261022.md`; immutable CB27 source and build artifact; RA-132.6, RA-133, RA-134.4; existing D3/D7 controls.
+- **On accepted Review:** assign CB28 (test-only diagnostic messages, RA-134.5) as the next bounded turn. Do not begin CB28 in this turn; TB29 remains conditional on the CB28 package.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — next | `M6-CP3-CB27-RP01-A7-CERTIFIED-SEAM-NEGATIVE-ORACLES` | Code + Build, test-only, compile only (RA-133, RA-134.4): five A7/A5 negative tests with discriminating preconditions. |
-| 2 — conditional | `M6-CP3-CB27-RP01-A7-CERTIFIED-SEAM-NEGATIVE-ORACLES-REV` | Review, only after step 1 completes: static adjudication; issues CB28 (RA-134.5). |
+| 1 — next | `M6-CP3-CB27-RP01-A7-CERTIFIED-SEAM-NEGATIVE-ORACLES-REV` | Independent Review of four compiled A7 negative tests and conditional same-side omission; may issue CB28 (RA-134.5). |
 | later — UNKNOWN until assigned | CB28 (test-only diagnostic messages for the 21 silent REDs; RA-134.5) → CB28-REV → TB29 (CB27 negatives + D3/D7 + 3 A7 guards + 21 silent + 4 wrong-code rows, on the CB28 package) → TB29-REV → DEFN-M1 (scoped from measured factory clauses) → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up (RA-130.7) only after a witness | Planned, not authorized; each Review assigns the next edge. |
 | later — UNKNOWN until assigned | `DIAG-RETAIN` (user-directed): retain A5 occurrences and relations, A6 merged classes and A7 vertex geometry as diagnostic snapshots for GUI/CLI; scope in `TODO.md` | Planned, not authorized; Review places it in the sequence clear of RP-01 turns. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **code-build** — CB27: test-only A7/A5 negative tests with RA-134.4 preconditions; compile only, no runtime.
+`load_next`: **review** — CB27 negative-oracle static and compile-evidence adjudication; runtime-free.
 
 Minimum successor context **after the mandatory start checklist and policies**:
 
 0. `.agents/Directional/ORIENTATION.md` — project context, read first.
 1. `.agents/Directional/ROADMAP.md` — milestone position only.
 2. `.agents/Directional/Future_Chat_Session_Handoff.md` — exact current handoff.
-3. `Architecture_M6_CP3_TB28_Census_Review_Audit_Decision_20261022.md` (RA-134: audit, corrected RED partition, CB27 preconditions, CB28 scope); `Architecture_M6_CP3_TB28_Selector_497_Census_Review_Decision_20261022.md` (RA-133); `Architecture_M6_CP3_TB27_A7_Certified_Seam_Cross_Sheet_Verification_Review_Decision_20261022.md` (RA-132.6); TQ:2725–2814 and TQ:3983–4061.
+3. `Architecture_M6_CP3_CB27_A7_Certified_Seam_Negative_Oracles_Code_Build_Record_20261022.md` plus `Architecture_M6_CP3_TB28_Census_Review_Audit_Decision_20261022.md` (RA-134: audit, corrected RED partition, CB27 preconditions, CB28 scope); `Architecture_M6_CP3_TB28_Selector_497_Census_Review_Decision_20261022.md` (RA-133); `Architecture_M6_CP3_TB27_A7_Certified_Seam_Cross_Sheet_Verification_Review_Decision_20261022.md` (RA-132.6); TQ:2725–2814 and TQ:3983–4061.
 4. `.agents/Directional/Regression_Root_Cause_Tracker.md` and `TODO.md` — unresolved issues and scope; required policy readings still govern.
 
 **Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py authority <sha>` and

@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-22 · RA-134 audits the TB28 review. Census upheld (462/497, no regressions); CB27 upheld with discriminating preconditions. Corrected: the phase-front product's own validation is the first failure in 17 of the 35 remaining REDs, and 21 print no reason. Next: CB27, then CB28 (test-only failure messages) and TB29, before DEFN-M1. Accepted CP2 491/491; stable 66/17/49, debt 1; RP-01 open and RP-02 unreached.
+**Currency:** 2026-10-22 · RA-134 audits the TB28 review. Census upheld (462/497, no regressions); CB27 upheld with discriminating preconditions. Corrected: the phase-front product's own validation is the first failure in 17 of the 35 remaining REDs, and 21 print no reason. CB27 compiled test-only; next: CB27-REV, then conditional CB28 (test-only failure messages) and TB29, before DEFN-M1. Accepted CP2 491/491; stable 66/17/49, debt 1; RP-01 open and RP-02 unreached.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,7 +50,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Latest candidate (TB28, reviewed by RA-133):** 462 PASS / 35 inherited RED on the frozen 497-row CP3 selector, with 13 RED→PASS and no PASS→RED vs TB21. The 12 seam-family cases and selector:447 are PASS. All 35 inherited first failures are classified in `Architecture_M6_CP3_TB28_Selector_497_Census_Review_Decision_20261022.md`; M1, D2 and fixture-debt causal obligations remain. TB28 is NOT accepted CP3 evidence; CP2 remains 491/491. A7 rejection negatives are the next test-only CB27.
+**Latest candidate (TB28, reviewed by RA-133):** 462 PASS / 35 inherited RED on the frozen 497-row CP3 selector, with 13 RED→PASS and no PASS→RED vs TB21. The 12 seam-family cases and selector:447 are PASS. All 35 inherited first failures are classified in `Architecture_M6_CP3_TB28_Selector_497_Census_Review_Decision_20261022.md`; M1, D2 and fixture-debt causal obligations remain. TB28 is NOT accepted CP3 evidence; CP2 remains 491/491. Four A7 rejection negatives are compiled in CB27, awaiting independent static Review; no runtime was executed.
 
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md) and [regression tracker](Regression_Root_Cause_Tracker.md).
 

@@ -1,3 +1,7 @@
+## 2026-10-22 — CB27 A7 negative oracles compiled, independent Review required
+
+- Added four D7-fixture negative tests for A7 certified-seam authority and A5/A6 shared-node predicates; no production code, fixtures, selector or workflow changes. Conditional same-side tamper is not reachable without earlier guards; independent CB27-REV must adjudicate. Initial compile failure was a test-only `LatticeTranslation` API mismatch; corrected with native struct comparison/member access. Eight-target GMP/GMPXX compile [run 39815137854](https://github.com/akashskypatel/Directional/actions/runs/39815137854), package `12443015113`, source `175c70e44d2c162d72812c842149f30c53c1fa25`. Compile-only; no runtime or CP3 acceptance. Report: `.agents/Directional/Architecture_M6_CP3_CB27_A7_Certified_Seam_Negative_Oracles_Code_Build_Record_20261022.md`. Next CB27-REV.
+
 ## 2026-10-22 — Audit of the TB28 review (RA-134): census upheld; remaining failures need their reasons recorded
 
 - Re-checked the census: 462 of 497 pass, 13 tests newly pass, and none newly fail. The CB27 negative-test turn is upheld, with three checks added so that each negative test can only pass for the intended reason.
