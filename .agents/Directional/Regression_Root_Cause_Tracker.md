@@ -1,3 +1,7 @@
+## TB26 Review (RA-129, 2026-10-22)
+
+TB26 verified. CB25 opened A5; A6 admits and selects the untampered certified seam relation (TB26's report wrongly said A6 was not reached). All nine RED rows now stop in A7, whose OrdinaryFront cross-sheet rule can never pass when the endpoints share no sheet. `focused30:26–28` PASS individually. D3 tamper still unmeasured. No count changes. Record: `Architecture_M6_CP3_TB26_Shared_Node_Seam_Witness_Harvest_Review_Decision_20261022.md`.
+
 ## TB26 — A5 shared-node seam witness harvest, candidate/non-stable (2026-10-22)
 
 Artifact-only [run 39727886868](https://github.com/akashskypatel/Directional/actions/runs/39727886868), result **12403479548** (ZIP SHA-256 `3f7df8c2ecbd9587127c4621feb3965abe383df31deae57bd48cf0283080ac2d`), on immutable CB25 package **12399179446**, semantic source `c5e0b242f3c3015f1f4f5f886058f0086fe1f679`: **18/18 selected/executed, 9 PASS / 9 RED, zero skips**, 21/21 manifest hashes, immutable postflight and no compile/relink/benchmark. All six guard/controls PASS; 12 A5-ISO = 3 PASS (`focused30:26/27/28`) and 9 RED. Initial run 39726328838 selected 0/18 owing solely to missing executable mode in staged copies; it supplies no product evidence. Harness was corrected without altering packaged binaries or test source.
@@ -45,7 +49,7 @@ Immutable artifact-only [run 39549820087](https://github.com/akashskypatel/Direc
 | Family | Identities | Locus / origin | Status |
 |---|---|---|---|
 | F: torus witness fixture lacks `fieldTransportAtlas` | `focused30:6`, `selector:447` | TQ:1607–1796; factory `atlas-binding` S:8462; `7de636c88` added the binding to the other pipeline fixtures (TQ:649, 757, 861) while this one was masked by `88aa8eae0` | **Closed at candidate level (RA-121):** TB23 `selector:447` PASS; `focused30:6` passes the atlas and moves to A5-ISO |
-| A5-ISO: A5 `MismatchedIsolationEvidence` on certified collinear seams | `focused30:6, 20, 24, 25, 26, 27, 28`; `selector:444, 446, 448`; `cp3entry:3, 5` | One mechanism (TB23–TB25): the A5 face clauses (RP:3891–3892) on shared-node OrdinaryFront relations (RA-124.3). Torus seam 60–61 (curved) and D3 grid seam 1–4 (uniform) both have identity turn (d = F = 0, RA-126.2), so frozen D3 holds and A5 is the only blocker | RA-127: CB25 (shared node = support, `selectedFace`, lattice coordinate; classifier mirror) → TB26 → CB26 negative tests |
+| A5-ISO: A5 `MismatchedIsolationEvidence` on certified collinear seams | `focused30:6, 20, 24, 25, 26, 27, 28`; `selector:444, 446, 448`; `cp3entry:3, 5` | One mechanism (TB23–TB25): the A5 face clauses (RP:3891–3892) on shared-node OrdinaryFront relations (RA-124.3). Torus seam 60–61 (curved) and D3 grid seam 1–4 (uniform) both have identity turn (d = F = 0, RA-126.2), so frozen D3 holds and A5 is the only blocker | A5 fixed by CB25 (RA-127/128). TB26 (RA-129): A6 admits; nine rows now stop at A7's cross-sheet rule (RP:7543–7603), which cannot pass for disjoint endpoint sheets → DEFN-SEAM-A7 → CB26 → TB27; negative tests in CB27 |
 
 Record: `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Review_Decision.md`.
 

@@ -1,3 +1,9 @@
+## 2026-10-22 — TB26 reviewed (RA-129): the seam fix works through A6; A7 is the next blocker
+
+- Review verified TB26. The A5 change works: A6 now accepts the shared-node seam relations, including in the two D3 tests. TB26's report said A6 was never reached; that is corrected.
+- Nine rows now fail one stage later, in A7. A7 accepts a relation between two sheets only if one corner's own wedge records a crossing between them. A corner's wedge can only record crossings among its own sheets, so this can never succeed across a seam, and A7 ignores the seam certificate the earlier stages checked.
+- The previous Review missed this consumer. Next: DEFN-SEAM-A7 (documents only) with a full audit of every stage that checks sheet crossings. Accounting unchanged. Record: `Architecture_M6_CP3_TB26_Shared_Node_Seam_Witness_Harvest_Review_Decision_20261022.md`.
+
 ## 2026-10-22 — TB26 immutable A5 seam witness harvest; stop for independent Review
 
 - Corrected only the staging executable mode in the TB26 harness; source `c5e0b242f3c3015f1f4f5f886058f0086fe1f679`, CB25 GMP package `12399179446`, all selectors and production tests unchanged. First execution attempt ran 0/18 (exit 126); corrected [run 39727886868](https://github.com/akashskypatel/Directional/actions/runs/39727886868) yielded artifact `12403479548` with 21/21 verified checksums, 18/18 independent selections, 9 PASS / 9 RED, six guard/control PASS and immutable postflight.

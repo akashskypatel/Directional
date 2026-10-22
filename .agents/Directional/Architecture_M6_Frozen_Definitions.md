@@ -1,3 +1,14 @@
+## RA-129 — TB26 reviewed: A5 and A6 admit the shared-node seam; A7 cross-sheet rule is the blocker (2026-10-22)
+
+Authority: `Architecture_M6_CP3_TB26_Shared_Node_Seam_Witness_Harvest_Review_Decision_20261022.md`.
+
+- **RA-129.1** TB26 verified: result `12403479548`, 21/21, 18/18, 9 PASS / 9 RED, controls PASS.
+- **RA-129.2** All nine RED stop in A7. `cp3entry:3/5`: A5 certified seam relation found, A6 admitted and selected it (RA-127.4 (i)/(ii) discharged); D3 tamper (iii) unmeasured. TB26 report's A6 claim corrected.
+- **RA-129.3** A7's OrdinaryFront cross-sheet rule (RP:7543–7603) can never pass for disjoint endpoint sheets: `occurrenceCertified` needs a wedge transition joining the two occurrences' sheets, but wedge transitions only join one wedge's own sheets (RP:4555–4661). A7 ignores the typed seam certificate. RA-127's enforcer audit missed A7.
+- **RA-129.4** Next: `M6-CP3-DEFN-SEAM-A7-RP01-CERTIFIED-SEAM-CROSS-SHEET-AUTHORITY` (documents only): consumer audit, `relationCertified` analysis, amended A7 rule through `certified_seam_direction`, A7 site diagnostic, non-weakening table, TB27 predictions.
+- **RA-129.5** DEFN-SEAM-A7 → REV → CB26 → REV → TB27 → REV → CB27 (tests) → REV → TB28 (+ census) → REV → DEFN-M1 → DEFN-T1 → fixture debt → census → RP-01 Review.
+
+---
 ## RA-127 — DEFN-SEAM reviewed: accepted with amendments; CB25 authorized (2026-10-22)
 
 Authority: `Architecture_M6_CP3_DEFN_SEAM_A5_Shared_Node_Side_Authority_Review_Decision_20261022.md`; contract `Architecture_M6_CP3_DEFN_SEAM_A5_Shared_Node_Side_Authority_20261022.md`.
