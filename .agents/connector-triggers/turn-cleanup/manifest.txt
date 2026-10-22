@@ -1,0 +1,2 @@
+# CB27A source snapshot trigger was temporary.
+.agents/connector-triggers/source-snapshot/cb27a-20261022-1849.txt
