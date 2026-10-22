@@ -1,3 +1,18 @@
+## RA-130 — DEFN-SEAM-A7 reviewed: accepted with amendments; CB26 authorized (2026-10-22)
+
+Authority: `Architecture_M6_CP3_DEFN_SEAM_A7_Certified_Seam_Cross_Sheet_Authority_Review_Decision_20261022.md`; contract `Architecture_M6_CP3_DEFN_SEAM_A7_Certified_Seam_Cross_Sheet_Authority_20261022.md`.
+
+- **RA-130.1** Census, the proof that `relationCertified` can hold (RP:4444–4448, 5213–5234), the core rule and the diagnostic are accepted, consistent with RA-34.1.
+- **RA-130.2 (B1)** The frozen D7 test `cp3entry:5` (TQ:3977–4056; RA-33.4/RA-34) is the A7 oracle: A7 accepts the certified relation; its evidence tamper rejects with site `cross-sheet`. The D3 tamper is a face-gauge quarter turn.
+- **RA-130.3 (B2)** A7 binds spans to `relation.id.first/second`; forest-edge order is unchecked (RP:7191–7204).
+- **RA-130.4 (B3)** No explicit pair or binding equality; it is implied by `certified_seam_wedge_side` (RP:3855–3875).
+- **RA-130.5 (B4)** The certified branch's evidence check must contain `{certificate region, seam, ordered sheets}`, not any connecting transition.
+- **RA-130.6 (B5)** Sites: `cross-sheet:seam-direction`, `cross-sheet` (D7), `cross-sheet:no-certificate`, `cross-sheet:periodic`.
+- **RA-130.7 (B6)** Periodic disjoint-sheet edges are equally impossible; latent, out of scope.
+- **RA-130.8** Next: `M6-CP3-CB26-RP01-A7-CERTIFIED-SEAM-CROSS-SHEET-AUTHORITY` (RP plus TQ:2811 helper record; compile only).
+- **RA-130.9** TB27 = 18 TB26 selections + 3 A7 site guards; D3/D7 tamper falsifiers. Then CB27 (tests) → TB28 (+ census) → DEFN-M1 → DEFN-T1 → fixture debt → census → RP-01 Review.
+
+---
 ## RA-129 — TB26 reviewed: A5 and A6 admit the shared-node seam; A7 cross-sheet rule is the blocker (2026-10-22)
 
 Authority: `Architecture_M6_CP3_TB26_Shared_Node_Seam_Witness_Harvest_Review_Decision_20261022.md`.

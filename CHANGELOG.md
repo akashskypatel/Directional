@@ -1,3 +1,15 @@
+## 2026-10-22 — DEFN-SEAM-A7 reviewed (RA-130): accepted with amendments; CB26 authorized
+
+- Review accepted the A7 seam-crossing contract. The census of A7's checks and the analysis of which conditions can hold are correct. Its audit missed that an existing frozen test (`cp3entry:5`) already requires A7 to accept this exact seam relation and to reject a copy with its crossing evidence removed.
+- Amendments:
+  - pair each span with the relation's own endpoints;
+  - do not duplicate a check the direction function already makes;
+  - require the seam certificate's own crossing in the relation's evidence;
+  - give every cross-sheet rejection a distinct label.
+
+  Periodic relations have the same latent flaw; it is recorded and left alone until a test shows it.
+- Next: CB26, compile only. Accounting unchanged. Record: `Architecture_M6_CP3_DEFN_SEAM_A7_Certified_Seam_Cross_Sheet_Authority_Review_Decision_20261022.md`.
+
 ## 2026-10-22 — DEFN-SEAM-A7: complete post-A5 seam-authority contract (documents only)
 
 - Static census at exact snapshot `575d10ef8e6efc6f20c24b1643b0620859a489a9` found A5 directed-side evidence makes A7 `relationCertified` attainable after A6; A7's per-occurrence `occurrenceCertified` cannot connect disjoint endpoint sheets. A8 verifies wedges independently and does not reauthorize the relation.
