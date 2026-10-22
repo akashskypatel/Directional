@@ -1,3 +1,8 @@
+## 2026-10-22 — DEFN-SEAM-A7: complete post-A5 seam-authority contract (documents only)
+
+- Static census at exact snapshot `575d10ef8e6efc6f20c24b1643b0620859a489a9` found A5 directed-side evidence makes A7 `relationCertified` attainable after A6; A7's per-occurrence `occurrenceCertified` cannot connect disjoint endpoint sheets. A8 verifies wedges independently and does not reauthorize the relation.
+- Froze a narrow certificate-only OrdinaryFront A7 rule using `certified_seam_direction` and the certificate's selected face/sheet bindings, preserving Periodic, no-certificate, region, wedge, source and D3 checks. Specified A7 code/site diagnostic, negative matrix and TB27 falsifiers. Record: `Architecture_M6_CP3_DEFN_SEAM_A7_Certified_Seam_Cross_Sheet_Authority_20261022.md`. No code, test, build or runtime change; independent Review next. Stable accounting unchanged.
+
 ## 2026-10-22 — TB26 reviewed (RA-129): the seam fix works through A6; A7 is the next blocker
 
 - Review verified TB26. The A5 change works: A6 now accepts the shared-node seam relations, including in the two D3 tests. TB26's report said A6 was never reached; that is corrected.

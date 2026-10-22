@@ -34,56 +34,43 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-22, after the TB26 Review (RA-129). CB25 works at A5, and A6 now admits the untampered certified seam relation (TB26's report said A6 was not reached; corrected). All nine RED rows stop in A7. Its OrdinaryFront cross-sheet rule (RP:7543–7603) can never pass when the endpoints share no sheet, because it needs a wedge transition that no occurrence can hold, and it ignores the typed seam certificate. Next: DEFN-SEAM-A7 (documents only). |
+| Currency | 2026-10-22 after DEFN-SEAM-A7 documented its complete post-A5 consumer audit at snapshot `575d10ef8e6e`, without source/runtime modification. A6-accepted certified seam evidence makes `relationCertified` attainable; the original A7 `occurrenceCertified` is impossible for disjoint endpoints. Independent DEFN-SEAM-A7 Review is next. TB26 nine RED and frozen accounting unchanged. |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; refetch before mutation. CB25 semantic source `c5e0b242f3c3015f1f4f5f886058f0086fe1f679` (compile GREEN); CB24 semantic source `dae267a82fb884ff9eba4fd0122ad61750d0c924`; CB24 independent Review RA-125 accepts compile-only evidence. Later non-documentation commits are GUI, build and README tooling only (A2a network display `bf518b003`, record `Architecture_M6_TOOL_VIS_Field_Network_GUI_Layer_Record_20261021.md`; macOS GUI configure; Windows static libraries and `/bigobj`; GUI text wrapping; GUI SurfaceCells diagnostics and field streamlines, with two fixes to the legacy streamline tracer `src/geometry/Streamlines.*`, which SurfaceCells does not use; see CHANGELOG). CB25 changes only RP A5 shared-node predicates relative to `dae267a82`; no other RP-01 source file changed, and Linux CI compile behavior is unchanged. Exact current HEAD must be re-fetched. |
 | Last accepted semantic runtime | CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. R3 baseline **403/497** rejected. |
 | Latest candidate or rejected evidence | TB26 [run 39727886868](https://github.com/akashskypatel/Directional/actions/runs/39727886868), result `12403479548` (ZIP `3f7df8c2…ac2d`), expires 2026-10-29T05:26:45Z; 18/18, 9 PASS / 9 RED; reviewed by RA-129 (`Architecture_M6_CP3_TB26_Shared_Node_Seam_Witness_Harvest_Review_Decision_20261022.md`). CB25 package `12399179446`, source `c5e0b242f` (RA-128). Census: TB21 **449/497** (RA-115). **Not promoted.** |
 | Regression accounting and debt | **66/17/49**, debt **1**, selector 497 frozen; R3 403/497 rejected; candidate evidence TB21 449/497. Tracker: `Regression_Root_Cause_Tracker.md`. |
-| Active boundary | `RP-01` open. **Seam family (12 rows):** `focused30:6, 20, 24, 25, 26, 27, 28`; `selector:444, 446, 448` (incl. G4-B002); `cp3entry:3, 5`. A5 (CB25) and A6 now admit shared-node certified seam relations; `focused30:26–28` PASS individually. The other nine stop in A7: eight with `UncertifiedCrossSheetBinding`, and `focused30:24` with its code unprinted. The owner is A7's OrdinaryFront cross-sheet rule (RA-129.3). The D3 tamper is still unmeasured. **M1**: 10 rows plus `focused30:12`, `cp3entry:2` (DEFN-M1). CP3-entry: D2 `cp3entry:1` (DEFN-T1). `RP-02` UNREACHED; Gate C suspended. |
+| Active boundary | `RP-01` open. DEFN-SEAM-A7 contract `Architecture_M6_CP3_DEFN_SEAM_A7_Certified_Seam_Cross_Sheet_Authority_20261022.md` is now written for independent Review, no implementation authorized; Review decides admission of its A7 rule and issues CB26 only if accepted. TB26 nine A7 RED; D3 tamper still unmeasured. M1 and D2 remain later, `RP-02` UNREACHED, Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-DEFN-SEAM-A7-RP01-CERTIFIED-SEAM-CROSS-SHEET-AUTHORITY` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-DEFN-SEAM-A7-RP01-CERTIFIED-SEAM-CROSS-SHEET-AUTHORITY-REV` — EXACT NEXT
 
-- **Type / owner:** DEFN (documents-only contract); implementation agent. Authority: RA-129.4 (`Architecture_M6_CP3_TB26_Shared_Node_Seam_Witness_Harvest_Review_Decision_20261022.md`).
-- **Objective:** define how A7 certifies a cross-sheet OrdinaryFront relation that carries a typed seam certificate, after a complete audit of every stage that decides cross-sheet admissibility.
-- **Read before work:**
-  - RA-129 (all), RA-127, RA-124.3;
-  - the TB26 report `Architecture_M6_CP3_TB26_Shared_Node_Seam_Witness_Harvest_Report_20261022.md`;
-  - RP:3855–3920 (A5 side and direction), RP:5204–5262 (relation evidence), RP:5804–5905 (A6 seam branch), RP:7120–7610 (A7), RP:8240–8290 (verification), RP:9265–9300 (failure mapping); TQ:2725–2814 (D3 helper);
-  - `LESSONS.md` "Keep definitions and their validation mutually traceable".
-- **In scope:** write `Architecture_M6_CP3_DEFN_SEAM_A7_Certified_Seam_Cross_Sheet_Authority_20261022.md` (at most 90 lines, anchored at HEAD) with:
-  1. a **consumer audit** of every stage after A5 that decides cross-sheet admissibility (search `cornerWedgeSheets`, `cornerWedgeIsolation`, `isolationTransitions`, `SideIsolationEvidence`, `isolationSeamTransportCertificate`), with each predicate's verdict on a shared-node certified seam relation;
-  2. whether `relationCertified` can hold for these relations (RP:5214–5233);
-  3. the **amended A7 rule**:
-     - for an OrdinaryFront edge with disjoint endpoint sheets and a typed seam certificate, the crossing is certified only if `certified_seam_direction` (the relation's spans and certificate) returns a direction and the endpoint sheets equal the certificate's sheets on the sides it selects;
-     - no re-derived side and no bare sheet labels;
-     - relations without a certificate, and all Periodic relations, keep the existing rule;
-  4. the **diagnostic**: append A7's `site` to `result.failure` for `UncertifiedCrossSheetBinding` (RP:9276–9280); the D3 helper records the A7 code and site;
-  5. a **non-weakening table** with the rejecting clause per case;
-  6. **TB27 predictions and falsifiers**, including the `cp3entry:3` D3 tamper rejecting as `RelationCertificateConflict`.
-- **Out of scope:** any code, compile or runtime; changes to A5, A6 or D3; nonzero-turn seams; Periodic cross-sheet semantics; DIAG-RETAIN.
-- **Success evidence:** the contract is committed with all six parts, and STATUS is COMPLETE.
-- **On success:** `M6-CP3-DEFN-SEAM-A7-RP01-CERTIFIED-SEAM-CROSS-SHEET-AUTHORITY-REV` (Review, mandatory). It adjudicates the contract and, if accepted, issues CB26.
-- **On failure/blocker:** STOP and return to Review if a further consumer cannot be stated without changing A6, or if `relationCertified` cannot be decided statically.
+- **Type / owner:** independent Review; authorized by RA-129.4 after DEFN-SEAM-A7 contract publication.
+- **Objective:** critically adjudicate the consumer completeness, static `relationCertified` proof, seam-specific A7 rule, non-weakening matrix, failure-site diagnostic and TB27 falsifiers in `Architecture_M6_CP3_DEFN_SEAM_A7_Certified_Seam_Cross_Sheet_Authority_20261022.md`.
+- **Read before work:** RA-129 (all), RA-127, RA-124.3, TB26 report, new contract; inspect actual A5/A6/A7/verification source and `LESSONS.md` contract-validation guidance at fresh HEAD.
+- **In scope:** Review-only validation of the contract's six obligations; identify any omitted admission consumer, unsafe side choice, unverifiable predicate, or missing negative control. Record decision and corrective measures. Review owns conditional CB26 authorization if accepted; review documentation consolidation and ORIENTATION currency are mandatory.
+- **Out of scope:** source/test/fixture/selector/workflow edits, compile/runtime, CB26 or TB27 execution, D3 amendment, nonzero-turn seam or Periodic semantics.
+- **Success evidence:** independent Review decision, source-line-backed adjudication and actionably scoped CB26 (only if accepted); authoritative handoff/TODO and beacon updated.
+- **On success:** CB26 is **conditional on this Review's acceptance and explicit assignment**; no preassigned CB26 canonical ID is authorized by the DEFN turn itself.
+- **On failure/blocker:** STOP and document the failing rule/consumer for a revised DEFN contract. Do not invent successor implementation authority.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — next | `M6-CP3-DEFN-SEAM-A7-RP01-CERTIFIED-SEAM-CROSS-SHEET-AUTHORITY` | DEFN, per RA-129.4: A7 consumer audit, certified-seam cross-sheet rule, diagnostic site, non-weakening table, TB27 predictions. |
-| 2 — conditional | `M6-CP3-DEFN-SEAM-A7-RP01-CERTIFIED-SEAM-CROSS-SHEET-AUTHORITY-REV` | Review, only after step 1 completes: adjudicates the contract; issues CB26 if accepted. |
-| later — UNKNOWN until assigned | CB26 (RP: A7 rule and failure-site suffix; TQ: helper record only) → CB26-REV → TB27 (the same 18 TB26 selections) → TB27-REV → CB27 (negative tests for RA-127.4b and the A7 table; TQ only) → CB27-REV → TB28 (new tests + selector-497 census) → TB28-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` only after a nonzero-turn witness | Planned, not authorized; each Review assigns the next edge. |
-| later — UNKNOWN until assigned | `DIAG-RETAIN` (user-directed): retain A5 occurrences and relations, A6 merged classes and A7 vertex geometry as diagnostic snapshots for GUI/CLI; scope in `TODO.md` | Planned, not authorized; Review places it in the sequence clear of RP-01 turns. |
+| 1 — next | `M6-CP3-DEFN-SEAM-A7-RP01-CERTIFIED-SEAM-CROSS-SHEET-AUTHORITY-REV` | Independent Review of `Architecture_M6_CP3_DEFN_SEAM_A7_Certified_Seam_Cross_Sheet_Authority_20261022.md`; the only authorized next action. |
+| 2 — conditional | CB26 (exact ID to be assigned by Review) | Only if independent Review accepts the contract; no code now. |
+| later — UNKNOWN until assigned | CB26-REV → TB27 → TB27-REV → CB27 → CB27-REV → TB28 (+ census) → TB28-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review | Planning only; each Review assigns the next edge. |
+| later — UNKNOWN until assigned | `DIAG-RETAIN` | User-directed diagnostic snapshots, to be separately scheduled clear of RP-01. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **plan** — DEFN-SEAM-A7: documents-only A7 certified-seam cross-sheet contract with full consumer audit (RA-129.4); no code, compile or runtime.
+`load_next`: **review** — DEFN-SEAM-A7 independent contract review. The new contract is the immediate subject; no code, compile or runtime.
 
 Minimum successor context **after the mandatory start checklist and policies**:
 
 0. `.agents/Directional/ORIENTATION.md` — project context, read first.
 1. `.agents/Directional/ROADMAP.md` — milestone position only.
 2. `.agents/Directional/Future_Chat_Session_Handoff.md` — exact current handoff.
-3. `Architecture_M6_CP3_TB26_Shared_Node_Seam_Witness_Harvest_Review_Decision_20261022.md` (RA-129: TB26 attribution, A6 correction, A7 proof, DEFN-SEAM-A7 scope); `Architecture_M6_CP3_TB26_Shared_Node_Seam_Witness_Harvest_Report_20261022.md`; `Architecture_M6_CP3_DEFN_SEAM_A5_Shared_Node_Side_Authority_Review_Decision_20261022.md` (RA-127); `LESSONS.md` "Keep definitions and their validation mutually traceable".
+3. `Architecture_M6_CP3_DEFN_SEAM_A7_Certified_Seam_Cross_Sheet_Authority_20261022.md` (current contract for independent adjudication); `Architecture_M6_CP3_TB26_Shared_Node_Seam_Witness_Harvest_Review_Decision_20261022.md` (RA-129: TB26 attribution, A6 correction, A7 proof); `Architecture_M6_CP3_TB26_Shared_Node_Seam_Witness_Harvest_Report_20261022.md`; `Architecture_M6_CP3_DEFN_SEAM_A5_Shared_Node_Side_Authority_Review_Decision_20261022.md` (RA-127); `LESSONS.md` "Keep definitions and their validation mutually traceable".
 4. `.agents/Directional/Regression_Root_Cause_Tracker.md` and `TODO.md` — unresolved issues and scope; required policy readings still govern.
 
 **Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py authority <sha>` and

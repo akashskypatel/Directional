@@ -1,4 +1,4 @@
-## CURRENT — TB26 reviewed (RA-129): A5 and A6 admit the seam; A7 cross-sheet rule is the blocker; DEFN-SEAM-A7 next (2026-10-22)
+## CURRENT — DEFN-SEAM-A7 contract committed; independent Review next (2026-10-22)
 
 - [x] Review (RA-129, TB26-REV):
   - harvest verified (ZIP digest, 21/21 manifest, 18 logs with one RUN each); controls PASS; `focused30:26–28` PASS individually;
@@ -6,22 +6,16 @@
   - all nine RED stop in A7 (eight `UncertifiedCrossSheetBinding`, `focused30:24` code unprinted);
   - **proof:** A7's OrdinaryFront cross-sheet rule needs an occurrence wedge transition joining the two endpoints' sheets; wedge transitions only join a wedge's own sheets, so the rule can never pass when the sheets are disjoint, and it ignores the typed seam certificate;
   - RA-127's enforcer audit missed A7 (Review's miss, not CB25's). Record: `Architecture_M6_CP3_TB26_Shared_Node_Seam_Witness_Harvest_Review_Decision_20261022.md`.
-- [ ] **EXACT NEXT:** `M6-CP3-DEFN-SEAM-A7-RP01-CERTIFIED-SEAM-CROSS-SHEET-AUTHORITY` — documents only, RA-129.4. Write `Architecture_M6_CP3_DEFN_SEAM_A7_Certified_Seam_Cross_Sheet_Authority_20261022.md` (at most 90 lines):
-  1. consumer audit of every post-A5 stage that decides cross-sheet admissibility;
-  2. `relationCertified` analysis (RP:5214–5233);
-  3. amended A7 rule (certificate plus `certified_seam_direction`; endpoint sheets equal the certificate's on the selected sides; no-certificate and Periodic relations unchanged);
-  4. diagnostic: A7 `site` appended to `result.failure` for this code; D3 helper records the A7 code and site;
-  5. non-weakening table;
-  6. TB27 predictions and falsifiers, including the D3 tamper.
-  No code, compile or runtime; no A5/A6/D3 change; no nonzero-turn or Periodic semantics.
-- [ ] **CONDITIONAL:** `M6-CP3-DEFN-SEAM-A7-RP01-CERTIFIED-SEAM-CROSS-SHEET-AUTHORITY-REV` — Review: adjudicates the contract; issues CB26 if accepted.
+- [x] **DEFN-SEAM-A7:** `M6-CP3-DEFN-SEAM-A7-RP01-CERTIFIED-SEAM-CROSS-SHEET-AUTHORITY` — documents-only A7 certified seam contract `Architecture_M6_CP3_DEFN_SEAM_A7_Certified_Seam_Cross_Sheet_Authority_20261022.md` (58 lines); post-A5 consumer census, `relationCertified` proof, amended A7 typed-direction rule, A7 site diagnostic and D3 helper recording, non-weakening matrix, TB27 predictions/falsifiers. No code, build or runtime; source frozen to `575d10ef8e6e`.
+- [ ] **EXACT NEXT:** `M6-CP3-DEFN-SEAM-A7-RP01-CERTIFIED-SEAM-CROSS-SHEET-AUTHORITY-REV` — independent Review adjudicates the six-part contract, audits all cross-sheet decision consumers and freezes CB26 only if the contract passes. Review-only; no compile/runtime/source/test changes.
+- [ ] **CONDITIONAL:** CB26 only when that Review expressly assigns it; no preauthorization from DEFN.
 - [ ] Planned, not authorized: CB26 (RP: A7 rule and failure-site suffix; TQ: helper record only) → CB26-REV → TB27 (the same 18 TB26 selections) → TB27-REV → CB27 (negative tests for RA-127.4b and the A7 table; TQ only) → CB27-REV → TB28 (new tests + selector-497 census) → TB28-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` only after a nonzero-turn witness.
 - [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
   - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
   - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
   - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
-- **Turn sequence:** DEFN-SEAM-REV (RA-127) → CB25 → CB25-REV (RA-128) → TB26 → TB26-REV (RA-129) → **DEFN-SEAM-A7** → DEFN-SEAM-A7-REV → CB26 → CB26-REV → TB27 → TB27-REV → CB27 → CB27-REV → TB28 (+ census) → TB28-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+- **Turn sequence:** DEFN-SEAM-REV (RA-127) → CB25 → CB25-REV (RA-128) → TB26 → TB26-REV (RA-129) → DEFN-SEAM-A7 [done] → **DEFN-SEAM-A7-REV** → CB26 → CB26-REV → TB27 → TB27-REV → CB27 → CB27-REV → TB28 (+ census) → TB28-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
 - Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB21 candidate 449/497; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
 
 ---
