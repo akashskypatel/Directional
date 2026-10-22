@@ -1,0 +1,2 @@
+# M6-CP3-CB26-REV: remove the completed review source-snapshot marker
+.agents/connector-triggers/source-snapshot/cb26-a7-review-20261022.txt
