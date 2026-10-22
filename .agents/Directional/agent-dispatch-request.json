@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb28-docs-apply-20261022-r1",
+  "request_id": "m6-cp3-cb28a-three-asserts-20261022-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb28-docs-apply",
-  "file_id": "1fSlCMyziZrRNzxeHt1NrQfBsMnzOtqx3",
-  "patch_sha256": "c4886e983462b11fb6a485f5dba47dd7a6be07e681a56abee65d6bb17a269b70",
-  "base_sha": "19aeb3e60e2d762006d95dc4a5007af54f094ee7",
+  "mailbox_key": "m6-cp3-cb28a-three-asserts",
+  "file_id": "1SAWvA4AOf5B_kwr47CrGdpaKWcbWBHZI",
+  "patch_sha256": "b533844d82ca111a09bb25f79f6e34f02d457ed4a54de6d0520de9bf6357118c",
+  "base_sha": "b04b0391f3d2b046d76d729f40ebf3d6448456d4",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record compiled CB28 and hand off independent review",
+  "commit_message": "test(directional): expose three M1 precedence rejection reasons",
   "retention_days": 7
 }
