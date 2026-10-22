@@ -1,4 +1,4 @@
-## CURRENT — DEFN-SEAM-A7 reviewed (RA-130): accepted with amendments; CB26 authorized (2026-10-22)
+## CURRENT — CB26 GMP compile GREEN; mandatory A7 Review next (2026-10-22)
 
 - [x] Review (RA-130, DEFN-SEAM-A7-REV): consumer census, the proof that `relationCertified` can hold, the core rule and the diagnostic are accepted. Binding amendments:
   - **B1:** the frozen D7 test `cp3entry:5` (TQ:3977–4056) requires A7 to accept the certified seam relation and to reject its evidence tamper with site `cross-sheet`; TB27 reports the D7 tamper. §6 correction: the D3 tamper is a face-gauge quarter turn;
@@ -7,13 +7,13 @@
   - **B4:** the evidence check must contain the certificate's own transition, not any transition connecting the sheet sets;
   - **B5:** sites `cross-sheet:seam-direction`, `cross-sheet` (D7), `cross-sheet:no-certificate`, `cross-sheet:periodic`;
   - **B6:** Periodic disjoint-sheet edges are equally impossible; latent, recorded, out of scope. Record: `Architecture_M6_CP3_DEFN_SEAM_A7_Certified_Seam_Cross_Sheet_Authority_Review_Decision_20261022.md`.
-- [ ] **EXACT NEXT:** `M6-CP3-CB26-RP01-A7-CERTIFIED-SEAM-CROSS-SHEET-AUTHORITY` — Code + Build, compile only (RA-130.8):
+- [x] **CB26 COMPLETE (compile-only):** `M6-CP3-CB26-RP01-A7-CERTIFIED-SEAM-CROSS-SHEET-AUTHORITY` (RA-130.8):
   1. A7 certified-seam branch: direction on canonical endpoints, then the certificate-bound evidence check; B5 sites;
   2. RP:9276–9280 failure-site suffix;
   3. TQ:2811 helper records the A7 code and site;
-  4. eight targets with GMP/GMPXX, `runtimeExecution=false`; record `Architecture_M6_CP3_CB26_A7_Certified_Seam_Cross_Sheet_Authority_Code_Build_Record_20261022.md` (at most 30 lines).
+  4. eight targets compiled with GMP/GMPXX, `runtimeExecution=false`; [run 39744189868](https://github.com/akashskypatel/Directional/actions/runs/39744189868), artifact `12409939859` (28/28 manifest). Record: `Architecture_M6_CP3_CB26_A7_Certified_Seam_Cross_Sheet_Authority_Code_Build_Record_20261022.md`.
   No A5, A6, per-member A7, A8, header, other-test, selector or workflow change.
-- [ ] **CONDITIONAL:** `M6-CP3-CB26-RP01-A7-CERTIFIED-SEAM-CROSS-SHEET-AUTHORITY-REV` — Review: static diff adjudication; issues TB27.
+- [ ] **EXACT NEXT:** `M6-CP3-CB26-RP01-A7-CERTIFIED-SEAM-CROSS-SHEET-AUTHORITY-REV` — Review: independently adjudicate the source diff, certificate-bound B1–B6, compile package and the frozen D7 oracle; issue TB27 only on acceptance.
 - [ ] Planned, not authorized: TB27 (18 TB26 selections + 3 A7 site guards; D3 and D7 tamper falsifiers) → TB27-REV → CB27 (negative tests, TQ only: RA-127.4b + A7 unrelated-seam evidence and no-direction) → CB27-REV → TB28 (new tests + selector-497 census) → TB28-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up (RA-130.7) only after a witness.
 - [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
   - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.

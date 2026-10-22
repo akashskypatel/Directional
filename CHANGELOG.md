@@ -1,3 +1,9 @@
+## 2026-10-22 — CB26 A7 certificate-bound cross-sheet authority compiled (no runtime)
+
+- At exact semantic source `e3d60337ed34538547d3a6d519bafae5b184330e`, A7 accepts a disjoint-sheet OrdinaryFront edge only through its typed certificate's canonical endpoint direction and its exact region/seam/ordered-sheet crossing recorded in relation evidence. Rejection sites distinguish missing direction, missing certificate-bound evidence, no-certificate, and Periodic. Failure site is propagated in the public failure string and TQ diagnostic helper. No other producer/selector/test semantics changed.
+- Patch committed by [run 39743932746](https://github.com/akashskypatel/Directional/actions/runs/39743932746) after correcting transport-only intended-path separators; [compile run 39744189868](https://github.com/akashskypatel/Directional/actions/runs/39744189868) GREEN on eight GMP/GMPXX targets. Artifact `12409939859` (ZIP SHA-256 `ee08279e537af4e99f287d28595df0ef639e632aa345bc0b1986bbb361ee86fa`), 28/28 checksums, no runtime executed. Record: `Architecture_M6_CP3_CB26_A7_Certified_Seam_Cross_Sheet_Authority_Code_Build_Record_20261022.md`.
+- Stable regression accounting and CP3 acceptance remain unchanged. Next: mandatory `'+rev+'` static Review; TB27 is not authorized until that Review accepts.
+
 ## 2026-10-22 — DEFN-SEAM-A7 reviewed (RA-130): accepted with amendments; CB26 authorized
 
 - Review accepted the A7 seam-crossing contract. The census of A7's checks and the analysis of which conditions can hold are correct. Its audit missed that an existing frozen test (`cp3entry:5`) already requires A7 to accept this exact seam relation and to reject a copy with its crossing evidence removed.
