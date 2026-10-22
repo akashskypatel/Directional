@@ -1,14 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb27-a7-cross-sheet-20261022-r2",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb27-a7-cross-sheet",
-  "executor_sha": "60414d738eb61a8aa747ba15e9fd65a61071b769",
-  "semantic_source_sha": "e3d60337ed34538547d3a6d519bafae5b184330e",
-  "turn_id": "M6-CP3-TB27-RP01-A7-CERTIFIED-SEAM-CROSS-SHEET-VERIFICATION",
-  "harness_path": ".agents/Directional/tools/m6_cp3_tb27_a7_cross_sheet_verification_harness.sh",
-  "harness_sha256": "5e3ca0a7c513d5373ee200b2442af315d7845d2dce81c6ea71b971ccbff2fe1f",
-  "environment": {},
-  "artifact_prefix": "m6-cp3-tb27-a7-seam-compliant",
-  "retention_days": 7
+  "request_id": "m6-cp3-tb27-docs-20261022-r1",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb27-docs",
+  "file_id": "11hofSDPnqXxVJivYzs_zJAG55LUMk5Vv",
+  "patch_sha256": "74f783853411dc8ba6e6b439c3bff2938804fdaebc92ff6173455d91016cac3d",
+  "base_sha": "c0b5faf9119d513ecaabec9c6c145fb7ca36433d",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): close TB27 targeted A7 verification and handoff Review",
+  "retention_days": 14
 }
