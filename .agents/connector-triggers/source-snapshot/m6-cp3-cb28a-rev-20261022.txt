@@ -1,3 +1,0 @@
-source_ref=agent/surface_cell_quad/p5-recover-bridge-healing
-turn=M6-CP3-CB28A-RP01-M1-PRECEDENCE-ASSERT-DIAGNOSTICS-REV
-scope=review-only
