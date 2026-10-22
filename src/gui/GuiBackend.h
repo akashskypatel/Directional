@@ -14,6 +14,7 @@
 #include <directional/visualization/FieldAlignedNetworkPolylines.h>
 #include <directional/visualization/SourceRegionDisplay.h>
 #include <directional/visualization/SurfaceCellTracingDisplay.h>
+#include <directional/visualization/TargetSizeDisplay.h>
 
 namespace directional::gui {
 
@@ -176,6 +177,18 @@ QuadMeshData remesh_with_field(const MeshData &mesh, const FieldData &field,
                                ProgressCallback progress = {});
 /// Runs the SurfaceCells backend and returns display data for the products
 /// it retains, which are published even when a later stage rejects the remesh.
+/// Target edge length and feature map from the first SurfaceCells stages.
+struct TargetSizeData {
+  visualization::TargetSizeDisplay display;
+  std::string pipelineStage;
+};
+
+/// Runs SurfaceCells only through its "metric" stage, where the target edge
+/// length and the feature map are computed.
+TargetSizeData compute_target_size(const MeshData &mesh, const FieldData &field,
+                                   const RemeshOptions &options,
+                                   ProgressCallback progress = {});
+
 /// With `stopAfterQuadTracing`, the run ends right after quad tracing (A4),
 /// which skips the slow later stages that diagnostics do not display.
 SurfaceCellDiagnosticsData run_surface_cell_diagnostics(

@@ -1,3 +1,8 @@
+## 2026-10-21 — GUI: target size and feature heatmaps
+
+- New GUI section "10. Target size and feature heatmaps" shows the SurfaceCells target edge length and its inputs (salience, curvature, thickness, feature density) as switchable vertex heatmaps, and the classified feature edges. The run stops after the metric stage. Sections 6–9 are unchanged.
+- New display-only adapter `directional/visualization/TargetSizeDisplay.h`, tested against the torus's published values and a hand-built result with an infinity and a wrong-length field. RP-01 sources are unchanged.
+
 ## 2026-10-21 — GUI: cut graph and disc regions
 
 - New GUI section "9. Cut graph and disc regions" shows the A2a' cut-graph edges, the A2b embedded graph arcs colored by kind (drawn from their exact source paths), and each face's disc region, with a separate category for faces that traces split. The panel counts proven-disc and singularity-free regions. Sections 6–8 are unchanged.

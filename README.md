@@ -550,6 +550,8 @@ field-extraction and quad-remeshing pipeline.
   adjustable line length and thickness, colored per line or by direction family.
 - Show how SurfaceCells cuts the surface into discs (section 9): cut-graph edges,
   embedded graph arcs colored by kind, and each face's disc region.
+- Show the target edge length and the inputs behind it as heatmaps, plus the
+  detected feature edges (section 10).
 - Save fields through the existing field-conversion implementation.
 - Save pure quad meshes as OBJ or OFF.
 - Run field extraction and remeshing asynchronously so the viewer remains responsive.
@@ -712,6 +714,23 @@ The run stops after quad tracing, where both products are built, and shows:
 The panel also counts the regions whose certificates prove a disc and an interior
 free of singularities. With the committed fixtures, the torus has 28 cut edges and 4
 disc regions.
+
+### Show target size and feature heatmaps
+
+In section 10, choose the field source and select **Show target size and features**.
+The run stops after the SurfaceCells "metric" stage, so it takes well under a second on
+small meshes, and it uses the target edge-length ratio from **Remesh options**. Each
+value becomes a vertex heatmap named `Size: <name>` on `Input mesh`; pick the one to
+show in the **Heatmap** list:
+
+- target edge length, and the salience, curvature and thickness size proposals behind it;
+- normalized salience, normalized feature density, curvature, thickness and feature
+  vertex density.
+
+`Feature edges` draws the non-smooth feature edges, colored by class (1 boundary,
+2 soft, 3 hard, 4 non-manifold), with strength and dihedral angle as extra quantities.
+Infinite values (such as unbounded thickness) are shown at the field's maximum, and the
+panel says how many.
 
 The **Browse...** buttons use the operating system's native file dialog:
 

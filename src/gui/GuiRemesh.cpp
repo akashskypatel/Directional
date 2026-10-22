@@ -108,4 +108,47 @@ SurfaceCellDiagnosticsData run_surface_cell_diagnostics(
   return result;
 }
 
+TargetSizeData compute_target_size(const MeshData &mesh, const FieldData &field,
+                                   const RemeshOptions &options,
+                                   ProgressCallback progress) {
+  validate_field(field, mesh.faces.rows());
+  validate_options({}, options);
+  if (field.raw.rows() != mesh.faces.rows() || field.raw.cols() != 12) {
+    throw std::runtime_error(
+        "The target size needs one 12-value raw cross per mesh face.");
+  }
+
+  pipeline::RemeshOptions pipelineOptions;
+  pipelineOptions.backend = pipeline::RemeshBackend::SurfaceCells;
+  pipelineOptions.surfaceCells.enabled = true;
+  pipelineOptions.surfaceCells.fallbackPolicy =
+      pipeline::SurfaceCellFallbackPolicy::Fail;
+  pipelineOptions.surfaceCells.allowSourceGridRecovery = false;
+  pipelineOptions.surfaceCells.retainIntermediateGeometry = true;
+  // Stage 1 is "metric": feature map and target size exist, nothing later runs.
+  pipelineOptions.surfaceCells.injectFailureAfterStage = 1;
+  pipelineOptions.parallelizeComponents = false;
+  pipelineOptions.lengthRatio = options.lengthRatio;
+  pipelineOptions.verbose = options.verbose;
+  pipelineOptions.progress = std::move(progress);
+
+  const pipeline::RemeshResult remesh = pipeline::remesh_from_raw_cross_field(
+      mesh.vertices, mesh.faces, field.raw, pipelineOptions);
+  const auto &context = remesh.surfaceCellContext;
+  TargetSizeData result;
+  result.pipelineStage = remesh.diagnostics.terminalFailureStage;
+  if (!context.hasMetricField && !context.hasFeatureMap) {
+    throw std::runtime_error(
+        "SurfaceCells stopped before computing the target size (" +
+        (result.pipelineStage.empty() ? std::string("no stage reported")
+                                      : result.pipelineStage) +
+        ").");
+  }
+  result.display = visualization::target_size_display(
+      mesh.vertices, mesh.faces,
+      context.hasMetricField ? &context.metricField : nullptr,
+      context.hasFeatureMap ? &context.featureMap : nullptr);
+  return result;
+}
+
 } // namespace directional::gui

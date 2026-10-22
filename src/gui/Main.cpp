@@ -60,6 +60,8 @@ constexpr const char *kTracedCornersName = "A4 cell corners";
 constexpr const char *kCutEdgesName = "A2a' cut edges";
 constexpr const char *kGraphArcsName = "A2b graph arcs";
 constexpr const char *kFaceDiscRegionQuantity = "A2b disc region";
+constexpr const char *kFeatureEdgesName = "Feature edges";
+constexpr const char *kSizeQuantityPrefix = "Size: ";
 constexpr const char *kStreamlineLineColors = "line colors";
 constexpr const char *kStreamlineFamilyColors = "direction family";
 
@@ -106,6 +108,7 @@ struct TaskResult {
   bool hasStreamlines = false;
   bool hasFieldNetwork = false;
   bool hasCutGraph = false;
+  bool hasTargetSize = false;
   directional::gui::MeshData mesh;
   directional::gui::FieldData field;
   std::optional<directional::gui::FieldOptions> fieldOptions;
@@ -117,6 +120,7 @@ struct TaskResult {
   std::string fieldNetworkStage;
   directional::visualization::CutGraphDisplay cutGraph;
   std::string cutGraphStage;
+  directional::gui::TargetSizeData targetSize;
   std::optional<ComparisonReportContext> comparisonContext;
   int simplificationSourceFaceCount = 0;
   int simplificationRootCount = 0;
@@ -301,6 +305,7 @@ private:
   std::string fieldNetworkStage_;
   std::optional<directional::visualization::CutGraphDisplay> cutGraph_;
   std::string cutGraphStage_;
+  std::optional<directional::gui::TargetSizeData> targetSize_;
 
   std::array<char, 1024> meshPath_{};
   std::array<char, 1024> fieldInputPath_{};
@@ -320,6 +325,8 @@ private:
   int streamlineFieldSource_ = 0;
   int fieldNetworkSource_ = 0;
   int cutGraphFieldSource_ = 0;
+  int targetSizeFieldSource_ = 0;
+  int targetSizeScalar_ = 0;
   float streamlineSeedSpacing_ = 2.0F;
   int streamlineSteps_ = 120;
   float streamlineStepLength_ = 0.5F;
@@ -388,6 +395,7 @@ private:
     clear_streamlines();
     clear_field_network();
     clear_cut_graph();
+    clear_target_size();
     calculatedFieldLabel_.clear();
     uploadedFieldLabel_.clear();
     calculatedFieldGlyph_ = {};
@@ -498,6 +506,69 @@ private:
       arcs->addEdgeScalarQuantity("arc", cutGraph.arcIndex,
                                   polyscope::DataType::CATEGORICAL);
     }
+    sync_overlay_transforms();
+  }
+
+  void remove_target_size_layers() {
+    if (polyscope::hasCurveNetwork(kFeatureEdgesName)) {
+      polyscope::removeCurveNetwork(kFeatureEdgesName);
+    }
+    if (targetSize_.has_value() && polyscope::hasSurfaceMesh(kInputMeshName)) {
+      auto *inputMesh = polyscope::getSurfaceMesh(kInputMeshName);
+      for (const auto &field : targetSize_->display.vertexScalars) {
+        inputMesh->removeQuantity(kSizeQuantityPrefix + field.name, false);
+      }
+    }
+  }
+
+  void clear_target_size() {
+    remove_target_size_layers();
+    targetSize_.reset();
+    targetSizeScalar_ = 0;
+  }
+
+  void show_selected_target_scalar() {
+    if (!targetSize_.has_value() || !polyscope::hasSurfaceMesh(kInputMeshName)) {
+      return;
+    }
+    const auto &fields = targetSize_->display.vertexScalars;
+    if (targetSizeScalar_ < 0 || targetSizeScalar_ >= static_cast<int>(fields.size())) {
+      return;
+    }
+    auto *inputMesh = polyscope::getSurfaceMesh(kInputMeshName);
+    inputMesh
+        ->getQuantity(kSizeQuantityPrefix +
+                      fields[static_cast<std::size_t>(targetSizeScalar_)].name)
+        ->setEnabled(true);
+    inputMesh->setEnabled(true);
+  }
+
+  void visualize_target_size() {
+    if (!targetSize_.has_value()) {
+      return;
+    }
+    const auto &display = targetSize_->display;
+    if (polyscope::hasSurfaceMesh(kInputMeshName)) {
+      auto *inputMesh = polyscope::getSurfaceMesh(kInputMeshName);
+      for (const auto &field : display.vertexScalars) {
+        inputMesh->addVertexScalarQuantity(kSizeQuantityPrefix + field.name,
+                                           field.values);
+      }
+    }
+    if (display.featureEdges.rows() > 0) {
+      auto *features = polyscope::registerCurveNetwork(
+          kFeatureEdgesName, display.featurePoints, display.featureEdges);
+      features->setColor({0.10F, 0.10F, 0.10F});
+      features->setRadius(0.0025F);
+      // 1 boundary, 2 soft, 3 hard, 4 non-manifold.
+      features->addEdgeScalarQuantity("class", display.featureClass,
+                                      polyscope::DataType::CATEGORICAL)
+          ->setEnabled(true);
+      features->addEdgeScalarQuantity("strength", display.featureStrength);
+      features->addEdgeScalarQuantity("angle (degrees)",
+                                      display.featureAngleDegrees);
+    }
+    show_selected_target_scalar();
     sync_overlay_transforms();
   }
 
@@ -765,7 +836,7 @@ private:
                              kRegionSeamsName, kRegionBoundariesName,
                              kStreamlinesName, kStopEdgesName,
                              kTracedCellsName, kCutEdgesName,
-                             kGraphArcsName}) {
+                             kGraphArcsName, kFeatureEdgesName}) {
       if (polyscope::hasCurveNetwork(name)) {
         sync(polyscope::getCurveNetwork(name));
       }
@@ -1357,6 +1428,48 @@ private:
     set_status("Computing the cut graph and disc regions...");
   }
 
+  void launch_target_size() {
+    require_mesh();
+    const std::optional<directional::gui::FieldData> &source =
+        targetSizeFieldSource_ == 0 ? calculatedField_ : uploadedField_;
+    if (!source.has_value()) {
+      throw std::runtime_error(
+          targetSizeFieldSource_ == 0
+              ? "Calculate a field before computing the target size."
+              : "Load an uploaded field before computing the target size.");
+    }
+
+    const directional::gui::MeshData mesh = *mesh_;
+    const directional::gui::FieldData field = *source;
+    const directional::gui::RemeshOptions options = remeshOptions_;
+    enable_verbose_session_log_if_needed(options.verbose);
+    const auto progress = progress_;
+    progress_->update(0, 100, "Computing target size and features");
+
+    task_ = std::async(std::launch::async, [mesh, field, options, progress]() {
+      TaskResult result;
+      try {
+        result.targetSize = directional::gui::compute_target_size(
+            mesh, field, options,
+            [progress](const std::size_t current, const std::size_t total,
+                       const std::string_view task) {
+              progress->update(current, total, task);
+            });
+        result.hasTargetSize = true;
+        const auto &display = result.targetSize.display;
+        result.message =
+            "Target size: " + std::to_string(display.vertexScalars.size()) +
+            " heatmaps and " + std::to_string(display.featureEdges.rows()) +
+            " feature edges.";
+      } catch (const std::exception &error) {
+        result.error = error.what();
+      }
+      progress->update(100, 100, "Target size and features finished");
+      return result;
+    });
+    set_status("Computing the target size and feature map...");
+  }
+
   void launch_trace_streamlines() {
     require_mesh();
     const std::optional<directional::gui::FieldData> &source =
@@ -1434,6 +1547,11 @@ private:
       remove_field_network_layers();
       visualize_field_network(*fieldNetwork_);
       sync_overlay_transforms();
+    }
+    if (result.hasTargetSize) {
+      clear_target_size();
+      targetSize_ = std::move(result.targetSize);
+      visualize_target_size();
     }
     if (result.hasCutGraph) {
       cutGraph_ = std::move(result.cutGraph);
@@ -2240,6 +2358,73 @@ void save_quad_mesh() {
         if (!cutGraphStage_.empty()) {
           ImGui::TextWrapped("SurfaceCells rejected later at: %s",
                              cutGraphStage_.c_str());
+        }
+      }
+    }
+
+    if (ImGui::CollapsingHeader("10. Target size and feature heatmaps")) {
+      ImGui::TextWrapped(
+          "Shows the SurfaceCells target edge length and the inputs behind it "
+          "(salience, curvature, thickness and feature density) as heatmaps, "
+          "plus the detected feature edges. The run stops after the metric "
+          "stage, so it is quick. Uses the target edge-length ratio from Remesh "
+          "options.");
+      const char *targetSizeSources[] = {"Calculated field", "Uploaded field"};
+      draw_labeled_full_width_control("Target size field source",
+                                      [this, &targetSizeSources] {
+                                        ImGui::Combo("##target_size_field_source",
+                                                     &targetSizeFieldSource_,
+                                                     targetSizeSources, 2);
+                                      });
+      const bool targetSizeFieldAvailable =
+          targetSizeFieldSource_ == 0 ? calculatedField_.has_value()
+                                      : uploadedField_.has_value();
+      ImGui::BeginDisabled(isBusy || !mesh_.has_value() || !targetSizeFieldAvailable);
+      if (ImGui::Button("Show target size and features")) {
+        guarded_action([this] { launch_target_size(); });
+      }
+      ImGui::EndDisabled();
+      if (targetSize_.has_value()) {
+        const auto &display = targetSize_->display;
+        const auto &fields = display.vertexScalars;
+        if (!fields.empty()) {
+          draw_labeled_full_width_control("Heatmap", [this, &fields] {
+            const std::string current =
+                fields[static_cast<std::size_t>(targetSizeScalar_)].name;
+            if (ImGui::BeginCombo("##target_size_heatmap", current.c_str())) {
+              for (int i = 0; i < static_cast<int>(fields.size()); ++i) {
+                const bool selected = i == targetSizeScalar_;
+                if (ImGui::Selectable(fields[static_cast<std::size_t>(i)].name.c_str(),
+                                      selected)) {
+                  targetSizeScalar_ = i;
+                  show_selected_target_scalar();
+                }
+              }
+              ImGui::EndCombo();
+            }
+          });
+          const auto &field = fields[static_cast<std::size_t>(targetSizeScalar_)];
+          ImGui::Text("Range: %.6g to %.6g", field.values.minCoeff(),
+                      field.values.maxCoeff());
+          if (field.nonFiniteCount > 0) {
+            ImGui::TextWrapped("%d infinite values are shown at the maximum.",
+                               field.nonFiniteCount);
+          }
+        } else {
+          ImGui::TextWrapped("No per-vertex target-size values were published.");
+        }
+        if (display.hasTargetSize) {
+          ImGui::Text("Resolved surface error: %.6g", display.resolvedSurfaceError);
+        }
+        if (display.hasFeatureMap) {
+          ImGui::Text("Feature edges: %d (class: 1 boundary, 2 soft, 3 hard, 4 "
+                      "non-manifold)",
+                      static_cast<int>(display.featureEdges.rows()));
+        }
+        for (const std::string &note : display.notes) {
+          ImGui::Bullet();
+          ImGui::SameLine();
+          ImGui::TextWrapped("%s", note.c_str());
         }
       }
     }

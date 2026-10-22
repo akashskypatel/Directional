@@ -268,7 +268,8 @@ add_library(
   src/visualization/FieldAlignedNetworkPolylines.cpp
   src/visualization/FieldStreamlines.cpp
   src/visualization/SourceRegionDisplay.cpp
-  src/visualization/SurfaceCellTracingDisplay.cpp)
+  src/visualization/SurfaceCellTracingDisplay.cpp
+  src/visualization/TargetSizeDisplay.cpp)
 add_library(Directional::pipeline ALIAS directional_pipeline)
 set_target_properties(
   directional_pipeline
