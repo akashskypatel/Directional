@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb27-compile-fix-apply-20261022-r2",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb27-compile-fix-apply",
-  "file_id": "155AEVZVNYa9APCs9fqhsXyHkkwlQBO7g",
-  "patch_sha256": "a0e40882c69894d3eeb2de63bbb4dd74cd5f1c3df98fcdccfe3805d18b0a9780",
-  "base_sha": "219f2e33a0ebf3ee8073580575f9f3ec38e7d4cd",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): fix CB27 lattice translation oracle comparison",
-  "retention_days": 7
+  "request_id": "m6-cp3-cb27-negatives-compile-20261022-r2",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb27-negatives-compile-r2",
+  "source_sha": "175c70e44d2c162d72812c842149f30c53c1fa25",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-cb27-negative-oracles-compile"
 }
