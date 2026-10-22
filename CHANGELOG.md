@@ -1,3 +1,8 @@
+## 2026-10-22 — DEFN-SEAM: A5 shared-node side-authority contract (documents only)
+
+- Froze the scoped `certified_seam_direction` contract: equal canonical `support` and `placement.selectedFace` identify a shared node; only then are two span-to-selected-face clauses inapplicable. Certified opposite wedge sides, distinct sheets, seam/region guards and unique certificate remain required. Non-shared-node cases retain both clauses.
+- All four callers, A6's unchanged gauge-face and frozen D3 checks, six rejecting counterexamples, and TB26 predictions/falsifiers are recorded in `Architecture_M6_CP3_DEFN_SEAM_A5_Shared_Node_Side_Authority_20261022.md`. No code, tests, builds or runtime executed; no evidence promoted. Independent DEFN-SEAM Review is next; CB25 not yet authorized.
+
 ## 2026-10-22 — TB25 reviewed (RA-126): identity turn on every measured seam; DEFN-SEAM narrowed
 
 - Review verified TB25. On the torus seam (curved producer) and on the D3 test grid (uniform producer), the gauges and the certified turn are all identity. The frozen D3 seam rule therefore holds there, and the only blocker is the A5 face check on relations whose two corners are one shared node.

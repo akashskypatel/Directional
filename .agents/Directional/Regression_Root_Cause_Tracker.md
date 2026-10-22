@@ -31,7 +31,7 @@ Immutable artifact-only [run 39549820087](https://github.com/akashskypatel/Direc
 | Family | Identities | Locus / origin | Status |
 |---|---|---|---|
 | F: torus witness fixture lacks `fieldTransportAtlas` | `focused30:6`, `selector:447` | TQ:1607–1796; factory `atlas-binding` S:8462; `7de636c88` added the binding to the other pipeline fixtures (TQ:649, 757, 861) while this one was masked by `88aa8eae0` | **Closed at candidate level (RA-121):** TB23 `selector:447` PASS; `focused30:6` passes the atlas and moves to A5-ISO |
-| A5-ISO: A5 `MismatchedIsolationEvidence` on certified collinear seams | `focused30:6, 20, 24, 25, 26, 27, 28`; `selector:444, 446, 448`; `cp3entry:3, 5` | One mechanism (TB23–TB25): the A5 face clauses (RP:3891–3892) on shared-node OrdinaryFront relations (RA-124.3). Torus seam 60–61 (curved) and D3 grid seam 1–4 (uniform) both have identity turn (d = F = 0, RA-126.2), so frozen D3 holds and A5 is the only blocker | DEFN-SEAM (RA-126.4: shared-node side authority) → CB25 → TB26 |
+| A5-ISO: A5 `MismatchedIsolationEvidence` on certified collinear seams | `focused30:6, 20, 24, 25, 26, 27, 28`; `selector:444, 446, 448`; `cp3entry:3, 5` | One mechanism (TB23–TB25): the A5 face clauses (RP:3891–3892) on shared-node OrdinaryFront relations (RA-124.3). Torus seam 60–61 (curved) and D3 grid seam 1–4 (uniform) both have identity turn (d = F = 0, RA-126.2), so frozen D3 holds and A5 is the only blocker | DEFN-SEAM contract authored (RA-126.4; independent DEFN-SEAM-REV pending) → conditional CB25 → TB26 |
 
 Record: `Architecture_M6_CP3_TB22_Torus_Witness_Harvest_Review_Decision.md`.
 
