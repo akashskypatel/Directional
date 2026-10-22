@@ -35,6 +35,6 @@ Code + Build, **test-only diagnostics** (RA-134.5): edit only `tests/SurfaceCell
 | Consolidation under CLEAN_UP_POLICY | n/a: one current record, no historical deletion |
 | Successor frozen | `M6-CP3-CB28-RP01-FACTORY-ERROR-DIAGNOSTICS`; RA-134.5 scope and STOP above |
 | Turn boundary held | Review only; no new product/test/selector/workflow edits or runtime execution |
-| review_check.py boundary | pending authoritative real-history execution; synthetic source snapshot cannot prove history |
+| review_check.py boundary | executed on a snapshot-derived synthetic repository: FAIL only because the historical rewrite-base commit is absent. Independent GitHub historical checks confirmed preserved rewrite-base durable headings (handoff 4/4, orientation 1/1, tracker 0/0); genuine historical script success is **not** claimed |
 | `STATUS` lifecycle maintained | entry/resume beacon published; final COMPLETE only after remote publication and verification |
-| Pushed to origin, branch in sync | pending verified Drive-apply remote publication; not claimed by this draft |
+| Pushed to origin, branch in sync | Drive-apply workflow 39852721276 committed this review at c99c682102ce4e04ea5ce7f3b6ff824fdd1a5a8c; exact six changed paths verified via GitHub compare. Local `git status -sb` against origin unavailable (no clone); branch synchronization not claimed |
