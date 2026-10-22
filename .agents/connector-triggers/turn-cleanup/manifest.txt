@@ -1,1 +1,0 @@
-.agents/connector-triggers/source-snapshot/cb25-rev-20261022-0348.txt
