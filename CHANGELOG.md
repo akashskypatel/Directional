@@ -1,3 +1,8 @@
+## 2026-10-22 — TB26 immutable A5 seam witness harvest; stop for independent Review
+
+- Corrected only the staging executable mode in the TB26 harness; source `c5e0b242f3c3015f1f4f5f886058f0086fe1f679`, CB25 GMP package `12399179446`, all selectors and production tests unchanged. First execution attempt ran 0/18 (exit 126); corrected [run 39727886868](https://github.com/akashskypatel/Directional/actions/runs/39727886868) yielded artifact `12403479548` with 21/21 verified checksums, 18/18 independent selections, 9 PASS / 9 RED, six guard/control PASS and immutable postflight.
+- Twelve A5-ISO: 3 PASS / 9 RED; six upstream `UncertifiedCrossSheetBinding`, one absent A7, and `cp3entry:3/5` unable to form a certified reciprocal relation. Untampered A6 and D3 tamper were not reached. RA-128 §3 stop/falsifier applies; no acceptance or stable count change (**66/17/49**, debt 1). The separately authorized independent TB26 Review must decide cause and successor; its canonical ID is not yet assigned. Report: `Architecture_M6_CP3_TB26_Shared_Node_Seam_Witness_Harvest_Report_20261022.md`.
+
 ## 2026-10-22 — CB25 independent Review (RA-128): source/compile accepted, TB26 issued
 
 - Independently inspected the single-file CB25 RP diff and immutable exact-source compile package: same RP SHA across review snapshot and compile source, 28/28 manifest checks, GMP/GMPXX links, eight compiled targets, no runtime. Shared-node predicate and classifier mirror RA-127 A1/A2, with other A5/A6/D3 guards preserved.

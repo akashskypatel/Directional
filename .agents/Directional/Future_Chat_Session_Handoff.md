@@ -34,41 +34,42 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-22, RA-128 independently accepted CB25 RP-only source and compile package; TB26 artifact-only runtime verification pending. The contract includes binding amendments: a shared node also needs equal lattice coordinates (A1); the rejection-site classifier must mirror the rule (A2); TB26 must report the A6 seam branch and D3 tamper for `cp3entry:3/5` (A3); negative tests follow in CB26 (A4). CB25 completed and RA-128 compile-reviewed; TB26 is the one authorized next turn. |
+| Currency | 2026-10-22, TB26 artifact-only runtime harvest completed without acceptance (18/18, 9 PASS / 9 RED); RA-128 §3 stop/falsifier requires independent Review because `cp3entry:3/5` lack the certified reciprocal relation and A6/D3 guards were not reached. CB25 remains compile-reviewed only. The TB26 Review canonical ID is UNKNOWN until assigned. A4 negative tests/CB26 and other downstream turns remain unauthorized. |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open; refetch before mutation. CB25 semantic source `c5e0b242f3c3015f1f4f5f886058f0086fe1f679` (compile GREEN); CB24 semantic source `dae267a82fb884ff9eba4fd0122ad61750d0c924`; CB24 independent Review RA-125 accepts compile-only evidence. Later non-documentation commits are GUI, build and README tooling only (A2a network display `bf518b003`, record `Architecture_M6_TOOL_VIS_Field_Network_GUI_Layer_Record_20261021.md`; macOS GUI configure; Windows static libraries and `/bigobj`; GUI text wrapping; GUI SurfaceCells diagnostics and field streamlines, with two fixes to the legacy streamline tracer `src/geometry/Streamlines.*`, which SurfaceCells does not use; see CHANGELOG). CB25 changes only RP A5 shared-node predicates relative to `dae267a82`; no other RP-01 source file changed, and Linux CI compile behavior is unchanged. Exact current HEAD must be re-fetched. |
 | Last accepted semantic runtime | CP2 **491/491**, package `11391685901`, source `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. R3 baseline **403/497** rejected. |
-| Latest candidate or rejected evidence | TB25 [run 39682528031](https://github.com/akashskypatel/Directional/actions/runs/39682528031), result `12384333036` (ZIP `f10ef778…cbc`), expires 2026-10-28T21:56:02Z; 11/11, 6 PASS / 5 RED; reviewed by RA-126 (`Architecture_M6_CP3_TB25_Seam_Frame_Values_Harvest_Review_Decision_20261022.md`). CB25 package `12399179446` (GREEN compile, 28/28 independently verified by RA-128, no runtime); CB24 package `12378590512` (RA-125). Census: TB21 **449/497** (RA-115). **Not promoted.** |
+| Latest candidate or rejected evidence | TB26 [run 39727886868](https://github.com/akashskypatel/Directional/actions/runs/39727886868), result `12403479548` (ZIP `3f7df8c2ecbd9587127c4621feb3965abe383df31deae57bd48cf0283080ac2d`), 21/21 hashes, 18/18 executed, 9 PASS / 9 RED, 6/6 controls PASS; 12 A5-ISO = 3 PASS / 9 RED; A6/D3 obligations unreached. Owner: `Architecture_M6_CP3_TB26_Shared_Node_Seam_Witness_Harvest_Report_20261022.md`. CB25 immutable package `12399179446`, source `c5e0b242...` (28/28 GMP, RA-128). Last broader candidate TB21 **449/497** (RA-115). **Not promoted.** |
 | Regression accounting and debt | **66/17/49**, debt **1**, selector 497 frozen; R3 403/497 rejected; candidate evidence TB21 449/497. Tracker: `Regression_Root_Cause_Tracker.md`. |
-| Active boundary | `RP-01` open. **A5-ISO (12 rows):** `focused30:6, 20, 24, 25, 26, 27, 28`; `selector:444, 446, 448` (incl. G4-B002); `cp3entry:3, 5`. One mechanism: the A5 certified-seam face clauses (RP:3891–3892) on shared-node relations with identity turn. Fix (RA-126.4, RA-127): skip those clauses only when support, `selectedFace` and lattice coordinate are all equal; classifier mirrors; A6/D3 source unchanged; nonzero-turn seams deferred (`DEFN-SEAM-NZ`). **M1**: 10 rows plus `focused30:12`, `cp3entry:2` (DEFN-M1). CP3-entry: D2 `cp3entry:1` (DEFN-T1). `RP-02` UNREACHED; Gate C suspended. |
+| Active boundary | `RP-01` open. **A5-ISO (12 rows):** `focused30:6, 20, 24, 25, 26, 27, 28`; `selector:444, 446, 448` (incl. G4-B002); `cp3entry:3, 5`. RA-127 shared-node exemption was compiled and reviewed but TB26 reveals six upstream uncertified cross-sheet bindings, one absent A7 and two failed certified-reciprocal seam fixture searches. Causal relation to the changed A5 clauses is unresolved; A6/D3 paths were never reached. Independent Review must adjudicate before correction. Nonzero-turn seams deferred (`DEFN-SEAM-NZ`). **M1**: 10 rows plus `focused30:12`, `cp3entry:2` (DEFN-M1). CP3-entry: D2 `cp3entry:1` (DEFN-T1). `RP-02` UNREACHED; Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-TB26-RP01-A5-SHARED-NODE-SEAM-WITNESS-HARVEST` — EXACT NEXT
+## Mandatory next turn — `UNKNOWN` (independent TB26 Review) — EXACT NEXT
 
-- **Type / owner:** artifact-only Test + Benchmark, no rebuild, repair, test/fixture/selector/source change; source `c5e0b242f3c3015f1f4f5f886058f0086fe1f679`, eight-target GMP/GMPXX package `12399179446`, SHA-256 `a82c75e0f648fa8f1c8e34e07934d7a01321692e12e993638f02465766f236e9`.
-- **Review authority:** `Architecture_M6_CP3_CB25_A5_Shared_Node_Side_Authority_Review_Decision_20261022.md` (RA-128). Independently verified source diff at `c5e0...`, matching RP bytes in package and 28/28 package hashes, no runtime.
-- **Scope:** harvest 12 A5-ISO rows (`focused30:6,20,24,25,26,27,28`; `selector:444,446,448`; `cp3entry:3,5`), guard `selector:447` and six TB25 controls. For `cp3entry:3/5`, explicitly report certified reciprocal relation and untampered A6 result; for `cp3entry:3`, existing D3 face-gauge quarter-turn tamper must reject `RelationCertificateConflict`.
-- **Stop/falsifiers:** any original exempted A5 face-label still rejects an exact shared-node pair, missing certified relation, admitted invalid wedge/side/sheet/certificate, control PASS→RED, D3 tamper admitted, or artifact/hash/source mismatch. Publish exact first failure; no synthetic PASS or green credit. Details RA-128 §3.
-- **Deferred:** CB26 negative tests (RA-127 A4, test-only), `DEFN-SEAM-NZ`, M1, D2 and DIAG-RETAIN stay outside TB26. Stable **66/17/49**, debt **1**, CP2 accepted **491/491**, R3 **403/497** rejected, TB21 candidate **449/497**, selector497 frozen; RP-01 open.
+- **Type / owner:** independent Review; canonical identifier is not assigned by available authority, so assign/confirm it before starting substantive Review. Do not invent an ID or initiate implementation.
+- **Objective:** independently review immutable TB26 evidence and RA-128 §3 falsifiers; adjudicate why the 12 A5-ISO witnesses yield 3 PASS / 9 RED despite the CB25 shared-node change, including the six `UncertifiedCrossSheetBinding`, one absent A7 and the two `A7:rejected-certified-seam` fixture searches.
+- **Read before work:** `Architecture_M6_CP3_TB26_Shared_Node_Seam_Witness_Harvest_Report_20261022.md` and its full raw result artifact `12403479548`; RA-128 `Architecture_M6_CP3_CB25_A5_Shared_Node_Side_Authority_Review_Decision_20261022.md`, RA-127 contract review and regression tracker.
+- **In scope:** independent source-of-failure/fixture attribution and bounded decision about how to obtain a certified reciprocal seam to exercise A6 untampered and D3 tamper; confirm controls and non-regression. Keep candidate status unless independently proven otherwise.
+- **Out of scope:** runtime acceptance from 9 PASS, edit to source/fixtures/selectors, rerun/compile in this completed TB26 turn, speculative CB26/DEFN/NZ/M1/D2/DIAG-RETAIN work.
+- **Success evidence:** a retained independent Review decision with explicit falsifiers, causal attribution or declared unresolved facts, and an authorized exact next corrective turn (or STOP if unknown).
+- **On success:** `UNKNOWN` until the Review assigns the successor. **On failure/blocker:** `UNKNOWN` — stop, do not silently continue.
+- **Frozen authority:** CP2 **491/491** accepted, R3 **403/497** rejected, TB21 candidate **449/497**, stable **66/17/49**, debt **1**, selector497 frozen; RP-01 open and RP-02 UNREACHED.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — done | `M6-CP3-CB25-RP01-A5-SHARED-NODE-SIDE-AUTHORITY` | Code + Build; exact source and package in CB25 record; no runtime. |
-| 2 — done | `M6-CP3-CB25-RP01-A5-SHARED-NODE-SIDE-AUTHORITY-REV` | RA-128 accepted scoped code and compile-only evidence. |
-| 3 — next | `M6-CP3-TB26-RP01-A5-SHARED-NODE-SEAM-WITNESS-HARVEST` | TB26 immutable artifact-only harvest; A3/D3 decisive runtime evidence. |
-| later — UNKNOWN until assigned | TB26-REV → CB26 (RA-127.4b negative tests, TQ only) → CB26-REV → TB27 (new tests + selector-497 census) → TB27-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` only after a nonzero-turn witness | Planned, not authorized; each Review assigns the next edge. |
-| later — UNKNOWN until assigned | `DIAG-RETAIN` (user-directed): retain A5 occurrences and relations, A6 merged classes and A7 vertex geometry as diagnostic snapshots for GUI/CLI; scope in `TODO.md` | Planned, not authorized; Review places it in the sequence clear of RP-01 turns. |
+| 1 — done | `M6-CP3-TB26-RP01-A5-SHARED-NODE-SEAM-WITNESS-HARVEST` | Verified diagnostic harvest (9 PASS / 9 RED); missing certified seam falsifier stops acceptance. |
+| 2 — next, ID UNKNOWN | Independent TB26 Review | Must first assign canonical ID; adjudicate root cause and issue bounded next turn. |
+| 3 — conditional UNKNOWN | CB26 / subsequent correction and separate TB | Not authorized without independent Review decision. `DIAG-RETAIN` deferred. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **test_benchmark** — TB26 immutable CB25 package; A5/A6/D3 witness harvest only.
+`load_next`: **review** — TB26 evidence, falsifiers and candidate/non-stable classification; no new code or runtime.
 
 Minimum successor context **after the mandatory start checklist and policies**:
 
 0. `.agents/Directional/ORIENTATION.md` — project context, read first.
 1. `.agents/Directional/ROADMAP.md` — milestone position only.
 2. `.agents/Directional/Future_Chat_Session_Handoff.md` — exact current handoff.
-3. `Architecture_M6_CP3_CB25_A5_Shared_Node_Side_Authority_Review_Decision_20261022.md` (RA-128 TB26 source/limits), `Architecture_M6_CP3_DEFN_SEAM_A5_Shared_Node_Side_Authority_Review_Decision_20261022.md` (RA-127 A1–A4); `Architecture_M6_CP3_DEFN_SEAM_A5_Shared_Node_Side_Authority_20261022.md` §§1–3; RA-118.2 in `Architecture_M6_Frozen_Definitions.md`; `LESSONS.md` §§3, 5.
+3. `Architecture_M6_CP3_TB26_Shared_Node_Seam_Witness_Harvest_Report_20261022.md` (run 39727886868, 18 logs, unresolved A6/D3); `Architecture_M6_CP3_CB25_A5_Shared_Node_Side_Authority_Review_Decision_20261022.md` (RA-128 stop/falsifiers), `Architecture_M6_CP3_DEFN_SEAM_A5_Shared_Node_Side_Authority_Review_Decision_20261022.md` (RA-127 A1–A4); `Architecture_M6_CP3_DEFN_SEAM_A5_Shared_Node_Side_Authority_20261022.md` §§1–3; RA-118.2 in `Architecture_M6_Frozen_Definitions.md`; `LESSONS.md` §§3, 5.
 4. `.agents/Directional/Regression_Root_Cause_Tracker.md` and `TODO.md` — unresolved issues and scope; required policy readings still govern.
 
 **Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py authority <sha>` and
