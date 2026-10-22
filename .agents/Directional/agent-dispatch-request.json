@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb27-rp01-negative-oracles-20261022-r1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb27-negative-oracles-apply",
-  "file_id": "10nAVw54BF8zgSZDOi5KpFMhJMqVaITlr",
-  "patch_sha256": "2d3e2f3c8226906ed033a1d60d9e6ac89aae1256c6ec7b2c252826e49122c0a2",
-  "base_sha": "95ceed8c9851b3307e96a8168312de7c2e87f8d8",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): add CB27 certified-seam negative oracles",
-  "retention_days": 14
+  "request_id": "m6-cp3-cb27-negatives-compile-20261022-r1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb27-negatives-compile",
+  "source_sha": "55b3d0c51f4f89c53417a75c8b17c7ad506ca7a1",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "directional-m6-cp3-cb27-negative-oracles-compile"
 }
