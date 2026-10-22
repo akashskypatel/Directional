@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb25-a5-docs-20261022-2",
+  "request_id": "m6-cp3-cb25-rev-docs-20261022-1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb25-a5-docs-apply-retry",
-  "file_id": "1IH1sLEL8s3dK3W0b74vhGtMYfwmIyVnR",
-  "patch_sha256": "6292f78e286340caaef9dac4ea1f1350d34a5ea1ed0b0131320e1846a6b09dce",
-  "base_sha": "1b9b742663bb29b864c9f1710a42a9e1b1e4eb07",
+  "mailbox_key": "m6-cp3-cb25-rev-docs-apply",
+  "file_id": "1LXHcaaR3_bgwZu9FhNSp4azkkpUSkC7y",
+  "patch_sha256": "4bd1fbf40808eb34b0133eae8e1d0f307b49a801c5cca459d4cf8767137c548d",
+  "base_sha": "2d542b47e9064bf74b8b7f1442b1417a5955f158",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record CB25 compile and hand off for review",
+  "commit_message": "docs(directional): independently review CB25 and authorize TB26",
   "retention_days": 7
 }
