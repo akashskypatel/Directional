@@ -54,7 +54,7 @@ try:
  z=root/"package.zip"
  subprocess.run(curl+[url+"/zip","-o",str(z)],check=True)
  ck(h(z)==digest,"ZIP SHA-256")
- with zipfile.ZipFile(z) as f:f.extractall(root/"pkg")
+ subprocess.run(["unzip","-q",str(z),"-d",str(root/"pkg")],check=True)
  pkg=root/"pkg"
  ck(manifest(pkg)==28,"manifest count")
  ck((pkg/"metadata/source-commit.txt").read_text().strip()==sha,"source mismatch")
@@ -72,7 +72,7 @@ try:
  for p in (pkg/"bin").iterdir():
   staged=view/"bin"/p.name
   shutil.copy2(p,staged)
-  staged.chmod(0o755)
+  ck(os.access(staged,os.X_OK),"missing archived executable mode: "+p.name)
  shutil.copytree(src/"benchmarks/fixtures",view/"test-data/benchmarks/fixtures")
  before={str(p.relative_to(view)):h(p) for p in view.rglob("*") if p.is_file()}
  exe=view/"bin/directional_surface_cell_producer_tests"
