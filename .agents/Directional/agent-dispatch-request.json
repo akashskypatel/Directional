@@ -1,12 +1,14 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb25-rev-docs-20261022-2",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb25-rev-docs-apply-retry",
-  "file_id": "1gmAIfRasdf5YAiUHnoApXYfjze16Qrus",
-  "patch_sha256": "5a6a8fa3f9fc8753b6a09312967250726bc6bbc624eb70f3d82778804659ab73",
-  "base_sha": "2d542b47e9064bf74b8b7f1442b1417a5955f158",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): independently review CB25 and authorize TB26",
+  "request_id": "m6-cp3-tb26-a5-shared-node-harvest-20261022-1",
+  "operation": "test_benchmark",
+  "mailbox_key": "m6-cp3-tb26-a5-shared-node-harvest",
+  "executor_sha": "5d3b5ff7c85038ecad353e0b9c5a727bf8a30ae2",
+  "semantic_source_sha": "c5e0b242f3c3015f1f4f5f886058f0086fe1f679",
+  "turn_id": "M6-CP3-TB26-RP01-A5-SHARED-NODE-SEAM-WITNESS-HARVEST",
+  "harness_path": ".agents/Directional/tools/m6_cp3_tb26_shared_node_seam_witness_harness.sh",
+  "harness_sha256": "c20b78463c8ad1aa2581d2a4f5f8b0cdd85b54b4805fee95033adcb6739f3f14",
+  "environment": {},
+  "artifact_prefix": "m6-cp3-tb26-shared-node-seam-harvest",
   "retention_days": 7
 }
