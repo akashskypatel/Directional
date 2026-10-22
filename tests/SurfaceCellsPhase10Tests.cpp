@@ -30,6 +30,66 @@
 
 namespace {
 
+std::string describe_phase_front_product_error(
+    const directional::geometry::SurfacePhaseFrontProductError &error) {
+  std::ostringstream out;
+  out << "code=" << static_cast<int>(error.code)
+      << ";sourceAuthoritySite="
+      << (error.sourceAuthoritySite.empty() ? "none" : error.sourceAuthoritySite)
+      << ";edge=" << error.edge << ";event=" << error.event
+      << ";cell=";
+  if (error.cell) out << error.cell->index();
+  else out << "none";
+  out << ";region=";
+  if (error.region) out << error.region->index();
+  else out << "none";
+  out << ";periodicRelation=";
+  if (!error.periodicRelation) {
+    out << "none";
+  } else {
+    const auto &relation = *error.periodicRelation;
+    out << "(region=" << relation.region().index();
+    const auto write_carrier = [&](const char *name, const auto &carrier) {
+      out << ";" << name << "=[";
+      for (std::size_t i = 0; i < carrier.size(); ++i) {
+        if (i != 0U) out << ",";
+        const auto &step = carrier[i];
+        out << "(" << static_cast<int>(step.kind) << ":"
+            << step.topology.first().index() << "-"
+            << step.topology.second().index() << ":";
+        if (step.interior) out << step.interior->index();
+        else out << "none";
+        out << ")";
+      }
+      out << "]";
+    };
+    write_carrier("generator", relation.generator_carrier());
+    write_carrier("cut", relation.cut_carrier());
+    out << ")";
+  }
+  return out.str();
+}
+
+std::string describe_field_atlas_build_error(
+    const directional::authority::FieldAtlasBuildError &error) {
+  std::ostringstream out;
+  out << "code="
+      << directional::authority::field_atlas_build_error_code_name(error.code);
+  if (error.sourceEdge) {
+    out << ";sourceEdge=(" << error.sourceEdge->first().index() << ","
+        << error.sourceEdge->second().index() << ")";
+  }
+  if (error.sourceFace) out << ";sourceFace=" << error.sourceFace->index();
+  if (error.sourceVertex) out << ";sourceVertex=" << error.sourceVertex->index();
+  if (error.topologyRegion) out << ";topologyRegion=" << error.topologyRegion->index();
+  if (error.incompleteCycleBasisReason) {
+    out << ";incompleteCycleBasisReason="
+        << directional::authority::incomplete_cycle_basis_reason_name(
+               *error.incompleteCycleBasisReason);
+  }
+  return out.str();
+}
+
 using directional::validation::MeshValidationFailureCode;
 
 directional::authority::SourceComponentId test_source_component_id(
@@ -4337,7 +4397,9 @@ build_periodic_route_network_with_source_atlas(
   auto sourceAtlas = directional::authority::FieldTransportAtlas::make(
       fixture.mesh, *sourceAuthority, options.hardFeatureEdges, sourceField);
   if (!sourceAtlas) {
-    throw std::runtime_error("periodic-route fixture source A3 unavailable");
+    throw std::runtime_error(
+        "periodic-route fixture source A3 unavailable;" +
+        describe_field_atlas_build_error(sourceAtlas.error()));
   }
   options.fieldTransportAtlas = &sourceAtlas.value();
   return directional::geometry::build_surface_cell_network(
@@ -6476,7 +6538,10 @@ rebuild_phase_front_with_edges(
   auto *value =
       std::get_if<directional::geometry::SurfacePhaseFrontProduct>(&rebuilt);
   if (value == nullptr) {
-    throw std::runtime_error("Failed to rebuild structurally valid phase-front product.");
+    throw std::runtime_error(
+        "Failed to rebuild structurally valid phase-front product;" +
+        describe_phase_front_product_error(
+            std::get<directional::geometry::SurfacePhaseFrontProductError>(rebuilt)));
   }
   return std::move(*value);
 }
