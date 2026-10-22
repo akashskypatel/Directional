@@ -1,3 +1,8 @@
+## 2026-10-22 — CB27A independent static Review accepts discriminating wedge-membership oracle
+
+- Verified D7's authentic second-endpoint `3/1` wedge withdrawal isolates membership while retaining P1–P6, original A6 authority and unchanged certificate; first three negatives and D3/D7 positives preserved. CB27A is **compile-only** (`39838687950`, artifact `12452346647`); no runtime tests/benchmarks or CP3 acceptance. Decision: `Architecture_M6_CP3_CB27A_Wedge_Membership_Oracle_Review_Decision_20261022.md`.
+- Authorized `M6-CP3-CB28-RP01-FACTORY-ERROR-DIAGNOSTICS` strictly for RA-134.5 test-only factory-error diagnostics in TQ/SP10, with independent CB28-REV before TB29. Stable 66/17/49, debt 1, CP2 491/491, TB28 462/497 candidate and selector 497 unchanged.
+
 ## 2026-10-22 — CB27A wedge-membership negative corrected and compiled
 
 - Replaced the previously masked certified-seam outside-wedge negative with a real endpoint binding-withdrawal witness, explicitly asserting P1–P6 and A6/A7 rejection site/locus. Only `tests/SurfaceCellTransitionQuotientTests.cpp` changed (+101/-20), source `f021e8f7b876c261b8337334596f519f4b7652a7`.
