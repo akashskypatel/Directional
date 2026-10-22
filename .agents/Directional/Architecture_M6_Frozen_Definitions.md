@@ -1,3 +1,16 @@
+## RA-132 — TB27 reviewed: seam family and both tampers PASS; census before negative tests (2026-10-22)
+
+Authority: `Architecture_M6_CP3_TB27_A7_Certified_Seam_Cross_Sheet_Verification_Review_Decision_20261022.md`.
+
+- **RA-132.1** TB27 verified: result `12420676412`, 24/24, 21/21 PASS; CB26 matches RA-130.8.
+- **RA-132.2** Seam family 12/12 PASS (targeted). D3 gauge tamper → `RelationCertificateConflict`; D7 A7-positive and evidence tamper → `cross-sheet`. RA-127.4 (iii) and RA-130 B1 discharged.
+- **RA-132.3** Untested: `cross-sheet:seam-direction`, `:no-certificate`, `:periodic`, B4 precision, RA-127.4b. Republished records skip A5's seam check (RP:3708–3756); test through A6/A7.
+- **RA-132.4** Realigned: the census runs on the unchanged CB26 package before the test-only CB27.
+- **RA-132.5** Next: `M6-CP3-TB28-RP01-SELECTOR-497-CENSUS` with harness `m6_cp3_entry_497_artifact_only_harness.sh` on package `12409939859`; expected at least 462/497 and no PASS→RED.
+- **RA-132.6** CB27 (issued at TB28-REV): D7-fixture negatives (unrelated seam, no certificate, lattice coordinate, outside wedge; same-side if constructible).
+- **RA-132.7** TB28 → REV → CB27 → REV → TB29 → REV → DEFN-M1 → DEFN-T1 → fixture debt → census → RP-01 Review.
+
+---
 ## RA-130 — DEFN-SEAM-A7 reviewed: accepted with amendments; CB26 authorized (2026-10-22)
 
 Authority: `Architecture_M6_CP3_DEFN_SEAM_A7_Certified_Seam_Cross_Sheet_Authority_Review_Decision_20261022.md`; contract `Architecture_M6_CP3_DEFN_SEAM_A7_Certified_Seam_Cross_Sheet_Authority_20261022.md`.

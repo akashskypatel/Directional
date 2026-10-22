@@ -1,3 +1,9 @@
+## 2026-10-22 — TB27 reviewed (RA-132): the seam fixes pass their targeted tests; full census next
+
+- Review verified TB27: all 21 targeted tests pass. That covers the 12 seam-family tests and both tamper checks: a rotated gauge is still rejected, and so is removed crossing evidence. The two seam fixes (A5 and A7) now work end to end on these tests.
+- Gaps: no test yet exercises three of the new A7 rejection labels, or a crossing recorded on the wrong seam. Those tests come in CB27.
+- Order changed: the full 497-test census runs first, on the already-built package, because the product code is final and a regression elsewhere is the main risk. Accounting unchanged. Record: `Architecture_M6_CP3_TB27_A7_Certified_Seam_Cross_Sheet_Verification_Review_Decision_20261022.md`.
+
 ## 2026-10-22 — TB27 A7 certified cross-sheet matrix: 21/21 targeted PASS
 
 - Corrected artifact-only [run 39764327506](https://github.com/akashskypatel/Directional/actions/runs/39764327506), result `12420676412` (ZIP SHA-256 `33dc0878cd4dd0592b1ad2ae0b436b2606c7a59e45cbc0e929358d6213f7babb`): exact CB26 source `e3d60337`, package `12409939859`, 21/21 selected and PASS (10 A5, 2 D3/D7, 6 controls, 3 new A7 guards), 24/24 result hashes, GMP/GMPXX, immutable postflight, no compile/relink/benchmark/selector mutation. Initial run `39761406833` also passed 21/21 but extracted permissions noncompliantly; corrected harness `60414d738` uses mode-preserving extraction.

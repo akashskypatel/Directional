@@ -1,4 +1,29 @@
-## CURRENT — TB27 targeted 21/21 PASS; independent Review required (2026-10-22)
+## CURRENT — TB27 reviewed (RA-132): seam family and both tampers PASS; census first, then negative tests (2026-10-22)
+
+- [x] Review (RA-132, TB27-REV):
+  - verified result `12420676412` (24/24 manifest; 21 logs, one RUN and one OK each, test names match the ledger);
+  - CB26 matches RA-130.8;
+  - **PASS:** the 12 seam-family rows; the D3 gauge tamper (`RelationCertificateConflict`); D7 A7-positive and evidence tamper (`cross-sheet`); all guards and controls. RA-127.4 (iii) and RA-130 B1 discharged;
+  - **not yet tested:** `cross-sheet:seam-direction`, `cross-sheet:no-certificate`, `cross-sheet:periodic`, B4 precision, RA-127.4b;
+  - **realigned:** census before CB27 (product final; a regression is the main risk). Record: `Architecture_M6_CP3_TB27_A7_Certified_Seam_Cross_Sheet_Verification_Review_Decision_20261022.md`.
+- [ ] **EXACT NEXT:** `M6-CP3-TB28-RP01-SELECTOR-497-CENSUS` — artifact-only census (RA-132.5):
+  1. run `m6_cp3_entry_497_artifact_only_harness.sh` unchanged on package `12409939859` with source `e3d60337e…`, ZIP `ee08279e…86fa`, root manifest `0c9183b8…b1cf`, source archive `d37cfbda…955c` (full values in the handoff); the package expires 2026-10-29T08:00:15Z;
+  2. report `Architecture_M6_CP3_TB28_Selector_497_Census_Report_20261022.md`: totals, PASS→RED and RED→PASS against TB21, first failures, A7 sites;
+  3. inventory `Architecture_M6_CP3_TB28_Selector_497_Red_Inventory.tsv`.
+  Predictions: seam family + `selector:447` RED→PASS, no PASS→RED, at least 462/497. STOP on any falsifier; no fixes.
+- [ ] **CONDITIONAL:** `M6-CP3-TB28-RP01-SELECTOR-497-CENSUS-REV` — Review: census adjudication, RED classification; issues CB27.
+- [ ] Planned, not authorized: CB27 (test-only, TQ: unrelated-seam evidence, no-certificate, lattice-coordinate and outside-wedge negatives; same-side if constructible; RA-132.6) → CB27-REV → TB29 (new tests + guards) → TB29-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up (RA-130.7) only after a witness.
+- [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
+  - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
+  - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
+  - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
+  - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
+- **Turn sequence:** CB26 → CB26-REV (RA-131) → TB27 → TB27-REV (RA-132) → **TB28 (census)** → TB28-REV → CB27 → CB27-REV → TB29 → TB29-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+- Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB21 candidate 449/497; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
+
+---
+
+## HISTORY — CB26 compiled and reviewed (RA-131); TB27 verified and reviewed (RA-132) (2026-10-22)
 
 - [x] Review (RA-130, DEFN-SEAM-A7-REV): consumer census, the proof that `relationCertified` can hold, the core rule and the diagnostic are accepted. Binding amendments:
   - **B1:** the frozen D7 test `cp3entry:5` (TQ:3977–4056) requires A7 to accept the certified seam relation and to reject its evidence tamper with site `cross-sheet`; TB27 reports the D7 tamper. §6 correction: the D3 tamper is a face-gauge quarter turn;
@@ -15,13 +40,8 @@
   No A5, A6, per-member A7, A8, header, other-test, selector or workflow change.
 - [x] **RA-131 Review COMPLETE:** `M6-CP3-CB26-RP01-A7-CERTIFIED-SEAM-CROSS-SHEET-AUTHORITY-REV` — independently accepted the two-path CB26 B1–B6 diff and hashed exact GMP compile evidence; no runtime. Record: `Architecture_M6_CP3_CB26_A7_Certified_Seam_Cross_Sheet_Authority_Review_Decision_20261022.md`.
 - [x] **TB27 complete (targeted verification):** `M6-CP3-TB27-RP01-A7-CERTIFIED-SEAM-CROSS-SHEET-VERIFICATION` — compliant [run 39764327506](https://github.com/akashskypatel/Directional/actions/runs/39764327506), artifact `12420676412`, 21/21 PASS; no rebuild/selector edits. Report `Architecture_M6_CP3_TB27_A7_Certified_Seam_Cross_Sheet_Verification_Report_20261022.md`.
-- [ ] **EXACT NEXT: UNKNOWN — STOP:** independent TB27 Review is mandatory; RA-131 authorizes the Review *task* but did not assign its canonical turn ID. Independently audit run artifacts, 21 individual test oracles and A7 falsifiers, decide promotion and whether CB27 can be authorized. Do not invent an ID or begin code work.
-- [ ] Later conditional sequence (only after authorized TB27 completes): TB27-REV → CB27 (negative tests, TQ only: RA-127.4b + A7 unrelated-seam evidence and no-direction) → CB27-REV → TB28 (new tests + selector-497 census) → TB28-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up (RA-130.7) only after a witness.
-- [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
-  - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
-  - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
-  - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
-  - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
+- [x] TB27 independent Review done (RA-132). Was: independent TB27 Review is mandatory; RA-131 authorizes the Review *task* but did not assign its canonical turn ID. Independently audit run artifacts, 21 individual test oracles and A7 falsifiers, decide promotion and whether CB27 can be authorized. Do not invent an ID or begin code work.
+- Later conditional sequence at the time (only after authorized TB27 completes): TB27-REV → CB27 (negative tests, TQ only: RA-127.4b + A7 unrelated-seam evidence and no-direction) → CB27-REV → TB28 (new tests + selector-497 census) → TB28-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up (RA-130.7) only after a witness.
 - **Turn sequence:** TB26-REV (RA-129) → DEFN-SEAM-A7 → DEFN-SEAM-A7-REV (RA-130) → CB26 → CB26-REV (RA-131) → **TB27** → TB27-REV → CB27 → CB27-REV → TB28 (+ census) → TB28-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
 - Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB21 candidate 449/497; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
 
