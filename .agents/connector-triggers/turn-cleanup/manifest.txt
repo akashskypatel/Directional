@@ -1,2 +1,0 @@
-# CB26 temporary source-snapshot trigger
-.agents/connector-triggers/source-snapshot/cb26-20261022-0745.txt
