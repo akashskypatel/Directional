@@ -65,7 +65,10 @@ try:
  for path,hash2 in frozen.items():ck(h(src/path)==hash2,"frozen selector: "+path)
  view=root/"view"
  (view/"bin").mkdir()
- for p in (pkg/"bin").iterdir():shutil.copy2(p,view/"bin"/p.name)
+ for p in (pkg/"bin").iterdir():
+  staged=view/"bin"/p.name
+  shutil.copy2(p,staged)
+  staged.chmod(0o755)
  shutil.copytree(src/"benchmarks/fixtures",view/"test-data/benchmarks/fixtures")
  before={str(p.relative_to(view)):h(p) for p in view.rglob("*") if p.is_file()}
  exe=view/"bin/directional_surface_cell_producer_tests"
