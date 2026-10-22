@@ -3874,6 +3874,15 @@ std::optional<CertifiedSeamSide> certified_seam_wedge_side(
   return side;
 }
 
+// A shared producer node may have different certified seam-side faces.
+bool certified_seam_shared_node(const SurfaceOccurrence &first,
+                                const SurfaceOccurrence &second) {
+  return first.support == second.support &&
+         first.placement.selectedFace == second.placement.selectedFace &&
+         first.placement.lattice.latticeCoordinate ==
+             second.placement.lattice.latticeCoordinate;
+}
+
 // The A4 certificate owns the source-face directions. Determine a single
 // typed direction before any ordinary-front sheet/branch/phase comparison;
 // labels outside the certificate never select the seam path.
@@ -3883,13 +3892,17 @@ std::optional<authority::Orientation> certified_seam_direction(
     const SurfaceOccurrenceSideSpan &firstSpan,
     const SurfaceOccurrenceSideSpan &secondSpan,
     const geometry::SurfaceIsolationSeamTransportCertificate &certificate) {
+  const bool sharedNode =
+      certified_seam_shared_node(firstOccurrence, secondOccurrence);
   if (!firstSpan.collinearEdge.has_value() ||
       firstSpan.collinearEdge != secondSpan.collinearEdge ||
       firstSpan.collinearEdge != certificate.seam() ||
       firstOccurrence.topologyRegion != certificate.region() ||
       secondOccurrence.topologyRegion != certificate.region() ||
-      firstSpan.interiorBinding.face != firstOccurrence.placement.selectedFace ||
-      secondSpan.interiorBinding.face != secondOccurrence.placement.selectedFace ||
+      (!sharedNode && firstSpan.interiorBinding.face !=
+                          firstOccurrence.placement.selectedFace) ||
+      (!sharedNode && secondSpan.interiorBinding.face !=
+                          secondOccurrence.placement.selectedFace) ||
       certificate.firstSheet() == certificate.secondSheet()) {
     return std::nullopt;
   }
@@ -5295,6 +5308,8 @@ SurfaceOccurrenceComplexProducer::produce(
               ++passingCount;
           }
           site += ";certs=" + std::to_string(matchingCount);
+          const bool sharedNode = certified_seam_shared_node(
+              canonicalFirstOccurrence, canonicalSecondOccurrence);
           std::size_t certificateIndex = 0U;
           for (const auto &certificate :
                phaseFront.isolationSeamTransportCertificates()) {
@@ -5308,11 +5323,11 @@ SurfaceOccurrenceComplexProducer::produce(
             } else if (canonicalFirstOccurrence.topologyRegion != certificate.region() ||
                        canonicalSecondOccurrence.topologyRegion != certificate.region()) {
               clause = "region";
-            } else if (canonicalFirstSpan.interiorBinding.face !=
-                       canonicalFirstOccurrence.placement.selectedFace) {
+            } else if (!sharedNode && canonicalFirstSpan.interiorBinding.face !=
+                                          canonicalFirstOccurrence.placement.selectedFace) {
               clause = "first-face";
-            } else if (canonicalSecondSpan.interiorBinding.face !=
-                       canonicalSecondOccurrence.placement.selectedFace) {
+            } else if (!sharedNode && canonicalSecondSpan.interiorBinding.face !=
+                                          canonicalSecondOccurrence.placement.selectedFace) {
               clause = "second-face";
             } else if (certificate.firstSheet() == certificate.secondSheet()) {
               clause = "same-sheet";
