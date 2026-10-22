@@ -1,3 +1,8 @@
+## 2026-10-22 — TB27 A7 certified cross-sheet matrix: 21/21 targeted PASS
+
+- Corrected artifact-only [run 39764327506](https://github.com/akashskypatel/Directional/actions/runs/39764327506), result `12420676412` (ZIP SHA-256 `33dc0878cd4dd0592b1ad2ae0b436b2606c7a59e45cbc0e929358d6213f7babb`): exact CB26 source `e3d60337`, package `12409939859`, 21/21 selected and PASS (10 A5, 2 D3/D7, 6 controls, 3 new A7 guards), 24/24 result hashes, GMP/GMPXX, immutable postflight, no compile/relink/benchmark/selector mutation. Initial run `39761406833` also passed 21/21 but extracted permissions noncompliantly; corrected harness `60414d738` uses mode-preserving extraction.
+- Targeted TB26 nine-RED seam failures eliminated in tested identities; `cross-sheet:seam-direction` and `cross-sheet:periodic` falsifiers absent. Independent TB27-REV still required before semantic acceptance/promotion; full selector 497, Periodic and nonzero seam unmeasured. Stable 66/17/49, debt 1 and CP2 491/491 unchanged. Evidence: `Architecture_M6_CP3_TB27_A7_Certified_Seam_Cross_Sheet_Verification_Report_20261022.md`.
+
 ## 2026-10-22 — RA-131 independent CB26 A7 static Review; TB27 issued
 
 - Accepted CB26 B1–B6 two-path semantic diff at `e3d60337ed34538547d3a6d519bafae5b184330e` **compile-only**; exact ZIP `ee08279e537af4e99f287d28595df0ef639e632aa345bc0b1986bbb361ee86fa`, GMP/GMPXX, 28/28, no runtime. Independent review and site/falsifier matrix: `Architecture_M6_CP3_CB26_A7_Certified_Seam_Cross_Sheet_Authority_Review_Decision_20261022.md`.

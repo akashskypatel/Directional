@@ -1,4 +1,4 @@
-## CURRENT — RA-131 accepts CB26 compile-only; immutable TB27 next (2026-10-22)
+## CURRENT — TB27 targeted 21/21 PASS; independent Review required (2026-10-22)
 
 - [x] Review (RA-130, DEFN-SEAM-A7-REV): consumer census, the proof that `relationCertified` can hold, the core rule and the diagnostic are accepted. Binding amendments:
   - **B1:** the frozen D7 test `cp3entry:5` (TQ:3977–4056) requires A7 to accept the certified seam relation and to reject its evidence tamper with site `cross-sheet`; TB27 reports the D7 tamper. §6 correction: the D3 tamper is a face-gauge quarter turn;
@@ -14,7 +14,8 @@
   4. eight targets compiled with GMP/GMPXX, `runtimeExecution=false`; [run 39744189868](https://github.com/akashskypatel/Directional/actions/runs/39744189868), artifact `12409939859` (28/28 manifest). Record: `Architecture_M6_CP3_CB26_A7_Certified_Seam_Cross_Sheet_Authority_Code_Build_Record_20261022.md`.
   No A5, A6, per-member A7, A8, header, other-test, selector or workflow change.
 - [x] **RA-131 Review COMPLETE:** `M6-CP3-CB26-RP01-A7-CERTIFIED-SEAM-CROSS-SHEET-AUTHORITY-REV` — independently accepted the two-path CB26 B1–B6 diff and hashed exact GMP compile evidence; no runtime. Record: `Architecture_M6_CP3_CB26_A7_Certified_Seam_Cross_Sheet_Authority_Review_Decision_20261022.md`.
-- [ ] **EXACT NEXT:** `M6-CP3-TB27-RP01-A7-CERTIFIED-SEAM-CROSS-SHEET-VERIFICATION` — artifact-only TB27: original 18 TB26 selections plus three RA-130.9 A7 guards; report D3/D7 falsifiers, preserve controls, no rebuild/compile/selector edits.
+- [x] **TB27 complete (targeted verification):** `M6-CP3-TB27-RP01-A7-CERTIFIED-SEAM-CROSS-SHEET-VERIFICATION` — compliant [run 39764327506](https://github.com/akashskypatel/Directional/actions/runs/39764327506), artifact `12420676412`, 21/21 PASS; no rebuild/selector edits. Report `Architecture_M6_CP3_TB27_A7_Certified_Seam_Cross_Sheet_Verification_Report_20261022.md`.
+- [ ] **EXACT NEXT: UNKNOWN — STOP:** independent TB27 Review is mandatory; RA-131 authorizes the Review *task* but did not assign its canonical turn ID. Independently audit run artifacts, 21 individual test oracles and A7 falsifiers, decide promotion and whether CB27 can be authorized. Do not invent an ID or begin code work.
 - [ ] Later conditional sequence (only after authorized TB27 completes): TB27-REV → CB27 (negative tests, TQ only: RA-127.4b + A7 unrelated-seam evidence and no-direction) → CB27-REV → TB28 (new tests + selector-497 census) → TB28-REV → DEFN-M1 → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up (RA-130.7) only after a witness.
 - [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
   - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
