@@ -1,0 +1,2 @@
+# CB30 temporary-state cleanup (durable dispatcher request is not temporary)
+.agents/connector-triggers/source-snapshot/20261023-cb30-periodic-owner-gauge.txt
