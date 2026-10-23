@@ -1,2 +1,0 @@
-# FG01 temporary source-snapshot trigger only
-.agents/connector-triggers/source-snapshot/fg01-20261023.txt
