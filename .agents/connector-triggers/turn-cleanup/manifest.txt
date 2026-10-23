@@ -1,2 +1,0 @@
-# DEFN-M1 temporary source snapshot trigger
-.agents/connector-triggers/source-snapshot/defn-m1-20261023-0800.txt
