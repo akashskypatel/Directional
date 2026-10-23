@@ -9164,13 +9164,13 @@ PhaseFrontDraft odd_atlas_owner_draft(const bool swapRows,
   const auto row0 = directional::authority::SourceFaceId::from_index(0, 2);
   const auto row1 = directional::authority::SourceFaceId::from_index(1, 2);
   if (!row0 || !row1) throw std::runtime_error("CB31 invalid face IDs");
-  const auto firstTopology = original.topology_for_row(*row0);
-  const auto secondTopology = original.topology_for_row(*row1);
+  const auto firstTopology = original.topology_for_row(row0.value());
+  const auto secondTopology = original.topology_for_row(row1.value());
   const std::vector<directional::authority::SourceFaceTopologyKey> topology =
       swapRows ? std::vector{secondTopology, firstTopology}
                : std::vector{firstTopology, secondTopology};
-  const auto component = original.component_for_row(*row0);
-  const auto sheet = original.sheet_for_row(*row0);
+  const auto component = original.component_for_row(row0.value());
+  const auto sheet = original.sheet_for_row(row0.value());
   auto authority = directional::geometry::SourceTopologyRegions::make(
       topology, {component, component}, {sheet, sheet}, original.regions());
   if (!authority || !authority->matches_source_faces(faces, 4U))
@@ -9213,15 +9213,15 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
   ASSERT_TRUE(sourceRow.has_value());
   ASSERT_TRUE(other.has_value());
   ASSERT_TRUE(original.sourceAtlas.has_value());
-  ASSERT_EQ(original.sourceAuthority.component_for_row(*sourceRow),
-            original.sourceAuthority.component_for_row(*other));
-  ASSERT_EQ(original.sourceAuthority.sheet_for_row(*sourceRow),
-            original.sourceAuthority.sheet_for_row(*other));
+  ASSERT_EQ(original.sourceAuthority.component_for_row(sourceRow.value()),
+            original.sourceAuthority.component_for_row(other.value()));
+  ASSERT_EQ(original.sourceAuthority.sheet_for_row(sourceRow.value()),
+            original.sourceAuthority.sheet_for_row(other.value()));
   ASSERT_FALSE(original.hardFeatureEdges.contains(edge));
   const auto directed = original.sourceAtlas->transition_value(
-      edge, *sourceRow, *other);
+      edge, sourceRow.value(), other.value());
   const auto reciprocal = original.sourceAtlas->transition_value(
-      edge, *other, *sourceRow);
+      edge, other.value(), sourceRow.value());
   ASSERT_TRUE(directed.has_value());
   ASSERT_TRUE(reciprocal.has_value());
   ASSERT_TRUE(directed->transport.value() == 1 ||
@@ -9292,9 +9292,9 @@ TEST(SurfacePhaseFrontProductFactoryAuthority,
   ASSERT_TRUE(row0.has_value());
   ASSERT_TRUE(row1.has_value());
   const auto edge = test_source_edge_topology(0, 2, 4U);
-  const auto forward = baseline.sourceAtlas->transition_value(edge, *row0, *row1);
+  const auto forward = baseline.sourceAtlas->transition_value(edge, row0.value(), row1.value());
   const auto inverse = invertedIngress.sourceAtlas->transition_value(
-      edge, *row0, *row1);
+      edge, row0.value(), row1.value());
   ASSERT_TRUE(forward.has_value());
   ASSERT_TRUE(inverse.has_value());
   ASSERT_TRUE(forward->transport.value() == 1 ||
