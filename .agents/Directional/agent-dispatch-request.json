@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-fg01-defn-docs-20261023-r1",
+  "request_id": "m6-cp3-cb30-periodic-owner-gauge-20261023-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-fg01-defn-docs",
-  "file_id": "1C9-gzO1wsKXkX9nuCI_L1Dy7iWnDiHqh",
-  "patch_sha256": "47c1941a64eeb8b5f298de263722a3e752edc199752d2a9f7b5f5219068c0278",
-  "base_sha": "5ade6d588814246474ebca9debcf0d6f00a31df0",
+  "mailbox_key": "m6-cp3-cb30-gauge-apply",
+  "file_id": "1EVya8Ln76vz8a5yasWqX2EPTsXkNZAtU",
+  "patch_sha256": "e6a6cc82c58f47f35a36bee6d6ee5641b467a8ac1c900842968c1d87907d7c1e",
+  "base_sha": "79aeb3ddcbe3c6c97163e7b57232d4226571678e",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): define periodic-owner face-gauge factory contract",
+  "commit_message": "test(surface-cells): derive reciprocal periodic owner face gauges and controls",
   "retention_days": 7
 }
