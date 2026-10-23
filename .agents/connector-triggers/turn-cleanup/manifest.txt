@@ -1,2 +1,0 @@
-# TB29 independent-review authentic-history audit temporary state
-.agents/connector-triggers/review-history/tb29-review-20261023.txt
