@@ -1,0 +1,4 @@
+CB29 snapshot trigger
+Source branch: agent/surface_cell_quad/p5-recover-bridge-healing
+Pre-trigger head: 4d433cf81d10f35c83d9c0ede22beecd0273dd17
+Purpose: obtain exact source snapshot for scoped Code + Build turn.
