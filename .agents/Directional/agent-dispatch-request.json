@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb32-evidence-closeout-20261023",
+  "request_id": "m6-cp3-ra148-review-docs-20261023",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb32-evidence-closeout",
-  "file_id": "17IMUVRir47WtFcijVO1a-o2Lilbp10hc",
-  "patch_sha256": "5836a60bcfb8e844c619e2d49f47d87ecea39ccfb19ffb322d099e42b4b20719",
-  "base_sha": "1b12e128e8e2cca3b849703df60f9783a70b7d31",
+  "mailbox_key": "m6-cp3-ra148-review-docs",
+  "file_id": "10XebEIXHiVKslS4egXBVR56js8-mW9fF",
+  "patch_sha256": "027bfa306773527e363ca92c9599fa0b1ec1d07b8348e2cb0a3de74f3640939f",
+  "base_sha": "79293c06589ad09cc1763fda0238bf614d090389",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): record immutable TB32 evidence and review handoff",
+  "commit_message": "docs(directional): independently review TB32 and freeze odd atlas transport proof",
   "retention_days": 7
 }
