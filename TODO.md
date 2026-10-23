@@ -1,4 +1,11 @@
-## CURRENT — RA-145 TB31 independent census Review; FG01 Definition next (2026-10-23)
+## CURRENT — FG01 face-gauge factory contract defined; independent Review next (2026-10-23)
+
+- [x] **FG01 DEFN:** inspected six `face-gauge-missing` inherited REDs (selector 220/221/296/302/304/439): common `direct_periodic_owner_fixture()` omits the mandatory per-source-face Z4 gauge despite building an A3 atlas. Selected fixture-only correction from A3 reciprocal transport/typed face mapping, pending independent Review; no production/test/selector mutation. `Architecture_M6_CP3_DEFN_FG01_Periodic_Face_Gauge_Factory_Contract_20261023.md`.
+- [ ] **Exact next:** `M6-CP3-DEFN-FG01-RP01-PERIODIC-FACE-GAUGE-FACTORY-CONTRACT-REV` independently adjudicates the fixture-only contract, synthetic periodic relation admissibility, non-vacuity and negative/invariance oracles. Do not authorize CB before Review assigns its exact identity. Frozen stable 66/17/49, debt1, accepted CP2 491/491, TB31 472/497 candidate, selector497 unchanged, RP-01 open.
+
+---
+
+## HISTORY — RA-145 TB31 independent census Review; FG01 Definition next (2026-10-23)
 
 - [x] **TB31-REV accepted as evidence, not gate promotion:** immutable 497/497 with 472 PASS / 25 inherited RED / 0 INVALID, ten RED→PASS and no PASS→RED. Independently verified 1,000 checksum entries, 497 case identities/log hashes and TB28 ledger. Decision `Architecture_M6_CP3_TB31_Selector_497_Census_Review_Decision_20261023.md`.
 - [ ] **EXACT NEXT:** `M6-CP3-DEFN-FG01-RP01-PERIODIC-FACE-GAUGE-FACTORY-CONTRACT` — documents-only evaluation of `selector:220,221,296,302,304,439`; disambiguate missing fixture face gauge vs checked-factory contract, supply falsifiable options. No code/test/fixture/selector change; next Review before CB.

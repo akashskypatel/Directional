@@ -34,38 +34,38 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-23, after RA-145 independent Review. Exact 497/497, 472 PASS / 25 inherited RED / 0 INVALID; ten RED→PASS, zero PASS→RED vs TB28. TB31 candidate remains unaccepted. FG01 definition mandatory next. |
+| Currency | 2026-10-23, FG01 Definition written after RA-145: six synthetic periodic-owner fixtures omit mandatory face-gauge input; contract-consistent fixture-only option selected **pending independent Review**. TB31 472/497 is still unaccepted; no code or runtime change. |
 | Branch/source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open. CB29 semantic `2602e7398cdc6f1281abe11a758de35166b6590c`; CB29 compile [run 39932638282](https://github.com/akashskypatel/Directional/actions/runs/39932638282), package `12492950387` ZIP SHA `9e2da1f4b5cf95ac45364e8c428f0bd9116dcfe96772de18d02a5a7bfb167319`; GMP eight targets, 28/28 hashes, compile-only. |
 | TB30 runtime evidence | [run 39949886169](https://github.com/akashskypatel/Directional/actions/runs/39949886169), immutable result `12500088095` ZIP SHA-256 `bba928eb45957a29521a221ad093891de29f6a498c156691acc9c68b3a7308bf`; all 29 identities once, 22 PASS / 7 typed RED, 61/61 result hashes, no missing/skip/invalid/duplicates/unexpected PASS, no rebuild. Owning `Architecture_M6_CP3_TB30_Certificate_Association_Ownership_Verification_Report_20261023.md`. |
 | Unresolved first failures | Six `face-gauge-missing` (`selector:220,221,296,302,304,439`) and one `open-rail-chain` (`cp3entry:4`) remain inherited typed RED, no new stable regression or resolved causal assignment. |
 | TB31 independently reviewed evidence | [run 39959505758](https://github.com/akashskypatel/Directional/actions/runs/39959505758), result `12506242253`, ZIP SHA-256 `97828fac57a63b5d8ca85ef0e5fd35fb7d5ed71c2b2579cd463bacc20d5e947b`; 1,000/1,000 checksum entries and 497/497 raw logs verified. All 497 Review-owned manifest rows matched exact test/binary/expected outcome; exit 0, postflight true, no compile/relink/benchmark. Report `Architecture_M6_CP3_TB31_Selector_497_Census_Report_20261023.md`, RED inventory and RA-145 review retained. |
 | Accepted versus candidate | CP2 491/491 accepted. R3 403/497 rejected; TB28 462/497 superseded as candidate by TB31 472/497, **unaccepted**. Selector 497 byte-frozen; stable 66/17/49, debt 1; RP-01 open, RP-02 unreached, Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-DEFN-FG01-RP01-PERIODIC-FACE-GAUGE-FACTORY-CONTRACT` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-DEFN-FG01-RP01-PERIODIC-FACE-GAUGE-FACTORY-CONTRACT-REV` — EXACT NEXT
 
-- **Type:** DEFN / documents-only. Source authority RA-145 (`Architecture_M6_CP3_TB31_Selector_497_Census_Review_Decision_20261023.md`), six inherited `face-gauge-missing` cases (`selector:220,221,296,302,304,439`).
-- **Goal:** compare direct periodic-owner fixture construction, gauge admissibility and checked-factory contract with frozen A3/A4 authority. Distinguish invalid fixture precondition from product contract defect; define one unweakened corrective option and independently falsifiable predictions, or stop for Review if evidence is insufficient.
-- **Read:** RA-145 decision, TB31 RED inventory/logs, RA-144 owner partition, frozen definitions, relevant tests and factory code. Do not run binaries or change product/tests/selectors during this definition.
-- **Stop/next:** no CB authorized yet. If a contract-consistent option is selected, independent `M6-CP3-DEFN-FG01-RP01-PERIODIC-FACE-GAUGE-FACTORY-CONTRACT-REV` reviews it before issuing implementation scope; otherwise retain the canonical DEFN with a review blocker. No other owner starts in this turn.
+- **Type:** independent Review of FG01's documents-only factory contract, under RA-145; no Code + Build, Test + Benchmark, selector changes or gate promotion.
+- **Read:** `Architecture_M6_CP3_DEFN_FG01_Periodic_Face_Gauge_Factory_Contract_20261023.md`, RA-145, TB31 six first-failure logs, frozen A3/A4/A6 gauge definitions, `direct_periodic_owner_fixture()`, checked factory pin and periodic admission.
+- **Decision:** accept/reject the bounded fixture-only gauge construction using real A3 typed-face reciprocal transitions; adjudicate disk/synthetic-periodic limitations, non-vacuous positive/tamper/permutation oracles, and whether all six existing owner assertions can be reached without weakening the factory. If accepted, assign the **exact** corrective CB identity and boundary; otherwise retain the FG01 question or issue a specific Review blocker. Do not invent a CB ID before Review.
+- **Preserve:** last accepted CP2 491/491, TB31 472/497 candidate, 497 frozen selectors, stable 66/17/49, debt 1, RP-01 open and RP-02 unreached.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — next | `M6-CP3-DEFN-FG01-RP01-PERIODIC-FACE-GAUGE-FACTORY-CONTRACT` | Define and falsify the six direct periodic-owner face-gauge factory preconditions; docs only. |
+| 1 — next | `M6-CP3-DEFN-FG01-RP01-PERIODIC-FACE-GAUGE-FACTORY-CONTRACT-REV` | Independently verify/falsify the FG01 fixture-only contract and issue (or withhold) the exact bounded CB authorization. |
 | later — UNKNOWN until assigned | per-owner turns (each DEFN or diagnostic first): face-gauge-missing (6) → A3 cycle locus (7, diagnostic) → untyped producer/oracle rows (7) → A5 `focused30:12` → `cp3entry:4` open-rail-chain → `selector:442` → DEFN-T1 (`cp3entry:1/2`) → census → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up only after a witness | Planned, not authorized; each Review assigns the next edge. |
 | later — UNKNOWN until assigned | `DIAG-RETAIN` (user-directed): retain A5 occurrences and relations, A6 merged classes and A7 vertex geometry as diagnostic snapshots for GUI/CLI; scope in `TODO.md` | Planned, not authorized; Review places it in the sequence clear of RP-01 turns. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **definition** — FG01: read RA-145 and isolate the six face-gauge fixture/factory preconditions; no product changes or runtime.
+`load_next`: **review** — FG01 contract (`Architecture_M6_CP3_DEFN_FG01_Periodic_Face_Gauge_Factory_Contract_20261023.md`), RA-145 and six immutable RED logs; no code, runtime or selector changes.
 
 Minimum next context after mandatory start/policies:
 
 0. `.agents/Directional/ORIENTATION.md`, `ROADMAP.md`, `LESSONS.md`, `REVIEW_TURN_POLICY.md`.
-1. `Architecture_M6_CP3_TB31_Selector_497_Census_Review_Decision_20261023.md` and frozen `Architecture_M6_CP3_TB31_Selector_497_Red_Inventory.tsv`, six `face-gauge-missing` raw logs in artifact `12506242253`.
+1. `Architecture_M6_CP3_DEFN_FG01_Periodic_Face_Gauge_Factory_Contract_20261023.md`, RA-145 `Architecture_M6_CP3_TB31_Selector_497_Census_Review_Decision_20261023.md`, and six raw `face-gauge-missing` TB31 logs in artifact `12506242253`.
 2. RA-144.2, `Architecture_M6_CP3_TB31_Census_Case_Manifest.tsv`, frozen gauge/owner definitions and producer test fixtures for the six cases.
-3. Source factory and test construction; do not assume `code=0` proves a product bug. Produce contract alternatives, witness requirements, predictions and stop rules before implementation.
+3. Independently inspect factory pin, source atlas transport and the fixture omission; adjudicate option A against the frozen relational gauge rules, plus synthetic periodic-owner limits. Issue an exact CB turn only on accepted Review.
 4. Preserve CP2 491/491 accepted, TB31 candidate 472/497, 66/17/49, debt1; leave frozen selector and RP-01 acceptance gate unchanged.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
