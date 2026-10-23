@@ -5,7 +5,7 @@
   - each targeted TB had been writing a single-use, hard-coded harness, and the TB27 harness supports only one binary;
   - **separation:** Review owns the case manifest `Architecture_M6_CP3_TB29_Targeted_Case_Manifest.tsv` (44 rows, SHA-256 `39fa5eb83e2da1b0668bc7368c5304011ec13de8804c54a2a3466f927c42d236`); the implementation agent builds one reusable input-driven harness;
   - plan's guard trio corrected to RA-130.9's (TB27 rows 19–21). Record: `Architecture_M6_CP3_TB29_Harness_Authorization_Design_Review_Decision_20261023.md`.
-- [ ] **EXACT NEXT:** `M6-CP3-TB29H-RP01-TARGETED-ARTIFACT-HARNESS` — control-plane Code + Build, no execution. Create `.agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh`, derived from the TB27 harness:
+- [x] **COMPLETE (static only):** `M6-CP3-TB29H-RP01-TARGETED-ARTIFACT-HARNESS` — control-plane Code + Build, no execution. Create `.agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh`, derived from the TB27 harness:
   1. environment inputs, including `CASE_MANIFEST` and `CASE_MANIFEST_SHA256`;
   2. multi-binary resolution;
   3. one run per case;
@@ -13,8 +13,8 @@
   5. fail-closed control gates; `unexpected_pass` reported;
   6. `--self-check`.
 
-  Validate with `bash -n`, `py_compile`, and `--self-check` (passes on the manifest; fails on duplicate and unknown-kind copies). Record `Architecture_M6_CP3_TB29H_Targeted_Harness_Code_Build_Record_20261023.md`.
-- [ ] **CONDITIONAL:** `M6-CP3-TB29H-RP01-TARGETED-ARTIFACT-HARNESS-REV` — Review: static harness review; releases TB29.
+  Validated with `bash -n`, `py_compile`, and `--self-check` (44 manifest cases PASS; duplicate and unknown-kind copies rejected). Record `Architecture_M6_CP3_TB29H_Targeted_Harness_Code_Build_Record_20261023.md`.
+- [ ] **EXACT NEXT:** `M6-CP3-TB29H-RP01-TARGETED-ARTIFACT-HARNESS-REV` — Review: static harness review; releases TB29.
 - [ ] Planned, not authorized: `M6-CP3-TB29-RP01-TYPED-FACTORY-CAUSE-HARVEST` (resumed: harness `m6_cp3_targeted_artifact_harness.sh` at its reviewed SHA + manifest `Architecture_M6_CP3_TB29_Targeted_Case_Manifest.tsv` on CB28A package `12465330920`, which expires 2026-10-29T22:54:39Z) → TB29-REV → DEFN-M1 (scoped from measured factory clauses) → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up (RA-130.7) only after a witness.
 - [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
   - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.

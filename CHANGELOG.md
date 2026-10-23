@@ -1,3 +1,9 @@
+## 2026-10-23 — TB29H reusable targeted artifact-only harness statically validated
+
+- New `.agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh` SHA-256 `be3db020d5292a7ecb3851d4e662cadb08696e4dd1befe0e159c920069b9b412`. Manifest-driven, environment-bound immutable package checks, multi-binary exact-one test selection, typed failure reasons, fail-closed control gates and evidence postflight.
+- Static validation: bash syntax, Python compilation, 44-row manifest accepted, duplicate-test and unknown-kind mutations rejected. No runtime or compilation executed, no selector/test/fixture/product/workflow changes. Record: `Architecture_M6_CP3_TB29H_Targeted_Harness_Code_Build_Record_20261023.md`.
+- Next is independent harness Review, not TB29 execution. CP2 491/491, TB28 462/497 candidate, stable 66/17/49 and witness debt 1 unchanged.
+
 ## 2026-10-23 — TB29 block resolved (RA-137): reviewed test list plus one reusable test runner
 
 - The planned run of 44 tests could not start: no approved script existed to run exactly those tests, and the run turn was not allowed to write one. Every targeted run so far had written its own single-use script.
