@@ -1,0 +1,2 @@
+# CB29 temporary source snapshot marker
+.agents/connector-triggers/source-snapshot/CB29-20261023-0911.txt
