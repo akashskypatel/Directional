@@ -34,41 +34,40 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-23, RA-147 independently accepts CB30 test-only static/compile evidence and authorizes TB32 immutable 500-case verification. No runtime or gate promotion. |
-| Branch/source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open. CB30 semantic `19267540081a4ff3a99826e3b9a766f1dbbded42`; compile [run 40023541183](https://github.com/akashskypatel/Directional/actions/runs/40023541183), artifact `12531891913` ZIP SHA-256 `040b7b12e4b36fa78f2c5eae6465ddaadd2a1fbd8ee9bf18ebda6e35e9a3b97b`; 28/28 hashes verified, GMP/GMPXX eight targets, `runtimeExecution=false`. |
-| TB30 runtime evidence | [run 39949886169](https://github.com/akashskypatel/Directional/actions/runs/39949886169), immutable result `12500088095` ZIP SHA-256 `bba928eb45957a29521a221ad093891de29f6a498c156691acc9c68b3a7308bf`; all 29 identities once, 22 PASS / 7 typed RED, 61/61 result hashes, no missing/skip/invalid/duplicates/unexpected PASS, no rebuild. Owning `Architecture_M6_CP3_TB30_Certificate_Association_Ownership_Verification_Report_20261023.md`. |
-| Unresolved first failures | Six `face-gauge-missing` (`selector:220,221,296,302,304,439`) and one `open-rail-chain` (`cp3entry:4`) remain inherited typed RED, no new stable regression or resolved causal assignment. |
-| TB31 independently reviewed evidence | [run 39959505758](https://github.com/akashskypatel/Directional/actions/runs/39959505758), result `12506242253`, ZIP SHA-256 `97828fac57a63b5d8ca85ef0e5fd35fb7d5ed71c2b2579cd463bacc20d5e947b`; 1,000/1,000 checksum entries and 497/497 raw logs verified. All 497 Review-owned manifest rows matched exact test/binary/expected outcome; exit 0, postflight true, no compile/relink/benchmark. Report `Architecture_M6_CP3_TB31_Selector_497_Census_Report_20261023.md`, RED inventory and RA-145 review retained. |
-| Accepted versus candidate | CP2 491/491 accepted. R3 403/497 rejected; TB28 462/497 superseded as candidate by TB31 472/497, **unaccepted**. Selector 497 byte-frozen; stable 66/17/49, debt 1; RP-01 open, RP-02 unreached, Gate C suspended. |
+| Currency | 2026-10-23, TB32 immutable 500-case result fully observed and independently log/hash audited; TB32-REV is next, with no runtime or gate promotion. |
+| Branch/source | `agent/surface_cell_quad/p5-recover-bridge-healing`, PR #8 draft/open. CB30 semantic `19267540081a4ff3a99826e3b9a766f1dbbded42`, compile artifact `12531891913` (28/28 hashes, eight GMP/GMPXX targets, `runtimeExecution=false`). |
+| TB32 candidate evidence | [run 40028643379](https://github.com/akashskypatel/Directional/actions/runs/40028643379), result artifact `12534679588`, outer ZIP SHA-256 `2c809e72489a69396c3c9e97e2a40ebb15f726de84a19b5610bb092fb9f85ddd`; 1,006/1,006 checksums, all 500 raw logs independently verified; 481 PASS / 19 inherited RED / 0 INVALID. Frozen 497 subset 478 PASS / 19 RED. [TB32 report](Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Verification_Report_20261023.md) and [residual inventory](Architecture_M6_CP3_TB32_Residual_Red_Inventory.tsv). |
+| Six resolved candidates | `selector:220,221,296,302,304,439` change RED→PASS and three new factory controls pass; no PASS→RED, no inherited first-site drift. This proves bounded synthetic factory behavior, **not** produced periodic topology, odd-transport/permutation or A6 invariance. |
+| Last reviewed evidence | TB31 [run 39959505758](https://github.com/akashskypatel/Directional/actions/runs/39959505758), 472/497 candidate-only independently reviewed in RA-145, 25 inherited RED; baseline for TB32 comparison. |
+| Accepted versus candidate | CP2 491/491 accepted; M6-CP3 unaccepted. R3 403/497 rejected; TB28 462/497, TB31 472/497, TB32 **478/497** are candidate counts. Frozen selector 497. Stable 66/17/49, debt 1; RP-01 open, RP-02 unreached, Gate C suspended. |
 
-## Mandatory next turn — `M6-CP3-TB32-RP01-PERIODIC-OWNER-FIXTURE-GAUGE-VERIFY` — EXACT NEXT
+## Mandatory next turn — `M6-CP3-TB32-RP01-PERIODIC-OWNER-FIXTURE-GAUGE-VERIFY-REV` — EXACT NEXT
 
-- **Type/owner:** immutable Test + Benchmark, artifact-only; no rebuild, configure, relink, benchmark, product/test/fixture/selector/source mutation. RA-147 independently accepted CB30 compile scope, not behavior.
-- **Exact package:** `19267540081a4ff3a99826e3b9a766f1dbbded42`; [run 40023541183](https://github.com/akashskypatel/Directional/actions/runs/40023541183), artifact `12531891913` ZIP SHA-256 `040b7b12e4b36fa78f2c5eae6465ddaadd2a1fbd8ee9bf18ebda6e35e9a3b97b`, 28/28 verified, eight GMP/GMPXX targets, `runtimeExecution=false`.
-- **Exact selected evidence:** `Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Case_Manifest.tsv` SHA-256 `597741409f06a80877cb8ae6f5fd2f92785de99a629a7d2c6453921858996437`, 500 unique one-execution identities: unchanged frozen 497 test names and IDs, six amended expected RED→PASS (`selector:220,221,296,302,304,439`), plus three distinct new factory controls. Anticipated **478/497 and 481/500 PASS** only; 19 inherited RED predicted, do not treat as measured.
-- **Falsifiers/STOP:** incorrect exact package, missing/skipped/duplicate/invalid test, wrong first typed site or unexpected verdict, changed immutable pre/post hash, actual PASS→RED, or failed new control. Publish raw individual logs and independent 500-row ledger. Stop for TB32-REV; do not repair, modify expectations or start other owners.
-- **Evidence/authority:** [RA-147 review](Architecture_M6_CP3_CB30_Periodic_Owner_Fixture_Gauge_Review_Decision_20261023.md) and [TB32 plan](Architecture_M6_CP3_TB32_Periodic_Owner_Gauge_Verification_Plan_20261023.md). CP2 491/491 accepted, TB31 472/497 candidate, stable 66/17/49 debt1, RP-01 open, RP-02 unreached. Synthetic owner-map fixture is not produced periodic/A6 proof.
+- **Type/owner:** independent Review of immutable TB32 artifact and primary log evidence; no runtime, compilation, relinking, source, fixture, selector or expected-verdict changes.
+- **Exact evidence:** semantic source `19267540081a4ff3a99826e3b9a766f1dbbded42`; [run 40028643379](https://github.com/akashskypatel/Directional/actions/runs/40028643379), artifact `12534679588`, ZIP SHA-256 `2c809e72489a69396c3c9e97e2a40ebb15f726de84a19b5610bb092fb9f85ddd`; 500 manifest `597741409f06a80877cb8ae6f5fd2f92785de99a629a7d2c6453921858996437`, verified 1,006/1,006 internal hashes, 481/500 PASS and 19 RED. Owning TB32 report/inventory above and RA-147 Review.
+- **Independent adjudication:** independently rederive exact 500 identity/name/binary/exit/raw-log outcomes; compare 497 with TB31, verify the six recovered original owner tests and three new controls are nonvacuous; audit all 19 unchanged RED typed first-sites. Resolve evidence scope and assign only independently authorized next owner. Preserve RA-146.2–4 and RA-45.4 limitations; synthetic factory passing cannot discharge produced periodic/A5/A6 topology or odd-transport/permutation obligations.
+- **Stop rules:** any independent artifact/manifest/hash/log mismatch, changed first failure, unexpected verdict, non-discriminating control, or unproved causal assignment must be recorded and reviewed; do not silently change frozen expectations, accepted gate or stable counts.
+- **Acceptance boundary:** Review may accept TB32 evidence, not promote CP3 without separate required produced witnesses. CP2 491/491 accepted, stable 66/17/49 debt1, RP-01 open / RP-02 unreached. Conditional successor after Review **UNKNOWN until independently assigned**; do not assume odd-transport or other owner implementation.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — next | `M6-CP3-TB32-RP01-PERIODIC-OWNER-FIXTURE-GAUGE-VERIFY` | Execute exactly 500 immutable cases, no rebuild/mutation |
-| 2 — conditional | `M6-CP3-TB32-RP01-PERIODIC-OWNER-FIXTURE-GAUGE-VERIFY-REV` | Independently review actual 500 outcomes, first failures and pre/postflight; no runtime |
+| 1 — next | `M6-CP3-TB32-RP01-PERIODIC-OWNER-FIXTURE-GAUGE-VERIFY-REV` | Independently assess exact TB32 evidence, no runtime |
+| 2 — conditional | `UNKNOWN` | Next owner depends on independent Review decision; do not assume successor |
 | 3 — separately planned | Odd-transport/permutation CB → TB → Review | Real odd A3 transport and unequal gauge, full row/corner remap, stale-vector/inverse negatives; new authorization required |
 | later — UNKNOWN | Remaining 19 RED owners → census → RP-01 Review | Cycle locus, untyped cases, A5, open-rail, selector442, DEFN-T1; A6 produced invariance separately retained |
 | deferred | DIAG-RETAIN, DEFN-SEAM-NZ and periodic follow-up | Existing separate gates retained |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **test-benchmark** — immutable CB30 compiled package, TB32 exact 500-case manifest and execution policy; no code/runtime change outside bounded TB.
+`load_next`: **review** — independently adjudicate TB32 500-case immutable result against TB31 and RA-147; no runtime execution.
 
 Minimum context after mandatory policies:
-0. ORIENTATION, ROADMAP, this handoff, TODO, RA-147 decision and TB32 plan/manifest.
-1. Immutable CB30 report `.agents/Directional/Architecture_M6_CP3_CB30_Periodic_Owner_Fixture_Gauge_Code_Build_Record_20261023.md` and [run 40023541183](https://github.com/akashskypatel/Directional/actions/runs/40023541183), artifact `12531891913` ZIP SHA-256 `040b7b12e4b36fa78f2c5eae6465ddaadd2a1fbd8ee9bf18ebda6e35e9a3b97b`; 28/28 hashes verified, GMP/GMPXX eight targets, `runtimeExecution=false`.
-2. TB32 500-row manifest (497 census plus three controls) with SHA-256 597741409f06a80877cb8ae6f5fd2f92785de99a629a7d2c6453921858996437; do not change identities, expected verdicts or source.
-3. Source A3 / factory gauge pin and RA-146.2–4 witness limitations; inspect outcomes only and preserve 19 inherited REDs.
-4. Frozen RA-45/RA-111 rules and RA-145/TB31 census evidence; no gate promotion.
+0. ORIENTATION, ROADMAP, this handoff, TODO, RA-147 decision and TB32 report/inventory.
+1. Immutable TB32 run 40028643379, result 12534679588, exact package 12531891913, TB32 manifest and frozen 497 selector.
+2. TB31 472/497 Review and RED inventory, RA-145 and RA-146.2–4 witness limitations, RA-45.4 produced A6 invariance.
+3. Regression tracker and frozen authority definitions; preserve stable counts and assign subsequent turn only after Review.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

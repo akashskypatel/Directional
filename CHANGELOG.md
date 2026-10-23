@@ -1,3 +1,9 @@
+## 2026-10-23 — TB32 immutable 500-case gauge verification (candidate; independent Review next)
+
+- Artifact-only [run 40028643379](https://github.com/akashskypatel/Directional/actions/runs/40028643379), CB30 compiled source `19267540081a4ff3a99826e3b9a766f1dbbded42`, result artifact `12534679588`, ZIP SHA-256 `2c809e72489a69396c3c9e97e2a40ebb15f726de84a19b5610bb092fb9f85ddd`; 1,006/1,006 checksums and 500/500 individual raw logs independently verified. No rebuild, relink, configuration, benchmark or case/selector mutation.
+- Measured **481/500 PASS, 19 inherited RED, 0 INVALID** (frozen 497: **478 PASS / 19 RED**). Six corrected owner tests `selector:220,221,296,302,304,439` moved RED→PASS and three new factory controls PASS; zero PASS→RED or inherited first typed-site changes. Candidate result, not M6-CP3 acceptance or proof of produced periodic/A5/A6 behavior.
+- Published TB32 report/residual inventory and next `M6-CP3-TB32-RP01-PERIODIC-OWNER-FIXTURE-GAUGE-VERIFY-REV`. CP2 accepted 491/491, stable 66/17/49 debt1; RP-01 open, RP-02 unreached, Gate C suspended. No subsequent owner work authorized this turn.
+
 ## 2026-10-23 — CB30 periodic-owner fixture gauge (Code + Build; independent Review next)
 
 ## 2026-10-23 — RA-147 CB30 periodic-owner gauge static review
