@@ -1,4 +1,4 @@
-## CURRENT — RA-137 resolves the TB29 block: Review-owned manifest; reusable harness TB29H, then TB29 (2026-10-23)
+## CURRENT — RA-138 rejects TB29H runtime release; RP02 harness correction before TB29 (2026-10-23)
 
 - [x] Design review (RA-137):
   - TB29 stopped correctly (the plan required a separately authorized harness);
@@ -14,14 +14,15 @@
   6. `--self-check`.
 
   Validated with `bash -n`, `py_compile`, and `--self-check` (44 manifest cases PASS; duplicate and unknown-kind copies rejected). Record `Architecture_M6_CP3_TB29H_Targeted_Harness_Code_Build_Record_20261023.md`.
-- [ ] **EXACT NEXT:** `M6-CP3-TB29H-RP01-TARGETED-ARTIFACT-HARNESS-REV` — Review: static harness review; releases TB29.
+- [x] **REVIEWED / REJECTED:** `M6-CP3-TB29H-RP01-TARGETED-ARTIFACT-HARNESS-REV` (RA-138): timeout/crash can masquerade as RED; count self-check undercommits; A5 diagnostics truncate hyphenated reasons.
+- [ ] **EXACT NEXT:** `M6-CP3-TB29H-RP02-TARGETED-ARTIFACT-HARNESS-CORRECTION` — control-plane harness-only H1–H3 correction, static probes, no binaries/build. Mandatory independent RP02-REV before releasing TB29.
 - [ ] Planned, not authorized: `M6-CP3-TB29-RP01-TYPED-FACTORY-CAUSE-HARVEST` (resumed: harness `m6_cp3_targeted_artifact_harness.sh` at its reviewed SHA + manifest `Architecture_M6_CP3_TB29_Targeted_Case_Manifest.tsv` on CB28A package `12465330920`, which expires 2026-10-29T22:54:39Z) → TB29-REV → DEFN-M1 (scoped from measured factory clauses) → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up (RA-130.7) only after a witness.
 - [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
   - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
   - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
   - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
   - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
-- **Turn sequence:** CB28 → CB28-REV (RA-136) → CB28A → CB28A-REV → TB29 [BLOCKED] → design review (RA-137) → **TB29H** → TB29H-REV → TB29 (resumed) → TB29-REV → DEFN-M1 → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+- **Turn sequence:** CB28 → CB28-REV (RA-136) → CB28A → CB28A-REV → TB29 [BLOCKED] → design review (RA-137) → TB29H → TB29H-REV (RA-138 REJECT) → **TB29H-RP02** → RP02-REV → TB29 (resumed) → TB29-REV → DEFN-M1 → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
 - Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB28 462/497 **candidate only**; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
 
 ---

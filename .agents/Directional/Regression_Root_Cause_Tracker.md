@@ -1,3 +1,7 @@
+## RA-138 — TB29H harness runtime authorization rejected (2026-10-23)
+
+**Candidate/non-stable control-plane evidence defect, not a product regression.** RA-138-H1: timeout/crash with one `[ RUN ]` is misclassified `RED`, which can produce successful harness exit for a RED-kind case without a terminal GoogleTest result. RA-138-H2: one-row self-check passes despite RA-137 required count check. RA-138-H3: A5 hyphenated reasons are truncated. Owner: `M6-CP3-TB29H-RP02-TARGETED-ARTIFACT-HARNESS-CORRECTION`, independent RP02-REV. Falsifiers: timeout/crash/truncated RED => INVALID + nonzero; declared case count enforced for 44 and future manifests; full A5 code/site preserved. **Forbidden:** TB29 execution or attribution of typed causes from this unaccepted harness, changing frozen manifest/selector or product tests. Accepted 66/17/49, debt 1, CP2 491/491, TB28 462/497 candidate unchanged. Review: `Architecture_M6_CP3_TB29H_Targeted_Harness_Review_Decision_20261023.md`.
+
 ## RA-137 — TB29 block resolved (2026-10-23)
 
 TB29 stopped before any execution because no authorized 44-identity harness existed. Review now owns the case manifest (`Architecture_M6_CP3_TB29_Targeted_Case_Manifest.tsv`, 44 rows); TB29H builds one reusable input-driven harness, then TB29 resumes on the CB28A package. Guard trio corrected to RA-130.9's. No count changes. Record: `Architecture_M6_CP3_TB29_Harness_Authorization_Design_Review_Decision_20261023.md`.
