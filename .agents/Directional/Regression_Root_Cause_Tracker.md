@@ -1,3 +1,7 @@
+## RA-140 — audit of the RP02 harness review (2026-10-23)
+
+Harness acceptance upheld and validated on real GoogleTest logs (TB28 35/35 RED, TB27 21/21 PASS). TB29 is released with complete inputs and must run before 2026-10-29T22:54:39Z. No count changes. Record: `Architecture_M6_CP3_TB29H_RP02_Review_Audit_Decision_20261023.md`.
+
 ## TB29H RP02-REV — targeted harness static review accepted (2026-10-23)
 
 Independent static review discharged RA-138-H1–H3 and RA-139-H4–H6 for TB29-specific harness use: exact SHA `436f5fff9c3b`, 12/12 built-in synthetic cases, 44-case manifest and four independent invalid manifests. **Not a product regression or runtime promotion.** RA-139.5 remains open: the separate 497-case census harness still treats abnormal termination as semantic RED and must be replaced or independently corrected before the next full census. Owner: the Review that schedules that census. Falsifier: any crash, timeout, missing terminal result or multi-run accepted as a completed RED. Forbidden: performing the next census on unreviewed unsafe classifier or treating TB29 focused cases as CP3 acceptance. Stable 66/17/49, debt 1, CP2 491/491, TB28 462/497 candidate unchanged. See `Architecture_M6_CP3_TB29H_RP02_Harness_Correction_Review_Decision_20261023.md`.

@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-23 · independent TB29H-RP02-REV accepted corrected harness H1–H6 for static use (`436f5fff9c3b`; 12/12 synthetic, 44-case and four manifest negatives). TB29 artifact-only typed-cause harvest is next, not yet executed; CB28A package expires 2026-10-29. Accepted CP2 491/491; TB28 462/497 candidate; stable 66/17/49, debt 1; RP-01 open and RP-02 unreached.
+**Currency:** 2026-10-23 · RA-140 upholds the corrected test runner and validates it on real logs (35/35 known failures, 21/21 known passes classified correctly). TB29, the 44-test typed-cause run, is released with complete inputs and must run before the package expires on 2026-10-29. Then TB29-REV scopes DEFN-M1 from measured causes. Accepted CP2 491/491; TB28 462/497 candidate; stable 66/17/49, debt 1; RP-01 open and RP-02 unreached.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 

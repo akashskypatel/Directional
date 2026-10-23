@@ -1,3 +1,14 @@
+## RA-140 — Audit of the RP02 harness review: upheld; validated on real logs; TB29 inputs completed (2026-10-23)
+
+Authority: `Architecture_M6_CP3_TB29H_RP02_Review_Audit_Decision_20261023.md`.
+
+- **RA-140.1** Harness `436f5fff…c9a` reproduced: `bash -n`, `--self-test` 12/12, `--self-check` 44; H1–H6 present.
+- **RA-140.2** On real logs: TB28 35/35 RED → RED, TB27 21/21 PASS → PASS; first failure found in 35/35. H4 is verified statically only.
+- **RA-140.3** TB29 inputs: package `12465330920`; source `4473e41e9…`; ZIP `da56650a…dfbf5`; root manifest `e6149577b0bb240efadd4bc47638ffd3b1441d6f99664542fa66b368df35454b`; source archive `d06d8484b98ffedfb38d99ebf38deee960d170e7d7fa3011f51453249e61371e`; manifest `39fa5eb8…d236`; count 44.
+- **RA-140.4** TB29-REV decides: DEFN-M1 scope by factory code and site (RA-105.3 clause only); the A3 route rows; `focused30:12`.
+- **RA-140.5** TB29 → REV → DEFN-M1 → REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+
+---
 ## RA-139 — Audit of the TB29H review (RA-138): H1–H3 upheld; H4–H6 added; self-test and count gate (2026-10-23)
 
 Authority: `Architecture_M6_CP3_TB29H_Review_Audit_Decision_20261023.md`; reviewed `Architecture_M6_CP3_TB29H_Targeted_Harness_Review_Decision_20261023.md` (RA-138).

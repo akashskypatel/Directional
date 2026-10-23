@@ -34,7 +34,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 | Field | Exact value / evidence owner |
 |---|---|
-| Currency | 2026-10-23, after independent TB29H-RP02-REV accepted static H1–H6 evidence for harness `436f5fff9c3b` and released TB29 as a separate artifact-only successor. RA-138's H1–H3 and the TB29 hold are upheld. Added: H4 (on timeout, kill the whole process group, or the test keeps writing to its hashed log), H5 (timing output to a separate file, as the census harness does) and H6 (read the reason only from the first failure block). The probes become a built-in `--self-test`, and a count gate is added. The census harness has the same RED/INVALID flaw (carried). The GMP preflight was verified sound (`DT_NEEDED`). |
+| Currency | 2026-10-23, after the audit of the RP02 harness review (RA-140). The harness acceptance is upheld. The harness's own classifier and extractors were run over **real** GoogleTest logs: 35/35 TB28 REDs → RED, 21/21 TB27 PASSes → PASS, a first failure found in 35/35. The timeout kill path is still verified only by reading the code. TB29's missing root-manifest and source-archive hashes were derived from the package. TB29 is released and must run before 2026-10-29T22:54:39Z. |
 | Working branch / HEAD | `agent/surface_cell_quad/p5-recover-bridge-healing`; PR #8 draft/open. Exact CB28A semantic commit `4473e41e94a35f1bf189fa046e86bac92c7391fb`, GMP/GMPXX package `12465330920` (run `39867988763`), outer ZIP SHA-256 `da56650a18f99443abf5f721620bb00fd5701dd1e660741da9aafb924a6dfbf5`; branch head includes subsequent dispatcher/documentation commits. |
 | Last accepted semantic runtime | CP2 **491/491**, package `11391685901`, semantic `5ce3132ec01748eff5b15f82be07a1abe2bd1af6`. R3 **403/497** rejected. |
 | Latest candidate evidence | RA-133-reviewed TB28 [run 39772864202](https://github.com/akashskypatel/Directional/actions/runs/39772864202), result artifact **`12424484672`**, ZIP SHA-256 `a54110dbb5475b76e6b6a6baa8fc1b7dcabd7aa50c95c5b390532509d1c656e6`; 1019/1019 manifest, 497/497 executed, **462 PASS/35 RED**, 13 RED→PASS and no PASS→RED vs TB21 449/48. Owning report `Architecture_M6_CP3_TB28_Selector_497_Census_Report_20261022.md`; TSV inventory and full ledger. **Not promoted.** |
@@ -43,35 +43,53 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Mandatory next turn — `M6-CP3-TB29-RP01-TYPED-FACTORY-CAUSE-HARVEST` — EXACT NEXT
 
-- **Type / boundary:** artifact-only Test + Benchmark (TB29), separate from completed independent RP02-REV; no source, test, fixture, selector, manifest, workflow or compile mutation, and no rebuild, relink or package repair.
-- **Static release authority:** accepted Review `Architecture_M6_CP3_TB29H_RP02_Harness_Correction_Review_Decision_20261023.md`: H1–H6, 12/12 synthetic cases, frozen 44-row self-check and four negatives independently passed. Harness `.agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh` SHA-256 `436f5fff9c3bec97457f4bc6b7c2b6182cb3f47707eb14a66af3b6a3f3dc3c9a`; manifest SHA-256 `39fa5eb83e2da1b0668bc7368c5304011ec13de8804c54a2a3466f927c42d236`; execute-time `EXPECTED_CASE_COUNT=44` mandatory.
-- **Exact executor evidence:** semantic source `4473e41e94a35f1bf189fa046e86bac92c7391fb`, CB28A artifact `12465330920`, outer ZIP SHA-256 `da56650a18f99443abf5f721620bb00fd5701dd1e660741da9aafb924a6dfbf5`, expires `2026-10-29T22:54:39Z`. Plan: `Architecture_M6_CP3_TB29_Typed_Factory_Cause_Harvest_Plan_20261022.md` (four A7 negatives, two D3/D7 positives, three A7 guards, 35 inherited TB28 REDs). Verify exact package and binaries before execution.
-- **Stop/falsifiers:** any missing/duplicate or mismatched identity, invalid source/package/harness SHA, control failure or unexpected A7 site, absent typed reason on the specified assertion, partial/invalid execution or a need to rebuild; retain evidence and route to independent Review. If artifact expires, Review-authorized recompile-only CB of exact `4473e41e9` precedes TB29; never substitute a new package autonomously.
-- **After TB29:** independent `M6-CP3-TB29-RP01-TYPED-FACTORY-CAUSE-HARVEST-REV` conditional on an immutable complete TB29 report; no CP3 promotion based on the targeted run. RA-139.5 unsafe 497 census-harness classifier remains an obligation for the later census.
+- **Type / owner:** Test + Benchmark, artifact-only; implementation agent. Authority: the RP02 review (`Architecture_M6_CP3_TB29H_RP02_Harness_Correction_Review_Decision_20261023.md`), with its inputs completed by RA-140.3 (`Architecture_M6_CP3_TB29H_RP02_Review_Audit_Decision_20261023.md`); the plan is `Architecture_M6_CP3_TB29_Typed_Factory_Cause_Harvest_Plan_20261022.md`, with the guard trio per RA-137.1.
+- **Objective:** run the 44 reviewed cases on the CB28A package and record a typed first-failure reason for every RED.
+- **Read before work:** RA-140; the TB29 plan; RA-137.2 (manifest); RA-139.3 (verdict rule); the harness's `--self-test` and `--self-check` usage.
+- **In scope:** dispatch `.agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh` (SHA-256 `436f5fff9c3bec97457f4bc6b7c2b6182cb3f47707eb14a66af3b6a3f3dc3c9a`) through `agent-test-benchmark-reusable.yml`, with `harness_env`:
+  - `CANDIDATE_ARTIFACT_ID=12465330920`;
+  - `EXPECTED_SOURCE_SHA=4473e41e94a35f1bf189fa046e86bac92c7391fb`;
+  - `EXPECTED_CANDIDATE_ZIP_SHA256=da56650a18f99443abf5f721620bb00fd5701dd1e660741da9aafb924a6dfbf5`;
+  - `EXPECTED_ROOT_MANIFEST_SHA256=e6149577b0bb240efadd4bc47638ffd3b1441d6f99664542fa66b368df35454b`;
+  - `EXPECTED_SOURCE_ARCHIVE_SHA256=d06d8484b98ffedfb38d99ebf38deee960d170e7d7fa3011f51453249e61371e`;
+  - `CASE_MANIFEST=.agents/Directional/Architecture_M6_CP3_TB29_Targeted_Case_Manifest.tsv`;
+  - `CASE_MANIFEST_SHA256=39fa5eb83e2da1b0668bc7368c5304011ec13de8804c54a2a3466f927c42d236`;
+  - `EXPECTED_CASE_COUNT=44`.
 
-## Completed latest turn — TB29H RP02 (2026-10-23)
-
-- [x] Harness-only correction H1–H6, `--self-test` and count gate applied at `813d377ed5dec911766d18c2568d438121fb592d`; `bash -n`, `py_compile`, 12/12 synthetic and all count/negative manifest checks passed. No product binary executed. Record: `Architecture_M6_CP3_TB29H_RP02_Harness_Correction_Code_Build_Record_20261023.md`. Independent Review is still mandatory.
+  Then write `Architecture_M6_CP3_TB29_Typed_Factory_Cause_Harvest_Report_20261023.md` with:
+  - all 44 verdicts;
+  - the 9 controls;
+  - every RED's `typed_reason` and first failure;
+  - the 35 REDs grouped by first failing component and typed reason (counts sum to 35);
+  - `unexpected_pass` and `INVALID` rows listed.
+- **Out of scope:** any source, test, harness, manifest, selector or workflow change; compile, relink or benchmarks; classifying causes beyond the observed text; promotion.
+- **Success evidence:**
+  - harness exit 0 (44 executed, `missing=0`, `control_bad=0`);
+  - the result artifact's `SHA256SUMS` verified;
+  - the report committed;
+  - STATUS COMPLETE.
+- **On success:** `M6-CP3-TB29-RP01-TYPED-FACTORY-CAUSE-HARVEST-REV` (Review, mandatory): decides DEFN-M1 scope and the A3 and `focused30:12` dispositions (RA-140.4).
+- **On failure/blocker:** STOP and record the evidence. Return to Review on any `control_bad`, `INVALID`, hash mismatch or package expiry. No reruns after runtime has started, and no fixes.
 
 ## Turn Sequence
 
 | Step | Canonical turn | Condition / boundary |
 |---|---|---|
-| 1 — next | `M6-CP3-TB29-RP01-TYPED-FACTORY-CAUSE-HARVEST` | Artifact-only 44-identity typed cause harvest on exact CB28A package and reviewed H1–H6 harness; no compile or mutation. |
-| 2 — conditional | `M6-CP3-TB29-RP01-TYPED-FACTORY-CAUSE-HARVEST-REV` | Independent runtime evidence review only after TB29 completes. |
-| later — UNKNOWN until assigned | `M6-CP3-TB29-RP01-TYPED-FACTORY-CAUSE-HARVEST` (resumed: corrected harness at its reviewed SHA + `Architecture_M6_CP3_TB29_Targeted_Case_Manifest.tsv` + `EXPECTED_CASE_COUNT=44` on CB28A package `12465330920`, which expires 2026-10-29T22:54:39Z; recompile-only CB of `4473e41e9` if it lapses) → TB29-REV → DEFN-M1 → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census (needs an RA-139.3-compliant harness, RA-139.5) → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up only after a witness | Planned, not authorized; each Review assigns the next edge. |
+| 1 — next | `M6-CP3-TB29-RP01-TYPED-FACTORY-CAUSE-HARVEST` | Artifact-only, 44 cases on CB28A package `12465330920` (expires 2026-10-29T22:54:39Z), harness `436f5fff…c9a`, inputs per RA-140.3. |
+| 2 — conditional | `M6-CP3-TB29-RP01-TYPED-FACTORY-CAUSE-HARVEST-REV` | Review, only after step 1 completes: typed-cause adjudication; scopes DEFN-M1 (RA-140.4). |
+| later — UNKNOWN until assigned | DEFN-M1 (scoped from measured factory clauses, RA-140.4) → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census (needs an RA-139.3-compliant harness, RA-139.5) → RP-01 Review; recompile-only CB of `4473e41e9` if package `12465330920` lapses before TB29; `DEFN-SEAM-NZ` and the Periodic follow-up only after a witness | Planned, not authorized; each Review assigns the next edge. |
 | later — UNKNOWN until assigned | `DIAG-RETAIN` (user-directed): retain A5 occurrences and relations, A6 merged classes and A7 vertex geometry as diagnostic snapshots for GUI/CLI; scope in `TODO.md` | Planned, not authorized; Review places it in the sequence clear of RP-01 turns. |
 
 ## Context Load Plan - DURABLE, DO NOT DELETE
 
-`load_next`: **artifact-only TB29** — `M6-CP3-TB29-RP01-TYPED-FACTORY-CAUSE-HARVEST`; exact case manifest/harness/source package; no compile or source mutation.
+`load_next`: **test-benchmark** — TB29: artifact-only 44-case harvest with the reviewed harness and the RA-140.3 inputs; no build.
 
 Minimum successor context **after the mandatory start checklist and policies**:
 
 0. `.agents/Directional/ORIENTATION.md` — project context, read first.
 1. `.agents/Directional/ROADMAP.md` — milestone position only.
 2. `.agents/Directional/Future_Chat_Session_Handoff.md` — exact current handoff.
-3. `Architecture_M6_CP3_TB29H_RP02_Harness_Correction_Review_Decision_20261023.md` (accepted H1–H6 static evidence and runtime release); `Architecture_M6_CP3_TB29_Typed_Factory_Cause_Harvest_Plan_20261022.md` (exact runtime gate); `Architecture_M6_CP3_TB29H_Review_Audit_Decision_20261023.md` (RA-139: audit, H4–H6, RA-139.3 classifier, RA-139.4 self-test, census-harness obligation); `Architecture_M6_CP3_TB29H_Targeted_Harness_Review_Decision_20261023.md` (RA-138 H1–H3); `Architecture_M6_CP3_TB29_Harness_Authorization_Design_Review_Decision_20261023.md` (RA-137.3); `Architecture_M6_CP3_TB29_Targeted_Case_Manifest.tsv`; corrected harness at SHA `436f5fff9c3b` and its RP02 code-build record.
+3. `Architecture_M6_CP3_TB29H_RP02_Review_Audit_Decision_20261023.md` (RA-140: real-log validation, complete TB29 inputs, pre-registered TB29-REV decisions); `Architecture_M6_CP3_TB29H_RP02_Harness_Correction_Review_Decision_20261023.md`; `Architecture_M6_CP3_TB29_Typed_Factory_Cause_Harvest_Plan_20261022.md`; `Architecture_M6_CP3_TB29_Targeted_Case_Manifest.tsv`.
 4. `.agents/Directional/Regression_Root_Cause_Tracker.md` and `TODO.md` — unresolved issues and scope; required policy readings still govern.
 
 **Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py authority <sha>` and

@@ -1,4 +1,24 @@
-## CURRENT — TB29H RP02 harness correction committed; independent Review next (2026-10-23)
+## CURRENT — RA-140 audit: RP02 harness validated on real logs; TB29 released with complete inputs (2026-10-23)
+
+- [x] Audit (RA-140) of the RP02 harness review:
+  - reproduced the harness SHA `436f5fff…c9a`, `bash -n`, `--self-test` (12/12) and `--self-check` (44);
+  - **new evidence:** the harness's own classifier and extractors on real logs give TB28 35/35 RED → RED and TB27 21/21 PASS → PASS, with a first failure found in 35/35;
+  - TB29's missing root-manifest (`e6149577…454b`) and source-archive (`d06d8484…371e`) hashes derived from the package;
+  - TB29-REV's decisions pre-registered (M1 scope by factory clause; A3 route; `focused30:12`). Record: `Architecture_M6_CP3_TB29H_RP02_Review_Audit_Decision_20261023.md`.
+- [ ] **EXACT NEXT:** `M6-CP3-TB29-RP01-TYPED-FACTORY-CAUSE-HARVEST` — artifact-only; harness `436f5fff…c9a`; manifest `39fa5eb8…d236`; `EXPECTED_CASE_COUNT=44`; CB28A package `12465330920` (full inputs in the handoff; **expires 2026-10-29T22:54:39Z**). Report `Architecture_M6_CP3_TB29_Typed_Factory_Cause_Harvest_Report_20261023.md` with all 44 verdicts, typed reasons and a 35-row attribution table. STOP on `control_bad`, `INVALID` or a hash mismatch.
+- [ ] **CONDITIONAL:** `M6-CP3-TB29-RP01-TYPED-FACTORY-CAUSE-HARVEST-REV` — Review: typed-cause adjudication; scopes DEFN-M1.
+- [ ] Planned, not authorized: DEFN-M1 (scoped from measured factory clauses, RA-140.4) → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census (needs an RA-139.3-compliant harness, RA-139.5) → RP-01 Review; recompile-only CB of `4473e41e9` if package `12465330920` lapses before TB29; `DEFN-SEAM-NZ` and the Periodic follow-up only after a witness.
+- [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
+  - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
+  - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
+  - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
+  - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
+- **Turn sequence:** TB29H-REV (RA-138) → audit (RA-139) → TB29H-RP02 → RP02-REV → audit (RA-140) → **TB29** → TB29-REV → DEFN-M1 → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
+- Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB28 462/497 **candidate only**; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
+
+---
+
+## HISTORY — TB29H-RP02 built and reviewed; RA-140 audit (2026-10-23)
 
 - [x] Audit (RA-139) of the TB29H review (RA-138):
   - H1–H3 confirmed at the cited lines;
@@ -9,13 +29,8 @@
   - **carried:** the census harness classifies crashes as RED (lines 311–312), so the next census needs an RA-139.3-compliant harness. Record: `Architecture_M6_CP3_TB29H_Review_Audit_Decision_20261023.md`.
 - [x] **TB29H RP02 harness correction:** H1–H6, count gate and built-in 12-case self-test landed in `813d377ed5dec911766d18c2568d438121fb592d`. Verified shell syntax, Python compile, 12/12 synthetic cases, 44 manifest entries and 4/4 negative manifest copies. No Directional binaries executed. Record: `Architecture_M6_CP3_TB29H_RP02_Harness_Correction_Code_Build_Record_20261023.md`.
 - [x] **RP02-REV accepted (static only):** `M6-CP3-TB29H-RP02-TARGETED-ARTIFACT-HARNESS-CORRECTION-REV` independently rehashed source/manifest, reran `bash -n`, embedded `py_compile`, 12 synthetic cases, 44-row and four negative manifest checks; H1–H6 accepted without Directional runtime. Review: `Architecture_M6_CP3_TB29H_RP02_Harness_Correction_Review_Decision_20261023.md`.
-- [ ] **EXACT NEXT:** `M6-CP3-TB29-RP01-TYPED-FACTORY-CAUSE-HARVEST` — resume 44-case artifact-only TB29 on exact CB28A package with reviewed harness SHA and `EXPECTED_CASE_COUNT=44`; immutable package expires 2026-10-29T22:54:39Z; follow original typed-cause plan and stop rules.
-- [ ] Planned, not authorized: `M6-CP3-TB29-RP01-TYPED-FACTORY-CAUSE-HARVEST` (resumed: corrected harness at its reviewed SHA + `Architecture_M6_CP3_TB29_Targeted_Case_Manifest.tsv` + `EXPECTED_CASE_COUNT=44` on CB28A package `12465330920`, which expires 2026-10-29T22:54:39Z; recompile-only CB of `4473e41e9` if it lapses) → TB29-REV → DEFN-M1 → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census (needs an RA-139.3-compliant harness, RA-139.5) → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up only after a witness.
-- [ ] **Planned (user-directed, 2026-10-21; Review schedules it) — `DIAG-RETAIN`: keep A5–A7 products as diagnostic snapshots.**
-  - Retain the A5 corner occurrences (support, placement, wedge bindings), the A5 occurrence relations (kind, endpoints, evidence), the A6 merged quotient classes and the A7 final vertex geometry in `SurfaceCellDiagnosticProductSnapshots` whenever `retainIntermediateGeometry` is set, including every product completed before a rejection.
-  - Make them reachable from the GUI (display layers) and the CLI (a diagnostics dump) in those diagnostic contexts.
-  - Constraints: one-way observations under the existing snapshot contract, never read back as stage authority; no admission, return-value or ordering change; bounded memory; nothing retained when retention is off.
-  - Suggested turns: DEFN (snapshot types, retention point per stage, behaviour on rejection, memory bound) → one CB+TB per product (A5 occurrences and relations; A6 classes; A7 geometry), each with a no-read-back test → CLI dump → GUI layers. It edits `RemeshPipeline.cpp`, so Review must sequence it clear of RP-01 diagnostic and corrective turns.
+- The RP02 review released `M6-CP3-TB29-RP01-TYPED-FACTORY-CAUSE-HARVEST` — resume 44-case artifact-only TB29 on exact CB28A package with reviewed harness SHA and `EXPECTED_CASE_COUNT=44`; immutable package expires 2026-10-29T22:54:39Z; follow original typed-cause plan and stop rules.
+- Planned, not authorized: `M6-CP3-TB29-RP01-TYPED-FACTORY-CAUSE-HARVEST` (resumed: corrected harness at its reviewed SHA + `Architecture_M6_CP3_TB29_Targeted_Case_Manifest.tsv` + `EXPECTED_CASE_COUNT=44` on CB28A package `12465330920`, which expires 2026-10-29T22:54:39Z; recompile-only CB of `4473e41e9` if it lapses) → TB29-REV → DEFN-M1 → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census (needs an RA-139.3-compliant harness, RA-139.5) → RP-01 Review; `DEFN-SEAM-NZ` and the Periodic follow-up only after a witness.
 - **Turn sequence:** TB29 [BLOCKED] → design review (RA-137) → TB29H → TB29H-REV (RA-138) → audit (RA-139) → TB29H-RP02 [done] → **RP02-REV** [done] → **TB29 (resumed; next)** → TB29-REV → DEFN-M1 → DEFN-M1-REV → corrective CB/TB → DEFN-T1 → fixture debt → census → RP-01 Review.
 - Frozen: stable 66/17/49, debt 1, CP2 491/491; R3 403/497 rejected; TB28 462/497 **candidate only**; selector 497 frozen. RP-01 open, RP-02 UNREACHED, Gate C suspended.
 

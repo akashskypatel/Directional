@@ -1,3 +1,9 @@
+## 2026-10-23 — Audit of the RP02 runner review (RA-140): validated on real logs; TB29 released
+
+- The corrected test runner was previously checked only against made-up logs. This audit ran its classification code over real logs from earlier runs: all 35 known failures were classified as failures and all 21 known passes as passes.
+- Two package fingerprints that the next run needs were missing from the docs; they were computed from the package itself.
+- Next: TB29, the 44-test run. It must happen before the package expires on 2026-10-29. Accounting unchanged. Record: `Architecture_M6_CP3_TB29H_RP02_Review_Audit_Decision_20261023.md`.
+
 ## 2026-10-23 — TB29H RP02 independent harness review accepted
 
 - Re-verified corrected harness `436f5fff9c3b` against RA-138/139: `bash -n`, embedded Python compile, built-in 12/12 synthetic cases, 44-row manifest and four independent rejected manifest variants. Source snapshot and correction changed-file scope independently verified. No Directional binary executed; no accepted CP3 promotion. TB29 44-case artifact-only typed-cause harvest is now separately authorized on unexpired CB28A package `12465330920`. RA-139.5 census-harness issue carried. Review: `Architecture_M6_CP3_TB29H_RP02_Harness_Correction_Review_Decision_20261023.md`.
