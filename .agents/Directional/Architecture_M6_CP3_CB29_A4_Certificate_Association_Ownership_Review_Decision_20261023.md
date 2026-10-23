@@ -18,6 +18,17 @@
 
 **Falsify if** an M1 member is RED or rejects with non-frozen code; any control/authenticity guard RED; a non-M1 factory row changes its observed typed first reason (`face-gauge-missing` for six, `open-rail-chain` for `cp3entry:4`); any package/hash/source mismatch, unexpected PASS, invalid/zero-selected test or unbounded full suite. Do not treat expected RED as a regression. Require independent TB30-REV before next definition/implementation or selector promotion.
 
+## History-sensitive boundary verification (2026-10-23 continuation)
+
+The local `review_check.py boundary` was executed against the source-snapshot synthetic Git repository and **did not pass** because that synthetic history omits rewrite commit `8b7299b43764a6ba3444e5bc774a2f1b65e99731`. This is not a claim of a local history-aware script PASS. To adjudicate the failed history portion independently, the actual GitHub commit and file APIs were used, starting at the verified rewrite baseline (2026-10-17T00:59:26Z), with commit-by-commit file-specific additions/deletions checked against exact baseline and current contents.
+
+- `CHANGELOG.md`: all 127 path-changing revisions inspected, **0 negative line deltas**, cumulative +2031; baseline 2134 lines, committed head 4165 (exact reconciliation).
+- `.agents/Directional/LESSONS.md`: all 16 path-changing revisions inspected, **0 negative line deltas**, cumulative +58; baseline 325 lines, committed head 383 (exact reconciliation).
+- The three rewrite-protected documents retain all baseline headings: handoff 4/4, orientation 1/1, regression tracker 0/0. The baseline is an ancestor of the reviewed head by GitHub comparison.
+- Exact remote compare from compiled semantic source `2602e7398cdc6f1281abe11a758de35166b6590c` through this review's committed docs/status head found no changed production, test, fixture, build, or selector path. The local source snapshot staged only the seven intended documentation files. The verified Google Drive workflow applied exactly those seven paths; its staging object was retired.
+
+**Qualification:** This is a remote-authoritative re-derivation of the history-dependent boundary and ledger predicates, **not** a successful execution of the exact helper against a complete local Git history. The synthetic checkout cannot independently establish `git status -sb` origin synchronization; exact remote PR head/commit and changed-path authority were checked via the GitHub connector instead. These tooling substitutions do not promote any runtime result or relax TB30's falsifiers.
+
 ## Review closeout
 
 | Duty | Answer |
@@ -37,6 +48,6 @@
 | Consolidation under CLEAN_UP_POLICY | n/a: CB29 active record and predecessor evidence retained for pending TB30/REV. |
 | Successor frozen | TB30 ID above, exact source/package/harness/manifest/count/falsifiers here. |
 | Turn boundary held | No product/test/selector/build/workflow changes and no Directional runtime execution in Review. |
-| review_check.py boundary | Local snapshot-only synthetic-git check is not actual repository-history proof; exact commit scope independently checked with GitHub diff/compare. |
+| review_check.py boundary | Synthetic-history command FAIL (rewrite baseline absent); independent real-GitHub commit-by-commit remote verification above passes corresponding history and no-code/selector-drift predicates. No literal script PASS claimed. |
 | `STATUS` lifecycle maintained | Entry/resume beacon updated; final beacon written last. |
 | Pushed to origin, branch in sync | Verified remote application is a post-record closeout duty; this record must not infer branch synchronization from a synthetic local source snapshot. |
