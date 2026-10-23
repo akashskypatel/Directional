@@ -1,3 +1,7 @@
+## TB29H RP02-REV — targeted harness static review accepted (2026-10-23)
+
+Independent static review discharged RA-138-H1–H3 and RA-139-H4–H6 for TB29-specific harness use: exact SHA `436f5fff9c3b`, 12/12 built-in synthetic cases, 44-case manifest and four independent invalid manifests. **Not a product regression or runtime promotion.** RA-139.5 remains open: the separate 497-case census harness still treats abnormal termination as semantic RED and must be replaced or independently corrected before the next full census. Owner: the Review that schedules that census. Falsifier: any crash, timeout, missing terminal result or multi-run accepted as a completed RED. Forbidden: performing the next census on unreviewed unsafe classifier or treating TB29 focused cases as CP3 acceptance. Stable 66/17/49, debt 1, CP2 491/491, TB28 462/497 candidate unchanged. See `Architecture_M6_CP3_TB29H_RP02_Harness_Correction_Review_Decision_20261023.md`.
+
 ## RA-139 — audit of the TB29H review (2026-10-23)
 
 RA-138's H1–H3 upheld. Added three harness defects:

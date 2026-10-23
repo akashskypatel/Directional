@@ -1,3 +1,7 @@
+## 2026-10-23 — TB29H RP02 independent harness review accepted
+
+- Re-verified corrected harness `436f5fff9c3b` against RA-138/139: `bash -n`, embedded Python compile, built-in 12/12 synthetic cases, 44-row manifest and four independent rejected manifest variants. Source snapshot and correction changed-file scope independently verified. No Directional binary executed; no accepted CP3 promotion. TB29 44-case artifact-only typed-cause harvest is now separately authorized on unexpired CB28A package `12465330920`. RA-139.5 census-harness issue carried. Review: `Architecture_M6_CP3_TB29H_RP02_Harness_Correction_Review_Decision_20261023.md`.
+
 ## 2026-10-23 — TB29H RP02 harness correction (control-plane only)
 
 - Corrected reusable 44-case artifact harness H1–H6: terminal outcome classification, expected row count, A5 causes, timeout process-group reaping, separate resource files and scoped failure extraction. Built-in 12-case self-test and manifest negative checks passed; source commit `813d377e`, SHA-256 `436f5fff9c3b`; no Directional binary or benchmark. Independent RP02-REV is next; TB29 remains held. See `Architecture_M6_CP3_TB29H_RP02_Harness_Correction_Code_Build_Record_20261023.md`.
