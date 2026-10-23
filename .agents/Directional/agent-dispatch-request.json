@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb29-doc-closeout-20261023-01",
+  "request_id": "m6-cp3-cb29-doc-closeout-20261023-02",
   "operation": "drive_apply",
   "mailbox_key": "m6-cp3-cb29-doc-closeout",
-  "file_id": "1--zgNXjbxuh51HmCMaYSH1WrKZV_AYmH",
-  "patch_sha256": "e58f96ce54a12346a36bd5d59f13d8e438548198dbc3139416b15ec4ca5ab0fc",
+  "file_id": "1BklE12RD9dJcLUXe4XGKefMO-koB3skd",
+  "patch_sha256": "ab2e7ae5f7b19b0dd3ab8ba234e4093974e188b782ff9663e8580375bbb0dcea",
   "base_sha": "a3a8ea97192141a43104e882c3a903fc23007635",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
   "commit_message": "docs(directional): close CB29 compile and hand off independent review",
