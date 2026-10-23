@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb29h-rp02-closeout-docs-20261023-v1",
+  "request_id": "m6-cp3-tb29h-rp02-review-docs-20261023-v1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-tb29h-rp02-closeout-docs",
-  "file_id": "1rHC_zkBXMnd3umoQOzUtumRLRCQ_0PKn",
-  "patch_sha256": "eacbb59103b9467f6c87673f12fe94467022d3625a55e9d73230cddd853669eb",
-  "base_sha": "7e2e0895b98a928f84045bfa1f9ef1adfb46290b",
+  "mailbox_key": "m6-cp3-tb29h-rp02-review-docs",
+  "file_id": "1r1uwKH7tfVHW7-_Xs3cD1FfwDpPoaCPL",
+  "patch_sha256": "2c2054362be739d34c76a14b24d7adae8a1665fb2e9e33a6f1a4d2200cde8ea6",
+  "base_sha": "ce6c4dbf407e7205110312f83ba0369f0e86b1c0",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close TB29H RP02 and hand off independent review",
+  "commit_message": "docs(directional): independently review TB29H RP02 harness",
   "retention_days": 7
 }
