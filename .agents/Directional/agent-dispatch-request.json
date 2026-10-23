@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb28a-review-docs-20261022-r1",
+  "request_id": "m6-cp3-tb29h-harness-20261023-r1",
   "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb28a-review-docs",
-  "file_id": "1_LhF9_VgnoB5Sovno5w1ojXqhskssl3r",
-  "patch_sha256": "5289ef75206d01333715db31919b85d84829785d80193ef9970f9e39c0cc8848",
-  "base_sha": "b1bbafeb60ec2370896b5a89301527bf0d99999e",
+  "mailbox_key": "m6-cp3-tb29h-harness",
+  "file_id": "1d3gItc-IJz9PhR9gBwq0jW8DYjYmv-6w",
+  "patch_sha256": "012e7ea6f7c365a4230b61480b9188aa977f5654f1411d9f783da2d0570cb77d",
+  "base_sha": "b9b01ad9dcb7ee0e1279520f8327f58dc7b36287",
   "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "docs(directional): close CB28A independent review",
+  "commit_message": "feat(directional): add statically validated targeted TB29 artifact harness",
   "retention_days": 7
 }
