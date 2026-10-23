@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb31-odd-atlas-drive-apply-20261023",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb31-odd-atlas-apply",
-  "file_id": "1mSZyhwXhX2z0mhh8LmppxmuqJ8RSQ-hu",
-  "patch_sha256": "2c92875bdaf7a63ea8f00ea6b56b52ce698d7057b76e066d0ff131f37e433cf5",
-  "base_sha": "c7f3e009969340c0e014b798989dd3fb9bc2ee9f",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(directional): verify odd atlas transport and canonical owner permutations",
-  "retention_days": 7
+  "request_id": "m6-cp3-cb31-odd-atlas-compile-20261023",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb31-odd-atlas-compile",
+  "source_sha": "01a511cfd237e5618cb1ccabe0733be3baa1be9c",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb31-odd-atlas"
 }
