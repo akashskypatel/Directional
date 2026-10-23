@@ -1,3 +1,7 @@
+## RA-147 — CB30 gauge fixture static Review, pending immutable TB32 (2026-10-23)
+
+**Candidate/non-stable; no new runtime evidence.** CB30 exact test source `19267540081a4ff3a99826e3b9a766f1dbbded42` changes only `tests/SurfaceCellTransitionQuotientTests.cpp`; compile artifact `12531891913` hashes 28/28, with GMP/GMPXX and no execution. Source-derived gauge preconditions and three separate negative/positive factory controls meet bounded RA-146.1 scope. **Owner:** `M6-CP3-TB32-RP01-PERIODIC-OWNER-FIXTURE-GAUGE-VERIFY` on frozen 500-case manifest SHA-256 `597741409f06a80877cb8ae6f5fd2f92785de99a629a7d2c6453921858996437`. **Falsifiers:** any of six owner tests fails at a new first site, any new control fails, PASS→RED versus TB31, missing/duplicate case, changed source/package, or misleading execution-only pass. Never mutate source, tests, frozen selectors or expectations in TB; never count a synthetic two-face owner fixture as produced periodic/A5/A6 topology. RA-146.2–4 and all other 19 inherited RED owners carried. Stable 66/17/49, debt1; CP2 491/491 accepted, TB31 472/497 candidate, RP-01 open, RP-02 unreached.
+
 ## RA-146 — FG01 fixture correction and evidence-scope review (2026-10-23)
 
 **Candidate/non-stable; no new runtime or accepted-green loss.** Stable 66/17/49, debt1, CP2 491 accepted, TB31 472/497 candidate unchanged. Decision: [RA-146](Architecture_M6_CP3_DEFN_FG01_Periodic_Face_Gauge_Factory_Contract_Review_Decision_20261023.md).

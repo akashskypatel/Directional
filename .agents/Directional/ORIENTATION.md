@@ -2,7 +2,7 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Currency:** 2026-10-23 · RA-146 FG01 reviewed: fixture-only gauge correction accepted with binding evidence limits; next bounded CB30. TB31 472/497 remains candidate, CP2 491/491 accepted; stable 66/17/49, debt1; RP-01 open, RP-02 unreached.
+**Currency:** 2026-10-23 · RA-147 CB30 fixture-only gauge static Review accepted; immutable TB32 500-case verification is next. TB31 472/497 remains candidate, CP2 491/491 accepted; stable 66/17/49, debt1; RP-01 open, RP-02 unreached.
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing` (experimental, PR #8).  
 **Purpose:** Help a fresh contributor understand the product, architecture, fixtures, project records, cadence, current status and outlook **in minutes**—without reading a turn-by-turn journal.
 
@@ -50,7 +50,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M6-CP3 — active** | Direct-production and M6 exit re-proof **not accepted**. Frozen 497-row entry selector; reviewed R3 candidate **403 PASS / 94 RED**. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
-**Current evidence (RA-145):** TB31's frozen 497-case selector has **472 PASS / 25 inherited RED** on the unchanged CB29 package, independently audited against all 497 immutable logs and TB28's 462/497 ledger: ten RED→PASS, zero PASS→RED. This is **candidate-only**, not accepted M6-CP3 completion. The 25 retained failures are divided by first-failure evidence into six face-gauge fixture/factory cases, seven A3 unavailable-route fixture cases, seven untyped producer/oracle cases, and five individually owned A5, A4, singularity and missing-witness cases. RA-146 authorizes only the shared periodic-owner fixture gauge correction and three factory controls. Odd-transport/permutation evidence is a separate later unit; synthetic unpaired owner records do not prove reciprocal periodic action or produced topology. Prior TB28/TB30 reports are historical comparison baselines.
+**Current evidence (RA-145):** TB31's frozen 497-case selector has **472 PASS / 25 inherited RED** on the unchanged CB29 package, independently audited against all 497 immutable logs and TB28's 462/497 ledger: ten RED→PASS, zero PASS→RED. This is **candidate-only**, not accepted M6-CP3 completion. The 25 retained failures are divided by first-failure evidence into six face-gauge fixture/factory cases, seven A3 unavailable-route fixture cases, seven untyped producer/oracle cases, and five individually owned A5, A4, singularity and missing-witness cases. RA-147 independently accepts compile-only CB30 test source and authorizes immutable TB32 six-owner-plus-three-control verification; the expected six recovered rows remain unmeasured. Odd-transport/permutation evidence is a separate later unit; synthetic unpaired owner records do not prove reciprocal periodic action or produced topology. Prior TB28/TB30 reports are historical comparison baselines.
 
 Stable accounting remains **66 events / 17 categories / 49 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md) and [regression tracker](Regression_Root_Cause_Tracker.md).
 
@@ -100,12 +100,12 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems — priority, not a task ledger
 
-**Immediate:** restore six periodic-owner fixture preconditions in bounded CB30, preserving production admission and original assertions. Independently reviewed scope: [RA-146](Architecture_M6_CP3_DEFN_FG01_Periodic_Face_Gauge_Factory_Contract_Review_Decision_20261023.md). No runtime correction has landed.
+**Immediate:** execute immutable TB32 to verify six owner-map tests plus three gauge controls after the compiled CB30 fixture correction. [RA-147](Architecture_M6_CP3_CB30_Periodic_Owner_Fixture_Gauge_Review_Decision_20261023.md) independently accepted only the static/compile scope; runtime outcomes remain unmeasured.
 
 
 | Priority | Missing outcome | Owner |
 |---|---|---|
-| **1** | Six owner-map tests abort before their assertions because the shared fixture omits mandatory face gauge. Correct this input only; separately prove nonzero transport/permutation. Synthetic factory admission cannot discharge produced periodic or A6 invariance obligations. | Bounded CB30 → CB30-REV; [RA-146](Architecture_M6_CP3_DEFN_FG01_Periodic_Face_Gauge_Factory_Contract_Review_Decision_20261023.md) |
+| **1** | Six owner-map tests previously aborted before assertions on missing fixture gauge; the bounded CB30 fixture change now compiles but the downstream six results remain unmeasured. Separately prove odd transport/permutation and produced periodic/A6 invariance. | TB32 → TB32-REV; [RA-146](Architecture_M6_CP3_DEFN_FG01_Periodic_Face_Gauge_Factory_Contract_Review_Decision_20261023.md) |
 | **2** | Restore accepted-prefix execution and the direct-production positive and tamper paths. Fixture debt follows TB19-REV: 242 → 174 → 250 → adjacent-sheet → 191 → 442, plus the I/R test assumptions. Preserve the accepted 491/491 and the frozen 497 identities. | M6-CP3; [tracker](Regression_Root_Cause_Tracker.md) |
 | **3** | Discharge the final **`G4-B002`** closed-complex candidate-extraction witness on real produced authority. | M6-CP3 exit |
 | **4** | Implement verified D0–D4 degradation/disposition and representative production quality/resource acceptance. | M7 → M8; [roadmap](ROADMAP.md) |
