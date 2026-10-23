@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-cb30-periodic-owner-gauge-20261023-r1",
-  "operation": "drive_apply",
-  "mailbox_key": "m6-cp3-cb30-gauge-apply",
-  "file_id": "1EVya8Ln76vz8a5yasWqX2EPTsXkNZAtU",
-  "patch_sha256": "e6a6cc82c58f47f35a36bee6d6ee5641b467a8ac1c900842968c1d87907d7c1e",
-  "base_sha": "79aeb3ddcbe3c6c97163e7b57232d4226571678e",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test(surface-cells): derive reciprocal periodic owner face gauges and controls",
-  "retention_days": 7
+  "request_id": "m6-cp3-cb30-gauge-compile-20261023-r1",
+  "operation": "compile",
+  "mailbox_key": "m6-cp3-cb30-gauge-compile",
+  "source_sha": "e98b6e8c7b70ce320ccc7888ec15f3fdb620b5d6",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb30-gauge"
 }
