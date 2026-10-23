@@ -1,2 +1,0 @@
-# TB32 response-boundary cleanup: source snapshot trigger only
-.agents/connector-triggers/source-snapshot/tb32-20261023-2138.txt

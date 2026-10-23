@@ -1,2 +1,0 @@
-TB32 immutable executor preparation source snapshot.
-Base authority: 2ba0a2b75aafcd9744304fa1b98379bc8a64b4e3
