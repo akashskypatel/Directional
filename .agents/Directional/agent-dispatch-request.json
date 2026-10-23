@@ -1,23 +1,12 @@
 {
   "schema_version": 1,
-  "request_id": "m6-cp3-tb31-selector497-census-20261023-01",
-  "operation": "test_benchmark",
-  "mailbox_key": "m6-cp3-tb31-selector497-census",
-  "executor_sha": "a2dafcc702f9de262d3315fad7645b0f400ec2d4",
-  "semantic_source_sha": "2602e7398cdc6f1281abe11a758de35166b6590c",
-  "turn_id": "M6-CP3-TB31-RP01-SELECTOR-497-CENSUS",
-  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
-  "harness_sha256": "436f5fff9c3bec97457f4bc6b7c2b6182cb3f47707eb14a66af3b6a3f3dc3c9a",
-  "environment": {
-    "CANDIDATE_ARTIFACT_ID": "12492950387",
-    "EXPECTED_SOURCE_SHA": "2602e7398cdc6f1281abe11a758de35166b6590c",
-    "EXPECTED_CANDIDATE_ZIP_SHA256": "9e2da1f4b5cf95ac45364e8c428f0bd9116dcfe96772de18d02a5a7bfb167319",
-    "EXPECTED_ROOT_MANIFEST_SHA256": "5f7259b7ec0f420c8d161973f450e99e76684b0643c8e21074d192931747320d",
-    "EXPECTED_SOURCE_ARCHIVE_SHA256": "e5ec539063d7bf6dfbe06b1552c081d117e052f8090a58aaa6ac754242e8f53a",
-    "CASE_MANIFEST": ".agents/Directional/Architecture_M6_CP3_TB31_Census_Case_Manifest.tsv",
-    "CASE_MANIFEST_SHA256": "b1c135d429f8c659e190f648b8678669cb7c14d393e0db9069568ea3838aa43e",
-    "EXPECTED_CASE_COUNT": "497"
-  },
-  "artifact_prefix": "m6-cp3-tb31-census",
+  "request_id": "m6-cp3-tb31-docs-20261023-01",
+  "operation": "drive_apply",
+  "mailbox_key": "m6-cp3-tb31-docs-20261023",
+  "file_id": "1o-t6ZLN7fJZmeyrb9jJlpUuxNmIvHrvT",
+  "patch_sha256": "8c36f69d458e7f91f75c542efd63d33d30352de665a25d525af9a5656c87cb3b",
+  "base_sha": "a2dafcc702f9de262d3315fad7645b0f400ec2d4",
+  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "commit_message": "docs(directional): preserve TB31 497-case census evidence and review handoff",
   "retention_days": 7
 }
