@@ -1,0 +1,3 @@
+CB30 fixture gauge independent review source snapshot
+semantic_authority=19267540081a4ff3a99826e3b9a766f1dbbded42
+requested_branch_head=72038add73eba8b82485bddfa7edd411bc3558f0
